@@ -1,0 +1,12 @@
+useDynLib(pomp)
+importFrom(graphics,plot)
+importFrom(stats,simulate,time,coef,logLik)
+importFrom(nlme,'coef<-')
+exportClasses('pomp','mif')
+exportMethods('plot','show','time','print','show','coerce',
+              'dprocess','rprocess','rmeasure','dmeasure',
+              'simulate','data.array','pfilter',
+              'coef','logLik',
+              'pred.mean','pred.var','filter.mean','conv.rec',
+              'particles','mif','continue','coef<-')
+export(pomp,sobol,pfilter,bspline.basis,periodic.bspline.basis,traj.match)
