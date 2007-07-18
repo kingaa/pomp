@@ -9,4 +9,4 @@ exportMethods('plot','show','time','print','show','coerce',
               'coef','logLik',
               'pred.mean','pred.var','filter.mean','conv.rec',
               'particles','mif','continue','coef<-')
-export(pomp,sobol,pfilter,bspline.basis,periodic.bspline.basis,traj.match)
+export(pomp,sobol,pfilter,bspline.basis,periodic.bspline.basis)
