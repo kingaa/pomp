@@ -1,0 +1,77 @@
+\name{pfilter}
+\alias{pfilter}
+\alias{pfilter,pomp-method}
+\alias{pfilter-pomp}
+\alias{pfilter,mif-method}
+\alias{pfilter-mif}
+\title{Particle filter.}
+\description{
+  Run a particle filter.
+}
+\usage{
+pfilter(object, \dots)
+\S4method{pfilter}{pomp}(object, xstart, params, tol = 1e-17,
+    warn = TRUE, max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
+    filter.mean = FALSE, \dots)
+\S4method{pfilter}{mif}(object, Np, coef, tol = 1e-17, warn = TRUE,
+    max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
+    filter.mean = FALSE, \dots)
+}
+\arguments{
+  \item{object}{An object of class \code{pomp} or inheriting class
+    \code{pomp}.}
+  \item{xstart}{A \code{nvars} x \code{np} matrix containing the initial
+    state-values of the \code{np} particles.  This must have a
+    `rownames' attribute.}
+  \item{params}{A \code{npars} x \code{np} matrix containing the
+    parameters corresponding to the initial state values in
+    \code{xstart}.  This must have a `rownames' attribute.  It is
+    permissible to supply \code{params} as a named numeric vector, i.e.,
+    without a \code{dim} attribute.  In this case, all particles will
+    inherit the same parameter values.}
+  \item{Np}{Number of particles to use.  By default, this is the number
+    of particles used in the \code{mif} iterations.}
+  \item{coef}{Coefficients at which to estimate the log likelihood.  By
+    default, \code{coef(object)} is used.}
+  \item{tol}{Particles with log likelihood below \code{tol} are
+    considered to be "lost".  A filtering failure occurs when, at some
+    time point, all particles are lost.  When all particles are lost,
+    the conditional log likelihood at that time point is set to be
+    \code{log(tol)}.}
+  \item{warn}{Should the user be warned about filtering failures?}
+  \item{max.fail}{The maximum number of filtering failures allowed.
+    If the number of filtering failures exceeds this number,
+    execution will terminate with an error.}
+  \item{pred.mean}{If \code{TRUE}, the prediction means are calculated
+    for the state variables and parameters.}
+  \item{pred.var}{If \code{TRUE}, the prediction variances are
+    calculated for the state variables and parameters.}
+  \item{filter.mean}{If \code{TRUE}, the filtering means are
+    calculated for the state variables and parameters.}
+  \item{\dots}{Additional arguments unused at present.}
+}
+\value{
+  A list with the following elements:
+  \item{pred.mean}{The \code{nvars+npars} x \code{ntimes} matrix of
+    prediction means, where \code{ntimes} is the length of the time
+    series contained in \code{object}.  The rows correspond to states
+    and parameters, in that order.}
+  \item{pred.variance}{The matrix of prediction variances, in the same
+    format as \code{pred.mean}.}
+  \item{filter.mean}{The matrix of filtering means, in the same
+    format as \code{pred.mean}.}
+  \item{eff.sample.size}{A vector containing the effective number of
+    particles at each time point.}
+  \item{cond.loglik}{A vector containing the conditional log likelihoods
+    at each time point.}
+  \item{nfail}{The number of filtering failures encountered.}
+  \item{loglik}{The estimated log-likelihood.}
+}
+\examples{
+## See the vignettes for more instructive examples.
+}
+\references{}
+\author{Aaron A. King (kingaa at umich dot edu)}
+\seealso{\link{pomp-class}}
+\keyword{models}
+\keyword{ts}

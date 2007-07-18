@@ -1,0 +1,79 @@
+\name{mif-class}
+\docType{class}
+\alias{mif-class}
+\title{The "mif" class}
+\description{The MIF algorithm: maximum likelihood via iterated
+  filtering.  The \code{mif} class holds a fitted model.}
+\section{Objects from the Class}{
+  Objects can be created by calls to the \code{mif} method on an
+  \code{pomp} object.  Such a call uses the MIF algorithm to fit the
+  model parameters.
+}
+\section{Slots}{
+  A \code{mif} object is derived from a \code{pomp} object and therefore
+  has all the slots of such an object.  See \code{\link{pomp-class}} for
+  details.  A full description of slots in a \code{mif} object follows.
+  \describe{
+    \item{ivps}{A character vector containing the names of variables
+      appearing in \code{coef} which are to be estimated as
+      initial-value parameters (IVPs).}
+    \item{pars}{A character vector containing the names of ordinary
+      parameters appearing in \code{coef} which are to be estimated.}
+    \item{Nmif}{Number of MIF iterations that have been completed.}
+    \item{particles}{A function of prototype
+      `particles(Np,center,sd,...)' that draws particles from a
+      distribution centered on `center' and with width proportional to
+      `sd'.}
+    \item{alg.pars}{A named list containing the specification of
+      the algorithm parameters.  This consists of the following elements:
+      \describe{
+	\item{cooling.factor}{the factor defining the exponential
+	  cooling schedule.}
+	\item{Np}{number of particles used.}
+	\item{CC}{the initial parameter SD multiplier.}
+	\item{T0}{an integer specifying the fixed lag for
+	  smoothing of IVPs.}
+      }
+    }
+    \item{coef}{A named vector containing the parameter estimate.}
+    \item{random.walk.sd}{A named vector containing the random-walk
+      variance to be used for ordinary parameters.  The width of the
+      initial distribution of particles will be random.walk.sd*CC.}
+    \item{pred.mean}{Matrix of prediction means.  See
+      \code{\link{pfilter}}.}
+    \item{pred.var}{Matrix of prediction variances.  See
+      \code{\link{pfilter}}.}
+    \item{filter.mean}{Matrix of filtering means.  See
+      \code{\link{pfilter}}.}
+    \item{conv.rec}{The "convergence record": a matrix
+      containing a record of the parameter values, log likelihoods, and
+      other pertinent information, with one row for each MIF iteration.}
+    \item{eff.sample.size}{A vector containing the effective number of
+      particles at each time point.  See \code{\link{pfilter}}.}
+    \item{cond.loglik}{A vector containing the conditional log
+      likelihoods at each time point.  See \code{\link{pfilter}}.}
+    \item{loglik}{A numeric value containing the value of the log
+      likelihood, as evaluated for the random-parameter model.}
+    \item{data}{Inherited from the \code{pomp} class.}
+    \item{times}{Inherited from the \code{pomp} class.}
+    \item{t0}{Inherited from the \code{pomp} class.}
+    \item{rprocess}{Inherited from the \code{pomp} class.}
+    \item{dprocess}{Inherited from the \code{pomp} class.}
+    \item{rmeasure}{Inherited from the \code{pomp} class.}
+    \item{dmeasure}{Inherited from the \code{pomp} class.}
+    \item{userdata}{Inherited from the \code{pomp} class.}
+  }
+}
+\section{Extends}{
+  Class \code{pomp}, directly.  See \code{\link{pomp-class}}.
+}
+\section{Methods}{
+  See \code{\link{mif}}, \link{mif-methods}, \link{particles-mif},
+  \link{pfilter-mif}.
+}
+\references{}
+\author{Aaron A. King (kingaa at umich dot edu)}
+\seealso{\code{\link{mif}}, \link{mif-methods}, \code{\link{pomp}},
+  \link{pomp-class}}
+\keyword{models}
+\keyword{ts}
