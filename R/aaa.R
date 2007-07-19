@@ -93,3 +93,7 @@ continue <- function (object, ... )
   stop("function 'continue' is undefined for objects of class '",class(object),"'")
 setGeneric('continue')
 
+'coef<-' <- function (object, ..., value)
+  stop("function 'coef<' is undefined for objects of class '",class(object),"'")
+setGeneric('coef<-')
+                      

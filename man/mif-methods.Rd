@@ -3,6 +3,7 @@
 \alias{mif-methods}
 \alias{coef,mif-method}
 \alias{coef-mif}
+\alias{coef<-}
 \alias{coef<-,mif-method}
 \alias{coef<--mif}
 \alias{logLik,mif-method}
