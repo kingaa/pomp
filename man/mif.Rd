@@ -28,6 +28,11 @@
       estimated.}
     \item{ivps}{Character vector of names of initial-value parameters to
       be estimated.}
+    \item{particles}{Function of prototype
+      \code{particles(Np,center,sd,...)} which sets up the initial
+      particle matrix by drawing a sample of size \code{Np} from the
+      initial particle distribution centered at \code{center} and of
+      width \code{sd}.}
     \item{rw.sd}{The intensity of the random walk.}
     \item{alg.pars}{A named list of algorithm parameters.  This consists
       of
@@ -76,14 +81,39 @@
   single call to \code{mif} to perform \code{Nmif=m+n} iterations.
 
   All additional arguments are passed to \code{mif}.  This feature can
-  be used to change any of the parameters (except the `particles'
+  be used to change any of the parameters (except the \code{particles}
   function).
 }
-\references{Ionides, E. L., Bret\'o, C., and King, A. A. Inference for
-  nonlinear dynamical systems. Proc. Nat'l. Acad. Sci. U.S.A., 2006,
-  103, 18438--18443}
+\section{Details}{
+  \strong{It is the user's responsibility to ensure that the
+    \code{particles} function satisfies the following conditions:}
+
+  \code{particles} has at least the following arguments: \code{Np},
+  \code{center}, \code{sd}, and \code{\dots}.  Additional arguments may
+  be specified.  These will be filled with the elements of the
+  \code{userdata} slot of the underlying "pomp" object (see
+  \code{\link{pomp-class}}).
+
+  \code{particles} returns a named list consisting of two matrices.  The
+  element \code{states} must contain the state-variable portion of the
+  particles; \code{params} must contain the parameter portion.  Each
+  matrix must have rownames and exactly \code{Np} columns.  Each column
+  represents a distinct particle.  The rownames are used by the
+  algorithms (see \code{mif}, \code{pfilter}).
+
+  The center of the particle distribution returned by \code{particles}
+  should be \code{center}.  The width of the particle distribution
+  should vary monotonically with \code{sd}.  In particular, when
+  \code{sd=0}, the \code{particles} should return matrices with
+  \code{Np} identical columns, each corresponding to the parameters
+  specified in \code{center}.
+}
+\references{E. L. Ionides, C. Bret{\'o}, & A. A. King, Inference for
+  nonlinear dynamical systems, Proc. Natl. Acad. Sci. U.S.A.,
+  103:18438--18443, 2006.}
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{\code{\link{mif-class}}, \code{\link{mif-methods}},
-  \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}}
+  \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
+  See the "random\_walk\_example" vignette for an example.}
 \keyword{models}
 \keyword{ts}

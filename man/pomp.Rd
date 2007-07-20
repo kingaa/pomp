@@ -41,7 +41,7 @@
   
   \code{rprocess} must have at least the following arguments: \code{xstart},
   \code{times}, \code{params}, and \code{\dots}.  Additional arguments
-  may be passed.  It is guaranteed that these will be filled with the
+  may be specified.  It is guaranteed that these will be filled with the
   corresponding elements the user has included as additional arguments
   in the construction of the \code{pomp} object.
 

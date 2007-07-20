@@ -38,7 +38,7 @@ pfilter(object, \dots)
     time point, all particles are lost.  When all particles are lost,
     the conditional log likelihood at that time point is set to be
     \code{log(tol)}.}
-  \item{warn}{Should the user be warned about filtering failures?}
+  \item{warn}{Should filtering failures generate warnings?}
   \item{max.fail}{The maximum number of filtering failures allowed.
     If the number of filtering failures exceeds this number,
     execution will terminate with an error.}
@@ -68,7 +68,7 @@ pfilter(object, \dots)
   \item{loglik}{The estimated log-likelihood.}
 }
 \examples{
-## See the vignettes for more instructive examples.
+## See the vignettes for examples.
 }
 \references{M. S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp. A
   Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian

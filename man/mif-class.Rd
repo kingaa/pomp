@@ -21,19 +21,18 @@
       parameters appearing in \code{coef} which are to be estimated.}
     \item{Nmif}{Number of MIF iterations that have been completed.}
     \item{particles}{A function of prototype
-      `particles(Np,center,sd,...)' that draws particles from a
-      distribution centered on `center' and with width proportional to
-      `sd'.}
-    \item{alg.pars}{A named list containing the specification of
-      the algorithm parameters.  This consists of the following elements:
-      \describe{
-	\item{cooling.factor}{the factor defining the exponential
-	  cooling schedule.}
-	\item{Np}{number of particles used.}
-	\item{CC}{the initial parameter SD multiplier.}
-	\item{T0}{an integer specifying the fixed lag for
-	  smoothing of IVPs.}
-      }
+      \code{particles(Np,center,sd,...)} that draws particles from a
+      distribution centered on \code{center} and with width proportional
+      to \code{sd}.}
+    \item{alg.pars}{A named list of algorithm parameters.  This consists
+      of
+      \item{Np}{the number of particles to use in filtering}
+      \item{var.factor}{the scaling coefficient relating the width of the
+        initial particle distribution to \code{rw.sd}}
+      \item{ic.lag}{the timepoint for fixed-lag smoothing of initial-value
+        parameters (IVPs)}
+      \item{cooling.factor}{the exponential cooling factor, \eqn{a},
+        where \eqn{0<a<1}}
     }
     \item{coef}{A named vector containing the parameter estimate.}
     \item{random.walk.sd}{A named vector containing the random-walk
@@ -71,7 +70,7 @@
   See \code{\link{mif}}, \link{mif-methods}, \link{particles-mif},
   \link{pfilter-mif}.
 }
-\references{E. L. Ionides, C. Bretó, & A. A. King, Inference for
+\references{E. L. Ionides, C. Bret{\'o}, & A. A. King, Inference for
   nonlinear dynamical systems, Proc. Natl. Acad. Sci. U.S.A.,
   103:18438--18443, 2006.}
 \author{Aaron A. King (kingaa at umich dot edu)}

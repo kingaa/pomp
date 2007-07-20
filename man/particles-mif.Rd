@@ -18,14 +18,14 @@ particles(object, \dots)
 }
 \details{
   The \code{particles} method is used to set up the initial distribution
-  of particles.
+  of particles.  It is an interface to the user-specifed
+  \code{particles} slot in the "mif" object.
 }
 \value{
   \code{particles} returns a list of two matrices.  \code{states}
   contains the state-variable portion of the particles; \code{params}
   contains the parameter portion.  Each has \code{Np} columns.
 }
-\references{}
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{\code{\link{mif}}, \link{mif-methods}, \code{\link{pomp}},
   \link{pomp-class}}

@@ -74,6 +74,6 @@
   }
 }
 \author{Aaron A. King (kingaa at umich dot edu)}
-\seealso{\code{\link{pomp}},\link{simulate-pomp}}
+\seealso{\code{\link{pomp}}, \link{simulate-pomp}}
 \keyword{models}
 \keyword{ts}
