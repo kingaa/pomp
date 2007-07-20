@@ -2,7 +2,7 @@
 
 #include "pomp.h"
 
-static void bspline_internal (double *y, double *x, int nx, int i, int p, double *knots, int nknots);
+static void bspline_internal (double *y, const double *x, int nx, int i, int p, const double *knots, int nknots);
 
 // B-spline basis
 
@@ -42,7 +42,7 @@ SEXP bspline_basis_function (SEXP x, SEXP i, SEXP degree, SEXP knots) {
 }
 
 
-static void bspline_internal (double *y, double *x, int nx, int i, int p, double *knots, int nknots)
+static void bspline_internal (double *y, const double *x, int nx, int i, int p, const double *knots, int nknots)
 {
   int j;
   double a, b;
