@@ -70,7 +70,9 @@ pfilter(object, \dots)
 \examples{
 ## See the vignettes for more instructive examples.
 }
-\references{}
+\references{M. S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp. A
+  Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian
+  Bayesian Tracking. IEEE Trans. Sig. Proc. 50:174--188, 2002.}
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{\link{pomp-class}}
 \keyword{models}
