@@ -3,7 +3,7 @@
 pfilter.pomp <- function (object, xstart, params, 
                           tol = 1e-17, warn = TRUE, max.fail = 0,
                           pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
-                          .rw.sd) {
+                          .rw.sd, ...) {
   ntimes <- length(time(object))
   if (is.null(dim(xstart))) stop("'xstart' must be a matrix")
   Np <- ncol(xstart)
