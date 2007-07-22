@@ -12,10 +12,8 @@
 pfilter(object, \dots)
 \S4method{pfilter}{pomp}(object, xstart, params, tol = 1e-17,
     warn = TRUE, max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, \dots)
-\S4method{pfilter}{mif}(object, Np, coef, tol = 1e-17, warn = TRUE,
-    max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, \dots)
+    filter.mean = FALSE, .rw.sd, \dots)
+\S4method{pfilter}{mif}(object, Np, coef, \dots)
 }
 \arguments{
   \item{object}{An object of class \code{pomp} or inheriting class
@@ -48,6 +46,8 @@ pfilter(object, \dots)
     calculated for the state variables and parameters.}
   \item{filter.mean}{If \code{TRUE}, the filtering means are
     calculated for the state variables and parameters.}
+  \item{.rw.sd}{For internal use with the MIF algorithm.  If
+    \code{TRUE}, the specified random walk SD is used.}
   \item{\dots}{Additional arguments unused at present.}
 }
 \value{
