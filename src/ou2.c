@@ -318,9 +318,9 @@ static void setrownames (SEXP x, int n, char **names) {
   SEXP nm, dimnms;
   PROTECT(nm = NEW_CHARACTER(n)); nprotect++;
   for (k = 0; k < n; k++) 
-    SET_ELEMENT(nm,k,mkChar(names[k]));
+    SET_STRING_ELT(nm,k,mkChar(names[k]));
   PROTECT(dimnms = allocVector(VECSXP,3)); nprotect++;
-  SET_ELEMENT(dimnms,0,nm);	// set row names
+  SET_VECTOR_ELT(dimnms,0,nm);	// set row names
   SET_DIMNAMES(x,dimnms);
   UNPROTECT(nprotect);
 }
@@ -331,7 +331,7 @@ static SEXP matchrownames (SEXP x, int n, char **names) {
   SEXP index, nm;
   PROTECT(nm = NEW_CHARACTER(n)); nprotect++;
   for (k = 0; k < n; k++) {
-    SET_ELEMENT(nm,k,mkChar(names[k]));
+    SET_STRING_ELT(nm,k,mkChar(names[k]));
   }
   PROTECT(index = match(GET_ROWNAMES(GET_DIMNAMES(x)),nm,0)); nprotect++;
   idx = INTEGER(index);
