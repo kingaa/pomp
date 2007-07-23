@@ -16,7 +16,6 @@
 }
 \examples{
 data(ou2)
-plot(ou2)
 slotNames(ou2)
 x0 <- c(x1.0=50,x2.0=-50)
 p <- c(
@@ -24,11 +23,11 @@ p <- c(
        sigma.1=1,sigma.2=0,sigma.3=2,
        tau=1
        )
-x <- simulate(ou2,nsim=10,seed=20348585,xstart=x0,params=p)
-plot(x[[1]])
+ou2 <- simulate(ou2,nsim=10,seed=20348585,xstart=x0,params=p)[[1]]
+plot(ou2)
 X <- matrix(x0,2,1000)
 rownames(X) <- names(x0)
 pfilter(ou2,xstart=X,params=p)$loglik
 }
-\seealso{\code{\link{pomp-class}} and the vignettes}
+\seealso{\code{\link{pomp-class}} and the vignettes.}
 \keyword{datasets}

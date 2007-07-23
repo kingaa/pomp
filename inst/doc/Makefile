@@ -4,11 +4,10 @@ PDFLATEX = pdflatex
 DVIPS = dvips -Ppdf
 EPSTOPDF = epstopdf
 
-VIGNETTES = random_walk_example.pdf
-
 default: vignettes clean
+	mv ou2.rda ../../data
 
-vignettes: $(VIGNETTES)
+vignettes: random_walk.pdf
 
 %.pdf: %.tex
 	$(PDFLATEX) $*

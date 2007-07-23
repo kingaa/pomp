@@ -1,7 +1,0 @@
-\documentclass[letterpaper]{amsart}
-%\VignetteIndexEntry{Introduction to pomp by example}
-\usepackage{hyperref}
-\usepackage{pdfpages}
-\begin{document}
-  \includepdf[fitpaper=true,pages=-]{random_walk.pdf}
-\end{document}
