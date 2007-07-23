@@ -114,6 +114,6 @@
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{\code{\link{mif-class}}, \code{\link{mif-methods}},
   \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
-  See the "random\_walk\_example" vignette for an example.}
+  See the "random\_walk" vignette for an example.}
 \keyword{models}
 \keyword{ts}

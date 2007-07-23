@@ -28,9 +28,9 @@
   results of fitting the model to the data by the MIF algorithm.
 }
 \section{Vignettes}{
-  The vignette `random\_walk\_example' illustrates the facilities of the
+  The vignette `random\_walk' illustrates the facilities of the
   package using simple random-walk processes.  Run
-  \code{vignette('random_walk_example')} or look at the HTML
+  \code{vignette('random_walk')} or look at the HTML
   documentation to view the vignette.
 }
 \author{Aaron A. King (kingaa at umich dot edu)}
