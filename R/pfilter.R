@@ -142,7 +142,7 @@ pfilter.pomp <- function (object, xstart, params,
 
     ## Matrix with samples (columns) from filtering distribution theta.t | Y.t
     if (!all.fail) {
-      sample <- .Call("systematic_resampling",weights)
+      sample <- .Call(systematic_resampling,weights)
       x <- x[,sample,drop=F]
       params <- params[,sample,drop=F]
     }

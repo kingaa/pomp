@@ -1,8 +1,8 @@
 bspline <- function (x, i, degree, knots)
-  .Call("bspline_basis_function",x,as.integer(i),as.integer(degree),knots)
+  .Call(bspline_basis_function,x,as.integer(i),as.integer(degree),knots)
 
 bspline.basis <- function (x, degree = 3, knots)
-  .Call("bspline_basis",x,as.integer(degree),knots)
+  .Call(bspline_basis,x,as.integer(degree),knots)
 
 periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1) {
   if (any(x < 0) || any(x > period))

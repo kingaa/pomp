@@ -1,4 +1,13 @@
-useDynLib(pomp)
+useDynLib(
+          pomp,
+          bspline_basis,
+          bspline_basis_function,
+          systematic_resampling,
+          ou2_simulator,
+          ou2_density,
+          bivariate_normal_rmeasure,
+          bivariate_normal_dmeasure
+          )
 importFrom(graphics,plot)
 importFrom(stats,simulate,time,coef,logLik)
 exportClasses('pomp','mif')
