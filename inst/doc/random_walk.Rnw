@@ -352,14 +352,10 @@ ou2 <- pomp(
               'tau')
 	    )
 @ 
-The \code{pomp} object we just created is included in the package: use \code{data(ou2)} to retrieve it.
-<<echo=F>>=
-save(list='ou2',file='ou2.rda')
-@ 
 We'll fill the data slot with simulated data:
 <<>>=
  tic <- Sys.time()
- ou2 <- simulate(ou2,xstart=x0,params=p,nsim=1000)[[1]]
+ ou2 <- simulate(ou2,xstart=x0,params=p,nsim=1000,seed=800733088)[[1]]
  toc <- Sys.time()
  print(toc-tic)
 @ 
@@ -389,6 +385,10 @@ dprocess(ou2,x[,,36:41,drop=F],times=time(ou2)[35:40],params=as.matrix(p),log=T)
 <<>>=
 log(dmeasure(ou2,y=y[,1,1:4],x=x[,,2:5,drop=F],times=time(ou2)[1:4],params=as.matrix(p)))
 dmeasure(ou2,y=y[,1,1:4],x=x[,,2:5,drop=F],times=time(ou2)[1:4],params=as.matrix(p),log=T)
+@ 
+The \code{pomp} object we just created is included in the package: use \code{data(ou2)} to retrieve it.
+<<echo=F>>=
+save(list='ou2',file='ou2.rda')
 @ 
 
 \section{Particle filter.}
