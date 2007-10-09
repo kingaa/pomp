@@ -8,7 +8,7 @@ periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1) {
   if (any(x < 0) || any(x > period))
     stop("cannot evaluate the basis outside the fundamental domain")
   if (nbasis < degree)
-    stop("must have nbasis < degree")
+    stop("must have nbasis >= degree")
   dx <- period/nbasis
   knots <- seq(-degree*dx,period+degree*dx,by=dx)
   y <- bspline.basis(x,degree,knots)
