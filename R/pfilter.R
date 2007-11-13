@@ -93,6 +93,20 @@ pfilter.pomp <- function (object, xstart, params,
 
     ## prediction variances
     if (pred.var) {
+      problem.indices <- unique(which(!is.finite(x),arr.ind=TRUE)[,1])
+      if (length(problem.indices)>0) {
+        stop(
+             "pfilter error: non-finite state variables ",
+             paste(rownames(x)[problem.indices],collapse=',')
+             )
+      }
+      problem.indices <- unique(which(!is.finite(params),arr.ind=TRUE)[,1])
+      if (length(problem.indices)>0) {
+        stop(
+             "pfilter error: non-finite parameters ",
+             paste(rownames(params)[problem.indices],collapse=',')
+             )
+      }
       xx <- try(
                 c(
                   apply(x,1,var),
