@@ -21,14 +21,15 @@
   \item{states}{Do we want the state trajectories?}
   \item{obs}{Do we want data-frames of the simulated observations?}
   \item{times}{The times for which observations are required.  Note
-    that the first element in \code{times} is the start time.  No
-    observation will be returned for this time.}
+    that the first element in \code{times} is the start time.}
   \item{\dots}{further arguments that are at present ignored.}
 }
 \value{
   If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of
   \code{nsim} `pomp' objects is returned.  Each has a simulated data
-  set.
+  set.  If \code{times} is specified, then the \code{t0} slot of the
+  created `pomp' objects will be filled with \code{times[1]} and the
+  simulated observations will be at times \code{times[-1]}.
 
   If \code{states=TRUE} and \code{obs=FALSE}, simulated state
   trajectories are returned as a rank-4 array with dimensions
@@ -39,8 +40,8 @@
 
   If \code{states=FALSE} and \code{obs=TRUE}, simulated observations are
   returned as a rank-4 array with dimensions \code{nobs} x
-  \code{ncol(xstart)} x \code{nsim} x \code{(ntimes-1)}.  Here,
-  \code{nobs} is the number of observables.
+  \code{ncol(xstart)} x \code{nsim} x \code{ntimes}.  Here, \code{nobs}
+  is the number of observables.
 
   If both \code{states=TRUE} and \code{obs=TRUE}, then a
   named list is returned.  It contains the state trajectories and

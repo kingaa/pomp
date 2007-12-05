@@ -15,5 +15,5 @@ periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1) {
   if (degree > 0)
     y[,1:degree] <- y[,1:degree]+y[,-(1:nbasis)]
   shift <- floor((degree-1)/2)
-  y[,c((shift+1):nbasis,1:shift)]
+  y[,c(seq(from=shift+1,to=nbasis,by=1),seq_len(shift))]
 }
