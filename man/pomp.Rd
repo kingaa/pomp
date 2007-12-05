@@ -14,7 +14,8 @@
     observations were made.}
   \item{times}{The times corresponding to the observations.
     \code{times} must be a strictly increasing numeric vector.}
-  \item{t0}{The zero-time.  This must be prior to the first observation.}
+  \item{t0}{The zero-time.  This must be no later than the time of the
+    first observation, \code{times[1]}.}
   \item{rprocess}{Function of prototype
     \code{rprocess(xstart,times,params,\dots)} which simulates from the
     unobserved process.}
