@@ -3,18 +3,24 @@ useDynLib(
           bspline_basis,
           bspline_basis_function,
           systematic_resampling,
-          ou2_simulator,
-          ou2_density,
-          bivariate_normal_rmeasure,
-          bivariate_normal_dmeasure
+          euler_model_simulator
           )
 importFrom(graphics,plot)
 importFrom(stats,simulate,time,coef,logLik)
 exportClasses('pomp','mif')
 exportMethods('plot','show','time','print','show','coerce',
-              'dprocess','rprocess','rmeasure','dmeasure',
+              'dprocess','rprocess','rmeasure','dmeasure','init.state',
               'simulate','data.array','pfilter',
               'coef','logLik',
               'pred.mean','pred.var','filter.mean','conv.rec',
               'particles','mif','continue','coef<-')
-export(pomp,pfilter,bspline.basis,periodic.bspline.basis)
+export(
+       pomp,
+       pfilter,
+       reulermultinom,
+       deulermultinom,
+       euler.simulate,
+       sobol,
+       bspline.basis,
+       periodic.bspline.basis
+       )

@@ -7,10 +7,18 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 
-SEXP systematic_resampling (SEXP weights);
-SEXP sobol_sequence (SEXP dim);
-SEXP bspline_basis (SEXP x, SEXP degree, SEXP knots);
-SEXP bspline_basis_function (SEXP x, SEXP i, SEXP degree, SEXP knots);
+#include "interp.h"
+#include "euler.h"
+
+/* bspline.c */
+SEXP bspline_basis(SEXP x, SEXP degree, SEXP knots);
+SEXP bspline_basis_function(SEXP x, SEXP i, SEXP degree, SEXP knots);
+
+/* dsobol.c */
+SEXP sobol_sequence(SEXP dim);
+
+/* resample.c */
+SEXP systematic_resampling(SEXP weights);
 
 #ifdef __cplusplus
 

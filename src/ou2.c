@@ -12,17 +12,12 @@ struct lookup_table {
 };
 
 // prototypes
-SEXP ou2_simulator (SEXP xstart, SEXP times, SEXP params);
-SEXP ou2_density (SEXP x, SEXP times, SEXP params, SEXP give_log);
-SEXP bivariate_normal_rmeasure (SEXP x, SEXP times, SEXP params);
-SEXP bivariate_normal_dmeasure (SEXP y, SEXP x, SEXP times, SEXP params, SEXP give_log);
-
 static double expit (double x);
 static double logit (double x);
-static void normal_rmeasure (int *n, double *X, double *par, int *index, double *obs);
-static void normal_dmeasure (int *n, double *X, double *par, int *index, double *Y, double *f, int *give_log);
-static void ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex);
-static void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log);
+void normal_rmeasure (int *n, double *X, double *par, int *index, double *obs);
+void normal_dmeasure (int *n, double *X, double *par, int *index, double *Y, double *f, int *give_log);
+void ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex);
+void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log);
 static void sim_ou2 (double *x,
 		     double alpha1, double alpha2, double alpha3, double alpha4, 
 		     double sigma1, double sigma2, double sigma3);
@@ -32,6 +27,11 @@ static double dens_ou2 (double *x1, double *x2,
 static SEXP makearray (int rank, int *dim);
 static void setrownames (SEXP x, int n, char **names);
 static SEXP matchrownames (SEXP x, int n, char **names);
+
+SEXP ou2_simulator (SEXP xstart, SEXP times, SEXP params);
+SEXP ou2_density (SEXP x, SEXP times, SEXP params, SEXP give_log);
+SEXP bivariate_normal_rmeasure (SEXP x, SEXP times, SEXP params);
+SEXP bivariate_normal_dmeasure (SEXP y, SEXP x, SEXP times, SEXP params, SEXP give_log);
 
 // this is the rprocess function
 // it is basically a wrapper around a call to 'ou2_adv', which could be called from R directly
@@ -130,7 +130,7 @@ SEXP bivariate_normal_dmeasure (SEXP y, SEXP x, SEXP times, SEXP params, SEXP gi
 
 // advance the matrix of particles from times[0] to the other times given
 // it is assumed that the times are consecutive (FIX THIS!)
-static void ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex)
+void ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex)
 {
   int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3];
   double *xp, *pp;
@@ -153,7 +153,7 @@ static void ou2_adv (double *x, double *xstart, double *par, double *times, int 
 }
 
 // pdf of a single 2D OU transition
-static void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log)
+void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log)
 {
   int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3];
   double *x1, *x2, *pp;
@@ -181,7 +181,7 @@ static void ou2_pdf (double *d, double *X, double *par, double *times, int *n, i
 #define TAU   (p[index[0]])
 
 // bivariate normal measurement error density
-static void normal_dmeasure (int *n, double *X, double *par, int *index, double *Y, double *f, int *give_log) {
+void normal_dmeasure (int *n, double *X, double *par, int *index, double *Y, double *f, int *give_log) {
   int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3], nobs = n[4];
   double *x, *p, *y, v, val;
   double tol = 1.0e-18;	// tol should be less than the tol in the particle filter!
@@ -207,7 +207,7 @@ static void normal_dmeasure (int *n, double *X, double *par, int *index, double 
 }
 
 // bivariate normal measurement error simulator
-static void normal_rmeasure (int *n, double *X, double *par, int *index, double *obs) {
+void normal_rmeasure (int *n, double *X, double *par, int *index, double *obs) {
   int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3], nobs = n[4];
   double *x, *p, v;
   double tol = 1.0e-18;	// tol should be less than the tol in the particle filter!
