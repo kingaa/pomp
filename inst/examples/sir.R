@@ -3,8 +3,6 @@ library(pomp)
 modelfile <- system.file("examples/sir.c",package="pomp")
 includedir <- system.file("include",package="pomp")
 lib <- system.file("libs/pomp.so",package="pomp")
-system(paste("gcc -fPIC -c -I/usr/local/lib64/R/include -I",includedir,sep=""))
-system(paste("R CMD SHLIB sir.o",lib,"-o sir.so",sep=" "))
 
 ## compile the model into shared-object library
 system(paste("gcc -fPIC -c -I/usr/local/lib64/R/include -I",includedir,modelfile))
@@ -28,7 +26,7 @@ dyn.load("sir.so")                    # load the shared-object library
 ## set up the pomp object
 po <- pomp(
            time=seq(1/52,20,by=1/52),
-           data=numeric(52*20),
+           data=rbind(measles=numeric(52*20)),
            t0=0,
            tbasis=tbasis,
            basis=basis,
@@ -54,7 +52,7 @@ po <- pomp(
              array(
                    data=rbinom(
                      n=nsims*ntimes,
-                     mu=x["cases",,],
+                     size=x["cases",,],
                      prob=exp(params["rho",])
                      ),
                    dim=c(1,nsims,ntimes),
@@ -98,21 +96,22 @@ print(toc-tic)
 
 X <- simulate(po,params=log(params),nsim=10,states=T)
 nm <- rownames(X)
-dim(X) <- c(11,10,992)
+dim(X) <- c(11,10,1041)
 rownames(X) <- nm
 
-dmeasure(
-         po,
-         y=data.array(x[[1]]),
-         x=X[,,-1,drop=F],
-         times=time(po),
-         params=matrix(
-           log(params),
-           nrow=length(params),
-           ncol=10,
-           dimnames=list(names(params),NULL)
-           ),
-         log=T
-         )
+f <- dmeasure(
+              po,
+              y=data.array(x[[1]]),
+              x=X[,,-1,drop=F],
+              times=time(po),
+              params=matrix(
+                log(params),
+                nrow=length(params),
+                ncol=10,
+                dimnames=list(names(params),NULL)
+                ),
+              log=T
+              )
+
 
 dyn.unload("sir.so")
