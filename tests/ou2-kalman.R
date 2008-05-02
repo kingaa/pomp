@@ -1,4 +1,4 @@
-require(pomp.devel)
+require(pomp)
 require(subplex)
 
 kalman.filter <- function (y, x0, a, b, sigma, tau) {

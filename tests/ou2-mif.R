@@ -1,4 +1,4 @@
-require(pomp.devel)
+require(pomp)
 
 data(ou2)
 

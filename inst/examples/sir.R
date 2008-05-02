@@ -1,8 +1,8 @@
-library(pomp.devel)
+library(pomp)
 
 modelfile <- system.file("examples/sir.c",package="pomp")
 includedir <- system.file("include",package="pomp")
-lib <- system.file("libs/pomp.devel.so",package="pomp")
+lib <- system.file("libs/pomp.so",package="pomp")
 system(paste("gcc -fPIC -c -I/usr/local/lib64/R/include -I",includedir,sep=""))
 system(paste("R CMD SHLIB sir.o",lib,"-o sir.so",sep=" "))
 
