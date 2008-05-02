@@ -42,6 +42,10 @@
     \item{dmeasure}{Function of prototype
       \code{dmeasure(y,x,params,log=FALSE,\dots)} which gives the
       likelihood of \code{y} given \code{x}.}
+    \item{initializer}{Function of prototype
+      \code{initializer(params,t0,\dots)} which gives a vector of
+      initial conditions when given a vector of parameters,
+      \code{params}, and a time \code{t0}.}
     \item{userdata}{A list containing any objects the user desires.  Using
       this mechanism, the user can store additional information necessary
       for the definition of the model.}
@@ -68,6 +72,8 @@
       \code{\link{rmeasure-pomp}}.}
     \item{dmeasure}{evaluates the measurement-model density.  See
       \code{\link{dmeasure-pomp}}.}
+    \item{init.state}{returns a vector of initialial conditions.  See
+      \code{\link{init.state-pomp}}.}
     \item{simulate}{\code{simulate} can be used to simulate state and/or
       observation trajectories.  See documentation under
       \code{\link{simulate-pomp}}.}

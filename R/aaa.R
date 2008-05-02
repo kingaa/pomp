@@ -12,6 +12,7 @@ setClass(
                         dprocess = 'function',
                         dmeasure = 'function',
                         rmeasure = 'function',
+                        initializer = 'function',
                         userdata = 'list'
                         )
          )
@@ -58,6 +59,10 @@ setGeneric('rmeasure')
 dmeasure <- function (object, y, x, times, params, log = FALSE, ...)
   stop("function 'dmeasure' is undefined for objects of class '",class(object),"'")
 setGeneric('dmeasure')  
+
+init.state <- function (object, params, t0, ...)
+  stop("function 'init.state' is undefined for objects of class '",class(object),"'")
+setGeneric('init.state')  
 
 ## particle filter
 pfilter <- function (object, ...)

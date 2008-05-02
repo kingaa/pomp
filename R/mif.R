@@ -19,12 +19,30 @@ mif.pomp <- function (object, Nmif = 1,
                       start = stop("'start' must be specified"),
                       pars = stop("'pars' must be specified"),
                       ivps = character(0),
-                      particles = stop("'particles' must be specified"),
+                      particles,
                       rw.sd = stop("'rw.sd' must be specified"),
                       alg.pars = stop("'alg.pars' must be specified"),
                       weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
                       .ndone = 0) {
-  particles <- match.fun(particles)
+  if (missing(particles)) {         # use default: normal distribution
+    particles <- function (Np, center, sd, ...) {
+      matrix(
+             data=rnorm(
+               n=Np*length(center),
+               mean=center,
+               sd=sd
+               ),
+             nrow=length(center),
+             ncol=Np,
+             dimnames=list(
+               names(center),
+               NULL
+               )
+             )
+    }
+  } else {
+    particles <- match.fun(particles)
+  }
   if (!all(c('Np','center','sd','...')%in%names(formals(particles))))
     stop("'particles' must be a function of prototype 'particles(Np,center,sd,...)'")
   start.names <- names(start)
@@ -115,38 +133,44 @@ mif.mif <- function (object, Nmif = object@Nmif, start = object@coef,
     if (inherits(cool.sched,'try-error'))
       stop("mif error: cooling schedule error\n",cool.sched)
     sigma.n <- sigma*cool.sched$alpha
-    X <- try(
+    P <- try(
              particles(object,Np=alg.pars$Np,center=theta,sd=sigma.n*alg.pars$var.factor),
-             silent=T
+             silent=FALSE
+             )
+    if (inherits(P,'try-error'))
+      stop("mif error: error in 'particles'")
+    X <- try(
+             init.state(object,params=P,t0=object@t0),
+             silent=FALSE
              )
     if (inherits(X,'try-error'))
-      stop("mif error: error in 'particles'\n",X)
+      stop("mif error: error in 'init.state'")
     x <- try(
              pfilter(
                      as(object,'pomp'),
-                     xstart=X$states,
-                     params=X$params,
+                     xstart=X,
+                     params=P,
                      tol=tol,
                      warn=warn,
                      max.fail=max.fail,
                      pred.mean=(n==Nmif),
-                     pred.var=T,
-                     filter.mean=T,
+                     pred.var=TRUE,
+                     filter.mean=TRUE,
                      .rw.sd=sigma.n[pars]
                      ),
-             silent=T
+             silent=FALSE
              )
     if (inherits(x,'try-error'))
-      stop("mif error: error in 'pfilter'\n",x)
+      stop("mif error: error in 'pfilter'")
 
-    v <- x$pred.var[pars,,drop=F]
+    v <- x$pred.var[pars,,drop=FALSE]
     
     if (weighted) {                     # MIF update rule
       v1 <- cool.sched$gamma*(1+alg.pars$var.factor^2)*sigma[pars]^2
-      theta.hat <- cbind(theta[pars],x$filter.mean[pars,,drop=F])
+      theta.hat <- cbind(theta[pars],x$filter.mean[pars,,drop=FALSE])
       theta[pars] <- theta[pars]+apply(apply(theta.hat,1,diff)/t(v),2,sum)*v1
     } else {                            # unweighted (flat) average
-      theta.hat <- x$filter.mean[pars,,drop=F]
+      theta.hat <- x$filter.mean[pars,,drop=FALSE]
       theta[pars] <- apply(theta.hat,1,mean)
     }
     theta[ivps] <- x$filter.mean[ivps,alg.pars$ic.lag]

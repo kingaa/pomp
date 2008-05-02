@@ -60,6 +60,7 @@
     \item{dprocess}{Inherited from the \code{pomp} class.}
     \item{rmeasure}{Inherited from the \code{pomp} class.}
     \item{dmeasure}{Inherited from the \code{pomp} class.}
+    \item{initializer}{Inherited from the \code{pomp} class.}
     \item{userdata}{Inherited from the \code{pomp} class.}
   }
 }

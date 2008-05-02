@@ -22,13 +22,18 @@ rmeasure(object, x, times, params, \dots)
     \code{ntimes!=length(times)}, an error is generated.}
   \item{times}{a numerical vector containing the times at which the
     measurements are to be made.}
-  \item{params}{a rank-2 array of parameters with the parameters
-    corresponding to the columns of \code{x}.}
+  \item{params}{a rank-2 array (dimensions \code{npars} x \code{nsims})
+    of parameters with the parameters corresponding to the columns of
+    \code{x}.}
   \item{\dots}{at present, these are ignored.}
 }
 \value{
   Returns a rank-3 array of dimensions \code{nobs} x \code{nsims} x
   \code{ntimes}, where \code{nobs} is the number of observed variables.
+}
+\details{
+  This function is essentially a wrapper around the user-supplied \code{rmeasure} slot of the \code{pomp} object.
+  For specifications on writing such a function, see \code{\link{pomp}}.
 }
 \references{}
 \author{Aaron A. King (kingaa at umich dot edu)}
