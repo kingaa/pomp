@@ -1,5 +1,4 @@
 require(pomp)
-require(subplex)
 
 kalman.filter <- function (y, x0, a, b, sigma, tau) {
   n <- nrow(y)
@@ -75,17 +74,14 @@ kalm.fit1 <- optim(p.guess,kalman,object=ou2,params=p.truth,hessian=T)
 toc <- Sys.time()
 print(toc-tic)
 tic <- Sys.time()
-kalm.fit2 <- subplex(p.guess,function(x)kalman(x,ou2,p.truth),tol=1e-6)
-toc <- Sys.time()
-print(toc-tic)
-cat("Kalman filter log likelihood at KF MLE\n")
 print(-kalm.fit1$value)
-print(-kalm.fit2$value)
 
-cat("coefficients at truth\n")
-print(p.truth[names(kalm.fit1$par)])
-cat("Kalman filter MLE\n")
-print(kalm.fit1$par)
-print(kalm.fit2$par)
-cat("Kalman filter estimated SEs\n")
-print(sqrt(diag(solve(kalm.fit1$hessian))))
+cat("summary of results\n")
+print(
+      cbind(
+            truth=p.truth[names(kalm.fit1$par)],
+            MLE=kalm.fit1$par,
+            SE=sqrt(diag(solve(kalm.fit1$hessian)))
+            )
+      )
+            

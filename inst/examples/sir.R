@@ -40,7 +40,7 @@ po <- pomp(
                             delta.t=dt,
                             statenames=c("S","I","R","cases","W","trans1"),
                             paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
-                            zeronames=c("cases","W"),
+                            zeronames=c("cases"),
                             tcovar=tbasis,
                             covar=basis,
                             PACKAGE="sir"
