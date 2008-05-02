@@ -6,7 +6,9 @@
   Facilities for simulating stochastic Markov processes based on the Euler algorithm.
 }
 \usage{
-euler.simulate(xstart, times, params, euler.step.fun, delta.t, statenames, paramnames, zeronames, tcovar, covar, PACKAGE)
+euler.simulate(xstart, times, params, euler.step.fun, delta.t,
+               statenames, paramnames, zeronames, tcovar, covar,
+               PACKAGE)
 }
 \arguments{
   \item{xstart}{

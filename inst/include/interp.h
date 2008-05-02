@@ -17,5 +17,4 @@ struct lookup_table {
 double dot_product (int dim, const double *basis, const double *coef);
 void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt);
 
-
 #endif

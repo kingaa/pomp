@@ -11,7 +11,6 @@ typedef void euler_step(double *x, const double *p,
 			const int *stateindex, const int *parindex,
 			int ncovar, const double *covar,
 			double t, double dt);
-
 // Description of Euler step functions (type euler_step)
 //  on input:
 // x          = pointer to state vector

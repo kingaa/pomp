@@ -3,14 +3,14 @@
 #include "euler.h"
 #include "interp.h"
 
-static SEXP makearray(int rank, int *dim);
-static SEXP matchrownames (SEXP x, SEXP names);
-static void setrownames (SEXP x, SEXP names);
 static void euler_simulator (euler_step *estep,
 			     double *x, double *xstart, double *times, double *params, 
 			    int *ndim, double *deltat,
 			    int *stateindex, int *parindex, int *zeroindex,
 			    double *time_table, double *covar_table);
+static SEXP makearray(int rank, int *dim);
+static SEXP matchrownames (SEXP x, SEXP names);
+static void setrownames (SEXP x, SEXP names);
 
 SEXP euler_model_simulator (SEXP func, 
 			    SEXP xstart, SEXP times, SEXP params, 
