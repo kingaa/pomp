@@ -11,7 +11,7 @@ system(paste("gcc -fPIC -c -I/usr/local/lib64/R/include -I",includedir,modelfile
 system(paste("R CMD SHLIB -o sir.so sir.o",lib))
 
 ## set up a lookup table for basis functions for the seasonality
-tbasis <- with(ewmeasles,seq(0,20,by=1/52))
+tbasis <- seq(0,20,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3)
 
 ## some parameters
