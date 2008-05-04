@@ -2,9 +2,12 @@
 
 plot.pomp <- function (x, y = NULL, 
                        variables = NULL,
-                       panel = lines, nc = NULL,
-                       yax.flip = FALSE, mar.multi = c(0, 5.1, 0, if(yax.flip) 5.1 else 2.1),
-                       oma.multi = c(6, 0, 5, 0), axes = TRUE,
+                       panel = lines,
+                       nc = NULL,
+                       yax.flip = FALSE,
+                       mar.multi = c(0, 5.1, 0, if(yax.flip) 5.1 else 2.1),
+                       oma.multi = c(6, 0, 5, 0),
+                       axes = TRUE,
                        ...) {
   X <- as(x,'data.frame')
   vars <- names(X)
@@ -14,16 +17,27 @@ plot.pomp <- function (x, y = NULL,
   plotpomp <- function (x, time,  y=NULL, plot.type = c("multiple","single"),
                         xy.labels, xy.lines, panel = lines, nc, xlabel,
                         type = "l", xlim = NULL, ylim = NULL, xlab = "time",
-                        ylab, log = "", col = par("col"), bg = NA, pch = par("pch"),
+                        ylab, log = "", col = par("col"), bg = NA,
+                        pch = par("pch"),
                         cex = par("cex"), lty = par("lty"), lwd = par("lwd"),
-                        axes = TRUE, frame.plot = axes, ann = par("ann"), main = NULL,
+                        axes = TRUE, frame.plot = axes, ann = par("ann"),
+                        main = NULL,
                         ...) {
     plot.type <- match.arg(plot.type)
     panel <- match.fun(panel)
     addmain <- function (main, cex.main = par("cex.main"),
-                         font.main = par("font.main"), col.main = par("col.main"),
+                         font.main = par("font.main"),
+                         col.main = par("col.main"),
                          ...) {
-      mtext(main, side = 3, line = 3, cex = cex.main,font = font.main, col = col.main, ...)
+      mtext(
+            main,
+            side=3,
+            line=3,
+            cex=cex.main,
+            font=font.main,
+            col=col.main,
+            ...
+            )
     }
     nser <- NCOL(x)
     if (nser > 10)
