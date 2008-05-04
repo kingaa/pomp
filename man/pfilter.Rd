@@ -13,7 +13,7 @@ pfilter(object, \dots)
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     warn = TRUE, max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, .rw.sd, \dots)
-\S4method{pfilter}{mif}(object, Np, coef, tol = 1e-17, warn = TRUE,
+\S4method{pfilter}{mif}(object, params, Np, coef, tol = 1e-17, warn = TRUE,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, \dots)
 }
@@ -30,10 +30,6 @@ pfilter(object, \dots)
   \item{Np}{
     Number of particles to use.
     When \code{object} is of class \code{mif}, this is by default the same number of particles used in the \code{mif} iterations.
-  }
-  \item{coef}{
-    Coefficients at which to estimate the log likelihood.
-    By default, \code{coef(object)} is used.
   }
   \item{tol}{
     Particles with log likelihood below \code{tol} are considered to be "lost".

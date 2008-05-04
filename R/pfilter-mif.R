@@ -1,20 +1,18 @@
 setMethod("pfilter",
           "mif",
-          function (object, Np, coef,
+          function (object, params, Np,
                     tol = 1e-17, warn = TRUE, max.fail = 0,
                     pred.mean = FALSE,
                     pred.var = FALSE,
                     filter.mean = FALSE, ...) {
+            if (missing(params))
+              params <- coef(object)
             if (missing(Np))
               Np <- object@alg.pars$Np
-            if (missing(coef))
-              coef <- object@coef
-            p <- particles(object,Np=Np,center=coef,sd=0)
-            x <- init.state(object,params=p,t0=object@t0)
             pfilter(
-                    as(object,'pomp'),
-                    xstart=x,
-                    params=p,
+                    as(object,"pomp"),
+                    params=params,
+                    Np=Np,
                     tol=tol,
                     warn=warn,
                     max.fail=max.fail,

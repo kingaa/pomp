@@ -13,6 +13,8 @@ setClass(
                         dmeasure = 'function',
                         rmeasure = 'function',
                         initializer = 'function',
+                        states = 'array',
+                        params = 'numeric',
                         userdata = 'list'
                         )
          )
@@ -21,13 +23,11 @@ setClass(
 setClass(
          'mif',
          representation(
-                        'pomp',
                         ivps = 'character',
                         pars = 'character',
                         Nmif = 'integer',
                         particles = 'function',
                         alg.pars = 'list',
-                        coef = 'numeric',
                         random.walk.sd = 'numeric',
                         pred.mean = 'matrix',
                         pred.var = 'matrix',
@@ -36,7 +36,8 @@ setClass(
                         eff.sample.size = 'numeric',
                         cond.loglik = 'numeric',
                         loglik = 'numeric'
-                        )
+                        ),
+         contains='pomp'
          )
 
 ## functions to extract or call the components of a "pomp" object
@@ -101,4 +102,3 @@ setGeneric('continue')
 'coef<-' <- function (object, ..., value)
   stop("function 'coef<' is undefined for objects of class '",class(object),"'")
 setGeneric('coef<-')
-                      

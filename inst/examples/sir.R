@@ -95,9 +95,6 @@ toc <- Sys.time()
 print(toc-tic)
 
 X <- simulate(po,params=log(params),nsim=10,states=T)
-nm <- rownames(X)
-dim(X) <- c(11,10,1041)
-rownames(X) <- nm
 
 f <- dmeasure(
               po,

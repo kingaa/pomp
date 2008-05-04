@@ -6,7 +6,13 @@ simulate.pomp.default <- function (object, nsim = 1, seed = NULL, params,
   times <- as.numeric(times)
   if (ntimes<1)
     stop("if length of 'times' is less than 1, there is no work to do")
-  if (is.null(dim(params)))
+  if (missing(params)) {
+    if (length(object@params)>0)
+      params <- object@params
+    else
+      stop("no 'params' specified")
+  }
+ if (is.null(dim(params)))
     params <- matrix(params,ncol=1,dimnames=list(names(params),NULL))
   if (is.null(rownames(params)))
     stop("'params' must have rownames")
@@ -38,27 +44,17 @@ simulate.pomp.default <- function (object, nsim = 1, seed = NULL, params,
     retval <- lapply(
                      seq(length=nreps),
                      function (rep) {
-                       x <- as(object,'pomp') # copy the pomp object
-                       x@t0 <- times[1]
-                       x@times <- times[-1]
-                       x@data <- array(0,dim=c(nobs,ntimes-1),dimnames=list(nm.y,NULL))
-                       x@data[,] <- y[,rep,-1] # replace the data
-                       x
+                       po <- as(object,'pomp') # copy the pomp object
+                       po@t0 <- times[1]
+                       po@times <- times[-1]
+                       po@data <- array(0,dim=c(nobs,ntimes-1),dimnames=list(nm.y,NULL))
+                       po@data[,] <- y[,rep,-1] # replace the data
+                       po@params <- params[,rep]      # store the parameters
+                       po@states <- x[,rep,] # store the states
+                       po
                      }
                      )
   } else {
-    if (states) {                       # reformat the x array
-      nvars <- nrow(x)
-      nm.x <- rownames(x)
-      dim(x) <- c(nvars,npars,nsim,ntimes)
-      rownames(x) <- nm.x
-    }
-    if (obs) {                          # reformat the y array
-      nobs <- nrow(y)
-      nm.y <- rownames(y)
-      dim(y) <- c(nobs,npars,nsim,ntimes)
-      rownames(y) <- nm.y
-    }
     if (!obs && states) {               # return states only
       retval <- x
     } else if (obs && !states) {        # return only observations

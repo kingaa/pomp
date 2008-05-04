@@ -16,7 +16,7 @@ powerlaw.cooling <- function (init = 1, delta = 0.1, eps = (1-delta)/2, n) {
 }
 
 mif.pomp <- function (object, Nmif = 1,
-                      start = stop("'start' must be specified"),
+                      start,
                       pars = stop("'pars' must be specified"),
                       ivps = character(0),
                       particles,
@@ -45,6 +45,13 @@ mif.pomp <- function (object, Nmif = 1,
   }
   if (!all(c('Np','center','sd','...')%in%names(formals(particles))))
     stop("'particles' must be a function of prototype 'particles(Np,center,sd,...)'")
+  if (missing(start)) {
+    if (length(coef(object))>0) {
+      start <- coef(object)
+    } else {
+      stop("'start' must be specified")
+    }
+  }
   start.names <- names(start)
   if (is.null(start.names))
     stop("mif error: 'start' must be a named vector")
@@ -69,6 +76,7 @@ mif.pomp <- function (object, Nmif = 1,
     stop("all the names of 'rw.sd' must be names of 'start'")
   if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
     stop("'alg.pars' must be a named list with elements 'Np','cooling.factor','ic.lag',and 'var.factor'")
+  coef(object) <- start
   newmif <- new(
                 "mif",
                 object,
@@ -77,7 +85,6 @@ mif.pomp <- function (object, Nmif = 1,
                 Nmif=as.integer(0),
                 particles=particles,
                 alg.pars=alg.pars,
-                coef=start,
                 random.walk.sd=rw.sd,
                 pred.mean=matrix(NA,0,0),
                 pred.var=matrix(NA,0,0),
@@ -102,7 +109,7 @@ mif.pomp <- function (object, Nmif = 1,
   }
 }
   
-mif.mif <- function (object, Nmif = object@Nmif, start = object@coef,
+mif.mif <- function (object, Nmif = object@Nmif, start = coef(object),
                      pars = object@pars, ivps = object@ivps, rw.sd = object@random.walk.sd,
                      alg.pars = object@alg.pars,
                      weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
@@ -177,6 +184,7 @@ mif.mif <- function (object, Nmif = object@Nmif, start = object@coef,
     conv.rec[n+1,-1] <- c(x$nfail,theta)
     conv.rec[n,1] <- x$loglik
   }
+  coef(object) <- theta
   new(
       "mif",
       object,
@@ -185,7 +193,6 @@ mif.mif <- function (object, Nmif = object@Nmif, start = object@coef,
       Nmif=as.integer(Nmif),
       particles=object@particles,
       alg.pars=alg.pars,
-      coef=theta,
       random.walk.sd=sigma,
       pred.mean=x$pred.mean,
       pred.var=x$pred.var,

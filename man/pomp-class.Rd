@@ -13,6 +13,11 @@
 \alias{data.array-pomp}
 \alias{data.array}
 \alias{coerce,pomp,data.frame-method}
+\alias{coef,pomp-method}
+\alias{coef-pomp}
+\alias{coef<-}
+\alias{coef<-,pomp-method}
+\alias{coef<--pomp}
 
 \title{Partially-observed Markov process}
 \description{The class \code{pomp} encodes a partially-observed Markov process.}
@@ -23,60 +28,92 @@
 }
 \section{Slots}{
   \describe{
-    \item{data}{An array holding the data.  This array is of dimensions
-      \code{nobs} x \code{ntimes}, where \code{nobs} is the number of
-      observed variables and \code{ntimes} is the number of times at which
-      observations were made.}
-    \item{times}{The times corresponding to the observations.
-      \code{times} must be a strictly increasing numeric vector.}
+    \item{data}{
+      An array holding the data.
+      This array is of dimensions \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observed variables and \code{ntimes} is the number of times at which observations were made.
+    }
+    \item{times}{
+      The times corresponding to the observations.
+      \code{times} must be a strictly increasing numeric vector.
+    }
     \item{t0}{The zero-time.}
-    \item{rprocess}{Function of prototype
-      \code{rprocess(xstart,times,params,\dots)} which simulates from the
-      unobserved process.}
-    \item{dprocess}{Function of prototype
-      \code{dprocess(x,times,params,log=FALSE,\dots)} which evaluates
-      the likelihood of a sequence of consecutive state transitions.}
-    \item{rmeasure}{Function of prototype
-      \code{rmeasure(x,times,params,\dots)}
-      which simulates from the observation process.}
-    \item{dmeasure}{Function of prototype
-      \code{dmeasure(y,x,params,log=FALSE,\dots)} which gives the
-      likelihood of \code{y} given \code{x}.}
-    \item{initializer}{Function of prototype
-      \code{initializer(params,t0,\dots)} which gives a vector of
-      initial conditions when given a vector of parameters,
-      \code{params}, and a time \code{t0}.}
-    \item{userdata}{A list containing any objects the user desires.  Using
-      this mechanism, the user can store additional information necessary
-      for the definition of the model.}
+    \item{rprocess}{
+      Function of prototype \code{rprocess(xstart,times,params,\dots)} which simulates from the unobserved process.
+    }
+    \item{dprocess}{
+      Function of prototype \code{dprocess(x,times,params,log=FALSE,\dots)} which evaluates the likelihood of a sequence of consecutive state transitions.
+    }
+    \item{rmeasure}{
+      Function of prototype \code{rmeasure(x,times,params,\dots)} which simulates from the observation process.
+    }
+    \item{dmeasure}{
+      Function of prototype \code{dmeasure(y,x,params,log=FALSE,\dots)} which gives the likelihood of \code{y} given \code{x}.
+    }
+    \item{initializer}{
+      Function of prototype \code{initializer(params,t0,\dots)} which gives a vector of initial conditions when given a vector of parameters, \code{params}, and a time \code{t0}.
+    }
+    \item{states}{
+      An array to hold a trajectory of the unobserved process.
+    }
+    \item{params}{
+      A named numeric vector to hold model parameters.
+    }
+    \item{userdata}{
+      A list containing any objects the user desires.
+      Using this mechanism, the user can store additional information necessary for the definition of the model.
+    }
   }
 }
 \section{Methods}{
   \describe{
-    \item{plot}{Plots the data.  Additional arguments are passed to the
-      low-level plotting routine.}
+    \item{coef}{
+      Returns the value of the \code{params} slot.
+    }
+    \item{coef<-}{
+      Assigns values to the \code{params} slot.
+      \code{coef(object,pars=NULL,\dots) <- value} has the effect of replacing the parameters of the specified names with the given values.
+      By default, if \code{value} has a names attribute, these names are used, otherwise the names attribute of \code{coef(object)} is used.
+    }
+    \item{plot}{
+      Plots the data and state trajectories (if the latter exist).
+      Additional arguments are passed to the low-level plotting routine.
+    }
     \item{print}{Prints the \code{pomp} object in a nice way.}
     \item{show}{Displays the \code{pomp} object.}
-    \item{data.array}{\code{data.array(object)} returns the array of
-      observations.  \code{data.array(object,vars)} gives just the
-      observations of variables \code{vars}.  \code{vars} may specify
-      the variables by position or by name.}
+    \item{data.array}{
+      \code{data.array(object)} returns the array of observations.
+      \code{data.array(object,vars)} gives just the observations of variables \code{vars}.
+      \code{vars} may specify the variables by position or by name.
+    }
     \item{time}{Returns the vector of observation times.}
-    \item{coerce}{A \code{pomp} object can be coerced to a data-frame
-      via \code{as(object,"data.frame")}.}
-    \item{rprocess}{simulates the process model.  See
-      \code{\link{rprocess-pomp}}.}
-    \item{dprocess}{evaluates the process model density.  See
-      \code{\link{dprocess-pomp}}.}
-    \item{rmeasure}{simulates the measurement model. See
-      \code{\link{rmeasure-pomp}}.}
-    \item{dmeasure}{evaluates the measurement-model density.  See
-      \code{\link{dmeasure-pomp}}.}
-    \item{init.state}{returns a vector of initialial conditions.  See
-      \code{\link{init.state-pomp}}.}
-    \item{simulate}{\code{simulate} can be used to simulate state and/or
-      observation trajectories.  See documentation under
-      \code{\link{simulate-pomp}}.}
+    \item{coerce}{
+      A \code{pomp} object can be coerced to a data frame via \code{as(object,"data.frame")}.
+      The data frame contains the times, the data, and the state trajectories, if they exist.
+    }
+    \item{rprocess}{
+      simulates the process model.
+      See \code{\link{rprocess-pomp}}.
+    }
+    \item{dprocess}{
+      evaluates the process model density.
+      See code{\link{dprocess-pomp}}.
+    }
+    \item{rmeasure}{
+      simulates the measurement model.
+      See \code{\link{rmeasure-pomp}}.
+    }
+    \item{dmeasure}{
+      evaluates the measurement-model density.
+      See \code{\link{dmeasure-pomp}}.
+    }
+    \item{init.state}{
+      returns a vector of initialial conditions.
+      See \code{\link{init.state-pomp}}.
+    }
+    \item{simulate}{
+      \code{simulate} can be used to simulate state and observation trajectories.
+      See documentation under \code{\link{simulate-pomp}}.
+    }
   }
 }
 \author{Aaron A. King (kingaa at umich dot edu)}

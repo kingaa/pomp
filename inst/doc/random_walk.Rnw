@@ -434,8 +434,14 @@ save(list='ou2',file='ou2.rda')
 
 We can run a particle filter as follows:
 <<>>=
-fit1 <- pfilter(ou2,p,Np=1000,filter.mean=T,pred.mean=T,pred.var=T)
+fit1 <- pfilter(ou2,params=p,Np=1000,filter.mean=T,pred.mean=T,pred.var=T)
 @ 
+Since \code{ou2} already contained the parameters \code{p}, it wasn't necessary to specify them;
+we could have done
+<<eval=F>>=
+fit1 <- pfilter(ou2,Np=1000)
+@
+for example.
 We can compare the results against those of the Kalman filter, which is exact in this case.
 First, we need to implement the Kalman filter.
 <<>>=
@@ -481,7 +487,7 @@ sigma <- matrix(c(p['sigma.1'],p['sigma.2'],0,p['sigma.3']),2,2)
 tau <- diag(p['tau'],2,2)
 fit2 <- kalman.filter(y,x0,a,b,sigma,tau)
 @ 
-In this case, the Kalman filter gives us a log likelihood of \code{fit2\$loglik=\Sexpr{fit2$loglik}}, while the particle filter gives us \code{fit1\$loglik=\Sexpr{fit1$loglik}}.
+In this case, the Kalman filter gives us a log likelihood of \code{fit2\$loglik=}\Sexpr{round(fit2$loglik,1)}, while the particle filter gives us \code{fit1\$loglik=}\Sexpr{round(fit1$loglik,1)}.
 
 \section{The MIF algorithm}
 
@@ -492,7 +498,7 @@ For this example, we'll just use the default particle distribution, which draws 
 We'll run MIF to maximize the likelihood over two of the parameters and the initial conditions.
 We'll use 1000 particles, an exponential cooling factor of 0.95, and a fixed-lag smoother with lag 10 for the initial conditions.
 <<>>=
-  ou2 <- mif(ou2,Nmif=0,start=c(x1.0=50,x2.0=-50,p),
+  ou2 <- mif(ou2,Nmif=0,start=p,
              pars=c('alpha.1','alpha.4'),ivps=c('x1.0','x2.0'),
              rw.sd=c(
                x1.0=5,x2.0=5,
@@ -519,7 +525,7 @@ toc <- Sys.time()
 print(toc-tic)
 coef(fit)
 @
-The log likelihood of the random-parameter model at the end of the mif iterations, which should be a rough approximation of that of the fixed-parameter model, is \code{logLik(fit)=}\Sexpr{logLik(fit)}.
+The log likelihood of the random-parameter model at the end of the mif iterations, which should be a rough approximation of that of the fixed-parameter model, is \code{logLik(fit)=}\Sexpr{round(logLik(fit),1)}.
 To get the log likelihood of the fixed-parameter model (up to Monte Carlo error) we can use \code{pfilter}:
 <<>>=
 pfilter(fit)$loglik

@@ -9,6 +9,13 @@ setMethod(
                     pred.var = FALSE,
                     filter.mean = FALSE,
                     .rw.sd, ...) {
+            if (missing(params)) {
+              if (length(object@params)>0) {
+                params <- object@params
+              } else {
+                stop("'params' must be supplied")
+              }
+            }
             if (missing(Np))
               Np <- NCOL(params)
             ntimes <- length(time(object))

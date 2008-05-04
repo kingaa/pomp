@@ -18,7 +18,10 @@
     Note that the number of replicates will be \code{nsim} times \code{ncol(xstart)}.
   }
   \item{seed}{The random seed to use.}
-  \item{params}{The parameters to use in simulating the model.}
+  \item{params}{
+    The parameters to use in simulating the model.
+    If \code{params} is not given, then the contents of the \code{params} slot of \code{object} will be used, if they exist.
+  }
   \item{states}{Do we want the state trajectories?}
   \item{obs}{Do we want data-frames of the simulated observations?}
   \item{times}{
@@ -29,14 +32,14 @@
 }
 \value{
   If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \code{pomp} objects is returned.
-  Each has a simulated data set.
+  Each has a simulated data set, together with the parameters used (in slot \code{params}) and the state trajectories also (in slot \code{states}).
   If \code{times} is specified, then the \code{t0} slot of the created `pomp' objects will be filled with \code{times[1]} and the simulated observations will be at times \code{times[-1]}.
 
-  If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-4 array with dimensions \code{nvar} x \code{ncol(params)} x \code{nsim} x \code{ntimes}.
+  If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-3 array with dimensions \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
   Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
   The measurement process is not simulated in this case.   
 
-  If \code{states=FALSE} and \code{obs=TRUE}, simulated observations are returned as a rank-4 array with dimensions \code{nobs} x \code{ncol(params)} x \code{nsim} x \code{ntimes}.
+  If \code{states=FALSE} and \code{obs=TRUE}, simulated observations are returned as a rank-3 array with dimensions \code{nobs} x \code{(ncol(params)*nsim)} x \code{ntimes}.
   Here, \code{nobs} is the number of observables.
 
   If both \code{states=TRUE} and \code{obs=TRUE}, then a named list is returned.
