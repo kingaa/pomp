@@ -66,6 +66,8 @@ pomp <- function (data, times, t0, rprocess, dprocess, rmeasure, dmeasure, initi
 
 default.initializer <- function (params,t0,...) {
   ivpnames <- grep("\\.0$",names(params),val=TRUE)
+  if (length(ivpnames)<1)
+    stop("no initial value parameters (names ending in '.0') found: see 'pomp' documentation")
   x <- params[ivpnames]
   names(x) <- gsub("\\.0$","",ivpnames)
   x
