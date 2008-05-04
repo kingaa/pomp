@@ -13,7 +13,7 @@ pfilter(object, \dots)
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     warn = TRUE, max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, .rw.sd, \dots)
-\S4method{pfilter}{mif}(object, params, Np, coef, tol = 1e-17, warn = TRUE,
+\S4method{pfilter}{mif}(object, params, Np, tol = 1e-17, warn = TRUE,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, \dots)
 }
