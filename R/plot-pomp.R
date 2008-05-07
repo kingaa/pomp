@@ -12,9 +12,13 @@ plot.pomp <- function (x, y = NULL,
   X <- as(x,'data.frame')
   vars <- names(X)
   tpos <- match("time",vars)
-  if(is.na(tpos))stop("no data variable labeled 'time'")
-  if(is.null(variables)) vars=vars[-tpos] else vars=variables
-  plotpomp <- function (x, time,  y=NULL, plot.type = c("multiple","single"),
+  if (is.na(tpos))
+    stop("no data variable labeled 'time'")
+  if (is.null(variables))
+    vars <- vars[-tpos]
+  else
+    vars <- variables
+  plotpomp <- function (x, time, 
                         xy.labels, xy.lines, panel = lines, nc, xlabel,
                         type = "l", xlim = NULL, ylim = NULL, xlab = "time",
                         ylab, log = "", col = par("col"), bg = NA,
@@ -23,21 +27,13 @@ plot.pomp <- function (x, y = NULL,
                         axes = TRUE, frame.plot = axes, ann = par("ann"),
                         main = NULL,
                         ...) {
-    plot.type <- match.arg(plot.type)
     panel <- match.fun(panel)
-    addmain <- function (main, cex.main = par("cex.main"),
+    addmain <- function (main,
+                         cex.main = par("cex.main"),
                          font.main = par("font.main"),
                          col.main = par("col.main"),
                          ...) {
-      mtext(
-            main,
-            side=3,
-            line=3,
-            cex=cex.main,
-            font=font.main,
-            col=col.main,
-            ...
-            )
+      mtext(main,side=3,line=3,cex=cex.main,font=font.main,col=col.main,...)
     }
     nser <- NCOL(x)
     if (nser > 10)
@@ -48,21 +44,18 @@ plot.pomp <- function (x, y = NULL,
     if (is.null(nm))
       nm <- paste("Series", 1:nser)
     if (is.null(nc))
-      nc <- if (nser > 4)
-        2
-      else 1
+      nc <- if(nser>4){2}else{1}
     nr <- ceiling(nser/nc)
-    oldpar <- par(mar = mar.multi, oma = oma.multi, mfcol = c(nr,nc))
+    oldpar <- par(mar=mar.multi,oma=oma.multi,mfcol=c(nr,nc))
     on.exit(par(oldpar))
     for (i in 1:nser) {
-      plot.default(y=x[[i]], x=time, axes = FALSE, xlab = "",
-                   ylab = "", log = log, col = col, bg = bg, pch = pch,
-                   ann = ann, type = "n", ...)
+      plot.default(y=x[[i]],x=time,axes=FALSE,xlab="",ylab="",log=log,
+                   col=col,bg=bg,pch=pch,ann=ann,type="n",...)
       panel(y=x[[i]],x=time,col=col,bg=bg,pch=pch,type=type,...)
       if (frame.plot)
         box(...)
       y.side <- if(i%%2||!yax.flip){2}else{4}
-      do.xax <- i%%nr == 0 || i == nser
+      do.xax <- (i%%nr==0)||(i==nser)
       if (axes) {
         axis(y.side, xpd = NA)
         if (do.xax)
@@ -75,20 +68,35 @@ plot.pomp <- function (x, y = NULL,
       }
     }
     if (ann && !is.null(main)) {
-      par(mfcol = c(1, 1))
-      addmain(main, ...)
+      par(mfcol=c(1,1))
+      addmain(main,...)
     }
     invisible(NULL)
   }
-  plotpomp(
-           x=X[vars],
-           time=X[[tpos]],
-           xy.labels=FALSE,
-           xlabel=deparse(substitute(x,env=parent.frame(1))),
-           panel=panel,
-           nc=nc,
-           axes=axes,
-           ...)
+  n.page <- ceiling(length(vars)/10)
+  plots.per.page <- ceiling(length(vars)/n.page)
+  if (n.page > 1) {
+    op <- par(ask=TRUE)
+    on.exit(par(op))
+  }
+  v1 <- 1
+  v2 <- min(v1+plots.per.page,length(vars))
+  for (page in 1:n.page) {
+    vv <- vars[seq(from=v1,to=v2)]
+    plotpomp(
+             x=X[vv],
+             time=X[[tpos]],
+             xy.labels=FALSE,
+             xlabel=deparse(substitute(x,env=parent.frame(1))),
+             panel=panel,
+             nc=nc,
+             axes=axes,
+             ...
+             )
+    v1 <- v2+1
+    v2 <- min(v2+plots.per.page,length(vars))    
+  }
+  invisible(NULL)
 }
 
 setMethod("plot","pomp",plot.pomp)
