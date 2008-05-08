@@ -82,9 +82,6 @@ filter.mean(object, \dots)
     \item{pfilter}{
       See \code{\link{pfilter-mif}}.
     }
-    \item{simulate}{
-      See \link{simulate-mif}.
-    }
   }
 }
 \references{

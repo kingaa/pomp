@@ -7,8 +7,12 @@ setMethod(
               stop("dmeasure error: 'y' must be a rank-2 array")
             if (length(dim(x))!=3)
               stop("dmeasure error: 'x' must be a rank-3 array")
+            if (length(dim(params))!=2)
+              stop("dmeasure error: 'params' must be a rank-2 array")
             if (dim(y)[2]!=dim(x)[3])
               stop("dmeasure error: dim(x)[3] != dim(y)[2]")
+            if (ncol(params)!=ncol(x))
+              stop("dmeasure error: number of columns of 'params' and 'x' do not agree")
             ntimes <- length(times)
             if (length(times)!=dim(y)[2])
               stop("dmeasure error: dim(y)[2] != length(times)")
@@ -29,7 +33,7 @@ setMethod(
                                object@userdata
                                )
                              ),
-                     silent=T
+                     silent=FALSE
                      )
             if (inherits(d,'try-error'))
               stop("dmeasure error: error in user 'dmeasure'\n",d)

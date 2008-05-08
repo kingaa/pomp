@@ -5,6 +5,8 @@ setMethod(
           function (object, x, times, params, log = FALSE, ...) {
             if (length(dim(x))!=3)
               stop("dprocess error: 'x' must be a rank-3 array")
+            if (length(dim(params))!=2)
+              stop("dprocess error: 'params' must be a rank-2 array")
             ntimes <- length(times)
             if (length(times)!=dim(x)[3])
               stop("dprocess error: dim(x)[3] != length(times)")
@@ -24,7 +26,7 @@ setMethod(
                                object@userdata
                                )
                              ),
-                     silent=T
+                     silent=FALSE
                      )
             if (inherits(d,'try-error'))
               stop("dprocess error: error in user 'dprocess'\n",d)
