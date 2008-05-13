@@ -131,7 +131,7 @@ rw2 <- pomp(
 @ 
 
 Now we'll specify some parameters and initial states.
-<<print=T>>=
+<<>>=
 p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
 p
 @ 
@@ -156,7 +156,7 @@ y <- simulate(rw2,params=p,obs=T,states=T,nsim=10)
 A \code{plot} method exists for \code{pomp} objects (Fig.~\ref{fig:random_walk}).
 
 \begin{figure}
-<<fig=T>>=
+<<fig=T,echo=F>>=
 plot(rw2)
 @ 
 \caption{A \code{plot} method exists for \code{pomp} objects.}
@@ -307,127 +307,12 @@ dprocess(ou2,x[,,36:41,drop=F],times=time(ou2)[35:40],params=as.matrix(p))
 dmeasure(ou2,y=y[,1,1:4],x=x[,,2:5,drop=F],times=time(ou2)[1:4],params=as.matrix(p))
 @ 
 
-\section{Linking in compiled code for computational efficiency.}
-
-The functions we've just written are (relatively) easy to read, but they will be slow to evaluate because, being written in R, they must be interpreted.
-Since many of the methods we will use require us to simulate the process and/or measurement models many times, it is a good idea to translate these codes into a compiled language.
-The package includes some C codes that were written to implement the OU example.
-Read the source (file `ou2.c') for details.
-
-\subsection{The \texttt{.C} interface}
-
+The codes above show how the \code{pomp} object is constructed.
+Being written in R, however, they're not particularly fast.
+To maximize computational efficiency, we'll instead use compiled codes.
+For more information on this topic, see the vignette, ``Using compiled code in \code{pomp}''.
 <<>>=
-  ou2.rprocess <- function (xstart, times, params, ...) {
-    nvar <- nrow(xstart)
-    npar <- nrow(params)
-    nrep <- ncol(xstart)
-    ntimes <- length(times)
-    ## get indices of the various parameters in the 'params' matrix
-    parindex <- match(
-		      c('alpha.1','alpha.2','alpha.3','alpha.4','sigma.1','sigma.2','sigma.3'),
-		      rownames(params)
-		      )-1      # C uses zero-based indexing!
-    array(
-	  .C("ou2_adv",
-	     X = double(nvar*nrep*ntimes),
-	     xstart = as.double(xstart),
-	     par = as.double(params),
-	     times = as.double(times),
-	     n = as.integer(c(nvar,npar,nrep,ntimes)),
-	     parindex = as.integer(parindex),
-	     DUP = FALSE,
-	     NAOK = TRUE,
-	     PACKAGE = "pomp"
-	     )$X,
-	  dim=c(nvar,nrep,ntimes),
-	  dimnames=list(rownames(xstart),NULL,NULL)
-	  )
-  }
-
-bvnorm.dmeasure <- function (y, x, times, params, log = TRUE, ...) {
-  measindex <- match(c("tau"),rownames(params))-1
-  nvar <- dim(x)[1]
-  nrep <- dim(x)[2]
-  ntimes <- dim(x)[3]
-  npar <- nrow(params)
-  nobs <- 2
-  ## since the system is autonomous, no need to keep track of time
-  array(
-	.C(
-           "normal_dmeasure",
-           n = as.integer(c(nvar,npar,nrep,ntimes,nobs)), 
-           X = as.double(x),
-           par = as.double(params),
-           index = as.integer(measindex),
-           Y = as.double(y),
-           f = double(nrep*ntimes),
-           give_log = as.integer(log),
-           DUP = FALSE,
-           NAOK = TRUE,
-           PACKAGE = "pomp"
-           )$f,
-        dim=c(nrep,ntimes)
-        )
-}
-
-bvnorm.rmeasure <- function (x, times, params, ...) {
-nvar <- dim(x)[1]
-nrep <- dim(x)[2]
-ntimes <- dim(x)[3]
-npar <- dim(params)[1]
-nobs <- 2
-measindex <- match(c("tau"),rownames(params))-1
-array(
-      .C(
-         "normal_rmeasure",
-         n = as.integer(c(nvar,npar,nrep,ntimes,nobs)),
-         X = as.double(x),
-         par = as.double(params),
-         index = as.integer(measindex),
-         obs = double(nobs*nrep*ntimes),
-         DUP = FALSE,
-         NAOK = TRUE,
-         PACKAGE = "pomp"
-         )$obs,
-      dim=c(nobs,nrep,ntimes),
-      dimnames=list(c('y1','y2'),NULL,NULL)
-      )
-}
-
-ou2 <- pomp( 
-	    times=seq(1,100),
-	    data=rbind(
-	      y1=rep(0,100),
-	      y2=rep(0,100)
-	      ),
-	    t0=0,
-	    rprocess = ou2.rprocess,
-	    dprocess = ou2.dprocess,
-	    rmeasure = bvnorm.rmeasure,
-	    dmeasure = bvnorm.dmeasure
-	    )
-@ 
-
-<<>>=
- tic <- Sys.time()
- ou2 <- simulate(ou2,params=p,nsim=1000,seed=800733088)[[1]]
- toc <- Sys.time()
- print(toc-tic)
-@ 
-
-Fig.~\ref{fig:ou_process} plots the data.
-
-\begin{figure}
-<<fig=T>>=
-  plot(ou2)
-@ 
-  \caption{One realization of the two-dimensional OU process.}
-  \label{fig:ou_process}
-\end{figure}
-
-The \code{pomp} object we just created is included in the package: use \code{data(ou2)} to retrieve it.
-<<echo=F>>=
-save(list='ou2',file='ou2.rda')
+data(ou2)
 @ 
 
 \section{Particle filter.}
@@ -440,7 +325,7 @@ Since \code{ou2} already contained the parameters \code{p}, it wasn't necessary 
 we could have done
 <<eval=F>>=
 fit1 <- pfilter(ou2,Np=1000)
-@
+@ 
 for example.
 We can compare the results against those of the Kalman filter, which is exact in this case.
 First, we need to implement the Kalman filter.
@@ -487,7 +372,7 @@ sigma <- matrix(c(p['sigma.1'],p['sigma.2'],0,p['sigma.3']),2,2)
 tau <- diag(p['tau'],2,2)
 fit2 <- kalman.filter(y,x0,a,b,sigma,tau)
 @ 
-In this case, the Kalman filter gives us a log likelihood of \code{fit2\$loglik=}\Sexpr{round(fit2$loglik,1)}, while the particle filter gives us \code{fit1\$loglik=}\Sexpr{round(fit1$loglik,1)}.
+In this case, the Kalman filter gives us a log likelihood of \code{fit2\$loglik=\Sexpr{round(fit2$loglik,1)}}, while the particle filter gives us \code{fit1\$loglik=\Sexpr{round(fit1$loglik,1)}}.
 
 \section{The MIF algorithm}
 
@@ -496,41 +381,44 @@ This distribution must be such that, when \code{sd=0}, all the particles are ide
 For this example, we'll just use the default particle distribution, which draws particles from a multivariate normal distribution.
 
 We'll run MIF to maximize the likelihood over two of the parameters and the initial conditions.
-We'll use 1000 particles, an exponential cooling factor of 0.95, and a fixed-lag smoother with lag 10 for the initial conditions.
+We'll use 1000 particles, an exponential cooling factor of 0.95, and a fixed-lag smoother with lag 10 for the initial conditions:
 <<>>=
-  ou2 <- mif(ou2,Nmif=0,start=p,
-             pars=c('alpha.1','alpha.4'),ivps=c('x1.0','x2.0'),
-             rw.sd=c(
-               x1.0=5,x2.0=5,
-               alpha.1=0.1,alpha.2=0,alpha.3=0,alpha.4=0.1,
-               sigma.1=0,sigma.2=0,sigma.3=0,
-               tau=0
-               ),
-             alg.pars=list(
-               Np=1000,
-               var.factor=1,
-               ic.lag=10,
-               cooling.factor=0.95
-               ),
-             max.fail=100
-             )
+alg.pars <- list(
+                 Np=1000,
+                 var.factor=1,
+                 ic.lag=10,
+                 cooling.factor=0.95
+                 )
 @ 
 Just to make it interesting, we'll start far from the true parameter values:
 <<>>=
-coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')) <- c(45,-60,0.8,0.9)
+start.p <- p
+start.p[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(45,-60,0.8,0.9)
 tic <- Sys.time()
-fit <- mif(ou2,Nmif=2,max.fail=100)
-fit <- continue(fit,Nmif=78,max.fail=100)
+fit <- mif(ou2,Nmif=1,start=start.p,
+           pars=c('alpha.1','alpha.4'),ivps=c('x1.0','x2.0'),
+           rw.sd=c(
+             x1.0=5,x2.0=5,
+             alpha.1=0.1,alpha.2=0,alpha.3=0,alpha.4=0.1,
+             sigma.1=0,sigma.2=0,sigma.3=0,
+             tau=0
+             ),
+           alg.pars=alg.pars,
+           max.fail=100
+           )
+fit <- continue(fit,Nmif=79,max.fail=100)
 toc <- Sys.time()
 print(toc-tic)
 coef(fit)
 @
-The log likelihood of the random-parameter model at the end of the mif iterations, which should be a rough approximation of that of the fixed-parameter model, is \code{logLik(fit)=}\Sexpr{round(logLik(fit),1)}.
-To get the log likelihood of the fixed-parameter model (up to Monte Carlo error) we can use \code{pfilter}:
-<<>>=
-pfilter(fit)$loglik
+One can plot various diagnostics for the fitted \code{mif} object using
+<<eval=F>>=
+plot(fit)
 @ 
-We can diagnose convergence of the MIF algorithm using ``convergence plots'' (Fig.~\ref{fig:convplot}).
+Here, we'll just plot the convergence records for the log likelihood and the two $\alpha$ parameters (Fig.~\ref{fig:convplot}).
+In applications, a good strategy is to start several MIFs from different starting points.
+A good diagnostic for convergence is obtained by plotting the \emph{convergence records} (see the documentation for \code{conv.rec}) and verifying that all the MIF iterations converge to the same parameters.
+One plots these---and other---diagnostics using \code{compare.mif} applied to a list of \code{mif} objects.
 
 \begin{figure}
 <<fig=T,echo=F>>=
@@ -544,10 +432,16 @@ par(op)
 \label{fig:convplot}
 \end{figure}
 
-Like \code{pomp} objects, \code{mif} objects can be simulated (Fig.~\ref{fig:mifsim}).
+The log likelihood of the random-parameter model at the end of the mif iterations---which should be a rough approximation of that of the fixed-parameter model---is \code{logLik(fit)=\Sexpr{round(logLik(fit),1)}}.
+To get the log likelihood of the fixed-parameter model (up to Monte Carlo error) we can use \code{pfilter}:
+<<>>=
+round(pfilter(fit)$loglik,1)
+@ 
+Like \code{pomp} objects, one can simulate from a fitted \code{mif} object (Fig.~\ref{fig:mifsim}).
+In this case, the \code{pomp} is simulated at the MLE.
 
 \begin{figure}
-<<fig=T>>=
+<<fig=T,echo=F>>=
 plot(simulate(fit)[[1]])
 @ 
 \caption{\code{mif} objects can be simulated.}  

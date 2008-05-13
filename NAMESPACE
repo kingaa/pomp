@@ -3,7 +3,10 @@ useDynLib(
           bspline_basis,
           bspline_basis_function,
           systematic_resampling,
-          euler_model_simulator
+          euler_model_simulator,
+          euler_model_density,
+          R_Euler_Multinom,
+          D_Euler_Multinom
           )
 importFrom(graphics,plot)
 importFrom(stats,simulate,time,coef,logLik)
@@ -20,6 +23,7 @@ export(
        reulermultinom,
        deulermultinom,
        euler.simulate,
+       euler.density,
        sobol,
        bspline.basis,
        periodic.bspline.basis
