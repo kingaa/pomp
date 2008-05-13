@@ -1,4 +1,4 @@
-library(pomp)
+require(pomp)
 
 modelfile <- system.file("examples/sir.c",package="pomp")
 includedir <- system.file("include",package="pomp")
@@ -6,8 +6,9 @@ lib <- system.file("libs/pomp.so",package="pomp")
 
 ## compile the model into shared-object library
 system(paste("cp",modelfile,"."))
-system(paste("R CMD COMPILE CFLAGS=\"-I",includedir,"\" sir.c",sep=""))
-system(paste("R CMD SHLIB -o sir.so sir.o",lib))
+system(paste("cp ",includedir,"/euler.h .",sep=""))
+system(paste("cp ",includedir,"/lookup_table.h .",sep=""))
+system(paste("R CMD SHLIB -o sir.so sir.c",lib))
 
 ## set up a lookup table for basis functions for the seasonality
 tbasis <- seq(0,20,by=1/52)
@@ -32,20 +33,39 @@ po <- pomp(
            tbasis=tbasis,
            basis=basis,
            dt=1/52/20,
-           rprocess=function(xstart,times,params,dt,tbasis,basis,...){
+           statenames=c("S","I","R","cases","W","trans1"),
+           paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
+           zeronames=c("cases"),
+           rprocess=function(xstart,times,params,dt,tbasis,basis,
+             statenames,paramnames,zeronames,...){
              euler.simulate(
                             xstart=xstart,
                             times=times,
                             params=params,
-                            euler.step.fun="sir_euler_multinomial",
+                            euler.step.fun="sir_euler_simulator",
                             delta.t=dt,
-                            statenames=c("S","I","R","cases","W","trans1"),
-                            paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
-                            zeronames=c("cases"),
+                            statenames=statenames,
+                            paramnames=paramnames,
+                            zeronames=zeronames,
                             tcovar=tbasis,
                             covar=basis,
                             PACKAGE="sir"
                             )
+           },
+           dprocess=function(x,times,params,log,tbasis,basis,
+             statenames,paramnames,...){
+             euler.density(
+                           x=x,
+                           times=times,
+                           params=params,
+                           euler.dens.fun="sir_euler_density",
+                           statenames=statenames,
+                           paramnames=paramnames,
+                           tcovar=tbasis,
+                           covar=basis,
+                           log=log,
+                           PACKAGE="sir"
+                           )
            },
            rmeasure=function(x,times,params,...){
              nsims <- ncol(params)
@@ -63,15 +83,15 @@ po <- pomp(
            dmeasure=function(y,x,times,params,log=FALSE,...){
              nreps <- ncol(params)
              ntimes <- length(times)
-             array(
-                   data=dbinom(
-                     x=y,
-                     size=x["cases",,],
-                     prob=exp(params["rho",]),
-                     log=log
-                     ),
-                   dim=c(nreps,ntimes)
-                   )
+             f <- array(dim=c(nreps,ntimes))
+             for (k in 1:nreps)
+               f[k,] <- dbinom(
+                               x=y,
+                               size=x["cases",k,],
+                               prob=exp(params["rho",k]),
+                               log=log
+                               )
+             f
            },
            initializer=function(params,t0,...){
              p <- exp(params)
@@ -79,11 +99,11 @@ po <- pomp(
              fracs <- p[c("S.0","I.0","R.0")]
              x0 <- c(
                      round(pop*fracs/sum(fracs)),
-                     0,rep(0,7)
+                     rep(0,9)
                      )
              names(x0) <- c(
                             "S","I","R","cases","W",
-                            paste("trans",1:6,sep="")
+                            paste("trans",1:7,sep="")
                             )
              x0
            }
@@ -95,13 +115,14 @@ x <- simulate(po,params=log(params),nsim=10)
 toc <- Sys.time()
 print(toc-tic)
 
-X <- simulate(po,params=log(params),nsim=10,states=T)
+t <- seq(0,4/52,1/52/20)
+X <- simulate(po,params=log(params),nsim=10,states=T,obs=T,times=t)
 
 f <- dmeasure(
               po,
-              y=data.array(x[[1]]),
-              x=X[,,-1,drop=F],
-              times=time(po),
+              y=t(as.matrix(X$obs[,7,])),
+              x=X$states,
+              times=t,
               params=matrix(
                 log(params),
                 nrow=length(params),
@@ -110,6 +131,20 @@ f <- dmeasure(
                 ),
               log=T
               )
+apply(f,1,sum)
 
+f <- dprocess(
+              po,
+              x=X$states[,,31:60],
+              times=t[31:60],
+              params=matrix(
+                log(params),
+                nrow=length(params),
+                ncol=10,
+                dimnames=list(names(params),NULL)
+                ),
+              log=T
+              )
+apply(f,1,sum)
 
 dyn.unload("sir.so")
