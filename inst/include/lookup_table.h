@@ -1,7 +1,7 @@
 // -*- C++ -*-
 
-#ifndef _POMP_INTERP_H_
-#define _POMP_INTERP_H_
+#ifndef _POMP_LOOKUP_TABLE_H_
+#define _POMP_LOOKUP_TABLE_H_
 
 #include <R.h>
 #include <Rmath.h>
