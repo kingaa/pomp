@@ -38,4 +38,4 @@ x <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3,d=4),dt=0.1)
 deulermultinom(x,size=100,rate=c(1,2,3,4),dt=0.1,log=TRUE)
 deulermultinom(x,size=100,rate=c(1,2,3,4),dt=0.2,log=TRUE)
 }
-\keyword{smooth}
+\keyword{distribution}
