@@ -6,7 +6,7 @@ bspline.basis <- function (x, degree = 3, knots)
 
 periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1) {
   if (nbasis<degree)
-    stop("must have nbasis >= degree")
+    stop("periodic.bspline.basis error: must have nbasis >= degree",call.=FALSE)
   dx <- period/nbasis
   knots <- seq(-degree*dx,period+degree*dx,by=dx)
   y <- bspline.basis(x%%period,degree,knots)

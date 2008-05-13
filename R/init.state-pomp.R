@@ -22,9 +22,9 @@ setMethod(
                             silent=FALSE
                             )
               if (inherits(x[[k]],'try-error'))
-                stop("init.state error: error in user 'initializer'")
+                stop("init.state error: error in user 'initializer'",call.=FALSE)
               if ((!is.numeric(x[[k]]))||(is.array(x[[k]]))||is.null(names(x[[k]])))
-                stop("'initializer' must return a named vector")
+                stop("init.state error: user 'initializer' must return a named vector",call.=FALSE)
             }
             do.call(cbind,x)
           }

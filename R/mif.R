@@ -44,19 +44,19 @@ mif.pomp <- function (object, Nmif = 1,
     particles <- match.fun(particles)
   }
   if (!all(c('Np','center','sd','...')%in%names(formals(particles))))
-    stop("'particles' must be a function of prototype 'particles(Np,center,sd,...)'")
+    stop("mif error: 'particles' must be a function of prototype 'particles(Np,center,sd,...)'",call.=FALSE)
   if (missing(start)) {
     if (length(coef(object))>0) {
       start <- coef(object)
     } else {
-      stop("'start' must be specified")
+      stop("mif error: 'start' must be specified",call.=FALSE)
     }
   }
   start.names <- names(start)
   if (is.null(start.names))
-    stop("mif error: 'start' must be a named vector")
+    stop("mif error: 'start' must be a named vector",call.=FALSE)
   if (length(pars) == 0)
-    stop("mif error: 'pars' must be a nonempty character vector")
+    stop("mif error: 'pars' must be a nonempty character vector",call.=FALSE)
   if (
       !is.character(pars) ||
       !is.character(ivps) ||
@@ -65,7 +65,7 @@ mif.pomp <- function (object, Nmif = 1,
       any(pars%in%ivps) ||
       any(ivps%in%pars)
       )
-    stop("'pars' and 'ivps' must be mutually disjoint elements of 'names(start)'")
+    stop("mif error: 'pars' and 'ivps' must be mutually disjoint elements of 'names(start)'",call.=FALSE)
   Nv <- length(start)
   if ((length(rw.sd)==1) && (rw.sd==0)) {
     rw.sd <- rep(0,Nv)
@@ -73,9 +73,9 @@ mif.pomp <- function (object, Nmif = 1,
   }
   rw.names <- names(rw.sd)
   if (any(!(rw.names%in%start.names)))
-    stop("all the names of 'rw.sd' must be names of 'start'")
+    stop("mif error: all the names of 'rw.sd' must be names of 'start'",call.=FALSE)
   if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
-    stop("'alg.pars' must be a named list with elements 'Np','cooling.factor','ic.lag',and 'var.factor'")
+    stop("mif error: 'alg.pars' must be a named list with elements 'Np','cooling.factor','ic.lag',and 'var.factor'",call.=FALSE)
   coef(object) <- start
   newmif <- new(
                 "mif",
@@ -119,15 +119,15 @@ mif.mif <- function (object, Nmif = object@Nmif, start = coef(object),
   names(sigma) <- names(start)
   rw.names <- names(rw.sd)
   if (!all(rw.names%in%names(start)))
-    stop("all the names of 'rw.sd' must be names of 'start'")
+    stop("mif error: all the names of 'rw.sd' must be names of 'start'",call.=FALSE)
   sigma[rw.names] <- rw.sd
   if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
-    stop("'alg.pars' must be a named list with elements 'Np','cooling.factor','ic.lag',and 'var.factor'")
+    stop("mif error: 'alg.pars' must be a named list with elements 'Np','cooling.factor','ic.lag',and 'var.factor'",call.=FALSE)
   conv.rec <- matrix(NA,
                      nrow=Nmif+1,
                      ncol=length(theta)+2,
                      dimnames=list(
-                       seq(0,Nmif),
+                       seq(.ndone,.ndone+Nmif),
                        c('loglik','nfail',names(theta))
                        )
                      )
@@ -135,23 +135,23 @@ mif.mif <- function (object, Nmif = object@Nmif, start = coef(object),
   for (n in seq(length=Nmif)) {
     cool.sched <- try(
                       mif.cooling(alg.pars$cooling.factor,.ndone+n),
-                      silent=T
+                      silent=FALSE
                       )
     if (inherits(cool.sched,'try-error'))
-      stop("mif error: cooling schedule error\n",cool.sched)
+      stop("mif error: cooling schedule error",call.=FALSE)
     sigma.n <- sigma*cool.sched$alpha
     P <- try(
              particles(object,Np=alg.pars$Np,center=theta,sd=sigma.n*alg.pars$var.factor),
              silent=FALSE
              )
     if (inherits(P,'try-error'))
-      stop("mif error: error in 'particles'")
+      stop("mif error: error in 'particles'",call.=FALSE)
     X <- try(
              init.state(object,params=P,t0=object@t0),
              silent=FALSE
              )
     if (inherits(X,'try-error'))
-      stop("mif error: error in 'init.state'")
+      stop("mif error: error in 'init.state'",call.=FALSE)
     x <- try(
              pfilter(
                      as(object,'pomp'),
@@ -168,7 +168,7 @@ mif.mif <- function (object, Nmif = object@Nmif, start = coef(object),
              silent=FALSE
              )
     if (inherits(x,'try-error'))
-      stop("mif error: error in 'pfilter'")
+      stop("mif error: error in 'pfilter'",call.=FALSE)
 
     v <- x$pred.var[pars,,drop=FALSE]
     

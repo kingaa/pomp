@@ -13,7 +13,7 @@ setMethod(
               if (length(object@params)>0) {
                 params <- object@params
               } else {
-                stop("'params' must be supplied")
+                stop("pfilter error: 'params' must be supplied",call.=FALSE)
               }
             }
             if (missing(Np))
@@ -33,7 +33,7 @@ setMethod(
             npars <- nrow(params)
             paramnames <- rownames(params)
             if (is.null(paramnames))
-              stop("pfilter error: 'params' must have rownames")
+              stop("pfilter error: 'params' must have rownames",call.=FALSE)
 
             xstart <- init.state(
                                  object,
@@ -47,9 +47,9 @@ setMethod(
             if (random.walk) {
               rw.names <- names(.rw.sd)
               if (is.null(rw.names)||!is.numeric(.rw.sd))
-                stop("pfilter error: '.rw.sd' must be a named vector")
+                stop("pfilter error: '.rw.sd' must be a named vector",call.=FALSE)
               if (any(!(rw.names%in%paramnames)))
-                stop("pfilter error: the rownames of 'params' must include all of the names of '.rw.sd'")
+                stop("pfilter error: the rownames of 'params' must include all of the names of '.rw.sd'",call.=FALSE)
               sigma <- .rw.sd
             }
             
@@ -100,7 +100,7 @@ setMethod(
                        silent=FALSE
                        )
               if (inherits(X,'try-error'))
-                stop("pfilter error: process simulation error")
+                stop("pfilter error: process simulation error",call.=FALSE)
 
               x[,] <- X                 # ditch the third dimension
               
@@ -114,7 +114,7 @@ setMethod(
                           silent=FALSE
                           )
                 if (inherits(xx,'try-error')) {
-                  stop("pfilter error: error in prediction mean computation");
+                  stop("pfilter error: error in prediction mean computation",call.=FALSE)
                 } else {
                   pred.m[,nt] <- xx
                 }
@@ -126,14 +126,16 @@ setMethod(
                 if (length(problem.indices)>0) {
                   stop(
                        "pfilter error: non-finite state variables ",
-                       paste(rownames(x)[problem.indices],collapse=',')
+                       paste(rownames(x)[problem.indices],collapse=','),
+                       call.=FALSE
                        )
                 }
                 problem.indices <- unique(which(!is.finite(params),arr.ind=TRUE)[,1])
                 if (length(problem.indices)>0) {
                   stop(
                        "pfilter error: non-finite parameters ",
-                       paste(rownames(params)[problem.indices],collapse=',')
+                       paste(rownames(params)[problem.indices],collapse=','),
+                       call.=FALSE
                        )
                 }
                 xx <- try(
@@ -144,7 +146,7 @@ setMethod(
                           silent=FALSE
                           )
                 if (inherits(xx,'try-error')) {
-                  stop("pfilter error: error in prediction variance computation")
+                  stop("pfilter error: error in prediction variance computation",call.=FALSE)
                 } else {
                   pred.v[,nt] <- xx
                 }
@@ -162,10 +164,10 @@ setMethod(
                              silent=FALSE
                              )
               if (inherits(weights,'try-error'))
-                stop("pfilter error: error in calculation of weights")
+                stop("pfilter error: error in calculation of weights",call.=FALSE)
               if (any(is.na(weights))) {
                 ## problem.indices <- which(is.na(weights))
-                stop("pfilter error: dmeasure returns NA")
+                stop("pfilter error: dmeasure returns NA",call.=FALSE)
               }
 
               ## test for failure to filter
@@ -177,7 +179,7 @@ setMethod(
                   message("filtering failure at time t = ",times[nt+1])
                 nfail <- nfail+1
                 if (nfail > max.fail)
-                  stop('pfilter error: too many filtering failures')
+                  stop('pfilter error: too many filtering failures',call.=FALSE)
                 loglik[nt] <- log(tol)          # worst log-likelihood
                 weights <- rep(1/Np,Np)
                 eff.sample.size[nt] <- 0

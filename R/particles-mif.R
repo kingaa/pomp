@@ -8,9 +8,9 @@ setMethod(
               names(sd) <- names(center)
             }
             if (is.null(names(center)) || is.null(names(sd)))
-              stop("particles error: 'center' and 'sd' must have names")
+              stop("particles error: 'center' and 'sd' must have names",call.=FALSE)
             if (length(sd)!=length(center))
-              stop("particles error: 'center' and 'sd' must be of equal length")
+              stop("particles error: 'center' and 'sd' must be of equal length",call.=FALSE)
             x <- try(
                      do.call(
                              object@particles,
@@ -22,13 +22,13 @@ setMethod(
                      silent=FALSE
                      )
             if (inherits(x,'try-error'))
-              stop("particles error: error in user-specified 'particles' function")
+              stop("particles error: error in user-specified 'particles' function",call.=FALSE)
             if (
                 !is.matrix(x) ||
                 Np!=ncol(x) ||
                 is.null(rownames(x))
                 )
-              stop("the 'particles' function must return a matrix with Np columns and rownames")
+              stop("particles error: user 'particles' function must return a matrix with Np columns and rownames",call.=FALSE)
             x
           }
           )

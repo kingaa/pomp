@@ -1,8 +1,8 @@
 sobol <- function (vars, n) {
   if (!is.list(vars) || is.null(names(vars)))
-    stop("'vars' must be a named list")
+    stop("sobol error: 'vars' must be a named list")
   if (!all(sapply(vars,function(x)is.numeric(x)&&(length(x)==2))))
-    stop("each entry in 'vars' must specify a range")
+    stop("sobol error: each entry in 'vars' must specify a range")
   d <- length(vars)
   x <- .Call("sobol_sequence",as.integer(c(d,n)))
   y <- sapply(
