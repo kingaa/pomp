@@ -5,12 +5,13 @@
 
 SEXP systematic_resampling (SEXP weights)
 {
-  SEXP perm;
-  long n = length(weights);
+  int nprotect = 0;
+  int n = length(weights);
   double u, du, *w;
   int i, j, *p;
+  SEXP perm;
 
-  PROTECT(perm = NEW_INTEGER(n));
+  PROTECT(perm = NEW_INTEGER(n)); nprotect++;
 
   p = INTEGER(perm);
   w = REAL(weights);
@@ -25,11 +26,10 @@ SEXP systematic_resampling (SEXP weights)
   for (i = 0, j = 0; j < n; j++) {
     u += du;
     while (u > w[i]) i++;
-    // must use 1-based indexing for compatibility with R!
-    p[j] = i + 1;
+    p[j] = i + 1; // must use 1-based indexing for compatibility with R!
   }
 
-  UNPROTECT(1);
+  UNPROTECT(nprotect);
 
   return(perm);
 }

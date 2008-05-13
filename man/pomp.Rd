@@ -90,7 +90,8 @@
   \code{x} must be a rank-3 array dimension \code{c(nvars,nreps,ntimes)}, where these variables have the same meanings as above.
   \code{times} is the corresponding set of times.
   \code{params} is a rank-2 array of dimension \code{c(npars,nreps)} as above.
-  \code{rmeasure} must return a rank-3 array.
+
+  \code{rmeasure} must return a rank-3 array with rownames.
   If \code{y} is the returned array, then \code{dim(y)=c(nobs,nreps,ntimes)}, where \code{nobs} is the number of observable variables and \code{nreps}, \code{ntimes} agree with the corresponding dimensions of \code{x}.
   \code{y[,j,k]} must be the vector of observables in the \code{j}-th realization at time \code{times[k]}.
 
@@ -111,15 +112,7 @@
 }
 \value{An object of class \code{pomp}.}
 \examples{
-x <- pomp(data=rbind(y=rnorm(100)),times=1:100,t0=0)
-print(x)
-plot(x)
-time(x)
-x <- pomp(data=data.frame(y=rpois(100,lambda=3),time=1:100),times='time',t0=0)
-print(x)
-plot(x)
-time(x)
-## See the vignettes for more instructive examples.
+## See the vignettes.
 }
 \section{Warning}{
   Some error checking is done, but complete error checking is impossible.  

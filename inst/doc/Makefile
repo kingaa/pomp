@@ -7,7 +7,7 @@ EPSTOPDF = epstopdf
 default: vignettes clean
 	mv ou2.rda ../../data
 
-vignettes: random_walk.pdf
+vignettes: compiled_code_in_pomp.pdf random_walk.pdf
 
 %.pdf: %.tex
 	$(PDFLATEX) $*

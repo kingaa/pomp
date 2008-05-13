@@ -4,7 +4,7 @@
 \alias{pfilter-pomp}
 \alias{pfilter,mif-method}
 \alias{pfilter-mif}
-\title{Particle filter.}
+\title{Particle filter}
 \description{
   Run a particle filter.
 }
