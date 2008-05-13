@@ -67,12 +67,19 @@
 \section{Methods}{
   \describe{
     \item{coef}{
-      Returns the value of the \code{params} slot.
+      \code{coef(object)} returns the contents of the \code{params} slot of \code{object}.
+      \code{coef(object,pars)} returns only those parameters named in \code{pars}.
     }
     \item{coef<-}{
-      Assigns values to the \code{params} slot.
-      \code{coef(object,pars=NULL,\dots) <- value} has the effect of replacing the parameters of the specified names with the given values.
-      By default, if \code{value} has a names attribute, these names are used, otherwise the names attribute of \code{coef(object)} is used.
+      Assigns values to the \code{params} slot of the \code{pomp} object.
+      If \code{coef(object)} exists, then \code{coef(object) <- value} has the effect of replacing the parameters of \code{object} with \code{value};
+      the names of \code{value} will be ignored and the names of \code{coef(object)} will be unchanged.
+      If \code{coef(object)} does not exist, then \code{coef(object) <- value} assigns \code{value} to the parameters of \code{object};
+      the names of \code{coef(object)} will be those of \code{value} and an error will be generated if \code{value} does not have names.
+      If \code{coef(object)} exists, then \code{coef(object,pars) <- value} replaces those parameters of \code{object} named in \code{pars} with the elements of \code{value};
+      the names of \code{value} are ignored.
+      If \code{coef(object)} does not exist, then \code{coef(object,pars) <- value} assigns \code{value} to the parameters of \code{object};
+      in this case, the names of \code{object} will be \code{pars} and the names of \code{value} will be ignored.
     }
     \item{plot}{
       Plots the data and state trajectories (if the latter exist).

@@ -35,7 +35,18 @@ setMethod(
           'coef',
           'pomp',
           function (object, pars, ...) {
-            if (missing(pars)) pars <- names(object@params)
+            if (missing(pars)) {
+              pars <- names(object@params)
+            } else {
+              excl <- !(pars%in%names(object@params))
+              if (any(excl)) {
+                stop(
+                     "in 'coef': names '",
+                     paste(pars[excl],collapse=','),
+                     "' correspond to no parameters"
+                     )
+              }
+            }
             object@params[pars]
           }
           )
@@ -45,49 +56,36 @@ setMethod(
           'coef<-',
           'pomp',
           function (object, pars, ..., value) {
-            if (missing(pars)) pars <- names(value)
-            if (is.null(pars)) {
-              if (length(value)!=length(object@params)) {
-                stop(
-                     "in 'coef<-': ",
-                     "number of items to replace is not equal to replacement length",
-                     call.=F
-                     )
+            if (length(object@params)==0) {
+              if (missing(pars)) {
+                pars <- names(value)
+                if (is.null(pars))
+                  stop("in 'coef<-': 'value' must be a named vector")
               } else {
-                pars <- names(value) <- names(object@params)
+                if (length(pars)!=length(value))
+                  stop("in 'coef<-': 'pars' and 'value' must be of the same length")
               }
-            }
-            if (is.null(names(value))) {
-              if (length(value)!=length(pars)) {
-                stop(
-                     "in 'coef<-': ",
-                     "number of items to replace is not equal to number of names given in 'pars'",
-                     call.=F
-                     )
-              } else {
-                names(value) <- pars
-              }
-            }
-            incl <- pars%in%names(value)
-            if (!all(incl)) {
-              stop(
-                   "in 'coef<-': ",
-                   "names '",paste(pars[!incl],collapse=','),"' are not present in 'value'",
-                   call.=F
-                   )
+              object@params <- as.numeric(value)
+              names(object@params) <- pars
             } else {
-              incl <- pars%in%names(object@params)
+              if (missing(pars)) {
+                pars <- names(object@params)
+                if (is.null(pars))
+                  stop("bad 'pomp' object: slot 'params' should be a named vector")
+              } else {
+                excl <- !(pars%in%names(object@params))
+                if (any(excl)) {
+                  stop(
+                       "in 'coef<-': names '",
+                       paste(pars[excl],collapse=','),
+                       "' correspond to no parameters"
+                       )
+                }
+              }
+              if (length(pars)!=length(value))
+                stop("in 'coef<-': 'pars' and 'value' must be of the same length")
+              object@params[pars] <- as.numeric(value)
             }
-            if (!all(incl)) {
-              warning(
-                      "in 'coef<-': ",
-                      "values '",
-                      paste(pars[!incl],collapse=','),
-                      "' correspond to no element in 'coef(object)' and hence are not replaced",
-                      call.=F
-                      )
-            }
-            object@params[pars[incl]] <- value[pars[incl]]
             object
           }
           )
