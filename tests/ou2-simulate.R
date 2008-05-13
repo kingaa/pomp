@@ -1,4 +1,4 @@
-require(pomp)
+library(pomp)
 
 data(ou2)
 
@@ -11,7 +11,7 @@ p <- c(
        )
 
 tic <- Sys.time()
-ou2.sim <- simulate(ou2,params=p,nsim=100)
+ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 toc <- Sys.time()
 print(toc-tic)
 
