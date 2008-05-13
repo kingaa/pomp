@@ -26,3 +26,31 @@ euler.simulate <- function (xstart, times, params,
         covar
         )
 }
+
+euler.density <- function (x, times, params,
+                           euler.dens.fun, 
+                           statenames = character(0),
+                           paramnames = character(0),
+                           tcovar, covar, log = FALSE,
+                           PACKAGE)
+{
+  if (missing(tcovar))
+    tcovar <- range(times)
+  if (missing(covar))
+    covar <- matrix(nrow=2,ncol=0)
+  if (missing(PACKAGE))
+    PACKAGE <- ""
+  efun <- getNativeSymbolInfo(euler.dens.fun,PACKAGE)$address
+  .Call(
+        euler_model_density,
+        efun,
+        x,
+        times,
+        params,
+        statenames,
+        paramnames,
+        tcovar,
+        covar,
+        log
+        )
+}
