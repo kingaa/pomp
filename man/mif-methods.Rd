@@ -48,9 +48,6 @@ filter.mean(object, \dots)
       Re-runs the MIF iterations.
       See the documentation under \cite{Re-running MIF Iterations} below.
     }
-    \item{plot}{
-      Plots a series of diagnostic plots.
-    }
     \item{pred.mean}{
       \code{pred.mean(object, pars = NULL)} returns the rows of the prediction-mean matrix corresponding to the names in \code{pars}.
       By default, all rows are returned.
