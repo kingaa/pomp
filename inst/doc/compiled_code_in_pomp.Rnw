@@ -32,7 +32,7 @@ Ann Arbor, Michigan 48109-1048 USA
 
 <<echo=F,results=hide>>=
   options(keep.source=TRUE,width=60)
-  library(pomp.devel)
+  library(pomp)
 @ 
 
 \section{A two-dimensional Ornstein-Uhlenbeck process.}
@@ -78,7 +78,7 @@ Read the source (file `ou2.c') for details.
 	     parindex = as.integer(parindex),
 	     DUP = FALSE,
 	     NAOK = TRUE,
-	     PACKAGE = "pomp.devel"
+	     PACKAGE = "pomp"
 	     )$X,
 	  dim=c(nvar,nrep,ntimes),
 	  dimnames=list(rownames(xstart),NULL,NULL)
@@ -106,7 +106,7 @@ Read the source (file `ou2.c') for details.
              give_log=as.integer(log),
 	     DUP = FALSE,
 	     NAOK = TRUE,
-	     PACKAGE = "pomp.devel"
+	     PACKAGE = "pomp"
 	     )$d,
 	  dim=c(nrep,ntimes-1)
 	  )
@@ -132,7 +132,7 @@ bvnorm.dmeasure <- function (y, x, times, params, log = TRUE, ...) {
            give_log = as.integer(log),
            DUP = FALSE,
            NAOK = TRUE,
-           PACKAGE = "pomp.devel"
+           PACKAGE = "pomp"
            )$f,
         dim=c(nrep,ntimes)
         )
@@ -155,7 +155,7 @@ array(
          obs = double(nobs*nrep*ntimes),
          DUP = FALSE,
          NAOK = TRUE,
-         PACKAGE = "pomp.devel"
+         PACKAGE = "pomp"
          )$obs,
       dim=c(nobs,nrep,ntimes),
       dimnames=list(c('y1','y2'),NULL,NULL)

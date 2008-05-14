@@ -28,10 +28,8 @@
   results of fitting the model to the data by the MIF algorithm.
 }
 \section{Vignettes}{
-  The vignette `random\_walk\_devel' illustrates the facilities of the
-  package using simple random-walk processes.  Run
-  \code{vignette('random_walk_devel')} or look at the HTML
-  documentation to view the vignette.
+  The vignette `random\_walk' illustrates the facilities of the package using simple random-walk processes.
+  Run \code{vignette('random_walk')} or look at the HTML documentation to view the vignette.
 }
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{\code{\link{pomp-class}}, \code{\link{pomp}},
