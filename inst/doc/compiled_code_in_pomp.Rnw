@@ -1,9 +1,17 @@
 \documentclass[10pt,reqno,final]{amsart}
 %\VignetteIndexEntry{Using compiled code in pomp}
 \usepackage{times}
-\usepackage{fullpage}
-\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{natbib}
+
+\setlength{\textwidth}{6.25in}
+\setlength{\textheight}{8.75in}
+\setlength{\evensidemargin}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\topmargin}{-.35in}
+\setlength{\parskip}{.1in}  
+\setlength{\parindent}{0.0in}  
 
 \title[Using compiled code]{Using compiled code in \texttt{pomp}}
 
@@ -30,6 +38,8 @@ Ann Arbor, Michigan 48109-1048 USA
 
 \maketitle
 
+\tableofcontents
+
 <<echo=F,results=hide>>=
   options(keep.source=TRUE,width=60)
   library(pomp)
@@ -37,9 +47,8 @@ Ann Arbor, Michigan 48109-1048 USA
 
 \section{A two-dimensional Ornstein-Uhlenbeck process.}
 
-To keep things simple, we will study a discrete-time process.
-The tricks below will continue to be useful even in the case of a continuous-time process, but the computational effort will be greater.
-The unobserved Ornstein-Uhlenbeck (OU) process $X_{t}\in\mathbb{R}^2$ satisfies
+Let's look again at our example of the discrete-time 2-D Ornstein-Uhlenbeck process with normal measurement error.
+Recall that the unobserved Ornstein-Uhlenbeck (OU) process $X_{t}\in\mathbb{R}^2$ satisfies
 \begin{equation*}
   X_{t} = A\,X_{t-1}+\xi_{t}.
 \end{equation*}
@@ -55,7 +64,7 @@ Since many of the methods we will use require us to simulate the process and/or 
 The package includes some C codes that were written to implement the OU example.
 Read the source (file `ou2.c') for details.
 
-\subsection{The \texttt{.C} interface}
+\section{The \texttt{.C} interface}
 
 <<>>=
   ou2.rprocess <- function (xstart, times, params, ...) {
@@ -192,7 +201,7 @@ p <- c(
  print(toc-tic)
 @ 
 
-\subsection{The \texttt{.Call} interface}
+\section{The \texttt{.Call} interface}
 
 The following wrapper functions make use of the above compiled codes.
 <<>>=
@@ -246,14 +255,6 @@ Fig.~\ref{fig:ou_process} plots the data.
   \label{fig:ou_process}
 \end{figure}
 
-Let's make sure everything works.
-<<>>=
-x0 <- init.state(ou2,params=p)
-x <- rprocess(ou2,xstart=as.matrix(x0),times=c(0,time(ou2)),params=as.matrix(p))
-y <- rmeasure(ou2,x=x[,,-1,drop=F],times=time(ou2),params=as.matrix(p))
-dprocess(ou2,x[,,36:41,drop=F],times=time(ou2)[35:40],params=as.matrix(p),log=T)
-dmeasure(ou2,y=y[,1,1:4],x=x[,,2:5,drop=F],times=time(ou2)[1:4],params=as.matrix(p),log=T)
-@ 
 The \code{pomp} object we just created is included in the package: use \code{data(ou2)} to retrieve it.
 <<echo=F>>=
 save(list='ou2',file='ou2.rda')

@@ -112,7 +112,125 @@
 }
 \value{An object of class \code{pomp}.}
 \examples{
-## See the vignettes.
+## Simple example: a 2-D Brownian motion, observed with normal error
+## first, set up the pomp object:
+
+rw2 <- pomp(
+            rprocess = function (xstart, times, params, ...) { 
+              ## this function simulates two independent random walks with intensities s1, s2
+              nsims <- ncol(params)
+              ntimes <- length(times)
+              dt <- diff(times)
+              x <- array(0,dim=c(2,nsims,ntimes))
+              rownames(x) <- rownames(xstart)
+              noise.sds <- params[c('s1','s2'),]
+              x[,,1] <- xstart
+              for (j in 2:ntimes) {
+                ## we are mimicking a continuous-time process, so the increments have SD ~ sqrt(dt)
+                ## note that we do not have to assume that 'times' are equally spaced
+                x[,,j] <- rnorm(n=2*nsims,mean=x[,,j-1],sd=noise.sds*dt[j-1])
+              }
+              x
+            },
+            dprocess = function (x, times, params, log = FALSE, ...) { 
+              ## given a sequence of consecutive states in 'x', this function computes the p.d.f.
+              nsims <- ncol(params)
+              ntimes <- length(times)
+              dt <- diff(times)
+              d <- array(0,dim=c(2,nsims,ntimes-1))
+              noise.sds <- params[c('s1','s2'),]
+              for (j in 2:ntimes)
+                d[,,j-1] <- dnorm(x[,,j]-x[,,j-1],mean=0,sd=noise.sds*dt[j-1],log=TRUE)
+              if (log) {
+                apply(d,c(2,3),sum)
+              } else {
+                exp(apply(d,c(2,3),sum))
+              }
+            },
+            rmeasure = function (x, times, params, ...) {
+              ## noisy observations of the two walks with common noise SD 'tau'
+              nsims <- dim(x)[2]
+              ntimes <- dim(x)[3]
+              y <- array(0,dim=c(2,nsims,ntimes))
+              rownames(y) <- c('y1','y2')
+              for (j in 1:nsims) {
+                for (k in 1:ntimes) {
+                  y[,j,k] <- rnorm(2,mean=x[,j,k],sd=params['tau',j])
+                }
+              }
+              y
+            },
+            dmeasure = function (y, x, times, params, log = FALSE, ...) {
+              ## noisy observations of the two walks with common noise SD 'tau'
+              d1 <- dnorm(
+                          x=y['y1',],
+                          mean=x['x1',,],
+                          sd=params['tau',],
+                          log=TRUE
+                          )
+              d2 <- dnorm(
+                          x=y['y2',],
+                          mean=x['x2',,],
+                          sd=params['tau',],
+                          log=TRUE
+                          )
+              if (log) {
+                d1+d2
+              } else {
+                exp(d1+d2)
+              }
+            },
+            times=1:100,
+            data=rbind(
+              y1=rep(0,100),
+              y2=rep(0,100)
+              ),
+            t0=0
+            )
+
+## specify some parameters
+p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
+
+## simulate
+examples <- simulate(rw2,params=p)
+rw2 <- examples[[1]]  ## by default, simulate produces a list of pomp objects
+plot(rw2)
+
+t <- seq(0,20)
+X <- simulate(rw2,params=p[,1],nsim=10,states=TRUE,obs=TRUE,times=t)
+
+## compute the process model likelihoods
+f <- dprocess(
+              rw2,
+              x=X$states,
+              times=t,
+              params=matrix(
+                p[,1],
+                nrow=nrow(p),
+                ncol=10,
+                dimnames=list(rownames(p),NULL)
+                ),
+              log=TRUE
+              )
+apply(f,1,sum)
+
+## compute the measurement likelihoods
+g <- dmeasure(
+              rw2,
+              y=X$obs[,7,],
+              x=X$states,
+              times=t,
+              params=matrix(
+                p[,1],
+                nrow=nrow(p),
+                ncol=10,
+                dimnames=list(rownames(p),NULL)
+                ),
+              log=TRUE
+              )
+apply(g,1,sum)
+
+## For more examples, see the vignettes.
 }
 \section{Warning}{
   Some error checking is done, but complete error checking is impossible.  
