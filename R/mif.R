@@ -46,11 +46,9 @@ mif.pomp <- function (object, Nmif = 1,
   if (!all(c('Np','center','sd','...')%in%names(formals(particles))))
     stop("mif error: 'particles' must be a function of prototype 'particles(Np,center,sd,...)'",call.=FALSE)
   if (missing(start)) {
-    if (length(coef(object))>0) {
-      start <- coef(object)
-    } else {
+    start <- coef(object)
+    if (length(start)==0)
       stop("mif error: 'start' must be specified",call.=FALSE)
-    }
   }
   start.names <- names(start)
   if (is.null(start.names))
