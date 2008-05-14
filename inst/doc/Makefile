@@ -7,7 +7,7 @@ EPSTOPDF = epstopdf
 default: vignettes clean
 	mv ou2.rda ../../data
 
-vignettes: compiled_code_in_pomp.pdf random_walk.pdf
+vignettes: compiled_code_in_pomp.pdf intro_to_pomp.pdf
 
 %.pdf: %.tex
 	$(PDFLATEX) $*
@@ -17,4 +17,4 @@ vignettes: compiled_code_in_pomp.pdf random_walk.pdf
 	$(EPSTOPDF) $*.eps --outfile=$*.pdf
 
 clean:
-	$(RM) *.tex *.log *.aux *.out *.Rout *-???.pdf Rplots.ps
+	$(RM) *.tex *.log *.aux *.out *.Rout *.toc *.lof *.lot *-???.pdf Rplots.ps
