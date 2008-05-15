@@ -103,7 +103,7 @@
     }
     \item{dprocess}{
       evaluates the process model density.
-      See code{\link{dprocess-pomp}}.
+      See \code{\link{dprocess-pomp}}.
     }
     \item{rmeasure}{
       simulates the measurement model.

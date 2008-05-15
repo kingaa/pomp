@@ -178,6 +178,7 @@ tic <- Sys.time()
 x <- simulate(po,params=log(params),nsim=3)
 toc <- Sys.time()
 print(toc-tic)
+plot(x[[1]])
 
 t <- seq(0,4/52,1/52/20)
 X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)

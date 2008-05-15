@@ -12,74 +12,72 @@
 \description{
   The MIF algorithm for estimating the parameters of a partially-observed Markov process.
 }
-\section{Running the MIF algorithm}{
-  The call sequence for \code{mif} is
-
-  \code{mif(object, Nmif, start, pars, ivps = character(0),
+\usage{
+mif(object, \dots)
+\S4method{mif}{pomp}(object, Nmif, start, pars, ivps = character(0),
     particles, rw.sd, alg.pars, weighted = TRUE,
-    tol = 1e-17, warn = TRUE, max.fail = 0)}
-
-  Description of arguments:
-  \describe{
-    \item{object}{An object of class \code{pomp}.}
-    \item{Nmif}{The number of MIF iterations to perform.}
-    \item{start}{The initial guess of the parameters.  This must be a named vector.}
-    \item{pars}{Character vector of names of ordinary parameters to be estimated.}
-    \item{ivps}{Character vector of names of initial-value parameters to be estimated.}
-    \item{particles}{
-      Function of prototype \code{particles(Np,center,sd,...)} which sets up the initial particle matrix by drawing a sample of size \code{Np} from the initial particle distribution centered at \code{center} and of width \code{sd}.
-      If \code{particles} is not supplied by the user, the default behavior is to draw the particles from a multivariate normal distribution with mean \code{center} and standard deviation \code{sd}.
-    }
-    \item{rw.sd}{The intensity of the random walk.}
-    \item{alg.pars}{
-      A named list of algorithm parameters.
-      This consists of
+    tol = 1e-17, warn = TRUE, max.fail = 0)
+\S4method{mif}{mif}(object, \dots)
+\S4method{continue}{mif}(object, Nmif, \dots)
+}
+\arguments{
+  \item{object}{An object of class \code{pomp}.}
+  \item{Nmif}{The number of MIF iterations to perform.}
+  \item{start}{The initial guess of the parameters.  This must be a named vector.}
+  \item{pars}{Character vector of names of ordinary parameters to be estimated.}
+  \item{ivps}{Character vector of names of initial-value parameters to be estimated.}
+  \item{particles}{
+    Function of prototype \code{particles(Np,center,sd,...)} which sets up the initial particle matrix by drawing a sample of size \code{Np} from the initial particle distribution centered at \code{center} and of width \code{sd}.
+    If \code{particles} is not supplied by the user, the default behavior is to draw the particles from a multivariate normal distribution with mean \code{center} and standard deviation \code{sd}.
+  }
+  \item{rw.sd}{The intensity of the random walk.}
+  \item{alg.pars}{
+    A named list of algorithm parameters.
+    This consists of
+    \describe{
       \item{Np}{the number of particles to use in filtering}
       \item{var.factor}{the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}}
       \item{ic.lag}{the timepoint for fixed-lag smoothing of initial-value parameters (IVPs)}
       \item{cooling.factor}{the exponential cooling factor, \code{alpha}, where \code{0<alpha<1}.}
     }
-    \item{weighted}{
-      Should a weighted average be used?
-      If \code{weighted=F}, the MIF update is not used;
-      rather, an unweighed average of the filtering means is used for the update.
-    }
-    \item{tol}{
-      Particles with log likelihood below \code{tol} are considered to be "lost".
-      A filtering failure occurs when, at some time point, all particles are lost.
-    }
-    \item{warn}{
-      Should a warning be generated when a filtering failure occurs?
-    }
-    \item{max.fail}{
-      Maximum number of filtering failures permitted.
-      If the number of failures exceeds this number, execution will terminate with an error.
-    }
-    }
+  }
+  \item{weighted}{
+    Should a weighted average be used?
+    If \code{weighted=F}, the MIF update is not used;
+    instead, an unweighed average of the filtering means is used for the update.
+  }
+  \item{tol}{
+    Particles with log likelihood below \code{tol} are considered to be "lost".
+    A filtering failure occurs when, at some time point, all particles are lost.
+  }
+  \item{warn}{
+    Should a warning be generated when a filtering failure occurs?
+  }
+  \item{max.fail}{
+    Maximum number of filtering failures permitted.
+    If the number of failures exceeds this number, execution will terminate with an error.
+  }
+  \item{\dots}{
+    Additional arguments that can be used to override the defaults.
+  }
 }
 \section{Re-running MIF Iterations}{
-  To re-run a sequence of MIF iterations, one can use the \code{mif} method on a "mif" object.
-  The call sequence is
-
-  \code{mif(object, \dots)}
-
-  Any additional arguments that are valid for the \code{mif} method of a "pomp" object (see \code{\link{pomp-class}}) can be given (with the exception of the \code{particles} function.
-  Arguments not specified will take the values they have in the slots of \code{object}.
+  To re-run a sequence of MIF iterations, one can use the \code{mif} method on a \code{mif} object.
+  The call sequence is \code{mif(object)}.
+  By default, the same parameters used for the original MIF run are re-used.
+  If one does specify additional arguments, these will override the defaults.
+  An exception is that one cannot override the \code{particles} function.
 }
 \section{Continuing MIF Iterations}{
   One can continue a series of MIF iterations from where one left off.
-  The call sequence is
-
-  \code{continue(object, Nmif, \dots)}
-
+  The call sequence is \code{continue(object, Nmif)}.
   This will perform \code{Nmif} additional MIF iterations on the \code{mif} object \code{object}.
   A call to \code{mif} to perform \code{Nmif=m} iterations followed by a call to \code{continue} to perform \code{Nmif=n} iterations will produce precisely the same effect as a single call to \code{mif} to perform \code{Nmif=m+n} iterations.
-
-  All additional arguments are passed to \code{mif}.
+  Additional arguments are passed to \code{mif}.
   This feature can be used to change any of the parameters (except the \code{particles} function).
 }
 \section{Details}{
-  \strong{It is the user's responsibility to ensure that the \code{particles} function satisfies the following conditions:}
+  \strong{It is the user's responsibility to ensure that, if the optional \code{particles} argument is given, that the \code{particles} function satisfies the following conditions:}
 
   \code{particles} has at least the following arguments:
   \code{Np}, \code{center}, \code{sd}, and \code{\dots}.
@@ -103,7 +101,7 @@
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{
   \code{\link{mif-class}}, \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
-  See the "intro\_to\_pomp\_devel" vignette for an example.
+  See the "intro\_to\_pomp" vignette for an example.
 }
 \keyword{models}
 \keyword{ts}
