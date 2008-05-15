@@ -29,7 +29,7 @@ filter.mean(object, \dots)
 \S4method{filter.mean}{mif}(object, pars, \dots)
 }
 \arguments{
-  \item{object}{The "mif" object.}
+  \item{object}{The \code{mif} object.}
   \item{pars}{Names of parameters.}
   \item{\dots}{
     Further arguments (either ignored or passed to underlying functions).
@@ -60,21 +60,15 @@ filter.mean(object, \dots)
       \code{filter.mean(object, pars = NULL)} returns the rows of the filtering-mean matrix corresponding to the names in \code{pars}.
       By default, all rows are returned.
     }
-    \item{predvarplot}{
-      \code{predvarplot(object, pars = NULL, mean = FALSE, \dots)} produces a plot of the scaled prediction variances for each parameter.
-      This can be used to diagnose a good value of the \code{mif} parameters \code{CC} and \code{T0}.
-      If used in this way, one should run \code{mif} with \code{Nmif=1} first.
-      Additional arguments in \code{\dots} will be passed to the actual plotting function.
-    }
     \item{pred.var}{
       \code{pred.var(object, pars = NULL)} returns the rows of the prediction-variance matrix corresponding to the names in \code{pars}.
       By default, all rows are returned.
     }
     \item{print}{
-      Prints a summary of the "mif" object.
+      Prints a summary of the \code{mif} object.
     }
     \item{show}{
-      Displays the "mif" object.
+      Displays the \code{mif} object.
     }
     \item{pfilter}{
       See \code{\link{pfilter-mif}}.

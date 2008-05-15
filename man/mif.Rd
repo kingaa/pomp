@@ -37,7 +37,7 @@
       \item{Np}{the number of particles to use in filtering}
       \item{var.factor}{the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}}
       \item{ic.lag}{the timepoint for fixed-lag smoothing of initial-value parameters (IVPs)}
-      \item{cooling.factor}{the exponential cooling factor, \eqn{a}, where \eqn{0<a<1}}
+      \item{cooling.factor}{the exponential cooling factor, \code{alpha}, where \code{0<alpha<1}.}
     }
     \item{weighted}{
       Should a weighted average be used?
@@ -72,7 +72,7 @@
 
   \code{continue(object, Nmif, \dots)}
 
-  This will perform \code{Nmif} additional MIF iterations on the "mif" object \code{object}.
+  This will perform \code{Nmif} additional MIF iterations on the \code{mif} object \code{object}.
   A call to \code{mif} to perform \code{Nmif=m} iterations followed by a call to \code{continue} to perform \code{Nmif=n} iterations will produce precisely the same effect as a single call to \code{mif} to perform \code{Nmif=m+n} iterations.
 
   All additional arguments are passed to \code{mif}.
@@ -85,7 +85,7 @@
   \code{Np}, \code{center}, \code{sd}, and \code{\dots}.
   \code{Np} should be assumed to be an integer; \code{center} and \code{sd} will be named vectors of the same length.
   Additional arguments may be specified;
-  these will be filled with the elements of the \code{userdata} slot of the underlying "pomp" object (see \code{\link{pomp-class}}).
+  these will be filled with the elements of the \code{userdata} slot of the underlying \code{pomp} object (see \code{\link{pomp-class}}).
 
   \code{particles} returns a \code{length(center)} x \code{Np} matrix with rownames.
   Each column represents a distinct particle.
@@ -103,7 +103,7 @@
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{
   \code{\link{mif-class}}, \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
-  See the "intro\_to\_pomp" vignette for an example.
+  See the "intro\_to\_pomp\_devel" vignette for an example.
 }
 \keyword{models}
 \keyword{ts}

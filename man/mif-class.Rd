@@ -43,7 +43,7 @@
 	the fixed lag used in the estimation of initial-value parameters (IVPs).
       }
       \item{cooling.factor}{
-	the exponential cooling factor, \eqn{a}, where \eqn{0<a<1}.
+	the exponential cooling factor, \code{alpha}, where \code{0<alpha<1}.
       }
     }
     \item{random.walk.sd}{
