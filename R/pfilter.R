@@ -35,11 +35,7 @@ setMethod(
             if (is.null(paramnames))
               stop("pfilter error: 'params' must have rownames",call.=FALSE)
 
-            xstart <- init.state(
-                                 object,
-                                 params=params,
-                                 t0=object@t0
-                                 )
+            xstart <- init.state(object,params=params)
             statenames <- rownames(xstart)
             nvars <- nrow(xstart)
 
@@ -84,7 +80,7 @@ setMethod(
                      )
             else NULL
 
-            times <- c(object@t0,time(object))
+            times <- time(object,t0=TRUE)
             x <- xstart
             
             for (nt in seq(length=ntimes)) {

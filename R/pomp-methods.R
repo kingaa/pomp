@@ -28,7 +28,13 @@ setMethod(
           )
 
 ## a simple method to extract the vector of times
-setMethod('time','pomp',function(x,...)x@times)
+setMethod(
+          "time",
+          "pomp",
+          function (x, t0 = FALSE, ...) {
+            if (t0) c(x@t0,x@times) else x@times
+          }
+          )
 
 ## extract the coefficients
 setMethod(

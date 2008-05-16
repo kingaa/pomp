@@ -92,7 +92,10 @@
       \code{data.array(object,vars)} gives just the observations of variables \code{vars}.
       \code{vars} may specify the variables by position or by name.
     }
-    \item{time}{Returns the vector of observation times.}
+    \item{time}{
+      \code{time(object)} returns the vector of observation times.
+      \code{time(object,t0=TRUE)} returns the vector of observation times with the zero-time \code{t0} prepended.
+    }
     \item{coerce}{
       A \code{pomp} object can be coerced to a data frame via \code{as(object,"data.frame")}.
       The data frame contains the times, the data, and the state trajectories, if they exist.

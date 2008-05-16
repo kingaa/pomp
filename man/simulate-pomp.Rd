@@ -8,7 +8,7 @@
 }
 \usage{
 \S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, params,
-         states = FALSE, obs = FALSE, times = c(object@t0,time(object)),
+         states = FALSE, obs = FALSE, times = time(object,t0=TRUE),
          \dots)
 }
 \arguments{
