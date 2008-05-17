@@ -141,10 +141,11 @@ Finally, we specify how to evaluate the likelihood of an observation given the u
                 log=TRUE
                 )
     if (log) {
-      d1+d2
+      f <- d1+d2
     } else {
-      exp(d1+d2)
+      f <- exp(d1+d2)
     }
+    array(f,dim=c(ncol(x),length(times)))
   }
 @ 
 With these four functions in hand, we construct the \code{pomp} object:
