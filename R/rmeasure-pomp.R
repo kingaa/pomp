@@ -3,38 +3,12 @@ setMethod(
           'rmeasure',
           'pomp',
           function (object, x, times, params, ...) {
-            if (length(dim(x))!=3)
-              stop("rmeasure error: 'x' must be a rank-3 array",call.=FALSE)
-            ntimes <- length(times)
-            nsims <- dim(x)[2]
-            if (ntimes!=dim(x)[3])
-              stop("rmeasure error: length of 'times' does not agree with dim(x)[3]",call.=FALSE)
-            if (nsims!=ncol(params))
-              stop("rmeasure error: number of columns of 'params' and 'x' do not agree",call.=FALSE)
-            y <- try(
-                     do.call(
-                             object@rmeasure,
-                             c(
-                               list(
-                                    x=x,
-                                    times=times,
-                                    params=params
-                                    ),
-                               object@userdata
-                               )
-                             ),
+            x <- try(
+                     .Call(do_rmeasure,object,x,times,params),
                      silent=FALSE
                      )
-            if (inherits(y,'try-error'))
+            if (inherits(x,'try-error'))
               stop("rmeasure error: error in user 'rmeasure'",call.=FALSE)
-            nobs <- nrow(object@data)
-            dim.y <- dim(y)
-            if (length(dim.y)!=3 || any(dim.y!=c(nobs,nsims,ntimes)) || is.null(rownames(y)))
-              stop(
-                   "rmeasure error: user 'rmeasure' must return an array of dimensions ",
-                   nobs,"x",nsims,"x",ntimes," with rownames",
-                   call.=FALSE
-                   )
-            y
+            x
           }
           )

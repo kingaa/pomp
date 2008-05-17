@@ -5,7 +5,7 @@ setMethod(
           "pomp",
           function (object, nsim = 1, seed = NULL, params,
                     states = FALSE, obs = FALSE,
-                    times = c(object@t0,time(object)), ...) {
+                    times = time(object,t0=TRUE), ...) {
             ntimes <- length(times)
             times <- as.numeric(times)
             if (ntimes<1)

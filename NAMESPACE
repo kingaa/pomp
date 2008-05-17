@@ -6,7 +6,11 @@ useDynLib(
           euler_model_simulator,
           euler_model_density,
           R_Euler_Multinom,
-          D_Euler_Multinom
+          D_Euler_Multinom,
+          do_rprocess,
+          do_dprocess,
+          do_rmeasure,
+          do_dmeasure
           )
 importFrom(graphics,plot)
 importFrom(stats,simulate,time,coef,logLik)
