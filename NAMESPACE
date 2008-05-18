@@ -10,7 +10,8 @@ useDynLib(
           do_rprocess,
           do_dprocess,
           do_rmeasure,
-          do_dmeasure
+          do_dmeasure,
+          do_init_state
           )
 importFrom(graphics,plot)
 importFrom(stats,simulate,time,coef,logLik)
