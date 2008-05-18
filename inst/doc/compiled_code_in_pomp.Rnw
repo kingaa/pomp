@@ -13,6 +13,8 @@
 \setlength{\parskip}{.1in}  
 \setlength{\parindent}{0.0in}  
 
+%% $Revision$
+
 \title[Using compiled code]{Using compiled code in \texttt{pomp}}
 
 \author[A. A. King]{Aaron A. King}
@@ -28,7 +30,7 @@ Ann Arbor, Michigan 48109-1048 USA
 
 \urladdr{http://www.umich.edu/\~{}kingaa}
 
-\date{\today}
+%% \date{\today}
 
 \newcommand\code[1]{\texttt{#1}}
 
@@ -43,6 +45,7 @@ Ann Arbor, Michigan 48109-1048 USA
 <<echo=F,results=hide>>=
   options(keep.source=TRUE,width=60)
   library(pomp)
+  set.seed(5384959)
 @ 
 
 \section{A two-dimensional Ornstein-Uhlenbeck process.}
