@@ -1,4 +1,4 @@
-library(pomp)
+library(pomp.devel)
 
 data(ou2)
 

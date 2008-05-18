@@ -15,6 +15,9 @@
 \alias{filter.mean}
 \alias{filter.mean,mif-method}
 \alias{filter.mean-mif}
+\alias{plot-mif}
+\alias{plot,mif-method}
+\alias{compare.mif}
 \title{Methods of the "mif" class}
 \description{Methods of the "mif" class.}
 \usage{
@@ -27,10 +30,15 @@ pred.var(object, \dots)
 \S4method{pred.var}{mif}(object, pars, \dots)
 filter.mean(object, \dots)
 \S4method{filter.mean}{mif}(object, pars, \dots)
+\S4method{plot}{mif}(x, y = NULL, \dots)
+compare.mif(z)
 }
 \arguments{
   \item{object}{The \code{mif} object.}
   \item{pars}{Names of parameters.}
+  \item{x}{The \code{mif} object.}
+  \item{y}{Ignored.}
+  \item{z}{A \code{mif} object or list of \code{mif} objects.}
   \item{\dots}{
     Further arguments (either ignored or passed to underlying functions).
   }
@@ -48,6 +56,13 @@ filter.mean(object, \dots)
       Re-runs the MIF iterations.
       See the documentation under \cite{Re-running MIF Iterations} below.
     }
+    \item{compare.mif}{
+      Given a \code{mif} object or a list of \code{mif} objects, \code{compare.mif} produces a set of diagnostic plots.
+    }
+    \item{plot}{
+      Plots a series of diagnostic plots.
+      When \code{x} is a \code{mif} object, \code{plot(x)} is equivalent to \code{compare.mif(list(x))}.
+    }
     \item{pred.mean}{
       \code{pred.mean(object, pars = NULL)} returns the rows of the prediction-mean matrix corresponding to the names in \code{pars}.
       By default, all rows are returned.
@@ -59,6 +74,12 @@ filter.mean(object, \dots)
     \item{filter.mean}{
       \code{filter.mean(object, pars = NULL)} returns the rows of the filtering-mean matrix corresponding to the names in \code{pars}.
       By default, all rows are returned.
+    }
+    \item{predvarplot}{
+      \code{predvarplot(object, pars = NULL, mean = FALSE, \dots)} produces a plot of the scaled prediction variances for each parameter.
+      This can be used to diagnose a good value of the \code{mif} parameters \code{CC} and \code{T0}.
+      If used in this way, one should run \code{mif} with \code{Nmif=1} first.
+      Additional arguments in \code{\dots} will be passed to the actual plotting function.
     }
     \item{pred.var}{
       \code{pred.var(object, pars = NULL)} returns the rows of the prediction-variance matrix corresponding to the names in \code{pars}.

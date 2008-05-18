@@ -1,4 +1,4 @@
-require(pomp)
+library(pomp.devel)
 
 data(ou2)
 
@@ -41,3 +41,7 @@ cat("coefficients at truth\n")
 print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')))
 cat("MIF MLE\n")
 print(coef(mif.fit,c('x1.0','x2.0','alpha.1','alpha.4')))
+
+plot(mif.fit)
+compare.mif(mif.fit)
+compare.mif(list(mif.fit,mif.fit))

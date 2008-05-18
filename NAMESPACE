@@ -1,5 +1,5 @@
 useDynLib(
-          pomp,
+          pomp.devel,
           bspline_basis,
           bspline_basis_function,
           systematic_resampling,
@@ -11,7 +11,11 @@ useDynLib(
           do_dprocess,
           do_rmeasure,
           do_dmeasure,
-          do_init_state
+          do_init_state,
+          ou2_simulator,
+          ou2_density,
+          bivariate_normal_rmeasure,
+          bivariate_normal_dmeasure
           )
 importFrom(graphics,plot)
 importFrom(stats,simulate,time,coef,logLik)
@@ -25,11 +29,14 @@ exportMethods('plot','show','time','print','show','coerce',
 export(
        pomp,
        pfilter,
+       traj.match,
+       NLF,
        reulermultinom,
        deulermultinom,
        euler.simulate,
        euler.density,
        sobol,
        bspline.basis,
-       periodic.bspline.basis
+       periodic.bspline.basis,
+       compare.mif
        )

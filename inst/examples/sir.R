@@ -1,8 +1,8 @@
-require(pomp)
+require(pomp.devel)
 
-modelfile <- system.file("examples/sir.c",package="pomp")
-includedir <- system.file("include",package="pomp")
-lib <- system.file("libs/pomp.so",package="pomp")
+modelfile <- system.file("examples/sir.c",package="pomp.devel")
+includedir <- system.file("include",package="pomp.devel")
+lib <- system.file("libs/pomp.devel.so",package="pomp.devel")
 
 ## compile the model into shared-object library
 system(paste("cp",modelfile,"."))

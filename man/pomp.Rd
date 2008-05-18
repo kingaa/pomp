@@ -246,6 +246,6 @@ apply(g,1,sum)
 }
 \references{}
 \author{Aaron A. King (kingaa at umich dot edu)}
-\seealso{\link{pomp-class}, \link{euler}, \code{vignette(intro_to_pomp)}}
+\seealso{\link{pomp-class}, \link{euler}, \code{vignette(intro_to_pomp,package="pomp.devel")}}
 \keyword{models}
 \keyword{ts}

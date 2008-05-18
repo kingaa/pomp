@@ -1,4 +1,4 @@
-require(pomp)
+library(pomp.devel)
 
 kalman.filter <- function (y, x0, a, b, sigma, tau) {
   n <- nrow(y)
@@ -84,4 +84,3 @@ print(
             SE=sqrt(diag(solve(kalm.fit1$hessian)))
             )
       )
-            
