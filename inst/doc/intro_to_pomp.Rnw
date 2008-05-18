@@ -130,7 +130,6 @@ In this function, \code{x}, \code{times}, and \code{params} are as they were abo
 Notice that we give the returned array, \code{y}, rownames.
 <<>>=
   bvnorm.rmeasure <- function (x, times, params, ...) {
-
     ## noisy observations of the two walks with common noise SD 'tau'
     nsims <- dim(x)[2]
     ntimes <- dim(x)[3]
