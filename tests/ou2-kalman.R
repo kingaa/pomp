@@ -37,7 +37,7 @@ kalman <- function (x, object, params) {
   y <- data.array(object)
   p <- params
   p[names(x)] <- x
-  x0 <- p[c('x1.0','x2.0')]
+  x0 <- init.state(object,params=p)
   a <- matrix(p[c('alpha.1','alpha.2','alpha.3','alpha.4')],2,2)
   b <- diag(1,2)
   sigma <- matrix(p[c('sigma.1','sigma.2','sigma.2','sigma.3')],2,2)
