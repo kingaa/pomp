@@ -52,7 +52,7 @@
   
   \describe{
     \item{\code{rprocess}}{
-      \code{rprocess} must have at least the following arguments:
+      must have at least the following arguments:
       \code{xstart}, \code{times}, \code{params}, and \code{\dots}.
       It can also take additional arguments.
       It is guaranteed that these will be filled with the corresponding elements the user has included as additional arguments in the construction of the \code{pomp} object.
@@ -71,7 +71,7 @@
       The rownames of \code{x} must correspond to those of \code{xstart}.
     }
     \item{\code{dprocess}}{
-      \code{dprocess} must have at least the following arguments:
+      must have at least the following arguments:
       \code{x}, \code{times}, \code{params}, \code{log}, and \code{\dots}.
       It may take additional arguments.
       It is guaranteed that these will be filled with the corresponding elements the user has included as additional arguments in the construction of the \code{pomp} object.
@@ -89,7 +89,7 @@
       \strong{In writing this function, you may assume that the transitions are consecutive.}
     }
     \item{\code{rmeasure}}{
-      \code{rmeasure} must have at least the arguments \code{x}, \code{times}, \code{params}, and \code{\dots}.
+      must have at least the arguments \code{x}, \code{times}, \code{params}, and \code{\dots}.
       It may take additional arguments, which will be filled with user-specified data as above.
       \code{x} must be a rank-3 array dimension \code{c(nvars,nreps,ntimes)}, where these variables have the same meanings as above.
       \code{times} is the corresponding set of times.
@@ -100,7 +100,7 @@
       \code{y[,j,k]} must be the vector of observables in the \code{j}-th realization at time \code{times[k]}.
     }
     \item{\code{dmeasure}}{
-      \code{dmeasure} must have at least the arguments \code{y}, \code{x}, \code{times}, \code{params}, \code{log}, and \code{\dots}.
+      must have at least the arguments \code{y}, \code{x}, \code{times}, \code{params}, \code{log}, and \code{\dots}.
       \code{y} is a rank-2 array of observations (\code{nobs} x \code{ntimes});
       \code{x}, a rank-3 array of states;
       \code{params}, a rank-2 array containing parameters;
@@ -111,7 +111,7 @@
       If \code{log=TRUE}, then the log of the p.d.f. is returned.
     }
     \item{\code{initializer}}{
-      \code{initializer} must have at least the arguments \code{params}, \code{t0}, and \code{\dots}.
+      must have at least the arguments \code{params}, \code{t0}, and \code{\dots}.
       \code{params} is a named vector of parameters.
       \code{t0} will be the time at which initial conditions are desired.
       \code{initializer} must return a named vector of initial conditions.
