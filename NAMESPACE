@@ -11,11 +11,7 @@ useDynLib(
           do_dprocess,
           do_rmeasure,
           do_dmeasure,
-          do_init_state,
-          ou2_simulator,
-          ou2_density,
-          bivariate_normal_rmeasure,
-          bivariate_normal_dmeasure
+          do_init_state
           )
 importFrom(graphics,plot)
 importFrom(stats,simulate,time,coef,logLik)
