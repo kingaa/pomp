@@ -43,6 +43,6 @@ dmeasure(object, y, x, times, params, log = FALSE, \dots)
 }
 \references{}
 \author{Aaron A. King (kingaa at umich dot edu)}
-\seealso{\code{\link{pomp-class}}}
+\seealso{\code{\link{pomp-class}}, \code{\link{pomp}}}
 \keyword{models}
 \keyword{ts}

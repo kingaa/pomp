@@ -44,6 +44,6 @@ rprocess(object, xstart, times, params, \dots)
 }
 \references{}
 \author{Aaron A. King (kingaa at umich dot edu)}
-\seealso{\code{\link{pomp-class}},\code{\link{pomp}}}
+\seealso{\code{\link{pomp-class}}, \code{\link{pomp}}}
 \keyword{models}
 \keyword{ts}
