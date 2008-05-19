@@ -198,10 +198,7 @@ p <- c(
 @ 
 
 <<>>=
- tic <- Sys.time()
  ou2 <- simulate(ou2,params=p,nsim=1000,seed=800733088)[[1]]
- toc <- Sys.time()
- print(toc-tic)
 @ 
 
 \section{The \texttt{.Call} interface}
@@ -243,10 +240,7 @@ They will come in handy later when we do particle filtering.
 
 We'll fill the data slot with simulated data:
 <<>>=
- tic <- Sys.time()
  ou2 <- simulate(ou2,params=p,nsim=1000,seed=800733088)[[1]]
- toc <- Sys.time()
- print(toc-tic)
 @ 
 Fig.~\ref{fig:ou_process} plots the data.
 

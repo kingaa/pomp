@@ -208,10 +208,7 @@ See \code{?pomp} for details.
 The pomp object \code{ou2} we just constructed has no data.
 If we simulate the model, we'll obtain another \code{pomp} object just like \code{ou2}, but with the \code{data} slot filled with simulated data:
 <<>>=
- tic <- Sys.time()
  ou2 <- simulate(ou2,params=true.p,nsim=1000)
- toc <- Sys.time()
- print(toc-tic)
  ou2 <- ou2[[1]]
 @ 
 Here, we actually ran 1000 simulations: the default behavior of \code{simulate} is to return a list of \code{pomp} objects.
@@ -385,7 +382,6 @@ Just to make it interesting, we'll start far from the true parameter values:
 <<>>=
 start.p <- true.p
 start.p[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(45,-60,0.8,0.9)
-tic <- Sys.time()
 fit <- mif(ou2,Nmif=1,start=start.p,
            pars=c('alpha.1','alpha.4'),ivps=c('x1.0','x2.0'),
            rw.sd=c(
@@ -398,8 +394,6 @@ fit <- mif(ou2,Nmif=1,start=start.p,
            max.fail=100
            )
 fit <- continue(fit,Nmif=79,max.fail=100)
-toc <- Sys.time()
-print(toc-tic)
 fitted.pars <- c("alpha.1","alpha.4","x1.0","x2.0")
 cbind(start=start.p[fitted.pars],mle=signif(coef(fit,fitted.pars),3),truth=true.p[fitted.pars])
 @
