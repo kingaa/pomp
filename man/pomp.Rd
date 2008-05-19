@@ -183,10 +183,11 @@ rw2 <- pomp(
                           log=TRUE
                           )
               if (log) {
-                d1+d2
+                f <- d1+d2
               } else {
-                exp(d1+d2)
+                f <- exp(d1+d2)
               }
+              array(f,dim=c(ncol(x),length(times)))
             },
             times=1:100,
             data=rbind(
@@ -246,6 +247,6 @@ apply(g,1,sum)
 }
 \references{}
 \author{Aaron A. King (kingaa at umich dot edu)}
-\seealso{\link{pomp-class}, \link{euler}, \code{vignette(intro_to_pomp)}}
+\seealso{\link{pomp-class}, \link{euler}, \code{vignette("intro_to_pomp")}}
 \keyword{models}
 \keyword{ts}
