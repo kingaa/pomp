@@ -1,4 +1,4 @@
-library(pomp.devel)
+library(pomp)
 
 data(ou2)
 true.p <- c(

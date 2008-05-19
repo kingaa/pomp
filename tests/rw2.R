@@ -1,4 +1,4 @@
-library(pomp.devel)
+library(pomp)
 
 rw.rprocess <- function (xstart, times, params, ...) { 
   ## this function simulates two independent random walks with intensities s1, s2

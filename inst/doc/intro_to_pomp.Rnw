@@ -40,7 +40,7 @@
 
 <<echo=F,results=hide>>=
   options(keep.source=TRUE,width=60)
-  library(pomp.devel)
+  library(pomp)
   set.seed(5384959)
 @ 
 

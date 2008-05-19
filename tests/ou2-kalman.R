@@ -1,4 +1,4 @@
-library(pomp.devel)
+library(pomp)
 
 kalman.filter <- function (y, x0, a, b, sigma, tau) {
   n <- nrow(y)

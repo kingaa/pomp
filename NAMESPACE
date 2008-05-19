@@ -1,5 +1,5 @@
 useDynLib(
-          pomp.devel,
+          pomp,
           bspline_basis,
           bspline_basis_function,
           systematic_resampling,
