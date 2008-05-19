@@ -1,8 +1,3 @@
-## $Log$
-## Revision 1.7  2008/05/19 14:08:44  kingaa
-## *** empty log message ***
-##
-
 ## constructor of the pomp class
 pomp <- function (data, times, t0, rprocess, dprocess, rmeasure, dmeasure, initializer, ...) {
   if (is.data.frame(data)) {
