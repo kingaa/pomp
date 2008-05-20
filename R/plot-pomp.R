@@ -79,7 +79,7 @@ setMethod(
             n.page <- ceiling(length(vars)/10)
             plots.per.page <- ceiling(length(vars)/n.page)
             if (n.page > 1) {
-              op <- par(ask=TRUE)
+              op <- par(ask=dev.interactive(orNone=TRUE))
               on.exit(par(op))
             }
             v1 <- 1

@@ -20,7 +20,7 @@ compare.mif <- function (z) {
   n.per.page <- min(nplots,10)
   if(n.per.page<=4) nc <- 1 else nc <- 2
   nr <- ceiling(n.per.page/nc)
-  oldpar <- par(mar=mar.multi,oma=oma.multi,mfcol=c(nr,nc),ask=T)
+  oldpar <- par(mar=mar.multi,oma=oma.multi,mfcol=c(nr,nc),ask=dev.interactive(orNone=TRUE))
   on.exit(par(oldpar)) 
   low <- 1
   hi <- 0
