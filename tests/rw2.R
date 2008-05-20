@@ -1,5 +1,7 @@
 library(pomp)
 
+set.seed(45820934)
+
 rw.rprocess <- function (xstart, times, params, ...) { 
   ## this function simulates two independent random walks with intensities s1, s2
   nsims <- ncol(params)
