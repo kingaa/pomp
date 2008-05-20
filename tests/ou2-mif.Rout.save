@@ -1,0 +1,88 @@
+
+R version 2.6.1 (2007-11-26)
+Copyright (C) 2007 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: subplex
+> 
+> data(ou2)
+> 
+> set.seed(64857673)
+> 
+> fit1.pfilter <- pfilter(ou2,Np=1000)
+> cat("coefficients at `truth'\n")
+coefficients at `truth'
+> print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')))
+   x1.0    x2.0 alpha.1 alpha.4 
+  50.00  -50.00    0.90    0.99 
+> cat("particle filter log likelihood at truth\n")
+particle filter log likelihood at truth
+> print(fit1.pfilter$loglik)
+[1] -423.2857
+> 
+> p.truth <- coef(ou2)
+> guess <- p.truth
+> guess[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(45,-60,0.8,0.9)
+> 
+> fit2.pfilter <- pfilter(ou2,params=guess,Np=1000,max.fail=1000,warn=F)
+> cat("coefficients at guess\n")
+coefficients at guess
+> print(guess[c('x1.0','x2.0','alpha.1','alpha.4')])
+   x1.0    x2.0 alpha.1 alpha.4 
+   45.0   -60.0     0.8     0.9 
+> cat("particle filter log likelihood at guess\n")
+particle filter log likelihood at guess
+> print(fit2.pfilter$loglik)
+[1] -684.8875
+> 
+> cat("running MIF\n")
+running MIF
+> tic <- Sys.time()
+> mif.fit <- mif(ou2,Nmif=10,start=guess,
++                pars=c('alpha.1','alpha.4'),ivps=c('x1.0','x2.0'),
++                rw.sd=c(
++                  x1.0=5,x2.0=5,
++                  alpha.1=0.1,alpha.2=0,alpha.3=0,alpha.4=0.1,
++                  sigma.1=0,sigma.2=0,sigma.3=0,
++                  tau=0
++                  ),
++                alg.pars=list(Np=1000,var.factor=1,ic.lag=10,cooling.factor=0.95),
++                max.fail=100
++                )
+> mif.fit <- continue(mif.fit,Nmif=70,max.fail=100)
+> toc <- Sys.time()
+> print(toc-tic)
+Time difference of 1.816391 mins
+> cat("PF estimated log likelihood at MIF MLE\n")
+PF estimated log likelihood at MIF MLE
+> print(pfilter(mif.fit)$loglik)
+[1] -420.9919
+> 
+> cat("coefficients at truth\n")
+coefficients at truth
+> print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')))
+   x1.0    x2.0 alpha.1 alpha.4 
+  50.00  -50.00    0.90    0.99 
+> cat("MIF MLE\n")
+MIF MLE
+> print(coef(mif.fit,c('x1.0','x2.0','alpha.1','alpha.4')))
+       x1.0        x2.0     alpha.1     alpha.4 
+ 51.2353585 -51.2426948   0.9001236   0.9740646 
+> 
+> plot(mif.fit)
+> compare.mif(mif.fit)
+> compare.mif(list(mif.fit,mif.fit))
+> 
