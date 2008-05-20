@@ -2,6 +2,8 @@ library(pomp)
 
 data(ou2)
 
+set.seed(64857673)
+
 fit1.pfilter <- pfilter(ou2,Np=1000)
 cat("coefficients at `truth'\n")
 print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')))
