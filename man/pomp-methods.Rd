@@ -29,6 +29,7 @@ coef(object, pars, \dots) <- value
 \S4method{time}{pomp}(object, t0 = FALSE)
 \S4method{show}{pomp}(object)
 \S4method{as}{pomp}(object, class)
+\S4method{coerce}{pomp,data.frame}(from, to = "data.frame")
 \S4method{print}{pomp}(x, \dots)
 \S4method{plot}{pomp}(x, y = NULL, variables, panel = lines,
       nc = NULL, yax.flip = FALSE,
@@ -56,6 +57,9 @@ coef(object, pars, \dots) <- value
   \item{class}{
     character;
     name of the class to which \code{object} should be coerced.
+  }
+  \item{from, to}{
+    the classes betwen which coercion should be performed.
   }
   \item{x}{the \code{pomp} object.}
   \item{y}{ignored.}
@@ -118,7 +122,9 @@ coef(object, pars, \dots) <- value
       Additional arguments are passed to the low-level plotting routine.
     }
     \item{print}{Prints the \code{pomp} object in a nice way.}
-    \item{coerce}{
+    \item{as, coerce}{
+      The \code{coerce} method should typically not be used directly.
+      It is defined by \code{setAs} as a method to be used by \code{as}.
       A \code{pomp} object can be coerced to a data frame via \code{as(object,"data.frame")}.
       The data frame contains the times, the data, and the state trajectories, if they exist.
     }
