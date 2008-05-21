@@ -43,7 +43,7 @@
     The names of the state variables are the same as the corresponding initial value parameters, but with the ".0" dropped.
   }
   \item{\dots}{
-    Any additional arguments are stored in a slot `userdata' and are passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.
+    Any additional arguments are stored in a slot \code{userdata} and are passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.
     Using this mechanism, the user can store additional information necessary for the definition of the model.
   }
 }
@@ -247,6 +247,15 @@ apply(g,1,sum)
 }
 \references{}
 \author{Aaron A. King (kingaa at umich dot edu)}
-\seealso{\link{pomp-class}, \link{euler}, \code{vignette("intro_to_pomp")}}
+\seealso{
+  \link{pomp-class},
+  \link{pomp-methods},
+  \code{\link{rprocess}},
+  \code{\link{dprocess}},
+  \code{\link{rmeasure}},
+  \code{\link{dmeasure}},
+  \code{\link{init.state}},
+  \link{euler}
+}
 \keyword{models}
 \keyword{ts}

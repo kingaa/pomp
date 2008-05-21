@@ -1,24 +1,6 @@
 \name{pomp-class}
 \docType{class}
 \alias{pomp-class}
-\alias{plot,pomp-method}
-\alias{plot-pomp}
-\alias{print,pomp-method}
-\alias{print-pomp}
-\alias{show,pomp-method}
-\alias{show-pomp}
-\alias{time,pomp-method}
-\alias{time-pomp}
-\alias{data.array,pomp-method}
-\alias{data.array-pomp}
-\alias{data.array}
-\alias{coerce,pomp,data.frame-method}
-\alias{coef,pomp-method}
-\alias{coef-pomp}
-\alias{coef<-}
-\alias{coef<-,pomp-method}
-\alias{coef<--pomp}
-
 \title{Partially-observed Markov process}
 \description{The class \code{pomp} encodes a partially-observed Markov process.}
 \section{Objects from the Class}{
@@ -65,68 +47,18 @@
   }
 }
 \section{Methods}{
-  \describe{
-    \item{coef}{
-      \code{coef(object)} returns the contents of the \code{params} slot of \code{object}.
-      \code{coef(object,pars)} returns only those parameters named in \code{pars}.
-    }
-    \item{coef<-}{
-      Assigns values to the \code{params} slot of the \code{pomp} object.
-      If \code{coef(object)} exists, then \code{coef(object) <- value} has the effect of replacing the parameters of \code{object} with \code{value};
-      the names of \code{value} will be ignored and the names of \code{coef(object)} will be unchanged.
-      If \code{coef(object)} does not exist, then \code{coef(object) <- value} assigns \code{value} to the parameters of \code{object};
-      the names of \code{coef(object)} will be those of \code{value} and an error will be generated if \code{value} does not have names.
-      If \code{coef(object)} exists, then \code{coef(object,pars) <- value} replaces those parameters of \code{object} named in \code{pars} with the elements of \code{value};
-      the names of \code{value} are ignored.
-      If \code{coef(object)} does not exist, then \code{coef(object,pars) <- value} assigns \code{value} to the parameters of \code{object};
-      in this case, the names of \code{object} will be \code{pars} and the names of \code{value} will be ignored.
-    }
-    \item{plot}{
-      Plots the data and state trajectories (if the latter exist).
-      Additional arguments are passed to the low-level plotting routine.
-    }
-    \item{print}{Prints the \code{pomp} object in a nice way.}
-    \item{show}{Displays the \code{pomp} object.}
-    \item{data.array}{
-      \code{data.array(object)} returns the array of observations.
-      \code{data.array(object,vars)} gives just the observations of variables \code{vars}.
-      \code{vars} may specify the variables by position or by name.
-    }
-    \item{time}{
-      \code{time(object)} returns the vector of observation times.
-      \code{time(object,t0=TRUE)} returns the vector of observation times with the zero-time \code{t0} prepended.
-    }
-    \item{coerce}{
-      A \code{pomp} object can be coerced to a data frame via \code{as(object,"data.frame")}.
-      The data frame contains the times, the data, and the state trajectories, if they exist.
-    }
-    \item{rprocess}{
-      simulates the process model.
-      See \code{\link{rprocess-pomp}}.
-    }
-    \item{dprocess}{
-      evaluates the process model density.
-      See \code{\link{dprocess-pomp}}.
-    }
-    \item{rmeasure}{
-      simulates the measurement model.
-      See \code{\link{rmeasure-pomp}}.
-    }
-    \item{dmeasure}{
-      evaluates the measurement-model density.
-      See \code{\link{dmeasure-pomp}}.
-    }
-    \item{init.state}{
-      returns a vector of initialial conditions.
-      See \code{\link{init.state-pomp}}.
-    }
-    \item{simulate}{
-      \code{simulate} can be used to simulate state and observation trajectories.
-      See documentation under \code{\link{simulate-pomp}}.
-    }
-  }
+  See the pomp methods documentation: \link{pomp-methods}.
 }
 \author{Aaron A. King (kingaa at umich dot edu)}
-\seealso{\code{\link{pomp}}, \link{simulate-pomp}}
+\seealso{
+  \code{\link{pomp}},
+  \link{pomp-methods},
+  \code{\link{rprocess}},
+  \code{\link{dprocess}},
+  \code{\link{rmeasure}},
+  \code{\link{dmeasure}},
+  \code{\link{init.state}},
+  \link{simulate-pomp}
+}
 \keyword{models}
 \keyword{ts}
