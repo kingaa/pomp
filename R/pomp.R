@@ -26,7 +26,14 @@ pomp <- function (data, times, t0, rprocess, dprocess, rmeasure, dmeasure, initi
   if (missing(dmeasure))
     dmeasure <- function(y,x,times,params,log=FALSE,...)stop("'dmeasure' not specified")
   if (missing(initializer))
-    initializer <- default.initializer
+    initializer <- function (params, t0, ...) {
+      ivpnames <- grep("\\.0$",names(params),val=TRUE)
+      if (length(ivpnames)<1)
+        stop("no initial value parameters (names ending in '.0') found: see 'pomp' documentation")
+      x <- params[ivpnames]
+      names(x) <- sub("\\.0$","",ivpnames)
+      x
+    }
   if (!is.function(rprocess))
     stop("pomp error: 'rprocess' must be a function")
   if (!is.function(dprocess))
@@ -62,13 +69,4 @@ pomp <- function (data, times, t0, rprocess, dprocess, rmeasure, dmeasure, initi
       initializer = initializer,
       userdata = list(...)
       )
-}
-
-default.initializer <- function (params, t0, ...) {
-  ivpnames <- grep("\\.0$",names(params),val=TRUE)
-  if (length(ivpnames)<1)
-    stop("no initial value parameters (names ending in '.0') found: see 'pomp' documentation")
-  x <- params[ivpnames]
-  names(x) <- gsub("\\.0$","",ivpnames)
-  x
 }
