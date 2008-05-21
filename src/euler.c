@@ -6,7 +6,7 @@
 static void euler_simulator (euler_step_sim *estep,
 			     double *x, double *xstart, double *times, double *params, 
 			     int *ndim, double *deltat,
-			     int *stateindex, int *parindex, int *zeroindex,
+			     int *stateindex, int *parindex, int *covindex, int *zeroindex,
 			     double *time_table, double *covar_table)
 {
   double t, *xp, *pp;
@@ -59,7 +59,7 @@ static void euler_simulator (euler_step_sim *estep,
 	pp = &params[npar*p];
 	xp = &x[nvar*(p+nrep*step)];
 
-	(*estep)(xp,pp,stateindex,parindex,covdim,covar_fn,t,dt);
+	(*estep)(xp,pp,stateindex,parindex,covindex,covdim,covar_fn,t,dt);
 
       }
 
@@ -80,8 +80,8 @@ static void euler_simulator (euler_step_sim *estep,
 SEXP euler_model_simulator (SEXP func, 
 			    SEXP xstart, SEXP times, SEXP params, 
 			    SEXP dt, 
-			    SEXP statenames, SEXP paramnames, SEXP zeronames,
-			    SEXP tbasis, SEXP basis) 
+			    SEXP statenames, SEXP paramnames, SEXP covarnames, SEXP zeronames,
+			    SEXP tcovar, SEXP covar) 
 {
   int nprotect = 0;
   int *dim, xdim[3], ndim[7];
@@ -89,9 +89,10 @@ SEXP euler_model_simulator (SEXP func,
   int poplen, baslen, basdim;
   int nstates = length(statenames);
   int nparams = length(paramnames);
+  int ncovars = length(covarnames);
   int nzeros = length(zeronames);
   euler_step_sim *ff;
-  SEXP X, dimX, pnm, snm, pindex, sindex, zindex;
+  SEXP X, dimX, pnm, snm, pindex, sindex, cindex, zindex;
   int k;
 
   if (inherits(func,"NativeSymbol")) {
@@ -102,20 +103,41 @@ SEXP euler_model_simulator (SEXP func,
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
-  dim = INTEGER(GET_DIM(basis)); baslen = dim[0]; basdim = dim[1];
+  dim = INTEGER(GET_DIM(covar)); baslen = dim[0]; basdim = dim[1];
   ntimes = length(times);
   xdim[0] = nvar; xdim[1] = nrep; xdim[2] = ntimes;
   PROTECT(X = makearray(3,xdim)); nprotect++;
   setrownames(X,GET_ROWNAMES(GET_DIMNAMES(xstart)),3);
-  PROTECT(sindex = matchrownames(xstart,statenames)); nprotect++;
-  PROTECT(pindex = matchrownames(params,paramnames)); nprotect++;
-  PROTECT(zindex = matchrownames(xstart,zeronames)); nprotect++;
+  if (nstates>0) {
+    PROTECT(sindex = MATCHROWNAMES(xstart,statenames)); nprotect++;
+  } else {
+    PROTECT(sindex = NEW_INTEGER(0)); nprotect++;
+  }
+  if (nparams>0) {
+    PROTECT(pindex = MATCHROWNAMES(params,paramnames)); nprotect++;
+  } else {
+    PROTECT(pindex = NEW_INTEGER(0)); nprotect++;
+  }
+  if (ncovars>0) {
+    if (isNull(GET_COLNAMES(GET_DIMNAMES(covar)))) {
+      error("euler.simulate error: 'covarnames' are supplied, but 'covar' has no columnnames");
+    } else {
+      PROTECT(cindex = MATCHCOLNAMES(covar,covarnames)); nprotect++;
+    }
+  } else {
+    PROTECT(cindex = NEW_INTEGER(0)); nprotect++;
+  }
+  if (nzeros>0) {
+    PROTECT(zindex = MATCHROWNAMES(xstart,zeronames)); nprotect++;
+  } else {
+    PROTECT(zindex = NEW_INTEGER(0)); nprotect++;
+  }
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; 
   ndim[4] = baslen; ndim[5] = basdim; ndim[6] = nzeros;
   euler_simulator(ff,REAL(X),REAL(xstart),REAL(times),REAL(params),
 		  ndim,REAL(dt),
-		  INTEGER(sindex),INTEGER(pindex),INTEGER(zindex),
-		  REAL(tbasis),REAL(basis));
+		  INTEGER(sindex),INTEGER(pindex),INTEGER(cindex),INTEGER(zindex),
+		  REAL(tcovar),REAL(covar));
   UNPROTECT(nprotect);
   return X;
 }
@@ -125,7 +147,7 @@ static void euler_densities (euler_step_pdf *estep,
 			     double *f, 
 			     double *x, double *times, double *params, 
 			     int *ndim,
-			     int *stateindex, int *parindex,
+			     int *stateindex, int *parindex, int *covindex,
 			     double *time_table, double *covar_table,
 			     int *give_log)
 {
@@ -164,7 +186,7 @@ static void euler_densities (euler_step_pdf *estep,
       pp = &params[npar*p];
       
       (*estep)(fp,x1p,x2p,pp,
-	       stateindex,parindex,
+	       stateindex,parindex,covindex,
 	       covdim,covar_fn,t,dt);
       
       if (!(*give_log)) *fp = exp(*fp);
@@ -175,8 +197,8 @@ static void euler_densities (euler_step_pdf *estep,
 
 SEXP euler_model_density (SEXP func, 
 			  SEXP x, SEXP times, SEXP params, 
-			  SEXP statenames, SEXP paramnames,
-			  SEXP tbasis, SEXP basis, SEXP log) 
+			  SEXP statenames, SEXP paramnames, SEXP covarnames,
+			  SEXP tcovar, SEXP covar, SEXP log) 
 {
   int nprotect = 0;
   int *dim, fdim[2], ndim[6];
@@ -184,8 +206,9 @@ SEXP euler_model_density (SEXP func,
   int baslen, basdim;
   int nstates = length(statenames);
   int nparams = length(paramnames);
+  int ncovars = length(covarnames);
   euler_step_pdf *ff;
-  SEXP F, dimF, pnm, snm, pindex, sindex;
+  SEXP F, dimF, pnm, snm, pindex, sindex, cindex;
   int k;
 
   if (inherits(func,"NativeSymbol")) {
@@ -196,17 +219,34 @@ SEXP euler_model_density (SEXP func,
 
   dim = INTEGER(GET_DIM(x)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
-  dim = INTEGER(GET_DIM(basis)); baslen = dim[0]; basdim = dim[1];
+  dim = INTEGER(GET_DIM(covar)); baslen = dim[0]; basdim = dim[1];
   ntimes = length(times);
   fdim[0] = nrep; fdim[1] = ntimes-1;
   PROTECT(F = makearray(2,fdim)); nprotect++;
-  PROTECT(sindex = matchrownames(x,statenames)); nprotect++;
-  PROTECT(pindex = matchrownames(params,paramnames)); nprotect++;
+  if (nstates>0) {
+    PROTECT(sindex = MATCHROWNAMES(x,statenames)); nprotect++;
+  } else {
+    PROTECT(sindex = NEW_INTEGER(0)); nprotect++;
+  }
+  if (nparams>0) {
+    PROTECT(pindex = MATCHROWNAMES(params,paramnames)); nprotect++;
+  } else {
+    PROTECT(pindex = NEW_INTEGER(0)); nprotect++;
+  }
+  if (ncovars>0) {
+    if (isNull(GET_COLNAMES(GET_DIMNAMES(covar)))) {
+      error("euler.density error: 'covarnames' are supplied, but 'covar' has no columnnames");
+    } else {
+      PROTECT(cindex = MATCHCOLNAMES(covar,covarnames)); nprotect++;
+    }
+  } else {
+    PROTECT(cindex = NEW_INTEGER(0)); nprotect++;
+  }
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; 
   ndim[4] = baslen; ndim[5] = basdim;
   euler_densities(ff,REAL(F),REAL(x),REAL(times),REAL(params),
-		  ndim,INTEGER(sindex),INTEGER(pindex),
-		  REAL(tbasis),REAL(basis),INTEGER(log));
+		  ndim,INTEGER(sindex),INTEGER(pindex),INTEGER(cindex),
+		  REAL(tcovar),REAL(covar),INTEGER(log));
   UNPROTECT(nprotect);
   return F;
 }

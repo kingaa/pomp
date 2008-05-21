@@ -8,7 +8,7 @@
 #include <Rdefines.h>
 
 typedef void euler_step_sim(double *x, const double *p, 
-			    const int *stateindex, const int *parindex,
+			    const int *stateindex, const int *parindex, const int *covindex,
 			    int ncovar, const double *covar,
 			    double t, double dt);
 // Description of Euler step functions (type euler_step_sim)
@@ -29,7 +29,7 @@ typedef void euler_step_sim(double *x, const double *p,
 
 typedef void euler_step_pdf(double *f, 
 			    double *x1, double *x2, const double *p, 
-			    const int *stateindex, const int *parindex,
+			    const int *stateindex, const int *parindex, const int *covindex,
 			    int ncovar, const double *covar,
 			    double t, double dt);
 

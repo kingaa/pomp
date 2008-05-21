@@ -2,6 +2,7 @@ euler.simulate <- function (xstart, times, params,
                             euler.step.fun, delta.t,
                             statenames = character(0),
                             paramnames = character(0),
+                            covarnames = character(0),
                             zeronames = character(0),
                             tcovar, covar, PACKAGE)
 {
@@ -21,6 +22,7 @@ euler.simulate <- function (xstart, times, params,
         delta.t,
         statenames,
         paramnames,
+        covarnames,
         zeronames,
         tcovar,
         covar
@@ -31,6 +33,7 @@ euler.density <- function (x, times, params,
                            euler.dens.fun, 
                            statenames = character(0),
                            paramnames = character(0),
+                           covarnames = character(0),
                            tcovar, covar, log = FALSE,
                            PACKAGE)
 {
@@ -49,6 +52,7 @@ euler.density <- function (x, times, params,
         params,
         statenames,
         paramnames,
+        covarnames,
         tcovar,
         covar,
         log

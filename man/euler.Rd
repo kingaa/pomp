@@ -8,11 +8,12 @@
 }
 \usage{
 euler.simulate(xstart, times, params, euler.step.fun, delta.t,
-               statenames, paramnames, zeronames, tcovar, covar,
-               PACKAGE)
+               statenames = character(0), paramnames = character(0),
+               covarnames = character(0), zeronames = character(0),
+               tcovar, covar, PACKAGE)
 euler.density(x, times, params, euler.dens.fun,
               statenames = character(0), paramnames = character(0),
-              tcovar, covar, log = FALSE, PACKAGE)
+              covarnames = character(0), tcovar, covar, log = FALSE, PACKAGE)
 }
 \arguments{
   \item{xstart}{
@@ -47,6 +48,9 @@ euler.density(x, times, params, euler.dens.fun,
   \item{paramnames}{
     Names of parameters, in the order they will be expected by the routine named in \code{euler.step.fun} and \code{euler.dens.fun}.
   }
+  \item{covarnames}{
+    Names of columns of the matrix of covariates \code{covar}, in the order they will be expected by the routine named in \code{euler.step.fun} and \code{euler.dens.fun}.
+  }
   \item{zeronames}{
     Names of additional variables which will be zeroed before each time in \code{times}.
     These are useful, e.g., for storing accumulations of state variables.
@@ -79,6 +83,7 @@ euler.density(x, times, params, euler.dens.fun,
 ## set up a lookup table for basis functions for the seasonality
 tbasis <- seq(0,20,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3)
+colnames(basis) <- paste("seas",1:3,sep='.')
 
 ## some parameters
 params <- c(
@@ -101,9 +106,10 @@ po <- pomp(
            dt=1/52/20,
            statenames=c("S","I","R","cases","W","trans1"),
            paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
+           basisnames=c("seas.1"),
            zeronames=c("cases"),
            rprocess=function(xstart,times,params,dt,tbasis,basis,
-             statenames,paramnames,zeronames,...){
+             statenames,paramnames,basisnames,zeronames,...){
              euler.simulate(
                             xstart=xstart,
                             times=times,
@@ -112,13 +118,14 @@ po <- pomp(
                             delta.t=dt,
                             statenames=statenames,
                             paramnames=paramnames,
+                            covarnames=basisnames,
                             zeronames=zeronames,
                             tcovar=tbasis,
                             covar=basis
                             )
            },
            dprocess=function(x,times,params,log,tbasis,basis,
-             statenames,paramnames,...){
+             statenames,paramnames,basisnames,...){
              euler.density(
                            x=x,
                            times=times,
@@ -126,6 +133,7 @@ po <- pomp(
                            euler.dens.fun="sir_euler_density",
                            statenames=statenames,
                            paramnames=paramnames,
+                           covarnames=basisnames,
                            tcovar=tbasis,
                            covar=basis,
                            log=log

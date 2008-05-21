@@ -38,12 +38,14 @@ static double term_time (double t, double b0, double b1)
 #define W         (x[stateindex[4]]) // integrated white noise
 #define TRANSTNS  (x[stateindex[5]]) // transition numbers
 
+#define SEASBASIS (covar[covindex[0]]) // first column of seasonality basis in lookup table
+
 // SIR model with Euler multinomial step
 // forced transmission (basis functions passed as covariates)
 // constant population size as a parameter
 // environmental stochasticity on transmission
 void sir_euler_simulator (double *x, const double *p, 
-			  const int *stateindex, const int *parindex,
+			  const int *stateindex, const int *parindex, const int *covindex,
 			  int covdim, const double *covar, 
 			  double t, double dt)
 {
@@ -62,7 +64,7 @@ void sir_euler_simulator (double *x, const double *p,
   popsize = exp(LOGPOPSIZE);
 
   // do table lookup to determine seasonal beta
-  beta = exp(dot_product(covdim,covar,&LOGBETA));
+  beta = exp(dot_product(covdim,&SEASBASIS,&LOGBETA));
 
   // test to make sure the parameters and state variable values are sane
   if (!(R_FINITE(beta)) || 
@@ -132,7 +134,7 @@ void sir_euler_simulator (double *x, const double *p,
 // constant population size as a parameter
 // environmental stochasticity on transmission
 void sir_euler_density (double *f, double *x1, double *x2, const double *p, 
-			const int *stateindex, const int *parindex,
+			const int *stateindex, const int *parindex, const int *covindex,
 			int covdim, const double *covar, 
 			double t, double dt)
 {
@@ -151,7 +153,7 @@ void sir_euler_density (double *f, double *x1, double *x2, const double *p,
   popsize = exp(LOGPOPSIZE);
 
   // do table lookup to determine seasonal beta
-  beta = exp(dot_product(covdim,covar,&LOGBETA));
+  beta = exp(dot_product(covdim,&SEASBASIS,&LOGBETA));
 
   // test to make sure the parameters and state variable values are sane
   if (!(R_FINITE(beta)) || 
@@ -205,3 +207,5 @@ void sir_euler_density (double *f, double *x1, double *x2, const double *p,
 #undef CASE   
 #undef W      
 #undef TRANSTNS
+
+#undef SEASBASIS
