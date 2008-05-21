@@ -10,6 +10,10 @@
 #include "lookup_table.h"
 #include "euler.h"
 
+# define MATCHROWNAMES(X,N) (matchnames(GET_ROWNAMES(GET_DIMNAMES(X)),(N)))
+# define MATCHCOLNAMES(X,N) (matchnames(GET_COLNAMES(GET_DIMNAMES(X)),(N)))
+# define MATCH_CHAR_TO_ROWNAMES(X,N,A) (match_char_to_names(GET_ROWNAMES(GET_DIMNAMES(X)),(N),(A)))
+
 /* bspline.c */
 SEXP bspline_basis(SEXP x, SEXP degree, SEXP knots);
 SEXP bspline_basis_function(SEXP x, SEXP i, SEXP degree, SEXP knots);
@@ -32,16 +36,37 @@ static SEXP makearray (int rank, int *dim) {
   return x;
 }
 
-static SEXP matchrownames (SEXP x, SEXP names) {
+static SEXP matchnames (SEXP x, SEXP names) {
   int nprotect = 0;
   int n = length(names);
   int *idx, k;
   SEXP index, nm;
   PROTECT(nm = AS_CHARACTER(names)); nprotect++;
-  PROTECT(index = match(GET_ROWNAMES(GET_DIMNAMES(x)),names,0)); nprotect++;
+  PROTECT(index = match(x,names,0)); nprotect++;
   idx = INTEGER(index);
   for (k = 0; k < n; k++) {
     if (idx[k]==0) error("variable %s not specified",STRING_ELT(nm,k));
+    idx[k] -= 1;
+  }
+  UNPROTECT(nprotect);
+  return index;
+}
+
+static SEXP match_char_to_names (SEXP x, int n, char **names) {
+  int nprotect = 0;
+  int *idx, k;
+  SEXP index, nm;
+  PROTECT(nm = NEW_CHARACTER(n)); nprotect++;
+  for (k = 0; k < n; k++) {
+    SET_STRING_ELT(nm,k,mkChar(names[k]));
+  }
+  PROTECT(index = match(x,nm,0)); nprotect++;
+  idx = INTEGER(index);
+  for (k = 0; k < n; k++) {
+    if (idx[k]==0) {
+      UNPROTECT(nprotect);
+      error("variable %s not specified",names[k]);
+    }
     idx[k] -= 1;
   }
   UNPROTECT(nprotect);

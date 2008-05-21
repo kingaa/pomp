@@ -22,7 +22,6 @@ static void sim_ou2 (double *x,
 static double dens_ou2 (double *x1, double *x2,
 			double alpha1, double alpha2, double alpha3, double alpha4, 
 			double sigma1, double sigma2, double sigma3, int give_log);
-static SEXP matchnames (SEXP x, int n, char **names);
 
 // this is the rprocess function
 // it is basically a wrapper around a call to 'ou2_adv', which could be called from R directly
@@ -39,7 +38,7 @@ SEXP ou2_simulator (SEXP xstart, SEXP times, SEXP params) {
   xdim[0] = nvar; xdim[1] = nrep; xdim[2] = ntimes;
   PROTECT(X = makearray(3,xdim)); nprotect++;
   setrownames(X,GET_ROWNAMES(GET_DIMNAMES(xstart)),3);
-  PROTECT(pindex = matchnames(GET_ROWNAMES(GET_DIMNAMES(params)),nparams,paramnames)); nprotect++;
+  PROTECT(pindex = MATCH_CHAR_TO_ROWNAMES(params,nparams,paramnames)); nprotect++;
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes;
   ou2_adv(REAL(X),REAL(xstart),REAL(params),REAL(times),ndim,INTEGER(pindex));
   UNPROTECT(nprotect);
@@ -60,7 +59,7 @@ SEXP ou2_density (SEXP x, SEXP times, SEXP params, SEXP give_log) {
   ntimes = length(times);
   xdim[0] = nrep; xdim[1] = ntimes-1;
   PROTECT(D = makearray(2,xdim)); nprotect++;
-  PROTECT(index = matchnames(GET_ROWNAMES(GET_DIMNAMES(params)),nparams,paramnames)); nprotect++;
+  PROTECT(index = MATCH_CHAR_TO_ROWNAMES(params,nparams,paramnames)); nprotect++;
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes;
   ou2_pdf(REAL(D),REAL(x),REAL(params),REAL(times),ndim,INTEGER(index),LOGICAL(give_log));
   UNPROTECT(nprotect);
@@ -87,7 +86,7 @@ SEXP bivariate_normal_rmeasure (SEXP x, SEXP times, SEXP params) {
   for (k = 0; k < nobs; k++) 
     SET_STRING_ELT(obsnm,k,mkChar(obsnames[k]));
   setrownames(obs,obsnm,3);
-  PROTECT(index = matchnames(GET_ROWNAMES(GET_DIMNAMES(params)),nparams,paramnames)); nprotect++;
+  PROTECT(index = MATCH_CHAR_TO_ROWNAMES(params,nparams,paramnames)); nprotect++;
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; ndim[4] = nobs;
   normal_rmeasure(ndim,REAL(x),REAL(params),INTEGER(index),REAL(obs));
   UNPROTECT(nprotect);
@@ -109,7 +108,7 @@ SEXP bivariate_normal_dmeasure (SEXP y, SEXP x, SEXP times, SEXP params, SEXP gi
   ntimes = length(times);
   xdim[0] = nrep; xdim[1] = ntimes;
   PROTECT(d = makearray(2,xdim)); nprotect++;
-  PROTECT(index = matchnames(GET_ROWNAMES(GET_DIMNAMES(params)),nparams,paramnames)); nprotect++;
+  PROTECT(index = MATCH_CHAR_TO_ROWNAMES(params,nparams,paramnames)); nprotect++;
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; ndim[4] = nobs;
   normal_dmeasure(ndim,REAL(x),REAL(params),INTEGER(index),REAL(y),REAL(d),LOGICAL(give_log));
   UNPROTECT(nprotect);
@@ -288,24 +287,4 @@ static double dens_ou2 (double *x1, double *x2,
   return ((give_log) ? val : exp(val));
 }
 
-static SEXP matchnames (SEXP x, int n, char **names) {
-  int nprotect = 0;
-  int *idx, k;
-  SEXP index, nm;
-  PROTECT(nm = NEW_CHARACTER(n)); nprotect++;
-  for (k = 0; k < n; k++) {
-    SET_STRING_ELT(nm,k,mkChar(names[k]));
-  }
-  PROTECT(index = match(x,nm,0)); nprotect++;
-  idx = INTEGER(index);
-  for (k = 0; k < n; k++) {
-    if (idx[k]==0) {
-      UNPROTECT(nprotect);
-      error("variable %s not specified",names[k]);
-    }
-    idx[k] -= 1;
-  }
-  UNPROTECT(nprotect);
-  return index;
-}
 
