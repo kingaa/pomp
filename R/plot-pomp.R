@@ -4,12 +4,12 @@ setMethod(
           "plot",
           "pomp",
           function (x, y = NULL, 
-                    variables = NULL,
+                    variables,
                     panel = lines,
                     nc = NULL,
                     yax.flip = FALSE,
-                    mar.multi = c(0, 5.1, 0, if(yax.flip) 5.1 else 2.1),
-                    oma.multi = c(6, 0, 5, 0),
+                    mar = c(0, 5.1, 0, if(yax.flip) 5.1 else 2.1),
+                    oma = c(6, 0, 5, 0),
                     axes = TRUE,
                     ...) {
             X <- as(x,'data.frame')
@@ -17,7 +17,7 @@ setMethod(
             tpos <- match("time",vars)
             if (is.na(tpos))
               stop("'pomp' plot error: no data variable labeled 'time'",call.=FALSE)
-            if (is.null(variables))
+            if (missing(variables))
               vars <- vars[-tpos]
             else
               vars <- variables
@@ -49,7 +49,7 @@ setMethod(
               if (is.null(nc))
                 nc <- if(nser>4){2}else{1}
               nr <- ceiling(nser/nc)
-              oldpar <- par(mar=mar.multi,oma=oma.multi,mfcol=c(nr,nc))
+              oldpar <- par(mar=mar,oma=oma,mfcol=c(nr,nc))
               on.exit(par(oldpar))
               for (i in 1:nser) {
                 plot.default(y=x[[i]],x=time,axes=FALSE,xlab="",ylab="",log=log,
