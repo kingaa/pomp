@@ -5,7 +5,7 @@ setMethod(
           function (object, y, x, times, params, log = FALSE, ...) {
             x <- try(
                      .Call(do_dmeasure,object,y,x,times,params,log),
-                     silent=FALSE
+                     silent=TRUE
                      )
             if (inherits(x,'try-error'))
               stop("dmeasure error: error in user 'dmeasure'",call.=FALSE)

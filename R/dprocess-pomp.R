@@ -6,7 +6,7 @@ setMethod(
           function (object, x, times, params, log = FALSE, ...) {
             x <- try(
                      .Call(do_dprocess,object,x,times,params,log),
-                     silent=FALSE
+                     silent=TRUE
                      )
             if (inherits(x,'try-error'))
               stop("dprocess error: error in user 'dprocess'",call.=FALSE)
