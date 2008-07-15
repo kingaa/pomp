@@ -67,19 +67,15 @@ Since many of the methods we will use require us to simulate the process and/or 
 The package includes some C codes that were written to implement the OU example.
 Read the source (file `ou2.c') for details.
 
-\section{The \texttt{.C} interface}
-
 <<>>=
-  ou2.rprocess <- function (xstart, times, params, ...) {
+  ou2.rprocess <- function (xstart, times, params, paramnames, ...) {
     nvar <- nrow(xstart)
     npar <- nrow(params)
     nrep <- ncol(xstart)
     ntimes <- length(times)
     ## get indices of the various parameters in the 'params' matrix
-    parindex <- match(
-		      c('alpha.1','alpha.2','alpha.3','alpha.4','sigma.1','sigma.2','sigma.3'),
-		      rownames(params)
-		      )-1      # C uses zero-based indexing!
+    ## C uses zero-based indexing!
+    parindex <- match(paramnames,rownames(params))-1
     array(
 	  .C("ou2_adv",
 	     X = double(nvar*nrep*ntimes),
@@ -102,11 +98,7 @@ Read the source (file `ou2.c') for details.
     npar <- nrow(params)
     nrep <- ncol(x)
     ntimes <- length(times)
-    ## get indices of the various parameters in the 'params' matrix
-    parindex <- match(
-		      c('alpha.1','alpha.2','alpha.3','alpha.4','sigma.1','sigma.2','sigma.3'),
-		      rownames(params)
-		      )-1      # C uses zero-based indexing!
+    parindex <- match(paramnames,rownames(params))-1
     array(
 	  .C("ou2_pdf",
              d = double(nrep*(ntimes-1)),
@@ -124,56 +116,6 @@ Read the source (file `ou2.c') for details.
 	  )
   }
 
-bvnorm.dmeasure <- function (y, x, times, params, log = TRUE, ...) {
-  measindex <- match(c("tau"),rownames(params))-1
-  nvar <- dim(x)[1]
-  nrep <- dim(x)[2]
-  ntimes <- dim(x)[3]
-  npar <- nrow(params)
-  nobs <- 2
-  ## since the system is autonomous, no need to keep track of time
-  array(
-	.C(
-           "normal_dmeasure",
-           n = as.integer(c(nvar,npar,nrep,ntimes,nobs)), 
-           X = as.double(x),
-           par = as.double(params),
-           index = as.integer(measindex),
-           Y = as.double(y),
-           f = double(nrep*ntimes),
-           give_log = as.integer(log),
-           DUP = FALSE,
-           NAOK = TRUE,
-           PACKAGE = "pomp"
-           )$f,
-        dim=c(nrep,ntimes)
-        )
-}
-
-bvnorm.rmeasure <- function (x, times, params, ...) {
-nvar <- dim(x)[1]
-nrep <- dim(x)[2]
-ntimes <- dim(x)[3]
-npar <- dim(params)[1]
-nobs <- 2
-measindex <- match(c("tau"),rownames(params))-1
-array(
-      .C(
-         "normal_rmeasure",
-         n = as.integer(c(nvar,npar,nrep,ntimes,nobs)),
-         X = as.double(x),
-         par = as.double(params),
-         index = as.integer(measindex),
-         obs = double(nobs*nrep*ntimes),
-         DUP = FALSE,
-         NAOK = TRUE,
-         PACKAGE = "pomp"
-         )$obs,
-      dim=c(nobs,nrep,ntimes),
-      dimnames=list(c('y1','y2'),NULL,NULL)
-      )
-}
-
 ou2 <- pomp( 
 	    times=seq(1,100),
 	    data=rbind(
@@ -183,8 +125,15 @@ ou2 <- pomp(
 	    t0=0,
 	    rprocess = ou2.rprocess,
 	    dprocess = ou2.dprocess,
-	    rmeasure = bvnorm.rmeasure,
-	    dmeasure = bvnorm.dmeasure
+	    dmeasure = "normal_dmeasure",
+	    rmeasure = "normal_rmeasure",
+            obsnames=c("y1","y2"),
+            paramnames=c(
+              "alpha.1","alpha.2","alpha.3","alpha.4",
+              "sigma.1","sigma.2","sigma.3",
+              "tau"
+              ),
+            statenames=c("x1","x2")
 	    )
 @ 
 
@@ -204,50 +153,6 @@ p <- c(
  print(toc-tic)
 @ 
 
-\section{The \texttt{.Call} interface}
-
-The following wrapper functions make use of the above compiled codes.
-<<>>=
-  ou2.rprocess <- function (xstart, times, params, ...) 
-    .Call('ou2_simulator',xstart,times,params)
-  ou2.dprocess <- function (x, times, params, log = FALSE, ...)
-    .Call('ou2_density',x,as.numeric(times),params,log)
-  bvnorm.dmeasure <- function (y, x, times, params, log = FALSE, ...)
-    .Call('bivariate_normal_dmeasure',y,x,as.numeric(times),params,log)
-  bvnorm.rmeasure <- function (x, times, params, ...)
-    .Call('bivariate_normal_rmeasure',x,as.numeric(times),params)
-@ 
-To take advantage of the compiled functions, we need to reconstruct the \code{pomp} object.
-<<>>=
-ou2 <- pomp( 
-	    times=seq(1,100),
-	    data=rbind(
-	      y1=rep(0,100),
-	      y2=rep(0,100)
-	      ),
-	    t0=0,
-	    rprocess = ou2.rprocess,
-	    dprocess = ou2.dprocess,
-	    rmeasure = bvnorm.rmeasure,
-	    dmeasure = bvnorm.dmeasure,
-            ivpnames = c('x1.0','x2.0'),
-            parnames = c(
-              'alpha.1','alpha.2','alpha.3','alpha.4',
-              'sigma.1','sigma.2','sigma.3',
-              'tau')
-	    )
-@ 
-Notice that we have added two objects, \code{ivpnames} and \code{parnames} to the \code{pomp} object.
-These character vectors are placed into the \code{userdata} slot of the \code{pomp} object and will be passed to each of the process and measurement model functions.
-They will come in handy later when we do particle filtering.
-
-We'll fill the data slot with simulated data:
-<<>>=
- tic <- Sys.time()
- ou2 <- simulate(ou2,params=p,nsim=1000,seed=800733088)[[1]]
- toc <- Sys.time()
- print(toc-tic)
-@ 
 Fig.~\ref{fig:ou_process} plots the data.
 
 \begin{figure}
