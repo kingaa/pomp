@@ -101,7 +101,7 @@ When this function is called, in the course of any algorithm that uses it, some 
 Next, we write a function that computes the likelihoods of a set of process model state transitions.
 Again, pay special attention to the structure of the input arguments and return value.
 <<>>=
-  ou2.dprocess <- function (x, times, params, log = FALSE, ...) { 
+  ou2.dprocess <- function (x, times, params, log, ...) { 
     ## this function simulates two discrete-time OU processes
     nreps <- ncol(x)
     ntimes <- length(times)
@@ -142,7 +142,7 @@ Notice that we give the returned vector, \code{y}, names to match the names of t
 Finally, we specify how to evaluate the likelihood of an observation given the underlying state.
 Again, the arguments \code{x}, \code{y}, and \code{params} are vectors.
 <<>>=
-  bvnorm.dmeasure <- function (y, t, x, params, log = FALSE, ...) {
+  bvnorm.dmeasure <- function (y, t, x, params, log, ...) {
     f <- sum(
              dnorm(
                    x=y[c("y1","y2")],
