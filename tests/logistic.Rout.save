@@ -45,6 +45,12 @@ Type 'q()' to quit R.
 +                   )
 +            },
 +            measurement.model=obs~lnorm(meanlog=log(n),sdlog=log(1+tau)),
++            skeleton=function(x,t,params,...){
++              with(
++                   as.list(c(x,params)),
++                   r*n*(1-n/K)
++                   )
++            },
 +            delta.t=0.01
 +            )
 > 
@@ -82,5 +88,22 @@ Type 'q()' to quit R.
        [,1]   [,2]   [,3]   [,4]   [,5]  [,6]
 [1,] -8.458 -11.14 -9.514 -8.818 -7.631 -7.75
 > 
-> 
+> print(
++       drop(
++            skeleton(
++                     po,
++                     x=array(
++                       seq(0,12000,by=1000),
++                       dim=c(1,1,13),
++                       dimnames=list('n',NULL,NULL)
++                       ),
++                     t=rep(0,13),
++                     params=as.matrix(params)
++                     )
++            ),
++       digits=4
++       )
+ [1]     0   810  1440  1890  2160  2250  2160  1890  1440   810     0  -990
+[13] -2160
+>                
 > 
