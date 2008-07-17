@@ -81,7 +81,7 @@ typedef void pomp_vectorfield_map (double *f, double *x, double *p,
 
 // Prototype for measurement model simulation
 typedef void pomp_measure_model_simulator (double *y, double *x, double *p, 
-					   int *stateindex, int *parindex, int *covindex, int *obsindex, 
+					   int *stateindex, int *parindex, int *covindex,
 					   int ncovars, double *covars, double t);
 // Description:
 //  on input:
@@ -93,8 +93,6 @@ typedef void pomp_measure_model_simulator (double *y, double *x, double *p,
 //                the 'paramnames' slot
 // covindex   = pointer to vector of integers indexing the parameters in 'covar'' in the order specified by 
 //                the 'covarnames' slot
-// obsindex   = pointer to vector of integers indexing the variables in 'data' in the order specified by 
-//                the 'obsnames' slot
 // ncovars    = number of covariates
 // covars     = pointer to a vector containing the values of the covariates at time t, as interpolated 
 //                from the covariate table supplied to 'pomp.skeleton'
@@ -105,8 +103,7 @@ typedef void pomp_measure_model_simulator (double *y, double *x, double *p,
 
 // Prototype for measurement model density evaluator
 typedef void pomp_measure_model_density (double *lik, double *y, double *x, double *p, int give_log,
-					 int *stateindex, int *parindex, 
-					 int *covindex, int *obsindex,
+					 int *stateindex, int *parindex, int *covindex,
 					 int ncovars, double *covars, double t);
 // Description:
 //  on input:
@@ -120,8 +117,6 @@ typedef void pomp_measure_model_density (double *lik, double *y, double *x, doub
 //                the 'paramnames' slot
 // covindex   = pointer to vector of integers indexing the parameters in 'covar'' in the order specified by 
 //                the 'covarnames' slot
-// obsindex   = pointer to vector of integers indexing the variables in 'data' in the order specified by 
-//                the 'obsnames' slot
 // ncovars    = number of covariates
 // covars     = pointer to a vector containing the values of the covariates at time t, as interpolated 
 //                from the covariate table supplied to 'pomp.skeleton'
