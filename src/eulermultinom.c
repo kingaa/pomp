@@ -27,6 +27,7 @@ void reulermultinom (int m, double size, double *rate, double dt, double *trans)
     Rprintf("reulermultinom infelicity 1: %lg %lg %lg\n",size,p,dt);
   m -= 1;
   for (k = 0; k < m; k++) {
+    if (rate[k] > p) p = rate[k];
     trans[k] = ((size > 0) && (p > 0)) ? rbinom(size,rate[k]/p) : 0;
     if (!(R_FINITE(size)&&R_FINITE(p)&&R_FINITE(rate[k])&&R_FINITE(trans[k])))
       Rprintf("reulermultinom infelicity %d: %lg %lg %lg %lg\n",k,size,rate[k]/p,trans[k],dt);
@@ -67,6 +68,7 @@ double deulermultinom (int m, double size, double *rate, double dt, double *tran
   m -= 1;
   for (k = 0; k < m; k++) {
     if ((n > 0) && (p > 0)) {
+      if (rate[k] > p) p = rate[k];
       ff += dbinom(trans[k],n,rate[k]/p,1);
     } else if (trans[k] > 0.0) {
       ff = R_NegInf;
