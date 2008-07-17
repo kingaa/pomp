@@ -1,0 +1,234 @@
+
+R version 2.6.1 (2007-11-26)
+Copyright (C) 2007 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> set.seed(45768683)
+> 
+> rw.rprocess <- function (params, xstart, times, ...) { 
++   ## this function simulates two independent random walks with intensities s1, s2
++   nvars <- nrow(xstart)
++   nreps <- ncol(params)
++   ntimes <- length(times)
++   dt <- diff(times)
++   x <- array(0,dim=c(nvars,nreps,ntimes))
++   rownames(x) <- rownames(xstart)
++   noise.sds <- params[c('s1','s2'),]
++   x[,,1] <- xstart
++   for (j in 2:ntimes) {
++     ## we are mimicking a continuous-time process, so the increments have SD ~ sqrt(dt)
++     ## note that we do not have to assume that 'times' are equally spaced
++     x[c("x1","x2"),,j] <- rnorm(
++                                 n=2*nreps,
++                                 mean=x[c("x1","x2"),,j-1],
++                                 sd=noise.sds*dt[j-1]
++                                 )
++   }
++   x
++ }
+> 
+> rw.dprocess <- function (x, times, params, log = FALSE, ...) { 
++   ## given a sequence of consecutive states in 'x', this function computes the p.d.f.
++   nreps <- ncol(params)
++   ntimes <- length(times)
++   dt <- diff(times)
++   d <- array(0,dim=c(2,nreps,ntimes-1))
++   noise.sds <- params[c('s1','s2'),]
++   for (j in 2:ntimes)
++     d[,,j-1] <- dnorm(x[,,j]-x[,,j-1],mean=0,sd=noise.sds*dt[j-1],log=TRUE)
++   d <- apply(d,c(2,3),sum)
++   if (log) d else exp(d)
++ }
+> 
+> bvnorm.rmeasure <- function (t, x, params, ...) {
++   ## noisy observations of the two walks with common noise SD 'tau'
++   c(
++     y1=rnorm(n=1,mean=x['x1'],sd=params['tau']),
++     y2=rnorm(n=1,mean=x['x2'],sd=params['tau'])
++     )
++ }
+> 
+> bvnorm.dmeasure <- function (y, x, t, params, log = FALSE, ...) {
++   f <- sum(
++            dnorm(
++                  x=y[c("y1","y2")],
++                  mean=x[c("x1","x2")],
++                  sd=params["tau"],
++                  log=TRUE
++                  ),
++            na.rm=TRUE
++            )
++   if (log) f else exp(f)
++ }
+> 
+> rw2 <- pomp(
++             rprocess = rw.rprocess,
++             dprocess = rw.dprocess,
++             measurement.model=list(
++               y1 ~ norm(mean=x1,sd=tau),
++               y2 ~ norm(mean=x2,sd=tau)
++             ),
++             times=1:100,
++             data=rbind(
++               y1=rep(0,100),
++               y2=rep(0,100)
++               ),
++             t0=0,
++             useless=23
++             )
+> 
+> p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
+> examples <- simulate(rw2,params=p)
+> rw2 <- examples[[1]]
+> 
+> y <- simulate(rw2,params=p,obs=T,states=T)
+> y <- simulate(rw2,params=p,obs=T)
+> x <- simulate(rw2,params=p,states=T)
+> x <- simulate(rw2,nsim=10,params=p,states=T)
+> x <- simulate(rw2,nsim=10,params=p[,1],states=T)
+> x <- simulate(rw2,nsim=10,params=p[,1],obs=T,states=T)
+> x <- simulate(rw2,nsim=10,params=p[,1],obs=T,states=T)
+> x <- simulate(rw2,nsim=10,params=p,obs=T,states=T)
+> x <- simulate(rw2,nsim=10,params=p[,1])
+> 
+> x <- data.array(rw2)
+> t <- time(rw2)
+> 
+> x0 <- init.state(rw2,params=p)
+> x <- rprocess(rw2,xstart=x0,times=0:100,params=p)
+> y <- rmeasure(rw2,x=x,times=0:100,params=p)
+> 
+> log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
+           [,1]       [,2]       [,3]       [,4]      [,5]
+[1,] -0.3528305 -0.2613777 -0.2447111 -0.2408028 -1.048260
+[2,] -3.0433899 -3.1306252 -2.6601367 -5.0275855 -2.596964
+[3,] -3.8848651 -4.1398497 -3.6984915 -3.8832277 -6.917348
+> dprocess(rw2,x[,,6:11],times=5:10,params=p,log=T)
+           [,1]       [,2]       [,3]       [,4]      [,5]
+[1,] -0.3528305 -0.2613777 -0.2447111 -0.2408028 -1.048260
+[2,] -3.0433899 -3.1306252 -2.6601367 -5.0275855 -2.596964
+[3,] -3.8848651 -4.1398497 -3.6984915 -3.8832277 -6.917348
+> 
+> dmeasure(rw2,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+            [,1]        [,2]       [,3]        [,4]
+[1,] 0.130009525 0.099538380 0.12701912 0.058909910
+[2,] 0.006314898 0.006087434 0.00545215 0.004457682
+[3,] 0.000000000 0.000000000 0.00000000 0.000000000
+> dmeasure(rw2,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+             [,1]         [,2]         [,3]         [,4]
+[1,] 9.495506e-19 4.639718e-07 0.0001862387 1.388155e-15
+[2,] 1.302891e-03 4.868953e-03 0.0062363554 3.532405e-03
+[3,] 0.000000e+00 0.000000e+00 0.0000000000 0.000000e+00
+> log(dmeasure(rw2,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
+           [,1]      [,2]       [,3]       [,4]
+[1,] -14.337877 -36.84944 -38.275846 -42.466689
+[2,]  -5.556753  -7.28100  -5.747134  -5.499941
+[3,]        Inf       Inf        Inf        Inf
+> dmeasure(rw2,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
+           [,1]      [,2]       [,3]       [,4]
+[1,] -14.337877 -36.84944 -38.275846 -42.466689
+[2,]  -5.556753  -7.28100  -5.747134  -5.499941
+[3,]        Inf       Inf        Inf        Inf
+> 
+> po <- pomp(
++            rprocess = rw.rprocess,
++            dprocess = rw.dprocess,
++            dmeasure = bvnorm.dmeasure,
++            rmeasure = bvnorm.rmeasure,
++            times=1:100,
++            data=rbind(
++              y1=rep(0,100),
++              y2=rep(0,100)
++              ),
++            t0=0
++            )
+> 
+> dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+            [,1]        [,2]       [,3]        [,4]
+[1,] 0.130009525 0.099538380 0.12701912 0.058909910
+[2,] 0.006314898 0.006087434 0.00545215 0.004457682
+[3,] 0.000000000 0.000000000 0.00000000 0.000000000
+> dmeasure(po,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+             [,1]         [,2]         [,3]         [,4]
+[1,] 9.495506e-19 4.639718e-07 0.0001862387 1.388155e-15
+[2,] 1.302891e-03 4.868953e-03 0.0062363554 3.532405e-03
+[3,] 0.000000e+00 0.000000e+00 0.0000000000 0.000000e+00
+> log(dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
+           [,1]      [,2]       [,3]       [,4]
+[1,] -14.337877 -36.84944 -38.275846 -42.466689
+[2,]  -5.556753  -7.28100  -5.747134  -5.499941
+[3,]        Inf       Inf        Inf        Inf
+> dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
+           [,1]      [,2]       [,3]       [,4]
+[1,] -14.337877 -36.84944 -38.275846 -42.466689
+[2,]  -5.556753  -7.28100  -5.747134  -5.499941
+[3,]        Inf       Inf        Inf        Inf
+> 
+> po <- pomp(
++            rprocess = euler.simulate,
++            dprocess = euler.density,
++            delta.t = 1,
++            step.fun = function(x, t, params, dt, ...) {
++              c(
++                y1=rnorm(n=1,mean=x['x1'],sd=params['s1']),
++                y2=rnorm(n=1,mean=x['x2'],sd=params['s2'])
++                )
++            },
++            dens.fun = function (x1, t1, x2, t2, params, ...) {
++              sum(
++                  dnorm(
++                        x=x2[c('x1','x2')],
++                        mean=x1[c('x1','x2')],
++                        sd=params[c('s1','s2')]
++                        ),
++                  na.rm=TRUE
++                  )
++            },
++            measurement.model=list(
++              y1 ~ norm(mean=x1,sd=tau),
++              y2 ~ norm(mean=x2,sd=tau)
++              ),
++            times=1:100,
++            data=rbind(
++              y1=rep(0,100),
++              y2=rep(0,100)
++              ),
++            t0=0
++            )
+> 
+> dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+            [,1]        [,2]       [,3]        [,4]
+[1,] 0.130009525 0.099538380 0.12701912 0.058909910
+[2,] 0.006314898 0.006087434 0.00545215 0.004457682
+[3,] 0.000000000 0.000000000 0.00000000 0.000000000
+> dmeasure(po,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+             [,1]         [,2]         [,3]         [,4]
+[1,] 9.495506e-19 4.639718e-07 0.0001862387 1.388155e-15
+[2,] 1.302891e-03 4.868953e-03 0.0062363554 3.532405e-03
+[3,] 0.000000e+00 0.000000e+00 0.0000000000 0.000000e+00
+> dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
+           [,1]      [,2]       [,3]       [,4]
+[1,] -14.337877 -36.84944 -38.275846 -42.466689
+[2,]  -5.556753  -7.28100  -5.747134  -5.499941
+[3,]        Inf       Inf        Inf        Inf
+> dprocess(rw2,x[,,6:11],times=5:10,params=p,log=T)
+           [,1]       [,2]       [,3]       [,4]      [,5]
+[1,] -0.3528305 -0.2613777 -0.2447111 -0.2408028 -1.048260
+[2,] -3.0433899 -3.1306252 -2.6601367 -5.0275855 -2.596964
+[3,] -3.8848651 -4.1398497 -3.6984915 -3.8832277 -6.917348
+> 
+> 

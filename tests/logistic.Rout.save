@@ -1,0 +1,86 @@
+
+R version 2.6.1 (2007-11-26)
+Copyright (C) 2007 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> po <- pomp(
++            data=rbind(obs=rep(0,1000)),
++            times=seq(0.1,by=0.1,length=1000),
++            t0=0,
++            rprocess=euler.simulate,
++            step.fun=function(x,t,params,delta.t,...){
++              with(
++                   as.list(c(x,params)),
++                   rnorm(
++                         n=1,
++                         mean=n+r*n*(1-n/K)*delta.t,
++                         sd=sigma*n*sqrt(delta.t)
++                         )
++                   )
++            },
++            dprocess=euler.density,
++            dens.fun=function(x1,x2,t1,t2,params,log,...){
++              delta.t <- t2-t1
++              with(
++                   as.list(c(x1,params)),
++                   dnorm(
++                         x=x2['n'],
++                         mean=n+r*n*(1-n/K)*delta.t,
++                         sd=sigma*n*sqrt(delta.t)
++                         )
++                   )
++            },
++            measurement.model=obs~lnorm(meanlog=log(n),sdlog=log(1+tau)),
++            delta.t=0.01
++            )
+> 
+> params <- c(n.0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
+> set.seed(73658676)
+> po <- simulate(po,params=params)[[1]]
+> 
+> t <- seq(0,by=0.01,length=50)
+> x <- simulate(po,times=t,states=T,obs=T)
+> 
+> print(
++       dprocess(
++                po,
++                x=x$states[,,45:50,drop=F],
++                times=t[45:50],
++                params=as.matrix(params),
++                log=TRUE
++                ),
++       digits=4
++       )
+         [,1]      [,2]      [,3]      [,4]     [,5]
+[1,] 0.001102 0.0004081 0.0006198 7.111e-05 0.001004
+> 
+> print(
++       dmeasure(
++                po,
++                y=rbind(obs=x$obs[,1,45:50]),
++                x=x$states[,,45:50,drop=F],
++                times=t[45:50],
++                params=as.matrix(params),
++                log=TRUE
++                ),
++       digits=4
++       )
+       [,1]   [,2]   [,3]   [,4]   [,5]  [,6]
+[1,] -8.458 -11.14 -9.514 -8.818 -7.631 -7.75
+> 
+> 
+> 

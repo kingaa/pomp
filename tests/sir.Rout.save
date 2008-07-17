@@ -1,0 +1,295 @@
+
+R version 2.6.1 (2007-11-26)
+Copyright (C) 2007 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> tbasis <- seq(0,25,by=1/52)
+> basis <- periodic.bspline.basis(tbasis,nbasis=3)
+> colnames(basis) <- paste("seas",1:3,sep='')
+> 
+> ## some parameters
+> params <- c(
++             gamma=26,mu=0.02,iota=0.01,
++             beta1=1200,beta2=1800,beta3=600,
++             beta.sd=1e-3,
++             pop=2.1e6,
++             rho=0.6,
++             S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
++             )
+> 
+> ## set up the pomp object
+> ## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
+> po <- pomp(
++            times=seq(1/52,4,by=1/52),
++            data=rbind(measles=numeric(52*4)),
++            t0=0,
++            tcovar=tbasis,
++            covar=basis,
++            delta.t=1/52/20,
++            statenames=c("S","I","R","cases","W","B","dW"),
++            paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
++            covarnames=c("seas1"),
++            zeronames=c("cases"),
++            step.fun=function(t,x,params,covars,delta.t,...) {
++              params <- exp(params)
++              with(
++                   as.list(c(x,params)),
++                   {
++                     beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
++                     beta.var <- beta.sd^2
++                     dW <- rgamma(n=1,shape=delta.t/beta.var,scale=beta.var)
++                     foi <- (iota+beta*I*dW/delta.t)/pop
++                     trans <- c(
++                                rpois(n=1,lambda=mu*pop*delta.t),
++                                reulermultinom(n=1,size=S,rate=c(foi,mu),dt=delta.t),
++                                reulermultinom(n=1,size=I,rate=c(gamma,mu),dt=delta.t),
++                                reulermultinom(n=1,size=R,rate=c(mu),dt=delta.t)
++                                )
++                     c(
++                       S+trans[1]-trans[2]-trans[3],
++                       I+trans[2]-trans[4]-trans[5],
++                       R+trans[4]-trans[6],
++                       cases+trans[4],
++                       if (beta.sd>0) W+(dW-delta.t)/beta.sd else W,
++                       trans,
++                       dW
++                       )
++                   }
++                   )
++            },
++            dens.fun=function(t1,t2,params,x1,x2,covars,...) {
++              params <- exp(params)
++              with(
++                   as.list(params),
++                   {
++                     dt <- t2-t1
++                     beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
++                     beta.var <- beta.sd^2
++                     dW <- x2['dW']
++                     foi <- (iota+beta*x1["I"]*dW/dt)/pop
++                     probs <- c(
++                                dpois(x=x2["B"],lambda=mu*pop*dt,log=T),
++                                deulermultinom(x=x2[c("SI","SD")],size=x1["S"],rate=c(foi,mu),dt=dt,log=T),
++                                deulermultinom(x=x2[c("IR","ID")],size=x1["I"],rate=c(gamma,mu),dt=dt,log=T),
++                                deulermultinom(x=x2["RD"],size=x1["R"],rate=c(mu),dt=dt,log=T),
++                                dgamma(x=dW,shape=dt/beta.var,scale=beta.var,log=T)
++                                )
++                     sum(probs)
++                   }
++                   )
++            },
++            skeleton=function(x,t,params,covars,...) {
++              params <- exp(params)
++              with(
++                   as.list(c(x,params)),
++                   {
++                     beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
++                     foi <- (iota+beta*I)/pop
++                     terms <- c(
++                                mu*pop,
++                                foi*S,
++                                mu*S,
++                                gamma*I,
++                                mu*I,
++                                mu*R
++                                )
++                     c(
++                       terms[1]-terms[2]-terms[3],
++                       terms[2]-terms[4]-terms[5],
++                       terms[4]-terms[6],
++                       terms[4]
++                       )
++                   }
++                   )
++            },
++            rprocess=euler.simulate,
++            dprocess=euler.density,
++            measurement.model=measles~binom(size=cases,prob=exp(rho)),
++            initializer=function(params,t0,...){
++              p <- exp(params)
++              with(
++                   as.list(p),
++                   {
++                     fracs <- c(S.0,I.0,R.0)
++                     x0 <- c(
++                             round(pop*fracs/sum(fracs)), # make sure the three compartments sum to 'pop' initially
++                             rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
++                             )
++                     names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
++                     x0
++                   }
++                   )
++            }
++            )
+> 
+> set.seed(3049953)
+> ## simulate from the model
+> tic <- Sys.time()
+> x <- simulate(po,params=log(params),nsim=3)
+> toc <- Sys.time()
+> print(toc-tic)
+Time difference of 3.816757 secs
+> 
+> t <- seq(0,4/52,1/52/20)
+> X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)
+> 
+> f <- dprocess(
++               po,
++               x=X$states[,,31:40],
++               times=t[31:40],
++               params=matrix(
++                 log(params),
++                 nrow=length(params),
++                 ncol=10,
++                 dimnames=list(names(params),NULL)
++                 ),
++               log=TRUE
++               )
+> print(apply(f,1,sum),digits=4)
+ [1] -58.74 -49.79 -50.78 -49.26 -58.14 -54.18 -49.18 -56.39 -46.28 -61.81
+> 
+> g <- dmeasure(
++               po,
++               y=rbind(measles=X$obs[,7,]),
++               x=X$states,
++               times=t,
++               params=matrix(
++                 log(params),
++                 nrow=length(params),
++                 ncol=10,
++                 dimnames=list(names(params),NULL)
++                 ),
++               log=TRUE
++               )
+> print(apply(g,1,sum),digits=4)
+ [1]   -Inf   -Inf -326.2   -Inf   -Inf   -Inf -208.8 -340.3 -374.4   -Inf
+> 
+> t <- seq(0,2,1/52)
+> X <- simulate(po,params=log(params),nsim=1,states=TRUE,obs=TRUE,times=t)
+> 
+> h <- skeleton(
++               po,
++               x=X$states[,1,55:70,drop=FALSE],
++               t=t[55:70],
++               params=as.matrix(log(params))
++               )
+> print(h[c("S","I","R"),,],digits=4)
+      [,1]     [,2]     [,3]     [,4]     [,5]   [,6]   [,7]   [,8]   [,9]
+S  39752.1  39619.4  39131.0  38723.4  38178.3  37175  35926  34338  33074
+I    220.7    285.4    446.2    605.5    823.4   1213   1720   2383   2957
+R -39975.6 -39908.7 -39579.9 -39330.2 -39002.3 -38389 -37646 -36722 -36032
+   [,10]  [,11]  [,12]  [,13]  [,14]  [,15]  [,16]
+S  29720  24679  17072   7277  -3472 -22298 -45803
+I   4372   6490   9665  13704  17972  25118  33052
+R -34093 -31169 -26739 -20983 -14503  -2824  12749
+> 
+> po <- pomp(
++            times=seq(1/52,4,by=1/52),
++            data=rbind(measles=numeric(52*4)),
++            t0=0,
++            tcovar=tbasis,
++            covar=basis,
++            delta.t=1/52/20,
++            statenames=c("S","I","R","cases","W","B","dW"),
++            paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
++            covarnames=c("seas1"),
++            zeronames=c("cases"),
++            step.fun="sir_euler_simulator",
++            rprocess=euler.simulate,
++            dens.fun="sir_euler_density",
++            dprocess=euler.density,
++            skeleton="sir_ODE",
++            PACKAGE="pomp",
++            measurement.model=measles~binom(size=cases,prob=exp(rho)),
++            initializer=function(params,t0,...){
++              p <- exp(params)
++              with(
++                   as.list(p),
++                   {
++                     fracs <- c(S.0,I.0,R.0)
++                     x0 <- c(
++                             round(pop*fracs/sum(fracs)), # make sure the three compartments sum to 'pop' initially
++                             rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
++                             )
++                     names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
++                     x0
++                   }
++                   )
++            }
++            )
+> 
+> set.seed(3049953)
+> ## simulate from the model
+> tic <- Sys.time()
+> x <- simulate(po,params=log(params),nsim=3)
+> toc <- Sys.time()
+> print(toc-tic)
+Time difference of 0.3644300 secs
+> 
+> t <- seq(0,4/52,1/52/20)
+> X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)
+> 
+> f <- dprocess(
++               po,
++               x=X$states[,,31:40],
++               times=t[31:40],
++               params=matrix(
++                 log(params),
++                 nrow=length(params),
++                 ncol=10,
++                 dimnames=list(names(params),NULL)
++                 ),
++               log=TRUE
++               )
+> print(apply(f,1,sum),digits=4)
+ [1] -50.75 -54.69 -49.79 -69.48 -41.00 -67.77 -55.00 -58.33 -63.23 -45.72
+> 
+> g <- dmeasure(
++               po,
++               y=rbind(measles=X$obs[,7,]),
++               x=X$states,
++               times=t,
++               params=matrix(
++                 log(params),
++                 nrow=length(params),
++                 ncol=10,
++                 dimnames=list(names(params),NULL)
++                 ),
++               log=TRUE
++               )
+> print(apply(g,1,sum),digits=4)
+ [1] -360.0   -Inf -309.1   -Inf -306.7   -Inf -211.9 -343.0 -307.9 -326.3
+> 
+> t <- seq(0,2,1/52)
+> X <- simulate(po,params=log(params),nsim=1,states=TRUE,obs=TRUE,times=t)
+> 
+> h <- skeleton(
++               po,
++               x=X$states[,1,55:70,drop=FALSE],
++               t=t[55:70],
++               params=as.matrix(log(params))
++               )
+> print(h[c("S","I","R"),,],digits=4)
+      [,1]     [,2]     [,3]     [,4]     [,5]     [,6]     [,7]     [,8]
+S  40145.4  40264.8  40257.9  40218.8  39877.3  39515.3  39095.8  38657.9
+I    142.9    137.3    153.8    177.3    294.6    432.2    601.9    789.7
+R -40282.0 -40395.6 -40404.8 -40388.8 -40165.0 -39941.8 -39691.4 -39442.1
+    [,9]  [,10]  [,11]  [,12]  [,13]  [,14]  [,15]  [,16]
+S  37656  36146  34162  31131  25769  17133   8099  -7927
+I   1205   1841   2692   3994   6275   9881  13525  19690
+R -38856 -37983 -36850 -35120 -32038 -27009 -21618 -11757
+> 
