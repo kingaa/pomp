@@ -28,6 +28,12 @@ po <- pomp(
                   )
            },
            measurement.model=obs~lnorm(meanlog=log(n),sdlog=log(1+tau)),
+           skeleton=function(x,t,params,...){
+             with(
+                  as.list(c(x,params)),
+                  r*n*(1-n/K)
+                  )
+           },
            delta.t=0.01
            )
 
@@ -61,4 +67,19 @@ print(
       digits=4
       )
 
-
+print(
+      drop(
+           skeleton(
+                    po,
+                    x=array(
+                      seq(0,12000,by=1000),
+                      dim=c(1,1,13),
+                      dimnames=list('n',NULL,NULL)
+                      ),
+                    t=rep(0,13),
+                    params=as.matrix(params)
+                    )
+           ),
+      digits=4
+      )
+               
