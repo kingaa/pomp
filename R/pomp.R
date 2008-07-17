@@ -2,7 +2,7 @@
 pomp <- function (data, times, t0, ..., rprocess, dprocess,
                   rmeasure, dmeasure, measurement.model,
                   skeleton, initializer, covar, tcovar,
-                  obsnames, statenames, paramnames, covarnames,
+                  statenames, paramnames, covarnames,
                   PACKAGE) {
   ## check the data
   if (is.data.frame(data)) {
@@ -141,12 +141,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   if (!all(c('params','t0','...')%in%names(formals(initializer))))
     stop("pomp error: 'initializer' must be a function of prototype 'initializer(params,t0,...)'")
   
-  if (missing(obsnames)) {
-    obsindex <- integer(0)
-  } else {
-    obsindex <- as.integer(match(obsnames,rownames(data))-1) ## must use zero-based indexing!
-  }
-
   if (missing(statenames)) statenames <- character(0)
   if (missing(paramnames)) paramnames <- character(0)
   if (missing(covarnames)) covarnames <- character(0)
@@ -220,7 +214,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
       initializer = initializer,
       covar = covar,
       tcovar = tcovar,
-      obsindex = obsindex,
       statenames = statenames,
       paramnames = paramnames,
       covarnames = covarnames,

@@ -7,7 +7,7 @@
 \usage{
   pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model, skeleton, initializer, covar, tcovar,
-       obsnames, statenames, paramnames, covarnames, PACKAGE)
+       statenames, paramnames, covarnames, PACKAGE)
 }
 \arguments{
   \item{data}{
@@ -75,8 +75,8 @@
     If a covariate table is supplied, then the value of each of the covariates is interpolated each time that \code{rmeasure}, \code{dmeasure}, or \code{skeleton} is evaluated.
     The resulting interpolated values are passed to the corresponding functions as a numeric vector named \code{covars}.
   }
-  \item{obsnames, statenames, paramnames, covarnames}{
-    Optional character vectors specifying the names of observables, state variables, parameters, or covariates, respectively.
+  \item{statenames, paramnames, covarnames}{
+    Optional character vectors specifying the names of state variables, parameters, or covariates, respectively.
     These are only used in the event that one or more of the basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}) are defined using native routines.
     In that case, these name vectors are matched against the corresponding names and the indices of the names are passed to the native routines.
   }

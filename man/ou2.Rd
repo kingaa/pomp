@@ -15,7 +15,6 @@
 \examples{
 data(ou2)
 plot(ou2)
-slotNames(ou2)
 p <- c(
        alpha.1=0.9,alpha.2=0,alpha.3=0,alpha.4=0.99,
        sigma.1=1,sigma.2=0,sigma.3=2,

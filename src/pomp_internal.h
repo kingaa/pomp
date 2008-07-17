@@ -50,7 +50,7 @@ static SEXP matchnames (SEXP x, SEXP names) {
   PROTECT(index = match(x,names,0)); nprotect++;
   idx = INTEGER(index);
   for (k = 0; k < n; k++) {
-    if (idx[k]==0) error("variable %s not specified",STRING_ELT(nm,k));
+    if (idx[k]==0) error("variable %s not found",STRING_ELT(nm,k));
     idx[k] -= 1;
   }
   UNPROTECT(nprotect);

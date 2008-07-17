@@ -11,8 +11,7 @@ static void dens_meas (pomp_measure_model_density *f,
 		       double *lik, double *y, 
 		       double *x, double *times, double *params, 
 		       int *give_log, int *ndim,
-		       int *obsindex, int *stateindex, 
-		       int *parindex, int *covindex,
+		       int *stateindex, int *parindex, int *covindex,
 		       double *time_table, double *covar_table)
 {
   double t, *lp, *xp, *pp, *yp;
@@ -46,9 +45,7 @@ static void dens_meas (pomp_measure_model_density *f,
       xp = &x[nvar*(p+nrep*k)];
       pp = &params[npar*p];
 
-      (*f)(lp,yp,xp,pp,*give_log,
-	   stateindex,parindex,covindex,obsindex,
-	   covdim,covar_fn,t);
+      (*f)(lp,yp,xp,pp,*give_log,stateindex,parindex,covindex,covdim,covar_fn,t);
       
     }
   }
@@ -80,10 +77,9 @@ static SEXP _pomp_dmeas_fcall;	// function call
 
 // this is the measurement pdf evaluated when the user supplies an R function
 // (and not a native routine)
-// Note that stateindex, parindex, covindex, obsindex are ignored.
+// Note that stateindex, parindex, covindex are ignored.
 static void default_meas_dens (double *lik, double *y, double *x, double *p, int give_log,
-			       int *stateindex, int *parindex, 
-			       int *covindex, int *obsindex,
+			       int *stateindex, int *parindex, int *covindex,
 			       int covdim, double *covar, double t)
 {
   int nprotect = 0;
@@ -116,7 +112,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   SEXP F, fn;
   SEXP dimP, dimX, dimY;
   SEXP tcovar, covar;
-  SEXP obsindex, statenames, paramnames, covarnames;
+  SEXP statenames, paramnames, covarnames;
   SEXP sindex, pindex, cindex;
   int *sidx, *pidx, *cidx;
   SEXP Xnames, Ynames, Pnames, Cnames;
@@ -153,7 +149,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(tcovar =  GET_SLOT(object,install("tcovar"))); nprotect++;
   PROTECT(covar =  GET_SLOT(object,install("covar"))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
-  PROTECT(obsindex =  GET_SLOT(object,install("obsindex"))); nprotect++;
   PROTECT(statenames =  GET_SLOT(object,install("statenames"))); nprotect++;
   PROTECT(paramnames =  GET_SLOT(object,install("paramnames"))); nprotect++;
   PROTECT(covarnames =  GET_SLOT(object,install("covarnames"))); nprotect++;
@@ -236,7 +231,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   ndim[4] = covlen; ndim[5] = covdim; ndim[6] = nobs;
 
   dens_meas(ff,REAL(F),REAL(y),REAL(x),REAL(times),REAL(params),INTEGER(log),ndim,
-	    INTEGER(obsindex),sidx,pidx,cidx,
+	    sidx,pidx,cidx,
 	    REAL(tcovar),REAL(covar));
   
   UNPROTECT(nprotect);

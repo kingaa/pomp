@@ -29,7 +29,6 @@ setClass(
                         params = 'numeric',
                         covar = 'matrix',
                         tcovar = 'numeric',
-                        obsindex = 'integer',
                         statenames = 'character',
                         paramnames = 'character',
                         covarnames = 'character',

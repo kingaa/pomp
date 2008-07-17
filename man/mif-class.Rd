@@ -77,7 +77,7 @@
       A numeric value containing the value of the log likelihood, as evaluated for the random-parameter model.
       Note that this will not be equal to the log likelihood for the fixed-parameter model.
     }
-    \item{data, times, t0, rprocess, dprocess, dmeasure, rmeasure, skeleton, initializer, states, params, obsindex, statenames, paramnames, covarnames, tcovar, covar, PACKAGE, userdata}{Inherited from the \code{pomp} class.}
+    \item{data, times, t0, rprocess, dprocess, dmeasure, rmeasure, skeleton, initializer, states, params, statenames, paramnames, covarnames, tcovar, covar, PACKAGE, userdata}{Inherited from the \code{pomp} class.}
   }
 }
 \section{Extends}{
