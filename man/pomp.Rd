@@ -59,7 +59,7 @@
     The deterministic skeleton can be provided in one of two ways:
     (1) as a function of prototype \code{skeleton(x,t,params,\dots)} which evaluates the deterministic skeleton (whether vectorfield or map) of at state \code{x} and time \code{t} given the parameters \code{params}, or
     (2) as the name of a native (compiled) routine with prototype "pomp\_vectorfield\_map" as defined in the header file "pomp.h".
-    If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the cocovariates at the time \code{t}.
+    If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
   }
   \item{initializer}{
     Function of prototype \code{initializer(params,t0,\dots)} which yields initial conditions for the state process when given a vector, \code{params}, of parameters.
