@@ -102,7 +102,7 @@ static void default_meas_sim (double *y, double *x, double *p,
 
   if (FIRST) {
     if (LENGTH(ans) != NOBS)
-      error("rmeasure error: user 'rmeasure' must return a vector of length ",NOBS);
+      error("rmeasure error: user 'rmeasure' must return a vector of length %d",NOBS);
     PROTECT(nm = GET_NAMES(ans)); nprotect++;
     if (!isNull(nm)) {		// match names against names from data slot
       PROTECT(oidx = matchnames(OBNM,nm)); nprotect++;
