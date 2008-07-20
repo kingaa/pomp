@@ -17,15 +17,12 @@ params <- c(
 ## set up the pomp object
 ## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
 po <- pomp(
-           times=seq(1/52,4,by=1/52),
+           times=1/52*seq.int(length=4*52),
            data=rbind(measles=numeric(52*4)),
            t0=0,
            tcovar=tbasis,
            covar=basis,
            delta.t=1/52/20,
-           statenames=c("S","I","R","cases","W","B","dW"),
-           paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
-           covarnames=c("seas1"),
            zeronames=c("cases"),
            step.fun=function(t,x,params,covars,delta.t,...) {
              params <- exp(params)
@@ -43,13 +40,18 @@ po <- pomp(
                                reulermultinom(n=1,size=R,rate=c(mu),dt=delta.t)
                                )
                     c(
-                      S+trans[1]-trans[2]-trans[3],
-                      I+trans[2]-trans[4]-trans[5],
-                      R+trans[4]-trans[6],
-                      cases+trans[4],
-                      if (beta.sd>0) W+(dW-delta.t)/beta.sd else W,
-                      trans,
-                      dW
+                      S=S+trans[1]-trans[2]-trans[3],
+                      I=I+trans[2]-trans[4]-trans[5],
+                      R=R+trans[4]-trans[6],
+                      cases=cases+trans[4],
+                      W=if (beta.sd>0) W+(dW-delta.t)/beta.sd else W,
+                      B=trans[1],
+                      SI=trans[2],
+                      SD=trans[3],
+                      IR=trans[4],
+                      ID=trans[5],
+                      RD=trans[6],
+                      dW=dW
                       )
                   }
                   )
@@ -126,7 +128,7 @@ x <- simulate(po,params=log(params),nsim=3)
 toc <- Sys.time()
 print(toc-tic)
 
-t <- seq(0,4/52,1/52/20)
+t <- seq(0,4/52,by=1/52/25)
 X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)
 
 f <- dprocess(
@@ -158,7 +160,7 @@ g <- dmeasure(
               )
 print(apply(g,1,sum),digits=4)
 
-t <- seq(0,2,1/52)
+t <- seq(0,2,by=1/52)
 X <- simulate(po,params=log(params),nsim=1,states=TRUE,obs=TRUE,times=t)
 
 h <- skeleton(
@@ -211,7 +213,7 @@ x <- simulate(po,params=log(params),nsim=3)
 toc <- Sys.time()
 print(toc-tic)
 
-t <- seq(0,4/52,1/52/20)
+t <- seq(0,4/52,by=1/52/25)
 X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)
 
 f <- dprocess(
@@ -243,7 +245,7 @@ g <- dmeasure(
               )
 print(apply(g,1,sum),digits=4)
 
-t <- seq(0,2,1/52)
+t <- seq(0,2,by=1/52)
 X <- simulate(po,params=log(params),nsim=1,states=TRUE,obs=TRUE,times=t)
 
 h <- skeleton(

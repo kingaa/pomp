@@ -2,7 +2,7 @@ library(pomp)
 
 po <- pomp(
            data=rbind(obs=rep(0,1000)),
-           times=seq(0.1,by=0.1,length=1000),
+           times=0.1*seq.int(length=1000),
            t0=0,
            rprocess=euler.simulate,
            step.fun=function(x,t,params,delta.t,...){
@@ -41,7 +41,7 @@ params <- c(n.0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
 set.seed(73658676)
 po <- simulate(po,params=params)[[1]]
 
-t <- seq(0,by=0.01,length=50)
+t <- seq(0,by=0.005,length=50)
 x <- simulate(po,times=t,states=T,obs=T)
 
 print(
