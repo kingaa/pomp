@@ -19,7 +19,7 @@ Type 'q()' to quit R.
 > 
 > po <- pomp(
 +            data=rbind(obs=rep(0,1000)),
-+            times=seq(0.1,by=0.1,length=1000),
++            times=0.1*seq.int(length=1000),
 +            t0=0,
 +            rprocess=euler.simulate,
 +            step.fun=function(x,t,params,delta.t,...){
@@ -58,7 +58,7 @@ Type 'q()' to quit R.
 > set.seed(73658676)
 > po <- simulate(po,params=params)[[1]]
 > 
-> t <- seq(0,by=0.01,length=50)
+> t <- seq(0,by=0.005,length=50)
 > x <- simulate(po,times=t,states=T,obs=T)
 > 
 > print(
@@ -71,8 +71,8 @@ Type 'q()' to quit R.
 +                ),
 +       digits=4
 +       )
-         [,1]      [,2]      [,3]      [,4]     [,5]
-[1,] 0.001102 0.0004081 0.0006198 7.111e-05 0.001004
+          [,1]     [,2]     [,3]     [,4]      [,5]
+[1,] 0.0008216 0.000731 0.001125 0.001374 0.0003549
 > 
 > print(
 +       dmeasure(
@@ -85,8 +85,8 @@ Type 'q()' to quit R.
 +                ),
 +       digits=4
 +       )
-       [,1]   [,2]   [,3]   [,4]   [,5]  [,6]
-[1,] -8.458 -11.14 -9.514 -8.818 -7.631 -7.75
+       [,1]  [,2] [,3]   [,4]   [,5]   [,6]
+[1,] -7.764 -7.82 -8.6 -7.815 -8.486 -7.995
 > 
 > print(
 +       drop(
