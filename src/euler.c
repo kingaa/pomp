@@ -1,6 +1,7 @@
 // dear emacs, please treat this as -*- C++ -*-
 
 #include "pomp_internal.h"
+#include <R_ext/Constants.h>
 
 // take nstep Euler-Poisson steps from t1 to t2
 static void euler_simulator (euler_step_sim *estep,
@@ -18,36 +19,49 @@ static void euler_simulator (euler_step_sim *estep,
   int covdim = ndim[5];
   int nzero = ndim[6];
   double covar_fn[covdim];
-  int k, p, step;
+  int j, k, p, step, neuler;
   double dt;
 
   struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
   
-  GetRNGstate();		// initialize R's pseudorandom number generator
-
+  // copy the start values into the result array
   for (p = 0; p < nrep; p++)
     for (k = 0; k < nvar; k++) 
-      x[k+nvar*p] = xstart[k+nvar*p]; // copy the start values into the result array
+      x[k+nvar*p] = xstart[k+nvar*p];
   
-  for (step = 1, t = times[0]; step < ntimes; step++) {	// loop over times
+  // loop over times
+  for (step = 1; step < ntimes; step++) {
 
-    R_CheckUserInterrupt();	// check for user interrupt
+    R_CheckUserInterrupt();
+
+    t = times[step-1];
+    dt = *deltat;
+    // neuler is the number of Euler steps to take in going from
+    // times[step-1] to times[step].
+    // this choice is meant to be conservative
+    // (i.e., so that the actual dt does not exceed the specified dt)
+    // (at least not by much) and to counteract roundoff error.
+    // it is not guaranteed: suggestions would be appreciated.
+    neuler = (int) ceil(((times[step]-t)/dt)-2*(DOUBLE_EPS/dt));
+
+    // if the next step would carry us beyond times[step], reduce dt
+    if (t+dt >= times[step]) {
+      dt = times[step] - t; 
+      neuler = 1;
+    }
 
     for (p = 0; p < nrep; p++) {
       xp = &x[nvar*(p+nrep*step)];
-      for (k = 0; k < nvar; k++) // copy in the previous values of the state variables
+      // copy in the previous values of the state variables
+      for (k = 0; k < nvar; k++)
 	xp[k] = x[k+nvar*(p+nrep*(step-1))];
+      // set some variables to zero
       for (k = 0; k < nzero; k++)
-	xp[zeroindex[k]] = 0.0;    // set some variables to zero
+	xp[zeroindex[k]] = 0.0;
     }
 
-    dt = *deltat;
-    if (t+dt > times[step]) { // if the next step would carry us beyond times[step], reduce dt
-      dt = times[step] - t; 
-    }
+    for (j = 0; j < neuler; j++) { // loop over Euler steps
 
-    while (1) {			// loop over Euler steps
-      
       // interpolate the covar functions for the covariates
       if (covdim > 0) 
 	table_lookup(&covariate_table,t,covar_fn,0);
@@ -61,18 +75,15 @@ static void euler_simulator (euler_step_sim *estep,
 
       }
 
-      t += dt;				    // advance time
-      if (t >= times[step]) {		    // finished with Euler steps
-	t = times[step];
-	break;
-      } else if (t > times[step]) { // if the next step would carry us beyond times[step], reduce dt
-	dt = times[step] - t; 
+      if (j == neuler-2) {	// penultimate step
+	dt = times[step]-t;
+	t = times[step]-dt;
+      } else {
+	t += dt;
       }
+
     }
   }
-
-  PutRNGstate();		// finished with R's random number generator
-
 }
 
 // these global objects will pass the needed information to the user-defined function (see 'default_euler_step_fn')
@@ -86,7 +97,13 @@ static int  euler_step_nvar;	// number of state variables
 static int  euler_step_npar;	// number of parameters
 static SEXP euler_step_envir;	// function's environment
 static SEXP euler_step_fcall;	// function call
+static int  euler_step_first;	// first evaluation?
+static SEXP euler_step_vnames;	// names of state variables
+static int *euler_step_vindex;	// indices of state variables
 
+#define FIRST   (euler_step_first)
+#define VNAMES  (euler_step_vnames)
+#define VINDEX  (euler_step_vindex)
 #define XVEC    (euler_step_Xvec)
 #define PVEC    (euler_step_Pvec)
 #define CVEC    (euler_step_Cvec)
@@ -106,9 +123,9 @@ static void default_euler_step_fn (double *x, const double *p,
 				   double t, double dt)
 {
   int nprotect = 0;
-  int k;
+  int *op, k;
   double *xp;
-  SEXP ans;
+  SEXP ans, nm, idx;
   xp = REAL(XVEC);
   for (k = 0; k < NVAR; k++) xp[k] = x[k];
   xp = REAL(PVEC);
@@ -119,9 +136,32 @@ static void default_euler_step_fn (double *x, const double *p,
   xp[0] = t;
   xp = REAL(DT);
   xp[0] = dt;
+
   PROTECT(ans = eval(FCALL,RHO)); nprotect++; // evaluate the call
+
+  if (FIRST) {
+    if (LENGTH(ans) != NVAR) {
+      UNPROTECT(nprotect);
+      error("user 'step.fun' must return a vector of length %d",NVAR);
+    }
+    PROTECT(nm = GET_NAMES(ans)); nprotect++;
+    if (!isNull(nm)) {	   // match names against names from data slot
+      PROTECT(idx = matchnames(VNAMES,nm)); nprotect++;
+      op = INTEGER(idx);
+      for (k = 0; k < NVAR; k++) VINDEX[k] = op[k];
+    } else {
+      VINDEX = 0;
+    }
+    FIRST = 0;
+  }
+
   xp = REAL(AS_NUMERIC(ans));
-  for (k = 0; k < NVAR; k++) x[k] = xp[k];
+  if (VINDEX != 0) {
+    for (k = 0; k < NVAR; k++) x[VINDEX[k]] = xp[k];
+  } else {
+    for (k = 0; k < NVAR; k++) x[k] = xp[k];
+  }
+
   UNPROTECT(nprotect);
 }
 
@@ -142,19 +182,21 @@ SEXP euler_model_simulator (SEXP func,
   int nzeros = LENGTH(zeronames);
   euler_step_sim *ff = NULL;
   SEXP X, pindex, sindex, cindex, zindex;
-  SEXP fn, Xnames, Pnames, Cnames;
+  int *sidx, *pidx, *cidx, *zidx;
+  SEXP fn, Pnames, Cnames;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
   ntimes = LENGTH(times);
 
-  PROTECT(Xnames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
+  PROTECT(VNAMES = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
   if (inherits(func,"NativeSymbol")) {
     ff = (euler_step_sim *) R_ExternalPtrAddr(func);
+    VINDEX = 0;
   } else if (isFunction(func)) {
     PROTECT(fn = func); nprotect++;
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
@@ -165,7 +207,7 @@ SEXP euler_model_simulator (SEXP func,
     PROTECT(XVEC = NEW_NUMERIC(nvar)); nprotect++; // for internal use
     PROTECT(PVEC = NEW_NUMERIC(npar)); nprotect++; // for internal use
     PROTECT(CVEC = NEW_NUMERIC(covdim)); nprotect++; // for internal use
-    SET_NAMES(XVEC,Xnames); // make sure the names attribute is copied
+    SET_NAMES(XVEC,VNAMES); // make sure the names attribute is copied
     SET_NAMES(PVEC,Pnames); // make sure the names attribute is copied
     SET_NAMES(CVEC,Cnames); // make sure the names attribute is copied
     // set up the function call
@@ -181,6 +223,8 @@ SEXP euler_model_simulator (SEXP func,
     SET_TAG(FCALL,install("x"));
     PROTECT(FCALL = LCONS(fn,FCALL)); nprotect++;
     ff = (euler_step_sim *) default_euler_step_fn;
+    VINDEX = (int *) Calloc(nvar,int);
+    FIRST = 1;
   } else {
     UNPROTECT(nprotect);
     error("illegal input: supplied function must be either an R function or a compiled native function");
@@ -188,33 +232,43 @@ SEXP euler_model_simulator (SEXP func,
 
   xdim[0] = nvar; xdim[1] = nrep; xdim[2] = ntimes;
   PROTECT(X = makearray(3,xdim)); nprotect++;
-  setrownames(X,Xnames,3);
+  setrownames(X,VNAMES,3);
+
   if (nstates>0) {
     PROTECT(sindex = MATCHROWNAMES(xstart,statenames)); nprotect++;
+    sidx = INTEGER(sindex);
   } else {
-    PROTECT(sindex = NEW_INTEGER(0)); nprotect++;
+    sidx = 0;
   }
   if (nparams>0) {
     PROTECT(pindex = MATCHROWNAMES(params,paramnames)); nprotect++;
+    pidx = INTEGER(pindex);
   } else {
-    PROTECT(pindex = NEW_INTEGER(0)); nprotect++;
+    pidx = 0;
   }
   if (ncovars>0) {
     PROTECT(cindex = MATCHCOLNAMES(covar,covarnames)); nprotect++;
+    cidx = INTEGER(cindex);
   } else {
-    PROTECT(cindex = NEW_INTEGER(0)); nprotect++;
+    cidx = 0;
   }
   if (nzeros>0) {
     PROTECT(zindex = MATCHROWNAMES(xstart,zeronames)); nprotect++;
+    zidx = INTEGER(zindex);
   } else {
-    PROTECT(zindex = NEW_INTEGER(0)); nprotect++;
+    zidx = 0;
   }
+
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; 
   ndim[4] = covlen; ndim[5] = covdim; ndim[6] = nzeros;
+
   euler_simulator(ff,REAL(X),REAL(xstart),REAL(times),REAL(params),
-		  ndim,REAL(dt),
-		  INTEGER(sindex),INTEGER(pindex),INTEGER(cindex),INTEGER(zindex),
+		  ndim,REAL(dt),sidx,pidx,cidx,zidx,
 		  REAL(tcovar),REAL(covar));
+
+  if (VINDEX != 0) Free(VINDEX);
+  VINDEX = 0;
+
   UNPROTECT(nprotect);
   return X;
 }
@@ -228,8 +282,11 @@ SEXP euler_model_simulator (SEXP func,
 #undef NPAR
 #undef RHO
 #undef FCALL
+#undef FIRST
+#undef VNAMES
+#undef VINDEX
 
-// take nstep Euler-Poisson steps from t1 to t2
+// compute pdf of a sequence of Euler steps
 static void euler_densities (euler_step_pdf *estep,
 			     double *f, 
 			     double *x, double *times, double *params, 
@@ -258,7 +315,7 @@ static void euler_densities (euler_step_pdf *estep,
     t1 = times[step];
     t2 = times[step+1];
 
-    // interpolate the covar functions for the covariates
+    // interpolate the covariates at time t1
     if (covdim > 0) 
       table_lookup(&covariate_table,t1,covar_fn,0);
     
@@ -324,7 +381,9 @@ static void default_euler_dens_fn (double *f, double *x1, double *x2, double t1,
   for (k = 0; k < ncovar; k++) xp[k] = covar[k];
   xp = REAL(TIME1); xp[0] = t1;
   xp = REAL(TIME2); xp[0] = t2;
+
   PROTECT(ans = eval(FCALL,RHO)); nprotect++; // evaluate the call
+
   xp = REAL(AS_NUMERIC(ans));
   f[0] = xp[0];
   UNPROTECT(nprotect);
@@ -345,6 +404,7 @@ SEXP euler_model_density (SEXP func,
   int ncovars = LENGTH(covarnames);
   euler_step_pdf *ff = NULL;
   SEXP F, pindex, sindex, cindex;
+  int *pidx, *sidx, *cidx;
   SEXP fn, Xnames, Pnames, Cnames;
 
   dim = INTEGER(GET_DIM(x)); nvar = dim[0]; nrep = dim[1];
@@ -395,26 +455,33 @@ SEXP euler_model_density (SEXP func,
 
   fdim[0] = nrep; fdim[1] = ntimes-1;
   PROTECT(F = makearray(2,fdim)); nprotect++;
+
   if (nstates>0) {
     PROTECT(sindex = MATCHROWNAMES(x,statenames)); nprotect++;
+    sidx = INTEGER(sindex);
   } else {
-    PROTECT(sindex = NEW_INTEGER(0)); nprotect++;
+    sidx = 0;
   }
   if (nparams>0) {
     PROTECT(pindex = MATCHROWNAMES(params,paramnames)); nprotect++;
+    pidx = INTEGER(pindex);
   } else {
-    PROTECT(pindex = NEW_INTEGER(0)); nprotect++;
+    pidx = 0;
   }
   if (ncovars>0) {
     PROTECT(cindex = MATCHCOLNAMES(covar,covarnames)); nprotect++;
+    cidx = INTEGER(cindex);
   } else {
-    PROTECT(cindex = NEW_INTEGER(0)); nprotect++;
+    cidx = 0;
   }
+
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; 
   ndim[4] = covlen; ndim[5] = covdim;
+
   euler_densities(ff,REAL(F),REAL(x),REAL(times),REAL(params),
-		  ndim,INTEGER(sindex),INTEGER(pindex),INTEGER(cindex),
+		  ndim,sidx,pidx,cidx,
 		  REAL(tcovar),REAL(covar),INTEGER(log));
+
   UNPROTECT(nprotect);
   return F;
 }
@@ -423,7 +490,8 @@ SEXP euler_model_density (SEXP func,
 #undef X2VEC
 #undef PVEC
 #undef CVEC
-#undef TIME
+#undef TIME1
+#undef TIME2
 #undef NVAR
 #undef NPAR
 #undef RHO
