@@ -79,6 +79,8 @@ void sir_euler_simulator (double *x, const double *p,
       !(R_FINITE(W)))
     return;
 
+  GetRNGstate();	     // initialize R's random number generator
+
   if (beta_sd > 0.0) {		// environmental noise is ON
     dW = rgamma(dt/beta_var,beta_var); // gamma noise, mean=dt, variance=(beta_sd^2 dt)
     if (!(R_FINITE(dW))) return;
@@ -100,6 +102,8 @@ void sir_euler_simulator (double *x, const double *p,
   reulermultinom(2,SUSC,&rate[1],dt,&trans[1]);
   reulermultinom(2,INFD,&rate[3],dt,&trans[3]);
   reulermultinom(1,RCVD,&rate[5],dt,&trans[5]);
+
+  PutRNGstate();	  // finished with R's random number generator
 
   // balance the equations
   SUSC += trans[0]-trans[1]-trans[2];
