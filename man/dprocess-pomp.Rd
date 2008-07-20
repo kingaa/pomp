@@ -17,8 +17,8 @@ dprocess(object, x, times, params, log = FALSE, \dots)
   \item{object}{an object of class \code{pomp}.}
   \item{x}{
     a rank-3 array containing the states of the unobserved process.
-    The dimensions of \code{x} are \code{nvars} x \code{nsims} x \code{ntimes}, where \code{nvars} is the number of state variables, \code{nsims} is the number of replicates, and \code{ntimes} is the length of \code{times}.
-    Note that if \code{nsims != nrow(y)} or \code{ntimes-1 != length(times)}, an error is generated.
+    The dimensions of \code{x} are \code{nvars} x \code{nreps} x \code{ntimes}, where \code{nvars} is the number of state variables, \code{nreps} is the number of replicates, and \code{ntimes} is the length of \code{times}.
+    Note that if \code{nreps != nrow(y)} or \code{ntimes-1 != length(times)}, an error is generated.
   }
   \item{times}{
     a numeric vector containing the times corresponding to the given states.
@@ -31,7 +31,7 @@ dprocess(object, x, times, params, log = FALSE, \dots)
   \item{\dots}{at present, these are ignored.}
 }
 \value{
-  Returns a matrix of dimensions \code{nsims} x \code{ntimes-1}.
+  Returns a matrix of dimensions \code{nreps} x \code{ntimes-1}.
   If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood of the transition from state \code{x[,j,k-1]} at time \code{times[k-1]} to state \code{x[,j,k]} at time \code{times[k]}.
 }
 \details{
