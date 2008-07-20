@@ -244,16 +244,21 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
 	     REAL(tcovar),REAL(covar));
 
   if (OIDX != 0) Free(OIDX);
+  OIDX = 0;
 
   UNPROTECT(nprotect);
   return Y;
 }
 
-#undef FCALL
 #undef XVEC
 #undef PVEC
 #undef CVEC
 #undef TIME
 #undef NVAR
 #undef NPAR
+#undef NOBS
+#undef FIRST
+#undef OBNM
+#undef OIDX
 #undef RHO
+#undef FCALL
