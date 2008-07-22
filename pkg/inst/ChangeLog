@@ -1,0 +1,38 @@
+2008-07-20  kingaa
+
+	* DESCRIPTION, NAMESPACE, R/aaa.R, R/bsplines.R, R/compare.mif.R,
+	  R/dmeasure-pomp.R, R/dprocess-pomp.R, R/euler.R,
+	  R/eulermultinom.R, R/init.state-pomp.R, R/mif-methods.R, R/mif.R,
+	  R/particles-mif.R, R/pfilter-mif.R, R/pfilter.R, R/plot-pomp.R,
+	  R/pomp-methods.R, R/pomp.R, R/rmeasure-pomp.R, R/rprocess-pomp.R,
+	  R/simulate-pomp.R, R/skeleton-pomp.R, R/sobol.R, inst,
+	  inst/ChangeLog, inst/GPL, inst/LICENSE, inst/NEWS, inst/doc,
+	  inst/doc/Makefile, inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/examples,
+	  inst/examples/logistic.R, inst/examples/rw2.R,
+	  inst/examples/sir.R, inst/examples/sir.c, inst/include,
+	  inst/include/pomp.h, man/bsplines.Rd, man/dmeasure-pomp.Rd,
+	  man/dprocess-pomp.Rd, man/euler.Rd, man/eulermultinom.Rd,
+	  man/init.state-pomp.Rd, man/mif-class.Rd, man/mif-methods.Rd,
+	  man/mif.Rd, man/ou2.Rd, man/particles-mif.Rd, man/pfilter.Rd,
+	  man/pomp-class.Rd, man/pomp-methods.Rd, man/pomp-package.Rd,
+	  man/pomp.Rd, man/rmeasure-pomp.Rd, man/rprocess-pomp.Rd,
+	  man/simulate-pomp.Rd, man/skeleton-pomp.Rd, man/sobol.Rd, src,
+	  src/bspline.c, src/dmeasure.c, src/dprocess.c, src/dsobol.c,
+	  src/euler.c, src/eulermultinom.c, src/initstate.c,
+	  src/lookup_table.c, src/ou2.c, src/pomp.h, src/pomp_fun.c,
+	  src/pomp_internal.h, src/resample.c, src/rmeasure.c,
+	  src/rprocess.c, src/sir.c, src/skeleton.c, src/sobol.f, tests,
+	  tests/logistic.R, tests/logistic.Rout.save, tests/ou2-kalman.R,
+	  tests/ou2-kalman.Rout.save, tests/ou2-mif.R,
+	  tests/ou2-mif.Rout.save, tests/ou2-simulate.R,
+	  tests/ou2-simulate.Rout.save, tests/rw2.R, tests/rw2.Rout.save,
+	  tests/sir.R, tests/sir.Rout.save: initial revision
+	* data/ou2.rda:
+	* data:
+
+2007-06-25  stefan7th
+
+	* README, ., R, man, www, www/index.php: Email in Readme changed
+
