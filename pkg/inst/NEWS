@@ -5,8 +5,6 @@ NEW IN VERSION 0.20-4:
     o	The Euler simulator no longer calls GetRNGState() and PutRNGState().
 	When a native routine is used for the Euler step, it must contain these calls.
 
-    o	The Euler-Maruyama simulations in sveirs.c, sveirr.c, and sveirs_shortcut.c have been removed.
-
     o	A potential bug in the Euler-multinomial simulator was repaired.
 
 NEW IN VERSION 0.20-2:
