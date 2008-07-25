@@ -16,10 +16,10 @@ euler.simulate <- function (xstart, times, params,
     }
   } else if (is.function(step.fun)) {
     if (!all(c('x','t','params','delta.t','...')%in%names(formals(step.fun))))
-      stop("'step.fun' must be a function of prototype 'step.fun(x,t,params,delta.t,...)'")
+      stop(sQuote("step.fun")," must be a function of prototype ",sQuote("step.fun(x,t,params,delta.t,...)"))
     efun <- step.fun
   } else {
-    stop("'step.fun' must be either a function or the name of a compiled routine")
+    stop(sQuote("step.fun")," must be either a function or the name of a compiled routine")
   }
 
   .Call(
@@ -57,10 +57,10 @@ euler.density <- function (x, times, params,
     }
   } else if (is.function(dens.fun)) {
     if (!all(c('x1','x2','t1','t2','params','...')%in%names(formals(dens.fun))))
-      stop("'dens.fun' must be a function of prototype 'dens.fun(x1,x2,t1,t2,params,...)'")
+      stop(sQuote("dens.fun")," must be a function of prototype ",sQuote("dens.fun(x1,x2,t1,t2,params,...)"))
     efun <- dens.fun
   } else {
-    stop("'dens.fun' must be either a function or the name of a compiled routine")
+    stop(sQuote("dens.fun")," must be either a function or the name of a compiled routine")
   }
 
   .Call(

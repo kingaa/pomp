@@ -55,7 +55,7 @@ setMethod(
 
 predvarplot.mif <- function (object, pars, type = 'l', mean = FALSE, ...) {
   if (!is(object,'mif'))
-    stop("predvarplot error: 'object' must be of class 'mif'",call.=FALSE)
+    stop("predvarplot error: ",sQuote("object")," must be of class ",sQuote("mif"),call.=FALSE)
   if (missing(pars))
     pars <- object@pars
   npv <- pred.var(object,pars)/(object@random.walk.sd[pars]^2)

@@ -20,11 +20,11 @@ setMethod(
           "pomp",
           function (object, Nmif = 1,
                     start,
-                    pars = stop("'pars' must be specified"),
+                    pars = stop(sQuote("pars")," must be specified"),
                     ivps = character(0),
                     particles,
-                    rw.sd = stop("'rw.sd' must be specified"),
-                    alg.pars = stop("'alg.pars' must be specified"),
+                    rw.sd = stop(sQuote("rw.sd")," must be specified"),
+                    alg.pars = stop(sQuote("alg.pars")," must be specified"),
                     weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
                     verbose = FALSE, .ndone = 0) {
             if (missing(particles)) {         # use default: normal distribution
@@ -47,17 +47,17 @@ setMethod(
               particles <- match.fun(particles)
             }
             if (!all(c('Np','center','sd','...')%in%names(formals(particles))))
-              stop("mif error: 'particles' must be a function of prototype 'particles(Np,center,sd,...)'",call.=FALSE)
+              stop("mif error: ",sQuote("particles")," must be a function of prototype ",sQuote("particles(Np,center,sd,...)"),call.=FALSE)
             if (missing(start)) {
               start <- coef(object)
               if (length(start)==0)
-                stop("mif error: 'start' must be specified",call.=FALSE)
+                stop("mif error: ",sQuote("start")," must be specified",call.=FALSE)
             }
             start.names <- names(start)
             if (is.null(start.names))
-              stop("mif error: 'start' must be a named vector",call.=FALSE)
+              stop("mif error: ",sQuote("start")," must be a named vector",call.=FALSE)
             if (length(pars) == 0)
-              stop("mif error: 'pars' must be a nonempty character vector",call.=FALSE)
+              stop("mif error: ",sQuote("pars")," must be a nonempty character vector",call.=FALSE)
             if (
                 !is.character(pars) ||
                 !is.character(ivps) ||
@@ -66,7 +66,7 @@ setMethod(
                 any(pars%in%ivps) ||
                 any(ivps%in%pars)
                 )
-              stop("mif error: 'pars' and 'ivps' must be mutually disjoint elements of 'names(start)'",call.=FALSE)
+              stop("mif error: ",sQuote("pars")," and ",sQuote("ivps")," must be mutually disjoint elements of ",sQuote("names(start)"),call.=FALSE)
             Nv <- length(start)
             if ((length(rw.sd)==1) && (rw.sd==0)) {
               rw.sd <- rep(0,Nv)
@@ -74,7 +74,7 @@ setMethod(
             }
             rw.names <- names(rw.sd)
             if (any(!(rw.names%in%start.names)))
-              stop("mif error: all the names of 'rw.sd' must be names of 'start'",call.=FALSE)
+              stop("mif error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
             if (any(rw.sd[c(pars,ivps)]==0)) {
               zero.pars <- names(which(rw.sd[c(pars,ivps)]==0))
               stop(
@@ -89,7 +89,7 @@ setMethod(
             }
             if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
               stop(
-                   "mif error: 'alg.pars' must be a named list with elements 'Np','cooling.factor','ic.lag',and 'var.factor'",
+                   "mif error: ",sQuote("alg.pars")," must be a named list with elements ",sQuote("Np"),",",sQuote("cooling.factor"),",",sQuote("ic.lag"),",and ",sQuote("var.factor"),
                    call.=FALSE
                    )
             coef(object) <- start
@@ -149,10 +149,10 @@ setMethod(
             names(sigma) <- names(start)
             rw.names <- names(rw.sd)
             if (!all(rw.names%in%names(start)))
-              stop("mif error: all the names of 'rw.sd' must be names of 'start'",call.=FALSE)
+              stop("mif error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
             sigma[rw.names] <- rw.sd
             if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
-              stop("mif error: 'alg.pars' must be a named list with elements 'Np','cooling.factor','ic.lag',and 'var.factor'",call.=FALSE)
+              stop("mif error: ",sQuote("alg.pars")," must be a named list with elements ",sQuote("Np"),",",sQuote("cooling.factor"),",",sQuote("ic.lag"),",and ",sQuote("var.factor"),call.=FALSE)
             conv.rec <- matrix(NA,
                                nrow=Nmif+1,
                                ncol=length(theta)+2,
@@ -175,13 +175,13 @@ setMethod(
                        silent=FALSE
                        )
               if (inherits(P,'try-error'))
-                stop("mif error: error in 'particles'",call.=FALSE)
+                stop("mif error: error in ",sQuote("particles"),call.=FALSE)
               X <- try(
                        init.state(object,params=P),
                        silent=FALSE
                        )
               if (inherits(X,'try-error'))
-                stop("mif error: error in 'init.state'",call.=FALSE)
+                stop("mif error: error in ",sQuote("init.state"),call.=FALSE)
               x <- try(
                        pfilter(
                                as(object,'pomp'),
@@ -198,7 +198,7 @@ setMethod(
                        silent=FALSE
                        )
               if (inherits(x,'try-error'))
-                stop("mif error: error in 'pfilter'",call.=FALSE)
+                stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
 
               v <- x$pred.var[pars,,drop=FALSE]
               

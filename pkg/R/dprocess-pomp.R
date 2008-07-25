@@ -9,7 +9,7 @@ setMethod(
                      silent=FALSE
                      )
             if (inherits(x,'try-error'))
-              stop("dprocess error: error in user 'dprocess'",call.=FALSE)
+              stop("dprocess error: error in user ",sQuote("dprocess"),call.=FALSE)
             x
           }
           )

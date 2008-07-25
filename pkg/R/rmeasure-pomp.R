@@ -8,7 +8,7 @@ setMethod(
                        silent=FALSE
                        )
             if (inherits(val,'try-error'))
-              stop("rmeasure error: error in user 'rmeasure'",call.=FALSE)
+              stop("rmeasure error: error in user ",sQuote("rmeasure"),call.=FALSE)
             val
           }
           )

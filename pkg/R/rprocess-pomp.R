@@ -8,7 +8,7 @@ setMethod(
                      silent=FALSE
                      )
             if (inherits(x,'try-error'))
-              stop("rprocess error: error in user 'rprocess'",call.=FALSE)
+              stop("rprocess error: error in user ",sQuote("rprocess"),call.=FALSE)
             x
           }
           )

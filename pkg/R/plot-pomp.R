@@ -16,7 +16,7 @@ setMethod(
             vars <- names(X)
             tpos <- match("time",vars)
             if (is.na(tpos))
-              stop("'pomp' plot error: no data variable labeled 'time'",call.=FALSE)
+              stop(sQuote("pomp")," plot error: no data variable labeled ",sQuote("time"),call.=FALSE)
             if (missing(variables))
               vars <- vars[-tpos]
             else
@@ -40,7 +40,7 @@ setMethod(
               }
               nser <- NCOL(x)
               if (nser > 10)
-                stop("'pomp' plot error: cannot plot more than 10 series as \"multiple\"",call.=FALSE)
+                stop(sQuote("pomp")," plot error: cannot plot more than 10 series as ",dQuote("multiple"),call.=FALSE)
               if (is.null(main))
                 main <- xlabel
               nm <- colnames(x)

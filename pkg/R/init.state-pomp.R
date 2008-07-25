@@ -10,7 +10,7 @@ setMethod(
                      silent=FALSE
                      )
             if (inherits(x,'try-error'))
-              stop("init.state error: error in user 'initializer'",call.=FALSE)
+              stop("init.state error: error in user ",sQuote("initializer"),call.=FALSE)
             x
           }
           )

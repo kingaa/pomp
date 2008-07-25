@@ -8,7 +8,7 @@ setMethod(
                      silent=FALSE
                      )
             if (inherits(x,'try-error'))
-              stop("skeleton error: error in user 'skeleton'",call.=FALSE)
+              stop("skeleton error: error in user ",sQuote("skeleton"),call.=FALSE)
             x
           }
           )

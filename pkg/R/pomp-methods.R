@@ -58,9 +58,9 @@ setMethod(
               excl <- !(pars%in%names(object@params))
               if (any(excl)) {
                 stop(
-                     "in 'coef': names '",
-                     paste(pars[excl],collapse=','),
-                     "' correspond to no parameters"
+                     "in ",sQuote("coef"),": name(s) ",
+                     paste(sapply(pars[excl],sQuote),collapse=','),
+                     " correspond to no parameter(s)"
                      )
               }
             }
@@ -77,10 +77,10 @@ setMethod(
               if (missing(pars)) {
                 pars <- names(value)
                 if (is.null(pars))
-                  stop("in 'coef<-': 'value' must be a named vector")
+                  stop("in ",sQuote("coef<-"),": ",sQuote("value")," must be a named vector")
               } else {
                 if (length(pars)!=length(value))
-                  stop("in 'coef<-': 'pars' and 'value' must be of the same length")
+                  stop("in ",sQuote("coef<-"),": ",sQuote("pars")," and ",sQuote("value")," must be of the same length")
               }
               object@params <- as.numeric(value)
               names(object@params) <- pars
@@ -88,19 +88,19 @@ setMethod(
               if (missing(pars)) {
                 pars <- names(object@params)
                 if (is.null(pars))
-                  stop("bad 'pomp' object: slot 'params' should be a named vector")
+                  stop("bad ",sQuote("pomp")," object: slot ",sQuote("params")," should be a named vector")
               } else {
                 excl <- !(pars%in%names(object@params))
                 if (any(excl)) {
                   stop(
-                       "in 'coef<-': names '",
-                       paste(pars[excl],collapse=','),
-                       "' correspond to no parameters"
+                       "in ",sQuote("coef<-"),": name(s) ",
+                       paste(sapply(pars[excl],sQuote),collapse=','),
+                       " correspond to no parameter(s)"
                        )
                 }
               }
               if (length(pars)!=length(value))
-                stop("in 'coef<-': 'pars' and 'value' must be of the same length")
+                stop("in ",sQuote("coef<-"),": ",sQuote("pars")," and ",sQuote("value")," must be of the same length")
               object@params[pars] <- as.numeric(value)
             }
             object
@@ -123,10 +123,10 @@ setMethod(
             print(object)
             cat("zero time, t0 = ",object@t0,"\n")
             if (length(coef(object))>0) {
-              cat("parameters:\n")
+              cat("parameter(s):\n")
               print(coef(object))
             } else {
-              cat ("parameters unspecified\n");
+              cat ("parameter(s) unspecified\n");
             }
             cat("process model simulator, rprocess = \n")
             print(object@rprocess)

@@ -2,7 +2,7 @@ compare.mif <- function (z) {
   ## assumes that x is a list of mifs with identical structure
   if (!is.list(z)) z <- list(z)
   if (!all(sapply(z,function(x)is(x,'mif'))))
-    stop("compare.mif error: 'z' must be a mif object or a list of mif objects",call.=FALSE)
+    stop("compare.mif error: ",sQuote("z")," must be a mif object or a list of mif objects",call.=FALSE)
   mar.multi <- c(0,5.1,0,2.1)
   oma.multi <- c(6,0,5,0)
   xx <- z[[1]]

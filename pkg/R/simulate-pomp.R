@@ -9,12 +9,12 @@ setMethod(
             ntimes <- length(times)
             times <- as.numeric(times)
             if (ntimes<1)
-              stop("if length of 'times' is less than 1, there is no work to do",call.=FALSE)
+              stop("if length of ",sQuote("times")," is less than 1, there is no work to do",call.=FALSE)
             if (missing(params)) {
               if (length(object@params)>0)
                 params <- object@params
               else
-                stop("no 'params' specified",call.=FALSE)
+                stop("no ",sQuote("params")," specified",call.=FALSE)
             }
             if (is.null(dim(params)))
               params <- matrix(params,ncol=1,dimnames=list(names(params),NULL))

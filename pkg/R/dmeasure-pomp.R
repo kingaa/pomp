@@ -8,7 +8,7 @@ setMethod(
                        silent=FALSE
                        )
             if (inherits(val,'try-error'))
-              stop("dmeasure error: error in user 'dmeasure'",call.=FALSE)
+              stop("dmeasure error: error in user ",sQuote("dmeasure"),call.=FALSE)
             val
           }
           )
