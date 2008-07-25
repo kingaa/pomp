@@ -26,11 +26,14 @@ mif.fit <- mif(ou2,Nmif=10,start=guess,
                pars=c('alpha.1','alpha.4'),ivps=c('x1.0','x2.0'),
                rw.sd=c(
                  x1.0=5,x2.0=5,
-                 alpha.1=0.1,alpha.2=0,alpha.3=0,alpha.4=0.1,
-                 sigma.1=0,sigma.2=0,sigma.3=0,
-                 tau=0
+                 alpha.1=0.1,alpha.4=0.1
                  ),
-               alg.pars=list(Np=1000,var.factor=1,ic.lag=10,cooling.factor=0.95),
+               alg.pars=list(
+                 Np=1000,
+                 var.factor=1,
+                 ic.lag=10,
+                 cooling.factor=0.95
+                 ),
                max.fail=100
                )
 mif.fit <- continue(mif.fit,Nmif=70,max.fail=100)
