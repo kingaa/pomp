@@ -75,6 +75,18 @@ setMethod(
             rw.names <- names(rw.sd)
             if (any(!(rw.names%in%start.names)))
               stop("mif error: all the names of 'rw.sd' must be names of 'start'",call.=FALSE)
+            if (any(rw.sd[c(pars,ivps)]==0)) {
+              zero.pars <- names(which(rw.sd[c(pars,ivps)]==0))
+              stop(
+                   "mif error: for every parameter you wish to estimate, you must specify a positive ",
+                   sQuote("rw.sd"),
+                   ".  ",
+                   sQuote("rw.sd"),
+                   " is zero for ",
+                   paste(zero.pars,collapse=", "),
+                   call.=FALSE
+                   )
+            }
             if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
               stop(
                    "mif error: 'alg.pars' must be a named list with elements 'Np','cooling.factor','ic.lag',and 'var.factor'",
