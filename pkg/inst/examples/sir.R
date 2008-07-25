@@ -27,18 +27,13 @@ params <- c(
 
 ## set up the pomp object
 po <- pomp(
-           times=seq(1/52,4,by=1/52),
+           times=1/52*seq.int(length=4*52),
            data=rbind(measles=numeric(52*4)),
            t0=0,
            tcovar=tbasis,
            covar=basis,
            delta.t=1/52/20,
-           statenames=c("S","I","R","cases","W","B","dW"),
-           paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
-           covarnames=c("seas1"),
            zeronames=c("cases"),
-           measurement.model=measles~binom(size=cases,prob=exp(rho)),
-           rprocess=euler.simulate,
            step.fun=function(t,x,params,covars,delta.t,...) {
              params <- exp(params)
              with(
@@ -55,18 +50,22 @@ po <- pomp(
                                reulermultinom(n=1,size=R,rate=c(mu),dt=delta.t)
                                )
                     c(
-                      S+trans[1]-trans[2]-trans[3],
-                      I+trans[2]-trans[4]-trans[5],
-                      R+trans[4]-trans[6],
-                      cases+trans[4],
-                      if (beta.sd>0) W+(dW-delta.t)/beta.sd else W,
-                      trans,
-                      dW
+                      S=S+trans[1]-trans[2]-trans[3],
+                      I=I+trans[2]-trans[4]-trans[5],
+                      R=R+trans[4]-trans[6],
+                      cases=cases+trans[4],
+                      W=if (beta.sd>0) W+(dW-delta.t)/beta.sd else W,
+                      B=trans[1],
+                      SI=trans[2],
+                      SD=trans[3],
+                      IR=trans[4],
+                      ID=trans[5],
+                      RD=trans[6],
+                      dW=dW
                       )
                   }
                   )
            },
-           dprocess=euler.density,
            dens.fun=function(t1,t2,params,x1,x2,covars,...) {
              params <- exp(params)
              with(
@@ -112,6 +111,9 @@ po <- pomp(
                   }
                   )
            },
+           rprocess=euler.simulate,
+           dprocess=euler.density,
+           measurement.model=measles~binom(size=cases,prob=exp(rho)),
            initializer=function(params,t0,...){
              p <- exp(params)
              with(
@@ -129,13 +131,6 @@ po <- pomp(
            }
            )
 
-set.seed(3049953)
-## simulate from the model
-tic <- Sys.time()
-x <- simulate(po,params=log(params),nsim=3)
-toc <- Sys.time()
-print(toc-tic)
-
 # alternatively, one can define the computationally intensive bits using native routines:
 ## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
 po <- pomp(
@@ -149,13 +144,13 @@ po <- pomp(
            paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
            covarnames=c("seas1"),
            zeronames=c("cases"),
-           measurement.model=measles~binom(size=cases,prob=exp(rho)),
-           rprocess=euler.simulate,
            step.fun="sir_euler_simulator",
-           dprocess=euler.density,
+           rprocess=euler.simulate,
            dens.fun="sir_euler_density",
+           dprocess=euler.density,
            skeleton="sir_ODE",
            PACKAGE="pomp",
+           measurement.model=measles~binom(size=cases,prob=exp(rho)),
            initializer=function(params,t0,...){
              p <- exp(params)
              with(
