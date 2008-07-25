@@ -1,4 +1,5 @@
-setMethod("pfilter",
+setMethod(
+          "pfilter",
           "mif",
           function (object, params, Np,
                     tol = 1e-17, warn = TRUE, max.fail = 0,
