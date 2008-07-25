@@ -1,3 +1,36 @@
+2008-07-25  kingaa
+
+	* tests/ou2-mif.Rout.save: no need to set rw.sd for parameters that
+	  aren't estimated
+	* inst/examples/logistic.R, inst/examples/rw2.R,
+	  inst/examples/sir.R, tests/examples.R: add a test of the examples
+	  in 'inst/examples' to the 'tests' directory
+	  modify the sir.R example so that it attempts to build a
+	  shared-object library only if .Platform$OS.type=='unix'
+	* inst/doc/intro_to_pomp.Rnw, tests/ou2-mif.R: no need to include
+	  zeros in 'rw.sd'
+	* man/mif.Rd: improve documentation regarding arguments to mif
+	* R/aaa.R: remove a whole lot of stuff that somehow got in from
+	  pomp.devel
+	* inst/examples/sir.R: fix up R-function version
+	* R/aaa.R: improve error handling: fix language and use sQuote,
+	  dQuote where appropriate
+	* DESCRIPTION:
+	* R/compare.mif.R, R/dmeasure-pomp.R, R/dprocess-pomp.R, R/euler.R,
+	  R/init.state-pomp.R, R/mif-methods.R, R/mif.R, R/particles-mif.R,
+	  R/pfilter.R, R/plot-pomp.R, R/pomp-methods.R, R/pomp.R,
+	  R/rmeasure-pomp.R, R/rprocess-pomp.R, R/simulate-pomp.R,
+	  R/skeleton-pomp.R, R/sobol.R: improve error handling: fix
+	  language and use sQuote, dQuote where appropriate
+	* R/mif.R: trap as error parameters (including ivps) which are to
+	  be estimated but which have zero rw.sd
+
+2008-07-22  kingaa
+
+	* inst/NEWS:
+	* inst/ChangeLog:
+	* inst/ChangeLog, inst/O_CHANGES:
+
 2008-07-20  kingaa
 
 	* DESCRIPTION, NAMESPACE, R/aaa.R, R/bsplines.R, R/compare.mif.R,
