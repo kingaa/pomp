@@ -1,4 +1,4 @@
-library(pomp)
+require(pomp)
 
 po <- pomp(
            data=rbind(obs=rep(0,1000)),

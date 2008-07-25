@@ -1,15 +1,5 @@
 require(pomp)
 
-modelfile <- system.file("examples/sir.c",package="pomp")
-includedir <- system.file("include",package="pomp")
-lib <- system.file("libs/pomp.so",package="pomp")
-
-## compile the model into shared-object library
-system(paste("cp",modelfile,"."))
-system(paste("cp ",includedir,"/euler.h .",sep=""))
-system(paste("cp ",includedir,"/lookup_table.h .",sep=""))
-system(paste("R CMD SHLIB -o sir.so sir.c",lib))
-
 ## basis functions for the seasonality
 tbasis <- seq(0,25,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3)
@@ -131,50 +121,63 @@ po <- pomp(
            }
            )
 
-# alternatively, one can define the computationally intensive bits using native routines:
+## alternatively, one can define the computationally intensive bits using native routines:
 ## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
-po <- pomp(
-           times=seq(1/52,4,by=1/52),
-           data=rbind(measles=numeric(52*4)),
-           t0=0,
-           tcovar=tbasis,
-           covar=basis,
-           delta.t=1/52/20,
-           statenames=c("S","I","R","cases","W","B","dW"),
-           paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
-           covarnames=c("seas1"),
-           zeronames=c("cases"),
-           step.fun="sir_euler_simulator",
-           rprocess=euler.simulate,
-           dens.fun="sir_euler_density",
-           dprocess=euler.density,
-           skeleton="sir_ODE",
-           PACKAGE="pomp",
-           measurement.model=measles~binom(size=cases,prob=exp(rho)),
-           initializer=function(params,t0,...){
-             p <- exp(params)
-             with(
-                  as.list(p),
-                  {
-                    fracs <- c(S.0,I.0,R.0)
-                    x0 <- c(
-                            round(pop*fracs/sum(fracs)), # make sure the three compartments sum to 'pop' initially
-                            rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
-                            )
-                    names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
-                    x0
-                  }
-                  )
-           }
-           )
 
-dyn.load("sir.so")                    # load the shared-object library
+if (.Platform$OS.type=='unix') {
 
-## simulate from the model
-tic <- Sys.time()
-x <- simulate(po,params=log(params),nsim=3)
-toc <- Sys.time()
-print(toc-tic)
-plot(x[[1]])
+  modelfile <- system.file("examples/sir.c",package="pomp")
+  includedir <- system.file("include",package="pomp")
+  lib <- system.file("libs/pomp.so",package="pomp")
 
-dyn.unload("sir.so")
+  ## compile the model into a shared-object library
+  system(paste("cp",modelfile,"."))
+  system(paste("cp ",includedir,"/pomp.h .",sep=""))
+  system(paste("R CMD SHLIB -o ./sir_example.so sir.c",lib))
+
+  po <- pomp(
+             times=seq(1/52,4,by=1/52),
+             data=rbind(measles=numeric(52*4)),
+             t0=0,
+             tcovar=tbasis,
+             covar=basis,
+             delta.t=1/52/20,
+             statenames=c("S","I","R","cases","W","B","dW"),
+             paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
+             covarnames=c("seas1"),
+             zeronames=c("cases"),
+             step.fun="sir_euler_simulator",
+             rprocess=euler.simulate,
+             dens.fun="sir_euler_density",
+             dprocess=euler.density,
+             skeleton="sir_ODE",
+             PACKAGE="sir_example", ## name of the shared-object library
+             measurement.model=measles~binom(size=cases,prob=exp(rho)),
+             initializer=function(params,t0,...){
+               p <- exp(params)
+               with(
+                    as.list(p),
+                    {
+                      fracs <- c(S.0,I.0,R.0)
+                      x0 <- c(
+                              round(pop*fracs/sum(fracs)), # make sure the three compartments sum to 'pop' initially
+                              rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
+                              )
+                      names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
+                      x0
+                    }
+                    )
+             }
+             )
+
+  dyn.load("sir_example.so") ## load the shared-object library
+
+  ## simulate from the model
+  tic <- Sys.time()
+  x <- simulate(po,params=log(params),nsim=3)
+  toc <- Sys.time()
+  print(toc-tic)
+
+  dyn.unload("sir_example.so")
+
+}
