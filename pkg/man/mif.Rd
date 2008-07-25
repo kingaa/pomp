@@ -21,24 +21,56 @@ mif(object, \dots)
 \S4method{continue}{mif}(object, Nmif, \dots)
 }
 \arguments{
-  \item{object}{An object of class \code{pomp}.}
-  \item{Nmif}{The number of MIF iterations to perform.}
-  \item{start}{The initial guess of the parameters.  This must be a named vector.}
-  \item{pars}{Character vector of names of ordinary parameters to be estimated.}
-  \item{ivps}{Character vector of names of initial-value parameters to be estimated.}
+  \item{object}{
+    An object of class \code{pomp}.
+  }
+  \item{Nmif}{
+    The number of MIF iterations to perform.
+  }
+  \item{start}{
+    The initial guess of the parameters.
+    This must be a named vector.
+  }
+  \item{pars}{
+    character vector;
+    names of ordinary parameters to be estimated.
+  }
+  \item{ivps}{
+    character vector;
+    names of initial-value parameters to be estimated.
+  }
   \item{particles}{
     Function of prototype \code{particles(Np,center,sd,...)} which sets up the initial particle matrix by drawing a sample of size \code{Np} from the initial particle distribution centered at \code{center} and of width \code{sd}.
     If \code{particles} is not supplied by the user, the default behavior is to draw the particles from a multivariate normal distribution with mean \code{center} and standard deviation \code{sd}.
   }
-  \item{rw.sd}{The intensity of the random walk.}
+  \item{rw.sd}{
+    numeric vector; the intensity of the random walk to be applied to parameters.
+    The random walk is only applied to parameters named in \code{pars}.
+    The algorithm requires that the random walk be nontrivial.
+    Thus, each element in \code{rw.sd[pars]} must be positive.
+    \code{rw.sd} is also used to scale the initial-value parameters (via the \code{particles} function).
+    Therefore, each element of \code{rw.sd[ivps]} must be positive.
+  }
   \item{alg.pars}{
     A named list of algorithm parameters.
     This consists of
     \describe{
-      \item{Np}{the number of particles to use in filtering}
-      \item{var.factor}{the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}}
-      \item{ic.lag}{the timepoint for fixed-lag smoothing of initial-value parameters (IVPs)}
-      \item{cooling.factor}{the exponential cooling factor, \code{alpha}, where \code{0<alpha<1}.}
+      \item{Np}{
+	a positive integer;
+	the number of particles to use in filtering
+      }
+      \item{ic.lag}{
+	a positive integer;
+	the timepoint for fixed-lag smoothing of initial-value parameters
+      }
+      \item{var.factor}{
+	a positive number;
+	the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}
+      }
+      \item{cooling.factor}{
+	a positive number not greater than 1;
+	the exponential cooling factor, \code{alpha}.
+      }
     }
   }
   \item{weighted}{
