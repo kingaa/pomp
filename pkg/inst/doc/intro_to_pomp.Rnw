@@ -110,7 +110,7 @@ Again, pay special attention to the structure of the input arguments and return 
       for (j in 1:nreps) {
         eps[1] <- (x['x1',j,k]-params['alpha.1',j]*x['x1',j,k-1]-params['alpha.3',j]*x['x2',j,k-1])/params['sigma.1',j]
         eps[2] <- (x['x2',j,k]-params['alpha.2',j]*x['x1',j,k-1]-params['alpha.4',j]*x['x2',j,k-1]-params['sigma.2',j]*eps[1])/params['sigma.3',j]
-        d[j,k-1] <- sum(dnorm(eps,mean=0,sd=1,log=TRUE),na.rm=T)
+        d[j,k-1] <- sum(dnorm(eps,mean=0,sd=1,log=TRUE),na.rm=T)-sum(log(params[c('sigma.1','sigma.3'),j]))
       }
     }
     if (log) d else exp(d)

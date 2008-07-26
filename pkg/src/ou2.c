@@ -174,7 +174,7 @@ static double dens_ou2 (double *x1, double *x2,
   eps[1] -= sigma2*eps[0];
   eps[1] /= sigma3;
 
-  val = dnorm(eps[0],0.0,1.0,1)+dnorm(eps[1],0.0,1.0,1);
+  val = dnorm(eps[0],0.0,1.0,1)+dnorm(eps[1],0.0,1.0,1)-log(sigma1)-log(sigma3);
   return ((give_log) ? val : exp(val));
 }
 

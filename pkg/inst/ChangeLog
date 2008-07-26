@@ -1,5 +1,10 @@
 2008-07-25  kingaa
 
+	* R/pfilter-mif.R:
+	* inst/NEWS:
+	* inst/NEWS:
+	* data/ou2.rda, inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
 	* tests/ou2-mif.Rout.save: no need to set rw.sd for parameters that
 	  aren't estimated
 	* inst/examples/logistic.R, inst/examples/rw2.R,
@@ -67,5 +72,5 @@
 
 2007-06-25  stefan7th
 
-	* README, ., R, man, www, www/index.php: Email in Readme changed
+	* ., R, man: Email in Readme changed
 

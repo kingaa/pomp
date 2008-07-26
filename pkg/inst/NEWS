@@ -1,8 +1,12 @@
+NEW IN VERSION 0.20-6:
+
+    o   bug fix in "intro_to_pomp" vignette
+    
 NEW IN VERSION 0.20-5:
 
-	o   better error handling and improved documentation for 'mif'
+    o   better error handling and improved documentation for 'mif'
 
-	o   testing of examples in the 'examples' directory, including compilation, linking, and running of dynamically-loadable library on unix machines
+    o   testing of examples in the 'examples' directory, including compilation, linking, and running of dynamically-loadable library on unix machines
 
 NEW IN VERSION 0.20-4:
 

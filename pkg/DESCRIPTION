@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Partially-observed Markov processes
-Version: 0.20-5
-Date: 2008-07-25
+Version: 0.20-6
+Date: 2008-07-26
 Author: Aaron A. King, Edward L. Ionides, Carles Martinez Breto
 Maintainer: Aaron A. King <kingaa@umich.edu>
 Description: Inference methods for partially-observed Markov processes
