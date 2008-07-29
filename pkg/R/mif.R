@@ -153,7 +153,8 @@ setMethod(
             sigma[rw.names] <- rw.sd
             if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
               stop("mif error: ",sQuote("alg.pars")," must be a named list with elements ",sQuote("Np"),",",sQuote("cooling.factor"),",",sQuote("ic.lag"),",and ",sQuote("var.factor"),call.=FALSE)
-            conv.rec <- matrix(NA,
+            conv.rec <- matrix(
+                               data=NA,
                                nrow=Nmif+1,
                                ncol=length(theta)+2,
                                dimnames=list(
