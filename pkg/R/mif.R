@@ -243,7 +243,7 @@ setMethod(
           function (object, Nmif, ...) {
             ndone <- object@Nmif
             obj <- mif(object,Nmif=Nmif,.ndone=ndone,...)
-            object@conv.rec[ndone+1,'loglik'] <- obj@conv.rec[1,'loglik']
+            object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1,c('loglik','nfail')]
             obj@conv.rec <- rbind(
                                   object@conv.rec,
                                   obj@conv.rec[-1,colnames(object@conv.rec)]
