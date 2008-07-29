@@ -1,3 +1,7 @@
+NEW IN VERSION 0.20-7:
+
+    o   bug fix in convergence record storage
+
 NEW IN VERSION 0.20-6:
 
     o   bug fix in "intro_to_pomp" vignette
