@@ -43,9 +43,30 @@ echo $contents; } ?>
 
 <!-- end of project description -->
 
-<p> No content added. </p>
+<p>
+<strong>pomp</strong> is built around a very general realization of nonlinear partially-observed Markov processes (AKA state-space models, nonlinear stochastic dynamical systems). 
+One specifies a model's process and measurement components; the package uses these functions in algorithms to simulate, analyze, and fit the model to data.
+</p>
 
-<p> The <strong>project summary page</strong> you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>. </p>
+<p>
+At the moment, algorithms are provided for particle filtering (AKA sequential importance sampling or sequential Monte Carlo) and the likelihood maximization by iterated filtering (MIF) method of Ionides, Breto, and King (PNAS, 103:18438-18443, 2006). 
+Future support for a variety of other algorithms is envisioned. 
+A working group of the National Center for Ecological Analysis and Synthesis (NCEAS), "Inference for Mechanistic Models", is currently implementing additional methods for this package.
+</p>
+
+<p>
+Simple worked examples are provided in two vignettes and in the "examples" directory of the installation.
+</p>
+
+<p>
+The package is provided under the GPL. 
+Contributions are welcome, as are comments, suggestions, examples, and bug reports.
+</p>
+
+<p>The development of this package has been aided by support from the U.S. N.S.F (Grants #EF-0545276, #EF-0430120) and by the "Inference for Mechanistic Models" Working Group supported by the National Center for Ecological Analysis and Synthesis, a Center funded by NSF (Grant #DEB-0553768), the University of California, Santa Barbara, and the State of California.</p>
+</p>
+
+<p>The <strong>project summary page</strong> you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>. </p>
 
 </body>
 </html>
