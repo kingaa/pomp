@@ -1,3 +1,9 @@
+NEW IN VERSION 0.20-8:
+
+    o   better error handling in mif
+
+    o	fix inaccuracy in documentation of 'pomp' arguments 'rmeasure' and 'dmeasure'
+
 NEW IN VERSION 0.20-7:
 
     o   bug fix in convergence record storage
