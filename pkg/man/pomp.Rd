@@ -130,25 +130,23 @@
       \strong{In writing this function, you may assume that the transitions are consecutive.}
     }
     \item{\code{rmeasure}}{
-      must have at least the arguments \code{x}, \code{times}, \code{params}, and \code{\dots}.
+      must take at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
       It may take additional arguments, which will be filled with user-specified data as above.
-      \code{x} must be a rank-3 array dimension \code{c(nvars,nreps,ntimes)}, where these variables have the same meanings as above.
-      \code{times} is the corresponding set of times.
-      \code{params} is a rank-2 array of dimension \code{c(npars,nreps)} as above.
+      \code{x} may be assumed to be a named vector of length \code{nvars}, (which has the same meanings as above).
+      \code{t} is a scalar quantity, the time at which the measurement is made.
+      \code{params} may be assumed to be a named vector of length \code{npars}.
       
-      \code{rmeasure} must return a rank-3 array with rownames.
-      If \code{y} is the returned array, then \code{dim(y)=c(nobs,nreps,ntimes)}, where \code{nobs} is the number of observable variables and \code{nreps}, \code{ntimes} agree with the corresponding dimensions of \code{x}.
-      \code{y[,j,k]} must be the vector of observables in the \code{j}-th realization at time \code{times[k]}.
+      \code{rmeasure} must return a named vector.
+      If \code{y} is the returned vector, then \code{length(y)=nobs}, where \code{nobs} is the number of observable variables.
     }
     \item{\code{dmeasure}}{
-      must have at least the arguments \code{y}, \code{x}, \code{times}, \code{params}, \code{log}, and \code{\dots}.
-      \code{y} is a rank-2 array of observations (\code{nobs} x \code{ntimes});
-      \code{x}, a rank-3 array of states;
-      \code{params}, a rank-2 array containing parameters;
-      and \code{times}, the corresponding observation times.
+      must take at least the arguments \code{y}, \code{x}, \code{times}, \code{params}, \code{log}, and \code{\dots}.
+      \code{y} may be assumed to be a named vector of length \code{nobs} containing (actual or simulated) values of the observed variables;
+      \code{x} will be a named vector of length \code{nvar} containing state variables
+      \code{params}, a named vector containing parameters;
+      and \code{t}, a scalar, the corresponding observation time.
       It may take additional arguments which will be filled with user-specified data as above.
-      \code{dmeasure} must return a rank-2 array of dimension \code{nreps} x \code{ntimes}.
-      If \code{d} is the returned array, then \code{d[j,k]} is the p.d.f. of \code{y[,k]} given \code{x[,j,k]} at time \code{times[k]}.
+      \code{dmeasure} must return a single numeric value, the p.d.f. of \code{y} given \code{x} at time \code{t}.
       If \code{log=TRUE}, then the log of the p.d.f. is returned.
     }
     \item{\code{skeleton}}{
