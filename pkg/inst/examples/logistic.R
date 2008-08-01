@@ -23,7 +23,8 @@ po <- pomp(
                   dnorm(
                         x=x2['n'],
                         mean=n+r*n*(1-n/K)*delta.t,
-                        sd=sigma*n*sqrt(delta.t)
+                        sd=sigma*n*sqrt(delta.t),
+                        log=log
                         )
                   )
            },
