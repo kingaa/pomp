@@ -1,71 +1,73 @@
 2008-08-01  kingaa
 
-	* inst/examples/logistic.R: make dprocess depend on 'log'
+	* [r36] inst/ChangeLog:
+	* [r35] inst/examples/logistic.R: make dprocess depend on 'log'
 
 2008-07-31  kingaa
 
-	* inst/NEWS:
-	* DESCRIPTION:
-	* R/mif.R: improved error handling in mif
-	* man/pomp.Rd: fix inaccuracy in documentation of rmeasure and
-	  dmeasure arguments
+	* [r34] inst/NEWS:
+	* [r33] DESCRIPTION:
+	* [r32] R/mif.R: improved error handling in mif
+	* [r31] man/pomp.Rd: fix inaccuracy in documentation of rmeasure
+	  and dmeasure arguments
 
 2008-07-29  kingaa
 
-	* inst/NEWS:
-	* DESCRIPTION:
-	* R/mif.R: bug fix in convergence record storage
-	* R/mif.R: cosmetic
+	* [r29] inst/NEWS:
+	* [r28] DESCRIPTION:
+	* [r27] R/mif.R: bug fix in convergence record storage
+	* [r26] R/mif.R: cosmetic
 
 2008-07-26  kingaa
 
-	* DESCRIPTION, inst/ChangeLog, inst/NEWS,
+	* [r25] DESCRIPTION, inst/ChangeLog, inst/NEWS,
 	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
 	  inst/doc/intro_to_pomp.pdf, src/ou2.c: bug fix in
 	  "intro_to_pomp.Rnw"
 
 2008-07-25  kingaa
 
-	* R/pfilter-mif.R:
-	* inst/NEWS:
-	* inst/NEWS:
-	* data/ou2.rda, inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
-	  inst/doc/intro_to_pomp.pdf:
-	* tests/ou2-mif.Rout.save: no need to set rw.sd for parameters that
-	  aren't estimated
-	* inst/examples/logistic.R, inst/examples/rw2.R,
+	* [r24] R/pfilter-mif.R:
+	* [r23] inst/NEWS:
+	* [r22] inst/NEWS:
+	* [r21] data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	* [r20] tests/ou2-mif.Rout.save: no need to set rw.sd for
+	  parameters that aren't estimated
+	* [r19] inst/examples/logistic.R, inst/examples/rw2.R,
 	  inst/examples/sir.R, tests/examples.R: add a test of the examples
 	  in 'inst/examples' to the 'tests' directory
 	  modify the sir.R example so that it attempts to build a
 	  shared-object library only if .Platform$OS.type=='unix'
-	* inst/doc/intro_to_pomp.Rnw, tests/ou2-mif.R: no need to include
-	  zeros in 'rw.sd'
-	* man/mif.Rd: improve documentation regarding arguments to mif
-	* R/aaa.R: remove a whole lot of stuff that somehow got in from
-	  pomp.devel
-	* inst/examples/sir.R: fix up R-function version
-	* R/aaa.R: improve error handling: fix language and use sQuote,
-	  dQuote where appropriate
-	* DESCRIPTION:
-	* R/compare.mif.R, R/dmeasure-pomp.R, R/dprocess-pomp.R, R/euler.R,
-	  R/init.state-pomp.R, R/mif-methods.R, R/mif.R, R/particles-mif.R,
-	  R/pfilter.R, R/plot-pomp.R, R/pomp-methods.R, R/pomp.R,
-	  R/rmeasure-pomp.R, R/rprocess-pomp.R, R/simulate-pomp.R,
-	  R/skeleton-pomp.R, R/sobol.R: improve error handling: fix
-	  language and use sQuote, dQuote where appropriate
-	* R/mif.R: trap as error parameters (including ivps) which are to
-	  be estimated but which have zero rw.sd
+	* [r18] inst/doc/intro_to_pomp.Rnw, tests/ou2-mif.R: no need to
+	  include zeros in 'rw.sd'
+	* [r17] man/mif.Rd: improve documentation regarding arguments to
+	  mif
+	* [r16] R/aaa.R: remove a whole lot of stuff that somehow got in
+	  from pomp.devel
+	* [r15] inst/examples/sir.R: fix up R-function version
+	* [r14] R/aaa.R: improve error handling: fix language and use
+	  sQuote, dQuote where appropriate
+	* [r13] DESCRIPTION:
+	* [r12] R/compare.mif.R, R/dmeasure-pomp.R, R/dprocess-pomp.R,
+	  R/euler.R, R/init.state-pomp.R, R/mif-methods.R, R/mif.R,
+	  R/particles-mif.R, R/pfilter.R, R/plot-pomp.R, R/pomp-methods.R,
+	  R/pomp.R, R/rmeasure-pomp.R, R/rprocess-pomp.R,
+	  R/simulate-pomp.R, R/skeleton-pomp.R, R/sobol.R: improve error
+	  handling: fix language and use sQuote, dQuote where appropriate
+	* [r11] R/mif.R: trap as error parameters (including ivps) which
+	  are to be estimated but which have zero rw.sd
 
 2008-07-22  kingaa
 
-	* inst/NEWS:
-	* inst/ChangeLog:
-	* inst/ChangeLog, inst/O_CHANGES:
+	* [r10] inst/NEWS:
+	* [r9] inst/ChangeLog:
+	* [r8] inst/ChangeLog, inst/O_CHANGES:
 
 2008-07-20  kingaa
 
-	* DESCRIPTION, NAMESPACE, R/aaa.R, R/bsplines.R, R/compare.mif.R,
-	  R/dmeasure-pomp.R, R/dprocess-pomp.R, R/euler.R,
+	* [r7] DESCRIPTION, NAMESPACE, R/aaa.R, R/bsplines.R,
+	  R/compare.mif.R, R/dmeasure-pomp.R, R/dprocess-pomp.R, R/euler.R,
 	  R/eulermultinom.R, R/init.state-pomp.R, R/mif-methods.R, R/mif.R,
 	  R/particles-mif.R, R/pfilter-mif.R, R/pfilter.R, R/plot-pomp.R,
 	  R/pomp-methods.R, R/pomp.R, R/rmeasure-pomp.R, R/rprocess-pomp.R,
@@ -93,10 +95,11 @@
 	  tests/ou2-mif.Rout.save, tests/ou2-simulate.R,
 	  tests/ou2-simulate.Rout.save, tests/rw2.R, tests/rw2.Rout.save,
 	  tests/sir.R, tests/sir.Rout.save: initial revision
-	* data/ou2.rda:
-	* data:
+	* [r6] data/ou2.rda:
+	* [r5] data:
 
 2007-06-25  stefan7th
 
-	* README, ., R, man, www, www/index.php: Email in Readme changed
+	* [r1] README, ., R, man, www, www/index.php: Email in Readme
+	  changed
 
