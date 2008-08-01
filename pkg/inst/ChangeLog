@@ -1,3 +1,29 @@
+2008-08-01  kingaa
+
+	* inst/examples/logistic.R: make dprocess depend on 'log'
+
+2008-07-31  kingaa
+
+	* inst/NEWS:
+	* DESCRIPTION:
+	* R/mif.R: improved error handling in mif
+	* man/pomp.Rd: fix inaccuracy in documentation of rmeasure and
+	  dmeasure arguments
+
+2008-07-29  kingaa
+
+	* inst/NEWS:
+	* DESCRIPTION:
+	* R/mif.R: bug fix in convergence record storage
+	* R/mif.R: cosmetic
+
+2008-07-26  kingaa
+
+	* DESCRIPTION, inst/ChangeLog, inst/NEWS,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, src/ou2.c: bug fix in
+	  "intro_to_pomp.Rnw"
+
 2008-07-25  kingaa
 
 	* R/pfilter-mif.R:
@@ -72,5 +98,5 @@
 
 2007-06-25  stefan7th
 
-	* ., R, man: Email in Readme changed
+	* README, ., R, man, www, www/index.php: Email in Readme changed
 
