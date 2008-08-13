@@ -6,8 +6,8 @@
 }
 \usage{
   pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model, skeleton, initializer, covar, tcovar,
-       statenames, paramnames, covarnames, PACKAGE)
+       measurement.model, skeleton.map, skeleton.vectorfield, initializer,
+       covar, tcovar, statenames, paramnames, covarnames, PACKAGE)
 }
 \arguments{
   \item{data}{
@@ -55,11 +55,15 @@
     See below for an example.
     NB: it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
   }
-  \item{skeleton}{
-    The deterministic skeleton can be provided in one of two ways:
+  \item{skeleton.map}{
+    If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map and can be specified using \code{skeleton.map} in one of two ways:
     (1) as a function of prototype \code{skeleton(x,t,params,\dots)} which evaluates the deterministic skeleton (whether vectorfield or map) of at state \code{x} and time \code{t} given the parameters \code{params}, or
     (2) as the name of a native (compiled) routine with prototype "pomp\_vectorfield\_map" as defined in the header file "pomp.h".
     If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
+  }
+  \item{skeleton.vectorfield}{
+    If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield and can be specified using \code{skeleton.vectorfield} in either of the two ways described above, under \code{skeleton.map}.
+    Note that it makes no sense to specify the deterministic skeleton both as a map and as a vectorfield: an attempt to do so will generate an error.
   }
   \item{initializer}{
     Function of prototype \code{initializer(params,t0,\dots)} which yields initial conditions for the state process when given a vector, \code{params}, of parameters.

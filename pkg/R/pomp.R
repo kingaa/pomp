@@ -1,7 +1,7 @@
 ## constructor of the pomp class
 pomp <- function (data, times, t0, ..., rprocess, dprocess,
                   rmeasure, dmeasure, measurement.model,
-                  skeleton, initializer, covar, tcovar,
+                  skeleton.map, skeleton.vectorfield, initializer, covar, tcovar,
                   statenames, paramnames, covarnames,
                   PACKAGE) {
   ## check the data
@@ -50,9 +50,68 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     rmeasure <- function(x,t,params,covars,...)stop(sQuote("rmeasure")," not specified")
   if (missing(dmeasure))
     dmeasure <- function(y,x,t,params,log=FALSE,covars,...)stop(sQuote("dmeasure")," not specified")
-  if (missing(skeleton))
-    skeleton <- function(x,t,params,covars,...)stop(sQuote("skeleton")," not specified")
-
+  
+  if (missing(skeleton.map)) {
+    if (missing(skeleton.vectorfield)) {# skeleton is unspecified
+      skeleton.type <- as.character(NA)
+      skeleton <- new(
+                      "pomp.fun",
+                      R.fun=function(x,t,params,covars,...)stop(sQuote("skeleton")," not specified"),
+                      use=as.integer(1)
+                      )
+    } else {                # skeleton is a vectorfield (ordinary differential equation)
+      skeleton.type <- "vectorfield"
+      if (is.function(skeleton.vectorfield)) {
+        if (!all(c('x','t','params','...')%in%names(formals(skeleton.vectorfield))))
+          stop(
+               sQuote("skeleton.vectorfield"),
+               " must be a function of prototype ",
+               sQuote("skeleton.vectorfield(x,t,params,...)")
+               )
+        skeleton <- new(
+                        "pomp.fun",
+                        R.fun=skeleton.vectorfield,
+                        use=as.integer(1)
+                        )
+      } else if (is.character(skeleton.vectorfield)) {
+        skeleton <- new(
+                        "pomp.fun",
+                        R.fun=function(x,t,params,...)stop("very bad: skel.fun"),
+                        native.fun=skeleton.vectorfield,
+                        PACKAGE=PACKAGE,
+                        use=as.integer(2)
+                        )
+      } else {
+        stop(sQuote("skeleton.vectorfield")," must be either a function or the name of a compiled routine")
+      }
+    }
+  } else {
+    if (missing(skeleton.vectorfield)) { # skeleton is a map (discrete-time system)
+      skeleton.type <- "map"
+      if (is.function(skeleton.map)) {
+        if (!all(c('x','t','params','...')%in%names(formals(skeleton.map))))
+          stop(sQuote("skeleton.map")," must be a function of prototype ",sQuote("skeleton.map(x,t,params,...)"))
+        skeleton <- new(
+                        "pomp.fun",
+                        R.fun=skeleton.map,
+                        use=as.integer(1)
+                        )
+      } else if (is.character(skeleton.map)) {
+        skeleton <- new(
+                        "pomp.fun",
+                        R.fun=function(x,t,params,...)stop("very bad: skel.fun"),
+                        native.fun=skeleton.map,
+                        PACKAGE=PACKAGE,
+                        use=as.integer(2)
+                        )
+      } else {
+        stop(sQuote("skeleton.map")," must be either a function or the name of a compiled routine")
+      }
+    } else { # a dynamical system cannot be both a map and a vectorfield
+      stop("it is not permitted to specify both ",sQuote("skeleton.map")," and ",sQuote("skeleton.vectorfield"))
+    }
+  }
+  
   if (missing(initializer)) {
     initializer <- function (params, t0, ...) {
       ivpnames <- grep("\\.0$",names(params),val=TRUE)
@@ -109,26 +168,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                     )
   } else {
     stop(sQuote("dmeasure")," must be either a function or the name of a compiled routine")
-  }
-  
-  if (is.function(skeleton)) {
-    if (!all(c('x','t','params','...')%in%names(formals(skeleton))))
-      stop(sQuote("skeleton")," must be a function of prototype ",sQuote("skeleton(x,t,params,...)"))
-    skeleton <- new(
-                    "pomp.fun",
-                    R.fun=skeleton,
-                    use=as.integer(1)
-                    )
-  } else if (is.character(skeleton)) {
-    skeleton <- new(
-                    "pomp.fun",
-                    R.fun=function(x,t,params,...)stop("very bad: skel.fun"),
-                    native.fun=skeleton,
-                    PACKAGE=PACKAGE,
-                    use=as.integer(2)
-                    )
-  } else {
-    stop(sQuote("skeleton")," must be either a function or the name of a compiled routine")
   }
   
   if (!is.function(initializer))
@@ -207,6 +246,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
       dprocess = dprocess,
       dmeasure = dmeasure,
       rmeasure = rmeasure,
+      skeleton.type = skeleton.type,
       skeleton = skeleton,
       data = data,
       times = times,

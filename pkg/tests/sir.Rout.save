@@ -1,6 +1,6 @@
 
-R version 2.6.1 (2007-11-26)
-Copyright (C) 2007 The R Foundation for Statistical Computing
+R version 2.7.1 (2008-06-23)
+Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,6 +16,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: odesolve
 > 
 > tbasis <- seq(0,25,by=1/52)
 > basis <- periodic.bspline.basis(tbasis,nbasis=3)
@@ -94,7 +95,8 @@ Type 'q()' to quit R.
 +                   }
 +                   )
 +            },
-+            skeleton=function(x,t,params,covars,...) {
++            skeleton.vectorfield=function(x,t,params,covars,...) {
++              xdot <- rep(0,length(x))
 +              params <- exp(params)
 +              with(
 +                   as.list(c(x,params)),
@@ -109,12 +111,13 @@ Type 'q()' to quit R.
 +                                mu*I,
 +                                mu*R
 +                                )
-+                     c(
-+                       terms[1]-terms[2]-terms[3],
-+                       terms[2]-terms[4]-terms[5],
-+                       terms[4]-terms[6],
-+                       terms[4]
-+                       )
++                     xdot[1:4] <- c(
++                                    terms[1]-terms[2]-terms[3],
++                                    terms[2]-terms[4]-terms[5],
++                                    terms[4]-terms[6],
++                                    terms[4]
++                                    )
++                     xdot
 +                   }
 +                   )
 +            },
@@ -144,7 +147,9 @@ Type 'q()' to quit R.
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.671906 secs
+Time difference of 4.001635 secs
+> pdf(file='sir.pdf')
+> plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t <- seq(0,4/52,by=1/52/25)
 > X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)
@@ -199,6 +204,14 @@ S  33608  28740  22452  16799   5834  -8382 -27621.9
 I   2847   4893   7554   9945  14452  20004  27020.1
 R -36462 -33640 -30013 -26751 -20293 -11629    593.4
 > 
+> t <- seq(0,20,by=1/52)
+> tic <- Sys.time()
+> X <- trajectory(po,params=log(params),times=t,hmax=1/52)
+> toc <- Sys.time()
+> print(toc-tic)
+Time difference of 9.436516 secs
+> plot(t,X['I',1,],type='l')
+> 
 > po <- pomp(
 +            times=seq(1/52,4,by=1/52),
 +            data=rbind(measles=numeric(52*4)),
@@ -214,7 +227,7 @@ R -36462 -33640 -30013 -26751 -20293 -11629    593.4
 +            rprocess=euler.simulate,
 +            dens.fun="sir_euler_density",
 +            dprocess=euler.density,
-+            skeleton="sir_ODE",
++            skeleton.vectorfield="sir_ODE",
 +            PACKAGE="pomp",
 +            measurement.model=measles~binom(size=cases,prob=exp(rho)),
 +            initializer=function(params,t0,...){
@@ -240,7 +253,8 @@ R -36462 -33640 -30013 -26751 -20293 -11629    593.4
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.3779790 secs
+Time difference of 0.3902411 secs
+> plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t <- seq(0,4/52,by=1/52/25)
 > X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)
@@ -294,4 +308,15 @@ R -37964.4 -37871.3 -36633 -35605 -34628 -33886 -31845 -30638 -25270 -20294
 S  -4107 -21296 -45772 -70414 -100996 -132252
 I  17033  23456  31943  39251   46266   49391
 R -12929  -2160  13830  31164   54730   82862
+> 
+> t <- seq(0,20,by=1/52)
+> tic <- Sys.time()
+> X <- trajectory(po,params=log(params),times=t,hmax=1/52)
+> toc <- Sys.time()
+> print(toc-tic)
+Time difference of 7.409947 secs
+> plot(t,X['I',1,],type='l')
+> dev.off()
+null device 
+          1 
 > 

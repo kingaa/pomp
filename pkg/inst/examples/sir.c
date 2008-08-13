@@ -165,6 +165,12 @@ void sir_ODE (double *f, double *x, const double *p,
   DRDT = term[3]-term[5];
   DCDT = term[3];		// cases are cumulative recoveries
 
+//   // trap for negative states
+//   DSDT = (SUSC < 0.0) ? DSDT : 0.0;
+//   DIDT = (INFD < 0.0) ? DIDT : 0.0;
+//   DRDT = (RCVD < 0.0) ? DRDT : 0.0;
+//   DCDT = (CASE < 0.0) ? DCDT : 0.0;
+
 }
 
 #undef DSDT

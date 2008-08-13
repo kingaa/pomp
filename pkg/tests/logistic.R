@@ -28,7 +28,7 @@ po <- pomp(
                   )
            },
            measurement.model=obs~lnorm(meanlog=log(n),sdlog=log(1+tau)),
-           skeleton=function(x,t,params,...){
+           skeleton.vectorfield=function(x,t,params,...){
              with(
                   as.list(c(x,params)),
                   r*n*(1-n/K)
@@ -83,3 +83,8 @@ print(
       digits=4
       )
                
+params <- cbind(c(n.0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),c(n.0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1))
+x <- trajectory(po,params=params)
+pdf(file='logistic.pdf')
+matplot(time(po,t0=TRUE),t(x['n',,]),type='l')
+dev.off()

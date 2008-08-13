@@ -38,7 +38,7 @@ skeleton(object, x, t, params, \dots)
 }
 \details{
   This function makes repeated calls to the user-supplied \code{skeleton} of the \code{pomp} object.
-  For specifications on supplying these, see \code{\link{pomp}}.
+  For specifications on supplying this, see \code{\link{pomp}}.
 }
 \references{}
 \author{Aaron A. King (kingaa at umich dot edu)}

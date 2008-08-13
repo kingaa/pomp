@@ -23,6 +23,7 @@ setClass(
                         dprocess = 'function',
                         dmeasure = 'pomp.fun',
                         rmeasure = 'pomp.fun',
+                        skeleton.type = 'character',
                         skeleton = 'pomp.fun',
                         initializer = 'function',
                         states = 'array',
@@ -128,3 +129,7 @@ setGeneric('coef<-')
 states <- function (object, ...)
   stop("function ",sQuote("states")," is undefined for objects of class ",sQuote(class(object)))
 setGeneric('states')
+
+trajectory <- function (object, params, times, ...)
+  stop("function ",sQuote("trajectory")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('trajectory')

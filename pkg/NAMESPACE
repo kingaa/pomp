@@ -26,7 +26,7 @@ exportMethods(
               'simulate','data.array','pfilter',
               'coef','logLik',
               'pred.mean','pred.var','filter.mean','conv.rec',
-              'particles','mif','continue','coef<-','states'
+              'particles','mif','continue','coef<-','states','trajectory'
               )
 
 export(

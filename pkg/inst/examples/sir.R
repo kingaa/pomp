@@ -77,7 +77,7 @@ po <- pomp(
                   }
                   )
            },
-           skeleton=function(x,t,params,covars,...) {
+           skeleton.vectorfield=function(x,t,params,covars,...) {
              params <- exp(params)
              with(
                   as.list(c(x,params)),
@@ -92,12 +92,13 @@ po <- pomp(
                                mu*I,
                                mu*R
                                )
-                    c(
-                      terms[1]-terms[2]-terms[3],
-                      terms[2]-terms[4]-terms[5],
-                      terms[4]-terms[6],
-                      terms[4]
-                      )
+                    xdot <- c(
+                              terms[1]-terms[2]-terms[3],
+                              terms[2]-terms[4]-terms[5],
+                              terms[4]-terms[6],
+                              terms[4]
+                              )
+                    ifelse(x>0,xdot,0)
                   }
                   )
            },
@@ -150,7 +151,7 @@ if (.Platform$OS.type=='unix') {
              rprocess=euler.simulate,
              dens.fun="sir_euler_density",
              dprocess=euler.density,
-             skeleton="sir_ODE",
+             skeleton.vectorfield="sir_ODE",
              PACKAGE="sir_example", ## name of the shared-object library
              measurement.model=measles~binom(size=cases,prob=exp(rho)),
              initializer=function(params,t0,...){

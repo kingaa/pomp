@@ -1,6 +1,6 @@
 
-R version 2.6.1 (2007-11-26)
-Copyright (C) 2007 The R Foundation for Statistical Computing
+R version 2.7.1 (2008-06-23)
+Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,6 +16,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: odesolve
 > 
 > po <- pomp(
 +            data=rbind(obs=rep(0,1000)),
@@ -45,7 +46,7 @@ Type 'q()' to quit R.
 +                   )
 +            },
 +            measurement.model=obs~lnorm(meanlog=log(n),sdlog=log(1+tau)),
-+            skeleton=function(x,t,params,...){
++            skeleton.vectorfield=function(x,t,params,...){
 +              with(
 +                   as.list(c(x,params)),
 +                   r*n*(1-n/K)
@@ -106,4 +107,11 @@ Type 'q()' to quit R.
  [1]     0   810  1440  1890  2160  2250  2160  1890  1440   810     0  -990
 [13] -2160
 >                
+> params <- cbind(c(n.0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),c(n.0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1))
+> x <- trajectory(po,params=params)
+> pdf(file='logistic.pdf')
+> matplot(time(po,t0=TRUE),t(x['n',,]),type='l')
+> dev.off()
+null device 
+          1 
 > 

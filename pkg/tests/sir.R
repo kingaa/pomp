@@ -77,7 +77,8 @@ po <- pomp(
                   }
                   )
            },
-           skeleton=function(x,t,params,covars,...) {
+           skeleton.vectorfield=function(x,t,params,covars,...) {
+             xdot <- rep(0,length(x))
              params <- exp(params)
              with(
                   as.list(c(x,params)),
@@ -92,12 +93,13 @@ po <- pomp(
                                mu*I,
                                mu*R
                                )
-                    c(
-                      terms[1]-terms[2]-terms[3],
-                      terms[2]-terms[4]-terms[5],
-                      terms[4]-terms[6],
-                      terms[4]
-                      )
+                    xdot[1:4] <- c(
+                                   terms[1]-terms[2]-terms[3],
+                                   terms[2]-terms[4]-terms[5],
+                                   terms[4]-terms[6],
+                                   terms[4]
+                                   )
+                    xdot
                   }
                   )
            },
@@ -127,6 +129,8 @@ tic <- Sys.time()
 x <- simulate(po,params=log(params),nsim=3)
 toc <- Sys.time()
 print(toc-tic)
+pdf(file='sir.pdf')
+plot(x[[1]],variables=c("S","I","R","cases","W"))
 
 t <- seq(0,4/52,by=1/52/25)
 X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)
@@ -171,6 +175,13 @@ h <- skeleton(
               )
 print(h[c("S","I","R"),,],digits=4)
 
+t <- seq(0,20,by=1/52)
+tic <- Sys.time()
+X <- trajectory(po,params=log(params),times=t,hmax=1/52)
+toc <- Sys.time()
+print(toc-tic)
+plot(t,X['I',1,],type='l')
+
 po <- pomp(
            times=seq(1/52,4,by=1/52),
            data=rbind(measles=numeric(52*4)),
@@ -186,7 +197,7 @@ po <- pomp(
            rprocess=euler.simulate,
            dens.fun="sir_euler_density",
            dprocess=euler.density,
-           skeleton="sir_ODE",
+           skeleton.vectorfield="sir_ODE",
            PACKAGE="pomp",
            measurement.model=measles~binom(size=cases,prob=exp(rho)),
            initializer=function(params,t0,...){
@@ -212,6 +223,7 @@ tic <- Sys.time()
 x <- simulate(po,params=log(params),nsim=3)
 toc <- Sys.time()
 print(toc-tic)
+plot(x[[1]],variables=c("S","I","R","cases","W"))
 
 t <- seq(0,4/52,by=1/52/25)
 X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)
@@ -255,3 +267,11 @@ h <- skeleton(
               params=as.matrix(log(params))
               )
 print(h[c("S","I","R"),,],digits=4)
+
+t <- seq(0,20,by=1/52)
+tic <- Sys.time()
+X <- trajectory(po,params=log(params),times=t,hmax=1/52)
+toc <- Sys.time()
+print(toc-tic)
+plot(t,X['I',1,],type='l')
+dev.off()
