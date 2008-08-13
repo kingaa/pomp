@@ -1,5 +1,28 @@
+2008-08-13  kingaa
+
+	* [r38] DESCRIPTION, NAMESPACE, R/aaa.R, R/pomp.R,
+	  R/trajectory-pomp.R, data/ou2.rda, inst/examples/logistic.R,
+	  inst/examples/sir.R, inst/examples/sir.c, man/mif-class.Rd,
+	  man/pomp-class.Rd, man/pomp.Rd, man/skeleton-pomp.Rd,
+	  man/trajectory-pomp.Rd, src/skeleton.c, tests/logistic.R,
+	  tests/logistic.Rout.save, tests/sir.R, tests/sir.Rout.save: add
+	  support for computing trajectories of the deterministic skeleton
+	  the skeleton must now be specified when the pomp is created: if
+	  the pomp is a discrete-time system, 'skeleton.map' is used to
+	  specify its deterministic skeleton; if it is a continuous-time
+	  system, 'skeleton.vectorfield' is used.
+	  the new method 'trajectory' will, in the first case, iterate the
+	  map to produce an itinerary and in the second case, it will call
+	  'lsoda' from the now-required 'odesolve' package to compute the
+	  trajectory.
+	  some changes to the basic 'pomp' structure have been made to
+	  facilitate all this.
+	  specifically, a new slot, 'skeleton-type', distinguishes between
+	  discrete-time and continuous-time systems
+
 2008-08-01  kingaa
 
+	* [r37] inst/ChangeLog:
 	* [r36] inst/ChangeLog:
 	* [r35] inst/examples/logistic.R: make dprocess depend on 'log'
 
