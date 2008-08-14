@@ -173,12 +173,18 @@ if (.Platform$OS.type=='unix') {
 
   dyn.load("sir_example.so") ## load the shared-object library
 
+  ## compute a trajectory of the deterministic skeleton
+  tic <- Sys.time()
+  X <- trajectory(po,params=log(params),hmax=1/52)
+  toc <- Sys.time()
+  print(toc-tic)
+
   ## simulate from the model
   tic <- Sys.time()
   x <- simulate(po,params=log(params),nsim=3)
   toc <- Sys.time()
   print(toc-tic)
-
+  
   dyn.unload("sir_example.so")
 
 }
