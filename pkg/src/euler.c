@@ -20,10 +20,12 @@ static void euler_simulator (euler_step_sim *estep,
   int nzero = ndim[6];
   double covar_fn[covdim];
   int j, k, p, step, neuler;
-  double dt;
+  double dt, tol;
 
   struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
   
+  tol = sqrt(DOUBLE_EPS); // relative tolerance in choosing Euler stepsize
+
   // copy the start values into the result array
   for (p = 0; p < nrep; p++)
     for (k = 0; k < nvar; k++) 
@@ -36,18 +38,22 @@ static void euler_simulator (euler_step_sim *estep,
 
     t = times[step-1];
     dt = *deltat;
+
     // neuler is the number of Euler steps to take in going from
     // times[step-1] to times[step].
     // this choice is meant to be conservative
-    // (i.e., so that the actual dt does not exceed the specified dt)
-    // (at least not by much) and to counteract roundoff error.
-    // it is not guaranteed: suggestions would be appreciated.
-    neuler = (int) ceil(((times[step]-t)/dt)-2*(DOUBLE_EPS/dt));
+    // (i.e., so that the actual dt does not exceed the specified dt 
+    // by more than the relative tolerance 'tol')
+    // and to counteract roundoff error.
+    // It seems to work well, but is not guaranteed: 
+    // suggestions would be appreciated.
 
-    // if the next step would carry us beyond times[step], reduce dt
     if (t+dt >= times[step]) {
       dt = times[step] - t; 
       neuler = 1;
+    } else {
+      neuler = (int) ceil((times[step]-t)/dt/(1+tol));
+      dt = (times[step]-t)/((double) neuler);
     }
 
     for (p = 0; p < nrep; p++) {
@@ -75,11 +81,11 @@ static void euler_simulator (euler_step_sim *estep,
 
       }
 
+      t += dt;
+
       if (j == neuler-2) {	// penultimate step
 	dt = times[step]-t;
 	t = times[step]-dt;
-      } else {
-	t += dt;
       }
 
     }
