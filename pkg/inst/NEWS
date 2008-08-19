@@ -1,3 +1,9 @@
+NEW IN VERSION 0.21-3:
+
+    o   trajectories of the deterministic skeleton can now be computed via the method "trajectory"
+
+    o	bug fix in stochastic Euler algorithm
+
 NEW IN VERSION 0.20-8:
 
     o   better error handling in mif
