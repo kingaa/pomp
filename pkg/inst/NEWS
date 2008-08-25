@@ -1,3 +1,7 @@
+NEW IN VERSION 0.21-4:
+
+    o  improved documentation in "euler.Rd"
+
 NEW IN VERSION 0.21-3:
 
     o   trajectories of the deterministic skeleton can now be computed via the method "trajectory"

@@ -34,11 +34,13 @@ euler.density(x, times, params, dens.fun, \dots,
     This can be either an R function or a compiled, dynamically loaded native function containing the model simulator.
     It should be written to take a single Euler step from a single point in state space.
     If it is a native function, it must be of type "euler\_step\_sim" as defined in the header "pomp.h", which is included with the package.
+    For details on how to write such codes, see Details.
   }
   \item{dens.fun}{
     This can be either an R function or a compiled, dynamically loaded native function containing the model transition probability density function.
     This function will be called to compute the probability of the actual Euler steps.
     It must be of type "euler\_step\_pdf" as defined in the header "pomp.h", which is included with the package.
+    For details on how to write such codes, see Details.
   }
   \item{delta.t}{
     Time interval of Euler steps.
@@ -67,13 +69,32 @@ euler.density(x, times, params, dens.fun, \dots,
     logical; if TRUE, probabilities p are given as log(p).
   }
   \item{\dots}{
-    if \code{step.fn} (or \code{dens.fn}) is an R function, then additional arguments will be passed to it.
-    If \code{step.fn} (or \code{dens.fn}) is a native routine, then additional arguments are ignored.
+    if \code{step.fun} (or \code{dens.fun}) is an R function, then additional arguments will be passed to it.
+    If \code{step.fun} (or \code{dens.fun}) is a native routine, then additional arguments are ignored.
   }
   \item{PACKAGE}{
     an optional argument that specifies to which dynamically loaded library we restrict the search for the native routines.
     If this is '"base"', we search in the R executable itself.
   }
+}
+\details{
+  If \code{step.fun} is written as an R function, it must have at least the arguments \code{x}, \code{t}, \code{params}, \code{delta.t}, and \code{\dots}.
+  On a call to this function, \code{x} will be a named vector of state variables, \code{t} a scalar time, and \code{params} a named vector of parameters.
+  The length of the Euler step will be \code{delta.t}.
+  If the argument \code{covars} is included and a covariate table has been included in the \code{pomp} object, then on a call to this function, \code{covars} will be filled with the values, at time \code{t}, of the covariates.
+  This is accomplished via interpolation of the covariate table.
+  Additional arguments may be given: these will be filled by the correspondingly-named elements in the \code{userdata} slot of the \code{pomp} object (see \code{\link{pomp}}).
+
+  If \code{step.fun} is written in a native language, it must be a function of type "euler\_step\_sim" as specified in the header "pomp.h" included with the package (see the directory "include" in the installed package directory).
+
+  If \code{dens.fun} is written as an R function, it must have at least the arguments \code{x1}, \code{x2}, \code{t1}, \code{t2}, \code{params}, and \code{\dots}.
+  On a call to this function, \code{x1} and \code{x2} will be named vectors of state variables at times \code{t1} and \code{t2}, respectively.
+  The named vector \code{params} contains the parameters.
+  If the argument \code{covars} is included and a covariate table has been included in the \code{pomp} object, then on a call to this function, \code{covars} will be filled with the values, at time \code{t1}, of the covariates.
+  This is accomplished via interpolation of the covariate table.
+  As above, any additional arguments will be filled by the correspondingly-named elements in the \code{userdata} slot of the \code{pomp} object (see \code{\link{pomp}}).
+
+  If \code{dens.fun} is written in a native language, it must be a function of type "euler\_step\_pdf" as defined in the header "pomp.h" included with the package (see the directory "include" in the installed package directory).
 }
 \value{
   \code{euler.simulate} returns a \code{nvar} x \code{nrep} x \code{ntimes} array, where \code{nvar} is the number of state variables, \code{nrep} is the number of replicate simulations (= number of columns of \code{xstart} and \code{params}), and \code{ntimes} is the length of \code{times}.
@@ -143,37 +164,5 @@ x <- simulate(po,params=log(params),nsim=3)
 toc <- Sys.time()
 print(toc-tic)
 plot(x[[1]])
-
-t <- seq(0,4/52,1/52/20)
-X <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t)
-
-f <- dprocess(
-              po,
-              x=X$states[,,31:40],
-              times=t[31:40],
-              params=matrix(
-                log(params),
-                nrow=length(params),
-                ncol=10,
-                dimnames=list(names(params),NULL)
-                ),
-              log=TRUE
-              )
-apply(f,1,sum)
-
-g <- dmeasure(
-              po,
-              y=rbind(measles=X$obs[,7,]),
-              x=X$states,
-              times=t,
-              params=matrix(
-                log(params),
-                nrow=length(params),
-                ncol=10,
-                dimnames=list(names(params),NULL)
-                ),
-              log=TRUE
-              )
-apply(g,1,sum)
 }
 \keyword{models}
