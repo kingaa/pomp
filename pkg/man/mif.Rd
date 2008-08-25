@@ -44,7 +44,7 @@ mif(object, \dots)
     If \code{particles} is not supplied by the user, the default behavior is to draw the particles from a multivariate normal distribution with mean \code{center} and standard deviation \code{sd}.
   }
   \item{rw.sd}{
-    numeric vector; the intensity of the random walk to be applied to parameters.
+    numeric vector with names; the intensity of the random walk to be applied to parameters.
     The random walk is only applied to parameters named in \code{pars}.
     The algorithm requires that the random walk be nontrivial.
     Thus, each element in \code{rw.sd[pars]} must be positive.

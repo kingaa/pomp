@@ -77,6 +77,8 @@ setMethod(
                    )
 
             rw.names <- names(rw.sd)
+            if (is.null(rw.names))
+              stop("mif error: ",sQuote("rw.sd")," must be a named vector",call.=FALSE)
             if (any(!(rw.names%in%start.names)))
               stop("mif error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
             if (any(rw.sd[c(pars,ivps)]<=0)) {
