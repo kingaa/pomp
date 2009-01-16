@@ -8,7 +8,8 @@ setMethod(
                     pred.mean = FALSE,
                     pred.var = FALSE,
                     filter.mean = FALSE,
-                    .rw.sd, ...) {
+                    .rw.sd,
+                    verbose = FALSE, ...) {
             if (missing(params)) {
               if (length(object@params)>0) {
                 params <- object@params
@@ -206,6 +207,10 @@ setMethod(
                 pred.v[rw.names,nt] <- pred.v[rw.names,nt]+sigma^2
                 params[rw.names,] <- params[rw.names,]+rnorm(n=Np*length(sigma),mean=0,sd=sigma)
               }
+
+              if (verbose)
+                cat("step",nt,"of",ntimes,"finished\n")
+
             }
 
             list(

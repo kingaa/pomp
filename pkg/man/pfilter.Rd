@@ -12,7 +12,7 @@
 pfilter(object, \dots)
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     warn = TRUE, max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, .rw.sd, \dots)
+    filter.mean = FALSE, .rw.sd, verbose = FALSE, \dots)
 \S4method{pfilter}{mif}(object, params, Np, tol = 1e-17, warn = TRUE,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, \dots)
@@ -55,6 +55,9 @@ pfilter(object, \dots)
   \item{.rw.sd}{
     For internal use with the MIF algorithm.
     If \code{TRUE}, the specified random walk SD is used.
+  }
+  \item{verbose}{
+    If \code{TRUE}, progress information is reported as \code{pfilter} works.
   }
   \item{\dots}{
     Additional arguments unused at present.
