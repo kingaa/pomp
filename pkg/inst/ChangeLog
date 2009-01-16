@@ -1,5 +1,12 @@
+2009-01-16  kingaa
+
+	* [r53] R/pfilter.R, man/pfilter.Rd: add 'verbose' option to
+	  'pfilter'
+
 2008-08-25  kingaa
 
+	* [r52] data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
 	* [r51] R/mif.R, man/mif.Rd, tests/ou2-mif.Rout.save: error trap in
 	  'mif': 'rw.sd' must have names
 	* [r50] DESCRIPTION, inst/NEWS, man/euler.Rd: better documentation
@@ -153,6 +160,5 @@
 
 2007-06-25  stefan7th
 
-	* [r1] README, ., R, man, www, www/index.php: Email in Readme
-	  changed
+	* [r1] ., R, man: Email in Readme changed
 

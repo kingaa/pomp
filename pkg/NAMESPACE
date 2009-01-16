@@ -39,5 +39,6 @@ export(
        sobol,
        bspline.basis,
        periodic.bspline.basis,
-       compare.mif
+       compare.mif,
+       nlf
        )
