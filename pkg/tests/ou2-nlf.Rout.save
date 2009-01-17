@@ -15,11 +15,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(pomp.devel)
-Loading required package: subplex
+> library(pomp)
 Loading required package: odesolve
-Loading required package: plotrix
-Loading required package: lattice
 > 
 > data(ou2)
 > 
