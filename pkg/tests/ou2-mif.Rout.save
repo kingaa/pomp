@@ -1,5 +1,5 @@
 
-R version 2.7.1 (2008-06-23)
+R version 2.7.2 (2008-08-25)
 Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -68,11 +68,11 @@ running MIF
 > mif.fit <- continue(mif.fit,Nmif=70,max.fail=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.694885 mins
+Time difference of 1.222864 mins
 > cat("PF estimated log likelihood at MIF MLE\n")
 PF estimated log likelihood at MIF MLE
 > print(pfilter(mif.fit)$loglik,digits=4)
-[1] -422.6
+[1] -421.7
 > 
 > cat("coefficients at truth\n")
 coefficients at truth
@@ -83,7 +83,7 @@ coefficients at truth
 MIF MLE
 > print(coef(mif.fit,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
     x1.0     x2.0  alpha.1  alpha.4 
- 51.1941 -51.2739   0.8990   0.9736 
+ 51.2028 -50.0965   0.9032   0.9738 
 > 
 > plot(mif.fit)
 > compare.mif(mif.fit)
