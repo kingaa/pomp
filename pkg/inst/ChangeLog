@@ -1,5 +1,21 @@
+2009-01-17  kingaa
+
+	* [r58] tests/ou2-nlf.Rout.save:
+	* [r57] tests/ou2-mif.Rout.save, tests/ou2-nlf.Rout:
+	* [r56] tests/ou2-nlf.R, tests/ou2-nlf.Rout.save:
+
 2009-01-16  kingaa
 
+	* [r55] DESCRIPTION: add functionality for parameter estimation via
+	  nonlinear forecasting, method due to Stephen P. Ellner and Bruce
+	  E. Kendall
+	* [r54] NAMESPACE, R/mvnorm.R, R/nlf-funcs.R, R/nlf-guts.R,
+	  R/nlf-lql.R, R/nlf-objfun.R, R/nlf.R, data/ou2.rda,
+	  inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, man/nlf.Rd, tests/ou2-nlf.R,
+	  tests/ou2-nlf.Rout: add functionality for parameter estimation
+	  via nonlinear forecasting, method due to Stephen P. Ellner and
+	  Bruce E. Kendall
 	* [r53] R/pfilter.R, man/pfilter.Rd: add 'verbose' option to
 	  'pfilter'
 
