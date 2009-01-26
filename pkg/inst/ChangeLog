@@ -1,5 +1,11 @@
+2009-01-25  kingaa
+
+	* [r61] DESCRIPTION: minor documentation corrections
+	* [r60] man/mif-class.Rd, man/mif-methods.Rd, man/mif.Rd:
+
 2009-01-17  kingaa
 
+	* [r59] inst/ChangeLog:
 	* [r58] tests/ou2-nlf.Rout.save:
 	* [r57] tests/ou2-mif.Rout.save, tests/ou2-nlf.Rout:
 	* [r56] tests/ou2-nlf.R, tests/ou2-nlf.Rout.save:
@@ -176,5 +182,6 @@
 
 2007-06-25  stefan7th
 
-	* [r1] ., R, man: Email in Readme changed
+	* [r1] README, ., R, man, www, www/index.php: Email in Readme
+	  changed
 
