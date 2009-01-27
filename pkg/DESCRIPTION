@@ -6,6 +6,6 @@ Date: 2009-01-27
 Author: Aaron A. King, Edward L. Ionides, Carles Martinez Breto, Steve Ellner, Bruce Kendall
 Maintainer: Aaron A. King <kingaa@umich.edu>
 Description: Inference methods for partially-observed Markov processes
-Depends: R(>= 2.6.1), stats, methods, graphics, odesolve, subplex
+Depends: R(>= 2.6.1), stats, methods, graphics, deSolve, subplex
 License: GPL (>= 2)
 LazyLoad: true

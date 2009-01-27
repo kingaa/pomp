@@ -51,7 +51,7 @@ setMethod(
                                 )
                        if (inherits(X,'try-error'))
                          stop("trajectory error: error in ",sQuote("lsoda"),call.=FALSE)
-                       if (attr(X,'istate')!=2)
+                       if (attr(X,'istate')[[1]]!=2)
                          warning("abnormal exit from ",sQuote("lsoda"),", istate = ",attr(X,'istate'),call.=FALSE)
                        x[,j,] <- t(X[,-1])
                      }
