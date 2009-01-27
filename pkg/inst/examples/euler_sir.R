@@ -123,18 +123,18 @@ po <- pomp(
            )
 
 ## alternatively, one can define the computationally intensive bits using native routines:
-## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
+## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "euler_sir.c")
 
 if (Sys.info()['sysname']=='Linux') {
 
-  modelfile <- system.file("examples/sir.c",package="pomp")
+  modelfile <- system.file("examples/euler_sir.c",package="pomp")
   includedir <- system.file("include",package="pomp")
   lib <- system.file("libs/pomp.so",package="pomp")
 
   ## compile the model into a shared-object library
   system(paste("cp",modelfile,"."))
   system(paste("cp ",includedir,"/pomp.h .",sep=""))
-  system(paste("R CMD SHLIB -o ./sir_example.so sir.c",lib))
+  system(paste("R CMD SHLIB -o ./euler_sir.so euler_sir.c",lib))
 
   po <- pomp(
              times=seq(1/52,4,by=1/52),
@@ -152,7 +152,7 @@ if (Sys.info()['sysname']=='Linux') {
              dens.fun="sir_euler_density",
              dprocess=euler.density,
              skeleton.vectorfield="sir_ODE",
-             PACKAGE="sir_example", ## name of the shared-object library
+             PACKAGE="euler_sir", ## name of the shared-object library
              measurement.model=measles~binom(size=cases,prob=exp(rho)),
              initializer=function(params,t0,...){
                p <- exp(params)
@@ -171,7 +171,7 @@ if (Sys.info()['sysname']=='Linux') {
              }
              )
 
-  dyn.load("sir_example.so") ## load the shared-object library
+  dyn.load("euler_sir.so") ## load the shared-object library
 
   ## compute a trajectory of the deterministic skeleton
   tic <- Sys.time()
@@ -185,6 +185,6 @@ if (Sys.info()['sysname']=='Linux') {
   toc <- Sys.time()
   print(toc-tic)
   
-  dyn.unload("sir_example.so")
+  dyn.unload("euler_sir.so")
 
 }
