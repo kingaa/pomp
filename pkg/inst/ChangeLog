@@ -1,5 +1,17 @@
 2009-01-27  kingaa
 
+	* [r67] DESCRIPTION, R/trajectory-pomp.R: 'odesolve' has been
+	  replaced by 'deSolve'
+	* [r66] inst/examples/euler_sir.R, inst/examples/euler_sir.c,
+	  inst/examples/sir.R, inst/examples/sir.c: moved 'sir.*' examples
+	  to 'euler_sir.*'
+	* [r65] DESCRIPTION, R/plot-pomp.R, inst/ChangeLog,
+	  inst/examples/sir.R, man/pomp-methods.Rd: add package 'subplex'
+	  as dependency
+	  run examples that compile native code only if
+	  Sys.info()['sysname']=='Linux'. This replaces the previous test
+	  that .Platform$OS.type=='unix', which resulted in errors under
+	  some versions of MacOSX.
 	* [r64] inst/ChangeLog:
 
 2009-01-26  kingaa
