@@ -1,5 +1,3 @@
-## plot pomp object
-
 setMethod(
           "plot",
           "pomp",
@@ -8,11 +6,11 @@ setMethod(
                     panel = lines,
                     nc = NULL,
                     yax.flip = FALSE,
-                    mar = c(0, 5.1, 0, if(yax.flip) 5.1 else 2.1),
+                    mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
                     oma = c(6, 0, 5, 0),
                     axes = TRUE,
                     ...) {
-            X <- as(x,'data.frame')
+            X <- as(x,"data.frame")
             vars <- names(X)
             tpos <- match("time",vars)
             if (is.na(tpos))

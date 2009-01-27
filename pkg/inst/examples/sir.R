@@ -125,7 +125,7 @@ po <- pomp(
 ## alternatively, one can define the computationally intensive bits using native routines:
 ## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
 
-if (.Platform$OS.type=='unix') {
+if (Sys.info()['sysname']=='Linux') {
 
   modelfile <- system.file("examples/sir.c",package="pomp")
   includedir <- system.file("include",package="pomp")
