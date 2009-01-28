@@ -33,37 +33,48 @@
    period>0 is the period of seasonal forcing in 'real time'.
  }
  \item{tensor}{
-   logical.
-   If FALSE, the fitted model is a generalized additive model with time mod period as one of the predictors, i.e., a gam with time-varying intercept. 
+   logical;
+   if FALSE, the fitted model is a generalized additive model with time mod period as one of the predictors, i.e., a gam with time-varying intercept. 
    If TRUE, the fitted model is a gam with lagged state variables as predictors and time-periodic coefficients, constructed using tensor products of basis functions of state variables with basis functions of time.
    }
-  \item{nconverge}{Number of convergence timesteps to be discarded from the model simulation}
-  \item{nasymp}{Number of asymptotic timesteps to be recorded from the
-    model simulation.}
+   \item{nconverge}{
+     Number of convergence timesteps to be discarded from the model simulation.
+   }
+  \item{nasymp}{
+    Number of asymptotic timesteps to be recorded from the model simulation.
+  }
   \item{seed}{
     Integer specifying the random number seed to use.
     When fitting, it is usually best to always run the simulations with the same sequence of random numbers, which is accomplished by setting \code{seed} to an integer.
     If you want a truly random simulation, set \code{seed=NULL}.
   }
   \item{nrbf}{A scalar specifying the number of radial basis functions to be used at each lag.}
-  \item{method}{Optimization method.  Choices are \code{\link[subplex]{subplex}} and
-    any of the methods used by \code{\link{optim}}}
-  \item{skip.se}{Logical; if \code{TRUE}, skip the computation of standard errors.}
-  \item{verbose}{Logical; if \code{TRUE}, the negative log quasilikelihood and parameter
-    values are printed at each iteration of the optimizer.}
-  \item{gr}{Something for \code{optim}}
-  \item{bootstrap} {Logical if \code{TRUE} the indices in \code{bootsamp} will determine which
-    of the conditional likelihood values be used in computing the quasi-loglikelihood. }
-  \item{bootsamp} {
-    Vector of integers; used to have the quasi-loglikelihood evaluated using a bootstrap re-sampling of the data set
+  \item{method}{
+    Optimization method.
+    Choices are \code{\link[subplex]{subplex}} and any of the methods used by \code{\link{optim}}.
+  }
+  \item{skip.se}{
+    Logical; if \code{TRUE}, skip the computation of standard errors.
+  }
+  \item{verbose}{
+    Logical; if \code{TRUE}, the negative log quasilikelihood and parameter values are printed at each iteration of the optimizer.
+  }
+  \item{gr}{Something for \code{optim}.}
+  \item{bootstrap}{
+    Logical;
+    if \code{TRUE} the indices in \code{bootsamp} will determine which of the conditional likelihood values be used in computing the quasi-loglikelihood.
+  }
+  \item{bootsamp}{
+    Vector of integers;
+    used to have the quasi-loglikelihood evaluated using a bootstrap re-sampling of the data set.
   } 
-  \item{lql.frac} {
+  \item{lql.frac}{
     target fractional change in log quasi-likelihood for quadratic standard error estimate
   } 
-  \item{se.par.frac} {
+  \item{se.par.frac}{
     initial parameter-change fraction for quadratic standard error estimate
   } 
-  \item{eval.only} {
+  \item{eval.only}{
     logical; if \code{TRUE}, no optimization is attempted and the quasi-loglikelihood value is evaluated at the \code{start} parameters.
   } 
   \item{\dots}{
