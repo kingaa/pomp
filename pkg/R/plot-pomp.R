@@ -1,7 +1,7 @@
 setMethod(
           "plot",
           "pomp",
-          function (x, y = NULL, 
+          function (x, y,
                     variables,
                     panel = lines,
                     nc = NULL,
