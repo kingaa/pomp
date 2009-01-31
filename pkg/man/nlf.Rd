@@ -59,7 +59,7 @@
   \item{verbose}{
     Logical; if \code{TRUE}, the negative log quasilikelihood and parameter values are printed at each iteration of the optimizer.
   }
-  \item{gr}{Something for \code{optim}.}
+  \item{gr}{optional; passed to \code{optim} if \code{optim} is used.}
   \item{bootstrap}{
     Logical;
     if \code{TRUE} the indices in \code{bootsamp} will determine which of the conditional likelihood values be used in computing the quasi-loglikelihood.
