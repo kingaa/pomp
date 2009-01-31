@@ -1,5 +1,15 @@
+2009-01-31  kingaa
+
+	* [r71] man/nlf.Rd: documentation fix
+
+2009-01-28  kingaa
+
+	* [r70] R/plot-pomp.R: remove default for the (unused) 'y' argument
+	* [r69] man/nlf.Rd: fix typos
+
 2009-01-27  kingaa
 
+	* [r68] inst/ChangeLog:
 	* [r67] DESCRIPTION, R/trajectory-pomp.R: 'odesolve' has been
 	  replaced by 'deSolve'
 	* [r66] inst/examples/euler_sir.R, inst/examples/euler_sir.c,
