@@ -2,17 +2,15 @@
 \alias{nlf}
 \title{Fit Model to Data Using Nonlinear Forecasting (NLF)}
 \description{
- Calls an optimizer to maximize the nonlinear forecasting (NLF) goodness of fit, by
- simulating data from a model, fitting a nonlinear autoregressive
- model to the simulated time series (which may be multivariate) and
- using the fitted model to predict some or all variables in the data time series. 
- NLF is an 'indirect inference' method using a quasi-likelihood as the objective
- function.
+  Calls an optimizer to maximize the nonlinear forecasting (NLF) goodness of fit, by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series (which may be multivariate) and using the fitted model to predict some or all variables in the data time series.
+  NLF is an 'indirect inference' method using a quasi-likelihood as the objective function.
 }
 \usage{
- nlf(object, start, est, lags, period = NA, tensor = FALSE, nconverge=1000, nasymp=1000,
-     seed = 1066, nrbf = 4, method = 'subplex', skip.se = FALSE, verbose = FALSE, gr = NULL,
-     bootstrap=FALSE, bootsamp = NULL, lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE, ...)
+ nlf(object, start, est, lags, period = NA, tensor = FALSE,
+     nconverge=1000, nasymp=1000, seed = 1066, nrbf = 4,
+     method = 'subplex', skip.se = FALSE, verbose = FALSE, gr = NULL,
+     bootstrap=FALSE, bootsamp = NULL,
+     lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE, ...)
 }
 \arguments{
   \item{object}{
