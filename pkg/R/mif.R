@@ -20,14 +20,18 @@ setMethod(
           "pomp",
           function (object, Nmif = 1,
                     start,
-                    pars = stop("mif error: ",sQuote("pars")," must be specified",call.=FALSE),
-                    ivps = character(0),
+                    pars, ivps = character(0),
                     particles,
-                    rw.sd = stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE),
-                    alg.pars = stop("mif error: ",sQuote("alg.pars")," must be specified",call.=FALSE),
+                    rw.sd, alg.pars,
                     weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
                     verbose = FALSE, .ndone = 0)
           {
+            if (missing(pars))
+              stop("mif error: ",sQuote("pars")," must be specified",call.=FALSE)
+            if (missing(rw.sd))
+              stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
+            if (missing(alg.pars))
+              stop("mif error: ",sQuote("alg.pars")," must be specified",call.=FALSE)
             if (missing(particles)) {         # use default: normal distribution
               particles <- function (Np, center, sd, ...) {
                 matrix(
@@ -152,12 +156,16 @@ setMethod(
 setMethod(
           "mif",
           "mif",
-          function (object, Nmif = object@Nmif, start = coef(object),
-                    pars = object@pars, ivps = object@ivps, rw.sd = object@random.walk.sd,
-                    alg.pars = object@alg.pars,
+          function (object, Nmif, start, pars, ivps, rw.sd, alg.pars,
                     weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
                     verbose = FALSE, .ndone = 0)
           {
+            if (missing(Nmif)) Nmif <- object@Nmif
+            if (missing(start)) start <- coef(object)
+            if (missing(pars)) pars <- object@pars
+            if (missing(ivps)) ivps <- object@ivps
+            if (missing(rw.sd)) rw.sd <- object@random.walk.sd
+            if (missing(alg.pars)) alg.pars <- object@alg.pars
             theta <- start
             start.names <- names(start)
             if (is.null(start.names))

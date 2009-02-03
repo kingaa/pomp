@@ -14,10 +14,12 @@
 }
 \usage{
 mif(object, \dots)
-\S4method{mif}{pomp}(object, Nmif, start, pars, ivps = character(0),
+\S4method{mif}{pomp}(object, Nmif = 1, start, pars, ivps = character(0),
     particles, rw.sd, alg.pars, weighted = TRUE,
-    tol = 1e-17, warn = TRUE, max.fail = 0, verbose = FALSE)
-\S4method{mif}{mif}(object, \dots)
+    tol = 1e-17, warn = TRUE, max.fail = 0, verbose = FALSE, .ndone = 0)
+\S4method{mif}{mif}(object, Nmif, start, pars, ivps, rw.sd, alg.pars,
+    weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
+    verbose = FALSE, .ndone = 0)
 \S4method{continue}{mif}(object, Nmif, \dots)
 }
 \arguments{
@@ -91,6 +93,10 @@ mif(object, \dots)
   }
   \item{verbose}{
     logical; if TRUE, print progress reports.
+  }
+  \item{.ndone}{
+    for internal use by \code{continue}.
+    do not meddle with this!
   }
   \item{\dots}{
     Additional arguments that can be used to override the defaults.

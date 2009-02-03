@@ -30,18 +30,18 @@
 coef(object, pars, \dots) <- value
 \S4method{data.array}{pomp}(object, vars, \dots)
 \S4method{states}{pomp}(object, vars, \dots)
-\S4method{time}{pomp}(object, t0 = FALSE)
+\S4method{time}{pomp}(x, t0 = FALSE, \dots)
 \S4method{show}{pomp}(object)
 \S4method{as}{pomp}(object, class)
-\S4method{coerce}{pomp,data.frame}(from, to = "data.frame")
+\S4method{coerce}{pomp,data.frame}(from, to = "data.frame", strict = TRUE)
 \S4method{print}{pomp}(x, \dots)
-\S4method{plot}{pomp}(x, y = NULL, variables, panel = lines,
+\S4method{plot}{pomp}(x, y, variables, panel = lines,
       nc = NULL, yax.flip = FALSE,
       mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
       oma = c(6, 0, 5, 0), axes = TRUE, \dots)
 }
 \arguments{
-  \item{object}{The \code{pomp} object.}
+  \item{object, x}{The \code{pomp} object.}
   \item{pars}{
     optional character;
     names of parameters to be retrieved or set.
@@ -65,7 +65,9 @@ coef(object, pars, \dots) <- value
   \item{from, to}{
     the classes betwen which coercion should be performed.
   }
-  \item{x}{the \code{pomp} object.}
+  \item{strict}{
+    ignored.
+  }
   \item{y}{ignored.}
   \item{variables}{
     optional character;

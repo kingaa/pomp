@@ -12,13 +12,14 @@
 }
 \usage{
 trajectory(object, params, times, \dots)
-\S4method{trajectory}{pomp}(object, params, times = time(object), \dots)
+\S4method{trajectory}{pomp}(object, params, times, \dots)
 }
 \arguments{
   \item{object}{an object of class \code{pomp}.}
   \item{times}{
     a numeric vector containing the times at which a trajectory is desired.
     The first of these will be the initial time.
+    By default, \code{times=time(object,t0=TRUE)}.
   }
   \item{params}{
     a rank-2 array of parameters.
