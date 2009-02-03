@@ -1,5 +1,19 @@
+2009-02-03  kingaa
+
+	* [r75] DESCRIPTION, R/mif.R, man/mif.Rd, man/pomp-methods.Rd,
+	  man/trajectory-pomp.Rd, src/euler_sir.c, src/sir.c: changes to
+	  documentation and default arguments so as to bring these into
+	  agreement. (discrepancies revealed by Kurt Hornik's extensive
+	  codoc testing).
+
+2009-02-01  kingaa
+
+	* [r74] inst/NEWS, man/nlf.Rd:
+
 2009-01-31  kingaa
 
+	* [r73] DESCRIPTION:
+	* [r72] inst/ChangeLog:
 	* [r71] man/nlf.Rd: documentation fix
 
 2009-01-28  kingaa
@@ -212,6 +226,5 @@
 
 2007-06-25  stefan7th
 
-	* [r1] README, ., R, man, www, www/index.php: Email in Readme
-	  changed
+	* [r1] ., R, man: Email in Readme changed
 
