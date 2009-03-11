@@ -1,5 +1,12 @@
+2009-03-11  kingaa
+
+	* [r78] man/eulermultinom.Rd, src/eulermultinom.c: replace "euler
+	  infelicity" Rprintf statements with warnings
+	* [r77] inst/CITATION: add CITATION file
+
 2009-02-03  kingaa
 
+	* [r76] inst/ChangeLog:
 	* [r75] DESCRIPTION, R/mif.R, man/mif.Rd, man/pomp-methods.Rd,
 	  man/trajectory-pomp.Rd, src/euler_sir.c, src/sir.c: changes to
 	  documentation and default arguments so as to bring these into
@@ -226,5 +233,6 @@
 
 2007-06-25  stefan7th
 
-	* [r1] ., R, man: Email in Readme changed
+	* [r1] README, ., R, man, www, www/index.php: Email in Readme
+	  changed
 
