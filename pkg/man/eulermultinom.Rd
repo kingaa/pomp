@@ -29,12 +29,13 @@ deulermultinom(x, size, rate, dt, log = FALSE)
   }
 }
 \details{
-  Direct access to the underlying C routines is available: see the header file "pomp.h", included with the package.
+  Direct access to the underlying C routines is available: see the header file "pomp.h", included with the package,
+  e.g., \code{edit(file=system.file("include/pomp.h",package="pomp"))}.
 }
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{\code{\link{euler}}, \code{\link{pomp}}}
 \examples{
-x <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=0.1)
+print(x <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=0.1))
 deulermultinom(x,size=100,rate=c(1,2,3),dt=0.1)
 }
 \keyword{distribution}
