@@ -26,8 +26,7 @@
 \description{Methods of the \code{pomp} class.}
 \usage{
 \S4method{coef}{pomp}(object, pars, \dots)
-## S4 method for signature 'pomp':
-coef(object, pars, \dots) <- value
+\S4method{coef}{pomp}(object, pars, \dots) <- value
 \S4method{data.array}{pomp}(object, vars, \dots)
 \S4method{states}{pomp}(object, vars, \dots)
 \S4method{time}{pomp}(x, t0 = FALSE, \dots)
