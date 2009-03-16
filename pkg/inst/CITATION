@@ -6,14 +6,14 @@ citEntry(
          author=personList(
  	   as.person("Aaron A. King"),
 	   as.person("Edward L. Ionides"),
-	   as.person("Carles Martinez Bret\'o"),
+	   as.person("Carles Martinez Bret\\'o"),
    	   as.person("Steve Ellner"), 
 	   as.person("Bruce Kendall")
 	   ),	   
 	 year=2009,
 	 url="http://pomp.r-forge.r-rproject.org",
 	 textVersion=paste(
-	 	 	 "Aaron A. King, E. L. Ionides, C. M. Bret\'o, S. P. Ellner, and B. E. Kendall",
+	 	 	 "Aaron A. King, E. L. Ionides, C. M. Bret\\'o, S. P. Ellner, and B. E. Kendall",
 			  "pomp: Statistical inference for partially observed Markov processes (R package)",
 			  "http://pomp.r-forge.r-project.org"
 			  )	   
