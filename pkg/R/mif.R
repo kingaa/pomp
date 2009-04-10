@@ -24,10 +24,8 @@ setMethod(
                     particles,
                     rw.sd, alg.pars,
                     weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
-                    verbose = FALSE, .ndone = 0)
+                    verbose = FALSE)
           {
-            if (missing(pars))
-              stop("mif error: ",sQuote("pars")," must be specified",call.=FALSE)
             if (missing(rw.sd))
               stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
             if (missing(alg.pars))
@@ -62,6 +60,16 @@ setMethod(
             if (is.null(start.names))
               stop("mif error: ",sQuote("start")," must be a named vector",call.=FALSE)
 
+            rw.names <- names(rw.sd)
+            if (is.null(rw.names) || any(rw.sd<0))
+              stop("mif error: ",sQuote("rw.sd")," must be a named non-negative numerical vector",call.=FALSE)
+            if (!all(rw.names%in%start.names))
+              stop("mif error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
+
+            rw.names <- names(rw.sd[rw.sd>0])
+            if (missing(pars)) {
+              pars <- rw.names[!(rw.names%in%ivps)]
+            }
             if (length(pars) == 0)
               stop("mif error: ",sQuote("pars")," must be a nonempty character vector",call.=FALSE)
             if (
@@ -70,33 +78,33 @@ setMethod(
                 !all(pars%in%start.names) ||
                 !all(ivps%in%start.names) ||
                 any(pars%in%ivps) ||
-                any(ivps%in%pars)
+                any(ivps%in%pars) ||
+                !all(pars%in%rw.names) ||
+                !all(ivps%in%rw.names)
                 )
               stop(
                    "mif error: ",
                    sQuote("pars")," and ",sQuote("ivps"),
-                   " must be mutually disjoint elements of ",
+                   " must be mutually disjoint subsets of ",
                    sQuote("names(start)"),
+                   " and must have a positive random-walk SDs specified in ",
+                   sQuote("rw.sd"),
                    call.=FALSE
                    )
 
-            rw.names <- names(rw.sd)
-            if (is.null(rw.names))
-              stop("mif error: ",sQuote("rw.sd")," must be a named vector",call.=FALSE)
-            if (any(!(rw.names%in%start.names)))
-              stop("mif error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
-            if (any(rw.sd[c(pars,ivps)]<=0)) {
-              zero.pars <- names(which(rw.sd[c(pars,ivps)]<=0))
-              stop(
-                   "mif error: for every parameter you wish to estimate, you must specify a positive ",
-                   sQuote("rw.sd"),
-                   ".  ",
-                   sQuote("rw.sd"),
-                   " is non-positive for ",
-                   paste(zero.pars,collapse=", "),
-                   call.=FALSE
-                   )
+            if (!all(rw.names%in%c(pars,ivps))) {
+              extra.rws <- rw.names[!(rw.names%in%c(pars,ivps))]
+              warning(
+                      "mif warning: the variable(s) ",
+                      paste(extra.rws,collapse=", "),
+                      " have positive random-walk SDs specified, but are included in neither ",
+                      sQuote("pars")," nor ",sQuote("ivps"),
+                      ". These random walk SDs are ignored.",
+                      call.=FALSE
+                      )
             }
+            rw.sd <- rw.sd[c(pars,ivps)]
+            rw.names <- names(rw.sd)
             
             if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
               stop(
@@ -171,6 +179,16 @@ setMethod(
             if (is.null(start.names))
               stop("mif error: ",sQuote("start")," must be a named vector",call.=FALSE)
 
+            sigma <- rep(0,length(start))
+            names(sigma) <- start.names
+
+            rw.names <- names(rw.sd)
+            if (is.null(rw.names) || any(rw.sd<0))
+              stop("mif error: ",sQuote("rw.sd")," must be a named non-negative numerical vector",call.=FALSE)
+            if (!all(rw.names%in%start.names))
+              stop("mif error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
+
+            rw.names <- names(rw.sd[rw.sd>0])
             if (length(pars) == 0)
               stop("mif error: ",sQuote("pars")," must be a nonempty character vector",call.=FALSE)
             if (
@@ -179,33 +197,34 @@ setMethod(
                 !all(pars%in%start.names) ||
                 !all(ivps%in%start.names) ||
                 any(pars%in%ivps) ||
-                any(ivps%in%pars)
+                any(ivps%in%pars) ||
+                !all(pars%in%rw.names) ||
+                !all(ivps%in%rw.names)
                 )
               stop(
                    "mif error: ",
                    sQuote("pars")," and ",sQuote("ivps"),
-                   " must be mutually disjoint elements of ",
+                   " must be mutually disjoint subsets of ",
                    sQuote("names(start)"),
+                   " and must have a positive random-walk SDs specified in ",
+                   sQuote("rw.sd"),
                    call.=FALSE
                    )
 
-            sigma <- rep(0,length(start))
-            names(sigma) <- start.names
-            rw.names <- names(rw.sd)
-            if (any(!(rw.names%in%start.names)))
-              stop("mif error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
-            if (any(rw.sd[c(pars,ivps)]<=0)) {
-              zero.pars <- names(which(rw.sd[c(pars,ivps)]<=0))
-              stop(
-                   "mif error: for every parameter you wish to estimate, you must specify a positive ",
-                   sQuote("rw.sd"),
-                   ".  ",
-                   sQuote("rw.sd"),
-                   " is non-positive for ",
-                   paste(zero.pars,collapse=", "),
-                   call.=FALSE
-                   )
+            if (!all(rw.names%in%c(pars,ivps))) {
+              extra.rws <- rw.names[!(rw.names%in%c(pars,ivps))]
+              warning(
+                      "mif warning: the variable(s) ",
+                      paste(extra.rws,collapse=", "),
+                      " have positive random-walk SDs specified, but are included in neither ",
+                      sQuote("pars")," nor ",sQuote("ivps"),
+                      ". These random walk SDs are ignored.",
+                      call.=FALSE
+                      )
             }
+            rw.sd <- rw.sd[c(pars,ivps)]
+            rw.names <- names(rw.sd)
+
             sigma[rw.names] <- rw.sd
 
             if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
@@ -264,7 +283,7 @@ setMethod(
                                warn=warn,
                                max.fail=max.fail,
                                pred.mean=(n==Nmif),
-                               pred.var=TRUE,
+                               pred.var=(weighted||(n==Nmif)),
                                filter.mean=TRUE,
                                .rw.sd=sigma.n[pars]
                                ),
@@ -305,7 +324,7 @@ setMethod(
                 Nmif=as.integer(Nmif),
                 particles=object@particles,
                 alg.pars=alg.pars,
-                random.walk.sd=sigma,
+                random.walk.sd=sigma[rw.names],
                 pred.mean=x$pred.mean,
                 pred.var=x$pred.var,
                 filter.mean=x$filter.mean,

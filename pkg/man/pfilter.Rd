@@ -54,7 +54,6 @@ pfilter(object, \dots)
   }
   \item{.rw.sd}{
     For internal use with the MIF algorithm.
-    If \code{TRUE}, the specified random walk SD is used.
   }
   \item{verbose}{
     If \code{TRUE}, progress information is reported as \code{pfilter} works.
@@ -66,8 +65,8 @@ pfilter(object, \dots)
 \value{
   A list with the following elements:
   \item{pred.mean}{
-    The \code{nvars+npars} x \code{ntimes} matrix of prediction means, where \code{ntimes} is the length of the time series contained in \code{object}.
-    The rows correspond to states and parameters, in that order.
+    The matrix of prediction means.
+    The rows correspond to states and parameters (if appropriate), in that order, the columns to successive observations in the time series contained in \code{object}.
   }
   \item{pred.variance}{
     The matrix of prediction variances, in the same format as \code{pred.mean}.

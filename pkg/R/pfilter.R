@@ -31,7 +31,6 @@ setMethod(
                                  )
                                )
             }
-            npars <- nrow(params)
             paramnames <- rownames(params)
             if (is.null(paramnames))
               stop("pfilter error: ",sQuote("params")," must have rownames",call.=FALSE)
@@ -48,18 +47,21 @@ setMethod(
               if (any(!(rw.names%in%paramnames)))
                 stop("pfilter error: the rownames of ",sQuote("params")," must include all of the names of ",sQuote(".rw.sd"),"",call.=FALSE)
               sigma <- .rw.sd
+            } else {
+              rw.names <- character(0)
             }
             
             loglik <- rep(NA,ntimes)
             eff.sample.size <- rep(NA,ntimes)
             nfail <- 0
+            npars <- length(rw.names)
             
             pred.m <-  if (pred.mean)
               matrix(
                      data=0,
                      nrow=nvars+npars,
                      ncol=ntimes,
-                     dimnames=list(c(statenames,paramnames),NULL)
+                     dimnames=list(c(statenames,rw.names),NULL)
                      )
             else NULL
             
@@ -68,17 +70,25 @@ setMethod(
                      data=0,
                      nrow=nvars+npars,
                      ncol=ntimes,
-                     dimnames=list(c(statenames,paramnames),NULL)
+                     dimnames=list(c(statenames,rw.names),NULL)
                      )
             else NULL
             
             filt.m <- if (filter.mean)
-              matrix(
-                     data=0,
-                     nrow=nvars+npars,
-                     ncol=ntimes,
-                     dimnames=list(c(statenames,paramnames),NULL)
-                     )
+              if (random.walk) 
+                matrix(
+                       data=0,
+                       nrow=nvars+length(paramnames),
+                       ncol=ntimes,
+                       dimnames=list(c(statenames,paramnames),NULL)
+                       )
+              else
+                matrix(
+                       data=0,
+                       nrow=nvars,
+                       ncol=ntimes,
+                       dimnames=list(statenames,NULL)
+                       )
             else NULL
 
             times <- time(object,t0=TRUE)
@@ -106,7 +116,7 @@ setMethod(
                 xx <- try(
                           c(
                             apply(x,1,mean),
-                            apply(params,1,mean)
+                            apply(params[rw.names,,drop=FALSE],1,mean)
                             ),
                           silent=FALSE
                           )
@@ -127,18 +137,20 @@ setMethod(
                        call.=FALSE
                        )
                 }
-                problem.indices <- unique(which(!is.finite(params),arr.ind=TRUE)[,1])
-                if (length(problem.indices)>0) {
-                  stop(
-                       "pfilter error: non-finite parameter(s): ",
-                       paste(rownames(params)[problem.indices],collapse=', '),
-                       call.=FALSE
-                       )
+                if (random.walk) {
+                  problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1])
+                  if (length(problem.indices)>0) {
+                    stop(
+                         "pfilter error: non-finite parameter(s): ",
+                         paste(rw.names[problem.indices],collapse=', '),
+                         call.=FALSE
+                         )
+                  }
                 }
                 xx <- try(
                           c(
                             apply(x,1,var),
-                            apply(params,1,var)
+                            apply(params[rw.names,,drop=FALSE],1,var)
                             ),
                           silent=FALSE
                           )
@@ -192,7 +204,8 @@ setMethod(
               ## compute filtering means
               if (filter.mean) {
                 filt.m[statenames,nt] <- x %*% weights
-                filt.m[paramnames,nt] <- params %*% weights
+                if (random.walk)
+                  filt.m[paramnames,nt] <- params %*% weights
               }
 
               ## Matrix with samples (columns) from filtering distribution theta.t | Y.t
