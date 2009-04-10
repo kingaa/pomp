@@ -33,18 +33,10 @@
     \item{alg.pars}{
       A named list of algorithm parameters.
       This consists of
-      \item{Np}{
-	the number of particles to use in filtering.
-      }
-      \item{var.factor}{
-	the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}.
-      }
-      \item{ic.lag}{
-	the fixed lag used in the estimation of initial-value parameters (IVPs).
-      }
-      \item{cooling.factor}{
-	the exponential cooling factor, \code{alpha}, where \code{0<alpha<1}.
-      }
+      \code{Np}, the number of particles to use in filtering; 
+      \code{var.factor}, the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd};
+      \code{ic.lag}, the fixed lag used in the estimation of initial-value parameters (IVPs);
+      and \code{cooling.factor}, the exponential cooling factor, \code{alpha}, where \code{0<alpha<1}.
     }
     \item{random.walk.sd}{
       A named vector containing the random-walk variance to be used for ordinary parameters.
@@ -77,7 +69,12 @@
       A numeric value containing the value of the log likelihood, as evaluated for the random-parameter model.
       Note that this will not be equal to the log likelihood for the fixed-parameter model.
     }
-    \item{data, times, t0, rprocess, dprocess, dmeasure, rmeasure, skeleton.type, skeleton, initializer, states, params, statenames, paramnames, covarnames, tcovar, covar, PACKAGE, userdata}{Inherited from the \code{pomp} class.}
+    \item{data, times, t0, rprocess, dprocess, dmeasure, rmeasure,
+      skeleton.type, skeleton, initializer, states, params,
+      statenames, paramnames, covarnames, tcovar, covar,
+      PACKAGE, userdata}{
+      Inherited from the \code{pomp} class.
+    }
   }
 }
 \section{Extends}{

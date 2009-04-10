@@ -77,7 +77,7 @@ compare.mif(z)
     }
     \item{predvarplot}{
       \code{predvarplot(object, pars = NULL, mean = FALSE, \dots)} produces a plot of the scaled prediction variances for each parameter.
-      This can be used to diagnose a good value of the \code{mif} parameters \code{CC} and \code{T0}.
+      This can be used to diagnose a good value of the \code{mif} parameters \code{var.factor} and \code{ic.lag}.
       If used in this way, one should run \code{mif} with \code{Nmif=1} first.
       Additional arguments in \code{\dots} will be passed to the actual plotting function.
     }
