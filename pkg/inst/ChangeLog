@@ -1,5 +1,58 @@
+2009-04-10  kingaa
+
+	* [r84] DESCRIPTION:
+	* [r83] DESCRIPTION, R/mif.R, R/pfilter.R, man/mif.Rd,
+	  man/pfilter.Rd: The handling of the argument 'pars' and 'ivps' in
+	  mif has been changed to eliminate redundancy and a possible
+	  source of errors. Now 'pars' and 'ivps' are checked to make sure
+	  that all names are in 'names(start)' and 'names(rw.sd)' and that
+	  they are mutually disjoint. Further, all the entries in
+	  'rw.sd[pars]' and 'rw.sd[ivps]' must be positive or an error is
+	  generated. If 'rw.sd' has positive values in slots not in the
+	  union of 'ivps' and 'pars', these are ignored and a warning is
+	  generated. The 'random.walk.sd' slot of the resulting 'mif'
+	  object contains only nonzero entries corresponding to the union
+	  of 'pars' and 'ivps'.
+	  
+	  If 'pars' is not specified in the arguments, then it is taken to
+	  be
+	  'names(rw.sd)[!(names(rw.sd)%in%ivps)]'
+	  
+	  Thus it is no longer necessary to specify 'pars' explicitly,
+	  provided one takes care that all and only nonzero entries in
+	  'rw.sd' correspond to parameters that one wishes to estimate. One
+	  can be a bit more careless with 'rw.sd' if one uses 'pars'. In
+	  any case, entries in 'rw.sd' that are zero are ignored.
+	  
+	  The computation of prediction means and variances and filtering
+	  means in 'pfilter' is handled differently. When used as a
+	  toplevel function (i.e., when the .rw.sd parameter used
+	  internally by 'mif' is unset), then the prediction means and
+	  variances and the filtering means are only computed for the state
+	  variables. This eliminates an annoying and unnecessary behavior
+	  that arose when parameters were set to nonfinite values.
+	  
+	  When .rw.sd is set (as when 'mif' calls 'pfilter'), the
+	  prediction means and variances are computed only for all state
+	  variables, but for only those parameters which are undergoing the
+	  MIF random walk. Filtering means are computed for all state
+	  variables and parameters, since they are needed for the fixed-lag
+	  smoothing on the initial-value parameters.
+	* [r82] man/mif-class.Rd, man/mif-methods.Rd: fix some
+	  documentation infelicities and bugs
+
+2009-03-16  kingaa
+
+	* [r81] inst/CITATION: fix Carles accent
+
+2009-03-13  kingaa
+
+	* [r80] man/pomp-methods.Rd: improve documentation for coef<-
+	  method for pomp object
+
 2009-03-11  kingaa
 
+	* [r79] DESCRIPTION, inst/ChangeLog:
 	* [r78] man/eulermultinom.Rd, src/eulermultinom.c: replace "euler
 	  infelicity" Rprintf statements with warnings
 	* [r77] inst/CITATION: add CITATION file
@@ -233,6 +286,5 @@
 
 2007-06-25  stefan7th
 
-	* [r1] README, ., R, man, www, www/index.php: Email in Readme
-	  changed
+	* [r1] ., R, man: Email in Readme changed
 
