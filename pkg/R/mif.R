@@ -50,7 +50,13 @@ setMethod(
               particles <- match.fun(particles)
             }
             if (!all(c('Np','center','sd','...')%in%names(formals(particles))))
-              stop("mif error: ",sQuote("particles")," must be a function of prototype ",sQuote("particles(Np,center,sd,...)"),call.=FALSE)
+              stop(
+                   "mif error: ",
+                   sQuote("particles"),
+                   " must be a function of prototype ",
+                   sQuote("particles(Np,center,sd,...)"),
+                   call.=FALSE
+                   )
             if (missing(start)) {
               start <- coef(object)
               if (length(start)==0)
@@ -265,36 +271,27 @@ setMethod(
               if (inherits(P,'try-error'))
                 stop("mif error: error in ",sQuote("particles"),call.=FALSE)
 
-              ## ...and state portion
-              X <- try(
-                       init.state(object,params=P),
-                       silent=FALSE
-                       )
-              if (inherits(X,'try-error'))
-                stop("mif error: error in ",sQuote("init.state"),call.=FALSE)
-
               ## run the particle filter
               x <- try(
-                       pfilter(
-                               as(object,'pomp'),
-                               xstart=X,
-                               params=P,
-                               tol=tol,
-                               warn=warn,
-                               max.fail=max.fail,
-                               pred.mean=(n==Nmif),
-                               pred.var=(weighted||(n==Nmif)),
-                               filter.mean=TRUE,
-                               .rw.sd=sigma.n[pars]
-                               ),
+                       pfilter.internal(
+                                        object=object,
+                                        params=P,
+                                        tol=tol,
+                                        warn=warn,
+                                        max.fail=max.fail,
+                                        pred.mean=(n==Nmif),
+                                        pred.var=(weighted||(n==Nmif)),
+                                        filter.mean=TRUE,
+                                        .rw.sd=sigma.n[pars],
+                                        verbose=verbose
+                                        ),
                        silent=FALSE
                        )
               if (inherits(x,'try-error'))
                 stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
 
-              v <- x$pred.var[pars,,drop=FALSE] # the prediction variance
-              
               if (weighted) {           # MIF update rule
+                v <- x$pred.var[pars,,drop=FALSE] # the prediction variance
                 v1 <- cool.sched$gamma*(1+alg.pars$var.factor^2)*sigma[pars]^2
                 theta.hat <- cbind(theta[pars],x$filter.mean[pars,,drop=FALSE])
                 theta[pars] <- theta[pars]+apply(apply(theta.hat,1,diff)/t(v),2,sum)*v1
