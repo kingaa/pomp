@@ -50,3 +50,34 @@ print(coef(mif.fit,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
 plot(mif.fit)
 compare.mif(mif.fit)
 compare.mif(list(mif.fit,mif.fit))
+
+set.seed(33848585L)
+
+fit <- mif(
+           ou2,
+           Nmif=0,
+           pars=c("alpha.1","alpha.4"),
+           ivps=c("x1.0","x2.0"),
+           rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
+           alg.pars=list(Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1)
+           )
+fit <- mif(
+           ou2,
+           Nmif=1,
+           pars=c("alpha.1","alpha.4"),
+           ivps=c("x1.0","x2.0"),
+           rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
+           alg.pars=list(Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1)
+           )
+fit <- mif(
+           ou2,
+           Nmif=2,
+           ivps=c("x1.0","x2.0"),
+           rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2),
+           alg.pars=list(Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1)
+           )
+fit <- continue(fit,Nmif=40)
+ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100)
+print(ff$loglik)
+fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.1))
+fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.1"))

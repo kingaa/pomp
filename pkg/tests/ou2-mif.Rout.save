@@ -1,5 +1,5 @@
 
-R version 2.7.2 (2008-08-25)
+R version 2.8.1 (2008-12-22)
 Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -16,7 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: odesolve
+Loading required package: deSolve
+Loading required package: subplex
 > 
 > data(ou2)
 > 
@@ -68,7 +69,7 @@ running MIF
 > mif.fit <- continue(mif.fit,Nmif=70,max.fail=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.222864 mins
+Time difference of 38.9845 secs
 > cat("PF estimated log likelihood at MIF MLE\n")
 PF estimated log likelihood at MIF MLE
 > print(pfilter(mif.fit)$loglik,digits=4)
@@ -88,4 +89,38 @@ MIF MLE
 > plot(mif.fit)
 > compare.mif(mif.fit)
 > compare.mif(list(mif.fit,mif.fit))
+> 
+> set.seed(33848585L)
+> 
+> fit <- mif(
++            ou2,
++            Nmif=0,
++            pars=c("alpha.1","alpha.4"),
++            ivps=c("x1.0","x2.0"),
++            rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
++            alg.pars=list(Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1)
++            )
+> fit <- mif(
++            ou2,
++            Nmif=1,
++            pars=c("alpha.1","alpha.4"),
++            ivps=c("x1.0","x2.0"),
++            rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
++            alg.pars=list(Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1)
++            )
+> fit <- mif(
++            ou2,
++            Nmif=2,
++            ivps=c("x1.0","x2.0"),
++            rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2),
++            alg.pars=list(Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1)
++            )
+> fit <- continue(fit,Nmif=40)
+> ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100)
+> print(ff$loglik)
+[1] -477.4053
+> fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.1))
+> fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.1"))
+Warning message:
+mif warning: the variable(s) alpha.4, x2.0 have positive random-walk SDs specified, but are included in neither ‘pars’ nor ‘ivps’. These random walk SDs are ignored. 
 > 
