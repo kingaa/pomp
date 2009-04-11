@@ -12,7 +12,7 @@
 pfilter(object, \dots)
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     warn = TRUE, max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, .rw.sd, verbose = FALSE, \dots)
+    filter.mean = FALSE, verbose = FALSE, \dots)
 \S4method{pfilter}{mif}(object, params, Np, tol = 1e-17, warn = TRUE,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, \dots)
@@ -51,9 +51,6 @@ pfilter(object, \dots)
   }
   \item{filter.mean}{
     If \code{TRUE}, the filtering means are calculated for the state variables and parameters.
-  }
-  \item{.rw.sd}{
-    For internal use with the MIF algorithm.
   }
   \item{verbose}{
     If \code{TRUE}, progress information is reported as \code{pfilter} works.

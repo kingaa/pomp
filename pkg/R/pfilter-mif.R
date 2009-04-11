@@ -11,7 +11,7 @@ setMethod(
             if (missing(Np))
               Np <- object@alg.pars$Np
             pfilter(
-                    as(object,"pomp"),
+                    object=as(object,"pomp"),
                     params=params,
                     Np=Np,
                     tol=tol,
