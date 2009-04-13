@@ -1,5 +1,29 @@
+2009-04-13  kingaa
+
+	* [r90] R/mif.R, man/mif.Rd, tests/ou2-mif.R: rewrite mif methods
+	  to use 'mif.internal'.
+	  this obviates the need for a user-visible '.ndone' argument.
+	  add some reporting when verbose=TRUE.
+	  the 'particles' function can now be altered after the mif object
+	  is created.
+	  some new tests have been added to tests/ou2-mif.R
+	* [r89] R/pfilter.R: a bit less reporting when verbose=TRUE
+
+2009-04-11  kingaa
+
+	* [r88] tests/ou2-mif.R, tests/ou2-mif.Rout.save: tests added for
+	  'mif' and 'pfilter'
+	* [r87] R/mif.R: modified in accordance with changes made in
+	  revision 86.
+	* [r86] R/pfilter-mif.R, R/pfilter.R, man/pfilter.Rd: put the guts
+	  of the particle filter into 'pfilter.internal'.
+	  this can be used by 'mif' directly and by methods for 'pfilter'.
+	  this obviates the need for the argument .rw.sd in the
+	  user-visible methods.
+
 2009-04-10  kingaa
 
+	* [r85] inst/ChangeLog:
 	* [r84] DESCRIPTION:
 	* [r83] DESCRIPTION, R/mif.R, R/pfilter.R, man/mif.Rd,
 	  man/pfilter.Rd: The handling of the argument 'pars' and 'ivps' in
