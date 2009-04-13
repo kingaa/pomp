@@ -1,5 +1,6 @@
 2009-04-13  kingaa
 
+	* [r91] inst/ChangeLog:
 	* [r90] R/mif.R, man/mif.Rd, tests/ou2-mif.R: rewrite mif methods
 	  to use 'mif.internal'.
 	  this obviates the need for a user-visible '.ndone' argument.
