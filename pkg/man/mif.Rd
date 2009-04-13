@@ -17,10 +17,8 @@ mif(object, \dots)
 \S4method{mif}{pomp}(object, Nmif = 1, start, pars, ivps = character(0),
     particles, rw.sd, alg.pars, weighted = TRUE,
     tol = 1e-17, warn = TRUE, max.fail = 0, verbose = FALSE)
-\S4method{mif}{mif}(object, Nmif, start, pars, ivps, rw.sd, alg.pars,
-    weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
-    verbose = FALSE, .ndone = 0)
-\S4method{continue}{mif}(object, Nmif, \dots)
+\S4method{mif}{mif}(object, Nmif, \dots)
+\S4method{continue}{mif}(object, Nmif = 1, \dots)
 }
 \arguments{
   \item{object}{
@@ -98,10 +96,6 @@ mif(object, \dots)
   \item{verbose}{
     logical; if TRUE, print progress reports.
   }
-  \item{.ndone}{
-    for internal use by \code{continue}.
-    Do not meddle with this!
-  }
   \item{\dots}{
     Additional arguments that can be used to override the defaults.
   }
@@ -111,15 +105,15 @@ mif(object, \dots)
   The call sequence is \code{mif(object)}.
   By default, the same parameters used for the original MIF run are re-used.
   If one does specify additional arguments, these will override the defaults.
-  An exception is that one cannot override the \code{particles} function.
 }
 \section{Continuing MIF Iterations}{
   One can continue a series of MIF iterations from where one left off.
   The call sequence is \code{continue(object, Nmif)}.
   This will perform \code{Nmif} additional MIF iterations on the \code{mif} object \code{object}.
   A call to \code{mif} to perform \code{Nmif=m} iterations followed by a call to \code{continue} to perform \code{Nmif=n} iterations will produce precisely the same effect as a single call to \code{mif} to perform \code{Nmif=m+n} iterations.
-  Additional arguments are passed to \code{mif}.
-  This feature can be used to change any of the parameters (except the \code{particles} function).
+  By default, all the algorithmic parameters are the same as used in the original call to \code{mif}.
+  Additional arguments will override the defaults.
+  This feature can be used to change any of the parameters.
 }
 \section{Details}{
   \strong{It is the user's responsibility to ensure that, if the optional \code{particles} argument is given, that the \code{particles} function satisfies the following conditions:}
