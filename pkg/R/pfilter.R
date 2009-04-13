@@ -215,8 +215,8 @@ pfilter.internal <- function (object, params, Np,
       params[rw.names,] <- params[rw.names,]+rnorm(n=Np*length(sigma),mean=0,sd=sigma)
     }
 
-    if (verbose)
-      cat("step",nt,"of",ntimes,"finished\n")
+    if (verbose && ((ntimes-nt)%%5==0))
+      cat("pfilter timestep",nt,"of",ntimes,"finished\n")
 
   }
 
