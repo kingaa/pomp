@@ -1,3 +1,16 @@
+2009-04-14  kingaa
+
+	* [r93] DESCRIPTION, R/mif.R, data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, man/mif.Rd, tests/ou2-mif.R,
+	  tests/ou2-mif.Rout.save, tests/sir.Rout.save: The parameter
+	  'alg.pars' is now deprecated. The four algorithm parameters Np,
+	  ic.lag, var.factor, cooling.factor are now specified directly as
+	  required arguments to pomp. The 'alg.pars' argument will be
+	  removed in a future release. Use of this argument now results in
+	  a warning message.
+	  
+
 2009-04-13  kingaa
 
 	* [r92] DESCRIPTION, data/ou2.rda, inst/ChangeLog,
