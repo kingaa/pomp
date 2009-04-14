@@ -1,5 +1,5 @@
 
-R version 2.7.1 (2008-06-23)
+R version 2.8.1 (2008-12-22)
 Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -16,7 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: odesolve
+Loading required package: deSolve
+Loading required package: subplex
 > 
 > tbasis <- seq(0,25,by=1/52)
 > basis <- periodic.bspline.basis(tbasis,nbasis=3)
@@ -147,7 +148,7 @@ Loading required package: odesolve
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.935402 secs
+Time difference of 2.595228 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -164,7 +165,7 @@ Time difference of 3.935402 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 7.444703 secs
+Time difference of 5.991744 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -255,7 +256,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.3896399 secs
+Time difference of 0.2616198 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -263,7 +264,7 @@ Time difference of 0.3896399 secs
 > X4 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 5.439281 secs
+Time difference of 4.824738 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > f2 <- dprocess(
@@ -314,7 +315,7 @@ I   6165   8975  11503  15834.2  21418  27852  34849
 R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > 
 > print(max(abs(f2-f1),na.rm=T),digits=4)
-[1] 7.994e-15
+[1] 8.882e-15
 > print(max(abs(g2-g1),na.rm=T),digits=4)
 [1] 0
 > print(max(abs(h2-h1),na.rm=T),digits=4)

@@ -28,12 +28,10 @@ mif.fit <- mif(ou2,Nmif=10,start=guess,
                  x1.0=5,x2.0=5,
                  alpha.1=0.1,alpha.4=0.1
                  ),
-               alg.pars=list(
-                 Np=1000,
-                 var.factor=1,
-                 ic.lag=10,
-                 cooling.factor=0.95
-                 ),
+               Np=1000,
+               var.factor=1,
+               ic.lag=10,
+               cooling.factor=0.95,
                max.fail=100
                )
 mif.fit <- continue(mif.fit,Nmif=70,max.fail=100)
@@ -59,7 +57,7 @@ fit <- mif(
            pars=c("alpha.1","alpha.4"),
            ivps=c("x1.0","x2.0"),
            rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
-           alg.pars=list(Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1)
+           Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
            )
 fit <- mif(
            ou2,
@@ -74,7 +72,7 @@ fit <- mif(
            Nmif=2,
            ivps=c("x1.0","x2.0"),
            rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2),
-           alg.pars=list(Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1)
+           Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1
            )
 fit <- continue(fit,Nmif=40)
 ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100)
@@ -84,6 +82,6 @@ fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.1"))
 s <- coef(fit)
 s[2] <- 0.01
 fit <- mif(fit,Nmif=10,start=s)
-fit <- mif(ou2,Nmif=3,rw.sd=c(alpha.1=0.1,alpha.4=0.1),alg.pars=list(Np=1000,cooling.factor=0.98,var.factor=1,ic.lag=2))
-fit <- continue(fit,Nmif=5,alg.pars=list(Np=2000,cooling.factor=0.98,var.factor=1,ic.lag=2))
+fit <- mif(ou2,Nmif=3,rw.sd=c(alpha.1=0.1,alpha.4=0.1),Np=1000,cooling.factor=0.98,var.factor=1,ic.lag=2)
+fit <- continue(fit,Nmif=5,Np=2000)
 fit <- continue(fit,ivps=c("x1.0"),rw.sd=c(alpha.1=0.1,alpha.4=0.1,x1.0=5,x2.0=5),Nmif=3)

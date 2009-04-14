@@ -15,7 +15,7 @@
 \usage{
 mif(object, \dots)
 \S4method{mif}{pomp}(object, Nmif = 1, start, pars, ivps = character(0),
-    particles, rw.sd, alg.pars, weighted = TRUE,
+    particles, rw.sd, Np, cooling.factor, var.factor, ic.lag, alg.pars, weighted = TRUE,
     tol = 1e-17, warn = TRUE, max.fail = 0, verbose = FALSE)
 \S4method{mif}{mif}(object, Nmif, \dots)
 \S4method{continue}{mif}(object, Nmif = 1, \dots)
@@ -55,27 +55,26 @@ mif(object, \dots)
     \code{rw.sd} must be non-negative (zeros are simply ignored),
     the name of every positive element of \code{rw.sd} must be in either \code{pars} or \code{ivps}.
   }
+  \item{Np}{
+    a positive integer;
+    the number of particles to use in filtering
+  }
+  \item{ic.lag}{
+    a positive integer;
+    the timepoint for fixed-lag smoothing of initial-value parameters
+  }
+  \item{var.factor}{
+    a positive number;
+    the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}
+  }
+  \item{cooling.factor}{
+    a positive number not greater than 1;
+    the exponential cooling factor, \code{alpha}.
+  }
   \item{alg.pars}{
-    A named list of algorithm parameters.
-    This consists of
-    \describe{
-      \item{Np}{
-	a positive integer;
-	the number of particles to use in filtering
-      }
-      \item{ic.lag}{
-	a positive integer;
-	the timepoint for fixed-lag smoothing of initial-value parameters
-      }
-      \item{var.factor}{
-	a positive number;
-	the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}
-      }
-      \item{cooling.factor}{
-	a positive number not greater than 1;
-	the exponential cooling factor, \code{alpha}.
-      }
-    }
+    optional; a named list of the algorithm parameters \code{Np}, \code{cooling.factor}, \code{var.factor}, \code{ic.lag}.
+    The use of \code{alg.pars} is now deprecated and generates a warning.
+    It will be removed in the near future.
   }
   \item{weighted}{
     Should a weighted average be used?

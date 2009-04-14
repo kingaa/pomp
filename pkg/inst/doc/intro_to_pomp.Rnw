@@ -350,16 +350,8 @@ In particular, this distribution must be such that, when \code{sd=0}, all the pa
 In this vignette, we'll use the default (multivariate normal) particle distribution.
 
 Let's jump right in and run MIF to maximize the likelihood over two of the parameters and both initial conditions.
-We'll use 1000 particles, an exponential cooling factor of 0.95, and a fixed-lag smoother with lag 10 for the initial conditions:
-<<>>=
-alg.pars <- list(
-                 Np=1000,
-                 var.factor=1,
-                 ic.lag=10,
-                 cooling.factor=0.95
-                 )
-@ 
-Just to make it interesting, we'll start far from the true parameter values:
+We'll use 1000 particles, an exponential cooling factor of 0.95, and a fixed-lag smoother with lag 10 for the initial conditions.
+Just to make it interesting, we'll start far from the true parameter values.
 <<>>=
 start.p <- true.p
 start.p[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(45,-60,0.8,0.9)
@@ -369,7 +361,10 @@ fit <- mif(ou2,Nmif=1,start=start.p,
              x1.0=5,x2.0=5,
              alpha.1=0.1,alpha.4=0.1
              ),
-           alg.pars=alg.pars,
+           Np=1000,
+           var.factor=1,
+           ic.lag=10,
+           cooling.factor=0.95,
            max.fail=100
            )
 fit <- continue(fit,Nmif=79,max.fail=100)

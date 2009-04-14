@@ -20,6 +20,7 @@ mif.internal <- function (object, Nmif = 1,
                           pars = NULL, ivps = NULL,
                           particles = NULL,
                           rw.sd = NULL, alg.pars = NULL,
+                          Np = NULL, cooling.factor = NULL, var.factor = NULL, ic.lag = NULL, 
                           weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
                           verbose = FALSE, .ndone = 0) {
   if (is.null(start)) {
@@ -89,16 +90,40 @@ mif.internal <- function (object, Nmif = 1,
   if (is.null(particles))
     particles <- object@particles
 
-  if (is.null(alg.pars))
-    alg.pars <- object@alg.pars
-  if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
-    stop(
-         "mif error: ",sQuote("alg.pars"),
-         " must be a named list with elements ",
-         sQuote("Np"),",",sQuote("cooling.factor"),",",sQuote("ic.lag"),
-         ",and ",sQuote("var.factor"),
-         call.=FALSE
-         )
+  if (is.null(alg.pars)) {
+    if (is.null(Np))
+      Np <- object@alg.pars$Np
+    Np <- as.integer(Np)
+    if ((length(Np)!=1)||(Np < 1))
+      stop("mif error: ",sQuote("Np")," must be a positive integer",call.=FALSE)
+    if (is.null(ic.lag))
+      ic.lag <- object@alg.pars$ic.lag
+    ic.lag <- as.integer(ic.lag)
+    if ((length(ic.lag)!=1)||(ic.lag < 1))
+      stop("mif error: ",sQuote("ic.lag")," must be a positive integer",call.=FALSE)
+    if (is.null(cooling.factor))
+      cooling.factor <- object@alg.pars$cooling.factor
+    if ((length(cooling.factor)!=1)||(cooling.factor < 0)||(cooling.factor>1))
+      stop("mif error: ",sQuote("cooling.factor")," must be a number between 0 and 1",call.=FALSE)
+    if (is.null(var.factor))
+      var.factor <- object@alg.pars$var.factor
+    if ((length(var.factor)!=1)||(var.factor < 0))
+      stop("mif error: ",sQuote("var.factor")," must be a positive number",call.=FALSE)
+  } else {                       # use of 'alg.pars' is now deprecated
+    warning("mif warning: use of ",sQuote("alg.pars")," is deprecated; see the documentation for ",sQuote("mif"),".",call.=FALSE)
+    if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
+      stop(
+           "mif error: ",sQuote("alg.pars"),
+           " must be a named list with elements ",
+           sQuote("Np"),",",sQuote("cooling.factor"),",",sQuote("ic.lag"),
+           ",and ",sQuote("var.factor"),
+           call.=FALSE
+           )
+    Np <- alg.pars$Np
+    cooling.factor <- alg.pars$cooling.factor
+    var.factor <- alg.pars$var.factor
+    ic.lag <- alg.pars$ic.lag
+  }
 
   if (verbose) {
     cat("performing",Nmif,"MIF iteration(s) to estimate parameter(s)",
@@ -108,9 +133,9 @@ mif.internal <- function (object, Nmif = 1,
     cat(" using random-walk with SD\n")
     print(rw.sd)
     cat(
-        "using",alg.pars$Np,"particles, variance factor",alg.pars$var.factor,
-        "\ninitial condition smoothing lag",alg.pars$ic.lag,
-        "and cooling factor",alg.pars$cooling.factor,"\n"
+        "using",Np,"particles, variance factor",var.factor,
+        "\ninitial condition smoothing lag",ic.lag,
+        "and cooling factor",cooling.factor,"\n"
         )
   }
 
@@ -139,7 +164,7 @@ mif.internal <- function (object, Nmif = 1,
 
     ## compute the cooled sigma
     cool.sched <- try(
-                      mif.cooling(alg.pars$cooling.factor,.ndone+n),
+                      mif.cooling(cooling.factor,.ndone+n),
                       silent=FALSE
                       )
     if (inherits(cool.sched,'try-error'))
@@ -148,7 +173,7 @@ mif.internal <- function (object, Nmif = 1,
 
     ## initialize the particles' parameter portion...
     P <- try(
-             particles(object,Np=alg.pars$Np,center=theta,sd=sigma.n*alg.pars$var.factor),
+             particles(object,Np=Np,center=theta,sd=sigma.n*var.factor),
              silent=FALSE
              )
     if (inherits(P,'try-error'))
@@ -175,7 +200,7 @@ mif.internal <- function (object, Nmif = 1,
 
     if (weighted) {           # MIF update rule
       v <- x$pred.var[pars,,drop=FALSE] # the prediction variance
-      v1 <- cool.sched$gamma*(1+alg.pars$var.factor^2)*sigma[pars]^2
+      v1 <- cool.sched$gamma*(1+var.factor^2)*sigma[pars]^2
       theta.hat <- cbind(theta[pars],x$filter.mean[pars,,drop=FALSE])
       theta[pars] <- theta[pars]+apply(apply(theta.hat,1,diff)/t(v),2,sum)*v1
     } else {                  # unweighted (flat) average
@@ -184,7 +209,7 @@ mif.internal <- function (object, Nmif = 1,
     }
     
     ## update the IVPs using fixed-lag smoothing
-    theta[ivps] <- x$filter.mean[ivps,alg.pars$ic.lag]
+    theta[ivps] <- x$filter.mean[ivps,ic.lag]
 
     ## store a record of this iteration
     conv.rec[n+1,-c(1,2)] <- theta
@@ -204,7 +229,12 @@ mif.internal <- function (object, Nmif = 1,
         pars=pars,
         Nmif=as.integer(Nmif),
         particles=particles,
-        alg.pars=alg.pars,
+        alg.pars=list(
+          Np=Np,
+          cooling.factor=cooling.factor,
+          var.factor=var.factor,
+          ic.lag=ic.lag
+          ),
         random.walk.sd=sigma[rw.names],
         pred.mean=x$pred.mean,
         pred.var=x$pred.var,
@@ -222,7 +252,12 @@ mif.internal <- function (object, Nmif = 1,
         pars=pars,
         Nmif=0L,
         particles=particles,
-        alg.pars=alg.pars,
+        alg.pars=list(
+          Np=Np,
+          cooling.factor=cooling.factor,
+          var.factor=var.factor,
+          ic.lag=ic.lag
+          ),
         random.walk.sd=sigma[rw.names],
         conv.rec=conv.rec
         )
@@ -236,6 +271,7 @@ setMethod(
                     pars, ivps = character(0),
                     particles,
                     rw.sd, alg.pars,
+                    Np, ic.lag, var.factor, cooling.factor,
                     weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
                     verbose = FALSE)
           {
@@ -273,12 +309,13 @@ setMethod(
                      call.=FALSE
                      )
             }
-            if (missing(alg.pars))
-              stop("mif error: ",sQuote("alg.pars")," must be specified",call.=FALSE)
-
+            if (missing(alg.pars)) alg.pars <- NULL # alg.pars is now deprecated
+              
             mif.internal(object,Nmif=Nmif,start=start,pars=pars,ivps=ivps,particles=particles,
-                         rw.sd=rw.sd,alg.pars=alg.pars,weighted=weighted,tol=tol,warn=warn,
-                         max.fail=max.fail,verbose=verbose,.ndone=0)
+                         rw.sd=rw.sd,alg.pars=alg.pars,Np=Np,cooling.factor=cooling.factor,
+                         var.factor=var.factor,ic.lag=ic.lag,
+                         weighted=weighted,tol=tol,warn=warn,max.fail=max.fail,
+                         verbose=verbose,.ndone=0)
 
           }
           )

@@ -1,5 +1,8 @@
 2009-04-13  kingaa
 
+	* [r92] DESCRIPTION, data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  tests/ou2-mif.Rout.save:
 	* [r91] inst/ChangeLog:
 	* [r90] R/mif.R, man/mif.Rd, tests/ou2-mif.R: rewrite mif methods
 	  to use 'mif.internal'.
