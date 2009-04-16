@@ -202,10 +202,10 @@ mif.internal <- function (object, Nmif = 1,
       v <- x$pred.var[pars,,drop=FALSE] # the prediction variance
       v1 <- cool.sched$gamma*(1+var.factor^2)*sigma[pars]^2
       theta.hat <- cbind(theta[pars],x$filter.mean[pars,,drop=FALSE])
-      theta[pars] <- theta[pars]+apply(apply(theta.hat,1,diff)/t(v),2,sum)*v1
+      theta[pars] <- theta[pars]+colSums(apply(theta.hat,1,diff)/t(v))*v1
     } else {                  # unweighted (flat) average
       theta.hat <- x$filter.mean[pars,,drop=FALSE]
-      theta[pars] <- apply(theta.hat,1,mean)
+      theta[pars] <- rowMeans(theta.hat)
     }
     
     ## update the IVPs using fixed-lag smoothing
