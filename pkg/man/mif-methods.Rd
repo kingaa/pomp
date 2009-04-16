@@ -96,6 +96,10 @@ compare.mif(z)
   E. L. Ionides, C. Bret\'o, & A. A. King,
   Inference for nonlinear dynamical systems,
   Proc. Natl. Acad. Sci. U.S.A., 103:18438--18443, 2006.
+
+  A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
+  Inapparent infections and cholera dynamics,
+  Nature, 454:877--880, 2008.
 }
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{\code{\link{mif}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}}

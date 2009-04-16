@@ -113,7 +113,6 @@ mif(object, \dots)
   A call to \code{mif} to perform \code{Nmif=m} iterations followed by a call to \code{continue} to perform \code{Nmif=n} iterations will produce precisely the same effect as a single call to \code{mif} to perform \code{Nmif=m+n} iterations.
   By default, all the algorithmic parameters are the same as used in the original call to \code{mif}.
   Additional arguments will override the defaults.
-  This feature can be used to change any of the parameters.
 }
 \section{Details}{
   \strong{It is the user's responsibility to ensure that, if the optional \code{particles} argument is given, that the \code{particles} function satisfies the following conditions:}
@@ -136,6 +135,10 @@ mif(object, \dots)
   E. L. Ionides, C. Bret\'o, & A. A. King,
   Inference for nonlinear dynamical systems,
   Proc. Natl. Acad. Sci. U.S.A., 103:18438--18443, 2006.
+
+  A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
+  Inapparent infections and cholera dynamics,
+  Nature, 454:877--880, 2008.
 }
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{
