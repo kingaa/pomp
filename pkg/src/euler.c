@@ -23,7 +23,7 @@ static void euler_simulator (euler_step_sim *estep,
   double dt, tol;
 
   struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
-  
+
   tol = sqrt(DOUBLE_EPS); // relative tolerance in choosing Euler stepsize
 
   // copy the start values into the result array
@@ -179,6 +179,7 @@ SEXP euler_model_simulator (SEXP func,
 			    SEXP tcovar, SEXP covar, SEXP args) 
 {
   int nprotect = 0;
+  int use_native = 0;
   int *dim, xdim[3], ndim[7];
   int nvar, npar, nrep, ntimes;
   int covlen, covdim;
@@ -201,9 +202,18 @@ SEXP euler_model_simulator (SEXP func,
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
   if (inherits(func,"NativeSymbol")) {
+    use_native = 1;
+  } else if (isFunction(func)) {
+    use_native = 0;
+  } else {
+    UNPROTECT(nprotect);
+    error("illegal input: supplied function must be either an R function or a compiled native function");
+  }
+    
+  if (use_native) {
     ff = (euler_step_sim *) R_ExternalPtrAddr(func);
     VINDEX = 0;
-  } else if (isFunction(func)) {
+  } else {
     PROTECT(fn = func); nprotect++;
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
     NVAR = nvar;			// for internal use
@@ -231,9 +241,6 @@ SEXP euler_model_simulator (SEXP func,
     ff = (euler_step_sim *) default_euler_step_fn;
     VINDEX = (int *) Calloc(nvar,int);
     FIRST = 1;
-  } else {
-    UNPROTECT(nprotect);
-    error("illegal input: supplied function must be either an R function or a compiled native function");
   }
 
   xdim[0] = nvar; xdim[1] = nrep; xdim[2] = ntimes;
@@ -268,9 +275,13 @@ SEXP euler_model_simulator (SEXP func,
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; 
   ndim[4] = covlen; ndim[5] = covdim; ndim[6] = nzeros;
 
+  if (use_native) GetRNGstate();
+
   euler_simulator(ff,REAL(X),REAL(xstart),REAL(times),REAL(params),
 		  ndim,REAL(dt),sidx,pidx,cidx,zidx,
 		  REAL(tcovar),REAL(covar));
+
+  if (use_native) PutRNGstate();
 
   if (VINDEX != 0) Free(VINDEX);
   VINDEX = 0;

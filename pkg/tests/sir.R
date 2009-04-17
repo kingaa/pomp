@@ -192,7 +192,7 @@ po <- pomp(
            covar=basis,
            delta.t=1/52/20,
            statenames=c("S","I","R","cases","W","B","dW"),
-           paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
+           paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
            covarnames=c("seas1"),
            zeronames=c("cases"),
            step.fun="sir_euler_simulator",
@@ -200,8 +200,9 @@ po <- pomp(
            dens.fun="sir_euler_density",
            dprocess=euler.density,
            skeleton.vectorfield="sir_ODE",
+           rmeasure="binom_rmeasure",
+           dmeasure="binom_dmeasure",
            PACKAGE="pomp",
-           measurement.model=measles~binom(size=cases,prob=exp(rho)),
            initializer=function(params,t0,...){
              p <- exp(params)
              with(

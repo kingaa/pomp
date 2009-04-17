@@ -239,9 +239,13 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
   ndim[0] = nvars; ndim[1] = npars; ndim[2] = nreps; ndim[3] = ntimes; 
   ndim[4] = covlen; ndim[5] = covdim; ndim[6] = nobs;
 
+  if (use_native) GetRNGstate();
+
   simul_meas(ff,REAL(Y),REAL(x),REAL(times),REAL(params),ndim,
 	     sidx,pidx,cidx,
 	     REAL(tcovar),REAL(covar));
+
+  if (use_native) PutRNGstate();
 
   if (OIDX != 0) Free(OIDX);
   OIDX = 0;

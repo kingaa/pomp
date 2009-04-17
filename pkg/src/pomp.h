@@ -27,6 +27,11 @@ typedef void euler_step_sim(double *x, const double *p,
 // dt         = size (duration) of the Euler step
 //  on output:
 // x          = contains the new state vector (i.e., at time t+dt)
+//
+// NB: There is no need to call GetRNGstate() or PutRNGstate() in the body of the user-defined function.
+//     The RNG is initialized before any call to this function, and the RNG state is written afterward.
+//     Inclusion of these calls in the user-defined function may result in significant slowdown.
+
 
 // Prototype for one-step Euler PDF, as used by "euler.density":
 typedef void euler_step_pdf(double *f, 
@@ -99,6 +104,10 @@ typedef void pomp_measure_model_simulator (double *y, double *x, double *p,
 // t          = time at the beginning of the Euler step
 //  on output:
 // y          = pointer to vector containing simulated observations (length = nobs = nrow(data))
+//
+// NB: There is no need to call GetRNGstate() or PutRNGstate() in the body of the user-defined function.
+//     The RNG is initialized before any call to this function, and the RNG state is written afterward.
+//     Inclusion of these calls in the user-defined function may result in significant slowdown.
 
 
 // Prototype for measurement model density evaluator

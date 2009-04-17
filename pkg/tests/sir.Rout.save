@@ -148,7 +148,7 @@ Loading required package: subplex
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.595228 secs
+Time difference of 4.017606 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -165,7 +165,7 @@ Time difference of 2.595228 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 5.991744 secs
+Time difference of 9.691413 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -223,7 +223,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 +            covar=basis,
 +            delta.t=1/52/20,
 +            statenames=c("S","I","R","cases","W","B","dW"),
-+            paramnames=c("gamma","mu","iota","beta1","beta.sd","pop"),
++            paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
 +            covarnames=c("seas1"),
 +            zeronames=c("cases"),
 +            step.fun="sir_euler_simulator",
@@ -231,8 +231,9 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 +            dens.fun="sir_euler_density",
 +            dprocess=euler.density,
 +            skeleton.vectorfield="sir_ODE",
++            rmeasure="binom_rmeasure",
++            dmeasure="binom_dmeasure",
 +            PACKAGE="pomp",
-+            measurement.model=measles~binom(size=cases,prob=exp(rho)),
 +            initializer=function(params,t0,...){
 +              p <- exp(params)
 +              with(
@@ -256,7 +257,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.2616198 secs
+Time difference of 0.2553811 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -264,7 +265,7 @@ Time difference of 0.2616198 secs
 > X4 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 4.824738 secs
+Time difference of 7.702386 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > f2 <- dprocess(

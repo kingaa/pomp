@@ -29,6 +29,7 @@ static double term_time (double t, double b0, double b1)
 #define LOGBETA        (p[parindex[3]]) // transmission rate
 #define LOGBETA_SD     (p[parindex[4]]) // environmental stochasticity SD in transmission rate
 #define LOGPOPSIZE     (p[parindex[5]]) // population size
+#define LOGRHO         (p[parindex[6]]) // reporting probability
 
 #define SUSC      (x[stateindex[0]]) // number of susceptibles
 #define INFD      (x[stateindex[1]]) // number of infectives
@@ -39,6 +40,22 @@ static double term_time (double t, double b0, double b1)
 #define dW        (x[stateindex[6]]) // white noise process
 
 #define SEASBASIS (covar[covindex[0]]) // first column of seasonality basis in lookup table
+
+#define MEASLES   (y[0])
+
+void binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
+		     int *stateindex, int *parindex, int *covindex,
+		     int ncovars, double *covars, double t) {
+  *lik = dbinom(MEASLES,CASE,exp(LOGRHO),give_log);
+}
+
+void binom_rmeasure (double *y, double *x, double *p, 
+		     int *stateindex, int *parindex, int *covindex,
+		     int ncovars, double *covars, double t) {
+  MEASLES = rbinom(CASE,exp(LOGRHO));
+}
+
+#undef MEASLES
 
 // SIR model with Euler multinomial step
 // forced transmission (basis functions passed as covariates)
@@ -79,8 +96,6 @@ void sir_euler_simulator (double *x, const double *p,
       !(R_FINITE(W)))
     return;
 
-  GetRNGstate();	     // initialize R's random number generator
-
   if (beta_sd > 0.0) {		// environmental noise is ON
     dW = rgamma(dt/beta_var,beta_var); // gamma noise, mean=dt, variance=(beta_sd^2 dt)
     if (!(R_FINITE(dW))) return;
@@ -103,8 +118,6 @@ void sir_euler_simulator (double *x, const double *p,
   reulermultinom(2,INFD,&rate[3],dt,&trans[3]);
   reulermultinom(1,RCVD,&rate[5],dt,&trans[5]);
 
-  PutRNGstate();	  // finished with R's random number generator
-
   // balance the equations
   SUSC += trans[0]-trans[1]-trans[2];
   INFD += trans[1]-trans[3]-trans[4];
@@ -115,10 +128,6 @@ void sir_euler_simulator (double *x, const double *p,
   }
 
 }
-
-#undef BIRTHS
-#undef W      
-#undef dW
 
 #define DSDT    (f[stateindex[0]])
 #define DIDT    (f[stateindex[1]])
@@ -172,10 +181,13 @@ void sir_ODE (double *f, double *x, const double *p,
 #undef DRDT
 #undef DCDT
 
-#undef SUSC   
-#undef INFD   
-#undef RCVD   
-#undef CASE   
+#undef SUSC
+#undef INFD
+#undef RCVD
+#undef CASE
+#undef W
+#undef BIRTHS
+#undef dW
 
 #define SUSC      (x1[stateindex[0]]) // number of susceptibles
 #define INFD      (x1[stateindex[1]]) // number of infectives
@@ -247,19 +259,20 @@ void sir_euler_density (double *f, double *x1, double *x2, double t1, double t2,
   *f += deulermultinom(1,RCVD,&rate[5],dt,&trans[5],1);
 }
 
-#undef GAMMA
-#undef MU   
-#undef IOTA 
-#undef BETA 
-#undef BETA_SD
-#undef POPSIZE
-
-#undef SUSC   
-#undef INFD   
-#undef RCVD   
-#undef CASE   
-#undef W      
-#undef BIRTHS
-#undef DW
-
 #undef SEASBASIS
+
+#undef SUSC
+#undef INFD
+#undef RCVD
+#undef CASE
+#undef W
+#undef BIRTHS
+#undef dW
+
+#undef LOGGAMMA
+#undef LOGMU
+#undef LOGIOTA
+#undef LOGBETA
+#undef LOGBETA_SD
+#undef LOGPOPSIZE
+#undef LOGRHO

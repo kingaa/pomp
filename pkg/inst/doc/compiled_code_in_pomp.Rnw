@@ -64,6 +64,7 @@ We let $\sigma\sigma^T$ be the variance-covariance matrix of $\xi_{t}$, where $\
 likewise, we let $\tau\tau^T$ be that of $\varepsilon_{t}$.
 
 Since many of the methods we will use require us to simulate the process and/or measurement models many times, it is a good idea to use native (compiled) codes for the computational heavy lifting.
+This can result in many-fold speedup.
 The package includes some C codes that were written to implement the OU example.
 Read the source (file `ou2.c') for details.
 

@@ -107,10 +107,8 @@ void normal_rmeasure (double *y, double *x, double *p,
 		      double t) 
 {
   double sd = fabs(TAU);
-  GetRNGstate();
   Y1 = rnorm(X1,sd);
   Y2 = rnorm(X2,sd);
-  PutRNGstate();
 }
 
 #undef X1

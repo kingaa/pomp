@@ -1,5 +1,15 @@
+2009-04-16  kingaa
+
+	* [r97] R/mif-methods.R, R/mif.R: use rowMeans and colMeans in
+	  place of apply where appropriate
+	* [r96] man/mif-class.Rd, man/mif-methods.Rd, man/mif.Rd: update
+	  references for 'mif'
+	* [r95] man/mif.Rd: fix order of arguments in documentation for
+	  'mif'
+
 2009-04-14  kingaa
 
+	* [r94] inst/ChangeLog:
 	* [r93] DESCRIPTION, R/mif.R, data/ou2.rda, inst/ChangeLog,
 	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
 	  inst/doc/intro_to_pomp.pdf, man/mif.Rd, tests/ou2-mif.R,
