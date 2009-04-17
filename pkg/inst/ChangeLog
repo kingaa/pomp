@@ -1,3 +1,18 @@
+2009-04-17  kingaa
+
+	* [r98] DESCRIPTION, data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/examples/euler_sir.R, inst/examples/euler_sir.c,
+	  inst/include/pomp.h, man/euler.Rd, src/euler.c, src/euler_sir.c,
+	  src/ou2.c, src/pomp.h, src/rmeasure.c, tests/sir.R,
+	  tests/sir.Rout.save: The 'euler' and 'rmeasure' evaluation codes
+	  now call GetRNGstate() and PutRNGstate() when the user-supplied
+	  function they will evaluate is a native routine. This means that
+	  potentially many fewer calls to these expensive functions can be
+	  made in, e.g., particle filtering or simulation of a large number
+	  of replicates and consequently significant performance gains.
+
 2009-04-16  kingaa
 
 	* [r97] R/mif-methods.R, R/mif.R: use rowMeans and colMeans in
