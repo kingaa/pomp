@@ -7,29 +7,29 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   ## check the data
   if (is.data.frame(data)) {
     if (!is.character(times) || length(times)!=1 || !(times%in%names(data)))
-      stop("pomp error: ",sQuote("times")," must be the name of a column of ",sQuote("data"),call.=FALSE)
+      stop("pomp error: ",sQuote("times")," must be the name of a column of ",sQuote("data"),call.=TRUE)
     tmnm <- times
     times <- data[[tmnm]]
     data <- do.call(rbind,lapply(data[!(names(data)%in%tmnm)],as.numeric))
   }
   if (!is.numeric(data))
-    stop("pomp error: ",sQuote("data")," must be numeric",call.=FALSE)
+    stop("pomp error: ",sQuote("data")," must be numeric",call.=TRUE)
   if (!is.array(data))
     data <- array(data,dim=c(1,length(data)),dimnames=list("data",NULL))
   storage.mode(data) <- 'double'
   
   ## check times
   if (!is.numeric(times) || !all(diff(times)>0))
-    stop("pomp error: ",sQuote("times")," must be an increasing numeric vector",call.=FALSE)
+    stop("pomp error: ",sQuote("times")," must be an increasing numeric vector",call.=TRUE)
   if (length(times)!=ncol(data))
-    stop("pomp error: the length of ",sQuote("times")," does not equal the number of columns in ",sQuote("data"),call.=FALSE)
+    stop("pomp error: the length of ",sQuote("times")," does not equal the number of columns in ",sQuote("data"),call.=TRUE)
   storage.mode(times) <- 'double'
   
   ## check t0
   if (!is.numeric(t0) || length(t0) > 1)
-    stop("pomp error: the zero-time ",sQuote("t0")," must be a single number",call.=FALSE)
+    stop("pomp error: the zero-time ",sQuote("t0")," must be a single number",call.=TRUE)
   if (t0 > times[1])
-    stop("pomp error: the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
+    stop("pomp error: the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=TRUE)
   storage.mode(t0) <- 'double'
   
   if (missing(rprocess))
@@ -67,7 +67,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                sQuote("skeleton.vectorfield"),
                " must be a function of prototype ",
                sQuote("skeleton.vectorfield(x,t,params,...)"),
-               call.=FALSE
+               call.=TRUE
                )
         skeleton <- new(
                         "pomp.fun",
@@ -83,10 +83,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                         use=as.integer(2)
                         )
       } else {
-        stop(
-             "pomp error: ",sQuote("skeleton.vectorfield")," must be either a function or the name of a compiled routine"
-             call.=FALSE
-             )
+        stop("pomp error: ",sQuote("skeleton.vectorfield")," must be either a function or the name of a compiled routine")
       }
     }
   } else {
@@ -94,7 +91,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
       skeleton.type <- "map"
       if (is.function(skeleton.map)) {
         if (!all(c('x','t','params','...')%in%names(formals(skeleton.map))))
-          stop(sQuote("skeleton.map")," must be a function of prototype ",sQuote("skeleton.map(x,t,params,...)"))
+          stop("pomp error: ",sQuote("skeleton.map")," must be a function of prototype ",sQuote("skeleton.map(x,t,params,...)"))
         skeleton <- new(
                         "pomp.fun",
                         R.fun=skeleton.map,
@@ -109,13 +106,10 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                         use=as.integer(2)
                         )
       } else {
-        stop(
-             "pomp error: ",sQuote("skeleton.map")," must be either a function or the name of a compiled routine"
-             call.=FALSE
-             )
+        stop("pomp error: ",sQuote("skeleton.map")," must be either a function or the name of a compiled routine")
       }
     } else { # a dynamical system cannot be both a map and a vectorfield
-      stop("it is not permitted to specify both ",sQuote("skeleton.map")," and ",sQuote("skeleton.vectorfield"),call.=FALSE)
+      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.map")," and ",sQuote("skeleton.vectorfield"))
     }
   }
   
@@ -135,20 +129,17 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   if (!is.function(rprocess))
     stop(
          "pomp error: ",sQuote("rprocess")," must be a function",
-         call.=FALSE
+         call.=TRUE
          )
   if (!is.function(dprocess))
     stop(
          "pomp error: ",sQuote("dprocess")," must be a function",
-         call.=FALSE
+         call.=TRUE
          )
 
   if (is.function(rmeasure)) {
     if (!all(c('x','t','params','...')%in%names(formals(rmeasure))))
-      stop(
-           "pomp error: ",sQuote("rmeasure")," must be a function of prototype ",sQuote("rmeasure(x,t,params,...)")
-           call.=FALSE
-           )
+      stop("pomp error: ",sQuote("rmeasure")," must be a function of prototype ",sQuote("rmeasure(x,t,params,...)"))
     rmeasure <- new(
                     "pomp.fun",
                     R.fun=rmeasure,
@@ -163,18 +154,12 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                     use=as.integer(2)
                     )
   } else {
-    stop(
-         "pomp error: ",sQuote("rmeasure")," must be either a function or the name of a compiled routine",
-         call.=FALSE
-         )
+    stop("pomp error: ",sQuote("rmeasure")," must be either a function or the name of a compiled routine")
   }
   
   if (is.function(dmeasure)) {
     if (!all(c('y','x','t','params','log','...')%in%names(formals(dmeasure))))
-      stop(
-           "pomp error: ",sQuote("dmeasure")," must be a function of prototype ",sQuote("dmeasure(y,x,t,params,log,...)")
-           call.=FALSE
-           )
+      stop("pomp error: ",sQuote("dmeasure")," must be a function of prototype ",sQuote("dmeasure(y,x,t,params,log,...)"))
     dmeasure <- new(
                     "pomp.fun",
                     R.fun=dmeasure,
@@ -189,32 +174,29 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                     use=as.integer(2)
                     )
   } else {
-    stop(
-         "pomp error: ",sQuote("dmeasure")," must be either a function or the name of a compiled routine",
-         call.=FALSE
-         )
+    stop("pomp error: ",sQuote("dmeasure")," must be either a function or the name of a compiled routine")
   }
   
   if (!is.function(initializer))
     stop(
          "pomp error: ",sQuote("initializer")," must be a function",
-         call.=FALSE
+         call.=TRUE
          )
   
   if (!all(c('xstart','times','params','...')%in%names(formals(rprocess))))
     stop(
          "pomp error: ",sQuote("rprocess")," must be a function of prototype ",sQuote("rprocess(xstart,times,params,...)"),
-         call.=FALSE
+         call.=TRUE
          )
   if (!all(c('x','times','params','log','...')%in%names(formals(dprocess))))
     stop(
          "pomp error: ",sQuote("dprocess")," must be a function of prototype ",sQuote("dprocess(x,times,params,log,...)"),
-         call.=FALSE
+         call.=TRUE
          )
   if (!all(c('params','t0','...')%in%names(formals(initializer))))
     stop(
          "pomp error: ",sQuote("initializer")," must be a function of prototype ",sQuote("initializer(params,t0,...)"),
-         call.=FALSE
+         call.=TRUE
          )
   
   if (missing(statenames)) statenames <- character(0)
@@ -226,10 +208,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     tcovar <- numeric(0)
     covarnames <- character(0)
   } else if (missing(tcovar)) {
-    stop(
-         "pomp error: if ",sQuote("covar")," is supplied, ",sQuote("tcovar")," must be supplied also",
-         call.=FALSE
-         )
+    stop("pomp error: if ",sQuote("covar")," is supplied, ",sQuote("tcovar")," must be supplied also")
   } else if (is.data.frame(covar)) {
     if (
         (
@@ -244,10 +223,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
          !(tcovar%in%names(covar))
          )
         ) {
-      stop(
-           "pomp error: if ",sQuote("covar")," is a data frame, ",sQuote("tcovar")," should indicate the time variable",
-           call.=FALSE
-           )
+      stop("pomp error: if ",sQuote("covar")," is a data frame, ",sQuote("tcovar")," should indicate the time variable")
     } else {
       tpos <- match(tcovar,names(covar))
       tcovar <- covar[[tpos]]
@@ -258,12 +234,12 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   }
   
   if (length(tcovar)!=nrow(covar)) {
-    stop("the length of ",sQuote("tcovar")," should match the number of rows of ",sQuote("covar"))
+    stop("pomp error: the length of ",sQuote("tcovar")," should match the number of rows of ",sQuote("covar"))
   } else if (!all(covarnames%in%colnames(covar))) {
     missing <- covarnames[!(covarnames%in%colnames(covar))]
-    stop("covariate(s) ",paste(missing,collapse=",")," are not found among the columns of ",sQuote("covar"))
+    stop("pomp error: covariate(s) ",paste(missing,collapse=",")," are not found among the columns of ",sQuote("covar"))
   } else if (!is.numeric(tcovar)) {
-    stop(sQuote("tcovar")," must either be a numeric vector or must name a numeric vector in the data frame ",sQuote("covar"))
+    stop("pomp error: ",sQuote("tcovar")," must either be a numeric vector or must name a numeric vector in the data frame ",sQuote("covar"))
   }
 
   if (nrow(covar)>0) {
@@ -311,10 +287,10 @@ measform2pomp <- function (formulae) {
     formulae <- list(formulae)
   nobs <- length(formulae)
   if (nobs < 1)
-    stop("you must provide at least one formula")
+    stop("pomp error: to use ",sQuote("measurement.model")," you must provide at least one formula")
   for (k in 1:nobs) {
     if (!inherits(formulae[[k]],"formula"))
-      stop(sQuote("measurement.model")," takes formulae as arguments")
+      stop("pomp error: ",sQuote("measurement.model")," takes formulae as arguments")
   }
   obsnames <- unlist(lapply(formulae,function(x)x[[2]]))
   distrib <- lapply(formulae,function(x)as.character(x[[3]][[1]]))
@@ -326,13 +302,13 @@ measform2pomp <- function (formulae) {
                silent=TRUE
                )
     if (inherits(res,'try-error'))
-      stop("distribution function ",ddistrib[[k]]," not found")
+      stop("pomp error: distribution function ",ddistrib[[k]]," not found")
     res <- try(
                match.fun(rdistrib[[k]]),
                silent=TRUE
                )
     if (inherits(res,'try-error'))
-      stop("random deviate function ",rdistrib[[k]]," not found")
+      stop("pomp error: random deviate function ",rdistrib[[k]]," not found")
   }
   pred.args <- lapply(formulae,function(x)as.list(x[[3]][-1]))
   dcalls <- vector(mode='list',length=nobs)
