@@ -2,12 +2,37 @@ setMethod(
           "trajectory",
           "pomp",
           function (object, params, times, ...) {
+            if (missing(params)) {
+              params <- coef(object)
+              if (length(params)==0) {
+                stop("trajectory error: ",sQuote("params")," must be supplied",call.=FALSE)
+              }
+            }
+            nrep <- NCOL(params)
+            if (is.null(dim(params))) {
+              params <- matrix(
+                               params,
+                               nrow=length(params),
+                               ncol=nrep,
+                               dimnames=list(
+                                 names(params),
+                                 NULL
+                                 )
+                               )
+            }
+            paramnames <- rownames(params)
+            if (is.null(paramnames))
+              stop("pfilter error: ",sQuote("params")," must have rownames",call.=FALSE)
+
+            if (missing(times))
+              times <- time(object,t0=TRUE)
+
             params <- as.matrix(params)
             if (missing(times))
               times <- time(object,t0=TRUE)
             x0 <- init.state(object,params=params,t0=times[1])
             x <- array(
-                       dim=c(nrow(x0),ncol(x0),length(times)),
+                       dim=c(nrow(x0),nrep,length(times)),
                        dimnames=list(rownames(x0),NULL,NULL)
                        )
             switch(
@@ -24,7 +49,7 @@ setMethod(
                      }
                    },
                    vectorfield={        # integrate the vectorfield
-                     for (j in 1:ncol(params)) {
+                     for (j in 1:nrep) {
                        X <- try(
                                 lsoda(
                                       y=x0[,j],

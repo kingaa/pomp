@@ -184,59 +184,25 @@ h1 <- skeleton(
                )
 print(h1[c("S","I","R"),,],digits=4)
 
-po <- pomp(
-           times=seq(1/52,4,by=1/52),
-           data=rbind(measles=numeric(52*4)),
-           t0=0,
-           tcovar=tbasis,
-           covar=basis,
-           delta.t=1/52/20,
-           statenames=c("S","I","R","cases","W","B","dW"),
-           paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
-           covarnames=c("seas1"),
-           zeronames=c("cases"),
-           step.fun="sir_euler_simulator",
-           rprocess=euler.simulate,
-           dens.fun="sir_euler_density",
-           dprocess=euler.density,
-           skeleton.vectorfield="sir_ODE",
-           rmeasure="binom_rmeasure",
-           dmeasure="binom_dmeasure",
-           PACKAGE="pomp",
-           initializer=function(params,t0,...){
-             p <- exp(params)
-             with(
-                  as.list(p),
-                  {
-                    fracs <- c(S.0,I.0,R.0)
-                    x0 <- c(
-                            round(pop*fracs/sum(fracs)), # make sure the three compartments sum to 'pop' initially
-                            rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
-                            )
-                    names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
-                    x0
-                  }
-                  )
-           }
-           )
+data(euler.sir)
 
 set.seed(3049953)
 ## simulate from the model
 tic <- Sys.time()
-x <- simulate(po,params=log(params),nsim=3)
+x <- simulate(euler.sir,nsim=3)
 toc <- Sys.time()
 print(toc-tic)
 plot(x[[1]],variables=c("S","I","R","cases","W"))
 
 t3 <- seq(0,20,by=1/52)
 tic <- Sys.time()
-X4 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
+X4 <- trajectory(euler.sir,times=t3,hmax=1/52)
 toc <- Sys.time()
 print(toc-tic)
 plot(t3,X4['I',1,],type='l')
 
 f2 <- dprocess(
-               po,
+               euler.sir,
                x=X1$states[,,31:40],
                times=t1[31:40],
                params=matrix(
@@ -250,7 +216,7 @@ f2 <- dprocess(
 print(apply(f2,1,sum),digits=4)
 
 g2 <- dmeasure(
-               po,
+               euler.sir,
                y=rbind(measles=X1$obs[,7,]),
                x=X1$states,
                times=t1,
@@ -265,7 +231,7 @@ g2 <- dmeasure(
 print(apply(g2,1,sum),digits=4)
 
 h2 <- skeleton(
-               po,
+               euler.sir,
                x=X2$states[,1,55:70,drop=FALSE],
                t=t2[55:70],
                params=as.matrix(log(params))
