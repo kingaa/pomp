@@ -32,7 +32,7 @@ coefficients at `truth'
 > cat("particle filter log likelihood at truth\n")
 particle filter log likelihood at truth
 > print(fit1.pfilter$loglik,digits=4)
-[1] -423.3
+[1] -412.9
 > 
 > p.truth <- coef(ou2)
 > guess <- p.truth
@@ -47,7 +47,7 @@ coefficients at guess
 > cat("particle filter log likelihood at guess\n")
 particle filter log likelihood at guess
 > print(fit2.pfilter$loglik,digits=4)
-[1] -686.8
+[1] -3913
 > 
 > cat("running MIF\n")
 running MIF
@@ -67,11 +67,11 @@ running MIF
 > mif.fit <- continue(mif.fit,Nmif=70,max.fail=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 58.27099 secs
+Time difference of 1.020114 mins
 > cat("PF estimated log likelihood at MIF MLE\n")
 PF estimated log likelihood at MIF MLE
 > print(pfilter(mif.fit)$loglik,digits=4)
-[1] -421.7
+[1] -411.2
 > 
 > cat("coefficients at truth\n")
 coefficients at truth
@@ -82,7 +82,7 @@ coefficients at truth
 MIF MLE
 > print(coef(mif.fit,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
     x1.0     x2.0  alpha.1  alpha.4 
- 51.2028 -50.0965   0.9032   0.9738 
+ 50.8435 -48.7910   0.9035   0.9902 
 > 
 > plot(mif.fit)
 > compare.mif(mif.fit)
@@ -118,7 +118,7 @@ mif warning: use of ‘alg.pars’ is deprecated; see the documentation for ‘m
 > fit <- continue(fit,Nmif=40)
 > ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100)
 > print(ff$loglik)
-[1] -477.4053
+[1] -441.1279
 > fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.1))
 > fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.1"))
 Warning message:

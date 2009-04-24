@@ -158,6 +158,7 @@ Fig.~\ref{fig:ou_process} plots the data.
 
 \begin{figure}
 <<fig=T,echo=F>>=
+  data(ou2)
   plot(ou2)
 @ 
   \caption{One realization of the two-dimensional OU process.}
@@ -165,8 +166,5 @@ Fig.~\ref{fig:ou_process} plots the data.
 \end{figure}
 
 The \code{pomp} object we just created is included in the package: use \code{data(ou2)} to retrieve it.
-<<echo=F>>=
-save(list='ou2',file='ou2.rda')
-@ 
 
 \end{document}

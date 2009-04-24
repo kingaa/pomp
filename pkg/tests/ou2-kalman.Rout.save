@@ -1,6 +1,6 @@
 
-R version 2.6.1 (2007-11-26)
-Copyright (C) 2007 The R Foundation for Statistical Computing
+R version 2.8.1 (2008-12-22)
+Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,6 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: deSolve
+Loading required package: subplex
 > 
 > kalman.filter <- function (y, x0, a, b, sigma, tau) {
 +   n <- nrow(y)
@@ -80,7 +82,7 @@ alpha.1 alpha.4    x1.0    x2.0
 > cat("Kalman filter log likelihood at truth\n")
 Kalman filter log likelihood at truth
 > print(-kalman(p.truth,ou2,p.truth),digits=4)
-[1] -422.4
+[1] -412
 > 
 > # make a wild guess
 > p.guess <- c(alpha.1=0.8,alpha.4=0.9,x1.0=45,x2.0=-60)
@@ -92,7 +94,7 @@ alpha.1 alpha.4    x1.0    x2.0
 > cat("Kalman filter log likelihood at guess\n")
 Kalman filter log likelihood at guess
 > print(-kalman(p.guess,ou2,p.truth),digits=4)
-[1] -562.3
+[1] -668.4
 > 
 > # find MLE using Kalman filter starting at the guess
 > cat("running Kalman filter estimation\n")
@@ -101,10 +103,10 @@ running Kalman filter estimation
 > kalm.fit1 <- optim(p.guess,kalman,object=ou2,params=p.truth,hessian=T)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 28.87264 secs
+Time difference of 39.45996 secs
 > tic <- Sys.time()
 > print(-kalm.fit1$value,digits=4)
-[1] -420.7
+[1] -411.1
 > 
 > cat("summary of results\n")
 summary of results
@@ -117,8 +119,8 @@ summary of results
 +       digits=4
 +       )
          truth      MLE       SE
-alpha.1   0.90   0.9020 0.009790
-alpha.4   0.99   0.9767 0.008197
-x1.0     50.00  50.7439 1.651465
-x2.0    -50.00 -49.3766 2.305126
+alpha.1   0.90   0.9021 0.009832
+alpha.4   0.99   0.9952 0.005294
+x1.0     50.00  50.4747 1.649801
+x2.0    -50.00 -47.9919 2.229328
 > 
