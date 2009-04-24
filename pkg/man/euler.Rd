@@ -106,64 +106,10 @@ euler.density(x, times, params, dens.fun, \dots,
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{\code{\link{eulermultinom}}, \code{\link{pomp}}}
 \examples{
-## set up a lookup table for basis functions for the seasonality
-tbasis <- seq(0,25,by=1/52)
-basis <- periodic.bspline.basis(tbasis,nbasis=3)
-colnames(basis) <- paste("seas",1:3,sep='')
-
-## some parameters
-params <- c(
-            gamma=26,mu=0.02,iota=0.01,
-            beta1=1200,beta2=1800,beta3=600,
-            beta.sd=1e-3,
-            pop=2.1e6,
-            rho=0.6,
-            S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
-            )
-
-## set up the pomp object
-## the C codes "sir_euler_simulator", "sir_euler_density", and "sir_ODE" are included
-## in the "examples" directory (file "sir.c")
-po <- pomp(
-           time=seq(1/52,20,by=1/52),
-           data=rbind(measles=numeric(52*20)),
-           t0=0,
-           tcovar=tbasis,
-           covar=basis,
-           delta.t=1/52/20,
-           statenames=c("S","I","R","cases","W","B","dW"),
-           paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
-           covarnames=c("seas1"),
-           zeronames=c("cases"),
-           step.fun="sir_euler_simulator",
-           dens.fun="sir_euler_density",
-           skeleton="sir_ODE",
-           rprocess=euler.simulate,
-           dprocess=euler.density,
-           dmeasure="binom_dmeasure",
-           rmeasure="binom_rmeasure",
-           initializer=function(params,t0,...){
-             p <- exp(params)
-             with(
-                  as.list(p),
-                  {
-                    fracs <- c(S.0,I.0,R.0)
-                    x0 <- c(
-                            round(pop*fracs/sum(fracs)), # make sure the three compartments sum to 'pop' initially
-                            rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
-                            )
-                    names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
-                    x0
-                  }
-                  )
-           }
-           )
-
-## simulate from the model
-tic <- Sys.time()
-x <- simulate(po,params=log(params),nsim=3)
-toc <- Sys.time()
-print(toc-tic)
-plot(x[[1]])
+## an example showing how to use these functions to implement a seasonal SIR model is contained
+## in the 'examples' directory
+\dontrun{
+edit(file=system.file("examples/euler_sir.R",package="pomp"))
+}
 }
 \keyword{models}
