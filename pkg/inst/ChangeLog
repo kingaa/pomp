@@ -1,5 +1,38 @@
+2009-04-26  kingaa
+
+	* [r105] data/euler.sir.R, data/euler.sir.rda, data/ou2.R,
+	  data/ou2.rda: It turns out not to work to use R files in the
+	  'data' directory if these involve actual computations. It appears
+	  that, during the package check process, the shared-object library
+	  is loaded *after* the data files are read. Consequently, the
+	  simulations used to generate the pomp objects in 'ou2.R' and
+	  'euler.sir.R' will not work. As a temporary fix, I have replaced
+	  these with binary files containing the objects. I do not yet have
+	  a satisfactory way of including the code used to generate these
+	  into the package yet.
+
+2009-04-24  kingaa
+
+	* [r104] R/trajectory-pomp.R, data/euler.sir.R, man/euler.sir.Rd,
+	  tests/sir.R, tests/sir.Rout.save: put 'euler.sir' in as an
+	  example pomp object obtainable via 'data(euler.sir)'
+	  make 'trajectory' a bit more user-friendly
+	* [r103] man/euler.Rd: remove the examples in the 'euler' and
+	  'SSA.simulate' man pages: refer the user to the 'examples'
+	  directory instead
+	* [r102] DESCRIPTION, data/ou2.R, data/ou2.rda,
+	  inst/doc/compiled_code_in_pomp.Rnw, tests/ou2-kalman.Rout.save,
+	  tests/ou2-mif.Rout.save: replace the binary data 'ou2.rda' with R
+	  code in 'ou2.R'
+
+2009-04-21  kingaa
+
+	* [r101] R/pomp.R: better error handling
+	* [r100] R/pomp.R: time variable is not needed in the covar table
+
 2009-04-17  kingaa
 
+	* [r99] inst/ChangeLog:
 	* [r98] DESCRIPTION, data/ou2.rda, inst/ChangeLog,
 	  inst/doc/compiled_code_in_pomp.Rnw,
 	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
