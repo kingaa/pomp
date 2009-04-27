@@ -1,5 +1,8 @@
 2009-04-26  kingaa
 
+	* [r107] DESCRIPTION, inst/ChangeLog: version 0.23-3
+	* [r106] data/euler.sir.rda, data/ou2.rda: use R-2.8.1 to generate
+	  the data/*.rda files
 	* [r105] data/euler.sir.R, data/euler.sir.rda, data/ou2.R,
 	  data/ou2.rda: It turns out not to work to use R files in the
 	  'data' directory if these involve actual computations. It appears
