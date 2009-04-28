@@ -24,7 +24,7 @@
 }
 \author{Aaron A. King (kingaa at umich dot edu)}
 \seealso{
-  \code{\link{pomp-class}}, \code{\link{pomp}}, \code{\link{mif-class}}, \code{\link{mif}}
+  \code{\link{pomp-class}}, \code{\link{pomp}}, \code{\link{mif-class}}, \code{\link{mif}}, \code{\link{nlf}}
 }
 \keyword{models}
 \keyword{ts}
