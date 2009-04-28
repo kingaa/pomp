@@ -1,6 +1,6 @@
 
-R version 2.6.1 (2007-11-26)
-Copyright (C) 2007 The R Foundation for Statistical Computing
+R version 2.8.1 (2008-12-22)
+Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,6 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: deSolve
+Loading required package: subplex
 > 
 > set.seed(45768683)
 > 
@@ -178,37 +180,7 @@ Type 'q()' to quit R.
 [2,]  -5.556753  -7.28100  -5.747134  -5.499941
 [3,]        Inf       Inf        Inf        Inf
 > 
-> po <- pomp(
-+            rprocess = euler.simulate,
-+            dprocess = euler.density,
-+            delta.t = 1,
-+            step.fun = function(x, t, params, dt, ...) {
-+              c(
-+                y1=rnorm(n=1,mean=x['x1'],sd=params['s1']),
-+                y2=rnorm(n=1,mean=x['x2'],sd=params['s2'])
-+                )
-+            },
-+            dens.fun = function (x1, t1, x2, t2, params, ...) {
-+              sum(
-+                  dnorm(
-+                        x=x2[c('x1','x2')],
-+                        mean=x1[c('x1','x2')],
-+                        sd=params[c('s1','s2')]
-+                        ),
-+                  na.rm=TRUE
-+                  )
-+            },
-+            measurement.model=list(
-+              y1 ~ norm(mean=x1,sd=tau),
-+              y2 ~ norm(mean=x2,sd=tau)
-+              ),
-+            times=1:100,
-+            data=rbind(
-+              y1=rep(0,100),
-+              y2=rep(0,100)
-+              ),
-+            t0=0
-+            )
+> data(rw2)
 > 
 > dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
             [,1]        [,2]       [,3]        [,4]

@@ -121,37 +121,7 @@ dmeasure(po,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
 log(dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
 dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
 
-po <- pomp(
-           rprocess = euler.simulate,
-           dprocess = euler.density,
-           delta.t = 1,
-           step.fun = function(x, t, params, dt, ...) {
-             c(
-               y1=rnorm(n=1,mean=x['x1'],sd=params['s1']),
-               y2=rnorm(n=1,mean=x['x2'],sd=params['s2'])
-               )
-           },
-           dens.fun = function (x1, t1, x2, t2, params, ...) {
-             sum(
-                 dnorm(
-                       x=x2[c('x1','x2')],
-                       mean=x1[c('x1','x2')],
-                       sd=params[c('s1','s2')]
-                       ),
-                 na.rm=TRUE
-                 )
-           },
-           measurement.model=list(
-             y1 ~ norm(mean=x1,sd=tau),
-             y2 ~ norm(mean=x2,sd=tau)
-             ),
-           times=1:100,
-           data=rbind(
-             y1=rep(0,100),
-             y2=rep(0,100)
-             ),
-           t0=0
-           )
+data(rw2)
 
 dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
 dmeasure(po,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
