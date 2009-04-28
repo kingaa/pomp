@@ -1,5 +1,17 @@
 2009-04-28  kingaa
 
+	* [r113] data/rw2.rda, man/rw2.Rd, tests/rw2.R,
+	  tests/rw2.Rout.save: add a new data()-accessible pomp object,
+	  coding a very simple 2D random walk
+	* [r112] DESCRIPTION, NAMESPACE, R/euler.R, data/euler.sir.rda,
+	  data/ou2.rda, inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, inst/examples/euler_sir.R,
+	  inst/examples/logistic.R, inst/examples/rw2.R, man/euler.Rd,
+	  src/euler.c, tests/logistic.R, tests/logistic.Rout.save,
+	  tests/sir.R, tests/sir.Rout.save: add onestep plugin to
+	  facilitate the construction of models for which explicit formulae
+	  are available for one-step transitions.
+	* [r111] inst/CITATION: fix citation info
 	* [r110] src/dprocess.c, src/rprocess.c: explicitly cast 'times' to
 	  double to avoid potential problems when R casts a sequence to
 	  integer storage type
