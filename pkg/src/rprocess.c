@@ -50,7 +50,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params)
   SET_TAG(fcall,install("tcovar"));
   PROTECT(fcall = LCONS(params,fcall)); nprotect++;
   SET_TAG(fcall,install("params"));
-  PROTECT(fcall = LCONS(times,fcall)); nprotect++;
+  PROTECT(fcall = LCONS(AS_NUMERIC(times),fcall)); nprotect++;
   SET_TAG(fcall,install("times"));
   PROTECT(fcall = LCONS(xstart,fcall)); nprotect++;
   SET_TAG(fcall,install("xstart"));

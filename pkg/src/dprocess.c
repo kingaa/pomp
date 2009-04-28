@@ -56,7 +56,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log)
   SET_TAG(fcall,install("log"));
   PROTECT(fcall = LCONS(params,fcall)); nprotect++;
   SET_TAG(fcall,install("params"));
-  PROTECT(fcall = LCONS(times,fcall)); nprotect++;
+  PROTECT(fcall = LCONS(AS_NUMERIC(times),fcall)); nprotect++;
   SET_TAG(fcall,install("times"));
   PROTECT(fcall = LCONS(x,fcall)); nprotect++;
   SET_TAG(fcall,install("x"));
