@@ -1,5 +1,5 @@
 
-R version 2.7.1 (2008-06-23)
+R version 2.8.1 (2008-12-22)
 Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -16,7 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: odesolve
+Loading required package: deSolve
+Loading required package: subplex
 > 
 > po <- pomp(
 +            data=rbind(obs=rep(0,1000)),
@@ -33,7 +34,7 @@ Loading required package: odesolve
 +                         )
 +                   )
 +            },
-+            dprocess=euler.density,
++            dprocess=onestep.density,
 +            dens.fun=function(x1,x2,t1,t2,params,log,...){
 +              delta.t <- t2-t1
 +              with(

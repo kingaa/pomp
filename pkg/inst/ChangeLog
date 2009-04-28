@@ -1,3 +1,15 @@
+2009-04-28  kingaa
+
+	* [r110] src/dprocess.c, src/rprocess.c: explicitly cast 'times' to
+	  double to avoid potential problems when R casts a sequence to
+	  integer storage type
+	* [r109] man/pomp-package.Rd:
+
+2009-04-27  kingaa
+
+	* [r108] inst/ChangeLog, inst/doc/Makefile,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+
 2009-04-26  kingaa
 
 	* [r107] DESCRIPTION, inst/ChangeLog: version 0.23-3

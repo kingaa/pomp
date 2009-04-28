@@ -1,7 +1,8 @@
 \name{euler}
 \alias{euler}
 \alias{euler.simulate}
-\alias{euler.density}
+\alias{onestep.simulate}
+\alias{onestep.density}
 \title{Dynamical models based on stochastic Euler algorithms}
 \description{
   Facilities for simulating discrete-time Markov processes and continuous-time Markov processes using the Euler algorithm.
@@ -11,10 +12,14 @@ euler.simulate(xstart, times, params, step.fun, delta.t, \dots,
                statenames = character(0), paramnames = character(0),
                covarnames = character(0), zeronames = character(0),
                tcovar, covar, PACKAGE)
-euler.density(x, times, params, dens.fun, \dots,
-              statenames = character(0), paramnames = character(0),
-              covarnames = character(0), tcovar, covar, log = FALSE,
-              PACKAGE)
+onestep.simulate(xstart, times, params, step.fun, \dots,
+                 statenames = character(0), paramnames = character(0),
+                 covarnames = character(0), zeronames = character(0),
+                 tcovar, covar, PACKAGE)
+onestep.density(x, times, params, dens.fun, \dots,
+                statenames = character(0), paramnames = character(0),
+                covarnames = character(0), tcovar, covar, log = FALSE,
+                PACKAGE)
 }
 \arguments{
   \item{xstart}{
@@ -37,8 +42,8 @@ euler.density(x, times, params, dens.fun, \dots,
     For details on how to write such codes, see Details.
   }
   \item{dens.fun}{
-    This can be either an R function or a compiled, dynamically loaded native function containing the model transition probability density function.
-    This function will be called to compute the probability of the actual Euler steps.
+    This can be either an R function or a compiled, dynamically loaded native function containing the model transition log probability density function.
+    This function will be called to compute the log likelihood of the actual Euler steps.
     It must be of type "euler\_step\_pdf" as defined in the header "pomp.h", which is included with the package.
     For details on how to write such codes, see Details.
   }
@@ -46,13 +51,13 @@ euler.density(x, times, params, dens.fun, \dots,
     Time interval of Euler steps.
   }
   \item{statenames}{
-    Names of state variables, in the order they will be expected by the routine named in \code{euler.step.fun} and \code{euler.dens.fun}.
+    Names of state variables, in the order they will be expected by the routine named in \code{step.fun} and \code{dens.fun}.
   }
   \item{paramnames}{
-    Names of parameters, in the order they will be expected by the routine named in \code{euler.step.fun} and \code{euler.dens.fun}.
+    Names of parameters, in the order they will be expected by the routine named in \code{step.fun} and \code{dens.fun}.
   }
   \item{covarnames}{
-    Names of columns of the matrix of covariates \code{covar}, in the order they will be expected by the routine named in \code{euler.step.fun} and \code{euler.dens.fun}.
+    Names of columns of the matrix of covariates \code{covar}, in the order they will be expected by the routine named in \code{step.fun} and \code{dens.fun}.
   }
   \item{zeronames}{
     Names of additional variables which will be zeroed before each time in \code{times}.
@@ -78,6 +83,11 @@ euler.density(x, times, params, dens.fun, \dots,
   }
 }
 \details{
+  \code{onestep.simulate} assumes that a single call to \code{step.fun} will advance the state process from one time to the next.
+  \code{euler.simulate} will take multiple Euler steps, each of size at most \code{delta.t} (see below for information on how the actual Euler step size is chosen) to get from one time to the next.
+
+  \code{onestep.density} assumes that no state transitions occure between consecutive times.
+
   If \code{step.fun} is written as an R function, it must have at least the arguments \code{x}, \code{t}, \code{params}, \code{delta.t}, and \code{\dots}.
   On a call to this function, \code{x} will be a named vector of state variables, \code{t} a scalar time, and \code{params} a named vector of parameters.
   The length of the Euler step will be \code{delta.t}.
@@ -97,10 +107,10 @@ euler.density(x, times, params, dens.fun, \dots,
   If \code{dens.fun} is written in a native language, it must be a function of type "euler\_step\_pdf" as defined in the header "pomp.h" included with the package (see the directory "include" in the installed package directory).
 }
 \value{
-  \code{euler.simulate} returns a \code{nvar} x \code{nrep} x \code{ntimes} array, where \code{nvar} is the number of state variables, \code{nrep} is the number of replicate simulations (= number of columns of \code{xstart} and \code{params}), and \code{ntimes} is the length of \code{times}.
+  \code{euler.simulate} and \code{onestep.simulate} each return a \code{nvar} x \code{nrep} x \code{ntimes} array, where \code{nvar} is the number of state variables, \code{nrep} is the number of replicate simulations (= number of columns of \code{xstart} and \code{params}), and \code{ntimes} is the length of \code{times}.
   If \code{x} is this array, \code{x[,,1]} will be identical to \code{xstart}; the rownames of \code{x} and \code{xstart} will also coincide.
 
-  \code{euler.density} returns a \code{nrep} x \code{ntimes-1} array.
+  \code{onestep.density} returns a \code{nrep} x \code{ntimes-1} array.
   If \code{f} is this array, \code{f[i,j]} is the likelihood of a transition from \code{x[,i,j]} to \code{x[,i,j+1]} in exactly one Euler step of duration \code{times[j+1]-times[j]}.
 }
 \author{Aaron A. King (kingaa at umich dot edu)}

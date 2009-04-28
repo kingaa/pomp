@@ -103,7 +103,7 @@ po <- pomp(
                   )
            },
            rprocess=euler.simulate,
-           dprocess=euler.density,
+           dprocess=onestep.density,
            measurement.model=measles~binom(size=cases,prob=exp(rho)),
            initializer=function(params,t0,...){
              p <- exp(params)
@@ -150,7 +150,7 @@ if (Sys.info()['sysname']=='Linux') {
              step.fun="sir_euler_simulator",
              rprocess=euler.simulate,
              dens.fun="sir_euler_density",
-             dprocess=euler.density,
+             dprocess=onestep.density,
              skeleton.vectorfield="sir_ODE",
              rmeasure="binom_rmeasure",
              dmeasure="binom_dmeasure",

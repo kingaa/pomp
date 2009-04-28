@@ -123,7 +123,7 @@ Loading required package: subplex
 +                   )
 +            },
 +            rprocess=euler.simulate,
-+            dprocess=euler.density,
++            dprocess=onestep.density,
 +            measurement.model=measles~binom(size=cases,prob=exp(rho)),
 +            initializer=function(params,t0,...){
 +              p <- exp(params)
@@ -148,7 +148,7 @@ Loading required package: subplex
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 4.005935 secs
+Time difference of 2.599395 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -165,7 +165,7 @@ Time difference of 4.005935 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 9.746132 secs
+Time difference of 5.949128 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -223,7 +223,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(euler.sir,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.2860382 secs
+Time difference of 0.1701131 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -231,7 +231,7 @@ Time difference of 0.2860382 secs
 > X4 <- trajectory(euler.sir,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 7.802866 secs
+Time difference of 4.644418 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > f2 <- dprocess(

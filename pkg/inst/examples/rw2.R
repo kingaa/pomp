@@ -1,5 +1,41 @@
 require(pomp)
 
+## using the "onestep" plugins
+
+rw2 <- pomp(
+            rprocess = onestep.simulate,
+            dprocess = onestep.density,
+            step.fun = function(x, t, params, delta.t, ...) {
+              c(
+                x1=rnorm(n=1,mean=x['x1'],sd=params['s1']*delta.t),
+                x2=rnorm(n=1,mean=x['x2'],sd=params['s2']*delta.t)
+                )
+            },
+            dens.fun = function (x1, t1, x2, t2, params, ...) {
+              sum(
+                  dnorm(
+                        x=x2[c('x1','x2')],
+                        mean=x1[c('x1','x2')],
+                        sd=params[c('s1','s2')]*(t2-t1),
+                        log=TRUE
+                        ),
+                  na.rm=TRUE
+                  )
+            },
+            measurement.model=list(
+              y1 ~ norm(mean=x1,sd=tau),
+              y2 ~ norm(mean=x2,sd=tau)
+              ),
+            times=1:100,
+            data=rbind(
+              y1=rep(0,100),
+              y2=rep(0,100)
+              ),
+            t0=0
+            )
+
+## writing rprocess and dprocess from scratch
+
 rw.rprocess <- function (params, xstart, times, ...) { 
   ## this function simulates two independent random walks with intensities s1, s2
   nvars <- nrow(xstart)
@@ -72,34 +108,3 @@ rw2 <- pomp(
             useless=23
             )
 
-po <- pomp(
-           rprocess = euler.simulate,
-           dprocess = euler.density,
-           delta.t = 1,
-           step.fun = function(x, t, params, dt, ...) {
-             c(
-               y1=rnorm(n=1,mean=x['x1'],sd=params['s1']),
-               y2=rnorm(n=1,mean=x['x2'],sd=params['s2'])
-               )
-           },
-           dens.fun = function (x1, t1, x2, t2, params, ...) {
-             sum(
-                 dnorm(
-                       x=x2[c('x1','x2')],
-                       mean=x1[c('x1','x2')],
-                       sd=params[c('s1','s2')]
-                       ),
-                 na.rm=TRUE
-                 )
-           },
-           measurement.model=list(
-             y1 ~ norm(mean=x1,sd=tau),
-             y2 ~ norm(mean=x2,sd=tau)
-             ),
-           times=1:100,
-           data=rbind(
-             y1=rep(0,100),
-             y2=rep(0,100)
-             ),
-           t0=0
-           )

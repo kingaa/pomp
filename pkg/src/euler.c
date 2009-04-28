@@ -92,6 +92,62 @@ static void euler_simulator (euler_step_sim *estep,
   }
 }
 
+// take one step from t1 to t2
+static void onestep_simulator (euler_step_sim *estep,
+			       double *x, double *xstart, double *times, double *params, 
+			       int *ndim, 
+			       int *stateindex, int *parindex, int *covindex, int *zeroindex,
+			       double *time_table, double *covar_table)
+{
+  double t, *xp, *pp;
+  int nvar = ndim[0];
+  int npar = ndim[1];
+  int nrep = ndim[2];
+  int ntimes = ndim[3];
+  int covlen = ndim[4];
+  int covdim = ndim[5];
+  int nzero = ndim[6];
+  double covar_fn[covdim];
+  int j, k, p, step, neuler;
+  double dt, tol;
+
+  struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
+
+  // copy the start values into the result array
+  for (p = 0; p < nrep; p++)
+    for (k = 0; k < nvar; k++) 
+      x[k+nvar*p] = xstart[k+nvar*p];
+  
+  // loop over times
+  for (step = 1; step < ntimes; step++) {
+
+    R_CheckUserInterrupt();
+
+    t = times[step-1];
+    dt = times[step]-t;
+
+    // interpolate the covar functions for the covariates
+    if (covdim > 0) 
+      table_lookup(&covariate_table,t,covar_fn,0);
+    
+    for (p = 0; p < nrep; p++) {
+      xp = &x[nvar*(p+nrep*step)];
+      // copy in the previous values of the state variables
+      for (k = 0; k < nvar; k++)
+	xp[k] = x[k+nvar*(p+nrep*(step-1))];
+      // set some variables to zero
+      for (k = 0; k < nzero; k++)
+	xp[zeroindex[k]] = 0.0;
+      
+      pp = &params[npar*p];
+      xp = &x[nvar*(p+nrep*step)];
+
+      (*estep)(xp,pp,stateindex,parindex,covindex,covdim,covar_fn,t,dt);
+      
+    }
+  }
+}
+
 // these global objects will pass the needed information to the user-defined function (see 'default_euler_step_fn')
 // each of these is allocated once, globally, and refilled many times
 static SEXP euler_step_Xvec;	// state variable vector
@@ -174,7 +230,7 @@ static void default_euler_step_fn (double *x, const double *p,
 
 SEXP euler_model_simulator (SEXP func, 
 			    SEXP xstart, SEXP times, SEXP params, 
-			    SEXP dt, 
+			    SEXP dt, SEXP method,
 			    SEXP statenames, SEXP paramnames, SEXP covarnames, SEXP zeronames,
 			    SEXP tcovar, SEXP covar, SEXP args) 
 {
@@ -191,11 +247,14 @@ SEXP euler_model_simulator (SEXP func,
   SEXP X, pindex, sindex, cindex, zindex;
   int *sidx, *pidx, *cidx, *zidx;
   SEXP fn, Pnames, Cnames;
+  int do_euler = 1, *meth;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
   ntimes = LENGTH(times);
+
+  if (*(INTEGER(AS_INTEGER(method)))) do_euler = 0;
 
   PROTECT(VNAMES = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
@@ -277,10 +336,16 @@ SEXP euler_model_simulator (SEXP func,
 
   if (use_native) GetRNGstate();
 
-  euler_simulator(ff,REAL(X),REAL(xstart),REAL(times),REAL(params),
-		  ndim,REAL(dt),sidx,pidx,cidx,zidx,
-		  REAL(tcovar),REAL(covar));
-
+  if (do_euler) {
+    euler_simulator(ff,REAL(X),REAL(xstart),REAL(times),REAL(params),
+		    ndim,REAL(dt),sidx,pidx,cidx,zidx,
+		    REAL(tcovar),REAL(covar));
+  } else {
+    onestep_simulator(ff,REAL(X),REAL(xstart),REAL(times),REAL(params),
+		      ndim,sidx,pidx,cidx,zidx,
+		      REAL(tcovar),REAL(covar));
+  }
+  
   if (use_native) PutRNGstate();
 
   if (VINDEX != 0) Free(VINDEX);

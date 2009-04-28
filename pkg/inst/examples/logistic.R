@@ -15,7 +15,7 @@ po <- pomp(
                         )
                   )
            },
-           dprocess=euler.density,
+           dprocess=onestep.density,
            dens.fun=function(x1,x2,t1,t2,params,log,...){
              delta.t <- t2-t1
              with(
