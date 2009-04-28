@@ -2,7 +2,7 @@ citHeader("To cite the pomp package in publications use:")
 
 citEntry(
          entry="Manual",
-         title="pomp: Statistical inference for partially observed Markov processes",
+         title="pomp: Statistical inference for partially observed Markov processes (R package)",
          author=personList(
  	   as.person("Aaron A. King"),
 	   as.person("Edward L. Ionides"),
