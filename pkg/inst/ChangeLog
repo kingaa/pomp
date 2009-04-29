@@ -1,5 +1,15 @@
+2009-04-29  kingaa
+
+	* [r116] DESCRIPTION, inst/include/pomp.h, man/euler.Rd,
+	  src/euler.c, src/lookup_table.c, src/pomp.h, src/pomp_internal.h:
+	  rearrange the headers
+	  rename the prototypes for native routines used in Euler and
+	  onestep plugins
+	* [r115] src/bspline.c, src/dsobol.c:
+
 2009-04-28  kingaa
 
+	* [r114] inst/ChangeLog: version 0.23-4
 	* [r113] data/rw2.rda, man/rw2.Rd, tests/rw2.R,
 	  tests/rw2.Rout.save: add a new data()-accessible pomp object,
 	  coding a very simple 2D random walk
