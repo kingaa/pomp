@@ -7,11 +7,28 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 
-// Prototype for one-step Euler simulator, as used by "euler.simulate":
-typedef void euler_step_sim(double *x, const double *p, 
-			    const int *stateindex, const int *parindex, const int *covindex,
-			    int ncovars, const double *covars,
-			    double t, double dt);
+// prototypes for C-level access to Euler-multinomial distribution functions
+void reulermultinom (int ntrans, double size, double *rate, double dt, double *trans);
+double deulermultinom (int ntrans, double size, double *rate, double dt, double *trans, int give_log);
+
+// facility for dotting a vector of parameters ('coef') against a vector of basis-function values ('basis')
+double dot_product (int dim, const double *basis, const double *coef);
+
+// Prototype for one-step simulator, as used by "euler.simulate" and "onestep.simulate":
+typedef double pomp_ssa_rate_fn(int j, double t, const double *x, const double *p);
+// Description:
+//  on input:
+// j          = integer specifying the number of the reaction whose rate is desired
+// t          = time at which the rates are to be evaluated
+// x          = vector of state variables
+// p          = vector of parameters
+//  returns the rate of the j-th reaction
+
+// Prototype for one-step simulator, as used by "euler.simulate" and "onestep.simulate":
+typedef void pomp_onestep_sim(double *x, const double *p, 
+			      const int *stateindex, const int *parindex, const int *covindex,
+			      int ncovars, const double *covars,
+			      double t, double dt);
 // Description:
 //  on input:
 // x          = pointer to state vector
@@ -33,11 +50,11 @@ typedef void euler_step_sim(double *x, const double *p,
 //     Inclusion of these calls in the user-defined function may result in significant slowdown.
 
 
-// Prototype for one-step Euler PDF, as used by "euler.density":
-typedef void euler_step_pdf(double *f, 
-			    double *x1, double *x2, double t1, double t2, const double *p, 
-			    const int *stateindex, const int *parindex, const int *covindex,
-			    int ncovars, const double *covars);
+// Prototype for one-step log probability density function, as used by "onestep.density":
+typedef void pomp_onestep_pdf(double *f, 
+			      double *x1, double *x2, double t1, double t2, const double *p, 
+			      const int *stateindex, const int *parindex, const int *covindex,
+			      int ncovars, const double *covars);
 // Description:
 //  on input:
 // x1         = pointer to state vector at time t1
@@ -56,11 +73,6 @@ typedef void euler_step_pdf(double *f,
 //                from the covariate table supplied to 'euler.density'
 //  on output:
 // f          = pointer to the probability density (a single scalar)
-
-// prototypes for C-level access to Euler-multinomial distribution functions
-void reulermultinom (int ntrans, double size, double *rate, double dt, double *trans);
-double deulermultinom (int ntrans, double size, double *rate, double dt, double *trans, int give_log);
-
 
 // Prototype for deterministic skeleton evaluation
 typedef void pomp_vectorfield_map (double *f, double *x, double *p, 
@@ -132,21 +144,5 @@ typedef void pomp_measure_model_density (double *lik, double *y, double *x, doub
 // t          = time at the beginning of the Euler step
 //  on output:
 // lik        = pointer to scalar containing (log) likelihood
-
-
-// lookup-table structure, as used internally
-struct lookup_table {
-  int length, width;
-  int index;
-  double *x;
-  double *y;
-};
-
-// simple linear interpolation of the lookup table (with derivative if desired)
-// setting dydt = 0 in the call to 'table_lookup' will bypass computation of the derivative
-void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt);
-
-// facility for dotting a vector of parameters ('coef') against a vector of basis-function values ('basis')
-double dot_product (int dim, const double *basis, const double *coef);
 
 #endif

@@ -14,6 +14,18 @@
 # define MATCHCOLNAMES(X,N) (matchnames(GET_COLNAMES(GET_DIMNAMES(X)),(N)))
 # define MATCH_CHAR_TO_ROWNAMES(X,N,A) (match_char_to_names(GET_ROWNAMES(GET_DIMNAMES(X)),(N),(A)))
 
+// lookup-table structure, as used internally
+struct lookup_table {
+  int length, width;
+  int index;
+  double *x;
+  double *y;
+};
+
+// simple linear interpolation of the lookup table (with derivative if desired)
+// setting dydt = 0 in the call to 'table_lookup' will bypass computation of the derivative
+void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt);
+
 /* bspline.c */
 SEXP bspline_basis(SEXP x, SEXP degree, SEXP knots);
 SEXP bspline_basis_function(SEXP x, SEXP i, SEXP degree, SEXP knots);
@@ -30,7 +42,7 @@ SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t, int *index);
 /* resample.c */
 SEXP systematic_resampling(SEXP weights);
 
-static SEXP makearray (int rank, int *dim) {
+static inline SEXP makearray (int rank, int *dim) {
   int nprotect = 0;
   int *dimp, k;
   SEXP dimx, x;
@@ -42,7 +54,7 @@ static SEXP makearray (int rank, int *dim) {
   return x;
 }
 
-static SEXP matchnames (SEXP x, SEXP names) {
+static inline SEXP matchnames (SEXP x, SEXP names) {
   int nprotect = 0;
   int n = length(names);
   int *idx, k;
@@ -58,7 +70,7 @@ static SEXP matchnames (SEXP x, SEXP names) {
   return index;
 }
 
-static SEXP match_char_to_names (SEXP x, int n, char **names) {
+static inline SEXP match_char_to_names (SEXP x, int n, char **names) {
   int nprotect = 0;
   int *idx, k;
   SEXP index, nm;
@@ -79,7 +91,7 @@ static SEXP match_char_to_names (SEXP x, int n, char **names) {
   return index;
 }
 
-static void setrownames (SEXP x, SEXP names, int n) {
+static inline void setrownames (SEXP x, SEXP names, int n) {
   int nprotect = 0;
   SEXP dimnms, nm;
   PROTECT(nm = AS_CHARACTER(names)); nprotect++;
@@ -89,11 +101,11 @@ static void setrownames (SEXP x, SEXP names, int n) {
   UNPROTECT(nprotect);
 }
 
-static double expit (double x) {
+static inline double expit (double x) {
   return 1.0/(1.0 + exp(-x));
 }
 
-static double logit (double x) {
+static inline double logit (double x) {
   return log(x/(1-x));
 }
 

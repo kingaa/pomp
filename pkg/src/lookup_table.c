@@ -2,7 +2,7 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 
-#include "pomp.h"
+#include "pomp_internal.h"
 
 SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t, int *index) {
   int nprotect = 0;
