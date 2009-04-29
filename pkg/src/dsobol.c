@@ -8,12 +8,13 @@ void F77_NAME(gosobl)(double *);
 
 SEXP sobol_sequence (SEXP dim)
 {
+  int nprotect = 0;
   SEXP data;
   int d = INTEGER(dim)[0];
   int n = INTEGER(dim)[1];
-  PROTECT(data = allocMatrix(REALSXP,d,n));
+  PROTECT(data = allocMatrix(REALSXP,d,n)); nprotect++;
   dsobol(REAL(data),d,n);
-  UNPROTECT(1);
+  UNPROTECT(nprotect);
   return(data);
 }
 
