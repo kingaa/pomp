@@ -14,7 +14,7 @@ double deulermultinom (int ntrans, double size, double *rate, double dt, double 
 // facility for dotting a vector of parameters ('coef') against a vector of basis-function values ('basis')
 double dot_product (int dim, const double *basis, const double *coef);
 
-// Prototype for one-step simulator, as used by "euler.simulate" and "onestep.simulate":
+// Prototype for stochastic simulation algorithm reaction-rate function.
 typedef double pomp_ssa_rate_fn(int j, double t, const double *x, const double *p);
 // Description:
 //  on input:
