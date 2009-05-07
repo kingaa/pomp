@@ -1,5 +1,29 @@
+2009-05-07  kingaa
+
+	* [r121] inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, inst/include/pomp.h,
+	  src/eulermultinom.c, src/pomp.h, tests/sir.R,
+	  tests/sir.Rout.save: streamline "reulermultinom" by moving
+	  GetRNGstate() and PutRNGstate() outside of a level of looping. If
+	  you want to use 'reulermultinom' at the C level, you must take
+	  care that it is wrapped inside of the RNGstate functions. An
+	  approx. 10-fold increase in speed for the euler.simulate function
+	  is realized by this simple change.
+
+2009-05-05  kingaa
+
+	* [r120] inst/include/pomp.h: fix the pomp.h header comments
+
+2009-05-01  kingaa
+
+	* [r119] R/init.state-pomp.R: when params is missing, use params <-
+	  coef(object)
+
 2009-04-29  kingaa
 
+	* [r118] src/pomp.h: fix comments
+	* [r117] inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
 	* [r116] DESCRIPTION, inst/include/pomp.h, man/euler.Rd,
 	  src/euler.c, src/lookup_table.c, src/pomp.h, src/pomp_internal.h:
 	  rearrange the headers
