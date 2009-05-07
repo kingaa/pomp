@@ -148,7 +148,7 @@ Loading required package: subplex
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.599395 secs
+Time difference of 4.062482 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -165,7 +165,7 @@ Time difference of 2.599395 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 5.949128 secs
+Time difference of 9.65457 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -220,10 +220,10 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > set.seed(3049953)
 > ## simulate from the model
 > tic <- Sys.time()
-> x <- simulate(euler.sir,nsim=3)
+> x <- simulate(euler.sir,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.1701131 secs
+Time difference of 2.457672 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -231,7 +231,7 @@ Time difference of 0.1701131 secs
 > X4 <- trajectory(euler.sir,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 4.644418 secs
+Time difference of 7.418138 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > f2 <- dprocess(

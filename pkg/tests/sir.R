@@ -189,7 +189,7 @@ data(euler.sir)
 set.seed(3049953)
 ## simulate from the model
 tic <- Sys.time()
-x <- simulate(euler.sir,nsim=3)
+x <- simulate(euler.sir,nsim=100)
 toc <- Sys.time()
 print(toc-tic)
 plot(x[[1]],variables=c("S","I","R","cases","W"))

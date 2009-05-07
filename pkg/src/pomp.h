@@ -8,21 +8,12 @@
 #include <Rdefines.h>
 
 // prototypes for C-level access to Euler-multinomial distribution functions
+// NB: 'reulermultinom' does not call GetRNGstate() and PutRNGstate() internally, so the user must do so
 void reulermultinom (int ntrans, double size, double *rate, double dt, double *trans);
 double deulermultinom (int ntrans, double size, double *rate, double dt, double *trans, int give_log);
 
 // facility for dotting a vector of parameters ('coef') against a vector of basis-function values ('basis')
 double dot_product (int dim, const double *basis, const double *coef);
-
-// Prototype for stochastic simulation algorithm reaction-rate function.
-typedef double pomp_ssa_rate_fn(int j, double t, const double *x, const double *p);
-// Description:
-//  on input:
-// j          = integer specifying the number of the reaction whose rate is desired
-// t          = time at which the rates are to be evaluated
-// x          = vector of state variables
-// p          = vector of parameters
-//  returns the rate of the j-th reaction
 
 // Prototype for one-step simulator, as used by "euler.simulate" and "onestep.simulate":
 typedef void pomp_onestep_sim(double *x, const double *p, 

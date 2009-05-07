@@ -21,7 +21,6 @@ void reulermultinom (int m, double size, double *rate, double dt, double *trans)
     }
     p += rate[k]; // total event rate
   }
-  GetRNGstate();
   size = rbinom(size,1-exp(-p*dt)); // total number of events
   if (!(R_FINITE(size)))
     warning("reulermultinom: result of binomial draw is not finite");
@@ -35,7 +34,6 @@ void reulermultinom (int m, double size, double *rate, double dt, double *trans)
     p -= rate[k];
   }
   trans[m] = size;
-  PutRNGstate();
 }
 
 // probability density of Euler-multinomial transitions
@@ -107,9 +105,11 @@ SEXP R_Euler_Multinom (SEXP n, SEXP size, SEXP rate, SEXP dt) {
   PROTECT(nn = AS_INTEGER(n)); nprotect++;
   dim[0] = ntrans;
   dim[1] = INTEGER(nn)[0];
-  PROTECT(x =  makearray(2,dim)); nprotect++;
+  PROTECT(x = makearray(2,dim)); nprotect++;
   setrownames(x,GET_NAMES(rate),2);
+  GetRNGstate();
   reulermultinom_multi(INTEGER(nn),&ntrans,REAL(size),REAL(rate),REAL(dt),REAL(x));
+  PutRNGstate();
   UNPROTECT(nprotect);
   return x;
 }
@@ -127,7 +127,7 @@ SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP dt, SEXP log) {
     warning("deulermultinom: only the first element of 'size' is meaningful");
   if (length(dt)>1)
     warning("deulermultinom: only the first element of 'dt' is meaningful");
-  PROTECT(f =  NEW_NUMERIC(n)); nprotect++;
+  PROTECT(f = NEW_NUMERIC(n)); nprotect++;
   deulermultinom_multi(&n,&ntrans,REAL(size),REAL(rate),REAL(dt),REAL(x),INTEGER(log),REAL(f));
   UNPROTECT(nprotect);
   return f;
