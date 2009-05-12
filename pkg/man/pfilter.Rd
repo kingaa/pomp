@@ -65,7 +65,7 @@ pfilter(object, \dots)
     The matrix of prediction means.
     The rows correspond to states and parameters (if appropriate), in that order, the columns to successive observations in the time series contained in \code{object}.
   }
-  \item{pred.variance}{
+  \item{pred.var}{
     The matrix of prediction variances, in the same format as \code{pred.mean}.
   }
   \item{filter.mean}{
