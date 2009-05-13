@@ -1,5 +1,23 @@
+2009-05-13  kingaa
+
+	* [r125] DESCRIPTION, R/simulate-pomp.R, data/euler.sir.rda,
+	  data/ou2.rda, data/rw2.rda, inst/examples/logistic.R,
+	  man/simulate-pomp.Rd, tests/logistic.R, tests/logistic.Rout.save,
+	  tests/ou2-nlf.R, tests/ou2-nlf.Rout.save, tests/ou2-simulate.R,
+	  tests/ou2-simulate.Rout.save: now when 'simulate' is called with
+	  nsim=1 (the default), a single 'pomp' object is returned rather
+	  than (per the old behavior) a list containing one 'pomp' object.
+
+2009-05-12  kingaa
+
+	* [r124] DESCRIPTION: fix bug in documentation
+	* [r123] man/pfilter.Rd: fix bug in documentation
+
 2009-05-07  kingaa
 
+	* [r122] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  version 0.23-6
 	* [r121] inst/doc/compiled_code_in_pomp.pdf,
 	  inst/doc/intro_to_pomp.pdf, inst/include/pomp.h,
 	  src/eulermultinom.c, src/pomp.h, tests/sir.R,
