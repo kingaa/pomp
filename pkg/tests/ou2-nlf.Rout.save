@@ -1,6 +1,6 @@
 
-R version 2.7.2 (2008-08-25)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.10.0 Under development (unstable) (2009-05-07 r48492)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,7 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: odesolve
+Loading required package: deSolve
+Loading required package: subplex
 > 
 > data(ou2)
 > 
@@ -24,7 +25,7 @@ Loading required package: odesolve
 > 
 > po <- ou2
 > coef(po,c("x1.0","x2.0","alpha.1","alpha.4")) <- c(0,0,0.1,0.2)
-> po <- simulate(po,times=(1:10000))[[1]]
+> po <- simulate(po,times=(1:10000))
 > p.truth <- coef(po)
 > guess <- p.truth
 > ## guess[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(45,-60,0.8,0.9)
@@ -61,8 +62,8 @@ Exiting from Nelder Mead minimizer
     25 function evaluations used
 h in NLF =  0.1 
 epsilon in NLF = 0.4420236 0.2750263 
-Fitted param  1 -4.042142 -4.042142  up in  ‘nlf’ 
-Fitted param  1 -4.031832  down in  ‘NLF’ 
-Fitted param  2 -4.032517 -4.032517  up in  ‘nlf’ 
-Fitted param  2 -4.03145  down in  ‘NLF’ 
+Fitted param  1 -4.042142 -4.042142  up in  'nlf' 
+Fitted param  1 -4.031832  down in  'NLF' 
+Fitted param  2 -4.032517 -4.032517  up in  'nlf' 
+Fitted param  2 -4.03145  down in  'NLF' 
 > 

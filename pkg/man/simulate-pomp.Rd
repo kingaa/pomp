@@ -35,6 +35,8 @@
   Each has a simulated data set, together with the parameters used (in slot \code{params}) and the state trajectories also (in slot \code{states}).
   If \code{times} is specified, then the \code{t0} slot of the created `pomp' objects will be filled with \code{times[1]} and the simulated observations will be at times \code{times[-1]}.
 
+  If \code{nsim=1}, then a single \code{pomp} object is returned (and not a singleton list).
+
   If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-3 array with dimensions \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
   Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
   The measurement process is not simulated in this case.   

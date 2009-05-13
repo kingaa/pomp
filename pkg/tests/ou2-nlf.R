@@ -6,7 +6,7 @@ set.seed(1066)
 
 po <- ou2
 coef(po,c("x1.0","x2.0","alpha.1","alpha.4")) <- c(0,0,0.1,0.2)
-po <- simulate(po,times=(1:10000))[[1]]
+po <- simulate(po,times=(1:10000))
 p.truth <- coef(po)
 guess <- p.truth
 ## guess[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(45,-60,0.8,0.9)

@@ -1,6 +1,6 @@
 
-R version 2.8.1 (2008-12-22)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.10.0 Under development (unstable) (2009-05-07 r48492)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -58,7 +58,7 @@ Loading required package: subplex
 > 
 > params <- c(n.0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
 > set.seed(73658676)
-> po <- simulate(po,params=params)[[1]]
+> po <- simulate(po,params=params)
 > 
 > t <- seq(0,by=0.005,length=50)
 > x <- simulate(po,times=t,states=T,obs=T)

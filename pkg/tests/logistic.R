@@ -39,7 +39,7 @@ po <- pomp(
 
 params <- c(n.0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
 set.seed(73658676)
-po <- simulate(po,params=params)[[1]]
+po <- simulate(po,params=params)
 
 t <- seq(0,by=0.005,length=50)
 x <- simulate(po,times=t,states=T,obs=T)

@@ -57,6 +57,9 @@ setMethod(
                                  po
                                }
                                )
+              if (nreps==1) {
+                retval <- retval[[1]]
+              }
             } else {
               if (!obs && states) {               # return states only
                 retval <- x

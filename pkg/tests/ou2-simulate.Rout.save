@@ -1,6 +1,6 @@
 
-R version 2.6.1 (2007-11-26)
-Copyright (C) 2007 The R Foundation for Statistical Computing
+R version 2.10.0 Under development (unstable) (2009-05-07 r48492)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,6 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: deSolve
+Loading required package: subplex
 > 
 > data(ou2)
 > 
@@ -31,11 +33,11 @@ Type 'q()' to quit R.
 > ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.2832530 secs
+Time difference of 0.3552971 secs
 > 
 > coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 > 
-> ou2.sim <- simulate(ou2)[[1]]
+> ou2.sim <- simulate(ou2)
 > x <- simulate(ou2,nsim=3,states=T)
 > y <- simulate(ou2,nsim=3,obs=T)
 > z <- simulate(ou2,nsim=3,obs=T,states=T)
