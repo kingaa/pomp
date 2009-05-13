@@ -149,7 +149,7 @@ p <- c(
 
 <<>>=
  tic <- Sys.time()
- ou2 <- simulate(ou2,params=p,nsim=1000,seed=800733088)[[1]]
+ ou2 <- simulate(ou2,params=p,nsim=1000,seed=800733088)
  toc <- Sys.time()
  print(toc-tic)
 @ 

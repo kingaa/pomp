@@ -1,5 +1,6 @@
 2009-05-13  kingaa
 
+	* [r126] inst/ChangeLog:
 	* [r125] DESCRIPTION, R/simulate-pomp.R, data/euler.sir.rda,
 	  data/ou2.rda, data/rw2.rda, inst/examples/logistic.R,
 	  man/simulate-pomp.Rd, tests/logistic.R, tests/logistic.Rout.save,

@@ -403,7 +403,7 @@ In this case, the \code{pomp} is simulated at the MLE.
 
 \begin{figure}
 <<fig=T,echo=F>>=
-plot(simulate(fit)[[1]])
+plot(simulate(fit))
 @ 
 \caption{\code{mif} objects can be simulated.}  
 \label{fig:mifsim}
