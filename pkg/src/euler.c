@@ -108,8 +108,8 @@ static void onestep_simulator (pomp_onestep_sim *estep,
   int covdim = ndim[5];
   int nzero = ndim[6];
   double covar_fn[covdim];
-  int j, k, p, step, neuler;
-  double dt, tol;
+  int k, p, step;
+  double dt;
 
   struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
 
@@ -247,7 +247,7 @@ SEXP euler_model_simulator (SEXP func,
   SEXP X, pindex, sindex, cindex, zindex;
   int *sidx, *pidx, *cidx, *zidx;
   SEXP fn, Pnames, Cnames;
-  int do_euler = 1, *meth;
+  int do_euler = 1;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
