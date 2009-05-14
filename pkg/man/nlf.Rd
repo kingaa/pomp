@@ -10,7 +10,7 @@
      nconverge=1000, nasymp=1000, seed = 1066, nrbf = 4,
      method = 'subplex', skip.se = FALSE, verbose = FALSE, gr = NULL,
      bootstrap=FALSE, bootsamp = NULL,
-     lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE, ...)
+     lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE, \dots)
 }
 \arguments{
   \item{object}{
