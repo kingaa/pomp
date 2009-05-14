@@ -28,6 +28,8 @@ typedef void pomp_onestep_sim(double *x, const double *p,
 //                the 'statenames' argument of 'euler.simulator'
 // parindex   = pointer to vector of integers pointing to the parameters in 'p' in the order specified by 
 //                the 'paramnames' argument of 'euler.simulator'
+// covindex   = pointer to vector of integers pointing to the covariates in 'covars' in the order 
+//                specified by the 'covarnames' argument of 'euler.simulator'
 // ncovars    = number of covariates
 // covars     = pointer to a vector containing the values of the covariates at time t, as interpolated 
 //                from the covariate table supplied to 'euler.simulator'
