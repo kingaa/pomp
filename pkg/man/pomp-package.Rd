@@ -6,7 +6,10 @@
   The \code{pomp} package provides facilities for inference using partially-observed Markov processes (AKA state-space models or nonlinear stochastic dynamical systems).
   The user provides functions specifying some or all of the model's process and measurement components.
   The package's algorithms are built on top of these functions.
-  At the moment, algorithms are provided for particle filtering (AKA sequential Monte Carlo or sequential importance sampling) and the likelihood maximization by iterated filtering (MIF) method of Ionides, Breto, and King (PNAS, 103:18438-18443, 2006).
+  At the moment, algorithms are provided for
+  particle filtering (AKA sequential Monte Carlo or sequential importance sampling),
+  the likelihood maximization by iterated filtering (MIF) method of Ionides, Breto, and King (PNAS, 103:18438-18443, 2006),
+  and the nonlinear forecasting algorithm of Kendall, Ellner, et al. (Ecol. Monog. 75:259-276, 2005).
   Future support for a variety of other algorithms is envisioned.
   A working group of the National Center for Ecological Analysis and Synthesis (NCEAS), "Inference for Mechanistic Models", is currently implementing additional methods for this package.
 

@@ -90,13 +90,15 @@
     An optional string giving the name of the dynamically loaded library in which the native routines are to be found.
   }
   \item{\dots}{
-    Any additional arguments are stored in a slot \code{userdata} and are passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.
-    Using this mechanism, the user can store additional information necessary for the definition of the model.
+    Any additional arguments are passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.
   }
 }
 \details{
-  \strong{It is the user's responsibility to ensure that the \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} functions satisfy the following conditions:}
-  
+  \strong{
+    It is not typically necessary (or easy) to define all of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} in any given problem.
+    Each algorithm makes use of a different subset of these functions.
+    If one of these functions is defined, it is the user's responsibility to ensure that it satisfies the following conditions:
+  }
   \describe{
     \item{\code{rprocess}}{
       if provided, must have at least the following arguments:
