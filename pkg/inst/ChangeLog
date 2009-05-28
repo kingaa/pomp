@@ -1,5 +1,30 @@
+2009-05-28  kingaa
+
+	* [r134] DESCRIPTION, R/bsplines.R, man/bsplines.Rd, src/bspline.c:
+	  fix up the bspline.basis function
+
+2009-05-26  kingaa
+
+	* [r133] DESCRIPTION, man/pomp-package.Rd, man/pomp.Rd: clarify
+	  some documentation
+
+2009-05-21  kingaa
+
+	* [r132] man/pomp-package.Rd, man/pomp.Rd: clarify the
+	  documentation on pomp object construction
+
+2009-05-14  kingaa
+
+	* [r131] inst/include/pomp.h: fix documentation
+	* [r130] man/nlf.Rd: fix documentation
+	* [r129] src/pomp.h: fix documentation
+	* [r128] src/euler.c: clean up the C codes in 'euler.c'
+
 2009-05-13  kingaa
 
+	* [r127] inst/ChangeLog, inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: version 0.24-1
 	* [r126] inst/ChangeLog:
 	* [r125] DESCRIPTION, R/simulate-pomp.R, data/euler.sir.rda,
 	  data/ou2.rda, data/rw2.rda, inst/examples/logistic.R,
