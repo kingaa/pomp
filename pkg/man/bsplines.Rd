@@ -3,38 +3,39 @@
 \alias{periodic.bspline.basis}
 \title{B-spline bases}
 \description{
-  These functions generate B-spline basis functions as lookup tables.
+  These functions generate B-spline basis functions.
   \code{bspline.basis} gives a set of basis functions.
   \code{periodic.bspline.basis} gives a basis of periodic spline functions.
 }
 \usage{
-bspline.basis(x, degree = 3, knots)
+bspline.basis(x, nbasis, degree = 3)
 periodic.bspline.basis(x, nbasis, degree = 3, period = 1)
 }
 \arguments{
   \item{x}{Vector at which the spline functions are to be evaluated.}
-  \item{degree}{Degree of requested B-splines.}
-  \item{knots}{Vector of positions of the knots.}
   \item{nbasis}{The number of basis functions to return.}
+  \item{degree}{Degree of requested B-splines.}
   \item{period}{The period of the requested periodic B-splines.}
 }
 \value{
   \item{bspline.basis}{
-    Returns a matrix with \code{length(x)} rows and \code{nbasis=length(knots)-degree-1} columns.
-    Each column contains the values one of the \code{nbasis} spline functions.
+    Returns a matrix with \code{length(x)} rows and \code{nbasis} columns.
+    Each column contains the values one of the spline basis functions.
   }
   \item{periodic.bspline.basis}{
     Returns a matrix with \code{length(x)} rows and \code{nbasis} columns.
+    The basis functions returned are periodic with period \code{period}.
   }
 }
 \author{Aaron A. King (kingaa at umich dot edu)}
 \examples{
-x <- seq(-0.2,1.2,by=0.01)
-y <- bspline.basis(x,degree=7,seq(0,1,length=14))
-matplot(x,y)
+x <- seq(0,2,by=0.01)
+y <- bspline.basis(x,degree=3,nbasis=9)
+matplot(x,y,type='l',ylim=c(0,1.1))
+lines(x,apply(y,1,sum),lwd=2)
 
 x <- seq(-1,2,by=0.01)
 y <- periodic.bspline.basis(x,nbasis=5)
-matplot(x,y)
+matplot(x,y,type='l')
 }
 \keyword{smooth}

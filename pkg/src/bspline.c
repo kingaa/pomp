@@ -8,18 +8,23 @@ static void bspline_internal (double *y, const double *x, int nx, int i, int p, 
 
 SEXP bspline_basis (SEXP x, SEXP degree, SEXP knots) {
   int nprotect = 0;
-  SEXP y;
+  SEXP y, xr, kr, di;
   int nx = length(x);
   int nknots = length(knots);
-  int deg = INTEGER_VALUE(degree);
-  int nbasis = nknots-deg-1;
+  int deg;
+  int nbasis;
   double *ydata;
   int i;
+  PROTECT(di = AS_INTEGER(degree)); nprotect++;
+  deg = INTEGER_VALUE(di);
   if (deg < 0) error("must have degree > 0 in 'bspline.basis'");
+  nbasis = nknots-deg-1;
+  PROTECT(xr = AS_NUMERIC(x)); nprotect++;
+  PROTECT(kr = AS_NUMERIC(knots)); nprotect++;
   PROTECT(y = allocMatrix(REALSXP,nx,nbasis)); nprotect++;
   ydata = REAL(y);
   for (i = 0; i < nbasis; i++) {
-    bspline_internal(ydata,REAL(x),nx,i,deg,REAL(knots),nknots);
+    bspline_internal(ydata,REAL(xr),nx,i,deg,REAL(kr),nknots);
     ydata += nx;
   }
   UNPROTECT(nprotect);
