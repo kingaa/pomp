@@ -39,7 +39,7 @@
 \tableofcontents
 
 <<echo=F,results=hide>>=
-  options(keep.source=TRUE,width=60)
+  options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
   library(pomp)
   set.seed(5384959)
 @ 

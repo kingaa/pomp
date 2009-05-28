@@ -1,5 +1,8 @@
 2009-05-28  kingaa
 
+	* [r135] data/euler.sir.rda, data/ou2.rda, data/rw2.rda,
+	  inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: version 0.24-3
 	* [r134] DESCRIPTION, R/bsplines.R, man/bsplines.Rd, src/bspline.c:
 	  fix up the bspline.basis function
 

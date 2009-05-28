@@ -43,7 +43,7 @@ Ann Arbor, Michigan 48109-1048 USA
 \tableofcontents
 
 <<echo=F,results=hide>>=
-  options(keep.source=TRUE,width=60)
+  options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
   library(pomp)
   set.seed(5384959)
 @ 
