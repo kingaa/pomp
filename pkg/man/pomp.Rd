@@ -27,9 +27,11 @@
   }
   \item{rprocess}{
     optional; a function of prototype \code{rprocess(xstart,times,params,\dots)} which simulates from the unobserved process.
+    See below for details.
   }
   \item{dprocess}{
     optional; a function of prototype \code{dprocess(x,times,params,log,\dots)} which evaluates the likelihood of a sequence of consecutive state transitions.
+    See below for details.
   }
   \item{rmeasure}{
     optional; the measurement model simulator.
@@ -53,7 +55,7 @@
     These formulae are parsed and used to generate \code{rmeasure} and \code{dmeasure} functions.
     If \code{measurement.model} is given it overrides any specification of \code{rmeasure} or \code{dmeasure}.
     See below for an example.
-    NB: it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
+    \strong{NB:} it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
   }
   \item{skeleton.map}{
     optional.
@@ -78,7 +80,7 @@
     This can be in the form of a matrix or a data frame.
     In either case the columns are taken to be distinct covariates.
     If \code{covar} is a data frame, \code{tcovar} can be either the name or the index of the time variable.
-    If a covariate table is supplied, then the value of each of the covariates is interpolated each time that \code{rmeasure}, \code{dmeasure}, or \code{skeleton} is evaluated.
+    If a covariate table is supplied, then the value of each of the covariates is interpolated as needed, i.e., whenever \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, or \code{init.state} is evaluated.
     The resulting interpolated values are passed to the corresponding functions as a numeric vector named \code{covars}.
   }
   \item{statenames, paramnames, covarnames}{
@@ -97,8 +99,12 @@
   \strong{
     It is not typically necessary (or easy) to define all of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} in any given problem.
     Each algorithm makes use of a different subset of these functions.
-    If one of these functions is defined, it is the user's responsibility to ensure that it satisfies the following conditions:
   }
+  The specification of process-model codes \code{rprocess} and/or \code{dprocess} can be somewhat nontrivial:
+  for this reason, \emph{plug-ins} have been developed to make this process easier for the user.
+  At present, if the process model evolves in discrete-time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{onestep.simulate}} and \code{\link{euler.simulate}} plug-ins for \code{rprocess} and \code{\link{onestep.density}} plug-in for \code{dprocess} are available.
+  The following describes how each of these functions should be written.
+  Examples are provided in the help documentation and the vignettes.
   \describe{
     \item{\code{rprocess}}{
       if provided, must have at least the following arguments:
@@ -106,11 +112,11 @@
       It can also take additional arguments.
       It is guaranteed that these will be filled with the corresponding elements the user has included as additional arguments in the construction of the \code{pomp} object.
       
-      In calls to \code{rprocess}, \code{xstart} will be a rank-2 array (matrix) with rows corresponding to state variables and columns corresponding to independent realizations of the process.
+      In calls to \code{rprocess}, \code{xstart} can be assumed to be a rank-2 array (matrix) with rows corresponding to state variables and columns corresponding to independent realizations of the process.
       \code{params} will similarly be a rank-2 array with rows corresponding to parameters and columns corresponding to independent realizations.
-      The columns of \code{params} are to be matched up with those of \code{xstart};
+      The columns of \code{params} correspond to those of \code{xstart};
       in particular, they will agree in number.
-      Both \code{xstart} and \code{params} must have rownames, which are available for use by the user.
+      Both \code{xstart} and \code{params} will have rownames, which are available for use by the user.
       
       \code{rprocess} must return a rank-3 array with rownames.
       Suppose \code{x} is the array returned.
@@ -118,6 +124,8 @@
       \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k]}.
       In particular, \code{x[,,1]} must be identical to \code{xstart}.
       The rownames of \code{x} must correspond to those of \code{xstart}.
+      
+      As mentioned above, some plug-ins are available for \code{rprocess}.
     }
     \item{\code{dprocess}}{
       if provided, must have at least the following arguments:
@@ -125,17 +133,22 @@
       It may take additional arguments.
       It is guaranteed that these will be filled with the corresponding elements the user has included as additional arguments in the construction of the \code{pomp} object.
       
-      In calls to \code{dprocess}, \code{x} will be an \code{nvars} x \code{nreps} x \code{ntimes} array, where these terms have the same meanings as above.
+      In calls to \code{dprocess}, \code{x} may be assumed to be an \code{nvars} x \code{nreps} x \code{ntimes} array, where these terms have the same meanings as above.
       \code{params} will be a rank-2 array with rows corresponding to individual parameters and columns corresponding to independent realizations.
-      The columns of \code{params} are to be matched up with those of \code{x}; in particular, they will agree in number.
-      Both \code{x} and \code{params} must have rownames, available for use by the user.
+      The columns of \code{params} correspond to those of \code{x}; in particular, they will agree in number.
+      Both \code{x} and \code{params} will have rownames, available for use by the user.
       
       \code{dprocess} must return a rank-2 array (matrix).
       Suppose \code{d} is the array returned.
       Then \code{dim(d)=c(nreps,ntimes-1)}.
       \code{d[j,k]} is the probability density of the transition from state \code{x[,j,k-1]} at time \code{times[k-1]} to state \code{x[,j,k]} at time \code{times[k]}.
-      If \code{log=TRUE}, then the log of the p.d.f. is returned.
+      If \code{log=TRUE}, then the log of the pdf is returned.
+
+      As mentioned above, some plug-ins are available for \code{dprocess}.
+
       \strong{In writing this function, you may assume that the transitions are consecutive.}
+      It should be quite clear that, but for this assumption, it would be quite difficult in general to write the transition probabilities.
+      In fact, from one perspective, the algorithms in \pkg{pomp} are designed to overcome just this difficulty.
     }
     \item{\code{rmeasure}}{
       if provided, must take at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.

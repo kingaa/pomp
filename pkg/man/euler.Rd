@@ -3,9 +3,9 @@
 \alias{euler.simulate}
 \alias{onestep.simulate}
 \alias{onestep.density}
-\title{Dynamical models based on stochastic Euler algorithms}
+\title{Plug-ins for dynamical models based on stochastic Euler algorithms}
 \description{
-  Facilities for simulating discrete-time Markov processes and continuous-time Markov processes using the Euler algorithm.
+  Facilities for implementing discrete-time Markov processes and continuous-time Markov processes using the Euler algorithm.
 }
 \usage{
 euler.simulate(xstart, times, params, step.fun, delta.t, \dots,
