@@ -1,5 +1,5 @@
 nlf <- function(object, start, est, lags, period = NA, tensor = FALSE, nconverge = 1000, nasymp = 1000, 
-                seed = 1066, nrbf = 4, method = 'subplex', skip.se = FALSE, verbose = FALSE, gr = NULL, 
+                seed = 1066, nrbf = 4, method = "subplex", skip.se = FALSE, verbose = FALSE, gr = NULL, 
 		bootstrap = FALSE, bootsamp = NULL, lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE, ...) {
   ## Fit a POMP object using NLF
   ## v. 0.1, 3 Dec. 2007 
