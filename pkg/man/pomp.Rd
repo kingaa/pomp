@@ -253,42 +253,36 @@ p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
 
 ## simulate
 examples <- simulate(rw2,params=p)
-rw2 <- examples[[1]]  ## by default, simulate produces a list of pomp objects
-plot(rw2)
+plot(examples[[1]])
 
-t <- seq(0,20)
-X <- simulate(rw2,params=p[,1],nsim=10,states=TRUE,obs=TRUE,times=t)
-
-## compute the process model likelihoods
-f <- dprocess(
-              rw2,
-              x=X$states,
-              times=t,
-              params=matrix(
-                p[,1],
-                nrow=nrow(p),
-                ncol=10,
-                dimnames=list(rownames(p),NULL)
-                ),
-              log=TRUE
-              )
-apply(f,1,sum)
-
-## compute the measurement likelihoods
-g <- dmeasure(
-              rw2,
-              y=X$obs[,7,],
-              x=X$states,
-              times=t,
-              params=matrix(
-                p[,1],
-                nrow=nrow(p),
-                ncol=10,
-                dimnames=list(rownames(p),NULL)
-                ),
-              log=TRUE
-              )
-apply(g,1,sum)
+## construct an (almost) equivalent pomp object using a plugin:
+rw2 <- pomp(
+            rprocess = euler.simulate,
+            step.fun = function (x, t, params, delta.t, ...) {
+              y <- rnorm(n=2,mean=x[c("x1","x2")],sd=params[c("s1","s2")]*delta.t)
+              names(y) <- c("x1","x2")
+              y
+            },
+            rmeasure = function (x, t, params, ...) {
+              y <- rnorm(n=2,mean=x[c("x1","x2")],sd=params["tau"])
+              names(y) <- c("y1","y2")
+              y
+            },
+            dmeasure = function (y, x, t, params, log, ...) {
+              d <- dnorm(x=y[c("y1","y2")],mean=x[c("x1","x2")],sd=params["tau"],log=TRUE)
+              print(d)
+              if (log) sum(d,na.rm=T) else exp(sum(d,na.rm=T))
+            },
+            delta.t=1,
+            data=data.frame(
+                            time=1:100,
+                            y1=rep(c(1,2,3,4,NA),20),
+                            y2=0
+                            ),
+            times="time",
+            t0=0
+            )
+rw2 <- simulate(rw2,params=c(s1=2,s2=0.1,tau=1,x1.0=0,x2.0=0))
 
 ## For more examples, see the vignettes.
 }
@@ -308,7 +302,7 @@ apply(g,1,sum)
   \code{\link{dmeasure}},
   \code{\link{skeleton}},
   \code{\link{init.state}},
-  \link{euler}
+  \link[pomp]{euler}
 }
 \keyword{models}
 \keyword{ts}

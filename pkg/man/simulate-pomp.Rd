@@ -51,6 +51,11 @@
   Simulation of the state process and of the measurement process are each accomplished by a single call to the user-supplied \code{rprocess} and \code{rmeasure} functions, respectively.
   This makes it possible for the user to write highly optimized code for these potentially expensive computations.
 }
+\examples{
+data(ou2)
+x <- simulate(ou2,seed=3495485,nsim=10)
+x <- simulate(ou2,seed=3495485,nsim=10,states=TRUE,obs=TRUE)
+}
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\link{pomp-class}}
 \keyword{models}

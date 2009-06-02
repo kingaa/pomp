@@ -40,6 +40,17 @@ trajectory(object, params, times, \dots)
   Unresolved issue: What is the behavior if \code{type="map"} and \code{times} are non-integral?
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
+\examples{
+data(euler.sir)
+x <- trajectory(euler.sir)
+plot(time(euler.sir,t0=TRUE),x["I",1,],type='l',xlab='time',ylab='I')
+lines(time(euler.sir,t0=FALSE),diff(x["cases",1,]),col='red')
+
+coef(euler.sir,c("gamma")) <- log(12)
+x <- trajectory(euler.sir)
+plot(time(euler.sir,t0=TRUE),x["I",1,],type='l',xlab='time',ylab='I')
+lines(time(euler.sir,t0=FALSE),diff(x["cases",1,]),col='red')
+}
 \seealso{\code{\link{pomp-class}}, \code{\link{pomp}}, \code{\link[deSolve]{lsoda}}}
 \keyword{models}
 \keyword{ts}

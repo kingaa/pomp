@@ -24,6 +24,15 @@ init.state(object, params, t0, \dots)
 \value{
   Returns a matrix of initial states (with rownames).
 }
+\examples{
+data(ou2)
+coef(ou2)
+init.state(ou2)
+
+data(euler.sir)
+coef(euler.sir)
+init.state(euler.sir)
+}
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{pomp-class}}}
 \keyword{models}
