@@ -6,7 +6,7 @@ EPSTOPDF = epstopdf
 
 default: vignettes clean
 
-vignettes: compiled_code_in_pomp.pdf intro_to_pomp.pdf
+vignettes: advanced_topics_in_pomp.pdf intro_to_pomp.pdf
 
 %.pdf: %.tex
 	$(PDFLATEX) $*
@@ -16,4 +16,4 @@ vignettes: compiled_code_in_pomp.pdf intro_to_pomp.pdf
 	$(EPSTOPDF) $*.eps --outfile=$*.pdf
 
 clean:
-	$(RM) *.tex *.log *.aux *.out *.Rout *.toc *.lof *.lot *-???.pdf Rplots.ps
+	$(RM) *.tex *.log *.aux *.out *.Rout *.toc *.lof *.lot *-???.pdf Rplots.ps Rplots.pdf

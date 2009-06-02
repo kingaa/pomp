@@ -1,0 +1,276 @@
+\documentclass[10pt,reqno,final]{amsart}
+%\VignetteIndexEntry{Advanced topics in pomp}
+\usepackage{times}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{natbib}
+
+\setlength{\textwidth}{6.25in}
+\setlength{\textheight}{8.75in}
+\setlength{\evensidemargin}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\topmargin}{-.35in}
+\setlength{\parskip}{.1in}  
+\setlength{\parindent}{0.0in}  
+
+\title[Using compiled code]{Using compiled code in \texttt{pomp}}
+
+\author[A. A. King]{Aaron A. King}
+
+\address{
+A. A. King, 
+Departments of Ecology \& Evolutionary Biology and Mathematics, 
+University of Michigan, 
+Ann Arbor, Michigan 48109-1048 USA
+}
+
+\email{kingaa at umich dot edu} 
+
+\urladdr{http://www.umich.edu/\~{}kingaa}
+
+%% \date{\today}
+
+\newcommand\code[1]{\texttt{#1}}
+
+\begin{document}
+
+\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T}
+
+\maketitle
+
+\tableofcontents
+
+<<echo=F,results=hide>>=
+  options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
+  library(pomp)
+  set.seed(5384959)
+@ 
+
+\section{The low-level interface}
+
+There is a low-level interface to \code{pomp} objects, primarily designed for package developers.
+Ordinary users should have little reason to use this interface.
+In this section, each of the methods that make up this interface will be introduced.
+
+The \code{init.state} method is called to initialize the state (unobserved) process.
+It takes a vector or matrix of parameters and returns a matrix of initial states.
+<<>>=
+data(ou2)
+true.p <- coef(ou2)
+x0 <- init.state(ou2)
+x0
+new.p <- cbind(true.p,true.p,true.p)
+new.p["x1.0",] <- 1:3
+init.state(ou2,params=new.p)
+@ 
+
+The \code{rprocess} method gives access to the process model simulator.
+It takes initial conditions (which need not correspond to the zero-time \code{t0} specified when the \code{pomp} object was constructed), a set of times, and a set of parameters.
+The initial states and parameters must be matrices, and they are checked for commensurability.
+The method returns a rank-3 array containing simulated state trajectories, sampled at the times specified.
+<<>>=
+x <- rprocess(ou2,xstart=x0,times=time(ou2,t0=T),params=as.matrix(true.p))
+dim(x)
+x[,,1:5]
+@ 
+Note that the dimensions of \code{x} are \verb+nvars x nreps x ntimes+, where \code{nvars} is the number of state variables, \code{nreps} is the number of simulated trajectories (which is the number of columns in the \code{params} and \code{xstart} matrices), and \code{ntimes} is the length of the \code{times} argument.
+Note also that \verb+x[,,1]+ is identical to \verb+xstart+.
+
+The \code{rmeasure} method gives access to the measurement model simulator:
+<<>>=
+x <- x[,,-1,drop=F]
+y <- rmeasure(ou2,x=x,times=time(ou2),params=as.matrix(true.p))
+dim(y)
+y[,,1:5]
+@ 
+The \code{dmeasure} and \code{dprocess} methods give access to the measurement and process model densities, respectively.
+<<>>=
+dprocess(ou2,x[,,36:41,drop=F],times=time(ou2)[35:40],params=as.matrix(true.p))
+dmeasure(ou2,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(ou2)[1:4],params=as.matrix(true.p))
+@ 
+All of these are to be preferred to direct access to the slots of the \code{pomp} object, because they do sanity checks on the inputs and outputs.
+
+\section{Acceleration using native codes.}
+
+Since many of the methods we will use require us to simulate the process and/or measurement models many times, it is a good idea to use native (compiled) codes for the computational heavy lifting.
+This can result in many-fold speedup.
+The \code{pomp} package includes some examples that use C codes.
+Here, we'll have a look at how the discrete-time 2-D Ornstein-Uhlenbeck process with normal measurement error is implemented.
+
+Recall that the unobserved Ornstein-Uhlenbeck (OU) process $X_{t}\in\mathbb{R}^2$ satisfies
+\begin{equation*}
+  X_{t} = A\,X_{t-1}+\xi_{t}.
+\end{equation*}
+The observation process is
+\begin{equation*}
+  Y_{t} = B\,X_{t}+\varepsilon_{t}.
+\end{equation*}
+In these equations, $A$ and and $B$ are 2$\times$2 constant matrices; $\xi_{t}$ and $\varepsilon_{t}$ are mutually-independent families of i.i.d. bivariate normal random variables.
+We let $\sigma\sigma^T$ be the variance-covariance matrix of $\xi_{t}$, where $\sigma$ is lower-triangular;
+likewise, we let $\tau\tau^T$ be that of $\varepsilon_{t}$.
+
+You can load a \code{pomp} object for this model with the command
+<<eval=F>>=
+data(ou2)
+@ 
+Here we'll examine how this object is put together.
+
+The process model simulator and density functions are as follows:
+<<>>=
+  ou2.rprocess <- function (xstart, times, params, paramnames, ...) {
+    nvar <- nrow(xstart)
+    npar <- nrow(params)
+    nrep <- ncol(xstart)
+    ntimes <- length(times)
+    ## get indices of the various parameters in the 'params' matrix
+    ## C uses zero-based indexing!
+    parindex <- match(paramnames,rownames(params))-1
+    array(
+	  .C("ou2_adv",
+	     X = double(nvar*nrep*ntimes),
+	     xstart = as.double(xstart),
+	     par = as.double(params),
+	     times = as.double(times),
+	     n = as.integer(c(nvar,npar,nrep,ntimes)),
+	     parindex = as.integer(parindex),
+	     DUP = FALSE,
+	     NAOK = TRUE,
+	     PACKAGE = "pomp"
+	     )$X,
+	  dim=c(nvar,nrep,ntimes),
+	  dimnames=list(rownames(xstart),NULL,NULL)
+	  )
+  }
+
+  ou2.dprocess <- function (x, times, params, log, paramnames, ...) {
+    nvar <- nrow(x)
+    npar <- nrow(params)
+    nrep <- ncol(x)
+    ntimes <- length(times)
+    parindex <- match(paramnames,rownames(params))-1
+    array(
+	  .C("ou2_pdf",
+             d = double(nrep*(ntimes-1)),
+             X = as.double(x),
+	     par = as.double(params),
+	     times = as.double(times),
+	     n = as.integer(c(nvar,npar,nrep,ntimes)),
+	     parindex = as.integer(parindex),
+             give_log=as.integer(log),
+	     DUP = FALSE,
+	     NAOK = TRUE,
+	     PACKAGE = "pomp"
+	     )$d,
+	  dim=c(nrep,ntimes-1)
+	  )
+  }
+@ 
+
+The call that constructs the \code{pomp} object is:
+<<>>=
+ou2 <- pomp( 
+	    times=seq(1,100),
+	    data=rbind(
+	      y1=rep(0,100),
+	      y2=rep(0,100)
+	      ),
+	    t0=0,
+	    rprocess = ou2.rprocess,
+	    dprocess = ou2.dprocess,
+	    dmeasure = "normal_dmeasure",
+	    rmeasure = "normal_rmeasure",
+            paramnames=c(
+              "alpha.1","alpha.2","alpha.3","alpha.4",
+              "sigma.1","sigma.2","sigma.3",
+              "tau"
+              ),
+            statenames = c("x1","x2")
+	    )
+@ 
+Notice that the process model is implemented using using \verb+.C+, while the measurement model is specified by giving the names of native C routines.
+Read the source (file `ou2.c') to see the definitions of these functions.
+
+We'll specify some parameters:
+<<>>=
+p <- c(
+       alpha.1=0.9,alpha.2=0,alpha.3=0,alpha.4=0.99,
+       sigma.1=1,sigma.2=0,sigma.3=2,
+       tau=1,x1.0=50,x2.0=-50
+       )
+@ 
+
+<<>>=
+tic <- Sys.time()
+x <- simulate(ou2,params=p,nsim=500,seed=800733088)
+toc <- Sys.time()
+print(toc-tic)
+@ 
+
+In this example, we've written our simulators and density functions ``from scratch''.
+\code{pomp} provides ``plug-in'' facilities to make it easier to define certain kinds of models.
+These plug-ins can be used with native codes as well, as we'll see in the next example.
+
+\section{A more complex example: a seasonal SIR model}
+
+<<>>=
+euler.sir <- pomp(
+                  times=seq(1/52,4,by=1/52),
+                  data=rbind(measles=numeric(52*4)),
+                  t0=0,
+                  tcovar=seq(0,25,by=1/52),
+                  covar=matrix(
+                    periodic.bspline.basis(seq(0,25,by=1/52),nbasis=3,period=1,degree=3),
+                    ncol=3,
+                    dimnames=list(NULL,paste("seas",1:3,sep=''))
+                    ),
+                  delta.t=1/52/20,
+                  statenames=c("S","I","R","cases","W","B","dW"),
+                  paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
+                  covarnames=c("seas1"),
+                  zeronames=c("cases"),
+                  comp.names=c("S","I","R"),
+                  step.fun="sir_euler_simulator",
+                  rprocess=euler.simulate,
+                  dens.fun="sir_euler_density",
+                  dprocess=onestep.density,
+                  skeleton.vectorfield="sir_ODE",
+                  rmeasure="binom_rmeasure",
+                  dmeasure="binom_dmeasure",
+                  PACKAGE="pomp",
+                  initializer=function(params, t0, comp.names, ...){
+                    p <- exp(params)
+                    snames <- c(
+                                "S","I","R","cases","W","B",
+                                "SI","SD","IR","ID","RD","dW"
+                                )
+                    fracs <- p[paste(comp.names,"0",sep=".")]
+                    x0 <- numeric(length(snames))
+                    names(x0) <- snames
+                    x0[comp.names] <- round(p['pop']*fracs/sum(fracs))
+                    x0
+                  }
+                  )
+@ 
+
+<<>>=
+coef(euler.sir) <- log(
+                       c(
+                         gamma=26,mu=0.02,iota=0.01,
+                         beta1=1200,beta2=1800,beta3=600,
+                         beta.sd=1e-3,
+                         pop=2.1e6,
+                         rho=0.6,
+                         S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
+                         )
+                       )
+
+<<>>=
+euler.sir <- simulate(euler.sir,nsim=1,seed=329348545L)
+@ 
+
+This example can be loaded via
+<<eval=F>>=
+data(euler.sir)
+@ 
+
+\end{document}

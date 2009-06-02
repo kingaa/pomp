@@ -12,8 +12,8 @@
 \setlength{\topmargin}{-.35in}
 \setlength{\parskip}{.1in}  
 \setlength{\parindent}{0.0in}  
-
-%% $Revision: 1.12 $
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
 
 \title[Introduction to \texttt{pomp}]{Introduction to \texttt{pomp} by example}
 
@@ -39,14 +39,15 @@
 \tableofcontents
 
 <<echo=F,results=hide>>=
-  options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
+  options(keep.source=TRUE,continue=" ",prompt=" ")
   library(pomp)
   set.seed(5384959)
 @ 
 
 \section{A first example: the two-dimensional Ornstein-Uhlenbeck process.}
 
-To keep things simple, we will study a discrete-time process.
+To begin with, for simplicity, we will study a discrete-time process.
+Later we'll look at a continuous-time model.
 The \code{pomp} package is designed with continuous-time processes in mind, but the associated computational effort is typically greater, and the additional complexities are best postponed until the structure and usage of the package is understood.
 The unobserved Ornstein-Uhlenbeck (OU) process $X_{t}\in\mathbb{R}^2$ satisfies
 \begin{equation*}
@@ -60,9 +61,25 @@ In these equations, $A$ and and $B$ are 2$\times$2 constant matrices; $\xi_{t}$ 
 We let $\sigma\sigma^T$ be the variance-covariance matrix of $\xi_{t}$, where $\sigma$ is lower-triangular;
 likewise, we let $\tau\tau^T$ be that of $\varepsilon_{t}$.
 
-In order to specify this partially-observed Markov process, we must implement both the process model (i.e., the unobserved process) and the measurement model (the observation process).
-In particular, we will need to be able to both simulate from and compute the p.d.f. of each of these models.
-In \code{pomp}, one constructs an object of class \code{pomp} to hold functions that do all of these things, together with data and other information.
+\subsection{Defining a partially observed Markov process.}
+
+In order to fully specify this partially-observed Markov process, we must implement both the process model (i.e., the unobserved process) and the measurement model (the observation process).
+That is, we would like to be able to:
+\begin{enumerate}
+\item \label{it:rproc} simulate from the process model, i.e., make a random draw from $X_{t+1}\,\vert\,X_{t}=x$ for arbitrary $x$ and $t$,
+\item \label{it:dproc} compute the probability density function (pdf) of state transitions, i.e., compute $f(X_{t+1}=x'\,\vert\,X_{t}=x)$ for arbitrary $x$, $x'$, and $t$,
+\item \label{it:rmeas} simulate from the measurement model, i.e., make a random draw from $Y_{t}\,\vert\,X_{t}=x$ for arbitrary $x$ and $t$, and
+\item \label{it:dmeas} compute the measurement model pdf, i.e., $f(Y_{t}=y\,\vert\,X_{t}=x)$ for arbitrary $x$, $y$, and $t$.
+\end{enumerate}
+For this simple model, all this is easy enough.
+In general, it will be difficult to do some of these things.
+Depending on what we wish to accomplish, however, we may not need all of these capabilities.
+For example, to simulate data, all we need is \ref{it:rproc} and \ref{it:rmeas}.
+To run a particle filter (and hence to use iterated filtering, \code{mif}), one needs \ref{it:rproc} and \ref{it:rmeas}.
+To do MCMC, one needs \ref{it:dproc} and \ref{it:dmeas}.
+Nonlinear forecasting (\code{nlf}) requires \ref{it:rproc} and \ref{it:rmeas}.
+In \code{pomp}, one constructs an object of class \code{pomp} by specifying functions to do some or all of \ref{it:rproc}--\ref{it:dmeas}, along with data and other information.
+The package provides algorithms for fitting the models to the data, for simulating the models, studying deterministic skeletons, and so on.
 The documentation (\code{?pomp}) spells out the usage of the \code{pomp} constructor, including detailed specifications for all its arguments and a worked example.
 
 \subsection{Building the \code{pomp} object}
@@ -186,6 +203,10 @@ In applications, one will frequently want more flexibility in parameterizing the
 This is available: one can optionally specify an alternative initializer.
 See \code{?pomp} for details.
 
+<<echo=F>>=
+data(ou2)
+@ 
+
 The pomp object \code{ou2} we just constructed has no data.
 If we simulate the model, we'll obtain another \code{pomp} object just like \code{ou2}, but with the \code{data} slot filled with simulated data:
 <<>>=
@@ -195,7 +216,7 @@ If we simulate the model, we'll obtain another \code{pomp} object just like \cod
 Here, we actually ran 1000 simulations: the default behavior of \code{simulate} is to return a list of \code{pomp} objects.
 
 There are a number of \emph{methods} that perform operations on \code{pomp} objects.
-One can read the documentation on all of these by doing \verb+class?pomp+.
+One can read the documentation on all of these by doing \verb+class?pomp+ and \verb+methods?pomp+.
 For example, one can coerce a \code{pomp} object to a data frame:
 <<eval=F>>=
 as(ou2,'data.frame')
@@ -205,6 +226,12 @@ One can access the data and the observation times using
 <<eval=F>>=
 data.array(ou2)
 time(ou2)  
+time(ou2,t0=TRUE)  
+@ 
+One can read and change parameters associated with the \code{pomp} object using
+<<eval=F>>=
+coef(ou2)
+coef(ou2,c("sigma.1","sigma.2")) <- c(1,0)
 @ 
 One can also plot a \code{pomp} object (Fig.~\ref{fig:ou2}).
 
@@ -217,60 +244,14 @@ plot(ou2)
   \caption{
     One can plot a \code{pomp} object.
     This shows the result of \code{plot(ou2)}.
-    \label{fig:ou2}
   }
+  \label{fig:ou2}
 \end{figure}
 
 
-\subsection{The low-level interface}
 
-There is a low-level interface to \code{pomp} objects, primarily designed for package developers.
-Ordinary users should have little reason to use this interface.
-Here, I'll just introduce each of the methods that make up this interface.
 
-The \code{init.state} method is called to initialize the state (unobserved) process.
-It takes a vector or matrix of parameters and returns a matrix of initial states.
-<<>>=
-x0 <- init.state(ou2,params=true.p)
-x0
-@ 
-
-The \code{rprocess} method gives access to the process model simulator.
-It takes initial conditions (which need not correspond to the zero-time \code{t0} specified when the \code{pomp} object was constructed), a set of times, and a set of parameters.
-The initial states and parameters must be matrices, and they are checked for commensurability.
-The method returns a rank-3 array containing simulated state trajectories, sampled at the times specified.
-<<>>=
-x <- rprocess(ou2,xstart=as.matrix(x0),times=c(0,time(ou2)),params=as.matrix(true.p))
-dim(x)
-@ 
-Note that the dimensions of \code{x} are \verb+nvars x nreps x ntimes+, where \code{nvars} is the number of state variables, \code{nreps} is the number of simulated trajectories (which is the number of columns in the \code{params} and \code{xstart} matrices), and \code{ntimes} is the length of the \code{times} argument.
-Note also that \verb+x[,,1]+ is identical to \verb+xstart+.
-
-The \code{rmeasure} method gives access to the measurement model simulator:
-<<>>=
-y <- rmeasure(ou2,x=x[,,-1,drop=F],times=time(ou2),params=as.matrix(true.p))
-dim(y)
-@ 
-The \code{dmeasure} and \code{dprocess} methods give access to the measurement and process model densities, respectively.
-<<>>=
-dprocess(ou2,x[,,36:41,drop=F],times=time(ou2)[35:40],params=as.matrix(true.p))
-dmeasure(ou2,y=y[,1,1:4],x=x[,,2:5,drop=F],times=time(ou2)[1:4],params=as.matrix(true.p))
-@ 
-All of these are to be preferred to direct access to the slots of the \code{pomp} object, because they do sanity checks on the inputs and outputs.
-
-Since the codes above that implement the model are written in \R, they're not particularly fast.
-To maximize computational efficiency, you'll frequently want to instead use compiled codes.
-For more information on this topic, see the vignette, \emph{Using compiled code in \code{pomp}}.
-For the remainder of this vignette, we'll use a version of \code{ou2} in which each of the four functions --- \code{dprocess}, \code{rprocess}, \code{dmeasure}, \code{rmeasure} --- is written in C.
-This \code{pomp} object is provided in the package; just do
-<<>>=
-data(ou2)
-@ 
-to retrieve it.
-The C codes that make it up are included in the source distribution of the package (look in the file `ou2.c').
-Another example, an SIR model of disease transmission, is included in the package `examples' directory.
-
-\section{Particle filter.}
+\section{Particle filtering.}
 
 <<echo=F>>=
 set.seed(74094853)
@@ -332,9 +313,9 @@ sigma <- matrix(c(true.p['sigma.1'],true.p['sigma.2'],0,true.p['sigma.3']),2,2)
 tau <- diag(true.p['tau'],2,2)
 fit2 <- kalman.filter(y,x0,a,b,sigma,tau)
 @ 
-In this case, the Kalman filter gives us a log likelihood of \code{fit2\$loglik=\Sexpr{round(fit2$loglik,1)}}, while the particle filter gives us \code{fit1\$loglik=\Sexpr{round(fit1$loglik,1)}}.
+In this case, the Kalman filter gives us a log likelihood of \code{fit2\$loglik=\Sexpr{round(fit2$loglik,2)}}, while the particle filter gives us \code{fit1\$loglik=\Sexpr{round(fit1$loglik,2)}}.
 
-\section{The maximum likelihood by iterated filtering (MIF) algorithm}
+\section{Iterated filtering: the MIF algorithm}
 
 The MIF algorithm works by modifying the model slightly.
 It replaces the model we are interested in fitting --- which has time-invariant parameters --- with a model that is just the same except that its parameters take a random walk in time.
@@ -408,5 +389,7 @@ plot(simulate(fit))
 \caption{\code{mif} objects can be simulated.}  
 \label{fig:mifsim}
 \end{figure}
+
+\section{Nonlinear forecasting}
 
 \end{document}
