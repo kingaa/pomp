@@ -1,5 +1,36 @@
+2009-06-02  kingaa
+
+	* [r142] data/euler.sir.rda, data/ou2.rda, inst/doc/Makefile,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: more changes to documentation
+	  reconfigure vignettes somewhat
+	* [r141] DESCRIPTION:
+	* [r140] man/init.state-pomp.Rd, man/pomp.Rd, man/simulate-pomp.Rd,
+	  man/trajectory-pomp.Rd: add some nice examples
+	* [r139] R/nlf.R:
+	* [r138] man/bsplines.Rd, man/dmeasure-pomp.Rd,
+	  man/dprocess-pomp.Rd, man/euler.Rd, man/euler.sir.Rd,
+	  man/eulermultinom.Rd, man/init.state-pomp.Rd, man/mif-class.Rd,
+	  man/mif-methods.Rd, man/mif.Rd, man/nlf.Rd, man/ou2.Rd,
+	  man/particles-mif.Rd, man/pfilter.Rd, man/pomp-class.Rd,
+	  man/pomp-methods.Rd, man/pomp-package.Rd, man/pomp.Rd,
+	  man/rmeasure-pomp.Rd, man/rprocess-pomp.Rd, man/simulate-pomp.Rd,
+	  man/skeleton-pomp.Rd, man/sobol.Rd, man/trajectory-pomp.Rd:
+	  further improvements to documentation
+
+2009-06-01  kingaa
+
+	* [r137] man/euler.Rd, man/pomp.Rd: further clarify documentation
+
 2009-05-28  kingaa
 
+	* [r136] inst/ChangeLog, inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: remove prompt and continue characters
+	  from vignette documents
 	* [r135] data/euler.sir.rda, data/ou2.rda, data/rw2.rda,
 	  inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
 	  inst/doc/intro_to_pomp.pdf: version 0.24-3
