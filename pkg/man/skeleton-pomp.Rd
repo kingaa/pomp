@@ -11,6 +11,8 @@
   In the case of a continuous-time system, this is the vector-field.
   NB: \code{skeleton} just evaluates the deterministic skeleton;
   it does not iterate or integrate.
+  This function is part of the low-level interface to \code{pomp} objects.
+  This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
 skeleton(object, x, t, params, \dots)
@@ -21,7 +23,6 @@ skeleton(object, x, t, params, \dots)
   \item{x}{
     a rank-3 array containing the states of the unobserved process at which the deterministic skeleton is to be evaluated.
     The dimensions of \code{x} are \code{nvars} x \code{nreps} x \code{ntimes}, where \code{nvars} is the number of state variables, \code{nreps} is the number of replicates, and \code{ntimes} is the length of \code{times}.
-    Note that if \code{ntimes != length(times)}, an error is generated.
   }
   \item{t}{
     a numeric vector containing the times at which the deterministic skeleton is to be evaluated.
@@ -39,9 +40,10 @@ skeleton(object, x, t, params, \dots)
 \details{
   This function makes repeated calls to the user-supplied \code{skeleton} of the \code{pomp} object.
   For specifications on supplying this, see \code{\link{pomp}}.
+
+  The function \code{\link{trajectory}} iterates the skeleton (in case it is a map) or integrates it using an ODE solver (in case it is a vectorfield).
 }
-\references{}
-\author{Aaron A. King (kingaa at umich dot edu)}
-\seealso{\code{\link{pomp-class}}, \code{\link{pomp}}}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
+\seealso{\code{\link{pomp-class}}, \code{\link{pomp}}, \code{\link{trajectory}}}
 \keyword{models}
 \keyword{ts}

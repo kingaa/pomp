@@ -35,10 +35,11 @@ trajectory(object, params, times, \dots)
   This function makes repeated calls to the user-supplied \code{skeleton} of the \code{pomp} object.
   For specifications on supplying this, see \code{\link{pomp}}.
 
-  What is the behavior if \code{type="map"} and \code{times} are non-integral?
+  When the skeleton is a vectorfield, \code{trajectory} integrates it using \code{\link[deSolve]{lsoda}}.
+
+  Unresolved issue: What is the behavior if \code{type="map"} and \code{times} are non-integral?
 }
-\references{}
-\author{Aaron A. King (kingaa at umich dot edu)}
-\seealso{\code{\link{pomp-class}}, \code{\link{pomp}}}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
+\seealso{\code{\link{pomp-class}}, \code{\link{pomp}}, \code{\link[deSolve]{lsoda}}}
 \keyword{models}
 \keyword{ts}

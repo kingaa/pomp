@@ -6,8 +6,6 @@
   \code{euler.sir} is a \code{pomp} object encoding a simple seasonal SIR model.
 }
 \usage{data(euler.sir)}
-\details{
-}
 \examples{
 data(euler.sir)
 plot(euler.sir)

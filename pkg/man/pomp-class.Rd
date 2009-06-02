@@ -2,11 +2,13 @@
 \docType{class}
 \alias{pomp-class}
 \title{Partially-observed Markov process}
-\description{The class \code{pomp} encodes a partially-observed Markov process.}
+\description{
+  The class \code{pomp} encodes a partially-observed Markov process.
+  This page documents the structure of the class:
+  see the documentation for \code{\link{pomp}} for usage instructions.
+}
 \section{Objects from the Class}{
-  Objects should be created by calls of the function
-  \code{pomp}.  See the documentation for \code{\link{pomp}} for
-  usage instructions and important warnings.
+  Objects should be created by calls of the function \code{pomp}.
 }
 \section{Slots}{
   \describe{
@@ -26,16 +28,16 @@
       Function of prototype \code{dprocess(x,times,params,log=FALSE,\dots)} which evaluates the likelihood of a sequence of consecutive state transitions.
     }
     \item{dmeasure}{
-      an object of class "pomp.fun" which encodes the measurement model density.
+      an object of class \dQuote{pomp.fun} which encodes the measurement model density.
     }
     \item{rmeasure}{
-      an object of class "pomp.fun" which encodes the measurement model simulator.
+      an object of class \dQuote{pomp.fun} which encodes the measurement model simulator.
     }
     \item{skeleton.type}{
       a character variable specifying whether the deterministic skeleton is a map or a vectorfield.
     }
     \item{skeleton}{
-      an object of class "pomp.fun" which encodes the deterministic skeleton.
+      an object of class \dQuote{pomp.fun} which encodes the deterministic skeleton.
     }
     \item{initializer}{
       Function of prototype \code{initializer(params,t0,\dots)} which gives a vector of initial conditions when given a vector of parameters, \code{params}, and a time \code{t0}.
@@ -65,7 +67,7 @@
 \section{Methods}{
   See the pomp methods documentation: \link{pomp-methods}.
 }
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \code{\link{pomp}},
   \link{pomp-methods},

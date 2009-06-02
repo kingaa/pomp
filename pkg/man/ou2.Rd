@@ -3,7 +3,7 @@
 \docType{data}
 \title{Two-dimensional Ornstein-Uhlenbeck process}
 \description{
-  \code{ou2} is a \code{pomp} object encoding a 2-D Ornstein-Uhlenbeck process.
+  \code{ou2} is a \code{pomp} object encoding a bivariate Ornstein-Uhlenbeck process.
 }
 \usage{data(ou2)}
 \details{
@@ -15,6 +15,7 @@
 \examples{
 data(ou2)
 plot(ou2)
+coef(ou2)
 p <- c(
        alpha.1=0.9,alpha.2=0,alpha.3=0,alpha.4=0.99,
        sigma.1=1,sigma.2=0,sigma.3=2,

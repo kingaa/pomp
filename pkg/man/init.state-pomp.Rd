@@ -3,12 +3,11 @@
 \alias{init.state}
 \alias{init.state,pomp-method}
 \alias{init.state-pomp}
-
-\title{
-  Return a matrix of initial conditions given a vector of parameters and an initial time.
-}
+\title{Return a matrix of initial conditions given a vector of parameters and an initial time.}
 \description{
   The method \code{init.state} returns a vector of initial conditions for the state process when given a vector of parameters \code{params} and an initial time \code{t0}.
+  This function is part of the low-level interface to \code{pomp} objects.
+  This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
 init.state(object, params, t0, \dots)
@@ -25,8 +24,7 @@ init.state(object, params, t0, \dots)
 \value{
   Returns a matrix of initial states (with rownames).
 }
-\references{}
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{pomp-class}}}
 \keyword{models}
 \keyword{ts}

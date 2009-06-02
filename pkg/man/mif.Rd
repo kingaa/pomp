@@ -72,6 +72,7 @@ mif(object, \dots)
   \item{var.factor}{
     a positive number;
     the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}
+    The width of the initial distribution of particles will be \code{random.walk.sd*var.factor}.
   }
   \item{cooling.factor}{
     a positive number not greater than 1;
@@ -103,7 +104,7 @@ mif(object, \dots)
 \section{Re-running MIF Iterations}{
   To re-run a sequence of MIF iterations, one can use the \code{mif} method on a \code{mif} object.
   The call sequence is \code{mif(object)}.
-  By default, the same parameters used for the original MIF run are re-used.
+  By default, the same parameters used for the original MIF run are re-used (except for \code{weighted}, \code{tol}, \code{warn}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
   If one does specify additional arguments, these will override the defaults.
 }
 \section{Continuing MIF Iterations}{
@@ -115,17 +116,18 @@ mif(object, \dots)
   Additional arguments will override the defaults.
 }
 \section{Details}{
+  If \code{particles} is not specified, the default behavior is to draw the particles from a multivariate normal distribution.
   \strong{It is the user's responsibility to ensure that, if the optional \code{particles} argument is given, that the \code{particles} function satisfies the following conditions:}
 
   \code{particles} has at least the following arguments:
   \code{Np}, \code{center}, \code{sd}, and \code{\dots}.
-  \code{Np} should be assumed to be an integer; \code{center} and \code{sd} will be named vectors of the same length.
+  \code{Np} may be assumed to be a positive integer;
+  \code{center} and \code{sd} will be named vectors of the same length.
   Additional arguments may be specified;
   these will be filled with the elements of the \code{userdata} slot of the underlying \code{pomp} object (see \code{\link{pomp-class}}).
 
-  \code{particles} returns a \code{length(center)} x \code{Np} matrix with rownames.
+  \code{particles} returns a \code{length(center)} x \code{Np} matrix with rownames matching the names of \code{center} and \code{sd}.
   Each column represents a distinct particle.
-  The rownames are used by the algorithms (see \code{mif}, \code{pfilter}).
 
   The center of the particle distribution returned by \code{particles} should be \code{center}.
   The width of the particle distribution should vary monotonically with \code{sd}.
@@ -140,10 +142,10 @@ mif(object, \dots)
   Inapparent infections and cholera dynamics,
   Nature, 454:877--880, 2008.
 }
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \code{\link{mif-class}}, \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
-  See the "intro\_to\_pomp" vignette for an example.
+  See the \dQuote{intro\_to\_pomp} vignette for an example.
 }
 \keyword{models}
 \keyword{ts}

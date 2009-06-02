@@ -3,12 +3,12 @@
 \title{Fit Model to Data Using Nonlinear Forecasting (NLF)}
 \description{
   Calls an optimizer to maximize the nonlinear forecasting (NLF) goodness of fit, by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series (which may be multivariate) and using the fitted model to predict some or all variables in the data time series.
-  NLF is an 'indirect inference' method using a quasi-likelihood as the objective function.
+  NLF is an \sQuote{indirect inference} method using a quasi-likelihood as the objective function.
 }
 \usage{
  nlf(object, start, est, lags, period = NA, tensor = FALSE,
      nconverge=1000, nasymp=1000, seed = 1066, nrbf = 4,
-     method = 'subplex', skip.se = FALSE, verbose = FALSE, gr = NULL,
+     method = "subplex", skip.se = FALSE, verbose = FALSE, gr = NULL,
      bootstrap=FALSE, bootsamp = NULL,
      lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE, \dots)
 }
@@ -76,14 +76,14 @@
     logical; if \code{TRUE}, no optimization is attempted and the quasi-loglikelihood value is evaluated at the \code{start} parameters.
   } 
   \item{\dots}{
-    Arguments that will be passed to \code{optim} in the \code{control} list.
+    Arguments that will be passed to \code{optim} or \code{subplex} in the \code{control} list.
   }
 }
 \details{
   This is functionally a wrapper for \code{nlf.objfun}, which does the statistical heavy lifting and should be consulted for details.
 }
 \value{
-  A list corresponding to the output from the optimizer, except that the full parameter vector is returned (not just the ones fitted), the LQL (and not -LQL) is reported, xstart is included, and asymptotic Wald standard errors based on M-estimator theory are returned for each fitted parameter.
+  A list corresponding to the output from the optimizer, except that the full parameter vector is returned (not just the ones fitted), the log quasilikelihood (LQL) (\emph{not} -LQL) is reported, xstart is included, and asymptotic Wald standard errors based on M-estimator theory are returned for each fitted parameter.
 }
 \references{
  The following papers describe and motivate the NLF approach to model fitting:
@@ -102,7 +102,7 @@
  \emph{Ecological Monographs} \bold{75}, 259--276.
  Available online at \url{http://repositories.cdlib.org/postprints/818/}
 }
-\author{Stephen P. Ellner (spe2 at cornell dot edu) and Bruce E. Kendall (kendall at bren dot ucsb dot edu)}
+\author{Stephen P. Ellner \email{spe2 at cornell dot edu} and Bruce E. Kendall \email{kendall at bren dot ucsb dot edu}}
 \keyword{models}
 \keyword{ts}
 

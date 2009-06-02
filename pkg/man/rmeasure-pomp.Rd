@@ -6,6 +6,8 @@
 \title{Simulate the measurement model of a partially-observed Markov process}
 \description{
   The method \code{rmeasure} draws from the distribution of measurements given the state of the system.
+  This function is part of the low-level interface to \code{pomp} objects.
+  This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
 rmeasure(object, x, times, params, \dots)
@@ -16,7 +18,6 @@ rmeasure(object, x, times, params, \dots)
   \item{x}{
     a rank-3 array containing the states of the unobserved process.
     The dimensions of \code{x} are \code{nvars} x \code{nreps} x \code{ntimes}, where \code{nvars} is the number of state variables, \code{nreps} is the number of simulations, and \code{ntimes} is the number of distinct times.
-    Note that if \code{ntimes!=length(times)}, an error is generated.
   }
   \item{times}{
     a numerical vector containing the times at which the measurements are to be made.
@@ -35,8 +36,7 @@ rmeasure(object, x, times, params, \dots)
   This function is essentially a wrapper around the user-supplied \code{rmeasure} slot of the \code{pomp} object.
   For specifications on writing such a function, see \code{\link{pomp}}.
 }
-\references{}
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{pomp-class}}, \code{\link{pomp}}}
 \keyword{models}
 \keyword{ts}

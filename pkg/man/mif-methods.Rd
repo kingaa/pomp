@@ -54,7 +54,7 @@ compare.mif(z)
     }
     \item{mif}{
       Re-runs the MIF iterations.
-      See the documentation under \cite{Re-running MIF Iterations} below.
+      See the documentation for \code{\link{mif}}.
     }
     \item{compare.mif}{
       Given a \code{mif} object or a list of \code{mif} objects, \code{compare.mif} produces a set of diagnostic plots.
@@ -101,7 +101,7 @@ compare.mif(z)
   Inapparent infections and cholera dynamics,
   Nature, 454:877--880, 2008.
 }
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{mif}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}}
 \keyword{models}
 \keyword{ts}

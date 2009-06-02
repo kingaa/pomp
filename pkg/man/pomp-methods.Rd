@@ -62,7 +62,7 @@
     name of the class to which \code{object} should be coerced.
   }
   \item{from, to}{
-    the classes betwen which coercion should be performed.
+    the classes between which coercion should be performed.
   }
   \item{strict}{
     ignored.
@@ -73,7 +73,7 @@
     names of variables to plot.
   }
   \item{panel}{
-    a 'function(x, col, bg, pch, type, ...)' which gives the action to be carried out in each panel of the display.
+    a function of prototype \code{panel(x, col, bg, pch, type, ...)} which gives the action to be carried out in each panel of the display.
   }
   \item{nc}{
     the number of columns to use.
@@ -114,7 +114,7 @@
     }
     \item{data.array}{
       \code{data.array(object)} returns the array of observations.
-      \code{data.array(object,vars)} gives just the observations of variables \code{vars}.
+      \code{data.array(object,vars)} gives just the observations of variables named \code{vars}.
       \code{vars} may specify the variables by position or by name.
     }
     \item{states}{
@@ -168,7 +168,7 @@
     }
   }
 }
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \code{\link{pomp}},
   \link{pomp-class},

@@ -3,11 +3,11 @@
 \alias{mif-class}
 \title{The "mif" class}
 \description{
-  The MIF algorithm: maximum likelihood via iterated filtering.
-  The \code{mif} class holds a fitted model.
+  The \code{mif} class holds a fitted model and is created by a call to \code{\link{mif}}.
+  See \code{\link{mif}} for usage.
 }
 \section{Objects from the Class}{
-  Objects can be created by calls to the \code{mif} method on an \code{pomp} object.
+  Objects can be created by calls to the \code{\link{mif}} method on an \code{\link{pomp}} object.
   Such a call uses the MIF algorithm to fit the model parameters.
 }
 \section{Slots}{
@@ -28,7 +28,6 @@
     \item{particles}{
       A function of prototype \code{particles(Np,center,sd,...)} that draws particles from a distribution centered on \code{center} and with width proportional to \code{sd}.
       This function can be optionally specified by the user.
-      Its default value is a multivariate normal distribution with mean at \code{center} and standard deviation \code{sd}.
     }
     \item{alg.pars}{
       A named list of algorithm parameters.
@@ -36,11 +35,10 @@
       \code{Np}, the number of particles to use in filtering; 
       \code{var.factor}, the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd};
       \code{ic.lag}, the fixed lag used in the estimation of initial-value parameters (IVPs);
-      and \code{cooling.factor}, the exponential cooling factor, \code{alpha}, where \code{0<alpha<1}.
+      and \code{cooling.factor}, the exponential cooling factor, where \code{0<cooling.factor<1}.
     }
     \item{random.walk.sd}{
       A named vector containing the random-walk variance to be used for ordinary parameters.
-      The width of the initial distribution of particles will be random.walk.sd*var.factor.
     }
     \item{pred.mean}{
       Matrix of prediction means.
@@ -63,7 +61,7 @@
       See \code{\link{pfilter}}.
     }
     \item{conv.rec}{
-      The "convergence record": a matrix containing a record of the parameter values, log likelihoods, and other pertinent information, with one row for each MIF iteration.
+      The \dQuote{convergence record}: a matrix containing a record of the parameter values, log likelihoods, and other pertinent information, with one row for each MIF iteration.
     }
     \item{loglik}{
       A numeric value containing the value of the log likelihood, as evaluated for the random-parameter model.
@@ -93,7 +91,7 @@
   Inapparent infections and cholera dynamics,
   Nature, 454:877--880, 2008.
 }
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{mif}}, \link{mif-methods}, \code{\link{pomp}}, \link{pomp-class}}
 \keyword{models}
 \keyword{ts}

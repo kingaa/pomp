@@ -17,7 +17,7 @@
     The number of simulations to perform.
     Note that the number of replicates will be \code{nsim} times \code{ncol(xstart)}.
   }
-  \item{seed}{The random seed to use.}
+  \item{seed}{optional; the random seed to use.}
   \item{params}{
     The parameters to use in simulating the model.
     If \code{params} is not given, then the contents of the \code{params} slot of \code{object} will be used, if they exist.
@@ -51,8 +51,7 @@
   Simulation of the state process and of the measurement process are each accomplished by a single call to the user-supplied \code{rprocess} and \code{rmeasure} functions, respectively.
   This makes it possible for the user to write highly optimized code for these potentially expensive computations.
 }
-\references{}
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\link{pomp-class}}
 \keyword{models}
 \keyword{ts}

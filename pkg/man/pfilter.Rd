@@ -6,7 +6,8 @@
 \alias{pfilter-mif}
 \title{Particle filter}
 \description{
-  Run a particle filter.
+  Run a plain vanilla particle filter.
+  Resampling is performed after each observation.
 }
 \usage{
 pfilter(object, \dots)
@@ -22,7 +23,7 @@ pfilter(object, \dots)
     An object of class \code{pomp} or inheriting class \code{pomp}.
   }
   \item{params}{
-    A \code{npars} x \code{np} matrix containing the parameters corresponding to the initial state values in \code{xstart}.
+    A \code{npars} x \code{Np} matrix containing the parameters corresponding to the initial state values in \code{xstart}.
     This must have a 'rownames' attribute.
     It is permissible to supply \code{params} as a named numeric vector, i.e., without a \code{dim} attribute.
     In this case, all particles will inherit the same parameter values.
@@ -92,7 +93,7 @@ pfilter(object, \dots)
   A Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian Bayesian Tracking.
   IEEE Trans. Sig. Proc. 50:174--188, 2002.
 }
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\link{pomp-class}}
 \keyword{models}
 \keyword{ts}

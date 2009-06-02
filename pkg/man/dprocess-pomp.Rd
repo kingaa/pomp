@@ -8,6 +8,8 @@
 }
 \description{
   The method \code{dprocess} evaluates the probability density of a set of consecutive state transitions.
+  This function is part of the low-level interface to \code{pomp} objects.
+  This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
 dprocess(object, x, times, params, log = FALSE, \dots)
@@ -18,7 +20,6 @@ dprocess(object, x, times, params, log = FALSE, \dots)
   \item{x}{
     a rank-3 array containing the states of the unobserved process.
     The dimensions of \code{x} are \code{nvars} x \code{nreps} x \code{ntimes}, where \code{nvars} is the number of state variables, \code{nreps} is the number of replicates, and \code{ntimes} is the length of \code{times}.
-    Note that if \code{nreps != nrow(y)} or \code{ntimes-1 != length(times)}, an error is generated.
   }
   \item{times}{
     a numeric vector containing the times corresponding to the given states.
@@ -27,7 +28,7 @@ dprocess(object, x, times, params, log = FALSE, \dots)
     a rank-2 array of parameters with columns corresponding to the columns of \code{x}.
     Note that the \code{x} and \code{params} must agree in the number of their columns.
   }
-  \item{log}{if TRUE, probabilities p are given as log(p).}
+  \item{log}{if TRUE, log probabilities are returned.}
   \item{\dots}{at present, these are ignored.}
 }
 \value{
@@ -38,7 +39,7 @@ dprocess(object, x, times, params, log = FALSE, \dots)
   This function is essentially a wrapper around the user-supplied \code{dprocess} slot of the \code{pomp} object.
   For specifications on writing such a function, see \code{\link{pomp}}.
 }
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{pomp-class}}, \code{\link{pomp}}}
 \keyword{models}
 \keyword{ts}

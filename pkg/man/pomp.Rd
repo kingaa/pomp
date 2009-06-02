@@ -2,22 +2,23 @@
 \alias{pomp}
 \title{Partially-observed Markov process object.}
 \description{
-  Create a new \code{pomp} object.
+  Create a new \code{pomp} object to hold a partially-observed Markov process model together with a uni- or multi-variate time series.
 }
 \usage{
   pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model, skeleton.map, skeleton.vectorfield, initializer,
-       covar, tcovar, statenames, paramnames, covarnames, PACKAGE)
+       measurement.model, skeleton.map, skeleton.vectorfield,
+       initializer, covar, tcovar, statenames, paramnames, covarnames,
+       PACKAGE)
 }
 \arguments{
   \item{data}{
     An array holding the data.
     This array is of dimensions \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observed variables and \code{ntimes} is the number of times at which observations were made.
     It is also possible to specify \code{data} as a data-frame, in which case the argument \code{times} must be the name of the column of observation times.
-    Note that if \code{data} is a data-frame, it will be coerced to an array with storage-mode `double'.
+    Note that if \code{data} is a data-frame, it will be internally coerced to an array with storage-mode \sQuote{double}.
   }
   \item{times}{
-    The times corresponding to the observations.
+    vector of times corresponding to the observations:
     \code{times} must be a strictly increasing numeric vector.
     If \code{data} is a data-frame, \code{times} should be the name of the column of observation times.
   }
@@ -37,7 +38,7 @@
     optional; the measurement model simulator.
     This can be specified in one of three ways:
     (1) as a function of prototype \code{rmeasure(x,t,params,\dots)} which makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
-    (2) as the name of a native (compiled) routine with prototype "pomp\_measure\_model\_simulator" as defined in the header file "pomp.h".
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp\_measure\_model\_simulator} as defined in the header file \dQuote{pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
     (3) using the formula-based \code{measurement.model} facility (see below).
   }
@@ -45,7 +46,7 @@
     optional; the measurement model probability density function.
     This can be specified in one of three ways:
     (1) as a function of prototype \code{dmeasure(y,x,t,params,log,\dots)} which computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
-    (2) as the name of a native (compiled) routine with prototype "pomp\_measure\_model\_density" as defined in the header file "pomp.h".
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp\_measure\_model\_density} as defined in the header file \dQuote{pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
     (3) using the formula-based \code{measurement.model} facility (see below).
     As might be expected, if \code{log=TRUE}, this function should return the log likelihood.
@@ -60,8 +61,8 @@
   \item{skeleton.map}{
     optional.
     If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map and can be specified using \code{skeleton.map} in one of two ways:
-    (1) as a function of prototype \code{skeleton(x,t,params,\dots)} which evaluates the deterministic skeleton (whether vectorfield or map) of at state \code{x} and time \code{t} given the parameters \code{params}, or
-    (2) as the name of a native (compiled) routine with prototype "pomp\_vectorfield\_map" as defined in the header file "pomp.h".
+    (1) as a function of prototype \code{skeleton(x,t,params,\dots)} which evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp\_vectorfield\_map} as defined in the header file \dQuote{pomp.h}.
     If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
   }
   \item{skeleton.vectorfield}{
@@ -71,9 +72,9 @@
   }
   \item{initializer}{
     optional; a function of prototype \code{initializer(params,t0,\dots)} which yields initial conditions for the state process when given a vector, \code{params}, of parameters.
-    By default, i.e., if it is unspecified when \code{pomp} is called, the initializer assumes any names in \code{params} that end in ".0" correspond to initial value parameters.
+    By default, i.e., if it is unspecified when \code{pomp} is called, the initializer assumes any names in \code{params} that end in \dQuote{.0} correspond to initial value parameters.
     These are simply copied over as initial conditions when \code{init.state} is called (see \code{\link{init.state-pomp}}).
-    The names of the state variables are the same as the corresponding initial value parameters, but with the ".0" dropped.
+    The names of the state variables are the same as the corresponding initial value parameters, but with the \dQuote{.0} dropped.
   }
   \item{covar, tcovar}{
     An optional table of covariates: \code{covar} is the table (with one column per variable) and \code{tcovar} the corresponding times (one entry per row of \code{covar}).
@@ -101,7 +102,7 @@
     Each algorithm makes use of a different subset of these functions.
   }
   The specification of process-model codes \code{rprocess} and/or \code{dprocess} can be somewhat nontrivial:
-  for this reason, \emph{plug-ins} have been developed to make this process easier for the user.
+  for this reason, \emph{plug-ins} have been developed to streamline this process for the user.
   At present, if the process model evolves in discrete-time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{onestep.simulate}} and \code{\link{euler.simulate}} plug-ins for \code{rprocess} and \code{\link{onestep.density}} plug-in for \code{dprocess} are available.
   The following describes how each of these functions should be written.
   Examples are provided in the help documentation and the vignettes.
@@ -167,8 +168,8 @@
       \code{params}, a named vector containing parameters;
       and \code{t}, a scalar, the corresponding observation time.
       It may take additional arguments which will be filled with user-specified data as above.
-      \code{dmeasure} must return a single numeric value, the p.d.f. of \code{y} given \code{x} at time \code{t}.
-      If \code{log=TRUE}, then the log of the p.d.f. is returned.
+      \code{dmeasure} must return a single numeric value, the pdf of \code{y} given \code{x} at time \code{t}.
+      If \code{log=TRUE}, then the log of the pdf is returned.
     }
     \item{\code{skeleton}}{
       If \code{skeleton} is an R function, it must have at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
@@ -183,7 +184,7 @@
       \code{skeleton} must return a numeric vector of the same length as \code{x}.
       The return value is interpreted as the vectorfield (if the dynamical system is continuous) or the value of the map (if the dynamical system is discrete), at the point \code{x} at time \code{t}.
 
-      If \code{skeleton} is the name of a native routine, this routine must be of prototype "pomp\_vectorfield\_map" as defined in the header "pomp.h" (see the "include" directory in the installed package directory).
+      If \code{skeleton} is the name of a native routine, this routine must be of prototype \dQuote{pomp\_vectorfield\_map} as defined in the header \dQuote{pomp.h} (see the \dQuote{include} directory in the installed package directory).
     }
     \item{\code{initializer}}{
       if provided, must have at least the arguments \code{params}, \code{t0}, and \code{\dots}.
@@ -297,8 +298,7 @@ apply(g,1,sum)
   Each algorithm that uses a \code{pomp} object uses some subset of the four basic components (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}).
   It is unlikely that any algorithm will use all of these.
 }
-\references{}
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \link{pomp-class},
   \link{pomp-methods},

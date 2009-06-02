@@ -7,6 +7,8 @@
 \title{Simulate the process model of a partially-observed Markov process}
 \description{
   The method \code{rprocess} runs simulations of the the process-model portion of partially-observed Markov process.
+  This function is part of the low-level interface to \code{pomp} objects.
+  This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
 rprocess(object, xstart, times, params, \dots)
@@ -42,8 +44,7 @@ rprocess(object, xstart, times, params, \dots)
   This function is essentially a wrapper around the user-supplied \code{rprocess} slot of the \code{pomp} object.
   For specifications on writing such a function, see \code{\link{pomp}}.
 }
-\references{}
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{pomp-class}}, \code{\link{pomp}}}
 \keyword{models}
 \keyword{ts}

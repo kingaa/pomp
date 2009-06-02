@@ -5,7 +5,8 @@
 \alias{onestep.density}
 \title{Plug-ins for dynamical models based on stochastic Euler algorithms}
 \description{
-  Facilities for implementing discrete-time Markov processes and continuous-time Markov processes using the Euler algorithm.
+  Plug-in facilities for implementing discrete-time Markov processes and continuous-time Markov processes using the Euler algorithm.
+  These can be used in the \code{rprocess} and \code{dprocess} slots of \code{pomp}.
 }
 \usage{
 euler.simulate(xstart, times, params, step.fun, delta.t, \dots,
@@ -36,42 +37,33 @@ onestep.density(x, times, params, dens.fun, \dots,
     The \code{nrep} columns of \code{params} correspond to those of \code{xstart}.
   }
   \item{step.fun}{
-    This can be either an R function or a compiled, dynamically loaded native function containing the model simulator.
+    This can be either an R function or the name of a compiled, dynamically loaded native function containing the model simulator.
     It should be written to take a single Euler step from a single point in state space.
-    If it is a native function, it must be of type "pomp\_onestep\_sim" as defined in the header "pomp.h", which is included with the package.
+    If it is a native function, it must be of type \dQuote{pomp\_onestep\_sim} as defined in the header \dQuote{pomp.h}, which is included with the package.
     For details on how to write such codes, see Details.
   }
   \item{dens.fun}{
     This can be either an R function or a compiled, dynamically loaded native function containing the model transition log probability density function.
     This function will be called to compute the log likelihood of the actual Euler steps.
-    It must be of type "pomp\_onestep\_pdf" as defined in the header "pomp.h", which is included with the package.
+    It must be of type \dQuote{pomp\_onestep\_pdf} as defined in the header \dQuote{pomp.h}, which is included with the package.
     For details on how to write such codes, see Details.
   }
   \item{delta.t}{
     Time interval of Euler steps.
   }
-  \item{statenames}{
-    Names of state variables, in the order they will be expected by the routine named in \code{step.fun} and \code{dens.fun}.
-  }
-  \item{paramnames}{
-    Names of parameters, in the order they will be expected by the routine named in \code{step.fun} and \code{dens.fun}.
-  }
-  \item{covarnames}{
-    Names of columns of the matrix of covariates \code{covar}, in the order they will be expected by the routine named in \code{step.fun} and \code{dens.fun}.
+  \item{statenames, paramnames, covarnames}{
+    Names of state variables, parameters, covariates, in the order they will be expected by the routine named in \code{step.fun} and \code{dens.fun}.
+    This information is only used when the latter are implemented as compiled native functions.
   }
   \item{zeronames}{
     Names of additional variables which will be zeroed before each time in \code{times}.
     These are useful, e.g., for storing accumulations of state variables.
   }
-  \item{tcovar}{
-    Times at which covariates are measured.
-  }
-  \item{covar}{
-    Matrix of covariates.
-    This should have dimensions \code{length(tcovar)} x \code{ncovar}, where \code{ncovar} is the number of covariates.
+  \item{covar, tcovar}{
+    Matrix of covariates and times at which covariates are measured.
   }
   \item{log}{
-    logical; if TRUE, probabilities p are given as log(p).
+    logical; if TRUE, log probabilities are given.
   }
   \item{\dots}{
     if \code{step.fun} (or \code{dens.fun}) is an R function, then additional arguments will be passed to it.
@@ -113,7 +105,7 @@ onestep.density(x, times, params, dens.fun, \dots,
   \code{onestep.density} returns a \code{nrep} x \code{ntimes-1} array.
   If \code{f} is this array, \code{f[i,j]} is the likelihood of a transition from \code{x[,i,j]} to \code{x[,i,j+1]} in exactly one Euler step of duration \code{times[j+1]-times[j]}.
 }
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{eulermultinom}}, \code{\link{pomp}}}
 \examples{
 ## an example showing how to use these functions to implement a seasonal SIR model is contained

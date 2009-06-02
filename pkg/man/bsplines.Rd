@@ -4,7 +4,7 @@
 \title{B-spline bases}
 \description{
   These functions generate B-spline basis functions.
-  \code{bspline.basis} gives a set of basis functions.
+  \code{bspline.basis} gives a basis of spline functions.
   \code{periodic.bspline.basis} gives a basis of periodic spline functions.
 }
 \usage{
@@ -27,7 +27,7 @@ periodic.bspline.basis(x, nbasis, degree = 3, period = 1)
     The basis functions returned are periodic with period \code{period}.
   }
 }
-\author{Aaron A. King (kingaa at umich dot edu)}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{
 x <- seq(0,2,by=0.01)
 y <- bspline.basis(x,degree=3,nbasis=9)
