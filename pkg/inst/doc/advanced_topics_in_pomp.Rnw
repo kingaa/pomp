@@ -6,14 +6,17 @@
 \usepackage{natbib}
 
 \setlength{\textwidth}{6.25in}
-\setlength{\textheight}{8.75in}
+\setlength{\textheight}{8.7in}
 \setlength{\evensidemargin}{0in}
 \setlength{\oddsidemargin}{0in}
 \setlength{\topmargin}{-.35in}
 \setlength{\parskip}{.1in}  
 \setlength{\parindent}{0.0in}  
 
-\title[Using compiled code]{Using compiled code in \texttt{pomp}}
+\newcommand\code[1]{\texttt{#1}}
+\newcommand{\R}{\textsf{R}}
+
+\title[Advanced topics]{Advanced topics in \texttt{pomp}}
 
 \author[A. A. King]{Aaron A. King}
 
@@ -30,21 +33,21 @@ Ann Arbor, Michigan 48109-1048 USA
 
 %% \date{\today}
 
-\newcommand\code[1]{\texttt{#1}}
-
 \begin{document}
 
-\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T}
+\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T}
 
 \maketitle
 
 \tableofcontents
 
 <<echo=F,results=hide>>=
-  options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
+  glop <- options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
   library(pomp)
   set.seed(5384959)
 @ 
+
+This document serves to introduce the low-level interface to \code{pomp} objects and to give some examples of the use of native (C or FORTRAN) codes in \code{pomp}.
 
 \section{The low-level interface}
 
@@ -85,8 +88,14 @@ y[,,1:5]
 @ 
 The \code{dmeasure} and \code{dprocess} methods give access to the measurement and process model densities, respectively.
 <<>>=
-dprocess(ou2,x[,,36:41,drop=F],times=time(ou2)[35:40],params=as.matrix(true.p))
-dmeasure(ou2,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(ou2)[1:4],params=as.matrix(true.p))
+fp <- dprocess(ou2,x=x,times=time(ou2),params=as.matrix(true.p))
+dim(fp)
+fp[,36:40]
+@ 
+<<>>=
+fm <- dmeasure(ou2,y=y[,1,],x=x,times=time(ou2),params=as.matrix(true.p))
+dim(fm)
+fm[,36:40]
 @ 
 All of these are to be preferred to direct access to the slots of the \code{pomp} object, because they do sanity checks on the inputs and outputs.
 
@@ -184,7 +193,8 @@ ou2 <- pomp(
               "sigma.1","sigma.2","sigma.3",
               "tau"
               ),
-            statenames = c("x1","x2")
+            statenames = c("x1","x2"),
+            PACKAGE="pomp"
 	    )
 @ 
 Notice that the process model is implemented using using \verb+.C+, while the measurement model is specified by giving the names of native C routines.
@@ -212,6 +222,20 @@ These plug-ins can be used with native codes as well, as we'll see in the next e
 
 \section{A more complex example: a seasonal SIR model}
 
+The SIR model is a mainstay of theoretical epidemiology.
+It has the deterministic skeleton
+\begin{equation*}
+  \begin{aligned}
+    &\frac{dS}{dt}=\mu\,(N-S)+\beta(t)\,\frac{I}{N}\,S\\
+    &\frac{dI}{dt}=\beta(t)\,\frac{I}{N}\,S-\gamma\,I-\mu\,I\\
+    &\frac{dR}{dt}=\gamma\,I-\mu\,R\\
+  \end{aligned}
+\end{equation*}
+Here $N=S+I+R$ is the (constant) population size and $\beta$ is a time-dependent contact rate.
+We'll assume that the contact rate is periodic and implement it as a covariate.
+We'll implement a stochastic version of this model using an Euler-multinomial approximation to the continuous-time Markov process.
+As an additonal wrinkle, we'll assume that the rate of the infection process $\beta\,I/N$ is perturbed by white noise.
+
 <<>>=
 euler.sir <- pomp(
                   times=seq(1/52,4,by=1/52),
@@ -229,10 +253,10 @@ euler.sir <- pomp(
                   covarnames=c("seas1"),
                   zeronames=c("cases"),
                   comp.names=c("S","I","R"),
-                  step.fun="sir_euler_simulator",
                   rprocess=euler.simulate,
-                  dens.fun="sir_euler_density",
+                  step.fun="sir_euler_simulator",
                   dprocess=onestep.density,
+                  dens.fun="sir_euler_density",
                   skeleton.vectorfield="sir_ODE",
                   rmeasure="binom_rmeasure",
                   dmeasure="binom_dmeasure",
@@ -271,6 +295,10 @@ euler.sir <- simulate(euler.sir,nsim=1,seed=329348545L)
 This example can be loaded via
 <<eval=F>>=
 data(euler.sir)
+@ 
+
+<<echo=F,results=hide>>=
+  options(glop)
 @ 
 
 \end{document}
