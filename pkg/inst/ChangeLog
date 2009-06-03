@@ -1,5 +1,12 @@
+2009-06-03  kingaa
+
+	* [r144] data/euler.sir.rda, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: improvements to vignettes
+
 2009-06-02  kingaa
 
+	* [r143] inst/ChangeLog: version 0.24-4
 	* [r142] data/euler.sir.rda, data/ou2.rda, inst/doc/Makefile,
 	  inst/doc/advanced_topics_in_pomp.Rnw,
 	  inst/doc/advanced_topics_in_pomp.pdf,
