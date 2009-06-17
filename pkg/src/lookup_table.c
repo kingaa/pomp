@@ -6,7 +6,6 @@
 
 SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t, int *index) {
   int nprotect = 0;
-  int flag = 0;
   int *dim, length, width;
   SEXP X;
 
