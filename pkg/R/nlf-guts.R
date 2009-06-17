@@ -190,29 +190,3 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
   
   LQL
 }
-
-dmvnorm <- function (x, mean, sigma, log = FALSE) {
-    if (is.vector(x)) {
-        x <- matrix(x, ncol = length(x))
-    }
-    if (missing(mean)) {
-        mean <- rep(0, length = ncol(x))
-    }
-    if (missing(sigma)) {
-        sigma <- diag(ncol(x))
-    }
-    if (NCOL(x) != NCOL(sigma)) {
-        stop("x and sigma have non-conforming size")
-    }
-    if (NROW(sigma) != NCOL(sigma)) {
-        stop("sigma must be a square matrix")
-    }
-    if (length(mean) != NROW(sigma)) {
-        stop("mean and sigma have non-conforming size")
-    }
-    distval <- mahalanobis(x, center = mean, cov = sigma)
-    logdet <- sum(log(eigen(sigma, symmetric=TRUE, only.values=TRUE)$values))
-    logretval <- -(ncol(x)*log(2*pi) + logdet + distval)/2
-    if(log) return(logretval)
-    exp(logretval)
-}
