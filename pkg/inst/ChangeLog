@@ -1,5 +1,21 @@
+2009-06-19  kingaa
+
+	* [r150] src/initstate.c: check for duplication of names between
+	  states and parameters
+	  manage the pointer protection stack more sensibly
+
+2009-06-17  kingaa
+
+	* [r149] src/lookup_table.c: minor changes to C code (remove unused
+	  variable)
+	* [r148] DESCRIPTION, NAMESPACE, R/mvnorm.R, R/nlf-guts.R: make use
+	  of mvtnorm::dmvnorm now instead of our own version
+	* [r147] R/nlf-guts.R: duplicate codes removed
+	* [r146] R/mvnorm.R: updated
+
 2009-06-03  kingaa
 
+	* [r145] DESCRIPTION, inst/ChangeLog: version 0.24-5
 	* [r144] data/euler.sir.rda, inst/doc/advanced_topics_in_pomp.Rnw,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
 	  inst/doc/intro_to_pomp.pdf: improvements to vignettes
