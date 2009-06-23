@@ -61,14 +61,6 @@ fit <- mif(
            )
 fit <- mif(
            ou2,
-           Nmif=1,
-           pars=c("alpha.1","alpha.4"),
-           ivps=c("x1.0","x2.0"),
-           rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
-           alg.pars=list(Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1)
-           )
-fit <- mif(
-           ou2,
            Nmif=2,
            ivps=c("x1.0","x2.0"),
            rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2),

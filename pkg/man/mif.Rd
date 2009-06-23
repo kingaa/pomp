@@ -15,7 +15,7 @@
 \usage{
 mif(object, \dots)
 \S4method{mif}{pomp}(object, Nmif = 1, start, pars, ivps = character(0),
-    particles, rw.sd, alg.pars, Np, ic.lag, var.factor, cooling.factor,
+    particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
     weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
     verbose = FALSE)
 \S4method{mif}{mif}(object, Nmif, \dots)
@@ -55,11 +55,6 @@ mif(object, \dots)
     \code{names(rw.sd)} must be a subset of \code{names(start)},
     \code{rw.sd} must be non-negative (zeros are simply ignored),
     the name of every positive element of \code{rw.sd} must be in either \code{pars} or \code{ivps}.
-  }
-  \item{alg.pars}{
-    optional; a named list of the algorithm parameters \code{Np}, \code{cooling.factor}, \code{var.factor}, \code{ic.lag}.
-    The use of \code{alg.pars} is now deprecated and generates a warning.
-    It will be removed in the near future.
   }
   \item{Np}{
     a positive integer;

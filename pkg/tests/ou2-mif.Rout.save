@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: deSolve
 Loading required package: subplex
+Loading required package: mvtnorm
 > 
 > data(ou2)
 > 
@@ -67,7 +68,7 @@ running MIF
 > mif.fit <- continue(mif.fit,Nmif=70,max.fail=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.020114 mins
+Time difference of 56.82802 secs
 > cat("PF estimated log likelihood at MIF MLE\n")
 PF estimated log likelihood at MIF MLE
 > print(pfilter(mif.fit)$loglik,digits=4)
@@ -100,16 +101,6 @@ MIF MLE
 +            )
 > fit <- mif(
 +            ou2,
-+            Nmif=1,
-+            pars=c("alpha.1","alpha.4"),
-+            ivps=c("x1.0","x2.0"),
-+            rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
-+            alg.pars=list(Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1)
-+            )
-Warning message:
-mif warning: use of ‘alg.pars’ is deprecated; see the documentation for ‘mif’. 
-> fit <- mif(
-+            ou2,
 +            Nmif=2,
 +            ivps=c("x1.0","x2.0"),
 +            rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2),
@@ -118,7 +109,7 @@ mif warning: use of ‘alg.pars’ is deprecated; see the documentation for ‘m
 > fit <- continue(fit,Nmif=40)
 > ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100)
 > print(ff$loglik)
-[1] -441.1279
+[1] -495.7194
 > fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.1))
 > fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.1"))
 Warning message:

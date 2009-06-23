@@ -19,7 +19,7 @@ mif.internal <- function (object, Nmif = 1,
                           start = NULL,
                           pars = NULL, ivps = NULL,
                           particles = NULL,
-                          rw.sd = NULL, alg.pars = NULL,
+                          rw.sd = NULL,
                           Np = NULL, cooling.factor = NULL, var.factor = NULL, ic.lag = NULL, 
                           weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
                           verbose = FALSE, .ndone = 0) {
@@ -90,41 +90,25 @@ mif.internal <- function (object, Nmif = 1,
   if (is.null(particles))
     particles <- object@particles
 
-  if (is.null(alg.pars)) {
-    if (is.null(Np))
-      Np <- object@alg.pars$Np
-    Np <- as.integer(Np)
-    if ((length(Np)!=1)||(Np < 1))
-      stop("mif error: ",sQuote("Np")," must be a positive integer",call.=FALSE)
-    if (is.null(ic.lag))
-      ic.lag <- object@alg.pars$ic.lag
-    ic.lag <- as.integer(ic.lag)
-    if ((length(ic.lag)!=1)||(ic.lag < 1))
-      stop("mif error: ",sQuote("ic.lag")," must be a positive integer",call.=FALSE)
-    if (is.null(cooling.factor))
-      cooling.factor <- object@alg.pars$cooling.factor
-    if ((length(cooling.factor)!=1)||(cooling.factor < 0)||(cooling.factor>1))
-      stop("mif error: ",sQuote("cooling.factor")," must be a number between 0 and 1",call.=FALSE)
-    if (is.null(var.factor))
-      var.factor <- object@alg.pars$var.factor
-    if ((length(var.factor)!=1)||(var.factor < 0))
-      stop("mif error: ",sQuote("var.factor")," must be a positive number",call.=FALSE)
-  } else {                       # use of 'alg.pars' is now deprecated
-    warning("mif warning: use of ",sQuote("alg.pars")," is deprecated; see the documentation for ",sQuote("mif"),".",call.=FALSE)
-    if (!all(c('Np','cooling.factor','ic.lag','var.factor')%in%names(alg.pars)))
-      stop(
-           "mif error: ",sQuote("alg.pars"),
-           " must be a named list with elements ",
-           sQuote("Np"),",",sQuote("cooling.factor"),",",sQuote("ic.lag"),
-           ",and ",sQuote("var.factor"),
-           call.=FALSE
-           )
-    Np <- alg.pars$Np
-    cooling.factor <- alg.pars$cooling.factor
-    var.factor <- alg.pars$var.factor
-    ic.lag <- alg.pars$ic.lag
-  }
-
+  if (is.null(Np))
+    Np <- object@alg.pars$Np
+  Np <- as.integer(Np)
+  if ((length(Np)!=1)||(Np < 1))
+    stop("mif error: ",sQuote("Np")," must be a positive integer",call.=FALSE)
+  if (is.null(ic.lag))
+    ic.lag <- object@alg.pars$ic.lag
+  ic.lag <- as.integer(ic.lag)
+  if ((length(ic.lag)!=1)||(ic.lag < 1))
+    stop("mif error: ",sQuote("ic.lag")," must be a positive integer",call.=FALSE)
+  if (is.null(cooling.factor))
+    cooling.factor <- object@alg.pars$cooling.factor
+  if ((length(cooling.factor)!=1)||(cooling.factor < 0)||(cooling.factor>1))
+    stop("mif error: ",sQuote("cooling.factor")," must be a number between 0 and 1",call.=FALSE)
+  if (is.null(var.factor))
+    var.factor <- object@alg.pars$var.factor
+  if ((length(var.factor)!=1)||(var.factor < 0))
+    stop("mif error: ",sQuote("var.factor")," must be a positive number",call.=FALSE)
+  
   if (verbose) {
     cat("performing",Nmif,"MIF iteration(s) to estimate parameter(s)",
         paste(pars,collapse=", "))
@@ -269,8 +253,7 @@ setMethod(
           function (object, Nmif = 1,
                     start,
                     pars, ivps = character(0),
-                    particles,
-                    rw.sd, alg.pars,
+                    particles, rw.sd,
                     Np, ic.lag, var.factor, cooling.factor,
                     weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
                     verbose = FALSE)
@@ -282,6 +265,15 @@ setMethod(
               rw.names <- names(rw.sd)[rw.sd>0]
               pars <- rw.names[!(rw.names%in%ivps)]
             }
+            if (missing(Np))
+              stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
+            if (missing(ic.lag))
+              stop("mif error: ",sQuote("ic.lag")," must be specified",call.=FALSE)
+            if (missing(var.factor))
+              stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
+            if (missing(cooling.factor))
+              stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
+              
             if (missing(particles)) {         # use default: normal distribution
               particles <- function (Np, center, sd, ...) {
                 matrix(
@@ -309,10 +301,9 @@ setMethod(
                      call.=FALSE
                      )
             }
-            if (missing(alg.pars)) alg.pars <- NULL # alg.pars is now deprecated
               
             mif.internal(object,Nmif=Nmif,start=start,pars=pars,ivps=ivps,particles=particles,
-                         rw.sd=rw.sd,alg.pars=alg.pars,Np=Np,cooling.factor=cooling.factor,
+                         rw.sd=rw.sd,Np=Np,cooling.factor=cooling.factor,
                          var.factor=var.factor,ic.lag=ic.lag,
                          weighted=weighted,tol=tol,warn=warn,max.fail=max.fail,
                          verbose=verbose,.ndone=0)
