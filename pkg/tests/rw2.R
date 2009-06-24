@@ -126,13 +126,14 @@ x0 <- init.state(rw2,params=p)
 x <- rprocess(rw2,xstart=x0,times=0:100,params=p)
 y <- rmeasure(rw2,x=x,times=0:100,params=p)
 
-log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
-dprocess(rw2,x[,,6:11],times=5:10,params=p,log=T)
-
-dmeasure(rw2,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
-dmeasure(rw2,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
-log(dmeasure(rw2,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
-dmeasure(rw2,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
+a1 <- dmeasure(rw2,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+b1 <- dmeasure(rw2,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+c1 <- log(dmeasure(rw2,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
+d1 <- dmeasure(rw2,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
+e1 <- dprocess(rw2,x[,,6:11],times=5:10,params=p,log=T)
+f1 <- log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
+max(abs(c1-d1),na.rm=T)
+max(abs(e1-f1),na.rm=T)
 
 po <- pomp(
            rprocess = rw.rprocess,
@@ -147,15 +148,32 @@ po <- pomp(
            t0=0
            )
 
-dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
-dmeasure(po,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
-log(dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
-dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
+a2 <- dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+b2 <- dmeasure(po,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+c2 <- log(dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
+d2 <- dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
+e2 <- dprocess(po,x[,,6:11],times=5:10,params=p,log=T)
+f2 <- log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
+max(abs(c2-d2),na.rm=T)
+max(abs(e2-f2),na.rm=T)
+
+max(abs(a1-a2))
+max(abs(b1-b2))
+max(abs(d1-d2),na.rm=T)
+max(abs(e1-e2),na.rm=T)
 
 data(rw2)
 
-dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
-dmeasure(po,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
-dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
-dprocess(rw2,x[,,6:11],times=5:10,params=p,log=T)
+a3 <- dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+b3 <- dmeasure(po,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
+c3 <- log(dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
+d3 <- dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
+e3 <- dprocess(po,x[,,6:11],times=5:10,params=p,log=T)
+f3 <- log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
+max(abs(c3-d3),na.rm=T)
+max(abs(e3-f3),na.rm=T)
 
+max(abs(a2-a3))
+max(abs(b2-b3))
+max(abs(d2-d3),na.rm=T)
+max(abs(e2-e3),na.rm=T)
