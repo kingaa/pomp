@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: deSolve
 Loading required package: subplex
+Loading required package: mvtnorm
 > 
 > kalman.filter <- function (y, x0, a, b, sigma, tau) {
 +   n <- nrow(y)
@@ -103,7 +104,7 @@ running Kalman filter estimation
 > kalm.fit1 <- optim(p.guess,kalman,object=ou2,params=p.truth,hessian=T)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 39.45996 secs
+Time difference of 37.90149 secs
 > tic <- Sys.time()
 > print(-kalm.fit1$value,digits=4)
 [1] -411.1

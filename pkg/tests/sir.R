@@ -123,6 +123,8 @@ po <- pomp(
            }
            )
 
+show(po)
+
 set.seed(3049953)
 ## simulate from the model
 tic <- Sys.time()
@@ -185,6 +187,8 @@ h1 <- skeleton(
 print(h1[c("S","I","R"),,],digits=4)
 
 data(euler.sir)
+
+show(euler.sir)
 
 set.seed(3049953)
 ## simulate from the model

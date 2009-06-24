@@ -121,7 +121,7 @@ setMethod(
           'pomp',
           function (object) {
             print(object)
-            cat("zero time, t0 = ",object@t0,"\n")
+            cat("zero time, t0 = ",object@t0,"\n",sep="")
             if (length(coef(object))>0) {
               cat("parameter(s):\n")
               print(coef(object))
@@ -133,9 +133,23 @@ setMethod(
             cat("process model density, dprocess = \n")
             print(object@dprocess)
             cat("measurement model simulator, rmeasure = \n")
-            print(object@rmeasure)
+            if (object@rmeasure@use==2) {
+              cat("native function, '",object@rmeasure@native.fun,"'",sep="")
+              if (length(object@rmeasure@PACKAGE)>0)
+                cat(", PACKAGE = '",object@rmeasure@PACKAGE,"'",sep="")
+              cat ("\n")
+            } else {
+              print(object@rmeasure@R.fun)
+            }
             cat("measurement model density, dmeasure = \n")
-            print(object@dmeasure)
+            if (object@dmeasure@use==2) {
+              cat("native function, '",object@dmeasure@native.fun,"'",sep="")
+              if (length(object@dmeasure@PACKAGE)>0)
+                cat(", PACKAGE = '",object@dmeasure@PACKAGE,"'",sep="")
+              cat ("\n")
+            } else {
+              print(object@dmeasure@R.fun)
+            }
             cat("initializer = \n")
             print(object@initializer)
             cat("userdata = \n")

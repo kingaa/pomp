@@ -1,3 +1,11 @@
+2009-06-23  kingaa
+
+	* [r152] DESCRIPTION, R/mif.R, data/euler.sir.rda, data/ou2.rda,
+	  data/rw2.rda, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/mif.Rd, tests/ou2-mif.R, tests/ou2-mif.Rout.save: alg.pars
+	  has been removed as an argument to 'mif'
+
 2009-06-19  kingaa
 
 	* [r151] DESCRIPTION, inst/ChangeLog,

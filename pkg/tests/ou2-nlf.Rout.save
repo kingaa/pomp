@@ -1,6 +1,6 @@
 
-R version 2.10.0 Under development (unstable) (2009-05-07 r48492)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.8.1 (2008-12-22)
+Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -18,17 +18,16 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: deSolve
 Loading required package: subplex
+Loading required package: mvtnorm
 > 
 > data(ou2)
 > 
-> set.seed(1066)
+> set.seed(1066L)
 > 
 > po <- ou2
 > coef(po,c("x1.0","x2.0","alpha.1","alpha.4")) <- c(0,0,0.1,0.2)
-> po <- simulate(po,times=(1:10000))
-> p.truth <- coef(po)
-> guess <- p.truth
-> ## guess[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(45,-60,0.8,0.9)
+> po <- simulate(po)
+> guess <- p.truth <- coef(po)
 > 
 > m1 <- nlf(
 +           object=po,
@@ -36,7 +35,7 @@ Loading required package: subplex
 +           est=c("alpha.1","alpha.4"),
 +           lags=c(1,2),
 +           nconverge=100,
-+           nasymp=2500,
++           nasymp=1000,
 +           method="Nelder-Mead",
 +           maxit=500,
 +           trace=1,
@@ -44,26 +43,114 @@ Loading required package: subplex
 +           lql.frac = 0.025
 +           )
   Nelder-Mead direct search function minimizer
-function value for initial parameters = 40059.679966
-  Scaled convergence tolerance is 0.000596936
+function value for initial parameters = 390.960996
+  Scaled convergence tolerance is 5.82577e-06
 Stepsize computed as 0.020000
-BUILD              3 40059.679966 40059.013186
-REFLECTION         5 40059.024962 40058.355658
-HI-REDUCTION       7 40059.013186 40058.355658
-HI-REDUCTION       9 40058.480960 40058.355658
-REFLECTION        11 40058.428912 40058.287812
-HI-REDUCTION      13 40058.355658 40058.283261
-HI-REDUCTION      15 40058.287812 40058.270086
-HI-REDUCTION      17 40058.283261 40058.262895
-HI-REDUCTION      19 40058.270086 40058.262895
-HI-REDUCTION      21 40058.263735 40058.260296
-HI-REDUCTION      23 40058.262895 40058.260296
+BUILD              3 391.170142 390.960996
+EXTENSION          5 391.121379 390.848054
+EXTENSION          7 390.960996 390.495673
+LO-REDUCTION       9 390.848054 390.495673
+EXTENSION         11 390.509255 390.032148
+EXTENSION         13 390.495673 389.677144
+REFLECTION        15 390.032148 389.601518
+EXTENSION         17 389.677144 389.069152
+LO-REDUCTION      19 389.601518 389.069152
+LO-REDUCTION      21 389.316744 389.069152
+REFLECTION        23 389.097526 388.964593
+LO-REDUCTION      25 389.069152 388.964593
+LO-REDUCTION      27 388.977691 388.959018
+HI-REDUCTION      29 388.964593 388.955938
+LO-REDUCTION      31 388.959018 388.954600
+HI-REDUCTION      33 388.955938 388.954600
+HI-REDUCTION      35 388.955009 388.953977
+LO-REDUCTION      37 388.954600 388.953960
+HI-REDUCTION      39 388.954009 388.953960
+HI-REDUCTION      41 388.953977 388.953875
+HI-REDUCTION      43 388.953960 388.953849
+LO-REDUCTION      45 388.953875 388.953849
+HI-REDUCTION      47 388.953868 388.953849
 Exiting from Nelder Mead minimizer
-    25 function evaluations used
+    49 function evaluations used
 h in NLF =  0.1 
-epsilon in NLF = 0.4420236 0.2750263 
-Fitted param  1 -4.042142 -4.042142  up in  'nlf' 
-Fitted param  1 -4.031832  down in  'NLF' 
-Fitted param  2 -4.032517 -4.032517  up in  'nlf' 
-Fitted param  2 -4.03145  down in  'NLF' 
+epsilon in NLF = 0.3120962 0.3004542 
+Fitted param  1 -3.984644 -3.984644  up in  ‘nlf’ 
+Fitted param  1 -3.985982  down in  ‘NLF’ 
+Fitted param  2 -3.993283 -3.993283  up in  ‘nlf’ 
+Fitted param  2 -3.993728  down in  ‘NLF’ 
+> 
+> se <- p.truth
+> se[] <- NA
+> se[names(m1$se)] <- m1$se
+> print(cbind(truth=p.truth,fit=m1$params,se=se),digits=3)
+        truth     fit    se
+alpha.1   0.1 -0.1539 0.114
+alpha.2   0.0  0.0000    NA
+alpha.3   0.0  0.0000    NA
+alpha.4   0.2  0.0159 0.110
+sigma.1   1.0  1.0000    NA
+sigma.2   0.0  0.0000    NA
+sigma.3   2.0  2.0000    NA
+tau       1.0  1.0000    NA
+x1.0      0.0  0.0000    NA
+x2.0      0.0  0.0000    NA
+> 
+> po <- simulate(po,times=(1:1000))
+> m2 <- nlf(
++           object=po,
++           start=guess,
++           est=c("alpha.1","alpha.4"),
++           lags=c(1,2),
++           nconverge=100,
++           nasymp=10000,
++           method="Nelder-Mead",
++           maxit=500,
++           trace=1,
++           verbose=TRUE,
++           lql.frac = 0.025
++           )
+  Nelder-Mead direct search function minimizer
+function value for initial parameters = 4012.121680
+  Scaled convergence tolerance is 5.97853e-05
+Stepsize computed as 0.020000
+BUILD              3 4012.528145 4012.121680
+REFLECTION         5 4012.384913 4012.067214
+EXTENSION          7 4012.121680 4011.649828
+EXTENSION          9 4012.067214 4011.551849
+REFLECTION        11 4011.649828 4011.355226
+HI-REDUCTION      13 4011.551849 4011.355226
+HI-REDUCTION      15 4011.436440 4011.355226
+LO-REDUCTION      17 4011.403589 4011.351028
+HI-REDUCTION      19 4011.355226 4011.351028
+HI-REDUCTION      21 4011.353532 4011.344389
+HI-REDUCTION      23 4011.351028 4011.344389
+LO-REDUCTION      25 4011.346527 4011.344130
+HI-REDUCTION      27 4011.344389 4011.344130
+HI-REDUCTION      29 4011.344238 4011.343759
+HI-REDUCTION      31 4011.344130 4011.343759
+HI-REDUCTION      33 4011.343867 4011.343759
+LO-REDUCTION      35 4011.343836 4011.343759
+Exiting from Nelder Mead minimizer
+    37 function evaluations used
+h in NLF =  0.1 
+epsilon in NLF = 0.4842402 0.2705555 
+Fitted param  1 -4.054405 -4.054405  up in  ‘nlf’ 
+Fitted param  1 -4.052725  down in  ‘NLF’ 
+Fitted param  2 -4.049163 -4.049163  up in  ‘nlf’ 
+Fitted param  2 -4.048027  down in  ‘NLF’ 
+> 
+> se <- p.truth
+> se[] <- NA
+> se[names(m2$se)] <- m2$se
+> print(cbind(truth=p.truth,fit=m2$params,se=se),digits=3)
+        truth    fit     se
+alpha.1   0.1 0.0169 0.0677
+alpha.2   0.0 0.0000     NA
+alpha.3   0.0 0.0000     NA
+alpha.4   0.2 0.1907 0.0490
+sigma.1   1.0 1.0000     NA
+sigma.2   0.0 0.0000     NA
+sigma.3   2.0 2.0000     NA
+tau       1.0 1.0000     NA
+x1.0      0.0 0.0000     NA
+x2.0      0.0 0.0000     NA
 > 

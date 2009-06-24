@@ -108,7 +108,11 @@ mif.internal <- function (object, Nmif = 1,
     var.factor <- object@alg.pars$var.factor
   if ((length(var.factor)!=1)||(var.factor < 0))
     stop("mif error: ",sQuote("var.factor")," must be a positive number",call.=FALSE)
-  
+
+  Nmif <- as.integer(Nmif)
+  if (Nmif<0)
+    stop("mif error: ",sQuote("Nmif")," must be a positive integer",call.=FALSE)
+
   if (verbose) {
     cat("performing",Nmif,"MIF iteration(s) to estimate parameter(s)",
         paste(pars,collapse=", "))

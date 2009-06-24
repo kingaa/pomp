@@ -22,7 +22,7 @@ Loading required package: mvtnorm
 > 
 > data(ou2)
 > 
-> set.seed(64857673)
+> set.seed(64857673L)
 > 
 > fit1.pfilter <- pfilter(ou2,Np=1000)
 > cat("coefficients at `truth'\n")
@@ -36,60 +36,116 @@ particle filter log likelihood at truth
 [1] -412.9
 > 
 > p.truth <- coef(ou2)
-> guess <- p.truth
-> guess[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(45,-60,0.8,0.9)
+> guess2 <- guess1 <- p.truth
+> guess1[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(45,-60,0.8,0.9)
+> guess2[c('x1.0','x2.0','alpha.1','alpha.4')] <- c(60,-45,0.9,0.8)
 > 
-> fit2.pfilter <- pfilter(ou2,params=guess,Np=1000,max.fail=1000,warn=F)
-> cat("coefficients at guess\n")
-coefficients at guess
-> print(guess[c('x1.0','x2.0','alpha.1','alpha.4')],digits=4)
-   x1.0    x2.0 alpha.1 alpha.4 
-   45.0   -60.0     0.8     0.9 
-> cat("particle filter log likelihood at guess\n")
-particle filter log likelihood at guess
-> print(fit2.pfilter$loglik,digits=4)
-[1] -3913
+> mif1 <- mif(ou2,Nmif=10,start=guess1,
++             pars=c('alpha.1','alpha.4'),ivps=c('x1.0','x2.0'),
++             rw.sd=c(
++               x1.0=5,x2.0=5,
++               alpha.1=0.1,alpha.4=0.1
++               ),
++             Np=1000,
++             var.factor=1,
++             ic.lag=10,
++             cooling.factor=0.95,
++             max.fail=100
++             )
 > 
-> cat("running MIF\n")
-running MIF
-> tic <- Sys.time()
-> mif.fit <- mif(ou2,Nmif=10,start=guess,
-+                pars=c('alpha.1','alpha.4'),ivps=c('x1.0','x2.0'),
-+                rw.sd=c(
-+                  x1.0=5,x2.0=5,
-+                  alpha.1=0.1,alpha.4=0.1
-+                  ),
-+                Np=1000,
-+                var.factor=1,
-+                ic.lag=10,
-+                cooling.factor=0.95,
-+                max.fail=100
-+                )
-> mif.fit <- continue(mif.fit,Nmif=70,max.fail=100)
-> toc <- Sys.time()
-> print(toc-tic)
-Time difference of 56.82802 secs
-> cat("PF estimated log likelihood at MIF MLE\n")
-PF estimated log likelihood at MIF MLE
-> print(pfilter(mif.fit)$loglik,digits=4)
-[1] -411.2
+> mif2 <- mif(ou2,Nmif=10,start=guess2,
++             pars=c('alpha.1','alpha.4'),ivps=c('x1.0','x2.0'),
++             rw.sd=c(
++               x1.0=5,x2.0=5,
++               alpha.1=0.1,alpha.4=0.1
++               ),
++             Np=1000,
++             var.factor=1,
++             ic.lag=10,
++             cooling.factor=0.95,
++             max.fail=100
++             )
 > 
-> cat("coefficients at truth\n")
-coefficients at truth
-> print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
-   x1.0    x2.0 alpha.1 alpha.4 
-  50.00  -50.00    0.90    0.99 
-> cat("MIF MLE\n")
-MIF MLE
-> print(coef(mif.fit,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
-    x1.0     x2.0  alpha.1  alpha.4 
- 50.8435 -48.7910   0.9035   0.9902 
-> 
-> plot(mif.fit)
-> compare.mif(mif.fit)
-> compare.mif(list(mif.fit,mif.fit))
+> pdf(file="ou2-mif.pdf")
+> plot(mif1)
+> compare.mif(mif2)
+> try(compare.mif(mif1,mif2))
+Error in compare.mif(mif1, mif2) : 
+  unused argument(s) (<S4 object of class "mif">)
+> compare.mif(list(mif1,mif2))
+> dev.off()
+null device 
+          1 
 > 
 > set.seed(33848585L)
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=1,
++         pars=c("alpha.1","alpha.4","x1.0"),
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
++         Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: ‘pars’ and ‘ivps’ must be mutually disjoint subsets of ‘names(start)’ and must have a positive random-walk SDs specified in ‘rw.sd’
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=1,
++         pars=c("alpha.1","alpha.4"),
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
++         Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: ‘pars’ and ‘ivps’ must be mutually disjoint subsets of ‘names(start)’ and must have a positive random-walk SDs specified in ‘rw.sd’
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=1,
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(alpha.1=0.1,alpha.4=0.2,alpha.3=0),
++         Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: ‘pars’ and ‘ivps’ must be mutually disjoint subsets of ‘names(start)’ and must have a positive random-walk SDs specified in ‘rw.sd’
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=1,
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
++         Np=100,ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: ‘cooling.factor’ must be specified
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=1,
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
++         Np=-10,cooling.factor=0.95,ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: ‘Np’ must be a positive integer
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=-3,
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
++         Np=11.6,cooling.factor=0.95,ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: ‘Nmif’ must be a positive integer
 > 
 > fit <- mif(
 +            ou2,
@@ -100,26 +156,34 @@ MIF MLE
 +            Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
 +            )
 > fit <- mif(
-+            ou2,
++            fit,
 +            Nmif=2,
 +            ivps=c("x1.0","x2.0"),
 +            rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2),
 +            Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1
 +            )
-> fit <- continue(fit,Nmif=40)
+> fit <- continue(fit)
+> fit <- continue(fit,Nmif=2)
 > ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100)
-> print(ff$loglik)
-[1] -495.7194
+filtering failure at time t = 3
+filtering failure at time t = 4
+filtering failure at time t = 5
+filtering failure at time t = 6
+filtering failure at time t = 7
+filtering failure at time t = 8
+filtering failure at time t = 9
+filtering failure at time t = 10
+filtering failure at time t = 11
 > fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.1))
 > fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.1"))
 Warning message:
 mif warning: the variable(s) alpha.4, x2.0 have positive random-walk SDs specified, but are included in neither ‘pars’ nor ‘ivps’. These random walk SDs are ignored. 
 > s <- coef(fit)
 > s[2] <- 0.01
-> fit <- mif(fit,Nmif=10,start=s)
+> fit <- mif(fit,Nmif=3,start=s)
 > fit <- mif(ou2,Nmif=3,rw.sd=c(alpha.1=0.1,alpha.4=0.1),Np=1000,cooling.factor=0.98,var.factor=1,ic.lag=2)
-> fit <- continue(fit,Nmif=5,Np=2000)
-> fit <- continue(fit,ivps=c("x1.0"),rw.sd=c(alpha.1=0.1,alpha.4=0.1,x1.0=5,x2.0=5),Nmif=3)
+> fit <- continue(fit,Nmif=2,Np=2000)
+> fit <- continue(fit,ivps=c("x1.0"),rw.sd=c(alpha.1=0.1,alpha.4=0.1,x1.0=5,x2.0=5),Nmif=2)
 Warning message:
 mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but are included in neither ‘pars’ nor ‘ivps’. These random walk SDs are ignored. 
 > 

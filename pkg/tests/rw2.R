@@ -58,6 +58,38 @@ bvnorm.dmeasure <- function (y, x, t, params, log = FALSE, ...) {
   if (log) f else exp(f)
 }
 
+bad.initializer <- function (params, t0, ...) 
+{
+  ivpnames <- c("x1.0","x2.0")
+  x <- params[ivpnames]
+  x
+}
+
+p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
+
+rw2 <- pomp(
+            rprocess = rw.rprocess,
+            dprocess = rw.dprocess,
+            measurement.model=list(
+              y1 ~ norm(mean=x1,sd=tau),
+              y2 ~ norm(mean=x2,sd=tau)
+            ),
+            initializer=bad.initializer,
+            times=1:100,
+            data=rbind(
+              y1=rep(0,100),
+              y2=rep(0,100)
+              ),
+            t0=0,
+            useless=23
+            )
+
+show(rw2)
+
+try(
+    simulate(rw2,params=p)
+    )
+
 rw2 <- pomp(
             rprocess = rw.rprocess,
             dprocess = rw.dprocess,
@@ -74,7 +106,6 @@ rw2 <- pomp(
             useless=23
             )
 
-p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
 examples <- simulate(rw2,params=p)
 rw2 <- examples[[1]]
 

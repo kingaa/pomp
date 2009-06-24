@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: deSolve
 Loading required package: subplex
+Loading required package: mvtnorm
 > 
 > set.seed(45768683)
 > 
@@ -77,6 +78,212 @@ Loading required package: subplex
 +   if (log) f else exp(f)
 + }
 > 
+> bad.initializer <- function (params, t0, ...) 
++ {
++   ivpnames <- c("x1.0","x2.0")
++   x <- params[ivpnames]
++   x
++ }
+> 
+> p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
+> 
+> rw2 <- pomp(
++             rprocess = rw.rprocess,
++             dprocess = rw.dprocess,
++             measurement.model=list(
++               y1 ~ norm(mean=x1,sd=tau),
++               y2 ~ norm(mean=x2,sd=tau)
++             ),
++             initializer=bad.initializer,
++             times=1:100,
++             data=rbind(
++               y1=rep(0,100),
++               y2=rep(0,100)
++               ),
++             t0=0,
++             useless=23
++             )
+> 
+> show(rw2)
+    time y1 y2
+1      1  0  0
+2      2  0  0
+3      3  0  0
+4      4  0  0
+5      5  0  0
+6      6  0  0
+7      7  0  0
+8      8  0  0
+9      9  0  0
+10    10  0  0
+11    11  0  0
+12    12  0  0
+13    13  0  0
+14    14  0  0
+15    15  0  0
+16    16  0  0
+17    17  0  0
+18    18  0  0
+19    19  0  0
+20    20  0  0
+21    21  0  0
+22    22  0  0
+23    23  0  0
+24    24  0  0
+25    25  0  0
+26    26  0  0
+27    27  0  0
+28    28  0  0
+29    29  0  0
+30    30  0  0
+31    31  0  0
+32    32  0  0
+33    33  0  0
+34    34  0  0
+35    35  0  0
+36    36  0  0
+37    37  0  0
+38    38  0  0
+39    39  0  0
+40    40  0  0
+41    41  0  0
+42    42  0  0
+43    43  0  0
+44    44  0  0
+45    45  0  0
+46    46  0  0
+47    47  0  0
+48    48  0  0
+49    49  0  0
+50    50  0  0
+51    51  0  0
+52    52  0  0
+53    53  0  0
+54    54  0  0
+55    55  0  0
+56    56  0  0
+57    57  0  0
+58    58  0  0
+59    59  0  0
+60    60  0  0
+61    61  0  0
+62    62  0  0
+63    63  0  0
+64    64  0  0
+65    65  0  0
+66    66  0  0
+67    67  0  0
+68    68  0  0
+69    69  0  0
+70    70  0  0
+71    71  0  0
+72    72  0  0
+73    73  0  0
+74    74  0  0
+75    75  0  0
+76    76  0  0
+77    77  0  0
+78    78  0  0
+79    79  0  0
+80    80  0  0
+81    81  0  0
+82    82  0  0
+83    83  0  0
+84    84  0  0
+85    85  0  0
+86    86  0  0
+87    87  0  0
+88    88  0  0
+89    89  0  0
+90    90  0  0
+91    91  0  0
+92    92  0  0
+93    93  0  0
+94    94  0  0
+95    95  0  0
+96    96  0  0
+97    97  0  0
+98    98  0  0
+99    99  0  0
+100  100  0  0
+zero time, t0 = 0
+parameter(s) unspecified
+process model simulator, rprocess = 
+function (params, xstart, times, ...) 
+{
+    nvars <- nrow(xstart)
+    nreps <- ncol(params)
+    ntimes <- length(times)
+    dt <- diff(times)
+    x <- array(0, dim = c(nvars, nreps, ntimes))
+    rownames(x) <- rownames(xstart)
+    noise.sds <- params[c("s1", "s2"), ]
+    x[, , 1] <- xstart
+    for (j in 2:ntimes) {
+        x[c("x1", "x2"), , j] <- rnorm(n = 2 * nreps, mean = x[c("x1", 
+            "x2"), , j - 1], sd = noise.sds * dt[j - 1])
+    }
+    x
+}
+process model density, dprocess = 
+function (x, times, params, log = FALSE, ...) 
+{
+    nreps <- ncol(params)
+    ntimes <- length(times)
+    dt <- diff(times)
+    d <- array(0, dim = c(2, nreps, ntimes - 1))
+    noise.sds <- params[c("s1", "s2"), ]
+    for (j in 2:ntimes) d[, , j - 1] <- dnorm(x[, , j] - x[, 
+        , j - 1], mean = 0, sd = noise.sds * dt[j - 1], log = TRUE)
+    d <- apply(d, c(2, 3), sum)
+    if (log) 
+        d
+    else exp(d)
+}
+measurement model simulator, rmeasure = 
+function (x, t, params, covars, ...) 
+{
+    y <- numeric(length = nobs)
+    names(y) <- obsnames
+    for (k in 1:nobs) {
+        y[k] <- eval(rcalls[[k]], envir = as.list(c(x, params, 
+            covars, t = t)))
+    }
+    y
+}
+<environment: 0x17d8bd8>
+measurement model density, dmeasure = 
+function (y, x, t, params, log, covars, ...) 
+{
+    f <- 0
+    for (k in 1:nobs) {
+        f <- f + eval(dcalls[[k]], envir = as.list(c(y, x, params, 
+            covars, t = t)))
+    }
+    if (log) 
+        f
+    else exp(f)
+}
+<environment: 0x17d8bd8>
+initializer = 
+function (params, t0, ...) 
+{
+    ivpnames <- c("x1.0", "x2.0")
+    x <- params[ivpnames]
+    x
+}
+userdata = 
+$useless
+[1] 23
+
+> 
+> try(
++     simulate(rw2,params=p)
++     )
+Error in try(.Call(do_init_state, object, as.matrix(params), t0), silent = FALSE) : 
+  a state variable and a parameter share a single name: 'x1.0'
+Error : init.state error: error in user ‘initializer’
+> 
 > rw2 <- pomp(
 +             rprocess = rw.rprocess,
 +             dprocess = rw.dprocess,
@@ -93,7 +300,6 @@ Loading required package: subplex
 +             useless=23
 +             )
 > 
-> p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
 > examples <- simulate(rw2,params=p)
 > rw2 <- examples[[1]]
 > 
