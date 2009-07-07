@@ -1,3 +1,22 @@
+2009-07-07  kingaa
+
+	* [r155] DESCRIPTION, NAMESPACE, R/trajmatch.R, data/euler.sir.rda,
+	  data/ou2.rda, data/rw2.rda, man/trajmatch.Rd,
+	  tests/ou2-mif.Rout.save, tests/ou2-trajmatch.R,
+	  tests/ou2-trajmatch.Rout.save: add trajectory-matching method
+
+2009-06-24  kingaa
+
+	* [r154] tests/rw2.R, tests/rw2.Rout.save: fix tests of 'rw2'
+	* [r153] DESCRIPTION, R/mif.R, R/pomp-methods.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/mif.Rd, tests/logistic.Rout.save, tests/ou2-kalman.Rout.save,
+	  tests/ou2-mif.R, tests/ou2-mif.Rout.save, tests/ou2-nlf.R,
+	  tests/ou2-nlf.Rout.save, tests/ou2-simulate.Rout.save,
+	  tests/rw2.R, tests/rw2.Rout.save, tests/sir.R,
+	  tests/sir.Rout.save: better testing
+	  some more error checking in 'mif'
+
 2009-06-23  kingaa
 
 	* [r152] DESCRIPTION, R/mif.R, data/euler.sir.rda, data/ou2.rda,
