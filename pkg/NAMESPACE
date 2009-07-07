@@ -42,5 +42,6 @@ export(
        bspline.basis,
        periodic.bspline.basis,
        compare.mif,
-       nlf
+       nlf,
+       traj.match
        )

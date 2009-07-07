@@ -1,6 +1,6 @@
 
-R version 2.8.1 (2008-12-22)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.9.1 (2009-06-26)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -70,8 +70,7 @@ particle filter log likelihood at truth
 > plot(mif1)
 > compare.mif(mif2)
 > try(compare.mif(mif1,mif2))
-Error in compare.mif(mif1, mif2) : 
-  unused argument(s) (<S4 object of class "mif">)
+Error in compare.mif(mif1, mif2) : unused argument(s) (mif2)
 > compare.mif(list(mif1,mif2))
 > dev.off()
 null device 
@@ -89,7 +88,7 @@ null device
 +         Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: ‘pars’ and ‘ivps’ must be mutually disjoint subsets of ‘names(start)’ and must have a positive random-walk SDs specified in ‘rw.sd’
+Error : mif error: 'pars' and 'ivps' must be mutually disjoint subsets of 'names(start)' and must have a positive random-walk SDs specified in 'rw.sd'
 > 
 > try(
 +     mif(
@@ -101,7 +100,7 @@ Error : mif error: ‘pars’ and ‘ivps’ must be mutually disjoint subsets o
 +         Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: ‘pars’ and ‘ivps’ must be mutually disjoint subsets of ‘names(start)’ and must have a positive random-walk SDs specified in ‘rw.sd’
+Error : mif error: 'pars' and 'ivps' must be mutually disjoint subsets of 'names(start)' and must have a positive random-walk SDs specified in 'rw.sd'
 > 
 > try(
 +     mif(
@@ -112,7 +111,7 @@ Error : mif error: ‘pars’ and ‘ivps’ must be mutually disjoint subsets o
 +         Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: ‘pars’ and ‘ivps’ must be mutually disjoint subsets of ‘names(start)’ and must have a positive random-walk SDs specified in ‘rw.sd’
+Error : mif error: 'pars' and 'ivps' must be mutually disjoint subsets of 'names(start)' and must have a positive random-walk SDs specified in 'rw.sd'
 > 
 > try(
 +     mif(
@@ -123,7 +122,7 @@ Error : mif error: ‘pars’ and ‘ivps’ must be mutually disjoint subsets o
 +         Np=100,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: ‘cooling.factor’ must be specified
+Error : mif error: 'cooling.factor' must be specified
 > 
 > try(
 +     mif(
@@ -134,7 +133,7 @@ Error : mif error: ‘cooling.factor’ must be specified
 +         Np=-10,cooling.factor=0.95,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: ‘Np’ must be a positive integer
+Error : mif error: 'Np' must be a positive integer
 > 
 > try(
 +     mif(
@@ -145,7 +144,7 @@ Error : mif error: ‘Np’ must be a positive integer
 +         Np=11.6,cooling.factor=0.95,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: ‘Nmif’ must be a positive integer
+Error : mif error: 'Nmif' must be a positive integer
 > 
 > fit <- mif(
 +            ou2,
@@ -177,7 +176,7 @@ filtering failure at time t = 11
 > fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.1))
 > fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.1"))
 Warning message:
-mif warning: the variable(s) alpha.4, x2.0 have positive random-walk SDs specified, but are included in neither ‘pars’ nor ‘ivps’. These random walk SDs are ignored. 
+mif warning: the variable(s) alpha.4, x2.0 have positive random-walk SDs specified, but are included in neither 'pars' nor 'ivps'. These random walk SDs are ignored. 
 > s <- coef(fit)
 > s[2] <- 0.01
 > fit <- mif(fit,Nmif=3,start=s)
@@ -185,5 +184,5 @@ mif warning: the variable(s) alpha.4, x2.0 have positive random-walk SDs specifi
 > fit <- continue(fit,Nmif=2,Np=2000)
 > fit <- continue(fit,ivps=c("x1.0"),rw.sd=c(alpha.1=0.1,alpha.4=0.1,x1.0=5,x2.0=5),Nmif=2)
 Warning message:
-mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but are included in neither ‘pars’ nor ‘ivps’. These random walk SDs are ignored. 
+mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but are included in neither 'pars' nor 'ivps'. These random walk SDs are ignored. 
 > 
