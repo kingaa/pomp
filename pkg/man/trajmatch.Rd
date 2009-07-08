@@ -9,16 +9,21 @@ traj.match(object, start, est, method = "Nelder-Mead", gr = NULL, \dots)
 }
 \arguments{
   \item{object}{A \code{pomp} object.}
-  \item{start}{Guessed parameters.}
+  \item{start}{Initial guess for parameters.}
   \item{est}{Character vector containing the names of parameters to be estimated.}
-  \item{method}{}
-  \item{gr}{}
-  \item{\dots}{Arguments that will be passed to \code{optim} in the
-    \code{control} list.}
+  \item{method}{
+    One of the optimization methods recognized by \code{\link{optim}}.
+  }
+  \item{gr}{
+    Passed to \code{\link{optim}}.
+  }
+  \item{\dots}{
+    Arguments that will be passed to \code{\link{optim}} in the \code{control} list.
+  }
 }
 \details{
-  Trajectory matching is accomplished using \code{\link{optim}}.  It is
-  assumed that the process model is deterministic.
+  Trajectory matching is accomplished using \code{\link{optim}}.
+  It is assumed that the process model is deterministic.
 }
 \examples{
   data(ou2)
@@ -30,7 +35,7 @@ traj.match(object, start, est, method = "Nelder-Mead", gr = NULL, \dots)
 	      )
   simdata <- simulate(ou2,nsim=1,params=true.p,seed=43553)
   guess.p <- true.p
-  guess.p[grep('sigma',names(guess.p))] <- 0
+  guess.p[grep('sigma',names(guess.p))] <- 0 ## make the process model deterministic
   res <- traj.match(
 		    simdata,
 		    start=guess.p,
