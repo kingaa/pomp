@@ -246,4 +246,11 @@ print(max(abs(f2-f1),na.rm=T),digits=4)
 print(max(abs(g2-g1),na.rm=T),digits=4)
 print(max(abs(h2-h1),na.rm=T),digits=4)
 
+data(euler.sir)
+states(euler.sir)[,1:2]
+time(euler.sir) <- seq(0,1,by=1/52)
+states(euler.sir)[,1:3]
+states(simulate(euler.sir))[,1:3]
+
 dev.off()
+

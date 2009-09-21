@@ -64,6 +64,10 @@ data.array <- function (object, ...)
   stop("function ",sQuote("data.array")," is undefined for objects of class ",sQuote(class(object)))
 setGeneric('data.array')  
 
+"time<-" <- function (object, ..., value)
+  stop("function ",sQuote("time<-")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric("time<-")  
+
 rprocess <- function (object, xstart, times, params, ...)
   stop("function ",sQuote("rprocess")," is undefined for objects of class ",sQuote(class(object)))
 setGeneric('rprocess')  
@@ -122,9 +126,9 @@ continue <- function (object, ... )
   stop("function ",sQuote("continue")," is undefined for objects of class ",sQuote(class(object)))
 setGeneric('continue')
 
-'coef<-' <- function (object, pars, ..., value)
-  stop("function ",sQuote("coef<")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric('coef<-')
+"coef<-" <- function (object, pars, ..., value)
+  stop("function ",sQuote("coef<-")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric("coef<-")
 
 states <- function (object, ...)
   stop("function ",sQuote("states")," is undefined for objects of class ",sQuote(class(object)))

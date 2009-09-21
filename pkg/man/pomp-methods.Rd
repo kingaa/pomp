@@ -9,6 +9,9 @@
 \alias{show-pomp}
 \alias{time,pomp-method}
 \alias{time-pomp}
+\alias{time<-}
+\alias{time<-,pomp-method}
+\alias{time<--pomp}
 \alias{data.array,pomp-method}
 \alias{data.array-pomp}
 \alias{data.array}
@@ -30,6 +33,7 @@
 \S4method{data.array}{pomp}(object, vars, \dots)
 \S4method{states}{pomp}(object, vars, \dots)
 \S4method{time}{pomp}(x, t0 = FALSE, \dots)
+\S4method{time}{pomp}(object, include.t0 = FALSE, \dots) <- value
 \S4method{show}{pomp}(object)
 \S4method{as}{pomp}(object, class)
 \S4method{coerce}{pomp,data.frame}(from, to = "data.frame", strict = TRUE)
@@ -56,6 +60,10 @@
   \item{t0}{
     logical;
     if TRUE, the zero time is prepended to the time vector.
+  }
+  \item{include.t0}{
+    logical;
+    if TRUE, the first element in \code{value} is taken to be the initial time.
   }
   \item{class}{
     character;
@@ -125,6 +133,12 @@
     \item{time}{
       \code{time(object)} returns the vector of observation times.
       \code{time(object,t0=TRUE)} returns the vector of observation times with the zero-time \code{t0} prepended.
+    }
+    \item{time<-}{
+      \code{time(object) <- value} replaces the observation times slot (\code{times}) of \code{object} with \code{value}.
+      \code{time(object,include.t0 = TRUE) <- value} has the same effect, but the first element in \code{value} is taken to be the initial time.
+      The second and subsequent elements of \code{value} are taken to be the observation times.
+      Those data and states (if they exist) corresponding to the new times are retained.
     }
     \item{show}{Displays the \code{pomp} object.}
     \item{plot}{

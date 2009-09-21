@@ -1,6 +1,6 @@
 
-R version 2.8.1 (2008-12-22)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.9.1 (2009-06-26)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -251,7 +251,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x17d8bd8>
+<environment: 0x27c8440>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -264,7 +264,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x17d8bd8>
+<environment: 0x27c8440>
 initializer = 
 function (params, t0, ...) 
 {
@@ -282,7 +282,7 @@ $useless
 +     )
 Error in try(.Call(do_init_state, object, as.matrix(params), t0), silent = FALSE) : 
   a state variable and a parameter share a single name: 'x1.0'
-Error : init.state error: error in user ‘initializer’
+Error : init.state error: error in user 'initializer'
 > 
 > rw2 <- pomp(
 +             rprocess = rw.rprocess,
@@ -385,4 +385,28 @@ Error : init.state error: error in user ‘initializer’
 [1] 0
 > max(abs(e2-e3),na.rm=T)
 [1] 0
+> 
+> time(rw2) <- seq(1,1000,by=20)
+> x <- simulate(rw2)
+> states(x)[,1:5]
+   [,1]       [,2]      [,3]      [,4]      [,5]
+x1    0 -0.2414417  -7.85263 -33.53872 -52.31123
+x2    0 -0.9545774 -21.42633 -23.14645 -98.62724
+> try(
++     time(rw2) <- seq(-20,1000,by=20)
++     )
+Error in .local(object, ..., value = value) : 
+  the zero-time 't0' must occur no later than the first observation
+> try(
++     time(rw2) <- c(0,5,10,15,12,20)
++     )
+Error in .local(object, ..., value = value) : 
+  the times specified must be an increasing sequence
+> time(rw2,include.t0=TRUE) <- seq(-20,1000,by=20)
+> x <- simulate(rw2)
+> time(rw2) <- c(0,20,25.8,50,60)
+> time(rw2,include.t0=TRUE) <- c(0,20,25.8,50,60)
+> time(rw2,include.t0=TRUE) <- c(0,0,20,25.8,50,60)
+> time(rw2) <- c(0,20,25.8,50,60)
+> 
 > 
