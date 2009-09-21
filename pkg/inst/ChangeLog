@@ -1,3 +1,16 @@
+2009-09-21  kingaa
+
+	* [r162] DESCRIPTION, NAMESPACE, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: - version 0.25-4
+	* [r161] src/euler.c: - fix bug that crops up when dt=0
+	* [r160] R/slice.R, man/slice.Rd: - add a new function
+	  "slice.design" for help with sliced likelihoods
+	* [r159] R/aaa.R, R/pomp-methods.R, man/pomp-methods.Rd,
+	  tests/rw2.R, tests/rw2.Rout.save, tests/sir.R,
+	  tests/sir.Rout.save: - add a new "time<-" method for
+	  manipulating/subsetting time series
+
 2009-07-08  kingaa
 
 	* [r158] man/trajmatch.Rd: make the documentation a bit more
