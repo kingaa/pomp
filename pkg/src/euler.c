@@ -48,7 +48,13 @@ static void euler_simulator (pomp_onestep_sim *estep,
     // It seems to work well, but is not guaranteed: 
     // suggestions would be appreciated.
 
-    if (t+dt >= times[step]) {
+    if (t > times[step]) {
+      error("'times' is not an increasing sequence");
+    }
+    else if (t == times[step]) {
+      dt = 0.0;
+      neuler = 0;
+    } else if (t+dt >= times[step]) {
       dt = times[step] - t; 
       neuler = 1;
     } else {
@@ -138,12 +144,13 @@ static void onestep_simulator (pomp_onestep_sim *estep,
       // set some variables to zero
       for (k = 0; k < nzero; k++)
 	xp[zeroindex[k]] = 0.0;
-      
-      pp = &params[npar*p];
-      xp = &x[nvar*(p+nrep*step)];
 
-      (*estep)(xp,pp,stateindex,parindex,covindex,covdim,covar_fn,t,dt);
-      
+      if (t < times[step]) { //  call the simulator only if time elapses
+	pp = &params[npar*p];
+	xp = &x[nvar*(p+nrep*step)];
+	(*estep)(xp,pp,stateindex,parindex,covindex,covdim,covar_fn,t,dt);
+      }
+
     }
   }
 }
