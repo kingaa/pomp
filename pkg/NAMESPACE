@@ -22,10 +22,10 @@ importFrom(mvtnorm,dmvnorm)
 exportClasses('pomp','mif')
 
 exportMethods(
-              'plot','show','time','print','coerce',
+              'plot','show','print','coerce',
               'dprocess','rprocess','rmeasure','dmeasure','init.state','skeleton',
               'simulate','data.array','pfilter',
-              'coef','logLik',
+              'coef','logLik','time','time<-',
               'pred.mean','pred.var','filter.mean','conv.rec',
               'particles','mif','continue','coef<-','states','trajectory'
               )
@@ -39,6 +39,7 @@ export(
        onestep.simulate,
        onestep.density,
        sobol,
+       slice.design,
        bspline.basis,
        periodic.bspline.basis,
        compare.mif,

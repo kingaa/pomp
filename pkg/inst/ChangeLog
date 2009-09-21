@@ -1,5 +1,14 @@
+2009-07-08  kingaa
+
+	* [r158] man/trajmatch.Rd: make the documentation a bit more
+	  explicit
+
 2009-07-07  kingaa
 
+	* [r157] data/verhulst.rda, man/verhulst.Rd: add stochastic
+	  Verhulst-Pearl (logistic) model to the set of examples
+	* [r156] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
 	* [r155] DESCRIPTION, NAMESPACE, R/trajmatch.R, data/euler.sir.rda,
 	  data/ou2.rda, data/rw2.rda, man/trajmatch.Rd,
 	  tests/ou2-mif.Rout.save, tests/ou2-trajmatch.R,

@@ -411,6 +411,7 @@ a <- matrix(true.p[c('alpha.1','alpha.2','alpha.3','alpha.4')],2,2)
 b <- diag(1,2)
 sigma <- matrix(c(true.p['sigma.1'],true.p['sigma.2'],0,true.p['sigma.3']),2,2)
 tau <- diag(true.p['tau'],2,2)
+x0 <- init.state(ou2)
 fit2 <- kalman.filter(y,x0,a,b,sigma,tau)
 @ 
 In this case, the Kalman filter gives us a log likelihood of \code{fit2\$loglik=\Sexpr{round(fit2$loglik,2)}}, while the particle filter gives us \code{fit1\$loglik=\Sexpr{round(fit1$loglik,2)}}.
