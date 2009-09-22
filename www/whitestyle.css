@@ -1,0 +1,47 @@
+body {
+    color: #000000;
+    background: #ffffff;
+    font-family: Lucida;
+}
+
+a {text-decoration: none }
+a:link { color: #0000ff;}
+a:visited { color: #0000ff;}
+a:active { color: #ff0000;}
+a:hover { color: #ff0000;}
+
+tr {vertical-align: top;}
+td {color: #000000; vertical-align: top;}
+th {color: #000000;}
+p {color: #000000;}
+caption {color: #000000;}
+
+h1 {
+    color: #000000;
+    font-family: Lucida;
+    font-size: large;
+}
+h2 {
+    color: #000000;
+    font-family: Lucida;
+}
+h3 {
+    color: #000000;
+    font-family: Lucida;
+}
+h4 {
+    color: #000000;
+    font-family: Lucida;
+}
+
+small.xtiny             { font-size : xx-small }
+small.tiny              { font-size : x-small  }
+small.scriptsize        { font-size : smaller  }
+small.footnotesize      { font-size : small    }
+small.small             {  }
+big.large               {  }
+big.xlarge              { font-size : large    }
+big.xxlarge             { font-size : x-large  }
+big.huge                { font-size : larger   }
+big.xhuge               { font-size : xx-large }
+
