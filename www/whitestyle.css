@@ -45,3 +45,6 @@ big.xxlarge             { font-size : x-large  }
 big.huge                { font-size : larger   }
 big.xhuge               { font-size : xx-large }
 
+.emph {
+      color: #E32644
+}

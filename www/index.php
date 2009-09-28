@@ -34,7 +34,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td align="right" width="60%">
-<h2>pomp:<br> statistical inference for partially-observed Markov processes</h2>
+<h2><span class="emph">pomp</span>:<br> 
+statistical inference for<br>
+<span class="emph">p</span>artially-<span class="emph">o</span>bserved&nbsp;<span class="emph">M</span>arkov&nbsp;<span class="emph">p</span>rocesses</h2>
 </td>
 <td align="left" width="40%">
 <ul>
