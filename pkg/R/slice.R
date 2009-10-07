@@ -19,3 +19,18 @@ slice.design <- function (vars, n) {
   y$slice <- as.factor(rep(names(vars)[varying],each=n))
   y
 }
+
+profile.design <- function (..., vars, n) {
+  prof <- list(...)
+  y <- as.matrix(sobol(vars,n))
+  x <- as.matrix(do.call(expand.grid,prof))
+  z <- array(dim=c(nrow(x),nrow(y),ncol(x)+ncol(y)))
+  for (j in 1:nrow(x)) {
+    for (k in 1:nrow(y)) {
+      z[j,k,] <- c(x[j,],y[k,])
+    }
+  }
+  dim(z) <- c(nrow(x)*nrow(y),ncol(x)+ncol(y))
+  colnames(z) <- c(colnames(x),colnames(y))
+  as.data.frame(z)
+}

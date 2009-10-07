@@ -21,6 +21,7 @@ sobol(vars, n)
   Numerical Recipes in C,
   Cambridge University Press, 1992
 }
+\seealso{\code{\link{slice.design}}, \code{\link{profile.design}}}
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{
 plot(sobol(vars=list(a=c(0,1),b=c(100,200)),100))
