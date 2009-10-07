@@ -40,6 +40,7 @@ export(
        onestep.density,
        sobol,
        slice.design,
+       profile.design,
        bspline.basis,
        periodic.bspline.basis,
        compare.mif,

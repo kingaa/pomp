@@ -1,5 +1,16 @@
+2009-10-07  kingaa
+
+	* [r170] R/slice.R, man/slice.Rd, man/sobol.Rd: - add a new
+	  function: profile.design, to aid in construction of likelihood
+	  profiles
+
+2009-09-30  kingaa
+
+	* [r169] DESCRIPTION: - fix Carles' name
+
 2009-09-21  kingaa
 
+	* [r163] inst/ChangeLog:
 	* [r162] DESCRIPTION, NAMESPACE, inst/ChangeLog,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
 	  inst/doc/intro_to_pomp.pdf: - version 0.25-4
