@@ -147,6 +147,18 @@ mif.internal <- function (object, Nmif = 1,
                        )
                      )
   conv.rec[1,] <- c(NA,NA,theta)
+
+  if (!all(is.finite(theta[c(pars,ivps)]))) {
+    stop(
+         sQuote("mif"),
+         " error: cannot estimate non-finite parameters: ",
+         paste(
+               c(pars,ivps)[!is.finite(theta[c(pars,ivps)])],
+               collapse=","
+               ),
+         call.=FALSE
+         )
+  }
   
   for (n in seq(length=Nmif)) { # main loop
 

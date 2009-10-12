@@ -112,6 +112,28 @@ try(
         )
     )
 
+try(
+    mif(
+        ou2,
+        Nmif=2,
+        start=c(alpha.1=0.9,alpha.2=0,alpha.3=0,alpha.4=-Inf,sigma.1=1,sigma.2=0,sigma.3=2,tau=1,x1.0=50,x2.0=-50),
+        ivps=c("x1.0","x2.0"),
+        rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
+        Np=11,cooling.factor=0.95,ic.lag=10,var.factor=1
+        )
+    )
+
+try(
+    mif(
+        ou2,
+        Nmif=2,
+        start=c(alpha.1=0.9,alpha.2=0,alpha.3=0,alpha.4=0.99,sigma.1=1,sigma.2=0,sigma.3=2,tau=1,x1.0=50,x2.0=NaN),
+        ivps=c("x1.0","x2.0"),
+        rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
+        Np=11,cooling.factor=0.95,ic.lag=10,var.factor=1
+        )
+    )
+
 fit <- mif(
            ou2,
            Nmif=0,
