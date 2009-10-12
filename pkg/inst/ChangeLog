@@ -1,5 +1,13 @@
+2009-10-12  kingaa
+
+	* [r172] DESCRIPTION, R/mif.R, tests/ou2-mif.R: - add error trap to
+	  prevent non-finite parameters from being estimated
+
 2009-10-07  kingaa
 
+	* [r171] DESCRIPTION, NAMESPACE, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - version 0.25-5
 	* [r170] R/slice.R, man/slice.Rd, man/sobol.Rd: - add a new
 	  function: profile.design, to aid in construction of likelihood
 	  profiles
