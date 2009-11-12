@@ -1,5 +1,13 @@
+2009-11-12  kingaa
+
+	* [r175] R/nlf.R, tests/ou2-nlf.R, tests/ou2-nlf.Rout.save: - bug
+	  fix in NLF code (for eval.only=TRUE)
+
 2009-10-12  kingaa
 
+	* [r174] tests/ou2-mif.Rout.save: - update ou2-mif.Rout.save
+	* [r173] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - version 0.25-6
 	* [r172] DESCRIPTION, R/mif.R, tests/ou2-mif.R: - add error trap to
 	  prevent non-finite parameters from being estimated
 
