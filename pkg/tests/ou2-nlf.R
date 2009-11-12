@@ -12,6 +12,20 @@ guess <- p.truth <- coef(po)
 m1 <- nlf(
           object=po,
           start=guess,
+          lags=c(1,2),
+          nconverge=100,
+          nasymp=1000,
+          trace=1,
+          verbose=TRUE,
+          eval.only=TRUE,
+          lql.frac = 0.025
+          )
+
+print(m1)
+
+m1 <- nlf(
+          object=po,
+          start=guess,
           est=c("alpha.1","alpha.4"),
           lags=c(1,2),
           nconverge=100,

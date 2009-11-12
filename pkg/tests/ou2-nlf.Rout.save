@@ -1,6 +1,6 @@
 
-R version 2.8.1 (2008-12-22)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.9.1 (2009-06-26)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -28,6 +28,21 @@ Loading required package: mvtnorm
 > coef(po,c("x1.0","x2.0","alpha.1","alpha.4")) <- c(0,0,0.1,0.2)
 > po <- simulate(po)
 > guess <- p.truth <- coef(po)
+> 
+> m1 <- nlf(
++           object=po,
++           start=guess,
++           lags=c(1,2),
++           nconverge=100,
++           nasymp=1000,
++           trace=1,
++           verbose=TRUE,
++           eval.only=TRUE,
++           lql.frac = 0.025
++           )
+> 
+> print(m1)
+[1] -390.961
 > 
 > m1 <- nlf(
 +           object=po,
@@ -73,10 +88,10 @@ Exiting from Nelder Mead minimizer
     49 function evaluations used
 h in NLF =  0.1 
 epsilon in NLF = 0.3120962 0.3004542 
-Fitted param  1 -3.984644 -3.984644  up in  ‘nlf’ 
-Fitted param  1 -3.985982  down in  ‘NLF’ 
-Fitted param  2 -3.993283 -3.993283  up in  ‘nlf’ 
-Fitted param  2 -3.993728  down in  ‘NLF’ 
+Fitted param  1 -3.984644 -3.984644  up in  'nlf' 
+Fitted param  1 -3.985982  down in  'NLF' 
+Fitted param  2 -3.993283 -3.993283  up in  'nlf' 
+Fitted param  2 -3.993728  down in  'NLF' 
 > 
 > se <- p.truth
 > se[] <- NA
@@ -109,48 +124,45 @@ x2.0      0.0  0.0000    NA
 +           lql.frac = 0.025
 +           )
   Nelder-Mead direct search function minimizer
-function value for initial parameters = 4012.121680
-  Scaled convergence tolerance is 5.97853e-05
+function value for initial parameters = 3931.875269
+  Scaled convergence tolerance is 5.85895e-05
 Stepsize computed as 0.020000
-BUILD              3 4012.528145 4012.121680
-REFLECTION         5 4012.384913 4012.067214
-EXTENSION          7 4012.121680 4011.649828
-EXTENSION          9 4012.067214 4011.551849
-REFLECTION        11 4011.649828 4011.355226
-HI-REDUCTION      13 4011.551849 4011.355226
-HI-REDUCTION      15 4011.436440 4011.355226
-LO-REDUCTION      17 4011.403589 4011.351028
-HI-REDUCTION      19 4011.355226 4011.351028
-HI-REDUCTION      21 4011.353532 4011.344389
-HI-REDUCTION      23 4011.351028 4011.344389
-LO-REDUCTION      25 4011.346527 4011.344130
-HI-REDUCTION      27 4011.344389 4011.344130
-HI-REDUCTION      29 4011.344238 4011.343759
-HI-REDUCTION      31 4011.344130 4011.343759
-HI-REDUCTION      33 4011.343867 4011.343759
-LO-REDUCTION      35 4011.343836 4011.343759
+BUILD              3 3931.875269 3931.417243
+EXTENSION          5 3931.541801 3930.827423
+EXTENSION          7 3931.417243 3930.572713
+REFLECTION         9 3930.827423 3930.228048
+LO-REDUCTION      11 3930.572713 3930.228048
+LO-REDUCTION      13 3930.344970 3930.215357
+HI-REDUCTION      15 3930.238133 3930.215357
+HI-REDUCTION      17 3930.228048 3930.213344
+HI-REDUCTION      19 3930.215357 3930.209340
+HI-REDUCTION      21 3930.213344 3930.208245
+LO-REDUCTION      23 3930.209340 3930.207339
+HI-REDUCTION      25 3930.208245 3930.207190
+HI-REDUCTION      27 3930.207339 3930.206898
+HI-REDUCTION      29 3930.207190 3930.206898
 Exiting from Nelder Mead minimizer
-    37 function evaluations used
+    31 function evaluations used
 h in NLF =  0.1 
-epsilon in NLF = 0.4842402 0.2705555 
-Fitted param  1 -4.054405 -4.054405  up in  ‘nlf’ 
-Fitted param  1 -4.052725  down in  ‘NLF’ 
-Fitted param  2 -4.049163 -4.049163  up in  ‘nlf’ 
-Fitted param  2 -4.048027  down in  ‘NLF’ 
+epsilon in NLF = 0.4209784 0.2679104 
+Fitted param  1 -3.976024 -3.976024  up in  'nlf' 
+Fitted param  1 -3.963879  down in  'NLF' 
+Fitted param  2 -3.967971 -3.967971  up in  'nlf' 
+Fitted param  2 -3.966288  down in  'NLF' 
 > 
 > se <- p.truth
 > se[] <- NA
 > se[names(m2$se)] <- m2$se
 > print(cbind(truth=p.truth,fit=m2$params,se=se),digits=3)
-        truth    fit     se
-alpha.1   0.1 0.0169 0.0677
-alpha.2   0.0 0.0000     NA
-alpha.3   0.0 0.0000     NA
-alpha.4   0.2 0.1907 0.0490
-sigma.1   1.0 1.0000     NA
-sigma.2   0.0 0.0000     NA
-sigma.3   2.0 2.0000     NA
-tau       1.0 1.0000     NA
-x1.0      0.0 0.0000     NA
-x2.0      0.0 0.0000     NA
+        truth   fit     se
+alpha.1   0.1 0.196 0.0541
+alpha.2   0.0 0.000     NA
+alpha.3   0.0 0.000     NA
+alpha.4   0.2 0.234 0.0372
+sigma.1   1.0 1.000     NA
+sigma.2   0.0 0.000     NA
+sigma.3   2.0 2.000     NA
+tau       1.0 1.000     NA
+x1.0      0.0 0.000     NA
+x2.0      0.0 0.000     NA
 > 

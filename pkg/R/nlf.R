@@ -64,7 +64,7 @@ nlf <- function(object, start, est, lags, period = NA, tensor = FALSE, nconverge
                  par=guess,
                  fn=nlf.objfun,
                  gr=gr,
-                 method=method, 
+                 method="SANN",
                  object=object,
                  params=params,
                  par.index=par.index, 
@@ -74,12 +74,12 @@ nlf <- function(object, start, est, lags, period = NA, tensor = FALSE, nconverge
                  tensor=tensor,
                  seed=seed,
                  nrbf=nrbf, 
+                 hessian=FALSE,
                  verbose=verbose,
                  bootstrap=bootstrap,
                  bootsamp=bootsamp,
                  control=list(
-                   maxit=0,
-                   method='SANN'
+                   maxit=0
                    )
                  ) 
     return(-opt$value) 
