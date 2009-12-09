@@ -1,3 +1,27 @@
+2009-12-09  kingaa
+
+	* [r182] DESCRIPTION: - version 0.26-2
+	* [r181] R/mif.R, R/pfilter-mif.R, R/pfilter.R, man/pfilter.Rd,
+	  tests/ou2-forecast.R, tests/ou2-forecast.Rout.save: - in pfilter,
+	  add ability to save individual particles' state vectors. this
+	  feature is useful for forecasting.
+	* [r180] tests/ou2-mif.Rout.save: - correct test results
+	* [r179] R/mif.R, tests/ou2-mif.R: - bug fix in 'mif' relating to
+	  non-standard particles functions
+
+2009-11-16  kingaa
+
+	* [r178] data/euler.sir.R, data/ou2.R, data/rw2.R, data/verhulst.R:
+	  - cosmetology
+
+2009-11-15  kingaa
+
+	* [r177] DESCRIPTION, data/euler.sir.R, data/euler.sir.rda,
+	  data/ou2.R, data/ou2.rda, data/rw2.R, data/rw2.rda,
+	  data/verhulst.R, data/verhulst.rda, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - now use lazy-loading for datasets
+
 2009-11-12  kingaa
 
 	* [r176] DESCRIPTION, inst/ChangeLog,
