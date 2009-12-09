@@ -160,3 +160,23 @@ fit <- mif(fit,Nmif=3,start=s)
 fit <- mif(ou2,Nmif=3,rw.sd=c(alpha.1=0.1,alpha.4=0.1),Np=1000,cooling.factor=0.98,var.factor=1,ic.lag=2)
 fit <- continue(fit,Nmif=2,Np=2000)
 fit <- continue(fit,ivps=c("x1.0"),rw.sd=c(alpha.1=0.1,alpha.4=0.1,x1.0=5,x2.0=5),Nmif=2)
+
+pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
+fit <- mif(
+           fit,
+           Nmif=10,
+           Np=1000,
+           particles=function(Np,center,sd,...){
+             matrix(
+                    data=runif(
+                      n=Np*length(center),
+                      min=center-sd,
+                      max=center+sd
+                      ),
+                    nrow=length(center),
+                    ncol=Np,
+                    dimnames=list(names(center),NULL)
+                    )
+           }
+           )
+pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
