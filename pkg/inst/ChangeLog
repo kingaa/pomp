@@ -1,5 +1,9 @@
 2009-12-09  kingaa
 
+	* [r184] inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: - fix
+	  some bugs and infelicities in the vignette
+	* [r183] inst/ChangeLog:
 	* [r182] DESCRIPTION: - version 0.26-2
 	* [r181] R/mif.R, R/pfilter-mif.R, R/pfilter.R, man/pfilter.Rd,
 	  tests/ou2-forecast.R, tests/ou2-forecast.Rout.save: - in pfilter,
