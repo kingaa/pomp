@@ -105,14 +105,14 @@ In this function, we assume that:
     x[,,1] <- xstart
     for (k in 2:ntimes) {
       for (j in 1:nreps) {
-        eps <- rnorm(2,mean=0,sd=1)
+        xi <- rnorm(2,mean=0,sd=1)
         x['x1',j,k] <- params['alpha.1',j]*x['x1',j,k-1]+
                          params['alpha.3',j]*x['x2',j,k-1]+
-                         params['sigma.1',j]*eps[1]
+                         params['sigma.1',j]*xi[1]
         x['x2',j,k] <- params['alpha.2',j]*x['x1',j,k-1]+
                          params['alpha.4',j]*x['x2',j,k-1]+
-                         params['sigma.2',j]*eps[1]+
-                         params['sigma.3',j]*eps[2]
+                         params['sigma.2',j]*xi[1]+
+                         params['sigma.3',j]*xi[2]
       }
     }
     x
@@ -131,18 +131,18 @@ Indeed, were we able to do so, we'd have no need for \code{pomp}!
     ## this function simulates two discrete-time OU processes
     nreps <- ncol(x)
     ntimes <- length(times)
-    eps <- numeric(2)
+    xi.scal <- numeric(2)
     f <- array(0,dim=c(nreps,ntimes-1))
     for (k in 2:ntimes) {
       for (j in 1:nreps) {
-        eps[1] <- x['x1',j,k]-params['alpha.1',j]*x['x1',j,k-1]-
-                     params['alpha.3',j]*x['x2',j,k-1]
-        eps[2] <- x['x2',j,k]-params['alpha.2',j]*x['x1',j,k-1]-
-                     params['alpha.4',j]*x['x2',j,k-1]-
-                     params['sigma.2',j]/params['sigma.1',j]*eps[1]
+        xi.scal[1] <- x['x1',j,k]-params['alpha.1',j]*x['x1',j,k-1]-
+                        params['alpha.3',j]*x['x2',j,k-1]
+        xi.scal[2] <- x['x2',j,k]-params['alpha.2',j]*x['x1',j,k-1]-
+                        params['alpha.4',j]*x['x2',j,k-1]-
+                        params['sigma.2',j]/params['sigma.1',j]*xi.scal[1]
         f[j,k-1] <- sum(
                         dnorm(
-                              x=eps,
+                              x=xi.scal,
                               mean=0,
                               sd=params[c("sigma.1","sigma.3"),j],
                               log=TRUE
@@ -353,15 +353,16 @@ if ((max(abs(old.fp-new.fp))>1e-12)||(max(abs(old.fm-new.fm))>1e-12)) stop("erro
 \section{Particle filtering.}
 
 <<echo=F>>=
-data(ou2)
 set.seed(74094853)
 @ 
 
 We can run a particle filter as follows:
 <<>>=
+data(ou2)
 fit1 <- pfilter(ou2,params=true.p,Np=1000,filter.mean=T,pred.mean=T,pred.var=T)
 @ 
-Since \code{ou2} already contained the parameters \code{p}, it wasn't necessary to specify them;
+The first (\code{data}) statement reads in the prepackaged version of \code{ou2}.
+Since this \code{ou2} already contains the parameters \code{p}, it wasn't necessary to specify them;
 we could have done
 <<eval=F>>=
 fit1 <- pfilter(ou2,Np=1000)
@@ -408,7 +409,7 @@ Now we can run it on the example data we generated above.
 <<>>=
 y <- data.array(ou2)
 a <- matrix(true.p[c('alpha.1','alpha.2','alpha.3','alpha.4')],2,2)
-b <- diag(1,2)
+b <- diag(1,2)   ## b is the identity matrix
 sigma <- matrix(c(true.p['sigma.1'],true.p['sigma.2'],0,true.p['sigma.3']),2,2)
 tau <- diag(true.p['tau'],2,2)
 x0 <- init.state(ou2)
