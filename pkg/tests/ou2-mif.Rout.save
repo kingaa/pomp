@@ -210,3 +210,23 @@ mif warning: the variable(s) alpha.4, x2.0 have positive random-walk SDs specifi
 Warning message:
 mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but are included in neither 'pars' nor 'ivps'. These random walk SDs are ignored. 
 > 
+> pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
+> fit <- mif(
++            fit,
++            Nmif=10,
++            Np=1000,
++            particles=function(Np,center,sd,...){
++              matrix(
++                     data=runif(
++                       n=Np*length(center),
++                       min=center-sd,
++                       max=center+sd
++                       ),
++                     nrow=length(center),
++                     ncol=Np,
++                     dimnames=list(names(center),NULL)
++                     )
++            }
++            )
+> pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
+> 
