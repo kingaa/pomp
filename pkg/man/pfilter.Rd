@@ -13,10 +13,9 @@
 pfilter(object, \dots)
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     warn = TRUE, max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, verbose = FALSE, \dots)
+    filter.mean = FALSE, save.states = FALSE, verbose = FALSE, \dots)
 \S4method{pfilter}{mif}(object, params, Np, tol = 1e-17, warn = TRUE,
-    max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, \dots)
+    pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE, \dots)
 }
 \arguments{
   \item{object}{
@@ -53,6 +52,9 @@ pfilter(object, \dots)
   \item{filter.mean}{
     If \code{TRUE}, the filtering means are calculated for the state variables and parameters.
   }
+  \item{save.states}{
+    If \code{TRUE}, the state-vector for each particle is saved and returned.
+  }
   \item{verbose}{
     If \code{TRUE}, progress information is reported as \code{pfilter} works.
   }
@@ -77,6 +79,11 @@ pfilter(object, \dots)
   }
   \item{cond.loglik}{
     A vector containing the conditional log likelihoods at each time point.
+  }
+  \item{states}{
+    If \code{saves.states=TRUE}, the array of state-vectors at each time point, for each particle.
+    An array with dimensions \code{nvars}-by-\code{Np}-by-\code{ntimes}.
+    In particular, \code{states[,i,t]} can be considered a sample from \eqn{f[X|y_{1:t}]}.
   }
   \item{nfail}{
     The number of filtering failures encountered.

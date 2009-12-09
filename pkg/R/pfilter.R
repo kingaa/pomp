@@ -6,7 +6,8 @@
 pfilter.internal <- function (object, params, Np,
                               tol, warn, max.fail,
                               pred.mean, pred.var, filter.mean,
-                              .rw.sd, verbose) {
+                              .rw.sd, verbose,
+                              save.states) {
   if (missing(params)) {
     params <- coef(object)
     if (length(params)==0) {
@@ -35,6 +36,15 @@ pfilter.internal <- function (object, params, Np,
   x <- init.state(object,params=params)
   statenames <- rownames(x)
   nvars <- nrow(x)
+  if (save.states) {
+    xparticles <- array(
+                        data=NA,
+                        dim=c(nvars,Np,ntimes),
+                        dimnames=list(statenames,NULL,NULL)
+                        )
+  } else {
+    xparticles <- NULL
+  }
   
   random.walk <- !missing(.rw.sd)
   if (random.walk) {
@@ -215,6 +225,10 @@ pfilter.internal <- function (object, params, Np,
       params[rw.names,] <- params[rw.names,]+rnorm(n=Np*length(sigma),mean=0,sd=sigma)
     }
 
+    if (save.states) {
+      xparticles[,,nt] <- x
+    }
+
     if (verbose && ((ntimes-nt)%%5==0))
       cat("pfilter timestep",nt,"of",ntimes,"finished\n")
 
@@ -226,6 +240,7 @@ pfilter.internal <- function (object, params, Np,
        filter.mean=filt.m,
        eff.sample.size=eff.sample.size,
        cond.loglik=loglik,
+       states=xparticles,
        nfail=nfail,
        loglik=sum(loglik)
        )
@@ -239,7 +254,9 @@ setMethod(
                     pred.mean = FALSE,
                     pred.var = FALSE,
                     filter.mean = FALSE,
-                    verbose = FALSE, ...) {
+                    save.states = FALSE,
+                    verbose = FALSE,
+                    ...) {
             pfilter.internal(
                              object=object,
                              params=params,
@@ -250,6 +267,7 @@ setMethod(
                              pred.mean=pred.mean,
                              pred.var=pred.var,
                              filter.mean=filter.mean,
+                             save.states=save.states,
                              verbose=verbose
                              )
           }
