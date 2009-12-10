@@ -15,7 +15,8 @@ pfilter(object, \dots)
     warn = TRUE, max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, save.states = FALSE, verbose = FALSE, \dots)
 \S4method{pfilter}{mif}(object, params, Np, tol = 1e-17, warn = TRUE,
-    pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE, \dots)
+    max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
+    filter.mean = FALSE, \dots)
 }
 \arguments{
   \item{object}{
