@@ -127,14 +127,21 @@ po <- pomp(
 
 if (Sys.info()['sysname']=='Linux') {
 
-  modelfile <- system.file("examples/euler_sir.c",package="pomp")
-  includedir <- system.file("include",package="pomp")
-  lib <- system.file("libs/pomp.so",package="pomp")
+  model <- "euler_sir"
+  pkg <- "pomp"
+  modelfile <- paste(model,".c",sep="")
+  headerfile <- system.file("include/pomp.h",package=pkg)
+  pkglib <- system.file(paste("libs/",pkg,.Platform$dynlib.ext,sep=""),package=pkg)
+  solib <- paste(model,.Platform$dynlib.ext,sep="")
 
   ## compile the model into a shared-object library
-  system(paste("cp",modelfile,"."))
-  system(paste("cp ",includedir,"/pomp.h .",sep=""))
-  system(paste("R CMD SHLIB -o ./euler_sir.so euler_sir.c",lib))
+  if (!file.copy(from=system.file(paste("examples/",modelfile,sep=""),package=pkg),to=getwd()))
+    stop("cannot copy source code ",modelfile," to ",getwd())
+  if (!file.copy(from=headerfile,to=getwd()))
+    stop("cannot copy header ",headerfile," to ",getwd())
+  rv <- system(paste(R.home("bin/R"),"CMD SHLIB -o",solib,modelfile,pkglib))
+  if (rv!=0)
+    stop("cannot compile shared-object library ",solib)
 
   po <- pomp(
              times=seq(1/52,4,by=1/52),
@@ -172,7 +179,7 @@ if (Sys.info()['sysname']=='Linux') {
              }
              )
 
-  dyn.load("euler_sir.so") ## load the shared-object library
+  dyn.load(solib) ## load the shared-object library
 
   ## compute a trajectory of the deterministic skeleton
   tic <- Sys.time()
@@ -186,6 +193,6 @@ if (Sys.info()['sysname']=='Linux') {
   toc <- Sys.time()
   print(toc-tic)
   
-  dyn.unload("euler_sir.so")
+  dyn.unload(solib)
 
 }
