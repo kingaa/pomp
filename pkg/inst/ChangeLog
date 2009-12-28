@@ -1,5 +1,16 @@
+2009-12-28  kingaa
+
+	* [r187] DESCRIPTION, inst/examples/euler_sir.R: - tests/examples.R
+	  has been improved for greater portability per suggestion of Brian
+	  Ripley
+
+2009-12-10  kingaa
+
+	* [r186] man/pfilter.Rd: - fix argument order
+
 2009-12-09  kingaa
 
+	* [r185] inst/ChangeLog:
 	* [r184] inst/doc/advanced_topics_in_pomp.pdf,
 	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: - fix
 	  some bugs and infelicities in the vignette
