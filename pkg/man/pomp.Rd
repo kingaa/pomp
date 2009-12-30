@@ -27,26 +27,26 @@
     This must be no later than the time of the first observation, \code{times[1]}.
   }
   \item{rprocess}{
-    optional; a function of prototype \code{rprocess(xstart,times,params,\dots)} which simulates from the unobserved process.
+    optional; a function of prototype \code{rprocess(xstart,times,params,\dots)} that simulates from the unobserved process.
     See below for details.
   }
   \item{dprocess}{
-    optional; a function of prototype \code{dprocess(x,times,params,log,\dots)} which evaluates the likelihood of a sequence of consecutive state transitions.
+    optional; a function of prototype \code{dprocess(x,times,params,log,\dots)} that evaluates the likelihood of a sequence of consecutive state transitions.
     See below for details.
   }
   \item{rmeasure}{
     optional; the measurement model simulator.
     This can be specified in one of three ways:
-    (1) as a function of prototype \code{rmeasure(x,t,params,\dots)} which makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp\_measure\_model\_simulator} as defined in the header file \dQuote{pomp.h}.
+    (1) as a function of prototype \code{rmeasure(x,t,params,\dots)} that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_simulator} as defined in the header file \dQuote{pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
     (3) using the formula-based \code{measurement.model} facility (see below).
   }
   \item{dmeasure}{
     optional; the measurement model probability density function.
     This can be specified in one of three ways:
-    (1) as a function of prototype \code{dmeasure(y,x,t,params,log,\dots)} which computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp\_measure\_model\_density} as defined in the header file \dQuote{pomp.h}.
+    (1) as a function of prototype \code{dmeasure(y,x,t,params,log,\dots)} that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_density} as defined in the header file \dQuote{pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
     (3) using the formula-based \code{measurement.model} facility (see below).
     As might be expected, if \code{log=TRUE}, this function should return the log likelihood.
@@ -61,8 +61,8 @@
   \item{skeleton.map}{
     optional.
     If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map and can be specified using \code{skeleton.map} in one of two ways:
-    (1) as a function of prototype \code{skeleton(x,t,params,\dots)} which evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp\_vectorfield\_map} as defined in the header file \dQuote{pomp.h}.
+    (1) as a function of prototype \code{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_vectorfield_map} as defined in the header file \dQuote{pomp.h}.
     If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
   }
   \item{skeleton.vectorfield}{
@@ -71,7 +71,7 @@
     Note that it makes no sense to specify the deterministic skeleton both as a map and as a vectorfield: an attempt to do so will generate an error.
   }
   \item{initializer}{
-    optional; a function of prototype \code{initializer(params,t0,\dots)} which yields initial conditions for the state process when given a vector, \code{params}, of parameters.
+    optional; a function of prototype \code{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
     By default, i.e., if it is unspecified when \code{pomp} is called, the initializer assumes any names in \code{params} that end in \dQuote{.0} correspond to initial value parameters.
     These are simply copied over as initial conditions when \code{init.state} is called (see \code{\link{init.state-pomp}}).
     The names of the state variables are the same as the corresponding initial value parameters, but with the \dQuote{.0} dropped.
@@ -121,12 +121,20 @@
       
       \code{rprocess} must return a rank-3 array with rownames.
       Suppose \code{x} is the array returned.
-      Then \code{dim(x)=c(nvars,nreps,ntimes)}, where \code{nvars} is the number of state variables (=\code{nrow(xstart)}), \code{nreps} is the number of independent realizations simulated (=\code{ncol(xstart)}), and \code{ntimes} is the length of the vector \code{times}.
+      Then \code{dim(x)=c(nvars,nreps,ntimes)}, where \code{nvars} (=\code{nrow(xstart)}) is the number of state variables, \code{nreps} (=\code{ncol(xstart)}) is the number of independent realizations simulated, and \code{ntimes} is the length of the vector \code{times}.
       \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k]}.
       In particular, \code{x[,,1]} must be identical to \code{xstart}.
       The rownames of \code{x} must correspond to those of \code{xstart}.
       
       As mentioned above, some plug-ins are available for \code{rprocess}.
+
+      At present, the following methods make use of \code{rprocess}:
+      \itemize{
+	\item \code{\link[=simulate-pomp]{simulate}}
+	\item \code{\link{pfilter}}
+	\item \code{\link{mif}}
+	\item \code{\link{nlf}}
+	}
     }
     \item{\code{dprocess}}{
       if provided, must have at least the following arguments:
@@ -150,6 +158,8 @@
       \strong{In writing this function, you may assume that the transitions are consecutive.}
       It should be quite clear that, but for this assumption, it would be quite difficult in general to write the transition probabilities.
       In fact, from one perspective, the algorithms in \pkg{pomp} are designed to overcome just this difficulty.
+
+      \strong{At present, no methods in \code{pomp} make use of \code{dprocess}.}
     }
     \item{\code{rmeasure}}{
       if provided, must take at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
@@ -160,6 +170,12 @@
       
       \code{rmeasure} must return a named vector.
       If \code{y} is the returned vector, then \code{length(y)=nobs}, where \code{nobs} is the number of observable variables.
+
+      At present, the following methods make use of \code{rmeasure}:
+      \itemize{
+	\item \code{\link[=simulate-pomp]{simulate}}
+	\item \code{\link{nlf}}
+	}
     }
     \item{\code{dmeasure}}{
       if provided, must take at least the arguments \code{y}, \code{x}, \code{times}, \code{params}, \code{log}, and \code{\dots}.
@@ -170,6 +186,12 @@
       It may take additional arguments which will be filled with user-specified data as above.
       \code{dmeasure} must return a single numeric value, the pdf of \code{y} given \code{x} at time \code{t}.
       If \code{log=TRUE}, then the log of the pdf is returned.
+
+      At present, the following methods make use of \code{dmeasure}:
+      \itemize{
+	\item \code{\link{pfilter}}
+	\item \code{\link{mif}}
+	}
     }
     \item{\code{skeleton}}{
       If \code{skeleton} is an R function, it must have at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
@@ -184,7 +206,12 @@
       \code{skeleton} must return a numeric vector of the same length as \code{x}.
       The return value is interpreted as the vectorfield (if the dynamical system is continuous) or the value of the map (if the dynamical system is discrete), at the point \code{x} at time \code{t}.
 
-      If \code{skeleton} is the name of a native routine, this routine must be of prototype \dQuote{pomp\_vectorfield\_map} as defined in the header \dQuote{pomp.h} (see the \dQuote{include} directory in the installed package directory).
+      If \code{skeleton} is the name of a native routine, this routine must be of prototype \dQuote{pomp_vectorfield_map} as defined in the header \dQuote{pomp.h} (see the \dQuote{include} directory in the installed package directory).
+
+      At present, the following methods make use of \code{skeleton}:
+      \itemize{
+	\item \code{\link{trajectory}}
+	}
     }
     \item{\code{initializer}}{
       if provided, must have at least the arguments \code{params}, \code{t0}, and \code{\dots}.

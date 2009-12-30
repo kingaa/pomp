@@ -20,7 +20,7 @@
   The basic class, \code{\link{pomp}}, is provided to encode a partially-observed Markov process together with a uni- or multi-variate data set.
 }
 \section{Vignettes}{
-  The vignette \sQuote{intro\_to\_pomp} illustrates the facilities of the package using familiar stochastic processes.
+  The vignette \sQuote{intro_to_pomp} illustrates the facilities of the package using familiar stochastic processes.
   Run \code{vignette("intro_to_pomp")} or look at the HTML documentation to view the vignette.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}

@@ -137,7 +137,7 @@ mif(object, \dots)
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \code{\link{mif-class}}, \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
-  See the \dQuote{intro\_to\_pomp} vignette for an example.
+  See the \dQuote{intro_to_pomp} vignette for an example.
 }
 \keyword{models}
 \keyword{ts}

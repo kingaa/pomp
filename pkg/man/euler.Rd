@@ -39,13 +39,13 @@ onestep.density(x, times, params, dens.fun, \dots,
   \item{step.fun}{
     This can be either an R function or the name of a compiled, dynamically loaded native function containing the model simulator.
     It should be written to take a single Euler step from a single point in state space.
-    If it is a native function, it must be of type \dQuote{pomp\_onestep\_sim} as defined in the header \dQuote{pomp.h}, which is included with the package.
+    If it is a native function, it must be of type \dQuote{pomp_onestep_sim} as defined in the header \dQuote{pomp.h}, which is included with the package.
     For details on how to write such codes, see Details.
   }
   \item{dens.fun}{
     This can be either an R function or a compiled, dynamically loaded native function containing the model transition log probability density function.
     This function will be called to compute the log likelihood of the actual Euler steps.
-    It must be of type \dQuote{pomp\_onestep\_pdf} as defined in the header \dQuote{pomp.h}, which is included with the package.
+    It must be of type \dQuote{pomp_onestep_pdf} as defined in the header \dQuote{pomp.h}, which is included with the package.
     For details on how to write such codes, see Details.
   }
   \item{delta.t}{
@@ -71,7 +71,7 @@ onestep.density(x, times, params, dens.fun, \dots,
   }
   \item{PACKAGE}{
     an optional argument that specifies to which dynamically loaded library we restrict the search for the native routines.
-    If this is '"base"', we search in the R executable itself.
+    If this is \dQuote{base}, we search in the R executable itself.
   }
 }
 \details{
@@ -87,7 +87,7 @@ onestep.density(x, times, params, dens.fun, \dots,
   This is accomplished via interpolation of the covariate table.
   Additional arguments may be given: these will be filled by the correspondingly-named elements in the \code{userdata} slot of the \code{pomp} object (see \code{\link{pomp}}).
 
-  If \code{step.fun} is written in a native language, it must be a function of type "pomp\_onestep\_sim" as specified in the header "pomp.h" included with the package (see the directory "include" in the installed package directory).
+  If \code{step.fun} is written in a native language, it must be a function of type "pomp_onestep_sim" as specified in the header "pomp.h" included with the package (see the directory "include" in the installed package directory).
 
   If \code{dens.fun} is written as an R function, it must have at least the arguments \code{x1}, \code{x2}, \code{t1}, \code{t2}, \code{params}, and \code{\dots}.
   On a call to this function, \code{x1} and \code{x2} will be named vectors of state variables at times \code{t1} and \code{t2}, respectively.
@@ -96,7 +96,7 @@ onestep.density(x, times, params, dens.fun, \dots,
   This is accomplished via interpolation of the covariate table.
   As above, any additional arguments will be filled by the correspondingly-named elements in the \code{userdata} slot of the \code{pomp} object (see \code{\link{pomp}}).
 
-  If \code{dens.fun} is written in a native language, it must be a function of type "pomp\_onestep\_pdf" as defined in the header "pomp.h" included with the package (see the directory "include" in the installed package directory).
+  If \code{dens.fun} is written in a native language, it must be a function of type "pomp_onestep_pdf" as defined in the header "pomp.h" included with the package (see the directory "include" in the installed package directory).
 }
 \value{
   \code{euler.simulate} and \code{onestep.simulate} each return a \code{nvar} x \code{nrep} x \code{ntimes} array, where \code{nvar} is the number of state variables, \code{nrep} is the number of replicate simulations (= number of columns of \code{xstart} and \code{params}), and \code{ntimes} is the length of \code{times}.
