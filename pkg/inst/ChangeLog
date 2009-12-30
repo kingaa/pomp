@@ -1,3 +1,10 @@
+2009-12-30  kingaa
+
+	* [r189] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  man/euler.Rd, man/mif.Rd, man/pomp-package.Rd, man/pomp.Rd: -
+	  some improvements to the documentation
+
 2009-12-28  kingaa
 
 	* [r188] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
