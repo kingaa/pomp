@@ -13,25 +13,20 @@ local(
                      dimnames=list(NULL,paste("seas",1:3,sep=''))
                      ),
                    delta.t=1/52/20,
-                   statenames=c("S","I","R","cases","W","B","dW"),
+                   statenames=c("S","I","R","cases","W"),
                    paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
                    covarnames=c("seas1"),
                    zeronames=c("cases"),
                    comp.names=c("S","I","R"),
                    step.fun="sir_euler_simulator",
                    rprocess=euler.simulate,
-                   dens.fun="sir_euler_density",
-                   dprocess=onestep.density,
                    skeleton.vectorfield="sir_ODE",
                    rmeasure="binom_rmeasure",
                    dmeasure="binom_dmeasure",
                    PACKAGE="pomp",
                    initializer=function(params, t0, comp.names, ...){
                      p <- exp(params)
-                     snames <- c(
-                                 "S","I","R","cases","W","B",
-                                 "SI","SD","IR","ID","RD","dW"
-                                 )
+                     snames <- c("S","I","R","cases","W")
                      fracs <- p[paste(comp.names,"0",sep=".")]
                      x0 <- numeric(length(snames))
                      names(x0) <- snames

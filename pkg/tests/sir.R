@@ -186,41 +186,27 @@ h1 <- skeleton(
                )
 print(h1[c("S","I","R"),,],digits=4)
 
-data(euler.sir)
+## now repeat using the compiled native codes built into the package
 
-show(euler.sir)
+po <- euler.sir
 
 set.seed(3049953)
 ## simulate from the model
 tic <- Sys.time()
-x <- simulate(euler.sir,nsim=100)
+x <- simulate(po,nsim=100)
 toc <- Sys.time()
 print(toc-tic)
 plot(x[[1]],variables=c("S","I","R","cases","W"))
 
 t3 <- seq(0,20,by=1/52)
 tic <- Sys.time()
-X4 <- trajectory(euler.sir,times=t3,hmax=1/52)
+X4 <- trajectory(po,times=t3,hmax=1/52)
 toc <- Sys.time()
 print(toc-tic)
 plot(t3,X4['I',1,],type='l')
 
-f2 <- dprocess(
-               euler.sir,
-               x=X1$states[,,31:40],
-               times=t1[31:40],
-               params=matrix(
-                 log(params),
-                 nrow=length(params),
-                 ncol=10,
-                 dimnames=list(names(params),NULL)
-                 ),
-               log=TRUE
-               )
-print(apply(f2,1,sum),digits=4)
-
 g2 <- dmeasure(
-               euler.sir,
+               po,
                y=rbind(measles=X1$obs[,7,]),
                x=X1$states,
                times=t1,
@@ -235,22 +221,20 @@ g2 <- dmeasure(
 print(apply(g2,1,sum),digits=4)
 
 h2 <- skeleton(
-               euler.sir,
+               po,
                x=X2$states[,1,55:70,drop=FALSE],
                t=t2[55:70],
                params=as.matrix(log(params))
                )
 print(h2[c("S","I","R"),,],digits=4)
 
-print(max(abs(f2-f1),na.rm=T),digits=4)
 print(max(abs(g2-g1),na.rm=T),digits=4)
 print(max(abs(h2-h1),na.rm=T),digits=4)
 
-data(euler.sir)
-states(euler.sir)[,1:2]
-time(euler.sir) <- seq(0,1,by=1/52)
-states(euler.sir)[,1:3]
-states(simulate(euler.sir))[,1:3]
+states(po)[,1:2]
+time(po) <- seq(0,1,by=1/52)
+states(po)[,1:3]
+states(simulate(po))[,1:3]
 
 dev.off()
 

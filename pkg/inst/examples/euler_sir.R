@@ -44,36 +44,8 @@ po <- pomp(
                       I=I+trans[2]-trans[4]-trans[5],
                       R=R+trans[4]-trans[6],
                       cases=cases+trans[4],
-                      W=if (beta.sd>0) W+(dW-delta.t)/beta.sd else W,
-                      B=trans[1],
-                      SI=trans[2],
-                      SD=trans[3],
-                      IR=trans[4],
-                      ID=trans[5],
-                      RD=trans[6],
-                      dW=dW
+                      W=if (beta.sd>0) W+(dW-delta.t)/beta.sd else W
                       )
-                  }
-                  )
-           },
-           dens.fun=function(t1,t2,params,x1,x2,covars,...) {
-             params <- exp(params)
-             with(
-                  as.list(params),
-                  {
-                    dt <- t2-t1
-                    beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
-                    beta.var <- beta.sd^2
-                    dW <- x2['dW']
-                    foi <- (iota+beta*x1["I"]*dW/dt)/pop
-                    probs <- c(
-                               dpois(x=x2["B"],lambda=mu*pop*dt,log=T),
-                               deulermultinom(x=x2[c("SI","SD")],size=x1["S"],rate=c(foi,mu),dt=dt,log=T),
-                               deulermultinom(x=x2[c("IR","ID")],size=x1["I"],rate=c(gamma,mu),dt=dt,log=T),
-                               deulermultinom(x=x2["RD"],size=x1["R"],rate=c(mu),dt=dt,log=T),
-                               dgamma(x=dW,shape=dt/beta.var,scale=beta.var,log=T)
-                               )
-                    sum(probs)
                   }
                   )
            },
@@ -103,7 +75,6 @@ po <- pomp(
                   )
            },
            rprocess=euler.simulate,
-           dprocess=onestep.density,
            measurement.model=measles~binom(size=cases,prob=exp(rho)),
            initializer=function(params,t0,...){
              p <- exp(params)
@@ -113,9 +84,9 @@ po <- pomp(
                     fracs <- c(S.0,I.0,R.0)
                     x0 <- c(
                             round(pop*fracs/sum(fracs)), # make sure the three compartments sum to 'pop' initially
-                            rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
+                            rep(0,2)	# zeros for 'cases' and 'W'
                             )
-                    names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
+                    names(x0) <- c("S","I","R","cases","W")
                     x0
                   }
                   )
@@ -150,14 +121,12 @@ if (Sys.info()['sysname']=='Linux') {
              tcovar=tbasis,
              covar=basis,
              delta.t=1/52/20,
-             statenames=c("S","I","R","cases","W","B","dW"),
+             statenames=c("S","I","R","cases","W"),
              paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
              covarnames=c("seas1"),
              zeronames=c("cases"),
              step.fun="sir_euler_simulator",
              rprocess=euler.simulate,
-             dens.fun="sir_euler_density",
-             dprocess=onestep.density,
              skeleton.vectorfield="sir_ODE",
              rmeasure="binom_rmeasure",
              dmeasure="binom_dmeasure",
@@ -170,9 +139,9 @@ if (Sys.info()['sysname']=='Linux') {
                       fracs <- c(S.0,I.0,R.0)
                       x0 <- c(
                               round(pop*fracs/sum(fracs)), # make sure the three compartments sum to 'pop' initially
-                              rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
+                              rep(0,2)	# zeros for 'cases' and 'W'
                               )
-                      names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
+                      names(x0) <- c("S","I","R","cases","W")
                       x0
                     }
                     )

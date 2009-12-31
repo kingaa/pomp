@@ -36,8 +36,6 @@ static double term_time (double t, double b0, double b1)
 #define RCVD      (x[stateindex[2]]) // number of recovereds
 #define CASE      (x[stateindex[3]]) // number of cases (accumulated per reporting period)
 #define W         (x[stateindex[4]]) // integrated white noise
-#define BIRTHS    (x[stateindex[5]]) // births
-#define dW        (x[stateindex[6]]) // white noise process
 
 #define SEASBASIS (covar[covindex[0]]) // first column of seasonality basis in lookup table
 
@@ -68,10 +66,11 @@ void sir_euler_simulator (double *x, const double *p,
 {
   int nrate = 6;
   double rate[nrate];		// transition rates
-  double *trans;		// transition numbers
+  double trans[nrate];		// transition numbers
   double gamma, mu, iota, beta_sd, beta_var, popsize;
   double beta;
-  
+  double dW;
+
   // untransform the parameters
   gamma = exp(LOGGAMMA);
   mu = exp(LOGMU);
@@ -112,7 +111,6 @@ void sir_euler_simulator (double *x, const double *p,
   rate[5] = mu; 		// death from recovered class
 
   // compute the transition numbers
-  trans = &BIRTHS;
   trans[0] = rpois(rate[0]*dt);	// births are Poisson
   reulermultinom(2,SUSC,&rate[1],dt,&trans[1]);
   reulermultinom(2,INFD,&rate[3],dt,&trans[3]);
@@ -186,88 +184,8 @@ void sir_ODE (double *f, double *x, const double *p,
 #undef RCVD
 #undef CASE
 #undef W
-#undef BIRTHS
-#undef dW
-
-#define SUSC      (x1[stateindex[0]]) // number of susceptibles
-#define INFD      (x1[stateindex[1]]) // number of infectives
-#define RCVD      (x1[stateindex[2]]) // number of recovereds
-#define CASE      (x1[stateindex[3]]) // number of cases (accumulated per reporting period)
-#define W         (x1[stateindex[4]]) // integrated white noise
-#define BIRTHS    (x2[stateindex[5]]) // births
-#define dW        (x2[stateindex[6]]) // white noise process
-
-// SIR model with Euler multinomial step
-// forced transmission (basis functions passed as covariates)
-// constant population size as a parameter
-// environmental stochasticity on transmission
-void sir_euler_density (double *f, double *x1, double *x2, double t1, double t2, const double *p, 
-			const int *stateindex, const int *parindex, const int *covindex,
-			int covdim, const double *covar)
-{
-  int nrate = 6;
-  double rate[nrate];		// transition rates
-  double *trans;		// transition numbers
-  double gamma, mu, iota, beta_sd, popsize;
-  double beta;
-  double dt = t2-t1;
-  
-  // untransform the parameters
-  gamma = exp(LOGGAMMA);
-  mu = exp(LOGMU);
-  iota = exp(LOGIOTA);
-  beta_sd = exp(LOGBETA_SD);
-  popsize = exp(LOGPOPSIZE);
-
-  beta = exp(dot_product(covdim,&SEASBASIS,&LOGBETA));
-
-  // test to make sure the parameters and state variable values are sane
-  if (!(R_FINITE(beta)) || 
-      !(R_FINITE(gamma)) ||
-      !(R_FINITE(mu)) ||
-      !(R_FINITE(beta_sd)) ||
-      !(R_FINITE(iota)) ||
-      !(R_FINITE(popsize)) ||
-      !(R_FINITE(SUSC)) ||
-      !(R_FINITE(INFD)) ||
-      !(R_FINITE(RCVD)) ||
-      !(R_FINITE(CASE)) ||
-      !(R_FINITE(W))) {
-    *f = R_NaN;
-    return;
-  }
-
-  // compute the transition rates
-  trans = &BIRTHS;
-  if (beta_sd > 0.0) {		// environmental noise is ON
-    double beta_var = beta_sd*beta_sd;
-    *f = dgamma(dW,dt/beta_var,beta_var,1);
-  } else {			// environmental noise is OFF
-    *f = 0;			// THIS ASSUMES THAT dw = dt !!!
-  }
-  rate[0] = mu*popsize;		// birth into susceptible class
-  rate[1] = (iota+beta*INFD*dW/dt)/popsize; // force of infection
-  rate[2] = mu;			// death from susceptible class
-  rate[3] = gamma;		// recovery
-  rate[4] = mu;			// death from infectious class
-  rate[5] = mu; 		// death from recovered class
-
-  // compute the transition numbers
-  *f += dpois(trans[0],rate[0]*dt,1); // births are Poisson
-  *f += deulermultinom(2,SUSC,&rate[1],dt,&trans[1],1);
-  *f += deulermultinom(2,INFD,&rate[3],dt,&trans[3],1);
-  *f += deulermultinom(1,RCVD,&rate[5],dt,&trans[5],1);
-}
 
 #undef SEASBASIS
-
-#undef SUSC
-#undef INFD
-#undef RCVD
-#undef CASE
-#undef W
-#undef BIRTHS
-#undef dW
 
 #undef LOGGAMMA
 #undef LOGMU

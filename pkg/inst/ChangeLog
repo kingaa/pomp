@@ -1,5 +1,8 @@
 2009-12-30  kingaa
 
+	* [r190] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - version 0.26-4
 	* [r189] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
 	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
 	  man/euler.Rd, man/mif.Rd, man/pomp-package.Rd, man/pomp.Rd: -
