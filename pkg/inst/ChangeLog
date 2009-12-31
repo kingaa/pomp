@@ -1,3 +1,16 @@
+2009-12-31  kingaa
+
+	* [r191] DESCRIPTION, data/euler.sir.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/examples/euler_sir.R, inst/examples/euler_sir.c,
+	  src/euler_sir.c, tests/sir.R, tests/sir.Rout.save: - make some
+	  simplifications to the advanced (SIR) example:
+	  it was confusing to have the dprocess specified when it is never
+	  used.
+	  better to leave this out until such time as we have a method that
+	  uses dprocess.
+
 2009-12-30  kingaa
 
 	* [r190] DESCRIPTION, inst/ChangeLog,
