@@ -1,5 +1,6 @@
 2009-12-31  kingaa
 
+	* [r192] inst/ChangeLog: - version 0.26-5
 	* [r191] DESCRIPTION, data/euler.sir.R, inst/ChangeLog,
 	  inst/doc/advanced_topics_in_pomp.Rnw,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,

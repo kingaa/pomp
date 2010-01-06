@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{natbib}
+\usepackage[nogin]{Sweave}
 
 \setlength{\textwidth}{6.25in}
 \setlength{\textheight}{8.7in}
@@ -35,8 +36,7 @@ Ann Arbor, Michigan 48109-1048 USA
 
 \begin{document}
 
-\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T}
-
+\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T,split=F,prefix=T,prefix.string=figs/advanced-topics-in-pomp}
 \maketitle
 
 \tableofcontents
@@ -44,6 +44,7 @@ Ann Arbor, Michigan 48109-1048 USA
 <<echo=F,results=hide>>=
   glop <- options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
   library(pomp)
+  pdf.options(useDingbats=FALSE)
   set.seed(5384959)
 @ 
 
@@ -243,7 +244,7 @@ euler.sir <- pomp(
                   t0=0,
                   tcovar=seq(0,25,by=1/52),
                   covar=matrix(
-                    periodic.bspline.basis(seq(0,50,by=1/52),nbasis=3,period=1,degree=3),
+                    periodic.bspline.basis(seq(0,25,by=1/52),nbasis=3,period=1,degree=3),
                     ncol=3,
                     dimnames=list(NULL,paste("seas",1:3,sep=''))
                     ),
