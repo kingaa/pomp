@@ -4,7 +4,7 @@
 ## question: how much efficiency would be realized by eliminating the calls to 'apply' with something else?
 
 pfilter.internal <- function (object, params, Np,
-                              tol, warn, max.fail,
+                              tol, max.fail,
                               pred.mean, pred.var, filter.mean,
                               .rw.sd, verbose,
                               save.states) {
@@ -188,7 +188,7 @@ pfilter.internal <- function (object, params, Np,
     failures <- weights < tol
     all.fail <- all(failures)
     if (all.fail) {                     # all particles are lost
-      if (warn)
+      if (verbose)
         message("filtering failure at time t = ",times[nt+1])
       nfail <- nfail+1
       if (nfail > max.fail)
@@ -250,19 +250,19 @@ setMethod(
           "pfilter",
           "pomp",
           function (object, params, Np,
-                    tol = 1e-17, warn = TRUE, max.fail = 0,
+                    tol = 1e-17,
+                    max.fail = 0,
                     pred.mean = FALSE,
                     pred.var = FALSE,
                     filter.mean = FALSE,
                     save.states = FALSE,
-                    verbose = FALSE,
+                    verbose = getOption("verbose"),
                     ...) {
             pfilter.internal(
                              object=object,
                              params=params,
                              Np=Np,
                              tol=tol,
-                             warn=warn,
                              max.fail=max.fail,
                              pred.mean=pred.mean,
                              pred.var=pred.var,

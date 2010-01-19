@@ -16,8 +16,8 @@
 mif(object, \dots)
 \S4method{mif}{pomp}(object, Nmif = 1, start, pars, ivps = character(0),
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
-    weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
-    verbose = FALSE)
+    weighted = TRUE, tol = 1e-17, max.fail = 0,
+    verbose = getOption("verbose"))
 \S4method{mif}{mif}(object, Nmif, \dots)
 \S4method{continue}{mif}(object, Nmif = 1, \dots)
 }
@@ -74,19 +74,16 @@ mif(object, \dots)
     the exponential cooling factor, \code{alpha}.
   }
   \item{weighted}{
-    Should a weighted average be used?
-    If \code{weighted=F}, the MIF update is not used;
+    logical; if TRUE, the MIF update (a weighted average) is used.
+    If FALSE, the MIF update is not used;
     instead, an unweighed average of the filtering means is used for the update.
   }
   \item{tol}{
-    Particles with log likelihood below \code{tol} are considered to be "lost".
+    numeric scalar; particles with log likelihood below \code{tol} are considered to be "lost".
     A filtering failure occurs when, at some time point, all particles are lost.
   }
-  \item{warn}{
-    Should a warning be generated when a filtering failure occurs?
-  }
   \item{max.fail}{
-    Maximum number of filtering failures permitted.
+    integer; maximum number of filtering failures permitted.
     If the number of failures exceeds this number, execution will terminate with an error.
   }
   \item{verbose}{
@@ -98,7 +95,7 @@ mif(object, \dots)
 }
 \section{Re-running MIF Iterations}{
   To re-run a sequence of MIF iterations, one can use the \code{mif} method on a \code{mif} object.
-  By default, the same parameters used for the original MIF run are re-used (except for \code{weighted}, \code{tol}, \code{warn}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
+  By default, the same parameters used for the original MIF run are re-used (except for \code{weighted}, \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
   If one does specify additional arguments, these will override the defaults.
 }
 \section{Continuing MIF Iterations}{

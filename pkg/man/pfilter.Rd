@@ -12,9 +12,10 @@
 \usage{
 pfilter(object, \dots)
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
-    warn = TRUE, max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, save.states = FALSE, verbose = FALSE, \dots)
-\S4method{pfilter}{mif}(object, params, Np, tol = 1e-17, warn = TRUE,
+    max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
+    filter.mean = FALSE, save.states = FALSE,
+    verbose = getOption("verbose"), \dots)
+\S4method{pfilter}{mif}(object, params, Np, tol = 1e-17,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, \dots)
 }
@@ -29,35 +30,32 @@ pfilter(object, \dots)
     In this case, all particles will inherit the same parameter values.
   }
   \item{Np}{
-    Number of particles to use.
+    integer; number of particles to use.
     When \code{object} is of class \code{mif}, this is by default the same number of particles used in the \code{mif} iterations.
   }
   \item{tol}{
-    Particles with log likelihood below \code{tol} are considered to be "lost".
+    positive numeric scalar; particles with log likelihood below \code{tol} are considered to be "lost".
     A filtering failure occurs when, at some time point, all particles are lost.
     When all particles are lost, the conditional log likelihood at that time point is set to be \code{log(tol)}.
   }
-  \item{warn}{
-    Should filtering failures generate warnings?
-  }
   \item{max.fail}{
-    The maximum number of filtering failures allowed.
+    integer; the maximum number of filtering failures allowed.
     If the number of filtering failures exceeds this number, execution will terminate with an error.
   }
   \item{pred.mean}{
-    If \code{TRUE}, the prediction means are calculated for the state variables and parameters.
+    logical; if \code{TRUE}, the prediction means are calculated for the state variables and parameters.
   }
   \item{pred.var}{
-    If \code{TRUE}, the prediction variances are calculated for the state variables and parameters.
+    logical; if \code{TRUE}, the prediction variances are calculated for the state variables and parameters.
   }
   \item{filter.mean}{
-    If \code{TRUE}, the filtering means are calculated for the state variables and parameters.
+    logical; if \code{TRUE}, the filtering means are calculated for the state variables and parameters.
   }
   \item{save.states}{
-    If \code{TRUE}, the state-vector for each particle is saved and returned.
+    logical; if \code{TRUE}, the state-vector for each particle is saved and returned.
   }
   \item{verbose}{
-    If \code{TRUE}, progress information is reported as \code{pfilter} works.
+    logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.
   }
   \item{\dots}{
     Additional arguments unused at present.

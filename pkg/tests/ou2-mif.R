@@ -151,7 +151,7 @@ fit <- mif(
            )
 fit <- continue(fit)
 fit <- continue(fit,Nmif=2)
-ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100)
+ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100,verbose=T)
 fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.1))
 fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.1"))
 s <- coef(fit)

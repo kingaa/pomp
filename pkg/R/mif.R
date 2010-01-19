@@ -21,7 +21,7 @@ mif.internal <- function (object, Nmif = 1,
                           particles = NULL,
                           rw.sd = NULL,
                           Np = NULL, cooling.factor = NULL, var.factor = NULL, ic.lag = NULL, 
-                          weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
+                          weighted = TRUE, tol = 1e-17, max.fail = 0,
                           verbose = FALSE, .ndone = 0) {
   is.mif <- is(object,"mif")
   if (is.null(start)) {
@@ -234,7 +234,6 @@ mif.internal <- function (object, Nmif = 1,
                               object=obj,
                               params=P,
                               tol=tol,
-                              warn=warn,
                               max.fail=max.fail,
                               pred.mean=(n==Nmif),
                               pred.var=(weighted||(n==Nmif)),
@@ -293,8 +292,8 @@ setMethod(
                     pars, ivps = character(0),
                     particles, rw.sd,
                     Np, ic.lag, var.factor, cooling.factor,
-                    weighted = TRUE, tol = 1e-17, warn = TRUE, max.fail = 0,
-                    verbose = FALSE)
+                    weighted = TRUE, tol = 1e-17, max.fail = 0,
+                    verbose = getOption("verbose"))
           {
             if (missing(start)) start <- NULL
             if (missing(rw.sd))
@@ -343,7 +342,7 @@ setMethod(
             mif.internal(object,Nmif=Nmif,start=start,pars=pars,ivps=ivps,particles=particles,
                          rw.sd=rw.sd,Np=Np,cooling.factor=cooling.factor,
                          var.factor=var.factor,ic.lag=ic.lag,
-                         weighted=weighted,tol=tol,warn=warn,max.fail=max.fail,
+                         weighted=weighted,tol=tol,max.fail=max.fail,
                          verbose=verbose,.ndone=0)
 
           }

@@ -1,5 +1,5 @@
 
-R version 2.9.1 (2009-06-26)
+R version 2.10.1 (2009-12-14)
 Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -187,16 +187,36 @@ Error : 'mif' error: cannot estimate non-finite parameters: x2.0
 +            )
 > fit <- continue(fit)
 > fit <- continue(fit,Nmif=2)
-> ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100)
+> ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100,verbose=T)
 filtering failure at time t = 3
 filtering failure at time t = 4
 filtering failure at time t = 5
+pfilter timestep 5 of 100 finished
 filtering failure at time t = 6
 filtering failure at time t = 7
 filtering failure at time t = 8
 filtering failure at time t = 9
 filtering failure at time t = 10
+pfilter timestep 10 of 100 finished
 filtering failure at time t = 11
+pfilter timestep 15 of 100 finished
+pfilter timestep 20 of 100 finished
+pfilter timestep 25 of 100 finished
+pfilter timestep 30 of 100 finished
+pfilter timestep 35 of 100 finished
+pfilter timestep 40 of 100 finished
+pfilter timestep 45 of 100 finished
+pfilter timestep 50 of 100 finished
+pfilter timestep 55 of 100 finished
+pfilter timestep 60 of 100 finished
+pfilter timestep 65 of 100 finished
+pfilter timestep 70 of 100 finished
+pfilter timestep 75 of 100 finished
+pfilter timestep 80 of 100 finished
+pfilter timestep 85 of 100 finished
+pfilter timestep 90 of 100 finished
+pfilter timestep 95 of 100 finished
+pfilter timestep 100 of 100 finished
 > fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.1))
 > fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.1"))
 Warning message:
