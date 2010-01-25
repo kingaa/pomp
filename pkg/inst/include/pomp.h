@@ -15,6 +15,9 @@ double deulermultinom (int ntrans, double size, double *rate, double dt, double 
 // facility for dotting a vector of parameters ('coef') against a vector of basis-function values ('basis')
 double dot_product (int dim, const double *basis, const double *coef);
 
+// facility for computing evaluating a basis of periodic bsplines
+void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
+
 // Prototype for one-step simulator, as used by "euler.simulate" and "onestep.simulate":
 typedef void pomp_onestep_sim(double *x, const double *p, 
 			      const int *stateindex, const int *parindex, const int *covindex,

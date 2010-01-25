@@ -1,5 +1,8 @@
 2010-01-19  kingaa
 
+	* [r196] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - update the vignettes for version
+	  0.27-1
 	* [r195] DESCRIPTION, inst/ChangeLog: - version 0.27-1
 	* [r194] DESCRIPTION, R/mif.R, R/pfilter-mif.R, R/pfilter.R,
 	  inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,

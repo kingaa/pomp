@@ -13,13 +13,5 @@ bspline.basis <- function (x, nbasis, degree = 3) {
 }
 
 periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1) {
-  if (nbasis<degree)
-    stop("periodic.bspline.basis error: must have ",sQuote("nbasis")," >= ",sQuote("degree"),call.=FALSE)
-  dx <- period/nbasis
-  knots <- seq(-degree*dx,period+degree*dx,by=dx)
-  y <- .Call(bspline_basis,x%%period,degree,knots)
-  if (degree>0)
-    y[,1:degree] <- y[,1:degree]+y[,-(1:nbasis)]
-  shift <- floor((degree-1)/2)
-  y[,c(seq(from=shift+1,to=nbasis,by=1),seq_len(shift))]
+  .Call(periodic_bspline_basis,x,nbasis,degree,period)
 }

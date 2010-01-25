@@ -211,10 +211,10 @@ g2 <- dmeasure(
                x=X1$states,
                times=t1,
                params=matrix(
-                 log(params),
-                 nrow=length(params),
+                 c(log(params),nbasis=3,degree=3,period=1),
+                 nrow=length(params)+3,
                  ncol=10,
-                 dimnames=list(names(params),NULL)
+                 dimnames=list(c(names(params),"nbasis","degree","period"),NULL)
                  ),
                log=TRUE
                )
@@ -224,7 +224,7 @@ h2 <- skeleton(
                po,
                x=X2$states[,1,55:70,drop=FALSE],
                t=t2[55:70],
-               params=as.matrix(log(params))
+               params=as.matrix(c(log(params),nbasis=3,degree=3,period=1))
                )
 print(h2[c("S","I","R"),,],digits=4)
 

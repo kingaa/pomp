@@ -118,12 +118,9 @@ if (Sys.info()['sysname']=='Linux') {
              times=seq(1/52,4,by=1/52),
              data=rbind(measles=numeric(52*4)),
              t0=0,
-             tcovar=tbasis,
-             covar=basis,
              delta.t=1/52/20,
              statenames=c("S","I","R","cases","W"),
-             paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
-             covarnames=c("seas1"),
+             paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho","nbasis","degree","period"),
              zeronames=c("cases"),
              step.fun="sir_euler_simulator",
              rprocess=euler.simulate,
@@ -152,13 +149,13 @@ if (Sys.info()['sysname']=='Linux') {
 
   ## compute a trajectory of the deterministic skeleton
   tic <- Sys.time()
-  X <- trajectory(po,params=log(params),hmax=1/52)
+  X <- trajectory(po,c(log(params),nbasis=3,degree=3,period=1),hmax=1/52)
   toc <- Sys.time()
   print(toc-tic)
 
   ## simulate from the model
   tic <- Sys.time()
-  x <- simulate(po,params=log(params),nsim=3)
+  x <- simulate(po,params=c(log(params),nbasis=3,degree=3,period=1),nsim=3)
   toc <- Sys.time()
   print(toc-tic)
   

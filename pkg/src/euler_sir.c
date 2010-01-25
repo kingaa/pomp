@@ -30,14 +30,15 @@ static double term_time (double t, double b0, double b1)
 #define LOGBETA_SD     (p[parindex[4]]) // environmental stochasticity SD in transmission rate
 #define LOGPOPSIZE     (p[parindex[5]]) // population size
 #define LOGRHO         (p[parindex[6]]) // reporting probability
+#define NBASIS         (p[parindex[7]]) // number of periodic B-spline basis functions
+#define DEGREE         (p[parindex[8]]) // degree of periodic B-spline basis functions
+#define PERIOD         (p[parindex[9]]) // period of B-spline basis functions
 
 #define SUSC      (x[stateindex[0]]) // number of susceptibles
 #define INFD      (x[stateindex[1]]) // number of infectives
 #define RCVD      (x[stateindex[2]]) // number of recovereds
 #define CASE      (x[stateindex[3]]) // number of cases (accumulated per reporting period)
 #define W         (x[stateindex[4]]) // integrated white noise
-
-#define SEASBASIS (covar[covindex[0]]) // first column of seasonality basis in lookup table
 
 #define MEASLES   (y[0])
 
@@ -70,6 +71,9 @@ void sir_euler_simulator (double *x, const double *p,
   double gamma, mu, iota, beta_sd, beta_var, popsize;
   double beta;
   double dW;
+  int nseas = (int) NBASIS;	// number of seasonal basis functions
+  int deg = (int) DEGREE;	// degree of seasonal basis functions
+  double seasonality[nseas];
 
   // untransform the parameters
   gamma = exp(LOGGAMMA);
@@ -79,7 +83,9 @@ void sir_euler_simulator (double *x, const double *p,
   popsize = exp(LOGPOPSIZE);
   beta_var = beta_sd*beta_sd;
 
-  beta = exp(dot_product(covdim,&SEASBASIS,&LOGBETA));
+  if (nseas <= 0) return;
+  periodic_bspline_basis_eval(t,PERIOD,deg,nseas,&seasonality[0]);
+  beta = exp(dot_product(nseas,&seasonality[0],&LOGBETA));
 
   // test to make sure the parameters and state variable values are sane
   if (!(R_FINITE(beta)) || 
@@ -141,6 +147,9 @@ void sir_ODE (double *f, double *x, const double *p,
   double term[nrate];		// terms in the equations
   double gamma, mu, iota, popsize;
   double beta;
+  int nseas = (int) NBASIS;	// number of seasonal basis functions
+  int deg = (int) DEGREE;	// degree of seasonal basis functions
+  double seasonality[nseas];
   
   // untransform the parameters
   gamma = exp(LOGGAMMA);
@@ -148,7 +157,9 @@ void sir_ODE (double *f, double *x, const double *p,
   iota = exp(LOGIOTA);
   popsize = exp(LOGPOPSIZE);
 
-  beta = exp(dot_product(covdim,&SEASBASIS,&LOGBETA));
+  if (nseas <= 0) return;
+  periodic_bspline_basis_eval(t,PERIOD,deg,nseas,&seasonality[0]);
+  beta = exp(dot_product(nseas,&seasonality[0],&LOGBETA));
 
   // compute the transition rates
   rate[0] = mu*popsize;		// birth into susceptible class
@@ -185,8 +196,6 @@ void sir_ODE (double *f, double *x, const double *p,
 #undef CASE
 #undef W
 
-#undef SEASBASIS
-
 #undef LOGGAMMA
 #undef LOGMU
 #undef LOGIOTA
@@ -194,3 +203,6 @@ void sir_ODE (double *f, double *x, const double *p,
 #undef LOGBETA_SD
 #undef LOGPOPSIZE
 #undef LOGRHO
+#undef NBASIS
+#undef DEGREE
+#undef PERIOD
