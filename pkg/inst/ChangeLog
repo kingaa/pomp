@@ -1,3 +1,16 @@
+2010-01-25  kingaa
+
+	* [r197] DESCRIPTION, NAMESPACE, R/bsplines.R, data/euler.sir.R,
+	  inst/ChangeLog, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/examples/euler_sir.R, inst/examples/euler_sir.c,
+	  inst/include/pomp.h, src/bspline.c, src/euler_sir.c, src/pomp.h,
+	  tests/sir.R, tests/sir.Rout.save: - add a new interface at the C
+	  level for evaluation of periodic B-splines bases.
+	  - rewrite the periodically-forced SIR model to use this facility.
+	  - rewrite the R level 'periodic.bspline.basis' function using the
+	  new C codes.
+
 2010-01-19  kingaa
 
 	* [r196] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
