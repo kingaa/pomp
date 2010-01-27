@@ -7,24 +7,32 @@ static void bspline_internal (double *y, const double *x, int nx, int i, int p, 
 
 // B-spline basis
 
-SEXP bspline_basis (SEXP x, SEXP degree, SEXP knots) {
+SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree) {
   int nprotect = 0;
-  SEXP y, xr, kr;
+  SEXP y, xr;
   int nx = length(x);
-  int nknots = length(knots);
+  int nb = INTEGER_VALUE(nbasis);
   int deg = INTEGER_VALUE(degree);
-  int nb;
-  double *ydata;
+  int nk = nb+deg+1;
+  double dx, minx, maxx;
+  double knots[nk];
+  double *xdata, *ydata;
   int i;
-  nb = nknots-deg-1;
   if (deg < 0) error("bspline.basis error: must have degree > 0");
-  if (nb<=deg) error("bspline.basis error: must have nbasis > degree");
+  if (nb <= deg) error("bspline.basis error: must have nbasis > degree");
   PROTECT(xr = AS_NUMERIC(x)); nprotect++;
-  PROTECT(kr = AS_NUMERIC(knots)); nprotect++;
   PROTECT(y = allocMatrix(REALSXP,nx,nb)); nprotect++;
+  xdata = REAL(xr);
   ydata = REAL(y);
+  for (i = 1, minx = maxx = xdata[0]; i < nx; i++) {
+    minx = (minx > xdata[i]) ? xdata[i] : minx;
+    maxx = (maxx < xdata[i]) ? xdata[i] : maxx;
+  }
+  dx = (maxx-minx)/((double) (nb-deg));
+  knots[0] = minx-deg*dx;
+  for (i = 1; i < nk; i++) knots[i] = knots[i-1]+dx;
   for (i = 0; i < nb; i++) {
-    bspline_internal(ydata,REAL(xr),nx,i,deg,REAL(kr),nknots);
+    bspline_internal(ydata,xdata,nx,i,deg,&knots[0],nk);
     ydata += nx;
   }
   UNPROTECT(nprotect);

@@ -27,6 +27,10 @@ periodic.bspline.basis(x, nbasis, degree = 3, period = 1)
     The basis functions returned are periodic with period \code{period}.
   }
 }
+\details{
+  Direct access to the underlying C routines is available.
+  See the header file \dQuote{pomp.h} for details.
+}
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{
 x <- seq(0,2,by=0.01)
