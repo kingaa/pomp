@@ -18,5 +18,10 @@ plot(cases~time,data=LondonYorke,subset=disease=="chickenpox"&town=="New York",t
 
 plot(cases~time,data=LondonYorke,subset=disease=="mumps"&town=="New York",type='l',col="blue",main="mumps, New York",bty='l')
 }
+\references{
+  W. P. London and J. A. Yorke,
+  Recurrent Outbreaks of Measles, Chickenpox and Mumps: I. Seasonal Variation in Contact Rates,
+  American Journal of Epidemiology, 98:453--468, 1973.
+  }
 \seealso{\code{\link{pomp-class}} and the vignettes}
 \keyword{datasets}
