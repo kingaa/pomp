@@ -1,5 +1,39 @@
+2010-03-13  kingaa
+
+	* [r205] DESCRIPTION: - go back to LazyData: false to avoid some
+	  ugly problems
+	* [r204] R/pomp.R, data/euler.sir.R, data/euler.sir.rda,
+	  data/ou2.R, data/ou2.rda, data/rw2.R, data/rw2.rda,
+	  data/verhulst.R, data/verhulst.rda, man/mif.Rd,
+	  src/euler_sir_density.c, src/eulermultinom.c,
+	  tests/ou2-forecast.R, tests/sir.R: - move default initializer to
+	  pomp namespace
+	  - go back to binary format data-loadable examples to avoid the
+	  ugly problem of tag-along environments
+	  - speed up for degenerate cases in reulermultinom
+	  - put euler-density function for SIR model into source (though it
+	  is not used at present)
+
+2010-02-11  kingaa
+
+	* [r203] R/mif.R: - fix of bug that occurs when mif's 'start'
+	  argument is specified with parameters in a different order than
+	  they occur in the 'params' slot of the pomp object
+
+2010-01-28  kingaa
+
+	* [r202] man/LondonYorke.Rd: - add reference for London & Yorke
+	* [r201] data/LondonYorke.rda, man/LondonYorke.Rd: - add the data
+	  set of London & Yorke
+
+2010-01-27  kingaa
+
+	* [r200] R/bsplines.R, man/bsplines.Rd, src/bspline.c: - some
+	  improvements in the B-spline codes
+
 2010-01-25  kingaa
 
+	* [r198] inst/ChangeLog: - version 0.27-2
 	* [r197] DESCRIPTION, NAMESPACE, R/bsplines.R, data/euler.sir.R,
 	  inst/ChangeLog, inst/doc/advanced_topics_in_pomp.Rnw,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
