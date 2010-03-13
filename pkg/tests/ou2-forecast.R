@@ -2,6 +2,7 @@ library(pomp)
 
 set.seed(921625222L)
 
+data(ou2)
 pf <- pfilter(ou2,Np=1000,save.states=TRUE)
 ll <- cumsum(pf$cond.loglik)
 pp <- matrix(data=coef(ou2),nrow=length(coef(ou2)),ncol=1000,dimnames=list(names(coef(ou2)),NULL))

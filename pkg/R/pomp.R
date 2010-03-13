@@ -1,4 +1,13 @@
 ## constructor of the pomp class
+default.initializer <- function (params, t0, ...) {
+  ivpnames <- grep("\\.0$",names(params),val=TRUE)
+  if (length(ivpnames)<1)
+    stop("default initializer error: no parameter names ending in ",sQuote(".0")," found: see ",sQuote("pomp")," documentation")
+  x <- params[ivpnames]
+  names(x) <- sub("\\.0$","",ivpnames)
+  x
+}
+
 pomp <- function (data, times, t0, ..., rprocess, dprocess,
                   rmeasure, dmeasure, measurement.model,
                   skeleton.map, skeleton.vectorfield, initializer, covar, tcovar,
@@ -114,14 +123,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   }
   
   if (missing(initializer)) {
-    initializer <- function (params, t0, ...) {
-      ivpnames <- grep("\\.0$",names(params),val=TRUE)
-      if (length(ivpnames)<1)
-        stop("default initializer error: no parameter names ending in ",sQuote(".0")," found: see ",sQuote("pomp")," documentation")
-      x <- params[ivpnames]
-      names(x) <- sub("\\.0$","",ivpnames)
-      x
-    }
+    initializer <- default.initializer
   }
 
   if (missing(PACKAGE)) PACKAGE <- character(0)

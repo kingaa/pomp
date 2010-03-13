@@ -187,7 +187,7 @@ h1 <- skeleton(
 print(h1[c("S","I","R"),,],digits=4)
 
 ## now repeat using the compiled native codes built into the package
-
+data(euler.sir)
 po <- euler.sir
 
 set.seed(3049953)

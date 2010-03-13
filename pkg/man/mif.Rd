@@ -29,8 +29,8 @@ mif(object, \dots)
     The number of MIF iterations to perform.
   }
   \item{start}{
-    The initial guess of the parameters.
-    This must be a named vector.
+    named numerical vector;
+    the starting guess of the parameters.
   }
   \item{pars}{
     optional character vector naming the ordinary parameters to be estimated.
@@ -42,7 +42,7 @@ mif(object, \dots)
     Every parameter named in \code{ivps} must have a positive random-walk standard deviation specified in \code{rw.sd}.
   }
   \item{particles}{
-    Function of prototype \code{particles(Np,center,sd,...)} which sets up the initial particle matrix by drawing a sample of size \code{Np} from the initial particle distribution centered at \code{center} and of width \code{sd}.
+    Function of prototype \code{particles(Np,center,sd,...)} which sets up the starting particle matrix by drawing a sample of size \code{Np} from the starting particle distribution centered at \code{center} and of width \code{sd}.
     If \code{particles} is not supplied by the user, the default behavior is to draw the particles from a multivariate normal distribution with mean \code{center} and standard deviation \code{sd}.
   }
   \item{rw.sd}{
@@ -66,8 +66,8 @@ mif(object, \dots)
   }
   \item{var.factor}{
     a positive number;
-    the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}
-    The width of the initial distribution of particles will be \code{random.walk.sd*var.factor}.
+    the scaling coefficient relating the width of the starting particle distribution to \code{rw.sd}.
+    In particular, the width of the distribution of particles at the start of the first MIF iteration will be \code{random.walk.sd*var.factor}.
   }
   \item{cooling.factor}{
     a positive number not greater than 1;
@@ -79,7 +79,7 @@ mif(object, \dots)
     instead, an unweighed average of the filtering means is used for the update.
   }
   \item{tol}{
-    numeric scalar; particles with log likelihood below \code{tol} are considered to be "lost".
+    numeric scalar; particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.
     A filtering failure occurs when, at some time point, all particles are lost.
   }
   \item{max.fail}{
@@ -120,7 +120,7 @@ mif(object, \dots)
 
   The center of the particle distribution returned by \code{particles} should be \code{center}.
   The width of the particle distribution should vary monotonically with \code{sd}.
-  In particular, when \code{sd=0}, the \code{particles} should return matrices with \code{Np} identical columns, each corresponding to the parameters specified in \code{center}.
+  In particular, when \code{sd=0}, the \code{particles} should return matrices with \code{Np} identical columns, each given by the parameters specified in \code{center}.
 }
 \references{
   E. L. Ionides, C. Bret\'o, & A. A. King,

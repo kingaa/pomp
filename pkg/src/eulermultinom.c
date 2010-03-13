@@ -9,31 +9,33 @@ void reulermultinom (int m, double size, double *rate, double dt, double *trans)
   double p = 0.0;
   int j, k;
   if ((size < 0.0) || (dt < 0.0) || (floor(size+0.5) != size)) {
-    for (k = 0; k < m; k++)
-      trans[k] = R_NaN;
+    for (k = 0; k < m; k++) trans[k] = R_NaN;
     return;
   }  
   for (k = 0; k < m; k++) {
     if (rate[k] < 0.0) {
-      for (j = 0; j < m; j++)
-	trans[j] = R_NaN;
+      for (j = 0; j < m; j++) trans[j] = R_NaN;
       return;
     }
     p += rate[k]; // total event rate
   }
-  size = rbinom(size,1-exp(-p*dt)); // total number of events
-  if (!(R_FINITE(size)))
-    warning("reulermultinom: result of binomial draw is not finite");
-  m -= 1;
-  for (k = 0; k < m; k++) {
-    if (rate[k] > p) p = rate[k];
-    trans[k] = ((size > 0) && (p > 0)) ? rbinom(size,rate[k]/p) : 0;
-    if (!(R_FINITE(size)&&R_FINITE(p)&&R_FINITE(rate[k])&&R_FINITE(trans[k])))
+  if (p > 0.0) {
+    size = rbinom(size,1-exp(-p*dt)); // total number of events
+    if (!(R_FINITE(size)))
       warning("reulermultinom: result of binomial draw is not finite");
-    size -= trans[k];
-    p -= rate[k];
+    m -= 1;
+    for (k = 0; k < m; k++) {
+      if (rate[k] > p) p = rate[k];
+      trans[k] = ((size > 0) && (p > 0)) ? rbinom(size,rate[k]/p) : 0;
+      if (!(R_FINITE(size)&&R_FINITE(p)&&R_FINITE(rate[k])&&R_FINITE(trans[k])))
+	warning("reulermultinom: result of binomial draw is not finite");
+      size -= trans[k];
+      p -= rate[k];
+    }
+    trans[m] = size;
+  } else {
+    for (k = 0; k < m; k++) trans[k] = 0.0;
   }
-  trans[m] = size;
 }
 
 // probability density of Euler-multinomial transitions
