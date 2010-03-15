@@ -1,6 +1,6 @@
 
-R version 2.10.1 (2009-12-14)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.0 Under development (unstable) (2010-02-25 r51179)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -423,7 +423,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x28d8c68>
+<environment: 0x2c7b448>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -436,7 +436,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x28d8c68>
+<environment: 0x2c7b448>
 initializer = 
 function (params, t0, ...) 
 {
@@ -507,7 +507,7 @@ function (t1, t2, params, x1, x2, covars, ...)
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.041221 secs
+Time difference of 2.009282 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -524,7 +524,7 @@ Time difference of 2.041221 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 4.547439 secs
+Time difference of 4.513309 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -575,7 +575,7 @@ I   6165   8975  11503  15834.2  21418  27852  34849
 R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > 
 > ## now repeat using the compiled native codes built into the package
-> 
+> data(euler.sir)
 > po <- euler.sir
 > 
 > set.seed(3049953)
@@ -584,7 +584,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.148207 secs
+Time difference of 2.146718 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -592,7 +592,7 @@ Time difference of 2.148207 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.70203 secs
+Time difference of 0.7040031 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
