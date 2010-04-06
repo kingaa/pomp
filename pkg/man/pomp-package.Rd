@@ -3,6 +3,8 @@
 \alias{pomp-package}
 \title{Partially-observed Markov processes}
 \description{
+  This is documentation for version \Sexpr[echo=F,stage=install,results=text]{packageDescription("pomp",fields="Version")} of \pkg{pomp}.
+
   The \code{pomp} package provides facilities for inference on time series data using partially-observed Markov processes (AKA state-space models or nonlinear stochastic dynamical systems).
   The user encodes a model as a \code{\link{pomp}} object by providing functions specifying some or all of the model's process and measurement components.
   The package's algorithms for fitting models to data, simulating, etc. then call these functions.
