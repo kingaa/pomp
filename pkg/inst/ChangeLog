@@ -1,5 +1,32 @@
+2010-04-07  kingaa
+
+	* [r212] man/LondonYorke.Rd: - improve documentation slightly
+
+2010-04-06  kingaa
+
+	* [r211] man/pomp-package.Rd: - include version message
+
+2010-03-15  kingaa
+
+	* [r210] inst/data-R/make.R: - not needed
+	* [r209] inst/data-R/dacca-census.q, inst/data-R/dacca-cholera.q,
+	  inst/data-R/dacca-mle.q, inst/data-R/dacca.R: - dacca data-object
+	  not yet ready for prime time
+	* [r208] DESCRIPTION, inst/data-R, inst/data-src,
+	  tests/ou2-forecast.Rout.save, tests/sir.Rout.save: - rename
+	  data-src data-R
+	  - update the test .Rout.save files
+	* [r207] inst/data-src, inst/data-src/dacca-census.q,
+	  inst/data-src/dacca-cholera.q, inst/data-src/dacca-mle.q,
+	  inst/data-src/dacca.R, inst/data-src/euler.sir.R,
+	  inst/data-src/make.R, inst/data-src/ou2.R, inst/data-src/rw2.R,
+	  inst/data-src/verhulst.R: - add source code for the
+	  data()-loadable examples
+
 2010-03-13  kingaa
 
+	* [r206] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - version 0.28-1
 	* [r205] DESCRIPTION: - go back to LazyData: false to avoid some
 	  ugly problems
 	* [r204] R/pomp.R, data/euler.sir.R, data/euler.sir.rda,
