@@ -1,11 +1,13 @@
 \name{LondonYorke}
 \alias{LondonYorke}
 \docType{data}
-\title{Reported cases of chickenpox, measles, and mumps from Baltimore and New York, 1928--1972}
+\title{Historical childhood disease incidence data}
 \description{
-  \code{LondonYorke} is a data-frame containing the monthly number of reported cases of three childhood diseases from two American cities in the mid-20th century.
+  \code{LondonYorke} is a data-frame containing the monthly number of reported cases of chickenpox, measles, and mumps from two American cities (Baltimore and New York) in the mid-20th century (1928--1972).
 }
-\usage{data(LondonYorke)}
+\usage{
+data(LondonYorke)
+}
 \examples{
 data(LondonYorke)
 
