@@ -1,5 +1,19 @@
 2010-04-29  kingaa
 
+	* [r216] DESCRIPTION, R/pfilter.R, R/trajmatch.R,
+	  data/euler.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/ChangeLog, inst/data-R/ou2.R,
+	  man/trajmatch.Rd, src/skeleton.c, tests/examples.R,
+	  tests/logistic.Rout.save, tests/ou2-forecast.Rout.save,
+	  tests/ou2-kalman.Rout.save, tests/ou2-nlf.Rout.save,
+	  tests/ou2-simulate.Rout.save, tests/ou2-trajmatch.Rout.save,
+	  tests/rw2.Rout.save, tests/sir.Rout.save: - change the
+	  trajectory-matching algorithm so that it depends on 'trajectory':
+	  it is no longer to set the process noise to zero manually in
+	  order to use this method
+	  - clean up error handling in 'pfilter'
+	  - update .Rout.save files in 'tests'
+	  - make 'skeleton' sensitive to variable names
 	* [r215] R/compare.mif.R, R/mif.R, R/nlf-funcs.R, R/nlf-guts.R,
 	  R/nlf.R, R/pfilter-mif.R, R/pfilter.R, R/plot-pomp.R,
 	  R/pomp-methods.R, R/pomp.R, R/slice.R, R/trajectory-pomp.R,
