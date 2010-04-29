@@ -1,0 +1,38 @@
+
+R version 2.10.1 (2009-12-14)
+Copyright (C) 2009 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: deSolve
+Loading required package: subplex
+Loading required package: mvtnorm
+> 
+> data(ou2)
+> 
+> pf <- pfilter(ou2,Np=1000,seed=343439L)
+> print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
+   x1.0    x2.0 alpha.1 alpha.4 
+  50.00  -50.00    0.90    0.99 
+> cat("particle filter log likelihood at truth\n")
+particle filter log likelihood at truth
+> print(pf$loglik,digits=4)
+[1] -412.8
+> 
+> data(euler.sir)
+> pf <- pfilter(euler.sir,Np=200,seed=394343L)
+> print(pf$loglik,digits=4)
+[1] -872.3
+> 
