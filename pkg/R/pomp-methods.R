@@ -83,7 +83,7 @@ setMethod(
                                      )
                if (ncol(ss)>length(tt)) tt <- c(tt0,tt)
                nt <- c(object@t0,object@times)
-               for (kt in seq(length=length(nt))) {
+               for (kt in seq_len(length(nt))) {
                  wr <- which(nt[kt]==tt)
                  if (length(wr)>0)
                    object@states[,kt] <- ss[,wr[1]]

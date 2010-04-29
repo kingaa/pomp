@@ -39,7 +39,7 @@ setMethod(
                    object@skeleton.type,
                    map={                # iterate the map
                      x[,,1] <- x0
-                     for (k in 2:length(times)) {
+                     for (k in seq(from=2,to=length(times),by=1)) {
                        x[,,k] <- skeleton(
                                           object,
                                           x=x[,,k-1,drop=FALSE],
@@ -49,7 +49,7 @@ setMethod(
                      }
                    },
                    vectorfield={        # integrate the vectorfield
-                     for (j in 1:nrep) {
+                     for (j in seq_len(nrep)) {
                        X <- try(
                                 lsoda(
                                       y=x0[,j],

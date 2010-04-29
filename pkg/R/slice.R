@@ -10,7 +10,7 @@ slice.design <- function (vars, n) {
   ranges <- lapply(vars[varying],function(x)x[c(1,3)])
   x <- as.data.frame(matrix(center.point,byrow=TRUE,ncol=nvars,nrow=n,dimnames=list(NULL,names(vars))))
   y <- vector(mode="list",length=nranges)
-  for (v in seq(length=nranges)) {
+  for (v in seq_len(nranges)) {
     y[[v]] <- x
     w <- varying[v]
     y[[v]][[w]] <- seq(from=ranges[[v]][1],to=ranges[[v]][2],length=n)
@@ -25,8 +25,8 @@ profile.design <- function (..., vars, n) {
   y <- as.matrix(sobol(vars,n))
   x <- as.matrix(do.call(expand.grid,prof))
   z <- array(dim=c(nrow(x),nrow(y),ncol(x)+ncol(y)))
-  for (j in 1:nrow(x)) {
-    for (k in 1:nrow(y)) {
+  for (j in seq_len(nrow(x))) {
+    for (k in seq_len(nrow(y))) {
       z[j,k,] <- c(x[j,],y[k,])
     }
   }

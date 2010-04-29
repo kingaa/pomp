@@ -6,8 +6,17 @@
 pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
                               pred.mean, pred.var, filter.mean,
-                              .rw.sd, verbose,
+                              .rw.sd, seed, verbose,
                               save.states) {
+  if (missing(seed)) seed <- NULL
+  if (!is.null(seed)) {
+    if (!exists(".Random.seed",where=.GlobalEnv)) { # need to initialize the RNG
+      runif(1)
+    }
+    save.seed <- get(".Random.seed",pos=.GlobalEnv)
+    set.seed(seed)
+  }
+
   if (missing(params)) {
     params <- coef(object)
     if (length(params)==0) {
@@ -98,7 +107,7 @@ pfilter.internal <- function (object, params, Np,
              )
   else NULL
 
-  for (nt in seq(length=ntimes)) {
+  for (nt in seq_len(ntimes)) {
     
     ## advance the state variables according to the process model
     X <- try(
@@ -234,6 +243,12 @@ pfilter.internal <- function (object, params, Np,
 
   }
 
+  if (!is.null(seed)) {
+    assign(".Random.seed",save.seed,pos=.GlobalEnv)
+    seed <- save.seed
+  }
+
+
   list(
        pred.mean=pred.m,
        pred.var=pred.v,
@@ -241,6 +256,7 @@ pfilter.internal <- function (object, params, Np,
        eff.sample.size=eff.sample.size,
        cond.loglik=loglik,
        states=xparticles,
+       seed=seed,
        nfail=nfail,
        loglik=sum(loglik)
        )
@@ -256,6 +272,7 @@ setMethod(
                     pred.var = FALSE,
                     filter.mean = FALSE,
                     save.states = FALSE,
+                    seed = NULL,
                     verbose = getOption("verbose"),
                     ...) {
             pfilter.internal(
@@ -268,6 +285,7 @@ setMethod(
                              pred.var=pred.var,
                              filter.mean=filter.mean,
                              save.states=save.states,
+                             seed=seed,
                              verbose=verbose
                              )
           }

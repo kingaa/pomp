@@ -209,7 +209,7 @@ mif.internal <- function (object, Nmif = 1,
              conv.rec=conv.rec
              )
 
-  for (n in seq(length=Nmif)) { # main loop
+  for (n in seq_len(Nmif)) { # main loop
 
     ## compute the cooled sigma
     cool.sched <- try(

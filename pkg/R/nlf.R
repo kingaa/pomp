@@ -149,7 +149,7 @@ nlf <- function(object, start, est, lags, period = NA, tensor = FALSE, nconverge
     if (verbose) cat("h in NLF = ", h, "\n")
     eps <- rep(h,nfitted)
 
-    for (i in 1:nfitted) {
+    for (i in seq_len(nfitted)) {
       Fvals <- rep(0,5)
       Fvals[3] <- F0  
       guess <- fitted
@@ -182,7 +182,7 @@ nlf <- function(object, start, est, lags, period = NA, tensor = FALSE, nconverge
     if (verbose) cat("epsilon in NLF =",t(eps), "\n")
 
     Imat <- matrix(0,npts,nfitted)
-    for (i in 1:nfitted) {
+    for (i in seq_len(nfitted)) {
       guess.up <- fitted
       guess.up[i] <- guess.up[i]+eps[i]
       f.up <- NLF.LQL(guess.up,object=object, params=params, par.index=par.index, 
@@ -210,8 +210,8 @@ nlf <- function(object, start, est, lags, period = NA, tensor = FALSE, nconverge
       Ihat[i,i] <- Newey.West(Imat[,i],Imat[,i],nlags)
     }
 
-    for (i in 1:(nfitted-1)) {
-      for (j in (i+1):nfitted) {
+    for (i in seq_len(nfitted-1)) {
+      for (j in seq(from=i+1,to=nfitted,by=1)) {
         guess.uu <- fitted
         guess.uu[i] <- guess.uu[i]+eps[i]
         guess.uu[j] <- guess.uu[j]+eps[j]

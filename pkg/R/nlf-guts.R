@@ -112,7 +112,7 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
   }
 
   if (multivar) {
-    for (jvar in 2:nvar) {
+    for (jvar in seq(from=2,to=nvar,by=1)) {
       data.ts <- data.mat[jvar,]
       model.ts <- model.mat[jvar,]
 
@@ -159,7 +159,7 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
   prediction.errors <- matrix(0,dim(data.pred)[1],nvar)
   model.residuals <- matrix(0,dim(model.pred)[1],nvar)
 
-  for (jvar in 1:nvar) {
+  for (jvar in seq_len(nvar)) {
     model.lm <- lm(model.pred[,jvar]~rbfbasis.model-1)
     model.residuals[,jvar] <- residuals(model.lm)
     ck <- as.vector(coef(model.lm))

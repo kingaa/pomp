@@ -290,7 +290,7 @@ measform2pomp <- function (formulae) {
   nobs <- length(formulae)
   if (nobs < 1)
     stop("pomp error: to use ",sQuote("measurement.model")," you must provide at least one formula")
-  for (k in 1:nobs) {
+  for (k in seq_len(nobs)) {
     if (!inherits(formulae[[k]],"formula"))
       stop("pomp error: ",sQuote("measurement.model")," takes formulae as arguments")
   }
@@ -298,7 +298,7 @@ measform2pomp <- function (formulae) {
   distrib <- lapply(formulae,function(x)as.character(x[[3]][[1]]))
   ddistrib <- lapply(distrib,function(x)paste("d",x,sep=''))
   rdistrib <- lapply(distrib,function(x)paste("r",x,sep=''))
-  for (k in 1:nobs) {
+  for (k in seq_len(nobs)) {
     res <- try(
                match.fun(ddistrib[[k]]),
                silent=TRUE
@@ -315,7 +315,7 @@ measform2pomp <- function (formulae) {
   pred.args <- lapply(formulae,function(x)as.list(x[[3]][-1]))
   dcalls <- vector(mode='list',length=nobs)
   rcalls <- vector(mode='list',length=nobs)
-  for (k in 1:nobs) {
+  for (k in seq_len(nobs)) {
     dcalls[[k]] <- as.call(
                            c(
                              list(
@@ -341,7 +341,7 @@ measform2pomp <- function (formulae) {
   list(
        dmeasure = function (y, x, t, params, log, covars, ...) {
          f <- 0
-         for (k in 1:nobs) {
+         for (k in seq_len(nobs)) {
            f <- f+eval(
                        dcalls[[k]],
                        envir=as.list(c(y,x,params,covars,t=t))
@@ -352,7 +352,7 @@ measform2pomp <- function (formulae) {
        rmeasure = function (x, t, params, covars, ...) {
          y <- numeric(length=nobs)
          names(y) <- obsnames
-         for (k in 1:nobs) {
+         for (k in seq_len(nobs)) {
            y[k] <- eval(
                         rcalls[[k]],
                         envir=as.list(c(x,params,covars,t=t))

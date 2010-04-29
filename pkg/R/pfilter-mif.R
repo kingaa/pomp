@@ -27,6 +27,7 @@ setMethod(
                     pred.var=pred.var,
                     filter.mean=filter.mean,
                     save.states=FALSE,
-                    ...)
+                    ...
+                    )
           }
           )

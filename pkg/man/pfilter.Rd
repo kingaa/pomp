@@ -7,13 +7,13 @@
 \title{Particle filter}
 \description{
   Run a plain vanilla particle filter.
-  Resampling is performed after each observation.
+  Resampling is performed at each observation.
 }
 \usage{
 pfilter(object, \dots)
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, save.states = FALSE,
+    filter.mean = FALSE, save.states = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
 \S4method{pfilter}{mif}(object, params, Np, tol = 1e-17,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
@@ -25,7 +25,7 @@ pfilter(object, \dots)
   }
   \item{params}{
     A \code{npars} x \code{Np} matrix containing the parameters corresponding to the initial state values in \code{xstart}.
-    This must have a 'rownames' attribute.
+    This must have a \sQuote{rownames} attribute.
     It is permissible to supply \code{params} as a named numeric vector, i.e., without a \code{dim} attribute.
     In this case, all particles will inherit the same parameter values.
   }
@@ -34,7 +34,7 @@ pfilter(object, \dots)
     When \code{object} is of class \code{mif}, this is by default the same number of particles used in the \code{mif} iterations.
   }
   \item{tol}{
-    positive numeric scalar; particles with log likelihood below \code{tol} are considered to be "lost".
+    positive numeric scalar; particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.
     A filtering failure occurs when, at some time point, all particles are lost.
     When all particles are lost, the conditional log likelihood at that time point is set to be \code{log(tol)}.
   }
@@ -53,6 +53,11 @@ pfilter(object, \dots)
   }
   \item{save.states}{
     logical; if \code{TRUE}, the state-vector for each particle is saved and returned.
+  }
+  \item{seed}{
+    optional; an object specifying if and how the random number generator should be initialized (\sQuote{seeded}).
+    If \code{seed} is an integer, it is passed to \code{set.seed} prior to any simulation and is returned as the \dQuote{seed} element of the return list.
+    By default, the state of the random number generator is not changed and the value of \code{.Random.seed} on the call is stored in the \dQuote{seed} element of the return list.
   }
   \item{verbose}{
     logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.
@@ -83,6 +88,11 @@ pfilter(object, \dots)
     If \code{saves.states=TRUE}, the array of state-vectors at each time point, for each particle.
     An array with dimensions \code{nvars}-by-\code{Np}-by-\code{ntimes}.
     In particular, \code{states[,i,t]} can be considered a sample from \eqn{f[X|y_{1:t}]}.
+  }
+  \item{seed}{
+    The state of the random number generator at the time \code{pfilter} was called.
+    If the argument \code{seed} was specified, this is a copy;
+    if not, this is the internal state of the random number generator at the time of call.
   }
   \item{nfail}{
     The number of filtering failures encountered.

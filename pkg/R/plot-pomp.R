@@ -49,7 +49,7 @@ setMethod(
               nr <- ceiling(nser/nc)
               oldpar <- par(mar=mar,oma=oma,mfcol=c(nr,nc))
               on.exit(par(oldpar))
-              for (i in 1:nser) {
+              for (i in seq_len(nser)) {
                 plot.default(y=x[[i]],x=time,axes=FALSE,xlab="",ylab="",log=log,
                              col=col,bg=bg,pch=pch,ann=ann,type="n",...)
                 panel(y=x[[i]],x=time,col=col,bg=bg,pch=pch,type=type,...)
@@ -82,7 +82,7 @@ setMethod(
             }
             v1 <- 1
             v2 <- min(v1+plots.per.page,length(vars))
-            for (page in 1:n.page) {
+            for (page in seq_len(n.page)) {
               vv <- vars[seq(from=v1,to=v2)]
               plotpomp(
                        x=X[vv],

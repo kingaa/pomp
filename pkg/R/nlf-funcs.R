@@ -8,7 +8,7 @@ make.lags.NLF <- function(x, lags, cov = NULL, nobs = 10000) {
     warning(" series length truncated to default in make.lags")
   start <- max(lags)+1
   temp <- matrix(0,ncol=xd*length(lags),nrow=n)
-  for (k in 1:length(lags)) {
+  for (k in seq_len(length(lags))) {
     a <- start-lags[k]
     b <- a + n - 1
     temp[,(1:xd)+(k-1)*xd] <- x[(a:b),]
@@ -48,7 +48,7 @@ make.rbfbasis <- function (X, knots, fac) {
   X1 <- X-knots[1]
   nknots <- length(knots)
   if (nknots>1) {
-    for (j in 2:nknots) {
+    for (j in seq(from=2,to=nknots,by=1)) {
       X1 <- cbind(X1,X-knots[j])
     }
   }
@@ -68,7 +68,7 @@ trimr <- function (a,n1,n2) {
 Newey.West <- function(x,y,maxlag) {
   w <- 1-(1:maxlag)/(maxlag+1)
   out <- mean(x*y,na.rm=T)
-  for(i in 1:maxlag) {
+  for (i in seq_len(maxlag)) {
     out <- out+w[i]*mean(trimr(x,i,0)*trimr(y,0,i),na.rm=T)+w[i]*mean(trimr(y,i,0)*trimr(x,0,i),na.rm=T)
   }
   out
@@ -80,9 +80,9 @@ make.tensorbasis.NLF <- function(A,B) {
   ncol.A <- ncol(A)
   ncol.B <- ncol(B)
   Tmat <- matrix(0,nrow(A),ncol.A*ncol.B)
-  for(i in 1:ncol.A) {
+  for (i in seq_len(ncol.A)) {
     start=(i-1)*ncol.B
-    for(j in 1:ncol.B) {
+    for (j in seq_len(ncol.B)) {
       Tmat[,start+j] <- A[,i]*B[,j]
     }
   }

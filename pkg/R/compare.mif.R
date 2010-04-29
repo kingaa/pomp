@@ -27,7 +27,7 @@ compare.mif <- function (z) {
   time <- time(xx)
   while (hi<nplots) {
     hi <- min(low+n.per.page-1,nplots)
-    for (i in low:hi) {
+    for (i in seq(from=low,to=hi,by=1)) {
       n <- i-low+1
       logplot <- if (plotnames[i]%in%lognames) "y" else ""
       dat <- sapply(
@@ -75,7 +75,7 @@ compare.mif <- function (z) {
   iteration <- seq(0,xx@Nmif)
   while (hi<nplots) {
     hi <- min(low+n.per.page-1,nplots)
-    for (i in low:hi) {
+    for (i in seq(from=low,to=hi,by=1)) {
       n <- i-low+1
       dat <- sapply(z,function(po,label) conv.rec(po,label),label=plotnames[i])
       matplot(
