@@ -58,6 +58,8 @@ static int  _pomp_skel_nvar;	// number of state variables
 static int  _pomp_skel_npar;	// number of parameters
 static SEXP _pomp_skel_envir;	// function's environment
 static SEXP _pomp_skel_fcall;	// function call
+static SEXP _pomp_skel_vnames;	// names of state variables
+//static int *_pomp_skel_vindex;	// indices of state variables
 
 #define XVEC    (_pomp_skel_Xvec)
 #define PVEC    (_pomp_skel_Pvec)
@@ -67,6 +69,8 @@ static SEXP _pomp_skel_fcall;	// function call
 #define NPAR    (_pomp_skel_npar)
 #define RHO     (_pomp_skel_envir)
 #define FCALL   (_pomp_skel_fcall)
+#define VNAMES  (_pomp_skel_vnames)
+//#define VINDEX  (_pomp_skel_vindex)
 
 // this is the vectorfield that is evaluated when the user supplies an R function
 // (and not a native routine)
@@ -78,7 +82,9 @@ static void default_skel_fn (double *f, double *x, double *p,
   int nprotect = 0;
   int k;
   double *xp;
-  SEXP ans;
+  SEXP ans, nm, idx;
+  int use_names, *op;
+
   xp = REAL(XVEC);
   for (k = 0; k < NVAR; k++) xp[k] = x[k];
   xp = REAL(PVEC);
@@ -88,12 +94,29 @@ static void default_skel_fn (double *f, double *x, double *p,
   xp = REAL(TIME);
   xp[0] = t;
   PROTECT(ans = eval(FCALL,RHO)); nprotect++; // evaluate the call
+
   if (LENGTH(ans)!=NVAR) {
     UNPROTECT(nprotect);
     error("skeleton error: user 'skeleton' must return a vector of length %d",NVAR);
   }
+
+  PROTECT(nm = GET_NAMES(ans)); nprotect++;
+  use_names = !isNull(nm);
+  if (use_names) {	   // match names against names from data slot
+    PROTECT(idx = matchnames(VNAMES,nm)); nprotect++;
+    op = INTEGER(idx);
+    //    for (k = 0; k < NVAR; k++) VINDEX[k] = op[k];
+    //  } else {
+    //    VINDEX = 0;
+  }
+
   xp = REAL(AS_NUMERIC(ans));
-  for (k = 0; k < NVAR; k++) f[k] = xp[k];
+  if (use_names) {
+    for (k = 0; k < NVAR; k++) f[op[k]] = xp[k];
+  } else {
+    for (k = 0; k < NVAR; k++) f[k] = xp[k];
+  }
+
   UNPROTECT(nprotect);
 }
 
@@ -109,7 +132,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params)
   SEXP tcovar, covar;
   SEXP statenames, paramnames, covarnames;
   SEXP sindex, pindex, cindex;
-  SEXP Xnames, Pnames, Cnames;
+  SEXP Pnames, Cnames;
   pomp_vectorfield_map *ff = NULL;
   int k;
 
@@ -150,7 +173,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params)
   ncovars = LENGTH(covarnames);
 
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
-  PROTECT(Xnames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
+  PROTECT(VNAMES = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
@@ -174,7 +197,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params)
     for (k = 0; k < nvars; k++) xp[k] = 0.0;
     PROTECT(PVEC = NEW_NUMERIC(npars)); nprotect++; // for internal use
     PROTECT(CVEC = NEW_NUMERIC(covdim)); nprotect++; // for internal use
-    SET_NAMES(XVEC,Xnames); // make sure the names attribute is copied
+    SET_NAMES(XVEC,VNAMES); // make sure the names attribute is copied
     SET_NAMES(PVEC,Pnames); // make sure the names attribute is copied
     SET_NAMES(CVEC,Cnames); // make sure the names attribute is copied
     // set up the function call
@@ -192,7 +215,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params)
 
   fdim[0] = nvars; fdim[1] = nreps; fdim[2] = ntimes;
   PROTECT(F = makearray(3,fdim)); nprotect++; 
-  setrownames(F,Xnames,3);
+  setrownames(F,VNAMES,3);
   xp = REAL(F);
   for (k = 0; k < nvars*nreps*ntimes; k++) xp[k] = 0.0;
 

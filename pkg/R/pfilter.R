@@ -20,7 +20,7 @@ pfilter.internal <- function (object, params, Np,
   if (missing(params)) {
     params <- coef(object)
     if (length(params)==0) {
-      stop("pfilter error: ",sQuote("params")," must be supplied",call.=FALSE)
+      stop(sQuote("pfilter")," error: ",sQuote("params")," must be supplied",call.=FALSE)
     }
   }
   if (missing(Np))
@@ -40,7 +40,7 @@ pfilter.internal <- function (object, params, Np,
   }
   paramnames <- rownames(params)
   if (is.null(paramnames))
-    stop("pfilter error: ",sQuote("params")," must have rownames",call.=FALSE)
+    stop(sQuote("pfilter")," error: ",sQuote("params")," must have rownames",call.=FALSE)
 
   x <- init.state(object,params=params)
   statenames <- rownames(x)
@@ -59,9 +59,13 @@ pfilter.internal <- function (object, params, Np,
   if (random.walk) {
     rw.names <- names(.rw.sd)
     if (is.null(rw.names)||!is.numeric(.rw.sd))
-      stop("pfilter error: ",sQuote(".rw.sd")," must be a named vector",call.=FALSE)
+      stop(sQuote("pfilter")," error: ",sQuote(".rw.sd")," must be a named vector",call.=FALSE)
     if (any(!(rw.names%in%paramnames)))
-      stop("pfilter error: the rownames of ",sQuote("params")," must include all of the names of ",sQuote(".rw.sd"),"",call.=FALSE)
+      stop(
+           sQuote("pfilter")," error: the rownames of ",
+           sQuote("params")," must include all of the names of ",
+           sQuote(".rw.sd"),"",call.=FALSE
+           )
     sigma <- .rw.sd
   } else {
     rw.names <- character(0)
@@ -120,7 +124,7 @@ pfilter.internal <- function (object, params, Np,
              silent=FALSE
              )
     if (inherits(X,'try-error'))
-      stop("pfilter error: process simulation error",call.=FALSE)
+      stop(sQuote("pfilter")," error: process simulation error",call.=FALSE)
 
     x[,] <- X                 # ditch the third dimension
     
@@ -134,7 +138,7 @@ pfilter.internal <- function (object, params, Np,
                 silent=FALSE
                 )
       if (inherits(xx,'try-error')) {
-        stop("pfilter error: error in prediction mean computation",call.=FALSE)
+        stop(sQuote("pfilter")," error: error in prediction mean computation",call.=FALSE)
       } else {
         pred.m[,nt] <- xx
       }
@@ -145,7 +149,7 @@ pfilter.internal <- function (object, params, Np,
       problem.indices <- unique(which(!is.finite(x),arr.ind=TRUE)[,1])
       if (length(problem.indices)>0) {
         stop(
-             "pfilter error: non-finite state variable(s): ",
+             sQuote("pfilter")," error: non-finite state variable(s): ",
              paste(rownames(x)[problem.indices],collapse=', '),
              call.=FALSE
              )
@@ -154,7 +158,7 @@ pfilter.internal <- function (object, params, Np,
         problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1])
         if (length(problem.indices)>0) {
           stop(
-               "pfilter error: non-finite parameter(s): ",
+               sQuote("pfilter")," error: non-finite parameter(s): ",
                paste(rw.names[problem.indices],collapse=', '),
                call.=FALSE
                )
@@ -168,7 +172,7 @@ pfilter.internal <- function (object, params, Np,
                 silent=FALSE
                 )
       if (inherits(xx,'try-error')) {
-        stop("pfilter error: error in prediction variance computation",call.=FALSE)
+        stop(sQuote("pfilter")," error: error in prediction variance computation",call.=FALSE)
       } else {
         pred.v[,nt] <- xx
       }
@@ -186,10 +190,10 @@ pfilter.internal <- function (object, params, Np,
                    silent=FALSE
                    )
     if (inherits(weights,'try-error'))
-      stop("pfilter error: error in calculation of weights",call.=FALSE)
+      stop(sQuote("pfilter")," error: error in calculation of weights",call.=FALSE)
     if (any(is.na(weights))) {
       ## problem.indices <- which(is.na(weights))
-      stop("pfilter error: dmeasure returns NA",call.=FALSE)
+      stop(sQuote("pfilter")," error: ",sQuote("dmeasure")," returns NA",call.=FALSE)
     }
 
     ## test for failure to filter
@@ -201,7 +205,7 @@ pfilter.internal <- function (object, params, Np,
         message("filtering failure at time t = ",times[nt+1])
       nfail <- nfail+1
       if (nfail > max.fail)
-        stop('pfilter error: too many filtering failures',call.=FALSE)
+        stop(sQuote("pfilter")," error: too many filtering failures",call.=FALSE)
       loglik[nt] <- log(tol)          # worst log-likelihood
       weights <- rep(1/Np,Np)
       eff.sample.size[nt] <- 0

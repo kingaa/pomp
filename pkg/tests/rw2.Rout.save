@@ -1,5 +1,5 @@
 
-R version 2.9.1 (2009-06-26)
+R version 2.10.1 (2009-12-14)
 Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -245,18 +245,18 @@ function (x, t, params, covars, ...)
 {
     y <- numeric(length = nobs)
     names(y) <- obsnames
-    for (k in 1:nobs) {
+    for (k in seq_len(nobs)) {
         y[k] <- eval(rcalls[[k]], envir = as.list(c(x, params, 
             covars, t = t)))
     }
     y
 }
-<environment: 0x27c8440>
+<environment: 0x189dbb0>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
     f <- 0
-    for (k in 1:nobs) {
+    for (k in seq_len(nobs)) {
         f <- f + eval(dcalls[[k]], envir = as.list(c(y, x, params, 
             covars, t = t)))
     }
@@ -264,7 +264,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x27c8440>
+<environment: 0x189dbb0>
 initializer = 
 function (params, t0, ...) 
 {

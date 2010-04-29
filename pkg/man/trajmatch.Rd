@@ -23,29 +23,31 @@ traj.match(object, start, est, method = "Nelder-Mead", gr = NULL, \dots)
 }
 \details{
   Trajectory matching is accomplished using \code{\link{optim}}.
-  It is assumed that the process model is deterministic.
+  The \code{\link{trajectory}} method is used for this, which in turn uses the \code{skeleton} slot of the \code{pomp} object.
 }
 \examples{
   data(ou2)
   true.p <- c(
-	      alpha.1=0.9,alpha.2=0,alpha.3=0,alpha.4=0.99,
-	      sigma.1=1,sigma.2=0,sigma.3=2,
+	      alpha.1=0.9,alpha.2=0,alpha.3=-0.4,alpha.4=0.99,
+	      sigma.1=2,sigma.2=0.1,sigma.3=2,
 	      tau=1,
               x1.0=50,x2.0=-50
 	      )
   simdata <- simulate(ou2,nsim=1,params=true.p,seed=43553)
   guess.p <- true.p
-  guess.p[grep('sigma',names(guess.p))] <- 0 ## make the process model deterministic
   res <- traj.match(
 		    simdata,
 		    start=guess.p,
-		    est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),
+		    est=c('alpha.1','alpha.3','alpha.4','x1.0','x2.0','tau'),
 		    maxit=2000,
+		    method="Nelder-Mead",
 		    reltol=1e-8
 		    )
+
 }
 \seealso{
   \code{\link{optim}},
+  \code{\link{trajectory}},
   \code{\link{pomp}},
   \code{\link{pomp-class}}
 }

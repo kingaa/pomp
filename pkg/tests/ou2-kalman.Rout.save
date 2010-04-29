@@ -1,6 +1,6 @@
 
-R version 2.8.1 (2008-12-22)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.10.1 (2009-12-14)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -104,7 +104,7 @@ running Kalman filter estimation
 > kalm.fit1 <- optim(p.guess,kalman,object=ou2,params=p.truth,hessian=T)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 37.90149 secs
+Time difference of 17.08114 secs
 > tic <- Sys.time()
 > print(-kalm.fit1$value,digits=4)
 [1] -411.1

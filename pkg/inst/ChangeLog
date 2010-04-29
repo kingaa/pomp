@@ -1,5 +1,26 @@
+2010-04-29  kingaa
+
+	* [r215] R/compare.mif.R, R/mif.R, R/nlf-funcs.R, R/nlf-guts.R,
+	  R/nlf.R, R/pfilter-mif.R, R/pfilter.R, R/plot-pomp.R,
+	  R/pomp-methods.R, R/pomp.R, R/slice.R, R/trajectory-pomp.R,
+	  man/pfilter.Rd: - replace ':' construct with 'seq' and 'seq_len'
+	  throughout
+	  - add 'seed' argument to 'pfilter'
+	* [r214] R/nlf-funcs.R, R/nlf-lql.R, R/nlf-objfun.R, R/nlf.R,
+	  man/dmeasure-pomp.Rd, man/dprocess-pomp.Rd,
+	  man/init.state-pomp.Rd, man/mif-class.Rd, man/nlf.Rd,
+	  man/particles-mif.Rd, man/pomp-class.Rd, man/rmeasure-pomp.Rd,
+	  man/rprocess-pomp.Rd, man/skeleton-pomp.Rd: - nlf now takes an
+	  optional argument 'transform' which transforms the data before
+	  fitting
+	  - the low-level interface documentation now has keyword
+	  'internal' which keeps it out of the manual
+
 2010-04-07  kingaa
 
+	* [r213] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - version 0.28-3
 	* [r212] man/LondonYorke.Rd: - improve documentation slightly
 
 2010-04-06  kingaa

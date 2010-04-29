@@ -56,6 +56,17 @@ simulate(
               },
               dmeasure = "normal_dmeasure",
               rmeasure = "normal_rmeasure",
+              skeleton.map = function (x, t, params, ...) {
+                with(
+                     as.list(c(x,params)),
+                     {
+                       c(
+                         x1=alpha.1*x1+alpha.3*x2,
+                         x2=alpha.2*x1+alpha.4*x2
+                         )
+                     }
+                     )
+              },
               paramnames = c(
                 "alpha.1","alpha.2","alpha.3","alpha.4",
                 "sigma.1","sigma.2","sigma.3",
