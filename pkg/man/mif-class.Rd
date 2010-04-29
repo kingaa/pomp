@@ -1,6 +1,7 @@
 \name{mif-class}
 \docType{class}
 \alias{mif-class}
+\keyword{internal}
 \title{The "mif" class}
 \description{
   The \code{mif} class holds a fitted model and is created by a call to \code{\link{mif}}.

@@ -65,7 +65,7 @@ trimr <- function (a,n1,n2) {
   }
 }
 
-Newey.West <-function(x,y,maxlag) {
+Newey.West <- function(x,y,maxlag) {
   w <- 1-(1:maxlag)/(maxlag+1)
   out <- mean(x*y,na.rm=T)
   for(i in 1:maxlag) {
@@ -75,16 +75,16 @@ Newey.West <-function(x,y,maxlag) {
 } 
 
 
-make.tensorbasis.NLF=function(A,B) {
-	if(nrow(A)!=nrow(B)) stop("Incompatible matrices in make.tensorbasis"); 
-	ncol.A=ncol(A)
-	ncol.B=ncol(B)
-	Tmat=matrix(0,nrow(A),ncol.A*ncol.B)
-	for(i in 1:ncol.A) {
-		start=(i-1)*ncol.B
-		for(j in 1:ncol.B) {
-			Tmat[,start+j]=A[,i]*B[,j]
-		}
-	}
-	return(Tmat)
+make.tensorbasis.NLF <- function(A,B) {
+  if(nrow(A)!=nrow(B)) stop("Incompatible matrices in make.tensorbasis")
+  ncol.A <- ncol(A)
+  ncol.B <- ncol(B)
+  Tmat <- matrix(0,nrow(A),ncol.A*ncol.B)
+  for(i in 1:ncol.A) {
+    start=(i-1)*ncol.B
+    for(j in 1:ncol.B) {
+      Tmat[,start+j] <- A[,i]*B[,j]
+    }
+  }
+  Tmat
 }

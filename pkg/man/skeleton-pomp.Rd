@@ -3,7 +3,7 @@
 \alias{skeleton}
 \alias{skeleton,pomp-method}
 \alias{skeleton-pomp}
-
+\keyword{internal}
 \title{Evaluate the deterministic skeleton at the given points in state space.}
 \description{
   The method \code{skeleton} computes the deterministic skeleton.

@@ -3,6 +3,7 @@
 \alias{dprocess}
 \alias{dprocess,pomp-method}
 \alias{dprocess-pomp}
+\keyword{internal}
 \title{
   Evaluate the probability density of state transitions in a Markov process
 }

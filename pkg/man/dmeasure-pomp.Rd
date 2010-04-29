@@ -3,6 +3,7 @@
 \alias{dmeasure}
 \alias{dmeasure,pomp-method}
 \alias{dmeasure-pomp}
+\keyword{internal}
 \title{Evaluate the probability density of observations given underlying states in a partially-observed Markov process}
 \description{
   The method \code{dmeasure} evaluates the probability density of a set of measurements given the state of the system.

@@ -7,8 +7,8 @@
 }
 \usage{
  nlf(object, start, est, lags, period = NA, tensor = FALSE,
-     nconverge=1000, nasymp=1000, seed = 1066, nrbf = 4,
-     method = "subplex", skip.se = FALSE, verbose = FALSE, gr = NULL,
+     nconverge=1000, nasymp=1000, seed = 1066, transform = function (x) x,
+     nrbf = 4, method = "subplex", skip.se = FALSE, verbose = FALSE, gr = NULL,
      bootstrap=FALSE, bootsamp = NULL,
      lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE, \dots)
 }
@@ -45,6 +45,14 @@
     Integer specifying the random number seed to use.
     When fitting, it is usually best to always run the simulations with the same sequence of random numbers, which is accomplished by setting \code{seed} to an integer.
     If you want a truly random simulation, set \code{seed=NULL}.
+  }
+  \item{transform}{
+    optional function.
+    If specified, forecasting is performed using data and model simulations transformed by this function.
+    By default, \code{transform} is the identity function.
+    The main purpose of \code{transform} is to achieve approximately multivariate normal forecasting errors.
+    If data are univariate, \code{transform} should take a scalar and return a scalar.
+    If data are multivariate, \code{transform} should assume a vector input and return a vector of the same length.
   }
   \item{nrbf}{A scalar specifying the number of radial basis functions to be used at each lag.}
   \item{method}{

@@ -3,6 +3,7 @@
 \alias{rmeasure}
 \alias{rmeasure,pomp-method}
 \alias{rmeasure-pomp}
+\keyword{internal}
 \title{Simulate the measurement model of a partially-observed Markov process}
 \description{
   The method \code{rmeasure} draws from the distribution of measurements given the state of the system.

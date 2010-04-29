@@ -3,7 +3,7 @@
 \alias{rprocess}
 \alias{rprocess,pomp-method}
 \alias{rprocess-pomp}
-
+\keyword{internal}
 \title{Simulate the process model of a partially-observed Markov process}
 \description{
   The method \code{rprocess} runs simulations of the the process-model portion of partially-observed Markov process.

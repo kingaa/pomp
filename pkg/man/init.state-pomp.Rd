@@ -3,6 +3,7 @@
 \alias{init.state}
 \alias{init.state,pomp-method}
 \alias{init.state-pomp}
+\keyword{internal}
 \title{Return a matrix of initial conditions given a vector of parameters and an initial time.}
 \description{
   The method \code{init.state} returns a vector of initial conditions for the state process when given a vector of parameters \code{params} and an initial time \code{t0}.

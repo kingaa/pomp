@@ -1,7 +1,8 @@
 \name{pomp-class}
 \docType{class}
 \alias{pomp-class}
-\title{Partially-observed Markov process}
+\keyword{internal}
+\title{Partially-observed Markov process class}
 \description{
   The class \code{pomp} encodes a partially-observed Markov process.
   This page documents the structure of the class:

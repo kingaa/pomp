@@ -3,6 +3,7 @@
 \alias{particles}
 \alias{particles,mif-method}
 \alias{particles-mif}
+\keyword{internal}
 \title{Generate particles from the user-specified distribution.}
 \description{
   Generate particles from the user-specified distribution.
