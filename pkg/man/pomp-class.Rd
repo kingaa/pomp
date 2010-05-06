@@ -63,6 +63,9 @@
       A list containing any objects the user desires.
       Using this mechanism, the user can store additional information necessary for the definition of the model.
     }
+    \item{call}{
+      The call that created the \code{pomp} object.
+    }
   }
 }
 \section{Methods}{

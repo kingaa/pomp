@@ -94,8 +94,8 @@ pfilter(object, \dots)
     If the argument \code{seed} was specified, this is a copy;
     if not, this is the internal state of the random number generator at the time of call.
   }
-  \item{nfail}{
-    The number of filtering failures encountered.
+  \item{Np, tol, nfail}{
+    The number of particles used, failure tolerance, and number of filtering failures, respectively.
   }
   \item{loglik}{
     The estimated log-likelihood.

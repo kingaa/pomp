@@ -261,6 +261,8 @@ pfilter.internal <- function (object, params, Np,
        cond.loglik=loglik,
        states=xparticles,
        seed=seed,
+       Np=Np,
+       tol=tol,
        nfail=nfail,
        loglik=sum(loglik)
        )

@@ -144,6 +144,7 @@ Loading required package: mvtnorm
 +            )
 > 
 > show(po)
+data and states:
           time measles
 1   0.01923077       0
 2   0.03846154       0
@@ -353,6 +354,71 @@ Loading required package: mvtnorm
 206 3.96153846       0
 207 3.98076923       0
 208 4.00000000       0
+
+call:
+pomp(data = rbind(measles = numeric(52 * 4)), times = 1/52 * 
+    seq.int(length = 4 * 52), t0 = 0, delta.t = 1/52/20, zeronames = c("cases"), 
+    step.fun = function(t, x, params, covars, delta.t, ...) {
+        params <- exp(params)
+        with(as.list(c(x, params)), {
+            beta <- exp(sum(log(c(beta1, beta2, beta3)) * covars))
+            beta.var <- beta.sd^2
+            dW <- rgamma(n = 1, shape = delta.t/beta.var, scale = beta.var)
+            foi <- (iota + beta * I * dW/delta.t)/pop
+            trans <- c(rpois(n = 1, lambda = mu * pop * delta.t), 
+                reulermultinom(n = 1, size = S, rate = c(foi, 
+                  mu), dt = delta.t), reulermultinom(n = 1, size = I, 
+                  rate = c(gamma, mu), dt = delta.t), reulermultinom(n = 1, 
+                  size = R, rate = c(mu), dt = delta.t))
+            c(S = S + trans[1] - trans[2] - trans[3], I = I + 
+                trans[2] - trans[4] - trans[5], R = R + trans[4] - 
+                trans[6], cases = cases + trans[4], W = if (beta.sd > 
+                0) W + (dW - delta.t)/beta.sd else W, B = trans[1], 
+                SI = trans[2], SD = trans[3], IR = trans[4], 
+                ID = trans[5], RD = trans[6], dW = dW)
+        })
+    }, dens.fun = function(t1, t2, params, x1, x2, covars, ...) {
+        params <- exp(params)
+        with(as.list(params), {
+            dt <- t2 - t1
+            beta <- exp(sum(log(c(beta1, beta2, beta3)) * covars))
+            beta.var <- beta.sd^2
+            dW <- x2["dW"]
+            foi <- (iota + beta * x1["I"] * dW/dt)/pop
+            probs <- c(dpois(x = x2["B"], lambda = mu * pop * 
+                dt, log = T), deulermultinom(x = x2[c("SI", "SD")], 
+                size = x1["S"], rate = c(foi, mu), dt = dt, log = T), 
+                deulermultinom(x = x2[c("IR", "ID")], size = x1["I"], 
+                  rate = c(gamma, mu), dt = dt, log = T), deulermultinom(x = x2["RD"], 
+                  size = x1["R"], rate = c(mu), dt = dt, log = T), 
+                dgamma(x = dW, shape = dt/beta.var, scale = beta.var, 
+                  log = T))
+            sum(probs)
+        })
+    }, rprocess = euler.simulate, dprocess = onestep.density, 
+    measurement.model = measles ~ binom(size = cases, prob = exp(rho)), 
+    skeleton.vectorfield = function(x, t, params, covars, ...) {
+        xdot <- rep(0, length(x))
+        params <- exp(params)
+        with(as.list(c(x, params)), {
+            beta <- exp(sum(log(c(beta1, beta2, beta3)) * covars))
+            foi <- (iota + beta * I)/pop
+            terms <- c(mu * pop, foi * S, mu * S, gamma * I, 
+                mu * I, mu * R)
+            xdot[1:4] <- c(terms[1] - terms[2] - terms[3], terms[2] - 
+                terms[4] - terms[5], terms[4] - terms[6], terms[4])
+            xdot
+        })
+    }, initializer = function(params, t0, ...) {
+        p <- exp(params)
+        with(as.list(p), {
+            fracs <- c(S.0, I.0, R.0)
+            x0 <- c(round(pop * fracs/sum(fracs)), rep(0, 9))
+            names(x0) <- c("S", "I", "R", "cases", "W", "B", 
+                "SI", "SD", "IR", "ID", "RD", "dW")
+            x0
+        })
+    }, covar = basis, tcovar = tbasis)
 zero time, t0 = 0
 parameter(s) unspecified
 process model simulator, rprocess = 
@@ -423,7 +489,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x325f890>
+<environment: 0x116d468>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -436,7 +502,22 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x325f890>
+<environment: 0x116d468>
+skeleton ( vectorfield ) = 
+function (x, t, params, covars, ...) 
+{
+    xdot <- rep(0, length(x))
+    params <- exp(params)
+    with(as.list(c(x, params)), {
+        beta <- exp(sum(log(c(beta1, beta2, beta3)) * covars))
+        foi <- (iota + beta * I)/pop
+        terms <- c(mu * pop, foi * S, mu * S, gamma * I, mu * 
+            I, mu * R)
+        xdot[1:4] <- c(terms[1] - terms[2] - terms[3], terms[2] - 
+            terms[4] - terms[5], terms[4] - terms[6], terms[4])
+        xdot
+    })
+}
 initializer = 
 function (params, t0, ...) 
 {
@@ -507,7 +588,7 @@ function (t1, t2, params, x1, x2, covars, ...)
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.060826 secs
+Time difference of 4.335154 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -524,7 +605,7 @@ Time difference of 2.060826 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 4.699151 secs
+Time difference of 10.29815 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -584,7 +665,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.14945 secs
+Time difference of 8.903283 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -592,7 +673,7 @@ Time difference of 2.14945 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.734072 secs
+Time difference of 1.693917 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(

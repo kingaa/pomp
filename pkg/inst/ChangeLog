@@ -1,5 +1,8 @@
 2010-04-29  kingaa
 
+	* [r218] tests/pfilter.R, tests/pfilter.Rout.save: - tests for
+	  'pfilter'
+	* [r217] inst/ChangeLog: - version 0.28-4
 	* [r216] DESCRIPTION, R/pfilter.R, R/trajmatch.R,
 	  data/euler.sir.rda, data/ou2.rda, data/rw2.rda,
 	  data/verhulst.rda, inst/ChangeLog, inst/data-R/ou2.R,

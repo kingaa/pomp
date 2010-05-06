@@ -34,7 +34,8 @@ setClass(
                         paramnames = 'character',
                         covarnames = 'character',
                         PACKAGE = 'character',
-                        userdata = 'list'
+                        userdata = 'list',
+                        call = "call"
                         )
          )
 

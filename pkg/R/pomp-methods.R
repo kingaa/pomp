@@ -157,7 +157,10 @@ setMethod(
           'print',
           'pomp',
           function (x, ...) {
+            cat("data and states:\n")
             print(as(x,'data.frame'))
+            cat("\ncall:\n")
+            print(x@call)
             invisible(x)
           }
           )
@@ -175,31 +178,23 @@ setMethod(
               cat ("parameter(s) unspecified\n");
             }
             cat("process model simulator, rprocess = \n")
-            print(object@rprocess)
+            show(object@rprocess)
             cat("process model density, dprocess = \n")
-            print(object@dprocess)
+            show(object@dprocess)
             cat("measurement model simulator, rmeasure = \n")
-            if (object@rmeasure@use==2) {
-              cat("native function, '",object@rmeasure@native.fun,"'",sep="")
-              if (length(object@rmeasure@PACKAGE)>0)
-                cat(", PACKAGE = '",object@rmeasure@PACKAGE,"'",sep="")
-              cat ("\n")
-            } else {
-              print(object@rmeasure@R.fun)
-            }
+            show(object@rmeasure)
             cat("measurement model density, dmeasure = \n")
-            if (object@dmeasure@use==2) {
-              cat("native function, '",object@dmeasure@native.fun,"'",sep="")
-              if (length(object@dmeasure@PACKAGE)>0)
-                cat(", PACKAGE = '",object@dmeasure@PACKAGE,"'",sep="")
-              cat ("\n")
-            } else {
-              print(object@dmeasure@R.fun)
+            show(object@dmeasure)
+            if (!is.na(object@skeleton.type)) {
+              cat("skeleton (",object@skeleton.type,") = \n")
+              show(object@skeleton)
             }
             cat("initializer = \n")
-            print(object@initializer)
-            cat("userdata = \n")
-            show(object@userdata)
+            show(object@initializer)
+            if (length(object@userdata)>0) {
+              cat("userdata = \n")
+              show(object@userdata)
+            }
             invisible(NULL)
           }
           )

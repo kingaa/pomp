@@ -105,6 +105,7 @@ Loading required package: mvtnorm
 +             )
 > 
 > show(rw2)
+data and states:
     time y1 y2
 1      1  0  0
 2      2  0  0
@@ -206,6 +207,12 @@ Loading required package: mvtnorm
 98    98  0  0
 99    99  0  0
 100  100  0  0
+
+call:
+pomp(data = rbind(y1 = rep(0, 100), y2 = rep(0, 100)), times = 1:100, 
+    t0 = 0, useless = 23, rprocess = rw.rprocess, dprocess = rw.dprocess, 
+    measurement.model = list(y1 ~ norm(mean = x1, sd = tau), 
+        y2 ~ norm(mean = x2, sd = tau)), initializer = bad.initializer)
 zero time, t0 = 0
 parameter(s) unspecified
 process model simulator, rprocess = 
@@ -251,7 +258,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x189dbb0>
+<environment: 0x160cbd8>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -264,7 +271,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x189dbb0>
+<environment: 0x160cbd8>
 initializer = 
 function (params, t0, ...) 
 {
