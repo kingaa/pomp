@@ -1,8 +1,8 @@
 \name{euler}
-\alias{euler}
 \alias{euler.simulate}
 \alias{onestep.simulate}
 \alias{onestep.density}
+\keyword{internal}
 \title{Plug-ins for dynamical models based on stochastic Euler algorithms}
 \description{
   Plug-in facilities for implementing discrete-time Markov processes and continuous-time Markov processes using the Euler algorithm.
