@@ -75,9 +75,10 @@ simulate(
               statenames = c("x1","x2")
               ),
          params=c(
-           alpha.1=0.9,alpha.2=0,alpha.3=0,alpha.4=0.99,
-           sigma.1=1,sigma.2=0,sigma.3=2,
-           tau=1,x1.0=50,x2.0=-50
+           alpha.1=0.8, alpha.2=-0.5, alpha.3=0.3, alpha.4=0.9,
+           sigma.1=3, sigma.2=-0.5, sigma.3=2,
+           tau=1, 
+           x1.0=-3, x2.0=4
            ),
          nsim=1,
          seed=377456545L

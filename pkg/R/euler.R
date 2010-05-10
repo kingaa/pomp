@@ -6,6 +6,7 @@ onestep.simulate <- function (xstart, times, params,
                               zeronames = character(0),
                               tcovar, covar, PACKAGE)
 {
+  .Deprecated(new="onestep.sim",package="pomp")
   if (is.character(step.fun)) {
     efun <- try(
                 getNativeSymbolInfo(step.fun,PACKAGE)$address,
@@ -48,6 +49,7 @@ euler.simulate <- function (xstart, times, params,
                             zeronames = character(0),
                             tcovar, covar, PACKAGE)
 {
+  .Deprecated(new="euler.sim",package="pomp")
   if (is.character(step.fun)) {
     efun <- try(
                 getNativeSymbolInfo(step.fun,PACKAGE)$address,
@@ -90,6 +92,7 @@ onestep.density <- function (x, times, params,
                              tcovar, covar, log = FALSE,
                              PACKAGE)
 {
+  .Deprecated(new="onestep.dens",package="pomp")
   if (is.character(dens.fun)) {
     efun <- try(
                 getNativeSymbolInfo(dens.fun,PACKAGE)$address,

@@ -1,3 +1,11 @@
+NEW IN VERSION 0.29-1:
+
+    o  big improvements to the documentation, including worked examples in vignettes.
+
+    o  encoding models is now much easier through the use of "plugin" modules.
+
+    o  several example pomps are now loadable via the data() command.
+
 NEW IN VERSION 0.22-1:
     
     o  the nonlinear forecasting method of Kendall, Ellner, et al. is now implemented in the package.  This is an "indirect inference" method using quasi-likelihood as an objective function.

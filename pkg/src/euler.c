@@ -267,20 +267,12 @@ SEXP euler_model_simulator (SEXP func,
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
-  if (inherits(func,"NativeSymbol")) {
-    use_native = 1;
-  } else if (isFunction(func)) {
-    use_native = 0;
-  } else {
-    UNPROTECT(nprotect);
-    error("illegal input: supplied function must be either an R function or a compiled native function");
-  }
-    
+  PROTECT(fn = pomp_fun_handler(func,&use_native)); nprotect++;
+
   if (use_native) {
-    ff = (pomp_onestep_sim *) R_ExternalPtrAddr(func);
+    ff = (pomp_onestep_sim *) R_ExternalPtrAddr(fn);
     VINDEX = 0;
   } else {
-    PROTECT(fn = func); nprotect++;
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
     NVAR = nvar;			// for internal use
     NPAR = npar;			// for internal use
@@ -495,6 +487,7 @@ SEXP euler_model_density (SEXP func,
   SEXP F, pindex, sindex, cindex;
   int *pidx, *sidx, *cidx;
   SEXP fn, Xnames, Pnames, Cnames;
+  int use_native;
 
   dim = INTEGER(GET_DIM(x)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
@@ -505,10 +498,11 @@ SEXP euler_model_density (SEXP func,
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
-  if (inherits(func,"NativeSymbol")) {
-    ff = (pomp_onestep_pdf *) R_ExternalPtrAddr(func);
-  } else if (isFunction(func)) {
-    PROTECT(fn = func); nprotect++;
+  PROTECT(fn = pomp_fun_handler(func,&use_native)); nprotect++;
+
+  if (use_native) {
+    ff = (pomp_onestep_pdf *) R_ExternalPtrAddr(fn);
+  } else {
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
     NVAR = nvar;			// for internal use
     NPAR = npar;			// for internal use
@@ -537,9 +531,6 @@ SEXP euler_model_density (SEXP func,
     SET_TAG(FCALL,install("x1"));
     PROTECT(FCALL = LCONS(fn,FCALL)); nprotect++;
     ff = (pomp_onestep_pdf *) default_onestep_dens_fn;
-  } else {
-    UNPROTECT(nprotect);
-    error("illegal input: supplied function must be either an R function or a compiled native function");
   }
 
   fdim[0] = nrep; fdim[1] = ntimes-1;

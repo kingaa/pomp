@@ -5,7 +5,6 @@ simulate(
               times=seq(1/52,4,by=1/52),
               data=rbind(measles=numeric(52*4)),
               t0=0,
-              delta.t=1/52/20,
               statenames=c("S","I","R","cases","W"),
               paramnames=c(
                 "gamma","mu","iota",
@@ -14,8 +13,11 @@ simulate(
                 ),
               zeronames=c("cases"),
               comp.names=c("S","I","R"),
-              step.fun="sir_euler_simulator",
-              rprocess=euler.simulate,
+              rprocess=euler.sim(
+                step.fun="sir_euler_simulator",
+                delta.t=1/52/20,
+                PACKAGE="pomp"
+                ),
               skeleton.vectorfield="sir_ODE",
               rmeasure="binom_rmeasure",
               dmeasure="binom_dmeasure",

@@ -22,33 +22,35 @@ po <- pomp(
            t0=0,
            tcovar=tbasis,
            covar=basis,
-           delta.t=1/52/20,
            zeronames=c("cases"),
-           step.fun=function(t,x,params,covars,delta.t,...) {
-             params <- exp(params)
-             with(
-                  as.list(c(x,params)),
-                  {
-                    beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
-                    beta.var <- beta.sd^2
-                    dW <- rgamma(n=1,shape=delta.t/beta.var,scale=beta.var)
-                    foi <- (iota+beta*I*dW/delta.t)/pop
-                    trans <- c(
-                               rpois(n=1,lambda=mu*pop*delta.t),
-                               reulermultinom(n=1,size=S,rate=c(foi,mu),dt=delta.t),
-                               reulermultinom(n=1,size=I,rate=c(gamma,mu),dt=delta.t),
-                               reulermultinom(n=1,size=R,rate=c(mu),dt=delta.t)
-                               )
-                    c(
-                      S=S+trans[1]-trans[2]-trans[3],
-                      I=I+trans[2]-trans[4]-trans[5],
-                      R=R+trans[4]-trans[6],
-                      cases=cases+trans[4],
-                      W=if (beta.sd>0) W+(dW-delta.t)/beta.sd else W
-                      )
-                  }
-                  )
-           },
+           rprocess=euler.sim(
+             step.fun=function(t,x,params,covars,delta.t,...) {
+               params <- exp(params)
+               with(
+                    as.list(c(x,params)),
+                    {
+                      beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
+                      beta.var <- beta.sd^2
+                      dW <- rgamma(n=1,shape=delta.t/beta.var,scale=beta.var)
+                      foi <- (iota+beta*I*dW/delta.t)/pop
+                      trans <- c(
+                                 rpois(n=1,lambda=mu*pop*delta.t),
+                                 reulermultinom(n=1,size=S,rate=c(foi,mu),dt=delta.t),
+                                 reulermultinom(n=1,size=I,rate=c(gamma,mu),dt=delta.t),
+                                 reulermultinom(n=1,size=R,rate=c(mu),dt=delta.t)
+                                 )
+                      c(
+                        S=S+trans[1]-trans[2]-trans[3],
+                        I=I+trans[2]-trans[4]-trans[5],
+                        R=R+trans[4]-trans[6],
+                        cases=cases+trans[4],
+                        W=if (beta.sd>0) W+(dW-delta.t)/beta.sd else W
+                        )
+                    }
+                    )
+             },
+             delta.t=1/52/20
+             ),
            skeleton.vectorfield=function(x,t,params,covars,...) {
              params <- exp(params)
              with(
@@ -74,7 +76,6 @@ po <- pomp(
                   }
                   )
            },
-           rprocess=euler.simulate,
            measurement.model=measles~binom(size=cases,prob=exp(rho)),
            initializer=function(params,t0,...){
              p <- exp(params)
@@ -94,11 +95,12 @@ po <- pomp(
            )
 
 ## alternatively, one can define the computationally intensive bits using native routines:
-## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "euler_sir.c")
+## the C codes "sir_euler_simulator", "sir_ODE", "binom_rmeasure", and "binom_dmeasure"
+## are included in the "examples" directory (file "sir.c")
 
 if (Sys.info()['sysname']=='Linux') {
 
-  model <- "euler_sir"
+  model <- "sir"
   pkg <- "pomp"
   modelfile <- paste(model,".c",sep="")
   headerfile <- system.file("include/pomp.h",package=pkg)
@@ -118,16 +120,17 @@ if (Sys.info()['sysname']=='Linux') {
              times=seq(1/52,4,by=1/52),
              data=rbind(measles=numeric(52*4)),
              t0=0,
-             delta.t=1/52/20,
              statenames=c("S","I","R","cases","W"),
              paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho","nbasis","degree","period"),
              zeronames=c("cases"),
-             step.fun="sir_euler_simulator",
-             rprocess=euler.simulate,
+             rprocess=euler.sim(
+               step.fun="sir_euler_simulator",
+               delta.t=1/52/20
+               ),
              skeleton.vectorfield="sir_ODE",
              rmeasure="binom_rmeasure",
              dmeasure="binom_dmeasure",
-             PACKAGE="euler_sir", ## name of the shared-object library
+             PACKAGE="sir", ## name of the shared-object library
              initializer=function(params,t0,...){
                p <- exp(params)
                with(
