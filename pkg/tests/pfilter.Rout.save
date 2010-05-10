@@ -25,11 +25,11 @@ Loading required package: mvtnorm
 > pf <- pfilter(ou2,Np=1000,seed=343439L)
 > print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
    x1.0    x2.0 alpha.1 alpha.4 
-  50.00  -50.00    0.90    0.99 
+   -3.0     4.0     0.8     0.9 
 > cat("particle filter log likelihood at truth\n")
 particle filter log likelihood at truth
 > print(pf$loglik,digits=4)
-[1] -412.8
+[1] -481.1
 > 
 > data(euler.sir)
 > pf <- pfilter(euler.sir,Np=200,seed=394343L)

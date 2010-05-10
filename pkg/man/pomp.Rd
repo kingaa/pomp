@@ -14,7 +14,7 @@
   \item{data}{
     An array holding the data.
     This array is of dimensions \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observed variables and \code{ntimes} is the number of times at which observations were made.
-    It is also possible to specify \code{data} as a data-frame, in which case the argument \code{times} must be the name of the column of observation times.
+    One can also specify \code{data} as a data-frame, in which case the argument \code{times} must be the name of the column of observation times.
     Note that if \code{data} is a data-frame, it will be internally coerced to an array with storage-mode \sQuote{double}.
   }
   \item{times}{
@@ -25,60 +25,62 @@
   \item{t0}{
     The zero-time.
     This must be no later than the time of the first observation, \code{times[1]}.
+    The stochastic dynamical system is initialized at time \code{t0}.
   }
   \item{rprocess}{
     optional; a function of prototype \code{rprocess(xstart,times,params,\dots)} that simulates from the unobserved process.
+    The easiest way to specify \code{rprocess} is to use one of the \code{\link{plugins}} provided as part of the \pkg{pomp} package.
     See below for details.
   }
   \item{dprocess}{
     optional; a function of prototype \code{dprocess(x,times,params,log,\dots)} that evaluates the likelihood of a sequence of consecutive state transitions.
+    The easiest way to specify \code{dprocess} is to use one of the \code{\link{plugins}} provided as part of the \pkg{pomp} package.
+    It is not typically necessary (or even feasible) to define \code{dprocess}.
     See below for details.
   }
   \item{rmeasure}{
-    optional; the measurement model simulator.
+    optional function; the measurement model simulator.
     This can be specified in one of three ways:
     (1) as a function of prototype \code{rmeasure(x,t,params,\dots)} that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_simulator} as defined in the header file \dQuote{pomp.h}.
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_simulator} as defined in the header file \dQuote{examples/pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
     (3) using the formula-based \code{measurement.model} facility (see below).
   }
   \item{dmeasure}{
-    optional; the measurement model probability density function.
+    optional function; the measurement model probability density function.
     This can be specified in one of three ways:
     (1) as a function of prototype \code{dmeasure(y,x,t,params,log,\dots)} that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_density} as defined in the header file \dQuote{pomp.h}.
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_density} as defined in the header file \dQuote{examples/pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
     (3) using the formula-based \code{measurement.model} facility (see below).
     As might be expected, if \code{log=TRUE}, this function should return the log likelihood.
   }
   \item{measurement.model}{
-    optional; a formula or list of formulae, specifying the measurement model.
-    These formulae are parsed and used to generate \code{rmeasure} and \code{dmeasure} functions.
+    optional formula; a formula or list of formulae, specifying the measurement model.
+    These formulae are parsed internally and used to generate \code{rmeasure} and \code{dmeasure} functions.
     If \code{measurement.model} is given it overrides any specification of \code{rmeasure} or \code{dmeasure}.
     See below for an example.
     \strong{NB:} it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
   }
-  \item{skeleton.map}{
-    optional.
-    If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map and can be specified using \code{skeleton.map} in one of two ways:
+  \item{skeleton.map, skeleton.vectorfield}{
+    optional functions.
+    If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map and can be specified using \code{skeleton.map}.
+    If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield and can be specified using \code{skeleton.vectorfield}.
+    In either event, the skeleton function can be specified in one of two ways:
     (1) as a function of prototype \code{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
     (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_vectorfield_map} as defined in the header file \dQuote{pomp.h}.
     If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
-  }
-  \item{skeleton.vectorfield}{
-    optional.
-    If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield and can be specified using \code{skeleton.vectorfield} in either of the two ways described above, under \code{skeleton.map}.
-    Note that it makes no sense to specify the deterministic skeleton both as a map and as a vectorfield: an attempt to do so will generate an error.
+    A dynamical system cannot be both discrete and continuous, so specifying both \code{skeleton.map} and \code{skeleton.vectorfield} generates an error.
   }
   \item{initializer}{
-    optional; a function of prototype \code{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
-    By default, i.e., if it is unspecified when \code{pomp} is called, the initializer assumes any names in \code{params} that end in \dQuote{.0} correspond to initial value parameters.
+    optional function of prototype \code{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
+    By default (i.e., if it is unspecified when \code{pomp} is called), the initializer assumes any parameters in \code{params} the names of which end in \dQuote{\code{.0}} are initial values.
     These are simply copied over as initial conditions when \code{init.state} is called (see \code{\link{init.state-pomp}}).
-    The names of the state variables are the same as the corresponding initial value parameters, but with the \dQuote{.0} dropped.
+    The names of the state variables are the same as the corresponding initial value parameters, but with the \dQuote{\code{.0}} dropped.
   }
   \item{covar, tcovar}{
     An optional table of covariates: \code{covar} is the table (with one column per variable) and \code{tcovar} the corresponding times (one entry per row of \code{covar}).
-    This can be in the form of a matrix or a data frame.
+    \code{covar} can be specified as either a matrix or a data frame.
     In either case the columns are taken to be distinct covariates.
     If \code{covar} is a data frame, \code{tcovar} can be either the name or the index of the time variable.
     If a covariate table is supplied, then the value of each of the covariates is interpolated as needed, i.e., whenever \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, or \code{init.state} is evaluated.
@@ -88,9 +90,10 @@
     Optional character vectors specifying the names of state variables, parameters, or covariates, respectively.
     These are only used in the event that one or more of the basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}) are defined using native routines.
     In that case, these name vectors are matched against the corresponding names and the indices of the names are passed to the native routines.
+    Using this facility allows one to write one or more of \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton} in native code in a way that does not depend on the order of states, parameters, and covariates at run time.
   }
   \item{PACKAGE}{
-    An optional string giving the name of the dynamically loaded library in which the native routines are to be found.
+    An optional string giving the name of the dynamically loaded library in which any native routines are to be found.
   }
   \item{\dots}{
     Any additional arguments are passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.
@@ -98,14 +101,17 @@
 }
 \details{
   \strong{
-    It is not typically necessary (or easy) to define all of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} in any given problem.
+    It is not typically necessary (or desirable, or even feasible) to define all of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{skeleton} in any given problem.
     Each algorithm makes use of a different subset of these functions.
   }
-  The specification of process-model codes \code{rprocess} and/or \code{dprocess} can be somewhat nontrivial:
-  for this reason, \emph{plug-ins} have been developed to streamline this process for the user.
-  At present, if the process model evolves in discrete-time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{onestep.simulate}} and \code{\link{euler.simulate}} plug-ins for \code{rprocess} and \code{\link{onestep.density}} plug-in for \code{dprocess} are available.
-  The following describes how each of these functions should be written.
-  Examples are provided in the help documentation and the vignettes.
+  In general, the specification of process-model codes \code{rprocess} and/or \code{dprocess} can be somewhat nontrivial:
+  for this reason, \code{\link{plugins}} have been developed to streamline this process for the user.
+  Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{euler.sim}} or \code{\link{onestep.sim}} plugin for \code{rprocess} and \code{\link{onestep.dens}} plugin for \code{dprocess} are available.
+  For exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm is available (see \code{\link{gillespie.sim}}).
+  To use the plugins, consult the help documentation (\code{?\link{plugins}}) and the vignettes.
+
+  It is anticipated that in specific cases, it may be possible to obtain increased computational efficiency by writing custom versions of \code{rprocess} and/or \code{dprocess}.
+  The following describes how each of these functions should be written in this case.
   \describe{
     \item{\code{rprocess}}{
       if provided, must have at least the following arguments:
@@ -126,8 +132,6 @@
       In particular, \code{x[,,1]} must be identical to \code{xstart}.
       The rownames of \code{x} must correspond to those of \code{xstart}.
       
-      As mentioned above, some plug-ins are available for \code{rprocess}.
-
       At present, the following methods make use of \code{rprocess}:
       \itemize{
 	\item \code{\link[=simulate-pomp]{simulate}}
@@ -152,8 +156,6 @@
       Then \code{dim(d)=c(nreps,ntimes-1)}.
       \code{d[j,k]} is the probability density of the transition from state \code{x[,j,k-1]} at time \code{times[k-1]} to state \code{x[,j,k]} at time \code{times[k]}.
       If \code{log=TRUE}, then the log of the pdf is returned.
-
-      As mentioned above, some plug-ins are available for \code{dprocess}.
 
       \strong{In writing this function, you may assume that the transitions are consecutive.}
       It should be quite clear that, but for this assumption, it would be quite difficult in general to write the transition probabilities.
@@ -223,113 +225,17 @@
 }
 \value{An object of class \code{pomp}.}
 \examples{
-## Simple example: a 2-D Brownian motion, observed with normal error
-## first, set up the pomp object:
-
-rw2 <- pomp(
-            rprocess = function (xstart, times, params, ...) { 
-              ## this function simulates two independent random walks with intensities s1, s2
-              nreps <- ncol(params)
-              ntimes <- length(times)
-              dt <- diff(times)
-              x <- array(0,dim=c(2,nreps,ntimes))
-              rownames(x) <- rownames(xstart)
-              noise.sds <- params[c('s1','s2'),]
-              x[,,1] <- xstart
-              for (j in 2:ntimes) {
-                ## we are mimicking a continuous-time process, so the increments have SD ~ sqrt(dt)
-                ## note that we do not have to assume that 'times' are equally spaced
-                x[,,j] <- rnorm(n=2*nreps,mean=x[,,j-1],sd=noise.sds*dt[j-1])
-              }
-              x
-            },
-            dprocess = function (x, times, params, log, ...) { 
-              ## given a sequence of consecutive states in 'x', this function computes the p.d.f.
-              nreps <- ncol(params)
-              ntimes <- length(times)
-              dt <- diff(times)
-              d <- array(0,dim=c(2,nreps,ntimes-1))
-              noise.sds <- params[c('s1','s2'),]
-              for (j in 2:ntimes)
-                d[,,j-1] <- dnorm(x[,,j]-x[,,j-1],mean=0,sd=noise.sds*dt[j-1],log=TRUE)
-              if (log) {
-                apply(d,c(2,3),sum)
-              } else {
-                exp(apply(d,c(2,3),sum))
-              }
-            },
-            measurement.model=list(
-              y1 ~ norm(mean=x1,sd=tau),
-              y2 ~ norm(mean=x2,sd=tau)
-            ),
-            skeleton = function (x, t, params, covars, ...) {
-              ## since this is a continuous-time process, the skeleton is the vectorfield
-              ## since the random walk is unbiased, the vectorfield is identically zero
-              rep(0,length=length(x))
-            },
-            times=1:100,
-            data=rbind(
-              y1=rep(0,100),
-              y2=rep(0,100)
-              ),
-            t0=0
-            )
-
-## specify some parameters
-p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
-
-## simulate
-examples <- simulate(rw2,params=p)
-plot(examples[[1]])
-
-## construct an (almost) equivalent pomp object using a plugin:
-rw2 <- pomp(
-            rprocess = euler.simulate,
-            step.fun = function (x, t, params, delta.t, ...) {
-              y <- rnorm(n=2,mean=x[c("x1","x2")],sd=params[c("s1","s2")]*delta.t)
-              names(y) <- c("x1","x2")
-              y
-            },
-            rmeasure = function (x, t, params, ...) {
-              y <- rnorm(n=2,mean=x[c("x1","x2")],sd=params["tau"])
-              names(y) <- c("y1","y2")
-              y
-            },
-            dmeasure = function (y, x, t, params, log, ...) {
-              d <- dnorm(x=y[c("y1","y2")],mean=x[c("x1","x2")],sd=params["tau"],log=TRUE)
-              print(d)
-              if (log) sum(d,na.rm=T) else exp(sum(d,na.rm=T))
-            },
-            delta.t=1,
-            data=data.frame(
-                            time=1:100,
-                            y1=rep(c(1,2,3,4,NA),20),
-                            y2=0
-                            ),
-            times="time",
-            t0=0
-            )
-rw2 <- simulate(rw2,params=c(s1=2,s2=0.1,tau=1,x1.0=0,x2.0=0))
-
-## For more examples, see the vignettes.
+## For examples, see the vignettes.
 }
 \section{Warning}{
   Some error checking is done, but complete error checking is impossible.  
   If the user-specified functions do not conform to the above specifications (see Details), then the results may be invalid.
-  Each algorithm that uses a \code{pomp} object uses some subset of the four basic components (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}).
-  It is unlikely that any algorithm will use all of these.
+  Each algorithm that uses a \code{pomp} object uses some subset of the five basic components (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}).
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \link{pomp-class},
   \link{pomp-methods},
-  \code{\link{rprocess}},
-  \code{\link{dprocess}},
-  \code{\link{rmeasure}},
-  \code{\link{dmeasure}},
-  \code{\link{skeleton}},
-  \code{\link{init.state}},
-  \link[pomp]{euler}
+  \link[pomp]{plugins}
 }
 \keyword{models}
 \keyword{ts}

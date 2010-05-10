@@ -22,61 +22,65 @@ po <- pomp(
            t0=0,
            tcovar=tbasis,
            covar=basis,
-           delta.t=1/52/20,
            zeronames=c("cases"),
-           step.fun=function(t,x,params,covars,delta.t,...) {
-             params <- exp(params)
-             with(
-                  as.list(c(x,params)),
-                  {
-                    beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
-                    beta.var <- beta.sd^2
-                    dW <- rgamma(n=1,shape=delta.t/beta.var,scale=beta.var)
-                    foi <- (iota+beta*I*dW/delta.t)/pop
-                    trans <- c(
-                               rpois(n=1,lambda=mu*pop*delta.t),
-                               reulermultinom(n=1,size=S,rate=c(foi,mu),dt=delta.t),
-                               reulermultinom(n=1,size=I,rate=c(gamma,mu),dt=delta.t),
-                               reulermultinom(n=1,size=R,rate=c(mu),dt=delta.t)
-                               )
-                    c(
-                      S=S+trans[1]-trans[2]-trans[3],
-                      I=I+trans[2]-trans[4]-trans[5],
-                      R=R+trans[4]-trans[6],
-                      cases=cases+trans[4],
-                      W=if (beta.sd>0) W+(dW-delta.t)/beta.sd else W,
-                      B=trans[1],
-                      SI=trans[2],
-                      SD=trans[3],
-                      IR=trans[4],
-                      ID=trans[5],
-                      RD=trans[6],
-                      dW=dW
-                      )
-                  }
-                  )
-           },
-           dens.fun=function(t1,t2,params,x1,x2,covars,...) {
-             params <- exp(params)
-             with(
-                  as.list(params),
-                  {
-                    dt <- t2-t1
-                    beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
-                    beta.var <- beta.sd^2
-                    dW <- x2['dW']
-                    foi <- (iota+beta*x1["I"]*dW/dt)/pop
-                    probs <- c(
-                               dpois(x=x2["B"],lambda=mu*pop*dt,log=T),
-                               deulermultinom(x=x2[c("SI","SD")],size=x1["S"],rate=c(foi,mu),dt=dt,log=T),
-                               deulermultinom(x=x2[c("IR","ID")],size=x1["I"],rate=c(gamma,mu),dt=dt,log=T),
-                               deulermultinom(x=x2["RD"],size=x1["R"],rate=c(mu),dt=dt,log=T),
-                               dgamma(x=dW,shape=dt/beta.var,scale=beta.var,log=T)
-                               )
-                    sum(probs)
-                  }
-                  )
-           },
+           rprocess=euler.sim(
+             delta.t=1/52/20,
+             step.fun=function(t,x,params,covars,delta.t,...) {
+               params <- exp(params)
+               with(
+                    as.list(c(x,params)),
+                    {
+                      beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
+                      beta.var <- beta.sd^2
+                      dW <- rgamma(n=1,shape=delta.t/beta.var,scale=beta.var)
+                      foi <- (iota+beta*I*dW/delta.t)/pop
+                      trans <- c(
+                                 rpois(n=1,lambda=mu*pop*delta.t),
+                                 reulermultinom(n=1,size=S,rate=c(foi,mu),dt=delta.t),
+                                 reulermultinom(n=1,size=I,rate=c(gamma,mu),dt=delta.t),
+                                 reulermultinom(n=1,size=R,rate=c(mu),dt=delta.t)
+                                 )
+                      c(
+                        S=S+trans[1]-trans[2]-trans[3],
+                        I=I+trans[2]-trans[4]-trans[5],
+                        R=R+trans[4]-trans[6],
+                        cases=cases+trans[4],
+                        W=if (beta.sd>0) W+(dW-delta.t)/beta.sd else W,
+                        B=trans[1],
+                        SI=trans[2],
+                        SD=trans[3],
+                        IR=trans[4],
+                        ID=trans[5],
+                        RD=trans[6],
+                        dW=dW
+                        )
+                    }
+                    )
+             }
+             ),
+           dprocess=onestep.dens(
+             dens.fun=function(t1,t2,params,x1,x2,covars,...) {
+               params <- exp(params)
+               with(
+                    as.list(params),
+                    {
+                      dt <- t2-t1
+                      beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
+                      beta.var <- beta.sd^2
+                      dW <- x2['dW']
+                      foi <- (iota+beta*x1["I"]*dW/dt)/pop
+                      probs <- c(
+                                 dpois(x=x2["B"],lambda=mu*pop*dt,log=T),
+                                 deulermultinom(x=x2[c("SI","SD")],size=x1["S"],rate=c(foi,mu),dt=dt,log=T),
+                                 deulermultinom(x=x2[c("IR","ID")],size=x1["I"],rate=c(gamma,mu),dt=dt,log=T),
+                                 deulermultinom(x=x2["RD"],size=x1["R"],rate=c(mu),dt=dt,log=T),
+                                 dgamma(x=dW,shape=dt/beta.var,scale=beta.var,log=T)
+                                 )
+                      sum(probs)
+                    }
+                    )
+             }
+             ),
            skeleton.vectorfield=function(x,t,params,covars,...) {
              xdot <- rep(0,length(x))
              params <- exp(params)
@@ -103,8 +107,6 @@ po <- pomp(
                   }
                   )
            },
-           rprocess=euler.simulate,
-           dprocess=onestep.density,
            measurement.model=measles~binom(size=cases,prob=exp(rho)),
            initializer=function(params,t0,...){
              p <- exp(params)

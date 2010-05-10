@@ -1,5 +1,7 @@
 library(pomp)
 
+set.seed(577639485L)
+
 kalman.filter <- function (y, x0, a, b, sigma, tau) {
   n <- nrow(y)
   ntimes <- ncol(y)
@@ -49,39 +51,34 @@ kalman <- function (x, object, params) {
 data(ou2)
 
 # true coefficients
-p.truth <- c(
-             alpha.1=0.9,alpha.2=0,alpha.3=0,alpha.4=0.99,
-             sigma.1=1,sigma.2=0,sigma.3=2,
-             tau=1,
-             x1.0=50,x2.0=-50
-             )
+p.truth <- coef(ou2)
 cat("coefficients at `truth'\n")
 print(p.truth[c('alpha.1','alpha.4','x1.0','x2.0')],digits=4)
 cat("Kalman filter log likelihood at truth\n")
-print(-kalman(p.truth,ou2,p.truth),digits=4)
+print(loglik.truth <- -kalman(p.truth,ou2,p.truth),digits=4)
 
 # make a wild guess
-p.guess <- c(alpha.1=0.8,alpha.4=0.9,x1.0=45,x2.0=-60)
+p.guess <- p.truth[c('alpha.1','alpha.4','x1.0','x2.0')]*exp(rnorm(n=4,mean=0,sd=0.5))
 cat("coefficients at guess\n")
 print(p.guess,digits=4)
 cat("Kalman filter log likelihood at guess\n")
-print(-kalman(p.guess,ou2,p.truth),digits=4)
+print(loglik.guess <- -kalman(p.guess,ou2,p.truth),digits=4)
 
 # find MLE using Kalman filter starting at the guess
 cat("running Kalman filter estimation\n")
 tic <- Sys.time()
-kalm.fit1 <- optim(p.guess,kalman,object=ou2,params=p.truth,hessian=T)
+kalm.fit1 <- optim(p.guess,kalman,object=ou2,params=p.truth,hessian=T,control=list(trace=2))
 toc <- Sys.time()
 print(toc-tic)
 tic <- Sys.time()
-print(-kalm.fit1$value,digits=4)
+print(loglik.mle <- -kalm.fit1$value,digits=4)
 
 cat("summary of results\n")
 print(
       cbind(
-            truth=p.truth[names(kalm.fit1$par)],
-            MLE=kalm.fit1$par,
-            SE=sqrt(diag(solve(kalm.fit1$hessian)))
+            truth=c(p.truth[names(kalm.fit1$par)],loglik=loglik.truth),
+            MLE=c(kalm.fit1$par,loglik=loglik.mle),
+            SE=c(sqrt(diag(solve(kalm.fit1$hessian))),NA)
             ),
-      digits=4
+      digits=3
       )

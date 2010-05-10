@@ -3,23 +3,29 @@
 \alias{pomp-package}
 \title{Partially-observed Markov processes}
 \description{
-  This is documentation for version \Sexpr[echo=F,stage=install,results=text]{packageDescription("pomp",fields="Version")} of \pkg{pomp}.
+%%  This is documentation for version \Sexpr[echo=F,stage=install,results=text]{packageDescription("pomp",fields="Version")} of \pkg{pomp}.
 
-  The \code{pomp} package provides facilities for inference on time series data using partially-observed Markov processes (AKA state-space models or nonlinear stochastic dynamical systems).
-  The user encodes a model as a \code{\link{pomp}} object by providing functions specifying some or all of the model's process and measurement components.
-  The package's algorithms for fitting models to data, simulating, etc. then call these functions.
-  At the moment, algorithms are provided for
-  particle filtering (AKA sequential Monte Carlo or sequential importance sampling, see \code{\link{pfilter}}),
-  the likelihood maximization by iterated filtering (\acronym{MIF}) method of Ionides, Breto, and King (PNAS, 103:18438-18443, 2006, see \code{\link{mif}}),
-  and the nonlinear forecasting algorithm of Kendall, Ellner, et al. (Ecol. Monog. 75:259-276, 2005, see \code{\link{nlf}}).
-  Future support for a variety of other algorithms is envisioned.
-  A working group of the National Center for Ecological Analysis and Synthesis (\acronym{NCEAS}), "Inference for Mechanistic Models", is currently implementing and testing additional methods for this package.
+  The \pkg{pomp} package provides facilities for inference on time series data using partially-observed Markov processes (AKA state-space models or nonlinear stochastic dynamical systems).
+  One might use \pkg{pomp} to fit a model to time-series data or simply to simulate a stochastic dynamical model.
+  The first step in using \pkg{pomp} is to encode one's model and data in an object of class \code{pomp}.
+  One does this via a call to \code{\link{pomp}}, which involves specifying the process and measurement components of the model in one or more of a variety of ways.
+  Details on this are given in the documentation for the \code{\link{pomp}} function and examples are given in the \sQuote{intro_to_pomp} vignette.
+
+  Currently, \pkg{pomp} provides algorithms for
+  (i) simulation of stochastic dynamical systems (see \code{\link[=simulate-pomp]{simulate}}),
+  (ii) particle filtering (AKA sequential Monte Carlo or sequential importance sampling, see \code{\link{pfilter}}),
+  (iii) the likelihood maximization by iterated filtering (\acronym{MIF}) method of Ionides, Breto, and King (PNAS, 103:18438-18443, 2006, see \code{\link{mif}}),
+  and (iv) the nonlinear forecasting algorithm of Kendall, Ellner, et al. (Ecol. Monog. 75:259-276, 2005, see \code{\link{nlf}}).
+  Future support for additional algorithms in envisioned, and implementations of
+  the Bayesian sequential Monte Carlo approach of Liu \& West and generalized probe-matching methods are currently under development.
+  Much of the work in \pkg{pomp} has been done under the auspices of a working group of the National Center for Ecological Analysis and Synthesis (\acronym{NCEAS}), "Inference for Mechanistic Models".
 
   The package is provided under the \acronym{GNU} Public License (\acronym{GPL}).
   Contributions are welcome, as are comments, suggestions for improvements, and bug reports.
 }
 \section{Classes}{
-  The basic class, \code{\link{pomp}}, is provided to encode a partially-observed Markov process together with a uni- or multi-variate data set.
+  \pkg{pomp} makes extensive use of S4 classes.
+  The basic class, \code{\link{pomp}}, encodes a partially-observed Markov process together with a uni- or multi-variate data set and (possibly) parameters.
 }
 \section{Vignettes}{
   The vignette \sQuote{intro_to_pomp} illustrates the facilities of the package using familiar stochastic processes.
@@ -27,7 +33,11 @@
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \code{\link{pomp}}, \code{\link{simulate-pomp}}, \code{\link{mif}}, \code{\link{nlf}}
+  \code{\link{pomp}},
+  \code{\link{pfilter}},
+  \code{\link[=simulate-pomp]{simulate}},
+  \code{\link{mif}},
+  \code{\link{nlf}}
 }
 \keyword{models}
 \keyword{ts}
