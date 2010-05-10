@@ -3,7 +3,7 @@ require(pomp)
 simulate(
          pomp(
               times=seq(1/52,4,by=1/52),
-              data=rbind(measles=numeric(52*4)),
+              data=rbind(reports=numeric(52*4)),
               t0=0,
               statenames=c("S","I","R","cases","W"),
               paramnames=c(

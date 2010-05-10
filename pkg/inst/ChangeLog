@@ -1,3 +1,50 @@
+2010-05-10  kingaa
+
+	* [r227] tests/gillespie.R, tests/gillespie.Rout.save: - tests for
+	  new gillespie simulator
+	* [r226] DESCRIPTION: - new version
+	* [r225] NAMESPACE: - new functions exported
+	* [r224] inst/include/pomp.h, man/euler.sir.Rd, man/ou2.Rd,
+	  man/pomp-package.Rd, man/pomp.Rd, man/verhulst.Rd,
+	  tests/logistic.R, tests/logistic.Rout.save, tests/ou2-kalman.R,
+	  tests/ou2-kalman.Rout.save, tests/ou2-mif.R,
+	  tests/ou2-mif.Rout.save, tests/ou2-nlf.R,
+	  tests/ou2-nlf.Rout.save, tests/ou2-trajmatch.R,
+	  tests/ou2-trajmatch.Rout.save, tests/pfilter.Rout.save,
+	  tests/sir.R, tests/sir.Rout.save: - tests and man pages
+	  corresponding to last changes
+	* [r223] R/euler.R, data/euler.sir.rda, data/gillespie.sir.rda,
+	  data/ou2.rda, data/rw2.rda, data/verhulst.rda, inst/NEWS,
+	  inst/data-R/euler.sir.R, inst/data-R/gillespie.sir.R,
+	  inst/data-R/ou2.R, inst/data-R/rw2.R, inst/data-R/verhulst.R,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/examples/euler_sir.R,
+	  inst/examples/euler_sir.c, inst/examples/logistic.R,
+	  inst/examples/rw2.R, inst/examples/sir.c, src/SSA.f,
+	  src/SSA_wrapper.c, src/euler.c, src/euler_sir.c,
+	  src/euler_sir_density.c, src/pomp.h, src/sir.c: - encoding models
+	  is now much easier through the use of "plugin" modules.
+	  - old plugins are now deprecated.
+	  - several example pomps are now loadable via the data() command.
+	  - new gillespie simulator (most of the work due to Helen Wearing)
+	* [r222] R/trajmatch.R: - purely cosmetic
+	* [r221] R/euler.R, man/euler.Rd: - old euler plugins
+	* [r220] R/euler.R, R/plugins.R, man/euler.Rd, man/plugins.Rd: -
+	  rename these files
+
+2010-05-06  kingaa
+
+	* [r219] DESCRIPTION, R/aaa.R, R/pfilter.R, R/pomp-fun.R,
+	  R/pomp-methods.R, R/pomp.R, data/euler.sir.rda, data/ou2.rda,
+	  data/rw2.rda, data/verhulst.rda, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/pfilter.Rd, man/pomp-class.Rd, man/pomp-fun.Rd,
+	  tests/rw2.Rout.save, tests/sir.Rout.save: - add a new slot,
+	  'call', to the pomp class
+	  - improve the way that pomps are printed and 'show'n
+	  - streamline pomp construction using pomp.fun
+	  - save Np and tol in the list returned by 'pfilter'
+
 2010-04-29  kingaa
 
 	* [r218] tests/pfilter.R, tests/pfilter.Rout.save: - tests for

@@ -1,4 +1,5 @@
 LATEX = latex
+BIBTEX = bibtex
 PDFLATEX = pdflatex
 
 DVIPS = dvips -Ppdf
@@ -10,10 +11,12 @@ vignettes: advanced_topics_in_pomp.pdf intro_to_pomp.pdf
 
 %.pdf: %.tex
 	$(PDFLATEX) $*
+	-$(BIBTEX) $*
+	$(PDFLATEX) $*
 	$(PDFLATEX) $*
 
 %.pdf: %.eps
 	$(EPSTOPDF) $*.eps --outfile=$*.pdf
 
 clean:
-	$(RM) *.tex *.log *.aux *.out *.Rout *.toc *.lof *.lot *-???.pdf Rplots.ps Rplots.pdf
+	$(RM) *.tex *.log *.aux *.blg *.bbl *.out *.Rout *.toc *.lof *.lot intro_to_pomp-*.pdf advanced_topics_in_pomp-*.pdf Rplots.ps Rplots.pdf
