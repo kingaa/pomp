@@ -17,7 +17,6 @@ traj.match <- function (object, start, est, method = "Nelder-Mead", gr = NULL, .
                fn=function (x) {
                  p <- start
                  p[par.est] <- x
-##                 x <- simulate(object,nsim=1,params=p,states=TRUE)[,,-1,drop=FALSE]
                  x <- trajectory(object,params=p)[,,-1,drop=FALSE]
                  d <- dmeasure(
                                object,
