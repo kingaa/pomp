@@ -1,5 +1,12 @@
 2010-05-10  kingaa
 
+	* [r233] man/euler.Rd: - the old plugins are deprecated: move their
+	  man pages to 'internal'
+	* [r232] inst/doc/ou2-first-mif.rda: - binary file with saved
+	  results
+	* [r231] man/euler.sir.Rd, man/sir.Rd: - tidying up
+	* [r230] R/euler.R: - preserve backward compatibility
+	* [r229] inst/ChangeLog:
 	* [r228] data/euler.sir.rda, inst/ChangeLog,
 	  inst/data-R/euler.sir.R, inst/doc/Makefile,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/ecology.bst,
