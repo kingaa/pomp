@@ -1,5 +1,10 @@
 2010-05-10  kingaa
 
+	* [r228] data/euler.sir.rda, inst/ChangeLog,
+	  inst/data-R/euler.sir.R, inst/doc/Makefile,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/ecology.bst,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/pomp.bib: - improve the "intro_to_pomp" vignette
 	* [r227] tests/gillespie.R, tests/gillespie.Rout.save: - tests for
 	  new gillespie simulator
 	* [r226] DESCRIPTION: - new version
