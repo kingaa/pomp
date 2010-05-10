@@ -7,22 +7,11 @@ onestep.simulate <- function (xstart, times, params,
                               tcovar, covar, PACKAGE)
 {
   .Deprecated(new="onestep.sim",package="pomp")
-  if (is.character(step.fun)) {
-    efun <- try(
-                getNativeSymbolInfo(step.fun,PACKAGE)$address,
-                silent=FALSE
-                )
-    if (inherits(efun,'try-error')) {
-      stop("no symbol named ",step.fun," in package ",PACKAGE)
-    }
-  } else if (is.function(step.fun)) {
-    if (!all(c('x','t','params','delta.t','...')%in%names(formals(step.fun))))
-      stop(sQuote("step.fun")," must be a function of prototype ",sQuote("step.fun(x,t,params,delta.t,...)"))
-    efun <- step.fun
-  } else {
-    stop(sQuote("step.fun")," must be either a function or the name of a compiled routine")
-  }
-
+  efun <- pomp.fun(
+                   f=step.fun,
+                   PACKAGE=PACKAGE,
+                   proto="step.fun(x,t,params,delta.t,...)"
+                   )
   .Call(
         euler_model_simulator,
         func=efun,
@@ -50,22 +39,11 @@ euler.simulate <- function (xstart, times, params,
                             tcovar, covar, PACKAGE)
 {
   .Deprecated(new="euler.sim",package="pomp")
-  if (is.character(step.fun)) {
-    efun <- try(
-                getNativeSymbolInfo(step.fun,PACKAGE)$address,
-                silent=FALSE
-                )
-    if (inherits(efun,'try-error')) {
-      stop("no symbol named ",step.fun," in package ",PACKAGE)
-    }
-  } else if (is.function(step.fun)) {
-    if (!all(c('x','t','params','delta.t','...')%in%names(formals(step.fun))))
-      stop(sQuote("step.fun")," must be a function of prototype ",sQuote("step.fun(x,t,params,delta.t,...)"))
-    efun <- step.fun
-  } else {
-    stop(sQuote("step.fun")," must be either a function or the name of a compiled routine")
-  }
-
+  efun <- pomp.fun(
+                   f=step.fun,
+                   PACKAGE=PACKAGE,
+                   proto="step.fun(x,t,params,delta.t,...)"
+                   )
   .Call(
         euler_model_simulator,
         func=efun,
@@ -93,22 +71,11 @@ onestep.density <- function (x, times, params,
                              PACKAGE)
 {
   .Deprecated(new="onestep.dens",package="pomp")
-  if (is.character(dens.fun)) {
-    efun <- try(
-                getNativeSymbolInfo(dens.fun,PACKAGE)$address,
-                silent=FALSE
-                )
-    if (inherits(efun,'try-error')) {
-      stop("no symbol named ",dens.fun," in package ",PACKAGE)
-    }
-  } else if (is.function(dens.fun)) {
-    if (!all(c('x1','x2','t1','t2','params','...')%in%names(formals(dens.fun))))
-      stop(sQuote("dens.fun")," must be a function of prototype ",sQuote("dens.fun(x1,x2,t1,t2,params,...)"))
-    efun <- dens.fun
-  } else {
-    stop(sQuote("dens.fun")," must be either a function or the name of a compiled routine")
-  }
-
+  efun <- pomp.fun(
+                   f=dens.fun,
+                   PACKAGE=PACKAGE,
+                   proto="dens.fun(x1,x2,t1,t2,params,...)"
+                   )
   .Call(
         euler_model_density,
         efun,
