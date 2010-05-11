@@ -17,9 +17,9 @@ onestep.dens(dens.fun, PACKAGE)
 }
 \arguments{
   \item{step.fun}{
-    This can be either an R function or the name of a compiled, dynamically loaded native function containing the model simulator.
+    This can be either an \R function or the name of a compiled, dynamically loaded native function containing the model simulator.
     It should be written to take a single Euler step from a single point in state space.
-    If it is an R function, it should be of the form \code{step.fun(x,t,params,delta.t,...)}.
+    If it is an \R function, it should be of the form \code{step.fun(x,t,params,delta.t,...)}.
     Here, \code{x} is a named vector containing the value of the state process at time \code{t},
     \code{params} is a named vector containing parameters,
     and \code{delta.t} is the length of the Euler time-step.
@@ -27,12 +27,11 @@ onestep.dens(dens.fun, PACKAGE)
     For details on how to write such codes, see Details.
   }
   \item{rate.fun}{
-    This can be either an R function or the name of a compiled, dynamically loaded native function that computes the transition rates.
-    If it is an R function, it should be of the form \code{rate.fun(j,x,t,params,...)}.
+    This can be either an \R function or the name of a compiled, dynamically loaded native function that computes the transition rates.
+    If it is an \R function, it should be of the form \code{rate.fun(j,x,t,params,...)}.
     Here, \code{j} is the number of the event,
-    \code{x} is a named vector containing the value of the state process at time \code{t},
-    \code{params} is a named vector containing parameters,
-    and \code{delta.t} is the length of the Euler time-step.
+    \code{x} is a named vector containing the value of the state process at time \code{t} and 
+    \code{params} is a named vector containing parameters.
     If \code{rate.fun} is a native function, it must be of type \dQuote{pomp_ssa_rate_fn} as defined in the header \dQuote{pomp.h}, which is included with the package.
     For details on how to write such codes, see Details.
   }
@@ -62,41 +61,62 @@ onestep.dens(dens.fun, PACKAGE)
   }
 }
 \details{
- \code{onestep.sim} assumes that a single call to \code{step.fun} will advance the state process from one time to the next.
- \code{euler.sim} will take multiple Euler steps, each of size at most \code{delta.t} (see below for information on how the actual Euler step size is chosen) to get from one time to the next.
+  \code{onestep.sim} is the appropriate choice when it is possible to simulate the change in state from one time to another, regardless of how large the difference in times is.
+  To use \code{onestep.sim}, you must write a function \code{step.fun} that will advance the state process from one arbitrary time to another.
+  \code{euler.sim} is appropriate when one cannot do this but can compute the change in state via repeated simulation of smaller steps.
+  There are two principal circumstances under which the latter approach is desirable.
+  First, if one is simulating a continuous time process but is willing to approximate it using an Euler approach.
+  Second, if one is simulating a discrete-time process.
+  To use \code{euler.sim}, you must write a function \code{step.fun} that will take a single Euler step, of size at most \code{delta.t}.
+  \code{euler.sim} will take as many Euler steps as it needs to in order to get from one time to another.
+  See below for information on how \code{euler.sim} chooses the actual step size it uses.
+  If one uses \code{euler.sim} to simulate a discrete-time process, \code{delta.t} should be set to the discrete time-step.
+  \code{gillespie.sim} allows exact simulation of a continuous-time, discrete-state Markov process using Gillespie's algorithm.
+  This is an \dQuote{event-driven} approach: correspondingly, to use \code{gillespie.sim}, you must write a function \code{rate.fun} that computes the rates of each elementary event and specify two matrices that describe the dependencies of each rate and the consequences of each event.
 
-  In writing \code{onestep.dens}, you can assume that no state transitions have occurred between \code{t1} and \code{t2}.
+  \code{onestep.dens} will generate a suitable \code{dprocess} function when one can compute the likelihood of a given state transition simply by knowing the states at two times under the assumption that the state has not changed between the times.
+  This is typically possible, for instance, when the \code{rprocess} function is implemented using \code{euler.sim}.
+  [NB: currently, there are no high-level algorithms in \pkg{pomp} that use \code{dprocess}.
+  This function is provided for completeness only, and with an eye toward future development.]
 
-  If \code{step.fun} is written as an R function, it must have at least the arguments \code{x}, \code{t}, \code{params}, \code{delta.t}, and \code{\dots}.
+  If \code{step.fun} is written as an \R function, it must have at least the arguments \code{x}, \code{t}, \code{params}, \code{delta.t}, and \code{\dots}.
   On a call to this function, \code{x} will be a named vector of state variables, \code{t} a scalar time, and \code{params} a named vector of parameters.
   The length of the Euler step will be \code{delta.t}.
   If the argument \code{covars} is included and a covariate table has been included in the \code{pomp} object, then on a call to this function, \code{covars} will be filled with the values, at time \code{t}, of the covariates.
   This is accomplished via interpolation of the covariate table.
   Additional arguments may be given: these will be filled by the correspondingly-named elements in the \code{userdata} slot of the \code{pomp} object (see \code{\link{pomp}}).
-
   If \code{step.fun} is written in a native language, it must be a function of type "pomp_onestep_sim" as specified in the header "pomp.h" included with the package (see the directory "include" in the installed package directory).
 
-  If \code{dens.fun} is written as an R function, it must have at least the arguments \code{x1}, \code{x2}, \code{t1}, \code{t2}, \code{params}, and \code{\dots}.
+  If \code{rate.fun} is written as an \R function, it must have at least the arguments \code{j}, \code{x}, \code{t}, \code{params}, and \code{\dots}.
+  Here, \code{j} is the an integer that indicates which specific elementary event we desire the rate of.
+  \code{x} is a named vector containing the value of the state process at time \code{t}, and
+  \code{params} is a named vector containing parameters.
+  If the argument \code{covars} is included and a covariate table has been included in the \code{pomp} object, then on a call to this function, \code{covars} will be filled with the values, at time \code{t}, of the covariates.
+  This is accomplished via interpolation of the covariate table.
+  If \code{rate.fun} is a native function, it must be of type \dQuote{pomp_ssa_rate_fn} as defined in the header \dQuote{pomp.h}, which is included with the package.
+  
+  In writing \code{onestep.dens}, you must assume that no state transitions have occurred between \code{t1} and \code{t2}.
+
+  If \code{dens.fun} is written as an \R function, it must have at least the arguments \code{x1}, \code{x2}, \code{t1}, \code{t2}, \code{params}, and \code{\dots}.
   On a call to this function, \code{x1} and \code{x2} will be named vectors of state variables at times \code{t1} and \code{t2}, respectively.
   The named vector \code{params} contains the parameters.
   If the argument \code{covars} is included and a covariate table has been included in the \code{pomp} object, then on a call to this function, \code{covars} will be filled with the values, at time \code{t1}, of the covariates.
+  If the argument \code{covars} is included and a covariate table has been included in the \code{pomp} object, then on a call to this function, \code{covars} will be filled with the values, at time \code{t1}, of the covariates.
   This is accomplished via interpolation of the covariate table.
   As above, any additional arguments will be filled by the correspondingly-named elements in the \code{userdata} slot of the \code{pomp} object (see \code{\link{pomp}}).
-
   If \code{dens.fun} is written in a native language, it must be a function of type "pomp_onestep_pdf" as defined in the header "pomp.h" included with the package (see the directory "include" in the installed package directory).
 }
 \value{
-  \code{onestep.sim} and \code{euler.sim} each return functions suitable for use as the argument \code{rprocess} argument in \code{\link{pomp}}.
+  \code{onestep.sim}, \code{euler.sim}, and \code{gillespie.sim} each return functions suitable for use as the argument \code{rprocess} argument in \code{\link{pomp}}.
 
   \code{onestep.dens} returns a function suitable for use as the argument \code{dprocess} in \code{\link{pomp}}.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{eulermultinom}}, \code{\link{pomp}}}
 \examples{
-## an example showing how to use these functions to implement a seasonal SIR model is contained
-## in the 'examples' directory
+## example showing how to use these functions are provided in the vignette "intro_to_pomp"
 \dontrun{
-edit(file=system.file("examples/sir.R",package="pomp"))
+vignette("intro_to_pomp")
 }
 }
 \keyword{models}

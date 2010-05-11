@@ -32,7 +32,6 @@ deulermultinom(x, size, rate, dt, log = FALSE)
   }
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
-\seealso{\code{\link{euler}}}
 \examples{
 print(x <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=0.1))
 deulermultinom(x,size=100,rate=c(1,2,3),dt=0.1)
