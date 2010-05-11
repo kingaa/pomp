@@ -3,7 +3,7 @@ Type: Package
 Title: Statistical inference for partially observed Markov processes
 Version: 0.29-1
 Date: 2010-05-10
-Author: Aaron A. King, Edward L. Ionides, Carles Breto, Steve Ellner, Bruce Kendall
+Author: Aaron A. King, Edward L. Ionides, Carles Breto, Steve Ellner, Bruce Kendall, Helen Wearing
 Maintainer: Aaron A. King <kingaa@umich.edu>
 Description: Inference methods for partially-observed Markov processes
 Depends: R(>= 2.9.1), stats, methods, graphics, deSolve, subplex, mvtnorm
