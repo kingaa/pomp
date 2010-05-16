@@ -27,7 +27,11 @@
 
 \title[Introduction to pomp]{Introduction to pomp:\\ inference for partially-observed Markov processes}
 
-\author[A. A. King]{Aaron A. King}
+\author[King]{Aaron A. King}
+\author[Ionides]{Edward L. Ionides}
+\author[Bret\'o]{Carles Bret\'o}
+\author[Ellner]{Stephen P. Ellner}
+\author[Kendall]{Bruce E. Kendall}
 
 \address{
   A. A. King,
@@ -65,6 +69,8 @@ The methods implemented in \pomp\ are all ``plug-and-play'' in the sense that th
 This property is desirable because it will typically be the case that a mechanistic model will not be otherwise amenable to standard statistical analyses, but will be relatively easy to simulate.
 Even when one is interested in a model for which one can write down an explicit likelihood, for example, there are probably models that are ``nearby'' and equally interesting for which the likelihood cannot explicitly be written.
 The price one pays for this flexibility is primarily in terms of computational expense.
+%% more on: why plug-and-play: flexibility of model choice aids scientific inference by allowing us to entertain multiple competing hypotheses
+%% ability to fit a variety of alternative models using the same statistical/computational approach makes direct comparison easier
 
 A partially-observed Markov process has two parts.
 First, there is the true underlying process which is generating the data.
@@ -97,15 +103,25 @@ On the other hand, one may need to \emph{simulate} this distribution, i.e., to d
 Depending on the model and on what one wants specifically to do, it may be technically easier or harder to do one of these or the other.
 Likewise, one may want to simulate, or evaluate the likelihood of, observations $Y_t$.
 At it's most basic level \pomp\ is an infrastructure that allows you to encode your model by specifying some or all of these four basic components:
-\begin{enumerate}
-\item \code{rprocess}: a simulator of the process model
-\item \code{dprocess}: an evaluator of the process model probability density function
-\item \code{rmeasure}: a simulator of the measurement model
-\item \code{dmeasure}: an evaluator of the measurement model probability density function
-\end{enumerate}
-Once you've encoded your model, \pomp\ provides a number of algorithms you can use to work with it: you can simulate the model, evaluate the likelihood of various parameter sets, and fit the model to the data using a variety of algorithms.
-Finally \pomp\ provides an applications programming interface (API) upon which new algorithms for partially-observed Markov process models can be built.
-In this document, we'll see how this all works using relatively simple examples.
+\begin{compactdesc}
+\item[\code{rprocess}] a simulator of the process model,
+\item[\code{dprocess}] an evaluator of the process model probability density function,
+\item[\code{rmeasure}] a simulator of the measurement model, and
+\item[\code{dmeasure}] an evaluator of the measurement model probability density function.
+\end{compactdesc}
+Once you've encoded your model, \pomp\ provides a number of algorithms you can use to work with it.
+In particular, within \pomp, you can:
+\begin{compactenum}[(1)]
+\item simulate your model easily, using \code{simulate},
+\item integrate your model's deterministic skeleton, using \code{trajectory},
+\item estimate the likelihood for any given set of parameters using sequential Monte Carlo, implemented in \code{pfilter},
+\item find maximum likelihood estimates for parameters using iterated filtering, implemented in \code{mif},
+\item estimate parameters using a simulated quasi maximum likelihood approach called \emph{nonlinear forecasting} and implemented in \code{nlf},
+\item estimate parameters using trajectory matching, as implemented in \code{traj.match},
+\item print and plot data, simulations, and diagnostics for the foregoing algorithms,
+\item build new algorithms for partially observed Markov processes upon the foundations \pomp\ provides, using the package's applications programming interface (API).
+\end{compactenum}
+In this document, we'll see how all this works using relatively simple examples.
 
 \section{A first example: a discrete-time bivariate autoregressive process.}
 
@@ -440,9 +456,10 @@ Since the particle filter gives an unbiased estimate of the likelihood, the diff
 One can reduce this error by using a larger number of particles and/or by re-running \code{pfilter} multiple times and averaging the resulting estimated likelihoods.
 The latter approach has the advantage of allowing one to estimate the Monte Carlo error itself.
 
-\section{Utility functions for extracting and changing pieces of a \pomp\ object}
+\section{Interlude: utility functions for extracting and changing pieces of a \pomp\ object}
 
 The \pomp\ package provides a number of functions to extract or change pieces of a \pomp-class object.
+%% Need references to S4 classes
 One can read the documentation on all of these by doing \verb+class?pomp+ and \verb+methods?pomp+.
 For example, as we've already seen, one can coerce a \pomp\ object to a data frame:
 <<eval=F>>=
@@ -465,6 +482,8 @@ One can read and change parameters associated with the \pomp\ object using, e.g.
 coef(ou2)
 coef(ou2,c("sigma.1","sigma.2")) <- c(1,0)
 @ 
+
+%% In the ``advanced_topics_in_pomp'' vignette, we show how one can get access to more of the underlying structure of a \pomp\ object.
 
 \section{Estimating parameters using iterated filtering: \code{mif}}
 
@@ -596,8 +615,34 @@ par(op)
 
 \section{Nonlinear forecasting: \code{nlf}}
 
-To be added.
-
+<<first-nlf,echo=F,eval=F>>=
+estnames <- c('alpha.2','alpha.3','tau')
+out <- nlf(
+           ou2,
+           start=theta.guess,
+           nasymp=2000,
+           est=estnames,
+           lags=c(4,6),
+           seed=5669345L,
+           skip.se=TRUE,
+           method="Nelder-Mead",
+           trace=0,
+           maxit=100,
+           reltol=1e-8,
+           transform=function(x)x,
+           eval.only=FALSE
+           )
+@ 
+<<first-nlf-results,echo=F,eval=F>>=
+print(
+      cbind(
+            guess=theta.guess[estnames],
+            fit=out$params[estnames],
+            truth=theta.true[estnames]
+            ),
+      digits=3
+      )
+@ 
 
 \section{Trajectory matching: \code{traj.match}}
 
