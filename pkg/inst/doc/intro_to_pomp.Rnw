@@ -143,12 +143,12 @@ The measurement process is
 \end{equation}
 In these equations, $\alpha$ and and $\beta$ are $2\times 2$ constant matrices.
 $\xi_{t}$ and $\varepsilon_{t}$ are mutually-independent families of i.i.d.\ bivariate standard normal random variables.
-$\sigma$ is a lower-triangular matrix such that $\sigma\sigma^T$ is the variance-covariance matrix of $X_{t+1}\vert X_{t}$.
-We'll assume that each component of $X$ is measured independently and with the same error, $\tau$, so that the variance-covariance matrix of $Y_{t}\vert X_{t}$ has $\tau^2$ on the diagonal and zeros elsewhere.
+$\sigma$ is a lower-triangular $2\times 2$ matrix such that $\sigma\sigma^T$ is the variance-covariance matrix of $X_{t+1}\vert X_{t}$.
+We'll assume that each component of $X$ is measured independently and with the same error, $\tau$, so that the variance-covariance matrix of $Y_{t}\vert X_{t}$ is just $\tau^2$ times the identity matrix.
 
 Given a data set, one can for this model obtain exact maximum likelihood estimates of the parameters using the Kalman filter.
 We will demonstrate this below.
-Here, we'll approach this model as we would a more complex model for which no such exact estimator is available.
+Here, however, for pedagogical reasons, we'll approach this model as we would a more complex model for which no such exact estimator is available.
 
 \section{Defining a partially observed Markov process in \pomp.}
 
@@ -165,7 +165,7 @@ As we saw before, we would like to be able to:
 For this simple model, all this is easy enough.
 More generally, it will be difficult to do some of these things.
 Depending on what we wish to accomplish, however, we may not need all of these capabilities and in particular,
-\textbf{to use any particular one of the algorithms in \pomp, we never need to specify all these.}
+\textbf{to use any particular one of the algorithms in \pomp, we need never specify \emph{all} these.}
 For example, to simulate data, all we need is \ref{it:rproc} and \ref{it:rmeas}.
 To run a particle filter (and hence to use iterated filtering, \code{mif}), one needs \ref{it:rproc} and \ref{it:dmeas}.
 To do MCMC, one needs \ref{it:dproc} and \ref{it:dmeas}.
@@ -663,11 +663,11 @@ In the discrete-time case, this is the map
 \end{equation*}
 In the continuous-time case, this is the vectorfield
 \begin{equation*}
-  x\,\mapsto\,\lim_{{\Delta}{t}\,\to\,0}\,\frac{\expect{X_{t+{\Delta}{t}}\;\vert\;X_{t}=x,\theta}}{{\Delta}{t}}.
+  x\,\mapsto\,\lim_{{\Delta}{t}\,\to\,0}\,\expect{\frac{X_{t+{\Delta}{t}}-X_{t}}{{\Delta}{t}}\;\Big{\vert}\;X_{t}=x,\theta}.
 \end{equation*}
 Our discrete-time bivariate autoregressive process has the deterministic skeleton
 \begin{equation}\label{eq:ou-skel}
-  X_{t} = \alpha\,X_{t-1}
+  x\,\mapsto\,\alpha\,x,
 \end{equation}
 which can be implemented in the \R\ function
 <<ou2-skeleton-def,echo=T>>=
