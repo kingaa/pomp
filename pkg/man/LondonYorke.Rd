@@ -16,9 +16,21 @@ lines(cases~time,data=LondonYorke,subset=disease=="measles"&town=="Baltimore",co
 lines(cases~time,data=LondonYorke,subset=disease=="measles"&town=="New York",col="blue")
 legend("topright",legend=c("Baltimore","New York"),lty=1,col=c("red","blue"),bty='n')
 
-plot(cases~time,data=LondonYorke,subset=disease=="chickenpox"&town=="New York",type='l',col="blue",main="chickenpox, New York",bty='l')
+plot(
+     cases~time,
+     data=LondonYorke,
+     subset=disease=="chickenpox"&town=="New York",
+     type='l',col="blue",main="chickenpox, New York",
+     bty='l'
+    )
 
-plot(cases~time,data=LondonYorke,subset=disease=="mumps"&town=="New York",type='l',col="blue",main="mumps, New York",bty='l')
+plot(
+     cases~time,
+     data=LondonYorke,
+     subset=disease=="mumps"&town=="New York",
+     type='l',col="blue",main="mumps, New York",
+     bty='l'
+    )
 }
 \references{
   W. P. London and J. A. Yorke,
