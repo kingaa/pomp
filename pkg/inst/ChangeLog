@@ -1,5 +1,19 @@
+2010-05-16  kingaa
+
+	* [r237] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: -
+	  some minor additions to the intro vignette
+
+2010-05-11  kingaa
+
+	* [r236] man/eulermultinom.Rd, man/plugins.Rd, man/pomp.Rd: -
+	  update documentation
+	* [r235] DESCRIPTION: - added Helen Wearing as an author for her
+	  work with the stochastic simulation algorithms
+
 2010-05-10  kingaa
 
+	* [r234] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - updated vignettes
 	* [r233] man/euler.Rd: - the old plugins are deprecated: move their
 	  man pages to 'internal'
 	* [r232] inst/doc/ou2-first-mif.rda: - binary file with saved

@@ -24,6 +24,7 @@
 \newcommand\code[1]{\texttt{#1}}
 \newcommand{\R}{\textsf{R}}
 \newcommand{\pomp}{\texttt{pomp}}
+\newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
 
 \title[Introduction to pomp]{Introduction to pomp:\\ inference for partially-observed Markov processes}
 
@@ -41,7 +42,7 @@
   48109-1048 USA
 }
 
-\email{kingaa@umich.edu} 
+\email{kingaa at umich dot edu} 
 
 \urladdr{http://pomp.r-forge.r-project.org}
 
@@ -361,6 +362,7 @@ The calls to \code{coef} and \code{coef<-} in the lines above make sure the para
 
 To compute the likelihood of the data, we can use the function \code{pfilter}.
 This runs a plain vanilla particle filter (AKA sequential Monte Carlo) algorithm and results in an unbiased estimate of the likelihood.
+See \citet{Arulampalam2002} for an excellent tutorial on particle filtering.
 To do this, we must decide how many concurrrent realizations (\emph{particles}) to use: the larger the number of particles, the smaller the Monte Carlo error but the greater the computational effort.
 Let's run \code{pfilter} with 1000 particles and evaluate the likelihood at the true parameters:
 <<ou2-pfilter-truth,eval=F>>=
@@ -485,6 +487,7 @@ coef(ou2,c("sigma.1","sigma.2")) <- c(1,0)
 
 %% In the ``advanced_topics_in_pomp'' vignette, we show how one can get access to more of the underlying structure of a \pomp\ object.
 
+\clearpage
 \section{Estimating parameters using iterated filtering: \code{mif}}
 
 Iterated filtering is a technique for maximizing the likelihood obtained by filtering.
@@ -615,6 +618,8 @@ par(op)
 
 \section{Nonlinear forecasting: \code{nlf}}
 
+To be added.
+
 <<first-nlf,echo=F,eval=F>>=
 estnames <- c('alpha.2','alpha.3','tau')
 out <- nlf(
@@ -644,11 +649,28 @@ print(
       )
 @ 
 
+\clearpage
 \section{Trajectory matching: \code{traj.match}}
 
-To be added.
-
-<<ou2-skeleton-def,echo=F,eval=F>>=
+The idea behind trajectory matching is a simple one.
+One attempts to fit a deterministic dynamical trajectory to the data.
+This is tantamount to assuming that all the stochasticity in the system is in the measurement process.
+In \pomp, the trajectory is computed using the \code{trajectory} function, which in turn uses the \code{skeleton} slot of the \pomp\ object.
+The \code{skeleton} slot should be filled with the deterministic skeleton of the process model.
+In the discrete-time case, this is the map
+\begin{equation*}
+  x\,\mapsto\,\expect{X_{t+1}\;\vert\;X_{t}=x,\theta}.
+\end{equation*}
+In the continuous-time case, this is the vectorfield
+\begin{equation*}
+  x\,\mapsto\,\lim_{{\Delta}{t}\,\to\,0}\,\frac{\expect{X_{t+{\Delta}{t}}\;\vert\;X_{t}=x,\theta}}{{\Delta}{t}}.
+\end{equation*}
+Our discrete-time bivariate autoregressive process has the deterministic skeleton
+\begin{equation}\label{eq:ou-skel}
+  X_{t} = \alpha\,X_{t-1}
+\end{equation}
+which can be implemented in the \R\ function
+<<ou2-skeleton-def,echo=T>>=
 ou2.skel <- function (x, t, params, ...) {
   xnew <- c(
             params["alpha.1"]*x["x1"]+params["alpha.3"]*x["x2"],
@@ -659,13 +681,12 @@ ou2.skel <- function (x, t, params, ...) {
 }
 @ 
 
-<<new-ou2-pomp-construction,eval=F,echo=F>>=
+We can incorporate the deterministic skeleton into a new \pomp\ object in the same way as before:
+<<new-ou2-pomp-construction,echo=T>>=
+dat <- subset(as(ou2,"data.frame"),time<=60)
+theta <- coef(ou2)
 new.ou2 <- pomp(
-                data=data.frame(
-                  time=1:100,
-                  y1=NA,
-                  y2=NA
-                  ),
+                data=dat[c("time","y1","y2")],
                 times="time",
                 rprocess=euler.sim(ou2.proc.sim,delta.t=1),
                 rmeasure=ou2.meas.sim,
@@ -674,28 +695,25 @@ new.ou2 <- pomp(
                 t0=0
                 )
 coef(new.ou2) <- theta
-coef(new.ou2,c("sigma.1","sigma.2","sigma.3","tau")) <- c(0,0,0,0.2)
+coef(new.ou2,c("sigma.1","sigma.2","sigma.3","tau")) <- c(0,0,0,0.5)
 new.ou2 <- simulate(new.ou2,seed=88737400L)
 @ 
-<<echo=F,eval=F>>=
-new.ou2 <- ou2
-coef(new.ou2) <- theta
-coef(new.ou2,c("sigma.1","sigma.2","sigma.3","tau")) <- c(0,0,0,0.2)
-new.ou2 <- simulate(new.ou2,seed=88737400L)
-@ 
+Note that we have turned off the process noise in \code{new.ou2} (next to last line) so that trajectory matching is actually formally appropriate for this model.
 
-<<ou2-trajmatch-calc,eval=F,echo=F>>=
+The \pomp\ function \code{traj.match} calls the optimizer \code{optim} to minimize the discrepancy between the trajectory and the data.
+The discrepancy is measured using the \code{dmeasure} function from the \pomp\ object.
+Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
+<<ou2-trajmatch-calc,eval=F>>=
 tm <- traj.match(
                  new.ou2,
                  start=coef(new.ou2),
-                 est=c("alpha.1","alpha.2","alpha.3","alpha.4","tau","x1.0","x2.0"),
+                 est=c("alpha.2","alpha.3","tau","x1.0","x2.0"),
                  method="Nelder-Mead",
                  maxit=1000,
                  reltol=1e-8
                  )
 @ 
-
-<<ou2-trajmatch-eval,echo=F,eval=F>>=
+<<ou2-trajmatch-eval,echo=F,eval=T>>=
 binary.file <- "ou2-trajmatch.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -705,20 +723,25 @@ if (file.exists(binary.file)) {
 }
 @
 
-%%\begin{figure}
-<<trajmatch-plot,fig=T,echo=F,eval=F>>=
+\begin{figure}
+<<trajmatch-plot,fig=T,echo=F,eval=T>>=
 op <- par(mfrow=c(2,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 plot(time(new.ou2),data.array(new.ou2,"y1"),xlab="",xaxt='n',ylab=expression(y[1]))
 x <- trajectory(new.ou2,params=tm$params)
-lines(time(new.ou2),x["x1",1,-1])
+lines(time(new.ou2),x["x1",1,-1],lwd=2)
 plot(time(new.ou2),data.array(new.ou2,"y2"),xlab="time",ylab=expression(y[2]))
-lines(time(new.ou2),x["x2",1,-1])
+lines(time(new.ou2),x["x2",1,-1],lwd=2)
 par(op)
 @ 
-%% \caption{Trajectory matching.}
-%% \label{fig:trajmatch-plot}
-%% \end{figure}
+\caption{
+  Illustration of trajectory matching.
+  The points show data simulated from \code{new.ou2}, which has no process noise but only measurement error.
+  The solid line shows the trajectory of the best-fitting model, obtained using \code{traj.match}.
+}
+\label{fig:trajmatch-plot}
+\end{figure}
 
+\clearpage
 \section{A more complex example: a seasonal epidemic model}
 
 The SIR model is a mainstay of theoretical epidemiology.
@@ -868,6 +891,7 @@ plot(sir)
   \label{fig:sir-plot}
 \end{figure}
 
+\clearpage
 \bibliographystyle{ecology}
 \bibliography{pomp}
 
