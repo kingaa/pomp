@@ -1,5 +1,4 @@
 <?php
-
 $domain=ereg_replace('[^\.]*\.(.*)$','\1',$_SERVER['HTTP_HOST']);
 $group_name=ereg_replace('([^\.]*)\..*$','\1',$_SERVER['HTTP_HOST']);
 $themeroot='http://r-forge.r-project.org/themes/rforge/';
@@ -23,7 +22,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <table border="0" width="80%" cellspacing="0" cellpadding="0">
 <tr>
 <td>
-<a href="/"><img src="<?php echo $themeroot; ?>/images/logo.png" border="0" alt="R-Forge Logo" /> </a> 
+<a href="/"><img src="<?php echo $themeroot; ?>/imagesrf/logo.png" border="0" alt="R-Forge Logo" /> </a> 
 </td> 
 </tr>
 </table>
