@@ -1,4 +1,4 @@
-\name{trajectory-pomp}
+\name{trajectory}
 \docType{methods}
 \alias{trajectory}
 \alias{trajectory,pomp-method}
