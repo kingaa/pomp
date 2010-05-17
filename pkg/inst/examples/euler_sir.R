@@ -103,16 +103,15 @@ if (Sys.info()['sysname']=='Linux') {
   model <- "sir"
   pkg <- "pomp"
   modelfile <- paste(model,".c",sep="")
-  headerfile <- system.file("include/pomp.h",package=pkg)
+  cppflags <- paste("PKG_CPPFLAGS=-I",system.file("include",package=pkg),sep="")
   pkglib <- system.file(paste("libs/",pkg,.Platform$dynlib.ext,sep=""),package=pkg)
   solib <- paste(model,.Platform$dynlib.ext,sep="")
 
   ## compile the model into a shared-object library
   if (!file.copy(from=system.file(paste("examples/",modelfile,sep=""),package=pkg),to=getwd()))
     stop("cannot copy source code ",modelfile," to ",getwd())
-  if (!file.copy(from=headerfile,to=getwd()))
-    stop("cannot copy header ",headerfile," to ",getwd())
-  rv <- system(paste(R.home("bin/R"),"CMD SHLIB -o",solib,modelfile,pkglib))
+  cmd <- paste(cppflags,R.home("bin/R"),"CMD SHLIB -o",solib,modelfile,pkglib)
+  rv <- system(cmd)
   if (rv!=0)
     stop("cannot compile shared-object library ",solib)
 
