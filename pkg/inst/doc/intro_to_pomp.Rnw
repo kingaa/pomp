@@ -46,11 +46,13 @@
 
 \urladdr{http://pomp.r-forge.r-project.org}
 
-%% \date{\today}
+\date{\today, \pomp~version~\Sexpr{packageDescription("pomp",fields="Version")}}
+
+\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T}
 
 \begin{document}
 
-\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T}
+\thispagestyle{empty}
 
 \maketitle
 
@@ -165,7 +167,7 @@ As we saw before, we would like to be able to:
 For this simple model, all this is easy enough.
 More generally, it will be difficult to do some of these things.
 Depending on what we wish to accomplish, however, we may not need all of these capabilities and in particular,
-\textbf{to use any particular one of the algorithms in \pomp, we need never specify \emph{all} these.}
+\textbf{to use any particular one of the algorithms in \pomp, we need never specify \emph{all} of \ref{it:rproc}--\ref{it:skel}.}
 For example, to simulate data, all we need is \ref{it:rproc} and \ref{it:rmeas}.
 To run a particle filter (and hence to use iterated filtering, \code{mif}), one needs \ref{it:rproc} and \ref{it:dmeas}.
 To do MCMC, one needs \ref{it:dproc} and \ref{it:dmeas}.
