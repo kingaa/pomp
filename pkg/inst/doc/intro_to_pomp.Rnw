@@ -220,6 +220,7 @@ Again the translation is straightforward.
 When this function is called, the unobserved states at time \code{t} will be in the named numeric vector \code{x} and the parameters in \code{params} as before.
 The function returns a named numeric vector that represents a single draw from the observation process \eqref{eq:ou-obs}.
 
+\clearpage
 \section{Simulating the model}
 
 With the two functions above, we already have all we need to simulate the entire model.
@@ -233,7 +234,7 @@ ou2 <- pomp(
               y2=NA
               ),
             times="time",
-            rprocess=euler.sim(
+            rprocess=discrete.time.sim(
               step.fun=ou2.proc.sim,
               delta.t=1
               ),
@@ -246,7 +247,7 @@ Since this is a toy problem, we have no data.
 In a moment, however, we'll simulate some data so we can explore \pomp's various methods for fitting models to data.
 The second argument (\code{times}) specifies which of the columns of \code{data} is the time variable.
 The third argument (\code{rprocess}) specifies that the process model simulator will be in discrete-time, one step at a time.
-The function \code{euler.sim} belongs to the package \pomp.
+The function \code{discrete.time.sim} belongs to the package \pomp.
 It takes several arguments, one of which, \code{step.fun}, is the particular function that actually takes the step.
 Its second argument, \code{delta.t}, sets the size of the time-step.
 The argument \code{rmeasure} specifies the measurement model simulator function.
@@ -316,6 +317,8 @@ plot(ou2,variables=c("y1","y2"))
 \label{fig:ou2-first-simulation-plot}
 \end{figure}
 
+\section{Computing likelihood using particle filtering}
+
 Since some parameter estimation algorithms in the \pomp\ package only require simulations of the full process, we are already in a position to use them.
 At present, the only such algorithm is nonlinear forecasting (\code{nlf}).
 In the near future, probe-matching algorithms that require only \code{rprocess} and \code{rmeasure} will be included in the package.
@@ -346,7 +349,7 @@ theta <- coef(ou2)
 ou2 <- pomp(
             data=dat[c("time","y1","y2")],
             times="time",
-            rprocess=euler.sim(ou2.proc.sim,delta.t=1),
+            rprocess=discrete.time.sim(ou2.proc.sim,delta.t=1),
             rmeasure=ou2.meas.sim,
             dmeasure=ou2.meas.dens,
             t0=0
@@ -359,8 +362,6 @@ data(ou2)
 @ 
 Note that we've first extracted the data from our old \code{ou2} and set up the new one with the same data and parameters.
 The calls to \code{coef} and \code{coef<-} in the lines above make sure the parameters have the same values they had before.
-
-\section{Computing likelihood using particle filtering}
 
 To compute the likelihood of the data, we can use the function \code{pfilter}.
 This runs a plain vanilla particle filter (AKA sequential Monte Carlo) algorithm and results in an unbiased estimate of the likelihood.
@@ -690,7 +691,7 @@ theta <- coef(ou2)
 new.ou2 <- pomp(
                 data=dat[c("time","y1","y2")],
                 times="time",
-                rprocess=euler.sim(ou2.proc.sim,delta.t=1),
+                rprocess=discrete.time.sim(ou2.proc.sim,delta.t=1),
                 rmeasure=ou2.meas.sim,
                 dmeasure=ou2.meas.dens,
                 skeleton.map=ou2.skel,
@@ -849,7 +850,8 @@ pomp(
 @ 
 The specification of \code{data}, \code{times}, and \code{t0} should be familiar.
 The covariates are specified using the arguments \code{tcovar} and \code{covar}.
-Again, we use \code{euler.sim} to specify the process simulator (\code{rprocess}): we use a time-step of 1/20 of a week.
+We use \code{euler.sim} to specify the process simulator (\code{rprocess}).
+We are approximating the continuous-time process using an Euler simulator with a time-step of 1/20 of a week.
 Both \code{rmeasure} and \code{dmeasure} can be specified at once using the \code{measurement.model} argument.
 Here, we model the observation process using a binomial process, where the \emph{reporting rate}, \code{rho}, is the probability that a case is reported.
 

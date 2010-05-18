@@ -41,6 +41,7 @@ export(
        onestep.simulate,
        onestep.density,
        euler.sim,
+       discrete.time.sim,
        onestep.sim,
        onestep.dens,
        gillespie.sim,
