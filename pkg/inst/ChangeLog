@@ -1,3 +1,39 @@
+2010-05-19  kingaa
+
+	* [r247] DESCRIPTION, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/examples/euler_sir.R,
+	  inst/examples/logistic.R, inst/examples/rw2.R,
+	  inst/examples/sir.R, inst/examples/sir.c, src/sir.c: - improve
+	  the vignettes
+	  - improve the examples
+
+2010-05-18  kingaa
+
+	* [r246] NAMESPACE, R/plugins.R, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-first-mif.rda, inst/doc/ou2-trajmatch.rda,
+	  man/plugins.Rd: - add the rprocess plugin 'discrete.time.sim',
+	  which is essentially identical to 'euler.sim'
+
+2010-05-17  kingaa
+
+	* [r245] inst/examples/euler_sir.R: - slight change to euler_sir
+	  example
+	* [r243] DESCRIPTION, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: - cosmetology
+	* [r242] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: -
+	  minor edits to intro vignette
+	* [r241] man/LondonYorke.Rd: - cosmetology
+	* [r240] man/trajectory-pomp.Rd: - index by the new generic
+	  'trajectory'
+	* [r239] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-trajmatch.rda, inst/doc/pomp.bib: - add section on
+	  trajectory matching to the intro vignette
+
 2010-05-16  kingaa
 
 	* [r237] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: -
