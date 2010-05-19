@@ -58,9 +58,10 @@
 
 \tableofcontents
 
-<<echo=F,results=hide>>=
+<<set-opts,echo=F,results=hide>>=
   glop <- options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
   library(pomp)
+  pdf.options(useDingbats=FALSE)
   set.seed(5384959)
 @ 
 
@@ -901,6 +902,6 @@ plot(sir)
 
 \end{document}
 
-<<echo=F,results=hide>>=
+<<restore-opts,echo=F,results=hide>>=
 options(glop)
 @ 

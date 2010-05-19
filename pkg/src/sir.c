@@ -41,21 +41,21 @@ static double term_time (double t, double b0, double b1)
 #define CASE      (x[stateindex[3]]) // number of cases (accumulated per reporting period)
 #define W         (x[stateindex[4]]) // integrated white noise
 
-#define MEASLES   (y[0])
+#define REPORTS   (y[0])
 
 void binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
 		     int *stateindex, int *parindex, int *covindex,
 		     int ncovars, double *covars, double t) {
-  *lik = dbinom(MEASLES,CASE,exp(LOGRHO),give_log);
+  *lik = dbinom(REPORTS,CASE,exp(LOGRHO),give_log);
 }
 
 void binom_rmeasure (double *y, double *x, double *p, 
 		     int *stateindex, int *parindex, int *covindex,
 		     int ncovars, double *covars, double t) {
-  MEASLES = rbinom(CASE,exp(LOGRHO));
+  REPORTS = rbinom(CASE,exp(LOGRHO));
 }
 
-#undef MEASLES
+#undef REPORTS
 
 // SIR model with Euler multinomial step
 // forced transmission (basis functions passed as covariates)

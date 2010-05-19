@@ -1,16 +1,18 @@
 require(pomp)
 
 ## a simple two-dimensional random walk
+## this makes use of the 'onestep.sim' plugin
+## which we can use since we can simulate the
+## increment of a random walk over any time
 
 rw2 <- pomp(
-            rprocess = euler.sim(
+            rprocess = onestep.sim(
               step.fun = function(x, t, params, delta.t, ...) {
                 c(
                   x1=rnorm(n=1,mean=x['x1'],sd=params['s1']*delta.t),
                   x2=rnorm(n=1,mean=x['x2'],sd=params['s2']*delta.t)
                   )
-              },
-              delta.t=1
+              }
               ),
             dprocess = onestep.dens(
               dens.fun = function (x1, t1, x2, t2, params, ...) {

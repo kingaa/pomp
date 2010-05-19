@@ -1,6 +1,9 @@
 require(pomp)
 
 ## a stochastic version of the Verhulst-Pearl logistic model
+## this evolves in continuous time, but we approximate the
+## stochastic dynamics using an Euler approximation
+## (plugin 'euler.sim') with fixed step-size
 
 po <- pomp(
            data=rbind(obs=rep(0,1000)),
