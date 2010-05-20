@@ -45,11 +45,14 @@ SEXP systematic_resampling(SEXP weights);
 static inline SEXP makearray (int rank, int *dim) {
   int nprotect = 0;
   int *dimp, k;
+  double *xp;
   SEXP dimx, x;
   PROTECT(dimx = NEW_INTEGER(rank)); nprotect++;
   dimp = INTEGER(dimx); 
   for (k = 0; k < rank; k++) dimp[k] = dim[k];
   PROTECT(x = allocArray(REALSXP,dimx)); nprotect++;
+  xp = REAL(x);
+  for (k = 0; k < length(x); k++) xp[k] = NA_REAL;
   UNPROTECT(nprotect);
   return x;
 }
