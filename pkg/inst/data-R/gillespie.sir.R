@@ -8,6 +8,7 @@ params <- c(
             beta3=log(490),
             gamma=log(24),
             iota=log(0.1),
+            rho=log(0.1),
             S.0=log(0.05),
             I.0=log(1e-4),
             R.0=log(0.95),
@@ -46,8 +47,13 @@ simulate(
                   rdeath=c(0,0,1,0,0)
                   )
                 ),
+              obsnames="reports",
               statenames=c("S","I","R","N","cases"),
-              paramnames=c("gamma","mu","iota","beta1","nu","nbasis","degree","period"),
+              paramnames=c(
+                "gamma","mu","iota",
+                "beta1","nu",
+                "nbasis","degree","period"
+                ),
               zeronames=c("cases"),
               measurement.model=reports~binom(size=cases,prob=0.1),
               initializer=function(params, t0, ...){

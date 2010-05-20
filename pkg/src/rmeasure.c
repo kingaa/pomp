@@ -11,7 +11,7 @@ static void simul_meas (pomp_measure_model_simulator *f,
 			double *y, 
 			double *x, double *times, double *params, 
 			int *ndim,
-			int *stateindex, int *parindex, int *covindex,
+			int *obsindex, int *stateindex, int *parindex, int *covindex,
 			double *time_table, double *covar_table)
 {
   double t, *xp, *pp, *yp;
@@ -44,7 +44,7 @@ static void simul_meas (pomp_measure_model_simulator *f,
       xp = &x[nvar*(p+nrep*k)];
       pp = &params[npar*p];
 
-      (*f)(yp,xp,pp,stateindex,parindex,covindex,covdim,covar_fn,t);
+      (*f)(yp,xp,pp,obsindex,stateindex,parindex,covindex,covdim,covar_fn,t);
       
     }
   }
@@ -80,9 +80,9 @@ static SEXP _pomp_rmeas_fcall;	// function call
 
 // this is the measurement simulator evaluated when the user supplies an R function
 // (and not a native routine)
-// Note that stateindex, parindex, covindex are ignored.
+// Note that obsindex, stateindex, parindex, covindex are ignored.
 static void default_meas_sim (double *y, double *x, double *p, 
-			      int *stateindex, int *parindex, int *covindex,
+			      int *obsindex, int *stateindex, int *parindex, int *covindex,
 			      int covdim, double *covar, double t)
 {
   int nprotect = 0;
@@ -127,12 +127,12 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
   SEXP Y, fn;
   SEXP dimP, dimX, dimD;
   SEXP tcovar, covar;
-  SEXP statenames, paramnames, covarnames;
-  SEXP sindex, pindex, cindex;
-  int *sidx, *pidx, *cidx;
+  SEXP statenames, paramnames, covarnames, obsnames;
+  SEXP sindex, pindex, cindex, oindex;
+  int *sidx, *pidx, *cidx, *oidx;
   SEXP Xnames, Pnames, Cnames;
   int use_native;
-  int nstates, nparams, ncovars;
+  int nstates, nparams, ncovars, nobsers;
   pomp_measure_model_simulator *ff = NULL;
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
@@ -160,9 +160,11 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
   PROTECT(tcovar =  GET_SLOT(object,install("tcovar"))); nprotect++;
   PROTECT(covar =  GET_SLOT(object,install("covar"))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
-  PROTECT(statenames =  GET_SLOT(object,install("statenames"))); nprotect++;
-  PROTECT(paramnames =  GET_SLOT(object,install("paramnames"))); nprotect++;
-  PROTECT(covarnames =  GET_SLOT(object,install("covarnames"))); nprotect++;
+  PROTECT(obsnames = GET_SLOT(object,install("obsnames"))); nprotect++;
+  PROTECT(statenames = GET_SLOT(object,install("statenames"))); nprotect++;
+  PROTECT(paramnames = GET_SLOT(object,install("paramnames"))); nprotect++;
+  PROTECT(covarnames = GET_SLOT(object,install("covarnames"))); nprotect++;
+  nobsers = LENGTH(obsnames);
   nstates = LENGTH(statenames);
   nparams = LENGTH(paramnames);
   ncovars = LENGTH(covarnames);
@@ -215,6 +217,13 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
   PROTECT(Y = makearray(3,ndim)); nprotect++; 
   setrownames(Y,OBNM,3);
 
+  if (nobsers > 0) {
+    PROTECT(oindex = matchnames(OBNM,obsnames)); nprotect++;
+    oidx = INTEGER(oindex);
+  } else {
+    oidx = 0;
+  }
+
   if (nstates > 0) {
     PROTECT(sindex = matchnames(Xnames,statenames)); nprotect++;
     sidx = INTEGER(sindex);
@@ -242,13 +251,14 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
   if (use_native) GetRNGstate();
 
   simul_meas(ff,REAL(Y),REAL(x),REAL(times),REAL(params),ndim,
-	     sidx,pidx,cidx,
+	     oidx,sidx,pidx,cidx,
 	     REAL(tcovar),REAL(covar));
 
   if (use_native) PutRNGstate();
 
   if (OIDX != 0) Free(OIDX);
   OIDX = 0;
+  FIRST = 0;
 
   UNPROTECT(nprotect);
   return Y;

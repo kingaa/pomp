@@ -64,7 +64,7 @@
 This document serves to give some examples of the use of native (C or FORTRAN) codes in \code{pomp} 
 and to introduce the low-level interface to \code{pomp} objects.
 
-\section{Acceleration using native codes.}
+\section{Acceleration using native codes: writing \code{rprocess} and \code{dprocess} from scratch.}
 
 Since many of the methods we will use require us to simulate the process and/or measurement models many times, it is a good idea to use native (compiled) codes for the computational heavy lifting.
 This can result in many-fold speedup.
@@ -142,25 +142,36 @@ ou2 <- pomp(
 	    t0=0,
 	    rprocess = ou2.rprocess,
 	    dprocess = ou2.dprocess,
-	    dmeasure = "normal_dmeasure",
-	    rmeasure = "normal_rmeasure",
+	    dmeasure = "ou2_normal_dmeasure",
+	    rmeasure = "ou2_normal_rmeasure",
             paramnames=c(
               "alpha.1","alpha.2","alpha.3","alpha.4",
               "sigma.1","sigma.2","sigma.3",
               "tau"
               ),
             statenames = c("x1","x2"),
+            obsnames = c("y1","y2"),
             PACKAGE="pomp"
 	    )
 @ 
 Notice that the process model is implemented using using \verb+.C+, while the measurement model is specified by giving the names of native C routines.
 Read the source to see the definitions of these functions.
-For convenience, the source codes are provided with the package in the \code{examples} directory.\
+For convenience, the source codes are provided with the package in the \code{examples} directory.
 Do
 <<view-ou2-source,eval=F>>=
 edit(file=system.file("examples/ou2.c",package="pomp"))
 @ 
 to view the source code.
+
+There is an important issue that arises when using native codes.
+This has to do with the order in which parameters, states, and observables are passed into the native codes.
+\pomp\ relies on the names (also row-names and column-names) attributes to identify variables in vectors and arrays.
+When you write a C or FORTRAN version of \code{rprocess} or \code{dmeasure} for example, you write a routine that takes parameters, state variables, and/or observables in the form of a vector.
+However, you have no control over the order in which these are given to you.
+Without some means of knowing which element of each vector corresponds to which variable, you cannot write the codes correctly.
+This is where the \code{paramnames}, \code{statenames}, and \code{obsnames} arguments to \code{pomp} come in.
+When you specifying the names of parameters, state variables, and observables (data variables) here, \code{pomp} matches these names against the corresponding names attributes of vectors and passes to your native routine integer vectors which you can use to identify the correct variables.
+See the source code to see how this is done.
 
 We'll specify some parameters:
 <<>>=
@@ -179,11 +190,11 @@ toc <- Sys.time()
 print(toc-tic)
 @ 
 
-In this example, we've written our simulators and density functions ``from scratch''.
+\section{Acceleration using native codes: using plug-ins with native code}
+
+In the preceding example, we've written our simulators and density functions ``from scratch''.
 \code{pomp} provides ``plug-in'' facilities to make it easier to define certain kinds of models.
 These plug-ins can be used with native codes as well, as we'll see in the next example.
-
-\section{The seasonal SIR model implemented using compiled native routines}
 
 In the ``intro\_to\_pomp'' vignette, we looked at the SIR model, which we implemented using an Euler-multinomial approximation to the continuous-time Markov process.
 Here is the same model implemented using native C codes:
@@ -203,10 +214,12 @@ pomp(
      ## native routine for the skeleton:
      skeleton.vectorfield="sir_ODE", 
      ## binomial measurement model:
-     rmeasure="binom_rmeasure", 
-     ## binomial measurement model:
-     dmeasure="binom_dmeasure", 
-     PACKAGE="pomp", ## name of the shared-object library
+     rmeasure="sir_binom_rmeasure", 
+     dmeasure="sir_binom_dmeasure", 
+     ## name of the shared-object library containing the native routines:
+     PACKAGE="pomp", 
+     ## the order of the observable assumed in the native routines:
+     obsnames=c("reports"),
      ## the order of the state variables assumed in the native routines:
      statenames=c("S","I","R","cases","W"),
      ## the order of the parameters assumed in the native routines:
@@ -230,12 +243,16 @@ pomp(
      }
      ) -> sir
 @ 
-The source code for the native routines \verb+sir_euler_simulator+, \verb+sir_ODE+, \verb+binom_rmeasure+, and \verb+binom_dmeasure+ is provided with the package (in the \code{examples} directory).
+The source code for the native routines \verb+sir_euler_simulator+, \verb+sir_ODE+, \verb+sir_binom_rmeasure+, and \verb+sir_binom_dmeasure+ is provided with the package (in the \code{examples} directory).
 To see the source code, do
 <<view-sir-source,eval=F>>=
 edit(file=system.file("examples/sir.c",package="pomp"))
 @ 
 Also in the \code{examples} directory is an \R\ script that shows how to compile \verb+sir.c+ into a shared-object library and link it with \R.
+Note that the native routines for this model are included in the package, which is why we give the \verb+PACKAGE="pomp"+ argument to \pomp.
+When you write your own model using native routines, you'll compile them into a dynamically-loadable library.
+In this case, you'll want to specify the name of that library using the \code{PACKAGE} argument.
+Again, refer to the SIR example included in the \code{examples} directory to see how this is done.
 
 Let's specify some parameters and simulate:
 <<sir-sim>>=

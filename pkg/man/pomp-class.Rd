@@ -52,8 +52,8 @@
     \item{covar, tcovar}{
       An optional table of covariates.
     }
-    \item{statenames, paramnames, covarnames}{
-      Names state variables, parameters, and covariates, respectively.
+    \item{obsnames, statenames, paramnames, covarnames}{
+      Names of observables, state variables, parameters, and covariates, respectively.
       These are used to make the interface with native routines more robust.
     }
     \item{PACKAGE}{

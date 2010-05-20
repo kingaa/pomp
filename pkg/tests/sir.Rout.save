@@ -38,7 +38,7 @@ Loading required package: mvtnorm
 > ## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
 > po <- pomp(
 +            times=1/52*seq.int(length=4*52),
-+            data=rbind(measles=numeric(52*4)),
++            data=rbind(reports=numeric(52*4)),
 +            t0=0,
 +            tcovar=tbasis,
 +            covar=basis,
@@ -127,7 +127,7 @@ Loading required package: mvtnorm
 +                   }
 +                   )
 +            },
-+            measurement.model=measles~binom(size=cases,prob=exp(rho)),
++            measurement.model=reports~binom(size=cases,prob=exp(rho)),
 +            initializer=function(params,t0,...){
 +              p <- exp(params)
 +              with(
@@ -147,7 +147,7 @@ Loading required package: mvtnorm
 > 
 > show(po)
 data and states:
-          time measles
+          time reports
 1   0.01923077       0
 2   0.03846154       0
 3   0.05769231       0
@@ -358,7 +358,7 @@ data and states:
 208 4.00000000       0
 
 call:
-pomp(data = rbind(measles = numeric(52 * 4)), times = 1/52 * 
+pomp(data = rbind(reports = numeric(52 * 4)), times = 1/52 * 
     seq.int(length = 4 * 52), t0 = 0, zeronames = c("cases"), 
     rprocess = euler.sim(delta.t = 1/52/20, step.fun = function(t, 
         x, params, covars, delta.t, ...) {
@@ -399,7 +399,7 @@ pomp(data = rbind(measles = numeric(52 * 4)), times = 1/52 *
                   log = T))
             sum(probs)
         })
-    }), measurement.model = measles ~ binom(size = cases, prob = exp(rho)), 
+    }), measurement.model = reports ~ binom(size = cases, prob = exp(rho)), 
     skeleton.vectorfield = function(x, t, params, covars, ...) {
         xdot <- rep(0, length(x))
         params <- exp(params)
@@ -435,7 +435,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0xd2aa58>
+<environment: 0xcfaab8>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -445,7 +445,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0xc618e8>
+<environment: 0xc60008>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -457,7 +457,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0xfec8c8>
+<environment: 0xfe3fa0>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -470,7 +470,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0xfec8c8>
+<environment: 0xfe3fa0>
 skeleton ( vectorfield ) = 
 function (x, t, params, covars, ...) 
 {
@@ -509,7 +509,7 @@ $zeronames
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.560417 secs
+Time difference of 3.034172 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -526,7 +526,7 @@ Time difference of 3.560417 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 8.624317 secs
+Time difference of 7.110227 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -546,7 +546,7 @@ Time difference of 8.624317 secs
 > 
 > g1 <- dmeasure(
 +                po,
-+                y=rbind(measles=X1$obs[,7,]),
++                y=rbind(reports=X1$obs[,7,]),
 +                x=X1$states,
 +                times=t1,
 +                params=matrix(
@@ -586,7 +586,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 6.935809 secs
+Time difference of 6.164427 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -594,12 +594,12 @@ Time difference of 6.935809 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.274156 secs
+Time difference of 1.135105 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
 +                po,
-+                y=rbind(measles=X1$obs[,7,]),
++                y=rbind(reports=X1$obs[,7,]),
 +                x=X1$states,
 +                times=t1,
 +                params=matrix(

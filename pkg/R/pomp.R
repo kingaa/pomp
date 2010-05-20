@@ -11,7 +11,7 @@ default.initializer <- function (params, t0, ...) {
 pomp <- function (data, times, t0, ..., rprocess, dprocess,
                   rmeasure, dmeasure, measurement.model,
                   skeleton.map, skeleton.vectorfield, initializer, covar, tcovar,
-                  statenames, paramnames, covarnames,
+                  obsnames, statenames, paramnames, covarnames,
                   PACKAGE) {
   ## save the call
   this.call <- match.call()
@@ -125,6 +125,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
          call.=TRUE
          )
   
+  if (missing(obsnames)) obsnames <- character(0)
   if (missing(statenames)) statenames <- character(0)
   if (missing(paramnames)) paramnames <- character(0)
   if (missing(covarnames)) covarnames <- character(0)
@@ -200,6 +201,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
       initializer = initializer,
       covar = covar,
       tcovar = tcovar,
+      obsnames = obsnames,
       statenames = statenames,
       paramnames = paramnames,
       covarnames = covarnames,

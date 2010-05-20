@@ -115,12 +115,14 @@ typedef void pomp_vectorfield_map (double *f, double *x, double *p,
 
 // Prototype for measurement model simulation
 typedef void pomp_measure_model_simulator (double *y, double *x, double *p, 
-					   int *stateindex, int *parindex, int *covindex,
+					   int *obsindex, int *stateindex, int *parindex, int *covindex,
 					   int ncovars, double *covars, double t);
 // Description:
 //  on input:
 // x          = pointer to state vector at time t
 // p          = pointer to parameter vector
+// obsindex   = pointer to vector of integers indexing the variables in 'y' in the order specified by 
+//                the 'obsnames' slot
 // stateindex = pointer to vector of integers indexing the states in 'x' in the order specified by 
 //                the 'statenames' slot
 // parindex   = pointer to vector of integers indexing the parameters in 'p' in the order specified by 
@@ -141,7 +143,7 @@ typedef void pomp_measure_model_simulator (double *y, double *x, double *p,
 
 // Prototype for measurement model density evaluator
 typedef void pomp_measure_model_density (double *lik, double *y, double *x, double *p, int give_log,
-					 int *stateindex, int *parindex, int *covindex,
+					 int *obsindex, int *stateindex, int *parindex, int *covindex,
 					 int ncovars, double *covars, double t);
 // Description:
 //  on input:
@@ -149,6 +151,8 @@ typedef void pomp_measure_model_density (double *lik, double *y, double *x, doub
 // x          = pointer to state vector at time t
 // p          = pointer to parameter vector
 // give_log   = should the log likelihood be returned?
+// obsindex   = pointer to vector of integers indexing the variables in 'y' in the order specified by 
+//                the 'obsnames' slot
 // stateindex = pointer to vector of integers indexing the states in 'x' in the order specified by 
 //                the 'statenames' slot
 // parindex   = pointer to vector of integers indexing the parameters in 'p' in the order specified by 

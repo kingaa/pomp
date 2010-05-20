@@ -2,9 +2,22 @@ require(pomp)
 
 simulate(
          pomp(
-              times=seq(1/52,4,by=1/52),
-              data=rbind(reports=numeric(52*4)),
+              data=data.frame(
+                time=seq(from=1/52,to=4,by=1/52),
+                reports=NA
+                ),
+              times="time",
               t0=0,
+              rprocess=euler.sim(
+                step.fun="sir_euler_simulator",
+                delta.t=1/52/20,
+                PACKAGE="pomp"
+                ),
+              skeleton.vectorfield="sir_ODE",
+              rmeasure="sir_binom_rmeasure",
+              dmeasure="sir_binom_dmeasure",
+              PACKAGE="pomp",
+              obsnames = c("reports"),
               statenames=c("S","I","R","cases","W"),
               paramnames=c(
                 "gamma","mu","iota",
@@ -13,15 +26,6 @@ simulate(
                 ),
               zeronames=c("cases"),
               comp.names=c("S","I","R"),
-              rprocess=euler.sim(
-                step.fun="sir_euler_simulator",
-                delta.t=1/52/20,
-                PACKAGE="pomp"
-                ),
-              skeleton.vectorfield="sir_ODE",
-              rmeasure="binom_rmeasure",
-              dmeasure="binom_dmeasure",
-              PACKAGE="pomp",
               initializer=function(params, t0, comp.names, ...){
                 p <- exp(params)
                 snames <- c("S","I","R","cases","W")

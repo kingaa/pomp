@@ -8,13 +8,12 @@
 
 // prototypes
 
-void normal_rmeasure (double *y, double *x, double *p, 
-		      int *stateindex, int *parindex, int *covindex,
-		      int ncovar, double *covar, 
-		      double t);
-void normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
-		      int *stateindex, int *parindex, int *covindex,
-		      int covdim, double *covar, double t);
+void ou2_normal_rmeasure (double *y, double *x, double *p, 
+			  int *obsindex, int *stateindex, int *parindex, int *covindex,
+			  int ncovar, double *covar, double t);
+void ou2_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
+			  int *obsindex, int *stateindex, int *parindex, int *covindex,
+			  int covdim, double *covar, double t);
 void ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex);
 void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log);
 static void sim_ou2 (double *x,
@@ -85,13 +84,13 @@ void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *par
 #define X1    (x[stateindex[0]])
 #define X2    (x[stateindex[1]])
 #define TAU   (p[parindex[7]])
-#define Y1    (y[0])
-#define Y2    (y[1])
+#define Y1    (y[obsindex[0]])
+#define Y2    (y[obsindex[1]])
 
 // bivariate normal measurement error density
-void normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
-		      int *stateindex, int *parindex, int *covindex,
-		      int covdim, double *covar, double t) 
+void ou2_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
+			  int *obsindex, int *stateindex, int *parindex, int *covindex,
+			  int covdim, double *covar, double t) 
 {
   double sd = fabs(TAU);
   double f = 0.0;
@@ -101,10 +100,10 @@ void normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log
 }
 
 // bivariate normal measurement error simulator
-void normal_rmeasure (double *y, double *x, double *p, 
-		      int *stateindex, int *parindex, int *covindex,
-		      int ncovar, double *covar, 
-		      double t) 
+void ou2_normal_rmeasure (double *y, double *x, double *p, 
+			  int *obsindex, int *stateindex, int *parindex, int *covindex,
+			  int ncovar, double *covar, 
+			  double t) 
 {
   double sd = fabs(TAU);
   Y1 = rnorm(X1,sd);

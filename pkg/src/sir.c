@@ -41,17 +41,17 @@ static double term_time (double t, double b0, double b1)
 #define CASE      (x[stateindex[3]]) // number of cases (accumulated per reporting period)
 #define W         (x[stateindex[4]]) // integrated white noise
 
-#define REPORTS   (y[0])
+#define REPORTS   (y[obsindex[0]])
 
-void binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
-		     int *stateindex, int *parindex, int *covindex,
-		     int ncovars, double *covars, double t) {
+void sir_binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
+			 int *obsindex, int *stateindex, int *parindex, int *covindex,
+			 int ncovars, double *covars, double t) {
   *lik = dbinom(REPORTS,CASE,exp(LOGRHO),give_log);
 }
 
-void binom_rmeasure (double *y, double *x, double *p, 
-		     int *stateindex, int *parindex, int *covindex,
-		     int ncovars, double *covars, double t) {
+void sir_binom_rmeasure (double *y, double *x, double *p, 
+			 int *obsindex, int *stateindex, int *parindex, int *covindex,
+			 int ncovars, double *covars, double t) {
   REPORTS = rbinom(CASE,exp(LOGRHO));
 }
 

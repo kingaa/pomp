@@ -18,7 +18,7 @@ params <- c(
 ## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
 po <- pomp(
            times=1/52*seq.int(length=4*52),
-           data=rbind(measles=numeric(52*4)),
+           data=rbind(reports=numeric(52*4)),
            t0=0,
            tcovar=tbasis,
            covar=basis,
@@ -107,7 +107,7 @@ po <- pomp(
                   }
                   )
            },
-           measurement.model=measles~binom(size=cases,prob=exp(rho)),
+           measurement.model=reports~binom(size=cases,prob=exp(rho)),
            initializer=function(params,t0,...){
              p <- exp(params)
              with(
@@ -167,7 +167,7 @@ print(apply(f1,1,sum),digits=4)
 
 g1 <- dmeasure(
                po,
-               y=rbind(measles=X1$obs[,7,]),
+               y=rbind(reports=X1$obs[,7,]),
                x=X1$states,
                times=t1,
                params=matrix(
@@ -209,7 +209,7 @@ plot(t3,X4['I',1,],type='l')
 
 g2 <- dmeasure(
                po,
-               y=rbind(measles=X1$obs[,7,]),
+               y=rbind(reports=X1$obs[,7,]),
                x=X1$states,
                times=t1,
                params=matrix(

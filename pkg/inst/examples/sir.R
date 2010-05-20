@@ -43,14 +43,16 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
                delta.t=1/52/20
                ),
              skeleton.vectorfield="sir_ODE", # native routine for the skeleton
-             rmeasure="binom_rmeasure", # binomial measurement model
-             dmeasure="binom_dmeasure", # binomial measurement model
+             rmeasure="sir_binom_rmeasure", # binomial measurement model
+             dmeasure="sir_binom_dmeasure", # binomial measurement model
              PACKAGE="sir", ## name of the shared-object library
+             ## the order of the observables assumed in the native routines:
+             obsnames="reports",
              ## the order of the state variables assumed in the native routines:
              statenames=c("S","I","R","cases","W"),
              ## the order of the parameters assumed in the native routines:
              paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho","nbasis","degree","period"), 
-             ## reset cases to zero at each new observation:
+             ## reset cases to zero after each new observation:
              zeronames=c("cases"),      
              initializer=function(params,t0,...){
                p <- exp(params)

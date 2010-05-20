@@ -1,5 +1,10 @@
+2010-05-20  kingaa
+
+	* [r249] src/pomp_internal.h: - initialize arrays with NA
+
 2010-05-19  kingaa
 
+	* [r248] inst/ChangeLog:
 	* [r247] DESCRIPTION, inst/doc/advanced_topics_in_pomp.Rnw,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
 	  inst/doc/intro_to_pomp.pdf, inst/examples/euler_sir.R,

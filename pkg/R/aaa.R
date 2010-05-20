@@ -30,6 +30,7 @@ setClass(
                         params = 'numeric',
                         covar = 'matrix',
                         tcovar = 'numeric',
+                        obsnames = 'character',
                         statenames = 'character',
                         paramnames = 'character',
                         covarnames = 'character',

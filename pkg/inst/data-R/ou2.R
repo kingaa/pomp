@@ -54,8 +54,8 @@ simulate(
                       dim=c(nrep,ntimes-1)
                       )
               },
-              dmeasure = "normal_dmeasure",
-              rmeasure = "normal_rmeasure",
+              dmeasure = "ou2_normal_dmeasure",
+              rmeasure = "ou2_normal_rmeasure",
               skeleton.map = function (x, t, params, ...) {
                 with(
                      as.list(c(x,params)),
@@ -72,7 +72,8 @@ simulate(
                 "sigma.1","sigma.2","sigma.3",
                 "tau"
                 ),
-              statenames = c("x1","x2")
+              statenames = c("x1","x2"),
+              obsnames = c("y1","y2")
               ),
          params=c(
            alpha.1=0.8, alpha.2=-0.5, alpha.3=0.3, alpha.4=0.9,

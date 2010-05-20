@@ -7,7 +7,8 @@
 \usage{
   pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model, skeleton.map, skeleton.vectorfield,
-       initializer, covar, tcovar, statenames, paramnames, covarnames,
+       initializer, covar, tcovar,
+       obsnames, statenames, paramnames, covarnames,
        PACKAGE)
 }
 \arguments{
@@ -86,11 +87,12 @@
     If a covariate table is supplied, then the value of each of the covariates is interpolated as needed, i.e., whenever \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, or \code{init.state} is evaluated.
     The resulting interpolated values are passed to the corresponding functions as a numeric vector named \code{covars}.
   }
-  \item{statenames, paramnames, covarnames}{
-    Optional character vectors specifying the names of state variables, parameters, or covariates, respectively.
+  \item{obsnames, statenames, paramnames, covarnames}{
+    Optional character vectors specifying the names of observables, state variables, parameters, or covariates, respectively.
     These are only used in the event that one or more of the basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}) are defined using native routines.
     In that case, these name vectors are matched against the corresponding names and the indices of the names are passed to the native routines.
     Using this facility allows one to write one or more of \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton} in native code in a way that does not depend on the order of states, parameters, and covariates at run time.
+    See the \dQuote{advanced_topic_in_pomp} vignette for more on this topic and examples.
   }
   \item{PACKAGE}{
     An optional string giving the name of the dynamically loaded library in which any native routines are to be found.
