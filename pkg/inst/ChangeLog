@@ -1,5 +1,21 @@
 2010-05-20  kingaa
 
+	* [r250] R/aaa.R, R/pomp.R, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/ChangeLog, inst/data-R/euler.sir.R,
+	  inst/data-R/gillespie.sir.R, inst/data-R/ou2.R,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-first-mif.rda, inst/doc/ou2-trajmatch.rda,
+	  inst/examples/sir.R, inst/examples/sir.c, inst/include/pomp.h,
+	  man/pomp-class.Rd, man/pomp.Rd, src/dmeasure.c, src/ou2.c,
+	  src/pomp.h, src/rmeasure.c, src/sir.c, tests/sir.R,
+	  tests/sir.Rout.save: - add 'obsnames' slot to the 'pomp' class
+	  - change 'dmeasure' and 'rmeasure' functions to make use of
+	  'obsnames' in the case of user-supplied native routines
+	  - modify prototypes of user-supplied native routines for
+	  measurement models in keeping with this
+	  - modify source code for SIR and OU2 models
 	* [r249] src/pomp_internal.h: - initialize arrays with NA
 
 2010-05-19  kingaa
