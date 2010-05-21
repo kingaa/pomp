@@ -1,5 +1,13 @@
+2010-05-21  kingaa
+
+	* [r254] inst/NEWS: - documenting changes
+	* [r253] inst/CHANGES_0.29-1.txt: - word wrap
+	* [r252] inst/CHANGES_0.29-1.txt: - describe the changes in version
+	  0.29-1
+
 2010-05-20  kingaa
 
+	* [r251] inst/ChangeLog:
 	* [r250] R/aaa.R, R/pomp.R, data/euler.sir.rda,
 	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
 	  data/verhulst.rda, inst/ChangeLog, inst/data-R/euler.sir.R,
