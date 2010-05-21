@@ -1,0 +1,168 @@
+There are three main changes in version 0.29-1.
+
+1. Substantial improvements to the documentation, including both the vignettes and the manual pages.
+
+2. A bigger, more intuitive, and easier-to-use set of "plugins" for filling the 'rprocess' slot of a 'pomp' object.
+
+3. Changes to the C interface for 'rmeasure' and 'dmeasure' functions.
+
+The first and second changes preserve backward compatibility: your old codes will work fine even if you do not make use of the new functionality. Using the old-style plugins 'euler.simulate' or 'onestep.simulate' will result in annoying warnings about these functions being deprecated and suggesting that you migrate to the new-style plugins sometime soon. In a future release of pomp, 'euler.simulate' and 'onestep.simulate' will disappear. 
+
+The third change does NOT preserve backward compatibility. If you use compiled native routines for 'rmeasure' and/or 'dmeasure', you must modify those routines or your codes will not work properly (and will almost certainly crash) when used with versions 0.29-1 and later of pomp. The required modification is quite minor, however, and is detailed below.
+
+In more detail:
+
+Change 1. 
+The vignettes have been completely rewritten to be useful as tutorials. The first vignette, "intro_to_pomp", is a step-by-step guide to the construction of a 'pomp' and simulation, particle filtering, trajectory-matching, iterated filtering, and nonlinear forecasting. View it by doing
+R> ?vignette("intro_to_pomp")
+The second vignette shows how to accelerate performance using compiled native routines and briefly introduces the developer interface to pomp.  View it by doing
+R> ?vignette("advanced_topics_in_pomp")
+
+Change 2. New plugins.
+As you probably know very well, it can be challenging to implement a model in pomp.  In particular, the most difficult bit is typically writing the process model simulator (rprocess).  In an effort to make this more intuitive, I have provided several new "plugins": functions that write the 'rprocess' function for you given minimal input on the form of the model.
+
+For some time there has been some plugin functionality, but their structure has made them nonintuitive and their documentation difficult to understand from the user's point of view. The new plugins are much more straightforward to use and their documentation is clearer (I hope). The new plugins provide precisely the same functionality: only the interface has changed. To be clear: switching over to the new-style plugins will have no effect on the underlying model nor, therefore, on inferences that have been based on that model.  
+
+If you have been using the old-style plugins (euler.simulate or onestep.simulate), you can continue to do so for the time being. However, warning messages will be generated to inform you that these functions are deprecated and will be removed in a later release of pomp.  
+
+To switch over to the new-style plugins, you need only edit a few lines in the R code that constructs a pomp object.  Specifically, if you use
+
+pomp(...,rprocess=euler.simulate,...,delta.t=dt,...,step.fun=foo,...,PACKAGE=bar,...)
+
+where 'foo' is either an R function or the name of a compiled native routine, and 'bar' is the name of the shared-object library where the compiled native routine resides, you can achieve the same functionality by using
+
+pomp(...,rprocess=euler.sim(step.fun=foo,delta.t=dt,PACKAGE=bar),...)
+
+Similarly, if you use 
+
+pomp(...,rprocess=onestep.simulate,...,step.fun=foo,...,PACKAGE=bar,...)
+
+replace it with
+
+pomp(...,rprocess=onestep.sim(step.fun=foo,PACKAGE=bar),...)
+
+Essentially, the new-style plugins are functions that return "customized" functions suitable for use in the 'rprocess' slot of a 'pomp' object.
+
+There are now new plugins that include a discrete-time model plugin ('discrete.time.sim') and an implementation of the Gillespie algorithm ('gillespie.sim'). The FORTRAN codes that underly 'gillespie.sim' are due to Helen Wearing.  For documentation on the new functionality, see
+R> ?plugins
+or 
+R>?euler.sim
+R>?gillespie.sim
+R>?onestep.sim
+R>?discrete.time.sim
+
+Change 3. New interface for C versions of 'rmeasure' and 'dmeasure'.
+
+This change only affects you if you use compiled native routines for the measurement portion of your model.  If you specify your measurement model either using 'measurement.model=blah' or by specifying 'rmeasure' and/or 'dmeasure' as R functions, you need do nothing.
+
+If you have written C functions to implement your measurement model, you have written a C function of prototype
+
+void pomp_measure_model_simulator (double *y, double *x, double *p, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
+
+and/or a function of prototype
+
+void pomp_measure_model_density (double *lik, double *y, double *x, double *p, int give_log, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
+
+In the new version of 'pomp', you must modify these functions to have prototypes
+
+void pomp_measure_model_simulator (double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
+
+and
+
+void pomp_measure_model_density (double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
+
+The only difference is that you need to insert a new int* argument 'obsindex' in the appropriate place.
+
+If you simply insert the new argument and do nothing more, your codes should function as before. If you wish to take advantage of the new functionality, it should make your codes more robust. To do so, when constructing a 'pomp' object, specify the names of observed variables in the 'obsnames' argument to 'pomp'. If you have done this, upon any call to either your C 'dmeasure' or 'rmeasure' function, 'obsindex' will be a pointer to a set of integers that indicate the positions in 'y' that correspond to the variables in 'obsnames' in that order. Thus, 'obsindex' is exactly analogous to 'stateindex', 'parindex', and 'covindex': 'obsindex' is to 'y' as 'stateindex' is to 'x' as 'parindex' is to 'p' as 'covindex' is to 'covars'.
+
+Here is an example of one of my own codes.  Before version 0.29-1, the code was:
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+#define TAU          (p[parindex[0]])
+#define DEATHS       (x[stateindex[4]])
+#define DATADEATHS   (y[0])
+
+void norm_rmeasure (double *y, double *x, double *p, 
+		    int *stateindex, int *parindex, int *covindex,
+		    int ncovars, double *covars, double t)
+{
+  double v, tol = 1.0e-18;
+  v = DEATHS*exp(TAU);
+  if (!(R_FINITE(v))) {
+    DATADEATHS = R_NaReal;
+  } else {
+    DATADEATHS = rnorm(DEATHS,v+tol);
+  }
+}
+
+void norm_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
+		    int *stateindex, int *parindex, int *covindex,
+		    int ncovars, double *covars, double t)
+{
+  double v, tol = 1.0e-18;
+  v = DEATHS*exp(TAU);
+  if (!(R_FINITE(v))) {
+    *lik = tol;
+  } else {
+    *lik = dnorm(DATADEATHS,DEATHS,v+tol,0)+tol;
+  }
+  if (give_log) *lik = log(*lik);
+}
+
+#undef TAU
+#undef DEATHS
+#undef DATADEATHS
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+
+As of pomp version 0.29-1, the code is:
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+#define TAU          (p[parindex[0]])
+#define DEATHS       (x[stateindex[4]])
+#define DATADEATHS   (y[obsindex[0]])
+
+void norm_rmeasure (double *y, double *x, double *p, 
+		    int *obsindex, int *stateindex, int *parindex, int *covindex,
+		    int ncovars, double *covars, double t)
+{
+  double v, tol = 1.0e-18;
+  v = DEATHS*exp(TAU);
+  if (!(R_FINITE(v))) {
+    DATADEATHS = R_NaReal;
+  } else {
+    DATADEATHS = rnorm(DEATHS,v+tol);
+  }
+}
+
+void norm_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
+		    int *obsindex, int *stateindex, int *parindex, int *covindex,
+		    int ncovars, double *covars, double t)
+{
+  double v, tol = 1.0e-18;
+  v = DEATHS*exp(TAU);
+  if (!(R_FINITE(v))) {
+    *lik = tol;
+  } else {
+    *lik = dnorm(DATADEATHS,DEATHS,v+tol,0)+tol;
+  }
+  if (give_log) *lik = log(*lik);
+}
+
+#undef TAU
+#undef DEATHS
+#undef DATADEATHS
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+
+A diff on these two shows just the changes:
+ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+3c3
+< #define DATADEATHS   (y[0])
+---
+> #define DATADEATHS   (y[obsindex[0]])
+6c6
+<                   int *stateindex, int *parindex, int *covindex,
+---
+>                   int *obsindex, int *stateindex, int *parindex, int *covindex,
+19c19
+<                   int *stateindex, int *parindex, int *covindex,
+---
+>                   int *obsindex, int *stateindex, int *parindex, int *covindex,
+ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
