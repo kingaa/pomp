@@ -1,44 +1,57 @@
 NEW IN VERSION 0.29-1:
 
-    o  big improvements to the documentation, including worked examples in vignettes.
+    This is a major revision.
 
-    o  encoding models is now much easier through the use of "plugin" modules.
+    o  Big improvements to the documentation, including worked examples in vignettes and improvements to the manual pages.
 
-    o  several example pomps are now loadable via the data() command.
+    o  Encoding models is now much easier through the use of "plugin" modules.
+       These are functions that write the 'rprocess' and 'dprocess' slots given minimal information on the structure of the model.
+
+    o  A plugin for continuous-time Markov process models using the Gillespie algorithm is available.
+
+    o  A plugin for discrete-time Markov processes is now available.
+
+    o  Several example pomps are now loadable via the data() command.
+
+    o  There are changes in the C interface to measurement models that are NOT BACKWARD COMPATIBLE.  
+       Existing user measurement model codes will need to be modified, but these changes are minor.
+       All this is fully explained in the file CHANGES_0.29-1.txt.
+
+    o  The changes are documented in detail in the file CHANGES_0.29-1.txt.
 
 NEW IN VERSION 0.22-1:
     
-    o  the nonlinear forecasting method of Kendall, Ellner, et al. is now implemented in the package.  This is an "indirect inference" method using quasi-likelihood as an objective function.
+    o  The nonlinear forecasting method of Kendall, Ellner, et al. is now implemented in the package.  This is an "indirect inference" method using quasi-likelihood as an objective function.
 
 NEW IN VERSION 0.21-4:
 
-    o  improved documentation in "euler.Rd"
+    o  Improved documentation in "euler.Rd".
 
 NEW IN VERSION 0.21-3:
 
-    o   trajectories of the deterministic skeleton can now be computed via the method "trajectory"
+    o   Trajectories of the deterministic skeleton can now be computed via the method "trajectory".
 
-    o	bug fix in stochastic Euler algorithm
+    o	Bug fix in stochastic Euler algorithm.
 
 NEW IN VERSION 0.20-8:
 
-    o   better error handling in mif
+    o   Better error handling in mif
 
-    o	fix inaccuracy in documentation of 'pomp' arguments 'rmeasure' and 'dmeasure'
+    o	Fix inaccuracy in documentation of 'pomp' arguments 'rmeasure' and 'dmeasure'
 
 NEW IN VERSION 0.20-7:
 
-    o   bug fix in convergence record storage
+    o   Bug fix in convergence record storage
 
 NEW IN VERSION 0.20-6:
 
-    o   bug fix in "intro_to_pomp" vignette
+    o   Bug fix in "intro_to_pomp" vignette
     
 NEW IN VERSION 0.20-5:
 
-    o   better error handling and improved documentation for 'mif'
+    o   Better error handling and improved documentation for 'mif'
 
-    o   testing of examples in the 'examples' directory, including compilation, linking, and running of dynamically-loadable library on unix machines
+    o   Testing of examples in the 'examples' directory, including compilation, linking, and running of dynamically-loadable library on unix machines
 
 NEW IN VERSION 0.20-4:
 
