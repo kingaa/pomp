@@ -84,7 +84,7 @@
   See \code{\link{mif}}, \link{mif-methods}, \link{particles-mif}, \link{pfilter-mif}.
 }
 \references{
-  E. L. Ionides, C. Bret\'o, & A. A. King,
+  E. L. Ionides, C. Bret\\'o, & A. A. King,
   Inference for nonlinear dynamical systems,
   Proc. Natl. Acad. Sci. U.S.A., 103:18438--18443, 2006.
 
