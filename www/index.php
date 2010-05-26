@@ -43,7 +43,7 @@ statistical inference for<br>
 <li><a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name;?>">Development version (on R-Forge)</a></li>
 <li><a href="http://cran.at.r-project.org/web/packages/pomp/">Release version (on CRAN)</a></li>
 <li><a target="_blank" href="http://cran.at.r-project.org/web/packages/pomp/pomp.pdf"><i>pomp</i> manual (PDF)</a></li>
-<li><a href="http://lists.r-forge.r-project.org/pipermail/pomp-announce/"><tt>pomp-announce</tt> mailing list archives</a></li>
+<li><a href="http://lists.r-forge.r-project.org/pipermail/pomp-announce/"><i>pomp-announce</i> mailing list archives</a></li>
 <li><a href="./index.php?nav=bib">References to the literature</a></li>
 <li><a href="./index.php?nav=authors">Authors' homepages</a></li>
 </ul>
