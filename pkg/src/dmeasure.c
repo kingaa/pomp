@@ -171,9 +171,8 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 				)
 	  ); nprotect++;
 
-  if (use_native) {		// use native routine
-    ff = (pomp_measure_model_density *) R_ExternalPtrAddr(fn);
-  } else {
+  switch (use_native) {
+  case 0:			// use R function
     ff = (pomp_measure_model_density *) default_meas_dens;
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
     NVAR = nvars;			// for internal use
@@ -203,6 +202,13 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     PROTECT(FCALL = LCONS(YVEC,FCALL)); nprotect++;
     SET_TAG(FCALL,install("y"));
     PROTECT(FCALL = LCONS(fn,FCALL)); nprotect++;
+    break;
+  case 1:			// use native routine
+    ff = (pomp_measure_model_density *) R_ExternalPtrAddr(fn);
+    break;
+  default:
+    error("unrecognized 'use' slot in 'dmeasure'");
+    break;
   }
 
   ndim[0] = nreps; ndim[1] = ntimes;

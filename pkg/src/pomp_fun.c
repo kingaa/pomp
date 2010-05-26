@@ -35,7 +35,7 @@ SEXP pomp_fun_handler (SEXP pfun, int *use_native)
     break;
   default:
     UNPROTECT(nprotect);
-    error("pomp_fun_handler: invalid value of 'use'");
+    error("'pomp_fun_handler': invalid value of 'use'");
     break;
   }
 

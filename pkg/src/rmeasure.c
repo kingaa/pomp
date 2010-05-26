@@ -182,10 +182,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
 				)
 	  ); nprotect++;
 
-  if (use_native) {		// use native routine
-    ff = (pomp_measure_model_simulator *) R_ExternalPtrAddr(fn);
-    OIDX = 0;
-  } else {			// use R function
+  switch (use_native) {
+  case 0:			// use R function
     ff = (pomp_measure_model_simulator *) default_meas_sim;
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
     NVAR = nvars;			// for internal use
@@ -211,6 +209,14 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
     PROTECT(FCALL = LCONS(fn,FCALL)); nprotect++;
     OIDX = (int *) Calloc(nobs,int);
     FIRST = 1;
+    break;
+  case 1:				// use native routine
+    ff = (pomp_measure_model_simulator *) R_ExternalPtrAddr(fn);
+    OIDX = 0;
+    break;
+  default:
+    error("unrecognized 'use' slot in 'rmeasure'");
+    break;
   }
 
   ndim[0] = nobs; ndim[1] = nreps; ndim[2] = ntimes;

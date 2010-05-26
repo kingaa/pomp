@@ -897,7 +897,7 @@ plot(sir)
 \end{figure}
 
 \clearpage
-\bibliographystyle{ecology}
+\bibliographystyle{fullnat}
 \bibliography{pomp}
 
 \end{document}

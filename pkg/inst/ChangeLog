@@ -1,5 +1,16 @@
+2010-05-23  kingaa
+
+	* [r263] man/mif-class.Rd, man/mif-methods.Rd, man/mif.Rd: - trying
+	  to get Carles' name right
+	* [r257] DESCRIPTION:
+
+2010-05-22  kingaa
+
+	* [r256] DESCRIPTION:
+
 2010-05-21  kingaa
 
+	* [r255] inst/ChangeLog:
 	* [r254] inst/NEWS: - documenting changes
 	* [r253] inst/CHANGES_0.29-1.txt: - word wrap
 	* [r252] inst/CHANGES_0.29-1.txt: - describe the changes in version
