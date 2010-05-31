@@ -84,24 +84,24 @@ nlf <- function(object, start, est, lags, period = NA, tensor = FALSE, nconverge
   }
 
   if (method == 'subplex') {
-    opt <- subplex(
-                   par=guess,
-                   fn=nlf.objfun,
-                   object=object,
-                   params=params,
-                   par.index=par.index, 
-                   times=times,
-                   lags=lags,
-                   period=period,
-                   tensor=tensor,
-                   seed=seed,
-                   transform=transform,
-                   nrbf=nrbf, 
-                   verbose=verbose,
-                   bootstrap=bootstrap,
-                   bootsamp=bootsamp,
-                   control=list(...)
-                   )
+    opt <- subplex::subplex(
+                            par=guess,
+                            fn=nlf.objfun,
+                            object=object,
+                            params=params,
+                            par.index=par.index, 
+                            times=times,
+                            lags=lags,
+                            period=period,
+                            tensor=tensor,
+                            seed=seed,
+                            transform=transform,
+                            nrbf=nrbf, 
+                            verbose=verbose,
+                            bootstrap=bootstrap,
+                            bootsamp=bootsamp,
+                            control=list(...)
+                            )
   } else {
     opt <- optim(
                  par=guess,

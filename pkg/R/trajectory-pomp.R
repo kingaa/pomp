@@ -55,27 +55,27 @@ setMethod(
                    vectorfield={        # integrate the vectorfield
                      for (j in seq_len(nrep)) {
                        X <- try(
-                                lsoda(
-                                      y=x0[,j],
-                                      times=times,
-                                      func=function(t,y,parms){
-                                        list(
-                                             skeleton(
-                                                      object,
-                                                      x=array(
-                                                        data=y,
-                                                        dim=c(length(y),1,1),
-                                                        dimnames=list(names(y),NULL,NULL)
-                                                        ),
-                                                      t=t,
-                                                      params=as.matrix(parms)
-                                                      ),
-                                             NULL
-                                             )
-                                      },
-                                      parms=params[,j],
-                                      ...
-                                      ),
+                                deSolve::lsoda(
+                                               y=x0[,j],
+                                               times=times,
+                                               func=function(t,y,parms){
+                                                 list(
+                                                      skeleton(
+                                                               object,
+                                                               x=array(
+                                                                 data=y,
+                                                                 dim=c(length(y),1,1),
+                                                                 dimnames=list(names(y),NULL,NULL)
+                                                                 ),
+                                                               t=t,
+                                                               params=as.matrix(parms)
+                                                               ),
+                                                      NULL
+                                                      )
+                                               },
+                                               parms=params[,j],
+                                               ...
+                                               ),
                                 silent=FALSE
                                 )
                        if (inherits(X,'try-error'))

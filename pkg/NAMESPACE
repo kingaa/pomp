@@ -20,6 +20,8 @@ useDynLib(
 importFrom(graphics,plot)		
 importFrom(stats,simulate,time,coef,logLik)
 importFrom(mvtnorm,dmvnorm,rmvnorm)
+importFrom(deSolve,lsoda)
+importFrom(subplex,subplex)
 
 exportClasses('pomp','mif')
 
