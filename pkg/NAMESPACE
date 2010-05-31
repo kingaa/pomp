@@ -19,7 +19,7 @@ useDynLib(
 
 importFrom(graphics,plot)		
 importFrom(stats,simulate,time,coef,logLik)
-importFrom(mvtnorm,dmvnorm)
+importFrom(mvtnorm,dmvnorm,rmvnorm)
 
 exportClasses('pomp','mif')
 

@@ -1,5 +1,21 @@
 ## this file contains short definitions of methods for the 'mif' class
 
+pred.mean <- function (object, ...)
+  stop("function ",sQuote("pred.mean")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('pred.mean')  
+
+pred.var <- function (object, ...)
+  stop("function ",sQuote("pred.var")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('pred.var')  
+
+filter.mean <- function (object, ...)
+  stop("function ",sQuote("filter.mean")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('filter.mean')  
+
+conv.rec <- function (object, ...)
+  stop("function ",sQuote("conv.rec")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('conv.rec')  
+
 ## extract the estimated log likelihood
 setMethod('logLik','mif',function(object,...)object@loglik)
 

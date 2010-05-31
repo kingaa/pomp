@@ -1,3 +1,7 @@
+dmeasure <- function (object, y, x, times, params, log = FALSE, ...)
+  stop("function ",sQuote("dmeasure")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('dmeasure')  
+
 ## evaluate the measurement model density function
 setMethod(
           'dmeasure',

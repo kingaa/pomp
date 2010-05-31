@@ -1,3 +1,15 @@
+## a class for functions that may be defined in R or using native routines
+setClass(
+         'pomp.fun',
+         representation(
+                        R.fun = 'function',
+                        native.fun = 'character',
+                        PACKAGE = 'character',
+                        use = 'integer'
+                        )
+         )
+
+## constructor
 pomp.fun <- function (f = NULL, PACKAGE, proto = NULL) {
   if (missing(PACKAGE))
     PACKAGE <- character(0)

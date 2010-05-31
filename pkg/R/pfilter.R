@@ -1,5 +1,10 @@
 ## particle filtering codes
 
+## generic particle filter
+pfilter <- function (object, ...)
+  stop("function ",sQuote("pfilter")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('pfilter')  
+
 ## question: when pfilter.internal is called by mif, do we need to compute the prediction means and variances of the state variables each time, or only at the end?
 ## question: how much efficiency would be realized by eliminating the calls to 'apply' with something else?
 

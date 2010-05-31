@@ -1,3 +1,7 @@
+trajectory <- function (object, params, times, ...)
+  stop("function ",sQuote("trajectory")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('trajectory')
+
 setMethod(
           "trajectory",
           "pomp",

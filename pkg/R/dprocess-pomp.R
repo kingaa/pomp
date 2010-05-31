@@ -1,3 +1,7 @@
+dprocess <- function (object, x, times, params, log = FALSE, ...)
+  stop("function ",sQuote("dprocess")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('dprocess')  
+
 ## evaluate the process model density function
 setMethod(
           'dprocess',

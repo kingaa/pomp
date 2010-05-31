@@ -1,3 +1,5 @@
+## MIF algorithm functions
+
 mif.cooling <- function (factor, n) {
   alpha <- factor^(n-1)
   list(alpha=alpha,gamma=alpha^2)
@@ -283,6 +285,14 @@ mif.internal <- function (object, Nmif = 1,
 
   obj
 }
+
+mif <- function (object, ... )
+  stop("function ",sQuote("mif")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('mif')
+
+continue <- function (object, ... )
+  stop("function ",sQuote("continue")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('continue')
 
 setMethod(
           "mif",

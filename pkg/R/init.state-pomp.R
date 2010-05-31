@@ -1,3 +1,7 @@
+init.state <- function (object, params, t0, ...)
+  stop("function ",sQuote("init.state")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('init.state')  
+
 ## initialize the process model
 setMethod(
           'init.state',

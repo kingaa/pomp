@@ -1,4 +1,31 @@
-## constructor of the pomp class
+## define the pomp class
+setClass(
+         'pomp',
+         representation(
+                        data = 'array',
+                        times = 'numeric',
+                        t0 = 'numeric',
+                        rprocess = 'function',
+                        dprocess = 'function',
+                        dmeasure = 'pomp.fun',
+                        rmeasure = 'pomp.fun',
+                        skeleton.type = 'character',
+                        skeleton = 'pomp.fun',
+                        initializer = 'function',
+                        states = 'array',
+                        params = 'numeric',
+                        covar = 'matrix',
+                        tcovar = 'numeric',
+                        obsnames = 'character',
+                        statenames = 'character',
+                        paramnames = 'character',
+                        covarnames = 'character',
+                        PACKAGE = 'character',
+                        userdata = 'list',
+                        call = "call"
+                        )
+         )
+
 default.initializer <- function (params, t0, ...) {
   ivpnames <- grep("\\.0$",names(params),val=TRUE)
   if (length(ivpnames)<1)
@@ -8,6 +35,7 @@ default.initializer <- function (params, t0, ...) {
   x
 }
 
+## constructor of the pomp class
 pomp <- function (data, times, t0, ..., rprocess, dprocess,
                   rmeasure, dmeasure, measurement.model,
                   skeleton.map, skeleton.vectorfield, initializer, covar, tcovar,

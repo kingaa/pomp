@@ -1,3 +1,7 @@
+skeleton <- function (object, x, t, params, ...)
+  stop("function ",sQuote("skeleton")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('skeleton')  
+
 ## evaluate the measurement model density function
 setMethod(
           'skeleton',

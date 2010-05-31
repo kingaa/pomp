@@ -1,3 +1,7 @@
+rmeasure <- function (object, x, times, params, ...)
+  stop("function ",sQuote("rmeasure")," is undefined for objects of class ",sQuote(class(object)))
+setGeneric('rmeasure')  
+
 ## simulate the measurement model
 setMethod(
           'rmeasure',
