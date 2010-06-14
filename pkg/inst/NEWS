@@ -1,3 +1,7 @@
+NEW IN VERSION 0.29-5:
+    o  The cholera transmission model from King, A. A., Ionides, E. L., Pascual, M., and Bouma, M. J. (2008) Inapparent infections and cholera dynamics, Nature 454:877--880 together with data from the Dacca district of historic Bengal are now included.
+       See 'help(dacca)' for details.
+
 NEW IN VERSION 0.29-1:
 
     This is a major revision.

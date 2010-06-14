@@ -1,3 +1,23 @@
+2010-05-31  kingaa
+
+	* [r267] DESCRIPTION, NAMESPACE, R/nlf.R, R/trajectory-pomp.R: -
+	  move deSolve, subplex from Depends to Import
+	* [r266] DESCRIPTION, NAMESPACE, R/aaa.R, R/dmeasure-pomp.R,
+	  R/dprocess-pomp.R, R/init.state-pomp.R, R/mif-class.R,
+	  R/mif-methods.R, R/mif.R, R/particles-mif.R, R/pfilter.R,
+	  R/pomp-fun.R, R/pomp-methods.R, R/pomp.R, R/rmeasure-pomp.R,
+	  R/rprocess-pomp.R, R/skeleton-pomp.R, R/trajectory-pomp.R: - use
+	  the Collate option in package DESCRIPTION
+
+2010-05-26  kingaa
+
+	* [r264] DESCRIPTION, inst/ChangeLog, inst/doc/ecology.bst,
+	  inst/doc/fullnat.bst, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, src/dmeasure.c, src/pomp_fun.c,
+	  src/rmeasure.c: - slight improvements to dmeasure & rmeasure
+	  methods
+	  - change bibliography style in vignettes
+
 2010-05-23  kingaa
 
 	* [r263] man/mif-class.Rd, man/mif-methods.Rd, man/mif.Rd: - trying
