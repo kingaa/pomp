@@ -1,3 +1,29 @@
+2010-06-23  kingaa
+
+	* [r271] DESCRIPTION, NAMESPACE: - update the NAMESPACE and
+	  DESCRIPTION files
+	* [r270] R/bsmc.R, man/bsmc.Rd, tests/ou2-bsmc.R,
+	  tests/ou2-bsmc.Rout.save: - add functionality for the Bayesian
+	  sequential Monte Carlo algorithm of Liu & West, implemented as
+	  'bsmc'.
+
+2010-06-22  kingaa
+
+	* [r269] R/bsplines.R: - simplify
+
+2010-06-14  kingaa
+
+	* [r268] DESCRIPTION, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/ChangeLog, inst/NEWS,
+	  inst/data-R/dacca.R, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, man/dacca.Rd, src/cholmodel.c: The
+	  cholera transmission model from King, A. A., Ionides, E. L.,
+	  Pascual, M., and Bouma, M. J. (2008) Inapparent infections and
+	  cholera dynamics, Nature 454:877--880 together with data from the
+	  Dacca district of historic Bengal are now included.
+	  Data provided courtesy of Menno J. Bouma.
+
 2010-05-31  kingaa
 
 	* [r267] DESCRIPTION, NAMESPACE, R/nlf.R, R/trajectory-pomp.R: -

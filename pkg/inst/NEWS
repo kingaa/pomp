@@ -1,3 +1,8 @@
+NEW IN VERSION 0.30-1:
+    o  pomp now includes an implementation of the approximate Bayesian Sequential Monte Carlo algorithm of Liu & West (Liu, J. & West, M. (2001) Combining Parameter and State Estimation in Simulation-Based Filtering in Doucet, A.; de Freitas, N. & Gordon, N. J. (eds.) Sequential Monte Carlo Methods in Practice, Springer, New York, pp. 197--224).
+       This algorithm is implemented in the method 'bsmc': see 'help(bsmc)' for details.
+       Thanks to Matt Ferrari and Michael Lavine for the implementation.
+       
 NEW IN VERSION 0.29-5:
     o  The cholera transmission model from King, A. A., Ionides, E. L., Pascual, M., and Bouma, M. J. (2008) Inapparent infections and cholera dynamics, Nature 454:877--880 together with data from the Dacca district of historic Bengal are now included.
        See 'help(dacca)' for details.
