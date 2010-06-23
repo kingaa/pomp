@@ -31,12 +31,12 @@ exportMethods(
               'simulate','data.array','pfilter',
               'coef','logLik','time','time<-',
               'pred.mean','pred.var','filter.mean','conv.rec',
-              'particles','mif','continue','coef<-','states','trajectory'
+              'particles','mif','continue','coef<-','states','trajectory',
+              'bsmc'
               )
 
 export(
        pomp,
-       pfilter,
        reulermultinom,
        deulermultinom,
        euler.simulate,
