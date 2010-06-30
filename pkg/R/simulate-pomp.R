@@ -24,6 +24,9 @@ setMethod(
               save.seed <- get('.Random.seed',envir=.GlobalEnv)
               set.seed(seed)
             }
+            if (!is.numeric(nsim)||(length(nsim)>1)||nsim<1)
+              stop(sQuote("nsim")," must be a positive integer")
+            nsim <- as.integer(nsim)
             xstart <- init.state(object,params=params,t0=times[1])
             nreps <- npars*nsim                   # total number of replicates
             ## we will do the process model simulations with single calls to the user functions

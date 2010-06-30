@@ -23,16 +23,17 @@ importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(deSolve,lsoda)
 importFrom(subplex,subplex)
 
-exportClasses('pomp','mif')
+exportClasses('pomp','mif','pmcmc')
 
 exportMethods(
               'plot','show','print','coerce',
               'dprocess','rprocess','rmeasure','dmeasure','init.state','skeleton',
-              'simulate','data.array','pfilter',
-              'coef','logLik','time','time<-',
-              'pred.mean','pred.var','filter.mean','conv.rec',
+              'data.array','coef','logLik','time','time<-',
+              'simulate','pfilter',
               'particles','mif','continue','coef<-','states','trajectory',
-              'bsmc'
+              'pred.mean','pred.var','filter.mean','conv.rec',
+              'bsmc',
+              'pmcmc','dprior'
               )
 
 export(
