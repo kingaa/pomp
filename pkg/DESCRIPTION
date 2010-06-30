@@ -17,7 +17,7 @@ Collate: eulermultinom.R euler.R plugins.R slice.R sobol.R bsplines.R
 	 pomp-fun.R pomp.R pomp-methods.R rmeasure-pomp.R rprocess-pomp.R 
 	 dmeasure-pomp.R dprocess-pomp.R simulate-pomp.R skeleton-pomp.R 
 	 trajectory-pomp.R plot-pomp.R init.state-pomp.R 
-	 pfilter.R trajmatch.R bsmc.R
+	 pfilter.R traj-match.R bsmc.R
 	 mif-class.R particles-mif.R pfilter-mif.R mif.R mif-methods.R compare.mif.R 
 	 pmcmc.R pmcmc-methods.R compare.pmcmc.R
 	 nlf-funcs.R nlf-guts.R nlf-lql.R nlf-objfun.R nlf.R 

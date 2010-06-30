@@ -8,7 +8,7 @@
   See \code{\link{mif}} for usage.
 }
 \section{Objects from the Class}{
-  Objects can be created by calls to the \code{\link{mif}} method on an \code{\link{pomp}} object.
+  Objects can be created by calls to the \code{\link{mif}} method on a \code{\link{pomp}} object.
   Such a call uses the MIF algorithm to fit the model parameters.
 }
 \section{Slots}{
