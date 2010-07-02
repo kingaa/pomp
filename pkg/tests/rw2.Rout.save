@@ -1,6 +1,6 @@
 
-R version 2.10.1 (2009-12-14)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,9 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: deSolve
-Loading required package: subplex
-Loading required package: mvtnorm
 > 
 > set.seed(45768683)
 > 
@@ -258,7 +255,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x160cbd8>
+<environment: 0x2629720>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -271,7 +268,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x160cbd8>
+<environment: 0x2629720>
 initializer = 
 function (params, t0, ...) 
 {
@@ -409,11 +406,11 @@ Error in .local(object, ..., value = value) :
 +     )
 Error in .local(object, ..., value = value) : 
   the times specified must be an increasing sequence
-> time(rw2,include.t0=TRUE) <- seq(-20,1000,by=20)
+> time(rw2,t0=TRUE) <- seq(-20,1000,by=20)
 > x <- simulate(rw2)
 > time(rw2) <- c(0,20,25.8,50,60)
-> time(rw2,include.t0=TRUE) <- c(0,20,25.8,50,60)
-> time(rw2,include.t0=TRUE) <- c(0,0,20,25.8,50,60)
+> time(rw2,t0=TRUE) <- c(0,20,25.8,50,60)
+> time(rw2,t0=TRUE) <- c(0,0,20,25.8,50,60)
 > time(rw2) <- c(0,20,25.8,50,60)
 > 
 > 

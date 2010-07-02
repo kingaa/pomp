@@ -17,7 +17,11 @@
     The number of simulations to perform.
     Note that the number of replicates will be \code{nsim} times \code{ncol(xstart)}.
   }
-  \item{seed}{optional; the random seed to use.}
+  \item{seed}{
+    optional; if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.
+    the random seed to use.
+    The RNG will be restored to its original state afterward.
+  }
   \item{params}{
     The parameters to use in simulating the model.
     If \code{params} is not given, then the contents of the \code{params} slot of \code{object} will be used, if they exist.

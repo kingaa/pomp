@@ -270,7 +270,7 @@ mif.internal <- function (object, Nmif = 1,
 
   }
 
-  coef(obj,names(theta)) <- theta
+  coef(obj,names(theta)) <- unname(theta)
 
   if (Nmif>0) {
     obj@Nmif <- as.integer(Nmif)

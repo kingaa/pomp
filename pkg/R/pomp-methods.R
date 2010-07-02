@@ -1,29 +1,21 @@
 ## this file contains some basic methods definitions
 
 ## functions to extract or call the components of a "pomp" object
-data.array <- function (object, ...)
-  stop("function ",sQuote("data.array")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric('data.array')  
+setGeneric("data.array",function(object,...)standardGeneric("data.array"))
 
-"time<-" <- function (object, ..., value)
-  stop("function ",sQuote("time<-")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric("time<-")  
+setGeneric("time<-",function(object,...,value)standardGeneric("time<-"))  
 
-"coef<-" <- function (object, pars, ..., value)
-  stop("function ",sQuote("coef<-")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric("coef<-")
+setGeneric("coef<-",function(object,...,value)standardGeneric("coef<-"))
 
-states <- function (object, ...)
-  stop("function ",sQuote("states")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric('states')
+setGeneric("states",function(object,...)standardGeneric("states"))
 
 ## 'coerce' method: allows for coercion of a "pomp" object to a data-frame
 setAs(
-      from='pomp',
-      to='data.frame',
+      from="pomp",
+      to="data.frame",
       def = function (from) {
         x <- as.data.frame(cbind(from@times,t(from@data)))
-        names(x) <- c('time',rownames(from@data))
+        names(x) <- c("time",rownames(from@data))
         if (length(from@states)>0) {
           nm <- names(x)
           x <- cbind(x,t(from@states[,-1,drop=FALSE]))
@@ -35,8 +27,8 @@ setAs(
 
 ## a simple method to extract the data array
 setMethod(
-          'data.array',
-          'pomp',
+          "data.array",
+          "pomp",
           function (object, vars, ...) {
             if (missing(vars))
               vars <- seq(length=nrow(object@data))
@@ -46,8 +38,8 @@ setMethod(
 
 ## a simple method to extract the array of states
 setMethod(
-          'states',
-          'pomp',
+          "states",
+          "pomp",
           function (object, vars, ...) {
             if (missing(vars))
               vars <- seq(length=nrow(object@states))
@@ -68,7 +60,7 @@ setMethod(
 setMethod(
           "time<-",
           "pomp",
-          function (object, include.t0 = FALSE, ..., value) {
+          function (object, t0 = FALSE, ..., value) {
             if (!is.numeric(value))
               stop(sQuote("value")," must be a numeric vector",call.=TRUE)
             storage.mode(value) <- "double"
@@ -76,7 +68,7 @@ setMethod(
             tt <- object@times
             dd <- object@data
             ss <- object@states
-            if (include.t0) {
+            if (t0) {
               object@t0 <- value[1]
               object@times <- value[-1]
             } else {
@@ -112,8 +104,8 @@ setMethod(
 
 ## extract the coefficients
 setMethod(
-          'coef',
-          'pomp',
+          "coef",
+          "pomp",
           function (object, pars, ...) {
             if (missing(pars)) {
               pars <- names(object@params)
@@ -122,7 +114,7 @@ setMethod(
               if (any(excl)) {
                 stop(
                      "in ",sQuote("coef"),": name(s) ",
-                     paste(sapply(pars[excl],sQuote),collapse=','),
+                     paste(sapply(pars[excl],sQuote),collapse=","),
                      " correspond to no parameter(s)"
                      )
               }
@@ -133,8 +125,8 @@ setMethod(
 
 ## modify the coefficients
 setMethod(
-          'coef<-',
-          'pomp',
+          "coef<-",
+          "pomp",
           function (object, pars, ..., value) {
             if (length(object@params)==0) {
               if (missing(pars)) {
@@ -157,13 +149,15 @@ setMethod(
                 if (any(excl)) {
                   stop(
                        "in ",sQuote("coef<-"),": name(s) ",
-                       paste(sapply(pars[excl],sQuote),collapse=','),
+                       paste(sapply(pars[excl],sQuote),collapse=","),
                        " correspond to no parameter(s)"
                        )
                 }
               }
               if (length(pars)!=length(value))
                 stop("in ",sQuote("coef<-"),": ",sQuote("pars")," and ",sQuote("value")," must be of the same length")
+              if (!is.null(names(value)))
+                warning("in ",sQuote("coef<-"),": names of ",sQuote("value")," are being discarded",call.=FALSE)
               object@params[pars] <- as.numeric(value)
             }
             object
@@ -171,11 +165,11 @@ setMethod(
           )
 
 setMethod(
-          'print',
-          'pomp',
+          "print",
+          "pomp",
           function (x, ...) {
             cat("data and states:\n")
-            print(as(x,'data.frame'))
+            print(as(x,"data.frame"))
             cat("\ncall:\n")
             print(x@call)
             invisible(x)
@@ -183,8 +177,8 @@ setMethod(
           )
 
 setMethod(
-          'show',
-          'pomp',
+          "show",
+          "pomp",
           function (object) {
             print(object)
             cat("zero time, t0 = ",object@t0,"\n",sep="")

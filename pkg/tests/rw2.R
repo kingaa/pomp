@@ -187,10 +187,10 @@ try(
 try(
     time(rw2) <- c(0,5,10,15,12,20)
     )
-time(rw2,include.t0=TRUE) <- seq(-20,1000,by=20)
+time(rw2,t0=TRUE) <- seq(-20,1000,by=20)
 x <- simulate(rw2)
 time(rw2) <- c(0,20,25.8,50,60)
-time(rw2,include.t0=TRUE) <- c(0,20,25.8,50,60)
-time(rw2,include.t0=TRUE) <- c(0,0,20,25.8,50,60)
+time(rw2,t0=TRUE) <- c(0,20,25.8,50,60)
+time(rw2,t0=TRUE) <- c(0,0,20,25.8,50,60)
 time(rw2) <- c(0,20,25.8,50,60)
 

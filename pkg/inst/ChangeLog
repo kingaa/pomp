@@ -1,5 +1,12 @@
 2010-06-30  kingaa
 
+	* [r281] DESCRIPTION, R/traj-match.R, R/trajmatch.R,
+	  man/mif-class.Rd, man/traj-match.Rd, man/trajmatch.Rd: - minor
+	  rearrangements of files
+	  - fix typo
+	* [r279] inst/doc/pomp.bib: - fix Andrieu et al. entry
+	* [r278] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - vignettes and Changelog up to date
 	* [r275] DESCRIPTION, NAMESPACE, R/compare.pmcmc.R,
 	  R/pmcmc-methods.R, R/pmcmc.R, R/simulate-pomp.R, inst/NEWS,
 	  inst/doc/pomp.bib, man/pmcmc-class.Rd, man/pmcmc-methods.Rd,
