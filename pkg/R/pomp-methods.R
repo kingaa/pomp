@@ -30,8 +30,11 @@ setMethod(
           "data.array",
           "pomp",
           function (object, vars, ...) {
+            varnames <- rownames(object@data)
             if (missing(vars))
-              vars <- seq(length=nrow(object@data))
+              vars <- varnames
+            else if (!all(vars%in%varnames))
+              stop("some elements of ",sQuote("vars")," correspond to no observed variable")
             object@data[vars,,drop=FALSE]
           }
           )
