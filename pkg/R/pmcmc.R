@@ -246,7 +246,7 @@ pmcmc.internal <- function (object, Nmcmc = 1,
 
   }
 
-  coef(obj) <- theta
+  coef(obj) <- unname(theta)
 
   if (Nmcmc>0) {
     obj@Nmcmc <- as.integer(Nmcmc)
