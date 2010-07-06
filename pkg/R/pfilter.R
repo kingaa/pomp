@@ -257,7 +257,6 @@ pfilter.internal <- function (object, params, Np,
     seed <- save.seed
   }
 
-
   list(
        pred.mean=pred.m,
        pred.var=pred.v,
