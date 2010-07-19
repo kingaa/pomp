@@ -12,6 +12,14 @@
 \alias{time<-}
 \alias{time<-,pomp-method}
 \alias{time<--pomp}
+\alias{timezero}
+\alias{timezero,pomp-method}
+\alias{timezero-pomp}
+\alias{timezero<-}
+\alias{timezero<-,pomp-method}
+\alias{timezero<--pomp}
+\alias{window,pomp-method}
+\alias{window--pomp}
 \alias{data.array,pomp-method}
 \alias{data.array-pomp}
 \alias{data.array}
@@ -34,6 +42,9 @@
 \S4method{states}{pomp}(object, vars, \dots)
 \S4method{time}{pomp}(x, t0 = FALSE, \dots)
 \S4method{time}{pomp}(object, t0 = FALSE, \dots) <- value
+\S4method{timezero}{pomp}(object, \dots)
+\S4method{timezero}{pomp}(object, \dots) <- value
+\S4method{window}{pomp}(x, start, end, \dots)
 \S4method{show}{pomp}(object)
 \S4method{as}{pomp}(object, class)
 \S4method{coerce}{pomp,data.frame}(from, to = "data.frame", strict = TRUE)
@@ -55,12 +66,15 @@
   }
   \item{value}{
     numeric;
-    values to be assigned to the parameters.
+    values to be assigned.
   }
   \item{t0}{
     logical;
     if TRUE on a call to \code{time}, the zero time is prepended to the time vector;
     if TRUE on a call to \code{time<-}, the first element in \code{value} is taken to be the initial time.
+  }
+  \item{start, end}{
+    start and end times of the window.
   }
   \item{class}{
     character;
@@ -136,6 +150,14 @@
       \code{time(object,t0=TRUE) <- value} has the same effect, but the first element in \code{value} is taken to be the initial time.
       The second and subsequent elements of \code{value} are taken to be the observation times.
       Those data and states (if they exist) corresponding to the new times are retained.
+    }
+    \item{timezero, timezero<-}{
+      \code{timezero(object)} returns the zero-time \code{t0}.
+      \code{timezero(object) <- value} sets the zero-time to \code{value}.
+    }
+    \item{window}{
+      \code{window(x,start=t1,end=t2} returns a new \code{pomp} object, identical to \code{x} but with only the data in the window between times \code{t1} and \code{t2} (inclusive).
+      By default, \code{start} is the time of the first observation and \code{end} is the time of the last.
     }
     \item{show}{Displays the \code{pomp} object.}
     \item{plot}{

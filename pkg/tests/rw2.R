@@ -178,6 +178,13 @@ max(abs(b2-b3))
 max(abs(d2-d3),na.rm=T)
 max(abs(e2-e3),na.rm=T)
 
+new <- window(rw2,start=20,end=30)
+new <- simulate(new)
+
+timezero(new)
+timezero(new) <- 19
+print(simulate(new))
+
 time(rw2) <- seq(1,1000,by=20)
 x <- simulate(rw2)
 states(x)[,1:5]
@@ -193,4 +200,5 @@ time(rw2) <- c(0,20,25.8,50,60)
 time(rw2,t0=TRUE) <- c(0,20,25.8,50,60)
 time(rw2,t0=TRUE) <- c(0,0,20,25.8,50,60)
 time(rw2) <- c(0,20,25.8,50,60)
+
 

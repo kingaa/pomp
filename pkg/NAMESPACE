@@ -18,7 +18,7 @@ useDynLib(
           )
 
 importFrom(graphics,plot)		
-importFrom(stats,simulate,time,coef,logLik)
+importFrom(stats,simulate,time,coef,logLik,window)
 importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(deSolve,lsoda)
 importFrom(subplex,subplex)
@@ -28,7 +28,7 @@ exportClasses('pomp','mif','pmcmc')
 exportMethods(
               'plot','show','print','coerce',
               'dprocess','rprocess','rmeasure','dmeasure','init.state','skeleton',
-              'data.array','coef','logLik','time','time<-',
+              'data.array','coef','logLik','time','time<-','timezero','timezero<-','window',
               'simulate','pfilter',
               'particles','mif','continue','coef<-','states','trajectory',
               'pred.mean','pred.var','filter.mean','conv.rec',

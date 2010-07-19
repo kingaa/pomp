@@ -1,3 +1,23 @@
+2010-07-06  kingaa
+
+	* [r285] R/pomp-methods.R: - error checking in 'data.array'
+	* [r284] R/pfilter.R: - minor
+	* [r283] R/pmcmc.R: - unname before 'coef<-' to avoid warning
+
+2010-07-02  kingaa
+
+	* [r282] R/mif.R, R/pomp-methods.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/pomp.bib,
+	  man/pomp-methods.Rd, man/simulate-pomp.Rd, tests/rw2.R,
+	  tests/rw2.Rout.save: - add warning in 'coef<-' where parameter
+	  values might unintentionally be mismatched
+	  - redefine some of the generics using standardGeneric()
+	  - change 'include.t0' argument in 'time<-()' to 't0' to match
+	  'time()'
+	  - improve documentation of 'simulate' method slightly
+	  - add Bhadra article to pomp.bib
+
 2010-06-30  kingaa
 
 	* [r281] DESCRIPTION, R/traj-match.R, R/trajmatch.R,

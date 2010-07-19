@@ -1,6 +1,6 @@
 
-R version 2.10.1 (2009-12-14)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,9 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: deSolve
-Loading required package: subplex
-Loading required package: mvtnorm
 > 
 > tbasis <- seq(0,25,by=1/52)
 > basis <- periodic.bspline.basis(tbasis,nbasis=3)
@@ -435,7 +432,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0xcfaab8>
+<environment: 0x2dfe318>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -445,7 +442,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0xc60008>
+<environment: 0x369b420>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -457,7 +454,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0xfe3fa0>
+<environment: 0x2abb470>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -470,7 +467,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0xfe3fa0>
+<environment: 0x2abb470>
 skeleton ( vectorfield ) = 
 function (x, t, params, covars, ...) 
 {
@@ -509,7 +506,7 @@ $zeronames
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.034172 secs
+Time difference of 2.071329 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -526,7 +523,7 @@ Time difference of 3.034172 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 7.110227 secs
+Time difference of 4.534647 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -586,7 +583,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 6.164427 secs
+Time difference of 2.7706 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -594,7 +591,7 @@ Time difference of 6.164427 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.135105 secs
+Time difference of 0.7220042 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -656,6 +653,13 @@ I        2100    2100  2.062000e+03
 R     2052400 2052400  2.052647e+06
 cases       0       0  1.007000e+03
 W           0       0 -1.602887e-01
+> 
+> po <- window(euler.sir,start=1,end=2)
+> plot(simulate(po))
+> timezero(po)
+[1] 0
+> timezero(po)<-2*time(po)[1]-time(po)[2]
+> plot(simulate(po))
 > 
 > dev.off()
 null device 

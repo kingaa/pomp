@@ -238,5 +238,11 @@ time(po) <- seq(0,1,by=1/52)
 states(po)[,1:3]
 states(simulate(po))[,1:3]
 
+po <- window(euler.sir,start=1,end=2)
+plot(simulate(po))
+timezero(po)
+timezero(po)<-2*time(po)[1]-time(po)[2]
+plot(simulate(po))
+
 dev.off()
 

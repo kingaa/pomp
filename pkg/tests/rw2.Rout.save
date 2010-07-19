@@ -255,7 +255,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x2629720>
+<environment: 0x1831540>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -268,7 +268,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x2629720>
+<environment: 0x1831540>
 initializer = 
 function (params, t0, ...) 
 {
@@ -390,12 +390,48 @@ Error : init.state error: error in user 'initializer'
 > max(abs(e2-e3),na.rm=T)
 [1] 0
 > 
+> new <- window(rw2,start=20,end=30)
+> new <- simulate(new)
+> 
+> timezero(new)
+[1] 0
+> timezero(new) <- 19
+> print(simulate(new))
+data and states:
+   time         y1         y2         x1         x2
+1    20  1.0889842 -2.9306255  0.3928615 -3.6019244
+2    21  0.6190426 -3.5224007  0.3502208 -2.7385549
+3    22 -0.9996197 -3.9952599 -1.3872796 -2.2270139
+4    23 -1.3789056 -2.5477141 -0.4674199 -2.3980597
+5    24  0.2470824  0.0985785  0.4256256 -0.0595737
+6    25  3.5291989  3.9686175  1.2073146  3.1753928
+7    26  2.4044278  5.0563153  0.6048257  4.5525857
+8    27  1.0704905  5.3986777  0.9983714  3.9165344
+9    28 -0.3706092  1.3254624  1.0613907  2.6270702
+10   29  1.2884699  4.0593363  1.4887009  4.8853658
+11   30  0.8533498 -0.7281767  2.3528744 -1.4303754
+
+call:
+pomp(data = rbind(y1 = rep(0, 100), y2 = rep(0, 100)), times = 1:100, 
+    t0 = 0, rprocess = onestep.sim(step.fun = function(x, t, 
+        params, delta.t, ...) {
+        c(x1 = rnorm(n = 1, mean = x["x1"], sd = params["s1"] * 
+            delta.t), x2 = rnorm(n = 1, mean = x["x2"], sd = params["s2"] * 
+            delta.t))
+    }), dprocess = onestep.dens(dens.fun = function(x1, t1, x2, 
+        t2, params, ...) {
+        sum(dnorm(x = x2[c("x1", "x2")], mean = x1[c("x1", "x2")], 
+            sd = params[c("s1", "s2")] * (t2 - t1), log = TRUE), 
+            na.rm = TRUE)
+    }), measurement.model = list(y1 ~ norm(mean = x1, sd = tau), 
+        y2 ~ norm(mean = x2, sd = tau)))
+> 
 > time(rw2) <- seq(1,1000,by=20)
 > x <- simulate(rw2)
 > states(x)[,1:5]
-   [,1]       [,2]      [,3]      [,4]      [,5]
-x1    0 -0.2414417  -7.85263 -33.53872 -52.31123
-x2    0 -0.9545774 -21.42633 -23.14645 -98.62724
+   [,1]       [,2]        [,3]      [,4]       [,5]
+x1    0  0.1308992  -0.8665404  -2.91768  -15.17674
+x2    0 -1.6507047 -30.2956790 -71.13064 -199.25743
 > try(
 +     time(rw2) <- seq(-20,1000,by=20)
 +     )
@@ -412,5 +448,6 @@ Error in .local(object, ..., value = value) :
 > time(rw2,t0=TRUE) <- c(0,20,25.8,50,60)
 > time(rw2,t0=TRUE) <- c(0,0,20,25.8,50,60)
 > time(rw2) <- c(0,20,25.8,50,60)
+> 
 > 
 > 

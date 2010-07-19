@@ -9,6 +9,10 @@ setGeneric("coef<-",function(object,...,value)standardGeneric("coef<-"))
 
 setGeneric("states",function(object,...)standardGeneric("states"))
 
+setGeneric("timezero",function(object,...)standardGeneric("timezero"))
+
+setGeneric("timezero<-",function(object,...,value)standardGeneric("timezero<-"))
+
 ## 'coerce' method: allows for coercion of a "pomp" object to a data-frame
 setAs(
       from="pomp",
@@ -101,6 +105,38 @@ setMethod(
                    object@states[,kt] <- ss[,wr[1]]
                }
              }
+            object
+          }
+          )
+
+setMethod(
+          "window",
+          "pomp",
+          function (x, start, end, ...) {
+            tm <- time(x,t0=FALSE)
+            if (missing(start))
+              start <- tm[1]
+            if (missing(end))
+              end <- tm[length(tm)]
+            tm <- tm[(tm>=start)&(tm<=end)]
+            time(x,t0=FALSE) <- tm
+            x
+          }
+          )
+
+setMethod("timezero","pomp",function(object,...)object@t0)
+
+setMethod(
+          "timezero<-",
+          "pomp",
+          function(object,...,value) {
+            if (value>object@times[1])
+              if (!is.numeric(value) || length(value) > 1)
+                stop("the zero-time ",sQuote("t0")," must be a single number",call.=TRUE)
+            if (value > object@times[1])
+              stop("the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=TRUE)
+            storage.mode(value) <- "double"
+            object@t0 <- value
             object
           }
           )

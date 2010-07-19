@@ -1,3 +1,6 @@
+NEW IN VERSION 0.31-2:
+    o  new "window", "timezero", and "timezero<-" methods are available for manipulating 'pomp' objects.
+
 NEW IN VERSION 0.31-1:
     o  pomp now includes an implementation of the particle Markov chain Monte Carlo algorithm of Andrieu et al. (Andrieu, C., Doucet, A., & Holenstein, R. (2010) Particle Markov chain Monte Carlo methods. J. R. Stat. Soc. B 72:1--33).
        This algorithm is implemented in the method 'pmcmc': see 'help(pmcmc)' for details.
