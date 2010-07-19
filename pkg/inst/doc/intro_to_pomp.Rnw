@@ -476,14 +476,26 @@ One can access the data and the observation times using
 <<eval=F>>=
 data.array(ou2)
 time(ou2)  
-time(ou2,t0=TRUE)  
 @ 
-The times can be changed using
+The observation times can be changed using
 <<eval=F>>=
 time(ou2) <- 1:10
+@ 
+or
+<<eval=F>>=
+ou2 <- window(ou2,start=1,end=10)
+@ 
+One can respectively view and change the zero-time by
+<<eval=F>>=
+timezero(ou2)
+timezero(ou2) <- -10
+@ 
+and can respectively view and change the zero-time together with the observation times by doing, for example
+<<eval=F>>=
+time(ou2,t0=TRUE)  
 time(ou2,t0=T) <- seq(from=0,to=10,by=1)
 @ 
-One can read and change parameters associated with the \pomp\ object using, e.g.,
+One can read and change model parameters using, e.g.,
 <<eval=F>>=
 coef(ou2)
 coef(ou2,c("sigma.1","sigma.2")) <- c(1,0)

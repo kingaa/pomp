@@ -1,3 +1,10 @@
+2010-07-19  kingaa
+
+	* [r286] DESCRIPTION, NAMESPACE, R/pomp-methods.R, inst/ChangeLog,
+	  inst/NEWS, man/pomp-methods.Rd, tests/rw2.R, tests/rw2.Rout.save,
+	  tests/sir.R, tests/sir.Rout.save: - added new 'window',
+	  'timezero', and 'timezero<-' methods for 'pomp' objects
+
 2010-07-06  kingaa
 
 	* [r285] R/pomp-methods.R: - error checking in 'data.array'
