@@ -1,0 +1,163 @@
+setClass(
+         "probe.matched.pomp",
+         contains="probed.pomp",
+         representation=representation(
+           weights="numeric",
+           fail.value="numeric",
+           evals="integer",
+           value="numeric",
+           convergence="integer",
+           msg="character"
+           )
+         )
+
+setMethod(
+          "summary",
+          "probe.matched.pomp",
+          function (object, ...) {
+            c(
+              summary(as(object,"probed.pomp")),
+              list(
+                   weights=object@weights,
+                   value=object@value,
+                   eval=object@evals,
+                   convergence=object@convergence
+                   ),
+              if(length(object@msg)>0) list(msg=object@msg) else NULL
+              )
+          }
+          )
+
+probe.mismatch <- function (par, est, object, probes, params,
+                            nsim = 1, seed = NULL,
+                            weights, datval,
+                            fail.value = NA) {
+  if (missing(par)) par <- numeric(0)
+  if (missing(est)) est <- integer(0)
+  if (missing(params)) params <- coef(object)
+  
+  params[est] <- par
+  
+  simval <- apply.probe.sim(object,probes=probes,params=params,nsim=nsim,seed=seed) # apply probes to model simulations
+  
+  ## compute a measure of the discrepancies between simulations and data
+  sim.means <- colMeans(simval)
+  simval <- sweep(simval,2,sim.means)
+  discrep <- ((datval-sim.means)^2)/colMeans(simval^2)
+
+  if (!all(is.finite(discrep))) {
+    mismatch <- fail.value 
+  } else {
+    mismatch <- sum(discrep*weights)/sum(weights)
+  }
+
+  mismatch
+}
+
+probe.match <- function(object, start, est = character(0),
+                        probes, weights,
+                        nsim, seed = NULL,
+                        method = c("subplex","Nelder-Mead","SANN"),
+                        verbose = getOption("verbose"), 
+                        eval.only = FALSE, fail.value = NA, ...) {
+
+  if (!is(object,"pomp"))
+    stop(sQuote("object")," must be of class ",sQuote("pomp"))
+
+  if (missing(start))
+    start <- coef(object)
+
+  if (!eval.only&&(length(est)<1))
+    stop("parameters to be estimated must be specified in ",sQuote("est"))
+  if (!is.character(est)|!all(est%in%names(start)))
+    stop(sQuote("est")," must refer to parameters named in ",sQuote("start"))
+  par.index <- which(names(start)%in%est)
+  
+  if (missing(probes)) {
+    if (is(object,"probed.pomp"))
+      probes <- object@probes
+    else
+      stop(sQuote("probes")," must be supplied")
+  }
+  if (!is.list(probes)) probes <- list(probes)
+  if (!all(sapply(probes,is.function)))
+    stop(sQuote("probes")," must be a function or a list of functions")
+
+  if (missing(weights)) weights <- rep(1,length(probes))
+
+  method <- match.arg(method)
+
+  params <- start
+  guess <- params[par.index]
+
+  datval <- apply.probe.data(object,probes=probes) # apply probes to data
+  
+  if (eval.only) {
+    val <- probe.mismatch(
+                          par=guess,
+                          est=par.index,
+                          object=object,
+                          probes=probes,
+                          params=params,
+                          nsim=nsim,
+                          seed=seed,
+                          weights=weights,
+                          datval=datval,
+                          fail.value=fail.value
+                          )
+    conv <- 0
+    evals <- as.integer(c(1,0))
+    msg <- paste(sQuote("probe.mismatch"),"evaluated")
+  } else {
+    if (method == 'subplex') {
+      opt <- subplex::subplex(
+                              par=guess,
+                              fn=probe.mismatch,
+                              est=par.index,
+                              object=object,
+                              probes=probes,
+                              params=params,
+                              nsim=nsim,
+                              seed=seed,
+                              weights=weights,
+                              datval=datval,
+                              fail.value=fail.value,
+                              control=list(...)
+                              )
+    } else {
+      opt <- optim(
+                   par=guess,
+                   fn=probe.mismatch,
+                   est=par.index,
+                   object=object,
+                   probes=probes,
+                   params=params,
+                   nsim=nsim,
+                   seed=seed,
+                   weights=weights,
+                   datval=datval,
+                   fail.value=fail.value,
+                   method=method, 
+                   control=list(...)
+                   )
+    }
+    val <- opt$value
+    params[par.index] <- opt$par
+    conv <- opt$convergence
+    evals <- opt$counts
+    msg <- opt$message
+  }
+
+  coef(object,names(params)) <- unname(params)
+
+  new(
+      "probe.matched.pomp",
+      probe(object,probes=probes,nsim=nsim,seed=seed),
+      weights=weights,
+      fail.value=as.numeric(fail.value),
+      value=val,
+      convergence=as.integer(conv),
+      evals=as.integer(evals),
+      msg=as.character(msg)
+      )
+}

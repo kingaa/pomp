@@ -23,7 +23,7 @@ importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(deSolve,lsoda)
 importFrom(subplex,subplex)
 
-exportClasses('pomp','mif','pmcmc')
+exportClasses('pomp','mif','pmcmc','probed.pomp','probe.matched.pomp','spect.pomp','spect.matched.pomp')
 
 exportMethods(
               'plot','show','print','coerce',
@@ -33,7 +33,8 @@ exportMethods(
               'particles','mif','continue','coef<-','states','trajectory',
               'pred.mean','pred.var','filter.mean','conv.rec',
               'bsmc',
-              'pmcmc','dprior'
+              'pmcmc','dprior',
+              'spect','probe'
               )
 
 export(
@@ -55,5 +56,15 @@ export(
        periodic.bspline.basis,
        compare.mif,
        nlf,
-       traj.match
+       traj.match,
+       probe.mean,
+       probe.var,
+       probe.sd,
+       probe.period,
+       probe.quantile,
+       probe.acf,
+       probe.cov,
+       probe.cor,
+       probe.match,
+       spect.match
        )

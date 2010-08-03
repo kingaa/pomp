@@ -1,10 +1,10 @@
 Package: pomp
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.31-2
-Date: 2010-07-19
+Version: 0.32-1
+Date: 2010-08-03
 Author: Aaron A. King, Edward L. Ionides, Carles Breto, Steve Ellner, Bruce Kendall, Helen Wearing, 
-	Matthew J. Ferrari, Michael Lavine
+	Matthew J. Ferrari, Michael Lavine, Dan Reuman
 Maintainer: Aaron A. King <kingaa@umich.edu>
 URL: http://pomp.r-forge.r-project.org
 Description: Inference methods for partially-observed Markov processes
@@ -21,3 +21,4 @@ Collate: eulermultinom.R euler.R plugins.R slice.R sobol.R bsplines.R
 	 mif-class.R particles-mif.R pfilter-mif.R mif.R mif-methods.R compare.mif.R 
 	 pmcmc.R pmcmc-methods.R compare.pmcmc.R
 	 nlf-funcs.R nlf-guts.R nlf-lql.R nlf-objfun.R nlf.R 
+	 probe.R probe-match.R basic-probes.R spect.R spect-match.R
