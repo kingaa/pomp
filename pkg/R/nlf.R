@@ -50,9 +50,9 @@ nlf <- function(object, start, est, lags, period = NA, tensor = FALSE, nconverge
   dt.tol <- 1e-3
   times <- time(object,t0=TRUE)
   dt <- diff(times[-1])
-  dt <- times[3]-times[2]
   if (diff(range(dt))>dt.tol*mean(dt))
     stop(sQuote("nlf")," requires evenly spaced sampling times")
+  dt <- times[3]-times[2]
   
   t0 <- times[1]
                                         # Vector of times to output the simulation
