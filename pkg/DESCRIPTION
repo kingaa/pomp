@@ -4,7 +4,7 @@ Title: Statistical inference for partially observed Markov processes
 Version: 0.32-1
 Date: 2010-08-03
 Author: Aaron A. King, Edward L. Ionides, Carles Breto, Steve Ellner, Bruce Kendall, Helen Wearing, 
-	Matthew J. Ferrari, Michael Lavine, Dan Reuman
+	Matthew J. Ferrari, Michael Lavine, Daniel C. Reuman
 Maintainer: Aaron A. King <kingaa@umich.edu>
 URL: http://pomp.r-forge.r-project.org
 Description: Inference methods for partially-observed Markov processes
