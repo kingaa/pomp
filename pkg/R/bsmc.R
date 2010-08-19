@@ -264,7 +264,7 @@ setMethod(
 
               ## Matrix with samples (columns) from filtering distribution theta.t | Y.t
               if (!all.fail) {
-                ## smp <- .Call(systematic_resampling,weights,PACKAGE="pomp.devel")
+                ## smp <- .Call(systematic_resampling,weights)
                 smp <- sample.int(n=Np,size=Np,replace=TRUE,prob=weights)
                 x <- x[,smp,drop=FALSE]
                 params[estind,] <- params[estind,smp,drop=FALSE]

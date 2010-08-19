@@ -28,7 +28,7 @@ exportClasses('pomp','mif','pmcmc','probed.pomp','probe.matched.pomp','spect.pom
 exportMethods(
               'plot','show','print','coerce',
               'dprocess','rprocess','rmeasure','dmeasure','init.state','skeleton',
-              'data.array','coef','logLik','time','time<-','timezero','timezero<-','window',
+              'data.array','summary','coef','logLik','time','time<-','timezero','timezero<-','window',
               'simulate','pfilter',
               'particles','mif','continue','coef<-','states','trajectory',
               'pred.mean','pred.var','filter.mean','conv.rec',
