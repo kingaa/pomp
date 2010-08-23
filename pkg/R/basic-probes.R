@@ -37,6 +37,7 @@ probe.acf <- function (
                        ...
                        ) {
   args <- list(...)
+  type <- match.arg(type)
   function (y) {
     zz <- do.call(acf,c(list(x=transform(y[var,]),lag.max=lag,plot=FALSE),args))
     if (type=="partial")
@@ -108,4 +109,3 @@ probe.cor <- function (
     val
   }
 }
-
