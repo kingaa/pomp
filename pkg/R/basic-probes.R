@@ -38,8 +38,9 @@ probe.acf <- function (
                        ) {
   args <- list(...)
   type <- match.arg(type)
+  mlag <- max(lag)
   function (y) {
-    zz <- do.call(acf,c(list(x=transform(y[var,]),lag.max=lag,plot=FALSE),args))
+    zz <- do.call(acf,c(list(x=transform(y[var,]),lag.max=mlag,plot=FALSE,type=type),args))
     if (type=="partial")
       val <- zz$acf[lag]
     else
