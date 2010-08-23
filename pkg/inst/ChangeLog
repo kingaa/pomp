@@ -1,5 +1,28 @@
+2010-08-19  kingaa
+
+	* [r291] DESCRIPTION, NAMESPACE, R/bsmc.R, tests/ou2-probe-match.R,
+	  tests/ou2-probe-match.Rout.save: - add in tests for probe
+	  matching
+
+2010-08-04  kingaa
+
+	* [r290] DESCRIPTION: - use Dan's full name
+
+2010-08-03  kingaa
+
+	* [r289] DESCRIPTION, NAMESPACE, R/basic-probes.R, R/probe-match.R,
+	  R/probe.R, R/spect-match.R, R/spect.R, man/basic-probes.Rd,
+	  man/probe.Rd, man/probed-pomp-class.Rd,
+	  man/probed-pomp-methods.Rd, man/spect-pomp-class.Rd,
+	  man/spect.Rd: - add in the probe- and spectral-matching codes
+	  (thanks to Dan Reuman and Bruce Kendall)
+	* [r288] R/nlf.R: - bug fix
+
 2010-07-19  kingaa
 
+	* [r287] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: - update
+	  the vignette
 	* [r286] DESCRIPTION, NAMESPACE, R/pomp-methods.R, inst/ChangeLog,
 	  inst/NEWS, man/pomp-methods.Rd, tests/rw2.R, tests/rw2.Rout.save,
 	  tests/sir.R, tests/sir.Rout.save: - added new 'window',
