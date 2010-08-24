@@ -1,5 +1,22 @@
 2010-08-24  kingaa
 
+	* [r303] DESCRIPTION, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/ricker.rda,
+	  inst/ChangeLog, inst/data-R/ricker.R,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, man/ricker.Rd, src/ricker.c,
+	  tests/ricker.R, tests/ricker.Rout.save: - include a
+	  Poisson-Ricker example
+	  - update the vignettes
+	* [r302] R/trajectory-pomp.R: - modify the algorithm in the case of
+	  a discrete-time map so that the assumption that 'times' are
+	  consecutive is no longer implicitly made
+	* [r301] R/euler.R, R/plugins.R, R/pomp-fun.R, R/pomp.R,
+	  man/plugins.Rd: - modify 'pomp.fun' so that the prototype is
+	  passed as an unevaluated call rather than as a character string
+	  (thus avoiding issues with escaped characters"
+	  - modify the plug-in 'discrete.time.sim' so that delta.t=1 is
+	  enforced
 	* [r299] inst/doc/pomp.bib: - update bibliography
 
 2010-08-23  kingaa
