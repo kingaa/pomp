@@ -39,12 +39,12 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
              times="time",
              t0=0,
              rprocess=euler.sim(
-               step.fun="sir_euler_simulator", # native routine for the simulation step
+               step.fun="_sir_euler_simulator", # native routine for the simulation step
                delta.t=1/52/20
                ),
-             skeleton.vectorfield="sir_ODE", # native routine for the skeleton
-             rmeasure="sir_binom_rmeasure", # binomial measurement model
-             dmeasure="sir_binom_dmeasure", # binomial measurement model
+             skeleton.vectorfield="_sir_ODE", # native routine for the skeleton
+             rmeasure="_sir_binom_rmeasure", # binomial measurement model
+             dmeasure="_sir_binom_dmeasure", # binomial measurement model
              PACKAGE="sir", ## name of the shared-object library
              ## the order of the observables assumed in the native routines:
              obsnames="reports",

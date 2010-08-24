@@ -43,15 +43,15 @@ static double term_time (double t, double b0, double b1)
 
 #define REPORTS   (y[obsindex[0]])
 
-void sir_binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
-			 int *obsindex, int *stateindex, int *parindex, int *covindex,
-			 int ncovars, double *covars, double t) {
+void _sir_binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
+			  int *obsindex, int *stateindex, int *parindex, int *covindex,
+			  int ncovars, double *covars, double t) {
   *lik = dbinom(REPORTS,CASE,exp(LOGRHO),give_log);
 }
 
-void sir_binom_rmeasure (double *y, double *x, double *p, 
-			 int *obsindex, int *stateindex, int *parindex, int *covindex,
-			 int ncovars, double *covars, double t) {
+void _sir_binom_rmeasure (double *y, double *x, double *p, 
+			  int *obsindex, int *stateindex, int *parindex, int *covindex,
+			  int ncovars, double *covars, double t) {
   REPORTS = rbinom(CASE,exp(LOGRHO));
 }
 
@@ -61,10 +61,10 @@ void sir_binom_rmeasure (double *y, double *x, double *p,
 // forced transmission (basis functions passed as covariates)
 // constant population size as a parameter
 // environmental stochasticity on transmission
-void sir_euler_simulator (double *x, const double *p, 
-			  const int *stateindex, const int *parindex, const int *covindex,
-			  int covdim, const double *covar, 
-			  double t, double dt)
+void _sir_euler_simulator (double *x, const double *p, 
+			   const int *stateindex, const int *parindex, const int *covindex,
+			   int covdim, const double *covar, 
+			   double t, double dt)
 {
   int nrate = 6;
   double rate[nrate];		// transition rates
@@ -139,9 +139,9 @@ void sir_euler_simulator (double *x, const double *p,
 #define DRDT    (f[stateindex[2]])
 #define DCDT    (f[stateindex[3]])
 
-void sir_ODE (double *f, double *x, const double *p, 
-	      const int *stateindex, const int *parindex, const int *covindex,
-	      int covdim, const double *covar, double t) 
+void _sir_ODE (double *f, double *x, const double *p, 
+	       const int *stateindex, const int *parindex, const int *covindex,
+	       int covdim, const double *covar, double t) 
 {
   int nrate = 6;
   double rate[nrate];		// transition rates
@@ -223,9 +223,9 @@ void sir_ODE (double *f, double *x, const double *p,
 #define POPN      (x[stateindex[3]]) // population size
 #define CASE      (x[stateindex[4]]) // accumulated cases
 
-double sir_rates (int j, double t, double *x, double *p,
-		  int *stateindex, int *parindex, int *covindex,
-		  int ncovar, double *covar) {
+double _sir_rates (int j, double t, double *x, double *p,
+		   int *stateindex, int *parindex, int *covindex,
+		   int ncovar, double *covar) {
   double beta;
   double rate = 0.0;
   int nseas = (int) NBASIS;	// number of seasonal basis functions
@@ -298,9 +298,9 @@ double sir_rates (int j, double t, double *x, double *p,
 // forced transmission (basis functions passed as covariates)
 // constant population size as a parameter
 // environmental stochasticity on transmission
-void sir_euler_density (double *f, double *x1, double *x2, double t1, double t2, const double *p, 
-			const int *stateindex, const int *parindex, const int *covindex,
-			int covdim, const double *covar)
+void _sir_euler_density (double *f, double *x1, double *x2, double t1, double t2, const double *p, 
+			 const int *stateindex, const int *parindex, const int *covindex,
+			 int covdim, const double *covar)
 {
   int nrate = 6;
   double rate[nrate];		// transition rates

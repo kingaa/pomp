@@ -6,11 +6,11 @@ simulate(
               times="time",
               t0=0,
               rprocess=discrete.time.sim(
-                step.fun="ricker_simulator"
+                step.fun="_ricker_simulator"
                 ),
-              rmeasure="poisson_rmeasure",
-              dmeasure="poisson_dmeasure",
-              skeleton.map="ricker_skeleton",
+              rmeasure="_ricker_poisson_rmeasure",
+              dmeasure="_ricker_poisson_dmeasure",
+              skeleton.map="_ricker_skeleton",
               paramnames=c("log.r","log.sigma","log.phi"),
               statenames=c("N","e"),
               obsnames=c("y")

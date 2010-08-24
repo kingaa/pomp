@@ -28,7 +28,7 @@ simulate(
               times="time",
               t0=0,
               rprocess=gillespie.sim(
-                rate.fun="sir_rates",
+                rate.fun="_sir_rates",
                 PACKAGE="pomp",
                 v=cbind(
                   birth=c(1,0,0,1,0),

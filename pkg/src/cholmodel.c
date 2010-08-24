@@ -71,9 +71,9 @@ void _cholmodel_norm_dmeasure (double *lik, double *y, double *x, double *p, int
 // truncation is not used
 // instead, particles with negative states are killed
 void _cholmodel_one (double *x, const double *p, 
-		const int *stateindex, const int *parindex, const int *covindex,
-		int covdim, const double *covar, 
-		double t, double dt)
+		     const int *stateindex, const int *parindex, const int *covindex,
+		     int covdim, const double *covar, 
+		     double t, double dt)
 {			   // implementation of the SIRS cholera model
   int nrstage = (int) NRSTAGE;
   int nbasis  = (int) NBASIS;

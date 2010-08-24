@@ -88,7 +88,7 @@ The process model simulator and density functions are as follows:
     ## C uses zero-based indexing!
     parindex <- match(paramnames,rownames(params))-1
     array(
-	  .C("ou2_adv",
+	  .C("_ou2_adv",
 	     X = double(nvar*nrep*ntimes),
 	     xstart = as.double(xstart),
 	     par = as.double(params),
@@ -113,7 +113,7 @@ The process model simulator and density functions are as follows:
     ntimes <- length(times)
     parindex <- match(paramnames,rownames(params))-1
     array(
-	  .C("ou2_pdf",
+	  .C("_ou2_pdf",
              d = double(nrep*(ntimes-1)),
              X = as.double(x),
 	     par = as.double(params),
@@ -142,8 +142,8 @@ ou2 <- pomp(
 	    t0=0,
 	    rprocess = ou2.rprocess,
 	    dprocess = ou2.dprocess,
-	    dmeasure = "ou2_normal_dmeasure",
-	    rmeasure = "ou2_normal_rmeasure",
+	    dmeasure = "_ou2_normal_dmeasure",
+	    rmeasure = "_ou2_normal_rmeasure",
             paramnames=c(
               "alpha.1","alpha.2","alpha.3","alpha.4",
               "sigma.1","sigma.2","sigma.3",
@@ -208,14 +208,14 @@ pomp(
      t0=0,
      ## native routine for the process simulator:
      rprocess=euler.sim(
-       step.fun="sir_euler_simulator", 
+       step.fun="_sir_euler_simulator", 
        delta.t=1/52/20
        ),
      ## native routine for the skeleton:
-     skeleton.vectorfield="sir_ODE", 
+     skeleton.vectorfield="_sir_ODE", 
      ## binomial measurement model:
-     rmeasure="sir_binom_rmeasure", 
-     dmeasure="sir_binom_dmeasure", 
+     rmeasure="_sir_binom_rmeasure", 
+     dmeasure="_sir_binom_dmeasure", 
      ## name of the shared-object library containing the native routines:
      PACKAGE="pomp", 
      ## the order of the observable assumed in the native routines:
@@ -243,7 +243,7 @@ pomp(
      }
      ) -> sir
 @ 
-The source code for the native routines \verb+sir_euler_simulator+, \verb+sir_ODE+, \verb+sir_binom_rmeasure+, and \verb+sir_binom_dmeasure+ is provided with the package (in the \code{examples} directory).
+The source code for the native routines \verb+_sir_euler_simulator+, \verb+_sir_ODE+, \verb+_sir_binom_rmeasure+, and \verb+_sir_binom_dmeasure+ is provided with the package (in the \code{examples} directory).
 To see the source code, do
 <<view-sir-source,eval=F>>=
 edit(file=system.file("examples/sir.c",package="pomp"))

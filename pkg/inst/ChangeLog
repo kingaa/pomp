@@ -1,5 +1,6 @@
 2010-08-24  kingaa
 
+	* [r304] inst/ChangeLog: - update changelog
 	* [r303] DESCRIPTION, data/dacca.rda, data/euler.sir.rda,
 	  data/gillespie.sir.rda, data/ou2.rda, data/ricker.rda,
 	  inst/ChangeLog, inst/data-R/ricker.R,

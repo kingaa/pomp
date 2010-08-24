@@ -8,14 +8,14 @@
 
 // prototypes
 
-void ou2_normal_rmeasure (double *y, double *x, double *p, 
-			  int *obsindex, int *stateindex, int *parindex, int *covindex,
-			  int ncovar, double *covar, double t);
-void ou2_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
-			  int *obsindex, int *stateindex, int *parindex, int *covindex,
-			  int covdim, double *covar, double t);
-void ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex);
-void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log);
+void _ou2_normal_rmeasure (double *y, double *x, double *p, 
+			   int *obsindex, int *stateindex, int *parindex, int *covindex,
+			   int ncovar, double *covar, double t);
+void _ou2_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
+			   int *obsindex, int *stateindex, int *parindex, int *covindex,
+			   int covdim, double *covar, double t);
+void _ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex);
+void _ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log);
 static void sim_ou2 (double *x,
 		     double alpha1, double alpha2, double alpha3, double alpha4, 
 		     double sigma1, double sigma2, double sigma3);
@@ -33,7 +33,7 @@ static double dens_ou2 (double *x1, double *x2,
 
 // advance the matrix of particles from times[0] to the other times given
 // it is assumed that the times are consecutive (FIX THIS!)
-void ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex)
+void _ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex)
 {
   int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3];
   double *xp, *pp;
@@ -56,7 +56,7 @@ void ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int
 }
 
 // pdf of a single 2D OU transition
-void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log)
+void _ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log)
 {
   int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3];
   double *x1, *x2, *pp;
@@ -88,9 +88,9 @@ void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *par
 #define Y2    (y[obsindex[1]])
 
 // bivariate normal measurement error density
-void ou2_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
-			  int *obsindex, int *stateindex, int *parindex, int *covindex,
-			  int covdim, double *covar, double t) 
+void _ou2_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
+			   int *obsindex, int *stateindex, int *parindex, int *covindex,
+			   int covdim, double *covar, double t) 
 {
   double sd = fabs(TAU);
   double f = 0.0;
@@ -100,10 +100,10 @@ void ou2_normal_dmeasure (double *lik, double *y, double *x, double *p, int give
 }
 
 // bivariate normal measurement error simulator
-void ou2_normal_rmeasure (double *y, double *x, double *p, 
-			  int *obsindex, int *stateindex, int *parindex, int *covindex,
-			  int ncovar, double *covar, 
-			  double t) 
+void _ou2_normal_rmeasure (double *y, double *x, double *p, 
+			   int *obsindex, int *stateindex, int *parindex, int *covindex,
+			   int ncovar, double *covar, 
+			   double t) 
 {
   double sd = fabs(TAU);
   Y1 = rnorm(X1,sd);
@@ -174,5 +174,3 @@ static double dens_ou2 (double *x1, double *x2,
   val = dnorm(eps[0],0.0,1.0,1)+dnorm(eps[1],0.0,1.0,1)-log(sigma1)-log(sigma3);
   return ((give_log) ? val : exp(val));
 }
-
-

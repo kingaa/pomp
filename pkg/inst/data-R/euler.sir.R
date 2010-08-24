@@ -9,13 +9,13 @@ simulate(
               times="time",
               t0=0,
               rprocess=euler.sim(
-                step.fun="sir_euler_simulator",
+                step.fun="_sir_euler_simulator",
                 delta.t=1/52/20,
                 PACKAGE="pomp"
                 ),
-              skeleton.vectorfield="sir_ODE",
-              rmeasure="sir_binom_rmeasure",
-              dmeasure="sir_binom_dmeasure",
+              skeleton.vectorfield="_sir_ODE",
+              rmeasure="_sir_binom_rmeasure",
+              dmeasure="_sir_binom_dmeasure",
               PACKAGE="pomp",
               obsnames = c("reports"),
               statenames=c("S","I","R","cases","W"),
