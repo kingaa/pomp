@@ -22,7 +22,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <table border="0" width="80%" cellspacing="0" cellpadding="0">
 <tr>
 <td>
-<a href="R-Forge.R-Project.org"><img src="<?php echo $themeroot; ?>/imagesrf/logo.png" border="0" alt="R-Forge Logo" /> </a> 
+<a href="http://R-Forge.R-Project.org"><img src="<?php echo $themeroot; ?>/imagesrf/logo.png" border="0" alt="R-Forge Logo" /> </a> 
 </td> 
 </tr>
 </table>
