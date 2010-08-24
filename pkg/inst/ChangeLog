@@ -1,3 +1,14 @@
+2010-08-24  kingaa
+
+	* [r299] inst/doc/pomp.bib: - update bibliography
+
+2010-08-23  kingaa
+
+	* [r297] R/basic-probes.R: - another minor bug fix
+	* [r296] R/basic-probes.R: - bug fix in 'probe.acf'
+	* [r295] DESCRIPTION:
+	* [r293] inst/ChangeLog, inst/NEWS: - update NEWS and ChangeLog
+
 2010-08-19  kingaa
 
 	* [r291] DESCRIPTION, NAMESPACE, R/bsmc.R, tests/ou2-probe-match.R,

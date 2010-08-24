@@ -236,8 +236,7 @@ ou2 <- pomp(
               ),
             times="time",
             rprocess=discrete.time.sim(
-              step.fun=ou2.proc.sim,
-              delta.t=1
+              step.fun=ou2.proc.sim
               ),
             rmeasure=ou2.meas.sim,
             t0=0
@@ -249,8 +248,8 @@ In a moment, however, we'll simulate some data so we can explore \pomp's various
 The second argument (\code{times}) specifies which of the columns of \code{data} is the time variable.
 The third argument (\code{rprocess}) specifies that the process model simulator will be in discrete-time, one step at a time.
 The function \code{discrete.time.sim} belongs to the package \pomp.
-It takes several arguments, one of which, \code{step.fun}, is the particular function that actually takes the step.
-Its second argument, \code{delta.t}, sets the size of the time-step.
+It takes the argument \code{step.fun}, which specifies the particular function that actually takes the step.
+The step is assumed to be a unit interval of time.
 The argument \code{rmeasure} specifies the measurement model simulator function.
 \code{t0} fixes $t_0$ for this model; here we have chosen this to be one time unit before the first observation.
 
@@ -350,7 +349,7 @@ theta <- coef(ou2)
 ou2 <- pomp(
             data=dat[c("time","y1","y2")],
             times="time",
-            rprocess=discrete.time.sim(ou2.proc.sim,delta.t=1),
+            rprocess=discrete.time.sim(ou2.proc.sim),
             rmeasure=ou2.meas.sim,
             dmeasure=ou2.meas.dens,
             t0=0
@@ -704,7 +703,7 @@ theta <- coef(ou2)
 new.ou2 <- pomp(
                 data=dat[c("time","y1","y2")],
                 times="time",
-                rprocess=discrete.time.sim(ou2.proc.sim,delta.t=1),
+                rprocess=discrete.time.sim(ou2.proc.sim),
                 rmeasure=ou2.meas.sim,
                 dmeasure=ou2.meas.dens,
                 skeleton.map=ou2.skel,
