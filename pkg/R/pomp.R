@@ -100,12 +100,12 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
       skeleton <- pomp.fun(f=function(x,t,params,covars,...)stop(sQuote("skeleton")," not specified"))
     } else {                # skeleton is a vectorfield (ordinary differential equation)
       skeleton.type <- "vectorfield"
-      skeleton <- pomp.fun(f=skeleton.vectorfield,PACKAGE=PACKAGE,proto="skeleton.vectorfield(x,t,params,...)")
+      skeleton <- pomp.fun(f=skeleton.vectorfield,PACKAGE=PACKAGE,proto=quote(skeleton.vectorfield(x,t,params,...)))
     }
   } else {
     if (missing(skeleton.vectorfield)) { # skeleton is a map (discrete-time system)
       skeleton.type <- "map"
-      skeleton <- pomp.fun(f=skeleton.map,PACKAGE=PACKAGE,proto="skeleton.map(x,t,params,...)")
+      skeleton <- pomp.fun(f=skeleton.map,PACKAGE=PACKAGE,proto=quote(skeleton.map(x,t,params,...)))
     } else { # a dynamical system cannot be both a map and a vectorfield
       stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.map")," and ",sQuote("skeleton.vectorfield"))
     }
@@ -128,8 +128,8 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
          call.=TRUE
          )
 
-  rmeasure <- pomp.fun(f=rmeasure,PACKAGE=PACKAGE,proto="rmeasure(x,t,params,...)")
-  dmeasure <- pomp.fun(f=dmeasure,PACKAGE=PACKAGE,proto="dmeasure(y,x,t,params,log,...)")
+  rmeasure <- pomp.fun(f=rmeasure,PACKAGE=PACKAGE,proto=quote(rmeasure(x,t,params,...)))
+  dmeasure <- pomp.fun(f=dmeasure,PACKAGE=PACKAGE,proto=quote(dmeasure(y,x,t,params,log,...)))
   
   if (!is.function(initializer))
     stop(

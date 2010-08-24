@@ -15,7 +15,9 @@ pomp.fun <- function (f = NULL, PACKAGE, proto = NULL) {
     PACKAGE <- character(0)
   if (is.function(f)) {
     if (!is.null(proto)) {
-      prototype <- strsplit(as.character(proto),split="\\(|\\)|\\,")
+      if (!is.call(proto))
+        stop(sQuote("proto")," must be an unevaluated call")
+      prototype <- as.character(proto)
       fname <- prototype[1]
       args <- prototype[-1]
       if (!all(args%in%names(formals(f))))

@@ -2,7 +2,7 @@ onestep.sim <- function (step.fun, PACKAGE) {
   efun <- pomp.fun(
                    f=step.fun,
                    PACKAGE=PACKAGE,
-                   proto="step.fun(x,t,params,delta.t,...)"
+                   proto=quote(step.fun(x,t,params,delta.t,...))
                    )
   function (xstart, times, params, ...,
             statenames = character(0),
@@ -29,11 +29,11 @@ onestep.sim <- function (step.fun, PACKAGE) {
   }
 }
 
-discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
+discrete.time.sim <- function (step.fun, PACKAGE) {
   efun <- pomp.fun(
                    f=step.fun,
                    PACKAGE=PACKAGE,
-                   proto="step.fun(x,t,params,delta.t,...)"
+                   proto=quote(step.fun(x,t,params,...))
                    )
   function (xstart, times, params, ...,
             statenames = character(0),
@@ -47,7 +47,7 @@ discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
           xstart=xstart,
           times=times,
           params=params,
-          dt=delta.t,
+          dt=1,
           method=0L,
           statenames=statenames,
           paramnames=paramnames,
@@ -64,7 +64,7 @@ euler.sim <- function (step.fun, delta.t, PACKAGE) {
   efun <- pomp.fun(
                    f=step.fun,
                    PACKAGE=PACKAGE,
-                   proto="step.fun(x,t,params,delta.t,...)"
+                   proto=quote(step.fun(x,t,params,delta.t,...))
                    )
   function (xstart, times, params, ...,
             statenames = character(0),
@@ -95,7 +95,7 @@ onestep.dens <- function (dens.fun, PACKAGE) {
   efun <- pomp.fun(
                    f=dens.fun,
                    PACKAGE=PACKAGE,
-                   proto="dens.fun(x1,x2,t1,t2,params,...)"
+                   proto=quote(dens.fun(x1,x2,t1,t2,params,...))
                    )
   function (x, times, params, ...,
             statenames = character(0),
@@ -131,7 +131,7 @@ gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
   efun <- pomp.fun(
                    f=rate.fun,
                    PACKAGE=PACKAGE,
-                   proto="rate.fun(j,x,t,params,...)"
+                   proto=quote(rate.fun(j,x,t,params,...))
                    )
   function (xstart, times, params,
             statenames = character(0),

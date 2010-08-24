@@ -10,7 +10,7 @@ onestep.simulate <- function (xstart, times, params,
   efun <- pomp.fun(
                    f=step.fun,
                    PACKAGE=PACKAGE,
-                   proto="step.fun(x,t,params,delta.t,...)"
+                   proto=quote(step.fun(x,t,params,delta.t,...))
                    )
   .Call(
         euler_model_simulator,
@@ -42,7 +42,7 @@ euler.simulate <- function (xstart, times, params,
   efun <- pomp.fun(
                    f=step.fun,
                    PACKAGE=PACKAGE,
-                   proto="step.fun(x,t,params,delta.t,...)"
+                   proto=quote(step.fun(x,t,params,delta.t,...))
                    )
   .Call(
         euler_model_simulator,
@@ -74,7 +74,7 @@ onestep.density <- function (x, times, params,
   efun <- pomp.fun(
                    f=dens.fun,
                    PACKAGE=PACKAGE,
-                   proto="dens.fun(x1,x2,t1,t2,params,...)"
+                   proto=quote(dens.fun(x1,x2,t1,t2,params,...))
                    )
   .Call(
         euler_model_density,
