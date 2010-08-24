@@ -27,14 +27,19 @@ setMethod(
             paramnames <- rownames(params)
             if (is.null(paramnames))
               stop("pfilter error: ",sQuote("params")," must have rownames",call.=FALSE)
-
-            if (missing(times))
-              times <- time(object,t0=TRUE)
-
             params <- as.matrix(params)
+
             if (missing(times))
               times <- time(object,t0=TRUE)
-            x0 <- init.state(object,params=params,t0=times[1])
+            else
+              times <- as.numeric(times)
+
+            tm <- times[1]
+            x0 <- init.state(object,params=params,t0=tm)
+            nm <- rownames(x0)
+            dim(x0) <- c(nrow(x0),nrep,1)
+            dimnames(x0) <- list(nm,NULL,NULL)
+            
             x <- array(
                        dim=c(nrow(x0),nrep,length(times)),
                        dimnames=list(rownames(x0),NULL,NULL)
@@ -42,21 +47,21 @@ setMethod(
             switch(
                    object@skeleton.type,
                    map={                # iterate the map
-                     x[,,1] <- x0
-                     for (k in seq(from=2,to=length(times),by=1)) {
-                       x[,,k] <- skeleton(
-                                          object,
-                                          x=x[,,k-1,drop=FALSE],
-                                          t=times[k-1],
-                                          params=params
-                                          )
+                     for (k in seq_along(times)) {
+                       if (tm < times[k]) {
+                         while (tm < times[k]) {
+                           x0[,,] <- skeleton(object,x=x0,t=tm,params=params)
+                           tm <- tm+1
+                         }
+                       }
+                       x[,,k] <- x0
                      }
                    },
                    vectorfield={        # integrate the vectorfield
                      for (j in seq_len(nrep)) {
                        X <- try(
                                 deSolve::lsoda(
-                                               y=x0[,j],
+                                               y=x0[,j,1],
                                                times=times,
                                                func=function(t,y,parms){
                                                  list(
