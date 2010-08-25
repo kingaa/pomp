@@ -43,3 +43,14 @@ pm.ou2 <- probe(
                 )
                 
 summary(pm.ou2)
+
+pb <- probe(
+            ou2,
+            probes=list(
+              y1=probe.quantile(var="y1",prob=seq(0.1,0.9,by=0.1)),
+              acf=probe.acf(var="y2",lag=c(2,4,7),transform=identity),
+              pd=probe.period(var="y1",kernel.width=3)
+              ),
+            nsim=200
+            )
+summary(pb)

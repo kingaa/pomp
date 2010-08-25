@@ -107,3 +107,33 @@ $pvals
 0.2235529 0.5469062 0.9261477 
 
 > 
+> pb <- probe(
++             ou2,
++             probes=list(
++               y1=probe.quantile(var="y1",prob=seq(0.1,0.9,by=0.1)),
++               acf=probe.acf(var="y2",lag=c(2,4,7),transform=identity),
++               pd=probe.period(var="y1",kernel.width=3)
++               ),
++             nsim=200
++             )
+> summary(pb)
+$coef
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+
+$nsim
+[1] 200
+
+$quantiles
+y1.10% y1.20% y1.30% y1.40% y1.50% y1.60% y1.70% y1.80% y1.90%   acf1   acf2 
+ 0.755  0.790  0.765  0.555  0.335  0.115  0.035  0.025  0.010  0.160  0.345 
+  acf3     pd 
+ 0.750  0.060 
+
+$pvals
+    y1.10%     y1.20%     y1.30%     y1.40%     y1.50%     y1.60%     y1.70% 
+0.48756219 0.41791045 0.46766169 0.88557214 0.67661692 0.23880597 0.07960199 
+    y1.80%     y1.90%       acf1       acf2       acf3         pd 
+0.05970149 0.02985075 0.32835821 0.69651741 0.49751244 0.12935323 
+
+> 

@@ -101,11 +101,12 @@ setMethod(
                                       seed=seed
                                       )
 
-            pvals <- numeric(length(probes))
-            names(pvals) <- names(probes)
-            quants <- numeric(length(probes))
-            names(quants) <- names(probes)
-            for (k in seq_along(probes)) {
+            nprobes <- length(datval)
+            pvals <- numeric(nprobes)
+            names(pvals) <- names(datval)
+            quants <- numeric(nprobes)
+            names(quants) <- names(datval)
+            for (k in seq_len(nprobes)) {
               tails <- c(sum(simval[,k]>datval[k]),sum(simval[,k]<datval[k])+1)/(nsim+1)
               pvals[k] <- min(c(2*tails,1))
               quants[k] <- sum(simval[,k]<datval[k])/nsim
