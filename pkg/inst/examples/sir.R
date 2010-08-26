@@ -19,14 +19,12 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
   model <- "sir"
   pkg <- "pomp"
   modelfile <- paste(model,".c",sep="")
-  cppflags <- paste("PKG_CPPFLAGS=-I",system.file("include",package=pkg),sep="")
-  pkglib <- system.file(paste("libs/",pkg,.Platform$dynlib.ext,sep=""),package=pkg)
   solib <- paste(model,.Platform$dynlib.ext,sep="")
 
   ## compile the model into a shared-object library
   if (!file.copy(from=system.file(paste("examples/",modelfile,sep=""),package=pkg),to=getwd()))
     stop("cannot copy source code ",modelfile," to ",getwd())
-  cmd <- paste(cppflags,R.home("bin/R"),"CMD SHLIB -o",solib,modelfile,pkglib)
+  cmd <- paste(R.home("bin/R"),"CMD SHLIB -o",solib,modelfile)
   rv <- system(cmd)
   if (rv!=0)
     stop("cannot compile shared-object library ",solib)
@@ -39,12 +37,12 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
              times="time",
              t0=0,
              rprocess=euler.sim(
-               step.fun="_sir_euler_simulator", # native routine for the simulation step
+               step.fun="sir_euler_simulator", # native routine for the simulation step
                delta.t=1/52/20
                ),
-             skeleton.vectorfield="_sir_ODE", # native routine for the skeleton
-             rmeasure="_sir_binom_rmeasure", # binomial measurement model
-             dmeasure="_sir_binom_dmeasure", # binomial measurement model
+             skeleton.vectorfield="sir_ODE", # native routine for the skeleton
+             rmeasure="binomial_rmeasure", # binomial measurement model
+             dmeasure="binomial_dmeasure", # binomial measurement model
              PACKAGE="sir", ## name of the shared-object library
              ## the order of the observables assumed in the native routines:
              obsnames="reports",
