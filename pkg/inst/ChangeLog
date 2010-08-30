@@ -1,5 +1,1159 @@
+2010-08-30  kingaa
+
+	* [r311] DESCRIPTION, NAMESPACE, R, data, inst, man,
+	  pomp/DESCRIPTION, pomp/NAMESPACE, pomp/R, pomp/data, pomp/inst,
+	  pomp/man, pomp/src, pomp/tests, src, tests: - put everything in
+	  pkg/pomp back into pkg
+	* [r310] pomp/DESCRIPTION, pomp/inst/ChangeLog,
+	  pomp/inst/doc/advanced_topics_in_pomp.pdf,
+	  pomp/inst/doc/intro_to_pomp.pdf: - update the vignettes
+
 2010-08-26  kingaa
 
-	* [r309] ., DESCRIPTION, NAMESPACE, R, data, inst, man, src, tests:
-	  - move everything in pkg/ to pkg/pomp
+	* [r309] DESCRIPTION, NAMESPACE, R, data, inst, man, pomp,
+	  pomp/DESCRIPTION, pomp/NAMESPACE, pomp/R, pomp/data, pomp/inst,
+	  pomp/man, pomp/src, pomp/tests, src, tests: - move everything in
+	  pkg/ to pkg/pomp
+	* [r308] inst/examples/sir.R, inst/examples/sir.c: - simplify the
+	  SIR example using compiled code
+	* [r307] DESCRIPTION, src/R_init_pomp.c: - register C-callable
+	  routines
+
+2010-08-25  kingaa
+
+	* [r306] DESCRIPTION, R/probe.R, tests/ou2-probe-match.R,
+	  tests/ou2-probe-match.Rout.save: - bug fix in 'probe'
+
+2010-08-24  kingaa
+
+	* [r305] data/euler.sir.rda, data/gillespie.sir.rda, data/ou2.rda,
+	  data/ricker.rda, inst/ChangeLog, inst/data-R/euler.sir.R,
+	  inst/data-R/gillespie.sir.R, inst/data-R/ou2.R,
+	  inst/data-R/ricker.R, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/examples/sir.R, inst/examples/sir.c, src/cholmodel.c,
+	  src/ou2.c, src/ricker.c, src/sir.c: - change names of C routines
+	  to keep namespace open (prepend C symbols in the package with
+	  "_")
+	* [r304] inst/ChangeLog: - update changelog
+	* [r303] DESCRIPTION, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/ricker.rda,
+	  inst/ChangeLog, inst/data-R/ricker.R,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, man/ricker.Rd, src/ricker.c,
+	  tests/ricker.R, tests/ricker.Rout.save: - include a
+	  Poisson-Ricker example
+	  - update the vignettes
+	* [r302] R/trajectory-pomp.R: - modify the algorithm in the case of
+	  a discrete-time map so that the assumption that 'times' are
+	  consecutive is no longer implicitly made
+	* [r301] R/euler.R, R/plugins.R, R/pomp-fun.R, R/pomp.R,
+	  man/plugins.Rd: - modify 'pomp.fun' so that the prototype is
+	  passed as an unevaluated call rather than as a character string
+	  (thus avoiding issues with escaped characters"
+	  - modify the plug-in 'discrete.time.sim' so that delta.t=1 is
+	  enforced
+	* [r299] inst/doc/pomp.bib: - update bibliography
+
+2010-08-23  kingaa
+
+	* [r297] R/basic-probes.R: - another minor bug fix
+	* [r296] R/basic-probes.R: - bug fix in 'probe.acf'
+	* [r295] DESCRIPTION:
+	* [r293] inst/ChangeLog, inst/NEWS: - update NEWS and ChangeLog
+
+2010-08-19  kingaa
+
+	* [r291] DESCRIPTION, NAMESPACE, R/bsmc.R, tests/ou2-probe-match.R,
+	  tests/ou2-probe-match.Rout.save: - add in tests for probe
+	  matching
+
+2010-08-04  kingaa
+
+	* [r290] DESCRIPTION: - use Dan's full name
+
+2010-08-03  kingaa
+
+	* [r289] DESCRIPTION, NAMESPACE, R/basic-probes.R, R/probe-match.R,
+	  R/probe.R, R/spect-match.R, R/spect.R, man/basic-probes.Rd,
+	  man/probe.Rd, man/probed-pomp-class.Rd,
+	  man/probed-pomp-methods.Rd, man/spect-pomp-class.Rd,
+	  man/spect.Rd: - add in the probe- and spectral-matching codes
+	  (thanks to Dan Reuman and Bruce Kendall)
+	* [r288] R/nlf.R: - bug fix
+
+2010-07-19  kingaa
+
+	* [r287] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: - update
+	  the vignette
+	* [r286] DESCRIPTION, NAMESPACE, R/pomp-methods.R, inst/ChangeLog,
+	  inst/NEWS, man/pomp-methods.Rd, tests/rw2.R, tests/rw2.Rout.save,
+	  tests/sir.R, tests/sir.Rout.save: - added new 'window',
+	  'timezero', and 'timezero<-' methods for 'pomp' objects
+
+2010-07-06  kingaa
+
+	* [r285] R/pomp-methods.R: - error checking in 'data.array'
+	* [r284] R/pfilter.R: - minor
+	* [r283] R/pmcmc.R: - unname before 'coef<-' to avoid warning
+
+2010-07-02  kingaa
+
+	* [r282] R/mif.R, R/pomp-methods.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/pomp.bib,
+	  man/pomp-methods.Rd, man/simulate-pomp.Rd, tests/rw2.R,
+	  tests/rw2.Rout.save: - add warning in 'coef<-' where parameter
+	  values might unintentionally be mismatched
+	  - redefine some of the generics using standardGeneric()
+	  - change 'include.t0' argument in 'time<-()' to 't0' to match
+	  'time()'
+	  - improve documentation of 'simulate' method slightly
+	  - add Bhadra article to pomp.bib
+
+2010-06-30  kingaa
+
+	* [r281] DESCRIPTION, R/traj-match.R, R/trajmatch.R,
+	  man/mif-class.Rd, man/traj-match.Rd, man/trajmatch.Rd: - minor
+	  rearrangements of files
+	  - fix typo
+	* [r279] inst/doc/pomp.bib: - fix Andrieu et al. entry
+	* [r278] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - vignettes and Changelog up to date
+	* [r275] DESCRIPTION, NAMESPACE, R/compare.pmcmc.R,
+	  R/pmcmc-methods.R, R/pmcmc.R, R/simulate-pomp.R, inst/NEWS,
+	  inst/doc/pomp.bib, man/pmcmc-class.Rd, man/pmcmc-methods.Rd,
+	  man/pmcmc.Rd, tests/ou2-pmcmc.R: - add PMCMC method from Andrieu
+	  et al. (2010)
+	  - add error check on 'nsim' in 'simulate' method for 'pomp'
+
+2010-06-23  kingaa
+
+	* [r272] inst/ChangeLog, inst/NEWS, inst/doc/pomp.bib: - add NEWS
+	  entry on the Liu & West implementation
+	  - update reference database
+	* [r271] DESCRIPTION, NAMESPACE: - update the NAMESPACE and
+	  DESCRIPTION files
+	* [r270] R/bsmc.R, man/bsmc.Rd, tests/ou2-bsmc.R,
+	  tests/ou2-bsmc.Rout.save: - add functionality for the Bayesian
+	  sequential Monte Carlo algorithm of Liu & West, implemented as
+	  'bsmc'.
+
+2010-06-22  kingaa
+
+	* [r269] R/bsplines.R: - simplify
+
+2010-06-14  kingaa
+
+	* [r268] DESCRIPTION, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/ChangeLog, inst/NEWS,
+	  inst/data-R/dacca.R, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, man/dacca.Rd, src/cholmodel.c: The
+	  cholera transmission model from King, A. A., Ionides, E. L.,
+	  Pascual, M., and Bouma, M. J. (2008) Inapparent infections and
+	  cholera dynamics, Nature 454:877--880 together with data from the
+	  Dacca district of historic Bengal are now included.
+	  Data provided courtesy of Menno J. Bouma.
+
+2010-05-31  kingaa
+
+	* [r267] DESCRIPTION, NAMESPACE, R/nlf.R, R/trajectory-pomp.R: -
+	  move deSolve, subplex from Depends to Import
+	* [r266] DESCRIPTION, NAMESPACE, R/aaa.R, R/dmeasure-pomp.R,
+	  R/dprocess-pomp.R, R/init.state-pomp.R, R/mif-class.R,
+	  R/mif-methods.R, R/mif.R, R/particles-mif.R, R/pfilter.R,
+	  R/pomp-fun.R, R/pomp-methods.R, R/pomp.R, R/rmeasure-pomp.R,
+	  R/rprocess-pomp.R, R/skeleton-pomp.R, R/trajectory-pomp.R: - use
+	  the Collate option in package DESCRIPTION
+
+2010-05-26  kingaa
+
+	* [r264] DESCRIPTION, inst/ChangeLog, inst/doc/ecology.bst,
+	  inst/doc/fullnat.bst, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, src/dmeasure.c, src/pomp_fun.c,
+	  src/rmeasure.c: - slight improvements to dmeasure & rmeasure
+	  methods
+	  - change bibliography style in vignettes
+
+2010-05-23  kingaa
+
+	* [r263] man/mif-class.Rd, man/mif-methods.Rd, man/mif.Rd: - trying
+	  to get Carles' name right
+	* [r257] DESCRIPTION:
+
+2010-05-22  kingaa
+
+	* [r256] DESCRIPTION:
+
+2010-05-21  kingaa
+
+	* [r255] inst/ChangeLog:
+	* [r254] inst/NEWS: - documenting changes
+	* [r253] inst/CHANGES_0.29-1.txt: - word wrap
+	* [r252] inst/CHANGES_0.29-1.txt: - describe the changes in version
+	  0.29-1
+
+2010-05-20  kingaa
+
+	* [r251] inst/ChangeLog:
+	* [r250] R/aaa.R, R/pomp.R, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/ChangeLog, inst/data-R/euler.sir.R,
+	  inst/data-R/gillespie.sir.R, inst/data-R/ou2.R,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-first-mif.rda, inst/doc/ou2-trajmatch.rda,
+	  inst/examples/sir.R, inst/examples/sir.c, inst/include/pomp.h,
+	  man/pomp-class.Rd, man/pomp.Rd, src/dmeasure.c, src/ou2.c,
+	  src/pomp.h, src/rmeasure.c, src/sir.c, tests/sir.R,
+	  tests/sir.Rout.save: - add 'obsnames' slot to the 'pomp' class
+	  - change 'dmeasure' and 'rmeasure' functions to make use of
+	  'obsnames' in the case of user-supplied native routines
+	  - modify prototypes of user-supplied native routines for
+	  measurement models in keeping with this
+	  - modify source code for SIR and OU2 models
+	* [r249] src/pomp_internal.h: - initialize arrays with NA
+
+2010-05-19  kingaa
+
+	* [r248] inst/ChangeLog:
+	* [r247] DESCRIPTION, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/examples/euler_sir.R,
+	  inst/examples/logistic.R, inst/examples/rw2.R,
+	  inst/examples/sir.R, inst/examples/sir.c, src/sir.c: - improve
+	  the vignettes
+	  - improve the examples
+
+2010-05-18  kingaa
+
+	* [r246] NAMESPACE, R/plugins.R, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-first-mif.rda, inst/doc/ou2-trajmatch.rda,
+	  man/plugins.Rd: - add the rprocess plugin 'discrete.time.sim',
+	  which is essentially identical to 'euler.sim'
+
+2010-05-17  kingaa
+
+	* [r245] inst/examples/euler_sir.R: - slight change to euler_sir
+	  example
+	* [r243] DESCRIPTION, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: - cosmetology
+	* [r242] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: -
+	  minor edits to intro vignette
+	* [r241] man/LondonYorke.Rd: - cosmetology
+	* [r240] man/trajectory-pomp.Rd: - index by the new generic
+	  'trajectory'
+	* [r239] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-trajmatch.rda, inst/doc/pomp.bib: - add section on
+	  trajectory matching to the intro vignette
+
+2010-05-16  kingaa
+
+	* [r237] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: -
+	  some minor additions to the intro vignette
+
+2010-05-11  kingaa
+
+	* [r236] man/eulermultinom.Rd, man/plugins.Rd, man/pomp.Rd: -
+	  update documentation
+	* [r235] DESCRIPTION: - added Helen Wearing as an author for her
+	  work with the stochastic simulation algorithms
+
+2010-05-10  kingaa
+
+	* [r234] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - updated vignettes
+	* [r233] man/euler.Rd: - the old plugins are deprecated: move their
+	  man pages to 'internal'
+	* [r232] inst/doc/ou2-first-mif.rda: - binary file with saved
+	  results
+	* [r231] man/euler.sir.Rd, man/sir.Rd: - tidying up
+	* [r230] R/euler.R: - preserve backward compatibility
+	* [r229] inst/ChangeLog:
+	* [r228] data/euler.sir.rda, inst/ChangeLog,
+	  inst/data-R/euler.sir.R, inst/doc/Makefile,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/ecology.bst,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/pomp.bib: - improve the "intro_to_pomp" vignette
+	* [r227] tests/gillespie.R, tests/gillespie.Rout.save: - tests for
+	  new gillespie simulator
+	* [r226] DESCRIPTION: - new version
+	* [r225] NAMESPACE: - new functions exported
+	* [r224] inst/include/pomp.h, man/euler.sir.Rd, man/ou2.Rd,
+	  man/pomp-package.Rd, man/pomp.Rd, man/verhulst.Rd,
+	  tests/logistic.R, tests/logistic.Rout.save, tests/ou2-kalman.R,
+	  tests/ou2-kalman.Rout.save, tests/ou2-mif.R,
+	  tests/ou2-mif.Rout.save, tests/ou2-nlf.R,
+	  tests/ou2-nlf.Rout.save, tests/ou2-trajmatch.R,
+	  tests/ou2-trajmatch.Rout.save, tests/pfilter.Rout.save,
+	  tests/sir.R, tests/sir.Rout.save: - tests and man pages
+	  corresponding to last changes
+	* [r223] R/euler.R, data/euler.sir.rda, data/gillespie.sir.rda,
+	  data/ou2.rda, data/rw2.rda, data/verhulst.rda, inst/NEWS,
+	  inst/data-R/euler.sir.R, inst/data-R/gillespie.sir.R,
+	  inst/data-R/ou2.R, inst/data-R/rw2.R, inst/data-R/verhulst.R,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/examples/euler_sir.R,
+	  inst/examples/euler_sir.c, inst/examples/logistic.R,
+	  inst/examples/rw2.R, inst/examples/sir.c, src/SSA.f,
+	  src/SSA_wrapper.c, src/euler.c, src/euler_sir.c,
+	  src/euler_sir_density.c, src/pomp.h, src/sir.c: - encoding models
+	  is now much easier through the use of "plugin" modules.
+	  - old plugins are now deprecated.
+	  - several example pomps are now loadable via the data() command.
+	  - new gillespie simulator (most of the work due to Helen Wearing)
+	* [r222] R/trajmatch.R: - purely cosmetic
+	* [r221] R/euler.R, man/euler.Rd: - old euler plugins
+	* [r220] R/euler.R, R/plugins.R, man/euler.Rd, man/plugins.Rd: -
+	  rename these files
+
+2010-05-06  kingaa
+
+	* [r219] DESCRIPTION, R/aaa.R, R/pfilter.R, R/pomp-fun.R,
+	  R/pomp-methods.R, R/pomp.R, data/euler.sir.rda, data/ou2.rda,
+	  data/rw2.rda, data/verhulst.rda, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/pfilter.Rd, man/pomp-class.Rd, man/pomp-fun.Rd,
+	  tests/rw2.Rout.save, tests/sir.Rout.save: - add a new slot,
+	  'call', to the pomp class
+	  - improve the way that pomps are printed and 'show'n
+	  - streamline pomp construction using pomp.fun
+	  - save Np and tol in the list returned by 'pfilter'
+
+2010-04-29  kingaa
+
+	* [r218] tests/pfilter.R, tests/pfilter.Rout.save: - tests for
+	  'pfilter'
+	* [r217] inst/ChangeLog: - version 0.28-4
+	* [r216] DESCRIPTION, R/pfilter.R, R/trajmatch.R,
+	  data/euler.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/ChangeLog, inst/data-R/ou2.R,
+	  man/trajmatch.Rd, src/skeleton.c, tests/examples.R,
+	  tests/logistic.Rout.save, tests/ou2-forecast.Rout.save,
+	  tests/ou2-kalman.Rout.save, tests/ou2-nlf.Rout.save,
+	  tests/ou2-simulate.Rout.save, tests/ou2-trajmatch.Rout.save,
+	  tests/rw2.Rout.save, tests/sir.Rout.save: - change the
+	  trajectory-matching algorithm so that it depends on 'trajectory':
+	  it is no longer to set the process noise to zero manually in
+	  order to use this method
+	  - clean up error handling in 'pfilter'
+	  - update .Rout.save files in 'tests'
+	  - make 'skeleton' sensitive to variable names
+	* [r215] R/compare.mif.R, R/mif.R, R/nlf-funcs.R, R/nlf-guts.R,
+	  R/nlf.R, R/pfilter-mif.R, R/pfilter.R, R/plot-pomp.R,
+	  R/pomp-methods.R, R/pomp.R, R/slice.R, R/trajectory-pomp.R,
+	  man/pfilter.Rd: - replace ':' construct with 'seq' and 'seq_len'
+	  throughout
+	  - add 'seed' argument to 'pfilter'
+	* [r214] R/nlf-funcs.R, R/nlf-lql.R, R/nlf-objfun.R, R/nlf.R,
+	  man/dmeasure-pomp.Rd, man/dprocess-pomp.Rd,
+	  man/init.state-pomp.Rd, man/mif-class.Rd, man/nlf.Rd,
+	  man/particles-mif.Rd, man/pomp-class.Rd, man/rmeasure-pomp.Rd,
+	  man/rprocess-pomp.Rd, man/skeleton-pomp.Rd: - nlf now takes an
+	  optional argument 'transform' which transforms the data before
+	  fitting
+	  - the low-level interface documentation now has keyword
+	  'internal' which keeps it out of the manual
+
+2010-04-07  kingaa
+
+	* [r213] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - version 0.28-3
+	* [r212] man/LondonYorke.Rd: - improve documentation slightly
+
+2010-04-06  kingaa
+
+	* [r211] man/pomp-package.Rd: - include version message
+
+2010-03-15  kingaa
+
+	* [r210] inst/data-R/make.R: - not needed
+	* [r209] inst/data-R/dacca-census.q, inst/data-R/dacca-cholera.q,
+	  inst/data-R/dacca-mle.q, inst/data-R/dacca.R: - dacca data-object
+	  not yet ready for prime time
+	* [r208] DESCRIPTION, inst/data-R, inst/data-src,
+	  tests/ou2-forecast.Rout.save, tests/sir.Rout.save: - rename
+	  data-src data-R
+	  - update the test .Rout.save files
+	* [r207] inst/data-src, inst/data-src/dacca-census.q,
+	  inst/data-src/dacca-cholera.q, inst/data-src/dacca-mle.q,
+	  inst/data-src/dacca.R, inst/data-src/euler.sir.R,
+	  inst/data-src/make.R, inst/data-src/ou2.R, inst/data-src/rw2.R,
+	  inst/data-src/verhulst.R: - add source code for the
+	  data()-loadable examples
+
+2010-03-13  kingaa
+
+	* [r206] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - version 0.28-1
+	* [r205] DESCRIPTION: - go back to LazyData: false to avoid some
+	  ugly problems
+	* [r204] R/pomp.R, data/euler.sir.R, data/euler.sir.rda,
+	  data/ou2.R, data/ou2.rda, data/rw2.R, data/rw2.rda,
+	  data/verhulst.R, data/verhulst.rda, man/mif.Rd,
+	  src/euler_sir_density.c, src/eulermultinom.c,
+	  tests/ou2-forecast.R, tests/sir.R: - move default initializer to
+	  pomp namespace
+	  - go back to binary format data-loadable examples to avoid the
+	  ugly problem of tag-along environments
+	  - speed up for degenerate cases in reulermultinom
+	  - put euler-density function for SIR model into source (though it
+	  is not used at present)
+
+2010-02-11  kingaa
+
+	* [r203] R/mif.R: - fix of bug that occurs when mif's 'start'
+	  argument is specified with parameters in a different order than
+	  they occur in the 'params' slot of the pomp object
+
+2010-01-28  kingaa
+
+	* [r202] man/LondonYorke.Rd: - add reference for London & Yorke
+	* [r201] data/LondonYorke.rda, man/LondonYorke.Rd: - add the data
+	  set of London & Yorke
+
+2010-01-27  kingaa
+
+	* [r200] R/bsplines.R, man/bsplines.Rd, src/bspline.c: - some
+	  improvements in the B-spline codes
+
+2010-01-25  kingaa
+
+	* [r198] inst/ChangeLog: - version 0.27-2
+	* [r197] DESCRIPTION, NAMESPACE, R/bsplines.R, data/euler.sir.R,
+	  inst/ChangeLog, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/examples/euler_sir.R, inst/examples/euler_sir.c,
+	  inst/include/pomp.h, src/bspline.c, src/euler_sir.c, src/pomp.h,
+	  tests/sir.R, tests/sir.Rout.save: - add a new interface at the C
+	  level for evaluation of periodic B-splines bases.
+	  - rewrite the periodically-forced SIR model to use this facility.
+	  - rewrite the R level 'periodic.bspline.basis' function using the
+	  new C codes.
+
+2010-01-19  kingaa
+
+	* [r196] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - update the vignettes for version
+	  0.27-1
+	* [r195] DESCRIPTION, inst/ChangeLog: - version 0.27-1
+	* [r194] DESCRIPTION, R/mif.R, R/pfilter-mif.R, R/pfilter.R,
+	  inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, man/mif.Rd, man/pfilter.Rd,
+	  tests/ou2-mif.R, tests/ou2-mif.Rout.save: - remove the 'warn'
+	  argument from pfilter and functions that call it.
+	  now 'verbose=TRUE' gives the same behavior.
+	  also, change the default of 'verbose' to 'getOption("verbose")'.
+	  - minor improvements to the documentation
+
+2010-01-06  kingaa
+
+	* [r193] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - bug fix in Advanced Topics vignette
+
+2009-12-31  kingaa
+
+	* [r192] inst/ChangeLog: - version 0.26-5
+	* [r191] DESCRIPTION, data/euler.sir.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/examples/euler_sir.R, inst/examples/euler_sir.c,
+	  src/euler_sir.c, tests/sir.R, tests/sir.Rout.save: - make some
+	  simplifications to the advanced (SIR) example:
+	  it was confusing to have the dprocess specified when it is never
+	  used.
+	  better to leave this out until such time as we have a method that
+	  uses dprocess.
+
+2009-12-30  kingaa
+
+	* [r190] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - version 0.26-4
+	* [r189] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  man/euler.Rd, man/mif.Rd, man/pomp-package.Rd, man/pomp.Rd: -
+	  some improvements to the documentation
+
+2009-12-28  kingaa
+
+	* [r188] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - version 0.6-3
+	* [r187] DESCRIPTION, inst/examples/euler_sir.R: - tests/examples.R
+	  has been improved for greater portability per suggestion of Brian
+	  Ripley
+
+2009-12-10  kingaa
+
+	* [r186] man/pfilter.Rd: - fix argument order
+
+2009-12-09  kingaa
+
+	* [r185] inst/ChangeLog:
+	* [r184] inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: - fix
+	  some bugs and infelicities in the vignette
+	* [r183] inst/ChangeLog:
+	* [r182] DESCRIPTION: - version 0.26-2
+	* [r181] R/mif.R, R/pfilter-mif.R, R/pfilter.R, man/pfilter.Rd,
+	  tests/ou2-forecast.R, tests/ou2-forecast.Rout.save: - in pfilter,
+	  add ability to save individual particles' state vectors. this
+	  feature is useful for forecasting.
+	* [r180] tests/ou2-mif.Rout.save: - correct test results
+	* [r179] R/mif.R, tests/ou2-mif.R: - bug fix in 'mif' relating to
+	  non-standard particles functions
+
+2009-11-16  kingaa
+
+	* [r178] data/euler.sir.R, data/ou2.R, data/rw2.R, data/verhulst.R:
+	  - cosmetology
+
+2009-11-15  kingaa
+
+	* [r177] DESCRIPTION, data/euler.sir.R, data/euler.sir.rda,
+	  data/ou2.R, data/ou2.rda, data/rw2.R, data/rw2.rda,
+	  data/verhulst.R, data/verhulst.rda, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - now use lazy-loading for datasets
+
+2009-11-12  kingaa
+
+	* [r176] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - version 0.26-7
+	* [r175] R/nlf.R, tests/ou2-nlf.R, tests/ou2-nlf.Rout.save: - bug
+	  fix in NLF code (for eval.only=TRUE)
+
+2009-10-12  kingaa
+
+	* [r174] tests/ou2-mif.Rout.save: - update ou2-mif.Rout.save
+	* [r173] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - version 0.25-6
+	* [r172] DESCRIPTION, R/mif.R, tests/ou2-mif.R: - add error trap to
+	  prevent non-finite parameters from being estimated
+
+2009-10-07  kingaa
+
+	* [r171] DESCRIPTION, NAMESPACE, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - version 0.25-5
+	* [r170] R/slice.R, man/slice.Rd, man/sobol.Rd: - add a new
+	  function: profile.design, to aid in construction of likelihood
+	  profiles
+
+2009-09-30  kingaa
+
+	* [r169] DESCRIPTION: - fix Carles' name
+
+2009-09-21  kingaa
+
+	* [r163] inst/ChangeLog:
+	* [r162] DESCRIPTION, NAMESPACE, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: - version 0.25-4
+	* [r161] src/euler.c: - fix bug that crops up when dt=0
+	* [r160] R/slice.R, man/slice.Rd: - add a new function
+	  "slice.design" for help with sliced likelihoods
+	* [r159] R/aaa.R, R/pomp-methods.R, man/pomp-methods.Rd,
+	  tests/rw2.R, tests/rw2.Rout.save, tests/sir.R,
+	  tests/sir.Rout.save: - add a new "time<-" method for
+	  manipulating/subsetting time series
+
+2009-07-08  kingaa
+
+	* [r158] man/trajmatch.Rd: make the documentation a bit more
+	  explicit
+
+2009-07-07  kingaa
+
+	* [r157] data/verhulst.rda, man/verhulst.Rd: add stochastic
+	  Verhulst-Pearl (logistic) model to the set of examples
+	* [r156] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
+	* [r155] DESCRIPTION, NAMESPACE, R/trajmatch.R, data/euler.sir.rda,
+	  data/ou2.rda, data/rw2.rda, man/trajmatch.Rd,
+	  tests/ou2-mif.Rout.save, tests/ou2-trajmatch.R,
+	  tests/ou2-trajmatch.Rout.save: add trajectory-matching method
+
+2009-06-24  kingaa
+
+	* [r154] tests/rw2.R, tests/rw2.Rout.save: fix tests of 'rw2'
+	* [r153] DESCRIPTION, R/mif.R, R/pomp-methods.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/mif.Rd, tests/logistic.Rout.save, tests/ou2-kalman.Rout.save,
+	  tests/ou2-mif.R, tests/ou2-mif.Rout.save, tests/ou2-nlf.R,
+	  tests/ou2-nlf.Rout.save, tests/ou2-simulate.Rout.save,
+	  tests/rw2.R, tests/rw2.Rout.save, tests/sir.R,
+	  tests/sir.Rout.save: better testing
+	  some more error checking in 'mif'
+
+2009-06-23  kingaa
+
+	* [r152] DESCRIPTION, R/mif.R, data/euler.sir.rda, data/ou2.rda,
+	  data/rw2.rda, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/mif.Rd, tests/ou2-mif.R, tests/ou2-mif.Rout.save: alg.pars
+	  has been removed as an argument to 'mif'
+
+2009-06-19  kingaa
+
+	* [r151] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  version 0.24-7
+	* [r150] src/initstate.c: check for duplication of names between
+	  states and parameters
+	  manage the pointer protection stack more sensibly
+
+2009-06-17  kingaa
+
+	* [r149] src/lookup_table.c: minor changes to C code (remove unused
+	  variable)
+	* [r148] DESCRIPTION, NAMESPACE, R/mvnorm.R, R/nlf-guts.R: make use
+	  of mvtnorm::dmvnorm now instead of our own version
+	* [r147] R/nlf-guts.R: duplicate codes removed
+	* [r146] R/mvnorm.R: updated
+
+2009-06-03  kingaa
+
+	* [r145] DESCRIPTION, inst/ChangeLog: version 0.24-5
+	* [r144] data/euler.sir.rda, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: improvements to vignettes
+
+2009-06-02  kingaa
+
+	* [r143] inst/ChangeLog: version 0.24-4
+	* [r142] data/euler.sir.rda, data/ou2.rda, inst/doc/Makefile,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: more changes to documentation
+	  reconfigure vignettes somewhat
+	* [r141] DESCRIPTION:
+	* [r140] man/init.state-pomp.Rd, man/pomp.Rd, man/simulate-pomp.Rd,
+	  man/trajectory-pomp.Rd: add some nice examples
+	* [r139] R/nlf.R:
+	* [r138] man/bsplines.Rd, man/dmeasure-pomp.Rd,
+	  man/dprocess-pomp.Rd, man/euler.Rd, man/euler.sir.Rd,
+	  man/eulermultinom.Rd, man/init.state-pomp.Rd, man/mif-class.Rd,
+	  man/mif-methods.Rd, man/mif.Rd, man/nlf.Rd, man/ou2.Rd,
+	  man/particles-mif.Rd, man/pfilter.Rd, man/pomp-class.Rd,
+	  man/pomp-methods.Rd, man/pomp-package.Rd, man/pomp.Rd,
+	  man/rmeasure-pomp.Rd, man/rprocess-pomp.Rd, man/simulate-pomp.Rd,
+	  man/skeleton-pomp.Rd, man/sobol.Rd, man/trajectory-pomp.Rd:
+	  further improvements to documentation
+
+2009-06-01  kingaa
+
+	* [r137] man/euler.Rd, man/pomp.Rd: further clarify documentation
+
+2009-05-28  kingaa
+
+	* [r136] inst/ChangeLog, inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: remove prompt and continue characters
+	  from vignette documents
+	* [r135] data/euler.sir.rda, data/ou2.rda, data/rw2.rda,
+	  inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: version 0.24-3
+	* [r134] DESCRIPTION, R/bsplines.R, man/bsplines.Rd, src/bspline.c:
+	  fix up the bspline.basis function
+
+2009-05-26  kingaa
+
+	* [r133] DESCRIPTION, man/pomp-package.Rd, man/pomp.Rd: clarify
+	  some documentation
+
+2009-05-21  kingaa
+
+	* [r132] man/pomp-package.Rd, man/pomp.Rd: clarify the
+	  documentation on pomp object construction
+
+2009-05-14  kingaa
+
+	* [r131] inst/include/pomp.h: fix documentation
+	* [r130] man/nlf.Rd: fix documentation
+	* [r129] src/pomp.h: fix documentation
+	* [r128] src/euler.c: clean up the C codes in 'euler.c'
+
+2009-05-13  kingaa
+
+	* [r127] inst/ChangeLog, inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: version 0.24-1
+	* [r126] inst/ChangeLog:
+	* [r125] DESCRIPTION, R/simulate-pomp.R, data/euler.sir.rda,
+	  data/ou2.rda, data/rw2.rda, inst/examples/logistic.R,
+	  man/simulate-pomp.Rd, tests/logistic.R, tests/logistic.Rout.save,
+	  tests/ou2-nlf.R, tests/ou2-nlf.Rout.save, tests/ou2-simulate.R,
+	  tests/ou2-simulate.Rout.save: now when 'simulate' is called with
+	  nsim=1 (the default), a single 'pomp' object is returned rather
+	  than (per the old behavior) a list containing one 'pomp' object.
+
+2009-05-12  kingaa
+
+	* [r124] DESCRIPTION: fix bug in documentation
+	* [r123] man/pfilter.Rd: fix bug in documentation
+
+2009-05-07  kingaa
+
+	* [r122] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  version 0.23-6
+	* [r121] inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, inst/include/pomp.h,
+	  src/eulermultinom.c, src/pomp.h, tests/sir.R,
+	  tests/sir.Rout.save: streamline "reulermultinom" by moving
+	  GetRNGstate() and PutRNGstate() outside of a level of looping. If
+	  you want to use 'reulermultinom' at the C level, you must take
+	  care that it is wrapped inside of the RNGstate functions. An
+	  approx. 10-fold increase in speed for the euler.simulate function
+	  is realized by this simple change.
+
+2009-05-05  kingaa
+
+	* [r120] inst/include/pomp.h: fix the pomp.h header comments
+
+2009-05-01  kingaa
+
+	* [r119] R/init.state-pomp.R: when params is missing, use params <-
+	  coef(object)
+
+2009-04-29  kingaa
+
+	* [r118] src/pomp.h: fix comments
+	* [r117] inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
+	* [r116] DESCRIPTION, inst/include/pomp.h, man/euler.Rd,
+	  src/euler.c, src/lookup_table.c, src/pomp.h, src/pomp_internal.h:
+	  rearrange the headers
+	  rename the prototypes for native routines used in Euler and
+	  onestep plugins
+	* [r115] src/bspline.c, src/dsobol.c:
+
+2009-04-28  kingaa
+
+	* [r114] inst/ChangeLog: version 0.23-4
+	* [r113] data/rw2.rda, man/rw2.Rd, tests/rw2.R,
+	  tests/rw2.Rout.save: add a new data()-accessible pomp object,
+	  coding a very simple 2D random walk
+	* [r112] DESCRIPTION, NAMESPACE, R/euler.R, data/euler.sir.rda,
+	  data/ou2.rda, inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, inst/examples/euler_sir.R,
+	  inst/examples/logistic.R, inst/examples/rw2.R, man/euler.Rd,
+	  src/euler.c, tests/logistic.R, tests/logistic.Rout.save,
+	  tests/sir.R, tests/sir.Rout.save: add onestep plugin to
+	  facilitate the construction of models for which explicit formulae
+	  are available for one-step transitions.
+	* [r111] inst/CITATION: fix citation info
+	* [r110] src/dprocess.c, src/rprocess.c: explicitly cast 'times' to
+	  double to avoid potential problems when R casts a sequence to
+	  integer storage type
+	* [r109] man/pomp-package.Rd:
+
+2009-04-27  kingaa
+
+	* [r108] inst/ChangeLog, inst/doc/Makefile,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+
+2009-04-26  kingaa
+
+	* [r107] DESCRIPTION, inst/ChangeLog: version 0.23-3
+	* [r106] data/euler.sir.rda, data/ou2.rda: use R-2.8.1 to generate
+	  the data/*.rda files
+	* [r105] data/euler.sir.R, data/euler.sir.rda, data/ou2.R,
+	  data/ou2.rda: It turns out not to work to use R files in the
+	  'data' directory if these involve actual computations. It appears
+	  that, during the package check process, the shared-object library
+	  is loaded *after* the data files are read. Consequently, the
+	  simulations used to generate the pomp objects in 'ou2.R' and
+	  'euler.sir.R' will not work. As a temporary fix, I have replaced
+	  these with binary files containing the objects. I do not yet have
+	  a satisfactory way of including the code used to generate these
+	  into the package yet.
+
+2009-04-24  kingaa
+
+	* [r104] R/trajectory-pomp.R, data/euler.sir.R, man/euler.sir.Rd,
+	  tests/sir.R, tests/sir.Rout.save: put 'euler.sir' in as an
+	  example pomp object obtainable via 'data(euler.sir)'
+	  make 'trajectory' a bit more user-friendly
+	* [r103] man/euler.Rd: remove the examples in the 'euler' and
+	  'SSA.simulate' man pages: refer the user to the 'examples'
+	  directory instead
+	* [r102] DESCRIPTION, data/ou2.R, data/ou2.rda,
+	  inst/doc/compiled_code_in_pomp.Rnw, tests/ou2-kalman.Rout.save,
+	  tests/ou2-mif.Rout.save: replace the binary data 'ou2.rda' with R
+	  code in 'ou2.R'
+
+2009-04-21  kingaa
+
+	* [r101] R/pomp.R: better error handling
+	* [r100] R/pomp.R: time variable is not needed in the covar table
+
+2009-04-17  kingaa
+
+	* [r99] inst/ChangeLog:
+	* [r98] DESCRIPTION, data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/examples/euler_sir.R, inst/examples/euler_sir.c,
+	  inst/include/pomp.h, man/euler.Rd, src/euler.c, src/euler_sir.c,
+	  src/ou2.c, src/pomp.h, src/rmeasure.c, tests/sir.R,
+	  tests/sir.Rout.save: The 'euler' and 'rmeasure' evaluation codes
+	  now call GetRNGstate() and PutRNGstate() when the user-supplied
+	  function they will evaluate is a native routine. This means that
+	  potentially many fewer calls to these expensive functions can be
+	  made in, e.g., particle filtering or simulation of a large number
+	  of replicates and consequently significant performance gains.
+
+2009-04-16  kingaa
+
+	* [r97] R/mif-methods.R, R/mif.R: use rowMeans and colMeans in
+	  place of apply where appropriate
+	* [r96] man/mif-class.Rd, man/mif-methods.Rd, man/mif.Rd: update
+	  references for 'mif'
+	* [r95] man/mif.Rd: fix order of arguments in documentation for
+	  'mif'
+
+2009-04-14  kingaa
+
+	* [r94] inst/ChangeLog:
+	* [r93] DESCRIPTION, R/mif.R, data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, man/mif.Rd, tests/ou2-mif.R,
+	  tests/ou2-mif.Rout.save, tests/sir.Rout.save: The parameter
+	  'alg.pars' is now deprecated. The four algorithm parameters Np,
+	  ic.lag, var.factor, cooling.factor are now specified directly as
+	  required arguments to pomp. The 'alg.pars' argument will be
+	  removed in a future release. Use of this argument now results in
+	  a warning message.
+	  
+
+2009-04-13  kingaa
+
+	* [r92] DESCRIPTION, data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  tests/ou2-mif.Rout.save:
+	* [r91] inst/ChangeLog:
+	* [r90] R/mif.R, man/mif.Rd, tests/ou2-mif.R: rewrite mif methods
+	  to use 'mif.internal'.
+	  this obviates the need for a user-visible '.ndone' argument.
+	  add some reporting when verbose=TRUE.
+	  the 'particles' function can now be altered after the mif object
+	  is created.
+	  some new tests have been added to tests/ou2-mif.R
+	* [r89] R/pfilter.R: a bit less reporting when verbose=TRUE
+
+2009-04-11  kingaa
+
+	* [r88] tests/ou2-mif.R, tests/ou2-mif.Rout.save: tests added for
+	  'mif' and 'pfilter'
+	* [r87] R/mif.R: modified in accordance with changes made in
+	  revision 86.
+	* [r86] R/pfilter-mif.R, R/pfilter.R, man/pfilter.Rd: put the guts
+	  of the particle filter into 'pfilter.internal'.
+	  this can be used by 'mif' directly and by methods for 'pfilter'.
+	  this obviates the need for the argument .rw.sd in the
+	  user-visible methods.
+
+2009-04-10  kingaa
+
+	* [r85] inst/ChangeLog:
+	* [r84] DESCRIPTION:
+	* [r83] DESCRIPTION, R/mif.R, R/pfilter.R, man/mif.Rd,
+	  man/pfilter.Rd: The handling of the argument 'pars' and 'ivps' in
+	  mif has been changed to eliminate redundancy and a possible
+	  source of errors. Now 'pars' and 'ivps' are checked to make sure
+	  that all names are in 'names(start)' and 'names(rw.sd)' and that
+	  they are mutually disjoint. Further, all the entries in
+	  'rw.sd[pars]' and 'rw.sd[ivps]' must be positive or an error is
+	  generated. If 'rw.sd' has positive values in slots not in the
+	  union of 'ivps' and 'pars', these are ignored and a warning is
+	  generated. The 'random.walk.sd' slot of the resulting 'mif'
+	  object contains only nonzero entries corresponding to the union
+	  of 'pars' and 'ivps'.
+	  
+	  If 'pars' is not specified in the arguments, then it is taken to
+	  be
+	  'names(rw.sd)[!(names(rw.sd)%in%ivps)]'
+	  
+	  Thus it is no longer necessary to specify 'pars' explicitly,
+	  provided one takes care that all and only nonzero entries in
+	  'rw.sd' correspond to parameters that one wishes to estimate. One
+	  can be a bit more careless with 'rw.sd' if one uses 'pars'. In
+	  any case, entries in 'rw.sd' that are zero are ignored.
+	  
+	  The computation of prediction means and variances and filtering
+	  means in 'pfilter' is handled differently. When used as a
+	  toplevel function (i.e., when the .rw.sd parameter used
+	  internally by 'mif' is unset), then the prediction means and
+	  variances and the filtering means are only computed for the state
+	  variables. This eliminates an annoying and unnecessary behavior
+	  that arose when parameters were set to nonfinite values.
+	  
+	  When .rw.sd is set (as when 'mif' calls 'pfilter'), the
+	  prediction means and variances are computed only for all state
+	  variables, but for only those parameters which are undergoing the
+	  MIF random walk. Filtering means are computed for all state
+	  variables and parameters, since they are needed for the fixed-lag
+	  smoothing on the initial-value parameters.
+	* [r82] man/mif-class.Rd, man/mif-methods.Rd: fix some
+	  documentation infelicities and bugs
+
+2009-03-16  kingaa
+
+	* [r81] inst/CITATION: fix Carles accent
+
+2009-03-13  kingaa
+
+	* [r80] man/pomp-methods.Rd: improve documentation for coef<-
+	  method for pomp object
+
+2009-03-11  kingaa
+
+	* [r79] DESCRIPTION, inst/ChangeLog:
+	* [r78] man/eulermultinom.Rd, src/eulermultinom.c: replace "euler
+	  infelicity" Rprintf statements with warnings
+	* [r77] inst/CITATION: add CITATION file
+
+2009-02-03  kingaa
+
+	* [r76] inst/ChangeLog:
+	* [r75] DESCRIPTION, R/mif.R, man/mif.Rd, man/pomp-methods.Rd,
+	  man/trajectory-pomp.Rd, src/euler_sir.c, src/sir.c: changes to
+	  documentation and default arguments so as to bring these into
+	  agreement. (discrepancies revealed by Kurt Hornik's extensive
+	  codoc testing).
+
+2009-02-01  kingaa
+
+	* [r74] inst/NEWS, man/nlf.Rd:
+
+2009-01-31  kingaa
+
+	* [r73] DESCRIPTION:
+	* [r72] inst/ChangeLog:
+	* [r71] man/nlf.Rd: documentation fix
+
+2009-01-28  kingaa
+
+	* [r70] R/plot-pomp.R: remove default for the (unused) 'y' argument
+	* [r69] man/nlf.Rd: fix typos
+
+2009-01-27  kingaa
+
+	* [r68] inst/ChangeLog:
+	* [r67] DESCRIPTION, R/trajectory-pomp.R: 'odesolve' has been
+	  replaced by 'deSolve'
+	* [r66] inst/examples/euler_sir.R, inst/examples/euler_sir.c,
+	  inst/examples/sir.R, inst/examples/sir.c: moved 'sir.*' examples
+	  to 'euler_sir.*'
+	* [r65] DESCRIPTION, R/plot-pomp.R, inst/ChangeLog,
+	  inst/examples/sir.R, man/pomp-methods.Rd: add package 'subplex'
+	  as dependency
+	  run examples that compile native code only if
+	  Sys.info()['sysname']=='Linux'. This replaces the previous test
+	  that .Platform$OS.type=='unix', which resulted in errors under
+	  some versions of MacOSX.
+	* [r64] inst/ChangeLog:
+
+2009-01-26  kingaa
+
+	* [r62] inst/ChangeLog:
+
+2009-01-25  kingaa
+
+	* [r61] DESCRIPTION: minor documentation corrections
+	* [r60] man/mif-class.Rd, man/mif-methods.Rd, man/mif.Rd:
+
+2009-01-17  kingaa
+
+	* [r59] inst/ChangeLog:
+	* [r58] tests/ou2-nlf.Rout.save:
+	* [r57] tests/ou2-mif.Rout.save, tests/ou2-nlf.Rout:
+	* [r56] tests/ou2-nlf.R, tests/ou2-nlf.Rout.save:
+
+2009-01-16  kingaa
+
+	* [r55] DESCRIPTION: add functionality for parameter estimation via
+	  nonlinear forecasting, method due to Stephen P. Ellner and Bruce
+	  E. Kendall
+	* [r54] NAMESPACE, R/mvnorm.R, R/nlf-funcs.R, R/nlf-guts.R,
+	  R/nlf-lql.R, R/nlf-objfun.R, R/nlf.R, data/ou2.rda,
+	  inst/ChangeLog, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, man/nlf.Rd, tests/ou2-nlf.R,
+	  tests/ou2-nlf.Rout: add functionality for parameter estimation
+	  via nonlinear forecasting, method due to Stephen P. Ellner and
+	  Bruce E. Kendall
+	* [r53] R/pfilter.R, man/pfilter.Rd: add 'verbose' option to
+	  'pfilter'
+
+2008-08-25  kingaa
+
+	* [r52] data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	* [r51] R/mif.R, man/mif.Rd, tests/ou2-mif.Rout.save: error trap in
+	  'mif': 'rw.sd' must have names
+	* [r50] DESCRIPTION, inst/NEWS, man/euler.Rd: better documentation
+	  in 'euler.Rd'
+
+2008-08-19  kingaa
+
+	* [r49] inst/NEWS:
+
+2008-08-15  kingaa
+
+	* [r48] data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	* [r47] tests/ou2-mif.Rout.save: fix bug in Euler step
+	* [r46] tests/sir.R, tests/sir.Rout.save: improve test of SIR model
+	* [r45] tests/logistic.Rout.save:
+	* [r44] DESCRIPTION, src/euler.c: fix bug in Euler step
+
+2008-08-14  kingaa
+
+	* [r43] DESCRIPTION: make description more descriptive
+	* [r42] inst/examples/sir.R: put trajectory computation into SIR
+	  example
+
+2008-08-13  kingaa
+
+	* [r41] data/ou2.rda, inst/doc/compiled_code_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
+	* [r40] inst/ChangeLog:
+	* [r39] inst/examples/sir.c: cosmetic
+	* [r38] DESCRIPTION, NAMESPACE, R/aaa.R, R/pomp.R,
+	  R/trajectory-pomp.R, data/ou2.rda, inst/examples/logistic.R,
+	  inst/examples/sir.R, inst/examples/sir.c, man/mif-class.Rd,
+	  man/pomp-class.Rd, man/pomp.Rd, man/skeleton-pomp.Rd,
+	  man/trajectory-pomp.Rd, src/skeleton.c, tests/logistic.R,
+	  tests/logistic.Rout.save, tests/sir.R, tests/sir.Rout.save: add
+	  support for computing trajectories of the deterministic skeleton
+	  the skeleton must now be specified when the pomp is created: if
+	  the pomp is a discrete-time system, 'skeleton.map' is used to
+	  specify its deterministic skeleton; if it is a continuous-time
+	  system, 'skeleton.vectorfield' is used.
+	  the new method 'trajectory' will, in the first case, iterate the
+	  map to produce an itinerary and in the second case, it will call
+	  'lsoda' from the now-required 'odesolve' package to compute the
+	  trajectory.
+	  some changes to the basic 'pomp' structure have been made to
+	  facilitate all this.
+	  specifically, a new slot, 'skeleton-type', distinguishes between
+	  discrete-time and continuous-time systems
+
+2008-08-01  kingaa
+
+	* [r37] inst/ChangeLog:
+	* [r36] inst/ChangeLog:
+	* [r35] inst/examples/logistic.R: make dprocess depend on 'log'
+
+2008-07-31  kingaa
+
+	* [r34] inst/NEWS:
+	* [r33] DESCRIPTION:
+	* [r32] R/mif.R: improved error handling in mif
+	* [r31] man/pomp.Rd: fix inaccuracy in documentation of rmeasure
+	  and dmeasure arguments
+
+2008-07-29  kingaa
+
+	* [r29] inst/NEWS:
+	* [r28] DESCRIPTION:
+	* [r27] R/mif.R: bug fix in convergence record storage
+	* [r26] R/mif.R: cosmetic
+
+2008-07-26  kingaa
+
+	* [r25] DESCRIPTION, inst/ChangeLog, inst/NEWS,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, src/ou2.c: bug fix in
+	  "intro_to_pomp.Rnw"
+
+2008-07-25  kingaa
+
+	* [r24] R/pfilter-mif.R:
+	* [r23] inst/NEWS:
+	* [r22] inst/NEWS:
+	* [r21] data/ou2.rda, inst/ChangeLog,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	* [r20] tests/ou2-mif.Rout.save: no need to set rw.sd for
+	  parameters that aren't estimated
+	* [r19] inst/examples/logistic.R, inst/examples/rw2.R,
+	  inst/examples/sir.R, tests/examples.R: add a test of the examples
+	  in 'inst/examples' to the 'tests' directory
+	  modify the sir.R example so that it attempts to build a
+	  shared-object library only if .Platform$OS.type=='unix'
+	* [r18] inst/doc/intro_to_pomp.Rnw, tests/ou2-mif.R: no need to
+	  include zeros in 'rw.sd'
+	* [r17] man/mif.Rd: improve documentation regarding arguments to
+	  mif
+	* [r16] R/aaa.R: remove a whole lot of stuff that somehow got in
+	  from pomp.devel
+	* [r15] inst/examples/sir.R: fix up R-function version
+	* [r14] R/aaa.R: improve error handling: fix language and use
+	  sQuote, dQuote where appropriate
+	* [r13] DESCRIPTION:
+	* [r12] R/compare.mif.R, R/dmeasure-pomp.R, R/dprocess-pomp.R,
+	  R/euler.R, R/init.state-pomp.R, R/mif-methods.R, R/mif.R,
+	  R/particles-mif.R, R/pfilter.R, R/plot-pomp.R, R/pomp-methods.R,
+	  R/pomp.R, R/rmeasure-pomp.R, R/rprocess-pomp.R,
+	  R/simulate-pomp.R, R/skeleton-pomp.R, R/sobol.R: improve error
+	  handling: fix language and use sQuote, dQuote where appropriate
+	* [r11] R/mif.R: trap as error parameters (including ivps) which
+	  are to be estimated but which have zero rw.sd
+
+2008-07-22  kingaa
+
+	* [r10] inst/NEWS:
+	* [r9] inst/ChangeLog:
+	* [r8] inst/ChangeLog, inst/O_CHANGES:
+
+2008-07-20  kingaa
+
+	* [r7] DESCRIPTION, NAMESPACE, R/aaa.R, R/bsplines.R,
+	  R/compare.mif.R, R/dmeasure-pomp.R, R/dprocess-pomp.R, R/euler.R,
+	  R/eulermultinom.R, R/init.state-pomp.R, R/mif-methods.R, R/mif.R,
+	  R/particles-mif.R, R/pfilter-mif.R, R/pfilter.R, R/plot-pomp.R,
+	  R/pomp-methods.R, R/pomp.R, R/rmeasure-pomp.R, R/rprocess-pomp.R,
+	  R/simulate-pomp.R, R/skeleton-pomp.R, R/sobol.R, inst,
+	  inst/ChangeLog, inst/GPL, inst/LICENSE, inst/NEWS, inst/doc,
+	  inst/doc/Makefile, inst/doc/compiled_code_in_pomp.Rnw,
+	  inst/doc/compiled_code_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/examples,
+	  inst/examples/logistic.R, inst/examples/rw2.R,
+	  inst/examples/sir.R, inst/examples/sir.c, inst/include,
+	  inst/include/pomp.h, man/bsplines.Rd, man/dmeasure-pomp.Rd,
+	  man/dprocess-pomp.Rd, man/euler.Rd, man/eulermultinom.Rd,
+	  man/init.state-pomp.Rd, man/mif-class.Rd, man/mif-methods.Rd,
+	  man/mif.Rd, man/ou2.Rd, man/particles-mif.Rd, man/pfilter.Rd,
+	  man/pomp-class.Rd, man/pomp-methods.Rd, man/pomp-package.Rd,
+	  man/pomp.Rd, man/rmeasure-pomp.Rd, man/rprocess-pomp.Rd,
+	  man/simulate-pomp.Rd, man/skeleton-pomp.Rd, man/sobol.Rd, src,
+	  src/bspline.c, src/dmeasure.c, src/dprocess.c, src/dsobol.c,
+	  src/euler.c, src/eulermultinom.c, src/initstate.c,
+	  src/lookup_table.c, src/ou2.c, src/pomp.h, src/pomp_fun.c,
+	  src/pomp_internal.h, src/resample.c, src/rmeasure.c,
+	  src/rprocess.c, src/sir.c, src/skeleton.c, src/sobol.f, tests,
+	  tests/logistic.R, tests/logistic.Rout.save, tests/ou2-kalman.R,
+	  tests/ou2-kalman.Rout.save, tests/ou2-mif.R,
+	  tests/ou2-mif.Rout.save, tests/ou2-simulate.R,
+	  tests/ou2-simulate.Rout.save, tests/rw2.R, tests/rw2.Rout.save,
+	  tests/sir.R, tests/sir.Rout.save: initial revision
+	* [r6] data/ou2.rda:
+	* [r5] data:
+
+2007-06-25  stefan7th
+
+	* [r1] ., R, man: Email in Readme changed
 
