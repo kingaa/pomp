@@ -29,12 +29,12 @@
     The stochastic dynamical system is initialized at time \code{t0}.
   }
   \item{rprocess}{
-    optional; a function of prototype \code{rprocess(xstart,times,params,\dots)} that simulates from the unobserved process.
+    optional function; a function of prototype \code{rprocess(xstart,times,params,\dots)} that simulates from the unobserved process.
     The easiest way to specify \code{rprocess} is to use one of the \code{\link{plugins}} provided as part of the \pkg{pomp} package.
     See below for details.
   }
   \item{dprocess}{
-    optional; a function of prototype \code{dprocess(x,times,params,log,\dots)} that evaluates the likelihood of a sequence of consecutive state transitions.
+    optional function; a function of prototype \code{dprocess(x,times,params,log,\dots)} that evaluates the likelihood of a sequence of consecutive state transitions.
     The easiest way to specify \code{dprocess} is to use one of the \code{\link{plugins}} provided as part of the \pkg{pomp} package.
     It is not typically necessary (or even feasible) to define \code{dprocess}.
     See below for details.
