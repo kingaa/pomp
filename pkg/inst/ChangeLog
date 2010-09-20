@@ -1,5 +1,11 @@
+2010-08-31  kingaa
+
+	* [r314] man/pomp.Rd: - minor clarification
+
 2010-08-30  kingaa
 
+	* [r313] pomp:
+	* [r312] inst/ChangeLog: - update ChangeLog
 	* [r311] DESCRIPTION, NAMESPACE, R, data, inst, man,
 	  pomp/DESCRIPTION, pomp/NAMESPACE, pomp/R, pomp/data, pomp/inst,
 	  pomp/man, pomp/src, pomp/tests, src, tests: - put everything in

@@ -9,6 +9,7 @@ useDynLib(
           SSA_simulator,
           R_Euler_Multinom,
           D_Euler_Multinom,
+          pfilter_computations,
           do_rprocess,
           do_dprocess,
           do_rmeasure,

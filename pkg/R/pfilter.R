@@ -77,44 +77,48 @@ pfilter.internal <- function (object, params, Np,
   }
   
   loglik <- rep(NA,ntimes)
-  eff.sample.size <- rep(NA,ntimes)
+  eff.sample.size <- numeric(ntimes)
   nfail <- 0
   npars <- length(rw.names)
+
+  pred.m <- NULL
+  pred.v <- NULL
+  filt.m <- NULL
+
+  ## set up storage for prediction means, variances, etc.
+  if (pred.mean)
+    pred.m <- matrix(
+                     data=0,
+                     nrow=nvars+npars,
+                     ncol=ntimes,
+                     dimnames=list(c(statenames,rw.names),NULL)
+                     )
   
-  pred.m <-  if (pred.mean)
-    matrix(
-           data=0,
-           nrow=nvars+npars,
-           ncol=ntimes,
-           dimnames=list(c(statenames,rw.names),NULL)
-           )
-  else NULL
+  if (pred.var)
+    pred.v <- matrix(
+                     data=0,
+                     nrow=nvars+npars,
+                     ncol=ntimes,
+                     dimnames=list(c(statenames,rw.names),NULL)
+                     )
   
-  pred.v <- if (pred.var)
-    matrix(
-           data=0,
-           nrow=nvars+npars,
-           ncol=ntimes,
-           dimnames=list(c(statenames,rw.names),NULL)
-           )
-  else NULL
-  
-  filt.m <- if (filter.mean)
-    if (random.walk) 
-      matrix(
-             data=0,
-             nrow=nvars+length(paramnames),
-             ncol=ntimes,
-             dimnames=list(c(statenames,paramnames),NULL)
-             )
-    else
-      matrix(
-             data=0,
-             nrow=nvars,
-             ncol=ntimes,
-             dimnames=list(statenames,NULL)
-             )
-  else NULL
+  if (filter.mean) {
+    if (random.walk) {
+      filt.m <- matrix(
+                       data=0,
+                       nrow=nvars+length(paramnames),
+                       ncol=ntimes,
+                       dimnames=list(c(statenames,paramnames),NULL)
+                       )
+    } else {
+      filt.m <- matrix(
+                       data=0,
+                       nrow=nvars,
+                       ncol=ntimes,
+                       dimnames=list(statenames,NULL)
+                       )
+    }
+  }
 
   for (nt in seq_len(ntimes)) {
     
@@ -133,33 +137,16 @@ pfilter.internal <- function (object, params, Np,
 
     x[,] <- X                 # ditch the third dimension
     
-    ## prediction means
-    if (pred.mean) {                    
-      xx <- try(
-                c(
-                  rowMeans(x),
-                  rowMeans(params[rw.names,,drop=FALSE])
-                  ),
-                silent=FALSE
-                )
-      if (inherits(xx,'try-error')) {
-        stop(sQuote("pfilter")," error: error in prediction mean computation",call.=FALSE)
-      } else {
-        pred.m[,nt] <- xx
-      }
-    }
-
-    ## prediction variances
-    if (pred.var) {
+    if (pred.var) { ## check for nonfinite state variables and parameters
       problem.indices <- unique(which(!is.finite(x),arr.ind=TRUE)[,1])
-      if (length(problem.indices)>0) {
+      if (length(problem.indices)>0) {  # state variables
         stop(
              sQuote("pfilter")," error: non-finite state variable(s): ",
              paste(rownames(x)[problem.indices],collapse=', '),
              call.=FALSE
              )
       }
-      if (random.walk) {
+      if (random.walk) { # parameters (need to be checked only if 'random.walk=TRUE')
         problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1])
         if (length(problem.indices)>0) {
           stop(
@@ -169,20 +156,8 @@ pfilter.internal <- function (object, params, Np,
                )
         }
       }
-      xx <- try(
-                c(
-                  apply(x,1,var),
-                  apply(params[rw.names,,drop=FALSE],1,var)
-                  ),
-                silent=FALSE
-                )
-      if (inherits(xx,'try-error')) {
-        stop(sQuote("pfilter")," error: error in prediction variance computation",call.=FALSE)
-      } else {
-        pred.v[,nt] <- xx
-      }
     }
-
+    
     ## determine the weights
     weights <- try(
                    dmeasure(
@@ -190,48 +165,49 @@ pfilter.internal <- function (object, params, Np,
                             y=object@data[,nt,drop=FALSE],
                             x=X,
                             times=times[nt+1],
-                            params=params
+                            params=params,
+                            log=FALSE
                             ),
                    silent=FALSE
                    )
     if (inherits(weights,'try-error'))
       stop(sQuote("pfilter")," error: error in calculation of weights",call.=FALSE)
     if (any(is.na(weights))) {
-      ## problem.indices <- which(is.na(weights))
       stop(sQuote("pfilter")," error: ",sQuote("dmeasure")," returns NA",call.=FALSE)
     }
 
-    ## test for failure to filter
-    dim(weights) <- NULL
-    failures <- weights < tol
-    all.fail <- all(failures)
-    if (all.fail) {                     # all particles are lost
+    ## prediction mean, prediction variance, filtering mean, effective sample size, log-likelihood
+    xx <- try(
+              .Call(
+                    pfilter_computations,
+                    x,params,
+                    random.walk,rw.names,
+                    pred.mean,pred.var,
+                    filter.mean,weights,tol
+                    ),
+              silent=FALSE
+              )
+    if (inherits(xx,'try-error')) {
+      stop(sQuote("pfilter")," error: error in prediction mean/variance computation",call.=FALSE)
+    }
+    all.fail <- xx$fail
+    loglik[nt] <- xx$loglik
+    eff.sample.size[nt] <- xx$ess
+
+    if (pred.mean)
+      pred.m[,nt] <- xx$pm
+    if (pred.var)
+      pred.v[,nt] <- xx$pv
+    if (filter.mean)
+      filt.m[,nt] <- xx$fm
+
+    if (all.fail) { ## all particles are lost
+      nfail <- nfail+1
       if (verbose)
         message("filtering failure at time t = ",times[nt+1])
-      nfail <- nfail+1
       if (nfail > max.fail)
         stop(sQuote("pfilter")," error: too many filtering failures",call.=FALSE)
-      loglik[nt] <- log(tol)          # worst log-likelihood
-      weights <- rep(1/Np,Np)
-      eff.sample.size[nt] <- 0
-    } else {                  # not all particles are lost
-      ## compute log-likelihood
-      loglik[nt] <- log(mean(weights))  
-      weights[failures] <- 0
-      weights <- weights/sum(weights)
-      ## compute effective sample-size
-      eff.sample.size[nt] <- 1/(weights%*%weights) 
-    }
-
-    ## compute filtering means
-    if (filter.mean) {
-      filt.m[statenames,nt] <- x %*% weights
-      if (random.walk)
-        filt.m[paramnames,nt] <- params %*% weights
-    }
-
-    ## Matrix with samples (columns) from filtering distribution theta.t | Y.t
-    if (!all.fail) {
+    } else { ## matrix with samples (columns) from filtering distribution theta.t | Y.t
       sample <- .Call(systematic_resampling,weights)
       x <- x[,sample,drop=FALSE]
       params <- params[,sample,drop=FALSE]
@@ -240,7 +216,7 @@ pfilter.internal <- function (object, params, Np,
     ## random walk for parameters
     if (random.walk) {
       pred.v[rw.names,nt] <- pred.v[rw.names,nt]+sigma^2
-      params[rw.names,] <- params[rw.names,]+rnorm(n=Np*length(sigma),mean=0,sd=sigma)
+      params[rw.names,] <- rnorm(n=Np*length(sigma),mean=params[rw.names,],sd=sigma)
     }
 
     if (save.states) {
