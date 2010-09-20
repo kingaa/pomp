@@ -1,3 +1,11 @@
+2010-09-20  kingaa
+
+	* [r315] DESCRIPTION, NAMESPACE, R/pfilter.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  src/pfilter.c, tests/ricker.Rout.save: - move most time-consuming
+	  computations in pfilter into C
+	  - thus: new file src/pfilter.c
+
 2010-08-31  kingaa
 
 	* [r314] man/pomp.Rd: - minor clarification
