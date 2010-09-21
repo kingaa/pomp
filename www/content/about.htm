@@ -1,63 +1,35 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<meta name="generator" content="Bluefish 1.0.7">
-<title></title>
-</head>
-<body>
-<p><strong>pomp</strong> provides a very general realization of
-nonlinear partially-observed Markov processes (AKA state-space
-models, nonlinear stochastic dynamical systems). One specifies a
-model's process and measurement components; the package uses these
-functions in algorithms to simulate, analyze, and fit the model to
-data.</p>
+<p><strong>pomp</strong> provides a very general realization of nonlinear partially-observed Markov processes (AKA nonlinear stochastic dynamical systems). These are a generalization of the familiar state-space and hidden Markov models to nonlinear, non-Gaussian processes in either discrete or continuous time. In <strong>pomp</strong>, one can implement a model by specifying its unobserved process and measurement components; the package uses these functions in algorithms to simulate, analyze, and fit the model to data.</p>
+
 <p>At the moment, support is provided for</p>
+
 <ul>
-<li>basic particle filtering (AKA sequential importance sampling or
-sequential Monte Carlo),</li>
-<li>trajectory matching,</li>
-<li>the approximate Bayesian sequential Monte Carlo algorithm of
-Liu&nbsp;&amp;&nbsp;West&nbsp;(2001),</li>
-<li>the particle Markov chain Monte Carlo method of Andrieu et
-al.&nbsp;(2010),</li>
-<li>the iterated filtering method of
-Ionides,&nbsp;Breto,&nbsp;&amp;&nbsp;King&nbsp;(2006),</li>
-<li>the nonlinear forecasting method of
-Ellner&nbsp;&amp;&nbsp;Kendall,</li>
-<li>probe-matching methods (e.g., Kendall et al. 1999), and</li>
-<li>power-spectrum-matching methods of Reuman et al. (2006).</li>
-</ul>
-Future support for a variety of other algorithms is envisioned. A
-working group of the <a href=
-"http://nceas.ucsb.edu">National&nbsp;Center&nbsp;for&nbsp;Ecological&nbsp;Analysis&nbsp;and&nbsp;Synthesis&nbsp;(NCEAS)</a>,
-"Inference for Mechanistic Models", is currently implementing
-additional methods for this package.
-<p>Simple worked examples are provided in <a href=
-"http://cran.at.r-project.org/web/packages/pomp/vignettes/">vignettes</a>
-and in the <tt>examples</tt> directory of the installed
-package.</p>
-<p>The package is provided under the GPL. Contributions are
-welcome, as are comments, suggestions, examples, and bug reports.
-Please send these to <tt>kingaa at umich dot edu</tt>.</p>
-<p>To keep abreast of new developments, <a href=
-"https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/pomp-announce"
-target="_top">subscribe to the <i>pomp-announce</i> mailing
-list</a>.</p>
+  <li>basic particle filtering (AKA sequential importance sampling or sequential Monte Carlo),</li>
+
+  <li>trajectory matching,</li>
+
+  <li>the approximate Bayesian sequential Monte Carlo algorithm of Liu&nbsp;&amp;&nbsp;West&nbsp;(2001),</li>
+
+  <li>the particle Markov chain Monte Carlo method of Andrieu et al.&nbsp;(2010),</li>
+
+  <li>the iterated filtering method of Ionides,&nbsp;Breto,&nbsp;&amp;&nbsp;King&nbsp;(2006),</li>
+
+  <li>the nonlinear forecasting method of Ellner&nbsp;&amp;&nbsp;Kendall,</li>
+
+  <li>probe-matching methods (e.g., Kendall et al. 1999), and</li>
+
+  <li>power-spectrum-matching methods of Reuman et al. (2006).</li>
+</ul>Future support for a variety of other algorithms is envisioned. A working group of the <a href="http://nceas.ucsb.edu">National&nbsp;Center&nbsp;for&nbsp;Ecological&nbsp;Analysis&nbsp;and&nbsp;Synthesis&nbsp;(NCEAS)</a>, "Inference for Mechanistic Models", is currently implementing additional methods for this package.
+
+<p>Simple worked examples are provided in <a href="http://cran.at.r-project.org/web/packages/pomp/vignettes/">vignettes</a> and in the <tt>examples</tt> directory of the installed package.</p>
+
+<p>The package is provided under the GPL. Contributions are welcome, as are comments, suggestions, examples, and bug reports. Please send these to <tt>kingaa at umich dot edu</tt>.</p>
+
+<p>To keep abreast of new developments, <a href="https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/pomp-announce" target="_top">subscribe to the <i>pomp-announce</i> mailing list</a>.</p>
+
 <table>
-<tr>
-<td><a href="http://www.nsf.gov"><img src="graphics/NSF_logo.jpg"
-alt="link to NSF"></a></td>
-<td>The development of this package has been made possible by
-support from the U.S. National Science Foundation (Grants
-#EF-0545276, #EF-0430120), by the "Inference for Mechanistic
-Models" Working Group supported by the National Center for
-Ecological Analysis and Synthesis, a Center funded by N.S.F. (Grant
-#DEB-0553768), the University of California, Santa Barbara, and the
-State of California, and by the RAPIDD program of the Science &amp;
-Technology Directorate, Department of Homeland Security and the
-Fogarty International Center, U.S. National Institutes of
-Health.</td>
-</tr>
+  <tr>
+    <td><a href="http://www.nsf.gov"><img src="graphics/NSF_logo.jpg" alt="link to NSF"></a></td>
+
+    <td>The development of this package has been made possible by support from the U.S. National Science Foundation (Grants #EF-0545276, #EF-0430120), by the "Inference for Mechanistic Models" Working Group supported by the National Center for Ecological Analysis and Synthesis, a Center funded by N.S.F. (Grant #DEB-0553768), the University of California, Santa Barbara, and the State of California, and by the RAPIDD program of the Science &amp; Technology Directorate, Department of Homeland Security and the Fogarty International Center, U.S. National Institutes of Health.</td>
+  </tr>
 </table>
-</body>
-</html>
