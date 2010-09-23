@@ -84,6 +84,8 @@ setMethod(
             if (!is.list(probes)) probes <- list(probes)
             if (!all(sapply(probes,is.function)))
               stop(sQuote("probes")," must be a function or a list of functions")
+            if (!all(sapply(probes,function(f)length(formals(f))==1)))
+              stop("each probe must be a function of a single argument")
             if (is.null(seed)) {
               if (exists('.Random.seed',where=.GlobalEnv)) {
                 seed <- get(".Random.seed",pos=.GlobalEnv)
@@ -107,8 +109,9 @@ setMethod(
             quants <- numeric(nprobes)
             names(quants) <- names(datval)
             for (k in seq_len(nprobes)) {
-              tails <- c(sum(simval[,k]>datval[k]),sum(simval[,k]<datval[k])+1)/(nsim+1)
-              pvals[k] <- min(c(2*tails,1))
+              r <- min(sum(simval[,k]>datval[k]),sum(simval[,k]<datval[k]))
+              tails <- (r+1)/(nsim+1)
+              pvals[k] <- min(2*tails,1)
               quants[k] <- sum(simval[,k]<datval[k])/nsim
             }
 
