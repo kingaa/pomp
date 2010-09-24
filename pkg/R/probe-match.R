@@ -38,17 +38,29 @@ probe.mismatch <- function (par, est, object, probes, params,
   
   params[est] <- par
   
-  simval <- apply.probe.sim(object,probes=probes,params=params,nsim=nsim,seed=seed) # apply probes to model simulations
+  ## apply probes to model simulations
+  simval <- .Call(
+                  apply_probe_sim,
+                  object=object,
+                  nsim=nsim,
+                  params=params,
+                  seed=seed,
+                  probes=probes,
+                  pnames=names(datval)
+                  )
   
   ## compute a measure of the discrepancies between simulations and data
   sim.means <- colMeans(simval)
   simval <- sweep(simval,2,sim.means)
   discrep <- ((datval-sim.means)^2)/colMeans(simval^2)
-
+  if ((length(weights)>1) && (length(weights)!=length(discrep)))
+    stop(length(discrep)," probes have been computed, but ",length(weights)," have been supplied")
   if (!all(is.finite(discrep))) {
     mismatch <- fail.value 
-  } else {
+  } else if (length(weights)>1) {
     mismatch <- sum(discrep*weights)/sum(weights)
+  } else {
+    mismatch <- sum(discrep)
   }
 
   mismatch
@@ -82,15 +94,17 @@ probe.match <- function(object, start, est = character(0),
   if (!is.list(probes)) probes <- list(probes)
   if (!all(sapply(probes,is.function)))
     stop(sQuote("probes")," must be a function or a list of functions")
+  if (!all(sapply(probes,function(f)length(formals(f))==1)))
+    stop("each probe must be a function of a single argument")            
 
-  if (missing(weights)) weights <- rep(1,length(probes))
+  if (missing(weights)) weights <- 1
 
   method <- match.arg(method)
 
   params <- start
   guess <- params[par.index]
 
-  datval <- apply.probe.data(object,probes=probes) # apply probes to data
+  datval <- .Call(apply_probe_data,object,probes) # apply probes to data
   
   if (eval.only) {
     val <- probe.mismatch(
