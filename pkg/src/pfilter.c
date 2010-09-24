@@ -87,7 +87,11 @@ SEXP pfilter_computations (SEXP x, SEXP params,
   }
 
   if (do_fm) {
-    PROTECT(fm = NEW_NUMERIC(nvars+npars)); nprotect++;
+    if (do_rw) {
+      PROTECT(fm = NEW_NUMERIC(nvars+npars)); nprotect++;
+    } else {
+      PROTECT(fm = NEW_NUMERIC(nvars)); nprotect++;
+    }
     xfm = REAL(fm);
   }
 
@@ -112,10 +116,10 @@ SEXP pfilter_computations (SEXP x, SEXP params,
     //  compute filter mean
     if (do_fm) {
       if (all_fail) {
-	for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars];
+	for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars]; 
 	xfm[j] = ws/((double) nreps);
-      } else {
-	for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars]*xw[k];
+      } else { 
+	for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars]*xw[k]; 
 	xfm[j] = ws/w;
       }
     }
