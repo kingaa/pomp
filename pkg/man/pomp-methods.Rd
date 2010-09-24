@@ -28,6 +28,7 @@
 \alias{states}
 \alias{as,pomp-method}
 \alias{coerce,pomp,data.frame-method}
+\alias{as.data.frame.pomp}
 \alias{coef,pomp-method}
 \alias{coef-pomp}
 \alias{coef<-}
@@ -47,6 +48,7 @@
 \S4method{window}{pomp}(x, start, end, \dots)
 \S4method{show}{pomp}(object)
 \S4method{as}{pomp}(object, class)
+as.data.frame.pomp(x)
 \S4method{coerce}{pomp,data.frame}(from, to = "data.frame", strict = TRUE)
 \S4method{print}{pomp}(x, \dots)
 \S4method{plot}{pomp}(x, y, variables, panel = lines,
