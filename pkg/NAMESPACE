@@ -10,6 +10,8 @@ useDynLib(
           R_Euler_Multinom,
           D_Euler_Multinom,
           pfilter_computations,
+          apply_probe_data,
+          apply_probe_sim,
           do_rprocess,
           do_dprocess,
           do_rmeasure,
