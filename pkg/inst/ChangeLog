@@ -1,5 +1,23 @@
+2010-09-24  kingaa
+
+	* [r321] R/pomp-methods.R, man/pomp-methods.Rd: - add S3 method
+	  as.data.frame.pomp
+	* [r320] DESCRIPTION, src/pfilter.c: - bug fix
+
+2010-09-23  kingaa
+
+	* [r319] R/probe.R: - empirical p-values are computed incorrectly.
+	  fix this.
+
+2010-09-21  kingaa
+
+	* [r317] inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/ou2-first-mif.rda,
+	  inst/doc/ou2-trajmatch.rda: - update the vignettes
+
 2010-09-20  kingaa
 
+	* [r316] inst/ChangeLog: - update changelog
 	* [r315] DESCRIPTION, NAMESPACE, R/pfilter.R, inst/ChangeLog,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
 	  src/pfilter.c, tests/ricker.Rout.save: - move most time-consuming

@@ -1,8 +1,7 @@
 
-R version 2.12.0 Under development (unstable) (2010-08-18 r52775)
+R version 2.11.1 (2010-05-31)
 Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
-Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -58,7 +57,7 @@ y1.mean y2.mean   y1.sd   y2.sd
 
 $pvals
    y1.mean    y2.mean      y1.sd      y2.sd 
-0.20359281 0.93812375 0.05189621 0.10778443 
+0.20359281 0.94211577 0.05189621 0.10778443 
 
 > summary(pm.po)
 $coef
@@ -73,8 +72,8 @@ y1.mean y2.mean   y1.sd   y2.sd
   0.054   0.644   1.000   1.000 
 
 $pvals
-  y1.mean   y2.mean     y1.sd     y2.sd 
-0.1117764 0.7105788 0.0000000 0.0000000 
+    y1.mean     y2.mean       y1.sd       y2.sd 
+0.111776447 0.714570858 0.003992016 0.003992016 
 
 > 
 > plot(pm.ou2)
@@ -83,7 +82,7 @@ $pvals
 > pm.ou2 <- probe(
 +                 ou2,
 +                 probes=list(
-+                   y1.lag3=probe.acf(var="y1",lag=3,type="corr"),
++                   y1acf=probe.acf(var="y1",lag.max=2,type="corr"),
 +                   y2.cov12=probe.cov(vars=c("y1"),lag=12,method="spearman"),
 +                   y12.cov8=probe.cov(vars=c("y2","y1"),lag=8,method="pearson")
 +                   ),
@@ -99,19 +98,19 @@ $nsim
 [1] 500
 
 $quantiles
- y1.lag3 y2.cov12 y12.cov8 
-   0.110    0.726    0.462 
+y1acf.acf.1.y1 y1acf.acf.2.y1       y2.cov12       y12.cov8 
+         0.092          0.054          0.726          0.462 
 
 $pvals
-  y1.lag3  y2.cov12  y12.cov8 
-0.2235529 0.5469062 0.9261477 
+y1acf.acf.1.y1 y1acf.acf.2.y1       y2.cov12       y12.cov8 
+     0.1876248      0.1117764      0.5508982      0.9261477 
 
 > 
 > pb <- probe(
 +             ou2,
 +             probes=list(
 +               y1=probe.quantile(var="y1",prob=seq(0.1,0.9,by=0.1)),
-+               acf=probe.acf(var="y2",lag=c(2,4,7),transform=identity),
++               probe.acf(var=c("y1","y2"),lag.max=4,transform=identity),
 +               pd=probe.period(var="y1",kernel.width=3)
 +               ),
 +             nsim=200
@@ -125,15 +124,19 @@ $nsim
 [1] 200
 
 $quantiles
-y1.10% y1.20% y1.30% y1.40% y1.50% y1.60% y1.70% y1.80% y1.90%   acf1   acf2 
- 0.755  0.790  0.765  0.555  0.335  0.115  0.035  0.025  0.010  0.160  0.345 
-  acf3     pd 
- 0.750  0.060 
+  y1.10%   y1.20%   y1.30%   y1.40%   y1.50%   y1.60%   y1.70%   y1.80% 
+   0.755    0.790    0.765    0.555    0.335    0.115    0.035    0.025 
+  y1.90% acf.0.y1 acf.1.y1 acf.2.y1 acf.3.y1 acf.4.y1 acf.0.y2 acf.1.y2 
+   0.010    0.035    0.045    0.030    0.115    0.790    0.065    0.060 
+acf.2.y2 acf.3.y2 acf.4.y2       pd 
+   0.080    0.110    0.445    0.060 
 
 $pvals
     y1.10%     y1.20%     y1.30%     y1.40%     y1.50%     y1.60%     y1.70% 
-0.48756219 0.41791045 0.46766169 0.88557214 0.67661692 0.23880597 0.07960199 
-    y1.80%     y1.90%       acf1       acf2       acf3         pd 
-0.05970149 0.02985075 0.32835821 0.69651741 0.49751244 0.12935323 
+0.49751244 0.42786070 0.47761194 0.89552239 0.67661692 0.23880597 0.07960199 
+    y1.80%     y1.90%   acf.0.y1   acf.1.y1   acf.2.y1   acf.3.y1   acf.4.y1 
+0.05970149 0.02985075 0.07960199 0.09950249 0.06965174 0.23880597 0.42786070 
+  acf.0.y2   acf.1.y2   acf.2.y2   acf.3.y2   acf.4.y2         pd 
+0.13930348 0.12935323 0.16915423 0.22885572 0.89552239 0.12935323 
 
 > 

@@ -1,0 +1,346 @@
+
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> data(ricker)
+> 
+> pdf(file="ricker-probe.pdf")
+> 
+> set.seed(6457673L)
+> z <- as.numeric(data.array(ricker))
+> 
+> po <- ricker
+> pb <- probe(
++             po,
++             probes=probe.marginal(
++               var="y",
++               transform=sqrt,
++               ref=z,
++               diff=1,
++               order=3
++               ),
++             nsim=1000,
++             seed=838775L
++             )
+> pb@datvals
+od.1 od.2 od.3 
+   1    0    0 
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+ od.1  od.2  od.3 
+0.731 0.304 0.345 
+
+$pvals
+     od.1      od.2      od.3 
+0.5394605 0.6093906 0.6913087 
+
+> plot(pb)
+> 
+> pb <- probe(
++             po,
++             probes=list(
++               probe.marginal(
++                                var="y",
++                                transform=sqrt,
++                                ref=z,
++                                diff=1,
++                                order=3
++                                ),
++               probe.acf(
++                         var="y",
++                         lag.max=5
++                         ),
++               mean=probe.mean(var="y",transform=sqrt)
++               ),
++             nsim=1000,
++             seed=838775L
++             )
+> pb@datvals
+        od.1         od.2         od.3      acf.0.y      acf.1.y      acf.2.y 
+    1.000000     0.000000     0.000000  3486.365244 -1157.950734  -629.406461 
+     acf.3.y      acf.4.y      acf.5.y         mean 
+  409.878220  -557.216308   406.454875     4.419695 
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+   od.1    od.2    od.3 acf.0.y acf.1.y acf.2.y acf.3.y acf.4.y acf.5.y    mean 
+  0.731   0.304   0.345   0.545   0.202   0.443   0.913   0.119   0.744   0.841 
+
+$pvals
+     od.1      od.2      od.3   acf.0.y   acf.1.y   acf.2.y   acf.3.y   acf.4.y 
+0.5394605 0.6093906 0.6913087 0.9110889 0.4055944 0.8871129 0.1758242 0.2397602 
+  acf.5.y      mean 
+0.5134865 0.3196803 
+
+> plot(pb)
+> 
+> coef(po) <- c(log(10),log(0.3),log(20),5,0)
+> 
+> pb <- probe(
++             po,
++             probes=probe.marginal(
++               var="y",
++               transform=sqrt,
++               ref=z,
++               diff=1,
++               order=3
++               ),
++             nsim=1000,
++             seed=838775L
++             )
+> pb@datvals
+od.1 od.2 od.3 
+   1    0    0 
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 2.302585 -1.203973  2.995732  5.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+ od.1  od.2  od.3 
+1.000 0.119 0.252 
+
+$pvals
+       od.1        od.2        od.3 
+0.001998002 0.239760240 0.505494505 
+
+> plot(pb)
+> 
+> system.time(
++             pm <- probe.match(
++                               pb,
++                               est=c("log.r","log.phi","N.0"),
++                               parscale=c(0.1,0.1,0.1),
++                               nsim=1000,
++                               seed=838775L,
++                               method="Nelder-Mead",
++                               reltol=1e-7,
++                               fail.value=1e9
++                               )
++             )
+   user  system elapsed 
+ 10.072   0.011  10.084 
+> plot(pm)
+> 
+> cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
+              truth       est     guess
+log.r      3.800000  2.559421  2.302585
+log.sigma -1.203973 -1.203973 -1.203973
+log.phi    2.302585  3.693456  2.995732
+N.0        7.000000  5.657090  5.000000
+e.0        0.000000  0.000000  0.000000
+> 
+> pb <- probe(
++             po,
++             probes=probe.marginal(
++               var="y",
++               transform=sqrt,
++               ref=runif(length(time(ricker))),
++               diff=2,
++               order=3
++               ),
++             nsim=1000,
++             seed=838775L
++             )
+> pb@datvals
+     od.1      od.2      od.3 
+27.509248 -4.882377 -3.481160 
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 2.302585 -1.203973  2.995732  5.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+ od.1  od.2  od.3 
+1.000 0.000 0.255 
+
+$pvals
+       od.1        od.2        od.3 
+0.001998002 0.001998002 0.511488511 
+
+> plot(pb)
+> 
+> pb <- probe(
++             ricker,
++             probes=probe.acf(
++               var="y",
++               transform=sqrt,
++               lag.max=5,
++               type="cov"
++               ),
++             nsim=1000,
++             seed=838775L
++             )
+> pb@datvals
+  acf.0.y   acf.1.y   acf.2.y   acf.3.y   acf.4.y   acf.5.y 
+20.917279 -6.505330 -5.105199  2.743784 -3.665714  2.275368 
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+acf.0.y acf.1.y acf.2.y acf.3.y acf.4.y acf.5.y 
+  0.424   0.171   0.294   0.886   0.086   0.734 
+
+$pvals
+  acf.0.y   acf.1.y   acf.2.y   acf.3.y   acf.4.y   acf.5.y 
+0.8491508 0.3436563 0.5894106 0.2297702 0.1738262 0.5334665 
+
+> plot(pb)
+> 
+> pb <- probe(
++             ricker,
++             probes=probe.acf(
++               var="y",
++               transform=sqrt,
++               lag.max=5,
++               type="cor"
++               ),
++             nsim=1000,
++             seed=838775L
++             )
+> pb@datvals
+   acf.1.y    acf.2.y    acf.3.y    acf.4.y    acf.5.y 
+-0.3110027 -0.2440661  0.1311731 -0.1752481  0.1087793 
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+acf.1.y acf.2.y acf.3.y acf.4.y acf.5.y 
+  0.210   0.256   0.883   0.080   0.737 
+
+$pvals
+  acf.1.y   acf.2.y   acf.3.y   acf.4.y   acf.5.y 
+0.4215784 0.5134865 0.2357642 0.1618382 0.5274725 
+
+> plot(pb)
+> 
+> pb <- probe(
++             ricker,
++             probes=list(
++               v=probe.var("y",transform=sqrt),
++               probe.acf(
++                         var="y",
++                         transform=sqrt,
++                         lag.max=0,
++                         type="cov"
++                         )
++               ),
++             nsim=1000,
++             seed=838775L
++             )
+> pb@datvals
+       v  acf.0.y 
+21.33562 20.91728 
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+      v acf.0.y 
+  0.424   0.424 
+
+$pvals
+        v   acf.0.y 
+0.8491508 0.8491508 
+
+> plot(pb)
+> 
+> try(
++     probe(
++           ricker,
++           probes=list(
++             mn=probe.mean("y",transform=sqrt,trim=0.1),
++             md=probe.median("y",na.rm=FALSE),
++             wacko=function(y)y[sample.int(n=length(y),size=sample.int(n=3,size=1))]
++             ),
++           nsim=100,
++           seed=838775L
++           )
++     )
+Error in .local(object, probes, ...) : 
+  variable-sized results returned by probe 2
+> 
+> try(
++     probe(
++           ricker,
++           probes=list(
++             mn=probe.mean("y",transform=sqrt,trim=0.1),
++             md=function(y)median(as.numeric(y)),
++             wacko=function(y) if (y[1]==69) 1 else c(1,2)
++             ),
++           nsim=100,
++           seed=838775L
++           )
++     )
+Error in .local(object, probes, ...) : 
+  probes return different number of values on different datasets
+> 
+> 
+> try(
++     probe(
++           ricker,
++           probes=list(
++             mn=probe.mean("y",transform=sqrt,trim=0.1),
++             md=function(y)median(as.numeric(y)),
++             wacko=function(y) if (y[29]==98) c(1,2) else 1
++             ),
++           nsim=20,
++           seed=838775L
++           )
++     )
+Error in .local(object, probes, ...) : 
+  probes return different number of values on different datasets
+> 
+> 
+> dev.off()
+null device 
+          1 
+> 

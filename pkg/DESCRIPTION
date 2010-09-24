@@ -1,7 +1,7 @@
 Package: pomp
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.32-7
+Version: 0.33-1
 Date: 2010-09-24
 Author: Aaron A. King, Edward L. Ionides, Carles Breto, Steve Ellner, Bruce Kendall, Helen Wearing, 
 	Matthew J. Ferrari, Michael Lavine, Daniel C. Reuman

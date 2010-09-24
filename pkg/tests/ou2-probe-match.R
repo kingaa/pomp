@@ -35,7 +35,7 @@ plot(pm.po)
 pm.ou2 <- probe(
                 ou2,
                 probes=list(
-                  y1.lag3=probe.acf(var="y1",lag=3,type="corr"),
+                  y1acf=probe.acf(var="y1",lag.max=2,type="corr"),
                   y2.cov12=probe.cov(vars=c("y1"),lag=12,method="spearman"),
                   y12.cov8=probe.cov(vars=c("y2","y1"),lag=8,method="pearson")
                   ),
@@ -48,7 +48,7 @@ pb <- probe(
             ou2,
             probes=list(
               y1=probe.quantile(var="y1",prob=seq(0.1,0.9,by=0.1)),
-              acf=probe.acf(var="y2",lag=c(2,4,7),transform=identity),
+              probe.acf(var=c("y1","y2"),lag.max=4,transform=identity),
               pd=probe.period(var="y1",kernel.width=3)
               ),
             nsim=200

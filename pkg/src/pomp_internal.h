@@ -149,4 +149,8 @@ public:
 
 #endif
 
+void pomp_backsolve(double *, int *, int *, double *, double *, int *);
+void pomp_qr(double *, int *, int *, int *, double *);
+void pomp_qrqy(double *, double *, double *, int *, int *, int *, int *, int *);
+
 #endif

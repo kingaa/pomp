@@ -12,6 +12,9 @@ useDynLib(
           pfilter_computations,
           apply_probe_data,
           apply_probe_sim,
+          probe_marginal_setup,
+          probe_marginal_solve,
+          probe_acf,
           do_rprocess,
           do_dprocess,
           do_rmeasure,
@@ -61,6 +64,7 @@ export(
        nlf,
        traj.match,
        probe.mean,
+       probe.median,
        probe.var,
        probe.sd,
        probe.period,
@@ -68,6 +72,7 @@ export(
        probe.acf,
        probe.cov,
        probe.cor,
+       probe.marginal,
        probe.match,
        spect.match
        )
