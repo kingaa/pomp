@@ -1,5 +1,21 @@
 2010-09-24  kingaa
 
+	* [r324] DESCRIPTION, NAMESPACE, R/basic-probes.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/pomp.bib, man/basic-probes.Rd, src/Makevars, src/mat.c,
+	  src/pomp_internal.h, src/probe_acf.c, src/probe_marginal.c,
+	  tests/ou2-probe-match.R, tests/ou2-probe-match.Rout.save,
+	  tests/ricker-probe.R, tests/ricker-probe.Rout.save: -
+	  probe.marginal and probe.median are introduced, based on the
+	  recommendation of Wood (2010)
+	  - probe.acf and probe.marginal are now coded in C for speed
+	  - probe.acf is slightly changed to use the natural definition of
+	  ACF
+	  - these ideas follow the recommendations of Simon Wood (2010)
+	  - a test file, using the Ricker example, is included
+	* [r323] NAMESPACE: - update NAMESPACe
+	* [r322] R/probe-match.R, R/probe.R, src/probe.c: - put the most
+	  computationally-intensive bits of the probe calculations into C
 	* [r321] R/pomp-methods.R, man/pomp-methods.Rd: - add S3 method
 	  as.data.frame.pomp
 	* [r320] DESCRIPTION, src/pfilter.c: - bug fix
