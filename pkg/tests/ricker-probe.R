@@ -10,6 +10,13 @@ z <- as.numeric(data.array(ricker))
 po <- ricker
 pb <- probe(
             po,
+            probes=probe.median("y"),
+            nsim=1000,
+            seed=838775L
+            )
+
+pb <- probe(
+            po,
             probes=probe.marginal(
               var="y",
               transform=sqrt,

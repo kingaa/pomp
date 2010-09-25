@@ -46,7 +46,7 @@ probe.mismatch <- function (par, est, object, probes, params,
                   params=params,
                   seed=seed,
                   probes=probes,
-                  pnames=names(datval)
+                  datval=datval
                   )
   
   ## compute a measure of the discrepancies between simulations and data

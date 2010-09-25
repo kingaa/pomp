@@ -26,9 +26,9 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
   return retval;
 }
 
-SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP names) {
+SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval) {
   int nprotect = 0;
-  SEXP y, obs, call;
+  SEXP y, obs, call, names;
   SEXP retval, val, valnames, x;
   int nprobe, nsims, nvars, ntimes, nvals;
   int xdim[2];
@@ -42,8 +42,8 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   // 'names' holds the names of the probe values
   // we get these from a previous call to 'apply_probe_data'
   nprobe = LENGTH(probes);
-  nvals = LENGTH(names);
-  PROTECT(names = AS_CHARACTER(names)); nprotect++; 
+  nvals = LENGTH(datval);
+  PROTECT(names = GET_NAMES(datval)); nprotect++; 
 
   // call 'simulate' to get simulated data sets
   PROTECT(obs = NEW_LOGICAL(1)); nprotect++;

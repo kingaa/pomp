@@ -44,7 +44,15 @@ setMethod(
             ## apply probes to data
             datval <- .Call(apply_probe_data,object,probes)
             ## apply probes to model simulations
-            simval <- .Call(apply_probe_sim,object,nsim,coef(object),seed,probes,names(datval))
+            simval <- .Call(
+                            apply_probe_sim,
+                            object,
+                            nsim,
+                            coef(object),
+                            seed,
+                            probes,
+                            datval
+                            )
                             
             nprobes <- length(datval)
             pvals <- numeric(nprobes)
