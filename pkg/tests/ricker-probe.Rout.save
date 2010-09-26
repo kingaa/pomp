@@ -27,6 +27,28 @@ Type 'q()' to quit R.
 > po <- ricker
 > pb <- probe(
 +             po,
++             probes=probe.median("y"),
++             nsim=1000,
++             seed=838775L
++             )
+> plot(pb)
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+[1] 0.784
+
+$pvals
+[1] 0.3376623
+
+> 
+> pb <- probe(
++             po,
 +             probes=probe.marginal(
 +               var="y",
 +               transform=sqrt,
@@ -150,7 +172,7 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
- 10.072   0.011  10.084 
+ 10.083   0.030  10.115 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
