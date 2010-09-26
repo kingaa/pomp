@@ -6,7 +6,7 @@
 #include <R_ext/Lapack.h>
 
 static void order_reg_solve (double *beta, double *x, double *mm, double *tau, int *pivot, int n, int np, int diff);
-static void order_reg_model_matrix (double *z, double *X, double *pivot, double *tau, int n, int np, int diff);
+static void order_reg_model_matrix (double *z, double *X, double *tau, int *pivot, int n, int np, int diff);
 
 SEXP probe_marginal_setup (SEXP ref, SEXP order, SEXP diff) {
   int nprotect = 0;
@@ -80,7 +80,7 @@ SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
 }
 
 // thanks to Simon N. Wood for the original version of the following code
-static void order_reg_model_matrix (double *z, double *X, double *tau, double *pivot, int n, int np, int diff) {
+static void order_reg_model_matrix (double *z, double *X, double *tau, int *pivot, int n, int np, int diff) {
   //   z is an n vector, containing no NAs
   //   X is an (n-diff) by np double matrix
   //   pivot is an (n-diff) integer vector
