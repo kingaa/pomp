@@ -14,6 +14,8 @@ pb <- probe(
             nsim=1000,
             seed=838775L
             )
+plot(pb)
+summary(pb)
 
 pb <- probe(
             po,
