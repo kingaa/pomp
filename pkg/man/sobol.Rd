@@ -1,5 +1,6 @@
 \name{sobol}
 \alias{sobol}
+\alias{sobol.design}
 \title{Sobol' low-discrepancy sequence}
 \description{
   Generate a data-frame containing a Sobol' low-discrepancy sequence.
