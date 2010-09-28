@@ -45,7 +45,7 @@ statistical inference for<br>
 <td align="left" width="40%">
 <ul>
 <li><a href="./index.php?nav=about">About <i>pomp</i></a></li>
-<li><a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name;?>">Development Version (Revision <?php print $svnrevision; ?>)</a></li>
+<li><a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name;?>">Development Version (Rev. <?php print $svnrevision; ?>)</a></li>
 <li><a href="http://cran.at.r-project.org/web/packages/pomp/">Release Version (<?php print $cranversion; ?>) on CRAN</a></li>
 <li><a target="_blank" href="http://cran.at.r-project.org/web/packages/pomp/pomp.pdf"><i>pomp</i> manual (PDF)</a></li>
 <li><a href="http://lists.r-forge.r-project.org/pipermail/pomp-announce/"><i>pomp-announce</i> mailing list archives</a></li>
