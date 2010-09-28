@@ -165,7 +165,7 @@ setMethod(
                     lower.panel=below.diag.panel,
                     upper.panel=above.diag.panel,
                     labels=lab.plus,
-                    cex.labels=1
+                    cex.labels=if (nprobes>5) 5/nprobes else 1
                     )
             } else {
               plot(datsimvals,datsimvals,type="n",xlab="",ylab="",yaxt="n",main=lab.plus)
