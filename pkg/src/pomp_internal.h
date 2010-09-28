@@ -42,7 +42,7 @@ SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t, int *index);
 /* resample.c */
 SEXP systematic_resampling(SEXP weights);
 
-static inline SEXP makearray (int rank, int *dim) {
+static R_INLINE SEXP makearray (int rank, int *dim) {
   int nprotect = 0;
   int *dimp, k;
   double *xp;
@@ -57,7 +57,7 @@ static inline SEXP makearray (int rank, int *dim) {
   return x;
 }
 
-static inline SEXP matchnames (SEXP x, SEXP names) {
+static R_INLINE SEXP matchnames (SEXP x, SEXP names) {
   int nprotect = 0;
   int n = length(names);
   int *idx, k;
@@ -73,7 +73,7 @@ static inline SEXP matchnames (SEXP x, SEXP names) {
   return index;
 }
 
-static inline SEXP match_char_to_names (SEXP x, int n, char **names) {
+static R_INLINE SEXP match_char_to_names (SEXP x, int n, char **names) {
   int nprotect = 0;
   int *idx, k;
   SEXP index, nm;
@@ -94,7 +94,7 @@ static inline SEXP match_char_to_names (SEXP x, int n, char **names) {
   return index;
 }
 
-static inline void setrownames (SEXP x, SEXP names, int n) {
+static R_INLINE void setrownames (SEXP x, SEXP names, int n) {
   int nprotect = 0;
   SEXP dimnms, nm;
   PROTECT(nm = AS_CHARACTER(names)); nprotect++;
@@ -104,11 +104,11 @@ static inline void setrownames (SEXP x, SEXP names, int n) {
   UNPROTECT(nprotect);
 }
 
-static inline double expit (double x) {
+static R_INLINE double expit (double x) {
   return 1.0/(1.0 + exp(-x));
 }
 
-static inline double logit (double x) {
+static R_INLINE double logit (double x) {
   return log(x/(1-x));
 }
 
