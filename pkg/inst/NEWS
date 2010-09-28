@@ -1,3 +1,8 @@
+NEW IN VERSION 0.33-1:
+    o Major improvements in speed in the probe-matching routines have been realized by coding the computationally-intensive portions of these calculations in C.  
+
+    o New probes recommended by Simon Wood (Nature 466:1102-1104, 2010) have been implemented.  In particular, the new function 'probe.marginal' regresses the marginal distributions of actual and simulated data against a reference distribution, returning as probes the regression coefficients.  'probe.marginal' and 'probe.acf' have been coded in C for speed.
+
 NEW IN VERSION 0.32-1:
     o  pomp now includes parameter estimation methods based on probe-matching and power-spectrum-matching as explained in papers by Kendall et al. (B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, S. N. Wood (1999) Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches.  Ecology, 80:1789--1805) and Reuman et al. (D.C. Reuman, R.A. Desharnais, R.F. Costantino, O. Ahmad, J.E. Cohen (2006) Power spectra reveal the influence of stochasticity on nonlinear population dynamics. Proc. Nat'l. Acad. Sci., U.S.A.} 103:18860--18865).
 

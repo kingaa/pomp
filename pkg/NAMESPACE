@@ -56,6 +56,7 @@ export(
        onestep.dens,
        gillespie.sim,
        sobol,
+       sobol.design,
        slice.design,
        profile.design,
        bspline.basis,

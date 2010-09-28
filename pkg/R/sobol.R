@@ -14,3 +14,17 @@ sobol <- function (vars, n) {
   colnames(y) <- names(vars)
   as.data.frame(y)
 }
+
+sobol.design <- function (lower = numeric(0), upper = numeric(0), nseq) {
+  if (length(lower)!=length(upper))
+    stop(sQuote("lower")," and ",sQuote("upper")," must have same length")
+  lnames <- names(lower)
+  if (is.null(lnames))
+    stop(sQuote("lower")," and ",sQuote("upper")," must be named vectors")
+  if (!all(sort(lnames)==sort(names(upper))))
+    stop("names of ",sQuote("lower")," and ",sQuote("upper")," must match")
+  upper <- upper[lnames]
+  ranges <- lapply(lnames,function(k)c(lower[k],upper[k]))
+  names(ranges) <- lnames
+  sobol(ranges,n=as.integer(nseq))
+}
