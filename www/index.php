@@ -2,10 +2,11 @@
 $domain=ereg_replace('[^\.]*\.(.*)$','\1',$_SERVER['HTTP_HOST']);
 $group_name=ereg_replace('([^\.]*)\..*$','\1',$_SERVER['HTTP_HOST']);
 $themeroot='http://r-forge.r-project.org/themes/rforge/';
+$rforgepkgs = "http://r-forge.r-project.org/R/?group_id=214";
 $cranpage = file_get_contents("http://cran.at.r-project.org/web/packages/pomp/");
 preg_match("/<tr><td valign=top>Version:<\/td>\\n<td>(.+?)<\/td>/",$cranpage,$matches);
 $cranversion = $matches[1];
-$rforgepage = file_get_contents("http://r-forge.r-project.org/R/?group_id=214");
+$rforgepage = file_get_contents($rforgepkgs);
 preg_match("/Rev\.: <b>(.+?)<\/b>/",$rforgepage,$matches);
 $svnrevision = $matches[1];
 echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -45,7 +46,7 @@ statistical inference for<br>
 <td align="left" width="40%">
 <ul>
 <li><a href="./index.php?nav=about">About <i>pomp</i></a></li>
-<li><a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name;?>">Development Version (Rev. <?php print $svnrevision; ?>)</a></li>
+<li><a href="http://<?php echo $domain; ?>/R/<?php echo $group_name;?>">Development Version (Rev. <?php print $svnrevision; ?>)</a></li>
 <li><a href="http://cran.at.r-project.org/web/packages/pomp/">Release Version (<?php print $cranversion; ?>) on CRAN</a></li>
 <li><a target="_blank" href="http://cran.at.r-project.org/web/packages/pomp/pomp.pdf"><i>pomp</i> manual (PDF)</a></li>
 <li><a href="http://lists.r-forge.r-project.org/pipermail/pomp-announce/"><i>pomp-announce</i> mailing list archives</a></li>
