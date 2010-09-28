@@ -68,7 +68,7 @@ SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
   PROTECT(beta = NEW_NUMERIC(np)); nprotect++;
   PROTECT(beta_names = NEW_STRING(np)); nprotect++;
   for (i = 0; i < np; i++) {
-    snprintf(tmp,BUFSIZ,"od.%ld",i+1);
+    snprintf(tmp,BUFSIZ,"marg.%ld",i+1);
     SET_STRING_ELT(beta_names,i,mkChar(tmp));
   }
   SET_NAMES(beta,beta_names);
