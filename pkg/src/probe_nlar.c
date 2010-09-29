@@ -1,9 +1,10 @@
 // -*- mode: C++; -*-
 
 #include "pomp_internal.h"
+#include "pomp_mat.h"
 #include <stdio.h>
 
-static void pomp_nlar(double *beta, double *y, int n, int nterms, int *lag, int *power, double *X);
+static void poly_nlar_fit(double *beta, double *y, int n, int nterms, int *lag, int *power, double *X);
 
 SEXP probe_nlar (SEXP x, SEXP lags, SEXP powers) {
   int nprotect = 0;
@@ -20,7 +21,7 @@ SEXP probe_nlar (SEXP x, SEXP lags, SEXP powers) {
   PROTECT(beta = NEW_NUMERIC(nterms)); nprotect++;
   
   mm = (double *) R_alloc(n*nterms,sizeof(double)); // storage for the model matrix
-  pomp_nlar(REAL(beta),REAL(y),n,nterms,INTEGER(lags),INTEGER(powers),mm);
+  poly_nlar_fit(REAL(beta),REAL(y),n,nterms,INTEGER(lags),INTEGER(powers),mm);
   
   PROTECT(beta_names = NEW_STRING(nterms)); nprotect++;
   for (k = 0; k < nterms; k++) {
@@ -36,8 +37,8 @@ SEXP probe_nlar (SEXP x, SEXP lags, SEXP powers) {
 // Code for polynomial auto-regression
 // The original version of the following code is due to Simon N. Wood.
 // Modifications by AAK.
-static void pomp_nlar(double *beta, double *y, int n, 
-		      int nterms, int *lag, int *power, double *X) {
+static void poly_nlar_fit (double *beta, double *y, int n, 
+			   int nterms, int *lag, int *power, double *X) {
   // 'x' is an n vector of data.
   // 'nterms' gives the number of terms on the rhs of the autoregression.
   // 'lag[i]' gives the lag of the ith term on the rhs.
@@ -114,18 +115,17 @@ static void pomp_nlar(double *beta, double *y, int n,
     // response vector is now length nx
 
     {
-      double tau[nterms], b[nterms];
+      double tau[nterms];
       int pivot[nterms];
 
-      // QR decompose the model matrix
-      for (i = 0; i < nterms; i++) pivot[i] = 0;
-      pomp_qr(X,&nx,&nterms,pivot,tau);
-      // solve R b = Q'y for b
-      pomp_qrqy(yp,X,tau,&nx,&one,&nterms,&one,&one); // y <- Q'y 
-      pomp_backsolve(X,&nx,&nterms,yp,b,&one); // b <- R^{-1} Q'y 
+      // first QR decompose the model matrix
+      pomp_qr(X,nx,nterms,pivot,tau);
+      // then solve R b = Q'y for b
+      pomp_qrqy(yp,X,tau,nx,1,nterms,1,1); // y <- Q'y 
+      pomp_backsolve(X,nx,nterms,yp,1);   // y <- R^{-1} Q'y 
       
-      // store b in kth column of beta
-      for (i = 0; i < nterms; i++) beta[pivot[i]] = b[i]; 
+      // unpivot and store coefficients in beta
+      for (i = 0; i < nterms; i++) beta[pivot[i]] = yp[i];
 
     }
 

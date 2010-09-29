@@ -108,18 +108,6 @@ probe.cor <- function (
   }
 }
 
-probe.marginal <- function (var, ref, order = 3, diff = 1, transform = identity) {
-  if (length(var)>1) stop(sQuote("probe.marginal")," is a univariate probe")
-  transform <- match.fun(transform)
-  setup <- .Call(probe_marginal_setup,transform(ref),order,diff)
-  function (y) .Call(
-                     probe_marginal_solve,
-                     x=transform(y[var,]),
-                     setup=setup,
-                     diff=diff
-                     )
-}
-
 probe.acf <- function (var, lag.max, type = c("covariance", "correlation"), transform = identity) {
   type <- match.arg(type)
   transform <- match.fun(transform)
@@ -132,7 +120,20 @@ probe.acf <- function (var, lag.max, type = c("covariance", "correlation"), tran
                      )
 }
 
+probe.marginal <- function (var, ref, order = 3, diff = 1, transform = identity) {
+  if (length(var)>1) stop(sQuote("probe.marginal")," is a univariate probe")
+  transform <- match.fun(transform)
+  setup <- .Call(probe_marginal_setup,transform(ref),order,diff)
+  function (y) .Call(
+                     probe_marginal_solve,
+                     x=transform(y[var,,drop=TRUE]),
+                     setup=setup,
+                     diff=diff
+                     )
+}
+
 probe.nlar <- function (var, lags, powers, transform = identity) {
+  if (length(var)>1) stop(sQuote("probe.nlar")," is a univariate probe")
   transform <- match.fun(transform)
   if (any(lags<1)||any(powers<1))
     stop(sQuote("lags")," and ",sQuote("powers")," must be positive integers")
@@ -147,7 +148,7 @@ probe.nlar <- function (var, lags, powers, transform = identity) {
   powers <- as.integer(powers)
   function (y) .Call(
                      probe_nlar,
-                     x=transform(y[var,,drop=FALSE]),
+                     x=transform(y[var,,drop=TRUE]),
                      lags=lags,
                      powers=powers
                      )

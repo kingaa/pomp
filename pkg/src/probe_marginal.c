@@ -1,9 +1,8 @@
 // -*- mode: C++ -*-
 
 #include "pomp_internal.h"
+#include "pomp_mat.h"
 #include <stdio.h>
-#include <R_ext/Linpack.h>
-#include <R_ext/Lapack.h>
 
 static void order_reg_solve (double *beta, double *x, double *mm, double *tau, int *pivot, int n, int np, int diff);
 static void order_reg_model_matrix (double *z, double *X, double *tau, int *pivot, int n, int np, int diff);
@@ -111,15 +110,14 @@ static void order_reg_model_matrix (double *z, double *X, double *tau, int *pivo
     for (j = 0; j < nx; j++) X2[j] = X1[j]*z[j];
 
   // QR decompose the model matrix 
-  for (i = 0; i < np; i++) pivot[i] = 0;
-  pomp_qr(X,&nx,&np,pivot,tau);
+  pomp_qr(X,nx,np,pivot,tau);
   
 }
 
 // thanks to Simon N. Wood for the original version of the following code
 static void order_reg_solve (double *beta, double *x, double *mm, double *tau, int *pivot, int n, int np, int diff) {
   int nx, one = 1;
-  double xx, coef[np];
+  double xx;
   int i, j;
 
   for (i = 0, nx = n; i < diff; i++) { // differencing loop
@@ -137,10 +135,10 @@ static void order_reg_solve (double *beta, double *x, double *mm, double *tau, i
   R_qsort(x,1,nx);
 
   // solve R b = Q'x for b
-  pomp_qrqy(x,mm,tau,&nx,&one,&np,&one,&one); // y <- Q'y
-  pomp_backsolve(mm,&nx,&np,x,coef,&one); // b <- R^{-1} Q'y
+  pomp_qrqy(x,mm,tau,nx,1,np,1,1); // y <- Q'y
+  pomp_backsolve(mm,nx,np,x,1);   // y <- R^{-1} Q'y 
 
-  // unpivot beta
-  for (i = 0; i < np; i++) beta[i] = coef[pivot[i]];
+  // unpivot and store the coefficients in beta
+  for (i = 0; i < np; i++) beta[pivot[i]] = x[i];
 
 }
