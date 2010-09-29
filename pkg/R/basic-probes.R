@@ -120,6 +120,18 @@ probe.acf <- function (var, lag.max, type = c("covariance", "correlation"), tran
                      )
 }
 
+probe.ccf <- function (vars, lags, transform = identity) {
+  transform <- match.fun(transform)
+  if (length(vars)!=2)
+    stop(sQuote("vars")," must name two variables")
+  function (y) .Call(
+                     probe_ccf,
+                     x=transform(y[vars[1],,drop=TRUE]),
+                     y=transform(y[vars[2],,drop=TRUE]),
+                     lags=lags
+                     )
+}
+
 probe.marginal <- function (var, ref, order = 3, diff = 1, transform = identity) {
   if (length(var)>1) stop(sQuote("probe.marginal")," is a univariate probe")
   transform <- match.fun(transform)

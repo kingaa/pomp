@@ -1,5 +1,60 @@
+2010-09-29  kingaa
+
+	* [r351] R/basic-probes.R, src/mat.c, src/pomp_internal.h,
+	  src/pomp_mat.h, src/probe_marginal.c, src/probe_nlar.c: - remove
+	  'mat.c' in favor of inline functions for regression, defined in
+	  the new header 'pomp_mat.h'
+	* [r350] src/euler.c, src/mat.c, src/pfilter.c, src/probe.c,
+	  src/probe_acf.c, src/probe_marginal.c, src/probe_nlar.c: - remove
+	  the last usages of dynamic allocation from 'mat.c'
+	  - changes in the compiled codes to eliminate pedantic compiler
+	  warnings
+	* [r349] tests/ou2-probe.R, tests/ou2-probe.Rout.save: - an exact
+	  check for the correctness of probe.acf is added
+	* [r348] man/pomp-methods.Rd: - keep up with changes
+	* [r347] tests/ou2-probe-match.R, tests/ou2-probe-match.Rout.save,
+	  tests/ou2-probe.R, tests/ou2-probe.Rout.save: - change name of
+	  file
+	  - add in a test of probe.acf and probe.nlar
+	* [r346] src/bspline.c: - use R_alloc instead of Calloc/Free
+	* [r345] src/euler.c, src/rmeasure.c: - use R_alloc instead of
+	  Calloc/Free
+	* [r344] NAMESPACE, R/pomp-methods.R: - export the new S3
+	  as.data.frame method for pomps
+	* [r343] man/basic-probes.Rd, tests/ricker-probe.Rout.save: -
+	  update documentation with an entry for 'probe.nlar'
+
+2010-09-28  kingaa
+
+	* [r339] NAMESPACE, R/basic-probes.R, src/probe_nlar.c,
+	  tests/ricker-probe.R: - add new 'probe.nlar': this probe performs
+	  a polynomial autoregression on a univariate series and returns
+	  the coefficients. Recommended by Wood (2010).
+	* [r338] src/probe_marginal.c: - change names returned by
+	  'probe.marginal'
+	* [r337] R/probe.R: - fix up labels when many probes are used
+	* [r334] man/sobol.Rd: - fix documentation error
+	* [r333] DESCRIPTION, NAMESPACE, R/profile-design.R,
+	  R/slice-design.R, R/slice.R, R/sobol.R, inst/NEWS,
+	  man/profile-design.Rd, man/slice-design.Rd, man/slice.Rd,
+	  man/sobol.Rd: - rearrange the slice and profile design functions
+	  to make them easier to use
+	* [r330] src/pomp_internal.h: - use R_STATIC macro
+
+2010-09-26  kingaa
+
+	* [r329] tests/ricker-probe.Rout.save: - improve tests for probes
+	* [r328] tests/ricker-probe.R: - improve tests for probes
+	* [r327] src/probe_marginal.c: - bug fix
+
+2010-09-25  kingaa
+
+	* [r326] DESCRIPTION, R/probe-match.R, R/probe.R, src/probe.c,
+	  tests/ricker-probe.R: - fix bug with unnamed probes
+
 2010-09-24  kingaa
 
+	* [r325] inst/ChangeLog: - update ChangeLog
 	* [r324] DESCRIPTION, NAMESPACE, R/basic-probes.R, inst/ChangeLog,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
 	  inst/doc/pomp.bib, man/basic-probes.Rd, src/Makevars, src/mat.c,

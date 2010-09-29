@@ -77,3 +77,28 @@ z1 <- tail(x$y1,-1)
 y2 <- head(x$y2,-1)
 z2 <- tail(x$y2,-1)
 max(abs(pb@datvals-c(mean(y1*z1)/mean(x$y1^2),mean(y2*z2)/mean(x$y2^2),mean(y1*z1)/mean(y1*y1),mean(y2*z2)/mean(y2*y2))))
+
+po <- simulate(ou2)
+pb <- probe(
+            po,
+            probes=list(
+              probe.acf(var=c("y1"),lag.max=2,type="cov"),
+              probe.ccf(vars=c("y1","y1"),lags=c(0,1,2))
+              ),
+            nsim=1000,
+            seed=1066L
+            )
+plot(pb)
+summary(pb)
+
+pb <- probe(
+            po,
+            probes=probe.ccf(vars=c("y1","y2"),lags=c(-5,-3,1,4,8)),
+            nsim=1000,
+            seed=1066L
+            )
+plot(pb)
+summary(pb)
+
+
+
