@@ -44,7 +44,6 @@ SEXP probe_marginal_setup (SEXP ref, SEXP order, SEXP diff) {
 
 SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
   int nprotect = 0;
-  SEXP dimx, dimm;
   SEXP X, mm, tau, pivot, beta, beta_names;
   int n, nx, np, df;
   int i;
@@ -58,9 +57,8 @@ SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
   PROTECT(tau = VECTOR_ELT(setup,1)); nprotect++; // diagonals
   PROTECT(pivot = VECTOR_ELT(setup,2)); nprotect++; // pivots
 
-  PROTECT(dimm = GET_DIM(mm)); nprotect++;
-  nx = INTEGER(dimm)[0];	// nx = number of rows in model matrix
-  np = INTEGER(dimm)[1];	// np = order of polynomial
+  nx = INTEGER(GET_DIM(mm))[0];	// nx = number of rows in model matrix
+  np = INTEGER(GET_DIM(mm))[1];	// np = order of polynomial
   
   if (n-df != nx) error("length of 'ref' must equal length of data");
   PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++; 
@@ -68,7 +66,7 @@ SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
   PROTECT(beta = NEW_NUMERIC(np)); nprotect++;
   PROTECT(beta_names = NEW_STRING(np)); nprotect++;
   for (i = 0; i < np; i++) {
-    snprintf(tmp,BUFSIZ,"marg.%ld",i+1);
+    snprintf(tmp,BUFSIZ,"marg.%d",i+1);
     SET_STRING_ELT(beta_names,i,mkChar(tmp));
   }
   SET_NAMES(beta,beta_names);

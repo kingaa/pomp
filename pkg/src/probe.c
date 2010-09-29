@@ -33,7 +33,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   int nprobe, nsims, nvars, ntimes, nvals;
   int xdim[2];
   double *xp, *yp;
-  int p, s, i, j, k, len0, len = 0;
+  int p, s, i, j, k, len0 = 0, len = 0;
 
   PROTECT(nsim = AS_INTEGER(nsim)); nprotect++;
   if ((LENGTH(nsim)>1) || (INTEGER(nsim)[0]<=0))
@@ -78,6 +78,8 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   SET_DIMNAMES(retval,valnames);
 
   for (p = 0, k = 0; p < nprobe; p++, k += len) { // loop over probes
+
+    R_CheckUserInterrupt();
 
     for (s = 0; s < nsims; s++) { // loop over simulations
 

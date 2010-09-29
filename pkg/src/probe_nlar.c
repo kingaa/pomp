@@ -3,13 +3,14 @@
 #include "pomp_internal.h"
 #include <stdio.h>
 
-static void pomp_nlar(double *beta, double *y, int n, int nterms, int *lag, int *power);
+static void pomp_nlar(double *beta, double *y, int n, int nterms, int *lag, int *power, double *X);
 
 SEXP probe_nlar (SEXP x, SEXP lags, SEXP powers) {
   int nprotect = 0;
   SEXP y, beta, beta_names;
   int n, nterms;
   int k;
+  double *mm;
   char tmp[BUFSIZ];
 
   n = LENGTH(x);		// n = # of observations
@@ -17,12 +18,13 @@ SEXP probe_nlar (SEXP x, SEXP lags, SEXP powers) {
 
   PROTECT(y = duplicate(AS_NUMERIC(x))); nprotect++; 
   PROTECT(beta = NEW_NUMERIC(nterms)); nprotect++;
-
-  pomp_nlar(REAL(beta),REAL(y),n,nterms,INTEGER(lags),INTEGER(powers));
+  
+  mm = (double *) R_alloc(n*nterms,sizeof(double)); // storage for the model matrix
+  pomp_nlar(REAL(beta),REAL(y),n,nterms,INTEGER(lags),INTEGER(powers),mm);
   
   PROTECT(beta_names = NEW_STRING(nterms)); nprotect++;
   for (k = 0; k < nterms; k++) {
-    snprintf(tmp,BUFSIZ,"nlar.%ld^%ld",INTEGER(lags)[k],INTEGER(powers)[k]);
+    snprintf(tmp,BUFSIZ,"nlar.%d^%d",INTEGER(lags)[k],INTEGER(powers)[k]);
     SET_STRING_ELT(beta_names,k,mkChar(tmp));
   }
   SET_NAMES(beta,beta_names);
@@ -35,7 +37,7 @@ SEXP probe_nlar (SEXP x, SEXP lags, SEXP powers) {
 // The original version of the following code is due to Simon N. Wood.
 // Modifications by AAK.
 static void pomp_nlar(double *beta, double *y, int n, 
-		      int nterms, int *lag, int *power) {
+		      int nterms, int *lag, int *power, double *X) {
   // 'x' is an n vector of data.
   // 'nterms' gives the number of terms on the rhs of the autoregression.
   // 'lag[i]' gives the lag of the ith term on the rhs.
@@ -81,21 +83,19 @@ static void pomp_nlar(double *beta, double *y, int n,
 
   } else {			// data not all the same
       
-    double *X, *Xp;
+    double *Xp;
     int finite[ny];
   
     // test for NA rows in model matrix and response vector
     for (nx = 0, yp = y+maxlag, j = 0; j < ny; j++) {
       finite[j] = (R_FINITE(yp[j])) ? 1 : 0; // finite response?
-      for (i = 0; i < nterms; i++) {
+      for (i = 0; i < nterms; i++)
 	finite[j] = (R_FINITE(yp[j-lag[i]])) ? finite[j] : 0; // finite in model matrix row j, column i
-      }
       if (finite[j]) nx++;
     }
     // nx is now the number of non-NA rows in the model matrix
 
     // build the model matrix, omitting NA rows
-    X = (double *) Calloc(nx*nterms,double);
     for (Xp = X, i = 0; i < nterms; i++) { // work through the terms
       for (j = 0; j < ny; j++) {
 	if (finite[j]) {
@@ -109,11 +109,8 @@ static void pomp_nlar(double *beta, double *y, int n,
     // X is now the nx by nterms model matrix
 
     // drop the NA rows from the response data
-    for (i = 0, j = 0; j < ny; j++) {
-      if (finite[j]) {		// keep this row
-	yp[i++] = yp[j];
-      }
-    }	
+    for (i = 0, j = 0; j < ny; j++)
+      if (finite[j]) yp[i++] = yp[j]; // keep this row
     // response vector is now length nx
 
     {
@@ -131,8 +128,6 @@ static void pomp_nlar(double *beta, double *y, int n,
       for (i = 0; i < nterms; i++) beta[pivot[i]] = b[i]; 
 
     }
-
-    Free(X);
 
   }
 

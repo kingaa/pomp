@@ -16,13 +16,12 @@ SEXP pfilter_computations (SEXP x, SEXP params,
 			   SEXP filtmean, SEXP weights, SEXP tol)
 {
   int nprotect = 0;
-  SEXP pm, pv, fm, ess, fail, loglik;
+  SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue, ess, fail, loglik;
   SEXP retval, retvalnames;
-  double *xpm, *xpv, *xfm, *xw;
+  double *xpm = 0, *xpv = 0, *xfm = 0, *xw = 0, *xx = 0, *xp = 0;
   SEXP dimX, Pnames, pindex;
-  double *xx, *xp;
   int *dim, *pidx, lv;
-  int nvars, npars, nrw, nreps, offset, nlost;
+  int nvars, npars = 0, nrw = 0, nreps, offset, nlost;
   int do_rw, do_pm, do_pv, do_fm, all_fail = 0;
   double sum, sumsq, vsq, ws, w, toler;
   int j, k;

@@ -2,11 +2,9 @@
 // some functions for linear algebra written by Simon N. Wood.
 // codes have been modified by AAK to suit his own peccadilloes
 
-#include <math.h>
-#include <R.h>
+#include "pomp_internal.h"
 #include <R_ext/Linpack.h>
 #include <R_ext/Lapack.h>
-#include "pomp_internal.h"
 
 void pomp_backsolve (double *R, int *r, int *c, double *B, double *C, int *bc) {
   double x;
@@ -21,40 +19,37 @@ void pomp_backsolve (double *R, int *r, int *c, double *B, double *C, int *bc) {
 }
 
 void pomp_qr (double *x, int *r, int *c, int *pivot, double *tau) {
-  int info, lwork = -1, i;
-  double work1, *work;
+  int info, j, lwork = -1;
+  double work1;
   // workspace query
   F77_NAME(dgeqp3)(r,c,x,r,pivot,tau,&work1,&lwork,&info);
   lwork = (int) floor(work1);
-  if ((work1-lwork) >0.5) lwork++;
-  work = (double *) Calloc(lwork,double);
-  // actual call
-  F77_NAME(dgeqp3)(r,c,x,r,pivot,tau,work,&lwork,&info); 
-  Free(work);
-  for (i = 0; i < *c; i++) pivot[i]--;
+  if ((work1-lwork) > 0.5) lwork++;
+  {
+    double work[lwork];
+    // actual call
+    F77_NAME(dgeqp3)(r,c,x,r,pivot,tau,work,&lwork,&info); 
+  }
+  for (j = 0; j < *c; j++) pivot[j]--;
   // ... for 'tis C in which we work and not the 'cursed Fortran...
 }
 
 
 void pomp_qrqy (double *b, double *a, double *tau, int *r, int *c, int *k, int *left, int *tp) {
-  char side, trans='N';
-  int lda, lwork = -1, info;
-  double *work, work1;
+  char side, trans;
+  int lda, info, lwork = -1;
+  double work1;
  
-  if (! *left) { 
-    side='R';
-    lda = *c;
-  } else {
-    side = 'L';
-    lda= *r;
-  }
-  if (*tp) trans='T'; 
+  side = (*left) ? 'L' : 'R';
+  lda = (*left) ? *r : *c;
+  trans = (*tp) ? 'T' : 'N';
   // workspace query
   F77_NAME(dormqr)(&side,&trans,r,c,k,a,&lda,tau,b,r,&work1,&lwork,&info);
   lwork = (int) floor(work1);
   if ((work1-lwork) > 0.5) lwork++;
-  work = (double *) Calloc(lwork,double);
-  // actual call
-  F77_NAME(dormqr)(&side,&trans,r,c,k,a,&lda,tau,b,r,work,&lwork,&info); 
-  Free(work);
+  {
+    double work[lwork];
+    // actual call
+    F77_NAME(dormqr)(&side,&trans,r,c,k,a,&lda,tau,b,r,work,&lwork,&info); 
+  }
 }

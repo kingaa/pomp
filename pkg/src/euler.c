@@ -19,7 +19,7 @@ static void euler_simulator (pomp_onestep_sim *estep,
   int covdim = ndim[5];
   int nzero = ndim[6];
   double covar_fn[covdim];
-  int j, k, p, step, neuler;
+  int j, k, p, step, neuler = 0;
   double dt, tol;
 
   struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
