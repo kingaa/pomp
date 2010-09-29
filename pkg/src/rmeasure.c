@@ -207,7 +207,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
     PROTECT(FCALL = LCONS(XVEC,FCALL)); nprotect++;
     SET_TAG(FCALL,install("x"));
     PROTECT(FCALL = LCONS(fn,FCALL)); nprotect++;
-    OIDX = (int *) Calloc(nobs,int);
+    OIDX = (int *) R_alloc(nobs,sizeof(int));
     FIRST = 1;
     break;
   case 1:				// use native routine
@@ -262,7 +262,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
 
   if (use_native) PutRNGstate();
 
-  if (OIDX != 0) Free(OIDX);
   OIDX = 0;
   FIRST = 0;
 
