@@ -140,3 +140,27 @@ $pvals
 0.13930348 0.12935323 0.16915423 0.22885572 0.89552239 0.12935323 
 
 > 
+> po <- ou2
+> coef(po,c("alpha.2","alpha.3")) <- c(0,0)
+> coef(po,c("sigma.2","sigma.1","sigma.3")) <- c(0,0.0,0.0)
+> coef(po,c("tau")) <- c(0.0)
+> po <- simulate(po)
+> pb <- probe(
++             po,
++             probes=list(
++               probe.acf(var=c("y1","y2"),lag.max=1,type="cor"),
++               probe.nlar("y1",lags=1,powers=1),
++               probe.nlar("y2",lags=1,powers=1)
++               ),
++             nsim=1000,
++             seed=1066L
++             )
+> x <- as.data.frame(po)
+> x <- sweep(x,2,mean(x))
+> y1 <- head(x$y1,-1)
+> z1 <- tail(x$y1,-1)
+> y2 <- head(x$y2,-1)
+> z2 <- tail(x$y2,-1)
+> max(abs(pb@datvals-c(mean(y1*z1)/mean(x$y1^2),mean(y2*z2)/mean(x$y2^2),mean(y1*z1)/mean(y1*y1),mean(y2*z2)/mean(y2*y2))))
+[1] 4.440892e-16
+> 
