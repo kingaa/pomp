@@ -48,7 +48,7 @@
 \S4method{window}{pomp}(x, start, end, \dots)
 \S4method{show}{pomp}(object)
 \S4method{as}{pomp}(object, class)
-as.data.frame.pomp(x)
+as.data.frame.pomp(x, row.names, optional, \dots)
 \S4method{coerce}{pomp,data.frame}(from, to = "data.frame", strict = TRUE)
 \S4method{print}{pomp}(x, \dots)
 \S4method{plot}{pomp}(x, y, variables, panel = lines,
@@ -111,6 +111,9 @@ as.data.frame.pomp(x)
   \item{axes}{
     logical;
     indicates if x- and y- axes should be drawn.
+  }
+  \item{row.names, optional}{
+    ignored.
   }
   \item{\dots}{
     Further arguments (either ignored or passed to underlying functions).
