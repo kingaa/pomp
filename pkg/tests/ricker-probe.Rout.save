@@ -25,6 +25,7 @@ Type 'q()' to quit R.
 > z <- as.numeric(data.array(ricker))
 > 
 > po <- ricker
+> 
 > pb <- probe(
 +             po,
 +             probes=probe.median("y"),
@@ -49,6 +50,78 @@ $pvals
 > 
 > pb <- probe(
 +             po,
++             probes=probe.nlar("y",lags=c(1,2,3),powers=c(1,1,1),transform="sqrt"),
++             nsim=1000,
++             seed=838775L
++             )
+> plot(pb)
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+nlar.1^1 nlar.2^1 nlar.3^1 
+   0.225    0.246    0.801 
+
+$pvals
+ nlar.1^1  nlar.2^1  nlar.3^1 
+0.4515485 0.4935065 0.3996004 
+
+> 
+> pb <- probe(
++             po,
++             probes=probe.nlar("y",lags=c(1,2,3),powers=1,transform="sqrt"),
++             nsim=1000,
++             seed=838775L
++             )
+> plot(pb)
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+nlar.1^1 nlar.2^1 nlar.3^1 
+   0.225    0.246    0.801 
+
+$pvals
+ nlar.1^1  nlar.2^1  nlar.3^1 
+0.4515485 0.4935065 0.3996004 
+
+> 
+> pb <- probe(
++             po,
++             probes=probe.nlar("y",lags=1,powers=c(1,2,3),transform="sqrt"),
++             nsim=1000,
++             seed=838775L
++             )
+> plot(pb)
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+nlar.1^1 nlar.1^2 nlar.1^3 
+   0.440    0.746    0.332 
+
+$pvals
+ nlar.1^1  nlar.1^2  nlar.1^3 
+0.8811189 0.5094905 0.6653347 
+
+> 
+> pb <- probe(
++             po,
 +             probes=probe.marginal(
 +               var="y",
 +               transform=sqrt,
@@ -60,8 +133,8 @@ $pvals
 +             seed=838775L
 +             )
 > pb@datvals
-od.1 od.2 od.3 
-   1    0    0 
+marg.1 marg.2 marg.3 
+     1      0      0 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -71,11 +144,11 @@ $nsim
 [1] 1000
 
 $quantiles
- od.1  od.2  od.3 
-0.731 0.304 0.345 
+marg.1 marg.2 marg.3 
+ 0.731  0.304  0.345 
 
 $pvals
-     od.1      od.2      od.3 
+   marg.1    marg.2    marg.3 
 0.5394605 0.6093906 0.6913087 
 
 > plot(pb)
@@ -100,7 +173,7 @@ $pvals
 +             seed=838775L
 +             )
 > pb@datvals
-        od.1         od.2         od.3      acf.0.y      acf.1.y      acf.2.y 
+      marg.1       marg.2       marg.3      acf.0.y      acf.1.y      acf.2.y 
     1.000000     0.000000     0.000000  3486.365244 -1157.950734  -629.406461 
      acf.3.y      acf.4.y      acf.5.y         mean 
   409.878220  -557.216308   406.454875     4.419695 
@@ -113,11 +186,11 @@ $nsim
 [1] 1000
 
 $quantiles
-   od.1    od.2    od.3 acf.0.y acf.1.y acf.2.y acf.3.y acf.4.y acf.5.y    mean 
+ marg.1  marg.2  marg.3 acf.0.y acf.1.y acf.2.y acf.3.y acf.4.y acf.5.y    mean 
   0.731   0.304   0.345   0.545   0.202   0.443   0.913   0.119   0.744   0.841 
 
 $pvals
-     od.1      od.2      od.3   acf.0.y   acf.1.y   acf.2.y   acf.3.y   acf.4.y 
+   marg.1    marg.2    marg.3   acf.0.y   acf.1.y   acf.2.y   acf.3.y   acf.4.y 
 0.5394605 0.6093906 0.6913087 0.9110889 0.4055944 0.8871129 0.1758242 0.2397602 
   acf.5.y      mean 
 0.5134865 0.3196803 
@@ -139,8 +212,8 @@ $pvals
 +             seed=838775L
 +             )
 > pb@datvals
-od.1 od.2 od.3 
-   1    0    0 
+marg.1 marg.2 marg.3 
+     1      0      0 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -150,11 +223,11 @@ $nsim
 [1] 1000
 
 $quantiles
- od.1  od.2  od.3 
-1.000 0.119 0.252 
+marg.1 marg.2 marg.3 
+ 1.000  0.119  0.252 
 
 $pvals
-       od.1        od.2        od.3 
+     marg.1      marg.2      marg.3 
 0.001998002 0.239760240 0.505494505 
 
 > plot(pb)
@@ -172,7 +245,7 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
- 10.083   0.030  10.115 
+ 10.040   0.015  10.056 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -181,6 +254,62 @@ log.r      3.800000  2.559421  2.302585
 log.sigma -1.203973 -1.203973 -1.203973
 log.phi    2.302585  3.693456  2.995732
 N.0        7.000000  5.657090  5.000000
+e.0        0.000000  0.000000  0.000000
+> 
+> pb <- probe(
++             po,
++             probes=probe.nlar(
++               var="y",
++               transform=sqrt,
++               lags=1,
++               powers=c(1,2,3)
++               ),
++             nsim=1000,
++             seed=838775L
++             )
+> pb@datvals
+   nlar.1^1    nlar.1^2    nlar.1^3 
+-0.48035604 -0.12200818  0.01188791 
+> summary(pb)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 2.302585 -1.203973  2.995732  5.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+nlar.1^1 nlar.1^2 nlar.1^3 
+   1.000    0.053    0.063 
+
+$pvals
+   nlar.1^1    nlar.1^2    nlar.1^3 
+0.001998002 0.107892108 0.127872128 
+
+> plot(pb)
+> 
+> system.time(
++             pm <- probe.match(
++                               pb,
++                               est=c("log.r","log.phi","N.0"),
++                               parscale=c(0.1,0.1,0.1),
++                               nsim=1000,
++                               seed=838775L,
++                               method="Nelder-Mead",
++                               reltol=1e-7,
++                               fail.value=1e9
++                               )
++             )
+   user  system elapsed 
+  6.325   0.006   6.333 
+> plot(pm)
+> 
+> cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
+              truth       est     guess
+log.r      3.800000  1.636451  2.302585
+log.sigma -1.203973 -1.203973 -1.203973
+log.phi    2.302585  3.438907  2.995732
+N.0        7.000000  5.375076  5.000000
 e.0        0.000000  0.000000  0.000000
 > 
 > pb <- probe(
@@ -196,7 +325,7 @@ e.0        0.000000  0.000000  0.000000
 +             seed=838775L
 +             )
 > pb@datvals
-     od.1      od.2      od.3 
+   marg.1    marg.2    marg.3 
 27.509248 -4.882377 -3.481160 
 > summary(pb)
 $coef
@@ -207,11 +336,11 @@ $nsim
 [1] 1000
 
 $quantiles
- od.1  od.2  od.3 
-1.000 0.000 0.255 
+marg.1 marg.2 marg.3 
+ 1.000  0.000  0.255 
 
 $pvals
-       od.1        od.2        od.3 
+     marg.1      marg.2      marg.3 
 0.001998002 0.001998002 0.511488511 
 
 > plot(pb)
@@ -287,16 +416,22 @@ $pvals
 +               probe.acf(
 +                         var="y",
 +                         transform=sqrt,
-+                         lag.max=0,
++                         lag.max=2,
 +                         type="cov"
-+                         )
++                         ),
++               probe.nlar(
++                          var="y",
++                          transform=sqrt,
++                          lags=c(1,2),
++                          powers=1
++                          )
 +               ),
 +             nsim=1000,
 +             seed=838775L
 +             )
 > pb@datvals
-       v  acf.0.y 
-21.33562 20.91728 
+         v    acf.0.y    acf.1.y    acf.2.y   nlar.1^1   nlar.2^1 
+21.3356248 20.9172792 -6.5053300 -5.1051986 -0.4337480 -0.3889323 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -306,12 +441,12 @@ $nsim
 [1] 1000
 
 $quantiles
-      v acf.0.y 
-  0.424   0.424 
+       v  acf.0.y  acf.1.y  acf.2.y nlar.1^1 nlar.2^1 
+   0.424    0.424    0.171    0.294    0.143    0.139 
 
 $pvals
-        v   acf.0.y 
-0.8491508 0.8491508 
+        v   acf.0.y   acf.1.y   acf.2.y  nlar.1^1  nlar.2^1 
+0.8491508 0.8491508 0.3436563 0.5894106 0.2877123 0.2797203 
 
 > plot(pb)
 > 
@@ -360,7 +495,6 @@ Error in .local(object, probes, ...) :
 +     )
 Error in .local(object, probes, ...) : 
   probes return different number of values on different datasets
-> 
 > 
 > dev.off()
 null device 
