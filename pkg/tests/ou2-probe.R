@@ -54,3 +54,21 @@ pb <- probe(
             nsim=200
             )
 summary(pb)
+
+po <- ou2
+coef(po,c("alpha.2","alpha.3")) <- c(0,0)
+coef(po,c("sigma.2","sigma.1","sigma.3")) <- c(0,0.0,0.0)
+coef(po,c("tau")) <- c(0.0)
+po <- simulate(po)
+pb <- probe(
+            po,
+            probes=list(
+              probe.acf(var=c("y1","y2"),lag.max=1,type="cor"),
+              probe.nlar("y1",lags=1,powers=1),
+              probe.nlar("y2",lags=1,powers=1)
+              ),
+            nsim=1000,
+            seed=1066L
+            )
+summary(pb)
+pb@datvals
