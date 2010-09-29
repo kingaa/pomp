@@ -29,8 +29,7 @@ setAs(
       }
       )
 
-as.data.frame.pomp <- function (x)
-  as(x,"data.frame")
+as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 
 ## a simple method to extract the data array
 setMethod(

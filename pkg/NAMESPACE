@@ -46,6 +46,7 @@ exportMethods(
 
 export(
        pomp,
+       as.data.frame.pomp,
        reulermultinom,
        deulermultinom,
        euler.simulate,
