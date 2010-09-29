@@ -74,12 +74,11 @@ SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period) {
   xrd = REAL(xr);
   PROTECT(y = allocMatrix(REALSXP,nx,nb)); nprotect++;
   ydata = REAL(y);
-  val = (double *) Calloc(nb,double);
+  val = (double *) R_alloc(nb,sizeof(double));
   for (j = 0; j < nx; j++) {
     periodic_bspline_basis_eval(xrd[j],pd,deg,nb,val);
     for (k = 0; k < nb; k++) ydata[j+nx*k] = val[k];
   }
-  Free(val);
   UNPROTECT(nprotect);
   return y;
 }
@@ -103,7 +102,7 @@ void periodic_bspline_basis_eval (double x, double period, int degree, int nbasi
   x = fmod(x,period);
   if (x < 0.0) x += period;
   for (k = 0; k < nknots; k++) {
-    bspline_internal(&yy[k],&x,1,k,degree,&knots[0],nknots);
+    bspline_internal(&yy[k],&x,1,k,degree,knots,nknots);
   }
   for (k = 0; k < degree; k++) yy[k] += yy[nbasis+k];
   for (k = 0; k < nbasis; k++) {
@@ -121,7 +120,7 @@ static void bspline_internal (double *y, const double *x, int nx, int i, int p, 
 
   if (p == 0) {
     for (j = 0; j < nx; j++)
-      y[j] = ((knots[i] <= x[j]) && (x[j] < knots[i+1]));
+      y[j] = (double) ((knots[i] <= x[j]) && (x[j] < knots[i+1]));
   } else {
     i2 = i+1;
     p2 = p-1;
