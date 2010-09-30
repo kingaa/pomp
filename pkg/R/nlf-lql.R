@@ -1,5 +1,5 @@
 NLF.LQL <- function (params.fitted, object, params, par.index,
-                     times, lags, period, tensor, seed = NULL, transform = function(x)x,
+                     times, lags, period, tensor, seed = NULL, transform = identity,
                      nrbf = 4, verbose = FALSE,
                      bootstrap = FALSE, bootsamp = NULL) {
 
@@ -31,7 +31,10 @@ NLF.LQL <- function (params.fitted, object, params, par.index,
   ## Test whether the model time series is valid
   if (!all(is.finite(y))) return(FAILED)
 
-  model.ts <- array(dim=c(nrow(data.ts),length(times)-1),dimnames=list(rownames(data.ts),NULL))
+  model.ts <- array(
+                    dim=c(nrow(data.ts),length(times)-1),
+                    dimnames=list(rownames(data.ts),NULL)
+                    )
   model.ts[,] <- apply(y[,1,-1,drop=FALSE],c(2,3),transform)
   data.ts[,] <- apply(data.ts,2,transform)
   

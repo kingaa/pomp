@@ -1,5 +1,5 @@
-NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period, tensor, 
-		      nrbf = 4, verbose = FALSE, plotfit = FALSE,
+NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period,
+                      tensor, nrbf = 4, verbose = FALSE, plotfit = FALSE,
                       bootstrap = FALSE, bootsamp = NULL) {
 
   ## Version 1.0, 4 December 2007, S.P. Ellner and Bruce E. Kendall
