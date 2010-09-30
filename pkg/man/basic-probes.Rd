@@ -9,6 +9,7 @@
 \alias{probe.cov}
 \alias{probe.cor}
 \alias{probe.acf}
+\alias{probe.ccf}
 \alias{probe.marginal}
 \alias{probe.nlar}
 \title{Some probes for partially-observed Markov processes}
@@ -25,6 +26,7 @@ probe.marginal(var, ref, order = 3, diff = 1, transform = identity)
 probe.nlar(var, lags, powers, transform = identity)
 probe.acf(var, lag.max, type = c("covariance", "correlation"),
           transform = identity)
+probe.ccf(vars, lags, transform = identity)
 probe.cov(vars, lag, method = c("pearson", "kendall", "spearman"),
                  transform = identity)
 probe.cor(vars, lag, method = c("pearson", "kendall", "spearman"),
@@ -33,7 +35,7 @@ probe.period(var, kernel.width, transform = identity)
 probe.quantile(var, prob, transform = identity)
 }
 \arguments{
-  \item{var}{
+  \item{var, vars}{
     character; the name(s) of the observed variable(s).
   }
   \item{trim}{
@@ -55,15 +57,14 @@ probe.quantile(var, prob, transform = identity)
   \item{lag.max}{
     The maximum lag at which the ACF is computed.
   }
-  \item{lag}{
+  \item{lag, lags}{
     In \code{probe.cov} and \code{probe.cor}, the lag between time series.
+    In \code{probe.ccf}, a vector of lags between time series.
+    Positive lags correspond to \code{x} advanced relative to \code{y};
+    negative lags, to the reverse.
   }
   \item{type}{
     Compute autocorrelation or autocovariance?
-  }
-  \item{vars}{
-    length-2 character vector;
-    the names or indices of the observed variables between which covariance or correlation is to be computed.
   }
   \item{method}{
     The type of covariance or correlation to compute: see \code{\link{cov}} and \code{\link{cor}}.
