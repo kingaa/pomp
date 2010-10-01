@@ -127,12 +127,10 @@ as.data.frame.pomp(x, row.names, optional, \dots)
     }
     \item{coef<-}{
       Assigns values to the \code{params} slot of the \code{pomp} object.
-      If \code{coef(object)} exists, then \code{coef(object) <- value} has the effect of replacing the parameters of \code{object} with \code{value};
-      the names of \code{value} will be ignored and the names of \code{coef(object)} will be unchanged.
-      If \code{coef(object)} does not exist, then \code{coef(object) <- value} assigns \code{value} to the parameters of \code{object};
-      the names of \code{coef(object)} will be those of \code{value} and an error will be generated if \code{value} does not have names.
+      \code{coef(object) <- value} has the effect of replacing the parameters of \code{object} with \code{value}.
       If \code{coef(object)} exists, then \code{coef(object,pars) <- value} replaces those parameters of \code{object} named in \code{pars} with the elements of \code{value};
       the names of \code{value} are ignored.
+      If some of the names in \code{pars} do not already name parameters in \code{coef(object)}, then they are concatenated.
       If \code{coef(object)} does not exist, then \code{coef(object,pars) <- value} assigns \code{value} to the parameters of \code{object};
       in this case, the names of \code{object} will be \code{pars} and the names of \code{value} will be ignored.
     }

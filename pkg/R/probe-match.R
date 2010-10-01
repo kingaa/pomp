@@ -162,11 +162,9 @@ probe.match <- function(object, start, est = character(0),
     msg <- opt$message
   }
 
-  coef(object,names(params)) <- unname(params)
-
   new(
       "probe.matched.pomp",
-      probe(object,probes=probes,nsim=nsim,seed=seed),
+      probe(object,probes=probes,params=params,nsim=nsim,seed=seed),
       weights=weights,
       fail.value=as.numeric(fail.value),
       value=val,

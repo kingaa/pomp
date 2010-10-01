@@ -19,9 +19,9 @@
 }
 \usage{
   spect(object, \dots)
-  \S4method{spect}{pomp}(object, vars, kernel.width, nsim, seed = NULL, transform = identity,
+  \S4method{spect}{pomp}(object, params, vars, kernel.width, nsim, seed = NULL, transform = identity,
            detrend = c("none","mean","linear","quadratic"), \dots)
-  \S4method{spect}{spect.pomp}(object, vars, kernel.width, nsim, seed = NULL, transform,
+  \S4method{spect}{spect.pomp}(object, params, vars, kernel.width, nsim, seed = NULL, transform,
            detrend, \dots)
   spect.match(object, start, est = character(0),
               vars, nsim, seed = NULL,
@@ -34,6 +34,10 @@
 \arguments{
   \item{object}{
     An object of class \code{pomp}.
+  }
+  \item{params}{
+    optional named numeric vector of model parameters.
+    By default, \code{params=coef(object)}.
   }
   \item{vars}{
     optional; names of observed variables for which the power spectrum will be computed.

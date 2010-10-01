@@ -17,8 +17,8 @@
 }
 \usage{
   probe(object, probes, \dots)
-  \S4method{probe}{pomp}(object, probes, nsim, seed = NULL, \dots)
-  \S4method{probe}{probed.pomp}(object, probes, nsim, seed = NULL, \dots)
+  \S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
+  \S4method{probe}{probed.pomp}(object, probes, params, nsim, seed = NULL, \dots)
   probe.match(object, start, est = character(0),
               probes, weights,
               nsim, seed = NULL,
@@ -35,6 +35,10 @@
     A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \code{pomp}.
     A vector-valued probe must always return a vector of the same size.
     A number of basic examples are provided with the package (see \link{basic.probes}).
+  }
+  \item{params}{
+    optional named numeric vector of model parameters.
+    By default, \code{params=coef(object)}.
   }
   \item{nsim}{
     The number of model simulations to be computed.

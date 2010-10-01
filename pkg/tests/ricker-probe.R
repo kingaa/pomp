@@ -84,7 +84,7 @@ pb@datvals
 summary(pb)
 plot(pb)
 
-coef(po) <- c(log(10),log(0.3),log(20),5,0)
+coef(po) <- c(log.r=log(10),log.sigma=log(0.3),log.phi=log(20),N.0=5,e.0=0)
 
 pb <- probe(
             po,

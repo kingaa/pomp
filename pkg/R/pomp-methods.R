@@ -169,37 +169,36 @@ setMethod(
           "coef<-",
           "pomp",
           function (object, pars, ..., value) {
-            if (length(object@params)==0) {
-              if (missing(pars)) {
-                pars <- names(value)
-                if (is.null(pars))
-                  stop("in ",sQuote("coef<-"),": ",sQuote("value")," must be a named vector")
-              } else {
-                if (length(pars)!=length(value))
-                  stop("in ",sQuote("coef<-"),": ",sQuote("pars")," and ",sQuote("value")," must be of the same length")
-              }
-              object@params <- as.numeric(value)
+            if (missing(pars)) {          ## replace the whole params slot with 'value'
+              pars <- names(value)
+              if (is.null(pars))
+                stop("in ",sQuote("coef<-"),": ",sQuote("value")," must be a named vector")
+              object@params <- numeric(length(pars))
               names(object@params) <- pars
-            } else {
-              if (missing(pars)) {
-                pars <- names(object@params)
-                if (is.null(pars))
-                  stop("bad ",sQuote("pomp")," object: slot ",sQuote("params")," should be a named vector")
-              } else {
-                excl <- !(pars%in%names(object@params))
-                if (any(excl)) {
-                  stop(
-                       "in ",sQuote("coef<-"),": name(s) ",
-                       paste(sapply(pars[excl],sQuote),collapse=","),
-                       " correspond to no parameter(s)"
-                       )
-                }
-              }
-              if (length(pars)!=length(value))
-                stop("in ",sQuote("coef<-"),": ",sQuote("pars")," and ",sQuote("value")," must be of the same length")
-              if (!is.null(names(value)))
+              object@params[] <- as.numeric(value)
+            } else { ## replace or append only the parameters named in 'pars'
+              if (!is.null(names(value))) ## we ignore the names of 'value'
                 warning("in ",sQuote("coef<-"),": names of ",sQuote("value")," are being discarded",call.=FALSE)
-              object@params[pars] <- as.numeric(value)
+              if (length(object@params)==0) { ## no pre-existing 'params' slot
+                object@params <- numeric(length(pars))
+                names(object@params) <- pars
+                object@params[] <- as.numeric(value)
+              } else { ## pre-existing params slot
+                excl <- !(pars%in%names(object@params)) ## new parameters
+                if (any(excl)) {                        ## append parameters
+                  warning(
+                          "in ",sQuote("coef<-"),": name(s) ",
+                          paste(sQuote(pars[excl]),collapse=","),
+                          " are not existing parameter(s);",
+                          " they are being concatenated",
+                          call.=FALSE
+                          )
+                  x <- c(object@params,numeric(length(excl)))
+                  names(x) <- c(names(object@params),pars[excl])
+                  object@params <- x
+                }
+                object@params[pars] <- as.numeric(value)
+              }
             }
             object
           }

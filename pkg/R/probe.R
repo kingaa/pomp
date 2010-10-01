@@ -29,12 +29,16 @@ setGeneric("probe",function(object,probes,...)standardGeneric("probe"))
 setMethod(
           "probe",
           signature(object="pomp"),
-          function (object, probes, nsim = 1, seed = NULL, ...) {
+          function (object, probes, params, nsim = 1, seed = NULL, ...) {
+
             if (!is.list(probes)) probes <- list(probes)
             if (!all(sapply(probes,is.function)))
               stop(sQuote("probes")," must be a function or a list of functions")
             if (!all(sapply(probes,function(f)length(formals(f))==1)))
               stop("each probe must be a function of a single argument")
+
+            if (missing(params)) params <- coef(object)
+
             if (is.null(seed)) {
               if (exists('.Random.seed',where=.GlobalEnv)) {
                 seed <- get(".Random.seed",pos=.GlobalEnv)
@@ -46,12 +50,12 @@ setMethod(
             ## apply probes to model simulations
             simval <- .Call(
                             apply_probe_sim,
-                            object,
-                            nsim,
-                            coef(object),
-                            seed,
-                            probes,
-                            datval
+                            object=object,
+                            nsim=nsim,
+                            params=params,
+                            seed=seed,
+                            probes=probes,
+                            datval=datval
                             )
                             
             nprobes <- length(datval)
@@ -66,6 +70,8 @@ setMethod(
               quants[k] <- sum(simval[,k]<datval[k])/nsim
             }
 
+            coef(object) <- params
+            
             new(
                 "probed.pomp",
                 object,
@@ -82,20 +88,27 @@ setMethod(
 setMethod(
           "probe",
           signature(object="probed.pomp"),
-          function (object, probes, nsim, seed = NULL, ...) {
+          function (object, probes, params, nsim, seed = NULL, ...) {
+
             if (missing(probes)) probes <- object@probes
             if (!is.list(probes)) probes <- list(probes)
             if (!all(sapply(probes,is.function)))
               stop(sQuote("probes")," must be a function or a list of functions")
+
+            if (missing(params)) params <- coef(object)
+
             if (is.null(seed)) {
               if (exists('.Random.seed',where=.GlobalEnv)) {
                 seed <- get(".Random.seed",pos=.GlobalEnv)
               }
             }
+
             if (missing(nsim)) nsim <- nrow(object@simvals)
+
             probe(
                   as(object,"pomp"),
                   probes=probes,
+                  params=params,
                   nsim=nsim,
                   seed=seed,
                   ...

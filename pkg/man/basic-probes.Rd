@@ -6,8 +6,6 @@
 \alias{probe.sd}
 \alias{probe.period}
 \alias{probe.quantile}
-\alias{probe.cov}
-\alias{probe.cor}
 \alias{probe.acf}
 \alias{probe.ccf}
 \alias{probe.marginal}
@@ -27,10 +25,6 @@ probe.nlar(var, lags, powers, transform = identity)
 probe.acf(var, lag.max, type = c("covariance", "correlation"),
           transform = identity)
 probe.ccf(vars, lags, transform = identity)
-probe.cov(vars, lag, method = c("pearson", "kendall", "spearman"),
-                 transform = identity)
-probe.cor(vars, lag, method = c("pearson", "kendall", "spearman"),
-                 transform = identity)
 probe.period(var, kernel.width, transform = identity)
 probe.quantile(var, prob, transform = identity)
 }
@@ -57,27 +51,26 @@ probe.quantile(var, prob, transform = identity)
   \item{lag.max}{
     The maximum lag at which the ACF is computed.
   }
-  \item{lag, lags}{
-    In \code{probe.cov} and \code{probe.cor}, the lag between time series.
+  \item{lags}{
     In \code{probe.ccf}, a vector of lags between time series.
     Positive lags correspond to \code{x} advanced relative to \code{y};
     negative lags, to the reverse.
+
+    In \code{probe.nlar}, a vector of lags present in the nonlinear autoregressive model that will be fit to the actual and simulated data.
+    See Details, below, for a precise description.
+  }
+  \item{powers}{
+    the powers of each term (corresponding to \code{lags}) in the the nonlinear autoregressive model that will be fit to the actual and simulated data.
+    See Details, below, for a precise description.
   }
   \item{type}{
     Compute autocorrelation or autocovariance?
-  }
-  \item{method}{
-    The type of covariance or correlation to compute: see \code{\link{cov}} and \code{\link{cor}}.
   }
   \item{ref}{
     empirical reference distribution.
     Simulated data will be regressed against the values of \code{ref}, sorted and, optionally, differenced.
     The resulting regression coefficients capture information about the shape of the marginal distribution.
     A good choice for \code{ref} is the data itself.
-  }
-  \item{lags, powers}{
-    the lags and powers, respectively, specifying the nonlinear autoregressive model that will be fit to the actual and simulated data.
-    See Details, below, for a precise description.
   }
   \item{order}{
     order of polynomial regression.

@@ -19,8 +19,6 @@ Type 'q()' to quit R.
 > set.seed(1066L)
 > 
 > data(ou2)
-> po <- ou2
-> coef(po,c("x1.0","x2.0","alpha.1","alpha.4")) <- c(0,0,0.1,0.2)
 > 
 > pm.ou2 <- probe(
 +                 ou2,
@@ -33,7 +31,13 @@ Type 'q()' to quit R.
 +                 nsim=500
 +                 )
 > pm.po <- probe(
-+                po,
++                ou2,
++                params=c(
++                  alpha.1=0.1,alpha.2=-0.5,alpha.3=0.3,alpha.4=0.2,
++                  sigma.1=3,sigma.2=-0.5,sigma.3=2,
++                  tau=1,
++                  x1.0=0,x2.0=0
++                  ),
 +                probes=list(
 +                  y1.mean=probe.mean(var="y1"),
 +                  y2.mean=probe.mean(var="y2"),
@@ -83,8 +87,8 @@ $pvals
 +                 ou2,
 +                 probes=list(
 +                   y1acf=probe.acf(var="y1",lag.max=2,type="corr"),
-+                   y2.cov12=probe.cov(vars=c("y1"),lag=12,method="spearman"),
-+                   y12.cov8=probe.cov(vars=c("y2","y1"),lag=8,method="pearson")
++                   y2acf=probe.acf(var=c("y2"),lag.max=2),
++                   y12ccf=probe.ccf(var=c("y2","y1"),lags=c(3,8))
 +                   ),
 +                 nsim=500
 +                 )
@@ -98,12 +102,16 @@ $nsim
 [1] 500
 
 $quantiles
-y1acf.acf.1.y1 y1acf.acf.2.y1       y2.cov12       y12.cov8 
-         0.092          0.054          0.726          0.462 
+y1acf.acf.1.y1 y1acf.acf.2.y1 y2acf.acf.0.y2 y2acf.acf.1.y2 y2acf.acf.2.y2 
+         0.092          0.054          0.052          0.052          0.050 
+  y12ccf.ccf.3   y12ccf.ccf.8 
+         0.056          0.364 
 
 $pvals
-y1acf.acf.1.y1 y1acf.acf.2.y1       y2.cov12       y12.cov8 
-     0.1876248      0.1117764      0.5508982      0.9261477 
+y1acf.acf.1.y1 y1acf.acf.2.y1 y2acf.acf.0.y2 y2acf.acf.1.y2 y2acf.acf.2.y2 
+     0.1876248      0.1117764      0.1077844      0.1077844      0.1037924 
+  y12ccf.ccf.3   y12ccf.ccf.8 
+     0.1157685      0.7305389 
 
 > 
 > pb <- probe(
@@ -163,4 +171,59 @@ $pvals
 > z2 <- tail(x$y2,-1)
 > max(abs(pb@datvals-c(mean(y1*z1)/mean(x$y1^2),mean(y2*z2)/mean(x$y2^2),mean(y1*z1)/mean(y1*y1),mean(y2*z2)/mean(y2*y2))))
 [1] 4.440892e-16
+> 
+> po <- simulate(ou2)
+> pb <- probe(
++             po,
++             probes=list(
++               probe.acf(var=c("y1"),lag.max=2,type="cov"),
++               probe.ccf(vars=c("y1","y1"),lags=c(0,1,2))
++               ),
++             nsim=1000,
++             seed=1066L
++             )
+> plot(pb)
+> summary(pb)
+$coef
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+
+$nsim
+[1] 1000
+
+$quantiles
+acf.0.y1 acf.1.y1 acf.2.y1    ccf.0    ccf.1    ccf.2 
+   0.117    0.101    0.200    0.117    0.101    0.200 
+
+$pvals
+ acf.0.y1  acf.1.y1  acf.2.y1     ccf.0     ccf.1     ccf.2 
+0.2357642 0.2037962 0.4015984 0.2357642 0.2037962 0.4015984 
+
+> 
+> pb <- probe(
++             po,
++             probes=probe.ccf(vars=c("y1","y2"),lags=c(-5,-3,1,4,8)),
++             nsim=1000,
++             seed=1066L
++             )
+> plot(pb)
+> summary(pb)
+$coef
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+
+$nsim
+[1] 1000
+
+$quantiles
+ccf.-5 ccf.-3  ccf.1  ccf.4  ccf.8 
+ 0.220  0.185  0.919  0.831  0.174 
+
+$pvals
+   ccf.-5    ccf.-3     ccf.1     ccf.4     ccf.8 
+0.4415584 0.3716284 0.1638362 0.3396603 0.3496503 
+
+> 
+> 
+> 
 > 

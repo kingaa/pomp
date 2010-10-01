@@ -197,7 +197,7 @@ $pvals
 
 > plot(pb)
 > 
-> coef(po) <- c(log(10),log(0.3),log(20),5,0)
+> coef(po) <- c(log.r=log(10),log.sigma=log(0.3),log.phi=log(20),N.0=5,e.0=0)
 > 
 > pb <- probe(
 +             po,
@@ -245,7 +245,7 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
- 10.040   0.015  10.056 
+  9.983   0.015  10.000 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -301,7 +301,7 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
-  6.325   0.006   6.333 
+  6.330   0.007   6.337 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))

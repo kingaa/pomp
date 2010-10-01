@@ -220,12 +220,11 @@ spect.match <- function(object, start, est = character(0),
     msg <- opt$message
   }
 
-  coef(object,names(params)) <- unname(params)
-
   new(
       "spect.matched.pomp",
       spect(
             object,
+            params=params,
             vars=vars,
             kernel.width=kernel.width,
             nsim=nsim,

@@ -22,7 +22,7 @@ Type 'q()' to quit R.
 > set.seed(64857673L)
 > 
 > po <- ricker
-> coef(po) <- c(log(2),log(1),log(20),7,0)
+> coef(po) <- c(log.r=log(2),log.sigma=log(1),log.phi=log(20),N.0=7,e.0=0)
 > 
 > pf.tr <- pfilter(ricker,Np=1000,max.fail=50)
 > pf.po <- pfilter(po,Np=1000,max.fail=50)
@@ -60,4 +60,30 @@ loglik    -142.74 -142.24 -266.548
 > lines(30:50,tj.2[1,,-1],col='red',lwd=2)
 > max(abs(tj.1[,,time(ricker,t0=T)>=30]-tj.2[,,-1]))
 [1] 0
+> 
+> data(ricker)
+> po <- ricker
+> try(
++     coef(po,"r")
++     )
+Error in .local(object, ...) : 
+  in 'coef': name(s) 'r' correspond to no parameter(s)
+> coef(po,c("r","phi")) <- c(0,0)
+Warning message:
+in 'coef<-': name(s) 'r','phi' are not existing parameter(s); they are being concatenated 
+> coef(po,c("log.r","log.phi")) <- c(a=0,b=0)
+Warning message:
+in 'coef<-': names of 'value' are being discarded 
+> coef(po,c("log.r","log.phi")) <- 0
+> coef(po) <- c(log.phi=0,log.r=3.5,N.0=10,e.0=0,log.sigma=-Inf)
+> coef(po)
+  log.phi     log.r       N.0       e.0 log.sigma 
+      0.0       3.5      10.0       0.0      -Inf 
+> coef(po,"new") <- 3
+Warning message:
+in 'coef<-': name(s) 'new' are not existing parameter(s); they are being concatenated 
+> plot(simulate(po))
+> coef(po)
+  log.phi     log.r       N.0       e.0 log.sigma       new 
+      0.0       3.5      10.0       0.0      -Inf       3.0 
 > 

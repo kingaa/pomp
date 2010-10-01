@@ -76,8 +76,6 @@ export(
        probe.acf,
        probe.ccf,
        probe.nlar,
-       probe.cov,
-       probe.cor,
        probe.marginal,
        probe.match,
        spect.match

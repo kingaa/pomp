@@ -2,8 +2,6 @@ library(pomp)
 set.seed(1066L)
 
 data(ou2)
-po <- ou2
-coef(po,c("x1.0","x2.0","alpha.1","alpha.4")) <- c(0,0,0.1,0.2)
 
 pm.ou2 <- probe(
                 ou2,
@@ -16,7 +14,13 @@ pm.ou2 <- probe(
                 nsim=500
                 )
 pm.po <- probe(
-               po,
+               ou2,
+               params=c(
+                 alpha.1=0.1,alpha.2=-0.5,alpha.3=0.3,alpha.4=0.2,
+                 sigma.1=3,sigma.2=-0.5,sigma.3=2,
+                 tau=1,
+                 x1.0=0,x2.0=0
+                 ),
                probes=list(
                  y1.mean=probe.mean(var="y1"),
                  y2.mean=probe.mean(var="y2"),
@@ -36,8 +40,8 @@ pm.ou2 <- probe(
                 ou2,
                 probes=list(
                   y1acf=probe.acf(var="y1",lag.max=2,type="corr"),
-                  y2.cov12=probe.cov(vars=c("y1"),lag=12,method="spearman"),
-                  y12.cov8=probe.cov(vars=c("y2","y1"),lag=8,method="pearson")
+                  y2acf=probe.acf(var=c("y2"),lag.max=2),
+                  y12ccf=probe.ccf(var=c("y2","y1"),lags=c(3,8))
                   ),
                 nsim=500
                 )

@@ -1,3 +1,8 @@
+NEW IN VERSION 0.34-1:
+    o 'coef<-' now behaves like ordinary vector assignment.
+    o 'probe' and 'spect' now take an argument 'params'
+    o 'probe.cov' and 'probe.cor' have been removed in favor of 'probe.acf' and 'probe.ccf'
+    
 NEW IN VERSION 0.33-1:
     o Major improvements in speed in the probe-matching routines have been realized by coding the computationally-intensive portions of these calculations in C.  
 

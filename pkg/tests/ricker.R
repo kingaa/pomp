@@ -5,7 +5,7 @@ data(ricker)
 set.seed(64857673L)
 
 po <- ricker
-coef(po) <- c(log(2),log(1),log(20),7,0)
+coef(po) <- c(log.r=log(2),log.sigma=log(1),log.phi=log(20),N.0=7,e.0=0)
 
 pf.tr <- pfilter(ricker,Np=1000,max.fail=50)
 pf.po <- pfilter(po,Np=1000,max.fail=50)
@@ -35,3 +35,17 @@ plot(time(ricker),tj.1[1,,-1],type='l')
 tj.2 <- trajectory(ricker,times=c(0,30:50))
 lines(30:50,tj.2[1,,-1],col='red',lwd=2)
 max(abs(tj.1[,,time(ricker,t0=T)>=30]-tj.2[,,-1]))
+
+data(ricker)
+po <- ricker
+try(
+    coef(po,"r")
+    )
+coef(po,c("r","phi")) <- c(0,0)
+coef(po,c("log.r","log.phi")) <- c(a=0,b=0)
+coef(po,c("log.r","log.phi")) <- 0
+coef(po) <- c(log.phi=0,log.r=3.5,N.0=10,e.0=0,log.sigma=-Inf)
+coef(po)
+coef(po,"new") <- 3
+plot(simulate(po))
+coef(po)
