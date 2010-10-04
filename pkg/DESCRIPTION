@@ -13,7 +13,7 @@ Imports: mvtnorm, subplex, deSolve
 License: GPL(>= 2)
 LazyLoad: true
 LazyData: false
-Collate: aaa.R eulermultinom.R euler.R plugins.R 
+Collate: aaa.R eulermultinom.R plugins.R 
 	 slice-design.R profile-design.R sobol.R bsplines.R 
 	 pomp-fun.R pomp.R pomp-methods.R rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R 
 	 dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R simulate-pomp.R trajectory-pomp.R plot-pomp.R 
