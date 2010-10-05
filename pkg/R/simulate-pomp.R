@@ -82,7 +82,7 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
     retval <- lapply(
                      seq_len(nreps),
                      function (rep) {
-                       po <- as(object,'pomp') # copy the pomp object
+                       po <- as(object,'pomp')
                        po@t0 <- t0
                        po@times <- times
                        po@params <- params[,rep]
@@ -93,19 +93,17 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                        po
                      }
                      )
-    if (nreps==1) {
-      retval <- retval[[1]]
-    }
-  } else if (!obs && states) {               # return states only
+    if (nreps==1) retval <- retval[[1]]
+  } else if (!obs && states)            # return states only
     retval <- x
-  } else if (obs && !states) {        # return only observations
+  else if (obs && !states)              # return only observations
     retval <- y
-  } else {                     # return both states and observations
+  else                           # return both states and observations
     retval <- list(
                    states = x,
                    obs = y
                    )
-  }
+
   retval
 }
 
