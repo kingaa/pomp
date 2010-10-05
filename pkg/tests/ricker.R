@@ -31,10 +31,10 @@ res <- rbind(
 print(res,digits=3)
 
 tj.1 <- trajectory(ricker)
-plot(time(ricker),tj.1[1,,-1],type='l')
-tj.2 <- trajectory(ricker,times=c(0,30:50))
-lines(30:50,tj.2[1,,-1],col='red',lwd=2)
-max(abs(tj.1[,,time(ricker,t0=T)>=30]-tj.2[,,-1]))
+plot(time(ricker),tj.1[1,,],type='l')
+tj.2 <- trajectory(ricker,times=c(30:50),t0=0)
+lines(30:50,tj.2[1,,],col='red',lwd=2)
+max(abs(tj.1[,,time(ricker)>=30]-tj.2[,,]))
 
 data(ricker)
 po <- ricker

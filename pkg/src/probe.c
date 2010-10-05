@@ -28,7 +28,7 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
 
 SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval) {
   int nprotect = 0;
-  SEXP y, obs, call, names;
+  SEXP y, obs, times, t0, call, names;
   SEXP retval, val, valnames, x;
   int nprobe, nsims, nvars, ntimes, nvals;
   int xdim[2];
@@ -44,11 +44,17 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   nprobe = LENGTH(probes);
   nvals = LENGTH(datval);
   PROTECT(names = GET_NAMES(datval)); nprotect++; 
+  PROTECT(t0 = GET_SLOT(object,install("t0"))); nprotect++;
+  PROTECT(times = GET_SLOT(object,install("times"))); nprotect++;
 
   // call 'simulate' to get simulated data sets
   PROTECT(obs = NEW_LOGICAL(1)); nprotect++;
   LOGICAL(obs)[0] = 1;		// we set obs=TRUE
-  PROTECT(call = LCONS(obs,R_NilValue)); nprotect++;
+  PROTECT(call = LCONS(t0,R_NilValue)); nprotect++;
+  SET_TAG(call,install("t0"));
+  PROTECT(call = LCONS(times,call)); nprotect++;
+  SET_TAG(call,install("times"));
+  PROTECT(call = LCONS(obs,call)); nprotect++;
   SET_TAG(call,install("obs"));
   PROTECT(call = LCONS(params,call)); nprotect++;
   SET_TAG(call,install("params"));
@@ -66,7 +72,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   ntimes = INTEGER(GET_DIM(y))[2]; // recall that 'simulate' returns a value for time zero
 
   // set up temporary storage
-  xdim[0] = nvars; xdim[1] = ntimes-1; 
+  xdim[0] = nvars; xdim[1] = ntimes;
   PROTECT(x = makearray(2,xdim)); nprotect++;
   setrownames(x,GET_ROWNAMES(GET_DIMNAMES(y)),2);
 
@@ -83,10 +89,10 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
 
     for (s = 0; s < nsims; s++) { // loop over simulations
 
-      // copy the data from y[,s,-1] to x[,]
+      // copy the data from y[,s,] to x[,]
       xp = REAL(x);
-      yp = REAL(y)+nvars*(s+nsims);
-      for (j = 1; j < ntimes; j++, yp += nvars*nsims) {
+      yp = REAL(y)+nvars*s;
+      for (j = 0; j < ntimes; j++, yp += nvars*nsims) {
 	for (i = 0; i < nvars; i++, xp++) *xp = yp[i];
       }
 

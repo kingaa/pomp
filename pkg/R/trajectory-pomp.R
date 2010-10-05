@@ -3,6 +3,39 @@ trajectory <- function (object, params, times, t0, ...)
 setGeneric('trajectory')
 
 trajectory.internal <- function (object, params, times, t0, ...) {
+
+  warn.condition <- missing(t0)
+  if (warn.condition) 
+    warning(
+            "The default behavior of ",sQuote("trajectory")," has changed.\n",
+            "See the documentation (",dQuote("pomp?trajectory"),") for details\n",
+            "and set the ",sQuote("times")," and ",sQuote("t0"),
+            " arguments appropriately to compensate.\n",
+            call.=FALSE
+            )
+
+  if (missing(times)) {
+    times <- time(object,t0=FALSE)
+  } else {
+    times <- as.numeric(times)
+  }
+
+  if (length(times)==0)
+    stop("if ",sQuote("times")," is empty, there is no work to do",call.=FALSE)
+  
+  if (any(diff(times)<0))
+    stop(sQuote("times")," must be a nondecreasing sequence of times",call.=FALSE)
+
+  if (missing(t0)) {
+    t0 <- timezero(object)
+  } else {
+    t0 <- as.numeric(t0)
+  }
+  
+  if (t0>times[1])
+    stop("the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
+  ntimes <- length(times)
+  
   if (missing(params)) {
     params <- coef(object)
     if (length(params)==0) {
@@ -26,12 +59,7 @@ trajectory.internal <- function (object, params, times, t0, ...) {
     stop("pfilter error: ",sQuote("params")," must have rownames",call.=FALSE)
   params <- as.matrix(params)
 
-  if (missing(times))
-    times <- time(object,t0=TRUE)
-  else
-    times <- as.numeric(times)
-
-  tm <- times[1]
+  tm <- t0
   x0 <- init.state(object,params=params,t0=tm)
   nm <- rownames(x0)
   dim(x0) <- c(nrow(x0),nrep,1)
@@ -59,7 +87,7 @@ trajectory.internal <- function (object, params, times, t0, ...) {
              X <- try(
                       deSolve::lsoda(
                                      y=x0[,j,1],
-                                     times=times,
+                                     times=c(t0,times),
                                      func=function(t,y,parms){
                                        list(
                                             skeleton(
@@ -84,7 +112,7 @@ trajectory.internal <- function (object, params, times, t0, ...) {
                stop("trajectory error: error in ",sQuote("lsoda"),call.=FALSE)
              if (attr(X,'istate')[[1]]!=2)
                warning("abnormal exit from ",sQuote("lsoda"),", istate = ",attr(X,'istate'),call.=FALSE)
-             x[,j,] <- t(X[,-1])
+             x[,j,] <- t(X[-1,-1])
            }
          },
          unspecified=stop("deterministic skeleton not specified")

@@ -1,5 +1,55 @@
+2010-10-04  kingaa
+
+	* [r360] R/trajectory-pomp.R: - put guts of trajectory calculation
+	  into the named function 'trajectory.internal'
+	* [r359] man/euler.Rd: - remove documentation for removed plugins
+	* [r358] DESCRIPTION, NAMESPACE, R/euler.R: - remove the functions
+	  'euler.simulate', 'onestep.simulate', and 'onestep.density',
+	  deprecated since version 0.29-1
+	* [r357] DESCRIPTION, R/aaa.R: - add a banner message on
+	  attachment.
+	* [r356] R/simulate-pomp.R: - 'simulate.internal' is now the named
+	  function for the guts of 'simulate'
+
+2010-10-01  kingaa
+
+	* [r355] DESCRIPTION, NAMESPACE, R/compare-mif.R,
+	  R/compare-pmcmc.R, R/compare.mif.R, R/compare.pmcmc.R,
+	  R/init-state-pomp.R, R/init.state-pomp.R, R/mif.R, R/nlf-guts.R,
+	  R/pmcmc.R, R/pomp-methods.R, R/probe-match.R, R/probe.R,
+	  R/spect-match.R, R/spect.R, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/NEWS, man/basic-probes.Rd,
+	  man/pomp-methods.Rd, man/probe.Rd, man/spect.Rd,
+	  tests/ou2-probe.R, tests/ou2-probe.Rout.save,
+	  tests/ricker-probe.R, tests/ricker-probe.Rout.save,
+	  tests/ricker-spect.R, tests/ricker.R, tests/ricker.Rout.save: -
+	  fix the behavior of 'coef<-' to make it match simple vector
+	  replacement by name. This is not a backward-compatible change but
+	  should be stable since it so much simpler, more flexible, and
+	  more intuitive.
+	  - drop unneeded 'as.vector' in 'nlf'
+	  - add 'params' argument to 'probe' and 'spect'. This allows the
+	  user to override the default 'params=coef(object)'.
+	  - add tests for 'spect' in 'tests/ricker-spect.R'
+	  - drop the slow 'probe.cor' and 'probe.cov' in favor of
+	  'probe.acf' and 'probe.ccf' which are written in C.
+	  - change the names of some source files
+
+2010-09-30  kingaa
+
+	* [r354] R/nlf-guts.R, R/nlf-lql.R, R/nlf.R: - cosmetology
+	* [r353] man/basic-probes.Rd: - update the man page to include
+	  'probe.ccf'
+
 2010-09-29  kingaa
 
+	* [r352] DESCRIPTION, NAMESPACE, R/basic-probes.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-first-mif.rda, inst/doc/ou2-trajmatch.rda,
+	  src/probe_ccf.c, tests/ou2-probe.R: - add in a new probe,
+	  'probe.ccf', which computes the CCF of two variables at various
+	  lags
 	* [r351] R/basic-probes.R, src/mat.c, src/pomp_internal.h,
 	  src/pomp_mat.h, src/probe_marginal.c, src/probe_nlar.c: - remove
 	  'mat.c' in favor of inline functions for regression, defined in

@@ -12,12 +12,13 @@ traj.match <- function (object, start, est, method = "Nelder-Mead", gr = NULL, .
     par.est <- as.integer(est)
   }
   guess <- start[par.est]
+  t0 <- timezero(object)
   opt <- optim(
                par=guess,
                fn=function (x) {
                  p <- start
                  p[par.est] <- x
-                 x <- trajectory(object,params=p)[,,-1,drop=FALSE]
+                 x <- trajectory(object,params=p,t0=t0)
                  d <- dmeasure(
                                object,
                                y=data.array(object),

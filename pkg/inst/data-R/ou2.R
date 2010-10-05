@@ -2,12 +2,12 @@ require(pomp)
 
 simulate(
          pomp( 
-              times=seq(1,100),
+              times=seq(1,101),
               data=rbind(
-                y1=rep(0,100),
-                y2=rep(0,100)
+                y1=rep(0,101),
+                y2=rep(0,101)
                 ),
-              t0=0,
+              t0=1,
               rprocess = function (xstart, times, params, paramnames, ...) {
                 nvar <- nrow(xstart)
                 npar <- nrow(params)
@@ -84,3 +84,6 @@ simulate(
          nsim=1,
          seed=377456545L
          ) -> ou2
+
+ou2 <- window(ou2,end=100)
+timezero(ou2) <- 0

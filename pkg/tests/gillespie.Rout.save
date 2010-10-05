@@ -1,6 +1,6 @@
 
-R version 2.10.1 (2009-12-14)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,9 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: deSolve
-Loading required package: subplex
-Loading required package: mvtnorm
 > 
 > params <- c(
 +             nu=log(1/70),
@@ -112,7 +109,7 @@ Loading required package: mvtnorm
 > 
 > data(gillespie.sir)
 > 
-> tail(as(simulate(gillespie.sir,times=time(gsir,t0=T),seed=1165270654L),"data.frame"))
+> tail(as(simulate(gillespie.sir,times=time(gsir),t0=timezero(gsir),seed=1165270654L),"data.frame"))
         time reports     S    I      R      N cases
 100 1.903846      52 65867 1143 932864 999874   479
 101 1.923077      59 65570 1150 933149 999869   545

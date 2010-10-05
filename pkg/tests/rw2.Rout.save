@@ -255,7 +255,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x1831540>
+<environment: 0x290b0f8>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -268,7 +268,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x1831540>
+<environment: 0x290b0f8>
 initializer = 
 function (params, t0, ...) 
 {
@@ -308,13 +308,53 @@ Error : init.state error: error in user 'initializer'
 > rw2 <- examples[[1]]
 > 
 > y <- simulate(rw2,params=p,obs=T,states=T)
+Warning message:
+The default behavior of 'simulate' has changed.
+See the documentation ("pomp?simulate") for details
+and set the 'times' and 't0' arguments appropriately to compensate.
+ 
 > y <- simulate(rw2,params=p,obs=T)
+Warning message:
+The default behavior of 'simulate' has changed.
+See the documentation ("pomp?simulate") for details
+and set the 'times' and 't0' arguments appropriately to compensate.
+ 
 > x <- simulate(rw2,params=p,states=T)
+Warning message:
+The default behavior of 'simulate' has changed.
+See the documentation ("pomp?simulate") for details
+and set the 'times' and 't0' arguments appropriately to compensate.
+ 
 > x <- simulate(rw2,nsim=10,params=p,states=T)
+Warning message:
+The default behavior of 'simulate' has changed.
+See the documentation ("pomp?simulate") for details
+and set the 'times' and 't0' arguments appropriately to compensate.
+ 
 > x <- simulate(rw2,nsim=10,params=p[,1],states=T)
+Warning message:
+The default behavior of 'simulate' has changed.
+See the documentation ("pomp?simulate") for details
+and set the 'times' and 't0' arguments appropriately to compensate.
+ 
 > x <- simulate(rw2,nsim=10,params=p[,1],obs=T,states=T)
+Warning message:
+The default behavior of 'simulate' has changed.
+See the documentation ("pomp?simulate") for details
+and set the 'times' and 't0' arguments appropriately to compensate.
+ 
 > x <- simulate(rw2,nsim=10,params=p[,1],obs=T,states=T)
+Warning message:
+The default behavior of 'simulate' has changed.
+See the documentation ("pomp?simulate") for details
+and set the 'times' and 't0' arguments appropriately to compensate.
+ 
 > x <- simulate(rw2,nsim=10,params=p,obs=T,states=T)
+Warning message:
+The default behavior of 'simulate' has changed.
+See the documentation ("pomp?simulate") for details
+and set the 'times' and 't0' arguments appropriately to compensate.
+ 
 > x <- simulate(rw2,nsim=10,params=p[,1])
 > 
 > x <- data.array(rw2)
@@ -333,7 +373,7 @@ Error : init.state error: error in user 'initializer'
 > max(abs(c1-d1),na.rm=T)
 [1] 0
 > max(abs(e1-f1),na.rm=T)
-[1] 5.551115e-17
+[1] 1.110223e-16
 > 
 > po <- pomp(
 +            rprocess = rw.rprocess,
@@ -357,7 +397,7 @@ Error : init.state error: error in user 'initializer'
 > max(abs(c2-d2),na.rm=T)
 [1] 0
 > max(abs(e2-f2),na.rm=T)
-[1] 5.551115e-17
+[1] 1.110223e-16
 > 
 > max(abs(a1-a2))
 [1] 0
@@ -379,7 +419,7 @@ Error : init.state error: error in user 'initializer'
 > max(abs(c3-d3),na.rm=T)
 [1] 0
 > max(abs(e3-f3),na.rm=T)
-[1] 5.551115e-17
+[1] 1.110223e-16
 > 
 > max(abs(a2-a3))
 [1] 0
@@ -398,18 +438,18 @@ Error : init.state error: error in user 'initializer'
 > timezero(new) <- 19
 > print(simulate(new))
 data and states:
-   time         y1         y2         x1         x2
-1    20  1.0889842 -2.9306255  0.3928615 -3.6019244
-2    21  0.6190426 -3.5224007  0.3502208 -2.7385549
-3    22 -0.9996197 -3.9952599 -1.3872796 -2.2270139
-4    23 -1.3789056 -2.5477141 -0.4674199 -2.3980597
-5    24  0.2470824  0.0985785  0.4256256 -0.0595737
-6    25  3.5291989  3.9686175  1.2073146  3.1753928
-7    26  2.4044278  5.0563153  0.6048257  4.5525857
-8    27  1.0704905  5.3986777  0.9983714  3.9165344
-9    28 -0.3706092  1.3254624  1.0613907  2.6270702
-10   29  1.2884699  4.0593363  1.4887009  4.8853658
-11   30  0.8533498 -0.7281767  2.3528744 -1.4303754
+   time         y1        y2         x1        x2
+1    20 -1.6884337  7.893126 -1.2104266  5.585134
+2    21 -2.8145700  9.654295 -2.9139462  9.999156
+3    22 -0.7079154 11.427262 -1.2691314 12.803405
+4    23 -1.9663383 13.816879 -1.0336197 14.339870
+5    24 -0.3243582 15.633269 -1.1466245 15.914169
+6    25 -1.4200363  7.390836  0.5447600  7.565067
+7    26  0.6036175 10.634535  0.2617258 11.984714
+8    27 -1.1057599  5.890297 -1.4472311  4.919314
+9    28 -0.8215306  5.446502 -1.4686200  5.261945
+10   29  0.5286784  5.028662  0.3162960  4.086637
+11   30  1.3077022  3.727208  0.3754759  4.471904
 
 call:
 pomp(data = rbind(y1 = rep(0, 100), y2 = rep(0, 100)), times = 1:100, 
@@ -429,9 +469,9 @@ pomp(data = rbind(y1 = rep(0, 100), y2 = rep(0, 100)), times = 1:100,
 > time(rw2) <- seq(1,1000,by=20)
 > x <- simulate(rw2)
 > states(x)[,1:5]
-   [,1]       [,2]        [,3]      [,4]       [,5]
-x1    0  0.1308992  -0.8665404  -2.91768  -15.17674
-x2    0 -1.6507047 -30.2956790 -71.13064 -199.25743
+          [,1]      [,2]      [,3]       [,4]        [,5]
+x1 -0.40921704 -14.37045 -32.07605  -13.11129    8.709396
+x2  0.03288061 -54.89529 -95.67928 -265.48399 -310.134221
 > try(
 +     time(rw2) <- seq(-20,1000,by=20)
 +     )

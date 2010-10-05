@@ -85,4 +85,4 @@ tail(as(gsir,"data.frame"))
 
 data(gillespie.sir)
 
-tail(as(simulate(gillespie.sir,times=time(gsir,t0=T),seed=1165270654L),"data.frame"))
+tail(as(simulate(gillespie.sir,times=time(gsir),t0=timezero(gsir),seed=1165270654L),"data.frame"))

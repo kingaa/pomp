@@ -53,20 +53,19 @@ nlf <- function (object, start, est, lags,
   guess <- params[par.index]
 
   dt.tol <- 1e-3
-  times <- time(object,t0=TRUE)
-  dt <- diff(times[-1])
+  times <- time(object,t0=FALSE)
+  t0 <- timezero(object)
+  dt <- diff(times)
   if (diff(range(dt))>dt.tol*mean(dt))
     stop(sQuote("nlf")," requires evenly spaced sampling times")
-  dt <- times[3]-times[2]
-  t0 <- times[1]
+  dt <- times[2]-times[1]
 
   ## Vector of times to output the simulation
   times <- seq(
                from=t0,
-               to=t0+(nconverge+nasymp)*dt,
+               length=nconverge+nasymp+1,
                by=dt
                )
-
 
   if (eval.only) {
     val <- nlf.objfun(
@@ -75,6 +74,7 @@ nlf <- function (object, start, est, lags,
                       params=params,
                       par.index=par.index,
                       times=times,
+                      t0=t0,
                       lags=lags,
                       period=period,
                       tensor=tensor,
@@ -96,6 +96,7 @@ nlf <- function (object, start, est, lags,
                             params=params,
                             par.index=par.index, 
                             times=times,
+                            t0=t0,
                             lags=lags,
                             period=period,
                             tensor=tensor,
@@ -117,6 +118,7 @@ nlf <- function (object, start, est, lags,
                  params=params,
                  par.index=par.index, 
                  times=times,
+                 t0=t0,
                  lags=lags,
                  period=period,
                  tensor=tensor,
@@ -141,7 +143,8 @@ nlf <- function (object, start, est, lags,
     Jhat <- matrix(0,nfitted,nfitted)
     Ihat <- Jhat
     f0 <- NLF.LQL(fitted,object=object, params=params, par.index=par.index, 
-                  times=times, lags=lags, period=period, tensor=tensor, seed=seed,
+                  times=times, t0=t0,
+                  lags=lags, period=period, tensor=tensor, seed=seed,
                   transform=transform, nrbf=4, 
                   verbose=FALSE)
     F0 <- mean(f0,na.rm=T)
@@ -161,25 +164,25 @@ nlf <- function (object, start, est, lags,
       guess <- fitted
       guess[i] <- fitted[i]-sqrt(2)*h*abs(fitted[i])  
       Fvals[1] <- mean(NLF.LQL(guess,object=object, params=params, par.index=par.index, 
-                               times=times, lags=lags, period=period, tensor=tensor,
+                               times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform=transform,
                                nrbf=4, verbose=FALSE),na.rm=T)
       guess <- fitted
       guess[i] <- fitted[i]-h*abs(fitted[i])
       Fvals[2] <- mean(NLF.LQL(guess,object=object, params=params, par.index=par.index, 
-                               times=times, lags=lags, period=period, tensor=tensor,
+                               times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform=transform, nrbf=4, 
                                verbose=FALSE),na.rm=T)
       guess <- fitted
       guess[i] <- fitted[i]+h*abs(fitted[i])
       Fvals[4] <- mean(NLF.LQL(guess,object=object, params=params, par.index=par.index, 
-                               times=times, lags=lags, period=period, tensor=tensor,
+                               times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform=transform, nrbf=4, 
                                verbose=FALSE),na.rm=T)
       guess <- fitted
       guess[i] <- fitted[i]+sqrt(2)*h*abs(fitted[i])
       Fvals[5] <- mean(NLF.LQL(guess,object=object, params=params, par.index=par.index, 
-                               times=times, lags=lags, period=period, tensor=tensor,
+                               times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform=transform, nrbf=4, 
                                verbose=FALSE),na.rm=T)
       FAILED =  - 999999
@@ -197,13 +200,13 @@ nlf <- function (object, start, est, lags,
       guess.up <- fitted
       guess.up[i] <- guess.up[i]+eps[i]
       f.up <- NLF.LQL(guess.up,object=object, params=params, par.index=par.index, 
-                      times=times, lags=lags, period=period, tensor=tensor,
+                      times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                       seed=seed, transform=transform, nrbf=4, 
                       verbose=FALSE)
       F.up <- mean(f.up,na.rm=T)
 
       f.up2 <- NLF.LQL(guess.up,object=object, params=params, par.index=par.index, 
-                       times=times, lags=lags, period=period, tensor=tensor,
+                       times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                        seed=seed, transform=transform, nrbf=4, 
                        verbose=FALSE)
 
@@ -213,7 +216,7 @@ nlf <- function (object, start, est, lags,
       guess.down <- fitted
       guess.down[i] <- guess.down[i]-eps[i]
       f.down <- NLF.LQL(guess.down,object=object, params=params, par.index=par.index, 
-                        times=times, lags=lags, period=period, tensor=tensor,
+                        times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                         seed=seed, transform=transform, nrbf=4, 
                         verbose=FALSE)
       F.down <- mean(f.down,na.rm=T)
@@ -232,7 +235,7 @@ nlf <- function (object, start, est, lags,
         guess.uu[i] <- guess.uu[i]+eps[i]
         guess.uu[j] <- guess.uu[j]+eps[j]
         F.uu <- mean(NLF.LQL(guess.uu,object=object, params=params, par.index=par.index,
-                             times=times, lags=lags, period=period, tensor=tensor,
+                             times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform=transform, nrbf=4, 
                              verbose=FALSE),na.rm=T)
 
@@ -240,7 +243,7 @@ nlf <- function (object, start, est, lags,
         guess.ud[i] <- guess.ud[i]+eps[i]
         guess.ud[j] <- guess.ud[j]-eps[j]
         F.ud <- mean(NLF.LQL(guess.ud,object=object, params=params, par.index=par.index,
-                             times=times, lags=lags, period=period, tensor=tensor,
+                             times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform=transform, nrbf=4, 
                              verbose=FALSE),na.rm=T) 
 
@@ -248,7 +251,7 @@ nlf <- function (object, start, est, lags,
         guess.du[i] <- guess.du[i]-eps[i]
         guess.du[j] <- guess.du[j]+eps[j]
         F.du <- mean(NLF.LQL(guess.du,object=object, params=params, par.index=par.index,
-                             times=times, lags=lags, period=period, tensor=tensor,
+                             times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform=transform, nrbf=4, 
                              verbose=FALSE),na.rm=T) 
 
@@ -256,7 +259,7 @@ nlf <- function (object, start, est, lags,
         guess.dd[i] <- guess.dd[i]-eps[i]
         guess.dd[j] <- guess.dd[j]-eps[j] 
         F.dd <- mean(NLF.LQL(guess.dd,object=object, params=params, par.index=par.index,
-                             times=times, lags=lags, period=period, tensor=tensor,
+                             times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform=transform, nrbf=4,
                              verbose=FALSE),na.rm=T) 
 

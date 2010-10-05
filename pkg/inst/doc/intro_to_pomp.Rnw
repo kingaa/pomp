@@ -743,9 +743,9 @@ if (file.exists(binary.file)) {
 op <- par(mfrow=c(2,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 plot(time(new.ou2),data.array(new.ou2,"y1"),xlab="",xaxt='n',ylab=expression(y[1]))
 x <- trajectory(new.ou2,params=tm$params)
-lines(time(new.ou2),x["x1",1,-1],lwd=2)
+lines(time(new.ou2),x["x1",1,],lwd=2)
 plot(time(new.ou2),data.array(new.ou2,"y2"),xlab="time",ylab=expression(y[2]))
-lines(time(new.ou2),x["x2",1,-1],lwd=2)
+lines(time(new.ou2),x["x2",1,],lwd=2)
 par(op)
 @ 
 \caption{
@@ -763,7 +763,7 @@ The SIR model is a mainstay of theoretical epidemiology.
 It has the deterministic skeleton
 \begin{equation*}
   \begin{aligned}
-    &\frac{dS}{dt}=\mu\,(N-S)+\beta(t)\,\frac{I}{N}\,S\\
+    &\frac{dS}{dt}=\mu\,(N-S)-\beta(t)\,\frac{I}{N}\,S\\
     &\frac{dI}{dt}=\beta(t)\,\frac{I}{N}\,S-\gamma\,I-\mu\,I\\
     &\frac{dR}{dt}=\gamma\,I-\mu\,R\\
   \end{aligned}

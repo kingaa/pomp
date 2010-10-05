@@ -44,10 +44,10 @@
       Function of prototype \code{initializer(params,t0,\dots)} which gives a vector of initial conditions when given a vector of parameters, \code{params}, and a time \code{t0}.
     }
     \item{states}{
-      An array to hold a trajectory of the unobserved process.
+      An array holding realization of the unobserved process, if it is available (for example, when the 'pomp' object has been created by 'simulate').
     }
     \item{params}{
-      A named numeric vector to hold model parameters.
+      A named numeric vector holding model parameters.
     }
     \item{covar, tcovar}{
       An optional table of covariates.

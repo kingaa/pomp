@@ -1,6 +1,6 @@
 
-R version 2.10.1 (2009-12-14)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,9 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: deSolve
-Loading required package: subplex
-Loading required package: mvtnorm
 > 
 > po <- pomp(
 +            data=rbind(obs=rep(0,1000)),
@@ -64,7 +61,7 @@ Loading required package: mvtnorm
 > po <- simulate(po,params=params)
 > 
 > t <- seq(0,by=0.005,length=50)
-> x <- simulate(po,times=t,states=T,obs=T)
+> x <- simulate(po,times=t,t0=t[1],states=T,obs=T)
 > 
 > print(
 +       dprocess(
@@ -76,8 +73,8 @@ Loading required package: mvtnorm
 +                ),
 +       digits=4
 +       )
-          [,1]      [,2]      [,3]      [,4]      [,5]
-[1,] 0.0005193 0.0005474 0.0007635 0.0006043 0.0003857
+         [,1]      [,2]      [,3]      [,4]      [,5]
+[1,] 0.001204 0.0005132 0.0005411 0.0007547 0.0005974
 > 
 > print(
 +       dmeasure(
@@ -90,8 +87,8 @@ Loading required package: mvtnorm
 +                ),
 +       digits=4
 +       )
-       [,1]  [,2]   [,3]   [,4]   [,5]   [,6]
-[1,] -8.885 -7.98 -8.185 -11.11 -7.935 -8.135
+       [,1]   [,2]   [,3]   [,4]   [,5]   [,6]
+[1,] -7.915 -8.896 -7.992 -8.196 -11.12 -7.946
 > 
 > print(
 +       drop(
@@ -113,9 +110,14 @@ Loading required package: mvtnorm
 >                
 > params <- cbind(c(n.0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),c(n.0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1))
 > x <- trajectory(po,params=params)
+Warning message:
+The default behavior of 'trajectory' has changed.
+See the documentation ("pomp?trajectory") for details
+and set the 'times' and 't0' arguments appropriately to compensate.
+ 
 > pdf(file='logistic.pdf')
 > plot(po)
-> matplot(time(po,t0=TRUE),t(x['n',,]),type='l')
+> matplot(time(po),t(x['n',,]),type='l')
 > dev.off()
 null device 
           1 

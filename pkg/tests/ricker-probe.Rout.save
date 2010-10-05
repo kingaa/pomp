@@ -42,10 +42,10 @@ $nsim
 [1] 1000
 
 $quantiles
-[1] 0.784
+[1] 0.782
 
 $pvals
-[1] 0.3376623
+[1] 0.3496503
 
 > 
 > pb <- probe(
@@ -65,11 +65,11 @@ $nsim
 
 $quantiles
 nlar.1^1 nlar.2^1 nlar.3^1 
-   0.225    0.246    0.801 
+   0.166    0.251    0.803 
 
 $pvals
  nlar.1^1  nlar.2^1  nlar.3^1 
-0.4515485 0.4935065 0.3996004 
+0.3336663 0.5034965 0.3956044 
 
 > 
 > pb <- probe(
@@ -89,11 +89,11 @@ $nsim
 
 $quantiles
 nlar.1^1 nlar.2^1 nlar.3^1 
-   0.225    0.246    0.801 
+   0.166    0.251    0.803 
 
 $pvals
  nlar.1^1  nlar.2^1  nlar.3^1 
-0.4515485 0.4935065 0.3996004 
+0.3336663 0.5034965 0.3956044 
 
 > 
 > pb <- probe(
@@ -113,11 +113,11 @@ $nsim
 
 $quantiles
 nlar.1^1 nlar.1^2 nlar.1^3 
-   0.440    0.746    0.332 
+   0.403    0.805    0.323 
 
 $pvals
  nlar.1^1  nlar.1^2  nlar.1^3 
-0.8811189 0.5094905 0.6653347 
+0.8071928 0.3916084 0.6473526 
 
 > 
 > pb <- probe(
@@ -133,8 +133,8 @@ $pvals
 +             seed=838775L
 +             )
 > pb@datvals
-marg.1 marg.2 marg.3 
-     1      0      0 
+       marg.1        marg.2        marg.3 
+ 1.000000e+00 -3.470661e-18 -1.108330e-18 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -145,11 +145,11 @@ $nsim
 
 $quantiles
 marg.1 marg.2 marg.3 
- 0.731  0.304  0.345 
+ 0.855  0.284  0.275 
 
 $pvals
    marg.1    marg.2    marg.3 
-0.5394605 0.6093906 0.6913087 
+0.2917083 0.5694306 0.5514486 
 
 > plot(pb)
 > 
@@ -173,10 +173,10 @@ $pvals
 +             seed=838775L
 +             )
 > pb@datvals
-      marg.1       marg.2       marg.3      acf.0.y      acf.1.y      acf.2.y 
-    1.000000     0.000000     0.000000  3486.365244 -1157.950734  -629.406461 
-     acf.3.y      acf.4.y      acf.5.y         mean 
-  409.878220  -557.216308   406.454875     4.419695 
+       marg.1        marg.2        marg.3       acf.0.y       acf.1.y 
+ 1.000000e+00 -3.470661e-18 -1.108330e-18  3.679493e+03 -1.275470e+03 
+      acf.2.y       acf.3.y       acf.4.y       acf.5.y          mean 
+-6.404084e+02  4.212841e+02 -4.929864e+02  2.954671e+02  4.430440e+00 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -187,13 +187,13 @@ $nsim
 
 $quantiles
  marg.1  marg.2  marg.3 acf.0.y acf.1.y acf.2.y acf.3.y acf.4.y acf.5.y    mean 
-  0.731   0.304   0.345   0.545   0.202   0.443   0.913   0.119   0.744   0.841 
+  0.855   0.284   0.275   0.647   0.034   0.431   0.920   0.149   0.686   0.838 
 
 $pvals
-   marg.1    marg.2    marg.3   acf.0.y   acf.1.y   acf.2.y   acf.3.y   acf.4.y 
-0.5394605 0.6093906 0.6913087 0.9110889 0.4055944 0.8871129 0.1758242 0.2397602 
-  acf.5.y      mean 
-0.5134865 0.3196803 
+    marg.1     marg.2     marg.3    acf.0.y    acf.1.y    acf.2.y    acf.3.y 
+0.29170829 0.56943057 0.55144855 0.70729271 0.06993007 0.86313686 0.16183816 
+   acf.4.y    acf.5.y       mean 
+0.29970030 0.62937063 0.32567433 
 
 > plot(pb)
 > 
@@ -212,8 +212,8 @@ $pvals
 +             seed=838775L
 +             )
 > pb@datvals
-marg.1 marg.2 marg.3 
-     1      0      0 
+       marg.1        marg.2        marg.3 
+ 1.000000e+00 -3.470661e-18 -1.108330e-18 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -224,11 +224,11 @@ $nsim
 
 $quantiles
 marg.1 marg.2 marg.3 
- 1.000  0.119  0.252 
+ 1.000  0.115  0.218 
 
 $pvals
      marg.1      marg.2      marg.3 
-0.001998002 0.239760240 0.505494505 
+0.001998002 0.231768232 0.437562438 
 
 > plot(pb)
 > 
@@ -245,15 +245,15 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
-  9.983   0.015  10.000 
+ 11.289   0.255  11.562 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
               truth       est     guess
-log.r      3.800000  2.559421  2.302585
+log.r      3.800000  2.635216  2.302585
 log.sigma -1.203973 -1.203973 -1.203973
-log.phi    2.302585  3.693456  2.995732
-N.0        7.000000  5.657090  5.000000
+log.phi    2.302585  3.604724  2.995732
+N.0        7.000000  4.967038  5.000000
 e.0        0.000000  0.000000  0.000000
 > 
 > pb <- probe(
@@ -269,7 +269,7 @@ e.0        0.000000  0.000000  0.000000
 +             )
 > pb@datvals
    nlar.1^1    nlar.1^2    nlar.1^3 
--0.48035604 -0.12200818  0.01188791 
+-0.50800036 -0.12068721  0.01214788 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -280,11 +280,11 @@ $nsim
 
 $quantiles
 nlar.1^1 nlar.1^2 nlar.1^3 
-   1.000    0.053    0.063 
+   0.999    0.078    0.065 
 
 $pvals
    nlar.1^1    nlar.1^2    nlar.1^3 
-0.001998002 0.107892108 0.127872128 
+0.003996004 0.157842158 0.131868132 
 
 > plot(pb)
 > 
@@ -301,15 +301,15 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
-  6.330   0.007   6.337 
+  6.739   0.128   6.867 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
               truth       est     guess
-log.r      3.800000  1.636451  2.302585
+log.r      3.800000  1.650922  2.302585
 log.sigma -1.203973 -1.203973 -1.203973
-log.phi    2.302585  3.438907  2.995732
-N.0        7.000000  5.375076  5.000000
+log.phi    2.302585  3.424852  2.995732
+N.0        7.000000  5.139255  5.000000
 e.0        0.000000  0.000000  0.000000
 > 
 > pb <- probe(
@@ -326,7 +326,7 @@ e.0        0.000000  0.000000  0.000000
 +             )
 > pb@datvals
    marg.1    marg.2    marg.3 
-27.509248 -4.882377 -3.481160 
+28.151972 -5.296308 -3.401414 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -337,11 +337,11 @@ $nsim
 
 $quantiles
 marg.1 marg.2 marg.3 
- 1.000  0.000  0.255 
+ 1.000  0.000  0.295 
 
 $pvals
      marg.1      marg.2      marg.3 
-0.001998002 0.001998002 0.511488511 
+0.001998002 0.001998002 0.591408591 
 
 > plot(pb)
 > 
@@ -358,7 +358,7 @@ $pvals
 +             )
 > pb@datvals
   acf.0.y   acf.1.y   acf.2.y   acf.3.y   acf.4.y   acf.5.y 
-20.917279 -6.505330 -5.105199  2.743784 -3.665714  2.275368 
+21.763354 -7.220449 -4.970518  3.099575 -2.823081  1.507337 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -369,11 +369,11 @@ $nsim
 
 $quantiles
 acf.0.y acf.1.y acf.2.y acf.3.y acf.4.y acf.5.y 
-  0.424   0.171   0.294   0.886   0.086   0.734 
+  0.592   0.067   0.315   0.907   0.144   0.658 
 
 $pvals
   acf.0.y   acf.1.y   acf.2.y   acf.3.y   acf.4.y   acf.5.y 
-0.8491508 0.3436563 0.5894106 0.2297702 0.1738262 0.5334665 
+0.8171828 0.1358641 0.6313686 0.1878122 0.2897103 0.6853147 
 
 > plot(pb)
 > 
@@ -389,8 +389,8 @@ $pvals
 +             seed=838775L
 +             )
 > pb@datvals
-   acf.1.y    acf.2.y    acf.3.y    acf.4.y    acf.5.y 
--0.3110027 -0.2440661  0.1311731 -0.1752481  0.1087793 
+    acf.1.y     acf.2.y     acf.3.y     acf.4.y     acf.5.y 
+-0.33177095 -0.22838933  0.14242173 -0.12971720  0.06926033 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -401,11 +401,11 @@ $nsim
 
 $quantiles
 acf.1.y acf.2.y acf.3.y acf.4.y acf.5.y 
-  0.210   0.256   0.883   0.080   0.737 
+  0.152   0.317   0.896   0.143   0.653 
 
 $pvals
   acf.1.y   acf.2.y   acf.3.y   acf.4.y   acf.5.y 
-0.4215784 0.5134865 0.2357642 0.1618382 0.5274725 
+0.3056943 0.6353646 0.2097902 0.2877123 0.6953047 
 
 > plot(pb)
 > 
@@ -431,7 +431,7 @@ $pvals
 +             )
 > pb@datvals
          v    acf.0.y    acf.1.y    acf.2.y   nlar.1^1   nlar.2^1 
-21.3356248 20.9172792 -6.5053300 -5.1051986 -0.4337480 -0.3889323 
+22.1986212 21.7633541 -7.2204486 -4.9705179 -0.4637368 -0.3923487 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -442,11 +442,11 @@ $nsim
 
 $quantiles
        v  acf.0.y  acf.1.y  acf.2.y nlar.1^1 nlar.2^1 
-   0.424    0.424    0.171    0.294    0.143    0.139 
+   0.592    0.592    0.067    0.315    0.105    0.133 
 
 $pvals
         v   acf.0.y   acf.1.y   acf.2.y  nlar.1^1  nlar.2^1 
-0.8491508 0.8491508 0.3436563 0.5894106 0.2877123 0.2797203 
+0.8171828 0.8171828 0.1358641 0.6313686 0.2117882 0.2677323 
 
 > plot(pb)
 > 
@@ -478,7 +478,7 @@ Error in .local(object, probes, ...) :
 +           )
 +     )
 Error in .local(object, probes, ...) : 
-  probes return different number of values on different datasets
+  variable-sized results returned by probe 2
 > 
 > 
 > try(
@@ -493,8 +493,104 @@ Error in .local(object, probes, ...) :
 +           seed=838775L
 +           )
 +     )
-Error in .local(object, probes, ...) : 
-  probes return different number of values on different datasets
+data and states:
+   time   y            N            e
+1     0  68 7.000000e+00  0.000000000
+2     1   2 2.252789e-01 -0.236326417
+3     2  87 9.270338e+00  0.142514917
+4     3   0 4.838115e-02  0.214872801
+5     4  12 1.334559e+00 -0.434373032
+6     5 174 1.652248e+01  0.050680017
+7     6   0 6.580213e-05  0.288900504
+8     7   0 3.474655e-03  0.166664153
+9     8   1 1.364301e-01 -0.126208160
+10    9  57 5.373723e+00  0.009893893
+11   10  11 1.426706e+00  0.247570226
+12   11 178 1.709891e+01  0.110352138
+13   12   0 3.548990e-05  0.213629584
+14   13   1 1.716305e-03  0.078716364
+15   14   0 5.173992e-02 -0.392227776
+16   15  34 2.867479e+00  0.266698995
+17   16  72 7.186486e+00 -0.013751626
+18   17   3 2.654867e-01  0.088093116
+19   18 101 1.031531e+01  0.125306543
+20   19   0 2.334234e-02  0.424194626
+21   20   8 9.308228e-01 -0.090857579
+22   21 156 1.511763e+01 -0.081629526
+23   22   0 2.245531e-04  0.200365891
+24   23   0 8.316669e-03 -0.187870529
+25   24   3 3.128041e-01 -0.164368083
+26   25  93 8.887588e+00 -0.140362049
+27   26   0 4.066734e-02 -0.299397913
+28   27  17 1.901241e+00  0.085504044
+29   28 121 1.154609e+01 -0.094919246
+30   29   0 3.138536e-03 -0.464258202
+31   30   0 9.488642e-02 -0.387937189
+32   31  19 2.705772e+00 -0.354651554
+33   32 107 1.141303e+01  0.345140888
+34   33   0 6.762374e-03  0.181896309
+35   34   4 3.712183e-01  0.212178610
+36   35 127 1.257413e+01  0.093824860
+37   36   0 2.874525e-03  0.390620517
+38   37   1 1.160878e-01 -0.098666431
+39   38  47 5.890808e+00  0.242889606
+40   39   8 6.233203e-01 -0.155280147
+41   40 117 1.084903e+01 -0.319909236
+42   41   0 8.618353e-03 -0.088906503
+43   42   3 4.386990e-01  0.138537850
+44   43  82 8.250457e+00 -0.427090607
+45   44   2 1.219238e-01  0.235829667
+46   45  39 3.604686e+00 -0.291482643
+47   46  70 5.367612e+00  0.202834336
+48   47  11 1.385056e+00  0.212969775
+49   48 275 2.645209e+01  0.534650657
+50   49   0 2.654912e-09 -0.370098425
+51   50   0 1.630946e-07  0.317918731
+
+call:
+pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA), times = "time", 
+    t0 = 0, rprocess = discrete.time.sim(step.fun = "_ricker_simulator"), 
+    rmeasure = "_ricker_poisson_rmeasure", dmeasure = "_ricker_poisson_dmeasure", 
+    skeleton.map = "_ricker_skeleton", obsnames = c("y"), statenames = c("N", 
+        "e"), paramnames = c("log.r", "log.sigma", "log.phi"))
+zero time, t0 = 0
+parameter(s):
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+process model simulator, rprocess = 
+function (xstart, times, params, ..., statenames = character(0), 
+    paramnames = character(0), covarnames = character(0), zeronames = character(0), 
+    tcovar, covar) 
+{
+    .Call(euler_model_simulator, func = efun, xstart = xstart, 
+        times = times, params = params, dt = 1, method = 0L, 
+        statenames = statenames, paramnames = paramnames, covarnames = covarnames, 
+        zeronames = zeronames, tcovar = tcovar, covar = covar, 
+        args = pairlist(...))
+}
+<environment: 0x10deaf8>
+process model density, dprocess = 
+function (x, times, params, log = FALSE, ...) 
+stop(sQuote("dprocess"), " not specified")
+<environment: 0x10d1a18>
+measurement model simulator, rmeasure = 
+native function '_ricker_poisson_rmeasure'
+measurement model density, dmeasure = 
+native function '_ricker_poisson_dmeasure'
+skeleton ( map ) = 
+native function '_ricker_skeleton'
+initializer = 
+function (params, t0, ...) 
+{
+    ivpnames <- grep("\\.0$", names(params), val = TRUE)
+    if (length(ivpnames) < 1) 
+        stop("default initializer error: no parameter names ending in ", 
+            sQuote(".0"), " found: see ", sQuote("pomp"), " documentation")
+    x <- params[ivpnames]
+    names(x) <- sub("\\.0$", "", ivpnames)
+    x
+}
+<environment: namespace:pomp>
 > 
 > dev.off()
 null device 

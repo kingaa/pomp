@@ -11,19 +11,19 @@
   In the case of a continuous-time system, the deterministic skeleton is a vector-field; \code{trajectory} integrates the vectorfield to obtain a trajectory.
 }
 \usage{
-trajectory(object, params, times, \dots)
-\S4method{trajectory}{pomp}(object, params, times, \dots)
+trajectory(object, params, times, t0, \dots)
+\S4method{trajectory}{pomp}(object, params, times, t0, \dots)
 }
 \arguments{
   \item{object}{an object of class \code{pomp}.}
-  \item{times}{
-    a numeric vector containing the times at which a trajectory is desired.
-    The first of these will be the initial time.
-    By default, \code{times=time(object,t0=TRUE)}.
-  }
   \item{params}{
     a rank-2 array of parameters.
     Each column of \code{params} is a distinct parameter vector.
+  }
+  \item{times, t0}{
+    \code{times} is a numeric vector specifying the times at which a trajectory is desired.
+    \code{t0} specifies the start time (the time at which the initial conditions hold).
+    The default for \code{times} is \code{times=time(object,t0=FALSE)} and \code{t0=timezero(object)}, respectively.
   }
   \item{\dots}{at present, these are ignored.}
 }
@@ -43,13 +43,13 @@ trajectory(object, params, times, \dots)
 \examples{
 data(euler.sir)
 x <- trajectory(euler.sir)
-plot(time(euler.sir,t0=TRUE),x["I",1,],type='l',xlab='time',ylab='I')
-lines(time(euler.sir,t0=FALSE),diff(x["cases",1,]),col='red')
+plot(time(euler.sir),x["I",1,],type='l',xlab='time',ylab='I')
+lines(time(euler.sir)[-1],diff(x["cases",1,]),col='red')
 
 coef(euler.sir,c("gamma")) <- log(12)
 x <- trajectory(euler.sir)
-plot(time(euler.sir,t0=TRUE),x["I",1,],type='l',xlab='time',ylab='I')
-lines(time(euler.sir,t0=FALSE),diff(x["cases",1,]),col='red')
+plot(time(euler.sir),x["I",1,],type='l',xlab='time',ylab='I')
+lines(time(euler.sir)[-1],diff(x["cases",1,]),col='red')
 }
 \seealso{\code{\link{pomp-class}}, \code{\link{pomp}}, \code{\link[deSolve]{lsoda}}}
 \keyword{models}

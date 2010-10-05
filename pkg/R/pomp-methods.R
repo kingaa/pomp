@@ -22,7 +22,7 @@ setAs(
         names(x) <- c("time",rownames(from@data))
         if (length(from@states)>0) {
           nm <- names(x)
-          x <- cbind(x,t(from@states[,-1,drop=FALSE]))
+          x <- cbind(x,t(from@states))
           names(x) <- c(nm,rownames(from@states))
         }
         x
@@ -94,19 +94,17 @@ setMethod(
                                  )
             object@data[,object@times%in%tt] <- dd[,tt%in%object@times]
             if (length(ss)>0) {
-               object@states <- array(
+              object@states <- array(
                                      data=NA,
-                                     dim=c(nrow(ss),length(object@times)+1),
+                                     dim=c(nrow(ss),length(object@times)),
                                      dimnames=list(rownames(ss),NULL)
                                      )
-               if (ncol(ss)>length(tt)) tt <- c(tt0,tt)
-               nt <- c(object@t0,object@times)
-               for (kt in seq_len(length(nt))) {
-                 wr <- which(nt[kt]==tt)
-                 if (length(wr)>0)
-                   object@states[,kt] <- ss[,wr[1]]
-               }
-             }
+              for (kt in seq_along(object@times)) {
+                wr <- which(object@times[kt]==tt)
+                if (length(wr)>0)
+                  object@states[,kt] <- ss[,wr[1]]
+              }
+            }
             object
           }
           )

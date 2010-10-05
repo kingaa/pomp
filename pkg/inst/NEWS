@@ -1,20 +1,41 @@
-NEW IN VERSION 0.34-1:
-    o 'coef<-' now behaves like ordinary vector assignment.
-    o 'probe' and 'spect' now take an argument 'params'
-    o 'probe.cov' and 'probe.cor' have been removed in favor of 'probe.acf' and 'probe.ccf'
+NEW  IN  VERSION  0.34-1: 
+
+    o  The default behaviors of 'simulate' and 'trajectory' with respect to the argument 'times' has changed.
+       There is a new argument, 't0', which specifies the time at which the initial conditions obtain.
+       The default for 't0' is 'timezero(object)'.
+       The default for 'times' is now 'time(object,t0=FALSE)' (it was 'time(object,t0=TRUE)').
+       This change eliminates an infelicity in which 'simulate' and 'trajectory' returned undesired values at the initial time.
+       To aid users in  modifying their codes, a warning is now displayed whenever a potentially affected call is made.
+
+    o  A banner is now displayed on package attachment.  
+       This will be used to report important changes.
+
+    o  'coef<-' now behaves like ordinary vector assignment.
+
+    o  'probe' and 'spect' now take an argument 'params'.
+
+    o  'probe.cov' and 'probe.cor' have been removed in favor of 'probe.acf' and 'probe.ccf'.
+
+    o  The functions 'euler.simulate', 'onestep.simulate', and 'onestep.density', deprecated since version 0.29-1, have been removed.  
     
 NEW IN VERSION 0.33-1:
-    o Major improvements in speed in the probe-matching routines have been realized by coding the computationally-intensive portions of these calculations in C.  
 
-    o New probes recommended by Simon Wood (Nature 466:1102-1104, 2010) have been implemented.  In particular, the new function 'probe.marginal' regresses the marginal distributions of actual and simulated data against a reference distribution, returning as probes the regression coefficients.  'probe.marginal' and 'probe.acf' have been coded in C for speed.
+    o Major improvements in speed in the probe-matching routines have been realized by coding the computationally-intensive portions of these calculations in C.
+
+    o New probes recommended by Simon Wood (Nature 466:1102-1104, 2010) have been implemented.
+      In particular, the new function 'probe.marginal' regresses the marginal distributions of actual and simulated data against a reference distribution, returning as probes the regression coefficients.
+      'probe.marginal' and 'probe.acf' have been coded in C for speed.
 
 NEW IN VERSION 0.32-1:
+
     o  pomp now includes parameter estimation methods based on probe-matching and power-spectrum-matching as explained in papers by Kendall et al. (B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, S. N. Wood (1999) Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches.  Ecology, 80:1789--1805) and Reuman et al. (D.C. Reuman, R.A. Desharnais, R.F. Costantino, O. Ahmad, J.E. Cohen (2006) Power spectra reveal the influence of stochasticity on nonlinear population dynamics. Proc. Nat'l. Acad. Sci., U.S.A.} 103:18860--18865).
 
 NEW IN VERSION 0.31-2:
+
     o  new "window", "timezero", and "timezero<-" methods are available for manipulating 'pomp' objects.
 
 NEW IN VERSION 0.31-1:
+
     o  pomp now includes an implementation of the particle Markov chain Monte Carlo algorithm of Andrieu et al. (Andrieu, C., Doucet, A., & Holenstein, R. (2010) Particle Markov chain Monte Carlo methods. J. R. Stat. Soc. B 72:1--33).
        This algorithm is implemented in the method 'pmcmc': see 'help(pmcmc)' for details.
        Implementation primarily due to Ed Ionides.
@@ -25,12 +46,13 @@ NEW IN VERSION 0.30-1:
        Thanks to Matt Ferrari and Michael Lavine for the implementation.
        
 NEW IN VERSION 0.29-5:
+
     o  The cholera transmission model from King, A. A., Ionides, E. L., Pascual, M., and Bouma, M. J. (2008) Inapparent infections and cholera dynamics, Nature 454:877--880 together with data from the Dacca district of historic Bengal are now included.
        See 'help(dacca)' for details.
 
 NEW IN VERSION 0.29-1:
 
-    This is a major revision.
+    o  This is a major revision.
 
     o  Big improvements to the documentation, including worked examples in vignettes and improvements to the manual pages.
 
@@ -108,7 +130,7 @@ NEW IN VERSION 0.20-2:
 
 NEW IN VERSION 0.20-1
 
-    This is a major revision.
+    o   This is a major revision.
 
     o	The basic structure of the 'pomp' class has been changed to better support the use of native routines as well as R functions.
 	In particular, the 'rmeasure', 'dmeasure', and 'skeleton' methods can now be specified either as R functions or as native routines.

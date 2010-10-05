@@ -44,7 +44,7 @@ set.seed(73658676)
 po <- simulate(po,params=params)
 
 t <- seq(0,by=0.005,length=50)
-x <- simulate(po,times=t,states=T,obs=T)
+x <- simulate(po,times=t,t0=t[1],states=T,obs=T)
 
 print(
       dprocess(
@@ -89,5 +89,5 @@ params <- cbind(c(n.0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),c(n.0=1000,K=11000,r=
 x <- trajectory(po,params=params)
 pdf(file='logistic.pdf')
 plot(po)
-matplot(time(po,t0=TRUE),t(x['n',,]),type='l')
+matplot(time(po),t(x['n',,]),type='l')
 dev.off()

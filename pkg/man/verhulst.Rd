@@ -19,9 +19,9 @@ params <- cbind(
                 c(n.0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1)
                 )
 x <- simulate(verhulst,params=params,states=TRUE)
-matplot(time(verhulst,t0=TRUE),t(x['n',,]),type='l')
+matplot(time(verhulst),t(x['n',,]),type='l')
 y <- trajectory(verhulst,params=params)
-matlines(time(verhulst,t0=TRUE),t(y['n',,]),type='l',lwd=2)
+matlines(time(verhulst),t(y['n',,]),type='l',lwd=2)
 }
 \seealso{\code{\link{pomp-class}} and the vignettes}
 \keyword{datasets}

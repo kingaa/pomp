@@ -98,9 +98,10 @@ compute.spect.sim <- function (object, params, vars, nsim, seed, transform, detr
                        nsim=nsim,
                        seed=seed,
                        params=params,
-                       times=time(object,t0=TRUE),
-                       obs=TRUE
-                       )[,,-1,drop=FALSE],
+                       obs=TRUE,
+                       times=time(object,t0=FALSE),
+                       t0=timezero(object)
+                       ),
               silent=FALSE
               )
   if (inherits(sims,"try-error"))

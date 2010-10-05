@@ -8,8 +8,7 @@
 }
 \usage{
 \S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, params,
-         states = FALSE, obs = FALSE, times = time(object,t0=TRUE),
-         \dots)
+         states = FALSE, obs = FALSE, times, t0, \dots)
 }
 \arguments{
   \item{object}{An object of class \code{pomp}.}
@@ -28,17 +27,18 @@
   }
   \item{states}{Do we want the state trajectories?}
   \item{obs}{Do we want data-frames of the simulated observations?}
-  \item{times}{
-    The times for which observations are required.
-    Note that the first element in \code{times} is the start time.
+  \item{times, t0}{
+    \code{times} specifies the times at which simulated observations will be made.
+    \code{t0} specifies the start time (the time at which the initial conditions hold).
+    The default for \code{times} is is \code{times=time(object,t0=FALSE)} and \code{t0=timezero(object)}, respectively.
   }
-  \item{\dots}{further arguments that are at present ignored.}
+  \item{\dots}{further arguments that are currently ignored.}
 }
 \value{
   If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \code{pomp} objects is returned.
   Each has a simulated data set, together with the parameters used (in slot \code{params}) and the state trajectories also (in slot \code{states}).
-  If \code{times} is specified, then the \code{t0} slot of the created `pomp' objects will be filled with \code{times[1]} and the simulated observations will be at times \code{times[-1]}.
-
+  If \code{times} is specified, then the simulated observations will be at times \code{times}.
+  
   If \code{nsim=1}, then a single \code{pomp} object is returned (and not a singleton list).
 
   If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-3 array with dimensions \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
