@@ -1,5 +1,7 @@
 2010-10-05  kingaa
 
+	* [r364] R/aaa.R: - fiddle with the banner
+	* [r363] inst/ChangeLog:
 	* [r362] tests/ou2-pmcmc.Rout.save, tests/skeleton.R,
 	  tests/skeleton.Rout.save: - add in results from ou2-pmcmc test
 	  - add another set of tests in 'skeleton.R'

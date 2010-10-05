@@ -16,6 +16,16 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+This is pomp version 0.34-1
+
+IMPORTANT NOTICE:
+The default behaviors of 'simulate' and 'trajectory' have changed as of release 0.34-1. You can ensure that your code will continue to function as you intend by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence of your code on the defaults. In the meantime, using 'simulate' or 'trajectory' in such a way as to rely on the default will produce a warning. These warnings will be removed in a future release.
+
+See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
+
+Subscribe to the pomp-announce list (go to pomp.r-forge.r-project.org) to receive email notification about new releases of pomp including descriptions of feature additions, changes, and fixes.
+
+
 > 
 > data(ou2)
 > 
@@ -31,7 +41,7 @@ Type 'q()' to quit R.
 > ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.2360878 secs
+Time difference of 0.2377090 secs
 > 
 > coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 > 

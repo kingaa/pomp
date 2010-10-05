@@ -16,6 +16,16 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+This is pomp version 0.34-1
+
+IMPORTANT NOTICE:
+The default behaviors of 'simulate' and 'trajectory' have changed as of release 0.34-1. You can ensure that your code will continue to function as you intend by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence of your code on the defaults. In the meantime, using 'simulate' or 'trajectory' in such a way as to rely on the default will produce a warning. These warnings will be removed in a future release.
+
+See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
+
+Subscribe to the pomp-announce list (go to pomp.r-forge.r-project.org) to receive email notification about new releases of pomp including descriptions of feature additions, changes, and fixes.
+
+
 > 
 > set.seed(398585L)
 > data(ou2)
@@ -58,7 +68,7 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 41.44052 secs
+Time difference of 41.84382 secs
 > 
 > print(
 +       cbind(
@@ -70,8 +80,8 @@ Time difference of 41.44052 secs
 +       )
         prior.mean posterior.mean truth       2.5%        50%      97.5%
 alpha.1  0.8000000      0.8000000   0.8  0.8000000  0.8000000  0.8000000
-alpha.2 -0.4999287     -0.5254444  -0.5 -0.5480088 -0.5461081 -0.4576629
-alpha.3  0.2996065      0.2964690   0.3  0.2827214  0.3009050  0.3012988
+alpha.2 -0.4999287     -0.5043393  -0.5 -0.5112463 -0.5065709 -0.4767260
+alpha.3  0.2996065      0.3270662   0.3  0.3146781  0.3319924  0.3384011
 alpha.4  0.9000000      0.9000000   0.9  0.9000000  0.9000000  0.9000000
 sigma.1  3.0000000      3.0000000   3.0  3.0000000  3.0000000  3.0000000
 sigma.2 -0.5000000     -0.5000000  -0.5 -0.5000000 -0.5000000 -0.5000000
@@ -81,5 +91,5 @@ x1.0    -3.0000000     -3.0000000  -3.0 -3.0000000 -3.0000000 -3.0000000
 x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > print(min(smc$eff.sample.size))
-[1] 5.987632
+[1] 6.94596
 > 

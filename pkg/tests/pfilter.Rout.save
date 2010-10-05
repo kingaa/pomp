@@ -1,6 +1,6 @@
 
-R version 2.10.1 (2009-12-14)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,9 +16,16 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: deSolve
-Loading required package: subplex
-Loading required package: mvtnorm
+This is pomp version 0.34-1
+
+IMPORTANT NOTICE:
+The default behaviors of 'simulate' and 'trajectory' have changed as of release 0.34-1. You can ensure that your code will continue to function as you intend by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence of your code on the defaults. In the meantime, using 'simulate' or 'trajectory' in such a way as to rely on the default will produce a warning. These warnings will be removed in a future release.
+
+See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
+
+Subscribe to the pomp-announce list (go to pomp.r-forge.r-project.org) to receive email notification about new releases of pomp including descriptions of feature additions, changes, and fixes.
+
+
 > 
 > data(ou2)
 > 
@@ -29,7 +36,7 @@ Loading required package: mvtnorm
 > cat("particle filter log likelihood at truth\n")
 particle filter log likelihood at truth
 > print(pf$loglik,digits=4)
-[1] -481.1
+[1] -476.6
 > 
 > data(euler.sir)
 > pf <- pfilter(euler.sir,Np=200,seed=394343L)

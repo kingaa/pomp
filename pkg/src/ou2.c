@@ -35,23 +35,45 @@ static double dens_ou2 (double *x1, double *x2,
 // it is assumed that the times are consecutive (FIX THIS!)
 void _ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex)
 {
-  int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3];
-  double *xp, *pp;
+  int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3], incr;
+  double tnow, tgoal, dt = 1.0;
+  double *xp0, *xp1, *pp;
   int i, j, k;
+
+  incr = nrep*nvar;
+
   GetRNGstate();       // initialize R's pseudorandom number generator
+
   for (j = 0; j < nrep; j++) {
-    xp = &x[nvar*j];		// get address of j-th state vector
-    for (i = 0; i < nvar; i++) xp[i] = xstart[i+nvar*j]; // copy xstart into the first slice of x
-  }
-  for (k = 1; k < ntimes; k++) {
+
     R_CheckUserInterrupt();
-    for (j = 0; j < nrep; j++) {
-      xp = &x[nvar*(j+nrep*k)];
-      pp = &par[npar*j];
-      for (i = 0; i < nvar; i++) xp[i] = x[i+nvar*(j+nrep*(k-1))];
-      sim_ou2(xp,ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3); // advance particle
+
+    xp0 = &xstart[nvar*j];     // pointer to j-th starting state
+    xp1 = &x[nvar*j];	       // pointer to j-th state vector
+    pp = &par[npar*j];	       // pointer to j-th parameter vector
+
+    for (i = 0; i < nvar; i++) xp1[i] = xp0[i]; // copy xstart into the first slice of x
+
+    tnow = times[0];		// initial time
+
+    for (k = 1; k < ntimes; k++) { // loop over times
+    
+      xp0 = xp1;
+      xp1 += incr;
+
+      for (i = 0; i < nvar; i++) xp1[i] = xp0[i]; // copy state vector
+
+      tgoal = times[k];
+
+      while (tnow < tgoal) {
+	sim_ou2(xp1,ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3); // advance state
+	tnow += dt;		// advance time
+      }
+
     }
+
   }
+
   PutRNGstate();	  // finished with R's random number generator
 }
 

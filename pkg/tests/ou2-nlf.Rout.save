@@ -16,6 +16,16 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+This is pomp version 0.34-1
+
+IMPORTANT NOTICE:
+The default behaviors of 'simulate' and 'trajectory' have changed as of release 0.34-1. You can ensure that your code will continue to function as you intend by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence of your code on the defaults. In the meantime, using 'simulate' or 'trajectory' in such a way as to rely on the default will produce a warning. These warnings will be removed in a future release.
+
+See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
+
+Subscribe to the pomp-announce list (go to pomp.r-forge.r-project.org) to receive email notification about new releases of pomp including descriptions of feature additions, changes, and fixes.
+
+
 > 
 > set.seed(594861940L)
 > 
@@ -36,7 +46,7 @@ Type 'q()' to quit R.
 +           lql.frac = 0.025
 +           )
 > print(m1)
-[1] -555.448
+[1] -555.547
 > 
 > m2 <- nlf(
 +           object=ou2,
@@ -53,66 +63,76 @@ Type 'q()' to quit R.
 +           lql.frac = 0.025
 +           )
   Nelder-Mead direct search function minimizer
-function value for initial parameters = 555.447984
-  Scaled convergence tolerance is 8.27682e-06
+function value for initial parameters = 555.547033
+  Scaled convergence tolerance is 8.2783e-06
 Stepsize computed as 0.100000
-BUILD              4 559.766061 555.447984
-HI-REDUCTION       6 557.051562 555.447984
-HI-REDUCTION       8 556.036042 555.166021
-LO-REDUCTION      10 555.512890 555.166021
-REFLECTION        12 555.447984 555.147214
-HI-REDUCTION      14 555.192349 555.110296
-HI-REDUCTION      16 555.166021 555.067342
-HI-REDUCTION      18 555.147214 555.061950
-HI-REDUCTION      20 555.110296 555.057410
-HI-REDUCTION      22 555.067342 555.049678
-HI-REDUCTION      24 555.061950 555.047266
-HI-REDUCTION      26 555.057410 555.044069
-HI-REDUCTION      28 555.049678 555.044069
-HI-REDUCTION      30 555.047266 555.040984
-REFLECTION        32 555.044378 555.040622
-REFLECTION        34 555.044069 555.037871
-REFLECTION        36 555.040984 555.036847
-HI-REDUCTION      38 555.040622 555.036847
-HI-REDUCTION      40 555.037871 555.036847
-LO-REDUCTION      42 555.037321 555.036508
-EXTENSION         44 555.037037 555.034319
-HI-REDUCTION      46 555.036847 555.034319
-LO-REDUCTION      48 555.036508 555.034319
-LO-REDUCTION      50 555.035578 555.034319
-EXTENSION         52 555.034913 555.033759
-LO-REDUCTION      54 555.034753 555.033759
-LO-REDUCTION      56 555.034319 555.033759
-HI-REDUCTION      58 555.034253 555.033759
-EXTENSION         60 555.034001 555.033182
-LO-REDUCTION      62 555.033917 555.033182
-EXTENSION         64 555.033759 555.032580
-EXTENSION         66 555.033343 555.032098
-EXTENSION         68 555.033182 555.031949
-REFLECTION        70 555.032580 555.031649
-HI-REDUCTION      72 555.032098 555.031649
-LO-REDUCTION      74 555.031949 555.031649
-LO-REDUCTION      76 555.031943 555.031649
-HI-REDUCTION      78 555.031739 555.031649
-HI-REDUCTION      80 555.031714 555.031649
-LO-REDUCTION      82 555.031673 555.031643
-HI-REDUCTION      84 555.031661 555.031636
-HI-REDUCTION      86 555.031649 555.031636
+BUILD              4 559.966959 555.547033
+HI-REDUCTION       6 556.890993 555.547033
+HI-REDUCTION       8 556.217248 555.181704
+LO-REDUCTION      10 555.617125 555.174895
+REFLECTION        12 555.547033 555.100277
+HI-REDUCTION      14 555.181704 555.100277
+HI-REDUCTION      16 555.174895 555.060649
+HI-REDUCTION      18 555.158167 555.060649
+HI-REDUCTION      20 555.100277 555.060649
+HI-REDUCTION      22 555.073319 555.046470
+HI-REDUCTION      24 555.064516 555.046470
+HI-REDUCTION      26 555.060649 555.046470
+LO-REDUCTION      28 555.049690 555.044469
+REFLECTION        30 555.047655 555.041210
+HI-REDUCTION      32 555.046470 555.041210
+HI-REDUCTION      34 555.044469 555.040900
+HI-REDUCTION      36 555.041431 555.040037
+HI-REDUCTION      38 555.041210 555.039984
+HI-REDUCTION      40 555.040900 555.039847
+LO-REDUCTION      42 555.040037 555.039534
+HI-REDUCTION      44 555.039984 555.039516
+EXTENSION         46 555.039847 555.038378
+HI-REDUCTION      48 555.039534 555.038378
+LO-REDUCTION      50 555.039516 555.038378
+LO-REDUCTION      52 555.039124 555.038378
+REFLECTION        54 555.038819 555.038336
+EXTENSION         56 555.038601 555.037899
+LO-REDUCTION      58 555.038378 555.037899
+LO-REDUCTION      60 555.038336 555.037899
+REFLECTION        62 555.038103 555.037848
+EXTENSION         64 555.038074 555.037593
+EXTENSION         66 555.037899 555.037354
+EXTENSION         68 555.037848 555.037335
+EXTENSION         70 555.037593 555.036537
+LO-REDUCTION      72 555.037354 555.036537
+LO-REDUCTION      74 555.037335 555.036537
+EXTENSION         76 555.037012 555.036094
+LO-REDUCTION      78 555.036938 555.036094
+EXTENSION         80 555.036537 555.035295
+LO-REDUCTION      82 555.036148 555.035295
+LO-REDUCTION      84 555.036094 555.035295
+REFLECTION        86 555.035627 555.035238
+REFLECTION        88 555.035311 555.035071
+LO-REDUCTION      90 555.035295 555.035071
+HI-REDUCTION      92 555.035238 555.035071
+REFLECTION        94 555.035152 555.035045
+LO-REDUCTION      96 555.035150 555.035045
+REFLECTION        98 555.035071 555.035010
+LO-REDUCTION     100 555.035065 555.035010
+LO-REDUCTION     102 555.035045 555.035010
+LO-REDUCTION     104 555.035022 555.035009
+LO-REDUCTION     106 555.035017 555.035009
 Exiting from Nelder Mead minimizer
-    88 function evaluations used
+    108 function evaluations used
 h in NLF =  0.1 
-epsilon in NLF = 0.07723393 0.08606162 1.499432 
-Fitted param  1 -5.935289 -5.935289  up in  'nlf' 
-Fitted param  1 -5.924214  down in  'NLF' 
-Fitted param  2 -5.92809 -5.92809  up in  'nlf' 
-Fitted param  2 -5.941322  down in  'NLF' 
-Fitted param  3 -5.953709 -5.953709  up in  'nlf' 
-Fitted param  3 -5.905519  down in  'NLF' 
+epsilon in NLF = 0.07620834 0.0830427 1.496106 
+Fitted param  1 -5.935533 -5.935533  up in  'nlf' 
+Fitted param  1 -5.923885  down in  'NLF' 
+Fitted param  2 -5.923836 -5.923836  up in  'nlf' 
+Fitted param  2 -5.941826  down in  'NLF' 
+Fitted param  3 -5.952844 -5.952844  up in  'nlf' 
+Fitted param  3 -5.905505  down in  'NLF' 
 > 
 > se <- m2$se
 > print(cbind(truth=p.truth[names(se)],fit=m2$params[names(se)],se=se),digits=3)
         truth    fit     se
-alpha.2  -0.5 -0.467 0.0454
-alpha.3   0.3  0.299 0.0541
-tau       1.0  0.930 0.5491
+alpha.2  -0.5 -0.465 0.0433
+alpha.3   0.3  0.292 0.0508
+tau       1.0  0.917 0.5458
 > 
