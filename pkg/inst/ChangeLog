@@ -1,5 +1,26 @@
+2010-10-06  kingaa
+
+	* [r369] src/probe_ccf.c, src/probe_marginal.c, src/probe_nlar.c: -
+	  remove unused variables
+
 2010-10-05  kingaa
 
+	* [r368] inst/CITATION: - update citation
+	* [r367] R/simulate-pomp.R: - minor changes
+	* [r366] inst/examples/ou2.c: - put in source code for ou2 example
+	  as promised in vignette
+	* [r365] data/ou2.rda, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-first-mif.rda, inst/doc/ou2-trajmatch.rda,
+	  src/ou2.c, tests/gillespie.Rout.save, tests/logistic.Rout.save,
+	  tests/ou2-bsmc.Rout.save, tests/ou2-forecast.Rout.save,
+	  tests/ou2-kalman.Rout.save, tests/ou2-mif.Rout.save,
+	  tests/ou2-nlf.Rout.save, tests/ou2-pmcmc.Rout.save,
+	  tests/ou2-probe.Rout.save, tests/ou2-simulate.Rout.save,
+	  tests/ou2-trajmatch.Rout.save, tests/pfilter.Rout.save,
+	  tests/ricker-probe.Rout.save, tests/ricker.Rout.save,
+	  tests/rw2.Rout.save, tests/sir.Rout.save,
+	  tests/skeleton.Rout.save: - fix a bug in 'ou2'
 	* [r364] R/aaa.R: - fiddle with the banner
 	* [r363] inst/ChangeLog:
 	* [r362] tests/ou2-pmcmc.Rout.save, tests/skeleton.R,
