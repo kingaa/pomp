@@ -46,7 +46,6 @@ static void poly_nlar_fit (double *beta, double *y, int n,
   // 'beta' contains the ar coefficients
 
   int maxlag, nx, ny, ok, ct;
-  int one = 1;
   int i, j, k;
   double xx, *yp;
   double obs1;

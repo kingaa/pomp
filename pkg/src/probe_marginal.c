@@ -116,7 +116,7 @@ static void order_reg_model_matrix (double *z, double *X, double *tau, int *pivo
 
 // thanks to Simon N. Wood for the original version of the following code
 static void order_reg_solve (double *beta, double *x, double *mm, double *tau, int *pivot, int n, int np, int diff) {
-  int nx, one = 1;
+  int nx;
   double xx;
   int i, j;
 

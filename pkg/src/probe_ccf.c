@@ -7,11 +7,10 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
 
 SEXP probe_ccf (SEXP x, SEXP y, SEXP lags) {
   int nprotect = 0;
-  SEXP ccf, ccf_names, cccf;
+  SEXP ccf, ccf_names;
   SEXP X, Y;
   int nlag, n;
-  int j, k, l;
-  double *p, *p1;
+  int k;
   char tmp[BUFSIZ], *nm;
   
   nlag = LENGTH(lags);
