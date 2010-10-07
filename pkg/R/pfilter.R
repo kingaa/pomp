@@ -128,21 +128,20 @@ pfilter.internal <- function (object, params, Np,
                       object,
                       x=x,
                       times=times[c(nt,nt+1)],
-                      params=params
-                      )[,,2,drop=FALSE],
+                      params=params,
+                      offset=1
+                      ),
              silent=FALSE
              )
     if (inherits(X,'try-error'))
       stop(sQuote("pfilter")," error: process simulation error",call.=FALSE)
 
-    x[,] <- X                 # ditch the third dimension
-    
     if (pred.var) { ## check for nonfinite state variables and parameters
-      problem.indices <- unique(which(!is.finite(x),arr.ind=TRUE)[,1])
+      problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1])
       if (length(problem.indices)>0) {  # state variables
         stop(
              sQuote("pfilter")," error: non-finite state variable(s): ",
-             paste(rownames(x)[problem.indices],collapse=', '),
+             paste(rownames(X)[problem.indices],collapse=', '),
              call.=FALSE
              )
       }
@@ -180,7 +179,7 @@ pfilter.internal <- function (object, params, Np,
     xx <- try(
               .Call(
                     pfilter_computations,
-                    x,params,
+                    X,params,
                     random.walk,rw.names,
                     pred.mean,pred.var,
                     filter.mean,weights,tol
@@ -209,7 +208,7 @@ pfilter.internal <- function (object, params, Np,
         stop(sQuote("pfilter")," error: too many filtering failures",call.=FALSE)
     } else { ## matrix with samples (columns) from filtering distribution theta.t | Y.t
       sample <- .Call(systematic_resampling,weights)
-      x <- x[,sample,drop=FALSE]
+      x[,] <- X[,sample,1,drop=FALSE]
       params <- params[,sample,drop=FALSE]
     }
 
