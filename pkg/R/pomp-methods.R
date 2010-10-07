@@ -3,6 +3,8 @@
 ## functions to extract or call the components of a "pomp" object
 setGeneric("data.array",function(object,...)standardGeneric("data.array"))
 
+setGeneric("obs",function(object,...)standardGeneric("obsns"))
+
 setGeneric("time<-",function(object,...,value)standardGeneric("time<-"))  
 
 setGeneric("coef<-",function(object,...,value)standardGeneric("coef<-"))
@@ -34,6 +36,20 @@ as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 ## a simple method to extract the data array
 setMethod(
           "data.array",
+          "pomp",
+          function (object, vars, ...) {
+            varnames <- rownames(object@data)
+            if (missing(vars))
+              vars <- varnames
+            else if (!all(vars%in%varnames))
+              stop("some elements of ",sQuote("vars")," correspond to no observed variable")
+            object@data[vars,,drop=FALSE]
+          }
+          )
+
+## a simple method to extract the data array
+setMethod(
+          "obs",
           "pomp",
           function (object, vars, ...) {
             varnames <- rownames(object@data)

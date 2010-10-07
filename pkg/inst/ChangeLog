@@ -1,5 +1,11 @@
+2010-10-07  kingaa
+
+	* [r371] R/aaa.R: - remove banner
+
 2010-10-06  kingaa
 
+	* [r370] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
 	* [r369] src/probe_ccf.c, src/probe_marginal.c, src/probe_nlar.c: -
 	  remove unused variables
 

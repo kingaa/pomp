@@ -20,6 +20,9 @@
 \alias{timezero<--pomp}
 \alias{window,pomp-method}
 \alias{window--pomp}
+\alias{obs,pomp-method}
+\alias{obs-pomp}
+\alias{obs}
 \alias{data.array,pomp-method}
 \alias{data.array-pomp}
 \alias{data.array}
@@ -39,6 +42,7 @@
 \usage{
 \S4method{coef}{pomp}(object, pars, \dots)
 \S4method{coef}{pomp}(object, pars, \dots) <- value
+\S4method{obs}{pomp}(object, vars, \dots)
 \S4method{data.array}{pomp}(object, vars, \dots)
 \S4method{states}{pomp}(object, vars, \dots)
 \S4method{time}{pomp}(x, t0 = FALSE, \dots)
@@ -134,9 +138,10 @@ as.data.frame.pomp(x, row.names, optional, \dots)
       If \code{coef(object)} does not exist, then \code{coef(object,pars) <- value} assigns \code{value} to the parameters of \code{object};
       in this case, the names of \code{object} will be \code{pars} and the names of \code{value} will be ignored.
     }
-    \item{data.array}{
-      \code{data.array(object)} returns the array of observations.
-      \code{data.array(object,vars)} gives just the observations of variables named \code{vars}.
+    \item{obs, data.array}{
+      These functions are synonymous.
+      \code{obs(object)} returns the array of observations.
+      \code{obs(object,vars)} gives just the observations of variables named \code{vars}.
       \code{vars} may specify the variables by position or by name.
     }
     \item{states}{

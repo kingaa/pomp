@@ -5,31 +5,32 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 
-SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params)
+#include "pomp_internal.h"
+
+SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset)
 {
   int nprotect = 0;
-  int *xdim, nvars, nreps, ntimes;
-  SEXP X, fn, fcall, rho;
+  int *xdim, nvars, nreps, ntimes, off;
+  SEXP X, Xoff, fn, fcall, rho;
   SEXP dimXstart, dimP, dimX;
   ntimes = length(times);
   if (ntimes < 2) {
-    UNPROTECT(nprotect);
     error("rprocess error: no transitions, no work to do");
   }
+  off = *(INTEGER(AS_INTEGER(offset)));
+  if ((off < 0)||(off>=ntimes))
+    error("illegal 'offset' value %d",off);
   PROTECT(dimXstart = GET_DIM(xstart)); nprotect++;
   if ((isNull(dimXstart)) || (length(dimXstart)!=2)) {
-    UNPROTECT(nprotect);
     error("rprocess error: 'xstart' must be a rank-2 array");
   }
   PROTECT(dimP = GET_DIM(params)); nprotect++;
   if ((isNull(dimP)) || (length(dimP)!=2)) {
-    UNPROTECT(nprotect);
     error("rprocess error: 'params' must be a rank-2 array");
   }
   xdim = INTEGER(dimXstart);
   nvars = xdim[0]; nreps = xdim[1];
   if (nreps != INTEGER(dimP)[1]) {
-    UNPROTECT(nprotect);
     error("rprocess error: number of columns of 'params' and 'xstart' do not agree");
   }
   // extract the process function
@@ -59,18 +60,28 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params)
   PROTECT(X = eval(fcall,rho)); nprotect++; // do the call
   PROTECT(dimX = GET_DIM(X)); nprotect++;
   if ((isNull(dimX)) || (length(dimX) != 3)) {
-    UNPROTECT(nprotect);
     error("rprocess error: user 'rprocess' must return a rank-3 array");
   }
   xdim = INTEGER(dimX);
   if ((xdim[0] != nvars) || (xdim[1] != nreps) || (xdim[2] != ntimes)) {
-    UNPROTECT(nprotect);
     error("rprocess error: user 'rprocess' must return a %d x %d x %d array",nvars,nreps,ntimes);
   }
   if (isNull(GET_ROWNAMES(GET_DIMNAMES(X)))) {
-    UNPROTECT(nprotect);
     error("rprocess error: user 'rprocess' must return an array with rownames");
   }
-  UNPROTECT(nprotect);
-  return X;
+  if (off > 0) {
+    int i, n;
+    double *s, *t;
+    xdim[2] -= off;
+    PROTECT(Xoff = makearray(3,xdim)); nprotect++;
+    setrownames(Xoff,GET_ROWNAMES(GET_DIMNAMES(X)),3);
+    s = REAL(X)+off*nvars*nreps;
+    t = REAL(Xoff);
+    for (i = 0, n = nvars*nreps*(ntimes-off); i < n; i++, s++, t++) *t = *s;
+    UNPROTECT(nprotect);
+    return Xoff;
+  } else {
+    UNPROTECT(nprotect);
+    return X;
+  }
 }

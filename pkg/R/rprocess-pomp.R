@@ -6,13 +6,6 @@ setGeneric('rprocess')
 setMethod(
           'rprocess',
           'pomp',
-          function (object, xstart, times, params, ...) { # the package algorithms will only use these arguments
-            x <- try(
-                     .Call(do_rprocess,object,xstart,times,params),
-                     silent=FALSE
-                     )
-            if (inherits(x,'try-error'))
-              stop("rprocess error: error in user ",sQuote("rprocess"),call.=FALSE)
-            x
-          }
+          function (object, xstart, times, params, offset = 0, ...)
+            .Call(do_rprocess,object,xstart,times,params,offset)
           )

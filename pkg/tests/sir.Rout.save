@@ -16,16 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-This is pomp version 0.34-1
-
-IMPORTANT NOTICE:
-The default behaviors of 'simulate' and 'trajectory' have changed as of release 0.34-1. You can ensure that your code will continue to function as you intend by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence of your code on the defaults. In the meantime, using 'simulate' or 'trajectory' in such a way as to rely on the default will produce a warning. These warnings will be removed in a future release.
-
-See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
-
-Subscribe to the pomp-announce list (go to pomp.r-forge.r-project.org) to receive email notification about new releases of pomp including descriptions of feature additions, changes, and fixes.
-
-
 > 
 > tbasis <- seq(0,25,by=1/52)
 > basis <- periodic.bspline.basis(tbasis,nbasis=3)
@@ -442,7 +432,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x222f078>
+<environment: 0x2633e80>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -452,7 +442,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0x1fb8eb0>
+<environment: 0x2ca6dd0>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -464,7 +454,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x26cb4c0>
+<environment: 0x2c3f9d0>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -477,7 +467,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x26cb4c0>
+<environment: 0x2c3f9d0>
 skeleton ( vectorfield ) = 
 function (x, t, params, covars, ...) 
 {
@@ -516,7 +506,7 @@ $zeronames
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.118832 secs
+Time difference of 2.066529 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -548,7 +538,7 @@ and set the 'times' and 't0' arguments appropriately to compensate.
  
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 4.587575 secs
+Time difference of 4.560865 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -608,7 +598,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.710038 secs
+Time difference of 2.543359 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -621,7 +611,7 @@ and set the 'times' and 't0' arguments appropriately to compensate.
  
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.73419 secs
+Time difference of 0.726177 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(

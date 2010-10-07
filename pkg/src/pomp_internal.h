@@ -26,21 +26,31 @@ struct lookup_table {
 // setting dydt = 0 in the call to 'table_lookup' will bypass computation of the derivative
 void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt);
 
-/* bspline.c */
+// bspline.c
 SEXP bspline_basis(SEXP x, SEXP degree, SEXP knots);
 SEXP bspline_basis_function(SEXP x, SEXP i, SEXP degree, SEXP knots);
 
-/* dsobol.c */
+// dsobol.c
 SEXP sobol_sequence(SEXP dim);
 
-/* pomp_fun.c */
+// pomp_fun.c
 SEXP pomp_fun_handler (SEXP pfun, int *use_native);
 
-/* lookup_table.c */
+// lookup_table.c
 SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t, int *index);
 
-/* resample.c */
+// resample.c
 SEXP systematic_resampling(SEXP weights);
+
+// initstate.c
+SEXP do_init_state (SEXP object, SEXP params, SEXP t0);
+
+// rprocess.c
+SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset);
+
+// rmeasure.c
+SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params);
+
 
 static R_INLINE SEXP makearray (int rank, int *dim) {
   int nprotect = 0;

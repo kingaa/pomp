@@ -64,12 +64,101 @@
 This document serves to give some examples of the use of native (C or FORTRAN) codes in \code{pomp} 
 and to introduce the low-level interface to \code{pomp} objects.
 
-\section{Acceleration using native codes: writing \code{rprocess} and \code{dprocess} from scratch.}
+\section{Acceleration using native codes: using plug-ins with native code}
 
 Since many of the methods we will use require us to simulate the process and/or measurement models many times, it is a good idea to use native (compiled) codes for the computational heavy lifting.
 This can result in many-fold speedup.
-The \code{pomp} package includes some examples that use C codes.
-First we'll have a look at how the discrete-time bivariate AR(1) process with normal measurement error is implemented.
+\code{pomp} provides ``plug-in'' facilities to make it easier to define certain kinds of models.
+These plug-ins can be used with native codes as well, as we'll see in the following examples.
+The \code{pomp} package includes other examples that use C codes: these can be loaded using the \code{data} command.
+
+In the ``intro\_to\_pomp'' vignette, we looked at the SIR model, which we implemented using an Euler-multinomial approximation to the continuous-time Markov process.
+Here is the same model implemented using native C codes:
+<<sir-def,keep.source=T>>=
+pomp(
+     data=data.frame(
+       time=seq(from=1/52,to=4,by=1/52),
+       reports=NA
+       ),
+     times="time",
+     t0=0,
+     ## native routine for the process simulator:
+     rprocess=euler.sim(
+       step.fun="_sir_euler_simulator", 
+       delta.t=1/52/20
+       ),
+     ## native routine for the skeleton:
+     skeleton.vectorfield="_sir_ODE", 
+     ## binomial measurement model:
+     rmeasure="_sir_binom_rmeasure", 
+     dmeasure="_sir_binom_dmeasure", 
+     ## name of the shared-object library containing the native routines:
+     PACKAGE="pomp", 
+     ## the order of the observable assumed in the native routines:
+     obsnames=c("reports"),
+     ## the order of the state variables assumed in the native routines:
+     statenames=c("S","I","R","cases","W"),
+     ## the order of the parameters assumed in the native routines:
+     paramnames=c(
+       "gamma","mu","iota","beta1","beta.sd",
+       "pop","rho","nbasis","degree","period"
+       ), 
+     ## reset cases to zero at each new observation:
+     zeronames=c("cases"),      
+     initializer=function(params,t0,...){
+       p <- exp(params)
+       with(
+            as.list(p),
+            {
+              fracs <- c(S.0,I.0,R.0)
+              x0 <- round(c(pop*fracs/sum(fracs),0,0))
+              names(x0) <- c("S","I","R","cases","W")
+              x0
+            }
+            )
+     }
+     ) -> sir
+@ 
+The source code for the native routines \verb+_sir_euler_simulator+, \verb+_sir_ODE+, \verb+_sir_binom_rmeasure+, and \verb+_sir_binom_dmeasure+ is provided with the package (in the \code{examples} directory).
+To see the source code, do
+<<view-sir-source,eval=F>>=
+edit(file=system.file("examples/sir.c",package="pomp"))
+@ 
+Also in the \code{examples} directory is an \R\ script that shows how to compile \verb+sir.c+ into a shared-object library and link it with \R.
+Note that the native routines for this model are included in the package, which is why we give the \verb+PACKAGE="pomp"+ argument to \pomp.
+When you write your own model using native routines, you'll compile them into a dynamically-loadable library.
+In this case, you'll want to specify the name of that library using the \code{PACKAGE} argument.
+Again, refer to the SIR example included in the \code{examples} directory to see how this is done.
+
+Let's specify some parameters and simulate:
+<<sir-sim>>=
+params <- c(
+            gamma=26,mu=0.02,iota=0.01,
+            beta1=1200,beta2=1800,beta3=600,
+            beta.sd=1e-3,                      
+            pop=2.1e6,
+            rho=0.6,
+            S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
+            )                                                     
+
+sir <- simulate(sir,params=c(log(params),nbasis=3,degree=3,period=1),seed=3493885L)
+
+tic <- Sys.time()
+sims <- simulate(sir,nsim=10)
+toc <- Sys.time()
+print(toc-tic)
+
+tic <- Sys.time()
+traj <- trajectory(sir,hmax=1/52)
+toc <- Sys.time()
+print(toc-tic)
+@ 
+
+\section{Acceleration using native codes: writing \code{rprocess} and \code{dprocess} from scratch.}
+
+In the preceding example, we used ``plug-ins'' provided by the package, in conjunction with native C routines, to specify our model.
+One can also write simulators and density functions ``from scratch''.
+Here, we'll have a look at how the discrete-time bivariate AR(1) process with normal measurement error is implemented.
 You can load a \code{pomp} object for this model and have a look at its structure with the commands
 <<eval=F>>=
 require(pomp)
@@ -186,94 +275,6 @@ theta <- c(
 <<>>=
 tic <- Sys.time()
 x <- simulate(ou2,params=theta,nsim=500,seed=80073088L)
-toc <- Sys.time()
-print(toc-tic)
-@ 
-
-\section{Acceleration using native codes: using plug-ins with native code}
-
-In the preceding example, we've written our simulators and density functions ``from scratch''.
-\code{pomp} provides ``plug-in'' facilities to make it easier to define certain kinds of models.
-These plug-ins can be used with native codes as well, as we'll see in the next example.
-
-In the ``intro\_to\_pomp'' vignette, we looked at the SIR model, which we implemented using an Euler-multinomial approximation to the continuous-time Markov process.
-Here is the same model implemented using native C codes:
-<<sir-def,keep.source=T>>=
-pomp(
-     data=data.frame(
-       time=seq(from=1/52,to=4,by=1/52),
-       reports=NA
-       ),
-     times="time",
-     t0=0,
-     ## native routine for the process simulator:
-     rprocess=euler.sim(
-       step.fun="_sir_euler_simulator", 
-       delta.t=1/52/20
-       ),
-     ## native routine for the skeleton:
-     skeleton.vectorfield="_sir_ODE", 
-     ## binomial measurement model:
-     rmeasure="_sir_binom_rmeasure", 
-     dmeasure="_sir_binom_dmeasure", 
-     ## name of the shared-object library containing the native routines:
-     PACKAGE="pomp", 
-     ## the order of the observable assumed in the native routines:
-     obsnames=c("reports"),
-     ## the order of the state variables assumed in the native routines:
-     statenames=c("S","I","R","cases","W"),
-     ## the order of the parameters assumed in the native routines:
-     paramnames=c(
-       "gamma","mu","iota","beta1","beta.sd",
-       "pop","rho","nbasis","degree","period"
-       ), 
-     ## reset cases to zero at each new observation:
-     zeronames=c("cases"),      
-     initializer=function(params,t0,...){
-       p <- exp(params)
-       with(
-            as.list(p),
-            {
-              fracs <- c(S.0,I.0,R.0)
-              x0 <- round(c(pop*fracs/sum(fracs),0,0))
-              names(x0) <- c("S","I","R","cases","W")
-              x0
-            }
-            )
-     }
-     ) -> sir
-@ 
-The source code for the native routines \verb+_sir_euler_simulator+, \verb+_sir_ODE+, \verb+_sir_binom_rmeasure+, and \verb+_sir_binom_dmeasure+ is provided with the package (in the \code{examples} directory).
-To see the source code, do
-<<view-sir-source,eval=F>>=
-edit(file=system.file("examples/sir.c",package="pomp"))
-@ 
-Also in the \code{examples} directory is an \R\ script that shows how to compile \verb+sir.c+ into a shared-object library and link it with \R.
-Note that the native routines for this model are included in the package, which is why we give the \verb+PACKAGE="pomp"+ argument to \pomp.
-When you write your own model using native routines, you'll compile them into a dynamically-loadable library.
-In this case, you'll want to specify the name of that library using the \code{PACKAGE} argument.
-Again, refer to the SIR example included in the \code{examples} directory to see how this is done.
-
-Let's specify some parameters and simulate:
-<<sir-sim>>=
-params <- c(
-            gamma=26,mu=0.02,iota=0.01,
-            beta1=1200,beta2=1800,beta3=600,
-            beta.sd=1e-3,                      
-            pop=2.1e6,
-            rho=0.6,
-            S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
-            )                                                     
-
-sir <- simulate(sir,params=c(log(params),nbasis=3,degree=3,period=1),seed=3493885L)
-
-tic <- Sys.time()
-sims <- simulate(sir,nsim=10)
-toc <- Sys.time()
-print(toc-tic)
-
-tic <- Sys.time()
-traj <- trajectory(sir,hmax=1/52)
 toc <- Sys.time()
 print(toc-tic)
 @ 

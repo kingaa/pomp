@@ -5,10 +5,20 @@ NEW  IN  VERSION  0.34-1:
        The default for 't0' is 'timezero(object)'.
        The default for 'times' is now 'time(object,t0=FALSE)' (it was 'time(object,t0=TRUE)').
        This change eliminates an infelicity in which 'simulate' and 'trajectory' returned undesired values at the initial time.
+       Users can ensure that their codes will continue to function as intended by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence on the defaults. 
        To aid users in  modifying their codes, a warning is now displayed whenever a potentially affected call is made.
+       These warnings will be removed in a future release.
+       See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
+
+    o  The 'states' slot now holds values of the state process only at the times given in the 'times' slot.
+       This is a change from the earlier behavior in which the 'states' slot sometimes included the value of the state process at 't0'.
+
+    o  'simulate' has been re-implemented in C for speed.
+
+    o  A new method 'obs' for pomp objects returns the contents of the 'data' slot.
+       It is synonymous with 'data.array'.
 
     o  A banner is now displayed on package attachment.  
-       This will be used to report important changes.
 
     o  'coef<-' now behaves like ordinary vector assignment.
 

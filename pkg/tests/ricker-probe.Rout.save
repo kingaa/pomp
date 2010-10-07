@@ -16,16 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-This is pomp version 0.34-1
-
-IMPORTANT NOTICE:
-The default behaviors of 'simulate' and 'trajectory' have changed as of release 0.34-1. You can ensure that your code will continue to function as you intend by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence of your code on the defaults. In the meantime, using 'simulate' or 'trajectory' in such a way as to rely on the default will produce a warning. These warnings will be removed in a future release.
-
-See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
-
-Subscribe to the pomp-announce list (go to pomp.r-forge.r-project.org) to receive email notification about new releases of pomp including descriptions of feature additions, changes, and fixes.
-
-
 > 
 > data(ricker)
 > 
@@ -255,7 +245,7 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
- 11.118   0.247  11.376 
+ 10.662   0.036  10.700 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -311,7 +301,7 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
-  6.768   0.125   6.895 
+  6.355   0.015   6.372 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -578,11 +568,11 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x2176b18>
+<environment: 0x2865958>
 process model density, dprocess = 
 function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified")
-<environment: 0x22887f0>
+<environment: 0x2863a38>
 measurement model simulator, rmeasure = 
 native function '_ricker_poisson_rmeasure'
 measurement model density, dmeasure = 

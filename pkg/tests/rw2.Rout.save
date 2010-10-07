@@ -16,16 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-This is pomp version 0.34-1
-
-IMPORTANT NOTICE:
-The default behaviors of 'simulate' and 'trajectory' have changed as of release 0.34-1. You can ensure that your code will continue to function as you intend by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence of your code on the defaults. In the meantime, using 'simulate' or 'trajectory' in such a way as to rely on the default will produce a warning. These warnings will be removed in a future release.
-
-See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
-
-Subscribe to the pomp-announce list (go to pomp.r-forge.r-project.org) to receive email notification about new releases of pomp including descriptions of feature additions, changes, and fixes.
-
-
 > 
 > set.seed(45768683)
 > 
@@ -265,7 +255,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x248a4f0>
+<environment: 0x1ab1930>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -278,7 +268,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x248a4f0>
+<environment: 0x1ab1930>
 initializer = 
 function (params, t0, ...) 
 {
@@ -294,9 +284,9 @@ $useless
 > try(
 +     simulate(rw2,params=p)
 +     )
-Error in try(.Call(do_init_state, object, as.matrix(params), t0), silent = FALSE) : 
+Error in try(.Call(simulation_computations, object, params, times, t0,  : 
   a state variable and a parameter share a single name: 'x1.0'
-Error : init.state error: error in user 'initializer'
+Error : 'simulate' error
 > 
 > rw2 <- pomp(
 +             rprocess = rw.rprocess,

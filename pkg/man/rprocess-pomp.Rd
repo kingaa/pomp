@@ -12,7 +12,7 @@
 }
 \usage{
 rprocess(object, xstart, times, params, \dots)
-\S4method{rprocess}{pomp}(object, xstart, times, params, \dots)
+\S4method{rprocess}{pomp}(object, xstart, times, params, offset, \dots)
 }
 \arguments{
   \item{object}{an object of class \code{pomp}.}
@@ -30,14 +30,16 @@ rprocess(object, xstart, times, params, \dots)
   \item{params}{
     a rank-2 array of parameters with the parameters corresponding to the columns of \code{xstart}.
   }
+  \item{offset}{
+    throw away the first \code{offset} times.
+  }
   \item{\dots}{at present, these are ignored.}
 }
 \value{
   \code{rprocess} returns a rank-3 array with rownames.
   Suppose \code{x} is the array returned.
-  Then \code{dim(x)=c(nvars,nreps,ntimes)}, where \code{nvars} is the number of state variables (=\code{nrow(xstart)}), \code{nreps} is the number of independent realizations simulated (=\code{ncol(xstart)}), and \code{ntimes} is the length of the vector \code{times}.
-  \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k]}.
-  In particular, \code{x[,,1]} must be identical to \code{xstart}.
+  Then \code{dim(x)=c(nvars,nreps,ntimes-offset)}, where \code{nvars} is the number of state variables (=\code{nrow(xstart)}), \code{nreps} is the number of independent realizations simulated (=\code{ncol(xstart)}), and \code{ntimes} is the length of the vector \code{times}.
+  \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k+offset]}.
   The rownames of \code{x} must correspond to those of \code{xstart}. 
 }
 \details{
