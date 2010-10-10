@@ -4,6 +4,7 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
+#include <string.h>
 
 #include "pomp_internal.h"
 
@@ -70,14 +71,10 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     error("rprocess error: user 'rprocess' must return an array with rownames");
   }
   if (off > 0) {
-    int i, n;
-    double *s, *t;
     xdim[2] -= off;
     PROTECT(Xoff = makearray(3,xdim)); nprotect++;
     setrownames(Xoff,GET_ROWNAMES(GET_DIMNAMES(X)),3);
-    s = REAL(X)+off*nvars*nreps;
-    t = REAL(Xoff);
-    for (i = 0, n = nvars*nreps*(ntimes-off); i < n; i++, s++, t++) *t = *s;
+    memcpy(REAL(Xoff),REAL(X)+off*nvars*nreps,(ntimes-off)*nvars*nreps*sizeof(double));
     UNPROTECT(nprotect);
     return Xoff;
   } else {

@@ -61,8 +61,7 @@
   set.seed(5384959)
 @ 
 
-This document serves to give some examples of the use of native (C or FORTRAN) codes in \code{pomp} 
-and to introduce the low-level interface to \code{pomp} objects.
+This document gives some examples of the use of native (C or FORTRAN) codes in \code{pomp} and introduces the low-level interface to \code{pomp} objects.
 
 \section{Acceleration using native codes: using plug-ins with native code}
 
@@ -122,7 +121,7 @@ pomp(
 The source code for the native routines \verb+_sir_euler_simulator+, \verb+_sir_ODE+, \verb+_sir_binom_rmeasure+, and \verb+_sir_binom_dmeasure+ is provided with the package (in the \code{examples} directory).
 To see the source code, do
 <<view-sir-source,eval=F>>=
-edit(file=system.file("examples/sir.c",package="pomp"))
+file.show(file=system.file("examples/sir.c",package="pomp"))
 @ 
 Also in the \code{examples} directory is an \R\ script that shows how to compile \verb+sir.c+ into a shared-object library and link it with \R.
 Note that the native routines for this model are included in the package, which is why we give the \verb+PACKAGE="pomp"+ argument to \pomp.
@@ -248,7 +247,7 @@ Read the source to see the definitions of these functions.
 For convenience, the source codes are provided with the package in the \code{examples} directory.
 Do
 <<view-ou2-source,eval=F>>=
-edit(file=system.file("examples/ou2.c",package="pomp"))
+file.show(file=system.file("examples/ou2.c",package="pomp"))
 @ 
 to view the source code.
 
