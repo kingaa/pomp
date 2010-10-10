@@ -1,5 +1,36 @@
+2010-10-10  kingaa
+
+	* [r375] inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  src/rprocess.c, src/simulate.c: - accelerate 'rprocess' and
+	  'simulate' by using 'memcpy' where appropriate
+	  - change the order of topics in 'advanced_topics_in_pomp'
+	  vignette
+
 2010-10-07  kingaa
 
+	* [r374] R/pfilter.R: - update pfilter.R to make use of the
+	  'offset' argument to 'rprocess'
+	* [r373] DESCRIPTION:
+	* [r372] NAMESPACE, R/pomp-methods.R, R/rprocess-pomp.R,
+	  R/simulate-pomp.R, inst/ChangeLog, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-first-mif.rda, inst/doc/ou2-trajmatch.rda,
+	  man/pomp-methods.Rd, man/rprocess-pomp.Rd, src/pomp_internal.h,
+	  src/rprocess.c, src/simulate.c, tests/fhn.R, tests/fhn.Rout.save,
+	  tests/gillespie.Rout.save, tests/logistic.Rout.save,
+	  tests/ou2-bsmc.Rout.save, tests/ou2-forecast.Rout.save,
+	  tests/ou2-kalman.Rout.save, tests/ou2-mif.Rout.save,
+	  tests/ou2-nlf.Rout.save, tests/ou2-pmcmc.Rout.save,
+	  tests/ou2-probe.Rout.save, tests/ou2-simulate.Rout.save,
+	  tests/ou2-trajmatch.Rout.save, tests/pfilter.Rout.save,
+	  tests/ricker-probe.Rout.save, tests/ricker.Rout.save,
+	  tests/rw2.Rout.save, tests/sir.Rout.save,
+	  tests/skeleton.Rout.save: - add 'offset' argument to 'rprocess'
+	  - implement 'simulate' in C for speed
+	  - add 'obs' method as synonym for 'data.array'
+	  - add FitzHugh-Nagumo model tests
 	* [r371] R/aaa.R: - remove banner
 
 2010-10-06  kingaa
