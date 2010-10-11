@@ -245,7 +245,7 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
- 10.662   0.036  10.700 
+ 10.847   0.241  11.089 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -301,8 +301,10 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
-  6.355   0.015   6.372 
+  6.538   0.112   6.660 
 > plot(pm)
+> plot(as(pm,"pomp"),variables="y")
+> plot(simulate(pm),variables="y")
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
               truth       est     guess
@@ -326,7 +328,7 @@ e.0        0.000000  0.000000  0.000000
 +             )
 > pb@datvals
    marg.1    marg.2    marg.3 
-28.151972 -5.296308 -3.401414 
+25.118195 -4.413983 -4.482302 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -337,11 +339,11 @@ $nsim
 
 $quantiles
 marg.1 marg.2 marg.3 
- 1.000  0.000  0.295 
+ 1.000  0.000  0.065 
 
 $pvals
      marg.1      marg.2      marg.3 
-0.001998002 0.001998002 0.591408591 
+0.001998002 0.001998002 0.131868132 
 
 > plot(pb)
 > 
@@ -568,11 +570,11 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x2865958>
+<environment: 0x1945c88>
 process model density, dprocess = 
 function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified")
-<environment: 0x2863a38>
+<environment: 0x1944560>
 measurement model simulator, rmeasure = 
 native function '_ricker_poisson_rmeasure'
 measurement model density, dmeasure = 
