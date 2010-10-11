@@ -37,4 +37,6 @@ sp <- spect(
 plot(sp)
 summary(sp)
 
+plot(simulate(sp),variables="y")
+
 dev.off()

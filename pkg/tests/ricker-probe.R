@@ -146,6 +146,8 @@ system.time(
                               )
             )
 plot(pm)
+plot(as(pm,"pomp"),variables="y")
+plot(simulate(pm),variables="y")
 
 cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
 

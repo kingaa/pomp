@@ -1,0 +1,95 @@
+
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> data(ricker)
+> 
+> pdf(file="ricker-spect.pdf")
+> 
+> set.seed(6457673L)
+> 
+> sp <- spect(
++             ricker,
++             kernel.width=3,
++             nsim=1000,
++             seed=838775L
++             )
+> plot(sp)
+> summary(sp)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$pvals
+        y       all 
+0.6113886 0.6113886 
+
+> 
+> po <- ricker
+> coef(po,"log.r") <- log(5)
+> sp <- spect(
++             po,
++             kernel.width=3,
++             nsim=1000,
++             seed=838775L
++             )
+> plot(sp)
+> summary(sp)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 1.609438 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$pvals
+          y         all 
+0.000999001 0.000999001 
+
+> 
+> po <- ricker
+> coef(po,"log.phi") <- log(30)
+> sp <- spect(
++             po,
++             kernel.width=3,
++             nsim=1000,
++             seed=838775L
++             )
+> plot(sp)
+> summary(sp)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  3.401197  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$pvals
+          y         all 
+0.000999001 0.000999001 
+
+> 
+> plot(simulate(sp),variables="y")
+> 
+> dev.off()
+null device 
+          1 
+> 
