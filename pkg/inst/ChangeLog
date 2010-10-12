@@ -1,5 +1,15 @@
+2010-10-11  kingaa
+
+	* [r378] tests/ricker-probe.Rout.save: - update
+	  'tests/ricker-probe.Rout.save'
+	* [r377] R/simulate-pomp.R, tests/ricker-probe.R,
+	  tests/ricker-spect.R, tests/ricker-spect.Rout.save: - fix bug in
+	  'simulate' as applied to objects inheriting from 'pomp'
+	  - add 'tests/ricker-spect.Rout.save'
+
 2010-10-10  kingaa
 
+	* [r376] DESCRIPTION, inst/ChangeLog: - version 0.34-2
 	* [r375] inst/doc/advanced_topics_in_pomp.Rnw,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
 	  src/rprocess.c, src/simulate.c: - accelerate 'rprocess' and

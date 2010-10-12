@@ -104,5 +104,6 @@ pb <- probe(
 plot(pb)
 summary(pb)
 
+head(as(pb,"data.frame"))
 
 

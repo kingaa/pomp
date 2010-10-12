@@ -245,7 +245,7 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
- 10.847   0.241  11.089 
+ 10.140   0.013  10.153 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -301,7 +301,7 @@ $pvals
 +                               )
 +             )
    user  system elapsed 
-  6.538   0.112   6.660 
+  6.228   0.011   6.241 
 > plot(pm)
 > plot(as(pm,"pomp"),variables="y")
 > plot(simulate(pm),variables="y")
@@ -489,110 +489,14 @@ Error in .local(object, probes, ...) :
 +           probes=list(
 +             mn=probe.mean("y",transform=sqrt,trim=0.1),
 +             md=function(y)median(as.numeric(y)),
-+             wacko=function(y) if (y[29]==98) c(1,2) else 1
++             wacko=function(y) if (y[28]==107) c(1,2) else 1
 +             ),
 +           nsim=20,
 +           seed=838775L
 +           )
 +     )
-data and states:
-   time   y            N            e
-1     0  68 7.000000e+00  0.000000000
-2     1   2 2.252789e-01 -0.236326417
-3     2  87 9.270338e+00  0.142514917
-4     3   0 4.838115e-02  0.214872801
-5     4  12 1.334559e+00 -0.434373032
-6     5 174 1.652248e+01  0.050680017
-7     6   0 6.580213e-05  0.288900504
-8     7   0 3.474655e-03  0.166664153
-9     8   1 1.364301e-01 -0.126208160
-10    9  57 5.373723e+00  0.009893893
-11   10  11 1.426706e+00  0.247570226
-12   11 178 1.709891e+01  0.110352138
-13   12   0 3.548990e-05  0.213629584
-14   13   1 1.716305e-03  0.078716364
-15   14   0 5.173992e-02 -0.392227776
-16   15  34 2.867479e+00  0.266698995
-17   16  72 7.186486e+00 -0.013751626
-18   17   3 2.654867e-01  0.088093116
-19   18 101 1.031531e+01  0.125306543
-20   19   0 2.334234e-02  0.424194626
-21   20   8 9.308228e-01 -0.090857579
-22   21 156 1.511763e+01 -0.081629526
-23   22   0 2.245531e-04  0.200365891
-24   23   0 8.316669e-03 -0.187870529
-25   24   3 3.128041e-01 -0.164368083
-26   25  93 8.887588e+00 -0.140362049
-27   26   0 4.066734e-02 -0.299397913
-28   27  17 1.901241e+00  0.085504044
-29   28 121 1.154609e+01 -0.094919246
-30   29   0 3.138536e-03 -0.464258202
-31   30   0 9.488642e-02 -0.387937189
-32   31  19 2.705772e+00 -0.354651554
-33   32 107 1.141303e+01  0.345140888
-34   33   0 6.762374e-03  0.181896309
-35   34   4 3.712183e-01  0.212178610
-36   35 127 1.257413e+01  0.093824860
-37   36   0 2.874525e-03  0.390620517
-38   37   1 1.160878e-01 -0.098666431
-39   38  47 5.890808e+00  0.242889606
-40   39   8 6.233203e-01 -0.155280147
-41   40 117 1.084903e+01 -0.319909236
-42   41   0 8.618353e-03 -0.088906503
-43   42   3 4.386990e-01  0.138537850
-44   43  82 8.250457e+00 -0.427090607
-45   44   2 1.219238e-01  0.235829667
-46   45  39 3.604686e+00 -0.291482643
-47   46  70 5.367612e+00  0.202834336
-48   47  11 1.385056e+00  0.212969775
-49   48 275 2.645209e+01  0.534650657
-50   49   0 2.654912e-09 -0.370098425
-51   50   0 1.630946e-07  0.317918731
-
-call:
-pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA), times = "time", 
-    t0 = 0, rprocess = discrete.time.sim(step.fun = "_ricker_simulator"), 
-    rmeasure = "_ricker_poisson_rmeasure", dmeasure = "_ricker_poisson_dmeasure", 
-    skeleton.map = "_ricker_skeleton", obsnames = c("y"), statenames = c("N", 
-        "e"), paramnames = c("log.r", "log.sigma", "log.phi"))
-zero time, t0 = 0
-parameter(s):
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
-process model simulator, rprocess = 
-function (xstart, times, params, ..., statenames = character(0), 
-    paramnames = character(0), covarnames = character(0), zeronames = character(0), 
-    tcovar, covar) 
-{
-    .Call(euler_model_simulator, func = efun, xstart = xstart, 
-        times = times, params = params, dt = 1, method = 0L, 
-        statenames = statenames, paramnames = paramnames, covarnames = covarnames, 
-        zeronames = zeronames, tcovar = tcovar, covar = covar, 
-        args = pairlist(...))
-}
-<environment: 0x1945c88>
-process model density, dprocess = 
-function (x, times, params, log = FALSE, ...) 
-stop(sQuote("dprocess"), " not specified")
-<environment: 0x1944560>
-measurement model simulator, rmeasure = 
-native function '_ricker_poisson_rmeasure'
-measurement model density, dmeasure = 
-native function '_ricker_poisson_dmeasure'
-skeleton ( map ) = 
-native function '_ricker_skeleton'
-initializer = 
-function (params, t0, ...) 
-{
-    ivpnames <- grep("\\.0$", names(params), val = TRUE)
-    if (length(ivpnames) < 1) 
-        stop("default initializer error: no parameter names ending in ", 
-            sQuote(".0"), " found: see ", sQuote("pomp"), " documentation")
-    x <- params[ivpnames]
-    names(x) <- sub("\\.0$", "", ivpnames)
-    x
-}
-<environment: namespace:pomp>
+Error in .local(object, probes, ...) : 
+  probes return different number of values on different datasets
 > 
 > dev.off()
 null device 

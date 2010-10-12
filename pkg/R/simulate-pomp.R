@@ -13,8 +13,6 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
             call.=FALSE
             )
 
-  object <- as(object,"pomp")
-
   if (missing(times))
     times <- time(object,t0=FALSE)
   else
@@ -39,6 +37,9 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
     set.seed(seed)
   }
   
+  if (!obs && !states)
+    object <- as(object,"pomp")
+
   retval <- try(
                 .Call(
                       simulation_computations,

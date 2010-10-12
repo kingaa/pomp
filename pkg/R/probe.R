@@ -187,3 +187,16 @@ setMethod(
           }
           )
 
+setAs(
+      from="probed.pomp",
+      to="data.frame",
+      def = function (from) {
+        x <- rbind(from@datvals,as.data.frame(from@simvals))
+        rownames(x) <- c(
+                         "data",
+                         paste("sim",seq_len(nrow(from@simvals)),sep=".")
+                         )
+        x
+      }
+      )
+

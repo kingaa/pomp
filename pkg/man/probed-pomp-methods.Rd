@@ -20,6 +20,8 @@
 \alias{plot,spect.matched.pomp-method}
 \alias{plot,spect.pomp-method}
 \alias{plot-spect.pomp}
+\alias{as,probed.pomp-method}
+\alias{coerce,probed.pomp,data.frame-method}
 \title{Methods of the "probed.pomp", "probe.matched.pomp", "spect.pomp", and "spect.matched.pomp" classes}
 \description{Methods of the \code{probed.pomp}, \code{probe.matched.pomp}, \code{spect.pomp}, and \code{spect.matched.pomp} classes}
 \usage{
@@ -35,6 +37,7 @@
                             data.styles = list(lwd=2, lty=2, col="black"))
 \S4method{summary}{spect.matched.pomp}(object, \dots)
 \S4method{plot}{spect.matched.pomp}(x, y, \dots)
+\S4method{as}{probed.pomp}(object, class)
 }
 \arguments{
   \item{object, x}{the object to be summarized or plotted.}
@@ -44,6 +47,10 @@
   \item{quantiles}{quantiles to plot}
   \item{quantile.styles}{plot style parameters for the quantiles}
   \item{data.styles}{plot style parameters for the data spectrum}
+  \item{class}{
+    character;
+    name of the class to which \code{object} should be coerced.
+  }
   \item{\dots}{
     Further arguments (either ignored or passed to underlying functions).
   }
@@ -55,6 +62,10 @@
     }
     \item{summary}{
       displays summary information.
+    }
+    \item{as}{
+      when a \sQuote{probed.pomp} is coerced to a \sQuote{data.frame}, the first row gives the probes applied to the data; the rest of the rows give the probes evaluated on simulated data.
+      The rownames of the result can be used to distinguish these.
     }
   }
 }
