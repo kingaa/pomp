@@ -115,10 +115,12 @@ good <- probe(
 summary(good)
 plot(good)
 
-ou2.bad <- ou2
-coef(ou2.bad,c("x1.0","x2.0","alpha.1","alpha.4")) <- c(0,0,0.1,0.2)
 bad <- probe(
-             ou2.bad,
+             ou2,
+             params=c(alpha.1=0.1,alpha.4=0.2,x1.0=0,x2.0=0,
+                      alpha.2=-0.5,alpha.3=0.3,
+                      sigma.1=3,sigma.2=-0.5,sigma.3=2,
+                      tau=1),
              probes=list(
                y1.mean=probe.mean(var="y1"),
                y2.mean=probe.mean(var="y2"),
