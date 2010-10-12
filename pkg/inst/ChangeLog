@@ -1,3 +1,14 @@
+2010-10-12  kingaa
+
+	* [r379] R/probe.R, R/simulate-pomp.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/probed-pomp-methods.Rd, tests/ou2-probe.R,
+	  tests/ou2-probe.Rout.save, tests/ricker-probe.R,
+	  tests/ricker-probe.Rout.save: - add method to coerce
+	  'probed.pomp' objects to data.frames
+	  - in 'simulate-pomp', it is only sometimes necessary to coerce to
+	  'pomp'
+
 2010-10-11  kingaa
 
 	* [r378] tests/ricker-probe.Rout.save: - update
