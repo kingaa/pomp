@@ -1,3 +1,12 @@
+NEW  IN  VERSION  0.34-2:
+
+    o  Added a method to coerce 'probed.pomp' objects to 'data.frame' objects.
+
+    o  Fix bug when 'simulate' is run on objects that inherit from 'pomp' but are not themselves pomps.
+       'simulate' should return 'pomp' objects when obs=F and states=F, regardless of what class 'object' is.
+
+    o  'simulate' and 'rprocess' are accelerated somewhat through judicious use of 'memcpy'.
+
 NEW  IN  VERSION  0.34-1: 
 
     o  The default behaviors of 'simulate' and 'trajectory' with respect to the argument 'times' has changed.
