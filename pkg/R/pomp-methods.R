@@ -3,7 +3,7 @@
 ## functions to extract or call the components of a "pomp" object
 setGeneric("data.array",function(object,...)standardGeneric("data.array"))
 
-setGeneric("obs",function(object,...)standardGeneric("obsns"))
+setGeneric("obs",function(object,...)standardGeneric("obs"))
 
 setGeneric("time<-",function(object,...,value)standardGeneric("time<-"))  
 
