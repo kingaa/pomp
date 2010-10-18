@@ -121,7 +121,7 @@ static void poly_nlar_fit (double *beta, double *y, int n,
       pomp_qr(X,nx,nterms,pivot,tau);
       // then solve R b = Q'y for b
       pomp_qrqy(yp,X,tau,nx,1,nterms,1,1); // y <- Q'y 
-      pomp_backsolve(X,nx,nterms,yp,1);   // y <- R^{-1} Q'y 
+      pomp_backsolve(X,nx,nterms,yp,1,"Upper","No transpose","Non-unit");   // y <- R^{-1} y
       
       // unpivot and store coefficients in beta
       for (i = 0; i < nterms; i++) beta[pivot[i]] = yp[i];
