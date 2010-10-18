@@ -3,41 +3,6 @@
 #include "pomp_internal.h"
 #include <stdio.h>
 
-static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lags, int nlag);
-
-SEXP probe_ccf (SEXP x, SEXP y, SEXP lags) {
-  int nprotect = 0;
-  SEXP ccf, ccf_names;
-  SEXP X, Y;
-  int nlag, n;
-  int k;
-  char tmp[BUFSIZ], *nm;
-  
-  nlag = LENGTH(lags);
-  PROTECT(lags = AS_INTEGER(lags)); nprotect++;
-
-  n = LENGTH(x);		// n = # of observations
-  if (n != LENGTH(y))
-    error("'x' and 'y' must have equal lengths");
-
-  PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++; 
-  PROTECT(Y = duplicate(AS_NUMERIC(y))); nprotect++; 
-   
-  PROTECT(ccf = NEW_NUMERIC(nlag)); nprotect++;
-
-  pomp_ccf_compute(REAL(ccf),REAL(X),REAL(Y),n,INTEGER(lags),nlag);
-  
-  PROTECT(ccf_names = NEW_STRING(nlag)); nprotect++;
-  for (k = 0; k < nlag; k++) {
-    snprintf(tmp,BUFSIZ,"ccf.%d",INTEGER(lags)[k]);
-    SET_STRING_ELT(ccf_names,k,mkChar(tmp));
-  }
-  SET_NAMES(ccf,ccf_names);
-
-  UNPROTECT(nprotect);
-  return ccf;
-}
-
 // vectorized routine for CCF calculation
 // we first center the series and then compute means of products
 static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lags, int nlag) {
@@ -89,3 +54,37 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
   }
   
 }
+
+SEXP probe_ccf (SEXP x, SEXP y, SEXP lags) {
+  int nprotect = 0;
+  SEXP ccf, ccf_names;
+  SEXP X, Y;
+  int nlag, n;
+  int k;
+  char tmp[BUFSIZ], *nm;
+  
+  nlag = LENGTH(lags);
+  PROTECT(lags = AS_INTEGER(lags)); nprotect++;
+
+  n = LENGTH(x);		// n = # of observations
+  if (n != LENGTH(y))
+    error("'x' and 'y' must have equal lengths");
+
+  PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++; 
+  PROTECT(Y = duplicate(AS_NUMERIC(y))); nprotect++; 
+   
+  PROTECT(ccf = NEW_NUMERIC(nlag)); nprotect++;
+
+  pomp_ccf_compute(REAL(ccf),REAL(X),REAL(Y),n,INTEGER(lags),nlag);
+  
+  PROTECT(ccf_names = NEW_STRING(nlag)); nprotect++;
+  for (k = 0; k < nlag; k++) {
+    snprintf(tmp,BUFSIZ,"ccf.%d",INTEGER(lags)[k]);
+    SET_STRING_ELT(ccf_names,k,mkChar(tmp));
+  }
+  SET_NAMES(ccf,ccf_names);
+
+  UNPROTECT(nprotect);
+  return ccf;
+}
+

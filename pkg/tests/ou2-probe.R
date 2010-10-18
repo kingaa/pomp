@@ -39,8 +39,8 @@ plot(pm.po)
 pm.ou2 <- probe(
                 ou2,
                 probes=list(
-                  y1acf=probe.acf(var="y1",lag.max=2,type="corr"),
-                  y2acf=probe.acf(var=c("y2"),lag.max=2),
+                  y1acf=probe.acf(var="y1",lags=c(0,1,2),type="corr"),
+                  y2acf=probe.acf(var=c("y2"),lags=c(0,1,2)),
                   y12ccf=probe.ccf(var=c("y2","y1"),lags=c(3,8))
                   ),
                 nsim=500
@@ -52,7 +52,7 @@ pb <- probe(
             ou2,
             probes=list(
               y1=probe.quantile(var="y1",prob=seq(0.1,0.9,by=0.1)),
-              probe.acf(var=c("y1","y2"),lag.max=4,transform=identity),
+              probe.acf(var=c("y1","y2"),lags=c(0,1,4,7),transform=identity),
               pd=probe.period(var="y1",kernel.width=3)
               ),
             nsim=200
@@ -67,7 +67,7 @@ po <- simulate(po)
 pb <- probe(
             po,
             probes=list(
-              probe.acf(var=c("y1","y2"),lag.max=1,type="cor"),
+              probe.acf(var=c("y1","y2"),lags=c(0,1),type="cor"),
               probe.nlar("y1",lags=1,powers=1),
               probe.nlar("y2",lags=1,powers=1)
               ),
@@ -86,7 +86,7 @@ po <- simulate(ou2)
 pb <- probe(
             po,
             probes=list(
-              probe.acf(var=c("y1"),lag.max=2,type="cov"),
+              probe.acf(var=c("y1"),lags=c(0,1,2),type="cov"),
               probe.ccf(vars=c("y1","y1"),lags=c(0,1,2))
               ),
             nsim=1000,

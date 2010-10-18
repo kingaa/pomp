@@ -3,67 +3,14 @@
 #include "pomp_internal.h"
 #include <stdio.h>
 
-static void pomp_acf (double *acf, double *x, int n, int nvars, int maxlag, int correlation);
-
-SEXP probe_acf (SEXP x, SEXP lag_max, SEXP corr) {
-  int nprotect = 0;
-  SEXP acf, acf_names, cacf;
-  SEXP X, X_names;
-  int maxlag, correlation, nvars, n;
-  int j, k, l;
-  double *p, *p1;
-  char tmp[BUFSIZ], *nm;
-
-  maxlag = *(INTEGER(AS_INTEGER(lag_max)));    // maximum lag
-  correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
-
-  nvars = INTEGER(GET_DIM(x))[0]; 	// nvars = # of variables
-  n = INTEGER(GET_DIM(x))[1];		// n = # of observations
-
-  PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++; 
-  PROTECT(X_names = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
-   
-  PROTECT(acf = NEW_NUMERIC((maxlag+1)*nvars)); nprotect++;
-
-  pomp_acf(REAL(acf),REAL(X),n,nvars,maxlag,correlation);
-  
-  if (correlation) {
-    PROTECT(cacf = NEW_NUMERIC(maxlag*nvars)); nprotect++;
-    PROTECT(acf_names = NEW_STRING(maxlag*nvars)); nprotect++;
-    for (j = 0, l = 0, p = REAL(cacf), p1 = REAL(acf)+1; j < nvars; j++, p1++) {
-      for (k = 1; k <= maxlag; k++, p++, p1++, l++) {
-	*p = *p1;		// copy correlations from acf into cacf
-	nm = (char *) CHARACTER_DATA(STRING_ELT(X_names,j));
-	snprintf(tmp,BUFSIZ,"acf.%d.%s",k,nm);
-	SET_STRING_ELT(acf_names,l,mkChar(tmp));
-      }
-    }
-    SET_NAMES(cacf,acf_names);
-  } else {
-    PROTECT(acf_names = NEW_STRING((maxlag+1)*nvars)); nprotect++;
-    for (j = 0, l = 0; j < nvars; j++) {
-      for (k = 0; k <= maxlag; k++, l++) {
-	nm = (char *) CHARACTER_DATA(STRING_ELT(X_names,j));
-	snprintf(tmp,BUFSIZ,"acf.%d.%s",k,nm);
-	SET_STRING_ELT(acf_names,l,mkChar(tmp));
-      }
-    }
-    SET_NAMES(acf,acf_names);
-  }
-
-  UNPROTECT(nprotect);
-  if (correlation) return(cacf); 
-  else return(acf);
-}
-
 // vectorized routine for ACF calculation
 // thanks to Simon N. Wood for the original version of this code
 // modifications due to AAK
 // note that the behavior of this ACF is slightly different from that of R's 'acf' function
 // we first center the series and then compute means of products
-static void pomp_acf (double *acf, double *x, int n, int nvars, int maxlag, int correlation) {
+static void pomp_acf (double *acf, double *x, int n, int nvars, int *lags, int nlag) {
   double xx, *p, *p0, *p1, *p2;
-  int j, k, lag, ct;
+  int i, j, k, lag, ct;
 
   // first center each row
   for (j = 0, p = x; j < nvars; j++, p++) {
@@ -81,7 +28,8 @@ static void pomp_acf (double *acf, double *x, int n, int nvars, int maxlag, int 
 
   // compute covariances
   for (j = 0, p0 = x, p = acf; j < nvars; j++, p0++) { // loop over series
-    for (lag = 0; lag <= maxlag; lag++, p++) { // loop over lags
+    for (i = 0; i < nlag; i++, p++) { // loop over lags
+      lag = lags[i];		      // i-th lag
       for (k = 0, ct = 0, xx = 0, p1 = p0, p2 = p0+lag*nvars; k < n-lag; k++, p1 += nvars, p2 += nvars)
   	if (R_FINITE(*p1) && R_FINITE(*p2)) {
   	  xx += (*p1)*(*p2);
@@ -91,10 +39,52 @@ static void pomp_acf (double *acf, double *x, int n, int nvars, int maxlag, int 
     }
   }
   
-  // convert to correlations if desired
-  if (correlation) 
-    for (j = 0, p = acf; j < nvars; j++, p += maxlag+1)
-      for (lag = 0, p0 = p, xx = *p; lag <= maxlag; lag++, p0++) 
-	*p0 /= xx;
+}
 
+SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
+  int nprotect = 0;
+  SEXP ans, ans_names;
+  SEXP X, X_names, cov;
+  int nlag, correlation, nvars, n;
+  int j, k, l;
+  double *p, *p1;
+  int *lag;
+  char tmp[BUFSIZ], *nm;
+
+  PROTECT(lags = AS_INTEGER(lags)); nprotect++;
+  nlag = LENGTH(lags);			      // number of lags
+  lag = INTEGER(lags);
+  correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
+
+  nvars = INTEGER(GET_DIM(x))[0]; 	// nvars = # of variables
+  n = INTEGER(GET_DIM(x))[1];		// n = # of observations
+
+  PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++; 
+  PROTECT(X_names = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
+   
+  PROTECT(ans = NEW_NUMERIC(nlag*nvars)); nprotect++;
+
+  pomp_acf(REAL(ans),REAL(X),n,nvars,lag,nlag);
+
+  if (correlation) {
+    l = 0;
+    PROTECT(cov = NEW_NUMERIC(nvars)); nprotect++;
+    pomp_acf(REAL(cov),REAL(X),n,nvars,&l,1); // compute lag-0 covariance
+    for (j = 0, p = REAL(ans), p1 = REAL(cov); j < nvars; j++, p1++)
+      for (k = 0; k < nlag; k++, p++)
+	*p /= *p1;
+  }
+  
+  PROTECT(ans_names = NEW_STRING(nlag*nvars)); nprotect++;
+  for (j = 0, l = 0; j < nvars; j++) {
+    for (k = 0; k < nlag; k++, l++) {
+      nm = (char *) CHARACTER_DATA(STRING_ELT(X_names,j));
+      snprintf(tmp,BUFSIZ,"acf.%d.%s",lag[k],nm);
+      SET_STRING_ELT(ans_names,l,mkChar(tmp));
+    }
+  }
+  SET_NAMES(ans,ans_names);
+
+  UNPROTECT(nprotect);
+  return ans;
 }

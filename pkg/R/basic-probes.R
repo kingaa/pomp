@@ -108,14 +108,18 @@ probe.cor <- function (
   }
 }
 
-probe.acf <- function (var, lag.max, type = c("covariance", "correlation"), transform = identity) {
+probe.acf <- function (var, lags, type = c("covariance", "correlation"), transform = identity) {
   type <- match.arg(type)
   transform <- match.fun(transform)
   corr <- type=="correlation"
+  if (corr && any(lags==0)) {
+    warning("useless zero lag discarded in ",sQuote("probe.acf"))
+    lags <- lags[lags!=0]
+  }
   function (y) .Call(
                      probe_acf,
                      x=transform(y[var,,drop=FALSE]),
-                     lag_max=lag.max,
+                     lags=lags,
                      corr=corr
                      )
 }

@@ -22,7 +22,7 @@ probe.var(var, transform = identity, na.rm = TRUE)
 probe.sd(var, transform = identity, na.rm = TRUE)
 probe.marginal(var, ref, order = 3, diff = 1, transform = identity)
 probe.nlar(var, lags, powers, transform = identity)
-probe.acf(var, lag.max, type = c("covariance", "correlation"),
+probe.acf(var, lags, type = c("covariance", "correlation"),
           transform = identity)
 probe.ccf(vars, lags, transform = identity)
 probe.period(var, kernel.width, transform = identity)
@@ -47,9 +47,6 @@ probe.quantile(var, prob, transform = identity)
   }
   \item{prob}{
     a single probability; the quantile to compute: see \code{\link{quantile}}.
-  }
-  \item{lag.max}{
-    The maximum lag at which the ACF is computed.
   }
   \item{lags}{
     In \code{probe.ccf}, a vector of lags between time series.
@@ -112,8 +109,8 @@ probe.quantile(var, prob, transform = identity)
     }
     \item{\code{probe.acf}}{
       returns a function that,
-      if \code{type=="covariance"}, computes the autocovariance function of variable \code{var} at lags 0 through \code{lag.max};
-      if \code{type=="correlation"}, computes the autocorrelation function of variable \code{var} at lags 1 through \code{lag.max}.
+      if \code{type=="covariance"}, computes the autocovariance function of variable \code{var} at lags \code{lags};
+      if \code{type=="correlation"}, computes the autocorrelation function of variable \code{var} at lags \code{lags}.
     }
     \item{\code{probe.cov}, \code{probe.cor}}{
       return functions that compute the covariance and correlation, respectively, between the two variables named in \code{vars} at relative lag \code{lag}.}

@@ -86,12 +86,15 @@ $pvals
 > pm.ou2 <- probe(
 +                 ou2,
 +                 probes=list(
-+                   y1acf=probe.acf(var="y1",lag.max=2,type="corr"),
-+                   y2acf=probe.acf(var=c("y2"),lag.max=2),
++                   y1acf=probe.acf(var="y1",lags=c(0,1,2),type="corr"),
++                   y2acf=probe.acf(var=c("y2"),lags=c(0,1,2)),
 +                   y12ccf=probe.ccf(var=c("y2","y1"),lags=c(3,8))
 +                   ),
 +                 nsim=500
 +                 )
+Warning message:
+In probe.acf(var = "y1", lags = c(0, 1, 2), type = "corr") :
+  useless zero lag discarded in 'probe.acf'
 >                 
 > summary(pm.ou2)
 $coef
@@ -118,7 +121,7 @@ y1acf.acf.1.y1 y1acf.acf.2.y1 y2acf.acf.0.y2 y2acf.acf.1.y2 y2acf.acf.2.y2
 +             ou2,
 +             probes=list(
 +               y1=probe.quantile(var="y1",prob=seq(0.1,0.9,by=0.1)),
-+               probe.acf(var=c("y1","y2"),lag.max=4,transform=identity),
++               probe.acf(var=c("y1","y2"),lags=c(0,1,4,7),transform=identity),
 +               pd=probe.period(var="y1",kernel.width=3)
 +               ),
 +             nsim=200
@@ -134,18 +137,18 @@ $nsim
 $quantiles
   y1.10%   y1.20%   y1.30%   y1.40%   y1.50%   y1.60%   y1.70%   y1.80% 
    0.755    0.760    0.800    0.620    0.355    0.125    0.025    0.010 
-  y1.90% acf.0.y1 acf.1.y1 acf.2.y1 acf.3.y1 acf.4.y1 acf.0.y2 acf.1.y2 
-   0.005    0.020    0.035    0.025    0.100    0.835    0.060    0.070 
-acf.2.y2 acf.3.y2 acf.4.y2       pd 
-   0.070    0.090    0.430    0.060 
+  y1.90% acf.0.y1 acf.1.y1 acf.4.y1 acf.7.y1 acf.0.y2 acf.1.y2 acf.4.y2 
+   0.005    0.020    0.035    0.835    0.840    0.060    0.070    0.430 
+acf.7.y2       pd 
+   0.870    0.060 
 
 $pvals
     y1.10%     y1.20%     y1.30%     y1.40%     y1.50%     y1.60%     y1.70% 
 0.49751244 0.48756219 0.40796020 0.76616915 0.71641791 0.25870647 0.05970149 
-    y1.80%     y1.90%   acf.0.y1   acf.1.y1   acf.2.y1   acf.3.y1   acf.4.y1 
-0.02985075 0.01990050 0.04975124 0.07960199 0.05970149 0.20895522 0.33830846 
-  acf.0.y2   acf.1.y2   acf.2.y2   acf.3.y2   acf.4.y2         pd 
-0.12935323 0.14925373 0.14925373 0.18905473 0.86567164 0.12935323 
+    y1.80%     y1.90%   acf.0.y1   acf.1.y1   acf.4.y1   acf.7.y1   acf.0.y2 
+0.02985075 0.01990050 0.04975124 0.07960199 0.33830846 0.32835821 0.12935323 
+  acf.1.y2   acf.4.y2   acf.7.y2         pd 
+0.14925373 0.86567164 0.26865672 0.12935323 
 
 > 
 > po <- ou2
@@ -156,13 +159,16 @@ $pvals
 > pb <- probe(
 +             po,
 +             probes=list(
-+               probe.acf(var=c("y1","y2"),lag.max=1,type="cor"),
++               probe.acf(var=c("y1","y2"),lags=c(0,1),type="cor"),
 +               probe.nlar("y1",lags=1,powers=1),
 +               probe.nlar("y2",lags=1,powers=1)
 +               ),
 +             nsim=1000,
 +             seed=1066L
 +             )
+Warning message:
+In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
+  useless zero lag discarded in 'probe.acf'
 > x <- as.data.frame(po)
 > x <- sweep(x,2,mean(x))
 > y1 <- head(x$y1,-1)
@@ -176,7 +182,7 @@ $pvals
 > pb <- probe(
 +             po,
 +             probes=list(
-+               probe.acf(var=c("y1"),lag.max=2,type="cov"),
++               probe.acf(var=c("y1"),lags=c(0,1,2),type="cov"),
 +               probe.ccf(vars=c("y1","y1"),lags=c(0,1,2))
 +               ),
 +             nsim=1000,
