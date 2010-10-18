@@ -8,7 +8,7 @@
 // modifications due to AAK
 // note that the behavior of this ACF is slightly different from that of R's 'acf' function
 // we first center the series and then compute means of products
-static void pomp_acf (double *acf, double *x, int n, int nvars, int *lags, int nlag) {
+static void pomp_acf_compute (double *acf, double *x, int n, int nvars, int *lags, int nlag) {
   double xx, *p, *p0, *p1, *p2;
   int i, j, k, lag, ct;
 
@@ -41,6 +41,58 @@ static void pomp_acf (double *acf, double *x, int n, int nvars, int *lags, int n
   
 }
 
+// vectorized routine for CCF calculation
+// we first center the series and then compute means of products
+static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lags, int nlag) {
+  double xx, *p, *p1, *p2;
+  int j, k, lag, ct;
+
+  // first center x
+  for (k = 0, xx = 0, ct = 0, p = x; k < n; k++, p++) {
+    if (R_FINITE(*p)) {
+      xx += *p;
+      ct++;
+    }
+  }
+  if (ct < 1) error("series 'x' has no data");
+  xx /= ct;			// mean of x[j]
+  for (k = 0, p = x; k < n; k++, p++)
+    if (R_FINITE(*p)) *p -= xx;
+
+  // now center y
+  for (k = 0, xx = 0, ct = 0, p = y; k < n; k++, p++) {
+    if (R_FINITE(*p)) {
+      xx += *p;
+      ct++;
+    }
+  }
+  if (ct < 1) error("series 'y' has no data");
+  xx /= ct;			// mean of y[j]
+  for (k = 0, p = y; k < n; k++, p++)
+    if (R_FINITE(*p)) *p -= xx;
+    
+  // compute covariances
+  for (j = 0, p = ccf; j < nlag; j++, p++) { // loop over lags
+    lag = lags[j];
+    if (lag < 0) {
+      for (k = 0, xx = 0, ct = 0, p1 = x-lag, p2 = y; k < n+lag; k++, p1++, p2++)
+	if (R_FINITE(*p1) && R_FINITE(*p1)) {
+	  xx += (*p1)*(*p2);
+	  ct++;
+	}
+      *p = (ct > 0) ? xx/ct : R_NaReal;
+    } else {
+      for (k = 0, xx = 0, ct = 0, p1 = x, p2 = y+lag; k < n-lag; k++, p1++, p2++)
+	if (R_FINITE(*p1) && R_FINITE(*p1)) {
+	  xx += (*p1)*(*p2);
+	  ct++;
+	}
+      *p = (ct > 0) ? xx/ct : R_NaReal;
+    }
+  }
+  
+}
+
 SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   int nprotect = 0;
   SEXP ans, ans_names;
@@ -64,12 +116,12 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
    
   PROTECT(ans = NEW_NUMERIC(nlag*nvars)); nprotect++;
 
-  pomp_acf(REAL(ans),REAL(X),n,nvars,lag,nlag);
+  pomp_acf_compute(REAL(ans),REAL(X),n,nvars,lag,nlag);
 
   if (correlation) {
     l = 0;
     PROTECT(cov = NEW_NUMERIC(nvars)); nprotect++;
-    pomp_acf(REAL(cov),REAL(X),n,nvars,&l,1); // compute lag-0 covariance
+    pomp_acf_compute(REAL(cov),REAL(X),n,nvars,&l,1); // compute lag-0 covariance
     for (j = 0, p = REAL(ans), p1 = REAL(cov); j < nvars; j++, p1++)
       for (k = 0; k < nlag; k++, p++)
 	*p /= *p1;
@@ -88,3 +140,37 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   UNPROTECT(nprotect);
   return ans;
 }
+
+SEXP probe_ccf (SEXP x, SEXP y, SEXP lags) {
+  int nprotect = 0;
+  SEXP ccf, ccf_names;
+  SEXP X, Y;
+  int nlag, n;
+  int k;
+  char tmp[BUFSIZ], *nm;
+  
+  nlag = LENGTH(lags);
+  PROTECT(lags = AS_INTEGER(lags)); nprotect++;
+
+  n = LENGTH(x);		// n = # of observations
+  if (n != LENGTH(y))
+    error("'x' and 'y' must have equal lengths");
+
+  PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++; 
+  PROTECT(Y = duplicate(AS_NUMERIC(y))); nprotect++; 
+   
+  PROTECT(ccf = NEW_NUMERIC(nlag)); nprotect++;
+
+  pomp_ccf_compute(REAL(ccf),REAL(X),REAL(Y),n,INTEGER(lags),nlag);
+  
+  PROTECT(ccf_names = NEW_STRING(nlag)); nprotect++;
+  for (k = 0; k < nlag; k++) {
+    snprintf(tmp,BUFSIZ,"ccf.%d",INTEGER(lags)[k]);
+    SET_STRING_ELT(ccf_names,k,mkChar(tmp));
+  }
+  SET_NAMES(ccf,ccf_names);
+
+  UNPROTECT(nprotect);
+  return ccf;
+}
+
