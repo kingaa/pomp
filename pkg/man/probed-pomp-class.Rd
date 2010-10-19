@@ -22,6 +22,7 @@
     \item{datvals, simvals}{values of each of the probes applied to the real and simulated data, respectively.}
     \item{quantiles}{fraction of simulations with probe values less than the value of the probe of the data.}
     \item{pvals}{two-sided p-values: fraction of the \code{simvals} that deviate more extremely from the mean of the \code{simvals} than does \code{datavals}.}
+    \item{synth.loglik}{the log synthetic likelihood (Wood 2010).  This is the likelihood assuming that the probes are multivariate-normally distributed.}
     \item{weights}{relative weights applied to the discrepancies in computing the probe-matching objective function.}
     \item{fail.value}{value to use to replace non-finite values of the objective function.}
     \item{evals}{
@@ -52,6 +53,10 @@
   B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, S. N. Wood
   Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches,
   Ecology, 80:1789--1805, 1999.
+
+  S. N. Wood
+  Statistical inference for noisy nonlinear ecological dynamic systems,
+  Nature, 466: 1102--1104, 2010.
 }
 \author{
   Daniel C. Reuman \email{d.reuman at imperial dot ac dot uk}

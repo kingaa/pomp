@@ -7,7 +7,8 @@ setClass(
                         datvals="numeric",
                         simvals="array",
                         quantiles="numeric",
-                        pvals="numeric"
+                        pvals="numeric",
+                        synth.loglik="numeric"
                         )
          )
 
@@ -19,7 +20,8 @@ setMethod(
                  coef=coef(object),
                  nsim=nrow(object@simvals),
                  quantiles=object@quantiles,
-                 pvals=object@pvals
+                 pvals=object@pvals,
+                 synth.loglik=object@synth.loglik
                  )
           }
           )
@@ -70,6 +72,8 @@ setMethod(
               quants[k] <- sum(simval[,k]<datval[k])/nsim
             }
 
+            ll <- .Call(synth_loglik,simval,datval)
+
             coef(object) <- params
             
             new(
@@ -80,7 +84,8 @@ setMethod(
                 datvals=datval,
                 simvals=simval,
                 quantiles=quants,
-                pvals=pvals
+                pvals=pvals,
+                synth.loglik=ll
                 )
           }
           )

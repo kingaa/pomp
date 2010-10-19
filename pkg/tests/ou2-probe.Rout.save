@@ -30,6 +30,7 @@ Type 'q()' to quit R.
 +                   ),
 +                 nsim=500
 +                 )
+> 
 > pm.po <- probe(
 +                ou2,
 +                params=c(
@@ -63,6 +64,9 @@ $pvals
    y1.mean    y2.mean      y1.sd      y2.sd 
 0.24750499 0.91816367 0.04391218 0.10379242 
 
+$synth.loglik
+[1] -5.480174
+
 > summary(pm.po)
 $coef
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
@@ -78,6 +82,9 @@ y1.mean y2.mean   y1.sd   y2.sd
 $pvals
     y1.mean     y2.mean       y1.sd       y2.sd 
 0.151696607 0.702594810 0.003992016 0.003992016 
+
+$synth.loglik
+[1] -180.4989
 
 > 
 > plot(pm.ou2)
@@ -116,6 +123,9 @@ y1acf.acf.1.y1 y1acf.acf.2.y1 y2acf.acf.0.y2 y2acf.acf.1.y2 y2acf.acf.2.y2
   y12ccf.ccf.3   y12ccf.ccf.8 
     0.09980040     0.65469062 
 
+$synth.loglik
+[1] -3368.175
+
 > 
 > pb <- probe(
 +             ou2,
@@ -150,6 +160,9 @@ $pvals
   acf.1.y2   acf.4.y2   acf.7.y2         pd 
 0.14925373 0.86567164 0.26865672 0.12935323 
 
+$synth.loglik
+[1] -1.732555e+39
+
 > 
 > po <- ou2
 > coef(po,c("alpha.2","alpha.3")) <- c(0,0)
@@ -183,7 +196,7 @@ In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
 +             po,
 +             probes=list(
 +               probe.acf(var=c("y1"),lags=c(0,1,2),type="cov"),
-+               probe.ccf(vars=c("y1","y1"),lags=c(0,1,2))
++               probe.ccf(vars=c("y1","y1"),lags=c(0,1,2),type="cov")
 +               ),
 +             nsim=1000,
 +             seed=1066L
@@ -204,6 +217,9 @@ acf.0.y1 acf.1.y1 acf.2.y1    ccf.0    ccf.1    ccf.2
 $pvals
  acf.0.y1  acf.1.y1  acf.2.y1     ccf.0     ccf.1     ccf.2 
 0.1918082 0.2237762 0.4495504 0.1918082 0.2237762 0.4495504 
+
+$synth.loglik
+[1] 27.6966
 
 > 
 > pb <- probe(
@@ -229,15 +245,45 @@ $pvals
    ccf.-5    ccf.-3     ccf.1     ccf.4     ccf.8 
 0.4075924 0.3876124 0.0919081 0.3856144 0.3716284 
 
+$synth.loglik
+[1] -27.84814
+
+> 
+> pb <- probe(
++             po,
++             probes=probe.ccf(vars=c("y1","y2"),lags=c(-5,-3,1,4,8),type="corr"),
++             nsim=1000,
++             seed=1066L
++             )
+> plot(pb)
+> summary(pb)
+$coef
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+
+$nsim
+[1] 1000
+
+$quantiles
+ccf.-5 ccf.-3  ccf.1  ccf.4  ccf.8 
+ 0.364  0.425  0.961  0.671  0.176 
+
+$pvals
+    ccf.-5     ccf.-3      ccf.1      ccf.4      ccf.8 
+0.72927073 0.85114885 0.07992008 0.65934066 0.35364635 
+
+$synth.loglik
+[1] 2.860594
+
 > 
 > head(as(pb,"data.frame"))
-        ccf.-5   ccf.-3      ccf.1     ccf.4       ccf.8
-data  19.34604 27.20885  -9.222381 -24.94993 -0.74878977
-sim.1 25.39116 47.09313 -21.570904 -42.14185 29.51164251
-sim.2 20.36428 26.94550 -11.171452 -23.47005  0.45640982
-sim.3 11.55157 19.89440  -2.804638 -15.20150 -3.15023990
-sim.4 21.26787 32.99956 -15.666009 -24.59495 -0.95437169
-sim.5 13.42573 22.06017  -9.814133 -19.89532 -0.05729449
+         ccf.-5    ccf.-3      ccf.1      ccf.4        ccf.8
+data  0.5333071 0.7500589 -0.2542309 -0.6877880 -0.020641683
+sim.1 0.4470813 0.8292044 -0.3798152 -0.7420235  0.519633798
+sim.2 0.5461973 0.7227145 -0.2996333 -0.6294983  0.012241523
+sim.3 0.4229191 0.7283615 -0.1026817 -0.5565477 -0.115334617
+sim.4 0.4577827 0.7103028 -0.3372048 -0.5293968 -0.020542485
+sim.5 0.4013560 0.6594786 -0.2933890 -0.5947615 -0.001712792
 > 
 > 
 > 
