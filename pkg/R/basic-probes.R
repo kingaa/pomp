@@ -110,12 +110,13 @@ probe.cor <- function (
 
 probe.acf <- function (var, lags, type = c("covariance", "correlation"), transform = identity) {
   type <- match.arg(type)
-  transform <- match.fun(transform)
   corr <- type=="correlation"
+  transform <- match.fun(transform)
   if (corr && any(lags==0)) {
     warning("useless zero lag discarded in ",sQuote("probe.acf"))
     lags <- lags[lags!=0]
   }
+  lags <- as.integer(lags)
   function (y) .Call(
                      probe_acf,
                      x=transform(y[var,,drop=FALSE]),
@@ -124,15 +125,19 @@ probe.acf <- function (var, lags, type = c("covariance", "correlation"), transfo
                      )
 }
 
-probe.ccf <- function (vars, lags, transform = identity) {
+probe.ccf <- function (vars, lags, type = c("covariance", "correlation"), transform = identity) {
+  type <- match.arg(type)
+  corr <- type=="correlation"
   transform <- match.fun(transform)
   if (length(vars)!=2)
     stop(sQuote("vars")," must name two variables")
+  lags <- as.integer(lags)
   function (y) .Call(
                      probe_ccf,
                      x=transform(y[vars[1],,drop=TRUE]),
                      y=transform(y[vars[2],,drop=TRUE]),
-                     lags=lags
+                     lags=lags,
+                     corr=corr
                      )
 }
 

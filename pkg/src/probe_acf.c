@@ -96,15 +96,15 @@ static void pomp_ccf_compute (double *ccf, double *x, double *y, int n, int *lag
 SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   int nprotect = 0;
   SEXP ans, ans_names;
-  SEXP X, X_names, cov;
+  SEXP X, X_names;
   int nlag, correlation, nvars, n;
   int j, k, l;
-  double *p, *p1;
+  double *p, *p1, *cov;
   int *lag;
   char tmp[BUFSIZ], *nm;
 
-  PROTECT(lags = AS_INTEGER(lags)); nprotect++;
   nlag = LENGTH(lags);			      // number of lags
+  PROTECT(lags = AS_INTEGER(lags)); nprotect++;
   lag = INTEGER(lags);
   correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
 
@@ -120,9 +120,9 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
 
   if (correlation) {
     l = 0;
-    PROTECT(cov = NEW_NUMERIC(nvars)); nprotect++;
-    pomp_acf_compute(REAL(cov),REAL(X),n,nvars,&l,1); // compute lag-0 covariance
-    for (j = 0, p = REAL(ans), p1 = REAL(cov); j < nvars; j++, p1++)
+    cov = (double *) R_alloc(nvars,sizeof(double));
+    pomp_acf_compute(cov,REAL(X),n,nvars,&l,1); // compute lag-0 covariance
+    for (j = 0, p = REAL(ans), p1 = cov; j < nvars; j++, p1++)
       for (k = 0; k < nlag; k++, p++)
 	*p /= *p1;
   }
@@ -141,16 +141,18 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   return ans;
 }
 
-SEXP probe_ccf (SEXP x, SEXP y, SEXP lags) {
+SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
   int nprotect = 0;
-  SEXP ccf, ccf_names;
+  SEXP ans, ans_names;
   SEXP X, Y;
-  int nlag, n;
+  double cov[2], xx, *p;
+  int nlag, n, correlation;
   int k;
   char tmp[BUFSIZ], *nm;
   
   nlag = LENGTH(lags);
   PROTECT(lags = AS_INTEGER(lags)); nprotect++;
+  correlation = *(INTEGER(AS_INTEGER(corr))); // correlation, or covariance?
 
   n = LENGTH(x);		// n = # of observations
   if (n != LENGTH(y))
@@ -159,18 +161,26 @@ SEXP probe_ccf (SEXP x, SEXP y, SEXP lags) {
   PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++; 
   PROTECT(Y = duplicate(AS_NUMERIC(y))); nprotect++; 
    
-  PROTECT(ccf = NEW_NUMERIC(nlag)); nprotect++;
+  PROTECT(ans = NEW_NUMERIC(nlag)); nprotect++;
 
-  pomp_ccf_compute(REAL(ccf),REAL(X),REAL(Y),n,INTEGER(lags),nlag);
+  pomp_ccf_compute(REAL(ans),REAL(X),REAL(Y),n,INTEGER(lags),nlag);
   
-  PROTECT(ccf_names = NEW_STRING(nlag)); nprotect++;
+  if (correlation) {
+    k = 0;
+    pomp_acf_compute(&cov[0],REAL(X),n,1,&k,1); // compute lag-0 covariance of x
+    pomp_acf_compute(&cov[1],REAL(Y),n,1,&k,1); // compute lag-0 covariance of y
+    xx = sqrt(cov[0]*cov[1]);
+    for (k = 0, p = REAL(ans); k < nlag; k++, p++) *p /= xx; // convert to correlation
+  }
+  
+  PROTECT(ans_names = NEW_STRING(nlag)); nprotect++;
   for (k = 0; k < nlag; k++) {
     snprintf(tmp,BUFSIZ,"ccf.%d",INTEGER(lags)[k]);
-    SET_STRING_ELT(ccf_names,k,mkChar(tmp));
+    SET_STRING_ELT(ans_names,k,mkChar(tmp));
   }
-  SET_NAMES(ccf,ccf_names);
+  SET_NAMES(ans,ans_names);
 
   UNPROTECT(nprotect);
-  return ccf;
+  return ans;
 }
 

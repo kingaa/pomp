@@ -18,6 +18,7 @@ useDynLib(
           probe_acf,
           probe_ccf,
           probe_nlar,
+          synth_loglik,
           do_rprocess,
           do_dprocess,
           do_rmeasure,

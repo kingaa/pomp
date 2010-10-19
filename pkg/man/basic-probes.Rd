@@ -24,7 +24,8 @@ probe.marginal(var, ref, order = 3, diff = 1, transform = identity)
 probe.nlar(var, lags, powers, transform = identity)
 probe.acf(var, lags, type = c("covariance", "correlation"),
           transform = identity)
-probe.ccf(vars, lags, transform = identity)
+probe.ccf(vars, lags, type = c("covariance", "correlation"),
+          transform = identity)
 probe.period(var, kernel.width, transform = identity)
 probe.quantile(var, prob, transform = identity)
 }
@@ -109,11 +110,14 @@ probe.quantile(var, prob, transform = identity)
     }
     \item{\code{probe.acf}}{
       returns a function that,
-      if \code{type=="covariance"}, computes the autocovariance function of variable \code{var} at lags \code{lags};
-      if \code{type=="correlation"}, computes the autocorrelation function of variable \code{var} at lags \code{lags}.
+      if \code{type=="covariance"}, computes the autocovariance of variable \code{var} at lags \code{lags};
+      if \code{type=="correlation"}, computes the autocorrelation of variable \code{var} at lags \code{lags}.
     }
-    \item{\code{probe.cov}, \code{probe.cor}}{
-      return functions that compute the covariance and correlation, respectively, between the two variables named in \code{vars} at relative lag \code{lag}.}
+    \item{\code{probe.ccf}}{
+      returns a function that,
+      if \code{type=="covariance"}, computes the cross covariance of the two variables named in \code{vars} at lags \code{lags};
+      if \code{type=="correlation"}, computes the cross correlation.
+    }
     \item{\code{probe.quantile}}{
       returns a function that estimates the \code{prob}-th quantile of variable \code{var}.
     }
