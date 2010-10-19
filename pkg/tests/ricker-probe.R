@@ -240,7 +240,7 @@ try(
           probes=list(
             mn=probe.mean("y",transform=sqrt,trim=0.1),
             md=function(y)median(as.numeric(y)),
-            wacko=function(y) if (y[1]==69) 1 else c(1,2)
+            wacko=function(y) if (y[1]==68) 1 else c(1,2)
             ),
           nsim=100,
           seed=838775L

@@ -13,6 +13,7 @@ pm.ou2 <- probe(
                   ),
                 nsim=500
                 )
+
 pm.po <- probe(
                ou2,
                params=c(
@@ -87,7 +88,7 @@ pb <- probe(
             po,
             probes=list(
               probe.acf(var=c("y1"),lags=c(0,1,2),type="cov"),
-              probe.ccf(vars=c("y1","y1"),lags=c(0,1,2))
+              probe.ccf(vars=c("y1","y1"),lags=c(0,1,2),type="cov")
               ),
             nsim=1000,
             seed=1066L
@@ -98,6 +99,15 @@ summary(pb)
 pb <- probe(
             po,
             probes=probe.ccf(vars=c("y1","y2"),lags=c(-5,-3,1,4,8)),
+            nsim=1000,
+            seed=1066L
+            )
+plot(pb)
+summary(pb)
+
+pb <- probe(
+            po,
+            probes=probe.ccf(vars=c("y1","y2"),lags=c(-5,-3,1,4,8),type="corr"),
             nsim=1000,
             seed=1066L
             )
