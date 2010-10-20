@@ -1,4 +1,12 @@
-NEW  IN  VERSION  0.34-2:
+NEW IN VERSION 0.34-3:
+
+    o  Added a facility for computation of "synthetic likelihood" (Wood 2010) using a robust estimate of the covariance.  A new slot in objects of class 'probed.pomp' holds this value.
+
+    o  Added the argument 'type' to 'probe.ccf' so that either cross-covariance or cross-correlation can be returned.  'probe.ccf' and 'probe.acf' now have comparable interfaces.
+
+    o  Changed the way that 'probe.acf' accepts lags.  Now an arbitrary set of lags can be selected.
+
+NEW IN VERSION 0.34-2:
 
     o  Added a method to coerce 'probed.pomp' objects to 'data.frame' objects.
 
@@ -7,7 +15,7 @@ NEW  IN  VERSION  0.34-2:
 
     o  'simulate' and 'rprocess' are accelerated somewhat through judicious use of 'memcpy'.
 
-NEW  IN  VERSION  0.34-1: 
+NEW IN VERSION 0.34-1: 
 
     o  The default behaviors of 'simulate' and 'trajectory' with respect to the argument 'times' has changed.
        There is a new argument, 't0', which specifies the time at which the initial conditions obtain.
