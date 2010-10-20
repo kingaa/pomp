@@ -18,7 +18,6 @@
   A full description of slots in a \code{probed.pomp} or \code{probe.matched.pomp} object follows.
   \describe{
     \item{probes}{list of the probes applied.}
-    \item{seed}{the seed of the RNG used.}
     \item{datvals, simvals}{values of each of the probes applied to the real and simulated data, respectively.}
     \item{quantiles}{fraction of simulations with probe values less than the value of the probe of the data.}
     \item{pvals}{two-sided p-values: fraction of the \code{simvals} that deviate more extremely from the mean of the \code{simvals} than does \code{datavals}.}

@@ -8,6 +8,7 @@
 \alias{continue}
 \alias{continue,mif-method}
 \alias{continue-mif}
+\alias{mif.profile.design}
 \title{The MIF algorithm}
 \description{
   The MIF algorithm for estimating the parameters of a partially-observed Markov process.
@@ -20,6 +21,8 @@ mif(object, \dots)
     verbose = getOption("verbose"))
 \S4method{mif}{mif}(object, Nmif, \dots)
 \S4method{continue}{mif}(object, Nmif = 1, \dots)
+mif.profile.design(object, profile, lower, upper, nprof, ivps, rw.sd,
+                   Np, ic.lag, var.factor, cooling.factor, \dots)
 }
 \arguments{
   \item{object}{
@@ -89,6 +92,14 @@ mif(object, \dots)
   \item{verbose}{
     logical; if TRUE, print progress reports.
   }
+  \item{lower, upper, nprof}{
+    used in specifying the profile calculation.
+    See \code{\link{profile.design}} for details.
+  }
+  \item{profile}{
+    named list of numeric vectors.
+    The profile calculation will fix parameters at all possible combinations of the parameters in \code{profile}.
+  }
   \item{\dots}{
     Additional arguments that can be used to override the defaults.
   }
@@ -103,6 +114,13 @@ mif(object, \dots)
   A call to \code{mif} to perform \code{Nmif=m} iterations followed by a call to \code{continue} to perform \code{Nmif=n} iterations will produce precisely the same effect as a single call to \code{mif} to perform \code{Nmif=m+n} iterations.
   By default, all the algorithmic parameters are the same as used in the original call to \code{mif}.
   Additional arguments will override the defaults.
+}
+\section{Likelihood profiles using MIF}{
+  The function \code{mif.profile.design} sets up a MIF likelihood-profile calculation.
+  It returns a list of lists, each one of which contains a \code{mif} object.
+  Running \code{mif} or \code{continue} on each of these will maximize the likelihood over the desired parameters, while holding others fixed.
+  Each \code{mif} calculation is independent of the others: the computation is therefore readily parallelized.
+  The list returned by \code{mif.profile.design} will have one element for every row in \code{do.call(expand.grid,profile)}.
 }
 \section{Details}{
   If \code{particles} is not specified, the default behavior is to draw the particles from a multivariate normal distribution.

@@ -384,3 +384,45 @@ setMethod(
             obj
           }
           )
+
+mif.profile.design <- function (object, profile, lower, upper, nprof, ivps, 
+                                rw.sd, Np, ic.lag, var.factor, cooling.factor, ...)
+  {
+    if (missing(profile)) profile <- list()
+    if (missing(lower)) lower <- numeric(0)
+    if (missing(upper)) upper <- lower
+    if (length(lower)!=length(upper))
+      stop(sQuote("lower")," and ",sQuote("upper")," must be of the same length")
+    pars <- names(lower)
+    if (missing(ivps)) ivps <- character(0)
+    Np <- as.integer(Np)
+
+    pd <- do.call(profile.design,c(profile,list(lower=lower,upper=upper,nprof=nprof)))
+
+    object <- as(object,"pomp")
+
+    pp <- coef(object)
+    idx <- !(names(pp)%in%names(pd))
+    if (any(idx)) pd <- cbind(pd,as.list(pp[idx]))
+      
+    ans <- vector(mode="list",length=nrow(pd))
+    for (k in seq_len(nrow(pd))) {
+      ans[[k]] <- list(
+                       mf=mif(
+                         object,
+                         Nmif=0,
+                         start=unlist(pd[k,]),
+                         pars=pars,
+                         ivps=ivps,
+                         rw.sd=rw.sd,
+                         Np=Np,
+                         ic.lag=ic.lag,
+                         var.factor=var.factor,
+                         cooling.factor=cooling.factor,
+                         ...
+                         )
+                       )
+    }
+
+    ans
+  }

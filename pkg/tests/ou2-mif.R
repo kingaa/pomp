@@ -4,6 +4,9 @@ data(ou2)
 
 set.seed(64857673L)
 
+obs(window(ou2,end=20,start=15))
+obs(window(ou2,end=5),"y1")
+
 fit1.pfilter <- pfilter(ou2,Np=1000)
 cat("coefficients at `truth'\n")
 print(coef(ou2,c('x1.0','x2.0','alpha.2','alpha.3')),digits=4)
@@ -180,3 +183,18 @@ fit <- mif(
            }
            )
 pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
+
+mp <- mif.profile.design(
+                         ou2,
+                         profile=list(
+                           alpha.1=seq(0.5,0.9,by=0.1),
+                           alpha.4=seq(0.5,0.9,by=0.1),
+                           sigma.1=1,sigma.2=0,sigma.3=1,
+                           x1.0=0,x2.0=0
+                           ),
+                         lower=c(alpha.2=-1,alpha.3=-1,tau=0.01),
+                         upper=c(alpha.2=1,alpha.3=1,tau=3),
+                         nprof=5,
+                         rw.sd=c(alpha.2=0.2,alpha.3=0.2,tau=0.1),
+                         Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
+                         )

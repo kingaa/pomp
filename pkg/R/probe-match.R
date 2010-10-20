@@ -66,12 +66,39 @@ probe.mismatch <- function (par, est, object, probes, params,
   mismatch
 }
 
+neg.synth.loglik <- function (par, est, object, probes, params,
+                              nsim = 1, seed = NULL,
+                              weights, datval,
+                              fail.value = NA) {
+  if (missing(par)) par <- numeric(0)
+  if (missing(est)) est <- integer(0)
+  if (missing(params)) params <- coef(object)
+  
+  params[est] <- par
+  
+  ## apply probes to model simulations
+  simval <- .Call(
+                  apply_probe_sim,
+                  object=object,
+                  nsim=nsim,
+                  params=params,
+                  seed=seed,
+                  probes=probes,
+                  datval=datval
+                  )
+  
+  ll <- .Call(synth_loglik,simval,datval)
+  -ll
+}
+
 probe.match <- function(object, start, est = character(0),
                         probes, weights,
                         nsim, seed = NULL,
                         method = c("subplex","Nelder-Mead","SANN"),
                         verbose = getOption("verbose"), 
                         eval.only = FALSE, fail.value = NA, ...) {
+
+  obj.fn <- probe.mismatch
 
   if (!is(object,"pomp"))
     stop(sQuote("object")," must be of class ",sQuote("pomp"))
@@ -107,26 +134,26 @@ probe.match <- function(object, start, est = character(0),
   datval <- .Call(apply_probe_data,object,probes) # apply probes to data
   
   if (eval.only) {
-    val <- probe.mismatch(
-                          par=guess,
-                          est=par.index,
-                          object=object,
-                          probes=probes,
-                          params=params,
-                          nsim=nsim,
-                          seed=seed,
-                          weights=weights,
-                          datval=datval,
-                          fail.value=fail.value
-                          )
+    val <- obj.fun(
+                   par=guess,
+                   est=par.index,
+                   object=object,
+                   probes=probes,
+                   params=params,
+                   nsim=nsim,
+                   seed=seed,
+                   weights=weights,
+                   datval=datval,
+                   fail.value=fail.value
+                   )
     conv <- 0
     evals <- as.integer(c(1,0))
-    msg <- paste(sQuote("probe.mismatch"),"evaluated")
+    msg <- paste("no optimization performed")
   } else {
     if (method == 'subplex') {
       opt <- subplex::subplex(
                               par=guess,
-                              fn=probe.mismatch,
+                              fn=obj.fn,
                               est=par.index,
                               object=object,
                               probes=probes,
@@ -141,7 +168,7 @@ probe.match <- function(object, start, est = character(0),
     } else {
       opt <- optim(
                    par=guess,
-                   fn=probe.mismatch,
+                   fn=obj.fn,
                    est=par.index,
                    object=object,
                    probes=probes,
@@ -164,7 +191,13 @@ probe.match <- function(object, start, est = character(0),
 
   new(
       "probe.matched.pomp",
-      probe(object,probes=probes,params=params,nsim=nsim,seed=seed),
+      probe(
+            as(object,"pomp"),
+            probes=probes,
+            params=params,
+            nsim=nsim,
+            seed=seed
+            ),
       weights=weights,
       fail.value=as.numeric(fail.value),
       value=val,
