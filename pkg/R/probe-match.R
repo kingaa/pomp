@@ -134,18 +134,18 @@ probe.match <- function(object, start, est = character(0),
   datval <- .Call(apply_probe_data,object,probes) # apply probes to data
   
   if (eval.only) {
-    val <- obj.fun(
-                   par=guess,
-                   est=par.index,
-                   object=object,
-                   probes=probes,
-                   params=params,
-                   nsim=nsim,
-                   seed=seed,
-                   weights=weights,
-                   datval=datval,
-                   fail.value=fail.value
-                   )
+    val <- obj.fn(
+                  par=guess,
+                  est=par.index,
+                  object=object,
+                  probes=probes,
+                  params=params,
+                  nsim=nsim,
+                  seed=seed,
+                  weights=weights,
+                  datval=datval,
+                  fail.value=fail.value
+                  )
     conv <- 0
     evals <- as.integer(c(1,0))
     msg <- paste("no optimization performed")
