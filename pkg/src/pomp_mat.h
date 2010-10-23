@@ -6,16 +6,8 @@
 
 static R_INLINE void pomp_backsolve (double *a, int m, int n, double *x, int incx, 
 				     char *uplo, char *transpose, char *unit) {
-  // Level 2 BLAS triangular-matrix solver
-  // DTRSV(UPLO,TRANS,DIAG,N,A,LDA,X,INCX)
+  // Level 2 BLAS triangular-matrix solver DTRSV(UPLO,TRANS,DIAG,N,A,LDA,X,INCX)
   F77_NAME(dtrsv)(uplo,transpose,unit,&n,a,&m,x,&incx);
-}
-
-static R_INLINE void pomp_qr_x_inv_r (double *a, int m, int n, double *b, int ldb) {
-  // Level 3 BLAS triangular-matrix solver
-  // DTRSM(SIDE,UPLO,TRANS,DIAG,M,N,ALPHA,A,LDA,B,LDB)
-  double alpha = 1.0;
-  F77_NAME(dtrsm)("Right","Upper","No transpose","Non-unit",&m,&n,&alpha,a,&m,b,&ldb);
 }
 
 static R_INLINE void pomp_qr (double *a, int m, int n, int *pivot, double *tau) {

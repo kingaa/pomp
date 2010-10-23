@@ -15,11 +15,12 @@ void robust_synth_loglik (double *y, int *dim, double *ydat, double *loglik) {
   int nrow = dim[0];
   int ncol = dim[1];
   double alpha = 2.0, beta = 1.25;
-  double x, xx, *yp, wbar;
-  double w[nrow], tau[ncol];
-  int pivot[nrow];
-  double *y1, *y2;
-  double d, d0, rss, half_log_det;
+  double w[nrow], tau[ncol], work[ncol];
+  int pivot[ncol];
+  int info = 0, ione = 1;
+  double one = 1.0;
+  double *y1, *y2, *yp;
+  double x, xx, wbar, d, d0, rss, half_log_det;
   int i, j, k;
 
   half_log_det = ncol*M_LN_SQRT_2PI;
@@ -27,22 +28,25 @@ void robust_synth_loglik (double *y, int *dim, double *ydat, double *loglik) {
   y1 = (double *) R_alloc(nrow*ncol,sizeof(double));
   y2 = (double *) R_alloc(nrow*ncol,sizeof(double));
 
-  // compute column means, center each column, compute preconditioner
+  // compute column means, center each column, precondition
   memcpy(y1,y,nrow*ncol*sizeof(double));
   for (yp = y1, j = 0; j < ncol; j++, yp += nrow) {
     for (xx = 0, i = 0; i < nrow; i++) xx += yp[i];
     xx /= nrow;
     for (i = 0; i < nrow; i++) yp[i] -= xx; // center the column
     for (xx = 0, i = 0; i < nrow; i++) xx += yp[i]*yp[i];
-    x = sqrt(xx/nrow);		   // column SD
+    x = sqrt(xx/(nrow-1));		   // column SD
     for (i = 0; i < nrow; i++) yp[i] /= x; // precondition
   }
 
   // do first QR decomposition & backsolve
-
   memcpy(y2,y1,nrow*ncol*sizeof(double));
-  pomp_qr(y2,nrow,ncol,pivot,tau); // Q*R = Y*inv(diag(d))
-  pomp_qr_x_inv_r(y2,nrow,ncol,y1,nrow); // y1 <- y1 %*% inv(R)
+  {
+    // LAPACK QR decomposition without pivoting DGEQR2(M,N,A,LDA,TAU,WORK,INFO)
+    F77_NAME(dgeqr2)(&nrow,&ncol,y2,&nrow,tau,work,&info);
+    // Level-3 BLAS triangular matrix solver DTRSM(SIDE,UPLO,TRANS,DIAG,M,N,ALPHA,A,LDA,B,LDB)
+    F77_NAME(dtrsm)("Right","Upper","No transpose","Non-unit",&nrow,&ncol,&one,y2,&nrow,y1,&nrow);
+  }
 
   // create Campbell weight vector
   d0 = sqrt(ncol)+alpha/sqrt(2.0);
@@ -51,7 +55,7 @@ void robust_synth_loglik (double *y, int *dim, double *ydat, double *loglik) {
       x = y1[i+nrow*j];
       xx += x*x;
     }
-    d = sqrt((nrow-1)*xx);	// Mahalonobis distance of row i
+    d = sqrt((nrow-1)*xx); // Mahalonobis distance of row i
     if (d > d0) {
       x = d-d0;
       xx = exp(-0.5*x*x/beta)*d0/d;
@@ -62,7 +66,7 @@ void robust_synth_loglik (double *y, int *dim, double *ydat, double *loglik) {
     wbar += xx*xx;
   }
   wbar = sqrt(wbar-1);
-
+  
   // compute weighted column means, center each column, precondition
   memcpy(y1,y,nrow*ncol*sizeof(double));
   for (yp = y1, j = 0; j < ncol; j++, yp += nrow) {
@@ -77,23 +81,22 @@ void robust_synth_loglik (double *y, int *dim, double *ydat, double *loglik) {
       xx += yp[i]*yp[i];
       yp[i] /= wbar; 
     }
-    x = sqrt(xx/(nrow-1)); // column SD
-    for (i = 0; i < nrow; i++) yp[i] *= (w[i]/x); // precondition & weight
-    ydat[j] /= x;
-    half_log_det += log(x); // sum up logs(diag(D))
+    d = sqrt(xx/(nrow-1)); // column SD
+    for (i = 0; i < nrow; i++) yp[i] *= (w[i]/d); // precondition & weight
+    ydat[j] /= d;
+    half_log_det += log(d); // sum up logs(diag(D))
   }
 
   // do second QR decomposition & backsolve
   pomp_qr(y1,nrow,ncol,pivot,tau); // Q*R = diag(w)*Y*inv(diag(d))
-  pomp_backsolve(y1,nrow,ncol,ydat,1,"Upper","Transpose","Non-unit"); // ydat <- ydat*inv(R)
+  for (j = 0; j < ncol; j++) tau[j] = ydat[pivot[j]]; // unpivot
+  pomp_backsolve(y1,nrow,ncol,tau,1,"Upper","Transpose","Non-unit");
 
   // compute residual sum of squares and add up logs of diag(R)
-  xx = 0;
   for (yp = y1, rss = 0, i = nrow+1, j = 0; j < ncol; j++, yp += i) { // yp marches along the diagonal of R
-    x = ydat[j];
+    x = tau[j];
     rss += x*x;
     half_log_det += log(fabs(*yp)); // log(diag(R))
-    xx += log(fabs(*yp));
   }
 
   *loglik = -0.5*rss-half_log_det;
