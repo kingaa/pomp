@@ -1,5 +1,69 @@
+2010-10-23  kingaa
+
+	* [r398] src/synth_lik.c: - make headers complete
+	* [r397] tests/ou2-mif.Rout.save, tests/ou2-probe.Rout.save,
+	  tests/ricker-probe.Rout.save: - update the tests
+	* [r396] R/probe-match.R: - go back to using synthetic likelihood
+	  as the objective function
+	  - deal with missing 'nsim'
+	* [r395] src/probe.c: - prevent protection stack overflow with nsim
+	  large
+	* [r394] src/pomp_mat.h, src/synth_lik.c: - fix bug to do with
+	  pivoting in 'synth_lik.c'
+
+2010-10-21  kingaa
+
+	* [r393] R/probe-match.R: - bug fix
+
+2010-10-20  kingaa
+
+	* [r392] NAMESPACE, R/mif.R, R/probe-match.R, R/probe.R,
+	  man/mif.Rd, man/probed-pomp-class.Rd, tests/ou2-mif.R: - remove
+	  'seed' slot from 'probed.pomp'-class objects
+	  - add alternative 'neg.synth.loglik' objective function for
+	  'probe-match'
+	  - add new 'mif.profile.design' function for setting up 'mif'
+	  profiling computations
+	* [r391] inst/NEWS: - update NEWS file
+	* [r390] DESCRIPTION, src/blowfly.c: - add C codes for blowfly
+	  example
+
+2010-10-19  kingaa
+
+	* [r389] R/probe.R, man/probed-pomp-class.Rd,
+	  tests/ou2-probe.Rout.save, tests/ricker-probe.Rout.save: - add
+	  'synth.loglik' slot to the 'probed.pomp' object
+	* [r388] tests/ou2-probe.R, tests/ricker-probe.R: - tests to go
+	  along with new 'probe.ccf' options
+	* [r387] DESCRIPTION, NAMESPACE, R/basic-probes.R,
+	  man/basic-probes.Rd, src/probe_acf.c, src/synth_lik.c: - add
+	  'synth_loglik.c': synthetic likelihood computation a la Wood
+	  (2010)
+	  - add 'correlation' option
+
+2010-10-18  kingaa
+
+	* [r386] src/probe_acf.c, src/probe_ccf.c: - move probe_ccf codes
+	  to probe_acf.c
+	* [r385] DESCRIPTION, R/basic-probes.R, man/basic-probes.Rd,
+	  src/probe_acf.c, src/probe_ccf.c, tests/ou2-probe.R,
+	  tests/ou2-probe.Rout.save, tests/ricker-probe.R,
+	  tests/ricker-probe.Rout.save: - change interface to 'probe.acf':
+	  now any positive lags can be specified
+	  - rearrange 'probe_acf.c' and 'probe_ccf.c' cosmetically
+	* [r384] src/pomp_mat.h, src/probe_marginal.c, src/probe_nlar.c: -
+	  rework pomp_mat.h to make the LAPACK interface a bit more
+	  flexible
+
+2010-10-13  kingaa
+
+	* [r383] R/pomp-methods.R: - bug fix
+	* [r382] inst/NEWS: - update NEWS file
+
 2010-10-12  kingaa
 
+	* [r381] man/probe.Rd: - tinker with 'probe' example
+	* [r380] inst/ChangeLog:
 	* [r379] R/probe.R, R/simulate-pomp.R, inst/ChangeLog,
 	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
 	  man/probed-pomp-methods.Rd, tests/ou2-probe.R,
