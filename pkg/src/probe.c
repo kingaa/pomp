@@ -15,7 +15,6 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
   for (i = 0; i < nprobe; i++) {
     SET_ELEMENT(vals,i,eval(lang2(VECTOR_ELT(probes,i),data),CLOENV(VECTOR_ELT(probes,i))));
     if (!IS_NUMERIC(VECTOR_ELT(vals,i))) {
-      UNPROTECT(nprotect);
       error("probe %ld returns a non-numeric result",i);
     }
   }
@@ -97,9 +96,8 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
       }
 
       // evaluate the probe on the simulated data
-      PROTECT(val = eval(lang2(VECTOR_ELT(probes,p),x),CLOENV(VECTOR_ELT(probes,p)))); nprotect++;
+      PROTECT(val = eval(lang2(VECTOR_ELT(probes,p),x),CLOENV(VECTOR_ELT(probes,p))));
       if (!IS_NUMERIC(val)) {
-	UNPROTECT(nprotect);
 	error("probe %ld returns a non-numeric result",p);
       }
 
@@ -107,7 +105,6 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
       if (s == 0)
 	len0 = len;
       else if (len != len0) {
-	UNPROTECT(nprotect);
 	error("variable-sized results returned by probe %ld",p);
       }
       if (k+len > nvals)
@@ -116,6 +113,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
       xp = REAL(retval); yp = REAL(val);
       for (i = 0; i < len; i++) xp[s+nsims*(i+k)] = yp[i];
 
+      UNPROTECT(1);
     }
     
   }
