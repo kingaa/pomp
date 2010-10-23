@@ -21,6 +21,14 @@ Type 'q()' to quit R.
 > 
 > set.seed(64857673L)
 > 
+> obs(window(ou2,end=20,start=15))
+        [,1]       [,2]       [,3]      [,4]      [,5]      [,6]
+y1  8.598190   2.199643  -1.134924 -2.564136 -4.915368 -4.338996
+y2 -4.903347 -10.251144 -10.362431 -8.168859 -7.220312 -2.310222
+> obs(window(ou2,end=5),"y1")
+        [,1]      [,2]     [,3]     [,4]     [,5]
+y1 -1.700816 0.2421701 3.767589 5.685888 3.774526
+> 
 > fit1.pfilter <- pfilter(ou2,Np=1000)
 > cat("coefficients at `truth'\n")
 coefficients at `truth'
@@ -237,4 +245,19 @@ mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but a
 +            }
 +            )
 > pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
+> 
+> mp <- mif.profile.design(
++                          ou2,
++                          profile=list(
++                            alpha.1=seq(0.5,0.9,by=0.1),
++                            alpha.4=seq(0.5,0.9,by=0.1),
++                            sigma.1=1,sigma.2=0,sigma.3=1,
++                            x1.0=0,x2.0=0
++                            ),
++                          lower=c(alpha.2=-1,alpha.3=-1,tau=0.01),
++                          upper=c(alpha.2=1,alpha.3=1,tau=3),
++                          nprof=5,
++                          rw.sd=c(alpha.2=0.2,alpha.3=0.2,tau=0.1),
++                          Np=100,cooling.factor=0.95,ic.lag=10,var.factor=1
++                          )
 > 
