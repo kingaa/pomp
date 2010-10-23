@@ -2,6 +2,7 @@
 
 #include "pomp_internal.h"
 #include "pomp_mat.h"
+#include <R_ext/Lapack.h>
 #include <string.h>
 
 // Campbell's robust variance-covariance estimation approach
