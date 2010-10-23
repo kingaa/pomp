@@ -98,7 +98,7 @@ probe.match <- function(object, start, est = character(0),
                         verbose = getOption("verbose"), 
                         eval.only = FALSE, fail.value = NA, ...) {
 
-  obj.fn <- probe.mismatch
+  obj.fn <- neg.synth.loglik
 
   if (!is(object,"pomp"))
     stop(sQuote("object")," must be of class ",sQuote("pomp"))
@@ -123,6 +123,13 @@ probe.match <- function(object, start, est = character(0),
     stop(sQuote("probes")," must be a function or a list of functions")
   if (!all(sapply(probes,function(f)length(formals(f))==1)))
     stop("each probe must be a function of a single argument")            
+
+  if (missing(nsim)) {
+    if (is(object,"probed.pomp"))
+      nsim <- nrow(object@simvals)
+    else
+      stop(sQuote("nsim")," must be supplied")
+  }
 
   if (missing(weights)) weights <- 1
 
