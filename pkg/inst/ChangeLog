@@ -1,5 +1,16 @@
+2010-10-24  kingaa
+
+	* [r401] src/pomp_mat.h, src/probe_marginal.c, src/probe_nlar.c,
+	  src/synth_lik.c, tests/ou2-probe.Rout.save,
+	  tests/ricker-probe.Rout.save: - get rid of all pivoting in
+	  synthetic likelihood calculation
+	  - make the inline routines in 'pomp_mat.h' a bit more flexible
+
 2010-10-23  kingaa
 
+	* [r400] DESCRIPTION:
+	* [r399] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - update changelog and vignettes
 	* [r398] src/synth_lik.c: - make headers complete
 	* [r397] tests/ou2-mif.Rout.save, tests/ou2-probe.Rout.save,
 	  tests/ricker-probe.Rout.save: - update the tests
