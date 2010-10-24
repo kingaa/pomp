@@ -4,10 +4,17 @@
 #include "pomp_internal.h"
 #include <R_ext/Lapack.h>
 
-static R_INLINE void pomp_backsolve (double *a, int m, int n, double *x, int incx, 
+static R_INLINE void pomp_backsolve (double *a, int lda, int n, double *x, int incx,
 				     char *uplo, char *transpose, char *unit) {
   // Level 2 BLAS triangular-matrix solver DTRSV(UPLO,TRANS,DIAG,N,A,LDA,X,INCX)
-  F77_NAME(dtrsv)(uplo,transpose,unit,&n,a,&m,x,&incx);
+  // DTRSV:  x <- A ^{-1} x -or- x <- A ^{-T} x, A triangular
+  // N is the order of A
+  // LDA is A's leading dimension
+  // INCX is the increment between successive X locations
+  // UPLO is "U" or "L" depending on whether A is upper or lower triangular
+  // TRANSPOSE is "T" or "N" depending on whether the transpose is desired
+  // DIAG is "U" or "N" depending on whether A is unit triangular or not
+  F77_NAME(dtrsv)(uplo,transpose,unit,&n,a,&lda,x,&incx);
 }
 
 static R_INLINE void pomp_qr (double *a, int m, int n, int *pivot, double *tau) {
@@ -25,22 +32,17 @@ static R_INLINE void pomp_qr (double *a, int m, int n, int *pivot, double *tau) 
   for (j = 0; j < n; j++) pivot[j]--;
 }
 
-static R_INLINE void pomp_qrqy (double *c, double *a, double *tau, int m, int n, int k, int left, int tp) {
-  int lda, info, lwork = -1;
-  char *side, *trans;
+static R_INLINE void pomp_qrqy (double *c, double *a, int lda, double *tau, int m, int n, int k, char *side, char *transpose) {
+  int info, lwork = -1;
   double work1;
  
-  side = (left) ? "left" : "right";
-  lda = (left) ? m : n;
-  trans = (tp) ? "transpose" : "no transpose";
-
   // workspace query
   // DORMQR(SIDE,TRANS,M,N,K,A,LDA,TAU,C,LDC,WORK,LWORK,INFO)
-  F77_NAME(dormqr)(side,trans,&m,&n,&k,a,&lda,tau,c,&m,&work1,&lwork,&info);
+  F77_NAME(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,&work1,&lwork,&info);
   lwork = (int) ceil(work1);
   {				// actual call
     double work[lwork];
-    F77_NAME(dormqr)(side,trans,&m,&n,&k,a,&lda,tau,c,&m,work,&lwork,&info);
+    F77_NAME(dormqr)(side,transpose,&m,&n,&k,a,&lda,tau,c,&m,work,&lwork,&info);
   }
 }
 

@@ -135,7 +135,7 @@ static void order_reg_solve (double *beta, double *x, double *mm, double *tau, i
   R_qsort(x,1,nx);
 
   // solve R b = Q'x for b
-  pomp_qrqy(x,mm,tau,nx,1,np,1,1); // y <- Q'y
+  pomp_qrqy(x,mm,nx,tau,nx,1,np,"left","transpose"); // y <- Q'y
   pomp_backsolve(mm,nx,np,x,1,"Upper","No transpose","Non-unit");   // y <- R^{-1} y
 
   // unpivot and store the coefficients in beta
