@@ -8,7 +8,7 @@
 \alias{continue}
 \alias{continue,mif-method}
 \alias{continue-mif}
-\alias{mif.profile.design}
+%%\alias{mif.profile.design}
 \title{The MIF algorithm}
 \description{
   The MIF algorithm for estimating the parameters of a partially-observed Markov process.
@@ -21,8 +21,8 @@ mif(object, \dots)
     verbose = getOption("verbose"))
 \S4method{mif}{mif}(object, Nmif, \dots)
 \S4method{continue}{mif}(object, Nmif = 1, \dots)
-mif.profile.design(object, profile, lower, upper, nprof, ivps, rw.sd,
-                   Np, ic.lag, var.factor, cooling.factor, \dots)
+%%mif.profile.design(object, profile, lower, upper, nprof, ivps, rw.sd,
+%%                   Np, ic.lag, var.factor, cooling.factor, \dots)
 }
 \arguments{
   \item{object}{
@@ -92,14 +92,14 @@ mif.profile.design(object, profile, lower, upper, nprof, ivps, rw.sd,
   \item{verbose}{
     logical; if TRUE, print progress reports.
   }
-  \item{lower, upper, nprof}{
-    used in specifying the profile calculation.
-    See \code{\link{profile.design}} for details.
-  }
-  \item{profile}{
-    named list of numeric vectors.
-    The profile calculation will fix parameters at all possible combinations of the parameters in \code{profile}.
-  }
+%   \item{lower, upper, nprof}{
+%     used in specifying the profile calculation.
+%     See \code{\link{profile.design}} for details.
+%   }
+%   \item{profile}{
+%     named list of numeric vectors.
+%     The profile calculation will fix parameters at all possible combinations of the parameters in \code{profile}.
+%   }
   \item{\dots}{
     Additional arguments that can be used to override the defaults.
   }
@@ -152,7 +152,7 @@ mif.profile.design(object, profile, lower, upper, nprof, ivps, rw.sd,
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \code{\link{mif-class}}, \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
-  See the \dQuote{intro_to_pomp} vignette for an example.
+  See the \dQuote{intro_to_pomp} vignette for examples.
 }
 \keyword{models}
 \keyword{ts}

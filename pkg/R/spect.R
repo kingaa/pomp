@@ -7,7 +7,6 @@ setClass(
          "spect.pomp",
          contains="pomp",
          representation=representation(
-           seed="integer",
            kernel.width="numeric",
            transform="function",
            freq="numeric",
@@ -159,12 +158,6 @@ setMethod(
             detrend <- match.arg(detrend)
             ker <- reuman.kernel(kernel.width)
 
-            if (is.null(seed)) {
-              if (exists('.Random.seed',where=.GlobalEnv)) {
-                seed <- get(".Random.seed",pos=.GlobalEnv)
-              }
-            }
-
             ds <- compute.spect.data(
                                      object,
                                      vars=vars,
@@ -209,7 +202,6 @@ setMethod(
             new(
                 "spect.pomp",
                 object,
-                seed=as.integer(seed),
                 kernel.width=kernel.width,
                 transform=transform,
                 detrend=detrend,
@@ -229,11 +221,6 @@ setMethod(
             if (missing(vars)) probes <- rownames(object@datspec)
             if (missing(kernel.width)) kernel.width <- object@kernel.width
             if (missing(nsim)) nsim <- nrow(object@simspec)
-            if (is.null(seed)) {
-              if (exists('.Random.seed',where=.GlobalEnv)) {
-                seed <- get(".Random.seed",pos=.GlobalEnv)
-              }
-            }
             if (missing(transform)) transform <- object@transform
             if (missing(detrend)) detrend <- object@detrend
             spect(

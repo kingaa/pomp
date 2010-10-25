@@ -14,6 +14,7 @@
   \code{probe} applies one or more \dQuote{probes} to time series data and model simulations and compares the results.
   It can be used to diagnose goodness of fit and/or as the basis for \dQuote{probe-matching}, a generalized method-of-moments approach to parameter estimation.
   \code{probe.match} calls an optimizer to adjust model parameters to do probe-matching, i.e., to minimize the discrepancy between simulated and actual data.
+  This discrepancy is measured using the \dQuote{synthetic likelihood} as defined by Wood (2010).
 }
 \usage{
   probe(object, probes, \dots)
@@ -93,6 +94,10 @@
   B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, S. N. Wood
   Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches,
   Ecology, 80:1789--1805, 1999.
+
+  S. N. Wood
+  Statistical inference for noisy nonlinear ecological dynamic systems,
+  Nature, 466: 1102--1104, 2010.
 }
 \author{
   Daniel C. Reuman (d.reuman at imperial dot ac dot uk)

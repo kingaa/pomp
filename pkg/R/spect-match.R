@@ -85,6 +85,8 @@ spect.match <- function(object, start, est = character(0),
                         verbose = getOption("verbose"),
                         eval.only = FALSE, fail.value = NA, ...) {
 
+  obj.fn <- spect.mismatch
+
   if (!is(object,"pomp"))
     stop(sQuote("object")," must be of class ",sQuote("pomp"))
 
@@ -156,21 +158,21 @@ spect.match <- function(object, start, est = character(0),
   guess <- params[par.index]
 
   if (eval.only) {
-    val <- spect.mismatch(
-                          par=guess,
-                          est=par.index,
-                          object=object,
-                          params=params,
-                          vars=vars,
-                          ker=ker,
-                          nsim=nsim,
-                          seed=seed,
-                          transform=transform,
-                          detrend=detrend, 
-                          weights=weights,
-                          data.spec=ds,
-                          fail.value=fail.value
-                          )
+    val <- obj.fn(
+                  par=guess,
+                  est=par.index,
+                  object=object,
+                  params=params,
+                  vars=vars,
+                  ker=ker,
+                  nsim=nsim,
+                  seed=seed,
+                  transform=transform,
+                  detrend=detrend, 
+                  weights=weights,
+                  data.spec=ds,
+                  fail.value=fail.value
+                  )
     conv <- 0
     evals <- as.integer(1)
     msg <- paste(sQuote("spec.mismatch"),"evaluated")
@@ -178,7 +180,7 @@ spect.match <- function(object, start, est = character(0),
     if (method == 'subplex') {
       opt <- subplex::subplex(
                               par=guess,
-                              fn=spect.mismatch,
+                              fn=obj.fn,
                               est=par.index,
                               object=object,
                               params=params,
@@ -196,7 +198,7 @@ spect.match <- function(object, start, est = character(0),
     } else {
       opt <- optim(
                    par=guess,
-                   fn=spect.mismatch,
+                   fn=obj.fn,
                    est=par.index,
                    object=object,
                    params=params,

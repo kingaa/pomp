@@ -1,10 +1,18 @@
-NEW IN VERSION 0.34-3:
+NEW IN VERSION 0.35-1:
 
     o  Added a facility for computation of "synthetic likelihood" (Wood 2010) using a robust estimate of the covariance.  A new slot in objects of class 'probed.pomp' holds this value.
+
+    o  The synthetic likelihood is now the quantity that is maximized in 'probe.match'.
 
     o  Added the argument 'type' to 'probe.ccf' so that either cross-covariance or cross-correlation can be returned.  'probe.ccf' and 'probe.acf' now have comparable interfaces.
 
     o  Changed the way that 'probe.acf' accepts lags.  Now an arbitrary set of lags can be selected.
+
+    o  A bug in the new method 'obs' has been fixed.
+
+    o  A protection-stack overflow bug in 'probe' has been fixed.
+
+    o  The 'seed' slot in 'probed.pomp' and 'spect.pomp' objects has been removed, along with unwanted behavior to do with it.
 
 NEW IN VERSION 0.34-2:
 

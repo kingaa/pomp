@@ -65,7 +65,6 @@ export(
        bspline.basis,
        periodic.bspline.basis,
        compare.mif,
-       mif.profile.design,
        nlf,
        traj.match,
        probe.mean,
