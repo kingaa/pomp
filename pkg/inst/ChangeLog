@@ -1,5 +1,17 @@
+2010-10-25  kingaa
+
+	* [r403] DESCRIPTION, NAMESPACE, R/spect-match.R, R/spect.R,
+	  inst/NEWS, man/mif.Rd, man/probe.Rd, tests/ou2-mif.R,
+	  tests/ou2-mif.Rout.save, tests/ricker.R, tests/ricker.Rout.save:
+	  - remove 'seed' slot from 'spect.pomp' objects
+	  - tinker with tests
+	  - 'tests/ricker.R' now contains a MIF vs PM contest
+	  - temporarily remove 'mif.profile.design' from the visible
+	  interface
+
 2010-10-24  kingaa
 
+	* [r402] DESCRIPTION, inst/ChangeLog: - update changelog
 	* [r401] src/pomp_mat.h, src/probe_marginal.c, src/probe_nlar.c,
 	  src/synth_lik.c, tests/ou2-probe.Rout.save,
 	  tests/ricker-probe.Rout.save: - get rid of all pivoting in
