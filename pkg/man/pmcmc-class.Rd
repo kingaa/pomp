@@ -1,5 +1,6 @@
 \name{pmcmc-class}
 \docType{class}
+\keyword{internal}
 \alias{pmcmc-class}
 \title{The "pmcmc" class}
 \description{
@@ -7,12 +8,11 @@
   See \code{\link{pmcmc}} for usage.
 }
 \section{Objects from the Class}{
-  Objects can be created by calls to the \code{\link{pmcmc}} method on an \code{\link{pomp}} object.
+  Objects can be created by calls to the \code{\link{pmcmc}} method on a \code{\link{pomp}} or \code{pfilterd.pomp} object.
   Such a call uses the Particle MCMC algorithm to fit the model parameters.
 }
 \section{Slots}{
-  A \code{pmcmc} object is derived from a \code{pomp} object and therefore has all the slots of such an object.
-  See \code{\link{pomp-class}} for details.
+  A \code{pmcmc} object is derived from a \code{pfilterd.pomp} object and therefore has all the slots of such an object.
   A full description of slots in a \code{pmcmc} object follows.
   \describe{
     \item{pars}{
@@ -32,25 +32,6 @@
     }
     \item{random.walk.sd}{
       A named vector containing the random-walk variances used to parameterize a Gaussian random walk MCMC proposal.
-    }
-    \item{filter.mean}{
-      Matrix of filtering means.
-      See \code{\link{pfilter}}.
-    }
-    \item{eff.sample.size}{
-      A vector containing the effective number of  particles at each time point.
-      See \code{\link{pfilter}}.
-    }
-    \item{cond.loglik}{
-      A vector containing the conditional log likelihoods at each time point.
-      See \code{\link{pfilter}}.
-    }
-    \item{conv.rec}{
-      The \dQuote{convergence record}: a matrix containing a record of the parameter values, log likelihoods, log prior probabilities, and other pertinent information, with one row for each PMCMC iteration.
-    }
-    \item{loglik}{
-      A numeric value containing the value of the log likelihood, as evaluated for the random-parameter model.
-      Note that this will not be equal to the log likelihood for the fixed-parameter model.
     }
     \item{log.prior}{
       A numeric value containing the log of the prior density evaluated at the parameter vector in the params slot.

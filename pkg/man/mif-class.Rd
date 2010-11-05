@@ -12,7 +12,7 @@
   Such a call uses the MIF algorithm to fit the model parameters.
 }
 \section{Slots}{
-  A \code{mif} object is derived from a \code{pomp} object and therefore has all the slots of such an object.
+  A \code{mif} object is derived from a \code{pfilterd.pomp} object and therefore has all the slots of such an object.
   See \code{\link{pomp-class}} for details.
   A full description of slots in a \code{mif} object follows.
   \describe{
@@ -30,43 +30,20 @@
       A function of prototype \code{particles(Np,center,sd,...)} that draws particles from a distribution centered on \code{center} and with width proportional to \code{sd}.
       This function can be optionally specified by the user.
     }
-    \item{alg.pars}{
-      A named list of algorithm parameters.
-      This consists of
-      \code{Np}, the number of particles to use in filtering; 
-      \code{var.factor}, the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd};
-      \code{ic.lag}, the fixed lag used in the estimation of initial-value parameters (IVPs);
-      and \code{cooling.factor}, the exponential cooling factor, where \code{0<cooling.factor<1}.
+    \item{var.factor}{
+      the scaling coefficient relating the width of the initial particle distribution to \code{rw.sd}
+    }
+    \item{ic.lag}{
+      the fixed lag used in the estimation of initial-value parameters (IVPs)
+    }
+    \item{cooling.factor}{
+      the exponential cooling factor, where \code{0<cooling.factor<1}.
     }
     \item{random.walk.sd}{
       A named vector containing the random-walk variance to be used for ordinary parameters.
     }
-    \item{pred.mean}{
-      Matrix of prediction means.
-      See \code{\link{pfilter}}.
-    }
-    \item{pred.var}{
-      Matrix of prediction variances.
-      See \code{\link{pfilter}}.
-    }
-    \item{filter.mean}{
-      Matrix of filtering means.
-      See \code{\link{pfilter}}.
-    }
-    \item{eff.sample.size}{
-      A vector containing the effective number of  particles at each time point.
-      See \code{\link{pfilter}}.
-    }
-    \item{cond.loglik}{
-      A vector containing the conditional log likelihoods at each time point.
-      See \code{\link{pfilter}}.
-    }
     \item{conv.rec}{
       The \dQuote{convergence record}: a matrix containing a record of the parameter values, log likelihoods, and other pertinent information, with one row for each MIF iteration.
-    }
-    \item{loglik}{
-      A numeric value containing the value of the log likelihood, as evaluated for the random-parameter model.
-      Note that this will not be equal to the log likelihood for the fixed-parameter model.
     }
     \item{data, times, t0, rprocess, dprocess, dmeasure, rmeasure,
       skeleton.type, skeleton, initializer, states, params,
@@ -81,7 +58,7 @@
   See \code{\link{pomp-class}}.
 }
 \section{Methods}{
-  See \code{\link{mif}}, \link{mif-methods}, \link{particles-mif}, \link{pfilter-mif}.
+  See \code{\link{mif}}, \link{mif-methods}, \link{particles-mif}
 }
 \references{
   E. L. Ionides, C. Bret\\'o, & A. A. King,

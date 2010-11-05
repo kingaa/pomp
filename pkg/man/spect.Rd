@@ -18,11 +18,12 @@
   It calls an optimizer to adjust model parameters to minimize the discrepancy between simulated and actual data.
 }
 \usage{
-  spect(object, \dots)
-  \S4method{spect}{pomp}(object, params, vars, kernel.width, nsim, seed = NULL, transform = identity,
-           detrend = c("none","mean","linear","quadratic"), \dots)
+  \S4method{spect}{pomp}(object, params, vars, kernel.width, nsim, seed = NULL,
+      transform = identity,
+      detrend = c("none","mean","linear","quadratic"),
+      \dots)
   \S4method{spect}{spect.pomp}(object, params, vars, kernel.width, nsim, seed = NULL, transform,
-           detrend, \dots)
+      detrend, \dots)
   spect.match(object, start, est = character(0),
               vars, nsim, seed = NULL,
               kernel.width, transform = identity, 

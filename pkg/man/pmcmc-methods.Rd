@@ -1,6 +1,7 @@
 \name{pmcmc-methods}
 \docType{methods}
 \alias{pmcmc-methods}
+\alias{dprior}
 \alias{dprior,pmcmc-method}
 \alias{dprior-pmcmc}
 \alias{logLik,pmcmc-method}
@@ -12,7 +13,6 @@
 \alias{plot-pmcmc}
 \alias{plot,pmcmc-method}
 \alias{compare.pmcmc}
-\alias{dprior}
 \title{Methods of the "pmcmc" class}
 \description{Methods of the "pmcmc" class.}
 \usage{
@@ -20,7 +20,7 @@
 \S4method{conv.rec}{pmcmc}(object, pars, \dots)
 \S4method{filter.mean}{pmcmc}(object, pars, \dots)
 \S4method{plot}{pmcmc}(x, y = NULL, \dots)
-\S4method{dprior}{pmcmc}(object, params, log)
+\S4method{dprior}{pmcmc}(object, params, log = FALSE, \dots)
 compare.pmcmc(z)
 }
 \arguments{
@@ -29,7 +29,7 @@ compare.pmcmc(z)
   \item{y}{Ignored.}
   \item{z}{A \code{pmcmc} object or list of \code{pmcmc} objects.}
   \item{params}{
-    Vector of parameters.
+    Named vector of parameters.
   }
   \item{log}{if TRUE, log probabilities are returned.}
   \item{\dots}{

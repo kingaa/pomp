@@ -2,22 +2,26 @@
 \alias{pfilter}
 \alias{pfilter,pomp-method}
 \alias{pfilter-pomp}
-\alias{pfilter,mif-method}
-\alias{pfilter-mif}
+\alias{pfilter,pfilterd.pomp-method}
+\alias{pfilter-pfilterd.pomp}
+\alias{logLik,pfilterd.pomp-method}
+\alias{logLik-pfilterd.pomp}
+\alias{$,pfilterd.pomp-method}
+\alias{$-pfilterd.pomp}
 \title{Particle filter}
 \description{
   Run a plain vanilla particle filter.
   Resampling is performed at each observation.
 }
 \usage{
-pfilter(object, \dots)
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, save.states = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
-\S4method{pfilter}{mif}(object, params, Np, tol = 1e-17,
+\S4method{pfilter}{pfilterd.pomp}(object, params, Np, tol,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, \dots)
+    filter.mean = FALSE, save.states = FALSE, seed = NULL,
+    verbose = getOption("verbose"), \dots)
 }
 \arguments{
   \item{object}{
@@ -67,7 +71,8 @@ pfilter(object, \dots)
   }
 }
 \value{
-  A list with the following elements:
+  An object of class \code{pfilterd.pomp}.
+  This class inherits from class \code{\link{pomp-class}} and contains the following additional slots:
   \item{pred.mean}{
     The matrix of prediction means.
     The rows correspond to states and parameters (if appropriate), in that order, the columns to successive observations in the time series contained in \code{object}.
@@ -100,6 +105,8 @@ pfilter(object, \dots)
   \item{loglik}{
     The estimated log-likelihood.
   }
+  These can be accessed using the \code{$} operator as if the returned object were a list.
+  In addition, \code{logLik} returns the log likelihood.
 }
 \examples{
 ## See the vignettes for examples.

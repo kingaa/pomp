@@ -155,6 +155,7 @@ fit <- mif(
 fit <- continue(fit)
 fit <- continue(fit,Nmif=2)
 ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100,verbose=T)
+ff <- pfilter(ff)
 fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.1))
 fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.2"))
 s <- coef(fit)
@@ -163,6 +164,15 @@ fit <- mif(fit,Nmif=3,start=s)
 fit <- mif(ou2,Nmif=3,rw.sd=c(alpha.2=0.1,alpha.3=0.1),Np=1000,cooling.factor=0.98,var.factor=1,ic.lag=2)
 fit <- continue(fit,Nmif=2,Np=2000)
 fit <- continue(fit,ivps=c("x1.0"),rw.sd=c(alpha.2=0.1,alpha.3=0.1,x1.0=5,x2.0=5),Nmif=2)
+ff <- pfilter(fit)
+fit <- mif(
+           ff,
+           Nmif=2,
+           ivps=c("x1.0","x2.0"),
+           rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
+           cooling.factor=0.95,ic.lag=10,var.factor=1
+           )
+
 
 pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
 fit <- mif(

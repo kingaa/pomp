@@ -3,6 +3,8 @@
 \alias{pmcmc}
 \alias{pmcmc,pmcmc-method}
 \alias{pmcmc-pmcmc}
+\alias{pmcmc,pfilterd.pomp-method}
+\alias{pmcmc-pfilterd.pomp}
 \alias{pmcmc,pomp-method}
 \alias{pmcmc-pomp}
 \alias{continue,pmcmc-method}
@@ -12,12 +14,18 @@
   The Particle MCMC algorithm for estimating the parameters of a partially-observed Markov process.
 }
 \usage{
-pmcmc(object, \dots)
 \S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, pars,
     rw.sd, dprior, Np, hyperparams, tol = 1e-17, max.fail = 0,
-    verbose = getOption("verbose"))
-\S4method{pmcmc}{pmcmc}(object, Nmcmc, \dots)
-\S4method{continue}{pmcmc}(object, Nmcmc = 1, \dots)
+    verbose = getOption("verbose"), \dots)
+\S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, start, pars,
+    rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
+    verbose = getOption("verbose"), \dots)
+\S4method{pmcmc}{pmcmc}(object, Nmcmc, start, pars,
+    rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
+    verbose = getOption("verbose"), \dots)
+\S4method{continue}{pmcmc}(object, Nmcmc = 1, start, pars,
+    rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
+    verbose = getOption("verbose"), \dots)
 }
 \arguments{
   \item{object}{
@@ -65,7 +73,8 @@ pmcmc(object, \dots)
     logical; if TRUE, print progress reports.
   }
   \item{\dots}{
-    Additional arguments that can be used to override the defaults.
+    Additional arguments.
+    These are currently ignored.
   }
 }
 \section{Re-running PMCMC Iterations}{
@@ -96,7 +105,8 @@ pmcmc(object, \dots)
 \author{Edward L. Ionides \email{ionides at umich dot edu}, Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \code{\link{pmcmc-class}}, \code{\link{pmcmc-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
-  See the \dQuote{intro_to_pomp} vignette for an example [CURRENTLY, ONLY DEMONSTRATING THE MIF ALGORITHM, WHICH IS ALGORITHMICALLY VERY SIMILAR TO PMCMC SINCE THEY BOTH DEPEND CRITICALLY ON A PARTICLE FILTERING STEP].
+  See the \dQuote{intro_to_pomp} vignette for an example
+  [CURRENTLY, ONLY DEMONSTRATING THE MIF ALGORITHM, WHICH IS ALGORITHMICALLY VERY SIMILAR TO PMCMC SINCE THEY BOTH DEPEND CRITICALLY ON A PARTICLE FILTERING STEP].
 }
 \keyword{models}
 \keyword{ts}

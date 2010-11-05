@@ -22,13 +22,9 @@
 \description{Methods of the "mif" class.}
 \usage{
 \S4method{logLik}{mif}(object, \dots)
-conv.rec(object, \dots)
 \S4method{conv.rec}{mif}(object, pars, \dots)
-pred.mean(object, \dots)
 \S4method{pred.mean}{mif}(object, pars, \dots)
-pred.var(object, \dots)
 \S4method{pred.var}{mif}(object, pars, \dots)
-filter.mean(object, \dots)
 \S4method{filter.mean}{mif}(object, pars, \dots)
 \S4method{plot}{mif}(x, y = NULL, \dots)
 compare.mif(z)
@@ -86,9 +82,6 @@ compare.mif(z)
     }
     \item{show}{
       Displays the \code{mif} object.
-    }
-    \item{pfilter}{
-      See \code{\link{pfilter-mif}}.
     }
   }
 }

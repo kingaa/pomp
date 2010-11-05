@@ -31,10 +31,10 @@
 \S4method{plot}{probe.matched.pomp}(x, y, \dots)
 \S4method{summary}{spect.pomp}(object, \dots)
 \S4method{plot}{spect.pomp}(x, y, max.plots.per.page = 4,
-                            plot.data = TRUE,
-                            quantiles = c(.025, .25, .5, .75, .975),
-                            quantile.styles = list(lwd=1, lty=1, col="gray70"),
-                            data.styles = list(lwd=2, lty=2, col="black"))
+          plot.data = TRUE,
+          quantiles = c(.025, .25, .5, .75, .975),
+          quantile.styles = list(lwd=1, lty=1, col="gray70"),
+          data.styles = list(lwd=2, lty=2, col="black"))
 \S4method{summary}{spect.matched.pomp}(object, \dots)
 \S4method{plot}{spect.matched.pomp}(x, y, \dots)
 \S4method{as}{probed.pomp}(object, class)

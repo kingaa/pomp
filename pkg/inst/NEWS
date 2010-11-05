@@ -1,3 +1,13 @@
+NEW IN VERSION 0.36-1:
+
+    o  There are two new classes: 'traj.matched.pomp' and 'pfilterd.pomp' to hold the results of 'traj.match' and 'pfilter' computations, respectively.  The old classes 'mif' and 'pmcmc' now inherit from 'pfilterd.pomp' in a natural way.
+
+    o  When 'traj.match' is called, the returned 'traj.matched.pomp' object has its 'states' slot filled with the model trajectory at the fitted parameters.
+
+    o  More optimization methods are now provided in 'traj.match'.
+
+    o  There is a change to the interface to 'pfilter' in that 'save.states' results in the filling of the 'last.states' slot.  Before version 0.36-1, the 'pfilter' returned a list.  The element 'states' of that list corresponds to the slot 'last.states' in version 0.36-1.  It was necessary to make this name-change in order to avoid a conflict with the 'states' slot inherited from the 'pomp' class.
+
 NEW IN VERSION 0.35-1:
 
     o  Added a facility for computation of "synthetic likelihood" (Wood 2010) using a robust estimate of the covariance.  A new slot in objects of class 'probed.pomp' holds this value.

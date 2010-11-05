@@ -1,8 +1,6 @@
 ## draw a set of Np particles from the user-specified distribution
 
-particles <- function (object, ...)
-  stop("function ",sQuote("particles")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric('particles')  
+setGeneric('particles',function(object,...)standardGeneric("particles"))
 
 setMethod(
           "particles",

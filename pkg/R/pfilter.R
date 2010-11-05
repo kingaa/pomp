@@ -1,18 +1,31 @@
 ## particle filtering codes
 
-## generic particle filter
-pfilter <- function (object, ...)
-  stop("function ",sQuote("pfilter")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric('pfilter')  
+setClass(
+         "pfilterd.pomp",
+         contains="pomp",
+         representation=representation(
+           pred.mean="array",
+           pred.var="array",
+           filter.mean="array",
+           eff.sample.size="numeric",
+           cond.loglik="numeric",
+           last.states="array",
+           seed="integer",
+           Np="integer",
+           tol="numeric",
+           nfail="integer",
+           loglik="numeric"
+           )
+         )
 
 ## question: when pfilter.internal is called by mif, do we need to compute the prediction means and variances of the state variables each time, or only at the end?
-## question: how much efficiency would be realized by eliminating the calls to 'apply' with something else?
 
 pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
                               pred.mean, pred.var, filter.mean,
                               .rw.sd, seed, verbose,
                               save.states) {
+  
   if (missing(seed)) seed <- NULL
   if (!is.null(seed)) {
     if (!exists(".Random.seed",where=.GlobalEnv)) { # need to initialize the RNG
@@ -22,14 +35,15 @@ pfilter.internal <- function (object, params, Np,
     set.seed(seed)
   }
 
-  if (missing(params)) {
-    params <- coef(object)
-    if (length(params)==0) {
-      stop(sQuote("pfilter")," error: ",sQuote("params")," must be supplied",call.=FALSE)
-    }
-  }
+  if (length(params)==0)
+    stop(sQuote("pfilter")," error: ",sQuote("params")," must be specified",call.=FALSE)
+  
   if (missing(Np))
     Np <- NCOL(params)
+  
+  if (missing(tol))
+    stop(sQuote("pfilter")," error: ",sQuote("tol")," must be specified",call.=FALSE)
+  
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
   if (is.null(dim(params))) {
@@ -50,15 +64,14 @@ pfilter.internal <- function (object, params, Np,
   x <- init.state(object,params=params)
   statenames <- rownames(x)
   nvars <- nrow(x)
-  if (save.states) {
+  if (save.states)
     xparticles <- array(
                         data=NA,
                         dim=c(nvars,Np,ntimes),
                         dimnames=list(statenames,NULL,NULL)
                         )
-  } else {
-    xparticles <- NULL
-  }
+  else
+    xparticles <- array(dim=c(0,0,0))
   
   random.walk <- !missing(.rw.sd)
   if (random.walk) {
@@ -81,10 +94,6 @@ pfilter.internal <- function (object, params, Np,
   nfail <- 0
   npars <- length(rw.names)
 
-  pred.m <- NULL
-  pred.v <- NULL
-  filt.m <- NULL
-
   ## set up storage for prediction means, variances, etc.
   if (pred.mean)
     pred.m <- matrix(
@@ -93,7 +102,9 @@ pfilter.internal <- function (object, params, Np,
                      ncol=ntimes,
                      dimnames=list(c(statenames,rw.names),NULL)
                      )
-  
+  else
+    pred.m <- array(dim=c(0,0))
+
   if (pred.var)
     pred.v <- matrix(
                      data=0,
@@ -101,24 +112,26 @@ pfilter.internal <- function (object, params, Np,
                      ncol=ntimes,
                      dimnames=list(c(statenames,rw.names),NULL)
                      )
+  else
+    pred.v <- array(dim=c(0,0))
   
-  if (filter.mean) {
-    if (random.walk) {
+  if (filter.mean)
+    if (random.walk)
       filt.m <- matrix(
                        data=0,
                        nrow=nvars+length(paramnames),
                        ncol=ntimes,
                        dimnames=list(c(statenames,paramnames),NULL)
                        )
-    } else {
+    else
       filt.m <- matrix(
                        data=0,
                        nrow=nvars,
                        ncol=ntimes,
                        dimnames=list(statenames,NULL)
                        )
-    }
-  }
+  else
+    filt.m <- array(dim=c(0,0))
 
   for (nt in seq_len(ntimes)) {
     
@@ -232,24 +245,29 @@ pfilter.internal <- function (object, params, Np,
     seed <- save.seed
   }
 
-  list(
-       pred.mean=pred.m,
-       pred.var=pred.v,
-       filter.mean=filt.m,
-       eff.sample.size=eff.sample.size,
-       cond.loglik=loglik,
-       states=xparticles,
-       seed=seed,
-       Np=Np,
-       tol=tol,
-       nfail=nfail,
-       loglik=sum(loglik)
-       )
+  new(
+      "pfilterd.pomp",
+      object,
+      pred.mean=pred.m,
+      pred.var=pred.v,
+      filter.mean=filt.m,
+      eff.sample.size=eff.sample.size,
+      cond.loglik=loglik,
+      last.states=xparticles,
+      seed=as.integer(seed),
+      Np=as.integer(Np),
+      tol=tol,
+      nfail=as.integer(nfail),
+      loglik=sum(loglik)
+      )
 }
+
+## generic particle filter
+setGeneric("pfilter",function(object,...)standardGeneric("pfilter"))
 
 setMethod(
           "pfilter",
-          "pomp",
+          signature=signature(object="pomp"),
           function (object, params, Np,
                     tol = 1e-17,
                     max.fail = 0,
@@ -260,6 +278,7 @@ setMethod(
                     seed = NULL,
                     verbose = getOption("verbose"),
                     ...) {
+            if (missing(params)) params <- coef(object)
             pfilter.internal(
                              object=object,
                              params=params,
@@ -275,3 +294,39 @@ setMethod(
                              )
           }
           )
+
+setMethod(
+          "pfilter",
+          signature=signature(object="pfilterd.pomp"),
+          function (object, params, Np,
+                    tol,
+                    max.fail = 0,
+                    pred.mean = FALSE,
+                    pred.var = FALSE,
+                    filter.mean = FALSE,
+                    save.states = FALSE,
+                    seed = NULL,
+                    verbose = getOption("verbose"),
+                    ...) {
+            if (missing(params)) params <- coef(object)
+            if (missing(Np)) Np <- object@Np
+            if (missing(tol)) tol <- object@tol
+            pfilter.internal(
+                             object=as(object,"pomp"),
+                             params=params,
+                             Np=Np,
+                             tol=tol,
+                             max.fail=max.fail,
+                             pred.mean=pred.mean,
+                             pred.var=pred.var,
+                             filter.mean=filter.mean,
+                             save.states=save.states,
+                             seed=seed,
+                             verbose=verbose
+                             )
+          }
+          )
+
+setMethod("$",signature(x="pfilterd.pomp"),function (x,name) slot(x,name))
+setMethod("logLik",signature(object="pfilterd.pomp"),function(object,...)object@loglik)
+

@@ -11,8 +11,8 @@
   Match trajectories to data.
 }
 \usage{
-traj.match(object, start, est, method = c("Nelder-Mead", "SANN", "subplex"), gr = NULL,
-           eval.only = FALSE, \dots)
+traj.match(object, start, est, method = c("Nelder-Mead", "SANN", "subplex"),
+           gr = NULL, eval.only = FALSE, \dots)
 }
 \arguments{
   \item{object}{A \code{pomp} object.}

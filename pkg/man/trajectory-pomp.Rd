@@ -11,7 +11,6 @@
   In the case of a continuous-time system, the deterministic skeleton is a vector-field; \code{trajectory} integrates the vectorfield to obtain a trajectory.
 }
 \usage{
-trajectory(object, params, times, t0, \dots)
 \S4method{trajectory}{pomp}(object, params, times, t0, \dots)
 }
 \arguments{

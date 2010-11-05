@@ -1,5 +1,22 @@
+2010-11-05  kingaa
+
+	* [r405] DESCRIPTION, NAMESPACE, R/aaa.R, R/probe-match.R,
+	  R/spect-match.R, R/traj-match.R, man/traj-match.Rd,
+	  tests/ou2-trajmatch.R, tests/ou2-trajmatch.Rout.save: - if
+	  eval.only=TRUE in traj.match, spect.match, or probe.match, the
+	  returned convergence field is now NA and the message says "no
+	  optimization performed"
+	  - traj.match now returns an object of class traj.matched.pomp, a
+	  new class that inherits from 'pomp'
+	  - the 'states' slot in the 'traj.matched.pomp' object is now
+	  filled with the trajectory
+	  - more optimization methods are now provided in 'traj.match'
+	  - the only class now exported is 'pomp'.
+
 2010-10-25  kingaa
 
+	* [r404] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - version 0.35-1
 	* [r403] DESCRIPTION, NAMESPACE, R/spect-match.R, R/spect.R,
 	  inst/NEWS, man/mif.Rd, man/probe.Rd, tests/ou2-mif.R,
 	  tests/ou2-mif.Rout.save, tests/ricker.R, tests/ricker.Rout.save:

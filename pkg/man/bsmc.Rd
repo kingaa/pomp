@@ -8,7 +8,6 @@
   \code{bsmc} gives draws from the posterior.
 }
 \usage{
-bsmc(object, \dots)
 \S4method{bsmc}{pomp}(object, params, est, smooth = 0.1, ntries = 1,
      tol = 1e-17, lower = -Inf, upper = Inf, seed = NULL,
      verbose = getOption("verbose"), max.fail = 0, \dots)

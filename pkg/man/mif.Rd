@@ -3,6 +3,8 @@
 \alias{mif}
 \alias{mif,mif-method}
 \alias{mif-mif}
+\alias{mif,pfilterd.pomp-method}
+\alias{mif-pfilterd.pomp}
 \alias{mif,pomp-method}
 \alias{mif-pomp}
 \alias{continue}
@@ -18,9 +20,19 @@ mif(object, \dots)
 \S4method{mif}{pomp}(object, Nmif = 1, start, pars, ivps = character(0),
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
     weighted = TRUE, tol = 1e-17, max.fail = 0,
-    verbose = getOption("verbose"))
-\S4method{mif}{mif}(object, Nmif, \dots)
-\S4method{continue}{mif}(object, Nmif = 1, \dots)
+    verbose = getOption("verbose"), \dots)
+\S4method{mif}{pfilterd.pomp}(object, Nmif = 1, start, pars, ivps = character(0),
+    particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
+    weighted = TRUE, tol, max.fail = 0,
+    verbose = getOption("verbose"), \dots)
+\S4method{mif}{mif}(object, Nmif, start, pars, ivps,
+    particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
+    weighted = TRUE, tol, max.fail = 0,
+    verbose = getOption("verbose"), \dots)
+\S4method{continue}{mif}(object, Nmif = 1, start, pars, ivps,
+    particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
+    weighted = TRUE, tol, max.fail = 0,
+    verbose = getOption("verbose"), \dots)
 %%mif.profile.design(object, profile, lower, upper, nprof, ivps, rw.sd,
 %%                   Np, ic.lag, var.factor, cooling.factor, \dots)
 }
@@ -101,7 +113,8 @@ mif(object, \dots)
 %     The profile calculation will fix parameters at all possible combinations of the parameters in \code{profile}.
 %   }
   \item{\dots}{
-    Additional arguments that can be used to override the defaults.
+    additional arguments.
+    Currently, these are ignored.
   }
 }
 \section{Re-running MIF Iterations}{
@@ -115,13 +128,13 @@ mif(object, \dots)
   By default, all the algorithmic parameters are the same as used in the original call to \code{mif}.
   Additional arguments will override the defaults.
 }
-\section{Likelihood profiles using MIF}{
-  The function \code{mif.profile.design} sets up a MIF likelihood-profile calculation.
-  It returns a list of lists, each one of which contains a \code{mif} object.
-  Running \code{mif} or \code{continue} on each of these will maximize the likelihood over the desired parameters, while holding others fixed.
-  Each \code{mif} calculation is independent of the others: the computation is therefore readily parallelized.
-  The list returned by \code{mif.profile.design} will have one element for every row in \code{do.call(expand.grid,profile)}.
-}
+% \section{Likelihood profiles using MIF}{
+%   The function \code{mif.profile.design} sets up a MIF likelihood-profile calculation.
+%   It returns a list of lists, each one of which contains a \code{mif} object.
+%   Running \code{mif} or \code{continue} on each of these will maximize the likelihood over the desired parameters, while holding others fixed.
+%   Each \code{mif} calculation is independent of the others: the computation is therefore readily parallelized.
+%   The list returned by \code{mif.profile.design} will have one element for every row in \code{do.call(expand.grid,profile)}.
+% }
 \section{Details}{
   If \code{particles} is not specified, the default behavior is to draw the particles from a multivariate normal distribution.
   \strong{It is the user's responsibility to ensure that, if the optional \code{particles} argument is given, that the \code{particles} function satisfies the following conditions:}
@@ -151,7 +164,7 @@ mif(object, \dots)
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \code{\link{mif-class}}, \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
+  \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
   See the \dQuote{intro_to_pomp} vignette for examples.
 }
 \keyword{models}

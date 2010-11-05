@@ -17,7 +17,6 @@
   This discrepancy is measured using the \dQuote{synthetic likelihood} as defined by Wood (2010).
 }
 \usage{
-  probe(object, probes, \dots)
   \S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
   \S4method{probe}{probed.pomp}(object, probes, params, nsim, seed = NULL, \dots)
   probe.match(object, start, est = character(0),
