@@ -173,9 +173,9 @@ spect.match <- function(object, start, est = character(0),
                   data.spec=ds,
                   fail.value=fail.value
                   )
-    conv <- 0
-    evals <- as.integer(1)
-    msg <- paste(sQuote("spec.mismatch"),"evaluated")
+    conv <- NA
+    evals <- as.integer(c(1,0))
+    msg <- paste("no optimization performed")
   } else {
     if (method == 'subplex') {
       opt <- subplex::subplex(

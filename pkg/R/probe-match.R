@@ -153,7 +153,7 @@ probe.match <- function(object, start, est = character(0),
                   datval=datval,
                   fail.value=fail.value
                   )
-    conv <- 0
+    conv <- NA
     evals <- as.integer(c(1,0))
     msg <- paste("no optimization performed")
   } else {

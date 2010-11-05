@@ -16,7 +16,7 @@ x <- sapply(
                                 maxit=2000,
                                 reltol=1e-8
                                 )
-              c(conv=res$convergence,loglik=res$value,res$params)
+              c(conv=res$convergence,loglik=logLik(res),coef(res))
             }
             )
 range(x['conv',])
@@ -30,3 +30,8 @@ print(
             ),
       digits=4
       )
+
+summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="subplex",maxit=100))
+
+summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),eval.only=T))
+

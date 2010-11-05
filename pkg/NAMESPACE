@@ -33,12 +33,12 @@ importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(deSolve,lsoda)
 importFrom(subplex,subplex)
 
-exportClasses('pomp','mif','pmcmc','probed.pomp','probe.matched.pomp','spect.pomp','spect.matched.pomp')
+exportClasses('pomp')
 
 exportMethods(
               'plot','show','print','coerce',
               'dprocess','rprocess','rmeasure','dmeasure','init.state','skeleton',
-              'data.array','obs','coef','time','time<-','timezero','timezero<-',
+              'data.array','obs','coef','time','time<-','timezero','timezero<-','$',
               'simulate','pfilter',
               'particles','mif','continue','coef<-','states','trajectory',
               'summary','logLik','window',
