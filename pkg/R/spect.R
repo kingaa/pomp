@@ -58,7 +58,7 @@ reuman.kernel <- function (kernel.width) {
 }
 
 compute.spect.data <- function (object, vars, transform, detrend, ker) {
-  dat <- data.array(object,vars)
+  dat <- obs(object,vars)
   if (any(is.na(dat)))
     stop(sQuote("spect")," is incompatible with NAs in the data")
   dt <- diff(time(object,t0=FALSE))

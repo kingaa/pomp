@@ -441,7 +441,7 @@ As we mentioned before, for this particular example, we can compute the likeliho
 An implementation of the Kalman filter is given in Box~\ref{box:kalman-filter-def}.
 Let's run the Kalman filter on the example data we generated above:
 <<kalman-filter-run>>=
-y <- data.array(ou2)
+y <- obs(ou2)
 a <- matrix(theta.guess[c('alpha.1','alpha.2','alpha.3','alpha.4')],nrow=2,ncol=2)
 b <- diag(1,2)   ## b is the identity matrix
 sigma <- matrix(
@@ -473,7 +473,7 @@ as(ou2,'data.frame')
 and if we \code{print} a \pomp\ object, the resulting data frame is what is shown, together with the call that created the \pomp\ object.
 One can access the data and the observation times using
 <<eval=F>>=
-data.array(ou2)
+obs(ou2)
 time(ou2)  
 @ 
 The observation times can be changed using
@@ -741,10 +741,10 @@ if (file.exists(binary.file)) {
 \begin{figure}
 <<trajmatch-plot,fig=T,echo=F,eval=T>>=
 op <- par(mfrow=c(2,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-plot(time(new.ou2),data.array(new.ou2,"y1"),xlab="",xaxt='n',ylab=expression(y[1]))
+plot(time(new.ou2),obs(new.ou2,"y1"),xlab="",xaxt='n',ylab=expression(y[1]))
 x <- trajectory(new.ou2,params=tm$params)
 lines(time(new.ou2),x["x1",1,],lwd=2)
-plot(time(new.ou2),data.array(new.ou2,"y2"),xlab="time",ylab=expression(y[2]))
+plot(time(new.ou2),obs(new.ou2,"y2"),xlab="time",ylab=expression(y[2]))
 lines(time(new.ou2),x["x2",1,],lwd=2)
 par(op)
 @ 

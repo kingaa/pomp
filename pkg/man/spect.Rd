@@ -42,7 +42,7 @@
   }
   \item{vars}{
     optional; names of observed variables for which the power spectrum will be computed.
-    This must be a subset of \code{rownames(data.array(object))}.
+    This must be a subset of \code{rownames(obs(object))}.
     By default, the spectrum will be computed for all observables.
   }
   \item{kernel.width}{

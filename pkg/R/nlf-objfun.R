@@ -20,7 +20,7 @@ NLF.LQL <- function (params.fitted, object, params, par.index,
   ## Version 0.1, 3 Dec. 2007, Bruce E. Kendall & Stephen P. Ellner
   ## Version 0.2, May 2008, Stephen P. Ellner  
 
-  data.ts <- data.array(object)
+  data.ts <- obs(object)
   
   y <- try(
            simulate(object,times=times,t0=t0,params=params,seed=seed,obs=TRUE,states=FALSE),
