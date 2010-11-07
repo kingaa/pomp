@@ -1,3 +1,15 @@
+2010-11-07  kingaa
+
+	* [r411] R/nlf-objfun.R, R/spect.R, inst/doc/intro_to_pomp.Rnw,
+	  man/basic-probes.Rd, man/spect.Rd: - replace 'data.array' with
+	  'obs' as the preferred method
+	* [r410] R/traj-match.R, R/trajectory-pomp.R, inst/ChangeLog,
+	  src/sir.c: - fix traj-match objective function
+	  - minor tweak to trajectory generic
+	  - make the variables 'cases' in SIR trajectories integer-valued
+	* [r409] src/probe_acf.c, src/synth_lik.c: - get rid of some unused
+	  varibles
+
 2010-11-05  kingaa
 
 	* [r407] DESCRIPTION, R/mif-class.R, R/mif.R, R/particles-mif.R,

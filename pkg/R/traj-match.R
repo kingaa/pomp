@@ -38,7 +38,7 @@ trajectory.nll <- function (par, est, object, params, t0, fail.value = NA, ...) 
   x <- trajectory(object,params=params,t0=t0)
   d <- dmeasure(
                 object,
-                y=data.array(object),
+                y=obs(object),
                 x=x,
                 times=time(object),
                 params=as.matrix(params),
@@ -57,7 +57,7 @@ trajectory.ls <- function (par, est, object, params, t0, fail.value = NA, transf
   x <- trajectory(object,params=params,t0=t0)
   d <- dmeasure(
                 object,
-                y=data.array(object),
+                y=obs(object),
                 x=x,
                 times=time(object),
                 params=as.matrix(params),
@@ -66,7 +66,8 @@ trajectory.ls <- function (par, est, object, params, t0, fail.value = NA, transf
   -sum(d)
 }
 
-traj.match <- function (object, start, est, method = c("Nelder-Mead","SANN","subplex"), 
+traj.match <- function (object, start, est,
+                        method = c("Nelder-Mead","SANN","subplex"), 
                         gr = NULL, eval.only = FALSE, ...) {
   
   if (!is(object,'pomp'))
@@ -76,19 +77,24 @@ traj.match <- function (object, start, est, method = c("Nelder-Mead","SANN","sub
   
   method <- match.arg(method)
 
-  if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
-  if (!all(est%in%names(start)))
-    stop("traj.match error: parameters named in ",sQuote("est")," must exist in ",sQuote("start"),call.=FALSE)
-  par.est <- which(names(start)%in%est)
+  if (eval.only) {
+    par.est <- integer(0)
+  } else {
+    if (missing(est))
+      stop("traj.match error: ",sQuote("est")," must be specified")
+    if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
+    if (!all(est%in%names(start)))
+      stop("traj.match error: parameters named in ",sQuote("est")," must exist in ",sQuote("start"),call.=FALSE)
+    par.est <- which(names(start)%in%est)
+    guess <- start[par.est]
+  }
 
-  guess <- start[par.est]
   t0 <- timezero(object)
   obj <- as(object,"pomp")
 
   obj.fn <- function (x) {
     p <- start
     p[par.est] <- x
-    x <- trajectory(obj,params=p,t0=t0)
     d <- dmeasure(
                   obj,
                   y=obs(obj),
@@ -103,10 +109,11 @@ traj.match <- function (object, start, est, method = c("Nelder-Mead","SANN","sub
   if (eval.only) {
 
     coef(obj,names(start)) <- unname(start)
-    val <- obj.fn(guess)
+    obj@states[,] <- trajectory(obj,t0=t0)[,1,]
+    val <- obj.fn(start)
     conv <- NA
     evals <- c(1,0)
-    msg <- paste("no optimization performed")
+    msg <- "no optimization performed"
     
   } else {
 
