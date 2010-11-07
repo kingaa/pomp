@@ -1,5 +1,34 @@
 2010-11-05  kingaa
 
+	* [r407] DESCRIPTION, R/mif-class.R, R/mif.R, R/particles-mif.R,
+	  R/pfilter-mif.R, R/pfilter.R, R/pmcmc.R, data/dacca.rda,
+	  data/euler.sir.rda, data/gillespie.sir.rda, data/ou2.rda,
+	  data/rw2.rda, data/verhulst.rda, inst/ChangeLog, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-first-mif.rda, inst/doc/ou2-trajmatch.rda,
+	  man/bsmc.Rd, man/mif-class.Rd, man/mif-methods.Rd, man/mif.Rd,
+	  man/pfilter.Rd, man/pmcmc-class.Rd, man/pmcmc-methods.Rd,
+	  man/pmcmc.Rd, man/probe.Rd, man/probed-pomp-methods.Rd,
+	  man/spect.Rd, man/traj-match.Rd, man/trajectory-pomp.Rd,
+	  tests/ou2-forecast.R, tests/ou2-forecast.Rout.save,
+	  tests/ou2-mif.R, tests/ou2-mif.Rout.save, tests/ou2-pmcmc.R,
+	  tests/ou2-pmcmc.Rout.save: - create new class 'pfilterd.pomp' to
+	  hold results of 'pfilter'
+	  - the classes 'mif' and 'pmcmc' now inherit from 'pfilterd.pomp'
+	  - changed the internal representation of 'mif' object (expanded
+	  'alg.pars' list to separate slots)
+	  - the arguments to the generic 'dprior' have changed
+	  - rearrange internal structure of 'mif' algorithm
+	  - rearrange internal structure of 'pmcmc' algorithm
+	  - add 'mif' and 'pmcmc' methods for 'pfilterd.pomp' objects
+	  - remove 'pfilter' method for 'mif' objects: the 'pfilter' method
+	  for 'pfilterd.pomp' objects does the job now
+	  - change output of 'pfilter' when 'save.states=TRUE': now states
+	  at final time are stored in slot 'last.states'
+	  - it is now allowed to call 'pfilter' with 'save.states=TRUE' on
+	  a 'mif' object.
+	  - the internal man pages for various of the classes have yet to
+	  be updated
 	* [r405] DESCRIPTION, NAMESPACE, R/aaa.R, R/probe-match.R,
 	  R/spect-match.R, R/traj-match.R, man/traj-match.Rd,
 	  tests/ou2-trajmatch.R, tests/ou2-trajmatch.Rout.save: - if

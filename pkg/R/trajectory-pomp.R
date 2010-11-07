@@ -1,7 +1,3 @@
-trajectory <- function (object, params, times, t0, ...)
-  stop("function ",sQuote("trajectory")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric('trajectory')
-
 trajectory.internal <- function (object, params, times, t0, ...) {
 
   warn.condition <- missing(t0)
@@ -119,5 +115,7 @@ trajectory.internal <- function (object, params, times, t0, ...) {
          )
   x
 }
+
+setGeneric('trajectory',function(object,params,times,t0,...)standardGeneric("trajectory"))
 
 setMethod("trajectory",signature=signature(object="pomp"),definition=trajectory.internal)

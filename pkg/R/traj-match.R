@@ -91,9 +91,9 @@ traj.match <- function (object, start, est, method = c("Nelder-Mead","SANN","sub
     x <- trajectory(obj,params=p,t0=t0)
     d <- dmeasure(
                   obj,
-                  y=data.array(object),
+                  y=obs(obj),
                   x=trajectory(obj,params=p,t0=t0),
-                  times=time(object),
+                  times=time(obj),
                   params=as.matrix(p),
                   log=TRUE
                   )
