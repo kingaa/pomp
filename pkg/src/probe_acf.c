@@ -148,7 +148,7 @@ SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr) {
   double cov[2], xx, *p;
   int nlag, n, correlation;
   int k;
-  char tmp[BUFSIZ], *nm;
+  char tmp[BUFSIZ];
   
   nlag = LENGTH(lags);
   PROTECT(lags = AS_INTEGER(lags)); nprotect++;
