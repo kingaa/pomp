@@ -2,10 +2,11 @@ setClass(
          "probe.matched.pomp",
          contains="probed.pomp",
          representation=representation(
+           est="character",
            weights="numeric",
            fail.value="numeric",
-           evals="integer",
            value="numeric",
+           evals="integer",
            convergence="integer",
            msg="character"
            )
@@ -18,6 +19,7 @@ setMethod(
             c(
               summary(as(object,"probed.pomp")),
               list(
+                   est=object@est,
                    weights=object@weights,
                    value=object@value,
                    eval=object@evals,
@@ -103,8 +105,7 @@ probe.match <- function(object, start, est = character(0),
   if (!is(object,"pomp"))
     stop(sQuote("object")," must be of class ",sQuote("pomp"))
 
-  if (missing(start))
-    start <- coef(object)
+  if (missing(start)) start <- coef(object)
 
   if (!eval.only&&(length(est)<1))
     stop("parameters to be estimated must be specified in ",sQuote("est"))
@@ -205,6 +206,7 @@ probe.match <- function(object, start, est = character(0),
             nsim=nsim,
             seed=seed
             ),
+      est=as.character(est),
       weights=weights,
       fail.value=as.numeric(fail.value),
       value=val,

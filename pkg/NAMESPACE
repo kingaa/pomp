@@ -33,7 +33,13 @@ importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(deSolve,lsoda)
 importFrom(subplex,subplex)
 
-exportClasses('pomp')
+exportClasses(
+              "pomp","pfilterd.pomp",
+              "mif","pmcmc",
+              "traj.matched.pomp",
+              "probed.pomp","probe.matched.pomp"
+              ,"spect.pomp","spect.matched.pomp"
+              )
 
 exportMethods(
               'plot','show','print','coerce',

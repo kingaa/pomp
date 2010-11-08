@@ -1,8 +1,8 @@
 library(pomp)
 
-data(ricker)
-
 pdf(file="ricker-spect.pdf")
+
+data(ricker)
 
 set.seed(6457673L)
 
@@ -14,6 +14,10 @@ sp <- spect(
             )
 plot(sp)
 summary(sp)
+
+spp <- spect.match(sp,eval.only=TRUE)
+plot(spp)
+summary(spp)
 
 po <- ricker
 coef(po,"log.r") <- log(5)

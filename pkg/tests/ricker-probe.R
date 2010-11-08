@@ -84,6 +84,10 @@ pb@datvals
 summary(pb)
 plot(pb)
 
+pbm <- probe.match(pb,eval.only=TRUE)
+plot(pbm)
+summary(pbm)
+
 coef(po) <- c(log.r=log(10),log.sigma=log(0.3),log.phi=log(20),N.0=5,e.0=0)
 
 pb <- probe(

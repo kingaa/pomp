@@ -6,6 +6,7 @@
 \alias{$-traj.matched.pomp}
 \alias{summary,traj.matched.pomp-method}
 \alias{summary-traj.matched.pomp}
+\alias{traj.matched.pomp-class}
 \title{Trajectory matching}
 \description{
   Match trajectories to data.
@@ -39,6 +40,19 @@ traj.match(object, start, est, method = c("Nelder-Mead", "SANN", "subplex"),
 }
 \value{
   An object of class \code{traj.matched.pomp}.
+  This class inherits from class \code{\link[=pomp-class]{pomp}} and contains the following additional slots:
+  \describe{
+    \item{evals}{
+      number of function and gradient evaluations by the optimizer.
+      See \code{\link{optim}}.
+    }
+    \item{value}{Value of the objective function.}
+    \item{convergence, msg}{
+      Convergence code and message from the optimizer.
+      See \code{\link{optim}}.
+    }
+  }
+
   Available methods for objects of this type include \code{summary} and \code{logLik}.
   The other slots of this object can be accessed via the \code{$} operator.
 }

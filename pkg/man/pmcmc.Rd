@@ -9,6 +9,7 @@
 \alias{pmcmc-pomp}
 \alias{continue,pmcmc-method}
 \alias{continue-pmcmc}
+\alias{pmcmc-class}
 \title{The PMCMC algorithm}
 \description{
   The Particle MCMC algorithm for estimating the parameters of a partially-observed Markov process.
@@ -75,6 +76,21 @@
   \item{\dots}{
     Additional arguments.
     These are currently ignored.
+  }
+}
+\value{
+  An object of class \code{pmcmc}.
+  This class inherits from class \code{\link[=pfilterd.pomp-class]{pfilterd.pomp}} and contains the following additional slots:
+  \describe{
+    \item{pars, Nmcmc, dprior, hyperparams}{
+      These slots hold the values of the corresponding arguments of the call to \code{pmcmc}.
+    }
+    \item{random.walk.sd}{
+      a named numeric vector containing the random-walk variances used to parameterize a Gaussian random walk MCMC proposal.
+    }
+    \item{log.prior}{
+      a numeric value containing the log of the prior density evaluated at the parameter vector in the params slot.
+    }
   }
 }
 \section{Re-running PMCMC Iterations}{

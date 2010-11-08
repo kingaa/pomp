@@ -9,6 +9,8 @@
 \alias{probe.match,probed.pomp-method}
 \alias{probe.match-pomp}
 \alias{probe.match-probed.pomp}
+\alias{probed.pomp-class}
+\alias{probe.matched.pomp-class}
 \title{Probe a partially-observed Markov process.}
 \description{
   \code{probe} applies one or more \dQuote{probes} to time series data and model simulations and compares the results.
@@ -80,14 +82,37 @@
 \details{
   A call to \code{probe} results in the evaluation of the probe(s) in \code{probes} on the data.
   Additionally, \code{nsim} simulated data sets are generated (via a call to \code{\link[=simulate-pomp]{simulate}}) and the probe(s) are applied to each of these.
-  The results of the probe computations on real and simulated data are stored in an object of class \code{\link[=probed.pomp-class]{probed.pomp}}.
+  The results of the probe computations on real and simulated data are stored in an object of class \code{probed.pomp}.
 
   A call to \code{probe.match} results in an attempt to optimize the agreement between model and data, as measured by the specified probes, over the parameters named in \code{est}.
   The results, including coefficients of the fitted model and values of the probes for data and fitted-model simulations, are stored in an object of class \code{\link[=probe.matched.pomp-class]{probe.matched.pomp}}.
 }
 \value{
-  \code{probe} returns an object of class \code{\link[=probed.pomp-class]{probed.pomp}}.
-  \code{probe.match} returns an object of class \code{\link[=probe.matched.pomp-class]{probe.matched.pomp}}.
+  \code{probe} returns an object of class \code{probed.pomp}.
+  \code{probed.pomp} is derived from the \code{\link[=pomp-class]{pomp}} class and therefore have all the slots of \code{pomp}.
+  In addition, a \code{probed.pomp} class has the following slots:
+  \describe{
+    \item{probes}{list of the probes applied.}
+    \item{datvals, simvals}{values of each of the probes applied to the real and simulated data, respectively.}
+    \item{quantiles}{fraction of simulations with probe values less than the value of the probe of the data.}
+    \item{pvals}{two-sided p-values: fraction of the \code{simvals} that deviate more extremely from the mean of the \code{simvals} than does \code{datavals}.}
+    \item{synth.loglik}{the log synthetic likelihood (Wood 2010).  This is the likelihood assuming that the probes are multivariate-normally distributed.}
+  }
+
+  \code{probe.match} returns an object of class \code{probe.matched.pomp}, which is derived from class \code{probed.pomp}.
+  \code{probe.matched.pomp} objects therefore have all the slots above plus the following:
+  \describe{
+    \item{est, weights, fail.value}{values of the corresponding arguments in the call to \code{spect.match}.}
+    \item{value}{value of the objective function.}
+    \item{evals}{
+      number of function and gradient evaluations by the optimizer.
+      See \code{\link{optim}}.
+    }
+    \item{convergence, msg}{
+      Convergence code and message from the optimizer.
+      See \code{\link{optim}}.
+    }
+  }
 }
 \references{
   B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, S. N. Wood

@@ -215,6 +215,48 @@ $synth.loglik
 
 > plot(pb)
 > 
+> pbm <- probe.match(pb,eval.only=TRUE)
+> plot(pbm)
+> summary(pbm)
+$coef
+    log.r log.sigma   log.phi       N.0       e.0 
+ 3.800000 -1.203973  2.302585  7.000000  0.000000 
+
+$nsim
+[1] 1000
+
+$quantiles
+ marg.1  marg.2  marg.3 acf.0.y acf.1.y acf.3.y acf.5.y    mean 
+  0.857   0.281   0.276   0.648   0.035   0.899   0.708   0.830 
+
+$pvals
+    marg.1     marg.2     marg.3    acf.0.y    acf.1.y    acf.3.y    acf.5.y 
+0.28771229 0.56343656 0.55344655 0.70529471 0.07192807 0.20379620 0.58541459 
+      mean 
+0.34165834 
+
+$synth.loglik
+[1] -14.77430
+
+$est
+character(0)
+
+$weights
+[1] 1
+
+$value
+[1] 15.31774
+
+$eval
+[1] 1 0
+
+$convergence
+[1] NA
+
+$msg
+[1] "no optimization performed"
+
+> 
 > coef(po) <- c(log.r=log(10),log.sigma=log(0.3),log.phi=log(20),N.0=5,e.0=0)
 > 
 > pb <- probe(
@@ -266,7 +308,7 @@ $synth.loglik
 +                               )
 +             )
    user  system elapsed 
- 12.860   0.031  12.893 
+ 13.482   0.016  13.516 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -325,7 +367,7 @@ $synth.loglik
 +                               )
 +             )
    user  system elapsed 
-  9.608   0.009   9.618 
+ 10.165   0.030  10.208 
 > plot(pm)
 > plot(as(pm,"pomp"),variables="y")
 > plot(simulate(pm),variables="y")
@@ -352,7 +394,7 @@ e.0        0.000000  0.000000  0.000000
 +             )
 > pb@datvals
    marg.1    marg.2    marg.3 
-24.306961 -4.195941 -3.990929 
+24.879460 -5.950185 -2.211594 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -363,14 +405,14 @@ $nsim
 
 $quantiles
 marg.1 marg.2 marg.3 
- 1.000  0.000  0.067 
+  1.00   0.00   0.32 
 
 $pvals
      marg.1      marg.2      marg.3 
-0.001998002 0.001998002 0.135864136 
+0.001998002 0.001998002 0.641358641 
 
 $synth.loglik
-[1] -65.7886
+[1] -56.62876
 
 > plot(pb)
 > 

@@ -4,9 +4,9 @@ setClass(
          representation=representation(
            est="character",
            fail.value="numeric",
-           evals="integer",
-           value="numeric",
            weights="numeric",
+           value="numeric",
+           evals="integer",
            convergence="integer",
            msg="character"
            )
@@ -42,8 +42,6 @@ spect.mismatch <- function (par, est, object, params,
   ## vector of frequencies and estimated power spectum of data
   freq <- data.spec$freq
   datval <- data.spec$spec
-
-  if (missing(weights)) weights <- 1
 
   ## estimate power spectra of simulations
   simvals <- compute.spect.sim(
@@ -90,9 +88,23 @@ spect.match <- function(object, start, est = character(0),
   if (!is(object,"pomp"))
     stop(sQuote("object")," must be of class ",sQuote("pomp"))
 
-  if (missing(vars))
-    vars <- rownames(object@data)
+  if (missing(start)) start <- coef(object)
+
+  if (!eval.only&&(length(est)<1))
+    stop("parameters to be estimated must be specified in ",sQuote("est"))
+  if (!is.character(est)|!all(est%in%names(start)))
+    stop(sQuote("est")," must refer to parameters named in ",sQuote("start"))
+  par.index <- which(names(start)%in%est)
+  
+  if (missing(vars)) vars <- rownames(object@data)
             
+  if (missing(nsim)) {
+    if (is(object,"spect.pomp"))
+      nsim <- nrow(object@simspec)
+    else
+      stop(sQuote("nsim")," must be supplied")
+  }
+
   if (missing(kernel.width)) {
     if (is(object,"spect.pomp")) {
       kernel.width <- object@kernel.width
@@ -110,7 +122,7 @@ spect.match <- function(object, start, est = character(0),
     }
   }
 
-  if (missing(nsim)||(nsim<1))
+  if (nsim<1)
     stop(sQuote("nsim")," must be specified as a positive integer")
 
   if (missing(detrend)) {
@@ -134,7 +146,9 @@ spect.match <- function(object, start, est = character(0),
 
   if (missing(weights)) weights <- 1
   if (is.numeric(weights)) {
-    if ((length(weights)!=1)&&(length(weights)!=length(ds$freq)))
+    if (length(weights)==1)
+      weights <- rep(weights,length(ds$freq))
+    if ((length(weights)!=length(ds$freq)))
       stop("if ",sQuote("weights")," is provided as a vector, it must have length ",length(ds$freq))
   } else if (is.function(weights)) {
     weights <- sapply(ds$freq,weights)
@@ -145,15 +159,8 @@ spect.match <- function(object, start, est = character(0),
     stop(sQuote("weights")," should be nonnegative and finite")
   weights <- weights/mean(weights)
 
-  if (missing(start))
-    start <- coef(object)
+  fail.value <- as.numeric(fail.value)
 
-  if (!eval.only&&(length(est)<1))
-    stop("parameters to be estimated must be specified in ",sQuote("est"))
-  if (!is.character(est)|!all(est%in%names(start)))
-    stop(sQuote("est")," must refer to parameters named in ",sQuote("start"))
-  par.index <- which(names(start)%in%est)
-  
   params <- start
   guess <- params[par.index]
 
@@ -175,7 +182,7 @@ spect.match <- function(object, start, est = character(0),
                   )
     conv <- NA
     evals <- as.integer(c(1,0))
-    msg <- paste("no optimization performed")
+    msg <- "no optimization performed"
   } else {
     if (method == 'subplex') {
       opt <- subplex::subplex(

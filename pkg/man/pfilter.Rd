@@ -8,6 +8,7 @@
 \alias{logLik-pfilterd.pomp}
 \alias{$,pfilterd.pomp-method}
 \alias{$-pfilterd.pomp}
+\alias{pfilterd.pomp-class}
 \title{Particle filter}
 \description{
   Run a plain vanilla particle filter.
@@ -72,38 +73,34 @@
 }
 \value{
   An object of class \code{pfilterd.pomp}.
-  This class inherits from class \code{\link{pomp-class}} and contains the following additional slots:
-  \item{pred.mean}{
-    The matrix of prediction means.
-    The rows correspond to states and parameters (if appropriate), in that order, the columns to successive observations in the time series contained in \code{object}.
-  }
-  \item{pred.var}{
-    The matrix of prediction variances, in the same format as \code{pred.mean}.
-  }
-  \item{filter.mean}{
-    The matrix of filtering means, in the same format as \code{pred.mean}.
-  }
-  \item{eff.sample.size}{
-    A vector containing the effective number of particles at each time point.
-  }
-  \item{cond.loglik}{
-    A vector containing the conditional log likelihoods at each time point.
-  }
-  \item{states}{
-    If \code{saves.states=TRUE}, the array of state-vectors at each time point, for each particle.
-    An array with dimensions \code{nvars}-by-\code{Np}-by-\code{ntimes}.
-    In particular, \code{states[,i,t]} can be considered a sample from \eqn{f[X|y_{1:t}]}.
-  }
-  \item{seed}{
-    The state of the random number generator at the time \code{pfilter} was called.
-    If the argument \code{seed} was specified, this is a copy;
-    if not, this is the internal state of the random number generator at the time of call.
-  }
-  \item{Np, tol, nfail}{
-    The number of particles used, failure tolerance, and number of filtering failures, respectively.
-  }
-  \item{loglik}{
-    The estimated log-likelihood.
+  This class inherits from class \code{\link[=pomp-class]{pomp}} and contains the following additional slots:
+  \describe{
+    \item{pred.mean, pred.var, filter.mean}{
+      matrices of prediction means, variances, and filter means, respectively.
+      In each of these, the rows correspond to states and parameters (if appropriate), in that order, the columns to successive observations in the time series contained in \code{object}.
+    }
+    \item{eff.sample.size}{
+      numeric vector containing the effective number of particles at each time point.
+    }
+    \item{cond.loglik}{
+      numeric vector containing the conditional log likelihoods at each time point.
+    }
+    \item{states}{
+      if \code{saves.states=TRUE}, the array of state-vectors at each time point, for each particle.
+      An array with dimensions \code{nvars}-by-\code{Np}-by-\code{ntimes}.
+      In particular, \code{states[,i,t]} can be considered a sample from \eqn{f[X|y_{1:t}]}.
+    }
+    \item{seed}{
+      the state of the random number generator at the time \code{pfilter} was called.
+      If the argument \code{seed} was specified, this is a copy;
+      if not, this is the internal state of the random number generator at the time of call.
+    }
+    \item{Np, tol, nfail}{
+      the number of particles used, failure tolerance, and number of filtering failures, respectively.
+    }
+    \item{loglik}{
+      the estimated log-likelihood.
+    }
   }
   These can be accessed using the \code{$} operator as if the returned object were a list.
   In addition, \code{logLik} returns the log likelihood.
