@@ -101,7 +101,7 @@ po <- pomp(
                                    terms[1]-terms[2]-terms[3],
                                    terms[2]-terms[4]-terms[5],
                                    terms[4]-terms[6],
-                                   terms[4]
+                                   gamma/52*(terms[2]-terms[4]-terms[5])
                                    )
                     xdot
                   }
@@ -119,6 +119,7 @@ po <- pomp(
                             rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
                             )
                     names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
+                    x0["cases"] <- gamma/52*x0["I"]
                     x0
                   }
                   )

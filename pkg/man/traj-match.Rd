@@ -1,5 +1,9 @@
 \name{traj.match}
 \alias{traj.match}
+\alias{traj.match-pomp}
+\alias{traj.match,pomp-method}
+\alias{traj.match-traj.matched.pomp}
+\alias{traj.match,traj.matched.pomp-method}
 \alias{logLik,traj.matched.pomp-method}
 \alias{logLik-traj.matched.pomp}
 \alias{$,traj.matched.pomp-method}
@@ -12,13 +16,17 @@
   Match trajectories to data.
 }
 \usage{
-traj.match(object, start, est, method = c("Nelder-Mead", "SANN", "subplex"),
-           gr = NULL, eval.only = FALSE, \dots)
+  \S4method{traj.match}{pomp}(object, start, est,
+                 method = c("Nelder-Mead", "SANN", "subplex"),
+                 gr = NULL, eval.only = FALSE, \dots)
+  \S4method{traj.match}{traj.matched.pomp}(object, start, est,
+                 method = c("Nelder-Mead", "SANN", "subplex"),
+                 gr = NULL, eval.only = FALSE, \dots)
 }
 \arguments{
   \item{object}{A \code{pomp} object.}
-  \item{start}{Initial guess for parameters.}
-  \item{est}{Character vector containing the names of parameters to be estimated.}
+  \item{start}{initial guess for parameters.}
+  \item{est}{character vector containing the names of parameters to be estimated.}
   \item{method}{
     Optimization method.
     Choices are \code{\link[subplex]{subplex}} and any of the methods used by \code{\link{optim}}.
@@ -27,7 +35,8 @@ traj.match(object, start, est, method = c("Nelder-Mead", "SANN", "subplex"),
     Passed to \code{\link{optim}}.
   }
   \item{eval.only}{
-    logical; if \code{TRUE}, no optimization is attempted and the quasi-loglikelihood value is evaluated at the \code{start} parameters.
+    logical;
+    if \code{TRUE}, no optimization is attempted and the log likelihood value is evaluated at the \code{start} parameters.
   }
   \item{\dots}{
     Arguments that will be passed to \code{\link{optim}} in its \code{control} list.
@@ -46,9 +55,12 @@ traj.match(object, start, est, method = c("Nelder-Mead", "SANN", "subplex"),
       number of function and gradient evaluations by the optimizer.
       See \code{\link{optim}}.
     }
-    \item{value}{Value of the objective function.}
+    \item{value}{
+      value of the objective function.
+      Larger values indicate better fit (i.e., \code{traj.match} attempts to maximize this quantity.
+    }
     \item{convergence, msg}{
-      Convergence code and message from the optimizer.
+      convergence code and message from the optimizer.
       See \code{\link{optim}}.
     }
   }
@@ -84,10 +96,10 @@ traj.match(object, start, est, method = c("Nelder-Mead", "SANN", "subplex"),
   lines(x2~time,data=as(res,"data.frame"),col='red')
 }
 \seealso{
-  \code{\link{optim}},
   \code{\link{trajectory}},
   \code{\link{pomp}},
-  \code{\link{pomp-class}}
+  \code{\link{optim}},
+  \code{\link[subplex]{subplex}}
 }
 \keyword{models}
 \keyword{ts}

@@ -118,7 +118,7 @@ Type 'q()' to quit R.
 +                                    terms[1]-terms[2]-terms[3],
 +                                    terms[2]-terms[4]-terms[5],
 +                                    terms[4]-terms[6],
-+                                    terms[4]
++                                    gamma/52*(terms[2]-terms[4]-terms[5])
 +                                    )
 +                     xdot
 +                   }
@@ -136,6 +136,7 @@ Type 'q()' to quit R.
 +                             rep(0,9)	# zeros for 'cases', 'W', and the transition numbers
 +                             )
 +                     names(x0) <- c("S","I","R","cases","W","B","SI","SD","IR","ID","RD","dW")
++                     x0["cases"] <- gamma/52*x0["I"]
 +                     x0
 +                   }
 +                   )
@@ -406,7 +407,8 @@ pomp(data = rbind(reports = numeric(52 * 4)), times = 1/52 *
             terms <- c(mu * pop, foi * S, mu * S, gamma * I, 
                 mu * I, mu * R)
             xdot[1:4] <- c(terms[1] - terms[2] - terms[3], terms[2] - 
-                terms[4] - terms[5], terms[4] - terms[6], terms[4])
+                terms[4] - terms[5], terms[4] - terms[6], gamma/52 * 
+                (terms[2] - terms[4] - terms[5]))
             xdot
         })
     }, initializer = function(params, t0, ...) {
@@ -416,6 +418,7 @@ pomp(data = rbind(reports = numeric(52 * 4)), times = 1/52 *
             x0 <- c(round(pop * fracs/sum(fracs)), rep(0, 9))
             names(x0) <- c("S", "I", "R", "cases", "W", "B", 
                 "SI", "SD", "IR", "ID", "RD", "dW")
+            x0["cases"] <- gamma/52 * x0["I"]
             x0
         })
     }, covar = basis, tcovar = tbasis)
@@ -432,7 +435,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x2633e80>
+<environment: 0x34f04e8>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -442,7 +445,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0x2ca6dd0>
+<environment: 0x318a708>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -454,7 +457,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x2c3f9d0>
+<environment: 0x359df90>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -467,7 +470,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x2c3f9d0>
+<environment: 0x359df90>
 skeleton ( vectorfield ) = 
 function (x, t, params, covars, ...) 
 {
@@ -479,7 +482,8 @@ function (x, t, params, covars, ...)
         terms <- c(mu * pop, foi * S, mu * S, gamma * I, mu * 
             I, mu * R)
         xdot[1:4] <- c(terms[1] - terms[2] - terms[3], terms[2] - 
-            terms[4] - terms[5], terms[4] - terms[6], terms[4])
+            terms[4] - terms[5], terms[4] - terms[6], gamma/52 * 
+            (terms[2] - terms[4] - terms[5]))
         xdot
     })
 }
@@ -492,6 +496,7 @@ function (params, t0, ...)
         x0 <- c(round(pop * fracs/sum(fracs)), rep(0, 9))
         names(x0) <- c("S", "I", "R", "cases", "W", "B", "SI", 
             "SD", "IR", "ID", "RD", "dW")
+        x0["cases"] <- gamma/52 * x0["I"]
         x0
     })
 }
@@ -506,7 +511,7 @@ $zeronames
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.066529 secs
+Time difference of 2.096126 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -538,7 +543,7 @@ and set the 'times' and 't0' arguments appropriately to compensate.
  
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 4.560865 secs
+Time difference of 4.700443 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -598,7 +603,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.543359 secs
+Time difference of 2.518889 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -611,7 +616,7 @@ and set the 'times' and 't0' arguments appropriately to compensate.
  
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.726177 secs
+Time difference of 0.71978 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(

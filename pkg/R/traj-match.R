@@ -2,6 +2,7 @@ setClass(
          "traj.matched.pomp",
          contains="pomp",
          representation=representation(
+           est="character",
            evals="integer",
            convergence="integer",
            msg="character",
@@ -29,62 +30,15 @@ setMethod(
           }
           )
 
-trajectory.nll <- function (par, est, object, params, t0, fail.value = NA, ...) {
-  if (missing(par)) par <- numeric(0)
-  if (missing(est)) est <- integer(0)
-  if (missing(params)) params <- coef(object)
-  if (missing(t0)) t0 <- timezero(object)
-  params[est] <- par
-  x <- trajectory(object,params=params,t0=t0)
-  d <- dmeasure(
-                object,
-                y=obs(object),
-                x=x,
-                times=time(object),
-                params=as.matrix(params),
-                log=TRUE
-                )
-  -sum(d)
-}
-
-trajectory.ls <- function (par, est, object, params, t0, fail.value = NA, transform, ...) {
-  if (missing(transform)) transform <- identity
-  if (missing(par)) par <- numeric(0)
-  if (missing(est)) est <- integer(0)
-  if (missing(params)) params <- coef(object)
-  if (missing(t0)) t0 <- timezero(object)
-  params[est] <- par
-  x <- trajectory(object,params=params,t0=t0)
-  d <- dmeasure(
-                object,
-                y=obs(object),
-                x=x,
-                times=time(object),
-                params=as.matrix(params),
-                log=TRUE
-                )
-  -sum(d)
-}
-
-traj.match <- function (object, start, est,
-                        method = c("Nelder-Mead","SANN","subplex"), 
-                        gr = NULL, eval.only = FALSE, ...) {
+traj.match.internal <- function (object, start, est, method, gr, eval.only, ...) {
   
-  if (!is(object,'pomp'))
-    stop("traj.match error: ",sQuote("object")," must be a ",sQuote("pomp")," object",call.=FALSE)
-
-  if (missing(start)) start <- coef(object)
-  
-  method <- match.arg(method)
-
   if (eval.only) {
     par.est <- integer(0)
   } else {
-    if (missing(est))
-      stop("traj.match error: ",sQuote("est")," must be specified")
     if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
     if (!all(est%in%names(start)))
-      stop("traj.match error: parameters named in ",sQuote("est")," must exist in ",sQuote("start"),call.=FALSE)
+      stop(sQuote("traj.match")," error: parameters named in ",sQuote("est"),
+           " must exist in ",sQuote("start"),call.=FALSE)
     par.est <- which(names(start)%in%est)
     guess <- start[par.est]
   }
@@ -109,7 +63,6 @@ traj.match <- function (object, start, est,
   if (eval.only) {
 
     coef(obj,names(start)) <- unname(start)
-    obj@states[,] <- trajectory(obj,t0=t0)[,1,]
     val <- obj.fn(start)
     conv <- NA
     evals <- c(1,0)
@@ -137,7 +90,6 @@ traj.match <- function (object, start, est,
     }
 
     coef(obj,names(opt$par)) <- unname(opt$par)
-    obj@states[,] <- trajectory(obj,t0=t0)[,1,]
     msg <- if (is.null(opt$message)) character(0) else opt$message
     conv <- opt$convergence
     evals <- opt$counts
@@ -145,12 +97,62 @@ traj.match <- function (object, start, est,
 
   }
 
-  ans <- new(
-             "traj.matched.pomp",
-             obj,
-             evals=as.integer(evals),
-             convergence=as.integer(conv),
-             msg=msg,
-             value=as.numeric(-val)
-	     )
+  obj@states <- trajectory(obj,t0=t0)[,1,]
+  
+  new(
+      "traj.matched.pomp",
+      obj,
+      est=as.character(est),
+      evals=as.integer(evals),
+      convergence=as.integer(conv),
+      msg=msg,
+      value=as.numeric(-val)
+      )
 }
+
+setGeneric("traj.match",function(object,...)standardGeneric("traj.match"))
+
+setMethod(
+          "traj.match",
+          signature=signature(object="pomp"),
+          function (object, start, est,
+                    method = c("Nelder-Mead","SANN","subplex"), 
+                    gr = NULL, eval.only = FALSE, ...) {
+            if (missing(start)) start <- coef(object)
+            if (missing(est)) {
+              est <- character(0)
+              eval.only <- TRUE
+            }
+            method <- match.arg(method)
+            traj.match.internal(
+                                object=object,
+                                start=start,
+                                est=est,
+                                method=method,
+                                gr=gr,
+                                eval.only=eval.only,
+                                ...
+                                )
+          }
+          )
+
+setMethod(
+          "traj.match",
+          signature=signature(object="traj.matched.pomp"),
+          function (object, start, est,
+                    method = c("Nelder-Mead","SANN","subplex"), 
+                    gr = NULL, eval.only = FALSE, ...) {
+            if (missing(start)) start <- coef(object)
+            if (missing(est)) est <- object@est
+            method <- match.arg(method)
+            traj.match.internal(
+                                object=object,
+                                start=start,
+                                est=est,
+                                method=method,
+                                gr=gr,
+                                eval.only=eval.only,
+                                ...
+                                )
+          }
+          )
