@@ -45,30 +45,39 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
 
   t0 <- timezero(object)
   obj <- as(object,"pomp")
-
-  obj.fn <- function (x) {
-    p <- start
-    p[par.est] <- x
-    d <- dmeasure(
-                  obj,
-                  y=obs(obj),
-                  x=trajectory(obj,params=p,t0=t0),
-                  times=time(obj),
-                  params=as.matrix(p),
-                  log=TRUE
-                  )
-    -sum(d)
-  }
+  coef(obj,names(start)) <- unname(start)
+  pmat <- as.matrix(start)
 
   if (eval.only) {
 
-    coef(obj,names(start)) <- unname(start)
-    val <- obj.fn(start)
+    val <- -sum(
+                dmeasure(
+                         obj,
+                         y=obs(obj),
+                         x=trajectory(obj,params=pmat,t0=t0),
+                         times=time(obj),
+                         params=pmat,
+                         log=TRUE
+                         )
+                )
     conv <- NA
     evals <- c(1,0)
     msg <- "no optimization performed"
     
   } else {
+
+    obj.fn <- function (x) {
+      pmat[par.est,] <- x
+      d <- dmeasure(
+                    obj,
+                    y=obs(obj),
+                    x=trajectory(obj,params=pmat,t0=t0),
+                    times=time(obj),
+                    params=pmat,
+                    log=TRUE
+                    )
+      -sum(d)
+    }
 
     if (method=="subplex") {
 
@@ -87,6 +96,7 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
                    method=method,
                    control=list(...)
                    )
+      
     }
 
     coef(obj,names(opt$par)) <- unname(opt$par)

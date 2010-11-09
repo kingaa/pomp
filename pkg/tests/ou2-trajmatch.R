@@ -4,7 +4,6 @@ data(ou2)
 true.p <- coef(ou2)
 simdata <- simulate(ou2,nsim=5,params=true.p,seed=394885)
 guess.p <- true.p
-guess.p[grep('sigma',names(guess.p))] <- 0
 
 x <- sapply(
             simdata,
