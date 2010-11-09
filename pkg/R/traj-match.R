@@ -107,7 +107,10 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
 
   }
 
-  obj@states <- trajectory(obj,t0=t0)[,1,]
+  ## fill 'states' slot of returned object with the trajectory
+  x <- trajectory(obj,t0=t0)
+  obj@states <- array(data=x,dim=dim(x)[c(1,3)])
+  rownames(obj@states) <- rownames(x)
   
   new(
       "traj.matched.pomp",
