@@ -11,7 +11,6 @@
   This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
-rmeasure(object, x, times, params, \dots)
 \S4method{rmeasure}{pomp}(object, x, times, params, \dots)
 }
 \arguments{

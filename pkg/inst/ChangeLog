@@ -1,5 +1,42 @@
+2010-11-09  kingaa
+
+	* [r416] DESCRIPTION, R/traj-match.R,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - revert version dependence to R>=2.10.1
+	  - fix bug in 'traj.match'
+	* [r415] DESCRIPTION, R/traj-match.R,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  tests/ou2-trajmatch.R, tests/ou2-trajmatch.Rout.save: - fix bug
+	  in 'traj.match'
+
+2010-11-08  kingaa
+
+	* [r414] DESCRIPTION, R/traj-match.R, data/euler.sir.rda,
+	  inst/data-R/euler.sir.R, man/traj-match.Rd, src/sir.c,
+	  tests/sir.R, tests/sir.Rout.save: - 'traj.match' is now
+	  implemented as a generic with methods for 'pomp' and
+	  'traj.matched.pomp' objects
+	  - the 'euler.sir' example has a different skeleton, one for which
+	  'cases' gives the approximate weekly number of new cases
+	* [r413] DESCRIPTION, NAMESPACE, R/probe-match.R, R/spect-match.R,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/pfilter.Rd, man/pmcmc-class.Rd, man/pmcmc.Rd, man/probe.Rd,
+	  man/probed-pomp-class.Rd, man/spect-pomp-class.Rd, man/spect.Rd,
+	  man/traj-match.Rd, tests/ricker-probe.R,
+	  tests/ricker-probe.Rout.save, tests/ricker-spect.R,
+	  tests/ricker-spect.Rout.save: - arrange for all classes to be
+	  exported
+	  - rearrange documentation for classes; now it's together with the
+	  constructors
+	  - fix bug in 'spect.match' with eval.only=TRUE
+	  - add slot in 'probe.matched.pomp' to make it parallel with
+	  'spect.matched.pomp'
+
 2010-11-07  kingaa
 
+	* [r412] R/traj-match.R, inst/ChangeLog,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/ou2-first-mif.rda,
+	  inst/doc/ou2-trajmatch.rda: - streamline 'traj.match' slightly
 	* [r411] R/nlf-objfun.R, R/spect.R, inst/doc/intro_to_pomp.Rnw,
 	  man/basic-probes.Rd, man/spect.Rd: - replace 'data.array' with
 	  'obs' as the preferred method

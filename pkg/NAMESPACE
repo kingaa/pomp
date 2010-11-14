@@ -30,8 +30,8 @@ useDynLib(
 importFrom(graphics,plot)		
 importFrom(stats,simulate,time,coef,logLik,window)
 importFrom(mvtnorm,dmvnorm,rmvnorm)
-importFrom(deSolve,lsoda)
 importFrom(subplex,subplex)
+importFrom(deSolve,ode,lsoda)
 
 exportClasses(
               "pomp","pfilterd.pomp",
@@ -42,12 +42,11 @@ exportClasses(
               )
 
 exportMethods(
-              'plot','show','print','coerce',
+              'plot','show','print','coerce','summary','logLik','window',
               'dprocess','rprocess','rmeasure','dmeasure','init.state','skeleton',
               'data.array','obs','coef','time','time<-','timezero','timezero<-','$',
               'simulate','pfilter',
               'particles','mif','continue','coef<-','states','trajectory',
-              'summary','logLik','window',
               'pred.mean','pred.var','filter.mean','conv.rec',
               'bsmc',
               'pmcmc','dprior',

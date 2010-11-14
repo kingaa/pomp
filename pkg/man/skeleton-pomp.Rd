@@ -15,7 +15,6 @@
   This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
-skeleton(object, x, t, params, \dots)
 \S4method{skeleton}{pomp}(object, x, t, params, \dots)
 }
 \arguments{

@@ -11,7 +11,6 @@
   This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
-dmeasure(object, y, x, times, params, log = FALSE, \dots)
 \S4method{dmeasure}{pomp}(object, y, x, times, params, log = FALSE, \dots)
 }
 \arguments{

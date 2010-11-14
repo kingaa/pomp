@@ -1,6 +1,4 @@
-rprocess <- function (object, xstart, times, params, ...)
-  stop("function ",sQuote("rprocess")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric('rprocess')  
+setGeneric("rprocess",function(object,...)standardGeneric("rprocess"))
 
 ## simulate the process model
 setMethod(

@@ -11,7 +11,6 @@
   This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
-init.state(object, params, t0, \dots)
 \S4method{init.state}{pomp}(object, params, t0, \dots)
 }
 \arguments{

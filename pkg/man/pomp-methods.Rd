@@ -19,7 +19,7 @@
 \alias{timezero<-,pomp-method}
 \alias{timezero<--pomp}
 \alias{window,pomp-method}
-\alias{window--pomp}
+\alias{window-pomp}
 \alias{obs,pomp-method}
 \alias{obs-pomp}
 \alias{obs}

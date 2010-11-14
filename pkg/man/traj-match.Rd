@@ -17,11 +17,11 @@
 }
 \usage{
   \S4method{traj.match}{pomp}(object, start, est,
-                 method = c("Nelder-Mead", "SANN", "subplex"),
-                 gr = NULL, eval.only = FALSE, \dots)
+           method = c("Nelder-Mead", "SANN", "subplex"),
+           gr = NULL, eval.only = FALSE, \dots)
   \S4method{traj.match}{traj.matched.pomp}(object, start, est,
-                 method = c("Nelder-Mead", "SANN", "subplex"),
-                 gr = NULL, eval.only = FALSE, \dots)
+           method = c("Nelder-Mead", "SANN", "subplex"),
+           gr = NULL, eval.only = FALSE, \dots)
 }
 \arguments{
   \item{object}{A \code{pomp} object.}

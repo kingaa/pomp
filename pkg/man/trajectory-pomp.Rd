@@ -24,7 +24,7 @@
     \code{t0} specifies the start time (the time at which the initial conditions hold).
     The default for \code{times} is \code{times=time(object,t0=FALSE)} and \code{t0=timezero(object)}, respectively.
   }
-  \item{\dots}{at present, these are ignored.}
+  \item{\dots}{at present, these are passed to the ODE integrator if the skeleton is a vectorfield and ignored if it is a map.}
 }
 \value{
   Returns an array of dimensions \code{nvar} x \code{nreps} x \code{ntimes}.

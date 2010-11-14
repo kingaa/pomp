@@ -267,7 +267,6 @@ mif.internal <- function (object, Nmif,
 }
 
 setGeneric('mif',function(object,...)standardGeneric("mif"))
-setGeneric('continue',function(object,...)standardGeneric("continue"))
 
 setMethod(
           "mif",

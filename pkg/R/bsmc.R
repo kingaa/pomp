@@ -13,9 +13,7 @@
 ## lower  = lower bounds on prior
 ## upper  = upper bounds on prior
 
-bsmc <- function (object, ...)
-  stop("function ",sQuote("bsmc")," is undefined for objects of class ",sQuote(class(object)))
-setGeneric('bsmc')
+setGeneric("bsmc",function(object,...)standardGeneric("bsmc"))
 
 setMethod(
           "bsmc",

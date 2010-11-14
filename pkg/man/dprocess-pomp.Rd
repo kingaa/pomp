@@ -13,7 +13,6 @@
   This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
-dprocess(object, x, times, params, log = FALSE, \dots)
 \S4method{dprocess}{pomp}(object, x, times, params, log = FALSE, \dots)
 }
 \arguments{

@@ -11,7 +11,6 @@
   This help page does not give instructions on the implementation of models: see \code{\link{pomp}} for instructions.
 }
 \usage{
-rprocess(object, xstart, times, params, \dots)
 \S4method{rprocess}{pomp}(object, xstart, times, params, offset, \dots)
 }
 \arguments{
