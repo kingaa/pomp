@@ -59,7 +59,6 @@ static int  _pomp_skel_npar;	// number of parameters
 static SEXP _pomp_skel_envir;	// function's environment
 static SEXP _pomp_skel_fcall;	// function call
 static SEXP _pomp_skel_vnames;	// names of state variables
-//static int *_pomp_skel_vindex;	// indices of state variables
 
 #define XVEC    (_pomp_skel_Xvec)
 #define PVEC    (_pomp_skel_Pvec)
@@ -70,7 +69,6 @@ static SEXP _pomp_skel_vnames;	// names of state variables
 #define RHO     (_pomp_skel_envir)
 #define FCALL   (_pomp_skel_fcall)
 #define VNAMES  (_pomp_skel_vnames)
-//#define VINDEX  (_pomp_skel_vindex)
 
 // this is the vectorfield that is evaluated when the user supplies an R function
 // (and not a native routine)
@@ -102,12 +100,9 @@ static void default_skel_fn (double *f, double *x, double *p,
 
   PROTECT(nm = GET_NAMES(ans)); nprotect++;
   use_names = !isNull(nm);
-  if (use_names) {	   // match names against names from data slot
+  if (use_names) {	  // match names against known names of states
     PROTECT(idx = matchnames(VNAMES,nm)); nprotect++;
     op = INTEGER(idx);
-    //    for (k = 0; k < NVAR; k++) VINDEX[k] = op[k];
-    //  } else {
-    //    VINDEX = 0;
   }
 
   xp = REAL(AS_NUMERIC(ans));
@@ -134,7 +129,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params)
   SEXP sindex, pindex, cindex;
   SEXP Pnames, Cnames;
   pomp_vectorfield_map *ff = NULL;
-  int k;
+  int k, len;
 
   ntimes = LENGTH(t);
 
@@ -217,7 +212,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params)
   PROTECT(F = makearray(3,fdim)); nprotect++; 
   setrownames(F,VNAMES,3);
   xp = REAL(F);
-  for (k = 0; k < nvars*nreps*ntimes; k++) xp[k] = 0.0;
+  for (k = 0, len = nvars*nreps*ntimes; k < len; k++) xp[k] = 0.0;
 
   if (nstates > 0) {
     PROTECT(sindex = MATCHROWNAMES(x,statenames)); nprotect++;
