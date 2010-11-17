@@ -159,7 +159,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
 
   PROTECT(tcovar =  GET_SLOT(object,install("tcovar"))); nprotect++;
   PROTECT(covar =  GET_SLOT(object,install("covar"))); nprotect++;
-  PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
   PROTECT(obsnames = GET_SLOT(object,install("obsnames"))); nprotect++;
   PROTECT(statenames = GET_SLOT(object,install("statenames"))); nprotect++;
   PROTECT(paramnames = GET_SLOT(object,install("paramnames"))); nprotect++;

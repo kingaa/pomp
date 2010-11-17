@@ -134,32 +134,23 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params)
   ntimes = LENGTH(t);
 
   PROTECT(dimX = GET_DIM(x)); nprotect++;
-  if ((isNull(dimX)) || (LENGTH(dimX)!=3)) {
-    UNPROTECT(nprotect);
+  if ((isNull(dimX)) || (LENGTH(dimX)!=3))
     error("skeleton error: 'x' must be a rank-3 array");
-  }
   dim = INTEGER(dimX);
   nvars = dim[0]; nreps = dim[1];
-  if (ntimes != dim[2]) {
-    UNPROTECT(nprotect);
+  if (ntimes != dim[2])
     error("skeleton error: length of 't' and 3rd dimension of 'x' do not agree");
-  }
 
   PROTECT(dimP = GET_DIM(params)); nprotect++;
-  if ((isNull(dimP)) || (LENGTH(dimP)!=2)) {
-    UNPROTECT(nprotect);
+  if ((isNull(dimP)) || (LENGTH(dimP)!=2))
     error("skeleton error: 'params' must be a rank-2 array");
-  }
   dim = INTEGER(dimP);
   npars = dim[0];
-  if (nreps != dim[1]) {
-    UNPROTECT(nprotect);
+  if (nreps != dim[1])
     error("skeleton error: 2nd dimensions of 'params' and 'x' do not agree");
-  }
 
   PROTECT(tcovar =  GET_SLOT(object,install("tcovar"))); nprotect++;
   PROTECT(covar =  GET_SLOT(object,install("covar"))); nprotect++;
-  PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
   PROTECT(statenames =  GET_SLOT(object,install("statenames"))); nprotect++;
   PROTECT(paramnames =  GET_SLOT(object,install("paramnames"))); nprotect++;
   PROTECT(covarnames =  GET_SLOT(object,install("covarnames"))); nprotect++;
