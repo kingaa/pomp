@@ -1,5 +1,7 @@
 library(pomp)
 
+set.seed(93885485L)
+
 data(ou2)
 true.p <- coef(ou2)
 simdata <- simulate(ou2,nsim=5,params=true.p,seed=394885)
@@ -32,5 +34,6 @@ print(
 
 summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="subplex",maxit=100))
 
-summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),eval.only=T))
+summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="sannbox",trace=3,parscale=0.1,maxit=100))
 
+summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),eval.only=T))

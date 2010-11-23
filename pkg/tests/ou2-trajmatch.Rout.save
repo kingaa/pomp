@@ -16,6 +16,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> set.seed(93885485L)
 > 
 > data(ou2)
 > true.p <- coef(ou2)
@@ -80,6 +85,226 @@ $msg
 [1] "number of function evaluations exceeds `maxit'"
 
 > 
+> summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="sannbox",trace=3,parscale=0.1,maxit=100))
+initial evaluation:  3327.081 
+initial parameters:  0.8 0.9 1 -3 4 
+iter  1  val= 2720.144 , accept= TRUE 
+current params:  0.7532048 0.7965677 1.074625 -2.990056 4.018537 
+iter  2  val= 2720.144 , accept= FALSE 
+current params:  0.7532048 0.7965677 1.074625 -2.990056 4.018537 
+iter  3  val= 2720.144 , accept= FALSE 
+current params:  0.7532048 0.7965677 1.074625 -2.990056 4.018537 
+iter  4  val= 2720.144 , accept= FALSE 
+current params:  0.7532048 0.7965677 1.074625 -2.990056 4.018537 
+iter  5  val= 2720.144 , accept= FALSE 
+current params:  0.7532048 0.7965677 1.074625 -2.990056 4.018537 
+iter  6  val= 2418.963 , accept= TRUE 
+current params:  0.7182885 0.7315718 1.138969 -3.061651 4.234396 
+iter  7  val= 2418.276 , accept= TRUE 
+current params:  0.6702808 0.9818138 1.181083 -3.175254 4.255643 
+iter  8  val= 2418.276 , accept= FALSE 
+current params:  0.6702808 0.9818138 1.181083 -3.175254 4.255643 
+iter  9  val= 2418.276 , accept= FALSE 
+current params:  0.6702808 0.9818138 1.181083 -3.175254 4.255643 
+iter  10  val= 2349.093 , accept= TRUE 
+current params:  0.524017 1.000039 1.175405 -3.175375 4.169192 
+iter  11  val= 2349.093 , accept= FALSE 
+current params:  0.524017 1.000039 1.175405 -3.175375 4.169192 
+iter  12  val= 2308.96 , accept= TRUE 
+current params:  0.5390601 0.9389608 1.180627 -3.147092 4.19522 
+iter  13  val= 2136.708 , accept= TRUE 
+current params:  0.4786343 0.9221789 1.230047 -3.165556 4.264548 
+iter  14  val= 2107.605 , accept= TRUE 
+current params:  0.5703518 0.9715367 1.254114 -3.111124 4.306843 
+iter  15  val= 2032.639 , accept= TRUE 
+current params:  0.6209473 0.9793712 1.292077 -3.061519 4.281032 
+iter  16  val= 2032.639 , accept= FALSE 
+current params:  0.6209473 0.9793712 1.292077 -3.061519 4.281032 
+iter  17  val= 2032.639 , accept= FALSE 
+current params:  0.6209473 0.9793712 1.292077 -3.061519 4.281032 
+iter  18  val= 1882.527 , accept= TRUE 
+current params:  0.6454196 0.9791284 1.359606 -3.012944 4.293127 
+iter  19  val= 1810.276 , accept= TRUE 
+current params:  0.6764328 1.011111 1.413802 -3.029529 4.247277 
+iter  20  val= 1810.276 , accept= FALSE 
+current params:  0.6764328 1.011111 1.413802 -3.029529 4.247277 
+iter  21  val= 1761.523 , accept= TRUE 
+current params:  0.6735086 1.010115 1.436825 -3.040515 4.267886 
+iter  22  val= 1761.523 , accept= FALSE 
+current params:  0.6735086 1.010115 1.436825 -3.040515 4.267886 
+iter  23  val= 1761.523 , accept= FALSE 
+current params:  0.6735086 1.010115 1.436825 -3.040515 4.267886 
+iter  24  val= 1669.82 , accept= TRUE 
+current params:  0.6372788 0.9833524 1.464653 -3.061988 4.315656 
+iter  25  val= 1669.82 , accept= FALSE 
+current params:  0.6372788 0.9833524 1.464653 -3.061988 4.315656 
+iter  26  val= 1669.82 , accept= FALSE 
+current params:  0.6372788 0.9833524 1.464653 -3.061988 4.315656 
+iter  27  val= 1621.532 , accept= TRUE 
+current params:  0.650197 0.9790861 1.495062 -3.043959 4.297732 
+iter  28  val= 1621.532 , accept= FALSE 
+current params:  0.650197 0.9790861 1.495062 -3.043959 4.297732 
+iter  29  val= 1621.532 , accept= FALSE 
+current params:  0.650197 0.9790861 1.495062 -3.043959 4.297732 
+iter  30  val= 1595.944 , accept= TRUE 
+current params:  0.6443714 1.021352 1.521304 -3.023417 4.327267 
+iter  31  val= 1595.944 , accept= FALSE 
+current params:  0.6443714 1.021352 1.521304 -3.023417 4.327267 
+iter  32  val= 1555.617 , accept= TRUE 
+current params:  0.6700071 0.9628854 1.537399 -3.043265 4.316877 
+iter  33  val= 1555.617 , accept= FALSE 
+current params:  0.6700071 0.9628854 1.537399 -3.043265 4.316877 
+iter  34  val= 1555.617 , accept= FALSE 
+current params:  0.6700071 0.9628854 1.537399 -3.043265 4.316877 
+iter  35  val= 1555.617 , accept= FALSE 
+current params:  0.6700071 0.9628854 1.537399 -3.043265 4.316877 
+iter  36  val= 1555.617 , accept= FALSE 
+current params:  0.6700071 0.9628854 1.537399 -3.043265 4.316877 
+iter  37  val= 1555.617 , accept= FALSE 
+current params:  0.6700071 0.9628854 1.537399 -3.043265 4.316877 
+iter  38  val= 1555.617 , accept= FALSE 
+current params:  0.6700071 0.9628854 1.537399 -3.043265 4.316877 
+iter  39  val= 1446.388 , accept= TRUE 
+current params:  0.6916208 0.912573 1.600249 -3.002902 4.342426 
+iter  40  val= 1446.388 , accept= FALSE 
+current params:  0.6916208 0.912573 1.600249 -3.002902 4.342426 
+iter  41  val= 1406.814 , accept= TRUE 
+current params:  0.6548845 0.898637 1.615665 -3.009874 4.372078 
+iter  42  val= 1406.814 , accept= FALSE 
+current params:  0.6548845 0.898637 1.615665 -3.009874 4.372078 
+iter  43  val= 1384.912 , accept= TRUE 
+current params:  0.6993791 0.8810955 1.638029 -2.994224 4.352276 
+iter  44  val= 1384.912 , accept= FALSE 
+current params:  0.6993791 0.8810955 1.638029 -2.994224 4.352276 
+iter  45  val= 1342.388 , accept= TRUE 
+current params:  0.6665224 0.8335342 1.653646 -2.978173 4.335576 
+iter  46  val= 1334.575 , accept= TRUE 
+current params:  0.6328988 0.8333977 1.656954 -2.969892 4.311855 
+iter  47  val= 1334.649 , accept= TRUE 
+current params:  0.6399444 0.8072521 1.653743 -2.956975 4.30343 
+iter  48  val= 1334.649 , accept= FALSE 
+current params:  0.6399444 0.8072521 1.653743 -2.956975 4.30343 
+iter  49  val= 1334.649 , accept= FALSE 
+current params:  0.6399444 0.8072521 1.653743 -2.956975 4.30343 
+iter  50  val= 1334.649 , accept= FALSE 
+current params:  0.6399444 0.8072521 1.653743 -2.956975 4.30343 
+iter  51  val= 1334.649 , accept= FALSE 
+current params:  0.6399444 0.8072521 1.653743 -2.956975 4.30343 
+iter  52  val= 1333.041 , accept= TRUE 
+current params:  0.605543 0.82917 1.655864 -2.990143 4.307197 
+iter  53  val= 1333.041 , accept= FALSE 
+current params:  0.605543 0.82917 1.655864 -2.990143 4.307197 
+iter  54  val= 1327.316 , accept= TRUE 
+current params:  0.6368124 0.8539377 1.667453 -2.988615 4.334961 
+iter  55  val= 1295.452 , accept= TRUE 
+current params:  0.618709 0.8524734 1.694322 -2.997447 4.325407 
+iter  56  val= 1270.420 , accept= TRUE 
+current params:  0.5901194 0.8160746 1.711434 -3.027965 4.312765 
+iter  57  val= 1270.420 , accept= FALSE 
+current params:  0.5901194 0.8160746 1.711434 -3.027965 4.312765 
+iter  58  val= 1270.420 , accept= FALSE 
+current params:  0.5901194 0.8160746 1.711434 -3.027965 4.312765 
+iter  59  val= 1241.955 , accept= TRUE 
+current params:  0.581974 0.8179566 1.739656 -2.996623 4.348772 
+iter  60  val= 1232.426 , accept= TRUE 
+current params:  0.5937759 0.7969884 1.748006 -2.973712 4.32759 
+iter  61  val= 1232.426 , accept= FALSE 
+current params:  0.5937759 0.7969884 1.748006 -2.973712 4.32759 
+iter  62  val= 1205.706 , accept= TRUE 
+current params:  0.5690983 0.764269 1.774335 -2.973598 4.302674 
+iter  63  val= 1205.706 , accept= FALSE 
+current params:  0.5690983 0.764269 1.774335 -2.973598 4.302674 
+iter  64  val= 1205.706 , accept= FALSE 
+current params:  0.5690983 0.764269 1.774335 -2.973598 4.302674 
+iter  65  val= 1205.706 , accept= FALSE 
+current params:  0.5690983 0.764269 1.774335 -2.973598 4.302674 
+iter  66  val= 1182.611 , accept= TRUE 
+current params:  0.5710116 0.785939 1.801455 -2.993636 4.291691 
+iter  67  val= 1167.827 , accept= TRUE 
+current params:  0.5732821 0.8225732 1.821809 -2.981542 4.293427 
+iter  68  val= 1167.827 , accept= FALSE 
+current params:  0.5732821 0.8225732 1.821809 -2.981542 4.293427 
+iter  69  val= 1167.827 , accept= FALSE 
+current params:  0.5732821 0.8225732 1.821809 -2.981542 4.293427 
+iter  70  val= 1159.736 , accept= TRUE 
+current params:  0.5633811 0.8360814 1.832664 -2.985213 4.272785 
+iter  71  val= 1157.020 , accept= TRUE 
+current params:  0.5707494 0.8370168 1.836375 -2.970371 4.271366 
+iter  72  val= 1157.020 , accept= FALSE 
+current params:  0.5707494 0.8370168 1.836375 -2.970371 4.271366 
+iter  73  val= 1146.235 , accept= TRUE 
+current params:  0.579767 0.8393374 1.850459 -2.980518 4.300226 
+iter  74  val= 1101.545 , accept= TRUE 
+current params:  0.5435931 0.8260895 1.906304 -2.961221 4.277552 
+iter  75  val= 1101.545 , accept= FALSE 
+current params:  0.5435931 0.8260895 1.906304 -2.961221 4.277552 
+iter  76  val= 1086.000 , accept= TRUE 
+current params:  0.5554613 0.8251125 1.928449 -2.969901 4.309415 
+iter  77  val= 1082.253 , accept= TRUE 
+current params:  0.5186073 0.7973389 1.931111 -2.964102 4.292897 
+iter  78  val= 1082.253 , accept= FALSE 
+current params:  0.5186073 0.7973389 1.931111 -2.964102 4.292897 
+iter  79  val= 1082.253 , accept= FALSE 
+current params:  0.5186073 0.7973389 1.931111 -2.964102 4.292897 
+iter  80  val= 1082.253 , accept= FALSE 
+current params:  0.5186073 0.7973389 1.931111 -2.964102 4.292897 
+iter  81  val= 1067.654 , accept= TRUE 
+current params:  0.4905712 0.806781 1.953060 -2.915265 4.291014 
+iter  82  val= 1067.654 , accept= FALSE 
+current params:  0.4905712 0.806781 1.953060 -2.915265 4.291014 
+iter  83  val= 1066.480 , accept= TRUE 
+current params:  0.5218239 0.7643546 1.953087 -2.897599 4.262599 
+iter  84  val= 1057.698 , accept= TRUE 
+current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+iter  85  val= 1057.698 , accept= FALSE 
+current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+iter  86  val= 1057.698 , accept= FALSE 
+current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+iter  87  val= 1057.698 , accept= FALSE 
+current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+iter  88  val= 1057.698 , accept= FALSE 
+current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+iter  89  val= 1057.698 , accept= FALSE 
+current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+iter  90  val= 1049.122 , accept= TRUE 
+current params:  0.5096302 0.8250705 1.982865 -2.874752 4.303329 
+iter  91  val= 1047.578 , accept= TRUE 
+current params:  0.5317058 0.8363981 1.986808 -2.895752 4.282648 
+iter  92  val= 1044.573 , accept= TRUE 
+current params:  0.5563495 0.8340046 1.992085 -2.889044 4.315888 
+iter  93  val= 1032.447 , accept= TRUE 
+current params:  0.5524559 0.8489246 2.013521 -2.895009 4.340358 
+iter  94  val= 1032.594 , accept= TRUE 
+current params:  0.5434189 0.8632482 2.014876 -2.896754 4.336861 
+iter  95  val= 1028.795 , accept= TRUE 
+current params:  0.5378289 0.8596204 2.020447 -2.914911 4.299825 
+iter  96  val= 1028.795 , accept= FALSE 
+current params:  0.5378289 0.8596204 2.020447 -2.914911 4.299825 
+iter  97  val= 1013.848 , accept= TRUE 
+current params:  0.5461696 0.8376482 2.043564 -2.947939 4.253507 
+iter  98  val= 1001.952 , accept= TRUE 
+current params:  0.552347 0.840818 2.065274 -2.951199 4.265389 
+iter  99  val= 999.435 , accept= TRUE 
+current params:  0.569008 0.8631994 2.074306 -2.94497 4.265321 
+iter  100  val= 999.435 , accept= FALSE 
+current params:  0.569008 0.8631994 2.074306 -2.94497 4.265321 
+best val= 999.435 
+$params
+   alpha.1    alpha.2    alpha.3    alpha.4    sigma.1    sigma.2    sigma.3 
+ 0.5690080 -0.5000000  0.3000000  0.8631994  3.0000000 -0.5000000  2.0000000 
+       tau       x1.0       x2.0 
+ 2.0743065 -2.9449702  4.2653209 
+
+$loglik
+[1] -999.435
+
+$eval
+[1] 101  NA
+
+$convergence
+[1] 0
+
+> 
 > summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),eval.only=T))
 $params
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
@@ -97,5 +322,4 @@ $convergence
 $msg
 [1] "no optimization performed"
 
-> 
 > 

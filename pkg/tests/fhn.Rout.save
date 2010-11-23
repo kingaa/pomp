@@ -16,6 +16,9 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
 > 
 > pdf.options(useDingbats=FALSE)
 > pdf(file="fhn.pdf")
@@ -61,20 +64,20 @@ and set the 'times' and 't0' arguments appropriately to compensate.
 , , 1
 
        [,1]       [,2]
-V 1.7086636 -1.9257703
-R 0.9467855  0.4306244
+V 1.7086515 -1.9257830
+R 0.9468273  0.4306572
 
 , , 2
 
       [,1]       [,2]
-V 1.684680 -1.9136509
-R 1.027155  0.3980866
+V 1.684666 -1.9136647
+R 1.027194  0.3981193
 
 , , 3
 
       [,1]       [,2]
-V 1.654986 -1.9015341
-R 1.103046  0.3661139
+V 1.654967 -1.9015481
+R 1.103084  0.3661463
 
 > matplot(time(fhn),t(y["V",,]),type='l',lty=1)
 > plot(y[1,,],y[2,,],type='n')
@@ -118,21 +121,21 @@ and set the 'times' and 't0' arguments appropriately to compensate.
 > y[,,199:201]
 , , 1
 
-        [,1]         [,2]
-V -1.3052965  1.273957507
-R -0.5591631 -0.006895447
+        [,1]        [,2]
+V -1.3052919  1.27398107
+R -0.5591608 -0.00692014
 
 , , 2
 
         [,1]       [,2]
-V -1.4459077 1.19167075
-R -0.5707848 0.02734892
+V -1.4459045 1.19170161
+R -0.5707824 0.02732499
 
 , , 3
 
-        [,1]       [,2]
-V -1.4714068 1.32433958
-R -0.5861086 0.06166643
+       [,1]       [,2]
+V -1.471404 1.32437192
+R -0.586106 0.06164339
 
 > matplot(time(fhn),t(y["V",,]),type='l',lty=1)
 > plot(y[1,,],y[2,,],type='n')

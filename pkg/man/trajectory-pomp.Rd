@@ -46,12 +46,12 @@
 data(euler.sir)
 x <- trajectory(euler.sir)
 plot(time(euler.sir),x["I",1,],type='l',xlab='time',ylab='I')
-lines(time(euler.sir)[-1],diff(x["cases",1,]),col='red')
+lines(time(euler.sir),x["cases",1,],col='red')
 
 coef(euler.sir,c("gamma")) <- log(12)
 x <- trajectory(euler.sir)
 plot(time(euler.sir),x["I",1,],type='l',xlab='time',ylab='I')
-lines(time(euler.sir)[-1],diff(x["cases",1,]),col='red')
+lines(time(euler.sir),x["cases",1,],col='red')
 }
 \seealso{\code{\link{pomp}}, \code{\link{traj.match}}, \code{\link[deSolve]{ode}}}
 \keyword{models}
