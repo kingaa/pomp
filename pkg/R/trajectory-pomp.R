@@ -1,3 +1,8 @@
+trajectory <- function (object, params, times, t0, ...)            
+  stop("function ",sQuote("trajectory")," is undefined for objects of class ",sQuote(class(object)))
+
+setGeneric('trajectory')                                                                            
+
 trajectory.internal <- function (object, params, times, t0, ...) {
 
   warn.condition <- missing(t0)
@@ -10,11 +15,10 @@ trajectory.internal <- function (object, params, times, t0, ...) {
             call.=FALSE
             )
 
-  if (missing(times)) {
+  if (missing(times))
     times <- time(object,t0=FALSE)
-  } else {
+  else
     times <- as.numeric(times)
-  }
 
   if (length(times)==0)
     stop("if ",sQuote("times")," is empty, there is no work to do",call.=FALSE)
@@ -22,11 +26,10 @@ trajectory.internal <- function (object, params, times, t0, ...) {
   if (any(diff(times)<0))
     stop(sQuote("times")," must be a nondecreasing sequence of times",call.=FALSE)
 
-  if (missing(t0)) {
+  if (missing(t0))
     t0 <- timezero(object)
-  } else {
+  else
     t0 <- as.numeric(t0)
-  }
   
   if (t0>times[1])
     stop("the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
@@ -55,67 +58,65 @@ trajectory.internal <- function (object, params, times, t0, ...) {
     stop("pfilter error: ",sQuote("params")," must have rownames",call.=FALSE)
   params <- as.matrix(params)
 
-  tm <- t0
-  x0 <- init.state(object,params=params,t0=tm)
-  nm <- rownames(x0)
-  dim(x0) <- c(nrow(x0),nrep,1)
-  dimnames(x0) <- list(nm,NULL,NULL)
+  x0 <- init.state(object,params=params,t0=t0)
+  nvar <- nrow(x0)
+  statenames <- rownames(x0)
+  dim(x0) <- c(nvar,nrep,1)
+  dimnames(x0) <- list(statenames,NULL,NULL)
   
-  x <- array(
-             dim=c(nrow(x0),nrep,length(times)),
-             dimnames=list(rownames(x0),NULL,NULL)
+  type <- object@skeleton.type          # map or vectorfield?
+
+  if (type=="map") {
+
+    x <- .Call(iterate_map,object,times,t0,x0,params)
+
+  } else if (type=="vectorfield") {
+
+    skel <- get.pomp.fun(object@skeleton)
+
+    ## vectorfield function (RHS of ODE) in 'deSolve' format
+    vf.eval <- function (t, y, ...) {
+      list(
+           .Call(
+                 do_skeleton,
+                 object,
+                 x=array(
+                   data=y,
+                   dim=c(nvar,nrep,1),
+                   dimnames=list(statenames,NULL,NULL)
+                   ),
+                 t=t,
+                 params=params,
+                 skel=skel
+                 ),
+           NULL
+           )
+    }
+
+    X <- try(
+             ode(
+                 y=x0,
+                 times=c(t0,times),
+                 func=vf.eval,
+                 method="lsoda",
+                 ...
+                 ),
+             silent=FALSE
              )
-  switch(
-         object@skeleton.type,
-         map={                # iterate the map
-           for (k in seq_along(times)) {
-             if (tm < times[k]) {
-               while (tm < times[k]) {
-                 x0[,,] <- skeleton(object,x=x0,t=tm,params=params)
-                 tm <- tm+1
-               }
-             }
-             x[,,k] <- x0
-           }
-         },
-         vectorfield={        # integrate the vectorfield
-           for (j in seq_len(nrep)) {
-             X <- try(
-                      deSolve::lsoda(
-                                     y=x0[,j,1],
-                                     times=c(t0,times),
-                                     func=function(t,y,parms){
-                                       list(
-                                            skeleton(
-                                                     object,
-                                                     x=array(
-                                                       data=y,
-                                                       dim=c(length(y),1,1),
-                                                       dimnames=list(names(y),NULL,NULL)
-                                                       ),
-                                                     t=t,
-                                                     params=as.matrix(parms)
-                                                     ),
-                                            NULL
-                                            )
-                                     },
-                                     parms=params[,j],
-                                     ...
-                                     ),
-                      silent=FALSE
-                      )
-             if (inherits(X,'try-error'))
-               stop("trajectory error: error in ",sQuote("lsoda"),call.=FALSE)
-             if (attr(X,'istate')[[1]]!=2)
-               warning("abnormal exit from ",sQuote("lsoda"),", istate = ",attr(X,'istate'),call.=FALSE)
-             x[,j,] <- t(X[-1,-1])
-           }
-         },
-         unspecified=stop("deterministic skeleton not specified")
-         )
+    if (inherits(X,'try-error'))
+      stop("trajectory error: error in ODE integrator",call.=FALSE)
+    if (attr(X,'istate')[1]!=2)
+      warning("abnormal exit from ODE integrator, istate = ",attr(X,'istate'),call.=FALSE)
+
+    x <- array(data=t(X[-1,-1]),dim=c(nvar,nrep,ntimes),dimnames=list(statenames,NULL,NULL))
+
+  } else {
+    
+    stop("deterministic skeleton not specified")
+
+  }
+
   x
 }
-
-setGeneric('trajectory',function(object,params,times,t0,...)standardGeneric("trajectory"))
 
 setMethod("trajectory",signature=signature(object="pomp"),definition=trajectory.internal)

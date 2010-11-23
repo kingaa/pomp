@@ -1,3 +1,24 @@
+2010-11-17  kingaa
+
+	* [r420] src/dmeasure.c, src/rmeasure.c, src/skeleton.c: - remove
+	  some redundant/unnecessary lines
+
+2010-11-16  kingaa
+
+	* [r419] R/skeleton-pomp.R: - remove one layer of try/catch
+	* [r418] src/skeleton.c: - minor tweaks
+
+2010-11-14  kingaa
+
+	* [r417] DESCRIPTION, NAMESPACE, R/aaa.R, R/bsmc.R,
+	  R/dmeasure-pomp.R, R/dprocess-pomp.R, R/init-state-pomp.R,
+	  R/mif.R, R/rmeasure-pomp.R, R/rprocess-pomp.R, inst/ChangeLog,
+	  man/dmeasure-pomp.Rd, man/dprocess-pomp.Rd,
+	  man/init.state-pomp.Rd, man/pomp-methods.Rd,
+	  man/rmeasure-pomp.Rd, man/rprocess-pomp.Rd, man/skeleton-pomp.Rd,
+	  man/traj-match.Rd, man/trajectory-pomp.Rd: - make declarations of
+	  generics uniform
+
 2010-11-09  kingaa
 
 	* [r416] DESCRIPTION, R/traj-match.R,

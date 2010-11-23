@@ -13,6 +13,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEX
   SEXP ans, ans_names;
   SEXP po, popo;
   SEXP statenames, paramnames, obsnames, statedim, obsdim;
+  SEXP rmeas;
   int nsims, nparsets, nreps, npars, nvars, ntimes, nobs;
   int qobs, qstates;
   int *dim, dims[3];
@@ -100,10 +101,11 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEX
 
   } else {			// we must do 'rmeasure'
 
+    PROTECT(rmeas = get_pomp_fun((GET_SLOT(object,install("rmeasure"))))); nprotect++;
     if (nsims > 1) {
-      PROTECT(y = do_rmeasure(object,x,times,p)); nprotect++;
+      PROTECT(y = do_rmeasure(object,x,times,p,rmeas)); nprotect++;
     } else {
-      PROTECT(y = do_rmeasure(object,x,times,params)); nprotect++;
+      PROTECT(y = do_rmeasure(object,x,times,params,rmeas)); nprotect++;
     }
     
     if (qobs) {

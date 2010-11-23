@@ -17,10 +17,10 @@
 }
 \usage{
   \S4method{traj.match}{pomp}(object, start, est,
-           method = c("Nelder-Mead", "SANN", "subplex"),
+           method = c("Nelder-Mead", "sannbox", "subplex"),
            gr = NULL, eval.only = FALSE, \dots)
   \S4method{traj.match}{traj.matched.pomp}(object, start, est,
-           method = c("Nelder-Mead", "SANN", "subplex"),
+           method = c("Nelder-Mead", "sannbox", "subplex"),
            gr = NULL, eval.only = FALSE, \dots)
 }
 \arguments{
@@ -29,7 +29,7 @@
   \item{est}{character vector containing the names of parameters to be estimated.}
   \item{method}{
     Optimization method.
-    Choices are \code{\link[subplex]{subplex}} and any of the methods used by \code{\link{optim}}.
+    Choices are \code{\link[subplex]{subplex}}, \dQuote{sannbox}, and any of the methods used by \code{\link{optim}}.
   }
   \item{gr}{
     Passed to \code{\link{optim}}.

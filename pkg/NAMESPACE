@@ -1,5 +1,6 @@
 useDynLib(			
           pomp,
+          get_pomp_fun,
           bspline_basis,
           periodic_bspline_basis,
           bspline_basis_function,
@@ -7,16 +8,13 @@ useDynLib(
           euler_model_simulator,
           euler_model_density,
           SSA_simulator,
-          R_Euler_Multinom,
-          D_Euler_Multinom,
+          R_Euler_Multinom,D_Euler_Multinom,
           pfilter_computations,
           simulation_computations,
-          apply_probe_data,
-          apply_probe_sim,
-          probe_marginal_setup,
-          probe_marginal_solve,
-          probe_acf,
-          probe_ccf,
+          iterate_map,traj_transp_and_copy,
+          apply_probe_data,apply_probe_sim,
+          probe_marginal_setup,probe_marginal_solve,
+          probe_acf,probe_ccf,
           probe_nlar,
           synth_loglik,
           do_rprocess,
@@ -31,7 +29,7 @@ importFrom(graphics,plot)
 importFrom(stats,simulate,time,coef,logLik,window)
 importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(subplex,subplex)
-importFrom(deSolve,ode,lsoda)
+importFrom(deSolve,ode)
 
 exportClasses(
               "pomp","pfilterd.pomp",
@@ -71,6 +69,8 @@ export(
        periodic.bspline.basis,
        compare.mif,
        nlf,
+       skeleton,
+       trajectory,
        traj.match,
        probe.mean,
        probe.median,

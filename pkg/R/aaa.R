@@ -6,13 +6,12 @@
 ##   cat("See the NEWS file for important information\n")
 ##}
 
-setGeneric("print",function(x,...)standardGeneric("print"))
-setGeneric("summary",function(object,...)standardGeneric("summary"))
-setGeneric("logLik",function(object,...)standardGeneric("logLik"))
+setGeneric("print")
+setGeneric("summary")
+setGeneric("plot",function(x,y,...)standardGeneric("plot"))
 setGeneric("simulate",function(object,nsim=1,seed=NULL,...)standardGeneric("simulate"))
 setGeneric("time",function(x,...)standardGeneric("time"))
 setGeneric("coef",function(object,...)standardGeneric("coef"))
+setGeneric("logLik",function(object,...)standardGeneric("logLik"))
 setGeneric("window",function(x,...)standardGeneric("window"))
-setGeneric("plot",function(x,y,...)standardGeneric("plot"))
-
 setGeneric("continue",function(object,...)standardGeneric("continue"))

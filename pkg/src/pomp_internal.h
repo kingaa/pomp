@@ -35,6 +35,7 @@ SEXP sobol_sequence(SEXP dim);
 
 // pomp_fun.c
 SEXP pomp_fun_handler (SEXP pfun, int *use_native);
+SEXP get_pomp_fun (SEXP pfun);
 
 // lookup_table.c
 SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t, int *index);
@@ -49,7 +50,10 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0);
 SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset);
 
 // rmeasure.c
-SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params);
+SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun);
+
+// skeleton.c
+SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun);
 
 
 static R_INLINE SEXP makearray (int rank, int *dim) {

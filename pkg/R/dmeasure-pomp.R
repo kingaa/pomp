@@ -4,6 +4,8 @@ setGeneric("dmeasure",function(object,...)standardGeneric("dmeasure"))
 setMethod(
           'dmeasure',
           'pomp',
-          function (object, y, x, times, params, log = FALSE, ...)
-            .Call(do_dmeasure,object,y,x,times,params,log),
+          function (object, y, x, times, params, log = FALSE, ...) {
+            fun <- get.pomp.fun(object@dmeasure)
+            .Call(do_dmeasure,object,y,x,times,params,log,fun)
+          }
           )

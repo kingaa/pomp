@@ -11,8 +11,7 @@ setClass(
 
 ## constructor
 pomp.fun <- function (f = NULL, PACKAGE, proto = NULL) {
-  if (missing(PACKAGE))
-    PACKAGE <- character(0)
+  if (missing(PACKAGE)) PACKAGE <- ""
   if (is.function(f)) {
     if (!is.null(proto)) {
       if (!is.call(proto))
@@ -70,3 +69,15 @@ setMethod(
           'pomp.fun',
           function (x, ...) show(x)
           )
+
+get.pomp.fun <- function (object) {
+  use <- as.integer(object@use-1)
+  if (use==0) {
+    f <- object@R.fun
+  } else if (use==1) {
+    f <- getNativeSymbolInfo(name=object@native.fun,PACKAGE=object@PACKAGE)$address
+  } else {
+    stop("invalid ",sQuote("use")," value")
+  }
+  list(f,use)
+}

@@ -104,7 +104,7 @@ static void default_meas_dens (double *lik, double *y, double *x, double *p, int
   UNPROTECT(nprotect);
 }
 
-SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log)
+SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP fun)
 {
   int nprotect = 0;
   int *dim, nvars, npars, nreps, ntimes, covlen, covdim, nobs;
@@ -163,12 +163,14 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
-  PROTECT(
-	  fn = pomp_fun_handler(
-				GET_SLOT(object,install("dmeasure")),
-				&use_native
-				)
-	  ); nprotect++;
+  PROTECT(fn = VECTOR_ELT(fun,0)); nprotect++;
+  use_native = INTEGER(VECTOR_ELT(fun,1))[0];
+//   PROTECT(
+// 	  fn = pomp_fun_handler(
+// 				GET_SLOT(object,install("dmeasure")),
+// 				&use_native
+// 				)
+// 	  ); nprotect++;
 
   switch (use_native) {
   case 0:			// use R function
@@ -245,8 +247,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   ndim[4] = covlen; ndim[5] = covdim; ndim[6] = nobs;
 
   dens_meas(ff,REAL(F),REAL(y),REAL(x),REAL(times),REAL(params),INTEGER(log),ndim,
-	    oidx,sidx,pidx,cidx,
-	    REAL(tcovar),REAL(covar));
+	    oidx,sidx,pidx,cidx,REAL(tcovar),REAL(covar));
   
   UNPROTECT(nprotect);
   return F;

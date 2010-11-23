@@ -119,7 +119,7 @@ static void default_meas_sim (double *y, double *x, double *p,
   UNPROTECT(nprotect);
 }
 
-SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
+SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
 {
   int nprotect = 0;
   int *dim, nvars, npars, nreps, ntimes, covlen, covdim, nobs;
@@ -174,12 +174,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params)
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
   PROTECT(OBNM = GET_ROWNAMES(GET_DIMNAMES(GET_SLOT(object,install("data"))))); nprotect++;
 
-  PROTECT(
-	  fn = pomp_fun_handler(
-				GET_SLOT(object,install("rmeasure")),
-				&use_native
-				)
-	  ); nprotect++;
+  PROTECT(fn = VECTOR_ELT(fun,0)); nprotect++;
+  use_native = INTEGER(VECTOR_ELT(fun,1))[0];
 
   switch (use_native) {
   case 0:			// use R function

@@ -72,6 +72,8 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     stop("pomp error: the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=TRUE)
   storage.mode(t0) <- 'double'
   
+  if (missing(PACKAGE)) PACKAGE <- ""
+  
   if (missing(rprocess))
     rprocess <- function(xstart,times,params,...)stop(sQuote("rprocess")," not specified")
   if (missing(dprocess))
@@ -115,8 +117,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     initializer <- default.initializer
   }
 
-  if (missing(PACKAGE)) PACKAGE <- character(0)
-  
   if (!is.function(rprocess))
     stop(
          "pomp error: ",sQuote("rprocess")," must be a function",

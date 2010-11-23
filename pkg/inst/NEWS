@@ -4,7 +4,7 @@ NEW IN VERSION 0.36-1:
 
     o  When 'traj.match' is called, the returned 'traj.matched.pomp' object has its 'states' slot filled with the model trajectory at the fitted parameters.
 
-    o  More optimization methods are now provided in 'traj.match'.
+    o  More optimization methods are now provided in 'traj.match'.  These include the new algorithm "sannbox", an optionally box-constrained simulated annealing algorithm.
 
     o  There is a change to the interface to 'pfilter' in that 'save.states' results in the filling of the 'last.states' slot.  Before version 0.36-1, the 'pfilter' returned a list.  The element 'states' of that list corresponds to the slot 'last.states' in version 0.36-1.  It was necessary to make this name-change in order to avoid a conflict with the 'states' slot inherited from the 'pomp' class.
 

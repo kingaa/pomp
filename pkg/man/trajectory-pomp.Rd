@@ -24,7 +24,10 @@
     \code{t0} specifies the start time (the time at which the initial conditions hold).
     The default for \code{times} is \code{times=time(object,t0=FALSE)} and \code{t0=timezero(object)}, respectively.
   }
-  \item{\dots}{at present, these are passed to the ODE integrator if the skeleton is a vectorfield and ignored if it is a map.}
+  \item{\dots}{
+    additional arguments are passed to the ODE integrator if the skeleton is a vectorfield and ignored if it is a map.
+    See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted.
+  }
 }
 \value{
   Returns an array of dimensions \code{nvar} x \code{nreps} x \code{ntimes}.
@@ -34,7 +37,7 @@
   This function makes repeated calls to the user-supplied \code{skeleton} of the \code{pomp} object.
   For specifications on supplying this, see \code{\link{pomp}}.
 
-  When the skeleton is a vectorfield, \code{trajectory} integrates it using \code{\link[deSolve]{lsoda}}.
+  When the skeleton is a vectorfield, \code{trajectory} integrates it using \code{\link[deSolve]{ode}}.
 
   Unresolved issue: What is the behavior if \code{type="map"} and \code{times} are non-integral?
 }
@@ -50,6 +53,6 @@ x <- trajectory(euler.sir)
 plot(time(euler.sir),x["I",1,],type='l',xlab='time',ylab='I')
 lines(time(euler.sir)[-1],diff(x["cases",1,]),col='red')
 }
-\seealso{\code{\link{pomp-class}}, \code{\link{pomp}}, \code{\link[deSolve]{lsoda}}}
+\seealso{\code{\link{pomp}}, \code{\link{traj.match}}, \code{\link[deSolve]{ode}}}
 \keyword{models}
 \keyword{ts}

@@ -10,13 +10,13 @@ setClass(
            )
          )
 
-setMethod("$",signature(x="traj.matched.pomp"),function(x, name) slot(x,name))
+setMethod("$",signature(x="traj.matched.pomp"),function(x, name)slot(x,name))
 
 setMethod("logLik",signature(object="traj.matched.pomp"),function(object,...)object@value)
 
 setMethod(
           "summary",
-          "traj.matched.pomp",
+          signature=signature(object="traj.matched.pomp"),
           function (object, ...) {
             c(
               list(
@@ -48,44 +48,52 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
   coef(obj,names(start)) <- unname(start)
   pmat <- as.matrix(start)
 
+  obj.fn <- function (x, object, params, t0, ind) {
+    params[ind,] <- x
+    X <- trajectory(object,params=params,t0=t0)
+    d <- dmeasure(
+                  object,
+                  y=obs(object),
+                  x=X,
+                  times=time(object),
+                  params=params,
+                  log=TRUE
+                  )
+    -sum(d)
+  }
+
   if (eval.only) {
 
-    val <- -sum(
-                dmeasure(
-                         obj,
-                         y=obs(obj),
-                         x=trajectory(obj,params=pmat,t0=t0),
-                         times=time(obj),
-                         params=pmat,
-                         log=TRUE
-                         )
-                )
+    val <- obj.fn(numeric(0),object=obj,params=pmat,t0=t0,ind=par.est)
     conv <- NA
     evals <- c(1,0)
     msg <- "no optimization performed"
     
   } else {
 
-    obj.fn <- function (x) {
-      pmat[par.est,] <- x
-      d <- dmeasure(
-                    obj,
-                    y=obs(obj),
-                    x=trajectory(obj,params=pmat,t0=t0),
-                    times=time(obj),
-                    params=pmat,
-                    log=TRUE
-                    )
-      -sum(d)
-    }
-
     if (method=="subplex") {
 
       opt <- subplex::subplex(
                               par=guess,
                               fn=obj.fn,
-                              control=list(...)
+                              control=list(...),
+                              object=obj,
+                              params=pmat,
+                              t0=t0,
+                              ind=par.est
                               )
+
+    } else if (method=="sannbox") {
+
+      opt <- sannbox(
+                     par=guess,
+                     fn=obj.fn,
+                     control=list(...),
+                     object=obj,
+                     params=pmat,
+                     t0=t0,
+                     ind=par.est
+                     )
 
     } else {
 
@@ -94,7 +102,11 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
                    fn=obj.fn,
                    gr=gr,
                    method=method,
-                   control=list(...)
+                   control=list(...),
+                   object=obj,
+                   params=pmat,
+                   t0=t0,
+                   ind=par.est
                    )
       
     }
@@ -123,19 +135,21 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
       )
 }
 
-setGeneric("traj.match",function(object,...)standardGeneric("traj.match"))
+traj.match <- function (object, ...)
+  stop("function ",sQuote("traj.match")," is undefined for objects of class ",sQuote(class(object)))
+
+setGeneric("traj.match")
 
 setMethod(
           "traj.match",
           signature=signature(object="pomp"),
           function (object, start, est,
-                    method = c("Nelder-Mead","SANN","subplex"), 
+                    method = c("Nelder-Mead","sannbox","subplex"), 
                     gr = NULL, eval.only = FALSE, ...) {
             if (missing(start)) start <- coef(object)
-            if (missing(est)) {
-              est <- character(0)
-              eval.only <- TRUE
-            }
+            if (!eval.only && missing(est))
+              stop(sQuote("est")," must be supplied if optimization is to be done")
+            if (eval.only) est <- character(0)
             method <- match.arg(method)
             traj.match.internal(
                                 object=object,
@@ -153,7 +167,7 @@ setMethod(
           "traj.match",
           signature=signature(object="traj.matched.pomp"),
           function (object, start, est,
-                    method = c("Nelder-Mead","SANN","subplex"), 
+                    method = c("Nelder-Mead","sannbox","subplex"), 
                     gr = NULL, eval.only = FALSE, ...) {
             if (missing(start)) start <- coef(object)
             if (missing(est)) est <- object@est
