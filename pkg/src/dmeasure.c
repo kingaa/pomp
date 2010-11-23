@@ -165,12 +165,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   PROTECT(fn = VECTOR_ELT(fun,0)); nprotect++;
   use_native = INTEGER(VECTOR_ELT(fun,1))[0];
-//   PROTECT(
-// 	  fn = pomp_fun_handler(
-// 				GET_SLOT(object,install("dmeasure")),
-// 				&use_native
-// 				)
-// 	  ); nprotect++;
 
   switch (use_native) {
   case 0:			// use R function

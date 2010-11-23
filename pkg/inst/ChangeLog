@@ -1,3 +1,44 @@
+2010-11-23  kingaa
+
+	* [r424] man/trajectory-pomp.Rd, tests/fhn.Rout.save,
+	  tests/ou2-trajmatch.R, tests/ou2-trajmatch.Rout.save: - update
+	  the tests
+	  - fix the example in 'trajectory'
+	  - the deterministic skeleton for 'euler.sir' now includes a state
+	  variable for the approximate number of cases (not cumulative
+	  cases as before)
+	* [r423] DESCRIPTION, NAMESPACE, R/aaa.R, R/dmeasure-pomp.R,
+	  R/pomp-fun.R, R/pomp.R, R/rmeasure-pomp.R, R/skeleton-pomp.R,
+	  R/traj-match.R, R/trajectory-pomp.R, data/dacca.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/ricker.rda,
+	  data/rw2.rda, data/verhulst.rda, inst/ChangeLog, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/traj-match.Rd, man/trajectory-pomp.Rd, src/dmeasure.c,
+	  src/pomp_fun.c, src/pomp_internal.h, src/rmeasure.c,
+	  src/simulate.c, src/skeleton.c, src/trajectory.c: - when PACKAGE
+	  is undefined in 'pomp' or 'pomp.fun', the default is now ""
+	  (rather than 'character(0)')
+	  - rewrite 'simulate' and 'trajectory' to minimize extraction from
+	  'pomp.fun' objects (and consequent lookup of dynamically-loaded
+	  symbols).
+	  - rewrite 'skeleton', 'rmeasure', and 'dmeasure' in keeping with
+	  above
+	  - rewrite 'traj.match' internals
+	  - add 'sannbox' box-constrained simulated annealing algorithm to
+	  'traj.match' suite of optimizers
+	  - 'traj.match' generates an error when 'est' is not supplied and
+	  'eval.only=FALSE'
+	  - for continuous-time POMPs, 'trajectory' computation is now done
+	  by a single call to 'deSolve::ode' (vs. one call for each
+	  parameter set as before)
+	  - new .Call-able function 'get_pomp_fun' to extract from
+	  'pomp.fun' objects
+	  - iteration of discrete-time deterministic skeleton maps is now
+	  done in C for speed (new file 'trajectory.c')
+	* [r422] R/dprocess-pomp.R: - fix bug
+	* [r421] R/sannbox.R: - add a simulated annealing algorithm with
+	  box constraints
+
 2010-11-17  kingaa
 
 	* [r420] src/dmeasure.c, src/rmeasure.c, src/skeleton.c: - remove
