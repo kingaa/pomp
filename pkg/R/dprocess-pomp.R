@@ -5,5 +5,5 @@ setMethod(
           'dprocess',
           'pomp',
           function (object, x, times, params, log = FALSE, ...)
-            .Call(do_dprocess,object,x,times,params,log),
+            .Call(do_dprocess,object,x,times,params,log)
           )
