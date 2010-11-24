@@ -188,6 +188,9 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     covar <- as.matrix(covar)
   }
   
+  storage.mode(tcovar) <- "double"
+  storage.mode(covar) <- "double"
+
   if (length(tcovar)!=nrow(covar)) {
     stop("pomp error: the length of ",sQuote("tcovar")," should match the number of rows of ",sQuote("covar"))
   } else if (!all(covarnames%in%colnames(covar))) {
