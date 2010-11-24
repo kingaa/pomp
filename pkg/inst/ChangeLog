@@ -1,5 +1,20 @@
+2010-11-24  kingaa
+
+	* [r428] R/pomp.R: - set storage.mode of 'covar' and 'tcovar' to
+	  'double'
+	* [r427] DESCRIPTION, NAMESPACE, R/aaa.R, R/probe-match.R,
+	  R/traj-match.R, inst/NEWS, man/probe.Rd: - make 'probe.match'
+	  into a method
+	  - tinker with generics
+	* [r426] inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/ou2-first-mif.rda,
+	  inst/doc/ou2-trajmatch.rda: - update vignettes
+
 2010-11-23  kingaa
 
+	* [r425] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, src/dmeasure.c: - cosmetics
+	  - update ChangeLog & vignettes
 	* [r424] man/trajectory-pomp.Rd, tests/fhn.Rout.save,
 	  tests/ou2-trajmatch.R, tests/ou2-trajmatch.Rout.save: - update
 	  the tests
