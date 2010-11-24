@@ -7,8 +7,10 @@
 \alias{probe.match}
 \alias{probe.match,pomp-method}
 \alias{probe.match,probed.pomp-method}
+\alias{probe.match,probe.matched.pomp-method}
 \alias{probe.match-pomp}
 \alias{probe.match-probed.pomp}
+\alias{probe.match-probe.matched.pomp}
 \alias{probed.pomp-class}
 \alias{probe.matched.pomp-class}
 \title{Probe a partially-observed Markov process.}
@@ -21,12 +23,24 @@
 \usage{
   \S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
   \S4method{probe}{probed.pomp}(object, probes, params, nsim, seed = NULL, \dots)
-  probe.match(object, start, est = character(0),
+  \S4method{probe.match}{pomp}(object, start, est = character(0),
               probes, weights,
               nsim, seed = NULL,
               method = c("subplex","Nelder-Mead","SANN"),
               verbose = getOption("verbose"), 
               eval.only = FALSE, fail.value = NA, \dots)
+  \S4method{probe.match}{probed.pomp}(object, start, est = character(0),
+              probes, weights,
+              nsim, seed = NULL,
+              method = c("subplex","Nelder-Mead","SANN"),
+              verbose = getOption("verbose"), 
+              eval.only = FALSE, fail.value = NA, \dots)
+  \S4method{probe.match}{probe.matched.pomp}(object, start, est,
+              probes, weights,
+              nsim, seed = NULL,
+              method = c("subplex","Nelder-Mead","SANN"),
+              verbose = getOption("verbose"), 
+              eval.only = FALSE, fail.value, \dots)
 }
 \arguments{
   \item{object}{
@@ -95,8 +109,14 @@
     \item{probes}{list of the probes applied.}
     \item{datvals, simvals}{values of each of the probes applied to the real and simulated data, respectively.}
     \item{quantiles}{fraction of simulations with probe values less than the value of the probe of the data.}
-    \item{pvals}{two-sided p-values: fraction of the \code{simvals} that deviate more extremely from the mean of the \code{simvals} than does \code{datavals}.}
-    \item{synth.loglik}{the log synthetic likelihood (Wood 2010).  This is the likelihood assuming that the probes are multivariate-normally distributed.}
+    \item{pvals}{
+      two-sided p-values:
+      fraction of the \code{simvals} that deviate more extremely from the mean of the \code{simvals} than does \code{datavals}.
+    }
+    \item{synth.loglik}{
+      the log synthetic likelihood (Wood 2010).
+      This is the likelihood assuming that the probes are multivariate-normally distributed.
+    }
   }
 
   \code{probe.match} returns an object of class \code{probe.matched.pomp}, which is derived from class \code{probed.pomp}.

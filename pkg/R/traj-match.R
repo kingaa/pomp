@@ -10,9 +10,9 @@ setClass(
            )
          )
 
-setMethod("$",signature(x="traj.matched.pomp"),function(x, name)slot(x,name))
+setMethod("$",signature=signature(x="traj.matched.pomp"),function(x, name)slot(x,name))
 
-setMethod("logLik",signature(object="traj.matched.pomp"),function(object,...)object@value)
+setMethod("logLik",signature=signature(object="traj.matched.pomp"),function(object, ...)object@value)
 
 setMethod(
           "summary",
