@@ -33,6 +33,9 @@
 \author[Bret\'o]{Carles Bret\'o}
 \author[Ellner]{Stephen P. Ellner}
 \author[Kendall]{Bruce E. Kendall}
+\author[Ferrari]{Matthew Ferrari}
+\author[Lavine]{Michael L. Lavine}
+\author[Reuman]{Daniel C. Reuman}
 
 \address{
   A. A. King,
@@ -122,6 +125,7 @@ In particular, within \pomp, you can:
 \item find maximum likelihood estimates for parameters using iterated filtering, implemented in \code{mif},
 \item estimate parameters using a simulated quasi maximum likelihood approach called \emph{nonlinear forecasting} and implemented in \code{nlf},
 \item estimate parameters using trajectory matching, as implemented in \code{traj.match},
+\item estimate parameters using probe matching, as implemented in \code{probe.match},
 \item print and plot data, simulations, and diagnostics for the foregoing algorithms,
 \item build new algorithms for partially observed Markov processes upon the foundations \pomp\ provides, using the package's applications programming interface (API).
 \end{compactenum}
@@ -131,8 +135,8 @@ In this document, we'll see how all this works using relatively simple examples.
 
 For simplicity, we'll begin with a very simple discrete-time model.
 The plug-and-play methods in \pomp\ were designed to work on much more complicated models, and for our first example, they'll be extreme overkill, but starting with a simple model will help make the implementation of more general models clear.
-Our first example will be moreover a model for which plug-and-play methods are not even necessary.
-This will allow us to compare the results we obtain with the generalizable plug-and-play methods with exact results obtainable by the specialized methods appropriate to this particular model.
+Moreover, our first example will be one for which plug-and-play methods are not even necessary.
+This will allow us to compare the results from generalizable plug-and-play methods with exact results from specialized methods appropriate to this particular model.
 Later we'll look at a continuous-time model for which no such special tricks are available.
 
 Consider a two-dimensional AR(1) process with noisy observations.
@@ -149,9 +153,9 @@ $\xi_{t}$ and $\varepsilon_{t}$ are mutually-independent families of i.i.d.\ biv
 $\sigma$ is a lower-triangular $2\times 2$ matrix such that $\sigma\sigma^T$ is the variance-covariance matrix of $X_{t+1}\vert X_{t}$.
 We'll assume that each component of $X$ is measured independently and with the same error, $\tau$, so that the variance-covariance matrix of $Y_{t}\vert X_{t}$ is just $\tau^2$ times the identity matrix.
 
-Given a data set, one can for this model obtain exact maximum likelihood estimates of the parameters using the Kalman filter.
+Given a data set, one can obtain exact maximum likelihood estimates of this model's parameters using the Kalman filter.
 We will demonstrate this below.
-Here, however, for pedagogical reasons, we'll approach this model as we would a more complex model for which no such exact estimator is available.
+Here, however, for pedagogical reasons, we'll approach this model as we would a more complex model for which no such exact estimation is available.
 
 \section{Defining a partially observed Markov process in \pomp.}
 
@@ -172,11 +176,13 @@ Depending on what we wish to accomplish, however, we may not need all of these c
 For example, to simulate data, all we need is \ref{it:rproc} and \ref{it:rmeas}.
 To run a particle filter (and hence to use iterated filtering, \code{mif}), one needs \ref{it:rproc} and \ref{it:dmeas}.
 To do MCMC, one needs \ref{it:dproc} and \ref{it:dmeas}.
-Nonlinear forecasting (\code{nlf}) requires \ref{it:rproc} and \ref{it:rmeas}.
+Nonlinear forecasting (\code{nlf}) and probe matching (\code{probe.match}) require \ref{it:rproc} and \ref{it:rmeas}.
 Trajectory matching (\code{traj.match}) requires \ref{it:dmeas} and \ref{it:skel}.
 
-Using \pomp, the first step is always to construct an object (of class \pomp, naturally enough), the key step of which is to specify functions to do some or all of \ref{it:rproc}--\ref{it:skel}, along with data and (optionally) other information.
-The package provides several algorithms for fitting the models to the data, for simulating the models, studying deterministic skeletons, and so on.
+Using \pomp, the first step is always to construct an \R\ object that encodes the model and the data.
+Naturally enough, this object will be of class \pomp.
+The key step in this is to specify functions to do some or all of \ref{it:rproc}--\ref{it:skel}, along with data and (optionally) other information.
+The package provides a number algorithms for fitting the models to the data, for simulating the models, studying deterministic skeletons, and so on.
 The documentation (\code{?pomp}) spells out the usage of the \pomp\ constructor, including detailed specifications for all its arguments and a worked example.
 
 Let's see how to implement the AR(1) model in \pomp.
@@ -189,12 +195,12 @@ This is a function that will simulate a single step ($t\to{t+1}$) of the unobser
 require(pomp)
 
 ou2.proc.sim <- function (x, t, params, delta.t, ...) {
-  xi <- rnorm(n=2,mean=0,sd=1) # noise terms
+  xi <- rnorm(n=2,mean=0,sd=sqrt(delta.t)) # noise terms
   xnew <- c(
             params["alpha.1"]*x["x1"]+params["alpha.3"]*x["x2"]+
-            params["sigma.1"]*xi[1],
+              params["sigma.1"]*xi[1],
             params["alpha.2"]*x["x1"]+params["alpha.4"]*x["x2"]+
-            params["sigma.2"]*xi[1]+params["sigma.3"]*xi[2]
+              params["sigma.2"]*xi[1]+params["sigma.3"]*xi[2]
             )
   names(xnew) <- c("x1","x2")
   xnew
@@ -207,7 +213,8 @@ Notice that these arguments are named numeric vectors and that the output must b
 In fact, the names of the output vector (here \code{xnew}) must be the same as those of the input vector \code{x}.
 The algorithms in \pomp\ all make heavy use of the \code{names} attributes of vectors and matrices.
 The argument \code{delta.t} tells how big the time-step is. 
-In this case, our time-step will be 1 unit: we'll see below how that gets specified.
+In this case, our time-step will be 1 unit; 
+we'll see below how that gets specified.
 
 Next, we'll implement a simulator for the observation process \eqref{eq:ou-obs}.
 <<ou2-meas-sim-def>>=
@@ -244,10 +251,10 @@ ou2 <- pomp(
 @ 
 The first argument (\code{data}) specifies a data-frame that holds the data and the times at which the data were observed.
 Since this is a toy problem, we have no data.
-In a moment, however, we'll simulate some data so we can explore \pomp's various methods for fitting models to data.
+In a moment, however, we'll simulate some data so we can explore \pomp's various fitting methods.
 The second argument (\code{times}) specifies which of the columns of \code{data} is the time variable.
 The third argument (\code{rprocess}) specifies that the process model simulator will be in discrete-time, one step at a time.
-The function \code{discrete.time.sim} belongs to the package \pomp.
+The function \code{discrete.time.sim} belongs to the \pomp\ package.
 It takes the argument \code{step.fun}, which specifies the particular function that actually takes the step.
 The step is assumed to be a unit interval of time.
 The argument \code{rmeasure} specifies the measurement model simulator function.
@@ -311,8 +318,8 @@ data(ou2)
 plot(ou2,variables=c("y1","y2"))
 @ 
 \caption{
-  Simulated data and unobserved states from the Ornstein-Uhlenbeck process (Eqs.~\ref{eq:ou-proc}--\ref{eq:ou-obs}).
-  This displays the results of the command \code{plot(ou2)}.
+  Simulated data and unobserved states from the bivariate AR(1) process (Eqs.~\ref{eq:ou-proc}--\ref{eq:ou-obs}).
+  This figure shows the output of the command \code{plot(ou2,variables=c("y1","y2"))}.
 }
 \label{fig:ou2-first-simulation-plot}
 \end{figure}
@@ -367,10 +374,10 @@ To compute the likelihood of the data, we can use the function \code{pfilter}.
 This runs a plain vanilla particle filter (AKA sequential Monte Carlo) algorithm and results in an unbiased estimate of the likelihood.
 See \citet{Arulampalam2002} for an excellent tutorial on particle filtering.
 To do this, we must decide how many concurrrent realizations (\emph{particles}) to use: the larger the number of particles, the smaller the Monte Carlo error but the greater the computational effort.
-Let's run \code{pfilter} with 1000 particles and evaluate the likelihood at the true parameters:
+Let's run \code{pfilter} with 1000 particles to estimate the likelihood at the true parameters:
 <<ou2-pfilter-truth,eval=F>>=
 pf <- pfilter(ou2,params=theta,Np=1000)
-loglik.truth <- pf$loglik
+loglik.truth <- logLik(pf)
 loglik.truth
 @ 
 <<ou2-pfilter-truth-eval,echo=F>>=
@@ -392,7 +399,7 @@ theta.true <- coef(ou2)
 theta.guess <- theta.true
 theta.guess[c("alpha.2","alpha.3","tau")] <- 1.5*theta.true[c("alpha.2","alpha.3","tau")]
 pf <- pfilter(ou2,params=theta.guess,Np=1000)
-loglik.guess <- pf$loglik
+loglik.guess <- logLik(pf)
 @ 
 <<ou2-pfilter-guess-eval,echo=F>>=
 set.seed(457645443L)
@@ -468,21 +475,18 @@ The \pomp\ package provides a number of functions to extract or change pieces of
 One can read the documentation on all of these by doing \verb+class?pomp+ and \verb+methods?pomp+.
 For example, as we've already seen, one can coerce a \pomp\ object to a data frame:
 <<eval=F>>=
-as(ou2,'data.frame')
+as(ou2,"data.frame")
 @ 
 and if we \code{print} a \pomp\ object, the resulting data frame is what is shown, together with the call that created the \pomp\ object.
-One can access the data and the observation times using
+One has access to the data and the observation times using
 <<eval=F>>=
 obs(ou2)
+obs(ou2,"y1")
 time(ou2)  
 @ 
 The observation times can be changed using
 <<eval=F>>=
 time(ou2) <- 1:10
-@ 
-or
-<<eval=F>>=
-ou2 <- window(ou2,start=1,end=10)
 @ 
 One can respectively view and change the zero-time by
 <<eval=F>>=
@@ -494,10 +498,20 @@ and can respectively view and change the zero-time together with the observation
 time(ou2,t0=TRUE)  
 time(ou2,t0=T) <- seq(from=0,to=10,by=1)
 @ 
-One can read and change model parameters using, e.g.,
+Alternatively, one can construct a new pomp object with the same model but with data restricted to a specified window:
+<<eval=F>>=
+window(ou2,start=3,end=20)
+@ 
+Note that \code{window} does not change the zero-time.
+One can display and modify model parameters using, e.g.,
 <<eval=F>>=
 coef(ou2)
 coef(ou2,c("sigma.1","sigma.2")) <- c(1,0)
+@ 
+Finally, one has access to the unobserved states via, e.g.,
+<<eval=F>>=
+states(ou2)
+states(ou2,"x1")
 @ 
 
 %% In the ``advanced_topics_in_pomp'' vignette, we show how one can get access to more of the underlying structure of a \pomp\ object.
@@ -523,7 +537,7 @@ The cooling schedule can be adjusted in \code{mif}, as can the intensity of the 
 See the documentation (\verb+?mif+) for details.
 
 Let's use iterated filtering to obtain an approximate MLE for the data in \code{ou2}.
-We'll initiate the algorithm at \code{theta.guess} and just estmate the parameters $\alpha_1$, $\alpha_4$, and $\tau$ along with the initial conditions:
+We'll initiate the algorithm at \code{theta.guess} and just estimate the parameters $\alpha_1$, $\alpha_4$, and $\tau$ along with the initial conditions:
 <<ou2-multi-mif-calc,eval=F,echo=T>>=
 mf <- replicate(
                 n=3,
@@ -546,8 +560,8 @@ mf <- replicate(
                 )
 fitted.pars <- c("alpha.2","alpha.3","tau","x1.0","x2.0")
 pf <- lapply(mf,pfilter)
-loglik.mle <- log(mean(exp(480+sapply(pf,function(x)x$loglik))))-480
-loglik.mle.sd <- sd(sapply(pf,function(x)x$loglik))
+loglik.mle <- log(mean(exp(480+sapply(pf,logLik))))-480
+loglik.mle.sd <- sd(sapply(pf,logLik))
 theta.mle <- apply(sapply(mf,coef),1,mean)
 @ 
 
@@ -570,7 +584,7 @@ mf <- mif(
           )
 fitted.pars <- c("alpha.2","alpha.3","tau","x1.0","x2.0")
 pf <- pfilter(mf)
-loglik.mle <- pf$loglik
+loglik.mle <- logLik(pf)
 theta.mle <- coef(mf)
 @ 
 
@@ -631,6 +645,310 @@ par(op)
 \label{fig:convplot}
 \end{figure}
 
+\clearpage
+\section{Trajectory matching: \code{traj.match}}
+
+The idea behind trajectory matching is a simple one.
+One attempts to fit a deterministic dynamical trajectory to the data.
+This is tantamount to assuming that all the stochasticity in the system is in the measurement process.
+In \pomp, the trajectory is computed using the \code{trajectory} function, which in turn uses the \code{skeleton} slot of the \pomp\ object.
+The \code{skeleton} slot should be filled with the deterministic skeleton of the process model.
+In the discrete-time case, this is the map
+\begin{equation*}
+  x\,\mapsto\,\expect{X_{t+1}\;\vert\;X_{t}=x,\theta}.
+\end{equation*}
+In the continuous-time case, this is the vectorfield
+\begin{equation*}
+  x\,\mapsto\,\lim_{{\Delta}{t}\,\to\,0}\,\expect{\frac{X_{t+{\Delta}{t}}-x}{{\Delta}{t}}\;\Big{\vert}\;X_{t}=x,\theta}.
+\end{equation*}
+Our discrete-time bivariate autoregressive process has the deterministic skeleton
+\begin{equation}\label{eq:ou-skel}
+  x\,\mapsto\,\alpha\,x,
+\end{equation}
+which can be implemented in the \R\ function
+<<ou2-skeleton-def,echo=T>>=
+ou2.skel <- function (x, t, params, ...) {
+  xnew <- c(
+            params["alpha.1"]*x["x1"]+params["alpha.3"]*x["x2"],
+            params["alpha.2"]*x["x1"]+params["alpha.4"]*x["x2"]
+            )
+  names(xnew) <- c("x1","x2")
+  xnew
+}
+@ 
+
+We can incorporate the deterministic skeleton into a new \pomp\ object via the \code{skeleton.map} argument:
+<<new-ou2-pomp-construction,echo=T>>=
+dat <- subset(as(ou2,"data.frame"),time<=60)
+theta <- coef(ou2)
+new.ou2 <- pomp(
+                data=dat[c("time","y1","y2")],
+                times="time",
+                rprocess=discrete.time.sim(ou2.proc.sim),
+                rmeasure=ou2.meas.sim,
+                dmeasure=ou2.meas.dens,
+                skeleton.map=ou2.skel,
+                t0=0
+                )
+coef(new.ou2) <- theta
+coef(new.ou2,"tau") <- 0.5
+coef(new.ou2,c("sigma.1","sigma.2","sigma.3")) <- 0
+new.ou2 <- simulate(new.ou2,seed=88737400L)
+@ 
+We use the \code{skeleton.map} argument for discrete-time processes and \code{skeleton.vectorfield} for continuous-time processes.
+Note that we have turned off the process noise in \code{new.ou2} (next to last line) so that trajectory matching is actually formally appropriate for this model.
+
+The \pomp\ function \code{traj.match} calls the optimizer \code{optim} to minimize the discrepancy between the trajectory and the data.
+The discrepancy is measured using the \code{dmeasure} function from the \pomp\ object.
+Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
+<<ou2-trajmatch-calc,eval=F>>=
+tm <- traj.match(
+                 new.ou2,
+                 start=coef(new.ou2),
+                 est=c("alpha.2","alpha.3","tau","x1.0","x2.0"),
+                 method="Nelder-Mead",
+                 maxit=1000,
+                 reltol=1e-8
+                 )
+@ 
+<<ou2-trajmatch-eval,echo=F,eval=T>>=
+binary.file <- "ou2-trajmatch.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<ou2-trajmatch-calc>>
+  save(new.ou2,tm,file=binary.file)
+}
+@
+
+\begin{figure}
+<<trajmatch-plot,fig=T,echo=F,eval=T>>=
+op <- par(mfrow=c(2,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
+plot(time(tm),obs(tm,"y1"),xlab="",xaxt='n',ylab=expression(y[1]))
+lines(time(tm),states(tm,"x1"),lwd=2)
+plot(time(tm),obs(tm,"y2"),xlab="time",ylab=expression(y[2]))
+lines(time(tm),states(tm,"x2"),lwd=2)
+par(op)
+@ 
+\caption{
+  Illustration of trajectory matching.
+  The points show data simulated from \code{new.ou2}, which has no process noise but only measurement error.
+  The solid line shows the trajectory of the best-fitting model, obtained using \code{traj.match}.
+}
+\label{fig:trajmatch-plot}
+\end{figure}
+
+\clearpage
+\section{Probe matching: \code{probe.match}}
+
+In probe matching, we fit a model to data using a set of summary statistics.
+We evaluate these statistics on the data and compare them to the distribution of values they take on simulations, then adjust model parameters to maximize agreement between model and data according to some criterion.
+Following \citet{Kendall1999}, we refer to the summary statistics as \emph{probes}.
+In probe-matching, one has unrestricted choice of probes, and there are a great many probes that one might sensibly choose.
+This introduces a degree of subjectivity into the inference procedure but has the advantage of allowing the investigator to identify \emph{a priori} those features of a data set he or she believes to be informative.
+
+In this section, we'll illustrate probe matching using a stochastic version of the Ricker map.
+In this discrete-time model, $N_t$ represents the (true) size of a population at time $t$ and obeys
+\begin{equation*}
+  N_{t+1}=r\,N_t\,\exp(-N_t+e_t),\qquad e_t\!\sim\!\mathrm{normal}(0,\sigma).
+\end{equation*}
+In addition, we assume that measurements $y_t$ of $N_t$ are themselves noisy, according to
+\begin{equation*}
+  y_t\!\sim\!\mathrm{Poisson}(\phi\,N_t).
+\end{equation*}
+As before, we'll begin by writing an \R\ function that implements a simulator (\code{rprocess}) for the Ricker model.
+It will be convenient to work with log-transformed parameters $\log r$, $\log\sigma$, $\log\phi$.
+Thus
+<<ricker-map-defn>>=
+ricker.sim <- function (x, t, params, ...) {
+  e <- rnorm(n=1,mean=0,sd=exp(params["log.sigma"])) 
+  xnew <- c(
+            exp(params["log.r"]+log(x["N"])-x["N"]+e),
+            e
+            )
+  names(xnew) <- c("N","e")
+  xnew
+}
+@
+Note that, in this implementation, $e$ is taken to be a state variable.
+This is not strictly necessary, but it might prove useful, for example, in \emph{a posteriori} diagnostic checking of model residuals.
+Now we can construct a \code{pomp} object; in this case, we use the \code{discrete.time.sim} plug-in.
+Note how we specify the measurement model.
+<<ricker-pomp>>=
+ricker <- pomp(
+               data=data.frame(time=seq(0,50,by=1),y=NA),
+               times="time",
+               t0=0,
+               rprocess=discrete.time.sim(
+                 step.fun=ricker.sim
+                 ),
+               measurement.model=y~pois(lambda=N*exp(log.phi))
+               )
+coef(ricker) <- c(
+                  log.r=3.8,
+                  log.sigma=log(0.3),
+                  log.phi=log(10),
+                  N.0=7,
+                  e.0=0
+                  )
+ricker <- simulate(ricker,seed=73691676L)
+@ 
+
+A pre-built \code{pomp} object implementing this model is included with the package.
+Its \code{rprocess}, \code{rmeasure}, and \code{dmeasure} components are written in C and are thus a bit faster than the \R\ implementation above.
+Do 
+<<get-ricker,echo=T,eval=T>>=
+data(ricker)
+@ 
+to load this \code{pomp} object.
+
+In \pomp, probes are simply functions that can be applied to an array of real or simulated data to yield a scalar or vector quantity.
+Several functions that create commonly-useful probes are included with the package.
+Do \verb+?basic.probes+ to read the documentation for these probes.
+In this illustration, we will make use of several probes recommended by \citet{Wood2010}: \code{probe.marginal}, \code{probe.acf}, and \code{probe.nlar}.
+\code{probe.marginal} regresses the data against a sample from a reference distribution; 
+the probe's values are those of the regression coefficients.
+\code{probe.acf} computes the auto-correlation or auto-covariance of the data at specified lags.
+\code{probe.nlar} fits a simple nonlinear (polynomial) autoregressive model to the data;
+again, the coefficients of the fitted model are the probe's values.
+We construct our set of probes by specifying a list
+<<probe-list>>=
+plist <- list(
+              probe.marginal("y",ref=obs(ricker),transform=sqrt),
+              probe.acf("y",lags=c(0,1,2,3,4),transform=sqrt),
+              probe.nlar("y",lags=c(1,1,1,2),powers=c(1,2,3,1),transform=sqrt)
+              )
+@ 
+An examination of the structure of \code{plist} reveals that it is a list of functions of a single argument.
+Each of these functions can be applied to the \code{ricker}'s data or to simulated data sets.
+A call to \pomp's function \code{probe} results in the application of these functions to the data, their application to each of some large number, \code{nsim}, of simulated data sets, and finally to a comparison of the two.
+To see this, we'll apply probe to the Ricker model at the true parameters and at a wild guess.
+<<first-probe>>=
+pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
+guess <- c(log.r=log(20),log.sigma=log(1),log.phi=log(20),N.0=7,e.0=0)
+pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
+@ 
+Results summaries and diagnostic plots showing the model-data agreement and correlations among the probes can be obtained by 
+<<first-probe-plot,eval=F>>=
+summary(pb.truth)
+summary(pb.guess)
+plot(pb.truth)
+plot(pb.guess)
+@ 
+An example of a diagnostic plot (using a simplified set of probes) is shown in Fig.~\ref{fig:ricker-probe-plot}.
+Among the quantities returned by \code{summary} is the synthetic likelihood \citep{Wood2010}.
+It is this synthetic likelihood that \pomp\ attempts to maximize in probe matching.
+
+\begin{figure}
+<<ricker-probe-plot,echo=F,fig=T>>=
+  pb <- probe(ricker,
+              probes=list(
+                probe.marginal("y",ref=obs(ricker),transform=sqrt),
+                probe.acf("y",lags=c(0,1,3),transform=sqrt),
+                mean=probe.mean("y",transform=sqrt)
+                       ),
+              nsim=1000,
+              seed=1066L
+              )
+  plot(pb)
+@ 
+\caption{
+  Results of \code{plot} on a \code{probed.pomp}-class object.
+  Above the diagonal, the pairwise scatterplots show the values of the probes on each of \Sexpr{summary(pb)$nsim} data sets.
+  The red lines show the values of each of the probes on the data.
+  The panels along the diagonal show the distributions of the probes on the simulated data, together with their values on the data and a two-sided p-value.
+  The numbers below the diagonal indicate the Pearson correlations between the corresponding probes.
+}
+\label{fig:ricker-probe-plot}
+\end{figure}
+
+Let us now attempt to fit the Ricker model to the data using probe-matching.
+<<ricker-probe-match-calc,eval=F>>=
+pm <- probe.match(
+                  pb.guess,
+                  est=c("log.r","log.sigma","log.phi"),
+                  method="Nelder-Mead",
+                  maxit=2000,
+                  seed=1066L,
+                  reltol=1e-8,
+                  trace=3
+                  )
+summary(pm)
+@ 
+This code runs a Nelder-Mead optimizer from the starting parameters \code{guess} in an attempt to maximize the synthetic likelihood based on the probes in \code{plist}.
+Both the starting parameters and the probes are stored internally in \code{pb.guess}, which is why we don't specify them explicitly here;
+if we wanted to change these, we could do so by specifying the \code{params} and/or \code{probes} arguments to \code{probe.match}.
+See \code{?probe.match} for full documentation.
+
+<<ricker-probe.match-eval,echo=F,eval=T,results=hide>>=
+binary.file <- "ricker-probe-match.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<ricker-probe-match-calc>>
+  save(pm,file=binary.file)
+}
+@
+
+By way of putting the synthetic likelihood in context, let's compare the results of estimating the Ricker model parameters using probe-matching and using iterated filtering, which is based on likelihood.
+The following code runs 600 MIF iterations starting at \code{guess}:
+<<ricker-mif-calc,eval=F>>=
+mf <- mif(
+          ricker,
+          start=guess,
+          Nmif=100,
+          Np=1000,
+          cooling.factor=0.99,
+          var.factor=2,
+          ic.lag=3,
+          max.fail=50,
+          rw.sd=c(log.r=0.1,log.sigma=0.1,log.phi=0.1)
+          )
+mf <- continue(mf,Nmif=500,max.fail=20)
+@ 
+
+<<ricker-mif-eval,echo=F,eval=T,results=hide>>=
+binary.file <- "ricker-mif.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<ricker-mif-calc>>
+  save(mf,file=binary.file)
+}
+@
+The following code compares parameters, likelihoods, and synthetic likelihoods (based on the probes in \code{plist}) at each of 
+\begin{inparaenum}
+\item the wild guess,
+\item the truth,
+\item the MLE from \code{mif}, and
+\item the maximum synthetic likelihood estimate from \code{probe.match}.
+\end{inparaenum}
+<<>>=
+pf.truth <- pfilter(ricker,Np=1000,max.fail=50,seed=1066L)
+pf.guess <- pfilter(ricker,params=guess,Np=1000,max.fail=50,seed=1066L)
+pf.mf <- pfilter(mf,Np=1000,seed=1066L)
+pf.pm <- pfilter(pm,Np=1000,max.fail=10,seed=1066L)
+pb.mf <- probe(mf,nsim=1000,probes=plist,seed=1066L)
+res <- rbind(
+             cbind(guess=guess,truth=coef(ricker),MLE=coef(mf),PM=coef(pm)),
+             loglik=c(
+               pf.guess$loglik,
+               pf.truth$loglik,
+               pf.mf$loglik,
+               pf.pm$loglik
+               ),
+             synth.loglik=c(
+               summary(pb.guess)$synth.loglik,
+               summary(pb.truth)$synth.loglik,
+               summary(pb.mf)$synth.loglik,
+               summary(pm)$synth.loglik
+               )
+             )
+
+print(res,digits=3)
+@ 
+
+\clearpage
 \section{Nonlinear forecasting: \code{nlf}}
 
 To be added.
@@ -663,98 +981,6 @@ print(
       digits=3
       )
 @ 
-
-\clearpage
-\section{Trajectory matching: \code{traj.match}}
-
-The idea behind trajectory matching is a simple one.
-One attempts to fit a deterministic dynamical trajectory to the data.
-This is tantamount to assuming that all the stochasticity in the system is in the measurement process.
-In \pomp, the trajectory is computed using the \code{trajectory} function, which in turn uses the \code{skeleton} slot of the \pomp\ object.
-The \code{skeleton} slot should be filled with the deterministic skeleton of the process model.
-In the discrete-time case, this is the map
-\begin{equation*}
-  x\,\mapsto\,\expect{X_{t+1}\;\vert\;X_{t}=x,\theta}.
-\end{equation*}
-In the continuous-time case, this is the vectorfield
-\begin{equation*}
-  x\,\mapsto\,\lim_{{\Delta}{t}\,\to\,0}\,\expect{\frac{X_{t+{\Delta}{t}}-X_{t}}{{\Delta}{t}}\;\Big{\vert}\;X_{t}=x,\theta}.
-\end{equation*}
-Our discrete-time bivariate autoregressive process has the deterministic skeleton
-\begin{equation}\label{eq:ou-skel}
-  x\,\mapsto\,\alpha\,x,
-\end{equation}
-which can be implemented in the \R\ function
-<<ou2-skeleton-def,echo=T>>=
-ou2.skel <- function (x, t, params, ...) {
-  xnew <- c(
-            params["alpha.1"]*x["x1"]+params["alpha.3"]*x["x2"],
-            params["alpha.2"]*x["x1"]+params["alpha.4"]*x["x2"]
-            )
-  names(xnew) <- c("x1","x2")
-  xnew
-}
-@ 
-
-We can incorporate the deterministic skeleton into a new \pomp\ object in the same way as before:
-<<new-ou2-pomp-construction,echo=T>>=
-dat <- subset(as(ou2,"data.frame"),time<=60)
-theta <- coef(ou2)
-new.ou2 <- pomp(
-                data=dat[c("time","y1","y2")],
-                times="time",
-                rprocess=discrete.time.sim(ou2.proc.sim),
-                rmeasure=ou2.meas.sim,
-                dmeasure=ou2.meas.dens,
-                skeleton.map=ou2.skel,
-                t0=0
-                )
-coef(new.ou2) <- theta
-coef(new.ou2,c("sigma.1","sigma.2","sigma.3","tau")) <- c(0,0,0,0.5)
-new.ou2 <- simulate(new.ou2,seed=88737400L)
-@ 
-Note that we have turned off the process noise in \code{new.ou2} (next to last line) so that trajectory matching is actually formally appropriate for this model.
-
-The \pomp\ function \code{traj.match} calls the optimizer \code{optim} to minimize the discrepancy between the trajectory and the data.
-The discrepancy is measured using the \code{dmeasure} function from the \pomp\ object.
-Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
-<<ou2-trajmatch-calc,eval=F>>=
-tm <- traj.match(
-                 new.ou2,
-                 start=coef(new.ou2),
-                 est=c("alpha.2","alpha.3","tau","x1.0","x2.0"),
-                 method="Nelder-Mead",
-                 maxit=1000,
-                 reltol=1e-8
-                 )
-@ 
-<<ou2-trajmatch-eval,echo=F,eval=T>>=
-binary.file <- "ou2-trajmatch.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
-<<ou2-trajmatch-calc>>
-  save(new.ou2,tm,file=binary.file)
-}
-@
-
-\begin{figure}
-<<trajmatch-plot,fig=T,echo=F,eval=T>>=
-op <- par(mfrow=c(2,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-plot(time(new.ou2),obs(new.ou2,"y1"),xlab="",xaxt='n',ylab=expression(y[1]))
-x <- trajectory(new.ou2,params=tm$params)
-lines(time(new.ou2),x["x1",1,],lwd=2)
-plot(time(new.ou2),obs(new.ou2,"y2"),xlab="time",ylab=expression(y[2]))
-lines(time(new.ou2),x["x2",1,],lwd=2)
-par(op)
-@ 
-\caption{
-  Illustration of trajectory matching.
-  The points show data simulated from \code{new.ou2}, which has no process noise but only measurement error.
-  The solid line shows the trajectory of the best-fitting model, obtained using \code{traj.match}.
-}
-\label{fig:trajmatch-plot}
-\end{figure}
 
 \clearpage
 \section{A more complex example: a seasonal epidemic model}
