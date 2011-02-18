@@ -1,5 +1,27 @@
+2011-02-18  kingaa
+
+	* [r433] src/blowfly.c: - allow for variable delta.t
+
+2011-02-16  kingaa
+
+	* [r432] DESCRIPTION, R/version.R, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/ou2-trajmatch.rda,
+	  inst/doc/ricker-mif.rda, inst/doc/ricker-probe-match.rda: -
+	  additions to the intro vignette
+	  - add "version()" to report/check pomp version
+
+2010-11-30  kingaa
+
+	* [r431] DESCRIPTION, R/aaa.R: - revert last change
+
+2010-11-29  kingaa
+
+	* [r430] DESCRIPTION, R/aaa.R: - turn banner back on
+
 2010-11-24  kingaa
 
+	* [r429] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - update changelog and vignettes
 	* [r428] R/pomp.R: - set storage.mode of 'covar' and 'tcovar' to
 	  'double'
 	* [r427] DESCRIPTION, NAMESPACE, R/aaa.R, R/probe-match.R,
