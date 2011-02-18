@@ -18,20 +18,20 @@
 #define EPS         (x[stateindex[4]]) // survival noise
 
 // Ricker model with log-normal process noise
-void _blowfly_simulator (double *x, const double *p, 
+void _blowfly_model_simulator (double *x, const double *p, 
 			 const int *stateindex, const int *parindex, const int *covindex,
 			 int covdim, const double *covar, 
 			 double t, double dt)
 {
-  double var_p = exp(2*LOG_SIGMAP);
-  double var_d = exp(2*LOG_SIGMAD);
+  double var_p = exp(2*LOG_SIGMAP)/dt;
+  double var_d = exp(2*LOG_SIGMAD)/dt;
   double e = (var_p > 0.0) ? rgamma(1.0/var_p,var_p) : 1.0;
   double eps = (var_d > 0.0) ? rgamma(1.0/var_d,var_d) : 1.0;
   double P = exp(LOG_P);
   int tau = (int) TAU;
   int k;
-  R = rpois(P*N[tau]*exp(-N[tau]/exp(LOG_NZERO))*e);
-  S = rbinom(N[0],exp(-exp(LOG_DELTA)*eps));
+  R = rpois(P*N[tau]*exp(-N[tau]/exp(LOG_NZERO))*dt*e);
+  S = rbinom(N[0],exp(-exp(LOG_DELTA)*dt*eps));
   E = e;
   EPS = eps;
   for (k = tau; k > 0; k--) N[k] = N[k-1];
