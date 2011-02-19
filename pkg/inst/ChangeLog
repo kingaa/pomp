@@ -1,5 +1,8 @@
 2011-02-18  kingaa
 
+	* [r434] inst/ChangeLog, inst/doc/ou2-first-mif.rda,
+	  inst/doc/ou2-multi-mif.rda: - multiple mif runs from different
+	  starting places
 	* [r433] src/blowfly.c: - allow for variable delta.t
 
 2011-02-16  kingaa

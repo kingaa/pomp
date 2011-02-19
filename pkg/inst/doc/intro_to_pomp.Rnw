@@ -537,60 +537,39 @@ The cooling schedule can be adjusted in \code{mif}, as can the intensity of the 
 See the documentation (\verb+?mif+) for details.
 
 Let's use iterated filtering to obtain an approximate MLE for the data in \code{ou2}.
-We'll initiate the algorithm at \code{theta.guess} and just estimate the parameters $\alpha_1$, $\alpha_4$, and $\tau$ along with the initial conditions:
+We'll initialize the algorithm at several starting points around \code{theta.true} and just estimate the parameters $\alpha_3$, $\alpha_3$, and $\tau$:
 <<ou2-multi-mif-calc,eval=F,echo=T>>=
+estpars <- c("alpha.2","alpha.3","tau")
 mf <- replicate(
-                n=3,
-                mif(
-                    ou2,
-                    Nmif=120,
-                    start=theta.guess,
-                    pars=c('alpha.2','alpha.3','tau'),
-                    ivps=c('x1.0','x2.0'),
-                    rw.sd=c(
-                      x1.0=5,x2.0=5,
-                      alpha.2=0.02,alpha.3=0.02,tau=0.05
-                      ),
-                    Np=1000,
-                    var.factor=4,
-                    ic.lag=10,
-                    cooling.factor=0.97,
-                    max.fail=10
-                    )
+                n=10,
+                {
+                  theta.guess <- theta.true
+                  theta.guess[estpars] <- rlnorm(
+                                                 n=length(estpars),
+                                                 meanlog=0,
+                                                 sdlog=0.5
+                                                 )*theta.guess[estpars]
+                  mif(
+                      ou2,
+                      Nmif=120,
+                      start=theta.guess,
+                      pars=estpars,
+                      rw.sd=c(
+                        alpha.2=0.02,alpha.3=0.02,tau=0.05
+                        ),
+                      Np=1000,
+                      var.factor=4,
+                      ic.lag=10,
+                      cooling.factor=0.97,
+                      max.fail=10
+                      )
+                }
                 )
-fitted.pars <- c("alpha.2","alpha.3","tau","x1.0","x2.0")
-pf <- lapply(mf,pfilter)
-loglik.mle <- log(mean(exp(480+sapply(pf,logLik))))-480
-loglik.mle.sd <- sd(sapply(pf,logLik))
-theta.mle <- apply(sapply(mf,coef),1,mean)
 @ 
 
-<<ou2-first-mif-calc,eval=F,echo=F>>=
-mf <- mif(
-          ou2,
-          Nmif=120,
-          start=theta.guess,
-          pars=c('alpha.2','alpha.3','tau'),
-          ivps=c('x1.0','x2.0'),
-          rw.sd=c(
-            x1.0=5,x2.0=5,
-            alpha.2=0.02,alpha.3=0.02,tau=0.05
-            ),
-          Np=1000,
-          var.factor=4,
-          ic.lag=10,
-          cooling.factor=0.97,
-          max.fail=10
-          )
-fitted.pars <- c("alpha.2","alpha.3","tau","x1.0","x2.0")
-pf <- pfilter(mf)
-loglik.mle <- logLik(pf)
-theta.mle <- coef(mf)
-@ 
-
-<<ou2-first-mif-eval,echo=F>>=
+<<ou2-multi-mif-eval,echo=F>>=
 set.seed(334388458L)
-binary.file <- "ou2-first-mif.rda"
+binary.file <- "ou2-multi-mif.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
@@ -598,27 +577,28 @@ if (file.exists(binary.file)) {
 <<ou2-multi-mif-calc>>
   toc <- Sys.time()
   etime <- toc-tic
-  save(mf,fitted.pars,theta.guess,theta.true,theta.mle,loglik.mle,etime,file=binary.file)
+  save(mf,estpars,theta.guess,theta.true,theta.mle,loglik.mle,etime,file=binary.file)
 }
 cbind(
-      guess=c(signif(theta.guess[fitted.pars],3),loglik=round(loglik.guess,1)),
-      mle=c(signif(theta.mle[fitted.pars],3),loglik=round(loglik.mle,1)),
-      truth=c(signif(theta.true[fitted.pars],3),loglik=round(loglik.truth,1))
+      guess=c(signif(theta.guess[estpars],3),loglik=round(loglik.guess,1)),
+      mle=c(signif(theta.mle[estpars],3),loglik=round(loglik.mle,1)),
+      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.truth,1))
       ) -> results.table
 @ 
-<<first-mif-results-table,echo=F>>=
-print(results.table)
+
+Each of the \Sexpr{length(mf)} \code{mif} runs ends up at a different place.
+In this case (but by no means in every case), we can average across these parameter estimates to get an approximate maximum likelihood estimate.
+We'll evaluate the likelihood several times at this estimate to get an idea of the Monte Carlo error in our likelihood estimate.
+<<ou2-post-mif>>=
+theta.mif <- apply(sapply(mf,coef),1,mean)
+loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
+print(loglik.mif.sd <- sd(loglik.mif))
+loglik.mif <- -480+log(mean(exp(480+loglik.mif)))
+loglik.truth <- replicate(n=10,logLik(pfilter(ou2,params=theta,Np=10000)))
+print(loglik.truth.sd <- sd(loglik.truth))
+loglik.truth <- -480+log(mean(exp(480+loglik.truth)))
 @ 
 
-<<first-mif-plot,echo=F,eval=F>>=
-op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-x <- conv.rec(mf,c("loglik","alpha.2","alpha.3","tau"))
-plot(x[,"loglik"],type='l',xlab="",ylab=expression(paste(log,L)),xaxt='n')
-plot(x[,"alpha.2"],type='l',xlab="",ylab=expression(alpha[2]),xaxt='n')
-plot(x[,"alpha.3"],type='l',xlab="",ylab=expression(alpha[3]),xaxt='n')
-plot(x[,"tau"],type='l',xlab="MIF iteration",ylab=expression(tau))
-par(op)
-@ 
 
 <<multi-mif-plot,echo=F,eval=F>>=
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
@@ -644,6 +624,10 @@ par(op)
 }
 \label{fig:convplot}
 \end{figure}
+
+<<first-mif-results-table,echo=F>>=
+print(results.table)
+@ 
 
 \clearpage
 \section{Trajectory matching: \code{traj.match}}
