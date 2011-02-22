@@ -218,6 +218,12 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
       warning("a covariate table has been given, yet the ",sQuote("dmeasure")," function does not have ",sQuote("covars")," as a formal argument")
   }
 
+  if ((length(tcovar)>0)&&((min(tcovar)>t0)||(max(tcovar)<max(times)))) 
+    warning(
+            "the supplied covariate covariate times ",sQuote("tcovar"),
+            " do not embrace the data times: covariates may be extrapolated"
+            )
+
   new(
       'pomp',
       rprocess = rprocess,
