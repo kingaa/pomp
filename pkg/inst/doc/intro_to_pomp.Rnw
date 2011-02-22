@@ -243,7 +243,8 @@ ou2 <- pomp(
               ),
             times="time",
             rprocess=discrete.time.sim(
-              step.fun=ou2.proc.sim
+              step.fun=ou2.proc.sim,
+              delta.t=1
               ),
             rmeasure=ou2.meas.sim,
             t0=0
@@ -256,7 +257,7 @@ The second argument (\code{times}) specifies which of the columns of \code{data}
 The third argument (\code{rprocess}) specifies that the process model simulator will be in discrete-time, one step at a time.
 The function \code{discrete.time.sim} belongs to the \pomp\ package.
 It takes the argument \code{step.fun}, which specifies the particular function that actually takes the step.
-The step is assumed to be a unit interval of time.
+Its second argument, \code{delta.t}, specifies the duration of the time step (by default, \code{delta.t=1}).
 The argument \code{rmeasure} specifies the measurement model simulator function.
 \code{t0} fixes $t_0$ for this model; here we have chosen this to be one time unit before the first observation.
 
@@ -567,6 +568,16 @@ mf <- replicate(
                 )
 @ 
 
+<<ou2-post-mif,eval=F,echo=F>>=
+theta.mif <- apply(sapply(mf,coef),1,mean)
+loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
+loglik.mif.sd <- sd(loglik.mif)
+loglik.mif <- -480+log(mean(exp(480+loglik.mif)))
+loglik.true <- replicate(n=10,logLik(pfilter(ou2,params=theta.true,Np=10000)))
+loglik.true.sd <- sd(loglik.true)
+loglik.true <- -480+log(mean(exp(480+loglik.true)))
+@ 
+
 <<ou2-multi-mif-eval,echo=F>>=
 set.seed(334388458L)
 binary.file <- "ou2-multi-mif.rda"
@@ -575,30 +586,24 @@ if (file.exists(binary.file)) {
 } else {
   tic <- Sys.time()
 <<ou2-multi-mif-calc>>
+<<ou2-post-mif>>
   toc <- Sys.time()
   etime <- toc-tic
-  save(mf,estpars,theta.guess,theta.true,theta.mle,loglik.mle,etime,file=binary.file)
+  save(mf,estpars,theta.mif,theta.true,loglik.mif,loglik.true,loglik.mif.sd,loglik.true.sd,etime,file=binary.file)
 }
 cbind(
-      guess=c(signif(theta.guess[estpars],3),loglik=round(loglik.guess,1)),
-      mle=c(signif(theta.mle[estpars],3),loglik=round(loglik.mle,1)),
-      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.truth,1))
+#      guess=c(signif(theta.guess[estpars],3),loglik=round(loglik.guess,1)),
+      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif,1),loglik.sd=round(loglik.mif.sd,1)),
+      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true,1),loglik.sd=round(loglik.true.sd,1))
       ) -> results.table
 @ 
 
 Each of the \Sexpr{length(mf)} \code{mif} runs ends up at a different place.
 In this case (but by no means in every case), we can average across these parameter estimates to get an approximate maximum likelihood estimate.
 We'll evaluate the likelihood several times at this estimate to get an idea of the Monte Carlo error in our likelihood estimate.
-<<ou2-post-mif>>=
-theta.mif <- apply(sapply(mf,coef),1,mean)
-loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
-print(loglik.mif.sd <- sd(loglik.mif))
-loglik.mif <- -480+log(mean(exp(480+loglik.mif)))
-loglik.truth <- replicate(n=10,logLik(pfilter(ou2,params=theta,Np=10000)))
-print(loglik.truth.sd <- sd(loglik.truth))
-loglik.truth <- -480+log(mean(exp(480+loglik.truth)))
+<<eval=F>>=
+<<ou2-post-mif>>
 @ 
-
 
 <<multi-mif-plot,echo=F,eval=F>>=
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
@@ -744,7 +749,7 @@ As before, we'll begin by writing an \R\ function that implements a simulator (\
 It will be convenient to work with log-transformed parameters $\log r$, $\log\sigma$, $\log\phi$.
 Thus
 <<ricker-map-defn>>=
-ricker.sim <- function (x, t, params, ...) {
+ricker.sim <- function (x, t, params, delta.t, ...) {
   e <- rnorm(n=1,mean=0,sd=exp(params["log.sigma"])) 
   xnew <- c(
             exp(params["log.r"]+log(x["N"])-x["N"]+e),
