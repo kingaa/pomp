@@ -1,3 +1,17 @@
+2011-02-22  kingaa
+
+	* [r437] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/ou2-multi-mif.rda: - tinker with mif example in intro
+	  vignette
+	* [r436] R/pomp.R: - do a check in 'pomp' to make sure tcovar
+	  embraces times; warn else
+
+2011-02-19  kingaa
+
+	* [r435] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: -
+	  improvements to the intro vignette
+
 2011-02-18  kingaa
 
 	* [r434] inst/ChangeLog, inst/doc/ou2-first-mif.rda,

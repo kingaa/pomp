@@ -151,6 +151,23 @@ probe.match.internal <- function(object, start, est,
                               fail.value=fail.value,
                               control=list(...)
                               )
+
+    } else if (method=="sannbox") {
+      opt <- sannbox(
+                     par=guess,
+                     fn=obj.fn,
+                     est=par.index,
+                     object=object,
+                     probes=probes,
+                     params=params,
+                     nsim=nsim,
+                     seed=seed,
+                     weights=weights,
+                     datval=datval,
+                     fail.value=fail.value,
+                     control=list(...)
+                     )
+
     } else {
       opt <- optim(
                    par=guess,
@@ -202,7 +219,7 @@ setMethod(
           function(object, start, est = character(0),
                    probes, weights,
                    nsim, seed = NULL,
-                   method = c("subplex","Nelder-Mead","SANN"),
+                   method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
                    verbose = getOption("verbose"), 
                    eval.only = FALSE, fail.value = NA, ...) {
             
@@ -241,7 +258,7 @@ setMethod(
           function(object, start, est = character(0),
                    probes, weights,
                    nsim, seed = NULL,
-                   method = c("subplex","Nelder-Mead","SANN"),
+                   method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
                    verbose = getOption("verbose"), 
                    eval.only = FALSE, fail.value = NA, ...) {
             
@@ -280,7 +297,7 @@ setMethod(
           function(object, start, est,
                    probes, weights,
                    nsim, seed = NULL,
-                   method = c("subplex","Nelder-Mead","SANN"),
+                   method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
                    verbose = getOption("verbose"), 
                    eval.only = FALSE, fail.value, ...) {
             

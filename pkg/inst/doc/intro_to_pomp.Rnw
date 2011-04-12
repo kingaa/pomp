@@ -329,7 +329,7 @@ plot(ou2,variables=c("y1","y2"))
 
 Since some parameter estimation algorithms in the \pomp\ package only require simulations of the full process, we are already in a position to use them.
 At present, the only such algorithm is nonlinear forecasting (\code{nlf}).
-In the near future, probe-matching algorithms that require only \code{rprocess} and \code{rmeasure} will be included in the package.
+Probe-matching algorithms that require only \code{rprocess} and \code{rmeasure} are also included in the package.
 If we want to work with likelihood-based methods, however, we will need to be able to compute the likelihood of the data $Y_t$ given the states $X_t$.
 To implement this in \pomp, we write another function:
 <<ou2-meas-dens-def>>=
@@ -373,8 +373,8 @@ The calls to \code{coef} and \code{coef<-} in the lines above make sure the para
 
 To compute the likelihood of the data, we can use the function \code{pfilter}.
 This runs a plain vanilla particle filter (AKA sequential Monte Carlo) algorithm and results in an unbiased estimate of the likelihood.
-See \citet{Arulampalam2002} for an excellent tutorial on particle filtering.
-To do this, we must decide how many concurrrent realizations (\emph{particles}) to use: the larger the number of particles, the smaller the Monte Carlo error but the greater the computational effort.
+See \citet{Arulampalam2002} for an excellent tutorial on particle filtering and \citet{Ionides2006} for a pseudocode description of the algorithm implemented in \pomp.
+We must decide how many concurrent realizations (\emph{particles}) to use: the larger the number of particles, the smaller the Monte Carlo error but the greater the computational effort.
 Let's run \code{pfilter} with 1000 particles to estimate the likelihood at the true parameters:
 <<ou2-pfilter-truth,eval=F>>=
 pf <- pfilter(ou2,params=theta,Np=1000)
@@ -521,8 +521,10 @@ states(ou2,"x1")
 \section{Estimating parameters using iterated filtering: \code{mif}}
 
 Iterated filtering is a technique for maximizing the likelihood obtained by filtering.
-In \pomp, the particle filter is used as a basis for iterated filtering.
+In \pomp, it is the particle filter that is iterated.
 Iterated filtering is implemented in the \code{mif} function.
+For a description of the algorithm and a description of its theoretical basis, see \citet{Ionides2006}.
+A more complete set of proofs is provided in a forthcoming paper.
 
 The key idea of iterated filtering is to replace the model we are interested in fitting---which has time-invariant parameters---with a model that is just the same except that its parameters take a random walk in time.
 As the intensity of this random walk approaches zero, the modified model approaches the original model.
@@ -940,7 +942,7 @@ print(res,digits=3)
 \clearpage
 \section{Nonlinear forecasting: \code{nlf}}
 
-To be added.
+\citet{Ellner1998,Kendall1999,Kendall2005}.  To be added.
 
 <<first-nlf,echo=F,eval=F>>=
 estnames <- c('alpha.2','alpha.3','tau')
@@ -970,6 +972,14 @@ print(
       digits=3
       )
 @ 
+
+\section{Bayesian sequential Monte Carlo: \code{bsmc}}
+
+\citet{Liu2001b}.  To be added.
+
+\section{Particle Markov chain Monte Carlo: \code{pmcmc}}
+
+\citet{Andrieu2010}.  To be added.
 
 \clearpage
 \section{A more complex example: a seasonal epidemic model}

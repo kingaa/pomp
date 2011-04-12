@@ -13,7 +13,7 @@
 \usage{
 onestep.sim(step.fun, PACKAGE)
 euler.sim(step.fun, delta.t, PACKAGE)
-discrete.time.sim(step.fun, PACKAGE)
+discrete.time.sim(step.fun, delta.t = 1, PACKAGE)
 gillespie.sim(rate.fun, v, d, PACKAGE)
 onestep.dens(dens.fun, PACKAGE)
 }
@@ -68,8 +68,7 @@ onestep.dens(dens.fun, PACKAGE)
   \code{euler.sim} is appropriate when one cannot do this but can compute the change in state via a sequence of smaller steps.
   This is desirable, for example, if one is simulating a continuous time process but is willing to approximate it using an Euler approach.
   \code{discrete.time.sim} is appropriate when the process evolves in discrete time.
-  In this case, it is assumed that the intervals between observations are integers.
-  Beware, however: this assumption is not checked.
+  In this case, by default, the intervals between observations are integers.
 
   To use \code{euler.sim} or \code{discrete.time.sim}, you must write a function \code{step.fun} that will take a single Euler step, of size at most \code{delta.t}.
   \code{euler.sim} and \code{discrete.time.sim} will create simulators that take as many steps as needed to get from one time to another.
