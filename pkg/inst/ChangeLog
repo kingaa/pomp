@@ -1,3 +1,11 @@
+2011-04-12  kingaa
+
+	* [r439] DESCRIPTION, R/plugins.R, R/probe-match.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, man/plugins.Rd: - add 'sannbox'
+	  constrained simulated annealing method for probe matching
+	  - re-implement the 'discrete.time.sim' plugin
+
 2011-02-22  kingaa
 
 	* [r437] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
