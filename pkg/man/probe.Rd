@@ -26,19 +26,19 @@
   \S4method{probe.match}{pomp}(object, start, est = character(0),
               probes, weights,
               nsim, seed = NULL,
-              method = c("subplex","Nelder-Mead","SANN"),
+              method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
               verbose = getOption("verbose"), 
               eval.only = FALSE, fail.value = NA, \dots)
   \S4method{probe.match}{probed.pomp}(object, start, est = character(0),
               probes, weights,
               nsim, seed = NULL,
-              method = c("subplex","Nelder-Mead","SANN"),
+              method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
               verbose = getOption("verbose"), 
               eval.only = FALSE, fail.value = NA, \dots)
   \S4method{probe.match}{probe.matched.pomp}(object, start, est,
               probes, weights,
               nsim, seed = NULL,
-              method = c("subplex","Nelder-Mead","SANN"),
+              method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
               verbose = getOption("verbose"), 
               eval.only = FALSE, fail.value, \dots)
 }
