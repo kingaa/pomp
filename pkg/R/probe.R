@@ -191,3 +191,4 @@ setAs(
       }
       )
 
+setMethod("logLik",signature(object="probed.pomp"),function(object,...)object@synth.loglik)

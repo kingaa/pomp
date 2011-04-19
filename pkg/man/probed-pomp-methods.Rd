@@ -21,6 +21,8 @@
 \alias{plot,spect.pomp-method}
 \alias{plot-spect.pomp}
 \alias{as,probed.pomp-method}
+\alias{logLik,probed.pomp-method}
+\alias{logLik-probed.pomp}
 \alias{coerce,probed.pomp,data.frame-method}
 \title{Methods of the "probed.pomp", "probe.matched.pomp", "spect.pomp", and "spect.matched.pomp" classes}
 \description{Methods of the \code{probed.pomp}, \code{probe.matched.pomp}, \code{spect.pomp}, and \code{spect.matched.pomp} classes}
@@ -30,6 +32,7 @@
 \S4method{summary}{probe.matched.pomp}(object, \dots)
 \S4method{plot}{probe.matched.pomp}(x, y, \dots)
 \S4method{summary}{spect.pomp}(object, \dots)
+\S4method{logLik}{probed.pomp}(object, \dots)
 \S4method{plot}{spect.pomp}(x, y, max.plots.per.page = 4,
           plot.data = TRUE,
           quantiles = c(.025, .25, .5, .75, .975),
@@ -62,6 +65,10 @@
     }
     \item{summary}{
       displays summary information.
+    }
+    \item{logLik}{
+      returns the synthetic likelihood for the probes.
+      NB: in general, this is not the same as the likelihood.
     }
     \item{as}{
       when a \sQuote{probed.pomp} is coerced to a \sQuote{data.frame}, the first row gives the probes applied to the data; the rest of the rows give the probes evaluated on simulated data.
