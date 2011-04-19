@@ -1,0 +1,50 @@
+
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> data(ou2)
+> 
+> set.seed(6457673L)
+> 
+> po <- window(ou2,end=5)
+> 
+> pb <- replicate(n=100,logLik(probe(po,nsim=1000,probes=function(x)x)))
+> pf <- replicate(n=100,logLik(pfilter(po,Np=1000)))
+> 
+> kruskal.test(list(pb,pf))
+
+	Kruskal-Wallis rank sum test
+
+data:  list(pb, pf) 
+Kruskal-Wallis chi-squared = 0.7272, df = 1, p-value = 0.3938
+
+> ks.test(pf,pb)
+
+	Two-sample Kolmogorov-Smirnov test
+
+data:  pf and pb 
+D = 0.14, p-value = 0.2810
+alternative hypothesis: two-sided 
+
+> qqplot(pf,pb)
+> abline(a=0,b=1)
+> 
