@@ -262,7 +262,7 @@ Note that \code{gompertz.meas.dens} is closely related to \code{gompertz.meas.si
 With the two functions above, we already have all we need to simulate the full model.
 The first step is to construct an \R\ object of class \pomp\ which will serve as a container to hold the model and data.
 This is done with a call to \pomp:
-<<first-pomp-construction>>=
+<<first-pomp-construction,eval=F>>=
 gompertz <- pomp(
                  data=data.frame(
                    time=1:100,
@@ -305,8 +305,23 @@ one can also parameterize initial conditions in an arbitrary way using the optio
 See the documentation (\verb+?pomp+) for details.
 
 Now we can simulate the model:
-<<gompertz-first-simulation,eval=T>>=
+<<gompertz-first-simulation,eval=F>>=
 gompertz <- simulate(gompertz,params=theta)
+@ 
+<<gompertz-get-data,eval=T,echo=F>>=
+data(gompertz)
+dat <- as.data.frame(gompertz)
+gompertz <- pomp(
+                 data=dat[c("time","Y")],
+                 times="time",
+                 rprocess=discrete.time.sim(
+                   step.fun=gompertz.proc.sim,
+                   delta.t=1
+                   ),
+                 rmeasure=gompertz.meas.sim,
+                 t0=0
+                 )
+coef(gompertz) <- theta
 @ 
 Now \code{gompertz} is identical to what it was before, but the data that were there before have been replaced by simulated data.
 The parameters (\code{theta}) at which the simulations were performed have also been saved internally to \code{gompertz}.
@@ -441,11 +456,11 @@ loglik.kalman <- kf$loglik-sum(log(obs(gompertz)))
 @ 
 In this case, the Kalman filter gives us a log likelihood of \Sexpr{round(loglik.kalman,2)}, 
 while the particle filter with 1000 particles gives \Sexpr{round(loglik.truth,2)}.
-By comparison, the likelihood at the ``guess'' is \Sexpr{round(loglik.guess,2)}.
 Since the particle filter gives an unbiased estimate of the likelihood, the difference is due to Monte Carlo error in the particle filter.
 One can reduce this error by using a larger number of particles and/or by re-running \code{pfilter} multiple times and averaging the resulting estimated likelihoods.
 The latter approach has the advantage of allowing one to estimate the Monte Carlo error itself.
 
+\clearpage
 \section{Interlude: utility functions for extracting and changing pieces of a \pomp\ object}
 
 The \pomp\ package provides a number of functions to extract or change pieces of a \pomp-class object.
@@ -545,6 +560,8 @@ gompertz.meas.dens <- function (y, x, t, params, log, ...) {
 }
 @ 
 
+Note that, in each of the above functions, we \emph{untransform} the parameters before we do any computations.
+
 <<loggomp-pomp-construction,eval=F>>=
 dat <- as(gompertz,"data.frame")
 theta <- c(
@@ -563,7 +580,6 @@ gompertz <- pomp(
 coef(gompertz) <- theta
 @ 
 
-Note that, in each of the above functions, we \emph{untransform} the parameters before we do any computations.
 A \code{pomp} object corresponding to the one just created (but with the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} bits coded in C for speed) can be loaded by executing \verb+data(gompertz)+.
 
 \clearpage
@@ -594,38 +610,35 @@ We'll initialize the algorithm at several starting points around \code{theta.tru
 data(gompertz)
 theta <- coef(gompertz)
 theta.true <- theta
-theta.guess <- theta.true
-theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
 @ 
 <<gompertz-multi-mif-calc,eval=F,echo=T>>=
 estpars <- c("log.r","log.sigma","log.tau")
-##estivps <- c("X.0")
 mf <- replicate(
                 n=10,
                 {
                   theta.guess <- theta.true
-                  theta.guess[estpars] <- rlnorm(
-                                                 n=length(estpars),
-                                                 meanlog=0,
-                                                 sdlog=0.5
-                                                 )*theta.guess[estpars]
+                  theta.guess[estpars] <- rnorm(
+                                                n=length(estpars),
+                                                mean=theta.guess[estpars],
+                                                sd=1
+                                                )
                   mif(
                       gompertz,
                       Nmif=100,
                       start=theta.guess,
                       pars=estpars,
-##                      ivps=estivps,
                       rw.sd=c(
                         log.r=0.02,log.sigma=0.02,log.tau=0.05
                         ),
-                      Np=1000,
+                      Np=2000,
                       var.factor=4,
                       ic.lag=10,
-                      cooling.factor=0.97,
+                      cooling.factor=0.999,
                       max.fail=10
                       )
                 }
                 )
+##mf <- lapply(mf,continue,Nmif=50)
 @ 
 
 <<gompertz-post-mif,eval=F,echo=F>>=
@@ -713,9 +726,10 @@ In the continuous-time case, this is the vectorfield
 \end{equation*}
 Our discrete-time Gompertz has the deterministic skeleton
 \begin{equation}\label{eq:gompertz-skel}
-  x\,\mapsto\,K^{1-R}\,x^{R},
+  x\,\mapsto\,K^{1-S}\,x^{S},
 \end{equation}
-which can be implemented in the \R\ function
+where $S=e^{-r\,{\Delta}t}$ and ${\Delta}t$ is the time-step.
+This can be implemented in the \R\ function
 <<gompertz-skeleton-def,echo=T>>=
 gompertz.skel <- function (x, t, params, ...) {
   delta.t <- 1
@@ -730,10 +744,8 @@ gompertz.skel <- function (x, t, params, ...) {
 
 We can incorporate the deterministic skeleton into a new \pomp\ object via the \code{skeleton.map} argument:
 <<new-gompertz-pomp-construction,echo=T>>=
-dat <- subset(as(gompertz,"data.frame"),time<=60)
-theta <- coef(gompertz)
 new.gompertz <- pomp(
-                     data=dat[c("time","Y")],
+                     data=data.frame(time=1:200,Y=NA),
                      times="time",
                      rprocess=discrete.time.sim(gompertz.proc.sim),
                      rmeasure=gompertz.meas.sim,
@@ -742,7 +754,7 @@ new.gompertz <- pomp(
                      t0=0
                      )
 coef(new.gompertz) <- theta
-coef(new.gompertz,"X.0") <- 0.5
+coef(new.gompertz,"X.0") <- 0.1
 coef(new.gompertz,"log.r") <- log(0.1)
 coef(new.gompertz,"log.tau") <- log(0.05)
 coef(new.gompertz,"log.sigma") <- log(0.05)
@@ -777,14 +789,15 @@ if (file.exists(binary.file)) {
 \begin{figure}
 <<trajmatch-plot,fig=T,echo=F,eval=T>>=
 op <- par(mfrow=c(1,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-plot(time(tm),obs(tm,"Y"),xlab="",xaxt='n',ylab=expression(X,Y),type='o')
+plot(time(tm),obs(tm,"Y"),xlab="time",ylab=expression(X,Y),type='o')
 lines(time(tm),states(tm,"X"),lwd=2)
 par(op)
 @ 
 \caption{
   Illustration of trajectory matching.
-  The points show data simulated from \code{new.gompertz}, which has no process noise but only measurement error.
+  The points show data simulated from \code{new.gompertz}.
   The solid line shows the trajectory of the best-fitting model, obtained using \code{traj.match}.
+  Fitting by trajectory matching is tantamount to the assumption that the data-generating process has no process noise but only measurement error.
 }
 \label{fig:trajmatch-plot}
 \end{figure}

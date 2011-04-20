@@ -16,13 +16,13 @@
 void _gompertz_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
 				int *obsindex, int *stateindex, int *parindex, int *covindex,
 				int ncovars, double *covars, double t) {
-  *lik = dnorm(log(Y),log(X),exp(LOG_TAU),give_log);
+  *lik = dlnorm(Y,log(X),exp(LOG_TAU),give_log);
 }
 
 void _gompertz_normal_rmeasure (double *y, double *x, double *p, 
 				int *obsindex, int *stateindex, int *parindex, int *covindex,
 				int ncovars, double *covars, double t) {
-  Y = exp(rnorm(log(X),exp(LOG_TAU)));
+  Y = rlnorm(log(X),exp(LOG_TAU));
 }
 
 #undef Y

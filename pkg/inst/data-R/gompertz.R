@@ -23,5 +23,5 @@ simulate(
            X.0=1
            ),
          nsim=1,
-         seed=73691676L
+         seed=299438676L
          ) -> gompertz
