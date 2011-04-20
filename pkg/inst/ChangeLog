@@ -1,3 +1,18 @@
+2011-04-19  kingaa
+
+	* [r443] tests/synlik.Rout.save: - add tests/synlik.Rout.save file
+	* [r442] DESCRIPTION, R/probe.R, man/probed-pomp-methods.Rd,
+	  tests/synlik.R: - add 'logLik' method for probed.pomp objects
+
+2011-04-15  kingaa
+
+	* [r441] man/probe.Rd: - synchronize with changes in probe.R
+
+2011-04-13  kingaa
+
+	* [r440] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - updated vignettes and changelog
+
 2011-04-12  kingaa
 
 	* [r439] DESCRIPTION, R/plugins.R, R/probe-match.R, inst/ChangeLog,

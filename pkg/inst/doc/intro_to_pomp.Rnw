@@ -11,8 +11,8 @@
 \setlength{\textheight}{8.75in}
 \setlength{\evensidemargin}{0in}
 \setlength{\oddsidemargin}{0in}
-\setlength{\topmargin}{-.35in}
-\setlength{\parskip}{.1in}  
+\setlength{\topmargin}{-0.35in}
+\setlength{\parskip}{0.1in}  
 \setlength{\parindent}{0.0in}  
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{1}
@@ -109,7 +109,7 @@ On the one hand, one may need to \emph{evaluate} the probability density of the 
 On the other hand, one may need to \emph{simulate} this distribution, i.e., to draw random samples from the distribution of $X_{t_{k+1}}\;\vert\;X_{t_k}$.
 Depending on the model and on what one wants specifically to do, it may be technically easier or harder to do one of these or the other.
 Likewise, one may want to simulate, or evaluate the likelihood of, observations $Y_t$.
-At it's most basic level \pomp\ is an infrastructure that allows you to encode your model by specifying some or all of these four basic components:
+At its most basic level \pomp\ is an infrastructure that allows you to encode your model by specifying some or all of these four basic components:
 \begin{compactdesc}
 \item[\code{rprocess}] a simulator of the process model,
 \item[\code{dprocess}] an evaluator of the process model probability density function,
@@ -123,7 +123,7 @@ In particular, within \pomp, you can:
 \item integrate your model's deterministic skeleton, using \code{trajectory},
 \item estimate the likelihood for any given set of parameters using sequential Monte Carlo, implemented in \code{pfilter},
 \item find maximum likelihood estimates for parameters using iterated filtering, implemented in \code{mif},
-\item estimate parameters using a simulated quasi maximum likelihood approach called \emph{nonlinear forecasting} and implemented in \code{nlf},
+\item estimate parameters using a simulated quasi-maximum-likelihood approach called \emph{nonlinear forecasting}, implemented in \code{nlf},
 \item estimate parameters using trajectory matching, as implemented in \code{traj.match},
 \item estimate parameters using probe matching, as implemented in \code{probe.match},
 \item print and plot data, simulations, and diagnostics for the foregoing algorithms,
@@ -131,31 +131,35 @@ In particular, within \pomp, you can:
 \end{compactenum}
 In this document, we'll see how all this works using relatively simple examples.
 
-\section{A first example: a discrete-time bivariate autoregressive process.}
+\section{A first example: a simple discrete-time population model.}
 
-For simplicity, we'll begin with a very simple discrete-time model.
-The plug-and-play methods in \pomp\ were designed to work on much more complicated models, and for our first example, they'll be extreme overkill, but starting with a simple model will help make the implementation of more general models clear.
+We'll demonstrate the basics of \pomp\ using a very simple discrete-time model.
+The plug-and-play methods in \pomp\ were designed to work on more complicated models, and for our first example, they'll be extreme overkill, but starting with a simple model will help make the implementation of more general models clear.
 Moreover, our first example will be one for which plug-and-play methods are not even necessary.
 This will allow us to compare the results from generalizable plug-and-play methods with exact results from specialized methods appropriate to this particular model.
 Later we'll look at a continuous-time model for which no such special tricks are available.
 
-Consider a two-dimensional AR(1) process with noisy observations.
-The state process $X_{t}\in\mathbb{R}^2$ satisfies
-\begin{equation}\label{eq:ou-proc}
-  X_{t} = \alpha\,X_{t-1}+\sigma\,\xi_{t}.
+Consider the discrete-time Gompertz model of population growth.
+Under this model, the density, $X_{t+1}$, of a population of plants or animals at time $t+{\Delta}t$ depends on the density, $X_{t}$, at time $t$ according to
+\begin{equation}\label{eq:gompertz1}
+  X_{t+1}=K^{1-e^{-r\,{\Delta}t}}\,X_{t}^{e^{-r\,{\Delta}t}}\,\varepsilon_{t},
 \end{equation}
-The measurement process is
-\begin{equation}\label{eq:ou-obs}
-  Y_{t} = \beta\,X_{t}+\tau\,\varepsilon_{t}.
+where $K$ is the so-called ``carrying capacity'' of the population, $r$ is a positive parameter, and the $\varepsilon_{t}$ are independent and identically-distributed lognormal random variables.
+In different notation, this model is
+\begin{equation}\label{eq:gompertz2}
+  \log{X_{t+1}}\;\sim\;\mathrm{normal}(\log{K}+\log{\left(\frac{X_t}{K}\right)}\,e^{-r\,{\Delta}t},\sigma),
 \end{equation}
-In these equations, $\alpha$ and and $\beta$ are $2\times 2$ constant matrices.
-$\xi_{t}$ and $\varepsilon_{t}$ are mutually-independent families of i.i.d.\ bivariate standard normal random variables.
-$\sigma$ is a lower-triangular $2\times 2$ matrix such that $\sigma\sigma^T$ is the variance-covariance matrix of $X_{t+1}\vert X_{t}$.
-We'll assume that each component of $X$ is measured independently and with the same error, $\tau$, so that the variance-covariance matrix of $Y_{t}\vert X_{t}$ is just $\tau^2$ times the identity matrix.
+where $\sigma^2={\mathrm{Var}[\log{\epsilon_{t}}]}$.
+We'll assume that we can measure the population density only with error.
+In particular, we'll assume that errors in measurement are lognormally distributed:
+\begin{equation}\label{eq:gompertz-obs}
+  \log{Y_{t}}\;\sim\;\mathrm{normal}(\log{X_{t}},\tau).
+\end{equation}
 
-Given a data set, one can obtain exact maximum likelihood estimates of this model's parameters using the Kalman filter.
-We will demonstrate this below.
-Here, however, for pedagogical reasons, we'll approach this model as we would a more complex model for which no such exact estimation is available.
+As we noted above, for this particular model, it isn't necessary to use plug-and-play methods: 
+one can obtain exact maximum likelihood estimates of this model's parameters using the Kalman filter.
+We will demonstrate this below and use it to check the results of plug-and-play inference.
+For now, let's approach this model as we would a more complex model for which no such exact estimation is available.
 
 \section{Defining a partially observed Markov process in \pomp.}
 
@@ -185,76 +189,99 @@ The key step in this is to specify functions to do some or all of \ref{it:rproc}
 The package provides a number algorithms for fitting the models to the data, for simulating the models, studying deterministic skeletons, and so on.
 The documentation (\code{?pomp}) spells out the usage of the \pomp\ constructor, including detailed specifications for all its arguments and a worked example.
 
-Let's see how to implement the AR(1) model in \pomp.
+Let's see how to implement the Gompertz model in \pomp.
 Here, we'll take the shortest path to this goal.
 In the ``advanced topics in \pomp'' vignette, we show how one can make the codes much more efficient using compiled native (C or FORTRAN) code.
 
 First, we write a function that implements the process model simulator.
-This is a function that will simulate a single step ($t\to{t+1}$) of the unobserved process \eqref{eq:ou-proc}.
-<<ou2-proc-sim-def>>=
+This is a function that will simulate a single step ($t\to{t+{\Delta}t}$) of the unobserved process \eqref{eq:gompertz1}.
+<<gompertz-proc-sim-def>>=
 require(pomp)
 
-ou2.proc.sim <- function (x, t, params, delta.t, ...) {
-  xi <- rnorm(n=2,mean=0,sd=sqrt(delta.t)) # noise terms
-  xnew <- c(
-            params["alpha.1"]*x["x1"]+params["alpha.3"]*x["x2"]+
-              params["sigma.1"]*xi[1],
-            params["alpha.2"]*x["x1"]+params["alpha.4"]*x["x2"]+
-              params["sigma.2"]*xi[1]+params["sigma.3"]*xi[2]
-            )
-  names(xnew) <- c("x1","x2")
-  xnew
+gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
+  ## unpack the parameters:
+  r <- params["r"]
+  K <- params["K"]
+  sigma <- params["sigma"]
+  ## the state at time t:
+  X <- x["X"]
+  ## generate a log-normal random variable:
+  eps <- exp(rnorm(n=1,mean=0,sd=sigma))
+  ## compute the state at time t+1:
+  S <- exp(-r*delta.t)
+  xnew <- c(X=unname(K^(1-S)*X^S*eps))
+  return(xnew)
 }
 @ 
-The translation from the mathematical description \eqref{eq:ou-proc} to the simulator is straightforward.
+The translation from the mathematical description \eqref{eq:gompertz1} to the simulator is straightforward.
 When this function is called, the argument \code{x} contains the state at time \code{t}.
-The parameters (including the matrix $\alpha$ and the process noise s.d.~matrix $\sigma$) are passed in the argument \code{params}.
-Notice that these arguments are named numeric vectors and that the output must be named numeric vector.
+The parameters (including $K$, $r$, and $\sigma$) are passed in the argument \code{params}.
+Notice that \code{x} and \code{params} are named numeric vectors and that the output must be also be a named numeric vector.
 In fact, the names of the output vector (here \code{xnew}) must be the same as those of the input vector \code{x}.
 The algorithms in \pomp\ all make heavy use of the \code{names} attributes of vectors and matrices.
 The argument \code{delta.t} tells how big the time-step is. 
 In this case, our time-step will be 1 unit; 
 we'll see below how that gets specified.
 
-Next, we'll implement a simulator for the observation process \eqref{eq:ou-obs}.
-<<ou2-meas-sim-def>>=
-ou2.meas.sim <- function (x, t, params, ...) {
-  y <- rnorm(n=2,mean=x[c("x1","x2")],sd=params["tau"])
-  names(y) <- c("y1","y2")
-  y
+Next, we'll implement a simulator for the observation process \eqref{eq:gompertz-obs}.
+<<gompertz-meas-sim-def>>=
+gompertz.meas.sim <- function (x, t, params, ...) {
+  ## unpack the parameters:
+  tau <- params["tau"]
+  ## state at time t:
+  X <- x["X"]
+  ## generate a simulated observation:
+  y <- c(Y=unname(rlnorm(n=1,meanlog=log(X),sd=tau)))
+  return(y)
 }
 @ 
-Again the translation is straightforward.
-When this function is called, the unobserved states at time \code{t} will be in the named numeric vector \code{x} and the parameters in \code{params} as before.
-The function returns a named numeric vector that represents a single draw from the observation process \eqref{eq:ou-obs}.
+Again the translation from the model \eqref{eq:gompertz-obs} is straightforward.
+When \code{gompertz.meas.sim} is called, the unobserved states at time \code{t} will be in the named numeric vector \code{x} and the parameters in \code{params} as before.
+The function returns a named numeric vector that represents a single draw from the observation process \eqref{eq:gompertz-obs}.
+
+Complementing the measurement model simulator is the corresponding measurement model density, which we can implement as follows:
+<<gompertz-meas-dens-def>>=
+gompertz.meas.dens <- function (y, x, t, params, log, ...) {
+  ## unpack the parameters:
+  tau <- params["tau"]
+  ## state at time t:
+  X <- x["X"]
+  ## observation at time t:
+  Y <- y["Y"]
+  ## compute the likelihood of Y|X,tau
+  f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
+  return(f)
+}
+@ 
+We'll need this later on for likelihood-based inference.
+Note that \code{gompertz.meas.dens} is closely related to \code{gompertz.meas.sim}.
 
 \clearpage
 \section{Simulating the model}
 
-With the two functions above, we already have all we need to simulate the entire model.
+With the two functions above, we already have all we need to simulate the full model.
 The first step is to construct an \R\ object of class \pomp\ which will serve as a container to hold the model and data.
 This is done with a call to \pomp:
 <<first-pomp-construction>>=
-ou2 <- pomp(
-            data=data.frame(
-              time=1:100,
-              y1=NA,
-              y2=NA
-              ),
-            times="time",
-            rprocess=discrete.time.sim(
-              step.fun=ou2.proc.sim,
-              delta.t=1
-              ),
-            rmeasure=ou2.meas.sim,
-            t0=0
-            )
+gompertz <- pomp(
+                 data=data.frame(
+                   time=1:100,
+                   Y=NA
+                   ),
+                 times="time",
+                 rprocess=discrete.time.sim(
+                   step.fun=gompertz.proc.sim,
+                   delta.t=1
+                   ),
+                 rmeasure=gompertz.meas.sim,
+                 t0=0
+                 )
 @ 
 The first argument (\code{data}) specifies a data-frame that holds the data and the times at which the data were observed.
 Since this is a toy problem, we have no data.
 In a moment, however, we'll simulate some data so we can explore \pomp's various fitting methods.
 The second argument (\code{times}) specifies which of the columns of \code{data} is the time variable.
-The third argument (\code{rprocess}) specifies that the process model simulator will be in discrete-time, one step at a time.
+The third argument (\code{rprocess}) specifies that the process model simulator will be in discrete time, one step at a time.
 The function \code{discrete.time.sim} belongs to the \pomp\ package.
 It takes the argument \code{step.fun}, which specifies the particular function that actually takes the step.
 Its second argument, \code{delta.t}, specifies the duration of the time step (by default, \code{delta.t=1}).
@@ -262,113 +289,67 @@ The argument \code{rmeasure} specifies the measurement model simulator function.
 \code{t0} fixes $t_0$ for this model; here we have chosen this to be one time unit before the first observation.
 
 Before we can simulate the model, we need to settle on some parameter values.
-We do this by specifying a named numeric vector that contains at least all the parameters needed by the functions \code{ou.proc.sim} and \code{ou.meas.sim}.
+We do this by specifying a named numeric vector that contains at least all the parameters needed by the functions \code{gompertz.proc.sim} and \code{gompertz.meas.sim}.
 The parameter vector needs to specify the initial conditions $X(t_{0})=x_{0}$ as well.
 <<set-params>>=
 theta <- c(
-           alpha.1=0.8, alpha.2=-0.5, alpha.3=0.3, alpha.4=0.9,
-           sigma.1=3, sigma.2=-0.5, sigma.3=2,
-           tau=1, 
-           x1.0=-3, x2.0=4
+           r=0.1,K=1,sigma=0.1,
+           tau=0.1,
+           X.0=1
            )
 @ 
-In terms of the mathematical formulation of the model (Eqs.~\ref{eq:ou-proc}--\ref{eq:ou-obs}), we have
-\begin{equation*}
-  \begin{gathered}
-    \alpha = \left(\begin{matrix}
-      \alpha_1 & \alpha_3 \\
-      \alpha_2 & \alpha_4
-    \end{matrix}\right)
-    \qquad 
-    \sigma = \left(\begin{matrix}
-      \sigma_1 & 0 \\
-      \sigma_2 & \sigma_3
-    \end{matrix}\right)
-    \qquad 
-    \beta = \left(\begin{matrix}
-      1 & 0 \\
-      0 & 1
-    \end{matrix}\right)
-    \qquad
-    X(0) = \left(\begin{matrix}
-      -3\\
-      \phantom{-}4
-    \end{matrix}\right).
-  \end{gathered}
-\end{equation*}
-The initial conditions are specified by the \code{x1.0} and \code{x2.0} elements.
-Here, the fact that the names end in ``\code{.0}'' is significant.
-This is the default operation of \pomp: 
-it is possible to parameterize the initial conditions in an arbitrary way using the optional \code{initializer} argument to \pomp: see the documentation (\verb+?pomp+) for details.
+In addition to the parameters $r$, $K$, $\sigma$, and $\tau$, note that we've specified the initial condition $X.0$ in the vector \code{theta}.
+The fact that the initial condition parameter's name ends in ``\code{.0}'' is significant: it tells \code{pomp} that this is the initial condition of the state variable \code{X}.
+This use of the ``\code{.0}'' suffix is the default behavior of \pomp: 
+one can also parameterize initial conditions in an arbitrary way using the optional \code{initializer} argument to \pomp.
+See the documentation (\verb+?pomp+) for details.
 
 Now we can simulate the model:
-<<ou2-first-simulation,eval=F>>=
-ou2 <- simulate(ou2,params=theta)
+<<gompertz-first-simulation,eval=T>>=
+gompertz <- simulate(gompertz,params=theta)
 @ 
-Now \code{ou2} is identical to what it was before, but the data that were there before have been replaced by simulated data.
-The parameters (\code{theta}) at which the simulations were performed have also been saved internally to \code{ou2}.
+Now \code{gompertz} is identical to what it was before, but the data that were there before have been replaced by simulated data.
+The parameters (\code{theta}) at which the simulations were performed have also been saved internally to \code{gompertz}.
 We can plot the simulated data via
 <<eval=F>>=
-plot(ou2,variables=c("y1","y2"))
+plot(gompertz,variables="Y")
 @ 
-Fig.~\ref{fig:ou2-first-simulation-plot} shows the results of this operation.
+Fig.~\ref{fig:gompertz-first-simulation-plot} shows the results of this operation.
 
 \begin{figure}
-<<ou2-plot,echo=F,fig=T>>=
-data(ou2)
-plot(ou2,variables=c("y1","y2"))
+<<gompertz-plot,echo=F,fig=T>>=
+plot(gompertz,variables=c("Y"))
 @ 
 \caption{
-  Simulated data and unobserved states from the bivariate AR(1) process (Eqs.~\ref{eq:ou-proc}--\ref{eq:ou-obs}).
-  This figure shows the output of the command \code{plot(ou2,variables=c("y1","y2"))}.
+  Simulated data and unobserved states from the Gompertz model (Eqs.~\ref{eq:gompertz1}--\ref{eq:gompertz-obs}).
+  This figure shows the output of the command \code{plot(gompertz,variables="Y")}.
 }
-\label{fig:ou2-first-simulation-plot}
+\label{fig:gompertz-first-simulation-plot}
 \end{figure}
 
 \section{Computing likelihood using particle filtering}
 
-Since some parameter estimation algorithms in the \pomp\ package only require simulations of the full process, we are already in a position to use them.
-At present, the only such algorithm is nonlinear forecasting (\code{nlf}).
-Probe-matching algorithms that require only \code{rprocess} and \code{rmeasure} are also included in the package.
+Some parameter estimation algorithms in the \pomp\ package only require \code{rprocess} and \code{rmeasure}.
+These include the nonlinear forecasting algorithm \code{nlf} and the probe-matching algorithm \code{probe.match}.
 If we want to work with likelihood-based methods, however, we will need to be able to compute the likelihood of the data $Y_t$ given the states $X_t$.
-To implement this in \pomp, we write another function:
-<<ou2-meas-dens-def>>=
-ou2.meas.dens <- function (y, x, t, params, log, ...) {
-  f <- sum(
-           dnorm(
-                 x=y[c("y1","y2")],
-                 mean=x[c("x1","x2")],
-                 sd=params["tau"],
-                 log=TRUE
-                 ),
-           na.rm=TRUE
-           )
-  if (log) f else exp(f)
-}
-@ 
-This function computes the likelihood of the observation \code{y} at time \code{t} given the states \code{x} and the parameters \code{params}.
-Here, the named vector \code{y} contains data at a single timepoint (\code{t}) and \code{x} contains a single realization of the unobserved process at the same time.
-The extra argument \code{log} specifies whether likelihood or log-likelihood is desired.
-
-To incorporate this into the \pomp\ object, we'll make another call to \pomp, giving our new function to the \code{dmeasure} argument:
+Above, we wrote an \R\ function, \code{gompertz.meas.dens}, to do this.
+We haven't yet used it all.
+To do so, we'll need to incorporate it into the \pomp\ object.
+We can do this by specifying the \code{dmeasure} argument in another call to \pomp:
 <<second-pomp-construction>>=
-dat <- as(ou2,"data.frame")
-theta <- coef(ou2)
-ou2 <- pomp(
-            data=dat[c("time","y1","y2")],
-            times="time",
-            rprocess=discrete.time.sim(ou2.proc.sim),
-            rmeasure=ou2.meas.sim,
-            dmeasure=ou2.meas.dens,
-            t0=0
-            )
-coef(ou2) <- theta
+dat <- as(gompertz,"data.frame")
+theta <- coef(gompertz)
+gompertz <- pomp(
+                 data=dat[c("time","Y")],
+                 times="time",
+                 rprocess=discrete.time.sim(gompertz.proc.sim),
+                 rmeasure=gompertz.meas.sim,
+                 dmeasure=gompertz.meas.dens,
+                 t0=0
+                 )
+coef(gompertz) <- theta
 @ 
-<<echo=F>>=
-rm(ou2)
-data(ou2)
-@ 
-Note that we've first extracted the data from our old \code{ou2} and set up the new one with the same data and parameters.
+Note that we've first extracted the data from our old \code{gompertz} and set up the new one with the same data and parameters.
 The calls to \code{coef} and \code{coef<-} in the lines above make sure the parameters have the same values they had before.
 
 To compute the likelihood of the data, we can use the function \code{pfilter}.
@@ -376,63 +357,61 @@ This runs a plain vanilla particle filter (AKA sequential Monte Carlo) algorithm
 See \citet{Arulampalam2002} for an excellent tutorial on particle filtering and \citet{Ionides2006} for a pseudocode description of the algorithm implemented in \pomp.
 We must decide how many concurrent realizations (\emph{particles}) to use: the larger the number of particles, the smaller the Monte Carlo error but the greater the computational effort.
 Let's run \code{pfilter} with 1000 particles to estimate the likelihood at the true parameters:
-<<ou2-pfilter-truth,eval=F>>=
-pf <- pfilter(ou2,params=theta,Np=1000)
+<<gompertz-pfilter-truth,eval=F>>=
+pf <- pfilter(gompertz,params=theta,Np=1000)
 loglik.truth <- logLik(pf)
 loglik.truth
 @ 
-<<ou2-pfilter-truth-eval,echo=F>>=
+<<gompertz-pfilter-truth-eval,echo=F>>=
 set.seed(457645443L)
-<<ou2-pfilter-truth>>
+<<gompertz-pfilter-truth>>
 @ 
-Since the true parameters (i.e., the parameters that generated the data) are stored within the \pomp\ object \code{ou2} and can be extracted by the \code{coef} function, we could have done
-<<ou2-pfilter-truth-alt1,eval=F>>=
-pf <- pfilter(ou2,params=coef(ou2),Np=1000)
+Since the true parameters (i.e., the parameters that generated the data) are stored within the \pomp\ object \code{gompertz} and can be extracted by the \code{coef} function, we could have done
+<<gompertz-pfilter-truth-alt1,eval=F>>=
+pf <- pfilter(gompertz,params=coef(gompertz),Np=1000)
 @ 
 or even just
-<<ou2-pfilter-truth-alt2,eval=F>>=
-pf <- pfilter(ou2,Np=1000)
+<<gompertz-pfilter-truth-alt2,eval=F>>=
+pf <- pfilter(gompertz,Np=1000)
 @ 
-since the parameters are stored in the \pomp\ object \code{ou2}.
-Now let's compute the log likelihood at a different point in parameter space:
-<<ou2-pfilter-guess,eval=F>>=
-theta.true <- coef(ou2)
+which would have worked since the parameters are stored in the \pomp\ object \code{gompertz}.
+Now let's compute the log likelihood at a different point in parameter space, one for which $r$, $K$, and $\sigma$ are 50\% higher than their true values.
+<<gompertz-pfilter-guess,eval=F>>=
+theta.true <- coef(gompertz)
 theta.guess <- theta.true
-theta.guess[c("alpha.2","alpha.3","tau")] <- 1.5*theta.true[c("alpha.2","alpha.3","tau")]
-pf <- pfilter(ou2,params=theta.guess,Np=1000)
+theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
+pf <- pfilter(gompertz,params=theta.guess,Np=1000)
 loglik.guess <- logLik(pf)
 @ 
-<<ou2-pfilter-guess-eval,echo=F>>=
+<<gompertz-pfilter-guess-eval,echo=F>>=
 set.seed(457645443L)
-<<ou2-pfilter-guess>>
+<<gompertz-pfilter-guess>>
 @ 
 
 \begin{textbox}
-\caption{Implementation of the Kalman filter for the AR(1) process.}
+\caption{Implementation of the Kalman filter for the Gompertz model.}
 \label{box:kalman-filter-def}
 <<kalman-filter-def>>=
-require(mvtnorm)
-kalman.filter <- function (y, x0, a, b, sigma, tau) {
-  n <- nrow(y)
-  ntimes <- ncol(y)
-  sigma.sq <- sigma%*%t(sigma)
-  tau.sq <- tau%*%t(tau)
-  inv.tau.sq <- solve(tau.sq)
+kalman.filter <- function (Y, X0, r, K, sigma, tau) {
+  ntimes <- length(Y)
+  sigma.sq <- sigma^2
+  tau.sq <- tau^2
   cond.loglik <- numeric(ntimes)
-  filter.mean <- matrix(0,n,ntimes)
-  pred.mean <- matrix(0,n,ntimes)
-  pred.var <- array(0,dim=c(n,n,ntimes))
-  m <- x0
-  v <- diag(0,n)
+  filter.mean <- numeric(ntimes)
+  pred.mean <- numeric(ntimes)
+  pred.var <- numeric(ntimes)
+  m <- log(X0)
+  v <- 0
+  S <- exp(-r)
   for (k in seq_len(ntimes)) {
-    pred.mean[,k] <- M <- a%*%m
-    pred.var[,,k] <- V <- a%*%v%*%t(a)+sigma.sq
-    q <- b%*%V%*%t(b)+tau.sq
-    r <- y[,k]-b%*%M
-    cond.loglik[k] <- dmvnorm(x=y[,k],mean=as.numeric(b%*%M),sigma=q,log=TRUE)
-    q <- t(b)%*%inv.tau.sq%*%b+solve(V)
-    v <- solve(q)
-    filter.mean[,k] <- m <- v%*%(t(b)%*%inv.tau.sq%*%y[,k]+solve(V,M))
+    pred.mean[k] <- M <- (1-S)*log(K) + S*m
+    pred.var[k] <- V <- S*v*S+sigma.sq
+    q <- V+tau.sq
+    r <- log(Y[k])-M
+    cond.loglik[k] <- dnorm(x=log(Y[k]),mean=M,sd=sqrt(q),log=TRUE)
+    q <- 1/V+1/tau.sq
+    filter.mean[k] <- m <- (log(Y[k])/tau.sq+M/V)/q
+    v <- 1/q
   }
   list(
        pred.mean=pred.mean,
@@ -449,22 +428,20 @@ As we mentioned before, for this particular example, we can compute the likeliho
 An implementation of the Kalman filter is given in Box~\ref{box:kalman-filter-def}.
 Let's run the Kalman filter on the example data we generated above:
 <<kalman-filter-run>>=
-y <- obs(ou2)
-a <- matrix(theta.guess[c('alpha.1','alpha.2','alpha.3','alpha.4')],nrow=2,ncol=2)
-b <- diag(1,2)   ## b is the identity matrix
-sigma <- matrix(
-                c(
-                  theta.guess['sigma.1'],0,
-                  theta.guess['sigma.2'],theta.guess['sigma.3']
-                  ),
-                nrow=2,ncol=2,byrow=T
-                )
-tau <- diag(theta.guess['tau'],2,2)
-x0 <- init.state(ou2)
-kf <- kalman.filter(y,x0,a,b,sigma,tau)
+y <- obs(gompertz)
+x0 <- init.state(gompertz)
+r <- coef(gompertz,"r")
+K <- coef(gompertz,"K")
+sigma <- coef(gompertz,"sigma")
+tau <- coef(gompertz,"tau")
+kf <- kalman.filter(y,x0,r,K,sigma,tau)
 @ 
-In this case, the Kalman filter gives us a log likelihood of \Sexpr{round(kf$loglik,2)}, 
-while the particle filter with 1000 particles gives \Sexpr{round(pf$loglik,2)}.
+<<kalman-likelihood-correction,echo=F>>=
+loglik.kalman <- kf$loglik-sum(log(obs(gompertz)))
+@ 
+In this case, the Kalman filter gives us a log likelihood of \Sexpr{round(loglik.kalman,2)}, 
+while the particle filter with 1000 particles gives \Sexpr{round(loglik.truth,2)}.
+By comparison, the likelihood at the ``guess'' is \Sexpr{round(loglik.guess,2)}.
 Since the particle filter gives an unbiased estimate of the likelihood, the difference is due to Monte Carlo error in the particle filter.
 One can reduce this error by using a larger number of particles and/or by re-running \code{pfilter} multiple times and averaging the resulting estimated likelihoods.
 The latter approach has the advantage of allowing one to estimate the Monte Carlo error itself.
@@ -476,46 +453,118 @@ The \pomp\ package provides a number of functions to extract or change pieces of
 One can read the documentation on all of these by doing \verb+class?pomp+ and \verb+methods?pomp+.
 For example, as we've already seen, one can coerce a \pomp\ object to a data frame:
 <<eval=F>>=
-as(ou2,"data.frame")
+as(gompertz,"data.frame")
 @ 
 and if we \code{print} a \pomp\ object, the resulting data frame is what is shown, together with the call that created the \pomp\ object.
 One has access to the data and the observation times using
 <<eval=F>>=
-obs(ou2)
-obs(ou2,"y1")
-time(ou2)  
+obs(gompertz)
+obs(gompertz,"Y")
+time(gompertz)  
 @ 
 The observation times can be changed using
 <<eval=F>>=
-time(ou2) <- 1:10
+time(gompertz) <- 1:10
 @ 
 One can respectively view and change the zero-time by
 <<eval=F>>=
-timezero(ou2)
-timezero(ou2) <- -10
+timezero(gompertz)
+timezero(gompertz) <- -10
 @ 
 and can respectively view and change the zero-time together with the observation times by doing, for example
 <<eval=F>>=
-time(ou2,t0=TRUE)  
-time(ou2,t0=T) <- seq(from=0,to=10,by=1)
+time(gompertz,t0=TRUE)  
+time(gompertz,t0=T) <- seq(from=0,to=10,by=1)
 @ 
 Alternatively, one can construct a new pomp object with the same model but with data restricted to a specified window:
 <<eval=F>>=
-window(ou2,start=3,end=20)
+window(gompertz,start=3,end=20)
 @ 
 Note that \code{window} does not change the zero-time.
 One can display and modify model parameters using, e.g.,
 <<eval=F>>=
-coef(ou2)
-coef(ou2,c("sigma.1","sigma.2")) <- c(1,0)
+coef(gompertz)
+coef(gompertz,c("sigma","tau")) <- c(1,0)
 @ 
 Finally, one has access to the unobserved states via, e.g.,
 <<eval=F>>=
-states(ou2)
-states(ou2,"x1")
+states(gompertz)
+states(gompertz,"X")
 @ 
 
 %% In the ``advanced_topics_in_pomp'' vignette, we show how one can get access to more of the underlying structure of a \pomp\ object.
+
+\clearpage
+\section{Transforming parameters}
+
+The parameters in the Gompertz model above are constrained to be positive.
+When we estimate these parameters using numerical search algorithms, we must find some way to ensure that these constraints will be honored.
+A straightforward way to accomplish this is to transform the parameters so that they become unconstrained.
+The following codes re-implement the Gompertz model using transformed parameters.
+
+<<loggomp-proc-sim-def>>=
+gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
+  ## unpack and untransform the parameters:
+  r <- exp(params["log.r"])
+  K <- exp(params["log.K"])
+  sigma <- exp(params["log.sigma"])
+  ## the state at time t:
+  X <- x["X"]
+  ## generate a log-normal random variable:
+  eps <- exp(rnorm(n=1,mean=0,sd=sigma))
+  ## compute the state at time t+1:
+  S <- exp(-r*delta.t)
+  xnew <- c(X=unname(K^(1-S)*X^S*eps))
+  return(xnew)
+}
+@ 
+
+<<loggomp-meas-sim-def>>=
+gompertz.meas.sim <- function (x, t, params, ...) {
+  ## unpack and untransform the parameters:
+  tau <- exp(params["log.tau"])
+  ## state at time t:
+  X <- x["X"]
+  ## generate a simulated observation:
+  y <- c(Y=unname(rlnorm(n=1,meanlog=log(X),sdlog=tau)))
+  return(y)
+}
+@ 
+
+<<loggomp-meas-dens-def>>=
+gompertz.meas.dens <- function (y, x, t, params, log, ...) {
+  ## unpack and untransform the parameters:
+  tau <- exp(params["log.tau"])
+  ## state at time t:
+  X <- x["X"]
+  ## observation at time t:
+  Y <- y["Y"]
+  ## compute the likelihood of Y|X,tau
+  f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
+  return(f)
+}
+@ 
+
+<<loggomp-pomp-construction,eval=F>>=
+dat <- as(gompertz,"data.frame")
+theta <- c(
+           log(coef(gompertz,c("r","K","tau","sigma"))),
+           coef(gompertz,"X.0")
+           )
+names(theta) <- c("log.r","log.K","log.tau","log.sigma","X.0")
+gompertz <- pomp(
+                 data=dat[c("time","Y")],
+                 times="time",
+                 rprocess=discrete.time.sim(gompertz.proc.sim),
+                 rmeasure=gompertz.meas.sim,
+                 dmeasure=gompertz.meas.dens,
+                 t0=0
+                 )
+coef(gompertz) <- theta
+@ 
+
+Note that, in each of the above functions, we \emph{untransform} the parameters before we do any computations.
+A \code{pomp} object corresponding to the one just created (but with the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} bits coded in C for speed) can be loaded by executing \verb+data(gompertz)+.
 
 \clearpage
 \section{Estimating parameters using iterated filtering: \code{mif}}
@@ -524,7 +573,7 @@ Iterated filtering is a technique for maximizing the likelihood obtained by filt
 In \pomp, it is the particle filter that is iterated.
 Iterated filtering is implemented in the \code{mif} function.
 For a description of the algorithm and a description of its theoretical basis, see \citet{Ionides2006}.
-A more complete set of proofs is provided in a forthcoming paper.
+A more complete set of proofs is provided in \citet{Ionides2011}.
 
 The key idea of iterated filtering is to replace the model we are interested in fitting---which has time-invariant parameters---with a model that is just the same except that its parameters take a random walk in time.
 As the intensity of this random walk approaches zero, the modified model approaches the original model.
@@ -539,10 +588,18 @@ As the filtering is iterated, the additional variability is decreased according 
 The cooling schedule can be adjusted in \code{mif}, as can the intensity of the parameter-space random walk and the other algorithm parameters.
 See the documentation (\verb+?mif+) for details.
 
-Let's use iterated filtering to obtain an approximate MLE for the data in \code{ou2}.
-We'll initialize the algorithm at several starting points around \code{theta.true} and just estimate the parameters $\alpha_3$, $\alpha_3$, and $\tau$:
-<<ou2-multi-mif-calc,eval=F,echo=T>>=
-estpars <- c("alpha.2","alpha.3","tau")
+Let's use iterated filtering to obtain an approximate MLE for the data in \code{gompertz}.
+We'll initialize the algorithm at several starting points around \code{theta.true} and just estimate the parameters $r$, $\tau$, and $\sigma$:
+<<echo=F>>=
+data(gompertz)
+theta <- coef(gompertz)
+theta.true <- theta
+theta.guess <- theta.true
+theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
+@ 
+<<gompertz-multi-mif-calc,eval=F,echo=T>>=
+estpars <- c("log.r","log.sigma","log.tau")
+##estivps <- c("X.0")
 mf <- replicate(
                 n=10,
                 {
@@ -553,12 +610,13 @@ mf <- replicate(
                                                  sdlog=0.5
                                                  )*theta.guess[estpars]
                   mif(
-                      ou2,
-                      Nmif=120,
+                      gompertz,
+                      Nmif=100,
                       start=theta.guess,
                       pars=estpars,
+##                      ivps=estivps,
                       rw.sd=c(
-                        alpha.2=0.02,alpha.3=0.02,tau=0.05
+                        log.r=0.02,log.sigma=0.02,log.tau=0.05
                         ),
                       Np=1000,
                       var.factor=4,
@@ -570,25 +628,26 @@ mf <- replicate(
                 )
 @ 
 
-<<ou2-post-mif,eval=F,echo=F>>=
+<<gompertz-post-mif,eval=F,echo=F>>=
 theta.mif <- apply(sapply(mf,coef),1,mean)
 loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
 loglik.mif.sd <- sd(loglik.mif)
-loglik.mif <- -480+log(mean(exp(480+loglik.mif)))
-loglik.true <- replicate(n=10,logLik(pfilter(ou2,params=theta.true,Np=10000)))
+bl <- mean(loglik.mif)
+loglik.mif <- bl+log(mean(exp(-bl+loglik.mif)))
+loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
 loglik.true.sd <- sd(loglik.true)
-loglik.true <- -480+log(mean(exp(480+loglik.true)))
+loglik.true <- bl+log(mean(exp(-bl+loglik.true)))
 @ 
 
-<<ou2-multi-mif-eval,echo=F>>=
+<<gompertz-multi-mif-eval,echo=F>>=
 set.seed(334388458L)
-binary.file <- "ou2-multi-mif.rda"
+binary.file <- "gompertz-multi-mif.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
   tic <- Sys.time()
-<<ou2-multi-mif-calc>>
-<<ou2-post-mif>>
+<<gompertz-multi-mif-calc>>
+<<gompertz-post-mif>>
   toc <- Sys.time()
   etime <- toc-tic
   save(mf,estpars,theta.mif,theta.true,loglik.mif,loglik.true,loglik.mif.sd,loglik.true.sd,etime,file=binary.file)
@@ -604,19 +663,19 @@ Each of the \Sexpr{length(mf)} \code{mif} runs ends up at a different place.
 In this case (but by no means in every case), we can average across these parameter estimates to get an approximate maximum likelihood estimate.
 We'll evaluate the likelihood several times at this estimate to get an idea of the Monte Carlo error in our likelihood estimate.
 <<eval=F>>=
-<<ou2-post-mif>>
+<<gompertz-post-mif>>
 @ 
 
 <<multi-mif-plot,echo=F,eval=F>>=
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 loglik <- sapply(mf,function(x)conv.rec(x,"loglik"))
-alpha.2 <- sapply(mf,function(x)conv.rec(x,"alpha.2"))
-alpha.3 <- sapply(mf,function(x)conv.rec(x,"alpha.3"))
-tau <- sapply(mf,function(x)conv.rec(x,"tau"))
-matplot(loglik,type='l',lty=1,xlab="",ylab=expression(paste(log,L)),xaxt='n')
-matplot(alpha.2,type='l',lty=1,xlab="",ylab=expression(alpha[2]),xaxt='n')
-matplot(alpha.3,type='l',lty=1,xlab="",ylab=expression(alpha[3]),xaxt='n')
-matplot(tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(tau))
+log.r <- sapply(mf,function(x)conv.rec(x,"log.r"))
+log.sigma <- sapply(mf,function(x)conv.rec(x,"log.sigma"))
+log.tau <- sapply(mf,function(x)conv.rec(x,"log.tau"))
+matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n')
+matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
+matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
+matplot(log.tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(log~tau))
 par(op)
 @ 
 
@@ -652,78 +711,79 @@ In the continuous-time case, this is the vectorfield
 \begin{equation*}
   x\,\mapsto\,\lim_{{\Delta}{t}\,\to\,0}\,\expect{\frac{X_{t+{\Delta}{t}}-x}{{\Delta}{t}}\;\Big{\vert}\;X_{t}=x,\theta}.
 \end{equation*}
-Our discrete-time bivariate autoregressive process has the deterministic skeleton
-\begin{equation}\label{eq:ou-skel}
-  x\,\mapsto\,\alpha\,x,
+Our discrete-time Gompertz has the deterministic skeleton
+\begin{equation}\label{eq:gompertz-skel}
+  x\,\mapsto\,K^{1-R}\,x^{R},
 \end{equation}
 which can be implemented in the \R\ function
-<<ou2-skeleton-def,echo=T>>=
-ou2.skel <- function (x, t, params, ...) {
-  xnew <- c(
-            params["alpha.1"]*x["x1"]+params["alpha.3"]*x["x2"],
-            params["alpha.2"]*x["x1"]+params["alpha.4"]*x["x2"]
-            )
-  names(xnew) <- c("x1","x2")
-  xnew
+<<gompertz-skeleton-def,echo=T>>=
+gompertz.skel <- function (x, t, params, ...) {
+  delta.t <- 1
+  r <- exp(params["log.r"])
+  K <- exp(params["log.K"])
+  X <- x["X"]
+  S <- exp(-r*delta.t)
+  xnew <- c(X=unname(K^(1-S)*X^S))
+  return(xnew)
 }
 @ 
 
 We can incorporate the deterministic skeleton into a new \pomp\ object via the \code{skeleton.map} argument:
-<<new-ou2-pomp-construction,echo=T>>=
-dat <- subset(as(ou2,"data.frame"),time<=60)
-theta <- coef(ou2)
-new.ou2 <- pomp(
-                data=dat[c("time","y1","y2")],
-                times="time",
-                rprocess=discrete.time.sim(ou2.proc.sim),
-                rmeasure=ou2.meas.sim,
-                dmeasure=ou2.meas.dens,
-                skeleton.map=ou2.skel,
-                t0=0
-                )
-coef(new.ou2) <- theta
-coef(new.ou2,"tau") <- 0.5
-coef(new.ou2,c("sigma.1","sigma.2","sigma.3")) <- 0
-new.ou2 <- simulate(new.ou2,seed=88737400L)
+<<new-gompertz-pomp-construction,echo=T>>=
+dat <- subset(as(gompertz,"data.frame"),time<=60)
+theta <- coef(gompertz)
+new.gompertz <- pomp(
+                     data=dat[c("time","Y")],
+                     times="time",
+                     rprocess=discrete.time.sim(gompertz.proc.sim),
+                     rmeasure=gompertz.meas.sim,
+                     dmeasure=gompertz.meas.dens,
+                     skeleton.map=gompertz.skel,
+                     t0=0
+                     )
+coef(new.gompertz) <- theta
+coef(new.gompertz,"X.0") <- 0.5
+coef(new.gompertz,"log.r") <- log(0.1)
+coef(new.gompertz,"log.tau") <- log(0.05)
+coef(new.gompertz,"log.sigma") <- log(0.05)
+new.gompertz <- simulate(new.gompertz,seed=88737400L)
 @ 
 We use the \code{skeleton.map} argument for discrete-time processes and \code{skeleton.vectorfield} for continuous-time processes.
-Note that we have turned off the process noise in \code{new.ou2} (next to last line) so that trajectory matching is actually formally appropriate for this model.
+%% Note that we have turned off the process noise in \code{new.gompertz} (next to last line) so that trajectory matching is actually formally appropriate for this model.
 
 The \pomp\ function \code{traj.match} calls the optimizer \code{optim} to minimize the discrepancy between the trajectory and the data.
 The discrepancy is measured using the \code{dmeasure} function from the \pomp\ object.
 Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
-<<ou2-trajmatch-calc,eval=F>>=
+<<gompertz-trajmatch-calc,eval=F>>=
 tm <- traj.match(
-                 new.ou2,
-                 start=coef(new.ou2),
-                 est=c("alpha.2","alpha.3","tau","x1.0","x2.0"),
+                 new.gompertz,
+                 start=coef(new.gompertz),
+                 est=c("log.r","log.K","log.tau","X.0"),
                  method="Nelder-Mead",
                  maxit=1000,
                  reltol=1e-8
                  )
 @ 
-<<ou2-trajmatch-eval,echo=F,eval=T>>=
-binary.file <- "ou2-trajmatch.rda"
+<<gompertz-trajmatch-eval,echo=F,eval=T>>=
+binary.file <- "gompertz-trajmatch.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-<<ou2-trajmatch-calc>>
-  save(new.ou2,tm,file=binary.file)
+<<gompertz-trajmatch-calc>>
+  save(new.gompertz,tm,file=binary.file)
 }
 @
 
 \begin{figure}
 <<trajmatch-plot,fig=T,echo=F,eval=T>>=
-op <- par(mfrow=c(2,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-plot(time(tm),obs(tm,"y1"),xlab="",xaxt='n',ylab=expression(y[1]))
-lines(time(tm),states(tm,"x1"),lwd=2)
-plot(time(tm),obs(tm,"y2"),xlab="time",ylab=expression(y[2]))
-lines(time(tm),states(tm,"x2"),lwd=2)
+op <- par(mfrow=c(1,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
+plot(time(tm),obs(tm,"Y"),xlab="",xaxt='n',ylab=expression(X,Y),type='o')
+lines(time(tm),states(tm,"X"),lwd=2)
 par(op)
 @ 
 \caption{
   Illustration of trajectory matching.
-  The points show data simulated from \code{new.ou2}, which has no process noise but only measurement error.
+  The points show data simulated from \code{new.gompertz}, which has no process noise but only measurement error.
   The solid line shows the trajectory of the best-fitting model, obtained using \code{traj.match}.
 }
 \label{fig:trajmatch-plot}
@@ -947,7 +1007,7 @@ print(res,digits=3)
 <<first-nlf,echo=F,eval=F>>=
 estnames <- c('alpha.2','alpha.3','tau')
 out <- nlf(
-           ou2,
+           gompertz,
            start=theta.guess,
            nasymp=2000,
            est=estnames,

@@ -66,9 +66,13 @@ setMethod(
           "states",
           "pomp",
           function (object, vars, ...) {
-            if (missing(vars))
-              vars <- seq(length=nrow(object@states))
-            object@states[vars,,drop=FALSE]
+            if (length(object@states)==0) {
+              NULL
+            } else {
+              if (missing(vars))
+                vars <- seq(length=nrow(object@states))
+              object@states[vars,,drop=FALSE]
+            }
           }
           )
 
