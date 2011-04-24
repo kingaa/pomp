@@ -1,3 +1,12 @@
+2011-04-24  kingaa
+
+	* [r446] DESCRIPTION, R/pfilter.R, inst/ChangeLog, src/resample.c:
+	  - fix bug in 'pfilter' introduced in version 0.32-6 (rev 315):
+	  upon filtering failure, state variables were left un-updated.
+	  Thanks to Karim Khader for noticing circumstances that led to the
+	  notice of this bug.
+	  - minor rearrangement of the codes in resample.c
+
 2011-04-20  kingaa
 
 	* [r445] DESCRIPTION, data/dacca.rda, data/euler.sir.rda,
