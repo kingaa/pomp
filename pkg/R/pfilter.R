@@ -217,8 +217,9 @@ pfilter.internal <- function (object, params, Np,
       nfail <- nfail+1
       if (verbose)
         message("filtering failure at time t = ",times[nt+1])
-      if (nfail > max.fail)
+      if (nfail>max.fail)
         stop(sQuote("pfilter")," error: too many filtering failures",call.=FALSE)
+      x[,] <- X[,,1,drop=FALSE]
     } else { ## matrix with samples (columns) from filtering distribution theta.t | Y.t
       sample <- .Call(systematic_resampling,weights)
       x[,] <- X[,sample,1,drop=FALSE]

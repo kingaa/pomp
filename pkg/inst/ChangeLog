@@ -1,3 +1,26 @@
+2011-04-20  kingaa
+
+	* [r445] DESCRIPTION, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
+	  data/ricker.rda, data/rw2.rda, data/verhulst.rda,
+	  inst/data-R/gompertz.R, inst/doc/gompertz-multi-mif.rda,
+	  inst/doc/gompertz-trajmatch.rda, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/ou2-multi-mif.rda,
+	  inst/doc/ou2-trajmatch.rda, src/gompertz.c: - improvements to the
+	  "intro" vignette
+	  - fix problem with gompertz measurement model
+	* [r444] DESCRIPTION, R/pomp-methods.R, data/dacca.rda,
+	  data/euler.sir.rda, data/gillespie.sir.rda, data/gompertz.rda,
+	  data/ou2.rda, data/ricker.rda, data/rw2.rda, data/verhulst.rda,
+	  inst/ChangeLog, inst/data-R/gompertz.R,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/gompertz-multi-mif.rda, inst/doc/gompertz-trajmatch.rda,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/pomp.bib, man/gompertz.Rd, src/gompertz.c: - fix bug in
+	  'states' method when 'states' slot is empty
+	  - add Gompertz model
+	  - edit 'intro_to_pomp' vignette to focus on Gompertz model
+
 2011-04-19  kingaa
 
 	* [r443] tests/synlik.Rout.save: - add tests/synlik.Rout.save file
