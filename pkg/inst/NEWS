@@ -1,3 +1,18 @@
+NEW IN VERSION 0.36-5:
+
+    o  The "intro_to_pomp" vignette has been updated.  The first part of the vignette centers on a new, more transparent first example.
+
+    o  A bug in 'pfilter' has been fixed.  This bug was introduced in version 0.32-6 (SVN revision 315).  Upon filtering failure, state variables were left un-updated.  Thanks to Karim Khader for reporting circumstances that led to the identification of this bug.
+
+    o  There is now a method for 'loglik' on 'probed.pomp' objects.  This returns the synthetic likelihood.
+
+    o  The box-constrained simulated annealing optimization method 'sannbox' is now an option in 'probe.match'.
+
+    o  Calling 'states' on a pomp object having no unobserved states now fails gracefully (returning NULL rather than generating an error).
+
+    o  The rprocess plugin 'discrete.time.sim' now takes an optional 'delta.t' argument to allow for arbitrary (but still necessarily regular) spacing of observations.  By default, delta.t=1.
+
+
 NEW IN VERSION 0.36-1:
 
     o  There are two new classes: 'traj.matched.pomp' and 'pfilterd.pomp' to hold the results of 'traj.match' and 'pfilter' computations, respectively.  The old classes 'mif' and 'pmcmc' now inherit from 'pfilterd.pomp' in a natural way.

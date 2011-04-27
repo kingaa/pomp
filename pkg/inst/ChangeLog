@@ -1,5 +1,7 @@
 2011-04-24  kingaa
 
+	* [r447] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
 	* [r446] DESCRIPTION, R/pfilter.R, inst/ChangeLog, src/resample.c:
 	  - fix bug in 'pfilter' introduced in version 0.32-6 (rev 315):
 	  upon filtering failure, state variables were left un-updated.
