@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,6 +17,9 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
 > 
 > data(ricker)
 > 
@@ -308,7 +312,7 @@ $synth.loglik
 +                               )
 +             )
    user  system elapsed 
- 13.482   0.016  13.516 
+ 13.888   0.047  13.965 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -367,7 +371,7 @@ $synth.loglik
 +                               )
 +             )
    user  system elapsed 
- 10.165   0.030  10.208 
+ 10.304   0.041  10.366 
 > plot(pm)
 > plot(as(pm,"pomp"),variables="y")
 > plot(simulate(pm),variables="y")
@@ -526,7 +530,7 @@ $pvals
 0.8171828 0.8171828 0.1358641 0.6313686 0.2117882 0.2677323 
 
 $synth.loglik
-[1] 29.83407
+[1] 30.22958
 
 > plot(pb)
 > 

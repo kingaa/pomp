@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,6 +17,9 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
 > set.seed(1066L)
 > 
 > data(ou2)
@@ -189,7 +193,7 @@ In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
 > y2 <- head(x$y2,-1)
 > z2 <- tail(x$y2,-1)
 > max(abs(pb@datvals-c(mean(y1*z1)/mean(x$y1^2),mean(y2*z2)/mean(x$y2^2),mean(y1*z1)/mean(y1*y1),mean(y2*z2)/mean(y2*y2))))
-[1] 4.440892e-16
+[1] 1.221245e-15
 > 
 > po <- simulate(ou2)
 > pb <- probe(
@@ -219,7 +223,7 @@ $pvals
 0.3016983 0.2957043 0.3216783 0.3016983 0.2957043 0.3216783 
 
 $synth.loglik
-[1] 86.8972
+[1] 89.34863
 
 > 
 > pb <- probe(

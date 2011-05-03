@@ -87,6 +87,7 @@ pfilter.internal <- function (object, params, Np,
     sigma <- .rw.sd
   } else {
     rw.names <- character(0)
+    sigma <- NULL
   }
   
   loglik <- rep(NA,ntimes)
@@ -189,22 +190,26 @@ pfilter.internal <- function (object, params, Np,
     }
 
     ## prediction mean, prediction variance, filtering mean, effective sample size, log-likelihood
+    ## also do resampling if filtering has not failed
     xx <- try(
               .Call(
                     pfilter_computations,
                     X,params,
-                    random.walk,rw.names,
+                    random.walk,sigma,
                     pred.mean,pred.var,
                     filter.mean,weights,tol
                     ),
               silent=FALSE
               )
     if (inherits(xx,'try-error')) {
-      stop(sQuote("pfilter")," error: error in prediction mean/variance computation",call.=FALSE)
+      stop(sQuote("pfilter")," error",call.=FALSE)
     }
     all.fail <- xx$fail
     loglik[nt] <- xx$loglik
     eff.sample.size[nt] <- xx$ess
+
+    x <- xx$states
+    params <- xx$params
 
     if (pred.mean)
       pred.m[,nt] <- xx$pm
@@ -219,19 +224,8 @@ pfilter.internal <- function (object, params, Np,
         message("filtering failure at time t = ",times[nt+1])
       if (nfail>max.fail)
         stop(sQuote("pfilter")," error: too many filtering failures",call.=FALSE)
-      x[,] <- X[,,1,drop=FALSE]
-    } else { ## matrix with samples (columns) from filtering distribution theta.t | Y.t
-      sample <- .Call(systematic_resampling,weights)
-      x[,] <- X[,sample,1,drop=FALSE]
-      params <- params[,sample,drop=FALSE]
     }
-
-    ## random walk for parameters
-    if (random.walk) {
-      pred.v[rw.names,nt] <- pred.v[rw.names,nt]+sigma^2
-      params[rw.names,] <- rnorm(n=Np*length(sigma),mean=params[rw.names,],sd=sigma)
-    }
-
+    
     if (save.states) {
       xparticles[,,nt] <- x
     }

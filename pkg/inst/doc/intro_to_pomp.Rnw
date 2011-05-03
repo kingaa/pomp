@@ -140,14 +140,14 @@ This will allow us to compare the results from generalizable plug-and-play metho
 Later we'll look at a continuous-time model for which no such special tricks are available.
 
 Consider the discrete-time Gompertz model of population growth.
-Under this model, the density, $X_{t+1}$, of a population of plants or animals at time $t+{\Delta}t$ depends on the density, $X_{t}$, at time $t$ according to
+Under this model, the density, $X_{t+{\Delta}t}$, of a population of plants or animals at time $t+{\Delta}t$ depends on the density, $X_{t}$, at time $t$ according to
 \begin{equation}\label{eq:gompertz1}
-  X_{t+1}=K^{1-e^{-r\,{\Delta}t}}\,X_{t}^{e^{-r\,{\Delta}t}}\,\varepsilon_{t},
+  X_{t+{\Delta}t}=K^{1-e^{-r\,{\Delta}t}}\,X_{t}^{e^{-r\,{\Delta}t}}\,\varepsilon_{t},
 \end{equation}
 where $K$ is the so-called ``carrying capacity'' of the population, $r$ is a positive parameter, and the $\varepsilon_{t}$ are independent and identically-distributed lognormal random variables.
 In different notation, this model is
 \begin{equation}\label{eq:gompertz2}
-  \log{X_{t+1}}\;\sim\;\mathrm{normal}(\log{K}+\log{\left(\frac{X_t}{K}\right)}\,e^{-r\,{\Delta}t},\sigma),
+  \log{X_{t+{\Delta}t}}\;\sim\;\mathrm{normal}(\log{K}+\log{\left(\frac{X_t}{K}\right)}\,e^{-r\,{\Delta}t},\sigma),
 \end{equation}
 where $\sigma^2={\mathrm{Var}[\log{\epsilon_{t}}]}$.
 We'll assume that we can measure the population density only with error.
@@ -166,12 +166,12 @@ For now, let's approach this model as we would a more complex model for which no
 In order to fully specify this partially-observed Markov process, we must implement both the process model (i.e., the unobserved process) and the measurement model (the observation process).
 As we saw before, we would like to be able to:
 \begin{enumerate}
-\item \label{it:rproc} simulate from the process model, i.e., make a random draw from $X_{t+1}\,\vert\,X_{t}=x$ for arbitrary $x$ and $t$ (\code{rprocess}),
-\item \label{it:dproc} compute the probability density function (pdf) of state transitions, i.e., compute $f(X_{t+1}=x'\,\vert\,X_{t}=x)$ for arbitrary $x$, $x'$, and $t$ (\code{dprocess}),
+\item \label{it:rproc} simulate from the process model, i.e., make a random draw from $X_{t+{\Delta}t}\,\vert\,X_{t}=x$ for arbitrary $x$ and $t$ (\code{rprocess}),
+\item \label{it:dproc} compute the probability density function (pdf) of state transitions, i.e., compute $f(X_{t+{\Delta}t}=x'\,\vert\,X_{t}=x)$ for arbitrary $x$, $x'$, $t$, and ${\Delta}t$ (\code{dprocess}),
 \item \label{it:rmeas} simulate from the measurement model, i.e., make a random draw from $Y_{t}\,\vert\,X_{t}=x$ for arbitrary $x$ and $t$ (\code{rmeasure}),
 \item \label{it:dmeas} compute the measurement model pdf, i.e., $f(Y_{t}=y\,\vert\,X_{t}=x)$ for arbitrary $x$, $y$, and $t$ (\code{dmeasure}), and
 \item \label{it:skel} compute the \emph{deterministic skeleton}.
-  In discrete-time, this is the map $x\,\mapsto\,\mathbb{E}[X_{t+1}\,\vert\,X_{t}=x]$ for arbitrary $x$.
+  In discrete-time, this is the map $x\,\mapsto\,\mathbb{E}[X_{t+{\Delta}t}\,\vert\,X_{t}=x]$ for arbitrary $x$.
 \end{enumerate}
 For this simple model, all this is easy enough.
 More generally, it will be difficult to do some of these things.
@@ -257,7 +257,7 @@ We'll need this later on for likelihood-based inference.
 Note that \code{gompertz.meas.dens} is closely related to \code{gompertz.meas.sim}.
 
 \clearpage
-\section{Simulating the model}
+\section{Simulating the model: \code{simulate}}
 
 With the two functions above, we already have all we need to simulate the full model.
 The first step is to construct an \R\ object of class \pomp\ which will serve as a container to hold the model and data.
@@ -342,7 +342,7 @@ plot(gompertz,variables=c("Y"))
 \label{fig:gompertz-first-simulation-plot}
 \end{figure}
 
-\section{Computing likelihood using particle filtering}
+\section{Computing likelihood using particle filtering: \code{pfilter}}
 
 Some parameter estimation algorithms in the \pomp\ package only require \code{rprocess} and \code{rmeasure}.
 These include the nonlinear forecasting algorithm \code{nlf} and the probe-matching algorithm \code{probe.match}.
