@@ -1,0 +1,668 @@
+
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> set.seed(343435488L)
+> 
+> pdf(file="sir-icfit.pdf")
+> 
+> data(euler.sir)
+> po <- window(euler.sir,end=0.25)
+> guess <- coef(po)
+> ics <- c("S.0","I.0","R.0") 
+> guess[ics[-3]] <- guess[ics[-3]]+c(0.5,-0.3)
+> 
+> plist <- list(
++               probe.marginal("reports",ref=obs(po),order=3,diff=1,transform=sqrt),
++               probe.acf("reports",lags=c(0,1,2,3,4,5),transform=sqrt),
++               median=probe.median("reports")
++               )
+> 
+> summary(pm.true <- probe(po,probes=plist,nsim=100,seed=1066L))
+$coef
+      gamma          mu        iota      nbasis      degree      period 
+ 3.25809654 -3.91202301 -4.60517019  3.00000000  3.00000000  1.00000000 
+      beta1       beta2       beta3     beta.sd         pop         rho 
+ 7.09007684  7.49554194  6.39692966 -6.90775528 14.55744790 -0.51082562 
+        S.0         I.0         R.0 
+-3.83198030 -6.90775528 -0.02292750 
+
+$nsim
+[1] 100
+
+$quantiles
+       marg.1        marg.2        marg.3 acf.0.reports acf.1.reports 
+         0.93          0.97          0.08          0.89          0.87 
+acf.2.reports acf.3.reports acf.4.reports acf.5.reports        median 
+         0.81          0.78          0.23          0.36          0.35 
+
+$pvals
+       marg.1        marg.2        marg.3 acf.0.reports acf.1.reports 
+   0.15841584    0.07920792    0.17821782    0.23762376    0.27722772 
+acf.2.reports acf.3.reports acf.4.reports acf.5.reports        median 
+   0.39603960    0.45544554    0.47524752    0.73267327    0.71287129 
+
+$synth.loglik
+[1] -4.012907
+
+> 
+> summary(pm.guess <- probe(po,params=guess,probes=plist,nsim=100,seed=1066L))
+$coef
+      gamma          mu        iota      nbasis      degree      period 
+ 3.25809654 -3.91202301 -4.60517019  3.00000000  3.00000000  1.00000000 
+      beta1       beta2       beta3     beta.sd         pop         rho 
+ 7.09007684  7.49554194  6.39692966 -6.90775528 14.55744790 -0.51082562 
+        S.0         I.0         R.0 
+-3.33198030 -7.20775528 -0.02292750 
+
+$nsim
+[1] 100
+
+$quantiles
+       marg.1        marg.2        marg.3 acf.0.reports acf.1.reports 
+            0             1             0             0             0 
+acf.2.reports acf.3.reports acf.4.reports acf.5.reports        median 
+            0             0             0             1             0 
+
+$pvals
+       marg.1        marg.2        marg.3 acf.0.reports acf.1.reports 
+   0.01980198    0.01980198    0.01980198    0.01980198    0.01980198 
+acf.2.reports acf.3.reports acf.4.reports acf.5.reports        median 
+   0.01980198    0.01980198    0.01980198    0.01980198    0.01980198 
+
+$synth.loglik
+[1] -1247.474
+
+> 
+> pm.fit <- probe.match(
++                       po,
++                       start=guess,
++                       probes=plist,
++                       est=ics[-1],
++                       method="Nelder-Mead",
++                       trace=3,
++                       reltol=1e-5,
++                       parscale=c(0.1,0.1),
++                       nsim=100,
++                       seed=1066L
++                      )
+  Nelder-Mead direct search function minimizer
+function value for initial parameters = 1247.473783
+  Scaled convergence tolerance is 0.0124747
+Stepsize computed as 7.207755
+BUILD              3 1882.104083 1247.473783
+HI-REDUCTION       5 1273.599371 321.643854
+HI-REDUCTION       7 1247.473783 50.803164
+LO-REDUCTION       9 321.643854 30.294611
+HI-REDUCTION      11 83.364824 30.294611
+HI-REDUCTION      13 51.401288 30.294611
+HI-REDUCTION      15 50.803164 30.294611
+EXTENSION         17 45.048892 12.640485
+REFLECTION        19 30.294611 5.652463
+HI-REDUCTION      21 14.282091 5.652463
+HI-REDUCTION      23 12.640485 5.652463
+REFLECTION        25 8.321974 4.949657
+HI-REDUCTION      27 6.048930 4.949657
+LO-REDUCTION      29 5.652463 4.949657
+SHRINK            33 5.636242 4.949657
+LO-REDUCTION      35 5.525022 4.306266
+HI-REDUCTION      37 4.949657 3.956195
+SHRINK            41 6.425156 3.956195
+LO-REDUCTION      43 4.572072 3.956195
+LO-REDUCTION      45 4.137456 3.956195
+SHRINK            49 6.284694 3.956195
+LO-REDUCTION      51 4.866083 3.956195
+SHRINK            55 5.731239 3.956195
+LO-REDUCTION      57 4.807376 3.956195
+SHRINK            61 5.951373 3.956195
+LO-REDUCTION      63 5.871587 3.956195
+REFLECTION        65 5.226899 3.953204
+LO-REDUCTION      67 4.191270 3.953204
+SHRINK            71 5.553088 3.805070
+HI-REDUCTION      73 5.039328 3.805070
+LO-REDUCTION      75 4.677420 3.805070
+SHRINK            79 5.039328 3.805070
+SHRINK            83 5.553088 3.805070
+LO-REDUCTION      85 5.039328 3.805070
+SHRINK            89 5.553088 3.805070
+Exiting from Nelder Mead minimizer
+    91 function evaluations used
+> 
+> summary(pm.fit)
+$coef
+     gamma         mu       iota     nbasis     degree     period      beta1 
+ 3.2580965 -3.9120230 -4.6051702  3.0000000  3.0000000  1.0000000  7.0900768 
+     beta2      beta3    beta.sd        pop        rho        S.0        I.0 
+ 7.4955419  6.3969297 -6.9077553 14.5574479 -0.5108256 -3.3319803 -6.4597344 
+       R.0 
+ 0.4722391 
+
+$nsim
+[1] 100
+
+$quantiles
+       marg.1        marg.2        marg.3 acf.0.reports acf.1.reports 
+         0.93          0.98          0.03          0.63          0.57 
+acf.2.reports acf.3.reports acf.4.reports acf.5.reports        median 
+         0.55          0.53          0.10          0.45          0.57 
+
+$pvals
+       marg.1        marg.2        marg.3 acf.0.reports acf.1.reports 
+   0.15841584    0.05940594    0.07920792    0.75247525    0.87128713 
+acf.2.reports acf.3.reports acf.4.reports acf.5.reports        median 
+   0.91089109    0.95049505    0.21782178    0.91089109    0.87128713 
+
+$synth.loglik
+[1] -3.805070
+
+$est
+[1] "I.0" "R.0"
+
+$weights
+[1] 1
+
+$value
+[1] 3.805070
+
+$eval
+[1] 91 NA
+
+$convergence
+[1] 0
+
+> 
+> comp.table <- cbind(true=exp(coef(po,ics)),guess=exp(guess[ics]),fit=exp(coef(pm.fit,ics)))
+> comp.table <- apply(comp.table,2,function(x)x/sum(x))
+> comp.table <- rbind(
++                     comp.table,
++                     synth.loglik=c(
++                       summary(pm.true)$synth.loglik,
++                       summary(pm.guess)$synth.loglik,
++                       summary(pm.fit)$synth.loglik
++                       )
++                     )
+> comp.table
+                    true         guess           fit
+S.0           0.02166667  3.523616e-02  0.0217703602
+I.0           0.00100000  7.307367e-04  0.0009538922
+R.0           0.97733333  9.640331e-01  0.9772757476
+synth.loglik -4.01290746 -1.247474e+03 -3.8050695934
+> 
+> x <- sapply(
++             list(true=pm.true,guess=pm.guess,fit=pm.fit),
++             function (x) trajectory(x,times=time(x),t0=timezero(x))["cases",1,]
++             )
+> 
+> plot(range(time(po)),range(c(states(po,"cases"),x)),bty='l',xlab="time",ylab="cases",type='n')
+> points(time(po),states(po,"cases"))
+> matlines(time(po),x,lty=1,col=c("red","blue","green"))
+> legend("topright",lty=1,bty='n',col=c("red","blue","green"),legend=colnames(x))
+> 
+> data(euler.sir)
+> po <- window(euler.sir,end=0.25)
+> guess <- coef(po)
+> ics <- c("S.0","I.0","R.0") 
+> guess[ics[-3]] <- guess[ics[-3]]+c(0.1,-0.2)
+> 
+> summary(tm.true <- traj.match(po,eval.only=TRUE))
+$params
+      gamma          mu        iota      nbasis      degree      period 
+ 3.25809654 -3.91202301 -4.60517019  3.00000000  3.00000000  1.00000000 
+      beta1       beta2       beta3     beta.sd         pop         rho 
+ 7.09007684  7.49554194  6.39692966 -6.90775528 14.55744790 -0.51082562 
+        S.0         I.0         R.0 
+-3.83198030 -6.90775528 -0.02292750 
+
+$loglik
+[1] -82.95589
+
+$eval
+[1] 1 0
+
+$convergence
+[1] NA
+
+$msg
+[1] "no optimization performed"
+
+> 
+> summary(tm.guess <- traj.match(po,start=guess,eval.only=TRUE))
+$params
+      gamma          mu        iota      nbasis      degree      period 
+ 3.25809654 -3.91202301 -4.60517019  3.00000000  3.00000000  1.00000000 
+      beta1       beta2       beta3     beta.sd         pop         rho 
+ 7.09007684  7.49554194  6.39692966 -6.90775528 14.55744790 -0.51082562 
+        S.0         I.0         R.0 
+-3.73198030 -7.10775528 -0.02292750 
+
+$loglik
+[1] -557.4875
+
+$eval
+[1] 1 0
+
+$convergence
+[1] NA
+
+$msg
+[1] "no optimization performed"
+
+> 
+> tm.fit <- traj.match(
++                      po,
++                      start=guess,
++                      est=ics[-1],
++                      method="sannbox",
++                      maxit=300,
++                      trace=2,
++                      parscale=c(0.1,0.1)
++                      )
+initial evaluation:  557.4875 
+iter  1  val= 202.5355 , accept= TRUE 
+iter  2  val= 202.5355 , accept= FALSE 
+iter  3  val= 202.5355 , accept= FALSE 
+iter  4  val= 202.5355 , accept= FALSE 
+iter  5  val= 202.5355 , accept= FALSE 
+iter  6  val= 202.5355 , accept= FALSE 
+iter  7  val= 202.5355 , accept= FALSE 
+iter  8  val= 202.5355 , accept= FALSE 
+iter  9  val= 202.5355 , accept= FALSE 
+iter  10  val= 202.5355 , accept= FALSE 
+iter  11  val= 202.5355 , accept= FALSE 
+iter  12  val= 202.5355 , accept= FALSE 
+iter  13  val= 202.5355 , accept= FALSE 
+iter  14  val= 202.5355 , accept= FALSE 
+iter  15  val= 202.5355 , accept= FALSE 
+iter  16  val= 202.5355 , accept= FALSE 
+iter  17  val= 202.5355 , accept= FALSE 
+iter  18  val= 202.5355 , accept= FALSE 
+iter  19  val= 202.5355 , accept= FALSE 
+iter  20  val= 162.2567 , accept= TRUE 
+iter  21  val= 162.2567 , accept= FALSE 
+iter  22  val= 162.2567 , accept= FALSE 
+iter  23  val= 162.2567 , accept= FALSE 
+iter  24  val= 162.2567 , accept= FALSE 
+iter  25  val= 162.2567 , accept= FALSE 
+iter  26  val= 162.2567 , accept= FALSE 
+iter  27  val= 141.8041 , accept= TRUE 
+iter  28  val= 141.8041 , accept= FALSE 
+iter  29  val= 130.7353 , accept= TRUE 
+iter  30  val= 130.7353 , accept= FALSE 
+iter  31  val= 130.7353 , accept= FALSE 
+iter  32  val= 130.7353 , accept= FALSE 
+iter  33  val= 130.7353 , accept= FALSE 
+iter  34  val= 130.7353 , accept= FALSE 
+iter  35  val= 130.7353 , accept= FALSE 
+iter  36  val= 130.7353 , accept= FALSE 
+iter  37  val= 130.7353 , accept= FALSE 
+iter  38  val= 130.7353 , accept= FALSE 
+iter  39  val= 130.7353 , accept= FALSE 
+iter  40  val= 130.7353 , accept= FALSE 
+iter  41  val= 130.7353 , accept= FALSE 
+iter  42  val= 130.7353 , accept= FALSE 
+iter  43  val= 130.7353 , accept= FALSE 
+iter  44  val= 130.7353 , accept= FALSE 
+iter  45  val= 130.7353 , accept= FALSE 
+iter  46  val= 130.7353 , accept= FALSE 
+iter  47  val= 123.9158 , accept= TRUE 
+iter  48  val= 123.1513 , accept= TRUE 
+iter  49  val= 123.1513 , accept= FALSE 
+iter  50  val= 123.1513 , accept= FALSE 
+iter  51  val= 123.1513 , accept= FALSE 
+iter  52  val= 123.1513 , accept= FALSE 
+iter  53  val= 123.1513 , accept= FALSE 
+iter  54  val= 123.1513 , accept= FALSE 
+iter  55  val= 123.1513 , accept= FALSE 
+iter  56  val= 123.1513 , accept= FALSE 
+iter  57  val= 123.1513 , accept= FALSE 
+iter  58  val= 113.3106 , accept= TRUE 
+iter  59  val= 113.3106 , accept= FALSE 
+iter  60  val= 113.3106 , accept= FALSE 
+iter  61  val= 113.3106 , accept= FALSE 
+iter  62  val= 109.4542 , accept= TRUE 
+iter  63  val= 109.4542 , accept= FALSE 
+iter  64  val= 107.3697 , accept= TRUE 
+iter  65  val= 107.3697 , accept= FALSE 
+iter  66  val= 107.3697 , accept= FALSE 
+iter  67  val= 107.3697 , accept= FALSE 
+iter  68  val= 105.1804 , accept= TRUE 
+iter  69  val= 105.1804 , accept= FALSE 
+iter  70  val= 105.1804 , accept= FALSE 
+iter  71  val= 105.1804 , accept= FALSE 
+iter  72  val= 105.1804 , accept= FALSE 
+iter  73  val= 105.1804 , accept= FALSE 
+iter  74  val= 105.1804 , accept= FALSE 
+iter  75  val= 105.1804 , accept= FALSE 
+iter  76  val= 105.1804 , accept= FALSE 
+iter  77  val= 105.1804 , accept= FALSE 
+iter  78  val= 105.1804 , accept= FALSE 
+iter  79  val= 102.0452 , accept= TRUE 
+iter  80  val= 102.0452 , accept= FALSE 
+iter  81  val= 102.0452 , accept= FALSE 
+iter  82  val= 102.0452 , accept= FALSE 
+iter  83  val= 102.0452 , accept= FALSE 
+iter  84  val= 102.0452 , accept= FALSE 
+iter  85  val= 96.87843 , accept= TRUE 
+iter  86  val= 96.87843 , accept= FALSE 
+iter  87  val= 96.87843 , accept= FALSE 
+iter  88  val= 96.56392 , accept= TRUE 
+iter  89  val= 96.56392 , accept= FALSE 
+iter  90  val= 96.56392 , accept= FALSE 
+iter  91  val= 96.56392 , accept= FALSE 
+iter  92  val= 96.56392 , accept= FALSE 
+iter  93  val= 96.56392 , accept= FALSE 
+iter  94  val= 96.56392 , accept= FALSE 
+iter  95  val= 96.56392 , accept= FALSE 
+iter  96  val= 93.35854 , accept= TRUE 
+iter  97  val= 93.35854 , accept= FALSE 
+iter  98  val= 93.35854 , accept= FALSE 
+iter  99  val= 93.35854 , accept= FALSE 
+iter  100  val= 93.35854 , accept= FALSE 
+iter  101  val= 93.35854 , accept= FALSE 
+iter  102  val= 93.35854 , accept= FALSE 
+iter  103  val= 89.3218 , accept= TRUE 
+iter  104  val= 88.1193 , accept= TRUE 
+iter  105  val= 88.1193 , accept= FALSE 
+iter  106  val= 88.1193 , accept= FALSE 
+iter  107  val= 88.1193 , accept= FALSE 
+iter  108  val= 88.1193 , accept= FALSE 
+iter  109  val= 88.1193 , accept= FALSE 
+iter  110  val= 88.1193 , accept= FALSE 
+iter  111  val= 88.1193 , accept= FALSE 
+iter  112  val= 88.1193 , accept= FALSE 
+iter  113  val= 88.1193 , accept= FALSE 
+iter  114  val= 88.1193 , accept= FALSE 
+iter  115  val= 88.1193 , accept= FALSE 
+iter  116  val= 88.1193 , accept= FALSE 
+iter  117  val= 88.1193 , accept= FALSE 
+iter  118  val= 88.1193 , accept= FALSE 
+iter  119  val= 88.1193 , accept= FALSE 
+iter  120  val= 88.1193 , accept= FALSE 
+iter  121  val= 88.1193 , accept= FALSE 
+iter  122  val= 88.1193 , accept= FALSE 
+iter  123  val= 88.1193 , accept= FALSE 
+iter  124  val= 88.1193 , accept= FALSE 
+iter  125  val= 88.1193 , accept= FALSE 
+iter  126  val= 88.1193 , accept= FALSE 
+iter  127  val= 88.1193 , accept= FALSE 
+iter  128  val= 88.1193 , accept= FALSE 
+iter  129  val= 86.8662 , accept= TRUE 
+iter  130  val= 86.8662 , accept= FALSE 
+iter  131  val= 86.8662 , accept= FALSE 
+iter  132  val= 86.8662 , accept= FALSE 
+iter  133  val= 86.8662 , accept= FALSE 
+iter  134  val= 86.8662 , accept= FALSE 
+iter  135  val= 86.8662 , accept= FALSE 
+iter  136  val= 86.8662 , accept= FALSE 
+iter  137  val= 86.8662 , accept= FALSE 
+iter  138  val= 86.8662 , accept= FALSE 
+iter  139  val= 86.8662 , accept= FALSE 
+iter  140  val= 86.8662 , accept= FALSE 
+iter  141  val= 81.4736 , accept= TRUE 
+iter  142  val= 81.4736 , accept= FALSE 
+iter  143  val= 81.4736 , accept= FALSE 
+iter  144  val= 81.4736 , accept= FALSE 
+iter  145  val= 81.4736 , accept= FALSE 
+iter  146  val= 81.4736 , accept= FALSE 
+iter  147  val= 81.4736 , accept= FALSE 
+iter  148  val= 81.4736 , accept= FALSE 
+iter  149  val= 81.4736 , accept= FALSE 
+iter  150  val= 81.4736 , accept= FALSE 
+iter  151  val= 81.4736 , accept= FALSE 
+iter  152  val= 81.4736 , accept= FALSE 
+iter  153  val= 81.4736 , accept= FALSE 
+iter  154  val= 81.4736 , accept= FALSE 
+iter  155  val= 81.4736 , accept= FALSE 
+iter  156  val= 80.6933 , accept= TRUE 
+iter  157  val= 80.6933 , accept= FALSE 
+iter  158  val= 75.75244 , accept= TRUE 
+iter  159  val= 75.75244 , accept= FALSE 
+iter  160  val= 75.75244 , accept= FALSE 
+iter  161  val= 71.66279 , accept= TRUE 
+iter  162  val= 71.66279 , accept= FALSE 
+iter  163  val= 71.66279 , accept= FALSE 
+iter  164  val= 71.66279 , accept= FALSE 
+iter  165  val= 71.66279 , accept= FALSE 
+iter  166  val= 71.66279 , accept= FALSE 
+iter  167  val= 72.1831 , accept= TRUE 
+iter  168  val= 72.1831 , accept= FALSE 
+iter  169  val= 72.1831 , accept= FALSE 
+iter  170  val= 72.1831 , accept= FALSE 
+iter  171  val= 72.1831 , accept= FALSE 
+iter  172  val= 72.1831 , accept= FALSE 
+iter  173  val= 72.1831 , accept= FALSE 
+iter  174  val= 72.1831 , accept= FALSE 
+iter  175  val= 72.1831 , accept= FALSE 
+iter  176  val= 72.1831 , accept= FALSE 
+iter  177  val= 72.1831 , accept= FALSE 
+iter  178  val= 72.1831 , accept= FALSE 
+iter  179  val= 68.91 , accept= TRUE 
+iter  180  val= 68.91 , accept= FALSE 
+iter  181  val= 68.91 , accept= FALSE 
+iter  182  val= 68.91 , accept= FALSE 
+iter  183  val= 68.91 , accept= FALSE 
+iter  184  val= 68.91 , accept= FALSE 
+iter  185  val= 68.91 , accept= FALSE 
+iter  186  val= 68.91 , accept= FALSE 
+iter  187  val= 68.91 , accept= FALSE 
+iter  188  val= 68.91 , accept= FALSE 
+iter  189  val= 68.91 , accept= FALSE 
+iter  190  val= 68.91 , accept= FALSE 
+iter  191  val= 68.91 , accept= FALSE 
+iter  192  val= 68.91 , accept= FALSE 
+iter  193  val= 68.91 , accept= FALSE 
+iter  194  val= 68.91 , accept= FALSE 
+iter  195  val= 68.91 , accept= FALSE 
+iter  196  val= 68.91 , accept= FALSE 
+iter  197  val= 68.91 , accept= FALSE 
+iter  198  val= 68.91 , accept= FALSE 
+iter  199  val= 68.91 , accept= FALSE 
+iter  200  val= 68.91 , accept= FALSE 
+iter  201  val= 68.91 , accept= FALSE 
+iter  202  val= 69.15251 , accept= TRUE 
+iter  203  val= 69.15251 , accept= FALSE 
+iter  204  val= 69.15251 , accept= FALSE 
+iter  205  val= 69.15251 , accept= FALSE 
+iter  206  val= 69.15251 , accept= FALSE 
+iter  207  val= 69.15251 , accept= FALSE 
+iter  208  val= 69.15251 , accept= FALSE 
+iter  209  val= 69.15251 , accept= FALSE 
+iter  210  val= 69.15251 , accept= FALSE 
+iter  211  val= 69.15251 , accept= FALSE 
+iter  212  val= 69.15251 , accept= FALSE 
+iter  213  val= 69.15251 , accept= FALSE 
+iter  214  val= 69.15251 , accept= FALSE 
+iter  215  val= 69.15251 , accept= FALSE 
+iter  216  val= 69.15251 , accept= FALSE 
+iter  217  val= 69.15251 , accept= FALSE 
+iter  218  val= 69.15251 , accept= FALSE 
+iter  219  val= 69.15251 , accept= FALSE 
+iter  220  val= 69.15251 , accept= FALSE 
+iter  221  val= 69.15251 , accept= FALSE 
+iter  222  val= 69.15251 , accept= FALSE 
+iter  223  val= 69.15251 , accept= FALSE 
+iter  224  val= 69.15251 , accept= FALSE 
+iter  225  val= 69.15251 , accept= FALSE 
+iter  226  val= 69.21927 , accept= TRUE 
+iter  227  val= 69.21927 , accept= FALSE 
+iter  228  val= 69.21927 , accept= FALSE 
+iter  229  val= 69.21927 , accept= FALSE 
+iter  230  val= 69.21927 , accept= FALSE 
+iter  231  val= 68.9241 , accept= TRUE 
+iter  232  val= 68.9241 , accept= FALSE 
+iter  233  val= 68.7367 , accept= TRUE 
+iter  234  val= 68.7367 , accept= FALSE 
+iter  235  val= 68.7367 , accept= FALSE 
+iter  236  val= 68.7367 , accept= FALSE 
+iter  237  val= 68.7367 , accept= FALSE 
+iter  238  val= 68.7367 , accept= FALSE 
+iter  239  val= 68.7367 , accept= FALSE 
+iter  240  val= 68.7367 , accept= FALSE 
+iter  241  val= 68.7367 , accept= FALSE 
+iter  242  val= 68.7367 , accept= FALSE 
+iter  243  val= 68.7367 , accept= FALSE 
+iter  244  val= 68.7367 , accept= FALSE 
+iter  245  val= 68.7367 , accept= FALSE 
+iter  246  val= 68.7367 , accept= FALSE 
+iter  247  val= 68.7367 , accept= FALSE 
+iter  248  val= 68.7367 , accept= FALSE 
+iter  249  val= 68.7367 , accept= FALSE 
+iter  250  val= 68.7367 , accept= FALSE 
+iter  251  val= 68.7367 , accept= FALSE 
+iter  252  val= 68.7367 , accept= FALSE 
+iter  253  val= 68.7367 , accept= FALSE 
+iter  254  val= 68.7367 , accept= FALSE 
+iter  255  val= 68.7367 , accept= FALSE 
+iter  256  val= 68.7367 , accept= FALSE 
+iter  257  val= 68.7367 , accept= FALSE 
+iter  258  val= 68.7367 , accept= FALSE 
+iter  259  val= 68.7367 , accept= FALSE 
+iter  260  val= 68.7367 , accept= FALSE 
+iter  261  val= 68.7367 , accept= FALSE 
+iter  262  val= 68.7367 , accept= FALSE 
+iter  263  val= 68.7367 , accept= FALSE 
+iter  264  val= 68.7367 , accept= FALSE 
+iter  265  val= 68.7367 , accept= FALSE 
+iter  266  val= 68.7367 , accept= FALSE 
+iter  267  val= 68.7367 , accept= FALSE 
+iter  268  val= 68.7367 , accept= FALSE 
+iter  269  val= 68.7367 , accept= FALSE 
+iter  270  val= 68.7367 , accept= FALSE 
+iter  271  val= 68.7367 , accept= FALSE 
+iter  272  val= 68.7367 , accept= FALSE 
+iter  273  val= 68.7367 , accept= FALSE 
+iter  274  val= 68.91344 , accept= TRUE 
+iter  275  val= 68.91344 , accept= FALSE 
+iter  276  val= 68.91344 , accept= FALSE 
+iter  277  val= 68.91344 , accept= FALSE 
+iter  278  val= 68.91344 , accept= FALSE 
+iter  279  val= 68.60169 , accept= TRUE 
+iter  280  val= 68.60169 , accept= FALSE 
+iter  281  val= 68.60169 , accept= FALSE 
+iter  282  val= 68.60169 , accept= FALSE 
+iter  283  val= 68.60169 , accept= FALSE 
+iter  284  val= 68.60169 , accept= FALSE 
+iter  285  val= 68.60169 , accept= FALSE 
+iter  286  val= 68.60169 , accept= FALSE 
+iter  287  val= 68.60169 , accept= FALSE 
+iter  288  val= 68.60169 , accept= FALSE 
+iter  289  val= 68.60169 , accept= FALSE 
+iter  290  val= 68.60169 , accept= FALSE 
+iter  291  val= 68.60169 , accept= FALSE 
+iter  292  val= 68.60169 , accept= FALSE 
+iter  293  val= 68.60169 , accept= FALSE 
+iter  294  val= 68.60169 , accept= FALSE 
+iter  295  val= 68.60169 , accept= FALSE 
+iter  296  val= 68.60169 , accept= FALSE 
+iter  297  val= 68.60169 , accept= FALSE 
+iter  298  val= 68.60169 , accept= FALSE 
+iter  299  val= 68.60169 , accept= FALSE 
+iter  300  val= 68.60169 , accept= FALSE 
+best val= 68.60169 
+> 
+> tm.fit <- traj.match(
++                      tm.fit,
++                      est=ics[-1],
++                      method="Nelder-Mead",
++                      trace=3,
++                      reltol=1e-8,
++                      parscale=c(0.1,0.1)
++                      )
+  Nelder-Mead direct search function minimizer
+function value for initial parameters = 68.601691
+  Scaled convergence tolerance is 6.86017e-07
+Stepsize computed as 6.872543
+BUILD              3 99999999999999996863366107917975552.000000 68.601691
+LO-REDUCTION       5 17849.224347 68.601691
+HI-REDUCTION       7 6625.575160 68.601691
+HI-REDUCTION       9 2828.947480 68.601691
+LO-REDUCTION      11 2266.048912 68.601691
+HI-REDUCTION      13 795.021892 68.601691
+LO-REDUCTION      15 289.536486 68.601691
+HI-REDUCTION      17 144.462562 68.601691
+HI-REDUCTION      19 128.332161 68.601691
+LO-REDUCTION      21 94.964675 68.601691
+LO-REDUCTION      23 80.366553 68.601691
+LO-REDUCTION      25 76.529426 68.601691
+LO-REDUCTION      27 73.016097 68.601691
+LO-REDUCTION      29 70.503279 68.601691
+LO-REDUCTION      31 69.390954 68.601691
+LO-REDUCTION      33 68.929621 68.601691
+HI-REDUCTION      35 68.776358 68.601691
+HI-REDUCTION      37 68.702289 68.601691
+HI-REDUCTION      39 68.672743 68.601691
+REFLECTION        41 68.669041 68.585510
+SHRINK            45 68.697670 68.556871
+HI-REDUCTION      47 68.680642 68.556871
+SHRINK            51 68.713035 68.556871
+LO-REDUCTION      53 68.680892 68.556871
+LO-REDUCTION      55 68.631057 68.556871
+SHRINK            59 68.763404 68.556871
+Exiting from Nelder Mead minimizer
+    61 function evaluations used
+> 
+> summary(tm.fit)
+$params
+      gamma          mu        iota      nbasis      degree      period 
+ 3.25809654 -3.91202301 -4.60517019  3.00000000  3.00000000  1.00000000 
+      beta1       beta2       beta3     beta.sd         pop         rho 
+ 7.09007684  7.49554194  6.39692966 -6.90775528 14.55744790 -0.51082562 
+        S.0         I.0         R.0 
+-3.73198030 -6.87128831  0.06086232 
+
+$loglik
+[1] -68.55687
+
+$eval
+[1] 61 NA
+
+$convergence
+[1] 0
+
+> 
+> comp.table <- cbind(true=exp(coef(po,ics)),guess=exp(guess[ics]),fit=exp(coef(tm.fit,ics)))
+> comp.table <- apply(comp.table,2,function(x)x/sum(x))
+> comp.table <- rbind(
++                     comp.table,
++                     loglik=sapply(list(tm.true,tm.guess,tm.fit),logLik)
++                     )
+> comp.table
+               true         guess           fit
+S.0      0.02166667  2.389525e-02  2.201397e-02
+I.0      0.00100000  8.170171e-04  9.534859e-04
+R.0      0.97733333  9.752877e-01  9.770325e-01
+loglik -82.95588677 -5.574875e+02 -6.855687e+01
+> 
+> x <- sapply(
++             list(true=tm.true,guess=tm.guess,fit=tm.fit),
++             function (x) trajectory(x,times=time(x),t0=timezero(x))["cases",1,]
++             )
+> 
+> plot(range(time(po)),range(c(states(po,"cases"),x)),bty='l',xlab="time",ylab="cases",type='n')
+> points(time(po),states(po,"cases"))
+> matlines(time(po),x,lty=1,col=c("red","blue","green"))
+> legend("topright",lty=c(NA,1,1,1),pch=c(1,NA,NA,NA),bty='n',col=c("black","red","blue","green"),legend=c("actual",colnames(x)))
+> 
+> dev.off()
+null device 
+          1 
+> 
+> 
