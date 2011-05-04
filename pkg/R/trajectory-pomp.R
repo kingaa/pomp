@@ -55,7 +55,7 @@ trajectory.internal <- function (object, params, times, t0, ...) {
   }
   paramnames <- rownames(params)
   if (is.null(paramnames))
-    stop("pfilter error: ",sQuote("params")," must have rownames",call.=FALSE)
+    stop("trajectory error: ",sQuote("params")," must have rownames",call.=FALSE)
   params <- as.matrix(params)
 
   x0 <- init.state(object,params=params,t0=t0)
@@ -65,6 +65,9 @@ trajectory.internal <- function (object, params, times, t0, ...) {
   dimnames(x0) <- list(statenames,NULL,NULL)
   
   type <- object@skeleton.type          # map or vectorfield?
+  
+  if (is.na(type))
+    stop("trajectory error: no skeleton specified",call.=FALSE)
 
   if (type=="map") {
 
