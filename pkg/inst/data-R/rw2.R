@@ -38,3 +38,5 @@ simulate(
          nsim=1,
          seed=738377475L
          ) -> rw2
+
+save(rw2,file="rw2.rda")

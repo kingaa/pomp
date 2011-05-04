@@ -50,3 +50,5 @@ simulate(
          nsim=1,
          seed=73658676L
          ) -> verhulst
+
+save(verhulst,file="verhulst.rda")

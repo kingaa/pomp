@@ -1,5 +1,20 @@
 2011-05-03  kingaa
 
+	* [r453] inst/doc/intro_to_pomp.pdf:
+	* [r452] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: -
+	  minor improvement to 'compare.mif' figure
+	* [r451] tests/filtfail.R, tests/filtfail.Rout.save,
+	  tests/sir-icfit.R, tests/sir-icfit.Rout.save: - two new tests:
+	  'sir-icfit' and 'filtfail'
+	* [r450] DESCRIPTION, R/pfilter.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, src/pfilter.c, src/resample.c,
+	  tests/ou2-probe.Rout.save, tests/ricker-probe.Rout.save,
+	  tests/ricker.Rout.save: - move resampling and random-walking
+	  inside 'pfilter.internal' into C (pfilter.c)
+	  - move resampling codes from 'resample.c' to 'pfilter.c'
+	  - update test .save files
+	  - minor corrections in 'intro_to_pomp' vignette
 	* [r449] R/bsplines.R, man/bsplines.Rd: - add 'names' argument
 
 2011-04-27  kingaa

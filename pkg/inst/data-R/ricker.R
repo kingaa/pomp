@@ -25,3 +25,5 @@ simulate(
          nsim=1,
          seed=73691676L
          ) -> ricker
+
+save(ricker,file="ricker.rda")

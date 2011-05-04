@@ -25,3 +25,5 @@ simulate(
          nsim=1,
          seed=299438676L
          ) -> gompertz
+
+save(gompertz,file="gompertz.rda")

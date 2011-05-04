@@ -25,12 +25,13 @@ void _blowfly_model_simulator (double *x, const double *p,
 {
   double var_p = exp(2*LOG_SIGMAP)/dt;
   double var_d = exp(2*LOG_SIGMAD)/dt;
+  double nzero = exp(LOG_NZERO);
   double e = (var_p > 0.0) ? rgamma(1.0/var_p,var_p) : 1.0;
   double eps = (var_d > 0.0) ? rgamma(1.0/var_d,var_d) : 1.0;
   double P = exp(LOG_P);
   int tau = (int) TAU;
   int k;
-  R = rpois(P*N[tau]*exp(-N[tau]/exp(LOG_NZERO))*dt*e);
+  R = rpois(P*N[tau]*exp(-N[tau]/nzero)*dt*e);
   S = rbinom(N[0],exp(-exp(LOG_DELTA)*dt*eps));
   E = e;
   EPS = eps;

@@ -87,3 +87,5 @@ simulate(
 
 ou2 <- window(ou2,end=100)
 timezero(ou2) <- 0
+
+save(ou2,file="ou2.rda")

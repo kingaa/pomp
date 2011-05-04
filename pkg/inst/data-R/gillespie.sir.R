@@ -73,3 +73,4 @@ simulate(
          seed=1165270654L
          ) -> gillespie.sir
 
+save(gillespie.sir,file="gillespie.sir.rda")

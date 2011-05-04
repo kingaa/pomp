@@ -1,3 +1,15 @@
+NEW IN VERSION 0.36-7:
+
+    o  'trajectory' now gives a more informative error when no skeleton is present
+
+    o  'pred.mean', 'pred.var', and 'filter.mean' methods are now defined for 'pfilterd.pomp' objects (and not just 'mif' objects)
+
+    o  A new 'data()'-loadable example is included: do '?blowflies' to read about it.
+
+NEW IN VERSION 0.36-6:
+
+    o  The B-spline basis construction functions 'bspline.basis' and 'periodic.bspline.basis' now take a 'names' argument that allows one to give names to the basis functions.
+
 NEW IN VERSION 0.36-5:
 
     o  The "intro_to_pomp" vignette has been updated.  The first part of the vignette centers on a new, more transparent first example.

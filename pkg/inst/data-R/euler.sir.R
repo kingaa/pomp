@@ -52,3 +52,5 @@ simulate(
          nsim=1,
          seed=329348545L
          ) -> euler.sir
+
+save(euler.sir,file="euler.sir.rda")
