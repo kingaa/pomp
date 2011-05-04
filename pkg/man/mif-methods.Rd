@@ -6,15 +6,6 @@
 \alias{conv.rec}
 \alias{conv.rec,mif-method}
 \alias{conv.rec-mif}
-\alias{pred.mean}
-\alias{pred.mean,mif-method}
-\alias{pred.mean-mif}
-\alias{pred.var}
-\alias{pred.var,mif-method}
-\alias{pred.var-mif}
-\alias{filter.mean}
-\alias{filter.mean,mif-method}
-\alias{filter.mean-mif}
 \alias{plot-mif}
 \alias{plot,mif-method}
 \alias{compare.mif}
@@ -23,9 +14,6 @@
 \usage{
 \S4method{logLik}{mif}(object, \dots)
 \S4method{conv.rec}{mif}(object, pars, \dots)
-\S4method{pred.mean}{mif}(object, pars, \dots)
-\S4method{pred.var}{mif}(object, pars, \dots)
-\S4method{filter.mean}{mif}(object, pars, \dots)
 \S4method{plot}{mif}(x, y = NULL, \dots)
 compare.mif(z)
 }
@@ -58,18 +46,6 @@ compare.mif(z)
     \item{plot}{
       Plots a series of diagnostic plots.
       When \code{x} is a \code{mif} object, \code{plot(x)} is equivalent to \code{compare.mif(list(x))}.
-    }
-    \item{pred.mean}{
-      \code{pred.mean(object, pars = NULL)} returns the rows of the prediction-mean matrix corresponding to the names in \code{pars}.
-      By default, all rows are returned.
-    }
-    \item{pred.var}{
-      \code{pred.var(object, pars = NULL)} returns the rows of the prediction-variance matrix corresponding to the names in \code{pars}.
-      By default, all rows are returned.
-    }
-    \item{filter.mean}{
-      \code{filter.mean(object, pars = NULL)} returns the rows of the filtering-mean matrix corresponding to the names in \code{pars}.
-      By default, all rows are returned.
     }
     \item{predvarplot}{
       \code{predvarplot(object, pars = NULL, mean = FALSE, \dots)} produces a plot of the scaled prediction variances for each parameter.

@@ -322,6 +322,3 @@ setMethod(
           }
           )
 
-setMethod("$",signature(x="pfilterd.pomp"),function (x,name) slot(x,name))
-setMethod("logLik",signature(object="pfilterd.pomp"),function(object,...)object@loglik)
-

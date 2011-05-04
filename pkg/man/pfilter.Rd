@@ -4,10 +4,6 @@
 \alias{pfilter-pomp}
 \alias{pfilter,pfilterd.pomp-method}
 \alias{pfilter-pfilterd.pomp}
-\alias{logLik,pfilterd.pomp-method}
-\alias{logLik-pfilterd.pomp}
-\alias{$,pfilterd.pomp-method}
-\alias{$-pfilterd.pomp}
 \alias{pfilterd.pomp-class}
 \title{Particle filter}
 \description{
