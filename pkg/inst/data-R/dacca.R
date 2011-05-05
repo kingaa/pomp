@@ -101,8 +101,6 @@ covartable <- data.frame(
                          trend=tcovar-mean(tcovar)
                          )
 
-dacca <- list()
-
 pomp(
      data=cholera,
      times='time',
@@ -155,13 +153,13 @@ pomp(
        states[comp.names] <- round(covars['pop']*frac/sum(frac))
        states
      }
-     ) -> dacca$po
+     ) -> dacca
 
 ## Parameter transformations
 ## Parameters are fit in the transformed space.
 ## Positive parameters are log transformed, probabilities are logit transformed.
 ## Initial conditions are parameterized in terms of log-transformed fractions in each compartment.
-dacca$transform <- function (params, dir = c("forward","inverse")) {
+dacca.transform <- function (params, dir = c("forward","inverse")) {
   dir <- match.arg(dir)
   r <- length(dim(params))
   nm <- if (r>0) rownames(params) else names(params)
@@ -191,5 +189,5 @@ dacca$transform <- function (params, dir = c("forward","inverse")) {
          )
 }
 
-coef(dacca$po) <- dacca$transform(mle,dir="forward")
-save(dacca,file="dacca.rda")
+coef(dacca) <- dacca.transform(mle,dir="forward")
+save(dacca,dacca.transform,file="dacca.rda")

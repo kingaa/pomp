@@ -1,3 +1,22 @@
+2011-05-04  kingaa
+
+	* [r456] R/aaa.R, R/mif-methods.R, R/pfilter-methods.R,
+	  R/pfilter.R, man/mif-methods.Rd, man/pfilter-methods.Rd,
+	  man/pfilter.Rd: - 'pred.mean', 'pred.var', and 'filter.mean'
+	  methods are now defined for 'pfilterd.pomp' objects (and not just
+	  'mif' objects)
+	* [r455] R/trajectory-pomp.R: - 'trajectory' now gives a more
+	  informative error when no skeleton is present
+	* [r454] DESCRIPTION, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
+	  data/ricker.rda, data/rw2.rda, data/verhulst.rda, inst/ChangeLog,
+	  inst/NEWS, inst/data-R/dacca.R, inst/data-R/euler.sir.R,
+	  inst/data-R/gillespie.sir.R, inst/data-R/gompertz.R,
+	  inst/data-R/ou2.R, inst/data-R/ricker.R, inst/data-R/rw2.R,
+	  inst/data-R/verhulst.R, src/blowfly.c, src/probe_acf.c: - fix bug
+	  in error message in 'probe_acf.c'
+	  - update data()-loadable examples
+
 2011-05-03  kingaa
 
 	* [r453] inst/doc/intro_to_pomp.pdf:
