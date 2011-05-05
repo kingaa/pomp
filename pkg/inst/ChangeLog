@@ -1,3 +1,14 @@
+2011-05-05  kingaa
+
+	* [r457] DESCRIPTION, data/blowflies.rda, data/dacca.rda,
+	  inst/ChangeLog, inst/data-R/blowflies.R,
+	  inst/data-R/blowflies.csv, inst/data-R/dacca.R,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/blowflies.Rd, man/dacca.Rd, src/tsir.c: - add blowflies
+	  example
+	  - fix bug in tsir code
+	  - rearrange 'dacca' example
+
 2011-05-04  kingaa
 
 	* [r456] R/aaa.R, R/mif-methods.R, R/pfilter-methods.R,
