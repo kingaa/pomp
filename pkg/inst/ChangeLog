@@ -1,5 +1,28 @@
 2011-05-09  kingaa
 
+	* [r464] inst/NEWS: - update
+	* [r463] NAMESPACE, R/pomp.R, data/blowflies.rda, data/dacca.rda,
+	  data/euler.sir.rda, data/gillespie.sir.rda, data/gompertz.rda,
+	  data/ou2.rda, data/ricker.rda, data/rw2.rda, data/verhulst.rda,
+	  inst/ChangeLog, inst/NEWS, inst/data-R/euler.sir.R,
+	  inst/data-R/gompertz.R, inst/data-R/ou2.R, inst/data-R/ricker.R,
+	  inst/data-R/verhulst.R, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/gompertz-trajmatch.rda, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/examples/gompertz.R,
+	  inst/examples/gompertz.c, inst/examples/logistic.R,
+	  inst/examples/sir.R, inst/include/pomp.h, man/pomp-class.Rd,
+	  man/pomp.Rd, src/pomp.h, src/skeleton.c, tests/fhn.R,
+	  tests/fhn.Rout.save, tests/logistic.R, tests/logistic.Rout.save,
+	  tests/ou2-simulate.Rout.save, tests/pomppomp.R,
+	  tests/pomppomp.Rout.save, tests/ricker.Rout.save, tests/rw2.R,
+	  tests/rw2.Rout.save, tests/sir.R, tests/sir.Rout.save,
+	  tests/skeleton.Rout.save: - the 'pomp' arguments 'skeleton.map'
+	  and 'skeleton.vectorfield' are now deprecated in favor of
+	  'skeleton' and 'skeleton.type'
+	  - 'pomp' is now a generic function with methods for data of type
+	  'numeric', 'matrix', 'data.frame', and 'pomp'. the latter method
+	  allows for copying of 'pomp' objects with modification.
 	* [r462] R/pomp-methods.R: - remove printing of call slot
 	* [r461] src/gompertz.c: - better commenting and some cleanup
 	* [r460] R/pomp-fun.R: - fix bug in error-checking

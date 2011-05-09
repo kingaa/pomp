@@ -1057,6 +1057,52 @@ print(
 \clearpage
 \section{A more complex example: a seasonal epidemic model}
 
+\begin{figure}
+  \begin{center}
+    \resizebox{0.8\textwidth}{!}{
+      \Large
+      \setlength{\unitlength}{5pt}
+	\begin{picture}(44,20)(-5,-4)
+	  \thicklines
+	  \put(0,0){\framebox(6,6){$S$}}
+	  \put(16,0){\framebox(6,6){$I$}}
+	  \put(32,0){\framebox(6,6){$R$}}
+	  \put(-4,3){\vector(1,0){4}}
+	  \put(-3.7,3.9){$\mu$}
+	  \put(6,3){\vector(1,0){10}}
+	  \put(9,3.9){$\lambda(t)$}
+	  \put(3,-0.2){\vector(0,-1){4}}
+	  \put(4,-3){$\mu$}
+	  \put(19,-0.2){\vector(0,-1){4}}
+	  \put(20,-3){$\mu$}
+	  \put(22,3){\vector(1,0){10}}
+	  \put(26,1){$\gamma$}
+	  \put(27,4){\vector(0,1){5}}
+	  \put(27.7,6){$\rho$}
+	  \put(27,11.5){\circle{5}}
+	  \put(26,10.7){{$C$}}
+	  \put(35,-0.2){\vector(0,-1){4}}
+	  \put(36,-3){$\mu$}
+	\end{picture}
+    }
+  \end{center}
+  \label{fig:SIR}
+  \caption{
+    Diagram of the SIR model.
+    The host population is divided into three classes according to their infection status: 
+    S, susceptible hosts; 
+    I, infected (and infectious) hosts; 
+    R, recovered and immune hosts. 
+    Births result in new susceptibles and all individuals have a common death rate $\mu$.
+    Since the birth rate equals the death rate, the expected population size, $N=S+I+R$, remains constant.
+    The S$\to$I rate, $\lambda$, called the \emph{force of infection}, depends on the number of infectious individuals according to $\lambda(t)={\beta(t)\,\xi(t)\,I}/{N}$,
+    where $\beta(t)$ is the seasonal (periodic) contact rate and $\xi(t)$ is a white noise.
+    The I$\to$R, or recovery, rate is $\gamma$.
+    The case reports, $C$, count infected individuals with probability $\rho$. 
+    Since diagnosed cases are treated with bed-rest and hence removed, infections are counted upon transition to R. 
+  }
+\end{figure}
+
 The SIR model is a mainstay of theoretical epidemiology.
 It has the deterministic skeleton
 \begin{equation*}
