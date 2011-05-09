@@ -5,16 +5,6 @@ setGeneric('trajectory')
 
 trajectory.internal <- function (object, params, times, t0, ...) {
 
-  warn.condition <- missing(t0)
-  if (warn.condition) 
-    warning(
-            "The default behavior of ",sQuote("trajectory")," has changed.\n",
-            "See the documentation (",dQuote("pomp?trajectory"),") for details\n",
-            "and set the ",sQuote("times")," and ",sQuote("t0"),
-            " arguments appropriately to compensate.\n",
-            call.=FALSE
-            )
-
   if (missing(times))
     times <- time(object,t0=FALSE)
   else

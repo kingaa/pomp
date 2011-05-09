@@ -3,15 +3,6 @@
 simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                                states = FALSE, obs = FALSE,
                                times, t0, ...) {
-  warn.condition <- (missing(t0) && ((obs || states) || (!missing(times))))
-  if (warn.condition) 
-    warning(
-            "The default behavior of ",sQuote("simulate")," has changed.\n",
-            "See the documentation (",dQuote("pomp?simulate"),") for details\n",
-            "and set the ",sQuote("times")," and ",sQuote("t0"),
-            " arguments appropriately to compensate.\n",
-            call.=FALSE
-            )
 
   if (missing(times))
     times <- time(object,t0=FALSE)
