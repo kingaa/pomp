@@ -228,8 +228,6 @@ setMethod(
           function (x, ...) {
             cat("data and states:\n")
             print(as(x,"data.frame"))
-            cat("\ncall:\n")
-            print(x@call)
             invisible(x)
           }
           )
