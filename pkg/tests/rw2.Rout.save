@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,6 +17,9 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
 > 
 > set.seed(45768683)
 > 
@@ -204,12 +208,6 @@ data and states:
 98    98  0  0
 99    99  0  0
 100  100  0  0
-
-call:
-pomp(data = rbind(y1 = rep(0, 100), y2 = rep(0, 100)), times = 1:100, 
-    t0 = 0, useless = 23, rprocess = rw.rprocess, dprocess = rw.dprocess, 
-    measurement.model = list(y1 ~ norm(mean = x1, sd = tau), 
-        y2 ~ norm(mean = x2, sd = tau)), initializer = bad.initializer)
 zero time, t0 = 0
 parameter(s) unspecified
 process model simulator, rprocess = 
@@ -255,7 +253,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x1ab1930>
+<environment: 0x1ba5950>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -268,7 +266,11 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x1ab1930>
+<environment: 0x1ba5950>
+skeleton ( map ) = 
+function (x, t, params, covars, ...) 
+stop(sQuote("skeleton"), " not specified")
+<environment: 0x1c5dd08>
 initializer = 
 function (params, t0, ...) 
 {
@@ -308,53 +310,13 @@ Error : 'simulate' error
 > rw2 <- examples[[1]]
 > 
 > y <- simulate(rw2,params=p,obs=T,states=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > y <- simulate(rw2,params=p,obs=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > x <- simulate(rw2,params=p,states=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > x <- simulate(rw2,nsim=10,params=p,states=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > x <- simulate(rw2,nsim=10,params=p[,1],states=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > x <- simulate(rw2,nsim=10,params=p[,1],obs=T,states=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > x <- simulate(rw2,nsim=10,params=p[,1],obs=T,states=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > x <- simulate(rw2,nsim=10,params=p,obs=T,states=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > x <- simulate(rw2,nsim=10,params=p[,1])
 > 
 > x <- data.array(rw2)
@@ -376,16 +338,9 @@ and set the 'times' and 't0' arguments appropriately to compensate.
 [1] 1.110223e-16
 > 
 > po <- pomp(
-+            rprocess = rw.rprocess,
-+            dprocess = rw.dprocess,
++            rw2,
 +            dmeasure = bvnorm.dmeasure,
-+            rmeasure = bvnorm.rmeasure,
-+            times=1:100,
-+            data=rbind(
-+              y1=rep(0,100),
-+              y2=rep(0,100)
-+              ),
-+            t0=0
++            rmeasure = bvnorm.rmeasure
 +            )
 > 
 > a2 <- dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
@@ -450,21 +405,6 @@ data and states:
 9    28 -0.8215306  5.446502 -1.4686200  5.261945
 10   29  0.5286784  5.028662  0.3162960  4.086637
 11   30  1.3077022  3.727208  0.3754759  4.471904
-
-call:
-pomp(data = rbind(y1 = rep(0, 100), y2 = rep(0, 100)), times = 1:100, 
-    t0 = 0, rprocess = onestep.sim(step.fun = function(x, t, 
-        params, delta.t, ...) {
-        c(x1 = rnorm(n = 1, mean = x["x1"], sd = params["s1"] * 
-            delta.t), x2 = rnorm(n = 1, mean = x["x2"], sd = params["s2"] * 
-            delta.t))
-    }), dprocess = onestep.dens(dens.fun = function(x1, t1, x2, 
-        t2, params, ...) {
-        sum(dnorm(x = x2[c("x1", "x2")], mean = x1[c("x1", "x2")], 
-            sd = params[c("s1", "s2")] * (t2 - t1), log = TRUE), 
-            na.rm = TRUE)
-    }), measurement.model = list(y1 ~ norm(mean = x1, sd = tau), 
-        y2 ~ norm(mean = x2, sd = tau)))
 > 
 > time(rw2) <- seq(1,1000,by=20)
 > x <- simulate(rw2)

@@ -42,6 +42,7 @@ exportClasses(
               )
 
 exportMethods(
+              pomp,
               plot,show,print,coerce,summary,logLik,window,"$",
               dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
               data.array,obs,coef,"coef<-",time,"time<-",timezero,"timezero<-",
@@ -55,7 +56,6 @@ exportMethods(
               )
 
 export(
-       pomp,
        as.data.frame.pomp,
        reulermultinom,
        deulermultinom,

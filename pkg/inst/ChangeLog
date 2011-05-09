@@ -1,5 +1,17 @@
+2011-05-09  kingaa
+
+	* [r462] R/pomp-methods.R: - remove printing of call slot
+	* [r461] src/gompertz.c: - better commenting and some cleanup
+	* [r460] R/pomp-fun.R: - fix bug in error-checking
+	  - allow pass-through of 'pomp.fun' objects
+	* [r459] DESCRIPTION, R/simulate-pomp.R, R/trajectory-pomp.R: -
+	  remove the warnings that were added in 0.34-1 regarding changed
+	  default behavior of 'simulate' and 'trajectory'
+
 2011-05-05  kingaa
 
+	* [r458] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
 	* [r457] DESCRIPTION, data/blowflies.rda, data/dacca.rda,
 	  inst/ChangeLog, inst/data-R/blowflies.R,
 	  inst/data-R/blowflies.csv, inst/data-R/dacca.R,

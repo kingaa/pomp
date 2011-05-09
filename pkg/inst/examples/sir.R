@@ -40,7 +40,8 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
                step.fun="sir_euler_simulator", # native routine for the simulation step
                delta.t=1/52/20
                ),
-             skeleton.vectorfield="sir_ODE", # native routine for the skeleton
+             skeleton.type="vectorfield",
+             skeleton="sir_ODE", # native routine for the skeleton
              rmeasure="binomial_rmeasure", # binomial measurement model
              dmeasure="binomial_dmeasure", # binomial measurement model
              PACKAGE="sir", ## name of the shared-object library

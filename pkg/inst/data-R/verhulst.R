@@ -33,7 +33,8 @@ simulate(
                 }
                 ),
               measurement.model=obs~lnorm(meanlog=log(n),sdlog=log(1+tau)),
-              skeleton.vectorfield=function(x,t,params,...){
+              skeleton.type="vectorfield",
+              skeleton=function(x,t,params,...){
                 with(
                      as.list(c(x,params)),
                      r*n*(1-n/K)

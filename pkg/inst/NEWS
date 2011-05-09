@@ -1,4 +1,17 @@
-NEW IN VERSION 0.36-7:
+NEWS
+
+0.37-1
+    o  The arguments 'skeleton.map' and 'skeleton.vectorfield' are now deprecated.
+       Specify a discrete-time skeleton using 'skeleton.type="map"' and a continuous-time skeleton via 'skeleton.type="vectorfield"'.
+
+    o  'pomp' is now a method rather than a function.  
+       Calling it on a 'pomp' object copies the object; one can optionally modify some of the slots.
+
+    o  The warning messages to do with the default behaviors of 'simulate' and 'trajectory' with respect to the arguments 'times' and 't0' have been removed.
+       These warnings were introduced in version 0.34-1 to alert users to changes in the default behavior of 'simulate' and 'trajectory' introduced with that version.
+       See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
+
+0.36-7:
 
     o  'trajectory' now gives a more informative error when no skeleton is present
 
@@ -6,11 +19,11 @@ NEW IN VERSION 0.36-7:
 
     o  A new 'data()'-loadable example is included: do '?blowflies' to read about it.
 
-NEW IN VERSION 0.36-6:
+0.36-6:
 
     o  The B-spline basis construction functions 'bspline.basis' and 'periodic.bspline.basis' now take a 'names' argument that allows one to give names to the basis functions.
 
-NEW IN VERSION 0.36-5:
+0.36-5:
 
     o  The "intro_to_pomp" vignette has been updated.  The first part of the vignette centers on a new, more transparent first example.
 
@@ -25,7 +38,7 @@ NEW IN VERSION 0.36-5:
     o  The rprocess plugin 'discrete.time.sim' now takes an optional 'delta.t' argument to allow for arbitrary (but still necessarily regular) spacing of observations.  By default, delta.t=1.
 
 
-NEW IN VERSION 0.36-1:
+0.36-1:
 
     o  There are two new classes: 'traj.matched.pomp' and 'pfilterd.pomp' to hold the results of 'traj.match' and 'pfilter' computations, respectively.  The old classes 'mif' and 'pmcmc' now inherit from 'pfilterd.pomp' in a natural way.
 
@@ -37,7 +50,7 @@ NEW IN VERSION 0.36-1:
 
     o  There is a change to the interface to 'pfilter' in that 'save.states' results in the filling of the 'last.states' slot.  Before version 0.36-1, the 'pfilter' returned a list.  The element 'states' of that list corresponds to the slot 'last.states' in version 0.36-1.  It was necessary to make this name-change in order to avoid a conflict with the 'states' slot inherited from the 'pomp' class.
 
-NEW IN VERSION 0.35-1:
+0.35-1:
 
     o  Added a facility for computation of "synthetic likelihood" (Wood 2010) using a robust estimate of the covariance.  A new slot in objects of class 'probed.pomp' holds this value.
 
@@ -53,7 +66,7 @@ NEW IN VERSION 0.35-1:
 
     o  The 'seed' slot in 'probed.pomp' and 'spect.pomp' objects has been removed, along with unwanted behavior to do with it.
 
-NEW IN VERSION 0.34-2:
+0.34-2:
 
     o  Added a method to coerce 'probed.pomp' objects to 'data.frame' objects.
 
@@ -62,7 +75,7 @@ NEW IN VERSION 0.34-2:
 
     o  'simulate' and 'rprocess' are accelerated somewhat through judicious use of 'memcpy'.
 
-NEW IN VERSION 0.34-1: 
+0.34-1: 
 
     o  The default behaviors of 'simulate' and 'trajectory' with respect to the argument 'times' has changed.
        There is a new argument, 't0', which specifies the time at which the initial conditions obtain.
@@ -92,7 +105,7 @@ NEW IN VERSION 0.34-1:
 
     o  The functions 'euler.simulate', 'onestep.simulate', and 'onestep.density', deprecated since version 0.29-1, have been removed.  
     
-NEW IN VERSION 0.33-1:
+0.33-1:
 
     o Major improvements in speed in the probe-matching routines have been realized by coding the computationally-intensive portions of these calculations in C.
 
@@ -100,31 +113,31 @@ NEW IN VERSION 0.33-1:
       In particular, the new function 'probe.marginal' regresses the marginal distributions of actual and simulated data against a reference distribution, returning as probes the regression coefficients.
       'probe.marginal' and 'probe.acf' have been coded in C for speed.
 
-NEW IN VERSION 0.32-1:
+0.32-1:
 
     o  pomp now includes parameter estimation methods based on probe-matching and power-spectrum-matching as explained in papers by Kendall et al. (B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, S. N. Wood (1999) Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches.  Ecology, 80:1789--1805) and Reuman et al. (D.C. Reuman, R.A. Desharnais, R.F. Costantino, O. Ahmad, J.E. Cohen (2006) Power spectra reveal the influence of stochasticity on nonlinear population dynamics. Proc. Nat'l. Acad. Sci., U.S.A.} 103:18860--18865).
 
-NEW IN VERSION 0.31-2:
+0.31-2:
 
     o  new "window", "timezero", and "timezero<-" methods are available for manipulating 'pomp' objects.
 
-NEW IN VERSION 0.31-1:
+0.31-1:
 
     o  pomp now includes an implementation of the particle Markov chain Monte Carlo algorithm of Andrieu et al. (Andrieu, C., Doucet, A., & Holenstein, R. (2010) Particle Markov chain Monte Carlo methods. J. R. Stat. Soc. B 72:1--33).
        This algorithm is implemented in the method 'pmcmc': see 'help(pmcmc)' for details.
        Implementation primarily due to Ed Ionides.
        
-NEW IN VERSION 0.30-1:
+0.30-1:
     o  pomp now includes an implementation of the approximate Bayesian Sequential Monte Carlo algorithm of Liu & West (Liu, J. & West, M. (2001) Combining Parameter and State Estimation in Simulation-Based Filtering. In Doucet, A.; de Freitas, N. & Gordon, N. J. (eds.) Sequential Monte Carlo Methods in Practice, Springer, New York, pp. 197--224).
        This algorithm is implemented in the method 'bsmc': see 'help(bsmc)' for details.
        Thanks to Matt Ferrari and Michael Lavine for the implementation.
        
-NEW IN VERSION 0.29-5:
+0.29-5:
 
     o  The cholera transmission model from King, A. A., Ionides, E. L., Pascual, M., and Bouma, M. J. (2008) Inapparent infections and cholera dynamics, Nature 454:877--880 together with data from the Dacca district of historic Bengal are now included.
        See 'help(dacca)' for details.
 
-NEW IN VERSION 0.29-1:
+0.29-1:
 
     o  This is a major revision.
 
@@ -145,41 +158,41 @@ NEW IN VERSION 0.29-1:
 
     o  The changes are documented in detail in the file CHANGES_0.29-1.txt.
 
-NEW IN VERSION 0.22-1:
+0.22-1:
     
     o  The nonlinear forecasting method of Kendall, Ellner, et al. is now implemented in the package.  This is an "indirect inference" method using quasi-likelihood as an objective function.
 
-NEW IN VERSION 0.21-4:
+0.21-4:
 
     o  Improved documentation in "euler.Rd".
 
-NEW IN VERSION 0.21-3:
+0.21-3:
 
     o   Trajectories of the deterministic skeleton can now be computed via the method "trajectory".
 
     o	Bug fix in stochastic Euler algorithm.
 
-NEW IN VERSION 0.20-8:
+0.20-8:
 
     o   Better error handling in mif
 
     o	Fix inaccuracy in documentation of 'pomp' arguments 'rmeasure' and 'dmeasure'
 
-NEW IN VERSION 0.20-7:
+0.20-7:
 
     o   Bug fix in convergence record storage
 
-NEW IN VERSION 0.20-6:
+0.20-6:
 
     o   Bug fix in "intro_to_pomp" vignette
     
-NEW IN VERSION 0.20-5:
+0.20-5:
 
     o   Better error handling and improved documentation for 'mif'
 
     o   Testing of examples in the 'examples' directory, including compilation, linking, and running of dynamically-loadable library on unix machines
 
-NEW IN VERSION 0.20-4:
+0.20-4:
 
     o   A bug in the Euler simulator was repaired.
 
@@ -188,7 +201,7 @@ NEW IN VERSION 0.20-4:
 
     o	A potential bug in the Euler-multinomial simulator was repaired.
 
-NEW IN VERSION 0.20-2:
+0.20-2:
 
     o	The lookup_table (see file 'include/pomp.h') interface for C codes has been streamlined.
         It is now slightly more straightforward to set up a 'struct lookup_table'.
@@ -202,7 +215,7 @@ NEW IN VERSION 0.20-2:
 
     o	Several bugs fixed.
 
-NEW IN VERSION 0.20-1
+0.20-1
 
     o   This is a major revision.
 

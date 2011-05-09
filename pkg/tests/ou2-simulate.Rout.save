@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,6 +17,9 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
 > 
 > data(ou2)
 > 
@@ -31,27 +35,12 @@ Type 'q()' to quit R.
 > ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01099110 secs
+Time difference of 0.009652853 secs
 > 
 > coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 > 
 > ou2.sim <- simulate(ou2)
 > x <- simulate(ou2,nsim=3,states=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > y <- simulate(ou2,nsim=3,obs=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > z <- simulate(ou2,nsim=3,obs=T,states=T)
-Warning message:
-The default behavior of 'simulate' has changed.
-See the documentation ("pomp?simulate") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > 

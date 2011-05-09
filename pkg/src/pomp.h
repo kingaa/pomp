@@ -92,9 +92,9 @@ typedef void pomp_onestep_pdf(double *f,
 // f          = pointer to the probability density (a single scalar)
 
 // Prototype for deterministic skeleton evaluation
-typedef void pomp_vectorfield_map (double *f, double *x, double *p, 
-				   int *stateindex, int *parindex, int *covindex, 
-				   int ncovars, double *covars, double t);
+typedef void pomp_skeleton (double *f, double *x, double *p, 
+			    int *stateindex, int *parindex, int *covindex, 
+			    int ncovars, double *covars, double t);
 
 // Description:
 //  on input:

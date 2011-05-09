@@ -81,7 +81,8 @@ po <- pomp(
                     )
              }
              ),
-           skeleton.vectorfield=function(x,t,params,covars,...) {
+           skeleton.type="vectorfield",
+           skeleton=function(x,t,params,covars,...) {
              xdot <- rep(0,length(x))
              params <- exp(params)
              with(

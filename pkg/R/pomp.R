@@ -21,11 +21,13 @@ setClass(
                         paramnames = 'character',
                         covarnames = 'character',
                         PACKAGE = 'character',
-                        userdata = 'list',
-                        call = "call"
+                        userdata = 'list'
                         )
          )
 
+## this is the initial-condition setting function that is used by default
+## it simply finds all parameters in the vector 'params' that have a name ending in '.0'
+## and returns a vector with their values with names stripped of '.0'
 default.initializer <- function (params, t0, ...) {
   ivpnames <- grep("\\.0$",names(params),val=TRUE)
   if (length(ivpnames)<1)
@@ -35,14 +37,16 @@ default.initializer <- function (params, t0, ...) {
   x
 }
 
-## constructor of the pomp class
-pomp <- function (data, times, t0, ..., rprocess, dprocess,
-                  rmeasure, dmeasure, measurement.model,
-                  skeleton.map, skeleton.vectorfield, initializer, covar, tcovar,
-                  obsnames, statenames, paramnames, covarnames,
-                  PACKAGE) {
-  ## save the call
-  this.call <- match.call()
+## as of version 0.37-1 'pomp' is a generic function
+setGeneric("pomp",function(data,...)standardGeneric("pomp"))
+
+## basic constructor of the pomp class
+pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
+                              rmeasure, dmeasure, measurement.model,
+                              skeleton = NULL, skeleton.type = c("map","vectorfield"),
+                              initializer, covar, tcovar,
+                              obsnames, statenames, paramnames, covarnames,
+                              PACKAGE) {
 
   ## check the data
   if (is.data.frame(data)) {
@@ -96,21 +100,12 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   if (missing(dmeasure))
     dmeasure <- function(y,x,t,params,log,covars,...)stop(sQuote("dmeasure")," not specified")
   
-  if (missing(skeleton.map)) {
-    if (missing(skeleton.vectorfield)) {# skeleton is unspecified
-      skeleton.type <- as.character(NA)
-      skeleton <- pomp.fun(f=function(x,t,params,covars,...)stop(sQuote("skeleton")," not specified"))
-    } else {                # skeleton is a vectorfield (ordinary differential equation)
-      skeleton.type <- "vectorfield"
-      skeleton <- pomp.fun(f=skeleton.vectorfield,PACKAGE=PACKAGE,proto=quote(skeleton.vectorfield(x,t,params,...)))
-    }
+  skeleton.type <- match.arg(skeleton.type)
+
+  if (is.null(skeleton)) {
+    skeleton <- pomp.fun(f=function(x,t,params,covars,...)stop(sQuote("skeleton")," not specified"))
   } else {
-    if (missing(skeleton.vectorfield)) { # skeleton is a map (discrete-time system)
-      skeleton.type <- "map"
-      skeleton <- pomp.fun(f=skeleton.map,PACKAGE=PACKAGE,proto=quote(skeleton.map(x,t,params,...)))
-    } else { # a dynamical system cannot be both a map and a vectorfield
-      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.map")," and ",sQuote("skeleton.vectorfield"))
-    }
+    skeleton <- pomp.fun(f=skeleton,PACKAGE=PACKAGE,proto=quote(skeleton(x,t,params,...)))
   }
   
   if (missing(initializer)) {
@@ -243,8 +238,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
       paramnames = paramnames,
       covarnames = covarnames,
       PACKAGE = PACKAGE,
-      userdata = list(...),
-      call=this.call
+      userdata = list(...)
       )
 }
 
@@ -326,4 +320,224 @@ measform2pomp <- function (formulae) {
        }
        )
 }
+
+## deal with the change-over from 'skeleton.map'/'skeleton.vectorfield' to
+## 'skeleton'/'skeleton.type'
+skeleton.jigger <- function (skeleton = NULL, skeleton.type,
+                             skeleton.map = NULL, skeleton.vectorfield = NULL) {
+  if (!is.null(skeleton.map)) {
+    warning(
+            "the arguments ",sQuote("skeleton.map")," and ",sQuote("skeleton.vectorfield"),
+            " are now deprecated.",
+            " Use ",sQuote("skeleton")," and ",sQuote("skeleton.type")," instead.",
+            call.=FALSE
+            )
+    if (!is.null(skeleton.vectorfield))
+      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.vectorfield")," and ",sQuote("skeleton.map"))
+    if (!is.null(skeleton))
+      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.map")," and ",sQuote("skeleton"))
+    skeleton.type <- "map"
+    skeleton <- skeleton.map
+  }
+  if (!is.null(skeleton.vectorfield)) {
+    warning(
+            "the arguments ",sQuote("skeleton.map")," and ",sQuote("skeleton.vectorfield"),
+            " are now deprecated.",
+            " Use ",sQuote("skeleton")," and ",sQuote("skeleton.type")," instead.",
+            call.=FALSE
+            )
+    if (!is.null(skeleton.map))
+      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.vectorfield")," and ",sQuote("skeleton.map"))
+    if (!is.null(skeleton))
+      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.vectorfield")," and ",sQuote("skeleton"))
+    skeleton.type <- "vectorfield"
+    skeleton <- skeleton.vectorfield
+  }
+  list(fn=skeleton,type=skeleton.type)
+}
+
+
+setMethod(
+          "pomp",
+          signature(data="data.frame"),
+          function (data, times, t0, ..., rprocess, dprocess,
+                    rmeasure, dmeasure, measurement.model,
+                    skeleton = NULL, skeleton.type = c("map","vectorfield"),
+                    skeleton.map = NULL, skeleton.vectorfield = NULL,
+                    initializer, covar, tcovar,
+                    obsnames, statenames, paramnames, covarnames,
+                    PACKAGE) {
+            skel <- skeleton.jigger(
+                                    skeleton=skeleton,
+                                    skeleton.type=skeleton.type,
+                                    skeleton.map=skeleton.map,
+                                    skeleton.vectorfield=skeleton.vectorfield
+                                    )
+            pomp.constructor(
+                             data=data,
+                             times=times,
+                             t0=t0,
+                             rprocess=rprocess,
+                             dprocess=dprocess,
+                             rmeasure=rmeasure,
+                             dmeasure=dmeasure,
+                             measurement.model=measurement.model,
+                             skeleton=skel$fn,
+                             skeleton.type=skel$type,
+                             initializer=initializer,
+                             covar=covar,
+                             tcovar=tcovar,
+                             obsnames=obsnames,
+                             statenames=statenames,
+                             paramnames=paramnames,
+                             covarnames=covarnames,
+                             PACKAGE=PACKAGE,
+                             ...
+                             )
+          }
+          )
+
+setMethod(
+          "pomp",
+          signature(data="matrix"),
+          function (data, times, t0, ..., rprocess, dprocess,
+                    rmeasure, dmeasure, measurement.model,
+                    skeleton = NULL, skeleton.type = c("map","vectorfield"),
+                    skeleton.map = NULL, skeleton.vectorfield = NULL,
+                    initializer, covar, tcovar,
+                    obsnames, statenames, paramnames, covarnames,
+                    PACKAGE) {
+            skel <- skeleton.jigger(
+                                    skeleton=skeleton,
+                                    skeleton.type=skeleton.type,
+                                    skeleton.map=skeleton.map,
+                                    skeleton.vectorfield=skeleton.vectorfield
+                                    )
+            pomp.constructor(
+                             data=data,
+                             times=times,
+                             t0=t0,
+                             rprocess=rprocess,
+                             dprocess=dprocess,
+                             rmeasure=rmeasure,
+                             dmeasure=dmeasure,
+                             measurement.model=measurement.model,
+                             skeleton=skel$fn,
+                             skeleton.type=skel$type,
+                             initializer=initializer,
+                             covar=covar,
+                             tcovar=tcovar,
+                             obsnames=obsnames,
+                             statenames=statenames,
+                             paramnames=paramnames,
+                             covarnames=covarnames,
+                             PACKAGE=PACKAGE,
+                             ...
+                             )
+          }
+          )
+
+
+setMethod(
+          "pomp",
+          signature(data="numeric"),
+          function (data, times, t0, ..., rprocess, dprocess,
+                    rmeasure, dmeasure, measurement.model,
+                    skeleton = NULL, skeleton.type = c("map","vectorfield"),
+                    skeleton.map = NULL, skeleton.vectorfield = NULL,
+                    initializer, covar, tcovar,
+                    obsnames, statenames, paramnames, covarnames,
+                    PACKAGE) {
+            skel <- skeleton.jigger(
+                                    skeleton=skeleton,
+                                    skeleton.type=skeleton.type,
+                                    skeleton.map=skeleton.map,
+                                    skeleton.vectorfield=skeleton.vectorfield
+                                    )
+            pomp.constructor(
+                             data=matrix(data,nrow=1,ncol=length(data)),
+                             times=times,
+                             t0=t0,
+                             rprocess=rprocess,
+                             dprocess=dprocess,
+                             rmeasure=rmeasure,
+                             dmeasure=dmeasure,
+                             measurement.model=measurement.model,
+                             skeleton=skel$fn,
+                             skeleton.type=skel$type,
+                             initializer=initializer,
+                             covar=covar,
+                             tcovar=tcovar,
+                             obsnames=obsnames,
+                             statenames=statenames,
+                             paramnames=paramnames,
+                             covarnames=covarnames,
+                             PACKAGE=PACKAGE,
+                             ...
+                             )
+          }
+          )
+
+setMethod(
+          "pomp",
+          signature(data="pomp"),
+          function (data, times, t0, ..., rprocess, dprocess,
+                    rmeasure, dmeasure, measurement.model,
+                    skeleton, skeleton.type,
+                    initializer, covar, tcovar,
+                    obsnames, statenames, paramnames, covarnames,
+                    PACKAGE) {
+            mmg <- !missing(measurement.model)
+            dmg <- !missing(dmeasure)
+            rmg <- !missing(rmeasure)
+            if (missing(times)) times <- data@times
+            if (missing(t0)) t0 <- data@t0
+            if (mmg) {
+              if (dmg||rmg)
+                warning(
+                        "specifying ",sQuote("measurement.model"),
+                        " overrides specification of ",sQuote("rmeasure")," and ",sQuote("dmeasure")
+                        )
+              mm <- measform2pomp(measurement.model)
+              rmeasure <- mm$rmeasure
+              dmeasure <- mm$dmeasure
+            } else {
+              if (!rmg) rmeasure <- data@rmeasure
+              if (!dmg) dmeasure <- data@dmeasure
+            }
+            if (missing(rprocess)) rprocess <- data@rprocess
+            if (missing(dprocess)) dprocess <- data@dprocess
+            if (missing(initializer)) initializer <- data@initializer
+            if (missing(covar)) covar <- data@covar
+            if (missing(tcovar)) tcovar <- data@tcovar
+            if (missing(obsnames)) obsnames <- data@obsnames
+            if (missing(statenames)) statenames <- data@statenames
+            if (missing(paramnames)) paramnames <- data@paramnames
+            if (missing(covarnames)) covarnames <- data@covarnames
+            if (missing(PACKAGE)) PACKAGE <- data@PACKAGE
+            if (missing(skeleton.type)) skeleton.type <- data@skeleton.type
+            if (missing(skeleton)) skeleton <- data@skeleton
+            
+            pomp.constructor(
+                             data=data@data,
+                             times=times,
+                             t0=t0,
+                             rprocess=rprocess,
+                             dprocess=dprocess,
+                             rmeasure=rmeasure,
+                             dmeasure=dmeasure,
+                             skeleton=skeleton,
+                             skeleton.type=skeleton.type,
+                             initializer=initializer,
+                             covar=covar,
+                             tcovar=tcovar,
+                             obsnames=obsnames,
+                             statenames=statenames,
+                             paramnames=paramnames,
+                             covarnames=covarnames,
+                             PACKAGE=PACKAGE,
+                             ...
+                             )
+          }
+          )
 

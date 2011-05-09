@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,6 +17,9 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
 > 
 > po <- pomp(
 +            data=rbind(obs=rep(0,1000)),
@@ -110,11 +114,6 @@ Type 'q()' to quit R.
 >                
 > params <- cbind(c(n.0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),c(n.0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1))
 > x <- trajectory(po,params=params)
-Warning message:
-The default behavior of 'trajectory' has changed.
-See the documentation ("pomp?trajectory") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > pdf(file='logistic.pdf')
 > plot(po)
 > matplot(time(po),t(x['n',,]),type='l')

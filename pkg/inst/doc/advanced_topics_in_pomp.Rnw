@@ -87,7 +87,8 @@ pomp(
        delta.t=1/52/20
        ),
      ## native routine for the skeleton:
-     skeleton.vectorfield="_sir_ODE", 
+     skeleton.type="vectorfield",
+     skeleton="_sir_ODE", 
      ## binomial measurement model:
      rmeasure="_sir_binom_rmeasure", 
      dmeasure="_sir_binom_dmeasure", 

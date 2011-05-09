@@ -1,27 +1,52 @@
 \name{pomp}
 \alias{pomp}
+\alias{pomp,data.frame-method}
+\alias{data.frame-pomp}
+\alias{pomp,numeric-method}
+\alias{numeric-pomp}
+\alias{pomp,matrix-method}
+\alias{matrix-pomp}
+\alias{pomp,pomp-method}
+\alias{pomp-pomp}
 \title{Partially-observed Markov process object.}
 \description{
   Create a new \code{pomp} object to hold a partially-observed Markov process model together with a uni- or multi-variate time series.
 }
 \usage{
-  pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model, skeleton.map, skeleton.vectorfield,
+\S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
+       measurement.model, skeleton = NULL, skeleton.type = c("map","vectorfield"),
+       skeleton.map = NULL, skeleton.vectorfield = NULL,
+       initializer, covar, tcovar,
+       obsnames, statenames, paramnames, covarnames,
+       PACKAGE)
+\S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
+       measurement.model, skeleton = NULL, skeleton.type = c("map","vectorfield"),
+       skeleton.map = NULL, skeleton.vectorfield = NULL,
+       initializer, covar, tcovar,
+       obsnames, statenames, paramnames, covarnames,
+       PACKAGE)
+\S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
+       measurement.model, skeleton = NULL, skeleton.type = c("map","vectorfield"),
+       skeleton.map = NULL, skeleton.vectorfield = NULL,
+       initializer, covar, tcovar,
+       obsnames, statenames, paramnames, covarnames,
+       PACKAGE)
+\S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
+       measurement.model, skeleton, skeleton.type,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE)
 }
 \arguments{
-  \item{data}{
-    An array holding the data.
-    This array is of dimensions \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observed variables and \code{ntimes} is the number of times at which observations were made.
-    One can also specify \code{data} as a data-frame, in which case the argument \code{times} must be the name of the column of observation times.
-    Note that if \code{data} is a data-frame, it will be internally coerced to an array with storage-mode \sQuote{double}.
-  }
-  \item{times}{
-    vector of times corresponding to the observations:
-    \code{times} must be a strictly increasing numeric vector.
-    If \code{data} is a data-frame, \code{times} should be the name of the column of observation times.
+  \item{data, times}{
+    The time series data and times at which observations are made.
+    \code{data} can be specified as a vector, a matrix, a data-frame, or a \code{pomp} object..
+    If \code{data} is a numeric vector, \code{times} must be a numeric vector of the same length.
+    If \code{data} is a matrix, it should have dimensions \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observed variables and \code{ntimes} is the number of times at which observations were made (i.e., each column is a distinct observation of the \code{nobs} variables).
+    In this case, \code{times} must be given as a numeric vector (of length \code{ntimes}).
+    If \code{data} is a data-frame, \code{times} must name of the column of observation times.
+    Note that, in this case, \code{data} is a data-frame, it will be internally coerced to an array with storage-mode \sQuote{double}.
+    Note that the \code{times} must be numeric and strictly increasing.
   }
   \item{t0}{
     The zero-time.
@@ -57,21 +82,26 @@
     As might be expected, if \code{log=TRUE}, this function should return the log likelihood.
   }
   \item{measurement.model}{
-    optional formula; a formula or list of formulae, specifying the measurement model.
+    optional; a formula or list of formulae, specifying the measurement model.
     These formulae are parsed internally and used to generate \code{rmeasure} and \code{dmeasure} functions.
     If \code{measurement.model} is given it overrides any specification of \code{rmeasure} or \code{dmeasure}.
     See below for an example.
     \strong{NB:} it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
   }
-  \item{skeleton.map, skeleton.vectorfield}{
-    optional functions.
-    If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map and can be specified using \code{skeleton.map}.
-    If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield and can be specified using \code{skeleton.vectorfield}.
-    In either event, the skeleton function can be specified in one of two ways:
-    (1) as a function of prototype \code{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_vectorfield_map} as defined in the header file \dQuote{pomp.h}.
+  \item{skeleton, skeleton.type, skeleton.map, skeleton.vectorfield}{
+    The function \code{skeleton} specifies the deterministic skeleton of the unobserved Markov process.
+    If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map: indicate this by specifying \code{skeleton.type="map"}.
+    If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield: indicate this by specifying \code{skeleton.type="vectorfield"}.
+    The skeleton function can be specified in one of two ways:
+    (1) as an \R function of prototype \code{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_skeleton} as defined in the header file \dQuote{pomp.h}.
     If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
+    
+    For compatibility with older versions (<0.37-1), one can specify \code{skeleton.map} or \code{skeleton.vectorfield}.
+    Specifying \code{skeleton.map=X} is equivalent to \code{skeleton=X} and \code{skeleton.type="map"}.
+    Specifying \code{skeleton.vectorfield=X} is equivalent to \code{skeleton=X} and \code{skeleton.type="vectorfield"}.
     A dynamical system cannot be both discrete and continuous, so specifying both \code{skeleton.map} and \code{skeleton.vectorfield} generates an error.
+    Use of these arguments generates a warning; in future releases, these arguments will be removed.
   }
   \item{initializer}{
     optional function of prototype \code{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
@@ -100,6 +130,11 @@
   \item{\dots}{
     Any additional arguments are passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.
   }
+}
+\value{
+  An object of class \code{pomp}.
+  If \code{data} is an object of class \code{\link[=pomp-class]{pomp}}, then by default the returned \code{pomp} object is identical to \code{data}.
+  If additional arguments are given, these override the defaults.
 }
 \details{
   \strong{
@@ -140,6 +175,8 @@
 	\item \code{\link{pfilter}}
 	\item \code{\link{mif}}
 	\item \code{\link{nlf}}
+	\item \code{\link{probe}}
+	\item \code{\link{probe.match}}
 	}
     }
     \item{\code{dprocess}}{
@@ -179,6 +216,8 @@
       \itemize{
 	\item \code{\link[=simulate-pomp]{simulate}}
 	\item \code{\link{nlf}}
+	\item \code{\link{probe}}
+	\item \code{\link{probe.match}}
 	}
     }
     \item{\code{dmeasure}}{
@@ -210,11 +249,12 @@
       \code{skeleton} must return a numeric vector of the same length as \code{x}.
       The return value is interpreted as the vectorfield (if the dynamical system is continuous) or the value of the map (if the dynamical system is discrete), at the point \code{x} at time \code{t}.
 
-      If \code{skeleton} is the name of a native routine, this routine must be of prototype \dQuote{pomp_vectorfield_map} as defined in the header \dQuote{pomp.h} (see the \dQuote{include} directory in the installed package directory).
+      If \code{skeleton} is the name of a native routine, this routine must be of prototype \dQuote{pomp_skeleton} as defined in the header \dQuote{pomp.h} (see the \dQuote{include} directory in the installed package directory).
 
       At present, the following methods make use of \code{skeleton}:
       \itemize{
 	\item \code{\link{trajectory}}
+	\item \code{\link{traj.match}}
 	}
     }
     \item{\code{initializer}}{
@@ -225,7 +265,6 @@
     }
   }
 }
-\value{An object of class \code{pomp}.}
 \examples{
 ## For examples, see the vignettes.
 }

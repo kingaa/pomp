@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,6 +17,9 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
 > 
 > data(ricker)
 > 
@@ -56,11 +60,6 @@ Type 'q()' to quit R.
 > matplot(seq(0,1,length=100),t(f[1,,]),type='l',lty=1)
 > 
 > x <- trajectory(euler.sir) ## use deSolve to compute a deterministic trajectory
-Warning message:
-The default behavior of 'trajectory' has changed.
-See the documentation ("pomp?trajectory") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > f <- skeleton(euler.sir,x=x,params=p[,3,drop=F],t=time(euler.sir))  ## evaluate skeleton at each point along it
 > 
 > fit <- smooth.spline(time(euler.sir),x["S",,])## fit a spline to the trajectory

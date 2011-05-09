@@ -10,7 +10,8 @@ simulate(
                 ),
               rmeasure="_gompertz_normal_rmeasure",
               dmeasure="_gompertz_normal_dmeasure",
-              skeleton.map="_gompertz_skeleton",
+              skeleton.type="map",
+              skeleton="_gompertz_skeleton",
               paramnames=c("log.r","log.K","log.sigma","log.tau"),
               statenames=c("X"),
               obsnames=c("Y")

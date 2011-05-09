@@ -26,11 +26,6 @@ Loading required package: deSolve
 > pdf(file="ricker.pdf")
 > 
 > tj.1 <- trajectory(ricker)
-Warning message:
-The default behavior of 'trajectory' has changed.
-See the documentation ("pomp?trajectory") for details
-and set the 'times' and 't0' arguments appropriately to compensate.
- 
 > plot(time(ricker),tj.1[1,,],type='l')
 > tj.2 <- trajectory(ricker,times=c(30:50),t0=0)
 > lines(30:50,tj.2[1,,],col='red',lwd=2)

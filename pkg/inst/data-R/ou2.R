@@ -56,7 +56,8 @@ simulate(
               },
               dmeasure = "_ou2_normal_dmeasure",
               rmeasure = "_ou2_normal_rmeasure",
-              skeleton.map = function (x, t, params, ...) {
+              skeleton.type="map",
+              skeleton = function (x, t, params, ...) {
                 with(
                      as.list(c(x,params)),
                      {

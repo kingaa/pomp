@@ -207,7 +207,7 @@ gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
   X <- x["X"]
   ## generate a log-normal random variable:
   eps <- exp(rnorm(n=1,mean=0,sd=sigma))
-  ## compute the state at time t+1:
+  ## compute the state at time t+delta.t:
   S <- exp(-r*delta.t)
   xnew <- c(X=unname(K^(1-S)*X^S*eps))
   return(xnew)
@@ -352,20 +352,13 @@ We haven't yet used it all.
 To do so, we'll need to incorporate it into the \pomp\ object.
 We can do this by specifying the \code{dmeasure} argument in another call to \pomp:
 <<second-pomp-construction>>=
-dat <- as(gompertz,"data.frame")
-theta <- coef(gompertz)
 gompertz <- pomp(
-                 data=dat[c("time","Y")],
-                 times="time",
-                 rprocess=discrete.time.sim(gompertz.proc.sim),
-                 rmeasure=gompertz.meas.sim,
-                 dmeasure=gompertz.meas.dens,
-                 t0=0
+                 gompertz,
+                 dmeasure=gompertz.meas.dens
                  )
 coef(gompertz) <- theta
 @ 
-Note that we've first extracted the data from our old \code{gompertz} and set up the new one with the same data and parameters.
-The calls to \code{coef} and \code{coef<-} in the lines above make sure the parameters have the same values they had before.
+The result of the above is a new \pomp\ object \code{gompertz} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
 
 To compute the likelihood of the data, we can use the function \code{pfilter}.
 This runs a plain vanilla particle filter (AKA sequential Monte Carlo) algorithm and results in an unbiased estimate of the likelihood.
@@ -527,7 +520,7 @@ gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
   X <- x["X"]
   ## generate a log-normal random variable:
   eps <- exp(rnorm(n=1,mean=0,sd=sigma))
-  ## compute the state at time t+1:
+  ## compute the state at time t+delta.t:
   S <- exp(-r*delta.t)
   xnew <- c(X=unname(K^(1-S)*X^S*eps))
   return(xnew)
@@ -581,6 +574,12 @@ coef(gompertz) <- theta
 @ 
 
 A \code{pomp} object corresponding to the one just created (but with the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} bits coded in C for speed) can be loaded by executing \verb+data(gompertz)+.
+For your convenience, codes creating this \pomp\ object are included with the package.
+To view them, do:
+<<eval=F>>=
+file.show(system.file("examples/gompertz.R",package="pomp"))
+file.show(system.file("examples/gompertz.c",package="pomp"))
+@ 
 
 \clearpage
 \section{Estimating parameters using iterated filtering: \code{mif}}
@@ -718,7 +717,7 @@ In \pomp, the trajectory is computed using the \code{trajectory} function, which
 The \code{skeleton} slot should be filled with the deterministic skeleton of the process model.
 In the discrete-time case, this is the map
 \begin{equation*}
-  x\,\mapsto\,\expect{X_{t+1}\;\vert\;X_{t}=x,\theta}.
+  x\,\mapsto\,\expect{X_{t+{\Delta}t}\;\vert\;X_{t}=x,\theta}.
 \end{equation*}
 In the continuous-time case, this is the vectorfield
 \begin{equation*}
@@ -750,7 +749,8 @@ new.gompertz <- pomp(
                      rprocess=discrete.time.sim(gompertz.proc.sim),
                      rmeasure=gompertz.meas.sim,
                      dmeasure=gompertz.meas.dens,
-                     skeleton.map=gompertz.skel,
+                     skeleton.type="map",
+                     skeleton=gompertz.skel,
                      t0=0
                      )
 coef(new.gompertz) <- theta
@@ -760,7 +760,7 @@ coef(new.gompertz,"log.tau") <- log(0.05)
 coef(new.gompertz,"log.sigma") <- log(0.05)
 new.gompertz <- simulate(new.gompertz,seed=88737400L)
 @ 
-We use the \code{skeleton.map} argument for discrete-time processes and \code{skeleton.vectorfield} for continuous-time processes.
+We use \code{skeleton.type="map"} for discrete-time processes (such as the Gompertz model) and \code{skeleton.type="vectorfield"} for continuous-time processes.
 %% Note that we have turned off the process noise in \code{new.gompertz} (next to last line) so that trajectory matching is actually formally appropriate for this model.
 
 The \pomp\ function \code{traj.match} calls the optimizer \code{optim} to minimize the discrepancy between the trajectory and the data.

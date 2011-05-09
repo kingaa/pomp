@@ -6,7 +6,7 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 
-static void eval_skel (pomp_vectorfield_map *vf,
+static void eval_skel (pomp_skeleton *vf,
 		       double *f, 
 		       double *x, double *times, double *params, 
 		       int *ndim,
@@ -128,7 +128,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   SEXP statenames, paramnames, covarnames;
   SEXP sindex, pindex, cindex;
   SEXP Snames, Pnames, Cnames;
-  pomp_vectorfield_map *ff = NULL;
+  pomp_skeleton *ff = NULL;
   int k, len;
 
   ntimes = LENGTH(t);
@@ -167,9 +167,9 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   use_native = INTEGER(VECTOR_ELT(fun,1))[0];
   
   if (use_native) {
-    ff = (pomp_vectorfield_map *) R_ExternalPtrAddr(fn);
+    ff = (pomp_skeleton *) R_ExternalPtrAddr(fn);
   } else {		    // else construct a call to the R function
-    ff = (pomp_vectorfield_map *) default_skel_fn;
+    ff = (pomp_skeleton *) default_skel_fn;
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
     NVAR = nvars;			// for internal use
     NPAR = npars;			// for internal use

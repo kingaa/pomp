@@ -136,16 +136,9 @@ max(abs(c1-d1),na.rm=T)
 max(abs(e1-f1),na.rm=T)
 
 po <- pomp(
-           rprocess = rw.rprocess,
-           dprocess = rw.dprocess,
+           rw2,
            dmeasure = bvnorm.dmeasure,
-           rmeasure = bvnorm.rmeasure,
-           times=1:100,
-           data=rbind(
-             y1=rep(0,100),
-             y2=rep(0,100)
-             ),
-           t0=0
+           rmeasure = bvnorm.rmeasure
            )
 
 a2 <- dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)

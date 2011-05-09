@@ -8,7 +8,8 @@ fhn <- pomp(
             data=data.frame(time=seq(0,60,by=0.1),Vobs=NA),
             times="time",
             t0=-0.1,
-            skeleton.vectorfield=function(x,t,params,...) {
+            skeleton.type="vectorfield",
+            skeleton=function(x,t,params,...) {
               with(
                    as.list(c(x,params)),
                    c(

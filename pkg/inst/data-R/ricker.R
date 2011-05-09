@@ -10,10 +10,12 @@ simulate(
                 ),
               rmeasure="_ricker_poisson_rmeasure",
               dmeasure="_ricker_poisson_dmeasure",
-              skeleton.map="_ricker_skeleton",
+              skeleton.type="map",
+              skeleton="_ricker_skeleton",
               paramnames=c("log.r","log.sigma","log.phi"),
               statenames=c("N","e"),
-              obsnames=c("y")
+              obsnames=c("y"),
+              PACKAGE="pomp"
               ),
          params=c(
            log.r=3.8,
