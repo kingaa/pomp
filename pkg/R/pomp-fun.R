@@ -12,16 +12,18 @@ setClass(
 ## constructor
 pomp.fun <- function (f = NULL, PACKAGE, proto = NULL) {
   if (missing(PACKAGE)) PACKAGE <- ""
-  if (is.function(f)) {
-    if (!is.null(proto)) {
-      if (!is.call(proto))
-        stop(sQuote("proto")," must be an unevaluated call")
-      prototype <- as.character(proto)
-      fname <- prototype[1]
-      args <- prototype[-1]
-      if (!all(args%in%names(formals(f))))
-        stop(sQuote(fname)," must be a function of prototype ",deparse(proto),call.=FALSE)
-    }
+  if (!is.null(proto)) {
+    if (!is.call(proto))
+      stop(sQuote("proto")," must be an unevaluated call")
+    prototype <- as.character(proto)
+    fname <- prototype[1]
+    args <- prototype[-1]
+    if (is.function(f)&&(!all(args%in%names(formals(f)))))
+      stop(sQuote(fname)," must be a function of prototype ",deparse(proto),call.=FALSE)
+  }
+  if (is(f,"pomp.fun")) {
+    retval <- f
+  } else if (is.function(f)) {
     retval <- new(
                   "pomp.fun",
                   R.fun=f,
