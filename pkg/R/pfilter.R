@@ -9,7 +9,8 @@ setClass(
            filter.mean="array",
            eff.sample.size="numeric",
            cond.loglik="numeric",
-           last.states="array",
+           saved.states="array",
+           saved.params="array",
            seed="integer",
            Np="integer",
            tol="numeric",
@@ -24,7 +25,7 @@ pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
                               pred.mean, pred.var, filter.mean,
                               .rw.sd, seed, verbose,
-                              save.states) {
+                              save.states, save.params) {
   
   if (missing(seed)) seed <- NULL
   if (!is.null(seed)) {
@@ -49,6 +50,7 @@ pfilter.internal <- function (object, params, Np,
   ntimes <- length(times)-1
   if (is.null(dim(params))) {
     one.par <- TRUE               # there is only one parameter vector
+    coef(object,names(params)) <- unname(params) # set params slot to the parameters
     params <- matrix(
                      params,
                      nrow=length(params),
@@ -66,6 +68,8 @@ pfilter.internal <- function (object, params, Np,
   x <- init.state(object,params=params)
   statenames <- rownames(x)
   nvars <- nrow(x)
+  
+  ## set up storage for saving samples from filtering distributions
   if (save.states)
     xparticles <- array(
                         data=NA,
@@ -74,7 +78,15 @@ pfilter.internal <- function (object, params, Np,
                         )
   else
     xparticles <- array(dim=c(0,0,0))
-  
+  if (save.params)
+    pparticles <- array(
+                        data=NA,
+                        dim=c(length(paramnames),Np,ntimes),
+                        dimnames=list(paramnames,NULL,NULL)
+                        )
+  else
+    pparticles <- array(dim=c(0,0,0))
+
   random.walk <- !missing(.rw.sd)
   if (random.walk) {
     rw.names <- names(.rw.sd)
@@ -233,6 +245,10 @@ pfilter.internal <- function (object, params, Np,
       xparticles[,,nt] <- x
     }
 
+    if (save.params) {
+      pparticles[,,nt] <- params
+    }
+
     if (verbose && ((ntimes-nt)%%5==0))
       cat("pfilter timestep",nt,"of",ntimes,"finished\n")
 
@@ -251,7 +267,8 @@ pfilter.internal <- function (object, params, Np,
       filter.mean=filt.m,
       eff.sample.size=eff.sample.size,
       cond.loglik=loglik,
-      last.states=xparticles,
+      saved.states=xparticles,
+      saved.params=pparticles,
       seed=as.integer(seed),
       Np=as.integer(Np),
       tol=tol,
@@ -273,6 +290,7 @@ setMethod(
                     pred.var = FALSE,
                     filter.mean = FALSE,
                     save.states = FALSE,
+                    save.params = FALSE,
                     seed = NULL,
                     verbose = getOption("verbose"),
                     ...) {
@@ -287,6 +305,7 @@ setMethod(
                              pred.var=pred.var,
                              filter.mean=filter.mean,
                              save.states=save.states,
+                             save.params=save.params,
                              seed=seed,
                              verbose=verbose
                              )
@@ -303,6 +322,7 @@ setMethod(
                     pred.var = FALSE,
                     filter.mean = FALSE,
                     save.states = FALSE,
+                    save.params = FALSE,
                     seed = NULL,
                     verbose = getOption("verbose"),
                     ...) {
@@ -319,9 +339,9 @@ setMethod(
                              pred.var=pred.var,
                              filter.mean=filter.mean,
                              save.states=save.states,
+                             save.params=save.params,
                              seed=seed,
                              verbose=verbose
                              )
           }
           )
-

@@ -13,6 +13,10 @@ NEWS
         These warnings were introduced in version 0.34-1 to alert users to changes in the default behavior of 'simulate' and 'trajectory' introduced with that version.
         See the help ("pomp?simulate", "pomp?trajectory") for details.
 
+     o  It is now possible to save both the states and particles portions of the filtering distributions computed in 'pfilter'.
+     	This is accomplished by means of the logical 'save.states' and 'save.params' arguments to 'pfilter'.
+	The particles are stored in rank-3 arrays in the slots 'saved.states' and 'saved.params'.
+
 0.36-7
      o  'trajectory' now gives a more informative error when no skeleton is present
 

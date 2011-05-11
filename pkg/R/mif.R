@@ -220,6 +220,7 @@ mif.internal <- function (object, Nmif,
                                 pred.var=(weighted||(n==Nmif)),
                                 filter.mean=TRUE,
                                 save.states=FALSE,
+                                save.params=FALSE,
                                 .rw.sd=sigma.n[pars],
                                 verbose=verbose
                                 ),

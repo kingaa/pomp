@@ -13,11 +13,13 @@
 \usage{
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, save.states = FALSE, seed = NULL,
+    filter.mean = FALSE, save.states = FALSE,
+    save.params = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
 \S4method{pfilter}{pfilterd.pomp}(object, params, Np, tol,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, save.states = FALSE, seed = NULL,
+    filter.mean = FALSE, save.states = FALSE,
+    save.params = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
 }
 \arguments{
@@ -52,8 +54,10 @@
   \item{filter.mean}{
     logical; if \code{TRUE}, the filtering means are calculated for the state variables and parameters.
   }
-  \item{save.states}{
-    logical; if \code{TRUE}, the state-vector for each particle is saved and returned.
+  \item{save.states, save.params}{
+    logical.
+    If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \code{\link[=pfilterd.pomp-class]{pfilterd.pomp}} object.
+    If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \code{\link[=pfilterd.pomp-class]{pfilterd.pomp}} object.
   }
   \item{seed}{
     optional; an object specifying if and how the random number generator should be initialized (\sQuote{seeded}).
@@ -68,7 +72,7 @@
   }
 }
 \value{
-  An object of class \code{pfilterd.pomp}.
+  An object of class \code{\link[=pfilterd.pomp-class]{pfilterd.pomp}}.
   This class inherits from class \code{\link[=pomp-class]{pomp}} and contains the following additional slots:
   \describe{
     \item{pred.mean, pred.var, filter.mean}{
@@ -81,10 +85,14 @@
     \item{cond.loglik}{
       numeric vector containing the conditional log likelihoods at each time point.
     }
-    \item{states}{
-      if \code{saves.states=TRUE}, the array of state-vectors at each time point, for each particle.
+    \item{saved.states}{
+      If \code{pfilter} was called with \code{save.states=TRUE}, this is the array of state-vectors at each time point, for each particle.
       An array with dimensions \code{nvars}-by-\code{Np}-by-\code{ntimes}.
-      In particular, \code{states[,i,t]} can be considered a sample from \eqn{f[X|y_{1:t}]}.
+      In particular, \code{saved.states[,i,t]} can be considered a sample from \eqn{f[X|y_{1:t}]}.
+    }
+    \item{saved.params}{
+      If \code{pfilter} was called with \code{save.params=TRUE}, this is the array of parameter-vectors at each time point, for each particle.
+      It is an array with dimensions \code{npars}-by-\code{Np}-by-\code{ntimes}.
     }
     \item{seed}{
       the state of the random number generator at the time \code{pfilter} was called.
@@ -100,6 +108,8 @@
   }
   These can be accessed using the \code{$} operator as if the returned object were a list.
   In addition, \code{logLik} returns the log likelihood.
+  Note that if the argument \code{params} is a named vector, then these parameters are included in the \code{params} slot of the returned \code{pfilterd.pomp} object.
+  That is \code{coef(pfilter(obj,params=theta))==theta} if \code{theta} is a named vector of parameters.
 }
 \examples{
 ## See the vignettes for examples.
