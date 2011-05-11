@@ -1,5 +1,15 @@
+2011-05-10  kingaa
+
+	* [r468] DESCRIPTION:
+
 2011-05-09  kingaa
 
+	* [r467] inst/ChangeLog, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/index.html,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: - add a
+	  diagram to intro vignette
+	  - add 'index.html' file for vignettes
+	  - fix NEWS file format
 	* [r464] inst/NEWS: - update
 	* [r463] NAMESPACE, R/pomp.R, data/blowflies.rda, data/dacca.rda,
 	  data/euler.sir.rda, data/gillespie.sir.rda, data/gompertz.rda,

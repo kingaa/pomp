@@ -44,9 +44,11 @@ pfilter.internal <- function (object, params, Np,
   if (missing(tol))
     stop(sQuote("pfilter")," error: ",sQuote("tol")," must be specified",call.=FALSE)
   
+  one.par <- FALSE
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
   if (is.null(dim(params))) {
+    one.par <- TRUE               # there is only one parameter vector
     params <- matrix(
                      params,
                      nrow=length(params),
@@ -197,7 +199,8 @@ pfilter.internal <- function (object, params, Np,
                     X,params,
                     random.walk,sigma,
                     pred.mean,pred.var,
-                    filter.mean,weights,tol
+                    filter.mean,one.par,
+                    weights,tol
                     ),
               silent=FALSE
               )

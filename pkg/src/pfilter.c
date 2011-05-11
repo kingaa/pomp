@@ -52,7 +52,8 @@ SEXP systematic_resampling (SEXP weights)
 SEXP pfilter_computations (SEXP x, SEXP params, 
 			   SEXP rw, SEXP rw_sd,
 			   SEXP predmean, SEXP predvar,
-			   SEXP filtmean, SEXP weights, SEXP tol)
+			   SEXP filtmean, SEXP onepar,
+			   SEXP weights, SEXP tol)
 {
   int nprotect = 0;
   SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue;
@@ -63,7 +64,7 @@ SEXP pfilter_computations (SEXP x, SEXP params,
   SEXP dimX, dimP, newdim, Xnames, Pnames, pindex;
   int *dim, *pidx, lv;
   int nvars, npars = 0, nrw = 0, nreps, offset, nlost;
-  int do_rw, do_pm, do_pv, do_fm, all_fail = 0;
+  int do_rw, do_pm, do_pv, do_fm, is_op, all_fail = 0;
   double sum, sumsq, vsq, ws, w, toler;
   int j, k;
 
@@ -86,6 +87,8 @@ SEXP pfilter_computations (SEXP x, SEXP params,
   do_pm = *(LOGICAL(AS_LOGICAL(predmean))); // calculate prediction means?
   do_pv = *(LOGICAL(AS_LOGICAL(predvar)));  // calculate prediction variances?
   do_fm = *(LOGICAL(AS_LOGICAL(filtmean))); // calculate filtering means?
+  is_op = *(LOGICAL(AS_LOGICAL(onepar))); // are all cols of 'params' the same?
+  is_op = is_op && !do_rw;
 
   PROTECT(ess = NEW_NUMERIC(1)); nprotect++; // effective sample size
   PROTECT(loglik = NEW_NUMERIC(1)); nprotect++; // log likelihood
@@ -115,7 +118,8 @@ SEXP pfilter_computations (SEXP x, SEXP params,
   *(LOGICAL(fail)) = all_fail;
 
   if (do_rw) {
-    PROTECT(pindex = matchnames(Pnames,rw_names)); nprotect++; // indices of parameters undergoing random walk
+    // indices of parameters undergoing random walk
+    PROTECT(pindex = matchnames(Pnames,rw_names)); nprotect++; 
     xp = REAL(params);
     pidx = INTEGER(pindex);
     nrw = LENGTH(rw_names);
@@ -224,29 +228,38 @@ SEXP pfilter_computations (SEXP x, SEXP params,
     st = REAL(newstates);
 
     // create storage for new parameters
-    xdim[0] = npars; xdim[1] = nreps;
-    PROTECT(newparams = makearray(2,xdim)); nprotect++;
-    setrownames(newparams,Pnames,2);
-    ps = REAL(params);
-    pt = REAL(newparams);
+    if (!is_op) {
+      xdim[0] = npars; xdim[1] = nreps;
+      PROTECT(newparams = makearray(2,xdim)); nprotect++;
+      setrownames(newparams,Pnames,2);
+      ps = REAL(params);
+      pt = REAL(newparams);
+    }
 
     // resample
     nosort_resamp(nreps,REAL(weights),sample,0);
     for (k = 0; k < nreps; k++) { // copy the particles
-      for (j = 0, xx = ss+nvars*sample[k]; j < nvars; j++, st++, xx++) *st = *xx;
-      for (j = 0, xp = ps+npars*sample[k]; j < npars; j++, pt++, xp++) *pt = *xp;
+      for (j = 0, xx = ss+nvars*sample[k]; j < nvars; j++, st++, xx++) 
+	*st = *xx;
+      if (!is_op) {
+	for (j = 0, xp = ps+npars*sample[k]; j < npars; j++, pt++, xp++) 
+	  *pt = *xp;
+      }
     }
+
   } else { // don't resample: just drop 3rd dimension in x prior to return
+
     PROTECT(newdim = NEW_INTEGER(2)); nprotect++;
     dim = INTEGER(newdim);
     dim[0] = nvars; dim[1] = nreps;
     SET_DIM(x,newdim);
     setrownames(x,Xnames,2);
+
   }
 
   if (do_rw) { // if random walk, adjust prediction variance and move particles
     xx = REAL(rw_sd);
-    xp = (all_fail) ? REAL(params) : REAL(newparams);
+    xp = (all_fail&&(!is_op)) ? REAL(params) : REAL(newparams);
     for (j = 0; j < nrw; j++) {
       offset = pidx[j];
       vsq = xx[j];
@@ -278,9 +291,13 @@ SEXP pfilter_computations (SEXP x, SEXP params,
   
   if (all_fail) {
     SET_ELEMENT(retval,3,x);
-    SET_ELEMENT(retval,4,params);
   } else {
     SET_ELEMENT(retval,3,newstates);
+  }
+
+  if (all_fail||is_op) {
+    SET_ELEMENT(retval,4,params);
+  } else {
     SET_ELEMENT(retval,4,newparams);
   }
 

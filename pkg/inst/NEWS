@@ -11,7 +11,7 @@ NEWS
 
      o  The warning messages to do with the default behaviors of 'simulate' and 'trajectory' with respect to the arguments 'times' and 't0' have been removed.
         These warnings were introduced in version 0.34-1 to alert users to changes in the default behavior of 'simulate' and 'trajectory' introduced with that version.
-        See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
+        See the help ("pomp?simulate", "pomp?trajectory") for details.
 
 0.36-7
      o  'trajectory' now gives a more informative error when no skeleton is present
