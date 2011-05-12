@@ -4,10 +4,11 @@ NEWS
      o  The arguments 'skeleton.map' and 'skeleton.vectorfield' are now deprecated.
         Specify a discrete-time skeleton using 'skeleton.type="map"' and a continuous-time skeleton via 'skeleton.type="vectorfield"'.
 
-     o  'pomp' is now a method rather than a function.  
+     o  'pomp' is now a generic function.  
         Calling it on a 'pomp' object copies the object; one can optionally modify some of the slots.
 
-     o  Two new files 'gompertz.R' and 'gompertz.c' are in the 'examples' directory.  These contain codes needed to reproduce the Gompertz example in the 'intro_to_pomp' vignette.
+     o  Two new files 'gompertz.R' and 'gompertz.c' are in the 'examples' directory.  
+     	These contain codes needed to reproduce the Gompertz example in the 'intro_to_pomp' vignette.
 
      o  The warning messages to do with the default behaviors of 'simulate' and 'trajectory' with respect to the arguments 'times' and 't0' have been removed.
         These warnings were introduced in version 0.34-1 to alert users to changes in the default behavior of 'simulate' and 'trajectory' introduced with that version.

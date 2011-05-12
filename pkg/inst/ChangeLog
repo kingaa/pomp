@@ -1,3 +1,26 @@
+2011-05-11  kingaa
+
+	* [r474] tests/sir-icfit.R, tests/sir-icfit.Rout.save: - add a test
+	  for the new 'pfilter'-based initial-condition-estimation method
+	* [r473] tests/ou2-forecast.R, tests/ou2-forecast.Rout.save: -
+	  update this test to use new 'save.params' option
+	* [r472] tests/logistic.Rout.save: - minor change
+	* [r471] tests/fhn.Rout.save: - minor change
+	* [r470] R/mif.R, R/pfilter.R, R/pmcmc.R, inst/NEWS,
+	  man/pfilter.Rd: - add new argument 'save.params' to 'pfilter' to
+	  allow saving the parameter portion of the particles
+	  - change the 'pfilterd.pomp' slot name 'last.states' to
+	  'saved.states', which connects with the option name
+	  - add a new slot 'saved.params' to the 'pfilterd.pomp' object
+	  - update 'pmcmc' and 'mif' in accordance with the above changes
+	  - modify 'pfilter' so that
+	  'coef(pfilter(obj,params=theta))==theta' as in 'mif', 'simulate',
+	  etc.
+	* [r469] DESCRIPTION, R/pfilter.R, inst/ChangeLog, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  src/pfilter.c: - eliminate unnecessary copying of identical
+	  parameter particles
+
 2011-05-10  kingaa
 
 	* [r468] DESCRIPTION:
