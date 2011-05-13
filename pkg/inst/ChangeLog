@@ -1,3 +1,22 @@
+2011-05-13  kingaa
+
+	* [r477] data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/gompertz-multi-mif.rda, inst/doc/gompertz-trajmatch.rda,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/ricker-mif.rda,
+	  inst/doc/ricker-probe-match.rda, man/pomp.Rd: - update vignettes
+	  - update data()-loadable objects
+	  - minor tweak to pomp man page
+	  - tweak to NEWS file
+
+2011-05-12  kingaa
+
+	* [r476] DESCRIPTION: - fix author line
+	* [r475] DESCRIPTION, inst/ChangeLog, inst/NEWS: - update ChangeLog
+	  and NEWS
+
 2011-05-11  kingaa
 
 	* [r474] tests/sir-icfit.R, tests/sir-icfit.Rout.save: - add a test
