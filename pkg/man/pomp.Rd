@@ -200,7 +200,7 @@
       It should be quite clear that, but for this assumption, it would be quite difficult in general to write the transition probabilities.
       In fact, from one perspective, the algorithms in \pkg{pomp} are designed to overcome just this difficulty.
 
-      \strong{At present, no methods in \code{pomp} make use of \code{dprocess}.}
+      \strong{At present, no methods in \pkg{pomp} make use of \code{dprocess}.}
     }
     \item{\code{rmeasure}}{
       if provided, must take at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.

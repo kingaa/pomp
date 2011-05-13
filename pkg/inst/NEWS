@@ -17,6 +17,7 @@ NEWS
      o  It is now possible to save both the states and particles portions of the filtering distributions computed in 'pfilter'.
      	This is accomplished by means of the logical 'save.states' and 'save.params' arguments to 'pfilter'.
 	The particles are stored in rank-3 arrays in the slots 'saved.states' and 'saved.params'.
+	This results in the need for a change in the structure of 'pfilterd.pomp' objects: note that 'pfilterd.pomp' objects (including 'mif' and 'pmcmc' objects) created under pre-0.37-1 version of the package will not load under versions >= 0.37-1.
 
 0.36-7
      o  'trajectory' now gives a more informative error when no skeleton is present
