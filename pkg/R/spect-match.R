@@ -151,7 +151,7 @@ spect.match <- function(object, start, est = character(0),
     if ((length(weights)!=length(ds$freq)))
       stop("if ",sQuote("weights")," is provided as a vector, it must have length ",length(ds$freq))
   } else if (is.function(weights)) {
-    weights <- sapply(ds$freq,weights)
+    weights <- vapply(ds$freq,weights,numeric(1))
   } else {
     stop(sQuote("weights")," must be specified as a vector or as a function")
   }

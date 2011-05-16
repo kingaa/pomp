@@ -32,7 +32,7 @@ sannbox <- function (par, fn, control = list(), ...) {
     control$sched <- function (k) control$temp/log(((k-1)%/%control$tmax)*control$tmax+exp(1))
 
   if (is.function(control$sched))
-    temps <- sapply(seq.int(from=1,to=control$maxit,by=1),control$sched)
+    temps <- vapply(seq_len(control$maxit),control$sched,numeric(1))
   else if (is.numeric(control$sched))
     temps <- control$sched
   

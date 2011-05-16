@@ -187,9 +187,10 @@ setMethod(
               ## L-2 distance between data and mean simulated spectrum
               datdist <- sum((datspec[,j]-mean.simspec[,j])^2)
               ## L-2 distance betw. each sim. and mean simulated spectrum
-              simdist <- sapply(
+              simdist <- vapply(
                                 seq_len(nsim),
-                                function(k)sum((simspec[k,,j]-mean.simspec[,j])^2)
+                                function(k)sum((simspec[k,,j]-mean.simspec[,j])^2),
+                                numeric(1)
                                 )
               pvals[j] <- (nsim+1-sum(simdist<datdist))/(nsim+1)
               totdatdist <- totdatdist+datdist

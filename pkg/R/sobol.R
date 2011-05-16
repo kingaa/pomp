@@ -5,11 +5,12 @@ sobol <- function (vars, n) {
     stop("sobol error: each entry in ",sQuote("vars")," must specify a range")
   d <- length(vars)
   x <- .Call("sobol_sequence",as.integer(c(d,n)))
-  y <- sapply(
-              seq(length=d),
+  y <- vapply(
+              seq_len(d),
               function (k) {
                 vars[[k]][1]+(vars[[k]][2]-vars[[k]][1])*x[k,]
-              }
+              },
+              numeric(n)
               )
   colnames(y) <- names(vars)
   as.data.frame(y)
