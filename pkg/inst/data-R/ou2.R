@@ -39,7 +39,7 @@ simulate(
                 ntimes <- length(times)
                 parindex <- match(paramnames,rownames(params))-1
                 array(
-                      .C("_ou2_pdf",
+                      .C("ou2_pdf",
                          d = double(nrep*(ntimes-1)),
                          X = as.double(x),
                          par = as.double(params),
@@ -54,8 +54,8 @@ simulate(
                       dim=c(nrep,ntimes-1)
                       )
               },
-              dmeasure = "_ou2_normal_dmeasure",
-              rmeasure = "_ou2_normal_rmeasure",
+              dmeasure = "ou2_normal_dmeasure",
+              rmeasure = "ou2_normal_rmeasure",
               skeleton.type="map",
               skeleton = function (x, t, params, ...) {
                 with(
