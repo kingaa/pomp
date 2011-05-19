@@ -5,23 +5,25 @@
 #include <Rdefines.h>
 
 // prototypes
-void ou2_normal_rmeasure (double *y, double *x, double *p, 
-			   int *obsindex, int *stateindex, int *parindex, int *covindex,
-			   int ncovar, double *covar, double t);
-void ou2_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
-			   int *obsindex, int *stateindex, int *parindex, int *covindex,
-			   int covdim, double *covar, double t);
+void ou2_rmeasure (double *y, double *x, double *p, 
+		   int *obsindex, int *stateindex, int *parindex, int *covindex,
+		   int ncovar, double *covar, double t);
+void ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
+		   int *obsindex, int *stateindex, int *parindex, int *covindex,
+		   int covdim, double *covar, double t);
 void ou2_adv (double *x, double *xstart, double *par, double *times, int *n);
-void _ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex);
 void ou2_step (double *x, const double *p,
 	       const int *stateindex, const int *parindex, const int *covindex,
 	       int ncovars, const double *covars,
 	       double t, double dt);
-void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log);
-static void sim_ou2 (double *x,
+void ou2_pdf (double *f, 
+	      double *x1, double *x2, double t1, double t2, const double *p, 
+	      const int *stateindex, const int *parindex, const int *covindex,
+	      int ncovars, const double *covars);
+static void sim_ou2 (double *x1, double *x2,
 		     double alpha1, double alpha2, double alpha3, double alpha4, 
 		     double sigma1, double sigma2, double sigma3);
-static double dens_ou2 (double *x1, double *x2,
+static double dens_ou2 (double x1, double x2, double z1, double z2,
 			double alpha1, double alpha2, double alpha3, double alpha4, 
 			double sigma1, double sigma2, double sigma3, int give_log);
 
@@ -70,7 +72,7 @@ void ou2_adv (double *x, double *xstart, double *par, double *times, int *n)
       tgoal = times[k];
 
       while (tnow < tgoal) {
-	sim_ou2(xp1,ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3); // advance state
+	sim_ou2(&xp1[0],&xp1[1],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3); // advance state
 	tnow += dt;		// advance time
       }
 
@@ -79,85 +81,6 @@ void ou2_adv (double *x, double *xstart, double *par, double *times, int *n)
   }
 
   PutRNGstate();	  // finished with R's random number generator
-}
-
-#undef ALPHA1
-#undef ALPHA2
-#undef ALPHA3
-#undef ALPHA4
-#undef SIGMA1
-#undef SIGMA2
-#undef SIGMA3
-
-#define ALPHA1     (pp[parindex[0]])
-#define ALPHA2     (pp[parindex[1]])
-#define ALPHA3     (pp[parindex[2]])
-#define ALPHA4     (pp[parindex[3]])
-#define SIGMA1     (pp[parindex[4]])
-#define SIGMA2     (pp[parindex[5]])
-#define SIGMA3     (pp[parindex[6]])
-
-// just like the above, but with parindex
-void _ou2_adv (double *x, double *xstart, double *par, double *times, int *n, int *parindex)
-{
-  int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3], incr;
-  double tnow, tgoal, dt = 1.0;
-  double *xp0, *xp1, *pp;
-  int i, j, k;
-
-  incr = nrep*nvar;
-
-  GetRNGstate();       // initialize R's pseudorandom number generator
-
-  for (j = 0; j < nrep; j++) {
-
-    R_CheckUserInterrupt();	// check for an interrupt signal
-
-    xp0 = &xstart[nvar*j];     // pointer to j-th starting state
-    xp1 = &x[nvar*j];	       // pointer to j-th state vector
-    pp = &par[npar*j];	       // pointer to j-th parameter vector
-
-    for (i = 0; i < nvar; i++) xp1[i] = xp0[i]; // copy xstart into the first slice of x
-
-    tnow = times[0];		// initial time
-
-    for (k = 1; k < ntimes; k++) { // loop over times
-    
-      xp0 = xp1;
-      xp1 += incr;
-
-      for (i = 0; i < nvar; i++) xp1[i] = xp0[i]; // copy state vector
-
-      tgoal = times[k];
-
-      while (tnow < tgoal) {
-	sim_ou2(xp1,ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3); // advance state
-	tnow += dt;		// advance time
-      }
-
-    }
-
-  }
-
-  PutRNGstate();	  // finished with R's random number generator
-}
-
-// pdf of a single 2D OU transition
-void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *parindex, int *give_log)
-{
-  int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3];
-  double *x1, *x2, *pp;
-  int j, k;
-  for (k = 0; k < nrep; k++) {
-    pp = &par[npar*k];	       // get address of k-th parameter vector
-    x1 = &X[nvar*k];	     // get address of (0,0)-th state vector
-    for (j = 1; j < ntimes; j++) {
-      R_CheckUserInterrupt();
-      x2 = &X[nvar*(k+nrep*j)]; // get address of (k,j)-th state vector
-      d[k+nrep*(j-1)] = dens_ou2(x1,x2,ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3,*give_log);
-      x1 = x2;
-    }
-  }
 }
 
 #undef ALPHA1
@@ -177,8 +100,9 @@ void ou2_pdf (double *d, double *X, double *par, double *times, int *n, int *par
 #define SIGMA3     (p[parindex[6]])
 #define TAU        (p[parindex[7]])
 
-#define X1    (x[stateindex[0]])
-#define X2    (x[stateindex[1]])
+#define X1    (stateindex[0])
+#define X2    (stateindex[1])
+
 #define Y1    (y[obsindex[0]])
 #define Y2    (y[obsindex[1]])
 
@@ -188,31 +112,50 @@ void ou2_step (double *x, const double *p,
 	       int ncovars, const double *covars,
 	       double t, double dt) 
 {
-  sim_ou2(x,ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3);
+  sim_ou2(&x[X1],&x[X2],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3);
 }
 
+// onestep transition probability density for use in 'onestep.dens' plug-in
+// transition from x to z as time goes from t1 to t2
+void ou2_pdf (double *f, 
+	      double *x, double *z, double t1, double t2, const double *p, 
+	      const int *stateindex, const int *parindex, const int *covindex,
+	      int ncovars, const double *covars)
+{
+  if (t2-t1 != 1)
+    error("ou2_pdf error: transitions must be consecutive");
+  f[0] = dens_ou2(x[X1],x[X2],z[X1],z[X2],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3,1);
+}
+
+void ou2_skel (double *f, double *x, double *p, 
+	       int *stateindex, int *parindex, int *covindex, 
+	       int ncovars, double *covars, double t)
+{
+  f[X1] = ALPHA1*x[X1]+ALPHA3*x[X2];
+  f[X2] = ALPHA2*x[X1]+ALPHA4*x[X2];
+}
 
 // bivariate normal measurement error density
-void ou2_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
-			   int *obsindex, int *stateindex, int *parindex, int *covindex,
-			   int covdim, double *covar, double t) 
+void ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
+		   int *obsindex, int *stateindex, int *parindex, int *covindex,
+		   int covdim, double *covar, double t) 
 {
   double sd = fabs(TAU);
   double f = 0.0;
-  f += (ISNA(Y1)) ? 0.0 : dnorm(Y1,X1,sd,1);
-  f += (ISNA(Y2)) ? 0.0 : dnorm(Y2,X2,sd,1);
+  f += (ISNA(Y1)) ? 0.0 : dnorm(Y1,x[X1],sd,1);
+  f += (ISNA(Y2)) ? 0.0 : dnorm(Y2,x[X2],sd,1);
   *lik = (give_log) ? f : exp(f);
 }
 
 // bivariate normal measurement error simulator
-void ou2_normal_rmeasure (double *y, double *x, double *p, 
-			   int *obsindex, int *stateindex, int *parindex, int *covindex,
-			   int ncovar, double *covar, 
-			   double t) 
+void ou2_rmeasure (double *y, double *x, double *p, 
+		   int *obsindex, int *stateindex, int *parindex, int *covindex,
+		   int ncovar, double *covar, 
+		   double t) 
 {
   double sd = fabs(TAU);
-  Y1 = rnorm(X1,sd);
-  Y2 = rnorm(X2,sd);
+  Y1 = rnorm(x[X1],sd);
+  Y2 = rnorm(x[X2],sd);
 }
 
 #undef ALPHA1
@@ -230,14 +173,14 @@ void ou2_normal_rmeasure (double *y, double *x, double *p,
 #undef Y2
 
 // simple 2D Ornstein-Uhlenbeck process simulation
-static void sim_ou2 (double *x,
+static void sim_ou2 (double *x1, double *x2,
 		     double alpha1, double alpha2, double alpha3, double alpha4, 
 		     double sigma1, double sigma2, double sigma3)
 {
   double eps[2], xnew[2];
 
-  if (!(R_FINITE(x[0]))) return;
-  if (!(R_FINITE(x[1]))) return;
+  if (!(R_FINITE(*x1))) return;
+  if (!(R_FINITE(*x2))) return;
   if (!(R_FINITE(alpha1))) return;
   if (!(R_FINITE(alpha2))) return;
   if (!(R_FINITE(alpha3))) return;
@@ -249,24 +192,25 @@ static void sim_ou2 (double *x,
   eps[0] = rnorm(0,1);
   eps[1] = rnorm(0,1);
 
-  xnew[0] = alpha1*x[0]+alpha3*x[1]+sigma1*eps[0];
-  xnew[1] = alpha2*x[0]+alpha4*x[1]+sigma2*eps[0]+sigma3*eps[1];
+  xnew[0] = alpha1*(*x1)+alpha3*(*x2)+sigma1*eps[0];
+  xnew[1] = alpha2*(*x1)+alpha4*(*x2)+sigma2*eps[0]+sigma3*eps[1];
 
-  x[0] = xnew[0];
-  x[1] = xnew[1];
+  *x1 = xnew[0];
+  *x2 = xnew[1];
 }
 
-// simple 2D Ornstein-Uhlenbeck process density
-static double dens_ou2 (double *x1, double *x2,
+// simple 2D Ornstein-Uhlenbeck process transition density
+// transition (x1,x2) -> (z1,z2) in 1 unit of time
+static double dens_ou2 (double x1, double x2, double z1, double z2,
 			double alpha1, double alpha2, double alpha3, double alpha4, 
 			double sigma1, double sigma2, double sigma3, int give_log)
 {
   double eps[2], val;
 
-  if (!(R_FINITE(x1[0]))) return R_NaReal;
-  if (!(R_FINITE(x1[1]))) return R_NaReal;
-  if (!(R_FINITE(x2[0]))) return R_NaReal;
-  if (!(R_FINITE(x2[1]))) return R_NaReal;
+  if (!(R_FINITE(x1))) return R_NaReal;
+  if (!(R_FINITE(x2))) return R_NaReal;
+  if (!(R_FINITE(z1))) return R_NaReal;
+  if (!(R_FINITE(z2))) return R_NaReal;
   if (!(R_FINITE(alpha1))) return R_NaReal;
   if (!(R_FINITE(alpha2))) return R_NaReal;
   if (!(R_FINITE(alpha3))) return R_NaReal;
@@ -276,8 +220,8 @@ static double dens_ou2 (double *x1, double *x2,
   if (!(R_FINITE(sigma3))) return R_NaReal;
 
   // compute residuals
-  eps[0] = x2[0]-alpha1*x1[0]-alpha3*x1[1];
-  eps[1] = x2[1]-alpha2*x1[0]-alpha4*x1[1];
+  eps[0] = z1-alpha1*x1-alpha3*x2;
+  eps[1] = z2-alpha2*x1-alpha4*x2;
 
   // backsolve
   eps[0] /= sigma1;
