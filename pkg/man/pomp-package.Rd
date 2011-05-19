@@ -36,8 +36,13 @@
   \code{\link{pomp}},
   \code{\link{pfilter}},
   \code{\link[=simulate-pomp]{simulate}},
+  \code{\link{trajectory}},
   \code{\link{mif}},
-  \code{\link{nlf}}
+  \code{\link{nlf}},
+  \code{\link{probe.match}},
+  \code{\link{traj.match}},
+  \code{\link{bsmc}},
+  \code{\link{pmcmc}}
 }
 \keyword{models}
 \keyword{ts}

@@ -221,7 +221,7 @@
 	}
     }
     \item{\code{dmeasure}}{
-      if provided, must take at least the arguments \code{y}, \code{x}, \code{times}, \code{params}, \code{log}, and \code{\dots}.
+      if provided, must take at least the arguments \code{y}, \code{x}, \code{t}, \code{params}, \code{log}, and \code{\dots}.
       \code{y} may be assumed to be a named vector of length \code{nobs} containing (actual or simulated) values of the observed variables;
       \code{x} will be a named vector of length \code{nvar} containing state variables
       \code{params}, a named vector containing parameters;
