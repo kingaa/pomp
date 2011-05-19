@@ -46,13 +46,35 @@ static double term_time (double t, double b0, double b1)
 void _sir_binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
 			  int *obsindex, int *stateindex, int *parindex, int *covindex,
 			  int ncovars, double *covars, double t) {
-  *lik = dbinom(REPORTS,nearbyint(CASE),exp(LOGRHO),give_log);
+  double size, prob;
+  double mean, sd;
+  double f;
+  size = CASE;
+  prob = exp(LOGRHO);
+  mean = size*prob;
+  sd = sqrt(size*prob*(1-prob));
+  if (REPORTS > 0) {
+    f = pnorm(REPORTS+0.5,mean,sd,1,0)-pnorm(REPORTS-0.5,mean,sd,1,0);
+  } else {
+    f = pnorm(REPORTS+0.5,mean,sd,1,0);
+  }
+  *lik = (give_log) ? log(f) : f;
+  //  *lik = dbinom(REPORTS,nearbyint(CASE),exp(LOGRHO),give_log);
 }
 
 void _sir_binom_rmeasure (double *y, double *x, double *p, 
 			  int *obsindex, int *stateindex, int *parindex, int *covindex,
 			  int ncovars, double *covars, double t) {
-  REPORTS = rbinom(nearbyint(CASE),exp(LOGRHO));
+  double size, prob;
+  double mean, sd;
+  double rep;
+  size = CASE;
+  prob = exp(LOGRHO);
+  mean = size*prob;
+  sd = sqrt(size*prob*(1-prob));
+  rep = nearbyint(rnorm(mean,sd));
+  REPORTS = (rep > 0) ? rep : 0;
+  //  REPORTS = rbinom(nearbyint(CASE),exp(LOGRHO));
 }
 
 #undef REPORTS
