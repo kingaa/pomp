@@ -129,7 +129,29 @@ Loading required package: deSolve
 +                   }
 +                   )
 +            },
-+            measurement.model=reports~binom(size=cases,prob=exp(rho)),
++ #           measurement.model=reports~binom(size=cases,prob=exp(rho)),
++            rmeasure=function(x,t,params,covars,...){
++              with(
++                   as.list(c(x,exp(params))),
++                   {
++                     rep <- round(rnorm(n=1,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases)))
++                     if (rep<0) rep <- 0
++                     c(reports=rep)
++                   }
++                   )
++            },
++            dmeasure=function(y,x,t,params,log,covars,...){
++              with(
++                   as.list(c(x,exp(params))),
++                   {
++                     if (y > 0) 
++                       f <- diff(pnorm(q=y+c(-0.5,0.5),mean=rho*cases,sd=sqrt(rho*(1-rho)*cases),lower.tail=TRUE,log.p=FALSE))
++                     else
++                       f <- pnorm(q=0.5,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases),lower.tail=TRUE,log.p=FALSE)
++                     if (log) log(f) else f
++                   }
++                   )
++            },
 +            initializer=function(params,t0,...){
 +              p <- exp(params)
 +              with(
@@ -372,7 +394,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x2cab758>
+<environment: 0x192ae10>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -382,32 +404,33 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0x239f2b8>
+<environment: 0x2012898>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
-    y <- numeric(length = nobs)
-    names(y) <- obsnames
-    for (k in seq_len(nobs)) {
-        y[k] <- eval(rcalls[[k]], envir = as.list(c(x, params, 
-            covars, t = t)))
-    }
-    y
+    with(as.list(c(x, exp(params))), {
+        rep <- round(rnorm(n = 1, mean = rho * cases, sd = sqrt(rho * 
+            (1 - rho) * cases)))
+        if (rep < 0) 
+            rep <- 0
+        c(reports = rep)
+    })
 }
-<environment: 0x2c72870>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
-    f <- 0
-    for (k in seq_len(nobs)) {
-        f <- f + eval(dcalls[[k]], envir = as.list(c(y, x, params, 
-            covars, t = t)))
-    }
-    if (log) 
-        f
-    else exp(f)
+    with(as.list(c(x, exp(params))), {
+        if (y > 0) 
+            f <- diff(pnorm(q = y + c(-0.5, 0.5), mean = rho * 
+                cases, sd = sqrt(rho * (1 - rho) * cases), lower.tail = TRUE, 
+                log.p = FALSE))
+        else f <- pnorm(q = 0.5, mean = rho * cases, sd = sqrt(rho * 
+            (1 - rho) * cases), lower.tail = TRUE, log.p = FALSE)
+        if (log) 
+            log(f)
+        else f
+    })
 }
-<environment: 0x2c72870>
 skeleton ( vectorfield ) = 
 function (x, t, params, covars, ...) 
 {
@@ -448,7 +471,7 @@ $zeronames
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.063876 secs
+Time difference of 2.064163 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -465,7 +488,7 @@ Time difference of 2.063876 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.7739 secs
+Time difference of 2.758715 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -481,7 +504,7 @@ Time difference of 2.7739 secs
 +                log=TRUE
 +                )
 > print(apply(f1,1,sum),digits=4)
- [1] -51.57 -43.19 -50.14 -39.65 -41.63 -49.34 -39.60 -48.19 -42.60 -48.26
+ [1] -41.29 -40.62 -58.44 -40.74 -48.97 -46.98 -40.59 -44.77 -49.61 -42.44
 > 
 > g1 <- dmeasure(
 +                po,
@@ -497,7 +520,7 @@ Time difference of 2.7739 secs
 +                log=TRUE
 +                )
 > print(apply(g1,1,sum),digits=4)
- [1]   -Inf   -Inf   -Inf   -Inf   -Inf   -Inf -263.6 -408.1   -Inf -468.1
+ [1] -363.9 -400.0 -418.2 -387.1 -404.6 -417.2 -251.7 -440.1 -404.5 -416.1
 > 
 > h1 <- skeleton(
 +                po,
@@ -506,14 +529,14 @@ Time difference of 2.7739 secs
 +                params=as.matrix(log(params))
 +                )
 > print(h1[c("S","I","R"),,],digits=4)
-      [,1]     [,2]     [,3]     [,4]     [,5]   [,6]   [,7]   [,8]   [,9]
-S  39362.0  39111.6  39195.1  38583.3  38374.5  36367  34769  33057  29765
-I    272.3    376.1    407.8    615.6    731.6   1423   2046   2755   4083
-R -39640.5 -39495.0 -39609.9 -39205.0 -39112.3 -37796 -36819 -35816 -33852
-   [,10]  [,11]  [,12]    [,13]  [,14]  [,15]  [,16]
-S  24577  17622  11393    319.5 -14707 -33518 -57305
-I   6165   8975  11503  15834.2  21418  27852  34849
-R -30746 -26601 -22900 -16156.5  -6714   5662  22453
+      [,1]     [,2]     [,3]   [,4]     [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
+S  39607.5  39770.1  39222.4  39000  38470.0  37635  36130  34844  33808  30538
+I    243.0    246.8    415.5    519    722.8   1047   1628   2172   2649   4006
+R -39852.3 -40019.5 -39639.0 -39520 -39191.5 -38682 -37758 -37016 -36456 -34544
+   [,11]  [,12]  [,13]  [,14]  [,15]    [,16]
+S  27082  20266  13528   2809  -8808 -26739.3
+I   5473   8300  11076  15339  19697  25951.9
+R -32554 -28565 -24604 -18148 -10889    787.2
 > 
 > ## now repeat using the compiled native codes built into the package
 > data(euler.sir)
@@ -525,7 +548,7 @@ R -30746 -26601 -22900 -16156.5  -6714   5662  22453
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.998704 secs
+Time difference of 1.99654 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -533,7 +556,7 @@ Time difference of 1.998704 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.1501851 secs
+Time difference of 0.1497879 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -550,7 +573,7 @@ Time difference of 0.1501851 secs
 +                log=TRUE
 +                )
 > print(apply(g2,1,sum),digits=4)
- [1]   -Inf   -Inf   -Inf   -Inf   -Inf   -Inf -263.6 -408.1   -Inf -468.1
+ [1] -363.9 -400.0 -418.2 -387.1 -404.6 -417.2 -251.7 -440.1 -404.5 -416.1
 > 
 > h2 <- skeleton(
 +                po,
@@ -559,19 +582,19 @@ Time difference of 0.1501851 secs
 +                params=as.matrix(c(log(params),nbasis=3,degree=3,period=1))
 +                )
 > print(h2[c("S","I","R"),,],digits=4)
-      [,1]     [,2]     [,3]     [,4]     [,5]   [,6]   [,7]   [,8]   [,9]
-S  39362.0  39111.6  39195.1  38583.3  38374.5  36367  34769  33057  29765
-I    272.3    376.1    407.8    615.6    731.6   1423   2046   2755   4083
-R -39640.5 -39495.0 -39609.9 -39205.0 -39112.3 -37796 -36819 -35816 -33852
-   [,10]  [,11]  [,12]    [,13]  [,14]  [,15]  [,16]
-S  24577  17622  11393    319.5 -14707 -33518 -57305
-I   6165   8975  11503  15834.2  21418  27852  34849
-R -30746 -26601 -22900 -16156.5  -6714   5662  22453
+      [,1]     [,2]     [,3]   [,4]     [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
+S  39607.5  39770.1  39222.4  39000  38470.0  37635  36130  34844  33808  30538
+I    243.0    246.8    415.5    519    722.8   1047   1628   2172   2649   4006
+R -39852.3 -40019.5 -39639.0 -39520 -39191.5 -38682 -37758 -37016 -36456 -34544
+   [,11]  [,12]  [,13]  [,14]  [,15]    [,16]
+S  27082  20266  13528   2809  -8808 -26739.3
+I   5473   8300  11076  15339  19697  25951.9
+R -32554 -28565 -24604 -18148 -10889    787.2
 > 
 > print(max(abs(g2-g1),na.rm=T),digits=4)
-[1] 0
+[1] 7.105e-15
 > print(max(abs(h2-h1),na.rm=T),digits=4)
-[1] 8.731e-11
+[1] 7.276e-11
 > 
 > states(po)[,1:2]
                [,1]          [,2]
@@ -589,12 +612,12 @@ R       NA  2.052647e+06  2.052886e+06
 cases   NA  1.045000e+03  9.960000e+02
 W       NA -2.334331e-01 -2.382536e-02
 > states(simulate(po))[,1:3]
-         [,1]          [,2]          [,3]
-S       45500  4.528700e+04  4.497600e+04
-I        2100  2.062000e+03  2.121000e+03
-R     2052400  2.052647e+06  2.052876e+06
-cases       0  1.007000e+03  1.041000e+03
-W           0 -1.602887e-01 -1.965854e-01
+         [,1]         [,2]          [,3]
+S       45500 4.526000e+04  4.506900e+04
+I        2100 2.091000e+03  2.141000e+03
+R     2052400 2.052645e+06  2.052811e+06
+cases       0 1.013000e+03  9.660000e+02
+W           0 9.854644e-03 -1.055328e-01
 > 
 > po <- window(euler.sir,start=1,end=2)
 > plot(simulate(po))
