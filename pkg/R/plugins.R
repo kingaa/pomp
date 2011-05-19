@@ -29,6 +29,37 @@ onestep.sim <- function (step.fun, PACKAGE) {
   }
 }
 
+discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
+  efun <- pomp.fun(
+                   f=step.fun,
+                   PACKAGE=PACKAGE,
+                   proto=quote(step.fun(x,t,params,...))
+                   )
+  function (xstart, times, params, ...,
+            statenames = character(0),
+            paramnames = character(0),
+            covarnames = character(0),
+            zeronames = character(0),
+            tcovar, covar) {
+    .Call(
+          euler_model_simulator,
+          func=efun,
+          xstart=xstart,
+          times=times,
+          params=params,
+          dt=delta.t,
+          method=0L,
+          statenames=statenames,
+          paramnames=paramnames,
+          covarnames=covarnames,
+          zeronames=zeronames,
+          tcovar=tcovar,
+          covar=covar,
+          args=pairlist(...)
+          )
+  }
+}
+
 euler.sim <- function (step.fun, delta.t, PACKAGE) {
   efun <- pomp.fun(
                    f=step.fun,
@@ -59,9 +90,6 @@ euler.sim <- function (step.fun, delta.t, PACKAGE) {
           )
   }
 }
-
-discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE)
-  euler.sim(step.fun=step.fun,delta.t=delta.t,PACKAGE=PACKAGE)
 
 onestep.dens <- function (dens.fun, PACKAGE) {
   efun <- pomp.fun(
