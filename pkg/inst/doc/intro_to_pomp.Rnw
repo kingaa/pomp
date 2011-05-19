@@ -21,9 +21,9 @@
 \newfloat{textbox}{t}{tbx}
 \floatname{textbox}{Box}
 
-\newcommand\code[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pkg}[1]{\textsf{#1}}
 \newcommand{\R}{\textsf{R}}
-\newcommand{\pomp}{\texttt{pomp}}
 \newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
 
 \title[Introduction to pomp]{Introduction to pomp:\\ inference for partially-observed Markov processes}
@@ -49,7 +49,7 @@
 
 \urladdr{http://pomp.r-forge.r-project.org}
 
-\date{\today, \pomp~version~\Sexpr{packageDescription("pomp",fields="Version")}}
+\date{\today, \pkg{pomp}~version~\Sexpr{packageDescription("pomp",fields="Version")}}
 
 \SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T}
 
@@ -71,8 +71,8 @@
 \section{Partially-observed Markov processes}
 
 Partially-observed Markov process models are also known as state-space models or stochastic dynamical systems.
-The \R\ package \pomp\ provides facilities for fitting such models to uni- or multi-variate time series, for simulating them, for assessing model adequacy, and for comparing among models.
-The methods implemented in \pomp\ are all ``plug-and-play'' in the sense that they require only that one be able to simulate the process portion of the model.
+The \R\ package \pkg{pomp}\ provides facilities for fitting such models to uni- or multi-variate time series, for simulating them, for assessing model adequacy, and for comparing among models.
+The methods implemented in \pkg{pomp}\ are all ``plug-and-play'' in the sense that they require only that one be able to simulate the process portion of the model.
 This property is desirable because it will typically be the case that a mechanistic model will not be otherwise amenable to standard statistical analyses, but will be relatively easy to simulate.
 Even when one is interested in a model for which one can write down an explicit likelihood, for example, there are probably models that are ``nearby'' and equally interesting for which the likelihood cannot explicitly be written.
 The price one pays for this flexibility is primarily in terms of computational expense.
@@ -85,7 +85,7 @@ This is typically the thing we are most interested in: our goal is usually to be
 Specifically, we may have various alternate hypotheses about how this system functions and we want to see whether time series data can tell us which hypotheses explain the data better.
 The challenge, of course, is that the data shed light on the system only indirectly.
 
-\pomp\ assumes that we can translate our hypotheses about the underlying, unobserved process into a Markov process model:
+\pkg{pomp}\ assumes that we can translate our hypotheses about the underlying, unobserved process into a Markov process model:
 That is, we are willing to assume that the system has a true \emph{state} process, $X_t$ that is Markovian.
 In particular, given any sequence of times $t_0$, $t_1$, \dots, $t_n$, the Markov property allows us to write
 \begin{equation}\label{eq:state-process}
@@ -109,15 +109,15 @@ On the one hand, one may need to \emph{evaluate} the probability density of the 
 On the other hand, one may need to \emph{simulate} this distribution, i.e., to draw random samples from the distribution of $X_{t_{k+1}}\;\vert\;X_{t_k}$.
 Depending on the model and on what one wants specifically to do, it may be technically easier or harder to do one of these or the other.
 Likewise, one may want to simulate, or evaluate the likelihood of, observations $Y_t$.
-At its most basic level \pomp\ is an infrastructure that allows you to encode your model by specifying some or all of these four basic components:
+At its most basic level \pkg{pomp} is an infrastructure that allows you to encode your model by specifying some or all of these four basic components:
 \begin{compactdesc}
 \item[\code{rprocess}] a simulator of the process model,
 \item[\code{dprocess}] an evaluator of the process model probability density function,
 \item[\code{rmeasure}] a simulator of the measurement model, and
 \item[\code{dmeasure}] an evaluator of the measurement model probability density function.
 \end{compactdesc}
-Once you've encoded your model, \pomp\ provides a number of algorithms you can use to work with it.
-In particular, within \pomp, you can:
+Once you've encoded your model, \pkg{pomp} provides a number of algorithms you can use to work with it.
+In particular, within \pkg{pomp}, you can:
 \begin{compactenum}[(1)]
 \item simulate your model easily, using \code{simulate},
 \item integrate your model's deterministic skeleton, using \code{trajectory},
@@ -127,14 +127,14 @@ In particular, within \pomp, you can:
 \item estimate parameters using trajectory matching, as implemented in \code{traj.match},
 \item estimate parameters using probe matching, as implemented in \code{probe.match},
 \item print and plot data, simulations, and diagnostics for the foregoing algorithms,
-\item build new algorithms for partially observed Markov processes upon the foundations \pomp\ provides, using the package's applications programming interface (API).
+\item build new algorithms for partially observed Markov processes upon the foundations \pkg{pomp} provides, using the package's applications programming interface (API).
 \end{compactenum}
 In this document, we'll see how all this works using relatively simple examples.
 
 \section{A first example: a simple discrete-time population model.}
 
-We'll demonstrate the basics of \pomp\ using a very simple discrete-time model.
-The plug-and-play methods in \pomp\ were designed to work on more complicated models, and for our first example, they'll be extreme overkill, but starting with a simple model will help make the implementation of more general models clear.
+We'll demonstrate the basics of \pkg{pomp} using a very simple discrete-time model.
+The plug-and-play methods in \pkg{pomp} were designed to work on more complicated models, and for our first example, they'll be extreme overkill, but starting with a simple model will help make the implementation of more general models clear.
 Moreover, our first example will be one for which plug-and-play methods are not even necessary.
 This will allow us to compare the results from generalizable plug-and-play methods with exact results from specialized methods appropriate to this particular model.
 Later we'll look at a continuous-time model for which no such special tricks are available.
@@ -161,7 +161,7 @@ one can obtain exact maximum likelihood estimates of this model's parameters usi
 We will demonstrate this below and use it to check the results of plug-and-play inference.
 For now, let's approach this model as we would a more complex model for which no such exact estimation is available.
 
-\section{Defining a partially observed Markov process in \pomp.}
+\section{Defining a partially observed Markov process in \pkg{pomp}.}
 
 In order to fully specify this partially-observed Markov process, we must implement both the process model (i.e., the unobserved process) and the measurement model (the observation process).
 As we saw before, we would like to be able to:
@@ -176,22 +176,22 @@ As we saw before, we would like to be able to:
 For this simple model, all this is easy enough.
 More generally, it will be difficult to do some of these things.
 Depending on what we wish to accomplish, however, we may not need all of these capabilities and in particular,
-\textbf{to use any particular one of the algorithms in \pomp, we need never specify \emph{all} of \ref{it:rproc}--\ref{it:skel}.}
+\textbf{to use any particular one of the algorithms in \pkg{pomp}, we need never specify \emph{all} of \ref{it:rproc}--\ref{it:skel}.}
 For example, to simulate data, all we need is \ref{it:rproc} and \ref{it:rmeas}.
 To run a particle filter (and hence to use iterated filtering, \code{mif}), one needs \ref{it:rproc} and \ref{it:dmeas}.
 To do MCMC, one needs \ref{it:dproc} and \ref{it:dmeas}.
 Nonlinear forecasting (\code{nlf}) and probe matching (\code{probe.match}) require \ref{it:rproc} and \ref{it:rmeas}.
 Trajectory matching (\code{traj.match}) requires \ref{it:dmeas} and \ref{it:skel}.
 
-Using \pomp, the first step is always to construct an \R\ object that encodes the model and the data.
-Naturally enough, this object will be of class \pomp.
+Using \pkg{pomp}, the first step is always to construct an \R\ object that encodes the model and the data.
+Naturally enough, this object will be of class \code{pomp}.
 The key step in this is to specify functions to do some or all of \ref{it:rproc}--\ref{it:skel}, along with data and (optionally) other information.
 The package provides a number algorithms for fitting the models to the data, for simulating the models, studying deterministic skeletons, and so on.
-The documentation (\code{?pomp}) spells out the usage of the \pomp\ constructor, including detailed specifications for all its arguments and a worked example.
+The documentation (\code{?pomp}) spells out the usage of the \code{pomp} constructor, including detailed specifications for all its arguments and a worked example.
 
-Let's see how to implement the Gompertz model in \pomp.
+Let's see how to implement the Gompertz model in \pkg{pomp}.
 Here, we'll take the shortest path to this goal.
-In the ``advanced topics in \pomp'' vignette, we show how one can make the codes much more efficient using compiled native (C or FORTRAN) code.
+In the ``advanced topics in pomp'' vignette, we show how one can make the codes much more efficient using compiled native (C or FORTRAN) code.
 
 First, we write a function that implements the process model simulator.
 This is a function that will simulate a single step ($t\to{t+{\Delta}t}$) of the unobserved process \eqref{eq:gompertz1}.
@@ -218,7 +218,7 @@ When this function is called, the argument \code{x} contains the state at time \
 The parameters (including $K$, $r$, and $\sigma$) are passed in the argument \code{params}.
 Notice that \code{x} and \code{params} are named numeric vectors and that the output must be also be a named numeric vector.
 In fact, the names of the output vector (here \code{xnew}) must be the same as those of the input vector \code{x}.
-The algorithms in \pomp\ all make heavy use of the \code{names} attributes of vectors and matrices.
+The algorithms in \pkg{pomp} all make heavy use of the \code{names} attributes of vectors and matrices.
 The argument \code{delta.t} tells how big the time-step is. 
 In this case, our time-step will be 1 unit; 
 we'll see below how that gets specified.
@@ -260,8 +260,8 @@ Note that \code{gompertz.meas.dens} is closely related to \code{gompertz.meas.si
 \section{Simulating the model: \code{simulate}}
 
 With the two functions above, we already have all we need to simulate the full model.
-The first step is to construct an \R\ object of class \pomp\ which will serve as a container to hold the model and data.
-This is done with a call to \pomp:
+The first step is to construct an \R\ object of class \code{pomp} which will serve as a container to hold the model and data.
+This is done with a call to \code{pomp}:
 <<first-pomp-construction,eval=F>>=
 gompertz <- pomp(
                  data=data.frame(
@@ -279,10 +279,10 @@ gompertz <- pomp(
 @ 
 The first argument (\code{data}) specifies a data-frame that holds the data and the times at which the data were observed.
 Since this is a toy problem, we have no data.
-In a moment, however, we'll simulate some data so we can explore \pomp's various fitting methods.
+In a moment, however, we'll simulate some data so we can explore \pkg{pomp}'s various fitting methods.
 The second argument (\code{times}) specifies which of the columns of \code{data} is the time variable.
 The third argument (\code{rprocess}) specifies that the process model simulator will be in discrete time, one step at a time.
-The function \code{discrete.time.sim} belongs to the \pomp\ package.
+The function \code{discrete.time.sim} belongs to the \pkg{pomp} package.
 It takes the argument \code{step.fun}, which specifies the particular function that actually takes the step.
 Its second argument, \code{delta.t}, specifies the duration of the time step (by default, \code{delta.t=1}).
 The argument \code{rmeasure} specifies the measurement model simulator function.
@@ -300,8 +300,8 @@ theta <- c(
 @ 
 In addition to the parameters $r$, $K$, $\sigma$, and $\tau$, note that we've specified the initial condition $X.0$ in the vector \code{theta}.
 The fact that the initial condition parameter's name ends in ``\code{.0}'' is significant: it tells \code{pomp} that this is the initial condition of the state variable \code{X}.
-This use of the ``\code{.0}'' suffix is the default behavior of \pomp: 
-one can also parameterize initial conditions in an arbitrary way using the optional \code{initializer} argument to \pomp.
+This use of the ``\code{.0}'' suffix is the default behavior of \code{pomp}: 
+one can also parameterize initial conditions in an arbitrary way using the optional \code{initializer} argument to \code{pomp}.
 See the documentation (\verb+?pomp+) for details.
 
 Now we can simulate the model:
@@ -344,13 +344,13 @@ plot(gompertz,variables=c("Y"))
 
 \section{Computing likelihood using particle filtering: \code{pfilter}}
 
-Some parameter estimation algorithms in the \pomp\ package only require \code{rprocess} and \code{rmeasure}.
+Some parameter estimation algorithms in the \pkg{pomp} package only require \code{rprocess} and \code{rmeasure}.
 These include the nonlinear forecasting algorithm \code{nlf} and the probe-matching algorithm \code{probe.match}.
 If we want to work with likelihood-based methods, however, we will need to be able to compute the likelihood of the data $Y_t$ given the states $X_t$.
 Above, we wrote an \R\ function, \code{gompertz.meas.dens}, to do this.
 We haven't yet used it all.
-To do so, we'll need to incorporate it into the \pomp\ object.
-We can do this by specifying the \code{dmeasure} argument in another call to \pomp:
+To do so, we'll need to incorporate it into the \code{pomp} object.
+We can do this by specifying the \code{dmeasure} argument in another call to \code{pomp}:
 <<second-pomp-construction>>=
 gompertz <- pomp(
                  gompertz,
@@ -358,11 +358,11 @@ gompertz <- pomp(
                  )
 coef(gompertz) <- theta
 @ 
-The result of the above is a new \pomp\ object \code{gompertz} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
+The result of the above is a new \code{pomp} object \code{gompertz} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
 
 To compute the likelihood of the data, we can use the function \code{pfilter}.
 This runs a plain vanilla particle filter (AKA sequential Monte Carlo) algorithm and results in an unbiased estimate of the likelihood.
-See \citet{Arulampalam2002} for an excellent tutorial on particle filtering and \citet{Ionides2006} for a pseudocode description of the algorithm implemented in \pomp.
+See \citet{Arulampalam2002} for an excellent tutorial on particle filtering and \citet{Ionides2006} for a pseudocode description of the algorithm implemented in \pkg{pomp}.
 We must decide how many concurrent realizations (\emph{particles}) to use: the larger the number of particles, the smaller the Monte Carlo error but the greater the computational effort.
 Let's run \code{pfilter} with 1000 particles to estimate the likelihood at the true parameters:
 <<gompertz-pfilter-truth,eval=F>>=
@@ -374,7 +374,7 @@ loglik.truth
 set.seed(457645443L)
 <<gompertz-pfilter-truth>>
 @ 
-Since the true parameters (i.e., the parameters that generated the data) are stored within the \pomp\ object \code{gompertz} and can be extracted by the \code{coef} function, we could have done
+Since the true parameters (i.e., the parameters that generated the data) are stored within the \code{pomp} object \code{gompertz} and can be extracted by the \code{coef} function, we could have done
 <<gompertz-pfilter-truth-alt1,eval=F>>=
 pf <- pfilter(gompertz,params=coef(gompertz),Np=1000)
 @ 
@@ -382,7 +382,7 @@ or even just
 <<gompertz-pfilter-truth-alt2,eval=F>>=
 pf <- pfilter(gompertz,Np=1000)
 @ 
-which would have worked since the parameters are stored in the \pomp\ object \code{gompertz}.
+which would have worked since the parameters are stored in the \code{pomp} object \code{gompertz}.
 Now let's compute the log likelihood at a different point in parameter space, one for which $r$, $K$, and $\sigma$ are 50\% higher than their true values.
 <<gompertz-pfilter-guess,eval=F>>=
 theta.true <- coef(gompertz)
@@ -454,16 +454,16 @@ One can reduce this error by using a larger number of particles and/or by re-run
 The latter approach has the advantage of allowing one to estimate the Monte Carlo error itself.
 
 \clearpage
-\section{Interlude: utility functions for extracting and changing pieces of a \pomp\ object}
+\section{Interlude: utility functions for extracting and changing pieces of a \code{pomp} object}
 
-The \pomp\ package provides a number of functions to extract or change pieces of a \pomp-class object.
+The \pkg{pomp} package provides a number of functions to extract or change pieces of a \code{pomp}-class object.
 %% Need references to S4 classes
 One can read the documentation on all of these by doing \verb+class?pomp+ and \verb+methods?pomp+.
-For example, as we've already seen, one can coerce a \pomp\ object to a data frame:
+For example, as we've already seen, one can coerce a \code{pomp} object to a data frame:
 <<eval=F>>=
 as(gompertz,"data.frame")
 @ 
-and if we \code{print} a \pomp\ object, the resulting data frame is what is shown, together with the call that created the \pomp\ object.
+and if we \code{print} a \code{pomp} object, the resulting data frame is what is shown, together with the call that created the \code{pomp} object.
 One has access to the data and the observation times using
 <<eval=F>>=
 obs(gompertz)
@@ -500,7 +500,7 @@ states(gompertz)
 states(gompertz,"X")
 @ 
 
-%% In the ``advanced_topics_in_pomp'' vignette, we show how one can get access to more of the underlying structure of a \pomp\ object.
+%% In the ``advanced_topics_in_pomp'' vignette, we show how one can get access to more of the underlying structure of a \code{pomp} object.
 
 \clearpage
 \section{Transforming parameters}
@@ -574,7 +574,7 @@ coef(gompertz) <- theta
 @ 
 
 A \code{pomp} object corresponding to the one just created (but with the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} bits coded in C for speed) can be loaded by executing \verb+data(gompertz)+.
-For your convenience, codes creating this \pomp\ object are included with the package.
+For your convenience, codes creating this \code{pomp} object are included with the package.
 To view them, do:
 <<eval=F>>=
 file.show(system.file("examples/gompertz.R",package="pomp"))
@@ -585,7 +585,7 @@ file.show(system.file("examples/gompertz.c",package="pomp"))
 \section{Estimating parameters using iterated filtering: \code{mif}}
 
 Iterated filtering is a technique for maximizing the likelihood obtained by filtering.
-In \pomp, it is the particle filter that is iterated.
+In \pkg{pomp}, it is the particle filter that is iterated.
 Iterated filtering is implemented in the \code{mif} function.
 For a description of the algorithm and a description of its theoretical basis, see \citet{Ionides2006}.
 A more complete set of proofs is provided in \citet{Ionides2011}.
@@ -643,12 +643,12 @@ mf <- replicate(
 <<gompertz-post-mif,eval=F,echo=F>>=
 theta.mif <- apply(sapply(mf,coef),1,mean)
 loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
-loglik.mif.sd <- sd(loglik.mif)
 bl <- mean(loglik.mif)
-loglik.mif <- bl+log(mean(exp(-bl+loglik.mif)))
+loglik.mif.est <- bl+log(mean(exp(loglik.mif-bl)))
+loglik.mif.se <- sd(exp(loglik.mif-bl))/sqrt(length(loglik.mif))/exp(loglik.mif.est-bl)
 loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
-loglik.true.sd <- sd(loglik.true)
-loglik.true <- bl+log(mean(exp(-bl+loglik.true)))
+loglik.true.est <- bl+log(mean(exp(loglik.true-bl)))
+loglik.true.se <- sd(exp(loglik.true-bl))/sqrt(length(loglik.true))/exp(loglik.true.est-bl)
 @ 
 
 <<gompertz-multi-mif-eval,echo=F>>=
@@ -662,12 +662,19 @@ if (file.exists(binary.file)) {
 <<gompertz-post-mif>>
   toc <- Sys.time()
   etime <- toc-tic
-  save(mf,estpars,theta.mif,theta.true,loglik.mif,loglik.true,loglik.mif.sd,loglik.true.sd,etime,file=binary.file)
+  save(
+       mf,estpars,
+       theta.mif,theta.true,
+       loglik.mif.est,loglik.true.est,
+       loglik.mif.se,loglik.true.se,
+       etime,
+       file=binary.file
+       )
 }
 cbind(
 #      guess=c(signif(theta.guess[estpars],3),loglik=round(loglik.guess,1)),
-      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif,1),loglik.sd=round(loglik.mif.sd,1)),
-      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true,1),loglik.sd=round(loglik.true.sd,1))
+      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif.est,1),loglik.se=signif(loglik.mif.se,2)),
+      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true.est,1),loglik.se=signif(loglik.true.se,2))
       ) -> results.table
 @ 
 
@@ -713,7 +720,7 @@ print(results.table)
 The idea behind trajectory matching is a simple one.
 One attempts to fit a deterministic dynamical trajectory to the data.
 This is tantamount to assuming that all the stochasticity in the system is in the measurement process.
-In \pomp, the trajectory is computed using the \code{trajectory} function, which in turn uses the \code{skeleton} slot of the \pomp\ object.
+In \pkg{pomp}, the trajectory is computed using the \code{trajectory} function, which in turn uses the \code{skeleton} slot of the \code{pomp} object.
 The \code{skeleton} slot should be filled with the deterministic skeleton of the process model.
 In the discrete-time case, this is the map
 \begin{equation*}
@@ -741,7 +748,7 @@ gompertz.skel <- function (x, t, params, ...) {
 }
 @ 
 
-We can incorporate the deterministic skeleton into a new \pomp\ object via the \code{skeleton.map} argument:
+We can incorporate the deterministic skeleton into a new \code{pomp} object via the \code{skeleton.map} argument:
 <<new-gompertz-pomp-construction,echo=T>>=
 new.gompertz <- pomp(
                      data=data.frame(time=1:200,Y=NA),
@@ -763,8 +770,8 @@ new.gompertz <- simulate(new.gompertz,seed=88737400L)
 We use \code{skeleton.type="map"} for discrete-time processes (such as the Gompertz model) and \code{skeleton.type="vectorfield"} for continuous-time processes.
 %% Note that we have turned off the process noise in \code{new.gompertz} (next to last line) so that trajectory matching is actually formally appropriate for this model.
 
-The \pomp\ function \code{traj.match} calls the optimizer \code{optim} to minimize the discrepancy between the trajectory and the data.
-The discrepancy is measured using the \code{dmeasure} function from the \pomp\ object.
+The \pkg{pomp} function \code{traj.match} calls the optimizer \code{optim} to minimize the discrepancy between the trajectory and the data.
+The discrepancy is measured using the \code{dmeasure} function from the \code{pomp} object.
 Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
 <<gompertz-trajmatch-calc,eval=F>>=
 tm <- traj.match(
@@ -866,7 +873,7 @@ data(ricker)
 @ 
 to load this \code{pomp} object.
 
-In \pomp, probes are simply functions that can be applied to an array of real or simulated data to yield a scalar or vector quantity.
+In \pkg{pomp}, probes are simply functions that can be applied to an array of real or simulated data to yield a scalar or vector quantity.
 Several functions that create commonly-useful probes are included with the package.
 Do \verb+?basic.probes+ to read the documentation for these probes.
 In this illustration, we will make use of several probes recommended by \citet{Wood2010}: \code{probe.marginal}, \code{probe.acf}, and \code{probe.nlar}.
@@ -885,7 +892,7 @@ plist <- list(
 @ 
 An examination of the structure of \code{plist} reveals that it is a list of functions of a single argument.
 Each of these functions can be applied to the \code{ricker}'s data or to simulated data sets.
-A call to \pomp's function \code{probe} results in the application of these functions to the data, their application to each of some large number, \code{nsim}, of simulated data sets, and finally to a comparison of the two.
+A call to \pkg{pomp}'s function \code{probe} results in the application of these functions to the data, their application to each of some large number, \code{nsim}, of simulated data sets, and finally to a comparison of the two.
 To see this, we'll apply probe to the Ricker model at the true parameters and at a wild guess.
 <<first-probe>>=
 pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
@@ -901,7 +908,7 @@ plot(pb.guess)
 @ 
 An example of a diagnostic plot (using a simplified set of probes) is shown in Fig.~\ref{fig:ricker-probe-plot}.
 Among the quantities returned by \code{summary} is the synthetic likelihood \citep{Wood2010}.
-It is this synthetic likelihood that \pomp\ attempts to maximize in probe matching.
+It is this synthetic likelihood that \pkg{pomp} attempts to maximize in probe matching.
 
 \begin{figure}
 <<ricker-probe-plot,echo=F,fig=T>>=
@@ -1118,7 +1125,7 @@ As an additional wrinkle, we'll assume that the rate of the infection process $\
 
 As in the earlier example, we need to write a function that will simulate the process.
 We can use \code{gillespie.sim} to implement this using the exact stochastic simulation algorithm of \citet{Gillespie1977a}.
-This will be quite slow and inefficient, however, so we'll use the so-called ``tau-leap'' algorithm, one version of which is implemented in \pomp\ using Euler-multinomial processes.
+This will be quite slow and inefficient, however, so we'll use the so-called ``tau-leap'' algorithm, one version of which is implemented in \pkg{pomp} using Euler-multinomial processes.
 Before we do this, we'll first define the basis functions that will be used for the seasonality.
 It is convenient to use periodic B-splines for this purpose.
 The following codes set up this basis.
@@ -1175,7 +1182,7 @@ See the documentation on \code{reulermultinom} for a more thorough explanation o
 Finally, a named vector is returned that contains the new values of the state variables, each of which is the old value, adjusted by the transitions.
 Note that the state variable \code{cases} accumulates the number of I$\to$R transitions and \code{W} accumulates the (standardized) white noise.
 
-Now we're ready to construct the \pomp\ object.
+Now we're ready to construct the \code{pomp} object.
 <<sir-pomp-def>>=
 pomp(
      data=data.frame(
@@ -1218,12 +1225,12 @@ Specifying \code{cases} in the \code{zeronames} argument has the effect of re-se
 Finally, in this example, we do not use the default parameterization of the initial states.
 Instead, we specify a custom \code{initializer} argument.
 We want instead to parameterize the initial states in terms of the fractions of the total population contained in each compartment.
-In particular, as we see in the \code{initializer} argument to \pomp, we normalize so that the sum of \code{S.0}, \code{I.0}, and \code{R.0} is 1, then multiply by the initial population size, and then round to the nearest whole number.
+In particular, as we see in the \code{initializer} argument to \code{pomp}, we normalize so that the sum of \code{S.0}, \code{I.0}, and \code{R.0} is 1, then multiply by the initial population size, and then round to the nearest whole number.
 Note that the initializer we have specified needs an argument \code{comp.names} (the names of the S, I, and R state variables).
 This is set in the last line.
-More generally, one can give any number or kind of additional arguments to \pomp:
+More generally, one can give any number or kind of additional arguments to \code{pomp}:
 they will be passed to the \code{initializer}, \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{skeleton} functions, if these exist.
-This feature aids in the writing of customized \pomp\ objects.
+This feature aids in the writing of customized \code{pomp} objects.
 
 Now we'll simulate data using the parameters
 <<sir-params>>=

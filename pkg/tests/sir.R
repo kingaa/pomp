@@ -108,7 +108,29 @@ po <- pomp(
                   }
                   )
            },
-           measurement.model=reports~binom(size=cases,prob=exp(rho)),
+#           measurement.model=reports~binom(size=cases,prob=exp(rho)),
+           rmeasure=function(x,t,params,covars,...){
+             with(
+                  as.list(c(x,exp(params))),
+                  {
+                    rep <- round(rnorm(n=1,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases)))
+                    if (rep<0) rep <- 0
+                    c(reports=rep)
+                  }
+                  )
+           },
+           dmeasure=function(y,x,t,params,log,covars,...){
+             with(
+                  as.list(c(x,exp(params))),
+                  {
+                    if (y > 0) 
+                      f <- diff(pnorm(q=y+c(-0.5,0.5),mean=rho*cases,sd=sqrt(rho*(1-rho)*cases),lower.tail=TRUE,log.p=FALSE))
+                    else
+                      f <- pnorm(q=0.5,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases),lower.tail=TRUE,log.p=FALSE)
+                    if (log) log(f) else f
+                  }
+                  )
+           },
            initializer=function(params,t0,...){
              p <- exp(params)
              with(
