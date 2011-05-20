@@ -139,11 +139,11 @@ About these inputs, we must assume:
 \item \code{params} will be a matrix, the columns of which are parameter vectors.
   The parameter names will be in the matrix column-names.
 \item \code{times} will be a vector of times at which realizations of the state process are required.
-  We will have \code{times[k] <= times[k+1]} for all indices \code{k}, but we cannot assume that the entries of \code{times} will be unique.
+  We will have \code{times[k]} $\le$ \code{times[k+1]} for all indices \code{k}, but we cannot assume that the entries of \code{times} will be unique.
 \item The initial states \code{xstart} are assumed to obtain at time \code{times[1]}.
 \end{enumerate}
 This function must return a rank-3 array, which has the realized values of the state process at the requested times.
-This array must have \code{x} rownames.
+This array must have rownames.
 Here is one implementation of such a simulator.
 <<vectorized-R-code>>=
 ou2.Rvect.rprocess <- function (xstart, times, params, ...) {
@@ -263,9 +263,7 @@ ou2.Cvect.rprocess <- function (xstart, times, params, ...) {
            xstart = as.double(xstart),
            par = as.double(params),
            times = as.double(times),
-           n = as.integer(c(nvar,npar,nrep,ntimes)),
-           DUP = FALSE,
-           NAOK = TRUE
+           n = as.integer(c(nvar,npar,nrep,ntimes))
            )$X,
         dim=c(nvar,nrep,ntimes),
         dimnames=list(rownames(xstart),NULL,NULL)        
@@ -280,7 +278,7 @@ ou2.Cvect <- pomp(
                   rprocess=ou2.Cvect.rprocess
                   )
 @ 
-<<vectorized-C-code-sim,echo=F>>=
+<<vectorized-C-code-sim,echo=T>>=
 tic <- Sys.time()
 paramnames <- c(
                 "alpha.1","alpha.2","alpha.3","alpha.4",
