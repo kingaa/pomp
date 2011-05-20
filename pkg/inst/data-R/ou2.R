@@ -9,7 +9,7 @@ simulate(
                 ),
               t0=1,
               rprocess=discrete.time.sim("ou2_step",PACKAGE="pomp"),
-              dprocess=onestep.dens("ou2_pdf"),
+              dprocess=onestep.dens("ou2_pdf",PACKAGE="pomp"),
               dmeasure = "ou2_dmeasure",
               rmeasure = "ou2_rmeasure",
               skeleton.type="map",
