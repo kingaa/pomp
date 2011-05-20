@@ -93,11 +93,26 @@ pmcmc.internal <- function (object, Nmcmc,
   if (missing(dprior.fun))
     stop("pmcmc error: ",sQuote("dprior")," must be specified",call.=FALSE)
 
+  ntimes <- length(time(object))
   if (missing(Np))
     stop("pmcmc error: ",sQuote("Np")," must be specified",call.=FALSE)
+  if (is.function(Np)) {
+    Np <- try(
+              vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
+              silent=FALSE
+              )
+    if (inherits(Np,"try-error"))
+      stop("if ",sQuote("Np")," is a function, it must return a single positive integer")
+  }
+  if (length(Np)==1)
+    Np <- rep(Np,times=ntimes+1)
+  else if (length(Np)!=(ntimes+1))
+    stop(sQuote("Np")," must have length 1 or length ",ntimes+1)
+  if (any(Np<=0))
+    stop("number of particles, ",sQuote("Np"),", must always be positive")
+  if (!is.numeric(Np))
+    stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
   Np <- as.integer(Np)
-  if ((length(Np)!=1)||(Np < 1))
-    stop("pmcmc error: ",sQuote("Np")," must be a positive integer",call.=FALSE)
 
   if (missing(hyperparams))
     stop("pmcmc error: ",sQuote("hyperparams")," must be specified",call.=FALSE)

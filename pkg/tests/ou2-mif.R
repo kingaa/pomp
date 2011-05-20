@@ -150,7 +150,8 @@ fit <- mif(
            Nmif=2,
            ivps=c("x1.0","x2.0"),
            rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
-           Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1
+           Np=function(k)if(k<10) 2000 else 500,
+           cooling.factor=0.95,ic.lag=10,var.factor=1
            )
 fit <- continue(fit)
 fit <- continue(fit,Nmif=2)

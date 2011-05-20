@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,6 +17,9 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
 > 
 > data(ou2)
 > 
@@ -138,7 +142,8 @@ Error : mif error: 'cooling.factor' must be specified
 +         Np=-10,cooling.factor=0.95,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: 'Np' must be a positive integer
+Error in mif.internal(object = object, Nmif = Nmif, start = start, pars = pars,  : 
+  number of particles, 'Np', must always be positive
 > 
 > try(
 +     mif(
@@ -188,7 +193,8 @@ Error : 'mif' error: cannot estimate non-finite parameters: x2.0
 +            Nmif=2,
 +            ivps=c("x1.0","x2.0"),
 +            rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
-+            Np=1000,cooling.factor=0.95,ic.lag=10,var.factor=1
++            Np=function(k)if(k<10) 2000 else 500,
++            cooling.factor=0.95,ic.lag=10,var.factor=1
 +            )
 > fit <- continue(fit)
 > fit <- continue(fit,Nmif=2)

@@ -3,26 +3,26 @@
 #include "pomp_internal.h"
 #include <Rdefines.h>
 
-static void nosort_resamp (int n, double *w, int *p, int offset) 
+static void nosort_resamp (int nw, double *w, int np, int *p, int offset) 
 {
   int i, j;
   double du, u;
 
-  for (j = 1; j < n; j++) w[j] += w[j-1];
+  for (j = 1; j < nw; j++) w[j] += w[j-1];
 
-  if (w[n-1] <= 0.0)
+  if (w[nw-1] <= 0.0)
     error("non-positive sum of weights");
 
-  du = w[n-1] / ((double) n);
+  du = w[nw-1] / ((double) np);
   u = runif(-du,0);
 
-  for (i = 0, j = 0; j < n; j++) {
+  for (i = 0, j = 0; j < np; j++) {
     u += du;
     while (u > w[i]) i++;
     p[j] = i;
   }
   if (offset)			// add offset if needed
-    for (j = 0; j < n; j++) p[j] += offset;
+    for (j = 0; j < np; j++) p[j] += offset;
 
 }
 
@@ -36,7 +36,7 @@ SEXP systematic_resampling (SEXP weights)
   GetRNGstate();
   n = LENGTH(weights);
   PROTECT(perm = NEW_INTEGER(n)); nprotect++;
-  nosort_resamp(n,REAL(weights),INTEGER(perm),1);
+  nosort_resamp(n,REAL(weights),n,INTEGER(perm),1);
   UNPROTECT(nprotect);
   PutRNGstate();
   return(perm);
@@ -49,7 +49,7 @@ SEXP systematic_resampling (SEXP weights)
 // weights are used in filtering mean computation.
 // if length(weights) == 1, an unweighted average is computed.
 // returns all of the above in a named list
-SEXP pfilter_computations (SEXP x, SEXP params, 
+SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 			   SEXP rw, SEXP rw_sd,
 			   SEXP predmean, SEXP predvar,
 			   SEXP filtmean, SEXP onepar,
@@ -62,9 +62,9 @@ SEXP pfilter_computations (SEXP x, SEXP params,
   SEXP retval, retvalnames;
   double *xpm = 0, *xpv = 0, *xfm = 0, *xw = 0, *xx = 0, *xp = 0;
   SEXP dimX, dimP, newdim, Xnames, Pnames, pindex;
-  int *dim, *pidx, lv;
+  int *dim, *pidx, lv, np;
   int nvars, npars = 0, nrw = 0, nreps, offset, nlost;
-  int do_rw, do_pm, do_pv, do_fm, is_op, all_fail = 0;
+  int do_rw, do_pm, do_pv, do_fm, do_par_resamp, all_fail = 0;
   double sum, sumsq, vsq, ws, w, toler;
   int j, k;
 
@@ -81,14 +81,16 @@ SEXP pfilter_computations (SEXP x, SEXP params,
     error("'states' and 'params' do not agree in second dimension");
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
 
+  np = INTEGER(AS_INTEGER(Np))[0]; // number of particles to resample
+
   PROTECT(rw_names = GET_NAMES(rw_sd)); nprotect++; // names of parameters undergoing random walk
 
   do_rw = *(LOGICAL(AS_LOGICAL(rw))); // do random walk in parameters?
   do_pm = *(LOGICAL(AS_LOGICAL(predmean))); // calculate prediction means?
   do_pv = *(LOGICAL(AS_LOGICAL(predvar)));  // calculate prediction variances?
   do_fm = *(LOGICAL(AS_LOGICAL(filtmean))); // calculate filtering means?
-  is_op = *(LOGICAL(AS_LOGICAL(onepar))); // are all cols of 'params' the same?
-  is_op = is_op && !do_rw;
+  do_par_resamp = *(LOGICAL(AS_LOGICAL(onepar))); // are all cols of 'params' the same?
+  do_par_resamp = !do_par_resamp || do_rw || (np != nreps); // should we do parameter resampling?
 
   PROTECT(ess = NEW_NUMERIC(1)); nprotect++; // effective sample size
   PROTECT(loglik = NEW_NUMERIC(1)); nprotect++; // log likelihood
@@ -217,19 +219,19 @@ SEXP pfilter_computations (SEXP x, SEXP params,
 
   if (!all_fail) { // resample the particles unless we have filtering failure
     int xdim[2];
-    int sample[nreps];
+    int sample[np];
     double *ss, *st, *ps, *pt;
 
     // create storage for new states
-    xdim[0] = nvars; xdim[1] = nreps;
+    xdim[0] = nvars; xdim[1] = np;
     PROTECT(newstates = makearray(2,xdim)); nprotect++;
     setrownames(newstates,Xnames,2);
     ss = REAL(x);
     st = REAL(newstates);
 
     // create storage for new parameters
-    if (!is_op) {
-      xdim[0] = npars; xdim[1] = nreps;
+    if (do_par_resamp) {
+      xdim[0] = npars; xdim[1] = np;
       PROTECT(newparams = makearray(2,xdim)); nprotect++;
       setrownames(newparams,Pnames,2);
       ps = REAL(params);
@@ -237,11 +239,11 @@ SEXP pfilter_computations (SEXP x, SEXP params,
     }
 
     // resample
-    nosort_resamp(nreps,REAL(weights),sample,0);
-    for (k = 0; k < nreps; k++) { // copy the particles
+    nosort_resamp(nreps,REAL(weights),np,sample,0);
+    for (k = 0; k < np; k++) { // copy the particles
       for (j = 0, xx = ss+nvars*sample[k]; j < nvars; j++, st++, xx++) 
 	*st = *xx;
-      if (!is_op) {
+      if (do_par_resamp) {
 	for (j = 0, xp = ps+npars*sample[k]; j < npars; j++, pt++, xp++) 
 	  *pt = *xp;
       }
@@ -259,7 +261,9 @@ SEXP pfilter_computations (SEXP x, SEXP params,
 
   if (do_rw) { // if random walk, adjust prediction variance and move particles
     xx = REAL(rw_sd);
-    xp = (all_fail&&(!is_op)) ? REAL(params) : REAL(newparams);
+    xp = (all_fail || !do_par_resamp) ? REAL(params) : REAL(newparams);
+    nreps = (all_fail) ? nreps : np;
+
     for (j = 0; j < nrw; j++) {
       offset = pidx[j];
       vsq = xx[j];
@@ -295,7 +299,7 @@ SEXP pfilter_computations (SEXP x, SEXP params,
     SET_ELEMENT(retval,3,newstates);
   }
 
-  if (all_fail||is_op) {
+  if (all_fail || !do_par_resamp) {
     SET_ELEMENT(retval,4,params);
   } else {
     SET_ELEMENT(retval,4,newparams);

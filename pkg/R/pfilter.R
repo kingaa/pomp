@@ -9,8 +9,8 @@ setClass(
            filter.mean="array",
            eff.sample.size="numeric",
            cond.loglik="numeric",
-           saved.states="array",
-           saved.params="array",
+           saved.states="list",
+           saved.params="list",
            seed="integer",
            Np="integer",
            tol="numeric",
@@ -39,22 +39,40 @@ pfilter.internal <- function (object, params, Np,
   if (length(params)==0)
     stop(sQuote("pfilter")," error: ",sQuote("params")," must be specified",call.=FALSE)
   
-  if (missing(Np))
-    Np <- NCOL(params)
-  
   if (missing(tol))
     stop(sQuote("pfilter")," error: ",sQuote("tol")," must be specified",call.=FALSE)
   
   one.par <- FALSE
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
+
+  if (missing(Np))
+    Np <- NCOL(params)
+  if (is.function(Np)) {
+    Np <- try(
+              vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
+              silent=FALSE
+              )
+    if (inherits(Np,"try-error"))
+      stop("if ",sQuote("Np")," is a function, it must return a single positive integer")
+  }
+  if (length(Np)==1)
+    Np <- rep(Np,times=ntimes+1)
+  else if (length(Np)!=(ntimes+1))
+    stop(sQuote("Np")," must have length 1 or length ",ntimes+1)
+  if (any(Np<=0))
+    stop("number of particles, ",sQuote("Np"),", must always be positive")
+  if (!is.numeric(Np))
+    stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
+  Np <- as.integer(Np)
+  
   if (is.null(dim(params))) {
     one.par <- TRUE               # there is only one parameter vector
     coef(object,names(params)) <- unname(params) # set params slot to the parameters
     params <- matrix(
                      params,
                      nrow=length(params),
-                     ncol=Np,
+                     ncol=Np[1],
                      dimnames=list(
                        names(params),
                        NULL
@@ -71,21 +89,13 @@ pfilter.internal <- function (object, params, Np,
   
   ## set up storage for saving samples from filtering distributions
   if (save.states)
-    xparticles <- array(
-                        data=NA,
-                        dim=c(nvars,Np,ntimes),
-                        dimnames=list(statenames,NULL,NULL)
-                        )
+    xparticles <- vector(mode="list",length=ntimes)
   else
-    xparticles <- array(dim=c(0,0,0))
+    xparticles <- list()
   if (save.params)
-    pparticles <- array(
-                        data=NA,
-                        dim=c(length(paramnames),Np,ntimes),
-                        dimnames=list(paramnames,NULL,NULL)
-                        )
+    pparticles <- vector(mode="list",length=ntimes)
   else
-    pparticles <- array(dim=c(0,0,0))
+    pparticles <- list()
 
   random.walk <- !missing(.rw.sd)
   if (random.walk) {
@@ -149,12 +159,12 @@ pfilter.internal <- function (object, params, Np,
     filt.m <- array(dim=c(0,0))
 
   for (nt in seq_len(ntimes)) {
-    
+
     ## advance the state variables according to the process model
     X <- try(
              rprocess(
                       object,
-                      x=x,
+                      xstart=x,
                       times=times[c(nt,nt+1)],
                       params=params,
                       offset=1
@@ -208,7 +218,7 @@ pfilter.internal <- function (object, params, Np,
     xx <- try(
               .Call(
                     pfilter_computations,
-                    X,params,
+                    X,params,Np[nt+1],
                     random.walk,sigma,
                     pred.mean,pred.var,
                     filter.mean,one.par,
@@ -242,11 +252,11 @@ pfilter.internal <- function (object, params, Np,
     }
     
     if (save.states) {
-      xparticles[,,nt] <- x
+      xparticles[[nt]] <- x
     }
 
     if (save.params) {
-      pparticles[,,nt] <- params
+      pparticles[[nt]] <- params
     }
 
     if (verbose && ((ntimes-nt)%%5==0))

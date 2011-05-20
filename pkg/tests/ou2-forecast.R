@@ -18,7 +18,7 @@ z <- array(dim=c(2,9,10))
 mse <- array(dim=c(2,9,10))
 t0 <- seq(from=10,to=90,by=10)
 for (k in seq_along(t0)) {
-  pp[c("x1.0","x2.0"),] <- pf$saved.states[c("x1","x2"),,tm==t0[k]]
+  pp[c("x1.0","x2.0"),] <- pf$saved.states[tm==t0[k]][[1]][c("x1","x2"),]
   inds <- which(tm>t0[k]&tm<=t0[k]+10)
   Y <- simulate(ou2,params=pp,obs=TRUE,t0=t0[k],times=tm[inds])
   mn <- apply(Y,c(1,3),mean)

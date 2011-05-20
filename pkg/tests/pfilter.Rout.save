@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -16,8 +17,13 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
 > 
 > data(ou2)
+> 
+> set.seed(9994847L)
 > 
 > pf <- pfilter(ou2,Np=1000,seed=343439L)
 > print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
@@ -28,8 +34,17 @@ particle filter log likelihood at truth
 > print(pf$loglik,digits=4)
 [1] -476.6
 > 
+> pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
+> pf.ll <- sapply(pf,logLik)
+> ll.est <- log(mean(exp(pf.ll-mean(pf.ll))))+mean(pf.ll)
+> ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
+> print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
+   loglik loglik.se 
+  -479.61      0.46 
+> 
 > data(euler.sir)
 > pf <- pfilter(euler.sir,Np=200,seed=394343L)
 > print(pf$loglik,digits=4)
-[1] -872.3
+[1] -884.2
+> 
 > 

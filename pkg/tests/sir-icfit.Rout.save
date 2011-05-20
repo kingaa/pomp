@@ -669,7 +669,7 @@ loglik -49.09744953 -1.768807e+03 -4.888492e+01
 +   }
 +   for (k in seq_len(5)) {
 +     pf <- pfilter(po,params=pp,save.params=TRUE)
-+     pp <- pf@saved.params[,,nd]
++     pp <- pf@saved.params[[nd]]
 +   }
 +   guesses <- sobol.design(
 +                           lower=apply(pp[est,],1,min),

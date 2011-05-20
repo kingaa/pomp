@@ -86,13 +86,14 @@
       numeric vector containing the conditional log likelihoods at each time point.
     }
     \item{saved.states}{
-      If \code{pfilter} was called with \code{save.states=TRUE}, this is the array of state-vectors at each time point, for each particle.
-      An array with dimensions \code{nvars}-by-\code{Np}-by-\code{ntimes}.
-      In particular, \code{saved.states[,i,t]} can be considered a sample from \eqn{f[X|y_{1:t}]}.
+      If \code{pfilter} was called with \code{save.states=TRUE}, this is the list of state-vectors at each time point, for each particle.
+      It is a length-\code{ntimes} list of \code{nvars}-by-\code{Np} arrays.
+      In particular, \code{saved.states[[t]][,i]} can be considered a sample from \eqn{f[X_t|y_{1:t}]}.
     }
     \item{saved.params}{
-      If \code{pfilter} was called with \code{save.params=TRUE}, this is the array of parameter-vectors at each time point, for each particle.
-      It is an array with dimensions \code{npars}-by-\code{Np}-by-\code{ntimes}.
+      If \code{pfilter} was called with \code{save.params=TRUE}, this is the list of parameter-vectors at each time point, for each particle.
+      It is a length-\code{ntimes} list of \code{npars}-by-\code{Np} arrays.
+      In particular, \code{saved.params[[t]][,i]} is the parameter portion of the i-th particle at time \eqn{t}.
     }
     \item{seed}{
       the state of the random number generator at the time \code{pfilter} was called.

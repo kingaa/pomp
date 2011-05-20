@@ -107,12 +107,27 @@ mif.internal <- function (object, Nmif,
 
   if (missing(particles))
     stop("mif error: ",sQuote("particles")," must be specified",call.=FALSE)
-  
+
+  ntimes <- length(time(object))
   if (missing(Np))
     stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
+  if (is.function(Np)) {
+    Np <- try(
+              vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
+              silent=FALSE
+              )
+    if (inherits(Np,"try-error"))
+      stop("if ",sQuote("Np")," is a function, it must return a single positive integer")
+  }
+  if (length(Np)==1)
+    Np <- rep(Np,times=ntimes+1)
+  else if (length(Np)!=(ntimes+1))
+    stop(sQuote("Np")," must have length 1 or length ",ntimes+1)
+  if (any(Np<=0))
+    stop("number of particles, ",sQuote("Np"),", must always be positive")
+  if (!is.numeric(Np))
+    stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
   Np <- as.integer(Np)
-  if ((length(Np)!=1)||(Np < 1))
-    stop("mif error: ",sQuote("Np")," must be a positive integer",call.=FALSE)
 
   if (missing(ic.lag))
     stop("mif error: ",sQuote("ic.lag")," must be specified",call.=FALSE)
@@ -135,20 +150,6 @@ mif.internal <- function (object, Nmif,
   Nmif <- as.integer(Nmif)
   if (Nmif<0)
     stop("mif error: ",sQuote("Nmif")," must be a positive integer",call.=FALSE)
-
-  if (verbose) {
-    cat("performing",Nmif,"MIF iteration(s) to estimate parameter(s)",
-        paste(pars,collapse=", "))
-    if (length(ivps)>0)
-      cat(" and IVP(s)",paste(ivps,collapse=", "))
-    cat(" using random-walk with SD\n")
-    print(rw.sd)
-    cat(
-        "using",Np,"particles, variance factor",var.factor,
-        "\ninitial condition smoothing lag",ic.lag,
-        "and cooling factor",cooling.factor,"\n"
-        )
-  }
 
   theta <- start
 
@@ -203,7 +204,7 @@ mif.internal <- function (object, Nmif,
 
     ## initialize the particles' parameter portion...
     P <- try(
-             particles(tmp.mif,Np=Np,center=theta,sd=sigma.n*var.factor),
+             particles(tmp.mif,Np=Np[1],center=theta,sd=sigma.n*var.factor),
              silent=FALSE
              )
     if (inherits(P,'try-error'))

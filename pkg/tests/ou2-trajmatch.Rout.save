@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.12.2 (2011-02-25)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -43,7 +44,7 @@ Loading required package: deSolve
 > range(x['conv',])
 [1] 0 0
 > range(x['loglik',])
-[1] -688.0077 -567.8361
+[1] -687.0136 -614.8054
 > print(
 +       cbind(
 +             truth=true.p,
@@ -54,16 +55,16 @@ Loading required package: deSolve
 +       digits=4
 +       )
         truth mean.est     bias     se
-alpha.1   0.8   0.6724 -0.12758 0.3949
+alpha.1   0.8   0.7082 -0.09185 0.3813
 alpha.2  -0.5  -0.5000  0.00000 0.0000
 alpha.3   0.3   0.3000  0.00000 0.0000
-alpha.4   0.9   0.8318 -0.06822 0.4922
+alpha.4   0.9   0.9704  0.07039 0.2009
 sigma.1   3.0   3.0000  0.00000 0.0000
 sigma.2  -0.5  -0.5000  0.00000 0.0000
 sigma.3   2.0   2.0000  0.00000 0.0000
-tau       1.0   6.0282  5.02824 1.4802
-x1.0     -3.0  -3.3701 -0.37012 2.7226
-x2.0      4.0   2.3504 -1.64964 4.4465
+tau       1.0   6.0401  5.04009 0.8810
+x1.0     -3.0  -4.2514 -1.25144 2.0408
+x2.0      4.0   4.2243  0.22427 6.3684
 > 
 > summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="subplex",maxit=100))
 $params

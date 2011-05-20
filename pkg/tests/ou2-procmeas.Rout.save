@@ -23,16 +23,18 @@ Loading required package: deSolve
 > 
 > data(ou2)
 > 
+> po <- window(ou2,end=10)
+> 
 > set.seed(3434388L)
 > 
-> pmat <- do.call(cbind,rep(list(coef(ou2)),3))
-> sims <- simulate(ou2,states=T,obs=T,params=pmat)
+> pmat <- do.call(cbind,rep(list(coef(po)),3))
+> sims <- simulate(po,states=T,obs=T,params=pmat)
 > 
-> dp <- dprocess(ou2,x=sims$states,times=time(ou2),params=pmat,log=T)
-> dm <- dmeasure(ou2,x=sims$states,y=obs(ou2),times=time(ou2),params=pmat,log=T)
+> dp <- dprocess(po,x=sims$states,times=time(po),params=pmat,log=T)
+> dm <- dmeasure(po,x=sims$states,y=obs(po),times=time(po),params=pmat,log=T)
 > 
 > apply(dp,1,sum)
-[1] -469.8877 -451.1436 -445.4460
+[1] -47.20607 -37.35755 -46.26917
 > apply(dm,1,sum)
-[1] -16202.19 -12225.52 -12082.81
+[1] -850.6711 -616.1925 -993.1957
 > 

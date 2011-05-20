@@ -1,5 +1,47 @@
+2011-05-19  kingaa
+
+	* [r489] tests/ou2-procmeas.R, tests/ou2-procmeas.Rout.save: - new
+	  test for dmeasure and dprocess in ou2
+	* [r488] data/ou2.rda, inst/data-R/ou2.R, man/ou2.Rd, src/ou2.c,
+	  tests/ou2-probe.Rout.save: - rework the OU2 model slightly
+	* [r487] tests/sir.Rout.save: - update sir test
+	* [r486] DESCRIPTION, data/blowflies.rda, data/dacca.rda,
+	  data/gompertz.rda, data/ou2.rda, data/ricker.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/NEWS, inst/doc/gompertz-multi-mif.rda,
+	  inst/doc/gompertz-trajmatch.rda, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/ricker-mif.rda,
+	  inst/doc/ricker-probe-match.rda, tests/sir-icfit.Rout.save,
+	  tests/sir.R: - minor improvements to 'intro to pomp' vignette
+	  - update data objects
+	  - update tests
+	* [r485] data/euler.sir.rda, data/gillespie.sir.rda,
+	  inst/examples/sir.c, src/sir.c: - change the measurement model
+	  for the SIR example
+	* [r484] inst/data-R/ou2.R, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf: - improve the 'advanced
+	  topics' vignette
+	  - update the data()-loadable ou2 object
+	* [r483] inst/examples/ou2.c, src/ou2.c: - modifications to the C
+	  codes for the OU2 example
+	* [r482] R/plugins.R: - change 'discrete.time.sim' so that
+	  'delta.t' is not a required argument of 'step.fun'
+	* [r481] man/pomp-package.Rd, man/pomp.Rd: - improve the
+	  documentation a bit
+
+2011-05-17  kingaa
+
+	* [r480] man/pomp.Rd: - put in links to pomp methods
+
+2011-05-16  kingaa
+
+	* [r479] DESCRIPTION, R/sannbox.R, R/sobol.R, R/spect-match.R,
+	  R/spect.R: - replace some instances of 'sapply' with 'vapply'
+
 2011-05-13  kingaa
 
+	* [r478] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - update DESCRIPTION and ChangeLog
 	* [r477] data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
 	  data/gillespie.sir.rda, data/ou2.rda, data/rw2.rda,
 	  data/verhulst.rda, inst/NEWS,

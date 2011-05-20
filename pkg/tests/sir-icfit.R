@@ -116,7 +116,7 @@ for (j in seq_len(3)) {
   }
   for (k in seq_len(5)) {
     pf <- pfilter(po,params=pp,save.params=TRUE)
-    pp <- pf@saved.params[,,nd]
+    pp <- pf@saved.params[[nd]]
   }
   guesses <- sobol.design(
                           lower=apply(pp[est,],1,min),
