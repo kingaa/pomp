@@ -911,7 +911,7 @@ Among the quantities returned by \code{summary} is the synthetic likelihood \cit
 It is this synthetic likelihood that \pkg{pomp} attempts to maximize in probe matching.
 
 \begin{figure}
-<<ricker-probe-plot,echo=F,fig=F>>=
+<<ricker-probe-plot,echo=F,fig=F,results=hide>>=
   pb <- probe(ricker,
               probes=list(
                 probe.marginal("y",ref=obs(ricker),transform=sqrt),
