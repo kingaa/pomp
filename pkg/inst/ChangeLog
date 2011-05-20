@@ -1,3 +1,28 @@
+2011-05-20  kingaa
+
+	* [r491] inst/doc/Makefile, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: - plot probe figure as jpeg to reduce
+	  size of PDF
+	* [r490] DESCRIPTION, R/mif.R, R/pfilter.R, R/pmcmc.R,
+	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ricker.rda,
+	  data/rw2.rda, data/verhulst.rda, inst/ChangeLog, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/gompertz-multi-mif.rda, inst/doc/gompertz-trajmatch.rda,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/ricker-mif.rda,
+	  inst/doc/ricker-probe-match.rda, man/pfilter.Rd, src/pfilter.c,
+	  tests/ou2-forecast.R, tests/ou2-forecast.Rout.save,
+	  tests/ou2-mif.R, tests/ou2-mif.Rout.save, tests/ou2-procmeas.R,
+	  tests/ou2-procmeas.Rout.save, tests/ou2-trajmatch.Rout.save,
+	  tests/pfilter.R, tests/pfilter.Rout.save, tests/sir-icfit.R,
+	  tests/sir-icfit.Rout.save, tests/synlik.R,
+	  tests/synlik.Rout.save: - pfilter has been redesigned to allow
+	  variable numbers of particles
+	  - pmcmc and mif have been modified to accommodate this
+	  - the 'saved.states' and 'saved.params' slots in 'pfilterd.pomp'
+	  objects are now lists of rank-2 arrays (they were each a rank-3
+	  array)
+
 2011-05-19  kingaa
 
 	* [r489] tests/ou2-procmeas.R, tests/ou2-procmeas.Rout.save: - new
