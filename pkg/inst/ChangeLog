@@ -1,5 +1,11 @@
 2011-05-20  kingaa
 
+	* [r495] man/pomp-package.Rd: - update the package?pomp help page.
+	* [r494] DESCRIPTION: - correct the date
+	* [r493] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: -
+	  cosmetic fix
+	* [r492] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - update changelog and vignettes
 	* [r491] inst/doc/Makefile, inst/doc/intro_to_pomp.Rnw,
 	  inst/doc/intro_to_pomp.pdf: - plot probe figure as jpeg to reduce
 	  size of PDF
