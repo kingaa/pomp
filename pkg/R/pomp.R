@@ -517,27 +517,34 @@ setMethod(
             if (missing(PACKAGE)) PACKAGE <- data@PACKAGE
             if (missing(skeleton.type)) skeleton.type <- data@skeleton.type
             if (missing(skeleton)) skeleton <- data@skeleton
-            
-            pomp.constructor(
-                             data=data@data,
-                             times=times,
-                             t0=t0,
-                             rprocess=rprocess,
-                             dprocess=dprocess,
-                             rmeasure=rmeasure,
-                             dmeasure=dmeasure,
-                             skeleton=skeleton,
-                             skeleton.type=skeleton.type,
-                             initializer=initializer,
-                             covar=covar,
-                             tcovar=tcovar,
-                             obsnames=obsnames,
-                             statenames=statenames,
-                             paramnames=paramnames,
-                             covarnames=covarnames,
-                             PACKAGE=PACKAGE,
-                             ...
-                             )
+            userdata <- data@userdata
+            added.userdata <- list(...)
+            userdata[names(added.userdata)] <- added.userdata
+            do.call(
+                    pomp.constructor,
+                    c(
+                      list(
+                           data=data@data,
+                           times=times,
+                           t0=t0,
+                           rprocess=rprocess,
+                           dprocess=dprocess,
+                           rmeasure=rmeasure,
+                           dmeasure=dmeasure,
+                           skeleton=skeleton,
+                           skeleton.type=skeleton.type,
+                           initializer=initializer,
+                           covar=covar,
+                           tcovar=tcovar,
+                           obsnames=obsnames,
+                           statenames=statenames,
+                           paramnames=paramnames,
+                           covarnames=covarnames,
+                           PACKAGE=PACKAGE
+                           ),
+                      userdata
+                      )
+                    )
           }
           )
 

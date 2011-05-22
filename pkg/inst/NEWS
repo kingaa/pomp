@@ -1,11 +1,16 @@
 NEWS
 
-0.37-2
+0.38-1
+     o  Fixed bug in 'pomp' when 'data' is of class 'pomp': userdata should be preserved.
+
+     o	Improved discussion of SIR model in "Intro to pomp" vignette.
+
      o  In 'pfilterd.pomp' objects, 'saved.states' and 'saved.params' slots are now length-ntimes lists of arrays.
 
      o  It is now possible to use variable numbers of particles in 'pfilter'.
      	The 'Np' argument may be specified as a single number as before, or now as either a vector of numbers or a function.
 
+0.37-2
      o  The "advanced topics" vignette has been much augmented and improved.
 
      o  The 'euler.sir' example (load it with 'data(euler.sir)') has a different measurement model: a discretized normal distribution with the same mean and variance as before.

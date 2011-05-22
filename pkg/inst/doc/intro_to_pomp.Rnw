@@ -723,13 +723,13 @@ This is tantamount to assuming that all the stochasticity in the system is in th
 In \pkg{pomp}, the trajectory is computed using the \code{trajectory} function, which in turn uses the \code{skeleton} slot of the \code{pomp} object.
 The \code{skeleton} slot should be filled with the deterministic skeleton of the process model.
 In the discrete-time case, this is the map
-\begin{equation*}
+\begin{equation}\label{eq:discrete-skeleton}
   x\,\mapsto\,\expect{X_{t+{\Delta}t}\;\vert\;X_{t}=x,\theta}.
-\end{equation*}
+\end{equation}
 In the continuous-time case, this is the vectorfield
-\begin{equation*}
+\begin{equation}\label{eq:continuous-skeleton}
   x\,\mapsto\,\lim_{{\Delta}{t}\,\to\,0}\,\expect{\frac{X_{t+{\Delta}{t}}-x}{{\Delta}{t}}\;\Big{\vert}\;X_{t}=x,\theta}.
-\end{equation*}
+\end{equation}
 Our discrete-time Gompertz has the deterministic skeleton
 \begin{equation}\label{eq:gompertz-skel}
   x\,\mapsto\,K^{1-S}\,x^{S},
@@ -1099,7 +1099,6 @@ print(
 	\end{picture}
     }
   \end{center}
-  \label{fig:SIR}
   \caption{
     Diagram of the SIR model.
     The host population is divided into three classes according to their infection status: 
@@ -1108,160 +1107,328 @@ print(
     R, recovered and immune hosts. 
     Births result in new susceptibles and all individuals have a common death rate $\mu$.
     Since the birth rate equals the death rate, the expected population size, $N=S+I+R$, remains constant.
-    The S$\to$I rate, $\lambda$, called the \emph{force of infection}, depends on the number of infectious individuals according to $\lambda(t)={\beta(t)\,\xi(t)\,I}/{N}$,
-    where $\beta(t)$ is the seasonal (periodic) contact rate and $\xi(t)$ is a white noise.
+    The S$\to$I rate, $\lambda$, called the \emph{force of infection}, depends on the number of infectious individuals according to $\lambda(t)={\beta\,I}/{N}$.
     The I$\to$R, or recovery, rate is $\gamma$.
-    The case reports, $C$, count infected individuals with probability $\rho$. 
+    The case reports, $C$, result from a process by which infections are recorded with probability $\rho$. 
     Since diagnosed cases are treated with bed-rest and hence removed, infections are counted upon transition to R. 
   }
+  \label{fig:SIR}
 \end{figure}
 
-The SIR model is a mainstay of theoretical epidemiology.
-It has the deterministic skeleton
+\subsection{The stochastic SIR model.}
+
+A mainstay of theoretical epidemiology, the SIR model describes the progress of a contagious infection through a population of hosts.
+The hosts are divided into three classes, according to their status vis-a-vis the infection (Fig.~\ref{fig:SIR}).
+The S class contains those that have not yet been infected and are thereby still susceptible to it;
+the I class comprises those who are currently infected and, by assumption, infectious;
+the R class includes those who have recovered from the infection.
+The latter are assumed to be immune against reinfection.
+We let $S(t)$, $I(t)$, and $R(t)$ represent the numbers of individuals within the respective classes at time $t$.
+
+It is natural to formulate this model as a continuous-time Markov process.
+In this process, the numbers of individuals within each class change through time in whole-number increments.
+In particular, individuals move between classes (entering S at birth, moving thence to I, and on to R unless death arrives first) at random times.
+Thus, the numbers of births and class-transitions that occur in any interval of time are random variables.
+The birth rate, death rates, and the rate of transition, $\gamma$, from I to R are frequently assumed to be constants, specific to the infection and the host population.
+Crucially, the I to R transition rate, the so-called \emph{force of infection}, is not constant, but depends on the current number of infectious individuals.
+The assumption that transmission is \emph{frequency dependent}, as for example when each individual realizes a fixed number of contacts per unit time, corresponds to the assumption $\lambda(t) = \beta\,I(t)/N$, where $\beta$ is known as the contact rate and $N=S+I+R$ is the population size.
+This assumption introduces the model's only nonlinearity.
+It is useful sometimes to further assume that birth and death rates are equal and independent of infection status---call the common rate $\mu$---which has the consequence that the expected population size then remains constant.
+
+It is typically impossible to monitor $S$, $I$, and $R$, directly. 
+Relatively commonly, however, records of \emph{cases}, i.e., individual infections, are kept by public health authorities.
+The number of cases, $C(t_1,t_2)$, recorded within a given reporting interval $[t_1,t_2)$ might perhaps be modeled by a binomial process
+\begin{equation*}
+  C(t_1,t_2)\;\sim\;\mathrm{binomial}({\Delta}_{I{\to}R}(t_1,t_2),\rho)
+\end{equation*}
+where $\Delta_{I{\to}R}(t_1,t_2)$ is the accumulated number of recoveries that have occured over the interval in question and $\rho$ is the \emph{reporting rate}, i.e., the probability that a given infection is observed and recorded.
+
+The model's deterministic skeleton is a system of nonlinear ordinary differential equations---a vectorfield---on the space of positive values of $S$, $I$, and $R$ (cf. Eq.~\ref{eq:continuous-skeleton}).
+Specifically, the SIR deterministic skeleton is
 \begin{equation*}
   \begin{aligned}
-    &\frac{dS}{dt}=\mu\,(N-S)-\beta(t)\,\frac{I}{N}\,S\\
-    &\frac{dI}{dt}=\beta(t)\,\frac{I}{N}\,S-\gamma\,I-\mu\,I\\
+    &\frac{dS}{dt}=\mu\,(N-S)-\beta\,\frac{I}{N}\,S\\
+    &\frac{dI}{dt}=\beta\,\frac{I}{N}\,S-\gamma\,I-\mu\,I\\
     &\frac{dR}{dt}=\gamma\,I-\mu\,R\\
   \end{aligned}
 \end{equation*}
-Here $N=S+I+R$ is the (constant) population size and $\beta$ is a time-dependent contact rate.
-We'll assume that the contact rate is periodic and implement it as a covariate.
-As an additional wrinkle, we'll assume that the rate of the infection process $\beta\,I/N$ is perturbed by white noise.
 
-As in the earlier example, we need to write a function that will simulate the process.
-We can use \code{gillespie.sim} to implement this using the exact stochastic simulation algorithm of \citet{Gillespie1977a}.
-This will be quite slow and inefficient, however, so we'll use the so-called ``tau-leap'' algorithm, one version of which is implemented in \pkg{pomp} using Euler-multinomial processes.
-Before we do this, we'll first define the basis functions that will be used for the seasonality.
-It is convenient to use periodic B-splines for this purpose.
-The following codes set up this basis.
-<<seas-basis>>=
-tbasis <- seq(0,25,by=1/52)
-basis <- periodic.bspline.basis(tbasis,nbasis=3)
-colnames(basis) <- paste("seas",1:3,sep='')
-@ 
+\subsection{Implementing the SIR model in \pkg{pomp}.}
 
-Now we'll define the process model simulator.
-Since we have covariates now, our function will have one additional argument, \code{covars}, which will contain the value of each covariate at time \code{t}, established using linear interpolation if necessary.
-<<sir-proc-sim-def>>=
-sir.proc.sim <- function (x, t, params, covars, delta.t, ...) {
-  params <- exp(params)
-  with(
-       as.list(c(x,params,covars)),
-       {
-         beta <- exp(sum(log(c(beta1,beta2,beta3))*c(seas1,seas2,seas3)))
-         beta.var <- beta.sd^2
-         dW <- if (beta.var>0) 
-           rgamma(n=1,shape=delta.t/beta.var,scale=beta.var) 
-         else 
-           delta.t
-         foi <- (iota+beta*I*dW/delta.t)/pop
-         trans <- c(
-                    rpois(n=1,lambda=mu*pop*delta.t),
-                    reulermultinom(n=1,size=S,rate=c(foi,mu),dt=delta.t),
-                    reulermultinom(n=1,size=I,rate=c(gamma,mu),dt=delta.t),
-                    reulermultinom(n=1,size=R,rate=c(mu),dt=delta.t)
-                    )
-         c(
-           S=S+trans[1]-trans[2]-trans[3],
-           I=I+trans[2]-trans[4]-trans[5],
-           R=R+trans[4]-trans[6],
-           cases=cases+trans[4],
-           W=if (beta.sd>0) W+(dW-delta.t)/beta.sd else W
-           )
-       }
-       )
+As before, we'll need to write functions to implement some or all of the SIR model's \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{skeleton} components.
+It turns out to be relatively straightforward to implement all of these but \code{dprocess}.
+
+For the \code{rprocess} portion, we can use \code{gillespie.sim} to implement the continuous-time Markov process exactly using the stochastic simulation algorithm of \citet{Gillespie1977a}.
+For many practical purposes, however, this will prove quite slow and inefficient.
+If we are willing to live with an approximate simulation scheme, we can use the the so-called ``tau-leap'' algorithm, one version of which is implemented in \pkg{pomp} as the \code{euler.sim} plug-in.
+This algorithm holds the transition rates $\lambda$, $\mu$, $\gamma$ constant over a small interval of time ${\delta}t$ and simulates the numbers of births, deaths, and transitions that occur over that interval.
+It then updates the state variables $S$, $I$, $R$ accordingly, increments the time variable by ${\delta}t$, recomputes the transition rates, and repeats.
+Naturally, as ${\delta}t\to 0$, this approximation to the true continuous-time process becomes better and better.
+The critical feature from the inference point of view, however, is that no relationship need be assumed between the Euler simulation interval ${\delta}t$ and the reporting interval, which itself need not even be the same from one observation to the next.
+
+Under this assumption, the number of individuals leaving any of the classes by all available routes over a particular time interval becomes a multinomial process.
+In particular, the probability that an S individual, for example, becomes infected is $p_{S{\to}I}=\frac{\lambda(t)}{\lambda(t)+\mu}\,(1-e^{-(\lambda(t)+\mu)\,{\delta}t})$; 
+the probability that an S individual dies before becoming infected is $p_{S{\to}}=\frac{\mu}{\lambda(t)+\mu}\,(1-e^{-(\lambda(t)+\mu)\,{\delta}t})$;
+and the probability that neither happens is $1-p_{S{\to}I}-p_{S{\to}}=e^{-(\lambda(t)+\mu)\,{\delta}t}$.
+Thus, if $\Delta_{S{\to}I}$ and $\Delta_{S{\to}}$ are the numbers of S individuals acquiring infection and dying, respectively, in the Euler simulation interval $(t,t+{\delta}t)$, then
+\begin{equation*}
+  (\Delta_{S{\to}I},\Delta_{S\to},S-\Delta_{S{\to}I}-\Delta_{S\to})\;\sim\;\mathrm{multinomial}\left(S(t);p_{S{\to}I},p_{S{\to}},1-p_{S{\to}I}-p_{S{\to}}\right),
+\end{equation*}
+Now, the expression on the right arises with sufficient frequency in compartmental models like the SIR that \pkg{pomp} has special functions for it.
+In \pkg{pomp}, the random variable $(\Delta_{S{\to}I},\Delta_{S\to})$ above is said to have an \emph{Euler-multinomial} distribution.
+The \pkg{pomp} functions \code{reulermultinom} and \code{deulermultinom} provide facilities for drawing random deviates from, and computing the p.d.f.\ of, such distributions.
+As the help pages relate, \code{reulermultinom} and \code{deulermultinom} parameterize the Euler-multinomial distributions by the size ($S(t)$ in the example above), rates ($\lambda(t)$ and $\mu$), and time interval ${\delta}t$.
+Obviously, the Euler-multinomial distributions generalize to an arbitrary number of exit routes.
+
+The help (\code{?euler.sim}) informs us that to use \code{euler.sim}, we need to specify a function that advances the states from $t$ to $t+{\delta}t$.
+The function \code{sir.proc.sim}, defined here, does this.
+<<sir-proc-sim-def,keep.source=T>>=
+sir.proc.sim <- function (x, t, params, delta.t, ...) {
+  ## untransform the parameters
+  N <- exp(params["N"])             # population size
+  gamma <- exp(params["gamma"])     # recovery rate
+  mu <- exp(params["mu"])           # birth rate = death rate
+  beta <- exp(params["beta"])       # contact rate
+  foi <- beta*x["I"]/N                       # the force of infection
+  trans <- c(
+             rpois(n=1,lambda=mu*N*delta.t), # births are assumed to be Poisson
+             reulermultinom(n=1,size=x["S"],rate=c(foi,mu),dt=delta.t), # exits from S
+             reulermultinom(n=1,size=x["I"],rate=c(gamma,mu),dt=delta.t), # exits from I
+             reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)        # exits from R
+             )
+  ## now connect the compartments
+  x+c(
+      trans[1]-trans[2]-trans[3],
+      trans[2]-trans[4]-trans[5],
+      trans[4]-trans[6],
+      trans[4]                          # accumulate the recoveries
+    )
 }
 @ 
-Let's look at this definition in a bit of detail.
-We will be log-transforming the parameters: the first line untransforms them.
-Here, we use \code{with} to make the codes a bit easier to read.
-The variable \code{beta} will be the transmission rate: 
-the time-dependence of this rate is parameterized using the basis functions, the current values have been passed via the \code{covars} argument.
-The next lines make a draw, \code{dW}, from a Gamma random variable which will model environmental stochasticity as white noise in the transmission process \citep{Breto2009,He2010}.
-The next line computes the force of infection, \code{foi}.
-\code{trans} is next filled with random draws of all the transitions between the S, I, and R compartments.
-Births are modeled using a Poisson distribution, the number of births is stored in \code{trans[1]}. 
-Individuals leave the S class through either death or infection: \code{trans[2]} will contain the number infected, \code{trans[3]} the number dead.
-The number leaving the I and R classes are handled similarly.
-See the documentation on \code{reulermultinom} for a more thorough explanation of how this function works.
-Finally, a named vector is returned that contains the new values of the state variables, each of which is the old value, adjusted by the transitions.
-Note that the state variable \code{cases} accumulates the number of I$\to$R transitions and \code{W} accumulates the (standardized) white noise.
+Note that we've assumed here that the parameters have been log-transformed.
 
-Now we're ready to construct the \code{pomp} object.
+Two significant wrinkles remains to be explained.
+First, notice that in \code{sir.proc.sim}, the state variable \code{cases} accumulates the total number of recoveries.
+Thus, \code{cases} will be a counting process and, in particular, will be nondecreasing with time.
+In fact, the number of recoveries within an interval, ${\Delta}_{I{\to}R}(t_1,t_2)=\mathtt{cases}(t_2)-\mathtt{cases}(t_1)$.
+Clearly, including \code{cases} as a state variable violates the Markov assumption.
+
+However, this is not an essential violation.
+Because none of the rates $\lambda$, $\mu$, or $\gamma$ depend on \code{cases}, the process remains essentially Markovian.
+We still have a difficulty with the measurement process, however, in that our data are assumed to be records of infections resolving within a given interval while the process model keeps track of the accumulated number of infections that have resolved since the record-keeping began.
+We can get around this difficulty by re-setting \code{cases} to zero immediately after each observation.
+We tell \pkg{pomp} to do this using the \code{pomp}'s \code{zeronames} argument, as we will see in a moment.
+
+The second wrinkle has to do with the initial conditions, i.e., the states $S(t_0)$, $I(t_0)$, $R(t_0)$.
+By default, \pkg{pomp} will allow us to specify these initial states arbitrarily.
+For the model to be consistent, they should be positive integers that sum to the population size $N$.
+We can enforce this constraint by customizing the parameterization of our initial conditions.
+We do this in by specializing a custom \code{initializer} in the call to \code{pomp} that constructs the \code{pomp} object.
+Let's construct it now and fill it with simulated data.
 <<sir-pomp-def>>=
-pomp(
-     data=data.frame(
-       time=seq(1/52,4,by=1/52),
-       reports=NA
-       ),
-     times="time",
-     t0=0,
-     tcovar=tbasis,
-     covar=basis,
-     rprocess=euler.sim(
-       step.fun=sir.proc.sim,
-       delta.t=1/52/20
-       ),
-     measurement.model=reports~binom(size=cases,prob=exp(rho)),
-     zeronames=c("cases"),
-     initializer=function(params, t0, comp.names, ...){
-       p <- exp(params)
-       snames <- c("S","I","R","cases","W")
-       fracs <- p[paste(comp.names,"0",sep=".")]
-       x0 <- numeric(length(snames))
-       names(x0) <- snames
-       x0[comp.names] <- round(p['pop']*fracs/sum(fracs))
-       x0
-     },
-     comp.names=c("S","I","R")
-     ) -> sir
+sir <- simulate(
+                pomp(
+                     data=data.frame(
+                       time=seq(1/52,15,by=1/52),
+                       reports=NA
+                       ),
+                     times="time",
+                     t0=0,
+                     rprocess=euler.sim(
+                       step.fun=sir.proc.sim,
+                       delta.t=1/52/20
+                       ),
+                    skeleton.type="vectorfield",
+                    skeleton=function(t,x,params,...){
+                       N <- exp(params["N"])             # population size
+                       gamma <- exp(params["gamma"])     # recovery rate
+                       mu <- exp(params["mu"])           # birth rate = death rate
+                       beta <- exp(params["beta"])       # contact rate
+                       foi <- beta*x["I"]/N # the force of infection
+                       trans <- c(
+                                  mu*N,               # births
+                                  x["S"]*c(foi,mu),   # exits from S
+                                  x["I"]*c(gamma,mu), # exits from I
+                                  x["R"]*mu           # exits from R
+                                  )
+                       ## now connect the compartments  
+                       x+c(
+                           trans[1]-trans[2]-trans[3],
+                           trans[2]-trans[4]-trans[5],
+                           trans[4]-trans[6],
+                           (trans[2]-trans[4]-trans[5])*gamma/52 # approximately the number of new infections/week
+                           )
+                     },
+                     measurement.model=reports~binom(size=cases,prob=exp(rho)),
+                     initializer=function(params, t0, ic.pars, comp.names, ...){
+                       x0 <- c(S=0,I=0,R=0,cases=0)
+                       N <- exp(params["N"])
+                       fracs <- exp(params[ic.pars])
+                       x0[comp.names] <- round(N*fracs/sum(fracs))
+                       x0
+                     },
+                     zeronames=c("cases"), # zero out this variable after each observation
+                     ic.pars=c("S0","I0","R0"), # initial condition parameters
+                     comp.names=c("S","I","R")          # names of the compartments
+                     ),
+                params=log(
+                  c(
+                    N=50000,
+                    beta=60,gamma=8,mu=1/50,
+                    rho=0.6,
+                    S0=8/60,I0=0.002,R0=1-8/60-0.001
+                    )
+                  ),
+                seed=677573454L
+                )
 @ 
-The specification of \code{data}, \code{times}, and \code{t0} should be familiar.
-The covariates are specified using the arguments \code{tcovar} and \code{covar}.
-We use \code{euler.sim} to specify the process simulator (\code{rprocess}).
-We are approximating the continuous-time process using an Euler simulator with a time-step of 1/20 of a week.
-Both \code{rmeasure} and \code{dmeasure} can be specified at once using the \code{measurement.model} argument.
-Here, we model the observation process using a binomial process, where the \emph{reporting rate}, \code{rho}, is the probability that a case is reported.
-
-As we noted before, the state variable \code{cases} accumulates the number of cases (i.e., the number of I$\to$R transitions).
-However, the data are not the cumulative number of cases, but the number of cases that have occurred since the last report.
-Specifying \code{cases} in the \code{zeronames} argument has the effect of re-setting the state variable \code{cases} to zero after each observation.
-
-Finally, in this example, we do not use the default parameterization of the initial states.
-Instead, we specify a custom \code{initializer} argument.
-We want instead to parameterize the initial states in terms of the fractions of the total population contained in each compartment.
-In particular, as we see in the \code{initializer} argument to \code{pomp}, we normalize so that the sum of \code{S.0}, \code{I.0}, and \code{R.0} is 1, then multiply by the initial population size, and then round to the nearest whole number.
-Note that the initializer we have specified needs an argument \code{comp.names} (the names of the S, I, and R state variables).
-This is set in the last line.
-More generally, one can give any number or kind of additional arguments to \code{pomp}:
-they will be passed to the \code{initializer}, \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{skeleton} functions, if these exist.
-This feature aids in the writing of customized \code{pomp} objects.
-
-Now we'll simulate data using the parameters
-<<sir-params>>=
-theta <- c(
-           gamma=26,mu=1/50,iota=10,
-           beta1=1200,beta2=1500,beta3=900,
-           beta.sd=1e-2,
-           pop=5e5,
-           rho=0.6,
-           S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
-           )
-@ 
-<<sir-first-sim>>=
-sir <- simulate(sir,nsim=1,params=log(theta),seed=329348545L)
-@ 
-Figure~\ref{fig:sir-plot} shows the simulated data and state variable trajectories.
+Notice that we are assuming here that the data are collected weekly and use an Euler step-size of 1/20~wk.
+Here, we've assumed an infection with an infectious period of $1/\gamma=1/8$~yr and a basic reproductive number, $R_0$ of $\beta/(\gamma+\mu)\approx 7.5$.
+We've assumed a host population size of 50,000 and 60\% reporting efficiency.
+Fig.~\ref{fig:sir-plot} shows one realization of this process.
 
 \begin{figure}
 <<sir-plot,fig=T,echo=F>>=
-data(euler.sir)
-sir <- simulate(euler.sir,nsim=1,params=c(log(theta),nbasis=3,period=1,degree=3),seed=329348545L)
 plot(sir)
 @   
   \caption{Results of \code{plot(sir)}.}
   \label{fig:sir-plot}
+\end{figure}
+
+\subsection{Complications: seasonality, imported infections, extra-demographic stochasticity.}
+
+Let's add a bit of real-world complexity to the simple SIR model.
+We'll modify the model to take three facts into account:
+\begin{inparaenum}[(i)]
+  \item For many infections, the contact rate is \emph{seasonal}: $\beta=\beta(t)$ is a periodic function of time.
+  \item No host population is truly closed: \emph{imported infections} arise when infected individuals visit the host population and transmit.
+  \item Stochastic fluctuation in the rates $\lambda$, $\mu$, and $\gamma$ can give rise to \emph{extrademographic stochasticity}, i.e., random process variability beyond the purely demographic stochasticity we've included so far.
+\end{inparaenum}
+
+One way to incorporate seasonality into the model is to assume some functional form for $\beta(t)$.
+Alternatively, we can use flexible functions to allow $\beta$ to take a variety of shapes.
+B-splines are useful in this regard and \pkg{pomp} provides some simple facilities for using these.
+If $s_{i}(t)$, $i=1,\dots,k$ is a periodic B-spline basis, as in Fig.~\ref{fig:seas-basis-plot}, then we can for example define
+\begin{equation*}
+  \log\beta(t)=\sum_{i}\!b_{i}\,s_{i}(t)
+\end{equation*}
+and, by varying the coefficients $b_{i}$, we can obtain a wide variety of shapes for $\beta(t)$.
+In \pkg{pomp}, we can define a set of periodic B-spline basis functions by doing:
+<<seas-basis>>=
+tbasis <- seq(0,20,by=1/52)
+basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,names="seas%d")
+@ 
+This results in a data-frame with \Sexpr{ncol(basis)} columns; 
+each column is a quadratic periodic B-spline over the 20~yr domain, with period 1~yr.
+Fig.~\ref{fig:seas-basis-plot} shows these basis functions.
+Effectively, \code{tbasis} and \code{basis} function as a look-up table that can be used by the \code{rprocess} simulator to obtain a seasonal contact rate, $\beta(t)$.
+We accomplish this using the \code{covar} and \code{tcovar} arguments to \code{pomp}, as we will see below.
+
+There are a number of ways to take account of imported infections.
+Here, we'll simply assume that there is some background force of infection, $\iota$, not due to I-class individuals.
+Putting this together with the seasonal contact rate results in a force of infection $\lambda(t)=\beta(t)\,I(t)/N+\iota$.
+
+Finally, we can allow for extrademographic stochasticity by allowing the force of infection to be itself a random variable.
+We'll accomplish this by assuming a multiplicative white noise on the force of infection, i.e.,
+\begin{equation*}
+  \lambda(t) = \left(\beta(t)\,\frac{I(t)}{N}+\iota\right)\,\frac{dW(t)}{dt},
+\end{equation*}
+where $dW/dt$ is a white noise, specifically the ``derivative'' of an integrated Gamma white noise process.
+\citet{He2010} discuss such processes and apply them in an inferential context.
+
+Let's modify the process-model simulator to incorporate these three complexities.
+<<complex-sir-def>>=
+complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
+  ## untransform the parameters
+  N <- exp(params["N"])                 # population size
+  gamma <- exp(params["gamma"])         # recovery rate
+  mu <- exp(params["mu"])               # birth rate = death rate
+  iota <- exp(params["iota"])           # import rate
+  b <- params[c("b1","b2","b3")] # contact-rate coefficients
+  beta <- exp(b%*%covars)       # flexible seasonality
+  beta.sd <- exp(params["beta.sd"])     # extrademographic noise intensity
+  beta.var <- beta.sd*beta.sd
+  if (beta.var > 0) 
+    dW <- rgamma(n=1,shape=delta.t/beta.var,scale=beta.var)
+  else
+    dW <- delta.t
+  foi <- (beta*x["I"]/N+iota)*dW/delta.t # the force of infection
+  trans <- c(
+             rpois(n=1,lambda=mu*N*delta.t), # births are assumed to be Poisson
+             reulermultinom(n=1,size=x["S"],rate=c(foi,mu),dt=delta.t), # exits from S
+             reulermultinom(n=1,size=x["I"],rate=c(gamma,mu),dt=delta.t), # exits from I
+             reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)        # exits from R
+             )
+  ## now connect the compartments
+  x+c(
+      trans[1]-trans[2]-trans[3],
+      trans[2]-trans[4]-trans[5],
+      trans[4]-trans[6],
+      trans[4],                         # accumulate the recoveries
+      (dW-delta.t)                      # mean = 0, sd = (beta.sd^2 delta.t)
+    )
+}
+complex.sir <- simulate(
+                        pomp(
+                             sir,
+                             tcovar=tbasis,
+                             covar=basis,
+                             rprocess=euler.sim(
+                               complex.sir.proc.sim,
+                               delta.t=1/52/20
+                               ),
+                             initializer=function(params, t0, ic.pars, comp.names, ...){
+                               x0 <- c(S=0,I=0,R=0,cases=0,W=0)
+                               N <- exp(params["N"])
+                               fracs <- exp(params[ic.pars])
+                               x0[comp.names] <- round(N*fracs/sum(fracs))
+                               x0
+                               }
+                             ),
+                        params=log(
+                          c(
+                            N=50000,
+                            b1=60,b2=10,b3=110,
+                            gamma=8,mu=1/50,
+                            rho=0.6,
+                            iota=0.01,beta.sd=0.1,
+                            S0=8/60,I0=0.002,R0=1-8/60-0.001
+                            )
+                          ),
+                        seed=8274355L
+                        )
+@ 
+Note that the seasonal basis functions are passed to \code{complex.sir.proc.sim} via the \code{covars} argument.
+Whenever \code{complex.sir.proc.sim} is called, this argument will contain values of the covariates obtained from the look-up table.
+
+\begin{figure}
+<<seas-basis-plot,echo=F,height=4,width=6,fig=T>>=
+op <- par(mar=c(5,5,1,5))
+matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
+        lty=1,col=c("red","blue","orange"),xlab="time (yr)",ylab="seasonal basis functions")
+bb <- coef(complex.sir,c("b1","b2","b3"))
+plot.window(c(0,2),c(0,1)*exp(max(bb)))
+lines(tbasis,exp(basis%*%bb),col="black",lwd=3,lty=1)
+lines(tbasis,exp(basis%*%bb),col="white",lwd=2.5,lty="23")
+axis(side=4)
+mtext(side=4,line=2,text=bquote(beta(t)==exp(.(b1)*s[1]+.(b2)*s[2]+.(b3)*s[3]),where=as.list(exp(coef(complex.sir)))))
+par(op)
+@   
+  \caption{
+    Periodic B-spline basis functions can be used to construct flexible periodic functions.
+    The colored lines show the three basis functions.
+    The dashed black line shows the seasonality $\beta(t)$ assumed in \code{complex.sir}.
+  }
+  \label{fig:seas-basis-plot}
+\end{figure}
+
+
+\begin{figure}
+<<complex-sir-plot,echo=F,fig=T>>=
+plot(complex.sir)
+@   
+  \caption{One realization of the SIR model with seasonal contact rate, imported infections, and extrademographic stochasticity in the force of infection.}
+  \label{fig:complex-sir-plot}
 \end{figure}
 
 \clearpage
