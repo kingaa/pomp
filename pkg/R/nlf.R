@@ -62,8 +62,8 @@ nlf <- function (object, start, est, lags,
 
   ## Vector of times to output the simulation
   times <- seq(
-               from=t0,
-               length=nconverge+nasymp+1,
+               from=t0+nconverge*dt,
+               length=nasymp,
                by=dt
                )
 
@@ -88,50 +88,33 @@ nlf <- function (object, start, est, lags,
     return(-val)
   }
 
-  if (method == 'subplex') {
-    opt <- subplex::subplex(
-                            par=guess,
-                            fn=nlf.objfun,
-                            object=object,
-                            params=params,
-                            par.index=par.index, 
-                            times=times,
-                            t0=t0,
-                            lags=lags,
-                            period=period,
-                            tensor=tensor,
-                            seed=seed,
-                            transform=transform,
-                            nrbf=nrbf, 
-                            verbose=verbose,
-                            bootstrap=bootstrap,
-                            bootsamp=bootsamp,
-                            control=list(...)
-                            )
-  } else {
-    opt <- optim(
-                 par=guess,
-                 fn=nlf.objfun,
-                 gr=gr,
-                 method=method, 
-                 object=object,
-                 params=params,
-                 par.index=par.index, 
-                 times=times,
-                 t0=t0,
-                 lags=lags,
-                 period=period,
-                 tensor=tensor,
-                 seed=seed,
-                 transform=transform,
-                 nrbf=nrbf, 
-                 verbose=verbose,
-                 bootstrap=bootstrap,
-                 bootsamp=bootsamp,
-                 control=list(...)
-                 )  
-  }
+  optimizer <- switch(
+                      method,
+                      subplex=subplex::subplex,
+                      stats::optim
+                      )
 
+  opt <- optimizer(
+                   par=guess,
+                   fn=nlf.objfun,
+                   object=object,
+                   params=params,
+                   par.index=par.index, 
+                   times=times,
+                   t0=t0,
+                   lags=lags,
+                   period=period,
+                   tensor=tensor,
+                   seed=seed,
+                   transform=transform,
+                   nrbf=nrbf, 
+                   verbose=verbose,
+                   bootstrap=bootstrap,
+                   bootsamp=bootsamp,
+                   control=list(...)
+                   )
+
+  opt$est <- est
   opt$value <- -opt$value
   params[par.index] <- opt$par
   opt$params <- params
