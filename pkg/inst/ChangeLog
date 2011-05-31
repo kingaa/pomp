@@ -1,5 +1,19 @@
+2011-05-31  kingaa
+
+	* [r503] DESCRIPTION, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/pomp.bib: - add section on
+	  NLF to intro vignette (by S. Ellner)
+
+2011-05-27  kingaa
+
+	* [r502] R/nlf.R: - fix newly introduced bug
+	* [r501] DESCRIPTION, R/nlf.R, tests/ou2-nlf.R,
+	  tests/ou2-nlf.Rout.save: - fix bug in 'nlf': nconverge was
+	  essentially ignored
+
 2011-05-22  kingaa
 
+	* [r500] DESCRIPTION, inst/ChangeLog:
 	* [r499] R/pomp.R, inst/NEWS, inst/doc/intro_to_pomp.Rnw,
 	  inst/doc/intro_to_pomp.pdf: - fix bug in pomp-pomp to do with
 	  userdata slot not being preserved

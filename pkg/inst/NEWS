@@ -1,5 +1,8 @@
 NEWS
 
+0.38-2
+     o  A new section describing and demonstrating nonlinear forecasting has been added to the "intro to pomp" vignette.
+
 0.38-1
      o  Fixed bug in 'pomp' when 'data' is of class 'pomp': userdata should be preserved.
 
