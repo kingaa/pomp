@@ -1122,7 +1122,14 @@ for (j in 1:25) {
   pars <- my.params
   pars["log.r"] <- log.r.vals[j]
   for(k in 1:4) {
-    fvals[j,k] <- nlf(my.pomp, start=pars, nasymp=5000, est=NULL, lags=lags[[k]], eval.only=TRUE)
+    fvals[j,k] <- nlf(
+                      my.pomp,
+                      start=pars,
+                      nasymp=5000,
+                      est=NULL,
+                      lags=lags[[k]],
+                      eval.only=TRUE
+                      )
   }
 }
 @ 
@@ -1135,7 +1142,14 @@ for (j in 1:25) {
   pars["log.K"] <- log.K.vals[j]
   pars["X.0"] <- exp(log.K.vals[j])
   for(k in 1:4) {
-    fvals2[j,k] <- nlf(my.pomp, start=pars, nasymp=5000, est=NULL, lags=lags[[k]], eval.only=TRUE)
+    fvals2[j,k] <- nlf(
+                       my.pomp,
+                       start=pars,
+                       nasymp=5000,
+                       est=NULL,
+                       lags=lags[[k]],
+                       eval.only=TRUE
+                       )
   }
 }
 @ 
@@ -1217,7 +1231,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<nlf-multi-short>>
-  save(lags,nreps,ndata,fvals,new.pomp,file=binary.file)
+  save(lags,nreps,ndata,fvals,file=binary.file)
 }
 @ 
 The last line above expresses the objective function as the geometric mean (quasi)likelihood per data point. 
@@ -1298,6 +1312,7 @@ if (file.exists(binary.file)) {
 <<>>=
 apply(pars,2,sd)
 @ 
+[CORRECT THIS COMMENT, OR EXPUNGE?]  
 The bootstrap standard errors are, as expected, slightly higher than the asymptotic estimates. 
 
 The code above implements a ``resampling cases'' approach to bootstrapping the data set to which the intermediate autoregressive model is fitted. 
