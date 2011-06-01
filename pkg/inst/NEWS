@@ -3,6 +3,8 @@ NEWS
 0.38-2
      o  A new section describing and demonstrating nonlinear forecasting has been added to the "intro to pomp" vignette.
 
+     o	Fixed bug in 'nlf': desire for transient period (nconverge>0) was unrecognized.
+
 0.38-1
      o  Fixed bug in 'pomp' when 'data' is of class 'pomp': userdata should be preserved.
 
