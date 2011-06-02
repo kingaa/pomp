@@ -1109,21 +1109,21 @@ But because of measurement error, prediction based on multiple lags might be mor
 Fig.~\ref{fig:nlf-gompertz} shows results for several candidate lags suggested by these considerations. 
 To reduce Monte Carlo error in the objective function, we used \code{simulate} to create a very long ``data set'':
 <<nlf-my-pomp,eval=T>>=
-my.pomp <- simulate(gompertz,times=c(1:1000))
-my.params <- coef(my.pomp)
+long.gomp <- simulate(gompertz,times=1:1000)
+theta <- coef(long.gomp)
 @ 
 and then evaluated the quasilikelihood for a range of parameter values: 
 <<nlf-lag-test-log.r,eval=F>>=
 lags <- list(1,2,c(1,2),c(2,3))
-log.r.vals <- my.params["log.r"]+seq(-0.69,0.69,length=25)
+log.r.vals <- theta["log.r"]+seq(-0.69,0.69,length=25)
 fvals <- matrix(nrow=25,ncol=4)
 for (j in 1:25) {
   cat(j,"\n")
-  pars <- my.params
+  pars <- theta
   pars["log.r"] <- log.r.vals[j]
   for(k in 1:4) {
     fvals[j,k] <- nlf(
-                      my.pomp,
+                      long.gomp,
                       start=pars,
                       nasymp=5000,
                       est=NULL,
@@ -1134,16 +1134,16 @@ for (j in 1:25) {
 }
 @ 
 <<nlf-lag-test-log.K,eval=F,echo=F>>=
-log.K.vals <- my.params["log.K"]+seq(-0.15,0.15,length=25)
+log.K.vals <- theta["log.K"]+seq(-0.15,0.15,length=25)
 fvals2 <- matrix(nrow=25,ncol=4)
 for (j in 1:25) {
   cat(j,"\n") 
-  pars <- my.params
+  pars <- theta
   pars["log.K"] <- log.K.vals[j]
   pars["X.0"] <- exp(log.K.vals[j])
   for(k in 1:4) {
     fvals2[j,k] <- nlf(
-                       my.pomp,
+                       long.gomp,
                        start=pars,
                        nasymp=5000,
                        est=NULL,
@@ -1161,7 +1161,7 @@ if (file.exists(binary.file)) {
 <<nlf-my-pomp>>
 <<nlf-lag-test-log.r>>
 <<nlf-lag-test-log.K>>
-  save(lags,log.r.vals,log.K.vals,fvals,fvals2,file=binary.file)
+  save(theta,lags,log.r.vals,log.K.vals,fvals,fvals2,file=binary.file)
 }
 @ 
 
@@ -1180,7 +1180,7 @@ matplot(
         type="o",
         pch=16
         )
-abline(v=my.params["log.r"],col="blue")
+abline(v=theta["log.r"],col="blue")
 legend("bottomleft",legend=c("1","2","1,2","2,3"),col=c("black","green3","red","purple"),lty=1,pch=16,cex=1,bty="n")
 
 matplot(
@@ -1193,14 +1193,14 @@ matplot(
         type="o",
         pch=16
         )
-abline(v=my.params["log.K"],col="blue")
+abline(v=theta["log.K"],col="blue")
 par(op)
 @ 
-\label{fig:nlf-gompertz}
 \caption{
   Values of the NLF objective function (log of the quasilikelihood) for the Gompertz model as a function of the parameters \code{log.r,log.K} for various choices of the \code{lags} argument. 
   All plotted curves were shifted vertically so as to have maximum value zero. 
-  The objective function was evaluated on an artificial data set of length 1000 that was created using \code{log.r=-2.3,log.K=0}, indicated by the vertical blue lines.
+  The objective function was evaluated on an artificial data set of length \Sexpr{length(obs(long.gomp))} that was generated assuming \code{log.r=\Sexpr{signif(theta["log.r"],2)}}, \code{log.K=\Sexpr{theta["log.K"]}}, indicated by the vertical blue lines.
+  \label{fig:nlf-gompertz}
 }
 \end{figure}  
 
@@ -1268,7 +1268,10 @@ and $\log{K}=$~\Sexpr{signif(true.fit$params["log.K"],2)}~$\pm$~\Sexpr{signif(tr
 
 The standard errors provided by \code{nlf} are based on a Newey-West estimate of the variance-covariance matrix that is generally
 somewhat biased downward. 
-So when time permits, bootstrap standard errors are preferable. 
+More importantly, these rough-and-ready standard error estimates can be unstable.
+This is because they are obtained from finite differences of the NLF objective function.
+This function, in turn, is approximated using simulated time series of finite length, which typically gives rise to fine-scale wrinkles.
+Therefore, when time permits, bootstrap standard errors are preferable. 
 When \code{nlf} is called with \code{bootstrap=TRUE}, the quasilikelihood function is evaluated on the bootstrap sample of the time series specified in \code{bootsamp}.  
 The first \code{max(lags)} observations cannot be forecast by the autoregressive model, so the size of the bootstrap sample is the length of the data series minus \code{max(lags)}: 
 %%Because of how \code{nlf} controls the random number seed, a unique seed for each draw of a bootstrap sample must be created before the samples are drawn: 
@@ -1312,19 +1315,57 @@ if (file.exists(binary.file)) {
 <<>>=
 apply(pars,2,sd)
 @ 
-[CORRECT THIS COMMENT, OR EXPUNGE?]  
-The bootstrap standard errors are, as expected, slightly higher than the asymptotic estimates. 
+In this case, the bootstrap standard errors don't differ much from the Newey-West estimates.
 
 The code above implements a ``resampling cases'' approach to bootstrapping the data set to which the intermediate autoregressive model is fitted. 
 This is valid when observations are conditionally independent given the past observations, which is only true for a Markov process if the complete state is observed. 
 Otherwise there may be correlations, and we need to use methods for bootstrapping time series.
 In \code{nlf} it is relatively easy to implement the ``blocks of blocks'' resampling method \citep[][p.~398]{Davison1997}. 
 For example, with block length $l=3$ we resample (with replacement) observations in groups of length 3: 
-<<eval=F>>=
-bootsamp <- replicate(n=nrep,sample(nboot,size=floor(nboot/3),replace=TRUE))
+<<block-bootsamp,eval=F>>=
+bootsamp <- replicate(n=nreps,sample(nboot,size=floor(nboot/3),replace=TRUE))
 bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
 @ 
 and otherwise proceed exactly as above. 
+<<nlf-block-boot,eval=F,echo=F>>=
+lags <- 2
+ndata <- length(obs(gompertz))
+nboot <- ndata-max(lags)
+nreps <- 100
+pars <- matrix(0,nreps,2)
+bootsamp <- replicate(
+                      n=nreps,
+                      sample(nboot-2,size=floor(nboot/3),replace=TRUE)
+                      )
+bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
+for (j in seq_len(nreps)) {
+  fit <- nlf(
+             gompertz,
+             start=coef(gompertz),
+             est=c("log.K","log.r"),
+             lags=lags,
+             seed=7639873, 
+             bootstrap=TRUE, 
+             bootsamp=bootsamp[,j],
+             skip.se=TRUE, 
+             method="Nelder-Mead",
+             trace=4,
+             nasymp=5000
+             )
+   pars[j,] <- fit$params[c("log.r","log.K")]
+}
+colnames(pars) <- c("log.r","log.K")
+@ 
+
+<<nlf-block-boot-eval,eval=T,echo=F,results=hide>>=
+binary.file <- "nlf-block-boot.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<nlf-block-boot>>
+  save(pars,file=binary.file)
+}
+@ 
 
 %%\citet{Ellner1998,Kendall1999}
 

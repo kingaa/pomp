@@ -1,5 +1,17 @@
+2011-06-01  kingaa
+
+	* [r507] inst/NEWS: - update NEWS file
+	* [r506] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/nlf-multi-short.rda: - abbreviate one results file
+	* [r505] inst/doc/nlf-boot.rda, inst/doc/nlf-fit-from-truth.rda,
+	  inst/doc/nlf-fits.rda, inst/doc/nlf-lag-tests.rda,
+	  inst/doc/nlf-multi-short.rda: - added binary results files for
+	  nlf portion of intro vignette
+
 2011-05-31  kingaa
 
+	* [r504] inst/ChangeLog, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
 	* [r503] DESCRIPTION, inst/doc/intro_to_pomp.Rnw,
 	  inst/doc/intro_to_pomp.pdf, inst/doc/pomp.bib: - add section on
 	  NLF to intro vignette (by S. Ellner)
