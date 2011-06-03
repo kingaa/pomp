@@ -22,6 +22,7 @@
     The RNG will be restored to its original state afterward.
   }
   \item{params}{
+    either a named numeric vector or a numeric matrix with rownames.
     The parameters to use in simulating the model.
     If \code{params} is not given, then the contents of the \code{params} slot of \code{object} will be used, if they exist.
   }

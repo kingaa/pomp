@@ -128,7 +128,7 @@
     An optional string giving the name of the dynamically loaded library in which any native routines are to be found.
   }
   \item{\dots}{
-    Any additional arguments are passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.
+    Any additional arguments given to \code{pomp} will be stored in the \code{\link[=pomp-class]{pomp}} object and passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.
   }
 }
 \value{
@@ -147,8 +147,9 @@
   For exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm is available (see \code{\link{gillespie.sim}}).
   To use the plugins, consult the help documentation (\code{?\link{plugins}}) and the vignettes.
 
-  It is anticipated that in specific cases, it may be possible to obtain increased computational efficiency by writing custom versions of \code{rprocess} and/or \code{dprocess}.
-  The following describes how each of these functions should be written in this case.
+  It is anticipated that, in specific cases, it will be possible to obtain increased computational efficiency by writing custom versions of \code{rprocess} and/or \code{dprocess}.
+  See the \dQuote{Advanced Topics in pomp} vignette for a discussion of this.
+  If such custom versions are desired, the following describes how each of these functions should be written in this case.
   \describe{
     \item{\code{rprocess}}{
       if provided, must have at least the following arguments:
@@ -202,14 +203,19 @@
 
       \strong{At present, no methods in \pkg{pomp} make use of \code{dprocess}.}
     }
+  }
+
+  The measurement-model, deterministic skeleton, and initializer components are easily specified without the use of plugins.
+  The following is a guide to writing these components.
+  \describe{
     \item{\code{rmeasure}}{
       if provided, must take at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
       It may take additional arguments, which will be filled with user-specified data as above.
-      \code{x} may be assumed to be a named vector of length \code{nvars}, (which has the same meanings as above).
+      \code{x} may be assumed to be a named numeric vector of length \code{nvars}, (which has the same meanings as above).
       \code{t} is a scalar quantity, the time at which the measurement is made.
-      \code{params} may be assumed to be a named vector of length \code{npars}.
+      \code{params} may be assumed to be a named numeric vector of length \code{npars}.
       
-      \code{rmeasure} must return a named vector.
+      \code{rmeasure} must return a named numeric vector.
       If \code{y} is the returned vector, then \code{length(y)=nobs}, where \code{nobs} is the number of observable variables.
 
       At present, the following methods make use of \code{rmeasure}:
@@ -222,9 +228,9 @@
     }
     \item{\code{dmeasure}}{
       if provided, must take at least the arguments \code{y}, \code{x}, \code{t}, \code{params}, \code{log}, and \code{\dots}.
-      \code{y} may be assumed to be a named vector of length \code{nobs} containing (actual or simulated) values of the observed variables;
-      \code{x} will be a named vector of length \code{nvar} containing state variables
-      \code{params}, a named vector containing parameters;
+      \code{y} may be assumed to be a named numeric vector of length \code{nobs} containing (actual or simulated) values of the observed variables;
+      \code{x} will be a named numeric vector of length \code{nvar} containing state variables
+      \code{params}, a named numeric vector containing parameters;
       and \code{t}, a scalar, the corresponding observation time.
       It may take additional arguments which will be filled with user-specified data as above.
       \code{dmeasure} must return a single numeric value, the pdf of \code{y} given \code{x} at time \code{t}.
@@ -259,19 +265,32 @@
     }
     \item{\code{initializer}}{
       if provided, must have at least the arguments \code{params}, \code{t0}, and \code{\dots}.
-      \code{params} is a named vector of parameters.
+      \code{params} is a named numeric vector of parameters.
       \code{t0} will be the time at which initial conditions are desired.
-      \code{initializer} must return a named vector of initial conditions.
+      \code{initializer} must return a named numeric vector of initial states.
     }
   }
 }
 \examples{
-## For examples, see the vignettes.
+## For examples, see the vignettes, the data()-loadable example \code{pomp} objects, and the provided example files.
+\dontrun{
+vignette("intro_to_pomp")
+vignette("advanced_topics_in_pomp")
+data(package="pomp")
+pomp.home <- system.file("examples",package="pomp")
+pomp.examples <- list.files(pomp.home)
+file.show(
+          file.path(pomp.home,pomp.examples),
+          header=paste("======",pomp.examples,"=======")
+         )
+}
 }
 \section{Warning}{
-  Some error checking is done, but complete error checking is impossible.  
+  Some error checking is done by \code{pomp}, but complete error checking is impossible.  
   If the user-specified functions do not conform to the above specifications (see Details), then the results may be invalid.
-  Each algorithm that uses a \code{pomp} object uses some subset of the five basic components (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}).
+  In particular, if both \code{rmeasure} and \code{dmeasure} are specified, the user should verify that these two functions correspond to the same model and if \code{skeleton} is specified, the user is responsible for verifying that it corresponds to the true deterministic skeleton of the model.
+  Each \pkg{pomp}-package algorithm uses some subset of the five basic components (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}).
+  If an algorithm requires a component that was not given in the construction of the \code{pomp} object, an error is generated.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{

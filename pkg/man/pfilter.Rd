@@ -27,10 +27,9 @@
     An object of class \code{pomp} or inheriting class \code{pomp}.
   }
   \item{params}{
-    A \code{npars} x \code{Np} matrix containing the parameters corresponding to the initial state values in \code{xstart}.
+    A \code{npars} x \code{Np} numeric matrix containing the parameters corresponding to the initial state values in \code{xstart}.
     This must have a \sQuote{rownames} attribute.
-    It is permissible to supply \code{params} as a named numeric vector, i.e., without a \code{dim} attribute.
-    In this case, all particles will inherit the same parameter values.
+    If it desired that all particles should share the same parameter values, one one may supply \code{params} as a named numeric vector.
   }
   \item{Np}{
     integer; number of particles to use.

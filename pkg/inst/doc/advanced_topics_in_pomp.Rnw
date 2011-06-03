@@ -213,7 +213,12 @@ A one-step simulator written in C for use with the \code{discrete.time.sim} plug
 file.show(file=system.file("examples/ou2.c",package="pomp"))
 @ 
 The one-step simulator is in function \code{ou2\_step}.
-We can put this into the \code{pomp} object and simulate as before by doing
+Prototypes for the one-step simulator and other functions are in the \code{pomp.h} header file;
+view it by doing
+<<view-pomp.h,eval=F,results=hide>>=
+file.show(file=system.file("include/pomp.h",package="pomp"))
+@ 
+We can put the one-step simulator into the \code{pomp} object and simulate as before by doing
 <<plugin-C-code>>=
 ou2.Cplug <- pomp(
                   ou2.Rplug,
@@ -246,7 +251,7 @@ This is a \Sexpr{round(speedup)}-fold speed-up relative to \code{ou2.Rplug}.
 
 The function \code{ou2\_adv} is a fully vectorized version of the simulator written in C.
 View this code by doing
-<<eval=F>>=
+<<eval=F,results=hide>>=
 <<view-ou2-source>>
 @ 
 This function is called in the following \code{rprocess} function.

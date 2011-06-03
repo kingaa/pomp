@@ -1,5 +1,8 @@
 NEWS
 
+0.38-3
+     o  Many minor clarifications in the help pages.
+
 0.38-2
      o  A new section describing and demonstrating nonlinear forecasting has been added to the "intro to pomp" vignette.
 
