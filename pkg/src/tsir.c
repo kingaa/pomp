@@ -59,7 +59,7 @@ void _tsir_simulator (double *x, const double *p,
   double em;
   double alpha;
   double sigma, eps;
-  double prob, lambda;
+  double lambda;
   int nbasis;
   int degree;
 

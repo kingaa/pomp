@@ -1,3 +1,18 @@
+2011-06-03  kingaa
+
+	* [r509] DESCRIPTION, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.Rnw, man/pfilter.Rd,
+	  man/plugins.Rd, man/pomp.Rd, man/simulate-pomp.Rd: - many minor
+	  improvements to the help pages
+
+2011-06-02  kingaa
+
+	* [r508] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/nlf-block-boot.rda,
+	  inst/doc/nlf-lag-tests.rda: - improvements/corrections to the
+	  intro vignette
+
 2011-06-01  kingaa
 
 	* [r507] inst/NEWS: - update NEWS file

@@ -29,8 +29,7 @@ static void nosort_resamp (int nw, double *w, int np, int *p, int offset)
 SEXP systematic_resampling (SEXP weights)
 {
   int nprotect = 0;
-  double u, du, *w;
-  int i, j, *p, n;
+  int n;
   SEXP perm;
 
   GetRNGstate();

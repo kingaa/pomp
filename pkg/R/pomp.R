@@ -29,7 +29,7 @@ setClass(
 ## it simply finds all parameters in the vector 'params' that have a name ending in '.0'
 ## and returns a vector with their values with names stripped of '.0'
 default.initializer <- function (params, t0, ...) {
-  ivpnames <- grep("\\.0$",names(params),val=TRUE)
+  ivpnames <- grep("\\.0$",names(params),value=TRUE)
   if (length(ivpnames)<1)
     stop("default initializer error: no parameter names ending in ",sQuote(".0")," found: see ",sQuote("pomp")," documentation")
   x <- params[ivpnames]
@@ -200,17 +200,17 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
         (skeleton@use==1)
         &&!("covars"%in%names(formals(skeleton@R.fun)))
         )
-      warning("a covariate table has been given, yet the ",sQuote("skeleton")," function does not have ",sQuote("covars")," as a formal argument")
+      warning("a covariate table has been given, yet the ",sQuote("skeleton")," function does not have ",sQuote("covars")," as a formal argument",call.=FALSE)
     if (
         (rmeasure@use==1)
         &&!("covars"%in%names(formals(rmeasure@R.fun)))
         )
-      warning("a covariate table has been given, yet the ",sQuote("rmeasure")," function does not have ",sQuote("covars")," as a formal argument")
+      warning("a covariate table has been given, yet the ",sQuote("rmeasure")," function does not have ",sQuote("covars")," as a formal argument",call.=FALSE)
     if (
         (dmeasure@use==1)
         &&!("covars"%in%names(formals(dmeasure@R.fun)))
         )
-      warning("a covariate table has been given, yet the ",sQuote("dmeasure")," function does not have ",sQuote("covars")," as a formal argument")
+      warning("a covariate table has been given, yet the ",sQuote("dmeasure")," function does not have ",sQuote("covars")," as a formal argument",call.=FALSE)
   }
 
   if ((length(tcovar)>0)&&((min(tcovar)>t0)||(max(tcovar)<max(times)))) 
@@ -247,10 +247,10 @@ measform2pomp <- function (formulae) {
     formulae <- list(formulae)
   nobs <- length(formulae)
   if (nobs < 1)
-    stop("pomp error: to use ",sQuote("measurement.model")," you must provide at least one formula")
+    stop("pomp error: to use ",sQuote("measurement.model")," you must provide at least one formula",call.=FALSE)
   for (k in seq_len(nobs)) {
     if (!inherits(formulae[[k]],"formula"))
-      stop("pomp error: ",sQuote("measurement.model")," takes formulae as arguments")
+      stop("pomp error: ",sQuote("measurement.model")," takes formulae as arguments",call.=FALSE)
   }
   obsnames <- unlist(lapply(formulae,function(x)x[[2]]))
   distrib <- lapply(formulae,function(x)as.character(x[[3]][[1]]))

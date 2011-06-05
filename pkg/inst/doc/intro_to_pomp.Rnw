@@ -1508,7 +1508,7 @@ sir.proc.sim <- function (x, t, params, delta.t, ...) {
              reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)        # exits from R
              )
   ## now connect the compartments
-  x+c(
+  x[c("S","I","R","cases")]+c(
       trans[1]-trans[2]-trans[3],
       trans[2]-trans[4]-trans[5],
       trans[4]-trans[6],
@@ -1537,61 +1537,62 @@ We can enforce this constraint by customizing the parameterization of our initia
 We do this in by specializing a custom \code{initializer} in the call to \code{pomp} that constructs the \code{pomp} object.
 Let's construct it now and fill it with simulated data.
 <<sir-pomp-def>>=
-sir <- simulate(
-                pomp(
-                     data=data.frame(
-                       time=seq(1/52,15,by=1/52),
-                       reports=NA
-                       ),
-                     times="time",
-                     t0=0,
-                     rprocess=euler.sim(
-                       step.fun=sir.proc.sim,
-                       delta.t=1/52/20
-                       ),
-                    skeleton.type="vectorfield",
-                    skeleton=function(t,x,params,...){
-                       N <- exp(params["N"])             # population size
-                       gamma <- exp(params["gamma"])     # recovery rate
-                       mu <- exp(params["mu"])           # birth rate = death rate
-                       beta <- exp(params["beta"])       # contact rate
-                       foi <- beta*x["I"]/N # the force of infection
-                       trans <- c(
-                                  mu*N,               # births
-                                  x["S"]*c(foi,mu),   # exits from S
-                                  x["I"]*c(gamma,mu), # exits from I
-                                  x["R"]*mu           # exits from R
-                                  )
-                       ## now connect the compartments  
-                       x+c(
-                           trans[1]-trans[2]-trans[3],
-                           trans[2]-trans[4]-trans[5],
-                           trans[4]-trans[6],
-                           (trans[2]-trans[4]-trans[5])*gamma/52 # approximately the number of new infections/week
+simulate(
+         pomp(
+              data=data.frame(
+                time=seq(1/52,15,by=1/52),
+                reports=NA
+                ),
+              times="time",
+              t0=0,
+              rprocess=euler.sim(
+                step.fun=sir.proc.sim,
+                delta.t=1/52/20
+                ),
+              skeleton.type="vectorfield",
+              skeleton=function(t,x,params,...){
+                N <- exp(params["N"])             # population size
+                gamma <- exp(params["gamma"])     # recovery rate
+                mu <- exp(params["mu"])           # birth rate = death rate
+                beta <- exp(params["beta"])       # contact rate
+                foi <- beta*x["I"]/N # the force of infection
+                terms <- c(
+                           mu*N,               # births
+                           x["S"]*c(foi,mu),   # exits from S
+                           x["I"]*c(gamma,mu), # exits from I
+                           x["R"]*mu           # exits from R
                            )
-                     },
-                     measurement.model=reports~binom(size=cases,prob=exp(rho)),
-                     initializer=function(params, t0, ic.pars, comp.names, ...){
-                       x0 <- c(S=0,I=0,R=0,cases=0)
-                       N <- exp(params["N"])
-                       fracs <- exp(params[ic.pars])
-                       x0[comp.names] <- round(N*fracs/sum(fracs))
-                       x0
-                     },
-                     zeronames=c("cases"), # zero out this variable after each observation
-                     ic.pars=c("S0","I0","R0"), # initial condition parameters
-                     comp.names=c("S","I","R")          # names of the compartments
-                     ),
-                params=log(
-                  c(
-                    N=50000,
-                    beta=60,gamma=8,mu=1/50,
-                    rho=0.6,
-                    S0=8/60,I0=0.002,R0=1-8/60-0.001
-                    )
-                  ),
-                seed=677573454L
-                )
+                ## now connect the compartments
+                c(
+                  terms[1]-terms[2]-terms[3],
+                  terms[2]-terms[4]-terms[5],
+                  terms[4]-terms[6],
+                  ## approx. number of new infections/week:
+                  (terms[2]-terms[4]-terms[5])*gamma/52
+                  )
+              },
+              measurement.model=reports~binom(size=cases,prob=exp(rho)),
+              initializer=function(params, t0, ic.pars, comp.names, ...){
+                x0 <- c(S=0,I=0,R=0,cases=0)
+                N <- exp(params["N"])
+                fracs <- exp(params[ic.pars])
+                x0[comp.names] <- round(N*fracs/sum(fracs))
+                x0
+              },
+              zeronames=c("cases"), # zero this variable after each obsvn.
+              ic.pars=c("S0","I0","R0"), # initial condition parameters
+              comp.names=c("S","I","R") # names of the compartments
+              ),
+         params=log(
+           c(
+             N=50000,
+             beta=60,gamma=8,mu=1/50,
+             rho=0.6,
+             S0=8/60,I0=0.002,R0=1-8/60-0.001
+             )
+           ),
+         seed=677573454L
+         ) -> sir
 @ 
 Notice that we are assuming here that the data are collected weekly and use an Euler step-size of 1/20~wk.
 Here, we've assumed an infection with an infectious period of $1/\gamma=1/8$~yr and a basic reproductive number, $R_0$ of $\beta/(\gamma+\mu)\approx 7.5$.
@@ -1645,7 +1646,8 @@ We'll accomplish this by assuming a multiplicative white noise on the force of i
   \lambda(t) = \left(\beta(t)\,\frac{I(t)}{N}+\iota\right)\,\frac{dW(t)}{dt},
 \end{equation*}
 where $dW/dt$ is a white noise, specifically the ``derivative'' of an integrated Gamma white noise process.
-\citet{He2010} discuss such processes and apply them in an inferential context.
+\citet{He2010} discuss such processes and apply them in an inferential context;
+Breto et al. (submitted) develop the theory of infinitesimally overdispersed processes.
 
 Let's modify the process-model simulator to incorporate these three complexities.
 <<complex-sir-def>>=
@@ -1671,43 +1673,45 @@ complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
              reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)        # exits from R
              )
   ## now connect the compartments
-  x+c(
+  x[c("S","I","R","cases","W")]+
+    c(
       trans[1]-trans[2]-trans[3],
       trans[2]-trans[4]-trans[5],
       trans[4]-trans[6],
-      trans[4],                         # accumulate the recoveries
-      (dW-delta.t)                      # mean = 0, sd = (beta.sd^2 delta.t)
+      trans[4],                   # accumulate the recoveries
+      (dW-delta.t)/beta.sd        # mean = 0, var = delta.t
     )
 }
-complex.sir <- simulate(
-                        pomp(
-                             sir,
-                             tcovar=tbasis,
-                             covar=basis,
-                             rprocess=euler.sim(
-                               complex.sir.proc.sim,
-                               delta.t=1/52/20
-                               ),
-                             initializer=function(params, t0, ic.pars, comp.names, ...){
-                               x0 <- c(S=0,I=0,R=0,cases=0,W=0)
-                               N <- exp(params["N"])
-                               fracs <- exp(params[ic.pars])
-                               x0[comp.names] <- round(N*fracs/sum(fracs))
-                               x0
-                               }
-                             ),
-                        params=log(
-                          c(
-                            N=50000,
-                            b1=60,b2=10,b3=110,
-                            gamma=8,mu=1/50,
-                            rho=0.6,
-                            iota=0.01,beta.sd=0.1,
-                            S0=8/60,I0=0.002,R0=1-8/60-0.001
-                            )
-                          ),
-                        seed=8274355L
-                        )
+
+simulate(
+         pomp(
+              sir,
+              tcovar=tbasis,
+              covar=basis,
+              rprocess=euler.sim(
+                complex.sir.proc.sim,
+                delta.t=1/52/20
+                ),
+              initializer=function(params, t0, ic.pars, comp.names, ...){
+                x0 <- c(S=0,I=0,R=0,cases=0,W=0)
+                N <- exp(params["N"])
+                fracs <- exp(params[ic.pars])
+                x0[comp.names] <- round(N*fracs/sum(fracs))
+                x0
+              }
+              ),
+         params=log(
+           c(
+             N=50000,
+             b1=60,b2=10,b3=110,
+             gamma=8,mu=1/50,
+             rho=0.6,
+             iota=0.01,beta.sd=0.1,
+             S0=8/60,I0=0.002,R0=1-8/60-0.001
+             )
+           ),
+         seed=8274355L
+         ) -> complex.sir
 @ 
 Note that the seasonal basis functions are passed to \code{complex.sir.proc.sim} via the \code{covars} argument.
 Whenever \code{complex.sir.proc.sim} is called, this argument will contain values of the covariates obtained from the look-up table.
@@ -1716,18 +1720,26 @@ Whenever \code{complex.sir.proc.sim} is called, this argument will contain value
 <<seas-basis-plot,echo=F,height=4,width=6,fig=T>>=
 op <- par(mar=c(5,5,1,5))
 matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
-        lty=1,col=c("red","blue","orange"),xlab="time (yr)",ylab="seasonal basis functions")
+        lty=1,col=c("red","blue","orange"),xlab="time (yr)",
+        ylab=quote("basis functions"~list(s[1],s[2],s[3])))
 bb <- coef(complex.sir,c("b1","b2","b3"))
 plot.window(c(0,2),c(0,1)*exp(max(bb)))
 lines(tbasis,exp(basis%*%bb),col="black",lwd=3,lty=1)
 lines(tbasis,exp(basis%*%bb),col="white",lwd=2.5,lty="23")
 axis(side=4)
-mtext(side=4,line=2,text=bquote(beta(t)==exp(.(b1)*s[1]+.(b2)*s[2]+.(b3)*s[3]),where=as.list(exp(coef(complex.sir)))))
+mtext(
+      side=4,
+      line=2,
+      text=bquote(
+        beta==exp(.(b1)*s[1]+.(b2)*s[2]+.(b3)*s[3]),
+        where=as.list(exp(coef(complex.sir)))
+        )
+      )
 par(op)
 @   
   \caption{
     Periodic B-spline basis functions can be used to construct flexible periodic functions.
-    The colored lines show the three basis functions.
+    The colored lines show the three basis functions, $s_1$, $s_2$, $s_3$.
     The dashed black line shows the seasonality $\beta(t)$ assumed in \code{complex.sir}.
   }
   \label{fig:seas-basis-plot}
@@ -1738,7 +1750,10 @@ par(op)
 <<complex-sir-plot,echo=F,fig=T>>=
 plot(complex.sir)
 @   
-  \caption{One realization of the SIR model with seasonal contact rate, imported infections, and extrademographic stochasticity in the force of infection.}
+  \caption{
+    One realization of the SIR model with seasonal contact rate, imported infections, and extrademographic stochasticity in the force of infection.
+    %%    The $W$ state-variable is an unbiased random walk that is the accumulation of the white-noise increments \code{dW}.
+}
   \label{fig:complex-sir-plot}
 \end{figure}
 
