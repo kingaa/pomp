@@ -218,7 +218,7 @@ as.data.frame.pomp(x, row.names, optional, \dots)
   \code{\link{rmeasure}},
   \code{\link{dmeasure}},
   \code{\link{init.state}},
-  \link{simulate-pomp}
+  \code{\link[=simulate-pomp]{simulate}}
 }
 \keyword{models}
 \keyword{ts}

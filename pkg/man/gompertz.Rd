@@ -7,8 +7,8 @@
 }
 \usage{data(gompertz)}
 \details{
-  The state process is \eqn{X_{t+1} = K^(1-R) X_{t}^R eps_{t}}, where the \eqn{eps_t} are i.i.d. lognormal random deviates with variance \eqn{sigma^2}.
-  The observed variables \eqn{Y_t} are distributed as \eqn{normal(X_t,tau)}.
+  The state process is \eqn{X_{t+1} = K^{(1-R)} X_{t}^R \varepsilon_{t}}, where the \eqn{\varepsilon_t} are i.i.d. lognormal random deviates with variance \eqn{\sigma^2}.
+  The observed variables \eqn{Y_t} are distributed as \eqn{\mathrm{normal}(X_t,\tau)}.
 }
 \examples{
 data(gompertz)

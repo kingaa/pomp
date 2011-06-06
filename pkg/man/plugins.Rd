@@ -116,7 +116,8 @@ onestep.dens(dens.fun, PACKAGE)
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{eulermultinom}}, \code{\link{pomp}}}
 \examples{
-## example showing how to use these functions are provided in the vignette "intro_to_pomp"
+## examples showing how to use these functions
+## are provided in the vignette "intro_to_pomp"
 \dontrun{
 vignette("intro_to_pomp")
 }

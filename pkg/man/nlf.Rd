@@ -7,8 +7,10 @@
 }
 \usage{
  nlf(object, start, est, lags, period = NA, tensor = FALSE,
-     nconverge=1000, nasymp=1000, seed = 1066, transform = function (x) x,
-     nrbf = 4, method = "subplex", skip.se = FALSE, verbose = FALSE, gr = NULL,
+     nconverge=1000, nasymp=1000, seed = 1066,
+     transform = function (x) x,
+     nrbf = 4, method = "subplex", skip.se = FALSE,
+     verbose = FALSE, gr = NULL,
      bootstrap=FALSE, bootsamp = NULL,
      lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE, \dots)
 }

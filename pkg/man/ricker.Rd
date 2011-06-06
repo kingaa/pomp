@@ -7,8 +7,8 @@
 }
 \usage{data(ricker)}
 \details{
-  The state process is \eqn{N_{t+1} = r N_{t} exp(-N_{t}+e_{t})}, where the \eqn{e_t} are i.i.d. normal random deviates with variance \eqn{sigma^2}.
-  The observed variables \eqn{y_t} are distributed as \eqn{Poisson(\phi N_t)}.
+  The state process is \eqn{N_{t+1} = r N_{t} exp(-N_{t}+e_{t})}, where the \eqn{e_t} are i.i.d. normal random deviates with variance \eqn{\sigma^2}.
+  The observed variables \eqn{y_t} are distributed as \eqn{\mathrm{Poisson}(\phi N_t)}.
 }
 \examples{
 data(ricker)

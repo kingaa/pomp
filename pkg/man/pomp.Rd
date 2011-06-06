@@ -14,19 +14,22 @@
 }
 \usage{
 \S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model, skeleton = NULL, skeleton.type = c("map","vectorfield"),
+       measurement.model,
+       skeleton = NULL, skeleton.type = c("map","vectorfield"),
        skeleton.map = NULL, skeleton.vectorfield = NULL,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model, skeleton = NULL, skeleton.type = c("map","vectorfield"),
+       measurement.model,
+       skeleton = NULL, skeleton.type = c("map","vectorfield"),
        skeleton.map = NULL, skeleton.vectorfield = NULL,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model, skeleton = NULL, skeleton.type = c("map","vectorfield"),
+       measurement.model,
+       skeleton = NULL, skeleton.type = c("map","vectorfield"),
        skeleton.map = NULL, skeleton.vectorfield = NULL,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
@@ -272,7 +275,8 @@
   }
 }
 \examples{
-## For examples, see the vignettes, the data()-loadable example \code{pomp} objects, and the provided example files.
+## For examples, see the vignettes, the data()-loadable
+## example \code{pomp} objects, and the provided example files.
 \dontrun{
 vignette("intro_to_pomp")
 vignette("advanced_topics_in_pomp")
