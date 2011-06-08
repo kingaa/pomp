@@ -1,3 +1,26 @@
+2011-06-07  kingaa
+
+	* [r514] man/dacca.Rd, man/eulermultinom.Rd: - fix 'dacca.Rd' to
+	  eliminate codoc warning
+	  - provide ascii-only eqns for 'eulermultinom' help
+
+2011-06-06  kingaa
+
+	* [r513] man/gompertz.Rd: - fix Gompertz model documentation
+	* [r512] DESCRIPTION, inst/NEWS: - update NEWS file
+	* [r511] man/bsplines.Rd, man/dacca.Rd, man/eulermultinom.Rd,
+	  man/gompertz.Rd, man/nlf.Rd, man/plugins.Rd, man/pomp-methods.Rd,
+	  man/pomp.Rd, man/ricker.Rd: - documentation improvements
+
+2011-06-05  kingaa
+
+	* [r510] DESCRIPTION, R/pomp.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, src/pfilter.c, src/tsir.c: - remove
+	  unused variables in C codes (per build warning)
+	  - fix errors in 'intro to pomp' vignette
+	  - minor change to some warnings in 'pomp'
+
 2011-06-03  kingaa
 
 	* [r509] DESCRIPTION, inst/NEWS,

@@ -1549,6 +1549,42 @@ simulate(
                 step.fun=sir.proc.sim,
                 delta.t=1/52/20
                 ),
+              measurement.model=reports~binom(size=cases,prob=exp(rho)),
+              initializer=function(params, t0, ic.pars, comp.names, ...){
+                x0 <- c(S=0,I=0,R=0,cases=0)
+                N <- exp(params["N"])
+                fracs <- exp(params[ic.pars])
+                x0[comp.names] <- round(N*fracs/sum(fracs))
+                x0
+              },
+              zeronames=c("cases"), # zero this variable after each obsvn.
+              ic.pars=c("S0","I0","R0"), # initial condition parameters
+              comp.names=c("S","I","R") # names of the compartments
+              ),
+         params=log(
+           c(
+             N=50000,
+             beta=60,gamma=8,mu=1/50,
+             rho=0.6,
+             S0=8/60,I0=0.002,R0=1-8/60-0.001
+             )
+           ),
+         seed=677573454L
+         ) -> sir
+@ 
+<<sir-pomp-def-with-skel,eval=F,echo=F>>=
+simulate(
+         pomp(
+              data=data.frame(
+                time=seq(1/52,15,by=1/52),
+                reports=NA
+                ),
+              times="time",
+              t0=0,
+              rprocess=euler.sim(
+                step.fun=sir.proc.sim,
+                delta.t=1/52/20
+                ),
               skeleton.type="vectorfield",
               skeleton=function(t,x,params,...){
                 N <- exp(params["N"])             # population size
@@ -1562,13 +1598,13 @@ simulate(
                            x["I"]*c(gamma,mu), # exits from I
                            x["R"]*mu           # exits from R
                            )
-                ## now connect the compartments
+                ## now put the equations together:
                 c(
-                  terms[1]-terms[2]-terms[3],
-                  terms[2]-terms[4]-terms[5],
-                  terms[4]-terms[6],
                   ## approx. number of new infections/week:
-                  (terms[2]-terms[4]-terms[5])*gamma/52
+                  cases=unname((terms[2]-terms[4]-terms[5])*gamma/52),
+                  S=unname(terms[1]-terms[2]-terms[3]), # dS/dt
+                  I=unname(terms[2]-terms[4]-terms[5]), # dI/dt
+                  R=unname(terms[4]-terms[6])           # dR/dt
                   )
               },
               measurement.model=reports~binom(size=cases,prob=exp(rho)),
