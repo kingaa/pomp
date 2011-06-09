@@ -31,11 +31,9 @@ deulermultinom(x, size, rate, dt, log = FALSE)
   \code{reulermultinom(n=m,size=N,rate=r,dt=dt)},
 
   where \code{r} is the vector of rates.
-  Evaluate the probability that \eqn{x_1,\dots,x_k}{x1,\dots,xk} are the numbers of individuals who have died in each of the \eqn{k} ways over the interval \eqn{\Delta t=}{}\code{dt}, by doing
+  Evaluate the probability that \eqn{x=(x_1,\dots,x_k)}{x=(x1,\dots,xk)} are the numbers of individuals who have died in each of the \eqn{k} ways over the interval \eqn{\Delta t=}{}\code{dt}, by doing
 
-  \code{deulermultinom(x=x,size=N,rate=r,dt=dt)},
-
-  where \code{x=c(x1,\dots,xk)}.
+  \code{deulermultinom(x=x,size=N,rate=r,dt=dt)}.
   
   Direct access to the underlying C routines is available: see the header file \dQuote{pomp.h}, included with the package.
 }

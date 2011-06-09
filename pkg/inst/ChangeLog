@@ -1,3 +1,9 @@
+2011-06-08  kingaa
+
+	* [r515] DESCRIPTION, inst/ChangeLog, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: - remove the deterministic skeleton
+	  from the SIR-model pomp objects.
+
 2011-06-07  kingaa
 
 	* [r514] man/dacca.Rd, man/eulermultinom.Rd: - fix 'dacca.Rd' to
