@@ -1,3 +1,8 @@
+2011-06-09  kingaa
+
+	* [r516] inst/ChangeLog, man/eulermultinom.Rd: - tweak to
+	  'eulermultinom' man page
+
 2011-06-08  kingaa
 
 	* [r515] DESCRIPTION, inst/ChangeLog, inst/doc/intro_to_pomp.Rnw,
