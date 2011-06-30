@@ -209,8 +209,8 @@ pfilter.internal <- function (object, params, Np,
                    )
     if (inherits(weights,'try-error'))
       stop(sQuote("pfilter")," error: error in calculation of weights",call.=FALSE)
-    if (any(is.na(weights))) {
-      stop(sQuote("pfilter")," error: ",sQuote("dmeasure")," returns NA",call.=FALSE)
+    if (any(!is.finite(weights))) {
+      stop(sQuote("pfilter")," error: ",sQuote("dmeasure")," returns non-finite value",call.=FALSE)
     }
 
     ## prediction mean, prediction variance, filtering mean, effective sample size, log-likelihood
