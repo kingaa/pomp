@@ -62,6 +62,7 @@ compute.spect.data <- function (object, vars, transform, detrend, ker) {
   if (any(is.na(dat)))
     stop(sQuote("spect")," is incompatible with NAs in the data")
   dt <- diff(time(object,t0=FALSE))
+  base.freq <- 1/mean(dt)
   dt.tol <- 0.025
   if (max(dt)-min(dt)>dt.tol*mean(dt))
     stop(sQuote("spect")," assumes evenly spaced times")
@@ -79,7 +80,7 @@ compute.spect.data <- function (object, vars, transform, detrend, ker) {
                      plot=FALSE
                      )
     if (j==1) {
-      freq <- sp$freq
+      freq <- base.freq*sp$freq
       datspec <- array(
                        dim=c(length(freq),nrow(dat)),
                        dimnames=list(NULL,vars)
