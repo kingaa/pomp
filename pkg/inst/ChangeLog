@@ -1,3 +1,15 @@
+2011-06-30  kingaa
+
+	* [r519] R/pfilter.R: - an error is generated in 'pfilter' if
+	  'dmeasure' returns any non-finite value (not just NA, as before)
+	* [r518] DESCRIPTION, R/spect.R: - fix 'spect' so that the
+	  frequencies reflect the timescale of observation
+
+2011-06-29  kingaa
+
+	* [r517] DESCRIPTION, R/aaa.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+
 2011-06-09  kingaa
 
 	* [r516] inst/ChangeLog, man/eulermultinom.Rd: - tweak to
