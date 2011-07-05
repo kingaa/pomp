@@ -1,4 +1,13 @@
 NEWS
+0.38-5
+     o	'pfilter' will now give an error if ever a non-finite likelihood (dmeasure value) is returned.
+	Before, errors were only generated when dmeasure returned NA.
+
+     o	'spect' now returns frequencies reflective of the observation times.
+     	Before, the frequencies were given as fractions of the sampling frequency.
+
+0.38-4
+     o  Improvements to the documentation.
 
 0.38-3
      o  Clarifications and minor improvements in the help pages.
