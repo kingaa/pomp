@@ -1,3 +1,16 @@
+2011-07-07  kingaa
+
+	* [r523] DESCRIPTION:
+	* [r522] inst/doc/intro_to_pomp.Rnw: - fix typo in intro vignette
+	  (thanks to Andreas Handel)
+
+2011-07-05  kingaa
+
+	* [r521] inst/NEWS: - update NEWS file
+	* [r520] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - update ChangeLog
+
 2011-06-30  kingaa
 
 	* [r519] R/pfilter.R: - an error is generated in 'pfilter' if
