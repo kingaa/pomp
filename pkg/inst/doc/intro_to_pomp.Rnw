@@ -1441,7 +1441,7 @@ In this process, the numbers of individuals within each class change through tim
 In particular, individuals move between classes (entering S at birth, moving thence to I, and on to R unless death arrives first) at random times.
 Thus, the numbers of births and class-transitions that occur in any interval of time are random variables.
 The birth rate, death rates, and the rate of transition, $\gamma$, from I to R are frequently assumed to be constants, specific to the infection and the host population.
-Crucially, the I to R transition rate, the so-called \emph{force of infection}, is not constant, but depends on the current number of infectious individuals.
+Crucially, the S to I transition rate, the so-called \emph{force of infection}, is not constant, but depends on the current number of infectious individuals.
 The assumption that transmission is \emph{frequency dependent}, as for example when each individual realizes a fixed number of contacts per unit time, corresponds to the assumption $\lambda(t) = \beta\,I(t)/N$, where $\beta$ is known as the contact rate and $N=S+I+R$ is the population size.
 This assumption introduces the model's only nonlinearity.
 It is useful sometimes to further assume that birth and death rates are equal and independent of infection status---call the common rate $\mu$---which has the consequence that the expected population size then remains constant.
