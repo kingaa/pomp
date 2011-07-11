@@ -1,5 +1,7 @@
 2011-07-07  kingaa
 
+	* [r524] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - version 0.38-5
 	* [r523] DESCRIPTION:
 	* [r522] inst/doc/intro_to_pomp.Rnw: - fix typo in intro vignette
 	  (thanks to Andreas Handel)

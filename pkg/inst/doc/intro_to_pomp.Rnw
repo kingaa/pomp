@@ -2,7 +2,7 @@
 %\VignetteIndexEntry{Introduction to pomp}
 \usepackage{times}
 \usepackage[utf8]{inputenc}
-\usepackage{graphicx}
+\usepackage[pdftex]{graphicx}
 \usepackage[round]{natbib}
 \usepackage{paralist}
 \usepackage{float}
