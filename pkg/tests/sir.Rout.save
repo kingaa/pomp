@@ -1,5 +1,5 @@
 
-R version 2.12.2 (2011-02-25)
+R version 2.13.1 (2011-07-08)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -394,7 +394,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x192ae10>
+<environment: 0x2d238f0>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -404,7 +404,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0x2012898>
+<environment: 0x222b818>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -471,7 +471,7 @@ $zeronames
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.064163 secs
+Time difference of 2.030447 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -488,7 +488,7 @@ Time difference of 2.064163 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.758715 secs
+Time difference of 2.690172 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -529,10 +529,10 @@ Time difference of 2.758715 secs
 +                params=as.matrix(log(params))
 +                )
 > print(h1[c("S","I","R"),,],digits=4)
-      [,1]     [,2]     [,3]   [,4]     [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
-S  39607.5  39770.1  39222.4  39000  38470.0  37635  36130  34844  33808  30538
-I    243.0    246.8    415.5    519    722.8   1047   1628   2172   2649   4006
-R -39852.3 -40019.5 -39639.0 -39520 -39191.5 -38682 -37758 -37016 -36456 -34544
+    [,1]     [,2]     [,3]   [,4]     [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
+S  39608  39770.1  39222.4  39000  38470.0  37635  36130  34844  33808  30538
+I    243    246.8    415.5    519    722.8   1047   1628   2172   2649   4006
+R -39852 -40019.5 -39639.0 -39520 -39191.5 -38682 -37758 -37016 -36456 -34544
    [,11]  [,12]  [,13]  [,14]  [,15]    [,16]
 S  27082  20266  13528   2809  -8808 -26739.3
 I   5473   8300  11076  15339  19697  25951.9
@@ -548,7 +548,7 @@ R -32554 -28565 -24604 -18148 -10889    787.2
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.99654 secs
+Time difference of 1.987663 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -556,7 +556,7 @@ Time difference of 1.99654 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.1497879 secs
+Time difference of 0.1495709 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -582,10 +582,10 @@ Time difference of 0.1497879 secs
 +                params=as.matrix(c(log(params),nbasis=3,degree=3,period=1))
 +                )
 > print(h2[c("S","I","R"),,],digits=4)
-      [,1]     [,2]     [,3]   [,4]     [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
-S  39607.5  39770.1  39222.4  39000  38470.0  37635  36130  34844  33808  30538
-I    243.0    246.8    415.5    519    722.8   1047   1628   2172   2649   4006
-R -39852.3 -40019.5 -39639.0 -39520 -39191.5 -38682 -37758 -37016 -36456 -34544
+    [,1]     [,2]     [,3]   [,4]     [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
+S  39608  39770.1  39222.4  39000  38470.0  37635  36130  34844  33808  30538
+I    243    246.8    415.5    519    722.8   1047   1628   2172   2649   4006
+R -39852 -40019.5 -39639.0 -39520 -39191.5 -38682 -37758 -37016 -36456 -34544
    [,11]  [,12]  [,13]  [,14]  [,15]    [,16]
 S  27082  20266  13528   2809  -8808 -26739.3
 I   5473   8300  11076  15339  19697  25951.9

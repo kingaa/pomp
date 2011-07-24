@@ -1,5 +1,5 @@
 
-R version 2.12.2 (2011-02-25)
+R version 2.13.1 (2011-07-08)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -199,11 +199,11 @@ iter  54  val= 1327.316 , accept= TRUE
 current params:  0.6368124 0.8539377 1.667453 -2.988615 4.334961 
 iter  55  val= 1295.452 , accept= TRUE 
 current params:  0.618709 0.8524734 1.694322 -2.997447 4.325407 
-iter  56  val= 1270.420 , accept= TRUE 
+iter  56  val= 1270.42 , accept= TRUE 
 current params:  0.5901194 0.8160746 1.711434 -3.027965 4.312765 
-iter  57  val= 1270.420 , accept= FALSE 
+iter  57  val= 1270.42 , accept= FALSE 
 current params:  0.5901194 0.8160746 1.711434 -3.027965 4.312765 
-iter  58  val= 1270.420 , accept= FALSE 
+iter  58  val= 1270.42 , accept= FALSE 
 current params:  0.5901194 0.8160746 1.711434 -3.027965 4.312765 
 iter  59  val= 1241.955 , accept= TRUE 
 current params:  0.581974 0.8179566 1.739656 -2.996623 4.348772 
@@ -220,7 +220,7 @@ current params:  0.5690983 0.764269 1.774335 -2.973598 4.302674
 iter  65  val= 1205.706 , accept= FALSE 
 current params:  0.5690983 0.764269 1.774335 -2.973598 4.302674 
 iter  66  val= 1182.611 , accept= TRUE 
-current params:  0.5710116 0.785939 1.801455 -2.993636 4.291691 
+current params:  0.5710116 0.7859391 1.801455 -2.993636 4.291691 
 iter  67  val= 1167.827 , accept= TRUE 
 current params:  0.5732821 0.8225732 1.821809 -2.981542 4.293427 
 iter  68  val= 1167.827 , accept= FALSE 
@@ -229,9 +229,9 @@ iter  69  val= 1167.827 , accept= FALSE
 current params:  0.5732821 0.8225732 1.821809 -2.981542 4.293427 
 iter  70  val= 1159.736 , accept= TRUE 
 current params:  0.5633811 0.8360814 1.832664 -2.985213 4.272785 
-iter  71  val= 1157.020 , accept= TRUE 
+iter  71  val= 1157.02 , accept= TRUE 
 current params:  0.5707494 0.8370168 1.836375 -2.970371 4.271366 
-iter  72  val= 1157.020 , accept= FALSE 
+iter  72  val= 1157.02 , accept= FALSE 
 current params:  0.5707494 0.8370168 1.836375 -2.970371 4.271366 
 iter  73  val= 1146.235 , accept= TRUE 
 current params:  0.579767 0.8393374 1.850459 -2.980518 4.300226 
@@ -239,7 +239,7 @@ iter  74  val= 1101.545 , accept= TRUE
 current params:  0.5435931 0.8260895 1.906304 -2.961221 4.277552 
 iter  75  val= 1101.545 , accept= FALSE 
 current params:  0.5435931 0.8260895 1.906304 -2.961221 4.277552 
-iter  76  val= 1086.000 , accept= TRUE 
+iter  76  val= 1086 , accept= TRUE 
 current params:  0.5554613 0.8251125 1.928449 -2.969901 4.309415 
 iter  77  val= 1082.253 , accept= TRUE 
 current params:  0.5186073 0.7973389 1.931111 -2.964102 4.292897 
@@ -250,23 +250,23 @@ current params:  0.5186073 0.7973389 1.931111 -2.964102 4.292897
 iter  80  val= 1082.253 , accept= FALSE 
 current params:  0.5186073 0.7973389 1.931111 -2.964102 4.292897 
 iter  81  val= 1067.654 , accept= TRUE 
-current params:  0.4905712 0.806781 1.953060 -2.915265 4.291014 
+current params:  0.4905712 0.806781 1.95306 -2.915265 4.291014 
 iter  82  val= 1067.654 , accept= FALSE 
-current params:  0.4905712 0.806781 1.953060 -2.915265 4.291014 
-iter  83  val= 1066.480 , accept= TRUE 
+current params:  0.4905712 0.806781 1.95306 -2.915265 4.291014 
+iter  83  val= 1066.48 , accept= TRUE 
 current params:  0.5218239 0.7643546 1.953087 -2.897599 4.262599 
 iter  84  val= 1057.698 , accept= TRUE 
-current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+current params:  0.5419846 0.8110294 1.9689 -2.880169 4.286582 
 iter  85  val= 1057.698 , accept= FALSE 
-current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+current params:  0.5419846 0.8110294 1.9689 -2.880169 4.286582 
 iter  86  val= 1057.698 , accept= FALSE 
-current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+current params:  0.5419846 0.8110294 1.9689 -2.880169 4.286582 
 iter  87  val= 1057.698 , accept= FALSE 
-current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+current params:  0.5419846 0.8110294 1.9689 -2.880169 4.286582 
 iter  88  val= 1057.698 , accept= FALSE 
-current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+current params:  0.5419846 0.8110294 1.9689 -2.880169 4.286582 
 iter  89  val= 1057.698 , accept= FALSE 
-current params:  0.5419846 0.8110294 1.968900 -2.880169 4.286582 
+current params:  0.5419846 0.8110294 1.9689 -2.880169 4.286582 
 iter  90  val= 1049.122 , accept= TRUE 
 current params:  0.5096302 0.8250705 1.982865 -2.874752 4.303329 
 iter  91  val= 1047.578 , accept= TRUE 
@@ -284,12 +284,12 @@ current params:  0.5378289 0.8596204 2.020447 -2.914911 4.299825
 iter  97  val= 1013.848 , accept= TRUE 
 current params:  0.5461696 0.8376482 2.043564 -2.947939 4.253507 
 iter  98  val= 1001.952 , accept= TRUE 
-current params:  0.552347 0.840818 2.065274 -2.951199 4.265389 
-iter  99  val= 999.435 , accept= TRUE 
+current params:  0.552347 0.8408179 2.065274 -2.951199 4.265389 
+iter  99  val= 999.4351 , accept= TRUE 
 current params:  0.569008 0.8631994 2.074306 -2.94497 4.265321 
-iter  100  val= 999.435 , accept= FALSE 
+iter  100  val= 999.4351 , accept= FALSE 
 current params:  0.569008 0.8631994 2.074306 -2.94497 4.265321 
-best val= 999.435 
+best val= 999.4351 
 $params
    alpha.1    alpha.2    alpha.3    alpha.4    sigma.1    sigma.2    sigma.3 
  0.5690080 -0.5000000  0.3000000  0.8631994  3.0000000 -0.5000000  2.0000000 
@@ -297,7 +297,7 @@ $params
  2.0743065 -2.9449702  4.2653209 
 
 $loglik
-[1] -999.435
+[1] -999.4351
 
 $eval
 [1] 101  NA

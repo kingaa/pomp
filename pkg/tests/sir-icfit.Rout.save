@@ -1,5 +1,5 @@
 
-R version 2.12.2 (2011-02-25)
+R version 2.13.1 (2011-07-08)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -39,12 +39,12 @@ Loading required package: deSolve
 > 
 > summary(pm.true <- probe(po,probes=plist,nsim=100,seed=1066L))
 $coef
-      gamma          mu        iota      nbasis      degree      period 
- 3.25809654 -3.91202301 -4.60517019  3.00000000  3.00000000  1.00000000 
-      beta1       beta2       beta3     beta.sd         pop         rho 
- 7.09007684  7.49554194  6.39692966 -6.90775528 14.55744790 -0.51082562 
-        S.0         I.0         R.0 
--3.83198030 -6.90775528 -0.02292750 
+     gamma         mu       iota     nbasis     degree     period      beta1 
+ 3.2580965 -3.9120230 -4.6051702  3.0000000  3.0000000  1.0000000  7.0900768 
+     beta2      beta3    beta.sd        pop        rho        S.0        I.0 
+ 7.4955419  6.3969297 -6.9077553 14.5574479 -0.5108256 -3.8319803 -6.9077553 
+       R.0 
+-0.0229275 
 
 $nsim
 [1] 100
@@ -67,12 +67,12 @@ $synth.loglik
 > 
 > summary(pm.guess <- probe(po,params=guess,probes=plist,nsim=100,seed=1066L))
 $coef
-      gamma          mu        iota      nbasis      degree      period 
- 3.25809654 -3.91202301 -4.60517019  3.00000000  3.00000000  1.00000000 
-      beta1       beta2       beta3     beta.sd         pop         rho 
- 7.09007684  7.49554194  6.39692966 -6.90775528 14.55744790 -0.51082562 
-        S.0         I.0         R.0 
--3.63198030 -7.10775528 -0.02292750 
+     gamma         mu       iota     nbasis     degree     period      beta1 
+ 3.2580965 -3.9120230 -4.6051702  3.0000000  3.0000000  1.0000000  7.0900768 
+     beta2      beta3    beta.sd        pop        rho        S.0        I.0 
+ 7.4955419  6.3969297 -6.9077553 14.5574479 -0.5108256 -3.6319803 -7.1077553 
+       R.0 
+-0.0229275 
 
 $nsim
 [1] 100
@@ -214,12 +214,12 @@ synth.loglik -3.32718185 -63.047679163 -1.540292335
 > 
 > summary(tm.true <- traj.match(po,eval.only=TRUE))
 $params
-      gamma          mu        iota      nbasis      degree      period 
- 3.25809654 -3.91202301 -4.60517019  3.00000000  3.00000000  1.00000000 
-      beta1       beta2       beta3     beta.sd         pop         rho 
- 7.09007684  7.49554194  6.39692966 -6.90775528 14.55744790 -0.51082562 
-        S.0         I.0         R.0 
--3.83198030 -6.90775528 -0.02292750 
+     gamma         mu       iota     nbasis     degree     period      beta1 
+ 3.2580965 -3.9120230 -4.6051702  3.0000000  3.0000000  1.0000000  7.0900768 
+     beta2      beta3    beta.sd        pop        rho        S.0        I.0 
+ 7.4955419  6.3969297 -6.9077553 14.5574479 -0.5108256 -3.8319803 -6.9077553 
+       R.0 
+-0.0229275 
 
 $loglik
 [1] -49.09745
@@ -236,12 +236,12 @@ $msg
 > 
 > summary(tm.guess <- traj.match(po,start=guess,eval.only=TRUE))
 $params
-      gamma          mu        iota      nbasis      degree      period 
- 3.25809654 -3.91202301 -4.60517019  3.00000000  3.00000000  1.00000000 
-      beta1       beta2       beta3     beta.sd         pop         rho 
- 7.09007684  7.49554194  6.39692966 -6.90775528 14.55744790 -0.51082562 
-        S.0         I.0         R.0 
--3.63198030 -7.10775528 -0.02292750 
+     gamma         mu       iota     nbasis     degree     period      beta1 
+ 3.2580965 -3.9120230 -4.6051702  3.0000000  3.0000000  1.0000000  7.0900768 
+     beta2      beta3    beta.sd        pop        rho        S.0        I.0 
+ 7.4955419  6.3969297 -6.9077553 14.5574479 -0.5108256 -3.6319803 -7.1077553 
+       R.0 
+-0.0229275 
 
 $loglik
 [1] -1768.807
@@ -294,7 +294,7 @@ iter  25  val= 1548.83 , accept= FALSE
 iter  26  val= 1548.83 , accept= FALSE 
 iter  27  val= 1389.144 , accept= TRUE 
 iter  28  val= 1389.144 , accept= FALSE 
-iter  29  val= 1375.290 , accept= TRUE 
+iter  29  val= 1375.29 , accept= TRUE 
 iter  30  val= 976.1314 , accept= TRUE 
 iter  31  val= 976.1314 , accept= FALSE 
 iter  32  val= 976.1314 , accept= FALSE 

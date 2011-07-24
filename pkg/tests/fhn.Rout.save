@@ -1,5 +1,5 @@
 
-R version 2.12.2 (2011-02-25)
+R version 2.13.1 (2011-07-08)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -127,9 +127,9 @@ R -0.5707824 0.02732499
 
 , , 3
 
-       [,1]       [,2]
-V -1.471404 1.32437192
-R -0.586106 0.06164339
+        [,1]       [,2]
+V -1.4714039 1.32437192
+R -0.5861061 0.06164339
 
 > matplot(time(fhn),t(y["V",,]),type='l',lty=1)
 > plot(y[1,,],y[2,,],type='n')

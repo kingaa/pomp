@@ -3,6 +3,14 @@
      &     ncovar,icovar,lcov,mcov,tcov,cov)
       implicit integer (i-n)
       implicit double precision (a-h,o-z)
+      dimension xstart(nvar,nreps), times(ntimes)
+      dimension params(npar,nreps), par(npar)
+      dimension xout(nvar,nreps,ntimes)
+      dimension e(nvar),v(nvar,nevent),d(nvar,nevent)
+      dimension izero(nzero)
+      dimension istate(nvar), ipar(npar), icovar(ncovar)
+      dimension tcov(lcov), cov(lcov,mcov)
+      dimension covars(mcov)
       external fprob
       ntreeh=1+int(log(nevent*1.0)/log(2.0)+1)
       do irep=1,nreps
@@ -91,7 +99,7 @@ c=================
                dum=min(e(i)*y(i),dum)
                if(dum.le.1.0)goto 50
             enddo
- 50         kappa=max(dum,1.0)
+ 50         kappa=max(dum,1.0d0)
             if(kappa.eq.1)then
                call gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,
      &              jevent,iflag,istate,ipar,ncovar,icovar,
@@ -276,7 +284,7 @@ c
       enddo
  500  return
       end
-	  
+
       subroutine tauleap(fprob,tau,t,f,y,v,d,par,n,m,ntreeh,npar,k,
      &     iflag,istate,ipar,ncovar,icovar,mcov,cov)
       implicit integer (i-n)
