@@ -1,3 +1,29 @@
+2011-07-24  kingaa
+
+	* [r526] DESCRIPTION, src/SSA.f, tests/fhn.Rout.save,
+	  tests/filtfail.Rout.save, tests/gillespie.Rout.save,
+	  tests/logistic.Rout.save, tests/ou2-bsmc.Rout.save,
+	  tests/ou2-forecast.Rout.save, tests/ou2-kalman.Rout.save,
+	  tests/ou2-mif.Rout.save, tests/ou2-nlf.Rout.save,
+	  tests/ou2-pmcmc.Rout.save, tests/ou2-probe.Rout.save,
+	  tests/ou2-procmeas.Rout.save, tests/ou2-simulate.Rout.save,
+	  tests/ou2-trajmatch.Rout.save, tests/pfilter.Rout.save,
+	  tests/pomppomp.Rout.save, tests/ricker-probe.Rout.save,
+	  tests/ricker-spect.Rout.save, tests/ricker.Rout.save,
+	  tests/rw2.Rout.save, tests/sir-icfit.Rout.save,
+	  tests/sir.Rout.save, tests/skeleton.Rout.save,
+	  tests/synlik.Rout.save: - modify src/SSA.f to get rid of warning
+	  messages seen in gfortran-4.6
+	  - update tests/*.Rout.save files
+
+2011-07-11  kingaa
+
+	* [r525] DESCRIPTION, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: - add 'pdftex' option to
+	  \usepackage{graphicx} in vignettes
+
 2011-07-07  kingaa
 
 	* [r524] inst/ChangeLog, inst/doc/advanced_topics_in_pomp.pdf,
