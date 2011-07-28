@@ -1,5 +1,6 @@
 2011-07-24  kingaa
 
+	* [r527] inst/ChangeLog: - update ChangeLog
 	* [r526] DESCRIPTION, src/SSA.f, tests/fhn.Rout.save,
 	  tests/filtfail.Rout.save, tests/gillespie.Rout.save,
 	  tests/logistic.Rout.save, tests/ou2-bsmc.Rout.save,

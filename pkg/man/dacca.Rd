@@ -1,6 +1,5 @@
 \name{dacca}
 \alias{dacca}
-\alias{dacca.transform}
 \docType{data}
 \title{Model of cholera transmission for historic Bengal.}
 \description{
@@ -15,10 +14,7 @@ data(dacca)
 }
 \details{
   \code{dacca} is a \code{pomp} object containing the model, data, and MLE parameters.
-  \code{dacca.transform} is a function that transforms the parameters.
-  If \code{params} is a matrix or vector of parameters on the natural scale for this model, \code{dacca.transform(params,dir="forward")} is the corresponding matrix or vector of parameters on the scale that they are used internally.
-  If \code{params} is a matrix or vector of parameters on the internal scale for this model, \code{dacca.transform(params,dir="inverse")} is the corresponding matrix or vector of parameters on the natural scale.
-  Parameters that naturally range over the positive reals are log-transformed by \code{dacca.transform};
+  Parameters that naturally range over the positive reals are log-transformed;
   parameters that range over the unit interval are logit-transformed;
   parameters that are naturally unbounded or take integer values are not transformed.
 }
@@ -26,11 +22,11 @@ data(dacca)
 data(dacca)
 plot(dacca)
 #MLEs on the natural scale
-theta <- dacca.transform(coef(dacca),dir="inverse") 
+coef(dacca,transform=TRUE)
 plot(simulate(dacca))
 # now change 'eps' and simulate again
-theta["eps"] <- 1
-plot(simulate(dacca,params=dacca.transform(theta,dir="forward")))
+coef(dacca,"eps",transform=TRUE) <- 1
+plot(simulate(dacca))
 }
 \references{
   King, A. A., Ionides, E. L., Pascual, M., and Bouma, M. J.

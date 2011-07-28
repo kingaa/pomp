@@ -20,6 +20,8 @@ setClass(
                         statenames = 'character',
                         paramnames = 'character',
                         covarnames = 'character',
+                        par.trans = 'function',
+                        par.untrans = 'function',
                         PACKAGE = 'character',
                         userdata = 'list'
                         )
@@ -46,7 +48,7 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
                               skeleton = NULL, skeleton.type = c("map","vectorfield"),
                               initializer, covar, tcovar,
                               obsnames, statenames, paramnames, covarnames,
-                              PACKAGE) {
+                              PACKAGE, parameter.transform, parameter.inv.transform) {
 
   ## check the data
   if (is.data.frame(data)) {
@@ -219,6 +221,41 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
             " do not embrace the data times: covariates may be extrapolated"
             )
 
+  if (missing(parameter.transform)) {
+    if (missing(parameter.inv.transform)) {
+      has.trans <- FALSE
+    } else {
+      stop("pomp error: if ",sQuote("parameter.inv.transform")," is supplied, then " ,
+           sQuote("parameter.transform")," must also be supplied")
+    }
+  } else {
+    if (missing(parameter.inv.transform)) {
+      stop("pomp error: if ",sQuote("parameter.transform")," is supplied, then " ,
+           sQuote("parameter.inv.transform")," must also be supplied")
+    } else {
+      has.trans <- TRUE
+    }
+  }
+  if (has.trans) {
+    par.trans <- match.fun(parameter.transform)
+    par.untrans <- match.fun(parameter.inv.transform)
+    if (!all(c('params','...')%in%names(formals(par.trans))))
+      stop(
+           "pomp error: ",sQuote("parameter.transform")," must be a function of prototype ",
+           sQuote("parameter.transform(params,...)"),
+           call.=TRUE
+           )
+    if (!all(c('params','...')%in%names(formals(par.untrans))))
+      stop(
+           "pomp error: ",sQuote("parameter.inv.transform")," must be a function of prototype ",
+           sQuote("parameter.inv.transform(params,...)"),
+           call.=TRUE
+           )
+  } else {
+    par.untrans <- par.trans <- function(params, ...) params
+  }
+  
+
   new(
       'pomp',
       rprocess = rprocess,
@@ -237,6 +274,8 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
       statenames = statenames,
       paramnames = paramnames,
       covarnames = covarnames,
+      par.trans = par.trans,
+      par.untrans = par.untrans,
       PACKAGE = PACKAGE,
       userdata = list(...)
       )
@@ -366,7 +405,7 @@ setMethod(
                     skeleton.map = NULL, skeleton.vectorfield = NULL,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
-                    PACKAGE) {
+                    PACKAGE, parameter.transform, parameter.inv.transform) {
             skel <- skeleton.jigger(
                                     skeleton=skeleton,
                                     skeleton.type=skeleton.type,
@@ -392,6 +431,8 @@ setMethod(
                              paramnames=paramnames,
                              covarnames=covarnames,
                              PACKAGE=PACKAGE,
+                             parameter.transform=parameter.transform,
+                             parameter.inv.transform=parameter.inv.transform,
                              ...
                              )
           }
@@ -406,7 +447,7 @@ setMethod(
                     skeleton.map = NULL, skeleton.vectorfield = NULL,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
-                    PACKAGE) {
+                    PACKAGE, parameter.transform, parameter.inv.transform) {
             skel <- skeleton.jigger(
                                     skeleton=skeleton,
                                     skeleton.type=skeleton.type,
@@ -432,6 +473,8 @@ setMethod(
                              paramnames=paramnames,
                              covarnames=covarnames,
                              PACKAGE=PACKAGE,
+                             parameter.transform=parameter.transform,
+                             parameter.inv.transform=parameter.inv.transform,
                              ...
                              )
           }
@@ -447,7 +490,7 @@ setMethod(
                     skeleton.map = NULL, skeleton.vectorfield = NULL,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
-                    PACKAGE) {
+                    PACKAGE, parameter.transform, parameter.inv.transform) {
             skel <- skeleton.jigger(
                                     skeleton=skeleton,
                                     skeleton.type=skeleton.type,
@@ -473,6 +516,8 @@ setMethod(
                              paramnames=paramnames,
                              covarnames=covarnames,
                              PACKAGE=PACKAGE,
+                             parameter.transform=parameter.transform,
+                             parameter.inv.transform=parameter.inv.transform,
                              ...
                              )
           }
@@ -486,7 +531,7 @@ setMethod(
                     skeleton, skeleton.type,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
-                    PACKAGE) {
+                    PACKAGE, parameter.transform, parameter.inv.transform) {
             mmg <- !missing(measurement.model)
             dmg <- !missing(dmeasure)
             rmg <- !missing(rmeasure)
@@ -517,6 +562,25 @@ setMethod(
             if (missing(PACKAGE)) PACKAGE <- data@PACKAGE
             if (missing(skeleton.type)) skeleton.type <- data@skeleton.type
             if (missing(skeleton)) skeleton <- data@skeleton
+
+            if (missing(parameter.transform)) {
+              if (missing(parameter.inv.transform)) {
+                par.trans <- data@par.trans
+                par.untrans <- data@par.untrans
+              } else {
+                stop("pomp error: if ",sQuote("parameter.inv.transform")," is supplied, then " ,
+                     sQuote("parameter.transform")," must also be supplied")
+              }
+            } else {
+              if (missing(parameter.inv.transform)) {
+                stop("pomp error: if ",sQuote("parameter.transform")," is supplied, then " ,
+                     sQuote("parameter.inv.transform")," must also be supplied")
+              } else {
+                par.trans <- match.fun(parameter.transform)
+                par.untrans <- match.fun(parameter.inv.transform)
+              }
+            }
+            
             userdata <- data@userdata
             added.userdata <- list(...)
             userdata[names(added.userdata)] <- added.userdata
@@ -540,7 +604,9 @@ setMethod(
                            statenames=statenames,
                            paramnames=paramnames,
                            covarnames=covarnames,
-                           PACKAGE=PACKAGE
+                           PACKAGE=PACKAGE,
+                           parameter.transform=par.trans,
+                           parameter.inv.transform=par.untrans
                            ),
                       userdata
                       )

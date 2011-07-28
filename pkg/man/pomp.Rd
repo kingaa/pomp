@@ -19,26 +19,26 @@
        skeleton.map = NULL, skeleton.vectorfield = NULL,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
-       PACKAGE)
+       PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"),
        skeleton.map = NULL, skeleton.vectorfield = NULL,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
-       PACKAGE)
+       PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"),
        skeleton.map = NULL, skeleton.vectorfield = NULL,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
-       PACKAGE)
+       PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model, skeleton, skeleton.type,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
-       PACKAGE)
+       PACKAGE, parameter.transform, parameter.inv.transform)
 }
 \arguments{
   \item{data, times}{
@@ -129,6 +129,18 @@
   }
   \item{PACKAGE}{
     An optional string giving the name of the dynamically loaded library in which any native routines are to be found.
+  }
+  \item{parameter.transform, parameter.inv.transform}{
+    Optional functions specifying parameter transformations.
+    These functions must have arguments \code{params} and \code{\dots}.
+    \code{parameter.transform} should transform parameters from the user's scale to the scale that \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, and \code{initializer} will use internally.
+    \code{parameter.inv.transform} should be the inverse of \code{parameter.transform}.
+    Note that it is the user's responsibility to make sure this holds.
+    If \code{obj} is the constructed \code{pomp} object, and \code{coef(obj)} is non-empty, a simple check of this is
+    \code{x <- coef(obj,transform=TRUE); obj1 <- obj; coef(obj1,transform=TRUE) <- x; identical(coef(obj),coef(obj1))} and
+    \code{identical(coef(obj1,transform=TRUE),x)}.
+    By default, both functions are the identity transformation.
+    See the \dQuote{introduction_to_pomp} vignette for an example.
   }
   \item{\dots}{
     Any additional arguments given to \code{pomp} will be stored in the \code{\link[=pomp-class]{pomp}} object and passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.

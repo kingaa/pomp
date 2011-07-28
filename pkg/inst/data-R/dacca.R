@@ -123,25 +123,23 @@ pomp(
        "omega1","sd.beta","beta.trend","log.beta1",
        "alpha","rho","clin","nbasis","nrstage"),
      covarnames = c("pop","dpopdt","seas.1","trend"),
-     ## log.trans=c(                 # parameters to log transform
-     ##   "gamma","eps","rho","delta","deltaI","alpha",
-     ##   "tau","sd.beta",
-     ##   paste("omega",seq(length=nbasis),sep=''),
-     ##   "S.0","I.0","Rs.0","R1.0","R2.0","R3.0"
-     ##   ),
-     ## logit.trans="clin",               # parameters to logit transform
-     ## transform=function (params, log.trans, logit.trans, ...) {
-     ##   logit <- function(p){log(p/(1-p))}      # (0,1) -> (-inf,inf)
-     ##   params[logit.trans] <- logit(params[logit.trans])
-     ##   params[log.trans] <- log(params[log.trans])
-     ##   params
-     ## },
-     ## inv.transform=function (params, log.trans, logit.trans, ...) {
-     ##   expit <- function(r){1/(1+exp(-r))}     # (-inf,inf) -> (0,1)
-     ##   params[logit.trans] <- expit(params[logit.trans])
-     ##   params[log.trans] <- exp(params[log.trans])
-     ##   params
-     ## },
+     log.trans=c(                 # parameters to log transform
+       "gamma","eps","rho","delta","deltaI","alpha",
+       "tau","sd.beta",
+       paste("omega",seq(length=nbasis),sep=''),
+       "S.0","I.0","Rs.0","R1.0","R2.0","R3.0"
+       ),
+     logit.trans="clin",               # parameters to logit transform
+     parameter.transform=function (params, log.trans, logit.trans, ...) {
+       params[logit.trans] <- qlogis(params[logit.trans])
+       params[log.trans] <- log(params[log.trans])
+       params
+     },
+     parameter.inv.transform=function (params, log.trans, logit.trans, ...) {
+       params[logit.trans] <- plogis(params[logit.trans])
+       params[log.trans] <- exp(params[log.trans])
+       params
+     },
      initializer = function (params, t0, covars, all.state.names, comp.names, nrstage, ...) {
        all.state.names <- c("S","I","Rs","R1","R2","R3","M","W","count")
        comp.names <- c("S","I","Rs",paste("R",1:nrstage,sep=''))
@@ -190,4 +188,4 @@ dacca.transform <- function (params, dir = c("forward","inverse")) {
 }
 
 coef(dacca) <- dacca.transform(mle,dir="forward")
-save(dacca,dacca.transform,file="dacca.rda")
+save(dacca,file="dacca.rda")

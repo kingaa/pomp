@@ -56,6 +56,9 @@
       Names of observables, state variables, parameters, and covariates, respectively.
       These are used to make the interface with native routines more robust.
     }
+    \item{par.trans, par.untrans}{
+      The forward and inverse parameter transformations.
+    }
     \item{PACKAGE}{
       Character variable giving the name of the dynamically loadable library containing native routines.
     }

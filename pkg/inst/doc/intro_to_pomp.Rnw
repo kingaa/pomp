@@ -494,6 +494,7 @@ One can display and modify model parameters using, e.g.,
 coef(gompertz)
 coef(gompertz,c("sigma","tau")) <- c(1,0)
 @ 
+See below for more information on the \code{coef} and \code{coef<-} methods for getting and setting parameters.
 Finally, one has access to the unobserved states via, e.g.,
 <<eval=F>>=
 states(gompertz)
@@ -508,6 +509,7 @@ states(gompertz,"X")
 The parameters in the Gompertz model above are constrained to be positive.
 When we estimate these parameters using numerical search algorithms, we must find some way to ensure that these constraints will be honored.
 A straightforward way to accomplish this is to transform the parameters so that they become unconstrained.
+To introduce some terminology, we want to transform the parameters from the \emph{natural scale} ($r$, $K$, $\sigma$, $\tau$), to another, \emph{internal scale}, on which they will have some desirable property, e.g., they will be unconstrained.
 The following codes re-implement the Gompertz model using transformed parameters.
 
 <<loggomp-proc-sim-def>>=
@@ -553,24 +555,69 @@ gompertz.meas.dens <- function (y, x, t, params, log, ...) {
 }
 @ 
 
-Note that, in each of the above functions, we \emph{untransform} the parameters before we do any computations.
+Note that, in each of the above functions, we \emph{untransform} the parameters back onto the natural scale before we do any computations.
 
-<<loggomp-pomp-construction,eval=F>>=
+\pkg{pomp} provides a facility to make it easier to work with parameter transformations.
+Specifically, we can specify the optional functions \code{parameter.transform} and \code{parameter.inv.transform} when we create the \code{pomp} object.
+The first function will take transform our parameters to the internal scale;
+the second one will invert that operation, transforming the parameters from the internal back to the natural scale.
+
+<<loggomp-pomp-construction,eval=T>>=
 dat <- as(gompertz,"data.frame")
-theta <- c(
-           log(coef(gompertz,c("r","K","tau","sigma"))),
-           coef(gompertz,"X.0")
-           )
-names(theta) <- c("log.r","log.K","log.tau","log.sigma","X.0")
+theta <- coef(gompertz)
+print(theta)
 gompertz <- pomp(
                  data=dat[c("time","Y")],
                  times="time",
                  rprocess=discrete.time.sim(gompertz.proc.sim),
                  rmeasure=gompertz.meas.sim,
                  dmeasure=gompertz.meas.dens,
-                 t0=0
+                 t0=0,
+                 parameter.transform=function(params,...){
+                   params <- c(
+                               params["X.0"],
+                               log(params[c("r","K","tau","sigma")])
+                               )
+                   names(params) <- c("X.0","log.r","log.K","log.tau","log.sigma")
+                   params
+                 },
+                 parameter.inv.transform=function(params,...){
+                   params <- c(
+                               params["X.0"],
+                               exp(params[c("log.r","log.K","log.tau","log.sigma")])
+                               )
+                   names(params) <- c("X.0","r","K","tau","sigma")
+                   params
+                 }
                  )
-coef(gompertz) <- theta
+@ 
+
+The parameter transformations come into play only via the \code{coef} and \code{coef<-} methods for getting and setting parameters.
+One can set the parameters by doing
+<<>>=
+coef(gompertz,transform=TRUE) <- theta
+@ 
+and get the parameters by
+<<>>=
+coef(gompertz,transform=TRUE)
+@ 
+To be clear: the parameter-setting expression assumes that \code{theta} is a named vector of parameters on the natural scale.
+After this operation, the parameters are stored internally in \code{gompertz}, on the internal scale, as we can check by doing
+<<>>=
+coef(gompertz)
+@ 
+
+Note that it's the user's responsibility to ensure that the \code{parameter.transform} and \code{parameter.inv.transform} are actually mutually inverse.
+A simple (but not foolproof) test of this is
+<<par-trans-inverse-test,results=verbatim>>=
+# use parameter.inv.transform:
+theta <- coef(gompertz,transform=TRUE)  
+## theta is on the natural scale
+g2 <- gompertz
+## use parameter.transform:
+coef(g2,transform=TRUE) <- theta
+## compare the internal-scale representations:
+identical(coef(gompertz),coef(g2))
 @ 
 
 A \code{pomp} object corresponding to the one just created (but with the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} bits coded in C for speed) can be loaded by executing \verb+data(gompertz)+.
@@ -651,7 +698,7 @@ loglik.true.est <- bl+log(mean(exp(loglik.true-bl)))
 loglik.true.se <- sd(exp(loglik.true-bl))/sqrt(length(loglik.true))/exp(loglik.true.est-bl)
 @ 
 
-<<gompertz-multi-mif-eval,echo=F>>=
+<<gompertz-multi-mif-eval,echo=F,results=hide>>=
 set.seed(334388458L)
 binary.file <- "gompertz-multi-mif.rda"
 if (file.exists(binary.file)) {

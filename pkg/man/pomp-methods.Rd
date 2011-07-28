@@ -40,8 +40,8 @@
 \title{Methods of the "pomp" class}
 \description{Methods of the \code{pomp} class.}
 \usage{
-\S4method{coef}{pomp}(object, pars, \dots)
-\S4method{coef}{pomp}(object, pars, \dots) <- value
+\S4method{coef}{pomp}(object, pars, transform = FALSE, \dots)
+\S4method{coef}{pomp}(object, pars, transform = FALSE, \dots) <- value
 \S4method{obs}{pomp}(object, vars, \dots)
 \S4method{data.array}{pomp}(object, vars, \dots)
 \S4method{states}{pomp}(object, vars, \dots)
@@ -69,6 +69,10 @@ as.data.frame.pomp(x, row.names, optional, \dots)
   \item{vars}{
     optional character;
     names of observed variables to be retrieved.
+  }
+  \item{transform}{
+    optional logical;
+    should the parameter transformations be applied?
   }
   \item{value}{
     numeric;
@@ -128,6 +132,8 @@ as.data.frame.pomp(x, row.names, optional, \dots)
     \item{coef}{
       \code{coef(object)} returns the contents of the \code{params} slot of \code{object}.
       \code{coef(object,pars)} returns only those parameters named in \code{pars}.
+      \code{coef(object,transform=TRUE)} returns \code{parameter.inv.transform(coef(object))}, where \code{parameter.inv.transform} is the user parameter inverse transformation function specified when \code{object} was created.
+      Likewise, \code{coef(object,pars,transform=TRUE)} returns \code{parameter.inv.transform(coef(object))[pars]}.
     }
     \item{coef<-}{
       Assigns values to the \code{params} slot of the \code{pomp} object.
@@ -137,6 +143,10 @@ as.data.frame.pomp(x, row.names, optional, \dots)
       If some of the names in \code{pars} do not already name parameters in \code{coef(object)}, then they are concatenated.
       If \code{coef(object)} does not exist, then \code{coef(object,pars) <- value} assigns \code{value} to the parameters of \code{object};
       in this case, the names of \code{object} will be \code{pars} and the names of \code{value} will be ignored.
+      \code{coef(object,transform=TRUE) <- value} assigns \code{parameter.transform(value)} to the \code{params} slot of \code{object}.
+      Here, \code{parameter.transform} is the parameter transformation function specified when \code{object} was created.
+      \code{coef(object,pars,transform=TRUE) <- value} first, discards any names the \code{value} may have, sets \code{names(value) <- pars}, and then replaces the elements of \code{object}'s \code{params} slot \code{parameter.transform(value)}.
+      In this case, if some of the names in \code{pars} do not already name parameters in \code{coef(object,transform=TRUE)}, then they are concatenated.
     }
     \item{obs, data.array}{
       These functions are synonymous.

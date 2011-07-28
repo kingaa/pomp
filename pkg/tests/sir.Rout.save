@@ -394,7 +394,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x2d238f0>
+<environment: 0x1513c10>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -404,7 +404,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0x222b818>
+<environment: 0x1edb848>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -460,6 +460,14 @@ function (params, t0, ...)
         x0
     })
 }
+parameter transform function = 
+function (params, ...) 
+params
+<environment: 0x1057aa0>
+parameter inverse transform function = 
+function (params, ...) 
+params
+<environment: 0x1057aa0>
 userdata = 
 $zeronames
 [1] "cases"
@@ -471,7 +479,7 @@ $zeronames
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.030447 secs
+Time difference of 2.048561 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -488,7 +496,7 @@ Time difference of 2.030447 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.690172 secs
+Time difference of 2.724916 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -548,7 +556,7 @@ R -32554 -28565 -24604 -18148 -10889    787.2
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.987663 secs
+Time difference of 2.509698 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -556,7 +564,7 @@ Time difference of 1.987663 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.1495709 secs
+Time difference of 0.153466 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -565,10 +573,10 @@ Time difference of 0.1495709 secs
 +                x=X1$states,
 +                times=t1,
 +                params=matrix(
-+                  c(log(params),nbasis=3,degree=3,period=1),
++                  coef(po),
 +                  nrow=length(params)+3,
 +                  ncol=10,
-+                  dimnames=list(c(names(params),"nbasis","degree","period"),NULL)
++                  dimnames=list(names(coef(po)),NULL)
 +                  ),
 +                log=TRUE
 +                )
@@ -579,7 +587,7 @@ Time difference of 0.1495709 secs
 +                po,
 +                x=X2$states[,1,55:70,drop=FALSE],
 +                t=t2[55:70],
-+                params=as.matrix(c(log(params),nbasis=3,degree=3,period=1))
++                params=as.matrix(coef(po))
 +                )
 > print(h2[c("S","I","R"),,],digits=4)
     [,1]     [,2]     [,3]   [,4]     [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
@@ -594,7 +602,7 @@ R -32554 -28565 -24604 -18148 -10889    787.2
 > print(max(abs(g2-g1),na.rm=T),digits=4)
 [1] 7.105e-15
 > print(max(abs(h2-h1),na.rm=T),digits=4)
-[1] 7.276e-11
+[1] 9.459e-11
 > 
 > states(po)[,1:2]
                [,1]          [,2]

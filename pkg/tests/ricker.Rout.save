@@ -40,10 +40,10 @@ Error in .local(object, ...) :
   in 'coef': name(s) 'r' correspond to no parameter(s)
 > coef(po,c("r","phi")) <- c(0,0)
 Warning message:
-in 'coef<-': name(s) 'r','phi' are not existing parameter(s); they are being concatenated 
+in 'coef<-': name(s) 'r','phi' do not refer to existing parameter(s); they are being concatenated 
 > coef(po,c("log.r","log.phi")) <- c(a=0,b=0)
 Warning message:
-in 'coef<-': names of 'value' are being discarded 
+in 'coef<-' names of 'value' are being discarded 
 > coef(po,c("log.r","log.phi")) <- 0
 > coef(po) <- c(log.phi=0,log.r=3.5,N.0=10,e.0=0,log.sigma=-Inf)
 > coef(po)
@@ -51,7 +51,7 @@ in 'coef<-': names of 'value' are being discarded
       0.0       3.5      10.0       0.0      -Inf 
 > coef(po,"new") <- 3
 Warning message:
-in 'coef<-': name(s) 'new' are not existing parameter(s); they are being concatenated 
+in 'coef<-': name(s) 'new' do not refer to existing parameter(s); they are being concatenated 
 > plot(simulate(po))
 > coef(po)
   log.phi     log.r       N.0       e.0 log.sigma       new 

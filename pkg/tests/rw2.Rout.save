@@ -253,7 +253,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x1acfdd0>
+<environment: 0x1ac3308>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -266,11 +266,11 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x1acfdd0>
+<environment: 0x1ac3308>
 skeleton ( map ) = 
 function (x, t, params, covars, ...) 
 stop(sQuote("skeleton"), " not specified")
-<environment: 0x1b4b158>
+<environment: 0x1b206e0>
 initializer = 
 function (params, t0, ...) 
 {
@@ -278,6 +278,14 @@ function (params, t0, ...)
     x <- params[ivpnames]
     x
 }
+parameter transform function = 
+function (params, ...) 
+params
+<environment: 0x1b206e0>
+parameter inverse transform function = 
+function (params, ...) 
+params
+<environment: 0x1b206e0>
 userdata = 
 $useless
 [1] 23

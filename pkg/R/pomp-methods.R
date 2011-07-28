@@ -161,24 +161,56 @@ setMethod(
           }
           )
 
+pomp.transform <- function (object, params, dir = c("forward","inverse")) {
+  dir <- match.arg(dir)
+  r <- length(dim(params))
+  nm <- if (r>0) rownames(params) else names(params)
+  tfunc <- switch(
+                  dir,
+                  forward=function (x) do.call(object@par.trans,c(list(x),object@userdata)),
+                  inverse=function (x) do.call(object@par.untrans,c(list(x),object@userdata))
+                  )
+  if (r > 1)
+    retval <- apply(params,2:r,tfunc)
+  else
+    retval <- tfunc(params)
+  if (is.null(names(retval)))
+    switch(
+           dir,
+           forward=stop(
+             "invalid ",sQuote("pomp")," object: ",
+             sQuote("parameter.transform")," must return a named numeric vector"
+             ),
+           inverse=stop(
+             "invalid ",sQuote("pomp")," object: ",
+             sQuote("parameter.inv.transform")," must return a named numeric vector"
+             )
+           )
+  retval
+}
+
 ## extract the coefficients
 setMethod(
           "coef",
           "pomp",
-          function (object, pars, ...) {
-            if (missing(pars)) {
-              pars <- names(object@params)
-            } else {
-              excl <- !(pars%in%names(object@params))
-              if (any(excl)) {
+          function (object, pars, transform = FALSE, ...) {
+            if (transform) 
+              params <- pomp.transform(object,params=object@params,dir="inverse")
+            else
+              params <- object@params
+            if (missing(pars))
+              pars <- names(params)
+            else {
+              excl <- setdiff(pars,names(params))
+              if (length(excl)>0) {
                 stop(
                      "in ",sQuote("coef"),": name(s) ",
-                     paste(sapply(pars[excl],sQuote),collapse=","),
+                     paste(sQuote(excl),collapse=","),
                      " correspond to no parameter(s)"
                      )
               }
             }
-            object@params[pars]
+            params[pars]
           }
           )
 
@@ -186,36 +218,54 @@ setMethod(
 setMethod(
           "coef<-",
           "pomp",
-          function (object, pars, ..., value) {
+          function (object, pars, transform = FALSE, ..., value) {
             if (missing(pars)) {          ## replace the whole params slot with 'value'
+              if (transform) 
+                value <- pomp.transform(object,params=value,dir="forward")
               pars <- names(value)
-              if (is.null(pars))
-                stop("in ",sQuote("coef<-"),": ",sQuote("value")," must be a named vector")
-              object@params <- numeric(length(pars))
-              names(object@params) <- pars
-              object@params[] <- as.numeric(value)
+              if (is.null(pars)) {
+                if (transform)
+                  stop(sQuote("parameter.transform(value)")," must be a named vector")
+                else
+                  stop(sQuote("value")," must be a named vector")
+              }
+              object@params <- value
             } else { ## replace or append only the parameters named in 'pars'
               if (!is.null(names(value))) ## we ignore the names of 'value'
-                warning("in ",sQuote("coef<-"),": names of ",sQuote("value")," are being discarded",call.=FALSE)
+                warning(
+                        "in ",sQuote("coef<-"),
+                        " names of ",sQuote("value")," are being discarded",
+                        call.=FALSE
+                        )
+##              if (length(pars)!=length(value))
+##                stop(sQuote("pars")," and ",sQuote("value")," must be of equal length")
               if (length(object@params)==0) { ## no pre-existing 'params' slot
-                object@params <- numeric(length(pars))
-                names(object@params) <- pars
-                object@params[] <- as.numeric(value)
+                val <- numeric(length(pars))
+                names(val) <- pars
+                val[] <- value
+                if (transform)
+                  value <- pomp.transform(object,params=val,dir="forward")
+                object@params <- value
               } else { ## pre-existing params slot
-                excl <- !(pars%in%names(object@params)) ## new parameters
-                if (any(excl)) {                        ## append parameters
+                params <- coef(object,transform=transform)
+                val <- numeric(length(pars))
+                names(val) <- pars
+                val[] <- value
+                excl <- !(pars%in%names(params)) ## new parameter names
+                if (any(excl)) { ## append parameters
                   warning(
                           "in ",sQuote("coef<-"),": name(s) ",
                           paste(sQuote(pars[excl]),collapse=","),
-                          " are not existing parameter(s);",
+                          " do not refer to existing parameter(s);",
                           " they are being concatenated",
                           call.=FALSE
                           )
-                  x <- c(object@params,numeric(length(excl)))
-                  names(x) <- c(names(object@params),pars[excl])
-                  object@params <- x
+                  params <- c(params,val[excl])
                 }
-                object@params[pars] <- as.numeric(value)
+                params[pars] <- val
+                if (transform)
+                  params <- pomp.transform(object,params=params,dir="forward")
+                object@params <- params
               }
             }
             object
@@ -258,6 +308,10 @@ setMethod(
             }
             cat("initializer = \n")
             show(object@initializer)
+            cat("parameter transform function = \n")
+            show(object@par.trans)
+            cat("parameter inverse transform function = \n")
+            show(object@par.untrans)
             if (length(object@userdata)>0) {
               cat("userdata = \n")
               show(object@userdata)

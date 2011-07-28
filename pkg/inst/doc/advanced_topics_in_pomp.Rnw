@@ -205,6 +205,57 @@ units(etime.Rvect) <- units(etime.Rplug)
 Doing \Sexpr{dim(simdat.Rvect)[2]} simulations of \code{ou2.Rvect} took \Sexpr{round(etime.Rvect,2)}~\Sexpr{units(etime.Rvect)}.
 Compared to the \Sexpr{round(etime.Rplug,2)}~\Sexpr{units(etime.Rplug)} it took to run \Sexpr{dim(simdat.Rplug)[2]} simulations of \code{ou2.Rplug}, this is a \Sexpr{round(as.numeric(etime.Rplug)/as.numeric(etime.Rvect))}-fold speed-up.
 
+\subsection{Using \R's byte compiler}
+
+From version {2.13}, \R\ has provided byte-compilation facilities, in the base package \code{compiler}.
+Let's see to what extent we can speed up our codes by byte-compiling the components of our \code{pomp} object.
+<<plugin-byte-code,echo=T>>=
+require(compiler)
+pomp( 
+     ou2.Rplug,
+     rprocess=discrete.time.sim(
+       step.fun=cmpfun(
+         function (x, t, params, ...) {
+           eps <- rnorm(n=2,mean=0,sd=1) # noise terms
+           xnew <- c(
+                     x1=params["alpha.1"]*x["x1"]+params["alpha.3"]*x["x2"]+
+                     params["sigma.1"]*eps[1],
+                     x2=params["alpha.2"]*x["x1"]+params["alpha.4"]*x["x2"]+
+                     params["sigma.2"]*eps[1]+params["sigma.3"]*eps[2]
+                     )
+           names(xnew) <- c("x1","x2")
+           xnew
+         },
+         options=list(optimize=3)
+         )
+       )
+     ) -> ou2.Bplug
+@ 
+<<plugin-byte-code-sim,echo=F>>=
+tic <- Sys.time()
+simdat.Bplug <- simulate(ou2.Bplug,params=coef(ou2),nsim=1000,states=T)
+toc <- Sys.time()
+etime.Bplug <- toc-tic
+@
+Doing these \Sexpr{dim(simdat.Bplug)[2]} simulations of \code{ou2.Bplug} took \Sexpr{round(etime.Bplug,2)}~\Sexpr{units(etime.Bplug)}.
+This is a \Sexpr{round(as.numeric(etime.Rplug)/as.numeric(etime.Bplug),1)}-fold speed-up relative to the plug-in code written in \R.
+
+We can byte-compile the vectorized \R\ code, too, and compare its performance:
+<<vectorized-byte-code>>=
+ou2.Bvect <- pomp(ou2.Rplug,rprocess=cmpfun(ou2.Rvect.rprocess,options=list(optimize=3)))
+@ 
+<<vectorized-byte-code-sim>>=
+tic <- Sys.time()
+simdat.Bvect <- simulate(ou2.Bvect,params=theta,states=T,nsim=1000)
+toc <- Sys.time()
+etime.Bvect <- toc-tic
+@ 
+<<echo=F>>=
+units(etime.Bvect) <- units(etime.Rplug)
+@ 
+This code shows a \Sexpr{round(as.numeric(etime.Rplug)/as.numeric(etime.Bvect))}-fold speed-up relative to the plug-in code written in \R.
+
+
 \subsection{Accelerating the code using C: a plug-in based implementation}
 
 As we've seen, we can usually acheive big accelerations using compiled native code.
@@ -342,17 +393,33 @@ pomp(
        ), 
      ## reset cases to zero at each new observation:
      zeronames=c("cases"),      
-     initializer=function(params,t0,...){
-       p <- exp(params)
-       with(
-            as.list(p),
-            {
-              fracs <- c(S.0,I.0,R.0)
-              x0 <- round(c(pop*fracs/sum(fracs),0,0))
-              names(x0) <- c("S","I","R","cases","W")
-              x0
-            }
-            )
+     comp.names=c("S","I","R"),
+     to.log.transform=c(
+       "gamma","mu","iota",
+       "beta1","beta2","beta3","beta.sd",
+       "rho",
+       "S.0","I.0","R.0"
+       ),
+     parameter.transform=function (params, to.log.transform, ...) {
+       params[to.log.transform] <- log(params[to.log.transform])
+       params
+     },
+     parameter.inv.transform=function (params, to.log.transform, ...) {
+       params[to.log.transform] <- exp(params[to.log.transform])
+       params
+     },
+     initializer=function(params, t0, comp.names, ...) {
+       ic.names <- paste(comp.names,".0",sep="")
+       snames <- c("S","I","R","cases","W")
+       fracs <- exp(params[ic.names])
+       x0 <- numeric(length(snames))
+       names(x0) <- snames
+       x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
+       ## since 'cases' is in 'zeronames' above, the IC for this variable
+       ## will only matter in trajectory computations
+       ## In trajectory computations, however, 'cases' will be roughly the weekly number of new cases
+       x0["cases"] <- x0["I"]*exp(params["gamma"])/52 
+       x0
      }
      ) -> sir
 @ 
