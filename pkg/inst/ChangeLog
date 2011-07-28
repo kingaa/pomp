@@ -1,3 +1,34 @@
+2011-07-28  kingaa
+
+	* [r528] DESCRIPTION, R/pomp-methods.R, R/pomp.R,
+	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
+	  data/ricker.rda, data/rw2.rda, data/verhulst.rda, inst/ChangeLog,
+	  inst/NEWS, inst/data-R/dacca.R, inst/data-R/euler.sir.R,
+	  inst/data-R/gompertz.R, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/gompertz-multi-mif.rda, inst/doc/gompertz-trajmatch.rda,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/nlf-block-boot.rda, inst/doc/nlf-boot.rda,
+	  inst/doc/nlf-fit-from-truth.rda, inst/doc/nlf-fits.rda,
+	  inst/doc/nlf-lag-tests.rda, inst/doc/nlf-multi-short.rda,
+	  inst/doc/ricker-mif.rda, inst/doc/ricker-probe-match.rda,
+	  man/dacca.Rd, man/pomp-class.Rd, man/pomp-methods.Rd,
+	  man/pomp.Rd, src/sir.c, tests/ricker.Rout.save,
+	  tests/rw2.Rout.save, tests/sir-icfit.Rout.save, tests/sir.R,
+	  tests/sir.Rout.save: - add facility for parameter transformations
+	  to pomp:
+	  - 'pomp' takes two new optional arguments: 'parameter.transform',
+	  'parameter.inv.transform'
+	  - 'coef' and 'coef<-' methods take new optional argument
+	  'transform' which applies the appropriate transform when TRUE
+	  - all data()-loadable objects are changed accordingly:
+	  'euler.sir', 'dacca', and 'gompertz' make use of this facility
+	  - the section on parameter transformation in the 'intro_to_pomp'
+	  vignette has been changed accordingly
+	  - add a section on byte-compiled code to the advanced topics
+	  vignette
+
 2011-07-24  kingaa
 
 	* [r527] inst/ChangeLog: - update ChangeLog
