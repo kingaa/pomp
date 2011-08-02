@@ -170,11 +170,14 @@ pomp.transform <- function (object, params, dir = c("forward","inverse")) {
                   forward=function (x) do.call(object@par.trans,c(list(x),object@userdata)),
                   inverse=function (x) do.call(object@par.untrans,c(list(x),object@userdata))
                   )
-  if (r > 1)
+  if (r > 1) {
     retval <- apply(params,2:r,tfunc)
-  else
+    no.names <- is.null(rownames(retval))
+  } else {
     retval <- tfunc(params)
-  if (is.null(names(retval)))
+    no.names <- is.null(names(retval))
+  }
+  if (no.names)
     switch(
            dir,
            forward=stop(

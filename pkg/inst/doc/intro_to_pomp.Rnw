@@ -592,7 +592,7 @@ gompertz <- pomp(
                  )
 @ 
 
-The parameter transformations come into play only via the \code{coef} and \code{coef<-} methods for getting and setting parameters.
+The parameter transformations come into play via the \code{coef} and \code{coef<-} methods for getting and setting parameters.
 One can set the parameters by doing
 <<>>=
 coef(gompertz,transform=TRUE) <- theta
@@ -688,6 +688,7 @@ mf <- replicate(
 @ 
 
 <<gompertz-post-mif,eval=F,echo=F>>=
+theta.true <- coef(gompertz)
 theta.mif <- apply(sapply(mf,coef),1,mean)
 loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
 bl <- mean(loglik.mif)
@@ -718,7 +719,7 @@ if (file.exists(binary.file)) {
        file=binary.file
        )
 }
-cbind(
+rbind(
 #      guess=c(signif(theta.guess[estpars],3),loglik=round(loglik.guess,1)),
       mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif.est,1),loglik.se=signif(loglik.mif.se,2)),
       truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true.est,1),loglik.se=signif(loglik.true.se,2))
@@ -728,6 +729,8 @@ cbind(
 Each of the \Sexpr{length(mf)} \code{mif} runs ends up at a different place.
 In this case (but by no means in every case), we can average across these parameter estimates to get an approximate maximum likelihood estimate.
 We'll evaluate the likelihood several times at this estimate to get an idea of the Monte Carlo error in our likelihood estimate.
+The particle filter produces an unbiased estimate of the likelihood;
+therefore, we'll average the likelihoods, not the log likelihoods.
 <<eval=F>>=
 <<gompertz-post-mif>>
 @ 

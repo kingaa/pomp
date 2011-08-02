@@ -11,9 +11,38 @@ setMethod('logLik','mif',function(object,...)object@loglik)
 setMethod(
           'conv.rec',
           'mif',
-          function (object, pars, ...) {
-            if (missing(pars)) pars <- colnames(object@conv.rec)
-            object@conv.rec[,pars]
+          function (object, pars, transform = FALSE, ...) {
+            if (transform) {
+              pars.improper <- c("loglik","nfail")
+              pars.proper <- setdiff(colnames(object@conv.rec),pars.improper)
+              retval <- cbind(
+                              t(
+                                pomp.transform(
+                                               object,
+                                               params=t(object@conv.rec[,pars.proper]),
+                                               dir="inverse"
+                                               )
+                                ),
+                              object@conv.rec[,pars.improper]
+                              )
+            } else {
+              retval <- object@conv.rec
+            }
+            if (missing(pars))
+              retval
+            else {
+              bad.pars <- setdiff(pars,colnames(retval))
+              if (length(bad.pars)>0)
+                stop(
+                     "in ",sQuote("conv.rec"),": name(s) ",
+                     paste(sQuote(bad.pars),collapse=","),
+                     " correspond to no parameter(s) in ",
+                     if (transform) sQuote("conv.rec(object,transform=TRUE)")
+                     else sQuote("conv.rec(object,transform=FALSE)"),
+                     call.=FALSE
+                     )
+              retval[,pars]
+            }
           }
           )
 

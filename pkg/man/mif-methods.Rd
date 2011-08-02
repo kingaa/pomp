@@ -13,7 +13,7 @@
 \description{Methods of the "mif" class.}
 \usage{
 \S4method{logLik}{mif}(object, \dots)
-\S4method{conv.rec}{mif}(object, pars, \dots)
+\S4method{conv.rec}{mif}(object, pars, transform = FALSE, \dots)
 \S4method{plot}{mif}(x, y = NULL, \dots)
 compare.mif(z)
 }
@@ -23,6 +23,11 @@ compare.mif(z)
   \item{x}{The \code{mif} object.}
   \item{y}{Ignored.}
   \item{z}{A \code{mif} object or list of \code{mif} objects.}
+  \item{transform}{
+    optional logical;
+    should the parameter transformations be applied?
+    See \code{\link[=coef-pomp]{coef}} for details.
+  }
   \item{\dots}{
     Further arguments (either ignored or passed to underlying functions).
   }

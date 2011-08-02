@@ -1,0 +1,101 @@
+
+R version 2.13.1 (2011-07-08)
+Copyright (C) 2011 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> options(digits=4)
+> 
+> data(gompertz)
+> 
+> po <- gompertz
+> coef(po)
+      X.0     log.r     log.K   log.tau log.sigma 
+    1.000    -2.303     0.000    -2.303    -2.303 
+> coef(po,transform=TRUE)
+  X.0     r     K   tau sigma 
+  1.0   0.1   1.0   0.1   0.1 
+> coef(po,c("log.r","X.0"))
+ log.r    X.0 
+-2.303  1.000 
+> coef(po,c("r","X.0"),transform=TRUE)
+  r X.0 
+0.1 1.0 
+> coef(po,c("r","K"),transform=TRUE) <- c(0.2,1)
+> coef(po)
+      X.0     log.r     log.K   log.tau log.sigma 
+    1.000    -1.609     0.000    -2.303    -2.303 
+> coef(po,transform=TRUE)
+  X.0     r     K   tau sigma 
+  1.0   0.2   1.0   0.1   0.1 
+> 
+> set.seed(93848585L)
+> mf <- mif(
++           po,
++           Nmif=5,Np=1000,
++           ic.lag=1,var.factor=1,cooling.factor=0.99,
++           rw.sd=c(log.r=0.02,log.K=0.02)
++           )
+> coef(mf,transform=TRUE)
+  X.0     r     K   tau sigma 
+1.000 0.198 1.046 0.100 0.100 
+> conv.rec(mf)
+  loglik nfail X.0  log.r    log.K log.tau log.sigma
+0  30.55     0   1 -1.609 0.000000  -2.303    -2.303
+1  31.18     0   1 -1.613 0.008437  -2.303    -2.303
+2  30.67     0   1 -1.616 0.017788  -2.303    -2.303
+3  30.55     0   1 -1.615 0.026324  -2.303    -2.303
+4  31.06     0   1 -1.612 0.039947  -2.303    -2.303
+5     NA    NA   1 -1.619 0.044705  -2.303    -2.303
+> conv.rec(mf,transform=TRUE)
+  X.0      r     K tau sigma loglik nfail
+0   1 0.2000 1.000 0.1   0.1  30.55     0
+1   1 0.1994 1.008 0.1   0.1  31.18     0
+2   1 0.1987 1.018 0.1   0.1  30.67     0
+3   1 0.1989 1.027 0.1   0.1  30.55     0
+4   1 0.1994 1.041 0.1   0.1  31.06     0
+5   1 0.1980 1.046 0.1   0.1     NA    NA
+> conv.rec(mf,c("loglik","log.r"))
+  loglik  log.r
+0  30.55 -1.609
+1  31.18 -1.613
+2  30.67 -1.616
+3  30.55 -1.615
+4  31.06 -1.612
+5     NA -1.619
+> try(conv.rec(mf,c("loglik","r"),transform=FALSE))
+Error : in 'conv.rec': name(s) 'r' correspond to no parameter(s) in 'conv.rec(object,transform=FALSE)'
+> try(conv.rec(mf,c("loglik","log.r"),transform=TRUE))
+Error : in 'conv.rec': name(s) 'log.r' correspond to no parameter(s) in 'conv.rec(object,transform=TRUE)'
+> conv.rec(mf,c("loglik","r"),transform=TRUE)
+  loglik      r
+0  30.55 0.2000
+1  31.18 0.1994
+2  30.67 0.1987
+3  30.55 0.1989
+4  31.06 0.1994
+5     NA 0.1980
+> conv.rec(mf,c("loglik"),transform=TRUE)
+    0     1     2     3     4     5 
+30.55 31.18 30.67 30.55 31.06    NA 
+> conv.rec(mf,c("K"),transform=TRUE)
+    0     1     2     3     4     5 
+1.000 1.008 1.018 1.027 1.041 1.046 
+> 
+> 
