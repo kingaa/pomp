@@ -1,5 +1,29 @@
+2011-08-08  kingaa
+
+	* [r532] data/gillespie.sir.rda, inst/data-R/gillespie.sir.R,
+	  inst/examples/gompertz.R, inst/examples/sir.R,
+	  inst/examples/sir.c, man/gompertz.Rd: - include parameter
+	  transformations in 'gillespie.sir'
+	  - bring examples into line with codes in vignettes
+	* [r531] data/verhulst.rda, inst/data-R/verhulst.R,
+	  tests/verhulst.R, tests/verhulst.Rout.save: - re-code verhulst
+	  example with more exemplary style.
+	  - include a new unit-test in tests/verhulst.R
+
+2011-08-02  kingaa
+
+	* [r530] DESCRIPTION, R/mif-methods.R, R/pomp-methods.R,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  man/mif-methods.Rd, tests/gompertz.R, tests/gompertz.Rout.save: -
+	  add 'transform' argument to 'conv.rec' method for 'mif' objects
+	  - add new unit test 'tests/gompertz.R' which tests the
+	  transformation facilities in 'coef', 'coef<-', and 'conv.rec'
+	  - small changes to 'intro_to_pomp' vignette
+	  - bug fix in 'pomp:::pomp.transform'
+
 2011-07-28  kingaa
 
+	* [r529] inst/ChangeLog:
 	* [r528] DESCRIPTION, R/pomp-methods.R, R/pomp.R,
 	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
 	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
