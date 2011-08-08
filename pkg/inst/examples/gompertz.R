@@ -42,9 +42,18 @@ pomp(
        ## compute the likelihood of Y|X,tau
        f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
        return(f)
+     },
+     parameter.transform=function(params,...){
+       params <- c(params["X.0"],log(params[c("r","K","tau","sigma")]))
+       names(params) <- c("X.0","log.r","log.K","log.tau","log.sigma")
+       params
+     },
+     parameter.inv.transform=function(params,...){
+       params <- c(params["X.0"],exp(params[c("log.r","log.K","log.tau","log.sigma")]))
+       names(params) <- c("X.0","r","K","tau","sigma")
+       params
      }
      ) -> gompertz
-
 
 ## Now code up the Gompertz example using native routines results in much faster computations.
 ## The C codes are included in the "examples" directory (file "gompertz.c")
@@ -64,16 +73,21 @@ po <- pomp(
            PACKAGE="gompertz",
            paramnames=c("log.r","log.K","log.sigma","log.tau"),
            statenames=c("X"),
-           obsnames=c("Y")
+           obsnames=c("Y"),
+           parameter.transform=function(params,...){
+             params <- c(params["X.0"],log(params[c("r","K","tau","sigma")]))
+             names(params) <- c("X.0","log.r","log.K","log.tau","log.sigma")
+             params
+           },
+           parameter.inv.transform=function(params,...){
+             params <- c(params["X.0"],exp(params[c("log.r","log.K","log.tau","log.sigma")]))
+             names(params) <- c("X.0","r","K","tau","sigma")
+             params
+           }
            )
 
-params <- c(
-            log.K=log(1),
-            log.r=log(0.1),
-            log.sigma=log(0.1),
-            log.tau=log(0.1),
-            X.0=1
-            )
+## set the parameters
+coef(po,transform=TRUE) <- c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1)
 
 if (Sys.info()['sysname']=='Linux') {   # only run this under linux
 
@@ -96,13 +110,13 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
 
   ## compute a trajectory of the deterministic skeleton
   tic <- Sys.time()
-  X <- trajectory(po,params=params)
+  X <- trajectory(po)
   toc <- Sys.time()
   print(toc-tic)
 
   ## simulate from the model
   tic <- Sys.time()
-  x <- simulate(po,params=params,nsim=3)
+  x <- simulate(po,nsim=3)
   toc <- Sys.time()
   print(toc-tic)
   

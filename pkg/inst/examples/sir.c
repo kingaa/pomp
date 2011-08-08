@@ -23,7 +23,7 @@ static double logit (double x) {
 #define LOGIOTA        (p[parindex[2]]) // import rate
 #define LOGBETA        (p[parindex[3]]) // transmission rate
 #define LOGBETA_SD     (p[parindex[4]]) // environmental stochasticity SD in transmission rate
-#define LOGPOPSIZE     (p[parindex[5]]) // population size
+#define POPSIZE        (p[parindex[5]]) // population size
 #define LOGRHO         (p[parindex[6]]) // reporting probability
 #define NBASIS         (p[parindex[7]]) // number of periodic B-spline basis functions
 #define DEGREE         (p[parindex[8]]) // degree of periodic B-spline basis functions
@@ -67,7 +67,7 @@ void sir_euler_simulator (double *x, const double *p,
   int nrate = 6;
   double rate[nrate];		// transition rates
   double trans[nrate];		// transition numbers
-  double gamma, mu, iota, beta_sd, beta_var, popsize;
+  double gamma, mu, iota, beta_sd, beta_var;
   double beta;			// transmission rate
   double dW;			// white noise increment
   int nseas = (int) NBASIS;	// number of seasonal basis functions
@@ -82,7 +82,6 @@ void sir_euler_simulator (double *x, const double *p,
   mu = exp(LOGMU);
   iota = exp(LOGIOTA);
   beta_sd = exp(LOGBETA_SD);
-  popsize = exp(LOGPOPSIZE);
   beta_var = beta_sd*beta_sd;
 
   // to evaluate the basis functions and compute the transmission rate, use some of 
@@ -104,7 +103,7 @@ void sir_euler_simulator (double *x, const double *p,
       !(R_FINITE(mu)) ||
       !(R_FINITE(beta_sd)) ||
       !(R_FINITE(iota)) ||
-      !(R_FINITE(popsize)) ||
+      !(R_FINITE(POPSIZE)) ||
       !(R_FINITE(SUSC)) ||
       !(R_FINITE(INFD)) ||
       !(R_FINITE(RCVD)) ||
@@ -121,8 +120,8 @@ void sir_euler_simulator (double *x, const double *p,
   }
 
   // compute the transition rates
-  rate[0] = mu*popsize;		// birth into susceptible class
-  rate[1] = (iota+beta*INFD*dW/dt)/popsize; // force of infection
+  rate[0] = mu*POPSIZE;		// birth into susceptible class
+  rate[1] = (iota+beta*INFD*dW/dt)/POPSIZE; // force of infection
   rate[2] = mu;			// death from susceptible class
   rate[3] = gamma;		// recovery
   rate[4] = mu;			// death from infectious class
@@ -157,7 +156,7 @@ void sir_ODE (double *f, double *x, const double *p,
   int nrate = 6;
   double rate[nrate];		// transition rates
   double term[nrate];		// terms in the equations
-  double gamma, mu, iota, popsize;
+  double gamma, mu, iota;
   double beta;
   int nseas = (int) NBASIS;	// number of seasonal basis functions
   int deg = (int) DEGREE;	// degree of seasonal basis functions
@@ -169,7 +168,6 @@ void sir_ODE (double *f, double *x, const double *p,
   gamma = exp(LOGGAMMA);
   mu = exp(LOGMU);
   iota = exp(LOGIOTA);
-  popsize = exp(LOGPOPSIZE);
 
   // to evaluate the basis functions and compute the transmission rate, use some of 
   // pomp's built-in C-level facilities:
@@ -182,8 +180,8 @@ void sir_ODE (double *f, double *x, const double *p,
   beta = exp((*dot)(nseas,&seasonality[0],&LOGBETA));
 
   // compute the transition rates
-  rate[0] = mu*popsize;		// birth into susceptible class
-  rate[1] = (iota+beta*INFD)/popsize; // force of infection
+  rate[0] = mu*POPSIZE;		// birth into susceptible class
+  rate[1] = (iota+beta*INFD)/POPSIZE; // force of infection
   rate[2] = mu;			// death from susceptible class
   rate[3] = gamma;		// recovery
   rate[4] = mu;			// death from infectious class
@@ -224,7 +222,7 @@ void sir_ODE (double *f, double *x, const double *p,
 #undef LOGIOTA
 #undef LOGBETA
 #undef LOGBETA_SD
-#undef LOGPOPSIZE
+#undef POPSIZE
 #undef LOGRHO
 #undef NBASIS
 #undef DEGREE

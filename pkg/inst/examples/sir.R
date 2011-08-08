@@ -6,16 +6,6 @@ require(pomp)
 
 if (Sys.info()['sysname']=='Linux') {   # only run this under linux
 
-  params <- c(                                                      
-              gamma=26,mu=0.02,iota=0.01,                           
-              beta1=1200,beta2=1800,beta3=600,                      
-              beta.sd=1e-3,                                         
-              pop=2.1e6,                                            
-              rho=0.6,                                              
-              S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200             
-              )                                                     
-
-
   model <- "sir"
   pkg <- "pomp"
   modelfile <- paste(model,".c",sep="")
@@ -50,37 +40,63 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
              ## the order of the state variables assumed in the native routines:
              statenames=c("S","I","R","cases","W"),
              ## the order of the parameters assumed in the native routines:
-             paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho","nbasis","degree","period"), 
+             paramnames=c(
+               "gamma","mu","iota","beta1","beta.sd","pop","rho",
+               "nbasis","degree","period"
+               ), 
              ## reset cases to zero after each new observation:
              zeronames=c("cases"),      
-             initializer=function(params,t0,...){
-               p <- exp(params)
-               with(
-                    as.list(p),
-                    {
-                      fracs <- c(S.0,I.0,R.0)
-                      x0 <- c(
-                              round(pop*fracs/sum(fracs)), # make sure the three compartments sum to 'pop' initially
-                              rep(0,2)	# zeros for 'cases' and 'W'
-                              )
-                      names(x0) <- c("S","I","R","cases","W")
-                      x0
-                    }
-                    )
+             to.log.transform=c(
+               "gamma","mu","iota",
+               "beta1","beta2","beta3","beta.sd",
+               "rho",
+               "S.0","I.0","R.0"
+               ),
+             parameter.transform=function (params, to.log.transform, ...) {
+               params[to.log.transform] <- log(params[to.log.transform])
+               params
+             },
+             parameter.inv.transform=function (params, to.log.transform, ...) {
+               params[to.log.transform] <- exp(params[to.log.transform])
+               params
+             },
+             initializer=function(params, t0, ...) {
+               comp.names <- c("S","I","R")
+               ic.names <- c("S.0","I.0","R.0")
+               snames <- c("S","I","R","cases","W")
+               fracs <- exp(params[ic.names])
+               x0 <- numeric(length(snames))
+               names(x0) <- snames
+               x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
+               ## since 'cases' is in 'zeronames' above, the IC for this variable
+               ## will only matter in trajectory computations
+               ## In trajectory computations, however, 'cases' will be roughly the weekly number of new cases
+               x0["cases"] <- x0["I"]*exp(params["gamma"])/52 
+               x0
              }
              )
+
+  coef(po,transform=TRUE) <- c(                                                      
+            gamma=26,mu=0.02,iota=0.01,                           
+            beta1=1200,beta2=1800,beta3=600,                      
+            beta.sd=1e-3,                                         
+            pop=2.1e6,                                            
+            rho=0.6,                                              
+            S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200,             
+            nbasis=3,degree=3,period=1
+            )
 
   dyn.load(solib) ## load the shared-object library
 
   ## compute a trajectory of the deterministic skeleton
   tic <- Sys.time()
-  X <- trajectory(po,c(log(params),nbasis=3,degree=3,period=1),hmax=1/52)
+  X <- trajectory(po,hmax=1/52)
   toc <- Sys.time()
   print(toc-tic)
 
   ## simulate from the model
   tic <- Sys.time()
-  x <- simulate(po,params=c(log(params),nbasis=3,degree=3,period=1),nsim=3)
+  x <- simulate(po,nsim=3)
   toc <- Sys.time()
   print(toc-tic)
   
