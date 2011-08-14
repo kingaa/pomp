@@ -4,25 +4,25 @@
 
 #include "pomp.h"
 
-static double expit (double x) {
-  return 1.0/(1.0 + exp(-x));
-}
+// static double expit (double x) {
+//   return 1.0/(1.0 + exp(-x));
+// }
 
-static double logit (double x) {
-  return log(x/(1-x));
-}
+// static double logit (double x) {
+//   return log(x/(1-x));
+// }
 
-static double term_time (double t, double b0, double b1) 
-{
-  static double correction = 0.4958904;
-  double day = 365.0 * (t - floor(t));
-  double interm;
-  interm = ((day >= 7.0 && day < 100.0)
-	    || (day >= 116.0 && day < 200.0) 
-	    || (day >= 252.0 && day < 300.0) 
-	    || (day >= 308.0 && day < 356.0)) ? 1.0 : -1.0;
-  return b0*(1.0+b1*interm)/(1.0+b1*correction);
-}
+// static double term_time (double t, double b0, double b1) 
+// {
+//   static double correction = 0.4958904;
+//   double day = 365.0 * (t - floor(t));
+//   double interm;
+//   interm = ((day >= 7.0 && day < 100.0)
+// 	    || (day >= 116.0 && day < 200.0) 
+// 	    || (day >= 252.0 && day < 300.0) 
+// 	    || (day >= 308.0 && day < 356.0)) ? 1.0 : -1.0;
+//   return b0*(1.0+b1*interm)/(1.0+b1*correction);
+// }
 
 #define LOGGAMMA       (p[parindex[0]]) // recovery rate
 #define LOGMU          (p[parindex[1]]) // baseline birth and death rate

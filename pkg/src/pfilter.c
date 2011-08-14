@@ -57,7 +57,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   int nprotect = 0;
   SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue;
   SEXP rw_names, ess, fail, loglik;
-  SEXP newstates, newparams;
+  SEXP newstates = R_NilValue, newparams = R_NilValue;
   SEXP retval, retvalnames;
   double *xpm = 0, *xpv = 0, *xfm = 0, *xw = 0, *xx = 0, *xp = 0;
   SEXP dimX, dimP, newdim, Xnames, Pnames, pindex;
@@ -219,7 +219,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   if (!all_fail) { // resample the particles unless we have filtering failure
     int xdim[2];
     int sample[np];
-    double *ss, *st, *ps, *pt;
+    double *ss = 0, *st = 0, *ps = 0, *pt = 0;
 
     // create storage for new states
     xdim[0] = nvars; xdim[1] = np;
