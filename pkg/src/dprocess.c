@@ -8,7 +8,7 @@
 SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log)
 {
   int nprotect = 0;
-  int *xdim, nvars, nreps, ntimes;
+  int *xdim, nreps, ntimes;
   SEXP X, fn, fcall, rho;
   SEXP dimP, dimX, dimF;
   ntimes = length(times);
@@ -27,7 +27,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log)
     error("dprocess error: 'params' must be a rank-2 array");
   }
   xdim = INTEGER(dimX);
-  nvars = xdim[0]; nreps = xdim[1];
+  nreps = xdim[1];
   if (nreps != INTEGER(dimP)[1]) {
     UNPROTECT(nprotect);
     error("dprocess error: number of columns of 'params' and 'x' do not agree");

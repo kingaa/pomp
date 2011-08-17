@@ -52,7 +52,7 @@
 \S4method{window}{pomp}(x, start, end, \dots)
 \S4method{show}{pomp}(object)
 \S4method{as}{pomp}(object, class)
-as.data.frame.pomp(x, row.names, optional, \dots)
+\S3method{as.data.frame}{pomp}(x, row.names, optional, \dots)
 \S4method{coerce}{pomp,data.frame}(from, to = "data.frame", strict = TRUE)
 \S4method{print}{pomp}(x, \dots)
 \S4method{plot}{pomp}(x, y, variables, panel = lines,
