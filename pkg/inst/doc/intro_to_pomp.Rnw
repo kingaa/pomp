@@ -1733,7 +1733,7 @@ We'll accomplish this by assuming a multiplicative white noise on the force of i
 \end{equation*}
 where $dW/dt$ is a white noise, specifically the ``derivative'' of an integrated Gamma white noise process.
 \citet{He2010} discuss such processes and apply them in an inferential context;
-Breto et al. (submitted) develop the theory of infinitesimally overdispersed processes.
+\citet{Breto2011} develop the theory of infinitesimally overdispersed processes.
 
 Let's modify the process-model simulator to incorporate these three complexities.
 <<complex-sir-def>>=
