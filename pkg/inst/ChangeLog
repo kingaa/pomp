@@ -1,5 +1,25 @@
+2011-08-17  kingaa
+
+	* [r537] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/pomp.bib, inst/doc/ricker-probe-plot.jpg: - update
+	  reference in intro vignette
+
+2011-08-15  kingaa
+
+	* [r536] inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - update vignettes
+	* [r535] inst/doc/Makefile, inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/ricker-probe-plot.jpg: -
+	  keep the jpeg files
+
+2011-08-14  kingaa
+
+	* [r534] DESCRIPTION, src/pfilter.c, src/sir.c: - clean up some of
+	  the C code to get rid of annoying warnings
+
 2011-08-08  kingaa
 
+	* [r533] DESCRIPTION, inst/ChangeLog, inst/TODO:
 	* [r532] data/gillespie.sir.rda, inst/data-R/gillespie.sir.R,
 	  inst/examples/gompertz.R, inst/examples/sir.R,
 	  inst/examples/sir.c, man/gompertz.Rd: - include parameter
