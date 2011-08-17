@@ -4,6 +4,9 @@ NEWS
      	New optional arguments 'parameter.transform' and 'parameter.inv.transform' to 'pomp' allow the user to specify transformations between natural and internal parameter scalings.
 	A new option 'transfom' to 'coef' and 'coef<-' allows the user to get and set parameters on the natural scale.
 	See 'pomp?coef' and the "intro_to_pomp" vignette for details and examples.
+	Similarly, the 'conv.rec' method now takes an optional 'transform' argument.
+
+     o	Minor improvements to the documentation.
 
 0.38-5
      o	'pfilter' will now give an error if ever a non-finite likelihood (dmeasure value) is returned.
