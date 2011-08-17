@@ -1,5 +1,10 @@
 2011-08-17  kingaa
 
+	* [r540] inst/NEWS: - update NEWS file
+	* [r539] man/pomp-methods.Rd, src/dprocess.c: - remove unused
+	  variable in 'dprocess.c'
+	  - use \S3method markup in documentation of 'as.data.frame.pomp'
+	* [r538] DESCRIPTION, inst/ChangeLog: - to upload to CRAN
 	* [r537] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
 	  inst/doc/pomp.bib, inst/doc/ricker-probe-plot.jpg: - update
 	  reference in intro vignette
