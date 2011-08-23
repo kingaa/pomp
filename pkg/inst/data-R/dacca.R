@@ -140,7 +140,7 @@ pomp(
        params[log.trans] <- exp(params[log.trans])
        params
      },
-     initializer = function (params, t0, covars, all.state.names, comp.names, nrstage, ...) {
+     initializer = function (params, t0, covars, nrstage, ...) {
        all.state.names <- c("S","I","Rs","R1","R2","R3","M","W","count")
        comp.names <- c("S","I","Rs",paste("R",1:nrstage,sep=''))
        comp.ic.names <- paste(comp.names,"0",sep='.')
