@@ -38,7 +38,7 @@ SEXP pomp_fun_handler (SEXP pfun, int *use_native);
 SEXP get_pomp_fun (SEXP pfun);
 
 // lookup_table.c
-SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t, int *index);
+SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t);
 
 // resample.c
 SEXP systematic_resampling(SEXP weights);

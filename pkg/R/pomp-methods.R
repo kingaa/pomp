@@ -27,6 +27,12 @@ setAs(
           x <- cbind(x,t(from@states))
           names(x) <- c(nm,rownames(from@states))
         }
+        if (length(from@covar)>0) {
+          nm <- names(x)
+          y <- .Call(lookup_in_table,from@tcovar,from@covar,from@times)
+          x <- cbind(x,t(y))
+          names(x) <- c(nm,rownames(y))
+        }
         x
       }
       )

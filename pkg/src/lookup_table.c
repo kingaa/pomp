@@ -4,10 +4,15 @@
 
 #include "pomp_internal.h"
 
-SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t, int *index) {
+SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t) {
   int nprotect = 0;
-  int *dim, length, width;
+  int *dim, xdim[2], length, width;
+  int j, nt;
+  double *tp, *xp;
   SEXP X;
+
+  PROTECT(t = AS_NUMERIC(t)); nprotect++;
+  nt = LENGTH(t);
 
   dim = INTEGER(GET_DIM(xtable));
   length = dim[0]; width = dim[1];
@@ -16,12 +21,19 @@ SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t, int *index) {
     error("incommensurate dimensions in 'lookup_in_table'");
   }
 
-  PROTECT(X = NEW_NUMERIC(width)); nprotect++;
-  SET_NAMES(X,GET_COLNAMES(GET_DIMNAMES(xtable)));
+  if (nt > 1) {
+    xdim[0] = width; xdim[1] = nt;
+    PROTECT(X = makearray(2,xdim)); nprotect++;
+    setrownames(X,GET_COLNAMES(GET_DIMNAMES(xtable)),2);
+  } else {
+    PROTECT(X = NEW_NUMERIC(width)); nprotect++;
+    SET_NAMES(X,GET_COLNAMES(GET_DIMNAMES(xtable)));
+  }
 
   struct lookup_table tab = {length,width,0,REAL(ttable),REAL(xtable)};
-  table_lookup(&tab,*(REAL(t)),REAL(X),0);
-  
+  for (j = 0, tp = REAL(t), xp = REAL(X); j < nt; j++, tp++, xp += width)
+    table_lookup(&tab,*tp,xp,0);
+
   UNPROTECT(nprotect);
   return X;
 }

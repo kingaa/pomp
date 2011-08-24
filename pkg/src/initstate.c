@@ -15,7 +15,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0)
   SEXP covar, tcovar, covars;
   SEXP paramnames, statenames, mindex;
   int *dim, *midx;
-  int npar, nrep, nvar, index = 0;
+  int npar, nrep, nvar;
   int xdim[2], j, k;
   double *p, *pp, *xp, *xpp;
 
@@ -45,7 +45,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0)
   PROTECT(tcovar = GET_SLOT(object,install("tcovar"))); nprotect++;
   if (LENGTH(tcovar) > 0) {	// do table lookkup
     PROTECT(covar = GET_SLOT(object,install("covar"))); nprotect++;
-    PROTECT(covars = lookup_in_table(tcovar,covar,t0,&index)); nprotect++;
+    PROTECT(covars = lookup_in_table(tcovar,covar,t0)); nprotect++;
     PROTECT(fcall = LCONS(covars,fcall)); nprotect++;
     SET_TAG(fcall,install("covars"));
   }

@@ -7,6 +7,7 @@ useDynLib(
           systematic_resampling,
           euler_model_simulator,
           euler_model_density,
+          lookup_in_table,
           SSA_simulator,
           R_Euler_Multinom,D_Euler_Multinom,
           pfilter_computations,

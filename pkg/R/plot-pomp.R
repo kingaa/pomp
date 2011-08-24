@@ -14,11 +14,18 @@ setMethod(
             vars <- names(X)
             tpos <- match("time",vars)
             if (is.na(tpos))
-              stop(sQuote("pomp")," plot error: no data variable labeled ",sQuote("time"),call.=FALSE)
-            if (missing(variables))
+              stop(
+                   sQuote("pomp"),
+                   " plot error: no data variable labeled ",
+                   sQuote("time"),
+                   call.=FALSE
+                   )
+            if (missing(variables)) {
               vars <- vars[-tpos]
-            else
+              vars <- setdiff(vars,colnames(x@covar))
+            } else {
               vars <- variables
+            }
             plotpomp <- function (x, time, 
                                   xy.labels, xy.lines, panel = lines, nc, xlabel,
                                   type = "l", xlim = NULL, ylim = NULL, xlab = "time",

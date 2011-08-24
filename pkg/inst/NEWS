@@ -1,4 +1,8 @@
 NEWS
+0.39-2
+     o	When 'po' is a 'pomp'-class object with covariates, 'as.data.frame(po)' and 'as(po,"data.frame")' now contain columns for the covariates. 
+     	The latter are interpolated, if necessary, at the observation times.
+
 0.39-1
      o	New facilities for parameter transformation are provided.
      	New optional arguments 'parameter.transform' and 'parameter.inv.transform' to 'pomp' allow the user to specify transformations between natural and internal parameter scalings.
