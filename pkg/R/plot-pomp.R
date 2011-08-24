@@ -23,8 +23,10 @@ setMethod(
             if (missing(variables)) {
               vars <- vars[-tpos]
               vars <- setdiff(vars,colnames(x@covar))
+              ylabels <- NULL
             } else {
               vars <- variables
+              ylabels <- names(variables)
             }
             plotpomp <- function (x, time, 
                                   xy.labels, xy.lines, panel = lines, nc, xlabel,
@@ -48,7 +50,9 @@ setMethod(
                 stop(sQuote("pomp")," plot error: cannot plot more than 10 series as ",dQuote("multiple"),call.=FALSE)
               if (is.null(main))
                 main <- xlabel
-              nm <- colnames(x)
+              nm <- ylab
+              if (is.null(nm))
+                nm <- colnames(x)
               if (is.null(nm))
                 nm <- paste("Series", 1:nser)
               if (is.null(nc))
@@ -94,6 +98,7 @@ setMethod(
               plotpomp(
                        x=X[vv],
                        time=X[[tpos]],
+                       ylab=ylabels,
                        xy.labels=FALSE,
                        xlabel=deparse(substitute(x,env=parent.frame(1))),
                        panel=panel,
