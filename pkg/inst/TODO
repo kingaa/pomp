@@ -16,3 +16,7 @@
   prediction variances, prediction means?
 
 * Add plugin for adaptive tau leaping algorithm.
+
+* Parallel 'pfilter' algorithm.
+
+* Add LPA model example.

@@ -1,5 +1,37 @@
+2011-08-29  kingaa
+
+	* [r547] data/LondonYorke.rda, data/blowflies.rda, data/dacca.rda,
+	  data/euler.sir.rda, data/gillespie.sir.rda, data/gompertz.rda,
+	  data/ou2.rda, data/ricker.rda, data/rw2.rda, data/verhulst.rda: -
+	  compress the data files
+
+2011-08-24  kingaa
+
+	* [r546] R/plot-pomp.R: - one can now change the ylabels in
+	  plotting a pomp object
+	* [r545] DESCRIPTION, NAMESPACE, R/plot-pomp.R, R/pomp-methods.R,
+	  inst/NEWS, src/initstate.c, src/lookup_table.c,
+	  src/pomp_internal.h, tests/gillespie.Rout.save,
+	  tests/sir.Rout.save: - improve 'lookup_in_table', which can now
+	  handle multiple index values
+	  - as(po,'data.frame'), 'po' a 'pomp' object, now has columns for
+	  (interpolated) covariates
+	  - plot(po) behaves as before if 'po' is a 'pomp' object
+
+2011-08-23  kingaa
+
+	* [r544] DESCRIPTION, data/dacca.rda, inst/data-R/dacca.R: - fix
+	  infelicity in 'dacca' object
+
 2011-08-17  kingaa
 
+	* [r543] DESCRIPTION, inst/doc/ricker-probe-plot.jpg: - minor
+	  changes
+	* [r542] inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/pomp.bib,
+	  inst/doc/ricker-probe-plot.jpg: - update reference in intro
+	  vignette
+	* [r541] inst/ChangeLog: - update ChangeLog
 	* [r540] inst/NEWS: - update NEWS file
 	* [r539] man/pomp-methods.Rd, src/dprocess.c: - remove unused
 	  variable in 'dprocess.c'
