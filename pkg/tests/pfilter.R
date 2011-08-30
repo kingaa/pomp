@@ -16,6 +16,14 @@ ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
 print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
 
 data(euler.sir)
-pf <- pfilter(euler.sir,Np=200,seed=394343L)
+pf <- pfilter(euler.sir,Np=100,seed=394343L)
+print(coef(pf,transform=TRUE))
 print(pf$loglik,digits=4)
+
+p <- coef(euler.sir)
+euler.sir@params <- numeric(0)
+p["iota"] <- log(1)
+pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L)
+print(coef(pf,transform=TRUE))
+print(logLik(pf),digits=4)
 

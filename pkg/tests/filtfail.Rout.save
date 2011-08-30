@@ -110,11 +110,10 @@ Loading required package: deSolve
 +               verbose=TRUE
 +               )
 filtering failure at time t = 4
-pfilter timestep 4 of 19 finished
-pfilter timestep 9 of 19 finished
-pfilter timestep 14 of 19 finished
+pfilter timestep 5 of 19 finished
+pfilter timestep 10 of 19 finished
+pfilter timestep 15 of 19 finished
 filtering failure at time t = 16
 filtering failure at time t = 17
 filtering failure at time t = 18
-pfilter timestep 19 of 19 finished
 > 

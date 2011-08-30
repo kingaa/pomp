@@ -43,8 +43,29 @@ particle filter log likelihood at truth
   -479.61      0.46 
 > 
 > data(euler.sir)
-> pf <- pfilter(euler.sir,Np=200,seed=394343L)
+> pf <- pfilter(euler.sir,Np=100,seed=394343L)
+> print(coef(pf,transform=TRUE))
+       gamma           mu         iota       nbasis       degree       period 
+2.600000e+01 2.000000e-02 1.000000e-02 3.000000e+00 3.000000e+00 1.000000e+00 
+       beta1        beta2        beta3      beta.sd          pop          rho 
+1.200000e+03 1.800000e+03 6.000000e+02 1.000000e-03 2.100000e+06 6.000000e-01 
+         S.0          I.0          R.0 
+2.166667e-02 1.000000e-03 9.773333e-01 
 > print(pf$loglik,digits=4)
-[1] -884.2
+[1] -892.7
+> 
+> p <- coef(euler.sir)
+> euler.sir@params <- numeric(0)
+> p["iota"] <- log(1)
+> pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L)
+> print(coef(pf,transform=TRUE))
+       gamma           mu         iota       nbasis       degree       period 
+2.600000e+01 2.000000e-02 1.000000e+00 3.000000e+00 3.000000e+00 1.000000e+00 
+       beta1        beta2        beta3      beta.sd          pop          rho 
+1.200000e+03 1.800000e+03 6.000000e+02 1.000000e-03 2.100000e+06 6.000000e-01 
+         S.0          I.0          R.0 
+2.166667e-02 1.000000e-03 9.773333e-01 
+> print(logLik(pf),digits=4)
+[1] -907.6
 > 
 > 

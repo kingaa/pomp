@@ -68,7 +68,7 @@ pfilter.internal <- function (object, params, Np,
   
   if (is.null(dim(params))) {
     one.par <- TRUE               # there is only one parameter vector
-    coef(object,names(params)) <- unname(params) # set params slot to the parameters
+    coef(object) <- params        # set params slot to the parameters
     params <- matrix(
                      params,
                      nrow=length(params),
@@ -259,7 +259,7 @@ pfilter.internal <- function (object, params, Np,
       pparticles[[nt]] <- params
     }
 
-    if (verbose && ((ntimes-nt)%%5==0))
+    if (verbose && (nt%%5==0))
       cat("pfilter timestep",nt,"of",ntimes,"finished\n")
 
   }
