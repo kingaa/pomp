@@ -1,14 +1,19 @@
 slice.design <- function (center, ...) {
+  .Deprecated(new="sliceDesign",package="pomp")
+  sliceDesign(center,...)
+}
+
+sliceDesign <- function (center, ...) {
   slices <- list(...)
   if ((!is.numeric(center))||is.null(names(center)))
-    stop(sQuote("slice.design"),": ",sQuote("center")," must be a named numeric vector")
+    stop(sQuote("sliceDesign"),": ",sQuote("center")," must be a named numeric vector")
   slnm <- names(slices)
   if (any(slnm==""))
-    stop(sQuote("slice.design"),": you cannot slice along an unnamed parameter")
+    stop(sQuote("sliceDesign"),": you cannot slice along an unnamed parameter")
   if (!all(slnm%in%names(center))) {
     problems <- slnm[!(slnm%in%names(center))]
     stop(
-         sQuote("slice.design"),
+         sQuote("sliceDesign"),
          " error: variable(s) ",
          sQuote(paste(problems,collapse=",")),
          " do not appear in ",

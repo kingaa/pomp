@@ -23,7 +23,7 @@ profile.design(\dots, lower, upper, nprof)
 \value{
   \code{profileDesign} returns a data frame with \code{nprof} points per profile point.
   The other parameters in \code{vars} are sampled using \code{sobol}.
-  The second form (\code{profile.design}) is now deprecated.
+  The equivalent form (\code{profile.design}) is now deprecated.
 }
 \seealso{\code{\link{sobol}}}
 \author{Aaron A. King \email{kingaa at umich dot edu}}

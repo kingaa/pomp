@@ -4,9 +4,12 @@ NEWS
      	The latter are interpolated, if necessary, at the observation times.
 
      o	Bug fix: when 'pfilter' is called with a single parameter vector supplied in the 'params' argument, these parameters are copied into the 'params' slot of the resulting 'pfilterd.pomp' object.
+     	Before, this failed when the 'params' slot of the 'pomp' object was empty.
+	A similar bug existed in 'traj.match' and has likewise been fixed.
 
      o	To eliminate warnings and confusion during package check, 'profile.design' has been replaced by 'profileDesign'.
-     	The former is now deprecated and will be removed in a future release.
+     	For parallelism, 'slice.design' and 'sobol.design' have been replaced by 'sliceDesign' and 'sobolDesign', respectively.
+     	The older forms are now deprecated and will be removed in a future release.
 
 0.39-1
      o	New facilities for parameter transformation are provided.

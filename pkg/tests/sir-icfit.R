@@ -105,7 +105,7 @@ est <- ics[-1]
 np <- 10000                              # number of particles to use
 pp <- array(coef(po),dim=c(length(coef(po)),np),dimnames=list(names(coef(po)),NULL))
 ## generate an array of guesses
-guesses <- sobol.design(lower=guess[est]-0.5,upper=guess[est]+0.5,nseq=np)
+guesses <- sobolDesign(lower=guess[est]-0.5,upper=guess[est]+0.5,nseq=np)
 nd <- length(time(po))
 
 ## fit the initial conditions using repeated filtering on the initial window of the data
@@ -118,11 +118,11 @@ for (j in seq_len(3)) {
     pf <- pfilter(po,params=pp,save.params=TRUE)
     pp <- pf@saved.params[[nd]]
   }
-  guesses <- sobol.design(
-                          lower=apply(pp[est,],1,min),
-                          upper=apply(pp[est,],1,max),
-                          nseq=np
-                          )
+  guesses <- sobolDesign(
+                         lower=apply(pp[est,],1,min),
+                         upper=apply(pp[est,],1,max),
+                         nseq=np
+                         )
 }
 
 pf.fit <- po

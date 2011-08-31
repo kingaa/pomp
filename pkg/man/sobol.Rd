@@ -1,5 +1,6 @@
 \name{sobol}
 \alias{sobol}
+\alias{sobolDesign}
 \alias{sobol.design}
 \title{Sobol' low-discrepancy sequence}
 \description{
@@ -7,6 +8,7 @@
 }
 \usage{
 sobol(vars, n)
+sobolDesign(lower, upper, nseq)
 sobol.design(lower, upper, nseq)
 }
 \arguments{
@@ -18,8 +20,9 @@ sobol.design(lower, upper, nseq)
   \item{sobol}{
     Returns a data frame with \code{n} \sQuote{observations} of the variables in \code{vars}.
   }
-  \item{sobol.design}{
+  \item{sobolDesign}{
     Returns a data frame with \code{nseq} \sQuote{observations} of the variables over the range specified.
+    The equivalent form \code{sobol.design} is now deprecated and will be removed in a future release.
   }
 }
 \references{
@@ -27,10 +30,10 @@ sobol.design(lower, upper, nseq)
   Numerical Recipes in C,
   Cambridge University Press, 1992
 }
-\seealso{\code{\link{slice.design}}, \code{\link{profile.design}}}
+\seealso{\code{\link{sliceDesign}}, \code{\link{profileDesign}}}
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{
 plot(sobol(vars=list(a=c(0,1),b=c(100,200)),100))
-plot(sobol.design(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
+plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
 }
 \keyword{design}

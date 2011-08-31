@@ -13,7 +13,7 @@ profileDesign <- function (..., lower, upper, nprof) {
     stop(sQuote("profileDesign"),": names of ",sQuote("lower")," and ",sQuote("upper")," must match!")
   vars <- ovars[!(ovars%in%pvars)]
   x <- as.matrix(expand.grid(...))
-  y <- as.matrix(sobol.design(lower=lower,upper=upper,nseq=nprof))
+  y <- as.matrix(sobolDesign(lower=lower,upper=upper,nseq=nprof))
   z <- array(dim=c(nrow(x)*nrow(y),ncol(x)+ncol(y)))
   colnames(z) <- c(colnames(x),colnames(y))
   i <- 1
