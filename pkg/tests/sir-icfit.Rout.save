@@ -1,5 +1,5 @@
 
-R version 2.13.1 (2011-07-08)
+R Under development (unstable) (2011-07-13 r56369)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -658,7 +658,7 @@ loglik -49.09744953 -1.768807e+03 -4.888492e+01
 > np <- 10000                              # number of particles to use
 > pp <- array(coef(po),dim=c(length(coef(po)),np),dimnames=list(names(coef(po)),NULL))
 > ## generate an array of guesses
-> guesses <- sobol.design(lower=guess[est]-0.5,upper=guess[est]+0.5,nseq=np)
+> guesses <- sobolDesign(lower=guess[est]-0.5,upper=guess[est]+0.5,nseq=np)
 > nd <- length(time(po))
 > 
 > ## fit the initial conditions using repeated filtering on the initial window of the data
@@ -671,11 +671,11 @@ loglik -49.09744953 -1.768807e+03 -4.888492e+01
 +     pf <- pfilter(po,params=pp,save.params=TRUE)
 +     pp <- pf@saved.params[[nd]]
 +   }
-+   guesses <- sobol.design(
-+                           lower=apply(pp[est,],1,min),
-+                           upper=apply(pp[est,],1,max),
-+                           nseq=np
-+                           )
++   guesses <- sobolDesign(
++                          lower=apply(pp[est,],1,min),
++                          upper=apply(pp[est,],1,max),
++                          nseq=np
++                          )
 + }
 > 
 > pf.fit <- po
