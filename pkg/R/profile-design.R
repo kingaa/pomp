@@ -1,11 +1,16 @@
 profile.design <- function (..., lower, upper, nprof) {
+  .Deprecated(new="profileDesign",package="pomp")
+  profileDesign(...,lower,upper,nprof)
+}
+
+profileDesign <- function (..., lower, upper, nprof) {
   prof <- list(...)
   pvars <- names(prof)
   if (any(pvars==""))
-    stop(sQuote("profile.design"),": you cannot profile over an unnamed variable!")
+    stop(sQuote("profileDesign"),": you cannot profile over an unnamed variable!")
   ovars <- names(lower)
   if (!all(sort(ovars)==sort(names(upper))))
-    stop(sQuote("profile.design"),": names of ",sQuote("lower")," and ",sQuote("upper")," must match!")
+    stop(sQuote("profileDesign"),": names of ",sQuote("lower")," and ",sQuote("upper")," must match!")
   vars <- ovars[!(ovars%in%pvars)]
   x <- as.matrix(expand.grid(...))
   y <- as.matrix(sobol.design(lower=lower,upper=upper,nseq=nprof))

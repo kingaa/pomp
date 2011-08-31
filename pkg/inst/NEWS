@@ -5,6 +5,9 @@ NEWS
 
      o	Bug fix: when 'pfilter' is called with a single parameter vector supplied in the 'params' argument, these parameters are copied into the 'params' slot of the resulting 'pfilterd.pomp' object.
 
+     o	To eliminate warnings and confusion during package check, 'profile.design' has been replaced by 'profileDesign'.
+     	The former is now deprecated and will be removed in a future release.
+
 0.39-1
      o	New facilities for parameter transformation are provided.
      	New optional arguments 'parameter.transform' and 'parameter.inv.transform' to 'pomp' allow the user to specify transformations between natural and internal parameter scalings.

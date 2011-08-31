@@ -68,6 +68,7 @@ export(
        sobol,
        sobol.design,
        slice.design,
+       profileDesign,
        profile.design,
        bspline.basis,
        periodic.bspline.basis,

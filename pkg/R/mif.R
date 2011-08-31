@@ -507,7 +507,7 @@ setMethod(
           }
           )
 
-mif.profile.design <- function (object, profile, lower, upper, nprof, ivps, 
+mif.profileDesign <- function (object, profile, lower, upper, nprof, ivps, 
                                 rw.sd, Np, ic.lag, var.factor, cooling.factor, ...)
   {
     if (missing(profile)) profile <- list()
@@ -519,7 +519,7 @@ mif.profile.design <- function (object, profile, lower, upper, nprof, ivps,
     if (missing(ivps)) ivps <- character(0)
     Np <- as.integer(Np)
 
-    pd <- do.call(profile.design,c(profile,list(lower=lower,upper=upper,nprof=nprof)))
+    pd <- do.call(profileDesign,c(profile,list(lower=lower,upper=upper,nprof=nprof)))
 
     object <- as(object,"pomp")
 
