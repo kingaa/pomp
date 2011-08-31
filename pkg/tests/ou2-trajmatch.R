@@ -37,3 +37,23 @@ summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="su
 summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="sannbox",trace=3,parscale=0.1,maxit=100))
 
 summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),eval.only=T))
+
+data(ou2)
+p <- coef(ou2)
+ou2@params <- numeric(0)
+res <- traj.match(
+                  ou2,
+                  start=p,
+                  est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),
+                  eval.only=TRUE
+                  )
+print(coef(res),digits=4)
+res <- traj.match(
+                  ou2,
+                  start=p,
+                  est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),
+                  maxit=2000,
+                  reltol=1e-8
+                  )
+print(coef(res),digits=4)
+print(coef(ou2),digist=4)

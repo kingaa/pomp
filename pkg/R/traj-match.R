@@ -45,7 +45,7 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
 
   t0 <- timezero(object)
   obj <- as(object,"pomp")
-  coef(obj,names(start)) <- unname(start)
+  coef(obj) <- start
   pmat <- as.matrix(start)
 
   obj.fn <- function (x, object, params, t0, ind) {
