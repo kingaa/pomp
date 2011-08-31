@@ -971,10 +971,10 @@ It is this synthetic likelihood that \pkg{pomp} attempts to maximize in probe ma
               nsim=1000,
               seed=1066L
               )
-  jpeg(
-       filename="ricker-probe-plot.jpg",
-       width=6,height=6,units='in',quality=75,res=300
-       )
+  png(
+      filename="ricker-probe-plot.png",
+      width=6,height=6,units='in',res=300
+      )
   plot(pb)
   dev.off()
 @ 
