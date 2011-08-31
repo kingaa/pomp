@@ -1,5 +1,22 @@
+2011-08-31  kingaa
+
+	* [r550] DESCRIPTION, NAMESPACE, R/mif.R, R/profile-design.R,
+	  inst/NEWS, man/profile-design.Rd: - replace 'profile.design' by
+	  'profileDesign' to eliminate warnings during package check
+	  ('profile.design' is mistaken for an undocumented S3 method). The
+	  former is now deprecated.
+
+2011-08-30  kingaa
+
+	* [r549] R/pfilter.R, inst/NEWS, tests/filtfail.Rout.save,
+	  tests/pfilter.R, tests/pfilter.Rout.save: - Bug fix: when
+	  'pfilter' is called with a single parameter vector supplied in
+	  the 'params' argument, these parameters are copied into the
+	  'params' slot of the resulting 'pfilterd.pomp' object.
+
 2011-08-29  kingaa
 
+	* [r548] DESCRIPTION, inst/ChangeLog, inst/TODO:
 	* [r547] data/LondonYorke.rda, data/blowflies.rda, data/dacca.rda,
 	  data/euler.sir.rda, data/gillespie.sir.rda, data/gompertz.rda,
 	  data/ou2.rda, data/ricker.rda, data/rw2.rda, data/verhulst.rda: -
