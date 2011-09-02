@@ -32,7 +32,14 @@
     If it desired that all particles should share the same parameter values, one one may supply \code{params} as a named numeric vector.
   }
   \item{Np}{
-    integer; number of particles to use.
+    the number of particles to use.
+    This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
+    Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object,t0=TRUE))}) or as a function taking a positive integer argument.
+    In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
+    \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
+    \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
+    and so on, while when \code{T=length(time(object,t0=TRUE))},
+    \code{Np(T)} is the number of particles to sample at the end of the time-series.
     When \code{object} is of class \code{mif}, this is by default the same number of particles used in the \code{mif} iterations.
   }
   \item{tol}{

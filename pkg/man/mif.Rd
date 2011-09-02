@@ -72,12 +72,19 @@ mif(object, \dots)
     the name of every positive element of \code{rw.sd} must be in either \code{pars} or \code{ivps}.
   }
   \item{Np}{
-    a positive integer;
-    the number of particles to use in filtering
+    the number of particles to use in filtering.
+    This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
+    Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object,t0=TRUE))}) or as a function taking a positive integer argument.
+    In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
+    \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
+    \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
+    and so on, while when \code{T=length(time(object,t0=TRUE))},
+    \code{Np(T)} is the number of particles to sample at the end of the time-series.
   }
   \item{ic.lag}{
     a positive integer;
-    the timepoint for fixed-lag smoothing of initial-value parameters
+    the timepoint for fixed-lag smoothing of initial-value parameters.
+    The \code{mif} update for initial-value parameters consists of replacing them by their filtering mean at time \code{times[ic.lag]}, where \code{times=time(object)}.
   }
   \item{var.factor}{
     a positive number;
