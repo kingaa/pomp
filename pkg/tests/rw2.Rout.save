@@ -86,6 +86,13 @@ Loading required package: deSolve
 +   x
 + }
 > 
+> crap.initializer <- function (params, t0, ...) 
++ {
++   x <- rnorm(n=ceiling(runif(n=1,min=0,max=10)))
++   names(x) <-head(letters,length(x))
++   x
++ }
+> 
 > p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
 > 
 > rw2 <- pomp(
@@ -253,7 +260,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x1ac3308>
+<environment: 0x1a7dd68>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -266,11 +273,11 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x1ac3308>
+<environment: 0x1a7dd68>
 skeleton ( map ) = 
 function (x, t, params, covars, ...) 
 stop(sQuote("skeleton"), " not specified")
-<environment: 0x1b206e0>
+<environment: 0x197dfb8>
 initializer = 
 function (params, t0, ...) 
 {
@@ -281,11 +288,11 @@ function (params, t0, ...)
 parameter transform function = 
 function (params, ...) 
 params
-<environment: 0x1b206e0>
+<environment: 0x197dfb8>
 parameter inverse transform function = 
 function (params, ...) 
 params
-<environment: 0x1b206e0>
+<environment: 0x197dfb8>
 userdata = 
 $useless
 [1] 23
@@ -296,6 +303,15 @@ $useless
 +     )
 Error in try(.Call(simulation_computations, object, params, times, t0,  : 
   a state variable and a parameter share a single name: 'x1.0'
+Error : 'simulate' error
+> 
+> rw2 <- pomp(rw2,initializer=crap.initializer)
+> 
+> try(
++     simulate(rw2,params=p)
++     )
+Error in try(.Call(simulation_computations, object, params, times, t0,  : 
+  user initializer returns vectors of non-uniform length
 Error : 'simulate' error
 > 
 > rw2 <- pomp(
@@ -401,25 +417,25 @@ Error : 'simulate' error
 > timezero(new) <- 19
 > print(simulate(new))
 data and states:
-   time         y1        y2         x1        x2
-1    20 -1.6884337  7.893126 -1.2104266  5.585134
-2    21 -2.8145700  9.654295 -2.9139462  9.999156
-3    22 -0.7079154 11.427262 -1.2691314 12.803405
-4    23 -1.9663383 13.816879 -1.0336197 14.339870
-5    24 -0.3243582 15.633269 -1.1466245 15.914169
-6    25 -1.4200363  7.390836  0.5447600  7.565067
-7    26  0.6036175 10.634535  0.2617258 11.984714
-8    27 -1.1057599  5.890297 -1.4472311  4.919314
-9    28 -0.8215306  5.446502 -1.4686200  5.261945
-10   29  0.5286784  5.028662  0.3162960  4.086637
-11   30  1.3077022  3.727208  0.3754759  4.471904
+   time         y1         y2         x1         x2
+1    20  0.2438664  3.1093573  0.5247663  5.0741536
+2    21 -2.4324990  4.5669427 -2.2582676  4.2250510
+3    22 -2.1352306 -0.5603485 -0.7850521 -0.9018197
+4    23 -2.1692027 -0.3188970 -3.1401853 -0.9659864
+5    24 -2.8414183  4.6011439 -3.0259749  4.3887615
+6    25 -2.4757198  5.4985276 -3.4177442  4.5663012
+7    26 -4.0340183  2.7230631 -3.2893220  3.1322801
+8    27 -0.9703700  2.7323470 -0.9813302  3.4304086
+9    28 -2.2416611  4.2287768 -1.3261916  5.1140568
+10   29 -3.3820676  3.2641391 -2.7023344  2.3159011
+11   30 -6.0554038  5.8737346 -3.2253252  4.7827002
 > 
 > time(rw2) <- seq(1,1000,by=20)
 > x <- simulate(rw2)
 > states(x)[,1:5]
-          [,1]      [,2]      [,3]       [,4]        [,5]
-x1 -0.40921704 -14.37045 -32.07605  -13.11129    8.709396
-x2  0.03288061 -54.89529 -95.67928 -265.48399 -310.134221
+         [,1]      [,2]      [,3]       [,4]      [,5]
+x1 -0.7441705  17.50995 -9.474945 -0.9377728  16.73823
+x2 -0.2655504 -75.53129 65.187445 45.3769880 -55.62340
 > try(
 +     time(rw2) <- seq(-20,1000,by=20)
 +     )

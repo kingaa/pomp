@@ -2,6 +2,9 @@ NEWS
 0.39-3
      o	The help files for 'pfilter' and 'mif' have been updated to explain how to use a variable number of particles in the particle filtering algorithm.
 
+     o	Inside 'init.state', a check has been added to make sure that the user's initializer function returns a vector of uniform size, as per the algorithms' assumptions.
+     	Thanks to Micaela Martinez-Bakker for catching this.
+
 0.39-2
      o	When 'po' is a 'pomp'-class object with covariates, 'as.data.frame(po)' and 'as(po,"data.frame")' now contain columns for the covariates. 
      	The latter are interpolated, if necessary, at the observation times.

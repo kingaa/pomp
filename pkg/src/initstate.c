@@ -89,6 +89,8 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0)
     for (k = 0; k < npar; k++) pp[k] = p[j*npar+k];
     PROTECT(x2 = eval(fcall,rho));
     xp = REAL(x2);
+    if (LENGTH(x2)!=nvar)
+      error("user initializer returns vectors of non-uniform length");
     for (k = 0; k < nvar; k++) xpp[j*nvar+k] = xp[k];
     UNPROTECT(1);
   }

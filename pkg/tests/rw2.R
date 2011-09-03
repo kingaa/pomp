@@ -65,6 +65,13 @@ bad.initializer <- function (params, t0, ...)
   x
 }
 
+crap.initializer <- function (params, t0, ...) 
+{
+  x <- rnorm(n=ceiling(runif(n=1,min=0,max=10)))
+  names(x) <-head(letters,length(x))
+  x
+}
+
 p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
 
 rw2 <- pomp(
@@ -85,6 +92,12 @@ rw2 <- pomp(
             )
 
 show(rw2)
+
+try(
+    simulate(rw2,params=p)
+    )
+
+rw2 <- pomp(rw2,initializer=crap.initializer)
 
 try(
     simulate(rw2,params=p)
