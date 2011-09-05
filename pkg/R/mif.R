@@ -65,9 +65,6 @@ mif.internal <- function (object, Nmif,
 
   if (missing(pars))
     stop("mif error: ",sQuote("pars")," must be specified",call.=FALSE)
-  if (length(pars)==0)
-    stop("mif error: at least one ordinary (non-IVP) parameter must be estimated",call.=FALSE)
-
   if (missing(ivps))
     stop("mif error: ",sQuote("ivps")," must be specified",call.=FALSE)
 
@@ -134,6 +131,23 @@ mif.internal <- function (object, Nmif,
   ic.lag <- as.integer(ic.lag)
   if ((length(ic.lag)!=1)||(ic.lag < 1))
     stop("mif error: ",sQuote("ic.lag")," must be a positive integer",call.=FALSE)
+  if (ic.lag>ntimes) {
+    warning(
+            "mif warning: ",sQuote("ic.lag")," = ",ic.lag," > ",ntimes,
+            " = length(time(",sQuote("object"),"))",
+            " is nonsensical.  Setting ",sQuote("ic.lag")," = ",ntimes,".",
+            call.=FALSE
+            )
+    ic.lag <- length(time(object))
+  }
+  if ((length(pars)==0)&&(ic.lag<length(time(object)))) {
+    warning(
+            "mif warning: only IVPs are to be estimated, yet ",sQuote("ic.lag")," = ",ic.lag,
+            " < ",ntimes," = length(time(",sQuote("object"),")),",
+            " so unnecessary work is to be done.",
+            call.=FALSE
+            )
+  }
 
   if (missing(cooling.factor))
     stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)

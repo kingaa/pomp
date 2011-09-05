@@ -53,8 +53,9 @@ mif(object, \dots)
     Leaving \code{pars} unspecified is equivalent to setting it equal to the names of all parameters with a positive value of \code{rw.sd} that are not \code{ivps}.
   }
   \item{ivps}{
-    optional character vector naming the initial-value parameters to be estimated.
+    optional character vector naming the initial-value parameters (IVPs) to be estimated.
     Every parameter named in \code{ivps} must have a positive random-walk standard deviation specified in \code{rw.sd}.
+    If \code{pars} is empty, i.e., only IVPs are to be estimated, see below \dQuote{"Using MIF to estimate initial-value parameters only"}.
   }
   \item{particles}{
     Function of prototype \code{particles(Np,center,sd,...)} which sets up the starting particle matrix by drawing a sample of size \code{Np} from the starting particle distribution centered at \code{center} and of width \code{sd}.
@@ -74,7 +75,7 @@ mif(object, \dots)
   \item{Np}{
     the number of particles to use in filtering.
     This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
-    Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object,t0=TRUE))}) or as a function taking a positive integer argument.
+    Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object,t0=TRUE))}) or as a function taking a positive integer argument.
     In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
     \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
     \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
@@ -85,6 +86,8 @@ mif(object, \dots)
     a positive integer;
     the timepoint for fixed-lag smoothing of initial-value parameters.
     The \code{mif} update for initial-value parameters consists of replacing them by their filtering mean at time \code{times[ic.lag]}, where \code{times=time(object)}.
+    It makes no sense to set \code{ic.lag>length(times)};
+    if it is so set, \code{ic.lag} is set to \code{length(times)} with a warning.
   }
   \item{var.factor}{
     a positive number;
@@ -130,10 +133,17 @@ mif(object, \dots)
   If one does specify additional arguments, these will override the defaults.
 }
 \section{Continuing MIF Iterations}{
-  One can continue a series of MIF iterations from where one left off using the \code{continue} method.
+  One can resume a series of MIF iterations from where one left off using the \code{continue} method.
   A call to \code{mif} to perform \code{Nmif=m} iterations followed by a call to \code{continue} to perform \code{Nmif=n} iterations will produce precisely the same effect as a single call to \code{mif} to perform \code{Nmif=m+n} iterations.
   By default, all the algorithmic parameters are the same as used in the original call to \code{mif}.
   Additional arguments will override the defaults.
+}
+\section{Using MIF to estimate initial-value parameters only}{
+  One can use MIF's fixed-lag smoothing to estimate only initial value parameters (IVPs).
+  In this case, \code{pars} is left empty and the IVPs to be estimated are named in \code{ivps}.
+  If \code{theta} is the current parameter vector, then at each MIF iteration, \code{Np} particles are drawn from a distribution centered at \code{theta} and with width proportional to \code{var.factor*rw.sd}, a particle filtering operation is performed, and \code{theta} is replaced by the filtering mean at \code{time(object)[ic.lag]}.
+  Note the implication that, when \code{mif} is used in this way on a time series any longer than \code{ic.lag}, unnecessary work is done.
+  If the time series in \code{object} is longer than \code{ic.lag}, consider replacing \code{object} with \code{window(object,end=ic.lag)}. 
 }
 % \section{Likelihood profiles using MIF}{
 %   The function \code{mif.profile.design} sets up a MIF likelihood-profile calculation.

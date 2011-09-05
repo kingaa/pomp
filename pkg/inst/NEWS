@@ -5,6 +5,8 @@ NEWS
      o	Inside 'init.state', a check has been added to make sure that the user's initializer function returns a vector of uniform size, as per the algorithms' assumptions.
      	Thanks to Micaela Martinez-Bakker for catching this.
 
+     o	'mif' has been modified so as to allow estimation of initial-value parameters alone via fixed-lag smoothing.
+
 0.39-2
      o	When 'po' is a 'pomp'-class object with covariates, 'as.data.frame(po)' and 'as(po,"data.frame")' now contain columns for the covariates. 
      	The latter are interpolated, if necessary, at the observation times.
