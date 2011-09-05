@@ -1,5 +1,45 @@
+2011-09-05  kingaa
+
+	* [r559] tests/ou2-icfit.Rout.save: - update file
+	* [r558] DESCRIPTION, R/mif.R, inst/NEWS, man/mif.Rd,
+	  tests/ou2-icfit.R, tests/ou2-icfit.Rout.save, tests/sir-icfit.R,
+	  tests/sir-icfit.Rout.save: - 'mif' is modified to allow
+	  estimation of IVPs only
+	  - update the 'mif' help page to document this
+	  - add codes to test this in 'tests/ou2-icfit'
+	  - remove the 'sir-icfit' test codes for the moment
+
+2011-09-03  kingaa
+
+	* [r557] DESCRIPTION, inst/NEWS, src/initstate.c, tests/rw2.R,
+	  tests/rw2.Rout.save: - add trap for user initializer that does
+	  not return vectors of a uniform size
+
+2011-09-02  kingaa
+
+	* [r556] DESCRIPTION, inst/NEWS, man/mif.Rd, man/pfilter.Rd: -
+	  improve the help files for 'pfilter' and 'mif' so as to explain
+	  how to use non-scalar (vector or function) values for the 'Np'
+	  argument.
+	  - the 'mif' help file description of the 'ic.lag' argument also
+	  improved
+
 2011-08-31  kingaa
 
+	* [r555] tests/sir-icfit.Rout.save:
+	* [r554] NAMESPACE, R/profile-design.R, R/slice-design.R,
+	  R/sobol.R, inst/NEWS, inst/TODO, man/profile-design.Rd,
+	  man/slice-design.Rd, man/sobol.Rd, tests/ou2-mif.R,
+	  tests/ou2-mif.Rout.save, tests/sir-icfit.R: - deprecate
+	  'sobol.design' and 'slice.design' in favor of 'sobolDesign' and
+	  'sliceDesign'
+	* [r553] R/traj-match.R, tests/ou2-trajmatch.R,
+	  tests/ou2-trajmatch.Rout.save: - fix bug in 'traj.match' to do
+	  with parameters not being saved when the pomp object had an empty
+	  'params' slot
+	* [r552] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: -
+	  try using PNG instead of JPEG to get around R-Forge's limitations
+	* [r551] inst/ChangeLog: - update ChangeLog
 	* [r550] DESCRIPTION, NAMESPACE, R/mif.R, R/profile-design.R,
 	  inst/NEWS, man/profile-design.Rd: - replace 'profile.design' by
 	  'profileDesign' to eliminate warnings during package check
