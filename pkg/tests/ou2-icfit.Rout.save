@@ -1,5 +1,5 @@
 
-R version 2.13.1 (2011-07-08)
+R Under development (unstable) (2011-09-03 r56917)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -28,7 +28,7 @@ Loading required package: deSolve
 > ics <- c("x1.0","x2.0")    # names of the initial condition parameters
 > 
 > p <- coef(ou2)
-> p[ics] <- c(0,0)
+> p[ics] <- c(4,-4)
 > 
 > fit <- mif(
 +            ou2,
@@ -67,7 +67,7 @@ mif warning: only IVPs are to be estimated, yet 'ic.lag' = 10 < 100 = length(tim
 > fit <- mif(
 +            window(ou2,end=10),
 +            start=p,
-+            Nmif=300,
++            Nmif=500,
 +            ic.lag=10,
 +            var.factor=4,
 +            ivps=ics,
@@ -75,30 +75,33 @@ mif warning: only IVPs are to be estimated, yet 'ic.lag' = 10 < 100 = length(tim
 +              x1.0=1,x2.0=1
 +              ),
 +            Np=1000,
-+            cooling.factor=0.99,
++            cooling.factor=1,
 +            max.fail=10
 +            )
 > 
 > print(logLik(pfilter(ou2,Np=2000)),digits=4)
 [1] -479.4
 > print(logLik(pfilter(ou2,params=p,Np=2000)),digits=4)
-[1] -481.3
+[1] -496.1
 > print(logLik(pfilter(ou2,params=coef(fit),Np=2000)),digits=4)
 [1] -480.3
 > print(coef(fit,ics))
      x1.0      x2.0 
--2.991659  2.880117 
+-3.585434  4.249552 
+> print(coef(ou2,ics))
+x1.0 x2.0 
+  -3    4 
 > print(p-coef(ou2))
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-      0       0       0       0       0       0       0       0       3      -4 
+      0       0       0       0       0       0       0       0       7      -8 
 > print(coef(fit)-p)
   alpha.1   alpha.2   alpha.3   alpha.4   sigma.1   sigma.2   sigma.3       tau 
  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000  0.000000 
      x1.0      x2.0 
--2.991659  2.880117 
+-7.585434  8.249552 
 > print(coef(fit)-coef(ou2))
-     alpha.1      alpha.2      alpha.3      alpha.4      sigma.1      sigma.2 
- 0.000000000  0.000000000  0.000000000  0.000000000  0.000000000  0.000000000 
-     sigma.3          tau         x1.0         x2.0 
- 0.000000000  0.000000000  0.008340701 -1.119883047 
+   alpha.1    alpha.2    alpha.3    alpha.4    sigma.1    sigma.2    sigma.3 
+ 0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000  0.0000000 
+       tau       x1.0       x2.0 
+ 0.0000000 -0.5854345  0.2495515 
 > 
