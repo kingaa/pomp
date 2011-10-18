@@ -76,7 +76,8 @@ pb <- probe(
             seed=1066L
             )
 x <- as.data.frame(po)
-x <- sweep(x,2,mean(x))
+mx <- sapply(x,mean)
+x <- sweep(x,2,mx)
 y1 <- head(x$y1,-1)
 z1 <- tail(x$y1,-1)
 y2 <- head(x$y2,-1)
