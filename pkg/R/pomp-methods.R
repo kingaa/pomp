@@ -177,7 +177,7 @@ pomp.transform <- function (object, params, dir = c("forward","inverse")) {
                   inverse=function (x) do.call(object@par.untrans,c(list(x),object@userdata))
                   )
   if (r > 1) {
-    retval <- apply(params,2:r,tfunc)
+    retval <- apply(params,seq.int(from=2,to=r),tfunc)
     no.names <- is.null(rownames(retval))
   } else {
     retval <- tfunc(params)

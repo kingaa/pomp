@@ -1,4 +1,7 @@
 NEWS
+0.39-4
+     o	Minor corrections to the documentation for 'spect', 'probe', and 'traj.match'.
+
 0.39-3
      o	The help files for 'pfilter' and 'mif' have been updated to explain how to use a variable number of particles in the particle filtering algorithm.
 

@@ -39,7 +39,7 @@
     if \code{TRUE}, no optimization is attempted and the log likelihood value is evaluated at the \code{start} parameters.
   }
   \item{\dots}{
-    Arguments that will be passed to \code{\link{optim}} in its \code{control} list.
+    Arguments that will be passed to \code{\link{optim}} or \code{\link{subplex}} via their \code{control} lists.
   }
 }
 \details{

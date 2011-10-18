@@ -89,8 +89,8 @@
   }
   \item{\dots}{
     Additional arguments.
-    In the case of \code{spec}, these are currently ignored.
-    In the case of \code{spec.match}, these are passed to \code{optim} or \code{subplex} in the \code{control} list.
+    In the case of \code{probe}, these are currently ignored.
+    In the case of \code{probe.match}, these are passed to \code{optim} or \code{subplex} in the \code{control} list.
   }
 }
 \details{
