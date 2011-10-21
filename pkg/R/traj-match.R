@@ -53,7 +53,7 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
     X <- trajectory(object,params=params,t0=t0)
     d <- dmeasure(
                   object,
-                  y=obs(object),
+                  y=object@data,
                   x=X,
                   times=time(object),
                   params=params,
