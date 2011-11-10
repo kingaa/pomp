@@ -11,6 +11,8 @@
 
 sannbox <- function (par, fn, control = list(), ...) {
 
+  big <- 1e35  ## a very large number
+
   npar <- length(par)
   neval <- 0
   
@@ -47,7 +49,9 @@ sannbox <- function (par, fn, control = list(), ...) {
   ## initialization for the algorithm
   laststep <- 0
   thetabest <- thetacurrent <- par
-  ybest <- ycurrent <- fn(thetacurrent,...)
+  ycurrent <- fn(thetacurrent,...)
+  if (!is.finite(ycurrent)) ycurrent <- big
+  ybest <- ycurrent
   neval <- 1
   
   if (control$trace>0)
@@ -71,6 +75,7 @@ sannbox <- function (par, fn, control = list(), ...) {
                         thetacand
                        )
     ycand <- fn(thetacand,...)
+    if (!is.finite(ycand)) ycand <- big
     neval <- neval+1
     
     ## see if you have a new best.params

@@ -187,7 +187,8 @@ Warning message:
 In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
   useless zero lag discarded in 'probe.acf'
 > x <- as.data.frame(po)
-> x <- sweep(x,2,mean(x))
+> mx <- sapply(x,mean)
+> x <- sweep(x,2,mx)
 > y1 <- head(x$y1,-1)
 > z1 <- tail(x$y1,-1)
 > y2 <- head(x$y2,-1)
