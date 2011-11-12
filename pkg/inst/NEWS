@@ -2,6 +2,13 @@ NEWS
 0.39-4
      o	Minor corrections to the documentation for 'spect', 'probe', and 'traj.match'.
 
+     o  Fix infelicity in 'traj.match' and 'nlf' that arises when the 'data' slot has no rownames.
+     	Rownames are not strictly required for the 'data' slot.
+
+     o  The 'sannbox' algorithm now should work even when the objective function throws a non-finite value.
+     	The behavior now is to replace non-finite values with a large number.
+	This behavior follows that of the 'SANN' method in 'optim.
+
 0.39-3
      o	The help files for 'pfilter' and 'mif' have been updated to explain how to use a variable number of particles in the particle filtering algorithm.
 

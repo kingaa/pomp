@@ -1,5 +1,27 @@
+2011-11-10  kingaa
+
+	* [r564] DESCRIPTION, R/sannbox.R, tests/ou2-probe.Rout.save: -
+	  change SANN algorithm in sannbox to replace non-finite
+	  objective-function values with a big number (as is done in
+	  optim's SANN).
+	  - update test file
+
+2011-10-21  kingaa
+
+	* [r563] DESCRIPTION, R/nlf-objfun.R, R/traj-match.R: - fix
+	  infelicity in 'traj.match' and 'nlf' that arises when the 'data'
+	  slot has no rownames (thanks to K. Hader) for pointing it out
+
+2011-10-18  kingaa
+
+	* [r562] tests/ou2-probe.R: - avoid deprecated mean(<data-frame>)
+	* [r561] DESCRIPTION, R/pomp-methods.R, inst/NEWS, man/probe.Rd,
+	  man/spect.Rd, man/traj-match.Rd: - minor corrections to the
+	  documentation
+
 2011-09-05  kingaa
 
+	* [r560] inst/ChangeLog: - update ChangeLog
 	* [r559] tests/ou2-icfit.Rout.save: - update file
 	* [r558] DESCRIPTION, R/mif.R, inst/NEWS, man/mif.Rd,
 	  tests/ou2-icfit.R, tests/ou2-icfit.Rout.save, tests/sir-icfit.R,
