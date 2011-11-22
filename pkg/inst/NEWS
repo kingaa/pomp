@@ -1,4 +1,8 @@
 NEWS
+0.39-5
+     o	Bug fix in 'bsmc' that arises when the state space is 1-D.
+     	Thanks to Arnab Bhattacharya for finding the bug.
+
 0.39-4
      o	Minor corrections to the documentation for 'spect', 'probe', and 'traj.match'.
 

@@ -138,7 +138,7 @@ setMethod(
                       )
               }
 
-              for ( j in seq_len(Np) ) {
+              for (j in seq_len(Np) ) {
                 x.tmp <- matrix(data=x[,j],nrow=nvars,ncol=ntries)
                 rownames(x.tmp) <- statenames
                 p.tmp <- matrix(data=params[,j],nrow=npars,ncol=ntries)
