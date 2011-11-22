@@ -1,3 +1,5 @@
+* unit tests for 'sannbox'
+
 * Create objective functions for 'probe.match', 'traj.match', and
    'spect.match' so that  users can roll their own optimization
    routines.  Use 'nloptr' as the target optimizer package?

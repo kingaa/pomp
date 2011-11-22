@@ -169,6 +169,7 @@ setMethod(
               k <- sample.int(n=Np,size=Np,replace=TRUE,prob=g)
               params <- params[,k]
               m <- m[,k]
+              g <- g[k]
 
               ## sample new parameter vector as per L&W AGM (3) and Liu & West eq(3.2)
               pvec <- try(
@@ -189,7 +190,7 @@ setMethod(
               ## sample current state vector x^(g)_(t+1) as per L&W AGM (4)
               X <- rprocess(
                             object,
-                            xstart=x[,k],
+                            xstart=x[,k,drop=FALSE],
                             times=times[c(nt,nt+1)],
                             params=params
                             )[,,2,drop=FALSE]
@@ -203,7 +204,7 @@ setMethod(
                                 params=params
                                 )
               ## evaluate weights as per L&W AGM (5)
-              weights <- numer/g[k]
+              weights <- numer/g
               
               ## apply box constraints as per the priors          
               for (j in seq_len(Np)) {
@@ -249,11 +250,11 @@ setMethod(
                 eff.sample.size[nt] <- 0
               } else {                  # not all particles are lost
                 ## compute log-likelihood
-                loglik[nt] <- log(mean(weights))  
+                loglik[nt] <- log(mean(weights))
                 weights[failures] <- 0
                 weights <- weights/sum(weights)
                 ## compute effective sample-size
-                eff.sample.size[nt] <- 1/(weights%*%weights) 
+                eff.sample.size[nt] <- 1/crossprod(weights)
               }
 
               if (verbose) {
