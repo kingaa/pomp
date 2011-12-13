@@ -49,3 +49,8 @@ print(
       )
 
 print(min(smc$eff.sample.size))
+print(smc$loglik)
+
+smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=455485L)
+print(smc$eff.sample.size)
+print(smc$loglik)

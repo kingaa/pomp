@@ -8,8 +8,8 @@
   \code{bsmc} gives draws from the posterior.
 }
 \usage{
-\S4method{bsmc}{pomp}(object, params, est, smooth = 0.1, ntries = 1,
-     tol = 1e-17, lower = -Inf, upper = Inf, seed = NULL,
+\S4method{bsmc}{pomp}(object, params, Np, est, smooth = 0.1,
+     ntries = 1, tol = 1e-17, lower = -Inf, upper = Inf, seed = NULL,
      verbose = getOption("verbose"), max.fail = 0, \dots)
 }
 \arguments{
@@ -17,15 +17,20 @@
     An object of class \code{pomp} or inheriting class \code{pomp}.
   }
   \item{params}{
-    A \code{npars} x \code{np} matrix containing the parameters corresponding to the initial state values in \code{xstart}.
-    The matrix should be Np columns long, where Np is the number of particles.  The values for each row should be Np draws from the prior distribution for the parameter. 
+    A \code{npars} x \code{Np} matrix (with rownames) containing the parameters corresponding to the initial state values in \code{xstart}.
+    \code{Np} is the number of particles, i.e., each row should contain \code{Np} draws from the prior distribution for that parameter.
     It is permissible to supply \code{params} as a named numeric vector, i.e., without a \code{dim} attribute.
     In this case, all particles will inherit the same parameter values, which is equivalent to a degenerate prior.
-    If some parameter values are to be held fixed in the fitting (i.e. params.fixed = TRUE), then those elements of params (rows if params is given as a matrix), must be set to NA.
+  }
+  \item{Np}{
+    If \code{params} is specified as a named vector, \code{Np} specifies the number of particles to use.
+    If \code{params} is specified as a matrix, \code{Np} should not be specified;
+    it is taken to be the number of columns of \code{params}.
   }
   \item{est}{
     Names of the rows of \code{params} that are to be estimated.
     No updates will be made to the other parameters.
+    If \code{est} is not specified, all parameters for which there is variation in \code{params} will be estimated.
   }
   \item{smooth}{
     Kernel density smoothing parameters.
@@ -37,7 +42,7 @@
     Number of draws from \code{rprocess} per particle used to estimate the expected value of the state process at time \code{t+1} given the state and parameters at time \code{t}.
   }
   \item{tol}{
-    Particles with log likelihood below \code{tol} are considered to be "lost".
+    Particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.
     A filtering failure occurs when, at some time point, all particles are lost.
     When all particles are lost, the conditional log likelihood at that time point is set to be \code{log(tol)}.
   }

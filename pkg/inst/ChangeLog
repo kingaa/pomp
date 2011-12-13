@@ -1,3 +1,14 @@
+2011-11-22  kingaa
+
+	* [r567] R/bsmc.R, inst/NEWS: - update NEWS file
+	* [r566] DESCRIPTION, R/bsmc.R, inst/TODO: - fix bug in 'bsmc' that
+	  arises when the state space is 1-D (add drop=FALSE flag to []
+	  operation)
+
+2011-11-12  kingaa
+
+	* [r565] DESCRIPTION, inst/ChangeLog, inst/NEWS: - version 0.39-4
+
 2011-11-10  kingaa
 
 	* [r564] DESCRIPTION, R/sannbox.R, tests/ou2-probe.Rout.save: -
