@@ -16,21 +16,18 @@
 \S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"),
-       skeleton.map = NULL, skeleton.vectorfield = NULL,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"),
-       skeleton.map = NULL, skeleton.vectorfield = NULL,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"),
-       skeleton.map = NULL, skeleton.vectorfield = NULL,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE, parameter.transform, parameter.inv.transform)
@@ -91,7 +88,7 @@
     See below for an example.
     \strong{NB:} it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
   }
-  \item{skeleton, skeleton.type, skeleton.map, skeleton.vectorfield}{
+  \item{skeleton, skeleton.type}{
     The function \code{skeleton} specifies the deterministic skeleton of the unobserved Markov process.
     If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map: indicate this by specifying \code{skeleton.type="map"}.
     If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield: indicate this by specifying \code{skeleton.type="vectorfield"}.
@@ -99,12 +96,6 @@
     (1) as an \R function of prototype \code{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
     (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_skeleton} as defined in the header file \dQuote{pomp.h}.
     If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
-    
-    For compatibility with older versions (<0.37-1), one can specify \code{skeleton.map} or \code{skeleton.vectorfield}.
-    Specifying \code{skeleton.map=X} is equivalent to \code{skeleton=X} and \code{skeleton.type="map"}.
-    Specifying \code{skeleton.vectorfield=X} is equivalent to \code{skeleton=X} and \code{skeleton.type="vectorfield"}.
-    A dynamical system cannot be both discrete and continuous, so specifying both \code{skeleton.map} and \code{skeleton.vectorfield} generates an error.
-    Use of these arguments generates a warning; in future releases, these arguments will be removed.
   }
   \item{initializer}{
     optional function of prototype \code{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
@@ -167,7 +158,13 @@
   If such custom versions are desired, the following describes how each of these functions should be written in this case.
   \describe{
     \item{\code{rprocess}}{
-      if provided, must have at least the following arguments:
+      In general, the specification of \code{rprocess} can be somewhat nontrivial:
+      for this reason, \code{\link{plugins}} have been developed to streamline this process for the user.
+      Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{euler.sim}} or \code{\link{onestep.sim}} plugin is available.
+      For exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm is available (see \code{\link{gillespie.sim}}).
+      To use the plugins, consult the help documentation (\code{?\link{plugins}}) and the vignettes.
+
+      If the plugins are not used \code{rprocess} must have at least the following arguments:
       \code{xstart}, \code{times}, \code{params}, and \code{\dots}.
       It can also take additional arguments.
       It is guaranteed that these will be filled with the corresponding elements the user has included as additional arguments in the construction of the \code{pomp} object.
@@ -196,7 +193,12 @@
 	}
     }
     \item{\code{dprocess}}{
-      if provided, must have at least the following arguments:
+      In general, the specification of \code{dprocess} can be somewhat nontrivial:
+      for this reason, \code{\link{plugins}} have been developed to streamline this process for the user.
+      Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{onestep.dens}} plugin for \code{dprocess} is available.
+      To use the plugins, consult the help documentation (\code{?\link{plugins}}) and the vignettes.
+
+      If the plugins are not used, \code{dprocess} must have at least the following arguments:
       \code{x}, \code{times}, \code{params}, \code{log}, and \code{\dots}.
       It may take additional arguments.
       It is guaranteed that these will be filled with the corresponding elements the user has included as additional arguments in the construction of the \code{pomp} object.

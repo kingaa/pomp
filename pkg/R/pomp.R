@@ -360,38 +360,8 @@ measform2pomp <- function (formulae) {
        )
 }
 
-## deal with the change-over from 'skeleton.map'/'skeleton.vectorfield' to
-## 'skeleton'/'skeleton.type'
-skeleton.jigger <- function (skeleton = NULL, skeleton.type,
-                             skeleton.map = NULL, skeleton.vectorfield = NULL) {
-  if (!is.null(skeleton.map)) {
-    warning(
-            "the arguments ",sQuote("skeleton.map")," and ",sQuote("skeleton.vectorfield"),
-            " are now deprecated.",
-            " Use ",sQuote("skeleton")," and ",sQuote("skeleton.type")," instead.",
-            call.=FALSE
-            )
-    if (!is.null(skeleton.vectorfield))
-      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.vectorfield")," and ",sQuote("skeleton.map"))
-    if (!is.null(skeleton))
-      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.map")," and ",sQuote("skeleton"))
-    skeleton.type <- "map"
-    skeleton <- skeleton.map
-  }
-  if (!is.null(skeleton.vectorfield)) {
-    warning(
-            "the arguments ",sQuote("skeleton.map")," and ",sQuote("skeleton.vectorfield"),
-            " are now deprecated.",
-            " Use ",sQuote("skeleton")," and ",sQuote("skeleton.type")," instead.",
-            call.=FALSE
-            )
-    if (!is.null(skeleton.map))
-      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.vectorfield")," and ",sQuote("skeleton.map"))
-    if (!is.null(skeleton))
-      stop("pomp error: it is not permitted to specify both ",sQuote("skeleton.vectorfield")," and ",sQuote("skeleton"))
-    skeleton.type <- "vectorfield"
-    skeleton <- skeleton.vectorfield
-  }
+## for backward compatibility
+skeleton.jigger <- function (skeleton = NULL, skeleton.type) {
   list(fn=skeleton,type=skeleton.type)
 }
 
@@ -402,15 +372,12 @@ setMethod(
           function (data, times, t0, ..., rprocess, dprocess,
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
-                    skeleton.map = NULL, skeleton.vectorfield = NULL,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             skel <- skeleton.jigger(
                                     skeleton=skeleton,
-                                    skeleton.type=skeleton.type,
-                                    skeleton.map=skeleton.map,
-                                    skeleton.vectorfield=skeleton.vectorfield
+                                    skeleton.type=skeleton.type
                                     )
             pomp.constructor(
                              data=data,
@@ -444,15 +411,12 @@ setMethod(
           function (data, times, t0, ..., rprocess, dprocess,
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
-                    skeleton.map = NULL, skeleton.vectorfield = NULL,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             skel <- skeleton.jigger(
                                     skeleton=skeleton,
-                                    skeleton.type=skeleton.type,
-                                    skeleton.map=skeleton.map,
-                                    skeleton.vectorfield=skeleton.vectorfield
+                                    skeleton.type=skeleton.type
                                     )
             pomp.constructor(
                              data=data,
@@ -487,15 +451,12 @@ setMethod(
           function (data, times, t0, ..., rprocess, dprocess,
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
-                    skeleton.map = NULL, skeleton.vectorfield = NULL,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             skel <- skeleton.jigger(
                                     skeleton=skeleton,
-                                    skeleton.type=skeleton.type,
-                                    skeleton.map=skeleton.map,
-                                    skeleton.vectorfield=skeleton.vectorfield
+                                    skeleton.type=skeleton.type
                                     )
             pomp.constructor(
                              data=matrix(data,nrow=1,ncol=length(data)),

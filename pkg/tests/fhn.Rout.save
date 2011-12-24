@@ -1,5 +1,5 @@
 
-R version 2.13.1 (2011-07-08)
+R version 2.14.1 (2011-12-22)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -88,15 +88,14 @@ R 1.103084  0.3661463
 +             t0=0,
 +             tcovar=seq(0,21,by=0.1),
 +             covar=cbind(i=sin(2*pi*seq(0,21,by=0.1))),
-+             skeleton.vectorfield=function(x,t,params,covars,...) {
++             skeleton.type="vectorfield",
++             skeleton=function(x,t,params,covars,...) {
 +               c(
 +                 V=unname(params['c']*(x['V']-(x['V']^3)/3-x['R']+covars['i'])),
 +                 R=unname((x['V']+params['a']-params['b']*x['R'])/params['c'])
 +                 )
 +             }
 +             )
-Warning message:
-the arguments 'skeleton.map' and 'skeleton.vectorfield' are now deprecated. Use 'skeleton' and 'skeleton.type' instead. 
 > 
 > skeleton(fhn,x,t=c(0,3),params=params)
 , , 1

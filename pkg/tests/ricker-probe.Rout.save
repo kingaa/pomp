@@ -1,5 +1,5 @@
 
-R version 2.13.1 (2011-07-08)
+R version 2.14.1 (2011-12-22)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -149,8 +149,8 @@ $synth.loglik
 +             seed=838775L
 +             )
 > pb@datvals
-       marg.1        marg.2        marg.3 
- 1.000000e+00 -3.470661e-18 -1.108330e-18 
+      marg.1       marg.2       marg.3 
+1.000000e+00 2.308125e-18 9.896164e-19 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -193,7 +193,7 @@ $synth.loglik
 +             )
 > pb@datvals
        marg.1        marg.2        marg.3       acf.0.y       acf.1.y 
- 1.000000e+00 -3.470661e-18 -1.108330e-18  3.679493e+03 -1.275470e+03 
+ 1.000000e+00  2.308125e-18  9.896164e-19  3.679493e+03 -1.275470e+03 
       acf.3.y       acf.5.y          mean 
  4.212841e+02  2.954671e+02  4.430440e+00 
 > summary(pb)
@@ -276,8 +276,8 @@ $msg
 +             seed=838775L
 +             )
 > pb@datvals
-       marg.1        marg.2        marg.3 
- 1.000000e+00 -3.470661e-18 -1.108330e-18 
+      marg.1       marg.2       marg.3 
+1.000000e+00 2.308125e-18 9.896164e-19 
 > summary(pb)
 $coef
     log.r log.sigma   log.phi       N.0       e.0 
@@ -312,7 +312,7 @@ $synth.loglik
 +                               )
 +             )
    user  system elapsed 
- 13.267   0.002  13.271 
+  7.380   0.000   7.404 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -371,7 +371,7 @@ $synth.loglik
 +                               )
 +             )
    user  system elapsed 
- 10.041   0.021  10.064 
+  5.492   0.000   5.512 
 > plot(pm)
 > plot(as(pm,"pomp"),variables="y")
 > plot(simulate(pm),variables="y")
@@ -530,7 +530,7 @@ $pvals
 0.8171828 0.8171828 0.1358641 0.6313686 0.2117882 0.2677323 
 
 $synth.loglik
-[1] 30.22958
+[1] 29.82456
 
 > plot(pb)
 > 
