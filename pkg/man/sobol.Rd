@@ -1,7 +1,6 @@
 \name{sobol}
 \alias{sobol}
 \alias{sobolDesign}
-\alias{sobol.design}
 \title{Sobol' low-discrepancy sequence}
 \description{
   Generate a data-frame containing a Sobol' low-discrepancy sequence.
@@ -9,7 +8,6 @@
 \usage{
 sobol(vars, n)
 sobolDesign(lower, upper, nseq)
-sobol.design(lower, upper, nseq)
 }
 \arguments{
   \item{vars}{Named list of ranges of variables.}
@@ -22,7 +20,6 @@ sobol.design(lower, upper, nseq)
   }
   \item{sobolDesign}{
     Returns a data frame with \code{nseq} \sQuote{observations} of the variables over the range specified.
-    The equivalent form \code{sobol.design} is now deprecated and will be removed in a future release.
   }
 }
 \references{

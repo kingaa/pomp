@@ -16,11 +16,6 @@ sobol <- function (vars, n) {
   as.data.frame(y)
 }
 
-sobol.design <- function (lower = numeric(0), upper = numeric(0), nseq) {
-  .Deprecated(new="sobolDesign",package="pomp")
-  sobolDesign(lower,upper,nseq)
-}
-
 sobolDesign <- function (lower = numeric(0), upper = numeric(0), nseq) {
   if (length(lower)!=length(upper))
     stop(sQuote("lower")," and ",sQuote("upper")," must have same length")

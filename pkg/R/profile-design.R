@@ -1,8 +1,3 @@
-profile.design <- function (..., lower, upper, nprof) {
-  .Deprecated(new="profileDesign",package="pomp")
-  profileDesign(...,lower,upper,nprof)
-}
-
 profileDesign <- function (..., lower, upper, nprof) {
   prof <- list(...)
   pvars <- names(prof)

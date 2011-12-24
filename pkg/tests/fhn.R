@@ -37,7 +37,8 @@ fhn <- pomp(
             t0=0,
             tcovar=seq(0,21,by=0.1),
             covar=cbind(i=sin(2*pi*seq(0,21,by=0.1))),
-            skeleton.vectorfield=function(x,t,params,covars,...) {
+            skeleton.type="vectorfield",
+            skeleton=function(x,t,params,covars,...) {
               c(
                 V=unname(params['c']*(x['V']-(x['V']^3)/3-x['R']+covars['i'])),
                 R=unname((x['V']+params['a']-params['b']*x['R'])/params['c'])

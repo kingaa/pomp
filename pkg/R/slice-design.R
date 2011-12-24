@@ -1,8 +1,3 @@
-slice.design <- function (center, ...) {
-  .Deprecated(new="sliceDesign",package="pomp")
-  sliceDesign(center,...)
-}
-
 sliceDesign <- function (center, ...) {
   slices <- list(...)
   if ((!is.numeric(center))||is.null(names(center)))
