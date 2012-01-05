@@ -1,5 +1,5 @@
 
-R version 2.13.1 (2011-07-08)
+R version 2.14.1 (2011-12-22)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -194,7 +194,7 @@ In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
 > y2 <- head(x$y2,-1)
 > z2 <- tail(x$y2,-1)
 > max(abs(pb@datvals-c(mean(y1*z1)/mean(x$y1^2),mean(y2*z2)/mean(x$y2^2),mean(y1*z1)/mean(y1*y1),mean(y2*z2)/mean(y2*y2))))
-[1] 1.221245e-15
+[1] 1.110223e-16
 > 
 > po <- simulate(ou2)
 > pb <- probe(
@@ -224,7 +224,7 @@ $pvals
 0.2817183 0.2877123 0.3216783 0.2817183 0.2877123 0.3216783 
 
 $synth.loglik
-[1] 91.41242
+[1] 93.95585
 
 > 
 > pb <- probe(

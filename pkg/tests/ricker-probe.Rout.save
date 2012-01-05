@@ -312,7 +312,7 @@ $synth.loglik
 +                               )
 +             )
    user  system elapsed 
-  7.380   0.000   7.404 
+  7.680   0.008   7.713 
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -371,7 +371,7 @@ $synth.loglik
 +                               )
 +             )
    user  system elapsed 
-  5.492   0.000   5.512 
+  5.668   0.000   5.683 
 > plot(pm)
 > plot(as(pm,"pomp"),variables="y")
 > plot(simulate(pm),variables="y")
