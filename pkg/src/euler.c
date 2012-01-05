@@ -3,6 +3,31 @@
 #include "pomp_internal.h"
 #include <R_ext/Constants.h>
 
+int num_euler_steps (double t1, double t2, double *dt) {
+  double tol = sqrt(DOUBLE_EPS);
+  int nstep;
+  // nstep will be the number of Euler steps to take in going from t1 to t2.
+  // note also that the stepsize changes.
+  // this choice is meant to be conservative
+  // (i.e., so that the actual dt does not exceed the specified dt 
+  // by more than the relative tolerance 'tol')
+  // and to counteract roundoff error.
+  // It seems to work well, but is not guaranteed: 
+  // suggestions would be appreciated.
+  
+  if (t1 >= t2) {
+    *dt = 0.0;
+    nstep = 0;
+  } else if (t1+*dt >= t2) {
+    *dt = t2-t1; 
+    nstep = 1;
+  } else {
+    nstep = (int) ceil((t2-t1)/(*dt)/(1+tol));
+    *dt = (t2-t1)/((double) nstep);
+  }
+  return nstep;
+}
+
 // take nstep Euler-Poisson steps from t1 to t2
 static void euler_simulator (pomp_onestep_sim *estep,
 			     double *x, double *xstart, double *times, double *params, 
@@ -24,8 +49,6 @@ static void euler_simulator (pomp_onestep_sim *estep,
 
   struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
 
-  tol = sqrt(DOUBLE_EPS); // relative tolerance in choosing Euler stepsize
-
   // copy the start values into the result array
   for (p = 0; p < nrep; p++)
     for (k = 0; k < nvar; k++) 
@@ -39,28 +62,11 @@ static void euler_simulator (pomp_onestep_sim *estep,
     t = times[step-1];
     dt = *deltat;
 
-    // neuler is the number of Euler steps to take in going from
-    // times[step-1] to times[step].
-    // this choice is meant to be conservative
-    // (i.e., so that the actual dt does not exceed the specified dt 
-    // by more than the relative tolerance 'tol')
-    // and to counteract roundoff error.
-    // It seems to work well, but is not guaranteed: 
-    // suggestions would be appreciated.
-
     if (t > times[step]) {
       error("'times' is not an increasing sequence");
     }
-    else if (t == times[step]) {
-      dt = 0.0;
-      neuler = 0;
-    } else if (t+dt >= times[step]) {
-      dt = times[step] - t; 
-      neuler = 1;
-    } else {
-      neuler = (int) ceil((times[step]-t)/dt/(1+tol));
-      dt = (times[step]-t)/((double) neuler);
-    }
+
+    neuler = num_euler_steps(t,times[step],&dt);
 
     for (p = 0; p < nrep; p++) {
       xp = &x[nvar*(p+nrep*step)];

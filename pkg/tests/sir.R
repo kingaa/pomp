@@ -102,7 +102,7 @@ po <- pomp(
                                    terms[1]-terms[2]-terms[3],
                                    terms[2]-terms[4]-terms[5],
                                    terms[4]-terms[6],
-                                   gamma/52*(terms[2]-terms[4]-terms[5])
+                                   terms[4]
                                    )
                     xdot
                   }

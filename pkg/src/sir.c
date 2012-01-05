@@ -202,7 +202,7 @@ void _sir_ODE (double *f, double *x, const double *p,
   DSDT = term[0]-term[1]-term[2];
   DIDT = term[1]-term[3]-term[4];
   DRDT = term[3]-term[5];
-  DCDT = DIDT*gamma/52;		     // roughly the weekly number of new cases
+  DCDT = term[3];		// accumulate the new I->R transitions
 
 }
 

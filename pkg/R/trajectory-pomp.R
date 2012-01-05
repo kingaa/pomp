@@ -56,12 +56,22 @@ trajectory.internal <- function (object, params, times, t0, ...) {
   
   type <- object@skeleton.type          # map or vectorfield?
   
+  if ("zeronames"%in%names(object@userdata))
+    znames <- object@userdata$zeronames
+  else
+    znames <- character(0)
+
   if (is.na(type))
     stop("trajectory error: no skeleton specified",call.=FALSE)
 
   if (type=="map") {
 
-    x <- .Call(iterate_map,object,times,t0,x0,params)
+    if ("skelmap.delta.t"%in%names(object@userdata))
+      dt <- as.numeric(object@userdata$skelmap.delta.t)
+    else
+      dt <- 1
+    
+    x <- .Call(iterate_map,object,times,t0,x0,params,dt,znames)
 
   } else if (type=="vectorfield") {
 
@@ -86,6 +96,9 @@ trajectory.internal <- function (object, params, times, t0, ...) {
            )
     }
 
+    if (length(znames)>0)
+      x0[znames,,] <- 0
+
     X <- try(
              ode(
                  y=x0,
@@ -103,6 +116,9 @@ trajectory.internal <- function (object, params, times, t0, ...) {
 
     x <- array(data=t(X[-1,-1]),dim=c(nvar,nrep,ntimes),dimnames=list(statenames,NULL,NULL))
 
+    if (length(znames)>0)
+      x[znames,,-1] <- apply(x[znames,,,drop=FALSE],c(1,2),diff)
+    
   } else {
     
     stop("deterministic skeleton not specified")

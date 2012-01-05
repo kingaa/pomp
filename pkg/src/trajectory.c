@@ -1,6 +1,7 @@
 // -*- C++ -*-
 
 #include <Rdefines.h>
+#include <R_ext/Constants.h>
 
 #include "pomp_internal.h"
 
@@ -29,15 +30,19 @@ SEXP traj_transp_and_copy (SEXP y, SEXP x, SEXP rep) {
   return ans;
 }
 
-SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
+SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params,
+		  SEXP dt, SEXP zeronames)
 {
   int nprotect = 0;
   SEXP ans;
-  SEXP x, f, skel, time;
+  SEXP x, f, skel, time, zindex;
   int nvars, nreps, ntimes;
-  int i, j, k;
+  int nzeros, nsteps;
+  int h, i, j, k;
   int ndim[3];
   double *tm, *tp, *xp, *fp, *ap;
+  int *zidx;
+  double deltat;
 
   PROTECT(t0 = AS_NUMERIC(t0)); nprotect++;
   PROTECT(x = duplicate(AS_NUMERIC(x0))); nprotect++;
@@ -63,23 +68,56 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
 
   PROTECT(skel = get_pomp_fun(GET_SLOT(object,install("skeleton")))); nprotect++;
 
+  PROTECT(dt = AS_NUMERIC(dt)); nprotect++;
+  if (REAL(dt)[0]<=0) 
+    error("timestep 'dt' must be positive!");
+
+  PROTECT(zeronames = AS_CHARACTER(zeronames)); nprotect++;
+  nzeros = LENGTH(zeronames);
+
+  if (nzeros>0) {
+    PROTECT(zindex = MATCHROWNAMES(x0,zeronames)); nprotect++;
+    zidx = INTEGER(zindex);
+  } else {
+    zidx = 0;
+  }
+
+  if (nzeros>0) {
+    for (j = 0; j < nreps; j++) {
+      for (i = 0; i < nzeros; i++) {
+	xp[zidx[i]+nvars*j] = 0.0;
+      }
+    }
+  }
+
   for (k = 0; k < ntimes; k++, tp++) {
-    if (*tm < *tp) {
-      while (*tm < *tp) {
-	PROTECT(f = do_skeleton(object,x,time,params,skel));
-	fp = REAL(f);
-	for (j = 0; j < nreps; j++) {
-	  for (i = 0; i < nvars; i++) {
-	    xp[i+nvars*j] = fp[i+nvars*j];
-	  }
+
+    if (k > 0) *tm = *(tp-1);
+    // compute number of steps to take
+    deltat = REAL(dt)[0];
+    nsteps = num_euler_steps(*tm,*tp,&deltat); 
+
+    for (h = 0; h < nsteps; h++) {
+      PROTECT(f = do_skeleton(object,x,time,params,skel));
+      fp = REAL(f);
+      for (j = 0; j < nreps; j++) {
+	for (i = 0; i < nvars; i++) {
+	  xp[i+nvars*j] = fp[i+nvars*j];
 	}
-	*tm += 1.0;
-	UNPROTECT(1);
+      }
+      UNPROTECT(1);
+      *tm += deltat;
+      if (h == nsteps-2) {	// penultimate step
+	deltat = *(tp+1)-*tm;
+	*tm = *(tp+1)-deltat;
       }
     }
     for (j = 0; j < nreps; j++) {
       for (i = 0; i < nvars; i++) {
 	ap[i+nvars*(j+nreps*k)] = xp[i+nvars*j];
+      }
+      for (i = 0; i < nzeros; i++) {
+	xp[zidx[i]+nvars*j] = 0.0;
       }
     }
   }
