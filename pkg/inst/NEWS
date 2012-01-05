@@ -1,4 +1,13 @@
 NEWS
+0.40-1
+     o  It is now possible for discrete-time determistic skeletons to have a general step-size.
+     	Before, the stepsize was always forced to be 1.
+
+     o  The deterministic skeleton trajectory functions now look for variables named in 'zeronames' and treat these variables as accumulators.
+     	This brings the behavior of the deterministic skeleton functions into line with 'rprocess'.
+
+     o	Include the user manual PDF among the vignettes.
+
 0.39-5
      o	Bug fix in 'bsmc' that arises when the state space is 1-D.
      	Thanks to Arnab Bhattacharya for finding the bug.

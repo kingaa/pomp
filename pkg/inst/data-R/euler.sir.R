@@ -47,10 +47,7 @@ po <- pomp(
              x0 <- numeric(length(snames))
              names(x0) <- snames
              x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
-             ## since 'cases' is in 'zeronames' above, the IC for this variable
-             ## will only matter in trajectory computations
-             ## In trajectory computations, however, 'cases' will be roughly the weekly number of new cases
-             x0["cases"] <- x0["I"]*exp(params["gamma"])/52 
+             x0["cases"] <- 0
              x0
            }
            )

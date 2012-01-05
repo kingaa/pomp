@@ -39,7 +39,9 @@
 
   When the skeleton is a vectorfield, \code{trajectory} integrates it using \code{\link[deSolve]{ode}}.
 
-  Unresolved issue: What is the behavior if \code{type="map"} and \code{times} are non-integral?
+  When the skeleton is a map, \code{trajectory} iterates it.
+  By default, time is advanced 1 unit per iteration.
+  The user can change this behavior by specifying the desired timestep using the argument \code{skelmap.delta.t} in the construction of the \code{pomp} object.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{
