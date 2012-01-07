@@ -11,6 +11,7 @@ setClass(
                         rmeasure = 'pomp.fun',
                         skeleton.type = 'character',
                         skeleton = 'pomp.fun',
+                        skelmap.delta.t = 'numeric',
                         initializer = 'function',
                         states = 'array',
                         params = 'numeric',
@@ -46,6 +47,7 @@ setGeneric("pomp",function(data,...)standardGeneric("pomp"))
 pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
                               rmeasure, dmeasure, measurement.model,
                               skeleton = NULL, skeleton.type = c("map","vectorfield"),
+                              skelmap.delta.t = 1,
                               initializer, covar, tcovar,
                               obsnames, statenames, paramnames, covarnames,
                               PACKAGE, parameter.transform, parameter.inv.transform) {
@@ -103,6 +105,9 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
     dmeasure <- function(y,x,t,params,log,covars,...)stop(sQuote("dmeasure")," not specified")
   
   skeleton.type <- match.arg(skeleton.type)
+  skelmap.delta.t <- as.numeric(skelmap.delta.t)
+  if (skelmap.delta.t <= 0)
+    stop(sQuote("skelmap.delta.t")," must be positive")
 
   if (is.null(skeleton)) {
     skeleton <- pomp.fun(f=function(x,t,params,covars,...)stop(sQuote("skeleton")," not specified"))
@@ -262,8 +267,9 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
       dprocess = dprocess,
       dmeasure = dmeasure,
       rmeasure = rmeasure,
-      skeleton.type = skeleton.type,
       skeleton = skeleton,
+      skeleton.type = skeleton.type,
+      skelmap.delta.t=skelmap.delta.t,
       data = data,
       times = times,
       t0 = t0,
@@ -360,25 +366,16 @@ measform2pomp <- function (formulae) {
        )
 }
 
-## for backward compatibility
-skeleton.jigger <- function (skeleton = NULL, skeleton.type) {
-  list(fn=skeleton,type=skeleton.type)
-}
-
-
 setMethod(
           "pomp",
           signature(data="data.frame"),
           function (data, times, t0, ..., rprocess, dprocess,
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
+                    skelmap.delta.t = 1,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
-            skel <- skeleton.jigger(
-                                    skeleton=skeleton,
-                                    skeleton.type=skeleton.type
-                                    )
             pomp.constructor(
                              data=data,
                              times=times,
@@ -388,8 +385,9 @@ setMethod(
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
                              measurement.model=measurement.model,
-                             skeleton=skel$fn,
-                             skeleton.type=skel$type,
+                             skeleton=skeleton,
+                             skeleton.type=skeleton.type,
+                             skelmap.delta.t=skelmap.delta.t,
                              initializer=initializer,
                              covar=covar,
                              tcovar=tcovar,
@@ -411,13 +409,10 @@ setMethod(
           function (data, times, t0, ..., rprocess, dprocess,
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
+                    skelmap.delta.t = 1,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
-            skel <- skeleton.jigger(
-                                    skeleton=skeleton,
-                                    skeleton.type=skeleton.type
-                                    )
             pomp.constructor(
                              data=data,
                              times=times,
@@ -427,8 +422,9 @@ setMethod(
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
                              measurement.model=measurement.model,
-                             skeleton=skel$fn,
-                             skeleton.type=skel$type,
+                             skeleton=skeleton,
+                             skeleton.type=skeleton.type,
+                             skelmap.delta.t=skelmap.delta.t,
                              initializer=initializer,
                              covar=covar,
                              tcovar=tcovar,
@@ -451,13 +447,10 @@ setMethod(
           function (data, times, t0, ..., rprocess, dprocess,
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
+                    skelmap.delta.t = 1,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
-            skel <- skeleton.jigger(
-                                    skeleton=skeleton,
-                                    skeleton.type=skeleton.type
-                                    )
             pomp.constructor(
                              data=matrix(data,nrow=1,ncol=length(data)),
                              times=times,
@@ -467,8 +460,9 @@ setMethod(
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
                              measurement.model=measurement.model,
-                             skeleton=skel$fn,
-                             skeleton.type=skel$type,
+                             skeleton=skeleton,
+                             skeleton.type=skeleton.type,
+                             skelmap.delta.t=skelmap.delta.t,
                              initializer=initializer,
                              covar=covar,
                              tcovar=tcovar,
@@ -489,7 +483,7 @@ setMethod(
           signature(data="pomp"),
           function (data, times, t0, ..., rprocess, dprocess,
                     rmeasure, dmeasure, measurement.model,
-                    skeleton, skeleton.type,
+                    skeleton, skeleton.type, skelmap.delta.t,
                     initializer, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
@@ -523,6 +517,7 @@ setMethod(
             if (missing(PACKAGE)) PACKAGE <- data@PACKAGE
             if (missing(skeleton.type)) skeleton.type <- data@skeleton.type
             if (missing(skeleton)) skeleton <- data@skeleton
+            if (missing(skelmap.delta.t)) skelmap.delta.t <- data@skelmap.delta.t
 
             if (missing(parameter.transform)) {
               if (missing(parameter.inv.transform)) {
@@ -558,6 +553,7 @@ setMethod(
                            dmeasure=dmeasure,
                            skeleton=skeleton,
                            skeleton.type=skeleton.type,
+                           skelmap.delta.t=skelmap.delta.t,
                            initializer=initializer,
                            covar=covar,
                            tcovar=tcovar,
@@ -574,4 +570,3 @@ setMethod(
                     )
           }
           )
-

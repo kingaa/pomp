@@ -30,14 +30,15 @@ SEXP traj_transp_and_copy (SEXP y, SEXP x, SEXP rep) {
   return ans;
 }
 
-SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params,
-		  SEXP dt, SEXP zeronames)
+SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, 
+		  SEXP zeronames)
 {
   int nprotect = 0;
   SEXP ans;
-  SEXP x, f, skel, time, zindex;
+  SEXP x, f, skel, time, zindex, dt;
   int nvars, nreps, ntimes;
-  int nzeros, nsteps;
+  int nzeros = LENGTH(zeronames);
+  int nsteps;
   int h, i, j, k;
   int ndim[3];
   double *tm, *tp, *xp, *fp, *ap;
@@ -67,16 +68,10 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params,
   ap = REAL(ans);
 
   PROTECT(skel = get_pomp_fun(GET_SLOT(object,install("skeleton")))); nprotect++;
-
-  PROTECT(dt = AS_NUMERIC(dt)); nprotect++;
-  if (REAL(dt)[0]<=0) 
-    error("timestep 'dt' must be positive!");
-
-  PROTECT(zeronames = AS_CHARACTER(zeronames)); nprotect++;
-  nzeros = LENGTH(zeronames);
+  PROTECT(dt = GET_SLOT(object,install("skelmap.delta.t"))); nprotect++;
 
   if (nzeros>0) {
-    PROTECT(zindex = MATCHROWNAMES(x0,zeronames)); nprotect++;
+    PROTECT(zindex = MATCHROWNAMES(x0,AS_CHARACTER(zeronames))); nprotect++;
     zidx = INTEGER(zindex);
   } else {
     zidx = 0;

@@ -2,6 +2,9 @@ NEWS
 0.40-1
      o  It is now possible for discrete-time determistic skeletons to have a general step-size.
      	Before, the stepsize was always forced to be 1.
+	The new argument 'skelmap.delta.t' in 'pomp' (default value 1) sets this step-size.
+	NB: in implementing this feature, a new slot has been added to the basic 'pomp' class.
+	'pomp' objects created with versions <0.40-1 will not therefore work with this version and must be re-created.
 
      o  The deterministic skeleton trajectory functions now look for variables named in 'zeronames' and treat these variables as accumulators.
      	This brings the behavior of the deterministic skeleton functions into line with 'rprocess'.

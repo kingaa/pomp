@@ -716,7 +716,8 @@ if (file.exists(binary.file)) {
        loglik.mif.est,loglik.true.est,
        loglik.mif.se,loglik.true.se,
        etime,
-       file=binary.file
+       file=binary.file,
+       compress=TRUE
        )
 }
 rbind(
@@ -839,7 +840,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<gompertz-trajmatch-calc>>
-  save(new.gompertz,tm,file=binary.file)
+  save(new.gompertz,tm,file=binary.file,compress=TRUE)
 }
 @
 
@@ -1013,7 +1014,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<ricker-probe-match-calc>>
-  save(pm,file=binary.file)
+  save(pm,file=binary.file,compress=TRUE)
 }
 @
 
@@ -1040,7 +1041,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<ricker-mif-calc>>
-  save(mf,file=binary.file)
+  save(mf,file=binary.file,compress=TRUE)
 }
 @
 The following code compares parameters, likelihoods, and synthetic likelihoods (based on the probes in \code{plist}) at each of 
@@ -1133,7 +1134,7 @@ if (file.exists(binary.file)) {
 } else {
 <<nlf-gompertz-starts>>
 <<nlf-gompertz-fits>>
-  save(starts,out,fits,file=binary.file)
+  save(starts,out,fits,file=binary.file,compress=TRUE)
 }
 @ 
 The results in this case are very encouraging,
@@ -1211,7 +1212,7 @@ if (file.exists(binary.file)) {
 <<nlf-my-pomp>>
 <<nlf-lag-test-log.r>>
 <<nlf-lag-test-log.K>>
-  save(theta,lags,log.r.vals,log.K.vals,fvals,fvals2,file=binary.file)
+  save(theta,lags,log.r.vals,log.K.vals,fvals,fvals2,file=binary.file,compress=TRUE)
 }
 @ 
 
@@ -1281,7 +1282,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<nlf-multi-short>>
-  save(lags,nreps,ndata,fvals,file=binary.file)
+  save(lags,nreps,ndata,fvals,file=binary.file,compress=TRUE)
 }
 @ 
 The last line above expresses the objective function as the geometric mean (quasi)likelihood per data point. 
@@ -1308,7 +1309,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<nlf-fit-from-truth>>
-  save(true.fit,file=binary.file)
+  save(true.fit,file=binary.file,compress=TRUE)
 }
 @ 
 From \verb+true.fit$params+ and \verb+true.fit$se+ we get the estimates ($\pm$ 1 standard error)
@@ -1359,7 +1360,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<nlf-boot>>
-  save(pars,file=binary.file)
+  save(pars,file=binary.file,compress=TRUE)
 }
 @ 
 <<>>=
@@ -1413,7 +1414,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<nlf-block-boot>>
-  save(pars,file=binary.file)
+  save(pars,file=binary.file,compress=TRUE)
 }
 @ 
 

@@ -28,4 +28,4 @@ simulate(
          seed=73691676L
          ) -> ricker
 
-save(ricker,file="ricker.rda")
+save(ricker,file="ricker.rda",compress=TRUE)

@@ -15,24 +15,25 @@
 \usage{
 \S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
-       skeleton = NULL, skeleton.type = c("map","vectorfield"),
+       skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
-       skeleton = NULL, skeleton.type = c("map","vectorfield"),
+       skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
-       skeleton = NULL, skeleton.type = c("map","vectorfield"),
+       skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model, skeleton, skeleton.type,
+       measurement.model,
+       skeleton, skeleton.type, skelmap.delta.t,
        initializer, covar, tcovar,
        obsnames, statenames, paramnames, covarnames,
        PACKAGE, parameter.transform, parameter.inv.transform)
@@ -88,14 +89,18 @@
     See below for an example.
     \strong{NB:} it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
   }
-  \item{skeleton, skeleton.type}{
+  \item{skeleton, skeleton.type, skelmap.delta.t}{
     The function \code{skeleton} specifies the deterministic skeleton of the unobserved Markov process.
     If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map: indicate this by specifying \code{skeleton.type="map"}.
     If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield: indicate this by specifying \code{skeleton.type="vectorfield"}.
+
     The skeleton function can be specified in one of two ways:
     (1) as an \R function of prototype \code{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
     (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_skeleton} as defined in the header file \dQuote{pomp.h}.
     If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
+
+    With a discrete-time skeleton, the default assumption is that time advances 1 unit per iteration of the map;
+    to change this, set \code{skelmap.delta.t} to the appropriate time-step.
   }
   \item{initializer}{
     optional function of prototype \code{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.

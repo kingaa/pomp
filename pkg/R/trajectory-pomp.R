@@ -66,12 +66,7 @@ trajectory.internal <- function (object, params, times, t0, ...) {
 
   if (type=="map") {
 
-    if ("skelmap.delta.t"%in%names(object@userdata))
-      dt <- as.numeric(object@userdata$skelmap.delta.t)
-    else
-      dt <- 1
-    
-    x <- .Call(iterate_map,object,times,t0,x0,params,dt,znames)
+    x <- .Call(iterate_map,object,times,t0,x0,params,znames)
 
   } else if (type=="vectorfield") {
 

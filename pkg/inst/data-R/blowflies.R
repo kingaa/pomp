@@ -118,4 +118,4 @@ if(test){
   
 } 
 
-save(blowflies1,blowflies2,file="blowflies.rda")
+save(blowflies1,blowflies2,file="blowflies.rda",compress=TRUE)
