@@ -5,7 +5,7 @@
   \code{sliceDesign} generates a data-frame representing points taken along one or more slices through a point in a multidimensional space.
 }
 \usage{
-sliceDesign(center, ...)
+sliceDesign(center, \dots)
 }
 \arguments{
   \item{center}{
