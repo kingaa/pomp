@@ -56,4 +56,4 @@ simulate(
          seed=73658676L
          ) -> verhulst
 
-save(verhulst,file="verhulst.rda",compress=TRUE)
+save(verhulst,file="verhulst.rda",compress="xz")

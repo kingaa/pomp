@@ -188,4 +188,4 @@ dacca.transform <- function (params, dir = c("forward","inverse")) {
 }
 
 coef(dacca) <- dacca.transform(mle,dir="forward")
-save(dacca,file="dacca.rda",compress=TRUE)
+save(dacca,file="dacca.rda",compress="xz")

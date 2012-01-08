@@ -39,4 +39,4 @@ simulate(
          seed=738377475L
          ) -> rw2
 
-save(rw2,file="rw2.rda",compress=TRUE)
+save(rw2,file="rw2.rda",compress="xz")

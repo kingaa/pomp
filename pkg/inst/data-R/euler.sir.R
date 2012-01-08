@@ -62,4 +62,4 @@ coef(po,transform=TRUE) <- c(gamma=26,mu=0.02,iota=0.01,
 
 simulate(po,nsim=1,seed=329348545L) -> euler.sir
 
-save(euler.sir,file="euler.sir.rda",compress=TRUE)
+save(euler.sir,file="euler.sir.rda",compress="xz")

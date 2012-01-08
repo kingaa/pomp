@@ -30,4 +30,4 @@ coef(po,transform=TRUE) <- c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1)
 
 simulate(po,nsim=1,seed=299438676L) -> gompertz
 
-save(gompertz,file="gompertz.rda",compress=TRUE)
+save(gompertz,file="gompertz.rda",compress="xz")
