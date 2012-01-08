@@ -56,17 +56,12 @@ trajectory.internal <- function (object, params, times, t0, ...) {
   
   type <- object@skeleton.type          # map or vectorfield?
   
-  if ("zeronames"%in%names(object@userdata))
-    znames <- object@userdata$zeronames
-  else
-    znames <- character(0)
-
   if (is.na(type))
     stop("trajectory error: no skeleton specified",call.=FALSE)
 
   if (type=="map") {
 
-    x <- .Call(iterate_map,object,times,t0,x0,params,znames)
+    x <- .Call(iterate_map,object,times,t0,x0,params)
 
   } else if (type=="vectorfield") {
 
@@ -90,6 +85,8 @@ trajectory.internal <- function (object, params, times, t0, ...) {
            NULL
            )
     }
+
+    znames <- object@zeronames
 
     if (length(znames)>0)
       x0[znames,,] <- 0

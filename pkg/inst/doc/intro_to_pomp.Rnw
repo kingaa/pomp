@@ -191,7 +191,7 @@ The documentation (\code{?pomp}) spells out the usage of the \code{pomp} constru
 
 Let's see how to implement the Gompertz model in \pkg{pomp}.
 Here, we'll take the shortest path to this goal.
-In the ``advanced topics in pomp'' vignette, we show how one can make the codes much more efficient using compiled native (C or FORTRAN) code.
+In the ``Advanced topics in \pkg{pomp}'' vignette, we show how one can make the codes much more efficient using compiled native (C or FORTRAN) code.
 
 First, we write a function that implements the process model simulator.
 This is a function that will simulate a single step ($t\to{t+{\Delta}t}$) of the unobserved process \eqref{eq:gompertz1}.
@@ -717,7 +717,7 @@ if (file.exists(binary.file)) {
        loglik.mif.se,loglik.true.se,
        etime,
        file=binary.file,
-       compress=TRUE
+       compress="xz"
        )
 }
 rbind(
@@ -840,7 +840,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<gompertz-trajmatch-calc>>
-  save(new.gompertz,tm,file=binary.file,compress=TRUE)
+  save(new.gompertz,tm,file=binary.file,compress="xz")
 }
 @
 
@@ -1014,7 +1014,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<ricker-probe-match-calc>>
-  save(pm,file=binary.file,compress=TRUE)
+  save(pm,file=binary.file,compress="xz")
 }
 @
 
@@ -1041,7 +1041,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<ricker-mif-calc>>
-  save(mf,file=binary.file,compress=TRUE)
+  save(mf,file=binary.file,compress="xz")
 }
 @
 The following code compares parameters, likelihoods, and synthetic likelihoods (based on the probes in \code{plist}) at each of 
@@ -1134,7 +1134,7 @@ if (file.exists(binary.file)) {
 } else {
 <<nlf-gompertz-starts>>
 <<nlf-gompertz-fits>>
-  save(starts,out,fits,file=binary.file,compress=TRUE)
+  save(starts,out,fits,file=binary.file,compress="xz")
 }
 @ 
 The results in this case are very encouraging,
@@ -1148,7 +1148,7 @@ same way.
 \code{nasymp} sets the length of the Gompertz model simulation on which the quasilikelihood is based; 
 larger values will give less variable parameter estimates, but will slow down the fitting process. 
 The slowdown is dominated by the time required to generate the model simulations, so efficient coding of \code{rprocess} is essential. 
-The ``Advanced topics in pomp'' vignette gives some advice on this. 
+The ``Advanced topics in \pkg{pomp}'' vignette gives some advice on this. 
 Do \code{vignette("advanced\_topics\_in\_pomp")} to view it.
 
 The choice of lags affects the accuracy of the intermediate statistical model and therefore the accuracy of parameter estimates, so it is worth putting some effort into choosing good lags. 
@@ -1212,7 +1212,7 @@ if (file.exists(binary.file)) {
 <<nlf-my-pomp>>
 <<nlf-lag-test-log.r>>
 <<nlf-lag-test-log.K>>
-  save(theta,lags,log.r.vals,log.K.vals,fvals,fvals2,file=binary.file,compress=TRUE)
+  save(theta,lags,log.r.vals,log.K.vals,fvals,fvals2,file=binary.file,compress="xz")
 }
 @ 
 
@@ -1282,7 +1282,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<nlf-multi-short>>
-  save(lags,nreps,ndata,fvals,file=binary.file,compress=TRUE)
+  save(lags,nreps,ndata,fvals,file=binary.file,compress="xz")
 }
 @ 
 The last line above expresses the objective function as the geometric mean (quasi)likelihood per data point. 
@@ -1309,7 +1309,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<nlf-fit-from-truth>>
-  save(true.fit,file=binary.file,compress=TRUE)
+  save(true.fit,file=binary.file,compress="xz")
 }
 @ 
 From \verb+true.fit$params+ and \verb+true.fit$se+ we get the estimates ($\pm$ 1 standard error)
@@ -1360,7 +1360,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<nlf-boot>>
-  save(pars,file=binary.file,compress=TRUE)
+  save(pars,file=binary.file,compress="xz")
 }
 @ 
 <<>>=
@@ -1414,7 +1414,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<nlf-block-boot>>
-  save(pars,file=binary.file,compress=TRUE)
+  save(pars,file=binary.file,compress="xz")
 }
 @ 
 
@@ -1504,6 +1504,8 @@ The number of cases, $C(t_1,t_2)$, recorded within a given reporting interval $[
   C(t_1,t_2)\;\sim\;\mathrm{binomial}({\Delta}_{I{\to}R}(t_1,t_2),\rho)
 \end{equation*}
 where $\Delta_{I{\to}R}(t_1,t_2)$ is the accumulated number of recoveries that have occured over the interval in question and $\rho$ is the \emph{reporting rate}, i.e., the probability that a given infection is observed and recorded.
+The fact that the observed data are linked to an accumulation, as opposed to an instantaneous value, introduces a little bit of complication;
+see the section on ``Accumulator variables'' in the ``Advanced Topics in \pkg{pomp}'' vignette for a thorough discussion of this issue.
 
 The model's deterministic skeleton is a system of nonlinear ordinary differential equations---a vectorfield---on the space of positive values of $S$, $I$, and $R$ (cf. Eq.~\ref{eq:continuous-skeleton}).
 Specifically, the SIR deterministic skeleton is
@@ -1580,6 +1582,7 @@ Because none of the rates $\lambda$, $\mu$, or $\gamma$ depend on \code{cases}, 
 We still have a difficulty with the measurement process, however, in that our data are assumed to be records of infections resolving within a given interval while the process model keeps track of the accumulated number of infections that have resolved since the record-keeping began.
 We can get around this difficulty by re-setting \code{cases} to zero immediately after each observation.
 We tell \pkg{pomp} to do this using the \code{pomp}'s \code{zeronames} argument, as we will see in a moment.
+The section on ``accumulator variables'' in the ``Advanced topics in \pkg{pomp}'' vignette discusses this in more detail.
 
 The second wrinkle has to do with the initial conditions, i.e., the states $S(t_0)$, $I(t_0)$, $R(t_0)$.
 By default, \pkg{pomp} will allow us to specify these initial states arbitrarily.
@@ -1608,7 +1611,7 @@ simulate(
                 x0[comp.names] <- round(N*fracs/sum(fracs))
                 x0
               },
-              zeronames=c("cases"), # zero this variable after each obsvn.
+              zeronames=c("cases"), # 'cases' is an accumulator variable
               ic.pars=c("S0","I0","R0"), # initial condition parameters
               comp.names=c("S","I","R") # names of the compartments
               ),
@@ -1666,7 +1669,7 @@ simulate(
                 x0[comp.names] <- round(N*fracs/sum(fracs))
                 x0
               },
-              zeronames=c("cases"), # zero this variable after each obsvn.
+              zeronames=c("cases"), # 'cases' is an accumulator variable
               ic.pars=c("S0","I0","R0"), # initial condition parameters
               comp.names=c("S","I","R") # names of the compartments
               ),

@@ -17,25 +17,25 @@
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, covar, tcovar,
-       obsnames, statenames, paramnames, covarnames,
+       obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, covar, tcovar,
-       obsnames, statenames, paramnames, covarnames,
+       obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, covar, tcovar,
-       obsnames, statenames, paramnames, covarnames,
+       obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton, skeleton.type, skelmap.delta.t,
        initializer, covar, tcovar,
-       obsnames, statenames, paramnames, covarnames,
+       obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 }
 \arguments{
@@ -121,7 +121,11 @@
     These are only used in the event that one or more of the basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}) are defined using native routines.
     In that case, these name vectors are matched against the corresponding names and the indices of the names are passed to the native routines.
     Using this facility allows one to write one or more of \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton} in native code in a way that does not depend on the order of states, parameters, and covariates at run time.
-    See the \dQuote{advanced_topic_in_pomp} vignette for more on this topic and examples.
+    See the \dQuote{Advanced topics in pomp} vignette for more on this topic and examples.
+  }
+  \item{zeronames}{
+    Optional character vector specifying the names of accumulator variables.
+    See the \dQuote{Advanced topics in pomp} vignette for a discussion of this.
   }
   \item{PACKAGE}{
     An optional string giving the name of the dynamically loaded library in which any native routines are to be found.
@@ -159,7 +163,7 @@
   To use the plugins, consult the help documentation (\code{?\link{plugins}}) and the vignettes.
 
   It is anticipated that, in specific cases, it will be possible to obtain increased computational efficiency by writing custom versions of \code{rprocess} and/or \code{dprocess}.
-  See the \dQuote{Advanced Topics in pomp} vignette for a discussion of this.
+  See the \dQuote{Advanced topics in pomp} vignette for a discussion of this.
   If such custom versions are desired, the following describes how each of these functions should be written in this case.
   \describe{
     \item{\code{rprocess}}{

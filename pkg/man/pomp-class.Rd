@@ -59,6 +59,9 @@
       Names of observables, state variables, parameters, and covariates, respectively.
       These are used to make the interface with native routines more robust.
     }
+    \item{zeronames}{
+      Names of accumulator variables.
+    }
     \item{par.trans, par.untrans}{
       The forward and inverse parameter transformations.
     }

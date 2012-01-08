@@ -461,6 +461,35 @@ sims <- simulate(sir,nsim=10,obs=T)
 traj <- trajectory(sir,hmax=1/52)
 @ 
 
+\section{Accumulator variables}
+
+Recall the SIR example discussed in the ``Introduction to \pkg{pomp}'' vignette.
+In this example, the data consist of reported cases, which are modeled as binomial draws from the true number of recoveries having occurred since the last observation.
+In particular, suppose the zero time for the process is $t_0$ and let $t_1, t_2, \dots, t_n$ be the times at which the data $y_1, y_2, \dots, y_n$ are recorded.
+Then the $k$-th observation $y_k = C(t_{k-1},t_{k})$ is the observed number of cases in time interval $[t_{k-1},t_{k})$.
+If $\Delta_{I{\to}R}(t_{k-1},t_{k})$ is the accumulated number of recoveries (I to R transitions) in the same interval, then the model assumes
+\begin{equation*}
+  y_{k}=C(t_{k-1},t_{k})\;\sim\;\mathrm{binomial}({\Delta}_{I{\to}R}(t_{k-1},t_{k}),\rho)
+\end{equation*}
+where $\rho$ is the probability a given case is actually recorded.
+
+Now, it is easy to keep track of the cumulative number of recoveries when simulating the continuous-time SIR state process; 
+one simply has to add each recovery to an accumulator variable when it occurs.
+The SIR simulator codes in the ``Introduction to \pkg{pomp}'' vignette do this, storing the cumulative number of recoveries in a state variable \code{cases}, so that at any time $t$,
+\begin{equation*}
+  \mathtt{cases}(t) = \text{cumulative number of recoveries having occurred in the interval $[t_0,t)$}.
+\end{equation*}
+It follows that $\Delta_{I{\to}R}(t_{k-1},t_{k})=\mathtt{cases}(t_{k})-\mathtt{cases}(t_{k-1})$.
+Does this not violate the Markov assumption upon which all the algorithms in \pkg{pomp} are based?
+Not really.
+Straightforwardly, one could augment the state process, adding $\mathtt{cases}(t_{k-1})$ to the state vector at time $t_k$.
+The state process would then become a \emph{hybrid} process, with one component (the $S$, $I$, $R$, and $\mathtt{cases}$ variables) evolving in continuous time, while the retarded $\mathtt{cases}$ variable would update discretely.
+
+It would, of course, be relatively easy to code up the model in this way, but because the need for accumulator variables is so common, \pkg{pomp} provides an easier work-around.
+Specifically, in the \code{pomp}-object constructing call to \code{pomp}, any variables named in the \code{zeronames} argument are assumed to be accumulator variables.
+At present, however, only the \code{rprocess} plug-ins and the deterministic-skeleton trajectory codes take this into account;
+setting \code{zeronames} will have no effect on custom \code{rprocess} codes.
+
 \clearpage
 \section{The low-level interface}
 

@@ -22,9 +22,9 @@ struct lookup_table {
   double *y;
 };
 
-// routine to compute number of Euler steps to take.
+// routine to compute number of discrete-time steps to take.
 // used by plugins in 'euler.c' and map iterator in 'trajectory.c'
-int num_euler_steps (double t1, double t2, double *dt);
+int num_map_steps (double t1, double t2, double dt);
 
 // simple linear interpolation of the lookup table (with derivative if desired)
 // setting dydt = 0 in the call to 'table_lookup' will bypass computation of the derivative

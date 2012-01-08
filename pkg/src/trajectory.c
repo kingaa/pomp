@@ -30,14 +30,13 @@ SEXP traj_transp_and_copy (SEXP y, SEXP x, SEXP rep) {
   return ans;
 }
 
-SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, 
-		  SEXP zeronames)
+SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
 {
   int nprotect = 0;
   SEXP ans;
-  SEXP x, f, skel, time, zindex, dt;
+  SEXP x, f, skel, time, zeronames, zindex, dt;
   int nvars, nreps, ntimes;
-  int nzeros = LENGTH(zeronames);
+  int nzeros;
   int nsteps;
   int h, i, j, k;
   int ndim[3];
@@ -69,9 +68,12 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params,
 
   PROTECT(skel = get_pomp_fun(GET_SLOT(object,install("skeleton")))); nprotect++;
   PROTECT(dt = GET_SLOT(object,install("skelmap.delta.t"))); nprotect++;
+  deltat = REAL(dt)[0];  
 
+  PROTECT(zeronames = GET_SLOT(object,install("zeronames"))); nprotect++;
+  nzeros = LENGTH(zeronames);
   if (nzeros>0) {
-    PROTECT(zindex = MATCHROWNAMES(x0,AS_CHARACTER(zeronames))); nprotect++;
+    PROTECT(zindex = MATCHROWNAMES(x0,zeronames)); nprotect++;
     zidx = INTEGER(zindex);
   } else {
     zidx = 0;
@@ -87,10 +89,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params,
 
   for (k = 0; k < ntimes; k++, tp++) {
 
-    if (k > 0) *tm = *(tp-1);
-    // compute number of steps to take
-    deltat = REAL(dt)[0];
-    nsteps = num_euler_steps(*tm,*tp,&deltat); 
+    nsteps = num_map_steps(*tm,*tp,deltat); 
 
     for (h = 0; h < nsteps; h++) {
       PROTECT(f = do_skeleton(object,x,time,params,skel));
@@ -102,10 +101,6 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params,
       }
       UNPROTECT(1);
       *tm += deltat;
-      if (h == nsteps-2) {	// penultimate step
-	deltat = *(tp+1)-*tm;
-	*tm = *(tp+1)-deltat;
-      }
     }
     for (j = 0; j < nreps; j++) {
       for (i = 0; i < nvars; i++) {
