@@ -73,6 +73,7 @@ export(
        periodic.bspline.basis,
        compare.mif,
        nlf,
+       parmat,
        probe.mean,
        probe.median,
        probe.var,
