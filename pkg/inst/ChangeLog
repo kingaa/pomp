@@ -1,3 +1,120 @@
+2012-01-10  kingaa
+
+	* [r587] .Rbuildignore: - don't ignore .rda files in inst/doc
+
+2012-01-09  kingaa
+
+	* [r586] DESCRIPTION, src/lpa.c: - add LPA model codes to src
+
+2012-01-08  kingaa
+
+	* [r585] inst/doc/manual.pdf: - updated manual
+	* [r584] DESCRIPTION, R/plugins.R, R/pomp.R, R/trajectory-pomp.R,
+	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
+	  data/ricker.rda, data/rw2.rda, data/verhulst.rda, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/gompertz-multi-mif.rda, inst/doc/gompertz-trajmatch.rda,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/manual.pdf, inst/doc/nlf-block-boot.rda,
+	  inst/doc/nlf-boot.rda, inst/doc/nlf-fit-from-truth.rda,
+	  inst/doc/nlf-fits.rda, inst/doc/nlf-lag-tests.rda,
+	  inst/doc/nlf-multi-short.rda, inst/doc/ricker-mif.rda,
+	  inst/doc/ricker-probe-match.rda, man/pomp-class.Rd, man/pomp.Rd,
+	  src/euler.c, src/pomp_internal.h, src/rprocess.c,
+	  src/trajectory.c, tests/sir.Rout.save: - include zeronames in
+	  basic 'pomp' object. this is passed to 'rprocess' and used by the
+	  codes in 'trajectory'.
+	  - add a new section to the 'advanced topics' vignette to discuss
+	  'zeronames' and accumulator variables.
+	  - fix a bug in 'trajectory' for maps and 'discrete.time.sim' in
+	  that step sizes were treated as variable (as for Euler steps)
+	  rather than as fixed.
+	* [r583] man/slice-design.Rd: - minor fix
+	* [r582] inst/data-R/blowflies.R, inst/data-R/dacca.R,
+	  inst/data-R/euler.sir.R, inst/data-R/gillespie.sir.R,
+	  inst/data-R/gompertz.R, inst/data-R/ou2.R, inst/data-R/ricker.R,
+	  inst/data-R/rw2.R, inst/data-R/verhulst.R: - use higher
+	  compression
+	* [r581] NAMESPACE:
+	* [r580] R/parmat.R, man/parmat.Rd: - the 'parmat' function to
+	  construct parameter matrices in one line
+	* [r579] .Rbuildignore: - add an .Rbuildignore file
+
+2012-01-07  kingaa
+
+	* [r578] inst/doc/advanced_topics_in_pomp.Rnw, inst/examples/sir.R,
+	  inst/examples/sir.c: - update the examples
+	* [r577] DESCRIPTION, R/pomp.R, R/trajectory-pomp.R,
+	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
+	  data/ricker.rda, data/rw2.rda, data/verhulst.rda, inst/NEWS,
+	  inst/data-R/blowflies.R, inst/data-R/dacca.R,
+	  inst/data-R/euler.sir.R, inst/data-R/gillespie.sir.R,
+	  inst/data-R/gompertz.R, inst/data-R/ou2.R, inst/data-R/ricker.R,
+	  inst/data-R/rw2.R, inst/data-R/verhulst.R,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/gompertz-multi-mif.rda, inst/doc/gompertz-trajmatch.rda,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/manual.pdf, inst/doc/nlf-block-boot.rda,
+	  inst/doc/nlf-boot.rda, inst/doc/nlf-fit-from-truth.rda,
+	  inst/doc/nlf-fits.rda, inst/doc/nlf-lag-tests.rda,
+	  inst/doc/nlf-multi-short.rda, inst/doc/ricker-mif.rda,
+	  inst/doc/ricker-probe-match.rda, man/pomp-class.Rd, man/pomp.Rd,
+	  src/trajectory.c: - add 'skelmap.delta.t' as a slot in the basic
+	  'pomp' object
+
+2012-01-05  kingaa
+
+	* [r576] DESCRIPTION, data/LondonYorke.rda, data/blowflies.rda,
+	  data/dacca.rda, data/euler.sir.rda, data/gillespie.sir.rda,
+	  data/gompertz.rda, data/ou2.rda, data/ricker.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/NEWS, inst/data-R/euler.sir.R,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/manual.pdf, man/trajectory-pomp.Rd: - update the data
+	  files and vignettes
+	  - the 'euler.sir' data()-loadable example now uses 'zeronames'
+	  for the deterministic skeleton
+	* [r575] inst/doc/manual.Rnw, inst/doc/manual.pdf: - put the manual
+	  into the set of vignettes
+	* [r574] tests/ou2-probe.Rout.save, tests/ricker-probe.Rout.save: -
+	  update the unit tests
+	* [r573] R/trajectory-pomp.R, src/euler.c, src/pomp_internal.h,
+	  src/sir.c, src/trajectory.c, tests/sir.R, tests/sir.Rout.save: -
+	  put calculation of Euler steps into a separate routine, now used
+	  both by the Euler plugin and by the deterministic map iterator
+	  - 'trajectory' can now make use of 'zeronames' a la the Euler
+	  plugin
+	  - 'trajectory' for maps can now handle a general timestep
+	* [r572] inst/doc/index.html, inst/doc/manual.Rnw,
+	  inst/doc/manual.pdf: - include the manual pdf among the vignettes
+
+2011-12-24  kingaa
+
+	* [r571] DESCRIPTION, R/pomp.R, man/pomp.Rd, tests/fhn.Rout.save,
+	  tests/ricker-probe.Rout.save: - finish removing deprecated
+	  'skeleton.map' and 'skeleton.vectorfield' interface
+	* [r570] NAMESPACE, R/profile-design.R, R/slice-design.R,
+	  R/sobol.R, man/profile-design.Rd, man/slice-design.Rd,
+	  man/sobol.Rd, tests/fhn.R: - remove deprecated codes
+	  'slice.design', 'sobol.design', and 'profile.design'
+
+2011-12-14  kingaa
+
+	* [r569] inst/NEWS: - update NEWS file
+	  - 'bsmc' is actually still using 'sample.int' (the last log entry
+	  notwithstanding)
+
+2011-12-13  kingaa
+
+	* [r568] DESCRIPTION, R/bsmc.R, inst/ChangeLog,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf,
+	  man/bsmc.Rd, tests/ou2-bsmc.R, tests/ou2-bsmc.Rout.save: - fix
+	  some inconsistencies with the arguments of 'bsmc'
+	  - switch 'bsmc' to using 'systematic_resampling' instead of
+	  'sample.int'
+
 2011-11-22  kingaa
 
 	* [r567] R/bsmc.R, inst/NEWS: - update NEWS file
