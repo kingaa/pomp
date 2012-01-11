@@ -32,12 +32,8 @@ int num_map_steps (double t1, double t2, double dt) {
   double tol = sqrt(DOUBLE_EPS);
   int nstep;
   // nstep will be the number of discrete-time steps to take in going from t1 to t2.
-  if (t1+dt > t2) {
-    nstep = 0;
-  } else {
-    nstep = (int) ceil((t2-t1)/dt/(1+tol));
-  }
-  return nstep;
+  nstep = (int) floor((t2-t1)/dt/(1-tol));
+  return (nstep > 0) ? nstep : 0;
 }
 
 // take Euler-Poisson steps of size at most deltat from t1 to t2
