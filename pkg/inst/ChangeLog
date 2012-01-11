@@ -1,5 +1,11 @@
+2012-01-11  kingaa
+
+	* [r589] src/euler.c: - bug fix: inappropriate choice of number of
+	  steps in some circumstances
+
 2012-01-10  kingaa
 
+	* [r588] inst/ChangeLog: - update ChangeLog for version 0.40-1
 	* [r587] .Rbuildignore: - don't ignore .rda files in inst/doc
 
 2012-01-09  kingaa

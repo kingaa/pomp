@@ -1,4 +1,8 @@
 NEWS
+0.40-2
+     o  A bug to do with computation of the number of steps needed in discrete-time simulation and trajectory computations has been fixed.
+     	This bug was introduced in version 0.40-1.
+
 0.40-1
      o  It is now possible for discrete-time determistic skeletons to have a general step-size.
      	Before, the stepsize was always forced to be 1.
