@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2011-12-13 r57882)
+R version 2.14.1 (2011-12-22)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -62,7 +62,7 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 3.258152 secs
+Time difference of 3.09274 secs
 > 
 > print(
 +       cbind(
@@ -86,13 +86,13 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > print(min(smc$eff.sample.size))
 [1] 40.66176
-> print(smc$loglik)
-[1] -30.90868
+> print(smc$log.evidence)
+[1] 44.55899
 > 
 > smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=455485L)
 > print(smc$eff.sample.size)
  [1] 334.84129  29.59904  21.74851 135.57314 134.38589  13.53892  74.06161
  [8]  19.83331  30.75126  79.16116
-> print(smc$loglik)
-[1] -30.27596
+> print(smc$log.evidence)
+[1] 38.46819
 > 

@@ -78,9 +78,6 @@
   \item{eff.sample.size}{
     A vector containing the effective number of particles at each time point.
   }
-  \item{cond.loglik}{
-    A vector containing the conditional log likelihoods at each time point.
-  }
   \item{smooth}{
     The smoothing parameter used (see above).
   }
@@ -92,8 +89,11 @@
   \item{nfail}{
     The number of filtering failures encountered.
   }
-  \item{loglik}{
-    The estimated log-likelihood.
+  \item{cond.log.evidence}{
+    A vector containing the conditional log evidence scores at each time point.
+  }
+  \item{log.evidence}{
+    The estimated log evidence.
   }
   \item{weights}{
     The resampling weights for each particle.

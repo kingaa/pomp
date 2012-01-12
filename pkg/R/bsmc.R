@@ -2,11 +2,12 @@
 ##
 ## in annotation L&W AGM == Liu & West "A General Algorithm"
 ## 
-## params = the initial particles for the parameter values
-##          these are drawn from the prior distribution for the parameters
-## est = names of parameters to estimate.  Other parameters are not updated.
+## params = the initial particles for the parameter values;
+##          these should be drawn from the prior distribution for the parameters
+## est = names of parameters to estimate; other parameters are not updated.
 ## smooth = parameter 'h' from AGM
-## ntries = number of samplesto draw from x_t+1|x(k)_t to estimate mean of mu(k)_t+1 as in sect 2.2 Liu & West
+## ntries = number of samplesto draw from x_{t+1} | x(k)_{t} to estimate
+##          mean of mu(k)_t+1 as in sect 2.2 Liu & West
 ## lower  = lower bounds on prior
 ## upper  = upper bounds on prior
 
@@ -27,10 +28,8 @@ setMethod(
 
             if (missing(seed)) seed <- NULL
             if (!is.null(seed)) {
-              if (!exists(".Random.seed",where=.GlobalEnv)) {
-                ## need to initialize the RNG
-                runif(1)
-              }
+              if (!exists(".Random.seed",where=.GlobalEnv))
+                runif(1) ## need to initialize the RNG
               save.seed <- get(".Random.seed",pos=.GlobalEnv)
               set.seed(seed)
             }
@@ -116,7 +115,7 @@ setMethod(
             times <- time(object,t0=TRUE)
             x <- xstart
 
-            loglik <- rep(NA,ntimes)
+            evidence <- rep(NA,ntimes)
             eff.sample.size <- rep(NA,ntimes)
             nfail <- 0
             
@@ -142,7 +141,7 @@ setMethod(
                       )
               }
 
-              X <- matrix(data=x,nrow=nvars,ncol=Np*ntries)
+	      X <- matrix(data=x,nrow=nvars,ncol=Np*ntries)
               rownames(X) <- statenames
               P <- matrix(data=params,nrow=npars,ncol=Np*ntries)
               rownames(P) <- paramnames
@@ -167,6 +166,7 @@ setMethod(
                             times=times[nt+1],
                             params=m											
                             )	
+              storeForEvidence1 <- log(sum(g))
               ## sample indices -- From L&W AGM (2)
 ##              k <- .Call(systematic_resampling,g)
               k <- sample.int(n=Np,size=Np,replace=TRUE,prob=g)
@@ -207,7 +207,9 @@ setMethod(
                                 params=params
                                 )
               ## evaluate weights as per L&W AGM (5)
-              weights <- numer/g
+
+	      weights <- numer/g
+	      storeForEvidence2 <- log(mean(weights))
               
               ## apply box constraints as per the priors          
               for (j in seq_len(Np)) {
@@ -248,12 +250,12 @@ setMethod(
                 nfail <- nfail+1
                 if (nfail > max.fail)
                   stop(error.prefix,"too many filtering failures",call.=FALSE)
-                loglik[nt] <- log(tol)          # worst log-likelihood
+                evidence[nt] <- log(tol)          # worst log-likelihood
                 weights <- rep(1/Np,Np)
                 eff.sample.size[nt] <- 0
               } else {                  # not all particles are lost
                 ## compute log-likelihood
-                loglik[nt] <- log(mean(weights))
+                evidence[nt] <- storeForEvidence1+storeForEvidence2
                 weights[failures] <- 0
                 weights <- weights/sum(weights)
                 ## compute effective sample-size
@@ -283,11 +285,11 @@ setMethod(
                  post=params,
                  prior=prior,
                  eff.sample.size=eff.sample.size,
-                 cond.loglik=loglik,
                  smooth=smooth,
                  seed=seed,
                  nfail=nfail,
-                 loglik=sum(loglik),
+                 cond.log.evidence=evidence,
+                 log.evidence=sum(evidence),
                  weights=weights
                  )
           }

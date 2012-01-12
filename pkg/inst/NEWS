@@ -1,4 +1,9 @@
 NEWS
+0.40-3
+     o  The 'bsmc' method has been improved, due to the contributions of Pierre Jacob.
+     	Specifically, 'bsmc' no longer reports a log-likelihood (which it never really computed anyway) but a log-evidence.
+	The latter computation was supplied by Pierre Jacob.
+
 0.40-2
      o  A bug to do with computation of the number of steps needed in discrete-time simulation and trajectory computations has been fixed.
      	This bug was introduced in version 0.40-1.
