@@ -10,7 +10,6 @@
 \alias{continue}
 \alias{continue,mif-method}
 \alias{continue-mif}
-%%\alias{mif.profile.design}
 \title{The MIF algorithm}
 \description{
   The MIF algorithm for estimating the parameters of a partially-observed Markov process.
@@ -33,8 +32,6 @@ mif(object, \dots)
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
     weighted = TRUE, tol, max.fail = 0,
     verbose = getOption("verbose"), \dots)
-%%mif.profile.design(object, profile, lower, upper, nprof, ivps, rw.sd,
-%%                   Np, ic.lag, var.factor, cooling.factor, \dots)
 }
 \arguments{
   \item{object}{
@@ -114,14 +111,6 @@ mif(object, \dots)
   \item{verbose}{
     logical; if TRUE, print progress reports.
   }
-%   \item{lower, upper, nprof}{
-%     used in specifying the profile calculation.
-%     See \code{\link{profile.design}} for details.
-%   }
-%   \item{profile}{
-%     named list of numeric vectors.
-%     The profile calculation will fix parameters at all possible combinations of the parameters in \code{profile}.
-%   }
   \item{\dots}{
     additional arguments.
     Currently, these are ignored.
@@ -145,13 +134,6 @@ mif(object, \dots)
   Note the implication that, when \code{mif} is used in this way on a time series any longer than \code{ic.lag}, unnecessary work is done.
   If the time series in \code{object} is longer than \code{ic.lag}, consider replacing \code{object} with \code{window(object,end=ic.lag)}. 
 }
-% \section{Likelihood profiles using MIF}{
-%   The function \code{mif.profile.design} sets up a MIF likelihood-profile calculation.
-%   It returns a list of lists, each one of which contains a \code{mif} object.
-%   Running \code{mif} or \code{continue} on each of these will maximize the likelihood over the desired parameters, while holding others fixed.
-%   Each \code{mif} calculation is independent of the others: the computation is therefore readily parallelized.
-%   The list returned by \code{mif.profile.design} will have one element for every row in \code{do.call(expand.grid,profile)}.
-% }
 \section{Details}{
   If \code{particles} is not specified, the default behavior is to draw the particles from a multivariate normal distribution.
   \strong{It is the user's responsibility to ensure that, if the optional \code{particles} argument is given, that the \code{particles} function satisfies the following conditions:}

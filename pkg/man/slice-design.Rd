@@ -9,7 +9,7 @@ sliceDesign(center, \dots)
 }
 \arguments{
   \item{center}{
-    \code{center} is a named numeric vectors specifying the point through which the slice(s) is (are) to be taken.
+    \code{center} is a named numeric vector specifying the point through which the slice(s) is (are) to be taken.
   }
   \item{\dots}{
     Additional numeric vector arguments specify the slices.
