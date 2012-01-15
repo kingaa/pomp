@@ -4,6 +4,17 @@ NEWS
      	Specifically, 'bsmc' no longer reports a log-likelihood (which it never really computed anyway) but a log-evidence.
 	The latter computation was supplied by Pierre Jacob.
 
+     o	A new helper function, 'exp2geom_rate_correction' has been added to the 'pomp.h' file.
+     	This function computes the rate r such that if N ~ geometric(prob=1-exp(-r*dt)) and T ~ exponential(rate=R), then E[N*dt] = E[T].
+	This is useful in approximating a continuous-time death process by a discrete time (Euler) process.
+	In particular, in such a case, T is the waiting time to death in the former and N*dt is the waiting time to death in the latter.
+	An Euler binomial or multinomial process with rate r=exp2geom_rate_correction(R,dt) will have the same mean waiting time as the exponential process with rate R.
+
+     o	A new helper function, 'rgammawn' has been added to the 'pomp.h' file.
+     	This function draws an increment of Gamma white-noise process with a given intensity.
+	Specifically, dw=rgammwn(sigma,dt) is Gamma distributed with mean dt and variance sigma^2*dt.
+	In this case, mu*dw/dt is suitable for use as a random rate in an Euler-multinomial process.
+
 0.40-2
      o  A bug to do with computation of the number of steps needed in discrete-time simulation and trajectory computations has been fixed.
      	This bug was introduced in version 0.40-1.
