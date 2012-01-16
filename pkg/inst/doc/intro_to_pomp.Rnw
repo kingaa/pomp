@@ -693,10 +693,10 @@ theta.mif <- apply(sapply(mf,coef),1,mean)
 loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
 bl <- mean(loglik.mif)
 loglik.mif.est <- bl+log(mean(exp(loglik.mif-bl)))
-loglik.mif.se <- sd(exp(loglik.mif-bl))/sqrt(length(loglik.mif))/exp(loglik.mif.est-bl)
+loglik.mif.se <- sd(exp(loglik.mif-bl))/exp(loglik.mif.est-bl)
 loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
 loglik.true.est <- bl+log(mean(exp(loglik.true-bl)))
-loglik.true.se <- sd(exp(loglik.true-bl))/sqrt(length(loglik.true))/exp(loglik.true.est-bl)
+loglik.true.se <- sd(exp(loglik.true-bl))/exp(loglik.true.est-bl)
 @ 
 
 <<gompertz-multi-mif-eval,echo=F,results=hide>>=
