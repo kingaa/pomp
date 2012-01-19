@@ -962,7 +962,7 @@ Among the quantities returned by \code{summary} is the synthetic likelihood \cit
 It is this synthetic likelihood that \pkg{pomp} attempts to maximize in probe matching.
 
 \begin{figure}
-<<ricker-probe-plot,echo=F,fig=F,results=hide>>=
+<<ricker-probe-plot,echo=F,fig=T,png=T,results=hide>>=
   pb <- probe(ricker,
               probes=list(
                 probe.marginal("y",ref=obs(ricker),transform=sqrt),
@@ -972,14 +972,8 @@ It is this synthetic likelihood that \pkg{pomp} attempts to maximize in probe ma
               nsim=1000,
               seed=1066L
               )
-  png(
-      filename="ricker-probe-plot.png",
-      width=6,height=6,units='in',res=300
-      )
   plot(pb)
-  dev.off()
 @ 
-\includegraphics[width=5in]{ricker-probe-plot}
 \caption{
   Results of \code{plot} on a \code{probed.pomp}-class object.
   Above the diagonal, the pairwise scatterplots show the values of the probes on each of \Sexpr{summary(pb)$nsim} data sets.
