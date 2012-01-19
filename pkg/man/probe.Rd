@@ -23,28 +23,28 @@
   \code{probe.match.objfun} constructs an objective function for probe-matching suitable for use in \code{optim}-like optimizers.
 }
 \usage{
-  \S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
-  \S4method{probe}{probed.pomp}(object, probes, params, nsim, seed = NULL, \dots)
-  \S4method{probe.match}{pomp}(object, start, est = character(0),
-              probes, weights,
-              nsim, seed = NULL,
-              method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
-              verbose = getOption("verbose"), 
-              eval.only = FALSE, fail.value = NA, \dots)
-  \S4method{probe.match}{probed.pomp}(object, start, est = character(0),
-              probes, weights,
-              nsim, seed = NULL,
-              method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
-              verbose = getOption("verbose"), 
-              eval.only = FALSE, fail.value = NA, \dots)
-  \S4method{probe.match}{probe.matched.pomp}(object, start, est,
-              probes, weights,
-              nsim, seed = NULL,
-              method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
-              verbose = getOption("verbose"), 
-              eval.only = FALSE, fail.value, \dots)
-  probe.match.objfun(object, params, est, probes, nsim = 1,
-       seed = NULL, fail.value = NA, \dots)
+\S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
+\S4method{probe}{probed.pomp}(object, probes, params, nsim, seed = NULL, \dots)
+\S4method{probe.match}{pomp}(object, start, est = character(0),
+            probes, weights,
+            nsim, seed = NULL,
+            method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
+            verbose = getOption("verbose"), 
+            eval.only = FALSE, fail.value = NA, \dots)
+\S4method{probe.match}{probed.pomp}(object, start, est = character(0),
+            probes, weights,
+            nsim, seed = NULL,
+            method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
+            verbose = getOption("verbose"), 
+            eval.only = FALSE, fail.value = NA, \dots)
+\S4method{probe.match}{probe.matched.pomp}(object, start, est,
+            probes, weights,
+            nsim, seed = NULL,
+            method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
+            verbose = getOption("verbose"), 
+            eval.only = FALSE, fail.value, \dots)
+probe.match.objfun(object, params, est, probes, nsim = 1,
+            seed = NULL, fail.value = NA, \dots)
 
 }
 \arguments{
@@ -107,6 +107,10 @@
 
   A call to \code{probe.match} results in an attempt to optimize the agreement between model and data, as measured by the specified probes, over the parameters named in \code{est}.
   The results, including coefficients of the fitted model and values of the probes for data and fitted-model simulations, are stored in an object of class \code{\link[=probe.matched.pomp-class]{probe.matched.pomp}}.
+
+  The objective function minimized by \code{probe.match} --- in a form suitable for use with \code{\link{optim}}-like optimizers --- is created by a call to \code{probe.match.objfun}.
+  Specifically, \code{probe.match.objfun} will return a function that takes a single numeric-vector argument that is assumed to cotain the parameters named in \code{est}, in that order.
+  This function will return the negative synthetic log likelihood for the probes specified.
 }
 \value{
   \code{probe} returns an object of class \code{probed.pomp}.
@@ -140,6 +144,8 @@
       See \code{\link{optim}}.
     }
   }
+
+  \code{probe.match.objfun} returns a function suitable for use as an objective function in an \code{\link{optim}}-like optimizer.
 }
 \references{
   B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, S. N. Wood
