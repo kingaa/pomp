@@ -10,10 +10,12 @@ NEWS
 	In particular, in such a case, T is the waiting time to death in the former and N*dt is the waiting time to death in the latter.
 	An Euler binomial or multinomial process with rate r=exp2geom_rate_correction(R,dt) will have the same mean waiting time as the exponential process with rate R.
 
-     o	A new helper function, 'rgammawn' has been added to the 'pomp.h' file.
-     	This function draws an increment of Gamma white-noise process with a given intensity.
+     o	A new helper function, 'rgammawn' has been added, with both R and C interfaces.
+     	This function draws an increment of a Gamma white-noise process with a given intensity.
 	Specifically, dw=rgammwn(sigma,dt) is Gamma distributed with mean dt and variance sigma^2*dt.
 	In this case, mu*dw/dt is suitable for use as a random rate in an Euler-multinomial process.
+
+     o	The "Brent" method for trajectory, probe, and spectrum matching has been added.
 
 0.40-2
      o  A bug to do with computation of the number of steps needed in discrete-time simulation and trajectory computations has been fixed.
