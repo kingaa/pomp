@@ -28,11 +28,7 @@ inline double exp2geom_rate_correction (double R, double dt) {
 // mu dW/dt is a candidate for a random rate process within an
 // Euler-multinomial context, i.e., 
 // E[mu*dW] = mu*dt and Var[mu*dW] = mu*sigma^2*dt
-inline double rgammawn (double sigma, double dt) {
-  double sigmasq;
-  sigmasq = sigma*sigma;
-  return (sigmasq > 0) ? rgamma(dt/sigmasq,sigmasq) : dt;
-}
+double rgammawn (double sigma, double dt);
 
 // facility for computing the inner produce of 
 // a vector of parameters ('coef') against a vector of basis-function values ('basis')
