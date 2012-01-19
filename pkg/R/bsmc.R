@@ -180,7 +180,7 @@ setMethod(
                                            n=Np,
                                            mean=rep(0,npars.est),
                                            sigma=hsq*params.var,
-                                           method="eigen"
+                                           method="svd"
                                            ),
                           silent=FALSE
                           )
