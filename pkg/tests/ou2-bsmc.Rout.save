@@ -62,7 +62,7 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 3.09274 secs
+Time difference of 3.128943 secs
 > 
 > print(
 +       cbind(
@@ -89,10 +89,10 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > print(smc$log.evidence)
 [1] 44.55899
 > 
-> smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=455485L)
+> smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=648651945L)
 > print(smc$eff.sample.size)
- [1] 334.84129  29.59904  21.74851 135.57314 134.38589  13.53892  74.06161
- [8]  19.83331  30.75126  79.16116
+ [1] 186.40437  36.29100  57.56951  29.30424 180.23722  34.63366 156.94264
+ [8]  24.49006 178.39269 125.05970
 > print(smc$log.evidence)
-[1] 38.46819
+[1] 37.68127
 > 

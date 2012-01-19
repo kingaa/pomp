@@ -51,6 +51,6 @@ print(
 print(min(smc$eff.sample.size))
 print(smc$log.evidence)
 
-smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=455485L)
+smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=648651945L)
 print(smc$eff.sample.size)
 print(smc$log.evidence)
