@@ -1,4 +1,12 @@
 NEWS
+0.40-4
+     o	New functions 'traj.match.objfun' and 'probe.match.objfun' have been added.
+     	These functions construct functions of one argument suitable for use as objective functions in 'optim'-like optimizers (iincluding 'subplex' and 'sannbox').
+	Minimizing these functions solves the trajectory-matching problem and probe-matching problem, respectively.
+	This allows the user much greater flexibility in choice of optimization algorithm than is afforded by 'traj.match' and 'probe.match'.
+
+     o	The 'sannbox' optimizer, which performs simulated annealing with box constraints, is now exported and available for general use.
+
 0.40-3
      o  The 'bsmc' method has been improved, due to the contributions of Pierre Jacob.
      	Specifically, 'bsmc' no longer reports a log-likelihood (which it never really computed anyway) but a log-evidence.
@@ -14,8 +22,6 @@ NEWS
      	This function draws an increment of a Gamma white-noise process with a given intensity.
 	Specifically, dw=rgammwn(sigma,dt) is Gamma distributed with mean dt and variance sigma^2*dt.
 	In this case, mu*dw/dt is suitable for use as a random rate in an Euler-multinomial process.
-
-     o	The "Brent" method for trajectory, probe, and spectrum matching has been added.
 
 0.40-2
      o  A bug to do with computation of the number of steps needed in discrete-time simulation and trajectory computations has been fixed.

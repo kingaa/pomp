@@ -85,5 +85,7 @@ export(
        probe.ccf,
        probe.nlar,
        probe.marginal,
-       spect.match
+       sannbox,
+       spect.match,
+       traj.match.objfun
        )

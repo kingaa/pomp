@@ -34,9 +34,19 @@ print(
 
 summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="subplex",maxit=100))
 
-summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="sannbox",trace=3,parscale=0.1,maxit=100))
+summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",trace=1,parscale=0.1,maxit=100))
 
-summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),eval.only=T))
+summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),eval.only=T))
+
+ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','alpha.1','alpha.4','tau'))
+print(ofun(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4','tau'))))
+
+try(ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','bob','alpha.4','harry')))
+try(traj.match(ou2,est=c('x1.0','x2.0','bob','alpha.4','tau')))
+
+fit <- optim(par=c(0,0,1,0.5,0.5),fn=ofun,method="Nelder-Mead",control=list(maxit=400))
+print(fit)
+stopifnot(fit$convergence==0)
 
 data(ou2)
 p <- coef(ou2)
@@ -56,4 +66,4 @@ res <- traj.match(
                   reltol=1e-8
                   )
 print(coef(res),digits=4)
-print(coef(ou2),digist=4)
+print(p,digits=4)

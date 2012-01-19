@@ -20,7 +20,6 @@ setMethod(
               summary(as(object,"probed.pomp")),
               list(
                    est=object@est,
-                   weights=object@weights,
                    value=object@value,
                    eval=object@evals,
                    convergence=object@convergence
@@ -30,67 +29,45 @@ setMethod(
           }
           )
 
-probe.mismatch <- function (par, est, object, probes, params,
-                            nsim = 1, seed = NULL,
-                            weights, datval,
-                            fail.value = NA) {
-  if (missing(par)) par <- numeric(0)
-  if (missing(est)) est <- integer(0)
+probe.match.objfun <- function (object, params, est, probes,
+                                nsim = 1, seed = NULL, fail.value = NA, ...) {
+
+  if (missing(est)) est <- character(0)
+  if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
   if (missing(params)) params <- coef(object)
+  if ((!is.numeric(params))||(is.null(names(params))))
+    stop(sQuote("params")," must be a named numeric vector")
+  par.est.idx <- match(est,names(params))
+  if (any(is.na(par.est.idx)))
+    stop("parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"))
   
-  params[est] <- par
+  if (!is.list(probes)) probes <- list(probes)
+  if (!all(sapply(probes,is.function)))
+    stop(sQuote("probes")," must be a function or a list of functions")
+  if (!all(sapply(probes,function(f)length(formals(f))==1)))
+    stop("each probe must be a function of a single argument")            
+
+  datval <- .Call(apply_probe_data,object,probes) # apply probes to data
+    
+  obj.fun <- function (par) {
+    params[par.est.idx] <- par
   
-  ## apply probes to model simulations
-  simval <- .Call(
-                  apply_probe_sim,
-                  object=object,
-                  nsim=nsim,
-                  params=params,
-                  seed=seed,
-                  probes=probes,
-                  datval=datval
-                  )
-  
-  ## compute a measure of the discrepancies between simulations and data
-  sim.means <- colMeans(simval)
-  simval <- sweep(simval,2,sim.means)
-  discrep <- ((datval-sim.means)^2)/colMeans(simval^2)
-  if ((length(weights)>1) && (length(weights)!=length(discrep)))
-    stop(length(discrep)," probes have been computed, but ",length(weights)," have been supplied")
-  if (!all(is.finite(discrep))) {
-    mismatch <- fail.value 
-  } else if (length(weights)>1) {
-    mismatch <- sum(discrep*weights)/sum(weights)
-  } else {
-    mismatch <- sum(discrep)
+    ## apply probes to model simulations
+    simval <- .Call(
+                    apply_probe_sim,
+                    object=object,
+                    nsim=nsim,
+                    params=params,
+                    seed=seed,
+                    probes=probes,
+                    datval=datval
+                    )
+    
+    ll <- .Call(synth_loglik,simval,datval)
+    if (is.finite(ll)||is.na(fail.value)) -ll else fail.value
   }
 
-  mismatch
-}
-
-neg.synth.loglik <- function (par, est, object, probes, params,
-                              nsim = 1, seed = NULL,
-                              weights, datval,
-                              fail.value = NA) {
-  if (missing(par)) par <- numeric(0)
-  if (missing(est)) est <- integer(0)
-  if (missing(params)) params <- coef(object)
-  
-  params[est] <- par
-  
-  ## apply probes to model simulations
-  simval <- .Call(
-                  apply_probe_sim,
-                  object=object,
-                  nsim=nsim,
-                  params=params,
-                  seed=seed,
-                  probes=probes,
-                  datval=datval
-                  )
-  
-  ll <- .Call(synth_loglik,simval,datval)
-  -ll
+  obj.fun
 }
 
 probe.match.internal <- function(object, start, est,
@@ -99,111 +76,66 @@ probe.match.internal <- function(object, start, est,
                                  method, verbose,
                                  eval.only, fail.value, ...) {
 
-  obj.fn <- neg.synth.loglik
+  if (eval.only) {
+    est <- character(0)
+    guess <- numeric(0)
+  } else {
+    if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
+    if (length(start)<1)
+      stop(sQuote("start")," must be supplied if ",sQuote("object")," contains no parameters")
+    if (is.null(names(start))||(!all(est%in%names(start))))
+      stop(sQuote("est")," must refer to parameters named in ",sQuote("start"))
+    guess <- start[est]
+  }
 
-  if (!is.list(probes)) probes <- list(probes)
+  obj <- as(object,"pomp")
+  coef(obj) <- start
 
-  if (!eval.only&&(length(est)<1))
-    stop("parameters to be estimated must be specified in ",sQuote("est"))
-  if (!is.character(est)|!all(est%in%names(start)))
-    stop(sQuote("est")," must refer to parameters named in ",sQuote("start"))
-  par.index <- which(names(start)%in%est)
-  
-  if (!all(sapply(probes,is.function)))
-    stop(sQuote("probes")," must be a function or a list of functions")
-  if (!all(sapply(probes,function(f)length(formals(f))==1)))
-    stop("each probe must be a function of a single argument")            
-  
-  params <- start
-  guess <- params[par.index]
+  obj.fn <- probe.match.objfun(
+                               obj,
+                               est=est,
+                               probes=probes,
+                               nsim=nsim,
+                               seed=seed,
+                               fail.value=fail.value
+                               )
 
-  datval <- .Call(apply_probe_data,object,probes) # apply probes to data
   
   if (eval.only) {
-    val <- obj.fn(
-                  par=guess,
-                  est=par.index,
-                  object=object,
-                  probes=probes,
-                  params=params,
-                  nsim=nsim,
-                  seed=seed,
-                  weights=weights,
-                  datval=datval,
-                  fail.value=fail.value
-                  )
+
+    val <- obj.fn(guess)
     conv <- NA
     evals <- as.integer(c(1,0))
     msg <- paste("no optimization performed")
+
   } else {
+
     if (method == 'subplex') {
-      opt <- subplex::subplex(
-                              par=guess,
-                              fn=obj.fn,
-                              est=par.index,
-                              object=object,
-                              probes=probes,
-                              params=params,
-                              nsim=nsim,
-                              seed=seed,
-                              weights=weights,
-                              datval=datval,
-                              fail.value=fail.value,
-                              control=list(...)
-                              )
-
+      opt <- subplex::subplex(par=guess,fn=obj.fn,control=list(...))
     } else if (method=="sannbox") {
-      opt <- sannbox(
-                     par=guess,
-                     fn=obj.fn,
-                     est=par.index,
-                     object=object,
-                     probes=probes,
-                     params=params,
-                     nsim=nsim,
-                     seed=seed,
-                     weights=weights,
-                     datval=datval,
-                     fail.value=fail.value,
-                     control=list(...)
-                     )
-
+      opt <- sannbox(par=guess,fn=obj.fn,control=list(...))
     } else {
-      opt <- optim(
-                   par=guess,
-                   fn=obj.fn,
-                   est=par.index,
-                   object=object,
-                   probes=probes,
-                   params=params,
-                   nsim=nsim,
-                   seed=seed,
-                   weights=weights,
-                   datval=datval,
-                   fail.value=fail.value,
-                   method=method, 
-                   control=list(...)
-                   )
+      opt <- optim(par=guess,fn=obj.fn,method=method,control=list(...))
     }
-    val <- opt$value
-    params[par.index] <- opt$par
+
+    if (!is.null(names(opt$par)) && !all(est==names(opt$par)))
+      stop("mismatch between parameter names returned by optimizer and ",sQuote("est"))
+    coef(obj,est) <- unname(opt$par)
+    msg <- if (is.null(opt$message)) character(0) else opt$message
     conv <- opt$convergence
+    val <- opt$value
     evals <- opt$counts
-    msg <- opt$message
   }
 
   new(
       "probe.matched.pomp",
       probe(
-            as(object,"pomp"),
+            obj,
             probes=probes,
-            params=params,
             nsim=nsim,
             seed=seed
             ),
       est=as.character(est),
-      weights=weights,
-      fail.value=as.numeric(fail.value),
       value=val,
       convergence=as.integer(conv),
       evals=as.integer(evals),
@@ -333,3 +265,66 @@ setMethod(
                                  )
           }
           )
+
+probe.mismatch <- function (par, est, object, probes, params,
+                            nsim = 1, seed = NULL,
+                            weights, datval,
+                            fail.value = NA) {
+  if (missing(par)) par <- numeric(0)
+  if (missing(est)) est <- integer(0)
+  if (missing(params)) params <- coef(object)
+  
+  params[est] <- par
+  
+  ## apply probes to model simulations
+  simval <- .Call(
+                  apply_probe_sim,
+                  object=object,
+                  nsim=nsim,
+                  params=params,
+                  seed=seed,
+                  probes=probes,
+                  datval=datval
+                  )
+  
+  ## compute a measure of the discrepancies between simulations and data
+  sim.means <- colMeans(simval)
+  simval <- sweep(simval,2,sim.means)
+  discrep <- ((datval-sim.means)^2)/colMeans(simval^2)
+  if ((length(weights)>1) && (length(weights)!=length(discrep)))
+    stop(length(discrep)," probes have been computed, but ",length(weights)," have been supplied")
+  if (!all(is.finite(discrep))) {
+    mismatch <- fail.value 
+  } else if (length(weights)>1) {
+    mismatch <- sum(discrep*weights)/sum(weights)
+  } else {
+    mismatch <- sum(discrep)
+  }
+
+  mismatch
+}
+
+neg.synth.loglik <- function (par, est, object, probes, params,
+                              nsim = 1, seed = NULL,
+                              weights, datval,
+                              fail.value = NA) {
+  if (missing(par)) par <- numeric(0)
+  if (missing(est)) est <- integer(0)
+  if (missing(params)) params <- coef(object)
+  
+  params[est] <- par
+  
+  ## apply probes to model simulations
+  simval <- .Call(
+                  apply_probe_sim,
+                  object=object,
+                  nsim=nsim,
+                  params=params,
+                  seed=seed,
+                  probes=probes,
+                  datval=datval
+                  )
+  
+  ll <- .Call(synth_loglik,simval,datval)
+  if (is.finite(ll)||is.na(fail.value)) -ll else fail.value
+}

@@ -30,27 +30,21 @@ setMethod(
           }
           )
 
-traj.match.internal <- function (object, start, est, method, gr, eval.only, ...) {
+traj.match.objfun <- function (object, params, est) {
   
-  if (eval.only) {
-    par.est <- integer(0)
-  } else {
-    if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
-    if (!all(est%in%names(start)))
-      stop(sQuote("traj.match")," error: parameters named in ",sQuote("est"),
-           " must exist in ",sQuote("start"),call.=FALSE)
-    par.est <- which(names(start)%in%est)
-    guess <- start[par.est]
-  }
+  if (missing(est)) est <- character(0)
+  if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
+  if (missing(params)) params <- coef(object)
+  if ((!is.numeric(params))||(is.null(names(params))))
+    stop(sQuote("params")," must be a named numeric vector")
+  par.est.idx <- match(est,names(params))
+  if (any(is.na(par.est.idx)))
+    stop("parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"))
+  params <- as.matrix(params)
 
-  t0 <- timezero(object)
-  obj <- as(object,"pomp")
-  coef(obj) <- start
-  pmat <- as.matrix(start)
-
-  obj.fn <- function (x, object, params, t0, ind) {
-    params[ind,] <- x
-    X <- trajectory(object,params=params,t0=t0)
+  obj.fn <- function (par) {
+    params[par.est.idx,] <- par
+    X <- trajectory(object,params=params)
     d <- dmeasure(
                   object,
                   y=object@data,
@@ -62,9 +56,32 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
     -sum(d)
   }
 
+  obj.fn
+}
+
+traj.match.internal <- function (object, start, est, method, gr, eval.only, ...) {
+  
+  if (eval.only) {
+    est <- character(0)
+    guess <- numeric(0)
+  } else {
+    if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
+    if (length(start)<1)
+      stop(sQuote("start")," must be supplied if ",sQuote("object")," contains no parameters")
+    if (!all(est%in%names(start)))
+      stop(sQuote("traj.match")," error: parameters named in ",sQuote("est"),
+           " must exist in ",sQuote("start"),call.=FALSE)
+    guess <- start[est]
+  }
+
+  obj <- as(object,"pomp")
+  coef(obj) <- start
+
+  obj.fn <- traj.match.objfun(obj,est=est)
+
   if (eval.only) {
 
-    val <- obj.fn(numeric(0),object=obj,params=pmat,t0=t0,ind=par.est)
+    val <- obj.fn(guess)
     conv <- NA
     evals <- c(1,0)
     msg <- "no optimization performed"
@@ -72,46 +89,16 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
   } else {
 
     if (method=="subplex") {
-
-      opt <- subplex::subplex(
-                              par=guess,
-                              fn=obj.fn,
-                              control=list(...),
-                              object=obj,
-                              params=pmat,
-                              t0=t0,
-                              ind=par.est
-                              )
-
+      opt <- subplex::subplex(par=guess,fn=obj.fn,control=list(...))
     } else if (method=="sannbox") {
-
-      opt <- sannbox(
-                     par=guess,
-                     fn=obj.fn,
-                     control=list(...),
-                     object=obj,
-                     params=pmat,
-                     t0=t0,
-                     ind=par.est
-                     )
-
+      opt <- sannbox(par=guess,fn=obj.fn,control=list(...))
     } else {
-
-      opt <- optim(
-                   par=guess,
-                   fn=obj.fn,
-                   gr=gr,
-                   method=method,
-                   control=list(...),
-                   object=obj,
-                   params=pmat,
-                   t0=t0,
-                   ind=par.est
-                   )
-      
+      opt <- optim(par=guess,fn=obj.fn,gr=gr,method=method,control=list(...))
     }
 
-    coef(obj,names(opt$par)) <- unname(opt$par)
+    if (!is.null(names(opt$par)) && !all(est==names(opt$par)))
+      stop("mismatch between parameter names returned by optimizer and ",sQuote("est"))
+    coef(obj,est) <- unname(opt$par)
     msg <- if (is.null(opt$message)) character(0) else opt$message
     conv <- opt$convergence
     evals <- opt$counts
@@ -120,7 +107,7 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
   }
 
   ## fill 'states' slot of returned object with the trajectory
-  x <- trajectory(obj,t0=t0)
+  x <- trajectory(obj)
   obj@states <- array(data=x,dim=dim(x)[c(1,3)])
   rownames(obj@states) <- rownames(x)
   
@@ -144,7 +131,7 @@ setMethod(
           "traj.match",
           signature=signature(object="pomp"),
           function (object, start, est,
-                    method = c("Nelder-Mead","sannbox","subplex"), 
+                    method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
                     gr = NULL, eval.only = FALSE, ...) {
             if (missing(start)) start <- coef(object)
             if (!eval.only && missing(est))
@@ -167,7 +154,7 @@ setMethod(
           "traj.match",
           signature=signature(object="traj.matched.pomp"),
           function (object, start, est,
-                    method = c("Nelder-Mead","sannbox","subplex"), 
+                    method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
                     gr = NULL, eval.only = FALSE, ...) {
             if (missing(start)) start <- coef(object)
             if (missing(est)) est <- object@est

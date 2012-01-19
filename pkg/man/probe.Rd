@@ -13,12 +13,14 @@
 \alias{probe.match-probe.matched.pomp}
 \alias{probed.pomp-class}
 \alias{probe.matched.pomp-class}
+\alias{probe.match.objfun}
 \title{Probe a partially-observed Markov process.}
 \description{
   \code{probe} applies one or more \dQuote{probes} to time series data and model simulations and compares the results.
   It can be used to diagnose goodness of fit and/or as the basis for \dQuote{probe-matching}, a generalized method-of-moments approach to parameter estimation.
   \code{probe.match} calls an optimizer to adjust model parameters to do probe-matching, i.e., to minimize the discrepancy between simulated and actual data.
   This discrepancy is measured using the \dQuote{synthetic likelihood} as defined by Wood (2010).
+  \code{probe.match.objfun} constructs an objective function for probe-matching suitable for use in \code{optim}-like optimizers.
 }
 \usage{
   \S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
@@ -41,6 +43,9 @@
               method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
               verbose = getOption("verbose"), 
               eval.only = FALSE, fail.value, \dots)
+  probe.match.objfun(object, params, est, probes, nsim = 1,
+       seed = NULL, fail.value = NA, \dots)
+
 }
 \arguments{
   \item{object}{
@@ -85,7 +90,9 @@
     Instead, the probe-mismatch value is simply evaluated at the \code{start} parameters.
   }
   \item{fail.value}{
-    optional scalar; if non-\code{NA}, this value is substituted for non-finite values of the objective function.
+    optional scalar;
+    if non-\code{NA}, this value is substituted for non-finite values of the objective function.
+    It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).
   }
   \item{\dots}{
     Additional arguments.

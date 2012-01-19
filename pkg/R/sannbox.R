@@ -22,6 +22,7 @@ sannbox <- function (par, fn, control = list(), ...) {
                           tmax=10,
                           sched=NULL,
                           candidate.dist=NULL,
+                          fnscale=1,
                           parscale=1,
                           lower=-Inf,
                           upper=Inf,
@@ -31,15 +32,24 @@ sannbox <- function (par, fn, control = list(), ...) {
   control <- control.default
 
   if (is.null(control$sched))           # default cooling schedule
-    control$sched <- function (k) control$temp/log(((k-1)%/%control$tmax)*control$tmax+exp(1))
+    control$sched <- function (k, temp, tmax) temp/log(((k-1)%/%tmax)*tmax+exp(1))
 
   if (is.function(control$sched))
-    temps <- vapply(seq_len(control$maxit),control$sched,numeric(1))
-  else if (is.numeric(control$sched))
+    temps <- vapply(
+                    seq_len(control$maxit),
+                    FUN=control$sched,
+                    FUN.VALUE=numeric(1),
+                    temp=control$temp,
+                    tmax=control$tmax
+                    )
+  else if (is.numeric(control$sched)) {
     temps <- control$sched
+    if (length(temps)<control$maxit)
+      stop("insufficiently many temperatures supplied in ",sQuote("control$sched"))
+  }
   
   if (is.null(control$candidate.dist))
-    candidate.dist <- function (temp) rnorm(n=npar,mean=0,sd=control$parscale*temp)
+    candidate.dist <- function (par, temp, scale) rnorm(n=npar,mean=par,sd=scale*temp)
 
   if (length(control$lower)<npar)
     control$lower <- rep(control$lower,npar)
@@ -49,7 +59,7 @@ sannbox <- function (par, fn, control = list(), ...) {
   ## initialization for the algorithm
   laststep <- 0
   thetabest <- thetacurrent <- par
-  ycurrent <- fn(thetacurrent,...)
+  ycurrent <- fn(thetacurrent,...)/control$fnscale
   if (!is.finite(ycurrent)) ycurrent <- big
   ybest <- ycurrent
   neval <- 1
@@ -62,7 +72,7 @@ sannbox <- function (par, fn, control = list(), ...) {
   ## main loop
   for (k in seq_len(control$maxit)) {
     ## get a candidate thetacand
-    thetacand <- thetacurrent+candidate.dist(temps[k])
+    thetacand <- candidate.dist(thetacurrent,temps[k],control$parscale)
     ## enforce box constraints
     thetacand <- ifelse(
                         thetacand<control$lower,
@@ -74,7 +84,7 @@ sannbox <- function (par, fn, control = list(), ...) {
                         control$upper,
                         thetacand
                        )
-    ycand <- fn(thetacand,...)
+    ycand <- fn(thetacand,...)/control$fnscale
     if (!is.finite(ycand)) ycand <- big
     neval <- neval+1
     
@@ -101,6 +111,8 @@ sannbox <- function (par, fn, control = list(), ...) {
     
   if (control$trace>0)
     cat("best val=",ybest,"\n")
+
+  names(thetacurrent) <- names(thetabest) <- names(par)
 
   list(
        counts=c(neval,NA),
