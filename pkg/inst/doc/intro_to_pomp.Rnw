@@ -1648,8 +1648,8 @@ simulate(
                            )
                 ## now put the equations together:
                 c(
-                  ## approx. number of new infections/week:
-                  cases=unname((terms[2]-terms[4]-terms[5])*gamma/52),
+                ## approx. number of new infections/week:
+                  cases=unname(terms[4]), # d(cases)/dt
                   S=unname(terms[1]-terms[2]-terms[3]), # dS/dt
                   I=unname(terms[2]-terms[4]-terms[5]), # dI/dt
                   R=unname(terms[4]-terms[6])           # dR/dt
