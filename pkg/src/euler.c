@@ -292,7 +292,8 @@ static void default_onestep_sim_fn (double *x, const double *p,
   if (FIRST) {
     if (LENGTH(ans) != NVAR) {
       UNPROTECT(nprotect);
-      error("user 'step.fun' must return a vector of length %d",NVAR);
+      error("user 'step.fun' returns a vector of %d states but %d are expected: compare initial conditions?",
+	    LENGTH(ans),NVAR);
     }
     PROTECT(nm = GET_NAMES(ans)); nprotect++;
     if (!isNull(nm)) {	   // match names against names from data slot

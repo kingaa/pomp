@@ -76,4 +76,3 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log)
   UNPROTECT(nprotect);
   return X;
 }
-

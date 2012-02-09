@@ -101,8 +101,10 @@ static void default_meas_sim (double *y, double *x, double *p,
   PROTECT(ans = eval(FCALL,RHO)); nprotect++; // evaluate the call
 
   if (FIRST) {
-    if (LENGTH(ans) != NOBS)
-      error("rmeasure error: user 'rmeasure' must return a vector of length %d",NOBS);
+    if (LENGTH(ans) != NOBS) {
+      error("user 'rmeasure' returns a vector of %d observables but %d are expected: compare 'data' slot?",
+	    LENGTH(ans),NOBS);
+    }
     PROTECT(nm = GET_NAMES(ans)); nprotect++;
     if (!isNull(nm)) {		// match names against names from data slot
       PROTECT(oidx = matchnames(OBNM,nm)); nprotect++;

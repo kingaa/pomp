@@ -18,19 +18,23 @@
 mif(object, \dots)
 \S4method{mif}{pomp}(object, Nmif = 1, start, pars, ivps = character(0),
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
-    weighted = TRUE, tol = 1e-17, max.fail = 0,
+    weighted, method = c("mif","unweighted","fp"),
+    tol = 1e-17, max.fail = 0,
     verbose = getOption("verbose"), \dots)
 \S4method{mif}{pfilterd.pomp}(object, Nmif = 1, start, pars, ivps = character(0),
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
-    weighted = TRUE, tol, max.fail = 0,
+    weighted, method = c("mif","unweighted","fp"),
+    tol, max.fail = 0,
     verbose = getOption("verbose"), \dots)
 \S4method{mif}{mif}(object, Nmif, start, pars, ivps,
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
-    weighted = TRUE, tol, max.fail = 0,
+    weighted, method = c("mif","unweighted","fp"),
+    tol, max.fail = 0,
     verbose = getOption("verbose"), \dots)
 \S4method{continue}{mif}(object, Nmif = 1, start, pars, ivps,
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
-    weighted = TRUE, tol, max.fail = 0,
+    weighted, method = c("mif","unweighted","fp"),
+    tol, max.fail = 0,
     verbose = getOption("verbose"), \dots)
 }
 \arguments{
@@ -95,10 +99,15 @@ mif(object, \dots)
     a positive number not greater than 1;
     the exponential cooling factor, \code{alpha}.
   }
-  \item{weighted}{
-    logical; if TRUE, the MIF update (a weighted average) is used.
-    If FALSE, the MIF update is not used;
-    instead, an unweighed average of the filtering means is used for the update.
+  \item{method, weighted}{
+    \code{method} sets the update rule used in the algorithm.
+    \code{method="mif"} uses the iterated filtering update rule (Ionides 2006, 2011);
+    \code{method="unweighted"} updates the parameter to the unweighted average of the filtering means of the parameters at each time;
+    \code{method="fp"} updates the parameter to the filtering mean at the end of the time series.
+    \code{weighted} is logical.
+    This argument is deprecated and will be removed in a future release.
+    \code{weighted=TRUE} is equivalent to \code{method="mif"};
+    \code{weighted=FALSE} is equivalent to \code{method="unweighted"}.
   }
   \item{tol}{
     numeric scalar; particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.
@@ -156,6 +165,10 @@ mif(object, \dots)
   E. L. Ionides, C. Bret\\'o, & A. A. King,
   Inference for nonlinear dynamical systems,
   Proc. Natl. Acad. Sci. U.S.A., 103:18438--18443, 2006.
+
+  E. L. Ionides, A. Bhadra, Y. Atchad{\\'e}, & A. A. King,
+  Iterated filtering,
+  Annals of Statistics, 39:1776--1802, 2011.
 
   A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
   Inapparent infections and cholera dynamics,

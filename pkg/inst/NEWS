@@ -1,4 +1,9 @@
 NEWS
+0.40-5
+     o	More informative error messages when dimension of state space or data space disagree internally.
+     o	The 'weighted' argument to 'mif' and 'continue' is now deprecated in favor of a new argument 'method'.
+     	The old 'weighted=T' corresponds to 'method="mif"' while the old 'weighted=F' corresponds to 'method="unweighted"'.
+
 0.40-4
      o	New functions 'traj.match.objfun' and 'probe.match.objfun' have been added.
      	These functions construct functions of one argument suitable for use as objective functions in 'optim'-like optimizers (iincluding 'subplex' and 'sannbox').

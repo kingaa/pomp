@@ -95,7 +95,8 @@ static void default_skel_fn (double *f, double *x, double *p,
 
   if (LENGTH(ans)!=NVAR) {
     UNPROTECT(nprotect);
-    error("skeleton error: user 'skeleton' must return a vector of length %d",NVAR);
+    error("user 'skeleton' returns a vector of %d state variables but %d are expected: compare initial conditions?",
+	  LENGTH(ans),NVAR);
   }
 
   PROTECT(nm = GET_NAMES(ans)); nprotect++;
