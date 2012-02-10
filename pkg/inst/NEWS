@@ -1,6 +1,7 @@
 NEWS
 0.40-5
      o	More informative error messages when dimension of state space or data space disagree internally.
+
      o	The 'weighted' argument to 'mif' and 'continue' is now deprecated in favor of a new argument 'method'.
      	The old 'weighted=T' corresponds to 'method="mif"' while the old 'weighted=F' corresponds to 'method="unweighted"'.
 
