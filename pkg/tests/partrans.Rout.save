@@ -1,0 +1,53 @@
+
+R version 2.14.1 (2011-12-22)
+Copyright (C) 2011 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> data(gompertz)
+> 
+> pars <- coef(gompertz,transform=TRUE)
+> tpars <- coef(gompertz,transform=FALSE)
+> 
+> new.trans <- function (params, ...) 
++ {
++   params <- c(params[c("X.0","tau","sigma")], log(params[c("r","K")]))
++   names(params) <- c("X.0","tau","sigma","log.r","log.K")
++   params
++ }
+> 
+> new.inv.trans <- function (params, ...) 
++ {
++   params <- c(params[c("X.0","tau","sigma")], exp(params[c("log.r","log.K")]))
++   names(params) <- c("X.0","tau","sigma","r","K")
++   params
++ }
+> 
+> po <- pomp(gompertz,parameter.transform=new.trans,parameter.inv.transform=new.inv.trans)
+> 
+> stopifnot(identical(pars,coef(po,transform=TRUE,names(pars))))
+> 
+> print(tpars)
+      X.0     log.r     log.K   log.tau log.sigma 
+ 1.000000 -2.302585  0.000000 -2.302585 -2.302585 
+> print(coef(po))
+      X.0       tau     sigma     log.r     log.K 
+ 1.000000  0.100000  0.100000 -2.302585  0.000000 
+> 
