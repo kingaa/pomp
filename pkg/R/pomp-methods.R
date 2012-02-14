@@ -203,23 +203,27 @@ setMethod(
           "coef",
           "pomp",
           function (object, pars, transform = FALSE, ...) {
-            if (transform) 
-              params <- pomp.transform(object,params=object@params,dir="inverse")
-            else
-              params <- object@params
-            if (missing(pars))
-              pars <- names(params)
-            else {
-              excl <- setdiff(pars,names(params))
-              if (length(excl)>0) {
-                stop(
-                     "in ",sQuote("coef"),": name(s) ",
-                     paste(sQuote(excl),collapse=","),
-                     " correspond to no parameter(s)"
-                     )
+            if (length(object@params)>0) {
+              if (transform) 
+                params <- pomp.transform(object,params=object@params,dir="inverse")
+              else
+                params <- object@params
+              if (missing(pars))
+                pars <- names(params)
+              else {
+                excl <- setdiff(pars,names(params))
+                if (length(excl)>0) {
+                  stop(
+                       "in ",sQuote("coef"),": name(s) ",
+                       paste(sQuote(excl),collapse=","),
+                       " correspond to no parameter(s)"
+                       )
+                }
               }
+              params[pars]
+            } else {
+              numeric(0)
             }
-            params[pars]
           }
           )
 
@@ -229,14 +233,16 @@ setMethod(
           "pomp",
           function (object, pars, transform = FALSE, ..., value) {
             if (missing(pars)) {          ## replace the whole params slot with 'value'
-              if (transform) 
-                value <- pomp.transform(object,params=value,dir="forward")
-              pars <- names(value)
-              if (is.null(pars)) {
-                if (transform)
-                  stop(sQuote("parameter.transform(value)")," must be a named vector")
-                else
-                  stop(sQuote("value")," must be a named vector")
+              if (length(value)>0) {
+                if (transform) 
+                  value <- pomp.transform(object,params=value,dir="forward")
+                pars <- names(value)
+                if (is.null(pars)) {
+                  if (transform)
+                    stop(sQuote("parameter.transform(value)")," must be a named vector")
+                  else
+                    stop(sQuote("value")," must be a named vector")
+                }
               }
               object@params <- value
             } else { ## replace or append only the parameters named in 'pars'
@@ -246,8 +252,9 @@ setMethod(
                         " names of ",sQuote("value")," are being discarded",
                         call.=FALSE
                         )
-##              if (length(pars)!=length(value))
-##                stop(sQuote("pars")," and ",sQuote("value")," must be of equal length")
+###   comment these lines out because 'coef(obj,c("a","b")) <- 3' should be legal
+###              if (length(pars)!=length(value))
+###                stop(sQuote("pars")," and ",sQuote("value")," must be of equal length")
               if (length(object@params)==0) { ## no pre-existing 'params' slot
                 val <- numeric(length(pars))
                 names(val) <- pars

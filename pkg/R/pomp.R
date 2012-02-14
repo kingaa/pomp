@@ -526,6 +526,8 @@ setMethod(
             if (missing(skeleton)) skeleton <- data@skeleton
             if (missing(skelmap.delta.t)) skelmap.delta.t <- data@skelmap.delta.t
 
+            pars <- coef(data,transform=TRUE)
+
             if (missing(parameter.transform)) {
               if (missing(parameter.inv.transform)) {
                 par.trans <- data@par.trans
@@ -575,6 +577,10 @@ setMethod(
                            ),
                       userdata
                       )
-                    )
+                    ) -> retval
+
+            coef(retval,transform=TRUE) <- pars            
+
+            retval
           }
           )
