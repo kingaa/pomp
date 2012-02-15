@@ -35,7 +35,7 @@ po <- pomp(
              "nbasis","degree","period"
              ),
            zeronames=c("cases"),
-           measurement.model=reports~binom(size=cases,prob=0.1),
+           measurement.model=reports~binom(size=cases,prob=exp(rho)),
            to.log.transform=c(
              "gamma","nu","mu","iota",
              "beta1","beta2","beta3",

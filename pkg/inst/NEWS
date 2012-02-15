@@ -3,6 +3,9 @@ NEWS
      o	When a pomp object is updated using 'pomp', the 'params' slot will now be copied over (appropriately transformed).
      	Before, it was simply dropped.
 
+     o	The 'gillespie.sir' example has been changed to make the reporting rate equal to 'rho'.
+     	Before, it was fixed at 10%.
+
 0.40-5
      o	More informative error messages when dimension of state space or data space disagree internally.
 
