@@ -1,8 +1,9 @@
 NEWS
-0.40-5
+0.40-6
      o	When a pomp object is updated using 'pomp', the 'params' slot will now be copied over (appropriately transformed).
      	Before, it was simply dropped.
 
+0.40-5
      o	More informative error messages when dimension of state space or data space disagree internally.
 
      o	The 'weighted' argument to 'mif' and 'continue' is now deprecated in favor of a new argument 'method'.
