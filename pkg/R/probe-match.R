@@ -48,6 +48,9 @@ probe.match.objfun <- function (object, params, est, probes,
     stop("each probe must be a function of a single argument")            
 
   datval <- .Call(apply_probe_data,object,probes) # apply probes to data
+  nprobes <- length(datval)
+  if (nprobes > nsim)
+    stop(sQuote("nsim"),"(=",nsim,") should be (much) larger than the number of probes (=",nprobes,")")
     
   obj.fun <- function (par) {
     params[par.est.idx] <- par
