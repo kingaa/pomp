@@ -6,6 +6,9 @@ NEWS
      o	The 'gillespie.sir' example has been changed to make the reporting rate equal to 'rho'.
      	Before, it was fixed at 10%.
 
+     o	A new error-trap has been put into 'probe' for the case nsim < nprobes.
+     	Thanks to Dani Jonas for finding this error.
+
 0.40-5
      o	More informative error messages when dimension of state space or data space disagree internally.
 

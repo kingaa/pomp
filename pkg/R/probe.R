@@ -42,6 +42,9 @@ setMethod(
 
             ## apply probes to data
             datval <- .Call(apply_probe_data,object,probes)
+            nprobes <- length(datval)
+            if (nprobes > nsim)
+              stop(sQuote("nsim"),"(=",nsim,") should be (much) larger than the number of probes (=",nprobes,")")
             ## apply probes to model simulations
             simval <- .Call(
                             apply_probe_sim,
@@ -53,7 +56,6 @@ setMethod(
                             datval=datval
                             )
                             
-            nprobes <- length(datval)
             pvals <- numeric(nprobes)
             names(pvals) <- names(datval)
             quants <- numeric(nprobes)
