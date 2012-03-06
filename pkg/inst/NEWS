@@ -1,4 +1,7 @@
 NEWS
+0.40-7
+     o	'parmat' now gracefully handles the case when 'params' is already a matrix.
+
 0.40-6
      o	When a pomp object is updated using 'pomp', the 'params' slot will now be copied over (appropriately transformed).
      	Before, it was simply dropped.

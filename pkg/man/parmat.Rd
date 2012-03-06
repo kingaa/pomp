@@ -9,14 +9,14 @@ parmat(params, nrep = 1)
 }
 \arguments{
   \item{params}{
-    named numeric vector of parameters.
+    named numeric vector or matrix of parameters.
   }
   \item{nrep}{
     number of replicates (columns) desired.
   }
 }
 \value{
-  \code{parmat} returns a matrix consisting of \code{nrep} copies of \code{params} and rownames identical to the names of \code{params}.
+  \code{parmat} returns a matrix consisting of \code{nrep} copies of \code{params}.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{

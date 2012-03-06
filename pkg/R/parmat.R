@@ -1,5 +1,6 @@
 parmat <- function (params, nrep = 1) {
-  p <- matrix(data=params,nrow=length(params),ncol=nrep)
-  rownames(p) <- names(params)
+  params <- as.matrix(params)
+  p <- matrix(data=params,nrow=nrow(params),ncol=ncol(params)*nrep)
+  rownames(p) <- rownames(params)
   p
 }
