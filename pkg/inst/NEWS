@@ -2,6 +2,11 @@ NEWS
 0.40-7
      o	'parmat' now gracefully handles the case when 'params' is already a matrix.
 
+     o	Error in the documentation of 'pfilter' repaired.
+       	Thanks to Alex Smith for pointing this out.
+
+     o	Improvements in the documentation of the Nicholson blowflies data 'data(blowflies)'.
+
 0.40-6
      o	When a pomp object is updated using 'pomp', the 'params' slot will now be copied over (appropriately transformed).
      	Before, it was simply dropped.

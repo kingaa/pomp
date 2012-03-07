@@ -43,9 +43,9 @@
     When \code{object} is of class \code{mif}, this is by default the same number of particles used in the \code{mif} iterations.
   }
   \item{tol}{
-    positive numeric scalar; particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.
+    positive numeric scalar; particles with likelihood less than \code{tol} are considered to be \dQuote{lost}.
     A filtering failure occurs when, at some time point, all particles are lost.
-    When all particles are lost, the conditional log likelihood at that time point is set to be \code{log(tol)}.
+    When all particles are lost, the conditional likelihood at that time point is set to \code{tol}.
   }
   \item{max.fail}{
     integer; the maximum number of filtering failures allowed.
