@@ -74,9 +74,9 @@ setMethod(
 
 get.pomp.fun <- function (object) {
   use <- as.integer(object@use-1)
-  if (use==0) {
+  if (use==0L) {
     f <- object@R.fun
-  } else if (use==1) {
+  } else if (use==1L) {
     f <- getNativeSymbolInfo(name=object@native.fun,PACKAGE=object@PACKAGE)$address
   } else {
     stop("invalid ",sQuote("use")," value")
