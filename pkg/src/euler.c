@@ -296,7 +296,7 @@ static void default_onestep_sim_fn (double *x, const double *p,
 	    LENGTH(ans),NVAR);
     }
     PROTECT(nm = GET_NAMES(ans)); nprotect++;
-    if (!isNull(nm)) {	   // match names against names from data slot
+    if (!isNull(nm)) {
       PROTECT(idx = matchnames(VNAMES,nm)); nprotect++;
       op = INTEGER(idx);
       for (k = 0; k < NVAR; k++) VINDEX[k] = op[k];
