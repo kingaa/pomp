@@ -32,6 +32,9 @@
 \alias{as,pomp-method}
 \alias{coerce,pomp,data.frame-method}
 \alias{as.data.frame.pomp}
+\alias{partrans}
+\alias{partrans,pomp-method}
+\alias{partrans-pomp}
 \alias{coef,pomp-method}
 \alias{coef-pomp}
 \alias{coef<-}
@@ -40,25 +43,26 @@
 \title{Methods of the "pomp" class}
 \description{Methods of the \code{pomp} class.}
 \usage{
+\S3method{as.data.frame}{pomp}(x, row.names, optional, \dots)
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots)
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots) <- value
 \S4method{obs}{pomp}(object, vars, \dots)
 \S4method{data.array}{pomp}(object, vars, \dots)
+\S4method{partrans}{pomp}(object, params, dir = c("forward","inverse"), \dots)
+\S4method{plot}{pomp}(x, y, variables, panel = lines,
+      nc = NULL, yax.flip = FALSE,
+      mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
+      oma = c(6, 0, 5, 0), axes = TRUE, \dots)
+\S4method{print}{pomp}(x, \dots)
+\S4method{show}{pomp}(object)
 \S4method{states}{pomp}(object, vars, \dots)
 \S4method{time}{pomp}(x, t0 = FALSE, \dots)
 \S4method{time}{pomp}(object, t0 = FALSE, \dots) <- value
 \S4method{timezero}{pomp}(object, \dots)
 \S4method{timezero}{pomp}(object, \dots) <- value
 \S4method{window}{pomp}(x, start, end, \dots)
-\S4method{show}{pomp}(object)
 \S4method{as}{pomp}(object, class)
-\S3method{as.data.frame}{pomp}(x, row.names, optional, \dots)
 \S4method{coerce}{pomp,data.frame}(from, to = "data.frame", strict = TRUE)
-\S4method{print}{pomp}(x, \dots)
-\S4method{plot}{pomp}(x, y, variables, panel = lines,
-      nc = NULL, yax.flip = FALSE,
-      mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
-      oma = c(6, 0, 5, 0), axes = TRUE, \dots)
 }
 \arguments{
   \item{object, x}{The \code{pomp} object.}
@@ -77,6 +81,16 @@
   \item{value}{
     numeric;
     values to be assigned.
+  }
+  \item{params}{
+    a vector or matrix of parameters to be transformed.
+  }
+  \item{dir}{
+    direction of the transformation.
+    \code{dir="forward"} applies the transformation from the \dQuote{natural} scale to the \dQuote{internal} scale.
+    This is the transformation specified by the \code{parameter.transform} argument to \code{pomp};
+    it is stored in the \sQuote{par.trans} slot of \code{object}.
+    \code{dir="inverse"} applies the inverse transformation (stored in the \sQuote{par.untrans} slot).
   }
   \item{t0}{
     logical;
