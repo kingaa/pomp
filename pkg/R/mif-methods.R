@@ -17,11 +17,11 @@ setMethod(
               pars.proper <- setdiff(colnames(object@conv.rec),pars.improper)
               retval <- cbind(
                               t(
-                                pomp.transform(
-                                               object,
-                                               params=t(object@conv.rec[,pars.proper]),
-                                               dir="inverse"
-                                               )
+                                partrans(
+                                         object,
+                                         params=t(object@conv.rec[,pars.proper]),
+                                         dir="inverse"
+                                         )
                                 ),
                               object@conv.rec[,pars.improper]
                               )
