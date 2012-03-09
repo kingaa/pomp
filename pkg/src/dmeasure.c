@@ -17,16 +17,20 @@ static void dens_meas (pomp_measure_model_density *f,
   double t, *lp, *xp, *pp, *yp;
   int nvar = ndim[0];
   int npar = ndim[1];
-  int nrep = ndim[2];
-  int ntimes = ndim[3];
-  int covlen = ndim[4];
-  int covdim = ndim[5];
-  int nobs = ndim[6];
+  int nrepp = ndim[2];
+  int nrepx = ndim[3];
+  int ntimes = ndim[4];
+  int covlen = ndim[5];
+  int covdim = ndim[6];
+  int nobs = ndim[7];
   double covar_fn[covdim];
+  int nrep;
   int k, p;
   
   // set up the covariate table
   struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
+
+  nrep = (nrepp > nrepx) ? nrepp : nrepx;
   
   for (k = 0; k < ntimes; k++) { // loop over times
 
@@ -42,8 +46,8 @@ static void dens_meas (pomp_measure_model_density *f,
     for (p = 0; p < nrep; p++) { // loop over replicates
       
       lp = &lik[p+nrep*k];
-      xp = &x[nvar*(p+nrep*k)];
-      pp = &params[npar*p];
+      xp = &x[nvar*((p%nrepx)+nrepx*k)];
+      pp = &params[npar*(p%nrepp)];
 
       (*f)(lp,yp,xp,pp,*give_log,obsindex,stateindex,parindex,covindex,covdim,covar_fn,t);
       
@@ -107,10 +111,9 @@ static void default_meas_dens (double *lik, double *y, double *x, double *p, int
 SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP fun)
 {
   int nprotect = 0;
-  int *dim, nvars, npars, nreps, ntimes, covlen, covdim, nobs;
+  int *dim, nvars, npars, nrepsp, nrepsx, nreps, ntimes, covlen, covdim, nobs;
   int ndim[7];
   SEXP F, fn;
-  SEXP dimP, dimX, dimY;
   SEXP tcovar, covar;
   SEXP statenames, paramnames, covarnames, obsnames;
   SEXP sindex, pindex, cindex, oindex;
@@ -125,26 +128,28 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   if (ntimes < 1)
     error("dmeasure error: no work to do");
 
-  PROTECT(dimY = GET_DIM(y)); nprotect++;
-  if ((isNull(dimY)) || (length(dimY)!=2))
-    error("dmeasure error: 'y' must be a rank-2 array");
-  dim = INTEGER(dimY); nobs = dim[0];
+  PROTECT(y = as_matrix(y)); nprotect++;
+  dim = INTEGER(GET_DIM(y));
+  nobs = dim[0];
+
   if (ntimes != dim[1])
     error("dmeasure error: length of 'times' and 2nd dimension of 'y' do not agree");
 
-  PROTECT(dimX = GET_DIM(x)); nprotect++;
-  if ((isNull(dimX)) || (length(dimX)!=3))
-    error("dmeasure error: 'x' must be a rank-3 array");
-  dim = INTEGER(dimX); nvars = dim[0]; nreps = dim[1];
+  PROTECT(x = as_state_array(x)); nprotect++;
+  dim = INTEGER(GET_DIM(x));
+  nvars = dim[0]; nrepsx = dim[1]; 
+
   if (ntimes != dim[2])
     error("dmeasure error: length of 'times' and 3rd dimension of 'x' do not agree");
 
-  PROTECT(dimP = GET_DIM(params)); nprotect++;
-  if ((isNull(dimP)) || (length(dimP)!=2))
-    error("dmeasure error: 'params' must be a rank-2 array");
-  dim = INTEGER(dimP); npars = dim[0];
-  if (nreps != dim[1])
-    error("dmeasure error: 2nd dimensions of 'params' and 'x' do not agree");
+  PROTECT(params = as_matrix(params)); nprotect++;
+  dim = INTEGER(GET_DIM(params));
+  npars = dim[0]; nrepsp = dim[1]; 
+
+  nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
+
+  if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
+    error("dmeasure error: larger number of replicates is not a multiple of smaller");
 
   PROTECT(tcovar =  GET_SLOT(object,install("tcovar"))); nprotect++;
   PROTECT(covar =  GET_SLOT(object,install("covar"))); nprotect++;
@@ -237,8 +242,8 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     cidx = 0;
   }
   
-  ndim[0] = nvars; ndim[1] = npars; ndim[2] = nreps; ndim[3] = ntimes; 
-  ndim[4] = covlen; ndim[5] = covdim; ndim[6] = nobs;
+  ndim[0] = nvars; ndim[1] = npars; ndim[2] = nrepsp; ndim[3] = nrepsx; ndim[4] = ntimes; 
+  ndim[5] = covlen; ndim[6] = covdim; ndim[7] = nobs;
 
   dens_meas(ff,REAL(F),REAL(y),REAL(x),REAL(times),REAL(params),INTEGER(log),ndim,
 	    oidx,sidx,pidx,cidx,REAL(tcovar),REAL(covar));

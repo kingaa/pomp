@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.14.2 (2012-02-29)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -394,7 +394,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x18fb960>
+<environment: 0x34a8e98>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -404,7 +404,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0x1872ef8>
+<environment: 0x3658c00>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -460,13 +460,9 @@ function (params, t0, ...)
     })
 }
 parameter transform function = 
-function (params, ...) 
-params
-<environment: 0x1ab0e20>
+function not specified
 parameter inverse transform function = 
-function (params, ...) 
-params
-<environment: 0x1ab0e20>
+function not specified
 > 
 > set.seed(3049953)
 > ## simulate from the model
@@ -474,7 +470,7 @@ params
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.108709 secs
+Time difference of 1.130086 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -491,7 +487,7 @@ Time difference of 1.108709 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.442132 secs
+Time difference of 1.471394 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -551,7 +547,7 @@ R -32554 -28565 -24604 -18148 -10889    787.2
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.197893 secs
+Time difference of 1.212947 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -559,7 +555,7 @@ Time difference of 1.197893 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.07234192 secs
+Time difference of 0.07457232 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(

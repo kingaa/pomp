@@ -11,29 +11,70 @@
 SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset)
 {
   int nprotect = 0;
-  int *xdim, nvars, nreps, ntimes, off;
-  SEXP X, Xoff, fn, fcall, rho;
+  int *xdim, nvars, npars, nreps, nrepsx, ntimes, off;
+  SEXP X, Xoff, copy, fn, fcall, rho;
   SEXP dimXstart, dimP, dimX;
+
   ntimes = length(times);
   if (ntimes < 2) {
-    error("rprocess error: no transitions, no work to do");
+    error("rprocess error: length(times)==0: no transitions, no work to do");
   }
+
   off = *(INTEGER(AS_INTEGER(offset)));
   if ((off < 0)||(off>=ntimes))
     error("illegal 'offset' value %d",off);
+
+  PROTECT(xstart = as_matrix(xstart)); nprotect++;
   PROTECT(dimXstart = GET_DIM(xstart)); nprotect++;
-  if ((isNull(dimXstart)) || (length(dimXstart)!=2)) {
-    error("rprocess error: 'xstart' must be a rank-2 array");
-  }
-  PROTECT(dimP = GET_DIM(params)); nprotect++;
-  if ((isNull(dimP)) || (length(dimP)!=2)) {
-    error("rprocess error: 'params' must be a rank-2 array");
-  }
   xdim = INTEGER(dimXstart);
-  nvars = xdim[0]; nreps = xdim[1];
-  if (nreps != INTEGER(dimP)[1]) {
-    error("rprocess error: number of columns of 'params' and 'xstart' do not agree");
+  nvars = xdim[0]; nrepsx = xdim[1];
+
+  PROTECT(params = as_matrix(params)); nprotect++;
+  PROTECT(dimP = GET_DIM(params)); nprotect++;
+  xdim = INTEGER(dimP);
+  npars = xdim[0]; nreps = xdim[1]; 
+
+  if (nrepsx > nreps) {		// more ICs than parameters
+    if (nrepsx % nreps != 0) {
+      error("rprocess error: larger number of replicates is not a multiple of smaller");
+    } else {
+      double *src, *tgt;
+      int dims[2];
+      int j, k;
+      dims[0] = npars; dims[1] = nrepsx;
+      PROTECT(copy = duplicate(params)); nprotect++;
+      PROTECT(params = makearray(2,dims)); nprotect++;
+      setrownames(params,GET_ROWNAMES(GET_DIMNAMES(copy)),2);
+      src = REAL(copy);
+      tgt = REAL(params);
+      for (j = 0; j < nrepsx; j++) {
+	for (k = 0; k < npars; k++, tgt++) {
+	  *tgt = src[k+npars*(j%nreps)];
+	}
+      }
+    }
+    nreps = nrepsx;
+  } else if (nrepsx < nreps) {	// more parameters than ICs
+    if (nreps % nrepsx != 0) {
+      error("rprocess error: larger number of replicates is not a multiple of smaller");
+    } else {
+      double *src, *tgt;
+      int dims[2];
+      int j, k;
+      dims[0] = nvars; dims[1] = nreps;
+      PROTECT(copy = duplicate(xstart)); nprotect++;
+      PROTECT(xstart = makearray(2,dims)); nprotect++;
+      setrownames(xstart,GET_ROWNAMES(GET_DIMNAMES(copy)),2);
+      src = REAL(copy);
+      tgt = REAL(xstart);
+      for (j = 0; j < nreps; j++) {
+	for (k = 0; k < nvars; k++, tgt++) {
+	  *tgt = src[k+nvars*(j%nrepsx)];
+	}
+      }
+    }
   }
+
   // extract the process function
   PROTECT(fn = GET_SLOT(object,install("rprocess"))); nprotect++;
   // construct the call

@@ -22,8 +22,9 @@ setClass(
                         paramnames = 'character',
                         covarnames = 'character',
                         zeronames = 'character',
-                        par.trans = 'function',
-                        par.untrans = 'function',
+                        has.trans = 'logical',
+                        par.trans = 'pomp.fun',
+                        par.untrans = 'pomp.fun',
                         PACKAGE = 'character',
                         userdata = 'list'
                         )
@@ -100,11 +101,6 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
     dmeasure <- mm$dmeasure
   }
   
-  if (missing(rmeasure))
-    rmeasure <- function(x,t,params,covars,...)stop(sQuote("rmeasure")," not specified")
-  if (missing(dmeasure))
-    dmeasure <- function(y,x,t,params,log,covars,...)stop(sQuote("dmeasure")," not specified")
-  
   skeleton.type <- match.arg(skeleton.type)
   skelmap.delta.t <- as.numeric(skelmap.delta.t)
   if (skelmap.delta.t <= 0)
@@ -131,8 +127,15 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
          call.=TRUE
          )
 
-  rmeasure <- pomp.fun(f=rmeasure,PACKAGE=PACKAGE,proto=quote(rmeasure(x,t,params,...)))
-  dmeasure <- pomp.fun(f=dmeasure,PACKAGE=PACKAGE,proto=quote(dmeasure(y,x,t,params,log,...)))
+  if (missing(rmeasure))
+    rmeasure <- pomp.fun()
+  else
+    rmeasure <- pomp.fun(f=rmeasure,PACKAGE=PACKAGE,proto=quote(rmeasure(x,t,params,...)))
+
+  if (missing(dmeasure))
+    dmeasure <- pomp.fun()
+  else 
+    dmeasure <- pomp.fun(f=dmeasure,PACKAGE=PACKAGE,proto=quote(dmeasure(y,x,t,params,log,...)))
   
   if (!is.function(initializer))
     stop(
@@ -244,24 +247,26 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
     }
   }
   if (has.trans) {
-    par.trans <- match.fun(parameter.transform)
-    par.untrans <- match.fun(parameter.inv.transform)
-    if (!all(c('params','...')%in%names(formals(par.trans))))
-      stop(
-           "pomp error: ",sQuote("parameter.transform")," must be a function of prototype ",
-           sQuote("parameter.transform(params,...)"),
-           call.=TRUE
-           )
-    if (!all(c('params','...')%in%names(formals(par.untrans))))
-      stop(
-           "pomp error: ",sQuote("parameter.inv.transform")," must be a function of prototype ",
-           sQuote("parameter.inv.transform(params,...)"),
-           call.=TRUE
-           )
+    par.trans <- pomp.fun(
+                          f=parameter.transform,
+                          PACKAGE=PACKAGE,
+                          proto=quote(par.trans(params,...))
+                          )
+    par.untrans <- pomp.fun(
+                            f=parameter.inv.transform,
+                            PACKAGE=PACKAGE,
+                            proto=quote(par.untrans(params,...))
+                            )
   } else {
-    par.untrans <- par.trans <- function(params, ...) params
+    par.trans <- pomp.fun()
+    par.untrans <- pomp.fun()
   }
-  
+  if (
+      has.trans &&
+      par.trans@use<0 &&
+      par.untrans@use<0
+      )
+    has.trans <- FALSE
 
   new(
       'pomp',
@@ -283,6 +288,7 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
       paramnames = paramnames,
       covarnames = covarnames,
       zeronames = zeronames,
+      has.trans = has.trans,
       par.trans = par.trans,
       par.untrans = par.untrans,
       PACKAGE = PACKAGE,
@@ -541,8 +547,8 @@ setMethod(
                 stop("pomp error: if ",sQuote("parameter.transform")," is supplied, then " ,
                      sQuote("parameter.inv.transform")," must also be supplied")
               } else {
-                par.trans <- match.fun(parameter.transform)
-                par.untrans <- match.fun(parameter.inv.transform)
+                par.trans <- parameter.transform
+                par.untrans <- parameter.inv.transform
               }
             }
             

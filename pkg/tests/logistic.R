@@ -52,7 +52,7 @@ print(
                po,
                x=x$states[,,45:50,drop=F],
                times=t[45:50],
-               params=as.matrix(params),
+               params=params,
                log=TRUE
                ),
       digits=4
@@ -64,7 +64,7 @@ print(
                y=rbind(obs=x$obs[,1,45:50]),
                x=x$states[,,45:50,drop=F],
                times=t[45:50],
-               params=as.matrix(params),
+               params=params,
                log=TRUE
                ),
       digits=4
@@ -80,7 +80,7 @@ print(
                       dimnames=list('n',NULL,NULL)
                       ),
                     t=rep(0,13),
-                    params=as.matrix(params)
+                    params=params
                     )
            ),
       digits=4

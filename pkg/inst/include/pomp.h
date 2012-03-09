@@ -37,6 +37,9 @@ double dot_product (int dim, const double *basis, const double *coef);
 // facility for computing evaluating a basis of periodic bsplines
 void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
 
+// Prototype for parameter transformation function.
+typedef void pomp_transform_fn (double *pt, double *p, int *parindex);
+
 // Prototype for stochastic simulation algorithm reaction-rate function, as used by "gillespie.sim":
 typedef double pomp_ssa_rate_fn(int j, double t, const double *x, const double *p,
 				int *stateindex, int *parindex, int *covindex,

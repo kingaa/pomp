@@ -1,6 +1,6 @@
 
-R version 2.13.1 (2011-07-08)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.14.2 (2012-02-29)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -73,7 +73,7 @@ Loading required package: deSolve
 +                po,
 +                x=x$states[,,45:50,drop=F],
 +                times=t[45:50],
-+                params=as.matrix(params),
++                params=params,
 +                log=TRUE
 +                ),
 +       digits=4
@@ -87,7 +87,7 @@ Loading required package: deSolve
 +                y=rbind(obs=x$obs[,1,45:50]),
 +                x=x$states[,,45:50,drop=F],
 +                times=t[45:50],
-+                params=as.matrix(params),
++                params=params,
 +                log=TRUE
 +                ),
 +       digits=4
@@ -105,7 +105,7 @@ Loading required package: deSolve
 +                       dimnames=list('n',NULL,NULL)
 +                       ),
 +                     t=rep(0,13),
-+                     params=as.matrix(params)
++                     params=params
 +                     )
 +            ),
 +       digits=4

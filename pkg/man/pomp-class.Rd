@@ -62,8 +62,9 @@
     \item{zeronames}{
       Names of accumulator variables.
     }
-    \item{par.trans, par.untrans}{
-      The forward and inverse parameter transformations.
+    \item{has.trans, par.trans, par.untrans}{
+      \code{has.trans=TRUE} if there is a non-trivial parameter transformation.
+      In this case, the forward and inverse parameter transformations are stored in \code{par.trans} and \code{par.untrans}.
     }
     \item{PACKAGE}{
       Character variable giving the name of the dynamically loadable library containing native routines.

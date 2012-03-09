@@ -45,7 +45,7 @@ pomp.fun <- function (f = NULL, PACKAGE, proto = NULL) {
                   R.fun=function(...)stop(sQuote(fname)," not specified"),
                   native.fun=character(0),
                   PACKAGE=PACKAGE,
-                  use=1L
+                  use=-1L
                   )
   }
   retval
@@ -55,13 +55,16 @@ setMethod(
           'show',
           'pomp.fun',
           function (object) {
-            if (object@use==1) {
+            use <- object@use
+            if (use==1L) {
               show(object@R.fun)
-            } else {
+            } else if (use==2L) {
               cat("native function ",sQuote(object@native.fun),sep="")
               if (length(object@PACKAGE)>0)
                 cat(", dynamically loaded from ",sQuote(object@PACKAGE),sep="")
               cat ("\n")
+            } else {
+              cat("function not specified\n")
             }
           }
           )
@@ -73,13 +76,13 @@ setMethod(
           )
 
 get.pomp.fun <- function (object) {
-  use <- as.integer(object@use-1)
-  if (use==0L) {
+  use <- object@use
+  if (use==1L) {
     f <- object@R.fun
-  } else if (use==1L) {
+  } else if (use==2L) {
     f <- getNativeSymbolInfo(name=object@native.fun,PACKAGE=object@PACKAGE)$address
   } else {
-    stop("invalid ",sQuote("use")," value")
+    stop("function not specified")
   }
-  list(f,use)
+  list(f,as.integer(use-1))
 }

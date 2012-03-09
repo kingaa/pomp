@@ -17,17 +17,21 @@ static void simul_meas (pomp_measure_model_simulator *f,
   double t, *xp, *pp, *yp;
   int nvar = ndim[0];
   int npar = ndim[1];
-  int nrep = ndim[2];
-  int ntimes = ndim[3];
-  int covlen = ndim[4];
-  int covdim = ndim[5];
-  int nobs = ndim[6];
+  int nrepp = ndim[2];
+  int nrepx = ndim[3];
+  int ntimes = ndim[4];
+  int covlen = ndim[5];
+  int covdim = ndim[6];
+  int nobs = ndim[7];
   double covar_fn[covdim];
+  int nrep;
   int k, p;
   
   // set up the covariate table
   struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
   
+  nrep = (nrepp > nrepx) ? nrepp : nrepx;
+
   for (k = 0; k < ntimes; k++) { // loop over times
 
     R_CheckUserInterrupt();	// check for user interrupt
@@ -41,8 +45,8 @@ static void simul_meas (pomp_measure_model_simulator *f,
     for (p = 0; p < nrep; p++) { // loop over replicates
       
       yp = &y[nobs*(p+nrep*k)];
-      xp = &x[nvar*(p+nrep*k)];
-      pp = &params[npar*p];
+      xp = &x[nvar*((p%nrepx)+nrepx*k)];
+      pp = &params[npar*(p%nrepp)];
 
       (*f)(yp,xp,pp,obsindex,stateindex,parindex,covindex,covdim,covar_fn,t);
       
@@ -89,6 +93,7 @@ static void default_meas_sim (double *y, double *x, double *p,
   int k, *op;
   double *xp;
   SEXP ans, nm, oidx;
+
   xp = REAL(XVEC);
   for (k = 0; k < NVAR; k++) xp[k] = x[k];
   xp = REAL(PVEC);
@@ -111,23 +116,26 @@ static void default_meas_sim (double *y, double *x, double *p,
       op = INTEGER(oidx);
       for (k = 0; k < NOBS; k++) OIDX[k] = op[k];
     } else {
-      for (k = 0; k < NOBS; k++) OIDX[k] = k;
+      OIDX = 0;
     }
     FIRST = 0;
   }
 
   xp = REAL(AS_NUMERIC(ans));
-  for (k = 0; k < NOBS; k++) y[OIDX[k]] = xp[k];
+  if (OIDX == 0) {
+    for (k = 0; k < NOBS; k++) y[k] = xp[k];
+  } else {
+    for (k = 0; k < NOBS; k++) y[OIDX[k]] = xp[k];
+  }
   UNPROTECT(nprotect);
 }
 
 SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
 {
   int nprotect = 0;
-  int *dim, nvars, npars, nreps, ntimes, covlen, covdim, nobs;
-  int ndim[7];
+  int *dim, nvars, npars, nrepsp, nrepsx, nreps, ntimes, covlen, covdim, nobs;
+  int ndim[8];
   SEXP Y, fn;
-  SEXP dimP, dimX, dimD;
   SEXP tcovar, covar;
   SEXP statenames, paramnames, covarnames, obsnames;
   SEXP sindex, pindex, cindex, oindex;
@@ -142,22 +150,24 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   if (ntimes < 1)
     error("rmeasure error: no work to do");
 
-  PROTECT(dimX = GET_DIM(x)); nprotect++;
-  if ((isNull(dimX)) || (length(dimX)!=3))
-    error("rmeasure error: 'x' must be a rank-3 array");
-  dim = INTEGER(dimX); nvars = dim[0]; nreps = dim[1];
+  PROTECT(x = as_state_array(x)); nprotect++;
+  dim = INTEGER(GET_DIM(x));
+  nvars = dim[0]; nrepsx = dim[1]; 
+
   if (ntimes != dim[2])
-    error("rprocess error: length of 'times' and 3rd dimension of 'x' do not agree");
+    error("rmeasure error: length of 'times' and 3rd dimension of 'x' do not agree");
 
-  PROTECT(dimP = GET_DIM(params)); nprotect++;
-  if ((isNull(dimP)) || (length(dimP)!=2))
-    error("rmeasure error: 'params' must be a rank-2 array");
-  dim = INTEGER(dimP); npars = dim[0];
-  if (nreps != dim[1])
-    error("rmeasure error: 2nd dimensions of 'params' and 'x' do not agree");
+  PROTECT(params = as_matrix(params)); nprotect++;
+  dim = INTEGER(GET_DIM(params));
+  npars = dim[0]; nrepsp = dim[1]; 
 
-  PROTECT(dimD = GET_DIM(GET_SLOT(object,install("data")))); nprotect++;
-  dim = INTEGER(dimD); nobs = dim[0];
+  nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
+
+  if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
+    error("rmeasure error: larger number of replicates is not a multiple of smaller");
+
+  dim = INTEGER(GET_DIM(GET_SLOT(object,install("data"))));
+  nobs = dim[0];
 
   PROTECT(tcovar =  GET_SLOT(object,install("tcovar"))); nprotect++;
   PROTECT(covar =  GET_SLOT(object,install("covar"))); nprotect++;
@@ -248,8 +258,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
     cidx = 0;
   }
 
-  ndim[0] = nvars; ndim[1] = npars; ndim[2] = nreps; ndim[3] = ntimes; 
-  ndim[4] = covlen; ndim[5] = covdim; ndim[6] = nobs;
+  ndim[0] = nvars; ndim[1] = npars; ndim[2] = nrepsp; ndim[3] = nrepsx; ndim[4] = ntimes; 
+  ndim[5] = covlen; ndim[6] = covdim; ndim[7] = nobs;
 
   if (use_native) GetRNGstate();
 

@@ -19,6 +19,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0)
   int xdim[2], j, k;
   double *p, *pp, *xp, *xpp;
 
+  PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
   npar = dim[0]; nrep = dim[1]; 
   p = REAL(params);

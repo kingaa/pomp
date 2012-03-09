@@ -518,7 +518,7 @@ It takes initial conditions (which need not correspond to the zero-time \code{t0
 The initial states and parameters must be matrices, and they are checked for commensurability.
 The method returns a rank-3 array containing simulated state trajectories, sampled at the times specified.
 <<>>=
-x <- rprocess(ou2,xstart=x0,times=time(ou2,t0=T),params=as.matrix(true.p))
+x <- rprocess(ou2,xstart=x0,times=time(ou2,t0=T),params=true.p)
 dim(x)
 x[,,1:5]
 @ 
@@ -530,7 +530,7 @@ Note also that \verb+x[,,1]+ is identical to \verb+xstart+.
 The \code{rmeasure} method gives access to the measurement model simulator:
 <<>>=
 x <- x[,,-1,drop=F]
-y <- rmeasure(ou2,x=x,times=time(ou2),params=as.matrix(true.p))
+y <- rmeasure(ou2,x=x,times=time(ou2),params=true.p)
 dim(y)
 y[,,1:5]
 @ 
@@ -539,12 +539,12 @@ y[,,1:5]
 
 The \code{dmeasure} and \code{dprocess} methods give access to the measurement and process model densities, respectively.
 <<>>=
-fp <- dprocess(ou2,x=x,times=time(ou2),params=as.matrix(true.p))
+fp <- dprocess(ou2,x=x,times=time(ou2),params=true.p)
 dim(fp)
 fp[,36:40]
 @ 
 <<>>=
-fm <- dmeasure(ou2,y=y[,1,],x=x,times=time(ou2),params=as.matrix(true.p))
+fm <- dmeasure(ou2,y=y[,1,],x=x,times=time(ou2),params=true.p)
 dim(fm)
 fm[,36:40]
 @ 
@@ -554,7 +554,7 @@ All of these are to be preferred to direct access to the slots of the \code{pomp
 
 There are a number of example \code{pomp} objects included with the package.
 These can be found by running
-<<all-data-loaable,eval=F>>=
+<<all-data-loadable,eval=F>>=
 data(package="pomp")
 @ 
 The \R\ scripts that generated these are included in the \code{data-R} directory of the installed package.

@@ -1,4 +1,10 @@
 NEWS
+0.40-8
+     o	A new method 'partrans' allows transformation of vectors or matrices of parameters.
+     	The parameter transformations have been pushed into C for speed.
+	It is possible to specify native parameter transformation routines in addition to C functions, but this last facility has not yet been extensively tested.
+	A new slot 'has.trans' has been introduced into the 'pomp' class, and the types of slots 'par.trans' and 'par.untrans' have changed.
+
 0.40-7
      o	'parmat' now gracefully handles the case when 'params' is already a matrix.
 

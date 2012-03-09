@@ -16,15 +16,19 @@ static void eval_skel (pomp_skeleton *vf,
   double t, *xp, *pp, *fp;
   int nvar = ndim[0];
   int npar = ndim[1];
-  int nrep = ndim[2];
-  int ntimes = ndim[3];
-  int covlen = ndim[4];
-  int covdim = ndim[5];
+  int nrepp = ndim[2];
+  int nrepx = ndim[3];
+  int ntimes = ndim[4];
+  int covlen = ndim[5];
+  int covdim = ndim[6];
   double covar_fn[covdim];
+  int nrep;
   int k, p;
   
   // set up the covariate table
   struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
+
+  nrep = (nrepp > nrepx) ? nrepp : nrepx;
   
   for (k = 0; k < ntimes; k++) { // loop over times
 
@@ -39,8 +43,8 @@ static void eval_skel (pomp_skeleton *vf,
     for (p = 0; p < nrep; p++) { // loop over replicates
       
       fp = &f[nvar*(p+nrep*k)];
-      xp = &x[nvar*(p+nrep*k)];
-      pp = &params[npar*p];
+      xp = &x[nvar*((p%nrepx)+nrepx*k)];
+      pp = &params[npar*(p%nrepp)];
 
       (*vf)(fp,xp,pp,stateindex,parindex,covindex,covdim,covar_fn,t);
       
@@ -59,6 +63,8 @@ static int  _pomp_skel_npar;	// number of parameters
 static SEXP _pomp_skel_envir;	// function's environment
 static SEXP _pomp_skel_fcall;	// function call
 static SEXP _pomp_skel_vnames;	// names of state variables
+static int *_pomp_skel_vindex;	// indices of state variables
+static int  _pomp_skel_first;	// first evaluation?
 
 #define XVEC    (_pomp_skel_Xvec)
 #define PVEC    (_pomp_skel_Pvec)
@@ -69,6 +75,8 @@ static SEXP _pomp_skel_vnames;	// names of state variables
 #define RHO     (_pomp_skel_envir)
 #define FCALL   (_pomp_skel_fcall)
 #define VNAMES  (_pomp_skel_vnames)
+#define VIDX    (_pomp_skel_vindex)
+#define FIRST   (_pomp_skel_first)
 
 // this is the vectorfield that is evaluated when the user supplies an R function
 // (and not a native routine)
@@ -81,7 +89,7 @@ static void default_skel_fn (double *f, double *x, double *p,
   int k;
   double *xp;
   SEXP ans, nm, idx;
-  int use_names, *op;
+  int use_names = 0, *op;
 
   xp = REAL(XVEC);
   for (k = 0; k < NVAR; k++) xp[k] = x[k];
@@ -91,26 +99,29 @@ static void default_skel_fn (double *f, double *x, double *p,
   for (k = 0; k < covdim; k++) xp[k] = covar[k];
   xp = REAL(TIME);
   xp[0] = t;
+
   PROTECT(ans = eval(FCALL,RHO)); nprotect++; // evaluate the call
 
-  if (LENGTH(ans)!=NVAR) {
-    UNPROTECT(nprotect);
-    error("user 'skeleton' returns a vector of %d state variables but %d are expected: compare initial conditions?",
-	  LENGTH(ans),NVAR);
-  }
-
-  PROTECT(nm = GET_NAMES(ans)); nprotect++;
-  use_names = !isNull(nm);
-  if (use_names) {	  // match names against known names of states
-    PROTECT(idx = matchnames(VNAMES,nm)); nprotect++;
-    op = INTEGER(idx);
+  if (FIRST) {
+    if (LENGTH(ans)!=NVAR)
+      error("user 'skeleton' returns a vector of %d state variables but %d are expected",LENGTH(ans),NVAR);
+    PROTECT(nm = GET_NAMES(ans)); nprotect++;
+    use_names = !isNull(nm);
+    if (use_names) {	  // match names against known names of states
+      PROTECT(idx = matchnames(VNAMES,nm)); nprotect++;
+      op = INTEGER(idx);
+      for (k = 0; k < NVAR; k++) VIDX[k] = op[k];
+    } else {
+      VIDX = 0;
+    }
+    FIRST = 0;
   }
 
   xp = REAL(AS_NUMERIC(ans));
-  if (use_names) {
-    for (k = 0; k < NVAR; k++) f[op[k]] = xp[k];
-  } else {
+  if (VIDX == 0) {
     for (k = 0; k < NVAR; k++) f[k] = xp[k];
+  } else {
+    for (k = 0; k < NVAR; k++) f[VIDX[k]] = xp[k];
   }
 
   UNPROTECT(nprotect);
@@ -119,8 +130,7 @@ static void default_skel_fn (double *f, double *x, double *p,
 SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
 {
   int nprotect = 0;
-  int *dim, nvars, npars, nreps, ntimes, covlen, covdim;
-  int fdim[3], ndim[6];
+  int *dim, nvars, npars, nrepsp, nrepsx, nreps, ntimes, covlen, covdim;
   int use_native;
   int nstates, nparams, ncovars;
   double *xp;
@@ -128,30 +138,31 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   SEXP tcovar, covar;
   SEXP statenames, paramnames, covarnames;
   SEXP sindex, pindex, cindex;
-  SEXP Snames, Pnames, Cnames;
+  SEXP Pnames, Cnames;
   pomp_skeleton *ff = NULL;
   int k, len;
 
+  PROTECT(t = AS_NUMERIC(t)); nprotect++;
   ntimes = LENGTH(t);
 
-  PROTECT(dimX = GET_DIM(x)); nprotect++;
-  if ((isNull(dimX)) || (LENGTH(dimX)!=3))
-    error("skeleton error: 'x' must be a rank-3 array");
-  dim = INTEGER(dimX);
-  nvars = dim[0]; nreps = dim[1];
+  PROTECT(x = as_state_array(x)); nprotect++;
+  dim = INTEGER(GET_DIM(x));
+  nvars = dim[0]; nrepsx = dim[1];
   if (ntimes != dim[2])
     error("skeleton error: length of 't' and 3rd dimension of 'x' do not agree");
 
-  PROTECT(dimP = GET_DIM(params)); nprotect++;
-  if ((isNull(dimP)) || (LENGTH(dimP)!=2))
-    error("skeleton error: 'params' must be a rank-2 array");
-  dim = INTEGER(dimP);
-  npars = dim[0];
-  if (nreps != dim[1])
-    error("skeleton error: 2nd dimensions of 'params' and 'x' do not agree");
-  
+  PROTECT(params = as_matrix(params)); nprotect++;
+  dim = INTEGER(GET_DIM(params));
+  npars = dim[0]; nrepsp = dim[1];
+
+  nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
+
+  if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
+    error("skeleton error: larger number of replicates is not a multiple of smaller");
+
   PROTECT(tcovar =  GET_SLOT(object,install("tcovar"))); nprotect++;
   PROTECT(covar =  GET_SLOT(object,install("covar"))); nprotect++;
+
   PROTECT(statenames =  GET_SLOT(object,install("statenames"))); nprotect++;
   PROTECT(paramnames =  GET_SLOT(object,install("paramnames"))); nprotect++;
   PROTECT(covarnames =  GET_SLOT(object,install("covarnames"))); nprotect++;
@@ -159,17 +170,17 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   nparams = LENGTH(paramnames);
   ncovars = LENGTH(covarnames);
 
-  dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
-  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
+  dim = INTEGER(GET_DIM(covar)); 
+  covlen = dim[0]; covdim = dim[1];
+  PROTECT(VNAMES = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
   PROTECT(fn = VECTOR_ELT(fun,0)); nprotect++;
   use_native = INTEGER(VECTOR_ELT(fun,1))[0];
   
-  if (use_native) {
-    ff = (pomp_skeleton *) R_ExternalPtrAddr(fn);
-  } else {		    // else construct a call to the R function
+  switch (use_native) {
+  case 0:			// R skeleton
     ff = (pomp_skeleton *) default_skel_fn;
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
     NVAR = nvars;			// for internal use
@@ -180,7 +191,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
     for (k = 0; k < nvars; k++) xp[k] = 0.0;
     PROTECT(PVEC = NEW_NUMERIC(npars)); nprotect++; // for internal use
     PROTECT(CVEC = NEW_NUMERIC(covdim)); nprotect++; // for internal use
-    SET_NAMES(XVEC,Snames); // make sure the names attribute is copied
+    SET_NAMES(XVEC,VNAMES); // make sure the names attribute is copied
     SET_NAMES(PVEC,Pnames); // make sure the names attribute is copied
     SET_NAMES(CVEC,Cnames); // make sure the names attribute is copied
     // set up the function call
@@ -194,14 +205,26 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
     PROTECT(FCALL = LCONS(XVEC,FCALL)); nprotect++;
     SET_TAG(FCALL,install("x"));
     PROTECT(FCALL = LCONS(fn,FCALL)); nprotect++;
-    PROTECT(VNAMES = duplicate(Snames)); nprotect++; // for internal use
+    VIDX = (int *) R_alloc(nvars,sizeof(int));
+    FIRST = 1;
+    break;
+  case 1:			// native skeleton
+    ff = (pomp_skeleton *) R_ExternalPtrAddr(fn);
+    VIDX = 0;
+    break;
+  default:
+    error("unrecognized 'use' slot in 'skeleton'");
+    break;
   }
 
-  fdim[0] = nvars; fdim[1] = nreps; fdim[2] = ntimes;
-  PROTECT(F = makearray(3,fdim)); nprotect++; 
-  setrownames(F,Snames,3);
-  xp = REAL(F);
-  for (k = 0, len = nvars*nreps*ntimes; k < len; k++) xp[k] = 0.0;
+  {
+    int fdim[3];
+    fdim[0] = nvars; fdim[1] = nreps; fdim[2] = ntimes;
+    PROTECT(F = makearray(3,fdim)); nprotect++; 
+    setrownames(F,VNAMES,3);
+    xp = REAL(F);
+    //  for (k = 0, len = nvars*nreps*ntimes; k < len; k++) xp[k] = 0.0;
+  }
 
   if (nstates > 0) {
     PROTECT(sindex = MATCHROWNAMES(x,statenames)); nprotect++;
@@ -219,12 +242,15 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
     PROTECT(cindex = NEW_INTEGER(0)); nprotect++;
   }
 
-  ndim[0] = nvars; ndim[1] = npars; ndim[2] = nreps; ndim[3] = ntimes; 
-  ndim[4] = covlen; ndim[5] = covdim;
+  {
+    int ndim[7];
+    ndim[0] = nvars; ndim[1] = npars; ndim[2] = nrepsp; ndim[3] = nrepsx; 
+    ndim[4] = ntimes; ndim[5] = covlen; ndim[6] = covdim;
 
-  eval_skel(ff,REAL(F),REAL(x),REAL(t),REAL(params),
-	    ndim,INTEGER(sindex),INTEGER(pindex),INTEGER(cindex),
-	    REAL(tcovar),REAL(covar));
+    eval_skel(ff,REAL(F),REAL(x),REAL(t),REAL(params),
+	      ndim,INTEGER(sindex),INTEGER(pindex),INTEGER(cindex),
+	      REAL(tcovar),REAL(covar));
+  }
 
   UNPROTECT(nprotect);
   return F;
