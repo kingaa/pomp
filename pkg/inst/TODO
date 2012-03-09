@@ -1,3 +1,5 @@
+* as.data.frame option for 'simulate'
+
 * unit tests for 'sannbox'
 
 * Create objective functions for 'probe.match', 'traj.match', and
@@ -8,7 +10,7 @@
 
 * Partial rejection control for 'pfilter'?
 
-* Better documentation/rationalization for 'zeronames'.
+* Adaptive particle numbers in pfilter.
 
 * It might be possible to make the writing of basic model functions
    using R expressions rather than functions.
@@ -21,10 +23,11 @@
 
 * Parallel 'pfilter' algorithm.
 
-* Add LPA model example.
+* Add LPA model examples.
+
+* SDE examples.
 
 * Extended Kalman filter.
 
 * Plugin for compartmental models.
 
-* Adaptive particle numbers in pfilter.

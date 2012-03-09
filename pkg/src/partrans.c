@@ -102,17 +102,29 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP fun)
   case 1:			// use native routine
     {
       pomp_transform_fn *ff = (pomp_transform_fn *) R_ExternalPtrAddr(fn);
-      SEXP paramnames, pindex;
-      int *idx, npar, nrep;
+      SEXP paramnames, pindex, Dim;
+      int *idx, npar, nrep, qvec;
       double *ps, *pt;
       int k;
 
-      idx = INTEGER(GET_DIM(params));
-      npar = idx[0]; nrep = idx[1];
+      PROTECT(Dim = GET_DIM(params)); nprotect++;
+      if (isNull(Dim)) {	// a single vector
+	npar = LENGTH(Dim); nrep = 1;
+	qvec = 1;
+      } else {			// a parameter matrix
+	int *dim;
+	dim = INTEGER(Dim);
+	npar = dim[0]; nrep = dim[1];
+	qvec = 0;
+      }
 
       PROTECT(paramnames = GET_SLOT(object,install("paramnames"))); nprotect++;
       if (LENGTH(paramnames) > 0) {
-	PROTECT(pindex = matchnames(GET_ROWNAMES(GET_DIMNAMES(params)),paramnames)); nprotect++;
+	if (qvec) {
+	  PROTECT(pindex = matchnames(GET_NAMES(params),paramnames)); nprotect++;
+	} else {
+	  PROTECT(pindex = matchnames(GET_ROWNAMES(GET_DIMNAMES(params)),paramnames)); nprotect++;
+	}
 	idx = INTEGER(pindex);
       } else {
 	idx = 0;

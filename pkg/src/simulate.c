@@ -32,6 +32,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEX
   qobs = *(LOGICAL(AS_LOGICAL(obs)));	    // 'obs' flag set?
   qstates = *(LOGICAL(AS_LOGICAL(states))); // 'states' flag set?
 
+  PROTECT(params = as_matrix(params)); nprotect++;
   PROTECT(paramnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nparsets = dim[1];
