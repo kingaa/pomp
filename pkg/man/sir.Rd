@@ -1,4 +1,5 @@
 \name{sir}
+\alias{sir}
 \alias{euler.sir}
 \alias{gillespie.sir}
 \docType{data}

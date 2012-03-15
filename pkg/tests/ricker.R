@@ -10,6 +10,35 @@ tj.2 <- trajectory(ricker,times=c(30:50),t0=0)
 lines(30:50,tj.2[1,,],col='red',lwd=2)
 max(abs(tj.1[,,time(ricker)>=30]-tj.2[,,]))
 
+tj.3 <- trajectory(ricker,as.data.frame=TRUE)
+plot(tj.3)
+tj.3 <- trajectory(ricker,as.data.frame=TRUE,params=parmat(coef(ricker),3),times=1:100)
+plot(N~time,data=tj.3,subset=traj==3,type='l')
+
+sm <- simulate(ricker,seed=343995,as.data.frame=TRUE)
+sm1 <- as.data.frame(simulate(ricker,seed=343995))
+stopifnot(identical(sm[names(sm1)],sm1))
+
+sm <- simulate(ricker,nsim=3,as.data.frame=TRUE)
+print(names(sm))
+print(dim(sm))
+
+sm <- simulate(ricker,nsim=3,obs=T,as.data.frame=TRUE)
+print(names(sm))
+print(dim(sm))
+
+sm <- simulate(ricker,nsim=3,states=T,as.data.frame=TRUE)
+print(names(sm))
+print(dim(sm))
+
+sm <- simulate(ricker,nsim=3,states=T,obs=T,as.data.frame=TRUE)
+print(names(sm))
+print(dim(sm))
+
+sm <- simulate(ricker,nsim=1,states=T,obs=T,as.data.frame=TRUE)
+print(names(sm))
+print(dim(sm))
+
 po <- ricker
 try(
     coef(po,"r")

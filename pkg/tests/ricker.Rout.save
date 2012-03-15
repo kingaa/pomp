@@ -1,6 +1,6 @@
 
-R version 2.13.1 (2011-07-08)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.14.2 (2012-02-29)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -31,6 +31,45 @@ Loading required package: deSolve
 > lines(30:50,tj.2[1,,],col='red',lwd=2)
 > max(abs(tj.1[,,time(ricker)>=30]-tj.2[,,]))
 [1] 0
+> 
+> tj.3 <- trajectory(ricker,as.data.frame=TRUE)
+> plot(tj.3)
+> tj.3 <- trajectory(ricker,as.data.frame=TRUE,params=parmat(coef(ricker),3),times=1:100)
+> plot(N~time,data=tj.3,subset=traj==3,type='l')
+> 
+> sm <- simulate(ricker,seed=343995,as.data.frame=TRUE)
+> sm1 <- as.data.frame(simulate(ricker,seed=343995))
+> stopifnot(identical(sm[names(sm1)],sm1))
+> 
+> sm <- simulate(ricker,nsim=3,as.data.frame=TRUE)
+> print(names(sm))
+[1] "time" "y"    "N"    "e"    "sim" 
+> print(dim(sm))
+[1] 153   5
+> 
+> sm <- simulate(ricker,nsim=3,obs=T,as.data.frame=TRUE)
+> print(names(sm))
+[1] "time" "y"    "sim" 
+> print(dim(sm))
+[1] 459   3
+> 
+> sm <- simulate(ricker,nsim=3,states=T,as.data.frame=TRUE)
+> print(names(sm))
+[1] "time" "N"    "e"    "sim" 
+> print(dim(sm))
+[1] 459   4
+> 
+> sm <- simulate(ricker,nsim=3,states=T,obs=T,as.data.frame=TRUE)
+> print(names(sm))
+[1] "time" "y"    "N"    "e"    "sim" 
+> print(dim(sm))
+[1] 459   5
+> 
+> sm <- simulate(ricker,nsim=1,states=T,obs=T,as.data.frame=TRUE)
+> print(names(sm))
+[1] "time" "y"    "N"    "e"    "sim" 
+> print(dim(sm))
+[1] 51  5
 > 
 > po <- ricker
 > try(

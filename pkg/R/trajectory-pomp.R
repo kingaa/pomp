@@ -3,14 +3,16 @@ trajectory <- function (object, params, times, t0, ...)
 
 setGeneric('trajectory')                                                                            
 
-trajectory.internal <- function (object, params, times, t0, ...) {
+trajectory.internal <- function (object, params, times, t0, as.data.frame = FALSE, ...) {
 
   if (missing(times))
     times <- time(object,t0=FALSE)
   else
     times <- as.numeric(times)
 
-  if (length(times)==0)
+  as.data.frame <- as.logical(as.data.frame)
+
+if (length(times)==0)
     stop("if ",sQuote("times")," is empty, there is no work to do",call.=FALSE)
   
   if (any(diff(times)<0))
@@ -21,7 +23,7 @@ trajectory.internal <- function (object, params, times, t0, ...) {
   else
     t0 <- as.numeric(t0)
   
-  if (t0>times[1])
+    if (t0>times[1])
     stop("the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
   ntimes <- length(times)
   
@@ -62,7 +64,7 @@ trajectory.internal <- function (object, params, times, t0, ...) {
   if (type=="map") {
 
     x <- .Call(iterate_map,object,times,t0,x0,params)
-
+    
   } else if (type=="vectorfield") {
 
     skel <- get.pomp.fun(object@skeleton)
@@ -107,7 +109,7 @@ trajectory.internal <- function (object, params, times, t0, ...) {
       warning("abnormal exit from ODE integrator, istate = ",attr(X,'istate'),call.=FALSE)
 
     x <- array(data=t(X[-1,-1]),dim=c(nvar,nrep,ntimes),dimnames=list(statenames,NULL,NULL))
-
+    
     if (length(znames)>0)
       x[znames,,-1] <- apply(x[znames,,,drop=FALSE],c(1,2),diff)
     
@@ -115,6 +117,23 @@ trajectory.internal <- function (object, params, times, t0, ...) {
     
     stop("deterministic skeleton not specified")
 
+  }
+
+  if (as.data.frame) {
+    x <- lapply(
+                seq_len(ncol(x)),
+                function (k) {
+                  nm <- rownames(x)
+                  y <- x[,k,,drop=FALSE]
+                  dim(y) <- dim(y)[c(1,3)]
+                  y <- as.data.frame(t(y))
+                  names(y) <- nm
+                  y$time <- times
+                  y$traj <- as.integer(k)
+                  y
+                }
+                )
+    x <- do.call(rbind,x)
   }
 
   x

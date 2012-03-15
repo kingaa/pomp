@@ -8,7 +8,8 @@
 }
 \usage{
 \S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, params,
-         states = FALSE, obs = FALSE, times, t0, \dots)
+         states = FALSE, obs = FALSE, times, t0,
+         as.data.frame = FALSE, \dots)
 }
 \arguments{
   \item{object}{An object of class \code{pomp}.}
@@ -32,6 +33,9 @@
     \code{times} specifies the times at which simulated observations will be made.
     \code{t0} specifies the start time (the time at which the initial conditions hold).
     The default for \code{times} is is \code{times=time(object,t0=FALSE)} and \code{t0=timezero(object)}, respectively.
+  }
+  \item{as.data.frame}{
+    logical; if \code{TRUE}, return the result as a data-frame.
   }
   \item{\dots}{further arguments that are currently ignored.}
 }
