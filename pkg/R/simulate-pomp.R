@@ -58,44 +58,34 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
 
   if (as.data.frame) {
     if (obs && states) {
-      nsim <- ncol(retval$obs)
-      retval <- lapply(
-                       seq_len(nsim),
-                       function (k) {
-                         nm <- rownames(retval$obs)
-                         dm <- dim(retval$obs)
-                         dim(retval$obs) <- c(dm[1],prod(dm[-1]))
-                         rownames(retval$obs) <- nm
-                         nm <- rownames(retval$states)
-                         dm <- dim(retval$states)
-                         dim(retval$states) <- c(dm[1],prod(dm[-1]))
-                         rownames(retval$states) <- nm
-                         cbind(
-                               time=times,
-                               as.data.frame(t(retval$obs)),
-                               as.data.frame(t(retval$states)),
-                               sim=as.integer(k)
-                               )
-                       }
-                       )
-      retval <- do.call(rbind,retval)
+      dm <- dim(retval$obs)
+      nsim <- dm[2]
+      ntimes <- dm[3]
+      nm <- rownames(retval$obs)
+      dim(retval$obs) <- c(dm[1],prod(dm[-1]))
+      rownames(retval$obs) <- nm
+      dm <- dim(retval$states)
+      nm <- rownames(retval$states)
+      dim(retval$states) <- c(dm[1],prod(dm[-1]))
+      rownames(retval$states) <- nm
+      retval <- cbind(
+                      as.data.frame(t(retval$obs)),
+                      as.data.frame(t(retval$states))
+                      )
+      retval$sim <- seq_len(nsim)
+      retval$time <- rep(times,each=nsim)
+      retval <- retval[order(retval$sim,retval$time),]
     } else if (obs || states) {
-      nsim <- ncol(retval)
-      retval <- lapply(
-                       seq_len(nsim),
-                       function (k) {
-                         nm <- rownames(retval)
-                         dm <- dim(retval)
-                         dim(retval) <- c(dm[1],prod(dm[-1]))
-                         rownames(retval) <- nm
-                         cbind(
-                               time=times,
-                               as.data.frame(t(retval)),
-                               sim=as.integer(k)
-                               )
-                       }
-                       )
-      retval <- do.call(rbind,retval)
+      dm <- dim(retval)
+      nsim <- dm[2]
+      ntimes <- dm[3]
+      nm <- rownames(retval)
+      dim(retval) <- c(dm[1],prod(dm[-1]))
+      rownames(retval) <- nm
+      retval <- as.data.frame(t(retval))
+      retval$sim <- seq_len(nsim)
+      retval$time <- rep(times,each=nsim)
+      retval <- retval[order(retval$sim,retval$time),]
     } else {
       nsim <- length(retval)
       if (nsim > 1) {
