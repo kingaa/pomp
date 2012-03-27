@@ -520,7 +520,8 @@ We'll log-transform all the parameters to enforce this constrant.
 gompertz <- pomp(
                  gompertz,
                  parameter.transform=function(params,...){
-                   params <- exp(params[c("log.r","log.K","log.tau","log.sigma","log.X.0")])
+                   params <- exp(params[c("log.r","log.K","log.tau",
+                                          "log.sigma","log.X.0")])
                    names(params) <- c("r","K","tau","sigma","X.0")
                    params
                  },
@@ -548,7 +549,7 @@ coef(gompertz)
 On the other hand, given parameter values on the estimation scale, one can set the parameters by 
 <<eval=T>>=
 coef(gompertz,transform=TRUE) <- c(log.r=log(0.1),log.K=0,
-                log.tau=log(0.1),log.sigma=log(0.1),X.0=0)
+                log.tau=log(0.1),log.sigma=log(0.1),log.X.0=0)
 @ 
 and get them by
 <<eval=T>>=
@@ -635,7 +636,6 @@ mf <- replicate(
                       )
                 }
                 )
-##mf <- lapply(mf,continue,Nmif=50)
 @ 
 
 Note that we've set \code{transform=TRUE} in the above.
@@ -1057,7 +1057,8 @@ Because of the way \code{nlf} controls the random number seed, starting values s
 starts <- replicate(n=5,
                     {
                       p <- coef(gompertz)
-                      p[c("K","r")] <- rlnorm(n=2,meanlog=log(p[c("K","r")]),sdlog=0.1)
+                      p[c("K","r")] <- rlnorm(n=2,meanlog=log(p[c("K","r")]),
+                                              sdlog=0.1)
                       p
                     },
                     simplify=FALSE
@@ -1066,7 +1067,9 @@ starts <- replicate(n=5,
 Then to make the results from different starts comparable, use the \code{seed} argument to initialize the random number generator the same way for each fit: 
 <<nlf-gompertz-fits,eval=F>>=
 out <- list()
-for (j in 1:5) { # Do fits. method, trace, and nasymp are explained below   
+## Do the fitting. 
+## method, trace, and nasymp are explained below   
+for (j in 1:5) {
   out[[j]] <- nlf(
                   gompertz,
                   start=starts[[j]],
