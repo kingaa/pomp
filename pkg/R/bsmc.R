@@ -334,6 +334,9 @@ setMethod(
             ##   prior <- partrans(object,prior,dir="forward")
             ## }
 
+            ## replace parameters with point estimate (posterior mean)
+            coef(object,transform=transform) <- apply(params,1,mean)
+
             new(
                 "bsmcd.pomp",
                 object,
@@ -354,10 +357,9 @@ setMethod(
 
 setMethod("$",signature(x="bsmcd.pomp"),function (x,name) slot(x,name))
 
-bsmc.plot <- function (prior, post, est, nbreaks, thin, ...) {
-  if (missing(thin)) thin <- Inf
-  prior <- t(prior[est,sample.int(n=nrow(prior),size=min(thin,nrow(prior)))])
-  post <- t(post[est,sample.int(n=nrow(post),size=min(thin,nrow(post)))])
+bsmc.plot <- function (prior, post, est, breaks, thin, ...) {
+  prior <- t(prior[est,sample.int(n=ncol(prior),size=min(thin,ncol(prior)))])
+  post <- t(post[est,sample.int(n=ncol(post),size=min(thin,ncol(post)))])
   all <- rbind(prior,post)
   pairs(
         all,
@@ -372,12 +374,12 @@ bsmc.plot <- function (prior, post, est, nbreaks, thin, ...) {
         },
         diag.panel=function (x, ...) { ## marginal posterior histogram
           i <- which(x[1]==all[1,])
-          breaks <- hist(c(post[,i],prior[,i]),breaks=nbreaks,plot=FALSE)$breaks
-          y1 <- hist(post[,i],breaks=breaks,plot=FALSE)$counts
+          bks <- hist(c(post[,i],prior[,i]),breaks=breaks,plot=FALSE)$breaks
+          y1 <- hist(post[,i],breaks=bks,plot=FALSE)$counts
           usr <- par('usr')
           op <- par(usr=c(usr[1:2],0,1.5*max(y1)))
           on.exit(par(op))
-          rect(head(breaks,-1),0,tail(breaks,-1),y1,col=rgb(0,0,1,0.5),border=NA,...)
+          rect(head(bks,-1),0,tail(bks,-1),y1,col=rgb(0,0,1,1),border=NA,...)
         }
         )
 }
@@ -385,6 +387,9 @@ bsmc.plot <- function (prior, post, est, nbreaks, thin, ...) {
 setMethod(
           "plot",
           signature(x="bsmcd.pomp"),
-          function (x, ..., thin, breaks) bsmc.plot(prior=x@prior,post=x@post,est=x@est,
-                                                    nbreaks=breaks,thin=thin,...)
+          function (x, ..., breaks, thin) {
+            if (missing(thin)) thin <- Inf
+            if (missing(breaks)) breaks <- 30
+            bsmc.plot(prior=x@prior,post=x@post,est=x@est,breaks=breaks,thin=thin,...)
+          }
           )

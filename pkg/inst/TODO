@@ -7,7 +7,7 @@
 * native C routine for vectorfield evaluation inside lsoda
 
 * parameter transformations: put 'transform' option into each estimation routine
-  (bsmc, mif, pmcmc, nlf, *.match)
+  (spect.match)
 
 * unit tests for above
 
