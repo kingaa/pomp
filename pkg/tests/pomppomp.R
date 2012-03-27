@@ -2,7 +2,7 @@ library(pomp)
 
 data(ricker)
 y1 <- obs(simulate(ricker,seed=1066L))
-r2 <- pomp(ricker,measurement.model=y~pois(lambda=N*exp(log.phi)))
+r2 <- pomp(ricker,measurement.model=y~pois(lambda=N*phi))
 coef(r2) <- coef(ricker)
 y2 <- obs(simulate(r2,seed=1066L))
 max(abs(y1-y2))

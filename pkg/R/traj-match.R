@@ -2,6 +2,8 @@ setClass(
          "traj.matched.pomp",
          contains="pomp",
          representation=representation(
+           start="numeric",
+           transform="logical",
            est="character",
            evals="integer",
            convergence="integer",
@@ -30,54 +32,76 @@ setMethod(
           }
           )
 
-traj.match.objfun <- function (object, params, est) {
+traj.match.objfun <- function (object, params, est, transform = FALSE) {
   
+  transform <- as.logical(transform)
   if (missing(est)) est <- character(0)
   if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
   if (missing(params)) params <- coef(object)
   if ((!is.numeric(params))||(is.null(names(params))))
     stop(sQuote("params")," must be a named numeric vector")
+  if (transform)
+    params <- partrans(object,params,dir="inverse")
   par.est.idx <- match(est,names(params))
   if (any(is.na(par.est.idx)))
     stop("parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"))
-  params <- as.matrix(params)
 
   obj.fn <- function (par) {
-    params[par.est.idx,] <- par
-    X <- trajectory(object,params=params)
-    d <- dmeasure(
-                  object,
-                  y=object@data,
-                  x=X,
-                  times=time(object),
-                  params=params,
-                  log=TRUE
-                  )
+    params[par.est.idx] <- par
+    if (transform) {
+      tparams <- partrans(object,params,dir="forward")
+      d <- dmeasure(
+                    object,
+                    y=object@data,
+                    x=trajectory(object,params=tparams),
+                    times=time(object),
+                    params=tparams,
+                    log=TRUE
+                    )
+    } else {
+      d <- dmeasure(
+                    object,
+                    y=object@data,
+                    x=trajectory(object,params=params),
+                    times=time(object),
+                    params=params,
+                    log=TRUE
+                    )
+    }
     -sum(d)
   }
 
   obj.fn
 }
 
-traj.match.internal <- function (object, start, est, method, gr, eval.only, ...) {
+traj.match.internal <- function (object, start, est, method, gr, eval.only, transform, ...) {
   
+  transform <- as.logical(transform)
+
   if (eval.only) {
     est <- character(0)
     guess <- numeric(0)
+    transform <- FALSE
   } else {
     if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
     if (length(start)<1)
       stop(sQuote("start")," must be supplied if ",sQuote("object")," contains no parameters")
-    if (!all(est%in%names(start)))
-      stop(sQuote("traj.match")," error: parameters named in ",sQuote("est"),
-           " must exist in ",sQuote("start"),call.=FALSE)
-    guess <- start[est]
+    if (transform) {
+      tstart <- partrans(object,start,dir="inverse")
+      if (is.null(names(tstart))||(!all(est%in%names(tstart))))
+        stop(sQuote("est")," must refer to parameters named in ",sQuote("partrans(object,start,dir=\"inverse\")"))
+      guess <- tstart[est]
+    } else {
+      if (is.null(names(start))||(!all(est%in%names(start))))
+        stop(sQuote("est")," must refer to parameters named in ",sQuote("start"))
+      guess <- start[est]
+    }
   }
 
   obj <- as(object,"pomp")
   coef(obj) <- start
 
-  obj.fn <- traj.match.objfun(obj,est=est)
+  obj.fn <- traj.match.objfun(obj,est=est,transform=transform)
 
   if (eval.only) {
 
@@ -98,7 +122,7 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
 
     if (!is.null(names(opt$par)) && !all(est==names(opt$par)))
       stop("mismatch between parameter names returned by optimizer and ",sQuote("est"))
-    coef(obj,est) <- unname(opt$par)
+    coef(obj,est,transform=transform) <- unname(opt$par)
     msg <- if (is.null(opt$message)) character(0) else opt$message
     conv <- opt$convergence
     evals <- opt$counts
@@ -114,6 +138,8 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, ...)
   new(
       "traj.matched.pomp",
       obj,
+      start=start,
+      transform=transform,
       est=as.character(est),
       evals=as.integer(evals),
       convergence=as.integer(conv),
@@ -132,7 +158,8 @@ setMethod(
           signature=signature(object="pomp"),
           function (object, start, est,
                     method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
-                    gr = NULL, eval.only = FALSE, ...) {
+                    gr = NULL, eval.only = FALSE, transform = FALSE, ...) {
+            transform <- as.logical(transform)
             if (missing(start)) start <- coef(object)
             if (!eval.only && missing(est))
               stop(sQuote("est")," must be supplied if optimization is to be done")
@@ -145,6 +172,7 @@ setMethod(
                                 method=method,
                                 gr=gr,
                                 eval.only=eval.only,
+                                transform=transform,
                                 ...
                                 )
           }
@@ -155,9 +183,11 @@ setMethod(
           signature=signature(object="traj.matched.pomp"),
           function (object, start, est,
                     method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
-                    gr = NULL, eval.only = FALSE, ...) {
+                    gr = NULL, eval.only = FALSE, transform, ...) {
             if (missing(start)) start <- coef(object)
             if (missing(est)) est <- object@est
+            if (missing(transform)) transform <- object@transform
+            transform <- as.logical(transform)
             method <- match.arg(method)
             traj.match.internal(
                                 object=object,
@@ -166,6 +196,7 @@ setMethod(
                                 method=method,
                                 gr=gr,
                                 eval.only=eval.only,
+                                transform=transform,
                                 ...
                                 )
           }

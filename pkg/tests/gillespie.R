@@ -1,16 +1,16 @@
 library(pomp)
 
 params <- c(
-            nu=log(1/70),
-            mu=log(1/70),
-            beta1=log(330),
-            beta2=log(410),
-            beta3=log(490),
-            gamma=log(24),
-            iota=log(0.1),
-            S.0=log(0.05),
-            I.0=log(1e-4),
-            R.0=log(0.95),
+            nu=1/70,
+            mu=1/70,
+            beta1=330,
+            beta2=410,
+            beta3=490,
+            gamma=24,
+            iota=0.1,
+            S.0=0.05,
+            I.0=1e-4,
+            R.0=0.95,
             N.0=1000000
             )
 
@@ -32,15 +32,15 @@ simulate(
                 rate.fun=function(j, x, t, params, covars, ...) {
                   switch(
                          j,
-                         exp(params["nu"])*x["N"], # birth
-                         exp(params["mu"])*x["S"], # susceptible death
+                         params["nu"]*x["N"], # birth
+                         params["mu"]*x["S"], # susceptible death
                          {                         # infection
-                           beta <- exp(params[c("beta1","beta2","beta3")])%*%covars[c("seas.1","seas.2","seas.3")]
-                           (beta*x["I"]+exp(params["iota"]))*x["S"]/x["N"]
+                           beta <- params[c("beta1","beta2","beta3")]%*%covars[c("seas.1","seas.2","seas.3")]
+                           (beta*x["I"]+params["iota"])*x["S"]/x["N"]
                          },
-                         exp(params["mu"])*x["I"], # infected death
-                         exp(params["gamma"])*x["I"], # recovery
-                         exp(params["mu"])*x["R"], # recovered death
+                         params["mu"]*x["I"], # infected death
+                         params["gamma"]*x["I"], # recovery
+                         params["mu"]*x["R"], # recovered death
                          stop("unrecognized event ",j)
                          )
                 },
@@ -67,7 +67,7 @@ simulate(
                 comp.names <- c("S","I","R")
                 icnames <- paste(comp.names,"0",sep=".")
                 snames <- c("S","I","R","N","cases")
-                fracs <- exp(params[icnames])
+                fracs <- params[icnames]
                 x0 <- numeric(length(snames))
                 names(x0) <- snames
                 x0["N"] <- params["N.0"]

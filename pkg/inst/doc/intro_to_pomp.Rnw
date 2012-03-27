@@ -292,14 +292,11 @@ Before we can simulate the model, we need to settle on some parameter values.
 We do this by specifying a named numeric vector that contains at least all the parameters needed by the functions \code{gompertz.proc.sim} and \code{gompertz.meas.sim}.
 The parameter vector needs to specify the initial conditions $X(t_{0})=x_{0}$ as well.
 <<set-params>>=
-theta <- c(
-           r=0.1,K=1,sigma=0.1,
-           tau=0.1,
-           X.0=1
-           )
+theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1,X.0=1)
 @ 
-In addition to the parameters $r$, $K$, $\sigma$, and $\tau$, note that we've specified the initial condition $X.0$ in the vector \code{theta}.
-The fact that the initial condition parameter's name ends in ``\code{.0}'' is significant: it tells \code{pomp} that this is the initial condition of the state variable \code{X}.
+In addition to the parameters $r$, $K$, $\sigma$, and $\tau$, note that we've specified the initial condition $X_0$ in the vector \code{theta}.
+The fact that the initial condition parameter's name ends in ``\code{.0}'' is significant: 
+it tells \code{pomp} that this is the initial condition of the state variable \code{X}.
 This use of the ``\code{.0}'' suffix is the default behavior of \code{pomp}: 
 one can also parameterize initial conditions in an arbitrary way using the optional \code{initializer} argument to \code{pomp}.
 See the documentation (\verb+?pomp+) for details.
@@ -504,115 +501,68 @@ states(gompertz,"X")
 %% In the ``advanced_topics_in_pomp'' vignette, we show how one can get access to more of the underlying structure of a \code{pomp} object.
 
 \clearpage
-\section{Transforming parameters}
+\section{Parameter transformations}
 
-The parameters in the Gompertz model above are constrained to be positive.
+It frequently happens that it is advantageous to estimate parameters on a scale different from that on which they appear in the model.
+For example, the parameters in the Gompertz model above are constrained to be positive.
 When we estimate these parameters using numerical search algorithms, we must find some way to ensure that these constraints will be honored.
 A straightforward way to accomplish this is to transform the parameters so that they become unconstrained.
-To introduce some terminology, we want to transform the parameters from the \emph{natural scale} ($r$, $K$, $\sigma$, $\tau$), to another, \emph{internal scale}, on which they will have some desirable property, e.g., they will be unconstrained.
-The following codes re-implement the Gompertz model using transformed parameters.
-
-<<loggomp-proc-sim-def>>=
-gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
-  ## unpack and untransform the parameters:
-  r <- exp(params["log.r"])
-  K <- exp(params["log.K"])
-  sigma <- exp(params["log.sigma"])
-  ## the state at time t:
-  X <- x["X"]
-  ## generate a log-normal random variable:
-  eps <- exp(rnorm(n=1,mean=0,sd=sigma))
-  ## compute the state at time t+delta.t:
-  S <- exp(-r*delta.t)
-  xnew <- c(X=unname(K^(1-S)*X^S*eps))
-  return(xnew)
-}
-@ 
-
-<<loggomp-meas-sim-def>>=
-gompertz.meas.sim <- function (x, t, params, ...) {
-  ## unpack and untransform the parameters:
-  tau <- exp(params["log.tau"])
-  ## state at time t:
-  X <- x["X"]
-  ## generate a simulated observation:
-  y <- c(Y=unname(rlnorm(n=1,meanlog=log(X),sdlog=tau)))
-  return(y)
-}
-@ 
-
-<<loggomp-meas-dens-def>>=
-gompertz.meas.dens <- function (y, x, t, params, log, ...) {
-  ## unpack and untransform the parameters:
-  tau <- exp(params["log.tau"])
-  ## state at time t:
-  X <- x["X"]
-  ## observation at time t:
-  Y <- y["Y"]
-  ## compute the likelihood of Y|X,tau
-  f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
-  return(f)
-}
-@ 
-
-Note that, in each of the above functions, we \emph{untransform} the parameters back onto the natural scale before we do any computations.
+To introduce some terminology, we want to transform the parameters from the \emph{natural scale} to another, \emph{estimation scale}, on which they will be unconstrained.
 
 \pkg{pomp} provides a facility to make it easier to work with parameter transformations.
 Specifically, we can specify the optional functions \code{parameter.transform} and \code{parameter.inv.transform} when we create the \code{pomp} object.
-The first function will take transform our parameters to the internal scale;
-the second one will invert that operation, transforming the parameters from the internal back to the natural scale.
+The first function will take transform our parameters from the estimation scale to the natural scale.
+the second one will invert that operation, transforming the parameters from the natural to the estimation scale.
+In our Gompertz model example, the natural-scale parameters are $r$, $K$, $\sigma$, $\tau$, and $X_0$, all of which are constrained to be positive.
+We'll log-transform all the parameters to enforce this constrant.
 
 <<loggomp-pomp-construction,eval=T>>=
-dat <- as(gompertz,"data.frame")
-theta <- coef(gompertz)
-print(theta)
 gompertz <- pomp(
-                 data=dat[c("time","Y")],
-                 times="time",
-                 rprocess=discrete.time.sim(gompertz.proc.sim),
-                 rmeasure=gompertz.meas.sim,
-                 dmeasure=gompertz.meas.dens,
-                 t0=0,
+                 gompertz,
                  parameter.transform=function(params,...){
-                   params <- c(
-                               params["X.0"],
-                               log(params[c("r","K","tau","sigma")])
-                               )
-                   names(params) <- c("X.0","log.r","log.K","log.tau","log.sigma")
+                   params <- exp(params[c("log.r","log.K","log.tau","log.sigma","log.X.0")])
+                   names(params) <- c("r","K","tau","sigma","X.0")
                    params
                  },
                  parameter.inv.transform=function(params,...){
-                   params <- c(
-                               params["X.0"],
-                               exp(params[c("log.r","log.K","log.tau","log.sigma")])
-                               )
-                   names(params) <- c("X.0","r","K","tau","sigma")
+                   params <- log(params[c("r","K","tau","sigma","X.0")])
+                   names(params) <- c("log.r","log.K","log.tau","log.sigma","log.X.0")
                    params
                  }
                  )
 @ 
 
-The parameter transformations come into play via the \code{coef} and \code{coef<-} methods for getting and setting parameters.
-One can set the parameters by doing
-<<>>=
-coef(gompertz,transform=TRUE) <- theta
+Note that the function given to the \code{parameter.transform} argument transforms parameters \emph{to} the natural scale while that given to the \code{parameter.inv.transform} argument transforms them \emph{from} the natural scale.
+Operationally, the defining property of the natural scale is that this is the scale on which the elementary functions \code{rprocess}, \code{rmeasure}, \code{dprocess}, \code{dmeasure}, \code{skeleton}, and \code{init.process} expect to see the parameters.
+Note also that we've changed the names of the parameters to make it obvious at a glance what scale we're on, but that this isn't really necessary.
+
+The parameter transformations come into play in the \code{coef} and \code{coef<-} methods for getting and setting parameters.
+If we have a vector of parameters on the natural scale, one can set them as parameters of \code{gompertz} by doing
+<<eval=T>>=
+coef(gompertz) <- c(r=0.1,K=1,tau=0.1,sigma=0.1,X.0=1)
 @ 
 and get the parameters by
-<<>>=
-coef(gompertz,transform=TRUE)
-@ 
-To be clear: the parameter-setting expression assumes that \code{theta} is a named vector of parameters on the natural scale.
-After this operation, the parameters are stored internally in \code{gompertz}, on the internal scale, as we can check by doing
-<<>>=
+<<eval=T>>=
 coef(gompertz)
 @ 
+On the other hand, given parameter values on the estimation scale, one can set the parameters by 
+<<eval=T>>=
+coef(gompertz,transform=TRUE) <- c(log.r=log(0.1),log.K=0,
+                log.tau=log(0.1),log.sigma=log(0.1),X.0=0)
+@ 
+and get them by
+<<eval=T>>=
+coef(gompertz,transform=TRUE)
+@ 
+
+To be clear: the parameter-setting expression \code{coef(gompertz) <- theta} assumes that \code{theta} is a named vector of parameters on the natural scale, while \code{coef(gompertz,transform=TRUE) <- theta} assumes that \code{theta} is on the estimation scale.
 
 Note that it's the user's responsibility to ensure that the \code{parameter.transform} and \code{parameter.inv.transform} are actually mutually inverse.
 A simple (but not foolproof) test of this is
 <<par-trans-inverse-test,results=verbatim>>=
 # use parameter.inv.transform:
 theta <- coef(gompertz,transform=TRUE)  
-## theta is on the natural scale
+## theta is on the estimation scale
 g2 <- gompertz
 ## use parameter.transform:
 coef(g2,transform=TRUE) <- theta
@@ -658,21 +608,22 @@ theta <- coef(gompertz)
 theta.true <- theta
 @ 
 <<gompertz-multi-mif-calc,eval=F,echo=T>>=
-estpars <- c("log.r","log.sigma","log.tau")
+estpars <- c("r","sigma","tau")
 mf <- replicate(
                 n=10,
                 {
                   theta.guess <- theta.true
-                  theta.guess[estpars] <- rnorm(
-                                                n=length(estpars),
-                                                mean=theta.guess[estpars],
-                                                sd=1
-                                                )
+                  theta.guess[estpars] <- rlnorm(
+                                                 n=length(estpars),
+                                                 meanlog=log(theta.guess[estpars]),
+                                                 sdlog=1
+                                                 )
                   mif(
                       gompertz,
                       Nmif=100,
                       start=theta.guess,
-                      pars=estpars,
+                      transform=TRUE,
+                      pars=c("log.r","log.sigma","log.tau"),
                       rw.sd=c(
                         log.r=0.02,log.sigma=0.02,log.tau=0.05
                         ),
@@ -686,6 +637,9 @@ mf <- replicate(
                 )
 ##mf <- lapply(mf,continue,Nmif=50)
 @ 
+
+Note that we've set \code{transform=TRUE} in the above.
+This means that the likelihood maximization is done on the estimation scale (see the section above on Parameter Transformations).
 
 <<gompertz-post-mif,eval=F,echo=F>>=
 theta.true <- coef(gompertz)
@@ -789,33 +743,27 @@ where $S=e^{-r\,{\Delta}t}$ and ${\Delta}t$ is the time-step.
 This can be implemented in the \R\ function
 <<gompertz-skeleton-def,echo=T>>=
 gompertz.skel <- function (x, t, params, ...) {
-  delta.t <- 1
-  r <- exp(params["log.r"])
-  K <- exp(params["log.K"])
+  r <- params["r"]
+  K <- params["K"]
   X <- x["X"]
-  S <- exp(-r*delta.t)
+  S <- exp(-r)
   xnew <- c(X=unname(K^(1-S)*X^S))
   return(xnew)
 }
 @ 
+Note that we have here assumed that ${\Delta}t=1$.
 
 We can incorporate the deterministic skeleton into a new \code{pomp} object via the \code{skeleton.map} argument:
 <<new-gompertz-pomp-construction,echo=T>>=
 new.gompertz <- pomp(
-                     data=data.frame(time=1:200,Y=NA),
-                     times="time",
-                     rprocess=discrete.time.sim(gompertz.proc.sim),
-                     rmeasure=gompertz.meas.sim,
-                     dmeasure=gompertz.meas.dens,
+                     gompertz,
                      skeleton.type="map",
-                     skeleton=gompertz.skel,
-                     t0=0
+                     skeleton=gompertz.skel
                      )
-coef(new.gompertz) <- theta
 coef(new.gompertz,"X.0") <- 0.1
-coef(new.gompertz,"log.r") <- log(0.1)
-coef(new.gompertz,"log.tau") <- log(0.05)
-coef(new.gompertz,"log.sigma") <- log(0.05)
+coef(new.gompertz,"r") <- 0.1
+coef(new.gompertz,"tau") <- 0.05
+coef(new.gompertz,"sigma") <- 0.05
 new.gompertz <- simulate(new.gompertz,seed=88737400L)
 @ 
 We use \code{skeleton.type="map"} for discrete-time processes (such as the Gompertz model) and \code{skeleton.type="vectorfield"} for continuous-time processes.
@@ -823,12 +771,14 @@ We use \code{skeleton.type="map"} for discrete-time processes (such as the Gompe
 
 The \pkg{pomp} function \code{traj.match} calls the optimizer \code{optim} to minimize the discrepancy between the trajectory and the data.
 The discrepancy is measured using the \code{dmeasure} function from the \code{pomp} object.
-Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
+The following codes perform trajectory matching.
+Since we set \code{transform=TRUE}, the optimization will be performed on the estimation scale.
 <<gompertz-trajmatch-calc,eval=F>>=
 tm <- traj.match(
                  new.gompertz,
                  start=coef(new.gompertz),
-                 est=c("log.r","log.K","log.tau","X.0"),
+                 transform=TRUE,
+                 est=c("log.r","log.K","log.tau","log.X.0"),
                  method="Nelder-Mead",
                  maxit=1000,
                  reltol=1e-8
@@ -843,6 +793,8 @@ if (file.exists(binary.file)) {
   save(new.gompertz,tm,file=binary.file,compress="xz")
 }
 @
+
+Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
 
 \begin{figure}
 <<trajmatch-plot,fig=T,echo=F,eval=T>>=
@@ -883,7 +835,7 @@ It will be convenient to work with log-transformed parameters $\log r$, $\log\si
 Thus
 <<ricker-map-defn>>=
 ricker.sim <- function (x, t, params, delta.t, ...) {
-  e <- rnorm(n=1,mean=0,sd=exp(params["log.sigma"])) 
+  e <- rnorm(n=1,mean=0,sd=params["sigma"]) 
   xnew <- c(
             exp(params["log.r"]+log(x["N"])-x["N"]+e),
             e
@@ -904,12 +856,12 @@ ricker <- pomp(
                rprocess=discrete.time.sim(
                  step.fun=ricker.sim
                  ),
-               measurement.model=y~pois(lambda=N*exp(log.phi))
+               measurement.model=y~pois(lambda=N*phi)
                )
 coef(ricker) <- c(
                   log.r=3.8,
-                  log.sigma=log(0.3),
-                  log.phi=log(10),
+                  sigma=0.3,
+                  phi=10,
                   N.0=7,
                   e.0=0
                   )
@@ -947,7 +899,7 @@ A call to \pkg{pomp}'s function \code{probe} results in the application of these
 To see this, we'll apply probe to the Ricker model at the true parameters and at a wild guess.
 <<first-probe>>=
 pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
-guess <- c(log.r=log(20),log.sigma=log(1),log.phi=log(20),N.0=7,e.0=0)
+guess <- c(log.r=log(20),sigma=1,phi=20,N.0=7,e.0=0)
 pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
 @ 
 Results summaries and diagnostic plots showing the model-data agreement and correlations among the probes can be obtained by 
@@ -969,6 +921,7 @@ It is this synthetic likelihood that \pkg{pomp} attempts to maximize in probe ma
                 probe.acf("y",lags=c(0,1,3),transform=sqrt),
                 mean=probe.mean("y",transform=sqrt)
                        ),
+              transform=TRUE,
               nsim=1000,
               seed=1066L
               )
@@ -989,6 +942,7 @@ Let us now attempt to fit the Ricker model to the data using probe-matching.
 pm <- probe.match(
                   pb.guess,
                   est=c("log.r","log.sigma","log.phi"),
+                  transform=TRUE,
                   method="Nelder-Mead",
                   maxit=2000,
                   seed=1066L,
@@ -1020,6 +974,7 @@ mf <- mif(
           start=guess,
           Nmif=100,
           Np=1000,
+          transform=TRUE,
           cooling.factor=0.99,
           var.factor=2,
           ic.lag=3,
@@ -1079,30 +1034,34 @@ The quasilikelihood function is defined by fitting a convenient statistical mode
 The intermediate statistical model in \code{nlf} is a multivariate generalized additive autoregressive model, using radial basis functions as the ridge functions and multivariate Gaussian process noise. 
 \citet{Smith1993} first proposed SQML and developed the underlying statistical theory, \citet{Tidd1993} independently proposed a similar method, and \citet{Kendall2005} describe in detail the methods used by \code{nlf} and use them to fit and compare models for insect population cycles. 
 
-As a simple example we can use \code{nlf} to estimate the parameters \code{log.K} and \code{log.r} of the Gompertz model.  
+As a simple example we can use \code{nlf} to estimate the parameters \code{K} and \code{r} of the Gompertz model.  
 An example of a minimal call, accepting the defaults for all optional arguments, is 
 <<eval=F>>=
 data(gompertz)
 out <- nlf(
            gompertz,
-           start=theta.guess,
-           est=c("log.K","log.r"),
+           start=c(r=1,K=2,sigma=0.5,tau=0.5,X.0=1),
+           partrans=TRUE,
+           est=c("K","r"),
            lags=c(1,2)
            )
 @ 
-where the first argument is the \code{pomp} object, \code{theta.guess} is a vector containing model parameters at which \code{nlf}'s search will begin, \code{est} contains the names of parameters \code{nlf} will estimate, and \code{lags} specifies which past values are to be used in the autoregressive model. 
+where the first argument is the \code{pomp} object, \code{start} is a vector containing model parameters at which \code{nlf}'s search will begin, \code{est} contains the names of parameters \code{nlf} will estimate, and \code{lags} specifies which past values are to be used in the autoregressive model. 
 In the call above \code{lags=c(1,2)} specifies that the autoregressive model predicts each observation, $y_t$ using $y_{t-1}$ and $y_{t-2}$, the two most recent past observations. 
 The set of lags need not include the most recent observation, and skips are allowed, so that \code{lags=c(2,3,6)} is also ``legal''. 
 
 The quasilikelihood is optimized numerically, so the reliability of the optimization should be assessed by doing multiple fits with different starting parameter values. 
 Because of the way \code{nlf} controls the random number seed, starting values should all be chosen before the calls to \code{nlf}: 
 <<nlf-gompertz-starts,eval=F>>=
-starts <- list()
-for (j in 1:5) { # Pick 5 random starting parameter values
-    sj <- coef(gompertz)
-    sj[c("log.K","log.r")] <- rnorm(n=2,mean=sj[c("log.K","log.r")],sd=0.1)
-    starts[[j]] <- sj
-}
+# pick 5 random starting parameter values
+starts <- replicate(n=5,
+                    {
+                      p <- coef(gompertz)
+                      p[c("K","r")] <- rlnorm(n=2,meanlog=log(p[c("K","r")]),sdlog=0.1)
+                      p
+                    },
+                    simplify=FALSE
+                    )
 @ 
 Then to make the results from different starts comparable, use the \code{seed} argument to initialize the random number generator the same way for each fit: 
 <<nlf-gompertz-fits,eval=F>>=
@@ -1111,15 +1070,18 @@ for (j in 1:5) { # Do fits. method, trace, and nasymp are explained below
   out[[j]] <- nlf(
                   gompertz,
                   start=starts[[j]],
+                  transform=log,
+                  transform.params=TRUE,
                   est=c("log.K","log.r"),
                   lags=c(1,2),
-                  seed=7639873, 
+                  seed=7639873L,
                   method="Nelder-Mead",
                   trace=4,
+                  skip.se=TRUE,
                   nasymp=5000
                   )  
 }
-fits <- t(sapply(out,function(x)c(x$params[c("log.r","log.K")],value=x$value)))
+fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
 @ 
 <<echo=F,eval=T,results=hide>>=
 binary.file <- "nlf-fits.rda"
@@ -1160,12 +1122,11 @@ theta <- coef(long.gomp)
 and then evaluated the quasilikelihood for a range of parameter values: 
 <<nlf-lag-test-log.r,eval=F>>=
 lags <- list(1,2,c(1,2),c(2,3))
-log.r.vals <- theta["log.r"]+seq(-0.69,0.69,length=25)
+r.vals <- theta["r"]*exp(seq(-0.69,0.69,length=25))
 fvals <- matrix(nrow=25,ncol=4)
 for (j in 1:25) {
-  cat(j,"\n")
   pars <- theta
-  pars["log.r"] <- log.r.vals[j]
+  pars["r"] <- r.vals[j]
   for(k in 1:4) {
     fvals[j,k] <- nlf(
                       long.gomp,
@@ -1179,13 +1140,11 @@ for (j in 1:25) {
 }
 @ 
 <<nlf-lag-test-log.K,eval=F,echo=F>>=
-log.K.vals <- theta["log.K"]+seq(-0.15,0.15,length=25)
+K.vals <- theta["K"]*exp(seq(-0.15,0.15,length=25))
 fvals2 <- matrix(nrow=25,ncol=4)
 for (j in 1:25) {
-  cat(j,"\n") 
   pars <- theta
-  pars["log.K"] <- log.K.vals[j]
-  pars["X.0"] <- exp(log.K.vals[j])
+  pars["K"] <- pars["X.0"] <- K.vals[j]
   for(k in 1:4) {
     fvals2[j,k] <- nlf(
                        long.gomp,
@@ -1206,7 +1165,7 @@ if (file.exists(binary.file)) {
 <<nlf-my-pomp>>
 <<nlf-lag-test-log.r>>
 <<nlf-lag-test-log.K>>
-  save(theta,lags,log.r.vals,log.K.vals,fvals,fvals2,file=binary.file,compress="xz")
+  save(theta,lags,r.vals,K.vals,fvals,fvals2,file=binary.file,compress="xz")
 }
 @ 
 
@@ -1216,35 +1175,35 @@ fvals <- scale(fvals,center=apply(fvals,2,max),scale=FALSE)
 fvals2 <- scale(fvals2,center=apply(fvals2,2,max),scale=FALSE)
 op <- par(mfrow=c(1,2),mar=c(5,5,1,1))
 matplot(
-        log.r.vals,
+        r.vals,
         fvals,
-        xlab=quote(log~r),
+        xlab="r",
         lty=1,
         col=c("black","green3","red","purple"),
         ylab="NLF objective function",
         type="o",
         pch=16
         )
-abline(v=theta["log.r"],col="blue")
-legend("bottomleft",legend=c("1","2","1,2","2,3"),col=c("black","green3","red","purple"),lty=1,pch=16,cex=1,bty="n")
+abline(v=theta["r"],col="blue")
+legend("bottomright",legend=c("1","2","1,2","2,3"),col=c("black","green3","red","purple"),lty=1,pch=16,cex=1,bty="n")
 
 matplot(
-        log.K.vals,
+        K.vals,
         fvals2,
-        xlab=quote(log~K),
+        xlab="K",
         lty=1,
         col=c("black","green3","red","purple"),
         ylab="NLF objective function",
         type="o",
         pch=16
         )
-abline(v=theta["log.K"],col="blue")
+abline(v=theta["K"],col="blue")
 par(op)
 @ 
 \caption{
-  Values of the NLF objective function (log of the quasilikelihood) for the Gompertz model as a function of the parameters \code{log.r,log.K} for various choices of the \code{lags} argument. 
+  Values of the NLF objective function (log of the quasilikelihood) for the Gompertz model as a function of the parameters \code{r,K} for various choices of the \code{lags} argument. 
   All plotted curves were shifted vertically so as to have maximum value zero. 
-  The objective function was evaluated on an artificial data set of length \Sexpr{length(obs(long.gomp))} that was generated assuming \code{log.r=\Sexpr{signif(theta["log.r"],2)}}, \code{log.K=\Sexpr{theta["log.K"]}}, indicated by the vertical blue lines.
+  The objective function was evaluated on an artificial data set of length \Sexpr{length(obs(long.gomp))} that was generated assuming \code{r=\Sexpr{signif(theta["r"],2)}}, \code{K=\Sexpr{theta["K"]}}, indicated by the vertical blue lines.
   \label{fig:nlf-gompertz}
 }
 \end{figure}  
@@ -1288,7 +1247,7 @@ so we proceed to fit with \code{lags=2}.
 <<nlf-fit-from-truth,eval=F>>=
 true.fit <- nlf(
                 gompertz,
-                start=coef(gompertz),
+                transform.params=TRUE,
                 est=c("log.K","log.r"),
                 lags=2,
                 seed=7639873, 
@@ -1307,8 +1266,8 @@ if (file.exists(binary.file)) {
 }
 @ 
 From \verb+true.fit$params+ and \verb+true.fit$se+ we get the estimates ($\pm$ 1 standard error)
-$\log{r}=$~\Sexpr{signif(true.fit$params["log.r"],2)}~$\pm$~\Sexpr{signif(true.fit$se["log.r"],2)}
-and $\log{K}=$~\Sexpr{signif(true.fit$params["log.K"],2)}~$\pm$~\Sexpr{signif(true.fit$se["log.K"],2)}. 
+${r}=$~\Sexpr{signif(true.fit$params["r"],2)}~$\pm$~\Sexpr{signif(true.fit$params["r"]*true.fit$se["log.r"],2)}
+and ${K}=$~\Sexpr{signif(true.fit$params["K"],2)}~$\pm$~\Sexpr{signif(true.fit$params["K"]*true.fit$se["log.K"],2)}. 
 %%$\log K = 0.081 \pm 0.064$, $\log r = -2.2 \pm 0.51$
 
 The standard errors provided by \code{nlf} are based on a Newey-West estimate of the variance-covariance matrix that is generally
@@ -1334,6 +1293,7 @@ for (j in seq_len(nreps)) {
   fit <- nlf(
              gompertz,
              start=coef(gompertz),
+             transform.params=TRUE,
              est=c("log.K","log.r"),
              lags=lags,
              seed=7639873, 
@@ -1344,9 +1304,9 @@ for (j in seq_len(nreps)) {
              trace=4,
              nasymp=5000
              )
-   pars[j,] <- fit$params[c("log.r","log.K")]
+   pars[j,] <- fit$params[c("r","K")]
 }
-colnames(pars) <- c("log.r","log.K")
+colnames(pars) <- c("r","K")
 @ 
 <<nlf-boot-eval,echo=F,eval=T,results=hide>>=
 binary.file <- "nlf-boot.rda"
@@ -1386,10 +1346,10 @@ bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
 for (j in seq_len(nreps)) {
   fit <- nlf(
              gompertz,
-             start=coef(gompertz),
+             transform.params=TRUE,
              est=c("log.K","log.r"),
              lags=lags,
-             seed=7639873, 
+             seed=7639873L,
              bootstrap=TRUE, 
              bootsamp=bootsamp[,j],
              skip.se=TRUE, 
@@ -1397,9 +1357,9 @@ for (j in seq_len(nreps)) {
              trace=4,
              nasymp=5000
              )
-   pars[j,] <- fit$params[c("log.r","log.K")]
+   pars[j,] <- fit$params[c("r","K")]
 }
-colnames(pars) <- c("log.r","log.K")
+colnames(pars) <- c("r","K")
 @ 
 
 <<nlf-block-boot-eval,eval=T,echo=F,results=hide>>=
@@ -1418,6 +1378,7 @@ if (file.exists(binary.file)) {
 \section{Bayesian sequential Monte Carlo: \code{bsmc}}
 
 \citet{Liu2001b}.  To be added.
+
 
 \section{Particle Markov chain Monte Carlo: \code{pmcmc}}
 
@@ -1542,11 +1503,11 @@ The help (\code{?euler.sim}) informs us that to use \code{euler.sim}, we need to
 The function \code{sir.proc.sim}, defined here, does this.
 <<sir-proc-sim-def,keep.source=T>>=
 sir.proc.sim <- function (x, t, params, delta.t, ...) {
-  ## untransform the parameters
-  N <- exp(params["N"])             # population size
-  gamma <- exp(params["gamma"])     # recovery rate
-  mu <- exp(params["mu"])           # birth rate = death rate
-  beta <- exp(params["beta"])       # contact rate
+  ## unpack the parameters
+  N <- params["N"]             # population size
+  gamma <- params["gamma"]     # recovery rate
+  mu <- params["mu"]           # birth rate = death rate
+  beta <- params["beta"]       # contact rate
   foi <- beta*x["I"]/N                       # the force of infection
   trans <- c(
              rpois(n=1,lambda=mu*N*delta.t), # births are assumed to be Poisson
@@ -1563,7 +1524,6 @@ sir.proc.sim <- function (x, t, params, delta.t, ...) {
     )
 }
 @ 
-Note that we've assumed here that the parameters have been log-transformed.
 
 Two significant wrinkles remains to be explained.
 First, notice that in \code{sir.proc.sim}, the state variable \code{cases} accumulates the total number of recoveries.
@@ -1597,11 +1557,11 @@ simulate(
                 step.fun=sir.proc.sim,
                 delta.t=1/52/20
                 ),
-              measurement.model=reports~binom(size=cases,prob=exp(rho)),
+              measurement.model=reports~binom(size=cases,prob=rho),
               initializer=function(params, t0, ic.pars, comp.names, ...){
                 x0 <- c(S=0,I=0,R=0,cases=0)
-                N <- exp(params["N"])
-                fracs <- exp(params[ic.pars])
+                N <- params["N"]
+                fracs <- params[ic.pars]
                 x0[comp.names] <- round(N*fracs/sum(fracs))
                 x0
               },
@@ -1609,36 +1569,24 @@ simulate(
               ic.pars=c("S0","I0","R0"), # initial condition parameters
               comp.names=c("S","I","R") # names of the compartments
               ),
-         params=log(
-           c(
+         params=c(
              N=50000,
              beta=60,gamma=8,mu=1/50,
              rho=0.6,
              S0=8/60,I0=0.002,R0=1-8/60-0.001
-             )
            ),
          seed=677573454L
          ) -> sir
 @ 
 <<sir-pomp-def-with-skel,eval=F,echo=F>>=
-simulate(
-         pomp(
-              data=data.frame(
-                time=seq(1/52,15,by=1/52),
-                reports=NA
-                ),
-              times="time",
-              t0=0,
-              rprocess=euler.sim(
-                step.fun=sir.proc.sim,
-                delta.t=1/52/20
-                ),
+sir <- pomp(
+            sir,
               skeleton.type="vectorfield",
               skeleton=function(t,x,params,...){
-                N <- exp(params["N"])             # population size
-                gamma <- exp(params["gamma"])     # recovery rate
-                mu <- exp(params["mu"])           # birth rate = death rate
-                beta <- exp(params["beta"])       # contact rate
+                N <- params["N"]             # population size
+                gamma <- params["gamma"]     # recovery rate
+                mu <- params["mu"]           # birth rate = death rate
+                beta <- params["beta"]       # contact rate
                 foi <- beta*x["I"]/N # the force of infection
                 terms <- c(
                            mu*N,               # births
@@ -1648,35 +1596,13 @@ simulate(
                            )
                 ## now put the equations together:
                 c(
-                ## approx. number of new infections/week:
-                  cases=unname(terms[4]), # d(cases)/dt
+                  cases=unname(terms[4]),               # d(cases)/dt
                   S=unname(terms[1]-terms[2]-terms[3]), # dS/dt
                   I=unname(terms[2]-terms[4]-terms[5]), # dI/dt
                   R=unname(terms[4]-terms[6])           # dR/dt
                   )
-              },
-              measurement.model=reports~binom(size=cases,prob=exp(rho)),
-              initializer=function(params, t0, ic.pars, comp.names, ...){
-                x0 <- c(S=0,I=0,R=0,cases=0)
-                N <- exp(params["N"])
-                fracs <- exp(params[ic.pars])
-                x0[comp.names] <- round(N*fracs/sum(fracs))
-                x0
-              },
-              zeronames=c("cases"), # 'cases' is an accumulator variable
-              ic.pars=c("S0","I0","R0"), # initial condition parameters
-              comp.names=c("S","I","R") # names of the compartments
-              ),
-         params=log(
-           c(
-             N=50000,
-             beta=60,gamma=8,mu=1/50,
-             rho=0.6,
-             S0=8/60,I0=0.002,R0=1-8/60-0.001
-             )
-           ),
-         seed=677573454L
-         ) -> sir
+              }
+)
 @ 
 Notice that we are assuming here that the data are collected weekly and use an Euler step-size of 1/20~wk.
 Here, we've assumed an infection with an infectious period of $1/\gamma=1/8$~yr and a basic reproductive number, $R_0$ of $\beta/(\gamma+\mu)\approx 7.5$.
@@ -1736,14 +1662,14 @@ where $dW/dt$ is a white noise, specifically the ``derivative'' of an integrated
 Let's modify the process-model simulator to incorporate these three complexities.
 <<complex-sir-def>>=
 complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
-  ## untransform the parameters
-  N <- exp(params["N"])                 # population size
-  gamma <- exp(params["gamma"])         # recovery rate
-  mu <- exp(params["mu"])               # birth rate = death rate
-  iota <- exp(params["iota"])           # import rate
-  b <- params[c("b1","b2","b3")] # contact-rate coefficients
-  beta <- exp(b%*%covars)       # flexible seasonality
-  beta.sd <- exp(params["beta.sd"])     # extrademographic noise intensity
+  ## unpack the parameters
+  N <- params["N"]                 # population size
+  gamma <- params["gamma"]         # recovery rate
+  mu <- params["mu"]               # birth rate = death rate
+  iota <- params["iota"]           # import rate
+  b <- params[c("b1","b2","b3")]   # contact-rate coefficients
+  beta <- b%*%covars               # flexible seasonality
+  beta.sd <- params["beta.sd"]     # extrademographic noise intensity
   beta.var <- beta.sd*beta.sd
   if (beta.var > 0) 
     dW <- rgamma(n=1,shape=delta.t/beta.var,scale=beta.var)
@@ -1778,21 +1704,19 @@ simulate(
                 ),
               initializer=function(params, t0, ic.pars, comp.names, ...){
                 x0 <- c(S=0,I=0,R=0,cases=0,W=0)
-                N <- exp(params["N"])
-                fracs <- exp(params[ic.pars])
+                N <- params["N"]
+                fracs <- params[ic.pars]
                 x0[comp.names] <- round(N*fracs/sum(fracs))
                 x0
               }
               ),
-         params=log(
-           c(
+         params=c(
              N=50000,
              b1=60,b2=10,b3=110,
              gamma=8,mu=1/50,
              rho=0.6,
              iota=0.01,beta.sd=0.1,
              S0=8/60,I0=0.002,R0=1-8/60-0.001
-             )
            ),
          seed=8274355L
          ) -> complex.sir

@@ -8,11 +8,12 @@
 \usage{
  nlf(object, start, est, lags, period = NA, tensor = FALSE,
      nconverge=1000, nasymp=1000, seed = 1066,
-     transform = function (x) x,
+     transform = identity,
      nrbf = 4, method = "subplex", skip.se = FALSE,
      verbose = FALSE, gr = NULL,
      bootstrap=FALSE, bootsamp = NULL,
-     lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE, \dots)
+     lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE,
+     transform.params = FALSE, \dots)
 }
 \arguments{
   \item{object}{
@@ -51,7 +52,7 @@
   \item{transform}{
     optional function.
     If specified, forecasting is performed using data and model simulations transformed by this function.
-    By default, \code{transform} is the identity function.
+    By default, \code{transform} is the identity function, i.e., no transformation is performed.
     The main purpose of \code{transform} is to achieve approximately multivariate normal forecasting errors.
     If data are univariate, \code{transform} should take a scalar and return a scalar.
     If data are multivariate, \code{transform} should assume a vector input and return a vector of the same length.
@@ -85,6 +86,10 @@
   \item{eval.only}{
     logical; if \code{TRUE}, no optimization is attempted and the quasi-loglikelihood value is evaluated at the \code{start} parameters.
   } 
+  \item{transform.params}{
+    logical;
+    if \code{TRUE}, parameters are optimized on the transformed scale.
+  }
   \item{\dots}{
     Arguments that will be passed to \code{optim} or \code{subplex} in the \code{control} list.
   }

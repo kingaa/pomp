@@ -3,6 +3,7 @@ setClass(
          'mif',
          contains='pfilterd.pomp',
          representation=representation(
+           transform = "logical",
            ivps = 'character',
            pars = 'character',
            Nmif = 'integer',

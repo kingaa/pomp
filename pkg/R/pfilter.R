@@ -25,8 +25,11 @@ pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
                               pred.mean, pred.var, filter.mean,
                               .rw.sd, seed, verbose,
-                              save.states, save.params) {
+                              save.states, save.params,
+                              transform) {
   
+  transform <- as.logical(transform)
+
   if (missing(seed)) seed <- NULL
   if (!is.null(seed)) {
     if (!exists(".Random.seed",where=.GlobalEnv)) { # need to initialize the RNG
@@ -83,7 +86,14 @@ pfilter.internal <- function (object, params, Np,
   if (is.null(paramnames))
     stop(sQuote("pfilter")," error: ",sQuote("params")," must have rownames",call.=FALSE)
 
-  x <- init.state(object,params=params)
+  x <- init.state(
+                  object,
+                  params=if (transform) {
+                    partrans(object,params,dir="forward")
+                  } else {
+                    params
+                  }
+                  )
   statenames <- rownames(x)
   nvars <- nrow(x)
   
@@ -160,13 +170,16 @@ pfilter.internal <- function (object, params, Np,
 
   for (nt in seq_len(ntimes)) {
 
+    ## transform the parameters if necessary
+    if (transform) tparams <- partrans(object,params,dir="forward")
+
     ## advance the state variables according to the process model
     X <- try(
              rprocess(
                       object,
                       xstart=x,
                       times=times[c(nt,nt+1)],
-                      params=params,
+                      params=if (transform) tparams else params,
                       offset=1
                       ),
              silent=FALSE
@@ -202,7 +215,7 @@ pfilter.internal <- function (object, params, Np,
                             y=object@data[,nt,drop=FALSE],
                             x=X,
                             times=times[nt+1],
-                            params=params,
+                            params=if (transform) tparams else params,
                             log=FALSE
                             ),
                    silent=FALSE
@@ -213,7 +226,8 @@ pfilter.internal <- function (object, params, Np,
       stop(sQuote("pfilter")," error: ",sQuote("dmeasure")," returns non-finite value",call.=FALSE)
     }
 
-    ## prediction mean, prediction variance, filtering mean, effective sample size, log-likelihood
+    ## compute prediction mean, prediction variance, filtering mean,
+    ## effective sample size, log-likelihood
     ## also do resampling if filtering has not failed
     xx <- try(
               .Call(
@@ -317,7 +331,8 @@ setMethod(
                              save.states=save.states,
                              save.params=save.params,
                              seed=seed,
-                             verbose=verbose
+                             verbose=verbose,
+                             transform=FALSE
                              )
           }
           )
@@ -351,7 +366,8 @@ setMethod(
                              save.states=save.states,
                              save.params=save.params,
                              seed=seed,
-                             verbose=verbose
+                             verbose=verbose,
+                             transform=FALSE
                              )
           }
           )

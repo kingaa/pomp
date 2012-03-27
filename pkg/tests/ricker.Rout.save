@@ -39,37 +39,42 @@ Loading required package: deSolve
 > 
 > sm <- simulate(ricker,seed=343995,as.data.frame=TRUE)
 > sm1 <- as.data.frame(simulate(ricker,seed=343995))
-> stopifnot(identical(sm[names(sm1)],sm1))
+> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 > 
-> sm <- simulate(ricker,nsim=3,as.data.frame=TRUE)
+> sm <- simulate(ricker,nsim=3,seed=343995,as.data.frame=TRUE)
 > print(names(sm))
 [1] "time" "y"    "N"    "e"    "sim" 
 > print(dim(sm))
 [1] 153   5
 > 
-> sm <- simulate(ricker,nsim=3,obs=T,as.data.frame=TRUE)
-> print(names(sm))
-[1] "time" "y"    "sim" 
-> print(dim(sm))
-[1] 459   3
+> sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
+> print(names(sm1))
+[1] "y"    "sim"  "time"
+> print(dim(sm1))
+[1] 153   3
+> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 > 
-> sm <- simulate(ricker,nsim=3,states=T,as.data.frame=TRUE)
-> print(names(sm))
-[1] "time" "N"    "e"    "sim" 
-> print(dim(sm))
-[1] 459   4
+> sm1 <- simulate(ricker,nsim=3,states=T,seed=343995,as.data.frame=TRUE)
+> print(names(sm1))
+[1] "N"    "e"    "sim"  "time"
+> print(dim(sm1))
+[1] 153   4
+> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 > 
-> sm <- simulate(ricker,nsim=3,states=T,obs=T,as.data.frame=TRUE)
-> print(names(sm))
-[1] "time" "y"    "N"    "e"    "sim" 
-> print(dim(sm))
-[1] 459   5
+> sm1 <- simulate(ricker,nsim=3,states=T,obs=T,seed=343995,as.data.frame=TRUE)
+> print(names(sm1))
+[1] "y"    "N"    "e"    "sim"  "time"
+> print(dim(sm1))
+[1] 153   5
+> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 > 
-> sm <- simulate(ricker,nsim=1,states=T,obs=T,as.data.frame=TRUE)
+> sm <- simulate(ricker,nsim=1,states=T,obs=T,seed=343995,as.data.frame=TRUE)
+> sm1 <- as.data.frame(simulate(ricker,seed=343995))
 > print(names(sm))
-[1] "time" "y"    "N"    "e"    "sim" 
+[1] "y"    "N"    "e"    "sim"  "time"
 > print(dim(sm))
 [1] 51  5
+> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 > 
 > po <- ricker
 > try(
@@ -79,228 +84,22 @@ Error in .local(object, ...) :
   in 'coef': name(s) 'r' correspond to no parameter(s)
 > coef(po,c("r","phi")) <- c(0,0)
 Warning message:
-in 'coef<-': name(s) 'r','phi' do not refer to existing parameter(s); they are being concatenated 
-> coef(po,c("log.r","log.phi")) <- c(a=0,b=0)
+in 'coef<-': name(s) 'r' do not refer to existing parameter(s); they are being concatenated 
+> coef(po,c("log.r","phi")) <- c(a=0,b=1)
 Warning message:
 in 'coef<-' names of 'value' are being discarded 
-> coef(po,c("log.r","log.phi")) <- 0
-> coef(po) <- c(log.phi=0,log.r=3.5,N.0=10,e.0=0,log.sigma=-Inf)
+> coef(po,c("log.r","phi")) <- 1
+> coef(po) <- c(phi=1,log.r=3.5,N.0=10,e.0=0,sigma=0)
 > coef(po)
-  log.phi     log.r       N.0       e.0 log.sigma 
-      0.0       3.5      10.0       0.0      -Inf 
+  phi log.r   N.0   e.0 sigma 
+  1.0   3.5  10.0   0.0   0.0 
 > coef(po,"new") <- 3
 Warning message:
 in 'coef<-': name(s) 'new' do not refer to existing parameter(s); they are being concatenated 
 > plot(simulate(po))
 > coef(po)
-  log.phi     log.r       N.0       e.0 log.sigma       new 
-      0.0       3.5      10.0       0.0      -Inf       3.0 
-> 
-> set.seed(64857673L)
-> 
-> guess <- ricker
-> coef(guess) <- c(log.r=log(20),log.sigma=log(1),log.phi=log(20),N.0=7,e.0=0)
-> 
-> mf <- mif(
-+           guess,
-+           Nmif=100,
-+           Np=1000,
-+           cooling.factor=0.99,
-+           var.factor=2,
-+           ic.lag=3,
-+           max.fail=50,
-+           rw.sd=c(log.r=0.1,log.sigma=0.1,log.phi=0.1)
-+           )
-> mf <- continue(mf,Nmif=500,max.fail=20)
-> 
-> plist <- list(
-+               probe.marginal("y",ref=obs(ricker),transform=sqrt),
-+               probe.acf("y",lags=c(0,1,2,3,4),transform=sqrt),
-+               probe.nlar("y",lags=c(1,1,1,2),powers=c(1,2,3,1),transform=sqrt)
-+               )
-> 
-> pr.guess <- probe(guess,probes=plist,nsim=1000,seed=1066L)
-> pr.tr <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
-> 
-> pm <- probe.match(
-+                   pr.guess,
-+                   est=c("log.r","log.sigma","log.phi"),
-+                   method="Nelder-Mead",
-+                   maxit=2000,
-+                   seed=1066L,
-+                   reltol=1e-8,
-+                   trace=3
-+                   )
-  Nelder-Mead direct search function minimizer
-function value for initial parameters = 12.281731
-  Scaled convergence tolerance is 1.22817e-07
-Stepsize computed as 0.299573
-BUILD              4 57.293574 12.281731
-LO-REDUCTION       6 50.563448 12.281731
-EXTENSION          8 22.273083 -5.683156
-EXTENSION         10 21.238197 -12.104646
-LO-REDUCTION      12 12.281731 -12.104646
-LO-REDUCTION      14 -5.683156 -12.104646
-HI-REDUCTION      16 -9.299555 -12.104646
-EXTENSION         18 -10.238701 -16.111147
-LO-REDUCTION      20 -10.432496 -16.111147
-LO-REDUCTION      22 -12.104646 -16.111147
-EXTENSION         24 -13.678744 -17.527973
-EXTENSION         26 -14.637732 -18.135507
-LO-REDUCTION      28 -16.111147 -18.406162
-REFLECTION        30 -17.527973 -18.901071
-HI-REDUCTION      32 -18.135507 -19.025728
-HI-REDUCTION      34 -18.406162 -19.025728
-REFLECTION        36 -18.822244 -19.711127
-HI-REDUCTION      38 -18.901071 -19.711127
-HI-REDUCTION      40 -19.025728 -19.711127
-SHRINK            45 -18.987087 -19.858319
-LO-REDUCTION      47 -19.288693 -19.858319
-LO-REDUCTION      49 -19.711127 -19.858319
-LO-REDUCTION      51 -19.779236 -19.858319
-SHRINK            56 -19.098736 -19.858319
-LO-REDUCTION      58 -19.213348 -19.858319
-LO-REDUCTION      60 -19.230757 -19.858319
-SHRINK            65 -19.572673 -19.858319
-HI-REDUCTION      67 -19.622339 -19.858319
-SHRINK            72 -19.417796 -19.883729
-LO-REDUCTION      74 -19.441471 -19.883729
-HI-REDUCTION      76 -19.458238 -19.883729
-LO-REDUCTION      78 -19.622452 -19.883729
-LO-REDUCTION      80 -19.692344 -19.883729
-SHRINK            85 -19.276517 -19.883729
-HI-REDUCTION      87 -19.332435 -19.883729
-LO-REDUCTION      89 -19.391462 -19.883729
-LO-REDUCTION      91 -19.766486 -19.883729
-SHRINK            96 -19.508802 -19.883729
-LO-REDUCTION      98 -19.685618 -19.883729
-SHRINK           103 -19.279074 -19.883729
-SHRINK           108 -19.498156 -20.036526
-SHRINK           113 -19.163003 -20.036526
-LO-REDUCTION     115 -19.685799 -20.036526
-SHRINK           120 -19.437896 -20.036526
-HI-REDUCTION     122 -19.594982 -20.036526
-LO-REDUCTION     124 -19.655126 -20.036526
-HI-REDUCTION     126 -19.693313 -20.036526
-HI-REDUCTION     128 -19.710519 -20.036526
-SHRINK           133 -19.212997 -20.036526
-LO-REDUCTION     135 -19.632972 -20.036526
-SHRINK           140 -19.318310 -20.036526
-LO-REDUCTION     142 -19.429013 -20.036526
-LO-REDUCTION     144 -19.541768 -20.036526
-SHRINK           149 -19.499454 -20.036526
-HI-REDUCTION     151 -19.643647 -20.036526
-HI-REDUCTION     153 -19.665508 -20.036526
-LO-REDUCTION     155 -19.842500 -20.036526
-SHRINK           160 -19.714203 -20.036526
-LO-REDUCTION     162 -19.900941 -20.036526
-SHRINK           167 -19.494052 -20.036526
-LO-REDUCTION     169 -19.557532 -20.036526
-LO-REDUCTION     171 -19.635954 -20.036526
-SHRINK           176 -19.571857 -20.036526
-HI-REDUCTION     178 -19.633935 -20.036526
-LO-REDUCTION     180 -19.773673 -20.036526
-SHRINK           185 -19.580741 -20.036526
-LO-REDUCTION     187 -19.713589 -20.036526
-SHRINK           192 -19.778851 -20.075344
-LO-REDUCTION     194 -19.920306 -20.075344
-SHRINK           199 -19.253544 -20.075344
-LO-REDUCTION     201 -19.563461 -20.075344
-LO-REDUCTION     203 -19.657461 -20.075344
-SHRINK           208 -19.386987 -20.075344
-LO-REDUCTION     210 -19.445799 -20.075344
-LO-REDUCTION     212 -19.595884 -20.075344
-SHRINK           217 -19.582926 -20.151824
-LO-REDUCTION     219 -19.753819 -20.151824
-LO-REDUCTION     221 -19.772159 -20.151824
-LO-REDUCTION     223 -19.782335 -20.151824
-SHRINK           228 -19.596088 -20.151824
-LO-REDUCTION     230 -19.681504 -20.151824
-SHRINK           235 -19.609725 -20.151824
-HI-REDUCTION     237 -19.615594 -20.151824
-HI-REDUCTION     239 -19.651915 -20.151824
-LO-REDUCTION     241 -19.694368 -20.151824
-LO-REDUCTION     243 -19.769449 -20.151824
-HI-REDUCTION     245 -19.782970 -20.151824
-SHRINK           250 -19.592628 -20.151824
-LO-REDUCTION     252 -19.877327 -20.151824
-HI-REDUCTION     254 -19.966120 -20.151824
-SHRINK           259 -19.757861 -20.151824
-LO-REDUCTION     261 -19.978390 -20.151824
-SHRINK           266 -19.866279 -20.151824
-HI-REDUCTION     268 -20.048979 -20.151824
-LO-REDUCTION     270 -20.073212 -20.164817
-HI-REDUCTION     272 -20.082314 -20.265947
-LO-REDUCTION     274 -20.151824 -20.265947
-SHRINK           279 -20.086588 -20.265947
-SHRINK           284 -20.054913 -20.265947
-REFLECTION       286 -20.079536 -20.312392
-LO-REDUCTION     288 -20.216102 -20.312392
-SHRINK           293 -20.153482 -20.312392
-SHRINK           298 -20.097052 -20.312392
-LO-REDUCTION     300 -20.118531 -20.312392
-LO-REDUCTION     302 -20.165018 -20.312392
-LO-REDUCTION     304 -20.176834 -20.312392
-SHRINK           309 -20.130573 -20.312392
-LO-REDUCTION     311 -20.175138 -20.312392
-HI-REDUCTION     313 -20.232404 -20.312392
-SHRINK           318 -20.158381 -20.340133
-LO-REDUCTION     320 -20.250809 -20.340133
-SHRINK           325 -20.236229 -20.340133
-LO-REDUCTION     327 -20.270202 -20.340133
-LO-REDUCTION     329 -20.313522 -20.340133
-SHRINK           334 -20.301190 -20.340133
-LO-REDUCTION     336 -20.320514 -20.340133
-SHRINK           341 -20.309539 -20.340133
-LO-REDUCTION     343 -20.328223 -20.340133
-SHRINK           348 -20.316445 -20.341834
-LO-REDUCTION     350 -20.337619 -20.341834
-HI-REDUCTION     352 -20.340133 -20.341834
-HI-REDUCTION     354 -20.341082 -20.341834
-SHRINK           359 -20.341834 -20.343672
-SHRINK           364 -20.341834 -20.343672
-SHRINK           369 -20.341834 -20.343672
-Polytope size measure not decreased in shrink
-Exiting from Nelder Mead minimizer
-    371 function evaluations used
-> 
-> pf.tr <- pfilter(ricker,Np=1000,max.fail=50,seed=1066L)
-> pf.guess <- pfilter(guess,Np=1000,max.fail=50,seed=1066L)
-> pf.mf <- pfilter(mf,Np=1000,seed=1066L)
-> pf.pm <- pfilter(pm,Np=1000,max.fail=10,seed=1066L)
-> 
-> pr.mf <- probe(mf,nsim=1000,probes=plist,seed=1066L)
-> 
-> res <- rbind(
-+              cbind(guess=coef(guess),truth=coef(ricker),MLE=coef(mf),PM=coef(pm)),
-+              loglik=c(
-+                pf.guess$loglik,
-+                pf.tr$loglik,
-+                pf.mf$loglik,
-+                pf.pm$loglik
-+                ),
-+              synth.loglik=c(
-+                summary(pr.guess)$synth.loglik,
-+                summary(pr.tr)$synth.loglik,
-+                summary(pr.mf)$synth.loglik,
-+                summary(pm)$synth.loglik
-+                )
-+              )
-> 
-> print(res,digits=3)
-              guess  truth     MLE      PM
-log.r           3.0    3.8    3.79    3.74
-log.sigma       0.0   -1.2   -1.74   -1.12
-log.phi         3.0    2.3    2.32    2.41
-N.0             7.0    7.0    7.00    7.00
-e.0             0.0    0.0    0.00    0.00
-loglik       -230.9 -139.5 -137.35 -143.33
-synth.loglik  -12.3   17.5   16.47   20.34
-> 
-> plot(ricker)
-> plot(simulate(guess))
-> plot(simulate(mf))
-> plot(simulate(pm))
+  phi log.r   N.0   e.0 sigma   new 
+  1.0   3.5  10.0   0.0   0.0   3.0 
 > 
 > dev.off()
 null device 

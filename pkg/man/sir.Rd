@@ -1,28 +1,29 @@
 \name{sir}
-\alias{sir}
 \alias{euler.sir}
 \alias{gillespie.sir}
 \docType{data}
 \title{Seasonal SIR model implemented using two stochastic simulation algorithms.}
 \description{
   \code{euler.sir} is a \code{pomp} object encoding a simple seasonal SIR model.
-  Simulation is performed using an Euler multinomial approximation (AKA tau leap method).
+  Simulation is performed using an Euler multinomial approximation.
   \code{gillespie.sir} has the same model implemented using Gillespie's algorithm.
 }
 \usage{
 data(euler.sir)
 data(gillespie.sir)
 }
+\details{
+  The codes that construct these \code{pomp} objects can be found in the \dQuote{data-R} directory in the installed package.
+  Do \code{file.show(system.file("data-R/sir.R",package="pomp"))} to view these codes.
+}
 \examples{
 data(euler.sir)
 plot(euler.sir)
-x <- simulate(euler.sir,nsim=10,seed=20348585)
-plot(x[[1]])
+plot(simulate(euler.sir,seed=20348585))
 
 data(gillespie.sir)
 plot(gillespie.sir)
-x <- simulate(gillespie.sir,nsim=1,seed=20348585)
-plot(x)
+plot(simulate(gillespie.sir,seed=20348585))
 }
 \seealso{\code{\link{pomp-class}} and the vignettes}
 \keyword{datasets}

@@ -39,7 +39,9 @@ mif.internal <- function (object, Nmif,
                           rw.sd, 
                           Np, cooling.factor, var.factor, ic.lag,
                           method, tol, max.fail,
-                          verbose, .ndone) {
+                          verbose, transform, .ndone) {
+
+  transform <- as.logical(transform)
 
   if (length(start)==0)
     stop(
@@ -47,6 +49,10 @@ mif.internal <- function (object, Nmif,
          sQuote("coef(object)")," is NULL",
          call.=FALSE
          )
+
+  if (transform)
+    start <- partrans(object,start,dir="inverse")
+
   start.names <- names(start)
   if (missing(start.names))
     stop("mif error: ",sQuote("start")," must be a named vector",call.=FALSE)
@@ -237,7 +243,8 @@ mif.internal <- function (object, Nmif,
                                 save.states=FALSE,
                                 save.params=FALSE,
                                 .rw.sd=sigma.n[pars],
-                                verbose=verbose
+                                verbose=verbose,
+                                transform=transform
                                 ),
                silent=FALSE
                )
@@ -274,9 +281,14 @@ mif.internal <- function (object, Nmif,
 
   }
 
+  ## back transform the parameter estimate if necessary
+  if (transform)
+    theta <- partrans(pfp,theta,dir="forward")
+  
   new(
       "mif",
       pfp,
+      transform=transform,
       params=theta,
       ivps=ivps,
       pars=pars,
@@ -303,7 +315,10 @@ setMethod(
                     Np, ic.lag, var.factor, cooling.factor,
                     weighted, method = c("mif","unweighted","fp"),
                     tol = 1e-17, max.fail = 0,
-                    verbose = getOption("verbose"), ...) {
+                    verbose = getOption("verbose"),
+                    transform = FALSE, ...) {
+
+            transform <- as.logical(transform)
 
             if (missing(start)) start <- coef(object)
             if (missing(rw.sd))
@@ -338,21 +353,7 @@ setMethod(
             }
 
             if (missing(particles)) {         # use default: normal distribution
-              particles <- function (Np, center, sd, ...) {
-                matrix(
-                       data=rnorm(
-                         n=Np*length(center),
-                         mean=center,
-                         sd=sd
-                         ),
-                       nrow=length(center),
-                       ncol=Np,
-                       dimnames=list(
-                         names(center),
-                         NULL
-                         )
-                       )
-              }
+              particles <- default.pomp.particles.fun
             } else {
               particles <- match.fun(particles)
               if (!all(c('Np','center','sd','...')%in%names(formals(particles))))
@@ -381,6 +382,7 @@ setMethod(
                          tol=tol,
                          max.fail=max.fail,
                          verbose=verbose,
+                         transform=transform,
                          .ndone=0
                          )
 
@@ -398,7 +400,10 @@ setMethod(
                     Np, ic.lag, var.factor, cooling.factor,
                     weighted, method = c("mif","unweighted","fp"),
                     tol = 1e-17, max.fail = 0,
-                    verbose = getOption("verbose"), ...) {
+                    verbose = getOption("verbose"),
+                    transform = FALSE, ...) {
+
+            transform <- as.logical(transform)
 
             if (missing(start)) start <- coef(object)
             if (missing(rw.sd))
@@ -462,6 +467,7 @@ setMethod(
                          tol=tol,
                          max.fail=max.fail,
                          verbose=verbose,
+                         transform=transform,
                          .ndone=0
                          )
           }
@@ -477,7 +483,8 @@ setMethod(
                     Np, ic.lag, var.factor, cooling.factor,
                     weighted, method = c("mif","unweighted","fp"),
                     tol = 1e-17, max.fail = 0,
-                    verbose = getOption("verbose"), ...) {
+                    verbose = getOption("verbose"),
+                    transform, ...) {
 
             if (missing(Nmif)) Nmif <- object@Nmif
             if (missing(start)) start <- coef(object)
@@ -490,6 +497,8 @@ setMethod(
             if (missing(var.factor)) var.factor <- object@var.factor
             if (missing(cooling.factor)) cooling.factor <- object@cooling.factor
             if (missing(tol)) tol <- object@tol
+            if (missing(transform)) transform <- object@transform
+            transform <- as.logical(transform)
 
             method <- match.arg(method)
             if (!missing(weighted)) {
@@ -523,6 +532,7 @@ setMethod(
                          tol=tol,
                          max.fail=max.fail,
                          verbose=verbose,
+                         transform=transform,
                          .ndone=0
                          )
           }
@@ -538,7 +548,8 @@ setMethod(
                     Np, ic.lag, var.factor, cooling.factor,
                     weighted, method = c("mif","unweighted","fp"),
                     tol = 1e-17, max.fail = 0,
-                    verbose = getOption("verbose"), ...) {
+                    verbose = getOption("verbose"),
+                    transform, ...) {
 
             ndone <- object@Nmif
             if (missing(start)) start <- coef(object)
@@ -551,6 +562,8 @@ setMethod(
             if (missing(var.factor)) var.factor <- object@var.factor
             if (missing(cooling.factor)) cooling.factor <- object@cooling.factor
             if (missing(tol)) tol <- object@tol
+            if (missing(transform)) transform <- object@transform
+            transform <- as.logical(transform)
 
             method <- match.arg(method)
             if (!missing(weighted)) {
@@ -584,6 +597,7 @@ setMethod(
                                 tol=tol,
                                 max.fail=max.fail,
                                 verbose=verbose,
+                                transform=transform,
                                 .ndone=ndone
                                 )
 

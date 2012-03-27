@@ -32,7 +32,7 @@ p <- array(
            dim=c(15,3),
            dimnames=list(names(coef(euler.sir)),NULL)
            )
-p["beta2",1:2] <- c(3,5)  ## try different values of one of the seasonality parameters
+p["log.beta2",1:2] <- c(3,5)  ## try different values of one of the seasonality parameters
 ## compute the skeleton at each point
 f <- skeleton(euler.sir,x=x,params=p,t=seq(0,1,length=100))
 ## verify that the skeleton varies with time

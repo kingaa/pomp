@@ -88,7 +88,7 @@ pbm <- probe.match(pb,eval.only=TRUE)
 plot(pbm)
 summary(pbm)
 
-coef(po) <- c(log.r=log(10),log.sigma=log(0.3),log.phi=log(20),N.0=5,e.0=0)
+coef(po) <- c(log.r=log(10),sigma=0.3,phi=20,N.0=5,e.0=0)
 
 pb <- probe(
             po,
@@ -106,18 +106,17 @@ pb@datvals
 summary(pb)
 plot(pb)
 
-system.time(
-            pm <- probe.match(
-                              pb,
-                              est=c("log.r","log.phi","N.0"),
-                              parscale=c(0.1,0.1,0.1),
-                              nsim=1000,
-                              seed=838775L,
-                              method="Nelder-Mead",
-                              reltol=1e-7,
-                              fail.value=1e9
-                              )
-            )
+pm <- probe.match(
+                  pb,
+                  est=c("log.r","log.phi","log.N.0"),
+                  transform=TRUE,
+                  parscale=c(0.1,0.1,0.1),
+                  nsim=1000,
+                  seed=838775L,
+                  method="Nelder-Mead",
+                  reltol=1e-7,
+                  fail.value=1e9
+                  )
 plot(pm)
 
 cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
@@ -137,18 +136,17 @@ pb@datvals
 summary(pb)
 plot(pb)
 
-system.time(
-            pm <- probe.match(
-                              pb,
-                              est=c("log.r","log.phi","N.0"),
-                              parscale=c(0.1,0.1,0.1),
-                              nsim=1000,
-                              seed=838775L,
-                              method="Nelder-Mead",
-                              reltol=1e-7,
-                              fail.value=1e9
-                              )
-            )
+pm <- probe.match(
+                  pb,
+                  est=c("log.r","log.phi","log.N.0"),
+                  transform=TRUE,
+                  parscale=c(0.1,0.1,0.1),
+                  nsim=1000,
+                  seed=838775L,
+                  method="Nelder-Mead",
+                  reltol=1e-7,
+                  fail.value=1e9
+                  )
 plot(pm)
 plot(as(pm,"pomp"),variables="y")
 plot(simulate(pm),variables="y")

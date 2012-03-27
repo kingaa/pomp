@@ -4,6 +4,7 @@ setClass(
          contains='pfilterd.pomp',
          representation(
                         pars = 'character',
+                        transform = 'logical',
                         Nmcmc = 'integer',
                         dprior = 'function',
                         hyperparams = 'list',
@@ -31,14 +32,16 @@ pmcmc.internal <- function (object, Nmcmc,
                             rw.sd, Np,
                             hyperparams,
                             tol, max.fail,
-                            verbose,
+                            verbose, transform,
                             .ndone, .prevcomp) {
 
+  transform <- as.logical(transform)
+
   if (missing(start))
-    stop("pmcmc error: ",sQuote("start")," must be specified",call.=FALSE)
+    stop(sQuote("start")," must be specified",call.=FALSE)
   if (length(start)==0)
     stop(
-         "pmcmc error: ",sQuote("start")," must be specified if ",
+         sQuote("start")," must be specified if ",
          sQuote("coef(object)")," is NULL",
          call.=FALSE
          )
@@ -166,7 +169,11 @@ pmcmc.internal <- function (object, Nmcmc,
     pfp <- try(
                pfilter.internal(
                                 object=obj,
-                                params=theta,
+                                params=if (transform) {
+                                  partrans(obj,theta,dir="forward")
+                                } else {
+                                  theta
+                                },
                                 Np=Np,
                                 tol=tol,
                                 max.fail=max.fail,
@@ -175,7 +182,8 @@ pmcmc.internal <- function (object, Nmcmc,
                                 filter.mean=TRUE,
                                 save.states=FALSE,
                                 save.params=FALSE,
-                                verbose=verbose
+                                verbose=verbose,
+                                transform=FALSE
                                 ),
                silent=FALSE
                )
@@ -195,10 +203,15 @@ pmcmc.internal <- function (object, Nmcmc,
     theta.prop[pars] <- rnorm(n=length(pars),mean=theta.prop[pars],sd=rw.sd)
 
     ## run the particle filter on the proposed new parameter values
+
     pfp.prop <- try(
                     pfilter.internal(
                                      object=obj,
-                                     params=theta.prop,
+                                     params=if (transform) {
+                                       partrans(obj,theta.prop,dir="forward")
+                                     } else {
+                                       theta.prop
+                                     },
                                      Np=Np,
                                      tol=tol,
                                      max.fail=max.fail,
@@ -207,7 +220,8 @@ pmcmc.internal <- function (object, Nmcmc,
                                      filter.mean=TRUE,
                                      save.states=FALSE,
                                      save.params=FALSE,
-                                     verbose=verbose
+                                     verbose=verbose,
+                                     transform=FALSE
                                      ),
                     silent=FALSE
                     )
@@ -233,6 +247,7 @@ pmcmc.internal <- function (object, Nmcmc,
       "pmcmc",
       pfp,
       params=theta,
+      transform=transform,
       Nmcmc=Nmcmc,
       pars=pars,
       dprior=dprior.fun,
@@ -251,10 +266,14 @@ setMethod(
           function (object, Nmcmc = 1,
                     start, pars, rw.sd,
                     dprior, Np, hyperparams,
-                    tol = 1e-17, max.fail = 0, verbose = getOption("verbose"),
+                    tol = 1e-17, max.fail = 0,
+                    verbose = getOption("verbose"),
+                    transform = FALSE,
                     ...) {
             
-            if (missing(start)) start <- coef(object)
+            transform <- as.logical(transform)
+
+            if (missing(start)) start <- coef(object,transform=transform)
 
             if (missing(rw.sd))
               stop("pmcmc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
@@ -297,6 +316,7 @@ setMethod(
                            tol=tol,
                            max.fail=max.fail,
                            verbose=verbose,
+                           transform=transform,
                            .ndone=0,
                            .prevcomp=NULL
                            )
@@ -309,10 +329,14 @@ setMethod(
           function (object, Nmcmc = 1,
                     start, pars, rw.sd,
                     dprior, Np, hyperparams,
-                    tol, max.fail = 0, verbose = getOption("verbose"),
+                    tol, max.fail = 0,
+                    verbose = getOption("verbose"),
+                    transform = FALSE,
                     ...) {
+
+            transform <- as.logical(transform)
             
-            if (missing(start)) start <- coef(object)
+            if (missing(start)) start <- coef(object,transform=transform)
 
             if (missing(rw.sd))
               stop("pmcmc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
@@ -356,6 +380,7 @@ setMethod(
                            tol=tol,
                            max.fail=max.fail,
                            verbose=verbose,
+                           transform=transform,
                            .ndone=0,
                            .prevcomp=NULL
                            )
@@ -368,7 +393,9 @@ setMethod(
           function (object, Nmcmc,
                     start, pars, rw.sd,
                     dprior, Np, hyperparams,
-                    tol, max.fail = 0, verbose = getOption("verbose"),
+                    tol, max.fail = 0,
+                    verbose = getOption("verbose"),
+                    transform,
                     ...) {
 
             if (missing(Nmcmc)) Nmcmc <- object@Nmcmc
@@ -379,6 +406,8 @@ setMethod(
             if (missing(Np)) Np <- object@Np
             if (missing(hyperparams)) hyperparams <- object@hyperparams
             if (missing(tol)) tol <- object@tol
+            if (missing(transform)) transform <- object@transform
+            transform <- as.logical(transform)
 
             pmcmc.internal(
                            object=as(object,"pomp"),
@@ -392,6 +421,7 @@ setMethod(
                            tol=tol,
                            max.fail=max.fail,
                            verbose=verbose,
+                           transform=transform,
                            .ndone=0,
                            .prevcomp=NULL
                            )
@@ -404,7 +434,9 @@ setMethod(
           function (object, Nmcmc = 1,
                     start, pars, rw.sd,
                     dprior, Np, hyperparams,
-                    tol, max.fail = 0, verbose = getOption("verbose"),
+                    tol, max.fail = 0,
+                    verbose = getOption("verbose"),
+                    transform,
                     ...) {
 
             if (missing(start)) start <- coef(object)
@@ -414,6 +446,8 @@ setMethod(
             if (missing(Np)) Np <- object@Np
             if (missing(hyperparams)) hyperparams <- object@hyperparams
             if (missing(tol)) tol <- object@tol
+            if (missing(transform)) transform <- object@transform
+            transform <- as.logical(transform)
 
             ndone <- object@Nmcmc
 
@@ -429,6 +463,7 @@ setMethod(
                                   tol=tol,
                                   max.fail=max.fail,
                                   verbose=verbose,
+                                  transform=transform,
                                   .ndone=ndone,
                                   .prevcomp=list(
                                     pfp=as(object,"pfilterd.pomp"),

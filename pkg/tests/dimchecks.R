@@ -50,8 +50,8 @@ stopifnot(identical(g1,g3[,1:3,]))
 stopifnot(identical(g1,g3[,4:6,]))
 
 data(gompertz)
-p <- parmat(coef(gompertz,transform=T),5)
-f1 <- partrans(gompertz,p,"forw")
-f2 <- parmat(coef(gompertz),5)
+p <- parmat(coef(gompertz),5)
+f1 <- partrans(gompertz,p,"inv")
+f2 <- parmat(coef(gompertz,transform=TRUE),5)
 stopifnot(identical(f1,f2))
 

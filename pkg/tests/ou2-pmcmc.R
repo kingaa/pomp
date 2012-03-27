@@ -35,6 +35,18 @@ f2 <- pmcmc(
             )
 
 
+f3 <- pmcmc(
+            ff,
+            Nmcmc=20,
+            dprior=dprior.ou2,
+            transform=TRUE,
+            hyperparams=list(min=coef(ou2)-1,max=coef(ou2)+1),
+            rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+            max.fail=100, 
+            verbose=FALSE
+            )
+
+
 if (FALSE) {
   f2 <- pmcmc(
               f1,Nmcmc=1000,Np=500,max.fail=100,

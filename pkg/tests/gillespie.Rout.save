@@ -1,6 +1,6 @@
 
-R version 2.13.1 (2011-07-08)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.14.2 (2012-02-29)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -22,16 +22,16 @@ Loading required package: subplex
 Loading required package: deSolve
 > 
 > params <- c(
-+             nu=log(1/70),
-+             mu=log(1/70),
-+             beta1=log(330),
-+             beta2=log(410),
-+             beta3=log(490),
-+             gamma=log(24),
-+             iota=log(0.1),
-+             S.0=log(0.05),
-+             I.0=log(1e-4),
-+             R.0=log(0.95),
++             nu=1/70,
++             mu=1/70,
++             beta1=330,
++             beta2=410,
++             beta3=490,
++             gamma=24,
++             iota=0.1,
++             S.0=0.05,
++             I.0=1e-4,
++             R.0=0.95,
 +             N.0=1000000
 +             )
 > 
@@ -53,15 +53,15 @@ Loading required package: deSolve
 +                 rate.fun=function(j, x, t, params, covars, ...) {
 +                   switch(
 +                          j,
-+                          exp(params["nu"])*x["N"], # birth
-+                          exp(params["mu"])*x["S"], # susceptible death
++                          params["nu"]*x["N"], # birth
++                          params["mu"]*x["S"], # susceptible death
 +                          {                         # infection
-+                            beta <- exp(params[c("beta1","beta2","beta3")])%*%covars[c("seas.1","seas.2","seas.3")]
-+                            (beta*x["I"]+exp(params["iota"]))*x["S"]/x["N"]
++                            beta <- params[c("beta1","beta2","beta3")]%*%covars[c("seas.1","seas.2","seas.3")]
++                            (beta*x["I"]+params["iota"])*x["S"]/x["N"]
 +                          },
-+                          exp(params["mu"])*x["I"], # infected death
-+                          exp(params["gamma"])*x["I"], # recovery
-+                          exp(params["mu"])*x["R"], # recovered death
++                          params["mu"]*x["I"], # infected death
++                          params["gamma"]*x["I"], # recovery
++                          params["mu"]*x["R"], # recovered death
 +                          stop("unrecognized event ",j)
 +                          )
 +                 },
@@ -88,7 +88,7 @@ Loading required package: deSolve
 +                 comp.names <- c("S","I","R")
 +                 icnames <- paste(comp.names,"0",sep=".")
 +                 snames <- c("S","I","R","N","cases")
-+                 fracs <- exp(params[icnames])
++                 fracs <- params[icnames]
 +                 x0 <- numeric(length(snames))
 +                 names(x0) <- snames
 +                 x0["N"] <- params["N.0"]
@@ -122,10 +122,10 @@ Loading required package: deSolve
 > 
 > tail(as(simulate(gillespie.sir,times=time(gsir),t0=timezero(gsir),seed=1165270654L),"data.frame"))
         time reports     S    I      R      N cases
-100 1.903846      52 65867 1143 932864 999874   479
-101 1.923077      59 65570 1150 933149 999869   545
-102 1.942308      46 65300 1090 933462 999852   583
-103 1.961538      52 65047 1098 933677 999822   505
-104 1.980769      45 64735 1142 933909 999786   506
-105 2.000000      52 64487 1110 934156 999753   532
+100 1.903846      49 65867 1145 932868 999880   478
+101 1.923077      49 65570 1151 933153 999874   545
+102 1.942308      57 65302 1092 933464 999858   581
+103 1.961538      41 65048 1097 933683 999828   509
+104 1.980769      44 64737 1140 933910 999787   504
+105 2.000000      47 64491 1109 934157 999757   530
 > 

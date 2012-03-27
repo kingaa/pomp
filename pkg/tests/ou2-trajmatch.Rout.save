@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.14.2 (2012-02-29)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -131,7 +131,8 @@ $msg
 Error in traj.match.objfun(ou2, est = c("x1.0", "x2.0", "bob", "alpha.4",  : 
   parameter(s): 'bob''harry' not found in 'params'
 > try(traj.match(ou2,est=c('x1.0','x2.0','bob','alpha.4','tau')))
-Error : 'traj.match' error: parameters named in 'est' must exist in 'start'
+Error in traj.match.internal(object = object, start = start, est = est,  : 
+  'est' must refer to parameters named in 'start'
 > 
 > fit <- optim(par=c(0,0,1,0.5,0.5),fn=ofun,method="Nelder-Mead",control=list(maxit=400))
 > print(fit)

@@ -17,105 +17,44 @@ plot(N~time,data=tj.3,subset=traj==3,type='l')
 
 sm <- simulate(ricker,seed=343995,as.data.frame=TRUE)
 sm1 <- as.data.frame(simulate(ricker,seed=343995))
-stopifnot(identical(sm[names(sm1)],sm1))
+stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 
-sm <- simulate(ricker,nsim=3,as.data.frame=TRUE)
+sm <- simulate(ricker,nsim=3,seed=343995,as.data.frame=TRUE)
 print(names(sm))
 print(dim(sm))
 
-sm <- simulate(ricker,nsim=3,obs=T,as.data.frame=TRUE)
-print(names(sm))
-print(dim(sm))
+sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
+print(names(sm1))
+print(dim(sm1))
+stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 
-sm <- simulate(ricker,nsim=3,states=T,as.data.frame=TRUE)
-print(names(sm))
-print(dim(sm))
+sm1 <- simulate(ricker,nsim=3,states=T,seed=343995,as.data.frame=TRUE)
+print(names(sm1))
+print(dim(sm1))
+stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 
-sm <- simulate(ricker,nsim=3,states=T,obs=T,as.data.frame=TRUE)
-print(names(sm))
-print(dim(sm))
+sm1 <- simulate(ricker,nsim=3,states=T,obs=T,seed=343995,as.data.frame=TRUE)
+print(names(sm1))
+print(dim(sm1))
+stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 
-sm <- simulate(ricker,nsim=1,states=T,obs=T,as.data.frame=TRUE)
+sm <- simulate(ricker,nsim=1,states=T,obs=T,seed=343995,as.data.frame=TRUE)
+sm1 <- as.data.frame(simulate(ricker,seed=343995))
 print(names(sm))
 print(dim(sm))
+stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 
 po <- ricker
 try(
     coef(po,"r")
     )
 coef(po,c("r","phi")) <- c(0,0)
-coef(po,c("log.r","log.phi")) <- c(a=0,b=0)
-coef(po,c("log.r","log.phi")) <- 0
-coef(po) <- c(log.phi=0,log.r=3.5,N.0=10,e.0=0,log.sigma=-Inf)
+coef(po,c("log.r","phi")) <- c(a=0,b=1)
+coef(po,c("log.r","phi")) <- 1
+coef(po) <- c(phi=1,log.r=3.5,N.0=10,e.0=0,sigma=0)
 coef(po)
 coef(po,"new") <- 3
 plot(simulate(po))
 coef(po)
-
-set.seed(64857673L)
-
-guess <- ricker
-coef(guess) <- c(log.r=log(20),log.sigma=log(1),log.phi=log(20),N.0=7,e.0=0)
-
-mf <- mif(
-          guess,
-          Nmif=100,
-          Np=1000,
-          cooling.factor=0.99,
-          var.factor=2,
-          ic.lag=3,
-          max.fail=50,
-          rw.sd=c(log.r=0.1,log.sigma=0.1,log.phi=0.1)
-          )
-mf <- continue(mf,Nmif=500,max.fail=20)
-
-plist <- list(
-              probe.marginal("y",ref=obs(ricker),transform=sqrt),
-              probe.acf("y",lags=c(0,1,2,3,4),transform=sqrt),
-              probe.nlar("y",lags=c(1,1,1,2),powers=c(1,2,3,1),transform=sqrt)
-              )
-
-pr.guess <- probe(guess,probes=plist,nsim=1000,seed=1066L)
-pr.tr <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
-
-pm <- probe.match(
-                  pr.guess,
-                  est=c("log.r","log.sigma","log.phi"),
-                  method="Nelder-Mead",
-                  maxit=2000,
-                  seed=1066L,
-                  reltol=1e-8,
-                  trace=3
-                  )
-
-pf.tr <- pfilter(ricker,Np=1000,max.fail=50,seed=1066L)
-pf.guess <- pfilter(guess,Np=1000,max.fail=50,seed=1066L)
-pf.mf <- pfilter(mf,Np=1000,seed=1066L)
-pf.pm <- pfilter(pm,Np=1000,max.fail=10,seed=1066L)
-
-pr.mf <- probe(mf,nsim=1000,probes=plist,seed=1066L)
-
-res <- rbind(
-             cbind(guess=coef(guess),truth=coef(ricker),MLE=coef(mf),PM=coef(pm)),
-             loglik=c(
-               pf.guess$loglik,
-               pf.tr$loglik,
-               pf.mf$loglik,
-               pf.pm$loglik
-               ),
-             synth.loglik=c(
-               summary(pr.guess)$synth.loglik,
-               summary(pr.tr)$synth.loglik,
-               summary(pr.mf)$synth.loglik,
-               summary(pm)$synth.loglik
-               )
-             )
-
-print(res,digits=3)
-
-plot(ricker)
-plot(simulate(guess))
-plot(simulate(mf))
-plot(simulate(pm))
 
 dev.off()

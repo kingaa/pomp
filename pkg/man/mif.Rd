@@ -20,22 +20,22 @@ mif(object, \dots)
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
     weighted, method = c("mif","unweighted","fp"),
     tol = 1e-17, max.fail = 0,
-    verbose = getOption("verbose"), \dots)
+    verbose = getOption("verbose"), transform = FALSE, \dots)
 \S4method{mif}{pfilterd.pomp}(object, Nmif = 1, start, pars, ivps = character(0),
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
     weighted, method = c("mif","unweighted","fp"),
     tol, max.fail = 0,
-    verbose = getOption("verbose"), \dots)
+    verbose = getOption("verbose"), transform = FALSE, \dots)
 \S4method{mif}{mif}(object, Nmif, start, pars, ivps,
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
     weighted, method = c("mif","unweighted","fp"),
     tol, max.fail = 0,
-    verbose = getOption("verbose"), \dots)
+    verbose = getOption("verbose"), transform, \dots)
 \S4method{continue}{mif}(object, Nmif = 1, start, pars, ivps,
     particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
     weighted, method = c("mif","unweighted","fp"),
-    tol, max.fail = 0,
-    verbose = getOption("verbose"), \dots)
+    tol, max.fail = 0, verbose = getOption("verbose"),
+    transform, \dots)
 }
 \arguments{
   \item{object}{
@@ -119,6 +119,10 @@ mif(object, \dots)
   }
   \item{verbose}{
     logical; if TRUE, print progress reports.
+  }
+  \item{transform}{
+    logical;
+    if \code{TRUE}, optimization is performed on the transformed scale.
   }
   \item{\dots}{
     additional arguments.

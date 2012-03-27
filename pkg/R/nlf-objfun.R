@@ -1,4 +1,4 @@
-NLF.LQL <- function (params.fitted, object, params, par.index,
+NLF.LQL <- function (params.fitted, object, params, par.index, transform.params = FALSE,
                      times, t0, lags, period, tensor, seed = NULL, transform = identity,
                      nrbf = 4, verbose = FALSE,
                      bootstrap = FALSE, bootsamp = NULL) {
@@ -9,10 +9,13 @@ NLF.LQL <- function (params.fitted, object, params, par.index,
 ### so a large NEGATIVE value is used to flag bad parameters 
 ###>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+  transform.params <- as.logical(transform.params)
+
   FAILED =  -99999999999
   params[par.index] <- params.fitted
   
-  params <- as.matrix(params)
+  if (transform.params)
+    params <- partrans(object,params,dir="forward")
 
   ## Need to extract number of state variables (nvar) from pomp object
   ## Need to include simulation times in problem specification
@@ -20,7 +23,7 @@ NLF.LQL <- function (params.fitted, object, params, par.index,
   ## Version 0.1, 3 Dec. 2007, Bruce E. Kendall & Stephen P. Ellner
   ## Version 0.2, May 2008, Stephen P. Ellner  
 
-  data.ts <- object@data
+  data.ts <- obs(object)
   
   y <- try(
            simulate(object,times=times,t0=t0,params=params,seed=seed,obs=TRUE,states=FALSE),
@@ -60,30 +63,5 @@ NLF.LQL <- function (params.fitted, object, params, par.index,
   LQL 
 }
 
-
-
-nlf.objfun <- function (params.fitted, object, params, par.index,
-                        times, t0, lags, period, tensor, seed, transform = function(x)x,
-                        nrbf = 4, verbose = FALSE, bootstrap = FALSE, bootsamp = NULL) 
-{
-  -sum(
-       NLF.LQL(
-               params.fitted=params.fitted,
-               object=object,
-               params=params,
-               par.index=par.index,
-               times=times,
-               t0=t0,
-               lags=lags,
-               period=period,
-               tensor=tensor,
-               seed=seed,
-               transform=transform,
-               nrbf=nrbf,
-               verbose=verbose,
-               bootstrap=bootstrap,
-               bootsamp=bootsamp
-               ),
-       na.rm=T
-       )
-} 
+nlf.objfun <- function (...) 
+  -sum(NLF.LQL(...),na.rm=TRUE)

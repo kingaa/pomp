@@ -11,6 +11,24 @@
 ## lower  = lower bounds on prior
 ## upper  = upper bounds on prior
 
+setClass(
+         "bsmcd.pomp",
+         contains="pomp",
+         representation=representation(
+           transform="logical",
+           post="array",
+           prior="array",
+           est="character",
+           eff.sample.size="numeric",
+           smooth="numeric",
+           seed="integer",
+           nfail="integer",
+           cond.log.evidence="numeric",
+           log.evidence="numeric",
+           weights="numeric"
+           )
+         )
+
 setGeneric("bsmc",function(object,...)standardGeneric("bsmc"))
 
 setMethod(
@@ -24,7 +42,10 @@ setMethod(
                     seed = NULL,
                     verbose = getOption("verbose"),
                     max.fail = 0,
+                    transform = FALSE,
                     ...) {
+
+            transform <- as.logical(transform)
 
             if (missing(seed)) seed <- NULL
             if (!is.null(seed)) {
@@ -37,8 +58,8 @@ setMethod(
             error.prefix <- paste(sQuote("bsmc"),"error: ")
 
             if (missing(params)) {
-              if (length(object@params)>0) {
-                params <- object@params
+              if (length(coef(object))>0) {
+                params <- coef(object)
               } else {
                 stop(error.prefix,sQuote("params")," must be supplied",call.=FALSE)
               }
@@ -46,8 +67,11 @@ setMethod(
 
             if (missing(Np)) Np <- NCOL(params)
             else if (is.matrix(params)&&(Np!=ncol(params)))
-              stop(error.prefix,sQuote("Np")," cannot be other than ",sQuote("ncol(params)"),call.=FALSE)
+              warning(sQuote("Np")," is ignored when ",sQuote("params")," is a matrix")
             
+            if (transform)
+              params <- partrans(object,params,dir="inverse")
+
             ntimes <- length(time(object))
             if (is.null(dim(params))) {
               params <- matrix(
@@ -60,10 +84,10 @@ setMethod(
                                  )
                                )
             }
-            prior <- params
 
             npars <- nrow(params)
             paramnames <- rownames(params)
+            prior <- params
 
             if (missing(est))
               est <- paramnames[apply(params,1,function(x)diff(range(x))>0)]
@@ -108,7 +132,14 @@ setMethod(
               }
             }
 
-            xstart <- init.state(object,params=params)
+            xstart <- init.state(
+                                 object,
+                                 params=if (transform) {
+                                   partrans(object,params,dir="forward")
+                                 } else {
+                                   params
+                                 }
+                                 )
             statenames <- rownames(xstart)
             nvars <- nrow(xstart)
             
@@ -141,17 +172,18 @@ setMethod(
                       )
               }
 
-	      X <- matrix(data=x,nrow=nvars,ncol=Np*ntries)
-              rownames(X) <- statenames
-              P <- matrix(data=params,nrow=npars,ncol=Np*ntries)
-              rownames(P) <- paramnames
               ## update mean of states at time nt as per L&W AGM (1) 
               tries <- rprocess(
                                 object,
-                                xstart=X,
+                                xstart=parmat(x,nrep=ntries),
                                 times=times[c(nt,nt+1)],
-                                params=P
-                                )[,,2,drop=FALSE]
+                                params=if (transform) {
+                                  partrans(object,params,dir="forward")
+                                } else {
+                                  params
+                                },
+                                offset=1
+                                )
               dim(tries) <- c(nvars,Np,ntries,1)
               mu <- apply(tries,c(1,2,4),mean)
               rownames(mu) <- statenames
@@ -164,7 +196,11 @@ setMethod(
                             y=object@data[,nt,drop=FALSE],
                             x=mu,
                             times=times[nt+1],
-                            params=m											
+                            params=if (transform) {
+                              partrans(object,m,dir="forward")
+                            } else {
+                              m
+                            }
                             )	
               storeForEvidence1 <- log(sum(g))
               ## sample indices -- From L&W AGM (2)
@@ -190,13 +226,21 @@ setMethod(
                 stop(error.prefix,"extreme particle depletion",call.=FALSE)
               params[estind,] <- m[estind,]+t(pvec)
 
+              if (transform)
+                tparams <- partrans(object,params,dir="forward")
+              
               ## sample current state vector x^(g)_(t+1) as per L&W AGM (4)
               X <- rprocess(
                             object,
                             xstart=x[,k,drop=FALSE],
                             times=times[c(nt,nt+1)],
-                            params=params
-                            )[,,2,drop=FALSE]
+                            params=if (transform) {
+                              tparams
+                            } else {
+                              params
+                            },
+                            offset=1
+                            )
 
               ## evaluate likelihood of observation given X (from L&W AGM (4))
               numer <- dmeasure(
@@ -204,7 +248,11 @@ setMethod(
                                 y=object@data[,nt,drop=FALSE],
                                 x=X,
                                 times=times[nt+1],
-                                params=params
+                                params=if (transform) {
+                                  tparams
+                                } else {
+                                  params
+                                }
                                 )
               ## evaluate weights as per L&W AGM (5)
 
@@ -281,16 +329,62 @@ setMethod(
               seed <- save.seed
             }
             
-            list(
-                 post=params,
-                 prior=prior,
-                 eff.sample.size=eff.sample.size,
-                 smooth=smooth,
-                 seed=seed,
-                 nfail=nfail,
-                 cond.log.evidence=evidence,
-                 log.evidence=sum(evidence),
-                 weights=weights
-                 )
+            ## if (transform) {
+            ##   params <- partrans(object,params,dir="forward")
+            ##   prior <- partrans(object,prior,dir="forward")
+            ## }
+
+            new(
+                "bsmcd.pomp",
+                object,
+                transform=transform,
+                post=params,
+                prior=prior,
+                est=as.character(est),
+                eff.sample.size=eff.sample.size,
+                smooth=smooth,
+                seed=as.integer(seed),
+                nfail=as.integer(nfail),
+                cond.log.evidence=evidence,
+                log.evidence=sum(evidence),
+                weights=weights
+                )
           }
+          )
+
+setMethod("$",signature(x="bsmcd.pomp"),function (x,name) slot(x,name))
+
+bsmc.plot <- function (prior, post, est, nbreaks, thin, ...) {
+  if (missing(thin)) thin <- Inf
+  prior <- t(prior[est,sample.int(n=nrow(prior),size=min(thin,nrow(prior)))])
+  post <- t(post[est,sample.int(n=nrow(post),size=min(thin,nrow(post)))])
+  all <- rbind(prior,post)
+  pairs(
+        all,
+        labels=est,
+        panel=function (x, y, ...) { ## prior, posterior pairwise scatterplot
+          op <- par(new=TRUE)
+          on.exit(par(op))
+          i <- which(x[1]==all[1,])
+          j <- which(y[1]==all[1,])
+          points(x,y,pch=20,col=rgb(0.85,0.85,0.85,0.1),xlim=range(all[,i]),ylim=range(all[,j]))
+          points(post[,i],post[,j],pch=20,col=rgb(0,0,1,0.01))
+        },
+        diag.panel=function (x, ...) { ## marginal posterior histogram
+          i <- which(x[1]==all[1,])
+          breaks <- hist(c(post[,i],prior[,i]),breaks=nbreaks,plot=FALSE)$breaks
+          y1 <- hist(post[,i],breaks=breaks,plot=FALSE)$counts
+          usr <- par('usr')
+          op <- par(usr=c(usr[1:2],0,1.5*max(y1)))
+          on.exit(par(op))
+          rect(head(breaks,-1),0,tail(breaks,-1),y1,col=rgb(0,0,1,0.5),border=NA,...)
+        }
+        )
+}
+
+setMethod(
+          "plot",
+          signature(x="bsmcd.pomp"),
+          function (x, ..., thin, breaks) bsmc.plot(prior=x@prior,post=x@post,est=x@est,
+                                                    nbreaks=breaks,thin=thin,...)
           )

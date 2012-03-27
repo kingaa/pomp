@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.14.2 (2012-02-29)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -39,8 +39,8 @@ Loading required package: deSolve
 > plot(pb)
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -64,8 +64,8 @@ $synth.loglik
 > plot(pb)
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -91,8 +91,8 @@ $synth.loglik
 > plot(pb)
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -118,8 +118,8 @@ $synth.loglik
 > plot(pb)
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -153,8 +153,8 @@ $synth.loglik
 1.000000e+00 2.308125e-18 9.896164e-19 
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -198,8 +198,8 @@ $synth.loglik
  4.212841e+02  2.954671e+02  4.430440e+00 
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -223,8 +223,8 @@ $synth.loglik
 > plot(pbm)
 > summary(pbm)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -258,7 +258,7 @@ $msg
 [1] "no optimization performed"
 
 > 
-> coef(po) <- c(log.r=log(10),log.sigma=log(0.3),log.phi=log(20),N.0=5,e.0=0)
+> coef(po) <- c(log.r=log(10),sigma=0.3,phi=20,N.0=5,e.0=0)
 > 
 > pb <- probe(
 +             po,
@@ -277,8 +277,8 @@ $msg
 1.000000e+00 2.308125e-18 9.896164e-19 
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 2.302585 -1.203973  2.995732  5.000000  0.000000 
+    log.r     sigma       phi       N.0       e.0 
+ 2.302585  0.300000 20.000000  5.000000  0.000000 
 
 $nsim
 [1] 1000
@@ -296,29 +296,26 @@ $synth.loglik
 
 > plot(pb)
 > 
-> system.time(
-+             pm <- probe.match(
-+                               pb,
-+                               est=c("log.r","log.phi","N.0"),
-+                               parscale=c(0.1,0.1,0.1),
-+                               nsim=1000,
-+                               seed=838775L,
-+                               method="Nelder-Mead",
-+                               reltol=1e-7,
-+                               fail.value=1e9
-+                               )
-+             )
-   user  system elapsed 
-  7.412   0.000   7.439 
+> pm <- probe.match(
++                   pb,
++                   est=c("log.r","log.phi","log.N.0"),
++                   transform=TRUE,
++                   parscale=c(0.1,0.1,0.1),
++                   nsim=1000,
++                   seed=838775L,
++                   method="Nelder-Mead",
++                   reltol=1e-7,
++                   fail.value=1e9
++                   )
 > plot(pm)
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
-              truth       est     guess
-log.r      3.800000  2.786419  2.302585
-log.sigma -1.203973 -1.203973 -1.203973
-log.phi    2.302585  3.381907  2.995732
-N.0        7.000000  4.427796  5.000000
-e.0        0.000000  0.000000  0.000000
+      truth       est     guess
+log.r   3.8  2.741461  2.302585
+sigma   0.3  0.300000  0.300000
+phi    10.0 32.376974 20.000000
+N.0     7.0  2.898467  5.000000
+e.0     0.0  0.000000  0.000000
 > 
 > pb <- probe(
 +             po,
@@ -336,8 +333,8 @@ e.0        0.000000  0.000000  0.000000
 -0.50800036 -0.12068721  0.01214788 
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 2.302585 -1.203973  2.995732  5.000000  0.000000 
+    log.r     sigma       phi       N.0       e.0 
+ 2.302585  0.300000 20.000000  5.000000  0.000000 
 
 $nsim
 [1] 1000
@@ -355,31 +352,28 @@ $synth.loglik
 
 > plot(pb)
 > 
-> system.time(
-+             pm <- probe.match(
-+                               pb,
-+                               est=c("log.r","log.phi","N.0"),
-+                               parscale=c(0.1,0.1,0.1),
-+                               nsim=1000,
-+                               seed=838775L,
-+                               method="Nelder-Mead",
-+                               reltol=1e-7,
-+                               fail.value=1e9
-+                               )
-+             )
-   user  system elapsed 
-  5.596   0.000   5.617 
+> pm <- probe.match(
++                   pb,
++                   est=c("log.r","log.phi","log.N.0"),
++                   transform=TRUE,
++                   parscale=c(0.1,0.1,0.1),
++                   nsim=1000,
++                   seed=838775L,
++                   method="Nelder-Mead",
++                   reltol=1e-7,
++                   fail.value=1e9
++                   )
 > plot(pm)
 > plot(as(pm,"pomp"),variables="y")
 > plot(simulate(pm),variables="y")
 > 
 > cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
-              truth       est     guess
-log.r      3.800000  1.664998  2.302585
-log.sigma -1.203973 -1.203973 -1.203973
-log.phi    2.302585  3.566425  2.995732
-N.0        7.000000  6.731655  5.000000
-e.0        0.000000  0.000000  0.000000
+      truth       est     guess
+log.r   3.8  1.717246  2.302585
+sigma   0.3  0.300000  0.300000
+phi    10.0 32.412299 20.000000
+N.0     7.0  7.298905  5.000000
+e.0     0.0  0.000000  0.000000
 > 
 > pb <- probe(
 +             po,
@@ -398,8 +392,8 @@ e.0        0.000000  0.000000  0.000000
 24.879460 -5.950185 -2.211594 
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 2.302585 -1.203973  2.995732  5.000000  0.000000 
+    log.r     sigma       phi       N.0       e.0 
+ 2.302585  0.300000 20.000000  5.000000  0.000000 
 
 $nsim
 [1] 1000
@@ -433,8 +427,8 @@ $synth.loglik
 21.763354 -7.220449 -4.970518  3.099575 -2.823081  1.507337 
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -468,8 +462,8 @@ $synth.loglik
 -0.33177095 -0.22838933  0.14242173 -0.12971720  0.06926033 
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -512,8 +506,8 @@ $synth.loglik
 22.1986212 21.7633541 -7.2204486 -4.9705179 -0.4637368 -0.3923487 
 > summary(pb)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000

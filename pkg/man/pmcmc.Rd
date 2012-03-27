@@ -17,16 +17,16 @@
 \usage{
 \S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, pars,
     rw.sd, dprior, Np, hyperparams, tol = 1e-17, max.fail = 0,
-    verbose = getOption("verbose"), \dots)
+    verbose = getOption("verbose"), transform = FALSE, \dots)
 \S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, start, pars,
     rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
-    verbose = getOption("verbose"), \dots)
+    verbose = getOption("verbose"), transform = FALSE, \dots)
 \S4method{pmcmc}{pmcmc}(object, Nmcmc, start, pars,
     rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
-    verbose = getOption("verbose"), \dots)
+    verbose = getOption("verbose"), transform, \dots)
 \S4method{continue}{pmcmc}(object, Nmcmc = 1, start, pars,
     rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
-    verbose = getOption("verbose"), \dots)
+    verbose = getOption("verbose"), transform, \dots)
 }
 \arguments{
   \item{object}{
@@ -72,6 +72,10 @@
   }
   \item{verbose}{
     logical; if TRUE, print progress reports.
+  }
+  \item{transform}{
+    logical;
+    if \code{TRUE}, optimization is performed on the transformed scale.
   }
   \item{\dots}{
     Additional arguments.

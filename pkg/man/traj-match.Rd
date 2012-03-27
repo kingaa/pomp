@@ -21,11 +21,11 @@
 \usage{
   \S4method{traj.match}{pomp}(object, start, est,
            method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
-           gr = NULL, eval.only = FALSE, \dots)
+           gr = NULL, eval.only = FALSE, transform = FALSE, \dots)
   \S4method{traj.match}{traj.matched.pomp}(object, start, est,
            method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
-           gr = NULL, eval.only = FALSE, \dots)
-traj.match.objfun(object, params, est)
+           gr = NULL, eval.only = FALSE, transform, \dots)
+traj.match.objfun(object, params, est, transform = FALSE)
 }
 \arguments{
   \item{object}{
@@ -58,6 +58,10 @@ traj.match.objfun(object, params, est)
     logical;
     if \code{TRUE}, no optimization is attempted and the log likelihood value is evaluated at the \code{start} parameters.
   }
+  \item{transform}{
+    logical;
+    if \code{TRUE}, optimization is performed on the transformed scale.
+  }
   \item{\dots}{
     Arguments that will be passed to \code{\link{optim}}, \code{\link[subplex]{subplex}} or \code{\link{sannbox}}, via their \code{control} lists.
   }
@@ -81,6 +85,9 @@ traj.match.objfun(object, params, est)
   \code{traj.match} returns an object of class \code{traj.matched.pomp}.
   This class inherits from class \code{\link[=pomp-class]{pomp}} and contains the following additional slots:
   \describe{
+    \item{transform, est}{
+      the values of these arguments on the call to \code{traj.match}.
+    }
     \item{evals}{
       number of function and gradient evaluations by the optimizer.
       See \code{\link{optim}}.
@@ -128,7 +135,7 @@ traj.match.objfun(object, params, est)
   lines(x2~time,data=as(res,"data.frame"),col='red')
 
   data(ricker)
-  ofun <- traj.match.objfun(ricker,params=coef(ricker),est=c("log.r","log.phi"))
+  ofun <- traj.match.objfun(ricker,est=c("log.r","log.phi"),transform=TRUE)
   optim(fn=ofun,par=c(2,0),method="BFGS")
 }
 \seealso{

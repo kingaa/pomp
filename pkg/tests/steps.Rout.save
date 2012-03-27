@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.14.2 (2012-02-29)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -24,7 +24,7 @@ Loading required package: deSolve
 > set.seed(54588699L)
 > 
 > data(ricker)
-> coef(ricker,"log.sigma") <- -Inf
+> coef(ricker,"sigma") <- 0
 > tm <- sort(runif(n=20,max=3))
 > x <- trajectory(ricker,times=tm)["N",,]
 > y <- simulate(ricker,times=tm,states=TRUE)["N",,]
@@ -43,5 +43,4 @@ Loading required package: deSolve
                 9                11                 7                 4 
    (0.086,0.0966]    (0.0966,0.107] 
                10                 8 
-> 
 > 

@@ -23,6 +23,9 @@
     \item{pars}{
       A character vector containing the names of parameters to be estimated using MIF.
     }
+    \item{transform}{
+      A logical scalar; was the estimation done on the transformed scale?
+    }
     \item{Nmif}{
       Number of MIF iterations that have been completed.
     }

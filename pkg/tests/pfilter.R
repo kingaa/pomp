@@ -17,13 +17,12 @@ print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
 
 data(euler.sir)
 pf <- pfilter(euler.sir,Np=100,seed=394343L)
-print(coef(pf,transform=TRUE))
+print(coef(pf))
 print(pf$loglik,digits=4)
 
 p <- coef(euler.sir)
 euler.sir@params <- numeric(0)
-p["iota"] <- log(1)
+p["iota"] <- 1
 pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L)
-print(coef(pf,transform=TRUE))
+print(coef(pf))
 print(logLik(pf),digits=4)
-

@@ -1,7 +1,15 @@
+* put BSMC example into the intro vignette
+
+* effects of replacing 'sample.int' with systematic resampling inside 'bsmc'
+
+* sorting vs no-sorting systematic resampling algorithm?
+
 * native C routine for vectorfield evaluation inside lsoda
 
 * parameter transformations: put 'transform' option into each estimation routine
   (bsmc, mif, pmcmc, nlf, *.match)
+
+* unit tests for above
 
 * unit tests for 'sannbox'
 

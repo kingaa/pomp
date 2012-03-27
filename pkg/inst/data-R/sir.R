@@ -21,29 +21,18 @@ po <- pomp(
            statenames=c("S","I","R","cases","W"),
            paramnames=c(
              "gamma","mu","iota",
-             "beta1","beta.sd","pop","rho",
-             "nbasis","degree","period"
+             "log.beta1","beta.sd","pop","rho",
+             "nbasis","degree","period",
+             "S.0","I.0","R.0"
              ),
            zeronames=c("cases"),
            comp.names=c("S","I","R"),
-           to.log.transform=c(
-             "gamma","mu","iota",
-             "beta1","beta2","beta3","beta.sd",
-             "rho",
-             "S.0","I.0","R.0"
-             ),
-           parameter.transform=function (params, to.log.transform, ...) {
-             params[to.log.transform] <- log(params[to.log.transform])
-             params
-           },
-           parameter.inv.transform=function (params, to.log.transform, ...) {
-             params[to.log.transform] <- exp(params[to.log.transform])
-             params
-           },
+           parameter.transform="_sir_par_trans",
+           parameter.inv.transform="_sir_par_untrans",
            initializer=function(params, t0, comp.names, ...) {
              ic.names <- paste(comp.names,".0",sep="")
              snames <- c("S","I","R","cases","W")
-             fracs <- exp(params[ic.names])
+             fracs <- params[ic.names]
              x0 <- numeric(length(snames))
              names(x0) <- snames
              x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
@@ -51,9 +40,10 @@ po <- pomp(
              x0
            }
            )
-coef(po,transform=TRUE) <- c(gamma=26,mu=0.02,iota=0.01,
+coef(po) <- c(
+          gamma=26,mu=0.02,iota=0.01,
           nbasis=3,degree=3,period=1,
-          beta1=1200,beta2=1800,beta3=600,
+          log.beta1=log(1200),log.beta2=log(1800),log.beta3=log(600),
           beta.sd=1e-3,
           pop=2.1e6,
           rho=0.6,
@@ -95,30 +85,19 @@ po <- pomp(
            statenames=c("S","I","R","N","cases"),
            paramnames=c(
              "gamma","mu","iota",
-             "beta1","nu",
-             "nbasis","degree","period"
-             ),
-           zeronames=c("cases"),
-           measurement.model=reports~binom(size=cases,prob=exp(rho)),
-           to.log.transform=c(
-             "gamma","nu","mu","iota",
-             "beta1","beta2","beta3",
-             "rho",
+             "log.beta1","beta.sd","pop","rho",
+             "nbasis","degree","period",
              "S.0","I.0","R.0"
              ),
-           parameter.transform=function (params, to.log.transform, ...) {
-             params[to.log.transform] <- log(params[to.log.transform])
-             params
-           },
-           parameter.inv.transform=function (params, to.log.transform, ...) {
-             params[to.log.transform] <- exp(params[to.log.transform])
-             params
-           },
+           zeronames=c("cases"),
+           measurement.model=reports~binom(size=cases,prob=rho),
+           parameter.transform="_sir_par_trans",
+           parameter.inv.transform="_sir_par_untrans",
            initializer=function(params, t0, ...){
              comp.names <- c("S","I","R")
              icnames <- paste(comp.names,"0",sep=".")
              snames <- c("S","I","R","N","cases")
-             fracs <- exp(params[icnames])
+             fracs <- params[icnames]
              x0 <- numeric(length(snames))
              names(x0) <- snames
              x0["N"] <- params["pop"]
@@ -127,14 +106,13 @@ po <- pomp(
            }
            )
 
-coef(po,transform=TRUE) <- c(
+coef(po) <- c(
           gamma=24,
-          nu=1/70,
           mu=1/70,
           iota=0.1,
-          beta1=330,
-          beta2=410,
-          beta3=490,
+          log.beta1=log(330),
+          log.beta2=log(410),
+          log.beta3=log(490),
           rho=0.1,
           S.0=0.05,
           I.0=1e-4,
@@ -142,8 +120,10 @@ coef(po,transform=TRUE) <- c(
           pop=1000000,
           nbasis=3,
           degree=3,
-          period=1
+          period=1,
+          beta.sd=0
           )
+
 
 simulate(
          po,

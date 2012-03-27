@@ -2,6 +2,10 @@
 \alias{bsmc}
 \alias{bsmc-pomp}
 \alias{bsmc,pomp-method}
+\alias{$,bsmcd.pomp-method}
+\alias{$-bsmcd.pomp}
+\alias{plot,bsmcd.pomp-method}
+\alias{plot-bsmcd.pomp}
 \title{Liu and West Bayesian Particle Filter}
 \description{
   Generates draws from the posterior distribution for the parameters using the Liu and West algorithm.
@@ -10,7 +14,8 @@
 \usage{
 \S4method{bsmc}{pomp}(object, params, Np, est, smooth = 0.1,
      ntries = 1, tol = 1e-17, lower = -Inf, upper = Inf, seed = NULL,
-     verbose = getOption("verbose"), max.fail = 0, \dots)
+     verbose = getOption("verbose"), max.fail = 0,
+     transform = FALSE, \dots)
 }
 \arguments{
 \item{object}{
@@ -63,12 +68,17 @@
     The maximum number of filtering failures allowed.
     If the number of filtering failures exceeds this number, execution will terminate with an error.
   }
+  \item{transform}{
+    logical;
+    if \code{TRUE}, the algorithm operates on the transformed scale.
+  }
   \item{\dots}{
     currently ignored.
   }
 }
 \value{
-  A list with the following elements:
+  An object of class \dQuote{bsmcd.pomp}.
+  The slots of this class include:
   \item{post}{
     A matrix containing draws from the approximate posterior distribution.
   }

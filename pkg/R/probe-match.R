@@ -2,6 +2,8 @@ setClass(
          "probe.matched.pomp",
          contains="probed.pomp",
          representation=representation(
+           start="numeric",
+           transform="logical",
            est="character",
            weights="numeric",
            fail.value="numeric",
@@ -30,13 +32,17 @@ setMethod(
           )
 
 probe.match.objfun <- function (object, params, est, probes,
-                                nsim = 1, seed = NULL, fail.value = NA, ...) {
+                                nsim = 1, seed = NULL, fail.value = NA,
+                                transform = FALSE, ...) {
 
+  transform <- as.logical(transform)
   if (missing(est)) est <- character(0)
   if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
   if (missing(params)) params <- coef(object)
   if ((!is.numeric(params))||(is.null(names(params))))
     stop(sQuote("params")," must be a named numeric vector")
+  if (transform)
+    params <- partrans(object,params,dir="inverse")
   par.est.idx <- match(est,names(params))
   if (any(is.na(par.est.idx)))
     stop("parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"))
@@ -53,14 +59,18 @@ probe.match.objfun <- function (object, params, est, probes,
     stop(sQuote("nsim"),"(=",nsim,") should be (much) larger than the number of probes (=",nprobes,")")
     
   obj.fun <- function (par) {
+
     params[par.est.idx] <- par
-  
+    
+    if (transform)
+      tparams <- partrans(object,params,dir="forward")
+
     ## apply probes to model simulations
     simval <- .Call(
                     apply_probe_sim,
                     object=object,
                     nsim=nsim,
-                    params=params,
+                    params=if (transform) tparams else params,
                     seed=seed,
                     probes=probes,
                     datval=datval
@@ -77,30 +87,41 @@ probe.match.internal <- function(object, start, est,
                                  probes, weights,
                                  nsim, seed,
                                  method, verbose,
-                                 eval.only, fail.value, ...) {
+                                 eval.only, fail.value, transform, ...) {
+
+  transform <- as.logical(transform)
 
   if (eval.only) {
     est <- character(0)
     guess <- numeric(0)
+    transform <- FALSE
   } else {
     if (!is.character(est)) stop(sQuote("est")," must be a vector of parameter names")
     if (length(start)<1)
       stop(sQuote("start")," must be supplied if ",sQuote("object")," contains no parameters")
-    if (is.null(names(start))||(!all(est%in%names(start))))
-      stop(sQuote("est")," must refer to parameters named in ",sQuote("start"))
-    guess <- start[est]
+    if (transform) {
+      tstart <- partrans(object,start,dir="inverse")
+      if (is.null(names(tstart))||(!all(est%in%names(tstart))))
+        stop(sQuote("est")," must refer to parameters named in ",sQuote("partrans(object,start,dir=\"inverse\")"))
+      guess <- tstart[est]
+    } else {
+      if (is.null(names(start))||(!all(est%in%names(start))))
+        stop(sQuote("est")," must refer to parameters named in ",sQuote("start"))
+      guess <- start[est]
+    }
   }
 
   obj <- as(object,"pomp")
   coef(obj) <- start
-
+    
   obj.fn <- probe.match.objfun(
                                obj,
                                est=est,
                                probes=probes,
                                nsim=nsim,
                                seed=seed,
-                               fail.value=fail.value
+                               fail.value=fail.value,
+                               transform=transform
                                )
 
   
@@ -123,7 +144,7 @@ probe.match.internal <- function(object, start, est,
 
     if (!is.null(names(opt$par)) && !all(est==names(opt$par)))
       stop("mismatch between parameter names returned by optimizer and ",sQuote("est"))
-    coef(obj,est) <- unname(opt$par)
+    coef(obj,est,transform=transform) <- unname(opt$par)
     msg <- if (is.null(opt$message)) character(0) else opt$message
     conv <- opt$convergence
     val <- opt$value
@@ -138,6 +159,8 @@ probe.match.internal <- function(object, start, est,
             nsim=nsim,
             seed=seed
             ),
+      start=start,
+      transform=transform,
       est=as.character(est),
       value=val,
       convergence=as.integer(conv),
@@ -156,16 +179,13 @@ setMethod(
                    nsim, seed = NULL,
                    method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
                    verbose = getOption("verbose"), 
-                   eval.only = FALSE, fail.value = NA, ...) {
+                   eval.only = FALSE, fail.value = NA, transform = FALSE,
+                   ...) {
             
+            transform <- as.logical(transform)
             if (missing(start)) start <- coef(object)
-
-            if (missing(probes))
-              stop(sQuote("probes")," must be supplied")
-
-            if (missing(nsim))
-              stop(sQuote("nsim")," must be supplied")
-
+            if (missing(probes)) stop(sQuote("probes")," must be supplied")
+            if (missing(nsim)) stop(sQuote("nsim")," must be supplied")
             if (missing(weights)) weights <- 1
 
             method <- match.arg(method)
@@ -182,6 +202,7 @@ setMethod(
                                  verbose=verbose,
                                  eval.only=eval.only,
                                  fail.value=fail.value,
+                                 transform=transform,
                                  ...
                                  )
           }
@@ -195,16 +216,13 @@ setMethod(
                    nsim, seed = NULL,
                    method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
                    verbose = getOption("verbose"), 
-                   eval.only = FALSE, fail.value = NA, ...) {
+                   eval.only = FALSE, fail.value = NA, transform = FALSE, ...) {
             
+            transform <- as.logical(transform)
+
             if (missing(start)) start <- coef(object)
-
-            if (missing(probes))
-              probes <- object@probes
-
-            if (missing(nsim))
-              nsim <- nrow(object@simvals)
-            
+            if (missing(probes)) probes <- object@probes
+            if (missing(nsim)) nsim <- nrow(object@simvals)
             if (missing(weights)) weights <- 1
 
             method <- match.arg(method)
@@ -221,6 +239,7 @@ setMethod(
                                  verbose=verbose,
                                  eval.only=eval.only,
                                  fail.value=fail.value,
+                                 transform=transform,
                                  ...
                                  )
           }
@@ -234,11 +253,11 @@ setMethod(
                    nsim, seed = NULL,
                    method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
                    verbose = getOption("verbose"), 
-                   eval.only = FALSE, fail.value, ...) {
+                   eval.only = FALSE, fail.value, transform, ...) {
             
             if (missing(start)) start <- coef(object)
-
             if (missing(est)) est <- object@est
+            if (missing(transform)) transform <- object@transform
 
             if (missing(probes))
               probes <- object@probes
@@ -264,6 +283,7 @@ setMethod(
                                  verbose=verbose,
                                  eval.only=eval.only,
                                  fail.value=fail.value,
+                                 transform=transform,
                                  ...
                                  )
           }

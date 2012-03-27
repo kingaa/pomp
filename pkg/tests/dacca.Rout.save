@@ -44,3 +44,7 @@ Loading required package: deSolve
 > print(dim(x))
 [1] 1800   21
 > 
+> pf <- pfilter(dacca,Np=1000,seed=5886855L)
+> print(round(logLik(pf),digits=1))
+[1] -3747.5
+> 

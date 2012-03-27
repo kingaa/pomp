@@ -12,15 +12,25 @@ simulate(
               dmeasure="_ricker_poisson_dmeasure",
               skeleton.type="map",
               skeleton="_ricker_skeleton",
-              paramnames=c("log.r","log.sigma","log.phi"),
+              paramnames=c("log.r","sigma","phi"),
               statenames=c("N","e"),
               obsnames=c("y"),
+              parameter.inv.transform=function(params,...) {
+                params <- c(params["log.r"],log(params[c("sigma","phi","N.0")]),params["e.0"])
+                names(params) <- c("log.r","log.sigma","log.phi","log.N.0","e.0")
+                params
+              },
+              parameter.transform=function(params,...) {
+                params <- c(params["log.r"],exp(params[c("log.sigma","log.phi","log.N.0")]),params["e.0"])
+                names(params) <- c("log.r","sigma","phi","N.0","e.0")
+                params
+              },
               PACKAGE="pomp"
               ),
          params=c(
            log.r=3.8,
-           log.sigma=log(0.3),
-           log.phi=log(10),
+           sigma=0.3,
+           phi=10,
            N.0=7,
            e.0=0
            ),

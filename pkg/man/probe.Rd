@@ -30,21 +30,21 @@
             nsim, seed = NULL,
             method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
             verbose = getOption("verbose"), 
-            eval.only = FALSE, fail.value = NA, \dots)
+            eval.only = FALSE, fail.value = NA, transform = FALSE, \dots)
 \S4method{probe.match}{probed.pomp}(object, start, est = character(0),
             probes, weights,
             nsim, seed = NULL,
             method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
             verbose = getOption("verbose"), 
-            eval.only = FALSE, fail.value = NA, \dots)
+            eval.only = FALSE, fail.value = NA, transform = FALSE, \dots)
 \S4method{probe.match}{probe.matched.pomp}(object, start, est,
             probes, weights,
             nsim, seed = NULL,
             method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
             verbose = getOption("verbose"), 
-            eval.only = FALSE, fail.value, \dots)
+            eval.only = FALSE, fail.value, transform, \dots)
 probe.match.objfun(object, params, est, probes, nsim = 1,
-            seed = NULL, fail.value = NA, \dots)
+                   seed = NULL, fail.value = NA, transform = FALSE, \dots)
 
 }
 \arguments{
@@ -93,6 +93,10 @@ probe.match.objfun(object, params, est, probes, nsim = 1,
     optional scalar;
     if non-\code{NA}, this value is substituted for non-finite values of the objective function.
     It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).
+  }
+  \item{transform}{
+    logical;
+    if \code{TRUE}, optimization is performed on the transformed scale.
   }
   \item{\dots}{
     Additional arguments.

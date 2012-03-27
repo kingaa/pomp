@@ -4,14 +4,12 @@
 #include <Rmath.h>
 #include "pomp.h"
 
-double expit (double x) {return 1.0/(1.0+exp(-x));}
-
 #define TAU        (p[parindex[0]])
 #define GAMMA      (p[parindex[1]])
 #define EPS        (p[parindex[2]])
 #define DELTA      (p[parindex[3]])
 #define DELTA_I    (p[parindex[4]])
-#define OMEGA      (p[parindex[5]])
+#define LOGOMEGA   (p[parindex[5]])
 #define SD_BETA    (p[parindex[6]])
 #define BETATREND  (p[parindex[7]])
 #define LOGBETA    (p[parindex[8]])
@@ -41,7 +39,7 @@ void _cholmodel_norm_rmeasure (double *y, double *x, double *p,
 			       int ncovars, double *covars, double t)
 {
   double v, tol = 1.0e-18;
-  v = DEATHS*exp(TAU);
+  v = DEATHS*TAU;
   if ((COUNT > 0) || (!(R_FINITE(v)))) {
     DATADEATHS = R_NaReal;
   } else {
@@ -54,7 +52,7 @@ void _cholmodel_norm_dmeasure (double *lik, double *y, double *x, double *p, int
 			       int ncovars, double *covars, double t)
 {
   double v, tol = 1.0e-18;
-  v = DEATHS*exp(TAU);
+  v = DEATHS*TAU;
   if ((COUNT>0.0) || (!(R_FINITE(v)))) {
     *lik = tol;
   } else {
@@ -87,16 +85,9 @@ void _cholmodel_one (double *x, const double *p,
   double wanings;
   double passages[nrstage+1];
   double effI;
+  double eps;
   double beta;
   double omega;
-  double gamma;
-  double rho;
-  double clin;
-  double eps; 
-  double delta; 
-  double deltaI;
-  double sd_beta;
-  double alpha;
   double dw;
   const double *pt;
   int j;
@@ -108,68 +99,61 @@ void _cholmodel_one (double *x, const double *p,
     if (!(R_FINITE(pt[j]))) return;
   }
 
-  gamma = exp(GAMMA);
-  eps = exp(EPS)*NRSTAGE;
-  rho = exp(RHO);
-  delta = exp(DELTA);
-  deltaI = exp(DELTA_I);
-  clin = expit(CLIN);
-  sd_beta = exp(SD_BETA);
-  alpha = exp(ALPHA);
+  eps = EPS*NRSTAGE;
 
-  if (!(R_FINITE(gamma))) return;
+  if (!(R_FINITE(GAMMA))) return;
   if (!(R_FINITE(eps))) return;
-  if (!(R_FINITE(rho))) return;
-  if (!(R_FINITE(delta))) return;
-  if (!(R_FINITE(deltaI))) return;
-  if (!(R_FINITE(clin))) return;
-  if (!(R_FINITE(sd_beta))) return;
-  if (!(R_FINITE(alpha))) return;
+  if (!(R_FINITE(RHO))) return;
+  if (!(R_FINITE(DELTA))) return;
+  if (!(R_FINITE(DELTA_I))) return;
+  if (!(R_FINITE(CLIN))) return;
+  if (!(R_FINITE(SD_BETA))) return;
+  if (!(R_FINITE(ALPHA))) return;
   if (!(R_FINITE(BETATREND))) return;
 
   beta = exp(dot_product(nbasis,&SEASBASIS,&LOGBETA)+BETATREND*TREND);
-  omega = exp(dot_product(nbasis,&SEASBASIS,&OMEGA));
+  omega = exp(dot_product(nbasis,&SEASBASIS,&LOGOMEGA));
 
   if (!(R_FINITE(beta))) return;
   if (!(R_FINITE(omega))) return;
 
   dw = rnorm(0,sqrt(dt));	// white noise
 
-  effI = pow(INFECT/POP,alpha);
-  births = DPOPDT + delta*POP;	// births
+  effI = pow(INFECT/POP,ALPHA);
+  births = DPOPDT + DELTA*POP;	// births
 
-  passages[0] = gamma*INFECT;	// recovery
-  ideaths = delta*INFECT;	// natural I deaths
-  disease = deltaI*INFECT;	// disease death
-  rsdeaths = delta*RSHORT;	// natural Rs deaths
-  wanings = rho*RSHORT;		// loss of immunity
+  passages[0] = GAMMA*INFECT;	// recovery
+  ideaths = DELTA*INFECT;	// natural I deaths
+  disease = DELTA_I*INFECT;	// disease death
+  rsdeaths = DELTA*RSHORT;	// natural Rs deaths
+  wanings = RHO*RSHORT;		// loss of immunity
 
   for (pt = &RLONG, j = 0; j < nrstage; j++) {
-    rldeaths[j] = delta*pt[j];	// natural R deaths
+    rldeaths[j] = DELTA*pt[j];	// natural R deaths
     passages[j+1] = eps*pt[j];	// passage to the next immunity class
   }
 
-  infections = (omega+(beta+sd_beta*dw/dt)*effI)*SUSCEP; // infection
-  sdeaths = delta*SUSCEP;	// natural S deaths
+  infections = (omega+(beta+SD_BETA*dw/dt)*effI)*SUSCEP; // infection
+  sdeaths = DELTA*SUSCEP;	// natural S deaths
   if (infections > 0.0) {
     if ((infections+sdeaths)*dt > SUSCEP) { // too many leaving S class
       COUNT += 1.0e10;
       return;
     }
   } else {
-    if ((-clin*infections+disease+ideaths+passages[0])*dt > INFECT) { // too many leaving I class
+    if ((-CLIN*infections+disease+ideaths+passages[0])*dt > INFECT) { // too many leaving I class
       COUNT += 1.0e5;
       return;
     }
-    if ((-(1-clin)*infections+rsdeaths+wanings)*dt > RSHORT) { // too many leaving Rs class
+    if ((-(1-CLIN)*infections+rsdeaths+wanings)*dt > RSHORT) { // too many leaving Rs class
       COUNT += 1;
       return;
     }
   }
 
   SUSCEP += (births - infections - sdeaths + passages[nrstage] + wanings)*dt;
-  INFECT += (clin*infections - disease - ideaths - passages[0])*dt;
-  RSHORT += ((1-clin)*infections - rsdeaths - wanings)*dt;
+  INFECT += (CLIN*infections - disease - ideaths - passages[0])*dt;
+  RSHORT += ((1-CLIN)*infections - rsdeaths - wanings)*dt;
   for (j = 0; j < nrstage; j++) 
     (&RLONG)[j] += (passages[j] - passages[j+1] - rldeaths[j])*dt;
   DEATHS += disease*dt;		// cumulative deaths due to disease
@@ -181,7 +165,7 @@ void _cholmodel_one (double *x, const double *p,
 #undef EPS      
 #undef DELTA    
 #undef DELTA_I  
-#undef OMEGA    
+#undef LOGOMEGA    
 #undef SD_BETA  
 #undef BETATREND
 #undef LOGBETA  

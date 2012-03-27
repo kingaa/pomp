@@ -11,13 +11,13 @@
 require(pomp)
 
 mle <- c(
-         gamma=20.8, eps=19.1, rho=0,
-         delta=0.02, deltaI=0.06, clin=1,
-         alpha=1, beta.trend=-0.00498,
-         log.beta1=0.747, log.beta2=6.38, log.beta3=-3.436, log.beta4=4.23, log.beta5=3.33, log.beta6=4.549,
-         omega1=0.184, omega2=0.07857, omega3=0.0584, omega4=0.0091719, omega5=0.00020821, omega6=0.01236,
-         sd.beta=3.1267, tau=0.2296,
-         S.0=6.3457, I.0=3.8615, Rs.0=0, R1.0=0.0086226, R2.0=0.009941, R3.0=1.18243e-06,
+         gamma=20.8,eps=19.1,rho=0,
+         delta=0.02, deltaI=0.06, clin=1, alpha=1,
+         beta.trend=-0.00498,
+         log.beta1=0.747, log.beta2=6.38, log.beta3=-3.44, log.beta4=4.23, log.beta5=3.33, log.beta6=4.55,
+         log.omega1=log(0.184), log.omega2=log(0.0786), log.omega3=log(0.0584), log.omega4=log(0.00917), log.omega5=log(0.000208), log.omega6=log(0.0124),
+         sd.beta=3.13, tau=0.23,
+         S.0=0.621, I.0=0.378, Rs.0=0, R1.0=0.000843, R2.0=0.000972, R3.0=1.16e-07,
          nbasis=6, nrstage=3
          )
 
@@ -120,72 +120,38 @@ pomp(
      obsnames = "cholera.deaths",
      statenames = c("S","I","Rs","R1","M","W","count"),
      paramnames = c("tau","gamma","eps","delta","deltaI",
-       "omega1","sd.beta","beta.trend","log.beta1",
+       "log.omega1","sd.beta","beta.trend","log.beta1",
        "alpha","rho","clin","nbasis","nrstage"),
      covarnames = c("pop","dpopdt","seas.1","trend"),
+     all.state.names=c("S","I","Rs",paste("R",1:nrstage,sep=''),"M","W","count"),
+     comp.names=c("S","I","Rs",paste("R",1:nrstage,sep='')),
+     comp.ic.names=c("S.0","I.0","Rs.0",paste("R",1:nrstage,".0",sep='')),
      log.trans=c(                 # parameters to log transform
        "gamma","eps","rho","delta","deltaI","alpha",
        "tau","sd.beta",
-       paste("omega",seq(length=nbasis),sep=''),
-       "S.0","I.0","Rs.0","R1.0","R2.0","R3.0"
+       "S.0","I.0","Rs.0",paste("R",1:nrstage,".0",sep='')
        ),
      logit.trans="clin",               # parameters to logit transform
-     parameter.transform=function (params, log.trans, logit.trans, ...) {
+     parameter.transform=function (params, log.trans, logit.trans, comp.ic.names, ...) {
+       params[logit.trans] <- plogis(params[logit.trans])
+       params[log.trans] <- exp(params[log.trans])
+       params[comp.ic.names] <- params[comp.ic.names]/sum(params[comp.ic.names])
+       params
+     },
+     parameter.inv.transform=function (params, log.trans, logit.trans, comp.names, ...) {
        params[logit.trans] <- qlogis(params[logit.trans])
        params[log.trans] <- log(params[log.trans])
        params
      },
-     parameter.inv.transform=function (params, log.trans, logit.trans, ...) {
-       params[logit.trans] <- plogis(params[logit.trans])
-       params[log.trans] <- exp(params[log.trans])
-       params
-     },
-     initializer = function (params, t0, covars, nrstage, ...) {
-       all.state.names <- c("S","I","Rs","R1","R2","R3","M","W","count")
-       comp.names <- c("S","I","Rs",paste("R",1:nrstage,sep=''))
-       comp.ic.names <- paste(comp.names,"0",sep='.')
+     initializer = function (params, t0, covars, nrstage, comp.ic.names, comp.names, all.state.names, ...) {
        states <- numeric(length(all.state.names))
        names(states) <- all.state.names
        ## translate fractions into initial conditions
-       frac <- exp(params[comp.ic.names])
+       frac <- params[comp.ic.names]
        states[comp.names] <- round(covars['pop']*frac/sum(frac))
        states
      }
      ) -> dacca
 
-## Parameter transformations
-## Parameters are fit in the transformed space.
-## Positive parameters are log transformed, probabilities are logit transformed.
-## Initial conditions are parameterized in terms of log-transformed fractions in each compartment.
-dacca.transform <- function (params, dir = c("forward","inverse")) {
-  dir <- match.arg(dir)
-  r <- length(dim(params))
-  nm <- if (r>0) rownames(params) else names(params)
-  log.trans=c(                 # parameters to log transform
-    "gamma","eps","rho","delta","deltaI","alpha",
-    "tau","sd.beta",
-    grep("omega.$",nm,val=TRUE),
-    "S.0","I.0","Rs.0","R1.0","R2.0","R3.0"
-    )
-  logit.trans="clin"
-  logit <- function(p){log(p/(1-p))}      # (0,1) -> (-inf,inf)
-  expit <- function(r){1/(1+exp(-r))}     # (-inf,inf) -> (0,1)
-  par.trans.vec <- function (x) {
-    x[logit.trans] <- logit(x[logit.trans])
-    x[log.trans] <- log(x[log.trans])
-    x
-  }
-  par.untrans.vec <- function (x) {
-    x[logit.trans] <- expit(x[logit.trans])
-    x[log.trans] <- exp(x[log.trans])
-    x
-  }
-  switch(
-         dir,
-         forward=if (r > 1) apply(params,2:r,par.trans.vec) else par.trans.vec(params),
-         inverse=if (r > 1) apply(params,2:r,par.untrans.vec) else par.untrans.vec(params)
-         )
-}
-
-coef(dacca) <- dacca.transform(mle,dir="forward")
+coef(dacca) <- mle
 save(dacca,file="dacca.rda",compress="xz")

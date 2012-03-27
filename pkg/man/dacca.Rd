@@ -22,10 +22,12 @@ data(dacca)
 data(dacca)
 plot(dacca)
 #MLEs on the natural scale
+coef(dacca)
+#MLEs on the transformed scale
 coef(dacca,transform=TRUE)
 plot(simulate(dacca))
 # now change 'eps' and simulate again
-coef(dacca,"eps",transform=TRUE) <- 1
+coef(dacca,"eps") <- 1
 plot(simulate(dacca))
 }
 \references{

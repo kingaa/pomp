@@ -1,12 +1,12 @@
 nlf <- function (object, start, est, lags,
                  period = NA, tensor = FALSE,
                  nconverge = 1000, nasymp = 1000, 
-                 seed = 1066, transform = function(x)x,
+                 seed = 1066, transform = identity,
                  nrbf = 4, method = "subplex",
                  skip.se = FALSE, verbose = FALSE, gr = NULL, 
                  bootstrap = FALSE, bootsamp = NULL,
                  lql.frac = 0.1, se.par.frac = 0.1,
-                 eval.only = FALSE, ...) {
+                 eval.only = FALSE, transform.params = FALSE, ...) {
 
   ## Fit a POMP object using NLF
   ## v. 0.1, 3 Dec. 2007 
@@ -25,32 +25,38 @@ nlf <- function (object, start, est, lags,
   if (!is(object,'pomp'))
     stop("'object' must be a 'pomp' object")
 
-  if (!is.function(transform))
-    stop(sQuote("transform")," must be a function!")
+  transform <- match.fun(transform)
 
-  if (eval.only) est <- 1
+  if (eval.only) est <- 1L
+
+  if (missing(start)) start <- coef(object)
+
+  transform.params <- as.logical(transform.params)
+  if (transform.params)
+    params <- partrans(object,start,dir="inverse")
+  else
+    params <- start
 
   if (is.character(est)) {
-    if (!all(est%in%names(start)))
-      stop(sQuote("nlf")," error: parameters named in ",sQuote("est")," must exist in ",sQuote("start"))
-
-    par.index <- which(names(start)%in%est)
-
+    if (!all(est%in%names(params)))
+      stop("parameters named in ",sQuote("est")," must exist in ",sQuote("start"))
+    par.index <- which(names(params)%in%est)
   } else if (is.numeric(est)) {
     est <- as.integer(est)
-    if (any((est<1)|(est>length(start))))
-      stop(sQuote("nlf")," error: trying to estimate parameters that don't exist!")
-    par.index <- as.integer(est)
+    if (any((est<1)|(est>length(params))))
+      stop("indices in ",sQuote("est")," are not appropriate")
+    par.index <- est      
   }
 
-  if (!(is.numeric(lql.frac)&&(lql.frac>0)&&(lql.frac<1)))
-    stop(sQuote("nlf")," error: ",sQuote("lql.frac")," must be in (0,1)")
-
-  if (!(is.numeric(se.par.frac)&&(se.par.frac>0)&&(se.par.frac<1)))
-    stop(sQuote("nlf")," error: ",sQuote("se.par.frac")," must be in (0,1)")
-
-  params <- start
   guess <- params[par.index]
+
+  lql.frac <- as.numeric(lql.frac)
+  if ((lql.frac<=0)||(lql.frac>=1))
+    stop(sQuote("lql.frac")," must be in (0,1)")
+  
+  se.par.frac <- as.numeric(se.par.frac)
+  if ((se.par.frac<=0)||(se.par.frac>=1))
+    stop(sQuote("se.par.frac")," must be in (0,1)")
 
   dt.tol <- 1e-3
   times <- time(object,t0=FALSE)
@@ -73,6 +79,7 @@ nlf <- function (object, start, est, lags,
                       object=object,
                       params=params,
                       par.index=par.index,
+                      transform.params=transform.params,
                       times=times,
                       t0=t0,
                       lags=lags,
@@ -95,6 +102,7 @@ nlf <- function (object, start, est, lags,
                             object=object,
                             params=params,
                             par.index=par.index, 
+                            transform.params=transform.params,
                             times=times,
                             t0=t0,
                             lags=lags,
@@ -117,6 +125,7 @@ nlf <- function (object, start, est, lags,
                  object=object,
                  params=params,
                  par.index=par.index, 
+                 transform.params=transform.params,
                  times=times,
                  t0=t0,
                  lags=lags,
@@ -135,15 +144,19 @@ nlf <- function (object, start, est, lags,
   opt$est <- est
   opt$value <- -opt$value
   params[par.index] <- opt$par
-  opt$params <- params
+  opt$params <- if (transform.params) partrans(object,params,dir="forward") else params
   opt$par <- NULL
 
-  if (!skip.se) { ## compute estimated Variance-Covariance matrix of fitted parameters 
+  if (!skip.se) { ## compute estimated Variance-Covariance matrix of fitted parameters
     fitted <- params[par.index]
     nfitted <- length(fitted)
     Jhat <- matrix(0,nfitted,nfitted)
     Ihat <- Jhat
-    f0 <- NLF.LQL(fitted,object=object, params=params, par.index=par.index, 
+    f0 <- NLF.LQL(fitted,
+                  object=object,
+                  params=params,
+                  par.index=par.index, 
+                  transform.params=transform.params,
                   times=times, t0=t0,
                   lags=lags, period=period, tensor=tensor, seed=seed,
                   transform=transform, nrbf=4, 
@@ -165,24 +178,28 @@ nlf <- function (object, start, est, lags,
       guess <- fitted
       guess[i] <- fitted[i]-sqrt(2)*h*abs(fitted[i])  
       Fvals[1] <- mean(NLF.LQL(guess,object=object, params=params, par.index=par.index, 
+                               transform.params=transform.params,
                                times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform=transform,
                                nrbf=4, verbose=FALSE),na.rm=T)
       guess <- fitted
       guess[i] <- fitted[i]-h*abs(fitted[i])
       Fvals[2] <- mean(NLF.LQL(guess,object=object, params=params, par.index=par.index, 
+                               transform.params=transform.params,
                                times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform=transform, nrbf=4, 
                                verbose=FALSE),na.rm=T)
       guess <- fitted
       guess[i] <- fitted[i]+h*abs(fitted[i])
       Fvals[4] <- mean(NLF.LQL(guess,object=object, params=params, par.index=par.index, 
+                               transform.params=transform.params,
                                times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform=transform, nrbf=4, 
                                verbose=FALSE),na.rm=T)
       guess <- fitted
       guess[i] <- fitted[i]+sqrt(2)*h*abs(fitted[i])
       Fvals[5] <- mean(NLF.LQL(guess,object=object, params=params, par.index=par.index, 
+                               transform.params=transform.params,
                                times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform=transform, nrbf=4, 
                                verbose=FALSE),na.rm=T)
@@ -201,12 +218,14 @@ nlf <- function (object, start, est, lags,
       guess.up <- fitted
       guess.up[i] <- guess.up[i]+eps[i]
       f.up <- NLF.LQL(guess.up,object=object, params=params, par.index=par.index, 
+                      transform.params=transform.params,
                       times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                       seed=seed, transform=transform, nrbf=4, 
                       verbose=FALSE)
       F.up <- mean(f.up,na.rm=T)
 
       f.up2 <- NLF.LQL(guess.up,object=object, params=params, par.index=par.index, 
+                       transform.params=transform.params,
                        times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                        seed=seed, transform=transform, nrbf=4, 
                        verbose=FALSE)
@@ -217,6 +236,7 @@ nlf <- function (object, start, est, lags,
       guess.down <- fitted
       guess.down[i] <- guess.down[i]-eps[i]
       f.down <- NLF.LQL(guess.down,object=object, params=params, par.index=par.index, 
+                        transform.params=transform.params,
                         times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                         seed=seed, transform=transform, nrbf=4, 
                         verbose=FALSE)
@@ -236,6 +256,7 @@ nlf <- function (object, start, est, lags,
         guess.uu[i] <- guess.uu[i]+eps[i]
         guess.uu[j] <- guess.uu[j]+eps[j]
         F.uu <- mean(NLF.LQL(guess.uu,object=object, params=params, par.index=par.index,
+                             transform.params=transform.params,
                              times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform=transform, nrbf=4, 
                              verbose=FALSE),na.rm=T)
@@ -244,6 +265,7 @@ nlf <- function (object, start, est, lags,
         guess.ud[i] <- guess.ud[i]+eps[i]
         guess.ud[j] <- guess.ud[j]-eps[j]
         F.ud <- mean(NLF.LQL(guess.ud,object=object, params=params, par.index=par.index,
+                             transform.params=transform.params,
                              times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform=transform, nrbf=4, 
                              verbose=FALSE),na.rm=T) 
@@ -252,6 +274,7 @@ nlf <- function (object, start, est, lags,
         guess.du[i] <- guess.du[i]-eps[i]
         guess.du[j] <- guess.du[j]+eps[j]
         F.du <- mean(NLF.LQL(guess.du,object=object, params=params, par.index=par.index,
+                             transform.params=transform.params,
                              times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform=transform, nrbf=4, 
                              verbose=FALSE),na.rm=T) 
@@ -260,6 +283,7 @@ nlf <- function (object, start, est, lags,
         guess.dd[i] <- guess.dd[i]-eps[i]
         guess.dd[j] <- guess.dd[j]-eps[j] 
         F.dd <- mean(NLF.LQL(guess.dd,object=object, params=params, par.index=par.index,
+                             transform.params=transform.params,
                              times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform=transform, nrbf=4,
                              verbose=FALSE),na.rm=T) 
@@ -272,13 +296,14 @@ nlf <- function (object, start, est, lags,
         Ihat[j,i] <- Ihat[i,j]  
       }
     }
+    opt$transform.params <- transform.params
     opt$Jhat <- Jhat
     opt$Ihat <- Ihat
     negJinv <- -solve(Jhat)
     Qhat <- negJinv%*%Ihat%*%negJinv
     opt$Qhat <- Qhat
     opt$se <- sqrt(diag(Qhat))/sqrt(npts)
-    names(opt$se) <- names(start)[par.index]
+    names(opt$se) <- names(params)[par.index]
     opt$npts <- npts
   }
   

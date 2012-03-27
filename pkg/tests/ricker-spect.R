@@ -31,7 +31,7 @@ plot(sp)
 summary(sp)
 
 po <- ricker
-coef(po,"log.phi") <- log(30)
+coef(po,"phi") <- 30
 sp <- spect(
             po,
             kernel.width=3,

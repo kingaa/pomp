@@ -1,6 +1,6 @@
 
-R version 2.13.1 (2011-07-08)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.14.2 (2012-02-29)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -36,8 +36,8 @@ Loading required package: deSolve
 > plot(sp)
 > summary(sp)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -51,8 +51,8 @@ $pvals
 > plot(spp)
 > summary(spp)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  2.302585  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  10.0   7.0   0.0 
 
 $nsim
 [1] 1000
@@ -88,8 +88,8 @@ $msg
 > plot(sp)
 > summary(sp)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 1.609438 -1.203973  2.302585  7.000000  0.000000 
+    log.r     sigma       phi       N.0       e.0 
+ 1.609438  0.300000 10.000000  7.000000  0.000000 
 
 $nsim
 [1] 1000
@@ -100,7 +100,7 @@ $pvals
 
 > 
 > po <- ricker
-> coef(po,"log.phi") <- log(30)
+> coef(po,"phi") <- 30
 > sp <- spect(
 +             po,
 +             kernel.width=3,
@@ -110,8 +110,8 @@ $pvals
 > plot(sp)
 > summary(sp)
 $coef
-    log.r log.sigma   log.phi       N.0       e.0 
- 3.800000 -1.203973  3.401197  7.000000  0.000000 
+log.r sigma   phi   N.0   e.0 
+  3.8   0.3  30.0   7.0   0.0 
 
 $nsim
 [1] 1000

@@ -20,7 +20,7 @@ setMethod(
                                 partrans(
                                          object,
                                          params=t(object@conv.rec[,pars.proper]),
-                                         dir="inverse"
+                                         dir="forward"
                                          )
                                 ),
                               object@conv.rec[,pars.improper]

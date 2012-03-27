@@ -4,25 +4,25 @@
 
 #include "pomp.h"
 
-#define LOG_R       (p[parindex[0]]) // growth rate
-#define LOG_SIGMA   (p[parindex[1]]) // process noise level
-#define LOG_PHI     (p[parindex[2]]) // measurement scale parameter
+#define LOG_R   (p[parindex[0]]) // log growth rate
+#define SIGMA   (p[parindex[1]]) // process noise level
+#define PHI     (p[parindex[2]]) // measurement scale parameter
 
-#define N           (x[stateindex[0]]) // population size
-#define E           (x[stateindex[1]]) // process noise
+#define N       (x[stateindex[0]]) // population size
+#define E       (x[stateindex[1]]) // process noise
 
-#define Y           (y[obsindex[0]]) // observed population size
+#define Y       (y[obsindex[0]]) // observed population size
 
 void _ricker_poisson_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
 			       int *obsindex, int *stateindex, int *parindex, int *covindex,
 			       int ncovars, double *covars, double t) {
-  *lik = dpois(Y,exp(LOG_PHI)*N,give_log);
+  *lik = dpois(Y,PHI*N,give_log);
 }
 
 void _ricker_poisson_rmeasure (double *y, double *x, double *p, 
 			       int *obsindex, int *stateindex, int *parindex, int *covindex,
 			       int ncovars, double *covars, double t) {
-  Y = rpois(exp(LOG_PHI)*N);
+  Y = rpois(PHI*N);
 }
 
 #undef Y
@@ -33,8 +33,7 @@ void _ricker_simulator (double *x, const double *p,
 			int covdim, const double *covar, 
 			double t, double dt)
 {
-  double sigma = exp(LOG_SIGMA);
-  double e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
+  double e = (SIGMA > 0.0) ? rnorm(0,SIGMA) : 0.0;
   N = exp(LOG_R+log(N)-N+e);
   E = e;
 }
@@ -51,5 +50,5 @@ void _ricker_skeleton (double *f, double *x, const double *p,
 #undef E
 
 #undef LOG_R
-#undef LOG_SIGMA
-#undef LOG_PHI
+#undef SIGMA
+#undef PHI

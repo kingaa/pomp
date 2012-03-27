@@ -33,6 +33,7 @@ mif1 <- mif(ou2,Nmif=30,start=guess1,
 
 mif2 <- mif(ou2,Nmif=30,start=guess2,
             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+            transform=TRUE,
             rw.sd=c(
               x1.0=5,x2.0=5,
               alpha.2=0.1,alpha.3=0.1
