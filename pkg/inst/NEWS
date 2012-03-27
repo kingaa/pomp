@@ -1,4 +1,16 @@
 NEWS
+0.41-1
+     o	New arguments in 'mif', 'nlf', 'bsmc', 'pmcmc', 'probe-match', and 'traj-match' allow the estimation to be done on a transformed parameter space.
+     	When 'transform=TRUE' in these commands ('transform.params=TRUE' for 'nlf'), estimation is performed on the transformed parameter space.
+	This is described and demonstrated in the 'intro_to_pomp' vignette.
+	The data()-loadable examples have been re-implemented to make use of this facility.
+	Note that this new functionality makes it unnecessary to "un-transform" model parameters within the user-specified 'rprocess', 'dprocess', 'rmeasure', 'dmeasure', 'skeleton', and 'initializer' codes.
+
+     o	The Bayesian sequential Monte Carlo command 'bsmc' now returns not a list but an object of class 'bsmcd.pomp'.
+     	A 'plot' method for objects of this class now exists.
+	Also, the parameter posterior means are now stored in the 'params' slot of the 'bsmcd.pomp' object:
+	access them with the 'coef' command as usual.
+
 0.40-9
      o	Setting the new argument 'as.data.frame' to 'TRUE' in 'simulate' and 'trajectory' causes the results to be returned as a data-frame.
 

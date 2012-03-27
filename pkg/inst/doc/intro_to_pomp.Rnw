@@ -527,7 +527,8 @@ gompertz <- pomp(
                  },
                  parameter.inv.transform=function(params,...){
                    params <- log(params[c("r","K","tau","sigma","X.0")])
-                   names(params) <- c("log.r","log.K","log.tau","log.sigma","log.X.0")
+                   names(params) <- c("log.r","log.K","log.tau",
+                                      "log.sigma","log.X.0")
                    params
                  }
                  )
@@ -1380,9 +1381,76 @@ if (file.exists(binary.file)) {
 \clearpage
 \section{Bayesian sequential Monte Carlo: \code{bsmc}}
 
-\citet{Liu2001b}.  To be added.
+The approximate Bayesian sequential Monte Carlo method of \citet{Liu2001b} is implemented in \pkg{pomp}.
+The following demonstrates its use on the Ricker model.
+
+First, we draw a sample from our prior distribution.
+Here, we'll use uniform priors on two model parameters ($\log{r}$ and $\sigma$), leaving the others fixed at their true values.
+<<bsmc-example-flat-prior-1,echo=F,eval=F>>=
+require(pomp)
+data(ricker)
+set.seed(136872209L)
+@ 
+We'll use 10,000 particles, so we'll need that many samples from the prior distribution.
+<<bsmc-example-flat-prior-2,eval=F>>=
+Np <- 10000
+params <- parmat(coef(ricker),nrep=Np)
+params["log.r",] <- runif(n=Np,min=2,max=5)
+params["sigma",] <- runif(n=Np,min=0.1,max=1)
+@ 
+Now \code{params} holds these 10,000 samples.
+The following runs the sequential Monte Carlo algorithm.
+Note that, by specifying \code{transform=TRUE}, we cause the estimation to proceed on the transformed scale.
+<<bsmc-example-flat-prior-3,eval=F>>=
+fit <- bsmc(ricker,params=params,transform=TRUE,
+            est=c("log.r","log.sigma"),smooth=0.2)
+@ 
+<<bsmc-example-flat-prior-eval,eval=T,echo=F>>=
+binary.file <- "bsmc-ricker-flat-prior.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<bsmc-example-flat-prior-1>>
+<<bsmc-example-flat-prior-2>>
+<<bsmc-example-flat-prior-3>>
+  save(fit,file=binary.file,compress="xz")
+}
+@ 
+Fig.~\ref{fig:bsmc-example-flat-prior} shows the results of this computation.
+Obtain the posterior means of the parameters by doing
+<<bsmc-example-flat-prior-coef>>=
+signif(coef(fit),digits=2)
+@ 
+Note that these are reported on the natural (i.e., untransformed) scale.
+
+\begin{figure}
+<<bsmc-example-flat-prior-plot,fig=T,pdf=F,png=T,height=6,width=6,echo=F>>=
+  plot(fit,thin=5000)
+@ 
+\caption{
+  Results of \code{bsmc} on the Ricker model.
+  The off-diagonal panels show 5000 samples from the prior (grey) and posterior (blue) distributions.
+  The diagonal panels show histograms of the marginal posterior distributions for each of the parameters.
+  Note that these are shown on the transformed scale.
+  This plot was produced by executing \code{plot(fit,thin=5000)}.
+  \label{fig:bsmc-example-flat-prior}
+}
+\end{figure}
+
+To repeat the procedure with log-normal priors on $r$ and $\sigma$, one might do the following.
+<<bsmc-example-normal-prior>>=
+## normal prior on log.r
+params["log.r",] <- rnorm(n=Np,mean=coef(ricker,"log.r"),sd=3)
+## log-normal prior on sigma
+params["sigma",] <- rlnorm(n=Np,meanlog=log(coef(ricker,"sigma")),
+                           sdlog=5)
+fit <- bsmc(ricker,params=params,transform=TRUE,
+            est=c("log.r","log.sigma"),smooth=0.2)
+signif(coef(fit),digits=2)
+@ 
 
 
+\clearpage
 \section{Particle Markov chain Monte Carlo: \code{pmcmc}}
 
 \citet{Andrieu2010}.  To be added.

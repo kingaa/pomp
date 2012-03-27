@@ -1,5 +1,217 @@
+2012-03-27  kingaa
+
+	* [r632] R/bsmc.R, inst/TODO, man/bsmc.Rd: - fix bug in plot method
+	  for 'bmscd.pomp'
+	  - parameter posterior means are now stored in the 'params' slot
+	  of 'bsmcd.pomp' objects
+	* [r631] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/manual.pdf: - compress the manual and fix some typos in
+	  the intro vignette
+	* [r630] tests/ricker-bsmc.R, tests/ricker-bsmc.Rout.save: - units
+	  tests for new 'bsmc' facilities
+	* [r629] DESCRIPTION, R/bsmc.R, R/mif-class.R, R/mif-methods.R,
+	  R/mif.R, R/nlf-objfun.R, R/nlf.R, R/pfilter.R, R/pmcmc.R,
+	  R/pomp.R, R/probe-match.R, R/traj-match.R, data/blowflies.rda,
+	  data/dacca.rda, data/euler.sir.rda, data/gillespie.sir.rda,
+	  data/gompertz.rda, data/ou2.rda, data/ricker.rda, data/rw2.rda,
+	  data/verhulst.rda, inst/TODO, inst/data-R/dacca.R,
+	  inst/data-R/gompertz.R, inst/data-R/ricker.R, inst/data-R/sir.R,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/gompertz-multi-mif.rda, inst/doc/gompertz-trajmatch.rda,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/manual.pdf, inst/doc/nlf-block-boot.rda,
+	  inst/doc/nlf-boot.rda, inst/doc/nlf-fit-from-truth.rda,
+	  inst/doc/nlf-fits.rda, inst/doc/nlf-lag-tests.rda,
+	  inst/doc/nlf-multi-short.rda, inst/doc/ricker-mif.rda,
+	  inst/doc/ricker-probe-match.rda, man/bsmc.Rd, man/dacca.Rd,
+	  man/mif-class.Rd, man/mif.Rd, man/nlf.Rd, man/pmcmc.Rd,
+	  man/probe.Rd, man/sir.Rd, man/traj-match.Rd, src/cholmodel.c,
+	  src/gompertz.c, src/ricker.c, src/sir.c, tests/dacca.R,
+	  tests/dacca.Rout.save, tests/dimchecks.R,
+	  tests/dimchecks.Rout.save, tests/gillespie.R,
+	  tests/gillespie.Rout.save, tests/gompertz.R,
+	  tests/gompertz.Rout.save, tests/ou2-mif.R,
+	  tests/ou2-mif.Rout.save, tests/ou2-pmcmc.R,
+	  tests/ou2-trajmatch.Rout.save, tests/partrans.R,
+	  tests/partrans.Rout.save, tests/pfilter.R,
+	  tests/pfilter.Rout.save, tests/pomppomp.R,
+	  tests/pomppomp.Rout.save, tests/ricker-probe.R,
+	  tests/ricker-probe.Rout.save, tests/ricker-spect.R,
+	  tests/ricker-spect.Rout.save, tests/ricker.R,
+	  tests/ricker.Rout.save, tests/skeleton.R,
+	  tests/skeleton.Rout.save, tests/steps.R, tests/steps.Rout.save: -
+	  put parameter transformation options into 'mif', 'bsmc', 'pmcmc',
+	  'probe-match', 'traj-match', and 'nlf'
+	  - reverse direction of parameter transformations in
+	  data()-loadable examples
+	  - update documentation
+	  - make 'bsmc' into an S4 method
+	  - plot method for 'bsmcd.pomp' objects
+
+2012-03-21  kingaa
+
+	* [r628] DESCRIPTION, R/simulate-pomp.R: - bug fix in simulate code
+	  (with as.data.frame argument)
+
+2012-03-15  kingaa
+
+	* [r627] DESCRIPTION, R/simulate-pomp.R, R/trajectory-pomp.R,
+	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
+	  data/ricker.rda, data/rw2.rda, data/verhulst.rda, inst/NEWS,
+	  inst/TODO, inst/data-R/euler.sir.R, inst/data-R/gillespie.sir.R,
+	  inst/data-R/sir.R, man/simulate-pomp.Rd, man/sir.Rd,
+	  man/trajectory-pomp.Rd, tests/dacca.R, tests/dacca.Rout.save,
+	  tests/ricker.R, tests/ricker.Rout.save: - add new 'as.data.frame'
+	  argument to 'simulate' and 'trajectory'
+	  - consolidate both SIR models in one inst/data-R file
+
+2012-03-09  kingaa
+
+	* [r626] DESCRIPTION, R/pomp-methods.R, inst/TODO, src/partrans.c,
+	  src/simulate.c, tests/ou2-procmeas.Rout.save: - minor bugfixes
+	* [r625] DESCRIPTION, NAMESPACE, R/init-state-pomp.R, R/pomp-fun.R,
+	  R/pomp-methods.R, R/pomp.R, data/blowflies.rda, data/dacca.rda,
+	  data/euler.sir.rda, data/gillespie.sir.rda, data/gompertz.rda,
+	  data/ou2.rda, data/ricker.rda, data/rw2.rda, data/verhulst.rda,
+	  inst/NEWS, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/gompertz-multi-mif.rda, inst/doc/gompertz-trajmatch.rda,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/nlf-block-boot.rda,
+	  inst/doc/nlf-boot.rda, inst/doc/nlf-fit-from-truth.rda,
+	  inst/doc/nlf-fits.rda, inst/doc/nlf-lag-tests.rda,
+	  inst/doc/nlf-multi-short.rda, inst/doc/ricker-mif.rda,
+	  inst/doc/ricker-probe-match.rda, inst/include/pomp.h,
+	  man/pomp-class.Rd, src/dmeasure.c, src/dprocess.c,
+	  src/initstate.c, src/partrans.c, src/pomp.h, src/pomp_internal.h,
+	  src/rmeasure.c, src/rprocess.c, src/skeleton.c,
+	  tests/dimchecks.R, tests/dimchecks.Rout.save, tests/logistic.R,
+	  tests/logistic.Rout.save, tests/ou2-procmeas.R,
+	  tests/ou2-procmeas.Rout.save, tests/rw2.Rout.save,
+	  tests/sir.Rout.save: - parameter transformations are handled
+	  through 'partrans'
+	  - all the horsemen now recycle parameters or states as
+	  appropriate
+	* [r624] man/pomp-methods.Rd: - update documentation
+	* [r623] R/mif-methods.R: - use new 'partrans' method
+
+2012-03-08  kingaa
+
+	* [r622] src/euler.c: - fix incorrect comment
+
+2012-03-07  kingaa
+
+	* [r621] R/pomp-fun.R: - minor tweak
+	* [r620] DESCRIPTION, inst/NEWS, man/blowflies.Rd, man/pfilter.Rd:
+	  - update documentation of 'blowflies'
+	  - correct error in 'pfilter' documentation
+
+2012-03-06  kingaa
+
+	* [r619] DESCRIPTION, R/parmat.R, inst/NEWS, man/parmat.Rd: -
+	  extend functionality of 'parmat' slightly
+
+2012-02-15  kingaa
+
+	* [r618] R/probe-match.R, inst/NEWS: - same error as before, fixed
+	  now in 'probe.match'
+	* [r617] R/probe.R, inst/NEWS: - catch error in 'probe' when nsim <
+	  nprobes
+	* [r616] DESCRIPTION, data/blowflies.rda, data/dacca.rda,
+	  data/euler.sir.rda, data/gillespie.sir.rda, data/gompertz.rda,
+	  data/ou2.rda, data/ricker.rda, data/rw2.rda, data/verhulst.rda,
+	  inst/NEWS, inst/data-R/gillespie.sir.R: - fix the Gillespie
+	  example
+	* [r615] inst/NEWS: - fix NEWS file
+
+2012-02-14  kingaa
+
+	* [r614] DESCRIPTION: - back off of using svn keywords for the Date
+	  field
+	* [r613] tests/partrans.R, tests/partrans.Rout.save: - add some
+	  units tests
+	* [r612] DESCRIPTION, R/pomp-methods.R, R/pomp.R, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - When a pomp object is updated using 'pomp', the 'params' slot
+	  will now be copied over (appropriately transformed). Before, it
+	  was simply dropped.
+
+2012-02-10  kingaa
+
+	* [r611] DESCRIPTION: - use svn keywords on date & svn revision
+	* [r610] inst/NEWS: - cosmetics
+
+2012-02-09  kingaa
+
+	* [r609] tests/ou2-mif-fp.R, tests/ou2-mif-fp.Rout.save: - some
+	  unit tests for new 'mif' functionality
+	* [r608] .Rinstignore, DESCRIPTION, R/mif.R, inst/NEWS, man/mif.Rd,
+	  src/dprocess.c, src/euler.c, src/rmeasure.c, src/skeleton.c: -
+	  more informative error messages in cases where dimensionality of
+	  state space or data space differ internally
+	  - more flexible choice of update methods in 'mif' via the new
+	  argument 'method' which replaces the old 'weighted' flag
+	  - the 'weighted' flag of 'mif' is now deprecated
+
+2012-02-06  kingaa
+
+	* [r607] inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf,
+	  inst/doc/manual.pdf: - minor changes
+
+2012-01-19  kingaa
+
+	* [r606] man/probe.Rd: - cosmetology
+	* [r605] R/version.R: - add a 'version.string' to the return list
+	* [r604] DESCRIPTION, NAMESPACE, R/probe-match.R, R/sannbox.R,
+	  R/traj-match.R, inst/NEWS, inst/doc/manual.pdf, man/probe.Rd,
+	  man/sannbox.Rd, man/traj-match.Rd, tests/ou2-trajmatch.R,
+	  tests/ou2-trajmatch.Rout.save, tests/ricker-probe.Rout.save: -
+	  add new 'traj.match.objfun' and 'probe.match.objfun' functions
+	  - rearrange existing 'traj.match' and 'probe.match' codes to make
+	  use of these
+	  - an improved 'sannbox' algorithm is now exported
+	* [r603] R/bsmc.R: - use SVD method in 'rmvnorm' rather than
+	  'eigen' method
+	* [r602] DESCRIPTION, NAMESPACE, inst/NEWS:
+	* [r601] inst/doc/Makefile, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf: - use png flag for big files
+	* [r600] tests/ou2-bsmc.R, tests/ou2-bsmc.Rout.save: - change the
+	  seed in an attempt to forestall errors under windows R-devel
+	* [r599] man/ricker.Rd: - cosmetics
+	* [r598] R/eulermultinom.R, inst/include/pomp.h,
+	  man/eulermultinom.Rd, src/eulermultinom.c, src/pomp.h: - add an R
+	  interface to the 'rgammawn' function
+	* [r597] .Rinstignore: - add .Rinstignore file
+
+2012-01-16  kingaa
+
+	* [r596] DESCRIPTION, inst/doc/gompertz-multi-mif.rda,
+	  inst/doc/intro_to_pomp.Rnw, inst/doc/intro_to_pomp.pdf: - fix
+	  SD/SE of pfilter log-likelihoods in 'intro_to_pomp'
+
+2012-01-15  kingaa
+
+	* [r595] DESCRIPTION, inst/NEWS: - update DESCRIPTION & NEWS files
+	* [r594] src/pomp.h: - add two inline helper functions: one for
+	  doing the exponential to geometric rate correction (see He et al.
+	  2010),
+	  the other for computing the increment of an integrated gamma
+	  white-noise process (see Breto et al.)
+
+2012-01-12  kingaa
+
+	* [r593] R/bsmc.R, inst/NEWS, man/bsmc.Rd, tests/ou2-bsmc.R,
+	  tests/ou2-bsmc.Rout.save: - Pierre Jacob's contributions to
+	  'bsmc'
+	* [r592] DESCRIPTION:
+	* [r591] man/mif.Rd, man/slice-design.Rd: - minor documentation
+	  fixes
+
 2012-01-11  kingaa
 
+	* [r590] DESCRIPTION, inst/ChangeLog, inst/NEWS, tests/steps.R,
+	  tests/steps.Rout.save: - version 0.40-2
 	* [r589] src/euler.c: - bug fix: inappropriate choice of number of
 	  steps in some circumstances
 
