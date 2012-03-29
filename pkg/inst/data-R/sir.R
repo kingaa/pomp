@@ -27,19 +27,19 @@ po <- pomp(
              ),
            zeronames=c("cases"),
            comp.names=c("S","I","R"),
+           ic.names=c("S.0","I.0","R.0"),
            parameter.transform="_sir_par_trans",
            parameter.inv.transform="_sir_par_untrans",
-           initializer=function(params, t0, comp.names, ...) {
-             ic.names <- paste(comp.names,".0",sep="")
+           initializer=function(params, t0, comp.names, ic.names, ...) {
              snames <- c("S","I","R","cases","W")
              fracs <- params[ic.names]
              x0 <- numeric(length(snames))
              names(x0) <- snames
              x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
-             x0["cases"] <- 0
              x0
            }
            )
+
 coef(po) <- c(
           gamma=26,mu=0.02,iota=0.01,
           nbasis=3,degree=3,period=1,
@@ -54,13 +54,11 @@ simulate(po,nsim=1,seed=329348545L) -> euler.sir
 
 save(euler.sir,file="euler.sir.rda",compress="xz")
 
+time(po) <- seq(from=0,to=10,by=1/52)
+
 po <- pomp(
-           data=data.frame(
-             time=seq(from=0,to=10,by=1/52),
-             reports=NA
-             ),
-           times="time",
-           t0=0,
+           po,
+           statenames=c("S","I","R","N","cases"),
            rprocess=gillespie.sim(
              rate.fun="_sir_rates",
              PACKAGE="pomp",
@@ -81,25 +79,13 @@ po <- pomp(
                rdeath=c(0,0,1,0,0)
                )
              ),
-           obsnames="reports",
-           statenames=c("S","I","R","N","cases"),
-           paramnames=c(
-             "gamma","mu","iota",
-             "log.beta1","beta.sd","pop","rho",
-             "nbasis","degree","period",
-             "S.0","I.0","R.0"
-             ),
-           zeronames=c("cases"),
            measurement.model=reports~binom(size=cases,prob=rho),
-           parameter.transform="_sir_par_trans",
-           parameter.inv.transform="_sir_par_untrans",
-           initializer=function(params, t0, ...){
-             comp.names <- c("S","I","R")
-             icnames <- paste(comp.names,"0",sep=".")
-             snames <- c("S","I","R","N","cases")
-             fracs <- params[icnames]
-             x0 <- numeric(length(snames))
-             names(x0) <- snames
+           comp.names=c("S","I","R"),
+           ic.names=c("S.0","I.0","R.0"),
+           initializer=function(params, t0, comp.names, ic.names, ...) {
+             x0 <- numeric(5)
+             names(x0) <- c("S","I","R","N","cases")
+             fracs <- params[ic.names]
              x0["N"] <- params["pop"]
              x0[comp.names] <- round(params["pop"]*fracs/sum(fracs))
              x0
@@ -107,23 +93,14 @@ po <- pomp(
            )
 
 coef(po) <- c(
-          gamma=24,
-          mu=1/70,
-          iota=0.1,
-          log.beta1=log(330),
-          log.beta2=log(410),
-          log.beta3=log(490),
-          rho=0.1,
-          S.0=0.05,
-          I.0=1e-4,
-          R.0=0.95,
-          pop=1000000,
-          nbasis=3,
-          degree=3,
-          period=1,
-          beta.sd=0
-          )
-
+              gamma=24,mu=1/70,iota=0.1,
+              log.beta1=log(330),log.beta2=log(410),log.beta3=log(490),
+              rho=0.1,
+              S.0=0.05,I.0=1e-4,R.0=0.95,
+              pop=1000000,
+              nbasis=3,degree=3,period=1,
+              beta.sd=0
+              )
 
 simulate(
          po,
@@ -132,3 +109,78 @@ simulate(
          ) -> gillespie.sir
 
 save(gillespie.sir,file="gillespie.sir.rda",compress="xz")
+
+tc <- textConnection("
+day;flu
+1;3
+2;8
+3;28
+4;76
+5;222
+6;293
+7;257
+8;237
+9;192
+10;126
+11;70
+12;28
+13;12
+14;5
+")
+
+flu <- read.csv2(file=tc)
+close(tc)
+
+po <- pomp(
+           data=flu,
+           times="day",
+           t0=0,
+           rprocess=euler.sim(
+             step.fun="_sir_euler_simulator",
+             delta.t=1/12,
+             PACKAGE="pomp"
+             ),
+           skeleton.type="vectorfield",
+           skeleton="_sir_ODE",
+           measurement.model=flu~norm(mean=rho*cases,sd=1+sigma*cases),
+           PACKAGE="pomp",
+           obsnames = c("flu"),
+           statenames=c("S","I","R","cases","W"),
+           paramnames=c(
+             "gamma","mu","iota",
+             "beta1","beta.sd","pop","rho",
+             "nbasis","degree","period"
+             ),
+           zeronames=c("cases"),
+           comp.names=c("S","I","R"),
+           ic.names=c("S.0","I.0","R.0"),
+           log.transformed=c(
+             "gamma","mu","iota","sigma",
+             "beta1","beta.sd",
+             "S.0","I.0","R.0"
+             ),
+           logit.transformed="rho",
+           parameter.transform="_sir_par_trans",
+           parameter.inv.transform="_sir_par_untrans",
+           initializer=function(params, t0, comp.names, ic.names, ...) {
+             snames <- c("S","I","R","cases","W")
+             fracs <- params[ic.names]
+             x0 <- numeric(length(snames))
+             names(x0) <- snames
+             x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
+             x0
+           }
+           )
+
+coef(po) <- c(
+              gamma=1/3,mu=0.0,iota=0.0,
+              nbasis=1,degree=0,period=1,
+              beta1=1.4,
+              beta.sd=0,
+              pop=1400,
+              rho=0.9,sigma=3.6,
+              S.0=0.999,I.0=0.001,R.0=0
+              )
+
+bbs <- po
+save(bbs,file="bbs.rda",compress="xz")

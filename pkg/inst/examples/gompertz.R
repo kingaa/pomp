@@ -8,10 +8,10 @@ pomp(
      t0=0,
      rprocess=discrete.time.sim( # a discrete-time process (see ?plugins)
        step.fun=function (x, t, params, delta.t, ...) { # this function takes one step t -> t+delta.t
-         ## unpack and untransform the parameters:
-         r <- exp(params["log.r"])
-         K <- exp(params["log.K"])
-         sigma <- exp(params["log.sigma"])
+         ## unpack the parameters:
+         r <- params["r"]
+         K <- params["K"]
+         sigma <- params["sigma"]
          ## the state at time t:
          X <- x["X"]
          ## generate a log-normal random variable:
@@ -24,8 +24,8 @@ pomp(
        delta.t=1                  # the size of the discrete time-step
        ),
      rmeasure=function (x, t, params, ...) {# the measurement model simulator
-       ## unpack and untransform the parameters:
-       tau <- exp(params["log.tau"])
+       ## unpack the parameters:
+       tau <- params["tau"]
        ## state at time t:
        X <- x["X"]
        ## generate a simulated observation:
@@ -33,8 +33,8 @@ pomp(
        return(y)
      },
      dmeasure=function (y, x, t, params, log, ...) { # measurement model density
-       ## unpack and untransform the parameters:
-       tau <- exp(params["log.tau"])
+       ## unpack the parameters:
+       tau <- params["log.tau"]
        ## state at time t:
        X <- x["X"]
        ## observation at time t:
@@ -43,13 +43,13 @@ pomp(
        f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
        return(f)
      },
-     parameter.transform=function(params,...){
-       params <- c(params["X.0"],log(params[c("r","K","tau","sigma")]))
-       names(params) <- c("X.0","log.r","log.K","log.tau","log.sigma")
+     parameter.inv.transform=function(params,...){
+       params <- log(params[c("X.0","r","K","tau","sigma")])
+       names(params) <- c("log.X.0","log.r","log.K","log.tau","log.sigma")
        params
      },
-     parameter.inv.transform=function(params,...){
-       params <- c(params["X.0"],exp(params[c("log.r","log.K","log.tau","log.sigma")]))
+     parameter.transform=function(params,...){
+       params <- exp(params[c("log.X.0","log.r","log.K","log.tau","log.sigma")])
        names(params) <- c("X.0","r","K","tau","sigma")
        params
      }
@@ -71,23 +71,23 @@ po <- pomp(
            skeleton.type="map",
            skeleton="gompertz_skeleton",
            PACKAGE="gompertz",
-           paramnames=c("log.r","log.K","log.sigma","log.tau"),
+           paramnames=c("r","K","sigma","tau"),
            statenames=c("X"),
            obsnames=c("Y"),
            parameter.transform=function(params,...){
-             params <- c(params["X.0"],log(params[c("r","K","tau","sigma")]))
-             names(params) <- c("X.0","log.r","log.K","log.tau","log.sigma")
+             params <- log(params[c("X.0","r","K","tau","sigma")])
+             names(params) <- c("log.X.0","log.r","log.K","log.tau","log.sigma")
              params
            },
            parameter.inv.transform=function(params,...){
-             params <- c(params["X.0"],exp(params[c("log.r","log.K","log.tau","log.sigma")]))
+             params <- exp(params[c("log.X.0","log.r","log.K","log.tau","log.sigma")])
              names(params) <- c("X.0","r","K","tau","sigma")
              params
            }
            )
 
 ## set the parameters
-coef(po,transform=TRUE) <- c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1)
+coef(po) <- c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1)
 
 if (Sys.info()['sysname']=='Linux') {   # only run this under linux
 

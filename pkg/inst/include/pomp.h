@@ -7,33 +7,6 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 
-// prototypes for C-level access to Euler-multinomial distribution functions
-// NB: 'reulermultinom' does not call GetRNGstate() and PutRNGstate() internally
-void reulermultinom (int ntrans, double size, double *rate, double dt, double *trans);
-double deulermultinom (int ntrans, double size, double *rate, double dt, double *trans, int give_log);
-
-// This function computes r such that if
-// N ~ geometric(prob=1-exp(-r dt)) and T ~ exponential(rate=R),
-// then E[N dt] = E[T]
-// i.e., the rate r for an Euler process that gives the same
-// expected waiting time as the exponential process it approximates.
-// In particular r -> R as dt -> 0.
-inline double exp2geom_rate_correction (double R, double dt) {
-  return (dt > 0) ? log(1.0+R*dt)/dt : R;
-}
-
-// This function draws a random increment of a gamma whitenoise process.
-// This will have expectation=dt and variance=(sigma^2*dt)
-// If dW = rgammawn(sigma,dt), then 
-// mu dW/dt is a candidate for a random rate process within an
-// Euler-multinomial context, i.e., 
-// E[mu*dW] = mu*dt and Var[mu*dW] = mu*sigma^2*dt
-double rgammawn (double sigma, double dt);
-
-// facility for computing the inner produce of 
-// a vector of parameters ('coef') against a vector of basis-function values ('basis')
-double dot_product (int dim, const double *basis, const double *coef);
-
 // facility for computing evaluating a basis of periodic bsplines
 void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
 
@@ -187,5 +160,44 @@ typedef void pomp_measure_model_density (double *lik, double *y, double *x, doub
 // t          = time at the beginning of the Euler step
 //  on output:
 // lik        = pointer to scalar containing (log) likelihood
+
+// This function computes r such that if
+// N ~ geometric(prob=1-exp(-r dt)) and T ~ exponential(rate=R),
+// then E[N dt] = E[T]
+// i.e., the rate r for an Euler process that gives the same
+// expected waiting time as the exponential process it approximates.
+// In particular r -> R as dt -> 0.
+inline double exp2geom_rate_correction (double R, double dt) {
+  return (dt > 0) ? log(1.0+R*dt)/dt : R;
+}
+
+// This function draws a random increment of a gamma whitenoise process.
+// This will have expectation=dt and variance=(sigma^2*dt)
+// If dW = rgammawn(sigma,dt), then 
+// mu dW/dt is a candidate for a random rate process within an
+// Euler-multinomial context, i.e., 
+// E[mu*dW] = mu*dt and Var[mu*dW] = mu*sigma^2*dt
+inline double rgammawn (double sigma, double dt) {
+  double sigmasq;
+  sigmasq = sigma*sigma;
+  return (sigmasq > 0) ? rgamma(dt/sigmasq,sigmasq) : dt;
+}
+
+// facility for computing the inner product of 
+// a vector of parameters ('coef') against a vector of basis-function values ('basis')
+double dot_product (int dim, const double *basis, const double *coef);
+
+
+// prototypes for C-level access to Euler-multinomial distribution functions
+
+// simulate Euler-multinomial transitions
+// NB: 'reulermultinom' does not call GetRNGstate() and PutRNGstate() internally
+// this must be done by the calling program
+// But note that when reulermultinom is called inside a pomp 'rprocess', there is no need to call
+// {Get,Put}RNGState() as this is handled by pomp
+void reulermultinom (int m, double size, double *rate, double dt, double *trans);
+
+// compute probabilities of eulermultinomial transitions
+double deulermultinom (int m, double size, double *rate, double dt, double *trans, int give_log);
 
 #endif

@@ -114,15 +114,11 @@ void _sir_euler_simulator (double *x, const double *p,
   int nrate = 6;
   double rate[nrate];		// transition rates
   double trans[nrate];		// transition numbers
-  double beta_var;
   double beta;
   double dW;
   int nseas = (int) NBASIS;	// number of seasonal basis functions
   int deg = (int) DEGREE;	// degree of seasonal basis functions
   double seasonality[nseas];
-
-  // untransform the parameters
-  beta_var = BETA_SD*BETA_SD;
 
   if (nseas <= 0) return;
   periodic_bspline_basis_eval(t,PERIOD,deg,nseas,&seasonality[0]);
@@ -142,12 +138,7 @@ void _sir_euler_simulator (double *x, const double *p,
       !(R_FINITE(W)))
     return;
 
-  if (BETA_SD > 0.0) {		// environmental noise is ON
-    dW = rgamma(dt/beta_var,beta_var); // gamma noise, mean=dt, variance=(beta_sd^2 dt)
-    if (!(R_FINITE(dW))) return;
-  } else {			// environmental noise is OFF
-    dW = dt;
-  }
+  dW = rgammawn(BETA_SD,dt); // gamma noise, mean=dt, variance=(beta_sd^2 dt)
 
   // compute the transition rates
   rate[0] = MU*POPSIZE;		// birth into susceptible class
@@ -168,9 +159,7 @@ void _sir_euler_simulator (double *x, const double *p,
   INFD += trans[1]-trans[3]-trans[4];
   RCVD += trans[3]-trans[5];
   CASE += trans[3];		// cases are cumulative recoveries
-  if (BETA_SD > 0.0) {
-    W += (dW-dt)/BETA_SD;	// mean zero, variance = dt
-  }
+  if (BETA_SD > 0.0)  W += (dW-dt)/BETA_SD; // mean = 0, variance = dt
 
 }
 

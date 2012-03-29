@@ -4,7 +4,6 @@
 
 #include "pomp_internal.h"
 
-// simulate Euler-multinomial transitions
 void reulermultinom (int m, double size, double *rate, double dt, double *trans) {
   double p = 0.0;
   int j, k;
@@ -84,15 +83,19 @@ double deulermultinom (int m, double size, double *rate, double dt, double *tran
 void reulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *dt, double *trans) {
   int k;
   int m = *ntrans;
-  for (k = 0; k < *n; k++)
-    reulermultinom(*ntrans,*size,rate,*dt,&trans[k*m]);
+  for (k = 0; k < *n; k++) {
+    reulermultinom(*ntrans,*size,rate,*dt,trans);
+    trans += m;
+  }
 }
 
 void deulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *dt, double *trans, int *give_log, double *f) {
   int k;
   int m = *ntrans;
-  for (k = 0; k < *n; k++)
-    f[k] = deulermultinom(*ntrans,*size,rate,*dt,&trans[k*m],*give_log);
+  for (k = 0; k < *n; k++) {
+    f[k] = deulermultinom(*ntrans,*size,rate,*dt,trans,*give_log);
+    trans += m;
+  }
 }
 
 SEXP R_Euler_Multinom (SEXP n, SEXP size, SEXP rate, SEXP dt) {
@@ -141,12 +144,6 @@ SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP dt, SEXP log) {
 // mu dW/dt is a candidate for a random rate process within an
 // Euler-multinomial context, i.e., 
 // E[mu*dW] = mu*dt and Var[mu*dW] = mu*sigma^2*dt
-double rgammawn (double sigma, double dt) {
-  double sigmasq;
-  sigmasq = sigma*sigma;
-  return (sigmasq > 0) ? rgamma(dt/sigmasq,sigmasq) : dt;
-}
-
 SEXP R_GammaWN (SEXP n, SEXP sigma, SEXP deltat) {
   int nprotect = 0;
   int k, nval, nsig, ndt;
