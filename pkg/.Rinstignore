@@ -1,3 +1,2 @@
 inst/doc/Makefile
 inst/doc/fullnat.bst
-inst/doc/(.+?)\.rda$
