@@ -1,4 +1,4 @@
-RSCRIPT = Rscript --vanilla
+RSCRIPT = $(R_HOME)/bin/Rscript --vanilla
 LATEX = latex
 BIBTEX = bibtex
 PDFLATEX = pdflatex
