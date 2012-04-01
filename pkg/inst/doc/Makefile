@@ -1,3 +1,4 @@
+RSCRIPT = Rscript --vanilla
 LATEX = latex
 BIBTEX = bibtex
 PDFLATEX = pdflatex
@@ -5,7 +6,17 @@ PDFLATEX = pdflatex
 DVIPS = dvips -Ppdf
 EPSTOPDF = epstopdf
 
-default: vignettes clean
+default: vignettes compress clean
+
+compress: export R_QPDF=qpdf
+compress: export R_GSCMD=gs
+compress: export GS_QUALITY=ebook
+
+compress: advanced_topics_in_pomp.pdf intro_to_pomp.pdf manual.pdf
+	for i in $^; do \
+	 echo "compressing" $$i; \
+	 $(RSCRIPT) -e "tools::compactPDF(\"$$i\")"; \
+	done 
 
 vignettes: advanced_topics_in_pomp.pdf intro_to_pomp.pdf
 
