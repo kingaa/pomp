@@ -51,7 +51,7 @@
 
 \date{\today, \pkg{pomp}~version~\Sexpr{packageDescription("pomp",fields="Version")}}
 
-\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T}
+\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T,resolution=100}
 
 \begin{document}
 
