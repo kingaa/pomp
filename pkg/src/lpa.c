@@ -4,12 +4,12 @@
 
 #include "pomp.h"
 
-#define LOG_B       (p[parindex[0]]) // egg-laying rate
-#define LOG_MUL     (p[parindex[1]]) // larva survival
-#define LOG_MUA     (p[parindex[2]]) // adult survival
-#define LOG_CEA     (p[parindex[3]]) // adult-on-egg cannibalism
-#define LOG_CEL     (p[parindex[4]]) // larva-on-egg cannibalism
-#define LOG_CPA     (p[parindex[5]]) // adult-on-pupa cannibalism
+#define B       (p[parindex[0]]) // egg-laying rate
+#define MUL     (p[parindex[1]]) // larva survival
+#define MUA     (p[parindex[2]]) // adult survival
+#define CEA     (p[parindex[3]]) // adult-on-egg cannibalism
+#define CEL     (p[parindex[4]]) // larva-on-egg cannibalism
+#define CPA     (p[parindex[5]]) // adult-on-pupa cannibalism
 
 #define L           (x[stateindex[0]]) // larvae
 #define P           (x[stateindex[1]]) // pupae
@@ -27,17 +27,10 @@ void _lpa_original_skeleton (double *f, double *x, const double *p,
 			     const int *stateindex, const int *parindex, const int *covindex,
 			     int covdim, const double *covar, double t) 
 {
-  double b = exp(LOG_B);
-  double mul = exp(LOG_MUL);
-  double mua = exp(LOG_MUA);
-  double cea = exp(LOG_CEA);
-  double cel = exp(LOG_CEL);
-  double cpa = exp(LOG_CPA);
-
-  double repro = b*exp(-cel*L-cea*A);
-  double lsurv = 1.0-mul;
-  double psurv = exp(-cpa*A);
-  double asurv = 1.0-mua;
+  double repro = B*exp(-CEL*L-CEA*A);
+  double lsurv = 1.0-MUL;
+  double psurv = exp(-CPA*A);
+  double asurv = 1.0-MUA;
   
   LPRIME = A*repro;
   PPRIME = L*lsurv;
@@ -53,17 +46,10 @@ void _lpa_poisson_binomial_simulator (double *x, const double *p,
 {
   double larvae, pupae, adults;
 
-  double b = exp(LOG_B);
-  double mul = exp(LOG_MUL);
-  double mua = exp(LOG_MUA);
-  double cea = exp(LOG_CEA);
-  double cel = exp(LOG_CEL);
-  double cpa = exp(LOG_CPA);
-
-  double repro = b*exp(-cel*L-cea*A);
-  double lsurv = 1.0-mul;
-  double psurv = exp(-cpa*A);
-  double asurv = 1.0-mua;
+  double repro = B*exp(-CEL*L-CEA*A);
+  double lsurv = 1.0-MUL;
+  double psurv = exp(-CPA*A);
+  double asurv = 1.0-MUA;
   
   larvae = rpois(A*repro);
   pupae = rbinom(L,lsurv);

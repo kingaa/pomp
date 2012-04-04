@@ -8,9 +8,9 @@ EPSTOPDF = epstopdf
 
 default: vignettes compress clean
 
-compress: export R_QPDF=qpdf
-compress: export R_GSCMD=gs
-compress: export GS_QUALITY=ebook
+compress: R_QPDF=qpdf
+compress: R_GSCMD=gs
+compress: GS_QUALITY=ebook
 
 compress: advanced_topics_in_pomp.pdf intro_to_pomp.pdf manual.pdf
 	for i in $^; do \

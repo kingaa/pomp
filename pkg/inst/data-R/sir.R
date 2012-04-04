@@ -148,18 +148,13 @@ po <- pomp(
            statenames=c("S","I","R","cases","W"),
            paramnames=c(
              "gamma","mu","iota",
-             "beta1","beta.sd","pop","rho",
-             "nbasis","degree","period"
+             "log.beta1","beta.sd","pop","rho",
+             "nbasis","degree","period",
+             "S.0","I.0","R.0"
              ),
            zeronames=c("cases"),
            comp.names=c("S","I","R"),
            ic.names=c("S.0","I.0","R.0"),
-           log.transformed=c(
-             "gamma","mu","iota","sigma",
-             "beta1","beta.sd",
-             "S.0","I.0","R.0"
-             ),
-           logit.transformed="rho",
            parameter.transform="_sir_par_trans",
            parameter.inv.transform="_sir_par_untrans",
            initializer=function(params, t0, comp.names, ic.names, ...) {
@@ -175,7 +170,7 @@ po <- pomp(
 coef(po) <- c(
               gamma=1/3,mu=0.0,iota=0.0,
               nbasis=1,degree=0,period=1,
-              beta1=1.4,
+              log.beta1=0.33,
               beta.sd=0,
               pop=1400,
               rho=0.9,sigma=3.6,
@@ -184,3 +179,4 @@ coef(po) <- c(
 
 bbs <- po
 save(bbs,file="bbs.rda",compress="xz")
+
