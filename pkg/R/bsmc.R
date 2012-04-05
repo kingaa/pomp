@@ -334,8 +334,8 @@ setMethod(
             ##   prior <- partrans(object,prior,dir="forward")
             ## }
 
-            ## replace parameters with point estimate (posterior mean)
-            coef(object,transform=transform) <- apply(params,1,mean)
+            ## replace parameters with point estimate (posterior median)
+            coef(object,transform=transform) <- apply(params,1,median)
 
             new(
                 "bsmcd.pomp",
@@ -357,29 +357,37 @@ setMethod(
 
 setMethod("$",signature(x="bsmcd.pomp"),function (x,name) slot(x,name))
 
-bsmc.plot <- function (prior, post, est, breaks, thin, ...) {
-  prior <- t(prior[est,sample.int(n=ncol(prior),size=min(thin,ncol(prior)))])
-  post <- t(post[est,sample.int(n=ncol(post),size=min(thin,ncol(post)))])
+bsmc.plot <- function (prior, post, pars, thin, ...) {
+  p1 <- sample.int(n=ncol(prior),size=min(thin,ncol(prior)))
+  p2 <- sample.int(n=ncol(post),size=min(thin,ncol(post)))
+  if (!all(pars%in%rownames(prior))) {
+    missing <- which(!(pars%in%rownames(prior)))
+    stop("unrecognized parameters: ",paste(sQuote(pars[missing]),collapse=","))
+    
+  }
+  prior <- t(prior[pars,])
+  post <- t(post[pars,])
   all <- rbind(prior,post)
   pairs(
         all,
-        labels=est,
+        labels=pars,
         panel=function (x, y, ...) { ## prior, posterior pairwise scatterplot
           op <- par(new=TRUE)
           on.exit(par(op))
           i <- which(x[1]==all[1,])
           j <- which(y[1]==all[1,])
-          points(x,y,pch=20,col=rgb(0.85,0.85,0.85,0.1),xlim=range(all[,i]),ylim=range(all[,j]))
-          points(post[,i],post[,j],pch=20,col=rgb(0,0,1,0.01))
+          points(prior[p1,i],prior[p1,j],pch=20,col=rgb(0.85,0.85,0.85,0.1),xlim=range(all[,i]),ylim=range(all[,j]))
+          points(post[p2,i],post[p2,j],pch=20,col=rgb(0,0,1,0.01))
         },
         diag.panel=function (x, ...) { ## marginal posterior histogram
           i <- which(x[1]==all[1,])
-          bks <- hist(c(post[,i],prior[,i]),breaks=breaks,plot=FALSE)$breaks
-          y1 <- hist(post[,i],breaks=bks,plot=FALSE)$counts
+          d1 <- density(prior[,i])
+          d2 <- density(post[,i])
           usr <- par('usr')
-          op <- par(usr=c(usr[1:2],0,1.5*max(y1)))
+          op <- par(usr=c(usr[1:2],0,1.5*max(d1$y,d2$y)))
           on.exit(par(op))
-          rect(head(bks,-1),0,tail(bks,-1),y1,col=rgb(0,0,1,1),border=NA,...)
+          polygon(d1,col=rgb(0.85,0.85,0.85,0.5))
+          polygon(d2,col=rgb(0,0,1,0.5))
         }
         )
 }
@@ -387,9 +395,15 @@ bsmc.plot <- function (prior, post, est, breaks, thin, ...) {
 setMethod(
           "plot",
           signature(x="bsmcd.pomp"),
-          function (x, ..., breaks, thin) {
+          function (x, ..., pars, thin) {
+            if (missing(pars)) pars <- names(coef(x,transform=!x@transform))
             if (missing(thin)) thin <- Inf
-            if (missing(breaks)) breaks <- 30
-            bsmc.plot(prior=x@prior,post=x@post,est=x@est,breaks=breaks,thin=thin,...)
+            bsmc.plot(
+                      prior=if (x@transform) partrans(x,x@prior,dir="forward") else x@prior,
+                      post=if (x@transform) partrans(x,x@post,dir="forward") else x@post,
+                      pars=pars,
+                      thin=thin,
+                      ...
+                      )
           }
           )

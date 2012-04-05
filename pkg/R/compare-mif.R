@@ -8,7 +8,7 @@ compare.mif <- function (z) {
   xx <- z[[1]]
   ivpnames <- xx@ivps
   estnames <- c(xx@pars,ivpnames)
-  parnames <- names(coef(xx))
+  parnames <- names(coef(xx,transform=xx@transform))
   unestnames <- parnames[-match(estnames,parnames)]
 
   ## plot filter means

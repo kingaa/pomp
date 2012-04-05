@@ -167,7 +167,7 @@ typedef void pomp_measure_model_density (double *lik, double *y, double *x, doub
 // i.e., the rate r for an Euler process that gives the same
 // expected waiting time as the exponential process it approximates.
 // In particular r -> R as dt -> 0.
-inline double exp2geom_rate_correction (double R, double dt) {
+static inline double exp2geom_rate_correction (double R, double dt) {
   return (dt > 0) ? log(1.0+R*dt)/dt : R;
 }
 
@@ -177,7 +177,7 @@ inline double exp2geom_rate_correction (double R, double dt) {
 // mu dW/dt is a candidate for a random rate process within an
 // Euler-multinomial context, i.e., 
 // E[mu*dW] = mu*dt and Var[mu*dW] = mu*sigma^2*dt
-inline double rgammawn (double sigma, double dt) {
+static inline double rgammawn (double sigma, double dt) {
   double sigmasq;
   sigmasq = sigma*sigma;
   return (sigmasq > 0) ? rgamma(dt/sigmasq,sigmasq) : dt;

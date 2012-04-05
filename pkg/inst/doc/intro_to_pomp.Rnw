@@ -1417,7 +1417,7 @@ if (file.exists(binary.file)) {
 }
 @ 
 Fig.~\ref{fig:bsmc-example-flat-prior} shows the results of this computation.
-Obtain the posterior means of the parameters by doing
+Obtain the posterior medians of the parameters by doing
 <<bsmc-example-flat-prior-coef>>=
 signif(coef(fit1),digits=2)
 @ 
@@ -1425,14 +1425,14 @@ Note that these are reported on the natural (i.e., untransformed) scale.
 
 \begin{figure}
 <<bsmc-example-flat-prior-plot,fig=T,pdf=F,png=T,height=6,width=6,echo=F>>=
-  plot(fit1,thin=5000)
+  plot(fit1,pars=c("log.r","sigma"),thin=5000)
 @ 
 \caption{
   Results of \code{bsmc} on the Ricker model.
   The off-diagonal panels show 5000 samples from the prior (grey) and posterior (blue) distributions.
-  The diagonal panels show histograms of the marginal posterior distributions for each of the parameters.
-  Note that these are shown on the transformed scale.
-  This plot was produced by executing \code{plot(fit1,thin=5000)}.
+  The diagonal panels show kernel density estimates of the marginal prior and posterior distributions for each of the parameters.
+  Note that these are shown on the natural scale.
+  This plot was produced by executing \code{plot(fit1,pars=c("r","sigma"),thin=5000)}.
   \label{fig:bsmc-example-flat-prior}
 }
 \end{figure}

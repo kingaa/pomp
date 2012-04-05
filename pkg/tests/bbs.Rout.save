@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2012-04-04 r58917) -- "Unsuffered Consequences"
+R version 2.14.2 (2012-02-29)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -49,7 +49,7 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
   Walker's alias method used: results are different from R < 2.2.0
 > signif(coef(fit1),3)
     gamma        mu      iota    nbasis    degree    period log.beta1   beta.sd 
-    0.333     0.000     0.000     1.000     0.000     1.000     1.160     0.000 
+    0.333     0.000     0.000     1.000     0.000     1.000     1.140     0.000 
       pop       rho     sigma       S.0       I.0       R.0 
  1400.000     0.900     1.960     0.999     0.001     0.000 
 > 
@@ -61,6 +61,3 @@ There were 11 warnings (use warnings() to see them)
       pop       rho     sigma       S.0       I.0       R.0 
  1400.000     0.900     0.426     0.999     0.001     0.000 
 > 
-> proc.time()
-   user  system elapsed 
-  2.368   0.048   2.435 

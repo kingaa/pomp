@@ -2,6 +2,8 @@ NEWS
 0.41-2
      o	Fix bug in 'bbs' example.
 
+     o  The posterior medians (not means) are now stored in the 'params' slot of the 'bsmcd.pomp' object.
+
 0.41-1
      o	New arguments in 'mif', 'nlf', 'bsmc', 'pmcmc', 'probe-match', and 'traj-match' allow the estimation to be done on a transformed parameter space.
      	When 'transform=TRUE' in these commands ('transform.params=TRUE' for 'nlf'), estimation is performed on the transformed parameter space.

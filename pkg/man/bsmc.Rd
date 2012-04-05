@@ -78,7 +78,7 @@
 }
 \value{
   An object of class \dQuote{bsmcd.pomp}.
-  The \dQuote{params} slot of this object will hold the parameter posterior means.
+  The \dQuote{params} slot of this object will hold the parameter posterior medians.
   The slots of this class include:
   \item{post}{
     A matrix containing draws from the approximate posterior distribution.
