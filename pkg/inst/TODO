@@ -4,8 +4,6 @@
 
 * sorting vs no-sorting systematic resampling algorithm?
 
-* native C routine for vectorfield evaluation inside lsoda
-
 * parameter transformations: put 'transform' option into each estimation routine
   (spect.match)
 

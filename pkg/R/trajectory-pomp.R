@@ -56,6 +56,9 @@ if (length(times)==0)
   dim(x0) <- c(nvar,nrep,1)
   dimnames(x0) <- list(statenames,NULL,NULL)
   
+  znames <- object@zeronames
+  if (length(znames)>0) x0[znames,,] <- 0
+
   type <- object@skeleton.type          # map or vectorfield?
   
   if (is.na(type))
@@ -68,37 +71,17 @@ if (length(times)==0)
   } else if (type=="vectorfield") {
 
     skel <- get.pomp.fun(object@skeleton)
-
-    ## vectorfield function (RHS of ODE) in 'deSolve' format
-    vf.eval <- function (t, y, ...) {
-      list(
-           .Call(
-                 do_skeleton,
-                 object,
-                 x=array(
-                   data=y,
-                   dim=c(nvar,nrep,1),
-                   dimnames=list(statenames,NULL,NULL)
-                   ),
-                 t=t,
-                 params=params,
-                 skel=skel
-                 ),
-           NULL
-           )
-    }
-
-    znames <- object@zeronames
-
-    if (length(znames)>0)
-      x0[znames,,] <- 0
+    .Call(pomp_desolve_init,object,params,skel,statenames,nvar,nrep);
 
     X <- try(
              ode(
                  y=x0,
                  times=c(t0,times),
-                 func=vf.eval,
                  method="lsoda",
+                 func="pomp_vf_eval",
+                 dllname="pomp",
+                 initfunc=NULL,
+                 parms=NULL,
                  ...
                  ),
              silent=FALSE
@@ -110,15 +93,15 @@ if (length(times)==0)
 
     x <- array(data=t(X[-1,-1]),dim=c(nvar,nrep,ntimes),dimnames=list(statenames,NULL,NULL))
     
-    if (length(znames)>0)
-      x[znames,,-1] <- apply(x[znames,,,drop=FALSE],c(1,2),diff)
-    
   } else {
     
     stop("deterministic skeleton not specified")
 
   }
 
+  if (length(znames)>0)
+    x[znames,,-1] <- apply(x[znames,,,drop=FALSE],c(1,2),diff)
+    
   if (as.data.frame) {
     x <- lapply(
                 seq_len(ncol(x)),

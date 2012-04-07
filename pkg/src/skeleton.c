@@ -5,6 +5,7 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
+#include <R_ext/Rdynload.h>
 
 static void eval_skel (pomp_skeleton *vf,
 		       double *f, 
@@ -265,3 +266,48 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
 #undef RHO   
 #undef FCALL 
 #undef VNAMES
+
+
+static SEXP *_pomp_vf_eval_object;
+static SEXP *_pomp_vf_eval_params;
+static SEXP *_pomp_vf_eval_skelfun;
+static SEXP *_pomp_vf_eval_xnames;
+static int _pomp_vf_eval_xdim[3];
+#define OBJECT        (_pomp_vf_eval_object)
+#define PARAMS        (_pomp_vf_eval_params)
+#define SKELFUN       (_pomp_vf_eval_skelfun)
+#define XNAMES        (_pomp_vf_eval_xnames)
+#define XDIM          (_pomp_vf_eval_xdim)
+
+void pomp_desolve_init (SEXP object, SEXP params, SEXP fun, SEXP statenames, SEXP nvar, SEXP nrep) {
+  OBJECT = &object;
+  PARAMS = &params;
+  SKELFUN = &fun;
+  XNAMES = &statenames;
+  XDIM[0] = INTEGER(AS_INTEGER(nvar))[0];
+  XDIM[1] = INTEGER(AS_INTEGER(nrep))[0];
+  XDIM[2] = 1;
+}
+
+
+void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, int *ip) 
+{
+  SEXP T, X, dXdt;
+  int dim[3];
+  
+  PROTECT(T = NEW_NUMERIC(1));
+  PROTECT(X = makearray(3,XDIM));
+  setrownames(X,*(XNAMES),3);
+  REAL(T)[0] = *t;
+  memcpy(REAL(X),y,(*neq)*sizeof(double));
+  PROTECT(dXdt = do_skeleton(*(OBJECT),X,T,*(PARAMS),*(SKELFUN)));
+  memcpy(ydot,REAL(dXdt),(*neq)*sizeof(double));
+  
+  UNPROTECT(3);
+}
+
+#undef XDIM
+#undef XNAMES
+#undef SKELFUN
+#undef PARAMS
+#undef OBJECT
