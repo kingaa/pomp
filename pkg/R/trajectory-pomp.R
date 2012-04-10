@@ -12,8 +12,8 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
 
   as.data.frame <- as.logical(as.data.frame)
 
-if (length(times)==0)
-    stop("if ",sQuote("times")," is empty, there is no work to do",call.=FALSE)
+  if (length(times)==0)
+    stop(sQuote("times")," is empty, there is no work to do",call.=FALSE)
   
   if (any(diff(times)<0))
     stop(sQuote("times")," must be a nondecreasing sequence of times",call.=FALSE)
@@ -23,7 +23,7 @@ if (length(times)==0)
   else
     t0 <- as.numeric(t0)
   
-    if (t0>times[1])
+  if (t0>times[1])
     stop("the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
   ntimes <- length(times)
   
@@ -33,22 +33,11 @@ if (length(times)==0)
       stop("trajectory error: ",sQuote("params")," must be supplied",call.=FALSE)
     }
   }
-  nrep <- NCOL(params)
-  if (is.null(dim(params))) {
-    params <- matrix(
-                     params,
-                     nrow=length(params),
-                     ncol=nrep,
-                     dimnames=list(
-                       names(params),
-                       NULL
-                       )
-                     )
-  }
+  params <- as.matrix(params)
+  nrep <- ncol(params)
   paramnames <- rownames(params)
   if (is.null(paramnames))
     stop("trajectory error: ",sQuote("params")," must have rownames",call.=FALSE)
-  params <- as.matrix(params)
 
   x0 <- init.state(object,params=params,t0=t0)
   nvar <- nrow(x0)
@@ -62,7 +51,7 @@ if (length(times)==0)
   type <- object@skeleton.type          # map or vectorfield?
   
   if (is.na(type))
-    stop("trajectory error: no skeleton specified",call.=FALSE)
+    stop("trajectory error: 'skeleton.type' unspecified",call.=FALSE)
 
   if (type=="map") {
 

@@ -44,6 +44,7 @@ void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt)
   int flag = 0;
   int j, k;
   double e;
+  if ((tab == 0) || (tab->length < 1) || (tab->width < 1)) return;
   tab->index = findInterval(tab->x,tab->length,x,TRUE,TRUE,tab->index,&flag);
   if (flag != 0)              // we are extrapolating
     warning("table_lookup: extrapolating (flag %d) at %le", flag, x);

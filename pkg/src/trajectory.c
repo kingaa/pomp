@@ -34,7 +34,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
 {
   int nprotect = 0;
   SEXP ans;
-  SEXP x, f, skel, time, zeronames, zindex, dt;
+  SEXP x, skel, time, zeronames;
   int nvars, nreps, ntimes;
   int nzeros;
   int nsteps;
@@ -44,8 +44,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
   int *zidx;
   double deltat;
 
-  PROTECT(t0 = AS_NUMERIC(t0)); nprotect++;
-  PROTECT(x = duplicate(AS_NUMERIC(x0))); nprotect++;
+  PROTECT(x = as_state_array(duplicate(AS_NUMERIC(x0)))); nprotect++;
   xp = REAL(x);
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
@@ -57,9 +56,8 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
   if (nreps != INTEGER(GET_DIM(params))[1])
     error("mismatch in dimensions of 'x0' and 'params'");
 
-  PROTECT(time = NEW_NUMERIC(1)); nprotect++;
+  PROTECT(time = duplicate(AS_NUMERIC(t0))); nprotect++;
   tm = REAL(time);
-  *tm = REAL(t0)[0];
 
   ndim[0] = nvars; ndim[1] = nreps; ndim[2] = ntimes;
   PROTECT(ans = makearray(3,ndim)); nprotect++;
@@ -67,14 +65,12 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
   ap = REAL(ans);
 
   PROTECT(skel = get_pomp_fun(GET_SLOT(object,install("skeleton")))); nprotect++;
-  PROTECT(dt = GET_SLOT(object,install("skelmap.delta.t"))); nprotect++;
-  deltat = REAL(dt)[0];  
+  deltat = *(REAL(GET_SLOT(object,install("skelmap.delta.t"))));
 
   PROTECT(zeronames = GET_SLOT(object,install("zeronames"))); nprotect++;
   nzeros = LENGTH(zeronames);
   if (nzeros>0) {
-    PROTECT(zindex = MATCHROWNAMES(x0,zeronames)); nprotect++;
-    zidx = INTEGER(zindex);
+    zidx = INTEGER(PROTECT(MATCHROWNAMES(x0,zeronames))); nprotect++;
   } else {
     zidx = 0;
   }
@@ -92,26 +88,58 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
     nsteps = num_map_steps(*tm,*tp,deltat); 
 
     for (h = 0; h < nsteps; h++) {
-      PROTECT(f = do_skeleton(object,x,time,params,skel));
-      fp = REAL(f);
-      for (j = 0; j < nreps; j++) {
-	for (i = 0; i < nvars; i++) {
-	  xp[i+nvars*j] = fp[i+nvars*j];
-	}
-      }
-      UNPROTECT(1);
+      fp = REAL(do_skeleton(object,x,time,params,skel));
+      for (j = 0; j < nreps; j++)
+	for (i = 0; i < nvars; i++) xp[i+nvars*j] = fp[i+nvars*j];
       *tm += deltat;
     }
+
     for (j = 0; j < nreps; j++) {
-      for (i = 0; i < nvars; i++) {
-	ap[i+nvars*(j+nreps*k)] = xp[i+nvars*j];
-      }
-      for (i = 0; i < nzeros; i++) {
-	xp[zidx[i]+nvars*j] = 0.0;
-      }
+      for (i = 0; i < nvars; i++) ap[i+nvars*(j+nreps*k)] = xp[i+nvars*j];
+      for (i = 0; i < nzeros; i++) xp[zidx[i]+nvars*j] = 0.0;
     }
+
   }
 
   UNPROTECT(nprotect);
   return ans;
 }
+
+static struct {
+  SEXP *object;
+  SEXP *params;
+  SEXP *skelfun;
+  SEXP *xnames;
+  int xdim[3];
+} _pomp_vf_eval_common;
+
+
+#define COMMON(X)    (_pomp_vf_eval_common.X)
+
+void pomp_desolve_init (SEXP object, SEXP params, SEXP fun, SEXP statenames, SEXP nvar, SEXP nrep) {
+  COMMON(object) = &object;
+  COMMON(params) = &params;
+  COMMON(skelfun) = &fun;
+  COMMON(xnames) = &statenames;
+  COMMON(xdim)[0] = INTEGER(AS_INTEGER(nvar))[0];
+  COMMON(xdim)[1] = INTEGER(AS_INTEGER(nrep))[0];
+  COMMON(xdim)[2] = 1;
+}
+
+
+void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, int *ip) 
+{
+  SEXP T, X, dXdt;
+  
+  PROTECT(T = NEW_NUMERIC(1));
+  PROTECT(X = makearray(3,COMMON(xdim)));
+  setrownames(X,*(COMMON(xnames)),3);
+  REAL(T)[0] = *t;
+  memcpy(REAL(X),y,(*neq)*sizeof(double));
+  PROTECT(dXdt = do_skeleton(*(COMMON(object)),X,T,*(COMMON(params)),*(COMMON(skelfun))));
+  memcpy(ydot,REAL(dXdt),(*neq)*sizeof(double));
+  
+  UNPROTECT(3);
+}
+
+#undef COMMON
