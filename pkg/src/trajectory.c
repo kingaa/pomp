@@ -103,10 +103,10 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
 }
 
 static struct {
-  SEXP *object;
-  SEXP *params;
-  SEXP *skelfun;
-  SEXP *xnames;
+  SEXP object;
+  SEXP params;
+  SEXP skelfun;
+  SEXP xnames;
   int xdim[3];
 } _pomp_vf_eval_common;
 
@@ -114,10 +114,10 @@ static struct {
 #define COMMON(X)    (_pomp_vf_eval_common.X)
 
 void pomp_desolve_init (SEXP object, SEXP params, SEXP fun, SEXP statenames, SEXP nvar, SEXP nrep) {
-  COMMON(object) = &object;
-  COMMON(params) = &params;
-  COMMON(skelfun) = &fun;
-  COMMON(xnames) = &statenames;
+  COMMON(object) = object;
+  COMMON(params) = params;
+  COMMON(skelfun) = fun;
+  COMMON(xnames) = statenames;
   COMMON(xdim)[0] = INTEGER(AS_INTEGER(nvar))[0];
   COMMON(xdim)[1] = INTEGER(AS_INTEGER(nrep))[0];
   COMMON(xdim)[2] = 1;
@@ -130,10 +130,10 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
   
   PROTECT(T = NEW_NUMERIC(1));
   PROTECT(X = makearray(3,COMMON(xdim)));
-  setrownames(X,*(COMMON(xnames)),3);
+  setrownames(X,COMMON(xnames),3);
   REAL(T)[0] = *t;
   memcpy(REAL(X),y,(*neq)*sizeof(double));
-  PROTECT(dXdt = do_skeleton(*(COMMON(object)),X,T,*(COMMON(params)),*(COMMON(skelfun))));
+  PROTECT(dXdt = do_skeleton(COMMON(object),X,T,COMMON(params),COMMON(skelfun)));
   memcpy(ydot,REAL(dXdt),(*neq)*sizeof(double));
   
   UNPROTECT(3);
