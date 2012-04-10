@@ -1,4 +1,8 @@
 NEWS
+0.41-3
+     o	In 'trajectory', all vectorfield and map evaluation is now done in C for speed.
+     	For continuous-time dynamical systems, this gives an approximately 4-fold speedup.
+
 0.41-2
      o	Fix bug in 'bbs' example.
 

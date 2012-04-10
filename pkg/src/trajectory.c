@@ -76,11 +76,8 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
   }
 
   if (nzeros>0) {
-    for (j = 0; j < nreps; j++) {
-      for (i = 0; i < nzeros; i++) {
-	xp[zidx[i]+nvars*j] = 0.0;
-      }
-    }
+    for (j = 0; j < nreps; j++)
+      for (i = 0; i < nzeros; i++) xp[zidx[i]+nvars*j] = 0.0;
   }
 
   for (k = 0; k < ntimes; k++, tp++) {
