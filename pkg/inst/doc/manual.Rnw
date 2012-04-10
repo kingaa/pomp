@@ -1,5 +1,0 @@
-%\VignetteIndexEntry{User Manual}
-\documentclass{article}
-\usepackage[utf8]{inputenc}
-\begin{document}
-\end{document}
