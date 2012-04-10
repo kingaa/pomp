@@ -8,7 +8,7 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
 
   model <- "sir"
   ## name of the file holding the model codes:
-  modelfile <- system.file(file.path("examples",paste(model,".c",sep="")),package="pomp")
+  modelfile <- system.file("examples",paste(model,".c",sep=""),package="pomp")
   ## name of the shared-object library:
   solib <- paste(model,.Platform$dynlib.ext,sep="")
   ## environment variables needed to locate the pomp header file:
@@ -93,16 +93,20 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
 
   ## compute a trajectory of the deterministic skeleton
   tic <- Sys.time()
-  X <- trajectory(po,hmax=1/52)
+  X <- trajectory(po,hmax=1/52,as.data.frame=TRUE)
   toc <- Sys.time()
   print(toc-tic)
 
+  plot(cases~time,data=X,type='l')
+
   ## simulate from the model
   tic <- Sys.time()
-  x <- simulate(po,nsim=3)
+  x <- simulate(po,nsim=3,as.data.frame=TRUE)
   toc <- Sys.time()
   print(toc-tic)
   
+  plot(cases~time,data=x,col=as.factor(x$sim),pch=16)
+
   dyn.unload(solib)
 
 }

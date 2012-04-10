@@ -4,7 +4,7 @@
 \alias{trajectory,pomp-method}
 \alias{trajectory-pomp}
 
-\title{Compute trajectories of the determinstic skeleton.}
+\title{Compute trajectories of the deterministic skeleton.}
 \description{
   The method \code{trajectory} computes a trajectory of the deterministic skeleton of a Markov process.
   In the case of a discrete-time system, the deterministic skeleton is a map and a trajectory is obtained by iterating the map.

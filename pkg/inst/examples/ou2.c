@@ -1,5 +1,7 @@
 // -*- C++ -*-
 
+// 2-D Ornstein-Uhlenbeck examples as discussed in the "Advanced Topics in pomp" vignette.
+
 #include <R.h>
 #include <Rmath.h>
 #include <Rdefines.h>

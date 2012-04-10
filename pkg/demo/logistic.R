@@ -49,6 +49,12 @@ po <- pomp(
 params <- c(n.0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
 set.seed(73658676)
 po <- simulate(po,params=params)
+plot(po)
 
-params <- cbind(c(n.0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),c(n.0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1))
-x <- trajectory(po,params=params)
+params <- cbind(
+                c(n.0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),
+                c(n.0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1)
+                )
+x <- trajectory(po,params=params,as.data.frame=TRUE)
+x <- reshape(x,dir="wide",idvar="time",timevar="traj")
+matplot(x$time,x[-1],type='l',bty='l',lty=1,xlab="time",ylab="n")

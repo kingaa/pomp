@@ -5,6 +5,10 @@
 #include <R_ext/Rdynload.h>
 #include <pomp.h>
 
+// SIR example as described in the "Advanced Topics in pomp" vignette.
+// for a demonstration of how to compile, link, and run this example,
+// do 'demo("sir",package="pomp")' at the R prompt.
+
 // some macros to make the code easier to read.
 // note how variables and parameters use the indices.
 // the integer vectors parindex, stateindex, obsindex

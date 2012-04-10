@@ -38,3 +38,6 @@ rw2 <- pomp(
               ),
             t0=0
             )
+
+rw2 <- simulate(rw2,params=c(s1=3,s2=1,x1.0=0,x2.0=1,tau=10))
+plot(rw2)

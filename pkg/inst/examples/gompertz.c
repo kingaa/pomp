@@ -1,27 +1,30 @@
 // dear emacs, please treat this as -*- C++ -*-
 
+// Gompertz example as described in the "Introduction to pomp" vignette.
+// for a demonstration of how to compile, link, and run this example,
+// do 'demo("gompertz",package="pomp")' at the R prompt.
+
 #include <Rmath.h>
 
-#include "pomp.h" // in R, do 'system.file("include/pomp.h",package="pomp")' to find this header file
+#include "pomp.h" // in R, do 'system.file("include","pomp.h",package="pomp")' to find this header file
 
 // define some macros to make the code easier to read
-#define R       (p[parindex[0]]) // growth rate
-#define K       (p[parindex[1]]) // carrying capacity
-#define SIGMA   (p[parindex[2]]) // process noise level
-#define TAU     (p[parindex[3]]) // measurement noise level
+#define R       (p[parindex[0]])   // growth rate
+#define K       (p[parindex[1]])   // carrying capacity
+#define SIGMA   (p[parindex[2]])   // process noise level
+#define TAU     (p[parindex[3]])   // measurement noise level
+#define Y       (y[obsindex[0]])   // observed population size
+#define X       (x[stateindex[0]]) // actual population size
+#define XPRIME  (f[stateindex[0]]) // new population size (for skeleton function only)
 
-#define Y           (y[obsindex[0]])   // observed population size
-#define X           (x[stateindex[0]]) // actual population size
-#define XPRIME      (f[stateindex[0]]) // new population size (for skeleton function only)
-
-// normal measurement model density
+// log-normal measurement model density
 void gompertz_normal_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
 				int *obsindex, int *stateindex, int *parindex, int *covindex,
 				int ncovars, double *covars, double t) {
   *lik = dlnorm(Y,log(X),TAU,give_log);
 }
 
-// normal measurement model simulator
+// log-normal measurement model simulator
 void gompertz_normal_rmeasure (double *y, double *x, double *p, 
 				int *obsindex, int *stateindex, int *parindex, int *covindex,
 				int ncovars, double *covars, double t) {
