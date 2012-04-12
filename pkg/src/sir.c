@@ -27,7 +27,7 @@ static double logit (double x) {
 #define GAMMA       (p[parindex[0]]) // recovery rate
 #define MU          (p[parindex[1]]) // baseline birth and death rate
 #define IOTA        (p[parindex[2]]) // import rate
-#define LOGBETA     (p[parindex[3]]) // transmission rate
+#define BETA       (&p[parindex[3]]) // transmission rates
 #define BETA_SD     (p[parindex[4]]) // environmental stochasticity SD in transmission rate
 #define POPSIZE     (p[parindex[5]]) // population size
 #define RHO         (p[parindex[6]]) // reporting probability
@@ -54,9 +54,13 @@ static double logit (double x) {
 
 void _sir_par_untrans (double *pt, double *p, int *parindex) 
 {
+  int nbasis = (int) NBASIS;
+  int k;
   pt[parindex[0]] = log(GAMMA);
   pt[parindex[1]] = log(MU);
   pt[parindex[2]] = log(IOTA);
+  for (k = 0; k < nbasis; k++)
+    pt[parindex[3]+k] = log(BETA[k]);
   pt[parindex[4]] = log(BETA_SD);
   pt[parindex[6]] = logit(RHO);
   pt[parindex[10]] = log(S0);
@@ -66,9 +70,13 @@ void _sir_par_untrans (double *pt, double *p, int *parindex)
  
 void _sir_par_trans (double *pt, double *p, int *parindex) 
 {
+  int nbasis = (int) NBASIS;
+  int k;
   pt[parindex[0]] = exp(GAMMA);
   pt[parindex[1]] = exp(MU);
   pt[parindex[2]] = exp(IOTA);
+  for (k = 0; k < nbasis; k++)
+    pt[parindex[3]+k] = exp(BETA[k]);
   pt[parindex[4]] = exp(BETA_SD);
   pt[parindex[6]] = expit(RHO);
   pt[parindex[10]] = exp(S0);
@@ -116,13 +124,16 @@ void _sir_euler_simulator (double *x, const double *p,
   double trans[nrate];		// transition numbers
   double beta;
   double dW;
-  int nseas = (int) NBASIS;	// number of seasonal basis functions
+  int nbasis = (int) NBASIS;	// number of seasonal basis functions
   int deg = (int) DEGREE;	// degree of seasonal basis functions
-  double seasonality[nseas];
+  double seasonality[nbasis];
+  int k;
 
-  if (nseas <= 0) return;
-  periodic_bspline_basis_eval(t,PERIOD,deg,nseas,&seasonality[0]);
-  beta = exp(dot_product(nseas,&seasonality[0],&LOGBETA));
+  if (nbasis <= 0) return;
+  periodic_bspline_basis_eval(t,PERIOD,deg,nbasis,&seasonality[0]);
+  for (k = 0, beta = 0; k < nbasis; k++)
+    beta += seasonality[k]*log(BETA[k]);
+  beta = exp(beta);
 
   //  test to make sure the parameters and state variable values are sane
   if (!(R_FINITE(beta)) || 
@@ -171,13 +182,16 @@ void _sir_ODE (double *f, double *x, const double *p,
   double rate[nrate];		// transition rates
   double term[nrate];		// terms in the equations
   double beta;
-  int nseas = (int) NBASIS;	// number of seasonal basis functions
+  int nbasis = (int) NBASIS;	// number of seasonal basis functions
   int deg = (int) DEGREE;	// degree of seasonal basis functions
-  double seasonality[nseas];
-  
-  if (nseas <= 0) return;
-  periodic_bspline_basis_eval(t,PERIOD,deg,nseas,&seasonality[0]);
-  beta = exp(dot_product(nseas,&seasonality[0],&LOGBETA));
+  double seasonality[nbasis];
+  int k;
+
+  if (nbasis <= 0) return;
+  periodic_bspline_basis_eval(t,PERIOD,deg,nbasis,&seasonality[0]);
+  for (k = 0, beta = 0; k < nbasis; k++)
+    beta += seasonality[k]*log(BETA[k]);
+  beta = exp(beta);
 
   // compute the transition rates
   rate[0] = MU*POPSIZE;		// birth into susceptible class
@@ -221,9 +235,10 @@ double _sir_rates (int j, double t, double *x, double *p,
 		   int ncovar, double *covar) {
   double beta;
   double rate = 0.0;
-  int nseas = (int) NBASIS;	// number of seasonal basis functions
+  int nbasis = (int) NBASIS;	// number of seasonal basis functions
   int deg = (int) DEGREE;	// degree of seasonal basis functions
-  double seasonality[nseas];
+  double seasonality[nbasis];
+  int k;
 
   switch (j) {
   case 1: 			// birth
@@ -233,8 +248,10 @@ double _sir_rates (int j, double t, double *x, double *p,
     rate = MU*SUSC;
     break;
   case 3:			// infection
-    periodic_bspline_basis_eval(t,PERIOD,deg,nseas,&seasonality[0]);
-    beta = exp(dot_product(nseas,&seasonality[0],&LOGBETA));
+    periodic_bspline_basis_eval(t,PERIOD,deg,nbasis,&seasonality[0]);
+    for (k = 0, beta = 0; k < nbasis; k++)
+      beta += seasonality[k]*log(BETA[k]);
+    beta = exp(beta);
     rate = (beta*INFD+IOTA)*SUSC/POPSIZE;
     break;
   case 4:			// infected death
@@ -252,4 +269,3 @@ double _sir_rates (int j, double t, double *x, double *p,
   }
   return rate;
 }
-

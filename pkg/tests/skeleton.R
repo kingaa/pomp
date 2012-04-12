@@ -12,7 +12,7 @@ p <- array(
            dim=c(5,3),
            dimnames=list(names(coef(ricker)),NULL)
            )
-p["log.r",] <- c(1,2,4)
+p["r",] <- exp(c(1,2,4))
 f <- skeleton(ricker,x=x,params=p,t=time(ricker,t0=T))
 plot(x[1,,],f[1,,],type='n')
 points(x[1,1,],f[1,1,],col='red')
@@ -32,7 +32,7 @@ p <- array(
            dim=c(15,3),
            dimnames=list(names(coef(euler.sir)),NULL)
            )
-p["log.beta2",1:2] <- c(3,5)  ## try different values of one of the seasonality parameters
+p["beta2",1:2] <- exp(c(3,5))  ## try different values of one of the seasonality parameters
 ## compute the skeleton at each point
 f <- skeleton(euler.sir,x=x,params=p,t=seq(0,1,length=100))
 ## verify that the skeleton varies with time
@@ -69,7 +69,7 @@ p <- array(
            dim=c(5,3),
            dimnames=list(names(coef(ricker)),NULL)
            )
-p["log.r",]<- c(1,2,4)
+p["r",]<- exp(c(1,2,4))
 
 f <- skeleton(ricker,x=x,params=p,t=time(ricker))
 

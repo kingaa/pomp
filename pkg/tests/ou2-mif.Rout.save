@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -263,3 +263,6 @@ mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but a
 +            )
 > pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
 > 
+> proc.time()
+   user  system elapsed 
+ 13.108   0.044  13.312 

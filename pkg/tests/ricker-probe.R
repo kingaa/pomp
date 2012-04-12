@@ -88,7 +88,7 @@ pbm <- probe.match(pb,eval.only=TRUE)
 plot(pbm)
 summary(pbm)
 
-coef(po) <- c(log.r=log(10),sigma=0.3,phi=20,N.0=5,e.0=0)
+coef(po) <- c(r=10,sigma=0.3,phi=20,N.0=5,e.0=0)
 
 pb <- probe(
             po,
@@ -108,7 +108,7 @@ plot(pb)
 
 pm <- probe.match(
                   pb,
-                  est=c("log.r","log.phi","log.N.0"),
+                  est=c("r","phi","N.0"),
                   transform=TRUE,
                   parscale=c(0.1,0.1,0.1),
                   nsim=1000,
@@ -138,7 +138,7 @@ plot(pb)
 
 pm <- probe.match(
                   pb,
-                  est=c("log.r","log.phi","log.N.0"),
+                  est=c("r","phi","N.0"),
                   transform=TRUE,
                   parscale=c(0.1,0.1,0.1),
                   nsim=1000,

@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -120,7 +120,7 @@ Loading required package: deSolve
 > 
 > data(gillespie.sir)
 > 
-> tail(as(simulate(gillespie.sir,times=time(gsir),t0=timezero(gsir),seed=1165270654L),"data.frame"))
+> tail(as.data.frame(simulate(gillespie.sir,times=time(gsir),t0=timezero(gsir),seed=1165270654L)))
         time reports     S    I      R      N cases
 100 1.903846      49 65867 1145 932868 999880   478
 101 1.923077      49 65570 1151 933153 999874   545
@@ -129,3 +129,6 @@ Loading required package: deSolve
 104 1.980769      44 64737 1140 933910 999787   504
 105 2.000000      47 64491 1109 934157 999757   530
 > 
+> proc.time()
+   user  system elapsed 
+  2.280   0.036   2.333 

@@ -20,7 +20,7 @@ plot(spp)
 summary(spp)
 
 po <- ricker
-coef(po,"log.r") <- log(5)
+coef(po,"r") <- 5
 sp <- spect(
             po,
             kernel.width=3,

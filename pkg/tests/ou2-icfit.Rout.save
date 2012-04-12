@@ -1,6 +1,6 @@
 
-R Under development (unstable) (2011-09-03 r56917)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -105,3 +105,6 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
        tau       x1.0       x2.0 
  0.0000000 -0.5854345  0.2495515 
 > 
+> proc.time()
+   user  system elapsed 
+ 16.365   0.056  16.483 

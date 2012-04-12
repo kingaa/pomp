@@ -1,6 +1,6 @@
 
-R version 2.13.1 (2011-07-08)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -114,3 +114,6 @@ alternative hypothesis: two-sided
 > ##  ggplot(data=melt(x))+geom_bar(aes(x=value,fill=variable),position="dodge")
 > 
 > 
+> proc.time()
+   user  system elapsed 
+  6.032   0.036   6.146 

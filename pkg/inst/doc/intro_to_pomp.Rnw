@@ -838,7 +838,7 @@ Thus
 ricker.sim <- function (x, t, params, delta.t, ...) {
   e <- rnorm(n=1,mean=0,sd=params["sigma"]) 
   xnew <- c(
-            exp(params["log.r"]+log(x["N"])-x["N"]+e),
+            params["r"]*x["N"]*exp(-x["N"]+e),
             e
             )
   names(xnew) <- c("N","e")
@@ -860,7 +860,7 @@ ricker <- pomp(
                measurement.model=y~pois(lambda=N*phi)
                )
 coef(ricker) <- c(
-                  log.r=3.8,
+                  r=exp(3.8),
                   sigma=0.3,
                   phi=10,
                   N.0=7,
@@ -900,7 +900,7 @@ A call to \pkg{pomp}'s function \code{probe} results in the application of these
 To see this, we'll apply probe to the Ricker model at the true parameters and at a wild guess.
 <<first-probe>>=
 pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
-guess <- c(log.r=log(20),sigma=1,phi=20,N.0=7,e.0=0)
+guess <- c(r=20,sigma=1,phi=20,N.0=7,e.0=0)
 pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
 @ 
 Results summaries and diagnostic plots showing the model-data agreement and correlations among the probes can be obtained by 
@@ -942,7 +942,7 @@ Let us now attempt to fit the Ricker model to the data using probe-matching.
 <<ricker-probe-match-calc,eval=F>>=
 pm <- probe.match(
                   pb.guess,
-                  est=c("log.r","log.sigma","log.phi"),
+                  est=c("r","sigma","phi"),
                   transform=TRUE,
                   method="Nelder-Mead",
                   maxit=2000,
@@ -980,7 +980,7 @@ mf <- mif(
           var.factor=2,
           ic.lag=3,
           max.fail=50,
-          rw.sd=c(log.r=0.1,log.sigma=0.1,log.phi=0.1)
+          rw.sd=c(r=0.1,sigma=0.1,phi=0.1)
           )
 mf <- continue(mf,Nmif=500,max.fail=20)
 @ 
@@ -1076,7 +1076,7 @@ for (j in 1:5) {
                   start=starts[[j]],
                   transform=log,
                   transform.params=TRUE,
-                  est=c("log.K","log.r"),
+                  est=c("K","r"),
                   lags=c(1,2),
                   seed=7639873L,
                   method="Nelder-Mead",
@@ -1252,7 +1252,7 @@ so we proceed to fit with \code{lags=2}.
 true.fit <- nlf(
                 gompertz,
                 transform.params=TRUE,
-                est=c("log.K","log.r"),
+                est=c("K","r"),
                 lags=2,
                 seed=7639873, 
                 method="Nelder-Mead",
@@ -1270,8 +1270,8 @@ if (file.exists(binary.file)) {
 }
 @ 
 From \verb+true.fit$params+ and \verb+true.fit$se+ we get the estimates ($\pm$ 1 standard error)
-${r}=$~\Sexpr{signif(true.fit$params["r"],2)}~$\pm$~\Sexpr{signif(true.fit$params["r"]*true.fit$se["log.r"],2)}
-and ${K}=$~\Sexpr{signif(true.fit$params["K"],2)}~$\pm$~\Sexpr{signif(true.fit$params["K"]*true.fit$se["log.K"],2)}. 
+${r}=$~\Sexpr{signif(true.fit$params["r"],2)}~$\pm$~\Sexpr{signif(true.fit$params["r"]*true.fit$se["r"],2)}
+and ${K}=$~\Sexpr{signif(true.fit$params["K"],2)}~$\pm$~\Sexpr{signif(true.fit$params["K"]*true.fit$se["K"],2)}. 
 %%$\log K = 0.081 \pm 0.064$, $\log r = -2.2 \pm 0.51$
 
 The standard errors provided by \code{nlf} are based on a Newey-West estimate of the variance-covariance matrix that is generally
@@ -1298,7 +1298,7 @@ for (j in seq_len(nreps)) {
              gompertz,
              start=coef(gompertz),
              transform.params=TRUE,
-             est=c("log.K","log.r"),
+             est=c("K","r"),
              lags=lags,
              seed=7639873, 
              bootstrap=TRUE, 
@@ -1351,7 +1351,7 @@ for (j in seq_len(nreps)) {
   fit <- nlf(
              gompertz,
              transform.params=TRUE,
-             est=c("log.K","log.r"),
+             est=c("K","r"),
              lags=lags,
              seed=7639873L,
              bootstrap=TRUE, 
@@ -1395,7 +1395,7 @@ We'll use 10,000 particles, so we'll need that many samples from the prior distr
 set.seed(136872209L)
 Np <- 10000
 prior1 <- parmat(coef(ricker),nrep=Np)
-prior1["log.r",] <- runif(n=Np,min=2,max=5)
+prior1["r",] <- exp(runif(n=Np,min=2,max=5))
 prior1["sigma",] <- runif(n=Np,min=0.1,max=1)
 @ 
 Now \code{params} holds these 10,000 samples.
@@ -1403,7 +1403,7 @@ The following runs the sequential Monte Carlo algorithm.
 Note that, by specifying \code{transform=TRUE}, we cause the estimation to proceed on the transformed scale.
 <<bsmc-example-flat-prior-3,eval=F>>=
   fit1 <- bsmc(ricker,params=prior1,transform=TRUE,
-               est=c("log.r","log.sigma"),smooth=0.2)
+               est=c("r","sigma"),smooth=0.2)
 @ 
 <<bsmc-example-flat-prior-eval,eval=T,echo=F>>=
 binary.file <- "bsmc-ricker-flat-prior.rda"
@@ -1425,7 +1425,7 @@ Note that these are reported on the natural (i.e., untransformed) scale.
 
 \begin{figure}
 <<bsmc-example-flat-prior-plot,fig=T,pdf=F,png=T,height=6,width=6,echo=F>>=
-  plot(fit1,pars=c("log.r","sigma"),thin=5000)
+  plot(fit1,pars=c("r","sigma"),thin=5000)
 @ 
 \caption{
   Results of \code{bsmc} on the Ricker model.
@@ -1442,12 +1442,12 @@ To repeat the procedure with log-normal priors on $r$ and $\sigma$, one might do
 set.seed(90348704L)
 Np <- 10000
 prior2 <- parmat(coef(ricker),nrep=Np)
-## normal prior on log.r
-prior2["log.r",] <- rnorm(n=Np,mean=4,sd=3)
+## log-normal prior on r
+prior2["r",] <- rlnorm(n=Np,meanlog=4,sdlog=3)
 ## log-normal prior on sigma
 prior2["sigma",] <- rlnorm(n=Np,meanlog=log(0.5),sdlog=5)
 fit2 <- bsmc(ricker,params=prior2,transform=TRUE,
-            est=c("log.r","log.sigma"),smooth=0.2)
+            est=c("r","sigma"),smooth=0.2)
 signif(coef(fit2),digits=2)
 @ 
 

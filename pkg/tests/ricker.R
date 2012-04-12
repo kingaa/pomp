@@ -46,12 +46,12 @@ stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 
 po <- ricker
 try(
-    coef(po,"r")
+    coef(po,"log.r")
     )
 coef(po,c("r","phi")) <- c(0,0)
-coef(po,c("log.r","phi")) <- c(a=0,b=1)
-coef(po,c("log.r","phi")) <- 1
-coef(po) <- c(phi=1,log.r=3.5,N.0=10,e.0=0,sigma=0)
+coef(po,c("r","phi")) <- c(a=0,b=1)
+coef(po,c("r","phi")) <- 1
+coef(po) <- c(phi=1,r=3.5,N.0=10,e.0=0,sigma=0)
 coef(po)
 coef(po,"new") <- 3
 plot(simulate(po))

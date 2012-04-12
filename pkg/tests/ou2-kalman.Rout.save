@@ -1,6 +1,6 @@
 
-R version 2.13.1 (2011-07-08)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -164,7 +164,7 @@ Exiting from Nelder Mead minimizer
     117 function evaluations used
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 11.55296 secs
+Time difference of 5.289137 secs
 > tic <- Sys.time()
 > print(loglik.mle <- -kalm.fit1$value,digits=4)
 [1] -477.2
@@ -186,3 +186,6 @@ x1.0      -3.0   -3.996 3.9811
 x2.0       4.0    2.952 2.6278
 loglik  -479.0 -477.241     NA
 > 
+> proc.time()
+   user  system elapsed 
+  5.776   0.040   5.861 

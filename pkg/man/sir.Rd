@@ -25,13 +25,16 @@ data(bbs)
 data(euler.sir)
 plot(euler.sir)
 plot(simulate(euler.sir,seed=20348585))
+coef(euler.sir)
 
 data(gillespie.sir)
 plot(gillespie.sir)
 plot(simulate(gillespie.sir,seed=20348585))
+coef(gillespie.sir)
 
 data(bbs)
 plot(bbs)
+coef(bbs)
 }
 \references{
   Anonymous (1978).

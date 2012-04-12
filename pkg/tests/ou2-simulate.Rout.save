@@ -1,6 +1,6 @@
 
-R version 2.13.1 (2011-07-08)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -35,7 +35,7 @@ Loading required package: deSolve
 > ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.007447004 secs
+Time difference of 0.01002026 secs
 > 
 > coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 > 
@@ -44,3 +44,6 @@ Time difference of 0.007447004 secs
 > y <- simulate(ou2,nsim=3,obs=T)
 > z <- simulate(ou2,nsim=3,obs=T,states=T)
 > 
+> proc.time()
+   user  system elapsed 
+  0.432   0.048   0.493 

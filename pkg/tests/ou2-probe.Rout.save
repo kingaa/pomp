@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -292,3 +292,6 @@ sim.5 0.5542739 0.6216561 -0.4089672 -0.7236761  0.06850115
 > 
 > 
 > 
+> proc.time()
+   user  system elapsed 
+  1.292   0.028   1.377 

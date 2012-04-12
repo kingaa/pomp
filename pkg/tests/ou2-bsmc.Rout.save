@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -62,7 +62,7 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 3.128943 secs
+Time difference of 3.02021 secs
 > 
 > print(
 +       cbind(
@@ -96,3 +96,6 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > print(smc$log.evidence)
 [1] 37.68127
 > 
+> proc.time()
+   user  system elapsed 
+  4.848   0.040   4.912 

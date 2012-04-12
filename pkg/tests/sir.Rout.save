@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -394,7 +394,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x34a8e98>
+<environment: 0x37f5b80>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -404,7 +404,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0x3658c00>
+<environment: 0x3921ab8>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -470,7 +470,7 @@ function not specified
 > x <- simulate(po,params=log(params),nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.130086 secs
+Time difference of 1.090771 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -487,7 +487,7 @@ Time difference of 1.130086 secs
 > X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.471394 secs
+Time difference of 1.077192 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -547,7 +547,7 @@ R -32554 -28565 -24604 -18148 -10889    787.2
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.212947 secs
+Time difference of 1.203072 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -555,7 +555,7 @@ Time difference of 1.212947 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.07457232 secs
+Time difference of 0.01984811 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -630,3 +630,6 @@ null device
           1 
 > 
 > 
+> proc.time()
+   user  system elapsed 
+  4.304   0.056   4.595 

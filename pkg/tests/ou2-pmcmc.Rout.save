@@ -1,6 +1,6 @@
 
-R version 2.13.1 (2011-07-08)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -56,6 +56,18 @@ Loading required package: deSolve
 +             )
 > 
 > 
+> f3 <- pmcmc(
++             ff,
++             Nmcmc=20,
++             dprior=dprior.ou2,
++             transform=TRUE,
++             hyperparams=list(min=coef(ou2)-1,max=coef(ou2)+1),
++             rw.sd=c(alpha.2=0.01,alpha.3=0.01),
++             max.fail=100, 
++             verbose=FALSE
++             )
+> 
+> 
 > if (FALSE) {
 +   f2 <- pmcmc(
 +               f1,Nmcmc=1000,Np=500,max.fail=100,
@@ -71,3 +83,6 @@ Loading required package: deSolve
 null device 
           1 
 > 
+> proc.time()
+   user  system elapsed 
+  2.744   0.040   3.037 

@@ -1,6 +1,6 @@
 
-R version 2.13.1 (2011-07-08)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -218,3 +218,6 @@ se2            NA        NA     0.05423946     0.05463665
 se3            NA        NA     0.54596143     0.54625858
 value   -10330.93 -555.0868  -554.48554809  -554.48546595
 > 
+> proc.time()
+   user  system elapsed 
+  8.256   0.040   8.334 

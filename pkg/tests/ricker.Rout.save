@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -78,30 +78,31 @@ Loading required package: deSolve
 > 
 > po <- ricker
 > try(
-+     coef(po,"r")
++     coef(po,"log.r")
 +     )
 Error in .local(object, ...) : 
-  in 'coef': name(s) 'r' correspond to no parameter(s)
+  in 'coef': name(s) 'log.r' correspond to no parameter(s)
 > coef(po,c("r","phi")) <- c(0,0)
-Warning message:
-in 'coef<-': name(s) 'r' do not refer to existing parameter(s); they are being concatenated 
-> coef(po,c("log.r","phi")) <- c(a=0,b=1)
+> coef(po,c("r","phi")) <- c(a=0,b=1)
 Warning message:
 in 'coef<-' names of 'value' are being discarded 
-> coef(po,c("log.r","phi")) <- 1
-> coef(po) <- c(phi=1,log.r=3.5,N.0=10,e.0=0,sigma=0)
+> coef(po,c("r","phi")) <- 1
+> coef(po) <- c(phi=1,r=3.5,N.0=10,e.0=0,sigma=0)
 > coef(po)
-  phi log.r   N.0   e.0 sigma 
+  phi     r   N.0   e.0 sigma 
   1.0   3.5  10.0   0.0   0.0 
 > coef(po,"new") <- 3
 Warning message:
 in 'coef<-': name(s) 'new' do not refer to existing parameter(s); they are being concatenated 
 > plot(simulate(po))
 > coef(po)
-  phi log.r   N.0   e.0 sigma   new 
+  phi     r   N.0   e.0 sigma   new 
   1.0   3.5  10.0   0.0   0.0   3.0 
 > 
 > dev.off()
 null device 
           1 
 > 
+> proc.time()
+   user  system elapsed 
+  0.532   0.028   0.676 

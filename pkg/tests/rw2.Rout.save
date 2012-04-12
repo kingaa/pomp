@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -260,7 +260,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x1d43d98>
+<environment: 0x20ff908>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -273,11 +273,11 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x1d43d98>
+<environment: 0x20ff908>
 skeleton ( map ) = 
 function (x, t, params, covars, ...) 
 stop(sQuote("skeleton"), " not specified")
-<environment: 0x1d2cee0>
+<environment: 0x10f26a0>
 initializer = 
 function (params, t0, ...) 
 {
@@ -451,3 +451,6 @@ Error in .local(object, ..., value = value) :
 > 
 > 
 > 
+> proc.time()
+   user  system elapsed 
+  0.840   0.016   0.872 

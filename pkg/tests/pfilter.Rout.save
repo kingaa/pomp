@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -47,8 +47,8 @@ particle filter log likelihood at truth
 > print(coef(pf))
        gamma           mu         iota       nbasis       degree       period 
 2.600000e+01 2.000000e-02 1.000000e-02 3.000000e+00 3.000000e+00 1.000000e+00 
-   log.beta1    log.beta2    log.beta3      beta.sd          pop          rho 
-7.090077e+00 7.495542e+00 6.396930e+00 1.000000e-03 2.100000e+06 6.000000e-01 
+       beta1        beta2        beta3      beta.sd          pop          rho 
+1.200000e+03 1.800000e+03 6.000000e+02 1.000000e-03 2.100000e+06 6.000000e-01 
          S.0          I.0          R.0 
 2.166667e-02 1.000000e-03 9.773333e-01 
 > print(pf$loglik,digits=4)
@@ -61,10 +61,13 @@ particle filter log likelihood at truth
 > print(coef(pf))
        gamma           mu         iota       nbasis       degree       period 
 2.600000e+01 2.000000e-02 1.000000e+00 3.000000e+00 3.000000e+00 1.000000e+00 
-   log.beta1    log.beta2    log.beta3      beta.sd          pop          rho 
-7.090077e+00 7.495542e+00 6.396930e+00 1.000000e-03 2.100000e+06 6.000000e-01 
+       beta1        beta2        beta3      beta.sd          pop          rho 
+1.200000e+03 1.800000e+03 6.000000e+02 1.000000e-03 2.100000e+06 6.000000e-01 
          S.0          I.0          R.0 
 2.166667e-02 1.000000e-03 9.773333e-01 
 > print(logLik(pf),digits=4)
 [1] -907.6
 > 
+> proc.time()
+   user  system elapsed 
+  5.772   0.048   5.858 

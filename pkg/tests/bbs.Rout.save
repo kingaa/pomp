@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -28,36 +28,38 @@ Loading required package: deSolve
 > coef(bbs)
        gamma           mu         iota       nbasis       degree       period 
    0.3333333    0.0000000    0.0000000    1.0000000    0.0000000    1.0000000 
-   log.beta1      beta.sd          pop          rho        sigma          S.0 
-   0.3300000    0.0000000 1400.0000000    0.9000000    3.6000000    0.9990000 
+        beta      beta.sd          pop          rho        sigma          S.0 
+   1.4000000    0.0000000 1400.0000000    0.9000000    3.6000000    0.9990000 
          I.0          R.0 
    0.0010000    0.0000000 
 > coef(bbs,transform=TRUE)
        gamma           mu         iota       nbasis       degree       period 
   -1.0986123         -Inf         -Inf    1.0000000    0.0000000    1.0000000 
-   log.beta1      beta.sd          pop          rho        sigma          S.0 
-   0.3300000         -Inf 1400.0000000    2.1972246    3.6000000   -0.0010005 
+        beta      beta.sd          pop          rho        sigma          S.0 
+   0.3364722         -Inf 1400.0000000    2.1972246    1.2809338   -0.0010005 
          I.0          R.0 
   -6.9077553         -Inf 
 > 
 > prior <- parmat(coef(bbs),nrep=1000)
-> prior["log.beta1",] <- runif(n=1000,min=1,max=2)
+> prior["beta",] <- exp(runif(n=1000,min=1,max=2))
 > prior["sigma",] <- runif(n=1000,min=2,max=4)
-> fit1 <- bsmc(bbs,params=prior,transform=TRUE,est=c("log.beta1","sigma"),smooth=0.2)
+> fit1 <- bsmc(bbs,params=prior,transform=TRUE,est=c("beta","sigma"),smooth=0.2)
 Warning message:
 In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
   Walker's alias method used: results are different from R < 2.2.0
 > signif(coef(fit1),3)
-    gamma        mu      iota    nbasis    degree    period log.beta1   beta.sd 
-    0.333     0.000     0.000     1.000     0.000     1.000     1.140     0.000 
-      pop       rho     sigma       S.0       I.0       R.0 
- 1400.000     0.900     1.960     0.999     0.001     0.000 
+   gamma       mu     iota   nbasis   degree   period     beta  beta.sd 
+   0.333    0.000    0.000    1.000    0.000    1.000    3.460    0.000 
+     pop      rho    sigma      S.0      I.0      R.0 
+1400.000    0.900    2.050    0.999    0.001    0.000 
 > 
-> fit2 <- traj.match(bbs,est=c("log.beta1","sigma"),transform=TRUE)
-There were 11 warnings (use warnings() to see them)
+> fit2 <- traj.match(bbs,est=c("beta","sigma"),transform=TRUE)
 > signif(coef(fit2),3)
-    gamma        mu      iota    nbasis    degree    period log.beta1   beta.sd 
-    0.333     0.000     0.000     1.000     0.000     1.000     0.704     0.000 
-      pop       rho     sigma       S.0       I.0       R.0 
- 1400.000     0.900     0.426     0.999     0.001     0.000 
+   gamma       mu     iota   nbasis   degree   period     beta  beta.sd 
+   0.333    0.000    0.000    1.000    0.000    1.000    2.020    0.000 
+     pop      rho    sigma      S.0      I.0      R.0 
+1400.000    0.900    0.426    0.999    0.001    0.000 
 > 
+> proc.time()
+   user  system elapsed 
+  2.624   0.052   2.701 

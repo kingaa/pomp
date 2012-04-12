@@ -135,7 +135,7 @@ traj.match.objfun(object, params, est, transform = FALSE)
   lines(x2~time,data=as(res,"data.frame"),col='red')
 
   data(ricker)
-  ofun <- traj.match.objfun(ricker,est=c("log.r","log.phi"),transform=TRUE)
+  ofun <- traj.match.objfun(ricker,est=c("r","phi"),transform=TRUE)
   optim(fn=ofun,par=c(2,0),method="BFGS")
 }
 \seealso{

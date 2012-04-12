@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -48,3 +48,6 @@ Loading required package: deSolve
 > print(round(logLik(pf),digits=1))
 [1] -3747.5
 > 
+> proc.time()
+   user  system elapsed 
+  3.428   0.052   3.501 

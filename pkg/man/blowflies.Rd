@@ -19,6 +19,24 @@ plot(blowflies2)
   Unlimited quantities of larval food were provided;
   the adult food supply (ground liver) was constant at 0.4g per day.
   The data were taken from the table provided by Brillinger et al. (1980).
+
+  The models are discrete delay equations:
+  \deqn{R(t+1) \sim \mathrm{Poisson}(P N(t-\tau) \exp{(-N(t-\tau)/N_{0})} e(t+1) {\Delta}t)}{%
+    R[t+1] ~ Poisson(P N[t-tau] exp(-N[t-tau]/N0) e[t+1] dt)}
+  \deqn{S(t+1) \sim \mathrm{binomial}(N(t),\exp{(-\delta \epsilon(t+1) {\Delta}t)})}{%
+    S[t+1] ~ binomial(N[t],exp(-delta eps[t+1] dt))}
+  \deqn{N(t) = R(t)+S(t)}{N[t]=R[t]+S[t]}
+  where \eqn{e(t)}{e[t]} and \eqn{\epsilon(t)}{eps[t]} are Gamma-distributed i.i.d. random variables with mean 1 and variances \eqn{{\sigma_p^2}/{{\Delta}t}}{sigma.p^2/dt}, \eqn{{\sigma_d^2}/{{\Delta}t}}{sigma.d^2/dt}, respectively.
+  \code{blowflies1} has a timestep (\eqn{{\Delta}t}{dt}) of 1 day, and \code{blowflies2} has a timestep of 2 days.
+  The process model in \code{blowflies1} thus corresponds exactly to that studied by Wood (2010).
+  The measurement model in both cases is taken to be
+  \deqn{y(t) \sim \mathrm{negbin}(N(t),1/\sigma_y^2)}{y[t] ~ negbin(N[t],1/sigma.y^2)}, i.e., the observations are assumed to be negative-binomially distributed with mean \eqn{N(t)}{N[t]} and variance \eqn{N(t)+(\sigma_y N(t))^2}{N[t]+(sigma.y N[t])^2}.
+  
+  Do
+
+  \code{file.show(system.file("data-R","blowflies.R",package="pomp"))}
+
+  to view the code that constructs these pomp objects.
 }
 \seealso{\code{\link{pomp-class}} and the vignettes}
 \references{

@@ -21,20 +21,25 @@ pomp(
        step.fun="_blowfly_model_simulator",
        delta.t=1,
        ),
-     paramnames=c("log.P","log.N0","log.delta","log.sigma.P","log.sigma.d","tau","log.sigma.y"),
+     paramnames=c("P","N0","delta","sigma.P","sigma.d","tau","sigma.y"),
      statenames=c("N1","R","S","e","eps"),
      obsnames=c("y"),
-     measurement.model=y~nbinom(mu=N1,size=exp(-2*log.sigma.y)),
+     measurement.model=y~nbinom(mu=N1,size=1/(sigma.y^2)),
      y.init=with( ## initial data
        raw.data,
-       approx(
-              x=day,
-              y=y,
-              xout=seq(from=0,to=14,by=1),
-              rule=2
-              )$y
+       approx(x=day,y=y,xout=seq(from=0,to=14,by=1),rule=2)$y
        ),
 #     y.init=c(948, 948, 942, 930, 911, 885, 858, 833.7, 801, 748.3, 676, 589.8, 504, 434.9, 397),
+     parameter.inv.transform=function(params,...) {
+       p <- c(log(params[c("delta","sigma.P","sigma.d","sigma.y","P","N0")]),params["tau"])
+       names(p) <- c(paste("log",c("delta","sigma.P","sigma.d","sigma.y","P","N0"),sep="."),"tau")
+       p
+     },
+     parameter.transform=function(params,...) {
+       p <- c(exp(params[paste("log",c("delta","sigma.P","sigma.d","sigma.y","P","N0"),sep=".")]),params["tau"])
+       names(p) <- c(c("delta","sigma.P","sigma.d","sigma.y","P","N0"),"tau")
+       p
+     },
      initializer=function (params, t0, y.init, ...) {
        ntau <- length(y.init)
        n <- y.init[ntau:1]
@@ -44,25 +49,14 @@ pomp(
      ) -> blowflies1
 
 pomp(
-     data=subset(raw.data[c("day","y")],day>14&day<400),
-     times="day",
-     t0=14,
+     blowflies1,
      rprocess=discrete.time.sim(
        step.fun="_blowfly_model_simulator",
        delta.t=2,
        ),
-     paramnames=c("log.P","log.N0","log.delta","log.sigma.P","log.sigma.d","tau","log.sigma.y"),
-     statenames=c("N1","R","S","e","eps"),
-     obsnames=c("y"),
-     measurement.model=y~nbinom(mu=N1,size=exp(-2*log.sigma.y)),
      y.init=with( ## initial data
        raw.data,
-       approx(
-              x=day,
-              y=y,
-              xout=seq(from=0,to=14,by=2),
-              rule=2
-              )$y
+       approx(x=day,y=y,xout=seq(from=0,to=14,by=2),rule=2)$y
        ),
      #y.init=c(948, 942, 911, 858, 801, 676, 504, 397),
      initializer=function (params, t0, y.init, ...) {
@@ -74,26 +68,26 @@ pomp(
      ) -> blowflies2
 
 ## mle from search to date
-coef(blowflies1) <- c(
-                    log.P = 1.189 , 
-                    log.delta = -1.828 , 
-                    log.N0 = 6.522 , 
-                    log.sigma.P = 0.301 , 
-                    log.sigma.d = -0.292 , 
-                    log.sigma.y = -3.625 , 
-                    tau = 14 
-                    )
+coef(blowflies1,transform=TRUE) <- c(
+                  log.P = 1.189, 
+                  log.delta = -1.828, 
+                  log.N0 = 6.522, 
+                  log.sigma.P = 0.301, 
+                  log.sigma.d = -0.292, 
+                  log.sigma.y = -3.625, 
+                  tau = 14 
+                  )
 
 ## mle from search to date
-coef(blowflies2) <- c(
-                    log.P = 1.005 , 
-                    log.delta = -1.75 , 
-                    log.N0 = 6.685 , 
-                    log.sigma.P = 0.366 , 
-                    log.sigma.d = -0.274 , 
-                    log.sigma.y = -4.524 , 
-                    tau = 7 
-                    )
+coef(blowflies2,transform=TRUE) <- c(
+                  log.P = 1.005, 
+                  log.delta = -1.75, 
+                  log.N0 = 6.685, 
+                  log.sigma.P = 0.366, 
+                  log.sigma.d = -0.274, 
+                  log.sigma.y = -4.524, 
+                  tau = 7 
+                  )
 
 test <- FALSE
 if(test){
@@ -109,9 +103,9 @@ if(test){
 
   ## check that it matches the deterministic skeleton when noise is small
   params.1.skel <- coef(blowflies1)
-  params.1.skel["log.sigma.P"] <- log(0.00001)
-  params.1.skel["log.sigma.d"] <- log(0.00001)
-  params.1.skel["log.sigma.y"] <- log(0.00001)
+  params.1.skel["sigma.P"] <- 0.00001
+  params.1.skel["sigma.d"] <- 0.00001
+  params.1.skel["sigma.y"] <- 0.00001
   simulate(blowflies1,params=params.1.skel,nsim=1,seed=73691676L) -> b1.skel
   plot(obs(blowflies1)['y',],ty='l',lty="dashed")
   lines(obs(b1.skel)['y',],ty='l')

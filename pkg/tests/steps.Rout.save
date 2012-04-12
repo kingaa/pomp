@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -44,3 +44,6 @@ Loading required package: deSolve
    (0.086,0.0966]    (0.0966,0.107] 
                10                 8 
 > 
+> proc.time()
+   user  system elapsed 
+  0.416   0.056   0.485 

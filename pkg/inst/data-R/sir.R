@@ -21,7 +21,7 @@ po <- pomp(
            statenames=c("S","I","R","cases","W"),
            paramnames=c(
              "gamma","mu","iota",
-             "log.beta1","beta.sd","pop","rho",
+             "beta1","beta.sd","pop","rho",
              "nbasis","degree","period",
              "S.0","I.0","R.0"
              ),
@@ -41,14 +41,14 @@ po <- pomp(
            )
 
 coef(po) <- c(
-          gamma=26,mu=0.02,iota=0.01,
-          nbasis=3,degree=3,period=1,
-          log.beta1=log(1200),log.beta2=log(1800),log.beta3=log(600),
-          beta.sd=1e-3,
-          pop=2.1e6,
-          rho=0.6,
-          S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
-          )
+              gamma=26,mu=0.02,iota=0.01,
+              nbasis=3,degree=3,period=1,
+              beta1=1200,beta2=1800,beta3=600,
+              beta.sd=1e-3,
+              pop=2.1e6,
+              rho=0.6,
+              S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
+              )
 
 simulate(po,nsim=1,seed=329348545L) -> euler.sir
 
@@ -94,7 +94,7 @@ po <- pomp(
 
 coef(po) <- c(
               gamma=24,mu=1/70,iota=0.1,
-              log.beta1=log(330),log.beta2=log(410),log.beta3=log(490),
+              beta1=330,beta2=410,beta3=490,
               rho=0.1,
               S.0=0.05,I.0=1e-4,R.0=0.95,
               pop=1000000,
@@ -111,7 +111,7 @@ simulate(
 save(gillespie.sir,file="gillespie.sir.rda",compress="xz")
 
 tc <- textConnection("
-day;flu
+day;reports
 1;3
 2;8
 3;28
@@ -142,21 +142,34 @@ po <- pomp(
              ),
            skeleton.type="vectorfield",
            skeleton="_sir_ODE",
-           measurement.model=flu~norm(mean=rho*cases,sd=1+sigma*cases),
+           measurement.model=reports~norm(mean=rho*cases,sd=1+sigma*cases),
            PACKAGE="pomp",
-           obsnames = c("flu"),
+           obsnames = c("reports"),
            statenames=c("S","I","R","cases","W"),
            paramnames=c(
              "gamma","mu","iota",
-             "log.beta1","beta.sd","pop","rho",
+             "beta","beta.sd","pop","rho",
              "nbasis","degree","period",
              "S.0","I.0","R.0"
              ),
            zeronames=c("cases"),
            comp.names=c("S","I","R"),
            ic.names=c("S.0","I.0","R.0"),
-           parameter.transform="_sir_par_trans",
-           parameter.inv.transform="_sir_par_untrans",
+           logvar=c(
+             "beta","gamma","mu","iota","sigma","beta.sd",
+             "S.0","I.0","R.0"
+             ),
+           logitvar="rho",
+           parameter.inv.transform=function (params, logvar, logitvar, ...) {
+             params[logvar] <- log(params[logvar])
+             params[logitvar] <- qlogis(params[logitvar])
+             params
+           },
+           parameter.transform=function (params, logvar, logitvar, ...) {
+             params[logvar] <- exp(params[logvar])
+             params[logitvar] <- plogis(params[logitvar])
+             params
+           },
            initializer=function(params, t0, comp.names, ic.names, ...) {
              snames <- c("S","I","R","cases","W")
              fracs <- params[ic.names]
@@ -170,7 +183,7 @@ po <- pomp(
 coef(po) <- c(
               gamma=1/3,mu=0.0,iota=0.0,
               nbasis=1,degree=0,period=1,
-              log.beta1=0.33,
+              beta=1.4,
               beta.sd=0,
               pop=1400,
               rho=0.9,sigma=3.6,
@@ -179,4 +192,3 @@ coef(po) <- c(
 
 bbs <- po
 save(bbs,file="bbs.rda",compress="xz")
-

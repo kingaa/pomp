@@ -1,4 +1,8 @@
-* put BSMC example into the intro vignette
+* take away confusing name-changes in introductory examples (ricker, sir)
+
+* fix bbs parameter transformations to include sigma
+
+* pompBuilder function for automatic pomp construction
 
 * effects of replacing 'sample.int' with systematic resampling inside 'bsmc'
 
@@ -28,8 +32,6 @@
 * Parallel 'pfilter' algorithm.
 
 * Add LPA model examples.
-
-* Add BBS example.
 
 * SDE examples.
 

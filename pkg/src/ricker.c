@@ -4,7 +4,7 @@
 
 #include "pomp.h"
 
-#define LOG_R   (p[parindex[0]]) // log growth rate
+#define R       (p[parindex[0]]) // growth rate
 #define SIGMA   (p[parindex[1]]) // process noise level
 #define PHI     (p[parindex[2]]) // measurement scale parameter
 
@@ -34,7 +34,7 @@ void _ricker_simulator (double *x, const double *p,
 			double t, double dt)
 {
   double e = (SIGMA > 0.0) ? rnorm(0,SIGMA) : 0.0;
-  N = exp(LOG_R+log(N)-N+e);
+  N = exp(log(R)+log(N)-N+e);
   E = e;
 }
 
@@ -42,13 +42,13 @@ void _ricker_skeleton (double *f, double *x, const double *p,
 		       const int *stateindex, const int *parindex, const int *covindex,
 		       int covdim, const double *covar, double t) 
 {
-  f[0] = exp(LOG_R+log(N)-N);
+  f[0] = exp(log(R)+log(N)-N);
   f[1] = 0.0;
 }
 
 #undef N
 #undef E
 
-#undef LOG_R
+#undef R
 #undef SIGMA
 #undef PHI
