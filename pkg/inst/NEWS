@@ -1,4 +1,8 @@
 NEWS
+0.41-4
+     o	The 'blowflies', 'euler.sir', 'gillespie.sir', 'bbs', and 'ricker' data()-loadable examples have been changed to make the parameterization simpler and more natural.
+     	Although these changes are not backward compatible, they make for much simpler explanations.
+
 0.41-3
      o	In 'trajectory', all vectorfield and map evaluation is now done in C for speed.
      	For continuous-time dynamical systems, this gives an approximately 4-fold speedup.

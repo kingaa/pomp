@@ -1,7 +1,3 @@
-* take away confusing name-changes in introductory examples (ricker, sir)
-
-* fix bbs parameter transformations to include sigma
-
 * pompBuilder function for automatic pomp construction
 
 * effects of replacing 'sample.int' with systematic resampling inside 'bsmc'
