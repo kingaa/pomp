@@ -1,7 +1,7 @@
 Package: pomp
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.41-4
+Version: 0.41-5
 Date: 2012-04-12
 Revision: $Rev$
 Author: Aaron A. King, Edward L. Ionides, Carles Breto, Steve Ellner, Bruce Kendall, Helen Wearing, Matthew J. Ferrari, Michael Lavine, Daniel C. Reuman
@@ -22,3 +22,4 @@ Collate: aaa.R version.R eulermultinom.R plugins.R
  	 pmcmc.R pmcmc-methods.R compare-pmcmc.R
  	 nlf-funcs.R nlf-guts.R nlf-objfun.R nlf.R 
 	 probe.R probe-match.R basic-probes.R spect.R spect-match.R
+	 builder.R
