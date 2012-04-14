@@ -2,6 +2,9 @@ NEWS
 0.41-5
      o	An experimental facility for constructing pomp objects with native C routines is now included.
 
+     o	The 'gompertz' example parameter transformations have been changed.
+     	No longer are the names of the parameter vector changed in the transformation.
+
 0.41-4
      o	The 'blowflies', 'euler.sir', 'gillespie.sir', 'bbs', and 'ricker' data()-loadable examples have been changed to make the parameterization simpler and more natural.
      	Although these changes are not backward compatible, they make for much simpler explanations.
@@ -13,7 +16,7 @@ NEWS
      o	Demos have been created to show some examples.
 
 0.41-2
-     o	Fix bug in 'bbs' example.
+     o	A segfault bug in 'bbs' example has been fixed.
 
      o  The posterior medians (not means) are now stored in the 'params' slot of the 'bsmcd.pomp' object.
 

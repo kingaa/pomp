@@ -15,14 +15,10 @@ po <- pomp(
            statenames=c("X"),
            obsnames=c("Y"),
            parameter.transform=function(params,...){
-             params <- exp(params[c("log.X.0","log.r","log.K","log.tau","log.sigma")])
-             names(params) <- c("X.0","r","K","tau","sigma")
-             params
+             exp(params)
            },
            parameter.inv.transform=function(params,...){
-             params <- log(params[c("X.0","r","K","tau","sigma")])
-             names(params) <- c("log.X.0","log.r","log.K","log.tau","log.sigma")
-             params
+             log(params)
            }
            )
 

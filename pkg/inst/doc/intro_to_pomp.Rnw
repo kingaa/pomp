@@ -159,7 +159,7 @@ In particular, we'll assume that errors in measurement are lognormally distribut
 As we noted above, for this particular model, it isn't necessary to use plug-and-play methods: 
 one can obtain exact maximum likelihood estimates of this model's parameters using the Kalman filter.
 We will demonstrate this below and use it to check the results of plug-and-play inference.
-For now, let's approach this model as we would a more complex model for which no such exact estimation is available.
+In this document, we'll approach this model as we would a more complex model for which no such exact estimation is available.
 
 \section{Defining a partially observed Markov process in \pkg{pomp}.}
 
@@ -520,16 +520,10 @@ We'll log-transform all the parameters to enforce this constrant.
 gompertz <- pomp(
                  gompertz,
                  parameter.transform=function(params,...){
-                   params <- exp(params[c("log.r","log.K","log.tau",
-                                          "log.sigma","log.X.0")])
-                   names(params) <- c("r","K","tau","sigma","X.0")
-                   params
+                   exp(params)
                  },
                  parameter.inv.transform=function(params,...){
-                   params <- log(params[c("r","K","tau","sigma","X.0")])
-                   names(params) <- c("log.r","log.K","log.tau",
-                                      "log.sigma","log.X.0")
-                   params
+                   log(params)
                  }
                  )
 @ 
@@ -549,14 +543,17 @@ coef(gompertz)
 @ 
 On the other hand, given parameter values on the estimation scale, one can set the parameters by 
 <<eval=T>>=
-coef(gompertz,transform=TRUE) <- c(log.r=log(0.1),log.K=0,
-                log.tau=log(0.1),log.sigma=log(0.1),log.X.0=0)
+coef(gompertz,transform=TRUE) <- c(r=log(0.1),K=0,tau=log(0.1),
+                sigma=log(0.1),X.0=0)
 @ 
 and get them by
 <<eval=T>>=
 coef(gompertz,transform=TRUE)
 @ 
-
+We can check that the parameters were set correctly on the natural scale:
+<<eval=T>>=
+coef(gompertz)
+@ 
 To be clear: the parameter-setting expression \code{coef(gompertz) <- theta} assumes that \code{theta} is a named vector of parameters on the natural scale, while \code{coef(gompertz,transform=TRUE) <- theta} assumes that \code{theta} is on the estimation scale.
 
 Note that it's the user's responsibility to ensure that the \code{parameter.transform} and \code{parameter.inv.transform} are actually mutually inverse.
@@ -576,10 +573,13 @@ A \code{pomp} object corresponding to the one just created (but with the \code{r
 For your convenience, codes creating this \code{pomp} object are included with the package.
 To view them, do:
 <<eval=F>>=
-file.show(system.file("examples/gompertz.R",package="pomp"))
+file.show(system.file("demo/gompertz.R",package="pomp"))
 file.show(system.file("examples/gompertz.c",package="pomp"))
 @ 
-
+or run the demo
+<<eval=F>>=
+demo(gompertz)
+@ 
 \clearpage
 \section{Estimating parameters using iterated filtering: \code{mif}}
 
@@ -625,9 +625,9 @@ mf <- replicate(
                       Nmif=100,
                       start=theta.guess,
                       transform=TRUE,
-                      pars=c("log.r","log.sigma","log.tau"),
+                      pars=estpars,
                       rw.sd=c(
-                        log.r=0.02,log.sigma=0.02,log.tau=0.05
+                        r=0.02,sigma=0.02,tau=0.05
                         ),
                       Np=2000,
                       var.factor=4,
@@ -691,12 +691,12 @@ therefore, we'll average the likelihoods, not the log likelihoods.
 <<gompertz-post-mif>>
 @ 
 
-<<multi-mif-plot,echo=F,eval=F>>=
+<<multi-mif-plot,echo=F,eval=T>>=
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 loglik <- sapply(mf,function(x)conv.rec(x,"loglik"))
-log.r <- sapply(mf,function(x)conv.rec(x,"log.r"))
-log.sigma <- sapply(mf,function(x)conv.rec(x,"log.sigma"))
-log.tau <- sapply(mf,function(x)conv.rec(x,"log.tau"))
+log.r <- sapply(mf,function(x)conv.rec(x,"r"))
+log.sigma <- sapply(mf,function(x)conv.rec(x,"sigma"))
+log.tau <- sapply(mf,function(x)conv.rec(x,"tau"))
 matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
 matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
 matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
@@ -779,7 +779,7 @@ tm <- traj.match(
                  new.gompertz,
                  start=coef(new.gompertz),
                  transform=TRUE,
-                 est=c("log.r","log.K","log.tau","log.X.0"),
+                 est=c("r","K","tau","X.0"),
                  method="Nelder-Mead",
                  maxit=1000,
                  reltol=1e-8
@@ -798,7 +798,7 @@ if (file.exists(binary.file)) {
 Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
 
 \begin{figure}
-<<trajmatch-plot,fig=T,echo=F,eval=T>>=
+<<trajmatch-plot,fig=T,echo=F,eval=T,height=4,width=6>>=
 op <- par(mfrow=c(1,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 plot(time(tm),obs(tm,"Y"),xlab="time",ylab=expression(X,Y),type='o')
 lines(time(tm),states(tm,"X"),lwd=2)
@@ -1743,11 +1743,7 @@ complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
   b <- params[c("b1","b2","b3")]   # contact-rate coefficients
   beta <- b%*%covars               # flexible seasonality
   beta.sd <- params["beta.sd"]     # extrademographic noise intensity
-  beta.var <- beta.sd*beta.sd
-  if (beta.var > 0) 
-    dW <- rgamma(n=1,shape=delta.t/beta.var,scale=beta.var)
-  else
-    dW <- delta.t
+  dW <- rgammawn(n=1,sigma=beta.sd,dt=delta.t) # Gamma white noise
   foi <- (beta*x["I"]/N+iota)*dW/delta.t # the force of infection
   trans <- c(
              rpois(n=1,lambda=mu*N*delta.t), # births are assumed to be Poisson
@@ -1804,16 +1800,16 @@ matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
         lty=1,col=c("red","blue","orange"),xlab="time (yr)",
         ylab=quote("basis functions"~list(s[1],s[2],s[3])))
 bb <- coef(complex.sir,c("b1","b2","b3"))
-plot.window(c(0,2),c(0,1)*exp(max(bb)))
-lines(tbasis,exp(basis%*%bb),col="black",lwd=3,lty=1)
-lines(tbasis,exp(basis%*%bb),col="white",lwd=2.5,lty="23")
+plot.window(c(0,2),c(0,1)*max(bb))
+lines(tbasis,basis%*%bb,col="black",lwd=3,lty=1)
+lines(tbasis,basis%*%bb,col="white",lwd=2.5,lty="23")
 axis(side=4)
 mtext(
       side=4,
       line=2,
       text=bquote(
-        beta==exp(.(b1)*s[1]+.(b2)*s[2]+.(b3)*s[3]),
-        where=as.list(exp(coef(complex.sir)))
+        beta==.(b1)*s[1]+.(b2)*s[2]+.(b3)*s[3],
+        where=as.list(coef(complex.sir))
         )
       )
 par(op)
@@ -1821,7 +1817,7 @@ par(op)
   \caption{
     Periodic B-spline basis functions can be used to construct flexible periodic functions.
     The colored lines show the three basis functions, $s_1$, $s_2$, $s_3$.
-    The dashed black line shows the seasonality $\beta(t)$ assumed in \code{complex.sir}.
+    The dashed black line shows the seasonal transmission $\beta(t)$ assumed in \code{complex.sir}.
   }
   \label{fig:seas-basis-plot}
 \end{figure}
