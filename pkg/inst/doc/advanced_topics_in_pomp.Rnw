@@ -414,7 +414,8 @@ To see the source code, do
 <<view-sir-source,eval=F>>=
 file.show(file=system.file("examples/sir.c",package="pomp"))
 @ 
-Also in the \code{examples} directory is an \R\ script that shows how to compile \verb+sir.c+ into a shared-object library and link it with \R.
+In the \code{demo} directory is an \R\ script that shows how to compile \verb+sir.c+ into a shared-object library and link it with \R.
+Do \code{demo(sir)} to run and view this script.
 Note that the native routines for this model are included in the package, which is why we give the \verb+PACKAGE="pomp"+ argument to \code{pomp}.
 When you write your own model using native routines, you'll compile them into a dynamically-loadable library.
 In this case, you'll want to specify the name of that library using the \code{PACKAGE} argument.
