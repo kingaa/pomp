@@ -1705,7 +1705,7 @@ Alternatively, we can use flexible functions to allow $\beta$ to take a variety 
 B-splines are useful in this regard and \pkg{pomp} provides some simple facilities for using these.
 If $s_{i}(t)$, $i=1,\dots,k$ is a periodic B-spline basis, as in Fig.~\ref{fig:seas-basis-plot}, then we can for example define
 \begin{equation*}
-  \log\beta(t)=\sum_{i}\!b_{i}\,s_{i}(t)
+  \beta(t)=\sum_{i}\!b_{i}\,s_{i}(t)
 \end{equation*}
 and, by varying the coefficients $b_{i}$, we can obtain a wide variety of shapes for $\beta(t)$.
 In \pkg{pomp}, we can define a set of periodic B-spline basis functions by doing:

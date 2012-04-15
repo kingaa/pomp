@@ -388,7 +388,7 @@ pomp(
      statenames=c("S","I","R","cases","W"),
      ## the order of the parameters assumed in the native routines:
      paramnames=c(
-       "gamma","mu","iota","logbeta1","beta.sd",
+       "gamma","mu","iota","beta1","beta.sd",
        "pop","rho","nbasis","degree","period"
        ), 
      ## designate 'cases' as an accumulator variable
@@ -438,11 +438,11 @@ Let's specify some parameters, simulate, and compute a deterministic trajectory:
 <<sir-sim>>=
 params <- c(
             gamma=26,mu=0.02,iota=0.01,
-            logbeta1=log(1200),logbeta2=log(1800),logbeta3=log(600),
+            beta1=400,beta2=480,beta3=320,
             beta.sd=1e-3,                      
             pop=2.1e6,
             rho=0.6,
-            S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
+            S.0=26/400,I.0=0.001,R.0=1-0.001-26/400
             )                                                     
 
 sir <- simulate(sir,params=c(params,nbasis=3,degree=3,period=1),seed=3493885L)
