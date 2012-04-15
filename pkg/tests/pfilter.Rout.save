@@ -45,29 +45,25 @@ particle filter log likelihood at truth
 > data(euler.sir)
 > pf <- pfilter(euler.sir,Np=100,seed=394343L)
 > print(coef(pf))
-       gamma           mu         iota       nbasis       degree       period 
-2.600000e+01 2.000000e-02 1.000000e-02 3.000000e+00 3.000000e+00 1.000000e+00 
-       beta1        beta2        beta3      beta.sd          pop          rho 
-1.200000e+03 1.800000e+03 6.000000e+02 1.000000e-03 2.100000e+06 6.000000e-01 
-         S.0          I.0          R.0 
-2.166667e-02 1.000000e-03 9.773333e-01 
+   gamma       mu     iota   nbasis   degree   period    beta1    beta2 
+2.60e+01 2.00e-02 1.00e-02 3.00e+00 3.00e+00 1.00e+00 4.00e+02 4.80e+02 
+   beta3  beta.sd      pop      rho      S.0      I.0      R.0 
+3.20e+02 1.00e-03 2.10e+06 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(pf$loglik,digits=4)
-[1] -892.7
+[1] -964.3
 > 
 > p <- coef(euler.sir)
 > euler.sir@params <- numeric(0)
 > p["iota"] <- 1
 > pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L)
 > print(coef(pf))
-       gamma           mu         iota       nbasis       degree       period 
-2.600000e+01 2.000000e-02 1.000000e+00 3.000000e+00 3.000000e+00 1.000000e+00 
-       beta1        beta2        beta3      beta.sd          pop          rho 
-1.200000e+03 1.800000e+03 6.000000e+02 1.000000e-03 2.100000e+06 6.000000e-01 
-         S.0          I.0          R.0 
-2.166667e-02 1.000000e-03 9.773333e-01 
+   gamma       mu     iota   nbasis   degree   period    beta1    beta2 
+2.60e+01 2.00e-02 1.00e+00 3.00e+00 3.00e+00 1.00e+00 4.00e+02 4.80e+02 
+   beta3  beta.sd      pop      rho      S.0      I.0      R.0 
+3.20e+02 1.00e-03 2.10e+06 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(logLik(pf),digits=4)
-[1] -907.6
+[1] -964
 > 
 > proc.time()
    user  system elapsed 
-  5.772   0.048   5.858 
+  5.732   0.080   5.850 

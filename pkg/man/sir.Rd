@@ -16,8 +16,12 @@ data(gillespie.sir)
 data(bbs)
 }
 \details{
+  This example is discussed extensively in the \dQuote{Introduction to \pkg{pomp}} and \dQuote{Advanced topics in \pkg{pomp}} vignettes.
+
   The codes that construct these \code{pomp} objects can be found in the \dQuote{data-R} directory in the installed package.
   Do \code{file.show(system.file("data-R/sir.R",package="pomp"))} to view these codes.
+  For the basic \code{rprocess}, \code{dmeasure}, \code{rmeasure}, and \code{skeleton} functions, these codes use compiled native routines built into the package's library.
+  View \dQuote{src/sir.c} in the package source or \code{file.show("examples/sir.c")} from an \R session to view these codes.
 
   The boarding school influenza outbreak is described in Anonymous (1978).
 }

@@ -7,11 +7,11 @@ colnames(basis) <- paste("seas",1:3,sep='')
 ## some parameters
 params <- c(
             gamma=26,mu=0.02,iota=0.01,
-            beta1=1200,beta2=1800,beta3=600,
+            beta1=400,beta2=480,beta3=320,
             beta.sd=1e-3,
             pop=2.1e6,
             rho=0.6,
-            S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
+            S.0=26/400,I.0=0.001,R.0=1-26/400
             )
 
 ## set up the pomp object
@@ -26,13 +26,11 @@ po <- pomp(
            rprocess=euler.sim(
              delta.t=1/52/20,
              step.fun=function(t,x,params,covars,delta.t,...) {
-               params <- exp(params)
                with(
                     as.list(c(x,params)),
                     {
-                      beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
-                      beta.var <- beta.sd^2
-                      dW <- rgamma(n=1,shape=delta.t/beta.var,scale=beta.var)
+                      beta <- sum(c(beta1,beta2,beta3)*covars)
+                      dW <- rgammawn(n=1,sigma=beta.sd,dt=delta.t)
                       foi <- (iota+beta*I*dW/delta.t)/pop
                       trans <- c(
                                  rpois(n=1,lambda=mu*pop*delta.t),
@@ -60,12 +58,11 @@ po <- pomp(
              ),
            dprocess=onestep.dens(
              dens.fun=function(t1,t2,params,x1,x2,covars,...) {
-               params <- exp(params)
                with(
                     as.list(params),
                     {
                       dt <- t2-t1
-                      beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
+                      beta <- sum(c(beta1,beta2,beta3)*covars)
                       beta.var <- beta.sd^2
                       dW <- x2['dW']
                       foi <- (iota+beta*x1["I"]*dW/dt)/pop
@@ -84,11 +81,10 @@ po <- pomp(
            skeleton.type="vectorfield",
            skeleton=function(x,t,params,covars,...) {
              xdot <- rep(0,length(x))
-             params <- exp(params)
              with(
                   as.list(c(x,params)),
                   {
-                    beta <- exp(sum(log(c(beta1,beta2,beta3))*covars))
+                    beta <- sum(c(beta1,beta2,beta3)*covars)
                     foi <- (iota+beta*I)/pop
                     terms <- c(
                                mu*pop,
@@ -108,10 +104,10 @@ po <- pomp(
                   }
                   )
            },
-#           measurement.model=reports~binom(size=cases,prob=exp(rho)),
+#           measurement.model=reports~binom(size=cases,prob=rho),
            rmeasure=function(x,t,params,covars,...){
              with(
-                  as.list(c(x,exp(params))),
+                  as.list(c(x,params)),
                   {
                     rep <- round(rnorm(n=1,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases)))
                     if (rep<0) rep <- 0
@@ -121,7 +117,7 @@ po <- pomp(
            },
            dmeasure=function(y,x,t,params,log,covars,...){
              with(
-                  as.list(c(x,exp(params))),
+                  as.list(c(x,params)),
                   {
                     if (y > 0) 
                       f <- diff(pnorm(q=y+c(-0.5,0.5),mean=rho*cases,sd=sqrt(rho*(1-rho)*cases),lower.tail=TRUE,log.p=FALSE))
@@ -132,9 +128,8 @@ po <- pomp(
                   )
            },
            initializer=function(params,t0,...){
-             p <- exp(params)
              with(
-                  as.list(p),
+                  as.list(params),
                   {
                     fracs <- c(S.0,I.0,R.0)
                     x0 <- c(
@@ -154,7 +149,7 @@ show(po)
 set.seed(3049953)
 ## simulate from the model
 tic <- Sys.time()
-x <- simulate(po,params=log(params),nsim=3)
+x <- simulate(po,params=params,nsim=3)
 toc <- Sys.time()
 print(toc-tic)
 
@@ -163,14 +158,14 @@ pdf(file='sir.pdf')
 plot(x[[1]],variables=c("S","I","R","cases","W"))
 
 t1 <- seq(0,4/52,by=1/52/25)
-X1 <- simulate(po,params=log(params),nsim=10,states=TRUE,obs=TRUE,times=t1)
+X1 <- simulate(po,params=params,nsim=10,states=TRUE,obs=TRUE,times=t1)
 
 t2 <- seq(0,2,by=1/52)
-X2 <- simulate(po,params=log(params),nsim=1,states=TRUE,obs=TRUE,times=t2)
+X2 <- simulate(po,params=params,nsim=1,states=TRUE,obs=TRUE,times=t2)
 
 t3 <- seq(0,20,by=1/52)
 tic <- Sys.time()
-X3 <- trajectory(po,params=log(params),times=t3,hmax=1/52)
+X3 <- trajectory(po,params=params,times=t3,hmax=1/52)
 toc <- Sys.time()
 print(toc-tic)
 plot(t3,X3['I',1,],type='l')
@@ -179,12 +174,7 @@ f1 <- dprocess(
                po,
                x=X1$states[,,31:40],
                times=t1[31:40],
-               params=matrix(
-                 log(params),
-                 nrow=length(params),
-                 ncol=10,
-                 dimnames=list(names(params),NULL)
-                 ),
+               params=parmat(params,nrep=10),
                log=TRUE
                )
 print(apply(f1,1,sum),digits=4)
@@ -194,12 +184,7 @@ g1 <- dmeasure(
                y=rbind(reports=X1$obs[,7,]),
                x=X1$states,
                times=t1,
-               params=matrix(
-                 log(params),
-                 nrow=length(params),
-                 ncol=10,
-                 dimnames=list(names(params),NULL)
-                 ),
+               params=parmat(params,nrep=10),
                log=TRUE
                )
 print(apply(g1,1,sum),digits=4)
@@ -208,7 +193,7 @@ h1 <- skeleton(
                po,
                x=X2$states[,1,55:70,drop=FALSE],
                t=t2[55:70],
-               params=as.matrix(log(params))
+               params=params
                )
 print(h1[c("S","I","R"),,],digits=4)
 
@@ -236,12 +221,7 @@ g2 <- dmeasure(
                y=rbind(reports=X1$obs[,7,]),
                x=X1$states,
                times=t1,
-               params=matrix(
-                 coef(po),
-                 nrow=length(params)+3,
-                 ncol=10,
-                 dimnames=list(names(coef(po)),NULL)
-                 ),
+               params=parmat(coef(po),nrep=10),
                log=TRUE
                )
 print(apply(g2,1,sum),digits=4)
@@ -250,7 +230,7 @@ h2 <- skeleton(
                po,
                x=X2$states[,1,55:70,drop=FALSE],
                t=t2[55:70],
-               params=as.matrix(coef(po))
+               params=coef(po)
                )
 print(h2[c("S","I","R"),,],digits=4)
 

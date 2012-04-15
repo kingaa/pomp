@@ -132,8 +132,7 @@ void _sir_euler_simulator (double *x, const double *p,
   if (nbasis <= 0) return;
   periodic_bspline_basis_eval(t,PERIOD,deg,nbasis,&seasonality[0]);
   for (k = 0, beta = 0; k < nbasis; k++)
-    beta += seasonality[k]*log(BETA[k]);
-  beta = exp(beta);
+    beta += seasonality[k]*BETA[k];
 
   //  test to make sure the parameters and state variable values are sane
   if (!(R_FINITE(beta)) || 
@@ -190,8 +189,7 @@ void _sir_ODE (double *f, double *x, const double *p,
   if (nbasis <= 0) return;
   periodic_bspline_basis_eval(t,PERIOD,deg,nbasis,&seasonality[0]);
   for (k = 0, beta = 0; k < nbasis; k++)
-    beta += seasonality[k]*log(BETA[k]);
-  beta = exp(beta);
+    beta += seasonality[k]*BETA[k];
 
   // compute the transition rates
   rate[0] = MU*POPSIZE;		// birth into susceptible class
@@ -250,8 +248,7 @@ double _sir_rates (int j, double t, double *x, double *p,
   case 3:			// infection
     periodic_bspline_basis_eval(t,PERIOD,deg,nbasis,&seasonality[0]);
     for (k = 0, beta = 0; k < nbasis; k++)
-      beta += seasonality[k]*log(BETA[k]);
-    beta = exp(beta);
+      beta += seasonality[k]*BETA[k];
     rate = (beta*INFD+IOTA)*SUSC/POPSIZE;
     break;
   case 4:			// infected death

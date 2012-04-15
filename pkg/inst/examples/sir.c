@@ -85,10 +85,9 @@ void sir_euler_simulator (double *x, const double *p,
 
   // compute transmission rate from seasonality
   if (nbasis <= 0) return;
-  (*eval_basis)(t,PERIOD,deg,nbasis,&seasonality[0]); // evaluate the periodic B-spline basis
+  eval_basis(t,PERIOD,deg,nbasis,&seasonality[0]); // evaluate the periodic B-spline basis
   for (k = 0, beta = 0; k < nbasis; k++) 
-    beta += log(BETA[k])*seasonality[k];
-  beta = exp(beta);
+    beta += BETA[k]*seasonality[k];
 
   // compute the environmental stochasticity
   dW = rgammawn(BETA_SD,dt);
@@ -136,10 +135,9 @@ void sir_ODE (double *f, double *x, const double *p,
 
   // compute transmission rate from seasonality
   if (nbasis <= 0) return;
-  (*eval_basis)(t,PERIOD,deg,nbasis,&seasonality[0]); // evaluate the periodic B-spline basis
+  eval_basis(t,PERIOD,deg,nbasis,&seasonality[0]); // evaluate the periodic B-spline basis
   for (k = 0, beta = 0; k < nbasis; k++) 
-    beta += log(BETA[k])*seasonality[k];
-  beta = exp(beta);
+    beta += BETA[k]*seasonality[k];
 
   // compute the transition rates
   rate[0] = MU*POPSIZE;		// birth into susceptible class

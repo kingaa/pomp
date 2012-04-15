@@ -43,14 +43,14 @@ po <- pomp(
 coef(po) <- c(
               gamma=26,mu=0.02,iota=0.01,
               nbasis=3,degree=3,period=1,
-              beta1=1200,beta2=1800,beta3=600,
+              beta1=400,beta2=480,beta3=320,
               beta.sd=1e-3,
               pop=2.1e6,
               rho=0.6,
-              S.0=26/1200,I.0=0.001,R.0=1-0.001-26/1200
+              S.0=26/400,I.0=0.001,R.0=1-26/400
               )
 
-simulate(po,nsim=1,seed=329348545L) -> euler.sir
+simulate(po,nsim=1,seed=329343545L) -> euler.sir
 
 save(euler.sir,file="euler.sir.rda",compress="xz")
 

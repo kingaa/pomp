@@ -1,13 +1,21 @@
 NEWS
+0.41-6
+     o	The 'gompertz' example parameter transformations have been changed.
+     	No longer are the names of the parameter vector changed in the transformation.
+	This change is not backward-compatible, but only codes using this example are affected.
+
+     o	The 'euler.sir' and 'gillespie.sir' examples have been changed.
+     	The transmission rate beta(t) is now the arithmetic sum of the seasonality basis functions.
+	Before, it was the geometric sum.
+	R0 is now given by the arithmetic average of the beta parameters divided by (gamma+mu).
+	This change is not backward-compatible, but only codes using these examples are affected.
+
 0.41-5
      o	An experimental facility for constructing pomp objects with native C routines is now included.
 
-     o	The 'gompertz' example parameter transformations have been changed.
-     	No longer are the names of the parameter vector changed in the transformation.
-
 0.41-4
      o	The 'blowflies', 'euler.sir', 'gillespie.sir', 'bbs', and 'ricker' data()-loadable examples have been changed to make the parameterization simpler and more natural.
-     	Although these changes are not backward compatible, they make for much simpler explanations.
+	This change is not backward-compatible, but only codes using this example are affected.
 
 0.41-3
      o	In 'trajectory', all vectorfield and map evaluation is now done in C for speed.
@@ -24,8 +32,10 @@ NEWS
      o	New arguments in 'mif', 'nlf', 'bsmc', 'pmcmc', 'probe-match', and 'traj-match' allow the estimation to be done on a transformed parameter space.
      	When 'transform=TRUE' in these commands ('transform.params=TRUE' for 'nlf'), estimation is performed on the transformed parameter space.
 	This is described and demonstrated in the 'intro_to_pomp' vignette.
-	The data()-loadable examples have been re-implemented to make use of this facility.
+
+     o	The data()-loadable examples have been re-implemented to make use of the above-mentioned facility.
 	Note that this new functionality makes it unnecessary to "un-transform" model parameters within the user-specified 'rprocess', 'dprocess', 'rmeasure', 'dmeasure', 'skeleton', and 'initializer' codes.
+	This change is not backward-compatible, but only codes using these data()-loadable example are affected.
 
      o	The Bayesian sequential Monte Carlo command 'bsmc' now returns not a list but an object of class 'bsmcd.pomp'.
      	An experimental 'plot' method for objects of this class now exists.
