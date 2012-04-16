@@ -353,7 +353,6 @@ gompertz <- pomp(
                  gompertz,
                  dmeasure=gompertz.meas.dens
                  )
-coef(gompertz) <- theta
 @ 
 The result of the above is a new \code{pomp} object \code{gompertz} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
 
@@ -611,32 +610,30 @@ theta.true <- theta
 @ 
 <<gompertz-multi-mif-calc,eval=F,echo=T>>=
 estpars <- c("r","sigma","tau")
-mf <- replicate(
-                n=10,
-                {
-                  theta.guess <- theta.true
-                  theta.guess[estpars] <- rlnorm(
-                                                 n=length(estpars),
-                                                 meanlog=log(theta.guess[estpars]),
-                                                 sdlog=1
-                                                 )
-                  mif(
-                      gompertz,
-                      Nmif=100,
-                      start=theta.guess,
-                      transform=TRUE,
-                      pars=estpars,
-                      rw.sd=c(
-                        r=0.02,sigma=0.02,tau=0.05
-                        ),
-                      Np=2000,
-                      var.factor=4,
-                      ic.lag=10,
-                      cooling.factor=0.999,
-                      max.fail=10
-                      )
-                }
+replicate(
+          n=10,
+          {
+            theta.guess <- theta.true
+            theta.guess[estpars] <- rlnorm(
+                                           n=length(estpars),
+                                           meanlog=log(theta.guess[estpars]),
+                                           sdlog=1
+                                           )
+            mif(
+                gompertz,
+                Nmif=100,
+                start=theta.guess,
+                transform=TRUE,
+                pars=estpars,
+                rw.sd=c(r=0.02,sigma=0.02,tau=0.05),
+                Np=2000,
+                var.factor=4,
+                ic.lag=10,
+                cooling.factor=0.999,
+                max.fail=10
                 )
+          }
+          ) -> mf
 @ 
 
 Note that we've set \code{transform=TRUE} in the above.
