@@ -1,31 +1,30 @@
-require(pomp.devel)
-
-params <- read.csv("budmoth-params.csv",sep=";")
-datasets <- rownames(params)
-params <- params[!(names(params)%in%c("seed"))]
+require(pompExamples)
 
 load("budmoth-simdata.rda")
+
+datasets <- rownames(params)
+params <- subset(params,select=-seed)
 
 budmoth.sim <- list()
 for (d in datasets) {
   po <- pomp(
-             data=subset(budmoth.sim.data,dataset==d,select=c(time,Qobs,Nobs,Sobs)),
+             data=subset(simdata,dataset==d,select=c(time,Qobs,Nobs,Sobs)),
              time="time",
              t0=0,
              rprocess=euler.sim(
                step.fun="budmoth_map",
                delta.t=1,
-               PACKAGE="pomp.devel"
+               PACKAGE="pompExamples"
                ),
              dprocess=onestep.dens(
                dens.fun="budmoth_density",
-               PACKAGE="pomp.devel"
+               PACKAGE="pompExamples"
                ),
              rmeasure="budmoth_rmeasure",
              dmeasure="budmoth_dmeasure",
              skeleton.type="map",
              skeleton="budmoth_skeleton",
-             PACKAGE="pomp.devel",
+             PACKAGE="pompExamples",
              paramnames=c(
                "alpha","sig.alpha","gam","lambda","sig.lambda",
                "g","delta","a","sig.a",

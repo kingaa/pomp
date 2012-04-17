@@ -3,29 +3,27 @@
 ## and states.  Simulations from the process model are approximated using
 ## an Euler approximation.
 
-require(pomp.devel)
-
-params <- read.csv("pertussis-params.csv",sep=";")
-datasets <- with(params,paste(model,pop,sep="."))
-params <- params[!(names(params)%in%c("model","pop","seed"))]
-rownames(params) <- datasets
+require(pompExamples)
 
 load("pertussis-simdata.rda")
+
+datasets <- rownames(params)
+params <- subset(params,select=-c(model,pop,seed))
 
 pertussis.sim <- list()
 for (d in datasets) {
   po <- pomp(
-             data=subset(pertussis.sim.data,dataset==d,select=c(time,reports)),
+             data=subset(simdata,dataset==d,select=c(time,reports)),
              times="time",
              t0=-1/52,
              rprocess = euler.sim(
                step.fun="pertussis_sveirr_EM",
-               delta.t=1/52/7,      # Euler stepsize
-               PACKAGE="pomp.devel"
+               delta.t=1/52/7,          # Euler stepsize
+               PACKAGE="pompExamples"
                ),
              skeleton.type="vectorfield",
              skeleton="pertussis_sveirr_skel",
-             PACKAGE="pomp.devel", # name of the dynamically loadable library where the C functions are
+             PACKAGE="pompExamples",
              paramnames=c(
                "birthrate","deathrate","mean.beta","ampl.beta",
                "imports","sigma","gamma","alpha.1","alpha.2","alpha.ratio",

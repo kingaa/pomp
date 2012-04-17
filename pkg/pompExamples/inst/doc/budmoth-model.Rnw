@@ -35,7 +35,7 @@
 \maketitle
 
 <<options,echo=F,results=hide>>=
-require(pomp.devel)
+require(pompExamples)
 require(xtable)
 glop <- options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
 options(
@@ -68,7 +68,7 @@ a_t &\sim& \mathrm{LogNormal}(\log(a),\sigma_{a}^2)
 Note: $X$ is $\mathrm{LogitNormal}(\mu,\sigma^2)$ if $\logit(X)$ is $\mathrm{Normal}(\mu,\sigma^2)$. 
 
 The inverse of $\logit$ is $\expit$. 
-R functions \texttt{logit}, \texttt{expit}, \texttt{rlogitnorm}, \texttt{dlogitnorm} are part of \texttt{pomp.devel}.
+R functions \texttt{logit}, \texttt{expit}, \texttt{rlogitnorm}, \texttt{dlogitnorm} are part of \texttt{pompExamples}.
 
 The state process, for $t=1,\ldots,T$:
 \begin{eqnarray}
@@ -120,7 +120,7 @@ budmoth.sim[[1]]@initializer
 @ 
 The parameters at which the simulated data are generated can be extracted via
 <<true-params>>=
-true.pars <- sapply(budmoth.sim[c("food.1","para.1","para.2","tri.1")],coef)
+true.pars <- sapply(budmoth.sim[c("food","para1","para2","tri")],coef)
 @ 
 and are displayed in Table~\ref{tab:sim-params}.
 
@@ -136,8 +136,8 @@ params[c("alpha","sig.alpha","gam","lambda","sig.lambda",
                                                                        "$\\beta_{0}$","$\\beta_{1}$",
                                                                        "$u$","$\\sigma_{Q}$","$\\sigma_{N}$","$\\sigma_{S}$",
                                                                        "$Q_{0}$","$N_{0}$","$S_{0}$")
-params <- params[c("math","name","food.1","para.1","para.2","tri.1")]
-names(params) <- c("parameter","R name","food.1","para.1","para.2","tri.1")
+params <- params[c("math","name","food","para1","para2","tri")]
+names(params) <- c("parameter","R name","food","para1","para2","tri")
 print(
       xtable(
              params,
@@ -157,7 +157,7 @@ print(
 
 \begin{figure}
 <<data-plot,fig=T,height=6,width=8,pdf=T,png=F,echo=F>>=
-require(pomp.devel)
+require(pompExamples)
 require(plyr)
 require(reshape)
 require(ggplot2)
@@ -177,7 +177,7 @@ To do this, we run the \code{pfilter} particle filtering code.
 <<true-loglik-calc,echo=F,eval=F>>=
 require(Rmpi)
 require(mpifarm)
-require(pomp.devel)
+require(pompExamples)
 
 data(budmoth.sim)
 
@@ -192,27 +192,23 @@ mpi.spawn.Rslaves(nslaves=ncpus)
 
 mpi.farmer(
            chunk=5,
-           seeds=as.integer(floor(runif(n=10000,1,2^31))),
+           seeds=as.integer(floor(runif(n=nrep,1,2^31))),
            jobs={
-             joblist <- vector(mode='list',length=nrep*length(budmoth.sim))
-             k <- 0
-             for (q in names(budmoth.sim)) {
-               for (r in seq_len(nrep)) {
-                 k <- k+1
-                 joblist[[k]] <- list(
-                                      seed=seeds[k],
-                                      dataset=q
-                                      )
-               }
-             }
-             joblist
+             require(plyr)
+             dlply(
+                   expand.grid(
+                               seed=seeds,
+                               dataset=names(budmoth.sim)
+                               ),
+                   ~dataset+seed
+                   )
            },
            common=list(
              pomps=budmoth.sim,
              Np=Np
              ),
            main={
-             require(pomp.devel)
+             require(pompExamples)
              save.seed <- .Random.seed
              set.seed(seed)
              tic <- Sys.time()
@@ -298,7 +294,7 @@ print(
 To get some sense of the shape of the likelihood surface, we can construct slices through each of the true parameter points.
 These likelihood slices are shown in Fig.~\ref{fig:slices}.
 <<slices-calc,eval=F,echo=F>>=
-require(pomp.devel)
+require(pompExamples)
 require(Rmpi)
 require(mpifarm)
 
@@ -312,7 +308,8 @@ true.pars <- sapply(budmoth.sim,coef)
 estnames <- c("gam","lambda","g","delta","a","w")
 par.range <- t(apply(true.pars[estnames,],1,function(x)c(0.5*min(x),1.5*max(x))))
   
-ncpus <- as.integer(Sys.getenv("PBS_NP"))
+##ncpus <- as.integer(Sys.getenv("PBS_NP"))
+ncpus <- 6
 
 slices <- lapply(
                  budmoth.sim,
@@ -369,7 +366,7 @@ mpi.farmer(
              estnames=estnames
              ),
            main={
-             require(pomp.devel)
+             require(pompExamples)
              po <- pomps[[dataset]]
              save.seed <- .Random.seed
              set.seed(seed)

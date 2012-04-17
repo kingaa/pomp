@@ -1,2 +1,3 @@
 inst/doc/Makefile
-inst/doc/fullnat.bst
+inst/data-R/Makefile
+inst/doc/(.+?)\.bst$

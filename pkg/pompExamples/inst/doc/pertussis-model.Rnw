@@ -59,7 +59,7 @@
 \begin{document}
 
 <<options,echo=F,results=hide>>=
-require(pomp.devel)
+require(pompExamples)
 require(xtable)
 .glop <- options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
 on.exit(options(.glop))
@@ -305,7 +305,7 @@ The simulations are performed using an Euler-multinomial approximation to the co
 Details on the implementation of this algorithm are given in \citet[][Box~1]{He2010}.
 
 <<format-params,echo=F,eval=F>>=
-require(pomp.devel)
+require(pompExamples)
 require(plyr)
 data(pertussis.sim)
 true.pars <- sapply(pertussis.sim,coef)
@@ -528,7 +528,7 @@ Once we can form a clearer notion of where the MLEs exist, it may be worthwhile 
 \end{document}
 
 <<wavelets,eval=F,echo=F,fig=T,clean=T>>=
-require(pomp.devel)
+require(pompExamples)
 require(Rwave)
 data(pertussis.sim)
 x <- lapply(pertussis.sim,as,"data.frame")

@@ -1,11 +1,2 @@
-useDynLib(pomp.devel)
+useDynLib(pompExamples)
 importFrom(pomp)
-export(
-       logit,
-       expit,
-       rlogitnorm,
-       dlogitnorm,
-       mult.norm.ts,
-       spsainb,
-       sainb
-       )
