@@ -1,0 +1,5 @@
+inst/doc/Makefile
+inst/data-R/Makefile
+inst/doc/(.+?)\.bst$
+inst/doc/(.+?)\.R$
+inst/doc/(.+?)\.png$

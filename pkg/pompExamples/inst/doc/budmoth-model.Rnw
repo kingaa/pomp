@@ -1,0 +1,494 @@
+\documentclass[10pt,reqno,final]{amsart}
+%\VignetteIndexEntry{The larch budmoth example}
+\usepackage{times}
+\pagestyle{plain}
+\usepackage[utf8]{inputenc}
+\usepackage{natbib}
+\usepackage[pdftex]{graphicx}
+\usepackage{paralist}
+\usepackage[nogin]{Sweave}
+\bibliographystyle{ecology}
+
+\setlength{\textwidth}{6.25in}
+\setlength{\textheight}{8.75in}
+\setlength{\evensidemargin}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\topmargin}{-.35in}
+\setlength{\parskip}{.1in}  
+\setlength{\parindent}{0.0in}  
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+
+\newcommand\code[1]{\texttt{#1}}
+\newcommand{\R}{\textsf{R}}
+\newcommand\logit{{\mathrm{logit}}}
+\newcommand\expit{{\mathrm{expit}}}
+
+\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=F,png=T,keep.source=T,split=T,prefix=T,prefix.string=budmoth-model,resolution=150}
+
+\title{Larch Budmoth State-Space Model}
+\author{AAK, ELI, SPE, KBN}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+<<options,echo=F,results=hide>>=
+require(pomp.devel)
+require(xtable)
+glop <- options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
+options(
+        device='pdf',
+        SweaveHooks=list(
+          clean=function()rm(list=ls(envir=.GlobalEnv),envir=.GlobalEnv)
+          )
+        )
+pdf.options(useDingbats=FALSE)
+set.seed(5384959)
+@ 
+
+\begin{itemize}
+\item Three state variables, 
+  $Q_t$ (measure of food quality on $[0,1]$), 
+  $N_t$ (budmoth density) and 
+  $S_t$ (fraction of budmoth larvae infected with parasitoids).
+
+\item Three observations, $\hat Q_t$ (needle length), $\hat N_t$ and $\hat S_t$.
+\end{itemize}
+
+\section{State process}
+
+Uncorrelated random effects, for $t=1,\ldots,T$:
+\begin{eqnarray}
+\alpha_t &\sim& \mathrm{LogitNormal}(\logit(\alpha),\sigma_{\alpha}^2)\\
+\lambda_t &\sim& \mathrm{Gamma}(\lambda,\sigma_{\lambda}^2)\\
+a_t &\sim& \mathrm{LogNormal}(\log(a),\sigma_{a}^2)
+\end{eqnarray}
+Note: $X$ is $\mathrm{LogitNormal}(\mu,\sigma^2)$ if $\logit(X)$ is $\mathrm{Normal}(\mu,\sigma^2)$. 
+
+The inverse of $\logit$ is $\expit$. 
+R functions \texttt{logit}, \texttt{expit}, \texttt{rlogitnorm}, \texttt{dlogitnorm} are part of \texttt{pomp.devel}.
+
+The state process, for $t=1,\ldots,T$:
+\begin{eqnarray}
+Q_{t} &=& (1-\alpha_{t})\frac{\gamma}{\gamma+N_{t-1}} +\alpha_{t}Q_{t-1} \\
+N_{t} &=& \lambda_t N_{t-1} (1-S_{t-1})\exp\big\{-gN_{t-1}-\delta(1-Q_{t-1})\big\} \\
+S_{t} &=&  1-\exp
+  \left(\frac{-a_tS_{t-1}N_{t-1}}{1+a_twS_{t-1}N_{t-1}} \right) \label{eq6}
+\end{eqnarray}
+
+\section{Measurement process}
+For $t=1,\ldots,T$:
+\begin{eqnarray}
+\hat Q_t &\sim& \mathrm{LogNormal}(\log(\beta_0+\beta_1Q_t),\sigma_Q^2) \label{eq7}\\
+\hat N_t  &\sim& \mathrm{LogNormal}(\log(N_t),\sigma_N^2) \\
+\hat S_t &\sim&  \mathrm{LogitNormal}(\logit(uS_t),\sigma_S^2)\label{eq9}
+\end{eqnarray}
+
+\section{Identifiability and constraints}
+
+One may wish to set $\beta_0=0$. 
+The logic is as follows: the steady state value of $Q_t$ is $\bar Q=\gamma/(\gamma+\bar N)$. 
+If $Q_t$ is in practice close to this value then $\bar Q$ identifies the mean of $\hat Q_t$ in (\ref{eq7}), leaving only the scale parameter $\beta_1$ to be determined. 
+Thus, the combination of $\gamma$, $\beta_0$ and $\beta_1$ is only weakly identifiable when $Q_t$ varies over only a fraction of its full range of $[0,1]$.
+
+\section{The budmoth example implemented}
+
+This model is implemented in the package and can be loaded with the command
+<<>>=
+data(budmoth.sim)
+@ 
+The object thereby loaded contains a named, length-\Sexpr{length(budmoth.sim)} list of pomp objects
+<<>>=
+names(budmoth.sim)
+@ 
+There are three parameter regimes (``food'', ``para'', and ``tri'' representing a food-quality-dominated, a parasitoid-dominated, and true tritrophic dynamics, respectively).
+In total, there are \Sexpr{length(budmoth.sim)} imulated data sets of length \Sexpr{diff(range(time(budmoth.sim[[1]])))+1} years.
+<<echo=F>>=
+for (q in names(budmoth.sim)) {
+  time(budmoth.sim[[q]]) <- 1:60
+}
+@ 
+The process model is implemented using the \code{euler.simulate} plugin with step function \verb+budmoth_map+ defined in \code{src/budmoth.c} in the package source.
+The log likelihood of any state transition is given by the native routine \verb+budmoth_density+.
+The measurement model is simulated using \verb+budmoth_rmeasure+
+and the likelihood is computed via \verb+budmoth_dmeasure+.
+Finally, the state process is initialized by 
+<<echo=F>>=
+budmoth.sim[[1]]@initializer
+@ 
+The parameters at which the simulated data are generated can be extracted via
+<<true-params>>=
+true.pars <- sapply(budmoth.sim[c("food.1","para.1","para.2","tri.1")],coef)
+@ 
+and are displayed in Table~\ref{tab:sim-params}.
+
+<<true-params-table,echo=F,results=tex>>=
+params <- as.data.frame(true.pars)
+params$name <- rownames(params)
+params$math <- ""
+params[c("alpha","sig.alpha","gam","lambda","sig.lambda",
+         "g","delta","a","w","sig.a","beta0","beta1","u",
+         "sigQobs","sigNobs","sigSobs","Q.0","N.0","S.0"),"math"] <- c("$\\alpha$","$\\sigma_{\\alpha}$","$\\gamma$",
+                                                                       "$\\lambda$","$\\sigma_{\\lambda}$","$g$","$\\delta$",
+                                                                       "$a$","$w$","$\\sigma_{a}$",
+                                                                       "$\\beta_{0}$","$\\beta_{1}$",
+                                                                       "$u$","$\\sigma_{Q}$","$\\sigma_{N}$","$\\sigma_{S}$",
+                                                                       "$Q_{0}$","$N_{0}$","$S_{0}$")
+params <- params[c("math","name","food.1","para.1","para.2","tri.1")]
+names(params) <- c("parameter","R name","food.1","para.1","para.2","tri.1")
+print(
+      xtable(
+             params,
+             caption="Parameters of the larch budmoth model, and the values corresponding to the simulated data.",
+             label="tab:sim-params"
+             ),
+      type='latex',
+      floating=TRUE,
+      caption.placement="top",
+      include.rownames=FALSE,
+      hline.after=c(-1,-1,0,nrow(params)),
+      sanitize.text.function=identity
+      )
+@ 
+
+\setkeys{Gin}{width=0.8\textwidth}
+
+\begin{figure}
+<<data-plot,fig=T,height=6,width=8,pdf=T,png=F,echo=F>>=
+require(pomp.devel)
+require(plyr)
+require(reshape)
+require(ggplot2)
+data(budmoth.sim)
+x <- ldply(budmoth.sim,as.data.frame)
+x <- rename(x,c(.id="dataset"))
+x <- melt(x,id.var=c("dataset","time"))
+pl <- ggplot(data=x,mapping=aes(x=time,y=value))+
+  geom_line()+facet_grid(variable~dataset,scale="free")
+print(pl)
+@   
+  \caption{Plot of the simulated budmoth data.}
+\end{figure}
+
+We can get a benchmark for likelihood-based fitting methods by computing the true likelihood at the true parameter values.
+To do this, we run the \code{pfilter} particle filtering code.
+<<true-loglik-calc,echo=F,eval=F>>=
+require(Rmpi)
+require(mpifarm)
+require(pomp.devel)
+
+data(budmoth.sim)
+
+ncpus <- length(budmoth.sim)
+
+nrep <- 10  ### number of particle filters to run
+Np <- 10000 ### number of particles
+
+set.seed(5384959)
+
+mpi.spawn.Rslaves(nslaves=ncpus)
+
+mpi.farmer(
+           chunk=5,
+           seeds=as.integer(floor(runif(n=10000,1,2^31))),
+           jobs={
+             joblist <- vector(mode='list',length=nrep*length(budmoth.sim))
+             k <- 0
+             for (q in names(budmoth.sim)) {
+               for (r in seq_len(nrep)) {
+                 k <- k+1
+                 joblist[[k]] <- list(
+                                      seed=seeds[k],
+                                      dataset=q
+                                      )
+               }
+             }
+             joblist
+           },
+           common=list(
+             pomps=budmoth.sim,
+             Np=Np
+             ),
+           main={
+             require(pomp.devel)
+             save.seed <- .Random.seed
+             set.seed(seed)
+             tic <- Sys.time()
+             pf <- try(pfilter(pomps[[dataset]],Np=Np,max.fail=100,warn=FALSE))
+             if (inherits(pf,"try-error")) {
+               loglik <- NA
+               nfail <- NA
+             } else {
+               loglik <- logLik(pf)
+               nfail <- pf$nfail
+             }
+             toc <- Sys.time()
+             .Random.seed <<- save.seed
+             data.frame(
+                        seed=seed,
+                        dataset=dataset,
+                        loglik=loglik,
+                        nfail=nfail,
+                        etime=toc-tic
+                        )
+           },
+           post={
+             require(plyr)
+             ldply(results)
+           }
+           ) -> results
+
+mpi.close.Rslaves()
+
+if (any(with(results,nfail!=0)))
+  warning("filtering failures occurred!")
+
+etime <- sum(results$etime)
+
+ll.est <- function (x) {
+  bl <- mean(x$loglik)
+  loglik <- bl+log(mean(exp(x$loglik-bl)))
+  se <- sd(exp(x$loglik-bl))/exp(loglik-bl)
+  data.frame(loglik=loglik,se=se)
+}
+
+loglik.truth <- ddply(results,~dataset,ll.est)
+
+save(loglik.truth,etime,Np,nrep,ncpus,file=binary.file,compress="xz")
+@ 
+<<true-loglik-eval,echo=F,results=hide>>=
+binary.file <- "budmoth-model-true-loglik.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<true-loglik-calc>>
+}
+@ 
+Table~\ref{tab:true-loglik} shows these likelihoods.
+
+<<true-loglik,results=tex,echo=F>>=
+nest <- 6
+loglik.truth[["5\\%"]] <- loglik.truth$loglik+qchisq(p=0.05,df=nest)/2
+print(
+      xtable(
+             loglik.truth,
+             caption=paste(
+               "Estimated log likelihood at the true parameters for the first ",length(time(budmoth.sim[[1]]))," years of simulated data. ",
+               "To obtain these,",nrep,"particle filtering runs, each with",Np,"particles, were used. ",
+               "The column labeled",dQuote("se"),"gives the standard error of the Monte Carlo likelihood calculation. ",
+               "The computation took ",signif(etime,2),"~CPU~",units(etime),"on inexpensive processors. ",
+               "The last column shows the likelihood we would expect to achieve at the MLE 95\\% of the time when estimating",
+               nest,"parameters.",
+               sep=" "
+               ),
+             label="tab:true-loglik",
+             digits=c(0,0,1,2,1)
+             ),
+      type="latex",
+      floating=TRUE,
+      caption.placement="top",
+      include.rownames=FALSE,
+      sanitize.text.function=identity,
+      hline.after=c(-1,-1,0,nrow(loglik.truth))
+      )
+@ 
+
+To get some sense of the shape of the likelihood surface, we can construct slices through each of the true parameter points.
+These likelihood slices are shown in Fig.~\ref{fig:slices}.
+<<slices-calc,eval=F,echo=F>>=
+require(pomp.devel)
+require(Rmpi)
+require(mpifarm)
+
+nrep <- 3  ### number of particle filters to run per parameter point
+Np <- 1000 ### number of particles per filter
+slice.length <- 100          ### number of points per slice
+
+data(budmoth.sim)
+
+true.pars <- sapply(budmoth.sim,coef)
+estnames <- c("gam","lambda","g","delta","a","w")
+par.range <- t(apply(true.pars[estnames,],1,function(x)c(0.5*min(x),1.5*max(x))))
+  
+ncpus <- as.integer(Sys.getenv("PBS_NP"))
+
+slices <- lapply(
+                 budmoth.sim,
+                 function (po) {
+                   center <- coef(po)
+                   ranges <- lapply(
+                                    estnames,
+                                    function(n) seq(
+                                                    from=par.range[n,1],
+                                                    to=par.range[n,2],
+                                                    length=slice.length
+                                                    )
+                                    )
+                   names(ranges) <- estnames
+                   do.call(sliceDesign,c(list(center=center),ranges))
+                 }
+                 )
+
+require(plyr)
+slices <- ldply(slices)
+rename(slices,c(.id="dataset")) -> slices
+
+set.seed(5384959)
+
+mpi.spawn.Rslaves(nslaves=ncpus)
+
+mpi.farmer(
+           chunk=20,
+           checkpoint=1000,
+           checkpoint.file=file.path(getwd(),"budmoth-slices-ckpt.rda"),
+           seeds=as.integer(floor(runif(n=nrep*nrow(slices),1,2^31))),
+           jobs={
+             joblist <- vector(mode="list",length=nrep*nrow(slices))
+             s <- 0
+             for (j in seq_len(nrow(slices))) {
+               ds <- slices$dataset[j]
+               sl <- slices$slice[j]
+               paramnames <- names(coef(budmoth.sim[[ds]]))
+               for (k in seq_len(nrep)) {
+                 s <- s+1
+                 joblist[[s]] <- list(
+                                      params=unlist(slices[j,paramnames]),
+                                      seed=seeds[s],
+                                      dataset=ds,
+                                      slice=sl
+                                      )
+               }
+             }
+             joblist
+           },
+           common=list(
+             pomps=budmoth.sim,
+             Np=Np,
+             estnames=estnames
+             ),
+           main={
+             require(pomp.devel)
+             po <- pomps[[dataset]]
+             save.seed <- .Random.seed
+             set.seed(seed)
+             tic <- Sys.time()
+             pf <- try(pfilter(po,params=params,Np=Np,max.fail=100,warn=FALSE))
+             if (inherits(pf,"try-error")) {
+               loglik <- NA
+               nfail <- NA
+               cond.loglik <- pf$cond.loglik
+             } else {
+               loglik <- logLik(pf)
+               nfail <- pf$nfail
+               cond.loglik <- pf$cond.loglik
+             }
+             toc <- Sys.time()
+             .Random.seed <<- save.seed
+             list(
+                  params=params,
+                  slice=slice,
+                  dataset=dataset,
+                  loglik=loglik,
+                  nfail=nfail,
+                  cond.loglik=cond.loglik,
+                  etime=toc-tic
+                  )
+           },
+           post={
+             require(plyr)
+             ldply(
+                   results,
+                   function(x)data.frame(
+                                         dataset=x$dataset,
+                                         slice=x$slice,
+                                         as.list(x$params),
+                                         loglik=x$loglik,
+                                         nfail=x$nfail,
+                                         etime=x$etime
+                                         )
+                   )
+           }
+           ) -> slices
+
+mpi.close.Rslaves()
+
+save(slices,file=binary.file,compress="xz")
+@ 
+<<slices-eval,echo=F>>=
+binary.file <- "budmoth-model-slices.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<slices-calc>>
+}
+@ 
+These calculations took \Sexpr{signif(etime,3)}~CPU~\Sexpr{units(etime)} on inexpensive processors.
+
+\setkeys{Gin}{width=0.95\textwidth}
+
+\begin{figure}
+<<slices-plot,fig=T,png=T,pdf=F,echo=F,height=7,width=7>>=
+require(ggplot2)
+require(plyr)
+require(reshape)
+x <- melt(slices,id.vars=c(".id","dataset","slice","loglik","nfail","etime"))
+x$.id <- NULL
+x$slice <- factor(x$slice,levels=levels(x$variable))
+x <- subset(x,slice==variable)
+x <- ddply(x,~dataset+slice,subset,loglik>max(loglik)-50)
+pl <- ggplot(data=x,mapping=aes(x=value,y=loglik))+
+  geom_point()+facet_grid(dataset~slice,scale="free")+
+  geom_smooth(method="loess")
+print(pl)
+@ 
+  \caption{
+    Sliced likelihood plots.
+    \label{fig:slices}
+  }
+\end{figure}
+
+To simulate ignorance, we will assume that we are uncertain about the values of some of the parameters.
+In particular, we will suppose that we wish to estimate the parameters that distinguish the regimes.
+<<estnames,echo=F>>=
+estnames <- names(which(apply(true.pars,1,function(x)diff(range(x))>0)))
+par.range <- signif(
+                    t(
+                      apply(
+                            true.pars[estnames,],
+                            1,
+                            function(x)c(0.5*min(x),1.5*max(x))
+                            )
+                      ),
+                    digits=3
+                    )
+colnames(par.range) <- c("lower","upper")
+@ 
+We will assume a hypercube within which we are uniformly uncertain as to the parameter values.
+The upper and lower limits for each of the parameters we will estimate are given in Table~\ref{tab:par-range}.
+
+<<ignorance-table,results=tex,echo=F>>=
+print(
+      xtable(
+             par.range,
+             caption="Parameters to estimate, and limits of uncertainty.",
+             label="tab:par-range",
+             display=c("s","fg","fg"),
+             digits=c(0,3,3)
+             ),
+      type="latex",
+      floating=TRUE,
+      caption.placement="top",
+      include.rownames=TRUE,
+#      sanitize.text.function=identity,
+      hline.after=c(-1,-1,0,nrow(par.range))
+      )
+@ 
+
+\end{document}
+
+<<echo=F>>=
+options(glop)
+@ 
+

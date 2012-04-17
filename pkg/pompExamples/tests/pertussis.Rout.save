@@ -1,0 +1,102 @@
+
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> require(pomp.devel)
+Loading required package: pomp.devel
+Loading required package: pomp
+> 
+> data(pertussis.sim)
+> 
+> names(pertussis.sim)
+[1] "SEIR.small"  "SEIR.big"    "SEIRS.small" "SEIRS.big"   "SEIRR.small"
+[6] "SEIRR.big"   "full.small"  "full.big"   
+> x <- lapply(pertussis.sim,as,"data.frame")
+> 
+> print(lapply(x,tail))
+$SEIR.small
+          time reports
+5196  99.90385      57
+5197  99.92308      71
+5198  99.94231      74
+5199  99.96154      60
+5200  99.98077      67
+5201 100.00000      51
+
+$SEIR.big
+          time reports
+5196  99.90385     435
+5197  99.92308     460
+5198  99.94231     376
+5199  99.96154     478
+5200  99.98077     428
+5201 100.00000     463
+
+$SEIRS.small
+          time reports
+5196  99.90385      48
+5197  99.92308      49
+5198  99.94231      56
+5199  99.96154      59
+5200  99.98077      68
+5201 100.00000      51
+
+$SEIRS.big
+          time reports
+5196  99.90385     425
+5197  99.92308     416
+5198  99.94231     507
+5199  99.96154     514
+5200  99.98077     568
+5201 100.00000     466
+
+$SEIRR.small
+          time reports
+5196  99.90385      24
+5197  99.92308      34
+5198  99.94231      37
+5199  99.96154      50
+5200  99.98077      26
+5201 100.00000      30
+
+$SEIRR.big
+          time reports
+5196  99.90385     449
+5197  99.92308     549
+5198  99.94231     608
+5199  99.96154     503
+5200  99.98077     525
+5201 100.00000     432
+
+$full.small
+          time reports
+5196  99.90385      44
+5197  99.92308      28
+5198  99.94231      42
+5199  99.96154      42
+5200  99.98077      61
+5201 100.00000      44
+
+$full.big
+          time reports
+5196  99.90385     714
+5197  99.92308     712
+5198  99.94231     741
+5199  99.96154     787
+5200  99.98077     799
+5201 100.00000     550
+
+> 
