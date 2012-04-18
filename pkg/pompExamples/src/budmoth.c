@@ -48,26 +48,6 @@ void budmoth_map (double *x, double *p,
   if (dt != 1.0) 
     error("'delta.t'=",dt,"!=1 violates an assumption of this model");
 
-  // untransform and check the parameters
-  if (!(R_FINITE(ALPHA))) return;
-  if (!(R_FINITE(SIGALPHA))) return;
-  if (!(R_FINITE(GAM))) return;
-  if (!(R_FINITE(LAMBDA))) return;
-  if (!(R_FINITE(SIGLAMBDA))) return;
-  if (!(R_FINITE(GEE))) return;
-  if (!(R_FINITE(DELTA))) return;
-  if (!(R_FINITE(AEY))) return;
-  if (!(R_FINITE(SIGAEY))) return;
-  if (!(R_FINITE(DUBYA))) return;
-
-  // untransform and check the state variables
-  if (!(R_FINITE(ALPHASTATE))) return;
-  if (!(R_FINITE(LAMBDASTATE))) return;
-  if (!(R_FINITE(ASTATE))) return;
-  if (!(R_FINITE(QSTATE))) return;
-  if (!(R_FINITE(NSTATE))) return;
-  if (!(R_FINITE(SSTATE))) return;
-
   sig2lambda = SIGLAMBDA*SIGLAMBDA/LAMBDA;
 
   ALPHASTATE = expit(rnorm(logit(ALPHA),SIGALPHA));
@@ -91,23 +71,6 @@ void budmoth_skeleton (double *f, double *x, double *p,
   double Q, N, S;
   double tol = 1e-6;
 
-  // untransform and check the parameters
-  if (!(R_FINITE(ALPHA))) return;
-  if (!(R_FINITE(GAM))) return;
-  if (!(R_FINITE(LAMBDA))) return;
-  if (!(R_FINITE(GEE))) return;
-  if (!(R_FINITE(DELTA))) return;
-  if (!(R_FINITE(AEY))) return;
-  if (!(R_FINITE(DUBYA))) return;
-
-  // untransform and check the state variables
-  if (!(R_FINITE(ALPHASTATE))) return;
-  if (!(R_FINITE(LAMBDASTATE))) return;
-  if (!(R_FINITE(ASTATE))) return;
-  if (!(R_FINITE(QSTATE))) return;
-  if (!(R_FINITE(NSTATE))) return;
-  if (!(R_FINITE(SSTATE))) return;
-
   f[stateindex[0]] = ALPHA;	// ALPHA equation
   f[stateindex[1]] = LAMBDA;	// LAMBDA equation
   f[stateindex[2]] = AEY;	// A equation
@@ -124,32 +87,23 @@ void budmoth_skeleton (double *f, double *x, double *p,
 void budmoth_rmeasure (double *y, double *x, double *p, 
 		       int *obsindex, int *stateindex, int *parindex, int *covindex,
 		       int ncovars, double *covars, double t) {
-  double meanlogQ;
-  double meanlogN;
-  double meanlogitS;
+  double meanlogQ = log(BETA0+BETA1*QSTATE);
+  double meanlogN = log(NSTATE);
+  double meanlogitS = logit(YEW*SSTATE);
 
-  if (
-      !(R_FINITE(meanlogQ = log(BETA0+BETA1*QSTATE))) ||
-      !(R_FINITE(SIGQOBS))
-      ) {
+  if (!(R_FINITE(meanlogQ)) || !(R_FINITE(SIGQOBS))) {
     QOBS = R_NaN;
   } else {
     QOBS = rlnorm(meanlogQ,SIGQOBS);
   }
 
-  if (
-      !(R_FINITE(meanlogN = log(NSTATE))) ||
-      !(R_FINITE(SIGNOBS))
-      ) {
+  if (!(R_FINITE(meanlogN = log(NSTATE))) || !(R_FINITE(SIGNOBS))) {
     NOBS = R_NaN;
   } else {
     NOBS = rlnorm(meanlogN,SIGNOBS);
   }
 
-  if (
-      !(R_FINITE(meanlogitS = logit(YEW*SSTATE))) ||
-      !(R_FINITE(SIGSOBS))
-      ) {
+  if (!(R_FINITE(meanlogitS)) || !(R_FINITE(SIGSOBS))) {
     SOBS = R_NaN;
   } else {
     SOBS = expit(rnorm(meanlogitS,SIGSOBS));
@@ -161,14 +115,10 @@ void budmoth_dmeasure (double *lik, double *y, double *x, double *p, int give_lo
 		       int *obsindex, int *stateindex, int *parindex, int *covindex,
 		       int ncovars, double *covars, double t) {
   
-  double meanlogQ;
-  double meanlogN;
-  double meanlogitS;
+  double meanlogQ = log(BETA0+BETA1*QSTATE);
+  double meanlogN = log(NSTATE);
+  double meanlogitS = logit(YEW*SSTATE);
   double f1, f2, f3;
-
-  meanlogQ = log(BETA0+BETA1*QSTATE);
-  meanlogN = log(NSTATE);
-  meanlogitS = logit(YEW*SSTATE);
 
   f1 = dlnorm(QOBS,meanlogQ,SIGQOBS,1);
   f2 = dlnorm(NOBS,meanlogN,SIGNOBS,1);
@@ -209,35 +159,6 @@ void budmoth_density (double *f, double *x1, double *x2, double t1, double t2, c
   if (t2-t1 != 1.0) 
     error("t2-t1=",t2-t1,"!=1 violates an assumption of this model");
 
-  // untransform and check the parameters and state variables
-  if (
-      !(R_FINITE(ALPHA)) ||
-      !(R_FINITE(SIGALPHA)) ||
-      !(R_FINITE(GAM)) ||
-      !(R_FINITE(LAMBDA)) ||
-      !(R_FINITE(SIGLAMBDA)) ||
-      !(R_FINITE(GEE)) ||
-      !(R_FINITE(DELTA)) ||
-      !(R_FINITE(AEY)) ||
-      !(R_FINITE(SIGAEY)) ||
-      !(R_FINITE(DUBYA)) ||
-      !(R_FINITE(x1[ALPHASTATE])) ||
-      !(R_FINITE(x1[LAMBDASTATE])) ||
-      !(R_FINITE(x1[ASTATE])) ||
-      !(R_FINITE(x1[QSTATE])) ||
-      !(R_FINITE(x1[NSTATE])) ||
-      !(R_FINITE(x1[SSTATE])) ||
-      !(R_FINITE(x2[ALPHASTATE])) ||
-      !(R_FINITE(x2[LAMBDASTATE])) ||
-      !(R_FINITE(x2[ASTATE])) ||
-      !(R_FINITE(x2[QSTATE])) ||
-      !(R_FINITE(x2[NSTATE])) ||
-      !(R_FINITE(x2[SSTATE]))
-      ) {
-    *f = R_NaN;
-    return;
-  }
-
   sig2lambda = SIGLAMBDA*SIGLAMBDA/LAMBDA;
 
   f1 = dnorm(logit(x2[ALPHASTATE]),logit(ALPHA),SIGALPHA/(x2[ALPHASTATE]*(1-x2[ALPHASTATE])),1);
@@ -269,4 +190,3 @@ void budmoth_density (double *f, double *x1, double *x2, double t1, double t2, c
 #undef SIGQOBS
 #undef SIGNOBS
 #undef SIGSOBS
-
