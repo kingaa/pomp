@@ -19,13 +19,6 @@
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{1}
 
-%% \begingroup\makeatletter\ifx\SetFigFont\undefined
-%% \gdef\SetFigFont#1#2#3#4#5{
-%%   \reset@font\fontsize{#1}{#2pt}
-%%   \fontfamily{#3}\fontseries{#4}\fontshape{#5}
-%%   \selectfont}
-%% \fi\endgroup
-
 \begingroup\makeatletter\ifx\SetFigFont\undefined
 \gdef\SetFigFont#1#2{
   \reset@font\fontsize{#1}{#2pt}
@@ -79,13 +72,13 @@ This document details the family of systems intended to model pertussis and in p
 We will describe the models, specify how we have used them to generate simulated epidemiological data, lay out the ``bounds of our simulated ignorance'' for the fitting exercises, and do a bit of preliminary investigation of the likelihood surface.
 In the simulation studies, we will focus on model selection and hypothesis testing.
 This is simplified somewhat by the fact that the candidate models are nested;
-the supermodel in this case is the SVEIRR model.
+the supermodel in this case is the SEIRR model.
 
 \tableofcontents
 
-\section{The SVEIRR equations}
+\section{The SEIRR equations}
 
-The SVEIRR system is a simpler alternative to the multiple-compartment model of \citet{Wearing2009}.
+The SEIRR system is a simpler alternative to the multiple-compartment model of \citet{Wearing2009}.
 The following key assumptions are made:
 \begin{enumerate}
 
@@ -93,27 +86,24 @@ The following key assumptions are made:
   With probability $\phi$, recovering individuals reactivate full susceptibility and enter the $S$ class.  
   This captures so-called ``polarising'' immunity.
 
-\item Vaccinated  individuals (in $V$ class) are assumed to be fully protected.   
-
-\item Individuals in the  $R_1$ and $V$   classes may lose immunity and become susceptible to immune  boosting upon entry  to the $R_2$ class, with rates $\alpha_1\,R_1$ and  $\alpha_2V$, respectively.
+\item Individuals in the  $R_1$  class may lose immunity and become susceptible to immune  boosting upon entry  to the $R_2$ class, with rate $\alpha_1\,R_1$.
 
 \item Within the $R_2$ class, exposure to infection is described by $\epsilon\,\lambda$, where $\epsilon$ modulates the force of infection in this class.  
   Crucially, those exposed --- with probability $\xi$ --- experience sub-clinical infections that boost immunity, moving affected individuals to the immune $R_1$ class ($R_2\,\rightarrow\,R_1$).
 
 \item A fraction ($1-\xi$) of exposed individuals in the $R_2$ class are assumed to develop full infection, i.e., become fully infectious ($R_2\,\rightarrow\,E$).  
 
-\item In the absence of immune boosting, individuals reactivate full susceptibilibty ($R_2\,\rightarrow\,S$) after a mean period of $1/\alpha_3$ in the $R_2$ class.
+\item In the absence of immune boosting, individuals reactivate full susceptibilibty ($R_2\,\rightarrow\,S$) after a mean period of $1/\alpha_2$ in the $R_2$ class.
 
 \end{enumerate}
 
-The  mean field equations describing this the SVEIRR system are given by:
+The  mean field equations describing this the SEIRR system are given by:
 \begin{align}
-\dot S&=\nu\,(1-p)\,N-\lambda(t)\,S-\mu\,S+\phi\,\gamma\,I+\alpha_3\,R_2\\
-\dot V&=\nu\,p\,N-(\mu+\alpha_2)\,V\\ 
+\dot S&=\nu\,\,N-\lambda(t)\,S-\mu\,S+\phi\,\gamma\,I+\alpha_2\,R_2\\
 \dot E&=\lambda(t)\,S+(1-\xi)\,\epsilon\,\lambda(t)\,R_2-(\mu+\sigma)\,E\\
 \dot I&=\sigma\,E-(\mu+\gamma)\,I\\
 \dot R_1&=(1-\phi)\,\gamma\,I-(\mu+\alpha_1)\,R_1+\xi\,\epsilon\,\lambda(t)\,R_2\\ 
-\dot R_2&=\alpha_1\,R_1-\left(\mu+\alpha_3+\epsilon\,\lambda(t)\right)\,R_2+\alpha_2\,V
+\dot R_2&=\alpha_1\,R_1-\left(\mu+\alpha_2+\epsilon\,\lambda(t)\right)\,R_2
 \end{align}
 In these equations, the force of infection, $\lambda$, is time dependent and given by
 \begin{equation}
@@ -152,17 +142,17 @@ The other parameters are constant; they are summarized in Table~\ref{tab:params}
             {\color[rgb]{0,0,0}
               \put(4861,-3121){\framebox(540,540){R$_2$}}
             }%
-            {\color[rgb]{0,0,0}
-              \put(1621,-3121){\framebox(540,540){V}}
-            }%
+            %% {\color[rgb]{0,0,0}
+            %%   \put(1621,-3121){\framebox(540,540){V}}
+            %% }%
             {\color[rgb]{0,0,0}
               \put(1081,-1771){\vector( 1, 0){540}}
-              \put(1256,-1681){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$(1-p)\,N\,\nu$}}}}
+              \put(1256,-1681){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$N\,\nu$}}}}
             }%
-            {\color[rgb]{0,0,0}
-              \put(1081,-2851){\vector( 1, 0){540}}
-              \put(1306,-2761){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$p\,N\,\nu$}}}}
-            }%
+            %% {\color[rgb]{0,0,0}
+            %%   \put(1081,-2851){\vector( 1, 0){540}}
+            %%   \put(1306,-2761){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$p\,N\,\nu$}}}}
+            %% }%
             {\color[rgb]{0,0,0}
               \put(2161,-1771){\vector( 1, 0){540}}
               \put(2381,-1906){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$\lambda$}}}}
@@ -180,10 +170,10 @@ The other parameters are constant; they are summarized in Table~\ref{tab:params}
               \put(2971,-2761){\vector( 0, 1){720}}
               \put(3916,-2716){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$(1-\xi)\,\lambda\,\epsilon$}}}}
             }%
-%%             {\color[rgb]{0,0,0}
-%%               \put(4321,-1771){\vector( 1, 0){540}}
-%%               \put(4541,-1906){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$\gamma$}}}}
-%%             }%
+             %% {\color[rgb]{0,0,0}
+             %%   \put(4321,-1771){\vector( 1, 0){540}}
+             %%   \put(4541,-1906){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$\gamma$}}}}
+             %% }%
             {\color[rgb]{0,0,0}
               \put(4321,-1771){\vector( 1, 0){540}}
               \put(4541,-1906){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$(1-\phi)\,\gamma$}}}}
@@ -198,25 +188,25 @@ The other parameters are constant; they are summarized in Table~\ref{tab:params}
               \put(4996,-2041){\vector( 0,-1){540}}
               \put(4821,-2311){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$\alpha_1$}}}}
             }%
-            {\color[rgb]{0,0,0}
-              \put(2161,-2941){\vector( 1, 0){2700}}
-              \put(3421,-3076){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$\alpha_2$}}}}
-            }%
+            %% {\color[rgb]{0,0,0}
+            %%   \put(2161,-2941){\vector( 1, 0){2700}}
+            %%   \put(3421,-3076){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$\alpha_2$}}}}
+            %% }%
             {\color[rgb]{0,0,0}
               \put(5401,-2851){\line( 1, 0){270}}
               \put(5671,-2851){\line( 0, 1){1620}}
               \put(5671,-1231){\line(-1, 0){3915}}
               \put(1756,-1231){\vector( 0,-1){270}}
-              \put(2971,-1186){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$\alpha_3$}}}}
+              \put(2971,-1186){\makebox(0,0)[b]{\smash{\SetFigFont{6}{7.2}{$\alpha_2$}}}}
             }%
       \end{picture}%
     }    
   \end{center}
   \caption{
-    Diagram of the full SVEIRR model, a simplified version of that studied by \citet{Wearing2009}.
-    When $\alpha_{1}=\alpha_{2}=\alpha_{3}=\epsilon=\phi=0$, this reduces to the SEIR model.
-    When $\phi=\epsilon=0$ and $\alpha_{1}{\gg}\alpha_{3}$, this reduces to the SEIRS model.
-    When $\phi=\epsilon=0$ and $\alpha_{1}=\alpha_{3}$, we obtain an SEIRS system where the waning of immunity is Gamma-distributed with a shape parameter of 2.
+    Diagram of the full SEIRR model, a simplified version of that studied by \citet{Wearing2009}.
+    When $\alpha_1=\epsilon=\phi=0$, this reduces to the SEIR model.
+    When $\phi=\epsilon=0$ and $\alpha_{1}{\gg}\alpha_{2}$, this reduces to the SEIRS model.
+    When $\phi=\epsilon=0$ and $\alpha_{1}=\alpha_{2}$, we obtain an SEIRS system where the waning of immunity is Gamma-distributed with a shape parameter of 2.
   }
   \label{fig:sveirr}
 \end{figure}
@@ -240,7 +230,7 @@ In the pertussis simulation study, we simulate the solution of a common problem:
 how can we assess the evidence for or against an important role for a particular mechanism?
 In the present instance, we are concerned with two mechanisms that have been hypothesized to play an important role in pertussis transmission: waning of immunity and boosting of immunity by natural exposure.
 We will assess the strength of evidence for each of these mechanisms using a model selection approach.
-Nested within the full SVEIRR model are several submodels:
+Nested within the full SEIRR model are several submodels:
 \begin{enumerate}
 
 \item When the intensity of the white noise $\zeta$ is zero, we lose the environmental stochasticity, 
@@ -248,9 +238,9 @@ Nested within the full SVEIRR model are several submodels:
 
 \item  When $\alpha_{1}=\phi=0$, there is no loss of immunity and we have the SEIR system.
 
-\item When $\eps=\phi=0$, and both $\alpha_{1},\alpha_{3}>0$, we have loss of immunity but no boosting: 
+\item When $\eps=\phi=0$, and both $\alpha_{1},\alpha_{2}>0$, we have loss of immunity but no boosting: 
   the system can be said to be of SEIRS form.
-  If in addition $\alpha_{1}=\alpha_{3}$, the waiting time to loss of immunity is Gamma distributed with shape parameter 1.
+  If in addition $\alpha_{1}=\alpha_{2}$, the waiting time to loss of immunity is Gamma distributed with shape parameter 2.
 
 \end{enumerate}  
 
@@ -273,8 +263,7 @@ Table~\ref{tab:params} explains the epidemiological meaning of model parameters 
     $\bar\beta$ & mean contact rate & $\bar{\beta}>0$ \\
     $b_1$ & amplitude of seasonality & $0\;\leq\;b_1\;\leq\;1$\\
     $1/ \alpha_1$ & mean period in R$_1$  & 1~da $\leq 1/\alpha_1\;\leq\;1/\mu$~yr\\ 
-    $1/ \alpha_2$ & mean period in V & 1~da $\leq 1/\alpha_2\;\leq\;1/\mu$~yr\\ 
-    $1/ \alpha_3$ & mean period in R$_2$ & 1~da $\leq 1/\alpha_3\;\leq\;1/\mu$~yr\\ 
+    $1/ \alpha_2$ & mean period in R$_2$ & 1~da $\leq 1/\alpha_2\;\leq\;1/\mu$~yr\\ 
     $\xi$ & probability of immune boosting &  $0\;\leq\;\xi\;\leq\;1$\\
     $\phi$ &  probability of not developing immunity &  $0\;\leq\;\phi\;\leq\;1$\\
     $p$ &  vaccination probability & $0\;\leq\;p\;\leq\;1$\\
@@ -298,7 +287,7 @@ The object thereby loaded contains a named length-\Sexpr{length(pertussis.sim)} 
 names(pertussis.sim)
 @ 
 There are three submodels (SEIR, SEIRS, SEIRR), representing a model with permanent immunity (SEIR), temporary immunity (SEIRS), and temporary immunity with boosting (SEIRR).
-The model labeled \code{full} is SVEIRR but with polarizing immunity ($\phi>0$) and environmental stochasticity $\sigma_{\zeta}>0$.
+The model labeled \code{full} is SEIRR but with polarizing immunity ($\phi>0$) and environmental stochasticity $\sigma_{\zeta}>0$.
 For each of these, there are 2 simulations, one at each of two population sizes (\scinot{5}{5} and \scinot{5}{6}).
 The parameter values used in the simulations are given in Table~\ref{tab:sim-params}.
 The simulations are performed using an Euler-multinomial approximation to the continuous-time Markov chain implicitly defined by Fig.~\ref{fig:sveirr}.
@@ -316,24 +305,24 @@ params[c(
          "birthrate","deathrate",
          "mean.beta","ampl.beta","imports",
          "sigma","gamma",
-         "alpha.1","alpha.2","alpha.3",
+         "alpha","alpha.ratio",
          "report.prob","boost.prob","polar.prob",
-         "vacc.prob","foi.mod",
+         "foi.mod",
          "popsize","noise.sigma","tau",
-         "S.0","E.0","I.0","R1.0","R2.0","V.0"
+         "S.0","E.0","I.0","R1.0","R2.0"
          ),
        "math"] <- c(
                     "$\\nu$","$\\mu$","$\\hat\\beta$","$b_{1}$","$\\iota$",
                     "$\\sigma$","$\\gamma$",
-                    "$\\alpha_{1}$","$\\alpha_{2}$","$\\alpha_{3}$",
+                    "$\\alpha_{1}$","$\\alpha_{2}/\\alpha_{1}$",
                     "$\\rho$","$\\xi$","$\\phi$",
-                    "$p$","$\\epsilon$",
+                    "$\\epsilon$",
                     "$N$","$\\sigma_{\\zeta}$","$\\tau$",
-                    "$S(0)/N$","$E(0)/N$","$I(0)/N$","$R_1(0)/N$","$R_2(0)/N$","$V(0)/N$"
+                    "$S(0)/N$","$E(0)/N$","$I(0)/N$","$R_1(0)/N$","$R_2(0)/N$"
                     )
 
 params <- params[c("math","name","SEIR.small","SEIRS.big","SEIRR.small","full.big")]
-params <- subset(params,!name%in%c("popsize","vacc.prob","S.0","E.0","I.0","R1.0","R2.0","V.0"))
+params <- subset(params,!name%in%c("popsize","S.0","E.0","I.0","R1.0","R2.0"))
 names(params) <- c("parameter","R name","SEIR","SEIRS","SEIRR","full")
 @ 
 
@@ -547,8 +536,8 @@ the measurement model overdispersion parameter $\tau$.
 We will suppose that no vaccination occurs ($p=0$) and that all infections result in immunity ($\phi=0$).
 In addition, we will initially assume that the process noise is purely demographic: $\sigma_{\zeta}=0$.
 Thus, for every model, we must fit the three parameters $\bar{\beta}$, $b_1$, and $\rho$.
-For the SEIR model, these are the only parameters that must be fit, since we assume $\alpha_{1}=\alpha_{3}=\eps=0$.
-For the SEIRS model, we must additionally fit $\alpha_{1}$ and $\alpha_{3}$, though we assume $\eps=0$.
+For the SEIR model, these are the only parameters that must be fit, since we assume $\alpha_{1}=\alpha_{2}=\eps=0$.
+For the SEIRS model, we must additionally fit $\alpha_{1}$ and $\alpha_{2}$, though we assume $\eps=0$.
 Finally, in the SEIRR model, we must fit $\eps$ and $\xi$ in addition to all the others, for a total of seven parameters.
 This is summarized in Table~\ref{tab:design}.
 
@@ -563,21 +552,21 @@ This is summarized in Table~\ref{tab:design}.
     \hline\hline
     Truth & Hypothesis & Parameters to estimate & Parameters fixed\\ 
     \hline
-    SEIRR.small & SEIR & $\bar{\beta}$, $b_1$, $\rho$ & $\alpha_{1}=\alpha_{3}=\eps=\phi=0$ \\
-    SEIRR.small & SEIRS & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\alpha_3$ & $\eps=\phi=0$\\
-    SEIRR.small & SEIRS (alt) & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$ & $\alpha_3=\alpha_1$, $\eps=\phi=0$\\
-    SEIRR.small & SEIRR & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\alpha_3$, $\eps$, $\xi$ & $\phi=0$ \\
-    SEIRR.small & SEIRR (alt) & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\eps$  & $\alpha_3=\alpha_1$, $\xi=\phi=0$ \\
-    full.small & SEIR & $\bar{\beta}$, $b_1$, $\rho$ & $\alpha_{1}=\alpha_{3}=\eps=\phi=0$ \\
-    full.small & SEIRS & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\alpha_3$ & $\eps=\phi=0$ \\
-    full.small & SEIRS (alt) & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$ & $\alpha_3=\alpha_1$, $\eps=\phi=0$ \\
-    full.small & SEIRR & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\alpha_3$, $\eps$, $\xi$ & $\phi=0$ \\
-    full.small & SEIRR (alt) & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\eps$  & $\alpha_3=\alpha_1$, $\xi=\phi=0$ \\
+    SEIRR.small & SEIR & $\bar{\beta}$, $b_1$, $\rho$ & $\alpha_{1}=\alpha_{2}=\eps=\phi=0$ \\
+    SEIRR.small & SEIRS & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\alpha_2$ & $\eps=\phi=0$\\
+    SEIRR.small & SEIRS (alt) & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$ & $\alpha_2=\alpha_1$, $\eps=\phi=0$\\
+    SEIRR.small & SEIRR & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\alpha_2$, $\eps$, $\xi$ & $\phi=0$ \\
+    SEIRR.small & SEIRR (alt) & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\eps$  & $\alpha_2=\alpha_1$, $\xi=\phi=0$ \\
+    full.small & SEIR & $\bar{\beta}$, $b_1$, $\rho$ & $\alpha_{1}=\alpha_{2}=\eps=\phi=0$ \\
+    full.small & SEIRS & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\alpha_2$ & $\eps=\phi=0$ \\
+    full.small & SEIRS (alt) & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$ & $\alpha_2=\alpha_1$, $\eps=\phi=0$ \\
+    full.small & SEIRR & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\alpha_2$, $\eps$, $\xi$ & $\phi=0$ \\
+    full.small & SEIRR (alt) & $\bar{\beta}$, $b_1$, $\rho$, $\alpha_1$, $\eps$  & $\alpha_2=\alpha_1$, $\xi=\phi=0$ \\
     \hline\hline
   \end{tabular}
 \end{table}
 
-In the event that it proves overly time-consuming to effectively fit the five parameters of the SEIRS model, we might allow ourselves to assume that $\alpha_{1}=\alpha_{3}$.
+In the event that it proves overly time-consuming to effectively fit the five parameters of the SEIRS model, we might allow ourselves to assume that $\alpha_{1}=\alpha_{2}$.
 In any case, it is likely that the relative values of these two parameters will be poorly identified.
 Likewise, if it proves really troublesome to fit six or seven parameters in the SEIRR model, we might allow ourselves to assume that $\xi=0$.
 This would have the interesting effect of introducing model misspecification into the problem and give us the opportunity to explore and comment on that issue as well.
@@ -586,7 +575,7 @@ This would have the interesting effect of introducing model misspecification int
 At the outset, we do not know where the MLEs for the SEIR and SEIRS models will be beyond the obvious facts that all the parameters are positive and $\rho$ and $\xi$ are probabilities.
 Based on other research, we have some reason to expect to uncover identifiability issues between the reporting rate $\rho$ and the other parameters, especially $\bar{\beta}$.
 In addition, waning of immunity acts to increase the overall mean prevalance and should thus be reflected in high $\bar{\beta}$ estimates for the SEIR model.
-As mentioned above, we expect identifiability problems to crop up between $\alpha_{1}$ and $\alpha_{3}$ as well.
+As mentioned above, we expect identifiability problems to crop up between $\alpha_{1}$ and $\alpha_{2}$ as well.
 For these reasons, it may initially be best for optimization approaches to initialize optimizers over a wide range and Bayesian approaches to use very flat priors.
 Once we can form a clearer notion of where the MLEs exist, it may be worthwhile to revisit this issue.
 

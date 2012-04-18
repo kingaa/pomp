@@ -13,5 +13,5 @@ tail(x)
 y <- trajectory(pertussis.sim$SEIRS.small,as.data.frame=TRUE)
 tail(y)
 
-pf <- pfilter(pertussis.sim$full.small,seed=3445886L,Np=1000)
+system.time(pf <- pfilter(pertussis.sim$full.small,seed=3445886L,Np=1000))
 logLik(pf)
