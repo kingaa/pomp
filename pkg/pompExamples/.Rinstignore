@@ -1,3 +1,4 @@
 inst/doc/Makefile
 inst/data-R/Makefile
 inst/doc/(.+?)\.bst$
+inst/doc/(.+?)\.rda$

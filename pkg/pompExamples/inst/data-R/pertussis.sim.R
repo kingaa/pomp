@@ -5,15 +5,16 @@
 
 require(pompExamples)
 
-load("pertussis-simdata.rda")
+load("pertussis-params.rda")
 
 datasets <- rownames(params)
-params <- subset(params,select=-c(model,pop,seed))
+seeds <- params["seed"]
+params <- subset(params,select=-seed)
 
 pertussis.sim <- list()
 for (d in datasets) {
   po <- pomp(
-             data=subset(simdata,dataset==d,select=c(time,reports)),
+             data=data.frame(time=seq(from=0,to=20,by=1/52),reports=NA),
              times="time",
              t0=-1/52,
              rprocess = euler.sim(
@@ -65,7 +66,7 @@ for (d in datasets) {
              }
              )
   coef(po) <- unlist(params[d,])
-  pertussis.sim[[d]] <- po
+  pertussis.sim[[d]] <- simulate(po,seed=seeds[d,])
 }
 
 save(pertussis.sim,file="pertussis.sim.rda",compress="xz")

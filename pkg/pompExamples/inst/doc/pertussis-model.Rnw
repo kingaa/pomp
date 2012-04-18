@@ -374,84 +374,155 @@ print(
       )
 @ 
 
-Plots of the data are shown in Figs.~\ref{fig:seir-plots}--\ref{fig:full-plots}.
+Plots of the data are shown in Fig.~\ref{fig:dataplots}.
 
-<<echo=F>>=
-tm <- time(pertussis.sim[[1]])
-ps <- sapply(pertussis.sim,coef,pars="popsize")
-cases <- t(apply(sapply(pertussis.sim,data.array),1,function(x)1e5*x/ps))
+\begin{figure}[h]
+  \begin{center}
+<<dataplots,fig=T,echo=F,png=T,pdf=F,height=8,width=6>>=
+require(ggplot2)
+require(plyr)
+require(reshape)
+require(pompExamples)
+data(pertussis.sim)
+x <- ldply(pertussis.sim,as.data.frame)
+x <- rename(x,c(.id="dataset"))
+x <- melt(x,id.var=c("dataset","time"))
+x <- subset(x,variable=="reports")
+x <- transform(
+               x,
+               size=ifelse(grepl("small",dataset),"small popn","big popn"),
+               model=sub("(.+?)\\..*","\\1 model",dataset,perl=T)
+               )
+x <- rename(x,c(value="reports"))
+pl <- ggplot(data=x,mapping=aes(x=time,y=reports))+
+  geom_line()+facet_wrap(model~size,scale="free",nrow=4)
+print(pl)
+
+@     
+  \end{center}
+  \caption{
+    Plots of the simulated pertussis data.
+    Population size \scinot{5}{5} (black); \scinot{5}{6} (red).
+    Top: the full data sets.
+    Bottom: the first 20~yr of simulated data.
+  }
+  \label{fig:dataplots}
+\end{figure}
+
+We can get a benchmark for likelihood-based fitting methods by computing the true likelihood at the true parameter values.
+To do this, we run the \code{pfilter} particle filtering code.
+<<true-loglik-calc,echo=F,eval=F>>=
+require(Rmpi)
+require(mpifarm)
+require(pompExamples)
+
+data(pertussis.sim)
+
+ncpus <- as.integer(Sys.getenv("PBS_NP"))
+
+nrep <- 10  ### number of particle filters to run
+Np <- 10000 ### number of particles
+
+set.seed(5384959)
+
+mpi.spawn.Rslaves(nslaves=ncpus)
+
+mpi.farmer(
+           chunk=1,
+           seeds=as.integer(floor(runif(n=nrep,1,2^31))),
+           jobs={
+             require(plyr)
+             dlply(
+                   expand.grid(
+                               seed=seeds,
+                               dataset=names(pertussis.sim)
+                               ),
+                   ~dataset+seed
+                   )
+           },
+           common=list(
+             pomps=pertussis.sim,
+             Np=Np
+             ),
+           main={
+             require(pompExamples)
+             save.seed <- .Random.seed
+             set.seed(seed)
+             tic <- Sys.time()
+             pf <- try(pfilter(pomps[[dataset]],Np=Np,max.fail=100,warn=FALSE))
+             if (inherits(pf,"try-error")) {
+               loglik <- NA
+               nfail <- NA
+             } else {
+               loglik <- logLik(pf)
+               nfail <- pf$nfail
+             }
+             toc <- Sys.time()
+             .Random.seed <<- save.seed
+             data.frame(
+                        seed=seed,
+                        dataset=dataset,
+                        loglik=loglik,
+                        nfail=nfail,
+                        etime=toc-tic
+                        )
+           },
+           post={
+             require(plyr)
+             ldply(results)
+           }
+           ) -> results
+
+mpi.close.Rslaves()
+
+if (any(with(results,nfail!=0)))
+  warning("filtering failures occurred!")
+
+etime <- sum(results$etime)
+
+ll.est <- function (x) {
+  bl <- mean(x$loglik)
+  loglik <- bl+log(mean(exp(x$loglik-bl)))
+  se <- sd(exp(x$loglik-bl))/exp(loglik-bl)
+  data.frame(loglik=loglik,se=se)
+}
+
+loglik.truth <- ddply(results,~dataset,ll.est)
+
+save(loglik.truth,etime,Np,nrep,ncpus,file=binary.file,compress="xz")
 @ 
-
-<<dataplot,echo=F,eval=F>>=
-op <- par(mfrow=c(2,1),mar=c(3,3,1,1),mgp=c(2,1,0))
-matplot(tm,cases[,ds],type='l',bty='l',lty=1,xlab="time",ylab=expression(cases/10^5))
-matplot(tm[tm<=20],cases[tm<=20,ds],type='l',bty='l',lty=1,xlab="time",ylab=expression(cases/10^5))
-par(op)
+<<true-loglik-eval,echo=F,results=hide>>=
+binary.file <- "pertussis-model-true-loglik.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<true-loglik-calc>>
+}
 @ 
+Table~\ref{tab:true-loglik} shows these likelihoods.
 
-\begin{figure}[h]
-  \begin{center}
-<<SEIR-plots,fig=T,echo=F>>=
-ds <- c("SEIR.small","SEIR.big")
-<<dataplot>>
-@     
-  \end{center}
-  \caption{
-    Plots of the simulated data, SEIR model with initial conditions chosen to give stationary dynamics.
-    Population size \scinot{5}{5} (black); \scinot{5}{6} (red).
-    Top: the full data sets.
-    Bottom: the first 20~yr of simulated data.
-  }
-  \label{fig:seir-plots}
-\end{figure}
-
-\begin{figure}[h]
-  \begin{center}
-<<SEIRS-plots,fig=T,echo=F>>=
-ds <- c("SEIRS.small","SEIRS.big")
-<<dataplot>>
-@     
-  \end{center}
-  \caption{
-    Plots of the simulated data, SEIRS model with initial conditions chosen to give stationary dynamics.
-    Population size \scinot{5}{5} (black); \scinot{5}{6} (red).
-    Top: the full data sets.
-    Bottom: the first 20~yr of simulated data.
-  }
-  \label{fig:seirs-plots}
-\end{figure}
-
-\begin{figure}[h]
-  \begin{center}
-<<SEIRR-plots,fig=T,echo=F>>=
-ds <- c("SEIRR.small","SEIRR.big")
-<<dataplot>>
-@     
-  \end{center}
-  \caption{
-    Plots of the simulated data, SEIRR model with initial conditions chosen to give stationary dynamics.
-    Population size \scinot{5}{5} (black); \scinot{5}{6} (red).
-    Top: the full data sets.
-    Bottom: the first 20~yr of simulated data.
-  }
-  \label{fig:seirr-plots}
-\end{figure}
-
-\begin{figure}[h]
-  \begin{center}
-<<full-plots,fig=T,echo=F>>=
-ds <- c("full.small","full.big")
-<<dataplot>>
-@     
-  \end{center}
-  \caption{
-    Plots of the simulated data, full model with initial conditions chosen to give stationary dynamics.
-    Population size \scinot{5}{5} (black); \scinot{5}{6} (red).
-    Top: the full data sets.
-    Bottom: the first 20~yr of simulated data.
-  }
-  \label{fig:full-plots}
-\end{figure}
+<<true-loglik,results=tex,echo=F>>=
+print(
+      xtable(
+             loglik.truth,
+             caption=paste(
+               "Estimated log likelihood at the true parameters for the simulated pertussis data. ",
+               "To obtain these,",nrep,"particle filtering runs, each with",Np,"particles, were used. ",
+               "The column labeled",dQuote("se"),"gives the standard error of the Monte Carlo likelihood calculation. ",
+               "The computation took ",signif(etime,2),"~CPU~",units(etime),"on inexpensive processors. ",
+               sep=" "
+               ),
+             label="tab:true-loglik",
+             digits=c(0,0,1,2)
+             ),
+      type="latex",
+      floating=TRUE,
+      caption.placement="top",
+      include.rownames=FALSE,
+      sanitize.text.function=identity,
+      hline.after=c(-1,-1,0,nrow(loglik.truth))
+      )
+@ 
 
 \newpage
 

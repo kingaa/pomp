@@ -1,14 +1,18 @@
 require(pompExamples)
 
-load("budmoth-simdata.rda")
+load("budmoth-params.rda")
 
 datasets <- rownames(params)
+seeds <- params["seed"]
 params <- subset(params,select=-seed)
 
 budmoth.sim <- list()
 for (d in datasets) {
   po <- pomp(
-             data=subset(simdata,dataset==d,select=c(time,Qobs,Nobs,Sobs)),
+             data=data.frame(
+               time=seq(from=0,to=60,by=1),
+               Qobs=NA,Nobs=NA,Sobs=NA
+               ),
              time="time",
              t0=0,
              rprocess=euler.sim(
@@ -58,7 +62,7 @@ for (d in datasets) {
              }
              )
   coef(po) <- unlist(params[d,])
-  budmoth.sim[[d]] <- po
+  budmoth.sim[[d]] <- simulate(po,seed=seeds[d,])
 }
 
 save(budmoth.sim,file="budmoth.sim.rda",compress="xz")

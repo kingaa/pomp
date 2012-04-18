@@ -165,6 +165,7 @@ data(budmoth.sim)
 x <- ldply(budmoth.sim,as.data.frame)
 x <- rename(x,c(.id="dataset"))
 x <- melt(x,id.var=c("dataset","time"))
+x <- subset(x,variable%in%c("Qobs","Nobs","Sobs"))
 pl <- ggplot(data=x,mapping=aes(x=time,y=value))+
   geom_line()+facet_grid(variable~dataset,scale="free")
 print(pl)
@@ -271,7 +272,7 @@ print(
       xtable(
              loglik.truth,
              caption=paste(
-               "Estimated log likelihood at the true parameters for the first ",length(time(budmoth.sim[[1]]))," years of simulated data. ",
+               "Estimated log likelihood at the true parameters for the simulated budmoth data. ",
                "To obtain these,",nrep,"particle filtering runs, each with",Np,"particles, were used. ",
                "The column labeled",dQuote("se"),"gives the standard error of the Monte Carlo likelihood calculation. ",
                "The computation took ",signif(etime,2),"~CPU~",units(etime),"on inexpensive processors. ",
@@ -308,8 +309,7 @@ true.pars <- sapply(budmoth.sim,coef)
 estnames <- c("gam","lambda","g","delta","a","w")
 par.range <- t(apply(true.pars[estnames,],1,function(x)c(0.5*min(x),1.5*max(x))))
   
-##ncpus <- as.integer(Sys.getenv("PBS_NP"))
-ncpus <- 6
+ncpus <- as.integer(Sys.getenv("PBS_NP"))
 
 slices <- lapply(
                  budmoth.sim,
