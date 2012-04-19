@@ -25,8 +25,13 @@ void _blowfly_model_simulator (double *x, const double *p,
 {
   double e = rgammawn(SIGMAP,dt)/dt;
   double eps = rgammawn(SIGMAD,dt)/dt;
-  int tau = nearbyint(TAU);
+  int tau;
   int k;
+
+  if (!(R_FINITE(TAU)))
+    error("non-finite value of 'tau'");
+
+  tau = nearbyint(TAU);
   R = rpois(P*N[tau]*exp(-N[tau]/NZERO)*dt*e);
   S = rbinom(N[0],exp(-DELTA*dt*eps));
   E = e;

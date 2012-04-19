@@ -20,6 +20,7 @@ pomp(
      rprocess=discrete.time.sim(
        step.fun="_blowfly_model_simulator",
        delta.t=1,
+       PACKAGE="pomp"
        ),
      paramnames=c("P","N0","delta","sigma.P","sigma.d","tau","sigma.y"),
      statenames=c("N1","R","S","e","eps"),
@@ -53,6 +54,7 @@ pomp(
      rprocess=discrete.time.sim(
        step.fun="_blowfly_model_simulator",
        delta.t=2,
+       PACKAGE="pomp"
        ),
      y.init=with( ## initial data
        raw.data,
