@@ -24,7 +24,7 @@ for (d in datasets) {
                Qobs=NA,Nobs=NA,Sobs=NA
                ),
              time="time",
-             t0=0,
+             t0=-1,
              rprocess=euler.sim(
                step.fun="budmoth_map",
                delta.t=1,

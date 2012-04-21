@@ -36,6 +36,10 @@ static inline double logit (double x) {
 #define NSTATE         (x[stateindex[4]])
 #define SSTATE         (x[stateindex[5]])
 
+#define QOBS   (y[obsindex[0]])
+#define NOBS   (y[obsindex[1]])
+#define SOBS   (y[obsindex[2]])
+
 void budmoth_map (double *x, double *p, 
 		  int *stateindex, int *parindex, int *covindex, 
 		  int covdim, double *covar, double t, double dt)
@@ -74,15 +78,11 @@ void budmoth_skeleton (double *f, double *x, double *p,
   f[stateindex[0]] = ALPHA;	// ALPHA equation
   f[stateindex[1]] = LAMBDA;	// LAMBDA equation
   f[stateindex[2]] = AEY;	// A equation
-  f[stateindex[3]] = (1-ALPHASTATE)*(GAM/(GAM+NSTATE))+ALPHASTATE*QSTATE; // Q equation
-  f[stateindex[4]] = LAMBDASTATE*NSTATE*(1-SSTATE)*exp(-GEE*NSTATE-DELTA*(1-QSTATE)); // N equation
+  f[stateindex[3]] = (1-ALPHA)*(GAM/(GAM+NSTATE))+ALPHA*QSTATE; // Q equation
+  f[stateindex[4]] = LAMBDA*NSTATE*(1-SSTATE)*exp(-GEE*NSTATE-DELTA*(1-QSTATE)); // N equation
   f[stateindex[5]] = 1-tol-exp(-(ASTATE*SSTATE*NSTATE+2*tol)/(1+DUBYA*ASTATE*SSTATE*NSTATE)); // S equation
 
 }
-
-#define QOBS   (y[obsindex[0]])
-#define NOBS   (y[obsindex[1]])
-#define SOBS   (y[obsindex[2]])
 
 void budmoth_rmeasure (double *y, double *x, double *p, 
 		       int *obsindex, int *stateindex, int *parindex, int *covindex,
