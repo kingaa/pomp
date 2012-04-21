@@ -1,0 +1,72 @@
+2012-04-21  kingaa
+
+	* [r671] DESCRIPTION, data/budmoth.sim.rda, data/pertussis.sim.rda,
+	  inst/NEWS, inst/data-R/budmoth.sim.R,
+	  inst/doc/budmoth-model-slices.rda,
+	  inst/doc/budmoth-model-true-loglik.rda,
+	  inst/doc/pertussis-model-true-loglik.rda, src/budmoth.c,
+	  tests/budmoth.Rout.save: - changed the budmoth model t0 to -1.
+	  The data are changed as well.
+
+2012-04-18  kingaa
+
+	* [r669] inst/doc/budmoth-model-slices.rda,
+	  inst/doc/budmoth-model-true-loglik.rda,
+	  inst/doc/pertussis-model-true-loglik.rda, src/budmoth.c: - remove
+	  finiteness checks from budmoth model
+	* [r668] .Rbuildignore, .Rinstignore, data/pertussis.sim.rda,
+	  inst/data-R/budmoth-params.rda, inst/data-R/budmoth.sim.R,
+	  inst/data-R/pertussis-params.rda, inst/data-R/pertussis.sim.R,
+	  inst/doc/budmoth-model-slices.rda,
+	  inst/doc/budmoth-model-true-loglik.rda,
+	  inst/doc/budmoth-model.pdf,
+	  inst/doc/pertussis-model-true-loglik.rda,
+	  inst/doc/pertussis-model.Rnw, inst/doc/pertussis-model.pdf,
+	  src/pertussis.c, tests/pertussis.R, tests/pertussis.Rout.save: -
+	  drop V from pertussis model
+	  - drop finiteness checks in pertussis model
+	* [r667] .Rinstignore, DESCRIPTION, data/budmoth.sim.rda,
+	  data/pertussis.sim.rda, inst/data-R/budmoth-params.rda,
+	  inst/data-R/budmoth-simdata.rda, inst/data-R/budmoth.sim.R,
+	  inst/data-R/pertussis-params.rda,
+	  inst/data-R/pertussis-simdata.rda, inst/data-R/pertussis.sim.R,
+	  inst/doc/budmoth-model-slices.rda,
+	  inst/doc/budmoth-model-true-loglik.rda,
+	  inst/doc/budmoth-model.Rnw, inst/doc/budmoth-model.pdf,
+	  inst/doc/pertussis-model-true-loglik.rda,
+	  inst/doc/pertussis-model.Rnw, inst/doc/pertussis-model.pdf,
+	  tests/budmoth.Rout.save, tests/pertussis.R,
+	  tests/pertussis.Rout.save: - new datasets
+	  - revert dependence to R>2.14.2
+	  - add log likelihood calculation to pertussis vignette
+	  - true parameters are included with pomps
+
+2012-04-17  kingaa
+
+	* [r666] .Rinstignore, DESCRIPTION, NAMESPACE,
+	  data/budmoth.sim.rda, data/pertussis.sim.rda,
+	  inst/data-R/budmoth-params.csv, inst/data-R/budmoth-simdata.rda,
+	  inst/data-R/budmoth.sim.R, inst/data-R/pertussis-params.csv,
+	  inst/data-R/pertussis-simdata.rda, inst/data-R/pertussis.sim.R,
+	  inst/doc/budmoth-model-slices.rda,
+	  inst/doc/budmoth-model-true-loglik.rda,
+	  inst/doc/budmoth-model.Rnw, inst/doc/budmoth-model.pdf,
+	  inst/doc/pertussis-model.Rnw, inst/doc/pertussis-model.pdf,
+	  man/budmoth.Rd, tests/budmoth.R, tests/pertussis.R: - fix loads
+	  of bugs
+	* [r665] ., .Rbuildignore, .Rinstignore, DESCRIPTION, NAMESPACE,
+	  data, data/budmoth.sim.rda, data/pertussis.sim.rda, inst,
+	  inst/GPL, inst/LICENSE, inst/data-R, inst/data-R/Makefile,
+	  inst/data-R/budmoth-params.csv, inst/data-R/budmoth-simdata.rda,
+	  inst/data-R/budmoth.sim.R, inst/data-R/pertussis-params.csv,
+	  inst/data-R/pertussis-simdata.rda, inst/data-R/pertussis.sim.R,
+	  inst/doc, inst/doc/Makefile, inst/doc/budmoth-model-slices.rda,
+	  inst/doc/budmoth-model-true-loglik.rda,
+	  inst/doc/budmoth-model.Rnw, inst/doc/budmoth-model.pdf,
+	  inst/doc/fullnat.bst, inst/doc/pertussis-model.Rnw,
+	  inst/doc/pertussis-model.pdf, inst/doc/pomp.bib, man,
+	  man/budmoth.Rd, man/pertussis.Rd, src, src/budmoth.c,
+	  src/pertussis.c, tests, tests/budmoth.R, tests/budmoth.Rout.save,
+	  tests/pertussis.R, tests/pertussis.Rout.save: - add pompExamples
+	  package
+
