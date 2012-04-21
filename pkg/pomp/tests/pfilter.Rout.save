@@ -50,7 +50,7 @@ particle filter log likelihood at truth
    beta3  beta.sd      pop      rho      S.0      I.0      R.0 
 3.20e+02 1.00e-03 2.10e+06 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(pf$loglik,digits=4)
-[1] -964.3
+[1] -947.4
 > 
 > p <- coef(euler.sir)
 > euler.sir@params <- numeric(0)
@@ -62,8 +62,8 @@ particle filter log likelihood at truth
    beta3  beta.sd      pop      rho      S.0      I.0      R.0 
 3.20e+02 1.00e-03 2.10e+06 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(logLik(pf),digits=4)
-[1] -964
+[1] -945.4
 > 
 > proc.time()
    user  system elapsed 
-  5.732   0.080   5.850 
+  5.788   0.044   5.866 
