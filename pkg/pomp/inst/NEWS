@@ -1,4 +1,8 @@
 NEWS
+0.42-1
+     o	An experimental facility for constructing pomp objects with native C routines is now included.
+     	This requires R version 2.15.0 or greater.
+
 0.41-6
      o	A bug in the 'blowflies' example has been fixed.
      	Thanks to Greg Minshall for discovering it.
