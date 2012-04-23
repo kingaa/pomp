@@ -389,7 +389,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x25543e0>
+<environment: 0x26bb410>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -399,7 +399,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0x24e7238>
+<environment: 0x264e268>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -463,7 +463,7 @@ function not specified
 > x <- simulate(po,params=params,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.024599 secs
+Time difference of 1.033125 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -480,7 +480,7 @@ Time difference of 1.024599 secs
 > X3 <- trajectory(po,params=params,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.7358234 secs
+Time difference of 0.7432306 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -530,7 +530,7 @@ R -31549.7 -30472.3 -30226.0 -29798.8 -29007.2 -28580 -27634 -26740
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.200051 secs
+Time difference of 1.196313 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -538,7 +538,7 @@ Time difference of 1.200051 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01725101 secs
+Time difference of 0.01725578 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -575,18 +575,18 @@ R -31549.7 -30472.3 -30226.0 -29798.8 -29007.2 -28580 -27634 -26740
 > 
 > states(po)[,1:2]
               [,1]         [,2]
-S     1.361010e+05 1.357700e+05
-I     2.064000e+03 2.065000e+03
-R     1.961799e+06 1.962133e+06
-cases 1.062000e+03 1.060000e+03
+S     1.361160e+05 1.357770e+05
+I     2.066000e+03 2.074000e+03
+R     1.961786e+06 1.962120e+06
+cases 1.049000e+03 1.060000e+03
 W     6.596952e-02 9.166551e-02
 > time(po) <- seq(0,1,by=1/52)
 > states(po)[,1:3]
       [,1]         [,2]         [,3]
-S       NA 1.361010e+05 1.357700e+05
-I       NA 2.064000e+03 2.065000e+03
-R       NA 1.961799e+06 1.962133e+06
-cases   NA 1.062000e+03 1.060000e+03
+S       NA 1.361160e+05 1.357770e+05
+I       NA 2.066000e+03 2.074000e+03
+R       NA 1.961786e+06 1.962120e+06
+cases   NA 1.049000e+03 1.060000e+03
 W       NA 6.596952e-02 9.166551e-02
 > states(simulate(po))[,1:3]
          [,1]          [,2]         [,3]
@@ -610,4 +610,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  3.920   0.036   4.195 
+  3.960   0.020   4.143 

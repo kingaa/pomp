@@ -203,5 +203,5 @@ render <- function (template, ...) {
     }
     retval[[i]] <- tpl
   }
-  do.call(paste0,retval)
+  do.call(function(...)paste(...,sep='.'),retval)
 }

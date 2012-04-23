@@ -1,12 +1,9 @@
 NEWS
-0.42-1
-     o	An experimental facility for constructing pomp objects with native C routines is now included.
-     	This requires R version 2.15.0 or greater.
-
-0.41-6
+0.41-7
      o	A bug in the 'blowflies' example has been fixed.
      	Thanks to Greg Minshall for discovering it.
 
+0.41-6
      o	The 'gompertz' example parameter transformations have been changed.
      	No longer are the names of the parameter vector changed in the transformation.
 	This change is not backward-compatible, but only codes using this example are affected.
