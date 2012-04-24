@@ -16,9 +16,9 @@ make.lags.NLF <- function(x, lags, cov = NULL, nobs = 10000) {
   a <- start
   b <- a + n - 1
   if(xd == 1)
-    lab <- format(paste("lag", rep(lags, rep(xd, length(lags))), sep = ""))
+    lab <- format(paste0("lag",rep(lags,rep(xd,length(lags)))))
   else
-    lab <- format(paste( rep(1:xd, length(lags)), "lag", rep(lags,rep(xd, length(lags))), sep = ""))
+    lab <- format(paste0(rep(seq_len(xd),length(lags)),"lag",rep(lags,rep(xd,length(lags)))))
   dimnames(temp) <- list(NULL,lab)
   skip <- NA
   if (!is.null(cov)) {

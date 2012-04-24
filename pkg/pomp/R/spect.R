@@ -327,12 +327,7 @@ setMethod(
                    ylab=expression(paste(log[10],"power"))
                    )
               title(
-                    main=paste(
-                      ylabs[i],
-                      ", p = ",
-                      round(spomp@pvals[i],4),
-                      sep=""
-                      ),
+                    main=paste0(ylabs[i],", p = ",round(spomp@pvals[i],4)),
                     line=0
                     )
               for (j in seq_along(quantiles)) {

@@ -130,7 +130,7 @@ probe.match.internal <- function(object, start, est,
     val <- obj.fn(guess)
     conv <- NA
     evals <- as.integer(c(1,0))
-    msg <- paste("no optimization performed")
+    msg <- "no optimization performed"
 
   } else {
 

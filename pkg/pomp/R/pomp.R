@@ -308,8 +308,8 @@ measform2pomp <- function (formulae) {
   }
   obsnames <- unlist(lapply(formulae,function(x)x[[2]]))
   distrib <- lapply(formulae,function(x)as.character(x[[3]][[1]]))
-  ddistrib <- lapply(distrib,function(x)paste("d",x,sep=''))
-  rdistrib <- lapply(distrib,function(x)paste("r",x,sep=''))
+  ddistrib <- lapply(distrib,function(x)paste0("d",x))
+  rdistrib <- lapply(distrib,function(x)paste0("r",x))
   for (k in seq_len(nobs)) {
     res <- try(
                match.fun(ddistrib[[k]]),

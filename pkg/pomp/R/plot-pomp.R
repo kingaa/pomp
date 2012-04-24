@@ -54,7 +54,7 @@ setMethod(
               if (is.null(nm))
                 nm <- colnames(x)
               if (is.null(nm))
-                nm <- paste("Series", 1:nser)
+                nm <- paste("Series",seq_len(nser))
               if (is.null(nc))
                 nc <- if(nser>4){2}else{1}
               nr <- ceiling(nser/nc)

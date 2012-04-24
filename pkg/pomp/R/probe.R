@@ -161,7 +161,7 @@ setMethod(
             labels <- paste("pb",seq_len(nprobes))
             if (!is.null(names(x@datvals)))
               labels <- ifelse(names(x@datvals)=="",labels,names(x@datvals))
-            lab.plus <- paste(labels,paste("p=",round(x@pvals,3),sep=""),sep="\n")
+            lab.plus <- paste(labels,paste0("p=",round(x@pvals,3)),sep="\n")
             ##now make the plot
 
             if (nprobes>1) {
