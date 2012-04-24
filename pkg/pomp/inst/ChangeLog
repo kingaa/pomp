@@ -1,5 +1,28 @@
+2012-04-24  kingaa
+
+	* [r678] R/aaa.R, R/nlf-funcs.R, R/plot-pomp.R, R/pomp.R,
+	  R/probe-match.R, R/probe.R, R/spect.R: - use 'paste0' where
+	  appropriate. define 'paste0' for use with R <= 2.15.0
+
+2012-04-23  kingaa
+
+	* [r677] DESCRIPTION: - change Depends to 2.14.2
+	* [r676] DESCRIPTION, R/builder.R, data/bbs.rda,
+	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
+	  data/ricker.rda, data/rw2.rda, data/verhulst.rda, inst/NEWS,
+	  inst/data-R/blowflies.R, src/blowfly.c, tests/blowflies.R,
+	  tests/blowflies.Rout.save, tests/sir.Rout.save: - remove the
+	  delay 'tau' from the blowflies example
+	  - make the 'pompBuilder' work under 2.14.2
+	  - update the data()-loadable examples
+
 2012-04-21  kingaa
 
+	* [r675] inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - update vignettes
+	* [r674] DESCRIPTION, inst/ChangeLog, inst/NEWS: - bump version
+	  number since R 2.15.0 is now needed
 	* [r673] inst/NEWS, tests/pfilter.Rout.save: - update unit tests
 	  and NEWS
 

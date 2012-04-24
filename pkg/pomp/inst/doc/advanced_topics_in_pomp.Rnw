@@ -549,6 +549,143 @@ data(package="pomp")
 The \R\ scripts that generated these are included in the \code{data-R} directory of the installed package.
 The majority of these use compiled code, which can be found in the package source.
 
+\section{Pomp Builder}
+
+<<pomp-builder,eval=F>>=
+rmeas <- "
+  double size = 1.0/sigma/sigma;
+  double prob = 1.0/(1.0+rho*cases/size);
+  reports = rnbinom(size,prob);
+"
+
+dmeas <- "
+  double size = 1.0/sigma/sigma;
+  double prob = 1.0/(1.0+rho*cases/size);
+  lik = dnbinom(reports,size,prob,give_log);
+"
+
+stepfn <- "
+  int nrate = 6;
+  int nbasis = 3;
+  int degree = 3;
+  double period = 1.0;
+  double rate[nrate];		// transition rates
+  double trans[nrate];		// transition numbers
+  double dW;
+  double seasonality[nbasis];
+  double beta;
+  int k;
+
+  dW = rgammawn(beta_sd,dt); // gamma noise, mean=dt, variance=(beta_sd^2 dt)
+  periodic_bspline_basis_eval(t,period,degree,nbasis,seasonality);
+  beta = exp(log(beta1)*seasonality[0]+log(beta2)*seasonality[1]+log(beta3)*seasonality[2]);
+
+  // compute the transition rates
+  rate[0] = mu*popsize;		// birth into susceptible class
+  rate[1] = (iota+beta*I*dW/dt)/popsize; // force of infection
+  rate[2] = mu;			// death from susceptible class
+  rate[3] = gamma;		// recovery
+  rate[4] = mu;			// death from infectious class
+  rate[5] = mu; 		// death from recovered class
+
+  // compute the transition numbers
+  trans[0] = rpois(rate[0]*dt);	// births are Poisson
+  reulermultinom(2,S,&rate[1],dt,&trans[1]);
+  reulermultinom(2,I,&rate[3],dt,&trans[3]);
+  reulermultinom(1,R,&rate[5],dt,&trans[5]);
+
+  // balance the equations
+  S += trans[0]-trans[1]-trans[2];
+  I += trans[1]-trans[3]-trans[4];
+  R += trans[3]-trans[5];
+  cases += trans[3];		// cases are cumulative recoveries
+  if (beta_sd > 0.0)  W += (dW-dt)/beta_sd; // mean = 0, variance = dt
+"
+
+skel <- "
+  int nrate = 6;
+  int nbasis = 3;
+  int degree = 3;	// degree of seasonal basis functions
+  double period = 1.0;
+  double rate[nrate];		// transition rates
+  double term[nrate];		// terms in the equations
+  double beta;
+  double seasonality[nbasis];
+  
+  // compute transmission rate from seasonality
+  periodic_bspline_basis_eval(t,period,degree,nbasis,seasonality);
+  beta = exp(log(beta1)*seasonality[0]+log(beta2)*seasonality[1]+log(beta3)*seasonality[2]);
+
+  // compute the transition rates
+  rate[0] = mu*popsize;		// birth into susceptible class
+  rate[1] = (iota+beta*I)/popsize; // force of infection
+  rate[2] = mu;			// death from susceptible class
+  rate[3] = gamma;		// recovery
+  rate[4] = mu;			// death from infectious class
+  rate[5] = mu; 		// death from recovered class
+
+  // compute the several terms
+  term[0] = rate[0];
+  term[1] = rate[1]*S;
+  term[2] = rate[2]*S;
+  term[3] = rate[3]*I;
+  term[4] = rate[4]*I;
+  term[5] = rate[5]*R;
+
+  // assemble the differential equations
+  DS = term[0]-term[1]-term[2];
+  DI = term[1]-term[3]-term[4];
+  DR = term[3]-term[5];
+  Dcases = term[3];		// accumulate the new I->R transitions
+  DW = 0;
+"
+
+pompBuilder(
+            data=data.frame(
+              reports=NA,
+              time=seq(0,10,by=1/52)
+              ),
+            times="time",
+            t0=-1/52,
+            name="SIR",
+            step.fn.delta.t=1/52/20,
+            paramnames=c(
+              "beta1","beta2","beta3","gamma","mu",
+              "beta.sd","rho","popsize","iota","sigma"
+              ),
+            statenames=c("S","I","R","W","cases"),
+            zeronames="cases",
+            rmeasure=rmeas,
+            dmeasure=dmeas,
+            step.fn=stepfn,
+            skeleton=skel,
+            skeleton.type="vectorfield"
+            ) -> sir
+
+simulate(
+         sir,
+         params=c(gamma=26,mu=0.05,beta.sd=0.1,
+           rho=0.6,sigma=0.1,popsize=1e5,iota=10,
+           beta1=100,beta2=120,beta3=80,
+           S.0=26000,I.0=0,R.0=74000,W.0=0,cases.0=0
+           )
+         ) -> sir
+@ 
+
+<<pomp-builder-eval,echo=F,eval=T,results=hide>>=
+if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
+  require(pomp)
+  pompBuilder <- pomp:::pompBuilder
+<<pomp-builder>>
+  simulate(sir) -> x
+  pfilter(sir,Np=500) -> pf
+  dyn.unload("SIR.so")
+  print(logLik(pf))
+}
+@ 
+
+
+
 <<restore-opts,echo=F,results=hide>>=
 options(glop)
 @ 

@@ -58,12 +58,12 @@ pompBuilder <- function (data, times, t0, name,
 }
 
 pompLink <- function (name) {
-  solib <- paste(name,.Platform$dynlib.ext,sep="")
+  solib <- paste0(name,.Platform$dynlib.ext)
   dyn.load(solib)
 }
 
 pompUnlink <- function (name) {
-  solib <- paste(name,.Platform$dynlib.ext,sep="")
+  solib <- paste0(name,.Platform$dynlib.ext)
   dyn.unload(solib)
 }
 
@@ -79,7 +79,7 @@ undefine <- list(
 header <- list(
                file="/* pomp model file: {%name%} */\n\n#include <pomp.h>\n#include <R_ext/Rdynload.h>\n",
                rmeasure="\nvoid {%name%}_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
-               dmeasure= "\nvoid {%name%}_dmeasure (double *__lik, double *__y, double *__x, double *__p, int __give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
+               dmeasure= "\nvoid {%name%}_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                step.fn="\nvoid {%name%}_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covar, double t, double dt)\n{\n",
                skeleton="\nvoid {%name%}_skelfn (double *__f, double *__x, double *__p, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n"
                )
@@ -91,7 +91,7 @@ decl <- list(
 
 footer <- list(
                rmeasure="\n}\n\n",
-               dmeasure="\nlik = (__give_log) ? log(lik) : lik;\n}\n\n",
+               dmeasure="\n}\n\n",
                step.fn="\n}\n\n",
                skeleton="\n}\n\n"
                )
@@ -103,8 +103,8 @@ pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmea
   paramnames <- cleanForC(paramnames)
   obsnames <- cleanForC(obsnames)
 
-  modelfile <- paste(name,".c",sep="")
-  solib <- paste(name,.Platform$dynlib.ext,sep="")
+  modelfile <- paste0(name,".c")
+  solib <- paste0(name,.Platform$dynlib.ext)
 
   out <- file(description=modelfile,open="w")
   
@@ -120,10 +120,10 @@ pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmea
     cat(file=out,render(define$var,variable=obsnames[v],ptr='__y',ilist='__obsindex',index=v-1))
   }
   for (v in seq_along(statenames)) {
-    cat(file=out,render(define$var,variable=paste("D",statenames[v],sep=""),ptr='__f',ilist='__stateindex',index=v-1))
+    cat(file=out,render(define$var,variable=paste0("D",statenames[v]),ptr='__f',ilist='__stateindex',index=v-1))
   }
   cat(file=out,render(define$var.alt,variable="lik",ptr='__lik',index=0))
-  
+
   ## rmeasure function
   cat(file=out,render(header$rmeasure,name=name),rmeasure,footer$rmeasure)
 
@@ -157,14 +157,13 @@ pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmea
     cat(file=out,render(undefine$var,variable=obsnames[v]))
   }
   for (v in seq_along(statenames)) {
-    cat(file=out,render(undefine$var,variable=paste("D",statenames[v],sep="")))
+    cat(file=out,render(undefine$var,variable=paste0("D",statenames[v])))
   }
   close(out)
 
-  cflags <- paste("PKG_CFLAGS=\"",
+  cflags <- paste0("PKG_CFLAGS=\"",
                   Sys.getenv("PKG_CFLAGS"),
-                  " -I",system.file("include",package="pomp"),"\"",
-                  sep="")
+                  " -I",system.file("include",package="pomp"),"\"")
 
   rv <- system2(
                 command=R.home("bin/R"),
@@ -203,5 +202,5 @@ render <- function (template, ...) {
     }
     retval[[i]] <- tpl
   }
-  do.call(function(...)paste(...,sep='.'),retval)
+  do.call(paste0,retval)
 }

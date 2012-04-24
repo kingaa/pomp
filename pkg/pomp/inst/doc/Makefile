@@ -20,6 +20,7 @@ vignettes: advanced_topics_in_pomp.pdf intro_to_pomp.pdf
 
 clean:
 	$(RM) *.tex *.log *.aux *.blg *.bbl *.out *.Rout *.toc *.lof *.lot 
+	$(RM) *.c *.o *.so
 	$(RM) Rplots.pdf
 	$(RM) intro_to_pomp-*.pdf advanced_topics_in_pomp-*.pdf 
 	$(RM) intro_to_pomp-*.png advanced_topics_in_pomp-*.png

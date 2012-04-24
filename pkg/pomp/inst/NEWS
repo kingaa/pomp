@@ -1,4 +1,7 @@
 NEWS
+0.41-8
+     o	A demonstration of 'pompBuilder' has been put into the 'advanced topics' vignette.
+
 0.41-7
      o	A bug in the 'blowflies' example has been fixed.
      	Thanks to Greg Minshall for discovering it.

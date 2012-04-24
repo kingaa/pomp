@@ -1,3 +1,5 @@
+* userdata access from C functions
+
 * pompBuilder function for automatic pomp construction
 
 * effects of replacing 'sample.int' with systematic resampling inside 'bsmc'
