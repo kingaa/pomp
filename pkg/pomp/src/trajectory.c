@@ -113,16 +113,25 @@ static struct {
 
 #define COMMON(X)    (_pomp_vf_eval_common.X)
 
-void pomp_desolve_init (SEXP object, SEXP params, SEXP fun, SEXP statenames, SEXP nvar, SEXP nrep) {
+void pomp_desolve_setup (SEXP object, SEXP params, SEXP fun, SEXP statenames, SEXP nvar, SEXP nrep) {
   COMMON(object) = object;
   COMMON(params) = params;
   COMMON(skelfun) = fun;
   COMMON(xnames) = statenames;
-  COMMON(xdim)[0] = INTEGER(AS_INTEGER(nvar))[0];
-  COMMON(xdim)[1] = INTEGER(AS_INTEGER(nrep))[0];
+  COMMON(xdim)[0] = *INTEGER(AS_INTEGER(nvar));
+  COMMON(xdim)[1] = *INTEGER(AS_INTEGER(nrep));
   COMMON(xdim)[2] = 1;
 }
 
+void pomp_desolve_takedown (void) {
+  COMMON(object) = R_NilValue;
+  COMMON(params) = R_NilValue;
+  COMMON(skelfun) = R_NilValue;
+  COMMON(xnames) = R_NilValue;
+  COMMON(xdim)[0] = 0;
+  COMMON(xdim)[1] = 0;
+  COMMON(xdim)[2] = 0;
+}
 
 void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, int *ip) 
 {

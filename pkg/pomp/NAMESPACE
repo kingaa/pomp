@@ -18,7 +18,7 @@ useDynLib(
           probe_acf,probe_ccf,
           probe_nlar,
           synth_loglik,
-          pomp_desolve_init,
+          pomp_desolve_setup,pomp_desolve_takedown,
           pomp_vf_eval,
           do_partrans,
           do_rprocess,
