@@ -68,7 +68,7 @@ SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period) {
   double *xrd, *ydata, *val;
   if (deg < 0) error("periodic_bspline_basis error: must have degree >= 0");
   if (nb <= 0) error("periodic_bspline_basis error: must have nbasis > 0");
-  if (deg > nb) error("periodic_bspline_basis error: must have degree <= nbasis");
+  if (nb < deg) error("periodic_bspline_basis error: must have nbasis >= degree");
   if (pd <= 0.0) error("periodic_bspline_basis error: must have period > 0");
   PROTECT(xr = AS_NUMERIC(x)); nprotect++;
   xrd = REAL(xr);
