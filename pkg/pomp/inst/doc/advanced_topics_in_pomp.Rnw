@@ -578,7 +578,7 @@ stepfn <- "
 
   dW = rgammawn(beta_sd,dt); // gamma noise, mean=dt, variance=(beta_sd^2 dt)
   periodic_bspline_basis_eval(t,period,degree,nbasis,seasonality);
-  beta = exp(log(beta1)*seasonality[0]+log(beta2)*seasonality[1]+log(beta3)*seasonality[2]);
+  beta = beta1*seasonality[0]+beta2*seasonality[1]+beta3*seasonality[2];
 
   // compute the transition rates
   rate[0] = mu*popsize;		// birth into susceptible class
