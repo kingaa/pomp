@@ -90,5 +90,6 @@ export(
        probe.marginal,
        sannbox,
        spect.match,
-       traj.match.objfun
+       traj.match.objfun,
+       pompBuilder
        )

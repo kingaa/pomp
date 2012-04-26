@@ -245,9 +245,18 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   ndim[0] = nvars; ndim[1] = npars; ndim[2] = nrepsp; ndim[3] = nrepsx; ndim[4] = ntimes; 
   ndim[5] = covlen; ndim[6] = covdim; ndim[7] = nobs;
 
+  if (use_native) {
+    PROTECT(FCALL = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+    set_pomp_userdata(FCALL);
+  }
+
   dens_meas(ff,REAL(F),REAL(y),REAL(x),REAL(times),REAL(params),INTEGER(log),ndim,
 	    oidx,sidx,pidx,cidx,REAL(tcovar),REAL(covar));
   
+  if (use_native) {
+    unset_pomp_userdata();
+  }
+
   UNPROTECT(nprotect);
   return F;
 }

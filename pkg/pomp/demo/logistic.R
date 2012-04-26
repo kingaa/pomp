@@ -49,12 +49,16 @@ po <- pomp(
 params <- c(n.0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
 set.seed(73658676)
 po <- simulate(po,params=params)
-plot(po)
 
 params <- cbind(
                 c(n.0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),
                 c(n.0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1)
                 )
-x <- trajectory(po,params=params,as.data.frame=TRUE)
-x <- reshape(x,dir="wide",idvar="time",timevar="traj")
-matplot(x$time,x[-1],type='l',bty='l',lty=1,xlab="time",ylab="n")
+traj <- trajectory(po,params=params,as.data.frame=TRUE)
+traj <- reshape(traj,dir="wide",idvar="time",timevar="traj")
+sim <- simulate(po,params=params,as.data.frame=TRUE,seed=34597368L)
+sim <- reshape(sim,dir="wide",idvar="time",timevar="sim")
+matplot(range(time(po)),range(c(traj[-1],sim[-1])),type='n',bty='l',lty=1,xlab="time",ylab="n",
+        main="simulations vs trajectories")
+matlines(traj$time,traj[-1],type='l',bty='l',lty=1,xlab="time",ylab="n")
+matlines(sim$time,sim[c("n.1","n.2")],type='l',bty='l',lty=1,xlab="time",ylab="n")

@@ -415,7 +415,10 @@ SEXP euler_model_simulator (SEXP func,
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; 
   ndim[4] = covlen; ndim[5] = covdim; ndim[6] = nzeros;
 
-  if (use_native) GetRNGstate();
+  if (use_native) {
+    set_pomp_userdata(args);
+    GetRNGstate();
+  }
 
   switch (meth) {
   case 0:
@@ -435,7 +438,10 @@ SEXP euler_model_simulator (SEXP func,
     break;
   }
   
-  if (use_native) PutRNGstate();
+  if (use_native) {
+    PutRNGstate();
+    unset_pomp_userdata();
+  }
 
   VINDEX = 0;
 
@@ -647,9 +653,13 @@ SEXP euler_model_density (SEXP func,
   ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; 
   ndim[4] = covlen; ndim[5] = covdim;
 
+  if (use_native) set_pomp_userdata(args);
+
   euler_densities(ff,REAL(F),REAL(x),REAL(times),REAL(params),
 		  ndim,sidx,pidx,cidx,
 		  REAL(tcovar),REAL(covar),INTEGER(log));
+
+  if (use_native) unset_pomp_userdata();
 
   UNPROTECT(nprotect);
   return F;

@@ -1,4 +1,15 @@
 NEWS
+0.42-1
+     o	An EXPERIMENTAL facility for constructing pomp objects out of native C routines is now included (pompBuilder).
+     	This facility is being actively developed and future changes may not be backward compatible.
+
+     o	A new facility allowing access to the 'userdata' slot of a pomp object from compiled 'rprocess', 'rmeasure', 'dprocess', 'dmeasure', 'skeleton', and 'partrans' codes is now available.
+     	Calls to the new C routines 'get_pomp_userdata', 'get_pomp_userdata_int', and 'get_pomp_userdata_double' allow retrieval of these elements.
+
+     o	Some of the data()-loadable examples have been reworked to make use of the above facility.
+     	The parameterization of these examples has changed.
+	These changes are not backward compatible: codes that depend on the data()-loadable examples may be broken.
+
 0.41-8
      o	A demonstration of 'pompBuilder' has been put into the 'advanced topics' vignette.
 

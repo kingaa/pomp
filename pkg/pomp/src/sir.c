@@ -31,12 +31,9 @@ static double logit (double x) {
 #define BETA_SD     (p[parindex[4]]) // environmental stochasticity SD in transmission rate
 #define POPSIZE     (p[parindex[5]]) // population size
 #define RHO         (p[parindex[6]]) // reporting probability
-#define NBASIS      (p[parindex[7]]) // number of periodic B-spline basis functions
-#define DEGREE      (p[parindex[8]]) // degree of periodic B-spline basis functions
-#define PERIOD      (p[parindex[9]]) // period of B-spline basis functions
-#define S0         (p[parindex[10]]) // initial fraction of S
-#define I0         (p[parindex[11]]) // initial fraction of I
-#define R0         (p[parindex[12]]) // initial fraction of R
+#define S0          (p[parindex[7]]) // initial fraction of S
+#define I0          (p[parindex[8]]) // initial fraction of I
+#define R0          (p[parindex[9]]) // initial fraction of R
 
 #define SUSC      (x[stateindex[0]]) // number of susceptibles
 #define INFD      (x[stateindex[1]]) // number of infectives
@@ -44,17 +41,17 @@ static double logit (double x) {
 #define CASE      (x[stateindex[3]]) // number of cases (accumulated per reporting period)
 #define W         (x[stateindex[4]]) // integrated white noise
 
-#define DSDT    (f[stateindex[0]])
-#define DIDT    (f[stateindex[1]])
-#define DRDT    (f[stateindex[2]])
-#define DCDT    (f[stateindex[3]])
-#define DWDT    (f[stateindex[4]])
+#define DSDT      (f[stateindex[0]])
+#define DIDT      (f[stateindex[1]])
+#define DRDT      (f[stateindex[2]])
+#define DCDT      (f[stateindex[3]])
+#define DWDT      (f[stateindex[4]])
 
-#define REPORTS   (y[obsindex[0]])
+#define REPORTS     (y[obsindex[0]])
 
 void _sir_par_untrans (double *pt, double *p, int *parindex) 
 {
-  int nbasis = (int) NBASIS;
+  int nbasis = *(get_pomp_userdata_int("nbasis"));
   int k;
   pt[parindex[0]] = log(GAMMA);
   pt[parindex[1]] = log(MU);
@@ -63,14 +60,14 @@ void _sir_par_untrans (double *pt, double *p, int *parindex)
     pt[parindex[3]+k] = log(BETA[k]);
   pt[parindex[4]] = log(BETA_SD);
   pt[parindex[6]] = logit(RHO);
-  pt[parindex[10]] = log(S0);
-  pt[parindex[11]] = log(I0);
-  pt[parindex[12]] = log(R0);
+  pt[parindex[7]] = log(S0);
+  pt[parindex[8]] = log(I0);
+  pt[parindex[9]] = log(R0);
 }
  
 void _sir_par_trans (double *pt, double *p, int *parindex) 
 {
-  int nbasis = (int) NBASIS;
+  int nbasis = *(get_pomp_userdata_int("nbasis"));
   int k;
   pt[parindex[0]] = exp(GAMMA);
   pt[parindex[1]] = exp(MU);
@@ -79,9 +76,9 @@ void _sir_par_trans (double *pt, double *p, int *parindex)
     pt[parindex[3]+k] = exp(BETA[k]);
   pt[parindex[4]] = exp(BETA_SD);
   pt[parindex[6]] = expit(RHO);
-  pt[parindex[10]] = exp(S0);
-  pt[parindex[11]] = exp(I0);
-  pt[parindex[12]] = exp(R0);
+  pt[parindex[7]] = exp(S0);
+  pt[parindex[8]] = exp(I0);
+  pt[parindex[9]] = exp(R0);
 }
 
 void _sir_binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
@@ -124,13 +121,14 @@ void _sir_euler_simulator (double *x, const double *p,
   double trans[nrate];		// transition numbers
   double beta;
   double dW;
-  int nbasis = (int) NBASIS;	// number of seasonal basis functions
-  int deg = (int) DEGREE;	// degree of seasonal basis functions
+  int nbasis = *(get_pomp_userdata_int("nbasis"));
+  int deg = *(get_pomp_userdata_int("degree"));
+  double period = *(get_pomp_userdata_double("period"));
   double seasonality[nbasis];
   int k;
 
   if (nbasis <= 0) return;
-  periodic_bspline_basis_eval(t,PERIOD,deg,nbasis,&seasonality[0]);
+  periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);
   for (k = 0, beta = 0; k < nbasis; k++)
     beta += seasonality[k]*BETA[k];
 
@@ -181,13 +179,14 @@ void _sir_ODE (double *f, double *x, const double *p,
   double rate[nrate];		// transition rates
   double term[nrate];		// terms in the equations
   double beta;
-  int nbasis = (int) NBASIS;	// number of seasonal basis functions
-  int deg = (int) DEGREE;	// degree of seasonal basis functions
+  int nbasis = *(get_pomp_userdata_int("nbasis"));
+  int deg = *(get_pomp_userdata_int("degree"));
+  double period = *(get_pomp_userdata_double("period"));
   double seasonality[nbasis];
   int k;
 
   if (nbasis <= 0) return;
-  periodic_bspline_basis_eval(t,PERIOD,deg,nbasis,&seasonality[0]);
+  periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);
   for (k = 0, beta = 0; k < nbasis; k++)
     beta += seasonality[k]*BETA[k];
 
@@ -233,8 +232,9 @@ double _sir_rates (int j, double t, double *x, double *p,
 		   int ncovar, double *covar) {
   double beta;
   double rate = 0.0;
-  int nbasis = (int) NBASIS;	// number of seasonal basis functions
-  int deg = (int) DEGREE;	// degree of seasonal basis functions
+  int nbasis = *(get_pomp_userdata_int("nbasis"));
+  int deg = *(get_pomp_userdata_int("degree"));
+  double period = *(get_pomp_userdata_double("period"));
   double seasonality[nbasis];
   int k;
 
@@ -246,7 +246,7 @@ double _sir_rates (int j, double t, double *x, double *p,
     rate = MU*SUSC;
     break;
   case 3:			// infection
-    periodic_bspline_basis_eval(t,PERIOD,deg,nbasis,&seasonality[0]);
+    periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);
     for (k = 0, beta = 0; k < nbasis; k++)
       beta += seasonality[k]*BETA[k];
     rate = (beta*INFD+IOTA)*SUSC/POPSIZE;

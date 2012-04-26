@@ -22,7 +22,6 @@ po <- pomp(
            paramnames=c(
              "gamma","mu","iota",
              "beta1","beta.sd","pop","rho",
-             "nbasis","degree","period",
              "S.0","I.0","R.0"
              ),
            zeronames=c("cases"),
@@ -30,6 +29,9 @@ po <- pomp(
            ic.names=c("S.0","I.0","R.0"),
            parameter.transform="_sir_par_trans",
            parameter.inv.transform="_sir_par_untrans",
+           nbasis=3L,
+           degree=3L,
+           period=1.0,
            initializer=function(params, t0, comp.names, ic.names, ...) {
              snames <- c("S","I","R","cases","W")
              fracs <- params[ic.names]
@@ -42,7 +44,6 @@ po <- pomp(
 
 coef(po) <- c(
               gamma=26,mu=0.02,iota=0.01,
-              nbasis=3,degree=3,period=1,
               beta1=400,beta2=480,beta3=320,
               beta.sd=1e-3,
               pop=2.1e6,
@@ -98,7 +99,6 @@ coef(po) <- c(
               rho=0.1,
               S.0=0.05,I.0=1e-4,R.0=0.95,
               pop=1000000,
-              nbasis=3,degree=3,period=1,
               beta.sd=0
               )
 
@@ -149,12 +149,14 @@ po <- pomp(
            paramnames=c(
              "gamma","mu","iota",
              "beta","beta.sd","pop","rho",
-             "nbasis","degree","period",
              "S.0","I.0","R.0"
              ),
            zeronames=c("cases"),
            comp.names=c("S","I","R"),
            ic.names=c("S.0","I.0","R.0"),
+           nbasis=1L,
+           degree=0L,
+           period=1.0,
            logvar=c(
              "beta","gamma","mu","iota","sigma","beta.sd",
              "S.0","I.0","R.0"
@@ -182,7 +184,6 @@ po <- pomp(
 
 coef(po) <- c(
               gamma=1/3,mu=0.0,iota=0.0,
-              nbasis=1,degree=0,period=1,
               beta=1.4,
               beta.sd=0,
               pop=1400,

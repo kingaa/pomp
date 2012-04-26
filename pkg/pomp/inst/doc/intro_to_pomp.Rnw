@@ -570,15 +570,11 @@ identical(coef(gompertz),coef(g2))
 
 A \code{pomp} object corresponding to the one just created (but with the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} bits coded in C for speed) can be loaded by executing \verb+data(gompertz)+.
 For your convenience, codes creating this \code{pomp} object are included with the package.
-To view them, do:
-<<eval=F>>=
-file.show(system.file("demo/gompertz.R",package="pomp"))
-file.show(system.file("examples/gompertz.c",package="pomp"))
-@ 
-or run the demo
+To view them, run the demo
 <<eval=F>>=
 demo(gompertz)
 @ 
+
 \clearpage
 \section{Estimating parameters using iterated filtering: \code{mif}}
 

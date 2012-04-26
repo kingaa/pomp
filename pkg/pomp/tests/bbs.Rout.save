@@ -26,19 +26,15 @@ Loading required package: deSolve
 > set.seed(48857734L)
 > 
 > coef(bbs)
-       gamma           mu         iota       nbasis       degree       period 
-   0.3333333    0.0000000    0.0000000    1.0000000    0.0000000    1.0000000 
-        beta      beta.sd          pop          rho        sigma          S.0 
-   1.4000000    0.0000000 1400.0000000    0.9000000    3.6000000    0.9990000 
-         I.0          R.0 
-   0.0010000    0.0000000 
+       gamma           mu         iota         beta      beta.sd          pop 
+   0.3333333    0.0000000    0.0000000    1.4000000    0.0000000 1400.0000000 
+         rho        sigma          S.0          I.0          R.0 
+   0.9000000    3.6000000    0.9990000    0.0010000    0.0000000 
 > coef(bbs,transform=TRUE)
-       gamma           mu         iota       nbasis       degree       period 
-  -1.0986123         -Inf         -Inf    1.0000000    0.0000000    1.0000000 
-        beta      beta.sd          pop          rho        sigma          S.0 
-   0.3364722         -Inf 1400.0000000    2.1972246    1.2809338   -0.0010005 
-         I.0          R.0 
-  -6.9077553         -Inf 
+       gamma           mu         iota         beta      beta.sd          pop 
+  -1.0986123         -Inf         -Inf    0.3364722         -Inf 1400.0000000 
+         rho        sigma          S.0          I.0          R.0 
+   2.1972246    1.2809338   -0.0010005   -6.9077553         -Inf 
 > 
 > prior <- parmat(coef(bbs),nrep=1000)
 > prior["beta",] <- exp(runif(n=1000,min=1,max=2))
@@ -48,18 +44,18 @@ Warning message:
 In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
   Walker's alias method used: results are different from R < 2.2.0
 > signif(coef(fit1),3)
-   gamma       mu     iota   nbasis   degree   period     beta  beta.sd 
-   0.333    0.000    0.000    1.000    0.000    1.000    3.460    0.000 
-     pop      rho    sigma      S.0      I.0      R.0 
-1400.000    0.900    2.050    0.999    0.001    0.000 
+   gamma       mu     iota     beta  beta.sd      pop      rho    sigma 
+   0.333    0.000    0.000    3.460    0.000 1400.000    0.900    2.050 
+     S.0      I.0      R.0 
+   0.999    0.001    0.000 
 > 
 > fit2 <- traj.match(bbs,est=c("beta","sigma"),transform=TRUE)
 > signif(coef(fit2),3)
-   gamma       mu     iota   nbasis   degree   period     beta  beta.sd 
-   0.333    0.000    0.000    1.000    0.000    1.000    2.020    0.000 
-     pop      rho    sigma      S.0      I.0      R.0 
-1400.000    0.900    0.426    0.999    0.001    0.000 
+   gamma       mu     iota     beta  beta.sd      pop      rho    sigma 
+   0.333    0.000    0.000    2.020    0.000 1400.000    0.900    0.426 
+     S.0      I.0      R.0 
+   0.999    0.001    0.000 
 > 
 > proc.time()
    user  system elapsed 
-  2.624   0.052   2.701 
+  2.816   0.028   2.867 

@@ -261,13 +261,20 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   ndim[0] = nvars; ndim[1] = npars; ndim[2] = nrepsp; ndim[3] = nrepsx; ndim[4] = ntimes; 
   ndim[5] = covlen; ndim[6] = covdim; ndim[7] = nobs;
 
-  if (use_native) GetRNGstate();
+  if (use_native) {
+    PROTECT(FCALL = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+    set_pomp_userdata(FCALL);
+    GetRNGstate();
+  }
 
   simul_meas(ff,REAL(Y),REAL(x),REAL(times),REAL(params),ndim,
 	     oidx,sidx,pidx,cidx,
 	     REAL(tcovar),REAL(covar));
 
-  if (use_native) PutRNGstate();
+  if (use_native) {
+    PutRNGstate();
+    unset_pomp_userdata();
+  }
 
   OIDX = 0;
   FIRST = 0;

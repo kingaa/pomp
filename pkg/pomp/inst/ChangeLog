@@ -1,5 +1,18 @@
+2012-04-25  kingaa
+
+	* [r682] inst/doc/advanced_topics_in_pomp.Rnw: - minor tweak to
+	  pompBuilder example
+	* [r681] NAMESPACE, R/trajectory-pomp.R, src/trajectory.c: - put in
+	  a routine to reset external variables after deSolve call
+	* [r680] src/bspline.c: - fix error message
+
 2012-04-24  kingaa
 
+	* [r679] DESCRIPTION, R/builder.R, inst/ChangeLog, inst/NEWS,
+	  inst/TODO, inst/doc/Makefile,
+	  inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf: - put 'pompBuilder'
+	  demonstration into 'advanced topics' vignette
 	* [r678] R/aaa.R, R/nlf-funcs.R, R/plot-pomp.R, R/pomp.R,
 	  R/probe-match.R, R/probe.R, R/spect.R: - use 'paste0' where
 	  appropriate. define 'paste0' for use with R <= 2.15.0

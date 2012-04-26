@@ -89,7 +89,7 @@ static SEXP pomp_R_transform_params (SEXP object, SEXP params, SEXP fun) {
 SEXP do_partrans (SEXP object, SEXP params, SEXP fun)
 {
   int nprotect = 0;
-  SEXP ptrans, fn;
+  SEXP ptrans, fn, userdata;
   int use, drop;
 
   PROTECT(fn = VECTOR_ELT(fun,0)); nprotect++;
@@ -130,12 +130,17 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP fun)
 	idx = 0;
       }
 
+      PROTECT(userdata = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+      set_pomp_userdata(userdata);
+
       PROTECT(ptrans = duplicate(params)); nprotect++;
 
       for (k = 0, ps = REAL(params), pt = REAL(ptrans); k < nrep; k++, ps += npar, pt += npar) {
 	R_CheckUserInterrupt();
 	(*ff)(pt,ps,idx);
       }
+
+      unset_pomp_userdata();
 
     }
     break;

@@ -7,6 +7,11 @@
 #include <Rmath.h>
 #include <Rdefines.h>
 
+// facility for extracting R objects from the 'userdata' slot
+const SEXP get_pomp_userdata (const char *name);
+const int *get_pomp_userdata_int (const char *name);
+const double *get_pomp_userdata_double (const char *name);
+
 // facility for computing evaluating a basis of periodic bsplines
 void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
 

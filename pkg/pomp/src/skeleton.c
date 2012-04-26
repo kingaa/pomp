@@ -192,6 +192,9 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
 
   case 1:			// native skeleton
     
+    PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+    set_pomp_userdata(fcall);
+
     for (k = 0, ft = REAL(F); k < ntimes; k++, ts++) { // loop over times
 
       R_CheckUserInterrupt();	// check for user interrupt
@@ -208,6 +211,8 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
 	
       }
     }
+
+    unset_pomp_userdata();
 
     break;
 

@@ -2,76 +2,65 @@ library(pomp)
 
 data(ricker)
 
-x <- array(
-           data=states(ricker),
-           dim=c(2,3,52),
-           dimnames=list(rownames(states(ricker)),NULL,NULL)
-           )
-p <- array(
-           data=coef(ricker),
-           dim=c(5,3),
-           dimnames=list(names(coef(ricker)),NULL)
-           )
+pdf(file="skeleton.pdf")
+pdf.options(useDingbats=FALSE)
+
+x <- states(ricker)
+p <- parmat(coef(ricker),3)
 p["r",] <- exp(c(1,2,4))
-f <- skeleton(ricker,x=x,params=p,t=time(ricker,t0=T))
-plot(x[1,,],f[1,,],type='n')
-points(x[1,1,],f[1,1,],col='red')
-points(x[1,2,],f[1,2,],col='blue')
-points(x[1,3,],f[1,3,],col='green')
+f <- skeleton(ricker,x=x,params=p,t=time(ricker))
+plot(range(x[1,]),range(f[1,,]),type='n',
+     xlab=expression(N[t]),ylab=expression(N[t+1]))
+points(x[1,],f[1,1,],col='red',pch=16)
+points(x[1,],f[1,2,],col='blue',pch=16)
+points(x[1,],f[1,3,],col='green',pch=16)
+legend("topright",bty='n',col=c("red","blue","green"),
+       legend=sapply(p["r",],function(x)bquote(log(r)==.(round(log(x),1)))),
+         pch=16)
 
 ## non-autonomous case
 
 data(euler.sir)
-x <- array(
-           data=states(euler.sir)[,1],
-           dim=c(5,3,100),
-           dimnames=list(rownames(states(euler.sir)),NULL,NULL)
-           )
-p <- array(
-           data=coef(euler.sir),
-           dim=c(15,3),
-           dimnames=list(names(coef(euler.sir)),NULL)
-           )
-p["beta2",1:2] <- exp(c(3,5))  ## try different values of one of the seasonality parameters
+x <- states(euler.sir)
+p <- parmat(coef(euler.sir),nrep=3)
+p["beta2",2:3] <- exp(c(3,5))  ## try different values of one of the seasonality parameters
 ## compute the skeleton at each point
-f <- skeleton(euler.sir,x=x,params=p,t=seq(0,1,length=100))
+f <- skeleton(euler.sir,x=x,params=p,t=time(euler.sir))
 ## verify that the skeleton varies with time
-matplot(seq(0,1,length=100),t(f[1,,]),type='l',lty=1)
+matplot(time(euler.sir),t(f["I",,]),type='l',lty=1)
 
-x <- trajectory(euler.sir) ## use deSolve to compute a deterministic trajectory
-f <- skeleton(euler.sir,x=x,params=p[,3,drop=F],t=time(euler.sir))  ## evaluate skeleton at each point along it
-
-fit <- smooth.spline(time(euler.sir),x["S",,])## fit a spline to the trajectory
-plot(predict(fit,deriv=1)$y,f["S",,])## compare spline estimate with computed vectorfield
+## use deSolve to compute a deterministic trajectorxy
+t <- time(euler.sir)
+x <- trajectory(euler.sir,params=p)
+## evaluate skeleton at each point along it
+f <- skeleton(euler.sir,x=x,params=p,t=t)
+f2 <- apply(x,c(1,2),function(xx)predict(smooth.spline(t,xx),deriv=1)$y)
+f2 <- aperm(f2,c(2,3,1))
+plot(f,f2,type='n')
+matpoints(t(f["S",,]),t(f2["S",,]))
+matpoints(t(f["S",,]),t(f2["S",,]))
 abline(a=0,b=1)
 
-fit <- smooth.spline(time(euler.sir),x["I",,])
-plot(predict(fit,deriv=1)$y,f["I",,])
-abline(a=0,b=1)
+for (i in 1:3) {
+  for (j in 1:3) {
+    stopifnot(all(signif(coef(lm(f2[i,j,]~f[i,j,]))[2],3)==1))
+  }
+}
+
 
 pomp.skeleton <- function(times,y,p,more) {
 # Turns a skeleton function from a 'pomp' object into the right hand
 # side of and ODE for use in CollocInfer
-
-  x <- array(y,dim=c(nrow(y),1,ncol(y)),dimnames=list(rownames(y),NULL,NULL))
-  params <- array(data=p,dim=c(length(p),1),dimnames=list(names(p),NULL))
-
-  skeleton(more$pomp.obj,x=x,params=params,t=times)
+  skeleton(more$pomp.obj,x=y,params=p,t=times)
 }
 
-x <- array(
-           data=states(ricker),
-           dim=c(2,3,51),
-           dimnames=list(rownames(states(ricker)),NULL,NULL)
-           )
-p <- array(
-           data=coef(ricker),
-           dim=c(5,3),
-           dimnames=list(names(coef(ricker)),NULL)
-           )
+x <- states(ricker)
+p <- parmat(coef(ricker),nrep=3)
 p["r",]<- exp(c(1,2,4))
 
 f <- skeleton(ricker,x=x,params=p,t=time(ricker))
+g <- pomp.skeleton(time(ricker),x,p,list(pomp.obj=ricker))
 
-pomp.skeleton(time(ricker),x[,1,],p[,1],list(pomp.obj=ricker))
+stopifnot(identical(f,g))
 
+dev.off()

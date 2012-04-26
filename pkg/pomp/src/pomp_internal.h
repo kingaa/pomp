@@ -59,6 +59,9 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun);
 // skeleton.c
 SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun);
 
+//userdata.c
+void set_pomp_userdata (SEXP object);
+void unset_pomp_userdata (void);
 
 static R_INLINE SEXP makearray (int rank, int *dim) {
   int nprotect = 0;
@@ -217,6 +220,27 @@ static R_INLINE double expit (double x) {
 
 static R_INLINE double logit (double x) {
   return log(x/(1-x));
+}
+
+static R_INLINE SEXP getListElement (SEXP list, const char *str)
+{
+  SEXP elmt = R_NilValue;
+  SEXP names = getAttrib(list,R_NamesSymbol);
+  for (R_len_t i = 0; i < length(list); i++)
+    if(strcmp(CHAR(STRING_ELT(names,i)),str) == 0) {
+      elmt = VECTOR_ELT(list,i);
+      break;
+    }
+  return elmt;
+}
+
+static R_INLINE SEXP getPairListElement (SEXP list, const char *name)
+{
+  while (list != R_NilValue) {
+    if (strcmp(STRING_PTR(PRINTNAME(TAG(list))),name)==0) break;
+    list = CDR(list);
+  }
+  return CAR(list);
 }
 
 #ifdef __cplusplus

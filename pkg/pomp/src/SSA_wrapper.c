@@ -172,13 +172,23 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
     zidx = 0;
   }
 
+  if (use_native) {
+    set_pomp_userdata(args);
+  }
+
   GetRNGstate();
   F77_CALL(driverssa)(F77_SUB(reactionrate),&nvar,&nevent,&npar,&nrep,&ntimes,
   		      INTEGER(mflag),REAL(xstart),REAL(times),REAL(params),
   		      REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),
   		      &nzeros,zidx,sidx,pidx,&ncovars,cidx,
   		      &covlen,&covdim,REAL(tcovar),REAL(covar));
+
   PutRNGstate();
+
+  if (use_native) {
+    unset_pomp_userdata();
+  }
+
   UNPROTECT(nprotect);
   return X;
 }
