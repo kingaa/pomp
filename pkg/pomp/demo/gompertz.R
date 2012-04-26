@@ -80,7 +80,6 @@ pompBuilder(
             t0=0,
             paramnames=c("r","K","sigma","X.0","tau"),
             statenames=c("X"),
-            zeronames=character(0),
             dmeasure=dmeas,
             rmeasure=rmeas,
             step.fn=step.fn,

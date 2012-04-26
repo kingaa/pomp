@@ -1,3 +1,25 @@
+2012-04-26  kingaa
+
+	* [r683] DESCRIPTION, NAMESPACE, R/builder.R, data/bbs.rda,
+	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
+	  data/ricker.rda, data/rw2.rda, data/verhulst.rda,
+	  demo/gompertz.R, demo/logistic.R, inst/ChangeLog, inst/NEWS,
+	  inst/data-R/sir.R, inst/doc/advanced_topics_in_pomp.Rnw,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.Rnw,
+	  inst/doc/intro_to_pomp.pdf, inst/examples/gompertz.c,
+	  inst/include/pomp.h, man/builder.Rd, src/R_init_pomp.c,
+	  src/SSA_wrapper.c, src/dmeasure.c, src/euler.c, src/partrans.c,
+	  src/pomp.h, src/pomp_internal.h, src/rmeasure.c, src/sir.c,
+	  src/skeleton.c, src/userdata.c, tests/bbs.Rout.save,
+	  tests/pfilter.Rout.save, tests/skeleton.R,
+	  tests/skeleton.Rout.save: - add new facility for accessing
+	  'userdata' from within user-defined native routines:
+	  get_pomp_userdata{,_int,_double}
+	  - change some data()-loadable examples to make use of this
+	  - make 'pompBuilder' visible
+	  - modify 'gompertz' demo to make use of 'pompBuilder'
+
 2012-04-25  kingaa
 
 	* [r682] inst/doc/advanced_topics_in_pomp.Rnw: - minor tweak to

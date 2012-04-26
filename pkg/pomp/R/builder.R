@@ -37,6 +37,7 @@ pompBuilder <- function (data, times, t0, name,
                         skeleton=skeleton
                         )
   if (link) pompLink(name)
+  if (missing(zeronames)) zeronames <- character(0)
   pomp(
        data=data,times=times,t0=t0,
        rprocess=euler.sim(
