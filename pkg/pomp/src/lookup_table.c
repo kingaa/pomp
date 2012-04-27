@@ -4,6 +4,18 @@
 
 #include "pomp_internal.h"
 
+struct lookup_table make_covariate_table (SEXP object, int *ncovar) {
+  struct lookup_table tab;
+  int *dim;
+  dim = INTEGER(GET_DIM(GET_SLOT(object,install("covar"))));
+  tab.length = dim[0];
+  *ncovar = tab.width = dim[1];
+  tab.index = 0;
+  tab.x = REAL(GET_SLOT(object,install("tcovar")));
+  tab.y = REAL(GET_SLOT(object,install("covar")));
+  return tab;
+}
+
 SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t) {
   int nprotect = 0;
   int *dim, xdim[2], length, width;
@@ -66,3 +78,4 @@ double dot_product (int dim, const double *basis, const double *coef) {
     trans += coef[j]*basis[j];
   return(trans);
 }
+

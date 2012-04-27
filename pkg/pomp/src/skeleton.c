@@ -1,33 +1,31 @@
 // dear emacs, please treat this as -*- C++ -*-
 
-#include "pomp_internal.h"
 #include <R.h>
 #include <Rmath.h>
 #include <Rdefines.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+#include "pomp_internal.h"
+
 SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
 {
   int nprotect = 0;
-  int nvars, npars, nrepp, nrepx, nreps, ntimes, covlen, covdim;
-  int use_native;
-  int fdim[3];
-  SEXP tcovar, covar, fn, Snames, F;
-  double *xs, *ts, *ps, *ft;
-  int *dim;
-
-  SEXP rho, fcall, ans, nm;
+  int nvars, npars, nrepp, nrepx, nreps, ntimes, ncovars;
+  int mode;
+  int use_names;
+  int *dim, ndim[3], *op;
+  SEXP fn, fcall, rho, ans, nm;
   SEXP tvec, xvec, pvec, cvec;
-  int first = 1;
-  int use_names = 0;
-  int *op;
-
-  int *sidx, *pidx, *cidx;
+  SEXP Snames, Cnames, Pnames;
   SEXP statenames, paramnames, covarnames;
-  pomp_skeleton *vf;
-
-  double *tp, *xp, *pp, *cp, *fs;
+  SEXP F;
+  double *xs, *ts, *ps, *fs, *ft;
+  double *tp, *xp, *pp, *cp;
+  int *sidx, *pidx, *cidx;
+  int first = 1;
+  pomp_skeleton *ff = NULL;
+  struct lookup_table covariate_table;
   int i, j, k;
 
   PROTECT(t = AS_NUMERIC(t)); nprotect++;
@@ -39,7 +37,6 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   nvars = dim[0]; nrepx = dim[1];
   if (ntimes != dim[2])
     error("skeleton error: length of 't' and 3rd dimension of 'x' do not agree");
-  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   xs = REAL(x);
 
   PROTECT(params = as_matrix(params)); nprotect++;
@@ -52,30 +49,31 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   if ((nreps % nrepp != 0) || (nreps % nrepx != 0))
     error("skeleton error: 2nd dimensions of 'x' and 'params' are incompatible");
 
-  // extract the covariates
-  PROTECT(tcovar =  GET_SLOT(object,install("tcovar"))); nprotect++;
-  PROTECT(covar =  GET_SLOT(object,install("covar"))); nprotect++;
-  dim = INTEGER(GET_DIM(covar)); 
-  covlen = dim[0]; covdim = dim[1];
-
+  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
+  PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
+    
   // set up the covariate table
-  struct lookup_table covariate_table = {covlen, covdim, 0, REAL(tcovar), REAL(covar)};
+  covariate_table = make_covariate_table(object,&ncovars);
+
+  // vector for interpolated covariates
+  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  SET_NAMES(cvec,Cnames);
+  cp = REAL(cvec);
 
   // set up the array to be returned
-  fdim[0] = nvars; fdim[1] = nreps; fdim[2] = ntimes;
-  PROTECT(F = makearray(3,fdim)); nprotect++; 
+  ndim[0] = nvars; ndim[1] = nreps; ndim[2] = ntimes;
+  PROTECT(F = makearray(3,ndim)); nprotect++; 
   setrownames(F,Snames,3);
 
   // extract the user-defined function
-  PROTECT(fn = VECTOR_ELT(fun,0)); nprotect++;
-  use_native = INTEGER(VECTOR_ELT(fun,1))[0];
-  
-  PROTECT(cvec = NEW_NUMERIC(covdim)); nprotect++;
-  SET_NAMES(cvec,GET_COLNAMES(GET_DIMNAMES(covar)));
-  cp = REAL(cvec);
+  PROTECT(fn = unpack_pomp_fun(fun,&mode)); nprotect++;
+
+  // extract 'userdata' as pairlist
+  PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
   // first do setup
-  switch (use_native) {
+  switch (mode) {
   case 0: 			// R skeleton
 
     PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
@@ -90,7 +88,6 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
     pp = REAL(pvec);
 
     // set up the function call
-    PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
     PROTECT(fcall = LCONS(cvec,fcall)); nprotect++;
     SET_TAG(fcall,install("covars"));
     PROTECT(fcall = LCONS(pvec,fcall)); nprotect++;
@@ -106,39 +103,23 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
 
   case 1:			// native skeleton
     
-    vf = (pomp_skeleton *) R_ExternalPtrAddr(fn);
-    
-    PROTECT(statenames = GET_SLOT(object,install("statenames"))); nprotect++;
-    if (LENGTH(statenames) > 0) {
-      sidx = INTEGER(PROTECT(MATCHROWNAMES(x,statenames))); nprotect++;
-    } else {
-      sidx = 0;
-    }
-    
-    PROTECT(paramnames = GET_SLOT(object,install("paramnames"))); nprotect++;
-    if (LENGTH(paramnames) > 0) {
-      pidx = INTEGER(PROTECT(MATCHROWNAMES(params,paramnames))); nprotect++;
-    } else {
-      pidx = 0;
-    }
-    
-    PROTECT(covarnames = GET_SLOT(object,install("covarnames"))); nprotect++;
-    if (LENGTH(covarnames) > 0) {
-      cidx = INTEGER(PROTECT(MATCHCOLNAMES(covar,covarnames))); nprotect++;
-    } else {
-      cidx = 0;
-    }
+    // construct state, parameter, covariate, observable indices
+    sidx = INTEGER(PROTECT(name_index(Snames,object,"statenames"))); nprotect++;
+    pidx = INTEGER(PROTECT(name_index(Pnames,object,"paramnames"))); nprotect++;
+    cidx = INTEGER(PROTECT(name_index(Cnames,object,"covarnames"))); nprotect++;
 
+    ff = (pomp_skeleton *) R_ExternalPtrAddr(fn);
+    
     break;
 
   default:
-    error("unrecognized 'use' slot in 'skeleton'");
+    error("unrecognized 'mode' slot in 'skeleton'");
     break;
   }
 
 
   // now do computations
-  switch (use_native) {
+  switch (mode) {
   case 0: 			// R skeleton
 
     for (k = 0, ft = REAL(F); k < ntimes; k++, ts++) { // loop over times
@@ -148,7 +129,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
       *tp = *ts;		// copy the time
 
       // interpolate the covar functions for the covariates
-      if (covdim > 0) table_lookup(&covariate_table,*ts,cp,0);
+      table_lookup(&covariate_table,*tp,cp,0);
       
       for (j = 0; j < nreps; j++, ft += nvars) { // loop over replicates
 	
@@ -192,7 +173,6 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
 
   case 1:			// native skeleton
     
-    PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
     set_pomp_userdata(fcall);
 
     for (k = 0, ft = REAL(F); k < ntimes; k++, ts++) { // loop over times
@@ -200,14 +180,14 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
       R_CheckUserInterrupt();	// check for user interrupt
       
       // interpolate the covar functions for the covariates
-      if (covdim > 0) table_lookup(&covariate_table,*ts,cp,0);
+      table_lookup(&covariate_table,*ts,cp,0);
       
       for (j = 0; j < nreps; j++, ft += nvars) { // loop over replicates
 	
 	xp = &xs[nvars*((j%nrepx)+nrepx*k)];
 	pp = &ps[npars*(j%nrepp)];
 	
-	(*vf)(ft,xp,pp,sidx,pidx,cidx,covdim,cp,*ts);
+	(*ff)(ft,xp,pp,sidx,pidx,cidx,ncovars,cp,*ts);
 	
       }
     }
@@ -217,7 +197,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
     break;
 
   default:
-    error("unrecognized 'use' slot in 'skeleton'");
+    error("unrecognized 'mode' slot in 'skeleton'");
     break;
   }
 

@@ -25,10 +25,12 @@ struct lookup_table {
 // routine to compute number of discrete-time steps to take.
 // used by plugins in 'euler.c' and map iterator in 'trajectory.c'
 int num_map_steps (double t1, double t2, double dt);
+int num_euler_steps (double t1, double t2, double *dt);
 
 // simple linear interpolation of the lookup table (with derivative if desired)
 // setting dydt = 0 in the call to 'table_lookup' will bypass computation of the derivative
 void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt);
+struct lookup_table make_covariate_table (SEXP object, int *ncovars);
 
 // bspline.c
 SEXP bspline_basis(SEXP x, SEXP degree, SEXP knots);
@@ -38,8 +40,9 @@ SEXP bspline_basis_function(SEXP x, SEXP i, SEXP degree, SEXP knots);
 SEXP sobol_sequence(SEXP dim);
 
 // pomp_fun.c
-SEXP pomp_fun_handler (SEXP pfun, int *use_native);
+SEXP pomp_fun_handler (SEXP pfun, int *mode);
 SEXP get_pomp_fun (SEXP pfun);
+SEXP unpack_pomp_fun (SEXP pfunlist, int *mode);
 
 // lookup_table.c
 SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t);
@@ -112,6 +115,18 @@ static R_INLINE SEXP match_char_to_names (SEXP x, int n, char **names) {
     idx[k] -= 1;
   }
   UNPROTECT(nprotect);
+  return index;
+}
+
+static R_INLINE SEXP name_index (SEXP names, SEXP object, const char *slot) {
+  SEXP slotnames, index;
+  PROTECT(slotnames = GET_SLOT(object,install(slot)));
+  if (LENGTH(slotnames) > 0) {
+    PROTECT(index = matchnames(names,slotnames));
+  } else {
+    PROTECT(index = NEW_INTEGER(0));
+  }
+  UNPROTECT(2);
   return index;
 }
 
@@ -236,8 +251,10 @@ static R_INLINE SEXP getListElement (SEXP list, const char *str)
 
 static R_INLINE SEXP getPairListElement (SEXP list, const char *name)
 {
+  char *tag;
   while (list != R_NilValue) {
-    if (strcmp(STRING_PTR(PRINTNAME(TAG(list))),name)==0) break;
+    tag = STRING_PTR(PRINTNAME(TAG(list)));
+    if (strcmp(tag,name)==0) break;
     list = CDR(list);
   }
   return CAR(list);

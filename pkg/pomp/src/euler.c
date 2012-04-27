@@ -3,464 +3,255 @@
 #include "pomp_internal.h"
 #include <R_ext/Constants.h>
 
-int num_euler_steps (double t1, double t2, double *dt) {
-  double tol = sqrt(DOUBLE_EPS);
-  int nstep;
-  // nstep will be the number of Euler steps to take in going from t1 to t2.
-  // note also that the stepsize changes.
-  // this choice is meant to be conservative
-  // (i.e., so that the actual dt does not exceed the specified dt 
-  // by more than the relative tolerance 'tol')
-  // and to counteract roundoff error.
-  // It seems to work well, but is not guaranteed: 
-  // suggestions would be appreciated.
-  
-  if (t1 >= t2) {
-    *dt = 0.0;
-    nstep = 0;
-  } else if (t1+*dt >= t2) {
-    *dt = t2-t1; 
-    nstep = 1;
-  } else {
-    nstep = (int) ceil((t2-t1)/(*dt)/(1+tol));
-    *dt = (t2-t1)/((double) nstep);
-  }
-  return nstep;
-}
-
-int num_map_steps (double t1, double t2, double dt) {
-  double tol = sqrt(DOUBLE_EPS);
-  int nstep;
-  // nstep will be the number of discrete-time steps to take in going from t1 to t2.
-  nstep = (int) floor((t2-t1)/dt/(1-tol));
-  return (nstep > 0) ? nstep : 0;
-}
-
-// take Euler-Poisson steps of size at most deltat from t1 to t2
-static void euler_simulator (pomp_onestep_sim *estep,
-			     double *x, double *xstart, double *times, double *params, 
-			     int *ndim, double *deltat,
-			     int *stateindex, int *parindex, int *covindex, int *zeroindex,
-			     double *time_table, double *covar_table)
-{
-  double t, *xp, *pp;
-  int nvar = ndim[0];
-  int npar = ndim[1];
-  int nrep = ndim[2];
-  int ntimes = ndim[3];
-  int covlen = ndim[4];
-  int covdim = ndim[5];
-  int nzero = ndim[6];
-  double covar_fn[covdim];
-  int j, k, p, step, nstep = 0;
-  double dt;
-
-  struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
-
-  // copy the start values into the result array
-  for (p = 0; p < nrep; p++)
-    for (k = 0; k < nvar; k++) 
-      x[k+nvar*p] = xstart[k+nvar*p];
-  
-  // loop over times
-  for (step = 1; step < ntimes; step++) {
-
-    R_CheckUserInterrupt();
-
-    t = times[step-1];
-    dt = *deltat;
-
-    if (t > times[step]) {
-      error("'times' is not an increasing sequence");
-    }
-
-    nstep = num_euler_steps(t,times[step],&dt);
-
-    for (p = 0; p < nrep; p++) {
-      xp = &x[nvar*(p+nrep*step)];
-      // copy in the previous values of the state variables
-      for (k = 0; k < nvar; k++)
-	xp[k] = x[k+nvar*(p+nrep*(step-1))];
-      // set some variables to zero
-      for (k = 0; k < nzero; k++)
-	xp[zeroindex[k]] = 0.0;
-    }
-
-    for (j = 0; j < nstep; j++) { // loop over Euler steps
-
-      // interpolate the covar functions for the covariates
-      if (covdim > 0) 
-	table_lookup(&covariate_table,t,covar_fn,0);
-
-      for (p = 0; p < nrep; p++) { // loop over replicates
-      
-	pp = &params[npar*p];
-	xp = &x[nvar*(p+nrep*step)];
-
-	(*estep)(xp,pp,stateindex,parindex,covindex,covdim,covar_fn,t,dt);
-
-      }
-
-      t += dt;
-
-      if (j == nstep-2) {	// penultimate step
-	dt = times[step]-t;
-	t = times[step]-dt;
-      }
-
-    }
-  }
-}
-
-// take discrete steps of size deltat from t1 to t2
-static void discrete_time_simulator (pomp_onestep_sim *estep,
-				     double *x, double *xstart, double *times, double *params, 
-				     int *ndim, double *deltat,
-				     int *stateindex, int *parindex, int *covindex, int *zeroindex,
-				     double *time_table, double *covar_table)
-{
-  double t, *xp, *pp;
-  int nvar = ndim[0];
-  int npar = ndim[1];
-  int nrep = ndim[2];
-  int ntimes = ndim[3];
-  int covlen = ndim[4];
-  int covdim = ndim[5];
-  int nzero = ndim[6];
-  double covar_fn[covdim];
-  int j, k, p, step, nstep = 0;
-  double dt;
-
-  struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
-
-  // copy the start values into the result array
-  for (p = 0; p < nrep; p++)
-    for (k = 0; k < nvar; k++) 
-      x[k+nvar*p] = xstart[k+nvar*p];
-  
-  dt = *deltat;
-  t = times[0];
-
-  // loop over times
-  for (step = 1; step < ntimes; step++) {
-
-    R_CheckUserInterrupt();
-
-    nstep = num_map_steps(t,times[step],dt);
-
-    for (p = 0; p < nrep; p++) {
-      xp = &x[nvar*(p+nrep*step)];
-      // copy in the previous values of the state variables
-      for (k = 0; k < nvar; k++)
-	xp[k] = x[k+nvar*(p+nrep*(step-1))];
-      // set some variables to zero
-      for (k = 0; k < nzero; k++)
-	xp[zeroindex[k]] = 0.0;
-    }
-
-    for (j = 0; j < nstep; j++) { // loop over steps
-
-      // interpolate the covar functions for the covariates
-      if (covdim > 0) 
-	table_lookup(&covariate_table,t,covar_fn,0);
-
-      for (p = 0; p < nrep; p++) { // loop over replicates
-      
-	pp = &params[npar*p];
-	xp = &x[nvar*(p+nrep*step)];
-
-	(*estep)(xp,pp,stateindex,parindex,covindex,covdim,covar_fn,t,dt);
-
-      }
-
-      t += dt;
-
-    }
-  }
-}
-
-// take one step from t1 to t2
-static void onestep_simulator (pomp_onestep_sim *estep,
-			       double *x, double *xstart, double *times, double *params, 
-			       int *ndim, 
-			       int *stateindex, int *parindex, int *covindex, int *zeroindex,
-			       double *time_table, double *covar_table)
-{
-  double t, *xp, *pp;
-  int nvar = ndim[0];
-  int npar = ndim[1];
-  int nrep = ndim[2];
-  int ntimes = ndim[3];
-  int covlen = ndim[4];
-  int covdim = ndim[5];
-  int nzero = ndim[6];
-  double covar_fn[covdim];
-  int k, p, step;
-  double dt;
-
-  struct lookup_table covariate_table = {covlen, covdim, 0, time_table, covar_table};
-
-  // copy the start values into the result array
-  for (p = 0; p < nrep; p++)
-    for (k = 0; k < nvar; k++) 
-      x[k+nvar*p] = xstart[k+nvar*p];
-  
-  // loop over times
-  for (step = 1; step < ntimes; step++) {
-
-    R_CheckUserInterrupt();
-
-    t = times[step-1];
-    dt = times[step]-t;
-
-    // interpolate the covar functions for the covariates
-    if (covdim > 0) 
-      table_lookup(&covariate_table,t,covar_fn,0);
-    
-    for (p = 0; p < nrep; p++) {
-      xp = &x[nvar*(p+nrep*step)];
-      // copy in the previous values of the state variables
-      for (k = 0; k < nvar; k++)
-	xp[k] = x[k+nvar*(p+nrep*(step-1))];
-      // set some variables to zero
-      for (k = 0; k < nzero; k++)
-	xp[zeroindex[k]] = 0.0;
-
-      if (t < times[step]) { //  call the simulator only if time elapses
-	pp = &params[npar*p];
-	xp = &x[nvar*(p+nrep*step)];
-	(*estep)(xp,pp,stateindex,parindex,covindex,covdim,covar_fn,t,dt);
-      }
-
-    }
-  }
-}
-
-// these global objects will pass the needed information to the user-defined function (see 'default_onestep_sim_fn')
-// each of these is allocated once, globally, and refilled many times
-static SEXP _onestep_internal_Xvec;	// state variable vector
-static SEXP _onestep_internal_Pvec;	// parameter vector
-static SEXP _onestep_internal_Cvec;	// covariate vector
-static SEXP _onestep_internal_time;	// time
-static SEXP _onestep_internal_dt;	// stepsize
-static int  _onestep_internal_nvar;	// number of state variables
-static int  _onestep_internal_npar;	// number of parameters
-static SEXP _onestep_internal_envir;	// function's environment
-static SEXP _onestep_internal_fcall;	// function call
-static int  _onestep_internal_first;	// first evaluation?
-static SEXP _onestep_internal_vnames;	// names of state variables
-static int *_onestep_internal_vindex;	// indices of state variables
-
-#define FIRST   (_onestep_internal_first)
-#define VNAMES  (_onestep_internal_vnames)
-#define VINDEX  (_onestep_internal_vindex)
-#define XVEC    (_onestep_internal_Xvec)
-#define PVEC    (_onestep_internal_Pvec)
-#define CVEC    (_onestep_internal_Cvec)
-#define TIME    (_onestep_internal_time)
-#define DT      (_onestep_internal_dt)
-#define NVAR    (_onestep_internal_nvar)
-#define NPAR    (_onestep_internal_npar)
-#define RHO     (_onestep_internal_envir)
-#define FCALL   (_onestep_internal_fcall)
-
-// this is the euler step function that is evaluated when the user supplies an R function
-// (and not a native routine)
-// Note that stateindex, parindex, covindex are ignored.
-static void default_onestep_sim_fn (double *x, const double *p, 
-				    const int *stateindex, const int *parindex, const int *covindex,
-				    int ncovar, const double *covar,
-				    double t, double dt)
-{
-  int nprotect = 0;
-  int *op, k;
-  double *xp;
-  SEXP ans, nm, idx;
-  xp = REAL(XVEC);
-  for (k = 0; k < NVAR; k++) xp[k] = x[k];
-  xp = REAL(PVEC);
-  for (k = 0; k < NPAR; k++) xp[k] = p[k];
-  xp = REAL(CVEC);
-  for (k = 0; k < ncovar; k++) xp[k] = covar[k];
-  xp = REAL(TIME);
-  xp[0] = t;
-  xp = REAL(DT);
-  xp[0] = dt;
-
-  PROTECT(ans = eval(FCALL,RHO)); nprotect++; // evaluate the call
-
-  if (FIRST) {
-    if (LENGTH(ans) != NVAR) {
-      UNPROTECT(nprotect);
-      error("user 'step.fun' returns a vector of %d states but %d are expected: compare initial conditions?",
-	    LENGTH(ans),NVAR);
-    }
-    PROTECT(nm = GET_NAMES(ans)); nprotect++;
-    if (!isNull(nm)) {
-      PROTECT(idx = matchnames(VNAMES,nm)); nprotect++;
-      op = INTEGER(idx);
-      for (k = 0; k < NVAR; k++) VINDEX[k] = op[k];
-    } else {
-      VINDEX = 0;
-    }
-    FIRST = 0;
-  }
-
-  xp = REAL(AS_NUMERIC(ans));
-  if (VINDEX != 0) {
-    for (k = 0; k < NVAR; k++) x[VINDEX[k]] = xp[k];
-  } else {
-    for (k = 0; k < NVAR; k++) x[k] = xp[k];
-  }
-
-  UNPROTECT(nprotect);
-}
-
-
 SEXP euler_model_simulator (SEXP func, 
-			    SEXP xstart, SEXP times, SEXP params, 
-			    SEXP dt, SEXP method,
-			    SEXP statenames, SEXP paramnames, SEXP covarnames, SEXP zeronames,
-			    SEXP tcovar, SEXP covar, SEXP args) 
+                            SEXP xstart, SEXP times, SEXP params, 
+                            SEXP deltat, SEXP method,
+                            SEXP statenames, SEXP paramnames, SEXP covarnames, SEXP zeronames,
+                            SEXP tcovar, SEXP covar, SEXP args) 
 {
   int nprotect = 0;
-  int use_native = 0;
-  int *dim, xdim[3], ndim[7];
-  int nvar, npar, nrep, ntimes;
-  int covlen, covdim;
-  int nstates = LENGTH(statenames);
-  int nparams = LENGTH(paramnames);
-  int ncovars = LENGTH(covarnames);
-  int nzeros = LENGTH(zeronames);
-  pomp_onestep_sim *ff = NULL;
-  SEXP X, pindex, sindex, cindex, zindex;
-  int *sidx, *pidx, *cidx, *zidx;
-  SEXP fn, Pnames, Cnames;
+  int first = 1;
+  int mode = -1;
   int meth = 0;
+  int use_names;
+  int *dim, *posn, xdim[3];
+  int nstep, nvars, npars, nreps, ntimes, nzeros, ncovars, covlen;
+  pomp_onestep_sim *ff = NULL;
+  SEXP X;
+  SEXP fn, fcall, ans, rho, nm;
+  SEXP Snames, Pnames, Cnames;
+  SEXP tvec, xvec, pvec, cvec, dtvec;
+  int *sidx, *pidx, *cidx, *zidx;
+  double *tp, *xp, *pp, *cp, *dtp, *xt, *ps;
+  double *time;
+  double *Xt;
+  double t, dt;
+  int i, j, k, step;
 
-  dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
-  dim = INTEGER(GET_DIM(params)); npar = dim[0];
-  dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
+  dim = INTEGER(GET_DIM(xstart)); nvars = dim[0]; nreps = dim[1];
+  dim = INTEGER(GET_DIM(params)); npars = dim[0];
+  dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; ncovars = dim[1];
   ntimes = LENGTH(times);
 
-  meth = *(INTEGER(AS_INTEGER(method))); // 0 = Euler, 1 = one-step, 2 = fixed step
-
-  PROTECT(VNAMES = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
+  PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
-  PROTECT(fn = pomp_fun_handler(func,&use_native)); nprotect++;
+  // set up the covariate table
+  struct lookup_table covariate_table = {covlen, ncovars, 0, REAL(tcovar), REAL(covar)};
 
-  if (use_native) {
+  // vector for interpolated covariates
+  PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
+  SET_NAMES(cvec,Cnames);
+  cp = REAL(cvec);
+
+  // indices of accumulator variables
+  nzeros = LENGTH(zeronames);
+  zidx = INTEGER(PROTECT(matchnames(Snames,zeronames))); nprotect++;
+
+  // extract user function
+  PROTECT(fn = pomp_fun_handler(func,&mode)); nprotect++;
+  
+  // set up
+  switch (mode) {
+
+  case 1:			// native code
+
+    // construct state, parameter, covariate, observable indices
+    sidx = INTEGER(PROTECT(matchnames(Snames,statenames))); nprotect++;
+    pidx = INTEGER(PROTECT(matchnames(Pnames,paramnames))); nprotect++;
+    cidx = INTEGER(PROTECT(matchnames(Cnames,covarnames))); nprotect++;
+
     ff = (pomp_onestep_sim *) R_ExternalPtrAddr(fn);
-    VINDEX = 0;
-  } else {
-    PROTECT(RHO = (CLOENV(fn))); nprotect++;
-    NVAR = nvar;			// for internal use
-    NPAR = npar;			// for internal use
-    PROTECT(DT = NEW_NUMERIC(1)); nprotect++;	// for internal use
-    PROTECT(TIME = NEW_NUMERIC(1)); nprotect++;	// for internal use
-    PROTECT(XVEC = NEW_NUMERIC(nvar)); nprotect++; // for internal use
-    PROTECT(PVEC = NEW_NUMERIC(npar)); nprotect++; // for internal use
-    PROTECT(CVEC = NEW_NUMERIC(covdim)); nprotect++; // for internal use
-    SET_NAMES(XVEC,VNAMES); // make sure the names attribute is copied
-    SET_NAMES(PVEC,Pnames); // make sure the names attribute is copied
-    SET_NAMES(CVEC,Cnames); // make sure the names attribute is copied
+
+    break;
+
+  case 0:			// R function
+
+    // get function's environment
+    PROTECT(rho = (CLOENV(fn))); nprotect++;
+
+    PROTECT(dtvec = NEW_NUMERIC(1)); nprotect++;
+    dtp = REAL(dtvec);
+    PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
+    tp = REAL(tvec);
+    PROTECT(xvec = NEW_NUMERIC(nvars)); nprotect++;
+    SET_NAMES(xvec,Snames);
+    xp = REAL(xvec);
+    PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
+    SET_NAMES(pvec,Pnames);
+    pp = REAL(pvec);
+
     // set up the function call
-    PROTECT(FCALL = LCONS(CVEC,args)); nprotect++;
-    SET_TAG(FCALL,install("covars"));
-    PROTECT(FCALL = LCONS(DT,FCALL)); nprotect++;
-    SET_TAG(FCALL,install("delta.t"));
-    PROTECT(FCALL = LCONS(PVEC,FCALL)); nprotect++;
-    SET_TAG(FCALL,install("params"));
-    PROTECT(FCALL = LCONS(TIME,FCALL)); nprotect++;
-    SET_TAG(FCALL,install("t"));
-    PROTECT(FCALL = LCONS(XVEC,FCALL)); nprotect++;
-    SET_TAG(FCALL,install("x"));
-    PROTECT(FCALL = LCONS(fn,FCALL)); nprotect++;
-    ff = (pomp_onestep_sim *) default_onestep_sim_fn;
-    VINDEX = (int *) R_alloc(nvar,sizeof(int));
-    FIRST = 1;
-  }
+    PROTECT(fcall = LCONS(cvec,args)); nprotect++;
+    SET_TAG(fcall,install("covars"));
+    PROTECT(fcall = LCONS(dtvec,fcall)); nprotect++;
+    SET_TAG(fcall,install("delta.t"));
+    PROTECT(fcall = LCONS(pvec,fcall)); nprotect++;
+    SET_TAG(fcall,install("params"));
+    PROTECT(fcall = LCONS(tvec,fcall)); nprotect++;
+    SET_TAG(fcall,install("t"));
+    PROTECT(fcall = LCONS(xvec,fcall)); nprotect++;
+    SET_TAG(fcall,install("x"));
+    PROTECT(fcall = LCONS(fn,fcall)); nprotect++;
 
-  xdim[0] = nvar; xdim[1] = nrep; xdim[2] = ntimes;
-  PROTECT(X = makearray(3,xdim)); nprotect++;
-  setrownames(X,VNAMES,3);
+    // to hold indices of variables that must be rearranged
+    posn = (int *) R_alloc(nvars,sizeof(int));    
 
-  if (nstates>0) {
-    PROTECT(sindex = MATCHROWNAMES(xstart,statenames)); nprotect++;
-    sidx = INTEGER(sindex);
-  } else {
+    // this is the euler step function that is evaluated when the user supplies an R function
+    // (and not a native routine)
+    // Note that stateindex, parindex, covindex are ignored.
+    void R_step_fn (double *x, const double *p, 
+		    const int *stateindex, const int *parindex, const int *covindex,
+		    int ncovar, const double *covar,
+		    double t, double dt)
+    {
+      int nprotect = 0;
+      int *op, i;
+      double *xs;
+      SEXP ans, nm;
+
+      for (i = 0; i < nvars; i++) xp[i] = x[i];
+      for (i = 0; i < npars; i++) pp[i] = p[i];
+      *tp = t;
+      *dtp = dt;
+      
+      if (first) {
+
+	PROTECT(ans = eval(fcall,rho)); nprotect++; // evaluate the call
+      
+	if (LENGTH(ans) != nvars) {
+	  error("user 'step.fun' returns a vector of %d states but %d are expected: compare initial conditions?",
+		LENGTH(ans),nvars);
+	}
+
+	PROTECT(nm = GET_NAMES(ans)); nprotect++;
+	use_names = !isNull(nm);
+	if (use_names) {
+	  op = INTEGER(PROTECT(matchnames(Snames,nm))); nprotect++;
+	  for (i = 0; i < nvars; i++) posn[i] = op[i];
+	}
+
+	xs = REAL(AS_NUMERIC(ans));
+
+	first = 0;
+
+      } else {
+      
+	xs = REAL(AS_NUMERIC(eval(fcall,rho)));
+
+      }
+
+      if (use_names) {
+	for (i = 0; i < nvars; i++) x[posn[i]] = xs[i];
+      } else {
+	for (i = 0; i < nvars; i++) x[i] = xs[i];
+      }
+      
+      UNPROTECT(nprotect);
+    }
+
     sidx = 0;
-  }
-  if (nparams>0) {
-    PROTECT(pindex = MATCHROWNAMES(params,paramnames)); nprotect++;
-    pidx = INTEGER(pindex);
-  } else {
     pidx = 0;
-  }
-  if (ncovars>0) {
-    PROTECT(cindex = MATCHCOLNAMES(covar,covarnames)); nprotect++;
-    cidx = INTEGER(cindex);
-  } else {
     cidx = 0;
-  }
-  if (nzeros>0) {
-    PROTECT(zindex = MATCHROWNAMES(xstart,zeronames)); nprotect++;
-    zidx = INTEGER(zindex);
-  } else {
-    zidx = 0;
+
+    ff = (pomp_onestep_sim *) R_step_fn;
+
+    break;
+
+  default:
+    error("unrecognized 'mode' in 'euler_simulator'");
+    break;
   }
 
-  ndim[0] = nvar; ndim[1] = npar; ndim[2] = nrep; ndim[3] = ntimes; 
-  ndim[4] = covlen; ndim[5] = covdim; ndim[6] = nzeros;
-
-  if (use_native) {
+  if (mode==1) {
     set_pomp_userdata(args);
     GetRNGstate();
   }
 
-  switch (meth) {
-  case 0:
-    euler_simulator(ff,REAL(X),REAL(xstart),REAL(times),REAL(params),
-		    ndim,REAL(dt),sidx,pidx,cidx,zidx,
-		    REAL(tcovar),REAL(covar));
-    break;
-  case 1:
-    onestep_simulator(ff,REAL(X),REAL(xstart),REAL(times),REAL(params),
-		      ndim,sidx,pidx,cidx,zidx,
-		      REAL(tcovar),REAL(covar));
-    break;
-  case 2:
-    discrete_time_simulator(ff,REAL(X),REAL(xstart),REAL(times),REAL(params),
-			    ndim,REAL(dt),sidx,pidx,cidx,zidx,
-			    REAL(tcovar),REAL(covar));
-    break;
+  // create array to hold results
+  xdim[0] = nvars; xdim[1] = nreps; xdim[2] = ntimes;
+  PROTECT(X = makearray(3,xdim)); nprotect++;
+  setrownames(X,Snames,3);
+  Xt = REAL(X);
+
+  // copy the start values into the result array
+  xt = REAL(xstart);
+  for (j = 0; j < nreps; j++)
+    for (i = 0; i < nvars; i++) 
+      Xt[i+nvars*j] = xt[i+nvars*j];
+
+  meth = *(INTEGER(AS_INTEGER(method))); // 0 = Euler, 1 = one-step, 2 = fixed step
+
+  // now do computations
+  // loop over times
+  time = REAL(times);
+  t = time[0];
+
+  for (step = 1; step < ntimes; step++) {
+
+    R_CheckUserInterrupt();
+
+    if (t > time[step]) {
+      error("'times' is not an increasing sequence");
+    }
+
+    switch (meth) {
+    case 0:			// Euler method
+      dt = *(REAL(deltat));
+      nstep = num_euler_steps(t,time[step],&dt);
+      break;
+    case 1:			// one step 
+      dt = time[step]-t;
+      nstep = (dt > 0) ? 1 : 0;
+      break;
+    case 2:			// fixed step
+      dt = *(REAL(deltat));
+      nstep = num_map_steps(t,time[step],dt);
+      break;
+    default:
+      error("unrecognized 'method' in 'stepwise_simulator'");
+    }
+
+    for (j = 0; j < nreps; j++) {
+      xt = &Xt[nvars*(j+nreps*step)];
+      // copy in the previous values of the state variables
+      for (i = 0; i < nvars; i++) xt[i] = Xt[i+nvars*(j+nreps*(step-1))];
+      // set some variables to zero 
+      for (i = 0; i < nzeros; i++) xt[zidx[i]] = 0.0;
+    }
+
+    for (k = 0; k < nstep; k++) { // loop over Euler steps
+
+      // interpolate the covar functions for the covariates
+      table_lookup(&covariate_table,t,cp,0);
+
+      for (j = 0, ps = REAL(params); j < nreps; j++, ps += npars) { // loop over replicates
+      
+	xt = &Xt[nvars*(j+nreps*step)];
+
+	(*ff)(xt,ps,sidx,pidx,cidx,ncovars,cp,t,dt);
+
+      }
+
+      t += dt;
+
+      if ((method == 0) && (k == nstep-2)) { // penultimate step
+	dt = time[step]-t;
+	t = time[step]-dt;
+      }
+
+    }
   }
-  
-  if (use_native) {
+
+  if (mode==1) {
     PutRNGstate();
     unset_pomp_userdata();
   }
 
-  VINDEX = 0;
-
   UNPROTECT(nprotect);
   return X;
 }
-
-#undef XVEC
-#undef PVEC
-#undef CVEC
-#undef TIME
-#undef DT
-#undef NVAR
-#undef NPAR
-#undef RHO
-#undef FCALL
-#undef FIRST
-#undef VNAMES
-#undef VINDEX
 
 // compute pdf of a sequence of Euler steps
 static void euler_densities (pomp_onestep_pdf *estep,
@@ -675,3 +466,37 @@ SEXP euler_model_density (SEXP func,
 #undef NPAR
 #undef RHO
 #undef FCALL
+
+int num_euler_steps (double t1, double t2, double *dt) {
+  double tol = sqrt(DOUBLE_EPS);
+  int nstep;
+  // nstep will be the number of Euler steps to take in going from t1 to t2.
+  // note also that the stepsize changes.
+  // this choice is meant to be conservative
+  // (i.e., so that the actual dt does not exceed the specified dt 
+  // by more than the relative tolerance 'tol')
+  // and to counteract roundoff error.
+  // It seems to work well, but is not guaranteed: 
+  // suggestions would be appreciated.
+  
+  if (t1 >= t2) {
+    *dt = 0.0;
+    nstep = 0;
+  } else if (t1+*dt >= t2) {
+    *dt = t2-t1; 
+    nstep = 1;
+  } else {
+    nstep = (int) ceil((t2-t1)/(*dt)/(1+tol));
+    *dt = (t2-t1)/((double) nstep);
+  }
+  return nstep;
+}
+
+int num_map_steps (double t1, double t2, double dt) {
+  double tol = sqrt(DOUBLE_EPS);
+  int nstep;
+  // nstep will be the number of discrete-time steps to take in going from t1 to t2.
+  nstep = (int) floor((t2-t1)/dt/(1-tol));
+  return (nstep > 0) ? nstep : 0;
+}
+

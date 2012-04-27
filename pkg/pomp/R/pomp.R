@@ -209,17 +209,17 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
 
   if (nrow(covar)>0) {
     if (
-        (skeleton@use==1)
+        (skeleton@mode==1)
         &&!("covars"%in%names(formals(skeleton@R.fun)))
         )
       warning("a covariate table has been given, yet the ",sQuote("skeleton")," function does not have ",sQuote("covars")," as a formal argument",call.=FALSE)
     if (
-        (rmeasure@use==1)
+        (rmeasure@mode==1)
         &&!("covars"%in%names(formals(rmeasure@R.fun)))
         )
       warning("a covariate table has been given, yet the ",sQuote("rmeasure")," function does not have ",sQuote("covars")," as a formal argument",call.=FALSE)
     if (
-        (dmeasure@use==1)
+        (dmeasure@mode==1)
         &&!("covars"%in%names(formals(dmeasure@R.fun)))
         )
       warning("a covariate table has been given, yet the ",sQuote("dmeasure")," function does not have ",sQuote("covars")," as a formal argument",call.=FALSE)
@@ -263,8 +263,8 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
   }
   if (
       has.trans &&
-      par.trans@use<0 &&
-      par.untrans@use<0
+      par.trans@mode<0 &&
+      par.untrans@mode<0
       )
     has.trans <- FALSE
 
