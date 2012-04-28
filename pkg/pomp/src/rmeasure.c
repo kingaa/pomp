@@ -11,20 +11,15 @@
 SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
 {
   int nprotect = 0;
-  int first = 1;
   int mode = -1;
-  int use_names;
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
   SEXP Snames, Pnames, Cnames, Onames;
   SEXP statenames, paramnames, covarnames, obsnames;
   SEXP tvec, xvec, pvec, cvec;
   SEXP fn, fcall, rho, ans, nm;
   SEXP Y;
-  double *ts, *xs, *ps, *ys;
-  double *cp, *xp, *pp, *tp, *yt;
   int *dim, ndim[3], *op;
   int *sidx, *pidx, *cidx, *oidx;
-  int i, j, k;
   struct lookup_table covariate_table;
   pomp_measure_model_simulator *ff = NULL;
 
@@ -36,7 +31,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepsx = dim[1]; 
-  xs = REAL(x);
 
   if (ntimes != dim[2])
     error("rmeasure error: length of 'times' and 3rd dimension of 'x' do not agree");
@@ -44,7 +38,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nrepsp = dim[1]; 
-  ps = REAL(params);
 
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
@@ -65,7 +58,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   // vector for interpolated covariates
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
   SET_NAMES(cvec,Cnames);
-  cp = REAL(cvec);
 
   ndim[0] = nobs; ndim[1] = nreps; ndim[2] = ntimes;
   PROTECT(Y = makearray(3,ndim)); nprotect++; 
@@ -82,15 +74,10 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   case 0:			// use R function
 
     PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
-    tp = REAL(tvec);
-
     PROTECT(xvec = NEW_NUMERIC(nvars)); nprotect++;
-    SET_NAMES(xvec,Snames);
-    xp = REAL(xvec);
-
     PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
+    SET_NAMES(xvec,Snames);
     SET_NAMES(pvec,Pnames);
-    pp = REAL(pvec);
 
     // set up the function call
     PROTECT(fcall = LCONS(cvec,fcall)); nprotect++;
@@ -133,53 +120,68 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
 
   case 0:			// R function
 
-    for (k = 0, yt = REAL(Y), ts = REAL(times); k < ntimes; k++, ts++) { // loop over times
+    {
+      int first = 1;
+      int use_names = 0;
+      double *yt = REAL(Y);
+      double *time = REAL(times);
+      double *tp = REAL(tvec);
+      double *cp = REAL(cvec);
+      double *xp = REAL(xvec);
+      double *pp = REAL(pvec);
+      double *xs = REAL(x);
+      double *ps = REAL(params);
+      double *ys;
+      int *posn;
+      int i, j, k;
 
-      R_CheckUserInterrupt();	// check for user interrupt
+      for (k = 0; k < ntimes; k++, time++) { // loop over times
 
-      *tp = *ts;		// copy the time
-      table_lookup(&covariate_table,*tp,cp,0); // interpolate the covariates
+	R_CheckUserInterrupt();	// check for user interrupt
+
+	*tp = *time;		// copy the time
+	table_lookup(&covariate_table,*tp,cp,0); // interpolate the covariates
     
-      for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
+	for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
 
-	// copy the states and parameters into place
-	for (i = 0; i < nvars; i++) xp[i] = xs[i+nvars*((j%nrepsx)+nrepsx*k)];
-	for (i = 0; i < npars; i++) pp[i] = ps[i+npars*(j%nrepsp)];
+	  // copy the states and parameters into place
+	  for (i = 0; i < nvars; i++) xp[i] = xs[i+nvars*((j%nrepsx)+nrepsx*k)];
+	  for (i = 0; i < npars; i++) pp[i] = ps[i+npars*(j%nrepsp)];
 	
-	if (first) {
-	  // evaluate the call
-	  PROTECT(ans = eval(fcall,rho)); nprotect++;
+	  if (first) {
+	    // evaluate the call
+	    PROTECT(ans = eval(fcall,rho)); nprotect++;
+	    if (LENGTH(ans) != nobs) {
+	      error("user 'rmeasure' returns a vector of %d observables but %d are expected: compare 'data' slot?",
+		    LENGTH(ans),nobs);
+	    }
 
-	  if (LENGTH(ans) != nobs) {
-	    error("user 'rmeasure' returns a vector of %d observables but %d are expected: compare 'data' slot?",
-		  LENGTH(ans),nobs);
-	  }
+	    // get name information to fix potential alignment problems
+	    PROTECT(nm = GET_NAMES(ans)); nprotect++;
+	    use_names = !isNull(nm);
+	    if (use_names) {		// match names against names from data slot
+	      posn = INTEGER(PROTECT(matchnames(Onames,nm))); nprotect++;
+	    } else {
+	      posn = 0;
+	    }
 
-	  // get name information to fix potential alignment problems
-	  PROTECT(nm = GET_NAMES(ans)); nprotect++;
-	  use_names = !isNull(nm);
-	  if (use_names) {		// match names against names from data slot
-	    op = INTEGER(PROTECT(matchnames(Onames,nm))); nprotect++;
+	    ys = REAL(AS_NUMERIC(ans));
+
+	    first = 0;
+
 	  } else {
-	    op = 0;
+
+	    ys = REAL(AS_NUMERIC(eval(fcall,rho)));
+
 	  }
 
-	  ys = REAL(AS_NUMERIC(ans));
-
-	  first = 0;
-
-	} else {
-
-	  ys = REAL(AS_NUMERIC(eval(fcall,rho)));
-
-	}
-
-	if (use_names) {
-	  for (i = 0; i < nobs; i++) yt[op[i]] = ys[i];
-	} else {
-	  for (i = 0; i < nobs; i++) yt[i] = ys[i];
-	}
+	  if (use_names) {
+	    for (i = 0; i < nobs; i++) yt[posn[i]] = ys[i];
+	  } else {
+	    for (i = 0; i < nobs; i++) yt[i] = ys[i];
+	  }
       
+	}
       }
     }
 
@@ -187,29 +189,39 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
 
   case 1: 			// native routine
 
-    set_pomp_userdata(fcall);
-    GetRNGstate();
+    {
+      double *yt = REAL(Y);
+      double *time = REAL(times);
+      double *xs = REAL(x);
+      double *ps = REAL(params);
+      double *cp = REAL(cvec);
+      double *xp, *pp;
+      int j, k;
 
-    for (k = 0, yt = REAL(Y), ts = REAL(times); k < ntimes; k++, ts++) { // loop over times
+      set_pomp_userdata(fcall);
+      GetRNGstate();
 
-      R_CheckUserInterrupt();	// check for user interrupt
+      for (k = 0; k < ntimes; k++, time++) { // loop over times
 
-      // interpolate the covar functions for the covariates
-      table_lookup(&covariate_table,*ts,cp,0);
+	R_CheckUserInterrupt();	// check for user interrupt
+
+	// interpolate the covar functions for the covariates
+	table_lookup(&covariate_table,*time,cp,0);
     
-      for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
+	for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
 	
-	xp = &xs[nvars*((j%nrepsx)+nrepsx*k)];
-	pp = &ps[npars*(j%nrepsp)];
+	  xp = &xs[nvars*((j%nrepsx)+nrepsx*k)];
+	  pp = &ps[npars*(j%nrepsp)];
 	
-	(*ff)(yt,xp,pp,oidx,sidx,pidx,cidx,ncovars,cp,*ts);
+	  (*ff)(yt,xp,pp,oidx,sidx,pidx,cidx,ncovars,cp,*time);
       
+	}
       }
+
+      PutRNGstate();
+      unset_pomp_userdata();
     }
-
-    PutRNGstate();
-    unset_pomp_userdata();
-
+    
     break;
 
   default:
