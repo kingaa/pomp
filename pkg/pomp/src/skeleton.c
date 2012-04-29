@@ -12,37 +12,29 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
 {
   int nprotect = 0;
   int nvars, npars, nrepp, nrepx, nreps, ntimes, ncovars;
-  int mode;
-  int use_names;
-  int *dim, ndim[3], *op;
+  int mode = -1;
+  int *dim;
   SEXP fn, fcall, rho, ans, nm;
   SEXP tvec, xvec, pvec, cvec;
   SEXP Snames, Cnames, Pnames;
   SEXP statenames, paramnames, covarnames;
   SEXP F;
-  double *xs, *ts, *ps, *fs, *ft;
-  double *tp, *xp, *pp, *cp;
   int *sidx, *pidx, *cidx;
-  int first = 1;
   pomp_skeleton *ff = NULL;
   struct lookup_table covariate_table;
-  int i, j, k;
 
   PROTECT(t = AS_NUMERIC(t)); nprotect++;
   ntimes = LENGTH(t);
-  ts = REAL(t);
 
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepx = dim[1];
   if (ntimes != dim[2])
     error("skeleton error: length of 't' and 3rd dimension of 'x' do not agree");
-  xs = REAL(x);
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nrepp = dim[1];
-  ps = REAL(params);
 
   // 2nd dimension of 'x' and 'params' need not agree
   nreps = (nrepp > nrepx) ? nrepp : nrepx;
@@ -59,12 +51,6 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   // vector for interpolated covariates
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
   SET_NAMES(cvec,Cnames);
-  cp = REAL(cvec);
-
-  // set up the array to be returned
-  ndim[0] = nvars; ndim[1] = nreps; ndim[2] = ntimes;
-  PROTECT(F = makearray(3,ndim)); nprotect++; 
-  setrownames(F,Snames,3);
 
   // extract the user-defined function
   PROTECT(fn = unpack_pomp_fun(fun,&mode)); nprotect++;
@@ -77,15 +63,10 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   case 0: 			// R skeleton
 
     PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
-    tp = REAL(tvec);
-
     PROTECT(xvec = NEW_NUMERIC(nvars)); nprotect++;
-    SET_NAMES(xvec,Snames);
-    xp = REAL(xvec);
-
     PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
-    SET_NAMES(pvec,GET_ROWNAMES(GET_DIMNAMES(params)));
-    pp = REAL(pvec);
+    SET_NAMES(xvec,Snames);
+    SET_NAMES(pvec,Pnames);
 
     // set up the function call
     PROTECT(fcall = LCONS(cvec,fcall)); nprotect++;
@@ -118,54 +99,77 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   }
 
 
+  // set up the array to hold results
+  {
+    int dim[3] = {nvars, nreps, ntimes};
+    PROTECT(F = makearray(3,dim)); nprotect++; 
+    setrownames(F,Snames,3);
+  }
+
   // now do computations
   switch (mode) {
   case 0: 			// R skeleton
 
-    for (k = 0, ft = REAL(F); k < ntimes; k++, ts++) { // loop over times
+    {
+      int first = 1;
+      int use_names;
+      double *time = REAL(t);
+      double *xs = REAL(x);
+      double *ps = REAL(params);
+      double *cp = REAL(cvec);
+      double *tp = REAL(tvec);
+      double *xp = REAL(xvec);
+      double *pp = REAL(pvec);
+      double *ft = REAL(F);
+      double *fs;
+      int *posn;
+      int i, j, k;
 
-      R_CheckUserInterrupt();	// check for user interrupt
-      
-      *tp = *ts;		// copy the time
+      for (k = 0; k < ntimes; k++, time++) { // loop over times
 
-      // interpolate the covar functions for the covariates
-      table_lookup(&covariate_table,*tp,cp,0);
+	R_CheckUserInterrupt();	// check for user interrupt
       
-      for (j = 0; j < nreps; j++, ft += nvars) { // loop over replicates
+	*tp = *time;		// copy the time
+
+	// interpolate the covar functions for the covariates
+	table_lookup(&covariate_table,*time,cp,0);
+      
+	for (j = 0; j < nreps; j++, ft += nvars) { // loop over replicates
 	
-	for (i = 0; i < nvars; i++) xp[i] = xs[i+nvars*((j%nrepx)+nrepx*k)];
-	for (i = 0; i < npars; i++) pp[i] = ps[i+npars*(j%nrepp)];
+	  memcpy(xp,&xs[nvars*((j%nrepx)+nrepx*k)],nvars*sizeof(double));
+	  memcpy(pp,&ps[npars*(j%nrepp)],npars*sizeof(double));
 	
-	if (first) {
+	  if (first) {
 	  
-	  PROTECT(ans = eval(fcall,rho)); nprotect++;
-	  if (LENGTH(ans)!=nvars)
-	    error("user 'skeleton' returns a vector of %d state variables but %d are expected",LENGTH(ans),nvars);
+	    PROTECT(ans = eval(fcall,rho)); nprotect++;
+	    if (LENGTH(ans)!=nvars)
+	      error("user 'skeleton' returns a vector of %d state variables but %d are expected",LENGTH(ans),nvars);
 
-	  // get name information to fix possible alignment problems
-	  PROTECT(nm = GET_NAMES(ans)); nprotect++;
-	  use_names = !isNull(nm);
-	  if (use_names) {
-	    op = INTEGER(PROTECT(matchnames(Snames,nm))); nprotect++;
+	    // get name information to fix possible alignment problems
+	    PROTECT(nm = GET_NAMES(ans)); nprotect++;
+	    use_names = !isNull(nm);
+	    if (use_names) {
+	      posn = INTEGER(PROTECT(matchnames(Snames,nm))); nprotect++;
+	    } else {
+	      posn = 0;
+	    }
+	  
+	    fs = REAL(AS_NUMERIC(ans));
+	  
+	    first = 0;
+	  
 	  } else {
-	    op = 0;
+	  
+	    fs = REAL(AS_NUMERIC(eval(fcall,rho)));
+
 	  }
 	  
-	  fs = REAL(AS_NUMERIC(ans));
-	  
-	  first = 0;
-	  
-	} else {
-	  
-	  fs = REAL(AS_NUMERIC(eval(fcall,rho)));
-
-	}
-	  
-	if (use_names) 
-	  for (i = 0; i < nvars; i++) ft[op[i]] = fs[i];
-	else
-	  for (i = 0; i < nvars; i++) ft[i] = fs[i];
+	  if (use_names) 
+	    for (i = 0; i < nvars; i++) ft[posn[i]] = fs[i];
+	  else
+	    for (i = 0; i < nvars; i++) ft[i] = fs[i];
 	
+	}
       }
     }
 
@@ -175,20 +179,30 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
     
     set_pomp_userdata(fcall);
 
-    for (k = 0, ft = REAL(F); k < ntimes; k++, ts++) { // loop over times
+    {
+      double *time = REAL(t);
+      double *xs = REAL(x);
+      double *ps = REAL(params);
+      double *cp = REAL(cvec);
+      double *ft = REAL(F);
+      double *xp, *pp;
+      int j, k;
 
-      R_CheckUserInterrupt();	// check for user interrupt
+      for (k = 0; k < ntimes; k++, time++) { // loop over times
+
+	R_CheckUserInterrupt();	// check for user interrupt
       
-      // interpolate the covar functions for the covariates
-      table_lookup(&covariate_table,*ts,cp,0);
+	// interpolate the covar functions for the covariates
+	table_lookup(&covariate_table,*time,cp,0);
       
-      for (j = 0; j < nreps; j++, ft += nvars) { // loop over replicates
+	for (j = 0; j < nreps; j++, ft += nvars) { // loop over replicates
 	
-	xp = &xs[nvars*((j%nrepx)+nrepx*k)];
-	pp = &ps[npars*(j%nrepp)];
+	  xp = &xs[nvars*((j%nrepx)+nrepx*k)];
+	  pp = &ps[npars*(j%nrepp)];
 	
-	(*ff)(ft,xp,pp,sidx,pidx,cidx,ncovars,cp,*ts);
+	  (*ff)(ft,xp,pp,sidx,pidx,cidx,ncovars,cp,*time);
 	
+	}
       }
     }
 

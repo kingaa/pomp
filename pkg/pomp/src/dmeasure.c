@@ -11,7 +11,6 @@
 SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP fun)
 {
   int nprotect = 0;
-  int first = 1;
   int mode = -1;
   int give_log;
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
@@ -20,12 +19,8 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   SEXP tvec, xvec, yvec, pvec, cvec;
   SEXP fn, fcall, rho, ans;
   SEXP F;
-  double *ts, *xs, *ps, *ys, *fs;
-  double *cp, *xp, *pp, *tp, *yp;
-  double *ft;
-  int *dim, ndim[2];
   int *sidx, *pidx, *cidx, *oidx;
-  int i, j, k;
+  int *dim;
   struct lookup_table covariate_table;
   pomp_measure_model_density *ff = NULL;
 
@@ -37,7 +32,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(y = as_matrix(y)); nprotect++;
   dim = INTEGER(GET_DIM(y));
   nobs = dim[0];
-  ys = REAL(y);
 
   if (ntimes != dim[1])
     error("dmeasure error: length of 'times' and 2nd dimension of 'y' do not agree");
@@ -45,7 +39,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepsx = dim[1]; 
-  xs = REAL(x);
 
   if (ntimes != dim[2])
     error("dmeasure error: length of 'times' and 3rd dimension of 'x' do not agree");
@@ -53,7 +46,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
   npars = dim[0]; nrepsp = dim[1]; 
-  ps = REAL(params);
 
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
@@ -73,10 +65,6 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   // vector for interpolated covariates
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
   SET_NAMES(cvec,Cnames);
-  cp = REAL(cvec);
-
-  ndim[0] = nreps; ndim[1] = ntimes;
-  PROTECT(F = makearray(2,ndim)); nprotect++; 
 
   // extract the user-defined function
   PROTECT(fn = unpack_pomp_fun(fun,&mode)); nprotect++;
@@ -90,19 +78,12 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   case 0:			// R function
 
     PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
-    tp = REAL(tvec);
-
     PROTECT(xvec = NEW_NUMERIC(nvars)); nprotect++;
-    SET_NAMES(xvec,Snames);
-    xp = REAL(xvec);
-
     PROTECT(yvec = NEW_NUMERIC(nobs)); nprotect++;
-    SET_NAMES(yvec,Onames);
-    yp = REAL(yvec);
-
     PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
+    SET_NAMES(xvec,Snames);
+    SET_NAMES(yvec,Onames);
     SET_NAMES(pvec,Pnames);
-    pp = REAL(pvec);
 
     // set up the function call
     PROTECT(fcall = LCONS(cvec,fcall)); nprotect++;
@@ -144,45 +125,63 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   }
 
+  // create array to store results
+  {
+    int dim[2] = {nreps, ntimes};
+    PROTECT(F = makearray(2,dim)); nprotect++; 
+  }
+
   // now do computations
   switch (mode) {
 
   case 0:			// R function
 
-    for (k = 0, ft = REAL(F), ts = REAL(times); k < ntimes; k++, ts++) { // loop over times
+    {
+      int first = 1;
+      double *ys = REAL(y);
+      double *xs = REAL(x);
+      double *ps = REAL(params);
+      double *cp = REAL(cvec);
+      double *tp = REAL(tvec);
+      double *xp = REAL(xvec);
+      double *yp = REAL(yvec);
+      double *pp = REAL(pvec);
+      double *ft = REAL(F);
+      double *time = REAL(times);
+      int j, k;
 
-      R_CheckUserInterrupt();	// check for user interrupt
+      for (k = 0; k < ntimes; k++, time++, ys += nobs) { // loop over times
 
-      *tp = *ts;		// copy the time
-      table_lookup(&covariate_table,*tp,cp,0); // interpolate the covariates
+	R_CheckUserInterrupt();	// check for user interrupt
 
-      for (i = 0; i < nobs; i++) yp[i] = ys[i+nobs*k];
-    
-      for (j = 0; j < nreps; j++, ft++) { // loop over replicates
+	*tp = *time;				   // copy the time
+	table_lookup(&covariate_table,*time,cp,0); // interpolate the covariates
 
-	// copy the states and parameters into place
-	for (i = 0; i < nvars; i++) xp[i] = xs[i+nvars*((j%nrepsx)+nrepsx*k)];
-	for (i = 0; i < npars; i++) pp[i] = ps[i+npars*(j%nrepsp)];
+	memcpy(yp,ys,nobs*sizeof(double));
+
+	for (j = 0; j < nreps; j++, ft++) { // loop over replicates
+
+	  // copy the states and parameters into place
+	  memcpy(xp,&xs[nvars*((j%nrepsx)+nrepsx*k)],nvars*sizeof(double));
+	  memcpy(pp,&ps[npars*(j%nrepsp)],npars*sizeof(double));
 	
-	if (first) {
-	  // evaluate the call
-	  PROTECT(ans = eval(fcall,rho)); nprotect++;
+	  if (first) {
+	    // evaluate the call
+	    PROTECT(ans = eval(fcall,rho)); nprotect++;
+	    if (LENGTH(ans) != 1)
+	      error("user 'dmeasure' return a vector of length %d when it should return a scalar",LENGTH(ans));
 
-	  if (LENGTH(ans) != 1)
-	    error("user 'dmeasure' return a vector of length %d when it should return a scalar",LENGTH(ans));
+	    *ft = *(REAL(AS_NUMERIC(ans)));
 
-	  fs = REAL(AS_NUMERIC(ans));
+	    first = 0;
 
-	  first = 0;
+	  } else {
 
-	} else {
+	    *ft = *(REAL(AS_NUMERIC(eval(fcall,rho))));
 
-	  fs = REAL(AS_NUMERIC(eval(fcall,rho)));
+	  }
 
 	}
-
-	*ft = *fs;
-
       }
     }
 
@@ -192,22 +191,31 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
     set_pomp_userdata(fcall);
 
-    for (k = 0, ft = REAL(F), ts = REAL(times); k < ntimes; k++, ts++) { // loop over times
+    {
+      double *yp = REAL(y);
+      double *xs = REAL(x);
+      double *ps = REAL(params);
+      double *cp = REAL(cvec);
+      double *ft = REAL(F);
+      double *time = REAL(times);
+      double *xp, *pp;
+      int j, k;
 
-      R_CheckUserInterrupt();	// check for user interrupt
-
-      // interpolate the covar functions for the covariates
-      table_lookup(&covariate_table,*ts,cp,0);
-
-      yp = &ys[nobs*k];
-    
-      for (j = 0; j < nreps; j++, ft++) { // loop over replicates
+      for (k = 0; k < ntimes; k++, time++, yp += nobs) { // loop over times
 	
-	xp = &xs[nvars*((j%nrepsx)+nrepsx*k)];
-	pp = &ps[npars*(j%nrepsp)];
+	R_CheckUserInterrupt();	// check for user interrupt
+
+	// interpolate the covar functions for the covariates
+	table_lookup(&covariate_table,*time,cp,0);
+
+	for (j = 0; j < nreps; j++, ft++) { // loop over replicates
 	
-	(*ff)(ft,yp,xp,pp,give_log,oidx,sidx,pidx,cidx,ncovars,cp,*ts);
+	  xp = &xs[nvars*((j%nrepsx)+nrepsx*k)];
+	  pp = &ps[npars*(j%nrepsp)];
+	
+	  (*ff)(ft,yp,xp,pp,give_log,oidx,sidx,pidx,cidx,ncovars,cp,*time);
       
+	}
       }
     }
 
