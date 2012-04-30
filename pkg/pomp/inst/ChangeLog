@@ -1,3 +1,9 @@
+2012-04-30  kingaa
+
+	* [r688] DESCRIPTION, R/builder.R, inst/ChangeLog, man/builder.Rd,
+	  src/trajectory.c: - rework the guts of 'iterate_map' for much
+	  faster trajectory calculation
+
 2012-04-29  kingaa
 
 	* [r687] src/dmeasure.c, src/skeleton.c: - more work on the guts
