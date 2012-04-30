@@ -20,9 +20,9 @@ CCode <- function (text, slot) {
 }
 
 pompBuilder <- function (data, times, t0, name,
-                         statenames, paramnames, zeronames,
+                         statenames, paramnames,
                          rmeasure, dmeasure, step.fn, step.fn.delta.t,
-                         skeleton, skeleton.type, skelmap.delta.t = 1,
+                         skeleton, skeleton.type, skelmap.delta.t = 1, ...,
                          link = TRUE) {
   obsnames <- names(data)
   obsnames <- setdiff(obsnames,times)
@@ -37,7 +37,6 @@ pompBuilder <- function (data, times, t0, name,
                         skeleton=skeleton
                         )
   if (link) pompLink(name)
-  if (missing(zeronames)) zeronames <- character(0)
   pomp(
        data=data,times=times,t0=t0,
        rprocess=euler.sim(
@@ -54,7 +53,7 @@ pompBuilder <- function (data, times, t0, name,
        obsnames=obsnames,
        statenames=statenames,
        paramnames=paramnames,
-       zeronames=zeronames
+       ...
        )
 }
 

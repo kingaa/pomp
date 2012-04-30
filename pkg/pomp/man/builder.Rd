@@ -5,9 +5,10 @@
   \code{pompBuilder} is an EXPERIMENTAL facility for producing compiled \code{pomp} objects.
 }
 \usage{
-pompBuilder(data, times, t0, name, statenames, paramnames, zeronames,
+pompBuilder(data, times, t0, name, statenames, paramnames, 
             rmeasure, dmeasure, step.fn, step.fn.delta.t,
-            skeleton, skeleton.type, skelmap.delta.t = 1, link = TRUE)
+            skeleton, skeleton.type, skelmap.delta.t = 1,
+            \dots, link = TRUE)
 }
 \arguments{
   \item{data, times, t0}{
@@ -18,8 +19,8 @@ pompBuilder(data, times, t0, name, statenames, paramnames, zeronames,
   \item{name}{
     character; the stem of the name for the files that will be produced.
   }
-  \item{statenames, paramnames, zeronames}{
-    names of state-variables, parameters, and accumulator variables, respectively
+  \item{statenames, paramnames}{
+    names of state-variables and parameters, respectively
   }
   \item{rmeasure, dmeasure}{
     C codes implementing the measurement model
@@ -32,6 +33,9 @@ pompBuilder(data, times, t0, name, statenames, paramnames, zeronames,
     \code{skeleton} is a C code that implements the deterministic skeleton.
     As in \code{pomp}, \code{skeleton.type} indicates whether the skeleton is a map (discrete-time) or vectorfield (continuous-time).
     If the former, \code{skelmap.delta.t} is the time-step of the map.
+  }
+  \item{\dots}{
+    additional arguments are passed to \code{\link{pomp}}
   }
   \item{link}{
     logical; if TRUE, the resulting code will be linked after compilation.

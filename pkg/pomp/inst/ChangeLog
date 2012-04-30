@@ -1,5 +1,35 @@
+2012-04-29  kingaa
+
+	* [r687] src/dmeasure.c, src/skeleton.c: - more work on the guts
+
+2012-04-28  kingaa
+
+	* [r686] DESCRIPTION, src/euler.c, src/rmeasure.c: - more changes
+	  to the guts
+
+2012-04-27  kingaa
+
+	* [r685] DESCRIPTION, R/pomp-fun.R, R/pomp.R, data/bbs.rda,
+	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
+	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
+	  data/ricker.rda, data/rw2.rda, data/verhulst.rda,
+	  inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/bsmc-ricker-flat-prior.rda,
+	  inst/doc/gompertz-multi-mif.rda, inst/doc/gompertz-trajmatch.rda,
+	  inst/doc/intro_to_pomp.pdf, inst/doc/nlf-block-boot.rda,
+	  inst/doc/nlf-boot.rda, inst/doc/nlf-fit-from-truth.rda,
+	  inst/doc/nlf-fits.rda, inst/doc/nlf-lag-tests.rda,
+	  inst/doc/nlf-multi-short.rda, inst/doc/ricker-mif.rda,
+	  inst/doc/ricker-probe-match.rda, src/dmeasure.c, src/euler.c,
+	  src/lookup_table.c, src/partrans.c, src/pomp_fun.c,
+	  src/pomp_internal.h, src/rmeasure.c, src/skeleton.c: - changes to
+	  the guts of 'rmeasure', 'dmeasure', 'partrans', and the Euler
+	  rprocess plugins
+
 2012-04-26  kingaa
 
+	* [r684] R/builder.R, demo/gompertz.R, inst/ChangeLog: - zeronames
+	  argument in 'pompBuilder' is optional
 	* [r683] DESCRIPTION, NAMESPACE, R/builder.R, data/bbs.rda,
 	  data/blowflies.rda, data/dacca.rda, data/euler.sir.rda,
 	  data/gillespie.sir.rda, data/gompertz.rda, data/ou2.rda,
