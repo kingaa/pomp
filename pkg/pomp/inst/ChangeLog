@@ -1,5 +1,14 @@
+2012-05-01  kingaa
+
+	* [r691] R/simulate-pomp.R, R/trajectory-pomp.R, tests/ricker.R,
+	  tests/ricker.Rout.save: - make 'sim' and 'traj' into factors when
+	  'simulate' or 'trajectory' are called with 'as.data.frame=TRUE'
+
 2012-04-30  kingaa
 
+	* [r690] inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf:
+	* [r689] inst/ChangeLog:
 	* [r688] DESCRIPTION, R/builder.R, inst/ChangeLog, man/builder.Rd,
 	  src/trajectory.c: - rework the guts of 'iterate_map' for much
 	  faster trajectory calculation
