@@ -109,6 +109,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
                 }
                 )
     x <- do.call(rbind,x)
+    x$traj <- factor(x$traj)
   }
 
   x

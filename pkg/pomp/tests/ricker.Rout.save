@@ -37,44 +37,45 @@ Loading required package: deSolve
 > tj.3 <- trajectory(ricker,as.data.frame=TRUE,params=parmat(coef(ricker),3),times=1:100)
 > plot(N~time,data=tj.3,subset=traj==3,type='l')
 > 
-> sm <- simulate(ricker,seed=343995,as.data.frame=TRUE)
-> sm1 <- as.data.frame(simulate(ricker,seed=343995))
-> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
+> sm <- as.data.frame(simulate(ricker,seed=343995))
+> sm1 <- simulate(ricker,seed=343995,as.data.frame=TRUE)
+> stopifnot(max(abs(as.matrix(sm1[names(sm)])-as.matrix(sm)))==0)
+> sm1 <- simulate(ricker,seed=343995,states=TRUE,obs=TRUE,as.data.frame=TRUE)
+> stopifnot(max(abs(as.matrix(sm1[names(sm)])-as.matrix(sm)))==0)
 > 
-> sm <- simulate(ricker,nsim=3,seed=343995,as.data.frame=TRUE)
-> print(names(sm))
-[1] "time" "y"    "N"    "e"    "sim" 
-> print(dim(sm))
-[1] 153   5
-> 
-> sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
+> sm1 <- simulate(ricker,nsim=3,seed=343995,as.data.frame=TRUE)
 > print(names(sm1))
-[1] "y"    "sim"  "time"
+[1] "time" "y"    "N"    "e"    "sim" 
 > print(dim(sm1))
-[1] 153   3
-> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
+[1] 153   5
 > 
 > sm1 <- simulate(ricker,nsim=3,states=T,seed=343995,as.data.frame=TRUE)
 > print(names(sm1))
 [1] "N"    "e"    "sim"  "time"
 > print(dim(sm1))
 [1] 153   4
-> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
+> print(tail(sm1))
+             N           e sim time
+138  4.0116869  0.05723792   3   45
+141  4.2497654  0.26933885   3   46
+144  2.9300053  0.07790589   3   47
+147  7.1162605  0.01738347   3   48
+150  0.2366483 -0.08730222   3   49
+153 18.9946973  0.82198849   3   50
 > 
-> sm1 <- simulate(ricker,nsim=3,states=T,obs=T,seed=343995,as.data.frame=TRUE)
+> sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
 > print(names(sm1))
-[1] "y"    "N"    "e"    "sim"  "time"
+[1] "y"    "sim"  "time"
 > print(dim(sm1))
-[1] 153   5
-> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
-> 
-> sm <- simulate(ricker,nsim=1,states=T,obs=T,seed=343995,as.data.frame=TRUE)
-> sm1 <- as.data.frame(simulate(ricker,seed=343995))
-> print(names(sm))
-[1] "y"    "N"    "e"    "sim"  "time"
-> print(dim(sm))
-[1] 51  5
-> stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
+[1] 153   3
+> print(tail(sm1))
+      y sim time
+138  36   3   45
+141  44   3   46
+144  27   3   47
+147  73   3   48
+150   1   3   49
+153 218   3   50
 > 
 > po <- ricker
 > try(
@@ -105,4 +106,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.532   0.028   0.676 
+  0.552   0.032   0.678 

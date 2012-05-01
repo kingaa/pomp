@@ -15,34 +15,25 @@ plot(tj.3)
 tj.3 <- trajectory(ricker,as.data.frame=TRUE,params=parmat(coef(ricker),3),times=1:100)
 plot(N~time,data=tj.3,subset=traj==3,type='l')
 
-sm <- simulate(ricker,seed=343995,as.data.frame=TRUE)
-sm1 <- as.data.frame(simulate(ricker,seed=343995))
-stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
+sm <- as.data.frame(simulate(ricker,seed=343995))
+sm1 <- simulate(ricker,seed=343995,as.data.frame=TRUE)
+stopifnot(max(abs(as.matrix(sm1[names(sm)])-as.matrix(sm)))==0)
+sm1 <- simulate(ricker,seed=343995,states=TRUE,obs=TRUE,as.data.frame=TRUE)
+stopifnot(max(abs(as.matrix(sm1[names(sm)])-as.matrix(sm)))==0)
 
-sm <- simulate(ricker,nsim=3,seed=343995,as.data.frame=TRUE)
-print(names(sm))
-print(dim(sm))
-
-sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
+sm1 <- simulate(ricker,nsim=3,seed=343995,as.data.frame=TRUE)
 print(names(sm1))
 print(dim(sm1))
-stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
 
 sm1 <- simulate(ricker,nsim=3,states=T,seed=343995,as.data.frame=TRUE)
 print(names(sm1))
 print(dim(sm1))
-stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
+print(tail(sm1))
 
-sm1 <- simulate(ricker,nsim=3,states=T,obs=T,seed=343995,as.data.frame=TRUE)
+sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
 print(names(sm1))
 print(dim(sm1))
-stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
-
-sm <- simulate(ricker,nsim=1,states=T,obs=T,seed=343995,as.data.frame=TRUE)
-sm1 <- as.data.frame(simulate(ricker,seed=343995))
-print(names(sm))
-print(dim(sm))
-stopifnot(max(abs(as.matrix(sm[names(sm1)])-as.matrix(sm1)))==0)
+print(tail(sm1))
 
 po <- ricker
 try(
