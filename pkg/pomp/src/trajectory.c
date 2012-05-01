@@ -198,6 +198,8 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
 
   case 1: 			// native code
 
+    set_pomp_userdata(fcall);
+    
     {
       double *time = REAL(times);
       double *Xt = REAL(X);
@@ -242,6 +244,9 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
 
       }
     }
+
+    unset_pomp_userdata();
+
     break;
 
   default:
