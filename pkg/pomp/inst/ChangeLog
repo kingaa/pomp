@@ -1,5 +1,12 @@
 2012-05-02  kingaa
 
+	* [r696] demo/gompertz.R, demo/sir.R, src/dmeasure.c, src/euler.c,
+	  src/pomp_internal.h, src/rmeasure.c, src/skeleton.c,
+	  src/trajectory.c, tests/demos.R, tests/examples.R: - changes to
+	  eliminate pedantic warnings
+	  - put covariate table interpolation into vectorfield trajectory
+	  computation
+	* [r695] inst/ChangeLog:
 	* [r694] DESCRIPTION, R/trajectory-pomp.R, src/trajectory.c: - more
 	  work on the guts of 'trajectory' for the vectorfield case
 
