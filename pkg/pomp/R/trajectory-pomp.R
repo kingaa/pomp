@@ -59,8 +59,9 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
     
   } else if (type=="vectorfield") {
 
-    skel <- get.pomp.fun(object@skeleton)
-    .Call(pomp_desolve_setup,object,x0,params,skel)
+    ## the 'savelist' contains C-level internals that are needed by 'pomp_vf_eval'
+    ## it prevents garbage collection of these data
+    savelist <- .Call(pomp_desolve_setup,object,x0,params)
 
     X <- try(
              ode(
@@ -76,7 +77,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
              silent=FALSE
              )
 
-    .Call(pomp_desolve_takedown)
+    .Call(pomp_desolve_takedown,savelist)
 
     if (inherits(X,'try-error'))
       stop("trajectory error: error in ODE integrator",call.=FALSE)

@@ -15,12 +15,12 @@
 # define MATCH_CHAR_TO_ROWNAMES(X,N,A) (match_char_to_names(GET_ROWNAMES(GET_DIMNAMES(X)),(N),(A)))
 
 // lookup-table structure, as used internally
-struct lookup_table {
+typedef struct lookup_table {
   int length, width;
   int index;
   double *x;
   double *y;
-};
+} lookup_table;
 
 // routine to compute number of discrete-time steps to take.
 // used by plugins in 'euler.c' and map iterator in 'trajectory.c'
@@ -61,6 +61,17 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun);
 
 // skeleton.c
 SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun);
+void eval_skeleton_native (double *f, double *time, double *x, double *p,
+			   int nvars, int npars, int ncovars, int ntimes, 
+			   int nrepx, int nrepp, int nreps, 
+			   int *sidx, int *pidx, int *cidx,
+			   lookup_table *covar_table,
+			   pomp_skeleton *fun, SEXP args);
+void eval_skeleton_R (double *f, double *time, double *x, double *p,
+		      SEXP fcall, SEXP rho, SEXP Snames,
+		      double *tp, double *xp, double *pp, double *cp,
+		      int nvars, int npars, int ntimes,
+		      int nrepx, int nrepp, int nreps, lookup_table *covar_table);
 
 //userdata.c
 void set_pomp_userdata (SEXP object);
