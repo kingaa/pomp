@@ -87,7 +87,9 @@ header <- list(
 decl <- list(
              periodic_bspline_basis_eval="void (*periodic_bspline_basis_eval)(double,double,int,int,double*);\nperiodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n",
              reulermultinom="void (*reulermultinom)(int,double,double*,double,double*);\nreulermultinom = (void (*)(int,double,double*,double,double*)) R_GetCCallable(\"pomp\",\"reulermultinom\");\n",
-             get_pomp_userdata="const SEXP (*get_pomp_userdata)(const char *);\npomp_get_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n"
+             get_pomp_userdata="const SEXP (*get_pomp_userdata)(const char *);\npomp_get_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n",
+             get_pomp_userdata_int="const int * (*get_pomp_userdata_int)(const char *);\npomp_get_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
+             get_pomp_userdata_double="const double * (*get_pomp_userdata_double)(const char *);\npomp_get_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n"
               )
 
 footer <- list(
