@@ -1,5 +1,13 @@
+2012-05-02  kingaa
+
+	* [r694] DESCRIPTION, R/trajectory-pomp.R, src/trajectory.c: - more
+	  work on the guts of 'trajectory' for the vectorfield case
+
 2012-05-01  kingaa
 
+	* [r693] src/trajectory.c: - make sure to set up 'userdata' access
+	  to user functions
+	* [r692] inst/ChangeLog:
 	* [r691] R/simulate-pomp.R, R/trajectory-pomp.R, tests/ricker.R,
 	  tests/ricker.Rout.save: - make 'sim' and 'traj' into factors when
 	  'simulate' or 'trajectory' are called with 'as.data.frame=TRUE'
