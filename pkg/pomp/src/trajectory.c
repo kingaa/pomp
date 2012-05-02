@@ -259,52 +259,153 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
 }
 
 static struct {
-  SEXP object;
+  int mode;
   SEXP params;
-  SEXP skelfun;
-  SEXP xnames;
-  int xdim[3];
-} _pomp_vf_eval_common;
+  SEXP object;
+  union {
+    struct {
+      SEXP skelfun;
+      SEXP snames;
+      int xdim[3];
+    } R_fun;
+    struct {
+      int nvars;
+      int npars;
+      int ncovars;
+      int nreps;
+      int *sidx;
+      int *pidx;
+      int *cidx;
+      pomp_skeleton *ff;
+    } native_code;
+  } shared;
+} _pomp_vf_eval_block;
 
 
-#define COMMON(X)    (_pomp_vf_eval_common.X)
+#define COMMON(X) (_pomp_vf_eval_block.X)
+#define RFUN(X)   (_pomp_vf_eval_block.shared.R_fun.X)
+#define NAT(X)    (_pomp_vf_eval_block.shared.native_code.X)
 
-void pomp_desolve_setup (SEXP object, SEXP params, SEXP fun, SEXP statenames, SEXP nvar, SEXP nrep) {
+void pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP fun) {
+  int nprotect = 0;
+  SEXP fn, sindex, pindex, cindex;
+  SEXP Snames, Pnames, Cnames;
+  int *dim;
+  int nvars, npars, ncovars, nreps;
+
   COMMON(object) = object;
+
+  PROTECT(fn = unpack_pomp_fun(fun,&COMMON(mode))); nprotect++;
   COMMON(params) = params;
-  COMMON(skelfun) = fun;
-  COMMON(xnames) = statenames;
-  COMMON(xdim)[0] = *INTEGER(AS_INTEGER(nvar));
-  COMMON(xdim)[1] = *INTEGER(AS_INTEGER(nrep));
-  COMMON(xdim)[2] = 1;
+
+  dim = INTEGER(GET_DIM(x0));
+  nvars = dim[0];
+
+  dim = INTEGER(GET_DIM(params));
+  npars = dim[0];
+  nreps = dim[1];
+
+  dim = INTEGER(GET_DIM(GET_SLOT(object,install("covar"))));
+  ncovars = dim[1];
+
+  switch (COMMON(mode)) {
+  case 0:			// R function
+    RFUN(skelfun) = fun;
+    RFUN(snames) = GET_ROWNAMES(GET_DIMNAMES(x0));
+    RFUN(xdim)[0] = nvars;
+    RFUN(xdim)[1] = nreps;
+    RFUN(xdim)[2] = 1;
+    break;
+  case 1:			// native code
+    PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x0))); nprotect++;
+    PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
+    PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
+    PROTECT(sindex = name_index(Snames,object,"statenames")); nprotect++;
+    PROTECT(pindex = name_index(Pnames,object,"paramnames")); nprotect++;
+    PROTECT(cindex = name_index(Cnames,object,"covarnames")); nprotect++;
+    NAT(sidx) = (int *) Calloc(LENGTH(sindex),int);
+    NAT(pidx) = (int *) Calloc(LENGTH(pindex),int);
+    NAT(cidx) = (int *) Calloc(LENGTH(cindex),int);
+    memcpy(NAT(sidx),INTEGER(sindex),LENGTH(sindex)*sizeof(int));
+    memcpy(NAT(pidx),INTEGER(pindex),LENGTH(pindex)*sizeof(int));
+    memcpy(NAT(cidx),INTEGER(cindex),LENGTH(cindex)*sizeof(int));
+    NAT(nvars) = nvars;
+    NAT(npars) = npars;
+    NAT(ncovars) = ncovars;
+    NAT(nreps) = nreps;
+    NAT(ff) = (pomp_skeleton *) R_ExternalPtrAddr(fn);
+    break;
+  default:
+    error("unrecognized 'mode' in 'pomp_desolve_setup'");
+    break;
+  }
+  UNPROTECT(nprotect);
+}
+
+void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, int *ip) 
+{
+  int nprotect = 0;
+  SEXP T, X, dXdt, args;
+  
+  switch (COMMON(mode)) {
+  case 0:			// R function
+    PROTECT(T = NEW_NUMERIC(1)); nprotect++;
+    PROTECT(X = makearray(3,RFUN(xdim))); nprotect++;
+    setrownames(X,RFUN(snames),3);
+    *(REAL(T)) = *t;
+    memcpy(REAL(X),y,(*neq)*sizeof(double));
+    PROTECT(dXdt = do_skeleton(COMMON(object),X,T,COMMON(params),RFUN(skelfun))); nprotect++;
+    memcpy(ydot,REAL(dXdt),(*neq)*sizeof(double));
+    break;
+  case 1:			// native code
+    PROTECT(args = VectorToPairList(GET_SLOT(COMMON(object),install("userdata")))); nprotect++;
+    set_pomp_userdata(args);
+    {
+      int j;
+      double covars[NAT(ncovars)];
+      double *pp = REAL(COMMON(params));
+      pomp_skeleton *ff = NAT(ff);
+      for (j = 0; j < NAT(nreps); j++, pp += NAT(npars), y += NAT(nvars), ydot += NAT(nvars)) {
+	(*ff)(ydot,y,pp,NAT(sidx),NAT(pidx),NAT(cidx),NAT(ncovars),covars,*t);
+      }
+    }
+    unset_pomp_userdata();
+    break;
+  default:
+    error("unrecognized 'mode' in 'pomp_vf_eval'");
+    break;
+  }
+
+  UNPROTECT(nprotect);
 }
 
 void pomp_desolve_takedown (void) {
   COMMON(object) = R_NilValue;
   COMMON(params) = R_NilValue;
-  COMMON(skelfun) = R_NilValue;
-  COMMON(xnames) = R_NilValue;
-  COMMON(xdim)[0] = 0;
-  COMMON(xdim)[1] = 0;
-  COMMON(xdim)[2] = 0;
-}
-
-void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, int *ip) 
-{
-  SEXP T, X, dXdt;
-  
-  PROTECT(T = NEW_NUMERIC(1));
-  PROTECT(X = makearray(3,COMMON(xdim)));
-  setrownames(X,COMMON(xnames),3);
-  REAL(T)[0] = *t;
-  memcpy(REAL(X),y,(*neq)*sizeof(double));
-  PROTECT(dXdt = do_skeleton(COMMON(object),X,T,COMMON(params),COMMON(skelfun)));
-  memcpy(ydot,REAL(dXdt),(*neq)*sizeof(double));
-  
-  UNPROTECT(3);
+  switch (COMMON(mode)) {
+  case 0:			// R function
+    RFUN(skelfun) = R_NilValue;
+    RFUN(snames) = R_NilValue;
+    RFUN(xdim)[0] = 0;
+    RFUN(xdim)[1] = 0;
+    RFUN(xdim)[2] = 0;
+    break;
+  case 1:			// native code
+    Free(NAT(sidx));
+    Free(NAT(pidx));
+    Free(NAT(cidx));
+    NAT(ff) = 0;
+    break;
+  default:
+    error("unrecognized 'mode' in 'pomp_desolve_takedown'");
+    break;
+  }
+  COMMON(mode) = -1;
 }
 
 #undef COMMON
+#undef RFUN
+#undef NAT
 
 // copy t(x[-1,-1]) -> y[,rep,]
 SEXP traj_transp_and_copy (SEXP y, SEXP x, SEXP rep) {

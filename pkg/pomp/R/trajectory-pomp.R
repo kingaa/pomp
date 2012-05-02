@@ -60,7 +60,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
   } else if (type=="vectorfield") {
 
     skel <- get.pomp.fun(object@skeleton)
-    .Call(pomp_desolve_setup,object,params,skel,statenames,nvar,nrep);
+    .Call(pomp_desolve_setup,object,x0,params,skel)
 
     X <- try(
              ode(
