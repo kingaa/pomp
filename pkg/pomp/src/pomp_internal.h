@@ -251,9 +251,9 @@ static R_INLINE SEXP getListElement (SEXP list, const char *str)
 
 static R_INLINE SEXP getPairListElement (SEXP list, const char *name)
 {
-  char *tag;
+  const char *tag;
   while (list != R_NilValue) {
-    tag = STRING_PTR(PRINTNAME(TAG(list)));
+    tag = CHAR(PRINTNAME(TAG(list)));
     if (strcmp(tag,name)==0) break;
     list = CDR(list);
   }

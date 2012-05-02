@@ -50,24 +50,24 @@ if (Sys.info()['sysname']=='Linux') {   # only run this under linux
                ), 
              ## reset cases to zero after each new observation:
              zeronames=c("cases"),      
-             to.log.transform=c(
+             logvar=c(
                "gamma","mu","iota",
                "beta1","beta2","beta3","beta.sd",
                "S.0","I.0","R.0"
                ),
-             to.logit.transform="rho",
+             logitvar="rho",
              comp.names=c("S","I","R"),
              ic.names=c("S.0","I.0","R.0"),
-             parameter.transform=function (params, to.log.transform, to.logit.transform, ic.names, ...) {
-               params[log.transformed] <- exp(params[log.transformed])
-               params[logit.transformed] <- plogis(params[logit.transformed])
+             parameter.transform=function (params, logvar, logitvar, ic.names, ...) {
+               params[logvar] <- exp(params[logvar])
+               params[logitvar] <- plogis(params[logitvar])
                params[ic.names] <- params[ic.names]/sum(params[ic.names])
                params
              },
-             parameter.inv.transform=function (params, log.transformed, logit.transformed, ic.names, ...) {
+             parameter.inv.transform=function (params, logvar, logitvar, ic.names, ...) {
                params[ic.names] <- params[ic.names]/sum(params[ic.names])
-               params[log.transformed] <- log(params[log.transformed])
-               params[logit.transformed] <- qlogis(params[logit.transformed])
+               params[logvar] <- log(params[logvar])
+               params[logitvar] <- qlogis(params[logitvar])
                params
              },
              initializer=function(params, t0, comp.names, ic.names, ...) {

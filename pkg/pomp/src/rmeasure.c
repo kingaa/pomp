@@ -18,8 +18,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   SEXP tvec, xvec, pvec, cvec;
   SEXP fn, fcall, rho, ans, nm;
   SEXP Y;
-  int *dim, ndim[3], *op;
-  int *sidx, *pidx, *cidx, *oidx;
+  int *dim;
+  int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
   struct lookup_table covariate_table;
   pomp_measure_model_simulator *ff = NULL;
 
@@ -59,9 +59,11 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
   SET_NAMES(cvec,Cnames);
 
-  ndim[0] = nobs; ndim[1] = nreps; ndim[2] = ntimes;
-  PROTECT(Y = makearray(3,ndim)); nprotect++; 
-  setrownames(Y,Onames,3);
+  {
+    int dim[3] = {nobs, nreps, ntimes};
+    PROTECT(Y = makearray(3,dim)); nprotect++; 
+    setrownames(Y,Onames,3);
+  }
 
   // extract the user-defined function
   PROTECT(fn = unpack_pomp_fun(fun,&mode)); nprotect++;

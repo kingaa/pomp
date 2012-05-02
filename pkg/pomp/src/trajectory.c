@@ -276,6 +276,7 @@ static struct {
       int *sidx;
       int *pidx;
       int *cidx;
+      struct lookup_table covariate_table;
       pomp_skeleton *ff;
     } native_code;
   } shared;
@@ -291,7 +292,7 @@ void pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP fun) {
   SEXP fn, sindex, pindex, cindex;
   SEXP Snames, Pnames, Cnames;
   int *dim;
-  int nvars, npars, ncovars, nreps;
+  int nvars, npars, nreps;
 
   COMMON(object) = object;
 
@@ -304,9 +305,6 @@ void pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP fun) {
   dim = INTEGER(GET_DIM(params));
   npars = dim[0];
   nreps = dim[1];
-
-  dim = INTEGER(GET_DIM(GET_SLOT(object,install("covar"))));
-  ncovars = dim[1];
 
   switch (COMMON(mode)) {
   case 0:			// R function
@@ -331,8 +329,8 @@ void pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP fun) {
     memcpy(NAT(cidx),INTEGER(cindex),LENGTH(cindex)*sizeof(int));
     NAT(nvars) = nvars;
     NAT(npars) = npars;
-    NAT(ncovars) = ncovars;
     NAT(nreps) = nreps;
+    NAT(covariate_table) = make_covariate_table(object,&NAT(ncovars));
     NAT(ff) = (pomp_skeleton *) R_ExternalPtrAddr(fn);
     break;
   default:
@@ -365,6 +363,7 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
       double covars[NAT(ncovars)];
       double *pp = REAL(COMMON(params));
       pomp_skeleton *ff = NAT(ff);
+      table_lookup(&NAT(covariate_table),*t,covars,0);
       for (j = 0; j < NAT(nreps); j++, pp += NAT(npars), y += NAT(nvars), ydot += NAT(nvars)) {
 	(*ff)(ydot,y,pp,NAT(sidx),NAT(pidx),NAT(cidx),NAT(ncovars),covars,*t);
       }

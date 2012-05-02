@@ -17,9 +17,8 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   SEXP fn, fcall, rho, ans, nm;
   SEXP tvec, xvec, pvec, cvec;
   SEXP Snames, Cnames, Pnames;
-  SEXP statenames, paramnames, covarnames;
   SEXP F;
-  int *sidx, *pidx, *cidx;
+  int *sidx = 0, *pidx = 0, *cidx = 0;
   pomp_skeleton *ff = NULL;
   struct lookup_table covariate_table;
 

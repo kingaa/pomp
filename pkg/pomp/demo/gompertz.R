@@ -86,7 +86,13 @@ pompBuilder(
             step.fn.delta.t=1,
             skeleton=skel,
             skeleton.type="map",
-            skelmap.delta.t=1
+            skelmap.delta.t=1,
+            parameter.inv.transform=function(params,...){
+              log(params)
+            },
+            parameter.transform=function(params,...){
+              exp(params)
+            }
             ) -> Gompertz
 
 ## simulate some data

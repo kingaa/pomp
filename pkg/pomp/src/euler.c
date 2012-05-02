@@ -256,7 +256,7 @@ SEXP euler_model_density (SEXP func,
   pomp_onestep_pdf *ff = NULL;
   SEXP t1vec, t2vec, x1vec, x2vec, pvec, cvec;
   SEXP Snames, Pnames, Cnames;
-  SEXP ans, rho, fcall, fn;
+  SEXP rho, fcall, fn;
   SEXP F;
   int *pidx = 0, *sidx = 0, *cidx = 0;
 

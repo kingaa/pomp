@@ -15,11 +15,10 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   int give_log;
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
   SEXP Snames, Pnames, Cnames, Onames;
-  SEXP statenames, paramnames, covarnames, obsnames;
   SEXP tvec, xvec, yvec, pvec, cvec;
   SEXP fn, fcall, rho, ans;
   SEXP F;
-  int *sidx, *pidx, *cidx, *oidx;
+  int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
   int *dim;
   struct lookup_table covariate_table;
   pomp_measure_model_density *ff = NULL;
