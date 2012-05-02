@@ -1,5 +1,14 @@
 2012-05-02  kingaa
 
+	* [r701] R/trajectory-pomp.R, src/pomp_internal.h, src/skeleton.c,
+	  src/trajectory.c: - work on the guts of the 'skeleton' and
+	  'trajectory' for speed up in vectorfield case
+	* [r700] tests/demos.R: - remove automatic running of demos (since
+	  this fails under windows)
+	* [r699] R/builder.R: - add declarations for
+	  'get_pomp_userdata_int' and 'get_pomp_userdata_double'
+	* [r698] src/rmeasure.c: - remove unused variables
+	* [r697] DESCRIPTION, inst/ChangeLog:
 	* [r696] demo/gompertz.R, demo/sir.R, src/dmeasure.c, src/euler.c,
 	  src/pomp_internal.h, src/rmeasure.c, src/skeleton.c,
 	  src/trajectory.c, tests/demos.R, tests/examples.R: - changes to
