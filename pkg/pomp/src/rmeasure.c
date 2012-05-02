@@ -14,7 +14,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   int mode = -1;
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
   SEXP Snames, Pnames, Cnames, Onames;
-  SEXP statenames, paramnames, covarnames, obsnames;
   SEXP tvec, xvec, pvec, cvec;
   SEXP fn, fcall, rho, ans, nm;
   SEXP Y;
