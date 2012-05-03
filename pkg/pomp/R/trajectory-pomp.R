@@ -92,8 +92,8 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
 
   }
 
-  if (length(znames)>0)
-    x[znames,,-1] <- apply(x[znames,,,drop=FALSE],c(1,2),diff)
+  for (z in znames)
+    x[z,,-1] <- apply(x[z,,,drop=FALSE],c(1,2),diff)
     
   if (as.data.frame) {
     x <- lapply(

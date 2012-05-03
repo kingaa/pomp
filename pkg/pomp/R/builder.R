@@ -99,8 +99,12 @@ footer <- list(
                skeleton="\n}\n\n"
                )
 
-pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmeasure, step.fn, skeleton) {
-
+pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmeasure, step.fn, skeleton)
+{
+  if (missing(name)) stop(sQuote("name")," must be supplied");
+  if (missing(statenames)) stop(sQuote("name")," must be supplied");
+  if (missing(paramnames)) stop(sQuote("name")," must be supplied");
+  if (missing(obsnames)) stop(sQuote("name")," must be supplied");
   name <- cleanForC(name)
   statenames <- cleanForC(statenames)
   paramnames <- cleanForC(paramnames)
