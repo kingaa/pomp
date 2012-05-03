@@ -45,9 +45,6 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
   dim(x0) <- c(nvar,nrep,1)
   dimnames(x0) <- list(statenames,NULL,NULL)
   
-  znames <- object@zeronames
-  if (length(znames)>0) x0[znames,,] <- 0
-
   type <- object@skeleton.type          # map or vectorfield?
   
   if (is.na(type))
@@ -58,6 +55,9 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
     x <- .Call(iterate_map,object,times,t0,x0,params)
     
   } else if (type=="vectorfield") {
+
+    znames <- object@zeronames
+    if (length(znames)>0) x0[znames,,] <- 0
 
     ## the 'savelist' contains C-level internals that are needed by 'pomp_vf_eval'
     ## it prevents garbage collection of these data
@@ -86,15 +86,16 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
 
     x <- array(data=t(X[-1,-1]),dim=c(nvar,nrep,ntimes),dimnames=list(statenames,NULL,NULL))
     
+    for (z in znames)
+      for (r in seq_len(ncol(x)))
+        x[z,r,-1] <- diff(x[z,r,])
+    
   } else {
     
     stop("deterministic skeleton not specified")
 
   }
 
-  for (z in znames)
-    x[z,,-1] <- apply(x[z,,,drop=FALSE],c(1,2),diff)
-    
   if (as.data.frame) {
     x <- lapply(
                 seq_len(ncol(x)),
