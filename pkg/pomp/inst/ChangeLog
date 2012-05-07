@@ -1,5 +1,22 @@
+2012-05-06  kingaa
+
+	* [r706] inst/doc/advanced_topics_in_pomp.pdf,
+	  inst/doc/intro_to_pomp.pdf: - update vignettes
+
+2012-05-03  kingaa
+
+	* [r705] R/trajectory-pomp.R: - really fix bug in 'trajectory' that
+	  occurs when 'zeronames' has length > 1
+	* [r704] src/R_init_pomp.c: - forgot to export
+	  'get_pomp_userdata_int' and 'get_pomp_userdata_double'
+	* [r703] DESCRIPTION, R/builder.R, R/trajectory-pomp.R, demo/sir.R:
+	  - fix bug in 'trajectory' for vectorfield case that shows up when
+	  'zeronames' has length > 1
+	  - re-work 'sir' demo so that it uses 'pompBuilder'
+
 2012-05-02  kingaa
 
+	* [r702] inst/ChangeLog:
 	* [r701] R/trajectory-pomp.R, src/pomp_internal.h, src/skeleton.c,
 	  src/trajectory.c: - work on the guts of the 'skeleton' and
 	  'trajectory' for speed up in vectorfield case

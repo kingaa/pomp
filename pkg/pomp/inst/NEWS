@@ -1,4 +1,8 @@
 NEWS
+0.42-2
+     o	Several minor bugs have been fixed.
+     	See the ChangeLog for details.
+
 0.42-1
      o	An EXPERIMENTAL facility for constructing pomp objects out of native C routines is now included (pompBuilder).
      	This facility is being actively developed and future changes may not be backward compatible.
