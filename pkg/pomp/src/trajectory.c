@@ -231,10 +231,10 @@ static struct {
       SEXP tvec, xvec, pvec, cvec;
     } R_fun;
     struct {
+      SEXP args;
       SEXP sindex;
       SEXP pindex;
       SEXP cindex;
-      SEXP args;
       pomp_skeleton *fun;
     } native_code;
   } shared;
@@ -249,7 +249,6 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params) {
   int mode = -1;
   SEXP fn, args;
   SEXP Snames, Pnames, Cnames;
-  SEXP retval;
   int *dim;
   int nvars, npars, nreps, ncovars;
 
@@ -259,8 +258,13 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params) {
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
   COMMON(mode) = mode;
+
   COMMON(object) = object;
   COMMON(params) = params;
+  if (!isNull(COMMON(object))) R_ReleaseObject(COMMON(object));
+  if (!isNull(COMMON(params))) R_ReleaseObject(COMMON(params));
+  R_PreserveObject(COMMON(object));
+  R_PreserveObject(COMMON(params));
 
   dim = INTEGER(GET_DIM(x0));
   nvars = dim[0];
@@ -304,31 +308,40 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params) {
 
     PROTECT(RFUN(Snames) = Snames); nprotect++;
     
-    PROTECT(retval = NEW_LIST(7)); nprotect++;
-    SET_VECTOR_ELT(retval,0,RFUN(fcall));
-    SET_VECTOR_ELT(retval,1,RFUN(rho));
-    SET_VECTOR_ELT(retval,2,RFUN(Snames));
-    SET_VECTOR_ELT(retval,3,RFUN(tvec));
-    SET_VECTOR_ELT(retval,4,RFUN(xvec));
-    SET_VECTOR_ELT(retval,5,RFUN(pvec));
-    SET_VECTOR_ELT(retval,6,RFUN(cvec));
-      
+    if (!isNull(RFUN(fcall))) R_ReleaseObject(RFUN(fcall));
+    if (!isNull(RFUN(rho))) R_ReleaseObject(RFUN(rho));
+    if (!isNull(RFUN(Snames))) R_ReleaseObject(RFUN(Snames));
+    if (!isNull(RFUN(tvec))) R_ReleaseObject(RFUN(tvec));
+    if (!isNull(RFUN(xvec))) R_ReleaseObject(RFUN(xvec));
+    if (!isNull(RFUN(pvec))) R_ReleaseObject(RFUN(pvec));
+    if (!isNull(RFUN(cvec))) R_ReleaseObject(RFUN(cvec));
+    R_PreserveObject(RFUN(fcall));
+    R_PreserveObject(RFUN(rho));
+    R_PreserveObject(RFUN(Snames));
+    R_PreserveObject(RFUN(tvec));
+    R_PreserveObject(RFUN(xvec));
+    R_PreserveObject(RFUN(pvec));
+    R_PreserveObject(RFUN(cvec));
+
     break;
   case 1:			// native code
+    // set aside userdata
+    NAT(args) = args;
     // construct index vectors
     PROTECT(NAT(sindex) = name_index(Snames,object,"statenames")); nprotect++;
     PROTECT(NAT(pindex) = name_index(Pnames,object,"paramnames")); nprotect++;
     PROTECT(NAT(cindex) = name_index(Cnames,object,"covarnames")); nprotect++;
     // extract pointer to user-defined function
     NAT(fun) = (pomp_skeleton *) R_ExternalPtrAddr(fn);
-    // set aside userdata
-    NAT(args) = args;
 
-    PROTECT(retval = NEW_LIST(4)); nprotect++;
-    SET_VECTOR_ELT(retval,0,args);
-    SET_VECTOR_ELT(retval,1,NAT(sindex));
-    SET_VECTOR_ELT(retval,2,NAT(pindex));
-    SET_VECTOR_ELT(retval,3,NAT(cindex));
+    if (!isNull(NAT(args))) R_ReleaseObject(NAT(args));
+    if (!isNull(NAT(sindex))) R_ReleaseObject(NAT(sindex));
+    if (!isNull(NAT(pindex))) R_ReleaseObject(NAT(pindex));
+    if (!isNull(NAT(cindex))) R_ReleaseObject(NAT(cindex));
+    R_PreserveObject(NAT(args));
+    R_PreserveObject(NAT(sindex));
+    R_PreserveObject(NAT(pindex));
+    R_PreserveObject(NAT(cindex));
 
     break;
   default:
@@ -336,7 +349,8 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params) {
     break;
   }
   UNPROTECT(nprotect);
-  return retval;
+  //  return retval;
+  return R_NilValue;
 }
 
 void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, int *ip) 
@@ -362,7 +376,9 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
   }
 }
 
-void pomp_desolve_takedown (SEXP savelist) {
+void pomp_desolve_takedown (void) {
+  R_ReleaseObject(COMMON(object));
+  R_ReleaseObject(COMMON(params));
   COMMON(object) = R_NilValue;
   COMMON(params) = R_NilValue;
   COMMON(nvars) = 0;
@@ -371,6 +387,13 @@ void pomp_desolve_takedown (SEXP savelist) {
   COMMON(nreps) = 0;
   switch (COMMON(mode)) {
   case 0:			// R function
+    R_ReleaseObject(RFUN(fcall));
+    R_ReleaseObject(RFUN(rho));
+    R_ReleaseObject(RFUN(Snames));
+    R_ReleaseObject(RFUN(tvec));
+    R_ReleaseObject(RFUN(xvec));
+    R_ReleaseObject(RFUN(pvec));
+    R_ReleaseObject(RFUN(cvec));
     RFUN(fcall) = R_NilValue;
     RFUN(rho) = R_NilValue;
     RFUN(Snames) = R_NilValue;
@@ -381,6 +404,10 @@ void pomp_desolve_takedown (SEXP savelist) {
     break;
   case 1:			// native code
     NAT(fun) = 0;
+    R_ReleaseObject(NAT(args));
+    R_ReleaseObject(NAT(sindex));
+    R_ReleaseObject(NAT(pindex));
+    R_ReleaseObject(NAT(cindex));
     NAT(args) = R_NilValue;
     NAT(sindex) = R_NilValue;
     NAT(pindex) = R_NilValue;
