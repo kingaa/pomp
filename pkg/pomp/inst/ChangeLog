@@ -1,3 +1,14 @@
+2012-05-08  kingaa
+
+	* [r713] DESCRIPTION, R/trajectory-pomp.R, src/trajectory.c: - use
+	  R_PreserveObject and R_ReleaseObject rather than the 'savelist'
+	  trick
+	* [r711] DESCRIPTION:
+
+2012-05-07  kingaa
+
+	* [r707] inst/ChangeLog, inst/NEWS: - update NEWS and ChangeLog
+
 2012-05-06  kingaa
 
 	* [r706] inst/doc/advanced_topics_in_pomp.pdf,
