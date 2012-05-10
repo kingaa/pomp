@@ -1,8 +1,7 @@
 library(pomp)
 
 tbasis <- seq(0,25,by=1/52)
-basis <- periodic.bspline.basis(tbasis,nbasis=3)
-colnames(basis) <- paste("seas",1:3,sep='')
+basis <- periodic.bspline.basis(tbasis,nbasis=3,names="seas%d")
 
 ## some parameters
 params <- c(
@@ -250,3 +249,44 @@ plot(simulate(po))
 
 dev.off()
 
+## test of vectorfield integrator
+
+data(euler.sir)
+
+po <- pomp(
+           window(euler.sir,end=2),
+           skeleton.type="vectorfield",
+           skeleton=function(x,t,params,...) {
+             xdot <- rep(0,length(x))
+             with(
+                  as.list(c(x,params)),
+                  {
+                    covars <- as.numeric(periodic.bspline.basis(t,nbasis=3,degree=3,period=1))
+                    beta <- sum(c(beta1,beta2,beta3)*covars)
+                    foi <- (iota+beta*I)/pop
+                    terms <- c(
+                               mu*pop,
+                               foi*S,
+                               mu*S,
+                               gamma*I,
+                               mu*I,
+                               mu*R
+                               )
+                    xdot[1:4] <- c(
+                                   terms[1]-terms[2]-terms[3],
+                                   terms[2]-terms[4]-terms[5],
+                                   terms[4]-terms[6],
+                                   terms[4]
+                                   )
+                    xdot
+                  }
+                  )
+           }
+           )
+
+x1 <- trajectory(po,hmax=1/52,as.data.frame=T)
+x2 <- trajectory(window(euler.sir,end=2),hmax=1/52,as.data.frame=T)
+
+stopifnot(identical(round(x1$S,3),round(x2$S,3)))
+stopifnot(identical(round(x1$I,3),round(x2$I,3)))
+stopifnot(identical(round(x1$cases,3),round(x2$cases,3)))

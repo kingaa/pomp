@@ -22,8 +22,7 @@ Loading required package: subplex
 Loading required package: deSolve
 > 
 > tbasis <- seq(0,25,by=1/52)
-> basis <- periodic.bspline.basis(tbasis,nbasis=3)
-> colnames(basis) <- paste("seas",1:3,sep='')
+> basis <- periodic.bspline.basis(tbasis,nbasis=3,names="seas%d")
 > 
 > ## some parameters
 > params <- c(
@@ -389,7 +388,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...))
 }
-<environment: 0x26bb410>
+<environment: 0x2277ff8>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE) 
@@ -399,7 +398,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...))
 }
-<environment: 0x264e268>
+<environment: 0x22dc348>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -463,7 +462,7 @@ function not specified
 > x <- simulate(po,params=params,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.033125 secs
+Time difference of 1.053949 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -480,7 +479,7 @@ Time difference of 1.033125 secs
 > X3 <- trajectory(po,params=params,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.7432306 secs
+Time difference of 0.6904695 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -530,7 +529,7 @@ R -31549.7 -30472.3 -30226.0 -29798.8 -29007.2 -28580 -27634 -26740
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.196313 secs
+Time difference of 1.30669 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -538,7 +537,7 @@ Time difference of 1.196313 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01725578 secs
+Time difference of 0.008178949 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -607,7 +606,48 @@ W           0 -1.381354e-02 3.473754e-01
 null device 
           1 
 > 
+> ## test of vectorfield integrator
+> 
+> data(euler.sir)
+> 
+> po <- pomp(
++            window(euler.sir,end=2),
++            skeleton.type="vectorfield",
++            skeleton=function(x,t,params,...) {
++              xdot <- rep(0,length(x))
++              with(
++                   as.list(c(x,params)),
++                   {
++                     covars <- as.numeric(periodic.bspline.basis(t,nbasis=3,degree=3,period=1))
++                     beta <- sum(c(beta1,beta2,beta3)*covars)
++                     foi <- (iota+beta*I)/pop
++                     terms <- c(
++                                mu*pop,
++                                foi*S,
++                                mu*S,
++                                gamma*I,
++                                mu*I,
++                                mu*R
++                                )
++                     xdot[1:4] <- c(
++                                    terms[1]-terms[2]-terms[3],
++                                    terms[2]-terms[4]-terms[5],
++                                    terms[4]-terms[6],
++                                    terms[4]
++                                    )
++                     xdot
++                   }
++                   )
++            }
++            )
+> 
+> x1 <- trajectory(po,hmax=1/52,as.data.frame=T)
+> x2 <- trajectory(window(euler.sir,end=2),hmax=1/52,as.data.frame=T)
+> 
+> stopifnot(identical(round(x1$S,3),round(x2$S,3)))
+> stopifnot(identical(round(x1$I,3),round(x2$I,3)))
+> stopifnot(identical(round(x1$cases,3),round(x2$cases,3)))
 > 
 > proc.time()
    user  system elapsed 
-  3.960   0.020   4.143 
+  3.896   0.036   4.149 
