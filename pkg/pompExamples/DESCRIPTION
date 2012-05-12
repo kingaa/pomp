@@ -1,8 +1,8 @@
 Package: pompExamples
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.20-4
-Date: 2012-05-09
+Version: 0.20-5
+Date: 2012-05-12
 Author: NCEAS Working Group on Inference for Mechanistic Models: Aaron King, Steve Ellner, Bruce Kendall, Daniel C. Reuman, Matt Ferrari, Ed Ionides, Helen Wearing
 Maintainer: Aaron A. King <kingaa@umich.edu>
 Description: Inference methods for partially-observed Markov processes
