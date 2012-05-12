@@ -5,6 +5,10 @@
 #include <Rdefines.h>
 #include <R_ext/Rdynload.h>
 
+inline double expit (double x) {return 1.0/(1.0+exp(-x));}
+
+inline double logit (double p) {return log(p/(1.0-p));}
+
 static inline double rgammawn (double sigma, double dt) {
   double sigmasq;
   sigmasq = sigma*sigma;
@@ -36,6 +40,11 @@ static double term_time (double t) {
 #define NOISE_SIGMA      (p[parindex[13]]) // white noise intensity
 #define POP              (p[parindex[14]]) // population size
 #define TAU              (p[parindex[15]]) // reporting SD
+#define S0               (p[parindex[16]]) // initial S
+#define E0               (p[parindex[17]]) // initial E
+#define I0               (p[parindex[18]]) // initial I
+#define R10              (p[parindex[19]]) // initial R1
+#define R20              (p[parindex[20]]) // initial R2
 
 #define SUS              (x[stateindex[0]]) // susceptibles
 #define EXP              (x[stateindex[1]]) // exposed
@@ -58,6 +67,69 @@ static double term_time (double t) {
 #define DSIMPOPDT        (f[stateindex[8]]) // simulated population size
 
 #define REPORTS (y[obsindex[0]])
+
+void pertussis_par_untrans (double *pt, double *p, int *parindex) 
+{
+  double sum;
+  pt[parindex[0]] = log(BIRTHRATE);
+  pt[parindex[1]] = log(DEATHRATE);
+  pt[parindex[2]] = log(MEANBETA);
+  pt[parindex[3]] = log(AMPLBETA);
+  pt[parindex[4]] = log(IMPORTS);
+  pt[parindex[5]] = log(SIGMA);
+  pt[parindex[6]] = log(GAMMA);
+  pt[parindex[7]] = log(ALPHA);
+  pt[parindex[8]] = log(ALPHA_RATIO);
+  pt[parindex[9]] = logit(REPORT_PROB);
+  pt[parindex[10]] = logit(BOOST_PROB);
+  pt[parindex[11]] = logit(POLAR_PHI);
+  pt[parindex[12]] = log(FOI_MOD);
+  pt[parindex[13]] = log(NOISE_SIGMA);
+  pt[parindex[15]] = log(TAU);
+
+  sum = S0+E0+I0+R10+R20;
+  pt[parindex[16]] = log(S0/sum);
+  pt[parindex[17]] = log(E0/sum);
+  pt[parindex[18]] = log(I0/sum);
+  pt[parindex[19]] = log(R10/sum);
+  pt[parindex[20]] = log(R20/sum);
+
+}
+
+void pertussis_par_trans (double *pt, double *p, int *parindex) 
+{
+  double sum;
+  double s, e, i, r1, r2;
+
+  pt[parindex[0]] = exp(BIRTHRATE);
+  pt[parindex[1]] = exp(DEATHRATE);
+  pt[parindex[2]] = exp(MEANBETA);
+  pt[parindex[3]] = exp(AMPLBETA);
+  pt[parindex[4]] = exp(IMPORTS);
+  pt[parindex[5]] = exp(SIGMA);
+  pt[parindex[6]] = exp(GAMMA);
+  pt[parindex[7]] = exp(ALPHA);
+  pt[parindex[8]] = exp(ALPHA_RATIO);
+  pt[parindex[9]] = expit(REPORT_PROB);
+  pt[parindex[10]] = expit(BOOST_PROB);
+  pt[parindex[11]] = expit(POLAR_PHI);
+  pt[parindex[12]] = exp(FOI_MOD);
+  pt[parindex[13]] = exp(NOISE_SIGMA);
+  pt[parindex[15]] = exp(TAU);
+
+  s = exp(S0);
+  e = exp(E0);
+  i = exp(I0);
+  r1 = exp(R10);
+  r2 = exp(R20);
+  sum = s+e+i+r1+r2;
+  pt[parindex[16]] = s/sum;
+  pt[parindex[17]] = e/sum;
+  pt[parindex[18]] = i/sum;
+  pt[parindex[19]] = r1/sum;
+  pt[parindex[20]] = r2/sum;
+
+}
 
 void pertussis_sveirr_EM (double *x, double *p, 
 			  int *stateindex, int *parindex, int *covindex, 

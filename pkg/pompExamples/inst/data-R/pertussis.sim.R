@@ -43,7 +43,8 @@ for (d in datasets) {
                "birthrate","deathrate","mean.beta","ampl.beta",
                "imports","sigma","gamma","alpha","alpha.ratio",
                "report.prob","boost.prob","polar.prob",
-               "foi.mod","noise.sigma","popsize","tau"
+               "foi.mod","noise.sigma","popsize","tau",
+               "S.0","E.0","I.0","R1.0","R2.0"
                ),
              statenames=c("S","E","I","R1","R2","cases","W","err","simpop"),
              zeronames=c("cases","err"),
@@ -51,12 +52,8 @@ for (d in datasets) {
              comp.names=c("S","E","I","R1","R2"),
              rmeasure = "negbin_rmeasure",
              dmeasure = "negbin_dmeasure",
-             logitvar=c("report.prob","boost.prob","polar.prob"),
-             logvar=c(
-               "birthrate","deathrate","mean.beta","ampl.beta","imports","sigma","gamma",
-               "alpha","alpha.ratio","foi.mod","noise.sigma","tau",
-               "S.0","E.0","I.0","R1.0","R2.0"
-               ),
+             parameter.inv.transform="pertussis_par_untrans",
+             parameter.transform="pertussis_par_trans",
              initializer = function (params, t0, statenames, comp.names, ivps, ...) {
                states <- numeric(length(statenames))
                names(states) <- statenames
@@ -65,18 +62,6 @@ for (d in datasets) {
                states[comp.names] <- round(params['popsize']*frac/sum(frac))
                states["simpop"] <- params["popsize"]
                states
-             },
-             parameter.inv.transform=function (params, logitvar, logvar, ivps, ...) {
-               params[ivps] <- params[ivps]/sum(params[ivps],na.rm=TRUE)
-               params[logitvar] <- qlogis(params[logitvar])
-               params[logvar] <- log(params[logvar])
-               params
-             },
-             parameter.transform=function (params, logitvar, logvar, ivps, ...) {
-               params[logitvar] <- plogis(params[logitvar])
-               params[logvar] <- exp(params[logvar])
-               params[ivps] <- params[ivps]/sum(params[ivps],na.rm=TRUE)
-               params
              }
              )
   coef(po) <- unlist(params[d,])

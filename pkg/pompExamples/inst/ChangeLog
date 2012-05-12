@@ -1,5 +1,16 @@
+2012-05-08  kingaa
+
+	* [r712] DESCRIPTION, tests/pertussis.Rout.save: - bring unit tests
+	  up to date
+	* [r710] DESCRIPTION: - update version number
+	* [r709] inst/doc/budmoth-model.pdf, inst/doc/pertussis-model.pdf:
+	  - update vignettes
+	* [r708] data/budmoth.sim.rda, data/pertussis.sim.rda: - update for
+	  compatibility with pomp version 0.42-2
+
 2012-04-21  kingaa
 
+	* [r672] inst/ChangeLog: - add ChangeLog
 	* [r671] DESCRIPTION, data/budmoth.sim.rda, data/pertussis.sim.rda,
 	  inst/NEWS, inst/data-R/budmoth.sim.R,
 	  inst/doc/budmoth-model-slices.rda,
