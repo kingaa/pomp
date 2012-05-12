@@ -1,7 +1,4 @@
-trajectory <- function (object, params, times, t0, ...)            
-  stop("function ",sQuote("trajectory")," is undefined for objects of class ",sQuote(class(object)))
-
-setGeneric('trajectory')                                                                            
+setGeneric("trajectory",function(object,...)standardGeneric("trajectory"))
 
 trajectory.internal <- function (object, params, times, t0, as.data.frame = FALSE, ...) {
 
