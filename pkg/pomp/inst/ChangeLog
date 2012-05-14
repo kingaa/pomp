@@ -1,3 +1,19 @@
+2012-05-12  kingaa
+
+	* [r716] DESCRIPTION, R/dmeasure-pomp.R, R/dprocess-pomp.R,
+	  R/pomp-methods.R, R/rmeasure-pomp.R, R/rprocess-pomp.R,
+	  R/skeleton-pomp.R, R/trajectory-pomp.R: - use fewer anonymous
+	  functions
+
+2012-05-10  kingaa
+
+	* [r715] DESCRIPTION, tests/sir.R, tests/sir.Rout.save: - add unit
+	  test for new trajectory codes
+
+2012-05-09  kingaa
+
+	* [r714] inst/ChangeLog:
+
 2012-05-08  kingaa
 
 	* [r713] DESCRIPTION, R/trajectory-pomp.R, src/trajectory.c: - use
