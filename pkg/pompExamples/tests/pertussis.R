@@ -15,3 +15,22 @@ tail(y)
 
 system.time(pf <- pfilter(pertussis.sim$full.small,seed=3445886L,Np=1000))
 logLik(pf)
+
+pttest <- function (po, digits = 15) {
+  identical(
+            signif(coef(po),digits=digits),
+            signif(partrans(po,partrans(po,coef(po),dir='inv'),dir='for'),digits=digits)
+            )
+}
+
+stopifnot(all(sapply(pertussis.sim,pttest)))
+
+pttest <- function (po, digits = 15) {
+  identical(
+            signif(coef(po,trans=T),digits=digits),
+            signif(partrans(po,partrans(po,coef(po,trans=T),dir='f'),dir='inv'),digits=digits)
+            )
+}
+
+stopifnot(all(sapply(pertussis.sim,pttest)))
+

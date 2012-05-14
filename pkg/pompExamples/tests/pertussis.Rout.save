@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2012-05-07 r59324) -- "Unsuffered Consequences"
+R version 2.15.0 (2012-03-30)
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -147,10 +147,29 @@ $full.big
 > 
 > system.time(pf <- pfilter(pertussis.sim$full.small,seed=3445886L,Np=1000))
    user  system elapsed 
- 22.373   0.004  22.451 
+ 22.637   0.004  22.720 
 > logLik(pf)
 [1] -3829.33
 > 
+> pttest <- function (po, digits = 15) {
++   identical(
++             signif(coef(po),digits=digits),
++             signif(partrans(po,partrans(po,coef(po),dir='inv'),dir='for'),digits=digits)
++             )
++ }
+> 
+> stopifnot(all(sapply(pertussis.sim,pttest)))
+> 
+> pttest <- function (po, digits = 15) {
++   identical(
++             signif(coef(po,trans=T),digits=digits),
++             signif(partrans(po,partrans(po,coef(po,trans=T),dir='f'),dir='inv'),digits=digits)
++             )
++ }
+> 
+> stopifnot(all(sapply(pertussis.sim,pttest)))
+> 
+> 
 > proc.time()
    user  system elapsed 
- 22.857   0.040  22.985 
+ 23.089   0.020  23.200 
