@@ -1,6 +1,6 @@
 \documentclass[10pt,reqno]{amsart}
 %\VignetteIndexEntry{The pertussis example}
-\usepackage{color}
+\usepackage[pdftex]{color}
 \usepackage{times}
 \pagestyle{plain}
 \usepackage[utf8]{inputenc}
