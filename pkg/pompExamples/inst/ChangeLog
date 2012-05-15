@@ -1,3 +1,22 @@
+2012-05-14  kingaa
+
+	* [r723] DESCRIPTION, R, R/version.R: - add 'version'
+	* [r720] DESCRIPTION, inst/doc/budmoth-model-slices.rda,
+	  inst/doc/budmoth-model-true-loglik.rda,
+	  inst/doc/budmoth-model.pdf,
+	  inst/doc/pertussis-model-true-loglik.rda,
+	  inst/doc/pertussis-model.Rnw, inst/doc/pertussis-model.pdf: -
+	  update vignettes
+	* [r719] DESCRIPTION, data/pertussis.sim.rda, tests/pertussis.R,
+	  tests/pertussis.Rout.save: - update 'pertussis.sim'
+
+2012-05-12  kingaa
+
+	* [r718] DESCRIPTION:
+	* [r717] inst/ChangeLog, inst/data-R/pertussis.sim.R,
+	  src/pertussis.c: - move parameter transformations into C for the
+	  pertussis example
+
 2012-05-08  kingaa
 
 	* [r712] DESCRIPTION, tests/pertussis.Rout.save: - bring unit tests
