@@ -113,7 +113,7 @@
     \code{covar} can be specified as either a matrix or a data frame.
     In either case the columns are taken to be distinct covariates.
     If \code{covar} is a data frame, \code{tcovar} can be either the name or the index of the time variable.
-    If a covariate table is supplied, then the value of each of the covariates is interpolated as needed, i.e., whenever \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, or \code{init.state} is evaluated.
+    If a covariate table is supplied, then the value of each of the covariates is interpolated as needed, i.e., whenever \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, or \code{init.state} is evaluated.
     The resulting interpolated values are passed to the corresponding functions as a numeric vector named \code{covars}.
   }
   \item{obsnames, statenames, paramnames, covarnames}{

@@ -22,8 +22,9 @@ CCode <- function (text, slot) {
 pompBuilder <- function (data, times, t0, name,
                          statenames, paramnames,
                          rmeasure, dmeasure, step.fn, step.fn.delta.t,
-                         skeleton, skeleton.type, skelmap.delta.t = 1, ...,
-                         link = TRUE) {
+                         skeleton, skeleton.type, skelmap.delta.t = 1,
+                         parameter.transform, parameter.inv.transform,
+                         ..., link = TRUE) {
   obsnames <- names(data)
   obsnames <- setdiff(obsnames,times)
   solib <- pompCBuilder(
@@ -34,7 +35,9 @@ pompBuilder <- function (data, times, t0, name,
                         rmeasure=rmeasure,
                         dmeasure=dmeasure,
                         step.fn=step.fn,
-                        skeleton=skeleton
+                        skeleton=skeleton,
+                        parameter.transform=parameter.transform,
+                        parameter.inv.transform=parameter.inv.transform
                         )
   if (link) pompLink(name)
   pomp(
@@ -49,6 +52,8 @@ pompBuilder <- function (data, times, t0, name,
        skeleton=render("{%name%}_skelfn",name=name),
        skeleton.type=skeleton.type,
        skelmap.delta.t=skelmap.delta.t,
+       parameter.transform=render("{%name%}_par_trans",name=name),
+       parameter.inv.transform=render("{%name%}_par_untrans",name=name),
        PACKAGE=name,
        obsnames=obsnames,
        statenames=statenames,
@@ -77,34 +82,52 @@ undefine <- list(
                  )
 
 header <- list(
-               file="/* pomp model file: {%name%} */\n\n#include <pomp.h>\n#include <R_ext/Rdynload.h>\n",
+               file="/* pomp model file: {%name%} */\n\n#include <pomp.h>\n#include <R_ext/Rdynload.h>\n\n",
                rmeasure="\nvoid {%name%}_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                dmeasure= "\nvoid {%name%}_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                step.fn="\nvoid {%name%}_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covar, double t, double dt)\n{\n",
-               skeleton="\nvoid {%name%}_skelfn (double *__f, double *__x, double *__p, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n"
+               skeleton="\nvoid {%name%}_skelfn (double *__f, double *__x, double *__p, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
+               parameter.transform="\nvoid {%name%}_par_trans (double *__pt, double *__p, int *__parindex)\n{\n",
+               parameter.inv.transform="\nvoid {%name%}_par_untrans (double *__pt, double *__p, int *__parindex)\n{\n"
                )
 
 decl <- list(
-             periodic_bspline_basis_eval="void (*periodic_bspline_basis_eval)(double,double,int,int,double*);\nperiodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n",
-             reulermultinom="void (*reulermultinom)(int,double,double*,double,double*);\nreulermultinom = (void (*)(int,double,double*,double,double*)) R_GetCCallable(\"pomp\",\"reulermultinom\");\n",
-             get_pomp_userdata="const SEXP (*get_pomp_userdata)(const char *);\npomp_get_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n",
-             get_pomp_userdata_int="const int * (*get_pomp_userdata_int)(const char *);\npomp_get_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
-             get_pomp_userdata_double="const double * (*get_pomp_userdata_double)(const char *);\npomp_get_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n"
-              )
+             periodic_bspline_basis_eval="\tvoid (*periodic_bspline_basis_eval)(double,double,int,int,double*);\nperiodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n",
+             reulermultinom="\tvoid (*reulermultinom)(int,double,double*,double,double*);\nreulermultinom = (void (*)(int,double,double*,double,double*)) R_GetCCallable(\"pomp\",\"reulermultinom\");\n",
+             get_pomp_userdata="\tconst SEXP (*get_pomp_userdata)(const char *);\npomp_get_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n",
+             get_pomp_userdata_int="\tconst int * (*get_pomp_userdata_int)(const char *);\npomp_get_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
+             get_pomp_userdata_double="\tconst double * (*get_pomp_userdata_double)(const char *);\npomp_get_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n",
+             logit="\tdouble logit(double p){return log(p/(1.0-p));}\n\n",
+             expit="\tdouble expit(double x){return 1.0/(1.0+exp(-x));}\n\n"
+             )
 
 footer <- list(
                rmeasure="\n}\n\n",
                dmeasure="\n}\n\n",
                step.fn="\n}\n\n",
-               skeleton="\n}\n\n"
+               skeleton="\n}\n\n",
+               parameter.transform="\n}\n\n",
+               parameter.inv.transform="\n}\n\n"
                )
 
-pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmeasure, step.fn, skeleton)
+utility.fns <- list(
+                    )
+
+
+pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmeasure,
+                          step.fn, skeleton, parameter.transform, parameter.inv.transform)
 {
   if (missing(name)) stop(sQuote("name")," must be supplied");
   if (missing(statenames)) stop(sQuote("name")," must be supplied");
   if (missing(paramnames)) stop(sQuote("name")," must be supplied");
   if (missing(obsnames)) stop(sQuote("name")," must be supplied");
+
+  mpt <- missing(parameter.transform)
+  mpit <- missing(parameter.inv.transform)
+  if (xor(mpt,mpit))
+    stop("if you supply one transformation function, you must supply its inverse")
+  has.trans <- !mpt
+
   name <- cleanForC(name)
   statenames <- cleanForC(statenames)
   paramnames <- cleanForC(paramnames)
@@ -116,6 +139,11 @@ pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmea
   out <- file(description=modelfile,open="w")
   
   cat(file=out,render(header$file,name=name))
+
+  for (f in utility.fns) {
+    cat(file=out,f)
+  }
+
   ## variable/parameter/observations definitions
   for (v in seq_along(paramnames)) {
     cat(file=out,render(define$var,variable=paramnames[v],ptr='__p',ilist='__parindex',index=v-1))
@@ -129,7 +157,27 @@ pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmea
   for (v in seq_along(statenames)) {
     cat(file=out,render(define$var,variable=paste0("D",statenames[v]),ptr='__f',ilist='__stateindex',index=v-1))
   }
+  for (v in seq_along(paramnames)) {
+    cat(file=out,render(define$var,variable=paste0("T",paramnames[v]),ptr='__pt',ilist='__parindex',index=v-1))
+  }
   cat(file=out,render(define$var.alt,variable="lik",ptr='__lik',index=0))
+
+  if (has.trans) {
+    ## parameter transformation function
+    cat(file=out,render(header$parameter.transform,name=name))
+    for (fn in names(decl)) {
+      if (grepl(fn,parameter.transform))
+        cat(file=out,decl[[fn]])
+    }
+    cat(file=out,parameter.transform,footer$parameter.transform)
+    ## inverse parameter transformation function
+    cat(file=out,render(header$parameter.inv.transform,name=name))
+    for (fn in names(decl)) {
+      if (grepl(fn,parameter.inv.transform))
+        cat(file=out,decl[[fn]])
+    }
+    cat(file=out,parameter.inv.transform,footer$parameter.inv.transform)
+  }
 
   ## rmeasure function
   cat(file=out,render(header$rmeasure,name=name),rmeasure,footer$rmeasure)
@@ -165,6 +213,9 @@ pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmea
   }
   for (v in seq_along(statenames)) {
     cat(file=out,render(undefine$var,variable=paste0("D",statenames[v])))
+  }
+  for (v in seq_along(paramnames)) {
+    cat(file=out,render(undefine$var,variable=paste0("T",paramnames[v])))
   }
   close(out)
 

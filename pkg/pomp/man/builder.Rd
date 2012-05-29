@@ -8,6 +8,7 @@
 pompBuilder(data, times, t0, name, statenames, paramnames, 
             rmeasure, dmeasure, step.fn, step.fn.delta.t,
             skeleton, skeleton.type, skelmap.delta.t = 1,
+            parameter.transform, parameter.inv.transform,
             \dots, link = TRUE)
 }
 \arguments{
@@ -33,6 +34,11 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
     \code{skeleton} is a C code that implements the deterministic skeleton.
     As in \code{pomp}, \code{skeleton.type} indicates whether the skeleton is a map (discrete-time) or vectorfield (continuous-time).
     If the former, \code{skelmap.delta.t} is the time-step of the map.
+  }
+  \item{parameter.transform, parameter.inv.transform}{
+    optional C codes that implement parameter transformations.
+    \code{parameter.transform} maps parameters from the estimation scale to the natural scale;
+    \code{parameter.inv.transformation} maps them from the natural scale to the estimation scale.
   }
   \item{\dots}{
     additional arguments are passed to \code{\link{pomp}}

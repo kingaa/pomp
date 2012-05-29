@@ -58,7 +58,6 @@ dmeas <- "
 "
 rmeas <- "
     Y = rlnorm(log(X),tau);
-    
 "
 step.fn <- "
   double S = exp(-r*dt);
@@ -71,6 +70,20 @@ skel <- "
   double S = exp(-r*dt);
   /* note that X is not over-written in the skeleton function */
   DX = pow(K,1-S)*pow(X,S); 
+"
+partrans <- "
+  Tr = exp(r);
+  TK = exp(K);
+  Tsigma = exp(sigma);
+  TX_0 = exp(X_0);
+  Ttau = exp(tau);
+"
+paruntrans <- "
+  Tr = log(r);
+  TK = log(K);
+  Tsigma = log(sigma);
+  TX_0 = log(X_0);
+  Ttau = log(tau);
 "
 
 pompBuilder(
@@ -87,12 +100,8 @@ pompBuilder(
             skeleton=skel,
             skeleton.type="map",
             skelmap.delta.t=1,
-            parameter.inv.transform=function(params,...){
-              log(params)
-            },
-            parameter.transform=function(params,...){
-              exp(params)
-            }
+            parameter.inv.transform=partrans,
+            parameter.transform=paruntrans
             ) -> Gompertz
 
 ## simulate some data
