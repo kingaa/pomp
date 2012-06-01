@@ -1,26 +1,24 @@
 require(pomp)
 
+## negative binomial measurement model
 dmeas <- "
-  lik = dbinom(cases,nearbyint(incid),rho,give_log);
+  double prob = theta/(theta+rho*incid);
+  lik = dnbinom(cases,theta,prob,give_log);
 "
 rmeas <- "
-  cases = rbinom(nearbyint(incid),rho);
+  double prob = theta/(theta+rho*incid);
+  cases = rnbinom(theta,prob);
 "
+## SIR process model with extra-demographic stochasticity
 step.fn <- '
   int nrate = 6;
   double rate[nrate];		// transition rates
   double trans[nrate];		// transition numbers
   double beta;			// transmission rate
   double dW;			// white noise increment
-  double period = 1.0;          // period of the seasonality
-  int nbasis = 3;               // number of seasonality basis functions
-  int deg = 3;                  // degree of the B-spline basis functions
-  double seasonality[nbasis];
   int k;
 
-  // compute transmission rate from seasonality
-  periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]); // evaluate the periodic B-spline basis
-  beta = beta1*seasonality[0]+beta2*seasonality[1]+beta3*seasonality[2];
+  beta = beta1*seas1+beta2*seas2+beta3*seas3;
 
   // compute the environmental stochasticity
   dW = rgammawn(beta_sd,dt);
@@ -52,16 +50,9 @@ skel <- '
   double term[nrate];		// transition numbers
   double beta;			// transmission rate
   double dW;			// white noise increment
-  double period = 1.0;          // period of the seasonality
-  int nbasis = 3;
-  int deg = 3;
-  double seasonality[nbasis];
   int k;
   
-  // compute transmission rate from seasonality
-  if (nbasis <= 0) return;
-  periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]); // evaluate the periodic B-spline basis
-  beta = beta1*seasonality[0]+beta2*seasonality[1]+beta3*seasonality[2];
+  beta = beta1*seas1+beta2*seas2+beta3*seas3;
 
   // compute the transition rates
   rate[0] = mu*popsize;		// birth into susceptible class
@@ -86,6 +77,7 @@ skel <- '
   Dincid = term[3];		// accumulate the new I->R transitions
   DW = 0;
 '
+## parameter transformations
 partrans <- "
   double sum;
   Tgamma = exp(gamma);
@@ -96,6 +88,7 @@ partrans <- "
   Tbeta3 = exp(beta3);
   Tbeta_sd = exp(beta_sd);
   Trho = expit(rho);
+  Ttheta = exp(theta);
   TS_0 = exp(S_0);
   TI_0 = exp(I_0);
   TR_0 = exp(R_0);
@@ -114,6 +107,7 @@ paruntrans <- "
   Tbeta3 = log(beta3);
   Tbeta_sd = log(beta_sd);
   Trho = logit(rho);
+  Ttheta = log(theta);
   sum = S_0+I_0+R_0;
   TS_0 = log(S_0/sum);
   TI_0 = log(I_0/sum);
@@ -121,6 +115,19 @@ paruntrans <- "
 "
 
 data(LondonYorke)
+
+cbind(
+      time=seq(from=1928,to=1934,by=0.01),
+      as.data.frame(
+                    periodic.bspline.basis(
+                                           x=seq(from=1928,to=1934,by=0.01),
+                                           nbasis=3,
+                                           degree=3,
+                                           period=1,
+                                           names="seas%d"
+                                           )
+                    )
+      ) -> covar
 
 pompBuilder(
             name="SIR",
@@ -137,12 +144,14 @@ pompBuilder(
             step.fn.delta.t=1/52/20,
             skeleton.type="vectorfield",
             skeleton=skel,
+            covar=covar,
+            tcovar="time",
             parameter.transform=partrans,
             parameter.inv.transform=paruntrans,
             statenames=c("S","I","R","incid","W"),
             paramnames=c(
               "gamma","mu","iota","beta1","beta2","beta3","beta.sd",
-              "popsize","rho","S.0","I.0","R.0"
+              "popsize","rho","theta","S.0","I.0","R.0"
               ), 
             zeronames=c("incid","W"),
             comp.names=c("S","I","R"),
@@ -159,9 +168,9 @@ pompBuilder(
 coef(po) <- c(
               gamma=26,mu=0.02,iota=0.01,
               beta1=120,beta2=140,beta3=100,
-              beta.sd=1e-3,
+              beta.sd=0.01,
               popsize=5e6,
-              rho=0.2,
+              rho=0.2,theta=0.001,
               S.0=0.22,I.0=0.0018,R.0=0.78
               )
 
@@ -184,12 +193,16 @@ plot(incid~time,data=x,col=as.factor(x$sim),pch=16)
 coef(po) <- coef(
                  traj.match(
                             pomp(
-                                 window(po,end=1930),
-                                 measurement.model=cases~norm(mean=rho*incid,sd=1000)
+                                 window(po,end=1930)
+                                 ## window(po,end=1930),
+                                 ## measurement.model=cases~norm(mean=rho*incid,sd=100)
                                  ),
-                            est=c("beta1","beta2","beta3","S.0","I.0","R.0"),
+                            est=c("S.0","I.0","R.0"),
                             transform=TRUE
                             )
                  )
+
+pf <- pfilter(po,Np=1000,max.fail=100)
+print(round(logLik(pf),1))
 
 dyn.unload("SIR.so")

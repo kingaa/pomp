@@ -172,7 +172,7 @@ typedef void pomp_measure_model_density (double *lik, double *y, double *x, doub
 // i.e., the rate r for an Euler process that gives the same
 // expected waiting time as the exponential process it approximates.
 // In particular r -> R as dt -> 0.
-static inline double exp2geom_rate_correction (double R, double dt) {
+static R_INLINE double exp2geom_rate_correction (double R, double dt) {
   return (dt > 0) ? log(1.0+R*dt)/dt : R;
 }
 
@@ -182,7 +182,7 @@ static inline double exp2geom_rate_correction (double R, double dt) {
 // mu dW/dt is a candidate for a random rate process within an
 // Euler-multinomial context, i.e., 
 // E[mu*dW] = mu*dt and Var[mu*dW] = mu*sigma^2*dt
-static inline double rgammawn (double sigma, double dt) {
+static R_INLINE double rgammawn (double sigma, double dt) {
   double sigmasq;
   sigmasq = sigma*sigma;
   return (sigmasq > 0) ? rgamma(dt/sigmasq,sigmasq) : dt;
@@ -204,5 +204,29 @@ void reulermultinom (int m, double size, double *rate, double dt, double *trans)
 
 // compute probabilities of eulermultinomial transitions
 double deulermultinom (int m, double size, double *rate, double dt, double *trans, int give_log);
+
+static R_INLINE double rbetabinom (double size, double prob, double theta) {
+  return rbinom(size,rbeta(prob*theta,(1.0-prob)*theta));
+}
+
+static R_INLINE double dbetabinom (double x, double size, double prob, double theta, int give_log) {
+  double a = theta*prob;
+  double b = theta*(1.0-prob);
+  double f = lchoose(size,x)-lbeta(a,b)+lbeta(a+x,b+size-x);
+  return (give_log) ? f : exp(f);
+}
+
+static R_INLINE double rbetanbinom (double mu, double size, double theta) {
+  double prob = size/(size+mu);
+  return rnbinom(size,rbeta(prob*theta,(1.0-prob)*theta));
+}
+
+static R_INLINE double dbetanbinom (double x, double mu, double size, double theta, int give_log) {
+  double prob = size/(size+mu);
+  double a = theta*prob;
+  double b = theta*(1.0-prob);
+  double f = lchoose(size+x-1,size-1)-lbeta(a,b)+lbeta(a+size,b+x);
+  return (give_log) ? f : exp(f);
+}
 
 #endif

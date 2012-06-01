@@ -58,8 +58,9 @@ void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt)
   double e;
   if ((tab == 0) || (tab->length < 1) || (tab->width < 1)) return;
   tab->index = findInterval(tab->x,tab->length,x,TRUE,TRUE,tab->index,&flag);
-  if (flag != 0)              // we are extrapolating
-    warning("table_lookup: extrapolating (flag %d) at %le", flag, x);
+  // warn only if we are *outside* the interval
+  if ((x < tab->x[0]) || (x > tab->x[(tab->length)-1]))
+    warning("table_lookup: extrapolating at %le", x);
   e = (x - tab->x[tab->index-1]) / (tab->x[tab->index] - tab->x[tab->index-1]);
   for (j = 0; j < tab->width; j++) {
     k = j*(tab->length)+(tab->index);
