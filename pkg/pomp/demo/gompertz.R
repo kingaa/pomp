@@ -51,7 +51,7 @@ pomp(
      }
      ) -> gompertz
 
-## Now code up the Gompertz example using native routines results in much faster computations.
+## Now code up the Gompertz example using native routines: results in much faster computations.
 
 dmeas <- "
     lik = dlnorm(Y,log(X),tau,give_log);

@@ -20,17 +20,28 @@ CCode <- function (text, slot) {
 }
 
 pompBuilder <- function (data, times, t0, name,
-                         statenames, paramnames,
+                         statenames, paramnames, tcovar, covar,
                          rmeasure, dmeasure, step.fn, step.fn.delta.t,
                          skeleton, skeleton.type, skelmap.delta.t = 1,
                          parameter.transform, parameter.inv.transform,
                          ..., link = TRUE) {
+  if (!is.data.frame(data)) stop(sQuote("data")," must be a data-frame")
   obsnames <- names(data)
   obsnames <- setdiff(obsnames,times)
+  if (!missing(covar)) {
+    if (!is.data.frame(covar)) stop(sQuote("covar")," must be a data-frame")
+    covarnames <- colnames(covar)
+    covarnames <- setdiff(covarnames,tcovar)
+  } else {
+    covar <- matrix(data=0,nrow=0,ncol=0)
+    tcovar <- numeric(0)
+    covarnames <- character(0)
+  }
   solib <- pompCBuilder(
                         name=name,
                         statenames=statenames,
                         paramnames=paramnames,
+                        covarnames=covarnames,
                         obsnames=obsnames,
                         rmeasure=rmeasure,
                         dmeasure=dmeasure,
@@ -58,6 +69,9 @@ pompBuilder <- function (data, times, t0, name,
        obsnames=obsnames,
        statenames=statenames,
        paramnames=paramnames,
+       covarnames=covarnames,
+       tcovar=tcovar,
+       covar=covar,
        ...
        )
 }
@@ -85,7 +99,7 @@ header <- list(
                file="/* pomp model file: {%name%} */\n\n#include <pomp.h>\n#include <R_ext/Rdynload.h>\n\n",
                rmeasure="\nvoid {%name%}_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                dmeasure= "\nvoid {%name%}_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
-               step.fn="\nvoid {%name%}_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covar, double t, double dt)\n{\n",
+               step.fn="\nvoid {%name%}_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
                skeleton="\nvoid {%name%}_skelfn (double *__f, double *__x, double *__p, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                parameter.transform="\nvoid {%name%}_par_trans (double *__pt, double *__p, int *__parindex)\n{\n",
                parameter.inv.transform="\nvoid {%name%}_par_untrans (double *__pt, double *__p, int *__parindex)\n{\n"
@@ -114,13 +128,14 @@ utility.fns <- list(
                     )
 
 
-pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmeasure,
+pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames, rmeasure, dmeasure,
                           step.fn, skeleton, parameter.transform, parameter.inv.transform)
 {
   if (missing(name)) stop(sQuote("name")," must be supplied");
-  if (missing(statenames)) stop(sQuote("name")," must be supplied");
-  if (missing(paramnames)) stop(sQuote("name")," must be supplied");
-  if (missing(obsnames)) stop(sQuote("name")," must be supplied");
+  if (missing(statenames)) stop(sQuote("statenames")," must be supplied");
+  if (missing(paramnames)) stop(sQuote("paramnames")," must be supplied");
+  if (missing(obsnames)) stop(sQuote("obsnames")," must be supplied");
+  if (missing(covarnames)) stop(sQuote("covarnames")," must be supplied");
 
   mpt <- missing(parameter.transform)
   mpit <- missing(parameter.inv.transform)
@@ -131,6 +146,7 @@ pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmea
   name <- cleanForC(name)
   statenames <- cleanForC(statenames)
   paramnames <- cleanForC(paramnames)
+  covarnames <- cleanForC(covarnames)
   obsnames <- cleanForC(obsnames)
 
   modelfile <- paste0(name,".c")
@@ -147,6 +163,9 @@ pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmea
   ## variable/parameter/observations definitions
   for (v in seq_along(paramnames)) {
     cat(file=out,render(define$var,variable=paramnames[v],ptr='__p',ilist='__parindex',index=v-1))
+  }
+  for (v in seq_along(covarnames)) {
+    cat(file=out,render(define$var,variable=covarnames[v],ptr='__covars',ilist='__covindex',index=v-1))
   }
   for (v in seq_along(statenames)) {
     cat(file=out,render(define$var,variable=statenames[v],ptr='__x',ilist='__stateindex',index=v-1))
@@ -204,6 +223,9 @@ pompCBuilder <- function (name, statenames, paramnames, obsnames, rmeasure, dmea
   ## undefine variables
   for (v in seq_along(paramnames)) {
     cat(file=out,render(undefine$var,variable=paramnames[v]))
+  }
+  for (v in seq_along(covarnames)) {
+    cat(file=out,render(undefine$var,variable=covarnames[v]))
   }
   for (v in seq_along(statenames)) {
     cat(file=out,render(undefine$var,variable=statenames[v]))

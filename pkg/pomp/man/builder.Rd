@@ -6,6 +6,7 @@
 }
 \usage{
 pompBuilder(data, times, t0, name, statenames, paramnames, 
+            tcovar, covar,
             rmeasure, dmeasure, step.fn, step.fn.delta.t,
             skeleton, skeleton.type, skelmap.delta.t = 1,
             parameter.transform, parameter.inv.transform,
@@ -22,6 +23,11 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
   }
   \item{statenames, paramnames}{
     names of state-variables and parameters, respectively
+  }
+  \item{tcovar, covar}{
+    optional.
+    \code{covar} is a data-frame containing covariates (variables in columns, timepoints in rows);
+    \code{tcovar} is the name of the column containing time.
   }
   \item{rmeasure, dmeasure}{
     C codes implementing the measurement model
