@@ -1,0 +1,69 @@
+
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> data(ou2)
+> 
+> set.seed(9994847L)
+> 
+> pf <- pfilter(ou2,Np=1000,seed=343439L)
+> print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
+   x1.0    x2.0 alpha.1 alpha.4 
+   -3.0     4.0     0.8     0.9 
+> cat("particle filter log likelihood at truth\n")
+particle filter log likelihood at truth
+> print(pf$loglik,digits=4)
+[1] -476.6
+> 
+> pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
+> pf.ll <- sapply(pf,logLik)
+> ll.est <- log(mean(exp(pf.ll-mean(pf.ll))))+mean(pf.ll)
+> ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
+> print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
+   loglik loglik.se 
+  -479.61      0.46 
+> 
+> data(euler.sir)
+> pf <- pfilter(euler.sir,Np=100,seed=394343L)
+> print(coef(pf))
+   gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
+2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
+     rho      S.0      I.0      R.0 
+6.00e-01 6.50e-02 1.00e-03 9.35e-01 
+> print(pf$loglik,digits=4)
+[1] -947.4
+> 
+> p <- coef(euler.sir)
+> euler.sir@params <- numeric(0)
+> p["iota"] <- 1
+> pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L)
+> print(coef(pf))
+   gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
+2.60e+01 2.00e-02 1.00e+00 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
+     rho      S.0      I.0      R.0 
+6.00e-01 6.50e-02 1.00e-03 9.35e-01 
+> print(logLik(pf),digits=4)
+[1] -945.4
+> 
+> proc.time()
+   user  system elapsed 
+  6.224   0.048   6.307 

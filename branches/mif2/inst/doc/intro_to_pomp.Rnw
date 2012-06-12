@@ -1,0 +1,1838 @@
+\documentclass[10pt,reqno,final]{amsart}
+%\VignetteIndexEntry{Introduction to pomp}
+\usepackage{times}
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[round]{natbib}
+\usepackage{paralist}
+\usepackage{float}
+
+\setlength{\textwidth}{6.25in}
+\setlength{\textheight}{8.75in}
+\setlength{\evensidemargin}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\topmargin}{-0.35in}
+\setlength{\parskip}{0.1in}  
+\setlength{\parindent}{0.0in}  
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
+
+\floatstyle{ruled}
+\newfloat{textbox}{t}{tbx}
+\floatname{textbox}{Box}
+
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\pkg}[1]{\textsf{#1}}
+\newcommand{\R}{\textsf{R}}
+\newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
+
+\title[Introduction to pomp]{Introduction to pomp:\\ inference for partially-observed Markov processes}
+
+\author[King]{Aaron A. King}
+\author[Ionides]{Edward L. Ionides}
+\author[Bret\'o]{Carles Bret\'o}
+\author[Ellner]{Stephen P. Ellner}
+\author[Kendall]{Bruce E. Kendall}
+\author[Ferrari]{Matthew Ferrari}
+\author[Lavine]{Michael L. Lavine}
+\author[Reuman]{Daniel C. Reuman}
+
+\address{
+  A. A. King,
+  Departments of Ecology \& Evolutionary Biology and Mathematics, 
+  University of Michigan, 
+  Ann Arbor, Michigan
+  48109-1048 USA
+}
+
+\email{kingaa at umich dot edu} 
+
+\urladdr{http://pomp.r-forge.r-project.org}
+
+\date{\today, \pkg{pomp}~version~\Sexpr{packageDescription("pomp",fields="Version")}}
+
+\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T,resolution=100}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\maketitle
+
+\tableofcontents
+
+<<set-opts,echo=F,results=hide>>=
+  glop <- options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
+  library(pomp)
+  pdf.options(useDingbats=FALSE)
+  set.seed(5384959)
+@ 
+
+\section{Partially-observed Markov processes}
+
+Partially-observed Markov process models are also known as state-space models or stochastic dynamical systems.
+The \R\ package \pkg{pomp}\ provides facilities for fitting such models to uni- or multi-variate time series, for simulating them, for assessing model adequacy, and for comparing among models.
+The methods implemented in \pkg{pomp}\ are all ``plug-and-play'' in the sense that they require only that one be able to simulate the process portion of the model.
+This property is desirable because it will typically be the case that a mechanistic model will not be otherwise amenable to standard statistical analyses, but will be relatively easy to simulate.
+Even when one is interested in a model for which one can write down an explicit likelihood, for example, there are probably models that are ``nearby'' and equally interesting for which the likelihood cannot explicitly be written.
+The price one pays for this flexibility is primarily in terms of computational expense.
+%% more on: why plug-and-play: flexibility of model choice aids scientific inference by allowing us to entertain multiple competing hypotheses
+%% ability to fit a variety of alternative models using the same statistical/computational approach makes direct comparison easier
+
+A partially-observed Markov process has two parts.
+First, there is the true underlying process which is generating the data.
+This is typically the thing we are most interested in: our goal is usually to better understand this process.
+Specifically, we may have various alternate hypotheses about how this system functions and we want to see whether time series data can tell us which hypotheses explain the data better.
+The challenge, of course, is that the data shed light on the system only indirectly.
+
+\pkg{pomp}\ assumes that we can translate our hypotheses about the underlying, unobserved process into a Markov process model:
+That is, we are willing to assume that the system has a true \emph{state} process, $X_t$ that is Markovian.
+In particular, given any sequence of times $t_0$, $t_1$, \dots, $t_n$, the Markov property allows us to write
+\begin{equation}\label{eq:state-process}
+  X_{t_{k+1}}\;\sim\;f(X_{t_{k}},\theta),
+\end{equation}
+for each $k=1,\dots,n$, where $f$ is some density.
+[In this document, we will be fairly cavalier about abusing notation, using the letter $f$ to denote a probability distribution function generically, assuming that the reader will be able to unambiguously tell which probability distribution we're talking about from the arguments to $f$ and the context.]
+That is, we assume that the state at time $t_{k+1}$ depends only on the state at time $t_{k}$ and on some parameters $\theta$.
+
+In addition to the state process $X_t$, there is some measurement or observation process $Y_t$ which models the process by which the data themselves are generated and links the data therefore to the state process.
+In particular, we assume that
+\begin{equation}\label{eq:meas-process}
+  Y_t\;\sim\;f(X_t,\theta)
+\end{equation}
+for all times $t$.
+That is, that the observations $Y_t$ are random variables that depend only on the state \emph{at that time} as well as on some parameters.
+
+So, to specify a partially-observed Markov process model, one has to specify a process (unobserved or state) model and a measurement (observation) model.
+This seems straightforward enough, but from the computational point of view, there are actually two aspects to each model that may be important.
+On the one hand, one may need to \emph{evaluate} the probability density of the state-transition $X_{t_{k}}\;\to\;X_{t_{k+1}}$, i.e., to compute $f(X_{t_{k+1}}\,\vert\,X_{t_{k}},\theta)$.
+On the other hand, one may need to \emph{simulate} this distribution, i.e., to draw random samples from the distribution of $X_{t_{k+1}}\;\vert\;X_{t_k}$.
+Depending on the model and on what one wants specifically to do, it may be technically easier or harder to do one of these or the other.
+Likewise, one may want to simulate, or evaluate the likelihood of, observations $Y_t$.
+At its most basic level \pkg{pomp} is an infrastructure that allows you to encode your model by specifying some or all of these four basic components:
+\begin{compactdesc}
+\item[\code{rprocess}] a simulator of the process model,
+\item[\code{dprocess}] an evaluator of the process model probability density function,
+\item[\code{rmeasure}] a simulator of the measurement model, and
+\item[\code{dmeasure}] an evaluator of the measurement model probability density function.
+\end{compactdesc}
+Once you've encoded your model, \pkg{pomp} provides a number of algorithms you can use to work with it.
+In particular, within \pkg{pomp}, you can:
+\begin{compactenum}[(1)]
+\item simulate your model easily, using \code{simulate},
+\item integrate your model's deterministic skeleton, using \code{trajectory},
+\item estimate the likelihood for any given set of parameters using sequential Monte Carlo, implemented in \code{pfilter},
+\item find maximum likelihood estimates for parameters using iterated filtering, implemented in \code{mif},
+\item estimate parameters using a simulated quasi-maximum-likelihood approach called \emph{nonlinear forecasting}, implemented in \code{nlf},
+\item estimate parameters using trajectory matching, as implemented in \code{traj.match},
+\item estimate parameters using probe matching, as implemented in \code{probe.match},
+\item print and plot data, simulations, and diagnostics for the foregoing algorithms,
+\item build new algorithms for partially observed Markov processes upon the foundations \pkg{pomp} provides, using the package's applications programming interface (API).
+\end{compactenum}
+In this document, we'll see how all this works using relatively simple examples.
+
+\section{A first example: a simple discrete-time population model.}
+
+We'll demonstrate the basics of \pkg{pomp} using a very simple discrete-time model.
+The plug-and-play methods in \pkg{pomp} were designed to work on more complicated models, and for our first example, they'll be extreme overkill, but starting with a simple model will help make the implementation of more general models clear.
+Moreover, our first example will be one for which plug-and-play methods are not even necessary.
+This will allow us to compare the results from generalizable plug-and-play methods with exact results from specialized methods appropriate to this particular model.
+Later we'll look at a continuous-time model for which no such special tricks are available.
+
+Consider the discrete-time Gompertz model of population growth.
+Under this model, the density, $X_{t+{\Delta}t}$, of a population of plants or animals at time $t+{\Delta}t$ depends on the density, $X_{t}$, at time $t$ according to
+\begin{equation}\label{eq:gompertz1}
+  X_{t+{\Delta}t}=K^{1-e^{-r\,{\Delta}t}}\,X_{t}^{e^{-r\,{\Delta}t}}\,\varepsilon_{t},
+\end{equation}
+where $K$ is the so-called ``carrying capacity'' of the population, $r$ is a positive parameter, and the $\varepsilon_{t}$ are independent and identically-distributed lognormal random variables.
+In different notation, this model is
+\begin{equation}\label{eq:gompertz2}
+  \log{X_{t+{\Delta}t}}\;\sim\;\mathrm{normal}(\log{K}+\log{\left(\frac{X_t}{K}\right)}\,e^{-r\,{\Delta}t},\sigma),
+\end{equation}
+where $\sigma^2={\mathrm{Var}[\log{\epsilon_{t}}]}$.
+We'll assume that we can measure the population density only with error.
+In particular, we'll assume that errors in measurement are lognormally distributed:
+\begin{equation}\label{eq:gompertz-obs}
+  \log{Y_{t}}\;\sim\;\mathrm{normal}(\log{X_{t}},\tau).
+\end{equation}
+
+As we noted above, for this particular model, it isn't necessary to use plug-and-play methods: 
+one can obtain exact maximum likelihood estimates of this model's parameters using the Kalman filter.
+We will demonstrate this below and use it to check the results of plug-and-play inference.
+In this document, we'll approach this model as we would a more complex model for which no such exact estimation is available.
+
+\section{Defining a partially observed Markov process in \pkg{pomp}.}
+
+In order to fully specify this partially-observed Markov process, we must implement both the process model (i.e., the unobserved process) and the measurement model (the observation process).
+As we saw before, we would like to be able to:
+\begin{enumerate}
+\item \label{it:rproc} simulate from the process model, i.e., make a random draw from $X_{t+{\Delta}t}\,\vert\,X_{t}=x$ for arbitrary $x$ and $t$ (\code{rprocess}),
+\item \label{it:dproc} compute the probability density function (pdf) of state transitions, i.e., compute $f(X_{t+{\Delta}t}=x'\,\vert\,X_{t}=x)$ for arbitrary $x$, $x'$, $t$, and ${\Delta}t$ (\code{dprocess}),
+\item \label{it:rmeas} simulate from the measurement model, i.e., make a random draw from $Y_{t}\,\vert\,X_{t}=x$ for arbitrary $x$ and $t$ (\code{rmeasure}),
+\item \label{it:dmeas} compute the measurement model pdf, i.e., $f(Y_{t}=y\,\vert\,X_{t}=x)$ for arbitrary $x$, $y$, and $t$ (\code{dmeasure}), and
+\item \label{it:skel} compute the \emph{deterministic skeleton}.
+  In discrete-time, this is the map $x\,\mapsto\,\mathbb{E}[X_{t+{\Delta}t}\,\vert\,X_{t}=x]$ for arbitrary $x$.
+\end{enumerate}
+For this simple model, all this is easy enough.
+More generally, it will be difficult to do some of these things.
+Depending on what we wish to accomplish, however, we may not need all of these capabilities and in particular,
+\textbf{to use any particular one of the algorithms in \pkg{pomp}, we need never specify \emph{all} of \ref{it:rproc}--\ref{it:skel}.}
+For example, to simulate data, all we need is \ref{it:rproc} and \ref{it:rmeas}.
+To run a particle filter (and hence to use iterated filtering, \code{mif}), one needs \ref{it:rproc} and \ref{it:dmeas}.
+To do MCMC, one needs \ref{it:dproc} and \ref{it:dmeas}.
+Nonlinear forecasting (\code{nlf}) and probe matching (\code{probe.match}) require \ref{it:rproc} and \ref{it:rmeas}.
+Trajectory matching (\code{traj.match}) requires \ref{it:dmeas} and \ref{it:skel}.
+
+Using \pkg{pomp}, the first step is always to construct an \R\ object that encodes the model and the data.
+Naturally enough, this object will be of class \code{pomp}.
+The key step in this is to specify functions to do some or all of \ref{it:rproc}--\ref{it:skel}, along with data and (optionally) other information.
+The package provides a number algorithms for fitting the models to the data, for simulating the models, studying deterministic skeletons, and so on.
+The documentation (\code{?pomp}) spells out the usage of the \code{pomp} constructor, including detailed specifications for all its arguments and a worked example.
+
+Let's see how to implement the Gompertz model in \pkg{pomp}.
+Here, we'll take the shortest path to this goal.
+In the ``Advanced topics in \pkg{pomp}'' vignette, we show how one can make the codes much more efficient using compiled native (C or FORTRAN) code.
+
+First, we write a function that implements the process model simulator.
+This is a function that will simulate a single step ($t\to{t+{\Delta}t}$) of the unobserved process \eqref{eq:gompertz1}.
+<<gompertz-proc-sim-def>>=
+require(pomp)
+
+gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
+  ## unpack the parameters:
+  r <- params["r"]
+  K <- params["K"]
+  sigma <- params["sigma"]
+  ## the state at time t:
+  X <- x["X"]
+  ## generate a log-normal random variable:
+  eps <- exp(rnorm(n=1,mean=0,sd=sigma))
+  ## compute the state at time t+delta.t:
+  S <- exp(-r*delta.t)
+  xnew <- c(X=unname(K^(1-S)*X^S*eps))
+  return(xnew)
+}
+@ 
+The translation from the mathematical description \eqref{eq:gompertz1} to the simulator is straightforward.
+When this function is called, the argument \code{x} contains the state at time \code{t}.
+The parameters (including $K$, $r$, and $\sigma$) are passed in the argument \code{params}.
+Notice that \code{x} and \code{params} are named numeric vectors and that the output must be also be a named numeric vector.
+In fact, the names of the output vector (here \code{xnew}) must be the same as those of the input vector \code{x}.
+The algorithms in \pkg{pomp} all make heavy use of the \code{names} attributes of vectors and matrices.
+The argument \code{delta.t} tells how big the time-step is. 
+In this case, our time-step will be 1 unit; 
+we'll see below how that gets specified.
+
+Next, we'll implement a simulator for the observation process \eqref{eq:gompertz-obs}.
+<<gompertz-meas-sim-def>>=
+gompertz.meas.sim <- function (x, t, params, ...) {
+  ## unpack the parameters:
+  tau <- params["tau"]
+  ## state at time t:
+  X <- x["X"]
+  ## generate a simulated observation:
+  y <- c(Y=unname(rlnorm(n=1,meanlog=log(X),sd=tau)))
+  return(y)
+}
+@ 
+Again the translation from the model \eqref{eq:gompertz-obs} is straightforward.
+When \code{gompertz.meas.sim} is called, the unobserved states at time \code{t} will be in the named numeric vector \code{x} and the parameters in \code{params} as before.
+The function returns a named numeric vector that represents a single draw from the observation process \eqref{eq:gompertz-obs}.
+
+Complementing the measurement model simulator is the corresponding measurement model density, which we can implement as follows:
+<<gompertz-meas-dens-def>>=
+gompertz.meas.dens <- function (y, x, t, params, log, ...) {
+  ## unpack the parameters:
+  tau <- params["tau"]
+  ## state at time t:
+  X <- x["X"]
+  ## observation at time t:
+  Y <- y["Y"]
+  ## compute the likelihood of Y|X,tau
+  f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
+  return(f)
+}
+@ 
+We'll need this later on for likelihood-based inference.
+Note that \code{gompertz.meas.dens} is closely related to \code{gompertz.meas.sim}.
+
+\clearpage
+\section{Simulating the model: \code{simulate}}
+
+With the two functions above, we already have all we need to simulate the full model.
+The first step is to construct an \R\ object of class \code{pomp} which will serve as a container to hold the model and data.
+This is done with a call to \code{pomp}:
+<<first-pomp-construction,eval=F>>=
+gompertz <- pomp(
+                 data=data.frame(
+                   time=1:100,
+                   Y=NA
+                   ),
+                 times="time",
+                 rprocess=discrete.time.sim(
+                   step.fun=gompertz.proc.sim,
+                   delta.t=1
+                   ),
+                 rmeasure=gompertz.meas.sim,
+                 t0=0
+                 )
+@ 
+The first argument (\code{data}) specifies a data-frame that holds the data and the times at which the data were observed.
+Since this is a toy problem, we have no data.
+In a moment, however, we'll simulate some data so we can explore \pkg{pomp}'s various fitting methods.
+The second argument (\code{times}) specifies which of the columns of \code{data} is the time variable.
+The third argument (\code{rprocess}) specifies that the process model simulator will be in discrete time, one step at a time.
+The function \code{discrete.time.sim} belongs to the \pkg{pomp} package.
+It takes the argument \code{step.fun}, which specifies the particular function that actually takes the step.
+Its second argument, \code{delta.t}, specifies the duration of the time step (by default, \code{delta.t=1}).
+The argument \code{rmeasure} specifies the measurement model simulator function.
+\code{t0} fixes $t_0$ for this model; here we have chosen this to be one time unit before the first observation.
+
+Before we can simulate the model, we need to settle on some parameter values.
+We do this by specifying a named numeric vector that contains at least all the parameters needed by the functions \code{gompertz.proc.sim} and \code{gompertz.meas.sim}.
+The parameter vector needs to specify the initial conditions $X(t_{0})=x_{0}$ as well.
+<<set-params>>=
+theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1,X.0=1)
+@ 
+In addition to the parameters $r$, $K$, $\sigma$, and $\tau$, note that we've specified the initial condition $X_0$ in the vector \code{theta}.
+The fact that the initial condition parameter's name ends in ``\code{.0}'' is significant: 
+it tells \code{pomp} that this is the initial condition of the state variable \code{X}.
+This use of the ``\code{.0}'' suffix is the default behavior of \code{pomp}: 
+one can also parameterize initial conditions in an arbitrary way using the optional \code{initializer} argument to \code{pomp}.
+See the documentation (\verb+?pomp+) for details.
+
+Now we can simulate the model:
+<<gompertz-first-simulation,eval=F>>=
+gompertz <- simulate(gompertz,params=theta)
+@ 
+<<gompertz-get-data,eval=T,echo=F>>=
+data(gompertz)
+dat <- as.data.frame(gompertz)
+gompertz <- pomp(
+                 data=dat[c("time","Y")],
+                 times="time",
+                 rprocess=discrete.time.sim(
+                   step.fun=gompertz.proc.sim,
+                   delta.t=1
+                   ),
+                 rmeasure=gompertz.meas.sim,
+                 t0=0
+                 )
+coef(gompertz) <- theta
+@ 
+Now \code{gompertz} is identical to what it was before, but the data that were there before have been replaced by simulated data.
+The parameters (\code{theta}) at which the simulations were performed have also been saved internally to \code{gompertz}.
+We can plot the simulated data via
+<<eval=F>>=
+plot(gompertz,variables="Y")
+@ 
+Fig.~\ref{fig:gompertz-first-simulation-plot} shows the results of this operation.
+
+\begin{figure}
+<<gompertz-plot,echo=F,fig=T>>=
+plot(gompertz,variables=c("Y"))
+@ 
+\caption{
+  Simulated data and unobserved states from the Gompertz model (Eqs.~\ref{eq:gompertz1}--\ref{eq:gompertz-obs}).
+  This figure shows the output of the command \code{plot(gompertz,variables="Y")}.
+}
+\label{fig:gompertz-first-simulation-plot}
+\end{figure}
+
+\section{Computing likelihood using particle filtering: \code{pfilter}}
+
+Some parameter estimation algorithms in the \pkg{pomp} package only require \code{rprocess} and \code{rmeasure}.
+These include the nonlinear forecasting algorithm \code{nlf} and the probe-matching algorithm \code{probe.match}.
+If we want to work with likelihood-based methods, however, we will need to be able to compute the likelihood of the data $Y_t$ given the states $X_t$.
+Above, we wrote an \R\ function, \code{gompertz.meas.dens}, to do this.
+We haven't yet used it all.
+To do so, we'll need to incorporate it into the \code{pomp} object.
+We can do this by specifying the \code{dmeasure} argument in another call to \code{pomp}:
+<<second-pomp-construction>>=
+gompertz <- pomp(
+                 gompertz,
+                 dmeasure=gompertz.meas.dens
+                 )
+@ 
+The result of the above is a new \code{pomp} object \code{gompertz} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
+
+To compute the likelihood of the data, we can use the function \code{pfilter}.
+This runs a plain vanilla particle filter (AKA sequential Monte Carlo) algorithm and results in an unbiased estimate of the likelihood.
+See \citet{Arulampalam2002} for an excellent tutorial on particle filtering and \citet{Ionides2006} for a pseudocode description of the algorithm implemented in \pkg{pomp}.
+We must decide how many concurrent realizations (\emph{particles}) to use: the larger the number of particles, the smaller the Monte Carlo error but the greater the computational effort.
+Let's run \code{pfilter} with 1000 particles to estimate the likelihood at the true parameters:
+<<gompertz-pfilter-truth,eval=F>>=
+pf <- pfilter(gompertz,params=theta,Np=1000)
+loglik.truth <- logLik(pf)
+loglik.truth
+@ 
+<<gompertz-pfilter-truth-eval,echo=F>>=
+set.seed(457645443L)
+<<gompertz-pfilter-truth>>
+@ 
+Since the true parameters (i.e., the parameters that generated the data) are stored within the \code{pomp} object \code{gompertz} and can be extracted by the \code{coef} function, we could have done
+<<gompertz-pfilter-truth-alt1,eval=F>>=
+pf <- pfilter(gompertz,params=coef(gompertz),Np=1000)
+@ 
+or even just
+<<gompertz-pfilter-truth-alt2,eval=F>>=
+pf <- pfilter(gompertz,Np=1000)
+@ 
+which would have worked since the parameters are stored in the \code{pomp} object \code{gompertz}.
+Now let's compute the log likelihood at a different point in parameter space, one for which $r$, $K$, and $\sigma$ are 50\% higher than their true values.
+<<gompertz-pfilter-guess,eval=F>>=
+theta.true <- coef(gompertz)
+theta.guess <- theta.true
+theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
+pf <- pfilter(gompertz,params=theta.guess,Np=1000)
+loglik.guess <- logLik(pf)
+@ 
+<<gompertz-pfilter-guess-eval,echo=F>>=
+set.seed(457645443L)
+<<gompertz-pfilter-guess>>
+@ 
+
+\begin{textbox}
+\caption{Implementation of the Kalman filter for the Gompertz model.}
+\label{box:kalman-filter-def}
+<<kalman-filter-def>>=
+kalman.filter <- function (Y, X0, r, K, sigma, tau) {
+  ntimes <- length(Y)
+  sigma.sq <- sigma^2
+  tau.sq <- tau^2
+  cond.loglik <- numeric(ntimes)
+  filter.mean <- numeric(ntimes)
+  pred.mean <- numeric(ntimes)
+  pred.var <- numeric(ntimes)
+  m <- log(X0)
+  v <- 0
+  S <- exp(-r)
+  for (k in seq_len(ntimes)) {
+    pred.mean[k] <- M <- (1-S)*log(K) + S*m
+    pred.var[k] <- V <- S*v*S+sigma.sq
+    q <- V+tau.sq
+    r <- log(Y[k])-M
+    cond.loglik[k] <- dnorm(x=log(Y[k]),mean=M,sd=sqrt(q),log=TRUE)
+    q <- 1/V+1/tau.sq
+    filter.mean[k] <- m <- (log(Y[k])/tau.sq+M/V)/q
+    v <- 1/q
+  }
+  list(
+       pred.mean=pred.mean,
+       pred.var=pred.var,
+       filter.mean=filter.mean,
+       cond.loglik=cond.loglik,
+       loglik=sum(cond.loglik)
+       )
+}
+@   
+\end{textbox}
+
+As we mentioned before, for this particular example, we can compute the likelihood exactly using the Kalman filter, using this as a check on the validity of the particle filtering algorithm.
+An implementation of the Kalman filter is given in Box~\ref{box:kalman-filter-def}.
+Let's run the Kalman filter on the example data we generated above:
+<<kalman-filter-run>>=
+y <- obs(gompertz)
+x0 <- init.state(gompertz)
+r <- coef(gompertz,"r")
+K <- coef(gompertz,"K")
+sigma <- coef(gompertz,"sigma")
+tau <- coef(gompertz,"tau")
+kf <- kalman.filter(y,x0,r,K,sigma,tau)
+@ 
+<<kalman-likelihood-correction,echo=F>>=
+loglik.kalman <- kf$loglik-sum(log(obs(gompertz)))
+@ 
+In this case, the Kalman filter gives us a log likelihood of \Sexpr{round(loglik.kalman,2)}, 
+while the particle filter with 1000 particles gives \Sexpr{round(loglik.truth,2)}.
+Since the particle filter gives an unbiased estimate of the likelihood, the difference is due to Monte Carlo error in the particle filter.
+One can reduce this error by using a larger number of particles and/or by re-running \code{pfilter} multiple times and averaging the resulting estimated likelihoods.
+The latter approach has the advantage of allowing one to estimate the Monte Carlo error itself.
+
+\clearpage
+\section{Interlude: utility functions for extracting and changing pieces of a \code{pomp} object}
+
+The \pkg{pomp} package provides a number of functions to extract or change pieces of a \code{pomp}-class object.
+%% Need references to S4 classes
+One can read the documentation on all of these by doing \verb+class?pomp+ and \verb+methods?pomp+.
+For example, as we've already seen, one can coerce a \code{pomp} object to a data frame:
+<<eval=F>>=
+as(gompertz,"data.frame")
+@ 
+and if we \code{print} a \code{pomp} object, the resulting data frame is what is shown, together with the call that created the \code{pomp} object.
+One has access to the data and the observation times using
+<<eval=F>>=
+obs(gompertz)
+obs(gompertz,"Y")
+time(gompertz)  
+@ 
+The observation times can be changed using
+<<eval=F>>=
+time(gompertz) <- 1:10
+@ 
+One can respectively view and change the zero-time by
+<<eval=F>>=
+timezero(gompertz)
+timezero(gompertz) <- -10
+@ 
+and can respectively view and change the zero-time together with the observation times by doing, for example
+<<eval=F>>=
+time(gompertz,t0=TRUE)  
+time(gompertz,t0=T) <- seq(from=0,to=10,by=1)
+@ 
+Alternatively, one can construct a new pomp object with the same model but with data restricted to a specified window:
+<<eval=F>>=
+window(gompertz,start=3,end=20)
+@ 
+Note that \code{window} does not change the zero-time.
+One can display and modify model parameters using, e.g.,
+<<eval=F>>=
+coef(gompertz)
+coef(gompertz,c("sigma","tau")) <- c(1,0)
+@ 
+See below for more information on the \code{coef} and \code{coef<-} methods for getting and setting parameters.
+Finally, one has access to the unobserved states via, e.g.,
+<<eval=F>>=
+states(gompertz)
+states(gompertz,"X")
+@ 
+
+%% In the ``advanced_topics_in_pomp'' vignette, we show how one can get access to more of the underlying structure of a \code{pomp} object.
+
+\clearpage
+\section{Parameter transformations}
+
+It frequently happens that it is advantageous to estimate parameters on a scale different from that on which they appear in the model.
+For example, the parameters in the Gompertz model above are constrained to be positive.
+When we estimate these parameters using numerical search algorithms, we must find some way to ensure that these constraints will be honored.
+A straightforward way to accomplish this is to transform the parameters so that they become unconstrained.
+To introduce some terminology, we want to transform the parameters from the \emph{natural scale} to another, \emph{estimation scale}, on which they will be unconstrained.
+
+\pkg{pomp} provides a facility to make it easier to work with parameter transformations.
+Specifically, we can specify the optional functions \code{parameter.transform} and \code{parameter.inv.transform} when we create the \code{pomp} object.
+The first function will take transform our parameters from the estimation scale to the natural scale.
+the second one will invert that operation, transforming the parameters from the natural to the estimation scale.
+In our Gompertz model example, the natural-scale parameters are $r$, $K$, $\sigma$, $\tau$, and $X_0$, all of which are constrained to be positive.
+We'll log-transform all the parameters to enforce this constrant.
+
+<<loggomp-pomp-construction,eval=T>>=
+gompertz <- pomp(
+                 gompertz,
+                 parameter.transform=function(params,...){
+                   exp(params)
+                 },
+                 parameter.inv.transform=function(params,...){
+                   log(params)
+                 }
+                 )
+@ 
+
+Note that the function given to the \code{parameter.transform} argument transforms parameters \emph{to} the natural scale while that given to the \code{parameter.inv.transform} argument transforms them \emph{from} the natural scale.
+Operationally, the defining property of the natural scale is that this is the scale on which the elementary functions \code{rprocess}, \code{rmeasure}, \code{dprocess}, \code{dmeasure}, \code{skeleton}, and \code{init.process} expect to see the parameters.
+Note also that we've changed the names of the parameters to make it obvious at a glance what scale we're on, but that this isn't really necessary.
+
+The parameter transformations come into play in the \code{coef} and \code{coef<-} methods for getting and setting parameters.
+If we have a vector of parameters on the natural scale, one can set them as parameters of \code{gompertz} by doing
+<<eval=T>>=
+coef(gompertz) <- c(r=0.1,K=1,tau=0.1,sigma=0.1,X.0=1)
+@ 
+and get the parameters by
+<<eval=T>>=
+coef(gompertz)
+@ 
+On the other hand, given parameter values on the estimation scale, one can set the parameters by 
+<<eval=T>>=
+coef(gompertz,transform=TRUE) <- c(r=log(0.1),K=0,tau=log(0.1),
+                sigma=log(0.1),X.0=0)
+@ 
+and get them by
+<<eval=T>>=
+coef(gompertz,transform=TRUE)
+@ 
+We can check that the parameters were set correctly on the natural scale:
+<<eval=T>>=
+coef(gompertz)
+@ 
+To be clear: the parameter-setting expression \code{coef(gompertz) <- theta} assumes that \code{theta} is a named vector of parameters on the natural scale, while \code{coef(gompertz,transform=TRUE) <- theta} assumes that \code{theta} is on the estimation scale.
+
+Note that it's the user's responsibility to ensure that the \code{parameter.transform} and \code{parameter.inv.transform} are actually mutually inverse.
+A simple (but not foolproof) test of this is
+<<par-trans-inverse-test,results=verbatim>>=
+# use parameter.inv.transform:
+theta <- coef(gompertz,transform=TRUE)  
+## theta is on the estimation scale
+g2 <- gompertz
+## use parameter.transform:
+coef(g2,transform=TRUE) <- theta
+## compare the internal-scale representations:
+identical(coef(gompertz),coef(g2))
+@ 
+
+A \code{pomp} object corresponding to the one just created (but with the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} bits coded in C for speed) can be loaded by executing \verb+data(gompertz)+.
+For your convenience, codes creating this \code{pomp} object are included with the package.
+To view them, run the demo
+<<eval=F>>=
+demo(gompertz)
+@ 
+
+\clearpage
+\section{Estimating parameters using iterated filtering: \code{mif}}
+
+Iterated filtering is a technique for maximizing the likelihood obtained by filtering.
+In \pkg{pomp}, it is the particle filter that is iterated.
+Iterated filtering is implemented in the \code{mif} function.
+For a description of the algorithm and a description of its theoretical basis, see \citet{Ionides2006}.
+A more complete set of proofs is provided in \citet{Ionides2011}.
+
+The key idea of iterated filtering is to replace the model we are interested in fitting---which has time-invariant parameters---with a model that is just the same except that its parameters take a random walk in time.
+As the intensity of this random walk approaches zero, the modified model approaches the original model.
+Adding additional variability in this way has three positive effects:
+\begin{inparaenum}[(i)]
+\item it smooths the likelihood surface, which makes optimization easier, 
+\item it combats \emph{particle depletion}, the fundamental difficulty associated with the particle filter, and
+\item the additional variability can be exploited to estimate of the gradient of the (smoothed) likelihood surface \emph{with no more computation than is required to estimate of the value of the likelihood}.
+\end{inparaenum}
+Iterated filtering exploits these effects to optimize the likelihood in a computationally efficient manner.
+As the filtering is iterated, the additional variability is decreased according to a \emph{cooling schedule}.
+The cooling schedule can be adjusted in \code{mif}, as can the intensity of the parameter-space random walk and the other algorithm parameters.
+See the documentation (\verb+?mif+) for details.
+
+Let's use iterated filtering to obtain an approximate MLE for the data in \code{gompertz}.
+We'll initialize the algorithm at several starting points around \code{theta.true} and just estimate the parameters $r$, $\tau$, and $\sigma$:
+<<echo=F>>=
+data(gompertz)
+theta <- coef(gompertz)
+theta.true <- theta
+@ 
+<<gompertz-multi-mif-calc,eval=F,echo=T>>=
+estpars <- c("r","sigma","tau")
+replicate(
+          n=10,
+          {
+            theta.guess <- theta.true
+            theta.guess[estpars] <- rlnorm(
+                                           n=length(estpars),
+                                           meanlog=log(theta.guess[estpars]),
+                                           sdlog=1
+                                           )
+            mif(
+                gompertz,
+                Nmif=100,
+                start=theta.guess,
+                transform=TRUE,
+                pars=estpars,
+                rw.sd=c(r=0.02,sigma=0.02,tau=0.05),
+                Np=2000,
+                var.factor=4,
+                ic.lag=10,
+                cooling.factor=0.999,
+                max.fail=10
+                )
+          }
+          ) -> mf
+@ 
+
+Note that we've set \code{transform=TRUE} in the above.
+This means that the likelihood maximization is done on the estimation scale (see the section above on Parameter Transformations).
+
+<<gompertz-post-mif,eval=F,echo=F>>=
+theta.true <- coef(gompertz)
+theta.mif <- apply(sapply(mf,coef),1,mean)
+loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
+bl <- mean(loglik.mif)
+loglik.mif.est <- bl+log(mean(exp(loglik.mif-bl)))
+loglik.mif.se <- sd(exp(loglik.mif-bl))/exp(loglik.mif.est-bl)
+loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
+loglik.true.est <- bl+log(mean(exp(loglik.true-bl)))
+loglik.true.se <- sd(exp(loglik.true-bl))/exp(loglik.true.est-bl)
+@ 
+
+<<gompertz-multi-mif-eval,echo=F,results=hide>>=
+set.seed(334388458L)
+binary.file <- "gompertz-multi-mif.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+  tic <- Sys.time()
+<<gompertz-multi-mif-calc>>
+<<gompertz-post-mif>>
+  toc <- Sys.time()
+  etime <- toc-tic
+  save(
+       mf,estpars,
+       theta.mif,theta.true,
+       loglik.mif.est,loglik.true.est,
+       loglik.mif.se,loglik.true.se,
+       etime,
+       file=binary.file,
+       compress="xz"
+       )
+}
+rbind(
+#      guess=c(signif(theta.guess[estpars],3),loglik=round(loglik.guess,1)),
+      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif.est,1),loglik.se=signif(loglik.mif.se,2)),
+      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true.est,1),loglik.se=signif(loglik.true.se,2))
+      ) -> results.table
+@ 
+
+Each of the \Sexpr{length(mf)} \code{mif} runs ends up at a different place.
+In this case (but by no means in every case), we can average across these parameter estimates to get an approximate maximum likelihood estimate.
+We'll evaluate the likelihood several times at this estimate to get an idea of the Monte Carlo error in our likelihood estimate.
+The particle filter produces an unbiased estimate of the likelihood;
+therefore, we'll average the likelihoods, not the log likelihoods.
+<<eval=F>>=
+<<gompertz-post-mif>>
+@ 
+
+<<multi-mif-plot,echo=F,eval=T>>=
+op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
+loglik <- sapply(mf,function(x)conv.rec(x,"loglik"))
+log.r <- sapply(mf,function(x)conv.rec(x,"r"))
+log.sigma <- sapply(mf,function(x)conv.rec(x,"sigma"))
+log.tau <- sapply(mf,function(x)conv.rec(x,"tau"))
+matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
+matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
+matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
+matplot(log.tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(log~tau))
+par(op)
+@ 
+
+
+\begin{figure}
+<<mif-plot,fig=T,echo=F>>=
+<<multi-mif-plot>>
+@ 
+\caption{
+  Convergence plots can be used to help diagnose convergence of the iterated filtering algorithm.
+  This shows part of the output of \code{compare.mif(mf)}.
+}
+\label{fig:convplot}
+\end{figure}
+
+<<first-mif-results-table,echo=F>>=
+print(results.table)
+@ 
+
+\clearpage
+\section{Trajectory matching: \code{traj.match}}
+
+The idea behind trajectory matching is a simple one.
+One attempts to fit a deterministic dynamical trajectory to the data.
+This is tantamount to assuming that all the stochasticity in the system is in the measurement process.
+In \pkg{pomp}, the trajectory is computed using the \code{trajectory} function, which in turn uses the \code{skeleton} slot of the \code{pomp} object.
+The \code{skeleton} slot should be filled with the deterministic skeleton of the process model.
+In the discrete-time case, this is the map
+\begin{equation}\label{eq:discrete-skeleton}
+  x\,\mapsto\,\expect{X_{t+{\Delta}t}\;\vert\;X_{t}=x,\theta}.
+\end{equation}
+In the continuous-time case, this is the vectorfield
+\begin{equation}\label{eq:continuous-skeleton}
+  x\,\mapsto\,\lim_{{\Delta}{t}\,\to\,0}\,\expect{\frac{X_{t+{\Delta}{t}}-x}{{\Delta}{t}}\;\Big{\vert}\;X_{t}=x,\theta}.
+\end{equation}
+Our discrete-time Gompertz has the deterministic skeleton
+\begin{equation}\label{eq:gompertz-skel}
+  x\,\mapsto\,K^{1-S}\,x^{S},
+\end{equation}
+where $S=e^{-r\,{\Delta}t}$ and ${\Delta}t$ is the time-step.
+This can be implemented in the \R\ function
+<<gompertz-skeleton-def,echo=T>>=
+gompertz.skel <- function (x, t, params, ...) {
+  r <- params["r"]
+  K <- params["K"]
+  X <- x["X"]
+  S <- exp(-r)
+  xnew <- c(X=unname(K^(1-S)*X^S))
+  return(xnew)
+}
+@ 
+Note that we have here assumed that ${\Delta}t=1$.
+
+We can incorporate the deterministic skeleton into a new \code{pomp} object via the \code{skeleton.map} argument:
+<<new-gompertz-pomp-construction,echo=T>>=
+new.gompertz <- pomp(
+                     gompertz,
+                     skeleton.type="map",
+                     skeleton=gompertz.skel
+                     )
+coef(new.gompertz,"X.0") <- 0.1
+coef(new.gompertz,"r") <- 0.1
+coef(new.gompertz,"tau") <- 0.05
+coef(new.gompertz,"sigma") <- 0.05
+new.gompertz <- simulate(new.gompertz,seed=88737400L)
+@ 
+We use \code{skeleton.type="map"} for discrete-time processes (such as the Gompertz model) and \code{skeleton.type="vectorfield"} for continuous-time processes.
+%% Note that we have turned off the process noise in \code{new.gompertz} (next to last line) so that trajectory matching is actually formally appropriate for this model.
+
+The \pkg{pomp} function \code{traj.match} calls the optimizer \code{optim} to minimize the discrepancy between the trajectory and the data.
+The discrepancy is measured using the \code{dmeasure} function from the \code{pomp} object.
+The following codes perform trajectory matching.
+Since we set \code{transform=TRUE}, the optimization will be performed on the estimation scale.
+<<gompertz-trajmatch-calc,eval=F>>=
+tm <- traj.match(
+                 new.gompertz,
+                 start=coef(new.gompertz),
+                 transform=TRUE,
+                 est=c("r","K","tau","X.0"),
+                 method="Nelder-Mead",
+                 maxit=1000,
+                 reltol=1e-8
+                 )
+@ 
+<<gompertz-trajmatch-eval,echo=F,eval=T>>=
+binary.file <- "gompertz-trajmatch.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<gompertz-trajmatch-calc>>
+  save(new.gompertz,tm,file=binary.file,compress="xz")
+}
+@
+
+Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
+
+\begin{figure}
+<<trajmatch-plot,fig=T,echo=F,eval=T,height=4,width=6>>=
+op <- par(mfrow=c(1,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
+plot(time(tm),obs(tm,"Y"),xlab="time",ylab=expression(X,Y),type='o')
+lines(time(tm),states(tm,"X"),lwd=2)
+par(op)
+@ 
+\caption{
+  Illustration of trajectory matching.
+  The points show data simulated from \code{new.gompertz}.
+  The solid line shows the trajectory of the best-fitting model, obtained using \code{traj.match}.
+  Fitting by trajectory matching is tantamount to the assumption that the data-generating process has no process noise but only measurement error.
+}
+\label{fig:trajmatch-plot}
+\end{figure}
+
+\clearpage
+\section{Probe matching: \code{probe.match}}
+
+In probe matching, we fit a model to data using a set of summary statistics.
+We evaluate these statistics on the data and compare them to the distribution of values they take on simulations, then adjust model parameters to maximize agreement between model and data according to some criterion.
+Following \citet{Kendall1999}, we refer to the summary statistics as \emph{probes}.
+In probe-matching, one has unrestricted choice of probes, and there are a great many probes that one might sensibly choose.
+This introduces a degree of subjectivity into the inference procedure but has the advantage of allowing the investigator to identify \emph{a priori} those features of a data set he or she believes to be informative.
+
+In this section, we'll illustrate probe matching using a stochastic version of the Ricker map.
+In this discrete-time model, $N_t$ represents the (true) size of a population at time $t$ and obeys
+\begin{equation*}
+  N_{t+1}=r\,N_t\,\exp(-N_t+e_t),\qquad e_t\!\sim\!\mathrm{normal}(0,\sigma).
+\end{equation*}
+In addition, we assume that measurements $y_t$ of $N_t$ are themselves noisy, according to
+\begin{equation*}
+  y_t\!\sim\!\mathrm{Poisson}(\phi\,N_t).
+\end{equation*}
+As before, we'll begin by writing an \R\ function that implements a simulator (\code{rprocess}) for the Ricker model.
+It will be convenient to work with log-transformed parameters $\log r$, $\log\sigma$, $\log\phi$.
+Thus
+<<ricker-map-defn>>=
+ricker.sim <- function (x, t, params, delta.t, ...) {
+  e <- rnorm(n=1,mean=0,sd=params["sigma"]) 
+  xnew <- c(
+            params["r"]*x["N"]*exp(-x["N"]+e),
+            e
+            )
+  names(xnew) <- c("N","e")
+  xnew
+}
+@
+Note that, in this implementation, $e$ is taken to be a state variable.
+This is not strictly necessary, but it might prove useful, for example, in \emph{a posteriori} diagnostic checking of model residuals.
+Now we can construct a \code{pomp} object; in this case, we use the \code{discrete.time.sim} plug-in.
+Note how we specify the measurement model.
+<<ricker-pomp>>=
+ricker <- pomp(
+               data=data.frame(time=seq(0,50,by=1),y=NA),
+               times="time",
+               t0=0,
+               rprocess=discrete.time.sim(
+                 step.fun=ricker.sim
+                 ),
+               measurement.model=y~pois(lambda=N*phi)
+               )
+coef(ricker) <- c(
+                  r=exp(3.8),
+                  sigma=0.3,
+                  phi=10,
+                  N.0=7,
+                  e.0=0
+                  )
+ricker <- simulate(ricker,seed=73691676L)
+@ 
+
+A pre-built \code{pomp} object implementing this model is included with the package.
+Its \code{rprocess}, \code{rmeasure}, and \code{dmeasure} components are written in C and are thus a bit faster than the \R\ implementation above.
+Do 
+<<get-ricker,echo=T,eval=T>>=
+data(ricker)
+@ 
+to load this \code{pomp} object.
+
+In \pkg{pomp}, probes are simply functions that can be applied to an array of real or simulated data to yield a scalar or vector quantity.
+Several functions that create commonly-useful probes are included with the package.
+Do \verb+?basic.probes+ to read the documentation for these probes.
+In this illustration, we will make use of several probes recommended by \citet{Wood2010}: \code{probe.marginal}, \code{probe.acf}, and \code{probe.nlar}.
+\code{probe.marginal} regresses the data against a sample from a reference distribution; 
+the probe's values are those of the regression coefficients.
+\code{probe.acf} computes the auto-correlation or auto-covariance of the data at specified lags.
+\code{probe.nlar} fits a simple nonlinear (polynomial) autoregressive model to the data;
+again, the coefficients of the fitted model are the probe's values.
+We construct our set of probes by specifying a list
+<<probe-list>>=
+plist <- list(
+              probe.marginal("y",ref=obs(ricker),transform=sqrt),
+              probe.acf("y",lags=c(0,1,2,3,4),transform=sqrt),
+              probe.nlar("y",lags=c(1,1,1,2),powers=c(1,2,3,1),transform=sqrt)
+              )
+@ 
+An examination of the structure of \code{plist} reveals that it is a list of functions of a single argument.
+Each of these functions can be applied to the \code{ricker}'s data or to simulated data sets.
+A call to \pkg{pomp}'s function \code{probe} results in the application of these functions to the data, their application to each of some large number, \code{nsim}, of simulated data sets, and finally to a comparison of the two.
+To see this, we'll apply probe to the Ricker model at the true parameters and at a wild guess.
+<<first-probe>>=
+pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
+guess <- c(r=20,sigma=1,phi=20,N.0=7,e.0=0)
+pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
+@ 
+Results summaries and diagnostic plots showing the model-data agreement and correlations among the probes can be obtained by 
+<<first-probe-plot,eval=F>>=
+summary(pb.truth)
+summary(pb.guess)
+plot(pb.truth)
+plot(pb.guess)
+@ 
+An example of a diagnostic plot (using a simplified set of probes) is shown in Fig.~\ref{fig:ricker-probe-plot}.
+Among the quantities returned by \code{summary} is the synthetic likelihood \citep{Wood2010}.
+It is this synthetic likelihood that \pkg{pomp} attempts to maximize in probe matching.
+
+\begin{figure}
+<<ricker-probe-plot,echo=F,fig=T,png=T,results=hide>>=
+  pb <- probe(ricker,
+              probes=list(
+                probe.marginal("y",ref=obs(ricker),transform=sqrt),
+                probe.acf("y",lags=c(0,1,3),transform=sqrt),
+                mean=probe.mean("y",transform=sqrt)
+                       ),
+              transform=TRUE,
+              nsim=1000,
+              seed=1066L
+              )
+  plot(pb)
+@ 
+\caption{
+  Results of \code{plot} on a \code{probed.pomp}-class object.
+  Above the diagonal, the pairwise scatterplots show the values of the probes on each of \Sexpr{summary(pb)$nsim} data sets.
+  The red lines show the values of each of the probes on the data.
+  The panels along the diagonal show the distributions of the probes on the simulated data, together with their values on the data and a two-sided p-value.
+  The numbers below the diagonal indicate the Pearson correlations between the corresponding probes.
+}
+\label{fig:ricker-probe-plot}
+\end{figure}
+
+Let us now attempt to fit the Ricker model to the data using probe-matching.
+<<ricker-probe-match-calc,eval=F>>=
+pm <- probe.match(
+                  pb.guess,
+                  est=c("r","sigma","phi"),
+                  transform=TRUE,
+                  method="Nelder-Mead",
+                  maxit=2000,
+                  seed=1066L,
+                  reltol=1e-8,
+                  trace=3
+                  )
+summary(pm)
+@ 
+This code runs a Nelder-Mead optimizer from the starting parameters \code{guess} in an attempt to maximize the synthetic likelihood based on the probes in \code{plist}.
+Both the starting parameters and the probes are stored internally in \code{pb.guess}, which is why we don't specify them explicitly here;
+if we wanted to change these, we could do so by specifying the \code{params} and/or \code{probes} arguments to \code{probe.match}.
+See \code{?probe.match} for full documentation.
+
+<<ricker-probe.match-eval,echo=F,eval=T,results=hide>>=
+binary.file <- "ricker-probe-match.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<ricker-probe-match-calc>>
+  save(pm,file=binary.file,compress="xz")
+}
+@
+
+By way of putting the synthetic likelihood in context, let's compare the results of estimating the Ricker model parameters using probe-matching and using iterated filtering, which is based on likelihood.
+The following code runs 600 MIF iterations starting at \code{guess}:
+<<ricker-mif-calc,eval=F>>=
+mf <- mif(
+          ricker,
+          start=guess,
+          Nmif=100,
+          Np=1000,
+          transform=TRUE,
+          cooling.factor=0.99,
+          var.factor=2,
+          ic.lag=3,
+          max.fail=50,
+          rw.sd=c(r=0.1,sigma=0.1,phi=0.1)
+          )
+mf <- continue(mf,Nmif=500,max.fail=20)
+@ 
+
+<<ricker-mif-eval,echo=F,eval=T,results=hide>>=
+binary.file <- "ricker-mif.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<ricker-mif-calc>>
+  save(mf,file=binary.file,compress="xz")
+}
+@
+The following code compares parameters, likelihoods, and synthetic likelihoods (based on the probes in \code{plist}) at each of 
+\begin{inparaenum}
+\item the wild guess,
+\item the truth,
+\item the MLE from \code{mif}, and
+\item the maximum synthetic likelihood estimate from \code{probe.match}.
+\end{inparaenum}
+<<>>=
+pf.truth <- pfilter(ricker,Np=1000,max.fail=50,seed=1066L)
+pf.guess <- pfilter(ricker,params=guess,Np=1000,max.fail=50,seed=1066L)
+pf.mf <- pfilter(mf,Np=1000,seed=1066L)
+pf.pm <- pfilter(pm,Np=1000,max.fail=10,seed=1066L)
+pb.mf <- probe(mf,nsim=1000,probes=plist,seed=1066L)
+res <- rbind(
+             cbind(guess=guess,truth=coef(ricker),MLE=coef(mf),PM=coef(pm)),
+             loglik=c(
+               pf.guess$loglik,
+               pf.truth$loglik,
+               pf.mf$loglik,
+               pf.pm$loglik
+               ),
+             synth.loglik=c(
+               summary(pb.guess)$synth.loglik,
+               summary(pb.truth)$synth.loglik,
+               summary(pb.mf)$synth.loglik,
+               summary(pm)$synth.loglik
+               )
+             )
+
+print(res,digits=3)
+@ 
+
+\clearpage
+\section{Nonlinear forecasting: \code{nlf}}
+
+NLF is an indirect inference approach \citep{Gourieroux1996}, meaning that an intermediate statistical model is used to quantify the model's goodness of fit to the data. 
+Specifically, NLF is a \emph{Simulated Quasi-Maximum Likelihood} (SQML) method. 
+The quasilikelihood function is defined by fitting a convenient statistical model to a long simulation output from the model of interest, and then evaluating the statistical model's likelihood function on the data. 
+The intermediate statistical model in \code{nlf} is a multivariate generalized additive autoregressive model, using radial basis functions as the ridge functions and multivariate Gaussian process noise. 
+\citet{Smith1993} first proposed SQML and developed the underlying statistical theory, \citet{Tidd1993} independently proposed a similar method, and \citet{Kendall2005} describe in detail the methods used by \code{nlf} and use them to fit and compare models for insect population cycles. 
+
+As a simple example we can use \code{nlf} to estimate the parameters \code{K} and \code{r} of the Gompertz model.  
+An example of a minimal call, accepting the defaults for all optional arguments, is 
+<<eval=F>>=
+data(gompertz)
+out <- nlf(
+           gompertz,
+           start=c(r=1,K=2,sigma=0.5,tau=0.5,X.0=1),
+           partrans=TRUE,
+           est=c("K","r"),
+           lags=c(1,2)
+           )
+@ 
+where the first argument is the \code{pomp} object, \code{start} is a vector containing model parameters at which \code{nlf}'s search will begin, \code{est} contains the names of parameters \code{nlf} will estimate, and \code{lags} specifies which past values are to be used in the autoregressive model. 
+In the call above \code{lags=c(1,2)} specifies that the autoregressive model predicts each observation, $y_t$ using $y_{t-1}$ and $y_{t-2}$, the two most recent past observations. 
+The set of lags need not include the most recent observation, and skips are allowed, so that \code{lags=c(2,3,6)} is also ``legal''. 
+
+The quasilikelihood is optimized numerically, so the reliability of the optimization should be assessed by doing multiple fits with different starting parameter values. 
+Because of the way \code{nlf} controls the random number seed, starting values should all be chosen before the calls to \code{nlf}: 
+<<nlf-gompertz-starts,eval=F>>=
+# pick 5 random starting parameter values
+starts <- replicate(n=5,
+                    {
+                      p <- coef(gompertz)
+                      p[c("K","r")] <- rlnorm(n=2,meanlog=log(p[c("K","r")]),
+                                              sdlog=0.1)
+                      p
+                    },
+                    simplify=FALSE
+                    )
+@ 
+Then to make the results from different starts comparable, use the \code{seed} argument to initialize the random number generator the same way for each fit: 
+<<nlf-gompertz-fits,eval=F>>=
+out <- list()
+## Do the fitting. 
+## method, trace, and nasymp are explained below   
+for (j in 1:5) {
+  out[[j]] <- nlf(
+                  gompertz,
+                  start=starts[[j]],
+                  transform=log,
+                  transform.params=TRUE,
+                  est=c("K","r"),
+                  lags=c(1,2),
+                  seed=7639873L,
+                  method="Nelder-Mead",
+                  trace=4,
+                  skip.se=TRUE,
+                  nasymp=5000
+                  )  
+}
+fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
+@ 
+<<echo=F,eval=T,results=hide>>=
+binary.file <- "nlf-fits.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<nlf-gompertz-starts>>
+<<nlf-gompertz-fits>>
+  save(starts,out,fits,file=binary.file,compress="xz")
+}
+@ 
+The results in this case are very encouraging,
+<<eval=T>>=
+fits
+@ 
+so below we will trust that repeated optimization isn't needed.  
+
+The call above also used the \code{method} argument to specify that the Nelder-Mead option in \code{optim} is used to maximize the quasilikelihood, and the \code{trace} argument is passed to \code{optim}; other arguments can be passed to \code{optim} in the
+same way. 
+\code{nasymp} sets the length of the Gompertz model simulation on which the quasilikelihood is based; 
+larger values will give less variable parameter estimates, but will slow down the fitting process. 
+The slowdown is dominated by the time required to generate the model simulations, so efficient coding of \code{rprocess} is essential. 
+The ``Advanced topics in \pkg{pomp}'' vignette gives some advice on this. 
+Do \code{vignette("advanced\_topics\_in\_pomp")} to view it.
+
+The choice of lags affects the accuracy of the intermediate statistical model and therefore the accuracy of parameter estimates, so it is worth putting some effort into choosing good lags. 
+Given enough time, a user could generate many artificial data sets, fit them all with several candidate lags, and evaluate the precision and accuracy of estimates. 
+A quicker approach is to explore the shape and variability of the quasilikelihood function near pilot parameter estimates for several candidate sets of lags, using \code{nlf} with \code{eval.only=TRUE} to evaluate the quasilikelihood without performing optimization. 
+
+For the Gompertz model the complete state vector is observed, so it is plausible that forecasting based on the one most recent observation is optimal, i.e. \code{lags=1}. 
+But because of measurement error, prediction based on multiple lags might be more accurate and more sensitive to parameter values, and longer-term forecasting might be beneficial if the effects of parameters are amplified over time. 
+Fig.~\ref{fig:nlf-gompertz} shows results for several candidate lags suggested by these considerations. 
+To reduce Monte Carlo error in the objective function, we used \code{simulate} to create a very long ``data set'':
+<<nlf-my-pomp,eval=T>>=
+long.gomp <- simulate(gompertz,times=1:1000)
+theta <- coef(long.gomp)
+@ 
+and then evaluated the quasilikelihood for a range of parameter values: 
+<<nlf-lag-test-log.r,eval=F>>=
+lags <- list(1,2,c(1,2),c(2,3))
+r.vals <- theta["r"]*exp(seq(-0.69,0.69,length=25))
+fvals <- matrix(nrow=25,ncol=4)
+for (j in 1:25) {
+  pars <- theta
+  pars["r"] <- r.vals[j]
+  for(k in 1:4) {
+    fvals[j,k] <- nlf(
+                      long.gomp,
+                      start=pars,
+                      nasymp=5000,
+                      est=NULL,
+                      lags=lags[[k]],
+                      eval.only=TRUE
+                      )
+  }
+}
+@ 
+<<nlf-lag-test-log.K,eval=F,echo=F>>=
+K.vals <- theta["K"]*exp(seq(-0.15,0.15,length=25))
+fvals2 <- matrix(nrow=25,ncol=4)
+for (j in 1:25) {
+  pars <- theta
+  pars["K"] <- pars["X.0"] <- K.vals[j]
+  for(k in 1:4) {
+    fvals2[j,k] <- nlf(
+                       long.gomp,
+                       start=pars,
+                       nasymp=5000,
+                       est=NULL,
+                       lags=lags[[k]],
+                       eval.only=TRUE
+                       )
+  }
+}
+@ 
+<<nlf-lag-tests,eval=T,echo=F,results=hide>>=
+binary.file <- "nlf-lag-tests.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<nlf-my-pomp>>
+<<nlf-lag-test-log.r>>
+<<nlf-lag-test-log.K>>
+  save(theta,lags,r.vals,K.vals,fvals,fvals2,file=binary.file,compress="xz")
+}
+@ 
+
+\begin{figure}[tbp]
+<<nlf-gompertz-plot,height=4,width=6,echo=F,fig=T>>=
+fvals <- scale(fvals,center=apply(fvals,2,max),scale=FALSE) 
+fvals2 <- scale(fvals2,center=apply(fvals2,2,max),scale=FALSE)
+op <- par(mfrow=c(1,2),mar=c(5,5,1,1))
+matplot(
+        r.vals,
+        fvals,
+        xlab="r",
+        lty=1,
+        col=c("black","green3","red","purple"),
+        ylab="NLF objective function",
+        type="o",
+        pch=16
+        )
+abline(v=theta["r"],col="blue")
+legend("bottomright",legend=c("1","2","1,2","2,3"),col=c("black","green3","red","purple"),lty=1,pch=16,cex=1,bty="n")
+
+matplot(
+        K.vals,
+        fvals2,
+        xlab="K",
+        lty=1,
+        col=c("black","green3","red","purple"),
+        ylab="NLF objective function",
+        type="o",
+        pch=16
+        )
+abline(v=theta["K"],col="blue")
+par(op)
+@ 
+\caption{
+  Values of the NLF objective function (log of the quasilikelihood) for the Gompertz model as a function of the parameters \code{r,K} for various choices of the \code{lags} argument. 
+  All plotted curves were shifted vertically so as to have maximum value zero. 
+  The objective function was evaluated on an artificial data set of length \Sexpr{length(obs(long.gomp))} that was generated assuming \code{r=\Sexpr{signif(theta["r"],2)}}, \code{K=\Sexpr{theta["K"]}}, indicated by the vertical blue lines.
+  \label{fig:nlf-gompertz}
+}
+\end{figure}  
+
+Based on Fig.~\ref{fig:nlf-gompertz}, \code{lags=2} seems like a good choice. 
+Another consideration is the variability of parameter estimates on multiple short data sets: 
+<<nlf-multi-short,eval=F>>=
+nreps <- 100
+ndata <- 60
+fvals <- matrix(nrow=nreps,ncol=length(lags))
+new.pomp <- simulate(gompertz,times=1:ndata,nsim=nreps,seed=NULL) # nreps simulated data sets 
+for (j in 1:nreps) {
+  for (k in seq_along(lags)) {
+    fvals[j,k] <- nlf(
+                      new.pomp[[j]], 
+                      start=coef(gompertz), 
+                      nasymp=5000, 
+                      est=NULL,
+                      lags=lags[[k]],
+                      eval.only=TRUE
+                      ) 
+  }
+}
+fvals <- exp(fvals/ndata)
+@ 
+<<nlf-multi-short-eval,echo=F,eval=T,results=hide>>=
+binary.file <- "nlf-multi-short.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<nlf-multi-short>>
+  save(lags,nreps,ndata,fvals,file=binary.file,compress="xz")
+}
+@ 
+The last line above expresses the objective function as the geometric mean (quasi)likelihood per data point. 
+The variability across data sets was nearly the same for all lags:
+<<eval=T>>=
+apply(fvals,2,function(x)sd(x)/mean(x))
+@ 
+so we proceed to fit with \code{lags=2}. 
+<<nlf-fit-from-truth,eval=F>>=
+true.fit <- nlf(
+                gompertz,
+                transform.params=TRUE,
+                est=c("K","r"),
+                lags=2,
+                seed=7639873, 
+                method="Nelder-Mead",
+                trace=4,
+                nasymp=5000
+                )
+@ 
+<<nlf-fit-from-truth-eval,echo=F,eval=T,results=hide>>=
+binary.file <- "nlf-fit-from-truth.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<nlf-fit-from-truth>>
+  save(true.fit,file=binary.file,compress="xz")
+}
+@ 
+From \verb+true.fit$params+ and \verb+true.fit$se+ we get the estimates ($\pm$ 1 standard error)
+${r}=$~\Sexpr{signif(true.fit$params["r"],2)}~$\pm$~\Sexpr{signif(true.fit$params["r"]*true.fit$se["r"],2)}
+and ${K}=$~\Sexpr{signif(true.fit$params["K"],2)}~$\pm$~\Sexpr{signif(true.fit$params["K"]*true.fit$se["K"],2)}. 
+%%$\log K = 0.081 \pm 0.064$, $\log r = -2.2 \pm 0.51$
+
+The standard errors provided by \code{nlf} are based on a Newey-West estimate of the variance-covariance matrix that is generally
+somewhat biased downward. 
+More importantly, these rough-and-ready standard error estimates can be unstable.
+This is because they are obtained from finite differences of the NLF objective function.
+This function, in turn, is approximated using simulated time series of finite length, which typically gives rise to fine-scale wrinkles.
+Therefore, when time permits, bootstrap standard errors are preferable. 
+When \code{nlf} is called with \code{bootstrap=TRUE}, the quasilikelihood function is evaluated on the bootstrap sample of the time series specified in \code{bootsamp}.  
+The first \code{max(lags)} observations cannot be forecast by the autoregressive model, so the size of the bootstrap sample is the length of the data series minus \code{max(lags)}: 
+%%Because of how \code{nlf} controls the random number seed, a unique seed for each draw of a bootstrap sample must be created before the samples are drawn: 
+<<echo=F>>=
+set.seed(32329L)
+@ 
+<<nlf-boot,eval=F>>=
+lags <- 2
+ndata <- length(obs(gompertz))
+nboot <- ndata-max(lags)
+nreps <- 100
+pars <- matrix(0,nreps,2)
+bootsamp <- replicate(n=nreps,sample(nboot,replace=TRUE))
+for (j in seq_len(nreps)) {
+  fit <- nlf(
+             gompertz,
+             start=coef(gompertz),
+             transform.params=TRUE,
+             est=c("K","r"),
+             lags=lags,
+             seed=7639873, 
+             bootstrap=TRUE, 
+             bootsamp=bootsamp[,j],
+             skip.se=TRUE, 
+             method="Nelder-Mead",
+             trace=4,
+             nasymp=5000
+             )
+   pars[j,] <- fit$params[c("r","K")]
+}
+colnames(pars) <- c("r","K")
+@ 
+<<nlf-boot-eval,echo=F,eval=T,results=hide>>=
+binary.file <- "nlf-boot.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<nlf-boot>>
+  save(pars,file=binary.file,compress="xz")
+}
+@ 
+<<>>=
+apply(pars,2,sd)
+@ 
+In this case, the bootstrap standard errors don't differ much from the Newey-West estimates.
+
+The code above implements a ``resampling cases'' approach to bootstrapping the data set to which the intermediate autoregressive model is fitted. 
+This is valid when observations are conditionally independent given the past observations, which is only true for a Markov process if the complete state is observed. 
+Otherwise there may be correlations, and we need to use methods for bootstrapping time series.
+In \code{nlf} it is relatively easy to implement the ``blocks of blocks'' resampling method \citep[][p.~398]{Davison1997}. 
+For example, with block length $l=3$ we resample (with replacement) observations in groups of length 3: 
+<<block-bootsamp,eval=F>>=
+bootsamp <- replicate(n=nreps,sample(nboot,size=floor(nboot/3),replace=TRUE))
+bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
+@ 
+and otherwise proceed exactly as above. 
+<<nlf-block-boot,eval=F,echo=F>>=
+lags <- 2
+ndata <- length(obs(gompertz))
+nboot <- ndata-max(lags)
+nreps <- 100
+pars <- matrix(0,nreps,2)
+bootsamp <- replicate(
+                      n=nreps,
+                      sample(nboot-2,size=floor(nboot/3),replace=TRUE)
+                      )
+bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
+for (j in seq_len(nreps)) {
+  fit <- nlf(
+             gompertz,
+             transform.params=TRUE,
+             est=c("K","r"),
+             lags=lags,
+             seed=7639873L,
+             bootstrap=TRUE, 
+             bootsamp=bootsamp[,j],
+             skip.se=TRUE, 
+             method="Nelder-Mead",
+             trace=4,
+             nasymp=5000
+             )
+   pars[j,] <- fit$params[c("r","K")]
+}
+colnames(pars) <- c("r","K")
+@ 
+
+<<nlf-block-boot-eval,eval=T,echo=F,results=hide>>=
+binary.file <- "nlf-block-boot.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<nlf-block-boot>>
+  save(pars,file=binary.file,compress="xz")
+}
+@ 
+
+%%\citet{Ellner1998,Kendall1999}
+
+\clearpage
+\section{Bayesian sequential Monte Carlo: \code{bsmc}}
+
+The approximate Bayesian sequential Monte Carlo method of \citet{Liu2001b} is implemented in \pkg{pomp}.
+The following demonstrates its use on the Ricker model.
+
+First, we draw a sample from our prior distribution.
+Here, we'll use uniform priors on two model parameters ($\log{r}$ and $\sigma$), leaving the others fixed at their true values.
+<<bsmc-example-flat-prior-1,echo=F,eval=T>>=
+require(pomp)
+data(ricker)
+@ 
+We'll use 10,000 particles, so we'll need that many samples from the prior distribution.
+<<bsmc-example-flat-prior-2,eval=F>>=
+set.seed(136872209L)
+Np <- 10000
+prior1 <- parmat(coef(ricker),nrep=Np)
+prior1["r",] <- exp(runif(n=Np,min=2,max=5))
+prior1["sigma",] <- runif(n=Np,min=0.1,max=1)
+@ 
+Now \code{params} holds these 10,000 samples.
+The following runs the sequential Monte Carlo algorithm.
+Note that, by specifying \code{transform=TRUE}, we cause the estimation to proceed on the transformed scale.
+<<bsmc-example-flat-prior-3,eval=F>>=
+  fit1 <- bsmc(ricker,params=prior1,transform=TRUE,
+               est=c("r","sigma"),smooth=0.2)
+@ 
+<<bsmc-example-flat-prior-eval,eval=T,echo=F>>=
+binary.file <- "bsmc-ricker-flat-prior.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<bsmc-example-flat-prior-1>>
+<<bsmc-example-flat-prior-2>>
+<<bsmc-example-flat-prior-3>>
+  save(fit1,file=binary.file,compress="xz")
+}
+@ 
+Fig.~\ref{fig:bsmc-example-flat-prior} shows the results of this computation.
+Obtain the posterior medians of the parameters by doing
+<<bsmc-example-flat-prior-coef>>=
+signif(coef(fit1),digits=2)
+@ 
+Note that these are reported on the natural (i.e., untransformed) scale.
+
+\begin{figure}
+<<bsmc-example-flat-prior-plot,fig=T,pdf=F,png=T,height=6,width=6,echo=F>>=
+  plot(fit1,pars=c("r","sigma"),thin=5000)
+@ 
+\caption{
+  Results of \code{bsmc} on the Ricker model.
+  The off-diagonal panels show 5000 samples from the prior (grey) and posterior (blue) distributions.
+  The diagonal panels show kernel density estimates of the marginal prior and posterior distributions for each of the parameters.
+  Note that these are shown on the natural scale.
+  This plot was produced by executing \code{plot(fit1,pars=c("r","sigma"),thin=5000)}.
+  \label{fig:bsmc-example-flat-prior}
+}
+\end{figure}
+
+To repeat the procedure with log-normal priors on $r$ and $\sigma$, one might do the following.
+<<bsmc-example-normal-prior>>=
+set.seed(90348704L)
+Np <- 10000
+prior2 <- parmat(coef(ricker),nrep=Np)
+## log-normal prior on r
+prior2["r",] <- rlnorm(n=Np,meanlog=4,sdlog=3)
+## log-normal prior on sigma
+prior2["sigma",] <- rlnorm(n=Np,meanlog=log(0.5),sdlog=5)
+fit2 <- bsmc(ricker,params=prior2,transform=TRUE,
+            est=c("r","sigma"),smooth=0.2)
+signif(coef(fit2),digits=2)
+@ 
+
+
+\clearpage
+\section{Particle Markov chain Monte Carlo: \code{pmcmc}}
+
+\citet{Andrieu2010}.  To be added.
+
+\clearpage
+\section{A more complex example: a seasonal epidemic model}
+
+\begin{figure}
+  \begin{center}
+    \resizebox{0.8\textwidth}{!}{
+      \Large
+      \setlength{\unitlength}{5pt}
+	\begin{picture}(44,20)(-5,-4)
+	  \thicklines
+	  \put(0,0){\framebox(6,6){$S$}}
+	  \put(16,0){\framebox(6,6){$I$}}
+	  \put(32,0){\framebox(6,6){$R$}}
+	  \put(-4,3){\vector(1,0){4}}
+	  \put(-3.7,3.9){$\mu$}
+	  \put(6,3){\vector(1,0){10}}
+	  \put(9,3.9){$\lambda(t)$}
+	  \put(3,-0.2){\vector(0,-1){4}}
+	  \put(4,-3){$\mu$}
+	  \put(19,-0.2){\vector(0,-1){4}}
+	  \put(20,-3){$\mu$}
+	  \put(22,3){\vector(1,0){10}}
+	  \put(26,1){$\gamma$}
+	  \put(27,4){\vector(0,1){5}}
+	  \put(27.7,6){$\rho$}
+	  \put(27,11.5){\circle{5}}
+	  \put(26,10.7){{$C$}}
+	  \put(35,-0.2){\vector(0,-1){4}}
+	  \put(36,-3){$\mu$}
+	\end{picture}
+    }
+  \end{center}
+  \caption{
+    Diagram of the SIR model.
+    The host population is divided into three classes according to their infection status: 
+    S, susceptible hosts; 
+    I, infected (and infectious) hosts; 
+    R, recovered and immune hosts. 
+    Births result in new susceptibles and all individuals have a common death rate $\mu$.
+    Since the birth rate equals the death rate, the expected population size, $N=S+I+R$, remains constant.
+    The S$\to$I rate, $\lambda$, called the \emph{force of infection}, depends on the number of infectious individuals according to $\lambda(t)={\beta\,I}/{N}$.
+    The I$\to$R, or recovery, rate is $\gamma$.
+    The case reports, $C$, result from a process by which infections are recorded with probability $\rho$. 
+    Since diagnosed cases are treated with bed-rest and hence removed, infections are counted upon transition to R. 
+  }
+  \label{fig:SIR}
+\end{figure}
+
+\subsection{The stochastic SIR model.}
+
+A mainstay of theoretical epidemiology, the SIR model describes the progress of a contagious infection through a population of hosts.
+The hosts are divided into three classes, according to their status vis-a-vis the infection (Fig.~\ref{fig:SIR}).
+The S class contains those that have not yet been infected and are thereby still susceptible to it;
+the I class comprises those who are currently infected and, by assumption, infectious;
+the R class includes those who have recovered from the infection.
+The latter are assumed to be immune against reinfection.
+We let $S(t)$, $I(t)$, and $R(t)$ represent the numbers of individuals within the respective classes at time $t$.
+
+It is natural to formulate this model as a continuous-time Markov process.
+In this process, the numbers of individuals within each class change through time in whole-number increments.
+In particular, individuals move between classes (entering S at birth, moving thence to I, and on to R unless death arrives first) at random times.
+Thus, the numbers of births and class-transitions that occur in any interval of time are random variables.
+The birth rate, death rates, and the rate of transition, $\gamma$, from I to R are frequently assumed to be constants, specific to the infection and the host population.
+Crucially, the S to I transition rate, the so-called \emph{force of infection}, is not constant, but depends on the current number of infectious individuals.
+The assumption that transmission is \emph{frequency dependent}, as for example when each individual realizes a fixed number of contacts per unit time, corresponds to the assumption $\lambda(t) = \beta\,I(t)/N$, where $\beta$ is known as the contact rate and $N=S+I+R$ is the population size.
+This assumption introduces the model's only nonlinearity.
+It is useful sometimes to further assume that birth and death rates are equal and independent of infection status---call the common rate $\mu$---which has the consequence that the expected population size then remains constant.
+
+It is typically impossible to monitor $S$, $I$, and $R$, directly. 
+Relatively commonly, however, records of \emph{cases}, i.e., individual infections, are kept by public health authorities.
+The number of cases, $C(t_1,t_2)$, recorded within a given reporting interval $[t_1,t_2)$ might perhaps be modeled by a binomial process
+\begin{equation*}
+  C(t_1,t_2)\;\sim\;\mathrm{binomial}({\Delta}_{I{\to}R}(t_1,t_2),\rho)
+\end{equation*}
+where $\Delta_{I{\to}R}(t_1,t_2)$ is the accumulated number of recoveries that have occured over the interval in question and $\rho$ is the \emph{reporting rate}, i.e., the probability that a given infection is observed and recorded.
+The fact that the observed data are linked to an accumulation, as opposed to an instantaneous value, introduces a little bit of complication;
+see the section on ``Accumulator variables'' in the ``Advanced Topics in \pkg{pomp}'' vignette for a thorough discussion of this issue.
+
+The model's deterministic skeleton is a system of nonlinear ordinary differential equations---a vectorfield---on the space of positive values of $S$, $I$, and $R$ (cf. Eq.~\ref{eq:continuous-skeleton}).
+Specifically, the SIR deterministic skeleton is
+\begin{equation*}
+  \begin{aligned}
+    &\frac{dS}{dt}=\mu\,(N-S)-\beta\,\frac{I}{N}\,S\\
+    &\frac{dI}{dt}=\beta\,\frac{I}{N}\,S-\gamma\,I-\mu\,I\\
+    &\frac{dR}{dt}=\gamma\,I-\mu\,R\\
+  \end{aligned}
+\end{equation*}
+
+\subsection{Implementing the SIR model in \pkg{pomp}.}
+
+As before, we'll need to write functions to implement some or all of the SIR model's \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{skeleton} components.
+It turns out to be relatively straightforward to implement all of these but \code{dprocess}.
+
+For the \code{rprocess} portion, we can use \code{gillespie.sim} to implement the continuous-time Markov process exactly using the stochastic simulation algorithm of \citet{Gillespie1977a}.
+For many practical purposes, however, this will prove quite slow and inefficient.
+If we are willing to live with an approximate simulation scheme, we can use the the so-called ``tau-leap'' algorithm, one version of which is implemented in \pkg{pomp} as the \code{euler.sim} plug-in.
+This algorithm holds the transition rates $\lambda$, $\mu$, $\gamma$ constant over a small interval of time ${\delta}t$ and simulates the numbers of births, deaths, and transitions that occur over that interval.
+It then updates the state variables $S$, $I$, $R$ accordingly, increments the time variable by ${\delta}t$, recomputes the transition rates, and repeats.
+Naturally, as ${\delta}t\to 0$, this approximation to the true continuous-time process becomes better and better.
+The critical feature from the inference point of view, however, is that no relationship need be assumed between the Euler simulation interval ${\delta}t$ and the reporting interval, which itself need not even be the same from one observation to the next.
+
+Under this assumption, the number of individuals leaving any of the classes by all available routes over a particular time interval becomes a multinomial process.
+In particular, the probability that an S individual, for example, becomes infected is $p_{S{\to}I}=\frac{\lambda(t)}{\lambda(t)+\mu}\,(1-e^{-(\lambda(t)+\mu)\,{\delta}t})$; 
+the probability that an S individual dies before becoming infected is $p_{S{\to}}=\frac{\mu}{\lambda(t)+\mu}\,(1-e^{-(\lambda(t)+\mu)\,{\delta}t})$;
+and the probability that neither happens is $1-p_{S{\to}I}-p_{S{\to}}=e^{-(\lambda(t)+\mu)\,{\delta}t}$.
+Thus, if $\Delta_{S{\to}I}$ and $\Delta_{S{\to}}$ are the numbers of S individuals acquiring infection and dying, respectively, in the Euler simulation interval $(t,t+{\delta}t)$, then
+\begin{equation*}
+  (\Delta_{S{\to}I},\Delta_{S\to},S-\Delta_{S{\to}I}-\Delta_{S\to})\;\sim\;\mathrm{multinomial}\left(S(t);p_{S{\to}I},p_{S{\to}},1-p_{S{\to}I}-p_{S{\to}}\right),
+\end{equation*}
+Now, the expression on the right arises with sufficient frequency in compartmental models like the SIR that \pkg{pomp} has special functions for it.
+In \pkg{pomp}, the random variable $(\Delta_{S{\to}I},\Delta_{S\to})$ above is said to have an \emph{Euler-multinomial} distribution.
+The \pkg{pomp} functions \code{reulermultinom} and \code{deulermultinom} provide facilities for drawing random deviates from, and computing the p.d.f.\ of, such distributions.
+As the help pages relate, \code{reulermultinom} and \code{deulermultinom} parameterize the Euler-multinomial distributions by the size ($S(t)$ in the example above), rates ($\lambda(t)$ and $\mu$), and time interval ${\delta}t$.
+Obviously, the Euler-multinomial distributions generalize to an arbitrary number of exit routes.
+
+The help (\code{?euler.sim}) informs us that to use \code{euler.sim}, we need to specify a function that advances the states from $t$ to $t+{\delta}t$.
+The function \code{sir.proc.sim}, defined here, does this.
+<<sir-proc-sim-def,keep.source=T>>=
+sir.proc.sim <- function (x, t, params, delta.t, ...) {
+  ## unpack the parameters
+  N <- params["N"]             # population size
+  gamma <- params["gamma"]     # recovery rate
+  mu <- params["mu"]           # birth rate = death rate
+  beta <- params["beta"]       # contact rate
+  foi <- beta*x["I"]/N                       # the force of infection
+  trans <- c(
+             rpois(n=1,lambda=mu*N*delta.t), # births are assumed to be Poisson
+             reulermultinom(n=1,size=x["S"],rate=c(foi,mu),dt=delta.t), # exits from S
+             reulermultinom(n=1,size=x["I"],rate=c(gamma,mu),dt=delta.t), # exits from I
+             reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)        # exits from R
+             )
+  ## now connect the compartments
+  x[c("S","I","R","cases")]+c(
+      trans[1]-trans[2]-trans[3],
+      trans[2]-trans[4]-trans[5],
+      trans[4]-trans[6],
+      trans[4]                          # accumulate the recoveries
+    )
+}
+@ 
+
+Two significant wrinkles remains to be explained.
+First, notice that in \code{sir.proc.sim}, the state variable \code{cases} accumulates the total number of recoveries.
+Thus, \code{cases} will be a counting process and, in particular, will be nondecreasing with time.
+In fact, the number of recoveries within an interval, ${\Delta}_{I{\to}R}(t_1,t_2)=\mathtt{cases}(t_2)-\mathtt{cases}(t_1)$.
+Clearly, including \code{cases} as a state variable violates the Markov assumption.
+
+However, this is not an essential violation.
+Because none of the rates $\lambda$, $\mu$, or $\gamma$ depend on \code{cases}, the process remains essentially Markovian.
+We still have a difficulty with the measurement process, however, in that our data are assumed to be records of infections resolving within a given interval while the process model keeps track of the accumulated number of infections that have resolved since the record-keeping began.
+We can get around this difficulty by re-setting \code{cases} to zero immediately after each observation.
+We tell \pkg{pomp} to do this using the \code{pomp}'s \code{zeronames} argument, as we will see in a moment.
+The section on ``accumulator variables'' in the ``Advanced topics in \pkg{pomp}'' vignette discusses this in more detail.
+
+The second wrinkle has to do with the initial conditions, i.e., the states $S(t_0)$, $I(t_0)$, $R(t_0)$.
+By default, \pkg{pomp} will allow us to specify these initial states arbitrarily.
+For the model to be consistent, they should be positive integers that sum to the population size $N$.
+We can enforce this constraint by customizing the parameterization of our initial conditions.
+We do this in by specializing a custom \code{initializer} in the call to \code{pomp} that constructs the \code{pomp} object.
+Let's construct it now and fill it with simulated data.
+<<sir-pomp-def>>=
+simulate(
+         pomp(
+              data=data.frame(
+                time=seq(1/52,15,by=1/52),
+                reports=NA
+                ),
+              times="time",
+              t0=0,
+              rprocess=euler.sim(
+                step.fun=sir.proc.sim,
+                delta.t=1/52/20
+                ),
+              measurement.model=reports~binom(size=cases,prob=rho),
+              initializer=function(params, t0, ic.pars, comp.names, ...){
+                x0 <- c(S=0,I=0,R=0,cases=0)
+                N <- params["N"]
+                fracs <- params[ic.pars]
+                x0[comp.names] <- round(N*fracs/sum(fracs))
+                x0
+              },
+              zeronames=c("cases"), # 'cases' is an accumulator variable
+              ic.pars=c("S0","I0","R0"), # initial condition parameters
+              comp.names=c("S","I","R") # names of the compartments
+              ),
+         params=c(
+             N=50000,
+             beta=60,gamma=8,mu=1/50,
+             rho=0.6,
+             S0=8/60,I0=0.002,R0=1-8/60-0.001
+           ),
+         seed=677573454L
+         ) -> sir
+@ 
+<<sir-pomp-def-with-skel,eval=F,echo=F>>=
+sir <- pomp(
+            sir,
+              skeleton.type="vectorfield",
+              skeleton=function(t,x,params,...){
+                N <- params["N"]             # population size
+                gamma <- params["gamma"]     # recovery rate
+                mu <- params["mu"]           # birth rate = death rate
+                beta <- params["beta"]       # contact rate
+                foi <- beta*x["I"]/N # the force of infection
+                terms <- c(
+                           mu*N,               # births
+                           x["S"]*c(foi,mu),   # exits from S
+                           x["I"]*c(gamma,mu), # exits from I
+                           x["R"]*mu           # exits from R
+                           )
+                ## now put the equations together:
+                c(
+                  cases=unname(terms[4]),               # d(cases)/dt
+                  S=unname(terms[1]-terms[2]-terms[3]), # dS/dt
+                  I=unname(terms[2]-terms[4]-terms[5]), # dI/dt
+                  R=unname(terms[4]-terms[6])           # dR/dt
+                  )
+              }
+)
+@ 
+Notice that we are assuming here that the data are collected weekly and use an Euler step-size of 1/20~wk.
+Here, we've assumed an infection with an infectious period of $1/\gamma=1/8$~yr and a basic reproductive number, $R_0$ of $\beta/(\gamma+\mu)\approx 7.5$.
+We've assumed a host population size of 50,000 and 60\% reporting efficiency.
+Fig.~\ref{fig:sir-plot} shows one realization of this process.
+
+\begin{figure}
+<<sir-plot,fig=T,echo=F>>=
+plot(sir)
+@   
+  \caption{Results of \code{plot(sir)}.}
+  \label{fig:sir-plot}
+\end{figure}
+
+\subsection{Complications: seasonality, imported infections, extra-demographic stochasticity.}
+
+Let's add a bit of real-world complexity to the simple SIR model.
+We'll modify the model to take three facts into account:
+\begin{inparaenum}[(i)]
+  \item For many infections, the contact rate is \emph{seasonal}: $\beta=\beta(t)$ is a periodic function of time.
+  \item No host population is truly closed: \emph{imported infections} arise when infected individuals visit the host population and transmit.
+  \item Stochastic fluctuation in the rates $\lambda$, $\mu$, and $\gamma$ can give rise to \emph{extrademographic stochasticity}, i.e., random process variability beyond the purely demographic stochasticity we've included so far.
+\end{inparaenum}
+
+One way to incorporate seasonality into the model is to assume some functional form for $\beta(t)$.
+Alternatively, we can use flexible functions to allow $\beta$ to take a variety of shapes.
+B-splines are useful in this regard and \pkg{pomp} provides some simple facilities for using these.
+If $s_{i}(t)$, $i=1,\dots,k$ is a periodic B-spline basis, as in Fig.~\ref{fig:seas-basis-plot}, then we can for example define
+\begin{equation*}
+  \beta(t)=\sum_{i}\!b_{i}\,s_{i}(t)
+\end{equation*}
+and, by varying the coefficients $b_{i}$, we can obtain a wide variety of shapes for $\beta(t)$.
+In \pkg{pomp}, we can define a set of periodic B-spline basis functions by doing:
+<<seas-basis>>=
+tbasis <- seq(0,20,by=1/52)
+basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,names="seas%d")
+@ 
+This results in a data-frame with \Sexpr{ncol(basis)} columns; 
+each column is a quadratic periodic B-spline over the 20~yr domain, with period 1~yr.
+Fig.~\ref{fig:seas-basis-plot} shows these basis functions.
+Effectively, \code{tbasis} and \code{basis} function as a look-up table that can be used by the \code{rprocess} simulator to obtain a seasonal contact rate, $\beta(t)$.
+We accomplish this using the \code{covar} and \code{tcovar} arguments to \code{pomp}, as we will see below.
+
+There are a number of ways to take account of imported infections.
+Here, we'll simply assume that there is some background force of infection, $\iota$, not due to I-class individuals.
+Putting this together with the seasonal contact rate results in a force of infection $\lambda(t)=\beta(t)\,I(t)/N+\iota$.
+
+Finally, we can allow for extrademographic stochasticity by allowing the force of infection to be itself a random variable.
+We'll accomplish this by assuming a multiplicative white noise on the force of infection, i.e.,
+\begin{equation*}
+  \lambda(t) = \left(\beta(t)\,\frac{I(t)}{N}+\iota\right)\,\frac{dW(t)}{dt},
+\end{equation*}
+where $dW/dt$ is a white noise, specifically the ``derivative'' of an integrated Gamma white noise process.
+\citet{He2010} discuss such processes and apply them in an inferential context;
+\citet{Breto2011} develop the theory of infinitesimally overdispersed processes.
+
+Let's modify the process-model simulator to incorporate these three complexities.
+<<complex-sir-def>>=
+complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
+  ## unpack the parameters
+  N <- params["N"]                 # population size
+  gamma <- params["gamma"]         # recovery rate
+  mu <- params["mu"]               # birth rate = death rate
+  iota <- params["iota"]           # import rate
+  b <- params[c("b1","b2","b3")]   # contact-rate coefficients
+  beta <- b%*%covars               # flexible seasonality
+  beta.sd <- params["beta.sd"]     # extrademographic noise intensity
+  dW <- rgammawn(n=1,sigma=beta.sd,dt=delta.t) # Gamma white noise
+  foi <- (beta*x["I"]/N+iota)*dW/delta.t # the force of infection
+  trans <- c(
+             rpois(n=1,lambda=mu*N*delta.t), # births are assumed to be Poisson
+             reulermultinom(n=1,size=x["S"],rate=c(foi,mu),dt=delta.t), # exits from S
+             reulermultinom(n=1,size=x["I"],rate=c(gamma,mu),dt=delta.t), # exits from I
+             reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)        # exits from R
+             )
+  ## now connect the compartments
+  x[c("S","I","R","cases","W")]+
+    c(
+      trans[1]-trans[2]-trans[3],
+      trans[2]-trans[4]-trans[5],
+      trans[4]-trans[6],
+      trans[4],                   # accumulate the recoveries
+      (dW-delta.t)/beta.sd        # mean = 0, var = delta.t
+    )
+}
+
+simulate(
+         pomp(
+              sir,
+              tcovar=tbasis,
+              covar=basis,
+              rprocess=euler.sim(
+                complex.sir.proc.sim,
+                delta.t=1/52/20
+                ),
+              initializer=function(params, t0, ic.pars, comp.names, ...){
+                x0 <- c(S=0,I=0,R=0,cases=0,W=0)
+                N <- params["N"]
+                fracs <- params[ic.pars]
+                x0[comp.names] <- round(N*fracs/sum(fracs))
+                x0
+              }
+              ),
+         params=c(
+             N=50000,
+             b1=60,b2=10,b3=110,
+             gamma=8,mu=1/50,
+             rho=0.6,
+             iota=0.01,beta.sd=0.1,
+             S0=8/60,I0=0.002,R0=1-8/60-0.001
+           ),
+         seed=8274355L
+         ) -> complex.sir
+@ 
+Note that the seasonal basis functions are passed to \code{complex.sir.proc.sim} via the \code{covars} argument.
+Whenever \code{complex.sir.proc.sim} is called, this argument will contain values of the covariates obtained from the look-up table.
+
+\begin{figure}
+<<seas-basis-plot,echo=F,height=4,width=6,fig=T>>=
+op <- par(mar=c(5,5,1,5))
+matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
+        lty=1,col=c("red","blue","orange"),xlab="time (yr)",
+        ylab=quote("basis functions"~list(s[1],s[2],s[3])))
+bb <- coef(complex.sir,c("b1","b2","b3"))
+plot.window(c(0,2),c(0,1)*max(bb))
+lines(tbasis,basis%*%bb,col="black",lwd=3,lty=1)
+lines(tbasis,basis%*%bb,col="white",lwd=2.5,lty="23")
+axis(side=4)
+mtext(
+      side=4,
+      line=2,
+      text=bquote(
+        beta==.(b1)*s[1]+.(b2)*s[2]+.(b3)*s[3],
+        where=as.list(coef(complex.sir))
+        )
+      )
+par(op)
+@   
+  \caption{
+    Periodic B-spline basis functions can be used to construct flexible periodic functions.
+    The colored lines show the three basis functions, $s_1$, $s_2$, $s_3$.
+    The dashed black line shows the seasonal transmission $\beta(t)$ assumed in \code{complex.sir}.
+  }
+  \label{fig:seas-basis-plot}
+\end{figure}
+
+
+\begin{figure}
+<<complex-sir-plot,echo=F,fig=T>>=
+plot(complex.sir)
+@   
+  \caption{
+    One realization of the SIR model with seasonal contact rate, imported infections, and extrademographic stochasticity in the force of infection.
+    %%    The $W$ state-variable is an unbiased random walk that is the accumulation of the white-noise increments \code{dW}.
+}
+  \label{fig:complex-sir-plot}
+\end{figure}
+
+\clearpage
+\bibliographystyle{fullnat}
+\bibliography{pomp}
+
+\end{document}
+
+<<restore-opts,echo=F,results=hide>>=
+options(glop)
+@ 

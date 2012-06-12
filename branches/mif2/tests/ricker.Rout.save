@@ -1,0 +1,109 @@
+
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> data(ricker)
+> 
+> pdf(file="ricker.pdf")
+> 
+> tj.1 <- trajectory(ricker)
+> plot(time(ricker),tj.1[1,,],type='l')
+> tj.2 <- trajectory(ricker,times=c(30:50),t0=0)
+> lines(30:50,tj.2[1,,],col='red',lwd=2)
+> max(abs(tj.1[,,time(ricker)>=30]-tj.2[,,]))
+[1] 0
+> 
+> tj.3 <- trajectory(ricker,as.data.frame=TRUE)
+> plot(tj.3)
+> tj.3 <- trajectory(ricker,as.data.frame=TRUE,params=parmat(coef(ricker),3),times=1:100)
+> plot(N~time,data=tj.3,subset=traj==3,type='l')
+> 
+> sm <- as.data.frame(simulate(ricker,seed=343995))
+> sm1 <- simulate(ricker,seed=343995,as.data.frame=TRUE)
+> stopifnot(max(abs(as.matrix(sm1[names(sm)])-as.matrix(sm)))==0)
+> sm1 <- simulate(ricker,seed=343995,states=TRUE,obs=TRUE,as.data.frame=TRUE)
+> stopifnot(max(abs(as.matrix(sm1[names(sm)])-as.matrix(sm)))==0)
+> 
+> sm1 <- simulate(ricker,nsim=3,seed=343995,as.data.frame=TRUE)
+> print(names(sm1))
+[1] "time" "y"    "N"    "e"    "sim" 
+> print(dim(sm1))
+[1] 153   5
+> 
+> sm1 <- simulate(ricker,nsim=3,states=T,seed=343995,as.data.frame=TRUE)
+> print(names(sm1))
+[1] "N"    "e"    "sim"  "time"
+> print(dim(sm1))
+[1] 153   4
+> print(tail(sm1))
+             N           e sim time
+138  4.0116869  0.05723792   3   45
+141  4.2497654  0.26933885   3   46
+144  2.9300053  0.07790589   3   47
+147  7.1162605  0.01738347   3   48
+150  0.2366483 -0.08730222   3   49
+153 18.9946973  0.82198849   3   50
+> 
+> sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
+> print(names(sm1))
+[1] "y"    "sim"  "time"
+> print(dim(sm1))
+[1] 153   3
+> print(tail(sm1))
+      y sim time
+138  36   3   45
+141  44   3   46
+144  27   3   47
+147  73   3   48
+150   1   3   49
+153 218   3   50
+> 
+> po <- ricker
+> try(
++     coef(po,"log.r")
++     )
+Error in .local(object, ...) : 
+  in 'coef': name(s) 'log.r' correspond to no parameter(s)
+> coef(po,c("r","phi")) <- c(0,0)
+> coef(po,c("r","phi")) <- c(a=0,b=1)
+Warning message:
+in 'coef<-' names of 'value' are being discarded 
+> coef(po,c("r","phi")) <- 1
+> coef(po) <- c(phi=1,r=3.5,N.0=10,e.0=0,sigma=0)
+> coef(po)
+  phi     r   N.0   e.0 sigma 
+  1.0   3.5  10.0   0.0   0.0 
+> coef(po,"new") <- 3
+Warning message:
+in 'coef<-': name(s) 'new' do not refer to existing parameter(s); they are being concatenated 
+> plot(simulate(po))
+> coef(po)
+  phi     r   N.0   e.0 sigma   new 
+  1.0   3.5  10.0   0.0   0.0   3.0 
+> 
+> dev.off()
+null device 
+          1 
+> 
+> proc.time()
+   user  system elapsed 
+  0.552   0.032   0.678 

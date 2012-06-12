@@ -1,0 +1,132 @@
+
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> pdf(file="ricker-spect.pdf")
+> 
+> data(ricker)
+> 
+> set.seed(6457673L)
+> 
+> sp <- spect(
++             ricker,
++             kernel.width=3,
++             nsim=1000,
++             seed=838775L
++             )
+> plot(sp)
+> summary(sp)
+$coef
+       r    sigma      phi      N.0      e.0 
+44.70118  0.30000 10.00000  7.00000  0.00000 
+
+$nsim
+[1] 1000
+
+$pvals
+        y       all 
+0.6113886 0.6113886 
+
+> 
+> spp <- spect.match(sp,eval.only=TRUE)
+> plot(spp)
+> summary(spp)
+$coef
+       r    sigma      phi      N.0      e.0 
+44.70118  0.30000 10.00000  7.00000  0.00000 
+
+$nsim
+[1] 1000
+
+$pvals
+        y       all 
+0.6423576 0.6423576 
+
+$est
+character(0)
+
+$value
+[1] 3.242017
+
+$eval
+[1] 1 0
+
+$convergence
+[1] NA
+
+$msg
+[1] "no optimization performed"
+
+> 
+> po <- ricker
+> coef(po,"r") <- 5
+> sp <- spect(
++             po,
++             kernel.width=3,
++             nsim=1000,
++             seed=838775L
++             )
+> plot(sp)
+> summary(sp)
+$coef
+    r sigma   phi   N.0   e.0 
+  5.0   0.3  10.0   7.0   0.0 
+
+$nsim
+[1] 1000
+
+$pvals
+          y         all 
+0.000999001 0.000999001 
+
+> 
+> po <- ricker
+> coef(po,"phi") <- 30
+> sp <- spect(
++             po,
++             kernel.width=3,
++             nsim=1000,
++             seed=838775L
++             )
+> plot(sp)
+> summary(sp)
+$coef
+       r    sigma      phi      N.0      e.0 
+44.70118  0.30000 30.00000  7.00000  0.00000 
+
+$nsim
+[1] 1000
+
+$pvals
+          y         all 
+0.000999001 0.000999001 
+
+> 
+> plot(simulate(sp),variables="y")
+> 
+> dev.off()
+null device 
+          1 
+> 
+> proc.time()
+   user  system elapsed 
+  2.176   0.056   2.378 
