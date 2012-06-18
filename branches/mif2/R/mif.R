@@ -20,7 +20,10 @@ mif.cooling <- function (factor, n) {   # default cooling schedule
   alpha <- factor^(n-1)
   list(alpha=alpha,gamma=alpha^2)
 }
-
+mif.cooling2 <- function (factor, n) {   # default cooling schedule
+	alpha <- (1+factor)/(n+factor)
+	list(alpha=alpha,gamma=alpha^2)
+}
 powerlaw.cooling <- function (init = 1, delta = 0.1, eps = (1-delta)/2, n) {
   m <- init
   if (n <= m) {                         # linear cooling regime
@@ -211,75 +214,142 @@ mif.internal <- function (object, Nmif,
   else
     pfp <- obj
 
-  for (n in seq_len(Nmif)) { # main loop
+##Branch mif1 and mif2 here  
+if (method!="mif2") 
+{
+#Nmif = M
+	for (n in seq_len(Nmif)) { # main loop
+		
+		## compute the cooled sigma
+		cool.sched <- try(
+				mif.cooling(cooling.factor,.ndone+n),
+				silent=FALSE
+		)
+		if (inherits(cool.sched,'try-error'))
+			stop("mif error: cooling schedule error",call.=FALSE)
+		sigma.n <- sigma*cool.sched$alpha
+		
+		## initialize the particles' parameter portion...
+		P <- try(
+				particles(tmp.mif,Np=Np[1],center=theta,sd=sigma.n*var.factor),
+				silent=FALSE
+		)
+		if (inherits(P,'try-error'))
+			stop("mif error: error in ",sQuote("particles"),call.=FALSE)
+		
+		## run the particle filter
+		pfp <- try(
+				pfilter.internal(
+						object=obj,
+						params=P,
+						tol=tol,
+						max.fail=max.fail,
+						pred.mean=(n==Nmif),
+						pred.var=((method=="mif")||(n==Nmif)),
+						filter.mean=TRUE,
+						save.states=FALSE,
+						save.params=FALSE,
+						.rw.sd=sigma.n[pars],
+						verbose=verbose,
+						transform=transform
+				),
+				silent=FALSE
+		)
+		if (inherits(pfp,'try-error'))
+			stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
+		
+		switch(
+				method,
+				mif={                                 # mif update rule
+					v <- pfp$pred.var[pars,,drop=FALSE] # the prediction variance
+					v1 <- cool.sched$gamma*(1+var.factor^2)*sigma[pars]^2
+					theta.hat <- cbind(theta[pars],pfp$filter.mean[pars,,drop=FALSE])
+					theta[pars] <- theta[pars]+colSums(apply(theta.hat,1,diff)/t(v))*v1
+				},
+				unweighted={                  # unweighted (flat) average
+					#theta.hat <- pfp$filter.mean[pars,,drop=FALSE]
+					#theta[pars] <- rowMeans(theta.hat)
+					theta.hat <- pfp$filter.mean[pars,ntimes,drop=FALSE]
+					theta[pars] <- theta.hat
+				},
+				fp={
+					theta.hat <- pfp$filter.mean[pars,ntimes,drop=FALSE]
+					theta[pars] <- theta.hat
+				},
+		#stop("unrecognized method",sQuote(method))
+		)
+		
+		## update the IVPs using fixed-lag smoothing
+		theta[ivps] <- pfp$filter.mean[ivps,ic.lag]
+		
+		## store a record of this iteration
+		conv.rec[n+1,-c(1,2)] <- theta
+		conv.rec[n,c(1,2)] <- c(pfp$loglik,pfp$nfail)
+		
+		if (verbose) cat("MIF iteration ",n," of ",Nmif," completed\n")
+		
+	}
+}
+else
+{		
+	for (n in seq_len(Nmif)) { # main loop
+		
+		## compute the cooled sigma
+		cool.sched <- try(
+				mif.cooling2(cooling.factor,.ndone),#+n,Np=Np[1],n),
+				silent=FALSE
+		)
+		if (inherits(cool.sched,'try-error'))
+			stop("mif error: cooling schedule error",call.=FALSE)
+		sigma.n <- sigma*cool.sched$alpha
+		
+		## initialize the particles' parameter portion...
+		P <- try(
+				particles(tmp.mif,Np=Np[1],center=theta,sd=sigma.n*var.factor),
+				silent=FALSE
+		)
+		if (inherits(P,'try-error'))
+			stop("mif error: error in ",sQuote("particles"),call.=FALSE)
+		
+		## run the particle filter
+		pfp <- try(
+				pfilter.internal(
+						object=obj,
+						params=P,
+						tol=tol,
+						max.fail=max.fail,
+						pred.mean=(n==Nmif),
+						pred.var=((method=="mif")||(n==Nmif)),
+						filter.mean=TRUE,
+						save.states=FALSE,
+						save.params=FALSE,
+						.rw.sd=sigma.n[pars],
+						verbose=verbose,
+						transform=transform
+				),
+				silent=FALSE
+		)
+		if (inherits(pfp,'try-error'))
+			stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
+		
+		theta.hat <- pfp$filter.mean[pars,ntimes,drop=FALSE]
+		theta[pars] <- theta.hat
+		
+		
+		## update the IVPs using fixed-lag smoothing
+		theta[ivps] <- pfp$filter.mean[ivps,ic.lag]
+		
+		## store a record of this iteration
+		conv.rec[n+1,-c(1,2)] <- theta
+		conv.rec[n,c(1,2)] <- c(pfp$loglik,pfp$nfail)
+		
+		if (verbose) cat("MIF iteration ",n," of ",Nmif," completed\n")
+		
+	}
+	
+	
+}
 
-    ## compute the cooled sigma
-    cool.sched <- try(
-                      mif.cooling(cooling.factor,.ndone+n),
-                      silent=FALSE
-                      )
-    if (inherits(cool.sched,'try-error'))
-      stop("mif error: cooling schedule error",call.=FALSE)
-    sigma.n <- sigma*cool.sched$alpha
-
-    ## initialize the particles' parameter portion...
-    P <- try(
-             particles(tmp.mif,Np=Np[1],center=theta,sd=sigma.n*var.factor),
-             silent=FALSE
-             )
-    if (inherits(P,'try-error'))
-      stop("mif error: error in ",sQuote("particles"),call.=FALSE)
-
-    ## run the particle filter
-    pfp <- try(
-               pfilter.internal(
-                                object=obj,
-                                params=P,
-                                tol=tol,
-                                max.fail=max.fail,
-                                pred.mean=(n==Nmif),
-                                pred.var=((method=="mif")||(n==Nmif)),
-                                filter.mean=TRUE,
-                                save.states=FALSE,
-                                save.params=FALSE,
-                                .rw.sd=sigma.n[pars],
-                                verbose=verbose,
-                                transform=transform
-                                ),
-               silent=FALSE
-               )
-    if (inherits(pfp,'try-error'))
-      stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
-
-    switch(
-           method,
-           mif={                                 # mif update rule
-             v <- pfp$pred.var[pars,,drop=FALSE] # the prediction variance
-             v1 <- cool.sched$gamma*(1+var.factor^2)*sigma[pars]^2
-             theta.hat <- cbind(theta[pars],pfp$filter.mean[pars,,drop=FALSE])
-             theta[pars] <- theta[pars]+colSums(apply(theta.hat,1,diff)/t(v))*v1
-           },
-           unweighted={                  # unweighted (flat) average
-             theta.hat <- pfp$filter.mean[pars,,drop=FALSE]
-             theta[pars] <- rowMeans(theta.hat)
-           },
-           fp={
-             theta.hat <- pfp$filter.mean[pars,ntimes,drop=FALSE]
-             theta[pars] <- theta.hat
-           },
-           stop("unrecognized method",sQuote(method))
-           )
-    
-    ## update the IVPs using fixed-lag smoothing
-    theta[ivps] <- pfp$filter.mean[ivps,ic.lag]
-
-    ## store a record of this iteration
-    conv.rec[n+1,-c(1,2)] <- theta
-    conv.rec[n,c(1,2)] <- c(pfp$loglik,pfp$nfail)
-
-    if (verbose) cat("MIF iteration ",n," of ",Nmif," completed\n")
-
-  }
 
   ## back transform the parameter estimate if necessary
   if (transform)
