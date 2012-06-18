@@ -6,6 +6,7 @@
 #include <R.h>
 #include <Rmath.h>
 #include <Rdefines.h>
+#include <R_ext/Rdynload.h>
 
 // facility for extracting R objects from the 'userdata' slot
 const SEXP get_pomp_userdata (const char *name);
