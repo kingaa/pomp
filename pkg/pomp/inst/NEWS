@@ -1,4 +1,15 @@
 NEWS
+0.42-6
+     o	Improve error checking in 'pomp'.
+
+     o	Add support for covariates to 'pompBuilder'.
+
+     o	Add native parameter transformation routines to the demos.
+
+     o	Change the warning behavior in 'lookup_table' so that warnings are not generated unless true extrapolation is performed (i.e., eliminate the warnings at the boundary).
+
+     o	Some small modifications to the 'pomp.h' header file.
+
 0.42-4
      o	When 'trajectory' calls 'ode', there is a need to preserve information across calls to the vectorfield-evaluating function.
      	The code has been modified to do this in a cleaner way.
