@@ -1,3 +1,50 @@
+2012-06-29  kingaa
+
+	* [r740] DESCRIPTION, R/pomp.R, inst/NEWS, man/pomp.Rd,
+	  tests/sir.R: - add 'params' argument to 'pomp' constructor
+	* [r739] R/traj-match.R, man/traj-match.Rd, tests/bbs-trajmatch.R,
+	  tests/bbs-trajmatch.Rout.save: - extra arguments (...) to
+	  'traj.match.objfun' are now passed on to the ODE integrator in
+	  case the skeleton is a vectorfield
+
+2012-06-18  kingaa
+
+	* [r732] inst/include/pomp.h: - update installed version of
+	  'pomp.h'
+	* [r731] DESCRIPTION, inst/NEWS, src/pomp.h: - update NEWS file
+	  - minor changes to 'pomp.h'
+
+2012-06-12  kingaa
+
+	* [r729] inst/doc/pomp.bib: - update bibliography database
+
+2012-06-01  kingaa
+
+	* [r727] DESCRIPTION, demo/sir.R, inst/include/pomp.h,
+	  src/lookup_table.c, src/pomp.h: - remove superfluous warnings
+	  from 'lookup_table'
+	  - fix 'sir' demo to work with covariate table
+	  - add some inline functions to 'pomp.h'
+	* [r726] DESCRIPTION, R/builder.R, demo/gompertz.R, man/builder.Rd:
+	  - fix incorrect error messages in 'pompBuilder'
+	  - allow 'pompBuilder' to deal with covariates
+
+2012-05-29  kingaa
+
+	* [r725] DESCRIPTION, R/builder.R, R/pomp.R, demo/gompertz.R,
+	  demo/sir.R, man/builder.Rd, man/pomp.Rd: - add support for
+	  parameter transformations to 'pompBuilder'
+	  - more error-trapping in 'pomp'
+	  - update demos to use compiled parameter transformations
+	  - fix minor omission in 'pomp' man page
+
+2012-05-14  kingaa
+
+	* [r722] DESCRIPTION: - update DESCRIPTION
+	* [r721] inst/ChangeLog, inst/NEWS,
+	  inst/doc/advanced_topics_in_pomp.pdf, inst/doc/intro_to_pomp.pdf:
+	  - update changelog NEWS file and vignettes
+
 2012-05-12  kingaa
 
 	* [r716] DESCRIPTION, R/dmeasure-pomp.R, R/dprocess-pomp.R,
