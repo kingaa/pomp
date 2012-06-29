@@ -20,14 +20,14 @@ mif.cooling <- function (factor, n) {   # default cooling schedule
   alpha <- factor^(n-1)
   list(alpha=alpha,gamma=alpha^2)
 }
-mif.cooling2 <- function (factor, n) {   # default cooling schedule
-	alpha <- (1+factor)/(n+factor)
-	list(alpha=alpha,gamma=alpha^2)
+mif.cooling2 <- function (cooling.scalar, n , m ) {   # cooling schedule for mif2
+	alpha <- (1+cooling.scalar)/(cooling.scalar+n*m)
+	list(alpha = alpha, gamma = alpha^2)
 }
 powerlaw.cooling <- function (init = 1, delta = 0.1, eps = (1-delta)/2, n) {
-  m <- init
-  if (n <= m) {                         # linear cooling regime
-    alpha <- (m-n+1)/m
+  em <- init
+  if (n <= em) {                         # linear cooling regime
+    alpha <- (em-n+1)/em
     gamma <- alpha
   } else {                              # power-law cooling regime
     alpha <- ((n/m)^(delta+eps))/n
@@ -39,6 +39,7 @@ powerlaw.cooling <- function (init = 1, delta = 0.1, eps = (1-delta)/2, n) {
 mif.internal <- function (object, Nmif,
                           start, pars, ivps,
                           particles,
+						  paramMatrix, option, cooling.scalar,cooling.m,
                           rw.sd, 
                           Np, cooling.factor, var.factor, ic.lag,
                           method, tol, max.fail,
@@ -173,7 +174,26 @@ mif.internal <- function (object, Nmif,
   Nmif <- as.integer(Nmif)
   if (Nmif<0)
     stop("mif error: ",sQuote("Nmif")," must be a positive integer",call.=FALSE)
+  if (missing(option) && !missing(method) )
+  {	  option=method
+	  warning(sQuote("mif")," warning: ",sQuote("method")," flag is deprecated, use ",sQuote("option"))
+  }	
+  if (missing(option) && missing(method))
+  {
+	  warning(sQuote("mif")," warning: ",sQuote("option")," is missing and set to mif by default")
+	  option="mif"
+  }	  
 
+  if (missing(cooling.scalar) && (option=="mif2"))
+  {   warning(sQuote("mif")," warning: ",sQuote("cooling scalar")," is missing and set to 200 by default.")
+	  cooling.scalar=200
+  }
+  if (missing(cooling.scalar) && (option!="mif2"))
+  {   warning(sQuote("mif")," warning: ",sQuote("cooling scalar")," is missing and set to 200 by default.")
+	  cooling.scalar=1
+  }
+  if (missing(cooling.m))
+	  cooling.m=-1
   theta <- start
 
   sigma <- rep(0,length(start))
@@ -213,143 +233,93 @@ mif.internal <- function (object, Nmif,
     tmp.mif <- new("mif",object,particles=particles,Np=Np) # only needed so that we can use the 'particles' method below
   else
     pfp <- obj
-
-##Branch mif1 and mif2 here  
-if (method!="mif2") 
-{
-#Nmif = M
-	for (n in seq_len(Nmif)) { # main loop
-		
-		## compute the cooled sigma
-		cool.sched <- try(
-				mif.cooling(cooling.factor,.ndone+n),
-				silent=FALSE
-		)
-		if (inherits(cool.sched,'try-error'))
-			stop("mif error: cooling schedule error",call.=FALSE)
-		sigma.n <- sigma*cool.sched$alpha
-		
-		## initialize the particles' parameter portion...
-		P <- try(
-				particles(tmp.mif,Np=Np[1],center=theta,sd=sigma.n*var.factor),
-				silent=FALSE
-		)
-		if (inherits(P,'try-error'))
-			stop("mif error: error in ",sQuote("particles"),call.=FALSE)
-		
-		## run the particle filter
-		pfp <- try(
-				pfilter.internal(
-						object=obj,
-						params=P,
-						tol=tol,
-						max.fail=max.fail,
-						pred.mean=(n==Nmif),
-						pred.var=((method=="mif")||(n==Nmif)),
-						filter.mean=TRUE,
-						save.states=FALSE,
-						save.params=FALSE,
-						.rw.sd=sigma.n[pars],
-						verbose=verbose,
-						transform=transform
-				),
-				silent=FALSE
-		)
-		if (inherits(pfp,'try-error'))
-			stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
-		
-		switch(
-				method,
-				mif={                                 # mif update rule
-					v <- pfp$pred.var[pars,,drop=FALSE] # the prediction variance
-					v1 <- cool.sched$gamma*(1+var.factor^2)*sigma[pars]^2
-					theta.hat <- cbind(theta[pars],pfp$filter.mean[pars,,drop=FALSE])
-					theta[pars] <- theta[pars]+colSums(apply(theta.hat,1,diff)/t(v))*v1
-				},
-				unweighted={                  # unweighted (flat) average
-					#theta.hat <- pfp$filter.mean[pars,,drop=FALSE]
-					#theta[pars] <- rowMeans(theta.hat)
-					theta.hat <- pfp$filter.mean[pars,ntimes,drop=FALSE]
+if (option != "mif2") {
+	for (n in seq_len(Nmif)) {
+		cool.sched <- try(mif.cooling(cooling.factor, .ndone + 
+								n), silent = FALSE)
+		if (inherits(cool.sched, "try-error")) 
+			stop("mif error: cooling schedule error", call. = FALSE)
+		sigma.n <- sigma * cool.sched$alpha
+		paramMatrix <- try(particles(tmp.mif, Np = Np[1], center = theta, 
+						sd = sigma.n * var.factor), silent = FALSE)
+		if (inherits(paramMatrix, "try-error")) 
+			stop("mif error: error in ", sQuote("particles"), 
+					call. = FALSE)
+		pfp <- try(pfilter.internal(object = obj, params = paramMatrix, 
+						tol = tol, max.fail = max.fail, pred.mean = (n == 
+									Nmif), pred.var = ((option == "mif") || (n == 
+										Nmif)), filter.mean = TRUE, save.states = FALSE, 
+						save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=-1, cooling.scalar=cooling.scalar,
+						verbose = verbose, transform = transform), silent = FALSE)
+		if (inherits(pfp, "try-error")) 
+			stop("mif error: error in ", sQuote("pfilter"), 
+					call. = FALSE)
+		switch(option, mif = {
+					v <- pfp$pred.var[pars, , drop = FALSE]
+					v1 <- cool.sched$gamma * (1 + var.factor^2) * 
+							sigma[pars]^2
+					theta.hat <- cbind(theta[pars], pfp$filter.mean[pars, 
+									, drop = FALSE])
+					theta[pars] <- theta[pars] + colSums(apply(theta.hat, 
+									1, diff)/t(v)) * v1
+				}, unweighted = {
+					theta.hat <- pfp$filter.mean[pars,,drop=FALSE]
+					theta[pars] <- rowMeans(theta.hat)
+				}, fp = {
+					theta.hat <- pfp$filter.mean[pars, ntimes, drop = FALSE]
 					theta[pars] <- theta.hat
-				},
-				fp={
-					theta.hat <- pfp$filter.mean[pars,ntimes,drop=FALSE]
-					theta[pars] <- theta.hat
-				},
-		#stop("unrecognized method",sQuote(method))
-		)
+				}, )
+		theta[ivps] <- pfp$filter.mean[ivps, ic.lag]
+		conv.rec[n + 1, -c(1, 2)] <- theta
+		conv.rec[n, c(1, 2)] <- c(pfp$loglik, pfp$nfail)
 		
-		## update the IVPs using fixed-lag smoothing
-		theta[ivps] <- pfp$filter.mean[ivps,ic.lag]
 		
-		## store a record of this iteration
-		conv.rec[n+1,-c(1,2)] <- theta
-		conv.rec[n,c(1,2)] <- c(pfp$loglik,pfp$nfail)
-		
-		if (verbose) cat("MIF iteration ",n," of ",Nmif," completed\n")
-		
+		if (verbose) 
+			cat("MIF iteration ", n, " of ", Nmif, " completed\n")
 	}
 }
-else
-{		
-	for (n in seq_len(Nmif)) { # main loop
+else {
+	
+	for (n in seq_len(Nmif)) {
 		
-		## compute the cooled sigma
-		cool.sched <- try(
-				mif.cooling2(cooling.factor,.ndone),#+n,Np=Np[1],n),
-				silent=FALSE
-		)
-		if (inherits(cool.sched,'try-error'))
-			stop("mif error: cooling schedule error",call.=FALSE)
-		sigma.n <- sigma*cool.sched$alpha
+		cool.sched <- try(mif.cooling2(cooling.scalar, .ndone + 
+								n, ntimes), silent = FALSE)
+		if (inherits(cool.sched, "try-error")) 
+			stop("mif error: cooling schedule error", call. = FALSE)
+		sigma.n <- sigma * cool.sched$alpha
 		
-		## initialize the particles' parameter portion...
-		P <- try(
-				particles(tmp.mif,Np=Np[1],center=theta,sd=sigma.n*var.factor),
-				silent=FALSE
-		)
-		if (inherits(P,'try-error'))
-			stop("mif error: error in ",sQuote("particles"),call.=FALSE)
 		
-		## run the particle filter
-		pfp <- try(
-				pfilter.internal(
-						object=obj,
-						params=P,
-						tol=tol,
-						max.fail=max.fail,
-						pred.mean=(n==Nmif),
-						pred.var=((method=="mif")||(n==Nmif)),
-						filter.mean=TRUE,
-						save.states=FALSE,
-						save.params=FALSE,
-						.rw.sd=sigma.n[pars],
-						verbose=verbose,
-						transform=transform
-				),
-				silent=FALSE
-		)
-		if (inherits(pfp,'try-error'))
-			stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
+		paramMatrix <- try(particles(tmp.mif, Np = Np[1], center = theta, 
+						sd = sigma.n * var.factor), silent = FALSE)
 		
-		theta.hat <- pfp$filter.mean[pars,ntimes,drop=FALSE]
+		
+		if (inherits(paramMatrix, "try-error")) 
+			stop("mif error: error in ", sQuote("particles"), 
+					call. = FALSE)
+		pfp <- try(pfilter.internal(object = obj, params = paramMatrix, 
+						tol = tol, max.fail = max.fail, pred.mean = (n == 
+									Nmif), pred.var = ((option == "mif2") || (n == 
+										Nmif)), filter.mean = TRUE, save.states = FALSE, 
+						save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=n,   cooling.scalar=cooling.scalar,
+						verbose = verbose, transform = transform), silent = FALSE)
+		if (inherits(pfp, "try-error")) 
+			stop("mif error: error in ", sQuote("pfilter"), 
+					call. = FALSE)
+		
+		theta.hat <- rowMeans(pfp$paramMatrix[pars, , drop = FALSE])
 		theta[pars] <- theta.hat
 		
+		theta[ivps] <- pfp$filter.mean[ivps, ic.lag]
+		conv.rec[n + 1, -c(1, 2)] <- theta
+		conv.rec[n, c(1, 2)] <- c(pfp$loglik, pfp$nfail)
 		
-		## update the IVPs using fixed-lag smoothing
-		theta[ivps] <- pfp$filter.mean[ivps,ic.lag]
 		
-		## store a record of this iteration
-		conv.rec[n+1,-c(1,2)] <- theta
-		conv.rec[n,c(1,2)] <- c(pfp$loglik,pfp$nfail)
+		if (verbose) 
+			cat("MIF iteration ", n, " of ", Nmif, " completed\n")
 		
-		if (verbose) cat("MIF iteration ",n," of ",Nmif," completed\n")
 		
 	}
-	
-	
 }
-
 
   ## back transform the parameter estimate if necessary
   if (transform)
@@ -364,7 +334,11 @@ else
       pars=pars,
       Nmif=Nmif,
       particles=particles,
-      var.factor=var.factor,
+	  paramMatrix=paramMatrix,
+	  option=option,
+	  cooling.scalar=cooling.scalar,
+	  cooling.m=cooling.m,
+	  var.factor=var.factor,
       ic.lag=ic.lag,
       cooling.factor=cooling.factor,
       random.walk.sd=sigma[rw.names],
@@ -381,9 +355,12 @@ setMethod(
           function (object, Nmif = 1,
                     start,
                     pars, ivps = character(0),
-                    particles, rw.sd,
-                    Np, ic.lag, var.factor, cooling.factor,
-                    weighted, method = c("mif","unweighted","fp"),
+                    particles, rw.sd, paramMatrix,
+					option= c("mif","unweighted","fp", "mif2"),
+					cooling.scalar,
+					cooling.m,
+					Np, ic.lag, var.factor, cooling.factor,
+                    weighted, 
                     tol = 1e-17, max.fail = 0,
                     verbose = getOption("verbose"),
                     transform = FALSE, ...) {
@@ -405,22 +382,27 @@ setMethod(
               stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
             if (missing(cooling.factor))
               stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
-            
-            method <- match.arg(method)
-            if (!missing(weighted)) {
-              warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("method"))
-              if (weighted) {
-                if (method!="mif") {
-                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("method"))
-                }
-                method <- "mif"
-              } else {
-                if (method!="unweighted") {
-                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("method"))
-                }
-                method <- "unweighted"
-              }
-            }
+		    if (missing(paramMatrix))
+			  paramMatrix=NULL
+		    if (missing(cooling.scalar))
+			  cooling.scalar=1
+		    if (missing(cooling.m))
+				cooling.m=-1	
+            option <- match.arg(option)
+			if (!missing(weighted)) {
+				warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("option"))
+				if (weighted) {
+					if (option!="mif") {
+						warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("option"))
+					}
+					option <- "mif"
+				} else {
+					if (option!="unweighted") {
+						warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("option"))
+					}
+					option <- "unweighted"
+				}
+			}
 
             if (missing(particles)) {         # use default: normal distribution
               particles <- default.pomp.particles.fun
@@ -443,17 +425,21 @@ setMethod(
                          pars=pars,
                          ivps=ivps,
                          particles=particles,
-                         rw.sd=rw.sd,
+						 rw.sd=rw.sd,
                          Np=Np,
                          cooling.factor=cooling.factor,
-                         var.factor=var.factor,
+						 var.factor=var.factor,
                          ic.lag=ic.lag,
                          method=method,
                          tol=tol,
                          max.fail=max.fail,
                          verbose=verbose,
                          transform=transform,
-                         .ndone=0
+                         .ndone=0,
+						 paramMatrix=paramMatrix,
+						 option=option,
+						 cooling.scalar=cooling.scalar,
+						 cooling.m=cooling.m
                          )
 
           }
@@ -467,8 +453,12 @@ setMethod(
                     start,
                     pars, ivps = character(0),
                     particles, rw.sd,
-                    Np, ic.lag, var.factor, cooling.factor,
-                    weighted, method = c("mif","unweighted","fp"),
+					paramMatrix, 
+					option= c("mif","unweighted","fp", "mif2"),
+					cooling.scalar,
+					cooling.m,
+					Np, ic.lag, var.factor, cooling.factor,
+                    weighted, 
                     tol = 1e-17, max.fail = 0,
                     verbose = getOption("verbose"),
                     transform = FALSE, ...) {
@@ -490,20 +480,25 @@ setMethod(
               stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
             if (missing(cooling.factor))
               stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
-            
-            method <- match.arg(method)
+		    if (missing(paramMatrix))
+			  paramMatrix=matrix(0,nrow=1,ncol=1)
+		    if (missing(cooling.scalar))
+			  cooling.scalar=1	
+		    if (missing(cooling.m))
+				cooling.m=-1
+            option <- match.arg(option)
             if (!missing(weighted)) {
-              warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("method"))
+              warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("option"))
               if (weighted) {
-                if (method!="mif") {
-                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("method"))
+                if (option!="mif") {
+                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("option"))
                 }
-                method <- "mif"
+                option <- "mif"
               } else {
-                if (method!="unweighted") {
-                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("method"))
+                if (option!="unweighted") {
+                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("option"))
                 }
-                method <- "unweighted"
+                option <- "unweighted"
               }
             }
 
@@ -531,6 +526,7 @@ setMethod(
                          rw.sd=rw.sd,
                          Np=Np,
                          cooling.factor=cooling.factor,
+						 
                          var.factor=var.factor,
                          ic.lag=ic.lag,
                          method=method,
@@ -538,7 +534,11 @@ setMethod(
                          max.fail=max.fail,
                          verbose=verbose,
                          transform=transform,
-                         .ndone=0
+                         .ndone=0,
+						 paramMatrix=paramMatrix,
+						 option=option,
+						 cooling.scalar=cooling.scalar,
+						 cooling.m=cooling.m
                          )
           }
           )
@@ -550,8 +550,12 @@ setMethod(
                     start,
                     pars, ivps,
                     particles, rw.sd,
+					paramMatrix,
+					option= c("mif","unweighted","fp", "mif2"),
+					cooling.scalar,
+					cooling.m,
                     Np, ic.lag, var.factor, cooling.factor,
-                    weighted, method = c("mif","unweighted","fp"),
+                    weighted, 
                     tol = 1e-17, max.fail = 0,
                     verbose = getOption("verbose"),
                     transform, ...) {
@@ -569,20 +573,25 @@ setMethod(
             if (missing(tol)) tol <- object@tol
             if (missing(transform)) transform <- object@transform
             transform <- as.logical(transform)
-
-            method <- match.arg(method)
+			if (missing(paramMatrix))
+				paramMatrix <- object@paramMatrix
+			if (missing(cooling.scalar))
+				cooling.scalar= object@cooling.scalar
+			if (missing(cooling.m))
+				cooling.m= object@cooling.m
+            option <- match.arg(option)
             if (!missing(weighted)) {
-              warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("method"))
+              warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("option"))
               if (weighted) {
-                if (method!="mif") {
-                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("method"))
+                if (option!="mif") {
+                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("option"))
                 }
-                method <- "mif"
+                option <- "mif"
               } else {
-                if (method!="unweighted") {
-                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("method"))
+                if (option!="unweighted") {
+                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("option"))
                 }
-                method <- "unweighted"
+                option <- "unweighted"
               }
             }
 
@@ -603,7 +612,11 @@ setMethod(
                          max.fail=max.fail,
                          verbose=verbose,
                          transform=transform,
-                         .ndone=0
+                         .ndone=0,
+						 paramMatrix=paramMatrix,
+						 option=option,
+						 cooling.scalar=cooling.scalar,
+						 cooling.m=cooling.m
                          )
           }
           )
@@ -614,9 +627,9 @@ setMethod(
           function (object, Nmif = 1,
                     start,
                     pars, ivps,
-                    particles, rw.sd,
+                    particles, rw.sd, paramMatrix, option= c("mif","unweighted","fp","mif2"), cooling.scalar,cooling.m,
                     Np, ic.lag, var.factor, cooling.factor,
-                    weighted, method = c("mif","unweighted","fp"),
+                    weighted,  
                     tol = 1e-17, max.fail = 0,
                     verbose = getOption("verbose"),
                     transform, ...) {
@@ -634,20 +647,25 @@ setMethod(
             if (missing(tol)) tol <- object@tol
             if (missing(transform)) transform <- object@transform
             transform <- as.logical(transform)
-
-            method <- match.arg(method)
+			if (missing(paramMatrix))
+				paramMatrix <- object@paramMatrix
+			if (missing(cooling.scalar))
+				cooling.scalar= object@cooling.scalar
+			if (missing(cooling.m))
+				cooling.m= object@cooling.m
+            option <- match.arg(option)
             if (!missing(weighted)) {
-              warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("method"))
+              warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("option"))
               if (weighted) {
-                if (method!="mif") {
-                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("method"))
+                if (option!="mif") {
+                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("option"))
                 }
-                method <- "mif"
+                option <- "mif"
               } else {
-                if (method!="unweighted") {
-                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("method"))
+                if (option!="unweighted") {
+                  warning(sQuote("mif")," warning: use of ",sQuote("weighted")," argument overrides choice of ",sQuote("option"))
                 }
-                method <- "unweighted"
+                option <- "unweighted"
               }
             }
 
@@ -668,8 +686,12 @@ setMethod(
                                 max.fail=max.fail,
                                 verbose=verbose,
                                 transform=transform,
-                                .ndone=ndone
-                                )
+                                .ndone=ndone,
+								paramMatrix=paramMatrix,
+								option=option,
+								cooling.scalar=cooling.scalar,
+								cooling.m=cooling.m
+								)
 
             object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1,c('loglik','nfail')]
             obj@conv.rec <- rbind(
@@ -713,10 +735,14 @@ mif.profileDesign <- function (object, profile, lower, upper, nprof, ivps,
                          ivps=ivps,
                          rw.sd=rw.sd,
                          Np=Np,
+						 paramMatrix=paramMatrix,
+						 option=option,
+						 cooling.scalar=cooling.scalar,
+						 cooling.m=cooling.m,
                          ic.lag=ic.lag,
                          var.factor=var.factor,
                          cooling.factor=cooling.factor,
-                         ...
+						 ...
                          )
                        )
     }
