@@ -32,7 +32,7 @@ setMethod(
           }
           )
 
-traj.match.objfun <- function (object, params, est, transform = FALSE) {
+traj.match.objfun <- function (object, params, est, transform = FALSE, ...) {
   
   transform <- as.logical(transform)
   if (missing(est)) est <- character(0)
@@ -53,7 +53,7 @@ traj.match.objfun <- function (object, params, est, transform = FALSE) {
       d <- dmeasure(
                     object,
                     y=object@data,
-                    x=trajectory(object,params=tparams),
+                    x=trajectory(object,params=tparams,...),
                     times=time(object),
                     params=tparams,
                     log=TRUE
@@ -62,7 +62,7 @@ traj.match.objfun <- function (object, params, est, transform = FALSE) {
       d <- dmeasure(
                     object,
                     y=object@data,
-                    x=trajectory(object,params=params),
+                    x=trajectory(object,params=params,...),
                     times=time(object),
                     params=params,
                     log=TRUE

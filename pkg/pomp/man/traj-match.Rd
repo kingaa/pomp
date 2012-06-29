@@ -25,7 +25,7 @@
   \S4method{traj.match}{traj.matched.pomp}(object, start, est,
            method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
            gr = NULL, eval.only = FALSE, transform, \dots)
-traj.match.objfun(object, params, est, transform = FALSE)
+traj.match.objfun(object, params, est, transform = FALSE, \dots)
 }
 \arguments{
   \item{object}{
@@ -63,7 +63,10 @@ traj.match.objfun(object, params, est, transform = FALSE)
     if \code{TRUE}, optimization is performed on the transformed scale.
   }
   \item{\dots}{
-    Arguments that will be passed to \code{\link{optim}}, \code{\link[subplex]{subplex}} or \code{\link{sannbox}}, via their \code{control} lists.
+    Extra arguments that will be passed either to the optimizer (\code{\link{optim}}, \code{\link[subplex]{subplex}} or \code{\link{sannbox}}, via their \code{control} lists) or to the ODE integrator.
+    In \code{traj.match}, extra arguments will be passed to the optimizer.
+    In \code{traj.match.objfun}, extra arguments are passed to the ODE integrator, but only if an ODE integrator is called, i.e., only when the deterministic skeleton is a vectorfield.
+    If extra arguments are needed by both optimizer and ODE integrator, construct an objective function first using \code{traj.match.objfun}, then give this objective function to the optimizer.
   }
 }
 \details{
@@ -137,6 +140,10 @@ traj.match.objfun(object, params, est, transform = FALSE)
   data(ricker)
   ofun <- traj.match.objfun(ricker,est=c("r","phi"),transform=TRUE)
   optim(fn=ofun,par=c(2,0),method="BFGS")
+
+  data(bbs)
+  ofun <- traj.match.objfun(bbs,est=c("beta","gamma"),transform=TRUE,hmax=0.001)
+  optim(fn=ofun,par=c(0,-1),method="Nelder-Mead")
 }
 \seealso{
   \code{\link{trajectory}},
