@@ -7,6 +7,9 @@ setClass(
            pred.mean="array",
            pred.var="array",
            filter.mean="array",
+		   paramMatrix="array",
+		   cooling.m = "numeric",
+		   cooling.scalar = "numeric",
            eff.sample.size="numeric",
            cond.loglik="numeric",
            saved.states="list",
@@ -23,7 +26,7 @@ setClass(
 
 pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
-                              pred.mean, pred.var, filter.mean,
+                              pred.mean, pred.var, filter.mean, paramMatrix, cooling.scalar,cooling.m,  
                               .rw.sd, seed, verbose,
                               save.states, save.params,
                               transform) {
@@ -67,7 +70,7 @@ pfilter.internal <- function (object, params, Np,
     stop("number of particles, ",sQuote("Np"),", must always be positive")
   if (!is.numeric(Np))
     stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
-  Np <- as.integer(Np)
+  
   
   if (is.null(dim(params))) {
     one.par <- TRUE               # there is only one parameter vector
@@ -170,7 +173,12 @@ pfilter.internal <- function (object, params, Np,
 
   for (nt in seq_len(ntimes)) {
 
-    ## transform the parameters if necessary
+	  if (cooling.m>0)
+		  sigma1=sigma*(cooling.scalar+1)/(cooling.scalar+nt+ntimes*(cooling.m-1))
+	  else
+		  sigma1=sigma
+	  
+	## transform the parameters if necessary
     if (transform) tparams <- partrans(object,params,dir="forward")
 
     ## advance the state variables according to the process model
@@ -233,7 +241,7 @@ pfilter.internal <- function (object, params, Np,
               .Call(
                     pfilter_computations,
                     X,params,Np[nt+1],
-                    random.walk,sigma,
+                    random.walk,sigma1,
                     pred.mean,pred.var,
                     filter.mean,one.par,
                     weights,tol
@@ -282,14 +290,17 @@ pfilter.internal <- function (object, params, Np,
     assign(".Random.seed",save.seed,pos=.GlobalEnv)
     seed <- save.seed
   }
-
+  paramMatrix <- params
   new(
       "pfilterd.pomp",
       object,
       pred.mean=pred.m,
       pred.var=pred.v,
       filter.mean=filt.m,
-      eff.sample.size=eff.sample.size,
+	  paramMatrix =paramMatrix,
+	  cooling.scalar=cooling.scalar,
+	  cooling.m=cooling.m,
+	  eff.sample.size=eff.sample.size,
       cond.loglik=loglik,
       saved.states=xparticles,
       saved.params=pparticles,
@@ -313,7 +324,10 @@ setMethod(
                     pred.mean = FALSE,
                     pred.var = FALSE,
                     filter.mean = FALSE,
-                    save.states = FALSE,
+					paramMatrix=paramMatrix,
+					cooling.scalar=cooling.scalar,
+					cooling.m = cooling.m,
+					save.states = FALSE,
                     save.params = FALSE,
                     seed = NULL,
                     verbose = getOption("verbose"),
@@ -328,7 +342,10 @@ setMethod(
                              pred.mean=pred.mean,
                              pred.var=pred.var,
                              filter.mean=filter.mean,
-                             save.states=save.states,
+							 paramMatrix = paramMatrix,
+							 cooling.scalar=cooling.scalar,
+							 cooling.m = cooling.m,
+							 save.states=save.states,
                              save.params=save.params,
                              seed=seed,
                              verbose=verbose,
@@ -346,7 +363,10 @@ setMethod(
                     pred.mean = FALSE,
                     pred.var = FALSE,
                     filter.mean = FALSE,
-                    save.states = FALSE,
+					paramMatrix,
+					cooling.scalar,
+					cooling.m,
+					save.states = FALSE,
                     save.params = FALSE,
                     seed = NULL,
                     verbose = getOption("verbose"),
@@ -354,6 +374,9 @@ setMethod(
             if (missing(params)) params <- coef(object)
             if (missing(Np)) Np <- object@Np
             if (missing(tol)) tol <- object@tol
+			if (missing(paramMatrix)) paramMatrix <- object@paramMatrix
+			if (missing(cooling.m)) cooling.m <- object@cooling.m
+			if (missing(cooling.scalar)) cooling.scalar <- object@cooling.scalar
             pfilter.internal(
                              object=as(object,"pomp"),
                              params=params,
@@ -363,11 +386,14 @@ setMethod(
                              pred.mean=pred.mean,
                              pred.var=pred.var,
                              filter.mean=filter.mean,
+							 paramMatrix=paramMatrix,
+							 cooling.m = cooling.m,
+							 cooling.scalar=cooling.scalar,
                              save.states=save.states,
                              save.params=save.params,
                              seed=seed,
                              verbose=verbose,
                              transform=FALSE
-                             )
+                             )	
           }
           )
