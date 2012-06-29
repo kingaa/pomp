@@ -1,4 +1,9 @@
 NEWS
+0.43-1
+     o	Modify 'traj.match.objfun' to allow arbitrary parameters to be passed to the ODE integrator.
+
+     o	Add 'params' argument to 'pomp' so that parameters can be specified at the time the pomp object is created.
+
 0.42-6
      o	Improve error checking in 'pomp'.
 

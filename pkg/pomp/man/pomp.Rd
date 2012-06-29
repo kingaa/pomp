@@ -16,25 +16,25 @@
 \S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
-       initializer, covar, tcovar,
+       initializer, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
-       initializer, covar, tcovar,
+       initializer, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
-       initializer, covar, tcovar,
+       initializer, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton, skeleton.type, skelmap.delta.t,
-       initializer, covar, tcovar,
+       initializer, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 }
@@ -108,6 +108,9 @@
     These are simply copied over as initial conditions when \code{init.state} is called (see \code{\link{init.state-pomp}}).
     The names of the state variables are the same as the corresponding initial value parameters, but with the \dQuote{\code{.0}} dropped.
   }
+  \item{params}{
+    optional named numeric vector of parameters.
+  }
   \item{covar, tcovar}{
     An optional table of covariates: \code{covar} is the table (with one column per variable) and \code{tcovar} the corresponding times (one entry per row of \code{covar}).
     \code{covar} can be specified as either a matrix or a data frame.
@@ -158,7 +161,7 @@
   }
   In general, the specification of process-model codes \code{rprocess} and/or \code{dprocess} can be somewhat nontrivial:
   for this reason, \code{\link{plugins}} have been developed to streamline this process for the user.
-  Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{euler.sim}} or \code{\link{onestep.sim}} plugin for \code{rprocess} and \code{\link{onestep.dens}} plugin for \code{dprocess} are available.
+  Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{euler.sim}}, \code{\link{discrete.time.sim}}, or \code{\link{onestep.sim}} plugin for \code{rprocess} and \code{\link{onestep.dens}} plugin for \code{dprocess} are available.
   For exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm is available (see \code{\link{gillespie.sim}}).
   To use the plugins, consult the help documentation (\code{?\link{plugins}}) and the vignettes.
 

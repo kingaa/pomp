@@ -50,13 +50,14 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
                               rmeasure, dmeasure, measurement.model,
                               skeleton = NULL, skeleton.type = c("map","vectorfield"),
                               skelmap.delta.t = 1,
-                              initializer, covar, tcovar,
+                              initializer, params, covar, tcovar,
                               obsnames, statenames, paramnames, covarnames, zeronames,
                               PACKAGE, parameter.transform, parameter.inv.transform) {
 
   if (missing(data)) stop(sQuote("data")," is a required argument")
   if (missing(times)) stop(sQuote("times")," is a required argument")
   if (missing(t0)) stop(sQuote("t0")," is a required argument")
+  if (missing(params)) params <- numeric(0)
   
   ## check the data
   if (is.data.frame(data)) {
@@ -273,6 +274,7 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
       times = times,
       t0 = t0,
       initializer = initializer,
+      params=params,
       covar = covar,
       tcovar = tcovar,
       obsnames = obsnames,
@@ -374,7 +376,7 @@ setMethod(
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
                     skelmap.delta.t = 1,
-                    initializer, covar, tcovar,
+                    initializer, params, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames, zeronames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             pomp.constructor(
@@ -390,6 +392,7 @@ setMethod(
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
                              initializer=initializer,
+                             params=params,
                              covar=covar,
                              tcovar=tcovar,
                              obsnames=obsnames,
@@ -412,7 +415,7 @@ setMethod(
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
                     skelmap.delta.t = 1,
-                    initializer, covar, tcovar,
+                    initializer, params, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames, zeronames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             pomp.constructor(
@@ -428,6 +431,7 @@ setMethod(
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
                              initializer=initializer,
+                             params=params,
                              covar=covar,
                              tcovar=tcovar,
                              obsnames=obsnames,
@@ -451,7 +455,7 @@ setMethod(
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
                     skelmap.delta.t = 1,
-                    initializer, covar, tcovar,
+                    initializer, params, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames, zeronames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             pomp.constructor(
@@ -467,6 +471,7 @@ setMethod(
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
                              initializer=initializer,
+                             params=params,
                              covar=covar,
                              tcovar=tcovar,
                              obsnames=obsnames,
@@ -488,7 +493,7 @@ setMethod(
           function (data, times, t0, ..., rprocess, dprocess,
                     rmeasure, dmeasure, measurement.model,
                     skeleton, skeleton.type, skelmap.delta.t,
-                    initializer, covar, tcovar,
+                    initializer, params, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames, zeronames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             mmg <- !missing(measurement.model)
@@ -512,6 +517,7 @@ setMethod(
             if (missing(rprocess)) rprocess <- data@rprocess
             if (missing(dprocess)) dprocess <- data@dprocess
             if (missing(initializer)) initializer <- data@initializer
+            if (missing(params)) params <- data@params
             if (missing(covar)) covar <- data@covar
             if (missing(tcovar)) tcovar <- data@tcovar
             if (missing(obsnames)) obsnames <- data@obsnames
@@ -523,8 +529,6 @@ setMethod(
             if (missing(skeleton.type)) skeleton.type <- data@skeleton.type
             if (missing(skeleton)) skeleton <- data@skeleton
             if (missing(skelmap.delta.t)) skelmap.delta.t <- data@skelmap.delta.t
-
-            pars <- coef(data)
 
             if (missing(parameter.transform)) {
               if (missing(parameter.inv.transform)) {
@@ -577,7 +581,7 @@ setMethod(
                       )
                     ) -> retval
 
-            coef(retval) <- pars            
+            coef(retval) <- params
 
             retval
           }

@@ -18,6 +18,7 @@ params <- c(
 po <- pomp(
            times=1/52*seq.int(length=4*52),
            data=rbind(reports=numeric(52*4)),
+           params=params,
            t0=0,
            tcovar=tbasis,
            covar=basis,
@@ -148,7 +149,7 @@ show(po)
 set.seed(3049953)
 ## simulate from the model
 tic <- Sys.time()
-x <- simulate(po,params=params,nsim=3)
+x <- simulate(po,nsim=3)
 toc <- Sys.time()
 print(toc-tic)
 
@@ -157,14 +158,14 @@ pdf(file='sir.pdf')
 plot(x[[1]],variables=c("S","I","R","cases","W"))
 
 t1 <- seq(0,4/52,by=1/52/25)
-X1 <- simulate(po,params=params,nsim=10,states=TRUE,obs=TRUE,times=t1)
+X1 <- simulate(po,nsim=10,states=TRUE,obs=TRUE,times=t1)
 
 t2 <- seq(0,2,by=1/52)
-X2 <- simulate(po,params=params,nsim=1,states=TRUE,obs=TRUE,times=t2)
+X2 <- simulate(po,nsim=1,states=TRUE,obs=TRUE,times=t2)
 
 t3 <- seq(0,20,by=1/52)
 tic <- Sys.time()
-X3 <- trajectory(po,params=params,times=t3,hmax=1/52)
+X3 <- trajectory(po,times=t3,hmax=1/52)
 toc <- Sys.time()
 print(toc-tic)
 plot(t3,X3['I',1,],type='l')
