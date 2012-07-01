@@ -58,6 +58,12 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
   if (missing(times)) stop(sQuote("times")," is a required argument")
   if (missing(t0)) stop(sQuote("t0")," is a required argument")
   if (missing(params)) params <- numeric(0)
+
+  if (length(params)>0) {
+    if (is.null(names(params)) || !is.numeric(params))
+      stop("pomp error: ",sQuote("params")," must be a named numeric vector",call.=TRUE)
+  }
+  storage.mode(params) <- 'double'
   
   ## check the data
   if (is.data.frame(data)) {

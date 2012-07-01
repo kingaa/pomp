@@ -259,6 +259,7 @@ setMethod(
                 object@params <- params
               }
             }
+            storage.mode(object@params) <- "double"
             object
           }
           )
