@@ -7,7 +7,7 @@ Author: Aaron A. King, Edward L. Ionides, Carles Breto, Steve Ellner, Bruce Kend
 Maintainer: Aaron A. King <kingaa@umich.edu>
 URL: http://pomp.r-forge.r-project.org
 Description: Inference methods for partially-observed Markov processes
-Depends: R(>= 2.14.2), stats, methods, graphics, mvtnorm, subplex, deSolve
+Depends: R(>= 2.14.1), stats, methods, graphics, mvtnorm, subplex, deSolve
 License: GPL(>= 2)
 LazyLoad: true
 LazyData: false
