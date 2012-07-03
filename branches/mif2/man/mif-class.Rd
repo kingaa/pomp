@@ -29,6 +29,12 @@
     \item{Nmif}{
       Number of MIF iterations that have been completed.
     }
+    \item{option}{
+      Method option of the mif object.
+    }
+    \item{cooling.scalar}{
+      A scalar constant (A) in the cooling scheme of method mif2.
+    }
     \item{particles}{
       A function of prototype \code{particles(Np,center,sd,...)} that draws particles from a distribution centered on \code{center} and with width proportional to \code{sd}.
       This function can be optionally specified by the user.

@@ -13,12 +13,12 @@
 \usage{
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, save.states = FALSE,
+    filter.mean = FALSE, paramMatrix=FALSE, save.states = FALSE,
     save.params = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
 \S4method{pfilter}{pfilterd.pomp}(object, params, Np, tol,
     max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, save.states = FALSE,
+    filter.mean = FALSE, paramMatrix=FALSE, save.states = FALSE,
     save.params = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
 }
@@ -59,6 +59,9 @@
   }
   \item{filter.mean}{
     logical; if \code{TRUE}, the filtering means are calculated for the state variables and parameters.
+  }
+  \item{paramMatrix}{
+    logical; if \code{TRUE}, the parameter matrix are calculated for the prior of the parameters.
   }
   \item{save.states, save.params}{
     logical.
