@@ -110,9 +110,7 @@ decl <- list(
              reulermultinom="\tvoid (*reulermultinom)(int,double,double*,double,double*);\nreulermultinom = (void (*)(int,double,double*,double,double*)) R_GetCCallable(\"pomp\",\"reulermultinom\");\n",
              get_pomp_userdata="\tconst SEXP (*get_pomp_userdata)(const char *);\npomp_get_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n",
              get_pomp_userdata_int="\tconst int * (*get_pomp_userdata_int)(const char *);\npomp_get_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
-             get_pomp_userdata_double="\tconst double * (*get_pomp_userdata_double)(const char *);\npomp_get_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n",
-             logit="\tdouble logit(double p){return log(p/(1.0-p));}\n\n",
-             expit="\tdouble expit(double x){return 1.0/(1.0+exp(-x));}\n\n"
+             get_pomp_userdata_double="\tconst double * (*get_pomp_userdata_double)(const char *);\npomp_get_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n"
              )
 
 footer <- list(

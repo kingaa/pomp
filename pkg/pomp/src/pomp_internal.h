@@ -240,14 +240,6 @@ static R_INLINE SEXP as_state_array (SEXP x) {
   return x;
 }
 
-static R_INLINE double expit (double x) {
-  return 1.0/(1.0 + exp(-x));
-}
-
-static R_INLINE double logit (double x) {
-  return log(x/(1-x));
-}
-
 static R_INLINE SEXP getListElement (SEXP list, const char *str)
 {
   SEXP elmt = R_NilValue;
