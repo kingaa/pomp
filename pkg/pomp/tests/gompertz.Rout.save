@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -44,6 +44,21 @@ Loading required package: deSolve
 > coef(po,transform=TRUE)
      K      r  sigma    tau    X.0 
  0.000 -1.609 -2.303 -2.303  0.000 
+> guess <- coef(po)
+> guess["r"] <- 0
+> 
+> try(
++     mf <- mif(
++               po,
++               start=guess,
++               Nmif=5,Np=1000,
++               transform=TRUE,
++               ic.lag=1,var.factor=1,cooling.factor=0.99,
++               rw.sd=c(r=0.02,K=0.02)
++               )
++     )
+Error : 'mif' error: mif cannot estimate non-finite parameters.
+The following transformed parameters are non-finite: r
 > 
 > set.seed(93848585L)
 > mf <- mif(
@@ -116,4 +131,4 @@ Loading required package: deSolve
 > 
 > proc.time()
    user  system elapsed 
-  1.448   0.048   1.509 
+  1.496   0.056   1.567 

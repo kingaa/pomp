@@ -17,6 +17,8 @@ setGeneric("continue",function(object,...)standardGeneric("continue"))
 setGeneric("pred.mean",function(object,...)standardGeneric("pred.mean"))
 setGeneric("pred.var",function(object,...)standardGeneric("pred.var"))
 setGeneric("filter.mean",function(object,...)standardGeneric("filter.mean"))
+setGeneric("cond.logLik",function(object,...)standardGeneric("cond.logLik"))
+setGeneric("eff.sample.size",function(object,...)standardGeneric("eff.sample.size"))
 
 if (!exists("paste0",where="package:base")) {
   paste0 <- function(...) paste(...,sep="")

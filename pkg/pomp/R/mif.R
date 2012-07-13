@@ -195,7 +195,8 @@ mif.internal <- function (object, Nmif,
   if (!all(is.finite(theta[c(pars,ivps)]))) {
     stop(
          sQuote("mif"),
-         " error: cannot estimate non-finite parameters: ",
+         " error: mif cannot estimate non-finite parameters.\n",
+         "The following ",if (transform) "transformed ", "parameters are non-finite: ",
          paste(
                c(pars,ivps)[!is.finite(theta[c(pars,ivps)])],
                collapse=","

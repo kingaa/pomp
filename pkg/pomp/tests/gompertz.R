@@ -11,6 +11,19 @@ coef(po,c("r","X.0"),transform=TRUE)
 coef(po,c("r","K")) <- c(0.2,1)
 coef(po)
 coef(po,transform=TRUE)
+guess <- coef(po)
+guess["r"] <- 0
+
+try(
+    mf <- mif(
+              po,
+              start=guess,
+              Nmif=5,Np=1000,
+              transform=TRUE,
+              ic.lag=1,var.factor=1,cooling.factor=0.99,
+              rw.sd=c(r=0.02,K=0.02)
+              )
+    )
 
 set.seed(93848585L)
 mf <- mif(

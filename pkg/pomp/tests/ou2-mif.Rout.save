@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -167,7 +167,8 @@ Error : mif error: 'Nmif' must be a positive integer
 +         Np=11,cooling.factor=0.95,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : 'mif' error: cannot estimate non-finite parameters: alpha.4
+Error : 'mif' error: mif cannot estimate non-finite parameters.
+The following parameters are non-finite: alpha.4
 > 
 > try(
 +     mif(
@@ -179,7 +180,8 @@ Error : 'mif' error: cannot estimate non-finite parameters: alpha.4
 +         Np=11,cooling.factor=0.95,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : 'mif' error: cannot estimate non-finite parameters: x2.0
+Error : 'mif' error: mif cannot estimate non-finite parameters.
+The following parameters are non-finite: x2.0
 > 
 > fit <- mif(
 +            ou2,
@@ -265,4 +267,4 @@ mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but a
 > 
 > proc.time()
    user  system elapsed 
- 13.108   0.044  13.312 
+ 13.728   0.036  13.921 
