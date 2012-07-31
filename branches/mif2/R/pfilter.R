@@ -24,7 +24,7 @@ setClass(
 
 pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
-                              pred.mean, pred.var, filter.mean, paramMatrix, cooling.scalar,cooling.m,
+                              pred.mean, pred.var, filter.mean, paramMatrix, cooling.scalar,cooling.m,option,
                               .rw.sd, seed, verbose,
                               save.states, save.params,
                               transform) {
@@ -45,7 +45,6 @@ pfilter.internal <- function (object, params, Np,
   
   if (missing(tol))
     stop(sQuote("pfilter")," error: ",sQuote("tol")," must be specified",call.=FALSE)
-  
   one.par <- FALSE
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
@@ -180,21 +179,18 @@ pfilter.internal <- function (object, params, Np,
   else
 	  paramMatrix <- array(dim=c(0,0))
 	
-  if(missing(cooling.scalar))
-	cooling.scalar <-400
-  if(missing(cooling.m))
-	cooling.m <--1
-
-
   for (nt in seq_len(ntimes)) {
-	  if (cooling.m>0)
+	  if (option=="mif2")
 	  {	  cool.sched <- try(mif.cooling2(cooling.scalar, nt , cooling.m, ntimes), silent = FALSE)
 	      if (inherits(cool.sched, "try-error")) 
 		       stop("pfilter error: cooling schedule error", call. = FALSE)
 		   sigma1=sigma*cool.sched$alpha
 	  }	  
 	  else
+	  {
 		  sigma1=sigma
+		  	  
+	  }
     ## transform the parameters if necessary
     if (transform) tparams <- partrans(object,params,dir="forward")
 
