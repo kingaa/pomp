@@ -12,6 +12,12 @@
 \alias{filter.mean}
 \alias{filter.mean,pfilterd.pomp-method}
 \alias{filter.mean-pfilterd.pomp}
+\alias{eff.sample.size}
+\alias{eff.sample.size,pfilterd.pomp-method}
+\alias{eff.sample.size-pfilterd.pomp}
+\alias{cond.logLik}
+\alias{cond.logLik,pfilterd.pomp-method}
+\alias{cond.logLik-pfilterd.pomp}
 \title{Methods of the "pfilterd.pomp" class}
 \description{Methods of the "pfilterd.pomp" class.}
 \usage{
@@ -19,6 +25,8 @@
 \S4method{pred.mean}{pfilterd.pomp}(object, pars, \dots)
 \S4method{pred.var}{pfilterd.pomp}(object, pars, \dots)
 \S4method{filter.mean}{pfilterd.pomp}(object, pars, \dots)
+\S4method{eff.sample.size}{pfilterd.pomp}(object, \dots)
+\S4method{cond.logLik}{pfilterd.pomp}(object, \dots)
 }
 \arguments{
   \item{object}{

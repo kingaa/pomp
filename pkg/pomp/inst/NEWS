@@ -1,4 +1,11 @@
 NEWS
+0.43-3
+     o	Fix bug in 'pompBuilder' on mac.
+
+     o	Fix bug in 'dmeasure' when log=TRUE.  Bug located by R. Reiner.
+
+     o	Add 'eff.sample.size' and 'cond.logLik' methods for 'pfilterd.pomp' objects.
+
 0.43-1
      o	Modify 'traj.match.objfun' to allow arbitrary parameters to be passed to the ODE integrator.
 
