@@ -1,4 +1,7 @@
 NEWS
+0.43-4
+     o	Clean up tests.
+
 0.43-3
      o	Fix bug in 'pompBuilder' on mac.
 

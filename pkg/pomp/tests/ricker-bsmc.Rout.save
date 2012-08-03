@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -39,17 +39,11 @@ Warning message:
 In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
   Walker's alias method used: results are different from R < 2.2.0
 > 
-> print(apply(fit$prior[c("r","sigma"),],1,mean))
-         r      sigma 
- 3.4894675 -0.7495206 
+> invisible(apply(fit$prior[c("r","sigma"),],1,mean))
 > 
-> print(apply(fit$post[c("r","sigma"),],1,mean))
-        r     sigma 
- 3.890965 -1.766350 
+> invisible(apply(fit$post[c("r","sigma"),],1,mean))
 > 
-> print(coef(fit))
-         r      sigma        phi        N.0        e.0 
-50.0502049  0.1702842 10.0000000  7.0000000  0.0000000 
+> invisible(coef(fit))
 > 
 > plot(fit,thin=300)
 > 
@@ -59,4 +53,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 21.989   0.068  22.270 
+ 23.861   0.076  24.137 

@@ -15,11 +15,11 @@ params["sigma",] <- runif(n=Np,min=0.1,max=1)
 
 fit <- bsmc(ricker,params=params,est=c("r","sigma"),transform=TRUE,smooth=0.2)
 
-print(apply(fit$prior[c("r","sigma"),],1,mean))
+invisible(apply(fit$prior[c("r","sigma"),],1,mean))
 
-print(apply(fit$post[c("r","sigma"),],1,mean))
+invisible(apply(fit$post[c("r","sigma"),],1,mean))
 
-print(coef(fit))
+invisible(coef(fit))
 
 plot(fit,thin=300)
 

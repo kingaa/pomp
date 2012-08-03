@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -193,8 +193,8 @@ In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
 > z1 <- tail(x$y1,-1)
 > y2 <- head(x$y2,-1)
 > z2 <- tail(x$y2,-1)
-> max(abs(pb@datvals-c(mean(y1*z1)/mean(x$y1^2),mean(y2*z2)/mean(x$y2^2),mean(y1*z1)/mean(y1*y1),mean(y2*z2)/mean(y2*y2))))
-[1] 1.110223e-16
+> small.diff <- pb@datvals-c(mean(y1*z1)/mean(x$y1^2),mean(y2*z2)/mean(x$y2^2),mean(y1*z1)/mean(y1*y1),mean(y2*z2)/mean(y2*y2))
+> stopifnot(max(abs(small.diff))<.Machine$double.eps*100)
 > 
 > po <- simulate(ou2)
 > pb <- probe(
@@ -294,4 +294,4 @@ sim.5 0.5542739 0.6216561 -0.4089672 -0.7236761  0.06850115
 > 
 > proc.time()
    user  system elapsed 
-  1.292   0.028   1.377 
+  1.320   0.040   1.484 

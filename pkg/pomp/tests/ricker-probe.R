@@ -16,7 +16,7 @@ pb <- probe(
             seed=838775L
             )
 plot(pb)
-summary(pb)
+invisible(summary(pb))
 
 pb <- probe(
             po,
@@ -25,7 +25,7 @@ pb <- probe(
             seed=838775L
             )
 plot(pb)
-summary(pb)
+invisible(summary(pb))
 
 pb <- probe(
             po,
@@ -34,7 +34,7 @@ pb <- probe(
             seed=838775L
             )
 plot(pb)
-summary(pb)
+invisible(summary(pb))
 
 pb <- probe(
             po,
@@ -43,7 +43,7 @@ pb <- probe(
             seed=838775L
             )
 plot(pb)
-summary(pb)
+invisible(summary(pb))
 
 pb <- probe(
             po,
@@ -57,8 +57,8 @@ pb <- probe(
             nsim=1000,
             seed=838775L
             )
-pb@datvals
-summary(pb)
+invisible(pb@datvals)
+invisible(summary(pb))
 plot(pb)
 
 pb <- probe(
@@ -80,13 +80,13 @@ pb <- probe(
             nsim=1000,
             seed=838775L
             )
-pb@datvals
-summary(pb)
+invisible(pb@datvals)
+invisible(summary(pb))
 plot(pb)
 
 pbm <- probe.match(pb,eval.only=TRUE)
 plot(pbm)
-summary(pbm)
+invisible(summary(pb))
 
 coef(po) <- c(r=10,sigma=0.3,phi=20,N.0=5,e.0=0)
 
@@ -102,8 +102,8 @@ pb <- probe(
             nsim=1000,
             seed=838775L
             )
-pb@datvals
-summary(pb)
+invisible(pb@datvals)
+invisible(summary(pb))
 plot(pb)
 
 pm <- probe.match(
@@ -119,7 +119,7 @@ pm <- probe.match(
                   )
 plot(pm)
 
-cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
+invisible(cbind(truth=coef(ricker),est=coef(pm),guess=coef(po)))
 
 pb <- probe(
             po,
@@ -132,8 +132,8 @@ pb <- probe(
             nsim=1000,
             seed=838775L
             )
-pb@datvals
-summary(pb)
+invisible(pb@datvals)
+invisible(summary(pb))
 plot(pb)
 
 pm <- probe.match(
@@ -151,7 +151,7 @@ plot(pm)
 plot(as(pm,"pomp"),variables="y")
 plot(simulate(pm),variables="y")
 
-cbind(truth=coef(ricker),est=coef(pm),guess=coef(po))
+invisible(cbind(truth=coef(ricker),est=coef(pm),guess=coef(po)))
 
 pb <- probe(
             po,
@@ -165,8 +165,8 @@ pb <- probe(
             nsim=1000,
             seed=838775L
             )
-pb@datvals
-summary(pb)
+invisible(pb@datvals)
+invisible(summary(pb))
 plot(pb)
 
 pb <- probe(
@@ -180,8 +180,8 @@ pb <- probe(
             nsim=1000,
             seed=838775L
             )
-pb@datvals
-summary(pb)
+invisible(pb@datvals)
+invisible(summary(pb))
 plot(pb)
 
 pb <- probe(
@@ -195,8 +195,8 @@ pb <- probe(
             nsim=1000,
             seed=838775L
             )
-pb@datvals
-summary(pb)
+invisible(pb@datvals)
+invisible(summary(pb))
 plot(pb)
 
 pb <- probe(
@@ -219,8 +219,8 @@ pb <- probe(
             nsim=1000,
             seed=838775L
             )
-pb@datvals
-summary(pb)
+invisible(pb@datvals)
+invisible(summary(pb))
 plot(pb)
 
 try(
