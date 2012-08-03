@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -29,8 +29,7 @@ Loading required package: deSolve
 > plot(time(ricker),tj.1[1,,],type='l')
 > tj.2 <- trajectory(ricker,times=c(30:50),t0=0)
 > lines(30:50,tj.2[1,,],col='red',lwd=2)
-> max(abs(tj.1[,,time(ricker)>=30]-tj.2[,,]))
-[1] 0
+> stopifnot(max(abs(tj.1[,,time(ricker)>=30]-tj.2[,,]))==0)
 > 
 > tj.3 <- trajectory(ricker,as.data.frame=TRUE)
 > plot(tj.3)
@@ -44,38 +43,16 @@ Loading required package: deSolve
 > stopifnot(max(abs(as.matrix(sm1[names(sm)])-as.matrix(sm)))==0)
 > 
 > sm1 <- simulate(ricker,nsim=3,seed=343995,as.data.frame=TRUE)
-> print(names(sm1))
-[1] "time" "y"    "N"    "e"    "sim" 
-> print(dim(sm1))
-[1] 153   5
+> stopifnot(all(names(sm1)==c("time","y","N","e","sim")))
+> stopifnot(all(dim(sm1)==c(153,5)))
 > 
 > sm1 <- simulate(ricker,nsim=3,states=T,seed=343995,as.data.frame=TRUE)
-> print(names(sm1))
-[1] "N"    "e"    "sim"  "time"
-> print(dim(sm1))
-[1] 153   4
-> print(tail(sm1))
-             N           e sim time
-138  4.0116869  0.05723792   3   45
-141  4.2497654  0.26933885   3   46
-144  2.9300053  0.07790589   3   47
-147  7.1162605  0.01738347   3   48
-150  0.2366483 -0.08730222   3   49
-153 18.9946973  0.82198849   3   50
+> stopifnot(all(names(sm1)==c("N","e","sim","time")))
+> stopifnot(all(dim(sm1)==c(153,4)))
 > 
 > sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
-> print(names(sm1))
-[1] "y"    "sim"  "time"
-> print(dim(sm1))
-[1] 153   3
-> print(tail(sm1))
-      y sim time
-138  36   3   45
-141  44   3   46
-144  27   3   47
-147  73   3   48
-150   1   3   49
-153 218   3   50
+> stopifnot(all(names(sm1)==c("y","sim","time")))
+> stopifnot(all(dim(sm1)==c(153,3)))
 > 
 > po <- ricker
 > try(
@@ -106,4 +83,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.552   0.032   0.678 
+  0.508   0.028   0.665 

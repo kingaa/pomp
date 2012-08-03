@@ -8,7 +8,7 @@ tj.1 <- trajectory(ricker)
 plot(time(ricker),tj.1[1,,],type='l')
 tj.2 <- trajectory(ricker,times=c(30:50),t0=0)
 lines(30:50,tj.2[1,,],col='red',lwd=2)
-max(abs(tj.1[,,time(ricker)>=30]-tj.2[,,]))
+stopifnot(max(abs(tj.1[,,time(ricker)>=30]-tj.2[,,]))==0)
 
 tj.3 <- trajectory(ricker,as.data.frame=TRUE)
 plot(tj.3)
@@ -22,18 +22,16 @@ sm1 <- simulate(ricker,seed=343995,states=TRUE,obs=TRUE,as.data.frame=TRUE)
 stopifnot(max(abs(as.matrix(sm1[names(sm)])-as.matrix(sm)))==0)
 
 sm1 <- simulate(ricker,nsim=3,seed=343995,as.data.frame=TRUE)
-print(names(sm1))
-print(dim(sm1))
+stopifnot(all(names(sm1)==c("time","y","N","e","sim")))
+stopifnot(all(dim(sm1)==c(153,5)))
 
 sm1 <- simulate(ricker,nsim=3,states=T,seed=343995,as.data.frame=TRUE)
-print(names(sm1))
-print(dim(sm1))
-print(tail(sm1))
+stopifnot(all(names(sm1)==c("N","e","sim","time")))
+stopifnot(all(dim(sm1)==c(153,4)))
 
 sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
-print(names(sm1))
-print(dim(sm1))
-print(tail(sm1))
+stopifnot(all(names(sm1)==c("y","sim","time")))
+stopifnot(all(dim(sm1)==c(153,3)))
 
 po <- ricker
 try(

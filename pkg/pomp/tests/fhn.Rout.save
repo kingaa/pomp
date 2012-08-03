@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -57,25 +57,7 @@ V 0.9333333  5.0
 R 0.4500000  0.2
 
 > y <- trajectory(fhn,params=params,hmax=0.1)
-> y[,,599:601]
-, , 1
-
-       [,1]       [,2]
-V 1.7086515 -1.9257830
-R 0.9468273  0.4306572
-
-, , 2
-
-      [,1]       [,2]
-V 1.684666 -1.9136647
-R 1.027194  0.3981193
-
-, , 3
-
-      [,1]       [,2]
-V 1.654967 -1.9015481
-R 1.103084  0.3661463
-
+> invisible(y[,,599:601])
 > matplot(time(fhn),t(y["V",,]),type='l',lty=1)
 > plot(y[1,,],y[2,,],type='n')
 > points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
@@ -97,39 +79,9 @@ R 1.103084  0.3661463
 +             }
 +             )
 > 
-> skeleton(fhn,x,t=c(0,3),params=params)
-, , 1
-
-   [,1]      [,2]
-V -2.00 -6.666667
-R -0.05  0.100000
-
-, , 2
-
-        [,1] [,2]
-V -0.6666667  5.0
-R  0.4500000  0.2
-
+> invisible(skeleton(fhn,x,t=c(0,3),params=params))
 > y <- trajectory(fhn,params=params,hmax=0.01)
-> y[,,199:201]
-, , 1
-
-        [,1]        [,2]
-V -1.3052919  1.27398107
-R -0.5591608 -0.00692014
-
-, , 2
-
-        [,1]       [,2]
-V -1.4459045 1.19170161
-R -0.5707824 0.02732499
-
-, , 3
-
-        [,1]       [,2]
-V -1.4714039 1.32437192
-R -0.5861061 0.06164339
-
+> invisible(y[,,199:201])
 > matplot(time(fhn),t(y["V",,]),type='l',lty=1)
 > plot(y[1,,],y[2,,],type='n')
 > points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
@@ -141,4 +93,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.948   0.032   1.095 
+  1.016   0.044   1.198 

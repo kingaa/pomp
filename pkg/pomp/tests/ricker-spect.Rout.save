@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -34,48 +34,11 @@ Loading required package: deSolve
 +             seed=838775L
 +             )
 > plot(sp)
-> summary(sp)
-$coef
-       r    sigma      phi      N.0      e.0 
-44.70118  0.30000 10.00000  7.00000  0.00000 
-
-$nsim
-[1] 1000
-
-$pvals
-        y       all 
-0.6113886 0.6113886 
-
+> invisible(summary(sp))
 > 
 > spp <- spect.match(sp,eval.only=TRUE)
 > plot(spp)
-> summary(spp)
-$coef
-       r    sigma      phi      N.0      e.0 
-44.70118  0.30000 10.00000  7.00000  0.00000 
-
-$nsim
-[1] 1000
-
-$pvals
-        y       all 
-0.6423576 0.6423576 
-
-$est
-character(0)
-
-$value
-[1] 3.242017
-
-$eval
-[1] 1 0
-
-$convergence
-[1] NA
-
-$msg
-[1] "no optimization performed"
-
+> invisible(summary(sp))
 > 
 > po <- ricker
 > coef(po,"r") <- 5
@@ -86,18 +49,7 @@ $msg
 +             seed=838775L
 +             )
 > plot(sp)
-> summary(sp)
-$coef
-    r sigma   phi   N.0   e.0 
-  5.0   0.3  10.0   7.0   0.0 
-
-$nsim
-[1] 1000
-
-$pvals
-          y         all 
-0.000999001 0.000999001 
-
+> invisible(summary(sp))
 > 
 > po <- ricker
 > coef(po,"phi") <- 30
@@ -108,18 +60,7 @@ $pvals
 +             seed=838775L
 +             )
 > plot(sp)
-> summary(sp)
-$coef
-       r    sigma      phi      N.0      e.0 
-44.70118  0.30000 30.00000  7.00000  0.00000 
-
-$nsim
-[1] 1000
-
-$pvals
-          y         all 
-0.000999001 0.000999001 
-
+> invisible(summary(sp))
 > 
 > plot(simulate(sp),variables="y")
 > 
@@ -129,4 +70,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.176   0.056   2.378 
+  2.264   0.064   2.509 

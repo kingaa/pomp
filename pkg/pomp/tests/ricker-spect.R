@@ -13,11 +13,11 @@ sp <- spect(
             seed=838775L
             )
 plot(sp)
-summary(sp)
+invisible(summary(sp))
 
 spp <- spect.match(sp,eval.only=TRUE)
 plot(spp)
-summary(spp)
+invisible(summary(sp))
 
 po <- ricker
 coef(po,"r") <- 5
@@ -28,7 +28,7 @@ sp <- spect(
             seed=838775L
             )
 plot(sp)
-summary(sp)
+invisible(summary(sp))
 
 po <- ricker
 coef(po,"phi") <- 30
@@ -39,7 +39,7 @@ sp <- spect(
             seed=838775L
             )
 plot(sp)
-summary(sp)
+invisible(summary(sp))
 
 plot(simulate(sp),variables="y")
 

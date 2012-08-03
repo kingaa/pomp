@@ -91,7 +91,7 @@ rw2 <- pomp(
             useless=23
             )
 
-show(rw2)
+invisible(show(rw2))
 
 try(
     simulate(rw2,params=p)
@@ -145,8 +145,8 @@ c1 <- log(dmeasure(rw2,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
 d1 <- dmeasure(rw2,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
 e1 <- dprocess(rw2,x[,,6:11],times=5:10,params=p,log=T)
 f1 <- log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
-max(abs(c1-d1),na.rm=T)
-max(abs(e1-f1),na.rm=T)
+stopifnot(max(abs(c1-d1),na.rm=T)<.Machine$double.eps*100)
+stopifnot(max(abs(e1-f1),na.rm=T)<.Machine$double.eps*100)
 
 po <- pomp(
            rw2,
@@ -160,13 +160,13 @@ c2 <- log(dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
 d2 <- dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
 e2 <- dprocess(po,x[,,6:11],times=5:10,params=p,log=T)
 f2 <- log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
-max(abs(c2-d2),na.rm=T)
-max(abs(e2-f2),na.rm=T)
+stopifnot(max(abs(c2-d2),na.rm=T)<.Machine$double.eps*100)
+stopifnot(max(abs(e2-f2),na.rm=T)<.Machine$double.eps*100)
 
-max(abs(a1-a2))
-max(abs(b1-b2))
-max(abs(d1-d2),na.rm=T)
-max(abs(e1-e2),na.rm=T)
+stopifnot(max(abs(a1-a2),na.rm=T)<.Machine$double.eps*100)
+stopifnot(max(abs(b1-b2),na.rm=T)<.Machine$double.eps*100)
+stopifnot(max(abs(d1-d2),na.rm=T)<.Machine$double.eps*100)
+stopifnot(max(abs(e1-e2),na.rm=T)<.Machine$double.eps*100)
 
 data(rw2)
 
@@ -176,24 +176,24 @@ c3 <- log(dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p))
 d3 <- dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
 e3 <- dprocess(po,x[,,6:11],times=5:10,params=p,log=T)
 f3 <- log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
-max(abs(c3-d3),na.rm=T)
-max(abs(e3-f3),na.rm=T)
+stopifnot(max(abs(c3-d3),na.rm=T)<.Machine$double.eps*100)
+stopifnot(max(abs(e3-f3),na.rm=T)<.Machine$double.eps*100)
 
-max(abs(a2-a3))
-max(abs(b2-b3))
-max(abs(d2-d3),na.rm=T)
-max(abs(e2-e3),na.rm=T)
+stopifnot(max(abs(a2-a3),na.rm=T)<.Machine$double.eps*100)
+stopifnot(max(abs(b2-b3),na.rm=T)<.Machine$double.eps*100)
+stopifnot(max(abs(d2-d3),na.rm=t)<.Machine$double.eps*100)
+stopifnot(max(abs(e2-e3),na.rm=t)<.Machine$double.eps*100)
 
 new <- window(rw2,start=20,end=30)
 new <- simulate(new)
 
-timezero(new)
+invisible(timezero(new))
 timezero(new) <- 19
 print(simulate(new))
 
 time(rw2) <- seq(1,1000,by=20)
 x <- simulate(rw2)
-states(x)[,1:5]
+invisible(states(x)[,1:5])
 try(
     time(rw2) <- seq(-20,1000,by=20)
     )
@@ -206,5 +206,3 @@ time(rw2) <- c(0,20,25.8,50,60)
 time(rw2,t0=TRUE) <- c(0,20,25.8,50,60)
 time(rw2,t0=TRUE) <- c(0,0,20,25.8,50,60)
 time(rw2) <- c(0,20,25.8,50,60)
-
-

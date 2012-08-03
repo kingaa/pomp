@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -112,7 +112,7 @@ Loading required package: deSolve
 +             useless=23
 +             )
 > 
-> show(rw2)
+> invisible(show(rw2))
 data and states:
     time y1 y2
 1      1  0  0
@@ -260,7 +260,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x20ff908>
+<environment: 0x216d088>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -273,11 +273,11 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x20ff908>
+<environment: 0x216d088>
 skeleton ( map ) = 
 function (x, t, params, covars, ...) 
 stop(sQuote("skeleton"), " not specified")
-<environment: 0x10f26a0>
+<environment: 0x2181870>
 initializer = 
 function (params, t0, ...) 
 {
@@ -352,10 +352,8 @@ Error : 'simulate' error
 > d1 <- dmeasure(rw2,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
 > e1 <- dprocess(rw2,x[,,6:11],times=5:10,params=p,log=T)
 > f1 <- log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
-> max(abs(c1-d1),na.rm=T)
-[1] 0
-> max(abs(e1-f1),na.rm=T)
-[1] 1.110223e-16
+> stopifnot(max(abs(c1-d1),na.rm=T)<.Machine$double.eps*100)
+> stopifnot(max(abs(e1-f1),na.rm=T)<.Machine$double.eps*100)
 > 
 > po <- pomp(
 +            rw2,
@@ -369,19 +367,13 @@ Error : 'simulate' error
 > d2 <- dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
 > e2 <- dprocess(po,x[,,6:11],times=5:10,params=p,log=T)
 > f2 <- log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
-> max(abs(c2-d2),na.rm=T)
-[1] 0
-> max(abs(e2-f2),na.rm=T)
-[1] 1.110223e-16
+> stopifnot(max(abs(c2-d2),na.rm=T)<.Machine$double.eps*100)
+> stopifnot(max(abs(e2-f2),na.rm=T)<.Machine$double.eps*100)
 > 
-> max(abs(a1-a2))
-[1] 0
-> max(abs(b1-b2))
-[1] 0
-> max(abs(d1-d2),na.rm=T)
-[1] 0
-> max(abs(e1-e2),na.rm=T)
-[1] 0
+> stopifnot(max(abs(a1-a2),na.rm=T)<.Machine$double.eps*100)
+> stopifnot(max(abs(b1-b2),na.rm=T)<.Machine$double.eps*100)
+> stopifnot(max(abs(d1-d2),na.rm=T)<.Machine$double.eps*100)
+> stopifnot(max(abs(e1-e2),na.rm=T)<.Machine$double.eps*100)
 > 
 > data(rw2)
 > 
@@ -391,25 +383,18 @@ Error : 'simulate' error
 > d3 <- dmeasure(po,y=y[,3,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p,log=T)
 > e3 <- dprocess(po,x[,,6:11],times=5:10,params=p,log=T)
 > f3 <- log(dprocess(rw2,x[,,6:11],times=5:10,params=p))
-> max(abs(c3-d3),na.rm=T)
-[1] 0
-> max(abs(e3-f3),na.rm=T)
-[1] 1.110223e-16
+> stopifnot(max(abs(c3-d3),na.rm=T)<.Machine$double.eps*100)
+> stopifnot(max(abs(e3-f3),na.rm=T)<.Machine$double.eps*100)
 > 
-> max(abs(a2-a3))
-[1] 0
-> max(abs(b2-b3))
-[1] 0
-> max(abs(d2-d3),na.rm=T)
-[1] 0
-> max(abs(e2-e3),na.rm=T)
-[1] 0
+> stopifnot(max(abs(a2-a3),na.rm=T)<.Machine$double.eps*100)
+> stopifnot(max(abs(b2-b3),na.rm=T)<.Machine$double.eps*100)
+> stopifnot(max(abs(d2-d3),na.rm=t)<.Machine$double.eps*100)
+> stopifnot(max(abs(e2-e3),na.rm=t)<.Machine$double.eps*100)
 > 
 > new <- window(rw2,start=20,end=30)
 > new <- simulate(new)
 > 
-> timezero(new)
-[1] 0
+> invisible(timezero(new))
 > timezero(new) <- 19
 > print(simulate(new))
 data and states:
@@ -428,10 +413,7 @@ data and states:
 > 
 > time(rw2) <- seq(1,1000,by=20)
 > x <- simulate(rw2)
-> states(x)[,1:5]
-         [,1]      [,2]      [,3]       [,4]      [,5]
-x1 -0.7441705  17.50995 -9.474945 -0.9377728  16.73823
-x2 -0.2655504 -75.53129 65.187445 45.3769880 -55.62340
+> invisible(states(x)[,1:5])
 > try(
 +     time(rw2) <- seq(-20,1000,by=20)
 +     )
@@ -449,8 +431,6 @@ Error in .local(object, ..., value = value) :
 > time(rw2,t0=TRUE) <- c(0,0,20,25.8,50,60)
 > time(rw2) <- c(0,20,25.8,50,60)
 > 
-> 
-> 
 > proc.time()
    user  system elapsed 
-  0.840   0.016   0.872 
+  0.876   0.048   0.940 

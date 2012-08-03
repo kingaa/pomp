@@ -234,13 +234,13 @@ h2 <- skeleton(
                )
 print(h2[c("S","I","R"),,],digits=4)
 
-print(max(abs(g2-g1),na.rm=T),digits=4)
-print(max(abs(h2-h1),na.rm=T),digits=4)
+stopifnot(max(abs(g2-g1),na.rm=T)<.Machine$double.eps*100)
+stopifnot(max(abs(h2-h1),na.rm=T)<.Machine$double.eps*2^16)
 
-states(po)[,1:2]
+invisible(states(po)[,1:2])
 time(po) <- seq(0,1,by=1/52)
-states(po)[,1:3]
-states(simulate(po))[,1:3]
+invisible(states(po)[,1:3])
+invisible(states(simulate(po))[,1:3])
 
 po <- window(euler.sir,start=1,end=2)
 plot(simulate(po))

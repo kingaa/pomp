@@ -24,7 +24,7 @@ x <- array(c(0,1,1,2,1,1,0,-1),dim=c(2,2,2),dimnames=list(c("V","R"),NULL,NULL))
 params <- rbind(a=c(0.7,0.5),b=c(0.8,0.5),c=c(2,5),V.0=c(1,1),R.0=c(0,0),i=c(0.8,0))
 skeleton(fhn,x,t=c(0,3),params=params)
 y <- trajectory(fhn,params=params,hmax=0.1)
-y[,,599:601]
+invisible(y[,,599:601])
 matplot(time(fhn),t(y["V",,]),type='l',lty=1)
 plot(y[1,,],y[2,,],type='n')
 points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
@@ -46,9 +46,9 @@ fhn <- pomp(
             }
             )
 
-skeleton(fhn,x,t=c(0,3),params=params)
+invisible(skeleton(fhn,x,t=c(0,3),params=params))
 y <- trajectory(fhn,params=params,hmax=0.01)
-y[,,199:201]
+invisible(y[,,199:201])
 matplot(time(fhn),t(y["V",,]),type='l',lty=1)
 plot(y[1,,],y[2,,],type='n')
 points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
