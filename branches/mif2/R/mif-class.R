@@ -6,6 +6,7 @@ setClass(
            transform = "logical",
            ivps = 'character',
            pars = 'character',
+		   paramMatrix='array',
            Nmif = 'integer',
 		   option ='character',
 		   cooling.scalar='numeric',
