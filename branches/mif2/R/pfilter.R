@@ -24,7 +24,7 @@ setClass(
 
 pfilter.internal <- function (object, params, Np,
 		tol, max.fail,
-		pred.mean, pred.var, filter.mean, paramMatrix, cooling.scalar,cooling.m, option,
+		pred.mean, pred.var, filter.mean, paramMatrix, cooling.scalar,cooling.m,
 		.rw.sd, seed, verbose,
 		save.states, save.params,
 		transform) {
@@ -180,15 +180,18 @@ pfilter.internal <- function (object, params, Np,
 	else
 		paramMatrix <- array(dim=c(0,0))
 	
+	if(missing(cooling.scalar))
+		cooling.scalar <-400
+	if(missing(cooling.m))
+		cooling.m <--1
 	
 	
 	for (nt in seq_len(ntimes)) {
-		if (option=="mif2")
+		if (cooling.m>0)
 		{	  cool.sched <- try(mif.cooling2(cooling.scalar, nt , cooling.m, ntimes), silent = FALSE)
 			if (inherits(cool.sched, "try-error")) 
 				stop("pfilter error: cooling schedule error", call. = FALSE)
 			sigma1=sigma*cool.sched$alpha
-			
 		}	  
 		else
 			sigma1=sigma
