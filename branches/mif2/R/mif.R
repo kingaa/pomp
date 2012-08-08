@@ -20,7 +20,9 @@ mif.cooling <- function (factor, n) {   # default cooling schedule
 	alpha <- factor^(n-1)
 	list(alpha=alpha,gamma=alpha^2)
 }
-mif.cooling2 <- function (cooling.scalar, nt, m , n ) {   # cooling schedule for mif2
+mif.cooling2 <- function (fraction, nt, m , n ) {   # cooling schedule for mif2
+	#cooling.scalar now is the fraction of cooling on 50 iteration
+	cooling.scalar =50*n*fraction/(1-fraction)
 	alpha <- (1+cooling.scalar)/(cooling.scalar+nt+n*(m-1))
 	list(alpha = alpha, gamma = alpha^2)
 }
@@ -42,7 +44,7 @@ mif.internal <- function (object, Nmif,
 		start, pars, ivps,
 		particles,
 		rw.sd,
-		option, cooling.scalar, paramMatrix,
+		option, fraction, paramMatrix,
 		Np, cooling.factor, var.factor, ic.lag,
 		method, tol, max.fail,
 		verbose, transform, .ndone) {
@@ -187,15 +189,11 @@ mif.internal <- function (object, Nmif,
 		option="mif"
 	}	  
 	
-	if (missing(cooling.scalar) && (option=="mif2"))
-	{   warning(sQuote("mif")," warning: ",sQuote("cooling scalar")," is missing and set to 200 by default.")
-		cooling.scalar=(1/20)*Nmif*ntimes
+	if (missing(fraction))
+	{   warning(sQuote("mif")," warning: ",sQuote("fraction")," is missing and set to 5% by default.")
+		fraction=0.05
 	}
-	if (missing(cooling.scalar) && (option!="mif2"))
-	{   warning(sQuote("mif")," warning: ",sQuote("cooling scalar")," is missing and set to 200 by default.")
-		cooling.scalar=-1
-	}
-	cooling.m=-1
+	
 	
 	
 	
@@ -256,7 +254,7 @@ mif.internal <- function (object, Nmif,
 							tol = tol, max.fail = max.fail, pred.mean = (n == 
 										Nmif), pred.var = ((option == "mif") || (n == 
 											Nmif)), filter.mean = TRUE, save.states = FALSE, 
-							save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=-1, cooling.scalar=cooling.scalar, paramMatrix=FALSE,
+							save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=-1, fraction=fraction, paramMatrix=FALSE,option=option,
 							verbose = verbose, transform = transform), silent = FALSE)
 			if (inherits(pfp, "try-error")) 
 				stop("mif error: error in ", sQuote("pfilter"), 
@@ -289,7 +287,7 @@ mif.internal <- function (object, Nmif,
 		
 		for (n in seq_len(Nmif)) {
 			
-			cool.sched <- try(mif.cooling2(cooling.scalar, 1 , .ndone + 
+			cool.sched <- try(mif.cooling2(fraction, 1 , .ndone + 
 									n, ntimes), silent = FALSE)
 			if (inherits(cool.sched, "try-error")) 
 				stop("mif error: cooling schedule error", call. = FALSE)
@@ -307,7 +305,7 @@ mif.internal <- function (object, Nmif,
 								tol = tol, max.fail = max.fail, pred.mean = (n == 
 											Nmif), pred.var = ((option == "mif2") || (n == 
 												Nmif)), filter.mean = TRUE, save.states = FALSE, 
-								save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=n,   cooling.scalar=cooling.scalar, paramMatrix=TRUE,
+								save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=n,   fraction=fraction, paramMatrix=TRUE,option=option,
 								verbose = verbose, transform = transform), silent = FALSE)
 				if (inherits(pfp, "try-error")) 
 					stop("mif error: error in ", sQuote("pfilter"), 
@@ -332,8 +330,9 @@ mif.internal <- function (object, Nmif,
 								tol = tol, max.fail = max.fail, pred.mean = (n == 
 											Nmif), pred.var = ((option == "mif2") || (n == 
 												Nmif)), filter.mean = TRUE, save.states = FALSE, 
-								save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=n,   cooling.scalar=cooling.scalar, paramMatrix=TRUE,
+								save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=n,   fraction=fraction, paramMatrix=TRUE,option=option,
 								verbose = verbose, transform = transform), silent = FALSE)
+				
 				if (inherits(pfp, "try-error")) 
 					stop("mif error: error in ", sQuote("pfilter"), 
 							call. = FALSE)
@@ -377,7 +376,7 @@ mif.internal <- function (object, Nmif,
 			tol=tol,
 			conv.rec=conv.rec,
 			option=option,
-			cooling.scalar = cooling.scalar
+			fraction = fraction
 	)
 }
 
@@ -391,7 +390,7 @@ setMethod(
 				pars, ivps = character(0),
 				particles, rw.sd,
 				Np, ic.lag, var.factor, cooling.factor,
-				weighted, option = c("mif","unweighted","fp","mif2"),cooling.scalar=400,paramMatrix,
+				weighted, option = c("mif","unweighted","fp","mif2"),fraction,paramMatrix,
 				tol = 1e-17, max.fail = 0,
 				verbose = getOption("verbose"),
 				transform = FALSE, ...) {
@@ -415,7 +414,7 @@ setMethod(
 				stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
 			
 			option <- match.arg(option)
-			cooling.scalar <- as.numeric(cooling.scalar)
+			fraction <- as.numeric(fraction)
 			if (missing(paramMatrix))
 			{
 				# set params slot to the default parameters
@@ -471,7 +470,7 @@ setMethod(
 					var.factor=var.factor,
 					ic.lag=ic.lag,
 					option=option,
-					cooling.scalar = cooling.scalar,
+					fraction = fraction,
 					paramMatrix= paramMatrix,
 					tol=tol,
 					max.fail=max.fail,
@@ -492,7 +491,7 @@ setMethod(
 				pars, ivps = character(0),
 				particles, rw.sd,
 				Np, ic.lag, var.factor, cooling.factor,
-				weighted, option = c("mif","unweighted","fp","mif2"),cooling.scalar=400, paramMatrix,
+				weighted, option = c("mif","unweighted","fp","mif2"),fraction, paramMatrix,
 				tol = 1e-17, max.fail = 0,
 				verbose = getOption("verbose"),
 				transform = FALSE, ...) {
@@ -514,9 +513,9 @@ setMethod(
 				stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
 			if (missing(cooling.factor))
 				stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
-			
-			option <- match.arg(option)
-			cooling.scalar <- as.numeric(cooling.scalar)
+			if (missing(option))
+				option <- object@option
+			fraction <- as.numeric(fraction)
 			if (missing(paramMatrix))
 				paramMatrix <-object@paramMatrix
 			if (!missing(weighted)) {
@@ -561,7 +560,7 @@ setMethod(
 					var.factor=var.factor,
 					ic.lag=ic.lag,
 					option=option,
-					cooling.scalar=cooling.scalar,
+					fraction=fraction,
 					paramMatrix=paramMatrix,
 					tol=tol,
 					max.fail=max.fail,
@@ -580,7 +579,7 @@ setMethod(
 				pars, ivps,
 				particles, rw.sd,
 				Np, ic.lag, var.factor, cooling.factor,
-				weighted, option = c("mif","unweighted","fp","mif2"),cooling.scalar=400,paramMatrix,
+				weighted, option = c("mif","unweighted","fp","mif2"),fraction,paramMatrix,
 				tol = 1e-17, max.fail = 0,
 				verbose = getOption("verbose"),
 				transform, ...) {
@@ -598,10 +597,11 @@ setMethod(
 			if (missing(tol)) tol <- object@tol
 			if (missing(transform)) transform <- object@transform
 			transform <- as.logical(transform)
-			cooling.scalar <- as.numeric(cooling.scalar)
+			fraction <- as.numeric(fraction)
 			if (missing(paramMatrix))
 				paramMatrix <- object@paramMatrix
-			option <- match.arg(option)
+			if (missing(option))
+				option <- object@option
 			
 			if (!missing(weighted)) {
 				warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("option"))
@@ -631,7 +631,7 @@ setMethod(
 					var.factor=var.factor,
 					ic.lag=ic.lag,
 					option=option,
-					cooling.scalar=cooling.scalar,
+					fraction=fraction,
 					paramMatrix=paramMatrix,
 					tol=tol,
 					max.fail=max.fail,
@@ -650,7 +650,7 @@ setMethod(
 				pars, ivps,
 				particles, rw.sd,
 				Np, ic.lag, var.factor, cooling.factor,
-				weighted, option = c("mif","unweighted","fp","mif2"),cooling.scalar=400,paramMatrix,
+				weighted, option = c("mif","unweighted","fp","mif2"),fraction,paramMatrix,
 				tol = 1e-17, max.fail = 0,
 				verbose = getOption("verbose"),
 				transform, ...) {
@@ -668,11 +668,11 @@ setMethod(
 			if (missing(tol)) tol <- object@tol
 			if (missing(transform)) transform <- object@transform
 			transform <- as.logical(transform)
-			cooling.scalar <- as.numeric(cooling.scalar) 
+			fraction <- as.numeric(fraction) 
 			if (missing(paramMatrix))
 				paramMatrix <- object@paramMatrix
-			
-			option <- match.arg(option)
+			if (missing(option))
+				option <- object@option
 			if (!missing(weighted)) {
 				warning(sQuote("mif")," warning: ",sQuote("weighted")," flag is deprecated, use ",sQuote("option"))
 				if (weighted) {
@@ -701,7 +701,7 @@ setMethod(
 					var.factor=var.factor,
 					ic.lag=ic.lag,
 					option=option,
-					cooling.scalar=cooling.scalar,
+					fraction=fraction,
 					paramMatrix=paramMatrix,
 					tol=tol,
 					max.fail=max.fail,
@@ -722,7 +722,7 @@ setMethod(
 )
 
 mif.profileDesign <- function (object, profile, lower, upper, nprof, ivps, 
-		rw.sd, Np, ic.lag, var.factor, cooling.factor,option, cooling.scalar, paramMatrix, ...)
+		rw.sd, Np, ic.lag, var.factor, cooling.factor,option, fraction, paramMatrix, ...)
 {
 	if (missing(profile)) profile <- list()
 	if (missing(lower)) lower <- numeric(0)
@@ -756,7 +756,7 @@ mif.profileDesign <- function (object, profile, lower, upper, nprof, ivps,
 						var.factor=var.factor,
 						cooling.factor=cooling.factor,
 						option=option,
-						cooling.scalar=cooling.scalar,
+						fraction=fraction,
 						paramMatrix=paramMatrix,
 						...
 				)
