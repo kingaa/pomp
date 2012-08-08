@@ -388,8 +388,14 @@ pf <- pfilter(gompertz,params=theta.guess,Np=1000)
 loglik.guess <- logLik(pf)
 @ 
 <<gompertz-pfilter-guess-eval,echo=F>>=
+binary.file <- "gompertz-pfilter-guess.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
 set.seed(457645443L)
 <<gompertz-pfilter-guess>>
+save(theta.true,theta.guess,loglik.guess,file=binary.file,compress='xz')
+}  
 @ 
 
 \begin{textbox}
@@ -891,10 +897,18 @@ An examination of the structure of \code{plist} reveals that it is a list of fun
 Each of these functions can be applied to the \code{ricker}'s data or to simulated data sets.
 A call to \pkg{pomp}'s function \code{probe} results in the application of these functions to the data, their application to each of some large number, \code{nsim}, of simulated data sets, and finally to a comparison of the two.
 To see this, we'll apply probe to the Ricker model at the true parameters and at a wild guess.
-<<first-probe>>=
+<<first-probe,eval=F,echo=T>>=
 pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
 guess <- c(r=20,sigma=1,phi=20,N.0=7,e.0=0)
 pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
+<<first-probe-eval,eval=T,echo=F>>=
+binary.file <- "ricker-first-probe.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<first-probe>>
+  save(pb.truth,pb.guess,guess,file=binary.file,compress='xz')
+}
 @ 
 Results summaries and diagnostic plots showing the model-data agreement and correlations among the probes can be obtained by 
 <<first-probe-plot,eval=F>>=
@@ -909,17 +923,23 @@ It is this synthetic likelihood that \pkg{pomp} attempts to maximize in probe ma
 
 \begin{figure}
 <<ricker-probe-plot,echo=F,fig=T,png=T,results=hide>>=
+binary.file <- "ricker-probe.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
   pb <- probe(ricker,
               probes=list(
                 probe.marginal("y",ref=obs(ricker),transform=sqrt),
                 probe.acf("y",lags=c(0,1,3),transform=sqrt),
                 mean=probe.mean("y",transform=sqrt)
-                       ),
+                ),
               transform=TRUE,
               nsim=1000,
               seed=1066L
               )
-  plot(pb)
+  save(pb,file=binary.file,compress='xz')
+}
+plot(pb)
 @ 
 \caption{
   Results of \code{plot} on a \code{probed.pomp}-class object.
@@ -994,7 +1014,7 @@ The following code compares parameters, likelihoods, and synthetic likelihoods (
 \item the MLE from \code{mif}, and
 \item the maximum synthetic likelihood estimate from \code{probe.match}.
 \end{inparaenum}
-<<>>=
+<<ricker-comparison,eval=F,echo=T>>=
 pf.truth <- pfilter(ricker,Np=1000,max.fail=50,seed=1066L)
 pf.guess <- pfilter(ricker,params=guess,Np=1000,max.fail=50,seed=1066L)
 pf.mf <- pfilter(mf,Np=1000,seed=1066L)
@@ -1015,7 +1035,16 @@ res <- rbind(
                summary(pm)$synth.loglik
                )
              )
-
+<<ricker-comparison-eval,echo=F,eval=T>>=
+binary.file <- "ricker-comparison.rda"
+if (file.exists(binary.file)) {
+  load(binary.file) 
+} else {
+<<ricker-comparison>>
+  save(res,file=binary.file,compress='xz')
+}
+@ 
+<<ricker-comparison-show>>=
 print(res,digits=3)
 @ 
 
@@ -1030,7 +1059,7 @@ The intermediate statistical model in \code{nlf} is a multivariate generalized a
 
 As a simple example we can use \code{nlf} to estimate the parameters \code{K} and \code{r} of the Gompertz model.  
 An example of a minimal call, accepting the defaults for all optional arguments, is 
-<<eval=F>>=
+<<first-nlf,eval=F>>=
 data(gompertz)
 out <- nlf(
            gompertz,
@@ -1080,7 +1109,7 @@ for (j in 1:5) {
 }
 fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
 @ 
-<<echo=F,eval=T,results=hide>>=
+<<nlf-fits-eval,echo=F,eval=T,results=hide>>=
 binary.file <- "nlf-fits.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -1431,7 +1460,7 @@ Note that these are reported on the natural (i.e., untransformed) scale.
 \end{figure}
 
 To repeat the procedure with log-normal priors on $r$ and $\sigma$, one might do the following.
-<<bsmc-example-normal-prior>>=
+<<bsmc-example-normal-prior,eval=F,echo=T>>=
 set.seed(90348704L)
 Np <- 10000
 prior2 <- parmat(coef(ricker),nrep=Np)
@@ -1441,9 +1470,17 @@ prior2["r",] <- rlnorm(n=Np,meanlog=4,sdlog=3)
 prior2["sigma",] <- rlnorm(n=Np,meanlog=log(0.5),sdlog=5)
 fit2 <- bsmc(ricker,params=prior2,transform=TRUE,
             est=c("r","sigma"),smooth=0.2)
+<<bsmc-example-normal-prior-eval,eval=T,echo=F>>=
+binary.file <- "bsmc-ricker-normal-prior.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<bsmc-example-normal-prior>>
+  save(fit2,file=binary.file,compress="xz")
+}
+<<bsmc-example-normal-prior-show,echo=T,eval=T>>=
 signif(coef(fit2),digits=2)
 @ 
-
 
 \clearpage
 \section{Particle Markov chain Monte Carlo: \code{pmcmc}}
@@ -1610,7 +1647,7 @@ For the model to be consistent, they should be positive integers that sum to the
 We can enforce this constraint by customizing the parameterization of our initial conditions.
 We do this in by specializing a custom \code{initializer} in the call to \code{pomp} that constructs the \code{pomp} object.
 Let's construct it now and fill it with simulated data.
-<<sir-pomp-def>>=
+<<sir-pomp-def,eval=F,echo=T>>=
 simulate(
          pomp(
               data=data.frame(
@@ -1643,7 +1680,14 @@ simulate(
            ),
          seed=677573454L
          ) -> sir
-@ 
+<<sir-pomp-def-eval,eval=T,echo=F>>=
+binary.file <- "sir-pomp-def.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<sir-pomp-def>>
+  save(sir,file=binary.file,compress='xz')
+}
 <<sir-pomp-def-with-skel,eval=F,echo=F>>=
 sir <- pomp(
             sir,
@@ -1726,7 +1770,7 @@ where $dW/dt$ is a white noise, specifically the ``derivative'' of an integrated
 \citet{Breto2011} develop the theory of infinitesimally overdispersed processes.
 
 Let's modify the process-model simulator to incorporate these three complexities.
-<<complex-sir-def>>=
+<<complex-sir-def,echo=T,eval=F>>=
 complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
   ## unpack the parameters
   N <- params["N"]                 # population size
@@ -1782,6 +1826,14 @@ simulate(
            ),
          seed=8274355L
          ) -> complex.sir
+<<complex-sir-def-eval,echo=F,eval=T>>=
+binary.file <- "complex-sir-def.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<complex-sir-def>>
+  save(complex.sir,file=binary.file,compress='xz')
+}
 @ 
 Note that the seasonal basis functions are passed to \code{complex.sir.proc.sim} via the \code{covars} argument.
 Whenever \code{complex.sir.proc.sim} is called, this argument will contain values of the covariates obtained from the look-up table.
