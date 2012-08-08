@@ -8,6 +8,7 @@ setClass(
 				pred.var="array",
 				filter.mean="array",
 				paramMatrix = "array",
+				option="character",
 				eff.sample.size="numeric",
 				cond.loglik="numeric",
 				saved.states="list",
@@ -24,7 +25,7 @@ setClass(
 
 pfilter.internal <- function (object, params, Np,
 		tol, max.fail,
-		pred.mean, pred.var, filter.mean, paramMatrix, cooling.scalar,cooling.m,
+		pred.mean, pred.var, filter.mean, paramMatrix, fraction,cooling.m, option,
 		.rw.sd, seed, verbose,
 		save.states, save.params,
 		transform) {
@@ -180,15 +181,14 @@ pfilter.internal <- function (object, params, Np,
 	else
 		paramMatrix <- array(dim=c(0,0))
 	
-	if(missing(cooling.scalar))
-		cooling.scalar <-400
-	if(missing(cooling.m))
-		cooling.m <--1
+	if(missing(fraction))
+		fraction <-0.05
+	
 	
 	
 	for (nt in seq_len(ntimes)) {
-		if (cooling.m>0)
-		{	  cool.sched <- try(mif.cooling2(cooling.scalar, nt , cooling.m, ntimes), silent = FALSE)
+		if (option=="mif2")
+		{	  cool.sched <- try(mif.cooling2(fraction, nt , cooling.m, ntimes), silent = FALSE)
 			if (inherits(cool.sched, "try-error")) 
 				stop("pfilter error: cooling schedule error", call. = FALSE)
 			sigma1=sigma*cool.sched$alpha
@@ -316,6 +316,7 @@ pfilter.internal <- function (object, params, Np,
 			pred.var=pred.v,
 			filter.mean=filt.m,
 			paramMatrix = paramMatrix,
+			option=option,
 			eff.sample.size=eff.sample.size,
 			cond.loglik=loglik,
 			saved.states=xparticles,
@@ -341,12 +342,14 @@ setMethod(
 				pred.var = FALSE,
 				filter.mean = FALSE,
 				paramMatrix = FALSE,
+				option,
 				save.states = FALSE,
 				save.params = FALSE,
 				seed = NULL,
 				verbose = getOption("verbose"),
 				...) {
 			if (missing(params)) params <- coef(object)
+			if (missing(option)) option <- "mif"
 			pfilter.internal(
 					object=object,
 					params=params,
@@ -357,6 +360,7 @@ setMethod(
 					pred.var=pred.var,
 					filter.mean=filter.mean,
 					paramMatrix = paramMatrix,
+					option=option,
 					save.states=save.states,
 					save.params=save.params,
 					seed=seed,
@@ -376,6 +380,7 @@ setMethod(
 				pred.var = FALSE,
 				filter.mean = FALSE,
 				paramMatrix = FALSE,
+				option,
 				save.states = FALSE,
 				save.params = FALSE,
 				seed = NULL,
@@ -384,6 +389,7 @@ setMethod(
 			if (missing(params)) params <- coef(object)
 			if (missing(Np)) Np <- object@Np
 			if (missing(tol)) tol <- object@tol
+			if (missing(option)) option <- object@option
 			pfilter.internal(
 					object=as(object,"pomp"),
 					params=params,
@@ -394,6 +400,7 @@ setMethod(
 					pred.var=pred.var,
 					filter.mean=filter.mean,
 					paramMatrix = paramMatrix,
+					option=option,
 					save.states=save.states,
 					save.params=save.params,
 					seed=seed,
