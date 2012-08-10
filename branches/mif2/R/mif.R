@@ -20,9 +20,9 @@ mif.cooling <- function (factor, n) {   # default cooling schedule
 	alpha <- factor^(n-1)
 	list(alpha=alpha,gamma=alpha^2)
 }
-mif.cooling2 <- function (fraction, nt, m , n ) {   # cooling schedule for mif2
+mif.cooling2 <- function (cooling.fraction, nt, m , n ) {   # cooling schedule for mif2
 	#cooling.scalar now is the fraction of cooling on 50 iteration
-	cooling.scalar =50*n*fraction/(1-fraction)
+	cooling.scalar =(50*n*cooling.fraction-1)/(1-cooling.fraction)
 	alpha <- (1+cooling.scalar)/(cooling.scalar+nt+n*(m-1))
 	list(alpha = alpha, gamma = alpha^2)
 }
@@ -44,7 +44,7 @@ mif.internal <- function (object, Nmif,
 		start, pars, ivps,
 		particles,
 		rw.sd,
-		option, fraction, paramMatrix,
+		option, cooling.fraction, paramMatrix,
 		Np, cooling.factor, var.factor, ic.lag,
 		method, tol, max.fail,
 		verbose, transform, .ndone) {
@@ -189,15 +189,14 @@ mif.internal <- function (object, Nmif,
 		option="mif"
 	}	  
 	
-	if (missing(fraction))
-	{   warning(sQuote("mif")," warning: ",sQuote("fraction")," is missing and set to 5% by default.")
-		fraction=0.05
+	if (missing(cooling.fraction))
+	{   warning(sQuote("mif")," warning: ",sQuote("cooling.fraction")," is missing and set to 5% by default.")
+		cooling.fraction=0.05
 	}
 	
-	
-	
-	
-	
+	if (missing(paramMatrix))
+	{    paramMatrix <- array(dim=c(0,0))
+	}
 	theta <- start
 	
 	sigma <- rep(0,length(start))
@@ -238,27 +237,56 @@ mif.internal <- function (object, Nmif,
 	else
 		pfp <- obj
 	
-	if (option != "mif2") {
-		for (n in seq_len(Nmif)) {
-			cool.sched <- try(mif.cooling(cooling.factor, .ndone + 
-									n), silent = FALSE)
-			if (inherits(cool.sched, "try-error")) 
-				stop("mif error: cooling schedule error", call. = FALSE)
-			sigma.n <- sigma * cool.sched$alpha
-			P <- try(particles(tmp.mif, Np = Np[1], center = theta, 
-							sd = sigma.n * var.factor), silent = FALSE)
-			if (inherits(P, "try-error")) 
-				stop("mif error: error in ", sQuote("particles"), 
-						call. = FALSE)
+	for (n in seq_len(Nmif)) {
+		##cooling schedule 
+		switch(option, mif2={
+					cool.sched <- try(mif.cooling2(cooling.fraction, 1 ,  
+									.ndone +n,  ntimes), silent = FALSE)
+				},
+				{ #not mif2	
+					cool.sched <- try(mif.cooling(cooling.factor, .ndone + 
+											n), silent = FALSE)
+				} )
+		if (inherits(cool.sched, "try-error")) 
+			stop("mif error: cooling schedule error", call. = FALSE)
+		sigma.n <- sigma * cool.sched$alpha
+		
+		P <- try(particles(tmp.mif, Np = Np[1], center = theta, 
+						sd = sigma.n * var.factor), silent = FALSE)
+		if (inherits(P, "try-error")) 
+			stop("mif error: error in ", sQuote("particles"), 
+					call. = FALSE)
+		## Setting up parameter switch
+		switch(option, mif2={
+					
+					if((n==1)&&(length(paramMatrix)==0)) #first time, set default for paramMatrix to start
+					{	paramMatrix<-matrix(
+								nrow=length(start),
+								ncol=Np[1],
+								dimnames=list(
+										names(start),
+										NULL)
+						)
+					}
+					else 
+					{
+						P[pars, ]=paramMatrix[pars,]
+					}
+					cooling.m=n
+					
+				},
+				{	#not mif2
+					cooling.m=-1
+				} )
 			pfp <- try(pfilter.internal(object = obj, params = P, 
 							tol = tol, max.fail = max.fail, pred.mean = (n == 
-										Nmif), pred.var = ((option == "mif") || (n == 
-											Nmif)), filter.mean = TRUE, save.states = FALSE, 
-							save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=-1, fraction=fraction, paramMatrix=FALSE,option=option,
-							verbose = verbose, transform = transform), silent = FALSE)
+										Nmif), pred.var = TRUE, filter.mean = TRUE, save.states = FALSE, 
+							save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=cooling.m, cooling.fraction=cooling.fraction, paramMatrix=paramMatrix,option=option,
+							verbose = verbose, transform = transform, .ndone=.ndone), silent = FALSE)
 			if (inherits(pfp, "try-error")) 
 				stop("mif error: error in ", sQuote("pfilter"), 
 						call. = FALSE)
+			##update switch
 			switch(option, mif = {
 						v <- pfp$pred.var[pars, , drop = FALSE]
 						v1 <- cool.sched$gamma * (1 + var.factor^2) * 
@@ -273,7 +301,12 @@ mif.internal <- function (object, Nmif,
 					}, fp = {
 						theta.hat <- pfp$filter.mean[pars, ntimes, drop = FALSE]
 						theta[pars] <- theta.hat
-					}, )
+					}, mif2 ={
+						paramMatrix <- pfp$paramMatrix
+						theta.hat <- rowMeans(pfp$paramMatrix[pars, , drop = FALSE])
+						theta[pars] <- theta.hat
+						
+					},)
 			theta[ivps] <- pfp$filter.mean[ivps, ic.lag]
 			conv.rec[n + 1, -c(1, 2)] <- theta
 			conv.rec[n, c(1, 2)] <- c(pfp$loglik, pfp$nfail)
@@ -281,78 +314,9 @@ mif.internal <- function (object, Nmif,
 			
 			if (verbose) 
 				cat("MIF iteration ", n, " of ", Nmif, " completed\n")
-		}
-	}
-	else {
 		
-		for (n in seq_len(Nmif)) {
-			
-			cool.sched <- try(mif.cooling2(fraction, 1 , .ndone + 
-									n, ntimes), silent = FALSE)
-			if (inherits(cool.sched, "try-error")) 
-				stop("mif error: cooling schedule error", call. = FALSE)
-			sigma.n <- sigma * cool.sched$alpha
-			
-			if (n==1)
-			{	P <- try(particles(tmp.mif, Np = Np[1], center = theta, 
-								sd = sigma.n * var.factor), silent = FALSE)
-				
-				
-				if (inherits(P, "try-error")) 
-					stop("mif error: error in ", sQuote("particles"), 
-							call. = FALSE)
-				pfp <- try(pfilter.internal(object = obj, params = P, 
-								tol = tol, max.fail = max.fail, pred.mean = (n == 
-											Nmif), pred.var = ((option == "mif2") || (n == 
-												Nmif)), filter.mean = TRUE, save.states = FALSE, 
-								save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=n,   fraction=fraction, paramMatrix=TRUE,option=option,
-								verbose = verbose, transform = transform), silent = FALSE)
-				if (inherits(pfp, "try-error")) 
-					stop("mif error: error in ", sQuote("pfilter"), 
-							call. = FALSE)
-				
-				
-			}
-			else
-			{
-				P <- try(particles(tmp.mif, Np = Np[1], center = theta, 
-								sd = sigma.n * var.factor), silent = FALSE)
-				
-				if (inherits(P, "try-error")) 
-					stop("mif error: error in ", sQuote("particles"), 
-							call. = FALSE)
-				# Replace sample of pars with the sample point from the last iteration
-				for ( i in 1:length(pars))
-					for (j in 1:Np)
-					{ 	P[pars[i],j]=paramMatrix[pars[i],j]
-					}
-				pfp <- try(pfilter.internal(object = obj, params = P, 
-								tol = tol, max.fail = max.fail, pred.mean = (n == 
-											Nmif), pred.var = ((option == "mif2") || (n == 
-												Nmif)), filter.mean = TRUE, save.states = FALSE, 
-								save.params = FALSE, .rw.sd = sigma.n[pars],cooling.m=n,   fraction=fraction, paramMatrix=TRUE,option=option,
-								verbose = verbose, transform = transform), silent = FALSE)
-				
-				if (inherits(pfp, "try-error")) 
-					stop("mif error: error in ", sQuote("pfilter"), 
-							call. = FALSE)
-				
-			}
-			paramMatrix = pfp$paramMatrix
-			theta.hat <- rowMeans(pfp$paramMatrix[pars, , drop = FALSE])
-			theta[pars] <- theta.hat
-			
-			theta[ivps] <- pfp$filter.mean[ivps, ic.lag]
-			conv.rec[n + 1, -c(1, 2)] <- theta
-			conv.rec[n, c(1, 2)] <- c(pfp$loglik, pfp$nfail)
-			
-			
-			if (verbose) 
-				cat("MIF iteration ", n, " of ", Nmif, " completed\n")
-			
-			
-		}
 	}
+	
 	
 	if (option =="mif2")
 		paramMatrix = pfp$params
@@ -376,7 +340,7 @@ mif.internal <- function (object, Nmif,
 			tol=tol,
 			conv.rec=conv.rec,
 			option=option,
-			fraction = fraction
+			cooling.fraction = cooling.fraction
 	)
 }
 
@@ -390,7 +354,7 @@ setMethod(
 				pars, ivps = character(0),
 				particles, rw.sd,
 				Np, ic.lag, var.factor, cooling.factor,
-				weighted, option = c("mif","unweighted","fp","mif2"),fraction,paramMatrix,
+				weighted, option = c("mif","unweighted","fp","mif2"),cooling.fraction,paramMatrix,
 				tol = 1e-17, max.fail = 0,
 				verbose = getOption("verbose"),
 				transform = FALSE, ...) {
@@ -414,7 +378,7 @@ setMethod(
 				stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
 			
 			option <- match.arg(option)
-			fraction <- as.numeric(fraction)
+			cooling.fraction <- as.numeric(cooling.fraction)
 			if (missing(paramMatrix))
 			{
 				# set params slot to the default parameters
@@ -470,7 +434,7 @@ setMethod(
 					var.factor=var.factor,
 					ic.lag=ic.lag,
 					option=option,
-					fraction = fraction,
+					cooling.fraction = cooling.fraction,
 					paramMatrix= paramMatrix,
 					tol=tol,
 					max.fail=max.fail,
@@ -491,7 +455,7 @@ setMethod(
 				pars, ivps = character(0),
 				particles, rw.sd,
 				Np, ic.lag, var.factor, cooling.factor,
-				weighted, option = c("mif","unweighted","fp","mif2"),fraction, paramMatrix,
+				weighted, option = c("mif","unweighted","fp","mif2"),cooling.fraction, paramMatrix,
 				tol = 1e-17, max.fail = 0,
 				verbose = getOption("verbose"),
 				transform = FALSE, ...) {
@@ -515,7 +479,7 @@ setMethod(
 				stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
 			if (missing(option))
 				option <- object@option
-			fraction <- as.numeric(fraction)
+			cooling.fraction <- as.numeric(cooling.fraction)
 			if (missing(paramMatrix))
 				paramMatrix <-object@paramMatrix
 			if (!missing(weighted)) {
@@ -560,7 +524,7 @@ setMethod(
 					var.factor=var.factor,
 					ic.lag=ic.lag,
 					option=option,
-					fraction=fraction,
+					cooling.fraction=cooling.fraction,
 					paramMatrix=paramMatrix,
 					tol=tol,
 					max.fail=max.fail,
@@ -579,7 +543,7 @@ setMethod(
 				pars, ivps,
 				particles, rw.sd,
 				Np, ic.lag, var.factor, cooling.factor,
-				weighted, option = c("mif","unweighted","fp","mif2"),fraction,paramMatrix,
+				weighted, option = c("mif","unweighted","fp","mif2"),cooling.fraction,paramMatrix,
 				tol = 1e-17, max.fail = 0,
 				verbose = getOption("verbose"),
 				transform, ...) {
@@ -597,7 +561,7 @@ setMethod(
 			if (missing(tol)) tol <- object@tol
 			if (missing(transform)) transform <- object@transform
 			transform <- as.logical(transform)
-			fraction <- as.numeric(fraction)
+			cooling.fraction <- as.numeric(cooling.fraction)
 			if (missing(paramMatrix))
 				paramMatrix <- object@paramMatrix
 			if (missing(option))
@@ -631,7 +595,7 @@ setMethod(
 					var.factor=var.factor,
 					ic.lag=ic.lag,
 					option=option,
-					fraction=fraction,
+					cooling.fraction=cooling.fraction,
 					paramMatrix=paramMatrix,
 					tol=tol,
 					max.fail=max.fail,
@@ -650,7 +614,7 @@ setMethod(
 				pars, ivps,
 				particles, rw.sd,
 				Np, ic.lag, var.factor, cooling.factor,
-				weighted, option = c("mif","unweighted","fp","mif2"),fraction,paramMatrix,
+				weighted, option = c("mif","unweighted","fp","mif2"),cooling.fraction,paramMatrix,
 				tol = 1e-17, max.fail = 0,
 				verbose = getOption("verbose"),
 				transform, ...) {
@@ -668,7 +632,8 @@ setMethod(
 			if (missing(tol)) tol <- object@tol
 			if (missing(transform)) transform <- object@transform
 			transform <- as.logical(transform)
-			fraction <- as.numeric(fraction) 
+			if (missing(cooling.fraction)) cooling.fraction <- object@cooling.fraction
+			cooling.fraction <- as.numeric(cooling.fraction) 
 			if (missing(paramMatrix))
 				paramMatrix <- object@paramMatrix
 			if (missing(option))
@@ -701,7 +666,7 @@ setMethod(
 					var.factor=var.factor,
 					ic.lag=ic.lag,
 					option=option,
-					fraction=fraction,
+					cooling.fraction=cooling.fraction,
 					paramMatrix=paramMatrix,
 					tol=tol,
 					max.fail=max.fail,
@@ -722,7 +687,7 @@ setMethod(
 )
 
 mif.profileDesign <- function (object, profile, lower, upper, nprof, ivps, 
-		rw.sd, Np, ic.lag, var.factor, cooling.factor,option, fraction, paramMatrix, ...)
+		rw.sd, Np, ic.lag, var.factor, cooling.factor,option, cooling.fraction, paramMatrix, ...)
 {
 	if (missing(profile)) profile <- list()
 	if (missing(lower)) lower <- numeric(0)
@@ -756,7 +721,7 @@ mif.profileDesign <- function (object, profile, lower, upper, nprof, ivps,
 						var.factor=var.factor,
 						cooling.factor=cooling.factor,
 						option=option,
-						fraction=fraction,
+						cooling.fraction=cooling.fraction,
 						paramMatrix=paramMatrix,
 						...
 				)
