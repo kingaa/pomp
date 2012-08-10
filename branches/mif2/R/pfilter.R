@@ -179,10 +179,11 @@ pfilter.internal <- function (object, params, Np,
 	for (nt in seq_len(ntimes)) {
 		if (option=="mif2")
 		{	  
-			cool.sched <- try(mif.cooling2(cooling.fraction, nt+.ndone , cooling.m+.ndone, ntimes), silent = FALSE)
+			cool.sched <- try(mif.cooling2(cooling.fraction, nt , cooling.m+.ndone, ntimes), silent = FALSE)#nt+.ndone
 			if (inherits(cool.sched, "try-error")) 
 				stop("pfilter error: cooling schedule error", call. = FALSE)
 			sigma1=sigma*cool.sched$alpha
+			
 		}	  
 		else
 			sigma1=sigma
