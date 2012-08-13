@@ -151,6 +151,9 @@ pfilter.internal <- function (object, params, Np,
 		)
 	else
 		pred.v <- array(dim=c(0,0))
+	if(missing(paramMatrix))
+		paramMatrix <- array(dim=c(0,0))
+	
 	
 	if (filter.mean)
 		if (random.walk)
@@ -169,12 +172,14 @@ pfilter.internal <- function (object, params, Np,
 			)
 	else
 		filt.m <- array(dim=c(0,0))
+	if (option=="mif2" && missing(cooling.fraction))
+		stop("pfilter error: ",sQuote("cooling.fraction")," must be specified for method mif2",call.=FALSE)
+	if (option=="mif2")
+		cooling.fraction <- as.numeric(cooling.fraction)
+	if (option=="mif2" && (missing(paramMatrix)))
+		stop("pfilter error: ",sQuote("paramMatrix")," must be specified for method mif2",call.=FALSE)
 	
-	if(missing(cooling.fraction))
-		cooling.fraction <-0.05
-	
-	if(missing(paramMatrix))
-		paramMatrix=array(dim=c(0,0))
+
 	
 	for (nt in seq_len(ntimes)) {
 		if (option=="mif2")
@@ -182,11 +187,11 @@ pfilter.internal <- function (object, params, Np,
 			cool.sched <- try(mif.cooling2(cooling.fraction, nt , cooling.m+.ndone, ntimes), silent = FALSE)#nt+.ndone
 			if (inherits(cool.sched, "try-error")) 
 				stop("pfilter error: cooling schedule error", call. = FALSE)
-			sigma1=sigma*cool.sched$alpha
+			sigma1<-sigma*cool.sched$alpha
 			
 		}	  
 		else
-			sigma1=sigma
+			sigma1<-sigma
 		## transform the parameters if necessary
 		if (transform) tparams <- partrans(object,params,dir="forward")
 		
@@ -342,6 +347,11 @@ setMethod(
 				...) {
 			if (missing(params)) params <- coef(object)
 			if (missing(option)) option <- "mif"
+			if (option=="mif2" && missing(cooling.fraction))
+				stop("pfilter error: ",sQuote("cooling.fraction")," must be specified for method mif2",call.=FALSE)
+			if (option=="mif2" && missing(cooling.m))
+				stop("pfilter error: ",sQuote("cooling.m")," must be specified for method mif2",call.=FALSE)
+			
 			pfilter.internal(
 					object=object,
 					params=params,
@@ -352,6 +362,8 @@ setMethod(
 					pred.var=pred.var,
 					filter.mean=filter.mean,
 					paramMatrix = paramMatrix,
+					cooling.fraction=cooling.fraction,
+					cooling.m=cooling.m,
 					option=option,
 					save.states=save.states,
 					save.params=save.params,
@@ -383,6 +395,10 @@ setMethod(
 			if (missing(Np)) Np <- object@Np
 			if (missing(tol)) tol <- object@tol
 			if (missing(option)) option <- object@option
+			if (option=="mif2" && missing(cooling.fraction))
+				cooling.fraction<-object@cooling.fraction
+			if (option=="mif2" && missing(cooling.m))
+				cooling.m<-object@cooling.m
 			if (missing(paramMatrix)) paramMatrix <- object@paramMatrix
 			pfilter.internal(
 					object=as(object,"pomp"),
@@ -394,6 +410,8 @@ setMethod(
 					pred.var=pred.var,
 					filter.mean=filter.mean,
 					paramMatrix = paramMatrix,
+					cooling.fraction=cooling.fraction,
+					cooling.m=cooling.m,
 					option=option,
 					save.states=save.states,
 					save.params=save.params,
