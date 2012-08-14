@@ -163,9 +163,17 @@ mif.internal <- function (object, Nmif,
 		)
 	}
 	
-	if (missing(cooling.factor))
+	if (missing(option) && missing(method))
+		stop("mif error: ",sQuote("option")," must be specified",call.=FALSE)
+	if (missing(option) && !missing(method) )
+	{	option <- method
+		warning(sQuote("mif")," warning: ",sQuote("method")," flag is deprecated, use ",sQuote("option"))
+	}
+	if (missing(cooling.factor)&&(option=="mif2"))	##Default value for the slot cooling.fraction
+		cooling.factor=1
+	if (missing(cooling.factor)&&(option!="mif2"))
 		stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
-	if ((length(cooling.factor)!=1)||(cooling.factor < 0)||(cooling.factor>1))
+	if ((option!="mif2")&&((length(cooling.factor)!=1)||(cooling.factor < 0)||(cooling.factor>1)))
 		stop("mif error: ",sQuote("cooling.factor")," must be a number between 0 and 1",call.=FALSE)
 	
 	if (missing(var.factor))
@@ -178,13 +186,6 @@ mif.internal <- function (object, Nmif,
 	Nmif <- as.integer(Nmif)
 	if (Nmif<0)
 		stop("mif error: ",sQuote("Nmif")," must be a positive integer",call.=FALSE)
-	
-	if (missing(option) && missing(method))
-		stop("mif error: ",sQuote("option")," must be specified",call.=FALSE)
-	if (missing(option) && !missing(method) )
-	{	option <- method
-		warning(sQuote("mif")," warning: ",sQuote("method")," flag is deprecated, use ",sQuote("option"))
-	}	
 	if (option=="mif2" && missing(cooling.fraction))
 		stop("mif error: ",sQuote("cooling.fraction")," must be specified for method mif2",call.=FALSE)
 	if (option=="mif2")
@@ -353,12 +354,23 @@ setMethod(
 				stop("mif error: ",sQuote("ic.lag")," must be specified",call.=FALSE)
 			if (missing(var.factor))
 				stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
-			if (missing(cooling.factor))
-				stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
+			
 			if (missing(option)&& missing(method))
 				stop("mif error: ",sQuote("option")," must be specified",call.=FALSE)
+			if (missing(option) && !missing(method) )
+			{	option <- method
+				warning(sQuote("mif")," warning: ",sQuote("method")," flag is deprecated, use ",sQuote("option"))
+			}
+			if (!missing(option))
+				option <- match.arg(option)
+			if (missing(cooling.factor)&&(option=="mif2"))	##Default value for the slot cooling.fraction
+				cooling.factor=1
+			if (missing(cooling.factor)&&(option!="mif2"))
+				stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
+			if ((option!="mif2")&&((length(cooling.factor)!=1)||(cooling.factor < 0)||(cooling.factor>1)))
+				stop("mif error: ",sQuote("cooling.factor")," must be a number between 0 and 1",call.=FALSE)
+				
 			
-			option <- match.arg(option)
 			if (option=="mif2" && missing(cooling.fraction))
 				stop("mif error: ",sQuote("cooling.fraction")," must be specified for method mif2",call.=FALSE)
 			if (!missing(weighted)) {
@@ -444,10 +456,12 @@ setMethod(
 				stop("mif error: ",sQuote("ic.lag")," must be specified",call.=FALSE)
 			if (missing(var.factor))
 				stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
-			if (missing(cooling.factor))
-				stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
+			
 			if (missing(option))
 				option <- object@option
+			if ((option!="mif2") && missing(cooling.factor))
+				cooling.factor <-object@cooling.factor
+			
 			if (option=="mif2" && missing(cooling.fraction))
 				cooling.fraction <- object@cooling.fraction
 			if (option=="mif2" && (missing(paramMatrix)))
@@ -535,6 +549,9 @@ setMethod(
 			
 			if (missing(option))
 				option <- object@option
+			if ((option!="mif2") && missing(cooling.factor))
+				cooling.factor <-object@cooling.factor
+			
 			
 			if (option=="mif2" && missing(cooling.fraction))
 				cooling.fraction <- object@cooling.fraction
@@ -602,15 +619,16 @@ setMethod(
 			if (missing(Np)) Np <- object@Np
 			if (missing(ic.lag)) ic.lag <- object@ic.lag
 			if (missing(var.factor)) var.factor <- object@var.factor
-			if (missing(cooling.factor)) cooling.factor <- object@cooling.factor
 			if (missing(tol)) tol <- object@tol
 			if (missing(transform)) transform <- object@transform
 			transform <- as.logical(transform)
-			if (option!=object@option && option =="mif2")
-				stop("mif error: ",sQuote("option")," for continue should be the same for mif2 option",call.=FALSE)
-			
 			if (missing(option))
 				option <- object@option
+			if ((option!="mif2") && missing(cooling.factor))
+				cooling.factor <-object@cooling.factor
+			
+			if (option!=object@option && option =="mif2")
+				stop("mif error: ",sQuote("option")," for continue should be the same for mif2 option",call.=FALSE)
 			if (option=="mif2" && missing(cooling.fraction))
 				cooling.fraction <- object@cooling.fraction
 			if (option=="mif2" && (missing(paramMatrix)))
