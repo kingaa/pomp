@@ -1,5 +1,5 @@
-% This file was created with JabRef 2.6.
-% Encoding: ISO8859_1
+% This file was created with JabRef 2.7b.
+% Encoding: UTF8
 
 @ARTICLE{Andrieu2010,
   author = {Andrieu, Christophe and Doucet, Arnaud and Holenstein, Roman},
@@ -89,6 +89,47 @@
   timestamp = {2009.09.15}
 }
 
+@ARTICLE{Breto2011,
+  author = {Bret{\'o}, Carles and Ionides, Edward L.},
+  title = {Compound Markov counting processes and their applications to modeling
+	infinitesimally over-dispersed systems},
+  journal = {Stochastic Processes and their Applications},
+  year = {2011},
+  volume = {121},
+  pages = {2571--2591},
+  number = {11},
+  month = nov,
+  __markedentry = {[kingaa:]},
+  abstract = {We propose an infinitesimal dispersion index for Markov counting processes.
+	We show that, under standard moment existence conditions, a process
+	is infinitesimally (over-)equi-dispersed if, and only if, it is simple
+	(compound), i.e. it increases in jumps of one (or more) unit(s),
+	even though infinitesimally equi-dispersed processes might be under-,
+	equi- or over-dispersed using previously studied indices. Compound
+	processes arise, for example, when introducing continuous-time white
+	noise to the rates of simple processes resulting in L{\'e}vy-driven
+	SDEs. We construct multivariate infinitesimally over-dispersed compartment
+	models and queuing networks, suitable for applications where moment
+	constraints inherent to simple processes do not hold.},
+  doi = {10.1016/j.spa.2011.07.005},
+  file = {Breto2011.pdf:Breto2011.pdf:PDF},
+  issn = {0304-4149},
+  keywords = {Continuous time, Counting Markov process, Birth–death process, Environmental
+	stochasticity, Infinitesimal over-dispersion, Simultaneous events},
+  owner = {kingaa},
+  timestamp = {2012.01.17}
+}
+
+@BOOK{Davison1997,
+  title = {{B}ootstrap {M}ethods and their {A}pplication},
+  publisher = {Cambridge University Press},
+  year = {1997},
+  author = {A.C. Davison and D.V. Hinkley},
+  address = {New York},
+  owner = {kingaa},
+  timestamp = {2011.05.26}
+}
+
 @ARTICLE{Ellner1998,
   author = {S. P. Ellner and B. A. Bailey and G. V. Bobashev and A. R. Gallant
 	and B. T. Grenfell and D. W. Nychka},
@@ -138,6 +179,15 @@
   timestamp = {2007.03.13}
 }
 
+@BOOK{Gourieroux1996,
+  title = {{S}imulation-based {E}conometric {M}ethods},
+  publisher = {Oxford University Press},
+  year = {1996},
+  author = {C. Gouri\'{e}roux and A. Monfort},
+  owner = {kingaa},
+  timestamp = {2011.05.26}
+}
+
 @ARTICLE{He2010,
   author = {He, Daihai and Ionides, Edward L. and King, Aaron A.},
   title = {{P}lug-and-play inference for disease dynamics: measles in large
@@ -169,6 +219,35 @@
   file = {He2010.pdf:He2010.pdf:PDF;:He2010_Supplement.pdf:PDF},
   owner = {kingaa},
   timestamp = {2009.06.26}
+}
+
+@ARTICLE{Ionides2011,
+  author = {E. L. Ionides and A. Bhadra and Y. Atchad{\'e} and A. A. King},
+  title = {Iterated filtering},
+  journal = {Annals of Statistics},
+  year = {2011},
+  volume = {39},
+  pages = {1776--1802},
+  number = {3},
+  abstract = {Inference for partially observed Markov process models has been a
+	longstanding methodological challenge with many scientific and engineering
+	applications. Iterated filtering algorithms maximize the likelihood
+	function for partially observed Markov process models by solving
+	a recursive sequence of filtering problems. We present new theoretical
+	results pertaining to the convergence of iterated filtering algorithms
+	implemented via sequential Monte Carlo filters. This theory complements
+	the growing body of empirical evidence that iterated filtering algorithms
+	provide an effective inference strategy for scientific models of
+	nonlinear dynamic systems. The first step in our theory involves
+	studying a new recursive approach for maximizing the likelihood function
+	of a latent variable model, when this likelihood is evaluated via
+	importance sampling. This leads to the consideration of an iterated
+	importance sampling algorithm which serves as a simple special case
+	of iterated filtering, and may have applicability in its own right.},
+  doi = {10.1214/11-AOS886},
+  file = {Ionides2011.pdf:Ionides2011.pdf:PDF},
+  owner = {kingaa},
+  timestamp = {2011.03.07}
 }
 
 @ARTICLE{Ionides2006,
@@ -338,6 +417,46 @@
   timestamp = {2008.08.13}
 }
 
+@ARTICLE{Knape2011,
+  author = {Knape, Jonas and de Valpine, Perry},
+  title = {Fitting complex population models by combining particle filters with
+	Markov chain Monte Carlo},
+  journal = {Ecology},
+  year = {2011},
+  volume = {93},
+  pages = {256--263},
+  number = {2},
+  month = oct,
+  __markedentry = {[kingaa:]},
+  abstract = {We show how a recent framework combining Markov chain Monte Carlo
+	(MCMC) with particle filters (PFMCMC) may be used to estimate population
+	state-space models. With the purpose of utilizing the strengths of
+	each method, PFMCMC explores hidden states by particle filters, while
+	process and observation parameters are estimated using an MCMC algorithm.
+	PFMCMC is exemplified by analyzing time series data on a red kangaroo
+	(Macropus rufus) population in New South Wales, Australia, using
+	MCMC over model parameters based on an adaptive Metropolis-Hastings
+	algorithm. We fit three population models to these data; a density-dependent
+	logistic diffusion model with environmental variance, an unregulated
+	stochastic exponential growth model, and a random-walk model. Bayes
+	factors and posterior model probabilities show that there is little
+	support for density dependence and that the random-walk model is
+	the most parsimonious model. The particle filter Metropolis-Hastings
+	algorithm is a brute-force method that may be used to fit a range
+	of complex population models. Implementation is straightforward and
+	less involved than standard MCMC for many models, and marginal densities
+	for model selection can be obtained with little additional effort.
+	The cost is mainly computational, resulting in long running times
+	that may be improved by parallelizing the algorithm.},
+  booktitle = {Ecology},
+  doi = {10.1890/11-0797.1},
+  file = {:Knape2011.pdf:PDF},
+  issn = {0012-9658},
+  owner = {kingaa},
+  publisher = {Ecological Society of America},
+  timestamp = {2012.06.01}
+}
+
 @INCOLLECTION{Liu2001b,
   author = {Liu, J and West, M.},
   title = {{C}ombining {P}arameter and {S}tate {E}stimation in {S}imulation-{B}ased
@@ -361,6 +480,55 @@
   volume = {103},
   pages = {18860--18865 },
   url = {http://dx.doi.org/10.1073/pnas.0608571103}
+}
+
+@ARTICLE{Smith1993,
+  author = {A. A. Smith},
+  title = {{E}stimating nonlinear time-series models using simulated vector
+	autoregression},
+  journal = {Journal of Applied Econometrics},
+  year = {1993},
+  volume = {8},
+  pages = {S63--S84},
+  owner = {kingaa},
+  timestamp = {2011.05.26}
+}
+
+@ARTICLE{Tidd1993,
+  author = {Tidd, C. W. and Olsen, L. F. and Schaffer, W. M.},
+  title = {{T}he {C}ase for {C}haos in {C}hildhood {E}pidemics. {II}. {P}redicting
+	{H}istorical {E}pidemics from {M}athematical {M}odels},
+  journal = {Proceedings of the Royal Society of London, Series B},
+  year = {1993},
+  volume = {254},
+  pages = {257--273},
+  number = {1341},
+  month = {Dec.},
+  abstract = {The case for chaos in childhood epidemics rests on two observations.
+	The first is that historical epidemics show various `fieldmarks'
+	of chaos, such as positive Lyapunov exponents. Second, phase portraits
+	reconstructed from real-world epidemiological time series bear a
+	striking resemblance to chaotic solutions obtained from certain epidemiological
+	models. Both lines of evidence are subject to dispute: the algorithms
+	used to look for the fieldmarks can be fooled by short, noisy time
+	series, and the same fieldmarks can be generated by stochastic models
+	in which there is demonstrably no chaos at all. In the present paper,
+	we compare the predictive abilities of stochastic models with those
+	of mechanistic scenarios that admit to chaotic solutions. The main
+	results are as follows: (i) the mechanistic models outperform their
+	stochastic counterparts; (ii) forecasting efficacy of the deterministic
+	models is maximized by positing parameter values that induce chaotic
+	behaviour; (iii) simple mechanistic models are equal if not superior
+	to more detailed schemes that include age structure; and (iv) prediction
+	accuracy for monthly notifications declines rapidly with time, so
+	that, from a practical standpoint, the results are of little value.
+	By way of contrast, next amplitude maps can successfully forecast
+	successive changes in maximum incidence one or more years into the
+	future.},
+  file = {Tidd1993.pdf:Tidd1993.pdf:PDF},
+  owner = {kingaa},
+  timestamp = {2009.09.22},
+  url = {http://links.jstor.org/sici?sici=0962-8452%2819931222%29254%3A1341%3C257%3ATCFCIC%3E2.0.CO%3B2-G}
 }
 
 @ARTICLE{Wearing2009,
