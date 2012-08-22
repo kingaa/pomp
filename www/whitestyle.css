@@ -1,50 +1,71 @@
 body {
     color: #000000;
     background: #ffffff;
-    font-family: Lucida;
+    font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
 }
-
-a {text-decoration: none }
-a:link { color: #0000ff;}
-a:visited { color: #0000ff;}
-a:active { color: #ff0000;}
-a:hover { color: #ff0000;}
-
-tr {vertical-align: top;}
-td {color: #000000; vertical-align: top;}
-th {color: #000000;}
-p {color: #000000;}
-caption {color: #000000;}
-
-h1 {
-    color: #000000;
-    font-family: Lucida;
-    font-size: large;
-}
-h2 {
-    color: #000000;
-    font-family: Lucida;
-}
-h3 {
-    color: #000000;
-    font-family: Lucida;
-}
-h4 {
-    color: #000000;
-    font-family: Lucida;
-}
-
-small.xtiny             { font-size : xx-small }
-small.tiny              { font-size : x-small  }
-small.scriptsize        { font-size : smaller  }
-small.footnotesize      { font-size : small    }
-small.small             {  }
-big.large               {  }
-big.xlarge              { font-size : large    }
-big.xxlarge             { font-size : x-large  }
-big.huge                { font-size : larger   }
-big.xhuge               { font-size : xx-large }
 
 .emph {
-      color: #E32644
+      color: #ff0000;
+      font-weight: bold;
+}
+
+.firstcharacter { 
+    float: left; 
+    color: #3333ff; 
+    font-size: 3em; 
+    line-height: 3em; 
+#    vertical-align: top;
+    padding-top: 2px; 
+    padding-right: 2px; 
+    padding-left: 2px; 
+}
+
+h1, h2, h3, h4 {
+    font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
+    font-weight: bold;
+    font-variant: normal;
+}
+h1 {
+    font-size: 1.5em;
+}
+h2 {
+    font-size: 1.375em;
+}
+h3 {
+    font-size: 1.25em;
+}
+h4 {
+    font-size: 1.125em;
+}
+p, ul, ol {
+    text-align: left;
+}
+tr {
+    vertical-align: top;
+}
+a:link, a:visited {
+    color: #0000ff;
+    text-decoration: none;
+}
+a:hover, a:active {
+    color: #ff3333;
+    text-decoration: none;
+}
+thead {
+    display: table-header-group;
+}
+dl, ul, ol, dd {
+    page-break-before: avoid;
+}
+dt, dd, tr, h1, h2, h3, h4, li, p {
+    page-break-inside: avoid;
+}
+dt, h1, h2, h3, h4 {
+    page-break-after: avoid;
+}
+dt, dd {
+    text-align: left;
+}
+dt {
+    font-weight: bold;
 }

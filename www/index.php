@@ -18,7 +18,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en   ">
 
   <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="keywords" content="stochastic dynamics, inference, hidden Markov model, state space model" />
 	<title><?php echo $group_name; ?></title>
 	<link href="./whitestyle.css" rel="stylesheet" type="text/css">
   </head>
@@ -51,7 +52,7 @@ statistical inference for<br>
 <li><a href="<?php echo $cranpage;?>">Release Version (<?php print $cranversion; ?>) on CRAN</a></li>
 <li><a target="_blank" href="http://cran.at.r-project.org/web/packages/pomp/pomp.pdf"><i>pomp</i> manual (PDF)</a></li>
 <li><a href="http://lists.r-forge.r-project.org/pipermail/pomp-announce/"><i>pomp-announce</i> mailing list archives</a></li>
-<li><a href="http://cran.at.r-project.org/web/packages/pomp/NEWS">Package NEWS file</a></li>
+<li><a target="_blank" href="http://cran.at.r-project.org/web/packages/pomp/NEWS">Package NEWS file</a></li>
 <li><a href="./index.php?nav=vignettes">Tutorial vignettes</a></li>
 <li><a href="./index.php?nav=bib">References to the literature</a></li>
 <li><a href="./index.php?nav=authors">Authors' homepages</a></li>
@@ -95,4 +96,3 @@ include($dfile);
 </table>
 </body>
 </html>
-
