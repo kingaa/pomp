@@ -6,7 +6,10 @@ PDFLATEX = pdflatex
 
 default: vignettes clean
 
-vignettes: advanced_topics_in_pomp.pdf intro_to_pomp.pdf
+vignettes: advanced_topics_in_pomp.pdf advanced_topics_in_pomp.R intro_to_pomp.pdf intro_to_pomp.R
+
+%.R: %.Rnw
+	$(REXE) CMD Stangle $*
 
 %.tex: %.Rnw
 	$(REXE) CMD Sweave $*
