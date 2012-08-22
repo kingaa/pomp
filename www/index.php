@@ -52,6 +52,7 @@ statistical inference for<br>
 <li><a target="_blank" href="http://cran.at.r-project.org/web/packages/pomp/pomp.pdf"><i>pomp</i> manual (PDF)</a></li>
 <li><a href="http://lists.r-forge.r-project.org/pipermail/pomp-announce/"><i>pomp-announce</i> mailing list archives</a></li>
 <li><a href="http://cran.at.r-project.org/web/packages/pomp/NEWS">Package NEWS file</a></li>
+<li><a href="./index.php?nav=vignettes">Tutorial vignettes</a></li>
 <li><a href="./index.php?nav=bib">References to the literature</a></li>
 <li><a href="./index.php?nav=authors">Authors' homepages</a></li>
 </ul>
@@ -68,6 +69,9 @@ statistical inference for<br>
 <?php
 $nav = $_REQUEST["nav"];
 switch ($nav) {
+    case "vignettes":
+        $dfile = "content/vignettes.htm";
+        break;
     case "bib":
         $dfile = "content/refs.htm";
         break;
