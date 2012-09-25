@@ -997,22 +997,22 @@ The following code compares parameters, likelihoods, and synthetic likelihoods (
 <<>>=
 pf.truth <- pfilter(ricker,Np=1000,max.fail=50,seed=1066L)
 pf.guess <- pfilter(ricker,params=guess,Np=1000,max.fail=50,seed=1066L)
-pf.mf <- pfilter(mf,Np=1000,seed=1066L)
-pf.pm <- pfilter(pm,Np=1000,max.fail=10,seed=1066L)
+#pf.mf <- pfilter(mf,Np=1000,seed=1066L)
+#pf.pm <- pfilter(pm,Np=1000,max.fail=10,seed=1066L)
 pb.mf <- probe(mf,nsim=1000,probes=plist,seed=1066L)
 res <- rbind(
              cbind(guess=guess,truth=coef(ricker),MLE=coef(mf),PM=coef(pm)),
              loglik=c(
                pf.guess$loglik,
-               pf.truth$loglik,
-               pf.mf$loglik,
-               pf.pm$loglik
+               pf.truth$loglik
+               #pf.mf$loglik
+               #pf.pm$loglik
                ),
              synth.loglik=c(
                summary(pb.guess)$synth.loglik,
                summary(pb.truth)$synth.loglik,
-               summary(pb.mf)$synth.loglik,
-               summary(pm)$synth.loglik
+               summary(pb.mf)$synth.loglik
+             #  summary(pm)$synth.loglik
                )
              )
 
