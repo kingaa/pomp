@@ -312,7 +312,9 @@ mif.internal <- function (object, Nmif,
 		paramMatrix[[1]]<-pfp$paramMatrix[[1]]
 		
 	}	
-	
+	if(option!='mif2' && missing(paramMatrix))
+	{	paramMatrix <-list()
+	}
 	new(
 			"mif",
 			pfp,
@@ -329,7 +331,7 @@ mif.internal <- function (object, Nmif,
 			tol=tol,
 			conv.rec=conv.rec,
 			option=option,
-			#paramMatrix=paramMatrix,
+			paramMatrix=paramMatrix,
 			cooling.fraction = cooling.fraction
 	)
 }
@@ -351,8 +353,7 @@ setMethod(
 				transform = FALSE, ...) {
 			
 			transform <- as.logical(transform)
-			
-						
+									
 			if (missing(start)) start <- coef(object)
 			if (missing(rw.sd))
 				stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
