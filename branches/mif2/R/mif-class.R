@@ -7,6 +7,7 @@ setClass(
            ivps = 'character',
            pars = 'character',
 		   Nmif = 'integer',
+		   option='character',
 		   cooling.fraction='numeric',
 		   particles = 'function',
            var.factor='numeric',
