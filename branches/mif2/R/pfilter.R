@@ -7,8 +7,7 @@ setClass(
 				pred.mean="array",
 				pred.var="array",
 				filter.mean="array",
-				paramMatrix = "array",
-				option="character",
+				paramMatrix = "list",
 				eff.sample.size="numeric",
 				cond.loglik="numeric",
 				saved.states="list",
@@ -29,7 +28,10 @@ pfilter.internal <- function (object, params, Np,
 		.rw.sd, seed, verbose,
 		save.states, save.params,
 		transform,.ndone) {
-	
+	if (missing(option))
+		option<-'mif'
+	if(missing(paramMatrix))
+		paramMatrix <- array(dim=c(0,0))
 	transform <- as.logical(transform)
 	
 	if (missing(seed)) seed <- NULL
@@ -151,8 +153,7 @@ pfilter.internal <- function (object, params, Np,
 		)
 	else
 		pred.v <- array(dim=c(0,0))
-	if(missing(paramMatrix))
-		paramMatrix <- array(dim=c(0,0))
+	
 	
 	
 	if (filter.mean)
@@ -305,7 +306,12 @@ pfilter.internal <- function (object, params, Np,
 		seed <- save.seed
 	}
 	if(option=="mif2")
-		paramMatrix <- params
+	{	paramMatrix <-vector(mode="list", length=1)
+		paramMatrix[[1]] <- params 
+		
+	}	
+	else
+		paramMatrix <-list()
 	new(
 			"pfilterd.pomp",
 			object,
@@ -313,7 +319,6 @@ pfilter.internal <- function (object, params, Np,
 			pred.var=pred.v,
 			filter.mean=filt.m,
 			paramMatrix = paramMatrix,
-			option=option,
 			eff.sample.size=eff.sample.size,
 			cond.loglik=loglik,
 			saved.states=xparticles,
@@ -351,7 +356,8 @@ setMethod(
 				stop("pfilter error: ",sQuote("cooling.fraction")," must be specified for method mif2",call.=FALSE)
 			if (option=="mif2" && missing(cooling.m))
 				stop("pfilter error: ",sQuote("cooling.m")," must be specified for method mif2",call.=FALSE)
-			
+			if(option=='mif2' && missing(paramMatrix))
+				paramMatrix <- list()
 			pfilter.internal(
 					object=object,
 					params=params,
@@ -394,12 +400,13 @@ setMethod(
 			if (missing(params)) params <- coef(object)
 			if (missing(Np)) Np <- object@Np
 			if (missing(tol)) tol <- object@tol
-			if (missing(option)) option <- object@option
+			if (missing(option)) option <- 'mif'
 			if (option=="mif2" && missing(cooling.fraction))
 				cooling.fraction<-object@cooling.fraction
 			if (option=="mif2" && missing(cooling.m))
 				cooling.m<-object@cooling.m
-			if (missing(paramMatrix)) paramMatrix <- object@paramMatrix
+			if (option=='mif2' && missing(paramMatrix)) 
+				paramMatrix <- object@paramMatrix
 			pfilter.internal(
 					object=as(object,"pomp"),
 					params=params,
