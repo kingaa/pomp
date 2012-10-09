@@ -37,23 +37,29 @@ pomp(
 
 
 ###################################################
-### code chunk number 3: plugin-R-code-sim
+### code chunk number 3: plugin-R-code-sim (eval = FALSE)
+###################################################
+## simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=5000,states=T)
+
+
+###################################################
+### code chunk number 4: plugin-R-code-eval
 ###################################################
 binary.file <- "plugin-R-code.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
   tic <- Sys.time()
-simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=1000,states=T)
-toc <- Sys.time()
-etime.Rplug <- toc-tic
-n.Rplug <- dim(simdat.Rplug)[2]
-save(etime.Rplug,n.Rplug,file=binary.file,compress='xz')
+simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=5000,states=T)
+  toc <- Sys.time()
+  etime.Rplug <- toc-tic
+  n.Rplug <- dim(simdat.Rplug)[2]
+  save(etime.Rplug,n.Rplug,file=binary.file,compress='xz')
 }
 
 
 ###################################################
-### code chunk number 4: vectorized-R-code (eval = FALSE)
+### code chunk number 5: vectorized-R-code (eval = FALSE)
 ###################################################
 ## ou2.Rvect.rprocess <- function (xstart, times, params, ...) {
 ##   nrep <- ncol(xstart)                  # number of realizations
@@ -90,13 +96,13 @@ save(etime.Rplug,n.Rplug,file=binary.file,compress='xz')
 
 
 ###################################################
-### code chunk number 5: vectorized-R-pomp (eval = FALSE)
+### code chunk number 6: vectorized-R-pomp (eval = FALSE)
 ###################################################
 ## ou2.Rvect <- pomp(ou2.Rplug,rprocess=ou2.Rvect.rprocess)
 
 
 ###################################################
-### code chunk number 6: theta (eval = FALSE)
+### code chunk number 7: theta (eval = FALSE)
 ###################################################
 ## theta <- c(
 ##            x1.0=-3, x2.0=4,
@@ -107,16 +113,13 @@ save(etime.Rplug,n.Rplug,file=binary.file,compress='xz')
 
 
 ###################################################
-### code chunk number 7: vectorized-R-code-sim (eval = FALSE)
+### code chunk number 8: vectorized-R-code-sim (eval = FALSE)
 ###################################################
-## tic <- Sys.time()
-## simdat.Rvect <- simulate(ou2.Rvect,params=theta,states=T,nsim=1000)
-## toc <- Sys.time()
-## etime.Rvect <- toc-tic
+## simdat.Rvect <- simulate(ou2.Rvect,params=theta,states=T,nsim=100000)
 
 
 ###################################################
-### code chunk number 8: vectorized-R-code-eval
+### code chunk number 9: vectorized-R-code-eval
 ###################################################
 binary.file <- "vectorized-R-code.rda"
 if (file.exists(binary.file)) {
@@ -161,9 +164,9 @@ theta <- c(
            alpha.1=0.8, alpha.2=-0.5, alpha.3=0.3, alpha.4=0.9,
            sigma.1=3, sigma.2=-0.5, sigma.3=2
            )
-tic <- Sys.time()
-simdat.Rvect <- simulate(ou2.Rvect,params=theta,states=T,nsim=1000)
-toc <- Sys.time()
+  tic <- Sys.time()
+simdat.Rvect <- simulate(ou2.Rvect,params=theta,states=T,nsim=100000)
+  toc <- Sys.time()
 etime.Rvect <- toc-tic
 units(etime.Rvect) <- units(etime.Rplug)
 n.Rvect <- dim(simdat.Rvect)[2]
@@ -172,19 +175,19 @@ save(etime.Rvect,n.Rvect,file=binary.file,compress='xz')
 
 
 ###################################################
-### code chunk number 9: view-ou2-source (eval = FALSE)
+### code chunk number 10: view-ou2-source (eval = FALSE)
 ###################################################
 ## file.show(file=system.file("examples/ou2.c",package="pomp"))
 
 
 ###################################################
-### code chunk number 10: view-pomp.h (eval = FALSE)
+### code chunk number 11: view-pomp.h (eval = FALSE)
 ###################################################
 ## file.show(file=system.file("include/pomp.h",package="pomp"))
 
 
 ###################################################
-### code chunk number 11: plugin-C-code (eval = FALSE)
+### code chunk number 12: plugin-C-code (eval = FALSE)
 ###################################################
 ## ou2.Cplug <- pomp(
 ##                   ou2.Rplug,
@@ -200,16 +203,13 @@ save(etime.Rvect,n.Rvect,file=binary.file,compress='xz')
 
 
 ###################################################
-### code chunk number 12: plugin-C-sim (eval = FALSE)
+### code chunk number 13: plugin-C-sim (eval = FALSE)
 ###################################################
-## tic <- Sys.time()
 ## simdat.Cplug <- simulate(ou2.Cplug,params=theta,states=T,nsim=100000)
-## toc <- Sys.time()
-## etime.Cplug <- toc-tic
 
 
 ###################################################
-### code chunk number 13: plugin-C-sim-eval
+### code chunk number 14: plugin-C-sim-eval
 ###################################################
 binary.file <- "plugin-C-code.rda"
 if (file.exists(binary.file)) {
@@ -226,9 +226,9 @@ ou2.Cplug <- pomp(
                   statenames=c("x1","x2"),
                   obsnames=c("y1","y2")
                   )
-tic <- Sys.time()
+  tic <- Sys.time()
 simdat.Cplug <- simulate(ou2.Cplug,params=theta,states=T,nsim=100000)
-toc <- Sys.time()
+  toc <- Sys.time()
 etime.Cplug <- toc-tic
   n.Cplug <- dim(simdat.Cplug)[2]
 units(etime.Cplug) <- units(etime.Rplug)
@@ -238,13 +238,13 @@ save(n.Cplug,etime.Cplug,speedup,file=binary.file,compress='xz')
 
 
 ###################################################
-### code chunk number 14: advanced_topics_in_pomp.Rnw:279-280 (eval = FALSE)
+### code chunk number 15: advanced_topics_in_pomp.Rnw:282-283 (eval = FALSE)
 ###################################################
 ## file.show(file=system.file("examples/ou2.c",package="pomp"))
 
 
 ###################################################
-### code chunk number 15: vectorized-C-code
+### code chunk number 16: vectorized-C-code
 ###################################################
 ou2.Cvect.rprocess <- function (xstart, times, params, ...) {
   nvar <- nrow(xstart)
@@ -266,45 +266,36 @@ ou2.Cvect.rprocess <- function (xstart, times, params, ...) {
 
 
 ###################################################
-### code chunk number 16: vectorized-C-code-pomp
+### code chunk number 17: vectorized-C-code-pomp
 ###################################################
 ou2.Cvect <- pomp(
                   ou2.Rplug,
                   rprocess=ou2.Cvect.rprocess
                   )
-
-
-###################################################
-### code chunk number 17: vectorized-C-code-sim (eval = FALSE)
-###################################################
-## tic <- Sys.time()
-## paramnames <- c(
-##                 "alpha.1","alpha.2","alpha.3","alpha.4",
-##                 "sigma.1","sigma.2","sigma.3",
-##                 "tau",
-##                 "x1.0","x2.0"
-##                 )
-## simdat.Cvect <- simulate(ou2.Cvect,params=theta[paramnames],nsim=100000,states=T)
-## toc <- Sys.time()
-## etime.Cvect <- toc-tic
-
-
-###################################################
-### code chunk number 18: vectorized-C-code-eval
-###################################################
-binary.file <- "vectorized-C-code.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
-tic <- Sys.time()
 paramnames <- c(
                 "alpha.1","alpha.2","alpha.3","alpha.4",
                 "sigma.1","sigma.2","sigma.3",
                 "tau",
                 "x1.0","x2.0"
                 )
+
+
+###################################################
+### code chunk number 18: vectorized-C-code-sim (eval = FALSE)
+###################################################
+## simdat.Cvect <- simulate(ou2.Cvect,params=theta[paramnames],nsim=100000,states=T)
+
+
+###################################################
+### code chunk number 19: vectorized-C-code-eval
+###################################################
+binary.file <- "vectorized-C-code.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+  tic <- Sys.time()
 simdat.Cvect <- simulate(ou2.Cvect,params=theta[paramnames],nsim=100000,states=T)
-toc <- Sys.time()
+  toc <- Sys.time()
 etime.Cvect <- toc-tic
   n.Cvect <- dim(simdat.Cvect)[2]
 units(etime.Cvect) <- units(etime.Rplug)
@@ -314,7 +305,7 @@ save(n.Cvect,etime.Cvect,speedup,file=binary.file,compress='xz')
 
 
 ###################################################
-### code chunk number 19: sir-def
+### code chunk number 20: sir-def
 ###################################################
   pomp(
        data=data.frame(
@@ -372,13 +363,13 @@ save(n.Cvect,etime.Cvect,speedup,file=binary.file,compress='xz')
 
 
 ###################################################
-### code chunk number 20: view-sir-source (eval = FALSE)
+### code chunk number 21: view-sir-source (eval = FALSE)
 ###################################################
 ## file.show(file=system.file("examples/sir.c",package="pomp"))
 
 
 ###################################################
-### code chunk number 21: sir-sim (eval = FALSE)
+### code chunk number 22: sir-sim (eval = FALSE)
 ###################################################
 ## params <- c(
 ##             gamma=26,mu=0.02,iota=0.01,
@@ -395,7 +386,7 @@ save(n.Cvect,etime.Cvect,speedup,file=binary.file,compress='xz')
 
 
 ###################################################
-### code chunk number 22: sir-sim-eval
+### code chunk number 23: sir-sim-eval
 ###################################################
 binary.file <- "sim-sim.rda"
 if (file.exists(binary.file)) {
@@ -418,7 +409,7 @@ traj <- trajectory(sir,hmax=1/52)
 
 
 ###################################################
-### code chunk number 23: advanced_topics_in_pomp.Rnw:488-495
+### code chunk number 24: advanced_topics_in_pomp.Rnw:490-497
 ###################################################
 data(ou2)
 true.p <- coef(ou2)
@@ -430,7 +421,7 @@ init.state(ou2,params=new.p)
 
 
 ###################################################
-### code chunk number 24: advanced_topics_in_pomp.Rnw:504-507
+### code chunk number 25: advanced_topics_in_pomp.Rnw:506-509
 ###################################################
 x <- rprocess(ou2,xstart=x0,times=time(ou2,t0=T),params=true.p)
 dim(x)
@@ -438,7 +429,7 @@ x[,,1:5]
 
 
 ###################################################
-### code chunk number 25: advanced_topics_in_pomp.Rnw:515-519
+### code chunk number 26: advanced_topics_in_pomp.Rnw:517-521
 ###################################################
 x <- x[,,-1,drop=F]
 y <- rmeasure(ou2,x=x,times=time(ou2),params=true.p)
@@ -447,7 +438,7 @@ y[,,1:5]
 
 
 ###################################################
-### code chunk number 26: advanced_topics_in_pomp.Rnw:525-528
+### code chunk number 27: advanced_topics_in_pomp.Rnw:527-530
 ###################################################
 fp <- dprocess(ou2,x=x,times=time(ou2),params=true.p)
 dim(fp)
@@ -455,7 +446,7 @@ fp[,36:40]
 
 
 ###################################################
-### code chunk number 27: advanced_topics_in_pomp.Rnw:530-533
+### code chunk number 28: advanced_topics_in_pomp.Rnw:532-535
 ###################################################
 fm <- dmeasure(ou2,y=y[,1,],x=x,times=time(ou2),params=true.p)
 dim(fm)
@@ -463,13 +454,13 @@ fm[,36:40]
 
 
 ###################################################
-### code chunk number 28: all-data-loadable (eval = FALSE)
+### code chunk number 29: all-data-loadable (eval = FALSE)
 ###################################################
 ## data(package="pomp")
 
 
 ###################################################
-### code chunk number 29: pomp-builder (eval = FALSE)
+### code chunk number 30: pomp-builder (eval = FALSE)
 ###################################################
 ## rmeas <- "
 ##   double size = 1.0/sigma/sigma;
@@ -592,7 +583,7 @@ fm[,36:40]
 
 
 ###################################################
-### code chunk number 30: pomp-builder-eval
+### code chunk number 31: pomp-builder-eval
 ###################################################
 if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
   require(pomp)
@@ -722,7 +713,7 @@ simulate(
 
 
 ###################################################
-### code chunk number 31: restore-opts
+### code chunk number 32: restore-opts
 ###################################################
 options(glop)
 

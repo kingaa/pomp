@@ -117,17 +117,20 @@ pomp(
        )
      ) -> ou2.Rplug
 @ 
-<<plugin-R-code-sim,echo=F>>=
+<<plugin-R-code-sim,echo=T,eval=F>>=
+simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=5000,states=T)
+@ 
+<<plugin-R-code-eval,echo=F,eval=T>>=
 binary.file <- "plugin-R-code.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
   tic <- Sys.time()
-simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=1000,states=T)
-toc <- Sys.time()
-etime.Rplug <- toc-tic
-n.Rplug <- dim(simdat.Rplug)[2]
-save(etime.Rplug,n.Rplug,file=binary.file,compress='xz')
+<<plugin-R-code-sim>>
+  toc <- Sys.time()
+  etime.Rplug <- toc-tic
+  n.Rplug <- dim(simdat.Rplug)[2]
+  save(etime.Rplug,n.Rplug,file=binary.file,compress='xz')
 }
 @ 
 Notice how we specify the process model simulator using the \code{rprocess} plug-in \code{discrete.time.sim}.
@@ -200,13 +203,10 @@ theta <- c(
            sigma.1=3, sigma.2=-0.5, sigma.3=2
            )
 @ 
-<<vectorized-R-code-sim,eval=F>>=
-tic <- Sys.time()
-simdat.Rvect <- simulate(ou2.Rvect,params=theta,states=T,nsim=1000)
-toc <- Sys.time()
-etime.Rvect <- toc-tic
+<<vectorized-R-code-sim,eval=F,echo=T>>=
+simdat.Rvect <- simulate(ou2.Rvect,params=theta,states=T,nsim=100000)
 @ 
-<<vectorized-R-code-eval,eval=T>>=
+<<vectorized-R-code-eval,eval=T,echo=F>>=
 binary.file <- "vectorized-R-code.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -214,7 +214,10 @@ if (file.exists(binary.file)) {
 <<vectorized-R-code>>
 <<vectorized-R-pomp>>
 <<theta>>
+  tic <- Sys.time()
 <<vectorized-R-code-sim>>
+  toc <- Sys.time()
+etime.Rvect <- toc-tic
 units(etime.Rvect) <- units(etime.Rplug)
 n.Rvect <- dim(simdat.Rvect)[2]
 save(etime.Rvect,n.Rvect,file=binary.file,compress='xz')
@@ -250,17 +253,17 @@ ou2.Cplug <- pomp(
                   obsnames=c("y1","y2")
                   )
 <<plugin-C-sim,eval=F>>=
-tic <- Sys.time()
 simdat.Cplug <- simulate(ou2.Cplug,params=theta,states=T,nsim=100000)
-toc <- Sys.time()
-etime.Cplug <- toc-tic
 <<plugin-C-sim-eval,eval=T,echo=F>>=
 binary.file <- "plugin-C-code.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<plugin-C-code>>
+  tic <- Sys.time()
 <<plugin-C-sim>>
+  toc <- Sys.time()
+etime.Cplug <- toc-tic
   n.Cplug <- dim(simdat.Cplug)[2]
 units(etime.Cplug) <- units(etime.Rplug)
 speedup <- as.numeric(etime.Rplug/n.Rplug)/as.numeric(etime.Cplug/n.Cplug)
@@ -307,25 +310,24 @@ ou2.Cvect <- pomp(
                   ou2.Rplug,
                   rprocess=ou2.Cvect.rprocess
                   )
-@ 
-<<vectorized-C-code-sim,echo=T,eval=F>>=
-tic <- Sys.time()
 paramnames <- c(
                 "alpha.1","alpha.2","alpha.3","alpha.4",
                 "sigma.1","sigma.2","sigma.3",
                 "tau",
                 "x1.0","x2.0"
                 )
+<<vectorized-C-code-sim,echo=T,eval=F>>=
 simdat.Cvect <- simulate(ou2.Cvect,params=theta[paramnames],nsim=100000,states=T)
-toc <- Sys.time()
-etime.Cvect <- toc-tic
 @
 <<vectorized-C-code-eval,echo=F,eval=T>>=
 binary.file <- "vectorized-C-code.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
+  tic <- Sys.time()
 <<vectorized-C-code-sim>>
+  toc <- Sys.time()
+etime.Cvect <- toc-tic
   n.Cvect <- dim(simdat.Cvect)[2]
 units(etime.Cvect) <- units(etime.Rplug)
 speedup <- as.numeric(etime.Rplug/n.Rplug)/as.numeric(etime.Cvect/n.Cvect)
