@@ -6,6 +6,7 @@
 #include <R.h>
 #include <Rmath.h>
 #include <Rdefines.h>
+#include <R_ext/Rdynload.h>
 
 // facility for extracting R objects from the 'userdata' slot
 const SEXP get_pomp_userdata (const char *name);
@@ -192,6 +193,13 @@ static R_INLINE double rgammawn (double sigma, double dt) {
 // a vector of parameters ('coef') against a vector of basis-function values ('basis')
 double dot_product (int dim, const double *basis, const double *coef);
 
+static R_INLINE double logit (double p) {
+  return log(p/(1.0-p));
+}
+
+static R_INLINE double expit (double x) {
+  return 1.0/(1.0+exp(-x));
+}
 
 // prototypes for C-level access to Euler-multinomial distribution functions
 
