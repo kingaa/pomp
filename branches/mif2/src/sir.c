@@ -4,14 +4,6 @@
 
 #include "pomp.h"
 
-static double expit (double x) {
-  return 1.0/(1.0 + exp(-x));
-}
-
-static double logit (double x) {
-  return log(x/(1-x));
-}
-
 // static double term_time (double t, double b0, double b1) 
 // {
 //   static double correction = 0.4958904;

@@ -12,7 +12,7 @@ License: GPL(>= 2)
 LazyLoad: true
 LazyData: false
 BuildVignettes: no
-Collate: aaa.R version.R eulermultinom.R plugins.R 
+Collate: aaa.R authors.R version.R eulermultinom.R plugins.R 
 	 parmat.R slice-design.R profile-design.R sobol.R bsplines.R sannbox.R
 	 pomp-fun.R pomp.R pomp-methods.R rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R 
 	 dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R simulate-pomp.R trajectory-pomp.R plot-pomp.R 

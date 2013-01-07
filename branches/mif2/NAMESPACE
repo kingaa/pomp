@@ -51,6 +51,7 @@ exportMethods(
               dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
               data.array,obs,partrans,coef,"coef<-",time,"time<-",timezero,"timezero<-",
               simulate,pfilter,
+              eff.sample.size,cond.logLik,
               particles,mif,continue,states,trajectory,
               pred.mean,pred.var,filter.mean,conv.rec,
               bsmc,
