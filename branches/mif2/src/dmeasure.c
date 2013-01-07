@@ -56,7 +56,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
     
-  give_log = *(INTEGER(log));
+  give_log = *(INTEGER(AS_INTEGER(log)));
 
   // set up the covariate table
   covariate_table = make_covariate_table(object,&ncovars);

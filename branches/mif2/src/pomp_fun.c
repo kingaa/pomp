@@ -33,7 +33,7 @@ SEXP pomp_fun_handler (SEXP pfun, int *mode)
     PROTECT(f = getListElement(nsi,"address")); nprotect++;
     break;
   default:
-    error("'pomp_fun_handler': invalid 'mode' value");
+    error("operation cannot be completed: some needed function has not been specified");
     break;
   }
 

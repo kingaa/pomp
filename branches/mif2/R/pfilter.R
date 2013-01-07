@@ -29,8 +29,9 @@ pfilter.internal <- function (object, params, Np,
                               cooling.fraction, cooling.m, option,
                               .rw.sd, seed, verbose,
                               save.states, save.params,
-                              transform,.ndone) {
-  
+                              transform,
+                              .ndone) {
+
   if (missing(option)) option<-'mif'
   if(missing(paramMatrix)) paramMatrix <- array(dim=c(0,0))
   transform <- as.logical(transform)
@@ -183,7 +184,7 @@ pfilter.internal <- function (object, params, Np,
     
     if (option=="mif2") {	  
       cool.sched <- try(
-                        mif.cooling2(cooling.fraction,nt,cooling.m+.ndone,ntimes),
+                        mif2.cooling(cooling.fraction,nt,cooling.m+.ndone,ntimes),
                         silent=FALSE
                         )
       if (inherits(cool.sched,"try-error")) 
