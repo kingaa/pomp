@@ -7,6 +7,7 @@ setClass(
            pred.mean="array",
            pred.var="array",
            filter.mean="array",
+           paramMatrix="array",
            eff.sample.size="numeric",
            cond.loglik="numeric",
            saved.states="list",
@@ -16,18 +17,38 @@ setClass(
            tol="numeric",
            nfail="integer",
            loglik="numeric"
+           ),
+         prototype=prototype(
+           pred.mean=array(data=numeric(0),dim=c(0,0)),
+           pred.var=array(data=numeric(0),dim=c(0,0)),
+           filter.mean=array(data=numeric(0),dim=c(0,0)),
+           paramMatrix=array(data=numeric(0),dim=c(0,0)),
+           eff.sample.size=numeric(0),
+           cond.loglik=numeric(0),
+           saved.states=list(),
+           saved.params=list(),
+           seed=as.integer(NA),
+           Np=as.integer(NA),
+           tol=as.double(NA),
+           nfail=as.integer(NA),
+           loglik=as.double(NA)
            )
          )
 
-## question: when pfilter.internal is called by mif, do we need to compute the prediction means and variances of the state variables each time, or only at the end?
+## question: when pfilter.internal is called by mif,
+## do we need to compute the prediction means and variances of the state variables each time,
+## or only at the end?
 
 pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
                               pred.mean, pred.var, filter.mean,
+                              cooling.fraction, cooling.m, mif2 = FALSE,
                               .rw.sd, seed, verbose,
                               save.states, save.params,
-                              transform) {
-  
+                              transform,
+                              .ndone = 0) {
+
+  mif2 <- as.logical(mif2)
   transform <- as.logical(transform)
 
   if (missing(seed)) seed <- NULL
@@ -38,7 +59,7 @@ pfilter.internal <- function (object, params, Np,
     save.seed <- get(".Random.seed",pos=.GlobalEnv)
     set.seed(seed)
   }
-
+  
   if (length(params)==0)
     stop(sQuote("pfilter")," error: ",sQuote("params")," must be specified",call.=FALSE)
   
@@ -48,7 +69,7 @@ pfilter.internal <- function (object, params, Np,
   one.par <- FALSE
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
-
+  
   if (missing(Np))
     Np <- NCOL(params)
   if (is.function(Np)) {
@@ -85,7 +106,7 @@ pfilter.internal <- function (object, params, Np,
   paramnames <- rownames(params)
   if (is.null(paramnames))
     stop(sQuote("pfilter")," error: ",sQuote("params")," must have rownames",call.=FALSE)
-
+  
   x <- init.state(
                   object,
                   params=if (transform) {
@@ -106,7 +127,7 @@ pfilter.internal <- function (object, params, Np,
     pparticles <- vector(mode="list",length=ntimes)
   else
     pparticles <- list()
-
+  
   random.walk <- !missing(.rw.sd)
   if (random.walk) {
     rw.names <- names(.rw.sd)
@@ -128,7 +149,7 @@ pfilter.internal <- function (object, params, Np,
   eff.sample.size <- numeric(ntimes)
   nfail <- 0
   npars <- length(rw.names)
-
+  
   ## set up storage for prediction means, variances, etc.
   if (pred.mean)
     pred.m <- matrix(
@@ -138,8 +159,8 @@ pfilter.internal <- function (object, params, Np,
                      dimnames=list(c(statenames,rw.names),NULL)
                      )
   else
-    pred.m <- array(dim=c(0,0))
-
+    pred.m <- array(data=numeric(0),dim=c(0,0))
+  
   if (pred.var)
     pred.v <- matrix(
                      data=0,
@@ -148,7 +169,7 @@ pfilter.internal <- function (object, params, Np,
                      dimnames=list(c(statenames,rw.names),NULL)
                      )
   else
-    pred.v <- array(dim=c(0,0))
+    pred.v <- array(data=numeric(0),dim=c(0,0))
   
   if (filter.mean)
     if (random.walk)
@@ -166,13 +187,31 @@ pfilter.internal <- function (object, params, Np,
                        dimnames=list(statenames,NULL)
                        )
   else
-    filt.m <- array(dim=c(0,0))
+    filt.m <- array(data=numeric(0),dim=c(0,0))
 
+  if (mif2) {
+    if (missing(cooling.fraction))
+      stop("pfilter error: ",sQuote("cooling.fraction")," must be specified for method mif2",call.=FALSE)
+    cooling.fraction <- as.numeric(cooling.fraction)
+  }
+  
   for (nt in seq_len(ntimes)) {
-
+    
+    if (mif2) {	  
+      cool.sched <- try(
+                        mif2.cooling(cooling.fraction,nt,cooling.m+.ndone,ntimes),
+                        silent=FALSE
+                        )
+      if (inherits(cool.sched,"try-error")) 
+        stop("pfilter error: cooling schedule error",call.=FALSE)
+      sigma1 <- sigma*cool.sched$alpha
+    } else {
+      sigma1 <- sigma
+    }
+    
     ## transform the parameters if necessary
     if (transform) tparams <- partrans(object,params,dir="forward")
-
+    
     ## advance the state variables according to the process model
     X <- try(
              rprocess(
@@ -186,7 +225,7 @@ pfilter.internal <- function (object, params, Np,
              )
     if (inherits(X,'try-error'))
       stop(sQuote("pfilter")," error: process simulation error",call.=FALSE)
-
+    
     if (pred.var) { ## check for nonfinite state variables and parameters
       problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1])
       if (length(problem.indices)>0) {  # state variables
@@ -225,7 +264,7 @@ pfilter.internal <- function (object, params, Np,
     if (any(!is.finite(weights))) {
       stop(sQuote("pfilter")," error: ",sQuote("dmeasure")," returns non-finite value",call.=FALSE)
     }
-
+    
     ## compute prediction mean, prediction variance, filtering mean,
     ## effective sample size, log-likelihood
     ## also do resampling if filtering has not failed
@@ -233,7 +272,8 @@ pfilter.internal <- function (object, params, Np,
               .Call(
                     pfilter_computations,
                     X,params,Np[nt+1],
-                    random.walk,sigma,
+                    random.walk,
+                    sigma1,
                     pred.mean,pred.var,
                     filter.mean,one.par,
                     weights,tol
@@ -246,17 +286,17 @@ pfilter.internal <- function (object, params, Np,
     all.fail <- xx$fail
     loglik[nt] <- xx$loglik
     eff.sample.size[nt] <- xx$ess
-
+    
     x <- xx$states
     params <- xx$params
-
+    
     if (pred.mean)
       pred.m[,nt] <- xx$pm
     if (pred.var)
       pred.v[,nt] <- xx$pv
     if (filter.mean)
       filt.m[,nt] <- xx$fm
-
+    
     if (all.fail) { ## all particles are lost
       nfail <- nfail+1
       if (verbose)
@@ -268,16 +308,16 @@ pfilter.internal <- function (object, params, Np,
     if (save.states) {
       xparticles[[nt]] <- x
     }
-
+    
     if (save.params) {
       pparticles[[nt]] <- params
     }
-
+    
     if (verbose && (nt%%5==0))
       cat("pfilter timestep",nt,"of",ntimes,"finished\n")
-
+    
   }
-
+  
   if (!is.null(seed)) {
     assign(".Random.seed",save.seed,pos=.GlobalEnv)
     seed <- save.seed
@@ -289,6 +329,7 @@ pfilter.internal <- function (object, params, Np,
       pred.mean=pred.m,
       pred.var=pred.v,
       filter.mean=filt.m,
+      paramMatrix=if (mif2) params else array(data=numeric(0),dim=c(0,0)),
       eff.sample.size=eff.sample.size,
       cond.loglik=loglik,
       saved.states=xparticles,
