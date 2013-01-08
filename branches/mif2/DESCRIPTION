@@ -14,8 +14,9 @@ LazyData: false
 BuildVignettes: no
 Collate: aaa.R authors.R version.R eulermultinom.R plugins.R 
 	 parmat.R slice-design.R profile-design.R sobol.R bsplines.R sannbox.R
-	 pomp-fun.R pomp.R pomp-methods.R rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R 
-	 dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R simulate-pomp.R trajectory-pomp.R plot-pomp.R 
+	 pomp-fun.R pomp-class.R pomp.R pomp-methods.R 
+	 rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R 
+	 simulate-pomp.R trajectory-pomp.R plot-pomp.R 
 	 pfilter.R pfilter-methods.R traj-match.R bsmc.R
 	 mif-class.R particles-mif.R mif.R mif-methods.R compare-mif.R 
  	 pmcmc.R pmcmc-methods.R compare-pmcmc.R
