@@ -38,7 +38,8 @@ mif.internal <- function (object, Nmif,
                           particles,
                           rw.sd, 
                           Np, cooling.factor, var.factor, ic.lag,
-                          method, tol, max.fail,
+                          method,
+                          tol, max.fail,
                           verbose, transform, .ndone) {
 
   transform <- as.logical(transform)
@@ -194,8 +195,7 @@ mif.internal <- function (object, Nmif,
 
   if (!all(is.finite(theta[c(pars,ivps)]))) {
     stop(
-         sQuote("mif"),
-         " error: mif cannot estimate non-finite parameters.\n",
+         sQuote("mif")," cannot estimate non-finite parameters.\n",
          "The following ",if (transform) "transformed ", "parameters are non-finite: ",
          paste(
                c(pars,ivps)[!is.finite(theta[c(pars,ivps)])],
