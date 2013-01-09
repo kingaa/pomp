@@ -9,7 +9,7 @@ pompExample(example)
 }
 \arguments{
   \item{example}{
-    character; name of the example to load.
+    example to load given as a name or literal character string.
     Evoked without an argument, \code{pompExample} lists all available examples.
   }
 }
@@ -19,5 +19,6 @@ pompExample(example)
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{
   pompExample()
-  pompExample("euler.sir")
+  pompExample(euler.sir)
+  pompExample("gompertz")
 }

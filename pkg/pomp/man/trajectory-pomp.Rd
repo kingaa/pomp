@@ -48,7 +48,7 @@
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{
-pompExample("euler.sir")
+pompExample(euler.sir)
 x <- trajectory(euler.sir)
 plot(time(euler.sir),x["I",1,],type='l',xlab='time',ylab='I')
 lines(time(euler.sir),x["cases",1,],col='red')

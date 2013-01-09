@@ -16,7 +16,7 @@
   parameters that are naturally unbounded or take integer values are not transformed.
 }
 \examples{
-pompExample("dacca")
+pompExample(dacca)
 plot(dacca)
 #MLEs on the natural scale
 coef(dacca)

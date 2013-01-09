@@ -10,7 +10,7 @@
   It is implemented using the \code{\link{euler.sim}} plug-in.
 }
 \examples{
-pompExample("verhulst")
+pompExample(verhulst)
 plot(verhulst)
 coef(verhulst)
 params <- cbind(

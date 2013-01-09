@@ -15,7 +15,7 @@
   This object is demonstrated in the vignette "Advanced topics in pomp".
 }
 \examples{
-pompExample("ou2")
+pompExample(ou2)
 plot(ou2)
 coef(ou2)
 x <- simulate(ou2)

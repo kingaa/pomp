@@ -8,7 +8,7 @@
   \code{blowflies1} and \code{blowflies2} are \code{pomp} objects encoding stochastic delay-difference models.
 }
 \examples{
-pompExample("blowflies")
+pompExample(blowflies)
 plot(blowflies1)
 plot(blowflies2)
 }

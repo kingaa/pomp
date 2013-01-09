@@ -10,7 +10,7 @@
   The observed variables \eqn{y_t}{y[t]} are distributed as \eqn{\mathrm{Poisson}(\phi N_t)}{Poisson(phi N[t])}.
 }
 \examples{
-pompExample("ricker")
+pompExample(ricker)
 plot(ricker)
 coef(ricker)
 }

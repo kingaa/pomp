@@ -12,7 +12,7 @@
   The \code{pomp} object includes parameter transformations that log-transform the parameters for estimation purposes.
 }
 \examples{
-pompExample("gompertz")
+pompExample(gompertz)
 plot(gompertz)
 coef(gompertz)
 coef(gompertz,transform=TRUE)

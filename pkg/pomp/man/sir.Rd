@@ -21,17 +21,17 @@
   The boarding school influenza outbreak is described in Anonymous (1978).
 }
 \examples{
-pompExample("euler.sir")
+pompExample(euler.sir)
 plot(euler.sir)
 plot(simulate(euler.sir,seed=20348585))
 coef(euler.sir)
 
-pompExample("gillespie.sir")
+pompExample(gillespie.sir)
 plot(gillespie.sir)
 plot(simulate(gillespie.sir,seed=20348585))
 coef(gillespie.sir)
 
-pompExample("bbs")
+pompExample(bbs)
 plot(bbs)
 coef(bbs)
 }
