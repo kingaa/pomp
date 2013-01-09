@@ -154,4 +154,6 @@ pomp(
      ) -> dacca
 
 coef(dacca) <- mle
-save(dacca,file="dacca.rda",compress="xz")
+
+assign("dacca",dacca,envir=.GlobalEnv)
+c("dacca")

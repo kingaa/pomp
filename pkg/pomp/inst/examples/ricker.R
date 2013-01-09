@@ -36,4 +36,5 @@ simulate(
          seed=73691676L
          ) -> ricker
 
-save(ricker,file="ricker.rda",compress="xz")
+assign("ricker",ricker,envir=.GlobalEnv)
+c("ricker")

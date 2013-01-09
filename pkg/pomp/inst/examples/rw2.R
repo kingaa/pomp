@@ -39,4 +39,5 @@ simulate(
          seed=738377475L
          ) -> rw2
 
-save(rw2,file="rw2.rda",compress="xz")
+assign("rw2",rw2,envir=.GlobalEnv)
+c("rw2")

@@ -56,4 +56,6 @@ simulate(
          seed=73658676L
          ) -> verhulst
 
-save(verhulst,file="verhulst.rda",compress="xz")
+
+assign("verhulst",verhulst,envir=.GlobalEnv)
+c("verhulst")

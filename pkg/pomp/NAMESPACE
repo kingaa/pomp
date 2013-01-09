@@ -92,5 +92,6 @@ export(
        sannbox,
        spect.match,
        traj.match.objfun,
-       pompBuilder
+       pompBuilder,
+       pompExample
        )

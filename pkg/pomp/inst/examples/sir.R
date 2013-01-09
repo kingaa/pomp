@@ -53,8 +53,6 @@ coef(po) <- c(
 
 simulate(po,nsim=1,seed=329343545L) -> euler.sir
 
-save(euler.sir,file="euler.sir.rda",compress="xz")
-
 time(po) <- seq(from=0,to=10,by=1/52)
 
 po <- pomp(
@@ -108,7 +106,6 @@ simulate(
          seed=1165270654L
          ) -> gillespie.sir
 
-save(gillespie.sir,file="gillespie.sir.rda",compress="xz")
 
 tc <- textConnection("
 day;reports
@@ -192,4 +189,8 @@ coef(po) <- c(
               )
 
 bbs <- po
-save(bbs,file="bbs.rda",compress="xz")
+
+assign("euler.sir",euler.sir,envir=.GlobalEnv)
+assign("gillespie.sir",gillespie.sir,envir=.GlobalEnv)
+assign("bbs",bbs,envir=.GlobalEnv)
+c("euler.sir","gillespie.sir","bbs")
