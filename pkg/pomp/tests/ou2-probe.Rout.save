@@ -22,7 +22,7 @@ Loading required package: subplex
 Loading required package: deSolve
 > set.seed(1066L)
 > 
-> pompExample("ou2")
+> pompExample(ou2)
 newly created pomp objects:
  ou2 
 > 

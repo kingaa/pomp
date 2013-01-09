@@ -23,7 +23,7 @@ Loading required package: deSolve
 > 
 > set.seed(921625222L)
 > 
-> pompExample("ou2")
+> pompExample(ou2)
 newly created pomp objects:
  ou2 
 > tm <- time(ou2)

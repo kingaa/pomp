@@ -168,7 +168,7 @@ stopifnot(max(abs(b1-b2),na.rm=T)<.Machine$double.eps*100)
 stopifnot(max(abs(d1-d2),na.rm=T)<.Machine$double.eps*100)
 stopifnot(max(abs(e1-e2),na.rm=T)<.Machine$double.eps*100)
 
-pompExample("rw2")
+pompExample(rw2)
 
 a3 <- dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
 b3 <- dmeasure(po,y=y[,2,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)

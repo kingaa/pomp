@@ -2,7 +2,7 @@ library(pomp)
 
 set.seed(93885485L)
 
-pompExample("ou2")
+pompExample(ou2)
 true.p <- coef(ou2)
 simdata <- simulate(ou2,nsim=5,params=true.p,seed=394885)
 guess.p <- true.p
@@ -48,7 +48,7 @@ fit <- optim(par=c(0,0,1,0.5,0.5),fn=ofun,method="Nelder-Mead",control=list(maxi
 print(fit)
 stopifnot(fit$convergence==0)
 
-pompExample("ou2")
+pompExample(ou2)
 p <- coef(ou2)
 ou2@params <- numeric(0)
 res <- traj.match(

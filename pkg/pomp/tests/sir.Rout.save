@@ -525,7 +525,7 @@ I    518.5    675.3    768.6    868.8    996.8   1074   1187   1278
 R -31549.7 -30472.3 -30226.0 -29798.8 -29007.2 -28580 -27634 -26740
 > 
 > ## now repeat using the compiled native codes built into the package
-> pompExample("euler.sir")
+> pompExample(euler.sir)
 newly created pomp objects:
  euler.sir 
 > po <- euler.sir
@@ -595,7 +595,7 @@ null device
 > 
 > ## test of vectorfield integrator
 > 
-> pompExample("euler.sir")
+> pompExample(euler.sir)
 newly created pomp objects:
  euler.sir 
 > 

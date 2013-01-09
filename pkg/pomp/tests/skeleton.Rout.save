@@ -21,7 +21,7 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> pompExample("ricker")
+> pompExample(ricker)
 newly created pomp objects:
  ricker 
 > 
@@ -43,7 +43,7 @@ newly created pomp objects:
 > 
 > ## non-autonomous case
 > 
-> pompExample("euler.sir")
+> pompExample(euler.sir)
 newly created pomp objects:
  euler.sir 
 > x <- states(euler.sir)

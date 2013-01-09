@@ -22,7 +22,7 @@ Loading required package: subplex
 Loading required package: deSolve
 > options(digits=4)
 > 
-> pompExample("gompertz")
+> pompExample(gompertz)
 newly created pomp objects:
  gompertz 
 > 

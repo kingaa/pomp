@@ -69,7 +69,7 @@ Loading required package: deSolve
 +   -kalman.filter(y,x0,a,b,sigma,tau)$loglik
 + }
 > 
-> pompExample("ou2")
+> pompExample(ou2)
 newly created pomp objects:
  ou2 
 > 

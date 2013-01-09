@@ -118,7 +118,7 @@ Loading required package: deSolve
 104 0.1970810
 105 0.1666667
 > 
-> pompExample("gillespie.sir")
+> pompExample(gillespie.sir)
 newly created pomp objects:
  gillespie.sir 
 > 

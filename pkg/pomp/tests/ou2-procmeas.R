@@ -1,6 +1,6 @@
 library(pomp)
 
-pompExample("ou2")
+pompExample(ou2)
 
 po <- window(ou2,end=10)
 

@@ -1,6 +1,6 @@
 library(pomp)
 
-pompExample("ricker")
+pompExample(ricker)
 
 pdf(file="ricker-probe.pdf")
 

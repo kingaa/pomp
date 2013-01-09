@@ -1,7 +1,7 @@
 library(pomp)
 set.seed(1066L)
 
-pompExample("ou2")
+pompExample(ou2)
 
 pm.ou2 <- probe(
                 ou2,

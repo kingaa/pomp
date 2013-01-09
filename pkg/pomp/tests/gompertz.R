@@ -1,7 +1,7 @@
 library(pomp)
 options(digits=4)
 
-pompExample("gompertz")
+pompExample(gompertz)
 
 po <- gompertz
 coef(po)

@@ -21,7 +21,7 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> pompExample("ou2")
+> pompExample(ou2)
 newly created pomp objects:
  ou2 
 > 
@@ -44,7 +44,7 @@ particle filter log likelihood at truth
    loglik loglik.se 
   -479.61      0.46 
 > 
-> pompExample("euler.sir")
+> pompExample(euler.sir)
 newly created pomp objects:
  euler.sir 
 > pf <- pfilter(euler.sir,Np=100,seed=394343L)

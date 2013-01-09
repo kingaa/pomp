@@ -2,7 +2,7 @@ library(pomp)
 
 pdf(file="ricker-spect.pdf")
 
-pompExample("ricker")
+pompExample(ricker)
 
 set.seed(6457673L)
 

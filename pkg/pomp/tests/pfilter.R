@@ -1,6 +1,6 @@
 library(pomp)
 
-pompExample("ou2")
+pompExample(ou2)
 
 set.seed(9994847L)
 
@@ -15,7 +15,7 @@ ll.est <- log(mean(exp(pf.ll-mean(pf.ll))))+mean(pf.ll)
 ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
 print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
 
-pompExample("euler.sir")
+pompExample(euler.sir)
 pf <- pfilter(euler.sir,Np=100,seed=394343L)
 print(coef(pf))
 print(pf$loglik,digits=4)

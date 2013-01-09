@@ -2,7 +2,7 @@ library(pomp)
 
 set.seed(921625222L)
 
-pompExample("ou2")
+pompExample(ou2)
 
 ics <- c("x1.0","x2.0")    # names of the initial condition parameters
 

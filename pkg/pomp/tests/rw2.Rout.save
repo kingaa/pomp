@@ -375,7 +375,7 @@ Error : 'simulate' error
 > stopifnot(max(abs(d1-d2),na.rm=T)<.Machine$double.eps*100)
 > stopifnot(max(abs(e1-e2),na.rm=T)<.Machine$double.eps*100)
 > 
-> pompExample("rw2")
+> pompExample(rw2)
 newly created pomp objects:
  rw2 
 > 

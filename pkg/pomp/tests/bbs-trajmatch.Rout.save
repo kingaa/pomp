@@ -21,7 +21,7 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> pompExample("bbs")
+> pompExample(bbs)
 newly created pomp objects:
  bbs 
 > 

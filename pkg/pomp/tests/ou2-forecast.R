@@ -2,7 +2,7 @@ library(pomp)
 
 set.seed(921625222L)
 
-pompExample("ou2")
+pompExample(ou2)
 tm <- time(ou2)
 y <- obs(ou2)
 theta <- coef(ou2)

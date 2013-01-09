@@ -23,7 +23,7 @@ Loading required package: deSolve
 > 
 > set.seed(594861940L)
 > 
-> pompExample("ou2")
+> pompExample(ou2)
 newly created pomp objects:
  ou2 
 > estnames=c("alpha.2","alpha.3","tau")

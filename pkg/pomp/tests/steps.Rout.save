@@ -23,7 +23,7 @@ Loading required package: deSolve
 > 
 > set.seed(54588699L)
 > 
-> pompExample("ricker")
+> pompExample(ricker)
 newly created pomp objects:
  ricker 
 > coef(ricker,"sigma") <- 0
@@ -32,7 +32,7 @@ newly created pomp objects:
 > y <- simulate(ricker,times=tm,states=TRUE)["N",,]
 > stopifnot(identical(x,y))
 > 
-> pompExample("verhulst")
+> pompExample(verhulst)
 newly created pomp objects:
  verhulst 
 > coef(verhulst,c("n.0","sigma")) <- c(15,0)

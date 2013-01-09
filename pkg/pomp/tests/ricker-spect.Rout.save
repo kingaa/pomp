@@ -23,7 +23,7 @@ Loading required package: deSolve
 > 
 > pdf(file="ricker-spect.pdf")
 > 
-> pompExample("ricker")
+> pompExample(ricker)
 newly created pomp objects:
  ricker 
 > 

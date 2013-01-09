@@ -23,7 +23,7 @@ Loading required package: deSolve
 > 
 > set.seed(93885485L)
 > 
-> pompExample("ou2")
+> pompExample(ou2)
 newly created pomp objects:
  ou2 
 > true.p <- coef(ou2)
@@ -156,7 +156,7 @@ NULL
 
 > stopifnot(fit$convergence==0)
 > 
-> pompExample("ou2")
+> pompExample(ou2)
 newly created pomp objects:
  ou2 
 > p <- coef(ou2)
