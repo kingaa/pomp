@@ -306,7 +306,7 @@
 \dontrun{
 vignette("intro_to_pomp")
 vignette("advanced_topics_in_pomp")
-data(package="pomp")
+pompExample()
 pomp.home <- system.file("examples",package="pomp")
 pomp.examples <- list.files(pomp.home)
 file.show(
