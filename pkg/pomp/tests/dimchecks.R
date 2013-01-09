@@ -2,7 +2,7 @@ library(pomp)
 
 set.seed(1420306530L)
 
-data(ricker)
+pompExample("ricker")
 po <- ricker
 
 pars <- coef(po)
@@ -49,7 +49,7 @@ g3 <- skeleton(po,x=x,t=0:5,params=parmat(pars,6))
 stopifnot(identical(g1,g3[,1:3,]))
 stopifnot(identical(g1,g3[,4:6,]))
 
-data(gompertz)
+pompExample("gompertz")
 p <- parmat(coef(gompertz),5)
 f1 <- partrans(gompertz,p,"inv")
 f2 <- parmat(coef(gompertz,transform=TRUE),5)

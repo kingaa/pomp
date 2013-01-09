@@ -1,6 +1,6 @@
 library(pomp)
 
-data(ricker)
+pompExample("ricker")
 y1 <- obs(simulate(ricker,seed=1066L))
 r2 <- pomp(ricker,measurement.model=y~pois(lambda=N*phi))
 coef(r2) <- coef(ricker)

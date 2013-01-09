@@ -1,6 +1,6 @@
 library(pomp)
 
-data(bbs)
+pompExample("bbs")
 
 set.seed(48857734L)
 

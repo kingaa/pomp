@@ -1,5 +1,5 @@
 
-R version 2.14.2 (2012-02-29)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -21,7 +21,9 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> data(ricker)
+> pompExample("ricker")
+newly created pomp objects:
+ ricker 
 > 
 > pdf(file="skeleton.pdf")
 > pdf.options(useDingbats=FALSE)
@@ -41,7 +43,9 @@ Loading required package: deSolve
 > 
 > ## non-autonomous case
 > 
-> data(euler.sir)
+> pompExample("euler.sir")
+newly created pomp objects:
+ euler.sir 
 > x <- states(euler.sir)
 > p <- parmat(coef(euler.sir),nrep=3)
 > p["beta2",2:3] <- exp(c(3,5))  ## try different values of one of the seasonality parameters
@@ -88,3 +92,6 @@ Loading required package: deSolve
 null device 
           1 
 > 
+> proc.time()
+   user  system elapsed 
+  0.680   0.084   0.940 

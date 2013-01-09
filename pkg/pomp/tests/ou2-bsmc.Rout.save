@@ -22,7 +22,9 @@ Loading required package: subplex
 Loading required package: deSolve
 > 
 > set.seed(398585L)
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > 
 > time(ou2) <- 1:10
 > 
@@ -62,7 +64,7 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 2.9886 secs
+Time difference of 3.497756 secs
 > 
 > print(
 +       cbind(
@@ -98,4 +100,4 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > proc.time()
    user  system elapsed 
-  4.804   0.080   4.912 
+  5.452   0.080   5.564 

@@ -5,7 +5,6 @@
 \description{
   \code{ou2} is a \code{pomp} object encoding a bivariate discrete-time Ornstein-Uhlenbeck process.
 }
-\usage{data(ou2)}
 \details{
   If the state process is \eqn{X(t) = (x_{1}(t),x_{2}(t))}, then
   \deqn{X(t+1) = \alpha X(t) + \sigma \epsilon(t),}
@@ -16,7 +15,7 @@
   This object is demonstrated in the vignette "Advanced topics in pomp".
 }
 \examples{
-data(ou2)
+pompExample("ou2")
 plot(ou2)
 coef(ou2)
 x <- simulate(ou2)

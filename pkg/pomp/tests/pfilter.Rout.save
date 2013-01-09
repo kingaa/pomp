@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -21,7 +21,9 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > 
 > set.seed(9994847L)
 > 
@@ -42,7 +44,9 @@ particle filter log likelihood at truth
    loglik loglik.se 
   -479.61      0.46 
 > 
-> data(euler.sir)
+> pompExample("euler.sir")
+newly created pomp objects:
+ euler.sir 
 > pf <- pfilter(euler.sir,Np=100,seed=394343L)
 > print(coef(pf))
    gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
@@ -66,4 +70,4 @@ particle filter log likelihood at truth
 > 
 > proc.time()
    user  system elapsed 
-  6.224   0.048   6.307 
+  6.532   0.080   6.642 

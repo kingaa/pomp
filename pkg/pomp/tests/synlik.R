@@ -1,6 +1,6 @@
 library(pomp)
 
-data(ou2)
+pompExample("ou2")
 
 set.seed(6457673L)
 

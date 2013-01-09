@@ -48,7 +48,7 @@ kalman <- function (x, object, params) {
   -kalman.filter(y,x0,a,b,sigma,tau)$loglik
 }
 
-data(ou2)
+pompExample("ou2")
 
 # true coefficients
 p.truth <- coef(ou2)

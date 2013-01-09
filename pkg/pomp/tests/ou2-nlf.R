@@ -2,7 +2,7 @@ library(pomp)
 
 set.seed(594861940L)
 
-data(ou2)
+pompExample("ou2")
 estnames=c("alpha.2","alpha.3","tau")
 theta.truth <- coef(ou2)
 theta.guess <- theta.truth

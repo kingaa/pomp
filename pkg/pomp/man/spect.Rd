@@ -154,7 +154,7 @@
   Aaron A. King (kingaa at umich dot edu)
 }
 \examples{
-data(ou2)
+pompExample("ou2")
 good <- spect(
               ou2,
               vars=c("y1","y2"),

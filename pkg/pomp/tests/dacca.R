@@ -2,7 +2,7 @@ library(pomp)
 
 set.seed(1420306530L)
 
-data(dacca)
+pompExample("dacca")
 
 x <- as.data.frame(dacca)
 print(names(x))

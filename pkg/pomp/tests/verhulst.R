@@ -1,6 +1,6 @@
 library(pomp)
 
-data(verhulst)
+pompExample("verhulst")
 
 tail(as(verhulst,"data.frame"))
 tail(as.data.frame(verhulst))

@@ -1,5 +1,5 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -21,7 +21,9 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> data(ricker)
+> pompExample("ricker")
+newly created pomp objects:
+ ricker 
 > 
 > pdf(file="ricker-bsmc.pdf")
 > 
@@ -53,4 +55,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 23.861   0.076  24.137 
+ 22.801   0.176  23.225 

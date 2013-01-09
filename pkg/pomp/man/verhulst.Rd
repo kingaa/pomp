@@ -5,13 +5,12 @@
 \description{
   \code{verhulst} is a \code{pomp} object encoding a univariate stochastic logistic model with measurement error.
 }
-\usage{data(verhulst)}
 \details{
   The model is written as an Ito diffusion, \eqn{dn = r n (1-n/K) dt + \sigma n dW}, where \eqn{W} is a Wiener process.
   It is implemented using the \code{\link{euler.sim}} plug-in.
 }
 \examples{
-data(verhulst)
+pompExample("verhulst")
 plot(verhulst)
 coef(verhulst)
 params <- cbind(

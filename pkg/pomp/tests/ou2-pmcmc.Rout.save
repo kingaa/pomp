@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -21,7 +21,9 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > 
 > dprior.ou2 <- function (params, hyperparams, ..., log) {
 +   f <- sum(dunif(params,min=hyperparams$min,max=hyperparams$max,log=TRUE))
@@ -85,4 +87,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.744   0.040   3.037 
+  3.340   0.044   3.532 

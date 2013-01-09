@@ -22,7 +22,9 @@ Loading required package: subplex
 Loading required package: deSolve
 > options(digits=4)
 > 
-> data(gompertz)
+> pompExample("gompertz")
+newly created pomp objects:
+ gompertz 
 > 
 > po <- gompertz
 > coef(po)
@@ -131,4 +133,4 @@ The following transformed parameters are non-finite: r
 > 
 > proc.time()
    user  system elapsed 
-  1.496   0.032   1.546 
+  1.828   0.040   1.895 

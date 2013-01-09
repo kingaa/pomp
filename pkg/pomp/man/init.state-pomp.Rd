@@ -25,11 +25,11 @@
   Returns a matrix of initial states (with rownames).
 }
 \examples{
-data(ou2)
+pompExample("ou2")
 coef(ou2)
 init.state(ou2)
 
-data(euler.sir)
+pompExample("euler.sir")
 coef(euler.sir)
 init.state(euler.sir)
 }

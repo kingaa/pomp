@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -23,7 +23,9 @@ Loading required package: deSolve
 > 
 > set.seed(93885485L)
 > 
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > true.p <- coef(ou2)
 > simdata <- simulate(ou2,nsim=5,params=true.p,seed=394885)
 > guess.p <- true.p
@@ -154,7 +156,9 @@ NULL
 
 > stopifnot(fit$convergence==0)
 > 
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > p <- coef(ou2)
 > ou2@params <- numeric(0)
 > res <- traj.match(
@@ -184,4 +188,4 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > proc.time()
    user  system elapsed 
-  2.244   0.044   2.311 
+  1.928   0.076   2.021 

@@ -1,6 +1,6 @@
 library(pomp)
 
-data(ricker)
+pompExample("ricker")
 
 pdf(file="skeleton.pdf")
 pdf.options(useDingbats=FALSE)
@@ -20,7 +20,7 @@ legend("topright",bty='n',col=c("red","blue","green"),
 
 ## non-autonomous case
 
-data(euler.sir)
+pompExample("euler.sir")
 x <- states(euler.sir)
 p <- parmat(coef(euler.sir),nrep=3)
 p["beta2",2:3] <- exp(c(3,5))  ## try different values of one of the seasonality parameters

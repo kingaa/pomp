@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -23,7 +23,9 @@ Loading required package: deSolve
 > 
 > set.seed(921625222L)
 > 
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > tm <- time(ou2)
 > y <- obs(ou2)
 > theta <- coef(ou2)
@@ -61,4 +63,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  1.492   0.048   1.691 
+  1.928   0.060   2.108 

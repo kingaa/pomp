@@ -1,6 +1,6 @@
 library(pomp)
 
-data(ou2)
+pompExample("ou2")
 
 set.seed(64857673L)
 
@@ -174,7 +174,6 @@ fit <- mif(
            rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
            cooling.factor=0.95,ic.lag=10,var.factor=1
            )
-
 
 pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
 fit <- mif(

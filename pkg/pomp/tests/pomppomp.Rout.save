@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -21,7 +21,9 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> data(ricker)
+> pompExample("ricker")
+newly created pomp objects:
+ ricker 
 > y1 <- obs(simulate(ricker,seed=1066L))
 > r2 <- pomp(ricker,measurement.model=y~pois(lambda=N*phi))
 > coef(r2) <- coef(ricker)
@@ -41,4 +43,4 @@ Loading required package: deSolve
 > 
 > proc.time()
    user  system elapsed 
-  0.432   0.036   0.491 
+  0.540   0.088   0.655 

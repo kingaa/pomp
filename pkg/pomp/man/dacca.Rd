@@ -9,9 +9,6 @@
 
   Data are provided courtesy of Dr. Menno J. Bouma, London School of Tropical Medicine and Hygiene.
 }
-\usage{
-data(dacca)
-}
 \details{
   \code{dacca} is a \code{pomp} object containing the model, data, and MLE parameters.
   Parameters that naturally range over the positive reals are log-transformed;
@@ -19,7 +16,7 @@ data(dacca)
   parameters that are naturally unbounded or take integer values are not transformed.
 }
 \examples{
-data(dacca)
+pompExample("dacca")
 plot(dacca)
 #MLEs on the natural scale
 coef(dacca)

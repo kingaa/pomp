@@ -21,7 +21,9 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > 
 > set.seed(64857673L)
 > 
@@ -244,7 +246,6 @@ mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but a
 +            cooling.factor=0.95,ic.lag=10,var.factor=1
 +            )
 > 
-> 
 > pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
 > fit <- mif(
 +            fit,
@@ -267,4 +268,4 @@ mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but a
 > 
 > proc.time()
    user  system elapsed 
- 13.280   0.056  13.499 
+ 13.544   0.040  13.767 

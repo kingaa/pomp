@@ -1,5 +1,5 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -21,7 +21,9 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> data(bbs)
+> pompExample("bbs")
+newly created pomp objects:
+ bbs 
 > 
 > guess <- c(
 +            mu=0,gamma=1/3,beta=1,beta.sd=0,iota=0,
@@ -68,4 +70,4 @@ in 'coef<-' names of 'value' are being discarded
 > 
 > proc.time()
    user  system elapsed 
-  2.180   0.032   2.236 
+  2.424   0.060   2.516 

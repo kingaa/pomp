@@ -7,9 +7,8 @@
 \description{
   \code{blowflies1} and \code{blowflies2} are \code{pomp} objects encoding stochastic delay-difference models.
 }
-\usage{data(blowflies)}
 \examples{
-data(blowflies)
+pompExample("blowflies")
 plot(blowflies1)
 plot(blowflies2)
 }
@@ -34,7 +33,7 @@ plot(blowflies2)
   
   Do
 
-  \code{file.show(system.file("data-R","blowflies.R",package="pomp"))}
+  \code{file.show(system.file("examples","blowflies.R",package="pomp"))}
 
   to view the code that constructs these pomp objects.
 }

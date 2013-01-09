@@ -1,6 +1,6 @@
 library(pomp)
 
-data(gompertz)
+pompExample("gompertz")
 
 pars <- coef(gompertz)
 

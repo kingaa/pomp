@@ -83,6 +83,6 @@ simulate(
 
 tail(as(gsir,"data.frame"))
 
-data(gillespie.sir)
+pompExample("gillespie.sir")
 
 tail(as.data.frame(simulate(gillespie.sir,times=time(gsir),t0=timezero(gsir),seed=1165270654L)))

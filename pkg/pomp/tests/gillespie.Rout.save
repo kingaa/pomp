@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -118,7 +118,9 @@ Loading required package: deSolve
 104 0.1970810
 105 0.1666667
 > 
-> data(gillespie.sir)
+> pompExample("gillespie.sir")
+newly created pomp objects:
+ gillespie.sir 
 > 
 > tail(as.data.frame(simulate(gillespie.sir,times=time(gsir),t0=timezero(gsir),seed=1165270654L)))
         time reports     S    I      R      N cases
@@ -131,4 +133,4 @@ Loading required package: deSolve
 > 
 > proc.time()
    user  system elapsed 
-  2.248   0.044   2.308 
+  4.400   0.056   4.480 

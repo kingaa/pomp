@@ -198,7 +198,7 @@ h1 <- skeleton(
 print(h1[c("S","I","R"),,],digits=4)
 
 ## now repeat using the compiled native codes built into the package
-data(euler.sir)
+pompExample("euler.sir")
 po <- euler.sir
 
 set.seed(3049953)
@@ -252,7 +252,7 @@ dev.off()
 
 ## test of vectorfield integrator
 
-data(euler.sir)
+pompExample("euler.sir")
 
 po <- pomp(
            window(euler.sir,end=2),

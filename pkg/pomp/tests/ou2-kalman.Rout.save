@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -69,7 +69,9 @@ Loading required package: deSolve
 +   -kalman.filter(y,x0,a,b,sigma,tau)$loglik
 + }
 > 
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > 
 > # true coefficients
 > p.truth <- coef(ou2)
@@ -164,7 +166,7 @@ Exiting from Nelder Mead minimizer
     117 function evaluations used
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 5.289137 secs
+Time difference of 5.160968 secs
 > tic <- Sys.time()
 > print(loglik.mle <- -kalm.fit1$value,digits=4)
 [1] -477.2
@@ -188,4 +190,4 @@ loglik  -479.0 -477.241     NA
 > 
 > proc.time()
    user  system elapsed 
-  5.776   0.040   5.861 
+  5.680   0.044   5.752 

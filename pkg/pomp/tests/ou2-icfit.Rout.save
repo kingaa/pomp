@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -23,7 +23,9 @@ Loading required package: deSolve
 > 
 > set.seed(921625222L)
 > 
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > 
 > ics <- c("x1.0","x2.0")    # names of the initial condition parameters
 > 
@@ -107,4 +109,4 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > proc.time()
    user  system elapsed 
- 16.365   0.056  16.483 
+ 17.629   0.060  17.749 

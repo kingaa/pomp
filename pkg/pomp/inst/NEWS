@@ -1,4 +1,9 @@
 NEWS
+0.44-1
+     o	Remove all data()-loadable pomp objects.
+	To load the prebuilt example pomp objects from previous versions, use the new 'pompExample' function.
+	E.g., instead of 'data(euler.sir)', do 'pompExample("euler.sir")'.
+
 0.43-4
      o	Clean up tests.
 

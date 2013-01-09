@@ -1,7 +1,7 @@
 library(pomp)
 
 set.seed(398585L)
-data(ou2)
+pompExample("ou2")
 
 time(ou2) <- 1:10
 

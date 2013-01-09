@@ -61,7 +61,7 @@
   This makes it possible for the user to write highly optimized code for these potentially expensive computations.
 }
 \examples{
-data(ou2)
+pompExample("ou2")
 x <- simulate(ou2,seed=3495485,nsim=10)
 x <- simulate(ou2,seed=3495485,nsim=10,states=TRUE,obs=TRUE)
 }

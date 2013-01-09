@@ -166,7 +166,7 @@ probe.match.objfun(object, params, est, probes, nsim = 1,
   Aaron A. King (kingaa at umich dot edu)
 }
 \examples{
-data(ou2)
+pompExample("ou2")
 good <- probe(
               ou2,
               probes=list(

@@ -1,6 +1,6 @@
 library(pomp)
 
-data(ou2)
+pompExample("ou2")
 
 dprior.ou2 <- function (params, hyperparams, ..., log) {
   f <- sum(dunif(params,min=hyperparams$min,max=hyperparams$max,log=TRUE))

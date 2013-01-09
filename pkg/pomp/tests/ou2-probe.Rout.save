@@ -1,5 +1,5 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -22,7 +22,9 @@ Loading required package: subplex
 Loading required package: deSolve
 > set.seed(1066L)
 > 
-> data(ou2)
+> pompExample("ou2")
+newly created pomp objects:
+ ou2 
 > 
 > pm.ou2 <- probe(
 +                 ou2,
@@ -294,4 +296,4 @@ sim.5 0.5542739 0.6216561 -0.4089672 -0.7236761  0.06850115
 > 
 > proc.time()
    user  system elapsed 
-  1.320   0.040   1.484 
+  1.576   0.076   1.703 

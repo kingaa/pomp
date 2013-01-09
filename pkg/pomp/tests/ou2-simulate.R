@@ -1,6 +1,6 @@
 library(pomp)
 
-data(ou2)
+pompExample("ou2")
 
 ## fix some parameters
 p <- c(

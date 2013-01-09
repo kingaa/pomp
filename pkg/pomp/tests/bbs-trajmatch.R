@@ -1,6 +1,6 @@
 library(pomp)
 
-data(bbs)
+pompExample("bbs")
 
 guess <- c(
            mu=0,gamma=1/3,beta=1,beta.sd=0,iota=0,

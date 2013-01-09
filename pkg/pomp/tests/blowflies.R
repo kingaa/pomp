@@ -1,6 +1,6 @@
 library(pomp)
 
-data(blowflies)
+pompExample("blowflies")
 
 init.state(blowflies1)
 x1 <- simulate(blowflies1)

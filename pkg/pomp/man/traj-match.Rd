@@ -111,7 +111,7 @@ traj.match.objfun(object, params, est, transform = FALSE, \dots)
   \code{traj.match.objfun} returns a function suitable for use as an objective function in an \code{\link{optim}}-like optimizer.
 }
 \examples{
-  data(ou2)
+  pompExample("ou2")
   true.p <- c(
 	      alpha.1=0.9,alpha.2=0,alpha.3=-0.4,alpha.4=0.99,
 	      sigma.1=2,sigma.2=0.1,sigma.3=2,
@@ -137,11 +137,11 @@ traj.match.objfun(object, params, est, transform = FALSE, \dots)
   lines(x1~time,data=as(res,"data.frame"),col='blue')
   lines(x2~time,data=as(res,"data.frame"),col='red')
 
-  data(ricker)
+  pompExample("ricker")
   ofun <- traj.match.objfun(ricker,est=c("r","phi"),transform=TRUE)
   optim(fn=ofun,par=c(2,0),method="BFGS")
 
-  data(bbs)
+  pompExample("bbs")
   ofun <- traj.match.objfun(bbs,est=c("beta","gamma"),transform=TRUE,hmax=0.001)
   optim(fn=ofun,par=c(0,-1),method="Nelder-Mead")
 }
