@@ -42,17 +42,27 @@
     \item{cooling.factor}{
       the exponential cooling factor, where \code{0<cooling.factor<1}.
     }
+    \item{cooling.fraction}{
+      the fraction that determines the cooling schedule when \code{method='mif2'}.
+      \code{0<cooling.fraction<1}.
+    }
+    \item{method}{
+      character; the mif update method.
+    }
     \item{random.walk.sd}{
       A named vector containing the random-walk variance to be used for ordinary parameters.
     }
     \item{conv.rec}{
       The \dQuote{convergence record}: a matrix containing a record of the parameter values, log likelihoods, and other pertinent information, with one row for each MIF iteration.
     }
-    \item{data, times, t0, rprocess, dprocess, dmeasure, rmeasure,
+    \item{pred.mean, pred.var, filter.mean,
+      eff.sample.size, cond.loglik, saved.states, saved.params, seed,
+      Np, tol, nfail, loglik,
+      data, times, t0, rprocess, dprocess, dmeasure, rmeasure,
       skeleton.type, skeleton, initializer, states, params,
-      statenames, paramnames, covarnames, tcovar, covar,
+      statenames, paramnames, covarnames, obsnames, tcovar, covar,
       PACKAGE, userdata}{
-      Inherited from the \code{pomp} class.
+      Inherited from the \code{pfilterd.pomp} class.
     }
   }
 }

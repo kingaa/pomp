@@ -183,7 +183,7 @@ pmcmc.internal <- function (object, Nmcmc,
                                 save.states=FALSE,
                                 save.params=FALSE,
                                 verbose=verbose,
-                                transform=FALSE
+                                .transform=FALSE
                                 ),
                silent=FALSE
                )
@@ -221,7 +221,7 @@ pmcmc.internal <- function (object, Nmcmc,
                                      save.states=FALSE,
                                      save.params=FALSE,
                                      verbose=verbose,
-                                     transform=FALSE
+                                     .transform=FALSE
                                      ),
                     silent=FALSE
                     )

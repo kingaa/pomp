@@ -11,6 +11,8 @@ setClass(
            var.factor='numeric',
            ic.lag='integer',
            cooling.factor='numeric',
+           cooling.fraction='numeric',
+           method='character',
            random.walk.sd = 'numeric',
            conv.rec = 'matrix'
            )

@@ -1,5 +1,7 @@
 NEWS
 0.44-1
+     o	New 'mif2' option for 'mif'.
+
      o	Remove all data()-loadable pomp objects.
 	To load the prebuilt example pomp objects from previous versions, use the new 'pompExample' function.
 	E.g., instead of 'data(euler.sir)', do 'pompExample("euler.sir")'.

@@ -35,21 +35,16 @@ setClass(
            )
          )
 
-## question: when pfilter.internal is called by mif,
-## do we need to compute the prediction means and variances of the state variables each time,
-## or only at the end?
-
 pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
                               pred.mean, pred.var, filter.mean,
-                              cooling.fraction, cooling.m, mif2 = FALSE,
+                              cooling.fraction, cooling.m, .mif2 = FALSE,
                               .rw.sd, seed, verbose,
                               save.states, save.params,
-                              transform,
-                              .ndone = 0) {
+                              .transform) {
 
-  mif2 <- as.logical(mif2)
-  transform <- as.logical(transform)
+  mif2 <- as.logical(.mif2)
+  transform <- as.logical(.transform)
 
   if (missing(seed)) seed <- NULL
   if (!is.null(seed)) {
@@ -78,16 +73,16 @@ pfilter.internal <- function (object, params, Np,
               silent=FALSE
               )
     if (inherits(Np,"try-error"))
-      stop("if ",sQuote("Np")," is a function, it must return a single positive integer")
+      stop("if ",sQuote("Np")," is a function, it must return a single positive integer",call.=FALSE)
   }
   if (length(Np)==1)
     Np <- rep(Np,times=ntimes+1)
   else if (length(Np)!=(ntimes+1))
-    stop(sQuote("Np")," must have length 1 or length ",ntimes+1)
+    stop(sQuote("Np")," must have length 1 or length ",ntimes+1,call.=FALSE)
   if (any(Np<=0))
-    stop("number of particles, ",sQuote("Np"),", must always be positive")
+    stop("number of particles, ",sQuote("Np"),", must always be positive",call.=FALSE)
   if (!is.numeric(Np))
-    stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
+    stop(sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
   Np <- as.integer(Np)
   
   if (is.null(dim(params))) {
@@ -199,7 +194,7 @@ pfilter.internal <- function (object, params, Np,
     
     if (mif2) {	  
       cool.sched <- try(
-                        mif2.cooling(cooling.fraction,nt,cooling.m+.ndone,ntimes),
+                        mif2.cooling(frac=cooling.fraction,nt=nt,m=cooling.m,n=ntimes),
                         silent=FALSE
                         )
       if (inherits(cool.sched,"try-error")) 
@@ -373,7 +368,7 @@ setMethod(
                              save.params=save.params,
                              seed=seed,
                              verbose=verbose,
-                             transform=FALSE
+                             .transform=FALSE
                              )
           }
           )
@@ -381,34 +376,16 @@ setMethod(
 setMethod(
           "pfilter",
           signature=signature(object="pfilterd.pomp"),
-          function (object, params, Np,
-                    tol,
-                    max.fail = 0,
-                    pred.mean = FALSE,
-                    pred.var = FALSE,
-                    filter.mean = FALSE,
-                    save.states = FALSE,
-                    save.params = FALSE,
-                    seed = NULL,
-                    verbose = getOption("verbose"),
-                    ...) {
+          function (object, params, Np, tol, ...) {
             if (missing(params)) params <- coef(object)
             if (missing(Np)) Np <- object@Np
             if (missing(tol)) tol <- object@tol
-            pfilter.internal(
-                             object=as(object,"pomp"),
-                             params=params,
-                             Np=Np,
-                             tol=tol,
-                             max.fail=max.fail,
-                             pred.mean=pred.mean,
-                             pred.var=pred.var,
-                             filter.mean=filter.mean,
-                             save.states=save.states,
-                             save.params=save.params,
-                             seed=seed,
-                             verbose=verbose,
-                             transform=FALSE
-                             )
+            pfilter(
+                    object=as(object,"pomp"),
+                    params=params,
+                    Np=Np,
+                    tol=tol,
+                    ...
+                    )
           }
           )

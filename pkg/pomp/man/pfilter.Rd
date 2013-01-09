@@ -16,11 +16,7 @@
     filter.mean = FALSE, save.states = FALSE,
     save.params = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
-\S4method{pfilter}{pfilterd.pomp}(object, params, Np, tol,
-    max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, save.states = FALSE,
-    save.params = FALSE, seed = NULL,
-    verbose = getOption("verbose"), \dots)
+\S4method{pfilter}{pfilterd.pomp}(object, params, Np, tol, \dots)
 }
 \arguments{
   \item{object}{
@@ -74,7 +70,8 @@
     logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.
   }
   \item{\dots}{
-    Additional arguments unused at present.
+    By default, when \code{pfilter} pfilter is run on a \code{pfilterd.pomp} object, the settings in the original call are re-used.
+    This default behavior can be overridden by changing the settings (see Examples below).
   }
 }
 \value{
@@ -119,7 +116,15 @@
   That is \code{coef(pfilter(obj,params=theta))==theta} if \code{theta} is a named vector of parameters.
 }
 \examples{
-## See the vignettes for examples.
+pompExample(gompertz)
+pf <- pfilter(gompertz,Np=1000)	## use 1000 particles
+logLik(pf)
+cond.logLik(pf)			## conditional log-likelihoods
+eff.sample.size(pf)
+logLik(pfilter(gompertz))      	## run it again with 1000 particles
+logLik(pfilter(gompertz,Np=2000))    	## run it with 2000 particles and get the filtering means
+
+## See the vignettes for more examples.
 }
 \references{
   M. S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp.
