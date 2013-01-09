@@ -185,7 +185,7 @@ mif.internal <- function (object, Nmif,
   if (option=="mif2")
     cooling.fraction <- as.numeric(cooling.fraction)
   if (missing(cooling.fraction)&&(option!="mif2"))	##Default value for the slot cooling.fraction
-    cooling.fraction <- NA
+    cooling.fraction <- as.numeric(NA)
   
   theta <- start
   

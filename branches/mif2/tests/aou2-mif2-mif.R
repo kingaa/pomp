@@ -2,8 +2,9 @@ library(pomp)
 
 data(ou2)
 
+set.seed(1285370209L)
 
-pdf(file="ou2-mif2-mif.pdf")
+pdf(file="aou2-mif2-mif.pdf")
 
 p.truth <- coef(ou2)
 guess2 <- guess1 <- p.truth

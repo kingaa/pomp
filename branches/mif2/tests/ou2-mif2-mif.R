@@ -2,6 +2,7 @@ library(pomp)
 
 data(ou2)
 
+set.seed(409003325L)
 
 pdf(file="ou2-mif2-mif.pdf")
 
@@ -46,15 +47,3 @@ mif2 <- mif(ou2,Nmif=100,start=guess1,
 compare.mif(list(mif1,mif2))
 
 dev.off()
-
-
-
-
-
-
-
-
-
-
-
-
