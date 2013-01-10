@@ -12,7 +12,7 @@
 }
 \usage{
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
-    max.fail = 0, pred.mean = FALSE, pred.var = FALSE,
+    max.fail = Inf, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, save.states = FALSE,
     save.params = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
@@ -46,6 +46,7 @@
   \item{max.fail}{
     integer; the maximum number of filtering failures allowed.
     If the number of filtering failures exceeds this number, execution will terminate with an error.
+    By default, \code{max.fail} is set to infinity, so no error can be triggered.
   }
   \item{pred.mean}{
     logical; if \code{TRUE}, the prediction means are calculated for the state variables and parameters.

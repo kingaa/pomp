@@ -356,9 +356,10 @@ setMethod(
                     Np, ic.lag, var.factor, cooling.factor,
                     cooling.fraction,
                     method = c("mif","unweighted","fp","mif2"),
-                    tol = 1e-17, max.fail = 0,
+                    tol = 1e-17, max.fail = Inf,
                     verbose = getOption("verbose"),
-                    transform = FALSE, ...) {
+                    transform = FALSE,
+                    ...) {
             
             transform <- as.logical(transform)
             method <- match.arg(method)
@@ -418,9 +419,7 @@ setMethod(
 setMethod(
           "mif",
           signature=signature(object="pfilterd.pomp"),
-          function (object, Nmif = 1,
-                    Np, tol, max.fail = 0,
-                    verbose = getOption("verbose"),
+          function (object, Nmif = 1, Np, tol,
                     ...) {
             
             if (missing(Np)) Np <- object@Np
@@ -431,8 +430,6 @@ setMethod(
                 Nmif=Nmif,
                 Np=Np,
                 tol=tol,
-                max.fail=max.fail,
-                verbose=verbose,
                 ...
                 )
           }
@@ -448,9 +445,9 @@ setMethod(
                     Np, ic.lag, var.factor, cooling.factor,
                     cooling.fraction,
                     method,
-                    tol, max.fail = 0,
-                    verbose = getOption("verbose"),
-                    transform, ...) {
+                    tol,
+                    transform,
+                    ...) {
             
             if (missing(Nmif)) Nmif <- object@Nmif
             if (missing(start)) start <- coef(object)
@@ -484,8 +481,6 @@ setMethod(
                 ic.lag=ic.lag,
                 method=method,
                 tol=tol,
-                max.fail=max.fail,
-                verbose=verbose,
                 transform=transform,
                 ...
                 )
@@ -496,8 +491,6 @@ setMethod(
           'continue',
           signature=signature(object='mif'),
           function (object, Nmif = 1,
-                    max.fail = 0,
-                    verbose = getOption("verbose"),
                     ...) {
             
             ndone <- object@Nmif
@@ -505,8 +498,6 @@ setMethod(
             obj <- mif(
                        object=object,
                        Nmif=Nmif,
-                       max.fail=max.fail,
-                       verbose=verbose,
                        .ndone=ndone,
                        paramMatrix=object@paramMatrix,
                        ...

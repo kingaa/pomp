@@ -2,6 +2,10 @@ NEWS
 0.44-1
      o	New 'mif2' option for 'mif'.
 
+     o	The default behavior for 'mif' and 'pfilter' with respect to filtering failures has been changed.
+     	Before, the default behavior has been to stop with an error on the first filtering failure ('max.fail=0').
+	Now, the default is 'max.fail=Inf', i.e., an error is never triggered.
+
      o	Remove all data()-loadable pomp objects.
 	To load the prebuilt example pomp objects from previous versions, use the new 'pompExample' function.
 	E.g., instead of 'data(euler.sir)', do 'pompExample("euler.sir")'.

@@ -45,7 +45,7 @@ pfilter.internal <- function (object, params, Np,
 
   mif2 <- as.logical(.mif2)
   transform <- as.logical(.transform)
-
+  
   if (missing(seed)) seed <- NULL
   if (!is.null(seed)) {
     if (!exists(".Random.seed",where=.GlobalEnv)) { # need to initialize the RNG
@@ -345,7 +345,7 @@ setMethod(
           signature=signature(object="pomp"),
           function (object, params, Np,
                     tol = 1e-17,
-                    max.fail = 0,
+                    max.fail = Inf,
                     pred.mean = FALSE,
                     pred.var = FALSE,
                     filter.mean = FALSE,
