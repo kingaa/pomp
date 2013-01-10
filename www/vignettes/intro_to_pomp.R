@@ -94,7 +94,7 @@ theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1,X.0=1)
 ###################################################
 ### code chunk number 8: gompertz-get-data
 ###################################################
-data(gompertz)
+pompExample(gompertz)
 dat <- as.data.frame(gompertz)
 gompertz <- pomp(
                  data=dat[c("time","Y")],
@@ -359,7 +359,7 @@ identical(coef(gompertz),coef(g2))
 ###################################################
 ### code chunk number 37: intro_to_pomp.Rnw:608-611
 ###################################################
-data(gompertz)
+pompExample(gompertz)
 theta <- coef(gompertz)
 theta.true <- theta
 
@@ -630,7 +630,7 @@ ricker <- simulate(ricker,seed=73691676L)
 ###################################################
 ### code chunk number 52: get-ricker
 ###################################################
-data(ricker)
+pompExample(ricker)
 
 
 ###################################################
@@ -841,7 +841,7 @@ print(res,digits=3)
 ###################################################
 ### code chunk number 65: first-nlf (eval = FALSE)
 ###################################################
-## data(gompertz)
+## pompExample(gompertz)
 ## out <- nlf(
 ##            gompertz,
 ##            start=c(r=1,K=2,sigma=0.5,tau=0.5,X.0=1),
@@ -1314,7 +1314,7 @@ colnames(pars) <- c("r","K")
 ### code chunk number 87: bsmc-example-flat-prior-1
 ###################################################
 require(pomp)
-data(ricker)
+pompExample(ricker)
 
 
 ###################################################
@@ -1342,7 +1342,7 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 require(pomp)
-data(ricker)
+pompExample(ricker)
 set.seed(136872209L)
 Np <- 10000
 prior1 <- parmat(coef(ricker),nrep=Np)

@@ -90,12 +90,12 @@ $\sigma$ is a lower-triangular matrix such that $\sigma\sigma^T$ is the variance
 We'll assume that each component of $X$ is measured independently and with the same error, $\tau$, so that the variance-covariance matrix of $Y_{t}\vert X_{t}$ has $\tau^2$ on the diagonal and zeros elsewhere.
 
 An implementation of this model is included in the package as a \code{pomp} object;
-load it by executing \code{data(ou2)}.
+load it by executing \code{pompExample(ou2)}.
 
 \subsection{An unvectorized implementation using \R\ code only}
 Before we set about vectorizing the codes, let's have a look at what a plug-in based implementation written entirely in \R\ might look like.
 <<plugin-R-code,echo=T,eval=T>>=
-data(ou2)
+pompExample(ou2)
 ou2.dat <- as.data.frame(ou2)
 
 pomp( 
@@ -488,7 +488,7 @@ In this section, each of the methods that make up this interface will be introdu
 The \code{init.state} method is called to initialize the state (unobserved) process.
 It takes a vector or matrix of parameters and returns a matrix of initial states.
 <<>>=
-data(ou2)
+pompExample(ou2)
 true.p <- coef(ou2)
 x0 <- init.state(ou2)
 x0
@@ -540,10 +540,10 @@ All of these are to be preferred to direct access to the slots of the \code{pomp
 
 There are a number of example \code{pomp} objects included with the package.
 These can be found by running
-<<all-data-loadable,eval=F>>=
-data(package="pomp")
+<<all-examples,eval=F>>=
+pompExample()
 @ 
-The \R\ scripts that generated these are included in the \code{data-R} directory of the installed package.
+The \R\ scripts that generated these are included in the \code{examples} directory of the installed package.
 The majority of these use compiled code, which can be found in the package source.
 
 \section{Pomp Builder}

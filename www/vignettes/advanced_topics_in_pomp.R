@@ -13,7 +13,7 @@
 ###################################################
 ### code chunk number 2: plugin-R-code
 ###################################################
-data(ou2)
+pompExample(ou2)
 ou2.dat <- as.data.frame(ou2)
 
 pomp( 
@@ -411,7 +411,7 @@ traj <- trajectory(sir,hmax=1/52)
 ###################################################
 ### code chunk number 24: advanced_topics_in_pomp.Rnw:490-497
 ###################################################
-data(ou2)
+pompExample(ou2)
 true.p <- coef(ou2)
 x0 <- init.state(ou2)
 x0
@@ -454,9 +454,9 @@ fm[,36:40]
 
 
 ###################################################
-### code chunk number 29: all-data-loadable (eval = FALSE)
+### code chunk number 29: all-examples (eval = FALSE)
 ###################################################
-## data(package="pomp")
+## pompExample()
 
 
 ###################################################

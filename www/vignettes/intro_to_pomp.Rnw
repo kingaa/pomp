@@ -306,7 +306,7 @@ Now we can simulate the model:
 gompertz <- simulate(gompertz,params=theta)
 @ 
 <<gompertz-get-data,eval=T,echo=F>>=
-data(gompertz)
+pompExample(gompertz)
 dat <- as.data.frame(gompertz)
 gompertz <- pomp(
                  data=dat[c("time","Y")],
@@ -574,7 +574,7 @@ coef(g2,transform=TRUE) <- theta
 identical(coef(gompertz),coef(g2))
 @ 
 
-A \code{pomp} object corresponding to the one just created (but with the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} bits coded in C for speed) can be loaded by executing \verb+data(gompertz)+.
+A \code{pomp} object corresponding to the one just created (but with the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} bits coded in C for speed) can be loaded by executing \verb+pompExample(gompertz)+.
 For your convenience, codes creating this \code{pomp} object are included with the package.
 To view them, run the demo
 <<eval=F>>=
@@ -606,7 +606,7 @@ See the documentation (\verb+?mif+) for details.
 Let's use iterated filtering to obtain an approximate MLE for the data in \code{gompertz}.
 We'll initialize the algorithm at several starting points around \code{theta.true} and just estimate the parameters $r$, $\tau$, and $\sigma$:
 <<echo=F>>=
-data(gompertz)
+pompExample(gompertz)
 theta <- coef(gompertz)
 theta.true <- theta
 @ 
@@ -872,7 +872,7 @@ A pre-built \code{pomp} object implementing this model is included with the pack
 Its \code{rprocess}, \code{rmeasure}, and \code{dmeasure} components are written in C and are thus a bit faster than the \R\ implementation above.
 Do 
 <<get-ricker,echo=T,eval=T>>=
-data(ricker)
+pompExample(ricker)
 @ 
 to load this \code{pomp} object.
 
@@ -1060,7 +1060,7 @@ The intermediate statistical model in \code{nlf} is a multivariate generalized a
 As a simple example we can use \code{nlf} to estimate the parameters \code{K} and \code{r} of the Gompertz model.  
 An example of a minimal call, accepting the defaults for all optional arguments, is 
 <<first-nlf,eval=F>>=
-data(gompertz)
+pompExample(gompertz)
 out <- nlf(
            gompertz,
            start=c(r=1,K=2,sigma=0.5,tau=0.5,X.0=1),
@@ -1410,7 +1410,7 @@ First, we draw a sample from our prior distribution.
 Here, we'll use uniform priors on two model parameters ($\log{r}$ and $\sigma$), leaving the others fixed at their true values.
 <<bsmc-example-flat-prior-1,echo=F,eval=T>>=
 require(pomp)
-data(ricker)
+pompExample(ricker)
 @ 
 We'll use 10,000 particles, so we'll need that many samples from the prior distribution.
 <<bsmc-example-flat-prior-2,eval=F>>=
