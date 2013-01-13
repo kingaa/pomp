@@ -1,19 +1,21 @@
 require(pompExamples)
 
-data(pertussis.sim)
+all <- c("SEIR.small","SEIR.big","SEIRS.small","SEIRS.big","SEIRR.small","SEIRR.big","full.small","full.big")
 
-names(pertussis.sim)
-x <- lapply(pertussis.sim,as.data.frame)
+sapply(all,function(n)eval(bquote(pertussis.sim(.(n))))) -> pt
+
+names(pt)
+x <- lapply(pt,as.data.frame)
 
 print(lapply(x,tail))
 
-x <- simulate(pertussis.sim$full.big,seed=395885L,as.data.frame=TRUE)
+x <- simulate(pertussis.sim(full.big),seed=395885L,as.data.frame=TRUE)
 tail(x)
 
-y <- trajectory(pertussis.sim$SEIRS.small,as.data.frame=TRUE)
+y <- trajectory(pertussis.sim(SEIRS.small),as.data.frame=TRUE)
 tail(y)
 
-system.time(pf <- pfilter(pertussis.sim$full.small,seed=3445886L,Np=1000))
+system.time(pf <- pfilter(pertussis.sim(full.small),seed=3445886L,Np=1000))
 logLik(pf)
 
 pttest <- function (po, digits = 15) {
@@ -23,7 +25,7 @@ pttest <- function (po, digits = 15) {
             )
 }
 
-stopifnot(all(sapply(pertussis.sim,pttest)))
+stopifnot(all(sapply(pt,pttest)))
 
 pttest <- function (po, digits = 15) {
   identical(
@@ -32,5 +34,4 @@ pttest <- function (po, digits = 15) {
             )
 }
 
-stopifnot(all(sapply(pertussis.sim,pttest)))
-
+stopifnot(all(sapply(pt,pttest)))

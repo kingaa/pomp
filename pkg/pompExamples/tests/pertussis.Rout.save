@@ -1,5 +1,5 @@
 
-R version 2.15.0 (2012-03-30)
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
 Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-unknown-linux-gnu (64-bit)
@@ -23,12 +23,14 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
 > 
-> data(pertussis.sim)
+> all <- c("SEIR.small","SEIR.big","SEIRS.small","SEIRS.big","SEIRR.small","SEIRR.big","full.small","full.big")
 > 
-> names(pertussis.sim)
+> sapply(all,function(n)eval(bquote(pertussis.sim(.(n))))) -> pt
+> 
+> names(pt)
 [1] "SEIR.small"  "SEIR.big"    "SEIRS.small" "SEIRS.big"   "SEIRR.small"
 [6] "SEIRR.big"   "full.small"  "full.big"   
-> x <- lapply(pertussis.sim,as.data.frame)
+> x <- lapply(pt,as.data.frame)
 > 
 > print(lapply(x,tail))
 $SEIR.small
@@ -111,7 +113,7 @@ $full.big
 1041 5002948
 
 > 
-> x <- simulate(pertussis.sim$full.big,seed=395885L,as.data.frame=TRUE)
+> x <- simulate(pertussis.sim(full.big),seed=395885L,as.data.frame=TRUE)
 > tail(x)
          time reports      S    E    I      R1      R2 cases          W err
 1036 19.90385     432 662434 5677 9458 3201351 1118149  4831 -0.4801610   7
@@ -128,7 +130,7 @@ $full.big
 1040 4997185   1
 1041 4997213   1
 > 
-> y <- trajectory(pertussis.sim$SEIRS.small,as.data.frame=TRUE)
+> y <- trajectory(pertussis.sim(SEIRS.small),as.data.frame=TRUE)
 > tail(y)
             S        E         I       R1       R2    cases W err simpop
 1036 81409.73 558.4599  942.3100 227353.0 189736.5 487.2963 0   0  5e+05
@@ -145,9 +147,9 @@ $full.big
 1040 19.98077    1
 1041 20.00000    1
 > 
-> system.time(pf <- pfilter(pertussis.sim$full.small,seed=3445886L,Np=1000))
+> system.time(pf <- pfilter(pertussis.sim(full.small),seed=3445886L,Np=1000))
    user  system elapsed 
- 22.637   0.004  22.720 
+ 65.132   0.216  65.495 
 > logLik(pf)
 [1] -3829.33
 > 
@@ -158,7 +160,7 @@ $full.big
 +             )
 + }
 > 
-> stopifnot(all(sapply(pertussis.sim,pttest)))
+> stopifnot(all(sapply(pt,pttest)))
 > 
 > pttest <- function (po, digits = 15) {
 +   identical(
@@ -167,9 +169,8 @@ $full.big
 +             )
 + }
 > 
-> stopifnot(all(sapply(pertussis.sim,pttest)))
-> 
+> stopifnot(all(sapply(pt,pttest)))
 > 
 > proc.time()
    user  system elapsed 
- 23.089   0.020  23.200 
+ 66.960   0.264  67.348 

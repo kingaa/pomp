@@ -1,21 +1,24 @@
 \name{pertussis}
 \alias{pertussis.sim}
-\docType{data}
 \title{Pertussis models with simulated data.}
 \description{
-  \code{pertussis.sim} is a list of \code{pomp} objects:
-  each encodes one of the pertussis models and contains simulated data.
+  \code{pertussis.sim} constructs a \code{pomp} object containing one of the pertussis models and simulated incidence data.
 }
 \usage{
-data(pertussis.sim)
+pertussis.sim(which)
+}
+\arguments{
+  \item{which}{
+    dataset to load given as a name or literal character string.
+    Evoked without an argument, \code{pertussis.sim} lists all available datasets.
+  }
 }
 \examples{
-data(pertussis.sim)
-names(pertussis.sim)
-
-plot(pertussis.sim[["SEIR.small"]])
-plot(pertussis.sim[["SEIRS.big"]])
-plot(pertussis.sim[["SEIRR.small"]])
+pertussis.sim()
+plot(pertussis.sim(SEIR.small))
+plot(pertussis.sim(SEIRS.big))
+plot(pertussis.sim(SEIRR.small))
+plot(pertussis.sim(full.big))
 }
-\seealso{the vignettes}
+\seealso{the dQuote{pertussis-model} vignette}
 \keyword{datasets}

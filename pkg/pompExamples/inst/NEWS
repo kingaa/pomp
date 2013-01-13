@@ -1,4 +1,8 @@
 NEWS
+0.22-1
+     o	The pomp objects are no longer accessed using 'data'.
+     	Instead, 'pertussis.sim' and 'budmoth.sim' are functions that return the pomp objects.
+
 0.21-1
      o	Changed t0 for the budmoth model from 0 to -1.
      	The data are different as well.
