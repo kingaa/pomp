@@ -22,3 +22,6 @@ pompExample(example)
   pompExample(euler.sir)
   pompExample("gompertz")
 }
+\seealso{
+  \code{\link{blowflies}}, \code{\link{dacca}}, \code{\link{gompertz}}, \code{\link{ou2}}, \code{\link{ricker}}, \code{\link{rw2}}, \code{\link{euler.sir}}, \code{\link{gillespie.sir}}, \code{\link{bbs}}, \code{\link{verhulst}}
+}
