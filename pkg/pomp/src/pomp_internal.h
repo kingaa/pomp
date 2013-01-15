@@ -10,6 +10,7 @@
 
 #include "pomp.h"
 
+# define MATCHNAMES(X,N) (matchnames(GET_NAMES(X),(N)))
 # define MATCHROWNAMES(X,N) (matchnames(GET_ROWNAMES(GET_DIMNAMES(X)),(N)))
 # define MATCHCOLNAMES(X,N) (matchnames(GET_COLNAMES(GET_DIMNAMES(X)),(N)))
 # define MATCH_CHAR_TO_ROWNAMES(X,N,A) (match_char_to_names(GET_ROWNAMES(GET_DIMNAMES(X)),(N),(A)))

@@ -298,10 +298,7 @@ mif.internal <- function (object, Nmif,
     switch(
            method,
            mif={              # original Ionides et al. (2006) average
-             v <- pfp@pred.var[pars,,drop=FALSE]
-             v1 <- cool.sched$gamma * (1 + var.factor^2) * sigma[pars]^2
-             theta.hat <- cbind(theta[pars],pfp@filter.mean[pars,,drop=FALSE])
-             theta[pars] <- theta[pars] + colSums(apply(theta.hat,1,diff)/t(v))*v1
+             theta <- .Call(mif_update,pfp,theta,cool.sched$gamma,var.factor,sigma,pars)
            },
            unweighted={                 # unweighted average
              theta[pars] <- rowMeans(pfp@filter.mean[pars,,drop=FALSE])
