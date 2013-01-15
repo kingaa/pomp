@@ -2,11 +2,6 @@ library(pomp)
 
 pompExample(ou2)
 
-
-set.seed(1285370209L)
-
-set.seed(409003325L)
-
 pdf(file="ou2-mif2.pdf")
 
 p.truth <- coef(ou2)

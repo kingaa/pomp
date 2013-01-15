@@ -25,11 +25,6 @@ Loading required package: deSolve
 newly created pomp objects:
  ou2 
 > 
-> 
-> set.seed(1285370209L)
-> 
-> set.seed(409003325L)
-> 
 > pdf(file="ou2-mif2.pdf")
 > 
 > p.truth <- coef(ou2)
@@ -53,7 +48,7 @@ newly created pomp objects:
 +              tol=1e-8
 +              )
 Warning message:
-'cooling.factor' ignored for method = 'mif2' 
+'cooling.factor' ignored for method='mif2' 
 > 
 > mif2a <- mif(ou2,Nmif=100,start=guess1,
 +              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
@@ -71,7 +66,7 @@ Warning message:
 +              tol=1e-8
 +              )  
 Warning message:
-'cooling.fraction' ignored for method != 'mif2' 
+'cooling.fraction' ignored for method!='mif2' 
 > 
 > compare.mif(list(mif1a,mif2a))
 > 
@@ -90,7 +85,7 @@ Warning message:
 +              method="mif2"
 +              )
 Warning message:
-'cooling.factor' ignored for method = 'mif2' 
+'cooling.factor' ignored for method='mif2' 
 > mif1b <- continue(mif1b,Nmif=50)
 > 
 > mif2b <- mif(ou2,Nmif=50,start=guess1,
@@ -120,4 +115,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 42.378   0.072  42.737 
+ 42.274   0.064  42.654 

@@ -170,6 +170,8 @@ mif.internal <- function (object, Nmif,
     if (!missing(cooling.factor) && !(is.na(cooling.factor)))
       warning(sQuote("cooling.factor")," ignored for method = ",sQuote("mif2"),call.=FALSE)
     cooling.factor <- as.numeric(NA)
+    if (Np[1]!=Np[ntimes+1])
+      stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"))
   } else {
     if (missing(cooling.factor) || is.na(cooling.factor))
       stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
@@ -228,7 +230,7 @@ mif.internal <- function (object, Nmif,
   obj <- as(object,"pomp")
   
   if (Nmif>0) {
-    tmp.mif <- new("mif",object,particles=particles,Np=Np)
+    tmp.mif <- new("mif",object,particles=particles,Np=Np[1])
   } else {
     pfp <- obj
   }
@@ -272,6 +274,7 @@ mif.internal <- function (object, Nmif,
                pfilter.internal(
                                 object=obj,
                                 params=P, 
+                                Np=Np,
                                 tol=tol,
                                 max.fail=max.fail,
                                 pred.mean=(n==Nmif),
