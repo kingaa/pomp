@@ -105,11 +105,14 @@ mif.internal <- function (object, Nmif,
   if (!all(rw.names%in%c(pars,ivps))) {
     extra.rws <- rw.names[!(rw.names%in%c(pars,ivps))]
     warning(
-            "mif warning: the variable(s) ",
-            paste(extra.rws,collapse=", "),
-            " have positive random-walk SDs specified, but are included in neither ",
+            ngettext(length(extra.rws),"mif warning: the variable ",
+                     "mif warning: the variables "),
+            paste(sQuote(extra.rws),collapse=", "),
+            ngettext(length(extra.rws)," has positive random-walk SD specified, but is included in neither ",
+                     " have positive random-walk SDs specified, but are included in neither "),
             sQuote("pars")," nor ",sQuote("ivps"),
-            ". These random walk SDs are ignored.",
+            ngettext(length(extra.rws),". This random walk SD will be ignored.",
+                     ". These random walk SDs will be ignored."),
             call.=FALSE
             )
   }
@@ -220,7 +223,7 @@ mif.internal <- function (object, Nmif,
          sQuote("mif")," cannot estimate non-finite parameters.\n",
          "The following ",if (transform) "transformed ", "parameters are non-finite: ",
          paste(
-               c(pars,ivps)[!is.finite(theta[c(pars,ivps)])],
+               sQuote(c(pars,ivps)[!is.finite(theta[c(pars,ivps)])]),
                collapse=","
                ),
          call.=FALSE

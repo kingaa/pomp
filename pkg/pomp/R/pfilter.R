@@ -318,6 +318,11 @@ pfilter.internal <- function (object, params, Np,
     seed <- save.seed
   }
 
+  if (nfail>0)
+    warning(sprintf(ngettext(nfail,msg1="%d filtering failure occurred in ",
+                             msg2="%d filtering failures occurred in "),nfail),
+            sQuote("pfilter"),call.=FALSE)
+
   new(
       "pfilterd.pomp",
       object,
