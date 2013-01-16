@@ -170,7 +170,7 @@ Error : mif error: 'Nmif' must be a positive integer
 +         )
 +     )
 Error : 'mif' cannot estimate non-finite parameters.
-The following parameters are non-finite: alpha.4
+The following parameters are non-finite: 'alpha.4'
 > 
 > try(
 +     mif(
@@ -183,7 +183,7 @@ The following parameters are non-finite: alpha.4
 +         )
 +     )
 Error : 'mif' cannot estimate non-finite parameters.
-The following parameters are non-finite: x2.0
+The following parameters are non-finite: 'x2.0'
 > 
 > fit <- mif(
 +            ou2,
@@ -228,7 +228,7 @@ pfilter timestep 100 of 100 finished
 > fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.1))
 > fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.2"))
 Warning message:
-mif warning: the variable(s) alpha.3, x2.0 have positive random-walk SDs specified, but are included in neither 'pars' nor 'ivps'. These random walk SDs are ignored. 
+mif warning: the variables 'alpha.3', 'x2.0' have positive random-walk SDs specified, but are included in neither 'pars' nor 'ivps'. These random walk SDs will be ignored. 
 > s <- coef(fit)
 > s[2] <- 0.01
 > fit <- mif(fit,Nmif=3,start=s)
@@ -236,7 +236,7 @@ mif warning: the variable(s) alpha.3, x2.0 have positive random-walk SDs specifi
 > fit <- continue(fit,Nmif=2,Np=2000)
 > fit <- continue(fit,ivps=c("x1.0"),rw.sd=c(alpha.2=0.1,alpha.3=0.1,x1.0=5,x2.0=5),Nmif=2)
 Warning message:
-mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but are included in neither 'pars' nor 'ivps'. These random walk SDs are ignored. 
+mif warning: the variable 'x2.0' has positive random-walk SD specified, but is included in neither 'pars' nor 'ivps'. This random walk SD will be ignored. 
 > ff <- pfilter(fit)
 > fit <- mif(
 +            ff,
@@ -268,4 +268,4 @@ mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but a
 > 
 > proc.time()
    user  system elapsed 
- 13.544   0.040  13.767 
+ 12.004   0.060  12.250 

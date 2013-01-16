@@ -116,7 +116,9 @@ pfilter timestep 15 of 19 finished
 filtering failure at time t = 16
 filtering failure at time t = 17
 filtering failure at time t = 18
+Warning message:
+4 filtering failures occurred in 'pfilter' 
 > 
 > proc.time()
    user  system elapsed 
-  0.560   0.052   0.622 
+  0.460   0.056   0.534 

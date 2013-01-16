@@ -28,6 +28,7 @@ newly created pomp objects:
 > pdf(file="skeleton.pdf")
 > pdf.options(useDingbats=FALSE)
 > 
+> ricker <- simulate(ricker,seed=366829807L)
 > x <- states(ricker)
 > p <- parmat(coef(ricker),3)
 > p["r",] <- exp(c(1,2,4))
@@ -46,6 +47,7 @@ newly created pomp objects:
 > pompExample(euler.sir)
 newly created pomp objects:
  euler.sir 
+> euler.sir <- simulate(euler.sir,seed=266045243L)
 > x <- states(euler.sir)
 > p <- parmat(coef(euler.sir),nrep=3)
 > p["beta2",2:3] <- exp(c(3,5))  ## try different values of one of the seasonality parameters
@@ -94,4 +96,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.680   0.084   0.940 
+  0.608   0.056   0.788 

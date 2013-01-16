@@ -60,7 +60,7 @@ newly created pomp objects:
 +               )
 +     )
 Error : 'mif' cannot estimate non-finite parameters.
-The following transformed parameters are non-finite: r
+The following transformed parameters are non-finite: 'r'
 > 
 > set.seed(93848585L)
 > mf <- mif(
@@ -133,4 +133,4 @@ The following transformed parameters are non-finite: r
 > 
 > proc.time()
    user  system elapsed 
-  1.828   0.040   1.895 
+  1.512   0.036   1.573 
