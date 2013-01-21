@@ -1,4 +1,0 @@
-%\VignetteIndexEntry{Advanced topics in pomp}
-\documentclass{article}
-\begin{document}
-\end{document}
