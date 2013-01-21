@@ -1,0 +1,103 @@
+
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
+Copyright (C) 2012 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> set.seed(398585L)
+> pompExample(ou2)
+newly created pomp objects:
+ ou2 
+> 
+> time(ou2) <- 1:10
+> 
+> Np <- 10000
+> 
+> prior.bounds <- rbind(
++                       alpha.2=c(-0.55,-0.45),
++                       alpha.3=c(0.25,0.35)
++                       )
+> colnames(prior.bounds) <- c("lower","upper")
+> 
+> estnames <- rownames(prior.bounds)
+> 
+> prior <- matrix(data=coef(ou2),nrow=length(coef(ou2)),ncol=Np)
+> rownames(prior) <- names(coef(ou2))
+> for (n in estnames) {
++   prior[n,] <- runif(n=Np,min=prior.bounds[n,1],max=prior.bounds[n,2])
++ }
+> 
+> ##Run Liu & West particle filter
+> tic <- Sys.time()
+> smc <- bsmc(
++             ou2,
++             params=prior,
++             est=estnames,
++             ntries=5,
++             smooth=0.02,
++             lower=prior.bounds[estnames,"lower"],
++             upper=prior.bounds[estnames,"upper"]
++             )
+Warning message:
+In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
+  Walker's alias method used: results are different from R < 2.2.0
+> toc <- Sys.time()
+> 
+> prior <- smc$prior
+> post <- smc$post
+> 
+> print(etime <- toc-tic)
+Time difference of 3.497756 secs
+> 
+> print(
++       cbind(
++             prior.mean=apply(prior,1,mean),
++             posterior.mean=apply(post,1,mean),
++             truth=coef(ou2),
++             t(apply(post,1,quantile,c(0.025,0.5,0.975)))
++             )
++       )
+        prior.mean posterior.mean truth       2.5%        50%      97.5%
+alpha.1  0.8000000      0.8000000   0.8  0.8000000  0.8000000  0.8000000
+alpha.2 -0.4999287     -0.5105023  -0.5 -0.5402483 -0.4993459 -0.4536930
+alpha.3  0.2996065      0.3148637   0.3  0.2823821  0.3260754  0.3388949
+alpha.4  0.9000000      0.9000000   0.9  0.9000000  0.9000000  0.9000000
+sigma.1  3.0000000      3.0000000   3.0  3.0000000  3.0000000  3.0000000
+sigma.2 -0.5000000     -0.5000000  -0.5 -0.5000000 -0.5000000 -0.5000000
+sigma.3  2.0000000      2.0000000   2.0  2.0000000  2.0000000  2.0000000
+tau      1.0000000      1.0000000   1.0  1.0000000  1.0000000  1.0000000
+x1.0    -3.0000000     -3.0000000  -3.0 -3.0000000 -3.0000000 -3.0000000
+x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
+> 
+> print(min(smc$eff.sample.size))
+[1] 22.94863
+> print(smc$log.evidence)
+[1] 45.47584
+> 
+> smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=648651945L)
+> print(smc$eff.sample.size)
+ [1] 186.40437  36.29100  57.56951  29.30424 180.23722  34.63366 156.94264
+ [8]  24.49006 178.39269 125.05970
+> print(smc$log.evidence)
+[1] 37.68127
+> 
+> proc.time()
+   user  system elapsed 
+  5.452   0.080   5.564 
