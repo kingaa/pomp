@@ -64,7 +64,7 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 3.497756 secs
+Time difference of 2.994066 secs
 > 
 > print(
 +       cbind(
@@ -100,4 +100,4 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > proc.time()
    user  system elapsed 
-  5.452   0.080   5.564 
+  4.876   0.048   4.960 

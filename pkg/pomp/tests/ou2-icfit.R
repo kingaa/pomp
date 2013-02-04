@@ -20,7 +20,7 @@ fit <- mif(
              x1.0=1,x2.0=1
              ),
            Np=1000,
-           cooling.factor=1,
+           cooling.fraction=1,
            max.fail=10
            )
 
@@ -35,7 +35,7 @@ fit <- mif(
              x1.0=1,x2.0=1
              ),
            Np=1000,
-           cooling.factor=1,
+           cooling.fraction=1,
            max.fail=10
            )
 
@@ -50,7 +50,7 @@ fit <- mif(
              x1.0=1,x2.0=1
              ),
            Np=1000,
-           cooling.factor=1,
+           cooling.fraction=1,
            max.fail=10
            )
 

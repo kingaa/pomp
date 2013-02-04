@@ -16,6 +16,43 @@ default.pomp.particles.fun <- function (Np, center, sd, ...) {
          )
 }
 
+cooling.function <- function (type, perobs, fraction, ntimes) {
+  switch(
+         type,
+         geometric={
+           factor <- fraction^(1/50)
+           if (perobs) {
+             function (nt, m) {
+               alpha <- factor^(nt/ntimes+m-1)
+               list(alpha=alpha,gamma=alpha^2)
+             }
+           } else {
+             function (nt, m) {
+               alpha <- factor^(m-1)
+               list(alpha=alpha,gamma=alpha^2)
+             }
+           }
+         },
+         hyperbolic={
+           if (perobs) {
+             scal <- (50*ntimes*fraction-1)/(1-fraction)
+             function (nt, m) {
+               alpha <- (1+scal)/(scal+nt+ntimes*(m-1))
+               list(alpha=alpha,gamma=alpha^2)
+             }
+           } else {
+             scal <- (50*fraction-1)/(1-fraction)
+             function (nt, m) {
+               alpha <- (1+scal)/(scal+m-1)
+               list(alpha=alpha,gamma=alpha^2)
+             }
+
+           }
+         },
+         stop("unrecognized cooling schedule type ",sQuote(type))
+         )
+}
+
 mif.cooling <- function (factor, n) {   # default geometric cooling schedule
   alpha <- factor^(n-1)
   list(alpha=alpha,gamma=alpha^2)
@@ -23,8 +60,8 @@ mif.cooling <- function (factor, n) {   # default geometric cooling schedule
 
 mif2.cooling <- function (frac, nt, m, n) {   # cooling schedule for mif2
   ## frac is the fraction of cooling after 50 iterations
-  cooling.scalar <- (50*n*frac-1)/(1-frac)
-  alpha <- (1+cooling.scalar)/(cooling.scalar+nt+n*(m-1))
+  scal <- (50*n*frac-1)/(1-frac)
+  alpha <- (1+scal)/(scal+nt+n*(m-1))
   list(alpha=alpha)
 }
 
@@ -44,8 +81,8 @@ mif.internal <- function (object, Nmif,
                           start, pars, ivps,
                           particles,
                           rw.sd,
-                          Np, cooling.factor, var.factor, ic.lag,
-                          cooling.fraction, 
+                          Np, var.factor, ic.lag,
+                          cooling.type, cooling.fraction, cooling.factor, 
                           method,
                           tol, max.fail,
                           verbose, transform, .ndone = 0,
@@ -164,27 +201,38 @@ mif.internal <- function (object, Nmif,
             )
   }
   
-  if (method=="mif2") {
-    if (missing(cooling.fraction) || is.na(cooling.fraction))
-      stop("mif error: ",sQuote("cooling.fraction")," must be specified for method = ",sQuote("mif2"),call.=FALSE)
-    cooling.fraction <- as.numeric(cooling.fraction)
-    if ((length(cooling.fraction)!=1)||(cooling.fraction<0)||(cooling.fraction>1))
-      stop("mif error: ",sQuote("cooling.fraction")," must be a number between 0 and 1",call.=FALSE)
-    if (!missing(cooling.factor) && !(is.na(cooling.factor)))
-      warning(sQuote("cooling.factor")," ignored for method = ",sQuote("mif2"),call.=FALSE)
-    cooling.factor <- as.numeric(NA)
-    if (Np[1]!=Np[ntimes+1])
-      stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"))
-  } else {
-    if (missing(cooling.factor) || is.na(cooling.factor))
-      stop("mif error: ",sQuote("cooling.factor")," must be specified",call.=FALSE)
+  ## the following deals with the deprecated option 'cooling.factor'
+  if (!missing(cooling.factor)) {
+    warning(sQuote("cooling.factor")," is deprecated.\n",
+            "See ?mif for instructions on specifying the cooling schedule.",
+            call.=FALSE)
     cooling.factor <- as.numeric(cooling.factor)
     if ((length(cooling.factor)!=1)||(cooling.factor<0)||(cooling.factor>1))
       stop("mif error: ",sQuote("cooling.factor")," must be a number between 0 and 1",call.=FALSE)
-    if (!missing(cooling.fraction) && !(is.na(cooling.fraction)))
-      warning(sQuote("cooling.fraction")," ignored for method != ",sQuote("mif2"),call.=FALSE)
-    cooling.fraction <- as.numeric(NA)
+    if (missing(cooling.fraction)) {
+      cooling.fraction <- cooling.factor^50
+    } else {
+      warning("specification of ",sQuote("cooling.factor"),
+              " is overridden by that of ",sQuote("cooling.fraction"),
+              call.=FALSE)
+    }
   }
+
+  if (missing(cooling.fraction))
+    stop("mif error: ",sQuote("cooling.fraction")," must be specified",call.=FALSE)
+  cooling.fraction <- as.numeric(cooling.fraction)
+  if ((length(cooling.fraction)!=1)||(cooling.fraction<0)||(cooling.fraction>1))
+    stop("mif error: ",sQuote("cooling.fraction")," must be a number between 0 and 1",call.=FALSE)
+  
+  cooling <- cooling.function(
+                              type=cooling.type,
+                              perobs=(method=="mif2"),
+                              fraction=cooling.fraction,
+                              ntimes=ntimes
+                              )
+
+  if ((method=="mif2")&&(Np[1]!=Np[ntimes+1]))
+    stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"))
   
   if (missing(var.factor))
     stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
@@ -243,16 +291,7 @@ mif.internal <- function (object, Nmif,
   for (n in seq_len(Nmif)) { ## iterate the filtering
 
     ## get the intensity of artificial noise from the cooling schedule
-    cool.sched <- try(
-                      switch(
-                             method,
-                             mif2=mif2.cooling(frac=cooling.fraction,nt=1,m=.ndone+n,n=ntimes),
-                             mif.cooling(factor=cooling.factor,n=.ndone+n)
-                             ),
-                      silent=FALSE
-                      )
-    if (inherits(cool.sched,"try-error")) 
-      stop("mif error: cooling schedule error",call.=FALSE)
+    cool.sched <- cooling(nt=1,m=.ndone+n)
     sigma.n <- sigma*cool.sched$alpha
     
     ## initialize the parameter portions of the particles
@@ -283,7 +322,7 @@ mif.internal <- function (object, Nmif,
                                 pred.mean=(n==Nmif),
                                 pred.var=((method=="mif")||(n==Nmif)),
                                 filter.mean=TRUE,
-                                cooling.fraction=cooling.fraction,
+                                cooling=cooling,
                                 cooling.m=.ndone+n,
                                 .mif2=(method=="mif2"),
                                 .rw.sd=sigma.n[pars],
@@ -341,7 +380,7 @@ mif.internal <- function (object, Nmif,
       tol=tol,
       conv.rec=conv.rec,
       method=method,
-      cooling.factor=cooling.factor,
+      cooling.type=cooling.type,
       cooling.fraction=cooling.fraction,
       paramMatrix=if (method=="mif2") paramMatrix else array(data=numeric(0),dim=c(0,0))
       )
@@ -356,8 +395,9 @@ setMethod(
                     start,
                     pars, ivps = character(0),
                     particles, rw.sd,
-                    Np, ic.lag, var.factor, cooling.factor,
-                    cooling.fraction,
+                    Np, ic.lag, var.factor,
+                    cooling.type = c("geometric","hyperbolic"),
+                    cooling.fraction, cooling.factor,
                     method = c("mif","unweighted","fp","mif2"),
                     tol = 1e-17, max.fail = Inf,
                     verbose = getOption("verbose"),
@@ -380,6 +420,8 @@ setMethod(
               stop("mif error: ",sQuote("ic.lag")," must be specified if ",sQuote("ivps")," are",call.=FALSE)
             if (missing(var.factor))
               stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
+
+            cooling.type <- match.arg(cooling.type)
             
             if (missing(particles)) { # use default: normal distribution
               particles <- default.pomp.particles.fun
@@ -404,6 +446,7 @@ setMethod(
                          particles=particles,
                          rw.sd=rw.sd,
                          Np=Np,
+                         cooling.type=cooling.type,
                          cooling.factor=cooling.factor,
                          cooling.fraction=cooling.fraction,
                          var.factor=var.factor,
@@ -445,8 +488,8 @@ setMethod(
                     start,
                     pars, ivps,
                     particles, rw.sd,
-                    Np, ic.lag, var.factor, cooling.factor,
-                    cooling.fraction,
+                    Np, ic.lag, var.factor,
+                    cooling.type, cooling.fraction,
                     method,
                     tol,
                     transform,
@@ -460,7 +503,7 @@ setMethod(
             if (missing(rw.sd)) rw.sd <- object@random.walk.sd
             if (missing(ic.lag)) ic.lag <- object@ic.lag
             if (missing(var.factor)) var.factor <- object@var.factor
-            if (missing(cooling.factor)) cooling.factor <- object@cooling.factor
+            if (missing(cooling.type)) cooling.type <- object@cooling.type
             if (missing(cooling.fraction)) cooling.fraction <- object@cooling.fraction
             if (missing(method)) method <- object@method
             if (missing(transform)) transform <- object@transform
@@ -478,7 +521,7 @@ setMethod(
                 particles=particles,
                 rw.sd=rw.sd,
                 Np=Np,
-                cooling.factor=cooling.factor,
+                cooling.type=cooling.type,
                 cooling.fraction=cooling.fraction,
                 var.factor=var.factor,
                 ic.lag=ic.lag,

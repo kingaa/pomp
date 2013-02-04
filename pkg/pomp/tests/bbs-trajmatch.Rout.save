@@ -70,4 +70,4 @@ in 'coef<-' names of 'value' are being discarded
 > 
 > proc.time()
    user  system elapsed 
-  2.424   0.060   2.516 
+  2.176   0.032   2.241 

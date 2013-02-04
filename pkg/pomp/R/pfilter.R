@@ -38,7 +38,7 @@ setClass(
 pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
                               pred.mean, pred.var, filter.mean,
-                              cooling.fraction, cooling.m, .mif2 = FALSE,
+                              cooling, cooling.m, .mif2 = FALSE,
                               .rw.sd, seed, verbose,
                               save.states, save.params,
                               .transform) {
@@ -184,21 +184,10 @@ pfilter.internal <- function (object, params, Np,
   else
     filt.m <- array(data=numeric(0),dim=c(0,0))
 
-  if (mif2) {
-    if (missing(cooling.fraction))
-      stop("pfilter error: ",sQuote("cooling.fraction")," must be specified for method mif2",call.=FALSE)
-    cooling.fraction <- as.numeric(cooling.fraction)
-  }
-  
   for (nt in seq_len(ntimes)) {
     
     if (mif2) {	  
-      cool.sched <- try(
-                        mif2.cooling(frac=cooling.fraction,nt=nt,m=cooling.m,n=ntimes),
-                        silent=FALSE
-                        )
-      if (inherits(cool.sched,"try-error")) 
-        stop("pfilter error: cooling schedule error",call.=FALSE)
+      cool.sched <- cooling(nt=nt,m=cooling.m)
       sigma1 <- sigma*cool.sched$alpha
     } else {
       sigma1 <- sigma

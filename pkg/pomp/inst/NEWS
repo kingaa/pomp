@@ -6,6 +6,12 @@ NEWS
      	Before, the default behavior has been to stop with an error on the first filtering failure ('max.fail=0').
 	Now, the default is 'max.fail=Inf', i.e., an error is never triggered.
 
+     o	The implementation of MIF cooling schedules has been changed to make it more general.
+     	The cooling schedule is now specified by a 'type' and a 'fraction'.
+	Currently, supported 'cooling.type's include 'geometric' (the old behavior) and 'hyperbolic', i.e., a 1/(1+n) schedule.
+	The 'cooling.fraction' argument specifies the cooling at 50 iterations.
+	That is, if s is the intensity of the random-walk perturbation to parameters at the first iteration ('rw.sd'), then the intensity at iteration 50 is s*cooling.fraction.
+
      o	Remove all data()-loadable pomp objects.
 	To load the prebuilt example pomp objects from previous versions, use the new 'pompExample' function.
 	E.g., instead of 'data(euler.sir)', do 'pompExample("euler.sir")'.

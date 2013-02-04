@@ -50,4 +50,4 @@ newly created pomp objects:
 > 
 > proc.time()
    user  system elapsed 
-  0.756   0.080   0.851 
+  0.480   0.040   0.543 

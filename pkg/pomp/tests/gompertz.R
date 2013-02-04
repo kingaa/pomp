@@ -20,7 +20,8 @@ try(
               start=guess,
               Nmif=5,Np=1000,
               transform=TRUE,
-              ic.lag=1,var.factor=1,cooling.factor=0.99,
+              ic.lag=1,var.factor=1,
+              cooling.fraction=0.99^50,
               rw.sd=c(r=0.02,K=0.02)
               )
     )
@@ -30,7 +31,8 @@ mf <- mif(
           po,
           Nmif=5,Np=1000,
           transform=TRUE,
-          ic.lag=1,var.factor=1,cooling.factor=0.99,
+          ic.lag=1,var.factor=1,
+          cooling.fraction=0.99^50,
           rw.sd=c(r=0.02,K=0.02)
           )
 coef(mf,transform=TRUE)
