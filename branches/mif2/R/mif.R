@@ -25,7 +25,8 @@ mif2.cooling <- function (frac, nt, m, n) {   # cooling schedule for mif2
   ## frac is the fraction of cooling after 50 iterations
   cooling.scalar <- (50*n*frac-1)/(1-frac)
   alpha <- (1+cooling.scalar)/(cooling.scalar+nt+n*(m-1))
-  list(alpha=alpha)
+  
+  list(alpha=alpha,gamma=alpha^2)
 }
 
 powerlaw.cooling <- function (init = 1, delta = 0.1, eps = (1-delta)/2, n) {
@@ -172,7 +173,7 @@ mif.internal <- function (object, Nmif,
       stop("mif error: ",sQuote("cooling.fraction")," must be a number between 0 and 1",call.=FALSE)
     if (!missing(cooling.factor) && !(is.na(cooling.factor)))
       warning(sQuote("cooling.factor")," ignored for method = ",sQuote("mif2"),call.=FALSE)
-    cooling.factor <- as.numeric(NA)
+    cooling.factor <- as.numeric(cooling.factor)
     if (Np[1]!=Np[ntimes+1])
       stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"))
   } else {
@@ -183,7 +184,7 @@ mif.internal <- function (object, Nmif,
       stop("mif error: ",sQuote("cooling.factor")," must be a number between 0 and 1",call.=FALSE)
     if (!missing(cooling.fraction) && !(is.na(cooling.fraction)))
       warning(sQuote("cooling.fraction")," ignored for method != ",sQuote("mif2"),call.=FALSE)
-    cooling.fraction <- as.numeric(NA)
+    cooling.fraction <- as.numeric(cooling.fraction)
   }
   
   if (missing(var.factor))
@@ -247,6 +248,8 @@ mif.internal <- function (object, Nmif,
                       switch(
                              method,
                              mif2=mif2.cooling(frac=cooling.fraction,nt=1,m=.ndone+n,n=ntimes),
+                             mif4=mif2.cooling(frac=cooling.fraction,nt=round((.ndone+n)/2),m=.ndone+n,n=ntimes),
+                             mif3=mif.cooling(factor=cooling.factor,n=.ndone+n),
                              mif.cooling(factor=cooling.factor,n=.ndone+n)
                              ),
                       silent=FALSE
@@ -268,24 +271,24 @@ mif.internal <- function (object, Nmif,
     if (inherits(P,"try-error")) 
       stop("mif error: error in ",sQuote("particles"),call.=FALSE)
 
-    if ((method=="mif2") && ((n>1) || have.parmat)) {
+    if (((method=="mif2")||(method=="mif3")) && ((n>1) || have.parmat)) {
       ## use pre-existing particle matrix
       P[pars,] <- paramMatrix[pars,]
     }
 
     pfp <- try(
-               pfilter.internal(
+                pfilter.internal(
                                 object=obj,
                                 params=P, 
                                 Np=Np,
                                 tol=tol,
                                 max.fail=max.fail,
                                 pred.mean=(n==Nmif),
-                                pred.var=((method=="mif")||(n==Nmif)),
+                                pred.var=((method=="mif")||(method=="mif4")||(n==Nmif)),
                                 filter.mean=TRUE,
                                 cooling.fraction=cooling.fraction,
                                 cooling.m=.ndone+n,
-                                .mif2=(method=="mif2"),
+                                .mif2=((method=="mif2")||(method=="mif3")),
                                 .rw.sd=sigma.n[pars],
                                 .transform=transform,
                                 save.states=FALSE, 
@@ -303,6 +306,9 @@ mif.internal <- function (object, Nmif,
            mif={              # original Ionides et al. (2006) average
              theta <- .Call(mif_update,pfp,theta,cool.sched$gamma,var.factor,sigma,pars)
            },
+           mif4={              # original Ionides et al. (2006) average
+             theta <- .Call(mif_update,pfp,theta,cool.sched$gamma,var.factor,sigma,pars)
+           },
            unweighted={                 # unweighted average
              theta[pars] <- rowMeans(pfp@filter.mean[pars,,drop=FALSE])
            },
@@ -310,6 +316,10 @@ mif.internal <- function (object, Nmif,
              theta[pars] <- pfp@filter.mean[pars,ntimes,drop=FALSE]
            },
            mif2={                     # "efficient" iterated filtering
+             paramMatrix <- pfp@paramMatrix
+             theta[pars] <- rowMeans(paramMatrix[pars,,drop=FALSE])
+           },
+           mif3={                     # "efficient" iterated filtering
              paramMatrix <- pfp@paramMatrix
              theta[pars] <- rowMeans(paramMatrix[pars,,drop=FALSE])
            },
@@ -343,7 +353,7 @@ mif.internal <- function (object, Nmif,
       method=method,
       cooling.factor=cooling.factor,
       cooling.fraction=cooling.fraction,
-      paramMatrix=if (method=="mif2") paramMatrix else array(data=numeric(0),dim=c(0,0))
+      paramMatrix=if ((method=="mif2")||(method=="mif3")) paramMatrix else array(data=numeric(0),dim=c(0,0))
       )
 }
 
@@ -358,7 +368,7 @@ setMethod(
                     particles, rw.sd,
                     Np, ic.lag, var.factor, cooling.factor,
                     cooling.fraction,
-                    method = c("mif","unweighted","fp","mif2"),
+                    method = c("mif","unweighted","fp","mif2","mif3","mif4"),
                     tol = 1e-17, max.fail = Inf,
                     verbose = getOption("verbose"),
                     transform = FALSE,
