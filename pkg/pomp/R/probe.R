@@ -119,34 +119,34 @@ setMethod(
               ##plot a histogram for the simulations
               usr <- par("usr")
               on.exit(par(usr))
-              par(usr=c(usr[1:2],0,1.5))
-              h <- hist(x[-1],plot=FALSE)
+              par(usr=c(usr[c(1L,2L)],0,1.5))
+              h <- hist(x[-1L],plot=FALSE)
               breaks <- h$breaks
               nB <- length(breaks)
               y <- h$counts
               y <- y/max(y)
-              rect(breaks[-nB],0,breaks[-1],y,...)
+              rect(breaks[-nB],0,breaks[-1L],y,...)
               ##plot the data point
-              lines(c(x[1],x[1]),c(0,max(h$counts)),col="red")
+              lines(c(x[1L],x[1L]),c(0,max(h$counts)),col="red")
             }
 
             ##function for plotting above-diagonal panels
             above.diag.panel <- function (x, y, ...) {
               ##plot the simulations
-              points(x[-1],y[-1],...)
+              points(x[-1L],y[-1L],...)
               ##plot the data
               mMx <- c(min(x),max(x))
               mMy <- c(min(y),max(y))
-              lines(c(x[1],x[1]),mMy,col="red")
-              lines(mMx,c(y[1],y[1]),col="red")
+              lines(c(x[1L],x[1L]),mMy,col="red")
+              lines(mMx,c(y[1L],y[1L]),col="red")
             }
             
             ##function for plotting below-diagonal panels
             below.diag.panel <- function (x, y, ...) {
               mMx <- c(min(x),max(x))
               mMy <- c(min(y),max(y))
-              x <- x[-1]
-              y <- y[-1]
+              x <- x[-1L]
+              y <- y[-1L]
               correls <- round(cor(x,y),3)
               text(mean(mMx),mean(mMy),correls,cex=1)
             }
@@ -155,8 +155,8 @@ setMethod(
             nprobes <- length(x@datvals)
             nsim <- nrow(x@simvals)
             datsimvals <- array(dim=c(nsim+1,nprobes))
-            datsimvals[1,] <- x@datvals
-            datsimvals[-1,] <- x@simvals
+            datsimvals[1L,] <- x@datvals
+            datsimvals[-1L,] <- x@simvals
             
             labels <- paste("pb",seq_len(nprobes))
             if (!is.null(names(x@datvals)))

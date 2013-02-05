@@ -53,9 +53,9 @@ probe.cov <- function (
   method <- match.arg(method)
   lag <- as.integer(lag)
   transform <- match.fun(transform)
-  var1 <- vars[1]
+  var1 <- vars[1L]
   if (length(vars)>1)
-    var2 <- vars[2]
+    var2 <- vars[2L]
   else
     var2 <- var1
   function (y) {
@@ -85,9 +85,9 @@ probe.cor <- function (
   method <- match.arg(method)
   lag <- as.integer(lag)
   transform <- match.fun(transform)
-  var1 <- vars[1]
+  var1 <- vars[1L]
   if (length(vars)>1)
-    var2 <- vars[2]
+    var2 <- vars[2L]
   else
     var2 <- var1
   function (y) {
@@ -134,8 +134,8 @@ probe.ccf <- function (vars, lags, type = c("covariance", "correlation"), transf
   lags <- as.integer(lags)
   function (y) .Call(
                      probe_ccf,
-                     x=transform(y[vars[1],,drop=TRUE]),
-                     y=transform(y[vars[2],,drop=TRUE]),
+                     x=transform(y[vars[1L],,drop=TRUE]),
+                     y=transform(y[vars[2L],,drop=TRUE]),
                      lags=lags,
                      corr=corr
                      )

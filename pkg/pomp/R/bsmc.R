@@ -50,7 +50,7 @@ setMethod(
             if (missing(seed)) seed <- NULL
             if (!is.null(seed)) {
               if (!exists(".Random.seed",where=.GlobalEnv))
-                runif(1) ## need to initialize the RNG
+                runif(n=1L) ## need to initialize the RNG
               save.seed <- get(".Random.seed",pos=.GlobalEnv)
               set.seed(seed)
             }
@@ -374,17 +374,17 @@ bsmc.plot <- function (prior, post, pars, thin, ...) {
         panel=function (x, y, ...) { ## prior, posterior pairwise scatterplot
           op <- par(new=TRUE)
           on.exit(par(op))
-          i <- which(x[1]==all[1,])
-          j <- which(y[1]==all[1,])
+          i <- which(x[1L]==all[1L,])
+          j <- which(y[1L]==all[1L,])
           points(prior[p1,i],prior[p1,j],pch=20,col=rgb(0.85,0.85,0.85,0.1),xlim=range(all[,i]),ylim=range(all[,j]))
           points(post[p2,i],post[p2,j],pch=20,col=rgb(0,0,1,0.01))
         },
         diag.panel=function (x, ...) { ## marginal posterior histogram
-          i <- which(x[1]==all[1,])
+          i <- which(x[1L]==all[1L,])
           d1 <- density(prior[,i])
           d2 <- density(post[,i])
           usr <- par('usr')
-          op <- par(usr=c(usr[1:2],0,1.5*max(d1$y,d2$y)))
+          op <- par(usr=c(usr[c(1L,2L)],0,1.5*max(d1$y,d2$y)))
           on.exit(par(op))
           polygon(d1,col=rgb(0.85,0.85,0.85,0.5))
           polygon(d2,col=rgb(0,0,1,0.5))

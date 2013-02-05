@@ -20,7 +20,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
   else
     t0 <- as.numeric(t0)
   
-  if (t0>times[1])
+  if (t0>times[1L])
     stop("the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
   ntimes <- length(times)
   
@@ -76,10 +76,10 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
 
     if (inherits(X,'try-error'))
       stop("trajectory error: error in ODE integrator",call.=FALSE)
-    if (attr(X,'istate')[1]!=2)
+    if (attr(X,'istate')[1L]!=2)
       warning("abnormal exit from ODE integrator, istate = ",attr(X,'istate'),call.=FALSE)
 
-    x <- array(data=t(X[-1,-1]),dim=c(nvar,nrep,ntimes),dimnames=list(statenames,NULL,NULL))
+    x <- array(data=t(X[-1L,-1L]),dim=c(nvar,nrep,ntimes),dimnames=list(statenames,NULL,NULL))
     
     for (z in znames)
       for (r in seq_len(ncol(x)))
@@ -97,7 +97,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
                 function (k) {
                   nm <- rownames(x)
                   y <- x[,k,,drop=FALSE]
-                  dim(y) <- dim(y)[c(1,3)]
+                  dim(y) <- dim(y)[c(1L,3L)]
                   y <- as.data.frame(t(y))
                   names(y) <- nm
                   y$time <- times

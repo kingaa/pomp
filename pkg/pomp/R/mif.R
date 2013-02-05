@@ -231,7 +231,7 @@ mif.internal <- function (object, Nmif,
                               ntimes=ntimes
                               )
 
-  if ((method=="mif2")&&(Np[1]!=Np[ntimes+1]))
+  if ((method=="mif2")&&(Np[1L]!=Np[ntimes+1]))
     stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"))
   
   if (missing(var.factor))
@@ -264,7 +264,7 @@ mif.internal <- function (object, Nmif,
                        c('loglik','nfail',names(theta))
                        )
                      )
-  conv.rec[1,] <- c(NA,NA,theta)
+  conv.rec[1L,] <- c(NA,NA,theta)
   
   if (!all(is.finite(theta[c(pars,ivps)]))) {
     stop(
@@ -281,7 +281,7 @@ mif.internal <- function (object, Nmif,
   obj <- as(object,"pomp")
   
   if (Nmif>0) {
-    tmp.mif <- new("mif",object,particles=particles,Np=Np[1])
+    tmp.mif <- new("mif",object,particles=particles,Np=Np[1L])
   } else {
     pfp <- obj
   }
@@ -298,7 +298,7 @@ mif.internal <- function (object, Nmif,
     P <- try(
              particles(
                        tmp.mif,
-                       Np=Np[1],
+                       Np=Np[1L],
                        center=theta,
                        sd=sigma.n*var.factor
                        ),
@@ -549,10 +549,10 @@ setMethod(
                        ...
                        )
             
-            object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1,c('loglik','nfail')]
+            object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1L,c('loglik','nfail')]
             obj@conv.rec <- rbind(
                                   object@conv.rec,
-                                  obj@conv.rec[-1,colnames(object@conv.rec)]
+                                  obj@conv.rec[-1L,colnames(object@conv.rec)]
                                   )
             obj@Nmif <- as.integer(ndone+Nmif)
             

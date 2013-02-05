@@ -42,7 +42,7 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
   ## check t0
   if (!is.numeric(t0) || length(t0) > 1)
     stop("pomp error: the zero-time ",sQuote("t0")," must be a single number",call.=TRUE)
-  if (t0 > times[1])
+  if (t0 > times[1L])
     stop("pomp error: the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=TRUE)
   storage.mode(t0) <- 'double'
   
@@ -259,8 +259,8 @@ measform2pomp <- function (formulae) {
     if (!inherits(formulae[[k]],"formula"))
       stop("pomp error: ",sQuote("measurement.model")," takes formulae as arguments",call.=FALSE)
   }
-  obsnames <- unlist(lapply(formulae,function(x)x[[2]]))
-  distrib <- lapply(formulae,function(x)as.character(x[[3]][[1]]))
+  obsnames <- unlist(lapply(formulae,function(x)x[[2L]]))
+  distrib <- lapply(formulae,function(x)as.character(x[[3L]][[1L]]))
   ddistrib <- lapply(distrib,function(x)paste0("d",x))
   rdistrib <- lapply(distrib,function(x)paste0("r",x))
   for (k in seq_len(nobs)) {
@@ -277,7 +277,7 @@ measform2pomp <- function (formulae) {
     if (inherits(res,'try-error'))
       stop("pomp error: random deviate function ",rdistrib[[k]]," not found")
   }
-  pred.args <- lapply(formulae,function(x)as.list(x[[3]][-1]))
+  pred.args <- lapply(formulae,function(x)as.list(x[[3L]][-1L]))
   dcalls <- vector(mode='list',length=nobs)
   rcalls <- vector(mode='list',length=nobs)
   for (k in seq_len(nobs)) {

@@ -91,7 +91,7 @@ pfilter.internal <- function (object, params, Np,
     params <- matrix(
                      params,
                      nrow=length(params),
-                     ncol=Np[1],
+                     ncol=Np[1L],
                      dimnames=list(
                        names(params),
                        NULL
@@ -211,7 +211,7 @@ pfilter.internal <- function (object, params, Np,
       stop(sQuote("pfilter")," error: process simulation error",call.=FALSE)
     
     if (pred.var) { ## check for nonfinite state variables and parameters
-      problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1])
+      problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])
       if (length(problem.indices)>0) {  # state variables
         stop(
              sQuote("pfilter")," error: non-finite state variable(s): ",
@@ -220,7 +220,7 @@ pfilter.internal <- function (object, params, Np,
              )
       }
       if (random.walk) { # parameters (need to be checked only if 'random.walk=TRUE')
-        problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1])
+        problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1L])
         if (length(problem.indices)>0) {
           stop(
                sQuote("pfilter")," error: non-finite parameter(s): ",

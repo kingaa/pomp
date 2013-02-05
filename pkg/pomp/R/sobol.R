@@ -8,7 +8,7 @@ sobol <- function (vars, n) {
   y <- vapply(
               seq_len(d),
               function (k) {
-                vars[[k]][1]+(vars[[k]][2]-vars[[k]][1])*x[k,]
+                vars[[k]][1L]+(vars[[k]][2L]-vars[[k]][1L])*x[k,]
               },
               numeric(n)
               )
