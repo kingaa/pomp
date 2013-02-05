@@ -631,7 +631,8 @@ replicate(
                 Np=2000,
                 var.factor=4,
                 ic.lag=10,
-                cooling.factor=0.999,
+                cooling.type="geometric",
+                cooling.fraction=0.95,
                 max.fail=10
                 )
           }
@@ -989,7 +990,8 @@ mf <- mif(
           Nmif=100,
           Np=1000,
           transform=TRUE,
-          cooling.factor=0.99,
+          cooling.type="geometric",
+          cooling.fraction=0.6,
           var.factor=2,
           ic.lag=3,
           max.fail=50,

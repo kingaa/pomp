@@ -387,7 +387,8 @@ theta.true <- theta
 ##                 Np=2000,
 ##                 var.factor=4,
 ##                 ic.lag=10,
-##                 cooling.factor=0.999,
+##                 cooling.type="geometric",
+##                 cooling.fraction=0.95,
 ##                 max.fail=10
 ##                 )
 ##           }
@@ -437,7 +438,8 @@ replicate(
                 Np=2000,
                 var.factor=4,
                 ic.lag=10,
-                cooling.factor=0.999,
+                cooling.type="geometric",
+                cooling.fraction=0.95,
                 max.fail=10
                 )
           }
@@ -471,7 +473,7 @@ rbind(
 
 
 ###################################################
-### code chunk number 41: intro_to_pomp.Rnw:689-690 (eval = FALSE)
+### code chunk number 41: intro_to_pomp.Rnw:690-691 (eval = FALSE)
 ###################################################
 ## theta.true <- coef(gompertz)
 ## theta.mif <- apply(sapply(mf,coef),1,mean)
@@ -743,7 +745,8 @@ summary(pm)
 ##           Nmif=100,
 ##           Np=1000,
 ##           transform=TRUE,
-##           cooling.factor=0.99,
+##           cooling.type="geometric",
+##           cooling.fraction=0.6,
 ##           var.factor=2,
 ##           ic.lag=3,
 ##           max.fail=50,
@@ -765,7 +768,8 @@ mf <- mif(
           Nmif=100,
           Np=1000,
           transform=TRUE,
-          cooling.factor=0.99,
+          cooling.type="geometric",
+          cooling.fraction=0.6,
           var.factor=2,
           ic.lag=3,
           max.fail=50,
@@ -931,7 +935,7 @@ fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
 
 
 ###################################################
-### code chunk number 69: intro_to_pomp.Rnw:1123-1124
+### code chunk number 69: intro_to_pomp.Rnw:1125-1126
 ###################################################
 fits
 
@@ -1116,7 +1120,7 @@ fvals <- exp(fvals/ndata)
 
 
 ###################################################
-### code chunk number 77: intro_to_pomp.Rnw:1269-1270
+### code chunk number 77: intro_to_pomp.Rnw:1271-1272
 ###################################################
 apply(fvals,2,function(x)sd(x)/mean(x))
 
@@ -1158,7 +1162,7 @@ true.fit <- nlf(
 
 
 ###################################################
-### code chunk number 80: intro_to_pomp.Rnw:1308-1309
+### code chunk number 80: intro_to_pomp.Rnw:1310-1311
 ###################################################
 set.seed(32329L)
 
@@ -1228,7 +1232,7 @@ colnames(pars) <- c("r","K")
 
 
 ###################################################
-### code chunk number 83: intro_to_pomp.Rnw:1346-1347
+### code chunk number 83: intro_to_pomp.Rnw:1348-1349
 ###################################################
 apply(pars,2,sd)
 
