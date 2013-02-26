@@ -83,7 +83,7 @@ void eval_skeleton_R (double *f,
   UNPROTECT(nprotect);
 }
 
-SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
+SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 {
   int nprotect = 0;
   int nvars, npars, nrepp, nrepx, nreps, ntimes, ncovars;
@@ -119,7 +119,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun)
   covariate_table = make_covariate_table(object,&ncovars);
 
   // extract the user-defined function
-  PROTECT(fn = unpack_pomp_fun(fun,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("skeleton")),gnsi,&mode)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;

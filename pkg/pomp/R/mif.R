@@ -85,9 +85,12 @@ mif.internal <- function (object, Nmif,
                           cooling.type, cooling.fraction, cooling.factor, 
                           method,
                           tol, max.fail,
-                          verbose, transform, .ndone = 0,
-                          paramMatrix) {
+                          verbose, transform, .ndone = 0L,
+                          paramMatrix,
+                          .getnativesymbolinfo = TRUE) {
   
+  gnsi <- as.logical(.getnativesymbolinfo)
+
   transform <- as.logical(transform)
   
   if (length(start)==0)
@@ -103,9 +106,6 @@ mif.internal <- function (object, Nmif,
   start.names <- names(start)
   if (is.null(start.names))
     stop("mif error: ",sQuote("start")," must be a named vector",call.=FALSE)
-  
-  if (missing(rw.sd))
-    stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
   
   rw.names <- names(rw.sd)
   if (is.null(rw.names) || any(rw.sd<0))
@@ -204,7 +204,7 @@ mif.internal <- function (object, Nmif,
   ## the following deals with the deprecated option 'cooling.factor'
   if (!missing(cooling.factor)) {
     warning(sQuote("cooling.factor")," is deprecated.\n",
-            "See ?mif for instructions on specifying the cooling schedule.",
+            "See ",sQuote("?mif")," for instructions on specifying the cooling schedule.",
             call.=FALSE)
     cooling.factor <- as.numeric(cooling.factor)
     if ((length(cooling.factor)!=1)||(cooling.factor<0)||(cooling.factor>1))
@@ -234,13 +234,9 @@ mif.internal <- function (object, Nmif,
   if ((method=="mif2")&&(Np[1L]!=Np[ntimes+1]))
     stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"))
   
-  if (missing(var.factor))
-    stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
   if ((length(var.factor)!=1)||(var.factor < 0))
     stop("mif error: ",sQuote("var.factor")," must be a positive number",call.=FALSE)
   
-  if (missing(Nmif))
-    stop("mif error: ",sQuote("Nmif")," must be specified",call.=FALSE)
   Nmif <- as.integer(Nmif)
   if (Nmif<0)
     stop("mif error: ",sQuote("Nmif")," must be a positive integer",call.=FALSE)
@@ -329,13 +325,16 @@ mif.internal <- function (object, Nmif,
                                 .transform=transform,
                                 save.states=FALSE, 
                                 save.params=FALSE,
-                                verbose=verbose
+                                verbose=verbose,
+                                .getnativesymbolinfo=gnsi
                                 ),
                silent=FALSE
                )
     if (inherits(pfp,"try-error")) 
       stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
 
+    gnsi <- FALSE
+    
     ## update parameters
     switch(
            method,

@@ -7,7 +7,7 @@ SEXP euler_model_simulator (SEXP func,
                             SEXP xstart, SEXP times, SEXP params, 
                             SEXP deltat, SEXP method,
                             SEXP statenames, SEXP paramnames, SEXP covarnames, SEXP zeronames,
-                            SEXP tcovar, SEXP covar, SEXP args) 
+                            SEXP tcovar, SEXP covar, SEXP args, SEXP gnsi) 
 {
   int nprotect = 0;
   int mode = -1;
@@ -19,6 +19,8 @@ SEXP euler_model_simulator (SEXP func,
   int *pidx = 0, *sidx = 0, *cidx = 0, *zidx = 0;
   pomp_onestep_sim *ff = NULL;
   int meth = *(INTEGER(AS_INTEGER(method))); // 0 = Euler, 1 = one-step, 2 = fixed step
+
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
   {
     int *dim;
@@ -44,7 +46,8 @@ SEXP euler_model_simulator (SEXP func,
   zidx = INTEGER(PROTECT(matchnames(Snames,zeronames))); nprotect++;
 
   // extract user function
-  PROTECT(fn = pomp_fun_handler(func,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
+  *(INTEGER(gnsi)) = 0;
   
   // set up
   switch (mode) {
@@ -247,7 +250,7 @@ SEXP euler_model_simulator (SEXP func,
 SEXP euler_model_density (SEXP func, 
 			  SEXP x, SEXP times, SEXP params, 
 			  SEXP statenames, SEXP paramnames, SEXP covarnames,
-			  SEXP tcovar, SEXP covar, SEXP log, SEXP args) 
+			  SEXP tcovar, SEXP covar, SEXP log, SEXP args, SEXP gnsi) 
 {
   int nprotect = 0;
   int mode;
@@ -259,6 +262,8 @@ SEXP euler_model_density (SEXP func,
   SEXP rho, fcall, fn;
   SEXP F;
   int *pidx = 0, *sidx = 0, *cidx = 0;
+
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
   {
     int *dim;
@@ -279,7 +284,7 @@ SEXP euler_model_density (SEXP func,
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
   SET_NAMES(cvec,Cnames);
 
-  PROTECT(fn = pomp_fun_handler(func,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
 
   give_log = *(INTEGER(log));
 

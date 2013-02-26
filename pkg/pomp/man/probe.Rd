@@ -24,7 +24,7 @@
 }
 \usage{
 \S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
-\S4method{probe}{probed.pomp}(object, probes, params, nsim, seed = NULL, \dots)
+\S4method{probe}{probed.pomp}(object, probes, params, nsim, \dots)
 \S4method{probe.match}{pomp}(object, start, est = character(0),
             probes, weights,
             nsim, seed = NULL,

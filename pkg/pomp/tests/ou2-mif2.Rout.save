@@ -99,7 +99,7 @@ newly created pomp objects:
 +              )  
 Warning message:
 'cooling.factor' is deprecated.
-See ?mif for instructions on specifying the cooling schedule. 
+See '?mif' for instructions on specifying the cooling schedule. 
 > mif2b <- continue(mif2b,Nmif=50)
 > 
 > compare.mif(list(mif1b,mif2b))
@@ -113,4 +113,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 41.730   0.056  42.104 
+ 42.138   0.064  42.548 

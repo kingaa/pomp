@@ -258,7 +258,7 @@ newly created pomp objects:
 +           seed=838775L
 +           )
 +     )
-Error in .local(object, probes, ...) : 
+Error in probe.internal(object = object, probes = probes, params = params,  : 
   variable-sized results returned by probe 2
 > 
 > try(
@@ -273,7 +273,7 @@ Error in .local(object, probes, ...) :
 +           seed=838775L
 +           )
 +     )
-Error in .local(object, probes, ...) : 
+Error in probe.internal(object = object, probes = probes, params = params,  : 
   probes return different number of values on different datasets
 > 
 > 
@@ -289,7 +289,7 @@ Error in .local(object, probes, ...) :
 +           seed=838775L
 +           )
 +     )
-Error in .local(object, probes, ...) : 
+Error in probe.internal(object = object, probes = probes, params = params,  : 
   probes return different number of values on different datasets
 > 
 > dev.off()
@@ -298,4 +298,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 11.708   0.072  12.073 
+ 11.796   0.048  12.053 

@@ -15,12 +15,12 @@ f1 <- pmcmc(
             Nmcmc=20,
             dprior=dprior.ou2,
             hyperparams=list(min=coef(ou2)-1,max=coef(ou2)+1),
-            rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+            rw.sd=c(alpha.2=0.001,alpha.3=0.001),
             Np=100,
             max.fail=100, 
             verbose=FALSE
             )
-f1 <- continue(f1,Nmcmc=20,max.fail=100)
+f1 <- continue(f1,Nmcmc=200,max.fail=100)
 plot(f1)
 
 ff <- pfilter(f1)
@@ -34,7 +34,6 @@ f2 <- pmcmc(
             verbose=FALSE
             )
 
-
 f3 <- pmcmc(
             ff,
             Nmcmc=20,
@@ -45,6 +44,7 @@ f3 <- pmcmc(
             max.fail=100, 
             verbose=FALSE
             )
+f4 <- pmcmc(f3)
 
 
 if (FALSE) {

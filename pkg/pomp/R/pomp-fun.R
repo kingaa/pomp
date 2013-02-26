@@ -5,13 +5,16 @@ setClass(
                         R.fun = 'function',
                         native.fun = 'character',
                         PACKAGE = 'character',
-                        mode = 'integer'
-                        )
+                        mode = 'integer',
+                        address = 'externalptr'
+                        ),
+         prototype=prototype(
+           R.fun=function(...)stop("unreachable error: please report this bug!"),
+           native.fun=character(0),
+           PACKAGE="",
+           mode=-1L ## undefined
+           )
          )
-
-pomp_native_code <- 2L
-pomp_R_function <- 1L
-pomp_undef_mode <- -1L
 
 ## constructor
 pomp.fun <- function (f = NULL, PACKAGE, proto = NULL) {
@@ -31,26 +34,17 @@ pomp.fun <- function (f = NULL, PACKAGE, proto = NULL) {
     retval <- new(
                   "pomp.fun",
                   R.fun=f,
-                  native.fun=character(0),
-                  PACKAGE=PACKAGE,
-                  mode=pomp_R_function
+                  mode=1L
                   )
   } else if (is.character(f)) {
     retval <- new(
                   "pomp.fun",
-                  R.fun=function(...)stop("unreachable error: please report this bug!"),
                   native.fun=f,
                   PACKAGE=PACKAGE,
-                  mode=pomp_native_code
+                  mode=2L
                   )
   } else {
-    retval <- new(
-                  "pomp.fun",
-                  R.fun=function(...)stop(sQuote(fname)," not specified"),
-                  native.fun=character(0),
-                  PACKAGE=PACKAGE,
-                  mode=pomp_undef_mode
-                  )
+    retval <- new("pomp.fun")
   }
   retval
 }
@@ -60,9 +54,9 @@ setMethod(
           'pomp.fun',
           function (object) {
             mode <- object@mode
-            if (mode==pomp_R_function) {
+            if (mode==1L) {
               show(object@R.fun)
-            } else if (mode==pomp_native_code) {
+            } else if (mode==2L) {
               cat("native function ",sQuote(object@native.fun),sep="")
               if (length(object@PACKAGE)>0)
                 cat(", dynamically loaded from ",sQuote(object@PACKAGE),sep="")
@@ -78,19 +72,3 @@ setMethod(
           'pomp.fun',
           function (x, ...) show(x)
           )
-
-get.pomp.fun <- function (object)
-  .Call(get_pomp_fun,object)
-
-
-## get.pomp.fun <- function (object) {
-##   mode <- object@mode
-##   if (mode==1L) {
-##     f <- object@R.fun
-##   } else if (mode==2L) {
-##     f <- getNativeSymbolInfo(name=object@native.fun,PACKAGE=object@PACKAGE)$address
-##   } else {
-##     stop("function not specified")
-##   }
-##   list(f,as.integer(mode-1))
-## }

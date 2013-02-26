@@ -8,20 +8,21 @@
 
 #include "pomp_internal.h"
 
-SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
+SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 {
   int nprotect = 0;
   int mode = -1;
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
   SEXP Snames, Pnames, Cnames, Onames;
   SEXP tvec, xvec, pvec, cvec;
-  SEXP fn, fcall, rho, ans, nm;
+  SEXP fun, fn, fcall, rho, ans, nm;
   SEXP Y;
   int *dim;
   int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
   struct lookup_table covariate_table;
   pomp_measure_model_simulator *ff = NULL;
 
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
   if (ntimes < 1)
@@ -65,7 +66,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun)
   }
 
   // extract the user-defined function
-  PROTECT(fn = unpack_pomp_fun(fun,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("rmeasure")),gnsi,&mode)); nprotect++;
+  *(INTEGER(gnsi)) = 0;
 
   // extract 'userdata' as pairlist
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;

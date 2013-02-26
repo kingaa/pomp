@@ -1,6 +1,6 @@
 setGeneric("trajectory",function(object,...)standardGeneric("trajectory"))
 
-trajectory.internal <- function (object, params, times, t0, as.data.frame = FALSE, ...) {
+trajectory.internal <- function (object, params, times, t0, as.data.frame = FALSE, .getnativesymbolinfo = TRUE, ...) {
 
   if (missing(times))
     times <- time(object,t0=FALSE)
@@ -49,14 +49,16 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
 
   if (type=="map") {
 
-    x <- .Call(iterate_map,object,times,t0,x0,params)
+    x <- .Call(iterate_map,object,times,t0,x0,params,.getnativesymbolinfo)
+    .getnativesymbolinfo <- FALSE
     
   } else if (type=="vectorfield") {
 
     znames <- object@zeronames
     if (length(znames)>0) x0[znames,,] <- 0
 
-    .Call(pomp_desolve_setup,object,x0,params)
+    .Call(pomp_desolve_setup,object,x0,params,.getnativesymbolinfo)
+    .getnativesymbolinfo <- FALSE
 
     X <- try(
              ode(
@@ -112,4 +114,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
   x
 }
 
-setMethod("trajectory",signature=signature(object="pomp"),definition=trajectory.internal)
+setMethod("trajectory",signature=signature(object="pomp"),
+          definition=function (object, params, times, t0, as.data.frame = FALSE, ...)
+          trajectory.internal(object=object,params=params,times=times,t0=t0,as.data.frame=as.data.frame,...)
+          )

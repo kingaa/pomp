@@ -92,7 +92,7 @@ void iterate_map_R (double *X, double *time, double *p,
   UNPROTECT(nprotect);
 }
 
-SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
+SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP gnsi)
 {
   int nprotect = 0;
   int mode = -1;
@@ -105,6 +105,8 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
   int *dim;
   lookup_table covariate_table;
   double deltat, t;
+
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
   deltat = *(REAL(GET_SLOT(object,install("skelmap.delta.t"))));
   t = *(REAL(AS_NUMERIC(t0)));
@@ -131,7 +133,8 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params)
   covariate_table = make_covariate_table(object,&ncovars);
 
   // extract user-defined function
-  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("skeleton")),&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("skeleton")),gnsi,&mode)); nprotect++;
+  *(INTEGER(gnsi)) = 0;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -244,7 +247,7 @@ static struct {
 #define RFUN(X)   (_pomp_vf_eval_block.shared.R_fun.X)
 #define NAT(X)    (_pomp_vf_eval_block.shared.native_code.X)
 
-SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params) {
+SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   int nprotect = 0;
   int mode = -1;
   SEXP fn, args;
@@ -252,8 +255,11 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params) {
   int *dim;
   int nvars, npars, nreps, ncovars;
 
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
+
   // extract user-defined skeleton function
-  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("skeleton")),&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("skeleton")),gnsi,&mode)); nprotect++;
+  *(INTEGER(gnsi)) = 0;
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 

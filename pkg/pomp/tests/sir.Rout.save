@@ -385,25 +385,25 @@ parameter(s):
 process model simulator, rprocess = 
 function (xstart, times, params, ..., statenames = character(0), 
     paramnames = character(0), covarnames = character(0), zeronames = character(0), 
-    tcovar, covar) 
+    tcovar, covar, .getnativesymbolinfo = TRUE) 
 {
     .Call(euler_model_simulator, func = efun, xstart = xstart, 
         times = times, params = params, dt = delta.t, method = 0L, 
         statenames = statenames, paramnames = paramnames, covarnames = covarnames, 
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
-        args = pairlist(...))
+        args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x1da3828>
+<environment: 0x2017ac8>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
-    covarnames = character(0), tcovar, covar, log = FALSE) 
+    covarnames = character(0), tcovar, covar, log = FALSE, .getnativesymbolinfo = TRUE) 
 {
     .Call(euler_model_density, func = efun, x = x, times = times, 
         params = params, statenames = statenames, paramnames = paramnames, 
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
-        log = log, args = pairlist(...))
+        log = log, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x1dcc4b0>
+<environment: 0xe85b98>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -467,7 +467,7 @@ function not specified
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.001417 secs
+Time difference of 1.027043 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -484,7 +484,7 @@ Time difference of 1.001417 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.6595488 secs
+Time difference of 0.6727858 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -536,7 +536,7 @@ newly created pomp objects:
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.259171 secs
+Time difference of 1.250798 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -544,7 +544,7 @@ Time difference of 1.259171 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.007857323 secs
+Time difference of 0.007832289 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -639,4 +639,4 @@ newly created pomp objects:
 > 
 > proc.time()
    user  system elapsed 
-  3.856   0.064   4.159 
+  3.964   0.036   4.188 

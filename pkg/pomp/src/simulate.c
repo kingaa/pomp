@@ -5,7 +5,9 @@
 
 #include "pomp_internal.h"
 
-SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEXP nsim, SEXP obs, SEXP states)
+SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEXP nsim, 
+			      SEXP obs, SEXP states,
+			      SEXP gnsi)
 {
   int nprotect = 0;
   SEXP xstart, x, y, alltimes, coef, yy, offset;
@@ -19,6 +21,8 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEX
   int *dim, dims[3];
   double *s, *t, *xs, *xt, *ys, *yt, *ps, *pt, tt;
   int i, j, k, np, nx;
+
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
   PROTECT(offset = NEW_INTEGER(1)); nprotect++;
   *(INTEGER(offset)) = 1;
@@ -87,11 +91,11 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEX
       memcpy(xt,xs,nx*sizeof(double));
     }
 
-    PROTECT(x = do_rprocess(object,x0,alltimes,p,offset)); nprotect++;
+    PROTECT(x = do_rprocess(object,x0,alltimes,p,offset,gnsi)); nprotect++;
 
   } else {			// nsim == 1
 
-    PROTECT(x = do_rprocess(object,xstart,alltimes,params,offset)); nprotect++;
+    PROTECT(x = do_rprocess(object,xstart,alltimes,params,offset,gnsi)); nprotect++;
 
   }
 
@@ -102,11 +106,10 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEX
 
   } else {			// we must do 'rmeasure'
 
-    PROTECT(rmeas = get_pomp_fun((GET_SLOT(object,install("rmeasure"))))); nprotect++;
     if (nsims > 1) {
-      PROTECT(y = do_rmeasure(object,x,times,p,rmeas)); nprotect++;
+      PROTECT(y = do_rmeasure(object,x,times,p,gnsi)); nprotect++;
     } else {
-      PROTECT(y = do_rmeasure(object,x,times,params,rmeas)); nprotect++;
+      PROTECT(y = do_rmeasure(object,x,times,params,gnsi)); nprotect++;
     }
     
     if (qobs) {

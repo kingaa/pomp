@@ -2,7 +2,8 @@
 
 simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                                states = FALSE, obs = FALSE,
-                               times, t0, as.data.frame = FALSE, ...) {
+                               times, t0, as.data.frame = FALSE,
+                               .getnativesymbolinfo = TRUE, ...) {
 
   if (missing(times))
     times <- time(object,t0=FALSE)
@@ -44,11 +45,13 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                       t0,
                       nsim,
                       obs,
-                      states
+                      states,
+                      .getnativesymbolinfo
                       ),
                 silent=FALSE
                 )
-
+  .getnativesymbolinfo <- FALSE
+  
   if (inherits(retval,'try-error'))
     stop(sQuote("simulate")," error",call.=FALSE)
 
@@ -110,4 +113,11 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
   retval
 }
 
-setMethod("simulate",signature=signature(object="pomp"),definition=simulate.internal)
+setMethod("simulate",signature=signature(object="pomp"),
+          definition=function (object, nsim = 1, seed = NULL, params,
+                               states = FALSE, obs = FALSE,
+                               times, t0, as.data.frame = FALSE, ...)
+          simulate.internal(object=object,nsim=nsim,seed=seed,params=params,
+                            states=states,obs=obs,times=times,t0=t0,
+                            as.data.frame=as.data.frame,...)
+          )

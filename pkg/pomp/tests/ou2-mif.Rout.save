@@ -66,7 +66,7 @@ particle filter log likelihood at truth
 +             )
 Warning message:
 'cooling.factor' is deprecated.
-See ?mif for instructions on specifying the cooling schedule. 
+See '?mif' for instructions on specifying the cooling schedule. 
 > 
 > mif2 <- mif(ou2,Nmif=30,start=guess2,
 +             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
@@ -283,4 +283,4 @@ mif warning: the variable 'x2.0' has positive random-walk SD specified, but is i
 > 
 > proc.time()
    user  system elapsed 
- 11.784   0.068  12.023 
+ 11.384   0.072  11.591 

@@ -38,12 +38,12 @@ newly created pomp objects:
 +             Nmcmc=20,
 +             dprior=dprior.ou2,
 +             hyperparams=list(min=coef(ou2)-1,max=coef(ou2)+1),
-+             rw.sd=c(alpha.2=0.01,alpha.3=0.01),
++             rw.sd=c(alpha.2=0.001,alpha.3=0.001),
 +             Np=100,
 +             max.fail=100, 
 +             verbose=FALSE
 +             )
-> f1 <- continue(f1,Nmcmc=20,max.fail=100)
+> f1 <- continue(f1,Nmcmc=200,max.fail=100)
 > plot(f1)
 > 
 > ff <- pfilter(f1)
@@ -57,7 +57,6 @@ newly created pomp objects:
 +             verbose=FALSE
 +             )
 > 
-> 
 > f3 <- pmcmc(
 +             ff,
 +             Nmcmc=20,
@@ -68,6 +67,7 @@ newly created pomp objects:
 +             max.fail=100, 
 +             verbose=FALSE
 +             )
+> f4 <- pmcmc(f3)
 > 
 > 
 > if (FALSE) {
@@ -87,4 +87,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.884   0.052   3.112 
+  6.788   0.052   6.997 

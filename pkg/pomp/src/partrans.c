@@ -7,13 +7,14 @@
 
 #include "pomp_internal.h"
 
-SEXP do_partrans (SEXP object, SEXP params, SEXP fun)
+SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 {
   int nprotect = 0;
   SEXP fn, fcall, rho, ans, nm;
   SEXP pdim, pvec;
   SEXP tparams;
   int mode = -1;
+  char direc;
   int qmat;
   int ndim[2], *dim, *idx;
   double *pp, *ps, *pt, *pa;
@@ -21,8 +22,20 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP fun)
   pomp_transform_fn *ff = NULL;
   int k;
 
+  direc = *(INTEGER(dir));
   // extract the user-defined function
-  PROTECT(fn = unpack_pomp_fun(fun,&mode)); nprotect++;
+  switch (direc) {
+  case 1:			// forward transformation
+    PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("par.trans")),gnsi,&mode)); nprotect++;
+    break;
+  case -1:			// inverse transformation
+    PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("par.untrans")),gnsi,&mode)); nprotect++;
+    break;
+  default:
+    error("impossible error");
+    break;
+  }
+  
   // extract 'userdata' as pairlist
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
