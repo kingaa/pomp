@@ -28,7 +28,7 @@ for (k in seq_along(t0)) {
   mse[,k,] <- bias^2+sd^2                         ## mean squared error
 }
 
-fit <- mif(ou2,Nmif=3,rw.sd=c(alpha.1=0.1,alpha.4=0.1),Np=1000,cooling.factor=0.98,var.factor=1,ic.lag=2)
+fit <- mif(ou2,Nmif=3,rw.sd=c(alpha.1=0.1,alpha.4=0.1),Np=1000,cooling.fraction=0.98^50,var.factor=1,ic.lag=2)
 pf <- pfilter(fit,save.states=TRUE,save.params=TRUE)
 
 pdf(file="ou2-forecast.pdf")

@@ -37,7 +37,7 @@ newly created pomp objects:
 > ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.005157232 secs
+Time difference of 0.00438261 secs
 > 
 > coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 > 
@@ -48,4 +48,4 @@ Time difference of 0.005157232 secs
 > 
 > proc.time()
    user  system elapsed 
-  0.512   0.036   0.557 
+  0.440   0.048   0.512 

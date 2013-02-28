@@ -9,7 +9,8 @@ onestep.sim <- function (step.fun, PACKAGE) {
             paramnames = character(0),
             covarnames = character(0),
             zeronames = character(0),
-            tcovar, covar) {
+            tcovar, covar,
+            .getnativesymbolinfo = TRUE) {
     .Call(
           euler_model_simulator,
           func=efun,
@@ -24,7 +25,8 @@ onestep.sim <- function (step.fun, PACKAGE) {
           zeronames=zeronames,
           tcovar=tcovar,
           covar=covar,
-          args=pairlist(...)
+          args=pairlist(...),
+          gnsi=.getnativesymbolinfo
           )
   }
 }
@@ -40,7 +42,8 @@ discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
             paramnames = character(0),
             covarnames = character(0),
             zeronames = character(0),
-            tcovar, covar) {
+            tcovar, covar,
+            .getnativesymbolinfo = TRUE) {
     .Call(
           euler_model_simulator,
           func=efun,
@@ -55,7 +58,8 @@ discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
           zeronames=zeronames,
           tcovar=tcovar,
           covar=covar,
-          args=pairlist(...)
+          args=pairlist(...),
+          gnsi=.getnativesymbolinfo
           )
   }
 }
@@ -71,7 +75,8 @@ euler.sim <- function (step.fun, delta.t, PACKAGE) {
             paramnames = character(0),
             covarnames = character(0),
             zeronames = character(0),
-            tcovar, covar) {
+            tcovar, covar,
+            .getnativesymbolinfo = TRUE) {
     .Call(
           euler_model_simulator,
           func=efun,
@@ -86,7 +91,8 @@ euler.sim <- function (step.fun, delta.t, PACKAGE) {
           zeronames=zeronames,
           tcovar=tcovar,
           covar=covar,
-          args=pairlist(...)
+          args=pairlist(...),
+          gnsi=.getnativesymbolinfo
           )
   }
 }
@@ -101,7 +107,8 @@ onestep.dens <- function (dens.fun, PACKAGE) {
             statenames = character(0),
             paramnames = character(0),
             covarnames = character(0),
-            tcovar, covar, log = FALSE) {
+            tcovar, covar, log = FALSE,
+            .getnativesymbolinfo = TRUE) {
     .Call(
           euler_model_density,
           func=efun,
@@ -114,7 +121,8 @@ onestep.dens <- function (dens.fun, PACKAGE) {
           tcovar=tcovar,
           covar=covar,
           log=log,
-          args=pairlist(...)
+          args=pairlist(...),
+          gnsi=.getnativesymbolinfo
           )
   }
 }
@@ -138,7 +146,9 @@ gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
             paramnames = character(0),
             covarnames = character(0),
             zeronames = character(0),
-            tcovar, covar, ...) {
+            tcovar, covar,
+            .getnativesymbolinfo = TRUE,
+            ...) {
     .Call(
           SSA_simulator,
           func=efun,
@@ -155,7 +165,8 @@ gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
           paramnames=paramnames,
           covarnames=covarnames,
           zeronames=zeronames,
-          args=pairlist(...)
+          args=pairlist(...),
+          gnsi=.getnativesymbolinfo
           )
   }
 }

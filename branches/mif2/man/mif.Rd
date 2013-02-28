@@ -17,13 +17,15 @@
 \usage{
 mif(object, \dots)
 \S4method{mif}{pomp}(object, Nmif = 1, start, pars, ivps = character(0),
-    particles, rw.sd, Np, ic.lag, var.factor, cooling.factor,
-    cooling.fraction, method = c("mif","unweighted","fp","mif2"),
+    particles, rw.sd, Np, ic.lag, var.factor,
+    cooling.type, cooling.fraction, cooling.factor,
+    method = c("mif","unweighted","fp","mif2"),
     tol = 1e-17, max.fail = Inf,
     verbose = getOption("verbose"), transform = FALSE, \dots)
 \S4method{mif}{pfilterd.pomp}(object, Nmif = 1, Np, tol, \dots)
 \S4method{mif}{mif}(object, Nmif, start, pars, ivps,
-    particles, rw.sd, Np, ic.lag, var.factor, cooling.factor, cooling.fraction,
+    particles, rw.sd, Np, ic.lag, var.factor,
+    cooling.type, cooling.fraction,
     method, tol, transform, \dots)
 \S4method{continue}{mif}(object, Nmif = 1, \dots)
 }
@@ -85,12 +87,14 @@ mif(object, \dots)
     the scaling coefficient relating the width of the starting particle distribution to \code{rw.sd}.
     In particular, the width of the distribution of particles at the start of the first MIF iteration will be \code{random.walk.sd*var.factor}.
   }
-  \item{cooling.factor}{
-    a positive number not greater than 1;
-    the exponential cooling factor, \code{alpha}.
-  }
-  \item{cooling.fraction}{
-    [EXPLAIN]
+  \item{cooling.type, cooling.fraction, cooling.factor}{
+    specifications for the cooling schedule, i.e., the manner in which the intensity of the parameter perturbations is reduced with successive filtering iterations.
+    \code{cooling.type} specifies the nature of the cooling schedule.
+    When \code{cooling.type="geometric"}, on the n-th MIF iteration, the relative perturbation intensity is \code{cooling.fraction^(n/50)}.
+    When \code{cooling.type="hyperbolic"}, on the n-th MIF iteration, the relative perturbation intensity is \code{(s+1)(s+n)}, where \code{(s+1)/(s+50)=cooling.fraction}.
+    \code{cooling.fraction} is the relative magnitude of the parameter perturbations after 50 MIF iterations.
+    \code{cooling.factor} is now deprecated:
+    to achieve the old behavior, use \code{cooling.type="geometric"} and \code{cooling.fraction=(cooling.factor)^50}.
   }
   \item{method}{
     \code{method} sets the update rule used in the algorithm.

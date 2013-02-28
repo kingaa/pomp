@@ -39,12 +39,8 @@
     \item{ic.lag}{
       the fixed lag used in the estimation of initial-value parameters (IVPs)
     }
-    \item{cooling.factor}{
-      the exponential cooling factor, where \code{0<cooling.factor<1}.
-    }
-    \item{cooling.fraction}{
-      the fraction that determines the cooling schedule when \code{method='mif2'}.
-      \code{0<cooling.fraction<1}.
+    \item{cooling.type, cooling.fraction}{
+      the cooling schedule specifications
     }
     \item{method}{
       character; the mif update method.

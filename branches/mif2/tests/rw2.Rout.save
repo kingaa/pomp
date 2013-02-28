@@ -260,7 +260,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x2b19de0>
+<environment: 0x1ad0480>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -273,11 +273,11 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x2b19de0>
+<environment: 0x1ad0480>
 skeleton ( map ) = 
 function (x, t, params, covars, ...) 
 stop(sQuote("skeleton"), " not specified")
-<environment: 0x2127ea0>
+<environment: 0x296b950>
 initializer = 
 function (params, t0, ...) 
 {
@@ -435,4 +435,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  1.064   0.040   1.321 
+  0.824   0.060   0.907 

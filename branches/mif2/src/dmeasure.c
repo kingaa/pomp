@@ -8,7 +8,7 @@
 
 #include "pomp_internal.h"
 
-SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP fun)
+SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi)
 {
   int nprotect = 0;
   int mode = -1;
@@ -66,7 +66,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   SET_NAMES(cvec,Cnames);
 
   // extract the user-defined function
-  PROTECT(fn = unpack_pomp_fun(fun,&mode)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("dmeasure")),gnsi,&mode)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;

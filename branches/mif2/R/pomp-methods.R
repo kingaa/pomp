@@ -35,18 +35,17 @@ setAs(
 as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 
 ## parameter transformations
-partrans.internal <- function (object, params, dir = c("forward","inverse"), ...) {
+partrans.internal <- function (object, params, dir = c("forward","inverse"),
+                               .getnativesymbolinfo = TRUE, ...) {
   if (!object@has.trans) return(params)
-  dir <- match.arg(dir)
-  tfunc <- switch(
-                  dir,
-                  forward=get.pomp.fun(object@par.trans),
-                  inverse=get.pomp.fun(object@par.untrans)
-                  )
-  .Call(do_partrans,object,params,tfunc)
+  dir <- switch(match.arg(dir),forward=1L,inverse=-1L)
+  .Call(do_partrans,object,params,dir,.getnativesymbolinfo)
 }
 
-setMethod("partrans","pomp",partrans.internal)
+setMethod("partrans","pomp",
+          function (object, params, dir = c("forward","inverse"), ...) 
+          partrans.internal(object=object,params=params,dir=dir,...)
+          )
 
 ## a simple method to extract the data array
 setMethod(

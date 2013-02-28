@@ -18,15 +18,11 @@
 \S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, pars,
     rw.sd, dprior, Np, hyperparams, tol = 1e-17, max.fail = 0,
     verbose = getOption("verbose"), transform = FALSE, \dots)
-\S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, start, pars,
-    rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
-    verbose = getOption("verbose"), transform = FALSE, \dots)
+\S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, Np, tol, \dots)
 \S4method{pmcmc}{pmcmc}(object, Nmcmc, start, pars,
     rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
     verbose = getOption("verbose"), transform, \dots)
-\S4method{continue}{pmcmc}(object, Nmcmc = 1, start, pars,
-    rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
-    verbose = getOption("verbose"), transform, \dots)
+\S4method{continue}{pmcmc}(object, Nmcmc = 1, \dots)
 }
 \arguments{
   \item{object}{

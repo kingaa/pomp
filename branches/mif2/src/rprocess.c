@@ -8,12 +8,14 @@
 
 #include "pomp_internal.h"
 
-SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset)
+SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset, SEXP gnsi)
 {
   int nprotect = 0;
   int *xdim, nvars, npars, nreps, nrepsx, ntimes, off;
   SEXP X, Xoff, copy, fn, fcall, rho;
   SEXP dimXstart, dimP, dimX;
+
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
   ntimes = length(times);
   if (ntimes < 2) {
@@ -79,6 +81,8 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   PROTECT(fn = GET_SLOT(object,install("rprocess"))); nprotect++;
   // construct the call
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(fcall = LCONS(gnsi,fcall)); nprotect++;
+  SET_TAG(fcall,install(".getnativesymbolinfo"));
   PROTECT(fcall = LCONS(GET_SLOT(object,install("PACKAGE")),fcall)); nprotect++;
   SET_TAG(fcall,install("PACKAGE"));
   PROTECT(fcall = LCONS(GET_SLOT(object,install("zeronames")),fcall)); nprotect++;

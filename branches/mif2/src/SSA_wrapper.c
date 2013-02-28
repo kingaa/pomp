@@ -86,7 +86,7 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
 SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params, 
 		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP tcovar, SEXP covar,
 		    SEXP statenames, SEXP paramnames, SEXP covarnames, SEXP zeronames,
-		    SEXP args)
+		    SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   int *dim, xdim[3];
@@ -101,6 +101,8 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   int *sidx, *pidx, *cidx, *zidx;
   SEXP fn, Snames, Pnames, Cnames;
 
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
+
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
@@ -111,7 +113,8 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
-  PROTECT(fn = pomp_fun_handler(func,&use_native)); nprotect++;
+  PROTECT(fn = pomp_fun_handler(func,gnsi,&use_native)); nprotect++;
+  *(INTEGER(gnsi)) = 0;
 
   if (use_native) {
     RXR = (pomp_ssa_rate_fn *) R_ExternalPtrAddr(fn);

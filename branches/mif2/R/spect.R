@@ -51,8 +51,8 @@ pomp.detrend <- function (tseries, type)
 reuman.kernel <- function (kernel.width) {
   ker <- kernel("modified.daniell",m=kernel.width)
   x <- seq.int(from=0,to=kernel.width,by=1)/kernel.width
-  ker[[1]] <- (15/(16*2*pi))*((x-1)^2)*((x+1)^2)
-  ker[[1]] <- ker[[1]]/(2*sum(ker[[1]][-1])+ker[[1]][1])
+  ker[[1L]] <- (15/(16*2*pi))*((x-1)^2)*((x+1)^2)
+  ker[[1L]] <- ker[[1L]]/(2*sum(ker[[1L]][-1])+ker[[1L]][1L])
   attr(ker,"name") <- NULL
   ker
 }

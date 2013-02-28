@@ -7,12 +7,14 @@
 
 #include "pomp_internal.h"
 
-SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log)
+SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi)
 {
   int nprotect = 0;
   int *xdim, npars, nvars, nreps, nrepsx, ntimes;
   SEXP X, fn, fcall, rho;
   SEXP dimP, dimF;
+
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
   ntimes = length(times);
   if (ntimes < 2)
@@ -77,6 +79,8 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log)
   PROTECT(fn = GET_SLOT(object,install("dprocess"))); nprotect++;
   // construct the call
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
+  PROTECT(fcall = LCONS(gnsi,fcall)); nprotect++;
+  SET_TAG(fcall,install(".getnativesymbolinfo"));
   PROTECT(fcall = LCONS(GET_SLOT(object,install("PACKAGE")),fcall)); nprotect++;
   SET_TAG(fcall,install("PACKAGE"));
   PROTECT(fcall = LCONS(GET_SLOT(object,install("covarnames")),fcall)); nprotect++;

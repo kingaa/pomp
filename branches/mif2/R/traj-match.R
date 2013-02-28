@@ -132,7 +132,7 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, tran
 
   ## fill 'states' slot of returned object with the trajectory
   x <- trajectory(obj)
-  obj@states <- array(data=x,dim=dim(x)[c(1,3)])
+  obj@states <- array(data=x,dim=dim(x)[c(1L,3L)])
   rownames(obj@states) <- rownames(x)
   
   new(

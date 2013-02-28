@@ -1,6 +1,5 @@
 useDynLib(			
           pomp,
-          get_pomp_fun,
           bspline_basis,
           periodic_bspline_basis,
           bspline_basis_function,

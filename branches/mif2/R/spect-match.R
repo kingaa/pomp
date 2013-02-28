@@ -12,23 +12,6 @@ setClass(
            )
          )
 
-setMethod(
-          "summary",
-          "spect.matched.pomp",
-          function (object, ...) {
-            c(
-              summary(as(object,"spect.pomp")),
-              list(
-                   est=object@est,
-                   value=object@value,
-                   eval=object@evals,
-                   convergence=object@convergence
-                   ),
-              if(length(object@msg)>0) list(msg=object@msg) else NULL
-              )
-          }
-          )
-
 spect.mismatch <- function (par, est, object, params,
                             vars, ker, nsim, seed,
                             transform, detrend, weights,
@@ -250,3 +233,20 @@ spect.match <- function(object, start, est = character(0),
       msg=as.character(msg)
       )
 }
+
+setMethod(
+          "summary",
+          "spect.matched.pomp",
+          function (object, ...) {
+            c(
+              summary(as(object,"spect.pomp")),
+              list(
+                   est=object@est,
+                   value=object@value,
+                   eval=object@evals,
+                   convergence=object@convergence
+                   ),
+              if(length(object@msg)>0) list(msg=object@msg) else NULL
+              )
+          }
+          )

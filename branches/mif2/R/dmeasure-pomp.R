@@ -1,9 +1,11 @@
 ## evaluate the measurement model density function
 setGeneric("dmeasure",function(object,...)standardGeneric("dmeasure"))
 
-dmeasure.internal <- function (object, y, x, times, params, log = FALSE, ...) {
-  fun <- get.pomp.fun(object@dmeasure)
-  .Call(do_dmeasure,object,y,x,times,params,log,fun)
+dmeasure.internal <- function (object, y, x, times, params, log = FALSE, .getnativesymbolinfo = TRUE, ...) {
+  .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)
 }
 
-setMethod("dmeasure","pomp",dmeasure.internal)
+setMethod("dmeasure","pomp",
+          function (object, y, x, times, params, log = FALSE, ...)
+          dmeasure.internal(object=object,y=y,x=x,times=times,params=params,log=log,...)
+          )

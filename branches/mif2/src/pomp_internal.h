@@ -41,9 +41,7 @@ SEXP bspline_basis_function(SEXP x, SEXP i, SEXP degree, SEXP knots);
 SEXP sobol_sequence(SEXP dim);
 
 // pomp_fun.c
-SEXP pomp_fun_handler (SEXP pfun, int *mode);
-SEXP get_pomp_fun (SEXP pfun);
-SEXP unpack_pomp_fun (SEXP pfunlist, int *mode);
+SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, int *mode);
 
 // lookup_table.c
 SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t);
@@ -55,13 +53,13 @@ SEXP systematic_resampling(SEXP weights);
 SEXP do_init_state (SEXP object, SEXP params, SEXP t0);
 
 // rprocess.c
-SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset);
+SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset, SEXP gnsi);
 
 // rmeasure.c
-SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP fun);
+SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi);
 
 // skeleton.c
-SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP fun);
+SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
 void eval_skeleton_native (double *f, double *time, double *x, double *p,
 			   int nvars, int npars, int ncovars, int ntimes, 
 			   int nrepx, int nrepp, int nreps, 

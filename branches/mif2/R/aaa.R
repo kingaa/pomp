@@ -1,7 +1,7 @@
 ## .onAttach <- function (...) {
-##   version <- library(help=pomp)$info[[1]]
-##   version <- strsplit(version[pmatch("Version",version)]," ")[[1]]
-##   version <- version[nchar(version)>0][2]
+##   version <- library(help=pomp)$info[[1L]]
+##   version <- strsplit(version[pmatch("Version",version)]," ")[[1L]]
+##   version <- version[nchar(version)>0][2L]
 ##   packageStartupMessage("This is pomp version ",version,"\n")
 ## }
 

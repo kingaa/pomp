@@ -43,7 +43,7 @@ newly created pomp objects:
 +              x1.0=1,x2.0=1
 +              ),
 +            Np=1000,
-+            cooling.factor=1,
++            cooling.fraction=1,
 +            max.fail=10
 +            )
 Warning message:
@@ -60,7 +60,7 @@ mif warning: 'ic.lag' = 1000 > 100 = length(time('object')) is nonsensical.  Set
 +              x1.0=1,x2.0=1
 +              ),
 +            Np=1000,
-+            cooling.factor=1,
++            cooling.fraction=1,
 +            max.fail=10
 +            )
 Warning message:
@@ -77,7 +77,7 @@ mif warning: only IVPs are to be estimated, yet 'ic.lag' = 10 < 100 = length(tim
 +              x1.0=1,x2.0=1
 +              ),
 +            Np=1000,
-+            cooling.factor=1,
++            cooling.fraction=1,
 +            max.fail=10
 +            )
 > 
@@ -109,4 +109,4 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > proc.time()
    user  system elapsed 
- 17.629   0.060  17.749 
+ 16.897   0.048  17.022 

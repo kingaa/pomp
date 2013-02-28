@@ -48,7 +48,7 @@ e    0 0.1148066 -0.2638123 -0.1406537 0.4036972 0.2134135
 > try(
 +     rprocess(po,xstart=parmat(xstart,2),times=0:5,params=parmat(pars,3))[,,3]
 +     )
-Error in .local(object, ...) : 
+Error in rprocess.internal(object = object, xstart = xstart, times = times,  : 
   rprocess error: larger number of replicates is not a multiple of smaller
 > 
 > rprocess(po,xstart=parmat(xstart,2),times=0:5,params=parmat(pars,6))[,,3]
@@ -64,7 +64,7 @@ e  0.1987878  0.2241485 -0.5425199 -0.1655866 0.2008968 -0.09235699
 > try(
 +     rmeasure(po,x=x,params=parmat(pars,3),times=0:5)[,,3]
 +     )
-Error in .local(object, ...) : 
+Error in rmeasure.internal(object = object, x = x, times = times, params = params,  : 
   rmeasure error: larger number of replicates is not a multiple of smaller
 > 
 > rmeasure(po,x=x,params=parmat(pars,4),times=0:5)
@@ -140,7 +140,7 @@ y    0    0
 > x <- rprocess(po,xstart=parmat(xstart,3),times=0:5,params=pars)
 > y <- rmeasure(po,x=x,params=pars,times=0:5)
 > try(dmeasure(po,x=x,y=y,params=parmat(pars,3),times=0:5))
-Error in .local(object, ...) : 
+Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
   dmeasure error: length of 'times' and 2nd dimension of 'y' do not agree
 > f1 <- dmeasure(po,x=x,y=y[,1,,drop=F],params=parmat(pars,3),times=0:5)
 > f2 <- dmeasure(po,x=x,y=y[,1,,drop=F],params=pars,times=0:5)
@@ -164,4 +164,4 @@ newly created pomp objects:
 > 
 > proc.time()
    user  system elapsed 
-  0.576   0.032   0.619 
+  0.452   0.044   0.518 
