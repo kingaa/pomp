@@ -38,11 +38,13 @@ setClass(
 pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
                               pred.mean, pred.var, filter.mean,
-                              cooling.fraction, cooling.m, .mif2 = FALSE,
+                              cooling, cooling.m, .mif2 = FALSE,
                               .rw.sd, seed, verbose,
                               save.states, save.params,
-                              .transform) {
+                              .transform,
+                              .getnativesymbolinfo = TRUE) {
 
+  ptsi.inv <- ptsi.for <- gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
   mif2 <- as.logical(.mif2)
   transform <- as.logical(.transform)
   
@@ -91,7 +93,7 @@ pfilter.internal <- function (object, params, Np,
     params <- matrix(
                      params,
                      nrow=length(params),
-                     ncol=Np[1],
+                     ncol=Np[1L],
                      dimnames=list(
                        names(params),
                        NULL
@@ -105,13 +107,15 @@ pfilter.internal <- function (object, params, Np,
   x <- init.state(
                   object,
                   params=if (transform) {
-                    partrans(object,params,dir="forward")
+                    partrans(object,params,dir="forward",
+                             .getnativesymbolinfo=ptsi.for)
                   } else {
                     params
                   }
                   )
   statenames <- rownames(x)
   nvars <- nrow(x)
+  ptsi.for <- FALSE
   
   ## set up storage for saving samples from filtering distributions
   if (save.states)
@@ -126,7 +130,7 @@ pfilter.internal <- function (object, params, Np,
   random.walk <- !missing(.rw.sd)
   if (random.walk) {
     rw.names <- names(.rw.sd)
-    if (is.null(rw.names)||!is.numeric(.rw.sd))
+    if (is.null(rw.names))
       stop(sQuote("pfilter")," error: ",sQuote(".rw.sd")," must be a named vector",call.=FALSE)
     if (any(!(rw.names%in%paramnames)))
       stop(
@@ -184,29 +188,21 @@ pfilter.internal <- function (object, params, Np,
   else
     filt.m <- array(data=numeric(0),dim=c(0,0))
 
-  if (mif2) {
-    if (missing(cooling.fraction))
-      stop("pfilter error: ",sQuote("cooling.fraction")," must be specified for method mif2",call.=FALSE)
-    cooling.fraction <- as.numeric(cooling.fraction)
-  }
-  
   for (nt in seq_len(ntimes)) {
     
-    if ((mif2==T) && (cooling.fraction>0)) {	  
-      cool.sched <- try(
-                        mif2.cooling(frac=cooling.fraction,nt=nt,m=cooling.m,n=ntimes),
-                        silent=FALSE
-                        )
-      if (inherits(cool.sched,"try-error")) 
-        stop("pfilter error: cooling schedule error",call.=FALSE)
-      sigma1 <- sigma*cool.sched$alpha
-      sigma1 <- sigma
+    if (mif2) {	  
+      cool.sched <- cooling(nt=nt,m=cooling.m)
+      sigma1 <- as.numeric(sigma[nt,])*cool.sched$alpha
+      names(sigma1)<-rw.names
     } else {
-      sigma1 <- sigma
+      sigma1 <- as.numeric(sigma[nt,])
+      names(sigma1)<-rw.names
     }
     
     ## transform the parameters if necessary
-    if (transform) tparams <- partrans(object,params,dir="forward")
+    if (transform) tparams <- partrans(object,params,dir="forward",
+                                       .getnativesymbolinfo=ptsi.for)
+    ptsi.for <- FALSE
     
     ## advance the state variables according to the process model
     X <- try(
@@ -215,15 +211,17 @@ pfilter.internal <- function (object, params, Np,
                       xstart=x,
                       times=times[c(nt,nt+1)],
                       params=if (transform) tparams else params,
-                      offset=1
+                      offset=1,
+                      .getnativesymbolinfo=gnsi.rproc
                       ),
              silent=FALSE
              )
     if (inherits(X,'try-error'))
       stop(sQuote("pfilter")," error: process simulation error",call.=FALSE)
+    gnsi.rproc <- FALSE
     
     if (pred.var) { ## check for nonfinite state variables and parameters
-      problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1])
+      problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])
       if (length(problem.indices)>0) {  # state variables
         stop(
              sQuote("pfilter")," error: non-finite state variable(s): ",
@@ -232,7 +230,7 @@ pfilter.internal <- function (object, params, Np,
              )
       }
       if (random.walk) { # parameters (need to be checked only if 'random.walk=TRUE')
-        problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1])
+        problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1L])
         if (length(problem.indices)>0) {
           stop(
                sQuote("pfilter")," error: non-finite parameter(s): ",
@@ -251,7 +249,8 @@ pfilter.internal <- function (object, params, Np,
                             x=X,
                             times=times[nt+1],
                             params=if (transform) tparams else params,
-                            log=FALSE
+                            log=FALSE,
+                            .getnativesymbolinfo=gnsi.dmeas
                             ),
                    silent=FALSE
                    )
@@ -260,6 +259,7 @@ pfilter.internal <- function (object, params, Np,
     if (any(!is.finite(weights))) {
       stop(sQuote("pfilter")," error: ",sQuote("dmeasure")," returns non-finite value",call.=FALSE)
     }
+    gnsi.dmeas <- FALSE
     
     ## compute prediction mean, prediction variance, filtering mean,
     ## effective sample size, log-likelihood
@@ -374,7 +374,8 @@ setMethod(
                              save.params=save.params,
                              seed=seed,
                              verbose=verbose,
-                             .transform=FALSE
+                             .transform=FALSE,
+                             ...
                              )
           }
           )
