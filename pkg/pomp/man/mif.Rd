@@ -81,6 +81,7 @@ mif(object, \dots)
     The \code{mif} update for initial-value parameters consists of replacing them by their filtering mean at time \code{times[ic.lag]}, where \code{times=time(object)}.
     It makes no sense to set \code{ic.lag>length(times)};
     if it is so set, \code{ic.lag} is set to \code{length(times)} with a warning.
+    For \code{method='mif2'}, the default is \code{ic.lag=length(times)}.
   }
   \item{var.factor}{
     a positive number;

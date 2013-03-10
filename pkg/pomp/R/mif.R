@@ -89,11 +89,11 @@ mif.internal <- function (object, Nmif,
                           particles,
                           rw.sd,
                           Np, var.factor, ic.lag,
-                          cooling.type, cooling.fraction, cooling.factor, 
+                          cooling.type, cooling.fraction, cooling.factor,
                           method,
                           tol, max.fail,
                           verbose, transform, .ndone = 0L,
-                          paramMatrix,
+                          paramMatrix = NULL,
                           .getnativesymbolinfo = TRUE) {
   
   gnsi <- as.logical(.getnativesymbolinfo)
@@ -122,9 +122,6 @@ mif.internal <- function (object, Nmif,
   rw.names <- names(rw.sd[rw.sd>0])
   if (length(rw.names) == 0)
     stop("mif error: ",sQuote("rw.sd")," must have one positive entry for each parameter to be estimated",call.=FALSE)
-  
-  if (missing(pars)) stop("mif error: ",sQuote("pars")," must be specified",call.=FALSE)
-  if (missing(ivps)) stop("mif error: ",sQuote("ivps")," must be specified",call.=FALSE)
   
   if (
       !is.character(pars) ||
@@ -163,11 +160,8 @@ mif.internal <- function (object, Nmif,
   rw.sd <- rw.sd[c(pars,ivps)]
   rw.names <- names(rw.sd)
   
-  if (missing(particles))
-    stop("mif error: ",sQuote("particles")," must be specified",call.=FALSE)
-  
   ntimes <- length(time(object))
-  if (missing(Np)) stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
+  if (is.null(Np)) stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
   if (is.function(Np)) {
     Np <- try(
               vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
@@ -186,7 +180,6 @@ mif.internal <- function (object, Nmif,
     stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
   Np <- as.integer(Np)
   
-  if (missing(ic.lag)) stop("mif error: ",sQuote("ic.lag")," must be specified",call.=FALSE)
   ic.lag <- as.integer(ic.lag)
   if ((length(ic.lag)!=1)||(ic.lag<1))
     stop("mif error: ",sQuote("ic.lag")," must be a positive integer",call.=FALSE)
@@ -289,7 +282,7 @@ mif.internal <- function (object, Nmif,
     pfp <- obj
   }
   
-  have.parmat <- !(missing(paramMatrix) || length(paramMatrix)==0)
+  have.parmat <- !(is.null(paramMatrix) || length(paramMatrix)==0)
 
   for (n in seq_len(Nmif)) { ## iterate the filtering
 
@@ -416,14 +409,19 @@ setMethod(
             if (missing(start)) start <- coef(object)
             if (missing(rw.sd))
               stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
+            if (missing(ic.lag) && length(ivps)>0) {
+              if (method=="mif2")
+                ic.lag <- length(time(object)) # default mif2 behavior
+              else
+                stop("mif error: ",sQuote("ic.lag")," must be specified if ",sQuote("ivps"),
+                     " are",call.=FALSE)
+            }
             if (missing(pars)) {
               rw.names <- names(rw.sd)[rw.sd>0]
               pars <- rw.names[!(rw.names%in%ivps)]
             }
             if (missing(Np))
               stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
-            if (missing(ic.lag) && length(ivps)>0)
-              stop("mif error: ",sQuote("ic.lag")," must be specified if ",sQuote("ivps")," are",call.=FALSE)
             if (missing(var.factor))
               stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
 
