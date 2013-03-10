@@ -38,7 +38,7 @@ cooling.function <- function (type, perobs, fraction, ntimes) {
              stop(
                   "mif error: ",sQuote("cooling.fraction"),
                   " must be < 1 when cooling.type = ",
-                  sQuote("hyperbolic")
+                  sQuote("hyperbolic"),
                   call.=FALSE
                   )
            if (perobs) {
