@@ -104,7 +104,7 @@ dat <- '"time";"y1";"y2"
 '
 
 pomp( 
-     data=read.csv2(textConnection(dat)),
+     data=read.csv2(text=dat),
      times="time",
      t0=0,
      rprocess=discrete.time.sim("ou2_step",PACKAGE="pomp"),

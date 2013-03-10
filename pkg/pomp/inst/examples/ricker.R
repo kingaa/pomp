@@ -55,7 +55,7 @@ dat <- '"time";"y"
 '
 
 pomp(
-     data=read.csv2(textConnection(dat)),
+     data=read.csv2(text=dat),
      times="time",
      t0=0,
      params=c(r=exp(3.8),sigma=0.3,phi=10,N.0=7,e.0=0), # originally used to generate the data

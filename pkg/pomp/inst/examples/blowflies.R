@@ -868,14 +868,13 @@ blowfly.data <- '"day";"y";"set"
 718;8103;4
 720;6803;4
 '
-
 raw.data <- subset(
-                   read.csv2(textConnection(blowfly.data),comment.char="#"),
-                   set==4
+                   read.csv2(text=blowfly.data,comment.char="#"),
+                   set==4,
+                   select=-set
                    )
-
 pomp(
-     data=subset(raw.data[c("day","y")],day>14&day<400),
+     data=subset(raw.data,day>14&day<400),
      times="day",
      t0=14,
      rprocess=discrete.time.sim(

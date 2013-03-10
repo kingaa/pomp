@@ -5,7 +5,8 @@ set.seed(834454394L)
 ### the following example tests to make sure that states are updated properly
 ### upon filtering failures
 
-"time,admissions,discharges,patients,cases
+records <- read.csv(text="
+time,admissions,discharges,patients,cases
 0,4,2,8,
 1,0,1,10,2
 2,2,0,9,1
@@ -27,11 +28,7 @@ set.seed(834454394L)
 18,4,0,7,1
 19,0,0,11,0
 20,1,4,11,
-" -> csvtext
-
-tc <- textConnection(csvtext)
-records <- read.csv(tc)
-close(tc)
+")
 
 po <- pomp(
            data=subset(records[c("time","cases")],!is.na(cases)),

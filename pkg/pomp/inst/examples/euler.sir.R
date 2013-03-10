@@ -213,7 +213,7 @@ dat <- '"time";"reports"
 
 
 po <- pomp(
-           data=read.csv2(textConnection(dat)),
+           data=read.csv2(text=dat),
            times="time",
            t0=0,
            params=c(
