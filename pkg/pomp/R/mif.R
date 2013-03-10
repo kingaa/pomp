@@ -34,6 +34,13 @@ cooling.function <- function (type, perobs, fraction, ntimes) {
            }
          },
          hyperbolic={
+           if (fraction>=1)
+             stop(
+                  "mif error: ",sQuote("cooling.fraction"),
+                  " must be < 1 when cooling.type = ",
+                  sQuote("hyperbolic")
+                  call.=FALSE
+                  )
            if (perobs) {
              scal <- (50*ntimes*fraction-1)/(1-fraction)
              function (nt, m) {
