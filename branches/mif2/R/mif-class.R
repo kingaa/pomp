@@ -13,7 +13,7 @@ setClass(
            cooling.type='character',
            cooling.fraction='numeric',
            method='character',
-           random.walk.sd = 'numeric',
+           random.walk.sd = 'matrix',
            conv.rec = 'matrix'
            )
          )
