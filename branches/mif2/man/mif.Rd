@@ -55,13 +55,16 @@ mif(object, \dots)
     If \code{particles} is not supplied by the user, the default behavior is to draw the particles from a multivariate normal distribution with mean \code{center} and standard deviation \code{sd}.
   }
   \item{rw.sd}{
-    numeric vector with names; the intensity of the random walk to be applied to parameters.
+    numeric vector with names, or named list, or matrix; the intensity of the random walk to be applied to parameters.
+    Ultimately, this argument is used to construct a matrix of random walk intensities for each parameter at each time. If the argument is a vector, or the list entry is a scalar, then the random walk intensity is constant at this value (unless the parameter is named in \code{ivps}, in which case it has this value at time t0 and is subsequently zero).
+    If rw.sd is a matrix, it should have \code{Ntimes+1} rows and a named column for each parameter.
+    If rw.sd is a list, then vector-valued entries on this list should have length \code{Ntimes+1}.
     The random walk is only applied to parameters named in \code{pars} (i.e., not to those named in \code{ivps}).
-    The algorithm requires that the random walk be nontrivial, so each element in \code{rw.sd[pars]} must be positive.
+    The algorithm requires that the random walk be nontrivial, so each element in \code{rw.sd[pars]} must be positive [THIS IS NO LONGER A REQUIREMENT FOR MIF2. IN GENERAL, THESE CONDITIONS NEED RETHINKING].
     \code{rw.sd} is also used to scale the initial-value parameters (via the \code{particles} function).
     Therefore, each element of \code{rw.sd[ivps]} must be positive.
     The following must be satisfied:
-    \code{names(rw.sd)} must be a subset of \code{names(start)},
+    \code{names(rw.sd)} or \code{colnames(rw.sd)}must be a subset of \code{names(start)},
     \code{rw.sd} must be non-negative (zeros are simply ignored),
     the name of every positive element of \code{rw.sd} must be in either \code{pars} or \code{ivps}.
   }
