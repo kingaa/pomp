@@ -1,10 +1,21 @@
 Package: pomp
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.44-2
-Date: 2013-03-11
-Author: Aaron A. King, Edward L. Ionides, Carles Breto, Steve Ellner, Bruce Kendall, Helen Wearing, Matthew J. Ferrari, Michael Lavine, Daniel C. Reuman
+Version: 0.44-3
+Date: 2013-03-21
+Author: Aaron A. King, Edward L. Ionides, Carles Breto
+Contributor: Steve Ellner, Bruce Kendall, Helen Wearing, Matthew J. Ferrari, Michael Lavine, Daniel C. Reuman, Simon N. Wood
 Maintainer: Aaron A. King <kingaa@umich.edu>
+Author@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),email="kingaa@umich.edu"),
+	  person(given=c("Edward","L."),family="Ionides",role=c("ctb")),
+	  person(given=c("Carles"),family="Breto",role=c("ctb")),
+	  person(given=c("Stephen","P."),family="Ellner",role=c("ctb")),
+	  person(given=c("Matthew","J."),family="Ferrari",role=c("ctb")),
+	  person(given=c("Bruce","E."),family="Kendall",role=c("ctb")),
+	  person(given=c("Michael"),family="Lavine",role=c("ctb")),
+	  person(given=c("Daniel","C."),family="Reuman",role=c("ctb")),
+	  person(given=c("Helen"),family="Wearing",role=c("ctb")),
+	  person(given=c("Simon","N."),family="Wood",role=c("ctb")))
 URL: http://pomp.r-forge.r-project.org
 Description: Inference methods for partially-observed Markov processes
 Depends: R(>= 2.14.1), stats, methods, graphics, mvtnorm, subplex, deSolve
