@@ -76,9 +76,26 @@ mif2b <- mif(ou2,Nmif=50,start=guess1,
              )  
 mif2b <- continue(mif2b,Nmif=50)
 
+mif2c <- mif(ou2,Nmif=50,start=guess1,
+             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+             rw.sd=c(
+               x1.0=0.5,x2.0=.5,
+               alpha.2=0.1,alpha.3=0.1),
+             transform=F,
+             Np=1000,
+             var.factor=1,
+             cooling.type="hyperbolic",
+             cooling.fraction=0.05,
+             max.fail=100,
+             method="mif2"
+             )  
+mif2c <- continue(mif2c,Nmif=50)
+
 compare.mif(list(mif1b,mif2b))
 
 compare.mif(list(mif1a,mif1b))
 compare.mif(list(mif2a,mif2b))
+
+compare.mif(list(mif1b,mif2c))
 
 dev.off()

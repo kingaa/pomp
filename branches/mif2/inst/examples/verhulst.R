@@ -1004,7 +1004,7 @@ dat <- '"time";"obs"
 '
 
 pomp(
-     data=read.csv2(textConnection(dat)),
+     data=read.csv2(text=dat),
      times="time",
      t0=0,
      params=c(n.0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1),

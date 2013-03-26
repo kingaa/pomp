@@ -1,6 +1,6 @@
 require(pomp)
 
-tc <- textConnection("
+flu <- read.csv2(text="
 day;reports
 1;3
 2;8
@@ -17,9 +17,6 @@ day;reports
 13;12
 14;5
 ")
-
-flu <- read.csv2(file=tc)
-close(tc)
 
 po <- pomp(
            data=flu,

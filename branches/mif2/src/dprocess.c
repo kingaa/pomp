@@ -12,7 +12,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
   int nprotect = 0;
   int *xdim, npars, nvars, nreps, nrepsx, ntimes;
   SEXP X, fn, fcall, rho;
-  SEXP dimP, dimF;
+  SEXP dimF;
 
   PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 

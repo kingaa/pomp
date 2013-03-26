@@ -104,7 +104,7 @@ dat <- '"time";"y1";"y2"
 '
 
 pomp(
-     data=read.csv2(textConnection(dat)),
+     data=read.csv2(text=dat),
      times="time",
      t0=0,
      params=c(x1.0=0,x2.0=0,s1=1,s2=3,tau=1), # parameters at which data were generated
