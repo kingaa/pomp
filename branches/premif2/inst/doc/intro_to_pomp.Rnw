@@ -1,4 +1,0 @@
-%\VignetteIndexEntry{Introduction to pomp}
-\documentclass{article}
-\begin{document}
-\end{document}
