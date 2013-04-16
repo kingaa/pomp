@@ -123,18 +123,20 @@ c            if(iflag.eq.1)goto 100
 c     
 c Recording output at required time points
 c     
-         do while((icount.le.ntimes).and.(t.ge.times(icount)))
-            do i=1,n
-               xout(i,irep,icount)=y(i)
-            enddo
+         if (icount.le.ntimes) then
+            do while((icount.le.ntimes).and.(t.ge.times(icount)))
+               do i=1,n
+                  xout(i,irep,icount)=y(i)
+               enddo
 c===============================
 c     Set appropriate states to zero
 c===============================
-            do i=1,nzero
-               y(izero(i)+1)=0.0d0
+               do i=1,nzero
+                  y(izero(i)+1)=0.0d0
+               enddo
+               icount=icount+1
             enddo
-            icount=icount+1
-         enddo
+         endif
 
          if((mcov.gt.0).and.(t.le.tmax))then
             call tlook(lcov,mcov,tcov,cov,t,covars)

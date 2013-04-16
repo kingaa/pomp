@@ -1,7 +1,6 @@
 
-R version 2.15.0 (2012-03-30)
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -164,7 +163,7 @@ Exiting from Nelder Mead minimizer
     117 function evaluations used
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 5.289137 secs
+Time difference of 3.744109 secs
 > tic <- Sys.time()
 > print(loglik.mle <- -kalm.fit1$value,digits=4)
 [1] -477.2
@@ -188,4 +187,4 @@ loglik  -479.0 -477.241     NA
 > 
 > proc.time()
    user  system elapsed 
-  5.776   0.040   5.861 
+  4.296   0.056   4.385 

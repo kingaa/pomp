@@ -1,7 +1,6 @@
 
-R version 2.15.0 (2012-03-30)
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -86,24 +85,24 @@ Loading required package: deSolve
 
 	Kruskal-Wallis rank sum test
 
-data:  list(loglik.probe, loglik.pfilter) 
+data:  list(loglik.probe, loglik.pfilter)
 Kruskal-Wallis chi-squared = 10.5617, df = 1, p-value = 0.001155
 
 > wilcox.test(loglik.probe,loglik.pfilter)
 
 	Wilcoxon rank sum test with continuity correction
 
-data:  loglik.probe and loglik.pfilter 
+data:  loglik.probe and loglik.pfilter
 W = 139841, p-value = 0.001155
-alternative hypothesis: true location shift is not equal to 0 
+alternative hypothesis: true location shift is not equal to 0
 
 > ks.test(loglik.pfilter,loglik.probe)
 
 	Two-sample Kolmogorov-Smirnov test
 
-data:  loglik.pfilter and loglik.probe 
+data:  loglik.pfilter and loglik.probe
 D = 0.16, p-value = 5.522e-06
-alternative hypothesis: two-sided 
+alternative hypothesis: two-sided
 
 > qqplot(loglik.pfilter,loglik.probe)
 > abline(a=0,b=1)
@@ -116,4 +115,4 @@ alternative hypothesis: two-sided
 > 
 > proc.time()
    user  system elapsed 
-  6.032   0.036   6.146 
+  6.360   0.056   6.497 

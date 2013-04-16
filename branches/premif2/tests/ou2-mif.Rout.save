@@ -1,7 +1,6 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -80,7 +79,7 @@ particle filter log likelihood at truth
 > plot(mif1)
 > compare.mif(mif2)
 > try(compare.mif(mif1,mif2))
-Error in compare.mif(mif1, mif2) : unused argument(s) (mif2)
+Error in compare.mif(mif1, mif2) : unused argument (mif2)
 > compare.mif(list(mif1,mif2))
 > dev.off()
 null device 
@@ -267,4 +266,4 @@ mif warning: the variable(s) x2.0 have positive random-walk SDs specified, but a
 > 
 > proc.time()
    user  system elapsed 
- 13.728   0.036  13.921 
+ 13.704   0.044  13.926 

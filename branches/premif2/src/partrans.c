@@ -12,7 +12,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP fun)
   int nprotect = 0;
   SEXP fn, fcall, rho, ans, nm;
   SEXP pdim, pvec;
-  SEXP tparams;
+  SEXP tparams = R_NilValue;
   int mode = -1;
   int qmat;
   int ndim[2], *dim, *idx;

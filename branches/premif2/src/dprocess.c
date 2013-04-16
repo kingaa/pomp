@@ -12,7 +12,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log)
   int nprotect = 0;
   int *xdim, npars, nvars, nreps, nrepsx, ntimes;
   SEXP X, fn, fcall, rho;
-  SEXP dimP, dimF;
+  SEXP dimF;
 
   ntimes = length(times);
   if (ntimes < 2)

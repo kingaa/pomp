@@ -5,7 +5,7 @@
 #include "pomp.h"
 
 #define P       (p[parindex[0]]) // growth rate
-#define NZERO   (p[parindex[1]]) // density-dependence parameter
+#define N0      (p[parindex[1]]) // density-dependence parameter
 #define DELTA   (p[parindex[2]]) // survival parameter
 #define SIGMAP  (p[parindex[3]]) // recruitment noise SD
 #define SIGMAD  (p[parindex[4]]) // survivorship noise SD
@@ -29,7 +29,7 @@ static void _blowfly_simulator (double *x, const double *p,
   double eps = rgammawn(SIGMAD,dt)/dt;
   int k;
 
-  R = rpois(P*N[tau]*exp(-N[tau]/NZERO)*dt*e);
+  R = rpois(P*N[tau]*exp(-N[tau]/N0)*dt*e);
   S = rbinom(N[0],exp(-DELTA*dt*eps));
   E = e;
   EPS = eps;
@@ -60,7 +60,7 @@ void _blowfly_rmeasure (double *y, double *x, double *p,
 #undef EPS
 
 #undef P
-#undef NZERO
+#undef N0
 #undef DELTA
 #undef SIGMAP
 #undef SIGMAD

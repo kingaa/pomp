@@ -1,9 +1,9 @@
 list(
      aak=person(given=c("Aaron","A."),family="King",role=c("aut","cre"),email="kingaa@umich.edu"),
-     eli=person(given=c("Edward","L."),family="Ionides",role=c("aut"),email="ionides@umich.edu"),
-     cb=person(given=c("Carles"),family="Breto",role=c("aut")),
-     spe=person(given=c("Stephen","P."),family="Ellner",role=c("aut")),
-     bek=person(given=c("Bruce","E."),family="Kendall",role=c("aut")),
+     eli=person(given=c("Edward","L."),family="Ionides",role=c("ctb")),
+     cb=person(given=c("Carles"),family="Breto",role=c("ctb")),
+     spe=person(given=c("Stephen","P."),family="Ellner",role=c("ctb")),
+     bek=person(given=c("Bruce","E."),family="Kendall",role=c("ctb")),
      mf=person(given=c("Matthew","J."),family="Ferrari",role=c("ctb")),
      ml=person(given=c("Michael"),family="Lavine",role=c("ctb")),
      dcr=person(given=c("Daniel","C."),family="Reuman",role=c("ctb")),

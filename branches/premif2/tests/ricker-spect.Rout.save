@@ -1,7 +1,6 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -70,4 +69,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.264   0.064   2.509 
+  2.376   0.068   2.613 

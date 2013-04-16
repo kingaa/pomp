@@ -1,7 +1,6 @@
 
-R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -260,7 +259,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x216d088>
+<environment: 0x38d5698>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -273,11 +272,11 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x216d088>
+<environment: 0x38d5698>
 skeleton ( map ) = 
 function (x, t, params, covars, ...) 
 stop(sQuote("skeleton"), " not specified")
-<environment: 0x2181870>
+<environment: 0x38e74e8>
 initializer = 
 function (params, t0, ...) 
 {
@@ -433,4 +432,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.876   0.048   0.940 
+  0.964   0.044   1.024 
