@@ -1,7 +1,6 @@
 
-R version 2.15.2 (2012-10-26) -- "Trick or Treat"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -87,7 +86,7 @@ See '?mif' for instructions on specifying the cooling schedule.
 > plot(mif1)
 > compare.mif(mif2)
 > try(compare.mif(mif1,mif2))
-Error in compare.mif(mif1, mif2) : unused argument(s) (mif2)
+Error in compare.mif(mif1, mif2) : unused argument (mif2)
 > compare.mif(list(mif1,mif2))
 > dev.off()
 null device 
@@ -283,4 +282,4 @@ mif warning: the variable 'x2.0' has positive random-walk SD specified, but is i
 > 
 > proc.time()
    user  system elapsed 
- 11.384   0.072  11.591 
+ 12.416   0.084  12.654 
