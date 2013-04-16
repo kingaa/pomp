@@ -3,10 +3,8 @@ Type: Package
 Title: Statistical inference for partially observed Markov processes
 Version: 0.43-8
 Date: 2013-04-16
-Author: Aaron A. King, Edward L. Ionides, Carles Breto
-Contributor: Steve Ellner, Bruce Kendall, Helen Wearing, Matthew J. Ferrari, Michael Lavine, Daniel C. Reuman, Simon N. Wood
 Maintainer: Aaron A. King <kingaa@umich.edu>
-Author@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),email="kingaa@umich.edu"),
+Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
 	  person(given=c("Carles"),family="Breto",role=c("aut")),
 	  person(given=c("Stephen","P."),family="Ellner",role=c("ctb")),
