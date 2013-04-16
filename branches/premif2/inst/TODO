@@ -1,0 +1,38 @@
+* userdata access from C functions
+
+* pompBuilder function for automatic pomp construction
+
+* effects of replacing 'sample.int' with systematic resampling inside 'bsmc'
+
+* sorting vs no-sorting systematic resampling algorithm?
+
+* parameter transformations: put 'transform' option into each estimation routine
+  (spect.match)
+
+* unit tests for above
+
+* unit tests for 'sannbox'
+
+* Improve 'pmcmc' to take advantage of all particles.
+
+* Partial rejection control for 'pfilter'?
+
+* Adaptive particle numbers in pfilter.
+
+* It might be possible to make the writing of basic model functions
+   using R expressions rather than functions....
+
+* Write 'plot' and 'print' methods for 'pfilterd.pomp' objects.  
+  This would display effective sample size, conditional log likelihood, filter means, prediction variances, prediction means?
+
+* Add plugin for adaptive tau leaping algorithm.
+
+* Parallel 'pfilter' algorithm.
+
+* Add LPA model examples.
+
+* SDE examples.
+
+* Extended Kalman filter.
+
+* Plugin for compartmental models.

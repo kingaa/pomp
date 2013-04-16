@@ -1,0 +1,75 @@
+
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
+Copyright (C) 2012 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> pompExample(blowflies)
+newly created pomp objects:
+ blowflies1 blowflies2 
+> 
+> init.state(blowflies1)
+     [,1]
+N1  397.0
+N2  450.5
+N3  504.0
+N4  590.0
+N5  676.0
+N6  738.5
+N7  801.0
+N8  829.5
+N9  858.0
+N10 884.5
+N11 911.0
+N12 926.5
+N13 942.0
+N14 945.0
+N15 948.0
+R     0.0
+S     0.0
+e     0.0
+eps   0.0
+> x1 <- simulate(blowflies1)
+> f1 <- pfilter(blowflies1,Np=1000,seed=599688L)
+> logLik(f1)
+[1] -1466.694
+> 
+> init.state(blowflies2)
+    [,1]
+N1   397
+N2   504
+N3   676
+N4   801
+N5   858
+N6   911
+N7   942
+N8   948
+R      0
+S      0
+e      0
+eps    0
+> x2 <- simulate(blowflies2)
+> f2 <- pfilter(blowflies2,Np=1000,seed=599688L)
+> logLik(f2)
+[1] -1471.781
+> 
+> proc.time()
+   user  system elapsed 
+  1.316   0.064   1.397 

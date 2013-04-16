@@ -1,0 +1,73 @@
+
+R version 2.15.2 (2012-10-26) -- "Trick or Treat"
+Copyright (C) 2012 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> pompExample(ou2)
+newly created pomp objects:
+ ou2 
+> 
+> set.seed(64857673L)
+> 
+> pdf(file="ou2-mif-fp.pdf")
+> 
+> p.truth <- coef(ou2)
+> guess2 <- guess1 <- p.truth
+> guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.25*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
+> guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 4*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
+> 
+> mif1 <- mif(ou2,Nmif=100,start=guess1,
++ 	    pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
++ 	    rw.sd=c(
++ 	    x1.0=5,x2.0=5,
++ 	    alpha.2=0.1,alpha.3=0.1
++ 	    ),
++ 	  Np=1000,
++ 	  var.factor=1,
++ 	  ic.lag=10,
++ 	  cooling.factor=0.95,
++ 	  max.fail=100,
++ 	  method="fp"
++ 	  )
+> 	  
+> mif2 <- mif(ou2,Nmif=100,start=guess2,
++ 	    pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
++ 	    rw.sd=c(
++ 	    x1.0=5,x2.0=5,
++ 	    alpha.2=0.1,alpha.3=0.1
++ 	    ),
++ 	  Np=1000,
++ 	  var.factor=1,
++ 	  ic.lag=10,
++ 	  cooling.factor=0.95,
++ 	  max.fail=100,
++ 	  method="fp"
++ 	  )
+> 	  
+> compare.mif(list(mif1,mif2))
+> 
+> dev.off()
+null device 
+          1 
+> 
+> proc.time()
+   user  system elapsed 
+ 20.065   0.076  20.346 
