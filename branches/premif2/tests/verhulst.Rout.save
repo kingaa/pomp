@@ -1,0 +1,57 @@
+
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> data(verhulst)
+> 
+> tail(as(verhulst,"data.frame"))
+      time       obs         n
+995   99.5 14051.372 12361.973
+996   99.6 10764.397  9093.707
+997   99.7  8359.591  8168.390
+998   99.8  8337.105  8730.532
+999   99.9  8322.998  8511.592
+1000 100.0  8327.300  9127.382
+> tail(as.data.frame(verhulst))
+      time       obs         n
+995   99.5 14051.372 12361.973
+996   99.6 10764.397  9093.707
+997   99.7  8359.591  8168.390
+998   99.8  8337.105  8730.532
+999   99.9  8322.998  8511.592
+1000 100.0  8327.300  9127.382
+> 
+> coef(verhulst,c("n.0","sigma")) <- c(100,0.2)
+> time(verhulst) <- 1:100
+> 
+> tail(as.data.frame(simulate(verhulst,seed=1066L)))
+    time       obs         n
+95    95 11528.048 10993.019
+96    96  7829.730  9218.963
+97    97  9483.337  9642.360
+98    98  9819.607  8914.544
+99    99  8753.751  9082.258
+100  100  9202.150  9452.477
+> 
+> proc.time()
+   user  system elapsed 
+  0.560   0.036   0.607 

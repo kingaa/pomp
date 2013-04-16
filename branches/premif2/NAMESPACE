@@ -1,0 +1,96 @@
+useDynLib(			
+          pomp,
+          get_pomp_fun,
+          bspline_basis,
+          periodic_bspline_basis,
+          bspline_basis_function,
+          systematic_resampling,
+          euler_model_simulator,
+          euler_model_density,
+          lookup_in_table,
+          SSA_simulator,
+          R_Euler_Multinom,D_Euler_Multinom,R_GammaWN,
+          pfilter_computations,
+          simulation_computations,
+          iterate_map,traj_transp_and_copy,
+          apply_probe_data,apply_probe_sim,
+          probe_marginal_setup,probe_marginal_solve,
+          probe_acf,probe_ccf,
+          probe_nlar,
+          synth_loglik,
+          pomp_desolve_setup,pomp_desolve_takedown,
+          pomp_vf_eval,
+          do_partrans,
+          do_rprocess,
+          do_dprocess,
+          do_rmeasure,
+          do_dmeasure,
+          do_skeleton,
+          do_init_state
+          )
+
+importFrom(graphics,plot)		
+importFrom(stats,simulate,time,coef,logLik,window)
+importFrom(mvtnorm,dmvnorm,rmvnorm)
+importFrom(subplex,subplex)
+importFrom(deSolve,ode)
+
+exportClasses(
+              pomp,
+              pfilterd.pomp,
+              mif,
+              pmcmc,
+              traj.matched.pomp,
+              probed.pomp,probe.matched.pomp,
+              spect.pomp,spect.matched.pomp
+              )
+
+exportMethods(
+              pomp,
+              plot,show,print,coerce,summary,logLik,window,"$",
+              dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
+              data.array,obs,partrans,coef,"coef<-",time,"time<-",timezero,"timezero<-",
+              simulate,pfilter,
+              eff.sample.size,cond.logLik,
+              particles,mif,continue,states,trajectory,
+              pred.mean,pred.var,filter.mean,conv.rec,
+              bsmc,
+              pmcmc,dprior,
+              spect,probe,
+              probe.match,traj.match
+              )
+
+export(
+       as.data.frame.pomp,
+       reulermultinom,
+       deulermultinom,
+       rgammawn,
+       euler.sim,
+       discrete.time.sim,
+       onestep.sim,
+       onestep.dens,
+       gillespie.sim,
+       sobol,
+       sobolDesign,
+       sliceDesign,
+       profileDesign,
+       bspline.basis,
+       periodic.bspline.basis,
+       compare.mif,
+       nlf,
+       parmat,
+       probe.mean,
+       probe.median,
+       probe.var,
+       probe.sd,
+       probe.period,
+       probe.quantile,
+       probe.acf,
+       probe.ccf,
+       probe.nlar,
+       probe.marginal,
+       sannbox,
+       spect.match,
+       traj.match.objfun,
+       pompBuilder
+       )

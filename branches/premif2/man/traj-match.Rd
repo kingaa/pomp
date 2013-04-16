@@ -1,0 +1,155 @@
+\name{traj.match}
+\alias{traj.match}
+\alias{traj.match-pomp}
+\alias{traj.match,pomp-method}
+\alias{traj.match-traj.matched.pomp}
+\alias{traj.match,traj.matched.pomp-method}
+\alias{logLik,traj.matched.pomp-method}
+\alias{logLik-traj.matched.pomp}
+\alias{$,traj.matched.pomp-method}
+\alias{$-traj.matched.pomp}
+\alias{summary,traj.matched.pomp-method}
+\alias{summary-traj.matched.pomp}
+\alias{traj.matched.pomp-class}
+\alias{traj.match.objfun}
+\title{Trajectory matching}
+\description{
+  Facilities for matching trajectories to data.
+  Trajectory matching is equivalent to maximum likelihood estimation under the assumption that process noise is entirely absent,
+  i.e., that all stochasticity is measurement error.
+}
+\usage{
+  \S4method{traj.match}{pomp}(object, start, est,
+           method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
+           gr = NULL, eval.only = FALSE, transform = FALSE, \dots)
+  \S4method{traj.match}{traj.matched.pomp}(object, start, est,
+           method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
+           gr = NULL, eval.only = FALSE, transform, \dots)
+traj.match.objfun(object, params, est, transform = FALSE, \dots)
+}
+\arguments{
+  \item{object}{
+    A \code{\link{pomp}} object.
+    If \code{object} has no \code{skeleton} slot, an error will be generated.
+  }
+  \item{start}{
+    named numeric vector containing an initial guess for parameters.
+    By default \code{start=coef(object)} if the latter exists.
+  }
+  \item{params}{
+    optional named numeric vector of parameters.
+    This should contain all parameters needed by the \code{skeleton} and \code{dmeasure} slots of \code{object}.
+    In particular, any parameters that are to be treated as fixed should be present here.
+    Parameter values given in \code{params} for parameters named in \code{est} will be ignored.
+    By default, \code{params=coef(object)} if the latter exists.
+  }
+  \item{est}{
+    character vector containing the names of parameters to be estimated.
+    In the case of \code{traj.match.objfun}, the objective function that is constructed will assume that its argument contains the parameters in this order.
+  }
+  \item{method}{
+    Optimization method.
+    Choices are \code{\link[subplex]{subplex}}, \dQuote{sannbox}, and any of the methods used by \code{\link{optim}}.
+  }
+  \item{gr}{
+    Passed to \code{\link{optim}}.
+  }
+  \item{eval.only}{
+    logical;
+    if \code{TRUE}, no optimization is attempted and the log likelihood value is evaluated at the \code{start} parameters.
+  }
+  \item{transform}{
+    logical;
+    if \code{TRUE}, optimization is performed on the transformed scale.
+  }
+  \item{\dots}{
+    Extra arguments that will be passed either to the optimizer (\code{\link{optim}}, \code{\link[subplex]{subplex}} or \code{\link{sannbox}}, via their \code{control} lists) or to the ODE integrator.
+    In \code{traj.match}, extra arguments will be passed to the optimizer.
+    In \code{traj.match.objfun}, extra arguments are passed to the ODE integrator, but only if an ODE integrator is called, i.e., only when the deterministic skeleton is a vectorfield.
+    If extra arguments are needed by both optimizer and ODE integrator, construct an objective function first using \code{traj.match.objfun}, then give this objective function to the optimizer.
+  }
+}
+\details{
+  In \pkg{pomp}, trajectory matching is the term used for maximizing the likelihood of the data under the assumption that there is no process noise.
+  Specifically, \code{traj.match} calls an optimizer (\code{\link{optim}}, \code{\link[subplex]{subplex}}, and \code{\link{sannbox}} are the currently supported options) to minimize an objective function.
+  For any value of the model parameters, this objective function is calculated by
+  \enumerate{
+    \item computing the deterministic trajectory of the model given the parameters.
+    This is the trajectory returned by \code{\link{trajectory}}, which relies on the model's deterministic skeleton as specified in the construction of the \code{pomp} object \code{object}.
+    \item evaluating the negative log likelihood of the data under the measurement model given the deterministic trajectory and the model parameters.
+    This is accomplished via the model's \code{dmeasure} slot.
+    The negative log likelihood is the objective function's value.
+  }
+
+  The objective function itself --- in a form suitable for use with \code{\link{optim}}-like optimizers --- is created by a call to \code{traj.match.objfun}.
+  Specifically, \code{traj.match.objfun} will return a function that takes a single numeric-vector argument that is assumed to cotain the parameters named in \code{est}, in that order.
+}
+\value{
+  \code{traj.match} returns an object of class \code{traj.matched.pomp}.
+  This class inherits from class \code{\link[=pomp-class]{pomp}} and contains the following additional slots:
+  \describe{
+    \item{transform, est}{
+      the values of these arguments on the call to \code{traj.match}.
+    }
+    \item{evals}{
+      number of function and gradient evaluations by the optimizer.
+      See \code{\link{optim}}.
+    }
+    \item{value}{
+      value of the objective function.
+      Larger values indicate better fit (i.e., \code{traj.match} attempts to maximize this quantity.
+    }
+    \item{convergence, msg}{
+      convergence code and message from the optimizer.
+      See \code{\link{optim}}.
+    }
+  }
+
+  Available methods for objects of this type include \code{summary} and \code{logLik}.
+  The other slots of this object can be accessed via the \code{$} operator.
+
+  \code{traj.match.objfun} returns a function suitable for use as an objective function in an \code{\link{optim}}-like optimizer.
+}
+\examples{
+  data(ou2)
+  true.p <- c(
+	      alpha.1=0.9,alpha.2=0,alpha.3=-0.4,alpha.4=0.99,
+	      sigma.1=2,sigma.2=0.1,sigma.3=2,
+	      tau=1,
+              x1.0=50,x2.0=-50
+	      )
+  simdata <- simulate(ou2,nsim=1,params=true.p,seed=43553)
+  guess.p <- true.p
+  res <- traj.match(
+		    simdata,
+		    start=guess.p,
+		    est=c('alpha.1','alpha.3','alpha.4','x1.0','x2.0','tau'),
+		    maxit=2000,
+		    method="Nelder-Mead",
+		    reltol=1e-8
+		    )
+
+  summary(res)
+
+  plot(range(time(res)),range(c(obs(res),states(res))),type='n',xlab="time",ylab="x,y")
+  points(y1~time,data=as(res,"data.frame"),col='blue')
+  points(y2~time,data=as(res,"data.frame"),col='red')
+  lines(x1~time,data=as(res,"data.frame"),col='blue')
+  lines(x2~time,data=as(res,"data.frame"),col='red')
+
+  data(ricker)
+  ofun <- traj.match.objfun(ricker,est=c("r","phi"),transform=TRUE)
+  optim(fn=ofun,par=c(2,0),method="BFGS")
+
+  data(bbs)
+  ofun <- traj.match.objfun(bbs,est=c("beta","gamma"),transform=TRUE,hmax=0.001)
+  optim(fn=ofun,par=c(0,-1),method="Nelder-Mead")
+}
+\seealso{
+  \code{\link{trajectory}},
+  \code{\link{pomp}},
+  \code{\link{optim}},
+  \code{\link[subplex]{subplex}}
+}
+\keyword{models}
+\keyword{ts}

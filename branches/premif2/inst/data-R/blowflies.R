@@ -1,0 +1,113 @@
+## blowfly model, with general dt
+## here, set up for dt=1 and dt=2
+## dt is hard-coded, and initial values are customized for each dt
+
+require(pomp)
+
+## following xia and tong, the delay is treated as fixed at 14 days
+## xia and tong claim to be using tau=8 bidays, but on inspection 
+## their Euler method is really tau=7 bidays
+
+raw.data <- subset(
+                   read.csv2("blowflies.csv",comment.char="#"),
+                   set==4
+                   )
+
+pomp(
+     data=subset(raw.data[c("day","y")],day>14&day<400),
+     times="day",
+     t0=14,
+     rprocess=discrete.time.sim(
+       step.fun="_blowfly_simulator_one",
+       delta.t=1,
+       PACKAGE="pomp"
+       ),
+     rmeasure="_blowfly_rmeasure",
+     dmeasure="_blowfly_dmeasure",
+     PACKAGE="pomp",
+     paramnames=c("P","N0","delta","sigma.P","sigma.d","sigma.y"),
+     statenames=c("N1","R","S","e","eps"),
+     obsnames=c("y"),
+     y.init=with( ## initial data
+       raw.data,
+       approx(x=day,y=y,xout=seq(from=0,to=14,by=1),rule=2)$y
+       ),
+#     y.init=c(948, 948, 942, 930, 911, 885, 858, 833.7, 801, 748.3, 676, 589.8, 504, 434.9, 397),
+     parameter.inv.transform=function(params,...) {
+       log(params)
+     },
+     parameter.transform=function(params,...) {
+       exp(params)
+     },
+     initializer=function (params, t0, y.init, ...) {
+       ntau <- length(y.init)
+       n <- y.init[ntau:1]
+       names(n) <- paste("N",seq_len(ntau),sep="")
+       c(n,R=0,S=0,e=0,eps=0)
+     }
+     ) -> blowflies1
+
+pomp(
+     blowflies1,
+     rprocess=discrete.time.sim(
+       step.fun="_blowfly_simulator_two",
+       delta.t=2,
+       PACKAGE="pomp"
+       ),
+     y.init=with( ## initial data
+       raw.data,
+       approx(x=day,y=y,xout=seq(from=0,to=14,by=2),rule=2)$y
+       ),
+     #y.init=c(948, 942, 911, 858, 801, 676, 504, 397),
+     initializer=function (params, t0, y.init, ...) {
+       ntau <- length(y.init)
+       n <- y.init[ntau:1]
+       names(n) <- paste("N",seq_len(ntau),sep="")
+       c(n,R=0,S=0,e=0,eps=0)
+     }
+     ) -> blowflies2
+
+## mle from search to date
+coef(blowflies1,transform=TRUE) <- c(
+                  P = 1.189, 
+                  delta = -1.828, 
+                  N0 = 6.522, 
+                  sigma.P = 0.301, 
+                  sigma.d = -0.292, 
+                  sigma.y = -3.625
+                  )
+
+## mle from search to date
+coef(blowflies2,transform=TRUE) <- c(
+                  P = 1.005, 
+                  delta = -1.75, 
+                  N0 = 6.685, 
+                  sigma.P = 0.366, 
+                  sigma.d = -0.274, 
+                  sigma.y = -4.524
+                  )
+
+test <- FALSE
+if(test){
+  sim1 <- simulate(blowflies1,nsim=1)
+  plot(obs(sim1)['y',],ty='l')
+  lines(obs(blowflies1)['y',],lty="dashed")
+  states(sim1)[,1]
+
+  sim2 <- simulate(blowflies2,nsim=1)
+  plot(obs(sim2)['y',],ty='l')
+  lines(obs(blowflies2)['y',],lty="dashed")
+  states(sim2)[,1]
+
+  ## check that it matches the deterministic skeleton when noise is small
+  params.1.skel <- coef(blowflies1)
+  params.1.skel["sigma.P"] <- 0.00001
+  params.1.skel["sigma.d"] <- 0.00001
+  params.1.skel["sigma.y"] <- 0.00001
+  simulate(blowflies1,params=params.1.skel,nsim=1,seed=73691676L) -> b1.skel
+  plot(obs(blowflies1)['y',],ty='l',lty="dashed")
+  lines(obs(b1.skel)['y',],ty='l')
+  
+} 
+
+save(blowflies1,blowflies2,file="blowflies.rda",compress="xz")

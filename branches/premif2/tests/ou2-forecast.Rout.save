@@ -1,0 +1,64 @@
+
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> set.seed(921625222L)
+> 
+> data(ou2)
+> tm <- time(ou2)
+> y <- obs(ou2)
+> theta <- coef(ou2)
+> pf <- pfilter(ou2,Np=1000,save.states=TRUE,save.params=TRUE)
+> ll <- cumsum(pf$cond.loglik)
+> pp <- matrix(
++              data=theta,
++              nrow=length(theta),
++              ncol=1000,
++              dimnames=list(names(theta),NULL)
++              )
+> z <- array(dim=c(2,9,10))
+> mse <- array(dim=c(2,9,10))
+> t0 <- seq(from=10,to=90,by=10)
+> for (k in seq_along(t0)) {
++   pp[c("x1.0","x2.0"),] <- pf$saved.states[tm==t0[k]][[1]][c("x1","x2"),]
++   inds <- which(tm>t0[k]&tm<=t0[k]+10)
++   Y <- simulate(ou2,params=pp,obs=TRUE,t0=t0[k],times=tm[inds])
++   mn <- apply(Y,c(1,3),mean)
++   sd <- apply(Y,c(1,3),sd)
++   bias <- mn-y[,inds]
++   z[,k,] <- bias/sd                               ## z score
++   mse[,k,] <- bias^2+sd^2                         ## mean squared error
++ }
+> 
+> fit <- mif(ou2,Nmif=3,rw.sd=c(alpha.1=0.1,alpha.4=0.1),Np=1000,cooling.factor=0.98,var.factor=1,ic.lag=2)
+> pf <- pfilter(fit,save.states=TRUE,save.params=TRUE)
+> 
+> pdf(file="ou2-forecast.pdf")
+> matplot(t(mse[1,,]),xlab="horizon",ylab="MSE",type='l',lty=1,col=hsv(h=seq(from=0,by=0.1,length=9)))
+> legend("topleft",bty='n',lty=1,col=hsv(h=seq(from=0,by=0.1,length=9)),legend=t0)
+> dev.off()
+null device 
+          1 
+> 
+> proc.time()
+   user  system elapsed 
+  1.492   0.048   1.691 

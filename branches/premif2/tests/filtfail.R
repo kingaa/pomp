@@ -1,0 +1,90 @@
+library(pomp)
+
+set.seed(834454394L)
+
+### the following example tests to make sure that states are updated properly
+### upon filtering failures
+
+"time,admissions,discharges,patients,cases
+0,4,2,8,
+1,0,1,10,2
+2,2,0,9,1
+3,1,4,11,2
+4,6,8,8,8
+5,4,1,6,0
+6,2,3,9,1
+7,4,2,8,1
+8,1,2,10,1
+9,3,2,9,1
+10,2,3,10,1
+11,3,2,9,2
+12,1,3,10,0
+13,1,3,8,2
+14,2,3,6,1
+15,1,4,5,2
+16,6,2,2,2
+17,2,1,6,2
+18,4,0,7,1
+19,0,0,11,0
+20,1,4,11,
+" -> csvtext
+
+tc <- textConnection(csvtext)
+records <- read.csv(tc)
+close(tc)
+
+po <- pomp(
+           data=subset(records[c("time","cases")],!is.na(cases)),
+           times="time",
+           t0=records$time[1],
+           rprocess=euler.sim(
+             step.fun=function(x, t, params, delta.t, covars, ...) {
+               with(
+                    as.list(c(x,params,covars)),
+                    {
+                      if (S+I!=patients) {
+                        print(c(t,S,I,patients))
+                        stop("assumption violation")
+                      }
+                      ## number of infected (resp. susceptible) admissions
+                      iadm <- rbinom(n=1,size=admissions,prob=p)
+                      sadm <- admissions-iadm
+                      ## number of infected (resp. susceptible) discharges
+                      idis <- rhyper(nn=1,m=I,n=S,k=discharges)
+                      sdis <- discharges-idis
+                      ## number of in-hospital infections
+                      infections <- rbinom(n=1,size=S+sadm-sdis,prob=1-exp(-beta*(I+iadm-idis)))
+                      c(
+                        I=unname(I+infections-idis+iadm),
+                        S=unname(S-infections-sdis+sadm)
+                        )
+                    }
+                    )
+             },
+             delta.t=1
+             ), 
+           rmeasure=function(x, t, params, covars, ...){
+             with(
+                  as.list(c(x,params,covars)),
+                  rbinom(1,size=I,prob=rho)
+                  )
+           },
+           dmeasure=function(y, x, t, params, log, covars, ...){
+             with(
+                  as.list(c(y,x,params,covars)),
+                  dbinom(cases,size=I,prob=rho,log=log)
+                  )
+           },
+           covar=records,
+           tcovar="time"
+           )
+
+simpo <- simulate(po,params=c(p=0.05,rho=0.5,beta=0.1,S.0=6,I.0=2))
+
+pf <- pfilter(
+              po,
+              params=c(p=0.05,rho=0.5,beta=0.01,S.0=6,I.0=2),
+              Np=10,
+              max.fail=20,
+              verbose=TRUE
+              )
