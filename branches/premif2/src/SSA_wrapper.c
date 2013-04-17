@@ -15,7 +15,7 @@ double F77_SUB(poisrnd)(double lambda) { return rpois(lambda); }
 double F77_SUB(gammarnd)(double shape, double scale) { return rgamma(shape,scale); }
 void F77_SUB(multinomrnd)(int N, double *p, int ncat, int *ix) { rmultinom(N,p,ncat,ix); }
 
-void F77_NAME(driverssa)(_pomp_rxnrate *fprob, int *nvar, int *nevent, int *npar, int *nreps, int *ntimes, 
+void F77_NAME(driverssa)(_pomp_rxnrate fprob, int *nvar, int *nevent, int *npar, int *nreps, int *ntimes, 
 			 int *kflag, double *xstart, double *times, double *params, double *xout,
 			 double *e, double *v, double *d, int *nzero, int *izero, int *istate, 
 			 int *ipar, int *ncov, int *icov, int *lcov, int *mcov, double *tcov, double *cov);
