@@ -2,11 +2,20 @@ Package: pompExamples
 Type: Package
 Title: Statistical inference for partially observed Markov processes
 Version: 0.21-1
-Date: 2013-01-13
-Author: NCEAS Working Group on Inference for Mechanistic Models: Aaron King, Steve Ellner, Bruce Kendall, Daniel C. Reuman, Matt Ferrari, Ed Ionides, Helen Wearing
+Date: 2013-04-22
 Maintainer: Aaron A. King <kingaa@umich.edu>
-Description: Inference methods for partially-observed Markov processes
-Depends: R(>= 2.14.2), stats, methods, graphics, pomp(>= 0.42-2)
+Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),email="kingaa@umich.edu"),
+	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
+	  person(given=c("Carles"),family="Breto",role=c("aut")),
+	  person(given=c("Stephen","P."),family="Ellner",role=c("ctb")),
+	  person(given=c("Matthew","J."),family="Ferrari",role=c("ctb")),
+	  person(given=c("Bruce","E."),family="Kendall",role=c("ctb")),
+	  person(given=c("Michael"),family="Lavine",role=c("ctb")),
+	  person(given=c("Daniel","C."),family="Reuman",role=c("ctb")),
+	  person(given=c("Helen"),family="Wearing",role=c("ctb")))
+URL: http://pomp.r-forge.r-project.org
+Description: More 'pomp' examples.
+Depends: R(>= 3.0.0), stats, methods, graphics, pomp(>= 0.43-8)
 License: GPL (>= 2)
 LazyLoad: true
 LazyData: false

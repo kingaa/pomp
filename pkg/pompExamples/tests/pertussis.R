@@ -1,4 +1,4 @@
-require(pompExamples)
+library(pompExamples)
 
 all <- c("SEIR.small","SEIR.big","SEIRS.small","SEIRS.big","SEIRR.small","SEIRR.big","full.small","full.big")
 

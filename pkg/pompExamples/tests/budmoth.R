@@ -1,4 +1,4 @@
-require(pompExamples)
+library(pompExamples)
 
 all <- c("food","para1","para2","tri")
 

@@ -22,5 +22,5 @@ plot(budmoth.sim(para1))
 plot(budmoth.sim(para2))
 plot(budmoth.sim(tri))
 }
-\seealso{the dQuote{budmoth-model} vignette}
+\seealso{the \dQuote{budmoth-model} vignette}
 \keyword{datasets}
