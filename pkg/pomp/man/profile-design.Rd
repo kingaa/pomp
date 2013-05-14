@@ -5,7 +5,8 @@
   \code{profileDesign} generates a data-frame where each row can be used as the starting point for a profile likelihood calculation.
 }
 \usage{
-profileDesign(\dots, lower, upper, nprof)
+profileDesign(\dots, lower, upper, nprof,
+              stringsAsFactors = default.stringsAsFactors())
 }
 \arguments{
   \item{\dots}{
@@ -16,6 +17,9 @@ profileDesign(\dots, lower, upper, nprof)
   }
   \item{nprof}{
     The number of starts per profile point.
+  }
+  \item{stringsAsFactors}{
+    should character vectors be converted to factors?
   }
 }
 \value{

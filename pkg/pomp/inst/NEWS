@@ -1,4 +1,7 @@
 NEWS
+0.45-1
+     o	'profileDesign' can now handle variables of mixed type.
+
 0.44-1
      o	New 'mif2' option for 'mif'.
 
