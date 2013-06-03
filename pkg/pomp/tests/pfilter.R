@@ -4,6 +4,8 @@ pompExample(ou2)
 
 set.seed(9994847L)
 
+pdf(file="pfilter.pdf")
+
 pf <- pfilter(ou2,Np=1000,seed=343439L)
 print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
 cat("particle filter log likelihood at truth\n")
@@ -23,6 +25,11 @@ print(pf$loglik,digits=4)
 p <- coef(euler.sir)
 euler.sir@params <- numeric(0)
 p["iota"] <- 1
-pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L)
+pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L,filter.mean=TRUE)
 print(coef(pf))
 print(logLik(pf),digits=4)
+plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
+plot(ess~time,data=as(pf,"data.frame"),type='l')
+plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
+
+dev.off()

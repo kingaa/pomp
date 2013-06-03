@@ -1,7 +1,6 @@
 
-R version 2.15.2 (2012-10-26) -- "Trick or Treat"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.1 (2013-05-16) -- "Good Sport"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -26,6 +25,8 @@ newly created pomp objects:
  ou2 
 > 
 > set.seed(9994847L)
+> 
+> pdf(file="pfilter.pdf")
 > 
 > pf <- pfilter(ou2,Np=1000,seed=343439L)
 > print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
@@ -59,7 +60,7 @@ newly created pomp objects:
 > p <- coef(euler.sir)
 > euler.sir@params <- numeric(0)
 > p["iota"] <- 1
-> pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L)
+> pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L,filter.mean=TRUE)
 > print(coef(pf))
    gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
 2.60e+01 2.00e-02 1.00e+00 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
@@ -67,7 +68,14 @@ newly created pomp objects:
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(logLik(pf),digits=4)
 [1] -945.4
+> plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
+> plot(ess~time,data=as(pf,"data.frame"),type='l')
+> plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
+> 
+> dev.off()
+null device 
+          1 
 > 
 > proc.time()
    user  system elapsed 
-  5.964   0.056   6.062 
+  6.044   0.104   6.320 

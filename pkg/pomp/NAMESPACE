@@ -62,6 +62,7 @@ exportMethods(
 
 export(
        as.data.frame.pomp,
+       as.data.frame.pfilterd.pomp,
        reulermultinom,
        deulermultinom,
        rgammawn,

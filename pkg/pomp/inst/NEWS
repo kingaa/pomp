@@ -1,4 +1,7 @@
 NEWS
+0.45-2
+     o	new method to coerce 'pfilterd.pomp' objects to data-frames.
+
 0.45-1
      o	'profileDesign' can now handle variables of mixed type.
 
