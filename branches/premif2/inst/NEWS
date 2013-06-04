@@ -1,4 +1,7 @@
 NEWS
+0.43-9
+     o	new method to coerce 'pfilterd.pomp' objects to data-frames.
+
 0.43-4
      o	Clean up tests.
 
