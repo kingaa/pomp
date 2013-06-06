@@ -94,7 +94,8 @@ mif.internal <- function (object, Nmif,
                           tol, max.fail,
                           verbose, transform, .ndone = 0L,
                           paramMatrix = NULL,
-                          .getnativesymbolinfo = TRUE) {
+                          .getnativesymbolinfo = TRUE,
+                          ...) {
   
   gnsi <- as.logical(.getnativesymbolinfo)
 
@@ -459,7 +460,8 @@ setMethod(
                          tol=tol,
                          max.fail=max.fail,
                          verbose=verbose,
-                         transform=transform
+                         transform=transform,
+                         ...
                          )
             
           }

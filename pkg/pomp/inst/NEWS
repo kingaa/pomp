@@ -1,4 +1,7 @@
 NEWS
+0.45-3
+     o	fix bug with 'continue' and method 'mif2'
+
 0.45-2
      o	new method to coerce 'pfilterd.pomp' objects to data-frames.
 
