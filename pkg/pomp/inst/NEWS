@@ -1,6 +1,6 @@
 NEWS
 0.45-4
-     o	changes in the way 'reulermultinom', 'deulermultinom', 'dot_product' are exported to other packages.  Rather than being exported as linkables, these are now defined as static inline functions in the 'pomp.h' header.
+     o	changes in the way 'reulermultinom', 'deulermultinom', 'dot_product' are exported to other packages.  Rather than just being exported as linkables, these are now also defined as static inline functions in the 'pomp.h' header.
 
 0.45-3
      o	fix bug with 'continue' and method 'mif2'
