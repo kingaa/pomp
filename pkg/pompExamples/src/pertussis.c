@@ -2,18 +2,9 @@
 
 #include <R.h>
 #include <Rmath.h>
-#include <Rdefines.h>
+#include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-
-inline double expit (double x) {return 1.0/(1.0+exp(-x));}
-
-inline double logit (double p) {return log(p/(1.0-p));}
-
-static inline double rgammawn (double sigma, double dt) {
-  double sigmasq;
-  sigmasq = sigma*sigma;
-  return (sigmasq > 0) ? rgamma(dt/sigmasq,sigmasq) : dt;
-}
+#include <pomp.h>
 
 static double term_time (double t) {
   double day = 365.0 * (t - floor(t));
@@ -142,9 +133,6 @@ void pertussis_sveirr_EM (double *x, double *p,
   double beta, alpha3;
   double dW;		// white noise process
   double foi;		// force of infection
-  void (*reulermultinom)(int, double, double *, double, double *);
-
-  reulermultinom = (void (*)(int,double,double*,double,double*)) R_GetCCallable("pomp","reulermultinom");
   
   alpha3 = ALPHA*ALPHA_RATIO;
   beta = MEANBETA*(1+AMPLBETA*term_time(t));

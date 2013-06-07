@@ -1,0 +1,2 @@
+POMP_INC = $(shell "$(R_HOME)/bin$(R_ARCH_BIN)/Rscript" -e 'library(pomp); cat(system.file("include",package="pomp"))')
+PKG_CFLAGS = -I $(POMP_INC)

@@ -1,7 +1,6 @@
 
-R version 2.15.2 (2012-10-26) -- "Trick or Treat"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.1 (2013-05-16) -- "Good Sport"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,8 +15,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> require(pompExamples)
-Loading required package: pompExamples
+> library(pompExamples)
 Loading required package: pomp
 Loading required package: mvtnorm
 Loading required package: subplex
@@ -130,4 +128,4 @@ $tri
 > 
 > proc.time()
    user  system elapsed 
-  1.284   0.056   1.323 
+  0.604   0.064   0.689 

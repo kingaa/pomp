@@ -1,8 +1,8 @@
 Package: pompExamples
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.21-1
-Date: 2013-04-22
+Version: 0.21-2
+Date: 2013-06-07
 Maintainer: Aaron A. King <kingaa@umich.edu>
 Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -15,7 +15,7 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),emai
 	  person(given=c("Helen"),family="Wearing",role=c("ctb")))
 URL: http://pomp.r-forge.r-project.org
 Description: More 'pomp' examples.
-Depends: R(>= 3.0.0), stats, methods, graphics, pomp(>= 0.43-8)
+Depends: R(>= 3.0.0), stats, methods, graphics, pomp(>= 0.45-4)
 License: GPL (>= 2)
 LazyLoad: true
 LazyData: false
