@@ -5,15 +5,15 @@
 
 #include <R.h>
 #include <Rmath.h>
-#include <Rdefines.h>
+#include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
-// facility for extracting R objects from the 'userdata' slot
+// facilities for extracting R objects from the 'userdata' slot
 const SEXP get_pomp_userdata (const char *name);
 const int *get_pomp_userdata_int (const char *name);
 const double *get_pomp_userdata_double (const char *name);
 
-// facility for computing evaluating a basis of periodic bsplines
+// facility for evaluating a set of periodic bspline basis functions
 void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
 
 // Prototype for parameter transformation function.
@@ -191,7 +191,13 @@ static R_INLINE double rgammawn (double sigma, double dt) {
 
 // facility for computing the inner product of 
 // a vector of parameters ('coef') against a vector of basis-function values ('basis')
-double dot_product (int dim, const double *basis, const double *coef);
+static R_INLINE double dot_product (int dim, const double *basis, const double *coef) {
+  int j;
+  double trans = 0.0;
+  for (j = 0; j < dim; j++)
+    trans += coef[j]*basis[j];
+  return(trans);
+}
 
 static R_INLINE double logit (double p) {
   return log(p/(1.0-p));
@@ -201,17 +207,88 @@ static R_INLINE double expit (double x) {
   return 1.0/(1.0+exp(-x));
 }
 
-// prototypes for C-level access to Euler-multinomial distribution functions
+// C-level definitions of Euler-multinomial distribution functions
 
 // simulate Euler-multinomial transitions
 // NB: 'reulermultinom' does not call GetRNGstate() and PutRNGstate() internally
 // this must be done by the calling program
 // But note that when reulermultinom is called inside a pomp 'rprocess', there is no need to call
 // {Get,Put}RNGState() as this is handled by pomp
-void reulermultinom (int m, double size, double *rate, double dt, double *trans);
+static void reulermultinom (int m, double size, double *rate, double dt, double *trans) {
+  double p = 0.0;
+  int j, k;
+  if ((size < 0.0) || (dt < 0.0) || (floor(size+0.5) != size)) {
+    for (k = 0; k < m; k++) trans[k] = R_NaN;
+    return;
+  }  
+  for (k = 0; k < m; k++) {
+    if (rate[k] < 0.0) {
+      for (j = 0; j < m; j++) trans[j] = R_NaN;
+      return;
+    }
+    p += rate[k]; // total event rate
+  }
+  if (p > 0.0) {
+    size = rbinom(size,1-exp(-p*dt)); // total number of events
+    if (!(R_FINITE(size)))
+      warning("reulermultinom: result of binomial draw is not finite");
+    m -= 1;
+    for (k = 0; k < m; k++) {
+      if (rate[k] > p) p = rate[k];
+      trans[k] = ((size > 0) && (p > 0)) ? rbinom(size,rate[k]/p) : 0;
+      if (!(R_FINITE(size)&&R_FINITE(p)&&R_FINITE(rate[k])&&R_FINITE(trans[k])))
+	warning("reulermultinom: result of binomial draw is not finite");
+      size -= trans[k];
+      p -= rate[k];
+    }
+    trans[m] = size;
+  } else {
+    for (k = 0; k < m; k++) trans[k] = 0.0;
+  }
+}
 
-// compute probabilities of eulermultinomial transitions
-double deulermultinom (int m, double size, double *rate, double dt, double *trans, int give_log);
+// compute probabilities of Euler-multinomial transitions
+static double deulermultinom (int m, double size, double *rate, double dt, double *trans, int give_log) {
+  double p = 0.0;
+  double n = 0.0;
+  double ff = 0.0;
+  int k;
+  if ((dt < 0.0) || (size < 0.0) || (floor(size+0.5) != size)) {
+    warning("NaNs produced");
+    return R_NaN;
+  }
+  for (k = 0; k < m; k++) {
+    if (rate[k] < 0.0) {
+      warning("NaNs produced");
+      return R_NaN;
+    }
+    if (trans[k] < 0.0) {
+      ff = (give_log) ? R_NegInf: 0.0;
+      return ff;
+    }
+    p += rate[k]; // total event rate
+    n += trans[k]; // total number of events
+  }
+  if (n > size) {
+    ff = (give_log) ? R_NegInf: 0.0;
+    return ff;
+  }
+  ff = dbinom(n,size,1-exp(-p*dt),1); // total number of events
+  m -= 1;
+  for (k = 0; k < m; k++) {
+    if ((n > 0) && (p > 0)) {
+      if (rate[k] > p) p = rate[k];
+      ff += dbinom(trans[k],n,rate[k]/p,1);
+    } else if (trans[k] > 0.0) {
+      ff = R_NegInf;
+      return ff;
+    }
+    n -= trans[k];
+    p -= rate[k];
+  }
+  ff = (give_log) ? ff : exp(ff);
+  return ff;
+}
 
 static R_INLINE double rbetabinom (double size, double prob, double theta) {
   return rbinom(size,rbeta(prob*theta,(1.0-prob)*theta));
