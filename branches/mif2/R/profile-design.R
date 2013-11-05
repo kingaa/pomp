@@ -1,4 +1,5 @@
-profileDesign <- function (..., lower, upper, nprof) {
+profileDesign <- function (..., lower, upper, nprof,
+                           stringsAsFactors = default.stringsAsFactors()) {
   prof <- list(...)
   pvars <- names(prof)
   if (any(pvars==""))
@@ -7,16 +8,16 @@ profileDesign <- function (..., lower, upper, nprof) {
   if (!all(sort(ovars)==sort(names(upper))))
     stop(sQuote("profileDesign"),": names of ",sQuote("lower")," and ",sQuote("upper")," must match!")
   vars <- ovars[!(ovars%in%pvars)]
-  x <- as.matrix(expand.grid(...))
-  y <- as.matrix(sobolDesign(lower=lower,upper=upper,nseq=nprof))
-  z <- array(dim=c(nrow(x)*nrow(y),ncol(x)+ncol(y)))
-  colnames(z) <- c(colnames(x),colnames(y))
-  i <- 1
-  for (j in seq_len(nrow(x))) {
-    for (k in seq_len(nrow(y))) {
-      z[i,] <- c(x[j,],y[k,])
-      i <- i+1
-    }
+  x <- expand.grid(...,stringsAsFactors=stringsAsFactors)
+  y <- sobolDesign(lower=lower,upper=upper,nseq=nprof)
+  z <- vector(mode='list',length=nrow(x)*nprof)
+  for (i in seq_len(nrow(x))) {
+    z[[i]] <- data.frame(
+                         x[i,,drop=FALSE],y,
+                         check.rows=FALSE,
+                         check.names=FALSE,
+                         row.names=seq_len(nprof)
+                         )
   }
-  as.data.frame(z)
+  do.call(rbind,z)
 }

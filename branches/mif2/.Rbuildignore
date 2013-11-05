@@ -2,5 +2,3 @@ inst/doc/Makefile
 inst/doc/(.+?)\.bst$
 inst/doc/(.+?)\.R$
 inst/doc/(.+?)\.png$
-^.*\.Rproj$
-^\.Rproj\.user$

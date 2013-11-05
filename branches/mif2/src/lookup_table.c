@@ -70,13 +70,3 @@ void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt)
   }
 }
 
-// facility for computing the inner product of 
-// a vector of parameters ('coef') against a vector of basis-function values ('basis')
-double dot_product (int dim, const double *basis, const double *coef) {
-  int j;
-  double trans = 0.0;
-  for (j = 0; j < dim; j++)
-    trans += coef[j]*basis[j];
-  return(trans);
-}
-

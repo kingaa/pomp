@@ -107,7 +107,6 @@ header <- list(
 
 decl <- list(
              periodic_bspline_basis_eval="\tvoid (*periodic_bspline_basis_eval)(double,double,int,int,double*);\nperiodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n",
-             reulermultinom="\tvoid (*reulermultinom)(int,double,double*,double,double*);\nreulermultinom = (void (*)(int,double,double*,double,double*)) R_GetCCallable(\"pomp\",\"reulermultinom\");\n",
              get_pomp_userdata="\tconst SEXP (*get_pomp_userdata)(const char *);\npomp_get_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n",
              get_pomp_userdata_int="\tconst int * (*get_pomp_userdata_int)(const char *);\npomp_get_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
              get_pomp_userdata_double="\tconst double * (*get_pomp_userdata_double)(const char *);\npomp_get_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n"

@@ -1,4 +1,16 @@
 NEWS
+0.45-4
+     o	changes in the way 'reulermultinom', 'deulermultinom', 'dot_product' are exported to other packages.  Rather than just being exported as linkables, these are now also defined as static inline functions in the 'pomp.h' header.
+
+0.45-3
+     o	fix bug with 'continue' and method 'mif2'
+
+0.45-2
+     o	new method to coerce 'pfilterd.pomp' objects to data-frames.
+
+0.45-1
+     o	'profileDesign' can now handle variables of mixed type.
+
 0.44-1
      o	New 'mif2' option for 'mif'.
 
