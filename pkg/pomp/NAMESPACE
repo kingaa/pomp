@@ -29,6 +29,7 @@ useDynLib(
           do_init_state
           )
 
+import(methods)
 importFrom(graphics,plot)		
 importFrom(stats,simulate,time,coef,logLik,window)
 importFrom(mvtnorm,dmvnorm,rmvnorm)
