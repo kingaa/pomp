@@ -1,6 +1,3 @@
-inst/doc/Makefile
+vignettes/Makefile
 inst/data-R/Makefile
-inst/doc/(.+?)\.bst$
-inst/doc/(.+?)\.R$
-inst/doc/(.+?)\.png$
-inst/doc/(.+?)\.pbs$
+vignettes/(.+?)\.pbs$

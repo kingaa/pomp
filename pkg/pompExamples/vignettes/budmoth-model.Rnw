@@ -24,7 +24,7 @@
 \newcommand\logit{{\mathrm{logit}}}
 \newcommand\expit{{\mathrm{expit}}}
 
-\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=F,png=T,keep.source=T,split=T,prefix=T,prefix.string=budmoth-model,resolution=150}
+\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=F,png=T,keep.source=T,split=F,prefix=T,prefix.string=budmoth-model,resolution=150}
 
 \title{Larch Budmoth State-Space Model}
 \author{AAK, ELI, SPE, KBN}
@@ -159,7 +159,7 @@ print(
 <<data-plot,fig=T,height=6,width=8,pdf=T,png=F,echo=F>>=
 require(pompExamples)
 require(plyr)
-require(reshape)
+require(reshape2)
 require(ggplot2)
 data(budmoth.sim)
 x <- ldply(budmoth.sim,as.data.frame)
@@ -429,9 +429,11 @@ These calculations took \Sexpr{signif(etime,3)}~CPU~\Sexpr{units(etime)} on inex
 <<slices-plot,fig=T,png=T,pdf=F,echo=F,height=7,width=7>>=
 require(ggplot2)
 require(plyr)
-require(reshape)
-x <- melt(slices,id.vars=c(".id","dataset","slice","loglik","nfail","etime"))
-x$.id <- NULL
+require(reshape2)
+slices$.id <- NULL
+slices$etime <- NULL
+slices$nfail <- NULL
+x <- melt(slices,id.vars=c("dataset","slice","loglik"))
 x$slice <- factor(x$slice,levels=levels(x$variable))
 x <- subset(x,slice==variable)
 x <- ddply(x,~dataset+slice,subset,loglik>max(loglik)-50)

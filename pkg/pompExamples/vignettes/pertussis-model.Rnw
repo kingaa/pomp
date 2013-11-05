@@ -370,7 +370,7 @@ Plots of the data are shown in Fig.~\ref{fig:dataplots}.
 <<dataplots,fig=T,echo=F,png=T,pdf=F,height=8,width=6>>=
 require(ggplot2)
 require(plyr)
-require(reshape)
+require(reshape2)
 require(pompExamples)
 data(pertussis.sim)
 x <- ldply(pertussis.sim,as.data.frame)
