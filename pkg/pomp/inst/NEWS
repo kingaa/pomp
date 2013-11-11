@@ -1,4 +1,9 @@
 NEWS
+0.45-5
+     o	a fix so that 'pompBuilder' will find 'pomp.h' header file on Windows machines.  Thanks to Dave Hayman for finding the problem.
+
+     o	some reorganization of the source package structure.
+
 0.45-4
      o	changes in the way 'reulermultinom', 'deulermultinom', 'dot_product' are exported to other packages.  Rather than just being exported as linkables, these are now also defined as static inline functions in the 'pomp.h' header.
 

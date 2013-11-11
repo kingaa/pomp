@@ -81,6 +81,7 @@ export(
        compare.mif,
        nlf,
        parmat,
+       logmeanexp,
        probe.mean,
        probe.median,
        probe.var,

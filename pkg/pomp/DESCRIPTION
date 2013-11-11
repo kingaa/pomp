@@ -1,21 +1,24 @@
 Package: pomp
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.45-5
-Date: 2013-11-05
-Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),email="kingaa@umich.edu"),
+Version: 0.45-6
+Date: 2013-11-10
+Authors@R: c(
+	   person(given=c("Aaron","A."),family="King",
+		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
 	  person(given=c("Carles"),family="Breto",role=c("aut")),
 	  person(given=c("Stephen","P."),family="Ellner",role=c("ctb")),
 	  person(given=c("Matthew","J."),family="Ferrari",role=c("ctb")),
 	  person(given=c("Bruce","E."),family="Kendall",role=c("ctb")),
 	  person(given=c("Michael"),family="Lavine",role=c("ctb")),
+	  person(given="Dao",family="Nguyen",role=c("ctb")),
 	  person(given=c("Daniel","C."),family="Reuman",role=c("ctb")),
 	  person(given=c("Helen"),family="Wearing",role=c("ctb")),
-	  person(given=c("Simon","N."),family="Wood",role=c("ctb")),
-	  person(given="Dao",family="Nguyen",role=c("ctb"))	)
+	  person(given=c("Simon","N."),family="Wood",role=c("ctb"))
+	  )
 Maintainer: Aaron A. King <kingaa@umich.edu>
-Author: Aaron A. King, Edward L. Ionides, Carles Breto, Steve Ellner, Bruce Kendall, Helen Wearing, Matthew J. Ferrari, Michael Lavine, Daniel C. Reuman, Simon N. Wood, Dao Nguyen
+Author: Aaron A. King, Edward L. Ionides, Carles Breto, Stephen P. Ellner, Matthew J. Ferrari, Bruce E. Kendall, Michael Lavine, Dao Nguyen, Daniel C. Reuman, Helen Wearing, Simon N. Wood
 URL: http://pomp.r-forge.r-project.org
 Description: Inference methods for partially-observed Markov processes
 Depends: R(>= 2.14.1), stats, graphics, methods, mvtnorm, subplex, deSolve
@@ -23,7 +26,8 @@ License: GPL(>= 2)
 LazyData: true
 BuildVignettes: true
 Collate: aaa.R authors.R version.R eulermultinom.R plugins.R 
-	 parmat.R slice-design.R profile-design.R sobol.R bsplines.R sannbox.R
+	 parmat.R logmeanexp.R slice-design.R 
+	 profile-design.R sobol.R bsplines.R sannbox.R
 	 pomp-fun.R pomp-class.R pomp.R pomp-methods.R 
 	 rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R 
 	 simulate-pomp.R trajectory-pomp.R plot-pomp.R 

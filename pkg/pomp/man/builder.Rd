@@ -55,12 +55,20 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
 }
 \value{
   The constructed \code{pomp} object.
-  A side-effect is the writing and compilation of a C code into a shared-object library.
+  A side-effect is the writing and compilation of a C code into a dynamics shared object.
   These files will reside in the current working directory (see \code{\link{getwd}}).
-  If \code{pompBuilder} has been called with \code{link=FALSE}, this shared-object library must be linked (see \code{\link{dyn.load}}) before the \code{pomp} object can be used.
+  If \code{pompBuilder} has been called with \code{link=FALSE}, this dynamic shared object must be linked (see \code{\link{dyn.load}}) before the \code{pomp} object can be used.
+
+  \strong{Parallel computing caution:}
+  note that, since a side-effect of running \code{pompBuilder} is the writing and compilation of a file, caution must be used when running parallel computations.
+  Simultaneous execution of \code{pompBuilder} on nodes sharing a common disk will cause all nodes to attempt to write the same file at the same time;
+  the results will be undefined.
+  If multiple nodes are to work on the same \code{pomp} object built by \code{pompBuilder}, first run \code{pompBuilder} once (perhaps with \code{link=FALSE}) to write the C file and compile it into a dynamic shared object file.
+  The \code{pomp} object returned by \code{pompBuilder} can then be shared with all worker nodes.
+  Note, however, that all worker nodes must dynamically load (using \code{\link{dyn.load}}) the dynamic shared object file before anything can be done with the \code{pomp} object.
 }
 \details{
-  \code{pompBuilder} assumes that files can be written to the current working directory and that shared-object libraries can be compiled and linked, i.e., that \code{R CMD SHLIB} will work.
+  \code{pompBuilder} assumes that files can be written to the current working directory and that dynamic shared objects can be compiled and linked, i.e., that \code{R CMD SHLIB} will work.
   This will not typically be the case in out-of-the-box Windows installations.
 }
 \seealso{
