@@ -58,4 +58,23 @@ if (FALSE) {
   acf(conv.rec(f2)[,c("alpha.2","alpha.3")])
 }
 
+dprior.ou2 <- function (params, hyperparams, ..., log) {
+  f <- sum(dnorm(params,mean=hyperparams$mean,sd=hyperparams$sd,log=TRUE))
+  if (log) f else exp(f)
+}
+
+f5 <- pmcmc(
+            ou2,
+            start=coef(ou2),
+            Nmcmc=20,
+            dprior=dprior.ou2,
+            hyperparams=list(mean=coef(ou2),sd=1),
+            rw.sd=c(alpha.2=0.001,alpha.3=0.001),
+            Np=100,
+            max.fail=100, 
+            verbose=FALSE
+            )
+f5 <- continue(f5,Nmcmc=200,max.fail=100)
+plot(f1)
+
 dev.off()

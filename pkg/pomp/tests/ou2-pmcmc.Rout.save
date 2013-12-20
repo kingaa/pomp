@@ -1,7 +1,6 @@
 
-R version 2.15.2 (2012-10-26) -- "Trick or Treat"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -81,10 +80,29 @@ newly created pomp objects:
 +   acf(conv.rec(f2)[,c("alpha.2","alpha.3")])
 + }
 > 
+> dprior.ou2 <- function (params, hyperparams, ..., log) {
++   f <- sum(dnorm(params,mean=hyperparams$mean,sd=hyperparams$sd,log=TRUE))
++   if (log) f else exp(f)
++ }
+> 
+> f5 <- pmcmc(
++             ou2,
++             start=coef(ou2),
++             Nmcmc=20,
++             dprior=dprior.ou2,
++             hyperparams=list(mean=coef(ou2),sd=1),
++             rw.sd=c(alpha.2=0.001,alpha.3=0.001),
++             Np=100,
++             max.fail=100, 
++             verbose=FALSE
++             )
+> f5 <- continue(f5,Nmcmc=200,max.fail=100)
+> plot(f1)
+> 
 > dev.off()
 null device 
           1 
 > 
 > proc.time()
    user  system elapsed 
-  6.788   0.052   6.997 
+ 11.480   0.036  11.720 

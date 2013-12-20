@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.45-6
-Date: 2013-11-10
+Version: 0.45-7
+Date: 2013-12-20
 Authors@R: c(
 	   person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
@@ -29,7 +29,8 @@ Collate: aaa.R authors.R version.R eulermultinom.R plugins.R
 	 parmat.R logmeanexp.R slice-design.R 
 	 profile-design.R sobol.R bsplines.R sannbox.R
 	 pomp-fun.R pomp-class.R pomp.R pomp-methods.R 
-	 rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R 
+	 rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R 
+	 dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R 
 	 simulate-pomp.R trajectory-pomp.R plot-pomp.R 
 	 pfilter.R pfilter-methods.R traj-match.R bsmc.R
 	 mif-class.R particles-mif.R mif.R mif-methods.R compare-mif.R 

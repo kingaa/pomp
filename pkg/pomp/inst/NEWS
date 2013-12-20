@@ -1,6 +1,11 @@
 NEWS
-0.45-5
+0.45-7
+     o	bug fix in 'pmcmc': Metropolis-Hastings ratio was incorrect except for flat priors!
+	
+0.45-6
      o	a fix so that 'pompBuilder' will find 'pomp.h' header file on Windows machines.  Thanks to Dave Hayman for finding the problem.
+
+     o	new 'logmeanexp' function.
 
      o	some reorganization of the source package structure.
 

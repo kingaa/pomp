@@ -237,7 +237,7 @@ pmcmc.internal <- function (object, Nmcmc,
     gnsi <- FALSE
 
     ## PMCMC update rule (OK because proposal is symmetric)
-    if (runif(1) < exp(pfp.prop@loglik-pfp@loglik+log.prior-log.prior.prop)) {
+    if (runif(1) < exp(pfp.prop@loglik+log.prior.prop-pfp@loglik-log.prior)) {
       pfp <- pfp.prop
       theta <- theta.prop
     }
