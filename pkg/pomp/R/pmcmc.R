@@ -240,6 +240,7 @@ pmcmc.internal <- function (object, Nmcmc,
     if (runif(1) < exp(pfp.prop@loglik+log.prior.prop-pfp@loglik-log.prior)) {
       pfp <- pfp.prop
       theta <- theta.prop
+      log.prior <- log.prior.prop
     }
 
     ## store a record of this iteration
