@@ -75,6 +75,6 @@ f5 <- pmcmc(
             verbose=FALSE
             )
 f5 <- continue(f5,Nmcmc=200,max.fail=100)
-plot(f1)
+plot(f5)
 
 dev.off()
