@@ -1,7 +1,7 @@
 Package: pompExamples
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.21-4
+Version: 0.22-1
 Date: 2013-11-11
 Maintainer: Aaron A. King <kingaa@umich.edu>
 Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),email="kingaa@umich.edu"),
