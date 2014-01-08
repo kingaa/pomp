@@ -1,4 +1,7 @@
 NEWS
+0.45-8
+     o	bug fix in 'gompertz' example.
+
 0.45-7
      o	bug fix in 'pmcmc': Metropolis-Hastings ratio was incorrect except for flat priors!
 	

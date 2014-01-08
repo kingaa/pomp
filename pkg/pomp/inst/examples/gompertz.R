@@ -105,7 +105,7 @@ dat <- '"time";"X";"Y"
 '
 
 po <- pomp(
-           data=read.csv2(text=dat),
+           data=subset(read.csv2(text=dat),select=-X),
            times="time",
            t0=0,
            params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
