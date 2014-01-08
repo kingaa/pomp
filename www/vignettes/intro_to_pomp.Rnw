@@ -646,11 +646,10 @@ This means that the likelihood maximization is done on the estimation scale (see
 theta.true <- coef(gompertz)
 theta.mif <- apply(sapply(mf,coef),1,mean)
 loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
-bl <- mean(loglik.mif)
-loglik.mif.est <- bl+log(mean(exp(loglik.mif-bl)))
+loglik.mif.est <- logmeanexp(loglik.mif)
 loglik.mif.se <- sd(exp(loglik.mif-bl))/exp(loglik.mif.est-bl)
 loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
-loglik.true.est <- bl+log(mean(exp(loglik.true-bl)))
+loglik.true.est <- logmeanexp(loglik.true)
 loglik.true.se <- sd(exp(loglik.true-bl))/exp(loglik.true.est-bl)
 @ 
 
@@ -1278,7 +1277,7 @@ true.fit <- nlf(
                 transform.params=TRUE,
                 est=c("K","r"),
                 lags=2,
-                seed=7639873, 
+                seed=7639873L, 
                 method="Nelder-Mead",
                 trace=4,
                 nasymp=5000
