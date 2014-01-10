@@ -9,10 +9,10 @@ default: vignettes clean
 vignettes: advanced_topics_in_pomp.pdf advanced_topics_in_pomp.R intro_to_pomp.pdf intro_to_pomp.R
 
 %.R: %.Rnw
-	$(REXE) CMD Stangle $*
+	$(REXE) CMD Stangle $*.Rnw
 
 %.tex: %.Rnw
-	$(REXE) CMD Sweave $*
+	$(REXE) CMD Sweave $*.Rnw
 
 %.pdf: %.tex
 	$(PDFLATEX) $*

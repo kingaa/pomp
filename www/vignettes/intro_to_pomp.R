@@ -1,4 +1,4 @@
-### R code from vignette source 'intro_to_pomp'
+### R code from vignette source 'intro_to_pomp.Rnw'
 ### Encoding: UTF-8
 
 ###################################################
@@ -401,11 +401,9 @@ theta.true <- theta
 ## theta.true <- coef(gompertz)
 ## theta.mif <- apply(sapply(mf,coef),1,mean)
 ## loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
-## loglik.mif.est <- logmeanexp(loglik.mif)
-## loglik.mif.se <- sd(exp(loglik.mif-bl))/exp(loglik.mif.est-bl)
+## loglik.mif.est <- logmeanexp(loglik.mif,se=TRUE)
 ## loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
-## loglik.true.est <- logmeanexp(loglik.true)
-## loglik.true.se <- sd(exp(loglik.true-bl))/exp(loglik.true.est-bl)
+## loglik.true.est <- logmeanexp(loglik.true,se=TRUE)
 
 
 ###################################################
@@ -446,41 +444,35 @@ replicate(
 theta.true <- coef(gompertz)
 theta.mif <- apply(sapply(mf,coef),1,mean)
 loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
-loglik.mif.est <- logmeanexp(loglik.mif)
-loglik.mif.se <- sd(exp(loglik.mif-bl))/exp(loglik.mif.est-bl)
+loglik.mif.est <- logmeanexp(loglik.mif,se=TRUE)
 loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
-loglik.true.est <- logmeanexp(loglik.true)
-loglik.true.se <- sd(exp(loglik.true-bl))/exp(loglik.true.est-bl)
+loglik.true.est <- logmeanexp(loglik.true,se=TRUE)
   toc <- Sys.time()
   etime <- toc-tic
   save(
        mf,estpars,
        theta.mif,theta.true,
        loglik.mif.est,loglik.true.est,
-       loglik.mif.se,loglik.true.se,
        etime,
        file=binary.file,
        compress="xz"
        )
 }
 rbind(
-#      guess=c(signif(theta.guess[estpars],3),loglik=round(loglik.guess,1)),
-      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif.est,1),loglik.se=signif(loglik.mif.se,2)),
-      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true.est,1),loglik.se=signif(loglik.true.se,2))
+      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif.est[1],1),loglik.se=signif(loglik.mif.est[2],2)),
+      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true.est[1],1),loglik.se=signif(loglik.true.est[2],2))
       ) -> results.table
 
 
 ###################################################
-### code chunk number 41: intro_to_pomp.Rnw:689-690 (eval = FALSE)
+### code chunk number 41: intro_to_pomp.Rnw:685-686 (eval = FALSE)
 ###################################################
 ## theta.true <- coef(gompertz)
 ## theta.mif <- apply(sapply(mf,coef),1,mean)
 ## loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
-## loglik.mif.est <- logmeanexp(loglik.mif)
-## loglik.mif.se <- sd(exp(loglik.mif-bl))/exp(loglik.mif.est-bl)
+## loglik.mif.est <- logmeanexp(loglik.mif,se=TRUE)
 ## loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
-## loglik.true.est <- logmeanexp(loglik.true)
-## loglik.true.se <- sd(exp(loglik.true-bl))/exp(loglik.true.est-bl)
+## loglik.true.est <- logmeanexp(loglik.true,se=TRUE)
 
 
 ###################################################
@@ -932,7 +924,7 @@ fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
 
 
 ###################################################
-### code chunk number 69: intro_to_pomp.Rnw:1124-1125
+### code chunk number 69: intro_to_pomp.Rnw:1120-1121
 ###################################################
 fits
 
@@ -1117,7 +1109,7 @@ fvals <- exp(fvals/ndata)
 
 
 ###################################################
-### code chunk number 77: intro_to_pomp.Rnw:1270-1271
+### code chunk number 77: intro_to_pomp.Rnw:1266-1267
 ###################################################
 apply(fvals,2,function(x)sd(x)/mean(x))
 
@@ -1130,7 +1122,7 @@ apply(fvals,2,function(x)sd(x)/mean(x))
 ##                 transform.params=TRUE,
 ##                 est=c("K","r"),
 ##                 lags=2,
-##                 seed=7639873L, 
+##                 seed=7639873, 
 ##                 method="Nelder-Mead",
 ##                 trace=4,
 ##                 nasymp=5000
@@ -1149,7 +1141,7 @@ true.fit <- nlf(
                 transform.params=TRUE,
                 est=c("K","r"),
                 lags=2,
-                seed=7639873L, 
+                seed=7639873, 
                 method="Nelder-Mead",
                 trace=4,
                 nasymp=5000
@@ -1159,7 +1151,7 @@ true.fit <- nlf(
 
 
 ###################################################
-### code chunk number 80: intro_to_pomp.Rnw:1309-1310
+### code chunk number 80: intro_to_pomp.Rnw:1305-1306
 ###################################################
 set.seed(32329L)
 
@@ -1229,7 +1221,7 @@ colnames(pars) <- c("r","K")
 
 
 ###################################################
-### code chunk number 83: intro_to_pomp.Rnw:1347-1348
+### code chunk number 83: intro_to_pomp.Rnw:1343-1344
 ###################################################
 apply(pars,2,sd)
 

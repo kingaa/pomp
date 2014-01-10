@@ -1,4 +1,4 @@
-### R code from vignette source 'advanced_topics_in_pomp'
+### R code from vignette source 'advanced_topics_in_pomp.Rnw'
 ### Encoding: UTF-8
 
 ###################################################
