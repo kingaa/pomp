@@ -1,7 +1,6 @@
 
-R version 2.15.2 (2012-10-26) -- "Trick or Treat"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -24,7 +23,7 @@ Loading required package: deSolve
 > set.seed(594861940L)
 > 
 > pompExample(ou2)
-newly created pomp objects:
+newly created pomp object(s):
  ou2 
 > estnames=c("alpha.2","alpha.3","tau")
 > theta.truth <- coef(ou2)
@@ -222,4 +221,4 @@ value   -10330.93 -555.0868  -554.48554809  -554.48546595
 > 
 > proc.time()
    user  system elapsed 
-  7.748   0.036   7.834 
+  8.164   0.064   8.283 

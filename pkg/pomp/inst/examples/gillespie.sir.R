@@ -583,10 +583,9 @@ pomp(
        x0[comp.names] <- round(params["pop"]*fracs/sum(fracs))
        x0
      }
-     ) -> po
+     ) -> gillespie.sir
 
 ## originally, the data were created via:
 ## simulate(po,nsim=1,seed=1165270654L) -> gillespie.sir
 
-assign("gillespie.sir",po,envir=.GlobalEnv)
 c("gillespie.sir")

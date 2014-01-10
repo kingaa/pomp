@@ -1,5 +1,5 @@
 
-R version 3.0.1 (2013-05-16) -- "Good Sport"
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
 Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -21,7 +21,7 @@ Loading required package: subplex
 Loading required package: deSolve
 > 
 > pompExample(ou2)
-newly created pomp objects:
+newly created pomp object(s):
  ou2 
 > 
 > set.seed(9994847L)
@@ -46,7 +46,7 @@ particle filter log likelihood at truth
   -479.61      0.46 
 > 
 > pompExample(euler.sir)
-newly created pomp objects:
+newly created pomp object(s):
  euler.sir 
 > pf <- pfilter(euler.sir,Np=100,seed=394343L)
 > print(coef(pf))
@@ -78,4 +78,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  6.044   0.104   6.320 
+  6.264   0.032   6.463 

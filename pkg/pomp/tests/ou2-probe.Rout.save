@@ -1,7 +1,6 @@
 
-R version 2.15.2 (2012-10-26) -- "Trick or Treat"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -23,7 +22,7 @@ Loading required package: deSolve
 > set.seed(1066L)
 > 
 > pompExample(ou2)
-newly created pomp objects:
+newly created pomp object(s):
  ou2 
 > 
 > pm.ou2 <- probe(
@@ -296,4 +295,4 @@ sim.5 0.5542739 0.6216561 -0.4089672 -0.7236761  0.06850115
 > 
 > proc.time()
    user  system elapsed 
-  1.272   0.052   1.383 
+  1.316   0.060   1.435 

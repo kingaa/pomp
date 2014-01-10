@@ -1,5 +1,5 @@
 
-R version 3.0.0 (2013-04-03) -- "Masked Marvel"
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
 Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -21,7 +21,7 @@ Loading required package: subplex
 Loading required package: deSolve
 > 
 > pompExample(ou2)
-newly created pomp objects:
+newly created pomp object(s):
  ou2 
 > 
 > set.seed(64857673L)
@@ -282,4 +282,4 @@ mif warning: the variable 'x2.0' has positive random-walk SD specified, but is i
 > 
 > proc.time()
    user  system elapsed 
- 12.416   0.084  12.654 
+ 12.152   0.060  12.353 

@@ -105,6 +105,7 @@ pomp(
      data=cholera,
      times='time',
      t0=t0,
+     params=mle,
      nrstage = nrstage,
      rprocess = euler.sim(
        step.fun = "_cholmodel_one",
@@ -153,7 +154,4 @@ pomp(
      }
      ) -> dacca
 
-coef(dacca) <- mle
-
-assign("dacca",dacca,envir=.GlobalEnv)
 c("dacca")

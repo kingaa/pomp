@@ -133,7 +133,6 @@ pomp(
        y1 ~ norm(mean=x1,sd=tau),
        y2 ~ norm(mean=x2,sd=tau)
        )
-     ) -> po
+     ) -> rw2
 
-assign("rw2",po,envir=.GlobalEnv)
 c("rw2")

@@ -1,7 +1,6 @@
 
-R version 2.15.2 (2012-10-26) -- "Trick or Treat"
-Copyright (C) 2012 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -22,7 +21,7 @@ Loading required package: subplex
 Loading required package: deSolve
 > 
 > pompExample(ricker)
-newly created pomp objects:
+newly created pomp object(s):
  ricker 
 > 
 > pdf(file="skeleton.pdf")
@@ -45,7 +44,7 @@ newly created pomp objects:
 > ## non-autonomous case
 > 
 > pompExample(euler.sir)
-newly created pomp objects:
+newly created pomp object(s):
  euler.sir 
 > euler.sir <- simulate(euler.sir,seed=266045243L)
 > x <- states(euler.sir)
@@ -96,4 +95,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.580   0.028   0.763 
+  0.632   0.044   0.795 

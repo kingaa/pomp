@@ -21,7 +21,7 @@ Loading required package: subplex
 Loading required package: deSolve
 > 
 > pompExample(ou2)
-newly created pomp objects:
+newly created pomp object(s):
  ou2 
 > 
 > dprior.ou2 <- function (params, hyperparams, ..., log) {
@@ -105,4 +105,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 11.480   0.036  11.720 
+ 11.572   0.060  11.819 

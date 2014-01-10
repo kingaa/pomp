@@ -1,16 +1,22 @@
-pompExample <- function (example) {
-  if (missing(example)) {
+pompExample <- function (example, envir = .GlobalEnv) {
+  example <- as.character(substitute(example))
+  if (example=="") {
     avlbl <- list.files(
                         path=system.file("examples",package="pomp"),
                         pattern=".+?R$"
                         )
     avlbl <- gsub("\\.R$","",avlbl)
-    cat("available pomp examples:\n",sQuote(avlbl),"\n")
+    avlbl
   } else {
-    ex <- as.character(substitute(example))
-    file <- system.file(file.path("examples",paste(ex,".R",sep="")),package="pomp")
+    file <- system.file(
+                        file.path("examples",paste(example,".R",sep="")),
+                        package="pomp"
+                        )
     objs <- source(file,local=TRUE)
-    cat("newly created pomp objects:\n",objs$value,"\n")
+    for (i in seq_along(objs$value)) {
+      assign(objs$value[i],get(objs$value[i]),envir=envir)
+    }
+    cat("newly created pomp object(s):\n",objs$value,"\n")
+    invisible(NULL)
   }
-  invisible(NULL)
 }

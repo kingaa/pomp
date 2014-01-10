@@ -1,4 +1,9 @@
 NEWS
+0.46-1
+     o	'pompExample' now has an optional argument, 'envir', determining which environment the pomp object will be loaded into.
+
+     o	'logmeanexp' now has an optional argument, 'se', allowing for computation of an approximate standard error.
+
 0.45-8
      o	bug fix in 'gompertz' example.
 

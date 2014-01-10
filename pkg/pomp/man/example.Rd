@@ -5,12 +5,15 @@
   \code{pompExample} loads pre-built example \code{pomp} objects.
 }
 \usage{
-pompExample(example)
+pompExample(example, envir = .GlobalEnv)
 }
 \arguments{
   \item{example}{
     example to load given as a name or literal character string.
     Evoked without an argument, \code{pompExample} lists all available examples.
+  }
+  \item{envir}{
+    the environment into which the objects should be loaded.
   }
 }
 \value{
@@ -23,5 +26,8 @@ pompExample(example)
   pompExample("gompertz")
 }
 \seealso{
-  \code{\link{blowflies}}, \code{\link{dacca}}, \code{\link{gompertz}}, \code{\link{ou2}}, \code{\link{ricker}}, \code{\link{rw2}}, \code{\link{euler.sir}}, \code{\link{gillespie.sir}}, \code{\link{bbs}}, \code{\link{verhulst}}
+  \code{\link{blowflies}}, \code{\link{dacca}}, \code{\link{gompertz}},
+  \code{\link{ou2}}, \code{\link{ricker}}, \code{\link{rw2}},
+  \code{\link{euler.sir}}, \code{\link{gillespie.sir}},
+  \code{\link{bbs}}, \code{\link{verhulst}}
 }

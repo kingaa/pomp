@@ -127,7 +127,6 @@ pomp(
        tau=1, 
        x1.0=-3, x2.0=4
        )
-     ) -> po
+     ) -> ou2
 
-assign("ou2",po,envir=.GlobalEnv)
 c("ou2")

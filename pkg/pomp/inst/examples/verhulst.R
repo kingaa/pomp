@@ -1047,7 +1047,6 @@ pomp(
        names(f) <- "n"
        f
      }
-     ) -> po
+     ) -> verhulst
 
-assign("verhulst",po,envir=.GlobalEnv)
 c("verhulst")

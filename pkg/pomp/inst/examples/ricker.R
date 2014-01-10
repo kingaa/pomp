@@ -78,7 +78,6 @@ pomp(
        params
      },
      PACKAGE="pomp"
-     ) -> po
+     ) -> ricker
 
-assign("ricker",po,envir=.GlobalEnv)
 c("ricker")

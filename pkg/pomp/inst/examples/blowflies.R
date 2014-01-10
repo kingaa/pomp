@@ -970,7 +970,4 @@ if(test){
   
 } 
 
-assign("blowflies1",blowflies1,envir=.GlobalEnv)
-assign("blowflies2",blowflies2,envir=.GlobalEnv)
-
 c("blowflies1","blowflies2")

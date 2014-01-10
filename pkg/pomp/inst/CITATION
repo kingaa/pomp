@@ -7,17 +7,19 @@ citEntry(
  	   as.person("Aaron A. King"),
 	   as.person("Edward L. Ionides"),
 	   as.person("Carles Martinez Bret\\'o"),
-   	   as.person("Steve Ellner"), 
-	   as.person("Bruce Kendall"),
-	   as.person("Helen Wearing"),
+   	   as.person("Stephen P. Ellner"), 
 	   as.person("Matthew J. Ferrari"),
+	   as.person("Bruce E. Kendall"),
 	   as.person("Michael Lavine"),
-	   as.person("Daniel C. Reuman")
+	   as.person("Dao Nguyen"),
+	   as.person("Daniel C. Reuman"),
+	   as.person("Helen Wearing"),
+	   as.person("Simon N. Wood")
 	   ),	   
-	 year=2010,
+	 year=2014,
 	 url="http://pomp.r-forge.r-rproject.org",
 	 textVersion=paste(
-			   "Aaron A. King, E. L. Ionides, C. M. Bret\\'o, S. P. Ellner, B. E. Kendall, Helen Wearing, Matthew J. Ferrari, Michael Lavine, and Daniel C. Reuman",
+			   "A. A. King, E. L. Ionides, C. M. Bret\\'o, S. P. Ellner, M. J. Ferrari, B. E. Kendall, M. Lavine, D. Nguyen, D. C. Reuman, H. Wearing, and S. N. Wood",
 			   "pomp: Statistical inference for partially observed Markov processes (R package)",
 			   "http://pomp.r-forge.r-project.org"
 			  )	   
