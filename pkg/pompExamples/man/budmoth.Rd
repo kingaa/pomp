@@ -20,7 +20,7 @@ budmoth.sim()			## print a list of all available datasets
 plot(budmoth.sim(food))
 plot(budmoth.sim(para1))
 plot(budmoth.sim(para2))
-plot(budmoth.sim(tri))
+plot(budmoth.sim("tri"))
 }
 \seealso{the \dQuote{budmoth-model} vignette}
 \keyword{datasets}

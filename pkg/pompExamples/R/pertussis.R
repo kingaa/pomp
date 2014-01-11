@@ -4,11 +4,15 @@
 
 pertussis.sim <- function (which) {
   if (missing(which)) {
-    cat("available datasets:",
-        sQuote(c("SEIR.small","SEIR.big",
-                 "SEIRS.small","SEIRS.big",
-                 "SEIRR.small","SEIRR.big",
-                 "full.small","full.big")),"\n")
+    datasets <- c(
+                  "SEIR.small","SEIR.big",
+                  "SEIRS.small","SEIRS.big",
+                  "SEIRR.small","SEIRR.big",
+                  "full.small","full.big"
+                  )
+
+    cat("available datasets:",sQuote(datasets),"\n")
+    invisible(datasets)
   } else {
     which <- as.character(substitute(which))
     simulate(
