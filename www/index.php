@@ -3,6 +3,7 @@ $domain=ereg_replace('[^\.]*\.(.*)$','\1',$_SERVER['HTTP_HOST']);
 $group_name=ereg_replace('([^\.]*)\..*$','\1',$_SERVER['HTTP_HOST']);
 $themeroot='http://r-forge.r-project.org/themes/rforge/';
 $rforgepkgs = "http://r-forge.r-project.org/R/?group_id=214";
+$tracker = "http://r-forge.r-project.org/tracker/?group_id=214";
 $cranpage = "http://cran.at.r-project.org/web/packages/pomp/";
 $crancontents = file_get_contents($cranpage);
 preg_match("/<tr><td valign=top>Version:<\/td>\\n<td>(.+?)<\/td>/",$crancontents,$matches);
@@ -54,6 +55,7 @@ statistical inference for<br>
 <li><a href="http://lists.r-forge.r-project.org/pipermail/pomp-announce/"><i>pomp-announce</i> mailing list archives</a></li>
 <li><a target="_blank" href="http://cran.at.r-project.org/web/packages/pomp/NEWS">Package NEWS file</a></li>
 <li><a href="./index.php?nav=vignettes">Tutorial vignettes</a></li>
+<li><a href="<?php echo $tracker;?>">Bug reports, feature &amp; support requests</a></li>
 <li><a href="./index.php?nav=bib">References to the literature</a></li>
 <li><a href="./index.php?nav=authors">Authors' homepages</a></li>
 </ul>
