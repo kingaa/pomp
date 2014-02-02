@@ -175,5 +175,4 @@ mif(object, \dots)
   \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
   See the \dQuote{intro_to_pomp} vignette for examples.
 }
-\keyword{models}
 \keyword{ts}

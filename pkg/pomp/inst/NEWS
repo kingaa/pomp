@@ -1,4 +1,7 @@
 NEWS
+0.47-1
+     o	'abc' implements Approximate Bayesian Computation for pomp models.
+
 0.46-1
      o	'pompExample' now has an optional argument, 'envir', determining which environment the pomp object will be loaded into.
 

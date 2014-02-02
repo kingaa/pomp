@@ -31,4 +31,3 @@ setMethod(
             compare.pmcmc(x)
           }
           )
-

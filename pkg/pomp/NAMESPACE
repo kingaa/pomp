@@ -43,7 +43,8 @@ exportClasses(
               pmcmc,
               traj.matched.pomp,
               probed.pomp,probe.matched.pomp,
-              spect.pomp,spect.matched.pomp
+              spect.pomp,spect.matched.pomp,
+              abc
               )
 
 exportMethods(
@@ -58,7 +59,8 @@ exportMethods(
               bsmc,
               pmcmc,dprior,
               spect,probe,
-              probe.match,traj.match
+              probe.match,abc,
+              traj.match
               )
 
 export(
