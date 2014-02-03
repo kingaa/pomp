@@ -14,4 +14,4 @@ coef(verhulst,c("n.0","sigma")) <- c(15,0)
 tm <- sort(runif(n=100,max=1))
 x <- trajectory(verhulst,times=tm)["n",,]
 y <- simulate(verhulst,times=tm,states=TRUE)["n",,]
-table(cut(x-y,breaks=10))
+table(cut(x-y,breaks=c(-Inf,seq(-0.2,0.2,by=0.01),Inf),ordered=T))
