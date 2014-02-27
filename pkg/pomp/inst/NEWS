@@ -1,4 +1,7 @@
 NEWS
+0.47-2
+     o	By default, 'pompBuilder' now creates all files in the temporary directory.
+
 0.47-1
      o	'abc' implements Approximate Bayesian Computation for pomp models.
 

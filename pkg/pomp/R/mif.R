@@ -410,12 +410,14 @@ setMethod(
             if (missing(start)) start <- coef(object)
             if (missing(rw.sd))
               stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
-            if (missing(ic.lag) && length(ivps)>0) {
-              if (method=="mif2")
-                ic.lag <- length(time(object)) # default mif2 behavior
-              else
-                stop("mif error: ",sQuote("ic.lag")," must be specified if ",sQuote("ivps"),
+            if (missing(ic.lag)) {
+              if (length(ivps)>0 && (method != "mif2")) {
+                stop("mif error: ",sQuote("ic.lag"),
+                     " must be specified if ",sQuote("ivps"),
                      " are",call.=FALSE)
+              } else {
+                ic.lag <- length(time(object))
+              }
             }
             if (missing(pars)) {
               rw.names <- names(rw.sd)[rw.sd>0]

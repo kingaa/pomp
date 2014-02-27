@@ -10,7 +10,7 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
             rmeasure, dmeasure, step.fn, step.fn.delta.t,
             skeleton, skeleton.type, skelmap.delta.t = 1,
             parameter.transform, parameter.inv.transform,
-            \dots, link = TRUE)
+            \dots, link = TRUE, save = FALSE)
 }
 \arguments{
   \item{data, times, t0}{
@@ -51,6 +51,11 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
   }
   \item{link}{
     logical; if TRUE, the resulting code will be linked after compilation.
+  }
+  \item{save}{
+    logical; if TRUE, the resulting C code will be saved in the current working directory.
+    The shared-object library will also be created in this directory.
+    If FALSE, the C code and shared-object library will be created in the temporary directory.
   }
 }
 \value{

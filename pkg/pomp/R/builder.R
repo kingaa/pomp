@@ -24,7 +24,7 @@ pompBuilder <- function (data, times, t0, name,
                          rmeasure, dmeasure, step.fn, step.fn.delta.t,
                          skeleton, skeleton.type, skelmap.delta.t = 1,
                          parameter.transform, parameter.inv.transform,
-                         ..., link = TRUE) {
+                         ..., link = TRUE, save = FALSE) {
   if (!is.data.frame(data)) stop(sQuote("data")," must be a data-frame")
   obsnames <- names(data)
   obsnames <- setdiff(obsnames,times)
@@ -37,20 +37,27 @@ pompBuilder <- function (data, times, t0, name,
     tcovar <- numeric(0)
     covarnames <- character(0)
   }
-  solib <- pompCBuilder(
-                        name=name,
-                        statenames=statenames,
-                        paramnames=paramnames,
-                        covarnames=covarnames,
-                        obsnames=obsnames,
-                        rmeasure=rmeasure,
-                        dmeasure=dmeasure,
-                        step.fn=step.fn,
-                        skeleton=skeleton,
-                        parameter.transform=parameter.transform,
-                        parameter.inv.transform=parameter.inv.transform
-                        )
-  if (link) pompLink(name)
+  pompCBuilder(
+               name=name,
+               statenames=statenames,
+               paramnames=paramnames,
+               covarnames=covarnames,
+               obsnames=obsnames,
+               rmeasure=rmeasure,
+               dmeasure=dmeasure,
+               step.fn=step.fn,
+               skeleton=skeleton,
+               parameter.transform=parameter.transform,
+               parameter.inv.transform=parameter.inv.transform,
+               save=save
+               )
+  if (link) {
+    if (save) {
+      pompLink(name)
+    } else {
+      pompLink(file.path(tempdir(),name))
+    }
+  }
   pomp(
        data=data,times=times,t0=t0,
        rprocess=euler.sim(
@@ -125,8 +132,10 @@ utility.fns <- list(
                     )
 
 
-pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames, rmeasure, dmeasure,
-                          step.fn, skeleton, parameter.transform, parameter.inv.transform)
+pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
+                          rmeasure, dmeasure, step.fn, skeleton,
+                          parameter.transform, parameter.inv.transform,
+                          save = FALSE)
 {
   if (missing(name)) stop(sQuote("name")," must be supplied");
   if (missing(statenames)) stop(sQuote("statenames")," must be supplied");
@@ -146,8 +155,10 @@ pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames, rm
   covarnames <- cleanForC(covarnames)
   obsnames <- cleanForC(obsnames)
 
-  modelfile <- paste0(name,".c")
-  solib <- paste0(name,.Platform$dynlib.ext)
+  stem <- if (save) name else file.path(tempdir(),name)
+  modelfile <- paste0(stem,".c") 
+  solib <- paste0(stem,.Platform$dynlib.ext)
+
   if (.Platform$OS.type=="unix") {
     pompheader <- "pomp.h"
   } else {
@@ -257,7 +268,7 @@ pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames, rm
   else
     cat("model codes written to",sQuote(modelfile),"\nlink to shared-object library",sQuote(solib),"\n")
 
-  invisible(solib)
+  invisible(NULL)
 }
 
 cleanForC <- function (text) {
