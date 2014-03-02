@@ -92,30 +92,12 @@ void _cholmodel_one (double *x, const double *p,
   const double *pt;
   int j;
 
-  if (!(R_FINITE(SUSCEP))) return;
-  if (!(R_FINITE(INFECT))) return;
-  if (!(R_FINITE(RSHORT))) return;
-  for (pt = &RLONG, j = 0; j < nrstage; j++) {
-    if (!(R_FINITE(pt[j]))) return;
-  }
+  if (COUNT != 0.0) return;
 
   eps = EPS*NRSTAGE;
 
-  if (!(R_FINITE(GAMMA))) return;
-  if (!(R_FINITE(eps))) return;
-  if (!(R_FINITE(RHO))) return;
-  if (!(R_FINITE(DELTA))) return;
-  if (!(R_FINITE(DELTA_I))) return;
-  if (!(R_FINITE(CLIN))) return;
-  if (!(R_FINITE(SD_BETA))) return;
-  if (!(R_FINITE(ALPHA))) return;
-  if (!(R_FINITE(BETATREND))) return;
-
   beta = exp(dot_product(nbasis,&SEASBASIS,&LOGBETA)+BETATREND*TREND);
   omega = exp(dot_product(nbasis,&SEASBASIS,&LOGOMEGA));
-
-  if (!(R_FINITE(beta))) return;
-  if (!(R_FINITE(omega))) return;
 
   dw = rnorm(0,sqrt(dt));	// white noise
 
@@ -135,21 +117,6 @@ void _cholmodel_one (double *x, const double *p,
 
   infections = (omega+(beta+SD_BETA*dw/dt)*effI)*SUSCEP; // infection
   sdeaths = DELTA*SUSCEP;	// natural S deaths
-  if (infections > 0.0) {
-    if ((infections+sdeaths)*dt > SUSCEP) { // too many leaving S class
-      COUNT += 1.0e10;
-      return;
-    }
-  } else {
-    if ((-CLIN*infections+disease+ideaths+passages[0])*dt > INFECT) { // too many leaving I class
-      COUNT += 1.0e5;
-      return;
-    }
-    if ((-(1-CLIN)*infections+rsdeaths+wanings)*dt > RSHORT) { // too many leaving Rs class
-      COUNT += 1;
-      return;
-    }
-  }
 
   SUSCEP += (births - infections - sdeaths + passages[nrstage] + wanings)*dt;
   INFECT += (CLIN*infections - disease - ideaths - passages[0])*dt;
@@ -159,6 +126,15 @@ void _cholmodel_one (double *x, const double *p,
   DEATHS += disease*dt;		// cumulative deaths due to disease
   NOISE += dw;
 
+  // check for violations of positivity constraints
+  // nonzero COUNT variable signals violation
+  if (SUSCEP < 0.0) { COUNT += 1; return;}
+  if (INFECT < 0.0) { COUNT += 1e3; return;}
+  if (RSHORT < 0.0) { COUNT += 1e6; return;}
+  if (DEATHS < 0.0) { COUNT += 1e9; return;}
+  for (j = 0; j < nrstage; j++) 
+    if ((&RLONG)[j] < 0.0) { COUNT += 1e12; return;}
+  
 }
 
 #undef GAMMA    

@@ -1,4 +1,10 @@
 NEWS
+0.47-3
+     o	Fix bug that arises only very occasionally in the 'dacca' cholera example.
+
+     o	Modify 'dacca' model so that rare positivity violations are punished in a different way.
+     	This modifies the formal model slightly.
+
 0.47-2
      o	By default, 'pompBuilder' now creates all files in the temporary directory.
 

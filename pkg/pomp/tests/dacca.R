@@ -14,3 +14,45 @@ print(dim(x))
 
 pf <- pfilter(dacca,Np=1000,seed=5886855L)
 print(round(logLik(pf),digits=1))
+
+## to investigate the rogue crash:
+
+dacca.pars <- c("gamma","eps","deltaI","beta.trend",
+                "log.beta1","log.beta2","log.beta3",
+                "log.beta4","log.beta5","log.beta6",
+                "log.omega1","log.omega2","log.omega3",
+                "log.omega4","log.omega5","log.omega6",
+                "sd.beta","tau")
+dacca.ivps <- c("S.0","I.0","R1.0","R2.0","R3.0")
+dacca.rw.sd <- c(
+                 rep(0.1,length(dacca.pars)),
+                 rep(0.2,length(dacca.ivps))
+                 )
+names(dacca.rw.sd) <- c(dacca.pars,dacca.ivps)
+
+param.tab <- read.csv2(text='
+"";"gamma";"eps";"rho";"delta";"deltaI";"clin";"alpha";"beta.trend";"log.beta1";"log.beta2";"log.beta3";"log.beta4";"log.beta5";"log.beta6";"log.omega1";"log.omega2";"log.omega3";"log.omega4";"log.omega5";"log.omega6";"sd.beta";"tau";"S.0";"I.0";"Rs.0";"R1.0";"R2.0";"R3.0";"nbasis";"nrstage"
+"mle1";20,8;19,1;0;0,02;0,06;1;1;-0,00498;0,747;6,38;-3,44;4,23;3,33;4,55;-1,6928195214;-2,5433835795;-2,8404393891;-4,6918179927;-8,4779724783;-4,3900588064;3,13;0,23;0,621;0,378;0;0,000843;0,000972;1,16e-07;6;3
+"box_min";10;0,2;0;0,02;0,03;1;1;-0,01;-4;0;-4;0;0;0;-10;-10;-10;-10;-10;-10;1;0,1;0;0;0;0;0;0;6;3
+"box_max";40;30;0;0,02;0,6;1;1;0;4;8;4;8;8;8;0;0;0;0;0;0;5;0,5;1;1;0;1;1;1;6;3
+',
+                       row.names=1
+                        )
+
+dacca.hyperparams <- list(
+                          min=unlist(param.tab["box_min",]),
+                          max=unlist(param.tab["box_max",])
+                          )
+dacca.rprior <- function (hyperparams, ...) {
+  r <- runif(length(hyperparams$min),min=hyperparams$min,max=hyperparams$max)
+  names(r) <- names(hyperparams$min)
+  r
+}
+
+set.seed(7777+7)
+params.tricky <- dacca.rprior(dacca.hyperparams)
+m7 <- mif(dacca,Nmif=2,start=params.tricky,pars=dacca.pars,ivps=dacca.ivps,
+          Np=100,ic.lag=600,method="mif2",rw.sd=dacca.rw.sd,
+          cooling.type="geometric",cooling.fraction=sqrt(0.1),var.factor=2,
+          transform=TRUE)
+m7 <- continue(m7)
