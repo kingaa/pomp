@@ -1,6 +1,6 @@
 
-R Under development (unstable) (2014-02-22 r65060) -- "Unsuffered Consequences"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -77,6 +77,7 @@ newly created pomp object(s):
 +                           min=unlist(param.tab["box_min",]),
 +                           max=unlist(param.tab["box_max",])
 +                           )
+> 
 > dacca.rprior <- function (hyperparams, ...) {
 +   r <- runif(length(hyperparams$min),min=hyperparams$min,max=hyperparams$max)
 +   names(r) <- names(hyperparams$min)
@@ -85,14 +86,49 @@ newly created pomp object(s):
 > 
 > set.seed(7777+7)
 > params.tricky <- dacca.rprior(dacca.hyperparams)
-> m7 <- mif(dacca,Nmif=2,start=params.tricky,pars=dacca.pars,ivps=dacca.ivps,
-+           Np=100,ic.lag=600,method="mif2",rw.sd=dacca.rw.sd,
-+           cooling.type="geometric",cooling.fraction=sqrt(0.1),var.factor=2,
-+           transform=TRUE)
-Warning message:
-1 filtering failure occurred in 'pfilter' 
+> m7 <- mif(
++           dacca,
++           Nmif=2,
++           start=params.tricky,
++           pars=dacca.pars,
++           ivps=dacca.ivps,
++           Np=100,
++           method="mif2",
++           rw.sd=dacca.rw.sd,
++           cooling.type="geometric",
++           cooling.fraction=sqrt(0.1),
++           var.factor=2,
++           transform=TRUE
++           )
+Warning messages:
+1: 11 filtering failures occurred in 'pfilter' 
+2: 4 filtering failures occurred in 'pfilter' 
 > m7 <- continue(m7)
+> 
+> set.seed(12350)
+> th.draw <- dacca.rprior(dacca.hyperparams)
+> m1 <- mif(
++           dacca,
++           Nmif=10,
++           Np=100,
++           start=th.draw,
++           pars=dacca.pars,
++           ivps=dacca.ivps,
++           method="mif2",
++           rw.sd=dacca.rw.sd,
++           cooling.type="geometric",
++           cooling.fraction=sqrt(0.1),
++           var.factor=2,
++           transform=TRUE
++           )
+Warning messages:
+1: 1 filtering failure occurred in 'pfilter' 
+2: 16 filtering failures occurred in 'pfilter' 
+3: 2 filtering failures occurred in 'pfilter' 
+4: 2 filtering failures occurred in 'pfilter' 
+5: 1 filtering failure occurred in 'pfilter' 
+6: 7 filtering failures occurred in 'pfilter' 
 > 
 > proc.time()
    user  system elapsed 
-  8.056   0.044   8.137 
+ 28.417   0.076  28.599 

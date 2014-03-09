@@ -89,7 +89,7 @@ void _cholmodel_one (double *x, const double *p,
   double beta;
   double omega;
   double dw;
-  const double *pt;
+  double *pt;
   int j;
 
   if (COUNT != 0.0) return;
@@ -110,9 +110,9 @@ void _cholmodel_one (double *x, const double *p,
   rsdeaths = DELTA*RSHORT;	// natural Rs deaths
   wanings = RHO*RSHORT;		// loss of immunity
 
-  for (pt = &RLONG, j = 0; j < nrstage; j++) {
-    rldeaths[j] = DELTA*pt[j];	// natural R deaths
-    passages[j+1] = eps*pt[j];	// passage to the next immunity class
+  for (pt = &RLONG, j = 0; j < nrstage; j++, pt++) {
+    rldeaths[j] = *pt*DELTA;	// natural R deaths
+    passages[j+1] = *pt*eps;	// passage to the next immunity class
   }
 
   infections = (omega+(beta+SD_BETA*dw/dt)*effI)*SUSCEP; // infection
@@ -121,20 +121,39 @@ void _cholmodel_one (double *x, const double *p,
   SUSCEP += (births - infections - sdeaths + passages[nrstage] + wanings)*dt;
   INFECT += (CLIN*infections - disease - ideaths - passages[0])*dt;
   RSHORT += ((1-CLIN)*infections - rsdeaths - wanings)*dt;
-  for (j = 0; j < nrstage; j++) 
-    (&RLONG)[j] += (passages[j] - passages[j+1] - rldeaths[j])*dt;
+  for (pt = &RLONG, j = 0; j < nrstage; j++, pt++) 
+    *pt += (passages[j] - passages[j+1] - rldeaths[j])*dt;
   DEATHS += disease*dt;		// cumulative deaths due to disease
   NOISE += dw;
 
   // check for violations of positivity constraints
   // nonzero COUNT variable signals violation
-  if (SUSCEP < 0.0) { COUNT += 1; return;}
-  if (INFECT < 0.0) { COUNT += 1e3; return;}
-  if (RSHORT < 0.0) { COUNT += 1e6; return;}
-  if (DEATHS < 0.0) { COUNT += 1e9; return;}
-  for (j = 0; j < nrstage; j++) 
-    if ((&RLONG)[j] < 0.0) { COUNT += 1e12; return;}
-  
+  if (SUSCEP < 0.0) {
+    SUSCEP = 0.0; INFECT = 0.0; RSHORT = 0.0; 
+    COUNT += 1; 
+  }
+  if (INFECT < 0.0) {
+    INFECT = 0.0; SUSCEP = 0.0; 
+    COUNT += 1e3; 
+  }
+  if (RSHORT < 0.0) { 
+    RSHORT = 0.0; SUSCEP = 0.0; 
+    COUNT += 1e6; 
+  }
+  if (DEATHS < 0.0) { 
+    DEATHS = 0.0; 
+    COUNT += 1e9; 
+  }
+  for (pt = &RLONG, j = 0; j < nrstage-1; j++, pt++) {
+    if (*pt < 0.0) {
+      *pt = 0.0; *(pt+1) = 0.0;
+      COUNT += 1e12; 
+    }
+  }
+  if (*pt < 0.0) {
+    *pt = 0.0; SUSCEP = 0.0;
+    COUNT += 1e12;
+  }
 }
 
 #undef GAMMA    

@@ -1,4 +1,7 @@
 NEWS
+0.47-4
+     o	Revisit 'dacca' bug.  Set negative compartments to zero along with compartments immediately downstream.
+
 0.47-3
      o	Fix bug that arises only very occasionally in the 'dacca' cholera example.
 

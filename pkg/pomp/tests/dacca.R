@@ -43,6 +43,7 @@ dacca.hyperparams <- list(
                           min=unlist(param.tab["box_min",]),
                           max=unlist(param.tab["box_max",])
                           )
+
 dacca.rprior <- function (hyperparams, ...) {
   r <- runif(length(hyperparams$min),min=hyperparams$min,max=hyperparams$max)
   names(r) <- names(hyperparams$min)
@@ -51,8 +52,35 @@ dacca.rprior <- function (hyperparams, ...) {
 
 set.seed(7777+7)
 params.tricky <- dacca.rprior(dacca.hyperparams)
-m7 <- mif(dacca,Nmif=2,start=params.tricky,pars=dacca.pars,ivps=dacca.ivps,
-          Np=100,ic.lag=600,method="mif2",rw.sd=dacca.rw.sd,
-          cooling.type="geometric",cooling.fraction=sqrt(0.1),var.factor=2,
-          transform=TRUE)
+m7 <- mif(
+          dacca,
+          Nmif=2,
+          start=params.tricky,
+          pars=dacca.pars,
+          ivps=dacca.ivps,
+          Np=100,
+          method="mif2",
+          rw.sd=dacca.rw.sd,
+          cooling.type="geometric",
+          cooling.fraction=sqrt(0.1),
+          var.factor=2,
+          transform=TRUE
+          )
 m7 <- continue(m7)
+
+set.seed(12350)
+th.draw <- dacca.rprior(dacca.hyperparams)
+m1 <- mif(
+          dacca,
+          Nmif=10,
+          Np=100,
+          start=th.draw,
+          pars=dacca.pars,
+          ivps=dacca.ivps,
+          method="mif2",
+          rw.sd=dacca.rw.sd,
+          cooling.type="geometric",
+          cooling.fraction=sqrt(0.1),
+          var.factor=2,
+          transform=TRUE
+          )
