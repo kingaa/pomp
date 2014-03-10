@@ -1,5 +1,5 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+R version 3.0.1 (2013-05-16) -- "Good Sport"
 Copyright (C) 2013 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -48,6 +48,10 @@ newly created pomp object(s):
 > pf <- pfilter(dacca,Np=1000,seed=5886855L)
 > print(round(logLik(pf),digits=1))
 [1] -3748.6
+> 
+> pf1 <- pfilter(simulate(dacca),Np=1000,seed=5886855L)
+> print(round(logLik(pf1),digits=1))
+[1] -3701.5
 > 
 > ## to investigate the rogue crash:
 > 
@@ -131,4 +135,4 @@ Warning messages:
 > 
 > proc.time()
    user  system elapsed 
- 28.417   0.076  28.599 
+ 36.898   0.108  37.070 

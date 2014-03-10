@@ -18,6 +18,10 @@
 #define CLIN       (p[parindex[11]])
 #define NBASIS     (p[parindex[12]])
 #define NRSTAGE    (p[parindex[13]])
+#define S0         (p[parindex[14]])
+#define I0         (p[parindex[15]])
+#define RS0        (p[parindex[16]])
+#define RL0        (p[parindex[17]])
 
 #define SUSCEP     (x[stateindex[0]])
 #define INFECT     (x[stateindex[1]])
@@ -33,6 +37,52 @@
 #define TREND      (covar[covindex[3]])
 
 #define DATADEATHS   (y[obsindex[0]])
+
+void _cholmodel_untrans (double *pt, double *p, int *parindex) 
+{
+  int k, nrstage = (int) NRSTAGE;
+  pt[parindex[0]] = log(TAU);
+  pt[parindex[1]] = log(GAMMA);
+  pt[parindex[2]] = log(EPS);
+  pt[parindex[3]] = log(DELTA);
+  pt[parindex[4]] = log(DELTA_I);
+  pt[parindex[6]] = log(SD_BETA);
+  pt[parindex[9]] = log(ALPHA);
+  pt[parindex[10]] = log(RHO);
+  pt[parindex[11]] = logit(CLIN);
+
+  pt[parindex[14]] = log(S0);
+  pt[parindex[15]] = log(I0);
+  pt[parindex[16]] = log(RS0);
+  for (k = 0; k < nrstage; k++) 
+    pt[parindex[17]+k] = log((&RL0)[k]);
+}
+ 
+void _cholmodel_trans (double *pt, double *p, int *parindex) 
+{
+  int k, nrstage = (int) NRSTAGE;
+  double sum = 0.0;
+  pt[parindex[0]] = exp(TAU);
+  pt[parindex[1]] = exp(GAMMA);
+  pt[parindex[2]] = exp(EPS);
+  pt[parindex[3]] = exp(DELTA);
+  pt[parindex[4]] = exp(DELTA_I);
+  pt[parindex[6]] = exp(SD_BETA);
+  pt[parindex[9]] = exp(ALPHA);
+  pt[parindex[10]] = exp(RHO);
+  pt[parindex[11]] = expit(CLIN);
+
+  sum += (pt[parindex[14]] = exp(S0));
+  sum += (pt[parindex[15]] = exp(I0));
+  sum += (pt[parindex[16]] = exp(RS0));
+  for (k = 0; k < nrstage; k++)
+    sum += (pt[parindex[17]+k] = exp((&RL0)[k]));
+  pt[parindex[14]] /= sum;
+  pt[parindex[15]] /= sum;
+  pt[parindex[16]] /= sum;
+  for (k = 0; k < nrstage; k++)
+    pt[parindex[17]+k] /= sum;
+}
 
 void _cholmodel_norm_rmeasure (double *y, double *x, double *p, 
 			       int *obsindex, int *stateindex, int *parindex, int *covindex,

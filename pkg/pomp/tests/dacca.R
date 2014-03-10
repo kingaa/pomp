@@ -15,6 +15,9 @@ print(dim(x))
 pf <- pfilter(dacca,Np=1000,seed=5886855L)
 print(round(logLik(pf),digits=1))
 
+pf1 <- pfilter(simulate(dacca),Np=1000,seed=5886855L)
+print(round(logLik(pf1),digits=1))
+
 ## to investigate the rogue crash:
 
 dacca.pars <- c("gamma","eps","deltaI","beta.trend",

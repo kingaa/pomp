@@ -122,28 +122,14 @@ pomp(
      statenames = c("S","I","Rs","R1","M","W","count"),
      paramnames = c("tau","gamma","eps","delta","deltaI",
        "log.omega1","sd.beta","beta.trend","log.beta1",
-       "alpha","rho","clin","nbasis","nrstage"),
+       "alpha","rho","clin","nbasis","nrstage",
+       "S.0","I.0","Rs.0","R1.0"),
      covarnames = c("pop","dpopdt","seas.1","trend"),
      all.state.names=c("S","I","Rs",paste("R",1:nrstage,sep=''),"M","W","count"),
      comp.names=c("S","I","Rs",paste("R",1:nrstage,sep='')),
      comp.ic.names=c("S.0","I.0","Rs.0",paste("R",1:nrstage,".0",sep='')),
-     log.trans=c(                 # parameters to log transform
-       "gamma","eps","rho","delta","deltaI","alpha",
-       "tau","sd.beta",
-       "S.0","I.0","Rs.0",paste("R",1:nrstage,".0",sep='')
-       ),
-     logit.trans="clin",               # parameters to logit transform
-     parameter.transform=function (params, log.trans, logit.trans, comp.ic.names, ...) {
-       params[logit.trans] <- plogis(params[logit.trans])
-       params[log.trans] <- exp(params[log.trans])
-       params[comp.ic.names] <- params[comp.ic.names]/sum(params[comp.ic.names])
-       params
-     },
-     parameter.inv.transform=function (params, log.trans, logit.trans, comp.names, ...) {
-       params[logit.trans] <- qlogis(params[logit.trans])
-       params[log.trans] <- log(params[log.trans])
-       params
-     },
+     parameter.transform="_cholmodel_trans",
+     parameter.inv.transform="_cholmodel_untrans",
      initializer = function (params, t0, covars, nrstage, comp.ic.names, comp.names, all.state.names, ...) {
        states <- numeric(length(all.state.names))
        names(states) <- all.state.names
