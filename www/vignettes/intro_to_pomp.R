@@ -110,7 +110,7 @@ coef(gompertz) <- theta
 
 
 ###################################################
-### code chunk number 9: intro_to_pomp.Rnw:326-327 (eval = FALSE)
+### code chunk number 9: intro_to_pomp.Rnw:327-328 (eval = FALSE)
 ###################################################
 ## plot(gompertz,variables="Y")
 
@@ -239,13 +239,13 @@ loglik.kalman <- kf$loglik-sum(log(obs(gompertz)))
 
 
 ###################################################
-### code chunk number 21: intro_to_pomp.Rnw:465-466 (eval = FALSE)
+### code chunk number 21: intro_to_pomp.Rnw:466-467 (eval = FALSE)
 ###################################################
 ## as(gompertz,"data.frame")
 
 
 ###################################################
-### code chunk number 22: intro_to_pomp.Rnw:470-473 (eval = FALSE)
+### code chunk number 22: intro_to_pomp.Rnw:471-474 (eval = FALSE)
 ###################################################
 ## obs(gompertz)
 ## obs(gompertz,"Y")
@@ -253,40 +253,40 @@ loglik.kalman <- kf$loglik-sum(log(obs(gompertz)))
 
 
 ###################################################
-### code chunk number 23: intro_to_pomp.Rnw:476-477 (eval = FALSE)
+### code chunk number 23: intro_to_pomp.Rnw:477-478 (eval = FALSE)
 ###################################################
 ## time(gompertz) <- 1:10
 
 
 ###################################################
-### code chunk number 24: intro_to_pomp.Rnw:480-482 (eval = FALSE)
+### code chunk number 24: intro_to_pomp.Rnw:481-483 (eval = FALSE)
 ###################################################
 ## timezero(gompertz)
 ## timezero(gompertz) <- -10
 
 
 ###################################################
-### code chunk number 25: intro_to_pomp.Rnw:485-487 (eval = FALSE)
+### code chunk number 25: intro_to_pomp.Rnw:486-488 (eval = FALSE)
 ###################################################
 ## time(gompertz,t0=TRUE)  
 ## time(gompertz,t0=T) <- seq(from=0,to=10,by=1)
 
 
 ###################################################
-### code chunk number 26: intro_to_pomp.Rnw:490-491 (eval = FALSE)
+### code chunk number 26: intro_to_pomp.Rnw:491-492 (eval = FALSE)
 ###################################################
 ## window(gompertz,start=3,end=20)
 
 
 ###################################################
-### code chunk number 27: intro_to_pomp.Rnw:495-497 (eval = FALSE)
+### code chunk number 27: intro_to_pomp.Rnw:496-498 (eval = FALSE)
 ###################################################
 ## coef(gompertz)
 ## coef(gompertz,c("sigma","tau")) <- c(1,0)
 
 
 ###################################################
-### code chunk number 28: intro_to_pomp.Rnw:501-503 (eval = FALSE)
+### code chunk number 28: intro_to_pomp.Rnw:502-504 (eval = FALSE)
 ###################################################
 ## states(gompertz)
 ## states(gompertz,"X")
@@ -307,32 +307,32 @@ gompertz <- pomp(
 
 
 ###################################################
-### code chunk number 30: intro_to_pomp.Rnw:542-543
+### code chunk number 30: intro_to_pomp.Rnw:543-544
 ###################################################
 coef(gompertz) <- c(r=0.1,K=1,tau=0.1,sigma=0.1,X.0=1)
 
 
 ###################################################
-### code chunk number 31: intro_to_pomp.Rnw:546-547
+### code chunk number 31: intro_to_pomp.Rnw:547-548
 ###################################################
 coef(gompertz)
 
 
 ###################################################
-### code chunk number 32: intro_to_pomp.Rnw:550-552
+### code chunk number 32: intro_to_pomp.Rnw:551-553
 ###################################################
 coef(gompertz,transform=TRUE) <- c(r=log(0.1),K=0,tau=log(0.1),
                 sigma=log(0.1),X.0=0)
 
 
 ###################################################
-### code chunk number 33: intro_to_pomp.Rnw:555-556
+### code chunk number 33: intro_to_pomp.Rnw:556-557
 ###################################################
 coef(gompertz,transform=TRUE)
 
 
 ###################################################
-### code chunk number 34: intro_to_pomp.Rnw:559-560
+### code chunk number 34: intro_to_pomp.Rnw:560-561
 ###################################################
 coef(gompertz)
 
@@ -351,13 +351,13 @@ identical(coef(gompertz),coef(g2))
 
 
 ###################################################
-### code chunk number 36: intro_to_pomp.Rnw:580-581 (eval = FALSE)
+### code chunk number 36: intro_to_pomp.Rnw:581-582 (eval = FALSE)
 ###################################################
 ## demo(gompertz)
 
 
 ###################################################
-### code chunk number 37: intro_to_pomp.Rnw:608-611
+### code chunk number 37: intro_to_pomp.Rnw:609-612
 ###################################################
 pompExample(gompertz)
 theta <- coef(gompertz)
@@ -465,7 +465,7 @@ rbind(
 
 
 ###################################################
-### code chunk number 41: intro_to_pomp.Rnw:685-686 (eval = FALSE)
+### code chunk number 41: intro_to_pomp.Rnw:686-687 (eval = FALSE)
 ###################################################
 ## theta.true <- coef(gompertz)
 ## theta.mif <- apply(sapply(mf,coef),1,mean)
@@ -924,7 +924,7 @@ fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
 
 
 ###################################################
-### code chunk number 69: intro_to_pomp.Rnw:1120-1121
+### code chunk number 69: intro_to_pomp.Rnw:1121-1122
 ###################################################
 fits
 
@@ -1109,7 +1109,7 @@ fvals <- exp(fvals/ndata)
 
 
 ###################################################
-### code chunk number 77: intro_to_pomp.Rnw:1266-1267
+### code chunk number 77: intro_to_pomp.Rnw:1267-1268
 ###################################################
 apply(fvals,2,function(x)sd(x)/mean(x))
 
@@ -1151,7 +1151,7 @@ true.fit <- nlf(
 
 
 ###################################################
-### code chunk number 80: intro_to_pomp.Rnw:1305-1306
+### code chunk number 80: intro_to_pomp.Rnw:1306-1307
 ###################################################
 set.seed(32329L)
 
@@ -1221,7 +1221,7 @@ colnames(pars) <- c("r","K")
 
 
 ###################################################
-### code chunk number 83: intro_to_pomp.Rnw:1343-1344
+### code chunk number 83: intro_to_pomp.Rnw:1344-1345
 ###################################################
 apply(pars,2,sd)
 

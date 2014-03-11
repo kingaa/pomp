@@ -190,8 +190,9 @@ The package provides a number algorithms for fitting the models to the data, for
 The documentation (\code{?pomp}) spells out the usage of the \code{pomp} constructor, including detailed specifications for all its arguments and a worked example.
 
 Let's see how to implement the Gompertz model in \pkg{pomp}.
-Here, we'll take the shortest path to this goal.
+Here, we'll take the shortest path to this goal, defining the necessary functions directly in \pkg{R}.
 In the ``Advanced topics in \pkg{pomp}'' vignette, we show how one can make the codes much more efficient using compiled native (C or FORTRAN) code.
+\textbf{NB: For all but the very simplest models, it is almost always necessary to use compiled native codes to make the computationally intensive algorithms in \pkg{pomp} fast enough to be useful in practice.}
 
 First, we write a function that implements the process model simulator.
 This is a function that will simulate a single step ($t\to{t+{\Delta}t}$) of the unobserved process \eqref{eq:gompertz1}.
