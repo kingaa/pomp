@@ -8,18 +8,18 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
-// facilities for extracting R objects from the 'userdata' slot
+// FACILITIES FOR EXTRACTING R OBJECTS FROM THE 'USERDATA' SLOT
 const SEXP get_pomp_userdata (const char *name);
 const int *get_pomp_userdata_int (const char *name);
 const double *get_pomp_userdata_double (const char *name);
 
-// facility for evaluating a set of periodic bspline basis functions
+// FACILITY FOR EVALUATING A SET OF PERIODIC BSPLINE BASIS FUNCTIONS
 void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
 
-// Prototype for parameter transformation function.
+// PROTOTYPE FOR PARAMETER TRANSFORMATION FUNCTION.
 typedef void pomp_transform_fn (double *pt, double *p, int *parindex);
 
-// Prototype for stochastic simulation algorithm reaction-rate function, as used by "gillespie.sim":
+// PROTOTYPE FOR STOCHASTIC SIMULATION ALGORITHM REACTION-RATE FUNCTION, AS USED BY "GILLESPIE.SIM":
 typedef double pomp_ssa_rate_fn(int j, double t, const double *x, const double *p,
 				int *stateindex, int *parindex, int *covindex,
 				int ncovar, double *covars);
@@ -40,7 +40,7 @@ typedef double pomp_ssa_rate_fn(int j, double t, const double *x, const double *
 //                from the covariate table supplied to 'SSA.simulator'
 //  returns the rate of the j-th reaction
 
-// Prototype for one-step simulator, as used by "euler.sim" and "onestep.sim":
+// PROTOTYPE FOR ONE-STEP SIMULATOR, AS USED BY "EULER.SIM" AND "ONESTEP.SIM":
 typedef void pomp_onestep_sim(double *x, const double *p, 
 			      const int *stateindex, const int *parindex, const int *covindex,
 			      int ncovars, const double *covars,
@@ -68,7 +68,7 @@ typedef void pomp_onestep_sim(double *x, const double *p,
 //     Inclusion of these calls in the user-defined function may result in significant slowdown.
 
 
-// Prototype for one-step log probability density function, as used by "onestep.dens":
+// PROTOTYPE FOR ONE-STEP LOG PROBABILITY DENSITY FUNCTION, AS USED BY "ONESTEP.DENS":
 typedef void pomp_onestep_pdf(double *f, 
 			      double *x1, double *x2, double t1, double t2, const double *p, 
 			      const int *stateindex, const int *parindex, const int *covindex,
@@ -92,7 +92,7 @@ typedef void pomp_onestep_pdf(double *f,
 //  on output:
 // f          = pointer to the probability density (a single scalar)
 
-// Prototype for deterministic skeleton evaluation
+// PROTOTYPE FOR DETERMINISTIC SKELETON EVALUATION
 typedef void pomp_skeleton (double *f, double *x, double *p, 
 			    int *stateindex, int *parindex, int *covindex, 
 			    int ncovars, double *covars, double t);
@@ -114,7 +114,7 @@ typedef void pomp_skeleton (double *f, double *x, double *p,
 //  on output:
 // f          = pointer to value of the map or vectorfield (a vector of the same length as 'x')
 
-// Prototype for measurement model simulation
+// PROTOTYPE FOR MEASUREMENT MODEL SIMULATION
 typedef void pomp_measure_model_simulator (double *y, double *x, double *p, 
 					   int *obsindex, int *stateindex, int *parindex, int *covindex,
 					   int ncovars, double *covars, double t);
@@ -142,7 +142,7 @@ typedef void pomp_measure_model_simulator (double *y, double *x, double *p,
 //     Inclusion of these calls in the user-defined function may result in significant slowdown.
 
 
-// Prototype for measurement model density evaluator
+// PROTOTYPE FOR MEASUREMENT MODEL DENSITY EVALUATOR
 typedef void pomp_measure_model_density (double *lik, double *y, double *x, double *p, int give_log,
 					 int *obsindex, int *stateindex, int *parindex, int *covindex,
 					 int ncovars, double *covars, double t);
@@ -167,6 +167,32 @@ typedef void pomp_measure_model_density (double *lik, double *y, double *x, doub
 //  on output:
 // lik        = pointer to scalar containing (log) likelihood
 
+// PROTOTYPE FOR PRIOR SIMULATION
+typedef void pomp_rprior (double *p, int *parindex);
+// Description:
+//  on input:
+// p          = pointer to parameter vector
+// parindex   = pointer to vector of integers indexing the parameters in 'p' in the order specified by 
+//                the 'paramnames' slot
+//  on output:
+// p          = pointer to vector containing draws from the prior
+//
+// NB: There is no need to call GetRNGstate() or PutRNGstate() in the body of the user-defined function.
+//     The RNG is initialized before any call to this function, and the RNG state is written afterward.
+//     Inclusion of these calls in the user-defined function may result in significant slowdown.
+
+// PROTOTYPE FOR PRIOR DENSITY EVALUATION
+typedef void pomp_dprior (double *lik, double *p, int give_log, int *parindex);
+// Description:
+//  on input:
+// p          = pointer to parameter vector
+// give_log   = should the log likelihood be returned?
+// parindex   = pointer to vector of integers indexing the parameters in 'p' in the order specified by 
+//                the 'paramnames' slot
+//  on output:
+// lik        = pointer to vector containing likelihoods
+
+// UTILITY FOR EXPONENTIAL/GEOMETRIC RATE CONVERSION
 // This function computes r such that if
 // N ~ geometric(prob=1-exp(-r dt)) and T ~ exponential(rate=R),
 // then E[N dt] = E[T]
@@ -177,6 +203,7 @@ static R_INLINE double exp2geom_rate_correction (double R, double dt) {
   return (dt > 0) ? log(1.0+R*dt)/dt : R;
 }
 
+// UTILITY FOR GAMMA WHITENOISE
 // This function draws a random increment of a gamma whitenoise process.
 // This will have expectation=dt and variance=(sigma^2*dt)
 // If dW = rgammawn(sigma,dt), then 
@@ -189,6 +216,7 @@ static R_INLINE double rgammawn (double sigma, double dt) {
   return (sigmasq > 0) ? rgamma(dt/sigmasq,sigmasq) : dt;
 }
 
+// VECTOR DOT-PRODUCT UTILITY
 // facility for computing the inner product of 
 // a vector of parameters ('coef') against a vector of basis-function values ('basis')
 static R_INLINE double dot_product (int dim, const double *basis, const double *coef) {
@@ -207,7 +235,7 @@ static R_INLINE double expit (double x) {
   return 1.0/(1.0+exp(-x));
 }
 
-// C-level definitions of Euler-multinomial distribution functions
+// C-LEVEL DEFINITIONS OF EULER-MULTINOMIAL DISTRIBUTION FUNCTIONS
 
 // simulate Euler-multinomial transitions
 // NB: 'reulermultinom' does not call GetRNGstate() and PutRNGstate() internally
@@ -247,7 +275,7 @@ static void reulermultinom (int m, double size, double *rate, double dt, double 
   }
 }
 
-// compute probabilities of Euler-multinomial transitions
+// COMPUTE PROBABILITIES OF EULER-MULTINOMIAL TRANSITIONS
 static double deulermultinom (int m, double size, double *rate, double dt, double *trans, int give_log) {
   double p = 0.0;
   double n = 0.0;

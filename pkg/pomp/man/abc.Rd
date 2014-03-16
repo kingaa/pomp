@@ -17,13 +17,12 @@
 }
 \usage{
 \S4method{abc}{pomp}(object, Nabc = 1, start, pars,
-    rw.sd, dprior, probes, scale, epsilon, hyperparams, 
+    rw.sd, probes, scale, epsilon,
     verbose = getOption("verbose"), transform = FALSE, \dots)
-\S4method{abc}{probed.pomp}(object, Nabc = 1, start, pars,
-    rw.sd, dprior, probes, scale, epsilon, hyperparams,
+\S4method{abc}{probed.pomp}(object, probes,
     verbose = getOption("verbose"), transform = FALSE, \dots)
 \S4method{abc}{abc}(object, Nabc, start, pars,
-    rw.sd, dprior, probes, scale, epsilon, hyperparams, 
+    rw.sd, probes, scale, epsilon,
     verbose = getOption("verbose"), transform, \dots)
 \S4method{continue}{abc}(object, Nabc = 1, \dots)
 }
@@ -52,10 +51,6 @@
     \code{rw.sd} must be non-negative (zeros are simply ignored),
     the name of every positive element of \code{rw.sd} must be in \code{pars}.
   }
-  \item{dprior}{
-    Function of prototype \code{dprior(params,hyperparams,...,log)} that evaluates the prior density.
-    This defaults to an improper uniform prior.
-  }
   \item{probes}{
   }
   \item{scale}{
@@ -63,9 +58,6 @@
   }
   \item{epsilon}{
 
-  }
-  \item{hyperparams}{
-    optional list; parameters to be passed to \code{dprior}.
   }
   \item{verbose}{
     logical; if TRUE, print progress reports.

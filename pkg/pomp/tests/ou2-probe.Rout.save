@@ -1,6 +1,6 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -295,4 +295,4 @@ sim.5 0.5542739 0.6216561 -0.4089672 -0.7236761  0.06850115
 > 
 > proc.time()
    user  system elapsed 
-  1.316   0.060   1.435 
+  1.340   0.064   1.476 

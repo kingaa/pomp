@@ -21,16 +21,9 @@
 \item{object}{
     An object of class \code{pomp} or inheriting class \code{pomp}.
   }
-  \item{params}{
-    A \code{npars} x \code{Np} matrix (with rownames) containing the parameters corresponding to the initial state values in \code{xstart}.
-    \code{Np} is the number of particles, i.e., each row should contain \code{Np} draws from the prior distribution for that parameter.
-    It is permissible to supply \code{params} as a named numeric vector, i.e., without a \code{dim} attribute.
-    In this case, all particles will inherit the same parameter values, which is equivalent to a degenerate prior.
-  }
-  \item{Np}{
-    If \code{params} is specified as a named vector, \code{Np} specifies the number of particles to use.
-    If \code{params} is specified as a matrix, \code{Np} should not be specified;
-    it is taken to be the number of columns of \code{params}.
+  \item{params, Np}{
+    Specifications for the prior distribution of particles.
+    See details below.
   }
   \item{est}{
     Names of the rows of \code{params} that are to be estimated.
@@ -110,6 +103,11 @@
     The resampling weights for each particle.
   }
 }
+\details{
+  There are two ways to specify the prior distribution of particles.
+  If \code{params} is unspecified or is a named vector, \code{Np} draws are made from the prior distribution, as specified by \code{\link{rprior}}.
+  Alternatively, \code{params} can be specified as an \code{npars} x \code{Np} matrix (with rownames).
+  }
 \author{
   Michael Lavine (lavine at math dot umass dot edu),
   Matthew Ferrari (mferrari at psu dot edu),

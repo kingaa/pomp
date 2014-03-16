@@ -23,18 +23,3 @@ setMethod(
             }
           }
           )
-
-setMethod(
-          "dprior",
-          signature=signature(object="abc"),
-          function (object, params, log = FALSE, ...) {
-            do.call(
-                    object@dprior,
-                    list(
-                         params=params,
-                         hyperparams=object@hyperparams,
-                         log=log
-                         )
-                    )
-          }
-          )

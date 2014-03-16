@@ -38,8 +38,6 @@ conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
   }
 }
 
-setGeneric("conv.rec",function(object,...)standardGeneric("conv.rec"))
-
 setMethod('conv.rec','mif',
           function (object, pars, transform = FALSE, ...) {
             conv.rec.internal(object=object,pars=pars,transform=transform,...)

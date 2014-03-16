@@ -1,0 +1,76 @@
+
+R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+Loading required package: mvtnorm
+Loading required package: subplex
+Loading required package: deSolve
+> 
+> pompExample(ou2)
+newly created pomp object(s):
+ ou2 
+> coef(ou2,"alpha.sd") <- 5
+Warning message:
+in 'coef<-': name(s) 'alpha.sd' do not refer to existing parameter(s); they are being concatenated 
+> 
+> set.seed(1835425749L)
+> 
+> po <- pomp(ou2,
++            dprior=function(params,log,...) {
++              ll <- sum(
++                        dnorm(
++                              x=params[c("alpha.1","alpha.2","alpha.3","alpha.4")],
++                              mean=c(0.8,-0.5,0.3,0.9),
++                              sd=params["alpha.sd"],
++                              log=TRUE
++                              )
++                        )
++              if (log) ll else exp(ll)
++            },
++            rprior=function(params,...) {
++              params[c("alpha.1","alpha.2","alpha.3","alpha.4")] <- rnorm(
++                                                                          n=4,
++                                                                          mean=c(0.8,-0.5,0.3,0.9),
++                                                                          sd=params["alpha.sd"]
++                                                                          )
++              params
++            }
++            )
+> 
+> 
+> stopifnot(all.equal(mean(dprior(po,params=parmat(coef(po),3))),dnorm(x=0,mean=0,sd=5)^4))
+> rprior(po,params=coef(po))
+               [,1]
+alpha.1  -2.2417803
+alpha.2   0.7708391
+alpha.3  -3.2398829
+alpha.4   9.9993334
+sigma.1   3.0000000
+sigma.2  -0.5000000
+sigma.3   2.0000000
+tau       1.0000000
+x1.0     -3.0000000
+x2.0      4.0000000
+alpha.sd  5.0000000
+> 
+> coef(po,"alpha.sd") <- 1
+> mean(dprior(po,params=rprior(po,params=parmat(coef(po),10000)),log=TRUE))+0.5*(1+log(2*pi))*4
+[1] -0.00978941
+> 
+> proc.time()
+   user  system elapsed 
+  0.656   0.052   0.719 

@@ -1,6 +1,6 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -15,94 +15,89 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(pomp)
+> if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
++ 
++   library(pomp)
++ 
++   pompExample(ou2)
++ 
++   dprior.ou2 <- function (params, log, ...) {
++     f <- sum(dunif(params,min=coef(ou2)-1,max=coef(ou2)+1,log=TRUE))
++     if (log) f else exp(f)
++   }
++ 
++   pdf(file="ou2-pmcmc.pdf")
++ 
++   f1 <- pmcmc(
++               pomp(ou2,dprior=dprior.ou2),
++               Nmcmc=20,
++               rw.sd=c(alpha.2=0.001,alpha.3=0.001),
++               Np=100,
++               max.fail=100, 
++               verbose=FALSE
++               )
++   f1 <- continue(f1,Nmcmc=200,max.fail=100)
++   plot(f1)
++ 
++   ff <- pfilter(f1)
++   f2 <- pmcmc(
++               ff,
++               Nmcmc=20,
++               rw.sd=c(alpha.2=0.01,alpha.3=0.01),
++               max.fail=100, 
++               verbose=FALSE
++               )
++ 
++   f3 <- pmcmc(
++               ff,
++               Nmcmc=20,
++               transform=TRUE,
++               rw.sd=c(alpha.2=0.01,alpha.3=0.01),
++               max.fail=100, 
++               verbose=FALSE
++               )
++   f4 <- pmcmc(f3)
++   f4 <- continue(f4,Nmcmc=100)
++ 
++   if (FALSE) {
++     f2 <- pmcmc(
++                 f1,Nmcmc=1000,Np=500,max.fail=100,
++                 verbose=FALSE
++                 )
++     plot(f2)
++     runs <- rle(conv.rec(f2)[,'loglik'])$lengths
++     plot(runs)
++     acf(conv.rec(f2)[,c("alpha.2","alpha.3")])
++   }
++ 
++   dprior.ou2 <- function (params, log, ...) {
++     f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
++     if (log) f else exp(f)
++   }
++ 
++   f5 <- pmcmc(
++               ou2,
++               start=coef(ou2),
++               Nmcmc=20,
++               rw.sd=c(alpha.2=0.001,alpha.3=0.001),
++               Np=100,
++               max.fail=100, 
++               verbose=FALSE
++               )
++   f5 <- continue(f5,Nmcmc=200,max.fail=100)
++   plot(f5)
++ 
++   dev.off()
++ 
++ }
 Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
-> 
-> pompExample(ou2)
 newly created pomp object(s):
  ou2 
-> 
-> dprior.ou2 <- function (params, hyperparams, ..., log) {
-+   f <- sum(dunif(params,min=hyperparams$min,max=hyperparams$max,log=TRUE))
-+   if (log) f else exp(f)
-+ }
-> 
-> pdf(file="ou2-pmcmc.pdf")
-> 
-> f1 <- pmcmc(
-+             ou2,
-+             start=coef(ou2),
-+             Nmcmc=20,
-+             dprior=dprior.ou2,
-+             hyperparams=list(min=coef(ou2)-1,max=coef(ou2)+1),
-+             rw.sd=c(alpha.2=0.001,alpha.3=0.001),
-+             Np=100,
-+             max.fail=100, 
-+             verbose=FALSE
-+             )
-> f1 <- continue(f1,Nmcmc=200,max.fail=100)
-> plot(f1)
-> 
-> ff <- pfilter(f1)
-> f2 <- pmcmc(
-+             ff,
-+             Nmcmc=20,
-+             dprior=dprior.ou2,
-+             hyperparams=list(min=coef(ou2)-1,max=coef(ou2)+1),
-+             rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-+             max.fail=100, 
-+             verbose=FALSE
-+             )
-> 
-> f3 <- pmcmc(
-+             ff,
-+             Nmcmc=20,
-+             dprior=dprior.ou2,
-+             transform=TRUE,
-+             hyperparams=list(min=coef(ou2)-1,max=coef(ou2)+1),
-+             rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-+             max.fail=100, 
-+             verbose=FALSE
-+             )
-> f4 <- pmcmc(f3)
-> 
-> 
-> if (FALSE) {
-+   f2 <- pmcmc(
-+               f1,Nmcmc=1000,Np=500,max.fail=100,
-+               verbose=FALSE
-+               )
-+   plot(f2)
-+   runs <- rle(conv.rec(f2)[,'loglik'])$lengths
-+   plot(runs)
-+   acf(conv.rec(f2)[,c("alpha.2","alpha.3")])
-+ }
-> 
-> dprior.ou2 <- function (params, hyperparams, ..., log) {
-+   f <- sum(dnorm(params,mean=hyperparams$mean,sd=hyperparams$sd,log=TRUE))
-+   if (log) f else exp(f)
-+ }
-> 
-> f5 <- pmcmc(
-+             ou2,
-+             start=coef(ou2),
-+             Nmcmc=20,
-+             dprior=dprior.ou2,
-+             hyperparams=list(mean=coef(ou2),sd=1),
-+             rw.sd=c(alpha.2=0.001,alpha.3=0.001),
-+             Np=100,
-+             max.fail=100, 
-+             verbose=FALSE
-+             )
-> f5 <- continue(f5,Nmcmc=200,max.fail=100)
-> plot(f5)
-> 
-> dev.off()
 null device 
           1 
 > 
 > proc.time()
    user  system elapsed 
- 11.572   0.060  11.819 
+ 13.804   0.096  14.124 

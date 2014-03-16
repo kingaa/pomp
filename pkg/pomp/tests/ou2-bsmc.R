@@ -51,6 +51,12 @@ print(
 print(min(smc$eff.sample.size))
 print(smc$log.evidence)
 
+ou2 <- pomp(ou2,
+            rprior=function(params,...){
+              params
+            }
+            )
+
 smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=648651945L)
 print(smc$eff.sample.size)
 print(smc$log.evidence)

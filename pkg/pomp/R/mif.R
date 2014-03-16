@@ -404,7 +404,6 @@ setMethod(
                     transform = FALSE,
                     ...) {
             
-            transform <- as.logical(transform)
             method <- match.arg(method)
             
             if (missing(start)) start <- coef(object)
@@ -515,7 +514,6 @@ setMethod(
             if (missing(cooling.fraction)) cooling.fraction <- object@cooling.fraction
             if (missing(method)) method <- object@method
             if (missing(transform)) transform <- object@transform
-            transform <- as.logical(transform)
 
             if (missing(Np)) Np <- object@Np
             if (missing(tol)) tol <- object@tol

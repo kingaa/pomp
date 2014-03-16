@@ -1,8 +1,7 @@
-### OU2 test of abc for pomp;  nov 2013
+### OU2 test of abc for pomp
 
 library(pomp) 
 pompExample(ou2)
-plot(ou2)
 
 pdf(file='abc.pdf')
 
@@ -21,9 +20,7 @@ plot(psim)
 
 scale.dat <- apply(psim@simvals,2,sd)
 
-po <- ou2 
-
-theta <- coef(ou2)
+po <- ou2
 
 abc1 <- abc(po,
             Nabc=10000,
@@ -31,10 +28,8 @@ abc1 <- abc(po,
             pars=c("alpha.1","alpha.2"),
             probes=probes.good,
             scale=scale.dat,
-            epsilon=3,
-            rw.sd= c(alpha.1=0.01,alpha.2=0.01),
-            hyperparams=list(junk=0),
-            verbose=TRUE
+            epsilon=1.7,
+            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
             )
 
 plot(abc1,scatter=TRUE)
@@ -45,4 +40,58 @@ runs <- rle(as.vector(conv.rec(abc1)[, "alpha.1"]))
 hist(runs$lengths)
 mean(runs$length)
 
+abc2 <- abc(po,
+            Nabc=2000,
+            pars=c("alpha.1","alpha.2"),
+            probes=probes.good,
+            scale=scale.dat,
+            epsilon=1,
+            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
+            )
+plot(abc2)
+
+abc3 <- abc(po,
+            Nabc=2000,
+            probes=probes.good,
+            scale=scale.dat,
+            epsilon=2,
+            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
+            )
+abc3 <- continue(abc3,Nabc=3000)
+plot(abc3)
+
+abc4 <- abc(probe(po,probes=probes.good,nsim=200),
+            Nabc=2000,
+            scale=scale.dat,
+            epsilon=2,
+            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
+            )
+plot(abc4)
+
+abc5 <- abc(abc4,Nabc=1000)
+plot(abc5)
+
+dprior6 <- function (params, log, ...) {
+  ll <- sum(
+            dnorm(
+                  x=params[c("alpha.1","alpha.2","alpha.3","alpha.4")],
+                  mean=c(0.8,-0.5,0.3,0.9),
+                  sd=5,
+                  log=TRUE
+                  )
+            )
+  if (log) ll else exp(ll)
+}
+
+abc6 <- abc(pomp(po,dprior=dprior6),
+            Nabc=2000,
+            pars=c("alpha.1","alpha.2"),
+            probes=probes.good,
+            scale=scale.dat,
+            epsilon=1,
+            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
+            )
+plot(abc6)
+
 dev.off()
+

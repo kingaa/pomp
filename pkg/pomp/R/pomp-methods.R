@@ -47,33 +47,19 @@ setMethod("partrans","pomp",
           partrans.internal(object=object,params=params,dir=dir,...)
           )
 
-## a simple method to extract the data array
-setMethod(
-          "data.array",
-          "pomp",
-          function (object, vars, ...) {
-            varnames <- rownames(object@data)
-            if (missing(vars))
-              vars <- varnames
-            else if (!all(vars%in%varnames))
-              stop("some elements of ",sQuote("vars")," correspond to no observed variable")
-            object@data[vars,,drop=FALSE]
-          }
-          )
+
+obs.internal <- function (object, vars, ...) {
+  varnames <- rownames(object@data)
+  if (missing(vars))
+    vars <- varnames
+  else if (!all(vars%in%varnames))
+    stop("some elements of ",sQuote("vars")," correspond to no observed variable")
+  object@data[vars,,drop=FALSE]
+}
 
 ## a simple method to extract the data array
-setMethod(
-          "obs",
-          "pomp",
-          function (object, vars, ...) {
-            varnames <- rownames(object@data)
-            if (missing(vars))
-              vars <- varnames
-            else if (!all(vars%in%varnames))
-              stop("some elements of ",sQuote("vars")," correspond to no observed variable")
-            object@data[vars,,drop=FALSE]
-          }
-          )
+setMethod("obs","pomp",obs.internal)
+setMethod("data.array","pomp",obs.internal)
 
 ## a simple method to extract the array of states
 setMethod(
@@ -293,6 +279,10 @@ setMethod(
             show(object@rmeasure)
             cat("measurement model density, dmeasure = \n")
             show(object@dmeasure)
+            cat("prior simulator, rprior = \n")
+            show(object@rprior)
+            cat("prior density, dprior = \n")
+            show(object@dprior)
             if (!is.na(object@skeleton.type)) {
               cat("skeleton (",object@skeleton.type,") = \n")
               show(object@skeleton)

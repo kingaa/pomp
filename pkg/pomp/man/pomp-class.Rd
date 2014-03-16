@@ -34,6 +34,12 @@
     \item{rmeasure}{
       an object of class \dQuote{pomp.fun} which encodes the measurement model simulator.
     }
+    \item{dprior}{
+      an object of class \dQuote{pomp.fun} which encodes the prior density.
+    }
+    \item{rprior}{
+      an object of class \dQuote{pomp.fun} which encodes the prior simulator.
+    }
     \item{skeleton.type}{
       a character variable specifying whether the deterministic skeleton is a map or a vectorfield.
     }

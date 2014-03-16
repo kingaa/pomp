@@ -1,9 +1,12 @@
 ## basic constructor of the pomp class
 pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
                               rmeasure, dmeasure, measurement.model,
-                              skeleton = NULL, skeleton.type = c("map","vectorfield"),
+                              skeleton = NULL,
+                              skeleton.type = c("map","vectorfield"),
                               skelmap.delta.t = 1,
-                              initializer, params, covar, tcovar,
+                              initializer,
+                              rprior, dprior,
+                              params, covar, tcovar,
                               obsnames, statenames, paramnames, covarnames, zeronames,
                               PACKAGE, parameter.transform, parameter.inv.transform) {
 
@@ -36,14 +39,16 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
   if (!is.numeric(times) || !all(diff(times)>0))
     stop("pomp error: ",sQuote("times")," must be an increasing numeric vector",call.=TRUE)
   if (length(times)!=ncol(data))
-    stop("pomp error: the length of ",sQuote("times")," does not equal the number of columns in ",sQuote("data"),call.=TRUE)
+    stop("pomp error: the length of ",sQuote("times")," does not equal the number of columns in ",
+         sQuote("data"),call.=TRUE)
   storage.mode(times) <- 'double'
   
   ## check t0
   if (!is.numeric(t0) || length(t0) > 1)
     stop("pomp error: the zero-time ",sQuote("t0")," must be a single number",call.=TRUE)
   if (t0 > times[1L])
-    stop("pomp error: the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=TRUE)
+    stop("pomp error: the zero-time ",sQuote("t0")," must occur no later than the first observation",
+         call.=TRUE)
   storage.mode(t0) <- 'double'
   
   if (missing(PACKAGE)) PACKAGE <- ""
@@ -57,7 +62,8 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
     if (!(missing(dmeasure)&&missing(rmeasure))) {
       warning(
               "specifying ",sQuote("measurement.model"),
-              " overrides specification of ",sQuote("rmeasure")," and ",sQuote("dmeasure")
+              " overrides specification of ",
+              sQuote("rmeasure")," and ",sQuote("dmeasure")
               )
     }
     mm <- measform2pomp(measurement.model)
@@ -71,9 +77,10 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
     stop(sQuote("skelmap.delta.t")," must be positive")
 
   if (is.null(skeleton)) {
-    skeleton <- pomp.fun(f=function(x,t,params,covars,...)stop(sQuote("skeleton")," not specified"))
+    skeleton <- pomp.fun()
   } else {
-    skeleton <- pomp.fun(f=skeleton,PACKAGE=PACKAGE,proto=quote(skeleton(x,t,params,...)))
+    skeleton <- pomp.fun(f=skeleton,PACKAGE=PACKAGE,
+                         proto=quote(skeleton(x,t,params,...)))
   }
   
   if (missing(initializer)) {
@@ -94,13 +101,29 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
   if (missing(rmeasure))
     rmeasure <- pomp.fun()
   else
-    rmeasure <- pomp.fun(f=rmeasure,PACKAGE=PACKAGE,proto=quote(rmeasure(x,t,params,...)))
+    rmeasure <- pomp.fun(f=rmeasure,PACKAGE=PACKAGE,
+                         proto=quote(rmeasure(x,t,params,...)))
 
   if (missing(dmeasure))
     dmeasure <- pomp.fun()
   else 
-    dmeasure <- pomp.fun(f=dmeasure,PACKAGE=PACKAGE,proto=quote(dmeasure(y,x,t,params,log,...)))
+    dmeasure <- pomp.fun(f=dmeasure,PACKAGE=PACKAGE,
+                         proto=quote(dmeasure(y,x,t,params,log,...)))
   
+  if (missing(rprior)) { ## no default rprior
+    rprior <- pomp.fun()
+  } else {
+    rprior <- pomp.fun(f=rprior,PACKAGE=PACKAGE,
+                       proto=quote(rprior(params,...)))
+  }
+            
+  if (missing(dprior)) { ## by default, use flat improper prior
+    dprior <- pomp.fun(f="_pomp_default_dprior")
+  } else {
+    dprior <- pomp.fun(f=dprior,PACKAGE=PACKAGE,
+                       proto=quote(dprior(params,log,...)))
+  }
+            
   if (!is.function(initializer))
     stop(
          "pomp error: ",sQuote("initializer")," must be a function",
@@ -226,6 +249,8 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
       dprocess = dprocess,
       dmeasure = dmeasure,
       rmeasure = rmeasure,
+      dprior = dprior,
+      rprior = rprior,
       skeleton = skeleton,
       skeleton.type = skeleton.type,
       skelmap.delta.t=skelmap.delta.t,
@@ -335,7 +360,9 @@ setMethod(
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
                     skelmap.delta.t = 1,
-                    initializer, params, covar, tcovar,
+                    initializer,
+                    rprior, dprior,
+                    params, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames, zeronames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             pomp.constructor(
@@ -347,6 +374,8 @@ setMethod(
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
                              measurement.model=measurement.model,
+                             dprior = dprior,
+                             rprior = rprior,
                              skeleton=skeleton,
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
@@ -374,7 +403,9 @@ setMethod(
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
                     skelmap.delta.t = 1,
-                    initializer, params, covar, tcovar,
+                    initializer,
+                    rprior, dprior,
+                    params, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames, zeronames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             pomp.constructor(
@@ -386,6 +417,8 @@ setMethod(
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
                              measurement.model=measurement.model,
+                             dprior = dprior,
+                             rprior = rprior,
                              skeleton=skeleton,
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
@@ -414,7 +447,9 @@ setMethod(
                     rmeasure, dmeasure, measurement.model,
                     skeleton = NULL, skeleton.type = c("map","vectorfield"),
                     skelmap.delta.t = 1,
-                    initializer, params, covar, tcovar,
+                    initializer,
+                    rprior, dprior,
+                    params, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames, zeronames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             pomp.constructor(
@@ -426,6 +461,8 @@ setMethod(
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
                              measurement.model=measurement.model,
+                             dprior = dprior,
+                             rprior = rprior,
                              skeleton=skeleton,
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
@@ -452,7 +489,9 @@ setMethod(
           function (data, times, t0, ..., rprocess, dprocess,
                     rmeasure, dmeasure, measurement.model,
                     skeleton, skeleton.type, skelmap.delta.t,
-                    initializer, params, covar, tcovar,
+                    initializer,
+                    rprior, dprior,
+                    params, covar, tcovar,
                     obsnames, statenames, paramnames, covarnames, zeronames,
                     PACKAGE, parameter.transform, parameter.inv.transform) {
             mmg <- !missing(measurement.model)
@@ -475,6 +514,8 @@ setMethod(
             }
             if (missing(rprocess)) rprocess <- data@rprocess
             if (missing(dprocess)) dprocess <- data@dprocess
+            if (missing(rprior)) rprior <- data@rprior
+            if (missing(dprior)) dprior <- data@dprior
             if (missing(initializer)) initializer <- data@initializer
             if (missing(params)) params <- data@params
             if (missing(covar)) covar <- data@covar
@@ -521,6 +562,8 @@ setMethod(
                            dprocess=dprocess,
                            rmeasure=rmeasure,
                            dmeasure=dmeasure,
+                           dprior = dprior,
+                           rprior = rprior,
                            skeleton=skeleton,
                            skeleton.type=skeleton.type,
                            skelmap.delta.t=skelmap.delta.t,

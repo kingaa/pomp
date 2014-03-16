@@ -16,11 +16,11 @@
 }
 \usage{
 \S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, pars,
-    rw.sd, dprior, Np, hyperparams, tol = 1e-17, max.fail = 0,
+    rw.sd, Np, tol = 1e-17, max.fail = 0,
     verbose = getOption("verbose"), transform = FALSE, \dots)
 \S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, Np, tol, \dots)
 \S4method{pmcmc}{pmcmc}(object, Nmcmc, start, pars,
-    rw.sd, dprior, Np, hyperparams, tol, max.fail = 0,
+    rw.sd, Np, tol, max.fail = 0,
     verbose = getOption("verbose"), transform, \dots)
 \S4method{continue}{pmcmc}(object, Nmcmc = 1, \dots)
 }
@@ -40,10 +40,6 @@
     Every parameter named in \code{pars} must have a positive random-walk standard deviation specified in \code{rw.sd}.
     Leaving \code{pars} unspecified is equivalent to setting it equal to the names of all parameters with a positive value of \code{rw.sd}.
   }
-  \item{dprior}{
-    Function of prototype \code{dprior(params,hyperparams,...,log)} that evaluates the prior density.
-    This defaults to an improper uniform prior.
-  }
   \item{rw.sd}{
     numeric vector with names; used to parameterize a Gaussian random walk MCMC proposal. The random walk is only applied to parameters named in \code{pars}. The algorithm requires that the random walk be nontrivial, so each element in \code{rw.sd[pars]} must be positive.
     The following must be satisfied:
@@ -54,9 +50,6 @@
   \item{Np}{
     a positive integer;
     the number of particles to use in each filtering operation.
-  }
-  \item{hyperparams}{
-    optional list; parameters to be passed to \code{dprior}.
   }
   \item{tol}{
     numeric scalar; particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.

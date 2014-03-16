@@ -204,5 +204,3 @@ coef(po) <- coef(
 
 pf <- pfilter(po,Np=1000,max.fail=100)
 print(round(logLik(pf),1))
-
-dyn.unload("SIR.so")

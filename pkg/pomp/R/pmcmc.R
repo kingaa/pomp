@@ -6,8 +6,6 @@ setClass(
                         pars = 'character',
                         transform = 'logical',
                         Nmcmc = 'integer',
-                        dprior = 'function',
-                        hyperparams = 'list',
                         random.walk.sd = 'numeric',
                         conv.rec = 'matrix',
                         log.prior = 'numeric'
@@ -17,28 +15,19 @@ setClass(
 ## PMCMC algorithm functions
 setGeneric('pmcmc',function(object,...)standardGeneric("pmcmc"))
 
-setGeneric('dprior', function(object,...)standardGeneric("dprior"))
-
-setMethod(
-          "dprior",
-          signature=signature(object="pmcmc"),
-          function (object, params, log = FALSE, ...) {
-            do.call(object@dprior,list(params=params,hyperparams=object@hyperparams,log=log))
-          }
-          )
-
 pmcmc.internal <- function (object, Nmcmc,
-                            start, pars, dprior.fun,
+                            start, pars,
                             rw.sd, Np,
-                            hyperparams,
                             tol, max.fail,
                             verbose, transform,
                             .ndone = 0L,
                             .prev.pfp = NULL, .prev.log.prior = NULL,
                             .getnativesymbolinfo = TRUE) {
 
+  object <- as(object,"pomp")
   gnsi <- as.logical(.getnativesymbolinfo)
   transform <- as.logical(transform)
+  .ndone <- as.integer(.ndone)
 
   if (missing(start))
     stop(sQuote("start")," must be specified",call.=FALSE)
@@ -96,9 +85,6 @@ pmcmc.internal <- function (object, Nmcmc,
   rw.sd <- rw.sd[pars]
   rw.names <- names(rw.sd)
 
-  if (missing(dprior.fun))
-    stop("pmcmc error: ",sQuote("dprior")," must be specified",call.=FALSE)
-
   ntimes <- length(time(object))
   if (missing(Np))
     stop("pmcmc error: ",sQuote("Np")," must be specified",call.=FALSE)
@@ -119,9 +105,6 @@ pmcmc.internal <- function (object, Nmcmc,
   if (!is.numeric(Np))
     stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
   Np <- as.integer(Np)
-
-  if (missing(hyperparams))
-    stop("pmcmc error: ",sQuote("hyperparams")," must be specified",call.=FALSE)
 
   if (missing(Nmcmc))
     stop("pmcmc error: ",sQuote("Nmcmc")," must be specified",call.=FALSE)
@@ -161,23 +144,11 @@ pmcmc.internal <- function (object, Nmcmc,
          )
   }
 
-  obj <- as(object,"pomp")
-  
-  if (Nmcmc>0)
-    tmp.pmcmc <- new("pmcmc",obj,dprior=dprior.fun,hyperparams=hyperparams)
-  else
-    pfp <- obj
-
-  if (.ndone==0) { ## compute prior and likelihood on initial parameter vector
+  if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
     pfp <- try(
                pfilter.internal(
-                                object=obj,
-                                params=if (transform) {
-                                  partrans(obj,theta,dir="forward",
-                                           .getnativesymbolinfo=gnsi)
-                                } else {
-                                  theta
-                                },
+                                object=object,
+                                params=theta,
                                 Np=Np,
                                 tol=tol,
                                 max.fail=max.fail,
@@ -194,7 +165,8 @@ pmcmc.internal <- function (object, Nmcmc,
                )
     if (inherits(pfp,'try-error'))
       stop("pmcmc error: error in ",sQuote("pfilter"),call.=FALSE)
-    log.prior <- dprior(object=tmp.pmcmc,params=theta,log=TRUE)
+    log.prior <- dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
+    gnsi <- FALSE
   } else { ## has been computed previously
     pfp <- .prev.pfp
     log.prior <- .prev.log.prior
@@ -205,18 +177,17 @@ pmcmc.internal <- function (object, Nmcmc,
   for (n in seq_len(Nmcmc)) { # main loop
 
     theta.prop <- theta
+    if (transform)
+      theta <- partrans(object,theta.prop,dir='inverse',.getnativesymbolinfo=gnsi)
     theta.prop[pars] <- rnorm(n=length(pars),mean=theta.prop[pars],sd=rw.sd)
+    if (transform)
+      theta <- partrans(object,theta.prop,dir='forward',.getnativesymbolinfo=gnsi)
 
     ## run the particle filter on the proposed new parameter values
     pfp.prop <- try(
                     pfilter.internal(
                                      object=pfp,
-                                     params=if (transform) {
-                                       partrans(obj,theta.prop,dir="forward",
-                                                .getnativesymbolinfo=gnsi)
-                                     } else {
-                                       theta.prop
-                                     },
+                                     params=theta.prop,
                                      Np=Np,
                                      tol=tol,
                                      max.fail=max.fail,
@@ -233,7 +204,7 @@ pmcmc.internal <- function (object, Nmcmc,
                     )
     if (inherits(pfp.prop,'try-error'))
       stop("pmcmc error: error in ",sQuote("pfilter"),call.=FALSE)
-    log.prior.prop <- dprior(object=tmp.pmcmc,params=theta.prop,log=TRUE)
+    log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,.getnativesymbolinfo=gnsi)
     gnsi <- FALSE
 
     ## PMCMC update rule (OK because proposal is symmetric)
@@ -258,10 +229,8 @@ pmcmc.internal <- function (object, Nmcmc,
       transform=transform,
       Nmcmc=Nmcmc,
       pars=pars,
-      dprior=dprior.fun,
       random.walk.sd=rw.sd,
       Np=Np,
-      hyperparams=hyperparams,
       tol=tol,
       conv.rec=conv.rec,
       log.prior=log.prior
@@ -272,47 +241,26 @@ setMethod(
           "pmcmc",
           signature=signature(object="pomp"),
           function (object, Nmcmc = 1,
-                    start, pars, rw.sd,
-                    dprior, Np, hyperparams,
+                    start, pars, rw.sd, Np,
                     tol = 1e-17, max.fail = 0,
                     verbose = getOption("verbose"),
                     transform = FALSE,
                     ...) {
             
-            transform <- as.logical(transform)
             if (missing(start)) start <- coef(object,transform=transform)
             if (missing(rw.sd))
               stop("pmcmc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
             if (missing(pars)) pars <- names(rw.sd)[rw.sd>0]
             if (missing(Np))
               stop("pmcmc error: ",sQuote("Np")," must be specified",call.=FALSE)
-            if (missing(hyperparams))
-              stop("pmcmc error: ",sQuote("hyperparams")," must be specified",call.=FALSE)
-            if (missing(dprior)) {         # use default flat improper prior
-              dprior <- function (params, hyperparams, log) {
-                if (log) 0 else 1
-              }
-            } else {
-              dprior <- match.fun(dprior)
-              if (!all(c('params','hyperparams','log')%in%names(formals(dprior))))
-                stop(
-                     "pmcmc error: ",
-                     sQuote("dprior"),
-                     " must be a function of prototype ",
-                     sQuote("dprior(params,hyperparams,log)"),
-                     call.=FALSE
-                     )
-            }
               
             pmcmc.internal(
                            object=object,
                            Nmcmc=Nmcmc,
                            start=start,
                            pars=pars,
-                           dprior.fun=dprior,
                            rw.sd=rw.sd,
                            Np=Np,
-                           hyperparams=hyperparams,
                            tol=tol,
                            max.fail=max.fail,
                            verbose=verbose,
@@ -325,8 +273,7 @@ setMethod(
 setMethod(
           "pmcmc",
           signature=signature(object="pfilterd.pomp"),
-          function (object, Nmcmc = 1,
-                    Np, tol, ...) {
+          function (object, Nmcmc = 1, Np, tol, ...) {
 
             if (missing(Np)) Np <- object@Np
             if (missing(tol)) tol <- object@tol
@@ -346,8 +293,7 @@ setMethod(
           signature=signature(object="pmcmc"),
           function (object, Nmcmc,
                     start, pars, rw.sd,
-                    dprior, Np, hyperparams,
-                    tol, max.fail = 0,
+                    Np, tol, max.fail = 0,
                     verbose = getOption("verbose"),
                     transform,
                     ...) {
@@ -356,22 +302,17 @@ setMethod(
             if (missing(start)) start <- coef(object)
             if (missing(pars)) pars <- object@pars
             if (missing(rw.sd)) rw.sd <- object@random.walk.sd
-            if (missing(dprior)) dprior <- object@dprior
             if (missing(Np)) Np <- object@Np
-            if (missing(hyperparams)) hyperparams <- object@hyperparams
             if (missing(tol)) tol <- object@tol
             if (missing(transform)) transform <- object@transform
-            transform <- as.logical(transform)
 
             pmcmc(
                   object=as(object,"pomp"),
                   Nmcmc=Nmcmc,
                   start=start,
                   pars=pars,
-                  dprior=dprior,
                   rw.sd=rw.sd,
                   Np=Np,
-                  hyperparams=hyperparams,
                   tol=tol,
                   max.fail=max.fail,
                   verbose=verbose,
@@ -384,8 +325,7 @@ setMethod(
 setMethod(
           'continue',
           signature=signature(object='pmcmc'),
-          function (object, Nmcmc = 1,
-                    ...) {
+          function (object, Nmcmc = 1, ...) {
 
             ndone <- object@Nmcmc
 

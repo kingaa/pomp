@@ -1,26 +1,34 @@
-library(pomp)
+if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
 
-pompExample(ricker)
+  library(pomp)
 
-pdf(file="ricker-bsmc.pdf")
+  pompExample(ricker)
 
-set.seed(6457673L)
+  pdf(file="ricker-bsmc.pdf")
 
-po <- ricker
+  set.seed(6457673L)
 
-Np <- 10000
-params <- parmat(coef(ricker),nrep=Np)
-params["r",] <- exp(runif(n=Np,min=2,max=5))
-params["sigma",] <- runif(n=Np,min=0.1,max=1)
+  po <- pomp(
+             ricker,
+             rprior=function (params, ...) {
+               params["r"] <- exp(runif(n=1,min=2,max=5))
+               params["sigma"] <- runif(n=1,min=0.1,max=1)
+               params
+             }
+             )
 
-fit <- bsmc(ricker,params=params,est=c("r","sigma"),transform=TRUE,smooth=0.2)
+  Np <- 10000
 
-invisible(apply(fit$prior[c("r","sigma"),],1,mean))
+  fit <- bsmc(po,Np=1000,est=c("r","sigma"),transform=TRUE,smooth=0.2)
 
-invisible(apply(fit$post[c("r","sigma"),],1,mean))
+  invisible(apply(fit$prior[c("r","sigma"),],1,mean))
 
-invisible(coef(fit))
+  invisible(apply(fit$post[c("r","sigma"),],1,mean))
 
-plot(fit,thin=300)
+  invisible(coef(fit))
 
-dev.off()
+  plot(fit,thin=300)
+
+  dev.off()
+
+}

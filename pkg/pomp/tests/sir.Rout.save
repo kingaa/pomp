@@ -1,6 +1,6 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -392,7 +392,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x2b29b58>
+<environment: 0x2c67598>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE, .getnativesymbolinfo = TRUE) 
@@ -402,7 +402,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x2b02c48>
+<environment: 0x2c41350>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -429,6 +429,10 @@ function (y, x, t, params, log, covars, ...)
         else f
     })
 }
+prior simulator, rprior = 
+function not specified
+prior density, dprior = 
+native function '_pomp_default_dprior', dynamically loaded from ''
 skeleton ( vectorfield ) = 
 function (x, t, params, covars, ...) 
 {
@@ -466,7 +470,7 @@ function not specified
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.023102 secs
+Time difference of 1.016458 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -483,7 +487,7 @@ Time difference of 1.023102 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.6711359 secs
+Time difference of 0.6689692 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -535,7 +539,7 @@ newly created pomp object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.243881 secs
+Time difference of 1.234442 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -543,7 +547,7 @@ Time difference of 1.243881 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.009595394 secs
+Time difference of 0.00938344 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -638,4 +642,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
-  3.988   0.068   4.278 
+  4.020   0.052   4.315 

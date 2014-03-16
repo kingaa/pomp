@@ -1,6 +1,6 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -15,60 +15,64 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(pomp)
+> if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
++ 
++   library(pomp)
++ 
++   pompExample(ou2)
++ 
++   set.seed(64857673L)
++ 
++   pdf(file="ou2-mif-fp.pdf")
++ 
++   p.truth <- coef(ou2)
++   guess2 <- guess1 <- p.truth
++   guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.25*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
++   guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 4*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
++ 
++   mif1 <- mif(ou2,Nmif=100,start=guess1,
++               pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
++               rw.sd=c(
++                 x1.0=5,x2.0=5,
++                 alpha.2=0.1,alpha.3=0.1
++                 ),
++               Np=1000,
++               var.factor=1,
++               ic.lag=10,
++               cooling.type="geometric",
++               cooling.fraction=0.95^50,
++               max.fail=100,
++               method="fp"
++               )
++   
++   mif2 <- mif(ou2,Nmif=100,start=guess2,
++               pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
++               rw.sd=c(
++                 x1.0=5,x2.0=5,
++                 alpha.2=0.1,alpha.3=0.1
++                 ),
++               Np=1000,
++               var.factor=1,
++               ic.lag=10,
++               cooling.type="geometric",
++               cooling.fraction=0.95^50,
++               max.fail=100,
++               method="fp"
++               )
++   
++   compare.mif(list(mif1,mif2))
++ 
++   dev.off()
++ 
++ }
 Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: deSolve
-> 
-> pompExample(ou2)
 newly created pomp object(s):
  ou2 
-> 
-> set.seed(64857673L)
-> 
-> pdf(file="ou2-mif-fp.pdf")
-> 
-> p.truth <- coef(ou2)
-> guess2 <- guess1 <- p.truth
-> guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.25*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
-> guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 4*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
-> 
-> mif1 <- mif(ou2,Nmif=100,start=guess1,
-+ 	    pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
-+ 	    rw.sd=c(
-+               x1.0=5,x2.0=5,
-+               alpha.2=0.1,alpha.3=0.1
-+               ),
-+             Np=1000,
-+             var.factor=1,
-+             ic.lag=10,
-+             cooling.type="geometric",
-+             cooling.fraction=0.95^50,
-+             max.fail=100,
-+             method="fp"
-+ 	  )
-> 	  
-> mif2 <- mif(ou2,Nmif=100,start=guess2,
-+ 	    pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
-+ 	    rw.sd=c(
-+               x1.0=5,x2.0=5,
-+               alpha.2=0.1,alpha.3=0.1
-+               ),
-+             Np=1000,
-+             var.factor=1,
-+             ic.lag=10,
-+             cooling.type="geometric",
-+             cooling.fraction=0.95^50,
-+             max.fail=100,
-+             method="fp"
-+             )
-> 	  
-> compare.mif(list(mif1,mif2))
-> 
-> dev.off()
 null device 
           1 
 > 
 > proc.time()
    user  system elapsed 
- 19.853   0.076  20.178 
+ 19.229   0.092  19.539 

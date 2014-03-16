@@ -1,9 +1,6 @@
 \name{pmcmc-methods}
 \docType{methods}
 \alias{pmcmc-methods}
-\alias{dprior}
-\alias{dprior,pmcmc-method}
-\alias{dprior-pmcmc}
 \alias{logLik,pmcmc-method}
 \alias{logLik-pmcmc}
 \alias{conv.rec,pmcmc-method}
@@ -20,7 +17,6 @@
 \S4method{conv.rec}{pmcmc}(object, pars, \dots)
 \S4method{filter.mean}{pmcmc}(object, pars, \dots)
 \S4method{plot}{pmcmc}(x, y = NULL, \dots)
-\S4method{dprior}{pmcmc}(object, params, log = FALSE, \dots)
 compare.pmcmc(z)
 }
 \arguments{
@@ -28,10 +24,6 @@ compare.pmcmc(z)
   \item{pars}{Names of parameters.}
   \item{y}{Ignored.}
   \item{z}{A \code{pmcmc} object or list of \code{pmcmc} objects.}
-  \item{params}{
-    Named vector of parameters.
-  }
-  \item{log}{if TRUE, log probabilities are returned.}
   \item{\dots}{
     Further arguments (either ignored or passed to underlying functions).
   }
@@ -45,9 +37,6 @@ compare.pmcmc(z)
     \item{logLik}{
       Returns the value in the \code{loglik} slot.
     }
-    \item{dprior}{
-       \code{dprior(object,params,log)} evaluates the prior density at \code{params} with values of the hyperparameters given by \code{object@hyperparams}.
-    } 
     \item{pmcmc}{
       Re-runs the PMCMC iterations.
       See the documentation for \code{\link{pmcmc}}.

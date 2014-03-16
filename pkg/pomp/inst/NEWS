@@ -1,4 +1,14 @@
 NEWS
+0.48-1
+     o	Create new 'dprior' and 'rprior' slots for 'pomp' objects.
+     	These will be used by the Bayesian methods (currently 'abc', 'bsmc', and 'pmcmc').
+	The 'hyperparams' argument to these methods has been removed;
+	hyperparameters are now treated just as any others.
+
+     o	'bsmc' can now be called so that the particles are drawn from the prior distribution (as set by the 'rpior' slot).
+
+     o	Some of the longer tests will only be run if an environment variable is set.
+
 0.47-4
      o	Revisit 'dacca' bug.  Set negative compartments to zero along with compartments immediately downstream.
 

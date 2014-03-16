@@ -6,11 +6,9 @@ setClass(
            pars = 'character',
            transform = 'logical',
            Nabc = 'integer',
-           dprior = 'function',
            probes='list',
            scale = 'numeric',
            epsilon = 'numeric',
-           hyperparams = 'list',
            random.walk.sd = 'numeric',
            conv.rec = 'matrix'
            )
@@ -20,19 +18,20 @@ setClass(
 setGeneric('abc',function(object,...)standardGeneric("abc"))
 
 abc.internal <- function (object, Nabc,
-                          start, pars, dprior.fun,
+                          start, pars,
                           rw.sd, probes,
-                          hyperparams,
                           epsilon, scale,
                           verbose, transform,
-                          .ndone, .getnativesymbolinfo = TRUE,
+                          .ndone = 0L,
+                          .getnativesymbolinfo = TRUE,
                           ...) {
 
+  object <- as(object,'pomp')
   gnsi <- as.logical(.getnativesymbolinfo)
-
   transform <- as.logical(transform)
-
   Nabc <- as.integer(Nabc)
+  epsilon <- as.numeric(epsilon)
+  epssq <- epsilon*epsilon
 
   if (length(start)==0)
     stop(
@@ -64,7 +63,7 @@ abc.internal <- function (object, Nabc,
     stop(
          "abc error: ",
          sQuote("pars"),
-         " must be a mutually disjoint subset of ",
+         " must be a subset of ",
          sQuote("names(start)"),
          " and must correspond to positive random-walk SDs specified in ",
          sQuote("rw.sd"),
@@ -101,7 +100,7 @@ abc.internal <- function (object, Nabc,
   }
 
   theta <- start
-  log.prior <- dprior.fun(params=theta,hyperparams=hyperparams,log=TRUE)
+  log.prior <- dprior(object,params=theta,log=TRUE)
   ## we suppose that theta is a "match", which does the right thing for continue() and
   ## should have negligible effect unless doing many short calls to continue()
 
@@ -161,8 +160,8 @@ abc.internal <- function (object, Nabc,
 
     ## ABC update rule
     distance <- sum(((datval-simval)/scale)^2)
-    if( (is.finite(distance)) && (distance<epsilon) ){ 
-      log.prior.prop <- dprior.fun(params=theta.prop,hyperparams=hyperparams,log=TRUE)
+    if( (is.finite(distance)) && (distance<epssq) ){ 
+      log.prior.prop <- dprior(object,params=theta.prop,log=TRUE)
       if (runif(1) < exp(log.prior.prop-log.prior)) {
         theta <- theta.prop
         log.prior <- log.prior.prop
@@ -180,15 +179,13 @@ abc.internal <- function (object, Nabc,
       'abc',
       po,
       params=theta,
-      pars = pars,
-      transform = transform,
-      Nabc = Nabc,
-      dprior = dprior.fun,
+      pars=pars,
+      transform=transform,
+      Nabc=Nabc,
       probes=probes,
-      scale = scale,
-      epsilon = epsilon,
-      hyperparams = hyperparams,
-      random.walk.sd = rw.sd,
+      scale=scale,
+      epsilon=epsilon,
+      random.walk.sd=rw.sd,
       conv.rec=conv.rec
       )
 
@@ -199,21 +196,19 @@ setMethod(
           signature=signature(object="pomp"),
           function (object, Nabc = 1,
                     start, pars, rw.sd,
-                    dprior, probes, scale, epsilon, hyperparams,
+                    probes, scale, epsilon,
                     verbose = getOption("verbose"),
                     transform = FALSE,
                     ...) {
             
-            transform <- as.logical(transform)
-
-            if (missing(start)) start <- coef(object,transform=transform)
+            if (missing(start))
+              start <- coef(object)
 
             if (missing(rw.sd))
               stop("abc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
 
-            if (missing(pars)) {
+            if (missing(pars))
               pars <- names(rw.sd)[rw.sd>0]
-            }
 
             if (missing(probes))
               stop("abc error: ",sQuote("probes")," must be specified",call.=FALSE)
@@ -222,41 +217,19 @@ setMethod(
               stop("abc error: ",sQuote("scale")," must be specified",call.=FALSE)
 
             if (missing(epsilon))
-              stop("abc error: ",sQuote("abc match criterion, epsilon,")," must be specified",call.=FALSE)
+              stop("abc error: abc match criterion, ",sQuote("epsilon"),", must be specified",call.=FALSE)
 
-            if (missing(hyperparams))
-              stop("abc error: ",sQuote("hyperparams")," must be specified",call.=FALSE)
-
-            if (missing(dprior)) {         # use default flat improper prior
-              dprior <- function (params, hyperparams, log) {
-                if (log) 0 else 1
-              }
-            } else {
-              dprior <- match.fun(dprior)
-              if (!all(c('params','hyperparams','log')%in%names(formals(dprior))))
-                stop(
-                     "abc error: ",
-                     sQuote("dprior"),
-                     " must be a function of prototype ",
-                     sQuote("dprior(params,hyperparams,log)"),
-                     call.=FALSE
-                     )
-            }
-            
             abc.internal(
                          object=object,
                          Nabc=Nabc,
                          start=start,
                          pars=pars,
-                         dprior.fun=dprior,
                          probes=probes,
                          scale=scale,
                          epsilon=epsilon,
                          rw.sd=rw.sd,
-                         hyperparams=hyperparams,
                          verbose=verbose,
-                         transform=transform,
-                         .ndone=0
+                         transform=transform
                          )
           }
           )
@@ -264,62 +237,19 @@ setMethod(
 setMethod(
           "abc",
           signature=signature(object="probed.pomp"),
-          function (object, Nabc = 1,
-                    start, pars, rw.sd,
-                    dprior, probes, scale, epsilon, hyperparams,
+          function (object, probes,
                     verbose = getOption("verbose"),
                     transform = FALSE,
                     ...) {
 
-            transform <- as.logical(transform)
-            
-            if (missing(start)) start <- coef(object,transform=transform)
-
-            if (missing(rw.sd))
-              stop("abc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
-
-            if (missing(pars)) {
-              pars <- names(rw.sd)[rw.sd>0]
-            }
-
             if (missing(probes)) probes <- object@probes
-            if (missing(scale)) probes <- object@scale
-            if (missing(epsilon)) probes <- object@epsilon
 
-            if (missing(hyperparams))
-              stop("abc error: ",sQuote("hyperparams")," must be specified",call.=FALSE)
-
-            if (missing(dprior)) {         # use default flat improper prior
-              dprior <- function (params, hyperparams, log) {
-                if (log) 0 else 1
-              }
-            } else {
-              dprior <- match.fun(dprior)
-              if (!all(c('params','hyperparams','log')%in%names(formals(dprior))))
-                stop(
-                     "abc error: ",
-                     sQuote("dprior"),
-                     " must be a function of prototype ",
-                     sQuote("dprior(params,hyperparams,log)"),
-                     call.=FALSE
-                     )
-            }
-            
-            abc.internal(
-                         object=as(object,"pomp"),
-                         Nabc=Nabc,
-                         start=start,
-                         pars=pars,
-                         dprior.fun=dprior,
-                         probes=probes,
-                         scale=scale,
-                         epsilon=epsilon,
-                         rw.sd=rw.sd,
-                         hyperparams=hyperparams,
-                         verbose=verbose,
-                         transform=transform,
-                         .ndone=0
-                         )
+            abc(
+                object=as(object,"pomp"),
+                probes=probes,
+                transform=transform,
+                ...
+                )
           }
           )
 
@@ -328,7 +258,7 @@ setMethod(
           signature=signature(object="abc"),
           function (object, Nabc,
                     start, pars, rw.sd,
-                    dprior, probes, scale, epsilon, hyperparams,
+                    probes, scale, epsilon,
                     verbose = getOption("verbose"),
                     transform,
                     ...) {
@@ -336,30 +266,25 @@ setMethod(
             if (missing(Nabc)) Nabc <- object@Nabc
             if (missing(start)) start <- coef(object)
             if (missing(pars)) pars <- object@pars
-            if (missing(rw.sd)) pars <- object@random.walk.sd
-            if (missing(dprior)) dprior <- object@dprior
+            if (missing(rw.sd)) rw.sd <- object@random.walk.sd
             if (missing(probes)) probes <- object@probes
-            if (missing(scale)) probes <- object@scale
-            if (missing(epsilon)) probes <- object@epsilon
-            if (missing(hyperparams)) hyperparams <- object@hyperparams
+            if (missing(scale)) scale <- object@scale
+            if (missing(epsilon)) epsilon <- object@epsilon
             if (missing(transform)) transform <- object@transform
-            transform <- as.logical(transform)
 
-            abc.internal(
-                         object=as(object,"pomp"),
-                         Nabc=Nabc,
-                         start=start,
-                         pars=pars,
-                         dprior.fun=dprior,
-                         rw.sd=rw.sd,
-                         probes=probes,
-                         scale=scale,
-                         epsilon=epsilon,
-                         hyperparams=hyperparams,
-                         verbose=verbose,
-                         transform=transform,
-                         .ndone=0
-                         )
+            abc(
+                object=as(object,"pomp"),
+                Nabc=Nabc,
+                start=start,
+                pars=pars,
+                rw.sd=rw.sd,
+                probes=probes,
+                scale=scale,
+                epsilon=epsilon,
+                verbose=verbose,
+                transform=transform,
+                ...
+                )
           }
           )
 
@@ -382,6 +307,7 @@ setMethod(
                                   obj@conv.rec[-1,]
                                   )
             obj@Nabc <- as.integer(ndone+Nabc)
+            
             obj
           }
           )

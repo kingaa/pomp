@@ -1,6 +1,6 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -259,7 +259,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x26493e8>
+<environment: 0x1e6db58>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -272,11 +272,13 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x26493e8>
+<environment: 0x1e6db58>
+prior simulator, rprior = 
+function not specified
+prior density, dprior = 
+native function '_pomp_default_dprior', dynamically loaded from ''
 skeleton ( map ) = 
-function (x, t, params, covars, ...) 
-stop(sQuote("skeleton"), " not specified")
-<environment: 0x2683b48>
+function not specified
 initializer = 
 function (params, t0, ...) 
 {
@@ -434,4 +436,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.912   0.060   0.985 
+  0.904   0.060   0.979 

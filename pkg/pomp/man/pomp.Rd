@@ -16,25 +16,25 @@
 \S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
-       initializer, params, covar, tcovar,
+       initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
-       initializer, params, covar, tcovar,
+       initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
-       initializer, params, covar, tcovar,
+       initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 \S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton, skeleton.type, skelmap.delta.t,
-       initializer, params, covar, tcovar,
+       initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform)
 }
@@ -107,6 +107,18 @@
     By default (i.e., if it is unspecified when \code{pomp} is called), the initializer assumes any parameters in \code{params} the names of which end in \dQuote{\code{.0}} are initial values.
     These are simply copied over as initial conditions when \code{init.state} is called (see \code{\link{init.state-pomp}}).
     The names of the state variables are the same as the corresponding initial value parameters, but with the \dQuote{\code{.0}} dropped.
+  }
+  \item{rprior}{
+    optional; function drawing a sample from a prior distribution on parameters.
+    This can be specified in one of two ways:
+    (1) as an \R function of prototype \code{rprior(params,\dots)},
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_rprior} as defined in the header file \dQuote{pomp.h}.
+  }
+  \item{dprior}{
+    optional; function evaluating the prior distribution.
+    This can be specified in one of two ways:
+    (1) as an \R function of prototype \code{dprior(params,log=FALSE,\dots)},
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_dprior} as defined in the header file \dQuote{pomp.h}.
   }
   \item{params}{
     optional named numeric vector of parameters.
