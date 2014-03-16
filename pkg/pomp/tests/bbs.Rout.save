@@ -37,16 +37,21 @@ newly created pomp object(s):
          rho        sigma          S.0          I.0          R.0 
    2.1972246    1.2809338   -0.0010005   -6.9077553         -Inf 
 > 
-> prior <- parmat(coef(bbs),nrep=1000)
-> prior["beta",] <- exp(runif(n=1000,min=1,max=2))
-> prior["sigma",] <- runif(n=1000,min=2,max=4)
-> fit1 <- bsmc(bbs,params=prior,transform=TRUE,est=c("beta","sigma"),smooth=0.2)
+> bbs <- pomp(bbs,
++             rprior=function(params,...){
++               params["beta"] <- exp(runif(n=1,min=1,max=2))
++               params["sigma"] <- runif(n=1,min=2,max=4)
++               params
++             }
++             )
+> 
+> fit1 <- bsmc(bbs,params=coef(bbs),Np=1000,transform=TRUE,est=c("beta","sigma"),smooth=0.2)
 Warning message:
 In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
   Walker's alias method used: results are different from R < 2.2.0
 > signif(coef(fit1),3)
    gamma       mu     iota     beta  beta.sd      pop      rho    sigma 
-   0.333    0.000    0.000    3.220    0.000 1400.000    0.900    2.240 
+   0.333    0.000    0.000    3.630    0.000 1400.000    0.900    2.220 
      S.0      I.0      R.0 
    0.999    0.001    0.000 
 > 
@@ -59,4 +64,4 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > 
 > proc.time()
    user  system elapsed 
-  2.824   0.036   2.881 
+  2.784   0.068   2.880 

@@ -63,7 +63,7 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 2.936097 secs
+Time difference of 2.921494 secs
 > 
 > print(
 +       cbind(
@@ -90,6 +90,12 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > print(smc$log.evidence)
 [1] 45.47584
 > 
+> ou2 <- pomp(ou2,
++             rprior=function(params,...){
++               params
++             }
++             )
+> 
 > smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=648651945L)
 > print(smc$eff.sample.size)
  [1] 186.40437  36.29100  57.56951  29.30424 180.23722  34.63366 156.94264
@@ -99,4 +105,4 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > proc.time()
    user  system elapsed 
-  4.808   0.060   4.897 
+  4.788   0.072   4.889 
