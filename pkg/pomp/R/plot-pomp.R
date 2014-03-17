@@ -6,6 +6,7 @@ plotpomp.internal <- function (x, y,
                                mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
                                oma = c(6, 0, 5, 0),
                                axes = TRUE,
+                               xlabel,
                                ...) {
   X <- as(x,"data.frame")
   vars <- names(X)
@@ -25,6 +26,7 @@ plotpomp.internal <- function (x, y,
     vars <- variables
     ylabels <- names(variables)
   }
+
   plotpomp <- function (x, time, 
                         xy.labels, xy.lines, panel = lines, nc, xlabel,
                         type = "l", xlim = NULL, ylim = NULL, xlab = "time",
@@ -97,7 +99,7 @@ plotpomp.internal <- function (x, y,
              time=X[[tpos]],
              ylab=ylabels,
              xy.labels=FALSE,
-             xlabel=deparse(substitute(x,env=parent.frame(1))),
+             xlabel=xlabel,
              panel=panel,
              nc=nc,
              axes=axes,
@@ -118,8 +120,10 @@ setMethod("plot","pomp",
                     oma = c(6, 0, 5, 0),
                     axes = TRUE,
                     ...) {
+            xlabel <- deparse(substitute(x,env=parent.frame()))
             plotpomp.internal(x=x,y=y,variables=variables,
                               panel=panel,nc=nc,yax.flip=yax.flip,
-                              mar=mar,oma=oma,axes=axes,...)
+                              mar=mar,oma=oma,axes=axes,
+                              xlabel=xlabel,...)
           }
           )
