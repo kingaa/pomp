@@ -1,7 +1,7 @@
 Package: pomp
 Type: Package
 Title: Statistical inference for partially observed Markov processes
-Version: 0.48-2
+Version: 0.48-3
 Date: 2014-03-17
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
@@ -23,8 +23,8 @@ License: GPL(>= 2)
 LazyData: true
 BuildVignettes: true
 MailingList: Subscribe to pomp-announce@r-forge.r-project.org for announcements by going to http://lists.r-forge.r-project.org/mailman/listinfo/pomp-announce.
-Collate: aaa.R authors.R version.R eulermultinom.R plugins.R 
-	 parmat.R logmeanexp.R slice-design.R 
+Collate: aaa.R authors.R generics.R version.R eulermultinom.R
+	 plugins.R parmat.R logmeanexp.R slice-design.R 
 	 profile-design.R sobol.R bsplines.R sannbox.R
 	 pomp-fun.R pomp-class.R pomp.R pomp-methods.R 
 	 rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R 

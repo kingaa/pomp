@@ -29,8 +29,6 @@ setClass(
            )
          )
 
-setGeneric("bsmc",function(object,...)standardGeneric("bsmc"))
-
 bsmc.internal <- function (object, params, Np, est,
                            smooth = 0.1,
                            ntries = 1,

@@ -30,8 +30,6 @@ particles.internal <- function (object, Np = 1, center = coef(object), sd = 0, .
   x
 }
 
-setGeneric('particles',function(object,...)standardGeneric("particles"))
-
 setMethod("particles",signature=signature(object="mif"),
           function (object, Np = 1, center = coef(object), sd = 0, ...) {
             particles.internal(object=object,Np=Np,center=center,sd=sd,...)

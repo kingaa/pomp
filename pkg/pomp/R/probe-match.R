@@ -169,8 +169,6 @@ probe.match.internal <- function(object, start, est,
       )
 }
 
-setGeneric("probe.match",function(object,...)standardGeneric("probe.match"))
-
 setMethod(
           "probe.match",
           signature=signature(object="pomp"),

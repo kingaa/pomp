@@ -12,9 +12,6 @@ setClass(
                         )
          )
 
-## PMCMC algorithm functions
-setGeneric('pmcmc',function(object,...)standardGeneric("pmcmc"))
-
 pmcmc.internal <- function (object, Nmcmc,
                             start, pars,
                             rw.sd, Np,

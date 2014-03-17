@@ -1,5 +1,4 @@
 ## evaluate the measurement model density function
-setGeneric("dmeasure",function(object,...)standardGeneric("dmeasure"))
 
 dmeasure.internal <- function (object, y, x, times, params, log = FALSE, .getnativesymbolinfo = TRUE, ...) {
   .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)

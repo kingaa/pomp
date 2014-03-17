@@ -1,5 +1,3 @@
-setGeneric("trajectory",function(object,...)standardGeneric("trajectory"))
-
 trajectory.internal <- function (object, params, times, t0, as.data.frame = FALSE, .getnativesymbolinfo = TRUE, ...) {
 
   if (missing(times))

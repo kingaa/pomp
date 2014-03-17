@@ -1,15 +1,5 @@
 ## this file contains some basic methods definitions
 
-## functions to extract or call the components of a "pomp" object
-setGeneric("data.array",function(object,...)standardGeneric("data.array"))
-setGeneric("obs",function(object,...)standardGeneric("obs"))
-setGeneric("time<-",function(object,...,value)standardGeneric("time<-"))  
-setGeneric("coef<-",function(object,...,value)standardGeneric("coef<-"))
-setGeneric("states",function(object,...)standardGeneric("states"))
-setGeneric("timezero",function(object,...)standardGeneric("timezero"))
-setGeneric("timezero<-",function(object,...,value)standardGeneric("timezero<-"))
-setGeneric("partrans",function(object,params,dir=c("forward","inverse"),...)standardGeneric("partrans"))
-
 ## 'coerce' method: allows for coercion of a "pomp" object to a data-frame
 setAs(
       from="pomp",

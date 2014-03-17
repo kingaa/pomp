@@ -341,9 +341,6 @@ pfilter.internal <- function (object, params, Np,
       )
 }
 
-## generic particle filter
-setGeneric("pfilter",function(object,...)standardGeneric("pfilter"))
-
 setMethod(
           "pfilter",
           signature=signature(object="pomp"),

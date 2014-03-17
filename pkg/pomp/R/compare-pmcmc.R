@@ -99,5 +99,3 @@ compare.pmcmc <- function (z) {
   }
   invisible(NULL)
 }
-
-

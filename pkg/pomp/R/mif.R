@@ -386,8 +386,6 @@ mif.internal <- function (object, Nmif,
       )
 }
 
-setGeneric('mif',function(object,...)standardGeneric("mif"))
-
 setMethod(
           "mif",
           signature=signature(object="pomp"),

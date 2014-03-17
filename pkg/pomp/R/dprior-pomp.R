@@ -1,5 +1,4 @@
 ## evaluate the prior probability density
-setGeneric("dprior",function(object,...)standardGeneric("dprior"))
 
 dprior.internal <- function (object, params, log = FALSE,
                              .getnativesymbolinfo = TRUE, ...) {

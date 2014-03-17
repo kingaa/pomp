@@ -136,8 +136,6 @@ compute.spect.sim <- function (object, params, vars, nsim, seed, transform, detr
   simspec
 }
 
-setGeneric("spect",function(object,...)standardGeneric("spect"))
-
 setMethod(
           "spect",
           signature(object="pomp"),

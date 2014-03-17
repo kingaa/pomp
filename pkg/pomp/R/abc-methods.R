@@ -19,7 +19,7 @@ setMethod(
             if (scatter) {
               pairs(conv.rec(x, pars))
             } else {
-              plot.ts(conv.rec(x,pars),main="Convergence record")
+              plot.ts(conv.rec(x,pars),...)
             }
           }
           )

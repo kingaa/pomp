@@ -1,4 +1,7 @@
 NEWS
+0.48-3
+     o	Correct a bug in 'abc' to do with parameter transformation.
+
 0.48-1
      o	Create new 'dprior' and 'rprior' slots for 'pomp' objects.
      	These will be used by the Bayesian methods (currently 'abc', 'bsmc', and 'pmcmc').

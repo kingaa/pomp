@@ -151,8 +151,6 @@ traj.match.internal <- function (object, start, est, method, gr, eval.only, tran
 traj.match <- function (object, ...)
   stop("function ",sQuote("traj.match")," is undefined for objects of class ",sQuote(class(object)))
 
-setGeneric("traj.match")
-
 setMethod(
           "traj.match",
           signature=signature(object="pomp"),

@@ -14,9 +14,6 @@ setClass(
            )
          )
 
-## ABC algorithm functions
-setGeneric('abc',function(object,...)standardGeneric("abc"))
-
 abc.internal <- function (object, Nabc,
                           start, pars,
                           rw.sd, probes,
@@ -100,7 +97,8 @@ abc.internal <- function (object, Nabc,
   }
 
   theta <- start
-  log.prior <- dprior(object,params=theta,log=TRUE)
+  log.prior <- dprior(object,params=theta,log=TRUE,
+                      .getnativesymbolinfo=gnsi)
   ## we suppose that theta is a "match", which does the right thing for continue() and
   ## should have negligible effect unless doing many short calls to continue()
 
@@ -126,10 +124,8 @@ abc.internal <- function (object, Nabc,
          )
   }
 
-  po <- as(object,"pomp")
-  
   ## apply probes to data
-  datval <- try(.Call(apply_probe_data,po,probes),silent=FALSE)
+  datval <- try(.Call(apply_probe_data,object,probes),silent=FALSE)
   if (inherits(datval,'try-error'))
     stop("abc error: error in ",sQuote("apply_probe_data"),call.=FALSE)
 
@@ -138,14 +134,25 @@ abc.internal <- function (object, Nabc,
   for (n in seq_len(Nabc)) { # main loop
 
     theta.prop <- theta
+
+    if (transform)
+      theta.prop <- partrans(object,params=theta.prop,dir='inverse',
+                             .getnativesymbolinfo=gnsi)
+
     theta.prop[pars] <- rnorm(n=length(pars),mean=theta.prop[pars],sd=rw.sd)
+
+    if (transform)
+      theta.prop <- partrans(object,params=theta.prop,dir='forward',
+                             .getnativesymbolinfo=gnsi)
+
+    gnsi <- FALSE
 
     ## compute the probes for the proposed new parameter values
 
     simval <- try(
                   .Call(
                         apply_probe_sim,
-                        object=po,
+                        object=object,
                         nsim=1,
                         params=theta.prop,
                         seed=NULL,
@@ -177,7 +184,7 @@ abc.internal <- function (object, Nabc,
 
   new(
       'abc',
-      po,
+      object,
       params=theta,
       pars=pars,
       transform=transform,
@@ -205,19 +212,23 @@ setMethod(
               start <- coef(object)
 
             if (missing(rw.sd))
-              stop("abc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
+              stop("abc error: ",sQuote("rw.sd")," must be specified",
+                   call.=FALSE)
 
             if (missing(pars))
               pars <- names(rw.sd)[rw.sd>0]
 
             if (missing(probes))
-              stop("abc error: ",sQuote("probes")," must be specified",call.=FALSE)
+              stop("abc error: ",sQuote("probes")," must be specified",
+                   call.=FALSE)
 
             if (missing(scale))
-              stop("abc error: ",sQuote("scale")," must be specified",call.=FALSE)
+              stop("abc error: ",sQuote("scale")," must be specified",
+                   call.=FALSE)
 
             if (missing(epsilon))
-              stop("abc error: abc match criterion, ",sQuote("epsilon"),", must be specified",call.=FALSE)
+              stop("abc error: abc match criterion, ",sQuote("epsilon"),
+                   ", must be specified",call.=FALSE)
 
             abc.internal(
                          object=object,
@@ -243,13 +254,13 @@ setMethod(
                     ...) {
 
             if (missing(probes)) probes <- object@probes
-
-            abc(
-                object=as(object,"pomp"),
-                probes=probes,
-                transform=transform,
-                ...
-                )
+            f <- selectMethod("abc","pomp")
+            f(
+              object=object,
+              probes=probes,
+              transform=transform,
+              ...
+              )
           }
           )
 
@@ -272,19 +283,21 @@ setMethod(
             if (missing(epsilon)) epsilon <- object@epsilon
             if (missing(transform)) transform <- object@transform
 
-            abc(
-                object=as(object,"pomp"),
-                Nabc=Nabc,
-                start=start,
-                pars=pars,
-                rw.sd=rw.sd,
-                probes=probes,
-                scale=scale,
-                epsilon=epsilon,
-                verbose=verbose,
-                transform=transform,
-                ...
-                )
+            f <- selectMethod("abc","pomp")
+
+            f(
+              object=object,
+              Nabc=Nabc,
+              start=start,
+              pars=pars,
+              rw.sd=rw.sd,
+              probes=probes,
+              scale=scale,
+              epsilon=epsilon,
+              verbose=verbose,
+              transform=transform,
+              ...
+              )
           }
           )
 
@@ -294,13 +307,14 @@ setMethod(
           function (object, Nabc = 1, ...) {
 
             ndone <- object@Nabc
+            f <- selectMethod("abc","abc")
             
-            obj <- abc(
-                       object=object,
-                       Nabc=Nabc,
-                       .ndone=ndone,
-                       ...
-                       )
+            obj <- f(
+                     object=object,
+                     Nabc=Nabc,
+                     .ndone=ndone,
+                     ...
+                     )
             
             obj@conv.rec <- rbind(
                                   object@conv.rec[,colnames(obj@conv.rec)],

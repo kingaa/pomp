@@ -1,6 +1,3 @@
-## as of version 0.37-1 'pomp' is a generic function
-setGeneric("pomp",function(data,...)standardGeneric("pomp"))
-
 ## this is the initial-condition setting function that is used by default
 ## it simply finds all parameters in the vector 'params' that have a name ending in '.0'
 ## and returns a vector with their values with names stripped of '.0'

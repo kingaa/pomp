@@ -63,8 +63,6 @@ probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) 
       )
 }
 
-setGeneric("probe",function(object,probes,...)standardGeneric("probe"))
-
 setMethod("probe",signature(object="pomp"),
           function (object, probes, params, nsim = 1, seed = NULL, ...) {
             probe.internal(object=object,probes=probes,params=params,
