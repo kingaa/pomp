@@ -576,29 +576,35 @@ tm <- traj.match(
 ###################################################
 ### code chunk number 49: trajmatch-plot
 ###################################################
+
 op <- par(mfrow=c(1,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 plot(time(tm),obs(tm,"Y"),xlab="time",ylab=expression(X,Y),type='o')
 lines(time(tm),states(tm,"X"),lwd=2)
 par(op)
 
 
+
 ###################################################
 ### code chunk number 50: ricker-map-defn
 ###################################################
+
 ricker.sim <- function (x, t, params, delta.t, ...) {
   e <- rnorm(n=1,mean=0,sd=params["sigma"]) 
-  xnew <- c(
-            params["r"]*x["N"]*exp(-x["N"]+e),
-            e
-            )
-  names(xnew) <- c("N","e")
-  xnew
+  setNames(
+           c(
+             params["r"]*x["N"]*exp(-x["N"]+e),
+             e
+             ),
+           c("N","e")
+           )
 }
+
 
 
 ###################################################
 ### code chunk number 51: ricker-pomp
 ###################################################
+
 ricker <- pomp(
                data=data.frame(time=seq(0,50,by=1),y=NA),
                times="time",
@@ -616,6 +622,7 @@ coef(ricker) <- c(
                   e.0=0
                   )
 ricker <- simulate(ricker,seed=73691676L)
+
 
 
 ###################################################
@@ -780,16 +787,10 @@ mf <- continue(mf,Nmif=500,max.fail=20)
 ## res <- rbind(
 ##              cbind(guess=guess,truth=coef(ricker),MLE=coef(mf),PM=coef(pm)),
 ##              loglik=c(
-##                pf.guess$loglik,
-##                pf.truth$loglik,
-##                pf.mf$loglik,
-##                pf.pm$loglik
+##                logLik(pf.guess),logLik(pf.truth),logLik(pf.mf),logLik(pf.pm)
 ##                ),
 ##              synth.loglik=c(
-##                summary(pb.guess)$synth.loglik,
-##                summary(pb.truth)$synth.loglik,
-##                summary(pb.mf)$synth.loglik,
-##                summary(pm)$synth.loglik
+##                logLik(pb.guess),logLik(pb.truth),logLik(pb.mf),logLik(pm)
 ##                )
 ##              )
 
@@ -809,16 +810,10 @@ pb.mf <- probe(mf,nsim=1000,probes=plist,seed=1066L)
 res <- rbind(
              cbind(guess=guess,truth=coef(ricker),MLE=coef(mf),PM=coef(pm)),
              loglik=c(
-               pf.guess$loglik,
-               pf.truth$loglik,
-               pf.mf$loglik,
-               pf.pm$loglik
+               logLik(pf.guess),logLik(pf.truth),logLik(pf.mf),logLik(pf.pm)
                ),
              synth.loglik=c(
-               summary(pb.guess)$synth.loglik,
-               summary(pb.truth)$synth.loglik,
-               summary(pb.mf)$synth.loglik,
-               summary(pm)$synth.loglik
+               logLik(pb.guess),logLik(pb.truth),logLik(pb.mf),logLik(pm)
                )
              )
   save(res,file=binary.file,compress='xz')
@@ -924,7 +919,7 @@ fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
 
 
 ###################################################
-### code chunk number 69: intro_to_pomp.Rnw:1121-1122
+### code chunk number 69: intro_to_pomp.Rnw:1122-1123
 ###################################################
 fits
 
@@ -1109,7 +1104,7 @@ fvals <- exp(fvals/ndata)
 
 
 ###################################################
-### code chunk number 77: intro_to_pomp.Rnw:1267-1268
+### code chunk number 77: intro_to_pomp.Rnw:1268-1269
 ###################################################
 apply(fvals,2,function(x)sd(x)/mean(x))
 
@@ -1151,7 +1146,7 @@ true.fit <- nlf(
 
 
 ###################################################
-### code chunk number 80: intro_to_pomp.Rnw:1306-1307
+### code chunk number 80: intro_to_pomp.Rnw:1307-1308
 ###################################################
 set.seed(32329L)
 
@@ -1221,7 +1216,7 @@ colnames(pars) <- c("r","K")
 
 
 ###################################################
-### code chunk number 83: intro_to_pomp.Rnw:1344-1345
+### code chunk number 83: intro_to_pomp.Rnw:1345-1346
 ###################################################
 apply(pars,2,sd)
 
@@ -1306,101 +1301,126 @@ colnames(pars) <- c("r","K")
 ###################################################
 ### code chunk number 87: bsmc-example-flat-prior-1
 ###################################################
-require(pomp)
+
 pompExample(ricker)
 
-
-###################################################
-### code chunk number 88: bsmc-example-flat-prior-2 (eval = FALSE)
-###################################################
-## set.seed(136872209L)
-## Np <- 10000
-## prior1 <- parmat(coef(ricker),nrep=Np)
-## prior1["r",] <- exp(runif(n=Np,min=2,max=5))
-## prior1["sigma",] <- runif(n=Np,min=0.1,max=1)
-
-
-###################################################
-### code chunk number 89: bsmc-example-flat-prior-3 (eval = FALSE)
-###################################################
-##   fit1 <- bsmc(ricker,params=prior1,transform=TRUE,
-##                est=c("r","sigma"),smooth=0.2)
+ricker <- pomp(
+               ricker,
+               rprior=function (params, ...) {
+                 params["r"] <- exp(runif(n=1,min=2,max=5))
+                 params["sigma"] <- runif(n=1,min=0.1,max=1)
+                 params
+               }
+               )
+                 
 
 
 ###################################################
-### code chunk number 90: bsmc-example-flat-prior-eval
+### code chunk number 88: bsmc-example-flat-prior-3 (eval = FALSE)
+###################################################
+##   
+##   fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
+##                est=c("r","sigma"),smooth=0.2,
+##                seed=1050180387L)
+## 
+
+
+###################################################
+### code chunk number 89: bsmc-example-flat-prior-eval
 ###################################################
 binary.file <- "bsmc-ricker-flat-prior.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-require(pomp)
+
 pompExample(ricker)
-set.seed(136872209L)
-Np <- 10000
-prior1 <- parmat(coef(ricker),nrep=Np)
-prior1["r",] <- exp(runif(n=Np,min=2,max=5))
-prior1["sigma",] <- runif(n=Np,min=0.1,max=1)
-  fit1 <- bsmc(ricker,params=prior1,transform=TRUE,
-               est=c("r","sigma"),smooth=0.2)
+
+ricker <- pomp(
+               ricker,
+               rprior=function (params, ...) {
+                 params["r"] <- exp(runif(n=1,min=2,max=5))
+                 params["sigma"] <- runif(n=1,min=0.1,max=1)
+                 params
+               }
+               )
+                 
+  
+  fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
+               est=c("r","sigma"),smooth=0.2,
+               seed=1050180387L)
+
   save(fit1,file=binary.file,compress="xz")
 }
 
 
 ###################################################
-### code chunk number 91: bsmc-example-flat-prior-coef
+### code chunk number 90: bsmc-example-flat-prior-coef
 ###################################################
+
 signif(coef(fit1),digits=2)
 
 
-###################################################
-### code chunk number 92: bsmc-example-flat-prior-plot
-###################################################
-  plot(fit1,pars=c("r","sigma"),thin=5000)
-
 
 ###################################################
-### code chunk number 93: bsmc-example-normal-prior (eval = FALSE)
+### code chunk number 91: bsmc-example-flat-prior-plot
 ###################################################
-## set.seed(90348704L)
-## Np <- 10000
-## prior2 <- parmat(coef(ricker),nrep=Np)
-## ## log-normal prior on r
-## prior2["r",] <- rlnorm(n=Np,meanlog=4,sdlog=3)
-## ## log-normal prior on sigma
-## prior2["sigma",] <- rlnorm(n=Np,meanlog=log(0.5),sdlog=5)
-## fit2 <- bsmc(ricker,params=prior2,transform=TRUE,
-##             est=c("r","sigma"),smooth=0.2)
+
+plot(fit1,pars=c("r","sigma"),thin=5000)
+
 
 
 ###################################################
-### code chunk number 94: bsmc-example-normal-prior-eval
+### code chunk number 92: bsmc-example-normal-prior (eval = FALSE)
+###################################################
+## 
+## ricker <- pomp(ricker,
+##                rprior=function (params, ...) {
+##                  x <- rlnorm(n=2,meanlog=c(4,log(0.5)),sdlog=c(3,5))
+##                  params[c("r","sigma")] <- x
+##                  params
+##                }
+##                )
+## 
+## fit2 <- bsmc(ricker,transform=TRUE,Np=10000,
+##              est=c("r","sigma"),smooth=0.2,
+##              seed=90348704L)
+## 
+
+
+###################################################
+### code chunk number 93: bsmc-example-normal-prior-eval
 ###################################################
 binary.file <- "bsmc-ricker-normal-prior.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-set.seed(90348704L)
-Np <- 10000
-prior2 <- parmat(coef(ricker),nrep=Np)
-## log-normal prior on r
-prior2["r",] <- rlnorm(n=Np,meanlog=4,sdlog=3)
-## log-normal prior on sigma
-prior2["sigma",] <- rlnorm(n=Np,meanlog=log(0.5),sdlog=5)
-fit2 <- bsmc(ricker,params=prior2,transform=TRUE,
-            est=c("r","sigma"),smooth=0.2)
+
+ricker <- pomp(ricker,
+               rprior=function (params, ...) {
+                 x <- rlnorm(n=2,meanlog=c(4,log(0.5)),sdlog=c(3,5))
+                 params[c("r","sigma")] <- x
+                 params
+               }
+               )
+
+fit2 <- bsmc(ricker,transform=TRUE,Np=10000,
+             est=c("r","sigma"),smooth=0.2,
+             seed=90348704L)
+
   save(fit2,file=binary.file,compress="xz")
 }
 
 
 ###################################################
-### code chunk number 95: bsmc-example-normal-prior-show
+### code chunk number 94: bsmc-example-normal-prior-show
 ###################################################
+
 signif(coef(fit2),digits=2)
 
 
+
 ###################################################
-### code chunk number 96: sir-proc-sim-def
+### code chunk number 95: sir-proc-sim-def
 ###################################################
 sir.proc.sim <- function (x, t, params, delta.t, ...) {
   ## unpack the parameters
@@ -1426,7 +1446,7 @@ sir.proc.sim <- function (x, t, params, delta.t, ...) {
 
 
 ###################################################
-### code chunk number 97: sir-pomp-def (eval = FALSE)
+### code chunk number 96: sir-pomp-def (eval = FALSE)
 ###################################################
 ## simulate(
 ##          pomp(
@@ -1463,7 +1483,7 @@ sir.proc.sim <- function (x, t, params, delta.t, ...) {
 
 
 ###################################################
-### code chunk number 98: sir-pomp-def-eval
+### code chunk number 97: sir-pomp-def-eval
 ###################################################
 binary.file <- "sir-pomp-def.rda"
 if (file.exists(binary.file)) {
@@ -1506,7 +1526,7 @@ simulate(
 
 
 ###################################################
-### code chunk number 99: sir-pomp-def-with-skel (eval = FALSE)
+### code chunk number 98: sir-pomp-def-with-skel (eval = FALSE)
 ###################################################
 ## sir <- pomp(
 ##             sir,
@@ -1535,20 +1555,20 @@ simulate(
 
 
 ###################################################
-### code chunk number 100: sir-plot
+### code chunk number 99: sir-plot
 ###################################################
 plot(sir)
 
 
 ###################################################
-### code chunk number 101: seas-basis
+### code chunk number 100: seas-basis
 ###################################################
 tbasis <- seq(0,20,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,names="seas%d")
 
 
 ###################################################
-### code chunk number 102: complex-sir-def (eval = FALSE)
+### code chunk number 101: complex-sir-def (eval = FALSE)
 ###################################################
 ## complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
 ##   ## unpack the parameters
@@ -1608,7 +1628,7 @@ basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,names="seas%d"
 
 
 ###################################################
-### code chunk number 103: complex-sir-def-eval
+### code chunk number 102: complex-sir-def-eval
 ###################################################
 binary.file <- "complex-sir-def.rda"
 if (file.exists(binary.file)) {
@@ -1674,7 +1694,7 @@ simulate(
 
 
 ###################################################
-### code chunk number 104: seas-basis-plot
+### code chunk number 103: seas-basis-plot
 ###################################################
 op <- par(mar=c(5,5,1,5))
 matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
@@ -1697,13 +1717,13 @@ par(op)
 
 
 ###################################################
-### code chunk number 105: complex-sir-plot
+### code chunk number 104: complex-sir-plot
 ###################################################
 plot(complex.sir)
 
 
 ###################################################
-### code chunk number 106: restore-opts
+### code chunk number 105: restore-opts
 ###################################################
 options(glop)
 

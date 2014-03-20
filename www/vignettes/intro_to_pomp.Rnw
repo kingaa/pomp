@@ -795,10 +795,12 @@ Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
 
 \begin{figure}
 <<trajmatch-plot,fig=T,echo=F,eval=T,height=4,width=6>>=
+
 op <- par(mfrow=c(1,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 plot(time(tm),obs(tm,"Y"),xlab="time",ylab=expression(X,Y),type='o')
 lines(time(tm),states(tm,"X"),lwd=2)
 par(op)
+
 @ 
 \caption{
   Illustration of trajectory matching.
@@ -831,21 +833,25 @@ As before, we'll begin by writing an \R\ function that implements a simulator (\
 It will be convenient to work with log-transformed parameters $\log r$, $\log\sigma$, $\log\phi$.
 Thus
 <<ricker-map-defn>>=
+
 ricker.sim <- function (x, t, params, delta.t, ...) {
   e <- rnorm(n=1,mean=0,sd=params["sigma"]) 
-  xnew <- c(
-            params["r"]*x["N"]*exp(-x["N"]+e),
-            e
-            )
-  names(xnew) <- c("N","e")
-  xnew
+  setNames(
+           c(
+             params["r"]*x["N"]*exp(-x["N"]+e),
+             e
+             ),
+           c("N","e")
+           )
 }
+
 @
 Note that, in this implementation, $e$ is taken to be a state variable.
 This is not strictly necessary, but it might prove useful, for example, in \emph{a posteriori} diagnostic checking of model residuals.
 Now we can construct a \code{pomp} object; in this case, we use the \code{discrete.time.sim} plug-in.
 Note how we specify the measurement model.
 <<ricker-pomp>>=
+
 ricker <- pomp(
                data=data.frame(time=seq(0,50,by=1),y=NA),
                times="time",
@@ -863,12 +869,13 @@ coef(ricker) <- c(
                   e.0=0
                   )
 ricker <- simulate(ricker,seed=73691676L)
+
 @ 
 
 A pre-built \code{pomp} object implementing this model is included with the package.
 Its \code{rprocess}, \code{rmeasure}, and \code{dmeasure} components are written in C and are thus a bit faster than the \R\ implementation above.
 Do 
-<<get-ricker,echo=T,eval=T>>=
+<<get-ricker,echo=T,eval=T,results=hide>>=
 pompExample(ricker)
 @ 
 to load this \code{pomp} object.
@@ -1021,16 +1028,10 @@ pb.mf <- probe(mf,nsim=1000,probes=plist,seed=1066L)
 res <- rbind(
              cbind(guess=guess,truth=coef(ricker),MLE=coef(mf),PM=coef(pm)),
              loglik=c(
-               pf.guess$loglik,
-               pf.truth$loglik,
-               pf.mf$loglik,
-               pf.pm$loglik
+               logLik(pf.guess),logLik(pf.truth),logLik(pf.mf),logLik(pf.pm)
                ),
              synth.loglik=c(
-               summary(pb.guess)$synth.loglik,
-               summary(pb.truth)$synth.loglik,
-               summary(pb.mf)$synth.loglik,
-               summary(pm)$synth.loglik
+               logLik(pb.guess),logLik(pb.truth),logLik(pb.mf),logLik(pm)
                )
              )
 <<ricker-comparison-eval,echo=F,eval=T>>=
@@ -1404,26 +1405,33 @@ if (file.exists(binary.file)) {
 The approximate Bayesian sequential Monte Carlo method of \citet{Liu2001b} is implemented in \pkg{pomp}.
 The following demonstrates its use on the Ricker model.
 
-First, we draw a sample from our prior distribution.
-Here, we'll use uniform priors on two model parameters ($\log{r}$ and $\sigma$), leaving the others fixed at their true values.
-<<bsmc-example-flat-prior-1,echo=F,eval=T>>=
-require(pomp)
+First, we'll specify a prior distribution.
+Bayesian sequential Monte Carlo requires only that we be able to simulate from the prior, so we'll need to write a function that draws samples.
+We then give this function to the \code{rprior} argument of \code{pomp}.
+Let's use uniform priors on $\log{r}$ and $\sigma$, leaving the others fixed at their true values.
+<<bsmc-example-flat-prior-1,echo=T,eval=T,results=hide>>=
+
 pompExample(ricker)
+
+ricker <- pomp(
+               ricker,
+               rprior=function (params, ...) {
+                 params["r"] <- exp(runif(n=1,min=2,max=5))
+                 params["sigma"] <- runif(n=1,min=0.1,max=1)
+                 params
+               }
+               )
+                 
 @ 
 We'll use 10,000 particles, so we'll need that many samples from the prior distribution.
-<<bsmc-example-flat-prior-2,eval=F>>=
-set.seed(136872209L)
-Np <- 10000
-prior1 <- parmat(coef(ricker),nrep=Np)
-prior1["r",] <- exp(runif(n=Np,min=2,max=5))
-prior1["sigma",] <- runif(n=Np,min=0.1,max=1)
-@ 
-Now \code{params} holds these 10,000 samples.
-The following runs the sequential Monte Carlo algorithm.
+The following runs the Bayesian sequential Monte Carlo algorithm with 10,000 particles.
 Note that, by specifying \code{transform=TRUE}, we cause the estimation to proceed on the transformed scale.
 <<bsmc-example-flat-prior-3,eval=F>>=
-  fit1 <- bsmc(ricker,params=prior1,transform=TRUE,
-               est=c("r","sigma"),smooth=0.2)
+  
+  fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
+               est=c("r","sigma"),smooth=0.2,
+               seed=1050180387L)
+
 @ 
 <<bsmc-example-flat-prior-eval,eval=T,echo=F>>=
 binary.file <- "bsmc-ricker-flat-prior.rda"
@@ -1431,7 +1439,6 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 <<bsmc-example-flat-prior-1>>
-<<bsmc-example-flat-prior-2>>
 <<bsmc-example-flat-prior-3>>
   save(fit1,file=binary.file,compress="xz")
 }
@@ -1439,13 +1446,17 @@ if (file.exists(binary.file)) {
 Fig.~\ref{fig:bsmc-example-flat-prior} shows the results of this computation.
 Obtain the posterior medians of the parameters by doing
 <<bsmc-example-flat-prior-coef>>=
+
 signif(coef(fit1),digits=2)
+
 @ 
 Note that these are reported on the natural (i.e., untransformed) scale.
 
 \begin{figure}
 <<bsmc-example-flat-prior-plot,fig=T,pdf=F,png=T,height=6,width=6,echo=F>>=
-  plot(fit1,pars=c("r","sigma"),thin=5000)
+
+plot(fit1,pars=c("r","sigma"),thin=5000)
+
 @ 
 \caption{
   Results of \code{bsmc} on the Ricker model.
@@ -1459,15 +1470,19 @@ Note that these are reported on the natural (i.e., untransformed) scale.
 
 To repeat the procedure with log-normal priors on $r$ and $\sigma$, one might do the following.
 <<bsmc-example-normal-prior,eval=F,echo=T>>=
-set.seed(90348704L)
-Np <- 10000
-prior2 <- parmat(coef(ricker),nrep=Np)
-## log-normal prior on r
-prior2["r",] <- rlnorm(n=Np,meanlog=4,sdlog=3)
-## log-normal prior on sigma
-prior2["sigma",] <- rlnorm(n=Np,meanlog=log(0.5),sdlog=5)
-fit2 <- bsmc(ricker,params=prior2,transform=TRUE,
-            est=c("r","sigma"),smooth=0.2)
+
+ricker <- pomp(ricker,
+               rprior=function (params, ...) {
+                 x <- rlnorm(n=2,meanlog=c(4,log(0.5)),sdlog=c(3,5))
+                 params[c("r","sigma")] <- x
+                 params
+               }
+               )
+
+fit2 <- bsmc(ricker,transform=TRUE,Np=10000,
+             est=c("r","sigma"),smooth=0.2,
+             seed=90348704L)
+
 <<bsmc-example-normal-prior-eval,eval=T,echo=F>>=
 binary.file <- "bsmc-ricker-normal-prior.rda"
 if (file.exists(binary.file)) {
@@ -1477,7 +1492,9 @@ if (file.exists(binary.file)) {
   save(fit2,file=binary.file,compress="xz")
 }
 <<bsmc-example-normal-prior-show,echo=T,eval=T>>=
+
 signif(coef(fit2),digits=2)
+
 @ 
 
 \clearpage

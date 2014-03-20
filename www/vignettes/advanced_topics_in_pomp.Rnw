@@ -675,7 +675,6 @@ if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
 <<pomp-builder>>
   simulate(sir) -> x
   pfilter(sir,Np=500) -> pf
-  dyn.unload("SIR.so")
   print(logLik(pf))
 }
 @ 

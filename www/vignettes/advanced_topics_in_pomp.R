@@ -707,7 +707,6 @@ simulate(
          ) -> sir
   simulate(sir) -> x
   pfilter(sir,Np=500) -> pf
-  dyn.unload("SIR.so")
   print(logLik(pf))
 }
 
