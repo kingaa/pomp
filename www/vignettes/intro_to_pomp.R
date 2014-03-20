@@ -1422,6 +1422,7 @@ signif(coef(fit2),digits=2)
 ###################################################
 ### code chunk number 95: sir-proc-sim-def
 ###################################################
+
 sir.proc.sim <- function (x, t, params, delta.t, ...) {
   ## unpack the parameters
   N <- params["N"]             # population size
@@ -1445,9 +1446,11 @@ sir.proc.sim <- function (x, t, params, delta.t, ...) {
 }
 
 
+
 ###################################################
 ### code chunk number 96: sir-pomp-def (eval = FALSE)
 ###################################################
+## 
 ## simulate(
 ##          pomp(
 ##               data=data.frame(
@@ -1460,7 +1463,7 @@ sir.proc.sim <- function (x, t, params, delta.t, ...) {
 ##                 step.fun=sir.proc.sim,
 ##                 delta.t=1/52/20
 ##                 ),
-##               measurement.model=reports~binom(size=cases,prob=rho),
+##               measurement.model=reports~nbinom(mu=rho*cases,size=theta),
 ##               initializer=function(params, t0, ic.pars, comp.names, ...){
 ##                 x0 <- c(S=0,I=0,R=0,cases=0)
 ##                 N <- params["N"]
@@ -1475,11 +1478,12 @@ sir.proc.sim <- function (x, t, params, delta.t, ...) {
 ##          params=c(
 ##              N=50000,
 ##              beta=60,gamma=8,mu=1/50,
-##              rho=0.6,
+##              rho=0.6,theta=10,
 ##              S0=8/60,I0=0.002,R0=1-8/60-0.001
 ##            ),
 ##          seed=677573454L
 ##          ) -> sir
+## 
 
 
 ###################################################
@@ -1489,6 +1493,7 @@ binary.file <- "sir-pomp-def.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
+
 simulate(
          pomp(
               data=data.frame(
@@ -1501,7 +1506,7 @@ simulate(
                 step.fun=sir.proc.sim,
                 delta.t=1/52/20
                 ),
-              measurement.model=reports~binom(size=cases,prob=rho),
+              measurement.model=reports~nbinom(mu=rho*cases,size=theta),
               initializer=function(params, t0, ic.pars, comp.names, ...){
                 x0 <- c(S=0,I=0,R=0,cases=0)
                 N <- params["N"]
@@ -1516,11 +1521,12 @@ simulate(
          params=c(
              N=50000,
              beta=60,gamma=8,mu=1/50,
-             rho=0.6,
+             rho=0.6,theta=10,
              S0=8/60,I0=0.002,R0=1-8/60-0.001
            ),
          seed=677573454L
          ) -> sir
+
   save(sir,file=binary.file,compress='xz')
 }
 
@@ -1528,6 +1534,7 @@ simulate(
 ###################################################
 ### code chunk number 98: sir-pomp-def-with-skel (eval = FALSE)
 ###################################################
+## 
 ## sir <- pomp(
 ##             sir,
 ##               skeleton.type="vectorfield",
@@ -1552,6 +1559,7 @@ simulate(
 ##                   )
 ##               }
 ## )
+## 
 
 
 ###################################################
@@ -1563,13 +1571,16 @@ plot(sir)
 ###################################################
 ### code chunk number 100: seas-basis
 ###################################################
+
 tbasis <- seq(0,20,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,names="seas%d")
+
 
 
 ###################################################
 ### code chunk number 101: complex-sir-def (eval = FALSE)
 ###################################################
+## 
 ## complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
 ##   ## unpack the parameters
 ##   N <- params["N"]                 # population size
@@ -1619,12 +1630,13 @@ basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,names="seas%d"
 ##              N=50000,
 ##              b1=60,b2=10,b3=110,
 ##              gamma=8,mu=1/50,
-##              rho=0.6,
+##              rho=0.6,theta=10,
 ##              iota=0.01,beta.sd=0.1,
 ##              S0=8/60,I0=0.002,R0=1-8/60-0.001
 ##            ),
 ##          seed=8274355L
 ##          ) -> complex.sir
+## 
 
 
 ###################################################
@@ -1634,6 +1646,7 @@ binary.file <- "complex-sir-def.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
+
 complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
   ## unpack the parameters
   N <- params["N"]                 # population size
@@ -1683,12 +1696,13 @@ simulate(
              N=50000,
              b1=60,b2=10,b3=110,
              gamma=8,mu=1/50,
-             rho=0.6,
+             rho=0.6,theta=10,
              iota=0.01,beta.sd=0.1,
              S0=8/60,I0=0.002,R0=1-8/60-0.001
            ),
          seed=8274355L
          ) -> complex.sir
+
   save(complex.sir,file=binary.file,compress='xz')
 }
 
@@ -1696,6 +1710,7 @@ simulate(
 ###################################################
 ### code chunk number 103: seas-basis-plot
 ###################################################
+
 op <- par(mar=c(5,5,1,5))
 matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
         lty=1,col=c("red","blue","orange"),xlab="time (yr)",
@@ -1716,10 +1731,13 @@ mtext(
 par(op)
 
 
+
 ###################################################
 ### code chunk number 104: complex-sir-plot
 ###################################################
+
 plot(complex.sir)
+
 
 
 ###################################################

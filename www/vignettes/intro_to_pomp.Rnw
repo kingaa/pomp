@@ -1572,11 +1572,11 @@ It is useful sometimes to further assume that birth and death rates are equal an
 
 It is typically impossible to monitor $S$, $I$, and $R$, directly. 
 Relatively commonly, however, records of \emph{cases}, i.e., individual infections, are kept by public health authorities.
-The number of cases, $C(t_1,t_2)$, recorded within a given reporting interval $[t_1,t_2)$ might perhaps be modeled by a binomial process
+The number of cases, $C(t_1,t_2)$, recorded within a given reporting interval $[t_1,t_2)$ might perhaps be modeled by a negative binomial process
 \begin{equation*}
-  C(t_1,t_2)\;\sim\;\mathrm{binomial}({\Delta}_{I{\to}R}(t_1,t_2),\rho)
+  C(t_1,t_2)\;\sim\;\mathrm{negbin}(\rho\,{\Delta}_{I{\to}R}(t_1,t_2),\theta)
 \end{equation*}
-where $\Delta_{I{\to}R}(t_1,t_2)$ is the accumulated number of recoveries that have occured over the interval in question and $\rho$ is the \emph{reporting rate}, i.e., the probability that a given infection is observed and recorded.
+where $\Delta_{I{\to}R}(t_1,t_2)$ is the accumulated number of recoveries that have occured over the interval in question, $\rho$ is the \emph{reporting rate}---the probability that a given infection is observed and recorded---and $\theta$ measures overdispersion in the reporting process.
 The fact that the observed data are linked to an accumulation, as opposed to an instantaneous value, introduces a little bit of complication;
 see the section on ``Accumulator variables'' in the ``Advanced Topics in \pkg{pomp}'' vignette for a thorough discussion of this issue.
 
@@ -1620,6 +1620,7 @@ Obviously, the Euler-multinomial distributions generalize to an arbitrary number
 The help (\code{?euler.sim}) informs us that to use \code{euler.sim}, we need to specify a function that advances the states from $t$ to $t+{\delta}t$.
 The function \code{sir.proc.sim}, defined here, does this.
 <<sir-proc-sim-def,keep.source=T>>=
+
 sir.proc.sim <- function (x, t, params, delta.t, ...) {
   ## unpack the parameters
   N <- params["N"]             # population size
@@ -1641,6 +1642,7 @@ sir.proc.sim <- function (x, t, params, delta.t, ...) {
       trans[4]                          # accumulate the recoveries
     )
 }
+
 @ 
 
 Two significant wrinkles remains to be explained.
@@ -1663,6 +1665,7 @@ We can enforce this constraint by customizing the parameterization of our initia
 We do this in by specializing a custom \code{initializer} in the call to \code{pomp} that constructs the \code{pomp} object.
 Let's construct it now and fill it with simulated data.
 <<sir-pomp-def,eval=F,echo=T>>=
+
 simulate(
          pomp(
               data=data.frame(
@@ -1675,7 +1678,7 @@ simulate(
                 step.fun=sir.proc.sim,
                 delta.t=1/52/20
                 ),
-              measurement.model=reports~binom(size=cases,prob=rho),
+              measurement.model=reports~nbinom(mu=rho*cases,size=theta),
               initializer=function(params, t0, ic.pars, comp.names, ...){
                 x0 <- c(S=0,I=0,R=0,cases=0)
                 N <- params["N"]
@@ -1690,11 +1693,12 @@ simulate(
          params=c(
              N=50000,
              beta=60,gamma=8,mu=1/50,
-             rho=0.6,
+             rho=0.6,theta=10,
              S0=8/60,I0=0.002,R0=1-8/60-0.001
            ),
          seed=677573454L
          ) -> sir
+
 <<sir-pomp-def-eval,eval=T,echo=F>>=
 binary.file <- "sir-pomp-def.rda"
 if (file.exists(binary.file)) {
@@ -1704,6 +1708,7 @@ if (file.exists(binary.file)) {
   save(sir,file=binary.file,compress='xz')
 }
 <<sir-pomp-def-with-skel,eval=F,echo=F>>=
+
 sir <- pomp(
             sir,
               skeleton.type="vectorfield",
@@ -1728,6 +1733,7 @@ sir <- pomp(
                   )
               }
 )
+
 @ 
 Notice that we are assuming here that the data are collected weekly and use an Euler step-size of 1/20~wk.
 Here, we've assumed an infection with an infectious period of $1/\gamma=1/8$~yr and a basic reproductive number, $R_0$ of $\beta/(\gamma+\mu)\approx 7.5$.
@@ -1762,8 +1768,10 @@ If $s_{i}(t)$, $i=1,\dots,k$ is a periodic B-spline basis, as in Fig.~\ref{fig:s
 and, by varying the coefficients $b_{i}$, we can obtain a wide variety of shapes for $\beta(t)$.
 In \pkg{pomp}, we can define a set of periodic B-spline basis functions by doing:
 <<seas-basis>>=
+
 tbasis <- seq(0,20,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,names="seas%d")
+
 @ 
 This results in a data-frame with \Sexpr{ncol(basis)} columns; 
 each column is a quadratic periodic B-spline over the 20~yr domain, with period 1~yr.
@@ -1786,6 +1794,7 @@ where $dW/dt$ is a white noise, specifically the ``derivative'' of an integrated
 
 Let's modify the process-model simulator to incorporate these three complexities.
 <<complex-sir-def,echo=T,eval=F>>=
+
 complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
   ## unpack the parameters
   N <- params["N"]                 # population size
@@ -1835,12 +1844,13 @@ simulate(
              N=50000,
              b1=60,b2=10,b3=110,
              gamma=8,mu=1/50,
-             rho=0.6,
+             rho=0.6,theta=10,
              iota=0.01,beta.sd=0.1,
              S0=8/60,I0=0.002,R0=1-8/60-0.001
            ),
          seed=8274355L
          ) -> complex.sir
+
 <<complex-sir-def-eval,echo=F,eval=T>>=
 binary.file <- "complex-sir-def.rda"
 if (file.exists(binary.file)) {
@@ -1855,6 +1865,7 @@ Whenever \code{complex.sir.proc.sim} is called, this argument will contain value
 
 \begin{figure}
 <<seas-basis-plot,echo=F,height=4,width=6,fig=T>>=
+
 op <- par(mar=c(5,5,1,5))
 matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
         lty=1,col=c("red","blue","orange"),xlab="time (yr)",
@@ -1873,6 +1884,7 @@ mtext(
         )
       )
 par(op)
+
 @   
   \caption{
     Periodic B-spline basis functions can be used to construct flexible periodic functions.
@@ -1885,7 +1897,9 @@ par(op)
 
 \begin{figure}
 <<complex-sir-plot,echo=F,fig=T>>=
+
 plot(complex.sir)
+
 @   
   \caption{
     One realization of the SIR model with seasonal contact rate, imported infections, and extrademographic stochasticity in the force of infection.

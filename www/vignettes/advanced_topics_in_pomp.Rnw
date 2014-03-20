@@ -338,115 +338,6 @@ Note that we've had to rearrange the order of parameters here to ensure that the
 Doing \Sexpr{n.Cvect} simulations of \code{ou2.Cvect} took \Sexpr{round(etime.Cvect,2)}~\Sexpr{units(etime.Cvect)}, a \Sexpr{round(speedup)}-fold speed-up relative to \code{ou2.Rplug}.
 
 
-\subsection{More on native codes and plug-ins}
-
-It's possible to use native codes for \code{dprocess} and for the measurement model portions of the \code{pomp} as well.
-In the ``Introduction to pomp'' vignette, we looked at the SIR model, which we implemented using an Euler-multinomial approximation to the continuous-time Markov process.
-Here is the same model implemented using native C codes:
-<<sir-def,keep.source=T>>=
-  pomp(
-       data=data.frame(
-         time=seq(from=1/52,to=4,by=1/52),
-         reports=NA
-         ),
-       times="time",
-       t0=0,
-       ## native routine for the process simulator:
-       rprocess=euler.sim(
-         step.fun="_sir_euler_simulator",
-         delta.t=1/52/20,
-         PACKAGE="pomp"
-         ),
-       ## native routine for the skeleton:
-       skeleton.type="vectorfield",
-       skeleton="_sir_ODE",
-       ## native measurement-model routines:
-       rmeasure="_sir_binom_rmeasure",
-       dmeasure="_sir_binom_dmeasure",
-       ## name of the shared-object library containing the 
-       PACKAGE="pomp",
-       ## the order of the observable assumed in the native routines:
-       obsnames = c("reports"),
-       ## the order of the state variables assumed in the native routines:
-       statenames=c("S","I","R","cases","W"),
-       ## the order of the parameters assumed in the native routines:
-       paramnames=c(
-         "gamma","mu","iota",
-         "beta1","beta.sd","pop","rho",
-         "S.0","I.0","R.0"
-         ),
-       nbasis=3L,                       # three seasonal basis functions
-       degree=3L,                       # use cubic B-splines
-       period=1.0,                      # seasonality has period 1yr
-       ## designate 'cases' as an accumulator variable
-       ## i.e., set it to zero after each observation
-       zeronames=c("cases"),
-       ## parameter transformations in native routines:
-       parameter.transform="_sir_par_trans",
-       parameter.inv.transform="_sir_par_untrans",
-       ## some variables to be used in the initializer
-       comp.names=c("S","I","R"),
-       ic.names=c("S.0","I.0","R.0"),
-       ## parameterization of the initial conditions:
-       initializer=function(params, t0, comp.names, ic.names, ...) {
-         snames <- c("S","I","R","cases","W")
-         fracs <- params[ic.names]
-         x0 <- numeric(length(snames))
-         names(x0) <- snames
-         x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
-         x0
-       }
-       ) -> sir
-@ 
-The source code for the native routines \verb+_sir_euler_simulator+, \verb+_sir_ODE+, \verb+_sir_binom_rmeasure+, and \verb+_sir_binom_dmeasure+ is provided with the package (in the \code{examples} directory).
-To see the source code, do
-<<view-sir-source,eval=F>>=
-file.show(file=system.file("examples/sir.c",package="pomp"))
-@ 
-In the \code{demo} directory is an \R\ script that shows how to compile \verb+sir.c+ into a shared-object library and link it with \R.
-Do \code{demo(sir)} to run and view this script.
-Note that the native routines for this model are included in the package, which is why we give the \verb+PACKAGE="pomp"+ argument to \code{pomp}.
-When you write your own model using native routines, you'll compile them into a dynamically-loadable library.
-In this case, you'll want to specify the name of that library using the \code{PACKAGE} argument.
-Again, refer to the SIR example included in the \code{examples} directory to see how this is done.
-
-You can also use the R package \pkg{inline} to put C or FORTRAN codes directly into your R functions.
-
-There is an important issue that arises when using native codes.
-This has to do with the order in which parameters, states, and observables are passed to these codes.
-\pkg{pomp} relies on the names (also row-names and column-names) attributes to identify variables in vectors and arrays.
-When you write a C or FORTRAN version of \code{rprocess} or \code{dmeasure} for example, you write a routine that takes parameters, state variables, and/or observables in the form of a vector.
-However, you have no control over the order in which these are given to you.
-Without some means of knowing which element of each vector corresponds to which variable, you cannot write the codes correctly.
-This is where the \code{paramnames}, \code{statenames}, \code{covarnames}, and \code{obsnames} arguments to \code{pomp} come in: use these arguments to specify the order in which your C code expects to see the parameters, state variables, covariates, and observables (data variables).
-\code{pomp} will match these names against the corresponding names attributes of vectors.
-It will then pass to your native routines index vectors you can use to locate the correct variables.
-See the source code to see how this is done.
-
-Let's specify some parameters, simulate, and compute a deterministic trajectory:
-<<sir-sim,eval=F>>=
-params <- c(
-            gamma=26,mu=0.02,iota=0.01,
-            beta1=400,beta2=480,beta3=320,
-            beta.sd=1e-3,                      
-            pop=2.1e6,
-            rho=0.6,
-            S.0=26/400,I.0=0.001,R.0=1-0.001-26/400
-            )                                                     
-
-sir <- simulate(sir,params=c(params,nbasis=3,degree=3,period=1),seed=3493885L)
-sims <- simulate(sir,nsim=10,obs=T)
-traj <- trajectory(sir,hmax=1/52)
-<<sir-sim-eval,echo=F,eval=T>>=
-binary.file <- "sim-sim.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
-<<sir-sim>>
-  save(sir,sims,traj,file=binary.file,compress='xz')
-}
-@ 
-
 \section{Accumulator variables}
 
 Recall the SIR example discussed in the ``Introduction to \pkg{pomp}'' vignette.
@@ -475,6 +366,256 @@ It would, of course, be relatively easy to code up the model in this way, but be
 Specifically, in the \code{pomp}-object constructing call to \code{pomp}, any variables named in the \code{zeronames} argument are assumed to be accumulator variables.
 At present, however, only the \code{rprocess} plug-ins and the deterministic-skeleton trajectory codes take this into account;
 setting \code{zeronames} will have no effect on custom \code{rprocess} codes.
+
+\clearpage
+\section{Incorporating native codes using \code{pompBuilder}}
+
+It's possible to use native codes for \code{dprocess} and for the measurement model portions of the \code{pomp} as well.
+In the ``Introduction to pomp'' vignette, we looked at the SIR model, which we implemented using an Euler-multinomial approximation to the continuous-time Markov process.
+Here, we implement a similar model using native C codes.
+The new, and still experimental, \code{pompBuilder} function helps us do this.
+
+We'll start by writing snippets of C code to implement each of the important parts of our model.
+First, we encode a negative binomial measurement model.
+<<pomp-builder-measmod,eval=T>>=
+
+## negative binomial measurement model
+## E[cases|incid] = rho*incid
+## Var[cases|incid] = rho*incid*(1+rho*incid/theta)
+rmeas <- '
+  cases = rnbinom_mu(theta,rho*incid);
+'
+
+dmeas <- '
+  lik = dnbinom_mu(cases,theta,rho*incid,give_log);
+'
+
+@ 
+
+Next the function that takes one Euler step.
+<<pomp-builder-stepfn,eval=T>>=
+
+## SIR process model with extra-demographic stochasticity
+## and seasonal transmission
+step.fn <- '
+  int nrate = 6;
+  double rate[nrate];		// transition rates
+  double trans[nrate];		// transition numbers
+  double beta;			// transmission rate
+  double dW;			// white noise increment
+  int k;
+
+  // seasonality in transmission
+  beta = beta1*seas1+beta2*seas2+beta3*seas3;
+
+  // compute the environmental stochasticity
+  dW = rgammawn(beta_sd,dt);
+
+  // compute the transition rates
+  rate[0] = mu*popsize;		// birth into susceptible class
+  rate[1] = (iota+beta*I*dW/dt)/popsize; // force of infection
+  rate[2] = mu;			// death from susceptible class
+  rate[3] = gamma;		// recovery
+  rate[4] = mu;			// death from infectious class
+  rate[5] = mu; 		// death from recovered class
+
+  // compute the transition numbers
+  trans[0] = rpois(rate[0]*dt);	// births are Poisson
+  reulermultinom(2,S,&rate[1],dt,&trans[1]);
+  reulermultinom(2,I,&rate[3],dt,&trans[3]);
+  reulermultinom(1,R,&rate[5],dt,&trans[5]);
+
+  // balance the equations
+  S += trans[0]-trans[1]-trans[2];
+  I += trans[1]-trans[3]-trans[4];
+  R += trans[3]-trans[5];
+  incid += trans[3];		// incidence is cumulative recoveries
+  if (beta_sd > 0.0) W += (dW-dt)/beta_sd; // increment has mean = 0, variance = dt
+'
+
+@ 
+
+Now the deterministic skeleton.
+The ``D'' prepended to each state variable indicates the derivative of the state variable.
+<<pomp-builder-skel,eval=T>>=
+
+skel <- '
+  int nrate = 6;
+  double rate[nrate];		// transition rates
+  double term[nrate];		// transition numbers
+  double beta;			// transmission rate
+  double dW;			// white noise increment
+  int k;
+  
+  beta = beta1*seas1+beta2*seas2+beta3*seas3;
+
+  // compute the transition rates
+  rate[0] = mu*popsize;		// birth into susceptible class
+  rate[1] = (iota+beta*I)/popsize; // force of infection
+  rate[2] = mu;			// death from susceptible class
+  rate[3] = gamma;		// recovery
+  rate[4] = mu;			// death from infectious class
+  rate[5] = mu; 		// death from recovered class
+
+  // compute the several terms
+  term[0] = rate[0];
+  term[1] = rate[1]*S;
+  term[2] = rate[2]*S;
+  term[3] = rate[3]*I;
+  term[4] = rate[4]*I;
+  term[5] = rate[5]*R;
+
+  // assemble the differential equations
+  DS = term[0]-term[1]-term[2];
+  DI = term[1]-term[3]-term[4];
+  DR = term[3]-term[5];
+  Dincid = term[3];		// accumulate the new I->R transitions
+  DW = 0;
+'
+
+@ 
+
+Next, we write snippets to perform parameter transformations.
+Note the convention of prepending ``T'' to the name to signify the transformed parameter.
+The log-barycentric transformation is very useful when dealing with parameters (such as our initial conditions) constrained to lie on a unit simplex.
+<<pomp-builder-partrans,eval=T>>=
+
+## parameter transformations
+## note we use barycentric coordinates for the initial conditions
+## the success of this depends on S0, I0, R0 being in
+## adjacent memory locations, in that order
+partrans <- "
+  Tgamma = exp(gamma);
+  Tmu = exp(mu);
+  Tiota = exp(iota);
+  Tbeta1 = exp(beta1);
+  Tbeta2 = exp(beta2);
+  Tbeta3 = exp(beta3);
+  Tbeta_sd = exp(beta_sd);
+  Trho = expit(rho);
+  Ttheta = exp(theta);
+  from_log_barycentric(&TS_0,&S_0,3);
+"
+
+paruntrans <- "
+  Tgamma = log(gamma);
+  Tmu = log(mu);
+  Tiota = log(iota);
+  Tbeta1 = log(beta1);
+  Tbeta2 = log(beta2);
+  Tbeta3 = log(beta3);
+  Tbeta_sd = log(beta_sd);
+  Trho = logit(rho);
+  Ttheta = log(theta);
+  to_log_barycentric(&TS_0,&S_0,3);
+"
+
+@ 
+
+To model seasonality in transmission, we'll use periodic B-splines.
+The following constructs a covariate table with three cubic, periodic B-spline basis functions.
+<<pomp-builder-covar,eval=T>>=
+
+covartab <- data.frame(
+                       time=seq(from=-1/52,to=10+1/52,by=1/26)
+                       )
+
+covartab <- cbind(
+                  covartab,
+                  with(covartab,
+                       periodic.bspline.basis(
+                                              x=time,
+                                              nbasis=3,
+                                              degree=3,
+                                              period=1,
+                                              names="seas%d"
+                                              )
+                       )
+                  )
+
+@ 
+
+A call to \code{pompBuilder} assembles the given codes, compiles them, and links them to the current \pkg{R} session.
+<<pomp-builder,eval=F>>=
+
+pompBuilder(
+            name="SIR",
+            data=data.frame(
+              cases=NA,
+              time=seq(0,10,by=1/52)
+              ),
+            times="time",
+            t0=-1/52,
+            dmeasure=dmeas,
+            rmeasure=rmeas,
+            step.fn=step.fn,
+            step.fn.delta.t=1/52/20,
+            skeleton.type="vectorfield",
+            skeleton=skel,
+            covar=covartab,
+            tcovar="time",
+            parameter.transform=partrans,
+            parameter.inv.transform=paruntrans,
+            statenames=c("S","I","R","incid","W"),
+            paramnames=c(
+              "gamma","mu","iota",
+              "beta1","beta2","beta3","beta.sd",
+              "popsize","rho","theta",
+              "S.0","I.0","R.0"
+              ), 
+            zeronames=c("incid","W"),
+            initializer=function(params, t0, ...) {
+              x0 <- setNames(numeric(5),c("S","I","R","incid","W"))
+              fracs <- params[c("S.0","I.0","R.0")]
+              x0[1:3] <- round(params['popsize']*fracs/sum(fracs))
+              x0
+            }
+            ) -> sir
+
+@ 
+
+<<pomp-builder-eval,echo=F,eval=T,results=hide>>=
+if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
+  require(pomp)
+<<pomp-builder>>
+}
+@ 
+
+Let's specify some parameters, simulate, and compute a deterministic trajectory:
+<<sir-sim,eval=F>>=
+
+coef(sir) <- c(
+               gamma=26,mu=0.02,iota=0.01,
+               beta1=400,beta2=480,beta3=320,
+               beta.sd=0.001,
+               popsize=2.1e6,
+               rho=0.6,theta=10,
+               S.0=26/400,I.0=0.001,R.0=1
+               )
+
+sir <- simulate(sir,seed=3493885L)
+traj <- trajectory(sir,hmax=1/52)
+
+<<sir-sim-eval,echo=F,eval=T>>=
+binary.file <- "sim-sim.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<sir-sim>>
+  save(sir,traj,file=binary.file,compress='xz')
+}
+@ 
+
+\begin{figure}
+<<sir-plot,fig=T,echo=F>>=
+plot(sir)
+@   
+  \caption{Results of \code{plot(sir)}.}
+  \label{fig:sir-plot}
+\end{figure}
+
+The C codes generated by the above can be generated by running the ``sir'' demo:
+do \verb+demo("sir",package="pomp")+.
 
 \clearpage
 \section{The low-level interface}
@@ -545,141 +686,6 @@ pompExample()
 @ 
 The \R\ scripts that generated these are included in the \code{examples} directory of the installed package.
 The majority of these use compiled code, which can be found in the package source.
-
-\section{Pomp Builder}
-
-<<pomp-builder,eval=F>>=
-rmeas <- "
-  double size = 1.0/sigma/sigma;
-  double prob = 1.0/(1.0+rho*cases/size);
-  reports = rnbinom(size,prob);
-"
-
-dmeas <- "
-  double size = 1.0/sigma/sigma;
-  double prob = 1.0/(1.0+rho*cases/size);
-  lik = dnbinom(reports,size,prob,give_log);
-"
-
-stepfn <- "
-  int nrate = 6;
-  int nbasis = 3;
-  int degree = 3;
-  double period = 1.0;
-  double rate[nrate];		// transition rates
-  double trans[nrate];		// transition numbers
-  double dW;
-  double seasonality[nbasis];
-  double beta;
-  int k;
-
-  dW = rgammawn(beta_sd,dt); // gamma noise, mean=dt, variance=(beta_sd^2 dt)
-  periodic_bspline_basis_eval(t,period,degree,nbasis,seasonality);
-  beta = beta1*seasonality[0]+beta2*seasonality[1]+beta3*seasonality[2];
-
-  // compute the transition rates
-  rate[0] = mu*popsize;		// birth into susceptible class
-  rate[1] = (iota+beta*I*dW/dt)/popsize; // force of infection
-  rate[2] = mu;			// death from susceptible class
-  rate[3] = gamma;		// recovery
-  rate[4] = mu;			// death from infectious class
-  rate[5] = mu; 		// death from recovered class
-
-  // compute the transition numbers
-  trans[0] = rpois(rate[0]*dt);	// births are Poisson
-  reulermultinom(2,S,&rate[1],dt,&trans[1]);
-  reulermultinom(2,I,&rate[3],dt,&trans[3]);
-  reulermultinom(1,R,&rate[5],dt,&trans[5]);
-
-  // balance the equations
-  S += trans[0]-trans[1]-trans[2];
-  I += trans[1]-trans[3]-trans[4];
-  R += trans[3]-trans[5];
-  cases += trans[3];		// cases are cumulative recoveries
-  if (beta_sd > 0.0)  W += (dW-dt)/beta_sd; // mean = 0, variance = dt
-"
-
-skel <- "
-  int nrate = 6;
-  int nbasis = 3;
-  int degree = 3;	// degree of seasonal basis functions
-  double period = 1.0;
-  double rate[nrate];		// transition rates
-  double term[nrate];		// terms in the equations
-  double beta;
-  double seasonality[nbasis];
-  
-  // compute transmission rate from seasonality
-  periodic_bspline_basis_eval(t,period,degree,nbasis,seasonality);
-  beta = exp(log(beta1)*seasonality[0]+log(beta2)*seasonality[1]+log(beta3)*seasonality[2]);
-
-  // compute the transition rates
-  rate[0] = mu*popsize;		// birth into susceptible class
-  rate[1] = (iota+beta*I)/popsize; // force of infection
-  rate[2] = mu;			// death from susceptible class
-  rate[3] = gamma;		// recovery
-  rate[4] = mu;			// death from infectious class
-  rate[5] = mu; 		// death from recovered class
-
-  // compute the several terms
-  term[0] = rate[0];
-  term[1] = rate[1]*S;
-  term[2] = rate[2]*S;
-  term[3] = rate[3]*I;
-  term[4] = rate[4]*I;
-  term[5] = rate[5]*R;
-
-  // assemble the differential equations
-  DS = term[0]-term[1]-term[2];
-  DI = term[1]-term[3]-term[4];
-  DR = term[3]-term[5];
-  Dcases = term[3];		// accumulate the new I->R transitions
-  DW = 0;
-"
-
-pompBuilder(
-            data=data.frame(
-              reports=NA,
-              time=seq(0,10,by=1/52)
-              ),
-            times="time",
-            t0=-1/52,
-            name="SIR",
-            step.fn.delta.t=1/52/20,
-            paramnames=c(
-              "beta1","beta2","beta3","gamma","mu",
-              "beta.sd","rho","popsize","iota","sigma"
-              ),
-            statenames=c("S","I","R","W","cases"),
-            zeronames="cases",
-            rmeasure=rmeas,
-            dmeasure=dmeas,
-            step.fn=stepfn,
-            skeleton=skel,
-            skeleton.type="vectorfield"
-            ) -> sir
-
-simulate(
-         sir,
-         params=c(gamma=26,mu=0.05,beta.sd=0.1,
-           rho=0.6,sigma=0.1,popsize=1e5,iota=10,
-           beta1=100,beta2=120,beta3=80,
-           S.0=26000,I.0=0,R.0=74000,W.0=0,cases.0=0
-           )
-         ) -> sir
-@ 
-
-<<pomp-builder-eval,echo=F,eval=T,results=hide>>=
-if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
-  require(pomp)
-<<pomp-builder>>
-  simulate(sir) -> x
-  pfilter(sir,Np=500) -> pf
-  print(logLik(pf))
-}
-@ 
-
-
 
 <<restore-opts,echo=F,results=hide>>=
 options(glop)
