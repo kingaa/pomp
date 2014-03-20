@@ -52,15 +52,13 @@ void _sir_par_untrans (double *pt, double *p, int *parindex)
     pt[parindex[3]+k] = log(BETA[k]);
   pt[parindex[4]] = log(BETA_SD);
   pt[parindex[6]] = logit(RHO);
-  pt[parindex[7]] = log(S0);
-  pt[parindex[8]] = log(I0);
-  pt[parindex[9]] = log(R0);
+  to_log_barycentric(pt+parindex[7],&S0,3);
+
 }
  
 void _sir_par_trans (double *pt, double *p, int *parindex) 
 {
   int nbasis = *(get_pomp_userdata_int("nbasis"));
-  double sum = 0.0;
   int k;
   pt[parindex[0]] = exp(GAMMA);
   pt[parindex[1]] = exp(MU);
@@ -69,12 +67,7 @@ void _sir_par_trans (double *pt, double *p, int *parindex)
     pt[parindex[3]+k] = exp(BETA[k]);
   pt[parindex[4]] = exp(BETA_SD);
   pt[parindex[6]] = expit(RHO);
-  sum += (pt[parindex[7]] = exp(S0));
-  sum += (pt[parindex[8]] = exp(I0));
-  sum += (pt[parindex[9]] = exp(R0));
-  pt[parindex[7]] /= sum;
-  pt[parindex[8]] /= sum;
-  pt[parindex[9]] /= sum;
+  from_log_barycentric(pt+parindex[7],&S0,3);
 }
 
 void _sir_binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,

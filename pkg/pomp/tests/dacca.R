@@ -7,18 +7,10 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
   pompExample(dacca)
 
   x <- as.data.frame(dacca)
-  print(names(x))
-  print(dim(x))
-
   x <- simulate(dacca,nsim=3,as.data.frame=TRUE)
-  print(names(x))
-  print(dim(x))
 
   pf <- pfilter(dacca,Np=1000,seed=5886855L)
-  print(round(logLik(pf),digits=1))
-
   pf1 <- pfilter(simulate(dacca),Np=1000,seed=5886855L)
-  print(round(logLik(pf1),digits=1))
 
   ## to investigate the rogue crash:
 
@@ -55,6 +47,8 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
     r
   }
 
+  op <- options(warn=-1)
+  
   set.seed(7777+7)
   params.tricky <- dacca.rprior(dacca.hyperparams)
   m7 <- mif(
@@ -89,5 +83,7 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
             var.factor=2,
             transform=TRUE
             )
+
+  options(op)
 
 }

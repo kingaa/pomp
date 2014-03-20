@@ -133,7 +133,7 @@ $msg
 Error in tmof.internal(object = object, params = params, est = est, transform = transform,  : 
   parameter(s): 'bob''harry' not found in 'params'
 > try(traj.match(ou2,est=c('x1.0','x2.0','bob','alpha.4','tau')))
-Error in maxim.internal(objfun = traj.match.objfun(object = object, params = start,  : 
+Error in minim.internal(objfun = traj.match.objfun(object = object, params = start,  : 
   'est' must refer to parameters named in 'start'
 > 
 > fit <- optim(par=c(0,0,1,0.5,0.5),fn=ofun,method="Nelder-Mead",control=list(maxit=400))
@@ -177,4 +177,4 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > proc.time()
    user  system elapsed 
-  1.588   0.084   1.700 
+  1.672   0.028   1.723 

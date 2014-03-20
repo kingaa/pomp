@@ -51,17 +51,12 @@ void _cholmodel_untrans (double *pt, double *p, int *parindex)
   pt[parindex[10]] = log(RHO);
   pt[parindex[11]] = logit(CLIN);
 
-  pt[parindex[14]] = log(S0);
-  pt[parindex[15]] = log(I0);
-  pt[parindex[16]] = log(RS0);
-  for (k = 0; k < nrstage; k++) 
-    pt[parindex[17]+k] = log((&RL0)[k]);
+  to_log_barycentric(&pt[parindex[14]],&S0,3+nrstage);
 }
  
 void _cholmodel_trans (double *pt, double *p, int *parindex) 
 {
   int k, nrstage = (int) NRSTAGE;
-  double sum = 0.0;
   pt[parindex[0]] = exp(TAU);
   pt[parindex[1]] = exp(GAMMA);
   pt[parindex[2]] = exp(EPS);
@@ -72,20 +67,12 @@ void _cholmodel_trans (double *pt, double *p, int *parindex)
   pt[parindex[10]] = exp(RHO);
   pt[parindex[11]] = expit(CLIN);
 
-  sum += (pt[parindex[14]] = exp(S0));
-  sum += (pt[parindex[15]] = exp(I0));
-  sum += (pt[parindex[16]] = exp(RS0));
-  for (k = 0; k < nrstage; k++)
-    sum += (pt[parindex[17]+k] = exp((&RL0)[k]));
-  pt[parindex[14]] /= sum;
-  pt[parindex[15]] /= sum;
-  pt[parindex[16]] /= sum;
-  for (k = 0; k < nrstage; k++)
-    pt[parindex[17]+k] /= sum;
+  from_log_barycentric(&pt[parindex[14]],&S0,3+nrstage);
 }
 
 void _cholmodel_norm_rmeasure (double *y, double *x, double *p, 
-			       int *obsindex, int *stateindex, int *parindex, int *covindex,
+			       int *obsindex, int *stateindex, 
+			       int *parindex, int *covindex,
 			       int ncovars, double *covars, double t)
 {
   double v, tol = 1.0e-18;
@@ -97,8 +84,10 @@ void _cholmodel_norm_rmeasure (double *y, double *x, double *p,
   }
 }
 
-void _cholmodel_norm_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
-			       int *obsindex, int *stateindex, int *parindex, int *covindex,
+void _cholmodel_norm_dmeasure (double *lik, double *y, double *x, 
+			       double *p, int give_log,
+			       int *obsindex, int *stateindex, 
+			       int *parindex, int *covindex,
 			       int ncovars, double *covars, double t)
 {
   double v, tol = 1.0e-18;
@@ -119,7 +108,8 @@ void _cholmodel_norm_dmeasure (double *lik, double *y, double *x, double *p, int
 // truncation is not used
 // instead, particles with negative states are killed
 void _cholmodel_one (double *x, const double *p, 
-		     const int *stateindex, const int *parindex, const int *covindex,
+		     const int *stateindex, const int *parindex, 
+		     const int *covindex,
 		     int covdim, const double *covar, 
 		     double t, double dt)
 {			   // implementation of the SIRS cholera model

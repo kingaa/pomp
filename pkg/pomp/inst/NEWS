@@ -5,6 +5,9 @@ NEWS
      o	'pomp' now depends on 'nloptr', which provides a suite of optimization algorithms.
      	This package can now be used in various methods for optimization of an objective function.
 
+     o	New inline C functions 'to_log_barycentric' and 'from_log_barycentric' are provided in 'pomp.h' to facilitate log-barycentric transformations.
+     	These have proven very useful in dealing with parameters constrained to sum to one (e.g., initial conditions of compartmental models).
+
 0.48-3
      o	Correct a bug in 'abc' to do with parameter transformation.
 

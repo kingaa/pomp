@@ -22,7 +22,6 @@ minim.internal <- function(objfun, start, est, object, method, transform, verbos
   
   if (length(est)==0) {
 
-    params <- c(A=3)
     val <- objfun(guess)
     conv <- NA
     evals <- as.integer(c(1,0))
