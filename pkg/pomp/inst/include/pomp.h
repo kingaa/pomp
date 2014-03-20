@@ -227,6 +227,8 @@ static R_INLINE double dot_product (int dim, const double *basis, const double *
   return(trans);
 }
 
+
+// LOGIT AND INVERSE LOGIT TRANSFORMATIONS
 static R_INLINE double logit (double p) {
   return log(p/(1.0-p));
 }
@@ -242,7 +244,8 @@ static R_INLINE double expit (double x) {
 // this must be done by the calling program
 // But note that when reulermultinom is called inside a pomp 'rprocess', there is no need to call
 // {Get,Put}RNGState() as this is handled by pomp
-static void reulermultinom (int m, double size, double *rate, double dt, double *trans) {
+static void reulermultinom (int m, double size, double *rate, 
+			    double dt, double *trans) {
   double p = 0.0;
   int j, k;
   if ((size < 0.0) || (dt < 0.0) || (floor(size+0.5) != size)) {
@@ -276,7 +279,8 @@ static void reulermultinom (int m, double size, double *rate, double dt, double 
 }
 
 // COMPUTE PROBABILITIES OF EULER-MULTINOMIAL TRANSITIONS
-static double deulermultinom (int m, double size, double *rate, double dt, double *trans, int give_log) {
+static double deulermultinom (int m, double size, double *rate, double dt, 
+			      double *trans, int give_log) {
   double p = 0.0;
   double n = 0.0;
   double ff = 0.0;
@@ -318,11 +322,42 @@ static double deulermultinom (int m, double size, double *rate, double dt, doubl
   return ff;
 }
 
+// C-LEVEL DEFINITIONS OF LOG-BARYCENTRIC TRANSFORMATION.
+// USEFUL FOR WORKING WITH PARAMETERS CONSTRAINED TO SUM TO 1
+
+// TRANSFORMS TO LOG BARYCENTRIC COORDINATES
+// on input:
+// x =  pointer to vector of parameters to be tranformed to 
+//      log barycentric coordinates,
+// n =  length of vector.
+// on output:
+// xt = pointer to vector of log barycentric coordinates
+static R_INLINE void to_log_barycentric (double *xt, const double *x, int n) {
+  double sum;
+  int i;
+  for (i = 0, sum = 0.0; i < n; i++) sum += x[i];
+  for (i = 0; i < n; i++) xt[i] = log(x[i]/sum);
+}
+
+// TRANSFORMS FROM LOG BARYCENTRIC COORDINATES
+// on input:
+// x =  pointer to vector of parameters in log barycentric coordinates,
+// n =  length of vector.
+// on output:
+// xt = pointer to vector of coordinates on unit simplex
+static R_INLINE void from_log_barycentric (double *xt, const double *x, int n) {
+  double sum;
+  int i;
+  for (i = 0, sum = 0.0; i < n; i++) sum += (xt[i] = exp(x[i]));
+  for (i = 0; i < n; i++) xt[i] /= sum;
+}
+
 static R_INLINE double rbetabinom (double size, double prob, double theta) {
   return rbinom(size,rbeta(prob*theta,(1.0-prob)*theta));
 }
 
-static R_INLINE double dbetabinom (double x, double size, double prob, double theta, int give_log) {
+static R_INLINE double dbetabinom (double x, double size, double prob, 
+double theta, int give_log) {
   double a = theta*prob;
   double b = theta*(1.0-prob);
   double f = lchoose(size,x)-lbeta(a,b)+lbeta(a+x,b+size-x);
@@ -334,7 +369,8 @@ static R_INLINE double rbetanbinom (double mu, double size, double theta) {
   return rnbinom(size,rbeta(prob*theta,(1.0-prob)*theta));
 }
 
-static R_INLINE double dbetanbinom (double x, double mu, double size, double theta, int give_log) {
+static R_INLINE double dbetanbinom (double x, double mu, double size, 
+double theta, int give_log) {
   double prob = size/(size+mu);
   double a = theta*prob;
   double b = theta*(1.0-prob);
