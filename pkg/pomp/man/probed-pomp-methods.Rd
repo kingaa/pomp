@@ -23,6 +23,10 @@
 \alias{as,probed.pomp-method}
 \alias{logLik,probed.pomp-method}
 \alias{logLik-probed.pomp}
+\alias{$,probed.pomp-method}
+\alias{$-probed.pomp}
+\alias{$,probe.matched.pomp-method}
+\alias{$-probe.matched.pomp}
 \alias{coerce,probed.pomp,data.frame-method}
 \title{Methods of the "probed.pomp", "probe.matched.pomp", "spect.pomp", and "spect.matched.pomp" classes}
 \description{Methods of the \code{probed.pomp}, \code{probe.matched.pomp}, \code{spect.pomp}, and \code{spect.matched.pomp} classes}
@@ -75,11 +79,12 @@
       The rownames of the result can be used to distinguish these.
     }
   }
+
+  In addition, slots of this object can be accessed via the \code{$} operator.
+
 }
 \author{
-  Daniel C. Reuman (d.reuman at imperial dot ac dot uk)
-  
-  Aaron A. King (kingaa at umich dot edu)
+  Daniel C. Reuman, Aaron A. King
 }
 \seealso{
   \code{\link{probe}},

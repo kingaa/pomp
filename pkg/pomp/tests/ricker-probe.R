@@ -7,7 +7,7 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
   pdf(file="ricker-probe.pdf")
 
   set.seed(6457673L)
-  z <- as.numeric(data.array(ricker))
+  z <- as.numeric(obs(ricker))
 
   po <- ricker
 
@@ -59,7 +59,7 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
               nsim=1000,
               seed=838775L
               )
-  invisible(pb@datvals)
+  invisible(pb$datvals)
   invisible(summary(pb))
   plot(pb)
 
@@ -82,13 +82,13 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
               nsim=1000,
               seed=838775L
               )
-  invisible(pb@datvals)
+  invisible(pb$datvals)
   invisible(summary(pb))
   plot(pb)
 
-  pbm <- probe.match(pb,eval.only=TRUE)
+  pbm <- probe.match(pb)
   plot(pbm)
-  invisible(summary(pb))
+  invisible(summary(pbm))
 
   coef(po) <- c(r=10,sigma=0.3,phi=20,N.0=5,e.0=0)
 
@@ -104,7 +104,7 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
               nsim=1000,
               seed=838775L
               )
-  invisible(pb@datvals)
+  invisible(pb$datvals)
   invisible(summary(pb))
   plot(pb)
 
@@ -134,7 +134,7 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
               nsim=1000,
               seed=838775L
               )
-  invisible(pb@datvals)
+  invisible(pb$datvals)
   invisible(summary(pb))
   plot(pb)
 
@@ -167,7 +167,7 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
               nsim=1000,
               seed=838775L
               )
-  invisible(pb@datvals)
+  invisible(pb$datvals)
   invisible(summary(pb))
   plot(pb)
 
@@ -182,7 +182,7 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
               nsim=1000,
               seed=838775L
               )
-  invisible(pb@datvals)
+  invisible(pb$datvals)
   invisible(summary(pb))
   plot(pb)
 
@@ -197,7 +197,7 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
               nsim=1000,
               seed=838775L
               )
-  invisible(pb@datvals)
+  invisible(pb$datvals)
   invisible(summary(pb))
   plot(pb)
 
@@ -221,7 +221,7 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
               nsim=1000,
               seed=838775L
               )
-  invisible(pb@datvals)
+  invisible(pb$datvals)
   invisible(summary(pb))
   plot(pb)
 

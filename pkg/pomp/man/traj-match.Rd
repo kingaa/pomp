@@ -12,6 +12,8 @@
 \alias{summary-traj.matched.pomp}
 \alias{traj.matched.pomp-class}
 \alias{traj.match.objfun}
+\alias{traj.match.objfun-pomp}
+\alias{traj.match.objfun,pomp-method}
 \title{Trajectory matching}
 \description{
   Facilities for matching trajectories to data.
@@ -19,13 +21,12 @@
   i.e., that all stochasticity is measurement error.
 }
 \usage{
-  \S4method{traj.match}{pomp}(object, start, est,
-           method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
-           gr = NULL, eval.only = FALSE, transform = FALSE, \dots)
-  \S4method{traj.match}{traj.matched.pomp}(object, start, est,
-           method = c("Nelder-Mead","subplex","SANN","BFGS","sannbox"),
-           gr = NULL, eval.only = FALSE, transform, \dots)
-traj.match.objfun(object, params, est, transform = FALSE, \dots)
+  \S4method{traj.match}{pomp}(object, start, est = character(0),
+           method = c("Nelder-Mead","subplex","SANN","BFGS",
+                      "sannbox","nloptr"),
+           transform = FALSE, \dots)
+  \S4method{traj.match}{traj.matched.pomp}(object, est, transform, \dots)
+  \S4method{traj.match.objfun}{pomp}(object, params, est, transform = FALSE, \dots)
 }
 \arguments{
   \item{object}{
@@ -51,22 +52,15 @@ traj.match.objfun(object, params, est, transform = FALSE, \dots)
     Optimization method.
     Choices are \code{\link[subplex]{subplex}}, \dQuote{sannbox}, and any of the methods used by \code{\link{optim}}.
   }
-  \item{gr}{
-    Passed to \code{\link{optim}}.
-  }
-  \item{eval.only}{
-    logical;
-    if \code{TRUE}, no optimization is attempted and the log likelihood value is evaluated at the \code{start} parameters.
-  }
   \item{transform}{
     logical;
     if \code{TRUE}, optimization is performed on the transformed scale.
   }
   \item{\dots}{
-    Extra arguments that will be passed either to the optimizer (\code{\link{optim}}, \code{\link[subplex]{subplex}} or \code{\link{sannbox}}, via their \code{control} lists) or to the ODE integrator.
+    Extra arguments that will be passed either to the optimizer (\code{\link{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}, or \code{\link{sannbox}}, via their \code{control} (\code{optim}, \code{subplex}, \code{sannbox}) or \code{opts} (\code{nloptr}) lists) or to the ODE integrator.
     In \code{traj.match}, extra arguments will be passed to the optimizer.
-    In \code{traj.match.objfun}, extra arguments are passed to the ODE integrator, but only if an ODE integrator is called, i.e., only when the deterministic skeleton is a vectorfield.
-    If extra arguments are needed by both optimizer and ODE integrator, construct an objective function first using \code{traj.match.objfun}, then give this objective function to the optimizer.
+    In \code{traj.match.objfun}, extra arguments are passed to \code{\link{trajectory}}.
+    If extra arguments are needed by both optimizer and \code{\link{trajectory}}, construct an objective function first using \code{traj.match.objfun}, then give this objective function to the optimizer.
   }
 }
 \details{
@@ -142,8 +136,9 @@ traj.match.objfun(object, params, est, transform = FALSE, \dots)
   optim(fn=ofun,par=c(2,0),method="BFGS")
 
   pompExample(bbs)
-  ofun <- traj.match.objfun(bbs,est=c("beta","gamma"),transform=TRUE,hmax=0.001)
-  optim(fn=ofun,par=c(0,-1),method="Nelder-Mead")
+  ## some options are passed to the ODE integrator
+  ofun <- traj.match.objfun(bbs,est=c("beta","gamma"),transform=TRUE,hmax=0.001,rtol=1e-6)
+  optim(fn=ofun,par=c(0,-1),method="Nelder-Mead",control=list(reltol=1e-10))
 }
 \seealso{
   \code{\link{trajectory}},

@@ -37,6 +37,7 @@ importFrom(stats,simulate,time,coef,logLik,window)
 importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(subplex,subplex)
 importFrom(deSolve,ode)
+importFrom(nloptr,nloptr)
 
 exportClasses(
               pomp,
@@ -61,6 +62,8 @@ exportMethods(
               particles,mif,continue,states,trajectory,
               pred.mean,pred.var,filter.mean,conv.rec,
               bsmc,pmcmc,abc,
+              traj.match.objfun,
+              probe.match.objfun,
               spect,probe,probe.match,
               traj.match
               )
@@ -98,7 +101,6 @@ export(
        probe.marginal,
        sannbox,
        spect.match,
-       traj.match.objfun,
        pompBuilder,
        pompExample
        )

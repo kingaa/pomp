@@ -26,3 +26,6 @@ coef(tm2,names(fit$par),transform=T) <- fit$par
 
 round(coef(tm1,est)/coef(tm2,est),5)
 
+options(warn=2)
+ofun <- traj.match.objfun(window(bbs,end=3),est=c("beta","gamma"),transform=TRUE,maxsteps=10,rtol=1e-6)
+try(optim(fn=ofun,par=c(0,-1),method="Nelder-Mead",control=list(reltol=1e-10)))

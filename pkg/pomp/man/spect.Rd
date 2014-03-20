@@ -147,11 +147,7 @@
   \emph{Ecology Letters}, \bold{11}, 820-830.
 }
 \author{
-  Daniel C. Reuman (d.reuman at imperial dot ac dot uk)
-
-  Cai GoGwilt
-  
-  Aaron A. King (kingaa at umich dot edu)
+  Daniel C. Reuman, Cai GoGwilt, Aaron A. King
 }
 \examples{
 pompExample(ou2)

@@ -18,7 +18,7 @@ psim <- probe(ou2,probes=probes.good,nsim=200)
 plot(psim)
 ## why do simulations sometimes seem extreme with respect to these probes?
 
-scale.dat <- apply(psim@simvals,2,sd)
+scale.dat <- apply(psim$simvals,2,sd)
 
 po <- ou2
 

@@ -14,6 +14,10 @@
 \alias{probed.pomp-class}
 \alias{probe.matched.pomp-class}
 \alias{probe.match.objfun}
+\alias{probe.match.objfun,pomp-method}
+\alias{probe.match.objfun,probed.pomp-method}
+\alias{probe.match.objfun-pomp}
+\alias{probe.match.objfun-probed.pomp}
 \title{Probe a partially-observed Markov process.}
 \description{
   \code{probe} applies one or more \dQuote{probes} to time series data and model simulations and compares the results.
@@ -24,28 +28,21 @@
 }
 \usage{
 \S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
-\S4method{probe}{probed.pomp}(object, probes, params, nsim, \dots)
+\S4method{probe}{probed.pomp}(object, probes, params, nsim, seed, \dots)
+\S4method{probe.match.objfun}{pomp}(object, params, est, probes, nsim,
+            seed = NULL, fail.value = NA, transform = FALSE, \dots)
+\S4method{probe.match.objfun}{probed.pomp}(object, probes, nsim, seed, \dots)
 \S4method{probe.match}{pomp}(object, start, est = character(0),
-            probes, weights,
-            nsim, seed = NULL,
-            method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
+            probes, nsim, seed = NULL,
+            method = c("subplex","Nelder-Mead","SANN","BFGS",
+                       "sannbox","nloptr"),
             verbose = getOption("verbose"), 
-            eval.only = FALSE, fail.value = NA, transform = FALSE, \dots)
-\S4method{probe.match}{probed.pomp}(object, start, est = character(0),
-            probes, weights,
-            nsim, seed = NULL,
-            method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
-            verbose = getOption("verbose"), 
-            eval.only = FALSE, fail.value = NA, transform = FALSE, \dots)
-\S4method{probe.match}{probe.matched.pomp}(object, start, est,
-            probes, weights,
-            nsim, seed = NULL,
-            method = c("subplex","Nelder-Mead","SANN","BFGS","sannbox"),
-            verbose = getOption("verbose"), 
-            eval.only = FALSE, fail.value, transform, \dots)
-probe.match.objfun(object, params, est, probes, nsim = 1,
-                   seed = NULL, fail.value = NA, transform = FALSE, \dots)
-
+            fail.value = NA, transform = FALSE, \dots)
+\S4method{probe.match}{probed.pomp}(object, probes, nsim, seed,
+            \dots, verbose = getOption("verbose"))
+\S4method{probe.match}{probe.matched.pomp}(object, est, probes,
+            nsim, seed, transform, fail.value, \dots,
+            verbose = getOption("verbose"))
 }
 \arguments{
   \item{object}{
@@ -74,23 +71,15 @@ probe.match.objfun(object, params, est, probes, nsim = 1,
   \item{est}{
     character vector; the names of parameters to be estimated.
   }
-  \item{weights}{
-    optional numeric vector of relative weights.
-    Must be of the same length as \code{probes}.
-  }
   \item{method}{
     Optimization method.
-    Choices are \code{\link[subplex]{subplex}} and any of the methods used by \code{\link{optim}}.
+    Choices refer to algorithms used in \code{\link{optim}}, \code{\link[subplex]{subplex}}, and \code{\link[nloptr]{nloptr}}.
   }
   \item{verbose}{
     logical; print diagnostic messages?
   }
-  \item{eval.only}{
-    logical; if \code{TRUE}, no optimization is attempted.
-    Instead, the probe-mismatch value is simply evaluated at the \code{start} parameters.
-  }
   \item{fail.value}{
-    optional scalar;
+    optional numeric scalar;
     if non-\code{NA}, this value is substituted for non-finite values of the objective function.
     It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).
   }
@@ -101,7 +90,8 @@ probe.match.objfun(object, params, est, probes, nsim = 1,
   \item{\dots}{
     Additional arguments.
     In the case of \code{probe}, these are currently ignored.
-    In the case of \code{probe.match}, these are passed to \code{optim} or \code{subplex} in the \code{control} list.
+    In the case of \code{probe.match}, these are passed to the optimizer (one of \code{\link{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}, or \code{\link{sannbox}}).
+    These are passed via the optimizer's \code{control} list (in the case of \code{optim}, \code{subplex}, and \code{sannbox}) or the \code{opts} list (in the case of \code{nloptr}).
   }
 }
 \details{
@@ -137,15 +127,15 @@ probe.match.objfun(object, params, est, probes, nsim = 1,
   \code{probe.match} returns an object of class \code{probe.matched.pomp}, which is derived from class \code{probed.pomp}.
   \code{probe.matched.pomp} objects therefore have all the slots above plus the following:
   \describe{
-    \item{est, weights, fail.value}{values of the corresponding arguments in the call to \code{spect.match}.}
-    \item{value}{value of the objective function.}
+    \item{est, transform, fail.value}{values of the corresponding arguments in the call to \code{probe.match}.}
+    \item{value}{value of the objective function at the optimum.}
     \item{evals}{
       number of function and gradient evaluations by the optimizer.
       See \code{\link{optim}}.
     }
     \item{convergence, msg}{
       Convergence code and message from the optimizer.
-      See \code{\link{optim}}.
+      See \code{\link{optim}} and \code{\link{nloptr}}.
     }
   }
 
@@ -161,9 +151,7 @@ probe.match.objfun(object, params, est, probes, nsim = 1,
   Nature, 466: 1102--1104, 2010.
 }
 \author{
-  Daniel C. Reuman (d.reuman at imperial dot ac dot uk)
-  
-  Aaron A. King (kingaa at umich dot edu)
+  Daniel C. Reuman, Aaron A. King
 }
 \examples{
 pompExample(ou2)

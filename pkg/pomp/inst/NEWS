@@ -1,4 +1,10 @@
 NEWS
+0.49-1
+     o	A new method, 'probe.match.objfun', constructs objective functions suitable for use in optimizers.
+
+     o	'pomp' now depends on 'nloptr', which provides a suite of optimization algorithms.
+     	This package can now be used in various methods for optimization of an objective function.
+
 0.48-3
      o	Correct a bug in 'abc' to do with parameter transformation.
 

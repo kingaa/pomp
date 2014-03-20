@@ -48,6 +48,7 @@ setGeneric("simulate",function(object,nsim=1,seed=NULL,...)standardGeneric("simu
 ## deterministic trajectory computation
 setGeneric("trajectory",function(object,...)standardGeneric("trajectory"))
 ## trajectory matching
+setGeneric("traj.match.objfun",function(object,...)standardGeneric("traj.match.objfun"))
 setGeneric("traj.match",function(object,...)standardGeneric("traj.match"))
 
 ## ABC algorithm functions
@@ -70,6 +71,7 @@ setGeneric('particles',function(object,...)standardGeneric("particles"))
 ## synthetic likelihood
 setGeneric("probe",function(object,probes,...)standardGeneric("probe"))
 ## probe matching
+setGeneric("probe.match.objfun",function(object,...)standardGeneric("probe.match.objfun"))
 setGeneric("probe.match",function(object,...)standardGeneric("probe.match"))
 
 ## power spectrum

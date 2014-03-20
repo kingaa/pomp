@@ -1,6 +1,8 @@
 library(pomp)
 set.seed(1066L)
 
+pdf(file="ou2-probe.pdf")
+
 pompExample(ou2)
 
 pm.ou2 <- probe(
@@ -82,7 +84,7 @@ y1 <- head(x$y1,-1)
 z1 <- tail(x$y1,-1)
 y2 <- head(x$y2,-1)
 z2 <- tail(x$y2,-1)
-small.diff <- pb@datvals-c(mean(y1*z1)/mean(x$y1^2),mean(y2*z2)/mean(x$y2^2),mean(y1*z1)/mean(y1*y1),mean(y2*z2)/mean(y2*y2))
+small.diff <- pb$datvals-c(mean(y1*z1)/mean(x$y1^2),mean(y2*z2)/mean(x$y2^2),mean(y1*z1)/mean(y1*y1),mean(y2*z2)/mean(y2*y2))
 stopifnot(max(abs(small.diff))<.Machine$double.eps*100)
 
 po <- simulate(ou2)
@@ -118,4 +120,43 @@ summary(pb)
 
 head(as(pb,"data.frame"))
 
+pompExample(ou2)
 
+good <- probe(
+              ou2,
+              probes=list(
+                y1.mean=probe.mean(var="y1"),
+                y2.mean=probe.mean(var="y2"),
+                y1.sd=probe.sd(var="y1"),
+                y2.sd=probe.sd(var="y2"),
+                extra=function(x)max(x["y1",])
+                ),
+              nsim=500
+              )
+
+ofun <- probe.match.objfun(ou2,est=c("alpha.1","alpha.2"),
+                           probes=good$probes,nsim=100,
+                           seed=349956868L
+                           )
+fit1 <- nloptr(
+               coef(good,c("alpha.1","alpha.2")),
+               ofun,
+               opts=list(
+                 algorithm="NLOPT_LN_SBPLX",
+                 xtol_rel=1e-10,
+                 maxeval=1000
+                 )
+               )
+fit2 <- probe.match(
+                    good,
+                    est=c("alpha.1","alpha.2"),
+                    nsim=100,
+                    algorithm="NLOPT_LN_SBPLX",
+                    xtol_rel=1e-10,
+                    maxeval=1000,
+                    seed=349956868L
+                    )
+
+all.equal(fit1$solution,unname(coef(fit2,fit2$est)))
+
+dev.off()

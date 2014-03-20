@@ -27,7 +27,8 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
 
   params <- as.matrix(params)
 
-  if (!is.null(seed)) { # set the random seed (be very careful about this)
+  ## set the random seed (be very careful about this)
+  if (!is.null(seed) && length(seed)>0) {
     if (!exists('.Random.seed',envir=.GlobalEnv)) runif(1)
     save.seed <- get('.Random.seed',envir=.GlobalEnv)
     set.seed(seed)
@@ -55,7 +56,8 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
   if (inherits(retval,'try-error'))
     stop(sQuote("simulate")," error",call.=FALSE)
 
-  if (!is.null(seed)) {                 # restore the RNG state
+  ## restore the RNG state
+  if (!is.null(seed) && length(seed)>0) {                 
     assign('.Random.seed',save.seed,envir=.GlobalEnv)
   }
 
@@ -113,11 +115,22 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
   retval
 }
 
-setMethod("simulate",signature=signature(object="pomp"),
+setMethod(
+          "simulate",
+          signature=signature(object="pomp"),
           definition=function (object, nsim = 1, seed = NULL, params,
                                states = FALSE, obs = FALSE,
                                times, t0, as.data.frame = FALSE, ...)
-          simulate.internal(object=object,nsim=nsim,seed=seed,params=params,
-                            states=states,obs=obs,times=times,t0=t0,
-                            as.data.frame=as.data.frame,...)
+          simulate.internal(
+                            object=object,
+                            nsim=nsim,
+                            seed=seed,
+                            params=params,
+                            states=states,
+                            obs=obs,
+                            times=times,
+                            t0=t0,
+                            as.data.frame=as.data.frame,
+                            ...
+                            )
           )

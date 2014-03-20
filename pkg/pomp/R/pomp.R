@@ -118,7 +118,7 @@ pomp.constructor <- function (data, times, t0, ..., rprocess, dprocess,
   }
             
   if (missing(dprior)) { ## by default, use flat improper prior
-    dprior <- pomp.fun(f="_pomp_default_dprior")
+    dprior <- pomp.fun(f="_pomp_default_dprior",PACKAGE="pomp")
   } else {
     dprior <- pomp.fun(f=dprior,PACKAGE=PACKAGE,
                        proto=quote(dprior(params,log,...)))

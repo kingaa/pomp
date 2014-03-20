@@ -7,16 +7,20 @@ setClass(
                         simvals="array",
                         quantiles="numeric",
                         pvals="numeric",
-                        synth.loglik="numeric"
+                        synth.loglik="numeric",
+                        seed="integer"
                         )
          )
 
 probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) {
+
   if (!is.list(probes)) probes <- list(probes)
   if (!all(sapply(probes,is.function)))
     stop(sQuote("probes")," must be a function or a list of functions")
   if (!all(sapply(probes,function(f)length(formals(f))==1)))
     stop("each probe must be a function of a single argument")
+
+  seed <- as.integer(seed)
   
   if (missing(params)) params <- coef(object)
 
@@ -25,6 +29,7 @@ probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) 
   nprobes <- length(datval)
   if (nprobes > nsim)
     stop(sQuote("nsim"),"(=",nsim,") should be (much) larger than the number of probes (=",nprobes,")")
+
   ## apply probes to model simulations
   simval <- .Call(
                   apply_probe_sim,
@@ -59,29 +64,41 @@ probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) 
       simvals=simval,
       quantiles=quants,
       pvals=pvals,
-      synth.loglik=ll
+      synth.loglik=ll,
+      seed=seed
       )
 }
 
-setMethod("probe",signature(object="pomp"),
-          function (object, probes, params, nsim = 1, seed = NULL, ...) {
-            probe.internal(object=object,probes=probes,params=params,
-                           nsim=nsim,seed=seed,...)
+setMethod(
+          "probe",
+          signature=signature(object="pomp"),
+          function (object, probes, params, nsim = 1, seed = NULL, ...)
+          {
+            probe.internal(
+                           object=object,
+                           probes=probes,
+                           params=params,
+                           nsim=nsim,
+                           seed=seed,
+                           ...
+                           )
           }
           )
 
 setMethod(
           "probe",
-          signature(object="probed.pomp"),
-          function (object, probes, params, nsim, ...) {
+          signature=signature(object="probed.pomp"),
+          function (object, probes, params, nsim, seed, ...) {
 
             if (missing(probes)) probes <- object@probes
             if (missing(nsim)) nsim <- nrow(object@simvals)
+            if (missing(seed)) seed <- object@seed
 
             probe(
-                  as(object,"pomp"),
+                  object=as(object,"pomp"),
                   probes=probes,
                   nsim=nsim,
+                  seed=seed,
                   ...
                   )
           }
@@ -187,3 +204,4 @@ setAs(
       )
 
 setMethod("logLik",signature(object="probed.pomp"),function(object,...)object@synth.loglik)
+setMethod("$",signature=signature(x="probed.pomp"),function(x, name)slot(x,name))

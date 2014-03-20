@@ -20,6 +20,7 @@ Type 'q()' to quit R.
 > library(pomp) 
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > pompExample(ou2)
 newly created pomp object(s):
@@ -40,7 +41,7 @@ newly created pomp object(s):
 > plot(psim)
 > ## why do simulations sometimes seem extreme with respect to these probes?
 > 
-> scale.dat <- apply(psim@simvals,2,sd)
+> scale.dat <- apply(psim$simvals,2,sd)
 > 
 > po <- ou2
 > 
@@ -123,4 +124,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  7.776   0.052   8.010 
+  7.816   0.084   8.154 
