@@ -23,7 +23,7 @@ mif(object, \dots)
     tol = 1e-17, max.fail = Inf,
     verbose = getOption("verbose"), transform = FALSE, \dots)
 \S4method{mif}{pfilterd.pomp}(object, Nmif = 1, Np, tol, \dots)
-\S4method{mif}{mif}(object, Nmif, start, pars, ivps,
+\S4method{mif}{mif}(object, Nmif, start, ivps,
     particles, rw.sd, Np, ic.lag, var.factor,
     cooling.type, cooling.fraction,
     method, tol, transform, \dots)

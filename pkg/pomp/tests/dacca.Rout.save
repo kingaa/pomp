@@ -64,6 +64,8 @@ Type 'q()' to quit R.
 +     r
 +   }
 + 
++   op <- options(warn=-1)
++   
 +   set.seed(7777+7)
 +   params.tricky <- dacca.rprior(dacca.hyperparams)
 +   m7 <- mif(
@@ -99,6 +101,8 @@ Type 'q()' to quit R.
 +             transform=TRUE
 +             )
 + 
++   options(op)
++ 
 + }
 Loading required package: mvtnorm
 Loading required package: subplex
@@ -106,16 +110,7 @@ Loading required package: nloptr
 Loading required package: deSolve
 newly created pomp object(s):
  dacca 
-Warning messages:
-1: 11 filtering failures occurred in 'pfilter' 
-2: 4 filtering failures occurred in 'pfilter' 
-3: 1 filtering failure occurred in 'pfilter' 
-4: 16 filtering failures occurred in 'pfilter' 
-5: 2 filtering failures occurred in 'pfilter' 
-6: 2 filtering failures occurred in 'pfilter' 
-7: 1 filtering failure occurred in 'pfilter' 
-8: 7 filtering failures occurred in 'pfilter' 
 > 
 > proc.time()
    user  system elapsed 
- 11.092   0.056  11.206 
+ 11.068   0.104  11.227 

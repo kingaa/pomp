@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > pompExample(bbs)
@@ -51,17 +52,17 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
   Walker's alias method used: results are different from R < 2.2.0
 > signif(coef(fit1),3)
    gamma       mu     iota     beta  beta.sd      pop      rho    sigma 
-   0.333    0.000    0.000    3.630    0.000 1400.000    0.900    2.220 
+   0.333    0.000    0.000    4.300    0.000 1400.000    0.900    2.050 
      S.0      I.0      R.0 
    0.999    0.001    0.000 
 > 
 > fit2 <- traj.match(bbs,est=c("beta","sigma"),transform=TRUE)
 > signif(coef(fit2),3)
    gamma       mu     iota     beta  beta.sd      pop      rho    sigma 
-   0.333    0.000    0.000    2.020    0.000 1400.000    0.900    0.426 
+   0.333    0.000    0.000    2.090    0.000 1400.000    0.900    0.474 
      S.0      I.0      R.0 
    0.999    0.001    0.000 
 > 
 > proc.time()
    user  system elapsed 
-  2.784   0.068   2.880 
+  2.908   0.064   3.003 

@@ -491,7 +491,7 @@ setMethod(
           signature=signature(object="mif"),
           function (object, Nmif,
                     start,
-                    pars, ivps,
+                    ivps,
                     particles, rw.sd,
                     Np, ic.lag, var.factor,
                     cooling.type, cooling.fraction,
@@ -502,7 +502,6 @@ setMethod(
             
             if (missing(Nmif)) Nmif <- object@Nmif
             if (missing(start)) start <- coef(object)
-            if (missing(pars)) pars <- object@pars
             if (missing(ivps)) ivps <- object@ivps
             if (missing(particles)) particles <- object@particles
             if (missing(rw.sd)) rw.sd <- object@random.walk.sd
@@ -520,7 +519,6 @@ setMethod(
                 object=as(object,"pomp"),
                 Nmif=Nmif,
                 start=start,
-                pars=pars,
                 ivps=ivps,
                 particles=particles,
                 rw.sd=rw.sd,

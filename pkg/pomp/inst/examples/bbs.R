@@ -37,13 +37,13 @@ pomp(
        ),
      skeleton.type="vectorfield",
      skeleton="_sir_ODE",
-     measurement.model=reports~nbinom(mu=rho*cases,size=1/sigma),
+     measurement.model=reports~nbinom(mu=rho*cases,size=1/sigma^2),
      PACKAGE="pomp",
      obsnames = c("reports"),
      statenames=c("S","I","R","cases","W"),
      paramnames=c(
        "gamma","mu","iota",
-       "beta","beta.sd","pop","rho",
+       "beta","beta.sd","pop","rho","sigma",
        "S.0","I.0","R.0"
        ),
      zeronames=c("cases"),

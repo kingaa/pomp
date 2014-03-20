@@ -229,6 +229,7 @@ Type 'q()' to quit R.
 + }
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 newly created pomp object(s):
  ou2 
@@ -272,10 +273,9 @@ pfilter timestep 85 of 100 finished
 pfilter timestep 90 of 100 finished
 pfilter timestep 95 of 100 finished
 pfilter timestep 100 of 100 finished
-Warning messages:
-1: mif warning: the variables 'alpha.3', 'x2.0' have positive random-walk SDs specified, but are included in neither 'pars' nor 'ivps'. These random walk SDs will be ignored. 
-2: mif warning: the variable 'x2.0' has positive random-walk SD specified, but is included in neither 'pars' nor 'ivps'. This random walk SD will be ignored. 
+Warning message:
+mif warning: the variables 'alpha.3', 'x2.0' have positive random-walk SDs specified, but are included in neither 'pars' nor 'ivps'. These random walk SDs will be ignored. 
 > 
 > proc.time()
    user  system elapsed 
- 11.740   0.092  11.978 
+ 11.960   0.064  12.167 
