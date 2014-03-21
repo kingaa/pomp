@@ -152,8 +152,17 @@
     \code{parameter.inv.transform} should be the inverse of \code{parameter.transform}.
     Note that it is the user's responsibility to make sure this holds.
     If \code{obj} is the constructed \code{pomp} object, and \code{coef(obj)} is non-empty, a simple check of this is
-    \code{x <- coef(obj,transform=TRUE); obj1 <- obj; coef(obj1,transform=TRUE) <- x; identical(coef(obj),coef(obj1))} and
+
+    \code{x <- coef(obj,transform=TRUE)}
+
+    \code{obj1 <- obj}
+
+    \code{coef(obj1,transform=TRUE) <- x}
+
+    \code{identical(coef(obj),coef(obj1))}
+
     \code{identical(coef(obj1,transform=TRUE),x)}.
+    
     By default, both functions are the identity transformation.
     See the \dQuote{introduction_to_pomp} vignette for an example.
   }
@@ -205,16 +214,6 @@
       \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k]}.
       In particular, \code{x[,,1]} must be identical to \code{xstart}.
       The rownames of \code{x} must correspond to those of \code{xstart}.
-      
-      At present, the following methods make use of \code{rprocess}:
-      \itemize{
-	\item \code{\link[=simulate-pomp]{simulate}}
-	\item \code{\link{pfilter}}
-	\item \code{\link{mif}}
-	\item \code{\link{nlf}}
-	\item \code{\link{probe}}
-	\item \code{\link{probe.match}}
-	}
     }
     \item{\code{dprocess}}{
       In general, the specification of \code{dprocess} can be somewhat nontrivial:
@@ -258,14 +257,6 @@
       
       \code{rmeasure} must return a named numeric vector.
       If \code{y} is the returned vector, then \code{length(y)=nobs}, where \code{nobs} is the number of observable variables.
-
-      At present, the following methods make use of \code{rmeasure}:
-      \itemize{
-	\item \code{\link[=simulate-pomp]{simulate}}
-	\item \code{\link{nlf}}
-	\item \code{\link{probe}}
-	\item \code{\link{probe.match}}
-	}
     }
     \item{\code{dmeasure}}{
       if provided, must take at least the arguments \code{y}, \code{x}, \code{t}, \code{params}, \code{log}, and \code{\dots}.
@@ -276,12 +267,6 @@
       It may take additional arguments which will be filled with user-specified data as above.
       \code{dmeasure} must return a single numeric value, the pdf of \code{y} given \code{x} at time \code{t}.
       If \code{log=TRUE}, then the log of the pdf is returned.
-
-      At present, the following methods make use of \code{dmeasure}:
-      \itemize{
-	\item \code{\link{pfilter}}
-	\item \code{\link{mif}}
-	}
     }
     \item{\code{skeleton}}{
       If \code{skeleton} is an R function, it must have at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
@@ -297,12 +282,6 @@
       The return value is interpreted as the vectorfield (if the dynamical system is continuous) or the value of the map (if the dynamical system is discrete), at the point \code{x} at time \code{t}.
 
       If \code{skeleton} is the name of a native routine, this routine must be of prototype \dQuote{pomp_skeleton} as defined in the header \dQuote{pomp.h} (see the \dQuote{include} directory in the installed package directory).
-
-      At present, the following methods make use of \code{skeleton}:
-      \itemize{
-	\item \code{\link{trajectory}}
-	\item \code{\link{traj.match}}
-	}
     }
     \item{\code{initializer}}{
       if provided, must have at least the arguments \code{params}, \code{t0}, and \code{\dots}.
