@@ -51,9 +51,9 @@ statistical inference for<br>
 <li><a href="./index.php?nav=about">About <i>pomp</i></a></li>
 <li><a href="<?php echo $rforgepkgs;?>">Development Version (Rev. <?php print $svnrevision; ?>)</a></li>
 <li><a href="<?php echo $cranpage;?>">Release Version (<?php print $cranversion; ?>) on CRAN</a></li>
-<li><a target="_blank" href="http://cran.at.r-project.org/web/packages/pomp/pomp.pdf"><i>pomp</i> manual (PDF)</a></li>
+<li><a target="_blank" href="./vignettes/pomp.pdf"><i>pomp</i> manual (PDF)</a></li>
 <li><a href="http://lists.r-forge.r-project.org/pipermail/pomp-announce/"><i>pomp-announce</i> mailing list archives</a></li>
-<li><a target="_blank" href="http://cran.at.r-project.org/web/packages/pomp/NEWS">Package NEWS file</a></li>
+<li><a href="./index.php?nav=news">Package NEWS</a></li>
 <li><a href="./index.php?nav=vignettes">Tutorial vignettes</a></li>
 <li><a href="<?php echo $tracker;?>">Bug reports, feature &amp; support requests</a></li>
 <li><a href="./index.php?nav=bib">References to the literature</a></li>
@@ -74,6 +74,9 @@ $nav = $_REQUEST["nav"];
 switch ($nav) {
     case "vignettes":
         $dfile = "content/vignettes.htm";
+        break;
+    case "news":
+        $dfile = "content/NEWS.html";
         break;
     case "bib":
         $dfile = "content/refs.htm";
