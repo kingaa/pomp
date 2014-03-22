@@ -1,0 +1,9 @@
+Package: tao
+Version: 1.0-1
+Date: 2009-04-01
+Title: Tao
+Author: Aaron A. King, Bruce E. Kendall, Steve Ellner
+Maintainer: Aaron A. King <kingaa@umich.edu>
+Depends: R (>= 2.5.1)
+Description: The package that can be described is not the Tao package.
+License: GPL (>= 2)
