@@ -18,6 +18,6 @@ coef(gompertz)
 coef(gompertz,transform=TRUE)
 }
 \seealso{
-  \code{\link{pomp-class}} and the "intro_to_pomp" vignette}.
+  \code{\link{pomp-class}} and the "intro_to_pomp" vignette.
 }
 \keyword{datasets}
