@@ -36,9 +36,9 @@
 }
 \section{Vignettes}{
   The vignette \sQuote{Introduction to pomp} illustrates the facilities of the package using familiar stochastic processes.
-  Run \code{vignette("intro_to_pomp")} or look at the HTML documentation to view the vignette.
-  Methods for accelerating your codes are discussed in the \sQuote{Advanced topics in pomp} vignette;
-  run \code{vignette("advanced_topics_in_pomp")} to view it.
+  Methods for accelerating your codes are discussed in the \sQuote{Advanced topics in pomp} vignette.
+  These vignettes are installed in the package \code{doc} directory and are accessible via the HTML documentation.
+  They can also be viewed at \url{http://pomp.r-forge.r-project.org}.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{

@@ -15,6 +15,11 @@ _C_h_a_n_g_e_s _i_n _p_o_m_p _v_e_r_s_i_o_n _0._4_9-_1:
           useful in dealing with parameters constrained to sum to one
           (e.g., initial conditions of compartmental models).
 
+        • Bug fix in 'periodic.bspline.basis'.
+
+        • Package vignettes are no longer available via 'vignette()'
+          but can be reached from the help index.
+
 _C_h_a_n_g_e_s _i_n _p_o_m_p _v_e_r_s_i_o_n _0._4_8-_3:
 
         • Correct a bug in 'abc' to do with parameter transformation.

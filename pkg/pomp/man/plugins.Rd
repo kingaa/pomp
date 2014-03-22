@@ -117,9 +117,6 @@ onestep.dens(dens.fun, PACKAGE)
 \seealso{\code{\link{eulermultinom}}, \code{\link{pomp}}}
 \examples{
 ## examples showing how to use these functions
-## are provided in the vignette "intro_to_pomp"
-\dontrun{
-vignette("intro_to_pomp")
-}
+## are provided in the "intro_to_pomp" vignette
 }
 \keyword{models}

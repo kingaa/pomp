@@ -12,11 +12,12 @@ void iterate_map_native (double *X, double *time, double *p,
 			 lookup_table *covar_table,
 			 pomp_skeleton *ff, SEXP args) 
 {
-  double covars[ncovars];
+  double *covars = NULL;
   int nsteps;
   double *Xs, *xs, *ps;
   int h, i, j, k;
   set_pomp_userdata(args);
+  if (ncovars > 0) covars = (double *) Calloc(ncovars, double);
   for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
     R_CheckUserInterrupt();
     for (i = 0; i < nzeros; i++)
@@ -33,6 +34,7 @@ void iterate_map_native (double *X, double *time, double *p,
     }
     if (nsteps == 0) memcpy(X,x,nvars*nreps*sizeof(double));
   }
+  if (ncovars > 0) Free(covars);
   unset_pomp_userdata();
 }
 

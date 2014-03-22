@@ -3,7 +3,7 @@
 #include "pomp_internal.h"
 
 void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
-static void bspline_internal (double *y, const double *x, int nx, int i, int p, const double *knots, int nknots);
+static void bspline_internal (double *y, const double *x, int nx, int i, int p, const double *knots);
 
 // B-spline basis
 
@@ -32,7 +32,7 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree) {
   knots[0] = minx-deg*dx;
   for (i = 1; i < nk; i++) knots[i] = knots[i-1]+dx;
   for (i = 0; i < nb; i++) {
-    bspline_internal(ydata,xdata,nx,i,deg,&knots[0],nk);
+    bspline_internal(ydata,xdata,nx,i,deg,&knots[0]);
     ydata += nx;
   }
   UNPROTECT(nprotect);
@@ -51,7 +51,7 @@ SEXP bspline_basis_function (SEXP x, SEXP i, SEXP degree, SEXP knots) {
     error("bad arguments in 'bspline'");
 
   PROTECT(y = NEW_NUMERIC(nx)); nprotect++;
-  bspline_internal(REAL(y),REAL(x),nx,ival,deg,REAL(knots),nknots);
+  bspline_internal(REAL(y),REAL(x),nx,ival,deg,REAL(knots));
   UNPROTECT(nprotect);
   return(y);
 }
@@ -87,14 +87,18 @@ void periodic_bspline_basis_eval (double x, double period, int degree, int nbasi
 {
   int nknots = nbasis+2*degree+1;
   int shift = (degree-1)/2;
-  double knots[nknots];
-  double yy[nknots];
+  double *knots = NULL, *yy = NULL;
   double dx;
   int j, k;
+
   if (period <= 0.0) error("periodic_bspline_basis_eval error: must have period > 0");
   if (nbasis <= 0) error("periodic_bspline_basis_eval error: must have nbasis > 0");
   if (degree < 0) error("periodic_bspline_basis_eval error: must have degree >= 0");
   if (nbasis < degree) error("periodic_bspline_basis_eval error: must have nbasis >= degree");
+
+  knots = (double *) Calloc(nknots+degree+1,double);
+  yy = (double *) Calloc(nknots,double);
+
   dx = period/((double) nbasis);
   for (k = -degree; k <= nbasis+degree; k++) {
     knots[degree+k] = k*dx;
@@ -102,34 +106,35 @@ void periodic_bspline_basis_eval (double x, double period, int degree, int nbasi
   x = fmod(x,period);
   if (x < 0.0) x += period;
   for (k = 0; k < nknots; k++) {
-    bspline_internal(&yy[k],&x,1,k,degree,knots,nknots);
+    bspline_internal(&yy[k],&x,1,k,degree,knots);
   }
   for (k = 0; k < degree; k++) yy[k] += yy[nbasis+k];
   for (k = 0; k < nbasis; k++) {
     j = (shift+k)%nbasis;
     y[k] = yy[j];
   }
+  Free(yy); Free(knots);
 }
 
-static void bspline_internal (double *y, const double *x, int nx, int i, int p, const double *knots, int nknots)
+static void bspline_internal (double *y, const double *x, int nx, int i, int p, const double *knots)
 {
   int j;
-  double a, b;
-  double y1[nx], y2[nx];
-  int i2, p2;
-
   if (p == 0) {
     for (j = 0; j < nx; j++)
       y[j] = (double) ((knots[i] <= x[j]) && (x[j] < knots[i+1]));
   } else {
-    i2 = i+1;
-    p2 = p-1;
-    bspline_internal(y1,x,nx,i,p2,knots,nknots);
-    bspline_internal(y2,x,nx,i2,p2,knots,nknots);
+    int i2 = i+1;
+    int p2 = p-1;
+    double *y1 = (double *) Calloc(nx,double);
+    double *y2 = (double *) Calloc(nx,double);
+    double a, b;
+    bspline_internal(y1,x,nx,i,p2,knots);
+    bspline_internal(y2,x,nx,i2,p2,knots);
     for (j = 0; j < nx; j++) {
       a = (x[j]-knots[i]) / (knots[i+p]-knots[i]);
       b = (knots[i2+p]-x[j]) / (knots[i2+p]-knots[i2]);
       y[j] = a * y1[j] + b * y2[j];
     }
+    Free(y1); Free(y2);
   }
 }

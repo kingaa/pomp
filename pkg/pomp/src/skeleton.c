@@ -17,9 +17,10 @@ void eval_skeleton_native (double *f,
 			   pomp_skeleton *fun, SEXP args) 
 {
   double *xp, *pp;
-  double covars[ncovars];
+  double *covars = NULL;
   int j, k;
   set_pomp_userdata(args);
+  if (ncovars > 0) covars = (double *) Calloc(ncovars, double);
   for (k = 0; k < ntimes; k++, time++) { // loop over times
     R_CheckUserInterrupt();	// check for user interrupt
     // interpolate the covar functions for the covariates
@@ -30,6 +31,7 @@ void eval_skeleton_native (double *f,
       (*fun)(f,xp,pp,sidx,pidx,cidx,ncovars,covars,*time);
     }
   }
+  if (ncovars > 0) Free(covars);
   unset_pomp_userdata();
 }
 

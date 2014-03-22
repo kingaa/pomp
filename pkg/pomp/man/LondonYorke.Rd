@@ -37,5 +37,4 @@ plot(
   Recurrent Outbreaks of Measles, Chickenpox and Mumps: I. Seasonal Variation in Contact Rates,
   American Journal of Epidemiology, 98:453--468, 1973.
   }
-\seealso{\code{\link{pomp-class}} and the vignettes}
 \keyword{datasets}

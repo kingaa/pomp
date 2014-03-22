@@ -295,8 +295,6 @@
 ## For examples, see the vignettes, the data()-loadable
 ## example \code{pomp} objects, and the provided example files.
 \dontrun{
-vignette("intro_to_pomp")
-vignette("advanced_topics_in_pomp")
 pompExample()
 pomp.home <- system.file("examples",package="pomp")
 pomp.examples <- list.files(pomp.home)

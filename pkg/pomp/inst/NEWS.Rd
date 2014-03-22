@@ -4,9 +4,11 @@
   \itemize{
     \item A new method, 'probe.match.objfun', constructs objective functions suitable for use in optimizers.
     \item 'pomp' now depends on 'nloptr', which provides a suite of optimization algorithms.
-       	This package can now be used in various methods for optimization of an objective function.
+    This package can now be used in various methods for optimization of an objective function.
     \item New inline C functions 'to_log_barycentric' and 'from_log_barycentric' are provided in 'pomp.h' to facilitate log-barycentric transformations.
-       	These have proven very useful in dealing with parameters constrained to sum to one (e.g., initial conditions of compartmental models).
+    These have proven very useful in dealing with parameters constrained to sum to one (e.g., initial conditions of compartmental models).
+    \item Bug fix in 'periodic.bspline.basis'.
+    \item Package vignettes are no longer available via 'vignette()' but can be reached from the help index.
   }
 }
 \section{Changes in pomp version 0.48-3}{
@@ -17,9 +19,9 @@
 \section{Changes in pomp version 0.48-1}{
   \itemize{
     \item Create new 'dprior' and 'rprior' slots for 'pomp' objects.
-       	These will be used by the Bayesian methods (currently 'abc', 'bsmc', and 'pmcmc').
-      The 'hyperparams' argument to these methods has been removed;
-      hyperparameters are now treated just as any others.
+    These will be used by the Bayesian methods (currently 'abc', 'bsmc', and 'pmcmc').
+    The 'hyperparams' argument to these methods has been removed;
+    hyperparameters are now treated just as any others.
     \item 'bsmc' can now be called so that the particles are drawn from the prior distribution (as set by the 'rpior' slot).
     \item Some of the longer tests will only be run if an environment variable is set.
   }
@@ -33,7 +35,7 @@
   \itemize{
     \item Fix bug that arises only very occasionally in the 'dacca' cholera example.
     \item Modify 'dacca' model so that rare positivity violations are punished in a different way.
-       	This modifies the formal model slightly.
+    This modifies the formal model slightly.
   }
 }
 \section{Changes in pomp version 0.47-2}{
@@ -93,16 +95,16 @@
   \itemize{
     \item New 'mif2' option for 'mif'.
     \item The default behavior for 'mif' and 'pfilter' with respect to filtering failures has been changed.
-       	Before, the default behavior has been to stop with an error on the first filtering failure ('max.fail=0').
-      Now, the default is 'max.fail=Inf', i.e., an error is never triggered.
+    Before, the default behavior has been to stop with an error on the first filtering failure ('max.fail=0').
+    Now, the default is 'max.fail=Inf', i.e., an error is never triggered.
     \item The implementation of MIF cooling schedules has been changed to make it more general.
-       	The cooling schedule is now specified by a 'type' and a 'fraction'.
-      Currently, supported 'cooling.type's include 'geometric' (the old behavior) and 'hyperbolic', i.e., a 1/(1+n) schedule.
-      The 'cooling.fraction' argument specifies the cooling at 50 iterations.
-      That is, if s is the intensity of the random-walk perturbation to parameters at the first iteration ('rw.sd'), then the intensity at iteration 50 is s*cooling.fraction.
+    The cooling schedule is now specified by a 'type' and a 'fraction'.
+    Currently, supported 'cooling.type's include 'geometric' (the old behavior) and 'hyperbolic', i.e., a 1/(1+n) schedule.
+    The 'cooling.fraction' argument specifies the cooling at 50 iterations.
+    That is, if s is the intensity of the random-walk perturbation to parameters at the first iteration ('rw.sd'), then the intensity at iteration 50 is s*cooling.fraction.
     \item Remove all data()-loadable pomp objects.
-      To load the prebuilt example pomp objects from previous versions, use the new 'pompExample' function.
-      E.g., instead of 'data(euler.sir)', do 'pompExample("euler.sir")'.
+    To load the prebuilt example pomp objects from previous versions, use the new 'pompExample' function.
+    E.g., instead of 'data(euler.sir)', do 'pompExample("euler.sir")'.
   }
 }
 \section{Changes in pomp version 0.43-4}{
@@ -135,24 +137,24 @@
 \section{Changes in pomp version 0.42-4}{
   \itemize{
     \item When 'trajectory' calls 'ode', there is a need to preserve information across calls to the vectorfield-evaluating function.
-       	The code has been modified to do this in a cleaner way.
+    The code has been modified to do this in a cleaner way.
   }
 }
 \section{Changes in pomp version 0.42-2}{
   \itemize{
     \item Several minor bugs have been fixed.
-       	See the ChangeLog for details.
+    See the ChangeLog for details.
   }
 }
 \section{Changes in pomp version 0.42-1}{
   \itemize{
     \item An EXPERIMENTAL facility for constructing pomp objects out of native C routines is now included (pompBuilder).
-       	This facility is being actively developed and future changes may not be backward compatible.
+    This facility is being actively developed and future changes may not be backward compatible.
     \item A new facility allowing access to the 'userdata' slot of a pomp object from compiled 'rprocess', 'rmeasure', 'dprocess', 'dmeasure', 'skeleton', and 'partrans' codes is now available.
-       	Calls to the new C routines 'get_pomp_userdata', 'get_pomp_userdata_int', and 'get_pomp_userdata_double' allow retrieval of these elements.
+    Calls to the new C routines 'get_pomp_userdata', 'get_pomp_userdata_int', and 'get_pomp_userdata_double' allow retrieval of these elements.
     \item Some of the data()-loadable examples have been reworked to make use of the above facility.
-       	The parameterization of these examples has changed.
-      These changes are not backward compatible: codes that depend on the data()-loadable examples may be broken.
+    The parameterization of these examples has changed.
+    These changes are not backward compatible: codes that depend on the data()-loadable examples may be broken.
   }
 }
 \section{Changes in pomp version 0.41-8}{
@@ -163,19 +165,19 @@
 \section{Changes in pomp version 0.41-7}{
   \itemize{
     \item A bug in the 'blowflies' example has been fixed.
-       	Thanks to Greg Minshall for discovering it.
+    Thanks to Greg Minshall for discovering it.
   }
 }
 \section{Changes in pomp version 0.41-6}{
   \itemize{
     \item The 'gompertz' example parameter transformations have been changed.
-       	No longer are the names of the parameter vector changed in the transformation.
-      This change is not backward-compatible, but only codes using this example are affected.
+    No longer are the names of the parameter vector changed in the transformation.
+    This change is not backward-compatible, but only codes using this example are affected.
     \item The 'euler.sir' and 'gillespie.sir' examples have been changed.
-       	The transmission rate beta(t) is now the arithmetic sum of the seasonality basis functions.
-      Before, it was the geometric sum.
-      R0 is now given by the arithmetic average of the beta parameters divided by (gamma+mu).
-      This change is not backward-compatible, but only codes using these examples are affected.
+    The transmission rate beta(t) is now the arithmetic sum of the seasonality basis functions.
+    Before, it was the geometric sum.
+    R0 is now given by the arithmetic average of the beta parameters divided by (gamma+mu).
+    This change is not backward-compatible, but only codes using these examples are affected.
   }
 }
 \section{Changes in pomp version 0.41-5}{
@@ -186,13 +188,13 @@
 \section{Changes in pomp version 0.41-4}{
   \itemize{
     \item The 'blowflies', 'euler.sir', 'gillespie.sir', 'bbs', and 'ricker' data()-loadable examples have been changed to make the parameterization simpler and more natural.
-      This change is not backward-compatible, but only codes using this example are affected.
+    This change is not backward-compatible, but only codes using this example are affected.
   }
 }
 \section{Changes in pomp version 0.41-3}{
   \itemize{
     \item In 'trajectory', all vectorfield and map evaluation is now done in C for speed.
-       	For continuous-time dynamical systems, this gives an approximately 4-fold speedup.
+    For continuous-time dynamical systems, this gives an approximately 4-fold speedup.
     \item Demos have been created to show some examples.
   }
 }
@@ -205,17 +207,17 @@
 \section{Changes in pomp version 0.41-1}{
   \itemize{
     \item New arguments in 'mif', 'nlf', 'bsmc', 'pmcmc', 'probe-match', and 'traj-match' allow the estimation to be done on a transformed parameter space.
-       	When 'transform=TRUE' in these commands ('transform.params=TRUE' for 'nlf'), estimation is performed on the transformed parameter space.
-      This is described and demonstrated in the 'intro_to_pomp' vignette.
+    When 'transform=TRUE' in these commands ('transform.params=TRUE' for 'nlf'), estimation is performed on the transformed parameter space.
+    This is described and demonstrated in the 'intro_to_pomp' vignette.
     \item The data()-loadable examples have been re-implemented to make use of the above-mentioned facility.
-      Note that this new functionality makes it unnecessary to "un-transform" model parameters within the user-specified 'rprocess', 'dprocess', 'rmeasure', 'dmeasure', 'skeleton', and 'initializer' codes.
-      This change is not backward-compatible, but only codes using these data()-loadable example are affected.
+    Note that this new functionality makes it unnecessary to "un-transform" model parameters within the user-specified 'rprocess', 'dprocess', 'rmeasure', 'dmeasure', 'skeleton', and 'initializer' codes.
+    This change is not backward-compatible, but only codes using these data()-loadable example are affected.
     \item The Bayesian sequential Monte Carlo command 'bsmc' now returns not a list but an object of class 'bsmcd.pomp'.
-       	An experimental 'plot' method for objects of this class now exists.
-      Also, the parameter posterior means are now stored in the 'params' slot of the 'bsmcd.pomp' object:
-      access them with the 'coef' command as usual.
+    An experimental 'plot' method for objects of this class now exists.
+    Also, the parameter posterior means are now stored in the 'params' slot of the 'bsmcd.pomp' object:
+    access them with the 'coef' command as usual.
     \item A new example, using data from an influenza outbreak in a British boarding school and an SIR model, has been included.
-       	Do 'data(bbs)' to load it.
+    Do 'data(bbs)' to load it.
   }
 }
 \section{Changes in pomp version 0.40-9}{
@@ -226,79 +228,79 @@
 \section{Changes in pomp version 0.40-8}{
   \itemize{
     \item A new method 'partrans' allows transformation of vectors or matrices of parameters.
-       	The parameter transformations have been pushed into C for speed.
-      It is possible to specify native parameter transformation routines in addition to C functions, but this last facility has not yet been extensively tested.
-      A new slot 'has.trans' has been introduced into the 'pomp' class, and the types of slots 'par.trans' and 'par.untrans' have changed.
+    The parameter transformations have been pushed into C for speed.
+    It is possible to specify native parameter transformation routines in addition to C functions, but this last facility has not yet been extensively tested.
+    A new slot 'has.trans' has been introduced into the 'pomp' class, and the types of slots 'par.trans' and 'par.untrans' have changed.
   }
 }
 \section{Changes in pomp version 0.40-7}{
   \itemize{
     \item 'parmat' now gracefully handles the case when 'params' is already a matrix.
     \item Error in the documentation of 'pfilter' repaired.
-         	Thanks to Alex Smith for pointing this out.
+    Thanks to Alex Smith for pointing this out.
     \item Improvements in the documentation of the Nicholson blowflies data 'data(blowflies)'.
   }
 }
 \section{Changes in pomp version 0.40-6}{
   \itemize{
     \item When a pomp object is updated using 'pomp', the 'params' slot will now be copied over (appropriately transformed).
-       	Before, it was simply dropped.
+    Before, it was simply dropped.
     \item The 'gillespie.sir' example has been changed to make the reporting rate equal to 'rho'.
-       	Before, it was fixed at 10\%.
+    Before, it was fixed at 10\%.
     \item A new error-trap has been put into 'probe' and 'probe.match' for the case nsim < nprobes.
-       	Thanks to Dani Jonas for finding this error.
+    Thanks to Dani Jonas for finding this error.
   }
 }
 \section{Changes in pomp version 0.40-5}{
   \itemize{
     \item More informative error messages when dimension of state space or data space disagree internally.
     \item The 'weighted' argument to 'mif' and 'continue' is now deprecated in favor of a new argument 'method'.
-       	The old 'weighted=T' corresponds to 'method="mif"' while the old 'weighted=F' corresponds to 'method="unweighted"'.
+    The old 'weighted=T' corresponds to 'method="mif"' while the old 'weighted=F' corresponds to 'method="unweighted"'.
   }
 }
 \section{Changes in pomp version 0.40-4}{
   \itemize{
     \item New functions 'traj.match.objfun' and 'probe.match.objfun' have been added.
-       	These functions construct functions of one argument suitable for use as objective functions in 'optim'-like optimizers (iincluding 'subplex' and 'sannbox').
-      Minimizing these functions solves the trajectory-matching problem and probe-matching problem, respectively.
-      This allows the user much greater flexibility in choice of optimization algorithm than is afforded by 'traj.match' and 'probe.match'.
+    These functions construct functions of one argument suitable for use as objective functions in 'optim'-like optimizers (iincluding 'subplex' and 'sannbox').
+    Minimizing these functions solves the trajectory-matching problem and probe-matching problem, respectively.
+    This allows the user much greater flexibility in choice of optimization algorithm than is afforded by 'traj.match' and 'probe.match'.
     \item The 'sannbox' optimizer, which performs simulated annealing with box constraints, is now exported and available for general use.
   }
 }
 \section{Changes in pomp version 0.40-3}{
   \itemize{
     \item The 'bsmc' method has been improved, due to the contributions of Pierre Jacob.
-       	Specifically, 'bsmc' no longer reports a log-likelihood (which it never actually computed anyway) but a log-evidence.
-      The latter computation was supplied by Pierre Jacob.
+    Specifically, 'bsmc' no longer reports a log-likelihood (which it never actually computed anyway) but a log-evidence.
+    The latter computation was supplied by Pierre Jacob.
     \item A new helper function, 'exp2geom_rate_correction' has been added to the 'pomp.h' file.
-       	This function computes the rate r such that if N ~ geometric(prob=1-exp(-r*dt)) and T ~ exponential(rate=R), then E[N*dt] = E[T].
-      This is useful in approximating a continuous-time death process by a discrete time (Euler) process.
-      In particular, in such a case, T is the waiting time to death in the former and N*dt is the waiting time to death in the latter.
-      An Euler binomial or multinomial process with rate r=exp2geom_rate_correction(R,dt) will have the same mean waiting time as the exponential process with rate R.
-      Thanks to Sebastien Ballesteros for suggesting this.
+    This function computes the rate r such that if N ~ geometric(prob=1-exp(-r*dt)) and T ~ exponential(rate=R), then E[N*dt] = E[T].
+    This is useful in approximating a continuous-time death process by a discrete time (Euler) process.
+    In particular, in such a case, T is the waiting time to death in the former and N*dt is the waiting time to death in the latter.
+    An Euler binomial or multinomial process with rate r=exp2geom_rate_correction(R,dt) will have the same mean waiting time as the exponential process with rate R.
+    Thanks to Sebastien Ballesteros for suggesting this.
     \item A new helper function, 'rgammawn' has been added, with both R and C interfaces.
-       	This function draws an increment of a Gamma white-noise process with a given intensity.
-      Specifically, dw=rgammwn(sigma,dt) is Gamma distributed with mean dt and variance sigma^2*dt.
-      In this case, mu*dw/dt is suitable for use as a random rate in an Euler-multinomial process.
-      Thanks to Sebastien Ballesteros for suggesting this.
+    This function draws an increment of a Gamma white-noise process with a given intensity.
+    Specifically, dw=rgammwn(sigma,dt) is Gamma distributed with mean dt and variance sigma^2*dt.
+    In this case, mu*dw/dt is suitable for use as a random rate in an Euler-multinomial process.
+    Thanks to Sebastien Ballesteros for suggesting this.
   }
 }
 \section{Changes in pomp version 0.40-2}{
   \itemize{
     \item A bug to do with computation of the number of steps needed in discrete-time simulation and trajectory computations has been fixed.
-       	This bug was introduced in version 0.40-1.
+    This bug was introduced in version 0.40-1.
   }
 }
 \section{Changes in pomp version 0.40-1}{
   \itemize{
     \item It is now possible for discrete-time determistic skeletons to have a general step-size.
-       	Before, the stepsize was always forced to be 1.
-      The new argument 'skelmap.delta.t' in 'pomp' (default value 1) sets this step-size.
-      NB: in implementing this feature, a new slot has been added to the basic 'pomp' class.
-      'pomp' objects created with versions <0.40-1 will not therefore work with this version and must be re-created.
+    Before, the stepsize was always forced to be 1.
+    The new argument 'skelmap.delta.t' in 'pomp' (default value 1) sets this step-size.
+    NB: in implementing this feature, a new slot has been added to the basic 'pomp' class.
+    'pomp' objects created with versions <0.40-1 will not therefore work with this version and must be re-created.
     \item The deterministic skeleton trajectory functions now look for variables named in 'zeronames' and treat these variables as accumulators.
-       	This brings the behavior of the deterministic skeleton functions into line with 'rprocess'.
-      A new section of the "advanced topics" vignette discusses accumulator variables and 'zeronames'.
+    This brings the behavior of the deterministic skeleton functions into line with 'rprocess'.
+    A new section of the "advanced topics" vignette discusses accumulator variables and 'zeronames'.
     \item Include the user manual PDF among the vignettes.
     \item The new function 'parmat' creates a suitable matrix of parameters in one line.
   }
@@ -306,7 +308,7 @@
 \section{Changes in pomp version 0.39-5}{
   \itemize{
     \item Bug fix in 'bsmc' that arises when the state space is 1-D.
-       	Thanks to Arnab Bhattacharya for finding the bug.
+    Thanks to Arnab Bhattacharya for finding the bug.
     \item Some inconsistencies in the arguments of 'bsmc' have been fixed.
   }
 }
@@ -314,48 +316,48 @@
   \itemize{
     \item Minor corrections to the documentation for 'spect', 'probe', and 'traj.match'.
     \item Fix infelicity in 'traj.match' and 'nlf' that arises when the 'data' slot has no rownames.
-       	Rownames are not strictly required for the 'data' slot.
+    Rownames are not strictly required for the 'data' slot.
     \item The 'sannbox' algorithm now should work even when the objective function throws a non-finite value.
-       	The behavior now is to replace non-finite values with a large number.
-      This behavior follows that of the 'SANN' method in 'optim.
+    The behavior now is to replace non-finite values with a large number.
+    This behavior follows that of the 'SANN' method in 'optim.
   }
 }
 \section{Changes in pomp version 0.39-3}{
   \itemize{
     \item The help files for 'pfilter' and 'mif' have been updated to explain how to use a variable number of particles in the particle filtering algorithm.
     \item Inside 'init.state', a check has been added to make sure that the user's initializer function returns a vector of uniform size, as per the algorithms' assumptions.
-       	Thanks to Micaela Martinez-Bakker for catching this.
+    Thanks to Micaela Martinez-Bakker for catching this.
     \item 'mif' has been modified so as to allow estimation of initial-value parameters alone via fixed-lag smoothing.
   }
 }
 \section{Changes in pomp version 0.39-2}{
   \itemize{
     \item When 'po' is a 'pomp'-class object with covariates, 'as.data.frame(po)' and 'as(po,"data.frame")' now contain columns for the covariates. 
-       	The latter are interpolated, if necessary, at the observation times.
+    The latter are interpolated, if necessary, at the observation times.
     \item Bug fix: when 'pfilter' is called with a single parameter vector supplied in the 'params' argument, these parameters are copied into the 'params' slot of the resulting 'pfilterd.pomp' object.
-       	Before, this failed when the 'params' slot of the 'pomp' object was empty.
-      A similar bug existed in 'traj.match' and has likewise been fixed.
+    Before, this failed when the 'params' slot of the 'pomp' object was empty.
+    A similar bug existed in 'traj.match' and has likewise been fixed.
     \item To eliminate warnings and confusion during package check, 'profile.design' has been replaced by 'profileDesign'.
-       	For parallelism, 'slice.design' and 'sobol.design' have been replaced by 'sliceDesign' and 'sobolDesign', respectively.
-       	The older forms are now deprecated and will be removed in a future release.
+    For parallelism, 'slice.design' and 'sobol.design' have been replaced by 'sliceDesign' and 'sobolDesign', respectively.
+    The older forms are now deprecated and will be removed in a future release.
   }
 }
 \section{Changes in pomp version 0.39-1}{
   \itemize{
     \item New facilities for parameter transformation are provided.
-       	New optional arguments 'parameter.transform' and 'parameter.inv.transform' to 'pomp' allow the user to specify transformations between natural and internal parameter scalings.
-      A new option 'transfom' to 'coef' and 'coef<-' allows the user to get and set parameters on the natural scale.
-      See 'pomp?coef' and the "intro_to_pomp" vignette for details and examples.
-      Similarly, the 'conv.rec' method now takes an optional 'transform' argument.
+    New optional arguments 'parameter.transform' and 'parameter.inv.transform' to 'pomp' allow the user to specify transformations between natural and internal parameter scalings.
+    A new option 'transfom' to 'coef' and 'coef<-' allows the user to get and set parameters on the natural scale.
+    See 'pomp?coef' and the "intro_to_pomp" vignette for details and examples.
+    Similarly, the 'conv.rec' method now takes an optional 'transform' argument.
     \item Minor improvements to the documentation.
   }
 }
 \section{Changes in pomp version 0.38-5}{
   \itemize{
     \item 'pfilter' will now give an error if ever a non-finite likelihood (dmeasure value) is returned.
-      Before, errors were only generated when dmeasure returned NA.
+    Before, errors were only generated when dmeasure returned NA.
     \item 'spect' now returns frequencies reflective of the observation times.
-       	Before, the frequencies were given as fractions of the sampling frequency.
+    Before, the frequencies were given as fractions of the sampling frequency.
   }
 }
 \section{Changes in pomp version 0.38-4}{
@@ -380,7 +382,7 @@
     \item Improved discussion of SIR model in "Intro to pomp" vignette.
     \item In 'pfilterd.pomp' objects, 'saved.states' and 'saved.params' slots are now length-ntimes lists of arrays.
     \item It is now possible to use variable numbers of particles in 'pfilter'.
-       	The 'Np' argument may be specified as a single number as before, or now as either a vector of numbers or a function.
+    The 'Np' argument may be specified as a single number as before, or now as either a vector of numbers or a function.
   }
 }
 \section{Changes in pomp version 0.37-2}{
@@ -392,18 +394,18 @@
 \section{Changes in pomp version 0.37-1}{
   \itemize{
     \item The arguments 'skeleton.map' and 'skeleton.vectorfield' are now deprecated.
-          Specify a discrete-time skeleton using 'skeleton.type="map"' and a continuous-time skeleton via 'skeleton.type="vectorfield"'.
+    Specify a discrete-time skeleton using 'skeleton.type="map"' and a continuous-time skeleton via 'skeleton.type="vectorfield"'.
     \item 'pomp' is now a generic function.  
-          Calling it on a 'pomp' object copies the object; one can optionally modify some of the slots.
+    Calling it on a 'pomp' object copies the object; one can optionally modify some of the slots.
     \item Two new files 'gompertz.R' and 'gompertz.c' are in the 'examples' directory.  
-       	These contain codes needed to reproduce the Gompertz example in the 'intro_to_pomp' vignette.
+    These contain codes needed to reproduce the Gompertz example in the 'intro_to_pomp' vignette.
     \item The warning messages to do with the default behaviors of 'simulate' and 'trajectory' with respect to the arguments 'times' and 't0' have been removed.
-          These warnings were introduced in version 0.34-1 to alert users to changes in the default behavior of 'simulate' and 'trajectory' introduced with that version.
-          See the help ("pomp?simulate", "pomp?trajectory") for details.
+    These warnings were introduced in version 0.34-1 to alert users to changes in the default behavior of 'simulate' and 'trajectory' introduced with that version.
+    See the help ("pomp?simulate", "pomp?trajectory") for details.
     \item It is now possible to save both the states and particles portions of the filtering distributions computed in 'pfilter'.
-       	This is accomplished by means of the logical 'save.states' and 'save.params' arguments to 'pfilter'.
-      The particles are stored in rank-3 arrays in the slots 'saved.states' and 'saved.params'.
-      This results in the need for a change in the structure of 'pfilterd.pomp' objects: note that 'pfilterd.pomp' objects (including 'mif' and 'pmcmc' objects) created under pre-0.37-1 version of the package will not load under versions >= 0.37-1.
+    This is accomplished by means of the logical 'save.states' and 'save.params' arguments to 'pfilter'.
+    The particles are stored in rank-3 arrays in the slots 'saved.states' and 'saved.params'.
+    This results in the need for a change in the structure of 'pfilterd.pomp' objects: note that 'pfilterd.pomp' objects (including 'mif' and 'pmcmc' objects) created under pre-0.37-1 version of the package will not load under versions >= 0.37-1.
   }
 }
 \section{Changes in pomp version 0.36-7}{
@@ -452,26 +454,26 @@
   \itemize{
     \item Added a method to coerce 'probed.pomp' objects to 'data.frame' objects.
     \item Fix bug when 'simulate' is run on objects that inherit from 'pomp' but are not themselves pomps.
-         'simulate' should return 'pomp' objects when obs=F and states=F, regardless of what class 'object' is.
+    'simulate' should return 'pomp' objects when obs=F and states=F, regardless of what class 'object' is.
     \item 'simulate' and 'rprocess' are accelerated somewhat through judicious use of 'memcpy'.
   }
 }
 \section{Changes in pomp version 0.34-1}{
   \itemize{
     \item The default behaviors of 'simulate' and 'trajectory' with respect to the argument 'times' has changed.
-          There is a new argument, 't0', which specifies the time at which the initial conditions obtain.
-          The default for 't0' is 'timezero(object)'.
-          The default for 'times' is now 'time(object,t0=FALSE)' (it was 'time(object,t0=TRUE)').
-          This change eliminates an infelicity in which 'simulate' and 'trajectory' returned undesired values at the initial time.
-          Users can ensure that their codes will continue to function as intended by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence on the defaults. 
-          To aid users in  modifying their codes, a warning is now displayed whenever a potentially affected call is made.
-          These warnings will be removed in a future release.
-          See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
+    There is a new argument, 't0', which specifies the time at which the initial conditions obtain.
+    The default for 't0' is 'timezero(object)'.
+    The default for 'times' is now 'time(object,t0=FALSE)' (it was 'time(object,t0=TRUE)').
+    This change eliminates an infelicity in which 'simulate' and 'trajectory' returned undesired values at the initial time.
+    Users can ensure that their codes will continue to function as intended by specifying the values of the 'times' and 't0' arguments to these functions, thus removing dependence on the defaults. 
+    To aid users in  modifying their codes, a warning is now displayed whenever a potentially affected call is made.
+    These warnings will be removed in a future release.
+    See the documentation ("pomp?simulate", "pomp?trajectory") for a description of the new default behaviors.
     \item The 'states' slot now holds values of the state process only at the times given in the 'times' slot.
-          This is a change from the earlier behavior in which the 'states' slot sometimes included the value of the state process at 't0'.
+    This is a change from the earlier behavior in which the 'states' slot sometimes included the value of the state process at 't0'.
     \item 'simulate' has been re-implemented in C for speed.
     \item A new method 'obs' for pomp objects returns the contents of the 'data' slot.
-          It is synonymous with 'data.array'.
+    It is synonymous with 'data.array'.
     \item A banner is now displayed on package attachment.  
     \item 'coef<-' now behaves like ordinary vector assignment.
     \item 'probe' and 'spect' now take an argument 'params'.
@@ -483,8 +485,8 @@
   \itemize{
     \item Major improvements in speed in the probe-matching routines have been realized by coding the computationally-intensive portions of these calculations in C.
     \item New probes recommended by Simon Wood (Nature 466:1102-1104, 2010) have been implemented.
-         In particular, the new function 'probe.marginal' regresses the marginal distributions of actual and simulated data against a reference distribution, returning as probes the regression coefficients.
-        'probe.marginal' and 'probe.acf' have been coded in C for speed.
+    In particular, the new function 'probe.marginal' regresses the marginal distributions of actual and simulated data against a reference distribution, returning as probes the regression coefficients.
+    'probe.marginal' and 'probe.acf' have been coded in C for speed.
   }
 }
 \section{Changes in pomp version 0.32-1}{
@@ -500,21 +502,21 @@
 \section{Changes in pomp version 0.31-1}{
   \itemize{
     \item pomp now includes an implementation of the particle Markov chain Monte Carlo algorithm of Andrieu et al. (Andrieu, C., Doucet, A., & Holenstein, R. (2010) Particle Markov chain Monte Carlo methods. J. R. Stat. Soc. B 72:1--33).
-          This algorithm is implemented in the method 'pmcmc': see 'help(pmcmc)' for details.
-      Implementation primarily due to Ed Ionides.
+    This algorithm is implemented in the method 'pmcmc': see 'help(pmcmc)' for details.
+    Implementation primarily due to Ed Ionides.
   }
 }
 \section{Changes in pomp version 0.30-1}{
   \itemize{
     \item pomp now includes an implementation of the approximate Bayesian Sequential Monte Carlo algorithm of Liu & West (Liu, J. & West, M. (2001) Combining Parameter and State Estimation in Simulation-Based Filtering. In Doucet, A.; de Freitas, N. & Gordon, N. J. (eds.) Sequential Monte Carlo Methods in Practice, Springer, New York, pp. 197--224).
-         This algorithm is implemented in the method 'bsmc': see 'help(bsmc)' for details.
-         Thanks to Matt Ferrari and Michael Lavine for the implementation.
+    This algorithm is implemented in the method 'bsmc': see 'help(bsmc)' for details.
+    Thanks to Matt Ferrari and Michael Lavine for the implementation.
   }
 }
 \section{Changes in pomp version 0.29-5}{
   \itemize{
     \item The cholera transmission model from King, A. A., Ionides, E. L., Pascual, M., and Bouma, M. J. (2008) Inapparent infections and cholera dynamics, Nature 454:877--880 together with data from the Dacca district of historic Bengal are now included.
-          See 'help(dacca)' for details.
+    See 'help(dacca)' for details.
   }
 }
 \section{Changes in pomp version 0.29-1}{
@@ -522,13 +524,13 @@
     \item This is a major revision.
     \item Big improvements to the documentation, including worked examples in vignettes and improvements to the manual pages.
     \item Encoding models is now much easier through the use of "plugin" modules.
-          These are functions that write the 'rprocess' and 'dprocess' slots given minimal information on the structure of the model.
+    These are functions that write the 'rprocess' and 'dprocess' slots given minimal information on the structure of the model.
     \item A plugin for continuous-time Markov process models using the Gillespie algorithm is available.
     \item A plugin for discrete-time Markov processes is now available.
     \item Several example pomps are now loadable via the data() command.
     \item There are changes in the C interface to measurement models that are NOT BACKWARD COMPATIBLE.  
-         Existing user measurement model codes will need to be modified, but these changes are minor.
-         All this is fully explained in the file CHANGES_0.29-1.txt.
+    Existing user measurement model codes will need to be modified, but these changes are minor.
+    All this is fully explained in the file CHANGES_0.29-1.txt.
     \item The changes are documented in detail in the file CHANGES_0.29-1.txt.
   }
 }
@@ -574,19 +576,19 @@
   \itemize{
     \item A bug in the Euler simulator was repaired.
     \item The Euler simulator no longer calls GetRNGState() and PutRNGState().
-       	 When a native routine is used for the Euler step, it must contain these calls.
+    When a native routine is used for the Euler step, it must contain these calls.
     \item A potential bug in the Euler-multinomial simulator was repaired.
   }
 }
 \section{Changes in pomp version 0.20-2}{
   \itemize{
     \item The lookup_table (see file 'include/pomp.h') interface for C codes has been streamlined.
-          It is now slightly more straightforward to set up a 'struct lookup_table'.
-      	See the examples ('include/examples').
+    It is now slightly more straightforward to set up a 'struct lookup_table'.
+    See the examples ('include/examples').
     \item Added 'logistic.R' to the 'tests' directory.  
-      This is a one-variable stochastic differential equation simulated using Euler-Maruyama.
+    This is a one-variable stochastic differential equation simulated using Euler-Maruyama.
     \item The SIR example ('examples/sir.R') now includes two pomps: one with native routines implementing rprocess, dprocess, and skeleton, the other using R files.
-      The comparison may be instructive.
+    The comparison may be instructive.
     \item Several bugs fixed.
   }
 }
@@ -594,22 +596,22 @@
   \itemize{
     \item This is a major revision.
     \item The basic structure of the 'pomp' class has been changed to better support the use of native routines as well as R functions.
-      In particular, the 'rmeasure', 'dmeasure', and 'skeleton' methods can now be specified either as R functions or as native routines.
-      Native routines are specified by name; an optional 'PACKAGE' argument is provided to narrow the search.
-      The search is done not at the time of the call to 'pomp' but at the time the function is used.
+    In particular, the 'rmeasure', 'dmeasure', and 'skeleton' methods can now be specified either as R functions or as native routines.
+    Native routines are specified by name; an optional 'PACKAGE' argument is provided to narrow the search.
+    The search is done not at the time of the call to 'pomp' but at the time the function is used.
     \item Support has been added for covariates, in the form of lookup tables.
-          This has been accomplished through the addition of slots 'tcovar', 'covar', and 'covarnames' to the 'pomp' class.
-      'rmeasure', 'dmeasure', 'skeleton', and 'init.state' now perform lookup when covariates exist and pass this information to the user-defined function.
-      'rprocess' and 'dprocess' receive the full lookup table ('tcovar' plus 'covar').
+    This has been accomplished through the addition of slots 'tcovar', 'covar', and 'covarnames' to the 'pomp' class.
+    'rmeasure', 'dmeasure', 'skeleton', and 'init.state' now perform lookup when covariates exist and pass this information to the user-defined function.
+    'rprocess' and 'dprocess' receive the full lookup table ('tcovar' plus 'covar').
     \item 'rmeasure', 'dmeasure', and 'skeleton' are now specified by a function (or native routine) that does the computation for ONE state vector and ONE parameter vector.
-      	This is analogous to the way that 'init.state' has operated from the beginning.
-      It greatly simplifies model specification from the user's point of view without changing the low-level methods interfaces (pomp methods 'rmeasure', 'dmeasure', 'skeleton', 'init.states').
-      However, THIS CHANGE IS NOT BACKWARD-COMPATIBLE: users will need to rewrite code for the 'rmeasure', 'dmeasure', and 'skeleton' slots.
-      In practice, this should not be difficult.
-      It involves removing loops over 'times' and columns of 'params' and (if covariates are used in the measurement model or deterministic skeleton) making use of the 'covars' argument passed to the user function.
+    This is analogous to the way that 'init.state' has operated from the beginning.
+    It greatly simplifies model specification from the user's point of view without changing the low-level methods interfaces (pomp methods 'rmeasure', 'dmeasure', 'skeleton', 'init.states').
+    However, THIS CHANGE IS NOT BACKWARD-COMPATIBLE: users will need to rewrite code for the 'rmeasure', 'dmeasure', and 'skeleton' slots.
+    In practice, this should not be difficult.
+    It involves removing loops over 'times' and columns of 'params' and (if covariates are used in the measurement model or deterministic skeleton) making use of the 'covars' argument passed to the user function.
     \item The interface to the 'euler.simulate' and 'euler.density' facilities have changed to make them consistent with the new pomp class.
     \item The header files have been reorganized: 'include/euler.h' and 'include/lookup_table.h' have been replaced with a single 'include/pomp.h'.
-      	Significant additions have been made to support the new structure of the pomp class.
-      Specifically, new prototypes have been defined for native routines to implement the measurement model, the process model, and the deterministic skeleton.
+    Significant additions have been made to support the new structure of the pomp class.
+    Specifically, new prototypes have been defined for native routines to implement the measurement model, the process model, and the deterministic skeleton.
   }
 }

@@ -114,7 +114,5 @@
 \author{Edward L. Ionides \email{ionides at umich dot edu}, Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \code{\link{pmcmc-class}}, \code{\link{pmcmc-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
-  See the \dQuote{intro_to_pomp} vignette for an example
-  [CURRENTLY, ONLY DEMONSTRATING THE MIF ALGORITHM, WHICH IS ALGORITHMICALLY VERY SIMILAR TO PMCMC SINCE THEY BOTH DEPEND CRITICALLY ON A PARTICLE FILTERING STEP].
 }
 \keyword{ts}
