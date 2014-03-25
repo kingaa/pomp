@@ -105,8 +105,6 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   int *sidx, *pidx, *cidx, *zidx;
   SEXP fn, Snames, Pnames, Cnames;
 
-  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
-
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
@@ -118,7 +116,6 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
   PROTECT(fn = pomp_fun_handler(func,gnsi,&use_native)); nprotect++;
-  *(INTEGER(gnsi)) = 0;
 
   if (use_native) {
     RXR = (pomp_ssa_rate_fn *) R_ExternalPtrAddr(fn);

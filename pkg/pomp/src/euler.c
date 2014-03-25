@@ -20,8 +20,6 @@ SEXP euler_model_simulator (SEXP func,
   pomp_onestep_sim *ff = NULL;
   int meth = *(INTEGER(AS_INTEGER(method))); // 0 = Euler, 1 = one-step, 2 = fixed step
 
-  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
-
   {
     int *dim;
     dim = INTEGER(GET_DIM(xstart)); nvars = dim[0]; nreps = dim[1];
@@ -47,7 +45,6 @@ SEXP euler_model_simulator (SEXP func,
 
   // extract user function
   PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
-  *(INTEGER(gnsi)) = 0;
   
   // set up
   switch (mode) {
@@ -262,8 +259,6 @@ SEXP euler_model_density (SEXP func,
   SEXP rho, fcall, fn;
   SEXP F;
   int *pidx = 0, *sidx = 0, *cidx = 0;
-
-  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
   {
     int *dim;

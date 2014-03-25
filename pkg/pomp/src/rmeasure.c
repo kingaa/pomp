@@ -22,7 +22,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   struct lookup_table covariate_table;
   pomp_measure_model_simulator *ff = NULL;
 
-  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
   if (ntimes < 1)
@@ -67,7 +66,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   // extract the user-defined function
   PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("rmeasure")),gnsi,&mode)); nprotect++;
-  *(INTEGER(gnsi)) = 0;
 
   // extract 'userdata' as pairlist
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;

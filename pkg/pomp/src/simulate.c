@@ -5,9 +5,8 @@
 
 #include "pomp_internal.h"
 
-SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEXP nsim, 
-			      SEXP obs, SEXP states,
-			      SEXP gnsi)
+SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, 
+			      SEXP nsim, SEXP obs, SEXP states, SEXP gnsi)
 {
   int nprotect = 0;
   SEXP xstart, x, y, alltimes, coef, yy, offset;
@@ -21,8 +20,6 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, SEX
   int *dim, dims[3];
   double *s, *t, *xs, *xt, *ys, *yt, *ps, *pt, tt;
   int i, j, k, np, nx;
-
-  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
   PROTECT(offset = NEW_INTEGER(1)); nprotect++;
   *(INTEGER(offset)) = 1;

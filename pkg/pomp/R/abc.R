@@ -2,7 +2,7 @@
 setClass(
          'abc',
          contains='pomp',
-         slots=c(
+         representation=representation(
            pars = 'character',
            transform = 'logical',
            Nabc = 'integer',
