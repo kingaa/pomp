@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > tbasis <- seq(0,25,by=1/52)
@@ -392,7 +393,7 @@ function (xstart, times, params, ..., statenames = character(0),
         zeronames = zeronames, tcovar = tcovar, covar = covar, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x2771830>
+<environment: 0x40a05e0>
 process model density, dprocess = 
 function (x, times, params, ..., statenames = character(0), paramnames = character(0), 
     covarnames = character(0), tcovar, covar, log = FALSE, .getnativesymbolinfo = TRUE) 
@@ -402,7 +403,7 @@ function (x, times, params, ..., statenames = character(0), paramnames = charact
         covarnames = covarnames, tcovar = tcovar, covar = covar, 
         log = log, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x274b770>
+<environment: 0x4078528>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -470,7 +471,7 @@ function not specified
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.020444 secs
+Time difference of 1.047905 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -487,7 +488,7 @@ Time difference of 1.020444 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.6750937 secs
+Time difference of 0.6808746 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -539,7 +540,7 @@ newly created pomp object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 1.233339 secs
+Time difference of 2.528942 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -547,7 +548,7 @@ Time difference of 1.233339 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.009794474 secs
+Time difference of 0.01628518 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -642,4 +643,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
-  4.036   0.032   5.051 
+  5.336   0.084   5.679 

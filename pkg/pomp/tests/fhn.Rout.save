@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > pdf.options(useDingbats=FALSE)
@@ -92,4 +93,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  1.028   0.052   1.292 
+  1.024   0.064   1.220 

@@ -65,4 +65,4 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > 
 > proc.time()
    user  system elapsed 
-  2.908   0.064   3.003 
+  2.888   0.064   3.011 

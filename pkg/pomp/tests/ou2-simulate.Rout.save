@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > pompExample(ou2)
@@ -36,7 +37,7 @@ newly created pomp object(s):
 > ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.006771803 secs
+Time difference of 0.005120277 secs
 > 
 > coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 > 
@@ -47,4 +48,4 @@ Time difference of 0.006771803 secs
 > 
 > proc.time()
    user  system elapsed 
-  0.480   0.068   0.560 
+  0.504   0.064   0.585 

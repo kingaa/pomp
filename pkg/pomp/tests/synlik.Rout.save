@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > pompExample(ou2)
@@ -117,4 +118,4 @@ alternative hypothesis: two-sided
 > 
 > proc.time()
    user  system elapsed 
-  7.240   0.032   7.379 
+  7.312   0.032   7.443 

@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > set.seed(577639485L)
@@ -165,7 +166,7 @@ Exiting from Nelder Mead minimizer
     117 function evaluations used
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.442711 secs
+Time difference of 3.437749 secs
 > tic <- Sys.time()
 > print(loglik.mle <- -kalm.fit1$value,digits=4)
 [1] -477.2
@@ -189,4 +190,4 @@ loglik  -479.0 -477.241     NA
 > 
 > proc.time()
    user  system elapsed 
-  3.960   0.056   4.038 
+  4.004   0.056   4.089 

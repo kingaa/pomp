@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > options(digits=4)
 > 
@@ -134,4 +135,4 @@ The following transformed parameters are non-finite: 'r'
 > 
 > proc.time()
    user  system elapsed 
-  1.504   0.068   1.585 
+  1.552   0.048   1.622 

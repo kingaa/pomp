@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > set.seed(398585L)
@@ -63,7 +64,7 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 2.921494 secs
+Time difference of 2.999716 secs
 > 
 > print(
 +       cbind(
@@ -105,4 +106,4 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > proc.time()
    user  system elapsed 
-  4.788   0.072   4.889 
+  4.896   0.068   4.995 

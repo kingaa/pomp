@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > set.seed(45768683)
@@ -259,7 +260,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x3ba13b0>
+<environment: 0x25f5b00>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -272,7 +273,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x3ba13b0>
+<environment: 0x25f5b00>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -436,4 +437,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.936   0.048   1.005 
+  0.944   0.076   1.040 

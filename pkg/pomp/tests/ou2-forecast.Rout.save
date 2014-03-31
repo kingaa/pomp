@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > set.seed(921625222L)
@@ -62,4 +63,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  1.576   0.060   1.751 
+  1.580   0.068   1.753 

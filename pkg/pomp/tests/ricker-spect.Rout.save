@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > pdf(file="ricker-spect.pdf")
@@ -71,4 +72,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.220   0.068   2.470 
+  2.316   0.072   2.553 

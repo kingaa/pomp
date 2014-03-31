@@ -18,6 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > pompExample(ou2)
@@ -73,4 +74,4 @@ alpha.sd  5.0000000
 > 
 > proc.time()
    user  system elapsed 
-  0.656   0.052   0.719 
+  0.700   0.044   0.764 
