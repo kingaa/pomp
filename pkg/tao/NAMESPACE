@@ -1,4 +1,1 @@
-export(
-       do.nothing,
-       do.nothing.else
-       )
+export(do.nothing,do.nothing.else)
