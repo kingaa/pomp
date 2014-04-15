@@ -317,4 +317,3 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   UNPROTECT(nprotect);
   return(retval);
 }
-

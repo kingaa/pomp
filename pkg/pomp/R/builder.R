@@ -22,9 +22,10 @@ CCode <- function (text, slot) {
 pompBuilder <- function (data, times, t0, name,
                          statenames, paramnames, tcovar, covar,
                          rmeasure, dmeasure, step.fn, step.fn.delta.t,
-                         skeleton, skeleton.type, skelmap.delta.t = 1,
+                         skeleton, skeleton.type = c("map","vectorfield"),
+                         skelmap.delta.t = 1,
                          parameter.transform, parameter.inv.transform,
-                         ..., link = TRUE, save = FALSE) {
+                         globals, ..., link = TRUE, save = FALSE) {
   if (!is.data.frame(data)) stop(sQuote("data")," must be a data-frame")
   obsnames <- names(data)
   obsnames <- setdiff(obsnames,times)
@@ -37,6 +38,7 @@ pompBuilder <- function (data, times, t0, name,
     tcovar <- numeric(0)
     covarnames <- character(0)
   }
+  skeleton.type <- match.arg(skeleton.type)
   pompCBuilder(
                name=name,
                statenames=statenames,
@@ -49,6 +51,7 @@ pompBuilder <- function (data, times, t0, name,
                skeleton=skeleton,
                parameter.transform=parameter.transform,
                parameter.inv.transform=parameter.inv.transform,
+               globals=globals,
                save=save
                )
   if (link) {
@@ -114,9 +117,9 @@ header <- list(
 
 decl <- list(
              periodic_bspline_basis_eval="\tvoid (*periodic_bspline_basis_eval)(double,double,int,int,double*);\nperiodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n",
-             get_pomp_userdata="\tconst SEXP (*get_pomp_userdata)(const char *);\npomp_get_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n",
-             get_pomp_userdata_int="\tconst int * (*get_pomp_userdata_int)(const char *);\npomp_get_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
-             get_pomp_userdata_double="\tconst double * (*get_pomp_userdata_double)(const char *);\npomp_get_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n"
+             get_pomp_userdata_int="\tconst int * (*get_pomp_userdata_int)(const char *);\nget_pomp_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
+             get_pomp_userdata_double="\tconst double * (*get_pomp_userdata_double)(const char *);\nget_pomp_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n",
+             `get_pomp_userdata(\\b|[^_])`="\tconst SEXP (*get_pomp_userdata)(const char *);\nget_pomp_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n"
              )
 
 footer <- list(
@@ -128,20 +131,28 @@ footer <- list(
                parameter.inv.transform="\n}\n\n"
                )
 
-utility.fns <- list(
-                    )
+utility.fns <- list()
 
+callable.decl <- function (code) {
+  fns <- vapply(names(decl),grepl,logical(1),code,perl=TRUE)
+  do.call(paste0,decl[fns])
+}
+
+missing.fun <- function (name) {
+  paste0("  error(\"'",name,"' not defined\");")
+}
 
 pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
                           rmeasure, dmeasure, step.fn, skeleton,
                           parameter.transform, parameter.inv.transform,
-                          save = FALSE)
+                          globals, save = FALSE)
 {
   if (missing(name)) stop(sQuote("name")," must be supplied");
   if (missing(statenames)) stop(sQuote("statenames")," must be supplied");
   if (missing(paramnames)) stop(sQuote("paramnames")," must be supplied");
   if (missing(obsnames)) stop(sQuote("obsnames")," must be supplied");
   if (missing(covarnames)) stop(sQuote("covarnames")," must be supplied");
+  if (missing(globals)) globals <- ""
 
   mpt <- missing(parameter.transform)
   mpit <- missing(parameter.inv.transform)
@@ -173,6 +184,8 @@ pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
     cat(file=out,f)
   }
 
+  cat(file=out,globals)
+
   ## variable/parameter/observations definitions
   for (v in seq_along(paramnames)) {
     cat(file=out,render(define$var,variable=paramnames[v],ptr='__p',ilist='__parindex',index=v-1))
@@ -197,40 +210,32 @@ pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
   if (has.trans) {
     ## parameter transformation function
     cat(file=out,render(header$parameter.transform,name=name))
-    for (fn in names(decl)) {
-      if (grepl(fn,parameter.transform))
-        cat(file=out,decl[[fn]])
-    }
+    cat(file=out,callable.decl(parameter.transform))
     cat(file=out,parameter.transform,footer$parameter.transform)
     ## inverse parameter transformation function
     cat(file=out,render(header$parameter.inv.transform,name=name))
-    for (fn in names(decl)) {
-      if (grepl(fn,parameter.inv.transform))
-        cat(file=out,decl[[fn]])
-    }
+    cat(file=out,callable.decl(parameter.inv.transform))
     cat(file=out,parameter.inv.transform,footer$parameter.inv.transform)
   }
 
   ## rmeasure function
+  if (missing(rmeasure)) rmeasure <- missing.fun("rmeasure")
   cat(file=out,render(header$rmeasure,name=name),rmeasure,footer$rmeasure)
 
   ## dmeasure function
+  if (missing(dmeasure)) dmeasure <- missing.fun("dmeasure")
   cat(file=out,render(header$dmeasure,name=name),dmeasure,footer$dmeasure)
 
   ## Euler step function
+  if (missing(step.fn)) step.fn <- missing.fun("step.fn")
   cat(file=out,render(header$step.fn,name=name))
-  for (fn in names(decl)) {
-    if (grepl(fn,step.fn))
-      cat(file=out,decl[[fn]])
-  }
+  cat(file=out,callable.decl(step.fn))
   cat(file=out,step.fn,footer$step.fn)
 
   ## skeleton function
+  if (missing(skeleton)) skeleton <- missing.fun("skeleton")
   cat(file=out,render(header$skeleton,name=name))
-  for (fn in names(decl)) {
-    if (grepl(fn,skeleton))
-      cat(file=out,decl[[fn]])
-  }
+  cat(file=out,callable.decl(skeleton))
   cat(file=out,skeleton,footer$skeleton)
 
   ## undefine variables
@@ -266,7 +271,8 @@ pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
   if (rv!=0)
     stop("cannot compile shared-object library ",sQuote(solib))
   else
-    cat("model codes written to",sQuote(modelfile),"\nlink to shared-object library",sQuote(solib),"\n")
+    cat("model codes written to",sQuote(modelfile),
+        "\nlink to shared-object library",sQuote(solib),"\n")
 
   invisible(NULL)
 }
@@ -280,7 +286,8 @@ cleanForC <- function (text) {
 render <- function (template, ...) {
   vars=list(...)
   n <- sapply(vars,length)
-  if (!all((n==max(n))|(n==1))) stop("incommensurate lengths of replacements")
+  if (!all((n==max(n))|(n==1)))
+    stop("incommensurate lengths of replacements")
   short <- which(n==1)
   n <- max(n)
   for (i in short) vars[[i]] <- rep(vars[[i]],n)

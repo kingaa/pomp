@@ -11,6 +11,10 @@ dmeas <- '
   lik = dnbinom_mu(cases,theta,rho*incid,give_log);
 '
 
+globals <- '
+  static int nbasis = 3;
+'
+
 ## SIR process model with extra-demographic stochasticity
 ## and seasonal transmission
 step.fn <- '
@@ -22,7 +26,8 @@ step.fn <- '
   int k;
 
   // seasonality in transmission
-  beta = beta1*seas1+beta2*seas2+beta3*seas3;
+  for (k = 0, beta = 0.0; k < nbasis; k++)
+     beta += (&beta1)[k]*(&seas1)[k];
 
   // compute the environmental stochasticity
   dW = rgammawn(beta_sd,dt);
@@ -57,7 +62,8 @@ skel <- '
   double dW;			// white noise increment
   int k;
   
-  beta = beta1*seas1+beta2*seas2+beta3*seas3;
+  for (k = 0, beta = 0.0; k < nbasis; k++)
+     beta += (&beta1)[k]*(&seas1)[k];
 
   // compute the transition rates
   rate[0] = mu*popsize;		// birth into susceptible class
@@ -88,12 +94,12 @@ skel <- '
 ## the success of this depends on S0, I0, R0 being in
 ## adjacent memory locations, in that order
 partrans <- "
+  int k;
   Tgamma = exp(gamma);
   Tmu = exp(mu);
   Tiota = exp(iota);
-  Tbeta1 = exp(beta1);
-  Tbeta2 = exp(beta2);
-  Tbeta3 = exp(beta3);
+  for (k = 0; k < nbasis; k++)
+    (&Tbeta1)[k] = exp((&beta1)[k]);
   Tbeta_sd = exp(beta_sd);
   Trho = expit(rho);
   Ttheta = exp(theta);
@@ -101,12 +107,12 @@ partrans <- "
 "
 
 paruntrans <- "
+  int k;
   Tgamma = log(gamma);
   Tmu = log(mu);
   Tiota = log(iota);
-  Tbeta1 = log(beta1);
-  Tbeta2 = log(beta2);
-  Tbeta3 = log(beta3);
+  for (k = 0; k < nbasis; k++)
+    (&Tbeta1)[k] = log((&beta1)[k]);
   Tbeta_sd = log(beta_sd);
   Trho = logit(rho);
   Ttheta = log(theta);
@@ -137,6 +143,7 @@ pompBuilder(
             ),
             times="time",
             t0=1928,
+            globals=globals,
             dmeasure=dmeas,
             rmeasure=rmeas,
             step.fn=step.fn,
@@ -149,7 +156,7 @@ pompBuilder(
             parameter.inv.transform=paruntrans,
             statenames=c("S","I","R","incid","W"),
             paramnames=c(
-              "gamma","mu","iota","beta1","beta2","beta3","beta.sd",
+              "gamma","mu","iota","beta1","beta.sd",
               "popsize","rho","theta","S.0","I.0","R.0"
               ), 
             zeronames=c("incid","W"),
@@ -161,7 +168,9 @@ pompBuilder(
               fracs <- params[ic.names]
               x0[comp.names] <- round(params['popsize']*fracs/sum(fracs))
               x0
-            }
+            },
+            save=FALSE,
+            link=TRUE
             ) -> po
 
 coef(po) <- c(
