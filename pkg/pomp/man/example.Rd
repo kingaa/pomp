@@ -24,6 +24,7 @@ pompExample(example, envir = .GlobalEnv)
   pompExample()
   pompExample(euler.sir)
   pompExample("gompertz")
+  file.show(system.file("include/pomp.h",package="pomp"))
 }
 \seealso{
   \code{\link{blowflies}}, \code{\link{dacca}}, \code{\link{gompertz}},

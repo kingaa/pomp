@@ -69,7 +69,7 @@
     optional; the measurement model simulator.
     This can be specified in one of three ways:
     (1) as a function of prototype \code{rmeasure(x,t,params,\dots)} that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_simulator} as defined in the header file \dQuote{examples/pomp.h}.
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_simulator} as defined in the header file \dQuote{pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
     (3) using the formula-based \code{measurement.model} facility (see below).
   }
@@ -77,7 +77,7 @@
     optional; the measurement model probability density function.
     This can be specified in one of three ways:
     (1) as a function of prototype \code{dmeasure(y,x,t,params,log,\dots)} that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_density} as defined in the header file \dQuote{examples/pomp.h}.
+    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_density} as defined in the header file \dQuote{pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
     (3) using the formula-based \code{measurement.model} facility (see below).
     As might be expected, if \code{log=TRUE}, this function should return the log likelihood.
