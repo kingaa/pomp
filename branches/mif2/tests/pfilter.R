@@ -1,4 +1,4 @@
-library(pomp)
+library(mif2)
 
 pompExample(ou2)
 

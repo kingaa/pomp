@@ -1,4 +1,4 @@
-library(pomp)
+library(mif2)
 
 pompExample(ou2)
 
@@ -10,10 +10,13 @@ guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.9*guess1[c('x1.0','x2.0','alph
 guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.2*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 
 set.seed(64857673L)
-mif1a <- mif(ou2,Nmif=100,start=guess1,
+mif1a <- mif(
+             ou2,
+             Nmif=100,
+             start=guess1,
              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
              rw.sd=c(
-               x1.0=.5,x2.0=.5,
+               x1.0=0.5,x2.0=0.5,
                alpha.2=0.1,alpha.3=0.1),
              transform=F,
              Np=1000,
@@ -28,7 +31,7 @@ mif1a <- mif(ou2,Nmif=100,start=guess1,
 mif2a <- mif(ou2,Nmif=100,start=guess1,
              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
              rw.sd=c(
-               x1.0=0.5,x2.0=.5,
+               x1.0=0.5,x2.0=0.5,
                alpha.2=0.1,alpha.3=0.1),
              transform=F,
              Np=1000,
@@ -47,7 +50,7 @@ set.seed(64857673L)
 mif1b <- mif(ou2,Nmif=50,start=guess1,
              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
              rw.sd=c(
-               x1.0=.5,x2.0=.5,
+               x1.0=0.5,x2.0=0.5,
                alpha.2=0.1,alpha.3=0.1),
              transform=F,
              Np=1000,
@@ -62,7 +65,7 @@ mif1b <- continue(mif1b,Nmif=50)
 mif2b <- mif(ou2,Nmif=50,start=guess1,
              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
              rw.sd=c(
-               x1.0=0.5,x2.0=.5,
+               x1.0=0.5,x2.0=0.5,
                alpha.2=0.1,alpha.3=0.1),
              transform=F,
              Np=1000,
@@ -79,7 +82,7 @@ mif2b <- continue(mif2b,Nmif=50)
 mif2c <- mif(ou2,Nmif=50,start=guess1,
              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
              rw.sd=c(
-               x1.0=0.5,x2.0=.5,
+               x1.0=0.5,x2.0=0.5,
                alpha.2=0.1,alpha.3=0.1),
              transform=F,
              Np=1000,
@@ -97,5 +100,37 @@ compare.mif(list(mif1a,mif1b))
 compare.mif(list(mif2a,mif2b))
 
 compare.mif(list(mif1b,mif2c))
+
+mif3a <- mif2(
+              ou2,
+              Nmif=50,
+              start=guess1,
+              perturb.fn=function(params,mifiter,timeno,...){
+                pert <- params
+                ic.sd <- c(x1.0=0.5,x2.0=0.5)
+                par.sd <- c(alpha.2=0.1,alpha.3=0.1)
+                frac <- 0.05
+                nT <- length(time(ou2))
+                theta <- (1-frac)/frac/(50*nT-1)
+                sigma <- 1/(1+theta*((mifiter-1)*nT+timeno-1))
+                if (timeno==1) {
+                  pert[names(ic.sd)] <- rnorm(
+                                              n=length(ic.sd),
+                                              mean=pert[names(ic.sd)],
+                                              sd=ic.sd*sigma
+                                              )
+                }
+                pert[names(par.sd)] <- rnorm(
+                                            n=length(par.sd),
+                                            mean=pert[names(par.sd)],
+                                            sd=par.sd*sigma
+                                            )
+                pert
+              },
+              transform=FALSE,
+              Np=1000
+              )  
+
+
 
 dev.off()

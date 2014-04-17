@@ -1,7 +1,6 @@
 
-R version 2.15.3 (2013-03-01) -- "Security Blanket"
-Copyright (C) 2013 The R Foundation for Statistical Computing
-ISBN 3-900051-07-0
+R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,13 +15,14 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
-> library(pomp)
+> library(mif2)
 Loading required package: mvtnorm
 Loading required package: subplex
+Loading required package: nloptr
 Loading required package: deSolve
 > 
 > pompExample(ou2)
-newly created pomp objects:
+newly created pomp object(s):
  ou2 
 > 
 > pdf(file="ou2-mif2.pdf")
@@ -130,4 +130,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 49.343   0.076  49.753 
+ 50.335   0.068  50.772 
