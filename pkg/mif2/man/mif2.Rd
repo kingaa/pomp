@@ -43,6 +43,9 @@
     and so on, while when \code{T=length(time(object,t0=TRUE))},
     \code{Np(T)} is the number of particles to sample at the end of the time-series.
   }
+  \item{perturb.fn}{
+    \code(perturb.fn(params,mifiter,timeno,\dots))
+  }
   \item{tol}{
     See the description under \code{\link{pfilter}}.
   }
@@ -59,14 +62,6 @@
   \item{\dots}{
     additional arguments that override the defaults.
   }
-}
-\section{Re-running MIF Iterations}{
-}
-\section{Continuing MIF Iterations}{
-}
-\section{Using MIF to estimate initial-value parameters only}{
-}
-\section{Details}{
 }
 \references{
   E. L. Ionides, A. Bhadra, Y. Atchad{\\'e}, & A. A. King,

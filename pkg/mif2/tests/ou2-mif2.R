@@ -47,8 +47,12 @@ mif2a <- mif(ou2,Nmif=100,start=guess1,
 compare.mif(list(mif1a,mif2a))
 
 set.seed(64857673L)
-mif1b <- mif(ou2,Nmif=50,start=guess1,
-             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+mif1b <- mif(
+             ou2,
+             Nmif=50,
+             start=guess1,
+             pars=c('alpha.2','alpha.3'),
+             ivps=c('x1.0','x2.0'),
              rw.sd=c(
                x1.0=0.5,x2.0=0.5,
                alpha.2=0.1,alpha.3=0.1),
@@ -62,8 +66,12 @@ mif1b <- mif(ou2,Nmif=50,start=guess1,
              )
 mif1b <- continue(mif1b,Nmif=50)
 
-mif2b <- mif(ou2,Nmif=50,start=guess1,
-             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+mif2b <- mif(
+             ou2,
+             Nmif=50,
+             start=guess1,
+             pars=c('alpha.2','alpha.3'),
+             ivps=c('x1.0','x2.0'),
              rw.sd=c(
                x1.0=0.5,x2.0=0.5,
                alpha.2=0.1,alpha.3=0.1),
@@ -79,8 +87,12 @@ mif2b <- mif(ou2,Nmif=50,start=guess1,
              )  
 mif2b <- continue(mif2b,Nmif=50)
 
-mif2c <- mif(ou2,Nmif=50,start=guess1,
-             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+mif2c <- mif(
+             ou2,
+             Nmif=50,
+             start=guess1,
+             pars=c('alpha.2','alpha.3'),
+             ivps=c('x1.0','x2.0'),
              rw.sd=c(
                x1.0=0.5,x2.0=0.5,
                alpha.2=0.1,alpha.3=0.1),
@@ -95,10 +107,8 @@ mif2c <- mif(ou2,Nmif=50,start=guess1,
 mif2c <- continue(mif2c,Nmif=50)
 
 compare.mif(list(mif1b,mif2b))
-
 compare.mif(list(mif1a,mif1b))
 compare.mif(list(mif2a,mif2b))
-
 compare.mif(list(mif1b,mif2c))
 
 mif3a <- mif2(
@@ -130,7 +140,5 @@ mif3a <- mif2(
               transform=FALSE,
               Np=1000
               )  
-
-
 
 dev.off()
