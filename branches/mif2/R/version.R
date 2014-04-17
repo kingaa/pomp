@@ -1,5 +1,5 @@
 version <- function (at.least = NULL) {
-  version <- library(help=pomp)$info[[1]]
+  version <- library(help=mif2)$info[[1]]
   version <- strsplit(version[pmatch("Version",version)]," ")[[1]]
   version <- version[nchar(version)>0][2]
   splv <- as.numeric(strsplit(version,"[-.]")[[1]])
@@ -12,4 +12,3 @@ version <- function (at.least = NULL) {
     (splv[1]==minv[1]) && (splv[2]==minv[2]) && (splv[3]>=minv[3])
   }
 }
-
