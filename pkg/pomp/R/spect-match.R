@@ -1,7 +1,7 @@
 setClass(
          "spect.matched.pomp",
          contains="spect.pomp",
-         representation=representation(
+         slots=c(
            est="character",
            fail.value="numeric",
            weights="numeric",
