@@ -44,7 +44,7 @@
     \code{Np(T)} is the number of particles to sample at the end of the time-series.
   }
   \item{perturb.fn}{
-    \code(perturb.fn(params,mifiter,timeno,\dots))
+    \code{perturb.fn(params,mifiter,timeno,\dots)}
   }
   \item{tol}{
     See the description under \code{\link{pfilter}}.
