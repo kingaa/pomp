@@ -10,7 +10,7 @@
 \alias{plot,mif-method}
 \alias{compare.mif}
 \title{Methods of the "mif" class}
-\description{Methods of the "mif" class.}
+\description{Methods of the \code{mif} class.}
 \usage{
 \S4method{logLik}{mif}(object, \dots)
 \S4method{conv.rec}{mif}(object, pars, transform = FALSE, \dots)
@@ -41,10 +41,6 @@ compare.mif(z)
     \item{logLik}{
       Returns the value in the \code{loglik} slot.
     }
-    \item{mif}{
-      Re-runs the MIF iterations.
-      See the documentation for \code{\link{mif}}.
-    }
     \item{compare.mif}{
       Given a \code{mif} object or a list of \code{mif} objects, \code{compare.mif} produces a set of diagnostic plots.
     }
@@ -52,28 +48,7 @@ compare.mif(z)
       Plots a series of diagnostic plots.
       When \code{x} is a \code{mif} object, \code{plot(x)} is equivalent to \code{compare.mif(list(x))}.
     }
-    \item{predvarplot}{
-      \code{predvarplot(object, pars = NULL, mean = FALSE, \dots)} produces a plot of the scaled prediction variances for each parameter.
-      This can be used to diagnose a good value of the \code{mif} parameters \code{var.factor} and \code{ic.lag}.
-      If used in this way, one should run \code{mif} with \code{Nmif=1} first.
-      Additional arguments in \code{\dots} will be passed to the actual plotting function.
-    }
-    \item{print}{
-      Prints a summary of the \code{mif} object.
-    }
-    \item{show}{
-      Displays the \code{mif} object.
-    }
   }
-}
-\references{
-  E. L. Ionides, C. Bret\\'o, & A. A. King,
-  Inference for nonlinear dynamical systems,
-  Proc. Natl. Acad. Sci. U.S.A., 103:18438--18443, 2006.
-
-  A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
-  Inapparent infections and cholera dynamics,
-  Nature, 454:877--880, 2008.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{mif}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}}

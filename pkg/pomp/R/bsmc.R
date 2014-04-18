@@ -14,7 +14,7 @@
 setClass(
          "bsmcd.pomp",
          contains="pomp",
-         representation=representation(
+         slots=c(
            transform="logical",
            post="array",
            prior="array",

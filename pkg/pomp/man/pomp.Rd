@@ -10,7 +10,8 @@
 \alias{pomp-pomp}
 \title{Partially-observed Markov process object.}
 \description{
-  Create a new \code{pomp} object to hold a partially-observed Markov process model together with a uni- or multi-variate time series.
+  This function creates a \code{pomp} object,
+  encoding a partially-observed Markov process model together with a uni- or multi-variate time series.
 }
 \usage{
 \S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
@@ -41,18 +42,20 @@
 \arguments{
   \item{data, times}{
     The time series data and times at which observations are made.
-    \code{data} can be specified as a vector, a matrix, a data-frame, or a \code{pomp} object..
+    \code{data} can be specified as a vector, a matrix, a data-frame, or a \code{pomp} object.
+
     If \code{data} is a numeric vector, \code{times} must be a numeric vector of the same length.
+
     If \code{data} is a matrix, it should have dimensions \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observed variables and \code{ntimes} is the number of times at which observations were made (i.e., each column is a distinct observation of the \code{nobs} variables).
     In this case, \code{times} must be given as a numeric vector (of length \code{ntimes}).
-    If \code{data} is a data-frame, \code{times} must name of the column of observation times.
-    Note that, in this case, \code{data} is a data-frame, it will be internally coerced to an array with storage-mode \sQuote{double}.
+
+    If \code{data} is a data-frame, \code{times} must name the column of observation times.
+    Note that, in this case, \code{data} will be internally coerced to an array with storage-mode \sQuote{double}.
     Note that the \code{times} must be numeric and strictly increasing.
   }
   \item{t0}{
-    The zero-time.
-    This must be no later than the time of the first observation, \code{times[1]}.
-    The stochastic dynamical system is initialized at time \code{t0}.
+    The zero-time: the stochastic dynamical system is initialized at time \code{t0}.
+    This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.
   }
   \item{rprocess}{
     optional function; a function of prototype \code{rprocess(xstart,times,params,\dots)} that simulates from the unobserved process.
@@ -84,15 +87,18 @@
   }
   \item{measurement.model}{
     optional; a formula or list of formulae, specifying the measurement model.
-    These formulae are parsed internally and used to generate \code{rmeasure} and \code{dmeasure} functions.
+    These formulae are parsed internally to generate \code{rmeasure} and \code{dmeasure} functions.
     If \code{measurement.model} is given it overrides any specification of \code{rmeasure} or \code{dmeasure}.
     See below for an example.
-    \strong{NB:} it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
+    \strong{NB:} This is a convenience function, primarily designed to facilitate exploration;
+    it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
   }
   \item{skeleton, skeleton.type, skelmap.delta.t}{
     The function \code{skeleton} specifies the deterministic skeleton of the unobserved Markov process.
-    If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map: indicate this by specifying \code{skeleton.type="map"}.
-    If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield: indicate this by specifying \code{skeleton.type="vectorfield"}.
+    If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map:
+    indicate this by specifying \code{skeleton.type="map"}.
+    If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield:
+    indicate this by specifying \code{skeleton.type="vectorfield"}.
 
     The skeleton function can be specified in one of two ways:
     (1) as an \R function of prototype \code{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
@@ -104,6 +110,7 @@
   }
   \item{initializer}{
     optional function of prototype \code{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
+
     By default (i.e., if it is unspecified when \code{pomp} is called), the initializer assumes any parameters in \code{params} the names of which end in \dQuote{\code{.0}} are initial values.
     These are simply copied over as initial conditions when \code{init.state} is called (see \code{\link{init.state-pomp}}).
     The names of the state variables are the same as the corresponding initial value parameters, but with the \dQuote{\code{.0}} dropped.
@@ -122,25 +129,31 @@
   }
   \item{params}{
     optional named numeric vector of parameters.
+    This will be coerced internally to storage mode \code{double}.
   }
   \item{covar, tcovar}{
-    An optional table of covariates: \code{covar} is the table (with one column per variable) and \code{tcovar} the corresponding times (one entry per row of \code{covar}).
+    An optional table of covariates:
+    \code{covar} is the table (one column per variable);
+    \code{tcovar} the corresponding times (one entry per row of \code{covar}).
+
     \code{covar} can be specified as either a matrix or a data frame.
     In either case the columns are taken to be distinct covariates.
     If \code{covar} is a data frame, \code{tcovar} can be either the name or the index of the time variable.
-    If a covariate table is supplied, then the value of each of the covariates is interpolated as needed, i.e., whenever \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, or \code{init.state} is evaluated.
+
+    If a covariate table is supplied, then the value of each of the covariates is interpolated as needed, i.e., whenever \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, \code{rprior}, \code{dprior}, or \code{init.state} is evaluated.
     The resulting interpolated values are passed to the corresponding functions as a numeric vector named \code{covars}.
   }
   \item{obsnames, statenames, paramnames, covarnames}{
-    Optional character vectors specifying the names of observables, state variables, parameters, or covariates, respectively.
-    These are only used in the event that one or more of the basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}) are defined using native routines.
+    Optional character vectors specifying the names of observables, state variables, parameters, and covariates, respectively.
+    These are only used in the event that one or more of the basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, \code{rprior}, \code{dprior}) are defined using native routines.
     In that case, these name vectors are matched against the corresponding names and the indices of the names are passed to the native routines.
-    Using this facility allows one to write one or more of \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton} in native code in a way that does not depend on the order of states, parameters, and covariates at run time.
-    See the \dQuote{Advanced topics in pomp} vignette for more on this topic and examples.
+    These vectors should list the parameters in the order that the native code expects them.
+    Using this facility allows one to write one or more of the basic functions in native code in a way that does not depend on the order of states, parameters, and covariates at run time.
+    See the \dQuote{Advanced topics in pomp} vignette for more on this topic, including examples.
   }
   \item{zeronames}{
     Optional character vector specifying the names of accumulator variables.
-    See the \dQuote{Advanced topics in pomp} vignette for a discussion of this.
+    See the \dQuote{Advanced topics in pomp} vignette for a discussion of accumulator variables.
   }
   \item{PACKAGE}{
     An optional string giving the name of the dynamically loaded library in which any native routines are to be found.
@@ -153,21 +166,19 @@
     Note that it is the user's responsibility to make sure this holds.
     If \code{obj} is the constructed \code{pomp} object, and \code{coef(obj)} is non-empty, a simple check of this is
 
-    \code{x <- coef(obj,transform=TRUE)}
-
-    \code{obj1 <- obj}
-
-    \code{coef(obj1,transform=TRUE) <- x}
-
-    \code{identical(coef(obj),coef(obj1))}
-
-    \code{identical(coef(obj1,transform=TRUE),x)}.
+    \preformatted{
+      x <- coef(obj,transform=TRUE)
+      obj1 <- obj
+      coef(obj1,transform=TRUE) <- x
+      identical(coef(obj),coef(obj1))
+      identical(coef(obj1,transform=TRUE),x).
+    }
     
     By default, both functions are the identity transformation.
     See the \dQuote{introduction_to_pomp} vignette for an example.
   }
   \item{\dots}{
-    Any additional arguments given to \code{pomp} will be stored in the \code{\link[=pomp-class]{pomp}} object and passed as arguments to each of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{initializer} whenever they are evaluated.
+    Any additional arguments given to \code{pomp} will be stored in the \code{\link[=pomp-class]{pomp}} object and passed as arguments to each of the basic functions whenever they are evaluated.
   }
 }
 \value{
@@ -177,26 +188,19 @@
 }
 \details{
   \strong{
-    It is not typically necessary (or desirable, or even feasible) to define all of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{skeleton} in any given problem.
+    It is not typically necessary (or even feasible) to define all of the functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{skeleton} in any given problem.
     Each algorithm makes use of a different subset of these functions.
   }
-  In general, the specification of process-model codes \code{rprocess} and/or \code{dprocess} can be somewhat nontrivial:
-  for this reason, \code{\link{plugins}} have been developed to streamline this process for the user.
+  Specification of process-model codes \code{rprocess} and/or \code{dprocess} in most cases is facilitated by so-called \code{\link{plugins}} that have been developed to handle common use-cases.
   Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{euler.sim}}, \code{\link{discrete.time.sim}}, or \code{\link{onestep.sim}} plugin for \code{rprocess} and \code{\link{onestep.dens}} plugin for \code{dprocess} are available.
   For exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm is available (see \code{\link{gillespie.sim}}).
   To use the plugins, consult the help documentation (\code{?\link{plugins}}) and the vignettes.
 
-  It is anticipated that, in specific cases, it will be possible to obtain increased computational efficiency by writing custom versions of \code{rprocess} and/or \code{dprocess}.
+  In specific cases, it may be possible to obtain increased computational efficiency by writing custom versions of \code{rprocess} and/or \code{dprocess}.
   See the \dQuote{Advanced topics in pomp} vignette for a discussion of this.
   If such custom versions are desired, the following describes how each of these functions should be written in this case.
   \describe{
     \item{\code{rprocess}}{
-      In general, the specification of \code{rprocess} can be somewhat nontrivial:
-      for this reason, \code{\link{plugins}} have been developed to streamline this process for the user.
-      Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{euler.sim}} or \code{\link{onestep.sim}} plugin is available.
-      For exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm is available (see \code{\link{gillespie.sim}}).
-      To use the plugins, consult the help documentation (\code{?\link{plugins}}) and the vignettes.
-
       If the plugins are not used \code{rprocess} must have at least the following arguments:
       \code{xstart}, \code{times}, \code{params}, and \code{\dots}.
       It can also take additional arguments.
@@ -216,11 +220,6 @@
       The rownames of \code{x} must correspond to those of \code{xstart}.
     }
     \item{\code{dprocess}}{
-      In general, the specification of \code{dprocess} can be somewhat nontrivial:
-      for this reason, \code{\link{plugins}} have been developed to streamline this process for the user.
-      Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{onestep.dens}} plugin for \code{dprocess} is available.
-      To use the plugins, consult the help documentation (\code{?\link{plugins}}) and the vignettes.
-
       If the plugins are not used, \code{dprocess} must have at least the following arguments:
       \code{x}, \code{times}, \code{params}, \code{log}, and \code{\dots}.
       It may take additional arguments.
@@ -245,8 +244,7 @@
     }
   }
 
-  The measurement-model, deterministic skeleton, and initializer components are easily specified without the use of plugins.
-  The following is a guide to writing these components.
+  The following is a guide to writing the measurement-model, deterministic skeleton, and initializer components. 
   \describe{
     \item{\code{rmeasure}}{
       if provided, must take at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
@@ -307,9 +305,9 @@ file.show(
 \section{Warning}{
   Some error checking is done by \code{pomp}, but complete error checking is impossible.  
   If the user-specified functions do not conform to the above specifications (see Details), then the results may be invalid.
-  In particular, if both \code{rmeasure} and \code{dmeasure} are specified, the user should verify that these two functions correspond to the same model and if \code{skeleton} is specified, the user is responsible for verifying that it corresponds to the true deterministic skeleton of the model.
-  Each \pkg{pomp}-package algorithm uses some subset of the five basic components (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}).
-  If an algorithm requires a component that was not given in the construction of the \code{pomp} object, an error is generated.
+  In particular, if both \code{rmeasure} and \code{dmeasure} are specified, the user should verify that these two functions correspond to the same probability distribution and if \code{skeleton} is specified, the user is responsible for verifying that it corresponds to the true deterministic skeleton of the model.
+  Each \pkg{pomp}-package algorithm uses some subset of the five basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}).
+  If an algorithm requires a component that has not been specified, an informative error will be generated.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{

@@ -13,24 +13,23 @@
 }
 \section{Slots}{
   A \code{mif} object is derived from a \code{pfilterd.pomp} object and therefore has all the slots of such an object.
-  See \code{\link{pomp-class}} for details.
-  A full description of slots in a \code{mif} object follows.
+  A description of \code{mif}-specific slots follows.
   \describe{
     \item{ivps}{
-      A character vector containing the names of initial-value parameters (IVPs).
+      character; contains the names of initial-value parameters (IVPs).
       These are parameters which are to be estimated using fixed-lag smoothing.
     }
     \item{pars}{
-      A character vector containing the names of parameters to be estimated using MIF.
+      character; contains the names of parameters to be estimated using MIF.
     }
     \item{transform}{
-      A logical scalar; was the estimation done on the transformed scale?
+      logical scalar; was the estimation done on the transformed scale?
     }
     \item{Nmif}{
-      Number of MIF iterations that have been completed.
+      integer; number of MIF iterations that have been completed.
     }
     \item{particles}{
-      A function of prototype \code{particles(Np,center,sd,...)} that draws particles from a distribution centered on \code{center} and with width proportional to \code{sd}.
+      function of prototype \code{particles(Np,center,sd,...)} that draws particles from a distribution centered on \code{center} and with width proportional to \code{sd}.
       This function can be optionally specified by the user.
     }
     \item{var.factor}{
@@ -46,10 +45,10 @@
       character; the mif update method.
     }
     \item{random.walk.sd}{
-      A named vector containing the random-walk variance to be used for ordinary parameters.
+      named vector containing the random-walk variance to be used for ordinary parameters.
     }
     \item{conv.rec}{
-      The \dQuote{convergence record}: a matrix containing a record of the parameter values, log likelihoods, and other pertinent information, with one row for each MIF iteration.
+      the \dQuote{convergence record}: a matrix containing a record of the parameter values, log likelihoods, and other pertinent information, with one row for each MIF iteration.
     }
     \item{pred.mean, pred.var, filter.mean,
       eff.sample.size, cond.loglik, saved.states, saved.params, seed,
@@ -63,22 +62,13 @@
   }
 }
 \section{Extends}{
-  Class \code{pomp}, directly.
-  See \code{\link{pomp-class}}.
+  Class \code{pfilterd.pomp}, directly.
+  See \code{\link{pfilter}}.
 }
 \section{Methods}{
   See \code{\link{mif}}, \link{mif-methods}, \link{particles-mif}
 }
-\references{
-  E. L. Ionides, C. Bret\\'o, & A. A. King,
-  Inference for nonlinear dynamical systems,
-  Proc. Natl. Acad. Sci. U.S.A., 103:18438--18443, 2006.
-
-  A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
-  Inapparent infections and cholera dynamics,
-  Nature, 454:877--880, 2008.
-}
 \author{Aaron A. King \email{kingaa at umich dot edu}}
-\seealso{\code{\link{mif}}, \link{mif-methods}, \code{\link{pomp}}, \link{pomp-class}}
+\seealso{\code{\link{mif}}, \link{mif-methods}, \code{\link{pfilter}}, \code{\link{pomp}}, \link{pomp-class}}
 \keyword{models}
 \keyword{ts}

@@ -1,7 +1,7 @@
 setClass(
          "traj.matched.pomp",
          contains="pomp",
-         representation=representation(
+         slots=c(
            transform="logical",
            est="character",
            evals="integer",

@@ -2,14 +2,14 @@
 setClass(
          'pmcmc',
          contains='pfilterd.pomp',
-         representation(
-                        pars = 'character',
-                        transform = 'logical',
-                        Nmcmc = 'integer',
-                        random.walk.sd = 'numeric',
-                        conv.rec = 'matrix',
-                        log.prior = 'numeric'
-                        )
+         slots=c(
+           pars = 'character',
+           transform = 'logical',
+           Nmcmc = 'integer',
+           random.walk.sd = 'numeric',
+           conv.rec = 'matrix',
+           log.prior = 'numeric'
+           )
          )
 
 pmcmc.internal <- function (object, Nmcmc,

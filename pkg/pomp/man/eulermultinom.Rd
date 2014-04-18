@@ -38,7 +38,7 @@ rgammawn(n = 1, sigma, dt)
 
   \code{deulermultinom(x=x,size=N,rate=r,dt=dt)}.
   
-  Breto & Ionides discuss how an infinitesimally overdispersed death process can be constructed by compounding a binomial process with a Gamma white noise process.
+  Bret\'o & Ionides discuss how an infinitesimally overdispersed death process can be constructed by compounding a binomial process with a Gamma white noise process.
   The Euler approximation of the resulting process can be obtained as follows.
   Let the increments of the equidispersed process be given by
 
@@ -49,15 +49,14 @@ rgammawn(n = 1, sigma, dt)
   That is, \eqn{\Delta W} has mean \eqn{\Delta t} and variance \eqn{\sigma^2 \Delta t}.
   The resulting process is overdispersed and converges (as \eqn{\Delta t} goes to zero) to a well-defined process.
   The following lines of \R code accomplish this:
-
-  \code{dW <- rgammawn(sigma=sigma,dt=dt)}
-  
-  \code{dn <- reulermultinom(size=N,rate=r,dt=dW)}
-
+  \preformatted{
+    dW <- rgammawn(sigma=sigma,dt=dt)
+    dn <- reulermultinom(size=N,rate=r,dt=dW)
+  }
   or
-
-  \code{dn <- reulermultinom(size=N,rate=r*dW/dt,dt=dt)}.
-  
+  \preformatted{
+    dn <- reulermultinom(size=N,rate=r*dW/dt,dt=dt).
+  }
   He et al. use such overdispersed death processes in modeling measles.
   
   For all of the functions described here, direct access to the underlying C routines is available:
@@ -86,7 +85,7 @@ dW <- rgammawn(sigma=0.1,dt=dt)
 print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW))
 }
 \references{
-  C. Bret\\'o & E. L. Ionides,
+  C. Bret\'o & E. L. Ionides,
   Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems.
   Stoch. Proc. Appl., 121:2571--2591, 2011.
 

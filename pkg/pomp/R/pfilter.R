@@ -3,7 +3,7 @@
 setClass(
          "pfilterd.pomp",
          contains="pomp",
-         representation=representation(
+         slots=c(
            pred.mean="array",
            pred.var="array",
            filter.mean="array",

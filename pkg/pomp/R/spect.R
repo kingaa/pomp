@@ -6,7 +6,7 @@
 setClass(
          "spect.pomp",
          contains="pomp",
-         representation=representation(
+         slots=c(
            kernel.width="numeric",
            transform="function",
            freq="numeric",

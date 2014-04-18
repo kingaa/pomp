@@ -1,15 +1,15 @@
 setClass(
          "probed.pomp",
          contains="pomp",
-         representation(
-                        probes="list",
-                        datvals="numeric",
-                        simvals="array",
-                        quantiles="numeric",
-                        pvals="numeric",
-                        synth.loglik="numeric",
-                        seed="integer"
-                        )
+         slots=c(
+           probes="list",
+           datvals="numeric",
+           simvals="array",
+           quantiles="numeric",
+           pvals="numeric",
+           synth.loglik="numeric",
+           seed="integer"
+           )
          )
 
 probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) {

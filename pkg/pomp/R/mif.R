@@ -4,7 +4,7 @@
 setClass(
          'mif',
          contains='pfilterd.pomp',
-         representation=representation(
+         slots=c(
            transform = "logical",
            ivps = 'character',
            pars = 'character',

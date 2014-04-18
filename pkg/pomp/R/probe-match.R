@@ -1,7 +1,7 @@
 setClass(
          "probe.matched.pomp",
          contains="probed.pomp",
-         representation=representation(
+         slots=c(
            transform="logical",
            est="character",
            fail.value="numeric",

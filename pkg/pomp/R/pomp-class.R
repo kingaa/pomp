@@ -14,7 +14,7 @@ default.initializer <- function (params, t0, ...) {
 ## define the pomp class
 setClass(
          'pomp',
-         representation=representation(
+         slots=c(
            data = 'array',
            times = 'numeric',
            t0 = 'numeric',
@@ -69,7 +69,7 @@ setClass(
            has.trans=FALSE,
            par.trans=pomp.fun(),
            par.untrans=pomp.fun(),
-           PACKAGE="",
+           PACKAGE=character(0),
            userdata=list()
            ),
          validity=function (object) {
