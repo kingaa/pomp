@@ -13,5 +13,5 @@ Description: Inference methods for partially-observed Markov processes
 Depends: R(>= 2.15.1), pomp(>= 0.49-1), methods
 License: GPL(>= 2)
 LazyData: true
-BuildVignettes: false
+BuildVignettes: true
 Collate: aaa.R generics.R version.R mif2.R mif2-methods.R
