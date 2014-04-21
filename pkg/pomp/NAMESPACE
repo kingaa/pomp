@@ -47,7 +47,8 @@ exportClasses(
               traj.matched.pomp,
               probed.pomp,probe.matched.pomp,
               spect.pomp,spect.matched.pomp,
-              abc
+              abc,
+              Csnippet
               )
 
 exportMethods(
@@ -71,6 +72,7 @@ exportMethods(
 export(
        as.data.frame.pomp,
        as.data.frame.pfilterd.pomp,
+       Csnippet,
        reulermultinom,
        deulermultinom,
        rgammawn,

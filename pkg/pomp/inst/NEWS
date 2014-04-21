@@ -2,10 +2,15 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_0-_1:
 
+        • ‘pomp’ can now take snippets of C code directly as
+          definitions of the various basic functions.  This is
+          accomplished through the use of a new "Csnippet" function.
+          See the ‘sir’ demo for a demonstration.
+
         • It is now possible to specify global variables and typedefs
-          using the ‘globals’ argument to ‘pompBuilder’.  See the ‘sir’
-          demo for a demonstration.  Thanks to Carl Pearson for the
-          suggestion.
+          using the ‘globals’ argument to ‘pompBuilder’ and ‘pomp’.
+          See the ‘sir’ demo for a demonstration.  Thanks to Carl
+          Pearson for the suggestion.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._4_9-_1:
 

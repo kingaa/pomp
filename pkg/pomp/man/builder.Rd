@@ -11,6 +11,7 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
             skeleton, skeleton.type = c("map","vectorfield"),
             skelmap.delta.t = 1,
             parameter.transform, parameter.inv.transform,
+            rprior, dprior,
             globals, \dots, link = TRUE, save = FALSE)
 }
 \arguments{
@@ -46,6 +47,9 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
     optional C codes that implement parameter transformations.
     \code{parameter.transform} maps parameters from the estimation scale to the natural scale;
     \code{parameter.inv.transformation} maps them from the natural scale to the estimation scale.
+  }
+  \item{rprior, dprior}{
+    C codes implementing the prior distribution
   }
   \item{globals}{
     optional.

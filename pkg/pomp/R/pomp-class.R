@@ -6,9 +6,7 @@ default.initializer <- function (params, t0, ...) {
   if (length(ivpnames)<1)
     stop("default initializer error: no parameter names ending in ",
          sQuote(".0")," found: see ",sQuote("pomp")," documentation")
-  x <- params[ivpnames]
-  names(x) <- sub("\\.0$","",ivpnames)
-  x
+  setNames(params[ivpnames],sub("\\.0$","",ivpnames))
 }
 
 ## define the pomp class
@@ -32,15 +30,10 @@ setClass(
            params = 'numeric',
            covar = 'matrix',
            tcovar = 'numeric',
-           obsnames = 'character',
-           statenames = 'character',
-           paramnames = 'character',
-           covarnames = 'character',
            zeronames = 'character',
            has.trans = 'logical',
            par.trans = 'pomp.fun',
            par.untrans = 'pomp.fun',
-           PACKAGE = 'character',
            userdata = 'list'
            ),
          prototype=prototype(
@@ -61,15 +54,10 @@ setClass(
            params=numeric(0),
            covar=array(data=numeric(0),dim=c(0,0)),
            tcovar=numeric(0),
-           obsnames=character(0),
-           statenames=character(0),
-           paramnames=character(0),
-           covarnames=character(0),
            zeronames=character(0),
            has.trans=FALSE,
            par.trans=pomp.fun(),
            par.untrans=pomp.fun(),
-           PACKAGE=character(0),
            userdata=list()
            ),
          validity=function (object) {
@@ -78,8 +66,6 @@ setClass(
              retval <- append(retval,paste(sQuote("data"),"is a required argument"))
            if (length(object@times)<1)
              retval <- append(retval,paste(sQuote("times"),"is a required argument"))
-           if (length(object@t0)<1)
-             retval <- append(retval,paste(sQuote("t0"),"is a required argument"))
            if (!is.numeric(object@params) || (length(object@params)>0 && is.null(names(object@params))))
              retval <- append(retval,paste(sQuote("params"),"must be a named numeric vector"))
            if (ncol(object@data)!=length(object@times))
@@ -89,7 +75,8 @@ setClass(
            if (length(object@t0)>1)
              retval <- append(retval,paste(sQuote("t0"),"must be a single number"))
            if (object@t0 > object@times[1])
-             retval <- append(retval,paste("the zero-time",sQuote("t0"),"must occur no later than the first observation"))
+             retval <- append(retval,paste("the zero-time",sQuote("t0"),
+                                           "must occur no later than the first observation"))
            if (object@skelmap.delta.t <= 0)
              retval <- append(retval,paste(sQuote("skelmap.delta.t"),"must be positive"))
            if (!all(c('xstart','times','params','...')%in%names(formals(object@rprocess))))
@@ -122,15 +109,6 @@ setClass(
                               paste(
                                     "the length of",sQuote("tcovar"),
                                     "should match the number of rows of",sQuote("covar")
-                                    )
-                              )
-           } else if (!all(object@covarnames%in%colnames(object@covar))) {
-             missing <- object@covarnames[!(object@covarnames%in%colnames(object@covar))]
-             retval <- append(
-                              retval,
-                              paste(
-                                    "covariate(s)",paste(missing,collapse=","),
-                                    "are not found among the columns of",sQuote("covar")
                                     )
                               )
            }

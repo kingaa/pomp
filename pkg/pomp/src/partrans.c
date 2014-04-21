@@ -12,6 +12,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
   int nprotect = 0;
   SEXP fn, fcall, rho, ans, nm;
   SEXP pdim, pvec;
+  SEXP pompfun;
   SEXP tparams = R_NilValue;
   int mode = -1;
   char direc;
@@ -26,10 +27,12 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
   // extract the user-defined function
   switch (direc) {
   case 1:			// forward transformation
-    PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("par.trans")),gnsi,&mode)); nprotect++;
+    PROTECT(pompfun = GET_SLOT(object,install("par.trans"))); nprotect++;
+    PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
     break;
   case -1:			// inverse transformation
-    PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("par.untrans")),gnsi,&mode)); nprotect++;
+    PROTECT(pompfun = GET_SLOT(object,install("par.untrans"))); nprotect++;
+    PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
     break;
   default:
     error("impossible error");
@@ -112,9 +115,9 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     ff = (pomp_transform_fn *) R_ExternalPtrAddr(fn);
     
     if (qmat) {
-      idx = INTEGER(PROTECT(name_index(GET_ROWNAMES(GET_DIMNAMES(params)),object,"paramnames"))); nprotect++;
+      idx = INTEGER(PROTECT(name_index(GET_ROWNAMES(GET_DIMNAMES(params)),pompfun,"paramnames"))); nprotect++;
     } else {
-      idx = INTEGER(PROTECT(name_index(GET_NAMES(params),object,"paramnames"))); nprotect++;
+      idx = INTEGER(PROTECT(name_index(GET_NAMES(params),pompfun,"paramnames"))); nprotect++;
     }
 
     set_pomp_userdata(fcall);

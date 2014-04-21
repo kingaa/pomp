@@ -51,26 +51,30 @@ pomp(
      }
      ) -> gompertz
 
-## Now code up the Gompertz example using native routines: results in much faster computations.
+## Now code up the Gompertz example using C snippets: results in much faster computations.
 
 dmeas <- "
     lik = dlnorm(Y,log(X),tau,give_log);
 "
+
 rmeas <- "
     Y = rlnorm(log(X),tau);
 "
-step.fn <- "
+
+step.fun <- "
   double S = exp(-r*dt);
   double logeps = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
   /* note that X is over-written by the next line */
   X = pow(K,(1-S))*pow(X,S)*exp(logeps); 
 "
+
 skel <- "
   double dt = 1.0;
   double S = exp(-r*dt);
   /* note that X is not over-written in the skeleton function */
   DX = pow(K,1-S)*pow(X,S); 
 "
+
 partrans <- "
   Tr = exp(r);
   TK = exp(K);
@@ -78,6 +82,7 @@ partrans <- "
   TX_0 = exp(X_0);
   Ttau = exp(tau);
 "
+
 paruntrans <- "
   Tr = log(r);
   TK = log(K);
@@ -86,23 +91,24 @@ paruntrans <- "
   Ttau = log(tau);
 "
 
-pompBuilder(
-            name="Gompertz",
-            data=data.frame(t=1:100,Y=NA),
-            times="t",
-            t0=0,
-            paramnames=c("r","K","sigma","X.0","tau"),
-            statenames=c("X"),
-            dmeasure=dmeas,
-            rmeasure=rmeas,
-            step.fn=step.fn,
-            step.fn.delta.t=1,
-            skeleton=skel,
-            skeleton.type="map",
-            skelmap.delta.t=1,
-            parameter.inv.transform=partrans,
-            parameter.transform=paruntrans
-            ) -> Gompertz
+pomp(
+     data=data.frame(t=1:100,Y=NA),
+     times="t",
+     t0=0,
+     paramnames=c("r","K","sigma","X.0","tau"),
+     statenames=c("X"),
+     dmeasure=Csnippet(dmeas),
+     rmeasure=Csnippet(rmeas),
+     rprocess=discrete.time.sim(
+       step.fun=Csnippet(step.fun),
+       delta.t=1
+       ),
+     skeleton=Csnippet(skel),
+     skeleton.type="map",
+     skelmap.delta.t=1,
+     parameter.inv.transform=Csnippet(partrans),
+     parameter.transform=Csnippet(paruntrans)
+     ) -> Gompertz
 
 ## simulate some data
 Gompertz <- simulate(Gompertz,params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1))
@@ -134,6 +140,8 @@ par(op)
 
 ## run a particle filter
 tic <- Sys.time()
-pf <- pfilter(Gompertz,Np=500)
+pf <- replicate(n=10,pfilter(Gompertz,Np=500))
 toc <- Sys.time()
 print(toc-tic)
+
+print(logmeanexp(sapply(pf,logLik),se=TRUE))

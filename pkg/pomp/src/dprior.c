@@ -18,6 +18,7 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
   int mode = -1;
   int npars, nreps;
   SEXP Pnames, F, fn, fcall;
+  SEXP pompfun;
   int *dim;
 
   PROTECT(params = as_matrix(params)); nprotect++;
@@ -27,7 +28,8 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
     
   // extract the user-defined function
-  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("dprior")),gnsi,&mode)); nprotect++;
+  PROTECT(pompfun = GET_SLOT(object,install("dprior"))); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -81,7 +83,7 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
       int j;
 
       // construct state, parameter, covariate, observable indices
-      pidx = INTEGER(PROTECT(name_index(Pnames,object,"paramnames"))); nprotect++;
+      pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames"))); nprotect++;
       
       // address of native routine
       ff = (pomp_dprior *) R_ExternalPtrAddr(fn);

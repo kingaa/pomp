@@ -7,11 +7,25 @@
 \alias{print-pomp.fun}
 \alias{pomp.fun-class}
 \alias{pomp.fun}
+\alias{pomp.fun,function-method}
+\alias{pomp.fun,character-method}
+\alias{pomp.fun,missing-method}
+\alias{pomp.fun,pomp.fun-method}
+\alias{pomp.fun,Csnippet-method}
 \keyword{internal}
 \title{Definition and methods of the "pomp.fun" class}
-\description{Definition and methods of the "pomp.fun" class}
+\description{Definition and methods of the \code{pomp.fun} class}
 \usage{
-pomp.fun(f = NULL, PACKAGE, proto = NULL)
+\S4method{pomp.fun}{function}(f, proto = NULL, \dots)
+\S4method{pomp.fun}{character}(f, PACKAGE = NULL, 
+      obsnames = character(0), statenames = character(0),
+      paramnames = character(0), covarnames = character(0), \dots)
+\S4method{pomp.fun}{Csnippet}(f, slotname = NULL, libname = NULL,
+      obsnames = character(0), statenames = character(0),
+      paramnames = character(0), covarnames = character(0), \dots)
+\S4method{pomp.fun}{pomp.fun}(f, \dots)
+\S4method{pomp.fun}{missing}(f, \dots)
+\S4method{pomp.fun}{NULL}(f, \dots)
 \S4method{show}{pomp.fun}(object)
 \S4method{print}{pomp.fun}(x, \dots)
 }

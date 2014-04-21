@@ -101,6 +101,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   SEXP fn, args;
   SEXP X;
   SEXP Snames, Pnames, Cnames;
+  SEXP pompfun;
   SEXP zeronames;
   int *zidx = 0;
   int nvars, npars, nreps, ntimes, ncovars, nzeros;
@@ -133,7 +134,8 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   covariate_table = make_covariate_table(object,&ncovars);
 
   // extract user-defined function
-  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("skeleton")),gnsi,&mode)); nprotect++;
+  PROTECT(pompfun = GET_SLOT(object,install("skeleton"))); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -194,9 +196,9 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
       int *sidx, *pidx, *cidx;
       pomp_skeleton *ff = (pomp_skeleton *) R_ExternalPtrAddr(fn);
       // construct state, parameter, covariate indices
-      sidx = INTEGER(PROTECT(name_index(Snames,object,"statenames"))); nprotect++;
-      pidx = INTEGER(PROTECT(name_index(Pnames,object,"paramnames"))); nprotect++;
-      cidx = INTEGER(PROTECT(name_index(Cnames,object,"covarnames"))); nprotect++;
+      sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames"))); nprotect++;
+      pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames"))); nprotect++;
+      cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames"))); nprotect++;
 
       iterate_map_native(REAL(X),REAL(times),REAL(params),deltat,t,REAL(x0),
 			 ntimes,nvars,npars,ncovars,nzeros,nreps,
@@ -251,11 +253,13 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   int mode = -1;
   SEXP fn, args;
   SEXP Snames, Pnames, Cnames;
+  SEXP pompfun;
   int *dim;
   int nvars, npars, nreps, ncovars;
 
   // extract user-defined skeleton function
-  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("skeleton")),gnsi,&mode)); nprotect++;
+  PROTECT(pompfun = GET_SLOT(object,install("skeleton"))); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
@@ -330,9 +334,9 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
     // set aside userdata
     NAT(args) = args;
     // construct index vectors
-    PROTECT(NAT(sindex) = name_index(Snames,object,"statenames")); nprotect++;
-    PROTECT(NAT(pindex) = name_index(Pnames,object,"paramnames")); nprotect++;
-    PROTECT(NAT(cindex) = name_index(Cnames,object,"covarnames")); nprotect++;
+    PROTECT(NAT(sindex) = name_index(Snames,pompfun,"statenames")); nprotect++;
+    PROTECT(NAT(pindex) = name_index(Pnames,pompfun,"paramnames")); nprotect++;
+    PROTECT(NAT(cindex) = name_index(Cnames,pompfun,"covarnames")); nprotect++;
     // extract pointer to user-defined function
     NAT(fun) = (pomp_skeleton *) R_ExternalPtrAddr(fn);
 

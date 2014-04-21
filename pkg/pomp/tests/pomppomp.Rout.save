@@ -1,5 +1,5 @@
 
-R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -30,12 +30,26 @@ newly created pomp object(s):
 > y2 <- obs(simulate(r2,seed=1066L))
 > max(abs(y1-y2))
 [1] 0
-> r3 <- pomp(ricker,dmeasure="_ricker_poisson_dmeasure",PACKAGE="pomp")
+> r3 <- pomp(
++            ricker,
++            dmeasure="_ricker_poisson_dmeasure",
++            PACKAGE="pomp",
++            paramnames=c("r","sigma","phi"),
++            statenames=c("N","e"),
++            obsnames=c("y")
++            )
 > coef(r3) <- coef(r2)
 > y3 <- obs(simulate(r3,seed=1066L))
 > max(abs(y1-y3))
 [1] 0
-> r4 <- pomp(r2,rmeasure="_ricker_poisson_rmeasure",PACKAGE="pomp")
+> r4 <- pomp(
++            r2,
++            rmeasure="_ricker_poisson_rmeasure",
++            PACKAGE="pomp",
++            paramnames=c("r","sigma","phi"),
++            statenames=c("N","e"),
++            obsnames=c("y")
++            )
 > coef(r4) <- coef(r2)
 > y4 <- obs(simulate(r4,seed=1066L))
 > max(abs(y1-y4))
@@ -43,4 +57,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
-  0.508   0.048   0.574 
+  0.372   0.030   0.378 

@@ -7,20 +7,16 @@ rmeas <- '
   cases = rnbinom_mu(theta,rho*incid);
 '
 
-dmeas <- '
-  lik = dnbinom_mu(cases,theta,rho*incid,give_log);
-'
-
+## three basis functions
 globals <- '
   static int nbasis = 3;
 '
 
 ## SIR process model with extra-demographic stochasticity
 ## and seasonal transmission
-step.fn <- '
-  int nrate = 6;
-  double rate[nrate];		// transition rates
-  double trans[nrate];		// transition numbers
+step.fun <- '
+  double rate[6];		// transition rates
+  double trans[6];		// transition numbers
   double beta;			// transmission rate
   double dW;			// white noise increment
   int k;
@@ -55,9 +51,8 @@ step.fn <- '
 '
 
 skel <- '
-  int nrate = 6;
-  double rate[nrate];		// transition rates
-  double term[nrate];		// transition numbers
+  double rate[6];		// transition rates
+  double term[6];		// transition numbers
   double beta;			// transmission rate
   double dW;			// white noise increment
   int k;
@@ -134,44 +129,42 @@ cbind(
                     )
       ) -> covar
 
-pompBuilder(
-            name="SIR",
-            data=subset(
-              LondonYorke,
-              subset=town=="New York"&disease=="measles"&year>=1928&year<=1933,
-              select=c(time,cases)
-            ),
-            times="time",
-            t0=1928,
-            globals=globals,
-            dmeasure=dmeas,
-            rmeasure=rmeas,
-            step.fn=step.fn,
-            step.fn.delta.t=1/52/20,
-            skeleton.type="vectorfield",
-            skeleton=skel,
-            covar=covar,
-            tcovar="time",
-            parameter.transform=partrans,
-            parameter.inv.transform=paruntrans,
-            statenames=c("S","I","R","incid","W"),
-            paramnames=c(
-              "gamma","mu","iota","beta1","beta.sd",
-              "popsize","rho","theta","S.0","I.0","R.0"
-              ), 
-            zeronames=c("incid","W"),
-            comp.names=c("S","I","R"),
-            ic.names=c("S.0","I.0","R.0"),
-            initializer=function(params, t0, comp.names, ic.names, ...) {
-              x0 <- numeric(5)
-              names(x0) <- c("S","I","R","incid","W")
-              fracs <- params[ic.names]
-              x0[comp.names] <- round(params['popsize']*fracs/sum(fracs))
-              x0
-            },
-            save=FALSE,
-            link=TRUE
-            ) -> po
+pomp(
+     data=subset(
+       LondonYorke,
+       subset=town=="New York"&disease=="measles"&year>=1928&year<=1933,
+       select=c(time,cases)
+       ),
+     times="time",
+     t0=1928,
+     globals=globals,
+     rmeasure=Csnippet(rmeas),
+     rprocess=euler.sim(
+       step.fun=Csnippet(step.fun),
+       delta.t=1/52/20
+       ),
+     skeleton.type="vectorfield",
+     skeleton=Csnippet(skel),
+     covar=covar,
+     tcovar="time",
+     parameter.transform=Csnippet(partrans),
+     parameter.inv.transform=Csnippet(paruntrans),
+     statenames=c("S","I","R","incid","W"),
+     paramnames=c(
+       "gamma","mu","iota","beta1","beta.sd",
+       "popsize","rho","theta","S.0","I.0","R.0"
+       ), 
+     zeronames=c("incid","W"),
+     comp.names=c("S","I","R"),
+     ic.names=c("S.0","I.0","R.0"),
+     initializer=function(params, t0, comp.names, ic.names, ...) {
+       x0 <- numeric(5)
+       names(x0) <- c("S","I","R","incid","W")
+       fracs <- params[ic.names]
+       x0[comp.names] <- round(params['popsize']*fracs/sum(fracs))
+       x0
+     }
+     ) -> po
 
 coef(po) <- c(
               gamma=26,mu=0.02,iota=0.01,
@@ -197,3 +190,24 @@ toc <- Sys.time()
 print(toc-tic)
 
 plot(incid~time,data=x,col=as.factor(x$sim),pch=16)
+
+## compute the likelihood.
+## first add a dmeasure
+po <- pomp(
+           po,
+           dmeasure=Csnippet('
+  lik = dnbinom_mu(cases,theta,rho*incid,give_log);
+'
+             ),
+           statenames=c("S","I","R","incid","W"),
+           paramnames=c(
+             "gamma","mu","iota","beta1","beta.sd",
+             "popsize","rho","theta","S.0","I.0","R.0"
+             )
+           )
+
+## then run a particle filter
+tic <- Sys.time()
+logLik(pfilter(po,Np=1000))
+toc <- Sys.time()
+print(toc-tic)

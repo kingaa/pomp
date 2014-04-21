@@ -92,6 +92,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   int mode = -1;
   int *dim;
   SEXP Snames, Cnames, Pnames;
+  SEXP pompfun;
   SEXP fn, args, F;
   lookup_table covariate_table;
 
@@ -121,7 +122,8 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   covariate_table = make_covariate_table(object,&ncovars);
 
   // extract the user-defined function
-  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("skeleton")),gnsi,&mode)); nprotect++;
+  PROTECT(pompfun = GET_SLOT(object,install("skeleton"))); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -175,9 +177,9 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
       int *sidx, *pidx, *cidx;
       pomp_skeleton *ff = NULL;
       // construct state, parameter, covariate, observable indices
-      sidx = INTEGER(PROTECT(name_index(Snames,object,"statenames"))); nprotect++;
-      pidx = INTEGER(PROTECT(name_index(Pnames,object,"paramnames"))); nprotect++;
-      cidx = INTEGER(PROTECT(name_index(Cnames,object,"covarnames"))); nprotect++;
+      sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames"))); nprotect++;
+      pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames"))); nprotect++;
+      cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames"))); nprotect++;
       // extract the address of the user function
       ff = (pomp_skeleton *) R_ExternalPtrAddr(fn);
       // make userdata 

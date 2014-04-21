@@ -5,8 +5,7 @@
 
 SEXP euler_model_simulator (SEXP func, 
                             SEXP xstart, SEXP times, SEXP params, 
-                            SEXP deltat, SEXP method,
-                            SEXP statenames, SEXP paramnames, SEXP covarnames, SEXP zeronames,
+                            SEXP deltat, SEXP method, SEXP zeronames,
                             SEXP tcovar, SEXP covar, SEXP args, SEXP gnsi) 
 {
   int nprotect = 0;
@@ -79,9 +78,9 @@ SEXP euler_model_simulator (SEXP func,
   case 1:			// native code
 
     // construct state, parameter, covariate indices
-    sidx = INTEGER(PROTECT(matchnames(Snames,statenames))); nprotect++;
-    pidx = INTEGER(PROTECT(matchnames(Pnames,paramnames))); nprotect++;
-    cidx = INTEGER(PROTECT(matchnames(Cnames,covarnames))); nprotect++;
+    sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames"))))); nprotect++;
+    pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames"))))); nprotect++;
+    cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames"))))); nprotect++;
 
     ff = (pomp_onestep_sim *) R_ExternalPtrAddr(fn);
 
@@ -245,8 +244,7 @@ SEXP euler_model_simulator (SEXP func,
 
 // compute pdf of a sequence of Euler steps
 SEXP euler_model_density (SEXP func, 
-			  SEXP x, SEXP times, SEXP params, 
-			  SEXP statenames, SEXP paramnames, SEXP covarnames,
+			  SEXP x, SEXP times, SEXP params,
 			  SEXP tcovar, SEXP covar, SEXP log, SEXP args, SEXP gnsi) 
 {
   int nprotect = 0;
@@ -318,9 +316,9 @@ SEXP euler_model_density (SEXP func,
   case 1:			// native code
 
     // construct state, parameter, covariate indices
-    sidx = INTEGER(PROTECT(matchnames(Snames,statenames))); nprotect++;
-    pidx = INTEGER(PROTECT(matchnames(Pnames,paramnames))); nprotect++;
-    cidx = INTEGER(PROTECT(matchnames(Cnames,covarnames))); nprotect++;
+    sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames"))))); nprotect++;
+    pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames"))))); nprotect++;
+    cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames"))))); nprotect++;
 
     ff = (pomp_onestep_pdf *) R_ExternalPtrAddr(fn);
 
@@ -458,4 +456,3 @@ int num_map_steps (double t1, double t2, double dt) {
   nstep = (int) floor((t2-t1)/dt/(1-tol));
   return (nstep > 0) ? nstep : 0;
 }
-

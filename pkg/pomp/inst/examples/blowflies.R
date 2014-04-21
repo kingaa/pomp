@@ -887,7 +887,6 @@ pomp(
      PACKAGE="pomp",
      paramnames=c("P","N0","delta","sigma.P","sigma.d","sigma.y"),
      statenames=c("N1","R","S","e","eps"),
-     obsnames=c("y"),
      y.init=with( ## initial data
        raw.data,
        approx(x=day,y=y,xout=seq(from=0,to=14,by=1),rule=2)$y
@@ -919,6 +918,8 @@ pomp(
        approx(x=day,y=y,xout=seq(from=0,to=14,by=2),rule=2)$y
        ),
      #y.init=c(948, 942, 911, 858, 801, 676, 504, 397),
+     paramnames=c("P","N0","delta","sigma.P","sigma.d","sigma.y"),
+     statenames=c("N1","R","S","e","eps"),
      initializer=function (params, t0, y.init, ...) {
        ntau <- length(y.init)
        n <- y.init[ntau:1]

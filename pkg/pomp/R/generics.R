@@ -29,6 +29,10 @@ setGeneric("timezero<-",function(object,...,value)standardGeneric("timezero<-"))
 setGeneric("partrans",function(object,params,dir=c("forward","inverse"),...)standardGeneric("partrans"))
 setGeneric("logLik",function(object,...)standardGeneric("logLik"))
 
+## internals
+setGeneric("pomp.fun",function(f,...)standardGeneric("pomp.fun"))
+setGeneric("plugin.handler",function(object,...)standardGeneric("plugin.handler"))
+
 ## prediction mean
 setGeneric("pred.mean",function(object,...)standardGeneric("pred.mean"))
 ## prediction variance

@@ -8,6 +8,7 @@
 \alias{matrix-pomp}
 \alias{pomp,pomp-method}
 \alias{pomp-pomp}
+\alias{pomp-class}
 \title{Partially-observed Markov process object.}
 \description{
   This function creates a \code{pomp} object,
@@ -16,28 +17,27 @@
 \usage{
 \S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
-       skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
+       skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, parameter.transform, parameter.inv.transform)
+       PACKAGE, parameter.transform, parameter.inv.transform, globals)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
-       skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
+       skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, parameter.transform, parameter.inv.transform)
+       PACKAGE, parameter.transform, parameter.inv.transform, globals)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
-       skeleton = NULL, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
+       skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, parameter.transform, parameter.inv.transform)
+       PACKAGE, parameter.transform, parameter.inv.transform, globals)
 \S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model,
-       skeleton, skeleton.type, skelmap.delta.t,
+       measurement.model, skeleton, skeleton.type, skelmap.delta.t,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, parameter.transform, parameter.inv.transform)
+       PACKAGE, parameter.transform, parameter.inv.transform, globals)
 }
 \arguments{
   \item{data, times}{
@@ -176,6 +176,11 @@
     
     By default, both functions are the identity transformation.
     See the \dQuote{introduction_to_pomp} vignette for an example.
+  }
+  \item{globals}{
+    optional character;
+    C code that will be included in the source for the shared-object library created when the call to \code{pomp} uses \code{Csnippets}.
+    If no \code{Csnippets} are used, \code{globals} has no effect.
   }
   \item{\dots}{
     Any additional arguments given to \code{pomp} will be stored in the \code{\link[=pomp-class]{pomp}} object and passed as arguments to each of the basic functions whenever they are evaluated.

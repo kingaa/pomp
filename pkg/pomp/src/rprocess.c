@@ -83,16 +83,8 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
   PROTECT(fcall = LCONS(gnsi,fcall)); nprotect++;
   SET_TAG(fcall,install(".getnativesymbolinfo"));
-  PROTECT(fcall = LCONS(GET_SLOT(object,install("PACKAGE")),fcall)); nprotect++;
-  SET_TAG(fcall,install("PACKAGE"));
   PROTECT(fcall = LCONS(GET_SLOT(object,install("zeronames")),fcall)); nprotect++;
   SET_TAG(fcall,install("zeronames"));
-  PROTECT(fcall = LCONS(GET_SLOT(object,install("covarnames")),fcall)); nprotect++;
-  SET_TAG(fcall,install("covarnames"));
-  PROTECT(fcall = LCONS(GET_SLOT(object,install("paramnames")),fcall)); nprotect++;
-  SET_TAG(fcall,install("paramnames"));
-  PROTECT(fcall = LCONS(GET_SLOT(object,install("statenames")),fcall)); nprotect++;
-  SET_TAG(fcall,install("statenames"));
   PROTECT(fcall = LCONS(GET_SLOT(object,install("covar")),fcall)); nprotect++;
   SET_TAG(fcall,install("covar"));
   PROTECT(fcall = LCONS(GET_SLOT(object,install("tcovar")),fcall)); nprotect++;

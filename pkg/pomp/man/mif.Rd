@@ -10,6 +10,7 @@
 \alias{continue}
 \alias{continue,mif-method}
 \alias{continue-mif}
+\alias{mif-class}
 \title{The MIF algorithm}
 \description{
   The MIF algorithm for estimating the parameters of a partially-observed Markov process.

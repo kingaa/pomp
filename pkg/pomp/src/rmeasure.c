@@ -16,6 +16,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   SEXP Snames, Pnames, Cnames, Onames;
   SEXP tvec, xvec, pvec, cvec;
   SEXP fun, fn, fcall, rho, ans, nm;
+  SEXP pompfun;
   SEXP Y;
   int *dim;
   int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
@@ -65,7 +66,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   }
 
   // extract the user-defined function
-  PROTECT(fn = pomp_fun_handler(GET_SLOT(object,install("rmeasure")),gnsi,&mode)); nprotect++;
+  PROTECT(pompfun = GET_SLOT(object,install("rmeasure"))); nprotect++;
+  PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
 
   // extract 'userdata' as pairlist
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -99,10 +101,10 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   case 1:				// use native routine
 
     // construct state, parameter, covariate, observable indices
-    oidx = INTEGER(PROTECT(name_index(Onames,object,"obsnames"))); nprotect++;
-    sidx = INTEGER(PROTECT(name_index(Snames,object,"statenames"))); nprotect++;
-    pidx = INTEGER(PROTECT(name_index(Pnames,object,"paramnames"))); nprotect++;
-    cidx = INTEGER(PROTECT(name_index(Cnames,object,"covarnames"))); nprotect++;
+    oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames"))); nprotect++;
+    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames"))); nprotect++;
+    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames"))); nprotect++;
+    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames"))); nprotect++;
 
     // address of native routine
     ff = (pomp_measure_model_simulator *) R_ExternalPtrAddr(fn);

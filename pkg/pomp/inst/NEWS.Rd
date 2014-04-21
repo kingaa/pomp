@@ -2,7 +2,10 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 0.50-1}{
   \itemize{
-    \item It is now possible to specify global variables and typedefs using the \code{globals} argument to \code{pompBuilder}.
+    \item \code{pomp} can now take snippets of C code directly as definitions of the various basic functions.
+    This is accomplished through the use of a new "Csnippet" function.
+    See the \sQuote{sir} demo for a demonstration.
+    \item It is now possible to specify global variables and typedefs using the \code{globals} argument to \code{pompBuilder} and \code{pomp}.
     See the \sQuote{sir} demo for a demonstration.
     Thanks to Carl Pearson for the suggestion.
   }
