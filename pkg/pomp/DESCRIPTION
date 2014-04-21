@@ -21,7 +21,7 @@ Description: Inference methods for partially-observed Markov processes
 Depends: R(>= 3.0.0), stats, graphics, methods, mvtnorm, subplex, nloptr, deSolve
 License: GPL(>= 2)
 LazyData: true
-BuildVignettes: false
+BuildVignettes: true
 MailingList: Subscribe to pomp-announce@r-forge.r-project.org for announcements by going to http://lists.r-forge.r-project.org/mailman/listinfo/pomp-announce.
 Collate: aaa.R authors.R generics.R version.R eulermultinom.R
 	 csnippet.R pomp-fun.R plugins.R 
