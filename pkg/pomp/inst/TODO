@@ -1,15 +1,15 @@
-* userdata access from C functions
+TO-DO LIST
 
-* pompBuilder function for automatic pomp construction
+* update intro and advanced_topics documents to use Csnippets
+
+* for plugins, remove intermediate R function call
+
+* write pompCBuilder support for 'onestep.dens' and 'gillespie.sim' plugins.
 
 * effects of replacing 'sample.int' with systematic resampling inside 'bsmc'
 
-* sorting vs no-sorting systematic resampling algorithm?
-
 * parameter transformations: put 'transform' option into each estimation routine
   (spect.match)
-
-* unit tests for above
 
 * unit tests for 'sannbox'
 
@@ -23,7 +23,7 @@
    using R expressions rather than functions....
 
 * Write 'plot' and 'print' methods for 'pfilterd.pomp' objects.  
-  This would display effective sample size, conditional log likelihood, filter means, prediction variances, prediction means?
+  Would this display effective sample size, conditional log likelihood, filter means, prediction variances, prediction means?
 
 * Add plugin for adaptive tau leaping algorithm.
 
