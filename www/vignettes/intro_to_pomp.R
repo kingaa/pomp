@@ -66,8 +66,7 @@ gompertz.meas.sim <- function (x, t, params, ...) {
 ##                    time=1:100,
 ##                    Y=NA
 ##                    ),
-##                  times=1,
-## ##                 times="time",
+##                  times="time",
 ##                  rprocess=discrete.time.sim(
 ##                    step.fun=gompertz.proc.sim,
 ##                    delta.t=1
@@ -235,7 +234,6 @@ kf <- kalman.filter(y,x0,r,K,sigma,tau)
 
 ## ----kalman-likelihood-correction,echo=F---------------------------------
 
-#loglik.kalman <- kf$loglik-sum(log(obs(gompertz)))
 loglik.kalman <- kf$loglik
 
 
