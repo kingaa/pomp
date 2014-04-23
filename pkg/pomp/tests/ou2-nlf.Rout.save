@@ -38,6 +38,7 @@ newly created pomp object(s):
 +           nconverge=100,
 +           nasymp=2000,
 +           trace=1,
++           method="Nelder-Mead",
 +           verbose=TRUE,
 +           eval.only=TRUE,
 +           seed=426094906L,
@@ -54,9 +55,9 @@ newly created pomp object(s):
 +           lags=c(4,6),
 +           nconverge=100,
 +           nasymp=2000,
-+           method="Nelder-Mead",
 +           maxit=500,
 +           trace=1,
++           method="Nelder-Mead",
 +           verbose=TRUE,
 +           seed=426094906L,
 +           lql.frac = 0.025
@@ -125,9 +126,9 @@ Fitted param  3 -5.872183  down in  'NLF'
 +           lags=c(4,6),
 +           nconverge=100,
 +           nasymp=2000,
-+           method="Nelder-Mead",
 +           maxit=500,
 +           trace=1,
++           method="Nelder-Mead",
 +           verbose=TRUE,
 +           eval.only=TRUE,
 +           seed=426094906L,
@@ -142,9 +143,9 @@ Fitted param  3 -5.872183  down in  'NLF'
 +           lags=c(4,6),
 +           nconverge=100,
 +           nasymp=2000,
-+           method="Nelder-Mead",
 +           maxit=500,
 +           trace=1,
++           method="Nelder-Mead",
 +           verbose=TRUE,
 +           seed=426094906L,
 +           lql.frac = 0.025
@@ -235,4 +236,4 @@ value   -1.035e+04 -551.8     -5.514e+02     -5.514e+02
 > 
 > proc.time()
    user  system elapsed 
-  6.836   0.060   6.942 
+  8.723   0.075   8.798 
