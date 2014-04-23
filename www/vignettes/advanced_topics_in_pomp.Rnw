@@ -1,18 +1,19 @@
 \documentclass[10pt,reqno,final]{amsart}
 %\VignetteIndexEntry{Advanced topics in pomp}
+%\VignetteEngine{knitr::knitr}
 \usepackage{times}
 \usepackage[utf8]{inputenc}
-\usepackage[pdftex]{graphicx}
 \usepackage[round]{natbib}
 \usepackage{paralist}
 \usepackage{float}
+\usepackage[colorlinks=true,urlcolor=blue,citecolor=blue,linkcolor=blue,pagecolor=blue]{hyperref}
 
 \setlength{\textwidth}{6.25in}
 \setlength{\textheight}{8.75in}
 \setlength{\evensidemargin}{0in}
 \setlength{\oddsidemargin}{0in}
-\setlength{\topmargin}{-.35in}
-\setlength{\parskip}{.1in}  
+\setlength{\topmargin}{-0.35in}
+\setlength{\parskip}{0.1in}  
 \setlength{\parindent}{0.0in}  
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{1}
@@ -25,8 +26,10 @@
 \newcommand{\pkg}[1]{\textsf{#1}}
 \newcommand{\R}{\textsf{R}}
 \newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\dlta}[1]{{\Delta}{#1}}
 
 \title[Advanced topics in pomp]{Advanced topics in pomp}
+\hypersetup{pdftitle={Advanced topics in pomp}}
 
 \author[A. A. King]{Aaron A. King}
 
@@ -44,7 +47,28 @@
 
 \date{\today, \pkg{pomp}~version~\Sexpr{packageDescription("pomp",fields="Version")}}
 
-\SweaveOpts{echo=T,results=verbatim,print=F,eps=F,pdf=T,keep.source=T,resolution=100}
+
+<<include=FALSE>>=
+
+opts_chunk$set(
+               echo=TRUE,results='markup',
+               progress=TRUE,prompt=FALSE,tidy=FALSE,highlight=FALSE,
+               print=FALSE,keep.source=TRUE,comment='##',
+               size='normalsize',background="#FFFFFF",
+               warning=FALSE,message=FALSE,error=FALSE,
+               dev='png',
+               fig.path='figure/adv-',fig.lp="fig:",
+               fig.align='left',fig.show='asis',
+               fig.height=6,fig.width=8,
+               dpi=150,
+               dev.args=list(
+                 bg='transparent',
+                 pointsize=10
+                 )
+               )
+
+@
+
 
 \begin{document}
 
@@ -54,289 +78,12 @@
 
 \tableofcontents
 
-<<set-opts,echo=F,results=hide>>=
-  glop <- options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
+<<include=FALSE>>=
+
   library(pomp)
-  pdf.options(useDingbats=FALSE)
   set.seed(5384959)
+
 @ 
-
-This document discusses accelerating \pkg{pomp} by vectorizing your codes and/or using native (C or FORTRAN) codes.
-It also introduces \pkg{pomp}'s low-level interface for code developers.
-
-\section{Accelerating your codes: vectorizing \code{rprocess} and using native codes}
-
-In the ``Introduction to pomp'' vignette, we used \emph{plug-ins} provided by the package to specify the \code{rprocess} component of partially-observed Markov process models.
-The \code{rprocess} plug-ins require you to write a simulator for a single realization of the process, for a single set of parameters, from one time to another.
-\pkg{pomp} then calls this code many times---using potentially many different parameter values, states, and times---whenever it simulates the process, computes likelihood via Monte Carlo integration, etc.
-The inference methods implemented in \pkg{pomp} are quite computationally intensive, which puts a premium on the speed of your codes.
-Sometimes, you can realize substantial speed-up of your code by vectorizing it.
-This necessitates foregoing the relative simplicity of the plug-in-based implementation and writing \code{rprocess} ``from scratch''.
-Here, we'll develop a vectorized version of \code{rprocess} in \R\ code, then we'll see what the same thing looks like coded in C.
-We'll compare these different versions in terms of their speed at simulation.
-
-We'll use a discrete-time bivariate AR(1) process with normal measurement error as our example.
-In this model, the state process $X_{t}\in\mathbb{R}^2$ satisfies
-\begin{equation}\label{eq:ou-proc}
-  X_{t} = \alpha\,X_{t-1}+\sigma\,\varepsilon_{t}.
-\end{equation}
-The measurement process is
-\begin{equation}\label{eq:ou-obs}
-  Y_{t} = \beta\,X_{t}+\tau\,\xi_{t}.
-\end{equation}
-In these equations, $\alpha$ and and $\beta$ are $2\times 2$ constant matrices.
-$\xi_{t}$ and $\varepsilon_{t}$ are mutually-independent families of i.i.d.\ bivariate standard normal random variables.
-$\sigma$ is a lower-triangular matrix such that $\sigma\sigma^T$ is the variance-covariance matrix of $X_{t+1}\vert X_{t}$.
-We'll assume that each component of $X$ is measured independently and with the same error, $\tau$, so that the variance-covariance matrix of $Y_{t}\vert X_{t}$ has $\tau^2$ on the diagonal and zeros elsewhere.
-
-An implementation of this model is included in the package as a \code{pomp} object;
-load it by executing \code{pompExample(ou2)}.
-
-\subsection{An unvectorized implementation using \R\ code only}
-Before we set about vectorizing the codes, let's have a look at what a plug-in based implementation written entirely in \R\ might look like.
-<<plugin-R-code,echo=T,eval=T>>=
-pompExample(ou2)
-ou2.dat <- as.data.frame(ou2)
-
-pomp( 
-     data=ou2.dat[c("time","y1","y2")],
-     times="time",
-     t0=0,
-     rprocess=discrete.time.sim(
-       step.fun=function (x, t, params, ...) {
-         eps <- rnorm(n=2,mean=0,sd=1) # noise terms
-         xnew <- c(
-                   x1=params["alpha.1"]*x["x1"]+params["alpha.3"]*x["x2"]+
-                       params["sigma.1"]*eps[1],
-                   x2=params["alpha.2"]*x["x1"]+params["alpha.4"]*x["x2"]+
-                       params["sigma.2"]*eps[1]+params["sigma.3"]*eps[2]
-                   )
-         names(xnew) <- c("x1","x2")
-         xnew
-       }
-       )
-     ) -> ou2.Rplug
-@ 
-<<plugin-R-code-sim,echo=T,eval=F>>=
-simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=5000,states=T)
-@ 
-<<plugin-R-code-eval,echo=F,eval=T>>=
-binary.file <- "plugin-R-code.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
-  tic <- Sys.time()
-<<plugin-R-code-sim>>
-  toc <- Sys.time()
-  etime.Rplug <- toc-tic
-  n.Rplug <- dim(simdat.Rplug)[2]
-  save(etime.Rplug,n.Rplug,file=binary.file,compress='xz')
-}
-@ 
-Notice how we specify the process model simulator using the \code{rprocess} plug-in \code{discrete.time.sim}.
-The latter function's \code{step.fun} argument is itself a function that simulates one realization of the process for one timestep and one set of parameters.
-When we vectorize the code, we'll do many realizations at once.
-
-\subsection{Vectorizing the process simulator using \R\ code only}
-Now, to write a vectorized \code{rprocess} in \R, we must write a function that simulates \code{nrep} realizations of the unobserved process.
-Each of these realizations may start at a different point in state space and each may have a different set of parameters.
-Moreover, this function must be capable of simulating the process over an arbitrary time interval and must be capable of reporting the unobserved states at arbitrary times in that interval.
-We'll accomplish this by writing an \R\ function with arguments \code{xstart}, \code{params}, and \code{times}.
-About these inputs, we must assume:
-\begin{enumerate}
-\item \code{xstart} will be a matrix, each column of which is a vector of initial values of the state process.
-  Each state variable (matrix row) will be named.
-\item \code{params} will be a matrix, the columns of which are parameter vectors.
-  The parameter names will be in the matrix column-names.
-\item \code{times} will be a vector of times at which realizations of the state process are required.
-  We will have \code{times[k]} $\le$ \code{times[k+1]} for all indices \code{k}, but we cannot assume that the entries of \code{times} will be unique.
-\item The initial states \code{xstart} are assumed to obtain at time \code{times[1]}.
-\end{enumerate}
-This function must return a rank-3 array, which has the realized values of the state process at the requested times.
-This array must have rownames.
-Here is one implementation of such a simulator.
-<<vectorized-R-code,eval=F>>=
-ou2.Rvect.rprocess <- function (xstart, times, params, ...) {
-  nrep <- ncol(xstart)                  # number of realizations
-  ntimes <- length(times)               # number of timepoints
-  ## unpack the parameters (for legibility only)
-  alpha.1 <- params["alpha.1",]
-  alpha.2 <- params["alpha.2",]
-  alpha.3 <- params["alpha.3",]
-  alpha.4 <- params["alpha.4",]
-  sigma.1 <- params["sigma.1",]
-  sigma.2 <- params["sigma.2",]
-  sigma.3 <- params["sigma.3",]
-  ## x is the array of states to be returned: it must have rownames
-  x <- array(0,dim=c(2,nrep,ntimes))
-  rownames(x) <- rownames(xstart)
-  ## xnow holds the current state values
-  x[,,1] <- xnow <- xstart
-  tnow <- times[1]
-  for (k in seq.int(from=2,to=ntimes,by=1)) {
-    tgoal <- times[k]
-    while (tnow < tgoal) {              # take one step at a time
-      eps <- array(rnorm(n=2*nrep,mean=0,sd=1),dim=c(2,nrep))
-      tmp <- alpha.1*xnow['x1',]+alpha.3*xnow['x2',]+
-        sigma.1*eps[1,]
-      xnow['x2',] <- alpha.2*xnow['x1',]+alpha.4*xnow['x2',]+
-        sigma.2*eps[1,]+sigma.3*eps[2,]
-      xnow['x1',] <- tmp
-      tnow <- tnow+1
-    }
-    x[,,k] <- xnow
-  }
-  x
-}
-@
-We can put this into a pomp object that is the same as \code{ou2.Rplug} in every way except in its \code{rprocess} slot by doing
-<<vectorized-R-pomp,eval=F>>=
-ou2.Rvect <- pomp(ou2.Rplug,rprocess=ou2.Rvect.rprocess)
-@ 
-
-Let's pick some parameters and simulate some data to see how long it takes this code to run.
-<<theta,eval=F>>=
-theta <- c(
-           x1.0=-3, x2.0=4,
-           tau=1,
-           alpha.1=0.8, alpha.2=-0.5, alpha.3=0.3, alpha.4=0.9,
-           sigma.1=3, sigma.2=-0.5, sigma.3=2
-           )
-@ 
-<<vectorized-R-code-sim,eval=F,echo=T>>=
-simdat.Rvect <- simulate(ou2.Rvect,params=theta,states=T,nsim=100000)
-@ 
-<<vectorized-R-code-eval,eval=T,echo=F>>=
-binary.file <- "vectorized-R-code.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
-<<vectorized-R-code>>
-<<vectorized-R-pomp>>
-<<theta>>
-  tic <- Sys.time()
-<<vectorized-R-code-sim>>
-  toc <- Sys.time()
-etime.Rvect <- toc-tic
-units(etime.Rvect) <- units(etime.Rplug)
-n.Rvect <- dim(simdat.Rvect)[2]
-save(etime.Rvect,n.Rvect,file=binary.file,compress='xz')
-}
-@ 
-Doing \Sexpr{n.Rvect} simulations of \code{ou2.Rvect} took \Sexpr{round(etime.Rvect,2)}~\Sexpr{units(etime.Rvect)}.
-Compared to the \Sexpr{round(etime.Rplug,2)}~\Sexpr{units(etime.Rplug)} it took to run \Sexpr{n.Rplug} simulations of \code{ou2.Rplug}, this is a \Sexpr{round(as.numeric(etime.Rplug)*n.Rvect/as.numeric(etime.Rvect)/n.Rplug)}-fold speed-up.
-
-\subsection{Accelerating the code using C: a plug-in based implementation}
-
-As we've seen, we can usually acheive big accelerations using compiled native code.
-A one-step simulator written in C for use with the \code{discrete.time.sim} plug-in is included with the package and can be viewed by doing
-<<view-ou2-source,eval=F>>=
-file.show(file=system.file("examples/ou2.c",package="pomp"))
-@ 
-The one-step simulator is in function \code{ou2\_step}.
-Prototypes for the one-step simulator and other functions are in the \code{pomp.h} header file;
-view it by doing
-<<view-pomp.h,eval=F,results=hide>>=
-file.show(file=system.file("include/pomp.h",package="pomp"))
-@ 
-We can put the one-step simulator into the \code{pomp} object and simulate as before by doing
-<<plugin-C-code,eval=F>>=
-ou2.Cplug <- pomp(
-                  ou2.Rplug,
-                  rprocess=discrete.time.sim("ou2_step"),
-                  paramnames=c(
-                    "alpha.1","alpha.2","alpha.3","alpha.4",
-                    "sigma.1","sigma.2","sigma.3",
-                    "tau"
-                    ),
-                  statenames=c("x1","x2"),
-                  obsnames=c("y1","y2")
-                  )
-<<plugin-C-sim,eval=F>>=
-simdat.Cplug <- simulate(ou2.Cplug,params=theta,states=T,nsim=100000)
-<<plugin-C-sim-eval,eval=T,echo=F>>=
-binary.file <- "plugin-C-code.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
-<<plugin-C-code>>
-  tic <- Sys.time()
-<<plugin-C-sim>>
-  toc <- Sys.time()
-etime.Cplug <- toc-tic
-  n.Cplug <- dim(simdat.Cplug)[2]
-units(etime.Cplug) <- units(etime.Rplug)
-speedup <- as.numeric(etime.Rplug/n.Rplug)/as.numeric(etime.Cplug/n.Cplug)
-save(n.Cplug,etime.Cplug,speedup,file=binary.file,compress='xz')
-}
-@ 
-Note that \code{ou2\_step} is written in such a way that we must specify \code{paramnames}, \code{statenames}, and \code{obsnames}.
-These \Sexpr{n.Cplug} simulations of \code{ou2.Cplug} took \Sexpr{round(etime.Cplug,2)}~\Sexpr{units(etime.Cplug)}.
-This is a \Sexpr{round(speedup)}-fold speed-up relative to \code{ou2.Rplug}.
-
-
-\subsection{A vectorized C implementation}
-
-The function \code{ou2\_adv} is a fully vectorized version of the simulator written in C.
-View this code by doing
-<<eval=F,results=hide>>=
-<<view-ou2-source>>
-@ 
-This function is called in the following \code{rprocess} function.
-Notice that the call to \code{ou2\_adv} uses the \verb+.C+ interface.
-<<vectorized-C-code>>=
-ou2.Cvect.rprocess <- function (xstart, times, params, ...) {
-  nvar <- nrow(xstart)
-  npar <- nrow(params)
-  nrep <- ncol(xstart)
-  ntimes <- length(times)
-  array(
-        .C("ou2_adv",
-           X = double(nvar*nrep*ntimes),
-           xstart = as.double(xstart),
-           par = as.double(params),
-           times = as.double(times),
-           n = as.integer(c(nvar,npar,nrep,ntimes))
-           )$X,
-        dim=c(nvar,nrep,ntimes),
-        dimnames=list(rownames(xstart),NULL,NULL)        
-        )
-}
-@ 
-
-The call that constructs the \code{pomp} object is:
-<<vectorized-C-code-pomp>>=
-ou2.Cvect <- pomp(
-                  ou2.Rplug,
-                  rprocess=ou2.Cvect.rprocess
-                  )
-paramnames <- c(
-                "alpha.1","alpha.2","alpha.3","alpha.4",
-                "sigma.1","sigma.2","sigma.3",
-                "tau",
-                "x1.0","x2.0"
-                )
-<<vectorized-C-code-sim,echo=T,eval=F>>=
-simdat.Cvect <- simulate(ou2.Cvect,params=theta[paramnames],nsim=100000,states=T)
-@
-<<vectorized-C-code-eval,echo=F,eval=T>>=
-binary.file <- "vectorized-C-code.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
-  tic <- Sys.time()
-<<vectorized-C-code-sim>>
-  toc <- Sys.time()
-etime.Cvect <- toc-tic
-  n.Cvect <- dim(simdat.Cvect)[2]
-units(etime.Cvect) <- units(etime.Rplug)
-speedup <- as.numeric(etime.Rplug/n.Rplug)/as.numeric(etime.Cvect/n.Cvect)
-save(n.Cvect,etime.Cvect,speedup,file=binary.file,compress='xz')
-}
-@ 
-Note that we've had to rearrange the order of parameters here to ensure that they arrive at the native codes in the right order.
-Doing \Sexpr{n.Cvect} simulations of \code{ou2.Cvect} took \Sexpr{round(etime.Cvect,2)}~\Sexpr{units(etime.Cvect)}, a \Sexpr{round(speedup)}-fold speed-up relative to \code{ou2.Rplug}.
-
 
 \section{Accumulator variables}
 
@@ -574,7 +321,7 @@ pompBuilder(
 
 @ 
 
-<<pomp-builder-eval,echo=F,eval=T,results=hide>>=
+<<pomp-builder-eval,echo=F,eval=T,results='hide'>>=
 if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
   require(pomp)
 <<pomp-builder>>
@@ -614,8 +361,8 @@ plot(sir)
   \label{fig:sir-plot}
 \end{figure}
 
-The C codes generated by the above can be generated by running the ``sir'' demo:
-do \verb+demo("sir",package="pomp")+.
+The C codes generated by the above are by default written into temporary files in the \R\ session's temporary directory.
+Setting \code{pompBuilder}'s \code{save} option to \code{TRUE} will cause them to be stored in the current working directory.
 
 \clearpage
 \section{The low-level interface}
@@ -685,10 +432,286 @@ These can be found by running
 pompExample()
 @ 
 The \R\ scripts that generated these are included in the \code{examples} directory of the installed package.
+Do
+<<example-sources,eval=F>>=
+list.files(system.file("examples",package="pomp"))
+@ 
 The majority of these use compiled code, which can be found in the package source.
 
-<<restore-opts,echo=F,results=hide>>=
-options(glop)
+In addition, there are several interactive demos that can be instructive.
+<<demos,eval=F>>=
+demo(package='pomp')
 @ 
+displays a list.
+
+\section{Different methods of implementing \code{rprocess}: relative performance}
+
+Here, we'll investigate various ways in which one might try to accelerate \code{rprocess}.
+We'll write a vectorized version in \R\ code, then we'll see what the same thing looks like coded in C.
+We'll compare these different versions in terms of their speed at simulation.
+We'll also compare their performance against that of the plugins.
+
+We'll use a discrete-time bivariate AR(1) process with normal measurement error as our example.
+In this model, the state process $X_{t}\in\mathbb{R}^2$ satisfies
+\begin{equation}\label{eq:ou-proc}
+  X_{t} = \alpha\,X_{t-1}+\sigma\,\varepsilon_{t}.
+\end{equation}
+The measurement process is
+\begin{equation}\label{eq:ou-obs}
+  Y_{t} = \beta\,X_{t}+\tau\,\xi_{t}.
+\end{equation}
+In these equations, $\alpha$ and and $\beta$ are $2\times 2$ constant matrices.
+$\xi_{t}$ and $\varepsilon_{t}$ are mutually-independent families of i.i.d.\ bivariate standard normal random variables.
+$\sigma$ is a lower-triangular matrix such that $\sigma\sigma^T$ is the variance-covariance matrix of $X_{t+1}\vert X_{t}$.
+We'll assume that each component of $X$ is measured independently and with the same error, $\tau$, so that the variance-covariance matrix of $Y_{t}\vert X_{t}$ has $\tau^2$ on the diagonal and zeros elsewhere.
+
+An implementation of this model is included in the package as a \code{pomp} object;
+load it by executing \code{pompExample(ou2)}.
+
+\subsection{An unvectorized implementation using \R\ code only}
+Before we set about vectorizing the codes, let's have a look at what a plug-in based implementation written entirely in \R\ might look like.
+<<plugin-R-code,echo=T,eval=T>>=
+pompExample(ou2)
+ou2.dat <- as.data.frame(ou2)
+
+pomp( 
+     data=ou2.dat[c("time","y1","y2")],
+     times="time",
+     t0=0,
+     rprocess=discrete.time.sim(
+       step.fun=function (x, t, params, ...) {
+         eps <- rnorm(n=2,mean=0,sd=1) # noise terms
+         xnew <- c(
+                   x1=params["alpha.1"]*x["x1"]+params["alpha.3"]*x["x2"]+
+                       params["sigma.1"]*eps[1],
+                   x2=params["alpha.2"]*x["x1"]+params["alpha.4"]*x["x2"]+
+                       params["sigma.2"]*eps[1]+params["sigma.3"]*eps[2]
+                   )
+         names(xnew) <- c("x1","x2")
+         xnew
+       }
+       )
+     ) -> ou2.Rplug
+@ 
+<<plugin-R-code-sim,echo=T,eval=F>>=
+simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=5000,states=T)
+@ 
+<<plugin-R-code-eval,echo=F,eval=T>>=
+binary.file <- "plugin-R-code.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+  tic <- Sys.time()
+<<plugin-R-code-sim>>
+  toc <- Sys.time()
+  etime.Rplug <- toc-tic
+  n.Rplug <- dim(simdat.Rplug)[2]
+  save(etime.Rplug,n.Rplug,file=binary.file,compress='xz')
+}
+@ 
+Notice how we specify the process model simulator using the \code{rprocess} plug-in \code{discrete.time.sim}.
+The latter function's \code{step.fun} argument is itself a function that simulates one realization of the process for one timestep and one set of parameters.
+When we vectorize the code, we'll do many realizations at once.
+
+\subsection{Vectorizing the process simulator using \R\ code only}
+Now, to write a vectorized \code{rprocess} in \R, we must write a function that simulates \code{nrep} realizations of the unobserved process.
+Each of these realizations may start at a different point in state space and each may have a different set of parameters.
+Moreover, this function must be capable of simulating the process over an arbitrary time interval and must be capable of reporting the unobserved states at arbitrary times in that interval.
+We'll accomplish this by writing an \R\ function with arguments \code{xstart}, \code{params}, and \code{times}.
+About these inputs, we must assume:
+\begin{enumerate}
+\item \code{xstart} will be a matrix, each column of which is a vector of initial values of the state process.
+  Each state variable (matrix row) will be named.
+\item \code{params} will be a matrix, the columns of which are parameter vectors.
+  The parameter names will be in the matrix column-names.
+\item \code{times} will be a vector of times at which realizations of the state process are required.
+  We will have \code{times[k]} $\le$ \code{times[k+1]} for all indices \code{k}, but we cannot assume that the entries of \code{times} will be unique.
+\item The initial states \code{xstart} are assumed to obtain at time \code{times[1]}.
+\end{enumerate}
+This function must return a rank-3 array, which has the realized values of the state process at the requested times.
+This array must have rownames.
+Here is one implementation of such a simulator.
+<<vectorized-R-code,eval=F>>=
+ou2.Rvect.rprocess <- function (xstart, times, params, ...) {
+  nrep <- ncol(xstart)                  # number of realizations
+  ntimes <- length(times)               # number of timepoints
+  ## unpack the parameters (for legibility only)
+  alpha.1 <- params["alpha.1",]
+  alpha.2 <- params["alpha.2",]
+  alpha.3 <- params["alpha.3",]
+  alpha.4 <- params["alpha.4",]
+  sigma.1 <- params["sigma.1",]
+  sigma.2 <- params["sigma.2",]
+  sigma.3 <- params["sigma.3",]
+  ## x is the array of states to be returned: it must have rownames
+  x <- array(0,dim=c(2,nrep,ntimes))
+  rownames(x) <- rownames(xstart)
+  ## xnow holds the current state values
+  x[,,1] <- xnow <- xstart
+  tnow <- times[1]
+  for (k in seq.int(from=2,to=ntimes,by=1)) {
+    tgoal <- times[k]
+    while (tnow < tgoal) {              # take one step at a time
+      eps <- array(rnorm(n=2*nrep,mean=0,sd=1),dim=c(2,nrep))
+      tmp <- alpha.1*xnow['x1',]+alpha.3*xnow['x2',]+
+        sigma.1*eps[1,]
+      xnow['x2',] <- alpha.2*xnow['x1',]+alpha.4*xnow['x2',]+
+        sigma.2*eps[1,]+sigma.3*eps[2,]
+      xnow['x1',] <- tmp
+      tnow <- tnow+1
+    }
+    x[,,k] <- xnow
+  }
+  x
+}
+@
+We can put this into a pomp object that is the same as \code{ou2.Rplug} in every way except in its \code{rprocess} slot by doing
+<<vectorized-R-pomp,eval=F>>=
+ou2.Rvect <- pomp(ou2.Rplug,rprocess=ou2.Rvect.rprocess)
+@ 
+
+Let's pick some parameters and simulate some data to see how long it takes this code to run.
+<<theta,eval=F>>=
+theta <- c(
+           x1.0=-3, x2.0=4,
+           tau=1,
+           alpha.1=0.8, alpha.2=-0.5, alpha.3=0.3, alpha.4=0.9,
+           sigma.1=3, sigma.2=-0.5, sigma.3=2
+           )
+@ 
+<<vectorized-R-code-sim,eval=F,echo=T>>=
+simdat.Rvect <- simulate(ou2.Rvect,params=theta,states=T,nsim=100000)
+@ 
+<<vectorized-R-code-eval,eval=T,echo=F>>=
+binary.file <- "vectorized-R-code.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<vectorized-R-code>>
+<<vectorized-R-pomp>>
+<<theta>>
+  tic <- Sys.time()
+<<vectorized-R-code-sim>>
+  toc <- Sys.time()
+etime.Rvect <- toc-tic
+units(etime.Rvect) <- units(etime.Rplug)
+n.Rvect <- dim(simdat.Rvect)[2]
+save(etime.Rvect,n.Rvect,file=binary.file,compress='xz')
+}
+@ 
+Doing \Sexpr{n.Rvect} simulations of \code{ou2.Rvect} took \Sexpr{round(etime.Rvect,2)}~\Sexpr{units(etime.Rvect)}.
+Compared to the \Sexpr{round(etime.Rplug,2)}~\Sexpr{units(etime.Rplug)} it took to run \Sexpr{n.Rplug} simulations of \code{ou2.Rplug}, this is a \Sexpr{round(as.numeric(etime.Rplug)*n.Rvect/as.numeric(etime.Rvect)/n.Rplug)}-fold speed-up.
+
+\subsection{Accelerating the code using C: a plug-in based implementation}
+
+As we've seen, we can usually acheive big accelerations using compiled native code.
+A one-step simulator written in C for use with the \code{discrete.time.sim} plug-in is included with the package and can be viewed by doing
+<<view-ou2-source,eval=F>>=
+file.show(file=system.file("examples/ou2.c",package="pomp"))
+@ 
+The one-step simulator is in function \code{ou2\_step}.
+Prototypes for the one-step simulator and other functions are in the \code{pomp.h} header file;
+view it by doing
+<<view-pomp.h,eval=F,results='hide'>>=
+file.show(file=system.file("include/pomp.h",package="pomp"))
+@ 
+We can put the one-step simulator into the \code{pomp} object and simulate as before by doing
+<<plugin-C-code,eval=F>>=
+ou2.Cplug <- pomp(
+                  ou2.Rplug,
+                  rprocess=discrete.time.sim("ou2_step"),
+                  paramnames=c(
+                    "alpha.1","alpha.2","alpha.3","alpha.4",
+                    "sigma.1","sigma.2","sigma.3",
+                    "tau"
+                    ),
+                  statenames=c("x1","x2"),
+                  obsnames=c("y1","y2")
+                  )
+<<plugin-C-sim,eval=F>>=
+simdat.Cplug <- simulate(ou2.Cplug,params=theta,states=T,nsim=100000)
+<<plugin-C-sim-eval,eval=T,echo=F>>=
+binary.file <- "plugin-C-code.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+<<plugin-C-code>>
+  tic <- Sys.time()
+<<plugin-C-sim>>
+  toc <- Sys.time()
+etime.Cplug <- toc-tic
+  n.Cplug <- dim(simdat.Cplug)[2]
+units(etime.Cplug) <- units(etime.Rplug)
+speedup <- as.numeric(etime.Rplug/n.Rplug)/as.numeric(etime.Cplug/n.Cplug)
+save(n.Cplug,etime.Cplug,speedup,file=binary.file,compress='xz')
+}
+@ 
+Note that \code{ou2\_step} is written in such a way that we must specify \code{paramnames}, \code{statenames}, and \code{obsnames}.
+These \Sexpr{n.Cplug} simulations of \code{ou2.Cplug} took \Sexpr{round(etime.Cplug,2)}~\Sexpr{units(etime.Cplug)}.
+This is a \Sexpr{round(speedup)}-fold speed-up relative to \code{ou2.Rplug}.
+
+
+\subsection{A vectorized C implementation}
+
+The function \code{ou2\_adv} is a fully vectorized version of the simulator written in C.
+View this code by doing
+<<eval=F,results='hide'>>=
+<<view-ou2-source>>
+@ 
+This function is called in the following \code{rprocess} function.
+Notice that the call to \code{ou2\_adv} uses the \verb+.C+ interface.
+<<vectorized-C-code>>=
+ou2.Cvect.rprocess <- function (xstart, times, params, ...) {
+  nvar <- nrow(xstart)
+  npar <- nrow(params)
+  nrep <- ncol(xstart)
+  ntimes <- length(times)
+  array(
+        .C("ou2_adv",
+           X = double(nvar*nrep*ntimes),
+           xstart = as.double(xstart),
+           par = as.double(params),
+           times = as.double(times),
+           n = as.integer(c(nvar,npar,nrep,ntimes))
+           )$X,
+        dim=c(nvar,nrep,ntimes),
+        dimnames=list(rownames(xstart),NULL,NULL)        
+        )
+}
+@ 
+
+The call that constructs the \code{pomp} object is:
+<<vectorized-C-code-pomp>>=
+ou2.Cvect <- pomp(
+                  ou2.Rplug,
+                  rprocess=ou2.Cvect.rprocess
+                  )
+paramnames <- c(
+                "alpha.1","alpha.2","alpha.3","alpha.4",
+                "sigma.1","sigma.2","sigma.3",
+                "tau",
+                "x1.0","x2.0"
+                )
+<<vectorized-C-code-sim,echo=T,eval=F>>=
+simdat.Cvect <- simulate(ou2.Cvect,params=theta[paramnames],
+                         nsim=100000,states=T)
+@
+<<vectorized-C-code-eval,echo=F,eval=T>>=
+binary.file <- "vectorized-C-code.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+  tic <- Sys.time()
+<<vectorized-C-code-sim>>
+  toc <- Sys.time()
+etime.Cvect <- toc-tic
+  n.Cvect <- dim(simdat.Cvect)[2]
+units(etime.Cvect) <- units(etime.Rplug)
+speedup <- as.numeric(etime.Rplug/n.Rplug)/as.numeric(etime.Cvect/n.Cvect)
+save(n.Cvect,etime.Cvect,speedup,file=binary.file,compress='xz')
+}
+@ 
+Note that we've had to rearrange the order of parameters here to ensure that they arrive at the native codes in the right order.
+Doing \Sexpr{n.Cvect} simulations of \code{ou2.Cvect} took \Sexpr{round(etime.Cvect,2)}~\Sexpr{units(etime.Cvect)}, a \Sexpr{round(speedup)}-fold speed-up relative to \code{ou2.Rplug}.
 
 \end{document}

@@ -1,18 +1,31 @@
-### R code from vignette source 'intro_to_pomp.Rnw'
-### Encoding: UTF-8
 
-###################################################
-### code chunk number 1: set-opts
-###################################################
-  glop <- options(keep.source=TRUE,width=60,continue=" ",prompt=" ")
-  library(pomp)
-  pdf.options(useDingbats=FALSE)
-  set.seed(5384959)
+## ----include=FALSE-------------------------------------------------------
+
+opts_chunk$set(
+               echo=TRUE,results='markup',
+               progress=TRUE,prompt=FALSE,tidy=FALSE,highlight=FALSE,
+               print=FALSE,keep.source=TRUE,comment='##',
+               size='normalsize',background="#FFFFFF",
+               warning=FALSE,message=FALSE,error=FALSE,
+               dev='png',
+               fig.path='figure/intro-',fig.lp="fig:",
+               fig.align='left',fig.show='asis',
+               fig.height=6,fig.width=8,
+               dpi=150,
+               dev.args=list(
+                 bg='transparent',
+                 pointsize=10
+                 )
+               )
 
 
-###################################################
-### code chunk number 2: gompertz-proc-sim-def
-###################################################
+
+## ----set-opts,echo=F,results='hide'--------------------------------------
+set.seed(5384959L)
+
+
+## ----gompertz-proc-sim-def-----------------------------------------------
+
 require(pomp)
 
 gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
@@ -31,9 +44,9 @@ gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
 }
 
 
-###################################################
-### code chunk number 3: gompertz-meas-sim-def
-###################################################
+
+## ----gompertz-meas-sim-def-----------------------------------------------
+
 gompertz.meas.sim <- function (x, t, params, ...) {
   ## unpack the parameters:
   tau <- params["tau"]
@@ -45,31 +58,16 @@ gompertz.meas.sim <- function (x, t, params, ...) {
 }
 
 
-###################################################
-### code chunk number 4: gompertz-meas-dens-def
-###################################################
-gompertz.meas.dens <- function (y, x, t, params, log, ...) {
-  ## unpack the parameters:
-  tau <- params["tau"]
-  ## state at time t:
-  X <- x["X"]
-  ## observation at time t:
-  Y <- y["Y"]
-  ## compute the likelihood of Y|X,tau
-  f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
-  return(f)
-}
 
-
-###################################################
-### code chunk number 5: first-pomp-construction (eval = FALSE)
-###################################################
+## ----first-pomp-construction,eval=F--------------------------------------
+## 
 ## gompertz <- pomp(
 ##                  data=data.frame(
 ##                    time=1:100,
 ##                    Y=NA
 ##                    ),
-##                  times="time",
+##                  times=1,
+## ##                 times="time",
 ##                  rprocess=discrete.time.sim(
 ##                    step.fun=gompertz.proc.sim,
 ##                    delta.t=1
@@ -77,23 +75,21 @@ gompertz.meas.dens <- function (y, x, t, params, log, ...) {
 ##                  rmeasure=gompertz.meas.sim,
 ##                  t0=0
 ##                  )
+## 
 
 
-###################################################
-### code chunk number 6: set-params
-###################################################
+## ----set-params----------------------------------------------------------
+
 theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1,X.0=1)
 
 
-###################################################
-### code chunk number 7: gompertz-first-simulation (eval = FALSE)
-###################################################
+
+## ----gompertz-first-simulation,eval=F------------------------------------
 ## gompertz <- simulate(gompertz,params=theta)
 
 
-###################################################
-### code chunk number 8: gompertz-get-data
-###################################################
+## ----gompertz-get-data,eval=T,echo=F,results='hide'----------------------
+
 pompExample(gompertz)
 dat <- as.data.frame(gompertz)
 gompertz <- pomp(
@@ -109,86 +105,90 @@ gompertz <- pomp(
 coef(gompertz) <- theta
 
 
-###################################################
-### code chunk number 9: intro_to_pomp.Rnw:327-328 (eval = FALSE)
-###################################################
-## plot(gompertz,variables="Y")
 
+## ----gompertz-plot,echo=F------------------------------------------------
 
-###################################################
-### code chunk number 10: gompertz-plot
-###################################################
 plot(gompertz,variables=c("Y"))
 
 
-###################################################
-### code chunk number 11: second-pomp-construction
-###################################################
+
+## ----second-pomp-construction--------------------------------------------
+
+gompertz.meas.dens <- function (y, x, t, params, log, ...) {
+  ## unpack the parameters:
+  tau <- params["tau"]
+  ## state at time t:
+  X <- x["X"]
+  ## observation at time t:
+  Y <- y["Y"]
+  ## compute the likelihood of Y|X,tau
+  f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
+  return(f)
+}
+
 gompertz <- pomp(
                  gompertz,
                  dmeasure=gompertz.meas.dens
                  )
 
 
-###################################################
-### code chunk number 12: gompertz-pfilter-truth (eval = FALSE)
-###################################################
+
+## ----gompertz-pfilter-truth,eval=F---------------------------------------
+## 
 ## pf <- pfilter(gompertz,params=theta,Np=1000)
 ## loglik.truth <- logLik(pf)
 ## loglik.truth
+## 
 
 
-###################################################
-### code chunk number 13: gompertz-pfilter-truth-eval
-###################################################
+## ----gompertz-pfilter-truth-eval,echo=F----------------------------------
 set.seed(457645443L)
+
 pf <- pfilter(gompertz,params=theta,Np=1000)
 loglik.truth <- logLik(pf)
 loglik.truth
 
 
-###################################################
-### code chunk number 14: gompertz-pfilter-truth-alt1 (eval = FALSE)
-###################################################
+
+## ----gompertz-pfilter-truth-alt1,eval=F----------------------------------
 ## pf <- pfilter(gompertz,params=coef(gompertz),Np=1000)
 
 
-###################################################
-### code chunk number 15: gompertz-pfilter-truth-alt2 (eval = FALSE)
-###################################################
+## ----gompertz-pfilter-truth-alt2,eval=F----------------------------------
 ## pf <- pfilter(gompertz,Np=1000)
 
 
-###################################################
-### code chunk number 16: gompertz-pfilter-guess (eval = FALSE)
-###################################################
+## ----gompertz-pfilter-guess,eval=F---------------------------------------
+## 
 ## theta.true <- coef(gompertz)
 ## theta.guess <- theta.true
 ## theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
 ## pf <- pfilter(gompertz,params=theta.guess,Np=1000)
 ## loglik.guess <- logLik(pf)
+## 
 
 
-###################################################
-### code chunk number 17: gompertz-pfilter-guess-eval
-###################################################
+## ----gompertz-pfilter-guess-eval,echo=F----------------------------------
+
 binary.file <- "gompertz-pfilter-guess.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 set.seed(457645443L)
+
 theta.true <- coef(gompertz)
 theta.guess <- theta.true
 theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
 pf <- pfilter(gompertz,params=theta.guess,Np=1000)
 loglik.guess <- logLik(pf)
+
 save(theta.true,theta.guess,loglik.guess,file=binary.file,compress='xz')
 }  
 
 
-###################################################
-### code chunk number 18: kalman-filter-def
-###################################################
+
+## ----kalman-filter-def---------------------------------------------------
+
 kalman.filter <- function (Y, X0, r, K, sigma, tau) {
   ntimes <- length(Y)
   sigma.sq <- sigma^2
@@ -205,7 +205,7 @@ kalman.filter <- function (Y, X0, r, K, sigma, tau) {
     pred.var[k] <- V <- S*v*S+sigma.sq
     q <- V+tau.sq
     r <- log(Y[k])-M
-    cond.loglik[k] <- dnorm(x=log(Y[k]),mean=M,sd=sqrt(q),log=TRUE)
+    cond.loglik[k] <- dnorm(x=log(Y[k]),mean=M,sd=sqrt(q),log=TRUE)-log(Y[k])
     q <- 1/V+1/tau.sq
     filter.mean[k] <- m <- (log(Y[k])/tau.sq+M/V)/q
     v <- 1/q
@@ -220,9 +220,9 @@ kalman.filter <- function (Y, X0, r, K, sigma, tau) {
 }
 
 
-###################################################
-### code chunk number 19: kalman-filter-run
-###################################################
+
+## ----kalman-filter-run---------------------------------------------------
+
 y <- obs(gompertz)
 x0 <- init.state(gompertz)
 r <- coef(gompertz,"r")
@@ -232,69 +232,152 @@ tau <- coef(gompertz,"tau")
 kf <- kalman.filter(y,x0,r,K,sigma,tau)
 
 
-###################################################
-### code chunk number 20: kalman-likelihood-correction
-###################################################
-loglik.kalman <- kf$loglik-sum(log(obs(gompertz)))
+
+## ----kalman-likelihood-correction,echo=F---------------------------------
+
+#loglik.kalman <- kf$loglik-sum(log(obs(gompertz)))
+loglik.kalman <- kf$loglik
 
 
-###################################################
-### code chunk number 21: intro_to_pomp.Rnw:466-467 (eval = FALSE)
-###################################################
+
+## ----eval=F--------------------------------------------------------------
 ## as(gompertz,"data.frame")
 
 
-###################################################
-### code chunk number 22: intro_to_pomp.Rnw:471-474 (eval = FALSE)
-###################################################
+## ----eval=F--------------------------------------------------------------
 ## obs(gompertz)
 ## obs(gompertz,"Y")
-## time(gompertz)  
+## time(gompertz)
 
 
-###################################################
-### code chunk number 23: intro_to_pomp.Rnw:477-478 (eval = FALSE)
-###################################################
+## ----eval=F--------------------------------------------------------------
 ## time(gompertz) <- 1:10
 
 
-###################################################
-### code chunk number 24: intro_to_pomp.Rnw:481-483 (eval = FALSE)
-###################################################
+## ----eval=F--------------------------------------------------------------
 ## timezero(gompertz)
 ## timezero(gompertz) <- -10
 
 
-###################################################
-### code chunk number 25: intro_to_pomp.Rnw:486-488 (eval = FALSE)
-###################################################
-## time(gompertz,t0=TRUE)  
+## ----eval=F--------------------------------------------------------------
+## time(gompertz,t0=TRUE)
 ## time(gompertz,t0=T) <- seq(from=0,to=10,by=1)
 
 
-###################################################
-### code chunk number 26: intro_to_pomp.Rnw:491-492 (eval = FALSE)
-###################################################
+## ----eval=F--------------------------------------------------------------
 ## window(gompertz,start=3,end=20)
 
 
-###################################################
-### code chunk number 27: intro_to_pomp.Rnw:496-498 (eval = FALSE)
-###################################################
+## ----eval=F--------------------------------------------------------------
 ## coef(gompertz)
 ## coef(gompertz,c("sigma","tau")) <- c(1,0)
 
 
-###################################################
-### code chunk number 28: intro_to_pomp.Rnw:502-504 (eval = FALSE)
-###################################################
+## ----eval=F--------------------------------------------------------------
 ## states(gompertz)
 ## states(gompertz,"X")
 
 
-###################################################
-### code chunk number 29: loggomp-pomp-construction
-###################################################
+## ----snippet-gomp-pomp,results='hide'------------------------------------
+
+gomp2 <- pomp(
+              data=subset(as(gompertz,"data.frame"),select=c(time,Y)),
+              times="time",
+              t0=0,
+              rmeasure=Csnippet('
+   Y = rlnorm(log(X),tau);
+'),
+              dmeasure=Csnippet('
+   lik = dlnorm(Y,log(X),tau,give_log);
+'),
+              rprocess=discrete.time.sim(
+                step.fun=Csnippet('
+  double S = exp(-r*dt);
+  double eps = (sigma > 0.0) ? exp(rnorm(0,sigma)) : 1.0;
+  X = pow(K,(1-S))*pow(X,S)*eps;
+'),
+                delta.t=1
+                ),
+              paramnames=c("sigma","tau","r","K"),
+              statenames="X",
+              params=theta
+              )
+
+
+
+## ----gompertz-perform,eval=F,echo=T--------------------------------------
+## 
+## tic <- Sys.time()
+## sim1 <- simulate(gompertz,nsim=1000,seed=5676868L,obs=TRUE)
+## toc <- Sys.time()
+## g1sim <- toc-tic
+## 
+## tic <- Sys.time()
+## sim2 <- simulate(gomp2,nsim=1000,seed=5676868L,obs=TRUE)
+## toc <- Sys.time()
+## g2sim <- toc-tic
+## 
+## all.equal(sim1,sim2)
+## 
+## tic <- Sys.time()
+## pf1 <- pfilter(gompertz,Np=10000,seed=5676868L)
+## toc <- Sys.time()
+## g1pf <- toc-tic
+## 
+## tic <- Sys.time()
+## pf2 <- pfilter(gomp2,Np=10000,seed=5676868L)
+## toc <- Sys.time()
+## g2pf <- toc-tic
+## 
+## all.equal(logLik(pf1),logLik(pf2))
+## 
+
+
+## ----gompertz-perform-eval,eval=T,echo=F,results='hide'------------------
+binary.file <- "gompertz-performance.rda"
+if (file.exists(binary.file)) {
+  load(binary.file)
+} else {
+set.seed(457645443L)
+
+tic <- Sys.time()
+sim1 <- simulate(gompertz,nsim=1000,seed=5676868L,obs=TRUE)
+toc <- Sys.time()
+g1sim <- toc-tic
+
+tic <- Sys.time()
+sim2 <- simulate(gomp2,nsim=1000,seed=5676868L,obs=TRUE)
+toc <- Sys.time()
+g2sim <- toc-tic
+
+all.equal(sim1,sim2)
+
+tic <- Sys.time()
+pf1 <- pfilter(gompertz,Np=10000,seed=5676868L)
+toc <- Sys.time()
+g1pf <- toc-tic
+
+tic <- Sys.time()
+pf2 <- pfilter(gomp2,Np=10000,seed=5676868L)
+toc <- Sys.time()
+g2pf <- toc-tic
+
+all.equal(logLik(pf1),logLik(pf2))
+
+save(g1sim,g2sim,g1pf,g2pf,file=binary.file,compress='xz')
+}  
+
+
+## ----eval=F--------------------------------------------------------------
+## demo(gompertz)
+
+
+## ----eval=F--------------------------------------------------------------
+## system.file("examples",package="pomp")
+
+
+## ----loggomp-pomp-construction,eval=T------------------------------------
+
 gompertz <- pomp(
                  gompertz,
                  parameter.transform=function(params,...){
@@ -306,40 +389,30 @@ gompertz <- pomp(
                  )
 
 
-###################################################
-### code chunk number 30: intro_to_pomp.Rnw:543-544
-###################################################
+
+## ----eval=T--------------------------------------------------------------
 coef(gompertz) <- c(r=0.1,K=1,tau=0.1,sigma=0.1,X.0=1)
 
 
-###################################################
-### code chunk number 31: intro_to_pomp.Rnw:547-548
-###################################################
+## ----eval=T--------------------------------------------------------------
 coef(gompertz)
 
 
-###################################################
-### code chunk number 32: intro_to_pomp.Rnw:551-553
-###################################################
+## ----eval=T--------------------------------------------------------------
 coef(gompertz,transform=TRUE) <- c(r=log(0.1),K=0,tau=log(0.1),
                 sigma=log(0.1),X.0=0)
 
 
-###################################################
-### code chunk number 33: intro_to_pomp.Rnw:556-557
-###################################################
+## ----eval=T--------------------------------------------------------------
 coef(gompertz,transform=TRUE)
 
 
-###################################################
-### code chunk number 34: intro_to_pomp.Rnw:560-561
-###################################################
+## ----eval=T--------------------------------------------------------------
 coef(gompertz)
 
 
-###################################################
-### code chunk number 35: par-trans-inverse-test
-###################################################
+## ----par-trans-inverse-test,results='markup'-----------------------------
+
 # use parameter.inv.transform:
 theta <- coef(gompertz,transform=TRUE)  
 ## theta is on the estimation scale
@@ -347,26 +420,17 @@ g2 <- gompertz
 ## use parameter.transform:
 coef(g2,transform=TRUE) <- theta
 ## compare the internal-scale representations:
-identical(coef(gompertz),coef(g2))
+all.equal(coef(gompertz),coef(g2))
 
 
-###################################################
-### code chunk number 36: intro_to_pomp.Rnw:581-582 (eval = FALSE)
-###################################################
-## demo(gompertz)
 
-
-###################################################
-### code chunk number 37: intro_to_pomp.Rnw:609-612
-###################################################
+## ----echo=F,results='hide'-----------------------------------------------
 pompExample(gompertz)
 theta <- coef(gompertz)
 theta.true <- theta
 
 
-###################################################
-### code chunk number 38: gompertz-multi-mif-calc (eval = FALSE)
-###################################################
+## ----gompertz-multi-mif-calc,eval=F,echo=T-------------------------------
 ## estpars <- c("r","sigma","tau")
 ## replicate(
 ##           n=10,
@@ -395,9 +459,7 @@ theta.true <- theta
 ##           ) -> mf
 
 
-###################################################
-### code chunk number 39: gompertz-post-mif (eval = FALSE)
-###################################################
+## ----gompertz-post-mif,eval=F,echo=F-------------------------------------
 ## theta.true <- coef(gompertz)
 ## theta.mif <- apply(sapply(mf,coef),1,mean)
 ## loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
@@ -406,9 +468,7 @@ theta.true <- theta
 ## loglik.true.est <- logmeanexp(loglik.true,se=TRUE)
 
 
-###################################################
-### code chunk number 40: gompertz-multi-mif-eval
-###################################################
+## ----gompertz-multi-mif-eval,echo=F,results='hide'-----------------------
 set.seed(334388458L)
 binary.file <- "gompertz-multi-mif.rda"
 if (file.exists(binary.file)) {
@@ -459,14 +519,12 @@ loglik.true.est <- logmeanexp(loglik.true,se=TRUE)
        )
 }
 rbind(
-      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif.est[1],1),loglik.se=signif(loglik.mif.est[2],2)),
-      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true.est[1],1),loglik.se=signif(loglik.true.est[2],2))
+      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif.est,2)),
+      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true.est,2))
       ) -> results.table
 
 
-###################################################
-### code chunk number 41: intro_to_pomp.Rnw:686-687 (eval = FALSE)
-###################################################
+## ----eval=F--------------------------------------------------------------
 ## theta.true <- coef(gompertz)
 ## theta.mif <- apply(sapply(mf,coef),1,mean)
 ## loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
@@ -475,9 +533,20 @@ rbind(
 ## loglik.true.est <- logmeanexp(loglik.true,se=TRUE)
 
 
-###################################################
-### code chunk number 42: multi-mif-plot
-###################################################
+## ----multi-mif-plot,echo=F,eval=F----------------------------------------
+## op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
+## loglik <- sapply(mf,function(x)conv.rec(x,"loglik"))
+## log.r <- sapply(mf,function(x)conv.rec(x,"r"))
+## log.sigma <- sapply(mf,function(x)conv.rec(x,"sigma"))
+## log.tau <- sapply(mf,function(x)conv.rec(x,"tau"))
+## matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
+## matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
+## matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
+## matplot(log.tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(log~tau))
+## par(op)
+
+
+## ----mif-plot,echo=F-----------------------------------------------------
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 loglik <- sapply(mf,function(x)conv.rec(x,"loglik"))
 log.r <- sapply(mf,function(x)conv.rec(x,"r"))
@@ -490,30 +559,12 @@ matplot(log.tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(log~tau))
 par(op)
 
 
-###################################################
-### code chunk number 43: mif-plot
-###################################################
-op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-loglik <- sapply(mf,function(x)conv.rec(x,"loglik"))
-log.r <- sapply(mf,function(x)conv.rec(x,"r"))
-log.sigma <- sapply(mf,function(x)conv.rec(x,"sigma"))
-log.tau <- sapply(mf,function(x)conv.rec(x,"tau"))
-matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
-matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
-matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
-matplot(log.tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(log~tau))
-par(op)
-
-
-###################################################
-### code chunk number 44: first-mif-results-table
-###################################################
+## ----first-mif-results-table,echo=F--------------------------------------
 print(results.table)
 
 
-###################################################
-### code chunk number 45: gompertz-skeleton-def
-###################################################
+## ----gompertz-skeleton-def,echo=T----------------------------------------
+
 gompertz.skel <- function (x, t, params, ...) {
   r <- params["r"]
   K <- params["K"]
@@ -524,58 +575,58 @@ gompertz.skel <- function (x, t, params, ...) {
 }
 
 
-###################################################
-### code chunk number 46: new-gompertz-pomp-construction
-###################################################
-new.gompertz <- pomp(
-                     gompertz,
-                     skeleton.type="map",
-                     skeleton=gompertz.skel
-                     )
-coef(new.gompertz,"X.0") <- 0.1
-coef(new.gompertz,"r") <- 0.1
-coef(new.gompertz,"tau") <- 0.05
-coef(new.gompertz,"sigma") <- 0.05
-new.gompertz <- simulate(new.gompertz,seed=88737400L)
+
+## ----gomp3-pomp----------------------------------------------------------
+
+gomp3 <- simulate(
+                  pomp(
+                       gompertz,
+                       skeleton=gompertz.skel,
+                       skeleton.type='map'
+                       ),
+                  params=c(
+                    X.0=0.1,r=0.1,tau=0.05,sigma=0.05,K=1
+                    ),
+                  seed=88737400L
+                  )
 
 
-###################################################
-### code chunk number 47: gompertz-trajmatch-calc (eval = FALSE)
-###################################################
+
+## ----gompertz-trajmatch-calc,eval=F--------------------------------------
+## 
 ## tm <- traj.match(
-##                  new.gompertz,
-##                  start=coef(new.gompertz),
+##                  gomp3,
+##                  start=coef(gomp3),
 ##                  transform=TRUE,
 ##                  est=c("r","K","tau","X.0"),
 ##                  method="Nelder-Mead",
 ##                  maxit=1000,
 ##                  reltol=1e-8
 ##                  )
+## 
 
 
-###################################################
-### code chunk number 48: gompertz-trajmatch-eval
-###################################################
+## ----gompertz-trajmatch-eval,echo=F,eval=T-------------------------------
 binary.file <- "gompertz-trajmatch.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
+
 tm <- traj.match(
-                 new.gompertz,
-                 start=coef(new.gompertz),
+                 gomp3,
+                 start=coef(gomp3),
                  transform=TRUE,
                  est=c("r","K","tau","X.0"),
                  method="Nelder-Mead",
                  maxit=1000,
                  reltol=1e-8
                  )
-  save(new.gompertz,tm,file=binary.file,compress="xz")
+
+  save(tm,file=binary.file,compress="xz")
 }
 
 
-###################################################
-### code chunk number 49: trajmatch-plot
-###################################################
+## ----trajmatch-plot,echo=F,eval=T,fig.height=4,fig.width=6---------------
 
 op <- par(mfrow=c(1,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 plot(time(tm),obs(tm,"Y"),xlab="time",ylab=expression(X,Y),type='o')
@@ -584,9 +635,7 @@ par(op)
 
 
 
-###################################################
-### code chunk number 50: ricker-map-defn
-###################################################
+## ----ricker-map-defn-----------------------------------------------------
 
 ricker.sim <- function (x, t, params, delta.t, ...) {
   e <- rnorm(n=1,mean=0,sd=params["sigma"]) 
@@ -601,9 +650,16 @@ ricker.sim <- function (x, t, params, delta.t, ...) {
 
 
 
-###################################################
-### code chunk number 51: ricker-pomp
-###################################################
+## ----ricker-sim-C-def----------------------------------------------------
+
+ricker.sim <- Csnippet('
+  e = rnorm(0,sigma);
+  N = r*N*exp(-N+e);
+')
+
+
+
+## ----ricker-pomp,results='hide'------------------------------------------
 
 ricker <- pomp(
                data=data.frame(time=seq(0,50,by=1),y=NA),
@@ -612,46 +668,40 @@ ricker <- pomp(
                rprocess=discrete.time.sim(
                  step.fun=ricker.sim
                  ),
-               measurement.model=y~pois(lambda=N*phi)
+               paramnames=c("r","sigma","phi"),
+               statenames=c("N","e"),
+               measurement.model=y~pois(lambda=N*phi),
+               params=c(
+                 r=exp(3.8),
+                 sigma=0.3,
+                 phi=10,
+                 N.0=7,
+                 e.0=0
+                 )
                )
-coef(ricker) <- c(
-                  r=exp(3.8),
-                  sigma=0.3,
-                  phi=10,
-                  N.0=7,
-                  e.0=0
-                  )
 ricker <- simulate(ricker,seed=73691676L)
 
 
 
-###################################################
-### code chunk number 52: get-ricker
-###################################################
+## ----get-ricker,echo=T,eval=T,results='hide'-----------------------------
 pompExample(ricker)
 
 
-###################################################
-### code chunk number 53: probe-list
-###################################################
+## ----probe-list----------------------------------------------------------
 plist <- list(
               probe.marginal("y",ref=obs(ricker),transform=sqrt),
               probe.acf("y",lags=c(0,1,2,3,4),transform=sqrt),
-              probe.nlar("y",lags=c(1,1,1,2),powers=c(1,2,3,1),transform=sqrt)
+              probe.nlar("y",lags=c(1,1,1,2),powers=c(1,2,3,1),
+                         transform=sqrt)
               )
 
 
-###################################################
-### code chunk number 54: first-probe (eval = FALSE)
-###################################################
+## ----first-probe,eval=F,echo=T-------------------------------------------
 ## pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
 ## guess <- c(r=20,sigma=1,phi=20,N.0=7,e.0=0)
 ## pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
 
-
-###################################################
-### code chunk number 55: first-probe-eval
-###################################################
+## ----first-probe-eval,eval=T,echo=F--------------------------------------
 binary.file <- "ricker-first-probe.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -663,18 +713,14 @@ pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
 }
 
 
-###################################################
-### code chunk number 56: first-probe-plot (eval = FALSE)
-###################################################
+## ----first-probe-plot,eval=F---------------------------------------------
 ## summary(pb.truth)
 ## summary(pb.guess)
 ## plot(pb.truth)
 ## plot(pb.guess)
 
 
-###################################################
-### code chunk number 57: ricker-probe-plot
-###################################################
+## ----ricker-probe-plot,echo=F,results='hide'-----------------------------
 binary.file <- "ricker-probe.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -694,9 +740,7 @@ if (file.exists(binary.file)) {
 plot(pb)
 
 
-###################################################
-### code chunk number 58: ricker-probe-match-calc (eval = FALSE)
-###################################################
+## ----ricker-probe-match-calc,eval=F--------------------------------------
 ## pm <- probe.match(
 ##                   pb.guess,
 ##                   est=c("r","sigma","phi"),
@@ -710,9 +754,7 @@ plot(pb)
 ## summary(pm)
 
 
-###################################################
-### code chunk number 59: ricker-probe.match-eval
-###################################################
+## ----ricker-probe.match-eval,echo=F,eval=T,results='hide'----------------
 binary.file <- "ricker-probe-match.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -732,9 +774,7 @@ summary(pm)
 }
 
 
-###################################################
-### code chunk number 60: ricker-mif-calc (eval = FALSE)
-###################################################
+## ----ricker-mif-calc,eval=F----------------------------------------------
 ## mf <- mif(
 ##           ricker,
 ##           start=guess,
@@ -751,9 +791,7 @@ summary(pm)
 ## mf <- continue(mf,Nmif=500,max.fail=20)
 
 
-###################################################
-### code chunk number 61: ricker-mif-eval
-###################################################
+## ----ricker-mif-eval,echo=F,eval=T,results='hide'------------------------
 binary.file <- "ricker-mif.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -776,9 +814,7 @@ mf <- continue(mf,Nmif=500,max.fail=20)
 }
 
 
-###################################################
-### code chunk number 62: ricker-comparison (eval = FALSE)
-###################################################
+## ----ricker-comparison,eval=F,echo=T-------------------------------------
 ## pf.truth <- pfilter(ricker,Np=1000,max.fail=50,seed=1066L)
 ## pf.guess <- pfilter(ricker,params=guess,Np=1000,max.fail=50,seed=1066L)
 ## pf.mf <- pfilter(mf,Np=1000,seed=1066L)
@@ -794,10 +830,7 @@ mf <- continue(mf,Nmif=500,max.fail=20)
 ##                )
 ##              )
 
-
-###################################################
-### code chunk number 63: ricker-comparison-eval
-###################################################
+## ----ricker-comparison-eval,echo=F,eval=T--------------------------------
 binary.file <- "ricker-comparison.rda"
 if (file.exists(binary.file)) {
   load(binary.file) 
@@ -820,15 +853,11 @@ res <- rbind(
 }
 
 
-###################################################
-### code chunk number 64: ricker-comparison-show
-###################################################
+## ----ricker-comparison-show----------------------------------------------
 print(res,digits=3)
 
 
-###################################################
-### code chunk number 65: first-nlf (eval = FALSE)
-###################################################
+## ----first-nlf,eval=F----------------------------------------------------
 ## pompExample(gompertz)
 ## out <- nlf(
 ##            gompertz,
@@ -839,9 +868,7 @@ print(res,digits=3)
 ##            )
 
 
-###################################################
-### code chunk number 66: nlf-gompertz-starts (eval = FALSE)
-###################################################
+## ----nlf-gompertz-starts,eval=F------------------------------------------
 ## # pick 5 random starting parameter values
 ## starts <- replicate(n=5,
 ##                     {
@@ -854,12 +881,10 @@ print(res,digits=3)
 ##                     )
 
 
-###################################################
-### code chunk number 67: nlf-gompertz-fits (eval = FALSE)
-###################################################
+## ----nlf-gompertz-fits,eval=F--------------------------------------------
 ## out <- list()
-## ## Do the fitting. 
-## ## method, trace, and nasymp are explained below   
+## ## Do the fitting.
+## ## method, trace, and nasymp are explained below
 ## for (j in 1:5) {
 ##   out[[j]] <- nlf(
 ##                   gompertz,
@@ -873,14 +898,12 @@ print(res,digits=3)
 ##                   trace=4,
 ##                   skip.se=TRUE,
 ##                   nasymp=5000
-##                   )  
+##                   )
 ## }
 ## fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
 
 
-###################################################
-### code chunk number 68: nlf-fits-eval
-###################################################
+## ----nlf-fits-eval,echo=F,eval=T,results='hide'--------------------------
 binary.file <- "nlf-fits.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -918,22 +941,16 @@ fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
 }
 
 
-###################################################
-### code chunk number 69: intro_to_pomp.Rnw:1122-1123
-###################################################
+## ----eval=T--------------------------------------------------------------
 fits
 
 
-###################################################
-### code chunk number 70: nlf-my-pomp
-###################################################
+## ----nlf-my-pomp,eval=T--------------------------------------------------
 long.gomp <- simulate(gompertz,times=1:1000)
 theta <- coef(long.gomp)
 
 
-###################################################
-### code chunk number 71: nlf-lag-test-log.r (eval = FALSE)
-###################################################
+## ----nlf-lag-test-log.r,eval=F-------------------------------------------
 ## lags <- list(1,2,c(1,2),c(2,3))
 ## r.vals <- theta["r"]*exp(seq(-0.69,0.69,length=25))
 ## fvals <- matrix(nrow=25,ncol=4)
@@ -953,9 +970,7 @@ theta <- coef(long.gomp)
 ## }
 
 
-###################################################
-### code chunk number 72: nlf-lag-test-log.K (eval = FALSE)
-###################################################
+## ----nlf-lag-test-log.K,eval=F,echo=F------------------------------------
 ## K.vals <- theta["K"]*exp(seq(-0.15,0.15,length=25))
 ## fvals2 <- matrix(nrow=25,ncol=4)
 ## for (j in 1:25) {
@@ -974,9 +989,7 @@ theta <- coef(long.gomp)
 ## }
 
 
-###################################################
-### code chunk number 73: nlf-lag-tests
-###################################################
+## ----nlf-lag-tests,eval=T,echo=F,results='hide'--------------------------
 binary.file <- "nlf-lag-tests.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -1020,9 +1033,7 @@ for (j in 1:25) {
 }
 
 
-###################################################
-### code chunk number 74: nlf-gompertz-plot
-###################################################
+## ----nlf-gompertz-plot,fig.height=4,fig.width=6,echo=F-------------------
 fvals <- scale(fvals,center=apply(fvals,2,max),scale=FALSE) 
 fvals2 <- scale(fvals2,center=apply(fvals2,2,max),scale=FALSE)
 op <- par(mfrow=c(1,2),mar=c(5,5,1,1))
@@ -1053,31 +1064,27 @@ abline(v=theta["K"],col="blue")
 par(op)
 
 
-###################################################
-### code chunk number 75: nlf-multi-short (eval = FALSE)
-###################################################
+## ----nlf-multi-short,eval=F----------------------------------------------
 ## nreps <- 100
 ## ndata <- 60
 ## fvals <- matrix(nrow=nreps,ncol=length(lags))
-## new.pomp <- simulate(gompertz,times=1:ndata,nsim=nreps,seed=NULL) # nreps simulated data sets 
+## new.pomp <- simulate(gompertz,times=1:ndata,nsim=nreps,seed=NULL) # nreps simulated data sets
 ## for (j in 1:nreps) {
 ##   for (k in seq_along(lags)) {
 ##     fvals[j,k] <- nlf(
-##                       new.pomp[[j]], 
-##                       start=coef(gompertz), 
-##                       nasymp=5000, 
+##                       new.pomp[[j]],
+##                       start=coef(gompertz),
+##                       nasymp=5000,
 ##                       est=NULL,
 ##                       lags=lags[[k]],
 ##                       eval.only=TRUE
-##                       ) 
+##                       )
 ##   }
 ## }
 ## fvals <- exp(fvals/ndata)
 
 
-###################################################
-### code chunk number 76: nlf-multi-short-eval
-###################################################
+## ----nlf-multi-short-eval,echo=F,eval=T,results='hide'-------------------
 binary.file <- "nlf-multi-short.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -1103,30 +1110,24 @@ fvals <- exp(fvals/ndata)
 }
 
 
-###################################################
-### code chunk number 77: intro_to_pomp.Rnw:1268-1269
-###################################################
+## ----eval=T--------------------------------------------------------------
 apply(fvals,2,function(x)sd(x)/mean(x))
 
 
-###################################################
-### code chunk number 78: nlf-fit-from-truth (eval = FALSE)
-###################################################
+## ----nlf-fit-from-truth,eval=F-------------------------------------------
 ## true.fit <- nlf(
 ##                 gompertz,
 ##                 transform.params=TRUE,
 ##                 est=c("K","r"),
 ##                 lags=2,
-##                 seed=7639873, 
+##                 seed=7639873,
 ##                 method="Nelder-Mead",
 ##                 trace=4,
 ##                 nasymp=5000
 ##                 )
 
 
-###################################################
-### code chunk number 79: nlf-fit-from-truth-eval
-###################################################
+## ----nlf-fit-from-truth-eval,echo=F,eval=T,results='hide'----------------
 binary.file <- "nlf-fit-from-truth.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -1145,15 +1146,11 @@ true.fit <- nlf(
 }
 
 
-###################################################
-### code chunk number 80: intro_to_pomp.Rnw:1307-1308
-###################################################
+## ----echo=F--------------------------------------------------------------
 set.seed(32329L)
 
 
-###################################################
-### code chunk number 81: nlf-boot (eval = FALSE)
-###################################################
+## ----nlf-boot,eval=F-----------------------------------------------------
 ## lags <- 2
 ## ndata <- length(obs(gompertz))
 ## nboot <- ndata-max(lags)
@@ -1167,10 +1164,10 @@ set.seed(32329L)
 ##              transform.params=TRUE,
 ##              est=c("K","r"),
 ##              lags=lags,
-##              seed=7639873, 
-##              bootstrap=TRUE, 
+##              seed=7639873,
+##              bootstrap=TRUE,
 ##              bootsamp=bootsamp[,j],
-##              skip.se=TRUE, 
+##              skip.se=TRUE,
 ##              method="Nelder-Mead",
 ##              trace=4,
 ##              nasymp=5000
@@ -1180,9 +1177,7 @@ set.seed(32329L)
 ## colnames(pars) <- c("r","K")
 
 
-###################################################
-### code chunk number 82: nlf-boot-eval
-###################################################
+## ----nlf-boot-eval,echo=F,eval=T,results='hide'--------------------------
 binary.file <- "nlf-boot.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -1215,22 +1210,16 @@ colnames(pars) <- c("r","K")
 }
 
 
-###################################################
-### code chunk number 83: intro_to_pomp.Rnw:1345-1346
-###################################################
+## ------------------------------------------------------------------------
 apply(pars,2,sd)
 
 
-###################################################
-### code chunk number 84: block-bootsamp (eval = FALSE)
-###################################################
+## ----block-bootsamp,eval=F-----------------------------------------------
 ## bootsamp <- replicate(n=nreps,sample(nboot,size=floor(nboot/3),replace=TRUE))
 ## bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
 
 
-###################################################
-### code chunk number 85: nlf-block-boot (eval = FALSE)
-###################################################
+## ----nlf-block-boot,eval=F,echo=F----------------------------------------
 ## lags <- 2
 ## ndata <- length(obs(gompertz))
 ## nboot <- ndata-max(lags)
@@ -1248,9 +1237,9 @@ apply(pars,2,sd)
 ##              est=c("K","r"),
 ##              lags=lags,
 ##              seed=7639873L,
-##              bootstrap=TRUE, 
+##              bootstrap=TRUE,
 ##              bootsamp=bootsamp[,j],
-##              skip.se=TRUE, 
+##              skip.se=TRUE,
 ##              method="Nelder-Mead",
 ##              trace=4,
 ##              nasymp=5000
@@ -1260,9 +1249,7 @@ apply(pars,2,sd)
 ## colnames(pars) <- c("r","K")
 
 
-###################################################
-### code chunk number 86: nlf-block-boot-eval
-###################################################
+## ----nlf-block-boot-eval,eval=T,echo=F,results='hide'--------------------
 binary.file <- "nlf-block-boot.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -1298,9 +1285,7 @@ colnames(pars) <- c("r","K")
 }
 
 
-###################################################
-### code chunk number 87: bsmc-example-flat-prior-1
-###################################################
+## ----bsmc-example-flat-prior-1,echo=T,eval=T,results='hide'--------------
 
 pompExample(ricker)
 
@@ -1315,19 +1300,15 @@ ricker <- pomp(
                  
 
 
-###################################################
-### code chunk number 88: bsmc-example-flat-prior-3 (eval = FALSE)
-###################################################
-##   
+## ----bsmc-example-flat-prior-3,eval=F------------------------------------
+## 
 ##   fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
 ##                est=c("r","sigma"),smooth=0.2,
 ##                seed=1050180387L)
 ## 
 
 
-###################################################
-### code chunk number 89: bsmc-example-flat-prior-eval
-###################################################
+## ----bsmc-example-flat-prior-eval,eval=T,echo=F--------------------------
 binary.file <- "bsmc-ricker-flat-prior.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -1353,25 +1334,19 @@ ricker <- pomp(
 }
 
 
-###################################################
-### code chunk number 90: bsmc-example-flat-prior-coef
-###################################################
+## ----bsmc-example-flat-prior-coef----------------------------------------
 
 signif(coef(fit1),digits=2)
 
 
 
-###################################################
-### code chunk number 91: bsmc-example-flat-prior-plot
-###################################################
+## ----bsmc-example-flat-prior-plot,fig.height=6,fig.width=6,echo=F--------
 
 plot(fit1,pars=c("r","sigma"),thin=5000)
 
 
 
-###################################################
-### code chunk number 92: bsmc-example-normal-prior (eval = FALSE)
-###################################################
+## ----bsmc-example-normal-prior,eval=F,echo=T-----------------------------
 ## 
 ## ricker <- pomp(ricker,
 ##                rprior=function (params, ...) {
@@ -1386,10 +1361,7 @@ plot(fit1,pars=c("r","sigma"),thin=5000)
 ##              seed=90348704L)
 ## 
 
-
-###################################################
-### code chunk number 93: bsmc-example-normal-prior-eval
-###################################################
+## ----bsmc-example-normal-prior-eval,eval=T,echo=F------------------------
 binary.file <- "bsmc-ricker-normal-prior.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -1410,321 +1382,289 @@ fit2 <- bsmc(ricker,transform=TRUE,Np=10000,
   save(fit2,file=binary.file,compress="xz")
 }
 
-
-###################################################
-### code chunk number 94: bsmc-example-normal-prior-show
-###################################################
+## ----bsmc-example-normal-prior-show,echo=T,eval=T------------------------
 
 signif(coef(fit2),digits=2)
 
 
 
-###################################################
-### code chunk number 95: sir-proc-sim-def
-###################################################
+## ----sir-step-R,keep.source=T--------------------------------------------
 
-sir.proc.sim <- function (x, t, params, delta.t, ...) {
+require(pomp)
+
+sir.step <- function (x, t, params, delta.t, ...) {
   ## unpack the parameters
   N <- params["N"]             # population size
   gamma <- params["gamma"]     # recovery rate
   mu <- params["mu"]           # birth rate = death rate
   beta <- params["beta"]       # contact rate
-  foi <- beta*x["I"]/N                       # the force of infection
+  foi <- beta*x["I"]/N         # the force of infection
   trans <- c(
-             rpois(n=1,lambda=mu*N*delta.t), # births are assumed to be Poisson
-             reulermultinom(n=1,size=x["S"],rate=c(foi,mu),dt=delta.t), # exits from S
-             reulermultinom(n=1,size=x["I"],rate=c(gamma,mu),dt=delta.t), # exits from I
-             reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)        # exits from R
+             ## births are assumed to be Poisson:
+             rpois(n=1,lambda=mu*N*delta.t),
+             ## exits from S:
+             reulermultinom(n=1,size=x["S"],rate=c(foi,mu),dt=delta.t),
+             ## exits from I:
+             reulermultinom(n=1,size=x["I"],rate=c(gamma,mu),dt=delta.t),
+             ## exits from R:
+             reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)
              )
   ## now connect the compartments
-  x[c("S","I","R","cases")]+c(
-      trans[1]-trans[2]-trans[3],
-      trans[2]-trans[4]-trans[5],
-      trans[4]-trans[6],
-      trans[4]                          # accumulate the recoveries
-    )
+  x["S"] <- x["S"]+trans[1]-trans[2]-trans[3]
+  x["I"] <- x["I"]+trans[2]-trans[4]-trans[5]
+  x["R"] <- x["R"]+trans[4]-trans[6]
+  x["cases"] <- x["cases"]+trans[4]
+  x
 }
 
 
 
-###################################################
-### code chunk number 96: sir-pomp-def (eval = FALSE)
-###################################################
-## 
-## simulate(
-##          pomp(
-##               data=data.frame(
-##                 time=seq(1/52,15,by=1/52),
-##                 reports=NA
-##                 ),
-##               times="time",
-##               t0=0,
-##               rprocess=euler.sim(
-##                 step.fun=sir.proc.sim,
-##                 delta.t=1/52/20
-##                 ),
-##               measurement.model=reports~nbinom(mu=rho*cases,size=theta),
-##               initializer=function(params, t0, ic.pars, comp.names, ...){
-##                 x0 <- c(S=0,I=0,R=0,cases=0)
-##                 N <- params["N"]
-##                 fracs <- params[ic.pars]
-##                 x0[comp.names] <- round(N*fracs/sum(fracs))
-##                 x0
-##               },
-##               zeronames=c("cases"), # 'cases' is an accumulator variable
-##               ic.pars=c("S0","I0","R0"), # initial condition parameters
-##               comp.names=c("S","I","R") # names of the compartments
-##               ),
-##          params=c(
-##              N=50000,
-##              beta=60,gamma=8,mu=1/50,
-##              rho=0.6,theta=10,
-##              S0=8/60,I0=0.002,R0=1-8/60-0.001
-##            ),
-##          seed=677573454L
-##          ) -> sir
-## 
+## ----sir-step-C----------------------------------------------------------
 
+sir.step <- '
+  double rate[6];		// transition rates
+  double trans[6];		// transition numbers
 
-###################################################
-### code chunk number 97: sir-pomp-def-eval
-###################################################
-binary.file <- "sir-pomp-def.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
+  // compute the transition rates
+  rate[0] = mu*N;		// birth into susceptible class
+  rate[1] = beta*I/N;           // force of infection
+  rate[2] = mu;			// death from susceptible class
+  rate[3] = gamma;		// recovery
+  rate[4] = mu;			// death from infectious class
+  rate[5] = mu; 		// death from recovered class
 
-simulate(
-         pomp(
-              data=data.frame(
-                time=seq(1/52,15,by=1/52),
-                reports=NA
-                ),
-              times="time",
-              t0=0,
-              rprocess=euler.sim(
-                step.fun=sir.proc.sim,
-                delta.t=1/52/20
-                ),
-              measurement.model=reports~nbinom(mu=rho*cases,size=theta),
-              initializer=function(params, t0, ic.pars, comp.names, ...){
-                x0 <- c(S=0,I=0,R=0,cases=0)
-                N <- params["N"]
-                fracs <- params[ic.pars]
-                x0[comp.names] <- round(N*fracs/sum(fracs))
-                x0
-              },
-              zeronames=c("cases"), # 'cases' is an accumulator variable
-              ic.pars=c("S0","I0","R0"), # initial condition parameters
-              comp.names=c("S","I","R") # names of the compartments
-              ),
-         params=c(
-             N=50000,
-             beta=60,gamma=8,mu=1/50,
-             rho=0.6,theta=10,
-             S0=8/60,I0=0.002,R0=1-8/60-0.001
-           ),
-         seed=677573454L
-         ) -> sir
+  // compute the transition numbers
+  trans[0] = rpois(rate[0]*dt);	// births are Poisson
+  reulermultinom(2,S,&rate[1],dt,&trans[1]);
+  reulermultinom(2,I,&rate[3],dt,&trans[3]);
+  reulermultinom(1,R,&rate[5],dt,&trans[5]);
 
-  save(sir,file=binary.file,compress='xz')
-}
-
-
-###################################################
-### code chunk number 98: sir-pomp-def-with-skel (eval = FALSE)
-###################################################
-## 
-## sir <- pomp(
-##             sir,
-##               skeleton.type="vectorfield",
-##               skeleton=function(t,x,params,...){
-##                 N <- params["N"]             # population size
-##                 gamma <- params["gamma"]     # recovery rate
-##                 mu <- params["mu"]           # birth rate = death rate
-##                 beta <- params["beta"]       # contact rate
-##                 foi <- beta*x["I"]/N # the force of infection
-##                 terms <- c(
-##                            mu*N,               # births
-##                            x["S"]*c(foi,mu),   # exits from S
-##                            x["I"]*c(gamma,mu), # exits from I
-##                            x["R"]*mu           # exits from R
-##                            )
-##                 ## now put the equations together:
-##                 c(
-##                   cases=unname(terms[4]),               # d(cases)/dt
-##                   S=unname(terms[1]-terms[2]-terms[3]), # dS/dt
-##                   I=unname(terms[2]-terms[4]-terms[5]), # dI/dt
-##                   R=unname(terms[4]-terms[6])           # dR/dt
-##                   )
-##               }
-## )
-## 
-
-
-###################################################
-### code chunk number 99: sir-plot
-###################################################
-plot(sir)
-
-
-###################################################
-### code chunk number 100: seas-basis
-###################################################
-
-tbasis <- seq(0,20,by=1/52)
-basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,names="seas%d")
+  // balance the equations
+  S += trans[0]-trans[1]-trans[2];
+  I += trans[1]-trans[3]-trans[4];
+  R += trans[3]-trans[5];
+  incid += trans[3];		// incidence is cumulative recoveries;
+'
 
 
 
-###################################################
-### code chunk number 101: complex-sir-def (eval = FALSE)
-###################################################
-## 
-## complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
-##   ## unpack the parameters
-##   N <- params["N"]                 # population size
-##   gamma <- params["gamma"]         # recovery rate
-##   mu <- params["mu"]               # birth rate = death rate
-##   iota <- params["iota"]           # import rate
-##   b <- params[c("b1","b2","b3")]   # contact-rate coefficients
-##   beta <- b%*%covars               # flexible seasonality
-##   beta.sd <- params["beta.sd"]     # extrademographic noise intensity
-##   dW <- rgammawn(n=1,sigma=beta.sd,dt=delta.t) # Gamma white noise
-##   foi <- (beta*x["I"]/N+iota)*dW/delta.t # the force of infection
-##   trans <- c(
-##              rpois(n=1,lambda=mu*N*delta.t), # births are assumed to be Poisson
-##              reulermultinom(n=1,size=x["S"],rate=c(foi,mu),dt=delta.t), # exits from S
-##              reulermultinom(n=1,size=x["I"],rate=c(gamma,mu),dt=delta.t), # exits from I
-##              reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)        # exits from R
-##              )
-##   ## now connect the compartments
-##   x[c("S","I","R","cases","W")]+
-##     c(
-##       trans[1]-trans[2]-trans[3],
-##       trans[2]-trans[4]-trans[5],
-##       trans[4]-trans[6],
-##       trans[4],                   # accumulate the recoveries
-##       (dW-delta.t)/beta.sd        # mean = 0, var = delta.t
-##     )
-## }
-## 
-## simulate(
-##          pomp(
-##               sir,
-##               tcovar=tbasis,
-##               covar=basis,
-##               rprocess=euler.sim(
-##                 complex.sir.proc.sim,
-##                 delta.t=1/52/20
-##                 ),
-##               initializer=function(params, t0, ic.pars, comp.names, ...){
-##                 x0 <- c(S=0,I=0,R=0,cases=0,W=0)
-##                 N <- params["N"]
-##                 fracs <- params[ic.pars]
-##                 x0[comp.names] <- round(N*fracs/sum(fracs))
-##                 x0
-##               }
-##               ),
-##          params=c(
-##              N=50000,
-##              b1=60,b2=10,b3=110,
-##              gamma=8,mu=1/50,
-##              rho=0.6,theta=10,
-##              iota=0.01,beta.sd=0.1,
-##              S0=8/60,I0=0.002,R0=1-8/60-0.001
-##            ),
-##          seed=8274355L
-##          ) -> complex.sir
-## 
+## ----sir-pomp-def,eval=T,echo=T,results='hide'---------------------------
+
+rmeas <- '
+  cases = rnbinom_mu(theta,rho*incid);
+'
+
+dmeas <- '
+  lik = dnbinom_mu(cases,theta,rho*incid,give_log);
+'
+
+pomp(
+     data=data.frame(
+       cases=NA,
+       time=seq(0,10,by=1/52)
+       ),
+     times="time",
+     t0=-1/52,
+     dmeasure=Csnippet(dmeas),
+     rmeasure=Csnippet(rmeas),
+     rprocess=euler.sim(
+       step.fun=Csnippet(sir.step),
+       delta.t=1/52/20
+       ),
+     statenames=c("S","I","R","incid"),
+     paramnames=c(
+       "gamma","mu","theta","beta",
+       "N","rho",
+       "S.0","I.0","R.0"
+       ), 
+     zeronames=c("incid"),
+     initializer=function(params, t0, ...) {
+       x0 <- c(S=0,I=0,R=0,incid=0)
+       fracs <- params[c("S.0","I.0","R.0")]
+       x0[1:3] <- round(params['N']*fracs/sum(fracs))
+       x0
+     },
+     params=c(
+       N=500000,beta=400,
+       gamma=26,mu=1/50,rho=0.1,theta=100,
+       S.0=26/400,I.0=0.002,R.0=1
+       )
+     ) -> sir
+
+simulate(sir,seed=1914679908L) -> sir
 
 
-###################################################
-### code chunk number 102: complex-sir-def-eval
-###################################################
-binary.file <- "complex-sir-def.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
 
-complex.sir.proc.sim <- function (x, t, params, delta.t, covars, ...) {
-  ## unpack the parameters
-  N <- params["N"]                 # population size
-  gamma <- params["gamma"]         # recovery rate
-  mu <- params["mu"]               # birth rate = death rate
-  iota <- params["iota"]           # import rate
-  b <- params[c("b1","b2","b3")]   # contact-rate coefficients
-  beta <- b%*%covars               # flexible seasonality
-  beta.sd <- params["beta.sd"]     # extrademographic noise intensity
-  dW <- rgammawn(n=1,sigma=beta.sd,dt=delta.t) # Gamma white noise
-  foi <- (beta*x["I"]/N+iota)*dW/delta.t # the force of infection
-  trans <- c(
-             rpois(n=1,lambda=mu*N*delta.t), # births are assumed to be Poisson
-             reulermultinom(n=1,size=x["S"],rate=c(foi,mu),dt=delta.t), # exits from S
-             reulermultinom(n=1,size=x["I"],rate=c(gamma,mu),dt=delta.t), # exits from I
-             reulermultinom(n=1,size=x["R"],rate=c(mu),dt=delta.t)        # exits from R
-             )
-  ## now connect the compartments
-  x[c("S","I","R","cases","W")]+
-    c(
-      trans[1]-trans[2]-trans[3],
-      trans[2]-trans[4]-trans[5],
-      trans[4]-trans[6],
-      trans[4],                   # accumulate the recoveries
-      (dW-delta.t)/beta.sd        # mean = 0, var = delta.t
-    )
-}
+
+## ----sir-plot,echo=F-----------------------------------------------------
+
+plot(sir,var=c("cases","incid","S","I"))
+
+
+
+## ----seas-basis----------------------------------------------------------
+
+tbasis <- seq(-1,21,by=1/52)
+basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,
+                                names="seas%d")
+
+
+
+## ----complex-sir-def,echo=T,eval=T,results='hide'------------------------
+
+seas.sir.step <- '
+  double rate[6];		// transition rates
+  double trans[6];		// transition numbers
+  double beta;			// transmission rate
+  double dW;			// white noise increment
+  int k;
+
+  // seasonality in transmission
+  for (k = 0, beta = 0.0; k < nbasis; k++)
+     beta += (&beta1)[k]*(&seas1)[k];
+
+  // compute the environmental stochasticity
+  dW = rgammawn(sigma,dt);
+
+  // compute the transition rates
+  rate[0] = mu*N;		// birth into susceptible class
+  rate[1] = (iota+beta*I)/N*dW/dt; // force of infection
+  rate[2] = mu;			// death from susceptible class
+  rate[3] = gamma;		// recovery
+  rate[4] = mu;			// death from infectious class
+  rate[5] = mu; 		// death from recovered class
+
+  // compute the transition numbers
+  trans[0] = rpois(rate[0]*dt);	// births are Poisson
+  reulermultinom(2,S,&rate[1],dt,&trans[1]);
+  reulermultinom(2,I,&rate[3],dt,&trans[3]);
+  reulermultinom(1,R,&rate[5],dt,&trans[5]);
+
+  // balance the equations
+  S += trans[0]-trans[1]-trans[2];
+  I += trans[1]-trans[3]-trans[4];
+  R += trans[3]-trans[5];
+  incid += trans[3];	// incidence is cumulative recoveries
+'
+
+
+## ----other-codes,results='hide'------------------------------------------
+
+seas.sir.skel <- '
+  double rate[6];		// transition rates
+  double term[6];		// transition numbers
+  double beta;			// transmission rate
+  double dW;			// white noise increment
+  int k;
+  
+  for (k = 0, beta = 0.0; k < nbasis; k++)
+     beta += (&beta1)[k]*(&seas1)[k];
+
+  // compute the transition rates
+  rate[0] = mu*N;		// birth into susceptible class
+  rate[1] = (iota+beta*I)/N;    // force of infection
+  rate[2] = mu;			// death from susceptible class
+  rate[3] = gamma;		// recovery
+  rate[4] = mu;			// death from infectious class
+  rate[5] = mu; 		// death from recovered class
+
+  // compute the several terms
+  term[0] = rate[0];
+  term[1] = rate[1]*S;
+  term[2] = rate[2]*S;
+  term[3] = rate[3]*I;
+  term[4] = rate[4]*I;
+  term[5] = rate[5]*R;
+
+  // assemble the differential equations
+  DS = term[0]-term[1]-term[2];
+  DI = term[1]-term[3]-term[4];
+  DR = term[3]-term[5];
+  Dincid = term[3]; // accumulate the new I->R transitions
+'
+
+partrans <- '
+  int k;
+  Tgamma = exp(gamma);
+  Tmu = exp(mu);
+  Tiota = exp(iota);
+  for (k = 0; k < nbasis; k++)
+    (&Tbeta1)[k] = exp((&beta1)[k]);
+  Tsigma = exp(sigma);
+  Trho = expit(rho);
+  Ttheta = exp(theta);
+  from_log_barycentric(&TS_0,&S_0,3);
+'
+
+paruntrans <- '
+  int k;
+  Tgamma = log(gamma);
+  Tmu = log(mu);
+  Tiota = log(iota);
+  for (k = 0; k < nbasis; k++)
+    (&Tbeta1)[k] = log((&beta1)[k]);
+  Tsigma = log(sigma);
+  Trho = logit(rho);
+  Ttheta = log(theta);
+  to_log_barycentric(&TS_0,&S_0,3);
+'
 
 simulate(
          pomp(
               sir,
-              tcovar=tbasis,
-              covar=basis,
+              rmeasure=Csnippet(rmeas),
+              dmeasure=Csnippet(dmeas),
               rprocess=euler.sim(
-                complex.sir.proc.sim,
+                step.fun=Csnippet(seas.sir.step),
                 delta.t=1/52/20
                 ),
-              initializer=function(params, t0, ic.pars, comp.names, ...){
-                x0 <- c(S=0,I=0,R=0,cases=0,W=0)
-                N <- params["N"]
-                fracs <- params[ic.pars]
-                x0[comp.names] <- round(N*fracs/sum(fracs))
+              covar=basis,
+              tcovar=tbasis,
+              skeleton=Csnippet(seas.sir.skel),
+              skeleton.type='vectorfield',
+              parameter.transform=Csnippet(partrans),
+              parameter.inv.transform=Csnippet(paruntrans),
+              statenames=c("S","I","R","incid"),
+              paramnames=c(
+                "gamma","mu","iota","beta1","sigma",
+                "N","rho","theta","S.0","I.0","R.0"
+                ), 
+              zeronames="incid",
+              globals="int nbasis = 3;\n",
+              initializer=function(params, t0, ...) {
+                x0 <- c(S=0,I=0,R=0,incid=0)
+                fracs <- params[c("S.0","I.0","R.0")]
+                x0[1:3] <- round(params['N']*fracs/sum(fracs))
                 x0
               }
               ),
          params=c(
-             N=50000,
-             b1=60,b2=10,b3=110,
-             gamma=8,mu=1/50,
-             rho=0.6,theta=10,
-             iota=0.01,beta.sd=0.1,
-             S0=8/60,I0=0.002,R0=1-8/60-0.001
+           N=500000,beta1=60,beta2=10,beta3=110,
+           gamma=8,mu=1/50,rho=0.5,theta=30,
+           iota=20,sigma=0.1,
+           S.0=0.13,I.0=0.003,R.0=0.87
            ),
-         seed=8274355L
+         seed=334849254L
          ) -> complex.sir
 
-  save(complex.sir,file=binary.file,compress='xz')
-}
 
 
-###################################################
-### code chunk number 103: seas-basis-plot
-###################################################
+## ----seas-basis-plot,echo=F,fig.height=4,fig.width=6---------------------
 
 op <- par(mar=c(5,5,1,5))
 matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
         lty=1,col=c("red","blue","orange"),xlab="time (yr)",
         ylab=quote("basis functions"~list(s[1],s[2],s[3])))
-bb <- coef(complex.sir,c("b1","b2","b3"))
-plot.window(c(0,2),c(0,1)*max(bb))
+bb <- coef(complex.sir,c("beta1","beta2","beta3"))
+plot.window(c(0,2),range(bb))
 lines(tbasis,basis%*%bb,col="black",lwd=3,lty=1)
 lines(tbasis,basis%*%bb,col="white",lwd=2.5,lty="23")
 axis(side=4)
 mtext(
       side=4,
-      line=2,
+      line=3,
       text=bquote(
-        beta==.(b1)*s[1]+.(b2)*s[2]+.(b3)*s[3],
+        beta==.(beta1)*s[1]+.(beta2)*s[2]+.(beta3)*s[3],
         where=as.list(coef(complex.sir))
         )
       )
@@ -1732,17 +1672,9 @@ par(op)
 
 
 
-###################################################
-### code chunk number 104: complex-sir-plot
-###################################################
+## ----complex-sir-plot,echo=F---------------------------------------------
 
 plot(complex.sir)
 
-
-
-###################################################
-### code chunk number 105: restore-opts
-###################################################
-options(glop)
 
 
