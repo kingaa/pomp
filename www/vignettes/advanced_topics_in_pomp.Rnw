@@ -329,7 +329,7 @@ if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
 @ 
 
 Let's specify some parameters, simulate, and compute a deterministic trajectory:
-<<sir-sim,eval=F>>=
+<<sir-sim,eval=T>>=
 
 coef(sir) <- c(
                gamma=26,mu=0.02,iota=0.01,
@@ -343,14 +343,6 @@ coef(sir) <- c(
 sir <- simulate(sir,seed=3493885L)
 traj <- trajectory(sir,hmax=1/52)
 
-<<sir-sim-eval,echo=F,eval=T>>=
-binary.file <- "sim-sim.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
-<<sir-sim>>
-  save(sir,traj,file=binary.file,compress='xz')
-}
 @ 
 
 \begin{figure}

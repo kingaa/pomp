@@ -256,26 +256,7 @@ pompBuilder(
 }
 
 
-## ----sir-sim,eval=F------------------------------------------------------
-## 
-## coef(sir) <- c(
-##                gamma=26,mu=0.02,iota=0.01,
-##                beta1=400,beta2=480,beta3=320,
-##                beta.sd=0.001,
-##                popsize=2.1e6,
-##                rho=0.6,theta=10,
-##                S.0=26/400,I.0=0.001,R.0=1
-##                )
-## 
-## sir <- simulate(sir,seed=3493885L)
-## traj <- trajectory(sir,hmax=1/52)
-## 
-
-## ----sir-sim-eval,echo=F,eval=T------------------------------------------
-binary.file <- "sim-sim.rda"
-if (file.exists(binary.file)) {
-  load(binary.file)
-} else {
+## ----sir-sim,eval=T------------------------------------------------------
 
 coef(sir) <- c(
                gamma=26,mu=0.02,iota=0.01,
@@ -289,8 +270,6 @@ coef(sir) <- c(
 sir <- simulate(sir,seed=3493885L)
 traj <- trajectory(sir,hmax=1/52)
 
-  save(sir,traj,file=binary.file,compress='xz')
-}
 
 
 ## ----sir-plot,fig=T,echo=F-----------------------------------------------
