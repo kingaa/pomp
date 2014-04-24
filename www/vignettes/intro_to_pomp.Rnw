@@ -550,7 +550,7 @@ For this reason, \pkg{pomp} provides facilities for specifying the basic model f
 There are two ways to accomplish this.
 Since version 0.50, one can define the components of a POMP model using snippets of C code.
 This is quite straightforward and easy to do in most cases.
-Alternatively, since its earliest versions, \pkg{pomp} has provided a more flexible, but more complicated interface allowing a user to write the basic functions in C or FORTRAN, compile them into a shared-object library using \code{R CMD SHLIB}, dynamically link them into an \R\ session, and construct \code{pomp} objects that call them.
+Alternatively, since its earliest versions, \pkg{pomp} has provided a more flexible, but more complicated, interface allowing a user to write the basic functions in C or FORTRAN, compile them into a shared-object library using \code{R CMD SHLIB}, dynamically link them into an \R\ session, and construct \code{pomp} objects that call them.
 Users desiring to follow the latter approach are directed to the ``Advanced topics'' document, included with the package and at \texttt{http://pomp.r-forge.r-project.org} and to the package source code for the POMP model examples included with the package.
 Here, we'll demonstrate the method using snippets.
 
@@ -570,7 +570,7 @@ gomp2 <- pomp(
               rprocess=discrete.time.sim(
                 step.fun=Csnippet('
   double S = exp(-r*dt);
-  double eps = (sigma > 0.0) ? exp(rnorm(0,sigma)) : 1.0;
+  double eps = rlnorm(0,sigma);
   X = pow(K,(1-S))*pow(X,S)*eps;
 '),
                 delta.t=1

@@ -291,7 +291,7 @@ gomp2 <- pomp(
               rprocess=discrete.time.sim(
                 step.fun=Csnippet('
   double S = exp(-r*dt);
-  double eps = (sigma > 0.0) ? exp(rnorm(0,sigma)) : 1.0;
+  double eps = rlnorm(0,sigma);
   X = pow(K,(1-S))*pow(X,S)*eps;
 '),
                 delta.t=1
