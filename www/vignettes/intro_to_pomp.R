@@ -315,7 +315,7 @@ gomp2 <- pomp(
 ## toc <- Sys.time()
 ## g2sim <- toc-tic
 ## 
-## all.equal(sim1,sim2)
+## stopifnot(all.equal(sim1,sim2))
 ## 
 ## tic <- Sys.time()
 ## pf1 <- pfilter(gompertz,Np=10000,seed=5676868L)
@@ -327,11 +327,11 @@ gomp2 <- pomp(
 ## toc <- Sys.time()
 ## g2pf <- toc-tic
 ## 
-## all.equal(logLik(pf1),logLik(pf2))
+## stopifnot(all.equal(logLik(pf1),logLik(pf2)))
 ## 
 
 
-## ----gompertz-perform-eval,eval=T,echo=F,results='hide'------------------
+## ----gompertz-perform-eval,eval=T,echo=F---------------------------------
 binary.file <- "gompertz-performance.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -348,7 +348,7 @@ sim2 <- simulate(gomp2,nsim=1000,seed=5676868L,obs=TRUE)
 toc <- Sys.time()
 g2sim <- toc-tic
 
-all.equal(sim1,sim2)
+stopifnot(all.equal(sim1,sim2))
 
 tic <- Sys.time()
 pf1 <- pfilter(gompertz,Np=10000,seed=5676868L)
@@ -360,7 +360,7 @@ pf2 <- pfilter(gomp2,Np=10000,seed=5676868L)
 toc <- Sys.time()
 g2pf <- toc-tic
 
-all.equal(logLik(pf1),logLik(pf2))
+stopifnot(all.equal(logLik(pf1),logLik(pf2)))
 
 save(g1sim,g2sim,g1pf,g2pf,file=binary.file,compress='xz')
 }  

@@ -1,8 +1,9 @@
-\documentclass[10pt,reqno,final]{amsart}
+\documentclass[10pt,reqno,final,pdftex]{amsart}
 %\VignetteIndexEntry{Advanced topics in pomp}
 %\VignetteEngine{knitr::knitr}
 \usepackage{times}
 \usepackage[utf8]{inputenc}
+\usepackage{graphicx}
 \usepackage[round]{natbib}
 \usepackage{paralist}
 \usepackage{float}
