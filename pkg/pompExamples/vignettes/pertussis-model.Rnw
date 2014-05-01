@@ -280,11 +280,21 @@ Table~\ref{tab:params} explains the epidemiological meaning of model parameters 
 
 The model above is implemented in the package and can be loaded with the command
 <<>>=
-data(pertussis.sim)
+pertussis.sim()
+pertPomps <- list(
+                  SEIR.small=pertussis.sim(SEIR.small),
+                  SEIR.big=pertussis.sim(SEIR.big),
+                  SEIRS.small=pertussis.sim(SEIRS.small),
+                  SEIRS.big=pertussis.sim(SEIRS.big),
+                  SEIRR.small=pertussis.sim(SEIRR.small),
+                  SEIRR.big=pertussis.sim(SEIRR.big),
+                  full.small=pertussis.sim(full.small),
+                  full.big=pertussis.sim(full.big)
+                  )
 @ 
-The object thereby loaded contains a named length-\Sexpr{length(pertussis.sim)} list of pomp objects:
+The object thereby loaded contains a named length-\Sexpr{length(pertPomps)} list of pomp objects:
 <<>>=
-names(pertussis.sim)
+names(pertPomps)
 @ 
 There are three submodels (SEIR, SEIRS, SEIRR), representing a model with permanent immunity (SEIR), temporary immunity (SEIRS), and temporary immunity with boosting (SEIRR).
 The model labeled \code{full} is SEIRR but with polarizing immunity ($\phi>0$) and environmental stochasticity $\sigma_{\zeta}>0$.
@@ -296,8 +306,17 @@ Details on the implementation of this algorithm are given in \citet[][Box~1]{He2
 <<format-params,echo=F,eval=F>>=
 require(pompExamples)
 require(plyr)
-data(pertussis.sim)
-true.pars <- sapply(pertussis.sim,coef)
+pertPomps <- list(
+                  SEIR.small=pertussis.sim(SEIR.small),
+                  SEIR.big=pertussis.sim(SEIR.big),
+                  SEIRS.small=pertussis.sim(SEIRS.small),
+                  SEIRS.big=pertussis.sim(SEIRS.big),
+                  SEIRR.small=pertussis.sim(SEIRR.small),
+                  SEIRR.big=pertussis.sim(SEIRR.big),
+                  full.small=pertussis.sim(full.small),
+                  full.big=pertussis.sim(full.big)
+                  )
+true.pars <- sapply(pertPomps,coef)
 params <- as.data.frame(true.pars)
 params$name <- rownames(params)
 params$math <- ""
@@ -372,8 +391,17 @@ require(ggplot2)
 require(plyr)
 require(reshape2)
 require(pompExamples)
-data(pertussis.sim)
-x <- ldply(pertussis.sim,as.data.frame)
+pertPomps <- list(
+                  SEIR.small=pertussis.sim(SEIR.small),
+                  SEIR.big=pertussis.sim(SEIR.big),
+                  SEIRS.small=pertussis.sim(SEIRS.small),
+                  SEIRS.big=pertussis.sim(SEIRS.big),
+                  SEIRR.small=pertussis.sim(SEIRR.small),
+                  SEIRR.big=pertussis.sim(SEIRR.big),
+                  full.small=pertussis.sim(full.small),
+                  full.big=pertussis.sim(full.big)
+                  )
+x <- ldply(pertPomps,as.data.frame)
 x <- rename(x,c(.id="dataset"))
 x <- melt(x,id.var=c("dataset","time"))
 x <- subset(x,variable=="reports")
@@ -405,7 +433,16 @@ require(Rmpi)
 require(mpifarm)
 require(pompExamples)
 
-data(pertussis.sim)
+pertPomps <- list(
+                  SEIR.small=pertussis.sim(SEIR.small),
+                  SEIR.big=pertussis.sim(SEIR.big),
+                  SEIRS.small=pertussis.sim(SEIRS.small),
+                  SEIRS.big=pertussis.sim(SEIRS.big),
+                  SEIRR.small=pertussis.sim(SEIRR.small),
+                  SEIRR.big=pertussis.sim(SEIRR.big),
+                  full.small=pertussis.sim(full.small),
+                  full.big=pertussis.sim(full.big)
+                  )
 
 ncpus <- as.integer(Sys.getenv("PBS_NP"))
 
@@ -424,13 +461,13 @@ mpi.farmer(
              dlply(
                    expand.grid(
                                seed=seeds,
-                               dataset=names(pertussis.sim)
+                               dataset=names(pertPomps)
                                ),
                    ~dataset+seed
                    )
            },
            common=list(
-             pomps=pertussis.sim,
+             pomps=pertPomps,
              Np=Np
              ),
            main={
@@ -590,8 +627,17 @@ Once we can form a clearer notion of where the MLEs exist, it may be worthwhile 
 <<wavelets,eval=F,echo=F,fig=T,clean=T>>=
 require(pompExamples)
 require(Rwave)
-data(pertussis.sim)
-x <- lapply(pertussis.sim,as,"data.frame")
+pertPomps <- list(
+                  SEIR.small=pertussis.sim(SEIR.small),
+                  SEIR.big=pertussis.sim(SEIR.big),
+                  SEIRS.small=pertussis.sim(SEIRS.small),
+                  SEIRS.big=pertussis.sim(SEIRS.big),
+                  SEIRR.small=pertussis.sim(SEIRR.small),
+                  SEIRR.big=pertussis.sim(SEIRR.big),
+                  full.small=pertussis.sim(full.small),
+                  full.big=pertussis.sim(full.big)
+                  )
+x <- lapply(pertPomps,as,"data.frame")
 x <- lapply(x,function(x)x[c("time","reports")])
 for (n in names(x)) 
   names(x[[n]])[2] <- n

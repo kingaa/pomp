@@ -103,9 +103,10 @@ pertussis.sim <- function (which) {
                   dmeasure = "negbin_dmeasure",
                   parameter.inv.transform="pertussis_par_untrans",
                   parameter.transform="pertussis_par_trans",
-                  initializer = function (params, t0, statenames, comp.names, ivps, ...) {
-                    states <- numeric(length(statenames))
-                    names(states) <- statenames
+                  varnames=c("S","E","I","R1","R2","cases","W","err","simpop"),
+                  initializer = function (params, t0, varnames, comp.names, ivps, ...) {
+                    states <- numeric(length(varnames))
+                    names(states) <- varnames
                     ## translate fractions into initial conditions
                     frac <- params[ivps]
                     states[comp.names] <- round(params['popsize']*frac/sum(frac))

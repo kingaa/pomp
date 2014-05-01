@@ -97,17 +97,27 @@ Thus, the combination of $\gamma$, $\beta_0$ and $\beta_1$ is only weakly identi
 
 This model is implemented in the package and can be loaded with the command
 <<>>=
-data(budmoth.sim)
+
+require(pompExamples)
+
+budmoth.sim()
+bmPomps <- list(
+                tri=budmoth.sim(tri),
+                food=budmoth.sim(food),
+                para1=budmoth.sim(para1),
+                para2=budmoth.sim(para2)
+                )
+
 @ 
 The object thereby loaded contains a named, length-\Sexpr{length(budmoth.sim)} list of pomp objects
 <<>>=
-names(budmoth.sim)
+names(bmPomps)
 @ 
 There are three parameter regimes (``food'', ``para'', and ``tri'' representing a food-quality-dominated, a parasitoid-dominated, and true tritrophic dynamics, respectively).
-In total, there are \Sexpr{length(budmoth.sim)} imulated data sets of length \Sexpr{diff(range(time(budmoth.sim[[1]])))+1} years.
+In total, there are \Sexpr{length(bmPomps)} imulated data sets of length \Sexpr{diff(range(time(bmPomps[[1]])))+1} years.
 <<echo=F>>=
-for (q in names(budmoth.sim)) {
-  time(budmoth.sim[[q]]) <- 1:60
+for (q in names(bmPomps)) {
+  time(bmPomps[[q]]) <- 1:60
 }
 @ 
 The process model is implemented using the \code{euler.simulate} plugin with step function \verb+budmoth_map+ defined in \code{src/budmoth.c} in the package source.
@@ -116,11 +126,11 @@ The measurement model is simulated using \verb+budmoth_rmeasure+
 and the likelihood is computed via \verb+budmoth_dmeasure+.
 Finally, the state process is initialized by 
 <<echo=F>>=
-budmoth.sim[[1]]@initializer
+bmPomps[[1]]@initializer
 @ 
 The parameters at which the simulated data are generated can be extracted via
 <<true-params>>=
-true.pars <- sapply(budmoth.sim[c("food","para1","para2","tri")],coef)
+true.pars <- sapply(bmPomps[c("food","para1","para2","tri")],coef)
 @ 
 and are displayed in Table~\ref{tab:sim-params}.
 
@@ -161,8 +171,13 @@ require(pompExamples)
 require(plyr)
 require(reshape2)
 require(ggplot2)
-data(budmoth.sim)
-x <- ldply(budmoth.sim,as.data.frame)
+bmPomps <- list(
+                tri=budmoth.sim(tri),
+                food=budmoth.sim(food),
+                para1=budmoth.sim(para1),
+                para2=budmoth.sim(para2)
+                )
+x <- ldply(bmPomps,as.data.frame)
 x <- rename(x,c(.id="dataset"))
 x <- melt(x,id.var=c("dataset","time"))
 x <- subset(x,variable%in%c("Qobs","Nobs","Sobs"))
@@ -180,9 +195,14 @@ require(Rmpi)
 require(mpifarm)
 require(pompExamples)
 
-data(budmoth.sim)
+bmPomps <- list(
+                tri=budmoth.sim(tri),
+                food=budmoth.sim(food),
+                para1=budmoth.sim(para1),
+                para2=budmoth.sim(para2)
+                )
 
-ncpus <- length(budmoth.sim)
+ncpus <- length(bmPomps)
 
 nrep <- 10  ### number of particle filters to run
 Np <- 10000 ### number of particles
@@ -199,13 +219,13 @@ mpi.farmer(
              dlply(
                    expand.grid(
                                seed=seeds,
-                               dataset=names(budmoth.sim)
+                               dataset=names(bmPomps)
                                ),
                    ~dataset+seed
                    )
            },
            common=list(
-             pomps=budmoth.sim,
+             pomps=bmPomps,
              Np=Np
              ),
            main={
@@ -303,16 +323,21 @@ nrep <- 3  ### number of particle filters to run per parameter point
 Np <- 1000 ### number of particles per filter
 slice.length <- 100          ### number of points per slice
 
-data(budmoth.sim)
+bmPomps <- list(
+                tri=budmoth.sim(tri),
+                food=budmoth.sim(food),
+                para1=budmoth.sim(para1),
+                para2=budmoth.sim(para2)
+                )
 
-true.pars <- sapply(budmoth.sim,coef)
+true.pars <- sapply(bmPomps,coef)
 estnames <- c("gam","lambda","g","delta","a","w")
 par.range <- t(apply(true.pars[estnames,],1,function(x)c(0.5*min(x),1.5*max(x))))
   
 ncpus <- as.integer(Sys.getenv("PBS_NP"))
 
 slices <- lapply(
-                 budmoth.sim,
+                 bmPomps,
                  function (po) {
                    center <- coef(po)
                    ranges <- lapply(
@@ -347,7 +372,7 @@ mpi.farmer(
              for (j in seq_len(nrow(slices))) {
                ds <- slices$dataset[j]
                sl <- slices$slice[j]
-               paramnames <- names(coef(budmoth.sim[[ds]]))
+               paramnames <- names(coef(bmPomps[[ds]]))
                for (k in seq_len(nrep)) {
                  s <- s+1
                  joblist[[s]] <- list(
@@ -361,7 +386,7 @@ mpi.farmer(
              joblist
            },
            common=list(
-             pomps=budmoth.sim,
+             pomps=bmPomps,
              Np=Np,
              estnames=estnames
              ),
