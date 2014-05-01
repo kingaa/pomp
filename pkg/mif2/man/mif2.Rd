@@ -1,6 +1,7 @@
 \name{mif2}
 \docType{methods}
 \alias{mif2}
+\alias{mif2d.pomp-class}
 \alias{mif2,mif2d.pomp-method}
 \alias{mif2-mif2d.pomp}
 \alias{mif2,pfilterd.pomp-method}
