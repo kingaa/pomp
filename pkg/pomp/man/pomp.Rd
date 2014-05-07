@@ -58,31 +58,33 @@
     This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.
   }
   \item{rprocess}{
-    optional function; a function of prototype \code{rprocess(xstart,times,params,\dots)} that simulates from the unobserved process.
+    optional function; a function of prototype \preformatted{rprocess(xstart,times,params,\dots)} that simulates from the unobserved process.
     The easiest way to specify \code{rprocess} is to use one of the \code{\link{plugins}} provided as part of the \pkg{pomp} package.
     See below for details.
   }
   \item{dprocess}{
-    optional function; a function of prototype \code{dprocess(x,times,params,log,\dots)} that evaluates the likelihood of a sequence of consecutive state transitions.
+    optional function; a function of prototype \preformatted{dprocess(x,times,params,log,\dots)} that evaluates the likelihood of a sequence of consecutive state transitions.
     The easiest way to specify \code{dprocess} is to use one of the \code{\link{plugins}} provided as part of the \pkg{pomp} package.
     It is not typically necessary (or even feasible) to define \code{dprocess}.
     See below for details.
   }
   \item{rmeasure}{
     optional; the measurement model simulator.
-    This can be specified in one of three ways:
-    (1) as a function of prototype \code{rmeasure(x,t,params,\dots)} that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_simulator} as defined in the header file \dQuote{pomp.h}.
+    This can be specified in one of four ways:
+    (1) as a function of prototype \preformatted{rmeasure(x,t,params,\dots)} that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
+    (2) as a snippet of C code (via \code{\link{Csnippet}}) that draws from the observation process as above.
+    (3) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_simulator} as defined in the header file \dQuote{pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
-    (3) using the formula-based \code{measurement.model} facility (see below).
+    (4) using the formula-based \code{measurement.model} facility (see below).
   }
   \item{dmeasure}{
     optional; the measurement model probability density function.
-    This can be specified in one of three ways:
-    (1) as a function of prototype \code{dmeasure(y,x,t,params,log,\dots)} that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_density} as defined in the header file \dQuote{pomp.h}.
+    This can be specified in one of four ways:
+    (1) as a function of prototype \preformatted{dmeasure(y,x,t,params,log,\dots)} that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
+    (2) as a snippet of C code (via \code{\link{Csnippet}}) that computes the p.d.f. as above.
+    (3) as the name of a native (compiled) routine with prototype \dQuote{pomp_measure_model_density} as defined in the header file \dQuote{pomp.h}.
     In the above cases, if the measurement model depends on covariates, the optional argument \code{covars} will be filled with interpolated values at each call.
-    (3) using the formula-based \code{measurement.model} facility (see below).
+    (4) using the formula-based \code{measurement.model} facility (see below).
     As might be expected, if \code{log=TRUE}, this function should return the log likelihood.
   }
   \item{measurement.model}{
@@ -100,16 +102,17 @@
     If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield:
     indicate this by specifying \code{skeleton.type="vectorfield"}.
 
-    The skeleton function can be specified in one of two ways:
-    (1) as an \R function of prototype \code{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_skeleton} as defined in the header file \dQuote{pomp.h}.
+    The skeleton function can be specified in one of three ways:
+    (1) as an \R function of prototype \preformatted{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
+    (2) as a snippet of C code (via \code{\link{Csnippet}}) that performs this evaluation.
+    (3) as the name of a native (compiled) routine with prototype \dQuote{pomp_skeleton} as defined in the header file \dQuote{pomp.h}.
     If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
 
     With a discrete-time skeleton, the default assumption is that time advances 1 unit per iteration of the map;
     to change this, set \code{skelmap.delta.t} to the appropriate time-step.
   }
   \item{initializer}{
-    optional function of prototype \code{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
+    optional function of prototype \preformatted{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
 
     By default (i.e., if it is unspecified when \code{pomp} is called), the initializer assumes any parameters in \code{params} the names of which end in \dQuote{\code{.0}} are initial values.
     These are simply copied over as initial conditions when \code{init.state} is called (see \code{\link{init.state-pomp}}).
@@ -117,15 +120,17 @@
   }
   \item{rprior}{
     optional; function drawing a sample from a prior distribution on parameters.
-    This can be specified in one of two ways:
-    (1) as an \R function of prototype \code{rprior(params,\dots)},
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_rprior} as defined in the header file \dQuote{pomp.h}.
+    This can be specified in one of three ways:
+    (1) as an \R function of prototype \preformatted{rprior(params,\dots)} that makes a draw from the prior distribution given \code{params},
+    (2) as a snippet of C code (via \code{\link{Csnippet}}) that draws from the prior,
+    (3) as the name of a native (compiled) routine with prototype \dQuote{pomp_rprior} as defined in the header file \dQuote{pomp.h}.
   }
   \item{dprior}{
     optional; function evaluating the prior distribution.
-    This can be specified in one of two ways:
-    (1) as an \R function of prototype \code{dprior(params,log=FALSE,\dots)},
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_dprior} as defined in the header file \dQuote{pomp.h}.
+    This can be specified in one of three ways:
+    (1) as an \R function of prototype \preformatted{dprior(params,log=FALSE,\dots)} that evaluates the prior probability density,
+    (2) as a snippet of C code (via \code{\link{Csnippet}}) that computes this p.d.f.,
+    (3) as the name of a native (compiled) routine with prototype \dQuote{pomp_dprior} as defined in the header file \dQuote{pomp.h}.
   }
   \item{params}{
     optional named numeric vector of parameters.
@@ -145,8 +150,8 @@
   }
   \item{obsnames, statenames, paramnames, covarnames}{
     Optional character vectors specifying the names of observables, state variables, parameters, and covariates, respectively.
-    These are only used in the event that one or more of the basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, \code{rprior}, \code{dprior}) are defined using native routines.
-    In that case, these name vectors are matched against the corresponding names and the indices of the names are passed to the native routines.
+    These are only used in the event that one or more of the basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, \code{rprior}, \code{dprior}) are defined using \code{\link{Csnippet}} or native routines.
+    In these cases, these name vectors are matched against the corresponding names and the indices of the names are passed to the native routines.
     These vectors should list the parameters in the order that the native code expects them.
     Using this facility allows one to write one or more of the basic functions in native code in a way that does not depend on the order of states, parameters, and covariates at run time.
     See the \dQuote{Advanced topics in pomp} vignette for more on this topic, including examples.
@@ -163,6 +168,7 @@
     These functions must have arguments \code{params} and \code{\dots}.
     \code{parameter.transform} should transform parameters from the user's scale to the scale that \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, and \code{initializer} will use internally.
     \code{parameter.inv.transform} should be the inverse of \code{parameter.transform}.
+    The parameter transformations can be defined (as in the case of \code{rmeasure}, \code{dmeasure}, \code{skeleton}, \code{rprior}, \code{dprior} above) using \R functions, \code{\link{Csnippet}}s, or native routines.
     Note that it is the user's responsibility to make sure this holds.
     If \code{obj} is the constructed \code{pomp} object, and \code{coef(obj)} is non-empty, a simple check of this is
 
@@ -179,7 +185,7 @@
   }
   \item{globals}{
     optional character;
-    C code that will be included in the source for the shared-object library created when the call to \code{pomp} uses \code{Csnippets}.
+    C code that will be included in the source for (and therefore hard-coded into) the shared-object library created when the call to \code{pomp} uses \code{Csnippets}.
     If no \code{Csnippets} are used, \code{globals} has no effect.
   }
   \item{\dots}{

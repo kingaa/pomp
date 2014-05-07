@@ -19,21 +19,28 @@ onestep.dens(dens.fun, PACKAGE)
 }
 \arguments{
   \item{step.fun}{
-    This can be either an \R function or the name of a compiled, dynamically loaded native function containing the model simulator.
+    This can be either an \R function, a \code{\link{Csnippet}}, or the name of a compiled, dynamically loaded native function containing the model simulator.
     It should be written to take a single Euler step from a single point in state space.
-    If it is an \R function, it should be of the form \code{step.fun(x,t,params,delta.t,...)}.
+
+    If it is an \R function, it should have prototype \code{step.fun(x,t,params,delta.t,...)}.
     Here, \code{x} is a named numeric vector containing the value of the state process at time \code{t},
     \code{params} is a named numeric vector containing parameters,
     and \code{delta.t} is the length of the Euler time-step.
+
+    For examples on the use of \code{\link{Csnippet}} to write fast simulators easily, see the \dQuote{Introduction to \pkg{pomp}} document, included with the package.
+
     If \code{step.fun} is the name of a native function, it must be of type \dQuote{pomp_onestep_sim} as defined in the header \dQuote{pomp.h}, which is included with the \pkg{pomp} package.
     For details on how to write such codes, see Details.
   }
   \item{rate.fun}{
-    This can be either an \R function or the name of a compiled, dynamically loaded native function that computes the transition rates.
+    This can be either an \R function, a \code{\link{Csnippet}}, or the name of a compiled, dynamically loaded native function that computes the transition rates.
     If it is an \R function, it should be of the form \code{rate.fun(j,x,t,params,...)}.
     Here, \code{j} is the number of the event,
     \code{x} is a named numeric vector containing the value of the state process at time \code{t} and 
     \code{params} is a named numeric vector containing parameters.
+
+    For examples on the use of \code{\link{Csnippet}} to write fast simulators easily, see the \dQuote{Introduction to \pkg{pomp}} document, included with the package.
+
     If \code{rate.fun} is a native function, it must be of type \dQuote{pomp_ssa_rate_fn} as defined in the header \dQuote{pomp.h}, which is included with the package.
     For details on how to write such codes, see Details.
   }
@@ -46,10 +53,12 @@ onestep.dens(dens.fun, PACKAGE)
     \code{d[i,j]} will have value 1 if event rate \code{j} must be updated as a result of a change in state variable \code{i} and 0 otherwise
     }
   \item{dens.fun}{
-    This can be either an R function or a compiled, dynamically loaded native function containing the model transition log probability density function.
+    This can be either an R function, a \code{\link{Csnippet}}, or a compiled, dynamically loaded native function containing the model transition log probability density function.
+
     If it is an R function, it should be of the form \code{dens.fun(x1,x2,t1,t2,params,...)}.
     Here, \code{x1} and \code{x2} are named numeric vectors containing the values of the state process at times \code{t1} and \code{t2},
     \code{params} is a named numeric vector containing parameters.
+
     If \code{dens.fun} is the name of a native function, it should be of type \dQuote{pomp_onestep_pdf} as defined in the header \dQuote{pomp.h}, which is included with the \pkg{pomp} package.
     This function should return the log likelihood of a transition from \code{x1} at time \code{t1} to \code{x2} at time \code{t2}, assuming that no intervening transitions have occurred.
     For details on how to write such codes, see Details.
@@ -60,6 +69,7 @@ onestep.dens(dens.fun, PACKAGE)
   \item{PACKAGE}{
     an optional argument that specifies to which dynamically loaded library we restrict the search for the native routines.
     If this is \dQuote{base}, we search in the R executable itself.
+    This argument is ignored if \code{step.fun}, \code{rate.fn}, or \code{dens.fun} is provided as an \R function or a \code{\link{Csnippet}}.
   }
 }
 \details{
