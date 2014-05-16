@@ -14,5 +14,5 @@ pompExample(ricker)
 plot(ricker)
 coef(ricker)
 }
-\seealso{\code{\link{pomp-class}} and the vignettes}
+\seealso{\code{\link{pomp}} and the vignettes}
 \keyword{datasets}

@@ -91,7 +91,6 @@
     optional; a formula or list of formulae, specifying the measurement model.
     These formulae are parsed internally to generate \code{rmeasure} and \code{dmeasure} functions.
     If \code{measurement.model} is given it overrides any specification of \code{rmeasure} or \code{dmeasure}.
-    See below for an example.
     \strong{NB:} This is a convenience function, primarily designed to facilitate exploration;
     it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} functions directly.
   }
@@ -103,8 +102,8 @@
     indicate this by specifying \code{skeleton.type="vectorfield"}.
 
     The skeleton function can be specified in one of three ways:
-    (1) as an \R function of prototype \preformatted{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params}, or
-    (2) as a snippet of C code (via \code{\link{Csnippet}}) that performs this evaluation.
+    (1) as an \R function of prototype \preformatted{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params},
+    (2) as a snippet of C code (via \code{\link{Csnippet}}) that performs this evaluation, or
     (3) as the name of a native (compiled) routine with prototype \dQuote{pomp_skeleton} as defined in the header file \dQuote{pomp.h}.
     If the deterministic skeleton depends on covariates, the optional argument \code{covars} will be filled with interpolated values of the covariates at the time \code{t}.
 
@@ -122,7 +121,7 @@
     optional; function drawing a sample from a prior distribution on parameters.
     This can be specified in one of three ways:
     (1) as an \R function of prototype \preformatted{rprior(params,\dots)} that makes a draw from the prior distribution given \code{params},
-    (2) as a snippet of C code (via \code{\link{Csnippet}}) that draws from the prior,
+    (2) as a snippet of C code (via \code{\link{Csnippet}}) that draws from the prior, or
     (3) as the name of a native (compiled) routine with prototype \dQuote{pomp_rprior} as defined in the header file \dQuote{pomp.h}.
   }
   \item{dprior}{
@@ -301,8 +300,9 @@
   }
 }
 \examples{
-## For examples, see the vignettes, the data()-loadable
-## example \code{pomp} objects, and the provided example files.
+## For examples, see the \dQuote{Introduction to \pkg{pomp}}
+## and \dQuote{Advanced topics in \pkg{pomp}} documents,
+## the demos, and the examples provided with the package, e.g.:
 \dontrun{
 pompExample()
 pomp.home <- system.file("examples",package="pomp")

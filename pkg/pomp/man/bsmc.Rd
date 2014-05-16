@@ -107,14 +107,21 @@
   There are two ways to specify the prior distribution of particles.
   If \code{params} is unspecified or is a named vector, \code{Np} draws are made from the prior distribution, as specified by \code{\link{rprior}}.
   Alternatively, \code{params} can be specified as an \code{npars} x \code{Np} matrix (with rownames).
-  }
+}
 \author{
   Michael Lavine (lavine at math dot umass dot edu),
   Matthew Ferrari (mferrari at psu dot edu),
   Aaron A. King
 }
+\references{
+  Liu, J. and M. West.
+  Combining Parameter and State Estimation in Simulation-Based Filtering.
+  In A. Doucet, N. de Freitas, and N. J. Gordon, editors,
+  Sequential Monte Carlo Methods in Practice, pages 197-224.
+  Springer, New York, 2001.
+}
 \examples{
-## See the vignettes for examples.
+## See the "Introducton to pomp" document for examples.
 }
 \seealso{\link{pomp-class}}
 \keyword{ts}

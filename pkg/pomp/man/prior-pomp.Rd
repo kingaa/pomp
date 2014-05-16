@@ -30,6 +30,6 @@
   For specifications on writing these functions, see \code{\link{pomp}}.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
-\seealso{\code{\link{pomp-class}}, \code{\link{pomp}}}
+\seealso{\code{\link{pomp}}}
 \keyword{models}
 \keyword{ts}

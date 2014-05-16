@@ -66,6 +66,6 @@ x <- simulate(ou2,seed=3495485,nsim=10)
 x <- simulate(ou2,seed=3495485,nsim=10,states=TRUE,obs=TRUE)
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
-\seealso{\link{pomp-class}}
+\seealso{\link{pomp}}
 \keyword{models}
 \keyword{ts}

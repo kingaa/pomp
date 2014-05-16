@@ -51,6 +51,6 @@ compare.mif(z)
   }
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
-\seealso{\code{\link{mif}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}}
+\seealso{\code{\link{mif}}, \code{\link{pomp}}, \code{\link{pfilter}}}
 \keyword{models}
 \keyword{ts}

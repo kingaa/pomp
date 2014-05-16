@@ -1,5 +1,14 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_0-_6:
+
+        • The package manual and tutorials are no longer included with
+          the package source.  Instead, links are provided to the
+          ‘pomp’ website.
+
+        • The package help pages have been revisited for accuracy and
+          completeness.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_0-_1:
 
         • ‘pomp’ can now take snippets of C code directly as

@@ -73,18 +73,6 @@
 }
 \value{
   An object of class \code{pmcmc}.
-  This class inherits from class \code{\link[=pfilterd.pomp-class]{pfilterd.pomp}} and contains the following additional slots:
-  \describe{
-    \item{pars, Nmcmc, dprior, hyperparams}{
-      These slots hold the values of the corresponding arguments of the call to \code{pmcmc}.
-    }
-    \item{random.walk.sd}{
-      a named numeric vector containing the random-walk variances used to parameterize a Gaussian random walk MCMC proposal.
-    }
-    \item{log.prior}{
-      a numeric value containing the log of the prior density evaluated at the parameter vector in the params slot.
-    }
-  }
 }
 \section{Re-running PMCMC Iterations}{
   To re-run a sequence of PMCMC iterations, one can use the \code{pmcmc} method on a \code{pmcmc} object.
@@ -100,7 +88,7 @@
 \section{Details}{
   \code{pmcmc} implements an MCMC algorithm in which the true likelihood of the data is replaced by an unbiased estimate computed by a particle filter.
   This gives an asymptotically correct Bayesian procedure for parameter estimation (Andrieu and Roberts, 2009).
-  An extension to give a correct Bayesian posterior distribution of unobserved state variables (Andrieu et al, 2010) has not yet been implemented.
+  An extension to give a correct Bayesian posterior distribution of unobserved state variables (as in Andrieu et al, 2010) has not yet been implemented.
 }
 \references{
   C. Andrieu, A. Doucet and R. Holenstein, 

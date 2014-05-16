@@ -133,7 +133,8 @@ footer <- list(
                parameter.transform="\n}\n\n",
                parameter.inv.transform="\n}\n\n",
                rprior="\n}\n\n",
-               dprior="\n}\n\n"
+               dprior="\n}\n\n",
+               globals="\n"
                )
 
 utility.fns <- list()
@@ -192,7 +193,7 @@ pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
     cat(file=out,f)
   }
 
-  cat(file=out,globals)
+  cat(file=out,globals,footer$globals)
 
   ## variable/parameter/observations definitions
   for (v in seq_along(paramnames)) {

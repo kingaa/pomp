@@ -133,6 +133,6 @@ logLik(pfilter(gompertz,Np=2000))    	## run it with 2000 particles and get the 
   IEEE Trans. Sig. Proc. 50:174--188, 2002.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
-\seealso{\link{pomp-class}}
+\seealso{\code{\link{pomp}}, \code{\link{mif}}, \code{\link{pmcmc}}, \code{\link{bsmc}}}
 \keyword{models}
 \keyword{ts}

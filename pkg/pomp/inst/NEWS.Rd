@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.50-6}{
+  \itemize{
+    \item The package manual and tutorials are no longer included with the package source.
+    Instead, links are provided to the \pkg{pomp} website.
+    \item The package help pages have been revisited for accuracy and completeness.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.50-1}{
   \itemize{
     \item \code{pomp} can now take snippets of C code directly as definitions of the various basic functions.

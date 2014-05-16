@@ -2,7 +2,7 @@
 \alias{pompBuilder}
 \title{Write, compile, link, and build a pomp object using native codes}
 \description{
-  \code{pompBuilder} is an EXPERIMENTAL facility for producing compiled \code{pomp} objects.
+  \code{pompBuilder} is a facility for producing compiled \code{pomp} objects.
 }
 \usage{
 pompBuilder(data, times, t0, name, statenames, paramnames, 

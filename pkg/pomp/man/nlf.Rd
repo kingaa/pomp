@@ -110,12 +110,10 @@
  Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P., McCauley, E., Nisbet, R. M. and Wood S. N. (1999)
  Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches.
  \emph{Ecology} \bold{80}, 1789--1805.
- Available online at \url{http://www2.bren.ucsb.edu/~kendall/pubs/1999Ecology.pdf}
 
  Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J., Murdoch, W. W. and Turchin, P. (2005)
  Population cycles in the pine looper moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
  \emph{Ecological Monographs} \bold{75}, 259--276.
- Available online at \url{http://repositories.cdlib.org/postprints/818/}
 }
 \author{Stephen P. Ellner \email{spe2 at cornell dot edu} and Bruce E. Kendall \email{kendall at bren dot ucsb dot edu}}
 \keyword{models}

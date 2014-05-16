@@ -11,9 +11,9 @@
 \alias{continue,mif-method}
 \alias{continue-mif}
 \alias{mif-class}
-\title{The MIF algorithm}
+\title{Iterated filtering}
 \description{
-  The MIF algorithm for estimating the parameters of a partially-observed Markov process.
+  Iterated filtering algorithms for estimating the parameters of a partially-observed Markov process.
 }
 \usage{
 mif(object, \dots)
@@ -35,7 +35,7 @@ mif(object, \dots)
     An object of class \code{pomp}.
   }
   \item{Nmif}{
-    The number of MIF iterations to perform.
+    The number of filtering iterations to perform.
   }
   \item{start}{
     named numerical vector;
@@ -82,7 +82,7 @@ mif(object, \dots)
     The \code{mif} update for initial-value parameters consists of replacing them by their filtering mean at time \code{times[ic.lag]}, where \code{times=time(object)}.
     It makes no sense to set \code{ic.lag>length(times)};
     if it is so set, \code{ic.lag} is set to \code{length(times)} with a warning.
-    For \code{method='mif2'}, the default is \code{ic.lag=length(times)}.
+    For \code{method="mif2"}, the default is \code{ic.lag=length(times)}.
   }
   \item{var.factor}{
     a positive number;
@@ -103,7 +103,7 @@ mif(object, \dots)
     \code{method="mif"} uses the iterated filtering update rule (Ionides 2006, 2011);
     \code{method="unweighted"} updates the parameter to the unweighted average of the filtering means of the parameters at each time;
     \code{method="fp"} updates the parameter to the filtering mean at the end of the time series.
-    \code{method="mif2"} [EXPLAIN]
+%    \code{method="mif2"} 
   }
   \item{tol}{
     See the description under \code{\link{pfilter}}.
@@ -149,7 +149,7 @@ mif(object, \dots)
   \code{Np} may be assumed to be a positive integer;
   \code{center} and \code{sd} will be named vectors of the same length.
   Additional arguments may be specified;
-  these will be filled with the elements of the \code{userdata} slot of the underlying \code{pomp} object (see \code{\link{pomp-class}}).
+  these will be filled with the elements of the \code{userdata} slot of the underlying \code{pomp} object (see \code{\link{pomp}}).
 
   \code{particles} returns a \code{length(center)} x \code{Np} matrix with rownames matching the names of \code{center} and \code{sd}.
   Each column represents a distinct particle.
@@ -173,7 +173,7 @@ mif(object, \dots)
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
+  \code{\link{mif-methods}}, \code{\link{pomp}}, \code{\link{pfilter}}.
   See the \dQuote{intro_to_pomp} vignette for examples.
 }
 \keyword{ts}

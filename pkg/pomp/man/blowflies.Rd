@@ -37,7 +37,7 @@ plot(blowflies2)
 
   to view the code that constructs these pomp objects.
 }
-\seealso{\code{\link{pomp-class}} and the vignettes}
+\seealso{\code{\link{pomp}}}
 \references{
   A. J. Nicholson (1957)
   The self-adjustment of populations to change.

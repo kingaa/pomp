@@ -138,8 +138,7 @@ probe.quantile(var, prob, transform = identity)
   Aaron A. King (kingaa at umich dot edu)
 }
 \seealso{
-  \link{pomp-class},
-  \link{pomp-methods}
+  \link{pomp}
 }
 \keyword{models}
 \keyword{ts}
