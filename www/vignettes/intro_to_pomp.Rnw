@@ -1766,7 +1766,7 @@ Obviously, the Euler-multinomial distributions generalize to an arbitrary number
 
 The help (\code{?euler.sim}) informs us that to use \code{euler.sim}, we need to specify a function that advances the states from $t$ to $t+{\delta}t$.
 The function \code{sir.step}, defined here, does this.
-<<sir-step-R,keep.source=T>>=
+<<sir-step-R>>=
 
 require(pomp)
 
