@@ -47,8 +47,8 @@ setMethod('logLik','mif',function(object,...)object@loglik)
 ## extract the convergence record
 conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
   if (transform) {
-    pars.improper <- c("loglik","nfail")
-    pars.proper <- setdiff(colnames(object@conv.rec),pars.improper)
+    pars.proper <- names(coef(object))
+    pars.improper <- setdiff(colnames(object@conv.rec),pars.proper)
     retval <- cbind(
                     t(
                       partrans(

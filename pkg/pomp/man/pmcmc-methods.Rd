@@ -31,7 +31,7 @@ compare.pmcmc(z)
 \section{Methods}{
   \describe{
     \item{conv.rec}{
-      \code{conv.rec(object, pars = NULL)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
+      \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
       By default, all rows are returned.
     }
     \item{logLik}{
