@@ -9,8 +9,8 @@ $crancontents = file_get_contents($cranpage);
 preg_match("/<tr><td valign=top>Version:<\/td>\\n<td>(.+?)<\/td>/",$crancontents,$matches);
 $cranversion = $matches[1];
 $rforgepage = file_get_contents($rforgepkgs);
-preg_match("/Rev\.: <b>(.+?)<\/b>/",$rforgepage,$matches);
-$svnrevision = $matches[2];
+preg_match_all("/Rev\.: <b>(.+?)<\/b>/",$rforgepage,&$matches);
+$svnrevision = $matches[1][1];
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
 <!DOCTYPE html

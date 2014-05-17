@@ -1205,12 +1205,12 @@ The intermediate statistical model in \code{nlf} is a multivariate generalized a
 
 As a simple example we can use \code{nlf} to estimate the parameters \code{K} and \code{r} of the Gompertz model.  
 An example of a minimal call, accepting the defaults for all optional arguments, is 
-<<first-nlf,eval=F>>=
+<<first-nlf,eval=T,results='hide'>>=
 pompExample(gompertz)
 out <- nlf(
            gompertz,
            start=c(r=1,K=2,sigma=0.5,tau=0.5,X.0=1),
-           partrans=TRUE,
+           transform.params=TRUE,
            est=c("K","r"),
            lags=c(1,2)
            )

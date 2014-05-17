@@ -3,6 +3,7 @@ REXE = $(R_HOME)/bin/R --vanilla
 LATEX = latex
 BIBTEX = bibtex
 PDFLATEX = pdflatex
+RM = rm -f
 
 default: vignettes clean
 
@@ -10,11 +11,9 @@ vignettes: advanced_topics_in_pomp.pdf advanced_topics_in_pomp.R intro_to_pomp.p
 
 %.R: %.Rnw
 	$(RSCRIPT) -e 'library(knitr); purl("$*.Rnw")'
-#	$(REXE) CMD Stangle $*.Rnw
 
 %.tex: %.Rnw
 	$(RSCRIPT) -e 'library(knitr); knit("$*.Rnw")'
-#	$(REXE) CMD Sweave $*.Rnw
 
 %.pdf: %.tex
 	$(PDFLATEX) $*
@@ -26,4 +25,5 @@ vignettes: advanced_topics_in_pomp.pdf advanced_topics_in_pomp.R intro_to_pomp.p
 clean:
 	$(RM) *.tex *.log *.aux *.blg *.bbl *.out *.Rout *.toc *.lof *.lot *.brf
 	$(RM) *.c *.o *.so
-	$(RM) Rplots.pdf figure/*
+	$(RM) Rplots.pdf
+	$(RM) -r figure

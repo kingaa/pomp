@@ -855,15 +855,15 @@ res <- rbind(
 print(res,digits=3)
 
 
-## ----first-nlf,eval=F----------------------------------------------------
-## pompExample(gompertz)
-## out <- nlf(
-##            gompertz,
-##            start=c(r=1,K=2,sigma=0.5,tau=0.5,X.0=1),
-##            partrans=TRUE,
-##            est=c("K","r"),
-##            lags=c(1,2)
-##            )
+## ----first-nlf,eval=T,results='hide'-------------------------------------
+pompExample(gompertz)
+out <- nlf(
+           gompertz,
+           start=c(r=1,K=2,sigma=0.5,tau=0.5,X.0=1),
+           transform.params=TRUE,
+           est=c("K","r"),
+           lags=c(1,2)
+           )
 
 
 ## ----nlf-gompertz-starts,eval=F------------------------------------------
