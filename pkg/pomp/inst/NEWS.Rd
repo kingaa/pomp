@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.50-8}{
+  \itemize{
+    \item Introduced new \code{compare.pmcmc} and \code{compare.abc} functions, comparable to \code{compare.mif}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.50-6}{
   \itemize{
     \item The package manual and tutorials are no longer included with the package source.

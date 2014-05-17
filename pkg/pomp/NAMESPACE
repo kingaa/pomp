@@ -87,7 +87,7 @@ export(
        profileDesign,
        bspline.basis,
        periodic.bspline.basis,
-       compare.mif,
+       compare.mif,compare.pmcmc,compare.abc,
        nlf,
        parmat,
        logmeanexp,

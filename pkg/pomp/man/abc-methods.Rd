@@ -5,16 +5,19 @@
 \alias{conv.rec-abc}
 \alias{plot-abc}
 \alias{plot,abc-method}
+\alias{compare.abc}
 \title{Methods of the "abc" class}
 \description{Methods of the "abc" class.}
 \usage{
 \S4method{conv.rec}{abc}(object, pars, \dots)
 \S4method{plot}{abc}(x, y, pars, scatter = FALSE, \dots)
+compare.abc(z)
 }
 \arguments{
   \item{object, x}{The \code{abc} object.}
   \item{pars}{Names of parameters.}
   \item{y}{Ignored.}
+  \item{z}{An \code{abc} object or list of \code{abc} objects.}
   \item{scatter}{
     optional logical;
     If \code{TRUE}, draw scatterplots.
@@ -30,7 +33,7 @@
       \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
       By default, all rows are returned.
     }
-    \item{plot}{
+    \item{plot, compare.abc}{
       Plots a series of diagnostic plots.
     }
   }
