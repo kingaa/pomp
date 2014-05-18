@@ -1,5 +1,9 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_0-_9:
+
+        • Fix bug in ‘compare.pmcmc’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_0-_8:
 
         • Introduced new ‘compare.pmcmc’ and ‘compare.abc’ functions,
