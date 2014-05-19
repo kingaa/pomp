@@ -6,7 +6,7 @@ $rforgepkgs = "http://r-forge.r-project.org/R/?group_id=214";
 $tracker = "http://r-forge.r-project.org/tracker/?group_id=214";
 $cranpage = "http://cran.at.r-project.org/web/packages/pomp/";
 $crancontents = file_get_contents($cranpage);
-preg_match("/<tr><td valign=top>Version:<\/td>\\n<td>(.+?)<\/td>/",$crancontents,$matches);
+preg_match("/<tr><td valign=\"top\">Version:<\/td>\\n<td>(.+?)<\/td><\/tr>/",$crancontents,$matches);
 $cranversion = $matches[1];
 $rforgepage = file_get_contents($rforgepkgs);
 preg_match_all("/Rev\.: <b>(.+?)<\/b>/",$rforgepage,&$matches);
