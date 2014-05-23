@@ -1,5 +1,5 @@
 
-R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -20,6 +20,8 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
 Loading required package: deSolve
+Loading required package: coda
+Loading required package: lattice
 > 
 > set.seed(45768683)
 > 
@@ -113,110 +115,16 @@ Loading required package: deSolve
 +             )
 > 
 > invisible(show(rw2))
-data and states:
-    time y1 y2
-1      1  0  0
-2      2  0  0
-3      3  0  0
-4      4  0  0
-5      5  0  0
-6      6  0  0
-7      7  0  0
-8      8  0  0
-9      9  0  0
-10    10  0  0
-11    11  0  0
-12    12  0  0
-13    13  0  0
-14    14  0  0
-15    15  0  0
-16    16  0  0
-17    17  0  0
-18    18  0  0
-19    19  0  0
-20    20  0  0
-21    21  0  0
-22    22  0  0
-23    23  0  0
-24    24  0  0
-25    25  0  0
-26    26  0  0
-27    27  0  0
-28    28  0  0
-29    29  0  0
-30    30  0  0
-31    31  0  0
-32    32  0  0
-33    33  0  0
-34    34  0  0
-35    35  0  0
-36    36  0  0
-37    37  0  0
-38    38  0  0
-39    39  0  0
-40    40  0  0
-41    41  0  0
-42    42  0  0
-43    43  0  0
-44    44  0  0
-45    45  0  0
-46    46  0  0
-47    47  0  0
-48    48  0  0
-49    49  0  0
-50    50  0  0
-51    51  0  0
-52    52  0  0
-53    53  0  0
-54    54  0  0
-55    55  0  0
-56    56  0  0
-57    57  0  0
-58    58  0  0
-59    59  0  0
-60    60  0  0
-61    61  0  0
-62    62  0  0
-63    63  0  0
-64    64  0  0
-65    65  0  0
-66    66  0  0
-67    67  0  0
-68    68  0  0
-69    69  0  0
-70    70  0  0
-71    71  0  0
-72    72  0  0
-73    73  0  0
-74    74  0  0
-75    75  0  0
-76    76  0  0
-77    77  0  0
-78    78  0  0
-79    79  0  0
-80    80  0  0
-81    81  0  0
-82    82  0  0
-83    83  0  0
-84    84  0  0
-85    85  0  0
-86    86  0  0
-87    87  0  0
-88    88  0  0
-89    89  0  0
-90    90  0  0
-91    91  0  0
-92    92  0  0
-93    93  0  0
-94    94  0  0
-95    95  0  0
-96    96  0  0
-97    97  0  0
-98    98  0  0
-99    99  0  0
-100  100  0  0
+100 records of 2 observables, recorded from t = 1 to 100 
+summary of data:
+       y1          y2   
+ Min.   :0   Min.   :0  
+ 1st Qu.:0   1st Qu.:0  
+ Median :0   Median :0  
+ Mean   :0   Mean   :0  
+ 3rd Qu.:0   3rd Qu.:0  
+ Max.   :0   Max.   :0  
 zero time, t0 = 0
-parameter(s) unspecified
 process model simulator, rprocess = 
 function (params, xstart, times, ...) 
 {
@@ -260,7 +168,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x25f5b00>
+<environment: 0x310abf8>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -273,7 +181,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x25f5b00>
+<environment: 0x310abf8>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -291,6 +199,7 @@ parameter transform function =
 function not specified
 parameter inverse transform function = 
 function not specified
+parameter(s) unspecified
 userdata = 
 $useless
 [1] 23
@@ -401,7 +310,7 @@ newly created pomp object(s):
 > invisible(timezero(new))
 > timezero(new) <- 19
 > print(simulate(new))
-data and states:
+data, states, and covariates:
    time         y1         y2         x1         x2
 1    20  0.2438664  3.1093573  0.5247663  5.0741536
 2    21 -2.4324990  4.5669427 -2.2582676  4.2250510
@@ -437,4 +346,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.944   0.076   1.040 
+  0.968   0.064   1.059 

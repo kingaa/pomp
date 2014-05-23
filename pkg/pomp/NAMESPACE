@@ -38,12 +38,13 @@ importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(subplex,subplex)
 importFrom(deSolve,ode)
 importFrom(nloptr,nloptr)
+importFrom(coda,mcmc,mcmc.list)
 
 exportClasses(
               pomp,
               pfilterd.pomp,
               mif,
-              pmcmc,
+              pmcmc,pmcmcList,
               traj.matched.pomp,
               probed.pomp,probe.matched.pomp,
               spect.pomp,spect.matched.pomp,
@@ -87,7 +88,7 @@ export(
        profileDesign,
        bspline.basis,
        periodic.bspline.basis,
-       compare.mif,compare.pmcmc,compare.abc,
+       compare.mif,
        nlf,
        parmat,
        logmeanexp,

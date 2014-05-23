@@ -17,7 +17,7 @@ f1 <- pmcmc(
             max.fail=100, 
             verbose=FALSE
             )
-f1 <- continue(f1,Nmcmc=200,max.fail=100)
+f1 <- continue(f1,Nmcmc=20,max.fail=100)
 plot(f1)
 
 ff <- pfilter(f1)
@@ -29,44 +29,55 @@ f2 <- pmcmc(
             verbose=FALSE
             )
 
-f3 <- pmcmc(
-            ff,
-            Nmcmc=20,
-            transform=TRUE,
-            rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-            max.fail=100, 
-            verbose=FALSE
-            )
-f4 <- pmcmc(f3)
-f4 <- continue(f4,Nmcmc=100)
+f3 <- pmcmc(f2)
+f4 <- continue(f3,Nmcmc=20)
 
-if (FALSE) {
-  f2 <- pmcmc(
-              f1,Nmcmc=1000,Np=500,max.fail=100,
-              verbose=FALSE
-              )
-  plot(f2)
-  runs <- rle(conv.rec(f2)[,'loglik'])$lengths
-  plot(runs)
-  acf(conv.rec(f2)[,c("alpha.2","alpha.3")])
-}
+plot(c(f2,f3))
 
-dprior.ou2 <- function (params, log, ...) {
-  f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
-  if (log) f else exp(f)
+try(ff <- c(f3,f4))
+
+if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
+  f2a <- pmcmc(
+               f1,Nmcmc=1000,Np=100,max.fail=100,
+               verbose=FALSE
+               )
+  plot(f2a)
+  runs <- rle(as.numeric(conv.rec(f2a,'loglik')))$lengths
+  plot(sort(runs))
+  acf(conv.rec(f2a,c("alpha.2","alpha.3")))
 }
 
 f5 <- pmcmc(
-            ou2,
-            start=coef(ou2),
+            pomp(ou2,
+                 dprior=function (params, log, ...) {
+                   f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+                   if (log) f else exp(f)
+                 }
+                 ),
             Nmcmc=20,
             rw.sd=c(alpha.2=0.001,alpha.3=0.001),
             Np=100,
             max.fail=100, 
             verbose=FALSE
             )
-f5 <- continue(f5,Nmcmc=200,max.fail=100)
-plot(f5)
+f6 <- continue(f5,Nmcmc=20,max.fail=100)
+plot(f6)
+
+ff <- c(f4,f6)
+plot(ff)
+plot(conv.rec(ff,c("alpha.2","alpha.3","loglik")))
+
+ff <- c(f2,f3)
+
+try(ff <- c(ff,f4,f6))
+try(ff <- c(f4,ou2))
+try(ff <- c(ff,ou2))
+
+plot(ff <- c(ff,f5))
+plot(conv.rec(c(f2,ff),c("alpha.2","alpha.3")))
+plot(conv.rec(ff[2],c("alpha.2")))
+plot(conv.rec(ff[2:3],c("alpha.3")))
+plot(conv.rec(ff[[3]],c("alpha.3")))
 
 dev.off()
 

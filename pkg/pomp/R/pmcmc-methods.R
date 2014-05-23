@@ -3,41 +3,133 @@
 ## extract the estimated log likelihood
 setMethod('logLik','pmcmc',function(object,...)object@loglik)
 
-## extract the filtering means
-setMethod(
-          'filter.mean',
-          'pmcmc',
-          function (object, pars, ...) {
-            if (missing(pars)) pars <- rownames(object@filter.mean)
-            object@filter.mean[pars,]
-          }
-          )
-
 ## extract the convergence record
 setMethod(
           'conv.rec',
-          'pmcmc',
+          signature=signature(object='pmcmc'),
           function (object, pars, ...) {
             if (missing(pars)) pars <- colnames(object@conv.rec)
-            object@conv.rec[,pars]
+            coda::mcmc(object@conv.rec[,pars])
           }
           )
 
 ## plot pmcmc object
 setMethod(
           "plot",
-          "pmcmc",
+          signature=signature(x='pmcmc'),
           function (x, y = NULL, ...) {
-            compare.pmcmc(x)
+            pmcmc.diagnostics(list(x))
           }
           )
 
-compare.pmcmc <- function (z) {
+
+## pmcmcList class
+setClass(
+         'pmcmcList',
+         slots=c(
+           list = 'list'
+           ),
+         prototype=prototype(
+           list = list()
+           ),
+         validity=function (object) {
+           if (!all(sapply(object@list,is,'pmcmc'))) {
+             retval <- paste0(
+                              "error in ",sQuote("c"),
+                              ": dissimilar objects cannot be combined"
+                              )
+             return(retval)
+           }
+           d <- sapply(object@list,function(x)dim(x@conv.rec))
+           if (!all(apply(d,1,diff)==0)) {
+             retval <- paste0(
+                              "error in ",sQuote("c"),
+                              ": to be combined, ",sQuote("pmcmc"),
+                              " objects must have chains of equal length"
+                              )
+             return(retval)
+           }
+           TRUE
+         }
+         )
+
+setMethod(
+          'c',
+          signature=signature(x='pmcmc'),
+          definition=function (x, ...) {
+            y <- list(...)
+            if (length(y)==0) {
+              new("pmcmcList",list=list(x))
+            } else {
+              p <- sapply(y,is,'pmcmc')
+              q <- sapply(y,is,'pmcmcList')
+              if (any(!(p||q)))
+                stop("cannot mix ",sQuote("pmcmc"),
+                     " and non-",sQuote("pmcmc")," objects")
+              y[p] <- lapply(y[p],list)
+              y[q] <- lapply(y[q],slot,"list")
+              new("pmcmcList",list=c(list(x),y,recursive=TRUE))
+            }
+          }
+          )
+
+setMethod(
+          'c',
+          signature=signature(x='pmcmcList'),
+          definition=function (x, ...) {
+            y <- list(...)
+            if (length(y)==0) {
+              x
+            } else {
+              x <- x@list
+              p <- sapply(y,is,'pmcmc')
+              pl <- sapply(y,is,'pmcmcList')
+              if (any(!(p||pl)))
+                stop("cannot mix ",sQuote("pmcmc"),
+                     " and non-",sQuote("pmcmc")," objects")
+              y[p] <- lapply(y[p],list)
+              y[pl] <- lapply(y[pl],slot,"list")
+              new("pmcmcList",list=c(x,y,recursive=TRUE))
+            }
+          }
+          )
+
+setMethod(
+          "[",
+          signature=signature(x="pmcmcList"),
+          definition=function(x, i, ...) {
+            y <- x
+            y@list <- x@list[i]
+            y
+          }
+          )
+
+setMethod(
+          "[[",
+          signature=signature(x="pmcmcList"),
+          definition=function(x, i, ...) {
+            x@list[[i]]
+          }
+          )
+
+setMethod(
+          'conv.rec',
+          signature=signature(object='pmcmcList'),
+          definition=function (object, ...) {
+            coda::mcmc.list(lapply(object@list,conv.rec,...))
+          }
+          )
+
+setMethod(
+          "plot",
+          signature=signature(x='pmcmcList'),
+          definition=function (x, y = NULL, ...) {
+            pmcmc.diagnostics(x@list)
+          }
+          )
+
+pmcmc.diagnostics <- function (z) {
   ## assumes that x is a list of pmcmcs with identical structure
-  if (!is.list(z)) z <- list(z)
-  if (!all(sapply(z,function(x)is(x,'pmcmc'))))
-    stop("compare.pmcmc error: ",sQuote("z"),
-         " must be a pmcmc object or a list of pmcmc objects",call.=FALSE)
   mar.multi <- c(0,5.1,0,2.1)
   oma.multi <- c(6,0,5,0)
   xx <- z[[1]]
@@ -80,4 +172,14 @@ compare.pmcmc <- function (z) {
     mtext("PMCMC convergence diagnostics",3,line=2,outer=TRUE)
   }
   invisible(NULL)
+}
+
+compare.pmcmc <- function (z) {
+  if (!is.list(z)) z <- list(z)
+  if (!all(sapply(z,function(x)is(x,'pmcmc'))))
+    stop("compare.pmcmc error: ",sQuote("z"),
+         " must be a pmcmc object or a list of pmcmc objects",call.=FALSE)
+  warning(sQuote("compare.pmcmc")," is deprecated.\n",
+          "Use ",sQuote("diagnostics")," instead.",call.=FALSE)
+  pmcmc.diagnostics(z)
 }

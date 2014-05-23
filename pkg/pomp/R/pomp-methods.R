@@ -243,7 +243,7 @@ setMethod(
           "print",
           "pomp",
           function (x, ...) {
-            cat("data and states:\n")
+            cat("data, states, and covariates:\n")
             print(as(x,"data.frame"))
             invisible(x)
           }
@@ -253,13 +253,20 @@ setMethod(
           "show",
           "pomp",
           function (object) {
-            print(object)
+            cat(length(object@times),"records of",
+                nrow(obs(object)),"observables,",
+                "recorded from t =",
+                min(object@times),"to",max(object@times),"\n")
+            cat("summary of data:\n")
+            print(summary(as.data.frame(t(obs(object)))))
             cat("zero time, t0 = ",object@t0,"\n",sep="")
-            if (length(coef(object))>0) {
-              cat("parameter(s):\n")
-              print(coef(object))
-            } else {
-              cat ("parameter(s) unspecified\n");
+            if (length(object@tcovar)>0) {
+              cat(nrow(object@covar),"records of",
+                  ncol(object@covar),"covariates,",
+                  "recorded from t =",min(object@tcovar),
+                  "to",max(object@tcovar),"\n")
+              cat("summary of covariates:\n")
+              print(summary(as.data.frame(object@covar)))
             }
             cat("process model simulator, rprocess = \n")
             show(object@rprocess)
@@ -283,6 +290,12 @@ setMethod(
             show(object@par.trans)
             cat("parameter inverse transform function = \n")
             show(object@par.untrans)
+            if (length(coef(object))>0) {
+              cat("parameter(s):\n")
+              print(coef(object))
+            } else {
+              cat ("parameter(s) unspecified\n");
+            }
             if (length(object@userdata)>0) {
               cat("userdata = \n")
               show(object@userdata)

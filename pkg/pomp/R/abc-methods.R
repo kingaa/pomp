@@ -6,18 +6,18 @@ setMethod(
           'abc',
           function (object, pars, ...) {
             if (missing(pars)) pars <- colnames(object@conv.rec)
-            object@conv.rec[,pars]
+            coda::mcmc(object@conv.rec[,pars])
           }
           )
 
-## plot pmcmc object
+## plot abc object
 setMethod(
           "plot",
           "abc",
           function (x, y, pars, scatter = FALSE, ...) {
             if (missing(pars)) pars <- x@pars
             if (scatter) {
-              pairs(conv.rec(x, pars))
+              pairs(as.matrix(conv.rec(x, pars)))
             } else {
               plot.ts(conv.rec(x,pars),xlab="iteration",...)
             }

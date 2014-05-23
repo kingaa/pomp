@@ -5,25 +5,35 @@
 \alias{logLik-pmcmc}
 \alias{conv.rec,pmcmc-method}
 \alias{conv.rec-pmcmc}
-\alias{filter.mean,pmcmc-method}
-\alias{filter.mean-pmcmc}
+\alias{conv.rec,pmcmcList-method}
+\alias{conv.rec-pmcmcList}
 \alias{plot-pmcmc}
 \alias{plot,pmcmc-method}
-\alias{compare.pmcmc}
+\alias{plot-pmcmcList}
+\alias{plot,pmcmcList-method}
+\alias{pmcmcList-class}
+\alias{c-pmcmc}
+\alias{c,pmcmc-method}
+\alias{c-pmcmcList}
+\alias{c,pmcmcList-method}
+\alias{[-pmcmcList}
+\alias{[,pmcmcList-method}
+\alias{[[-pmcmcList}
+\alias{[[,pmcmcList-method}
 \title{Methods of the "pmcmc" class}
 \description{Methods of the "pmcmc" class.}
 \usage{
 \S4method{logLik}{pmcmc}(object, \dots)
 \S4method{conv.rec}{pmcmc}(object, pars, \dots)
-\S4method{filter.mean}{pmcmc}(object, pars, \dots)
+\S4method{conv.rec}{pmcmcList}(object, \dots)
 \S4method{plot}{pmcmc}(x, y = NULL, \dots)
-compare.pmcmc(z)
+\S4method{c}{pmcmc}(x, \dots, recursive = FALSE)
+\S4method{c}{pmcmcList}(x, \dots, recursive = FALSE)
 }
 \arguments{
-  \item{object, x}{The \code{pmcmc} object.}
+  \item{object, x}{The \code{pmcmc} or \code{pmcmcList} object.}
   \item{pars}{Names of parameters.}
-  \item{y}{Ignored.}
-  \item{z}{A \code{pmcmc} object or list of \code{pmcmc} objects.}
+  \item{y, recursive}{Ignored.}
   \item{\dots}{
     Further arguments (either ignored or passed to underlying functions).
   }
@@ -31,35 +41,17 @@ compare.pmcmc(z)
 \section{Methods}{
   \describe{
     \item{conv.rec}{
-      \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
-      By default, all rows are returned.
+      \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars} as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
+    }
+    \item{plot}{
+      Plots density- and trace-plots.
+      This uses package \pkg{coda}'s default plots.
     }
     \item{logLik}{
       Returns the value in the \code{loglik} slot.
     }
-    \item{pmcmc}{
-      Re-runs the PMCMC iterations.
-      See the documentation for \code{\link{pmcmc}}.
-    }
-    \item{compare.pmcmc}{
-      Given a \code{pmcmc} object or a list of \code{pmcmc} objects, \code{compare.pmcmc} produces a set of diagnostic plots.
-    }
-    \item{plot}{
-      Plots a series of diagnostic plots.
-      When \code{x} is a \code{pmcmc} object, \code{plot(x)} is equivalent to \code{compare.pmcmc(list(x))}.
-    }
-    \item{filter.mean}{
-      \code{filter.mean(object, pars = NULL)} returns the rows of the filtering-mean matrix corresponding to the names in \code{pars}.
-      By default, all rows are returned.
-    }
-    \item{print}{
-      Prints a summary of the \code{pmcmc} object.
-    }
-    \item{show}{
-      Displays the \code{pmcmc} object.
-    }
-    \item{pfilter}{
-      See \code{\link{pfilter}}.
+    \item{c}{
+      Concatenates \code{pmcmc} objects into a \code{pmcmcList}.
     }
   }
 }
