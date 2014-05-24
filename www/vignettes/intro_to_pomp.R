@@ -430,113 +430,137 @@ theta.true <- theta
 
 ## ----gompertz-multi-mif-calc,eval=F,echo=T-------------------------------
 ## estpars <- c("r","sigma","tau")
-## replicate(
-##           n=10,
-##           {
-##             theta.guess <- theta.true
-##             theta.guess[estpars] <- rlnorm(
-##                                            n=length(estpars),
-##                                            meanlog=log(theta.guess[estpars]),
-##                                            sdlog=1
-##                                            )
-##             mif(
-##                 gompertz,
-##                 Nmif=100,
-##                 start=theta.guess,
-##                 transform=TRUE,
-##                 pars=estpars,
-##                 rw.sd=c(r=0.02,sigma=0.02,tau=0.05),
-##                 Np=2000,
-##                 var.factor=4,
-##                 ic.lag=10,
-##                 cooling.type="geometric",
-##                 cooling.fraction=0.95,
-##                 max.fail=10
-##                 )
-##           }
-##           ) -> mf
+## mf <- foreach(i=1:10,
+##               .inorder=FALSE,
+##               .options.multicore=list(set.seed=TRUE)
+##               ) %dopar%
+## {
+##   theta.guess <- theta.true
+##   theta.guess[estpars] <- rlnorm(
+##                                  n=length(estpars),
+##                                  meanlog=log(theta.guess[estpars]),
+##                                  sdlog=1
+##                                  )
+##   m1 <- mif(
+##             gompertz,
+##             Nmif=50,
+##             start=theta.guess,
+##             transform=TRUE,
+##             rw.sd=c(r=0.02,sigma=0.02,tau=0.05),
+##             Np=2000,
+##             var.factor=4,
+##             ic.lag=10,
+##             cooling.type="geometric",
+##             cooling.fraction=0.95
+##             )
+##   m1 <- continue(m1,Nmif=50,cooling.fraction=0.8)
+##   m1 <- continue(m1,Nmif=50,cooling.fraction=0.6)
+##   m1 <- continue(m1,Nmif=50,cooling.fraction=0.2)
+##   ll <- replicate(n=10,logLik(pfilter(m1,Np=10000)))
+##   list(mif=m1,ll=ll)
+## }
 
 
 ## ----gompertz-post-mif,eval=F,echo=F-------------------------------------
 ## theta.true <- coef(gompertz)
-## theta.mif <- apply(sapply(mf,coef),1,mean)
-## loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
-## loglik.mif.est <- logmeanexp(loglik.mif,se=TRUE)
-## loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
-## loglik.true.est <- logmeanexp(loglik.true,se=TRUE)
+## loglik.true <- replicate(n=10,logLik(pfilter(gompertz,Np=10000)))
+## loglik.true <- logmeanexp(loglik.true,se=TRUE)
+## theta.mif <- t(sapply(mf,function(x)coef(x$mif)))
+## loglik.mif <- t(sapply(mf,function(x)logmeanexp(x$ll,se=TRUE)))
+## best <- which.max(loglik.mif[,1])
+## theta.mif <- theta.mif[best,]
+## loglik.mif <- loglik.mif[best,]
 
 
 ## ----gompertz-multi-mif-eval,echo=F,results='hide'-----------------------
-set.seed(334388458L)
 binary.file <- "gompertz-multi-mif.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
+
+  require(foreach)
+  require(doMC)
+  registerDoMC()
+  
+  save.seed <- .Random.seed
+  set.seed(334388458L,kind="L'Ecuyer")
+
   tic <- Sys.time()
 estpars <- c("r","sigma","tau")
-replicate(
-          n=10,
-          {
-            theta.guess <- theta.true
-            theta.guess[estpars] <- rlnorm(
-                                           n=length(estpars),
-                                           meanlog=log(theta.guess[estpars]),
-                                           sdlog=1
-                                           )
-            mif(
-                gompertz,
-                Nmif=100,
-                start=theta.guess,
-                transform=TRUE,
-                pars=estpars,
-                rw.sd=c(r=0.02,sigma=0.02,tau=0.05),
-                Np=2000,
-                var.factor=4,
-                ic.lag=10,
-                cooling.type="geometric",
-                cooling.fraction=0.95,
-                max.fail=10
-                )
-          }
-          ) -> mf
-theta.true <- coef(gompertz)
-theta.mif <- apply(sapply(mf,coef),1,mean)
-loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
-loglik.mif.est <- logmeanexp(loglik.mif,se=TRUE)
-loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
-loglik.true.est <- logmeanexp(loglik.true,se=TRUE)
+mf <- foreach(i=1:10,
+              .inorder=FALSE,
+              .options.multicore=list(set.seed=TRUE)
+              ) %dopar%
+{
+  theta.guess <- theta.true
+  theta.guess[estpars] <- rlnorm(
+                                 n=length(estpars),
+                                 meanlog=log(theta.guess[estpars]),
+                                 sdlog=1
+                                 )
+  m1 <- mif(
+            gompertz,
+            Nmif=50,
+            start=theta.guess,
+            transform=TRUE,
+            rw.sd=c(r=0.02,sigma=0.02,tau=0.05),
+            Np=2000,
+            var.factor=4,
+            ic.lag=10,
+            cooling.type="geometric",
+            cooling.fraction=0.95
+            )
+  m1 <- continue(m1,Nmif=50,cooling.fraction=0.8)
+  m1 <- continue(m1,Nmif=50,cooling.fraction=0.6)
+  m1 <- continue(m1,Nmif=50,cooling.fraction=0.2)
+  ll <- replicate(n=10,logLik(pfilter(m1,Np=10000)))
+  list(mif=m1,ll=ll)
+}
   toc <- Sys.time()
   etime <- toc-tic
+  .Random.seed <<- save.seed
+
+theta.true <- coef(gompertz)
+loglik.true <- replicate(n=10,logLik(pfilter(gompertz,Np=10000)))
+loglik.true <- logmeanexp(loglik.true,se=TRUE)
+theta.mif <- t(sapply(mf,function(x)coef(x$mif)))
+loglik.mif <- t(sapply(mf,function(x)logmeanexp(x$ll,se=TRUE)))
+best <- which.max(loglik.mif[,1])
+theta.mif <- theta.mif[best,]
+loglik.mif <- loglik.mif[best,]
+
   save(
        mf,estpars,
        theta.mif,theta.true,
-       loglik.mif.est,loglik.true.est,
+       loglik.mif,loglik.true,
        etime,
        file=binary.file,
        compress="xz"
        )
 }
 rbind(
-      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif.est,2)),
-      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true.est,2))
+      mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif,2)),
+      truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true,2))
       ) -> results.table
 
 
 ## ----eval=F--------------------------------------------------------------
 ## theta.true <- coef(gompertz)
-## theta.mif <- apply(sapply(mf,coef),1,mean)
-## loglik.mif <- replicate(n=10,logLik(pfilter(mf[[1]],params=theta.mif,Np=10000)))
-## loglik.mif.est <- logmeanexp(loglik.mif,se=TRUE)
-## loglik.true <- replicate(n=10,logLik(pfilter(gompertz,params=theta.true,Np=10000)))
-## loglik.true.est <- logmeanexp(loglik.true,se=TRUE)
+## loglik.true <- replicate(n=10,logLik(pfilter(gompertz,Np=10000)))
+## loglik.true <- logmeanexp(loglik.true,se=TRUE)
+## theta.mif <- t(sapply(mf,function(x)coef(x$mif)))
+## loglik.mif <- t(sapply(mf,function(x)logmeanexp(x$ll,se=TRUE)))
+## best <- which.max(loglik.mif[,1])
+## theta.mif <- theta.mif[best,]
+## loglik.mif <- loglik.mif[best,]
 
 
 ## ----multi-mif-plot,echo=F,eval=F----------------------------------------
 ## op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-## loglik <- sapply(mf,function(x)conv.rec(x,"loglik"))
-## log.r <- sapply(mf,function(x)conv.rec(x,"r"))
-## log.sigma <- sapply(mf,function(x)conv.rec(x,"sigma"))
-## log.tau <- sapply(mf,function(x)conv.rec(x,"tau"))
+## loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
+## log.r <- sapply(mf,function(x)conv.rec(x$mif,"r"))
+## log.sigma <- sapply(mf,function(x)conv.rec(x$mif,"sigma"))
+## log.tau <- sapply(mf,function(x)conv.rec(x$mif,"tau"))
 ## matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
 ## matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
 ## matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
@@ -546,10 +570,10 @@ rbind(
 
 ## ----mif-plot,echo=F-----------------------------------------------------
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
-loglik <- sapply(mf,function(x)conv.rec(x,"loglik"))
-log.r <- sapply(mf,function(x)conv.rec(x,"r"))
-log.sigma <- sapply(mf,function(x)conv.rec(x,"sigma"))
-log.tau <- sapply(mf,function(x)conv.rec(x,"tau"))
+loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
+log.r <- sapply(mf,function(x)conv.rec(x$mif,"r"))
+log.sigma <- sapply(mf,function(x)conv.rec(x$mif,"sigma"))
+log.tau <- sapply(mf,function(x)conv.rec(x$mif,"tau"))
 matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
 matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
 matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
