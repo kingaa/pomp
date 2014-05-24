@@ -27,7 +27,7 @@ pomp.dist: pomp/inst/include/pomp.h
 pomp/inst/include/pomp.h: pomp/src/pomp.h
 	$(CP) $^ $@
 
-pompweb.vignettes: export POMP_BUILD_VIGNETTES=yes
+../www.vignettes: export POMP_BUILD_VIGNETTES=yes
 %.dist %.manual %.vignettes: export R_QPDF=qpdf
 %.dist %.manual %.vignettes: export R_GSCMD=gs
 %.dist %.manual %.vignettes: export GS_QUALITY=ebook
@@ -38,10 +38,10 @@ pompweb.vignettes: export POMP_BUILD_VIGNETTES=yes
 %.vignettes %.data: export R_LIBS=$(CURDIR)/library
 %.bin %.check %.qcheck %.qqcheck %.xcheck %.crancheck %.upload %.publish %.clean %.install %.win: PKG = $*_$(shell perl -ne 'print $$1 if /Version:\s+(\d+\.\d+-\d+)/;' $*/DESCRIPTION)
 
-pompweb.vignettes: pomp.install pomp.manual
-	(cd pompweb/vignettes; make)
-	cp pomp.pdf pompweb/vignettes
-	$(RCMD) Rdconv -t html pomp/inst/NEWS.Rd -o pompweb/content/NEWS.html
+../www.vignettes: pomp.install pomp.manual
+	(cd ../www/vignettes; make)
+	cp pomp.pdf ../www/vignettes
+	$(RCMD) Rdconv -t html pomp/inst/NEWS.Rd -o ../www/content/NEWS.html
 
 %.vignettes: %.install
 	cd $*/vignettes; make 
@@ -73,25 +73,23 @@ pompweb.vignettes: pomp.install pomp.manual
 	$(TOUCH) $@
 
 %.xcheck: %.dist
+	mkdir -p check
 	$(RCMD) check --use-gct --use-valgrind --timings --library=check $(PKG).tar.gz
 	$(TOUCH) $@
 
 %.check: %.dist
+	mkdir -p check
 	$(RCMD) check --library=check $(PKG).tar.gz
 	$(TOUCH) $@
 
 %.qcheck: %.dist
+	mkdir -p check
 	$(RCMD) check --library=check --no-vignettes --no-tests $(PKG).tar.gz
 	$(TOUCH) $@
 
 %.qqcheck: %.dist
+	mkdir -p check
 	$(RCMD) check --library=check --no-codoc --no-examples --no-vignettes --no-manual --no-tests $(PKG).tar.gz
-	$(TOUCH) $@
-
-%.changelog:
-	$(SVN) update $*
-	$(SVN2CL) --include-rev --group-by-day -o $*/inst/ChangeLog $*
-	$(SVN) info $* | perl -ne "print if /Revision|Date/;" > $*/inst/SVN-REVISION
 	$(TOUCH) $@
 
 %.manual:
