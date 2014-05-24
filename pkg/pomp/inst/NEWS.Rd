@@ -1,5 +1,17 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.51-1}{
+  \itemize{
+    \item Package 'coda' is now a dependency of 'pomp'.
+    This package provides various generic MCMC diagnostics.
+    \item Features that facilitate multiple PMCMC chains have been added.
+    There is a 'c' method to combine 'pmcmc' objects into a 'pmcmcList' object.
+    Running 'conv.rec' on a 'pmcmc' or 'pmcmcList' object now produces 'coda' 'mcmc' and 'mcmc.list' objects, respectively.
+    Diagnostic plots are produced by running 'plot' on such objects.
+    \item The 'compare.pmcmc' and 'compare.abc' methods have been removed.
+    They are superceded by these diagnostic plots.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.50-9}{
   \itemize{
     \item Fix bug in \code{compare.pmcmc}.
