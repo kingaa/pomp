@@ -1,5 +1,20 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_1-_1:
+
+        • Package 'coda' is now a dependency of 'pomp'.  This package
+          provides various generic MCMC diagnostics.
+
+        • Features that facilitate multiple PMCMC chains have been
+          added.  There is a 'c' method to combine 'pmcmc' objects into
+          a 'pmcmcList' object.  Running 'conv.rec' on a 'pmcmc' or
+          'pmcmcList' object now produces 'coda' 'mcmc' and 'mcmc.list'
+          objects, respectively.  Diagnostic plots are produced by
+          running 'plot' on such objects.
+
+        • The 'compare.pmcmc' and 'compare.abc' methods have been
+          removed.  They are superceded by these diagnostic plots.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_0-_9:
 
         • Fix bug in ‘compare.pmcmc’.

@@ -38,13 +38,10 @@ pomp/inst/include/pomp.h: pomp/src/pomp.h
 %.vignettes %.data: export R_LIBS=$(CURDIR)/library
 %.bin %.check %.qcheck %.qqcheck %.xcheck %.crancheck %.upload %.publish %.clean %.install %.win: PKG = $*_$(shell perl -ne 'print $$1 if /Version:\s+(\d+\.\d+-\d+)/;' $*/DESCRIPTION)
 
-../www.vignettes: pomp.install pomp.manual
+pomp.vignettes: pomp.install pomp.manual
 	(cd ../www/vignettes; make)
 	cp pomp.pdf ../www/vignettes
 	$(RCMD) Rdconv -t html pomp/inst/NEWS.Rd -o ../www/content/NEWS.html
-
-%.vignettes: %.install
-	cd $*/vignettes; make 
 
 %.data: %.install
 	cd $*/inst/data-R; make
