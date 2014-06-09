@@ -157,26 +157,26 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   PROTECT(X = makearray(3,xdim)); nprotect++;
   setrownames(X,Snames,3);
 
- if (nstates>0) {
-    PROTECT(sindex = MATCHROWNAMES(xstart,statenames)); nprotect++;
+  if (nstates>0) {
+    PROTECT(sindex = MATCHROWNAMES(xstart,statenames,"state variables")); nprotect++;
     sidx = INTEGER(sindex);
   } else {
     sidx = 0;
   }
   if (nparams>0) {
-    PROTECT(pindex = MATCHROWNAMES(params,paramnames)); nprotect++;
+    PROTECT(pindex = MATCHROWNAMES(params,paramnames,"parameters")); nprotect++;
     pidx = INTEGER(pindex);
   } else {
     pidx = 0;
   }
   if (ncovars>0) {
-    PROTECT(cindex = MATCHCOLNAMES(covar,covarnames)); nprotect++;
+    PROTECT(cindex = MATCHCOLNAMES(covar,covarnames,"covariates")); nprotect++;
     cidx = INTEGER(cindex);
   } else {
     cidx = 0;
   }
   if (nzeros>0) {
-    PROTECT(zindex = MATCHROWNAMES(xstart,zeronames)); nprotect++;
+    PROTECT(zindex = MATCHROWNAMES(xstart,zeronames,"state variables")); nprotect++;
     zidx = INTEGER(zindex);
   } else {
     zidx = 0;

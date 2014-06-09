@@ -80,7 +80,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 	  PROTECT(nm = GET_NAMES(ans)); nprotect++;
 	  use_names = !isNull(nm);
 	  if (use_names) {   // match names against names from params slot
-	    posn = INTEGER(PROTECT(matchnames(Pnames,nm))); nprotect++;
+	    posn = INTEGER(PROTECT(matchnames(Pnames,nm,"parameters"))); nprotect++;
 	  } else {
 	    posn = 0;
 	  }

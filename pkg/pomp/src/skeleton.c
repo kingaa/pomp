@@ -67,7 +67,7 @@ void eval_skeleton_R (double *f,
 	PROTECT(nm = GET_NAMES(ans)); nprotect++;
 	use_names = !isNull(nm);
 	if (use_names) {
-	  posn = INTEGER(PROTECT(matchnames(Snames,nm))); nprotect++;
+	  posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
 	} else {
 	  posn = 0;
 	}

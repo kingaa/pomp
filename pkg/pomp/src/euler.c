@@ -40,7 +40,7 @@ SEXP euler_model_simulator (SEXP func,
 
   // indices of accumulator variables
   nzeros = LENGTH(zeronames);
-  zidx = INTEGER(PROTECT(matchnames(Snames,zeronames))); nprotect++;
+  zidx = INTEGER(PROTECT(matchnames(Snames,zeronames,"state variables"))); nprotect++;
 
   // extract user function
   PROTECT(fn = pomp_fun_handler(func,gnsi,&mode)); nprotect++;
@@ -78,9 +78,9 @@ SEXP euler_model_simulator (SEXP func,
   case 1:			// native code
 
     // construct state, parameter, covariate indices
-    sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames"))))); nprotect++;
-    pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames"))))); nprotect++;
-    cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames"))))); nprotect++;
+    sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames")),"state variables"))); nprotect++;
+    pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames")),"parameters"))); nprotect++;
+    cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames")),"covariates"))); nprotect++;
 
     ff = (pomp_onestep_sim *) R_ExternalPtrAddr(fn);
 
@@ -181,14 +181,14 @@ SEXP euler_model_simulator (SEXP func,
 
 	      	PROTECT(ans = eval(fcall,rho));	nprotect++; // evaluate the call
 	      	if (LENGTH(ans) != nvars) {
-	      	  error("user 'step.fun' returns a vector of %d states but %d are expected: compare initial conditions?",
+	      	  error("user 'step.fun' returns a vector of %d state variables but %d are expected: compare initial conditions?",
 	      		LENGTH(ans),nvars);
 	      	}
 		
 	      	PROTECT(nm = GET_NAMES(ans)); nprotect++;
 	      	use_names = !isNull(nm);
 	      	if (use_names) {
-	      	  posn = INTEGER(PROTECT(matchnames(Snames,nm))); nprotect++;
+	      	  posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
 	      	}
 
 	      	ap = REAL(AS_NUMERIC(ans));
@@ -316,9 +316,9 @@ SEXP euler_model_density (SEXP func,
   case 1:			// native code
 
     // construct state, parameter, covariate indices
-    sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames"))))); nprotect++;
-    pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames"))))); nprotect++;
-    cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames"))))); nprotect++;
+    sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames")),"state variables"))); nprotect++;
+    pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames")),"parameters"))); nprotect++;
+    cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames")),"covariates"))); nprotect++;
 
     ff = (pomp_onestep_pdf *) R_ExternalPtrAddr(fn);
 

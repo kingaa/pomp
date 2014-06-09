@@ -120,7 +120,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 
   if (do_rw) {
     // indices of parameters undergoing random walk
-    PROTECT(pindex = matchnames(Pnames,rw_names)); nprotect++; 
+    PROTECT(pindex = matchnames(Pnames,rw_names,"parameters")); nprotect++; 
     xp = REAL(params);
     pidx = INTEGER(pindex);
     nrw = LENGTH(rw_names);

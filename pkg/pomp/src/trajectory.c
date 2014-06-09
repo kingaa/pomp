@@ -75,7 +75,7 @@ void iterate_map_R (double *X, double *time, double *p,
 	  PROTECT(nm = GET_NAMES(ans)); nprotect++;
 	  use_names = !isNull(nm);
 	  if (use_names) {
-	    posn = INTEGER(PROTECT(matchnames(Snames,nm))); nprotect++;
+	    posn = INTEGER(PROTECT(matchnames(Snames,nm,"state variables"))); nprotect++;
 	  }
 	  fs = REAL(AS_NUMERIC(ans));
 	  first = 0;
@@ -144,7 +144,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   PROTECT(zeronames = GET_SLOT(object,install("zeronames"))); nprotect++;
   nzeros = LENGTH(zeronames);
   if (nzeros > 0) {
-    zidx = INTEGER(PROTECT(matchnames(Snames,zeronames))); nprotect++;
+    zidx = INTEGER(PROTECT(matchnames(Snames,zeronames,"state variables"))); nprotect++;
   }
 
   // create array to store results

@@ -26,10 +26,10 @@ SEXP mif_update (SEXP pfp, SEXP theta, SEXP gamma, SEXP varfactor,
   dim = INTEGER(GET_DIM(FM)); nfm = dim[0]; ntimes = dim[1];
   dim = INTEGER(GET_DIM(PV)); npv = dim[0];
 
-  sidx = INTEGER(PROTECT(MATCHNAMES(sigma,pars))); nprotect++;
-  thidx = INTEGER(PROTECT(MATCHNAMES(theta,pars))); nprotect++;
-  midx = INTEGER(PROTECT(MATCHROWNAMES(FM,pars))); nprotect++;
-  vidx = INTEGER(PROTECT(MATCHROWNAMES(PV,pars))); nprotect++;
+  sidx = INTEGER(PROTECT(MATCHNAMES(sigma,pars,"random-walk SDs"))); nprotect++;
+  thidx = INTEGER(PROTECT(MATCHNAMES(theta,pars,"parameters"))); nprotect++;
+  midx = INTEGER(PROTECT(MATCHROWNAMES(FM,pars,"filter-mean variables"))); nprotect++;
+  vidx = INTEGER(PROTECT(MATCHROWNAMES(PV,pars,"prediction-variance variables"))); nprotect++;
 
   PROTECT(newtheta = duplicate(theta)); nprotect++;
 

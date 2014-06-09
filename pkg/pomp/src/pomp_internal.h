@@ -10,9 +10,9 @@
 
 #include "pomp.h"
 
-# define MATCHNAMES(X,N) (matchnames(GET_NAMES(X),(N)))
-# define MATCHROWNAMES(X,N) (matchnames(GET_ROWNAMES(GET_DIMNAMES(X)),(N)))
-# define MATCHCOLNAMES(X,N) (matchnames(GET_COLNAMES(GET_DIMNAMES(X)),(N)))
+# define MATCHNAMES(X,N,W) (matchnames(GET_NAMES(X),(N),(W)))
+# define MATCHROWNAMES(X,N,W) (matchnames(GET_ROWNAMES(GET_DIMNAMES(X)),(N),(W)))
+# define MATCHCOLNAMES(X,N,W) (matchnames(GET_COLNAMES(GET_DIMNAMES(X)),(N),(W)))
 # define MATCH_CHAR_TO_ROWNAMES(X,N,A) (match_char_to_names(GET_ROWNAMES(GET_DIMNAMES(X)),(N),(A)))
 
 // lookup-table structure, as used internally
@@ -91,7 +91,7 @@ static R_INLINE SEXP makearray (int rank, int *dim) {
   return x;
 }
 
-static R_INLINE SEXP matchnames (SEXP x, SEXP names) {
+static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
   int nprotect = 0;
   int n = length(names);
   int *idx, k;
@@ -100,7 +100,10 @@ static R_INLINE SEXP matchnames (SEXP x, SEXP names) {
   PROTECT(index = match(x,names,0)); nprotect++;
   idx = INTEGER(index);
   for (k = 0; k < n; k++) {
-    if (idx[k]==0) error("variable '%s' not found",CHARACTER_DATA(STRING_ELT(nm,k)));
+    if (idx[k]==0) 
+      error("variable '%s' not found among the %s",
+	    CHARACTER_DATA(STRING_ELT(nm,k)),
+	    where);
     idx[k] -= 1;
   }
   UNPROTECT(nprotect);
@@ -132,7 +135,7 @@ static R_INLINE SEXP name_index (SEXP names, SEXP object, const char *slot) {
   SEXP slotnames, index;
   PROTECT(slotnames = GET_SLOT(object,install(slot)));
   if (LENGTH(slotnames) > 0) {
-    PROTECT(index = matchnames(names,slotnames));
+    PROTECT(index = matchnames(names,slotnames,slot));
   } else {
     PROTECT(index = NEW_INTEGER(0));
   }

@@ -163,7 +163,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 	    PROTECT(nm = GET_NAMES(ans)); nprotect++;
 	    use_names = !isNull(nm);
 	    if (use_names) {		// match names against names from data slot
-	      posn = INTEGER(PROTECT(matchnames(Onames,nm))); nprotect++;
+	      posn = INTEGER(PROTECT(matchnames(Onames,nm,"observables"))); nprotect++;
 	    } else {
 	      posn = 0;
 	    }
