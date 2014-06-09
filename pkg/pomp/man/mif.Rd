@@ -93,7 +93,7 @@ mif(object, \dots)
     specifications for the cooling schedule, i.e., the manner in which the intensity of the parameter perturbations is reduced with successive filtering iterations.
     \code{cooling.type} specifies the nature of the cooling schedule.
     When \code{cooling.type="geometric"}, on the n-th MIF iteration, the relative perturbation intensity is \code{cooling.fraction^(n/50)}.
-    When \code{cooling.type="hyperbolic"}, on the n-th MIF iteration, the relative perturbation intensity is \code{(s+1)(s+n)}, where \code{(s+1)/(s+50)=cooling.fraction}.
+    When \code{cooling.type="hyperbolic"}, on the n-th MIF iteration, the relative perturbation intensity is \code{(s+1)/(s+n)}, where \code{(s+1)/(s+50)=cooling.fraction}.
     \code{cooling.fraction} is the relative magnitude of the parameter perturbations after 50 MIF iterations.
     \code{cooling.factor} is now deprecated:
     to achieve the old behavior, use \code{cooling.type="geometric"} and \code{cooling.fraction=(cooling.factor)^50}.
