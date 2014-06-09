@@ -223,12 +223,12 @@ bsmc.internal <- function (object, params, Np, est,
 
     ## sample new parameter vector as per L&W AGM (3) and Liu & West eq(3.2)
     pvec <- try(
-                mvtnorm::rmvnorm(
-                                 n=Np,
-                                 mean=rep(0,npars.est),
-                                 sigma=hsq*params.var,
-                                 method="svd"
-                                 ),
+                rmvnorm(
+                        n=Np,
+                        mean=rep(0,npars.est),
+                        sigma=hsq*params.var,
+                        method="svd"
+                        ),
                 silent=FALSE
                 )
     if (inherits(pvec,"try-error"))

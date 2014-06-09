@@ -185,7 +185,7 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
     LQL <- dnorm(prediction.errors[,1],mean=0,sd=sigma.model,log=TRUE)
   } else {
     sigma.model <- cov(model.residuals)
-    LQL <- mvtnorm::dmvnorm(prediction.errors,sigma=sigma.model,log=TRUE) ## NOTE: This could be improved using GLS.
+    LQL <- dmvnorm(prediction.errors,sigma=sigma.model,log=TRUE) ## NOTE: This could be improved using GLS.
   }  
   
   LQL

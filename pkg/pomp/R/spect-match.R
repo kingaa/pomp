@@ -168,23 +168,23 @@ spect.match <- function(object, start, est = character(0),
     msg <- "no optimization performed"
   } else {
     if (method == 'subplex') {
-      opt <- subplex::subplex(
-                              par=guess,
-                              fn=obj.fn,
-                              est=par.index,
-                              object=object,
-                              params=params,
-                              vars=vars,
-                              ker=ker,
-                              nsim=nsim,
-                              seed=seed,
-                              transform=transform,
-                              detrend=detrend,
-                              weights=weights,
-                              data.spec=ds,
-                              fail.value=fail.value,
-                              control=list(...)
-                              )
+      opt <- subplex(
+                     par=guess,
+                     fn=obj.fn,
+                     est=par.index,
+                     object=object,
+                     params=params,
+                     vars=vars,
+                     ker=ker,
+                     nsim=nsim,
+                     seed=seed,
+                     transform=transform,
+                     detrend=detrend,
+                     weights=weights,
+                     data.spec=ds,
+                     fail.value=fail.value,
+                     control=list(...)
+                     )
     } else {
       opt <- optim(
                    par=guess,

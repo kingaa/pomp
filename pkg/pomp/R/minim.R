@@ -32,7 +32,7 @@ minim.internal <- function(objfun, start, est, object, method, transform, verbos
     opts <- list(...)
 
     if (method == 'subplex') {
-      opt <- subplex::subplex(par=guess,fn=objfun,control=opts)
+      opt <- subplex(par=guess,fn=objfun,control=opts)
     } else if (method=="sannbox") {
       opt <- sannbox(par=guess,fn=objfun,control=opts)
     } else if (method=="nloptr") {
