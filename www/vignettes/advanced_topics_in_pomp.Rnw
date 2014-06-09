@@ -50,7 +50,6 @@
 
 
 <<include=FALSE>>=
-
 opts_chunk$set(
                echo=TRUE,results='markup',
                progress=TRUE,prompt=FALSE,tidy=FALSE,highlight=FALSE,
@@ -80,10 +79,8 @@ opts_chunk$set(
 \tableofcontents
 
 <<include=FALSE>>=
-
   library(pomp)
   set.seed(5384959)
-
 @ 
 
 \section{Accumulator variables}
@@ -126,7 +123,6 @@ The new, and still experimental, \code{pompBuilder} function helps us do this.
 We'll start by writing snippets of C code to implement each of the important parts of our model.
 First, we encode a negative binomial measurement model.
 <<pomp-builder-measmod,eval=T>>=
-
 ## negative binomial measurement model
 ## E[cases|incid] = rho*incid
 ## Var[cases|incid] = rho*incid*(1+rho*incid/theta)
@@ -137,12 +133,10 @@ rmeas <- '
 dmeas <- '
   lik = dnbinom_mu(cases,theta,rho*incid,give_log);
 '
-
 @ 
 
 Next the function that takes one Euler step.
 <<pomp-builder-stepfn,eval=T>>=
-
 ## SIR process model with extra-demographic stochasticity
 ## and seasonal transmission
 step.fn <- '
@@ -180,13 +174,11 @@ step.fn <- '
   incid += trans[3];		// incidence is cumulative recoveries
   if (beta_sd > 0.0) W += (dW-dt)/beta_sd; // increment has mean = 0, variance = dt
 '
-
 @ 
 
 Now the deterministic skeleton.
 The ``D'' prepended to each state variable indicates the derivative of the state variable.
 <<pomp-builder-skel,eval=T>>=
-
 skel <- '
   int nrate = 6;
   double rate[nrate];		// transition rates
@@ -220,14 +212,12 @@ skel <- '
   Dincid = term[3];		// accumulate the new I->R transitions
   DW = 0;
 '
-
 @ 
 
 Next, we write snippets to perform parameter transformations.
 Note the convention of prepending ``T'' to the name to signify the transformed parameter.
 The log-barycentric transformation is very useful when dealing with parameters (such as our initial conditions) constrained to lie on a unit simplex.
 <<pomp-builder-partrans,eval=T>>=
-
 ## parameter transformations
 ## note we use barycentric coordinates for the initial conditions
 ## the success of this depends on S0, I0, R0 being in
@@ -257,13 +247,11 @@ paruntrans <- "
   Ttheta = log(theta);
   to_log_barycentric(&TS_0,&S_0,3);
 "
-
 @ 
 
 To model seasonality in transmission, we'll use periodic B-splines.
 The following constructs a covariate table with three cubic, periodic B-spline basis functions.
 <<pomp-builder-covar,eval=T>>=
-
 covartab <- data.frame(
                        time=seq(from=-1/52,to=10+1/52,by=1/26)
                        )
@@ -285,7 +273,6 @@ covartab <- cbind(
 
 A call to \code{pompBuilder} assembles the given codes, compiles them, and links them to the current \pkg{R} session.
 <<pomp-builder,eval=F>>=
-
 pompBuilder(
             name="SIR",
             data=data.frame(
@@ -319,7 +306,6 @@ pompBuilder(
               x0
             }
             ) -> sir
-
 @ 
 
 <<pomp-builder-eval,echo=F,eval=T,results='hide'>>=
@@ -331,7 +317,6 @@ if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
 
 Let's specify some parameters, simulate, and compute a deterministic trajectory:
 <<sir-sim,eval=T>>=
-
 coef(sir) <- c(
                gamma=26,mu=0.02,iota=0.01,
                beta1=400,beta2=480,beta3=320,
@@ -343,7 +328,6 @@ coef(sir) <- c(
 
 sir <- simulate(sir,seed=3493885L)
 traj <- trajectory(sir,hmax=1/52)
-
 @ 
 
 \begin{figure}

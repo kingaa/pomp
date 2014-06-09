@@ -1,6 +1,5 @@
 
 ## ----include=FALSE-------------------------------------------------------
-
 opts_chunk$set(
                echo=TRUE,results='markup',
                progress=TRUE,prompt=FALSE,tidy=FALSE,highlight=FALSE,
@@ -25,7 +24,6 @@ set.seed(5384959L)
 
 
 ## ----gompertz-proc-sim-def-----------------------------------------------
-
 require(pomp)
 
 gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
@@ -46,7 +44,6 @@ gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
 
 
 ## ----gompertz-meas-sim-def-----------------------------------------------
-
 gompertz.meas.sim <- function (x, t, params, ...) {
   ## unpack the parameters:
   tau <- params["tau"]
@@ -60,7 +57,6 @@ gompertz.meas.sim <- function (x, t, params, ...) {
 
 
 ## ----first-pomp-construction,eval=F--------------------------------------
-## 
 ## gompertz <- pomp(
 ##                  data=data.frame(
 ##                    time=1:100,
@@ -78,17 +74,13 @@ gompertz.meas.sim <- function (x, t, params, ...) {
 
 
 ## ----set-params----------------------------------------------------------
-
 theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1,X.0=1)
-
 
 
 ## ----gompertz-first-simulation,eval=F------------------------------------
 ## gompertz <- simulate(gompertz,params=theta)
 
-
 ## ----gompertz-get-data,eval=T,echo=F,results='hide'----------------------
-
 pompExample(gompertz)
 dat <- as.data.frame(gompertz)
 gompertz <- pomp(
@@ -104,15 +96,11 @@ gompertz <- pomp(
 coef(gompertz) <- theta
 
 
-
 ## ----gompertz-plot,echo=F------------------------------------------------
-
 plot(gompertz,variables=c("Y"))
 
 
-
 ## ----second-pomp-construction--------------------------------------------
-
 gompertz.meas.dens <- function (y, x, t, params, log, ...) {
   ## unpack the parameters:
   tau <- params["tau"]
@@ -131,22 +119,16 @@ gompertz <- pomp(
                  )
 
 
-
 ## ----gompertz-pfilter-truth,eval=F---------------------------------------
-## 
 ## pf <- pfilter(gompertz,params=theta,Np=1000)
 ## loglik.truth <- logLik(pf)
 ## loglik.truth
-## 
-
 
 ## ----gompertz-pfilter-truth-eval,echo=F----------------------------------
 set.seed(457645443L)
-
 pf <- pfilter(gompertz,params=theta,Np=1000)
 loglik.truth <- logLik(pf)
 loglik.truth
-
 
 
 ## ----gompertz-pfilter-truth-alt1,eval=F----------------------------------
@@ -158,36 +140,28 @@ loglik.truth
 
 
 ## ----gompertz-pfilter-guess,eval=F---------------------------------------
-## 
 ## theta.true <- coef(gompertz)
 ## theta.guess <- theta.true
 ## theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
 ## pf <- pfilter(gompertz,params=theta.guess,Np=1000)
 ## loglik.guess <- logLik(pf)
-## 
-
 
 ## ----gompertz-pfilter-guess-eval,echo=F----------------------------------
-
 binary.file <- "gompertz-pfilter-guess.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 set.seed(457645443L)
-
 theta.true <- coef(gompertz)
 theta.guess <- theta.true
 theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
 pf <- pfilter(gompertz,params=theta.guess,Np=1000)
 loglik.guess <- logLik(pf)
-
 save(theta.true,theta.guess,loglik.guess,file=binary.file,compress='xz')
 }  
 
 
-
 ## ----kalman-filter-def---------------------------------------------------
-
 kalman.filter <- function (Y, X0, r, K, sigma, tau) {
   ntimes <- length(Y)
   sigma.sq <- sigma^2
@@ -219,9 +193,7 @@ kalman.filter <- function (Y, X0, r, K, sigma, tau) {
 }
 
 
-
 ## ----kalman-filter-run---------------------------------------------------
-
 y <- obs(gompertz)
 x0 <- init.state(gompertz)
 r <- coef(gompertz,"r")
@@ -230,12 +202,8 @@ sigma <- coef(gompertz,"sigma")
 tau <- coef(gompertz,"tau")
 kf <- kalman.filter(y,x0,r,K,sigma,tau)
 
-
-
 ## ----kalman-likelihood-correction,echo=F---------------------------------
-
 loglik.kalman <- kf$loglik
-
 
 
 ## ----eval=F--------------------------------------------------------------
@@ -277,7 +245,6 @@ loglik.kalman <- kf$loglik
 
 
 ## ----snippet-gomp-pomp,results='hide'------------------------------------
-
 gomp2 <- pomp(
               data=subset(as(gompertz,"data.frame"),select=c(time,Y)),
               times="time",
@@ -330,37 +297,12 @@ gomp2 <- pomp(
 ## stopifnot(all.equal(logLik(pf1),logLik(pf2)))
 ## 
 
-
 ## ----gompertz-perform-eval,eval=T,echo=F---------------------------------
 binary.file <- "gompertz-performance.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 set.seed(457645443L)
-
-tic <- Sys.time()
-sim1 <- simulate(gompertz,nsim=1000,seed=5676868L,obs=TRUE)
-toc <- Sys.time()
-g1sim <- toc-tic
-
-tic <- Sys.time()
-sim2 <- simulate(gomp2,nsim=1000,seed=5676868L,obs=TRUE)
-toc <- Sys.time()
-g2sim <- toc-tic
-
-stopifnot(all.equal(sim1,sim2))
-
-tic <- Sys.time()
-pf1 <- pfilter(gompertz,Np=10000,seed=5676868L)
-toc <- Sys.time()
-g1pf <- toc-tic
-
-tic <- Sys.time()
-pf2 <- pfilter(gomp2,Np=10000,seed=5676868L)
-toc <- Sys.time()
-g2pf <- toc-tic
-
-stopifnot(all.equal(logLik(pf1),logLik(pf2)))
 
 save(g1sim,g2sim,g1pf,g2pf,file=binary.file,compress='xz')
 }  
@@ -375,7 +317,6 @@ save(g1sim,g2sim,g1pf,g2pf,file=binary.file,compress='xz')
 
 
 ## ----loggomp-pomp-construction,eval=T------------------------------------
-
 gompertz <- pomp(
                  gompertz,
                  parameter.transform=function(params,...){
@@ -385,7 +326,6 @@ gompertz <- pomp(
                    log(params)
                  }
                  )
-
 
 
 ## ----eval=T--------------------------------------------------------------
@@ -410,7 +350,6 @@ coef(gompertz)
 
 
 ## ----par-trans-inverse-test,results='markup'-----------------------------
-
 # use parameter.inv.transform:
 theta <- coef(gompertz,transform=TRUE)  
 ## theta is on the estimation scale
@@ -426,7 +365,6 @@ all.equal(coef(gompertz),coef(g2))
 pompExample(gompertz)
 theta <- coef(gompertz)
 theta.true <- theta
-
 
 ## ----gompertz-multi-mif-calc,eval=F,echo=T-------------------------------
 ## estpars <- c("r","sigma","tau")
@@ -528,7 +466,6 @@ loglik.mif <- t(sapply(mf,function(x)logmeanexp(x$ll,se=TRUE)))
 best <- which.max(loglik.mif[,1])
 theta.mif <- theta.mif[best,]
 loglik.mif <- loglik.mif[best,]
-
   save(
        mf,estpars,
        theta.mif,theta.true,
@@ -586,7 +523,6 @@ print(results.table)
 
 
 ## ----gompertz-skeleton-def,echo=T----------------------------------------
-
 gompertz.skel <- function (x, t, params, ...) {
   r <- params["r"]
   K <- params["K"]
@@ -597,9 +533,7 @@ gompertz.skel <- function (x, t, params, ...) {
 }
 
 
-
 ## ----gomp3-pomp----------------------------------------------------------
-
 gomp3 <- simulate(
                   pomp(
                        gompertz,
@@ -613,9 +547,7 @@ gomp3 <- simulate(
                   )
 
 
-
 ## ----gompertz-trajmatch-calc,eval=F--------------------------------------
-## 
 ## tm <- traj.match(
 ##                  gomp3,
 ##                  start=coef(gomp3),
@@ -625,15 +557,12 @@ gomp3 <- simulate(
 ##                  maxit=1000,
 ##                  reltol=1e-8
 ##                  )
-## 
-
 
 ## ----gompertz-trajmatch-eval,echo=F,eval=T-------------------------------
 binary.file <- "gompertz-trajmatch.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-
 tm <- traj.match(
                  gomp3,
                  start=coef(gomp3),
@@ -643,22 +572,18 @@ tm <- traj.match(
                  maxit=1000,
                  reltol=1e-8
                  )
-
   save(tm,file=binary.file,compress="xz")
 }
 
 
 ## ----trajmatch-plot,echo=F,eval=T,fig.height=4,fig.width=6---------------
-
 op <- par(mfrow=c(1,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 plot(time(tm),obs(tm,"Y"),xlab="time",ylab=expression(X,Y),type='o')
 lines(time(tm),states(tm,"X"),lwd=2)
 par(op)
 
 
-
 ## ----ricker-map-defn-----------------------------------------------------
-
 ricker.sim <- function (x, t, params, delta.t, ...) {
   e <- rnorm(n=1,mean=0,sd=params["sigma"]) 
   setNames(
@@ -671,18 +596,14 @@ ricker.sim <- function (x, t, params, delta.t, ...) {
 }
 
 
-
 ## ----ricker-sim-C-def----------------------------------------------------
-
 ricker.sim <- Csnippet('
   e = rnorm(0,sigma);
   N = r*N*exp(-N+e);
 ')
 
 
-
 ## ----ricker-pomp,results='hide'------------------------------------------
-
 ricker <- pomp(
                data=data.frame(time=seq(0,50,by=1),y=NA),
                times="time",
@@ -702,7 +623,6 @@ ricker <- pomp(
                  )
                )
 ricker <- simulate(ricker,seed=73691676L)
-
 
 
 ## ----get-ricker,echo=T,eval=T,results='hide'-----------------------------
@@ -874,7 +794,6 @@ res <- rbind(
   save(res,file=binary.file,compress='xz')
 }
 
-
 ## ----ricker-comparison-show----------------------------------------------
 print(res,digits=3)
 
@@ -923,7 +842,6 @@ out <- nlf(
 ##                   )
 ## }
 ## fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
-
 
 ## ----nlf-fits-eval,echo=F,eval=T,results='hide'--------------------------
 binary.file <- "nlf-fits.rda"
@@ -991,7 +909,6 @@ theta <- coef(long.gomp)
 ##   }
 ## }
 
-
 ## ----nlf-lag-test-log.K,eval=F,echo=F------------------------------------
 ## K.vals <- theta["K"]*exp(seq(-0.15,0.15,length=25))
 ## fvals2 <- matrix(nrow=25,ncol=4)
@@ -1009,7 +926,6 @@ theta <- coef(long.gomp)
 ##                        )
 ##   }
 ## }
-
 
 ## ----nlf-lag-tests,eval=T,echo=F,results='hide'--------------------------
 binary.file <- "nlf-lag-tests.rda"
@@ -1105,7 +1021,6 @@ par(op)
 ## }
 ## fvals <- exp(fvals/ndata)
 
-
 ## ----nlf-multi-short-eval,echo=F,eval=T,results='hide'-------------------
 binary.file <- "nlf-multi-short.rda"
 if (file.exists(binary.file)) {
@@ -1148,7 +1063,6 @@ apply(fvals,2,function(x)sd(x)/mean(x))
 ##                 nasymp=5000
 ##                 )
 
-
 ## ----nlf-fit-from-truth-eval,echo=F,eval=T,results='hide'----------------
 binary.file <- "nlf-fit-from-truth.rda"
 if (file.exists(binary.file)) {
@@ -1170,7 +1084,6 @@ true.fit <- nlf(
 
 ## ----echo=F--------------------------------------------------------------
 set.seed(32329L)
-
 
 ## ----nlf-boot,eval=F-----------------------------------------------------
 ## lags <- 2
@@ -1197,7 +1110,6 @@ set.seed(32329L)
 ##    pars[j,] <- fit$params[c("r","K")]
 ## }
 ## colnames(pars) <- c("r","K")
-
 
 ## ----nlf-boot-eval,echo=F,eval=T,results='hide'--------------------------
 binary.file <- "nlf-boot.rda"
@@ -1230,7 +1142,6 @@ for (j in seq_len(nreps)) {
 colnames(pars) <- c("r","K")
   save(pars,file=binary.file,compress="xz")
 }
-
 
 ## ------------------------------------------------------------------------
 apply(pars,2,sd)
@@ -1308,7 +1219,6 @@ colnames(pars) <- c("r","K")
 
 
 ## ----bsmc-example-flat-prior-1,echo=T,eval=T,results='hide'--------------
-
 pompExample(ricker)
 
 ricker <- pomp(
@@ -1319,23 +1229,18 @@ ricker <- pomp(
                  params
                }
                )
-                 
 
 
 ## ----bsmc-example-flat-prior-3,eval=F------------------------------------
-## 
 ##   fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
 ##                est=c("r","sigma"),smooth=0.2,
 ##                seed=1050180387L)
-## 
-
 
 ## ----bsmc-example-flat-prior-eval,eval=T,echo=F--------------------------
 binary.file <- "bsmc-ricker-flat-prior.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-
 pompExample(ricker)
 
 ricker <- pomp(
@@ -1346,30 +1251,22 @@ ricker <- pomp(
                  params
                }
                )
-                 
-  
   fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
                est=c("r","sigma"),smooth=0.2,
                seed=1050180387L)
-
   save(fit1,file=binary.file,compress="xz")
 }
 
 
 ## ----bsmc-example-flat-prior-coef----------------------------------------
-
 signif(coef(fit1),digits=2)
 
 
-
 ## ----bsmc-example-flat-prior-plot,fig.height=6,fig.width=6,echo=F--------
-
 plot(fit1,pars=c("r","sigma"),thin=5000)
 
 
-
 ## ----bsmc-example-normal-prior,eval=F,echo=T-----------------------------
-## 
 ## ricker <- pomp(ricker,
 ##                rprior=function (params, ...) {
 ##                  x <- rlnorm(n=2,meanlog=c(4,log(0.5)),sdlog=c(3,5))
@@ -1388,7 +1285,6 @@ binary.file <- "bsmc-ricker-normal-prior.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-
 ricker <- pomp(ricker,
                rprior=function (params, ...) {
                  x <- rlnorm(n=2,meanlog=c(4,log(0.5)),sdlog=c(3,5))
@@ -1405,13 +1301,10 @@ fit2 <- bsmc(ricker,transform=TRUE,Np=10000,
 }
 
 ## ----bsmc-example-normal-prior-show,echo=T,eval=T------------------------
-
 signif(coef(fit2),digits=2)
 
 
-
 ## ----sir-step-R----------------------------------------------------------
-
 require(pomp)
 
 sir.step <- function (x, t, params, delta.t, ...) {
@@ -1440,9 +1333,7 @@ sir.step <- function (x, t, params, delta.t, ...) {
 }
 
 
-
 ## ----sir-step-C----------------------------------------------------------
-
 sir.step <- '
   double rate[6];		// transition rates
   double trans[6];		// transition numbers
@@ -1471,7 +1362,6 @@ sir.step <- '
 
 
 ## ----sir-pomp-def,eval=T,echo=T,results='hide'---------------------------
-
 rmeas <- '
   cases = rnbinom_mu(theta,rho*incid);
 '
@@ -1516,24 +1406,17 @@ pomp(
 simulate(sir,seed=1914679908L) -> sir
 
 
-
-
 ## ----sir-plot,echo=F-----------------------------------------------------
-
 plot(sir,var=c("cases","incid","S","I"))
 
 
-
 ## ----seas-basis----------------------------------------------------------
-
 tbasis <- seq(-1,21,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,
                                 names="seas%d")
 
 
-
 ## ----complex-sir-def,echo=T,eval=T,results='hide'------------------------
-
 seas.sir.step <- '
   double rate[6];		// transition rates
   double trans[6];		// transition numbers
@@ -1571,7 +1454,6 @@ seas.sir.step <- '
 
 
 ## ----other-codes,results='hide'------------------------------------------
-
 seas.sir.skel <- '
   double rate[6];		// transition rates
   double term[6];		// transition numbers
@@ -1672,7 +1554,6 @@ simulate(
 
 
 ## ----seas-basis-plot,echo=F,fig.height=4,fig.width=6---------------------
-
 op <- par(mar=c(5,5,1,5))
 matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
         lty=1,col=c("red","blue","orange"),xlab="time (yr)",
@@ -1695,8 +1576,6 @@ par(op)
 
 
 ## ----complex-sir-plot,echo=F---------------------------------------------
-
 plot(complex.sir)
-
 
 

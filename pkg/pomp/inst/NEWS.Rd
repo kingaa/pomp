@@ -1,15 +1,24 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.51-2}{
+  \itemize{
+    \item More informative error messages are generated when a needed variable cannot be found.
+    \item Features that facilitate multiple ABC chains have been added.
+    There is a \code{c} method to combine \code{abc} objects into an \code{abcList} object and to combine \code{abcList} objects.
+    Running \code{conv.rec} on an \code{abc} or \code{abcList} object produces \pkg{coda} \code{mcmc} and \code{mcmc.list} objects, respectively.
+    Diagnostic plots are produced by running \code{plot} on such objects.
+    \item Basic structure of \code{pmcmcList} and \code{abcList} objects is changed: these objects now inherit directly from \code{list}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.51-1}{
   \itemize{
-    \item Package 'coda' is now a dependency of 'pomp'.
+    \item Package \pkg{coda} is now a dependency of \pkg{pomp}.
     This package provides various generic MCMC diagnostics.
     \item Features that facilitate multiple PMCMC chains have been added.
-    There is a 'c' method to combine 'pmcmc' objects into a 'pmcmcList' object.
-    Running 'conv.rec' on a 'pmcmc' or 'pmcmcList' object now produces 'coda' 'mcmc' and 'mcmc.list' objects, respectively.
-    Diagnostic plots are produced by running 'plot' on such objects.
-    \item The 'compare.pmcmc' and 'compare.abc' methods have been removed.
-    They are superceded by these diagnostic plots.
+    There is a \code{c} method to combine \code{pmcmc} objects into a \code{pmcmcList} object and to combine \code{pmcmcList} objects.
+    Running \code{conv.rec} on a \code{pmcmc} or \code{pmcmcList} object now produces \pkg{coda} \code{mcmc} and \code{mcmc.list} objects, respectively.
+    Diagnostic plots are produced by running \code{plot} on such objects.
+    \item The \code{compare.pmcmc} and \code{compare.abc} methods have been removed as obsolete.
   }
 }
 \section{Changes in \pkg{pomp} version 0.50-9}{
@@ -32,7 +41,7 @@
 \section{Changes in \pkg{pomp} version 0.50-1}{
   \itemize{
     \item \code{pomp} can now take snippets of C code directly as definitions of the various basic functions.
-    This is accomplished through the use of a new "Csnippet" function.
+    This is accomplished through the use of a new \code{Csnippet} function.
     See the \sQuote{sir} demo for a demonstration.
     \item It is now possible to specify global variables and typedefs using the \code{globals} argument to \code{pompBuilder} and \code{pomp}.
     See the \sQuote{sir} demo for a demonstration.
@@ -249,7 +258,7 @@
     When \code{transform=TRUE} in these commands (\code{transform.params=TRUE} for \code{nlf}), estimation is performed on the transformed parameter space.
     This is described and demonstrated in the \dQuote{intro_to_pomp} vignette.
     \item The \code{data()}-loadable examples have been re-implemented to make use of the above-mentioned facility.
-    Note that this new functionality makes it unnecessary to "un-transform" model parameters within the user-specified \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, and \code{initializer} codes.
+    Note that this new functionality makes it unnecessary to un-transform model parameters within the user-specified \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, and \code{initializer} codes.
     This change is not backward-compatible, but only codes using these \code{data()}-loadable example are affected.
     \item The Bayesian sequential Monte Carlo command \code{bsmc} now returns not a list but an object of class \code{bsmcd.pomp}.
     An experimental \code{plot} method for objects of this class now exists.

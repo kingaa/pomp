@@ -18,8 +18,6 @@
 \alias{c,pmcmcList-method}
 \alias{[-pmcmcList}
 \alias{[,pmcmcList-method}
-\alias{[[-pmcmcList}
-\alias{[[,pmcmcList-method}
 \title{Methods of the "pmcmc" class}
 \description{Methods of the "pmcmc" class.}
 \usage{
@@ -27,6 +25,7 @@
 \S4method{conv.rec}{pmcmc}(object, pars, \dots)
 \S4method{conv.rec}{pmcmcList}(object, \dots)
 \S4method{plot}{pmcmc}(x, y = NULL, \dots)
+\S4method{plot}{pmcmcList}(x, y, \dots)
 \S4method{c}{pmcmc}(x, \dots, recursive = FALSE)
 \S4method{c}{pmcmcList}(x, \dots, recursive = FALSE)
 }
@@ -44,8 +43,7 @@
       \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars} as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
     }
     \item{plot}{
-      Plots density- and trace-plots.
-      This uses package \pkg{coda}'s default plots.
+      Diagnostic plots.
     }
     \item{logLik}{
       Returns the value in the \code{loglik} slot.

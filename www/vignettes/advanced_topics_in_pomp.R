@@ -1,6 +1,5 @@
 
 ## ----include=FALSE-------------------------------------------------------
-
 opts_chunk$set(
                echo=TRUE,results='markup',
                progress=TRUE,prompt=FALSE,tidy=FALSE,highlight=FALSE,
@@ -21,14 +20,11 @@ opts_chunk$set(
 
 
 ## ----include=FALSE-------------------------------------------------------
-
   library(pomp)
   set.seed(5384959)
 
 
-
 ## ----pomp-builder-measmod,eval=T-----------------------------------------
-
 ## negative binomial measurement model
 ## E[cases|incid] = rho*incid
 ## Var[cases|incid] = rho*incid*(1+rho*incid/theta)
@@ -41,9 +37,7 @@ dmeas <- '
 '
 
 
-
 ## ----pomp-builder-stepfn,eval=T------------------------------------------
-
 ## SIR process model with extra-demographic stochasticity
 ## and seasonal transmission
 step.fn <- '
@@ -83,9 +77,7 @@ step.fn <- '
 '
 
 
-
 ## ----pomp-builder-skel,eval=T--------------------------------------------
-
 skel <- '
   int nrate = 6;
   double rate[nrate];		// transition rates
@@ -121,9 +113,7 @@ skel <- '
 '
 
 
-
 ## ----pomp-builder-partrans,eval=T----------------------------------------
-
 ## parameter transformations
 ## note we use barycentric coordinates for the initial conditions
 ## the success of this depends on S0, I0, R0 being in
@@ -155,9 +145,7 @@ paruntrans <- "
 "
 
 
-
 ## ----pomp-builder-covar,eval=T-------------------------------------------
-
 covartab <- data.frame(
                        time=seq(from=-1/52,to=10+1/52,by=1/26)
                        )
@@ -178,7 +166,6 @@ covartab <- cbind(
 
 
 ## ----pomp-builder,eval=F-------------------------------------------------
-## 
 ## pompBuilder(
 ##             name="SIR",
 ##             data=data.frame(
@@ -212,13 +199,11 @@ covartab <- cbind(
 ##               x0
 ##             }
 ##             ) -> sir
-## 
 
 
 ## ----pomp-builder-eval,echo=F,eval=T,results='hide'----------------------
 if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
   require(pomp)
-
 pompBuilder(
             name="SIR",
             data=data.frame(
@@ -252,12 +237,10 @@ pompBuilder(
               x0
             }
             ) -> sir
-
 }
 
 
 ## ----sir-sim,eval=T------------------------------------------------------
-
 coef(sir) <- c(
                gamma=26,mu=0.02,iota=0.01,
                beta1=400,beta2=480,beta3=320,
@@ -269,7 +252,6 @@ coef(sir) <- c(
 
 sir <- simulate(sir,seed=3493885L)
 traj <- trajectory(sir,hmax=1/52)
-
 
 
 ## ----sir-plot,fig=T,echo=F-----------------------------------------------
@@ -303,7 +285,6 @@ y[,,1:5]
 fp <- dprocess(ou2,x=x,times=time(ou2),params=true.p)
 dim(fp)
 fp[,36:40]
-
 
 ## ------------------------------------------------------------------------
 fm <- dmeasure(ou2,y=y[,1,],x=x,times=time(ou2),params=true.p)
@@ -346,10 +327,8 @@ pomp(
        )
      ) -> ou2.Rplug
 
-
 ## ----plugin-R-code-sim,echo=T,eval=F-------------------------------------
 ## simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=5000,states=T)
-
 
 ## ----plugin-R-code-eval,echo=F,eval=T------------------------------------
 binary.file <- "plugin-R-code.rda"
@@ -412,10 +391,8 @@ simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=5000,states=T)
 ##            sigma.1=3, sigma.2=-0.5, sigma.3=2
 ##            )
 
-
 ## ----vectorized-R-code-sim,eval=F,echo=T---------------------------------
 ## simdat.Rvect <- simulate(ou2.Rvect,params=theta,states=T,nsim=100000)
-
 
 ## ----vectorized-R-code-eval,eval=T,echo=F--------------------------------
 binary.file <- "vectorized-R-code.rda"
@@ -561,7 +538,6 @@ paramnames <- c(
 ## ----vectorized-C-code-sim,echo=T,eval=F---------------------------------
 ## simdat.Cvect <- simulate(ou2.Cvect,params=theta[paramnames],
 ##                          nsim=100000,states=T)
-
 
 ## ----vectorized-C-code-eval,echo=F,eval=T--------------------------------
 binary.file <- "vectorized-C-code.rda"

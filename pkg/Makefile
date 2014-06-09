@@ -27,7 +27,7 @@ pomp.dist: pomp/inst/include/pomp.h
 pomp/inst/include/pomp.h: pomp/src/pomp.h
 	$(CP) $^ $@
 
-../www.vignettes: export POMP_BUILD_VIGNETTES=yes
+pomp.vignettes: export POMP_BUILD_VIGNETTES=yes
 %.dist %.manual %.vignettes: export R_QPDF=qpdf
 %.dist %.manual %.vignettes: export R_GSCMD=gs
 %.dist %.manual %.vignettes: export GS_QUALITY=ebook
@@ -123,7 +123,7 @@ pomp.vignettes: pomp.install pomp.manual
 	$(TOUCH) $@
 
 %.remove:
-	$(RCMD) REMOVE --library=$(INSTALL_DIR) $*
+	-$(RCMD) REMOVE --library=$(INSTALL_DIR) $*
 	$(RM) $*.install
 
 %.publish: %.dist %.manual

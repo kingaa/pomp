@@ -8,22 +8,40 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 0.51-2</h3>
+
+
+<ul>
+<li><p> More informative error messages are generated when a needed variable cannot be found.
+</p>
+</li>
+<li><p> Features that facilitate multiple ABC chains have been added.
+There is a <code>c</code> method to combine <code>abc</code> objects into an <code>abcList</code> object and to combine <code>abcList</code> objects.
+Running <code>conv.rec</code> on an <code>abc</code> or <code>abcList</code> object produces <span class="pkg">coda</span> <code>mcmc</code> and <code>mcmc.list</code> objects, respectively.
+Diagnostic plots are produced by running <code>plot</code> on such objects.
+</p>
+</li>
+<li><p> Basic structure of <code>pmcmcList</code> and <code>abcList</code> objects is changed: these objects now inherit directly from <code>list</code>.
+</p>
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 0.51-1</h3>
 
 
 <ul>
-<li><p> Package 'coda' is now a dependency of 'pomp'.
+<li><p> Package <span class="pkg">coda</span> is now a dependency of <span class="pkg">pomp</span>.
 This package provides various generic MCMC diagnostics.
 </p>
 </li>
 <li><p> Features that facilitate multiple PMCMC chains have been added.
-There is a 'c' method to combine 'pmcmc' objects into a 'pmcmcList' object.
-Running 'conv.rec' on a 'pmcmc' or 'pmcmcList' object now produces 'coda' 'mcmc' and 'mcmc.list' objects, respectively.
-Diagnostic plots are produced by running 'plot' on such objects.
+There is a <code>c</code> method to combine <code>pmcmc</code> objects into a <code>pmcmcList</code> object and to combine <code>pmcmcList</code> objects.
+Running <code>conv.rec</code> on a <code>pmcmc</code> or <code>pmcmcList</code> object now produces <span class="pkg">coda</span> <code>mcmc</code> and <code>mcmc.list</code> objects, respectively.
+Diagnostic plots are produced by running <code>plot</code> on such objects.
 </p>
 </li>
-<li><p> The 'compare.pmcmc' and 'compare.abc' methods have been removed.
-They are superceded by these diagnostic plots.
+<li><p> The <code>compare.pmcmc</code> and <code>compare.abc</code> methods have been removed as obsolete.
 </p>
 </li></ul>
 
@@ -68,7 +86,7 @@ Instead, links are provided to the <span class="pkg">pomp</span> website.
 
 <ul>
 <li> <p><code>pomp</code> can now take snippets of C code directly as definitions of the various basic functions.
-This is accomplished through the use of a new &quot;Csnippet&quot; function.
+This is accomplished through the use of a new <code>Csnippet</code> function.
 See the &lsquo;sir&rsquo; demo for a demonstration.
 </p>
 </li>
@@ -494,7 +512,7 @@ This is described and demonstrated in the &ldquo;intro_to_pomp&rdquo; vignette.
 </p>
 </li>
 <li><p> The <code>data()</code>-loadable examples have been re-implemented to make use of the above-mentioned facility.
-Note that this new functionality makes it unnecessary to &quot;un-transform&quot; model parameters within the user-specified <code>rprocess</code>, <code>dprocess</code>, <code>rmeasure</code>, <code>dmeasure</code>, <code>skeleton</code>, and <code>initializer</code> codes.
+Note that this new functionality makes it unnecessary to un-transform model parameters within the user-specified <code>rprocess</code>, <code>dprocess</code>, <code>rmeasure</code>, <code>dmeasure</code>, <code>skeleton</code>, and <code>initializer</code> codes.
 This change is not backward-compatible, but only codes using these <code>data()</code>-loadable example are affected.
 </p>
 </li>

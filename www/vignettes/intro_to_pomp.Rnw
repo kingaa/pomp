@@ -56,7 +56,6 @@
 \date{\today, \pkg{pomp}~version~\Sexpr{packageDescription("pomp",fields="Version")}}
 
 <<include=FALSE>>=
-
 opts_chunk$set(
                echo=TRUE,results='markup',
                progress=TRUE,prompt=FALSE,tidy=FALSE,highlight=FALSE,
@@ -219,7 +218,6 @@ Farther on, we'll see how to realize large gains in computational speed using co
 First, we write a function that implements the process model simulator.
 This is a function that will simulate a single step ($t\to{t+\dlta{t}}$) of the unobserved process \eqref{eq:gompertz1}.
 <<gompertz-proc-sim-def>>=
-
 require(pomp)
 
 gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
@@ -250,7 +248,6 @@ we'll see below how that gets specified.
 
 Next, we'll implement a simulator for the observation process \eqref{eq:gompertz-obs}.
 <<gompertz-meas-sim-def>>=
-
 gompertz.meas.sim <- function (x, t, params, ...) {
   ## unpack the parameters:
   tau <- params["tau"]
@@ -272,7 +269,6 @@ With the two functions above, we have what we need to simulate the full model.
 The first step is to construct an \R\ object of class \code{pomp} which will serve as a container to hold the model and data.
 This is done with a call to \code{pomp}:
 <<first-pomp-construction,eval=F>>=
-
 gompertz <- pomp(
                  data=data.frame(
                    time=1:100,
@@ -303,9 +299,7 @@ Before we can simulate the model, we need to settle on some parameter values.
 We do this by specifying a named numeric vector that contains at least all the parameters needed by the functions \code{gompertz.proc.sim} and \code{gompertz.meas.sim}.
 The parameter vector needs to specify the initial conditions $X(t_{0})=x_{0}$ as well.
 <<set-params>>=
-
 theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1,X.0=1)
-
 @ 
 In addition to the parameters $r$, $K$, $\sigma$, and $\tau$, note that we've specified the initial condition $X_0$ in the vector \code{theta}.
 The fact that the initial condition parameter's name ends in ``\code{.0}'' is significant: 
@@ -319,7 +313,6 @@ Now we can simulate a data set:
 gompertz <- simulate(gompertz,params=theta)
 @ 
 <<gompertz-get-data,eval=T,echo=F,results='hide'>>=
-
 pompExample(gompertz)
 dat <- as.data.frame(gompertz)
 gompertz <- pomp(
@@ -333,7 +326,6 @@ gompertz <- pomp(
                  t0=0
                  )
 coef(gompertz) <- theta
-
 @ 
 Now \code{gompertz} is identical to what it was before, but the data that were there before have been replaced by simulated data.
 The parameters (\code{theta}) at which the simulations were performed have also been saved internally to \code{gompertz}.
@@ -341,9 +333,7 @@ Fig.~\ref{fig:gompertz-first-simulation-plot} shows the results of issuing a \co
 
 \begin{figure}
 <<gompertz-plot,echo=F>>=
-
 plot(gompertz,variables=c("Y"))
-
 @ 
 \caption{
   Simulated data and unobserved states from the Gompertz model (Eqs.~\ref{eq:gompertz1}--\ref{eq:gompertz-obs}).
@@ -361,7 +351,6 @@ We can do this by specifying the \code{dmeasure} argument in another call to \co
 To make the model definition internally consistent, we'll need to take care that the \code{dmeasure} corresponds to the same probability distribution we're sampling from in the \code{rmeasure} code we wrote already.
 The following accomplishes this and adds the measurement model density function to the \code{pomp} object.
 <<second-pomp-construction>>=
-
 gompertz.meas.dens <- function (y, x, t, params, log, ...) {
   ## unpack the parameters:
   tau <- params["tau"]
@@ -378,7 +367,6 @@ gompertz <- pomp(
                  gompertz,
                  dmeasure=gompertz.meas.dens
                  )
-
 @ 
 The result of the above is a new \code{pomp} object \code{gompertz} in every way identical to the one we had before, but with the measurement-model density function \code{dmeasure} now specified.
 
@@ -388,11 +376,9 @@ See \citet{Arulampalam2002} for an excellent tutorial on particle filtering and 
 We must decide how many concurrent realizations (\emph{particles}) to use: the larger the number of particles, the smaller the Monte Carlo error but the greater the computational effort.
 Let's run \code{pfilter} with 1000 particles to estimate the likelihood at the true parameters:
 <<gompertz-pfilter-truth,eval=F>>=
-
 pf <- pfilter(gompertz,params=theta,Np=1000)
 loglik.truth <- logLik(pf)
 loglik.truth
-
 @ 
 <<gompertz-pfilter-truth-eval,echo=F>>=
 set.seed(457645443L)
@@ -408,16 +394,13 @@ pf <- pfilter(gompertz,Np=1000)
 @ 
 Now let's compute the log likelihood at a different point in parameter space, one for which $r$, $K$, and $\sigma$ are 50\% higher than their true values.
 <<gompertz-pfilter-guess,eval=F>>=
-
 theta.true <- coef(gompertz)
 theta.guess <- theta.true
 theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
 pf <- pfilter(gompertz,params=theta.guess,Np=1000)
 loglik.guess <- logLik(pf)
-
 @ 
 <<gompertz-pfilter-guess-eval,echo=F>>=
-
 binary.file <- "gompertz-pfilter-guess.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
@@ -426,14 +409,12 @@ set.seed(457645443L)
 <<gompertz-pfilter-guess>>
 save(theta.true,theta.guess,loglik.guess,file=binary.file,compress='xz')
 }  
-
 @ 
 
 \begin{textbox}
 \caption{Implementation of the Kalman filter for the Gompertz model.}
 \label{box:kalman-filter-def}
 <<kalman-filter-def>>=
-
 kalman.filter <- function (Y, X0, r, K, sigma, tau) {
   ntimes <- length(Y)
   sigma.sq <- sigma^2
@@ -463,7 +444,6 @@ kalman.filter <- function (Y, X0, r, K, sigma, tau) {
        loglik=sum(cond.loglik)
        )
 }
-
 @   
 \end{textbox}
 
@@ -471,7 +451,6 @@ As we mentioned before, for this particular example, we can compute the likeliho
 An implementation of the Kalman filter is given in Box~\ref{box:kalman-filter-def}.
 Let's run the Kalman filter on the example data we generated above:
 <<kalman-filter-run>>=
-
 y <- obs(gompertz)
 x0 <- init.state(gompertz)
 r <- coef(gompertz,"r")
@@ -479,12 +458,9 @@ K <- coef(gompertz,"K")
 sigma <- coef(gompertz,"sigma")
 tau <- coef(gompertz,"tau")
 kf <- kalman.filter(y,x0,r,K,sigma,tau)
-
 @ 
 <<kalman-likelihood-correction,echo=F>>=
-
 loglik.kalman <- kf$loglik
-
 @ 
 In this case, the Kalman filter gives us a log likelihood of \Sexpr{round(loglik.kalman,1)}, 
 while the particle filter with 1000 particles gives \Sexpr{round(loglik.truth,1)}.
@@ -556,7 +532,6 @@ Here, we'll demonstrate the method using snippets.
 
 The following call to \code{pomp} implements a POMP model equivalent to that encoded in \code{gompertz}:
 <<snippet-gomp-pomp,results='hide'>>=
-
 gomp2 <- pomp(
               data=subset(as(gompertz,"data.frame"),select=c(time,Y)),
               times="time",
@@ -654,7 +629,6 @@ In our Gompertz model example, the natural-scale parameters are $r$, $K$, $\sigm
 We'll log-transform all the parameters to enforce this constrant.
 
 <<loggomp-pomp-construction,eval=T>>=
-
 gompertz <- pomp(
                  gompertz,
                  parameter.transform=function(params,...){
@@ -664,7 +638,6 @@ gompertz <- pomp(
                    log(params)
                  }
                  )
-
 @ 
 We could have chosen to write faster versions of these transformations using \code{Csnippet} as above.
 
@@ -699,7 +672,6 @@ To be clear: the parameter-setting expression \code{coef(gompertz) <- theta} ass
 Note that it's the user's responsibility to ensure that the \code{parameter.transform} and \code{parameter.inv.transform} are actually mutually inverse.
 A simple (but not foolproof) test of this is
 <<par-trans-inverse-test,results='markup'>>=
-
 # use parameter.inv.transform:
 theta <- coef(gompertz,transform=TRUE)  
 ## theta is on the estimation scale
@@ -807,7 +779,6 @@ if (file.exists(binary.file)) {
   .Random.seed <<- save.seed
 
 <<gompertz-post-mif>>
-
   save(
        mf,estpars,
        theta.mif,theta.true,
@@ -885,7 +856,6 @@ Our discrete-time Gompertz has the deterministic skeleton
 where $S=e^{-r\,\dlta{t}}$ and $\dlta{t}$ is the time-step.
 This can be implemented in the \R\ function
 <<gompertz-skeleton-def,echo=T>>=
-
 gompertz.skel <- function (x, t, params, ...) {
   r <- params["r"]
   K <- params["K"]
@@ -894,13 +864,11 @@ gompertz.skel <- function (x, t, params, ...) {
   xnew <- c(X=unname(K^(1-S)*X^S))
   return(xnew)
 }
-
 @ 
 Note that we have here implicitly assumed that $\dlta{t}=1$.
 
 We can incorporate the deterministic skeleton into a new \code{pomp} object via the \code{skeleton} argument:
 <<gomp3-pomp>>=
-
 gomp3 <- simulate(
                   pomp(
                        gompertz,
@@ -912,7 +880,6 @@ gomp3 <- simulate(
                     ),
                   seed=88737400L
                   )
-
 @ 
 We set the \code{skeleton.type} argument to \code{"map"} for discrete-time processes (such as the Gompertz model) and to \code{"vectorfield"} for continuous-time processes.
 
@@ -921,7 +888,6 @@ The discrepancy is measured using the \code{dmeasure} function from the \code{po
 The following codes perform trajectory matching.
 Since we set \code{transform=TRUE}, the optimization will be performed on the estimation scale.
 <<gompertz-trajmatch-calc,eval=F>>=
-
 tm <- traj.match(
                  gomp3,
                  start=coef(gomp3),
@@ -931,7 +897,6 @@ tm <- traj.match(
                  maxit=1000,
                  reltol=1e-8
                  )
-
 @ 
 <<gompertz-trajmatch-eval,echo=F,eval=T>>=
 binary.file <- "gompertz-trajmatch.rda"
@@ -947,12 +912,10 @@ Fig.~\ref{fig:trajmatch-plot} shows the results of this fit.
 
 \begin{figure}[b]
 <<trajmatch-plot,echo=F,eval=T,fig.height=4,fig.width=6>>=
-
 op <- par(mfrow=c(1,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 plot(time(tm),obs(tm,"Y"),xlab="time",ylab=expression(X,Y),type='o')
 lines(time(tm),states(tm,"X"),lwd=2)
 par(op)
-
 @ 
 \caption{
   Illustration of trajectory matching.
@@ -984,7 +947,6 @@ In addition, we assume that measurements $y_t$ of $N_t$ are themselves noisy, ac
 As before, we'll begin by writing an \R\ function that implements a simulator (\code{rprocess}) for the Ricker model.
 Thus, in \R\ code, we write
 <<ricker-map-defn>>=
-
 ricker.sim <- function (x, t, params, delta.t, ...) {
   e <- rnorm(n=1,mean=0,sd=params["sigma"]) 
   setNames(
@@ -995,23 +957,19 @@ ricker.sim <- function (x, t, params, delta.t, ...) {
            c("N","e")
            )
 }
-
 @
 In C code, we'd write
 <<ricker-sim-C-def>>=
-
 ricker.sim <- Csnippet('
   e = rnorm(0,sigma);
   N = r*N*exp(-N+e);
 ')
-
 @ 
 Note that, in the above implementations, $e$ is taken to be a state variable.
 This is not strictly necessary, but it might prove useful, for example, in \emph{a posteriori} diagnostic checking of model residuals.
 Now we can construct a \code{pomp} object; in this case, we use the \code{discrete.time.sim} plug-in.
 Note how we specify the measurement model.
 <<ricker-pomp,results='hide'>>=
-
 ricker <- pomp(
                data=data.frame(time=seq(0,50,by=1),y=NA),
                times="time",
@@ -1031,7 +989,6 @@ ricker <- pomp(
                  )
                )
 ricker <- simulate(ricker,seed=73691676L)
-
 @ 
 
 A pre-built \code{pomp} object implementing this model is included with the package.
@@ -1573,7 +1530,6 @@ Bayesian sequential Monte Carlo requires only that we be able to simulate from t
 We then give this function to the \code{rprior} argument of \code{pomp}.
 Let's use uniform priors on $\log{r}$ and $\sigma$, leaving the others fixed at their true values.
 <<bsmc-example-flat-prior-1,echo=T,eval=T,results='hide'>>=
-
 pompExample(ricker)
 
 ricker <- pomp(
@@ -1584,17 +1540,14 @@ ricker <- pomp(
                  params
                }
                )
-                 
 @ 
 We'll use 10,000 particles, so we'll need that many samples from the prior distribution.
 The following runs the Bayesian sequential Monte Carlo algorithm with 10,000 particles.
 Note that, by specifying \code{transform=TRUE}, we cause the estimation to proceed on the transformed scale.
 <<bsmc-example-flat-prior-3,eval=F>>=
-  
   fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
                est=c("r","sigma"),smooth=0.2,
                seed=1050180387L)
-
 @ 
 <<bsmc-example-flat-prior-eval,eval=T,echo=F>>=
 binary.file <- "bsmc-ricker-flat-prior.rda"
@@ -1609,17 +1562,13 @@ if (file.exists(binary.file)) {
 Fig.~\ref{fig:bsmc-example-flat-prior} shows the results of this computation.
 Obtain the posterior medians of the parameters by doing
 <<bsmc-example-flat-prior-coef>>=
-
 signif(coef(fit1),digits=2)
-
 @ 
 Note that these are reported on the natural (i.e., untransformed) scale.
 
 \begin{figure}
 <<bsmc-example-flat-prior-plot,fig.height=6,fig.width=6,echo=F>>=
-
 plot(fit1,pars=c("r","sigma"),thin=5000)
-
 @ 
 \caption{
   Results of \code{bsmc} on the Ricker model.
@@ -1633,7 +1582,6 @@ plot(fit1,pars=c("r","sigma"),thin=5000)
 
 To repeat the procedure with log-normal priors on $r$ and $\sigma$, one might do the following.
 <<bsmc-example-normal-prior,eval=F,echo=T>>=
-
 ricker <- pomp(ricker,
                rprior=function (params, ...) {
                  x <- rlnorm(n=2,meanlog=c(4,log(0.5)),sdlog=c(3,5))
@@ -1655,9 +1603,7 @@ if (file.exists(binary.file)) {
   save(fit2,file=binary.file,compress="xz")
 }
 <<bsmc-example-normal-prior-show,echo=T,eval=T>>=
-
 signif(coef(fit2),digits=2)
-
 @ 
 
 \clearpage
@@ -1783,7 +1729,6 @@ Obviously, the Euler-multinomial distributions generalize to an arbitrary number
 The help (\code{?euler.sim}) informs us that to use \code{euler.sim}, we need to specify a function that advances the states from $t$ to $t+{\delta}t$.
 The function \code{sir.step}, defined here, does this.
 <<sir-step-R>>=
-
 require(pomp)
 
 sir.step <- function (x, t, params, delta.t, ...) {
@@ -1810,11 +1755,9 @@ sir.step <- function (x, t, params, delta.t, ...) {
   x["cases"] <- x["cases"]+trans[4]
   x
 }
-
 @ 
 Here is a C snippet implementing the same simulator.
 <<sir-step-C>>=
-
 sir.step <- '
   double rate[6];		// transition rates
   double trans[6];		// transition numbers
@@ -1861,7 +1804,6 @@ We can enforce this constraint by customizing the parameterization of our initia
 We do this in by specializing a custom \code{initializer} in the call to \code{pomp} that constructs the \code{pomp} object.
 Let's construct it now and fill it with simulated data.
 <<sir-pomp-def,eval=T,echo=T,results='hide'>>=
-
 rmeas <- '
   cases = rnbinom_mu(theta,rho*incid);
 '
@@ -1904,8 +1846,6 @@ pomp(
      ) -> sir
 
 simulate(sir,seed=1914679908L) -> sir
-
-
 @ 
 Notice that we are assuming here that the data are collected weekly and use an Euler step-size of 1/20~wk.
 Here, we've assumed an infection with an infectious period of $1/\gamma=1/26$~yr and a basic reproductive number, $R_0$ of $\beta/(\gamma+\mu)\approx 15$.
@@ -1914,9 +1854,7 @@ Fig.~\ref{fig:sir-plot} shows one realization of this process.
 
 \begin{figure}[b]
 <<sir-plot,echo=F>>=
-
 plot(sir,var=c("cases","incid","S","I"))
-
 @   
   \caption{Results of \code{plot(sir,var=c("cases","incid","S","I"))}.}
   \label{fig:sir-plot}
@@ -1942,11 +1880,9 @@ If $s_{i}(t)$, $i=1,\dots,k$ is a periodic B-spline basis, as in Fig.~\ref{fig:s
 and, by varying the coefficients $b_{i}$, we can obtain a wide variety of shapes for $\beta(t)$.
 In \pkg{pomp}, we can define a set of periodic B-spline basis functions by doing:
 <<seas-basis>>=
-
 tbasis <- seq(-1,21,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3,degree=2,period=1,
                                 names="seas%d")
-
 @ 
 This results in a data-frame with \Sexpr{ncol(basis)} columns; 
 each column is a quadratic periodic B-spline over the 20~yr domain, with period 1~yr.
@@ -1969,7 +1905,6 @@ where $W$ is an integrated Gamma white noise process.
 
 Let's modify the process-model simulator to incorporate these three complexities.
 <<complex-sir-def,echo=T,eval=T,results='hide'>>=
-
 seas.sir.step <- '
   double rate[6];		// transition rates
   double trans[6];		// transition numbers
@@ -2008,7 +1943,6 @@ seas.sir.step <- '
 
 While we're at it, let's supply a deterministic skeleton and parameter transformation functions.
 <<other-codes,results='hide'>>=
-
 seas.sir.skel <- '
   double rate[6];		// transition rates
   double term[6];		// transition numbers
@@ -2111,7 +2045,6 @@ simulate(
 
 \begin{figure}
 <<seas-basis-plot,echo=F,fig.height=4,fig.width=6>>=
-
 op <- par(mar=c(5,5,1,5))
 matplot(tbasis,basis,xlim=c(0,2),type='l',lwd=2,bty='u',
         lty=1,col=c("red","blue","orange"),xlab="time (yr)",
@@ -2143,9 +2076,7 @@ par(op)
 
 \begin{figure}
 <<complex-sir-plot,echo=F>>=
-
 plot(complex.sir)
-
 @   
   \caption{
     One realization of the SIR model with seasonal contact rate, imported infections, and extrademographic stochasticity in the force of infection.

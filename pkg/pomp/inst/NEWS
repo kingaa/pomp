@@ -1,19 +1,35 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_1-_2:
+
+        • More informative error messages are generated when a needed
+          variable cannot be found.
+
+        • Features that facilitate multiple ABC chains have been added.
+          There is a ‘c’ method to combine ‘abc’ objects into an
+          ‘abcList’ object and to combine ‘abcList’ objects.  Running
+          ‘conv.rec’ on an ‘abc’ or ‘abcList’ object produces ‘coda’
+          ‘mcmc’ and ‘mcmc.list’ objects, respectively.  Diagnostic
+          plots are produced by running ‘plot’ on such objects.
+
+        • Basic structure of ‘pmcmcList’ and ‘abcList’ objects is
+          changed: these objects now inherit directly from ‘list’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_1-_1:
 
-        • Package 'coda' is now a dependency of 'pomp'.  This package
+        • Package ‘coda’ is now a dependency of ‘pomp’.  This package
           provides various generic MCMC diagnostics.
 
         • Features that facilitate multiple PMCMC chains have been
-          added.  There is a 'c' method to combine 'pmcmc' objects into
-          a 'pmcmcList' object.  Running 'conv.rec' on a 'pmcmc' or
-          'pmcmcList' object now produces 'coda' 'mcmc' and 'mcmc.list'
-          objects, respectively.  Diagnostic plots are produced by
-          running 'plot' on such objects.
+          added.  There is a ‘c’ method to combine ‘pmcmc’ objects into
+          a ‘pmcmcList’ object and to combine ‘pmcmcList’ objects.
+          Running ‘conv.rec’ on a ‘pmcmc’ or ‘pmcmcList’ object now
+          produces ‘coda’ ‘mcmc’ and ‘mcmc.list’ objects, respectively.
+          Diagnostic plots are produced by running ‘plot’ on such
+          objects.
 
-        • The 'compare.pmcmc' and 'compare.abc' methods have been
-          removed.  They are superceded by these diagnostic plots.
+        • The ‘compare.pmcmc’ and ‘compare.abc’ methods have been
+          removed as obsolete.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_0-_9:
 
@@ -37,7 +53,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_0-_1
 
         • ‘pomp’ can now take snippets of C code directly as
           definitions of the various basic functions.  This is
-          accomplished through the use of a new "Csnippet" function.
+          accomplished through the use of a new ‘Csnippet’ function.
           See the ‘sir’ demo for a demonstration.
 
         • It is now possible to specify global variables and typedefs
@@ -314,7 +330,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._4_1-_1
 
         • The ‘data()’-loadable examples have been re-implemented to
           make use of the above-mentioned facility.  Note that this new
-          functionality makes it unnecessary to "un-transform" model
+          functionality makes it unnecessary to un-transform model
           parameters within the user-specified ‘rprocess’, ‘dprocess’,
           ‘rmeasure’, ‘dmeasure’, ‘skeleton’, and ‘initializer’ codes.
           This change is not backward-compatible, but only codes using

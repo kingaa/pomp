@@ -48,7 +48,7 @@ exportClasses(
               traj.matched.pomp,
               probed.pomp,probe.matched.pomp,
               spect.pomp,spect.matched.pomp,
-              abc,
+              abc,abcList,
               Csnippet
               )
 

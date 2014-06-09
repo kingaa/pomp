@@ -1,15 +1,15 @@
-## this file contains short definitions of methods for the 'pmcmc' class
+## this file defines methods for the 'pmcmc' and 'pmcmcList' classes
 
 ## extract the estimated log likelihood
 setMethod('logLik','pmcmc',function(object,...)object@loglik)
 
-## extract the convergence record
+## extract the convergence record as a coda::mcmc object
 setMethod(
           'conv.rec',
           signature=signature(object='pmcmc'),
           function (object, pars, ...) {
             if (missing(pars)) pars <- colnames(object@conv.rec)
-            coda::mcmc(object@conv.rec[,pars])
+            coda::mcmc(object@conv.rec[,pars,drop=FALSE])
           }
           )
 
@@ -26,21 +26,16 @@ setMethod(
 ## pmcmcList class
 setClass(
          'pmcmcList',
-         slots=c(
-           list = 'list'
-           ),
-         prototype=prototype(
-           list = list()
-           ),
+         contains='list',
          validity=function (object) {
-           if (!all(sapply(object@list,is,'pmcmc'))) {
+           if (!all(sapply(object,is,'pmcmc'))) {
              retval <- paste0(
                               "error in ",sQuote("c"),
                               ": dissimilar objects cannot be combined"
                               )
              return(retval)
            }
-           d <- sapply(object@list,function(x)dim(x@conv.rec))
+           d <- sapply(object,function(x)dim(x@conv.rec))
            if (!all(apply(d,1,diff)==0)) {
              retval <- paste0(
                               "error in ",sQuote("c"),
@@ -59,16 +54,16 @@ setMethod(
           definition=function (x, ...) {
             y <- list(...)
             if (length(y)==0) {
-              new("pmcmcList",list=list(x))
+              new("pmcmcList",list(x))
             } else {
               p <- sapply(y,is,'pmcmc')
-              q <- sapply(y,is,'pmcmcList')
-              if (any(!(p||q)))
+              pl <- sapply(y,is,'pmcmcList')
+              if (any(!(p||pl)))
                 stop("cannot mix ",sQuote("pmcmc"),
                      " and non-",sQuote("pmcmc")," objects")
               y[p] <- lapply(y[p],list)
-              y[q] <- lapply(y[q],slot,"list")
-              new("pmcmcList",list=c(list(x),y,recursive=TRUE))
+              y[pl] <- lapply(y[pl],as,"list")
+              new("pmcmcList",c(list(x),y,recursive=TRUE))
             }
           }
           )
@@ -81,15 +76,14 @@ setMethod(
             if (length(y)==0) {
               x
             } else {
-              x <- x@list
               p <- sapply(y,is,'pmcmc')
               pl <- sapply(y,is,'pmcmcList')
               if (any(!(p||pl)))
                 stop("cannot mix ",sQuote("pmcmc"),
                      " and non-",sQuote("pmcmc")," objects")
               y[p] <- lapply(y[p],list)
-              y[pl] <- lapply(y[pl],slot,"list")
-              new("pmcmcList",list=c(x,y,recursive=TRUE))
+              y[pl] <- lapply(y[pl],as,"list")
+              new("pmcmcList",c(as(x,"list"),y,recursive=TRUE))
             }
           }
           )
@@ -98,17 +92,7 @@ setMethod(
           "[",
           signature=signature(x="pmcmcList"),
           definition=function(x, i, ...) {
-            y <- x
-            y@list <- x@list[i]
-            y
-          }
-          )
-
-setMethod(
-          "[[",
-          signature=signature(x="pmcmcList"),
-          definition=function(x, i, ...) {
-            x@list[[i]]
+            new('pmcmcList',as(x,"list")[i])
           }
           )
 
@@ -116,7 +100,7 @@ setMethod(
           'conv.rec',
           signature=signature(object='pmcmcList'),
           definition=function (object, ...) {
-            coda::mcmc.list(lapply(object@list,conv.rec,...))
+            coda::mcmc.list(lapply(object,conv.rec,...))
           }
           )
 
@@ -124,7 +108,7 @@ setMethod(
           "plot",
           signature=signature(x='pmcmcList'),
           definition=function (x, y = NULL, ...) {
-            pmcmc.diagnostics(x@list)
+            pmcmc.diagnostics(x)
           }
           )
 

@@ -93,5 +93,11 @@ abc6 <- abc(pomp(po,dprior=dprior6),
             )
 plot(abc6)
 
+try(abc7 <- c(abc2,abc3))
+plot(abc7 <- c(abc2,abc4))
+plot(abc7,scatter=TRUE)
+plot(conv.rec(c(abc2,abc4)))
+plot(conv.rec(c(abc7,abc6)))
+
 dev.off()
 
