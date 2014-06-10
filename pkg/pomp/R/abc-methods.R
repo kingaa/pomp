@@ -135,7 +135,6 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
     oma.multi <- c(6,0,5,0)
     xx <- z[[1]]
     estnames <- pars
-    
     ## plot abc convergence diagnostics
     other.diagnostics <- c()
     plotnames <- c(other.diagnostics,estnames)
@@ -152,7 +151,7 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
       hi <- min(low+n.per.page-1,nplots)
       for (i in seq(from=low,to=hi,by=1)) {
         n <- i-low+1
-        dat <- sapply(z,function(po,label) conv.rec(po,label),label=plotnames[i])
+        dat <- sapply(z,conv.rec,pars=plotnames[i])
         matplot(
                 y=dat, 
                 x=iteration,
