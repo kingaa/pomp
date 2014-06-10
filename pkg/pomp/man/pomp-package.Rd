@@ -8,7 +8,7 @@
   The first step in using \pkg{pomp} is to encode one's model and data in an object of class \code{pomp}.
   One does this via a call to \code{\link{pomp}}, which involves specifying the process and measurement components of the model in one or more of a variety of ways.
   Details on this are given in the documentation for the \code{\link{pomp}} function.
-  Examples are given in the \sQuote{Introduction to \pkg{pomp}} document, in the demos (\code{demo(package='pomp')}), and via the \code{\link{pompExample}} function.
+  Examples are given in the \href{http://pomp.r-forge.r-project.org/vignettes/intro_to_pomp.pdf}{\dQuote{Introduction to \pkg{pomp}}} document, in the demos (\code{demo(package='pomp')}), and via the \code{\link{pompExample}} function.
 
   \pkg{pomp} version \Sexpr[echo=F,stage=install,results=text]{packageDescription("pomp",fields="Version")} provides algorithms for
   \enumerate{
@@ -37,8 +37,8 @@
   The basic class, \code{\link{pomp}}, encodes a partially-observed Markov process together with a uni- or multi-variate data set and (possibly) parameters.
 }
 \section{Documentation}{
-  The \href{http://pomp.r-forge.r-project.org/vignettes/index.html}{\sQuote{Introduction to \pkg{pomp}}} document illustrates the facilities of the package using familiar stochastic processes.
-  The \href{http://pomp.r-forge.r-project.org/vignettes/index.html}{\sQuote{Advanced topics in \pkg{pomp}}} document discusses the low-level interface and some more advanced modeling techniques.
+  The \href{http://pomp.r-forge.r-project.org/vignettes/intro_to_pomp.pdf}{\sQuote{Introduction to \pkg{pomp}}} document illustrates the facilities of the package using familiar stochastic processes.
+  The \href{http://pomp.r-forge.r-project.org/vignettes/advanced_topics_in_pomp.pdf}{\sQuote{Advanced topics in \pkg{pomp}}} document discusses the low-level interface and some more advanced modeling techniques.
   These documents can be viewed at \url{http://pomp.r-forge.r-project.org}.
 }
 \references{

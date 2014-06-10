@@ -300,8 +300,8 @@
   }
 }
 \examples{
-## For examples, see the \dQuote{Introduction to \pkg{pomp}}
-## and \dQuote{Advanced topics in \pkg{pomp}} documents,
+## For examples, see the "Introduction to pomp"
+## and "Advanced topics in pomp" documents,
 ## the demos, and the examples provided with the package, e.g.:
 \dontrun{
 pompExample()
