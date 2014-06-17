@@ -15,13 +15,11 @@
   The Particle MCMC algorithm for estimating the parameters of a partially-observed Markov process.
 }
 \usage{
-\S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, pars,
-    rw.sd, Np, tol = 1e-17, max.fail = 0,
-    verbose = getOption("verbose"), transform = FALSE, \dots)
+\S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, pars, rw.sd, Np,
+    tol = 1e-17, max.fail = 0, verbose = getOption("verbose"), \dots)
 \S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, Np, tol, \dots)
-\S4method{pmcmc}{pmcmc}(object, Nmcmc, start, pars,
-    rw.sd, Np, tol, max.fail = 0,
-    verbose = getOption("verbose"), transform, \dots)
+\S4method{pmcmc}{pmcmc}(object, Nmcmc, start, pars, rw.sd, Np,
+    tol, max.fail = 0, verbose = getOption("verbose"), \dots)
 \S4method{continue}{pmcmc}(object, Nmcmc = 1, \dots)
 }
 \arguments{
@@ -61,10 +59,6 @@
   }
   \item{verbose}{
     logical; if TRUE, print progress reports.
-  }
-  \item{transform}{
-    logical;
-    if \code{TRUE}, optimization is performed on the transformed scale.
   }
   \item{\dots}{
     Additional arguments.

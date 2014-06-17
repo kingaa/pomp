@@ -4,7 +4,6 @@ setClass(
          contains='pfilterd.pomp',
          slots=c(
            pars = 'character',
-           transform = 'logical',
            Nmcmc = 'integer',
            random.walk.sd = 'numeric',
            conv.rec = 'matrix',
@@ -16,14 +15,13 @@ pmcmc.internal <- function (object, Nmcmc,
                             start, pars,
                             rw.sd, Np,
                             tol, max.fail,
-                            verbose, transform,
+                            verbose,
                             .ndone = 0L,
                             .prev.pfp = NULL, .prev.log.prior = NULL,
                             .getnativesymbolinfo = TRUE) {
 
   object <- as(object,"pomp")
   gnsi <- as.logical(.getnativesymbolinfo)
-  transform <- as.logical(transform)
   .ndone <- as.integer(.ndone)
 
   if (missing(start))
@@ -154,8 +152,8 @@ pmcmc.internal <- function (object, Nmcmc,
                                 filter.mean=TRUE,
                                 save.states=FALSE,
                                 save.params=FALSE,
-                                verbose=verbose,
                                 .transform=FALSE,
+                                verbose=verbose,
                                 .getnativesymbolinfo=gnsi
                                 ),
                silent=FALSE
@@ -174,11 +172,7 @@ pmcmc.internal <- function (object, Nmcmc,
   for (n in seq_len(Nmcmc)) { # main loop
 
     theta.prop <- theta
-    if (transform)
-      theta <- partrans(object,theta.prop,dir='inverse',.getnativesymbolinfo=gnsi)
     theta.prop[pars] <- rnorm(n=length(pars),mean=theta.prop[pars],sd=rw.sd)
-    if (transform)
-      theta <- partrans(object,theta.prop,dir='forward',.getnativesymbolinfo=gnsi)
 
     ## run the particle filter on the proposed new parameter values
     pfp.prop <- try(
@@ -193,8 +187,8 @@ pmcmc.internal <- function (object, Nmcmc,
                                      filter.mean=TRUE,
                                      save.states=FALSE,
                                      save.params=FALSE,
-                                     verbose=verbose,
                                      .transform=FALSE,
+                                     verbose=verbose,
                                      .getnativesymbolinfo=gnsi
                                      ),
                     silent=FALSE
@@ -223,7 +217,6 @@ pmcmc.internal <- function (object, Nmcmc,
       "pmcmc",
       pfp,
       params=theta,
-      transform=transform,
       Nmcmc=Nmcmc,
       pars=pars,
       random.walk.sd=rw.sd,
@@ -241,10 +234,9 @@ setMethod(
                     start, pars, rw.sd, Np,
                     tol = 1e-17, max.fail = 0,
                     verbose = getOption("verbose"),
-                    transform = FALSE,
                     ...) {
             
-            if (missing(start)) start <- coef(object,transform=transform)
+            if (missing(start)) start <- coef(object)
             if (missing(rw.sd))
               stop("pmcmc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
             if (missing(pars)) pars <- names(rw.sd)[rw.sd>0]
@@ -261,7 +253,6 @@ setMethod(
                            tol=tol,
                            max.fail=max.fail,
                            verbose=verbose,
-                           transform=transform,
                            ...
                            )
           }
@@ -292,7 +283,6 @@ setMethod(
                     start, pars, rw.sd,
                     Np, tol, max.fail = 0,
                     verbose = getOption("verbose"),
-                    transform,
                     ...) {
 
             if (missing(Nmcmc)) Nmcmc <- object@Nmcmc
@@ -301,7 +291,6 @@ setMethod(
             if (missing(rw.sd)) rw.sd <- object@random.walk.sd
             if (missing(Np)) Np <- object@Np
             if (missing(tol)) tol <- object@tol
-            if (missing(transform)) transform <- object@transform
 
             pmcmc(
                   object=as(object,"pomp"),
@@ -313,7 +302,6 @@ setMethod(
                   tol=tol,
                   max.fail=max.fail,
                   verbose=verbose,
-                  transform=transform,
                   ...
                   )
           }
