@@ -304,6 +304,30 @@ if (file.exists(binary.file)) {
 } else {
 set.seed(457645443L)
 
+tic <- Sys.time()
+sim1 <- simulate(gompertz,nsim=1000,seed=5676868L,obs=TRUE)
+toc <- Sys.time()
+g1sim <- toc-tic
+
+tic <- Sys.time()
+sim2 <- simulate(gomp2,nsim=1000,seed=5676868L,obs=TRUE)
+toc <- Sys.time()
+g2sim <- toc-tic
+
+stopifnot(all.equal(sim1,sim2))
+
+tic <- Sys.time()
+pf1 <- pfilter(gompertz,Np=10000,seed=5676868L)
+toc <- Sys.time()
+g1pf <- toc-tic
+
+tic <- Sys.time()
+pf2 <- pfilter(gomp2,Np=10000,seed=5676868L)
+toc <- Sys.time()
+g2pf <- toc-tic
+
+stopifnot(all.equal(logLik(pf1),logLik(pf2)))
+
 save(g1sim,g2sim,g1pf,g2pf,file=binary.file,compress='xz')
 }  
 
