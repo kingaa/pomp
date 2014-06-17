@@ -18,12 +18,12 @@
 \usage{
 \S4method{abc}{pomp}(object, Nabc = 1, start, pars,
     rw.sd, probes, scale, epsilon,
-    verbose = getOption("verbose"), transform = FALSE, \dots)
+    verbose = getOption("verbose"), \dots)
 \S4method{abc}{probed.pomp}(object, probes,
-    verbose = getOption("verbose"), transform = FALSE, \dots)
+    verbose = getOption("verbose"), \dots)
 \S4method{abc}{abc}(object, Nabc, start, pars,
     rw.sd, probes, scale, epsilon,
-    verbose = getOption("verbose"), transform, \dots)
+    verbose = getOption("verbose"), \dots)
 \S4method{continue}{abc}(object, Nabc = 1, \dots)
 }
 \arguments{
@@ -62,10 +62,6 @@
   \item{verbose}{
     logical; if TRUE, print progress reports.
   }
-  \item{transform}{
-    logical;
-    if \code{TRUE}, optimization is performed on the transformed scale.
-  }
   \item{\dots}{
     Additional arguments.
     These are currently ignored.
@@ -75,7 +71,7 @@
   An object of class \code{abc}.
   This class inherits from class \code{\link[=probed.pomp-class]{probed.pomp}} and contains the following additional slots:
   \describe{
-    \item{pars, Nabc, dprior, hyperparams, transform, scale, epsilon}{
+    \item{pars, Nabc, dprior, hyperparams, scale, epsilon}{
       These slots hold the values of the corresponding arguments of the call to \code{abc}.
     }
     \item{random.walk.sd}{

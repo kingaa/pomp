@@ -4,7 +4,6 @@ setClass(
          contains='pomp',
          slots=c(
            pars = 'character',
-           transform = 'logical',
            Nabc = 'integer',
            probes='list',
            scale = 'numeric',
@@ -18,14 +17,13 @@ abc.internal <- function (object, Nabc,
                           start, pars,
                           rw.sd, probes,
                           epsilon, scale,
-                          verbose, transform,
+                          verbose,
                           .ndone = 0L,
                           .getnativesymbolinfo = TRUE,
                           ...) {
 
   object <- as(object,'pomp')
   gnsi <- as.logical(.getnativesymbolinfo)
-  transform <- as.logical(transform)
   Nabc <- as.integer(Nabc)
   epsilon <- as.numeric(epsilon)
   epssq <- epsilon*epsilon
@@ -134,16 +132,7 @@ abc.internal <- function (object, Nabc,
   for (n in seq_len(Nabc)) { # main loop
 
     theta.prop <- theta
-
-    if (transform)
-      theta.prop <- partrans(object,params=theta.prop,dir='inverse',
-                             .getnativesymbolinfo=gnsi)
-
     theta.prop[pars] <- rnorm(n=length(pars),mean=theta.prop[pars],sd=rw.sd)
-
-    if (transform)
-      theta.prop <- partrans(object,params=theta.prop,dir='forward',
-                             .getnativesymbolinfo=gnsi)
 
     gnsi <- FALSE
 
@@ -187,7 +176,6 @@ abc.internal <- function (object, Nabc,
       object,
       params=theta,
       pars=pars,
-      transform=transform,
       Nabc=Nabc,
       probes=probes,
       scale=scale,
@@ -205,7 +193,6 @@ setMethod(
                     start, pars, rw.sd,
                     probes, scale, epsilon,
                     verbose = getOption("verbose"),
-                    transform = FALSE,
                     ...) {
             
             if (missing(start))
@@ -239,8 +226,7 @@ setMethod(
                          scale=scale,
                          epsilon=epsilon,
                          rw.sd=rw.sd,
-                         verbose=verbose,
-                         transform=transform
+                         verbose=verbose
                          )
           }
           )
@@ -250,7 +236,6 @@ setMethod(
           signature=signature(object="probed.pomp"),
           function (object, probes,
                     verbose = getOption("verbose"),
-                    transform = FALSE,
                     ...) {
 
             if (missing(probes)) probes <- object@probes
@@ -258,7 +243,6 @@ setMethod(
             f(
               object=object,
               probes=probes,
-              transform=transform,
               ...
               )
           }
@@ -271,7 +255,6 @@ setMethod(
                     start, pars, rw.sd,
                     probes, scale, epsilon,
                     verbose = getOption("verbose"),
-                    transform,
                     ...) {
 
             if (missing(Nabc)) Nabc <- object@Nabc
@@ -281,7 +264,6 @@ setMethod(
             if (missing(probes)) probes <- object@probes
             if (missing(scale)) scale <- object@scale
             if (missing(epsilon)) epsilon <- object@epsilon
-            if (missing(transform)) transform <- object@transform
 
             f <- selectMethod("abc","pomp")
 
@@ -295,7 +277,6 @@ setMethod(
               scale=scale,
               epsilon=epsilon,
               verbose=verbose,
-              transform=transform,
               ...
               )
           }

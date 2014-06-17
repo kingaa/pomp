@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.51-3}{
+  \itemize{
+    \item \code{transform} argument for \code{pmcmc} and \code{abc} has been removed.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.51-2}{
   \itemize{
     \item More informative error messages are generated when a needed variable cannot be found.
