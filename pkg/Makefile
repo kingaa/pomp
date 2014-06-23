@@ -99,7 +99,7 @@ pomp.vignettes: pomp.install pomp.manual
 	$(CP) $*.pdf $*/inst/doc/manual.pdf
 	$(TOUCH) $@
 
-%.dist: %.manual
+%.dist:
 	-$(RCMD) Rdconv -t txt $*/inst/NEWS.Rd -o $*/inst/NEWS
 	$(RCMD) build --force --no-manual --resave-data --compact-vignettes=both $*
 	$(TOUCH) $@
