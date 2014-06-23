@@ -95,9 +95,12 @@ abc.internal <- function (object, Nabc,
   }
 
   theta <- start
-  log.prior <- dprior(object,params=theta,log=TRUE,
-                      .getnativesymbolinfo=gnsi)
-  ## we suppose that theta is a "match", which does the right thing for continue() and
+  log.prior <- dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
+  if (!is.finite(log.prior))
+    stop("inadmissible value of ",sQuote("dprior"),
+         " at parameters ",sQuote("start"))
+  ## we suppose that theta is a "match",
+  ## which does the right thing for continue() and
   ## should have negligible effect unless doing many short calls to continue()
 
   conv.rec <- matrix(
@@ -132,38 +135,39 @@ abc.internal <- function (object, Nabc,
   for (n in seq_len(Nabc)) { # main loop
 
     theta.prop <- theta
-    theta.prop[pars] <- rnorm(n=length(pars),mean=theta.prop[pars],sd=rw.sd)
+    theta.prop[pars] <- rnorm(n=length(pars),mean=theta[pars],sd=rw.sd)
+    log.prior.prop <- dprior(object,params=theta.prop,log=TRUE)
 
-    gnsi <- FALSE
+    if (is.finite(log.prior.prop) &&
+        runif(1) < exp(log.prior.prop-log.prior)) {
 
-    ## compute the probes for the proposed new parameter values
+      ## compute the probes for the proposed new parameter values
 
-    simval <- try(
-                  .Call(
-                        apply_probe_sim,
-                        object=object,
-                        nsim=1,
-                        params=theta.prop,
-                        seed=NULL,
-                        probes=probes,
-                        datval=datval
-                        ),
-                  silent=FALSE
-                  )
+      simval <- try(
+                    .Call(
+                          apply_probe_sim,
+                          object=object,
+                          nsim=1,
+                          params=theta.prop,
+                          seed=NULL,
+                          probes=probes,
+                          datval=datval
+                          ),
+                    silent=FALSE
+                    )
 
-    if (inherits(simval,'try-error'))
-      stop("abc error: error in ",sQuote("apply_probe_sim"),call.=FALSE)
+      if (inherits(simval,'try-error'))
+        stop("abc error: error in ",sQuote("apply_probe_sim"),call.=FALSE)
 
-    ## ABC update rule
-    distance <- sum(((datval-simval)/scale)^2)
-    if( (is.finite(distance)) && (distance<epssq) ){ 
-      log.prior.prop <- dprior(object,params=theta.prop,log=TRUE)
-      if (runif(1) < exp(log.prior.prop-log.prior)) {
+      ## ABC update rule
+      distance <- sum(((datval-simval)/scale)^2)
+      if( (is.finite(distance)) && (distance<epssq) ){ 
         theta <- theta.prop
         log.prior <- log.prior.prop
       }
-    }
 
+    }
+    
     ## store a record of this iteration
     conv.rec[n+1,names(theta)] <- theta
     if (verbose && (n%%5==0))

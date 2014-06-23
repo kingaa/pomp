@@ -64,7 +64,7 @@ newly created pomp object(s):
 > runs <- rle(as.vector(conv.rec(abc1)[, "alpha.1"]))
 > hist(runs$lengths)
 > mean(runs$length)
-[1] 7.31602
+[1] 6.949965
 > 
 > abc2 <- abc(po,
 +             Nabc=2000,
@@ -134,4 +134,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  8.616   0.052   8.991 
+ 11.122   0.067  11.192 
