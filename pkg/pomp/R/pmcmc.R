@@ -172,7 +172,7 @@ pmcmc.internal <- function (object, Nmcmc,
   for (n in seq_len(Nmcmc)) { # main loop
 
     theta.prop <- theta
-    theta.prop[pars] <- rnorm(n=length(pars),mean=theta.prop[pars],sd=rw.sd)
+    theta.prop[pars] <- rnorm(n=length(pars),mean=theta[pars],sd=rw.sd)
 
     ## run the particle filter on the proposed new parameter values
     pfp.prop <- try(
