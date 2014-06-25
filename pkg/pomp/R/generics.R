@@ -45,7 +45,6 @@ setGeneric("cond.logLik",function(object,...)standardGeneric("cond.logLik"))
 setGeneric("eff.sample.size",function(object,...)standardGeneric("eff.sample.size"))
 ## convergence record
 setGeneric("conv.rec",function(object,...)standardGeneric("conv.rec"))
-
 ## stochastic simulation
 setGeneric("simulate",function(object,nsim=1,seed=NULL,...)standardGeneric("simulate"))
 

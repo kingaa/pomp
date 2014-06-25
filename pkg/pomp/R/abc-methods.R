@@ -1,12 +1,12 @@
 ## this file contains short definitions of methods for the 'abc' class
 
-## extract the convergence record
+## extract the convergence record as an 'mcmc' object
 setMethod(
           'conv.rec',
           'abc',
           function (object, pars, ...) {
             if (missing(pars)) pars <- colnames(object@conv.rec)
-            coda::mcmc(object@conv.rec[,pars,drop=FALSE])
+            coda::mcmc(object@conv.rec[,pars,drop=FALSE],...)
           }
           )
 
@@ -21,6 +21,8 @@ setMethod(
             ## } else {
             ##   plot.ts(conv.rec(x,pars),xlab="iteration",...)
             ## }
+            if (!missing(y))
+              warning(sQuote("y")," is ignored")
             abc.diagnostics(c(x),pars=pars,scatter=scatter,...)
           }
           )
@@ -98,6 +100,7 @@ setMethod(
           }
           )
 
+## extract the convergence record as an 'mcmc.list' object
 setMethod(
           'conv.rec',
           signature=signature(object='abcList'),
@@ -109,7 +112,9 @@ setMethod(
 setMethod(
           "plot",
           signature=signature(x='abcList'),
-          definition=function (x, y = NULL, ...) {
+          definition=function (x, y, ...) {
+            if (!missing(y))
+              warning(sQuote("y")," is ignored")
             abc.diagnostics(x,...)
           }
           )

@@ -24,7 +24,7 @@
 \S4method{logLik}{pmcmc}(object, \dots)
 \S4method{conv.rec}{pmcmc}(object, pars, \dots)
 \S4method{conv.rec}{pmcmcList}(object, \dots)
-\S4method{plot}{pmcmc}(x, y = NULL, \dots)
+\S4method{plot}{pmcmc}(x, y, \dots)
 \S4method{plot}{pmcmcList}(x, y, \dots)
 \S4method{c}{pmcmc}(x, \dots, recursive = FALSE)
 \S4method{c}{pmcmcList}(x, \dots, recursive = FALSE)

@@ -49,9 +49,9 @@ mif2 <- mif(ou2,Nmif=30,start=guess2,
 
 pdf(file="ou2-mif.pdf")
 plot(mif1)
-compare.mif(mif2)
-try(compare.mif(mif1,mif2))
-compare.mif(list(mif1,mif2))
+plot(mif2)
+try(plot(mif1,mif2))
+plot(c(mif1,mif2))
 dev.off()
 
 set.seed(33848585L)

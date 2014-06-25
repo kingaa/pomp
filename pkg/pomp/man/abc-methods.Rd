@@ -45,6 +45,9 @@
       \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
       By default, all rows are returned.
     }
+    \item{c}{
+      Concatenates \code{abc} objects into an \code{abcList}.
+    }
     \item{plot}{
       Diagnostic plots.
     }

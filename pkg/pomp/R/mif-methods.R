@@ -89,8 +89,105 @@ setMethod('conv.rec','mif',
 setMethod(
           "plot",
           "mif",
-          function (x, y = NULL, ...) {
-            compare.mif(x)
+          function (x, y, ...) {
+            if (!missing(y)) {
+              y <- substitute(y)
+              warning(sQuote(y)," is ignored")
+            }
+            mif.diagnostics(list(x))
+          }
+          )
+
+## mifList class
+setClass(
+         'mifList',
+         contains='list',
+         validity=function (object) {
+           if (!all(sapply(object,is,'mif'))) {
+             retval <- paste0(
+                              "error in ",sQuote("c"),
+                              ": dissimilar objects cannot be combined"
+                              )
+             return(retval)
+           }
+           d <- sapply(object,function(x)dim(x@conv.rec))
+           if (!all(apply(d,1,diff)==0)) {
+             retval <- paste0(
+                              "error in ",sQuote("c"),
+                              ": to be combined, ",sQuote("mif"),
+                              " objects must equal numbers of iterations"
+                              )
+             return(retval)
+           }
+           TRUE
+         }
+         )
+
+setMethod(
+          'c',
+          signature=signature(x='mif'),
+          definition=function (x, ...) {
+            y <- list(...)
+            if (length(y)==0) {
+              new("mifList",list(x))
+            } else {
+              p <- sapply(y,is,'mif')
+              pl <- sapply(y,is,'mifList')
+              if (any(!(p||pl)))
+                stop("cannot mix ",sQuote("mif"),
+                     " and non-",sQuote("mif")," objects")
+              y[p] <- lapply(y[p],list)
+              y[pl] <- lapply(y[pl],as,"list")
+              new("mifList",c(list(x),y,recursive=TRUE))
+            }
+          }
+          )
+
+setMethod(
+          'c',
+          signature=signature(x='mifList'),
+          definition=function (x, ...) {
+            y <- list(...)
+            if (length(y)==0) {
+              x
+            } else {
+              p <- sapply(y,is,'mif')
+              pl <- sapply(y,is,'mifList')
+              if (any(!(p||pl)))
+                stop("cannot mix ",sQuote("mif"),
+                     " and non-",sQuote("mif")," objects")
+              y[p] <- lapply(y[p],list)
+              y[pl] <- lapply(y[pl],as,"list")
+              new("mifList",c(as(x,"list"),y,recursive=TRUE))
+            }
+          }
+          )
+
+setMethod(
+          "[",
+          signature=signature(x="mifList"),
+          definition=function(x, i, ...) {
+            new('mifList',as(x,"list")[i])
+          }
+          )
+
+setMethod(
+          'conv.rec',
+          signature=signature(object='mifList'),
+          definition=function (object, ...) {
+            lapply(object,conv.rec,...)
+          }
+          )
+
+setMethod(
+          "plot",
+          signature=signature(x='mifList'),
+          definition=function (x, y, ...) {
+            if (!missing(y)) {
+              y <- substitute(y)
+              warning(sQuote(y)," is ignored")
+            }
+            mif.diagnostics(x)
           }
           )
 
@@ -112,10 +209,12 @@ predvarplot.mif <- function (object, pars, type = 'l', mean = FALSE, ...) {
 }
 
 compare.mif <- function (z) {
-  ## assumes that x is a list of mifs with identical structure
-  if (!is.list(z)) z <- list(z)
-  if (!all(sapply(z,function(x)is(x,'mif'))))
-    stop("compare.mif error: ",sQuote("z")," must be a mif object or a list of mif objects",call.=FALSE)
+  stop(sQuote("compare.mif")," has been deprecated in favor of ",
+       sQuote("plot"))
+}
+
+mif.diagnostics <- function (z) {
+  ## assumes that z is a list of mifs with identical structure
   mar.multi <- c(0,5.1,0,2.1)
   oma.multi <- c(6,0,5,0)
   xx <- z[[1]]

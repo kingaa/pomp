@@ -1,5 +1,5 @@
 
-R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -20,6 +20,8 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
 Loading required package: deSolve
+Loading required package: coda
+Loading required package: lattice
 > 
 > pompExample(ou2)
 newly created pomp object(s):
@@ -64,7 +66,7 @@ newly created pomp object(s):
 +              tol=1e-8
 +              )  
 > 
-> compare.mif(list(mif1a,mif2a))
+> plot(c(mif1a,mif2a))
 > 
 > set.seed(64857673L)
 > mif1b <- mif(ou2,Nmif=50,start=guess1,
@@ -117,12 +119,19 @@ See '?mif' for instructions on specifying the cooling schedule.
 +              )  
 > mif2c <- continue(mif2c,Nmif=50)
 > 
-> compare.mif(list(mif1b,mif2b))
+> plot(c(mif1b,mif2b))
 > 
-> compare.mif(list(mif1a,mif1b))
-> compare.mif(list(mif2a,mif2b))
+> plot(c(mif1a,mif1b))
+> plot(c(mif2a,mif2b))
 > 
-> compare.mif(list(mif1b,mif2c))
+> plot(mfl1 <- c(mif1b,mif2c))
+> 
+> mfl2 <- c(mfl1,mif2c)
+> mfl3 <- c(mif2a,mfl1)
+> 
+> try(c(mif2a,continue(mif2b,Nmif=1)))
+Error in validObject(.Object) : 
+  invalid class "mifList" object: error in 'c': to be combined, 'mif' objects must equal numbers of iterations
 > 
 > dev.off()
 null device 
@@ -130,4 +139,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 50.335   0.068  50.772 
+ 59.213   0.057  59.317 

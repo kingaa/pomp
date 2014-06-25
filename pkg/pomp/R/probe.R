@@ -104,7 +104,7 @@ setMethod(
           }
           )
 
-probeplot.internal <- function (x, y, ...) {
+probeplot.internal <- function (x, ...) {
   ##function for plotting diagonal panels
   diag.panel.hist <- function(x, ...) {
     ##plot a histogram for the simulations
@@ -170,9 +170,12 @@ probeplot.internal <- function (x, y, ...) {
   }
 }
 
-setMethod("plot","probed.pomp", 
-          function (x, y, ...) {
-            probeplot.internal(x=x,y=y,...)
+setMethod("plot",
+          signature=signature(x="probed.pomp"), 
+          definition=function (x, y, ...) {
+            if (!missing(y))
+              warning(sQuote("y")," is ignored")
+            probeplot.internal(x=x,...)
           }
           )
 

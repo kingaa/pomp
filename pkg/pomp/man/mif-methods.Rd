@@ -6,22 +6,37 @@
 \alias{conv.rec}
 \alias{conv.rec,mif-method}
 \alias{conv.rec-mif}
+\alias{conv.rec,mifList-method}
+\alias{conv.rec-mifList}
 \alias{plot-mif}
 \alias{plot,mif-method}
+\alias{plot-mifList}
+\alias{plot,mifList-method}
+\alias{mifList-class}
+\alias{c-mif}
+\alias{c,mif-method}
+\alias{c-mifList}
+\alias{c,mifList-method}
+\alias{[-mifList}
+\alias{[,mifList-method}
 \alias{compare.mif}
 \title{Methods of the "mif" class}
 \description{Methods of the \code{mif} class.}
 \usage{
 \S4method{logLik}{mif}(object, \dots)
 \S4method{conv.rec}{mif}(object, pars, transform = FALSE, \dots)
-\S4method{plot}{mif}(x, y = NULL, \dots)
+\S4method{conv.rec}{mifList}(object, \dots)
+\S4method{plot}{mif}(x, y, \dots)
+\S4method{plot}{mifList}(x, y, \dots)
+\S4method{c}{mif}(x, \dots, recursive = FALSE)
+\S4method{c}{mifList}(x, \dots, recursive = FALSE)
 compare.mif(z)
 }
 \arguments{
   \item{object}{The \code{mif} object.}
   \item{pars}{Names of parameters.}
   \item{x}{The \code{mif} object.}
-  \item{y}{Ignored.}
+  \item{y, recursive}{Ignored.}
   \item{z}{A \code{mif} object or list of \code{mif} objects.}
   \item{transform}{
     optional logical;
@@ -41,12 +56,14 @@ compare.mif(z)
     \item{logLik}{
       Returns the value in the \code{loglik} slot.
     }
-    \item{compare.mif}{
-      Given a \code{mif} object or a list of \code{mif} objects, \code{compare.mif} produces a set of diagnostic plots.
+    \item{c}{
+      Concatenates \code{mif} objects into an \code{mifList}.
     }
     \item{plot}{
       Plots a series of diagnostic plots.
-      When \code{x} is a \code{mif} object, \code{plot(x)} is equivalent to \code{compare.mif(list(x))}.
+    }
+    \item{compare.mif}{
+      Deprecated: use \code{plot} instead.
     }
   }
 }

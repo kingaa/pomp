@@ -41,6 +41,6 @@ mif2 <- mif(ou2,Nmif=100,start=guess2,
             method="fp"
             )
 
-compare.mif(list(mif1,mif2))
+plot(c(mif1,mif2))
 
 dev.off()

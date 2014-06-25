@@ -367,17 +367,17 @@ bsmc.internal <- function (object, params, Np, est,
 
 setMethod(
           "bsmc",
-          "pomp",
-          function (object, params, Np, est,
-                    smooth = 0.1,
-                    ntries = 1,
-                    tol = 1e-17,
-                    lower = -Inf, upper = Inf,
-                    seed = NULL,
-                    verbose = getOption("verbose"),
-                    max.fail = 0,
-                    transform = FALSE,
-                    ...) {
+          signature=signature(object="pomp"),
+          definition = function (object, params, Np, est,
+            smooth = 0.1,
+            ntries = 1,
+            tol = 1e-17,
+            lower = -Inf, upper = Inf,
+            seed = NULL,
+            verbose = getOption("verbose"),
+            max.fail = 0,
+            transform = FALSE,
+            ...) {
             bsmc.internal(
                           object=object,
                           params=params,
@@ -397,7 +397,10 @@ setMethod(
           }
           )
 
-setMethod("$",signature(x="bsmcd.pomp"),function (x,name) slot(x,name))
+setMethod("$",
+          signature(x="bsmcd.pomp"),
+          definition = function (x, name) slot(x,name)
+          )
 
 bsmc.plot <- function (prior, post, pars, thin, ...) {
   p1 <- sample.int(n=ncol(prior),size=min(thin,ncol(prior)))
@@ -437,7 +440,9 @@ bsmc.plot <- function (prior, post, pars, thin, ...) {
 setMethod(
           "plot",
           signature(x="bsmcd.pomp"),
-          function (x, ..., pars, thin) {
+          function (x, y, ..., pars, thin) {
+            if (!missing(y))
+              warning(sQuote("y")," is ignored")
             if (missing(pars)) pars <- names(coef(x,transform=!x@transform))
             if (missing(thin)) thin <- Inf
             bsmc.plot(

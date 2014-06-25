@@ -1,5 +1,13 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.52-1}{
+  \itemize{
+    \item The new \code{mifList} class facilitates approaches based on multiple \code{mif} runs.
+    The \code{c} method constructs \code{mifList}s from \code{mif}s.
+    The \code{plot} method produces diagnostic plots.
+    \item \code{compare.mif} is now deprecated in favor of \code{plot} applied to a \code{mif} or \code{mifList}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.51-3}{
   \itemize{
     \item \code{transform} argument for \code{pmcmc} and \code{abc} has been removed.

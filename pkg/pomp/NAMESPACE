@@ -43,7 +43,7 @@ importFrom(coda,mcmc,mcmc.list)
 exportClasses(
               pomp,
               pfilterd.pomp,
-              mif,
+              mif,mifList,
               pmcmc,pmcmcList,
               traj.matched.pomp,
               probed.pomp,probe.matched.pomp,

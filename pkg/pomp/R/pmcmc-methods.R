@@ -9,7 +9,7 @@ setMethod(
           signature=signature(object='pmcmc'),
           function (object, pars, ...) {
             if (missing(pars)) pars <- colnames(object@conv.rec)
-            coda::mcmc(object@conv.rec[,pars,drop=FALSE])
+            coda::mcmc(object@conv.rec[,pars,drop=FALSE],...)
           }
           )
 
@@ -17,7 +17,9 @@ setMethod(
 setMethod(
           "plot",
           signature=signature(x='pmcmc'),
-          function (x, y = NULL, ...) {
+          function (x, y, ...) {
+            if (!missing(y))
+              warning(sQuote("y")," is ignored")
             pmcmc.diagnostics(list(x))
           }
           )
@@ -96,6 +98,7 @@ setMethod(
           }
           )
 
+## extract the convergence records as a coda::mcmc.list object
 setMethod(
           'conv.rec',
           signature=signature(object='pmcmcList'),
@@ -107,7 +110,9 @@ setMethod(
 setMethod(
           "plot",
           signature=signature(x='pmcmcList'),
-          definition=function (x, y = NULL, ...) {
+          definition=function (x, y, ...) {
+            if (!missing(y))
+              warning(sQuote("y")," is ignored")
             pmcmc.diagnostics(x)
           }
           )

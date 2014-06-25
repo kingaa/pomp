@@ -41,7 +41,7 @@ mif2a <- mif(ou2,Nmif=100,start=guess1,
              tol=1e-8
              )  
 
-compare.mif(list(mif1a,mif2a))
+plot(c(mif1a,mif2a))
 
 set.seed(64857673L)
 mif1b <- mif(ou2,Nmif=50,start=guess1,
@@ -91,11 +91,16 @@ mif2c <- mif(ou2,Nmif=50,start=guess1,
              )  
 mif2c <- continue(mif2c,Nmif=50)
 
-compare.mif(list(mif1b,mif2b))
+plot(c(mif1b,mif2b))
 
-compare.mif(list(mif1a,mif1b))
-compare.mif(list(mif2a,mif2b))
+plot(c(mif1a,mif1b))
+plot(c(mif2a,mif2b))
 
-compare.mif(list(mif1b,mif2c))
+plot(mfl1 <- c(mif1b,mif2c))
+
+mfl2 <- c(mfl1,mif2c)
+mfl3 <- c(mif2a,mfl1)
+
+try(c(mif2a,continue(mif2b,Nmif=1)))
 
 dev.off()
