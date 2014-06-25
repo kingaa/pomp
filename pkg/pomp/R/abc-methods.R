@@ -79,7 +79,7 @@ setMethod(
           'abc',
           function (object, pars, ...) {
             if (missing(pars)) pars <- colnames(object@conv.rec)
-            coda::mcmc(object@conv.rec[,pars,drop=FALSE],...)
+            coda::mcmc(object@conv.rec[,pars,drop=FALSE])
           }
           )
 

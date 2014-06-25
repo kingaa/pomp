@@ -3,7 +3,7 @@
 library(pomp) 
 pompExample(ou2)
 
-pdf(file='abc.pdf')
+pdf(file='ou2-abc.pdf')
 
 set.seed(2079015564L)
 
@@ -97,7 +97,8 @@ try(abc7 <- c(abc2,abc3))
 plot(abc7 <- c(abc2,abc4))
 plot(abc7,scatter=TRUE)
 plot(conv.rec(c(abc2,abc4)))
-plot(conv.rec(c(abc7,abc6),thin=10,start=5000))
+plot(conv.rec(c(abc7,abc6)))
+plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=1000))
 
 dev.off()
 

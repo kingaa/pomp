@@ -28,7 +28,7 @@ Loading required package: lattice
 newly created pomp object(s):
  ou2 
 > 
-> pdf(file='abc.pdf')
+> pdf(file='ou2-abc.pdf')
 > 
 > set.seed(2079015564L)
 > 
@@ -125,7 +125,8 @@ Error in validObject(.Object) :
 > plot(abc7 <- c(abc2,abc4))
 > plot(abc7,scatter=TRUE)
 > plot(conv.rec(c(abc2,abc4)))
-> plot(conv.rec(c(abc7,abc6),thin=10,start=5000))
+> plot(conv.rec(c(abc7,abc6)))
+> plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=1000))
 > 
 > dev.off()
 null device 
@@ -134,4 +135,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  9.980   0.064  10.288 
+  9.604   0.052   9.963 
