@@ -3,28 +3,6 @@
 ## extract the estimated log likelihood
 setMethod('logLik','pmcmc',function(object,...)object@loglik)
 
-## extract the convergence record as a coda::mcmc object
-setMethod(
-          'conv.rec',
-          signature=signature(object='pmcmc'),
-          function (object, pars, ...) {
-            if (missing(pars)) pars <- colnames(object@conv.rec)
-            coda::mcmc(object@conv.rec[,pars,drop=FALSE],...)
-          }
-          )
-
-## plot pmcmc object
-setMethod(
-          "plot",
-          signature=signature(x='pmcmc'),
-          function (x, y, ...) {
-            if (!missing(y))
-              warning(sQuote("y")," is ignored")
-            pmcmc.diagnostics(list(x))
-          }
-          )
-
-
 ## pmcmcList class
 setClass(
          'pmcmcList',
@@ -98,21 +76,48 @@ setMethod(
           }
           )
 
+## extract the convergence record as a coda::mcmc object
+setMethod(
+          'conv.rec',
+          signature=signature(object='pmcmc'),
+          function (object, pars, ...) {
+            if (missing(pars)) pars <- colnames(object@conv.rec)
+            coda::mcmc(object@conv.rec[,pars,drop=FALSE],...)
+          }
+          )
+
 ## extract the convergence records as a coda::mcmc.list object
 setMethod(
           'conv.rec',
           signature=signature(object='pmcmcList'),
           definition=function (object, ...) {
-            coda::mcmc.list(lapply(object,conv.rec,...))
+            f <- selectMethod("conv.rec","pmcmc")
+            coda::mcmc.list(lapply(object,f,...))
           }
           )
+
+## plot pmcmc object
+setMethod(
+          "plot",
+          signature=signature(x='pmcmc'),
+          function (x, y, ...) {
+            if (!missing(y)) {
+              y <- substitute(y)
+              warning(sQuote(y)," is ignored")
+            }
+            pmcmc.diagnostics(list(x))
+          }
+          )
+
 
 setMethod(
           "plot",
           signature=signature(x='pmcmcList'),
           definition=function (x, y, ...) {
-            if (!missing(y))
-              warning(sQuote("y")," is ignored")
+            if (!missing(y)) {
+              y <- substitute(y)
+              warning(sQuote(y)," is ignored")
+            }
             pmcmc.diagnostics(x)
           }
           )

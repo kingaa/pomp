@@ -1,32 +1,5 @@
 ## this file contains short definitions of methods for the 'abc' class
 
-## extract the convergence record as an 'mcmc' object
-setMethod(
-          'conv.rec',
-          'abc',
-          function (object, pars, ...) {
-            if (missing(pars)) pars <- colnames(object@conv.rec)
-            coda::mcmc(object@conv.rec[,pars,drop=FALSE],...)
-          }
-          )
-
-## plot abc object
-setMethod(
-          "plot",
-          "abc",
-          function (x, y, pars, scatter = FALSE, ...) {
-            ## if (missing(pars)) pars <- x@pars
-            ## if (scatter) {
-            ##   pairs(as.matrix(conv.rec(x,pars)))
-            ## } else {
-            ##   plot.ts(conv.rec(x,pars),xlab="iteration",...)
-            ## }
-            if (!missing(y))
-              warning(sQuote("y")," is ignored")
-            abc.diagnostics(c(x),pars=pars,scatter=scatter,...)
-          }
-          )
-
 ## abcList class
 setClass(
          'abcList',
@@ -100,12 +73,36 @@ setMethod(
           }
           )
 
+## extract the convergence record as an 'mcmc' object
+setMethod(
+          'conv.rec',
+          'abc',
+          function (object, pars, ...) {
+            if (missing(pars)) pars <- colnames(object@conv.rec)
+            coda::mcmc(object@conv.rec[,pars,drop=FALSE],...)
+          }
+          )
+
 ## extract the convergence record as an 'mcmc.list' object
 setMethod(
           'conv.rec',
           signature=signature(object='abcList'),
           definition=function (object, ...) {
-            coda::mcmc.list(lapply(object,conv.rec,...))
+            f <- selectMethod("conv.rec","abc")
+            coda::mcmc.list(lapply(object,f,...))
+          }
+          )
+
+## plot abc object
+setMethod(
+          "plot",
+          "abc",
+          function (x, y, pars, scatter = FALSE, ...) {
+            if (!missing(y)) {
+              y <- substitute(y)
+              warning(sQuote(y)," is ignored")
+            }
+            abc.diagnostics(c(x),pars=pars,scatter=scatter,...)
           }
           )
 
@@ -113,8 +110,10 @@ setMethod(
           "plot",
           signature=signature(x='abcList'),
           definition=function (x, y, ...) {
-            if (!missing(y))
-              warning(sQuote("y")," is ignored")
+            if (!missing(y)) {
+              y <- substitute(y)
+              warning(sQuote(y)," is ignored")
+            }
             abc.diagnostics(x,...)
           }
           )

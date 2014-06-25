@@ -125,7 +125,7 @@ Error in validObject(.Object) :
 > plot(abc7 <- c(abc2,abc4))
 > plot(abc7,scatter=TRUE)
 > plot(conv.rec(c(abc2,abc4)))
-> plot(conv.rec(c(abc7,abc6)))
+> plot(conv.rec(c(abc7,abc6),thin=10,start=5000))
 > 
 > dev.off()
 null device 
@@ -134,4 +134,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 11.122   0.067  11.192 
+  9.980   0.064  10.288 

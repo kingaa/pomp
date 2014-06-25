@@ -97,7 +97,7 @@ try(abc7 <- c(abc2,abc3))
 plot(abc7 <- c(abc2,abc4))
 plot(abc7,scatter=TRUE)
 plot(conv.rec(c(abc2,abc4)))
-plot(conv.rec(c(abc7,abc6)))
+plot(conv.rec(c(abc7,abc6),thin=10,start=5000))
 
 dev.off()
 

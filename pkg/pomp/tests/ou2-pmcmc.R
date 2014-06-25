@@ -76,7 +76,7 @@ try(ff <- c(ff,ou2))
 plot(ff <- c(ff,f5))
 plot(conv.rec(c(f2,ff),c("alpha.2","alpha.3")))
 plot(conv.rec(ff[2],c("alpha.2")))
-plot(conv.rec(ff[2:3],c("alpha.3")))
+plot(conv.rec(ff[2:3],c("alpha.3"),thin=3,start=2))
 plot(conv.rec(ff[[3]],c("alpha.3")))
 
 dev.off()
