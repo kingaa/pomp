@@ -823,7 +823,7 @@ par(op)
 @ 
 \caption{
   Convergence plots can be used to help diagnose convergence of the iterated filtering algorithm.
-  This shows part of the output of \code{compare.mif(mf)}.
+  This shows part of the output of \code{plot(mf)}.
 }
 \label{fig:convplot}
 \end{figure}
