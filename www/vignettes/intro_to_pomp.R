@@ -854,7 +854,7 @@ out <- nlf(
 ##   out[[j]] <- nlf(
 ##                   gompertz,
 ##                   start=starts[[j]],
-##                   transform=log,
+##                   transform.data=log,
 ##                   transform.params=TRUE,
 ##                   est=c("K","r"),
 ##                   lags=c(1,2),
@@ -865,42 +865,42 @@ out <- nlf(
 ##                   nasymp=5000
 ##                   )
 ## }
-## fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
+## fits <- t(sapply(out,function(x)c(coef(x,c("r","K")),value=logLik(x))))
 
 ## ----nlf-fits-eval,echo=F,eval=T,results='hide'--------------------------
 binary.file <- "nlf-fits.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-# pick 5 random starting parameter values
-starts <- replicate(n=5,
-                    {
-                      p <- coef(gompertz)
-                      p[c("K","r")] <- rlnorm(n=2,meanlog=log(p[c("K","r")]),
-                                              sdlog=0.1)
-                      p
-                    },
-                    simplify=FALSE
-                    )
-out <- list()
-## Do the fitting. 
-## method, trace, and nasymp are explained below   
-for (j in 1:5) {
-  out[[j]] <- nlf(
-                  gompertz,
-                  start=starts[[j]],
-                  transform=log,
-                  transform.params=TRUE,
-                  est=c("K","r"),
-                  lags=c(1,2),
-                  seed=7639873L,
-                  method="Nelder-Mead",
-                  trace=4,
-                  skip.se=TRUE,
-                  nasymp=5000
-                  )  
-}
-fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
+  # pick 5 random starting parameter values
+  starts <- replicate(n=5,
+                      {
+                        p <- coef(gompertz)
+                        p[c("K","r")] <- rlnorm(n=2,meanlog=log(p[c("K","r")]),
+                                                sdlog=0.1)
+                        p
+                      },
+                      simplify=FALSE
+                      )
+  out <- list()
+  ## Do the fitting. 
+  ## method, trace, and nasymp are explained below   
+  for (j in 1:5) {
+    out[[j]] <- nlf(
+                    gompertz,
+                    start=starts[[j]],
+                    transform.data=log,
+                    transform.params=TRUE,
+                    est=c("K","r"),
+                    lags=c(1,2),
+                    seed=7639873L,
+                    method="Nelder-Mead",
+                    trace=4,
+                    skip.se=TRUE,
+                    nasymp=5000
+                    )  
+  }
+  fits <- t(sapply(out,function(x)c(coef(x,c("r","K")),value=logLik(x))))
   save(starts,out,fits,file=binary.file,compress="xz")
 }
 
@@ -922,14 +922,14 @@ theta <- coef(long.gomp)
 ##   pars <- theta
 ##   pars["r"] <- r.vals[j]
 ##   for(k in 1:4) {
-##     fvals[j,k] <- nlf(
-##                       long.gomp,
-##                       start=pars,
-##                       nasymp=5000,
-##                       est=NULL,
-##                       lags=lags[[k]],
-##                       eval.only=TRUE
-##                       )
+##     fit <- nlf(
+##                long.gomp,
+##                start=pars,
+##                nasymp=5000,
+##                lags=lags[[k]],
+##                eval.only=TRUE
+##                )
+##     fvals[j,k] <- logLik(fit)
 ##   }
 ## }
 
@@ -940,14 +940,14 @@ theta <- coef(long.gomp)
 ##   pars <- theta
 ##   pars["K"] <- pars["X.0"] <- K.vals[j]
 ##   for(k in 1:4) {
-##     fvals2[j,k] <- nlf(
-##                        long.gomp,
-##                        start=pars,
-##                        nasymp=5000,
-##                        est=NULL,
-##                        lags=lags[[k]],
-##                        eval.only=TRUE
-##                        )
+##     fit <- nlf(
+##                long.gomp,
+##                start=pars,
+##                nasymp=5000,
+##                lags=lags[[k]],
+##                eval.only=TRUE
+##                )
+##     fvals2[j,k] <- logLik(fit)
 ##   }
 ## }
 
@@ -956,41 +956,41 @@ binary.file <- "nlf-lag-tests.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-long.gomp <- simulate(gompertz,times=1:1000)
-theta <- coef(long.gomp)
-lags <- list(1,2,c(1,2),c(2,3))
-r.vals <- theta["r"]*exp(seq(-0.69,0.69,length=25))
-fvals <- matrix(nrow=25,ncol=4)
-for (j in 1:25) {
-  pars <- theta
-  pars["r"] <- r.vals[j]
-  for(k in 1:4) {
-    fvals[j,k] <- nlf(
-                      long.gomp,
-                      start=pars,
-                      nasymp=5000,
-                      est=NULL,
-                      lags=lags[[k]],
-                      eval.only=TRUE
-                      )
+  long.gomp <- simulate(gompertz,times=1:1000)
+  theta <- coef(long.gomp)
+  lags <- list(1,2,c(1,2),c(2,3))
+  r.vals <- theta["r"]*exp(seq(-0.69,0.69,length=25))
+  fvals <- matrix(nrow=25,ncol=4)
+  for (j in 1:25) {
+    pars <- theta
+    pars["r"] <- r.vals[j]
+    for(k in 1:4) {
+      fit <- nlf(
+                 long.gomp,
+                 start=pars,
+                 nasymp=5000,
+                 lags=lags[[k]],
+                 eval.only=TRUE
+                 )
+      fvals[j,k] <- logLik(fit)
+    }
   }
-}
-K.vals <- theta["K"]*exp(seq(-0.15,0.15,length=25))
-fvals2 <- matrix(nrow=25,ncol=4)
-for (j in 1:25) {
-  pars <- theta
-  pars["K"] <- pars["X.0"] <- K.vals[j]
-  for(k in 1:4) {
-    fvals2[j,k] <- nlf(
-                       long.gomp,
-                       start=pars,
-                       nasymp=5000,
-                       est=NULL,
-                       lags=lags[[k]],
-                       eval.only=TRUE
-                       )
+  K.vals <- theta["K"]*exp(seq(-0.15,0.15,length=25))
+  fvals2 <- matrix(nrow=25,ncol=4)
+  for (j in 1:25) {
+    pars <- theta
+    pars["K"] <- pars["X.0"] <- K.vals[j]
+    for(k in 1:4) {
+      fit <- nlf(
+                 long.gomp,
+                 start=pars,
+                 nasymp=5000,
+                 lags=lags[[k]],
+                 eval.only=TRUE
+                 )
+      fvals2[j,k] <- logLik(fit)
+    }
   }
-}
   save(theta,lags,r.vals,K.vals,fvals,fvals2,file=binary.file,compress="xz")
 }
 
@@ -1033,14 +1033,14 @@ par(op)
 ## new.pomp <- simulate(gompertz,times=1:ndata,nsim=nreps,seed=NULL) # nreps simulated data sets
 ## for (j in 1:nreps) {
 ##   for (k in seq_along(lags)) {
-##     fvals[j,k] <- nlf(
-##                       new.pomp[[j]],
-##                       start=coef(gompertz),
-##                       nasymp=5000,
-##                       est=NULL,
-##                       lags=lags[[k]],
-##                       eval.only=TRUE
-##                       )
+##     fit <- nlf(
+##                new.pomp[[j]],
+##                start=coef(gompertz),
+##                nasymp=5000,
+##                lags=lags[[k]],
+##                eval.only=TRUE
+##                )
+##     fvals[j,k] <- logLik(fit)
 ##   }
 ## }
 ## fvals <- exp(fvals/ndata)
@@ -1050,23 +1050,23 @@ binary.file <- "nlf-multi-short.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-nreps <- 100
-ndata <- 60
-fvals <- matrix(nrow=nreps,ncol=length(lags))
-new.pomp <- simulate(gompertz,times=1:ndata,nsim=nreps,seed=NULL) # nreps simulated data sets 
-for (j in 1:nreps) {
-  for (k in seq_along(lags)) {
-    fvals[j,k] <- nlf(
-                      new.pomp[[j]], 
-                      start=coef(gompertz), 
-                      nasymp=5000, 
-                      est=NULL,
-                      lags=lags[[k]],
-                      eval.only=TRUE
-                      ) 
+  nreps <- 100
+  ndata <- 60
+  fvals <- matrix(nrow=nreps,ncol=length(lags))
+  new.pomp <- simulate(gompertz,times=1:ndata,nsim=nreps,seed=NULL) # nreps simulated data sets 
+  for (j in 1:nreps) {
+    for (k in seq_along(lags)) {
+      fit <- nlf(
+                 new.pomp[[j]], 
+                 start=coef(gompertz), 
+                 nasymp=5000, 
+                 lags=lags[[k]],
+                 eval.only=TRUE
+                 ) 
+      fvals[j,k] <- logLik(fit)
+    }
   }
-}
-fvals <- exp(fvals/ndata)
+  fvals <- exp(fvals/ndata)
   save(lags,nreps,ndata,fvals,file=binary.file,compress="xz")
 }
 
@@ -1092,16 +1092,16 @@ binary.file <- "nlf-fit-from-truth.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-true.fit <- nlf(
-                gompertz,
-                transform.params=TRUE,
-                est=c("K","r"),
-                lags=2,
-                seed=7639873, 
-                method="Nelder-Mead",
-                trace=4,
-                nasymp=5000
-                )
+  true.fit <- nlf(
+                  gompertz,
+                  transform.params=TRUE,
+                  est=c("K","r"),
+                  lags=2,
+                  seed=7639873,
+                  method="Nelder-Mead",
+                  trace=4,
+                  nasymp=5000
+                  )
   save(true.fit,file=binary.file,compress="xz")
 }
 
@@ -1131,7 +1131,7 @@ set.seed(32329L)
 ##              trace=4,
 ##              nasymp=5000
 ##              )
-##    pars[j,] <- fit$params[c("r","K")]
+##    pars[j,] <- coef(fit,c("r","K"))
 ## }
 ## colnames(pars) <- c("r","K")
 
@@ -1140,30 +1140,30 @@ binary.file <- "nlf-boot.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-lags <- 2
-ndata <- length(obs(gompertz))
-nboot <- ndata-max(lags)
-nreps <- 100
-pars <- matrix(0,nreps,2)
-bootsamp <- replicate(n=nreps,sample(nboot,replace=TRUE))
-for (j in seq_len(nreps)) {
-  fit <- nlf(
-             gompertz,
-             start=coef(gompertz),
-             transform.params=TRUE,
-             est=c("K","r"),
-             lags=lags,
-             seed=7639873, 
-             bootstrap=TRUE, 
-             bootsamp=bootsamp[,j],
-             skip.se=TRUE, 
-             method="Nelder-Mead",
-             trace=4,
-             nasymp=5000
-             )
-   pars[j,] <- fit$params[c("r","K")]
-}
-colnames(pars) <- c("r","K")
+  lags <- 2
+  ndata <- length(obs(gompertz))
+  nboot <- ndata-max(lags)
+  nreps <- 100
+  pars <- matrix(0,nreps,2)
+  bootsamp <- replicate(n=nreps,sample(nboot,replace=TRUE))
+  for (j in seq_len(nreps)) {
+    fit <- nlf(
+               gompertz,
+               start=coef(gompertz),
+               transform.params=TRUE,
+               est=c("K","r"),
+               lags=lags,
+               seed=7639873, 
+               bootstrap=TRUE, 
+               bootsamp=bootsamp[,j],
+               skip.se=TRUE, 
+               method="Nelder-Mead",
+               trace=4,
+               nasymp=5000
+               )
+     pars[j,] <- coef(fit,c("r","K"))
+  }
+  colnames(pars) <- c("r","K")
   save(pars,file=binary.file,compress="xz")
 }
 
@@ -1201,7 +1201,7 @@ apply(pars,2,sd)
 ##              trace=4,
 ##              nasymp=5000
 ##              )
-##    pars[j,] <- fit$params[c("r","K")]
+##    pars[j,] <- coef(fit,c("r","K"))
 ## }
 ## colnames(pars) <- c("r","K")
 
@@ -1211,33 +1211,33 @@ binary.file <- "nlf-block-boot.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-lags <- 2
-ndata <- length(obs(gompertz))
-nboot <- ndata-max(lags)
-nreps <- 100
-pars <- matrix(0,nreps,2)
-bootsamp <- replicate(
-                      n=nreps,
-                      sample(nboot-2,size=floor(nboot/3),replace=TRUE)
-                      )
-bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
-for (j in seq_len(nreps)) {
-  fit <- nlf(
-             gompertz,
-             transform.params=TRUE,
-             est=c("K","r"),
-             lags=lags,
-             seed=7639873L,
-             bootstrap=TRUE, 
-             bootsamp=bootsamp[,j],
-             skip.se=TRUE, 
-             method="Nelder-Mead",
-             trace=4,
-             nasymp=5000
-             )
-   pars[j,] <- fit$params[c("r","K")]
-}
-colnames(pars) <- c("r","K")
+  lags <- 2
+  ndata <- length(obs(gompertz))
+  nboot <- ndata-max(lags)
+  nreps <- 100
+  pars <- matrix(0,nreps,2)
+  bootsamp <- replicate(
+                        n=nreps,
+                        sample(nboot-2,size=floor(nboot/3),replace=TRUE)
+                        )
+  bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
+  for (j in seq_len(nreps)) {
+    fit <- nlf(
+               gompertz,
+               transform.params=TRUE,
+               est=c("K","r"),
+               lags=lags,
+               seed=7639873L,
+               bootstrap=TRUE, 
+               bootsamp=bootsamp[,j],
+               skip.se=TRUE, 
+               method="Nelder-Mead",
+               trace=4,
+               nasymp=5000
+               )
+     pars[j,] <- coef(fit,c("r","K"))
+  }
+  colnames(pars) <- c("r","K")
   save(pars,file=binary.file,compress="xz")
 }
 

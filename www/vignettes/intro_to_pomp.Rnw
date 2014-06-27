@@ -1215,7 +1215,7 @@ for (j in 1:5) {
   out[[j]] <- nlf(
                   gompertz,
                   start=starts[[j]],
-                  transform=log,
+                  transform.data=log,
                   transform.params=TRUE,
                   est=c("K","r"),
                   lags=c(1,2),
@@ -1226,15 +1226,15 @@ for (j in 1:5) {
                   nasymp=5000
                   )  
 }
-fits <- t(sapply(out,function(x)c(x$params[c("r","K")],value=x$value)))
+fits <- t(sapply(out,function(x)c(coef(x,c("r","K")),value=logLik(x))))
 @ 
 <<nlf-fits-eval,echo=F,eval=T,results='hide'>>=
 binary.file <- "nlf-fits.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-<<nlf-gompertz-starts>>
-<<nlf-gompertz-fits>>
+  <<nlf-gompertz-starts>>
+  <<nlf-gompertz-fits>>
   save(starts,out,fits,file=binary.file,compress="xz")
 }
 @ 
@@ -1273,14 +1273,14 @@ for (j in 1:25) {
   pars <- theta
   pars["r"] <- r.vals[j]
   for(k in 1:4) {
-    fvals[j,k] <- nlf(
-                      long.gomp,
-                      start=pars,
-                      nasymp=5000,
-                      est=NULL,
-                      lags=lags[[k]],
-                      eval.only=TRUE
-                      )
+    fit <- nlf(
+               long.gomp,
+               start=pars,
+               nasymp=5000,
+               lags=lags[[k]],
+               eval.only=TRUE
+               )
+    fvals[j,k] <- logLik(fit)
   }
 }
 @ 
@@ -1291,14 +1291,14 @@ for (j in 1:25) {
   pars <- theta
   pars["K"] <- pars["X.0"] <- K.vals[j]
   for(k in 1:4) {
-    fvals2[j,k] <- nlf(
-                       long.gomp,
-                       start=pars,
-                       nasymp=5000,
-                       est=NULL,
-                       lags=lags[[k]],
-                       eval.only=TRUE
-                       )
+    fit <- nlf(
+               long.gomp,
+               start=pars,
+               nasymp=5000,
+               lags=lags[[k]],
+               eval.only=TRUE
+               )
+    fvals2[j,k] <- logLik(fit)
   }
 }
 @ 
@@ -1307,9 +1307,9 @@ binary.file <- "nlf-lag-tests.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-<<nlf-my-pomp>>
-<<nlf-lag-test-log.r>>
-<<nlf-lag-test-log.K>>
+  <<nlf-my-pomp>>
+  <<nlf-lag-test-log.r>>
+  <<nlf-lag-test-log.K>>
   save(theta,lags,r.vals,K.vals,fvals,fvals2,file=binary.file,compress="xz")
 }
 @ 
@@ -1362,14 +1362,14 @@ fvals <- matrix(nrow=nreps,ncol=length(lags))
 new.pomp <- simulate(gompertz,times=1:ndata,nsim=nreps,seed=NULL) # nreps simulated data sets 
 for (j in 1:nreps) {
   for (k in seq_along(lags)) {
-    fvals[j,k] <- nlf(
-                      new.pomp[[j]], 
-                      start=coef(gompertz), 
-                      nasymp=5000, 
-                      est=NULL,
-                      lags=lags[[k]],
-                      eval.only=TRUE
-                      ) 
+    fit <- nlf(
+               new.pomp[[j]], 
+               start=coef(gompertz), 
+               nasymp=5000, 
+               lags=lags[[k]],
+               eval.only=TRUE
+               ) 
+    fvals[j,k] <- logLik(fit)
   }
 }
 fvals <- exp(fvals/ndata)
@@ -1379,7 +1379,7 @@ binary.file <- "nlf-multi-short.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-<<nlf-multi-short>>
+  <<nlf-multi-short>>
   save(lags,nreps,ndata,fvals,file=binary.file,compress="xz")
 }
 @ 
@@ -1395,7 +1395,7 @@ true.fit <- nlf(
                 transform.params=TRUE,
                 est=c("K","r"),
                 lags=2,
-                seed=7639873, 
+                seed=7639873,
                 method="Nelder-Mead",
                 trace=4,
                 nasymp=5000
@@ -1406,14 +1406,13 @@ binary.file <- "nlf-fit-from-truth.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-<<nlf-fit-from-truth>>
+  <<nlf-fit-from-truth>>
   save(true.fit,file=binary.file,compress="xz")
 }
 @ 
-From \verb+true.fit$params+ and \verb+true.fit$se+ we get the estimates ($\pm$ 1 standard error)
-${r}=$~\Sexpr{signif(true.fit$params["r"],2)}~$\pm$~\Sexpr{signif(true.fit$params["r"]*true.fit$se["r"],2)}
-and ${K}=$~\Sexpr{signif(true.fit$params["K"],2)}~$\pm$~\Sexpr{signif(true.fit$params["K"]*true.fit$se["K"],2)}. 
-%%$\log K = 0.081 \pm 0.064$, $\log r = -2.2 \pm 0.51$
+From \verb+coef(true.fit)+ and \verb+true.fit$se+ we get the estimates ($\pm$ 1 standard error)
+${r}=$~\Sexpr{signif(coef(true.fit,"r"),2)}~$\pm$~\Sexpr{signif(coef(true.fit,"r")*true.fit$se["r"],2)}
+and ${K}=$~\Sexpr{signif(coef(true.fit,"K"),2)}~$\pm$~\Sexpr{signif(coef(true.fit,"K")*true.fit$se["K"],2)}. 
 
 The standard errors provided by \code{nlf} are based on a Newey-West estimate of the variance-covariance matrix that is generally
 somewhat biased downward. 
@@ -1449,7 +1448,7 @@ for (j in seq_len(nreps)) {
              trace=4,
              nasymp=5000
              )
-   pars[j,] <- fit$params[c("r","K")]
+   pars[j,] <- coef(fit,c("r","K"))
 }
 colnames(pars) <- c("r","K")
 @ 
@@ -1458,7 +1457,7 @@ binary.file <- "nlf-boot.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-<<nlf-boot>>
+  <<nlf-boot>>
   save(pars,file=binary.file,compress="xz")
 }
 @ 
@@ -1502,7 +1501,7 @@ for (j in seq_len(nreps)) {
              trace=4,
              nasymp=5000
              )
-   pars[j,] <- fit$params[c("r","K")]
+   pars[j,] <- coef(fit,c("r","K"))
 }
 colnames(pars) <- c("r","K")
 @ 
@@ -1512,7 +1511,7 @@ binary.file <- "nlf-block-boot.rda"
 if (file.exists(binary.file)) {
   load(binary.file)
 } else {
-<<nlf-block-boot>>
+  <<nlf-block-boot>>
   save(pars,file=binary.file,compress="xz")
 }
 @ 
