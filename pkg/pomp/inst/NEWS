@@ -8,9 +8,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_3-_1
 
         • The ‘transform’ argument (for providing a function to
           transform the data) has been removed in favor of
-          ‘transform.data’.  The logical ‘transform.params’ argument
-          has been removed in favor of ‘transform’, as used in the
-          other inference algorithms (‘mif’, ‘probe.match’, etc.).
+          ‘transform.data’.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_2-_1:
 
