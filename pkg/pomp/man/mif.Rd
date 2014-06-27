@@ -16,7 +16,6 @@
   Iterated filtering algorithms for estimating the parameters of a partially-observed Markov process.
 }
 \usage{
-mif(object, \dots)
 \S4method{mif}{pomp}(object, Nmif = 1, start, pars, ivps = character(0),
     particles, rw.sd, Np, ic.lag, var.factor,
     cooling.type, cooling.fraction, cooling.factor,

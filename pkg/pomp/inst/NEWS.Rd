@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.53-1}{
+  \itemize{
+    \item \code{nlf} now returns an S4 object of class \code{nlfd.pomp} with a \code{logLik} method for extracting the log quasi likelihood and a \code{$} method for extracting arbitrary components.
+    \item The \code{transform} argument (for providing a function to transform the data) has been removed in favor of \code{transform.data}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.52-1}{
   \itemize{
     \item The new \code{mifList} class facilitates approaches based on multiple \code{mif} runs.

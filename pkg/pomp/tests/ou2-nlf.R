@@ -14,31 +14,17 @@ m1 <- nlf(
           lags=c(4,6),
           nconverge=100,
           nasymp=2000,
-          trace=1,
-          method="Nelder-Mead",
-          verbose=TRUE,
           eval.only=TRUE,
           seed=426094906L,
           lql.frac = 0.025
           )
-se1 <- rep(NA,length(estnames))
-print(m1)
 
 m2 <- nlf(
-          object=ou2,
-          start=theta.truth,
+          m1,
           est=estnames,
-          lags=c(4,6),
-          nconverge=100,
-          nasymp=2000,
           maxit=500,
-          trace=1,
-          method="Nelder-Mead",
-          verbose=TRUE,
-          seed=426094906L,
-          lql.frac = 0.025
+          method="Nelder-Mead"
           )
-se2 <- m2$se
 
 m3 <- nlf(
           object=ou2,
@@ -47,39 +33,25 @@ m3 <- nlf(
           nconverge=100,
           nasymp=2000,
           maxit=500,
-          trace=1,
           method="Nelder-Mead",
-          verbose=TRUE,
           eval.only=TRUE,
           seed=426094906L,
           lql.frac = 0.025
           )
-se3 <- rep(NA,length(estnames))
 
 m4 <- nlf(
-          object=ou2,
-          start=theta.guess,
-          est=estnames,
-          lags=c(4,6),
-          nconverge=100,
-          nasymp=2000,
-          maxit=500,
-          trace=1,
-          method="Nelder-Mead",
-          verbose=TRUE,
-          seed=426094906L,
-          lql.frac = 0.025
+          m3,
+          est=estnames
           )
-se4 <- m4$se
 
-options(scipen=-3)
+options(scipen=3)
 print(
       signif(
-             cbind(
-                   guess=c(theta.guess[estnames],se=se3,value=m3),
-                   truth=c(theta.truth[estnames],se=se1,value=m1),
-                   fit.from.guess=c(m4$params[estnames],se=se4,value=m4$value),
-                   fit.from.truth=c(m2$params[estnames],se=se2,value=m2$value)
+             rbind(
+                   fit.from.guess=c(coef(m4,estnames),se=m4$se,value=logLik(m4)),
+                   fit.from.truth=c(coef(m2,estnames),se=m2$se,value=logLik(m4)),
+                   guess=c(theta.guess[estnames],se=rep(NA,length(estnames)),value=logLik(m3)),
+                   truth=c(theta.truth[estnames],se=rep(NA,length(estnames)),value=logLik(m1))
                    ),
              4
              )

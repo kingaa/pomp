@@ -63,9 +63,9 @@ pomp.vignettes: pomp.install pomp.manual
 	$(TOUCH) $@
 
 %.cransrc:
-	$(RM) -r cran
 	mkdir -p cran
-	svn export $* cran/$*
+	$(RM) -r cran/$*
+	git archive --format=tar master $* | (cd cran; tar -xf -)
 	$(RM) -r cran/$*/tests 
 	$(TOUCH) $@
 

@@ -20,6 +20,8 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
 Loading required package: deSolve
+Loading required package: coda
+Loading required package: lattice
 > 
 > set.seed(583615606L)
 > 
@@ -37,88 +39,17 @@ newly created pomp object(s):
 +           lags=c(4,6),
 +           nconverge=100,
 +           nasymp=2000,
-+           trace=1,
-+           method="Nelder-Mead",
-+           verbose=TRUE,
 +           eval.only=TRUE,
 +           seed=426094906L,
 +           lql.frac = 0.025
 +           )
-> se1 <- rep(NA,length(estnames))
-> print(m1)
-[1] -551.8268
 > 
 > m2 <- nlf(
-+           object=ou2,
-+           start=theta.truth,
++           m1,
 +           est=estnames,
-+           lags=c(4,6),
-+           nconverge=100,
-+           nasymp=2000,
 +           maxit=500,
-+           trace=1,
-+           method="Nelder-Mead",
-+           verbose=TRUE,
-+           seed=426094906L,
-+           lql.frac = 0.025
++           method="Nelder-Mead"
 +           )
-  Nelder-Mead direct search function minimizer
-function value for initial parameters = 551.826845
-  Scaled convergence tolerance is 8.22286e-06
-Stepsize computed as 0.100000
-BUILD              4 555.857055 551.809812
-HI-REDUCTION       6 553.587531 551.809812
-HI-REDUCTION       8 552.896950 551.547043
-LO-REDUCTION      10 551.826845 551.547043
-REFLECTION        12 551.809812 551.525614
-HI-REDUCTION      14 551.582310 551.444555
-HI-REDUCTION      16 551.547043 551.429120
-HI-REDUCTION      18 551.525614 551.417773
-HI-REDUCTION      20 551.444555 551.417773
-HI-REDUCTION      22 551.429120 551.390624
-LO-REDUCTION      24 551.419291 551.390624
-LO-REDUCTION      26 551.417773 551.384044
-LO-REDUCTION      28 551.396651 551.379480
-HI-REDUCTION      30 551.390624 551.379480
-HI-REDUCTION      32 551.384044 551.379480
-HI-REDUCTION      34 551.381372 551.379480
-HI-REDUCTION      36 551.380899 551.378810
-LO-REDUCTION      38 551.379724 551.378261
-REFLECTION        40 551.379480 551.378023
-HI-REDUCTION      42 551.378810 551.378023
-LO-REDUCTION      44 551.378261 551.377746
-HI-REDUCTION      46 551.378120 551.377589
-EXTENSION         48 551.378023 551.376695
-LO-REDUCTION      50 551.377746 551.376695
-LO-REDUCTION      52 551.377589 551.376695
-EXTENSION         54 551.377112 551.375515
-LO-REDUCTION      56 551.376869 551.375515
-LO-REDUCTION      58 551.376695 551.375515
-EXTENSION         60 551.375706 551.374028
-LO-REDUCTION      62 551.375521 551.374028
-EXTENSION         64 551.375515 551.373593
-LO-REDUCTION      66 551.374448 551.373593
-REFLECTION        68 551.374028 551.373497
-HI-REDUCTION      70 551.373639 551.373497
-LO-REDUCTION      72 551.373623 551.373486
-REFLECTION        74 551.373593 551.373446
-HI-REDUCTION      76 551.373497 551.373425
-LO-REDUCTION      78 551.373486 551.373425
-HI-REDUCTION      80 551.373446 551.373419
-HI-REDUCTION      82 551.373429 551.373411
-REFLECTION        84 551.373425 551.373407
-HI-REDUCTION      86 551.373419 551.373407
-Exiting from Nelder Mead minimizer
-    88 function evaluations used
-h in NLF =  0.1 
-epsilon in NLF = 0.07430234 0.07131381 1.121473 
-Fitted param  1 -5.893573 -5.893573  up in  'nlf' 
-Fitted param  1 -5.887746  down in  'NLF' 
-Fitted param  2 -5.888468 -5.888468  up in  'nlf' 
-Fitted param  2 -5.890894  down in  'NLF' 
-Fitted param  3 -5.901121 -5.901121  up in  'nlf' 
-Fitted param  3 -5.872183  down in  'NLF' 
-> se2 <- m2$se
 > 
 > m3 <- nlf(
 +           object=ou2,
@@ -127,113 +58,35 @@ Fitted param  3 -5.872183  down in  'NLF'
 +           nconverge=100,
 +           nasymp=2000,
 +           maxit=500,
-+           trace=1,
 +           method="Nelder-Mead",
-+           verbose=TRUE,
 +           eval.only=TRUE,
 +           seed=426094906L,
 +           lql.frac = 0.025
 +           )
-> se3 <- rep(NA,length(estnames))
 > 
 > m4 <- nlf(
-+           object=ou2,
-+           start=theta.guess,
-+           est=estnames,
-+           lags=c(4,6),
-+           nconverge=100,
-+           nasymp=2000,
-+           maxit=500,
-+           trace=1,
-+           method="Nelder-Mead",
-+           verbose=TRUE,
-+           seed=426094906L,
-+           lql.frac = 0.025
++           m3,
++           est=estnames
 +           )
-  Nelder-Mead direct search function minimizer
-function value for initial parameters = 10349.712405
-  Scaled convergence tolerance is 0.000154223
-Stepsize computed as 0.150000
-BUILD              4 29590.472476 574.029743
-REFLECTION         6 10349.712405 561.069623
-EXTENSION          8 10349.712405 552.918157
-LO-REDUCTION      10 574.029743 552.446706
-LO-REDUCTION      12 561.069623 552.446706
-LO-REDUCTION      14 554.933811 552.446706
-LO-REDUCTION      16 553.288596 552.188648
-HI-REDUCTION      18 552.918157 552.188648
-REFLECTION        20 552.446706 551.941892
-HI-REDUCTION      22 552.310402 551.941892
-LO-REDUCTION      24 552.188648 551.941892
-EXTENSION         26 552.061458 551.693153
-LO-REDUCTION      28 551.960407 551.693153
-HI-REDUCTION      30 551.941892 551.693153
-EXTENSION         32 551.777968 551.552226
-LO-REDUCTION      34 551.749550 551.552226
-HI-REDUCTION      36 551.693153 551.552226
-EXTENSION         38 551.598023 551.421898
-HI-REDUCTION      40 551.581645 551.421898
-LO-REDUCTION      42 551.552226 551.421898
-REFLECTION        44 551.511351 551.401006
-LO-REDUCTION      46 551.462702 551.401006
-REFLECTION        48 551.428693 551.390416
-LO-REDUCTION      50 551.421898 551.388095
-LO-REDUCTION      52 551.401006 551.388095
-REFLECTION        54 551.395541 551.387873
-LO-REDUCTION      56 551.390416 551.385576
-REFLECTION        58 551.388095 551.379441
-HI-REDUCTION      60 551.387873 551.379441
-HI-REDUCTION      62 551.385576 551.379441
-LO-REDUCTION      64 551.383020 551.379441
-HI-REDUCTION      66 551.382723 551.379441
-EXTENSION         68 551.381009 551.378081
-LO-REDUCTION      70 551.380921 551.378081
-EXTENSION         72 551.379441 551.374956
-LO-REDUCTION      74 551.379030 551.374956
-LO-REDUCTION      76 551.378081 551.374956
-LO-REDUCTION      78 551.376822 551.374956
-EXTENSION         80 551.375968 551.373995
-LO-REDUCTION      82 551.375446 551.373995
-REFLECTION        84 551.374956 551.373649
-LO-REDUCTION      86 551.374162 551.373649
-REFLECTION        88 551.373995 551.373632
-HI-REDUCTION      90 551.373845 551.373632
-REFLECTION        92 551.373739 551.373469
-REFLECTION        94 551.373649 551.373462
-LO-REDUCTION      96 551.373632 551.373462
-Exiting from Nelder Mead minimizer
-    98 function evaluations used
-h in NLF =  0.1 
-epsilon in NLF = 0.07430743 0.07134126 1.118089 
-Fitted param  1 -5.893548 -5.893548  up in  'nlf' 
-Fitted param  1 -5.887774  down in  'NLF' 
-Fitted param  2 -5.888571 -5.888571  up in  'nlf' 
-Fitted param  2 -5.89076  down in  'NLF' 
-Fitted param  3 -5.901152 -5.901152  up in  'nlf' 
-Fitted param  3 -5.872222  down in  'NLF' 
-> se4 <- m4$se
 > 
-> options(scipen=-3)
+> options(scipen=3)
 > print(
 +       signif(
-+              cbind(
-+                    guess=c(theta.guess[estnames],se=se3,value=m3),
-+                    truth=c(theta.truth[estnames],se=se1,value=m1),
-+                    fit.from.guess=c(m4$params[estnames],se=se4,value=m4$value),
-+                    fit.from.truth=c(m2$params[estnames],se=se2,value=m2$value)
++              rbind(
++                    fit.from.guess=c(coef(m4,estnames),se=m4$se,value=logLik(m4)),
++                    fit.from.truth=c(coef(m2,estnames),se=m2$se,value=logLik(m4)),
++                    guess=c(theta.guess[estnames],se=rep(NA,length(estnames)),value=logLik(m3)),
++                    truth=c(theta.truth[estnames],se=rep(NA,length(estnames)),value=logLik(m1))
 +                    ),
 +              4
 +              )
 +       )
-             guess  truth fit.from.guess fit.from.truth
-alpha.2 -7.500e-01   -0.5     -4.663e-01     -4.664e-01
-alpha.3  4.500e-01    0.3      3.005e-01      3.003e-01
-tau      1.500e+00    1.0      1.129e+00      1.125e+00
-se1             NA     NA      3.531e-02      3.533e-02
-se2             NA     NA      3.978e-02      3.974e-02
-se3             NA     NA      5.287e-01      5.312e-01
-value   -1.035e+04 -551.8     -5.514e+02     -5.514e+02
+               alpha.2 alpha.3   tau se.alpha.2 se.alpha.3 se.tau    value
+fit.from.guess -0.4681  0.3054 1.435    0.03025    0.04433 0.4164   -553.0
+fit.from.truth -0.4681  0.3052 1.436    0.03030    0.04434 0.4161   -553.0
+guess          -0.7500  0.4500 1.500         NA         NA     NA -10350.0
+truth          -0.5000  0.3000 1.000         NA         NA     NA   -551.8
 > 
 > proc.time()
    user  system elapsed 
-  8.723   0.075   8.798 
+  4.684   0.064   4.808 

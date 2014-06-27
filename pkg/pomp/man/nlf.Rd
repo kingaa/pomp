@@ -1,19 +1,31 @@
 \name{nlf}
 \alias{nlf}
+\alias{nlf,pomp-method}
+\alias{nlf-pomp}
+\alias{nlf,nlfd.pomp-method}
+\alias{nlf-nlfd.pomp}
+\alias{nlfd.pomp-class}
+\alias{logLik,nlfd.pomp-method}
+\alias{logLik-nlfd.pomp}
+\alias{$,nlfd.pomp-method}
+\alias{$-nlfd.pomp}
 \title{Fit Model to Data Using Nonlinear Forecasting (NLF)}
 \description{
   Calls an optimizer to maximize the nonlinear forecasting (NLF) goodness of fit, by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series (which may be multivariate) and using the fitted model to predict some or all variables in the data time series.
   NLF is an \sQuote{indirect inference} method using a quasi-likelihood as the objective function.
 }
 \usage{
- nlf(object, start, est, lags, period = NA, tensor = FALSE,
+\S4method{nlf}{pomp}(object, start, est, lags, period = NA, tensor = FALSE,
      nconverge=1000, nasymp=1000, seed = 1066,
-     transform = identity,
-     nrbf = 4, method = "subplex", skip.se = FALSE,
-     verbose = FALSE, gr = NULL,
+     transform.data, nrbf = 4,
+     method = c("subplex", "Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
+     skip.se = FALSE, verbose = getOption("verbose"),
      bootstrap=FALSE, bootsamp = NULL,
      lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE,
-     transform.params = FALSE, \dots)
+     transform.params = FALSE, transform, \dots)
+\S4method{nlf}{nlfd.pomp}(object, start, est, lags, period, tensor,
+     nconverge, nasymp, seed, transform.data, nrbf, method,
+     lql.frac, se.par.frac, transform.params, \dots)
 }
 \arguments{
   \item{object}{
@@ -49,13 +61,13 @@
     When fitting, it is usually best to always run the simulations with the same sequence of random numbers, which is accomplished by setting \code{seed} to an integer.
     If you want a truly random simulation, set \code{seed=NULL}.
   }
-  \item{transform}{
+  \item{transform.data, transform}{
     optional function.
     If specified, forecasting is performed using data and model simulations transformed by this function.
-    By default, \code{transform} is the identity function, i.e., no transformation is performed.
-    The main purpose of \code{transform} is to achieve approximately multivariate normal forecasting errors.
-    If data are univariate, \code{transform} should take a scalar and return a scalar.
-    If data are multivariate, \code{transform} should assume a vector input and return a vector of the same length.
+    By default, \code{transform.data} is the identity function, i.e., no transformation is performed.
+    The main purpose of \code{transform.data} is to achieve approximately multivariate normal forecasting errors.
+    If data are univariate, \code{transform.data} should take a scalar and return a scalar.
+    If data are multivariate, \code{transform.data} should assume a vector input and return a vector of the same length.
   }
   \item{nrbf}{A scalar specifying the number of radial basis functions to be used at each lag.}
   \item{method}{
@@ -68,7 +80,6 @@
   \item{verbose}{
     Logical; if \code{TRUE}, the negative log quasilikelihood and parameter values are printed at each iteration of the optimizer.
   }
-  \item{gr}{optional; passed to \code{optim} if \code{optim} is used.}
   \item{bootstrap}{
     Logical;
     if \code{TRUE} the indices in \code{bootsamp} will determine which of the conditional likelihood values be used in computing the quasi-loglikelihood.
@@ -95,10 +106,12 @@
   }
 }
 \details{
-  This is functionally a wrapper for \code{nlf.objfun}, which does the statistical heavy lifting and should be consulted for details.
+  This runs an optimizer to maximize \code{nlf.objfun}.
 }
 \value{
-  A list corresponding to the output from the optimizer, except that the full parameter vector is returned (not just the ones fitted), the log quasilikelihood (LQL) (\emph{not} -LQL) is reported, xstart is included, and asymptotic Wald standard errors based on M-estimator theory are returned for each fitted parameter.
+  An object of class \code{nlfd.pomp}.
+  \code{logLik} applied to such an object returns the log quasi likelihood.
+  The \code{$} method allows extraction of arbitrary slots from the \code{nlfd.pomp} object.
 }
 \references{
  The following papers describe and motivate the NLF approach to model fitting:
@@ -115,7 +128,9 @@
  Population cycles in the pine looper moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
  \emph{Ecological Monographs} \bold{75}, 259--276.
 }
-\author{Stephen P. Ellner \email{spe2 at cornell dot edu} and Bruce E. Kendall \email{kendall at bren dot ucsb dot edu}}
-\keyword{models}
+\author{
+  Stephen P. Ellner \email{spe2 at cornell dot edu},
+  Bruce E. Kendall \email{kendall at bren dot ucsb dot edu},
+  Aaron A. King \email{kingaa at umich dot edu}
+}
 \keyword{ts}
-

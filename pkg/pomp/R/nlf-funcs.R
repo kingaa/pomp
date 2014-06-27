@@ -81,7 +81,7 @@ make.tensorbasis.NLF <- function(A,B) {
   ncol.B <- ncol(B)
   Tmat <- matrix(0,nrow(A),ncol.A*ncol.B)
   for (i in seq_len(ncol.A)) {
-    start=(i-1)*ncol.B
+    start <- (i-1)*ncol.B
     for (j in seq_len(ncol.B)) {
       Tmat[,start+j] <- A[,i]*B[,j]
     }

@@ -66,6 +66,9 @@ setGeneric("pfilter",function(object,...)standardGeneric("pfilter"))
 ## particle Markov chain Monte Carlo (PMCMC)
 setGeneric('pmcmc',function(object,...)standardGeneric("pmcmc"))
 
+## nonlinear forecasting
+setGeneric('nlf',function(object,...)standardGeneric("nlf"))
+
 ## iterated filtering
 setGeneric('mif',function(object,...)standardGeneric("mif"))
 ## generate new particles
