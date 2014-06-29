@@ -1,6 +1,0 @@
-inst/doc/Makefile
-inst/data-R/Makefile
-inst/data-R/make.R
-inst/doc/(.+?)\.bst$
-inst/doc/(.+?)\.R$
-inst/doc/(.+?)\.png$
