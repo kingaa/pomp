@@ -144,10 +144,10 @@ pomp.vignettes: pomp.install pomp.manual
 	$(RSCRIPT) pkgindex.R
 
 %.tex: %.Rnw
-	$(RCMD) Sweave $*
+	$(RSCRIPT) -e "library(knitr); knit(\"$*.Rnw\")"
 
 %.R: %.Rnw
-	$(RCMD) Stangle $*
+	$(RSCRIPT) -e "library(knitr); purl(\"$*.Rnw\")"
 
 %.pdf: %.tex
 	$(PDFLATEX) $*
@@ -166,6 +166,7 @@ pomp.vignettes: pomp.install pomp.manual
 	$(MAKEIDX) $*
 
 clean:
-	$(RM) *.o *.so *.tex *.log *.aux *.out *.nav *.snm *.toc *-???.pdf Rplots.ps Rplots.pdf
+	$(RM) *.o *.so *.tex *.log *.aux *.out *.nav *.snm *.toc *.bak
+	$(RM) Rplots.ps Rplots.pdf
 
 .SECONDARY:
