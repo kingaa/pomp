@@ -1,9 +1,5 @@
 TO-DO LIST
 
-* update intro and advanced_topics documents to use Csnippets
-
-* for plugins, remove intermediate R function call
-
 * write pompCBuilder support for 'onestep.dens' and 'gillespie.sim' plugins.
 
 * effects of replacing 'sample.int' with systematic resampling inside 'bsmc'
@@ -18,9 +14,6 @@ TO-DO LIST
 * Partial rejection control for 'pfilter'?
 
 * Adaptive particle numbers in pfilter.
-
-* It might be possible to make the writing of basic model functions
-   using R expressions rather than functions....
 
 * Write 'plot' and 'print' methods for 'pfilterd.pomp' objects.  
   Would this display effective sample size, conditional log likelihood, filter means, prediction variances, prediction means?
