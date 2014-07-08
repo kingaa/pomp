@@ -4,6 +4,7 @@ $group_name=ereg_replace('([^\.]*)\..*$','\1',$_SERVER['HTTP_HOST']);
 $themeroot='http://r-forge.r-project.org/themes/rforge/';
 $rforgepkgs = "http://r-forge.r-project.org/R/?group_id=214";
 $tracker = "http://r-forge.r-project.org/tracker/?group_id=214";
+$scm = "http://r-forge.r-project.org/scm/viewvc.php/?root=pomp";
 $cranpage = "http://cran.at.r-project.org/web/packages/pomp/";
 $crancontents = file_get_contents($cranpage);
 preg_match("/<tr><td>Version:<\/td>\\n<td>(.+?)<\/td>/",$crancontents,$matches);
@@ -56,6 +57,7 @@ statistical inference for<br>
 <li><a href="./index.php?nav=news">Package NEWS</a></li>
 <li><a href="./index.php?nav=vignettes">Tutorial vignettes</a></li>
 <li><a href="<?php echo $tracker;?>">Bug reports, feature &amp; support requests</a></li>
+<li><a href="<?php echo $scm;?>">Source code repository</a></li>
 <li><a href="./index.php?nav=bib">References to the literature</a></li>
 <li><a href="./index.php?nav=authors">Authors' homepages</a></li>
 </ul>
