@@ -1,5 +1,5 @@
 
-R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -20,6 +20,8 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
 Loading required package: deSolve
+Loading required package: coda
+Loading required package: lattice
 > 
 > pompExample(bbs)
 newly created pomp object(s):
@@ -47,9 +49,6 @@ newly created pomp object(s):
 +             )
 > 
 > fit1 <- bsmc(bbs,params=coef(bbs),Np=1000,transform=TRUE,est=c("beta","sigma"),smooth=0.2)
-Warning message:
-In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
-  Walker's alias method used: results are different from R < 2.2.0
 > signif(coef(fit1),3)
    gamma       mu     iota     beta  beta.sd      pop      rho    sigma 
    0.333    0.000    0.000    4.300    0.000 1400.000    0.900    2.050 
@@ -65,4 +64,4 @@ In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
 > 
 > proc.time()
    user  system elapsed 
-  2.888   0.064   3.011 
+  2.957   0.036   2.983 

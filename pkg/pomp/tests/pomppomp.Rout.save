@@ -1,5 +1,5 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -20,6 +20,8 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
 Loading required package: deSolve
+Loading required package: coda
+Loading required package: lattice
 > 
 > pompExample(ricker)
 newly created pomp object(s):
@@ -57,4 +59,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
-  0.372   0.030   0.378 
+  0.562   0.032   0.582 

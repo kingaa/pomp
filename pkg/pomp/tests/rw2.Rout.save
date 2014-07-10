@@ -1,5 +1,5 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -168,7 +168,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x310abf8>
+<environment: 0x2d8eeb0>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -181,7 +181,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x310abf8>
+<environment: 0x2d8eeb0>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -346,4 +346,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.968   0.064   1.059 
+  0.928   0.056   0.968 

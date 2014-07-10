@@ -1,5 +1,5 @@
 
-R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -20,6 +20,8 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
 Loading required package: deSolve
+Loading required package: coda
+Loading required package: lattice
 > 
 > pompExample(ricker)
 newly created pomp object(s):
@@ -41,9 +43,6 @@ newly created pomp object(s):
 > Np <- 10000
 > 
 > fit <- bsmc(po,Np=1000,est=c("r","sigma"),transform=TRUE,smooth=0.2)
-Warning message:
-In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
-  Walker's alias method used: results are different from R < 2.2.0
 > 
 > invisible(apply(fit$prior[c("r","sigma"),],1,mean))
 > 
@@ -59,4 +58,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.972   0.068   3.210 
+  3.035   0.057   3.068 

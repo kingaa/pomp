@@ -1,5 +1,5 @@
 
-R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -20,6 +20,8 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
 Loading required package: deSolve
+Loading required package: coda
+Loading required package: lattice
 > 
 > set.seed(398585L)
 > pompExample(ou2)
@@ -55,16 +57,13 @@ newly created pomp object(s):
 +             lower=prior.bounds[estnames,"lower"],
 +             upper=prior.bounds[estnames,"upper"]
 +             )
-Warning message:
-In sample.int(n = Np, size = Np, replace = TRUE, prob = g) :
-  Walker's alias method used: results are different from R < 2.2.0
 > toc <- Sys.time()
 > 
 > prior <- smc$prior
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 2.999716 secs
+Time difference of 3.021244 secs
 > 
 > print(
 +       cbind(
@@ -106,4 +105,4 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > proc.time()
    user  system elapsed 
-  4.896   0.068   4.995 
+  4.967   0.053   5.012 

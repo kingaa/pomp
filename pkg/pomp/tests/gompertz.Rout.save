@@ -1,5 +1,5 @@
 
-R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -20,6 +20,8 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
 Loading required package: deSolve
+Loading required package: coda
+Loading required package: lattice
 > options(digits=4)
 > 
 > pompExample(gompertz)
@@ -135,4 +137,4 @@ The following transformed parameters are non-finite: 'r'
 > 
 > proc.time()
    user  system elapsed 
-  1.552   0.048   1.622 
+  1.762   0.063   1.806 

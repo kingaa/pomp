@@ -1,5 +1,5 @@
 
-R version 3.0.3 (2014-03-06) -- "Warm Puppy"
+R version 3.1.1 (2014-07-10) -- "Sock it to Me"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -20,6 +20,8 @@ Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
 Loading required package: deSolve
+Loading required package: coda
+Loading required package: lattice
 > 
 > pompExample(ou2)
 newly created pomp object(s):
@@ -74,4 +76,4 @@ alpha.sd  5.0000000
 > 
 > proc.time()
    user  system elapsed 
-  0.700   0.044   0.764 
+  0.697   0.016   0.703 
