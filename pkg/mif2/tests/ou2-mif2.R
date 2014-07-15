@@ -44,7 +44,7 @@ mif2a <- mif(ou2,Nmif=100,start=guess1,
              tol=1e-8
              )  
 
-compare.mif(list(mif1a,mif2a))
+plot(c(mif1a,mif2a))
 
 set.seed(64857673L)
 mif1b <- mif(
@@ -106,10 +106,10 @@ mif2c <- mif(
              )  
 mif2c <- continue(mif2c,Nmif=50)
 
-compare.mif(list(mif1b,mif2b))
-compare.mif(list(mif1a,mif1b))
-compare.mif(list(mif2a,mif2b))
-compare.mif(list(mif1b,mif2c))
+plot(c(mif1b,mif2b))
+plot(c(mif1a,mif1b))
+plot(c(mif2a,mif2b))
+plot(c(mif1b,mif2c))
 
 mif3a <- mif2(
               ou2,
