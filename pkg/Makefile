@@ -136,12 +136,13 @@ pomp.vignettes: pomp.install pomp.manual
 	-$(INSTALL) -m0644 $(PKG).zip $(REPOS)/$(WINREPOS)
 	-$(INSTALL) -m0644 $(PKG).tar.gz $(REPOS)/$(SRCREPOS)
 	-$(INSTALL) -m0644 $*.pdf $(REPOS)/$(DOCREPOS)
-	$(RSCRIPT) pkgindex.R winrepos="\"$(REPOS)/$(WINREPOS)\"" srcrepos="\"$(REPOS)/$(SRCREPOS)\""
+	$(RSCRIPT) -e 'Sys.umask("0022"); tools::write_PACKAGES(dir="$(REPOS)/$(WINREPOS)",type="win.binary")'
+	$(RSCRIPT) -e 'Sys.umask("0022"); tools::write_PACKAGES(dir="$(REPOS)/$(SRCREPOS)",type="source")'
 	mkdir -p $(ARCHIVE)
 	-$(INSTALL) -m0644 $(PKG).zip $(ARCHIVE)
 	-$(INSTALL) -m0644 $(PKG).tar.gz $(ARCHIVE)
 	-$(INSTALL) -m0644 $*.pdf $(ARCHIVE)
-	$(RSCRIPT) pkgindex.R
+	$(RSCRIPT) -e 'Sys.umask("0022"); tools::write_PACKAGES(dir="dists",type="source")'
 
 %.tex: %.Rnw
 	$(RSCRIPT) -e "library(knitr); knit(\"$*.Rnw\")"
