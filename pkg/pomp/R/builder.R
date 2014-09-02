@@ -176,6 +176,10 @@ pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
   obsnames <- cleanForC(obsnames)
 
   stem <- if (save) name else file.path(tempdir(),name)
+  if (.Platform$OS.type=="windows") {
+    stem <- gsub("\\","/",stem,fixed=TRUE)
+  }
+
   modelfile <- paste0(stem,".c") 
   solib <- paste0(stem,.Platform$dynlib.ext)
 
