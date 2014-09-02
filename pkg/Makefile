@@ -7,6 +7,7 @@ INSTALL_DIR=./library
 
 REXE = R --vanilla
 RCMD = $(REXE) CMD
+RCMD_ALT = R CMD
 RSCRIPT = Rscript --vanilla
 
 PDFLATEX = pdflatex
@@ -59,7 +60,7 @@ pomp.vignettes: pomp.install pomp.manual
 	$(TOUCH) $@
 
 %.crancheck: %.crandist
-	$(RCMD) check --as-cran --library=check $(PKG).tar.gz
+	$(RCMD_ALT) check --as-cran --library=check $(PKG).tar.gz
 	$(TOUCH) $@
 
 %.cransrc:
