@@ -7,7 +7,7 @@ INSTALL_DIR=./library
 
 REXE = R --vanilla
 RCMD = $(REXE) CMD
-RCMD_ALT = R CMD
+RCMD_ALT = R --no-save --no-restore CMD
 RSCRIPT = Rscript --vanilla
 
 PDFLATEX = pdflatex
@@ -34,6 +34,7 @@ pomp.vignettes: export POMP_BUILD_VIGNETTES=yes
 %.dist %.manual %.vignettes: export GS_QUALITY=ebook
 %.dist %.manual %.vignettes: export R_HOME=$(shell $(REXE) RHOME)
 %.check %.crancheck: export _R_CHECK_ALL_NON_ISO_C_=TRUE
+%.crancheck: export R_PROFILE_USER=./Rprofile
 %.check %.crancheck: export _R_CHECK_WALL_FORTRAN_=TRUE
 %.check %.xcheck: export POMP_FULL_TESTS=yes
 %.vignettes %.data: export R_LIBS=$(CURDIR)/library
