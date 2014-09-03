@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.53-6}{
+  \itemize{
+    \item A bug having to do with paths to the temporary C files, encountered when using \code{Csnippet}s under windows, has been fixed.
+    \item Package demos are now checked by \code{R CMD check} on all platforms.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.53-1}{
   \itemize{
     \item \code{nlf} now returns an S4 object of class \code{nlfd.pomp} with a \code{logLik} method for extracting the log quasi likelihood and a \code{$} method for extracting arbitrary components.

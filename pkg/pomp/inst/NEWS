@@ -1,5 +1,14 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_3-_6:
+
+        • A bug having to do with paths to the temporary C files,
+          encountered when using ‘Csnippet’s under windows, has been
+          fixed.
+
+        • Package demos are now checked by ‘R CMD check’ on all
+          platforms.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_3-_1:
 
         • ‘nlf’ now returns an S4 object of class ‘nlfd.pomp’ with a
