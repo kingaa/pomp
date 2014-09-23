@@ -26,7 +26,7 @@ newly created pomp object(s):
 > 
 > time(ou2) <- 1:10
 > 
-> Np <- 10000
+> Np <- 50000
 > 
 > prior.bounds <- rbind(
 +                       alpha.2=c(-0.55,-0.45),
@@ -44,22 +44,19 @@ newly created pomp object(s):
 > 
 > ##Run Liu & West particle filter
 > tic <- Sys.time()
-> smc <- bsmc(
-+             ou2,
-+             params=prior,
-+             est=estnames,
-+             ntries=5,
-+             smooth=0.02,
-+             lower=prior.bounds[estnames,"lower"],
-+             upper=prior.bounds[estnames,"upper"]
-+             )
+> smc <- bsmc2(
++              ou2,
++              params=prior,
++              est=estnames,
++              smooth=0.02
++              )
 > toc <- Sys.time()
 > 
 > prior <- smc$prior
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 2.931616 secs
+Time difference of 2.042303 secs
 > 
 > print(
 +       cbind(
@@ -71,8 +68,8 @@ Time difference of 2.931616 secs
 +       )
         prior.mean posterior.mean truth       2.5%        50%      97.5%
 alpha.1  0.8000000      0.8000000   0.8  0.8000000  0.8000000  0.8000000
-alpha.2 -0.4999287     -0.5105023  -0.5 -0.5402483 -0.4993459 -0.4536930
-alpha.3  0.2996065      0.3148637   0.3  0.2823821  0.3260754  0.3388949
+alpha.2 -0.4999934     -0.5041799  -0.5 -0.5484110 -0.5061110 -0.4524724
+alpha.3  0.2998071      0.3015016   0.3  0.2526553  0.3020846  0.3478032
 alpha.4  0.9000000      0.9000000   0.9  0.9000000  0.9000000  0.9000000
 sigma.1  3.0000000      3.0000000   3.0  3.0000000  3.0000000  3.0000000
 sigma.2 -0.5000000     -0.5000000  -0.5 -0.5000000 -0.5000000 -0.5000000
@@ -82,9 +79,9 @@ x1.0    -3.0000000     -3.0000000  -3.0 -3.0000000 -3.0000000 -3.0000000
 x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > print(min(smc$eff.sample.size))
-[1] 22.94863
+[1] 3362.331
 > print(smc$log.evidence)
-[1] 45.47584
+[1] -44.40479
 > 
 > ou2 <- pomp(ou2,
 +             rprior=function(params,...){
@@ -92,13 +89,13 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 +             }
 +             )
 > 
-> smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=648651945L)
+> smc <- bsmc2(ou2,Np=25000,smooth=0.1,est=estnames,seed=648651945L)
 > print(smc$eff.sample.size)
- [1] 186.40437  36.29100  57.56951  29.30424 180.23722  34.63366 156.94264
- [8]  24.49006 178.39269 125.05970
+ [1] 6022.591 3916.624 3039.755 3240.052 5532.814 1832.363 4933.092 1598.452
+ [9] 5047.793 3816.342
 > print(smc$log.evidence)
-[1] 37.68127
+[1] -44.37704
 > 
 > proc.time()
    user  system elapsed 
-  4.908   0.068   5.011 
+  3.576   0.104   3.707 
