@@ -15,7 +15,8 @@ bbs <- pomp(bbs,
             }
             )
 
-fit1 <- bsmc(bbs,params=coef(bbs),Np=1000,transform=TRUE,est=c("beta","sigma"),smooth=0.2)
+fit1 <- bsmc2(bbs,params=coef(bbs),Np=5000,transform=TRUE,
+              est=c("beta","sigma"),smooth=0.2)
 signif(coef(fit1),3)
 
 fit2 <- traj.match(bbs,est=c("beta","sigma"),transform=TRUE)

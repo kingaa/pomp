@@ -59,6 +59,7 @@ setGeneric('abc',function(object,...)standardGeneric("abc"))
 
 ## Bayesian SMC (Liu & West)
 setGeneric("bsmc",function(object,...)standardGeneric("bsmc"))
+setGeneric("bsmc2",function(object,...)standardGeneric("bsmc2"))
 
 ## basic SMC (particle filter)
 setGeneric("pfilter",function(object,...)standardGeneric("pfilter"))

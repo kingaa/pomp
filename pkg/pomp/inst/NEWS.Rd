@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.54-1}{
+  \itemize{
+    \item A modified version of the Liu and West (2001) algorithm is included as \code{bsmc2}.
+    \item By default, when \code{B} is of class \code{bsmcd.pomp}, \code{plot(B)} ignores fixed parameters.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.53-6}{
   \itemize{
     \item A bug having to do with paths to the temporary C files, encountered when using \code{Csnippet}s under windows, has been fixed.

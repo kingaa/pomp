@@ -1,5 +1,13 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_4-_1:
+
+        • A modified version of the Liu and West (2001) algorithm is
+          included as ‘bsmc2’.
+
+        • By default, when ‘B’ is of class ‘bsmcd.pomp’, ‘plot(B)’
+          ignores fixed parameters.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_3-_6:
 
         • A bug having to do with paths to the temporary C files,

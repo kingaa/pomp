@@ -1,15 +1,18 @@
-\name{bsmc}
-\alias{bsmc}
-\alias{bsmc-pomp}
-\alias{bsmc,pomp-method}
-\title{Liu and West Bayesian Particle Filter}
+\name{bsmc2}
+\alias{bsmc2}
+\alias{bsmc2-pomp}
+\alias{bsmc2,pomp-method}
+\alias{$,bsmcd.pomp-method}
+\alias{$-bsmcd.pomp}
+\alias{plot,bsmcd.pomp-method}
+\alias{plot-bsmcd.pomp}
+\title{Modified Liu and West Bayesian Particle Filter}
 \description{
-  Generates draws from the posterior distribution for the parameters using the Liu and West algorithm.
-  \code{bsmc} gives draws from the posterior.
+  Generates draws from the posterior distribution for the parameters using a plug-and-play variant of the Liu and West algorithm.
 }
 \usage{
-\S4method{bsmc}{pomp}(object, params, Np, est, smooth = 0.1,
-     ntries = 1, tol = 1e-17, lower = -Inf, upper = Inf, seed = NULL,
+\S4method{bsmc2}{pomp}(object, params, Np, est, smooth = 0.1,
+     tol = 1e-17, seed = NULL,
      verbose = getOption("verbose"), max.fail = 0,
      transform = FALSE, \dots)
 }
@@ -32,18 +35,10 @@
     Thus, \code{smooth=0} means that no noise will be added to parameters.
     Generally, the value of \code{smooth} should be chosen close to 0 (i.e., \code{shrink~0.1}).
   }
-  \item{ntries}{
-    Number of draws from \code{rprocess} per particle used to estimate the expected value of the state process at time \code{t+1} given the state and parameters at time \code{t}.
-  }
   \item{tol}{
     Particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.
     A filtering failure occurs when, at some time point, all particles are lost.
     When all particles are lost, the conditional log likelihood at that time point is set to be \code{log(tol)}.
-  }
-  \item{lower, upper}{
-    optional; lower and upper bounds on the priors.
-    This is useful in case there are box constraints satisfied by the priors.
-    The posterior is guaranteed to lie within these bounds.
   }
   \item{seed}{
     optional; an object specifying if and how the random number generator should be initialized (\sQuote{seeded}).
@@ -108,6 +103,7 @@
   Michael Lavine (lavine at math dot umass dot edu),
   Matthew Ferrari (mferrari at psu dot edu),
   Aaron A. King
+  Edward L. Ionides
 }
 \references{
   Liu, J. and M. West.

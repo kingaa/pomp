@@ -64,7 +64,7 @@ exportMethods(
               eff.sample.size,cond.logLik,
               particles,mif,continue,states,trajectory,
               pred.mean,pred.var,filter.mean,conv.rec,
-              bsmc,pmcmc,abc,nlf,
+              bsmc2,bsmc,pmcmc,abc,nlf,
               traj.match.objfun,
               probe.match.objfun,
               spect,probe,probe.match,

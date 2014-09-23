@@ -24,8 +24,7 @@ setClass(
            seed="integer",
            nfail="integer",
            cond.log.evidence="numeric",
-           log.evidence="numeric",
-           weights="numeric"
+           log.evidence="numeric"
            )
          )
 
@@ -76,18 +75,6 @@ bsmc.internal <- function (object, params, Np, est,
   ptsi.inv <- FALSE
   
   ntimes <- length(time(object))
-  if (is.null(dim(params))) {
-    params <- matrix(
-                     params,
-                     nrow=length(params),
-                     ncol=Np,
-                     dimnames=list(
-                       names(params),
-                       NULL
-                       )
-                     )
-  }
-
   npars <- nrow(params)
   paramnames <- rownames(params)
   prior <- params
@@ -360,8 +347,7 @@ bsmc.internal <- function (object, params, Np, est,
       seed=as.integer(seed),
       nfail=as.integer(nfail),
       cond.log.evidence=evidence,
-      log.evidence=sum(evidence),
-      weights=weights
+      log.evidence=sum(evidence)
       )
 }
 
@@ -443,7 +429,7 @@ setMethod(
           function (x, y, ..., pars, thin) {
             if (!missing(y))
               warning(sQuote("y")," is ignored")
-            if (missing(pars)) pars <- names(coef(x,transform=!x@transform))
+            if (missing(pars)) pars <- x@est
             if (missing(thin)) thin <- Inf
             bsmc.plot(
                       prior=if (x@transform) partrans(x,x@prior,dir="forward") else x@prior,
