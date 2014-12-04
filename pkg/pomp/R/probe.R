@@ -208,3 +208,13 @@ setAs(
 
 setMethod("logLik",signature(object="probed.pomp"),function(object,...)object@synth.loglik)
 setMethod("$",signature=signature(x="probed.pomp"),function(x, name)slot(x,name))
+
+values.probe.internal <- function (object, ...) {
+  x <- as.data.frame(rbind(object@datvals,object@simvals))
+  row.names(x) <- seq.int(from=0,to=nrow(x)-1)
+  x$.id <- factor(c("data",rep("sim",nrow(x)-1)))
+  x
+}
+
+setMethod("values",signature(object="probed.pomp"),
+          definition=values.probe.internal)

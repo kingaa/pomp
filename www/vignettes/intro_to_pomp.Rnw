@@ -563,7 +563,6 @@ This call to \code{pomp} will result in the creation of a C file in the session'
 
 Let's compare the performance of \code{gompertz} and \code{gomp2}.
 <<gompertz-perform,eval=F,echo=T>>=
-
 tic <- Sys.time()
 sim1 <- simulate(gompertz,nsim=1000,seed=5676868L,obs=TRUE)
 toc <- Sys.time()
@@ -587,7 +586,6 @@ toc <- Sys.time()
 g2pf <- toc-tic
 
 stopifnot(all.equal(logLik(pf1),logLik(pf2)))
-
 @ 
 <<gompertz-perform-eval,eval=T,echo=F>>=
 binary.file <- "gompertz-performance.rda"
@@ -1519,9 +1517,9 @@ if (file.exists(binary.file)) {
 %%\citet{Ellner1998,Kendall1999}
 
 \clearpage
-\section{Bayesian sequential Monte Carlo: \code{bsmc}}
+\section{Bayesian sequential Monte Carlo: \code{bsmc2}}
 
-The approximate Bayesian sequential Monte Carlo method of \citet{Liu2001b} is implemented in \pkg{pomp}.
+A modified version of the approximate Bayesian sequential Monte Carlo method of \citet{Liu2001b} is implemented in \pkg{pomp}.
 The following demonstrates its use on the Ricker model.
 
 First, we'll specify a prior distribution.
@@ -1544,9 +1542,9 @@ We'll use 10,000 particles, so we'll need that many samples from the prior distr
 The following runs the Bayesian sequential Monte Carlo algorithm with 10,000 particles.
 Note that, by specifying \code{transform=TRUE}, we cause the estimation to proceed on the transformed scale.
 <<bsmc-example-flat-prior-3,eval=F>>=
-  fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
-               est=c("r","sigma"),smooth=0.2,
-               seed=1050180387L)
+  fit1 <- bsmc2(ricker,Np=10000,transform=TRUE,
+                est=c("r","sigma"),smooth=0.2,
+                seed=1050180387L)
 @ 
 <<bsmc-example-flat-prior-eval,eval=T,echo=F>>=
 binary.file <- "bsmc-ricker-flat-prior.rda"
@@ -1570,7 +1568,7 @@ Note that these are reported on the natural (i.e., untransformed) scale.
 plot(fit1,pars=c("r","sigma"),thin=5000)
 @ 
 \caption{
-  Results of \code{bsmc} on the Ricker model.
+  Results of \code{bsmc2} on the Ricker model.
   The off-diagonal panels show 5000 samples from the prior (grey) and posterior (blue) distributions.
   The diagonal panels show kernel density estimates of the marginal prior and posterior distributions for each of the parameters.
   Note that these are shown on the natural scale.
@@ -1589,9 +1587,9 @@ ricker <- pomp(ricker,
                }
                )
 
-fit2 <- bsmc(ricker,transform=TRUE,Np=10000,
-             est=c("r","sigma"),smooth=0.2,
-             seed=90348704L)
+fit2 <- bsmc2(ricker,transform=TRUE,Np=10000,
+              est=c("r","sigma"),smooth=0.2,
+              seed=90348704L)
 
 <<bsmc-example-normal-prior-eval,eval=T,echo=F>>=
 binary.file <- "bsmc-ricker-normal-prior.rda"

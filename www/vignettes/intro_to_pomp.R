@@ -271,7 +271,6 @@ gomp2 <- pomp(
 
 
 ## ----gompertz-perform,eval=F,echo=T--------------------------------------
-## 
 ## tic <- Sys.time()
 ## sim1 <- simulate(gompertz,nsim=1000,seed=5676868L,obs=TRUE)
 ## toc <- Sys.time()
@@ -295,7 +294,6 @@ gomp2 <- pomp(
 ## g2pf <- toc-tic
 ## 
 ## stopifnot(all.equal(logLik(pf1),logLik(pf2)))
-## 
 
 ## ----gompertz-perform-eval,eval=T,echo=F---------------------------------
 binary.file <- "gompertz-performance.rda"
@@ -303,7 +301,6 @@ if (file.exists(binary.file)) {
   load(binary.file)
 } else {
 set.seed(457645443L)
-
 tic <- Sys.time()
 sim1 <- simulate(gompertz,nsim=1000,seed=5676868L,obs=TRUE)
 toc <- Sys.time()
@@ -327,7 +324,6 @@ toc <- Sys.time()
 g2pf <- toc-tic
 
 stopifnot(all.equal(logLik(pf1),logLik(pf2)))
-
 save(g1sim,g2sim,g1pf,g2pf,file=binary.file,compress='xz')
 }  
 
@@ -1256,9 +1252,9 @@ ricker <- pomp(
 
 
 ## ----bsmc-example-flat-prior-3,eval=F------------------------------------
-##   fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
-##                est=c("r","sigma"),smooth=0.2,
-##                seed=1050180387L)
+##   fit1 <- bsmc2(ricker,Np=10000,transform=TRUE,
+##                 est=c("r","sigma"),smooth=0.2,
+##                 seed=1050180387L)
 
 ## ----bsmc-example-flat-prior-eval,eval=T,echo=F--------------------------
 binary.file <- "bsmc-ricker-flat-prior.rda"
@@ -1275,9 +1271,9 @@ ricker <- pomp(
                  params
                }
                )
-  fit1 <- bsmc(ricker,Np=10000,transform=TRUE,
-               est=c("r","sigma"),smooth=0.2,
-               seed=1050180387L)
+  fit1 <- bsmc2(ricker,Np=10000,transform=TRUE,
+                est=c("r","sigma"),smooth=0.2,
+                seed=1050180387L)
   save(fit1,file=binary.file,compress="xz")
 }
 
@@ -1299,9 +1295,9 @@ plot(fit1,pars=c("r","sigma"),thin=5000)
 ##                }
 ##                )
 ## 
-## fit2 <- bsmc(ricker,transform=TRUE,Np=10000,
-##              est=c("r","sigma"),smooth=0.2,
-##              seed=90348704L)
+## fit2 <- bsmc2(ricker,transform=TRUE,Np=10000,
+##               est=c("r","sigma"),smooth=0.2,
+##               seed=90348704L)
 ## 
 
 ## ----bsmc-example-normal-prior-eval,eval=T,echo=F------------------------
@@ -1317,9 +1313,9 @@ ricker <- pomp(ricker,
                }
                )
 
-fit2 <- bsmc(ricker,transform=TRUE,Np=10000,
-             est=c("r","sigma"),smooth=0.2,
-             seed=90348704L)
+fit2 <- bsmc2(ricker,transform=TRUE,Np=10000,
+              est=c("r","sigma"),smooth=0.2,
+              seed=90348704L)
 
   save(fit2,file=binary.file,compress="xz")
 }

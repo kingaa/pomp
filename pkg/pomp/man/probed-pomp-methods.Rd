@@ -8,6 +8,11 @@
 \alias{summary,probe.matched.pomp-method}
 \alias{summary-probed.pomp}
 \alias{summary-probe.matched.pomp}
+\alias{values}
+\alias{values,probed.pomp-method}
+\alias{values,probe.matched.pomp-method}
+\alias{values-probed.pomp}
+\alias{values-probe.matched.pomp}
 \alias{plot,probed.pomp-method}
 \alias{plot,probe.matched.pomp-method}
 \alias{plot-probed.pomp}
@@ -37,6 +42,7 @@
 \S4method{plot}{probe.matched.pomp}(x, y, \dots)
 \S4method{summary}{spect.pomp}(object, \dots)
 \S4method{logLik}{probed.pomp}(object, \dots)
+\S4method{values}{probed.pomp}(object, \dots)
 \S4method{plot}{spect.pomp}(x, y, max.plots.per.page = 4,
           plot.data = TRUE,
           quantiles = c(.025, .25, .5, .75, .975),
@@ -69,6 +75,10 @@
     }
     \item{summary}{
       displays summary information.
+    }
+    \item{values}{
+      extracts the realized values of the probes on the data and on the simulations as a data frame in long format.
+      The variable \code{.id} indicates whether the probes are from the data or simulations.
     }
     \item{logLik}{
       returns the synthetic likelihood for the probes.
