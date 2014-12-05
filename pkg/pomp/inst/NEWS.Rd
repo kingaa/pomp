@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.55-1}{
+  \itemize{
+    \item New \code{values} method extracts simulated probe values on \code{probed.pomp} object.
+    \item Better documentation in the \file{pomp.h} header file.
+    \item Vignettes now feature \code{bsmc2} instead of \code{bsmc}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.54-1}{
   \itemize{
     \item A modified version of the Liu and West (2001) algorithm is included as \code{bsmc2}.

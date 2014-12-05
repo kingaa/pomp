@@ -187,8 +187,8 @@ typedef void pomp_dprior (double *lik, double *p, int give_log, int *parindex);
 //  on input:
 // p          = pointer to parameter vector
 // give_log   = should the log likelihood be returned?
-// parindex   = pointer to vector of integers indexing the parameters in 'p' in the order specified by 
-//                the 'paramnames' slot
+// parindex   = pointer to vector of integers indexing the parameters 
+//              in 'p' in the order specified by the 'paramnames' slot
 //  on output:
 // lik        = pointer to vector containing likelihoods
 
@@ -239,11 +239,24 @@ static R_INLINE double expit (double x) {
 
 // C-LEVEL DEFINITIONS OF EULER-MULTINOMIAL DISTRIBUTION FUNCTIONS
 
-// simulate Euler-multinomial transitions
+// reulermultinom: simulate Euler-multinomial transitions
+// Description:
+//  on input:
+// m      = (positive integer) number of potential transitions ("deaths")
+// size   = (positive integer) number of individuals at risk
+// rate   = pointer to vector of transition ("death") rates
+// dt     = (positive real) duration of time interval
+//  on output:
+// trans  = pointer to vector containing the random deviates 
+//          (numbers of individuals making the respective transitions)
+// See '?reulermultinom' and vignettes for more on the Euler-multinomial 
+// distributions.
+//
 // NB: 'reulermultinom' does not call GetRNGstate() and PutRNGstate() internally
 // this must be done by the calling program
-// But note that when reulermultinom is called inside a pomp 'rprocess', there is no need to call
-// {Get,Put}RNGState() as this is handled by pomp
+// But note that when reulermultinom is called inside a pomp 'rprocess',
+// there is no need to call {Get,Put}RNGState() as this is handled by pomp
+
 static void reulermultinom (int m, double size, double *rate, 
 			    double dt, double *trans) {
   double p = 0.0;
@@ -278,7 +291,21 @@ static void reulermultinom (int m, double size, double *rate,
   }
 }
 
-// COMPUTE PROBABILITIES OF EULER-MULTINOMIAL TRANSITIONS
+// deulermultinom: probabilities of Euler-multinomial transitions
+// Description:
+//  on input:
+// m        = (positive integer) number of potential transitions ("deaths")
+// size     = (positive integer) number of individuals at risk
+// rate     = pointer to vector of transition ("death") rates
+// dt       = (positive real) duration of time interval
+// trans    = pointer to vector containing the data
+//            (numbers of individuals making the respective transitions)
+// give_log = 1 if log probability is desired; 0 if probability is desired
+//  return value: probability or log probability (as requested)
+// 
+// See '?deulermultinom' and vignettes for more on the Euler-multinomial 
+// distributions.
+
 static double deulermultinom (int m, double size, double *rate, double dt, 
 			      double *trans, int give_log) {
   double p = 0.0;
