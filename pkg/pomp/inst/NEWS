@@ -1,5 +1,14 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_5-_1:
+
+        • New ‘values’ method extracts simulated probe values on
+          ‘probed.pomp’ object.
+
+        • Better documentation in the ‘pomp.h’ header file.
+
+        • Vignettes now feature ‘bsmc2’ instead of ‘bsmc’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_4-_1:
 
         • A modified version of the Liu and West (2001) algorithm is
