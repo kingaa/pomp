@@ -64,9 +64,9 @@ pomp(
      dmeasure="_parus_poisson_dmeasure",
      skeleton="_parus_ricker_skeleton",
      skeleton.type="map",
-#     paramnames=c("r","K","sigma","tau"),
-#     statenames=c("N"),
-#     obsnames=c("pop"),
+     paramnames=c("r","K","sigma","tau"),
+     statenames=c("N"),
+     obsnames=c("pop"),
      PACKAGE="pomp"
      ) -> parusR
 
