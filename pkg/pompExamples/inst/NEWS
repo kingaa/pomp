@@ -1,5 +1,12 @@
 _N_e_w_s _f_o_r _P_a_c_k_a_g_e '_p_o_m_p_E_x_a_m_p_l_e_s'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p_E_x_a_m_p_l_e_s' _v_e_r_s_i_o_n _0._2_4-_1:
+
+        • Examples included in the package can now be accessed using
+          ‘pomp’'s ‘pompExample’ function.
+
+        • New _Parus major_ example.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p_E_x_a_m_p_l_e_s' _v_e_r_s_i_o_n _0._2_3-_2:
 
         • Update for use with ‘pomp’ version 0.50.

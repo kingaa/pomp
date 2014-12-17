@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for Package 'pompExamples'}
+\section{Changes in \pkg{pompExamples} version 0.24-1}{
+  \itemize{
+    \item Examples included in the package can now be accessed using \pkg{pomp}'s \code{pompExample} function.
+    \item New \emph{Parus major} example.
+  }
+}
 \section{Changes in \pkg{pompExamples} version 0.23-2}{
   \itemize{
     \item Update for use with \pkg{pomp} version 0.50.

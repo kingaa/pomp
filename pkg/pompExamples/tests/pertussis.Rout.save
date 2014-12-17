@@ -1,6 +1,6 @@
 
-R version 3.0.1 (2013-05-16) -- "Good Sport"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -17,9 +17,8 @@ Type 'q()' to quit R.
 
 > library(pompExamples)
 Loading required package: pomp
-Loading required package: mvtnorm
 Loading required package: subplex
-Loading required package: deSolve
+Loading required package: nloptr
 > 
 > all <- c("SEIR.small","SEIR.big","SEIRS.small","SEIRS.big","SEIRR.small","SEIRR.big","full.small","full.big")
 > 
@@ -147,7 +146,7 @@ $full.big
 > 
 > system.time(pf <- pfilter(pertussis.sim(full.small),seed=3445886L,Np=1000))
    user  system elapsed 
- 19.717   0.000  19.778 
+ 18.793   0.000  18.864 
 > logLik(pf)
 [1] -3829.33
 > 
@@ -171,4 +170,4 @@ $full.big
 > 
 > proc.time()
    user  system elapsed 
- 20.497   0.064  20.642 
+ 19.533   0.040  19.671 
