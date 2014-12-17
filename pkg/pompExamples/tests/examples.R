@@ -1,8 +1,5 @@
 library(pompExamples)
 
-## pdf.options(useDingbats=FALSE)
-## pdf(file="examples.pdf")
-
 set.seed(47575684L)
 
 po <- pompExample(parus,proc="Ricker",meas="lognormal",envir=NULL)
@@ -22,7 +19,5 @@ tj <- trajectory(po[[1]])
 po <- pompExample(parus,proc="Gompertz",meas="lognormal",envir=NULL)
 pf <- pfilter(simulate(po$parus),Np=100,max.fail=Inf)
 
-po <- pompExample(bbp,envir=NULL)
-pf <- pfilter(simulate(po$bbp),Np=100,max.fail=Inf)
-
-## dev.off()
+pompExample(bbp)
+pf <- pfilter(simulate(bbp),Np=100,max.fail=Inf)
