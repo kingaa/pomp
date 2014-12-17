@@ -1,6 +1,31 @@
+#' Annual *Parus major* counts in Wytham Wood, Oxfordshire, England.
+#' 
+#' @param proc  the process model (Gompertz or Ricker are currently supported)
+#' @param meas  the measurement model
+#' (lognormal, negative binomial, and Poisson are currently supported)
+#' @references McCleery, R. & Perrins, C. (1991)
+#' Effects of predation on the numbers of Great Tits, Parus major.
+#' In: Bird Population Studies, 
+#' edited by Perrins, C.M., Lebreton, J.-D. & Hirons, G.J.M. 
+#' Oxford. Univ. Press. pp. 129--147.
+#' @author Aaron A. King \email{kingaa@@umich.edu}
+
 require(pomp)
 
-dat <- 'year,pop
+dat <- '
+## Parus major (Great Tit) census (all individuals)
+## Wytham Wood, Oxfordshire
+## Global Population Dynamics Database dataset #10163.
+## (NERC Centre for Population Biology, Imperial College (2010) 
+## The Global Population Dynamics Database Version 2. 
+## http://www.sw.ic.ac.uk/cpb/cpb/gpdd.html").
+## Original source: 
+## McCleery, R. & Perrins, C. (1991)
+## Effects of predation on the numbers of Great Tits, Parus major.
+## In: Bird Population Studies, 
+## edited by Perrins, C.M., Lebreton, J.-D. & Hirons, G.J.M. 
+## Oxford. Univ. Press. pp. 129--147.
+year,pop
 1960,148
 1961,258
 1962,185
@@ -30,7 +55,7 @@ dat <- 'year,pop
 1986,211
 '
 
-dat <- read.csv(text=dat)
+dat <- read.csv(text=dat,comment.char="#")
 
 parus.example <- function (proc = c("Gompertz","Ricker"),
                            meas = c("lognormal","Poisson","negbin")) {
