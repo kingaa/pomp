@@ -21,4 +21,4 @@ Suggests: Rmpi,mpifarm,plyr,reshape2,ggplot2,xtable
 License: GPL (>= 2)
 LazyData: false
 BuildVignettes: true
-Collate: aaa.R budmoth.R pertussis.R
+Collate: aaa.R pertussis.R

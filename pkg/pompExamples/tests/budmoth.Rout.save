@@ -1,6 +1,6 @@
 
-R version 3.0.1 (2013-05-16) -- "Good Sport"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -17,13 +17,12 @@ Type 'q()' to quit R.
 
 > library(pompExamples)
 Loading required package: pomp
-Loading required package: mvtnorm
 Loading required package: subplex
-Loading required package: deSolve
+Loading required package: nloptr
 > 
 > all <- c("food","para1","para2","tri")
 > 
-> sapply(all,function(n)eval(bquote(budmoth.sim(.(n))))) -> bm
+> bm <- pompExample(budmoth,envir=NULL)
 > 
 > names(bm)
 [1] "food"  "para1" "para2" "tri"  
@@ -95,7 +94,7 @@ $tri
 61 0.4828455 22.35338 1.429722
 
 > 
-> y <- simulate(budmoth.sim(food),seed=3434996L,as.data.frame=TRUE)
+> y <- simulate(bm$food,seed=3434996L,as.data.frame=TRUE)
 > tail(y)
    time     Qobs      Nobs         Sobs         Q         N            S
 56   55 24.75707 1.2571930 0.0536837100 0.6960924 0.6909030 0.0655207892
@@ -112,7 +111,7 @@ $tri
 60 0.4994891 5.038971 1.0048781   1
 61 0.4818151 4.973050 0.9217527   1
 > 
-> z <- trajectory(budmoth.sim(tri),as.data.frame=TRUE)
+> z <- trajectory(bm$tri,as.data.frame=TRUE)
 > tail(z)
            Q          N            S Alpha Lambda   A time traj
 56 0.9795835 16.9946885 0.0001199655   0.5     22 1.7   55    1
@@ -122,10 +121,10 @@ $tri
 60 0.8998638  0.5133800 0.1500321097   0.5     22 1.7   59    1
 61 0.9448503  3.3848665 0.1205147616   0.5     22 1.7   60    1
 > 
-> pf <- pfilter(budmoth.sim(food),seed=34348885L,Np=1000)
+> pf <- pfilter(bm$para1,seed=34348885L,Np=1000)
 > logLik(pf)
-[1] 360.1747
+[1] 10.68836
 > 
 > proc.time()
    user  system elapsed 
-  0.604   0.064   0.689 
+  0.649   0.033   0.670 

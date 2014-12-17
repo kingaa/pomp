@@ -23,6 +23,6 @@ po <- pompExample(parus,proc="Gompertz",meas="lognormal",envir=NULL)
 pf <- pfilter(simulate(po$parus),Np=100,max.fail=Inf)
 
 po <- pompExample(bbp,envir=NULL)
-pf <- pfilter(simulate(pf$bbp),Np=100,max.fail=Inf)
+pf <- pfilter(simulate(po$bbp),Np=100,max.fail=Inf)
 
 ## dev.off()
