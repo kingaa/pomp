@@ -21,3 +21,4 @@ pf <- pfilter(simulate(po$parus),Np=100,max.fail=Inf)
 
 pompExample(bbp)
 pf <- pfilter(simulate(bbp),Np=100,max.fail=Inf)
+tj <- trajectory(bbp)

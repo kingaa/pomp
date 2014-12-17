@@ -63,12 +63,23 @@ pomp(data=subset(dat,select=c(week,deaths)),
                          y += dy + beta*X*(dW+beta*X*ito);
                          n += dn;
                          "
+         ),
+       delta.t=1/24/7
        ),
-       delta.t=1/24),
+     skeleton=Csnippet("
+                        double X = exp(x);
+                        double Y = exp(y);
+                        Dx = mu*(1.0/X-1)+(delta-beta)*Y;
+                        Dy = beta*X+delta*(Y-1)-gamma-mu;
+                        Dn = -delta*Y;
+                        "
+       ),
+     skeleton.type="vectorfield",
      paramnames=c("beta","delta","mu","gamma","sigma","theta","ratio"),
      statenames=c("x","y","n"),
-     measurement.model=deaths~nbinom(mu=ratio*exp(y),size=theta),
-     logvar=c("beta","delta","ratio","sigma","theta"),
+     rmeasure=Csnippet("deaths=rnbinom_mu(theta,ratio*exp(y));"),
+     dmeasure=Csnippet("lik=dnbinom_mu(deaths,theta,ratio*exp(y),give_log);"),
+     logvar=c("beta","delta","ratio","sigma","theta","mu"),
      logitvar=c("y0"),
      parameter.inv.transform=function (params, logvar, logitvar, ...) {
        params[logvar] <- log(params[logvar])

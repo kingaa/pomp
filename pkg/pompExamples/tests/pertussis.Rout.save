@@ -1,5 +1,5 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+R Under development (unstable) (2014-12-14 r67168) -- "Unsuffered Consequences"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -146,7 +146,7 @@ $full.big
 > 
 > system.time(pf <- pfilter(pertussis.sim(full.small),seed=3445886L,Np=1000))
    user  system elapsed 
- 18.793   0.000  18.864 
+ 17.801   0.004  17.861 
 > logLik(pf)
 [1] -3829.33
 > 
@@ -170,4 +170,4 @@ $full.big
 > 
 > proc.time()
    user  system elapsed 
- 19.533   0.040  19.671 
+ 18.657   0.060  18.801 
