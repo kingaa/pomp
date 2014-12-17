@@ -1,22 +1,38 @@
-pompExample <- function (example, envir = .GlobalEnv) {
+pompExample <- function (example, ..., envir = .GlobalEnv) {
   example <- as.character(substitute(example))
+  pomp.dir <- system.file("examples",package="pomp")
+  exampleDirs <- getOption("pomp.examples",default=pomp.dir)
+  names(exampleDirs) <- exampleDirs
   if (example=="") {
-    avlbl <- list.files(
-                        path=system.file("examples",package="pomp"),
-                        pattern=".+?R$"
-                        )
-    avlbl <- gsub("\\.R$","",avlbl)
-    avlbl
-  } else {
-    file <- system.file(
-                        file.path("examples",paste(example,".R",sep="")),
-                        package="pomp"
-                        )
-    objs <- source(file,local=TRUE)
-    for (i in seq_along(objs$value)) {
-      assign(objs$value[i],get(objs$value[i]),envir=envir)
+    avlbl <- lapply(exampleDirs,list.files,pattern=".+?R$")
+    avlbl <- lapply(avlbl,function(x) gsub("\\.R$","",x))
+    for (dir in exampleDirs) {
+      cat("examples in ",dir,":\n",sep="")
+      print(avlbl[[dir]])
     }
-    cat("newly created pomp object(s):\n",objs$value,"\n")
-    invisible(NULL)
+  } else {
+    evalEnv <- list2env(list(...))
+    file <- c(lapply(exampleDirs,list.files,
+                     pattern=paste0(example,".R"),
+                     full.names=TRUE),
+              recursive=TRUE)
+    if (length(file)>1) {
+      warning("using ",sQuote(file[1])," from ",sQuote(names(file)[1]))
+    }
+    objs <- source(file[1],local=evalEnv)
+    if (is.null(envir)) {
+      obj <- setNames(lapply(objs$value,get,envir=evalEnv),objs$value)
+    } else if (is.environment(envir)) {
+      for (i in seq_along(objs$value)) {
+        assign(objs$value[i],
+               get(objs$value[i],envir=evalEnv),
+               envir=envir)
+      }
+      cat("newly created pomp object(s):\n",objs$value,"\n")
+      obj <- NULL
+    } else {
+      stop(sQuote("envir")," must be an environment or NULL")
+    }
+    invisible(obj)
   }
 }

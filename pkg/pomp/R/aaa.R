@@ -1,10 +1,12 @@
-## .onAttach <- function (...) {
-##   version <- library(help=pomp)$info[[1L]]
-##   version <- strsplit(version[pmatch("Version",version)]," ")[[1L]]
-##   version <- version[nchar(version)>0][2L]
-##   packageStartupMessage("This is pomp version ",version,"\n")
-## }
+.onAttach <- function (...) {
+  exampleDir <- getOption("pomp.examples")
+  pompExampleDir <- system.file("examples",package="pomp")
+  options(pomp.examples=c(exampleDir,pompExampleDir,recursive=TRUE))
+}
 
-if (!exists("paste0",where="package:base")) {
-  paste0 <- function(...) paste(...,sep="")
+.onDetach <- function (...) {
+  exampleDir <- getOption("pomp.examples")
+  pompExampleDir <- system.file("examples",package="pomp")
+  exampleDir <- exampleDir[exampleDir!=pompExampleDir]
+  options(pomp.examples=exampleDir)
 }

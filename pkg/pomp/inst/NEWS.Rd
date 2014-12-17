@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.56-1}{
+  \itemize{
+    \item Revamped the \code{pompExample} function.
+    A search path for example directories is now stored in global option "pomp.examples".
+  }
+}
 \section{Changes in \pkg{pomp} version 0.55-1}{
   \itemize{
     \item New \code{values} method extracts simulated probe values on \code{probed.pomp} object.
