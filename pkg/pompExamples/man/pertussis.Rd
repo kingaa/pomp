@@ -21,4 +21,4 @@ plot(pertussis.sim(SEIRR.small))
 plot(pertussis.sim("full.big"))
 }
 \seealso{the \dQuote{pertussis-model} vignette}
-\keyword{datasets}
+\keyword{models}

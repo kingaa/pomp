@@ -1,14 +1,7 @@
-#' Annual *Parus major* counts in Wytham Wood, Oxfordshire, England.
-#' 
-#' @param proc  the process model (Gompertz or Ricker are currently supported)
-#' @param meas  the measurement model
-#' (lognormal, negative binomial, and Poisson are currently supported)
-#' @references McCleery, R. & Perrins, C. (1991)
-#' Effects of predation on the numbers of Great Tits, Parus major.
-#' In: Bird Population Studies, 
-#' edited by Perrins, C.M., Lebreton, J.-D. & Hirons, G.J.M. 
-#' Oxford. Univ. Press. pp. 129--147.
-#' @author Aaron A. King \email{kingaa@@umich.edu}
+# Annual *Parus major* counts in Wytham Wood, Oxfordshire, England.
+# 
+# 'proc' specifies the process model (Gompertz or Ricker currently supported)
+# 'meas' specifies the measurement model (lognormal, negbin, or Poisson)
 
 require(pomp)
 
@@ -108,6 +101,6 @@ parus.example <- function (proc = c("Gompertz","Ricker"),
        )
 }
 
-parus <- parus.example(proc=proc,meas=meas)
+parus <- parus.example(proc,meas)
 
 c("parus")
