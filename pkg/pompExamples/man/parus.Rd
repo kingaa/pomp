@@ -31,11 +31,13 @@
   \deqn{\mathrm{pop}_{t} \sim \mathrm{Lognormal}(\log(N_t),\theta).}
 }
 \examples{
+\dontrun{
 pompExample(parus,proc="Ricker",meas="negbin")
 plot(parus)
 plot(simulate(parus))
 
 pompExample(parus,proc="Gompertz",meas="lognormal")
 plot(simulate(parus))
+}
 }
 \keyword{models,datasets}
