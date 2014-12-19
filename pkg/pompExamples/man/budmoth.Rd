@@ -43,12 +43,10 @@
 }
 \examples{
 ## three regimes, high and low noise regimes for parasitism and tritrophic
-\dontrun{
 bm <- pompExample(budmoth,envir=NULL)
 plot(bm$food)
 plot(bm$para1)
 plot(bm$para2)
 plot(bm$tri)
-}
 }
 \keyword{models}
