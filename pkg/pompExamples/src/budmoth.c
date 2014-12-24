@@ -3,14 +3,7 @@
 #include <R.h>
 #include <Rmath.h>
 #include <Rdefines.h>
-
-static inline double expit (double x) {
-  return 1.0/(1.0 + exp(-x));
-}
-
-static inline double logit (double x) {
-  return log(x/(1-x));
-}
+#include <pomp.h>
 
 #define ALPHA      (p[parindex[0]])
 #define SIGALPHA   (p[parindex[1]])

@@ -1,8 +1,7 @@
 // dear emacs, please treat this as -*- C++ -*-
 
 #include <Rmath.h>
-
-#include "pomp.h"
+#include <pomp.h>
 
 #define R       (p[parindex[0]]) // growth rate
 #define K       (p[parindex[1]]) // carrying capacity
