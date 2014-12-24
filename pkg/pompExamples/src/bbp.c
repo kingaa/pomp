@@ -1,8 +1,7 @@
-/* pomp model file: _bombay_plague */
+/* pomp model file: _bbp */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
-
  
 #define Beta	(__p[__parindex[0]])
 #define delta	(__p[__parindex[1]])
@@ -27,57 +26,57 @@
 #define Tratio	(__pt[__parindex[6]])
 #define lik	(__lik[0])
 
-void _bombay_plague_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)
+void _bbp_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)
 {
- deaths=rnbinom_mu(theta,ratio*exp(y)); 
+  deaths=rnbinom_mu(theta,ratio*exp(y)); 
 }
 
 
-void _bombay_plague_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)
+void _bbp_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)
 {
- lik=dnbinom_mu(deaths,theta,ratio*exp(y),give_log); 
+  lik=dnbinom_mu(deaths,theta,ratio*exp(y),give_log); 
 }
 
 
-void _bombay_plague_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)
+void _bbp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)
 {
 
-                         double X = exp(x);
-                         double Y = exp(y);
-                         double dx, dy, dn, dW, ito;
-                         dx = (mu*(1.0/X-1)+(delta-Beta)*Y)*dt;
-                         dy = (Beta*X+delta*(Y-1)-gamma-mu)*dt;
-                         dn = -delta*Y*dt;
-                         dW = rnorm(0,sigma*sqrt(dt));
-                         ito = 0.5*sigma*sigma*dt;
-                         x += dx - Beta*Y*(dW-Beta*Y*ito);
-                         y += dy + Beta*X*(dW+Beta*X*ito);
-                         n += dn;
+  double X = exp(x);
+  double Y = exp(y);
+  double dx, dy, dn, dW, ito;
+  dx = (mu*(1.0/X-1)+(delta-Beta)*Y)*dt;
+  dy = (Beta*X+delta*(Y-1)-gamma-mu)*dt;
+  dn = -delta*Y*dt;
+  dW = rnorm(0,sigma*sqrt(dt));
+  ito = 0.5*sigma*sigma*dt;
+  x += dx - Beta*Y*(dW-Beta*Y*ito);
+  y += dy + Beta*X*(dW+Beta*X*ito);
+  n += dn;
                           
 }
 
 
-void _bombay_plague_skelfn (double *__f, double *__x, double *__p, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)
+void _bbp_skelfn (double *__f, double *__x, double *__p, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)
 {
 
-                        double X = exp(x);
-                        double Y = exp(y);
-                        Dx = mu*(1.0/X-1)+(delta-Beta)*Y;
-                        Dy = Beta*X+delta*(Y-1)-gamma-mu;
-                        Dn = -delta*Y;
+  double X = exp(x);
+  double Y = exp(y);
+  Dx = mu*(1.0/X-1)+(delta-Beta)*Y;
+  Dy = Beta*X+delta*(Y-1)-gamma-mu;
+  Dn = -delta*Y;
                          
 }
 
 
-void _bombay_plague_rprior (double *__p, int *__parindex)
+void _bbp_rprior (double *__p, int *__parindex)
 {
-   error("'rprior' not defined"); 
+  error("'rprior' not defined"); 
 }
 
 
-void _bombay_plague_dprior (double *__lik, double *__p, int give_log, int *__parindex)
+void _bbp_dprior (double *__lik, double *__p, int give_log, int *__parindex)
 {
-   error("'dprior' not defined"); 
+  error("'dprior' not defined"); 
 }
 
 #undef Beta

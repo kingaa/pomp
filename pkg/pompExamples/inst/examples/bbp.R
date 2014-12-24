@@ -48,37 +48,43 @@ pomp(data=subset(dat,select=c(week,deaths)),
        beta=2,delta=1.5,y0=0.0004,theta=54,
        sigma=0.02,
        mu=0,gamma=0.2,ratio=10000
-     ),
+       ),
      rprocess=euler.sim(
-       step.fun=Csnippet("
-                         double X = exp(x);
-                         double Y = exp(y);
-                         double dx, dy, dn, dW, ito;
-                         dx = (mu*(1.0/X-1)+(delta-beta)*Y)*dt;
-                         dy = (beta*X+delta*(Y-1)-gamma-mu)*dt;
-                         dn = -delta*Y*dt;
-                         dW = rnorm(0,sigma*sqrt(dt));
-                         ito = 0.5*sigma*sigma*dt;
-                         x += dx - beta*Y*(dW-beta*Y*ito);
-                         y += dy + beta*X*(dW+beta*X*ito);
-                         n += dn;
-                         "
-         ),
+       step.fun="_bbp_stepfn",
+       PACKAGE="pompExamples",
+### step.fun=Csnippet("
+###                   double X = exp(x);
+###                   double Y = exp(y);
+###                   double dx, dy, dn, dW, ito;
+###                   dx = (mu*(1.0/X-1)+(delta-beta)*Y)*dt;
+###                   dy = (beta*X+delta*(Y-1)-gamma-mu)*dt;
+###                   dn = -delta*Y*dt;
+###                   dW = rnorm(0,sigma*sqrt(dt));
+###                   ito = 0.5*sigma*sigma*dt;
+###                   x += dx - beta*Y*(dW-beta*Y*ito);
+###                   y += dy + beta*X*(dW+beta*X*ito);
+###                   n += dn;
+###                   "
+###   ),
        delta.t=1/24/7
        ),
-     skeleton=Csnippet("
-                        double X = exp(x);
-                        double Y = exp(y);
-                        Dx = mu*(1.0/X-1)+(delta-beta)*Y;
-                        Dy = beta*X+delta*(Y-1)-gamma-mu;
-                        Dn = -delta*Y;
-                        "
-       ),
+     skeleton="_bbp_skelfn",
+### skeleton=Csnippet("
+###                    double X = exp(x);
+###                    double Y = exp(y);
+###                    Dx = mu*(1.0/X-1)+(delta-beta)*Y;
+###                    Dy = beta*X+delta*(Y-1)-gamma-mu;
+###                    Dn = -delta*Y;
+###                    "
+###   ),
      skeleton.type="vectorfield",
      paramnames=c("beta","delta","mu","gamma","sigma","theta","ratio"),
      statenames=c("x","y","n"),
-     rmeasure=Csnippet("deaths=rnbinom_mu(theta,ratio*exp(y));"),
-     dmeasure=Csnippet("lik=dnbinom_mu(deaths,theta,ratio*exp(y),give_log);"),
+     rmeasure="_bbp_rmeasure",
+     dmeasure="_bbp_dmeasure",
+     PACKAGE="pompExamples",
+###     rmeasure=Csnippet("deaths=rnbinom_mu(theta,ratio*exp(y));"),
+###     dmeasure=Csnippet("lik=dnbinom_mu(deaths,theta,ratio*exp(y),give_log);"),
      logvar=c("beta","delta","ratio","sigma","theta","mu"),
      logitvar=c("y0"),
      parameter.inv.transform=function (params, logvar, logitvar, ...) {
