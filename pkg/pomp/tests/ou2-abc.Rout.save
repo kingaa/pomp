@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -18,14 +18,10 @@ Type 'q()' to quit R.
 > ### OU2 test of abc for pomp
 > 
 > library(pomp) 
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > pompExample(ou2)
-newly created pomp object(s):
+newly created object(s):
  ou2 
 > 
 > pdf(file='ou2-abc.pdf')
@@ -135,4 +131,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 11.588   0.056  11.647 
+ 11.085   0.055  11.138 

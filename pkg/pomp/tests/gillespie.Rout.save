@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,12 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > params <- c(
 +             nu=1/70,
@@ -121,7 +117,7 @@ Loading required package: lattice
 105 0.1666667
 > 
 > pompExample(gillespie.sir)
-newly created pomp object(s):
+newly created object(s):
  gillespie.sir 
 > 
 > tail(as.data.frame(simulate(gillespie.sir,times=time(gsir),t0=timezero(gsir),seed=1165270654L)))
@@ -135,4 +131,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
-  2.637   0.064   2.693 
+  2.565   0.041   2.592 

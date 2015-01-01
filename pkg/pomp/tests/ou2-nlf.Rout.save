@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,17 +16,13 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > set.seed(583615606L)
 > 
 > pompExample(ou2)
-newly created pomp object(s):
+newly created object(s):
  ou2 
 > estnames=c("alpha.2","alpha.3","tau")
 > theta.truth <- coef(ou2)
@@ -89,4 +85,4 @@ truth          -0.5000  0.3000 1.000         NA         NA     NA   -551.8
 > 
 > proc.time()
    user  system elapsed 
-  5.413   0.023   5.433 
+  5.003   0.037   5.037 

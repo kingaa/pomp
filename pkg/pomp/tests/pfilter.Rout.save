@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,15 +16,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > pompExample(ou2)
-newly created pomp object(s):
+newly created object(s):
  ou2 
 > 
 > set.seed(9994847L)
@@ -49,7 +45,7 @@ particle filter log likelihood at truth
   -479.61      0.46 
 > 
 > pompExample(euler.sir)
-newly created pomp object(s):
+newly created object(s):
  euler.sir 
 > pf <- pfilter(euler.sir,Np=100,seed=394343L)
 > print(coef(pf))
@@ -81,4 +77,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 10.454   0.035  10.489 
+  9.887   0.037   9.924 

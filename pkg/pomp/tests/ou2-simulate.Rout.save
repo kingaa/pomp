@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,15 +16,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > pompExample(ou2)
-newly created pomp object(s):
+newly created object(s):
  ou2 
 > 
 > ## fix some parameters
@@ -39,7 +35,7 @@ newly created pomp object(s):
 > ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.006201267 secs
+Time difference of 0.007747889 secs
 > 
 > coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 > 
@@ -50,4 +46,4 @@ Time difference of 0.006201267 secs
 > 
 > proc.time()
    user  system elapsed 
-  0.523   0.016   0.530 
+  0.501   0.022   0.507 

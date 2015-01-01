@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,17 +16,13 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > set.seed(921625222L)
 > 
 > pompExample(ou2)
-newly created pomp object(s):
+newly created object(s):
  ou2 
 > tm <- time(ou2)
 > y <- obs(ou2)
@@ -65,4 +61,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  1.456   0.016   1.463 
+  1.376   0.042   1.402 

@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -20,7 +20,7 @@ Loading required package: subplex
 Loading required package: nloptr
 > 
 > pompExample(bbs)
-newly created pomp object(s):
+newly created object(s):
  bbs 
 > 
 > set.seed(48857734L)
@@ -69,4 +69,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
-  6.716   0.076   6.831 
+  7.769   0.051   7.832 

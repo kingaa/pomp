@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,15 +16,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > pompExample(gompertz)
-newly created pomp object(s):
+newly created object(s):
  gompertz 
 > 
 > pars <- coef(gompertz)
@@ -56,4 +52,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
-  0.500   0.053   0.522 
+  0.492   0.020   0.494 

@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,12 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > set.seed(45768683)
 > 
@@ -168,7 +164,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x2d8eeb0>
+<environment: 0x1c9a9f8>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -181,7 +177,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x2d8eeb0>
+<environment: 0x1c9a9f8>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -287,7 +283,7 @@ Error : 'simulate' error
 > stopifnot(max(abs(e1-e2),na.rm=T)<.Machine$double.eps*100)
 > 
 > pompExample(rw2)
-newly created pomp object(s):
+newly created object(s):
  rw2 
 > 
 > a3 <- dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
@@ -346,4 +342,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.928   0.056   0.968 
+  0.879   0.041   0.908 

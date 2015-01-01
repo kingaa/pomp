@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,12 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > tbasis <- seq(0,25,by=1/52)
 > basis <- periodic.bspline.basis(tbasis,nbasis=3,names="seas%d")
@@ -196,7 +192,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x2d72f88>
+<environment: 0x151f968>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -205,7 +201,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x2be3788>
+<environment: 0x1272bc8>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -278,7 +274,7 @@ parameter(s):
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.9839017 secs
+Time difference of 0.9468338 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -295,7 +291,7 @@ Time difference of 0.9839017 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.6020904 secs
+Time difference of 0.560688 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -337,7 +333,7 @@ R -31549.7 -30472.3 -30226.0 -29798.8 -29007.2 -28580 -27634 -26740
 > 
 > ## now repeat using the compiled native codes built into the package
 > pompExample(euler.sir)
-newly created pomp object(s):
+newly created object(s):
  euler.sir 
 > po <- euler.sir
 > 
@@ -347,7 +343,7 @@ newly created pomp object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.182583 secs
+Time difference of 3.17 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -355,7 +351,7 @@ Time difference of 3.182583 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.02289963 secs
+Time difference of 0.02284503 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -407,7 +403,7 @@ null device
 > ## test of vectorfield integrator
 > 
 > pompExample(euler.sir)
-newly created pomp object(s):
+newly created object(s):
  euler.sir 
 > 
 > po <- pomp(
@@ -450,4 +446,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
-  5.871   0.068   5.916 
+  5.763   0.045   5.771 

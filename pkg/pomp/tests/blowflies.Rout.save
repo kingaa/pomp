@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,15 +16,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > pompExample(blowflies)
-newly created pomp object(s):
+newly created object(s):
  blowflies1 blowflies2 
 > 
 > init.state(blowflies1)
@@ -74,4 +70,4 @@ eps    0
 > 
 > proc.time()
    user  system elapsed 
-  1.430   0.051   1.473 
+  1.493   0.039   1.519 

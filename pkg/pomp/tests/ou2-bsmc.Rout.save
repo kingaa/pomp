@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,16 +16,12 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > set.seed(398585L)
 > pompExample(ou2)
-newly created pomp object(s):
+newly created object(s):
  ou2 
 > 
 > time(ou2) <- 1:10
@@ -63,7 +59,7 @@ newly created pomp object(s):
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 3.021244 secs
+Time difference of 3.430529 secs
 > 
 > print(
 +       cbind(
@@ -105,4 +101,4 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > proc.time()
    user  system elapsed 
-  4.967   0.053   5.012 
+  5.498   0.064   5.527 

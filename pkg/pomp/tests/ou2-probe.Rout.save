@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,18 +16,14 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > set.seed(1066L)
 > 
 > pdf(file="ou2-probe.pdf")
 > 
 > pompExample(ou2)
-newly created pomp object(s):
+newly created object(s):
  ou2 
 > 
 > pm.ou2 <- probe(
@@ -297,7 +293,7 @@ sim.4 0.3693204 0.5205152 -0.4305519 -0.5773910 -0.04953301
 sim.5 0.5542739 0.6216561 -0.4089672 -0.7236761  0.06850115
 > 
 > pompExample(ou2)
-newly created pomp object(s):
+newly created object(s):
  ou2 
 > 
 > good <- probe(
@@ -344,4 +340,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  8.873   0.076   8.949 
+  8.501   0.048   8.545 

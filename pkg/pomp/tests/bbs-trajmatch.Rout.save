@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,15 +16,11 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > pompExample(bbs)
-newly created pomp object(s):
+newly created object(s):
  bbs 
 > 
 > guess <- c(
@@ -72,8 +68,8 @@ in 'coef<-' names of 'value' are being discarded
 > options(warn=2)
 > ofun <- traj.match.objfun(window(bbs,end=3),est=c("beta","gamma"),transform=TRUE,maxsteps=10,rtol=1e-6)
 > try(optim(fn=ofun,par=c(0,-1),method="Nelder-Mead",control=list(reltol=1e-10)))
-DLSODA-  At current T (=R1), MXSTEP (=I1) steps
-      taken on this call before reaching TOUT
+DLSODA-  At current T (=R1), MXSTEP (=I1) steps   
+      taken on this call before reaching TOUT     
 In above message, I1 = 10
  
 In above message, R1 = 0.609738
@@ -84,4 +80,4 @@ Error : trajectory error: error in ODE integrator
 > 
 > proc.time()
    user  system elapsed 
-  2.795   0.053   2.839 
+  2.725   0.017   2.733 

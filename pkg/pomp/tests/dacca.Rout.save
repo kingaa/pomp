@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,17 +16,13 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > set.seed(1420306530L)
 > 
 > pompExample(dacca)
-newly created pomp object(s):
+newly created object(s):
  dacca 
 > 
 > x <- as.data.frame(dacca)
@@ -111,4 +107,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
- 13.216   0.040  13.260 
+ 14.817   0.035  14.853 

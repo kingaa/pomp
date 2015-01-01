@@ -28,7 +28,7 @@ pompExample <- function (example, ..., envir = .GlobalEnv) {
                get(objs$value[i],envir=evalEnv),
                envir=envir)
       }
-      cat("newly created pomp object(s):\n",objs$value,"\n")
+      cat("newly created object(s):\n",objs$value,"\n")
       obj <- NULL
     } else {
       stop(sQuote("envir")," must be an environment or NULL")

@@ -1,5 +1,5 @@
 
-R version 3.1.1 (2014-07-10) -- "Sock it to Me"
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,17 +16,13 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: mvtnorm
 Loading required package: subplex
 Loading required package: nloptr
-Loading required package: deSolve
-Loading required package: coda
-Loading required package: lattice
 > 
 > set.seed(54588699L)
 > 
 > pompExample(ricker)
-newly created pomp object(s):
+newly created object(s):
  ricker 
 > coef(ricker,"sigma") <- 0
 > tm <- sort(runif(n=20,max=3))
@@ -35,7 +31,7 @@ newly created pomp object(s):
 > stopifnot(identical(x,y))
 > 
 > pompExample(verhulst)
-newly created pomp object(s):
+newly created object(s):
  verhulst 
 > coef(verhulst,c("n.0","sigma")) <- c(15,0)
 > tm <- sort(runif(n=100,max=1))
@@ -64,4 +60,4 @@ newly created pomp object(s):
 > 
 > proc.time()
    user  system elapsed 
-  0.531   0.023   0.544 
+  0.498   0.026   0.511 
