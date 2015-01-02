@@ -18,16 +18,3 @@ tj <- trajectory(po[[1]])
 
 po <- pompExample(parus,proc="Gompertz",meas="lognormal",envir=NULL)
 pf <- pfilter(simulate(po$parus),Np=100,max.fail=Inf)
-
-pompExample(bbp)
-pf <- pfilter(simulate(bbp),Np=100,max.fail=Inf)
-tj <- trajectory(bbp)
-
-pompExample(ebola)
-ebolaModel(country="Guinea") -> po
-pf <- pfilter(simulate(po),Np=100)
-tj <- trajectory(po)
-
-ebolaModel(country="SierraLeone",na.rm=TRUE,type='cum') -> po
-pf <- pfilter(simulate(po),Np=100)
-tj <- trajectory(po)

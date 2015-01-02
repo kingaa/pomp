@@ -54,6 +54,7 @@ dat <- melt(dat,id="week",variable.name="country",value.name="cases")
 mutate(dat,deaths=NA) -> dat
 
 ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfrica"),
+                        data = NULL,
                         timestep = 0.01, nstageE = 3L,
                         type = c("raw","cum"), na.rm = FALSE, least.sq = FALSE) {
 
@@ -77,14 +78,18 @@ ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfric
              S_0=1-index_case,E_0=index_case/2-5e-9,
              I_0=index_case/2-5e-9,R_0=1e-8)
 
-  if (ctry=="WestAfrica") {
-    dat <- ddply(dat,~week,summarize,
-                 cases=sum(cases,na.rm=TRUE),
-                 deaths=sum(deaths,na.rm=TRUE))
+  if (is.null(data)) {
+    if (ctry=="WestAfrica") {
+      dat <- ddply(dat,~week,summarize,
+                   cases=sum(cases,na.rm=TRUE),
+                   deaths=sum(deaths,na.rm=TRUE))
+    } else {
+      dat <- subset(dat,country==ctry,select=-country)
+    }
   } else {
-    dat <- subset(dat,country==ctry,select=-country)
+    dat <- data
   }
-
+    
   if (na.rm) {
     dat <- mutate(subset(dat,!is.na(cases)),week=week-min(week)+1)
   }

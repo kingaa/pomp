@@ -1,0 +1,43 @@
+
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pompExamples)
+Loading required package: pomp
+Loading required package: subplex
+Loading required package: nloptr
+> 
+> set.seed(47575684L)
+> 
+> pompExample(ebola)
+Loading required package: plyr
+Loading required package: reshape2
+newly created pomp object(s):
+ ebolaModel 
+> ebolaModel(country="Guinea") -> po
+> pf <- pfilter(simulate(po),Np=100)
+> tj <- trajectory(po)
+> 
+> ebolaModel(country="SierraLeone",na.rm=TRUE,type='cum') -> po
+> pf <- pfilter(simulate(po),Np=100)
+> tj <- trajectory(po)
+> dd <- simulate(po,as.data.frame=TRUE,obs=TRUE)
+> dd$week <- dd$time
+> po <- ebolaModel(data=subset(dd,select=c(week,cases,deaths)))
+> 
+> proc.time()
+   user  system elapsed 
+  1.100   0.034   1.119 

@@ -127,4 +127,4 @@ $tri
 > 
 > proc.time()
    user  system elapsed 
-  0.649   0.033   0.670 
+  0.614   0.056   0.652 

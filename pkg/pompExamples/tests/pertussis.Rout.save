@@ -168,4 +168,4 @@ $full.big
 > 
 > proc.time()
    user  system elapsed 
- 23.494   0.034  23.544 
+ 23.697   0.033  23.738 
