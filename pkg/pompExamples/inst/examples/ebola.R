@@ -3,7 +3,7 @@ require(plyr)
 require(reshape2)
 
 WHO.situation.report.Oct.1 <- '
-Week,Guinea,Liberia,SierraLeone
+week,Guinea,Liberia,SierraLeone
 1,2.244,,
 2,2.244,,
 3,0.073,,
@@ -50,7 +50,6 @@ populations <- c(Guinea=10628972,Liberia=4092310,SierraLeone=6190280)
 populations["WestAfrica"] <- sum(populations)
 
 dat <- read.csv(text=WHO.situation.report.Oct.1,stringsAsFactors=FALSE)
-rename(dat,c(Week="week")) -> dat
 dat <- melt(dat,id="week",variable.name="country",value.name="cases")
 mutate(dat,deaths=NA) -> dat
 
@@ -78,15 +77,20 @@ ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfric
              S_0=1-index_case,E_0=index_case/2-5e-9,
              I_0=index_case/2-5e-9,R_0=1e-8)
 
-  dat <- subset(dat,country==ctry,select=-country)
+  if (ctry=="WestAfrica") {
+    dat <- ddply(dat,~week,summarize,
+                 cases=sum(cases,na.rm=TRUE),
+                 deaths=sum(deaths,na.rm=TRUE))
+  } else {
+    dat <- subset(dat,country==ctry,select=-country)
+  }
+
   if (na.rm) {
     dat <- mutate(subset(dat,!is.na(cases)),week=week-min(week)+1)
   }
   if (type=="cum") {
     dat <- mutate(dat,cases=cumsum(cases),deaths=cumsum(deaths))
   }
-
-  print(dat)
 
   ## Create the pomp object
   pomp(
@@ -99,7 +103,7 @@ ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfric
        zeronames=if (type=="raw") c("N_EI","N_IR") else character(0),
        paramnames=c("N","R0","alpha","gamma","rho","k","cfr",
          "S_0","E_0","I_0","R_0"),
-       nstageE=nstageE,
+       nstageE=as.integer(nstageE),
        PACKAGE="pompExamples",
        dmeasure=if (least.sq) "_ebola_dObsLS" else "_ebola_dObs",
        rmeasure=if (least.sq) "_ebola_rObsLS" else "_ebola_rObs",
