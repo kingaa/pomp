@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.57-1}{
+  \itemize{
+    \item \code{simulate} has a new argument, \code{include.data}, that when used in conjuncion with \code{as.data.frame=TRUE} will include the actual data in the resulting data frame along with the simulations.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.56-1}{
   \itemize{
     \item Revamped the \code{pompExample} function.

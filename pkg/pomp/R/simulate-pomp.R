@@ -3,6 +3,7 @@
 simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                                states = FALSE, obs = FALSE,
                                times, t0, as.data.frame = FALSE,
+                               include.data = FALSE,
                                .getnativesymbolinfo = TRUE, ...) {
 
   if (missing(times))
@@ -18,6 +19,7 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
   obs <- as.logical(obs)
   states <- as.logical(states)
   as.data.frame <- as.logical(as.data.frame)
+  include.data <- as.logical(include.data)
 
   if (missing(params))
     params <- coef(object)
@@ -109,6 +111,11 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
         retval$sim <- factor(1)
       }
     }
+
+    if (include.data) {
+      od <- as.data.frame(object)
+      retval <- merge(od,retval,sort=FALSE)
+    }
     
   }
 
@@ -119,8 +126,9 @@ setMethod(
           "simulate",
           signature=signature(object="pomp"),
           definition=function (object, nsim = 1, seed = NULL, params,
-                               states = FALSE, obs = FALSE,
-                               times, t0, as.data.frame = FALSE, ...)
+            states = FALSE, obs = FALSE,
+            times, t0, as.data.frame = FALSE, include.data = FALSE,
+            ...)
           simulate.internal(
                             object=object,
                             nsim=nsim,
@@ -131,6 +139,7 @@ setMethod(
                             times=times,
                             t0=t0,
                             as.data.frame=as.data.frame,
+                            include.data=include.data,
                             ...
                             )
           )
