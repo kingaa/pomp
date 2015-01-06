@@ -14,6 +14,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   int *xdim, nvars, npars, nreps, nrepsx, ntimes, off;
   SEXP X, Xoff, copy, fn, fcall, rho;
   SEXP dimXstart, dimP, dimX;
+  const char *dimnm[3] = {"variable","rep","time"};
 
   PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
@@ -113,10 +114,12 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     xdim[2] -= off;
     PROTECT(Xoff = makearray(3,xdim)); nprotect++;
     setrownames(Xoff,GET_ROWNAMES(GET_DIMNAMES(X)),3);
+    fixdimnames(Xoff,dimnm,3);
     memcpy(REAL(Xoff),REAL(X)+off*nvars*nreps,(ntimes-off)*nvars*nreps*sizeof(double));
     UNPROTECT(nprotect);
     return Xoff;
   } else {
+    fixdimnames(X,dimnm,3);
     UNPROTECT(nprotect);
     return X;
   }

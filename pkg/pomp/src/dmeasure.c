@@ -129,7 +129,9 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   // create array to store results
   {
     int dim[2] = {nreps, ntimes};
+    const char *dimnm[2] = {"rep","time"};
     PROTECT(F = makearray(2,dim)); nprotect++; 
+    fixdimnames(F,dimnm,2);
   }
 
   // now do computations

@@ -109,7 +109,10 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
     UNPROTECT(nprotect);
     error("dprocess error: user 'dprocess' must return a %d x %d array",nreps,ntimes-1);
   }
-
+  {
+    const char *dimnms[2] = {"rep","time"};
+    fixdimnames(X,dimnms,2);
+  }
   UNPROTECT(nprotect);
   return X;
 }

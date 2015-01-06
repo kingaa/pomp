@@ -13,7 +13,6 @@
 # define MATCHNAMES(X,N,W) (matchnames(GET_NAMES(X),(N),(W)))
 # define MATCHROWNAMES(X,N,W) (matchnames(GET_ROWNAMES(GET_DIMNAMES(X)),(N),(W)))
 # define MATCHCOLNAMES(X,N,W) (matchnames(GET_COLNAMES(GET_DIMNAMES(X)),(N),(W)))
-# define MATCH_CHAR_TO_ROWNAMES(X,N,A) (match_char_to_names(GET_ROWNAMES(GET_DIMNAMES(X)),(N),(A)))
 
 // lookup-table structure, as used internally
 typedef struct lookup_table {
@@ -77,27 +76,25 @@ void set_pomp_userdata (SEXP object);
 void unset_pomp_userdata (void);
 
 static R_INLINE SEXP makearray (int rank, int *dim) {
-  int nprotect = 0;
   int *dimp, k;
   double *xp;
   SEXP dimx, x;
-  PROTECT(dimx = NEW_INTEGER(rank)); nprotect++;
+  PROTECT(dimx = NEW_INTEGER(rank));
   dimp = INTEGER(dimx); 
   for (k = 0; k < rank; k++) dimp[k] = dim[k];
-  PROTECT(x = allocArray(REALSXP,dimx)); nprotect++;
+  PROTECT(x = allocArray(REALSXP,dimx));
   xp = REAL(x);
   for (k = 0; k < length(x); k++) xp[k] = NA_REAL;
-  UNPROTECT(nprotect);
+  UNPROTECT(2);
   return x;
 }
 
 static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
-  int nprotect = 0;
   int n = length(names);
   int *idx, k;
   SEXP index, nm;
-  PROTECT(nm = AS_CHARACTER(names)); nprotect++;
-  PROTECT(index = match(x,names,0)); nprotect++;
+  PROTECT(nm = AS_CHARACTER(names));
+  PROTECT(index = match(x,names,0));
   idx = INTEGER(index);
   for (k = 0; k < n; k++) {
     if (idx[k]==0) 
@@ -106,28 +103,7 @@ static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
 	    where);
     idx[k] -= 1;
   }
-  UNPROTECT(nprotect);
-  return index;
-}
-
-static R_INLINE SEXP match_char_to_names (SEXP x, int n, char **names) {
-  int nprotect = 0;
-  int *idx, k;
-  SEXP index, nm;
-  PROTECT(nm = NEW_CHARACTER(n)); nprotect++;
-  for (k = 0; k < n; k++) {
-    SET_STRING_ELT(nm,k,mkChar(names[k]));
-  }
-  PROTECT(index = match(x,nm,0)); nprotect++;
-  idx = INTEGER(index);
-  for (k = 0; k < n; k++) {
-    if (idx[k]==0) {
-      UNPROTECT(nprotect);
-      error("variable %s not specified",names[k]);
-    }
-    idx[k] -= 1;
-  }
-  UNPROTECT(nprotect);
+  UNPROTECT(2);
   return index;
 }
 
@@ -144,12 +120,27 @@ static R_INLINE SEXP name_index (SEXP names, SEXP object, const char *slot) {
 }
 
 static R_INLINE void setrownames (SEXP x, SEXP names, int n) {
-  int nprotect = 0;
   SEXP dimnms, nm;
-  PROTECT(nm = AS_CHARACTER(names)); nprotect++;
-  PROTECT(dimnms = allocVector(VECSXP,n)); nprotect++;
+  PROTECT(nm = AS_CHARACTER(names));
+  PROTECT(dimnms = allocVector(VECSXP,n));
   SET_ELEMENT(dimnms,0,nm);	// set row names
   SET_DIMNAMES(x,dimnms);
+  UNPROTECT(2);
+}
+
+static R_INLINE void fixdimnames (SEXP x, const char **names, int n) {
+  int nprotect = 0;
+  int i;
+  SEXP dimnames, nm;
+  PROTECT(dimnames = GET_DIMNAMES(x)); nprotect++;
+  if (isNull(dimnames)) {
+    PROTECT(dimnames = allocVector(VECSXP,n)); nprotect++;
+  }
+  PROTECT(nm = allocVector(VECSXP,n)); nprotect++;
+  for (i = 0; i < n; i++)
+    SET_ELEMENT(nm,i,mkChar(names[i]));
+  SET_NAMES(dimnames,nm);
+  SET_DIMNAMES(x,dimnames);
   UNPROTECT(nprotect);
 }
 

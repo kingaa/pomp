@@ -192,7 +192,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x151f968>
+<environment: 0x24f3bf8>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -201,7 +201,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x1272bc8>
+<environment: 0x228d048>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -274,7 +274,7 @@ parameter(s):
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.9468338 secs
+Time difference of 0.8555272 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -291,7 +291,7 @@ Time difference of 0.9468338 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.560688 secs
+Time difference of 0.5343869 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -322,14 +322,16 @@ Time difference of 0.560688 secs
 +                params=params
 +                )
 > print(h1[c("S","I","R"),,],digits=4)
-      [,1]     [,2]      [,3]      [,4]     [,5]   [,6]     [,7]   [,8]
-S  32161.6  31582.4  32142.21  31758.36  31639.0  32006  31953.5  31666
-I   -318.4   -218.9    -88.93     21.52    128.7    218    309.2    403
-R -31855.2 -31375.0 -32064.98 -31792.40 -31780.0 -32236 -32276.8 -32083
-      [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
-S  31017.5  29782.5  29443.9  28916.7  27997.1  27494  26434  25448
-I    518.5    675.3    768.6    868.8    996.8   1074   1187   1278
-R -31549.7 -30472.3 -30226.0 -29798.8 -29007.2 -28580 -27634 -26740
+        time
+variable     [,1]     [,2]      [,3]      [,4]     [,5]   [,6]     [,7]   [,8]
+       S  32161.6  31582.4  32142.21  31758.36  31639.0  32006  31953.5  31666
+       I   -318.4   -218.9    -88.93     21.52    128.7    218    309.2    403
+       R -31855.2 -31375.0 -32064.98 -31792.40 -31780.0 -32236 -32276.8 -32083
+        time
+variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
+       S  31017.5  29782.5  29443.9  28916.7  27997.1  27494  26434  25448
+       I    518.5    675.3    768.6    868.8    996.8   1074   1187   1278
+       R -31549.7 -30472.3 -30226.0 -29798.8 -29007.2 -28580 -27634 -26740
 > 
 > ## now repeat using the compiled native codes built into the package
 > pompExample(euler.sir)
@@ -343,7 +345,7 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.17 secs
+Time difference of 2.513178 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -351,7 +353,7 @@ Time difference of 3.17 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.02284503 secs
+Time difference of 0.01763391 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -372,14 +374,16 @@ Time difference of 0.02284503 secs
 +                params=coef(po)
 +                )
 > print(h2[c("S","I","R"),,],digits=4)
-      [,1]     [,2]      [,3]      [,4]     [,5]   [,6]     [,7]   [,8]
-S  32161.6  31582.4  32142.21  31758.36  31639.0  32006  31953.5  31666
-I   -318.4   -218.9    -88.93     21.52    128.7    218    309.2    403
-R -31855.2 -31375.0 -32064.98 -31792.40 -31780.0 -32236 -32276.8 -32083
-      [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
-S  31017.5  29782.5  29443.9  28916.7  27997.1  27494  26434  25448
-I    518.5    675.3    768.6    868.8    996.8   1074   1187   1278
-R -31549.7 -30472.3 -30226.0 -29798.8 -29007.2 -28580 -27634 -26740
+        time
+variable     [,1]     [,2]      [,3]      [,4]     [,5]   [,6]     [,7]   [,8]
+       S  32161.6  31582.4  32142.21  31758.36  31639.0  32006  31953.5  31666
+       I   -318.4   -218.9    -88.93     21.52    128.7    218    309.2    403
+       R -31855.2 -31375.0 -32064.98 -31792.40 -31780.0 -32236 -32276.8 -32083
+        time
+variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
+       S  31017.5  29782.5  29443.9  28916.7  27997.1  27494  26434  25448
+       I    518.5    675.3    768.6    868.8    996.8   1074   1187   1278
+       R -31549.7 -30472.3 -30226.0 -29798.8 -29007.2 -28580 -27634 -26740
 > 
 > stopifnot(max(abs(g2-g1),na.rm=T)<.Machine$double.eps*100)
 > stopifnot(max(abs(h2-h1),na.rm=T)<.Machine$double.eps*2^16)
@@ -446,4 +450,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
-  5.763   0.045   5.771 
+  5.024   0.052   5.246 

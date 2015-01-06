@@ -18,6 +18,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0)
   int npar, nrep, nvar;
   int xdim[2], j, k;
   double *p, *pp, *xp, *xpp;
+  const char *dimnms[2] = {"variable","rep"};
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
@@ -76,6 +77,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0)
   xdim[0] = nvar; xdim[1] = nrep;
   PROTECT(x = makearray(2,xdim)); nprotect++;
   setrownames(x,statenames,2);
+  fixdimnames(x,dimnms,2);
   xpp = REAL(x);
 
   for (k = 0; k < nvar; k++) xpp[k] = xp[k];

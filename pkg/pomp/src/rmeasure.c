@@ -61,8 +61,10 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   {
     int dim[3] = {nobs, nreps, ntimes};
+    const char *dimnm[3] = {"variable","rep","time"};
     PROTECT(Y = makearray(3,dim)); nprotect++; 
     setrownames(Y,Onames,3);
+    fixdimnames(Y,dimnm,3);
   }
 
   // extract the user-defined function

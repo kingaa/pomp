@@ -281,4 +281,4 @@ mif warning: the variables 'alpha.3', 'x2.0' have positive random-walk SDs speci
 > 
 > proc.time()
    user  system elapsed 
- 13.791   0.053  13.848 
+ 11.452   0.064  11.704 

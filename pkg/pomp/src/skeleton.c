@@ -131,8 +131,10 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   // set up the array to hold results
   {
     int dim[3] = {nvars, nreps, ntimes};
+    const char *dimnms[3] = {"variable","rep","time"};
     PROTECT(F = makearray(3,dim)); nprotect++; 
     setrownames(F,Snames,3);
+    fixdimnames(F,dimnms,3);
   }
 
   // first do setup

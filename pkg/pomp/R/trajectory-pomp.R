@@ -91,6 +91,8 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
 
   }
 
+  dimnames(x) <- setNames(dimnames(x),c("variable","rep","time"))
+
   if (as.data.frame) {
     x <- lapply(
                 seq_len(ncol(x)),

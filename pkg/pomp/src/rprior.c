@@ -20,6 +20,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   SEXP Pnames, P, fn, fcall;
   SEXP pompfun;
   int *dim;
+  const char *dimnms[2] = {"variable","rep"};
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
@@ -144,5 +145,6 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   }
 
   UNPROTECT(nprotect);
+  fixdimnames(P,dimnms,2);
   return P;
 }

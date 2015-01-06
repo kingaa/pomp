@@ -164,7 +164,7 @@ Exiting from Nelder Mead minimizer
     117 function evaluations used
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.235065 secs
+Time difference of 3.309699 secs
 > tic <- Sys.time()
 > print(loglik.mle <- -kalm.fit1$value,digits=4)
 [1] -477.2
@@ -188,4 +188,4 @@ loglik  -479.0 -477.241     NA
 > 
 > proc.time()
    user  system elapsed 
-  3.769   0.026   3.787 
+  3.960   0.044   4.036 

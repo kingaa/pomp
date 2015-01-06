@@ -35,7 +35,7 @@ newly created object(s):
 > ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.007747889 secs
+Time difference of 0.006910086 secs
 > 
 > coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 > 
@@ -46,4 +46,4 @@ Time difference of 0.007747889 secs
 > 
 > proc.time()
    user  system elapsed 
-  0.501   0.022   0.507 
+  0.508   0.040   0.572 

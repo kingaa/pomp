@@ -164,7 +164,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x1c9a9f8>
+<environment: 0x24441b8>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -177,7 +177,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x1c9a9f8>
+<environment: 0x24441b8>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -342,4 +342,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.879   0.041   0.908 
+  0.992   0.040   1.052 
