@@ -53,6 +53,117 @@ dat <- read.csv(text=WHO.situation.report.Oct.1,stringsAsFactors=FALSE)
 dat <- melt(dat,id="week",variable.name="country",value.name="cases")
 mutate(dat,deaths=NA) -> dat
 
+
+paruntrans <- Csnippet('
+  double *IC = &S_0;
+  double *TIC = &TS_0;
+  TN = log(N);
+  TR0 = log(R0);
+  Talpha = log(alpha);
+  Tgamma = log(gamma);
+  Trho = logit(rho);
+  Tk = log(k);
+  Tcfr = logit(cfr);
+  to_log_barycentric(TIC,IC,4);
+')
+
+partrans <- Csnippet('
+  double *IC = &S_0;
+  double *TIC = &TS_0;
+  TN = exp(N);
+  TR0 = exp(R0);
+  Talpha = exp(alpha);
+  Tgamma = exp(gamma);
+  Trho = expit(rho);
+  Tk = exp(k);
+  Tcfr = expit(cfr);
+  from_log_barycentric(TIC,IC,4);
+')
+
+##  Observation model: hierarchical model for cases and deaths
+## p(R_t, D_t| C_t) = p(R_t | C_t) * p(D_t | C_t, R_t)
+## p(R_t | C_t): Negative binomial with mean rho * C_t and dispersion parameter 1 / k
+## p(D_t | C_t, R_t): Binomial B(R_t, cfr)
+
+dObs <- Csnippet('
+  double f;
+  if (k > 0.0)
+    f = dnbinom_mu(nearbyint(cases),1.0/k,rho*N_EI,1);
+  else
+    f = dpois(nearbyint(cases),rho*N_EI,1);
+  lik = (give_log) ? f : exp(f);
+')
+
+dObsLS <- Csnippet('
+  double f;
+  f = dnorm(cases,rho*N_EI,k,1);
+  lik = (give_log) ? f : exp(f);
+')
+
+rObs <- Csnippet('
+  if (k > 0) {
+    cases = rnbinom_mu(1.0/k,rho*N_EI);
+    deaths = rnbinom_mu(1.0/k,rho*cfr*N_IR);
+  } else {
+    cases = rpois(rho*N_EI);
+    deaths = rpois(rho*cfr*N_IR);
+  }')
+
+rObsLS <- Csnippet('
+  cases = rnorm(rho*N_EI,k);
+  deaths = NA_REAL;
+')
+
+rSim <- Csnippet('
+  double lambda, beta;
+  double *E = &E1;
+  beta = R0 * gamma; // Transmission rate
+  lambda = beta * I / N; // Force of infection
+  int i;
+
+  // Transitions
+  // From class S
+  double transS = rbinom(S, 1.0 - exp(- lambda * dt)); // No of infections
+  // From class E
+  double transE[nstageE]; // No of transitions between classes E
+  for(i = 0; i < nstageE; i++){
+    transE[i] = rbinom(E[i], 1.0 - exp(- nstageE * alpha * dt));
+  }
+  // From class I
+  double transI = rbinom(I, 1.0 - exp(- gamma * dt)); // No of transitions I->R
+
+  // Balance the equations
+  S -= transS;
+  E[0] += transS - transE[0];
+  for(i=1; i < nstageE; i++) {
+    E[i] += transE[i-1] - transE[i];
+  }
+  I += transE[nstageE - 1] - transI;
+  R += transI;
+  N_EI += transE[nstageE - 1]; // No of transitions from E to I
+  N_IR += transI; // No of transitions from I to R
+')
+
+skel <- Csnippet('
+  double lambda, beta;
+  double *E = &E1;
+  double *DE = &DE1;
+  beta = R0 * gamma; // Transmission rate
+  lambda = beta * I / N; // Force of infection
+  int i;
+
+  // Balance the equations
+  DS = - lambda * S;
+  DE[0] = lambda * S - nstageE * alpha * E[0];
+  for (i=1; i < nstageE; i++)
+    DE[i] = nstageE * alpha * (E[i-1]-E[i]);
+  DI = nstageE * alpha * E[nstageE-1] - gamma * I;
+  DR = gamma * I;
+  DN_EI = nstageE * alpha * E[nstageE-1];
+  DN_IR = gamma * I;
+')
+
+
 ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfrica"),
                         data = NULL,
                         timestep = 0.01, nstageE = 3L,
@@ -69,6 +180,9 @@ ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfric
   infectious_period <- 7/7
   index_case <- 10/pop
   dt <- timestep
+  nstageE <- as.integer(nstageE)
+
+  globs <- paste0("static int nstageE = ",nstageE,";");
 
   theta <- c(N=pop,R0=1.4,
              alpha=-1/(nstageE*dt)*log(1-nstageE*dt/incubation_period),
@@ -89,7 +203,7 @@ ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfric
   } else {
     dat <- data
   }
-    
+
   if (na.rm) {
     dat <- mutate(subset(dat,!is.na(cases)),week=week-min(week)+1)
   }
@@ -103,20 +217,20 @@ ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfric
        times="week",
        t0=0,
        params=theta,
+       globals=globs,
        obsnames=c("cases","deaths"),
        statenames=c("S","E1","I","R","N_EI","N_IR"),
        zeronames=if (type=="raw") c("N_EI","N_IR") else character(0),
        paramnames=c("N","R0","alpha","gamma","rho","k","cfr",
          "S_0","E_0","I_0","R_0"),
-       nstageE=as.integer(nstageE),
-       PACKAGE="pompExamples",
-       dmeasure=if (least.sq) "_ebola_dObsLS" else "_ebola_dObs",
-       rmeasure=if (least.sq) "_ebola_rObsLS" else "_ebola_rObs",
-       rprocess=discrete.time.sim(step.fun="_ebola_rSim",delta.t=timestep),
-       skeleton="_ebola_skel",
+       nstageE=nstageE,
+       dmeasure=if (least.sq) dObsLS else dObs,
+       rmeasure=if (least.sq) rObsLS else rObs,
+       rprocess=discrete.time.sim(step.fun=rSim,delta.t=timestep),
+       skeleton=skel,
        skeleton.type="vectorfield",
-       parameter.transform="_ebola_par_trans",
-       parameter.inv.transform="_ebola_par_untrans",
+       parameter.transform=partrans,
+       parameter.inv.transform=paruntrans,
        initializer=function (params, t0, nstageE, ...) {
          all.state.names <- c("S",paste0("E",1:nstageE),"I","R","N_EI","N_IR")
          comp.names <- c("S",paste0("E",1:nstageE),"I","R")

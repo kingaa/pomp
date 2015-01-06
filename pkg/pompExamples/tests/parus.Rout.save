@@ -41,4 +41,4 @@ Loading required package: nloptr
 > 
 > proc.time()
    user  system elapsed 
-  0.572   0.037   0.596 
+  0.716   0.060   0.806 

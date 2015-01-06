@@ -23,11 +23,11 @@ Loading required package: nloptr
 > set.seed(47575684L)
 > 
 > pompExample(bbp)
-newly created pomp object(s):
+newly created object(s):
  bbp 
 > pf <- pfilter(simulate(bbp),Np=100,max.fail=Inf)
 > tj <- trajectory(bbp)
 > 
 > proc.time()
    user  system elapsed 
-  0.573   0.038   0.597 
+  0.728   0.028   0.786 

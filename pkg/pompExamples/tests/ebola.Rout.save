@@ -25,19 +25,43 @@ Loading required package: nloptr
 > pompExample(ebola)
 Loading required package: plyr
 Loading required package: reshape2
-newly created pomp object(s):
+newly created object(s):
  ebolaModel 
 > ebolaModel(country="Guinea") -> po
+make[1]: Entering directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+gcc -std=gnu99 -I/usr/local/apps/R/R-3.1.2/lib64/R/include -DNDEBUG  -I/usr/local/include    -I/usr/local/apps/R/R-3.1.2/lib64/R/library/pomp/include -fpic  -g -O2  -c /tmp/RtmpU0NeMt/pomp2583FF7C2A2A.c -o /tmp/RtmpU0NeMt/pomp2583FF7C2A2A.o
+gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.1.2/lib64/R/lib -L/usr/local/lib64 -o /tmp/RtmpU0NeMt/pomp2583FF7C2A2A.so /tmp/RtmpU0NeMt/pomp2583FF7C2A2A.o -L/usr/local/apps/R/R-3.1.2/lib64/R/lib -lR
+make[1]: Leaving directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+make[1]: Entering directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+make[1]: Leaving directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+model codes written to '/tmp/RtmpU0NeMt/pomp2583FF7C2A2A.c' 
+link to shared-object library '/tmp/RtmpU0NeMt/pomp2583FF7C2A2A.so' 
 > pf <- pfilter(simulate(po),Np=100)
 > tj <- trajectory(po)
 > 
 > ebolaModel(country="SierraLeone",na.rm=TRUE,type='cum') -> po
+make[1]: Entering directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+gcc -std=gnu99 -I/usr/local/apps/R/R-3.1.2/lib64/R/include -DNDEBUG  -I/usr/local/include    -I/usr/local/apps/R/R-3.1.2/lib64/R/library/pomp/include -fpic  -g -O2  -c /tmp/RtmpU0NeMt/pompDA1B7D4C88B1.c -o /tmp/RtmpU0NeMt/pompDA1B7D4C88B1.o
+gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.1.2/lib64/R/lib -L/usr/local/lib64 -o /tmp/RtmpU0NeMt/pompDA1B7D4C88B1.so /tmp/RtmpU0NeMt/pompDA1B7D4C88B1.o -L/usr/local/apps/R/R-3.1.2/lib64/R/lib -lR
+make[1]: Leaving directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+make[1]: Entering directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+make[1]: Leaving directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+model codes written to '/tmp/RtmpU0NeMt/pompDA1B7D4C88B1.c' 
+link to shared-object library '/tmp/RtmpU0NeMt/pompDA1B7D4C88B1.so' 
 > pf <- pfilter(simulate(po),Np=100)
 > tj <- trajectory(po)
 > dd <- simulate(po,as.data.frame=TRUE,obs=TRUE)
 > dd$week <- dd$time
 > po <- ebolaModel(data=subset(dd,select=c(week,cases,deaths)))
+make[1]: Entering directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+gcc -std=gnu99 -I/usr/local/apps/R/R-3.1.2/lib64/R/include -DNDEBUG  -I/usr/local/include    -I/usr/local/apps/R/R-3.1.2/lib64/R/library/pomp/include -fpic  -g -O2  -c /tmp/RtmpU0NeMt/pompBF9800D29D72.c -o /tmp/RtmpU0NeMt/pompBF9800D29D72.o
+gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.1.2/lib64/R/lib -L/usr/local/lib64 -o /tmp/RtmpU0NeMt/pompBF9800D29D72.so /tmp/RtmpU0NeMt/pompBF9800D29D72.o -L/usr/local/apps/R/R-3.1.2/lib64/R/lib -lR
+make[1]: Leaving directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+make[1]: Entering directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+make[1]: Leaving directory `/userdata/kingaa/projects/pomp/pkg/pompExamples.Rcheck/tests'
+model codes written to '/tmp/RtmpU0NeMt/pompBF9800D29D72.c' 
+link to shared-object library '/tmp/RtmpU0NeMt/pompBF9800D29D72.so' 
 > 
 > proc.time()
    user  system elapsed 
-  1.100   0.034   1.119 
+  2.032   0.228   3.798 
