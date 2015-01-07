@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.58-1}{
+  \itemize{
+    \item A \code{pomp} object created with \code{Csnippet}s or \code{pompBuilder} will now remember its associated shared-object file, which can be unloaded and reloaded using the new \code{pompUnload} and \code{pompLoad} methods.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.57-1}{
   \itemize{
     \item \code{simulate} has a new argument, \code{include.data}, that when used in conjuncion with \code{as.data.frame=TRUE} will include the actual data in the resulting data frame along with the simulations.

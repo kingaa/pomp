@@ -46,7 +46,10 @@ pompBuilder <- function (data, times, t0, name,
                globals=globals,
                link=link,
                save=save
-               ) -> name
+               ) -> bret
+
+  name <- bret[1]
+  solib <- bret[2]
 
   pomp(
        data=data,
@@ -71,19 +74,26 @@ pompBuilder <- function (data, times, t0, name,
        paramnames=paramnames,
        tcovar=tcovar,
        covar=covar,
-       ...
+       ...,
+       .solibfile=solib
        )
 }
 
-pompLink <- function (name) {
-  solib <- paste0(name,.Platform$dynlib.ext)
-  dyn.load(solib)
-}
+setMethod("pompLoad",
+          signature=signature(object='pomp'),
+          definition = function (object) {
+            for (lib in object@solibfile)
+              dyn.load(lib)
+            invisible(NULL)
+          })
 
-pompUnlink <- function (name) {
-  solib <- paste0(name,.Platform$dynlib.ext)
-  dyn.unload(solib)
-}
+setMethod("pompUnload",
+          signature=signature(object='pomp'),
+          definition = function (object) {
+            for (lib in object@solibfile)
+              dyn.unload(lib)
+            invisible(NULL)
+          })
 
 define <- list(
                var="#define {%variable%}\t({%ptr%}[{%ilist%}[{%index%}]])\n",
@@ -295,15 +305,9 @@ pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
     cat("model codes written to",sQuote(modelfile),
         "\nlink to shared-object library",sQuote(solib),"\n")
 
-  if (link) {
-    if (save) {
-      pompLink(name)
-    } else {
-      pompLink(file.path(tempdir(),name))
-    }
-  }
+  if (link) dyn.load(solib)
 
-  invisible(name)
+  invisible(c(name,solib))
 }
 
 cleanForC <- function (text) {
@@ -333,3 +337,4 @@ render <- function (template, ...) {
   }
   do.call(paste0,retval)
 }
+

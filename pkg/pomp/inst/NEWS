@@ -1,5 +1,12 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_8-_1:
+
+        • A ‘pomp’ object created with ‘Csnippet’s or ‘pompBuilder’
+          will now remember its associated shared-object file, which
+          can be unloaded and reloaded using the new ‘pompUnload’ and
+          ‘pompLoad’ methods.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_7-_1:
 
         • ‘simulate’ has a new argument, ‘include.data’, that when used

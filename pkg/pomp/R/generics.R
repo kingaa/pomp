@@ -88,3 +88,7 @@ setGeneric("spect",function(object,...)standardGeneric("spect"))
 
 ## continue an iteration
 setGeneric("continue",function(object,...)standardGeneric("continue"))
+
+## dynamic loading and unloading
+setGeneric("pompLoad",function(object,...)standardGeneric("pompLoad"))
+setGeneric("pompUnload",function(object,...)standardGeneric("pompUnload"))

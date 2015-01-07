@@ -9,6 +9,12 @@
 \alias{pomp,pomp-method}
 \alias{pomp-pomp}
 \alias{pomp-class}
+\alias{pompLoad}
+\alias{pompLoad-pomp}
+\alias{pompLoad,pomp-method}
+\alias{pompUnload}
+\alias{pompUnload-pomp}
+\alias{pompUnload,pomp-method}
 \title{Partially-observed Markov process object.}
 \description{
   This function creates a \code{pomp} object,
@@ -38,6 +44,8 @@
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform, globals)
+\S4method{pompLoad}{pomp}(object)
+\S4method{pompUnload}{pomp}(object)
 }
 \arguments{
   \item{data, times}{
@@ -185,7 +193,10 @@
   \item{globals}{
     optional character;
     C code that will be included in the source for (and therefore hard-coded into) the shared-object library created when the call to \code{pomp} uses \code{Csnippets}.
-    If no \code{Csnippets} are used, \code{globals} has no effect.
+    If no \code{Csnippet}s are used, \code{globals} has no effect.
+  }
+  \item{object}{
+    a \code{pomp} object.
   }
   \item{\dots}{
     Any additional arguments given to \code{pomp} will be stored in the \code{\link[=pomp-class]{pomp}} object and passed as arguments to each of the basic functions whenever they are evaluated.
@@ -312,6 +323,13 @@ file.show(
           header=paste("======",pomp.examples,"=======")
          )
 }
+}
+\section{Dynamically linked codes}{
+  \code{pompLoad} and \code{pompUnload} cause any compiled codes associated with \code{object} to be dynamically linked or unlinked, respectively.
+  When 
+  \code{Csnippet}s are used in the construction of a \code{pomp} object, the resulting shared-object library is dynamically loaded (linked) at the time of its construction.
+  A subsequent call to \code{pompUnload} will unload the shared object library;
+  it can afterward be reloaded via a call to \code{pompLoad}.
 }
 \section{Warning}{
   Some error checking is done by \code{pomp}, but complete error checking is impossible.  

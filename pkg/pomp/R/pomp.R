@@ -9,14 +9,18 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               obsnames, statenames, paramnames, covarnames,
                               zeronames, PACKAGE,
                               parameter.transform, parameter.inv.transform,
-                              globals,
-                              userdata) {
+                              globals, userdata, ..., .solibfile) {
 
   ## preliminary error checking
   if (missing(data)) stop(sQuote("data")," is a required argument")
   if (missing(times)) stop(sQuote("times")," is a required argument")
   if (missing(t0)) stop(sQuote("t0")," is a required argument")
   if (missing(params)) params <- numeric(0)
+  if (missing(.solibfile)) .solibfile <- character(0)
+  
+  if (missing(userdata)) userdata <- list()
+  added.userdata <- list(...)
+  userdata[names(added.userdata)] <- added.userdata
 
   ## name of shared object library
   if (missing(PACKAGE)) PACKAGE <- NULL
@@ -147,10 +151,14 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                            ),
                    silent=FALSE
                    )
-    if (inherits(PACKAGE,"try-error"))
+    if (inherits(PACKAGE,"try-error")) {
       stop("error in building shared-object library from Csnippets")
+    } else {
+      .solibfile <- c(.solibfile,libname[2L])
+      libname <- libname[1L]
+    }
   } else {
-    libname <- ""
+    libname <- ''
   }
   
   ## handle rprocess
@@ -363,6 +371,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
       has.trans = has.trans,
       par.trans = par.trans,
       par.untrans = par.untrans,
+      solibfile = .solibfile,
       userdata = userdata
       )
 }
@@ -483,8 +492,8 @@ setMethod(
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
                              measurement.model=measurement.model,
-                             dprior = dprior,
-                             rprior = rprior,
+                             dprior=dprior,
+                             rprior=rprior,
                              skeleton=skeleton,
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
@@ -501,7 +510,7 @@ setMethod(
                              parameter.transform=parameter.transform,
                              parameter.inv.transform=parameter.inv.transform,
                              globals=globals,
-                             userdata=list(...)
+                             ...
                              )
           }
           )
@@ -527,8 +536,8 @@ setMethod(
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
                              measurement.model=measurement.model,
-                             dprior = dprior,
-                             rprior = rprior,
+                             dprior=dprior,
+                             rprior=rprior,
                              skeleton=skeleton,
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
@@ -545,7 +554,7 @@ setMethod(
                              parameter.transform=parameter.transform,
                              parameter.inv.transform=parameter.inv.transform,
                              globals=globals,
-                             userdata=list(...)
+                             ...
                              )
           }
           )
@@ -572,8 +581,8 @@ setMethod(
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
                              measurement.model=measurement.model,
-                             dprior = dprior,
-                             rprior = rprior,
+                             dprior=dprior,
+                             rprior=rprior,
                              skeleton=skeleton,
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
@@ -590,7 +599,7 @@ setMethod(
                              parameter.transform=parameter.transform,
                              parameter.inv.transform=parameter.inv.transform,
                              globals=globals,
-                             userdata=list(...)
+                             ...
                              )
           }
           )
@@ -659,10 +668,6 @@ setMethod(
               }
             }
 
-            userdata <- data@userdata
-            added.userdata <- list(...)
-            userdata[names(added.userdata)] <- added.userdata
-
             if (missing(obsnames)) obsnames <- character(0)
             if (missing(statenames)) statenames <- character(0)
             if (missing(paramnames)) paramnames <- character(0)
@@ -677,8 +682,8 @@ setMethod(
                              dprocess=dprocess,
                              rmeasure=rmeasure,
                              dmeasure=dmeasure,
-                             dprior = dprior,
-                             rprior = rprior,
+                             dprior=dprior,
+                             rprior=rprior,
                              skeleton=skeleton,
                              skeleton.type=skeleton.type,
                              skelmap.delta.t=skelmap.delta.t,
@@ -695,7 +700,8 @@ setMethod(
                              parameter.inv.transform=par.untrans,
                              params=params,
                              globals=globals,
-                             userdata=userdata
+                             userdata=data@userdata,
+                             ...
                              )
           }
           )

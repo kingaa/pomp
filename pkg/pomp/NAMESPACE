@@ -56,6 +56,7 @@ exportClasses(
 exportMethods(
               pomp,
               plot,show,print,coerce,summary,logLik,window,"$",
+              pompLoad,pompUnload,
               dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
               dprior,rprior,
               data.array,obs,partrans,coef,"coef<-",
