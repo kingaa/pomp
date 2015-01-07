@@ -79,20 +79,34 @@ pompBuilder <- function (data, times, t0, name,
        )
 }
 
+pompLoad.internal <- function (object, ...,
+                               verbose = getOption("verbose",FALSE)) {
+  for (lib in object@solibfile) {
+    if (verbose) cat("loading",sQuote(lib),"\n")
+    dyn.load(lib)
+  }
+  invisible(NULL)
+}
+
+pompUnload.internal <- function (object, ...,
+                                 verbose = getOption("verbose",FALSE)) {
+  for (lib in object@solibfile) {
+    if (verbose) cat("unloading",sQuote(lib),"\n")
+    dyn.unload(lib)
+  }
+  invisible(NULL)
+}
+
 setMethod("pompLoad",
           signature=signature(object='pomp'),
-          definition = function (object) {
-            for (lib in object@solibfile)
-              dyn.load(lib)
-            invisible(NULL)
+          definition = function (object, ...) {
+            pompLoad.internal(object,...)
           })
 
 setMethod("pompUnload",
           signature=signature(object='pomp'),
-          definition = function (object) {
-            for (lib in object@solibfile)
-              dyn.unload(lib)
-            invisible(NULL)
+          definition = function (object, ...) {
+            pompUnload.internal(object,...)
           })
 
 define <- list(
@@ -161,7 +175,8 @@ missing.fun <- function (name) {
 pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
                           rmeasure, dmeasure, step.fn, skeleton,
                           parameter.transform, parameter.inv.transform,
-                          rprior, dprior, globals, save = FALSE, link = TRUE)
+                          rprior, dprior, globals, save = FALSE, link = TRUE,
+                          verbose = getOption("verbose",FALSE))
 {
 
   if (missing(name))
@@ -297,11 +312,12 @@ pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
   rv <- system2(
                 command=R.home("bin/R"),
                 args=c("CMD","SHLIB","-o",solib,modelfile),
-                env=cflags
+                env=cflags,
+                stdout=if (verbose) "" else NULL
                 )
   if (rv!=0)
     stop("cannot compile shared-object library ",sQuote(solib))
-  else
+  else if (verbose)
     cat("model codes written to",sQuote(modelfile),
         "\nlink to shared-object library",sQuote(solib),"\n")
 

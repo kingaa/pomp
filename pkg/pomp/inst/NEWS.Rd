@@ -2,6 +2,12 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 0.58-1}{
   \itemize{
+    \item Compiler messages are now suppressed by default when \code{Csnippet}s are used in construction of a \code{pomp} object.
+    These can be enabled by setting \code{options(verbose=TRUE)}.
+  }
+}
+\section{Changes in \pkg{pomp} version 0.58-1}{
+  \itemize{
     \item A \code{pomp} object created with \code{Csnippet}s or \code{pompBuilder} will now remember its associated shared-object file, which can be unloaded and reloaded using the new \code{pompUnload} and \code{pompLoad} methods.
   }
 }

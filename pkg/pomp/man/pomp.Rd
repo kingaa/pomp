@@ -44,8 +44,8 @@
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, parameter.transform, parameter.inv.transform, globals)
-\S4method{pompLoad}{pomp}(object)
-\S4method{pompUnload}{pomp}(object)
+\S4method{pompLoad}{pomp}(object, \dots)
+\S4method{pompUnload}{pomp}(object, \dots)
 }
 \arguments{
   \item{data, times}{

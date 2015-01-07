@@ -9,7 +9,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               obsnames, statenames, paramnames, covarnames,
                               zeronames, PACKAGE,
                               parameter.transform, parameter.inv.transform,
-                              globals, userdata, ..., .solibfile) {
+                              globals, userdata, ..., .solibfile,
+                              verbose = getOption("verbose",FALSE)) {
 
   ## preliminary error checking
   if (missing(data)) stop(sQuote("data")," is a required argument")
@@ -144,7 +145,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                                   covarnames=covarnames,
                                   globals=globals,
                                   link=TRUE,
-                                  save=FALSE
+                                  save=FALSE,
+                                  verbose=verbose
                                   ),
                              snips
                              )
