@@ -301,10 +301,12 @@ pfilter.internal <- function (object, params, Np,
     
     if (save.states) {
       xparticles[[nt]] <- x
+      dimnames(xparticles[[nt]]) <- setNames(dimnames(xparticles[[nt]]),c("variable","rep"))
     }
     
     if (save.params) {
       pparticles[[nt]] <- params
+      dimnames(pparticles[[nt]]) <- setNames(dimnames(pparticles[[nt]]),c("variable","rep"))
     }
     
     if (verbose && (nt%%5==0))

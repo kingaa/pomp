@@ -59,6 +59,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   SEXP rw_names, ess, fail, loglik;
   SEXP newstates = R_NilValue, newparams = R_NilValue;
   SEXP retval, retvalnames;
+  const char *dimnm[2] = {"variable","rep"};
   double *xpm = 0, *xpv = 0, *xfm = 0, *xw = 0, *xx = 0, *xp = 0;
   SEXP dimX, dimP, newdim, Xnames, Pnames, pindex;
   int *dim, *pidx, lv, np;
@@ -225,6 +226,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     xdim[0] = nvars; xdim[1] = np;
     PROTECT(newstates = makearray(2,xdim)); nprotect++;
     setrownames(newstates,Xnames,2);
+    fixdimnames(newstates,dimnm,2);
     ss = REAL(x);
     st = REAL(newstates);
 
@@ -233,6 +235,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
       xdim[0] = npars; xdim[1] = np;
       PROTECT(newparams = makearray(2,xdim)); nprotect++;
       setrownames(newparams,Pnames,2);
+      fixdimnames(newparams,dimnm,2);
       ps = REAL(params);
       pt = REAL(newparams);
     }
@@ -255,6 +258,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     dim[0] = nvars; dim[1] = nreps;
     SET_DIM(x,newdim);
     setrownames(x,Xnames,2);
+    fixdimnames(x,dimnm,2);
 
   }
 
