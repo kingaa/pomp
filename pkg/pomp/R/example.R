@@ -11,7 +11,11 @@ pompExample <- function (example, ..., envir = .GlobalEnv) {
       print(avlbl[[dir]])
     }
   } else {
-    evalEnv <- list2env(list(...))
+## the following needed from R/3.0.0 to R/3.1.1:
+    dots <- list(...)
+    evalEnv <- if (length(dots)>0) list2env(list(...)) else new.env()
+## the following will work from R/3.1.2
+##  evalEnv <- list2env(list(...))
     file <- c(lapply(exampleDirs,list.files,
                      pattern=paste0(example,".R"),
                      full.names=TRUE),
