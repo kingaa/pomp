@@ -25,3 +25,7 @@ signif(coef(fit2),3)
 
 fit3 <- traj.match(bbs,est=c("beta","sigma"),transform=TRUE)
 signif(coef(fit3),3)
+
+sim1 <- simulate(bbs,nsim=20,as.data.frame=TRUE,include.data=TRUE)
+sim2 <- simulate(bbs,nsim=20,as.data.frame=TRUE,obs=TRUE,include.data=TRUE)
+sim3 <- simulate(bbs,nsim=20,as.data.frame=TRUE,states=TRUE,include.data=TRUE)

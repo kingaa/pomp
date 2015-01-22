@@ -67,6 +67,10 @@ newly created object(s):
      S.0      I.0      R.0 
    0.999    0.001    0.000 
 > 
+> sim1 <- simulate(bbs,nsim=20,as.data.frame=TRUE,include.data=TRUE)
+> sim2 <- simulate(bbs,nsim=20,as.data.frame=TRUE,obs=TRUE,include.data=TRUE)
+> sim3 <- simulate(bbs,nsim=20,as.data.frame=TRUE,states=TRUE,include.data=TRUE)
+> 
 > proc.time()
    user  system elapsed 
-  7.008   0.076   7.124 
+  7.153   0.049   7.193 

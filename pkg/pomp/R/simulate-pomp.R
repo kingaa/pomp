@@ -115,8 +115,7 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
     if (include.data) {
       od <- as.data.frame(object)
       od$sim <- "data"
-      od <- od[names(retval)]
-      retval <- rbind(od,retval)
+      retval <- merge(od,retval,all=TRUE)
     }
 
     retval$sim <- factor(retval$sim)
