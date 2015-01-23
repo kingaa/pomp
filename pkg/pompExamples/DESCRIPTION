@@ -17,7 +17,7 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),
 URL: http://pomp.r-forge.r-project.org
 Description: More 'pomp' examples.
 Depends: R(>= 3.0.0), stats, graphics, pomp(>= 0.58-6)
-Suggests: plyr, reshape2, knitr, ggplot2
+Suggests: plyr, reshape2, ggplot2, knitr, markdown
 License: GPL (>= 2)
 LazyData: false
 BuildVignettes: true
