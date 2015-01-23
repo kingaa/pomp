@@ -1,8 +1,8 @@
 Package: pompExamples
 Type: Package
 Title: Additional pomp examples
-Version: 0.25-4
-Date: 2015-01-05
+Version: 0.26-1
+Date: 2015-01-23
 Maintainer: Aaron A. King <kingaa@umich.edu>
 Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),
 	   email="kingaa@umich.edu"),
@@ -16,9 +16,10 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),
 	  person(given=c("Helen"),family="Wearing",role=c("ctb")))
 URL: http://pomp.r-forge.r-project.org
 Description: More 'pomp' examples.
-Depends: R(>= 3.0.0), stats, graphics, pomp(>= 0.56-1)
-Suggests: plyr, reshape2
+Depends: R(>= 3.0.0), stats, graphics, pomp(>= 0.58-6)
+Suggests: plyr, reshape2, knitr, ggplot2
 License: GPL (>= 2)
 LazyData: false
 BuildVignettes: true
+VignetteBuilder: knitr
 Collate: aaa.R pertussis.R

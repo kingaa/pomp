@@ -45,6 +45,9 @@ pomp.vignettes: pomp.install pomp.manual
 	cp pomp.pdf ../www/vignettes
 	$(RCMD) Rdconv -t html pomp/inst/NEWS.Rd -o ../www/content/NEWS.html
 
+pompExamples.vignettes: pompExamples.install
+	(cd pompExamples/vignettes; make)
+
 %.data: %.install
 	cd $*/inst/data-R; make
 
