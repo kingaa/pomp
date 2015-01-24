@@ -1,0 +1,107 @@
+%\VignetteIndexEntry{Parus major example}
+%\VignetteEngine{knitr::knitr}
+
+# Analysis of Parus Major data from Wytham Wood  
+***Aaron A. King***
+
+```{r setup,include=FALSE}
+require(pomp)
+require(plyr)
+require(reshape2)
+options(stringsAsFactors=FALSE,keep.source=TRUE,encoding="UTF-8")
+
+require(ggplot2)
+theme_set(theme_bw())
+
+require(knitr)
+opts_knit$set(out.format="html")
+opts_chunk$set(
+  progress=TRUE,
+  prompt=FALSE,tidy=FALSE,highlight=TRUE,
+  strip.white=TRUE,
+  warning=FALSE,message=FALSE,error=FALSE,
+  echo=TRUE,cache=FALSE,
+  results='markup',
+  fig.show='asis',
+  fig.height=5,fig.width=10,
+  dpi=100
+  )
+
+require(pompExamples)
+set.seed(862663052L)
+```
+
+First, a little function to cache the results of expensive computations.
+
+```{r juliaChild}
+juliaChild <- function (file, expr) {
+  if (file.exists(file)) {
+    readRDS(file)
+    } else {
+      val <- eval(expr)
+      saveRDS(val,file=file)
+      val
+      }
+  }
+```
+
+### Load and plot the data
+
+```{r}
+pompExample(parus,proc='Gompertz',meas='Poisson')
+plot(parus)
+coef(parus)
+logLik(traj.match(parus))
+```
+
+## Trajectory matching
+
+```{r}
+juliaChild("parus-tm1.rds",{
+  tm <- parus
+  coef(tm,"theta") <- NA
+  traj.match(tm,est=c("K","r","sigma"),transform=T) -> tm
+  traj.match(tm,method='subplex') -> tm
+  data.frame(loglik=logLik(tm),loglik.se=0,as.list(coef(tm)))
+  }) -> tm
+```
+```{r}
+ggplot(data=simulate(parus,params=unlist(tm),nsim=10,obs=TRUE,
+                     as.data.frame=TRUE,include.data=TRUE),
+       mapping=aes(x=time,y=pop,group=sim,alpha=sim=="data"))+
+  geom_line()
+```
+
+## Iterated filtering
+
+```{r}
+juliaChild("parus-mf.rds",{
+  mf <- parus
+  coef(mf,"theta") <- NA
+  mif(mf,rw.sd=c(K=0.02,r=0.02,sigma=0.02),
+      cooling.fraction=0.8,var.factor=2,
+      Nmif=50,Np=2000,method='mif2',
+      cooling.type='hyperbolic') -> mf
+  continue(mf,Nmif=250) -> mf
+  mif(mf) -> mf
+  mif(mf,Np=5000) -> mf
+  mif(mf,Np=5000) -> mf
+  mif(mf,Np=5000) -> mf
+  continue(mf,Nmif=50) -> mf
+  plot(mf)
+  ll <- unname(logmeanexp(raply(5,logLik(pfilter(mf))),se=TRUE))
+  data.frame(loglik=ll[1],loglik.se=ll[2],as.list(coef(mf)))
+}) -> mf
+```
+```{r}
+ggplot(data=simulate(parus,params=unlist(mf),nsim=10,obs=TRUE,
+                     as.data.frame=TRUE,include.data=TRUE),
+       mapping=aes(x=time,y=pop,group=sim,alpha=sim=="data"))+
+  geom_line()
+```
+
+## Comparison
+
+```{r}
+kable(ldply(list(det=tm,stoch=mf),.id='model'))
+```
