@@ -50,17 +50,46 @@ juliaChild <- function (file, expr) {
 ```{r}
 pompExample(parus,proc='Gompertz',meas='Poisson')
 plot(parus)
+```
+
+## Model description
+
+### Process model
+
+If `proc="Gompertz"`, then the population size, $N_t$ follows the stochastic Gompertz model
+$$N_{t} = K^{1-S}\,N_{t-1}^S\,\epsilon_t,$$
+where $S=e^r$ and $\epsilon_t\stackrel{i.i.d.}{\sim}\mathrm{Lognormal}(0,\sigma)$.
+
+If `proc="Ricker"`, the state process is the stochastic Ricker model
+$$N_{t} = N_{t-1}\,\exp\left(r\,\left(1-\frac{N_{t-1}}{K}\right)\right)\,\epsilon_t,$$
+where, again, $\epsilon_t\stackrel{i.i.d.}{\sim}\mathrm{Lognormal}(0,\sigma)$.
+
+### Measurement model
+
+There are three alternative measurement models.
+
+If `meas="Poisson"`, the measurement process is
+$$\mathrm{pop}_{t} \sim \mathrm{Poisson}(N_t).$$
+
+If `meas="negbin"`, the measurement process is
+$$\mathrm{pop}_{t} \sim \mathrm{Negbin}(N_t,\theta),$$
+i.e., $\mathrm{pop}_t$ has mean $N_t$ and variance $N_t+\frac{N_t^2}{\theta}$.
+
+If `meas="lognormal"`, the measurement process is
+$$\mathrm{pop}_{t} \sim \mathrm{Lognormal}(\log(N_t),\theta).$$
+
+```{r}
 coef(parus)
-logLik(traj.match(parus))
 ```
 
 ## Trajectory matching
 
 ```{r}
+logLik(traj.match(parus))
 juliaChild("parus-tm1.rds",{
   tm <- parus
-  coef(tm,"theta") <- NA
-  traj.match(tm,est=c("K","r","sigma"),transform=T) -> tm
+  coef(tm,c("sigma","theta")) <- c(0,NA)
+  traj.match(tm,est=c("K","r"),transform=T) -> tm
   traj.match(tm,method='subplex') -> tm
   data.frame(loglik=logLik(tm),loglik.se=0,as.list(coef(tm)))
   }) -> tm
@@ -69,7 +98,9 @@ juliaChild("parus-tm1.rds",{
 ggplot(data=simulate(parus,params=unlist(tm),nsim=10,obs=TRUE,
                      as.data.frame=TRUE,include.data=TRUE),
        mapping=aes(x=time,y=pop,group=sim,alpha=sim=="data"))+
-  geom_line()
+  geom_line()+
+  scale_alpha_manual(name="",labels=c(`TRUE`='data',`FALSE`='simulation'),
+                     values=c(`TRUE`=1,`FALSE`=0.2))
 ```
 
 ## Iterated filtering
@@ -91,17 +122,19 @@ juliaChild("parus-mf.rds",{
   plot(mf)
   ll <- unname(logmeanexp(raply(5,logLik(pfilter(mf))),se=TRUE))
   data.frame(loglik=ll[1],loglik.se=ll[2],as.list(coef(mf)))
-}) -> mf
+  }) -> mf
 ```
 ```{r}
 ggplot(data=simulate(parus,params=unlist(mf),nsim=10,obs=TRUE,
                      as.data.frame=TRUE,include.data=TRUE),
        mapping=aes(x=time,y=pop,group=sim,alpha=sim=="data"))+
-  geom_line()
+  geom_line()+
+  scale_alpha_manual(name="",labels=c(`TRUE`='data',`FALSE`='simulation'),
+                     values=c(`TRUE`=1,`FALSE`=0.2))
 ```
 
 ## Comparison
 
 ```{r}
-kable(ldply(list(det=tm,stoch=mf),.id='model'))
+kable(ldply(list(det.gomp.poisson=tm,stoch.gomp.poisson=mf),.id='model'))
 ```
