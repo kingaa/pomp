@@ -44,7 +44,9 @@ obs.internal <- function (object, vars, ...) {
     vars <- varnames
   else if (!all(vars%in%varnames))
     stop("some elements of ",sQuote("vars")," correspond to no observed variable")
-  object@data[vars,,drop=FALSE]
+  y <- object@data[vars,,drop=FALSE]
+  dimnames(y) <- list(variable=rownames(y),time=time(object))
+  y
 }
 
 ## a simple method to extract the data array
@@ -52,19 +54,19 @@ setMethod("obs","pomp",obs.internal)
 setMethod("data.array","pomp",obs.internal)
 
 ## a simple method to extract the array of states
-setMethod(
-          "states",
-          "pomp",
-          function (object, vars, ...) {
-            if (length(object@states)==0) {
-              NULL
-            } else {
-              if (missing(vars))
-                vars <- seq(length=nrow(object@states))
-              object@states[vars,,drop=FALSE]
-            }
-          }
-          )
+states.internal <- function (object, vars, ...) {
+  if (length(object@states)==0) {
+    NULL
+  } else {
+    if (missing(vars))
+      vars <- seq(length=nrow(object@states))
+    x <- object@states[vars,,drop=FALSE]
+    dimnames(x) <- list(variable=rownames(x),time=time(object))
+    x
+  }
+}
+
+setMethod("states","pomp",states.internal)
 
 ## a simple method to extract the vector of times
 setMethod(
