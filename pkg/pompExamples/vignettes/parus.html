@@ -66,7 +66,7 @@ img {
 <h1>Analysis of Parus Major data from Wytham Wood</h1>
 <p><strong><em>Aaron A. King</em></strong></p>
 <p>First, a little function to cache the results of expensive computations.</p>
-<pre class="r"><code>juliaChild &lt;- function (file, expr) {
+<pre class="r"><code>bake &lt;- function (file, expr) {
   if (file.exists(file)) {
     readRDS(file)
     } else {
@@ -105,7 +105,7 @@ img {
 <h2>Trajectory matching</h2>
 <pre class="r"><code>logLik(traj.match(parus))</code></pre>
 <pre><code>## [1] -275.2802</code></pre>
-<pre class="r"><code>juliaChild(&quot;parus-tm1.rds&quot;,{
+<pre class="r"><code>bake(&quot;parus-tm1.rds&quot;,{
   tm &lt;- parus
   coef(tm,c(&quot;sigma&quot;,&quot;theta&quot;)) &lt;- c(0,NA)
   traj.match(tm,est=c(&quot;K&quot;,&quot;r&quot;),transform=T) -&gt; tm
@@ -122,7 +122,7 @@ img {
 </div>
 <div id="iterated-filtering" class="section level2">
 <h2>Iterated filtering</h2>
-<pre class="r"><code>juliaChild(&quot;parus-mf.rds&quot;,{
+<pre class="r"><code>bake(&quot;parus-mf.rds&quot;,{
   mf &lt;- parus
   coef(mf,&quot;theta&quot;) &lt;- NA
   mif(mf,rw.sd=c(K=0.02,r=0.02,sigma=0.02),

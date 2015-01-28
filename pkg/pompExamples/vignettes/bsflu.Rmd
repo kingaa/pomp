@@ -33,8 +33,8 @@ set.seed(862663052L)
 
 First, a little function to cache the results of expensive computations.
 
-```{r juliaChild}
-juliaChild <- function (file, expr) {
+```{r bake}
+bake <- function (file, expr) {
   if (file.exists(file)) {
     readRDS(file)
     } else {
@@ -64,11 +64,11 @@ ggplot(data=melt(simdat,id=c("sim","time")),
 ### Trajectory matching
 
 ```{r tm1}
-juliaChild("bsflu-tm1.rds",{
+bake("bsflu-tm1.rds",{
   traj.match(bsflu,est=c("Beta","inf.pd","rho"),transform=TRUE) -> tm
   traj.match(tm,method='subplex') -> tm
   data.frame(loglik=logLik(tm),loglik.se=0,as.list(coef(tm)))
-}) -> tm1
+  }) -> tm1
 ```
 ```{r tm1-simplot}
 simdat <- simulate(bsflu,params=unlist(tm1),nsim=10,
@@ -84,7 +84,7 @@ ggplot(data=melt(simdat,id=c("sim","time")),
 ### Iterated filtering
 
 ```{r mf1}
-juliaChild("bsflu-mf1.rds",{
+bake("bsflu-mf1.rds",{
   mif(bsflu,rw.sd=c(Beta=0.05,inf.pd=0.05,rho=0.05),
       cooling.fraction=0.9,var.factor=2,
       Nmif=50,Np=1000,method='mif2',transform=TRUE) -> mf
@@ -92,7 +92,7 @@ juliaChild("bsflu-mf1.rds",{
   mif(mf,Nmif=50,cooling.fraction=0.1) -> mf
   ll <- unname(logmeanexp(raply(5,logLik(pfilter(mf))),se=TRUE))
   data.frame(loglik=ll[1],loglik.se=ll[2],as.list(coef(mf)))
-}) -> mf1
+  }) -> mf1
 ```
 ```{r mf1-simplot}
 simdat <- simulate(bsflu,params=unlist(mf1),nsim=10,
@@ -124,11 +124,11 @@ ggplot(data=melt(simdat,id=c("sim","time")),
 ### Trajectory matching
 
 ```{r tm3}
-juliaChild("bsflu-tm3.rds",{
+bake("bsflu-tm3.rds",{
   traj.match(bsflu3,est=c("Beta","inf.pd","rho"),transform=TRUE) -> tm
   traj.match(tm,method='subplex') -> tm
   data.frame(loglik=logLik(tm),loglik.se=0,as.list(coef(tm)))
-}) -> tm3
+  }) -> tm3
 ```
 ```{r tm3-simplot}
 simdat <- simulate(bsflu3,params=unlist(tm3),nsim=10,
@@ -144,7 +144,7 @@ ggplot(data=melt(simdat,id=c("sim","time")),
 ### Iterated filtering
 
 ```{r mf3}
-juliaChild("bsflu-mf3.rds",{
+bake("bsflu-mf3.rds",{
   mif(bsflu3,rw.sd=c(Beta=0.05,inf.pd=0.05,rho=0.05),
       cooling.fraction=0.9,var.factor=2,
       Nmif=50,Np=1000,method='mif2',transform=TRUE) -> mf
@@ -152,7 +152,7 @@ juliaChild("bsflu-mf3.rds",{
   mif(mf,Nmif=50,cooling.fraction=0.1) -> mf
   ll <- unname(logmeanexp(raply(5,logLik(pfilter(mf))),se=TRUE))
   data.frame(loglik=ll[1],loglik.se=ll[2],as.list(coef(mf)))
-}) -> mf3
+  }) -> mf3
 ```
 ```{r mf3-simplot}
 simdat <- simulate(bsflu3,params=unlist(mf3),nsim=10,
