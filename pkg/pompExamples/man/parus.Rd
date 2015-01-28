@@ -38,4 +38,5 @@ plot(simulate(parus))
 pompExample(parus,proc="Gompertz",meas="lognormal")
 plot(simulate(parus))
 }
+\seealso{\code{vignette("parus")}}
 \keyword{models,datasets}
