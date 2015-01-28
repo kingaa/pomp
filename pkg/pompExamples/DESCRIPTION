@@ -18,6 +18,7 @@ URL: http://pomp.r-forge.r-project.org
 Description: More 'pomp' examples.
 Depends: R(>= 3.0.0), stats, graphics, pomp(>= 0.58-6)
 Suggests: plyr, reshape2, ggplot2, knitr, markdown
+LinkingTo: pomp
 License: GPL (>= 2)
 LazyData: false
 BuildVignettes: true

@@ -65,7 +65,6 @@ void budmoth_skeleton (double *f, double *x, double *p,
 		       int *stateindex, int *parindex, int *covindex, 
 		       int ncovars, double *covars, double t) 
 {
-  double Q, N, S;
   double tol = 1e-6;
 
   f[stateindex[0]] = ALPHA;	// ALPHA equation
@@ -142,10 +141,7 @@ void budmoth_density (double *f, double *x1, double *x2, double t1, double t2, c
 		      const int *stateindex, const int *parindex, const int *covindex,
 		      int covdim, const double *covar)
 {
-  double noise;
   double sig2lambda;
-  double Q, N, S;
-  double tol = 1e-6;
   double f1, f2, f3;
 
   // check the discrete-time assumption
