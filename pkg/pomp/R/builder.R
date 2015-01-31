@@ -172,23 +172,27 @@ missing.fun <- function (name) {
   paste0("  error(\"'",name,"' not defined\");")
 }
 
-pompCBuilder <- function (name, statenames, paramnames, covarnames, obsnames,
+randomName <- function (stem = "pomp", size = 2) {
+  paste0(stem,
+         paste(
+               format(
+                      as.hexmode(ceiling(runif(n=size,max=2^24))),
+                      upper.case=TRUE
+                      ),
+               collapse=""
+               )
+         )
+}
+
+pompCBuilder <- function (name = NULL,
+                          statenames, paramnames, covarnames, obsnames,
                           rmeasure, dmeasure, step.fn, skeleton,
                           parameter.transform, parameter.inv.transform,
                           rprior, dprior, globals, save = FALSE, link = TRUE,
                           verbose = getOption("verbose",FALSE))
 {
 
-  if (missing(name))
-    name <- paste0("pomp",
-                   paste(
-                         format(
-                                as.hexmode(ceiling(runif(n=2,max=2^24))),
-                                upper.case=TRUE
-                                ),
-                         collapse=""
-                         )
-                   )
+  if (is.null(name)) name <- randomName()
 
   has.trans <- !(missing(parameter.transform))
 
