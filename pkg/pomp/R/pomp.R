@@ -153,7 +153,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                            ),
                    silent=FALSE
                    )
-    if (inherits(PACKAGE,"try-error")) {
+    if (inherits(libname,"try-error")) {
       stop("error in building shared-object library from Csnippets")
     } else {
       .solibfile <- c(.solibfile,libname[2L])
