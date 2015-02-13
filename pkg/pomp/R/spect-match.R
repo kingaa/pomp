@@ -37,13 +37,14 @@ spect.mismatch <- function (par, est, object, params,
                                detrend=detrend,
                                ker=ker
                                )
+  ## simvals is an nsim x nfreq x nobs array
   
   ## compute a measure of the discrepancies between simulations and data
   discrep <- array(dim=c(length(freq),length(vars)))
   sim.means <- colMeans(simvals)
   for (j in seq_along(freq)) {
     for (k in seq_along(vars)) {
-      discrep[j,k] <- ((datval[j,k]-sim.means[j,k])^2)/mean((simvals[j,,k]-sim.means[j,k])^2)
+      discrep[j,k] <- ((datval[j,k]-sim.means[j,k])^2)/mean((simvals[,j,k]-sim.means[j,k])^2)
     }
     discrep[j,] <- weights[j]*discrep[j,]
   }

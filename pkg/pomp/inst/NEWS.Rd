@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.59-1}{
+  \itemize{
+    \item A bug in \code{spect.match} has been fixed.
+    Thanks to Karsten Hempel for finding it and contributing the fix.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.58-1}{
   \itemize{
     \item Compiler messages are now suppressed by default when \code{Csnippet}s are used in construction of a \code{pomp} object.
