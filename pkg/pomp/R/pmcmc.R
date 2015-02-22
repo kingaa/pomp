@@ -3,12 +3,14 @@ setClass(
          'pmcmc',
          contains='pfilterd.pomp',
          slots=c(
+           pars = 'character',
            Nmcmc = 'integer',
            proposal = 'function',
            conv.rec = 'array',
            log.prior = 'numeric'
            ),
          prototype=prototype(
+           pars = character(0),
            Nmcmc = 0L,
            proposal = function (...) stop("proposal not specified"),
            conv.rec=array(dim=c(0,0)),
@@ -44,9 +46,9 @@ pmcmc.internal <- function (object, Nmcmc,
   ## test proposal distribution
   theta <- try(proposal(start))
   if (inherits(theta,"try-error"))
-    stop("pmcmc error: error in proposal function")
+    stop("pmcmc error: error in proposal function",call.=FALSE)
   if (is.null(names(theta)) || !is.numeric(theta))
-    stop("pmcmc error: ",sQuote("proposal")," must return a named numeric vector")
+    stop("pmcmc error: ",sQuote("proposal")," must return a named numeric vector",call.=FALSE)
 
   ntimes <- length(time(object))
   if (missing(Np))
@@ -164,10 +166,14 @@ pmcmc.internal <- function (object, Nmcmc,
 
   }
 
+  pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
+  pars <- names(pars[pars])
+
   new(
       "pmcmc",
       pfp,
       params=theta,
+      pars=pars,
       Nmcmc=Nmcmc,
       proposal=proposal,
       Np=Np,
@@ -190,16 +196,21 @@ setMethod(
             if (missing(Np))
               stop("pmcmc error: ",sQuote("Np")," must be specified",call.=FALSE)
               
+            if (missing(proposal)) proposal <- NULL
+
             if (!missing(rw.sd)) {
               warning("pmcmc warning: ",sQuote("rw.sd")," is a deprecated argument.",
                       "Use ",sQuote("proposal")," instead.",call.=FALSE)
-              if (missing(proposal)) {
+              if (is.null(proposal)) {
                 proposal <- mvn.diag.rw(rw.sd=rw.sd)
               } else {
                 warning("pmcmc warning: since ",sQuote("proposal"),
                         " has been specified, ",sQuote("rw.sd")," is ignored.")
               }
             }
+
+            if (is.null(proposal))
+              stop("pmcmc error: ",sQuote("proposal")," must be specified",call.=FALSE)
 
             if (!missing(pars))
               warning("pmcmc warning: ",sQuote("pars")," is a deprecated argument and will be ignored.",call.=FALSE)
