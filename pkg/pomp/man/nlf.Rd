@@ -22,10 +22,10 @@
      skip.se = FALSE, verbose = getOption("verbose"),
      bootstrap=FALSE, bootsamp = NULL,
      lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE,
-     transform.params = FALSE, transform, \dots)
+     transform.params, transform = FALSE, \dots)
 \S4method{nlf}{nlfd.pomp}(object, start, est, lags, period, tensor,
      nconverge, nasymp, seed, transform.data, nrbf, method,
-     lql.frac, se.par.frac, transform.params, \dots)
+     lql.frac, se.par.frac, transform, \dots)
 }
 \arguments{
   \item{object}{
@@ -61,7 +61,16 @@
     When fitting, it is usually best to always run the simulations with the same sequence of random numbers, which is accomplished by setting \code{seed} to an integer.
     If you want a truly random simulation, set \code{seed=NULL}.
   }
-  \item{transform.data, transform}{
+  \item{transform.params}{
+    deprecated.
+    Will be removed in a future version.
+    Use \code{transform} instead.
+  }
+  \item{transform}{
+    logical;
+    if \code{TRUE}, parameters are optimized on the transformed scale.
+  }
+  \item{transform.data}{
     optional function.
     If specified, forecasting is performed using data and model simulations transformed by this function.
     By default, \code{transform.data} is the identity function, i.e., no transformation is performed.
@@ -97,10 +106,6 @@
   \item{eval.only}{
     logical; if \code{TRUE}, no optimization is attempted and the quasi-loglikelihood value is evaluated at the \code{start} parameters.
   } 
-  \item{transform.params}{
-    logical;
-    if \code{TRUE}, parameters are optimized on the transformed scale.
-  }
   \item{\dots}{
     Arguments that will be passed to \code{optim} or \code{subplex} in the \code{control} list.
   }

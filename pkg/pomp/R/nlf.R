@@ -414,16 +414,16 @@ setMethod(
             verbose = getOption("verbose"),
             bootstrap = FALSE, bootsamp = NULL,
             lql.frac = 0.1, se.par.frac = 0.1,
-            eval.only = FALSE, transform.params = FALSE,
-            transform, ...)
+            eval.only = FALSE, transform.params,
+            transform = FALSE, ...)
           {
-            transform.params <- as.logical(transform.params)
-            if (!missing(transform)) {
-              warning("argument ",sQuote("transform"),
-                      " is deprecated and will change meaning in a future release.\n",
-                      "Use ",sQuote("transform.data")," instead.")
-              if (missing(transform.data)) transform.data <- transform
+            if (!missing(transform.params)) {
+              warning("argument ",sQuote("transform.params"),
+                      " is deprecated and will be removed in a future release.\n",
+                      "Use ",sQuote("transform")," instead.")
+              if (missing(transform)) transform <- transform.params
             }
+            transform <- as.logical(transform)
             if (missing(transform.data)) transform.data <- identity
             transform.data <- match.fun(transform.data)
             period <- as.numeric(period)
@@ -469,7 +469,7 @@ setMethod(
                          lql.frac=lql.frac,
                          se.par.frac=se.par.frac,
                          eval.only=eval.only,
-                         transform=transform.params,
+                         transform=transform,
                          transform.data=transform.data,
                          ...
                          )
@@ -482,7 +482,7 @@ setMethod(
           definition=function (object, start, est, lags,
             period, tensor, nconverge, nasymp, seed,
             transform.data, nrbf, method, lql.frac, se.par.frac,
-            transform.params, ...)
+            transform, ...)
           {            
             if (missing(start)) start <- coef(object)
             if (missing(est)) est <- object@est
@@ -492,7 +492,7 @@ setMethod(
             if (missing(nconverge)) nconverge <- object@nconverge
             if (missing(nasymp)) nasymp <- object@nasymp
             if (missing(seed)) seed <- object@seed
-            if (missing(transform.params)) transform.params <- object@transform
+            if (missing(transform)) transform <- object@transform
             if (missing(transform.data)) transform.data <- object@transform.data
             if (missing(nrbf)) nrbf <- object@nrbf
             if (missing(method)) method <- object@method
@@ -509,7 +509,7 @@ setMethod(
               tensor=tensor,
               nconverge=nconverge,
               seed=seed,
-              transform.params=transform.params,
+              transform=transform,
               transform.data=transform.data,
               nrbf=nrbf,
               method=method,
