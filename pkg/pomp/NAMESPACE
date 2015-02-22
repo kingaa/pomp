@@ -73,9 +73,10 @@ exportMethods(
               traj.match
               )
 
+S3method(as.data.frame,pomp)
+S3method(as.data.frame,pfilterd.pomp)
+
 export(
-       as.data.frame.pomp,
-       as.data.frame.pfilterd.pomp,
        Csnippet,
        reulermultinom,
        deulermultinom,
@@ -92,7 +93,6 @@ export(
        profileDesign,
        bspline.basis,
        periodic.bspline.basis,
-       compare.mif,
        parmat,
        logmeanexp,
        probe.mean,

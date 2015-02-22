@@ -208,11 +208,6 @@ predvarplot.mif <- function (object, pars, type = 'l', mean = FALSE, ...) {
   }
 }
 
-compare.mif <- function (z) {
-  stop(sQuote("compare.mif")," has been deprecated in favor of ",
-       sQuote("plot"))
-}
-
 mif.diagnostics <- function (z) {
   ## assumes that z is a list of mifs with identical structure
   mar.multi <- c(0,5.1,0,2.1)

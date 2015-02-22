@@ -167,13 +167,3 @@ pmcmc.diagnostics <- function (z) {
   }
   invisible(NULL)
 }
-
-compare.pmcmc <- function (z) {
-  if (!is.list(z)) z <- list(z)
-  if (!all(sapply(z,function(x)is(x,'pmcmc'))))
-    stop("compare.pmcmc error: ",sQuote("z"),
-         " must be a pmcmc object or a list of pmcmc objects",call.=FALSE)
-  warning(sQuote("compare.pmcmc")," is deprecated.\n",
-          "Use ",sQuote("diagnostics")," instead.",call.=FALSE)
-  pmcmc.diagnostics(z)
-}

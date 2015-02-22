@@ -17,7 +17,7 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",
 	  person(given=c("Simon","N."),family="Wood",role=c("ctb"))
 	  )
 URL: http://pomp.r-forge.r-project.org
-Description: Inference methods for partially observed Markov processes (AKA stochastic dynamical systems, state-space models)
+Description: Inference methods for partially observed Markov processes (AKA stochastic dynamical systems, state-space models).
 Depends: R(>= 3.0.0), methods, subplex, nloptr
 Imports: stats, graphics, mvtnorm, deSolve, coda
 License: GPL(>= 2)
