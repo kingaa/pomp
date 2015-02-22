@@ -206,6 +206,8 @@ setAs(
       }
       )
 
+as.data.frame.probed.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
+
 setMethod("logLik",signature(object="probed.pomp"),function(object,...)object@synth.loglik)
 setMethod("$",signature=signature(x="probed.pomp"),function(x, name)slot(x,name))
 
