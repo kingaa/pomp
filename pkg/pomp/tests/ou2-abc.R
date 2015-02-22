@@ -25,11 +25,10 @@ po <- ou2
 abc1 <- abc(po,
             Nabc=10000,
             start=coef(ou2),
-            pars=c("alpha.1","alpha.2"),
             probes=probes.good,
             scale=scale.dat,
             epsilon=1.7,
-            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
+            proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))
             )
 
 plot(abc1,scatter=TRUE)
@@ -42,11 +41,10 @@ mean(runs$length)
 
 abc2 <- abc(po,
             Nabc=2000,
-            pars=c("alpha.1","alpha.2"),
             probes=probes.good,
             scale=scale.dat,
             epsilon=1,
-            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
+            proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
             )
 plot(abc2)
 
@@ -55,16 +53,21 @@ abc3 <- abc(po,
             probes=probes.good,
             scale=scale.dat,
             epsilon=2,
-            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
+            rw.sd=c(alpha.1=0.01,alpha.2=0.01)
             )
 abc3 <- continue(abc3,Nabc=3000)
 plot(abc3)
+
+sig <- matrix(c(0.01,0.005,0.005,0.01),
+              2,2,
+              dimnames=list(c("alpha.1","alpha.2"),
+                c("alpha.1","alpha.2")))
 
 abc4 <- abc(probe(po,probes=probes.good,nsim=200),
             Nabc=2000,
             scale=scale.dat,
             epsilon=2,
-            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
+            proposal=mvn.rw(sig)
             )
 plot(abc4)
 
@@ -89,7 +92,7 @@ abc6 <- abc(pomp(po,dprior=dprior6),
             probes=probes.good,
             scale=scale.dat,
             epsilon=1,
-            rw.sd= c(alpha.1=0.01,alpha.2=0.01)
+            proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
             )
 plot(abc6)
 

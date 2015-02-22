@@ -8,14 +8,22 @@ setClass(
            probes='list',
            scale = 'numeric',
            epsilon = 'numeric',
-           random.walk.sd = 'numeric',
+           proposal = 'function',
            conv.rec = 'matrix'
+           ),
+         prototype=prototype(
+           pars = character(0),
+           Nabc = 0L,
+           probes = list(),
+           scale = numeric(0),
+           epsilon = 1.0,
+           proposal = function (...) stop("proposal not specified"),
+           conv.rec=array(dim=c(0,0))
            )
          )
 
 abc.internal <- function (object, Nabc,
-                          start, pars,
-                          rw.sd, probes,
+                          start, proposal, probes,
                           epsilon, scale,
                           verbose,
                           .ndone = 0L,
@@ -39,45 +47,15 @@ abc.internal <- function (object, Nabc,
   if (is.null(start.names))
     stop("abc error: ",sQuote("start")," must be a named vector",call.=FALSE)
 
-  if (missing(rw.sd))
-    stop("abc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
-  rw.names <- names(rw.sd)
-  if (is.null(rw.names) || any(rw.sd<0))
-    stop("abc error: ",sQuote("rw.sd")," must be a named non-negative numerical vector",call.=FALSE)
-  if (!all(rw.names%in%start.names))
-    stop("abc error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
-  rw.names <- names(rw.sd[rw.sd>0])
-  if (length(rw.names) == 0)
-    stop("abc error: ",sQuote("rw.sd")," must have one positive entry for each parameter to be estimated",call.=FALSE)
+  if (!is.function(proposal))
+    stop(sQuote("proposal")," must be a function")
 
-  if (
-      !is.character(pars) ||
-      !all(pars%in%start.names) ||
-      !all(pars%in%rw.names)
-      )
-    stop(
-         "abc error: ",
-         sQuote("pars"),
-         " must be a subset of ",
-         sQuote("names(start)"),
-         " and must correspond to positive random-walk SDs specified in ",
-         sQuote("rw.sd"),
-         call.=FALSE
-         )
-
-  if (!all(rw.names%in%pars)) {
-    extra.rws <- rw.names[!(rw.names%in%pars)]
-    warning(
-            "abc warning: the variable(s) ",
-            paste(extra.rws,collapse=", "),
-            " have positive random-walk SDs specified, but are not included in ",
-            sQuote("pars"),
-            ". These random walk SDs are ignored.",
-            call.=FALSE
-            )
-  }
-  rw.sd <- rw.sd[pars]
-  rw.names <- names(rw.sd)
+  ## test proposal distribution
+  theta <- try(proposal(start))
+  if (inherits(theta,"try-error"))
+    stop("abc error: error in proposal function",call.=FALSE)
+  if (is.null(names(theta)) || !is.numeric(theta))
+    stop("abc error: ",sQuote("proposal")," must return a named numeric vector",call.=FALSE)
 
   if (!is.list(probes)) probes <- list(probes)
   if (!all(sapply(probes,is.function)))
@@ -88,10 +66,7 @@ abc.internal <- function (object, Nabc,
   ntimes <- length(time(object))
   
   if (verbose) {
-    cat("performing",Nabc,"ABC iteration(s) to estimate parameter(s)",
-        paste(pars,collapse=", "))
-    cat(" using random-walk with SD\n")
-    print(rw.sd)
+    cat("performing",Nabc,"ABC iteration(s)\n")
   }
 
   theta <- start
@@ -113,18 +88,6 @@ abc.internal <- function (object, Nabc,
                        )
                      )
 
-  if (!all(is.finite(theta[pars]))) {
-    stop(
-         sQuote("abc"),
-         " error: cannot estimate non-finite parameters: ",
-         paste(
-               pars[!is.finite(theta[pars])],
-               collapse=","
-               ),
-         call.=FALSE
-         )
-  }
-
   ## apply probes to data
   datval <- try(.Call(apply_probe_data,object,probes),silent=FALSE)
   if (inherits(datval,'try-error'))
@@ -134,8 +97,7 @@ abc.internal <- function (object, Nabc,
 
   for (n in seq_len(Nabc)) { # main loop
 
-    theta.prop <- theta
-    theta.prop[pars] <- rnorm(n=length(pars),mean=theta[pars],sd=rw.sd)
+    theta.prop <- proposal(theta)
     log.prior.prop <- dprior(object,params=theta.prop,log=TRUE)
 
     if (is.finite(log.prior.prop) &&
@@ -175,6 +137,9 @@ abc.internal <- function (object, Nabc,
 
   }
 
+  pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
+  pars <- names(pars[pars])
+
   new(
       'abc',
       object,
@@ -184,7 +149,7 @@ abc.internal <- function (object, Nabc,
       probes=probes,
       scale=scale,
       epsilon=epsilon,
-      random.walk.sd=rw.sd,
+      proposal=proposal,
       conv.rec=conv.rec
       )
 
@@ -194,7 +159,7 @@ setMethod(
           "abc",
           signature=signature(object="pomp"),
           function (object, Nabc = 1,
-                    start, pars, rw.sd,
+                    start, proposal, pars, rw.sd,
                     probes, scale, epsilon,
                     verbose = getOption("verbose"),
                     ...) {
@@ -202,12 +167,24 @@ setMethod(
             if (missing(start))
               start <- coef(object)
 
-            if (missing(rw.sd))
-              stop("abc error: ",sQuote("rw.sd")," must be specified",
-                   call.=FALSE)
+            if (missing(proposal)) proposal <- NULL
 
-            if (missing(pars))
-              pars <- names(rw.sd)[rw.sd>0]
+            if (!missing(rw.sd)) {
+              warning("abc warning: ",sQuote("rw.sd")," is a deprecated argument: ",
+                      "Use ",sQuote("proposal")," instead.",call.=FALSE)
+              if (is.null(proposal)) {
+                proposal <- mvn.diag.rw(rw.sd=rw.sd)
+              } else {
+                warning("abc warning: since ",sQuote("proposal"),
+                        " has been specified, ",sQuote("rw.sd")," is ignored.")
+              }
+            }
+
+            if (is.null(proposal))
+              stop("abc error: ",sQuote("proposal")," must be specified",call.=FALSE)
+
+            if (!missing(pars))
+              warning("abc warning: ",sQuote("pars")," is a deprecated argument and will be ignored.",call.=FALSE)
 
             if (missing(probes))
               stop("abc error: ",sQuote("probes")," must be specified",
@@ -225,11 +202,10 @@ setMethod(
                          object=object,
                          Nabc=Nabc,
                          start=start,
-                         pars=pars,
+                         proposal=proposal,
                          probes=probes,
                          scale=scale,
                          epsilon=epsilon,
-                         rw.sd=rw.sd,
                          verbose=verbose
                          )
           }
@@ -256,15 +232,14 @@ setMethod(
           "abc",
           signature=signature(object="abc"),
           function (object, Nabc,
-                    start, pars, rw.sd,
+                    start, proposal,
                     probes, scale, epsilon,
                     verbose = getOption("verbose"),
                     ...) {
 
             if (missing(Nabc)) Nabc <- object@Nabc
             if (missing(start)) start <- coef(object)
-            if (missing(pars)) pars <- object@pars
-            if (missing(rw.sd)) rw.sd <- object@random.walk.sd
+            if (missing(proposal)) proposal <- object@proposal
             if (missing(probes)) probes <- object@probes
             if (missing(scale)) scale <- object@scale
             if (missing(epsilon)) epsilon <- object@epsilon
@@ -275,8 +250,7 @@ setMethod(
               object=object,
               Nabc=Nabc,
               start=start,
-              pars=pars,
-              rw.sd=rw.sd,
+              proposal=proposal,
               probes=probes,
               scale=scale,
               epsilon=epsilon,

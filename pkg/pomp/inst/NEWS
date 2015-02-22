@@ -1,5 +1,28 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_0-_1:
+
+        • ‘pmcmc’ and ‘abc’ can now use arbitrary symmetric proposal
+          distributions via the ‘proposal’ argument.  For the moment,
+          these are constrained to be symmetric.  Two new functions,
+          ‘mvn.diag.rw’ and ‘mvn.rw’ generate suitable proposal
+          functions.  The first generates a multivariate normal
+          random-walk proposal with diagonal variance-covariance
+          matrix; this duplicates the old behavior of both ‘abc’ and
+          ‘pmcmc’.  The second, ‘mvn.rw’, corresponds to a multivariate
+          normal random-walk proposal with arbitrary
+          variance-covariance matrix.
+
+        • In ‘pmcmc’ and ‘abc’, the arguments ‘pars’ and ‘rw.sd’ are
+          now unneeded and have been deprecated.  Use of ‘rw.sd’ will
+          generate a warning and result in behavior equivalent to
+          choosing ‘proposal=mvn.diag.rw(rw.sd)’.  Use of ‘pars’ will
+          be ignored, with a warning.
+
+        • In ‘nlf’, the ‘transform.params’ argument is now deprecated;
+          use instead the ‘transform’ argument, as in the other
+          inference methods.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._5_9-_1:
 
         • A bug in ‘spect.match’ has been fixed.  Thanks to Karsten

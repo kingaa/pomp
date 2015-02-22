@@ -1,5 +1,19 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.60-1}{
+  \itemize{
+    \item \code{pmcmc} and \code{abc} can now use arbitrary symmetric proposal distributions via the \code{proposal} argument.
+    For the moment, these are constrained to be symmetric.
+    Two new functions, \code{mvn.diag.rw} and \code{mvn.rw} generate suitable proposal functions.
+    The first generates a multivariate normal random-walk proposal with diagonal variance-covariance matrix; this duplicates the old behavior of both \code{abc} and \code{pmcmc}.
+    The second, \code{mvn.rw}, corresponds to a multivariate normal random-walk proposal with arbitrary variance-covariance matrix.
+    \item In \code{pmcmc} and \code{abc}, the arguments \code{pars} and \code{rw.sd} are now unneeded and have been deprecated.
+    Use of \code{rw.sd} will generate a warning and result in behavior equivalent to choosing \code{proposal=mvn.diag.rw(rw.sd)}.
+    Use of \code{pars} will be ignored, with a warning.
+    \item In \code{nlf}, the \code{transform.params} argument is now deprecated;
+    use instead the \code{transform} argument, as in the other inference methods.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.59-1}{
   \itemize{
     \item A bug in \code{spect.match} has been fixed.
