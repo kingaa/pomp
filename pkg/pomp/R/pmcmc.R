@@ -3,18 +3,22 @@ setClass(
          'pmcmc',
          contains='pfilterd.pomp',
          slots=c(
-           pars = 'character',
            Nmcmc = 'integer',
-           random.walk.sd = 'numeric',
-           conv.rec = 'matrix',
+           proposal = 'function',
+           conv.rec = 'array',
            log.prior = 'numeric'
+           ),
+         prototype=prototype(
+           Nmcmc = 0L,
+           proposal = function (...) stop("proposal not specified"),
+           conv.rec=array(dim=c(0,0)),
+           log.prior=numeric(0)
            )
          )
 
 pmcmc.internal <- function (object, Nmcmc,
-                            start, pars,
-                            rw.sd, Np,
-                            tol, max.fail,
+                            start, proposal,
+                            Np, tol, max.fail,
                             verbose,
                             .ndone = 0L,
                             .prev.pfp = NULL, .prev.log.prior = NULL,
@@ -29,56 +33,20 @@ pmcmc.internal <- function (object, Nmcmc,
   if (length(start)==0)
     stop(
          sQuote("start")," must be specified if ",
-         sQuote("coef(object)")," is NULL",
-         call.=FALSE
+         sQuote("coef(object)")," is NULL"
          )
-  start.names <- names(start)
-  if (is.null(start.names))
+  if (is.null(names(start)))
     stop("pmcmc error: ",sQuote("start")," must be a named vector",call.=FALSE)
 
-  if (missing(rw.sd))
-    stop("pmcmc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
-  rw.names <- names(rw.sd)
-  if (is.null(rw.names) || any(rw.sd<0))
-    stop("pmcmc error: ",sQuote("rw.sd")," must be a named non-negative numerical vector",call.=FALSE)
-  if (!all(rw.names%in%start.names))
-    stop("pmcmc error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
-  rw.names <- names(rw.sd[rw.sd>0])
-  if (length(rw.names) == 0)
-    stop("pmcmc error: ",sQuote("rw.sd")," must have one positive entry for each parameter to be estimated",call.=FALSE)
+  if (!is.function(proposal))
+    stop(sQuote("proposal")," must be a function")
 
-  if (missing(pars))
-    stop("pmcmc error: ",sQuote("pars")," must be specified",call.=FALSE)
-  if (length(pars)==0)
-    stop("pmcmc error: at least one parameter must be estimated",call.=FALSE)
-  if (
-      !is.character(pars) ||
-      !all(pars%in%start.names) ||
-      !all(pars%in%rw.names)
-      )
-    stop(
-         "pmcmc error: ",
-         sQuote("pars"),
-         " must be a mutually disjoint subset of ",
-         sQuote("names(start)"),
-         " and must correspond to positive random-walk SDs specified in ",
-         sQuote("rw.sd"),
-         call.=FALSE
-         )
-
-  if (!all(rw.names%in%pars)) {
-    extra.rws <- rw.names[!(rw.names%in%pars)]
-    warning(
-            "pmcmc warning: the variable(s) ",
-            paste(extra.rws,collapse=", "),
-            " have positive random-walk SDs specified, but are not included in ",
-            sQuote("pars"),
-            ". These random walk SDs are ignored.",
-            call.=FALSE
-            )
-  }
-  rw.sd <- rw.sd[pars]
-  rw.names <- names(rw.sd)
+  ## test proposal distribution
+  theta <- try(proposal(start))
+  if (inherits(theta,"try-error"))
+    stop("pmcmc error: error in proposal function")
+  if (is.null(names(theta)) || !is.numeric(theta))
+    stop("pmcmc error: ",sQuote("proposal")," must return a named numeric vector")
 
   ntimes <- length(time(object))
   if (missing(Np))
@@ -108,11 +76,7 @@ pmcmc.internal <- function (object, Nmcmc,
     stop("pmcmc error: ",sQuote("Nmcmc")," must be a positive integer",call.=FALSE)
 
   if (verbose) {
-    cat("performing",Nmcmc,"PMCMC iteration(s) to estimate parameter(s)",
-        paste(pars,collapse=", "))
-    cat(" using random-walk with SD\n")
-    print(rw.sd)
-    cat("using",Np,"particles\n")
+    cat("performing",Nmcmc,"PMCMC iteration(s) using",Np,"particles\n")
   }
 
   theta <- start
@@ -126,18 +90,6 @@ pmcmc.internal <- function (object, Nmcmc,
                        colnames=c('loglik','log.prior','nfail',names(theta))
                        )
                      )
-
-  if (!all(is.finite(theta[pars]))) {
-    stop(
-         sQuote("pmcmc"),
-         " error: cannot estimate non-finite parameters: ",
-         paste(
-               pars[!is.finite(theta[pars])],
-               collapse=","
-               ),
-         call.=FALSE
-         )
-  }
 
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
     pfp <- try(
@@ -171,8 +123,7 @@ pmcmc.internal <- function (object, Nmcmc,
 
   for (n in seq_len(Nmcmc)) { # main loop
 
-    theta.prop <- theta
-    theta.prop[pars] <- rnorm(n=length(pars),mean=theta[pars],sd=rw.sd)
+    theta.prop <- proposal(theta)
 
     ## run the particle filter on the proposed new parameter values
     pfp.prop <- try(
@@ -218,8 +169,7 @@ pmcmc.internal <- function (object, Nmcmc,
       pfp,
       params=theta,
       Nmcmc=Nmcmc,
-      pars=pars,
-      random.walk.sd=rw.sd,
+      proposal=proposal,
       Np=Np,
       tol=tol,
       conv.rec=conv.rec,
@@ -231,24 +181,34 @@ setMethod(
           "pmcmc",
           signature=signature(object="pomp"),
           function (object, Nmcmc = 1,
-                    start, pars, rw.sd, Np,
+                    start, proposal, pars, rw.sd, Np,
                     tol = 1e-17, max.fail = 0,
                     verbose = getOption("verbose"),
                     ...) {
             
             if (missing(start)) start <- coef(object)
-            if (missing(rw.sd))
-              stop("pmcmc error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
-            if (missing(pars)) pars <- names(rw.sd)[rw.sd>0]
             if (missing(Np))
               stop("pmcmc error: ",sQuote("Np")," must be specified",call.=FALSE)
               
+            if (!missing(rw.sd)) {
+              warning("pmcmc warning: ",sQuote("rw.sd")," is a deprecated argument.",
+                      "Use ",sQuote("proposal")," instead.",call.=FALSE)
+              if (missing(proposal)) {
+                proposal <- mvn.diag.rw(rw.sd=rw.sd)
+              } else {
+                warning("pmcmc warning: since ",sQuote("proposal"),
+                        " has been specified, ",sQuote("rw.sd")," is ignored.")
+              }
+            }
+
+            if (!missing(pars))
+              warning("pmcmc warning: ",sQuote("pars")," is a deprecated argument and will be ignored.",call.=FALSE)
+
             pmcmc.internal(
                            object=object,
                            Nmcmc=Nmcmc,
                            start=start,
-                           pars=pars,
-                           rw.sd=rw.sd,
+                           proposal=proposal,
                            Np=Np,
                            tol=tol,
                            max.fail=max.fail,
@@ -280,15 +240,14 @@ setMethod(
           "pmcmc",
           signature=signature(object="pmcmc"),
           function (object, Nmcmc,
-                    start, pars, rw.sd,
+                    start, proposal,
                     Np, tol, max.fail = 0,
                     verbose = getOption("verbose"),
                     ...) {
 
             if (missing(Nmcmc)) Nmcmc <- object@Nmcmc
             if (missing(start)) start <- coef(object)
-            if (missing(pars)) pars <- object@pars
-            if (missing(rw.sd)) rw.sd <- object@random.walk.sd
+            if (missing(proposal)) proposal <- object@proposal
             if (missing(Np)) Np <- object@Np
             if (missing(tol)) tol <- object@tol
 
@@ -296,8 +255,7 @@ setMethod(
                   object=as(object,"pomp"),
                   Nmcmc=Nmcmc,
                   start=start,
-                  pars=pars,
-                  rw.sd=rw.sd,
+                  proposal=proposal,
                   Np=Np,
                   tol=tol,
                   max.fail=max.fail,

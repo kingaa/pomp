@@ -127,7 +127,8 @@ pmcmc.diagnostics <- function (z) {
   mar.multi <- c(0,5.1,0,2.1)
   oma.multi <- c(6,0,5,0)
   xx <- z[[1]]
-  estnames <- xx@pars
+  estnames <- apply(xx@conv.rec,2,function(x)diff(range(x))>0)
+  estnames <- names(estnames[estnames])
 
   ## plot pmcmc convergence diagnostics
   other.diagnostics <- c("loglik", "log.prior","nfail")

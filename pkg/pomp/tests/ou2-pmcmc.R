@@ -12,7 +12,7 @@ pdf(file="ou2-pmcmc.pdf")
 f1 <- pmcmc(
             pomp(ou2,dprior=dprior.ou2),
             Nmcmc=20,
-            rw.sd=c(alpha.2=0.001,alpha.3=0.001),
+            proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
             Np=100,
             max.fail=100, 
             verbose=FALSE
@@ -55,7 +55,7 @@ f5 <- pmcmc(
                  }
                  ),
             Nmcmc=20,
-            rw.sd=c(alpha.2=0.001,alpha.3=0.001),
+            proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
             Np=100,
             max.fail=100, 
             verbose=FALSE

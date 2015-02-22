@@ -15,11 +15,11 @@
   The Particle MCMC algorithm for estimating the parameters of a partially-observed Markov process.
 }
 \usage{
-\S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, pars, rw.sd, Np,
+\S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, proposal, pars, rw.sd, Np,
     tol = 1e-17, max.fail = 0, verbose = getOption("verbose"), \dots)
 \S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, Np, tol, \dots)
-\S4method{pmcmc}{pmcmc}(object, Nmcmc, start, pars, rw.sd, Np,
-    tol, max.fail = 0, verbose = getOption("verbose"), \dots)
+\S4method{pmcmc}{pmcmc}(object, Nmcmc, start, proposal, Np, tol,
+    max.fail = 0, verbose = getOption("verbose"), \dots)
 \S4method{continue}{pmcmc}(object, Nmcmc = 1, \dots)
 }
 \arguments{
@@ -33,18 +33,14 @@
     named numeric vector;
     the starting guess of the parameters.
   }
-  \item{pars}{
-    optional character vector naming the ordinary parameters to be estimated.
-    Every parameter named in \code{pars} must have a positive random-walk standard deviation specified in \code{rw.sd}.
-    Leaving \code{pars} unspecified is equivalent to setting it equal to the names of all parameters with a positive value of \code{rw.sd}.
+  \item{proposal}{
+    optional function that draws from the proposal distribution.
+    Currently, the proposal distribution must be symmetric for proper inference:
+    it is the user's responsibility to ensure that it is.
+    Several functions that construct appropriate proposal function are provided:
+    see \link{MCMC proposal functions} for more information.
   }
-  \item{rw.sd}{
-    numeric vector with names; used to parameterize a Gaussian random walk MCMC proposal. The random walk is only applied to parameters named in \code{pars}. The algorithm requires that the random walk be nontrivial, so each element in \code{rw.sd[pars]} must be positive.
-    The following must be satisfied:
-    \code{names(rw.sd)} must be a subset of \code{names(start)},
-    \code{rw.sd} must be non-negative (zeros are simply ignored),
-    the name of every positive element of \code{rw.sd} must be in \code{pars}.
-  }
+  \item{pars, rw.sd}{Deprecated.  Will be removed in a future release.}
   \item{Np}{
     a positive integer;
     the number of particles to use in each filtering operation.

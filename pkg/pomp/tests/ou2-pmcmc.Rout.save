@@ -33,7 +33,7 @@ newly created object(s):
 > f1 <- pmcmc(
 +             pomp(ou2,dprior=dprior.ou2),
 +             Nmcmc=20,
-+             rw.sd=c(alpha.2=0.001,alpha.3=0.001),
++             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
 +             Np=100,
 +             max.fail=100, 
 +             verbose=FALSE
@@ -49,6 +49,8 @@ newly created object(s):
 +             max.fail=100, 
 +             verbose=FALSE
 +             )
+Warning message:
+pmcmc warning: 'rw.sd' is a deprecated argument.Use 'proposal' instead. 
 > 
 > f3 <- pmcmc(f2)
 > f4 <- continue(f3,Nmcmc=20)
@@ -78,7 +80,7 @@ Error in validObject(.Object) :
 +                  }
 +                  ),
 +             Nmcmc=20,
-+             rw.sd=c(alpha.2=0.001,alpha.3=0.001),
++             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
 +             Np=100,
 +             max.fail=100, 
 +             verbose=FALSE
@@ -114,4 +116,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 24.125   0.068  24.493 
+ 28.001   0.048  28.080 
