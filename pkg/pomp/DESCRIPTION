@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 0.59-1
-Date: 2015-02-14
+Version: 0.60-1
+Date: 2015-02-22
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -35,7 +35,7 @@ Collate: aaa.R authors.R generics.R eulermultinom.R
 	 pfilter.R pfilter-methods.R minim.R traj-match.R 
 	 bsmc.R bsmc2.R
 	 mif.R mif-methods.R
- 	 pmcmc.R pmcmc-methods.R
+	 proposals.R pmcmc.R pmcmc-methods.R
  	 nlf-funcs.R nlf-guts.R nlf-objfun.R nlf.R 
 	 probe.R probe-match.R basic-probes.R spect.R spect-match.R
 	 abc.R abc-methods.R

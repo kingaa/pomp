@@ -85,6 +85,7 @@ export(
        onestep.sim,
        onestep.dens,
        gillespie.sim,
+       mvn.diag.rw,mvn.rw,
        sobol,
        sobolDesign,
        sliceDesign,
