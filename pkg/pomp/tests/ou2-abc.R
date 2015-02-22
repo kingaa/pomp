@@ -58,10 +58,11 @@ abc3 <- abc(po,
 abc3 <- continue(abc3,Nabc=3000)
 plot(abc3)
 
-sig <- matrix(c(0.01,0.005,0.005,0.01),
-              2,2,
-              dimnames=list(c("alpha.1","alpha.2"),
-                c("alpha.1","alpha.2")))
+sig <- array(data=c(0.1,0.02,0,0.1),
+             dim=c(2,2),
+             dimnames=list(c("alpha.1","alpha.2"),
+               c("alpha.1","alpha.2")))
+sig <- crossprod(sig)
 
 abc4 <- abc(probe(po,probes=probes.good,nsim=200),
             Nabc=2000,

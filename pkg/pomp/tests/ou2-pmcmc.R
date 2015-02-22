@@ -80,5 +80,27 @@ plot(conv.rec(ff[2:3],c("alpha.3")))
 plot(window(conv.rec(ff[2:3],c("alpha.3")),thin=3,start=2))
 plot(conv.rec(ff[[3]],c("alpha.3")))
 
+sig <- array(data=c(0.1,-0.1,0,0.01),
+             dim=c(2,2),
+             dimnames=list(
+               c("alpha.2","alpha.3"),
+               c("alpha.2","alpha.3")))
+sig <- crossprod(sig)
+
+f7 <- pmcmc(
+            pomp(ou2,
+                 dprior=function (params, log, ...) {
+                   f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+                   if (log) f else exp(f)
+                 }
+                 ),
+            Nmcmc=30,
+            proposal=mvn.rw(sig),
+            Np=100,
+            max.fail=100, 
+            verbose=FALSE
+            )
+plot(f7)
+
 dev.off()
 
