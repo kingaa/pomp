@@ -1181,7 +1181,7 @@ pompExample(gompertz)
 out <- nlf(
            gompertz,
            start=c(r=1,K=2,sigma=0.5,tau=0.5,X.0=1),
-           transform.params=TRUE,
+           transform=TRUE,
            est=c("K","r"),
            lags=c(1,2)
            )
@@ -1214,7 +1214,7 @@ for (j in 1:5) {
                   gompertz,
                   start=starts[[j]],
                   transform.data=log,
-                  transform.params=TRUE,
+                  transform=TRUE,
                   est=c("K","r"),
                   lags=c(1,2),
                   seed=7639873L,
@@ -1390,7 +1390,7 @@ so we proceed to fit with \code{lags=2}.
 <<nlf-fit-from-truth,eval=F>>=
 true.fit <- nlf(
                 gompertz,
-                transform.params=TRUE,
+                transform=TRUE,
                 est=c("K","r"),
                 lags=2,
                 seed=7639873,
@@ -1435,7 +1435,7 @@ for (j in seq_len(nreps)) {
   fit <- nlf(
              gompertz,
              start=coef(gompertz),
-             transform.params=TRUE,
+             transform=TRUE,
              est=c("K","r"),
              lags=lags,
              seed=7639873, 
@@ -1488,7 +1488,7 @@ bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
 for (j in seq_len(nreps)) {
   fit <- nlf(
              gompertz,
-             transform.params=TRUE,
+             transform=TRUE,
              est=c("K","r"),
              lags=lags,
              seed=7639873L,

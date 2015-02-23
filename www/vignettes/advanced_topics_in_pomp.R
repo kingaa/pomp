@@ -1,4 +1,3 @@
-
 ## ----include=FALSE-------------------------------------------------------
 opts_chunk$set(
                echo=TRUE,results='markup',
@@ -18,11 +17,9 @@ opts_chunk$set(
                )
 
 
-
 ## ----include=FALSE-------------------------------------------------------
   library(pomp)
   set.seed(5384959)
-
 
 ## ----pomp-builder-measmod,eval=T-----------------------------------------
 ## negative binomial measurement model
@@ -35,7 +32,6 @@ rmeas <- '
 dmeas <- '
   lik = dnbinom_mu(cases,theta,rho*incid,give_log);
 '
-
 
 ## ----pomp-builder-stepfn,eval=T------------------------------------------
 ## SIR process model with extra-demographic stochasticity
@@ -76,7 +72,6 @@ step.fn <- '
   if (beta_sd > 0.0) W += (dW-dt)/beta_sd; // increment has mean = 0, variance = dt
 '
 
-
 ## ----pomp-builder-skel,eval=T--------------------------------------------
 skel <- '
   int nrate = 6;
@@ -112,7 +107,6 @@ skel <- '
   DW = 0;
 '
 
-
 ## ----pomp-builder-partrans,eval=T----------------------------------------
 ## parameter transformations
 ## note we use barycentric coordinates for the initial conditions
@@ -144,7 +138,6 @@ paruntrans <- "
   to_log_barycentric(&TS_0,&S_0,3);
 "
 
-
 ## ----pomp-builder-covar,eval=T-------------------------------------------
 covartab <- data.frame(
                        time=seq(from=-1/52,to=10+1/52,by=1/26)
@@ -162,7 +155,6 @@ covartab <- cbind(
                                               )
                        )
                   )
-
 
 
 ## ----pomp-builder,eval=F-------------------------------------------------
@@ -199,7 +191,6 @@ covartab <- cbind(
 ##               x0
 ##             }
 ##             ) -> sir
-
 
 ## ----pomp-builder-eval,echo=F,eval=T,results='hide'----------------------
 if (Sys.getenv("POMP_BUILD_VIGNETTES")=="yes") {
@@ -239,7 +230,6 @@ pompBuilder(
             ) -> sir
 }
 
-
 ## ----sir-sim,eval=T------------------------------------------------------
 coef(sir) <- c(
                gamma=26,mu=0.02,iota=0.01,
@@ -253,10 +243,8 @@ coef(sir) <- c(
 sir <- simulate(sir,seed=3493885L)
 traj <- trajectory(sir,hmax=1/52)
 
-
 ## ----sir-plot,fig=T,echo=F-----------------------------------------------
 plot(sir)
-
 
 ## ------------------------------------------------------------------------
 pompExample(ou2)
@@ -267,19 +255,16 @@ new.p <- cbind(true.p,true.p,true.p)
 new.p["x1.0",] <- 1:3
 init.state(ou2,params=new.p)
 
-
 ## ------------------------------------------------------------------------
 x <- rprocess(ou2,xstart=x0,times=time(ou2,t0=T),params=true.p)
 dim(x)
 x[,,1:5]
-
 
 ## ------------------------------------------------------------------------
 x <- x[,,-1,drop=F]
 y <- rmeasure(ou2,x=x,times=time(ou2),params=true.p)
 dim(y)
 y[,,1:5]
-
 
 ## ------------------------------------------------------------------------
 fp <- dprocess(ou2,x=x,times=time(ou2),params=true.p)
@@ -291,18 +276,14 @@ fm <- dmeasure(ou2,y=y[,1,],x=x,times=time(ou2),params=true.p)
 dim(fm)
 fm[,36:40]
 
-
 ## ----all-examples,eval=F-------------------------------------------------
 ## pompExample()
-
 
 ## ----example-sources,eval=F----------------------------------------------
 ## list.files(system.file("examples",package="pomp"))
 
-
 ## ----demos,eval=F--------------------------------------------------------
 ## demo(package='pomp')
-
 
 ## ----plugin-R-code,echo=T,eval=T-----------------------------------------
 pompExample(ou2)
@@ -343,7 +324,6 @@ simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=5000,states=T)
   save(etime.Rplug,n.Rplug,file=binary.file,compress='xz')
 }
 
-
 ## ----vectorized-R-code,eval=F--------------------------------------------
 ## ou2.Rvect.rprocess <- function (xstart, times, params, ...) {
 ##   nrep <- ncol(xstart)                  # number of realizations
@@ -378,10 +358,8 @@ simdat.Rplug <- simulate(ou2.Rplug,params=coef(ou2),nsim=5000,states=T)
 ##   x
 ## }
 
-
 ## ----vectorized-R-pomp,eval=F--------------------------------------------
 ## ou2.Rvect <- pomp(ou2.Rplug,rprocess=ou2.Rvect.rprocess)
-
 
 ## ----theta,eval=F--------------------------------------------------------
 ## theta <- c(
@@ -447,14 +425,11 @@ n.Rvect <- dim(simdat.Rvect)[2]
 save(etime.Rvect,n.Rvect,file=binary.file,compress='xz')
 }
 
-
 ## ----view-ou2-source,eval=F----------------------------------------------
 ## file.show(file=system.file("examples/ou2.c",package="pomp"))
 
-
 ## ----view-pomp.h,eval=F,results='hide'-----------------------------------
 ## file.show(file=system.file("include/pomp.h",package="pomp"))
-
 
 ## ----plugin-C-code,eval=F------------------------------------------------
 ## ou2.Cplug <- pomp(
@@ -498,10 +473,8 @@ speedup <- as.numeric(etime.Rplug/n.Rplug)/as.numeric(etime.Cplug/n.Cplug)
 save(n.Cplug,etime.Cplug,speedup,file=binary.file,compress='xz')
 }
 
-
 ## ----eval=F,results='hide'-----------------------------------------------
 ## file.show(file=system.file("examples/ou2.c",package="pomp"))
-
 
 ## ----vectorized-C-code---------------------------------------------------
 ou2.Cvect.rprocess <- function (xstart, times, params, ...) {
@@ -521,7 +494,6 @@ ou2.Cvect.rprocess <- function (xstart, times, params, ...) {
         dimnames=list(rownames(xstart),NULL,NULL)        
         )
 }
-
 
 ## ----vectorized-C-code-pomp----------------------------------------------
 ou2.Cvect <- pomp(
@@ -554,5 +526,4 @@ units(etime.Cvect) <- units(etime.Rplug)
 speedup <- as.numeric(etime.Rplug/n.Rplug)/as.numeric(etime.Cvect/n.Cvect)
 save(n.Cvect,etime.Cvect,speedup,file=binary.file,compress='xz')
 }
-
 

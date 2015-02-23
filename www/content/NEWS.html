@@ -8,6 +8,82 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 0.60-1</h3>
+
+
+<ul>
+<li> <p><code>pmcmc</code> and <code>abc</code> can now use arbitrary symmetric proposal distributions via the <code>proposal</code> argument.
+For the moment, these are constrained to be symmetric.
+Two new functions, <code>mvn.diag.rw</code> and <code>mvn.rw</code> generate suitable proposal functions.
+The first generates a multivariate normal random-walk proposal with diagonal variance-covariance matrix; this duplicates the old behavior of both <code>abc</code> and <code>pmcmc</code>.
+The second, <code>mvn.rw</code>, corresponds to a multivariate normal random-walk proposal with arbitrary variance-covariance matrix.
+</p>
+</li>
+<li><p> In <code>pmcmc</code> and <code>abc</code>, the arguments <code>pars</code> and <code>rw.sd</code> are now unneeded and have been deprecated.
+Use of <code>rw.sd</code> will generate a warning and result in behavior equivalent to choosing <code>proposal=mvn.diag.rw(rw.sd)</code>.
+Use of <code>pars</code> will be ignored, with a warning.
+</p>
+</li>
+<li><p> In <code>nlf</code>, the <code>transform.params</code> argument is now deprecated;
+use instead the <code>transform</code> argument, as in the other inference methods.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 0.59-1</h3>
+
+
+<ul>
+<li><p> A bug in <code>spect.match</code> has been fixed.
+Thanks to Karsten Hempel for finding it and contributing the fix.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 0.58-1</h3>
+
+
+<ul>
+<li><p> Compiler messages are now suppressed by default when <code>Csnippet</code>s are used in construction of a <code>pomp</code> object.
+These can be enabled by setting <code>options(verbose=TRUE)</code>.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 0.58-1</h3>
+
+
+<ul>
+<li><p> A <code>pomp</code> object created with <code>Csnippet</code>s or <code>pompBuilder</code> will now remember its associated shared-object file, which can be unloaded and reloaded using the new <code>pompUnload</code> and <code>pompLoad</code> methods.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 0.57-1</h3>
+
+
+<ul>
+<li> <p><code>simulate</code> has a new argument, <code>include.data</code>, that when used in conjuncion with <code>as.data.frame=TRUE</code> will include the actual data in the resulting data frame along with the simulations.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 0.56-1</h3>
+
+
+<ul>
+<li><p> Revamped the <code>pompExample</code> function.
+A search path for example directories is now stored in global option &quot;pomp.examples&quot;.
+</p>
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 0.55-1</h3>
 
 
