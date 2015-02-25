@@ -50,8 +50,8 @@ year,pop
 
 dat <- read.csv(text=dat,comment.char="#")
 
-parus.example <- function (proc = c("Gompertz","Ricker"),
-                           meas = c("lognormal","Poisson","negbin")) {
+parus <- function (proc = c("Gompertz","Ricker"),
+                   meas = c("lognormal","Poisson","negbin")) {
 
   proc <- match.arg(proc)
   meas <- match.arg(meas)
@@ -100,7 +100,5 @@ parus.example <- function (proc = c("Gompertz","Ricker"),
        PACKAGE="pompExamples"
        )
 }
-
-parus <- parus.example(proc,meas)
 
 c("parus")

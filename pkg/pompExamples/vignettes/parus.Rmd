@@ -48,8 +48,9 @@ bake <- function (file, expr) {
 ### Load and plot the data
 
 ```{r}
-pompExample(parus,proc='Gompertz',meas='Poisson')
-plot(parus)
+pompExample(parus)
+pGP <- parus(proc='Gompertz',meas='Poisson')
+plot(pGP)
 ```
 
 ## Model description
@@ -79,15 +80,15 @@ If `meas="lognormal"`, the measurement process is
 $$\mathrm{pop}_{t} \sim \mathrm{Lognormal}(\log(N_t),\theta).$$
 
 ```{r}
-coef(parus)
+coef(pGP)
 ```
 
 ## Trajectory matching
 
 ```{r}
-logLik(traj.match(parus))
+logLik(traj.match(pGP))
 bake("parus-tm1.rds",{
-  tm <- parus
+  tm <- pGP
   coef(tm,c("sigma","theta")) <- c(0,NA)
   traj.match(tm,est=c("K","r"),transform=T) -> tm
   traj.match(tm,method='subplex') -> tm
@@ -95,7 +96,7 @@ bake("parus-tm1.rds",{
   }) -> tm
 ```
 ```{r}
-ggplot(data=simulate(parus,params=unlist(tm),nsim=10,obs=TRUE,
+ggplot(data=simulate(pGP,params=unlist(tm),nsim=10,obs=TRUE,
                      as.data.frame=TRUE,include.data=TRUE),
        mapping=aes(x=time,y=pop,group=sim,alpha=sim=="data"))+
   geom_line()+
@@ -107,7 +108,7 @@ ggplot(data=simulate(parus,params=unlist(tm),nsim=10,obs=TRUE,
 
 ```{r}
 bake("parus-mf.rds",{
-  mf <- parus
+  mf <- pGP
   coef(mf,"theta") <- NA
   mif(mf,rw.sd=c(K=0.02,r=0.02,sigma=0.02),
       cooling.fraction=0.8,var.factor=2,
@@ -125,7 +126,7 @@ bake("parus-mf.rds",{
   }) -> mf
 ```
 ```{r}
-ggplot(data=simulate(parus,params=unlist(mf),nsim=10,obs=TRUE,
+ggplot(data=simulate(pGP,params=unlist(mf),nsim=10,obs=TRUE,
                      as.data.frame=TRUE,include.data=TRUE),
        mapping=aes(x=time,y=pop,group=sim,alpha=sim=="data"))+
   geom_line()+

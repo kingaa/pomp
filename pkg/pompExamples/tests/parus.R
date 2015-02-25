@@ -2,19 +2,21 @@ library(pompExamples)
 
 set.seed(47575684L)
 
-po <- pompExample(parus,proc="Ricker",meas="lognormal",envir=NULL)
-pf <- pfilter(simulate(po$parus),Np=100,max.fail=Inf)
-tj <- trajectory(po$parus)
+pompExample(parus)
 
-po <- pompExample(parus,proc="Ricker",meas="negbin",envir=NULL)
-pf <- pfilter(simulate(po$parus),Np=100,max.fail=Inf)
+po <- parus(proc="Ricker",meas="lognormal")
+pf <- pfilter(simulate(po),Np=100,max.fail=Inf)
+tj <- trajectory(po)
 
-po <- pompExample(parus,proc="Ricker",meas="Poisson",envir=NULL)
-pf <- pfilter(simulate(po$parus),Np=100,max.fail=Inf)
+po <- parus(proc="Ricker",meas="negbin")
+pf <- pfilter(simulate(po),Np=100,max.fail=Inf)
 
-po <- pompExample(parus,proc="Gompertz",meas="Poisson",envir=NULL)
-pf <- pfilter(simulate(po[[1]]),Np=100,max.fail=Inf)
-tj <- trajectory(po[[1]])
+po <- parus(proc="Ricker",meas="Poisson")
+pf <- pfilter(simulate(po),Np=100,max.fail=Inf)
 
-po <- pompExample(parus,proc="Gompertz",meas="lognormal",envir=NULL)
-pf <- pfilter(simulate(po$parus),Np=100,max.fail=Inf)
+po <- parus(proc="Gompertz",meas="Poisson")
+pf <- pfilter(simulate(po),Np=100,max.fail=Inf)
+tj <- trajectory(po)
+
+po <- parus(proc="Gompertz",meas="lognormal")
+pf <- pfilter(simulate(po),Np=100,max.fail=Inf)

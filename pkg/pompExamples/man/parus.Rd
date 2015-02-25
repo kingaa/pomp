@@ -3,10 +3,14 @@
 \alias{parus}
 \title{POMPs for time series of Parus major population counts from Wytham Wood}
 \description{
-  \code{pompExample(parus,proc,meas)} constructs a \code{pomp} object containing one of several population-dynamics models and abundance data from Parus major in Wytham Wood.
+  \code{pompExample(parus)} constructs a function that constructs \code{pomp} objects implementing each of several population-dynamics models and abundance data from Parus major in Wytham Wood.
 
-  The model has one state variables, \eqn{N_t}, the true abundance.
+  The model has one state variable, \eqn{N_t}, the true abundance.
   There is one observable, \eqn{\mathrm{pop}_t}.
+
+  The function defined is: \preformatted{
+  parus(proc = c("Gompertz", "Ricker"),
+        meas = c("lognormal","Poisson","negbin"))}
 }
 \section{State process}{
   If \code{proc="Gompertz"}, the state process is the stochastic Gompertz model
@@ -31,12 +35,14 @@
   \deqn{\mathrm{pop}_{t} \sim \mathrm{Lognormal}(\log(N_t),\theta).}
 }
 \examples{
-pompExample(parus,proc="Ricker",meas="negbin")
-plot(parus)
-plot(simulate(parus))
+pompExample(parus)
+p1 <- parus(proc="Ricker",meas="negbin") 
+plot(p1)
+plot(simulate(p1))
 
-pompExample(parus,proc="Gompertz",meas="lognormal")
-plot(simulate(parus))
+p2 <- parus(proc="Gompertz",meas="lognormal")
+plot(simulate(p2))
+pf <- pfilter(p2,Np=1000)
 }
 \seealso{\code{vignette("parus")}}
 \keyword{models,datasets}
