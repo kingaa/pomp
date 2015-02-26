@@ -124,19 +124,7 @@ undefine <- list(
 
 header <- list(
                file="/* pomp model file: {%name%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
-               registration="
-void R_init_{%name%} (DllInfo *info) {
-  R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_incr\", (DL_FUNC) __pomp_load_stack_incr);
-  R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_decr\", (DL_FUNC) __pomp_load_stack_decr);
-}\n\n",
-               stackhandling="
-static int __pomp_load_stack = 0;\n
-void __pomp_load_stack_incr (void) {
-  ++__pomp_load_stack;
-}\n
-void __pomp_load_stack_decr (int *val) {
-  *val = --__pomp_load_stack;
-}\n",
+               registration="\nvoid R_init_{%name%} (DllInfo *info)\n{\n",
                rmeasure="\nvoid {%name%}_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                dmeasure= "\nvoid {%name%}_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                step.fn="\nvoid {%name%}_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
@@ -158,6 +146,19 @@ fnames <- list(
                dprior="{%name%}_dprior"
                )
 
+regist <- list(
+               rmeasure="R_RegisterCCallable(\"{%name%}\", \"{%name%}_rmeasure\", (DL_FUNC) {%name%}_rmeasure);\n",
+               dmeasure="R_RegisterCCallable(\"{%name%}\", \"{%name%}_dmeasure\", (DL_FUNC) {%name%}_dmeasure);\n",
+               step.fn="R_RegisterCCallable(\"{%name%}\", \"{%name%}_stepfn\", (DL_FUNC) {%name%}_stepfn);\n",
+               skeleton="R_RegisterCCallable(\"{%name%}\", \"{%name%}_skelfn\", (DL_FUNC) {%name%}_skelfn);\n",
+               parameter.transform="R_RegisterCCallable(\"{%name%}\", \"{%name%}_par_trans\", (DL_FUNC) {%name%}_par_trans);\n",
+               parameter.inv.transform="R_RegisterCCallable(\"{%name%}\", \"{%name%}_par_untrans\", (DL_FUNC) {%name%}_par_untrans);\n",
+               rprior="R_RegisterCCallable(\"{%name%}\", \"{%name%}_rprior\", (DL_FUNC) {%name%}_rprior);\n",
+               dprior="R_RegisterCCallable(\"{%name%}\", \"{%name%}_dprior\", (DL_FUNC) {%name%}_dprior);\n",
+               loadstack.incr="R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_incr\", (DL_FUNC) __pomp_load_stack_incr);\n",
+               loadstack.decr="R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_decr\", (DL_FUNC) __pomp_load_stack_decr);\n"
+               )
+
 decl <- list(
              periodic_bspline_basis_eval="\tvoid (*periodic_bspline_basis_eval)(double,double,int,int,double*);\nperiodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n",
              get_pomp_userdata_int="\tconst int * (*get_pomp_userdata_int)(const char *);\nget_pomp_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
@@ -174,8 +175,18 @@ footer <- list(
                parameter.inv.transform="\n}\n\n",
                rprior="\n}\n\n",
                dprior="\n}\n\n",
-               globals="\n"
+               globals="\n",
+               registration="}\n\n"
                )
+
+               stackhandling <- "
+static int __pomp_load_stack = 0;\n
+void __pomp_load_stack_incr (void) {
+  ++__pomp_load_stack;
+}\n
+void __pomp_load_stack_decr (int *val) {
+  *val = --__pomp_load_stack;
+}\n"
 
 utility.fns <- list()
 
@@ -326,9 +337,13 @@ pompCBuilder <- function (name = NULL,
     cat(file=out,render(undefine$var,variable=paste0("T",paramnames[v])))
   }
 
-  cat(file=out,header$stackhandling)
+  cat(file=out,stackhandling)
 
+  ## registration
   cat(file=out,render(header$registration,name=name))
+  for (v in names(regist)) 
+    cat(file=out,render(regist[[v]],name=name))
+  cat(file=out,footer$registration)
 
   close(out)
 
