@@ -42,3 +42,25 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, int *mode)
   UNPROTECT(nprotect);
   return f;
 }
+
+SEXP load_stack_incr (SEXP pack) {
+  char *pkg;
+  void (*ff)(void);
+  pkg = CHARACTER_DATA(STRING_ELT(pack,0));
+  ff = R_GetCCallable(pkg,"__pomp_load_stack_incr");
+  ff();
+  return R_NilValue;
+}
+
+SEXP load_stack_decr (SEXP pack) {
+  SEXP s;
+  char *pkg;
+  void (*ff)(int *);
+  PROTECT(s = NEW_INTEGER(1));
+  pkg = CHARACTER_DATA(STRING_ELT(pack,0));
+  ff = R_GetCCallable(pkg,"__pomp_load_stack_decr");
+  ff(INTEGER(s));
+  if (*(INTEGER(s)) < 0) error("impossible!");
+  UNPROTECT(1);
+  return s;
+}

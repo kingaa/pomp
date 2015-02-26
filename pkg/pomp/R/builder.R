@@ -83,7 +83,7 @@ pompLoad.internal <- function (object, ..., verbose = getOption("verbose",FALSE)
       dyn.load(lib[2])
       if (verbose) cat("loading",sQuote(lib[2]),"\n")
     }
-    .C("__pomp_load_stack_incr",PACKAGE=lib[1])
+    .Call(load_stack_incr,lib[1])
   }
   invisible(NULL)
 }
@@ -91,8 +91,7 @@ pompLoad.internal <- function (object, ..., verbose = getOption("verbose",FALSE)
 pompUnload.internal <- function (object, ..., verbose = getOption("verbose",FALSE)) {
   for (lib in object@solibfile) {
     if (is.loaded("__pomp_load_stack_decr",PACKAGE=lib[1])) {
-      st <- .C("__pomp_load_stack_decr",st=integer(1),PACKAGE=lib[1])$st
-      stopifnot(st>=0)
+      st <- .Call(load_stack_decr,lib[1])
       if (st==0) {
         dyn.unload(lib[2])
         if (verbose) cat("unloading",sQuote(lib[2]),"\n")
@@ -125,15 +124,19 @@ undefine <- list(
 
 header <- list(
                file="/* pomp model file: {%name%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
+               registration="
+void R_init_{%name%} (DllInfo *info) {
+  R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_incr\", (DL_FUNC) __pomp_load_stack_incr);
+  R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_decr\", (DL_FUNC) __pomp_load_stack_decr);
+}\n\n",
                stackhandling="
 static int __pomp_load_stack = 0;\n
 void __pomp_load_stack_incr (void) {
   ++__pomp_load_stack;
 }\n
 void __pomp_load_stack_decr (int *val) {
-  *val = (--__pomp_load_stack);
-}
-",
+  *val = --__pomp_load_stack;
+}\n",
                rmeasure="\nvoid {%name%}_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                dmeasure= "\nvoid {%name%}_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                step.fn="\nvoid {%name%}_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
@@ -143,7 +146,6 @@ void __pomp_load_stack_decr (int *val) {
                rprior="\nvoid {%name%}_rprior (double *__p, int *__parindex)\n{\n",
                dprior="\nvoid {%name%}_dprior (double *__lik, double *__p, int give_log, int *__parindex)\n{\n"
                )
-
 
 fnames <- list(
                rmeasure="{%name%}_rmeasure",
@@ -209,8 +211,6 @@ pompCBuilder <- function (name = NULL,
   if (is.null(name)) name <- randomName()
   if (is.null(dir)) dir <- tempdir()
 
-  has.trans <- !(missing(parameter.transform))
-
   if (missing(globals)) globals <- ""
 
   name <- cleanForC(name)
@@ -264,16 +264,19 @@ pompCBuilder <- function (name = NULL,
   }
   cat(file=out,render(define$var.alt,variable="lik",ptr='__lik',index=0))
 
-  if (has.trans) {
-    ## parameter transformation function
-    cat(file=out,render(header$parameter.transform,name=name))
-    cat(file=out,callable.decl(parameter.transform))
-    cat(file=out,parameter.transform,footer$parameter.transform)
-    ## inverse parameter transformation function
-    cat(file=out,render(header$parameter.inv.transform,name=name))
-    cat(file=out,callable.decl(parameter.inv.transform))
-    cat(file=out,parameter.inv.transform,footer$parameter.inv.transform)
-  }
+  ## parameter transformation function
+  if (missing(parameter.transform))
+    parameter.transform <- missing.fun("parameter.transform")
+  cat(file=out,render(header$parameter.transform,name=name))
+  cat(file=out,callable.decl(parameter.transform))
+  cat(file=out,parameter.transform,footer$parameter.transform)
+
+  ## inverse parameter transformation function
+  if (missing(parameter.inv.transform))
+    parameter.inv.transform <- missing.fun("parameter.inv.transform")
+  cat(file=out,render(header$parameter.inv.transform,name=name))
+  cat(file=out,callable.decl(parameter.inv.transform))
+  cat(file=out,parameter.inv.transform,footer$parameter.inv.transform)
 
   ## rmeasure function
   if (missing(rmeasure)) rmeasure <- missing.fun("rmeasure")
@@ -324,6 +327,8 @@ pompCBuilder <- function (name = NULL,
   }
 
   cat(file=out,header$stackhandling)
+
+  cat(file=out,render(header$registration,name=name))
 
   close(out)
 
