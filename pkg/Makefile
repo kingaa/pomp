@@ -70,7 +70,7 @@ pompExamples.vignettes: pompExamples.install
 %.cransrc:
 	mkdir -p cran check
 	$(RM) -r cran/$*
-	git archive --format=tar master $* | (cd cran; tar -xf -)
+	git archive --format=tar HEAD $* | (cd cran; tar -xf -)
 	$(RM) -r cran/$*/tests 
 	$(TOUCH) $@
 
