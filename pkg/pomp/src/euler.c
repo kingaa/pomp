@@ -9,7 +9,7 @@ SEXP euler_model_simulator (SEXP func,
                             SEXP tcovar, SEXP covar, SEXP args, SEXP gnsi) 
 {
   int nprotect = 0;
-  int mode = -1;
+  pompfunmode mode = undef;
   int nstep, nvars, npars, nreps, ntimes, nzeros, ncovars, covlen;
   SEXP X;
   SEXP fn, fcall, rho, ans, nm;
@@ -48,7 +48,7 @@ SEXP euler_model_simulator (SEXP func,
   // set up
   switch (mode) {
 
-  case 0:			// R function
+  case Rfun:			// R function
 
     PROTECT(dtvec = NEW_NUMERIC(1)); nprotect++;
     PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
@@ -75,7 +75,7 @@ SEXP euler_model_simulator (SEXP func,
 
     break;
 
-  case 1:			// native code
+  case native:			// native code
 
     // construct state, parameter, covariate indices
     sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames")),"state variables"))); nprotect++;
@@ -87,7 +87,7 @@ SEXP euler_model_simulator (SEXP func,
     break;
 
   default:
-    error("unrecognized 'mode' in 'euler_simulator'");
+    error("unrecognized 'mode' %d in 'euler_simulator'",mode);
     break;
   }
 
@@ -163,7 +163,7 @@ SEXP euler_model_simulator (SEXP func,
 	  
 	  switch (mode) {
 
-	  case 0: 		// R function
+	  case Rfun: 		// R function
 
 	    {
 	      double *xp = REAL(xvec);
@@ -211,13 +211,13 @@ SEXP euler_model_simulator (SEXP func,
 
 	    break;
 	      
-	  case 1: 		// native code
+	  case native: 		// native code
 
 	    (*ff)(xm,pm,sidx,pidx,cidx,ncovars,cp,t,dt);
 	    break;
 
 	  default:
-	    error("unrecognized 'mode' in 'euler_simulator'");
+	    error("unrecognized 'mode' %d in 'euler_simulator'",mode);
 	    break;
 	  }
 
@@ -283,7 +283,7 @@ SEXP euler_model_density (SEXP func,
 
   switch (mode) {
 
-  case 0:			// R function
+  case Rfun:			// R function
 
     PROTECT(t1vec = NEW_NUMERIC(1)); nprotect++;
     PROTECT(t2vec = NEW_NUMERIC(1)); nprotect++;
@@ -313,7 +313,7 @@ SEXP euler_model_density (SEXP func,
 
     break;
 
-  case 1:			// native code
+  case native:			// native code
 
     // construct state, parameter, covariate indices
     sidx = INTEGER(PROTECT(matchnames(Snames,GET_SLOT(func,install("statenames")),"state variables"))); nprotect++;
@@ -325,7 +325,7 @@ SEXP euler_model_density (SEXP func,
     break;
 
   default:
-    error("unrecognized 'mode' in 'euler_model_density'");
+    error("unrecognized 'mode' %d in 'euler_model_density'",mode);
     break;
   }
 
@@ -337,7 +337,7 @@ SEXP euler_model_density (SEXP func,
 
   switch (mode) {
 
-  case 0:			// R function
+  case Rfun:			// R function
 
     {
       double *cp = REAL(cvec);
@@ -379,7 +379,7 @@ SEXP euler_model_density (SEXP func,
 
     break;
 
-  case 1:			// native code
+  case native:			// native code
 
     set_pomp_userdata(args);
 
@@ -415,7 +415,7 @@ SEXP euler_model_density (SEXP func,
     break;
 
   default:
-    error("unrecognized 'mode' in 'euler_model_density'");
+    error("unrecognized 'mode' %d in 'euler_model_density'",mode);
     break;
 
   }

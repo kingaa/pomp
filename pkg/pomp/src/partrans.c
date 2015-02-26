@@ -14,7 +14,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
   SEXP pdim, pvec;
   SEXP pompfun;
   SEXP tparams = R_NilValue;
-  int mode = -1;
+  pompfunmode mode = undef;
   char direc;
   int qmat;
   int ndim[2], *dim, *idx;
@@ -54,7 +54,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
   switch (mode) {
 
-  case 0: 			// use user-supplied R function
+  case Rfun: 			// use user-supplied R function
 
     // set up the function call
     if (qmat) {		// matrix case
@@ -110,7 +110,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
     break;
 
-  case 1:			// use native routine
+  case native:			// use native routine
 
     ff = (pomp_transform_fn *) R_ExternalPtrAddr(fn);
     

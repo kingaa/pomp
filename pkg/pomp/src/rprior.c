@@ -15,7 +15,7 @@
 SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 {
   int nprotect = 0;
-  int mode = -1;
+  pompfunmode mode = undef;
   int npars, nreps;
   SEXP Pnames, P, fn, fcall;
   SEXP pompfun;
@@ -37,7 +37,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
   // first do setup
   switch (mode) {
-  case 0:			// use R function
+  case Rfun:			// use R function
 
     {
       SEXP pvec, rho, ans, nm;
@@ -106,7 +106,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
     break;
 
-  case 1:			// use native routine
+  case native:			// use native routine
 
     {
       double *pp, *ps;

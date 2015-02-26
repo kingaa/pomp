@@ -40,7 +40,8 @@ SEXP bspline_basis_function(SEXP x, SEXP i, SEXP degree, SEXP knots);
 SEXP sobol_sequence(SEXP dim);
 
 // pomp_fun.c
-SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, int *mode);
+typedef enum {undef=-1,Rfun=0,native=1,regNative=2} pompfunmode;
+SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode);
 
 // lookup_table.c
 SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t);

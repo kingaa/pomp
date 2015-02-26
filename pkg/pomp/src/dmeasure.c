@@ -11,7 +11,7 @@
 SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi)
 {
   int nprotect = 0;
-  int mode = -1;
+  pompfunmode mode = undef;
   int give_log;
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
   SEXP Snames, Pnames, Cnames, Onames;
@@ -76,7 +76,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   // first do setup
   switch (mode) {
 
-  case 0:			// R function
+  case Rfun:			// R function
 
     PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
     PROTECT(xvec = NEW_NUMERIC(nvars)); nprotect++;
@@ -106,7 +106,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
     break;
 
-  case 1:			// native code
+  case native:			// native code
 
     // construct state, parameter, covariate, observable indices
     oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames"))); nprotect++;
@@ -137,7 +137,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   // now do computations
   switch (mode) {
 
-  case 0:			// R function
+  case Rfun:			// R function
 
     {
       int first = 1;
@@ -190,7 +190,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
     break;
 
-  case 1:			// native code
+  case native:			// native code
 
     set_pomp_userdata(fcall);
 

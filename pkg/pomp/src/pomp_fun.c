@@ -9,31 +9,65 @@
 
 // returns either the R function or the address of the native routine
 // on return, use_native tells whether to use the native or the R function
-SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, int *mode) 
+SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 {
   int nprotect = 0;
-  SEXP nf, pack, nsi, f = R_NilValue;
+  SEXP f = R_NilValue;
 
-  *mode = *(INTEGER(GET_SLOT(pfun,install("mode"))))-1;
+  *mode = *(INTEGER(GET_SLOT(pfun,install("mode"))));
 
   switch (*mode) {
-  case 0:			// R function
+
+  case Rfun:			// R function
+
     PROTECT(f = GET_SLOT(pfun,install("R.fun"))); nprotect++;
+
     break;
-  case 1:			// native code
-    if (*(INTEGER(gnsi))) {	// get native symbol information
+
+  case native: case regNative:	// native code
+
+    if (*(INTEGER(gnsi))) {	// get native symbol information?
+
+      SEXP nf, pack;
       PROTECT(nf = GET_SLOT(pfun,install("native.fun"))); nprotect++;
       PROTECT(pack = GET_SLOT(pfun,install("PACKAGE"))); nprotect++;
       if (LENGTH(pack) < 1) {
 	PROTECT(pack = mkString("")); nprotect++;
       }
-      PROTECT(nsi = eval(lang3(install("getNativeSymbolInfo"),nf,pack),R_BaseEnv)); nprotect++;
-      PROTECT(f = getListElement(nsi,"address")); nprotect++;
+
+      switch (*mode) {
+      case native:
+	{
+	  SEXP nsi;
+	  PROTECT(nsi = eval(lang3(install("getNativeSymbolInfo"),nf,pack),R_BaseEnv)); nprotect++;
+	  PROTECT(f = getListElement(nsi,"address")); nprotect++;
+	}
+	break;
+
+      case regNative:
+	{
+	  const char *fname, *pkg;
+	  DL_FUNC ff;
+	  fname = (const char *) CHARACTER_DATA(STRING_ELT(nf,0));
+	  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
+	  ff = R_GetCCallable(pkg,fname);
+	  PROTECT(f = R_MakeExternalPtr(ff,pfun,R_NilValue)); nprotect++;
+	}
+	break;
+      }
+
       SET_SLOT(pfun,install("address"),f);
-    } else {
+
+    } else {			// native symbol info is stored
+
       PROTECT(f = GET_SLOT(pfun,install("address"))); nprotect++;
+
     }
+
+    *mode = native;
+
     break;
+
   default:
     error("operation cannot be completed: some needed function has not been specified");
     break;
@@ -44,21 +78,21 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, int *mode)
 }
 
 SEXP load_stack_incr (SEXP pack) {
-  char *pkg;
+  const char *pkg;
   void (*ff)(void);
-  pkg = CHARACTER_DATA(STRING_ELT(pack,0));
-  ff = R_GetCCallable(pkg,"__pomp_load_stack_incr");
+  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
+  ff = (void (*)(void)) R_GetCCallable(pkg,"__pomp_load_stack_incr");
   ff();
   return R_NilValue;
 }
 
 SEXP load_stack_decr (SEXP pack) {
   SEXP s;
-  char *pkg;
+  const char *pkg;
   void (*ff)(int *);
   PROTECT(s = NEW_INTEGER(1));
-  pkg = CHARACTER_DATA(STRING_ELT(pack,0));
-  ff = R_GetCCallable(pkg,"__pomp_load_stack_decr");
+  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
+  ff = (void (*)(int *)) R_GetCCallable(pkg,"__pomp_load_stack_decr");
   ff(INTEGER(s));
   if (*(INTEGER(s)) < 0) error("impossible!");
   UNPROTECT(1);

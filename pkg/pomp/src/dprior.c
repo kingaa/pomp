@@ -15,7 +15,7 @@ void _pomp_default_dprior (double *lik, double *p, int give_log, int *parindex) 
 SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 {
   int nprotect = 0;
-  int mode = -1;
+  pompfunmode mode = undef;
   int npars, nreps;
   SEXP Pnames, F, fn, fcall;
   SEXP pompfun;
@@ -39,7 +39,7 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
       
   // first do setup
   switch (mode) {
-  case 0:			// use R function
+  case Rfun:			// use R function
 
     {
       SEXP pvec, rho, ans;
@@ -74,7 +74,7 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 
     break;
 
-  case 1:			// use native routine
+  case native:			// use native routine
 
     {
       int give_log, *pidx = 0;

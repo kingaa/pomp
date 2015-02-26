@@ -1,6 +1,8 @@
 ## a class for functions that may be defined in R,
 ## using pre-written native routines, or C snippets
 
+pompfunmode <- list(undef=-1L,Rfun=0L,native=1L,regNative=2L)
+
 setClass(
          'pomp.fun',
          slots=c(
@@ -20,7 +22,7 @@ setClass(
            },
            native.fun=character(0),
            PACKAGE=character(0),
-           mode=-1L, ## undefined behavior
+           mode=pompfunmode$undef,
            obsnames = character(0),
            statenames = character(0),
            paramnames = character(0),
@@ -58,7 +60,7 @@ setMethod(
                 stop(sQuote(fname)," must be a function of prototype ",
                      deparse(proto),call.=FALSE)
             }
-            new("pomp.fun",R.fun=f,mode=1L)
+            new("pomp.fun",R.fun=f,mode=pompfunmode$Rfun)
           }
           )
 
@@ -72,7 +74,7 @@ setMethod(
                 "pomp.fun",
                 native.fun=f,
                 PACKAGE=as.character(PACKAGE),
-                mode=2L,
+                mode=pompfunmode$native,
                 obsnames=obsnames,
                 statenames=statenames,
                 paramnames=paramnames,
@@ -97,7 +99,7 @@ setMethod(
                 "pomp.fun",
                 native.fun=render(fnames[[slotname]],name=libname),
                 PACKAGE=as.character(libname),
-                mode=2L,
+                mode=pompfunmode$regNative,
                 obsnames=obsnames,
                 statenames=statenames,
                 paramnames=paramnames,
@@ -114,12 +116,17 @@ setMethod(
 
 setMethod(
           'show',
-          'pomp.fun',
-          function (object) {
+          signature=signature('pomp.fun'),
+          definition=function (object) {
             mode <- object@mode
-            if (mode==1L) {
+            if (mode==pompfunmode$Rfun) { # R function
               show(object@R.fun)
-            } else if (mode==2L) {
+            } else if (mode==pompfunmode$native) { # user supplied native code
+              cat("native function ",sQuote(object@native.fun),sep="")
+              if (length(object@PACKAGE)>0)
+                cat(", dynamically loaded from ",sQuote(object@PACKAGE),sep="")
+              cat ("\n")
+            } else if (mode==pompfunmode$regNative) { # built from Csnippets
               cat("native function ",sQuote(object@native.fun),sep="")
               if (length(object@PACKAGE)>0)
                 cat(", dynamically loaded from ",sQuote(object@PACKAGE),sep="")
