@@ -4,7 +4,8 @@
   \itemize{
     \item When using \code{Csnippet}s or \code{pompBuilder}, it is no longer necessary to manually load and unload the dynamically loadable library.
     This is now handled automatically.
-    Accordingly, the \code{link} argument of \code{pompBuilder} and the \code{pompLoad} and \code{pompUnload} functions have been removed.
+    Accordingly, the \code{link} argument of \code{pompBuilder} has been removed.
+    The \code{pompLoad} and \code{pompUnload} functions introduced in 0.58-1 remain available, though they should rarely be needed.
   }
 }
 \section{Changes in \pkg{pomp} version 0.60-1}{

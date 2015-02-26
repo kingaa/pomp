@@ -5,8 +5,10 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_1-_1
         • When using ‘Csnippet’s or ‘pompBuilder’, it is no longer
           necessary to manually load and unload the dynamically
           loadable library.  This is now handled automatically.
-          Accordingly, the ‘link’ argument of ‘pompBuilder’ and the
-          ‘pompLoad’ and ‘pompUnload’ functions have been removed.
+          Accordingly, the ‘link’ argument of ‘pompBuilder’ has been
+          removed.  The ‘pompLoad’ and ‘pompUnload’ functions
+          introduced in 0.58-1 remain available, though they should
+          rarely be needed.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_0-_1:
 
