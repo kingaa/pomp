@@ -237,8 +237,6 @@ pompCBuilder <- function (name = NULL,
   
   cat(file=out,render(header$file,name=name,pompheader=pompheader))
 
-  cat(file=out,header$stackhandling)
-
   for (f in utility.fns) {
     cat(file=out,f)
   }
@@ -324,6 +322,9 @@ pompCBuilder <- function (name = NULL,
   for (v in seq_along(paramnames)) {
     cat(file=out,render(undefine$var,variable=paste0("T",paramnames[v])))
   }
+
+  cat(file=out,header$stackhandling)
+
   close(out)
 
   cflags <- paste0("PKG_CFLAGS=\"",

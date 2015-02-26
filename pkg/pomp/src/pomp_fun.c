@@ -25,8 +25,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, int *mode)
       PROTECT(nf = GET_SLOT(pfun,install("native.fun"))); nprotect++;
       PROTECT(pack = GET_SLOT(pfun,install("PACKAGE"))); nprotect++;
       if (LENGTH(pack) < 1) {
-	PROTECT(pack = NEW_CHARACTER(1)); nprotect++;
-	SET_STRING_ELT(pack,0,mkChar(""));
+	PROTECT(pack = mkString("")); nprotect++;
       }
       PROTECT(nsi = eval(lang3(install("getNativeSymbolInfo"),nf,pack),R_BaseEnv)); nprotect++;
       PROTECT(f = getListElement(nsi,"address")); nprotect++;
