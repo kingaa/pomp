@@ -79,8 +79,10 @@ pompBuilder <- function (data, times, t0, name,
 
 pompLoad.internal <- function (object, ..., verbose = getOption("verbose",FALSE)) {
   for (lib in object@solibfile) {
-    if (!is.loaded("__pomp_load_stack_incr",PACKAGE=lib[1])) dyn.load(lib[2])
-    if (verbose) cat("loading",sQuote(lib[2]),"\n")
+    if (!is.loaded("__pomp_load_stack_incr",PACKAGE=lib[1])) {
+      dyn.load(lib[2])
+      if (verbose) cat("loading",sQuote(lib[2]),"\n")
+    }
     .C("__pomp_load_stack_incr",PACKAGE=lib[1])
   }
   invisible(NULL)
@@ -91,8 +93,10 @@ pompUnload.internal <- function (object, ..., verbose = getOption("verbose",FALS
     if (is.loaded("__pomp_load_stack_decr",PACKAGE=lib[1])) {
       st <- .C("__pomp_load_stack_decr",st=integer(1),PACKAGE=lib[1])$st
       stopifnot(st>=0)
-      if (st==0) dyn.unload(lib[2])
-      if (verbose) cat("unloading",sQuote(lib[2]),"\n")
+      if (st==0) {
+        dyn.unload(lib[2])
+        if (verbose) cat("unloading",sQuote(lib[2]),"\n")
+      }
     }
   }
   invisible(NULL)
