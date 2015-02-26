@@ -5,7 +5,7 @@ pompBuilder <- function (data, times, t0, name,
                          skelmap.delta.t = 1,
                          parameter.transform, parameter.inv.transform,
                          rprior, dprior,
-                         globals, ..., link = TRUE, save = FALSE) {
+                         globals, ..., save = FALSE) {
   
   if (!is.data.frame(data)) stop(sQuote("data")," must be a data-frame")
   obsnames <- names(data)
@@ -44,12 +44,10 @@ pompBuilder <- function (data, times, t0, name,
                rprior=rprior,
                dprior=dprior,
                globals=globals,
-               link=link,
-               save=save
-               ) -> bret
+               dir=if (save) getwd() else NULL
+               ) -> solib
 
-  name <- bret[1]
-  solib <- bret[2]
+  name <- solib[1]
 
   pomp(
        data=data,
@@ -75,24 +73,27 @@ pompBuilder <- function (data, times, t0, name,
        tcovar=tcovar,
        covar=covar,
        ...,
-       .solibfile=solib
+       .solibfile=list(solib)
        )
 }
 
-pompLoad.internal <- function (object, ...,
-                               verbose = getOption("verbose",FALSE)) {
+pompLoad.internal <- function (object, ..., verbose = getOption("verbose",FALSE)) {
   for (lib in object@solibfile) {
-    if (verbose) cat("loading",sQuote(lib),"\n")
-    dyn.load(lib)
+    if (!is.loaded("__pomp_load_stack_incr",PACKAGE=lib[1])) dyn.load(lib[2])
+    if (verbose) cat("loading",sQuote(lib[2]),"\n")
+    .C("__pomp_load_stack_incr",PACKAGE=lib[1])
   }
   invisible(NULL)
 }
-
-pompUnload.internal <- function (object, ...,
-                                 verbose = getOption("verbose",FALSE)) {
+ 
+pompUnload.internal <- function (object, ..., verbose = getOption("verbose",FALSE)) {
   for (lib in object@solibfile) {
-    if (verbose) cat("unloading",sQuote(lib),"\n")
-    dyn.unload(lib)
+    if (is.loaded("__pomp_load_stack_decr",PACKAGE=lib[1])) {
+      st <- .C("__pomp_load_stack_decr",st=integer(1),PACKAGE=lib[1])$st
+      stopifnot(st>=0)
+      if (st==0) dyn.unload(lib[2])
+      if (verbose) cat("unloading",sQuote(lib[2]),"\n")
+    }
   }
   invisible(NULL)
 }
@@ -120,6 +121,15 @@ undefine <- list(
 
 header <- list(
                file="/* pomp model file: {%name%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
+               stackhandling="
+static int __pomp_load_stack = 0;\n
+void __pomp_load_stack_incr (void) {
+  ++__pomp_load_stack;
+}\n
+void __pomp_load_stack_decr (int *val) {
+  *val = (--__pomp_load_stack);
+}
+",
                rmeasure="\nvoid {%name%}_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                dmeasure= "\nvoid {%name%}_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
                step.fn="\nvoid {%name%}_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
@@ -188,11 +198,12 @@ pompCBuilder <- function (name = NULL,
                           statenames, paramnames, covarnames, obsnames,
                           rmeasure, dmeasure, step.fn, skeleton,
                           parameter.transform, parameter.inv.transform,
-                          rprior, dprior, globals, save = FALSE, link = TRUE,
+                          rprior, dprior, globals, dir = NULL,
                           verbose = getOption("verbose",FALSE))
 {
 
   if (is.null(name)) name <- randomName()
+  if (is.null(dir)) dir <- tempdir()
 
   has.trans <- !(missing(parameter.transform))
 
@@ -204,7 +215,7 @@ pompCBuilder <- function (name = NULL,
   covarnames <- cleanForC(covarnames)
   obsnames <- cleanForC(obsnames)
 
-  stem <- if (save) name else file.path(tempdir(),name)
+  stem <- file.path(dir,name)
   if (.Platform$OS.type=="windows") {
     stem <- gsub("\\","/",stem,fixed=TRUE)
   }
@@ -221,6 +232,8 @@ pompCBuilder <- function (name = NULL,
   out <- file(description=modelfile,open="w")
   
   cat(file=out,render(header$file,name=name,pompheader=pompheader))
+
+  cat(file=out,header$stackhandling)
 
   for (f in utility.fns) {
     cat(file=out,f)
@@ -324,8 +337,6 @@ pompCBuilder <- function (name = NULL,
   else if (verbose)
     cat("model codes written to",sQuote(modelfile),
         "\nlink to shared-object library",sQuote(solib),"\n")
-
-  if (link) dyn.load(solib)
 
   invisible(c(name,solib))
 }

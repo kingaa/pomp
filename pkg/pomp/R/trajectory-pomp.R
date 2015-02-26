@@ -1,5 +1,7 @@
 trajectory.internal <- function (object, params, times, t0, as.data.frame = FALSE, .getnativesymbolinfo = TRUE, ...) {
 
+  pompLoad(object)
+  
   if (missing(times))
     times <- time(object,t0=FALSE)
   else
@@ -110,6 +112,8 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
     x <- do.call(rbind,x)
     x$traj <- factor(x$traj)
   }
+
+  pompUnload(object)
 
   x
 }

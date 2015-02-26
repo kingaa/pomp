@@ -1,6 +1,8 @@
 minim.internal <- function(objfun, start, est, object, method, transform, verbose, ...)
 {
 
+  pompLoad(object)
+
   transform <- as.logical(transform)
   est <- as.character(est)
   
@@ -62,6 +64,8 @@ minim.internal <- function(objfun, start, est, object, method, transform, verbos
   if (transform)
     start <- partrans(object,start,dir='forward')
   
+  pompUnload(object)
+
   list(
        params=start,
        est=est,

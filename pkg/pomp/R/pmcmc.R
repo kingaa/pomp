@@ -30,6 +30,8 @@ pmcmc.internal <- function (object, Nmcmc,
   gnsi <- as.logical(.getnativesymbolinfo)
   .ndone <- as.integer(.ndone)
 
+  pompLoad(object)
+
   if (missing(start))
     stop(sQuote("start")," must be specified",call.=FALSE)
   if (length(start)==0)
@@ -168,6 +170,8 @@ pmcmc.internal <- function (object, Nmcmc,
 
   pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
   pars <- names(pars[pars])
+
+  pompUnload(object)
 
   new(
       "pmcmc",

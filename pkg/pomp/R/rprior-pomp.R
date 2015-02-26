@@ -1,10 +1,14 @@
 ## simulate from the prior
 
 rprior.internal <- function (object, params, .getnativesymbolinfo = TRUE, ...) {
-  .Call(do_rprior,object,params,.getnativesymbolinfo)
+  pompLoad(object)
+  rv <- .Call(do_rprior,object,params,.getnativesymbolinfo)
+  pompUnload(object)
+  rv
 }
 
-setMethod("rprior","pomp",
-          function (object, params, ...)
+setMethod("rprior",
+          signature=signature("pomp"),
+          definition=function (object, params, ...)
           rprior.internal(object=object,params=params,...)
           )

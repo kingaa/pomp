@@ -5,6 +5,7 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                                times, t0, as.data.frame = FALSE,
                                include.data = FALSE,
                                .getnativesymbolinfo = TRUE, ...) {
+  pompLoad(object)
 
   if (missing(times))
     times <- time(object,t0=FALSE)
@@ -121,6 +122,8 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
     retval$sim <- factor(retval$sim)
 
   }
+
+  pompUnload(object)
 
   retval
 }

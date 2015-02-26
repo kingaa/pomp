@@ -17,7 +17,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
   if (missing(times)) stop(sQuote("times")," is a required argument")
   if (missing(t0)) stop(sQuote("t0")," is a required argument")
   if (missing(params)) params <- numeric(0)
-  if (missing(.solibfile)) .solibfile <- character(0)
+  if (missing(.solibfile)) .solibfile <- list()
   
   if (missing(userdata)) userdata <- list()
   added.userdata <- list(...)
@@ -144,8 +144,6 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                                   paramnames=paramnames,
                                   covarnames=covarnames,
                                   globals=globals,
-                                  link=TRUE,
-                                  save=FALSE,
                                   verbose=verbose
                                   ),
                              snips
@@ -157,8 +155,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
       stop("in ",sQuote("pomp"),": error in building shared-object library from Csnippets:\n",
            libname,call.=FALSE)
     } else {
-      .solibfile <- c(.solibfile,libname[2L])
-      libname <- libname[1L]
+      .solibfile <- c(.solibfile,list(libname))
+      libname <- libname[1]
     }
   } else {
     libname <- ''
@@ -703,6 +701,7 @@ setMethod(
                              parameter.inv.transform=par.untrans,
                              params=params,
                              globals=globals,
+                             .solibfile=data@solibfile,
                              userdata=data@userdata,
                              ...
                              )

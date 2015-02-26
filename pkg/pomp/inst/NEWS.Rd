@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.61-1}{
+  \itemize{
+    \item When using \code{Csnippet}s or \code{pompBuilder}, it is no longer necessary to manually load and unload the dynamically loadable library.
+    This is now handled automatically.
+    Accordingly, the \code{link} argument of \code{pompBuilder} and the \code{pompLoad} and \code{pompUnload} functions have been removed.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.60-1}{
   \itemize{
     \item \code{pmcmc} and \code{abc} can now use arbitrary symmetric proposal distributions via the \code{proposal} argument.

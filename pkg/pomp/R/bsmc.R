@@ -40,6 +40,8 @@ bsmc.internal <- function (object, params, Np, est,
                            .getnativesymbolinfo = TRUE,
                            ...) {
 
+  pompLoad(object)
+
   gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
   ptsi.inv <- ptsi.for <- TRUE
   transform <- as.logical(transform)
@@ -334,6 +336,8 @@ bsmc.internal <- function (object, params, Np, est,
   
   ## replace parameters with point estimate (posterior median)
   coef(object,transform=transform) <- apply(params,1,median)
+
+  pompUnload(object)
 
   new(
       "bsmcd.pomp",

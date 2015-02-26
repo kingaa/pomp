@@ -118,6 +118,8 @@ mif.internal <- function (object, Nmif,
                           .getnativesymbolinfo = TRUE,
                           ...) {
   
+  pompLoad(object)
+
   gnsi <- as.logical(.getnativesymbolinfo)
 
   transform <- as.logical(transform)
@@ -386,6 +388,8 @@ mif.internal <- function (object, Nmif,
   ## back transform the parameter estimate if necessary
   if (transform) theta <- partrans(pfp,theta,dir="forward")
   
+  pompUnload(object)
+
   new(
       "mif",
       pfp,

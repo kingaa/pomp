@@ -44,6 +44,8 @@ pfilter.internal <- function (object, params, Np,
                               .transform,
                               .getnativesymbolinfo = TRUE) {
 
+  pompLoad(object)
+
   ptsi.inv <- ptsi.for <- gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
   mif2 <- as.logical(.mif2)
   transform <- as.logical(.transform)
@@ -333,6 +335,8 @@ pfilter.internal <- function (object, params, Np,
     warning(sprintf(ngettext(nfail,msg1="%d filtering failure occurred in ",
                              msg2="%d filtering failures occurred in "),nfail),
             sQuote("pfilter"),call.=FALSE)
+
+  pompUnload(object)
 
   new(
       "pfilterd.pomp",

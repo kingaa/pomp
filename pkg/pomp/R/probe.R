@@ -14,6 +14,8 @@ setClass(
 
 probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) {
 
+  pompLoad(object)
+
   if (!is.list(probes)) probes <- list(probes)
   if (!all(sapply(probes,is.function)))
     stop(sQuote("probes")," must be a function or a list of functions")
@@ -55,6 +57,8 @@ probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) 
   ll <- .Call(synth_loglik,simval,datval)
 
   coef(object) <- params
+
+  pompUnload(object)
 
   new(
       "probed.pomp",

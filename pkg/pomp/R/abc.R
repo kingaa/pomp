@@ -36,6 +36,8 @@ abc.internal <- function (object, Nabc,
   epsilon <- as.numeric(epsilon)
   epssq <- epsilon*epsilon
 
+  pompLoad(object)
+
   if (length(start)==0)
     stop(
          "abc error: ",sQuote("start")," must be specified if ",
@@ -139,6 +141,8 @@ abc.internal <- function (object, Nabc,
 
   pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
   pars <- names(pars[pars])
+
+  pompUnload(object)
 
   new(
       'abc',

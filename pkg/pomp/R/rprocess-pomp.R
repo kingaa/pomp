@@ -1,7 +1,12 @@
 ## simulate the process model
 
-rprocess.internal <- function (object, xstart, times, params, offset = 0, .getnativesymbolinfo = TRUE, ...)
-  .Call(do_rprocess,object,xstart,times,params,offset,.getnativesymbolinfo)
+rprocess.internal <- function (object, xstart, times, params, offset = 0, .getnativesymbolinfo = TRUE, ...) {
+  pompLoad(object)
+  rv <- .Call(do_rprocess,object,xstart,times,params,offset,.getnativesymbolinfo)
+  pompUnload(object)
+  rv
+}  
+  
 
 setMethod(
           "rprocess",

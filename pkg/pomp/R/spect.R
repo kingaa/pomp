@@ -144,6 +144,8 @@ setMethod(
                     detrend = c("none","mean","linear","quadratic"),
                     ...) {
 
+            pompLoad(object)
+            
             if (missing(params)) params <- coef(object)
 
             if (missing(vars))
@@ -199,6 +201,8 @@ setMethod(
 
             coef(object) <- params
 
+            pompUnload(object)
+            
             new(
                 "spect.pomp",
                 object,

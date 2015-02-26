@@ -59,6 +59,8 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                           eval.only, transform.data, ...)
 {
   
+  pompLoad(object)
+
   if (eval.only) est <- character(0)
   if (missing(start)) start <- coef(object)
   if (transform)
@@ -374,6 +376,8 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
     opt$npts <- npts
   }
   
+  pompUnload(object)
+
   new(
       "nlfd.pomp",
       object,

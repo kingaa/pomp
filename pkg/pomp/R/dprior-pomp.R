@@ -2,10 +2,14 @@
 
 dprior.internal <- function (object, params, log = FALSE,
                              .getnativesymbolinfo = TRUE, ...) {
-  .Call(do_dprior,object,params,log,.getnativesymbolinfo)
+  pompLoad(object)
+  rv <- .Call(do_dprior,object,params,log,.getnativesymbolinfo)
+  pompUnload(object)
+  rv
 }
 
-setMethod("dprior","pomp",
+setMethod("dprior",
+          signature=signature("pomp"),
           function (object, params, log = FALSE, ...)
           dprior.internal(object=object,params=params,log=log,...)
           )

@@ -65,6 +65,8 @@ pmof.internal <- function (object, params, est, probes,
     
   function (par) {
     
+    pompLoad(object)
+
     params[par.est.idx] <- par
     
     if (transform)
@@ -82,6 +84,7 @@ pmof.internal <- function (object, params, est, probes,
                     )
     
     ll <- .Call(synth_loglik,simval,datval)
+    pompUnload(object)
     if (is.finite(ll)||is.na(fail.value)) -ll else fail.value
   }
 }
@@ -136,6 +139,8 @@ setMethod(
                    transform = FALSE,
                    ...) {
 
+            pompLoad(object)
+            
             if (missing(start)) start <- coef(object)
             if (missing(probes)) stop(sQuote("probes")," must be supplied")
             if (missing(nsim)) stop(sQuote("nsim")," must be supplied")
@@ -166,6 +171,8 @@ setMethod(
                                 )
 
             coef(object) <- m$params
+            
+            pompUnload(object)
             
             new(
                 "probe.matched.pomp",
