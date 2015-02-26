@@ -113,83 +113,6 @@ setMethod("pompUnload",
             pompUnload.internal(object,...)
           })
 
-define <- list(
-               var="#define {%variable%}\t({%ptr%}[{%ilist%}[{%index%}]])\n",
-               var.alt="#define {%variable%}\t({%ptr%}[{%index%}])\n"
-               )
-
-undefine <- list(
-                 var="#undef {%variable%}\n"
-                 )
-
-header <- list(
-               file="/* pomp model file: {%name%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
-               registration="\nvoid R_init_{%name%} (DllInfo *info)\n{\n",
-               rmeasure="\nvoid {%name%}_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
-               dmeasure= "\nvoid {%name%}_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
-               step.fn="\nvoid {%name%}_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
-               skeleton="\nvoid {%name%}_skelfn (double *__f, double *__x, double *__p, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
-               parameter.transform="\nvoid {%name%}_par_trans (double *__pt, double *__p, int *__parindex)\n{\n",
-               parameter.inv.transform="\nvoid {%name%}_par_untrans (double *__pt, double *__p, int *__parindex)\n{\n",
-               rprior="\nvoid {%name%}_rprior (double *__p, int *__parindex)\n{\n",
-               dprior="\nvoid {%name%}_dprior (double *__lik, double *__p, int give_log, int *__parindex)\n{\n"
-               )
-
-fnames <- list(
-               rmeasure="{%name%}_rmeasure",
-               dmeasure= "{%name%}_dmeasure",
-               step.fn="{%name%}_stepfn",
-               skeleton="{%name%}_skelfn",
-               parameter.transform="{%name%}_par_trans",
-               parameter.inv.transform="{%name%}_par_untrans",
-               rprior="{%name%}_rprior",
-               dprior="{%name%}_dprior"
-               )
-
-regist <- list(
-               rmeasure="R_RegisterCCallable(\"{%name%}\", \"{%name%}_rmeasure\", (DL_FUNC) {%name%}_rmeasure);\n",
-               dmeasure="R_RegisterCCallable(\"{%name%}\", \"{%name%}_dmeasure\", (DL_FUNC) {%name%}_dmeasure);\n",
-               step.fn="R_RegisterCCallable(\"{%name%}\", \"{%name%}_stepfn\", (DL_FUNC) {%name%}_stepfn);\n",
-               skeleton="R_RegisterCCallable(\"{%name%}\", \"{%name%}_skelfn\", (DL_FUNC) {%name%}_skelfn);\n",
-               parameter.transform="R_RegisterCCallable(\"{%name%}\", \"{%name%}_par_trans\", (DL_FUNC) {%name%}_par_trans);\n",
-               parameter.inv.transform="R_RegisterCCallable(\"{%name%}\", \"{%name%}_par_untrans\", (DL_FUNC) {%name%}_par_untrans);\n",
-               rprior="R_RegisterCCallable(\"{%name%}\", \"{%name%}_rprior\", (DL_FUNC) {%name%}_rprior);\n",
-               dprior="R_RegisterCCallable(\"{%name%}\", \"{%name%}_dprior\", (DL_FUNC) {%name%}_dprior);\n",
-               loadstack.incr="R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_incr\", (DL_FUNC) __pomp_load_stack_incr);\n",
-               loadstack.decr="R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_decr\", (DL_FUNC) __pomp_load_stack_decr);\n"
-               )
-
-decl <- list(
-             periodic_bspline_basis_eval="\tvoid (*periodic_bspline_basis_eval)(double,double,int,int,double*);\nperiodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n",
-             get_pomp_userdata_int="\tconst int * (*get_pomp_userdata_int)(const char *);\nget_pomp_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
-             get_pomp_userdata_double="\tconst double * (*get_pomp_userdata_double)(const char *);\nget_pomp_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n",
-             `get_pomp_userdata(\\b|[^_])`="\tconst SEXP (*get_pomp_userdata)(const char *);\nget_pomp_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n"
-             )
-
-footer <- list(
-               rmeasure="\n}\n\n",
-               dmeasure="\n}\n\n",
-               step.fn="\n}\n\n",
-               skeleton="\n}\n\n",
-               parameter.transform="\n}\n\n",
-               parameter.inv.transform="\n}\n\n",
-               rprior="\n}\n\n",
-               dprior="\n}\n\n",
-               globals="\n",
-               registration="}\n\n"
-               )
-
-               stackhandling <- "
-static int __pomp_load_stack = 0;\n
-void __pomp_load_stack_incr (void) {
-  ++__pomp_load_stack;
-}\n
-void __pomp_load_stack_decr (int *val) {
-  *val = --__pomp_load_stack;
-}\n"
-
-utility.fns <- list()
-
 callable.decl <- function (code) {
   fns <- vapply(names(decl),grepl,logical(1),code,perl=TRUE)
   do.call(paste0,decl[fns])
@@ -394,3 +317,81 @@ render <- function (template, ...) {
   do.call(paste0,retval)
 }
 
+## TEMPLATES
+
+define <- list(
+               var="#define {%variable%}\t({%ptr%}[{%ilist%}[{%index%}]])\n",
+               var.alt="#define {%variable%}\t({%ptr%}[{%index%}])\n"
+               )
+
+undefine <- list(
+                 var="#undef {%variable%}\n"
+                 )
+
+header <- list(
+               file="/* pomp model file: {%name%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
+               registration="\nvoid R_init_{%name%} (DllInfo *info)\n{\n",
+               rmeasure="\nvoid {%name%}_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
+               dmeasure= "\nvoid {%name%}_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
+               step.fn="\nvoid {%name%}_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
+               skeleton="\nvoid {%name%}_skelfn (double *__f, double *__x, double *__p, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
+               parameter.transform="\nvoid {%name%}_par_trans (double *__pt, double *__p, int *__parindex)\n{\n",
+               parameter.inv.transform="\nvoid {%name%}_par_untrans (double *__pt, double *__p, int *__parindex)\n{\n",
+               rprior="\nvoid {%name%}_rprior (double *__p, int *__parindex)\n{\n",
+               dprior="\nvoid {%name%}_dprior (double *__lik, double *__p, int give_log, int *__parindex)\n{\n"
+               )
+
+fnames <- list(
+               rmeasure="{%name%}_rmeasure",
+               dmeasure= "{%name%}_dmeasure",
+               step.fn="{%name%}_stepfn",
+               skeleton="{%name%}_skelfn",
+               parameter.transform="{%name%}_par_trans",
+               parameter.inv.transform="{%name%}_par_untrans",
+               rprior="{%name%}_rprior",
+               dprior="{%name%}_dprior"
+               )
+
+regist <- list(
+               rmeasure="R_RegisterCCallable(\"{%name%}\", \"{%name%}_rmeasure\", (DL_FUNC) {%name%}_rmeasure);\n",
+               dmeasure="R_RegisterCCallable(\"{%name%}\", \"{%name%}_dmeasure\", (DL_FUNC) {%name%}_dmeasure);\n",
+               step.fn="R_RegisterCCallable(\"{%name%}\", \"{%name%}_stepfn\", (DL_FUNC) {%name%}_stepfn);\n",
+               skeleton="R_RegisterCCallable(\"{%name%}\", \"{%name%}_skelfn\", (DL_FUNC) {%name%}_skelfn);\n",
+               parameter.transform="R_RegisterCCallable(\"{%name%}\", \"{%name%}_par_trans\", (DL_FUNC) {%name%}_par_trans);\n",
+               parameter.inv.transform="R_RegisterCCallable(\"{%name%}\", \"{%name%}_par_untrans\", (DL_FUNC) {%name%}_par_untrans);\n",
+               rprior="R_RegisterCCallable(\"{%name%}\", \"{%name%}_rprior\", (DL_FUNC) {%name%}_rprior);\n",
+               dprior="R_RegisterCCallable(\"{%name%}\", \"{%name%}_dprior\", (DL_FUNC) {%name%}_dprior);\n",
+               loadstack.incr="R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_incr\", (DL_FUNC) __pomp_load_stack_incr);\n",
+               loadstack.decr="R_RegisterCCallable(\"{%name%}\", \"__pomp_load_stack_decr\", (DL_FUNC) __pomp_load_stack_decr);\n"
+               )
+
+decl <- list(
+             periodic_bspline_basis_eval="\tvoid (*periodic_bspline_basis_eval)(double,double,int,int,double*);\nperiodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n",
+             get_pomp_userdata_int="\tconst int * (*get_pomp_userdata_int)(const char *);\nget_pomp_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
+             get_pomp_userdata_double="\tconst double * (*get_pomp_userdata_double)(const char *);\nget_pomp_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n",
+             `get_pomp_userdata(\\b|[^_])`="\tconst SEXP (*get_pomp_userdata)(const char *);\nget_pomp_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n"
+             )
+
+footer <- list(
+               rmeasure="\n}\n\n",
+               dmeasure="\n}\n\n",
+               step.fn="\n}\n\n",
+               skeleton="\n}\n\n",
+               parameter.transform="\n}\n\n",
+               parameter.inv.transform="\n}\n\n",
+               rprior="\n}\n\n",
+               dprior="\n}\n\n",
+               globals="\n",
+               registration="}\n\n"
+               )
+
+stackhandling <- "
+static int __pomp_load_stack = 0;\n
+void __pomp_load_stack_incr (void) {
+  ++__pomp_load_stack;
+}\n
+void __pomp_load_stack_decr (int *val) {
+  *val = --__pomp_load_stack;
+}\n"
+
+utility.fns <- list()
