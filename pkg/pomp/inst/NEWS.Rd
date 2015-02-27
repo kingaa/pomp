@@ -1,8 +1,8 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 0.62-1}{
+\section{Changes in \pkg{pomp} version 0.61-3}{
   \itemize{
-    \item \code{mif}'s \code{pars} argument, which is redundant, is now ignored with a warning.
+    \item \code{mif}'s \code{pars} argument, which is redundant, is now deprecated.
     In a future release, this argument will be removed.
   }
 }

@@ -114,26 +114,56 @@ mif.internal <- function (object, Nmif,
   if (is.null(start.names))
     stop("mif error: ",sQuote("start")," must be a named vector",call.=FALSE)
   
-  if (!is.null(pars)) {
-    warning("mif warning: the ",sQuote("pars")," argument to ",sQuote("mif")," is unnecessary and deprecated and will be ignored.\n",
-            "This behavior differs from that previous to ",sQuote("pomp")," version 0.62",call.=FALSE)
-  }
-
   rw.names <- names(rw.sd)
   if (is.null(rw.names) || any(rw.sd<0))
     stop("mif error: ",sQuote("rw.sd")," must be a named non-negative numerical vector",call.=FALSE)
   if (!all(rw.names%in%start.names))
     stop("mif error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
-  rw.names <- rw.names[rw.sd>0]
+  rw.names <- names(rw.sd[rw.sd>0])
   if (length(rw.names) == 0)
     stop("mif error: ",sQuote("rw.sd")," must have one positive entry for each parameter to be estimated",call.=FALSE)
-  pars <- rw.names[!(rw.names%in%ivps)]
   
-  if (!is.character(ivps) || !all(ivps%in%start.names))
-    stop("mif error: ",sQuote("ivps")," must name model parameters",call.=FALSE)
-
-##  rw.sd <- rw.sd[c(pars,ivps)]
-##  rw.names <- names(rw.sd)
+  if (is.null(pars))
+    pars <- rw.names[!(rw.names%in%ivps)]
+  else
+    warning("mif warning: argument ",sQuote("pars")," is redundant and deprecated.  It will be removed in a future release.",call.=FALSE)
+  
+  if (
+      !is.character(pars) ||
+      !is.character(ivps) ||
+      !all(pars%in%start.names) ||
+      !all(ivps%in%start.names) ||
+      any(pars%in%ivps) ||
+      any(ivps%in%pars) ||
+      !all(pars%in%rw.names) ||
+      !all(ivps%in%rw.names)
+      )
+    stop(
+         "mif error: ",
+         sQuote("pars")," and ",sQuote("ivps"),
+         " must be mutually disjoint subsets of ",
+         sQuote("names(start)"),
+         " and must have a positive random-walk SDs specified in ",
+         sQuote("rw.sd"),
+         call.=FALSE
+         )
+  
+  if (!all(rw.names%in%c(pars,ivps))) {
+    extra.rws <- rw.names[!(rw.names%in%c(pars,ivps))]
+    warning(
+            ngettext(length(extra.rws),"mif warning: the variable ",
+                     "mif warning: the variables "),
+            paste(sQuote(extra.rws),collapse=", "),
+            ngettext(length(extra.rws)," has positive random-walk SD specified, but is included in neither ",
+                     " have positive random-walk SDs specified, but are included in neither "),
+            sQuote("pars")," nor ",sQuote("ivps"),
+            ngettext(length(extra.rws),". This random walk SD will be ignored.",
+                     ". These random walk SDs will be ignored."),
+            call.=FALSE
+            )
+  }
+  rw.sd <- rw.sd[c(pars,ivps)]
+  rw.names <- names(rw.sd)
   
   ntimes <- length(time(object))
   if (is.null(Np)) stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)

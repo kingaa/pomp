@@ -133,4 +133,4 @@ The following transformed parameters are non-finite: 'r'
 > 
 > proc.time()
    user  system elapsed 
-  1.616   0.052   1.820 
+  1.576   0.052   1.652 

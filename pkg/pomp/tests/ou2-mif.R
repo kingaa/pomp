@@ -19,7 +19,7 @@ guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.5*guess1[c('x1.0','x2.0','alph
 guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 
 mif1 <- mif(ou2,Nmif=30,start=guess1,
-            ivps=c('x1.0','x2.0'),
+            pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
             rw.sd=c(
               x1.0=5,x2.0=5,
               alpha.2=0.1,alpha.3=0.1
@@ -33,7 +33,7 @@ mif1 <- mif(ou2,Nmif=30,start=guess1,
             )
 
 mif2 <- mif(ou2,Nmif=30,start=guess2,
-            ivps=c('x1.0','x2.0'),
+            pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
             transform=TRUE,
             rw.sd=c(
               x1.0=5,x2.0=5,
@@ -60,9 +60,66 @@ try(
     mif(
         ou2,
         Nmif=1,
+        pars=c("alpha.1","alpha.4","x1.0"),
         ivps=c("x1.0","x2.0"),
-        rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=-1),
+        rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
         Np=100,cooling.type="geometric",cooling.fraction=0.95^50,
+        ic.lag=10,var.factor=1
+        )
+    )
+
+try(
+    mif(
+        ou2,
+        Nmif=1,
+        pars=c("alpha.1","alpha.4"),
+        ivps=c("x1.0","x2.0"),
+        rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
+        Np=100,
+        cooling.type="geometric",cooling.fraction=0.95^50,
+        ic.lag=10,var.factor=1
+        )
+    )
+
+try(
+    mif(
+        ou2,
+        Nmif=1,
+        ivps=c("x1.0","x2.0"),
+        rw.sd=c(alpha.1=0.1,alpha.4=0.2,alpha.3=0),
+        Np=100,cooling.type="geometric",cooling.fraction=0.95^50,
+        cooling.factor=0.95,ic.lag=10,var.factor=1
+        )
+    )
+
+try(
+    mif(
+        ou2,
+        Nmif=1,
+        ivps=c("x1.0","x2.0"),
+        rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
+        Np=100,ic.lag=10,var.factor=1
+        )
+    )
+
+try(
+    mif(
+        ou2,
+        Nmif=1,
+        ivps=c("x1.0","x2.0"),
+        rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
+        Np=-10,cooling.type="geometric",cooling.fraction=0.95^50,
+        ic.lag=10,var.factor=1
+        )
+    )
+
+try(
+    mif(
+        ou2,
+        Nmif=-3,
+        ivps=c("x1.0","x2.0"),
+        rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
+        Np=11.6,cooling.type="geometric",cooling.fraction=0.95^50,
         ic.lag=10,var.factor=1
         )
     )
@@ -94,6 +151,7 @@ try(
 fit <- mif(
            ou2,
            Nmif=0,
+           pars=c("alpha.2","alpha.3"),
            ivps=c("x1.0","x2.0"),
            rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2,alpha.3=0),
            Np=100,cooling.type="geometric",cooling.fraction=0.95^50,
@@ -113,7 +171,7 @@ fit <- continue(fit,Nmif=2)
 ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100,verbose=T)
 ff <- pfilter(ff)
 fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.1))
-fit <- continue(fit,Nmif=2,ivps=c("x1.0"),rw.sd=c(x1.0=5,alpha.2=0.1))
+fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.2"))
 s <- coef(fit)
 s[2] <- 0.01
 fit <- mif(fit,Nmif=3,start=s)

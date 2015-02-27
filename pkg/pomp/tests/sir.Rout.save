@@ -192,7 +192,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x297a5b0>
+<environment: 0x24f3bf8>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -201,7 +201,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x29c1750>
+<environment: 0x228d048>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -274,7 +274,7 @@ parameter(s):
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.8456991 secs
+Time difference of 0.8555272 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -291,7 +291,7 @@ Time difference of 0.8456991 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.5423157 secs
+Time difference of 0.5343869 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -345,7 +345,7 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.511306 secs
+Time difference of 2.513178 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -353,7 +353,7 @@ Time difference of 2.511306 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01758862 secs
+Time difference of 0.01763391 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -450,4 +450,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
-  5.008   0.064   5.232 
+  5.024   0.052   5.246 

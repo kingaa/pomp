@@ -52,7 +52,7 @@ particle filter log likelihood at truth
 > guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 > 
 > mif1 <- mif(ou2,Nmif=30,start=guess1,
-+             ivps=c('x1.0','x2.0'),
++             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
 +             rw.sd=c(
 +               x1.0=5,x2.0=5,
 +               alpha.2=0.1,alpha.3=0.1
@@ -64,12 +64,13 @@ particle filter log likelihood at truth
 +             cooling.factor=0.95,
 +             max.fail=100
 +             )
-Warning message:
-'cooling.factor' is deprecated.
+Warning messages:
+1: mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
+2: 'cooling.factor' is deprecated.
 See '?mif' for instructions on specifying the cooling schedule. 
 > 
 > mif2 <- mif(ou2,Nmif=30,start=guess2,
-+             ivps=c('x1.0','x2.0'),
++             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
 +             transform=TRUE,
 +             rw.sd=c(
 +               x1.0=5,x2.0=5,
@@ -82,6 +83,8 @@ See '?mif' for instructions on specifying the cooling schedule.
 +             cooling.fraction=0.95^50,
 +             max.fail=100
 +             )
+Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > 
 > pdf(file="ou2-mif.pdf")
 > plot(mif1)
@@ -100,13 +103,80 @@ null device
 +     mif(
 +         ou2,
 +         Nmif=1,
++         pars=c("alpha.1","alpha.4","x1.0"),
 +         ivps=c("x1.0","x2.0"),
-+         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=-1),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
 +         Np=100,cooling.type="geometric",cooling.fraction=0.95^50,
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: 'rw.sd' must be a named non-negative numerical vector
+Error : mif error: 'pars' and 'ivps' must be mutually disjoint subsets of 'names(start)' and must have a positive random-walk SDs specified in 'rw.sd'
+In addition: Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=1,
++         pars=c("alpha.1","alpha.4"),
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
++         Np=100,
++         cooling.type="geometric",cooling.fraction=0.95^50,
++         ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: 'pars' and 'ivps' must be mutually disjoint subsets of 'names(start)' and must have a positive random-walk SDs specified in 'rw.sd'
+In addition: Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=1,
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(alpha.1=0.1,alpha.4=0.2,alpha.3=0),
++         Np=100,cooling.type="geometric",cooling.fraction=0.95^50,
++         cooling.factor=0.95,ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: 'pars' and 'ivps' must be mutually disjoint subsets of 'names(start)' and must have a positive random-walk SDs specified in 'rw.sd'
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=1,
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0.1,alpha.4=0.2,alpha.3=0),
++         Np=100,ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: 'cooling.fraction' must be specified
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=1,
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
++         Np=-10,cooling.type="geometric",cooling.fraction=0.95^50,
++         ic.lag=10,var.factor=1
++         )
++     )
+Error in mif.internal(object = object, Nmif = Nmif, start = start, ivps = ivps,  : 
+  number of particles, 'Np', must always be positive
+> 
+> try(
++     mif(
++         ou2,
++         Nmif=-3,
++         ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.1=0,alpha.4=0.2,alpha.3=0),
++         Np=11.6,cooling.type="geometric",cooling.fraction=0.95^50,
++         ic.lag=10,var.factor=1
++         )
++     )
+Error : mif error: 'Nmif' must be a positive integer
 > 
 > try(
 +     mif(
@@ -139,11 +209,14 @@ The following parameters are non-finite: 'x2.0'
 > fit <- mif(
 +            ou2,
 +            Nmif=0,
++            pars=c("alpha.2","alpha.3"),
 +            ivps=c("x1.0","x2.0"),
 +            rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2,alpha.3=0),
 +            Np=100,cooling.type="geometric",cooling.fraction=0.95^50,
 +            ic.lag=10,var.factor=1
 +            )
+Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > fit <- mif(
 +            fit,
 +            Nmif=2,
@@ -178,7 +251,10 @@ pfilter timestep 95 of 100 finished
 pfilter timestep 100 of 100 finished
 > ff <- pfilter(ff)
 > fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.1))
-> fit <- continue(fit,Nmif=2,ivps=c("x1.0"),rw.sd=c(x1.0=5,alpha.2=0.1))
+> fit <- continue(fit,Nmif=2,ivps=c("x1.0"),pars=c("alpha.2"))
+Warning messages:
+1: mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
+2: mif warning: the variables 'alpha.3', 'x2.0' have positive random-walk SDs specified, but are included in neither 'pars' nor 'ivps'. These random walk SDs will be ignored. 
 > s <- coef(fit)
 > s[2] <- 0.01
 > fit <- mif(fit,Nmif=3,start=s)
@@ -217,4 +293,4 @@ pfilter timestep 100 of 100 finished
 > 
 > proc.time()
    user  system elapsed 
- 12.032   0.080  12.261 
+ 15.048   0.037  15.088 

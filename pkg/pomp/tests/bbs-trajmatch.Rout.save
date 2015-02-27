@@ -80,4 +80,4 @@ Error : trajectory error: error in ODE integrator
 > 
 > proc.time()
    user  system elapsed 
-  2.448   0.052   2.525 
+  2.480   0.052   2.555 

@@ -32,7 +32,7 @@ newly created object(s):
 > 
 > set.seed(64857673L)
 > mif1a <- mif(ou2,Nmif=100,start=guess1,
-+              ivps=c('x1.0','x2.0'),
++              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -45,9 +45,11 @@ newly created object(s):
 +              method="mif2",
 +              tol=1e-8
 +              )
+Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > 
 > mif2a <- mif(ou2,Nmif=100,start=guess1,
-+              ivps=c('x1.0','x2.0'),
++              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=0.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -61,12 +63,14 @@ newly created object(s):
 +              method="mif",
 +              tol=1e-8
 +              )  
+Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > 
 > plot(c(mif1a,mif2a))
 > 
 > set.seed(64857673L)
 > mif1b <- mif(ou2,Nmif=50,start=guess1,
-+              ivps=c('x1.0','x2.0'),
++              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -78,10 +82,12 @@ newly created object(s):
 +              cooling.fraction=0.05,
 +              method="mif2"
 +              )
+Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > mif1b <- continue(mif1b,Nmif=50)
 > 
 > mif2b <- mif(ou2,Nmif=50,start=guess1,
-+              ivps=c('x1.0','x2.0'),
++              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=0.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -95,13 +101,14 @@ newly created object(s):
 +              max.fail=100,
 +              method="mif"
 +              )  
-Warning message:
-'cooling.factor' is deprecated.
+Warning messages:
+1: mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
+2: 'cooling.factor' is deprecated.
 See '?mif' for instructions on specifying the cooling schedule. 
 > mif2b <- continue(mif2b,Nmif=50)
 > 
 > mif2c <- mif(ou2,Nmif=50,start=guess1,
-+              ivps=c('x1.0','x2.0'),
++              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=0.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -113,6 +120,8 @@ See '?mif' for instructions on specifying the cooling schedule.
 +              max.fail=100,
 +              method="mif2"
 +              )  
+Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > mif2c <- continue(mif2c,Nmif=50)
 > 
 > plot(c(mif1b,mif2b))
@@ -135,4 +144,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 51.303   0.148  51.806 
+ 66.333   0.037  66.430 
