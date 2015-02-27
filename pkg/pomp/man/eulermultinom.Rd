@@ -26,41 +26,24 @@ rgammawn(n = 1, sigma, dt)
   \deqn{(N-\sum_{i=1}^k \Delta n_i, \Delta n_1, \dots, \Delta n_k) \sim \mathrm{multinomial}(N;p_0,p_1,\dots,p_k),}{(N-\sum(dni), dn1, \dots, dnk) ~ multinomial(N;p0,p1,\dots,pk),}
   where \eqn{\Delta n_i}{dni} is the number of individuals dying in way \eqn{i} over the interval, the probability of remaining alive is \eqn{p_0=\exp(-\sum_i r_i \Delta t)}{p0=exp(-\sum(ri dt))}, and the probability of dying in way \eqn{j} is
   \deqn{p_j=\frac{r_j}{\sum_i r_i} (1-\exp(-\sum_i r_i \Delta t)).}{pj=(1-exp(-sum(ri dt))) rj/(\sum(ri)).}
-  In this case, we can say that
+  In this case, we say that
   \deqn{(\Delta n_1, \dots, \Delta n_k) \sim \mathrm{eulermultinom}(N,r,\Delta t),}{(dn1,\dots,dnk)~eulermultinom(N,r,dt),}
   where \eqn{r=(r_1,\dots,r_k)}{r=(r1,\dots,rk)}.
-  Draw \eqn{m} random samples from this distribution by doing
-  
-  \code{dn <- reulermultinom(n=m,size=N,rate=r,dt=dt)},
-
+  Draw \eqn{m} random samples from this distribution by doing \preformatted{dn <- reulermultinom(n=m,size=N,rate=r,dt=dt),}
   where \code{r} is the vector of rates.
-  Evaluate the probability that \eqn{x=(x_1,\dots,x_k)}{x=(x1,\dots,xk)} are the numbers of individuals who have died in each of the \eqn{k} ways over the interval \eqn{\Delta t=}{}\code{dt}, by doing
-
-  \code{deulermultinom(x=x,size=N,rate=r,dt=dt)}.
+  Evaluate the probability that \eqn{x=(x_1,\dots,x_k)}{x=(x1,\dots,xk)} are the numbers of individuals who have died in each of the \eqn{k} ways over the interval \eqn{\Delta t=}{}\code{dt}, by doing \preformatted{deulermultinom(x=x,size=N,rate=r,dt=dt).}
   
-  Bret\'o & Ionides discuss how an infinitesimally overdispersed death process can be constructed by compounding a binomial process with a Gamma white noise process.
+  Breto & Ionides (2011) discuss how an infinitesimally overdispersed death process can be constructed by compounding a binomial process with a Gamma white noise process.
   The Euler approximation of the resulting process can be obtained as follows.
-  Let the increments of the equidispersed process be given by
-
-  \code{reulermultinom(size=N,rate=r,dt=dt)}.
-  
+  Let the increments of the equidispersed process be given by \preformatted{reulermultinom(size=N,rate=r,dt=dt).}
   In this expression, replace the rate \eqn{r} with \eqn{r {\Delta W}/{\Delta t}},
-  where \eqn{\Delta W ~ Gamma(dt/\sigma^2,\sigma^2)} is the increment of an integrated Gamma white noise process with intensity \eqn{\sigma}.
-  That is, \eqn{\Delta W} has mean \eqn{\Delta t} and variance \eqn{\sigma^2 \Delta t}.
+  where \eqn{\Delta\!W \sim \mathrm{Gamma}(\Delta\!t/\sigma^2,\sigma^2)} is the increment of an integrated Gamma white noise process with intensity \eqn{\sigma}.
+  That is, \eqn{\Delta\!W} has mean \eqn{\Delta\!t} and variance \eqn{\sigma^2 \Delta\!t}.
   The resulting process is overdispersed and converges (as \eqn{\Delta t} goes to zero) to a well-defined process.
-  The following lines of \R code accomplish this:
-  \preformatted{
-    dW <- rgammawn(sigma=sigma,dt=dt)
-    dn <- reulermultinom(size=N,rate=r,dt=dW)
-  }
-  or
-  \preformatted{
-    dn <- reulermultinom(size=N,rate=r*dW/dt,dt=dt).
-  }
+  The following lines of \R code accomplish this: \preformatted{dW <- rgammawn(sigma=sigma,dt=dt)} \preformatted{dn <- reulermultinom(size=N,rate=r,dt=dW)} or \preformatted{dn <- reulermultinom(size=N,rate=r*dW/dt,dt=dt).}
   He et al. use such overdispersed death processes in modeling measles.
   
-  For all of the functions described here, access to the underlying C routines is available:
-  see below.
+  For all of the functions described here, access to the underlying C routines is available: see below.
 }
 \value{
   \item{reulermultinom}{
@@ -75,8 +58,8 @@ rgammawn(n = 1, sigma, dt)
     Returns a vector of length \code{n} containing random increments of the integrated Gamma white noise process with intensity \code{sigma}.
   }
 }
-\section{C interface}{
-  A C API for these functions is also provided by the package.
+\section{C API}{
+  An interface for C codes using these functions is provided by the package.
   At an \R prompt, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view the header file that defines and explains the API.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
@@ -89,7 +72,7 @@ dW <- rgammawn(sigma=0.1,dt=dt)
 print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW))
 }
 \references{
-  C. Bret\'o & E. L. Ionides,
+  C. Breto & E. L. Ionides,
   Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems.
   Stoch. Proc. Appl., 121:2571--2591, 2011.
 

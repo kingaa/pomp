@@ -1,6 +1,7 @@
 \name{Probe functions}
 \title{Some useful probes for partially-observed Markov processes}
 \alias{Probe functions}
+\alias{probe functions}
 \alias{basic.probes}
 \alias{probe.mean}
 \alias{probe.median}

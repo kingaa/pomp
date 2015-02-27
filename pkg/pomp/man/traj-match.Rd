@@ -1,5 +1,5 @@
 \name{Trajectory matching}
-\title{Trajectory matching}
+\title{Parameter estimation by fitting the trajectory of a model's deterministic skeleton to data}
 \alias{Trajectory matching}
 \alias{traj.match}
 \alias{traj.match-pomp}
@@ -17,9 +17,10 @@
 \alias{traj.match.objfun-pomp}
 \alias{traj.match.objfun,pomp-method}
 \description{
-  Facilities for matching trajectories of a model's deterministic skeleton to data.
+  This function attempts to match trajectories of a model's deterministic skeleton to data.
   Trajectory matching is equivalent to maximum likelihood estimation under the assumption that process noise is entirely absent,
   i.e., that all stochasticity is measurement error.
+  Accordingly, this method uses only the \code{skeleton} and \code{dmeasure} components of a \acronym{POMP} model.
 }
 \usage{
   \S4method{traj.match}{pomp}(object, start, est = character(0),

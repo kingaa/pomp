@@ -152,7 +152,6 @@
       In this case, if some of the names in \code{pars} do not already name parameters in \code{coef(object,transform=TRUE)}, then they are concatenated.
     }
     \item{obs}{
-      These functions are synonymous.
       \code{obs(object)} returns the array of observations.
       \code{obs(object,vars)} gives just the observations of variables named in \code{vars}.
       \code{vars} may specify the variables by position or by name.
@@ -186,9 +185,7 @@
       Additional arguments are passed to the low-level plotting routine.
     }
     \item{print}{Prints the \code{pomp} object in a nice way.}
-    \item{as, coerce}{
-      The \code{coerce} method should typically not be used directly.
-      It is defined by \code{setAs} as a method to be used by \code{as}.
+    \item{as}{
       A \code{pomp} object can be coerced to a data frame via \preformatted{as(object,"data.frame").}
       The data frame contains the times, the data, and the state trajectories, if they exist.
     }
@@ -198,7 +195,8 @@
 \seealso{
   \code{\link{pomp}},
   \link{pomp low-level interface},
-  \link[=simulate-pomp]{simulate}
+  \link[=simulate-pomp]{simulate},
+  \code{\link{pfilter}}, \code{\link{probe}}.
 }
 \keyword{programming}
 \keyword{ts}

@@ -1,9 +1,9 @@
 \name{sir}
+\title{Compartmental epidemiological models}
 \alias{euler.sir}
 \alias{gillespie.sir}
 \alias{bbs}
 \docType{data}
-\title{SIR models.}
 \description{
   \code{euler.sir} is a \code{pomp} object encoding a simple seasonal SIR model.
   Simulation is performed using an Euler multinomial approximation.
@@ -11,12 +11,7 @@
   \code{bbs} is a nonseasonal SIR model together with data from a 1978 outbreak of influenza in a British boarding school.
 }
 \details{
-  This example is discussed tutorials available on the \href{http://pomp.r-forge.r-project.org}{package website}.
-
-  The codes that construct these \code{pomp} objects can be found in the \dQuote{examples} directory in the installed package.
-  Do \code{system.file("examples",package="pomp"))} to find this directory.
-  For the basic \code{rprocess}, \code{dmeasure}, \code{rmeasure}, and \code{skeleton} functions, these codes use compiled native routines built into the package's library.
-  View \dQuote{src/sir.c} in the package source or \code{file.show("examples/sir.c")} from an \R session to view these codes.
+  This and similar examples are discussed and constructed in tutorials available on the \href{http://pomp.r-forge.r-project.org}{package website}.
 
   The boarding school influenza outbreak is described in Anonymous (1978).
 }

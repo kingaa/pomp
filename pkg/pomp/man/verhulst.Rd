@@ -6,7 +6,7 @@
   \code{verhulst} is a \code{pomp} object encoding a univariate stochastic logistic model with measurement error.
 }
 \details{
-  The model is written as an Ito diffusion, \eqn{dn = r n (1-n/K) dt + \sigma n dW}, where \eqn{W} is a Wiener process.
+  The model is written as an Ito diffusion, \deqn{dn = r n \left(1-\frac{n}{K}\right) dt + \sigma n dW}{dn = r n (1-n/K) dt + sigma n dW}, where \eqn{W} is a Wiener process.
   It is implemented using the \code{\link{euler.sim}} plug-in.
 }
 \examples{
@@ -23,7 +23,7 @@ y <- trajectory(verhulst,params=params)
 matlines(time(verhulst),t(y['n',,]),type='l',lwd=2)
 }
 \seealso{
-  \code{\link{pomp}} and the tutorial documents on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  \code{\link{pomp}}
 }
 \keyword{models}
 \keyword{datasets}

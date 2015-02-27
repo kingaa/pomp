@@ -1,6 +1,6 @@
 \name{Example pomp models}
+\title{Examples of the construction of POMP models}
 \alias{pompExample}
-\title{Examples of the construction of POMP models.}
 \alias{Example pomp models}
 \alias{pompExample}
 \description{
@@ -23,13 +23,16 @@ pompExample(example, \dots, envir = .GlobalEnv)
   }
 }
 \details{
-  Directories in the the global option \code{pomp.examples} (set using \code{options()}) are searched for files named \file{example.R}.
+  Directories listed in the global option \code{pomp.examples} (which can be changed using \code{options()}) are searched for file named \file{<example>.R}.
   If found, this file will be \code{source}d in a temporary environment.
-  Additional arguments to \code{pompExample} define variables within this environment and will therefore be available when the code in \file{example.R} is \code{source}d.
+  Additional arguments to \code{pompExample} define variables within this environment and will therefore be available when the code in \file{<example>.R} is \code{source}d.
+
+  The codes that construct these \code{pomp} objects can be found in the \file{examples} directory in the installed package.
+  Do \code{system.file("examples",package="pomp"))} to find this directory.
 }
 \value{
-  By default, \code{pompExample} has the side effect of creating one or more \code{pomp} objects in the global workspace.
-  If \code{envir=NULL}, there are no side effects; rather, the \code{pomp} objects are returned as a list.
+  By default, \code{pompExample} has the side effect of creating one or more objects in the global workspace.
+  If \code{envir=NULL}, there are no side effects; rather, the objects are returned as a list.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{

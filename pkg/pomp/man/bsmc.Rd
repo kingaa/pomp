@@ -121,7 +121,7 @@
 \author{
   Michael Lavine (lavine at math dot umass dot edu),
   Matthew Ferrari (mferrari at psu dot edu),
-  Aaron A. King (kingaa at umich dot edu)
+  Aaron A. King (kingaa at umich dot edu),
   Edward L. Ionides (ionides at umich dot edu)
 }
 \references{

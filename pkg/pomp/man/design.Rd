@@ -69,7 +69,7 @@ dim(x)
 plot(x)
 }
 \references{
-  W. H. Press, S. A. Teukolsky, W. T. Vetterling, \& B. P. Flannery,
+  W. H. Press, S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery,
   Numerical Recipes in C,
   Cambridge University Press, 1992
 }

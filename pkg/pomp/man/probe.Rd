@@ -88,7 +88,7 @@
     A single probe or a list of one or more probes.
     A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \code{pomp}.
     A vector-valued probe must always return a vector of the same size.
-    A number of useful examples are provided with the package: see \link{Probe functions}).
+    A number of useful examples are provided with the package: see \link{probe functions}).
   }
   \item{params}{
     optional named numeric vector of model parameters.
@@ -247,7 +247,7 @@ summary(bad)
 plot(bad)
 }
 \seealso{
-  \link{pomp}, \link{Probe functions}, \link{spect},
+  \link{pomp}, \link{probe functions}, \link{spect},
   and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
 }
 \keyword{optimize}

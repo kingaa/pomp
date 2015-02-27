@@ -197,7 +197,7 @@
   In particular, when \code{sd=0}, the \code{particles} should return matrices with \code{Np} identical columns, each given by the parameters specified in \code{center}.
 }
 \references{
-  E. L. Ionides, C. Bret\\'o, & A. A. King,
+  E. L. Ionides, C. Breto, & A. A. King,
   Inference for nonlinear dynamical systems,
   Proc. Natl. Acad. Sci. U.S.A., 103:18438--18443, 2006.
 

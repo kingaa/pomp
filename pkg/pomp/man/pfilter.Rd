@@ -152,13 +152,20 @@
     }
     \item{cond.logLik}{
       Extracts the estimated conditional log likelihood
-      \deqn{\ell_t(\theta) = \mathrm{Prob}[y_t \vert y_1, \dots, y_{t-1}]}
+      \deqn{\ell_t(\theta) = \mathrm{Prob}[y_t \vert y_1, \dots, y_{t-1}],}{ell_t(theta)=Prob[y_t | y_1, \dots, y_(t-1)],}
+      where \eqn{y_t} are the data, at time \eqn{t}.
     }
     \item{eff.sample.size}{
-      Extracts the (time-dependent) estimated effective sample size.
+      Extracts the (time-dependent) estimated effective sample size, computed as
+      \deqn{\left(\sum_i\!w_{it}^2\right)^{-1},}{1/(sum(w_it^2)),}
+      where \eqn{w_{it}}{w_it} is the normalized weight of particle \eqn{i} at time \eqn{t}.
     }
-    \item{pred.mean, pred.var, filter.mean}{
-      Extract the mean and variance of the approximate prediction distribution and the mean of the filtering distribution, respectively.
+    \item{pred.mean, pred.var}{
+      Extract the mean and variance of the approximate prediction distribution.
+      This prediction distribution is that of \deqn{X_t \vert y_1,\dots,y_{t-1},}{X_t | y_1,\dots,y_(t-1),} where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively, at time \eqn{t}.
+    }
+    \item{filter.mean}{
+      Extract the mean of the filtering distribution, which is that of \deqn{X_t \vert y_1,\dots,y_t,}{X_t | y_1,\dots,y_t,} where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively, at time \eqn{t}.
     }
   }
 }

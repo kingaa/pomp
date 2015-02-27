@@ -58,7 +58,7 @@ onestep.dens(dens.fun, PACKAGE)
   \item{dens.fun}{
     This can be either an R function, a \code{\link{Csnippet}}, or a compiled, dynamically loaded native function containing the model transition log probability density function.
 
-    If it is an R function, it should be of the form \code{dens.fun(x1,x2,t1,t2,params,...)}.
+    If it is an R function, it should be of the form \preformatted{dens.fun(x1,x2,t1,t2,params,...).}
     Here, \code{x1} and \code{x2} are named numeric vectors containing the values of the state process at times \code{t1} and \code{t2},
     \code{params} is a named numeric vector containing parameters.
 

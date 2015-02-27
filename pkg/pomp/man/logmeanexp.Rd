@@ -2,7 +2,7 @@
 \alias{logmeanexp}
 \title{The log-mean-exp trick}
 \description{
-  \code{logmeanexp} computes the log-mean-exp of a set of numbers.
+  \code{logmeanexp} computes \deqn{\log\frac{1}{N}\sum_{n=1}^N\!e^x_i,}{log mean exp(x_i),} avoiding over- and under-flow in doing so.
 }
 \usage{
 logmeanexp(x, se = FALSE)
@@ -22,5 +22,6 @@ logmeanexp(x, se = FALSE)
   ll <- replicate(n=5,logLik(pfilter(ricker,Np=1000)))
   ## an estimate of the log likelihood:
   logmeanexp(ll)
+  ## with standard error:
   logmeanexp(ll,se=TRUE)
 }

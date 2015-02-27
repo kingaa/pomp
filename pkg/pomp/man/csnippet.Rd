@@ -21,6 +21,8 @@
   The \code{pomp} constructor combines these \code{Csnippet}s into a compilable C file stored in the \R session's temporary directory.
   They are then compiled (via \code{\link[=SHLIB]{R CMD SHLIB}}) into dynamically loadable shared objects.
   This is then dynamically loaded as needed.
+
+  Instructions for writing models using \code{Csnippet}s, along with examples, are given in the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{

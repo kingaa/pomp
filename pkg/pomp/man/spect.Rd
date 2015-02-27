@@ -1,6 +1,7 @@
 \name{Power spectrum computation and matching}
 \title{Power spectrum computation and spectrum-matching for partially-observed Markov processes}
 \alias{Power spectrum computation and matching}
+\alias{power spectrum computation and matching}
 \alias{spect}
 \alias{spect,pomp-method}
 \alias{spect-pomp}
@@ -56,7 +57,7 @@ spect.match(object, start, est = character(0),
   }
   \item{seed}{
     optional; if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
-    See \link{simulate-pomp}.
+    See \code{\link[=simulate-pomp]{simulate}}.
   }
   \item{transform}{
     function; this transformation will be applied to the observables prior to estimation of the spectrum, and prior to any detrending.

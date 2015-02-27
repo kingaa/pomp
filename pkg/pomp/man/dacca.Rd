@@ -28,9 +28,9 @@ coef(dacca,"eps") <- 1
 plot(simulate(dacca))
 }
 \references{
-  King, A. A., Ionides, E. L., Pascual, M., and Bouma, M. J.
-  Inapparent infections and cholera dynamics.
-  Nature 454:877-880 (2008)
+  A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
+  Inapparent infections and cholera dynamics,
+  Nature, 454:877-880, 2008
 }
 \seealso{
   \code{\link{euler.sir}},
