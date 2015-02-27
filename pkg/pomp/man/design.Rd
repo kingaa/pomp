@@ -1,0 +1,77 @@
+\name{design}
+\title{Design matrices for pomp calculations}
+\alias{profileDesign}
+\alias{sobolDesign}
+\alias{sobol}
+\alias{sliceDesign}
+\description{
+  These functions are useful for generating designs for the exploration of parameter space.
+  \code{sobolDesign} generate a Latin hypercube design using the Sobol' low-discrepancy sequence.
+  \code{profileDesign} generates a data-frame where each row can be used as the starting point for a profile likelihood calculation.
+  \code{sliceDesign} generates points along slices through a specified point.
+}
+\usage{
+sobolDesign(lower, upper, nseq)
+profileDesign(\dots, lower, upper, nprof,
+              stringsAsFactors = default.stringsAsFactors())
+sliceDesign(center, \dots)
+}
+\arguments{
+  \item{lower, upper}{
+    named numeric vectors giving the lower and upper bounds of the ranges, respectively.
+  }
+  \item{\dots}{
+    In \code{profileDesign}, additional arguments specify the parameters over which to profile and the values of these parameters.
+
+    In \code{sliceDesign}, additional numeric vector arguments specify the locations of points along the slices.
+  }
+  \item{nseq}{
+    Total number of points requested.
+  }
+  \item{nprof}{
+    The number of points per profile point.
+  }
+  \item{stringsAsFactors}{
+    should character vectors be converted to factors?
+  }
+  \item{center}{
+    \code{center} is a named numeric vector specifying the point through which the slice(s) is (are) to be taken.
+  }
+}
+\value{
+  \code{sobolDesign} 
+
+  \code{profileDesign} returns a data frame with \code{nprof} points per profile point.
+  The other parameters in \code{vars} are sampled using \code{sobol}.
+}
+\examples{
+## Sobol' low-discrepancy design
+plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
+
+## A one-parameter profile design:
+x <- profileDesign(p=1:10,lower=c(a=0,b=0),upper=c(a=1,b=5),nprof=20)
+dim(x)
+plot(x)
+
+## A two-parameter profile design:
+x <- profileDesign(p=1:10,q=3:5,lower=c(a=0,b=0),upper=c(b=5,a=1),nprof=20)
+dim(x)
+plot(x)
+
+## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.
+x <- sliceDesign(center=c(A=3,B=8,C=0),B=seq(0,10,by=1))
+dim(x)
+plot(x)
+
+## Two slices through the same point along the A and C directions.
+x <- sliceDesign(c(A=3,B=8,C=0),A=seq(0,5,by=1),C=seq(0,5,length=11))
+dim(x)
+plot(x)
+}
+\references{
+  W. H. Press, S. A. Teukolsky, W. T. Vetterling, \& B. P. Flannery,
+  Numerical Recipes in C,
+  Cambridge University Press, 1992
+}
+\author{Aaron A. King \email{kingaa at umich dot edu}}
+\keyword{design}

@@ -18,6 +18,6 @@ coef(gompertz)
 coef(gompertz,transform=TRUE)
 }
 \seealso{
-  the \href{http://pomp.r-forge.r-project.org/vignettes/intro_to_pomp.pdf}{\dQuote{Introduction to \pkg{pomp}}} tutorial.
+  \code{pomp}, \code{ricker}, and the tutorials at \url{http://pomp.r-forge.r-project.org}.
 }
 \keyword{datasets}

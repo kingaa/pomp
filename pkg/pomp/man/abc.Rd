@@ -1,6 +1,8 @@
-\name{abc}
+\title{Estimation by approximate Bayesian computation (ABC)}
+\name{Approximate Bayesian computation}
 \docType{methods}
 \alias{abc}
+\alias{ABC}
 \alias{abc-abc}
 \alias{abc,probed.pomp-method}
 \alias{abc-probed.pomp}
@@ -11,7 +13,22 @@
 \alias{continue,abc-method}
 \alias{continue-abc}
 \alias{abc-class}
-\title{The ABC algorithm}
+\alias{abc-methods}
+\alias{conv.rec,abc-method}
+\alias{conv.rec-abc}
+\alias{conv.rec,abcList-method}
+\alias{conv.rec-abcList}
+\alias{plot-abc}
+\alias{plot,abc-method}
+\alias{plot-abcList}
+\alias{plot,abcList-method}
+\alias{abcList-class}
+\alias{c-abc}
+\alias{c,abc-method}
+\alias{c-abcList}
+\alias{c,abcList-method}
+\alias{[-abcList}
+\alias{[,abcList-method}
 \description{
   The approximate Bayesian computation (ABC) algorithm for estimating the parameters of a partially-observed Markov process.
 }
@@ -25,6 +42,10 @@
     probes, scale, epsilon,
     verbose = getOption("verbose"), \dots)
 \S4method{continue}{abc}(object, Nabc = 1, \dots)
+\S4method{conv.rec}{abc}(object, pars, \dots)
+\S4method{conv.rec}{abcList}(object, \dots)
+\S4method{plot}{abc}(x, y, pars, scatter = FALSE, \dots)
+\S4method{plot}{abcList}(x, y, \dots)
 }
 \arguments{
   \item{object}{
@@ -44,7 +65,6 @@
     Several functions that construct appropriate proposal function are provided:
     see \link{MCMC proposal functions} for more information.
   }
-  \item{pars}{Deprecated and ignored.  Will be removed in a future release.}
   \item{rw.sd}{
     Deprecated.  Will be removed in a future release.
     Specifying \code{rw.sd} is equivalent to setting \code{proposal=mvn.diag.rw(rw.sd)}.
@@ -62,33 +82,48 @@
   \item{verbose}{
     logical; if TRUE, print progress reports.
   }
+  \item{pars}{Names of parameters.}
+  \item{scatter}{
+    optional logical;
+    If \code{TRUE}, draw scatterplots.
+    If \code{FALSE}, draw traceplots.
+  }
+  \item{x}{\code{abc} object.}
+  \item{y}{Ignored.}
   \item{\dots}{
     Additional arguments.
     These are currently ignored.
   }
 }
-\value{
-  An object of class \code{abc}.
-  This class inherits from class \code{\link[=probed.pomp-class]{probed.pomp}} and contains the following additional slots:
-  \describe{
-    \item{pars, Nabc, dprior, hyperparams, scale, epsilon}{
-      These slots hold the values of the corresponding arguments of the call to \code{abc}.
-    }
-  }
+\section{Running ABC}{
+  \code{abc} returns an object of class \code{abc}.
+  One or more \code{abc} objects can be joined to form an \code{abcList} object.
 }
-\section{Re-running ABC Iterations}{
+\section{Re-running ABC iterations}{
   To re-run a sequence of ABC iterations, one can use the \code{abc} method on a \code{abc} object.
   By default, the same parameters used for the original ABC run are re-used (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
   If one does specify additional arguments, these will override the defaults.
 }
-\section{Continuing ABC Iterations}{
+\section{Continuing ABC iterations}{
   One can continue a series of ABC iterations from where one left off using the \code{continue} method.
   A call to \code{abc} to perform \code{Nabc=m} iterations followed by a call to \code{continue} to perform \code{Nabc=n} iterations will produce precisely the same effect as a single call to \code{abc} to perform \code{Nabc=m+n} iterations.
   By default, all the algorithmic parameters are the same as used in the original call to \code{abc}.
   Additional arguments will override the defaults.
 }
-\section{Details}{
-  TO APPEAR.
+\section{Methods}{
+  Methods that can be used to manipulate, display, or extract information from an \code{abc} object:
+  \describe{
+    \item{conv.rec}{
+      \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
+      By default, all rows are returned.
+    }
+    \item{c}{
+      Concatenates \code{abc} objects into an \code{abcList}.
+    }
+    \item{plot}{
+      Diagnostic plots.
+    }
+  }
 }
 \references{
   T. Toni and M. P. H. Stumpf,
@@ -101,7 +136,6 @@
 }
 \author{Edward L. Ionides \email{ionides at umich dot edu}, Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \link{abc-methods}, \code{\link{pomp}}, \code{\link{probe}}.
-  See the \dQuote{intro_to_pomp} vignette for an example
+  \code{\link{pomp}}, \code{\link{probe}}, and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.  
 }
 \keyword{ts}

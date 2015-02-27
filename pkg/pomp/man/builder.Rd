@@ -2,7 +2,9 @@
 \alias{pompBuilder}
 \title{Write, compile, and build a pomp object using native codes}
 \description{
-  \code{pompBuilder} is a facility for producing compiled \code{pomp} objects.
+  \code{pompBuilder} is a tool for producing compiled \code{pomp} objects.
+  It was an early attempt to facilitate the use of compiled codes but has been replaced by the more flexible use of \code{\link{Csnippet}}s in the regular \code{pomp} constructor function.
+  It is not being actively maintained and users are encouraged to migrate to using \code{\link{Csnippet}}s.
 }
 \usage{
 pompBuilder(data, times, t0, name, statenames, paramnames, 
@@ -79,9 +81,8 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
   This will not typically be the case in out-of-the-box Windows installations.
 }
 \seealso{
-  \code{\link{pomp}} and the demos.
+  \code{\link{pomp}}, \code{\link{Csnippet}}
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
-\examples{
-  ## see the demos 
-}
+\keyword{programming}
+\keyword{internal}

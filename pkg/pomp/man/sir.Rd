@@ -40,5 +40,5 @@ coef(bbs)
   Influenza in a boarding school.
   British Medical Journal 1:587
 }
-\seealso{\code{\link{pomp-class}} and the vignettes}
+\seealso{\code{\link{pomp}} and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.}
 \keyword{datasets}

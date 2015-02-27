@@ -1,5 +1,6 @@
-\name{simulate-pomp}
+\name{pomp simulation}
 \docType{methods}
+\alias{pomp simulation}
 \alias{simulate,pomp-method}
 \alias{simulate-pomp}
 \title{Running simulations of a partially-observed Markov process}

@@ -1,10 +1,11 @@
-\name{proposals}
+\name{MCMC proposal distributions}
+\alias{MCMC proposal distributions}
 \alias{MCMC proposal functions}
 \alias{mvn.rw}
 \alias{mvn.diag.rw}
-\title{MCMC proposal functions}
+\title{MCMC proposal distributions}
 \description{
-  Construct proposal distributions for use with MCMC methods.
+  Functions to construct proposal distributions for use with MCMC methods.
 }
 \usage{
   mvn.diag.rw(rw.sd)
@@ -24,4 +25,5 @@
   Functions taking a single argument.
   Given a parameter vector, each returns a single draw from the corresponding proposal distribution.
 }
+\seealso{\code{\link{pmcmc}}, \code{\link{abc}}}
 \author{Aaron A. King \email{kingaa at umich dot edu}}

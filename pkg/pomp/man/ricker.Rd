@@ -14,5 +14,5 @@ pompExample(ricker)
 plot(ricker)
 coef(ricker)
 }
-\seealso{\code{\link{pomp}} and the vignettes}
+\seealso{\code{\link{pomp}}, \code{\link{gompertz}}, and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.}
 \keyword{datasets}

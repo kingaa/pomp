@@ -726,13 +726,13 @@ mf <- foreach(i=1:10,
   m1 <- mif(
             gompertz,
             Nmif=50,
+            method="mif2",
             start=theta.guess,
             transform=TRUE,
             rw.sd=c(r=0.02,sigma=0.02,tau=0.05),
             Np=2000,
-            var.factor=4,
-            ic.lag=10,
-            cooling.type="geometric",
+            var.factor=2,
+            cooling.type="hyperbolic",
             cooling.fraction=0.95
             )
   m1 <- continue(m1,Nmif=50,cooling.fraction=0.8)
@@ -765,7 +765,7 @@ if (file.exists(binary.file)) {
 
   require(foreach)
   require(doMC)
-  registerDoMC()
+  registerDoMC(10)
   
   save.seed <- .Random.seed
   set.seed(334388458L,kind="L'Ecuyer")
@@ -1110,15 +1110,14 @@ mf <- mif(
           start=guess,
           Nmif=100,
           Np=1000,
+          method="mif2",
           transform=TRUE,
-          cooling.type="geometric",
+          cooling.type="hyperbolic",
           cooling.fraction=0.6,
-          var.factor=2,
-          ic.lag=3,
-          max.fail=50,
+          var.factor=1,
           rw.sd=c(r=0.1,sigma=0.1,phi=0.1)
           )
-mf <- continue(mf,Nmif=500,max.fail=20)
+mf <- continue(mf,Nmif=500)
 @ 
 
 <<ricker-mif-eval,echo=F,eval=T,results='hide'>>=

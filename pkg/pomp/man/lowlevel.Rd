@@ -1,5 +1,6 @@
 \name{Low-level-interface}
 \docType{methods}
+\title{pomp low-level interface}
 \alias{pomp low-level interface}
 \alias{rprocess}
 \alias{rprocess,pomp-method}
@@ -28,9 +29,14 @@
 \alias{trajectory}
 \alias{trajectory,pomp-method}
 \alias{trajectory-pomp}
-\title{The low-level interface to pomp objects}
+\alias{pompLoad}
+\alias{pompLoad-pomp}
+\alias{pompLoad,pomp-method}
+\alias{pompUnload}
+\alias{pompUnload-pomp}
+\alias{pompUnload,pomp-method}
 \description{
-  A \code{pomp} object implements a partially observed Markov process (POMP) model.
+  A \code{pomp} object implements a partially observed Markov process (\acronym{POMP}) model.
   Basic operations on this model (with shorthand terms) include:
   \enumerate{
     \item simulation of the state process given parameters (rprocess)
@@ -44,7 +50,7 @@
     \item computation of a trajetory of the deterministic skeleton given parameters (trajectory)
   }
   \pkg{pomp} provides S4 methods that implement each of these basic operations.
-  These operations can be combined to implement computations and statistical inference methods that depend only on a model's POMP structure.
+  These operations can be combined to implement computations and statistical inference methods that depend only on a model's \acronym{POMP} structure.
   For convenience, parameter transformations may also be enclosed in a \code{pomp} object.
 
   This page documents these elements.
@@ -59,6 +65,8 @@
 \S4method{init.state}{pomp}(object, params, t0, \dots)
 \S4method{skeleton}{pomp}(object, x, t, params, \dots)
 \S4method{trajectory}{pomp}(object, params, times, t0, as.data.frame = FALSE, \dots)
+\S4method{pompLoad}{pomp}(object, \dots)
+\S4method{pompUnload}{pomp}(object, \dots)
 }
 \arguments{
   \item{object}{an object of class \code{pomp}.}
@@ -102,8 +110,8 @@
     In all other cases, additional arguments are ignored.
   }
 }
-\section{rprocess: simulating the process model}{
-  \code{rprocess} runs simulations of the the process-model portion of partially-observed Markov process.
+\section{rprocess}{
+  \code{rprocess} simulates the process-model portion of partially-observed Markov process.
 
   When \code{rprocess} is called, the first entry of \code{times} is taken to be the initial time
   (i.e., that corresponding to \code{xstart}).
@@ -111,12 +119,12 @@
 
   \code{rprocess} returns a rank-3 array with rownames.
   Suppose \code{x} is the array returned.
-  Then \code{dim(x)=c(nvars,nrep,ntimes-offset)}, where \code{nvars} is the number of state variables (=\code{nrow(xstart)}), \code{nrep} is the number of independent realizations simulated (=\code{ncol(xstart)}), and \code{ntimes} is the length of the vector \code{times}.
+  Then \preformatted{dim(x)=c(nvars,nrep,ntimes-offset),} where \code{nvars} is the number of state variables (=\code{nrow(xstart)}), \code{nrep} is the number of independent realizations simulated (=\code{ncol(xstart)}), and \code{ntimes} is the length of the vector \code{times}.
   \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k+offset]}.
-  The rownames of \code{x} must correspond to those of \code{xstart}. 
+  The rownames of \code{x} must correspond to those of \code{xstart}.
 }
-\section{dprocess: evaluating the probability density of a sequence of state transitions}{
-  \code{dprocess} evaluates the probability density of a set of consecutive state transitions.
+\section{dprocess}{
+  \code{dprocess} evaluates the probability density of a sequence of consecutive state transitions.
 
   \code{dprocess} returns a matrix of dimensions \code{nrep} x \code{ntimes-1}.
   If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood of the transition from state \code{x[,j,k-1]} at time \code{times[k-1]} to state \code{x[,j,k]} at time \code{times[k]}.
@@ -145,7 +153,7 @@
   In the case of a continuous-time system, the skeleton is a vectorfield.
   NB: \code{skeleton} just evaluates the deterministic skeleton;
   it does not iterate or integrate.
-  
+
   \code{skeleton} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
   If \code{f} is the returned matrix, \code{f[i,j,k]} is the i-th component of the deterministic skeleton at time \code{times[k]} given the state \code{x[,j,k]} and parameters \code{params[,j]}.
 }
@@ -165,8 +173,27 @@
 \section{Parameter transformations}{
   User-defined parameter transformations enclosed in the \code{pomp} object can be accessed via \code{\link{partrans}}.
 }
+\section{\code{pompLoad}, \code{pompUnload}}{
+  \code{pompLoad} and \code{pompUnload} cause compiled codes associated with \code{object} to be dynamically linked or unlinked, respectively.
+  When \code{Csnippet}s are used in the construction of a \code{pomp} object, the resulting shared-object library is dynamically loaded (linked) before each use, and unloaded afterward.
+  These functions are provided because in some instances, greater control may be desired.
+  These functions have no effect on shared-object libraries linked by the user.
+}
 \examples{
 pompExample(ricker)
+
+p <- parmat(c(r=42,phi=10,sigma=0.3,N.0=7,e.0=0),10)
+t <- c(1:10,20,30)
+t0 <- 0
+x0 <- init.state(ricker,params=p,t0=t0)
+x <- rprocess(ricker,xstart=x0,times=c(t0,t),params=p,offset=1)
+y <- rmeasure(ricker,params=p,x=x,times=t)
+ll <- dmeasure(ricker,y=y[,3,,drop=FALSE],x=x,times=t,params=p,log=TRUE)
+apply(ll,1,sum)
+f <- skeleton(ricker,x=x,t=t,params=p)
+z <- trajectory(ricker,params=p,times=t,t0=t0)
+
+## short arguments are recycled:
 p <- c(r=42,phi=10,sigma=0.3,N.0=7,e.0=0)
 t <- c(1:10,20,30)
 t0 <- 0

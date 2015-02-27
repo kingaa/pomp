@@ -12,7 +12,6 @@
   The observation process is \eqn{Y(t) = (y_1(t),y_2(t))}, where \eqn{y_i(t) \sim \mathrm{normal}(x_i(t),\tau)}.
   The functions \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{skeleton} are implemented using compiled C code for computational speed:
   see the source code for details.
-  This object is demonstrated in the vignette "Advanced topics in pomp".
 }
 \examples{
 pompExample(ou2)
@@ -23,5 +22,5 @@ plot(x)
 pf <- pfilter(ou2,Np=1000)
 logLik(pf)
 }
-\seealso{\code{\link{pomp}} and the vignettes}
-\keyword{datasets}
+\seealso{\code{\link{pomp}}}
+\keyword{ts}

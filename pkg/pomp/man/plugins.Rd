@@ -28,7 +28,7 @@ onestep.dens(dens.fun, PACKAGE)
     \code{params} is a named numeric vector containing parameters,
     and \code{delta.t} is the length of the Euler time-step.
 
-    For examples on the use of \code{\link{Csnippet}} to write fast simulators easily, see the \dQuote{Introduction to \pkg{pomp}} tutorial vignette, available on the \href{http://pomp.r-forge.r-project.org}{package website}.
+    For examples on the use of \code{\link{Csnippet}} to write fast simulators easily, see the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
 
     If \code{step.fun} is the name of a native function, it must be of type \dQuote{pomp_onestep_sim} as defined in the header \dQuote{pomp.h}, which is included with the \pkg{pomp} package.
     For details on how to write such codes, see Details.
@@ -40,7 +40,7 @@ onestep.dens(dens.fun, PACKAGE)
     \code{x} is a named numeric vector containing the value of the state process at time \code{t} and 
     \code{params} is a named numeric vector containing parameters.
 
-    For examples on the use of \code{\link{Csnippet}} to write fast simulators easily, see the \dQuote{Introduction to \pkg{pomp}} tutorial vignette, available on the \href{http://pomp.r-forge.r-project.org}{package website}.
+    For examples on the use of \code{\link{Csnippet}} to write fast simulators easily, see tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
 
     If \code{rate.fun} is a native function, it must be of type \dQuote{pomp_ssa_rate_fn} as defined in the header \dQuote{pomp.h}, which is included with the package.
     For details on how to write such codes, see Details.
@@ -126,8 +126,4 @@ onestep.dens(dens.fun, PACKAGE)
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{eulermultinom}}, \code{\link{pomp}}}
-\examples{
-## examples showing how to use these functions
-## are provided in the "intro_to_pomp" vignette
-}
 \keyword{models}

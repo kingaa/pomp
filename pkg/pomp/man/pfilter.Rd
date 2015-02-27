@@ -1,13 +1,38 @@
-\name{pfilter}
+\name{Particle filter}
+\title{Particle filter}
+\alias{particle filter}
+\alias{sequential Monte Carlo}
+\alias{SMC}
 \alias{pfilter}
 \alias{pfilter,pomp-method}
 \alias{pfilter-pomp}
 \alias{pfilter,pfilterd.pomp-method}
 \alias{pfilter-pfilterd.pomp}
 \alias{pfilterd.pomp-class}
-\title{Particle filter}
+\alias{logLik,pfilterd.pomp-method}
+\alias{logLik-pfilterd.pomp}
+\alias{$,pfilterd.pomp-method}
+\alias{$-pfilterd.pomp}
+\alias{pred.mean}
+\alias{pred.mean,pfilterd.pomp-method}
+\alias{pred.mean-pfilterd.pomp}
+\alias{pred.var}
+\alias{pred.var,pfilterd.pomp-method}
+\alias{pred.var-pfilterd.pomp}
+\alias{filter.mean}
+\alias{filter.mean,pfilterd.pomp-method}
+\alias{filter.mean-pfilterd.pomp}
+\alias{eff.sample.size}
+\alias{eff.sample.size,pfilterd.pomp-method}
+\alias{eff.sample.size-pfilterd.pomp}
+\alias{cond.logLik}
+\alias{cond.logLik,pfilterd.pomp-method}
+\alias{cond.logLik-pfilterd.pomp}
+\alias{as,pfilterd.pomp-method}
+\alias{as.data.frame.pfilterd.pomp}
+\alias{coerce,pfilterd.pomp,data.frame-method}
 \description{
-  Run a plain vanilla particle filter.
+  A plain vanilla sequential Monte Carlo (particle filter) algorithm.
   Resampling is performed at each observation.
 }
 \usage{
@@ -17,6 +42,12 @@
     save.params = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
 \S4method{pfilter}{pfilterd.pomp}(object, params, Np, tol, \dots)
+\S4method{logLik}{pfilterd.pomp}(object, \dots)
+\S4method{cond.logLik}{pfilterd.pomp}(object, \dots)
+\S4method{eff.sample.size}{pfilterd.pomp}(object, \dots)
+\S4method{pred.mean}{pfilterd.pomp}(object, pars, \dots)
+\S4method{pred.var}{pfilterd.pomp}(object, pars, \dots)
+\S4method{filter.mean}{pfilterd.pomp}(object, pars, \dots)
 }
 \arguments{
   \item{object}{
@@ -30,7 +61,7 @@
   \item{Np}{
     the number of particles to use.
     This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
-    Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object,t0=TRUE))}) or as a function taking a positive integer argument.
+    Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers of length \preformatted{length(time(object,t0=TRUE))} or as a function taking a positive integer argument.
     In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
     \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
     \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
@@ -70,13 +101,14 @@
   \item{verbose}{
     logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.
   }
+  \item{pars}{Names of parameters.}
   \item{\dots}{
     By default, when \code{pfilter} pfilter is run on a \code{pfilterd.pomp} object, the settings in the original call are re-used.
     This default behavior can be overridden by changing the settings (see Examples below).
   }
 }
 \value{
-  An object of class \code{\link[=pfilterd.pomp-class]{pfilterd.pomp}}.
+  An object of class \code{pfilterd.pomp}.
   This class inherits from class \code{\link[=pomp-class]{pomp}} and contains the following additional slots:
   \describe{
     \item{pred.mean, pred.var, filter.mean}{
@@ -112,20 +144,36 @@
     }
   }
   These can be accessed using the \code{$} operator as if the returned object were a list.
-  In addition, \code{logLik} returns the log likelihood.
   Note that if the argument \code{params} is a named vector, then these parameters are included in the \code{params} slot of the returned \code{pfilterd.pomp} object.
-  That is \code{coef(pfilter(obj,params=theta))==theta} if \code{theta} is a named vector of parameters.
+}
+\section{Methods}{
+  \describe{
+    \item{logLik}{
+      Extracts the estimated log likelihood.
+    }
+    \item{cond.logLik}{
+      Extracts the estimated conditional log likelihood
+      \deqn{\ell_t(\theta) = \mathrm{Prob}[y_t \vert y_1, \dots, y_{t-1}]}
+    }
+    \item{eff.sample.size}{
+      Extracts the (time-dependent) estimated effective sample size.
+    }
+    \item{pred.mean, pred.var, filter.mean}{
+      Extract the mean and variance of the approximate prediction distribution and the mean of the filtering distribution, respectively.
+    }
+  }
 }
 \examples{
 pompExample(gompertz)
 pf <- pfilter(gompertz,Np=1000)	## use 1000 particles
+plot(pf)
 logLik(pf)
 cond.logLik(pf)			## conditional log-likelihoods
-eff.sample.size(pf)
+eff.sample.size(pf)             ## effective sample size
 logLik(pfilter(gompertz))      	## run it again with 1000 particles
-logLik(pfilter(gompertz,Np=2000))    	## run it with 2000 particles and get the filtering means
-
-## See the vignettes for more examples.
+## run it with 2000 particles
+pf <- pfilter(gompertz,Np=2000,filter.mean=TRUE)
+fm <- filter.mean(pf)    	## extract the filtering means
 }
 \references{
   M. S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp.
@@ -133,6 +181,9 @@ logLik(pfilter(gompertz,Np=2000))    	## run it with 2000 particles and get the 
   IEEE Trans. Sig. Proc. 50:174--188, 2002.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
-\seealso{\code{\link{pomp}}, \code{\link{mif}}, \code{\link{pmcmc}}, \code{\link{bsmc}}}
+\seealso{
+  \code{\link{pomp}}, \code{\link{mif}}, \code{\link{pmcmc}}, \code{\link{bsmc2}},
+  and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+}
 \keyword{models}
 \keyword{ts}
