@@ -59,8 +59,8 @@ rgammawn(n = 1, sigma, dt)
   }
   He et al. use such overdispersed death processes in modeling measles.
   
-  For all of the functions described here, direct access to the underlying C routines is available:
-  see the header file \dQuote{pomp.h}, included with the package.
+  For all of the functions described here, access to the underlying C routines is available:
+  see below.
 }
 \value{
   \item{reulermultinom}{

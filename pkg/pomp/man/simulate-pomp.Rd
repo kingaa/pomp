@@ -1,11 +1,11 @@
-\name{pomp simulation}
+\name{POMP simulation}
+\title{Simulations of a partially-observed Markov process}
 \docType{methods}
-\alias{pomp simulation}
+\alias{POMP simulation}
 \alias{simulate,pomp-method}
 \alias{simulate-pomp}
-\title{Running simulations of a partially-observed Markov process}
 \description{
-  \code{simulate} can be used to generate simulated data sets and/or to simulate the state process.
+  \code{simulate} generates simulations of the state and measurement processes.
 }
 \usage{
 \S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, params,

@@ -1,4 +1,6 @@
-\name{traj.match}
+\name{Trajectory matching}
+\title{Trajectory matching}
+\alias{Trajectory matching}
 \alias{traj.match}
 \alias{traj.match-pomp}
 \alias{traj.match,pomp-method}
@@ -14,9 +16,8 @@
 \alias{traj.match.objfun}
 \alias{traj.match.objfun-pomp}
 \alias{traj.match.objfun,pomp-method}
-\title{Trajectory matching}
 \description{
-  Facilities for matching trajectories to data.
+  Facilities for matching trajectories of a model's deterministic skeleton to data.
   Trajectory matching is equivalent to maximum likelihood estimation under the assumption that process noise is entirely absent,
   i.e., that all stochasticity is measurement error.
 }
@@ -146,5 +147,5 @@
   \code{\link{optim}},
   \code{\link[subplex]{subplex}}
 }
-\keyword{models}
+\keyword{optimize}
 \keyword{ts}

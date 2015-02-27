@@ -200,5 +200,5 @@
   \link{pomp low-level interface},
   \link[=simulate-pomp]{simulate}
 }
-\keyword{models}
+\keyword{programming}
 \keyword{ts}

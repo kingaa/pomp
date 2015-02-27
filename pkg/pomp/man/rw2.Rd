@@ -16,3 +16,4 @@ plot(x[[1]])
 }
 \seealso{\code{\link{pomp}}, \code{\link{ou2}}}
 \keyword{datasets}
+\keyword{models}

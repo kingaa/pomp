@@ -1,5 +1,6 @@
-\name{bsmc2}
-\title{Liu and West Bayesian Particle Filter}
+\name{Bayesian sequential Monte Carlo}
+\title{The Liu and West Bayesian particle filter}
+\alias{Bayesian sequential Monte Carlo}
 \alias{bsmc}
 \alias{bsmc-pomp}
 \alias{bsmc,pomp-method}
@@ -14,12 +15,12 @@
   Modified versions of the Liu and West (2001) algorithm.
 }
 \usage{
-\S4method{bsmc}{pomp}(object, params, Np, est, smooth = 0.1,
-     ntries = 1, tol = 1e-17, lower = -Inf, upper = Inf, seed = NULL,
-     verbose = getOption("verbose"), max.fail = 0,
-     transform = FALSE, \dots)
 \S4method{bsmc2}{pomp}(object, params, Np, est, smooth = 0.1,
      tol = 1e-17, seed = NULL,
+     verbose = getOption("verbose"), max.fail = 0,
+     transform = FALSE, \dots)
+\S4method{bsmc}{pomp}(object, params, Np, est, smooth = 0.1,
+     ntries = 1, tol = 1e-17, lower = -Inf, upper = Inf, seed = NULL,
      verbose = getOption("verbose"), max.fail = 0,
      transform = FALSE, \dots)
 }
@@ -120,8 +121,8 @@
 \author{
   Michael Lavine (lavine at math dot umass dot edu),
   Matthew Ferrari (mferrari at psu dot edu),
-  Aaron A. King
-  Edward L. Ionides
+  Aaron A. King (kingaa at umich dot edu)
+  Edward L. Ionides (ionides at umich dot edu)
 }
 \references{
   Liu, J. and M. West.
@@ -130,8 +131,7 @@
   Sequential Monte Carlo Methods in Practice, pages 197-224.
   Springer, New York, 2001.
 }
-\examples{
-## See the "Introducton to pomp" document for examples.
+\seealso{
+  \code{\link{pomp}}, \code{\link{pfilter}}
 }
-\seealso{\link{pomp-class}}
 \keyword{ts}

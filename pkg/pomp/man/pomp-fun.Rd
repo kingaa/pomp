@@ -12,7 +12,6 @@
 \alias{pomp.fun,missing-method}
 \alias{pomp.fun,pomp.fun-method}
 \alias{pomp.fun,Csnippet-method}
-\keyword{internal}
 \title{Definition and methods of the "pomp.fun" class}
 \description{Definition and methods of the \code{pomp.fun} class}
 \usage{
@@ -40,10 +39,12 @@
   \item{object, x}{The \code{pomp.fun} object.}
 }
 \details{
-  The sQuote{pomp.fun} class helps to settle common issues associated with user-defined functions which can be defined either via R code or by a native, compiled routine.
+  The \code{pomp.fun} class helps to settle common issues associated with user-defined functions which can be defined either via R code or by a native, compiled routine.
   It is not exported to userland.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \code{\link{pomp}}
 }
+\keyword{programming}
+\keyword{internal}

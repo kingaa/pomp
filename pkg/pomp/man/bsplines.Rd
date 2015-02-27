@@ -35,9 +35,10 @@ periodic.bspline.basis(x, nbasis, degree = 3, period = 1, names = NULL)
     The basis functions returned are periodic with period \code{period}.
   }
 }
-\details{
-  Direct access to the underlying C routines is available.
-  See the header file \dQuote{pomp.h} for details.
+\section{C API}{
+  Access to the underlying C routines is available:
+  See the header file \file{pomp.h} for the details.
+  Do \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view this file.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{

@@ -1,6 +1,8 @@
-\name{pompExample}
+\name{Example pomp models}
 \alias{pompExample}
-\title{Pre-built examples of pomp objects.}
+\title{Examples of the construction of POMP models.}
+\alias{Example pomp models}
+\alias{pompExample}
 \description{
   \code{pompExample} loads pre-built example \code{pomp} objects.
 }
@@ -43,3 +45,5 @@ pompExample(example, \dots, envir = .GlobalEnv)
   \code{\link{euler.sir}}, \code{\link{gillespie.sir}},
   \code{\link{bbs}}, \code{\link{verhulst}}
 }
+\keyword{models}
+\keyword{datasets}

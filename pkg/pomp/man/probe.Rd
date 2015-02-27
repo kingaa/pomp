@@ -1,5 +1,6 @@
-\name{probe}
+\name{Probes and synthetic likelihood}
 \title{Probe a partially-observed Markov process by computing summary statistics and the synthetic likelihood.}
+\alias{Probes and synthetic likelihood}
 \alias{probe}
 \alias{probe,pomp-method}
 \alias{probe,probed.pomp-method}
@@ -249,5 +250,5 @@ plot(bad)
   \link{pomp}, \link{Probe functions}, \link{spect},
   and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
 }
-\keyword{models}
+\keyword{optimize}
 \keyword{ts}

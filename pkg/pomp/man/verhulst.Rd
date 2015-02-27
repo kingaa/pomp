@@ -22,5 +22,8 @@ matplot(time(verhulst),t(x['n',,]),type='l')
 y <- trajectory(verhulst,params=params)
 matlines(time(verhulst),t(y['n',,]),type='l',lwd=2)
 }
-\seealso{\code{\link{pomp-class}} and the vignettes}
+\seealso{
+  \code{\link{pomp}} and the tutorial documents on the \href{http://pomp.r-forge.r-project.org}{package website}.
+}
+\keyword{models}
 \keyword{datasets}

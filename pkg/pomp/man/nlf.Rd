@@ -1,4 +1,6 @@
-\name{nlf}
+\name{Nonlinear forecasting}
+\title{Parameter estimation my maximum simulated quasi-likelihood (nonlinear forecasting)}
+\alias{Nonlinear forecasting}
 \alias{nlf}
 \alias{nlf,pomp-method}
 \alias{nlf-pomp}
@@ -9,9 +11,9 @@
 \alias{logLik-nlfd.pomp}
 \alias{$,nlfd.pomp-method}
 \alias{$-nlfd.pomp}
-\title{Fit Model to Data Using Nonlinear Forecasting (NLF)}
 \description{
-  Calls an optimizer to maximize the nonlinear forecasting (NLF) goodness of fit, by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series (which may be multivariate) and using the fitted model to predict some or all variables in the data time series.
+  \code{nlf} calls an optimizer to maximize the nonlinear forecasting (NLF) goodness of fit.
+  The latter is computed by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series, and quantifying the ability of the resulting fitted model to predict the data time series.
   NLF is an \sQuote{indirect inference} method using a quasi-likelihood as the objective function.
 }
 \usage{
@@ -138,4 +140,5 @@
   Bruce E. Kendall \email{kendall at bren dot ucsb dot edu},
   Aaron A. King \email{kingaa at umich dot edu}
 }
+\keyword{optimize}
 \keyword{ts}

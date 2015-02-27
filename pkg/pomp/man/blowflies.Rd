@@ -64,4 +64,5 @@ plot(blowflies2)
   in G. Oster (ed.), Some Questions in Mathematical Biology, vol. 13, pp. 65--90.
   American Mathematical Society, Providence.
 }
+\keyword{models}
 \keyword{datasets}

@@ -1,4 +1,6 @@
-\name{pomp}
+\name{pomp constructor}
+\title{Constructor of the basic POMP object}
+\alias{pomp constructor}
 \alias{pomp}
 \alias{pomp,data.frame-method}
 \alias{data.frame-pomp}
@@ -9,7 +11,6 @@
 \alias{pomp,pomp-method}
 \alias{pomp-pomp}
 \alias{pomp-class}
-\title{Partially-observed Markov process object constructor.}
 \description{
   This function constructs a \code{pomp} object,
   encoding a partially-observed Markov process model together with a uni- or multivariate time series.
@@ -128,7 +129,7 @@
     optional; function drawing a sample from a prior distribution on parameters.
     This can be specified in one of three ways:
     (1) as an \R function of prototype \preformatted{rprior(params,\dots)} that makes a draw from the prior distribution given \code{params},
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_rprior} as defined in the header file \file{pomp.h}, or
+    (2) as the name of a native (compiled) routine with prototype \code{pomp_rprior} as defined in the header file \file{pomp.h}, or
     (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
     (3) as a snippet of C code (via \code{\link{Csnippet}}).
     As above, the latter is typically preferable.
@@ -137,7 +138,7 @@
     optional; function evaluating the prior distribution.
     This can be specified in one of three ways:
     (1) as an \R function of prototype \preformatted{dprior(params,log=FALSE,\dots)} that evaluates the prior probability density,
-    (2) as the name of a native (compiled) routine with prototype \dQuote{pomp_dprior} as defined in the header file \file{pomp.h}, or
+    (2) as the name of a native (compiled) routine with prototype \code{pomp_dprior} as defined in the header file \file{pomp.h}, or
     (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
     (3) as a snippet of C code (via \code{\link{Csnippet}}).
     As above, the latter is typically preferable.

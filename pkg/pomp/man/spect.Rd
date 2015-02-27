@@ -1,4 +1,6 @@
-\name{spect}
+\name{Power spectrum computation and matching}
+\title{Power spectrum computation and spectrum-matching for partially-observed Markov processes}
+\alias{Power spectrum computation and matching}
 \alias{spect}
 \alias{spect,pomp-method}
 \alias{spect-pomp}
@@ -11,7 +13,6 @@
 \alias{spect.match-spect.pomp}
 \alias{spect.pomp-class}
 \alias{spect.matched.pomp-class}
-\title{Power spectrum computation for partially-observed Markov processes.}
 \description{
   \code{spect} estimates the power spectrum of time series data and model simulations and compares the results.
   It can be used to diagnose goodness of fit and/or as the basis for frequency-domain parameter estimation (\code{spect.match}).
@@ -20,19 +21,19 @@
   It calls an optimizer to adjust model parameters to minimize the discrepancy between simulated and actual data.
 }
 \usage{
-  \S4method{spect}{pomp}(object, params, vars, kernel.width, nsim, seed = NULL,
-      transform = identity,
-      detrend = c("none","mean","linear","quadratic"),
-      \dots)
-  \S4method{spect}{spect.pomp}(object, params, vars, kernel.width, nsim, seed = NULL, transform,
-      detrend, \dots)
-  spect.match(object, start, est = character(0),
-              vars, nsim, seed = NULL,
-              kernel.width, transform = identity, 
-              detrend = c("none","mean","linear","quadratic"),
-              weights, method = c("subplex","Nelder-Mead","SANN"),
-              verbose = getOption("verbose"),
-              eval.only = FALSE, fail.value = NA, \dots)
+\S4method{spect}{pomp}(object, params, vars, kernel.width, nsim, seed = NULL,
+     transform = identity,
+     detrend = c("none","mean","linear","quadratic"),
+     \dots)
+\S4method{spect}{spect.pomp}(object, params, vars, kernel.width, nsim, seed = NULL, transform,
+     detrend, \dots)
+spect.match(object, start, est = character(0),
+            vars, nsim, seed = NULL,
+            kernel.width, transform = identity, 
+            detrend = c("none","mean","linear","quadratic"),
+            weights, method = c("subplex","Nelder-Mead","SANN"),
+            verbose = getOption("verbose"),
+            eval.only = FALSE, fail.value = NA, \dots)
 }
 \arguments{
   \item{object}{
@@ -176,5 +177,5 @@ plot(bad)
 \seealso{
   \link{pomp}, \code{\link{probe}}
 }
-\keyword{models}
+\keyword{optimize}
 \keyword{ts}

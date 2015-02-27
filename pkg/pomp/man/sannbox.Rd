@@ -1,6 +1,7 @@
-\name{sannbox}
-\alias{sannbox}
+\name{Simulated annealing}
 \title{Simulated annealing with box constraints.}
+\alias{Simulated annealing}
+\alias{sannbox}
 \description{
   \code{sannbox} is a straightforward implementation of simulated annealing with box constraints.
 }

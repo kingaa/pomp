@@ -27,3 +27,4 @@
 }
 \seealso{\code{\link{pmcmc}}, \code{\link{abc}}}
 \author{Aaron A. King \email{kingaa at umich dot edu}}
+\keyword{models}

@@ -34,5 +34,4 @@ particles(object, \dots)
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{\code{\link{mif}}, \link{mif-methods}, \code{\link{pomp}}, \link{pomp-class}}
-\keyword{models}
 \keyword{ts}

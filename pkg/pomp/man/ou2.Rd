@@ -23,4 +23,5 @@ pf <- pfilter(ou2,Np=1000)
 logLik(pf)
 }
 \seealso{\code{\link{pomp}}}
-\keyword{ts}
+\keyword{models}
+\keyword{datasets}

@@ -1,8 +1,9 @@
 \name{pomp-package}
+\title{Inference for partially observed Markov processes}
 \docType{package}
+\alias{The pomp package}
 \alias{pomp-package}
 \alias{pomp package}
-\title{Inference for partially observed Markov processes}
 \description{
   The \pkg{pomp} package provides facilities for inference on time series data using partially-observed Markov process (\acronym{POMP}) models.
   These models are also known as state-space models or nonlinear stochastic dynamical systems.
@@ -70,4 +71,5 @@
   \code{\link{pmcmc}}
 }
 \keyword{models}
+\keyword{datasets}
 \keyword{ts}

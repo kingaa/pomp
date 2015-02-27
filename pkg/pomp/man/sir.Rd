@@ -11,7 +11,7 @@
   \code{bbs} is a nonseasonal SIR model together with data from a 1978 outbreak of influenza in a British boarding school.
 }
 \details{
-  This example is discussed extensively in the \dQuote{Introduction to \pkg{pomp}} and \dQuote{Advanced topics in \pkg{pomp}} vignettes, available on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  This example is discussed tutorials available on the \href{http://pomp.r-forge.r-project.org}{package website}.
 
   The codes that construct these \code{pomp} objects can be found in the \dQuote{examples} directory in the installed package.
   Do \code{system.file("examples",package="pomp"))} to find this directory.
@@ -42,3 +42,4 @@ coef(bbs)
 }
 \seealso{\code{\link{pomp}} and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.}
 \keyword{datasets}
+\keyword{models}

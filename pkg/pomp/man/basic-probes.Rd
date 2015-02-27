@@ -141,5 +141,4 @@ probe.quantile(var, prob, transform = identity)
 \seealso{
   \link{pomp}
 }
-\keyword{models}
 \keyword{ts}

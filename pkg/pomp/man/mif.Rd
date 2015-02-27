@@ -217,4 +217,5 @@
 \seealso{
   \code{\link{pomp}}, \code{\link{pfilter}}
 }
+\keyword{optimize}
 \keyword{ts}

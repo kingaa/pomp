@@ -36,4 +36,5 @@ plot(simulate(dacca))
   \code{\link{euler.sir}},
   \code{\link{pomp}}
 }
+\keyword{models}
 \keyword{datasets}

@@ -184,5 +184,4 @@ fm <- filter.mean(pf)    	## extract the filtering means
   \code{\link{pomp}}, \code{\link{mif}}, \code{\link{pmcmc}}, \code{\link{bsmc2}},
   and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
 }
-\keyword{models}
 \keyword{ts}

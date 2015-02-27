@@ -20,4 +20,5 @@ coef(gompertz,transform=TRUE)
 \seealso{
   \code{pomp}, \code{ricker}, and the tutorials at \url{http://pomp.r-forge.r-project.org}.
 }
+\keyword{models}
 \keyword{datasets}
