@@ -55,7 +55,7 @@ Loading required package: nloptr
 + }
 > 
 > kalman <- function (x, object, params) {
-+   y <- data.array(object)
++   y <- obs(object)
 +   p <- params
 +   p[names(x)] <- x
 +   x0 <- init.state(object,params=p)
@@ -82,9 +82,6 @@ alpha.1 alpha.4    x1.0    x2.0
 Kalman filter log likelihood at truth
 > print(loglik.truth <- -kalman(p.truth,ou2,p.truth),digits=4)
 [1] -479
-Warning message:
-In data.array(object) :
-  'data.array' is deprecated and will be removed in a future release.  Use 'obs' instead.
 > 
 > # make a wild guess
 > p.guess <- p.truth[c('alpha.1','alpha.4','x1.0','x2.0')]*exp(rnorm(n=4,mean=0,sd=0.5))
@@ -97,9 +94,6 @@ alpha.1 alpha.4    x1.0    x2.0
 Kalman filter log likelihood at guess
 > print(loglik.guess <- -kalman(p.guess,ou2,p.truth),digits=4)
 [1] -511.8
-Warning message:
-In data.array(object) :
-  'data.array' is deprecated and will be removed in a future release.  Use 'obs' instead.
 > 
 > # find MLE using Kalman filter starting at the guess
 > cat("running Kalman filter estimation\n")
@@ -168,10 +162,9 @@ HI-REDUCTION     113 477.241057 477.241042
 HI-REDUCTION     115 477.241051 477.241042
 Exiting from Nelder Mead minimizer
     117 function evaluations used
-There were 50 or more warnings (use warnings() to see the first 50)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.404061 secs
+Time difference of 3.41739 secs
 > tic <- Sys.time()
 > print(loglik.mle <- -kalm.fit1$value,digits=4)
 [1] -477.2
@@ -195,4 +188,4 @@ loglik  -479.0 -477.241     NA
 > 
 > proc.time()
    user  system elapsed 
-  3.924   0.040   3.956 
+  3.933   0.035   3.954 

@@ -164,7 +164,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x1535468>
+<environment: 0x2300468>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -177,7 +177,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x1535468>
+<environment: 0x2300468>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -246,10 +246,7 @@ Error : 'simulate' error
 > x <- simulate(rw2,nsim=10,params=p,obs=T,states=T)
 > x <- simulate(rw2,nsim=10,params=p[,1])
 > 
-> x <- data.array(rw2)
-Warning message:
-In data.array(rw2) :
-  'data.array' is deprecated and will be removed in a future release.  Use 'obs' instead.
+> x <- obs(rw2)
 > t <- time(rw2)
 > 
 > x0 <- init.state(rw2,params=p)
@@ -345,4 +342,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.903   0.036   0.923 
+  0.870   0.033   0.889 
