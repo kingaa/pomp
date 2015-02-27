@@ -76,6 +76,9 @@ newly created object(s):
 > # exact likelihood
 > p.truth <- coef(po)
 > loglik.truth <- -kalman(p.truth,po,p.truth)
+Warning message:
+In data.array(object) :
+  'data.array' is deprecated and will be removed in a future release.  Use 'obs' instead.
 > 
 > ## likelihood from probes (works since ou2 is Gaussian)
 > loglik.probe <- replicate(n=500,logLik(probe(po,nsim=200,probes=function(x)x)))
@@ -116,4 +119,4 @@ alternative hypothesis: two-sided
 > 
 > proc.time()
    user  system elapsed 
-  6.336   0.060   6.534 
+  7.404   0.033   7.432 

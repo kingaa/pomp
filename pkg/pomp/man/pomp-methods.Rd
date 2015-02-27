@@ -1,5 +1,6 @@
 \name{pomp-methods}
 \docType{methods}
+\alias{pomp methods}
 \alias{pomp-methods}
 \alias{plot,pomp-method}
 \alias{plot-pomp}
@@ -47,7 +48,6 @@
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots)
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots) <- value
 \S4method{obs}{pomp}(object, vars, \dots)
-\S4method{data.array}{pomp}(object, vars, \dots)
 \S4method{partrans}{pomp}(object, params, dir = c("forward","inverse"), \dots)
 \S4method{plot}{pomp}(x, y, variables, panel = lines,
       nc = NULL, yax.flip = FALSE,
@@ -162,7 +162,7 @@
       \code{coef(object,pars,transform=TRUE) <- value} first, discards any names the \code{value} may have, sets \code{names(value) <- pars}, and then replaces the elements of \code{object}'s \code{params} slot \code{parameter.transform(value)}.
       In this case, if some of the names in \code{pars} do not already name parameters in \code{coef(object,transform=TRUE)}, then they are concatenated.
     }
-    \item{obs, data.array}{
+    \item{obs}{
       These functions are synonymous.
       \code{obs(object)} returns the array of observations.
       \code{obs(object,vars)} gives just the observations of variables named \code{vars}.
@@ -236,13 +236,7 @@
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
   \code{\link{pomp}},
-  \link{pomp-class},
-  \code{\link{rprocess}},
-  \code{\link{dprocess}},
-  \code{\link{rmeasure}},
-  \code{\link{dmeasure}},
-  \code{\link{init.state}},
-  \code{\link[=simulate-pomp]{simulate}}
+  \link{pomp low-level interface}
 }
 \keyword{models}
 \keyword{ts}

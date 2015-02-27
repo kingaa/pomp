@@ -132,7 +132,7 @@ x <- simulate(rw2,nsim=10,params=p[,1],obs=T,states=T)
 x <- simulate(rw2,nsim=10,params=p,obs=T,states=T)
 x <- simulate(rw2,nsim=10,params=p[,1])
 
-x <- data.array(rw2)
+x <- obs(rw2)
 t <- time(rw2)
 
 x0 <- init.state(rw2,params=p)

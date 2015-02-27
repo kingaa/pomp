@@ -1,11 +1,12 @@
 \name{plugins}
 \alias{plugins}
+\alias{process model plugins}
 \alias{onestep.sim}
 \alias{euler.sim}
 \alias{discrete.time.sim}
 \alias{onestep.dens}
 \alias{gillespie.sim}
-\title{Plug-ins for dynamical models based on stochastic Euler algorithms}
+\title{Plug-ins for state-process models}
 \description{
   Plug-in facilities for implementing discrete-time Markov processes and continuous-time Markov processes using the Euler algorithm.
   These can be used in the \code{rprocess} and \code{dprocess} slots of \code{pomp}.

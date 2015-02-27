@@ -340,18 +340,9 @@ file.show(
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \link{pomp-methods},
-  \link[pomp]{plugins},
-  \code{\link[=pomp-methods]{time}},
-  \code{\link[=pomp-methods]{time<-}},
-  \code{\link[=pomp-methods]{timezero}},
-  \code{\link[=pomp-methods]{timezero<-}},
-  \code{\link[=pomp-methods]{coef}},
-  \code{\link[=pomp-methods]{coef<-}},
-  \code{\link[=pomp-methods]{obs}},
-  \code{\link[=pomp-methods]{states}},
-  \code{\link[=pomp-methods]{window}},
-  \code{\link[=pomp-methods]{as.data.frame.pomp}}
+  \link{pomp methods},
+  \link{pomp low-level interface},
+  \link{process model plugins}
  }
 \keyword{models}
 \keyword{ts}

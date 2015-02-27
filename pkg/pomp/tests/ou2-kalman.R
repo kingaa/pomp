@@ -36,7 +36,7 @@ kalman.filter <- function (y, x0, a, b, sigma, tau) {
 }
 
 kalman <- function (x, object, params) {
-  y <- data.array(object)
+  y <- obs(object)
   p <- params
   p[names(x)] <- x
   x0 <- init.state(object,params=p)
