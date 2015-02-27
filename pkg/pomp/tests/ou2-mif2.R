@@ -70,7 +70,7 @@ mif2b <- mif(ou2,Nmif=50,start=guess1,
              ic.lag=10,
              cooling.whatsit=200,
              cooling.type="geometric",
-             cooling.factor=0.95,
+             cooling.fraction=0.95^50,
              max.fail=100,
              method="mif"
              )  

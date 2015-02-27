@@ -61,13 +61,11 @@ particle filter log likelihood at truth
 +             var.factor=1,
 +             ic.lag=10,
 +             cooling.type="geometric",
-+             cooling.factor=0.95,
++             cooling.fraction=0.95^50,
 +             max.fail=100
 +             )
-Warning messages:
-1: mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
-2: 'cooling.factor' is deprecated.
-See '?mif' for instructions on specifying the cooling schedule. 
+Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > 
 > mif2 <- mif(ou2,Nmif=30,start=guess2,
 +             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
@@ -129,18 +127,6 @@ mif warning: argument 'pars' is redundant and deprecated.  It will be removed in
 Error : mif error: 'pars' and 'ivps' must be mutually disjoint subsets of 'names(start)' and must have a positive random-walk SDs specified in 'rw.sd'
 In addition: Warning message:
 mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
-> 
-> try(
-+     mif(
-+         ou2,
-+         Nmif=1,
-+         ivps=c("x1.0","x2.0"),
-+         rw.sd=c(alpha.1=0.1,alpha.4=0.2,alpha.3=0),
-+         Np=100,cooling.type="geometric",cooling.fraction=0.95^50,
-+         cooling.factor=0.95,ic.lag=10,var.factor=1
-+         )
-+     )
-Error : mif error: 'pars' and 'ivps' must be mutually disjoint subsets of 'names(start)' and must have a positive random-walk SDs specified in 'rw.sd'
 > 
 > try(
 +     mif(
@@ -293,4 +279,4 @@ Warning messages:
 > 
 > proc.time()
    user  system elapsed 
- 15.048   0.037  15.088 
+ 15.232   0.060  15.274 

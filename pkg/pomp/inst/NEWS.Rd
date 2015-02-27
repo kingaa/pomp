@@ -1,5 +1,13 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.62-1}{
+  \itemize{
+    \item \code{mif} now has the default value \code{var.factor=1}.
+    Since \code{var.factor} has long been a required parameter, this change is backward compatible.
+    Since \code{var.factor} has long been a required parameter, this change is backward compatible.
+    \item The long-deprecated \code{cooling.factor} option to \code{mif} has now been removed.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.61-3}{
   \itemize{
     \item \code{mif}'s \code{pars} argument, which is redundant, is now deprecated.

@@ -86,7 +86,7 @@ mif.internal <- function (object, Nmif,
                           particles,
                           rw.sd,
                           Np, var.factor, ic.lag,
-                          cooling.type, cooling.fraction, cooling.factor,
+                          cooling.type, cooling.fraction,
                           method,
                           tol, max.fail,
                           verbose, transform, .ndone = 0L,
@@ -206,23 +206,6 @@ mif.internal <- function (object, Nmif,
             )
   }
   
-  ## the following deals with the deprecated option 'cooling.factor'
-  if (!missing(cooling.factor)) {
-    warning(sQuote("cooling.factor")," is deprecated.\n",
-            "See ",sQuote("?mif")," for instructions on specifying the cooling schedule.",
-            call.=FALSE)
-    cooling.factor <- as.numeric(cooling.factor)
-    if ((length(cooling.factor)!=1)||(cooling.factor<0)||(cooling.factor>1))
-      stop("mif error: ",sQuote("cooling.factor")," must be a number between 0 and 1",call.=FALSE)
-    if (missing(cooling.fraction)) {
-      cooling.fraction <- cooling.factor^50
-    } else {
-      warning("specification of ",sQuote("cooling.factor"),
-              " is overridden by that of ",sQuote("cooling.fraction"),
-              call.=FALSE)
-    }
-  }
-
   if (missing(cooling.fraction))
     stop("mif error: ",sQuote("cooling.fraction")," must be specified",call.=FALSE)
   cooling.fraction <- as.numeric(cooling.fraction)
@@ -399,9 +382,9 @@ setMethod(
                     start,
                     ivps = character(0),
                     particles, rw.sd,
-                    Np, ic.lag, var.factor,
+                    Np, ic.lag, var.factor = 1,
                     cooling.type = c("geometric","hyperbolic"),
-                    cooling.fraction, cooling.factor,
+                    cooling.fraction,
                     method = c("mif","unweighted","fp","mif2"),
                     tol = 1e-17, max.fail = Inf,
                     verbose = getOption("verbose"),
@@ -453,7 +436,6 @@ setMethod(
                          rw.sd=rw.sd,
                          Np=Np,
                          cooling.type=cooling.type,
-                         cooling.factor=cooling.factor,
                          cooling.fraction=cooling.fraction,
                          var.factor=var.factor,
                          ic.lag=ic.lag,

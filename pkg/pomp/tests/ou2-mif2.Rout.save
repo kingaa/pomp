@@ -97,14 +97,12 @@ mif warning: argument 'pars' is redundant and deprecated.  It will be removed in
 +              ic.lag=10,
 +              cooling.whatsit=200,
 +              cooling.type="geometric",
-+              cooling.factor=0.95,
++              cooling.fraction=0.95^50,
 +              max.fail=100,
 +              method="mif"
 +              )  
-Warning messages:
-1: mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
-2: 'cooling.factor' is deprecated.
-See '?mif' for instructions on specifying the cooling schedule. 
+Warning message:
+mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > mif2b <- continue(mif2b,Nmif=50)
 > 
 > mif2c <- mif(ou2,Nmif=50,start=guess1,
@@ -144,4 +142,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 66.333   0.037  66.430 
+ 66.324   0.058  66.448 

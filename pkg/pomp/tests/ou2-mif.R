@@ -28,7 +28,7 @@ mif1 <- mif(ou2,Nmif=30,start=guess1,
             var.factor=1,
             ic.lag=10,
             cooling.type="geometric",
-            cooling.factor=0.95,
+            cooling.fraction=0.95^50,
             max.fail=100
             )
 
@@ -78,17 +78,6 @@ try(
         Np=100,
         cooling.type="geometric",cooling.fraction=0.95^50,
         ic.lag=10,var.factor=1
-        )
-    )
-
-try(
-    mif(
-        ou2,
-        Nmif=1,
-        ivps=c("x1.0","x2.0"),
-        rw.sd=c(alpha.1=0.1,alpha.4=0.2,alpha.3=0),
-        Np=100,cooling.type="geometric",cooling.fraction=0.95^50,
-        cooling.factor=0.95,ic.lag=10,var.factor=1
         )
     )
 
