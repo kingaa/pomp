@@ -174,10 +174,7 @@ summary(bad)
 plot(bad)
 }
 \seealso{
-  \link{pomp-class},
-  \link{pomp-methods},
-  \code{\link{probe}},
-  \code{\link{probe.match}}
+  \link{pomp}, \code{\link{probe}}
 }
 \keyword{models}
 \keyword{ts}

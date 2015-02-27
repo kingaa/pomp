@@ -1,4 +1,4 @@
-\name{pomp-methods}
+\name{pomp methods}
 \docType{methods}
 \alias{pomp methods}
 \alias{pomp-methods}
@@ -41,10 +41,9 @@
 \alias{coef<-}
 \alias{coef<-,pomp-method}
 \alias{coef<--pomp}
-\title{Methods of the "pomp" class}
-\description{Methods of the \code{pomp} class.}
+\title{Functions for manipulating, displaying, and extracting information from objects of the \code{pomp} class}
+\description{This page documents the various methods that allow one to extract information from, display, plot, and modify \code{pomp} objects.}
 \usage{
-\S3method{as.data.frame}{pomp}(x, row.names, optional, \dots)
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots)
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots) <- value
 \S4method{obs}{pomp}(object, vars, \dots)
@@ -62,7 +61,6 @@
 \S4method{timezero}{pomp}(object, \dots) <- value
 \S4method{window}{pomp}(x, start, end, \dots)
 \S4method{as}{pomp}(object, class)
-\S4method{coerce}{pomp,data.frame}(from, to = "data.frame", strict = TRUE)
 }
 \arguments{
   \item{object, x}{The \code{pomp} object.}
@@ -104,12 +102,6 @@
     character;
     name of the class to which \code{object} should be coerced.
   }
-  \item{from, to}{
-    the classes between which coercion should be performed.
-  }
-  \item{strict}{
-    ignored.
-  }
   \item{y}{ignored.}
   \item{variables}{
     optional character;
@@ -133,9 +125,6 @@
   \item{axes}{
     logical;
     indicates if x- and y- axes should be drawn.
-  }
-  \item{row.names, optional}{
-    ignored.
   }
   \item{\dots}{
     Further arguments (either ignored or passed to underlying functions).

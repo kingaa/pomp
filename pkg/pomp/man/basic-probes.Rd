@@ -1,4 +1,6 @@
-\name{basic.probes}
+\name{Probe functions}
+\title{Some useful probes for partially-observed Markov processes}
+\alias{Probe functions}
 \alias{basic.probes}
 \alias{probe.mean}
 \alias{probe.median}
@@ -10,10 +12,9 @@
 \alias{probe.ccf}
 \alias{probe.marginal}
 \alias{probe.nlar}
-\title{Some probes for partially-observed Markov processes}
 \description{
-  Several simple and configurable probes are provided in the package.
-  These can be used directly and as examples for building custom probes.
+  Several simple and configurable probes are provided with in the package.
+  These can be used directly and as templates for custom probes.
 }
 \usage{
 probe.mean(var, trim = 0, transform = identity, na.rm = TRUE)

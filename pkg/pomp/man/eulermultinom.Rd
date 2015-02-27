@@ -1,11 +1,11 @@
 \name{eulermultinom}
+\title{The Euler-multinomial distributions and Gamma white-noise processes}
 \alias{eulermultinom}
 \alias{reulermultinom}
 \alias{deulermultinom}
 \alias{rgammawn}
-\title{Euler-multinomial death process}
 \description{
-  Density and random-deviate generation for the Euler-multinomial death process with parameters \code{size}, \code{rate}, and \code{dt}.
+  This page documents both the Euler-multinomial family of distributions and the package's simulator of Gamma white-noise processes.
 }
 \usage{
 reulermultinom(n = 1, size, rate, dt)
@@ -75,6 +75,10 @@ rgammawn(n = 1, sigma, dt)
     Returns a vector of length \code{n} containing random increments of the integrated Gamma white noise process with intensity \code{sigma}.
   }
 }
+\section{C interface}{
+  A C API for these functions is also provided by the package.
+  At an \R prompt, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view the header file that defines and explains the API.
+}
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \examples{
 print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=0.1))
@@ -92,5 +96,5 @@ print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW))
   D. He, E. L. Ionides, & A. A. King,
   Plug-and-play inference for disease dynamics: measles in large and small populations as a case study.
   J. R. Soc. Interface, 7:271--283, 2010.
-  }
+}
 \keyword{distribution}

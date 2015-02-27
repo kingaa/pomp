@@ -1,4 +1,5 @@
-\name{pmcmc}
+\name{Particle Markov Chain Monte Carlo}
+\title{The particle Markov chain Metropolis-Hastings algorithm}
 \docType{methods}
 \alias{pmcmc}
 \alias{pmcmc,pmcmc-method}
@@ -10,7 +11,24 @@
 \alias{continue,pmcmc-method}
 \alias{continue-pmcmc}
 \alias{pmcmc-class}
-\title{The PMCMC algorithm}
+\alias{pmcmc-methods}
+\alias{logLik,pmcmc-method}
+\alias{logLik-pmcmc}
+\alias{conv.rec,pmcmc-method}
+\alias{conv.rec-pmcmc}
+\alias{conv.rec,pmcmcList-method}
+\alias{conv.rec-pmcmcList}
+\alias{plot-pmcmc}
+\alias{plot,pmcmc-method}
+\alias{plot-pmcmcList}
+\alias{plot,pmcmcList-method}
+\alias{pmcmcList-class}
+\alias{c-pmcmc}
+\alias{c,pmcmc-method}
+\alias{c-pmcmcList}
+\alias{c,pmcmcList-method}
+\alias{[-pmcmcList}
+\alias{[,pmcmcList-method}
 \description{
   The Particle MCMC algorithm for estimating the parameters of a partially-observed Markov process.
 }
@@ -80,6 +98,22 @@
   This gives an asymptotically correct Bayesian procedure for parameter estimation (Andrieu and Roberts, 2009).
   An extension to give a correct Bayesian posterior distribution of unobserved state variables (as in Andrieu et al, 2010) has not yet been implemented.
 }
+\section{Methods}{
+  \describe{
+    \item{conv.rec}{
+      \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars} as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
+    }
+    \item{plot}{
+      Diagnostic plots.
+    }
+    \item{logLik}{
+      Returns the value in the \code{loglik} slot.
+    }
+    \item{c}{
+      Concatenates \code{pmcmc} objects into a \code{pmcmcList}.
+    }
+  }
+}
 \references{
   C. Andrieu, A. Doucet and R. Holenstein, 
   Particle Markov chain Monte Carlo methods, 
@@ -91,6 +125,7 @@
 }
 \author{Edward L. Ionides \email{ionides at umich dot edu}, Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \code{\link{pmcmc-class}}, \code{\link{pmcmc-methods}}, \code{\link{pomp}}, \code{\link{pomp-class}}, \code{\link{pfilter}}.
+  \code{\link{pomp}}, \code{\link{pfilter}},
+  and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
 }
 \keyword{ts}

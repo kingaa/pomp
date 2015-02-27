@@ -1,4 +1,5 @@
 \name{probe}
+\title{Probe a partially-observed Markov process by computing summary statistics and the synthetic likelihood.}
 \alias{probe}
 \alias{probe,pomp-method}
 \alias{probe,probed.pomp-method}
@@ -18,7 +19,39 @@
 \alias{probe.match.objfun,probed.pomp-method}
 \alias{probe.match.objfun-pomp}
 \alias{probe.match.objfun-probed.pomp}
-\title{Probe a partially-observed Markov process.}
+\alias{probed.pomp-methods}
+\alias{probe.matched.pomp-methods}
+\alias{spect.pomp-methods}
+\alias{spect.matched.pomp-methods}
+\alias{summary,probed.pomp-method}
+\alias{summary,probe.matched.pomp-method}
+\alias{summary-probed.pomp}
+\alias{summary-probe.matched.pomp}
+\alias{values}
+\alias{values,probed.pomp-method}
+\alias{values,probe.matched.pomp-method}
+\alias{values-probed.pomp}
+\alias{values-probe.matched.pomp}
+\alias{plot,probed.pomp-method}
+\alias{plot,probe.matched.pomp-method}
+\alias{plot-probed.pomp}
+\alias{plot-probe.matched.pomp}
+\alias{summary,spect.pomp-method}
+\alias{summary,spect.matched.pomp-method}
+\alias{summary-spect.pomp}
+\alias{summary-spect.matched.pomp}
+\alias{plot,spect.pomp-method}
+\alias{plot,spect.matched.pomp-method}
+\alias{plot,spect.pomp-method}
+\alias{plot-spect.pomp}
+\alias{as,probed.pomp-method}
+\alias{logLik,probed.pomp-method}
+\alias{logLik-probed.pomp}
+\alias{$,probed.pomp-method}
+\alias{$-probed.pomp}
+\alias{$,probe.matched.pomp-method}
+\alias{$-probe.matched.pomp}
+\alias{coerce,probed.pomp,data.frame-method}
 \description{
   \code{probe} applies one or more \dQuote{probes} to time series data and model simulations and compares the results.
   It can be used to diagnose goodness of fit and/or as the basis for \dQuote{probe-matching}, a generalized method-of-moments approach to parameter estimation.
@@ -43,6 +76,8 @@
 \S4method{probe.match}{probe.matched.pomp}(object, est, probes,
             nsim, seed, transform, fail.value, \dots,
             verbose = getOption("verbose"))
+\S4method{logLik}{probed.pomp}(object, \dots)
+\S4method{values}{probed.pomp}(object, \dots)
 }
 \arguments{
   \item{object}{
@@ -52,7 +87,7 @@
     A single probe or a list of one or more probes.
     A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \code{pomp}.
     A vector-valued probe must always return a vector of the same size.
-    A number of basic examples are provided with the package (see \link{basic.probes}).
+    A number of useful examples are provided with the package: see \link{Probe functions}).
   }
   \item{params}{
     optional named numeric vector of model parameters.
@@ -141,6 +176,29 @@
 
   \code{probe.match.objfun} returns a function suitable for use as an objective function in an \code{\link{optim}}-like optimizer.
 }
+\section{Methods}{
+  \describe{
+    \item{plot}{
+      displays diagnostic plots.
+    }
+    \item{summary}{
+      displays summary information.
+    }
+    \item{values}{
+      extracts the realized values of the probes on the data and on the simulations as a data frame in long format.
+      The variable \code{.id} indicates whether the probes are from the data or simulations.
+    }
+    \item{logLik}{
+      returns the synthetic likelihood for the probes.
+      NB: in general, this is not the same as the likelihood.
+    }
+    \item{as, as.data.frame}{
+      when a \sQuote{probed.pomp} is coerced to a \sQuote{data.frame}, the first row gives the probes applied to the data; the rest of the rows give the probes evaluated on simulated data.
+      The rownames of the result can be used to distinguish these.
+    }
+  }
+  In addition, slots of this object can be accessed via the \code{$} operator.
+}
 \references{
   B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, S. N. Wood
   Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches,
@@ -188,14 +246,8 @@ summary(bad)
 plot(bad)
 }
 \seealso{
-  \link{pomp-class},
-  \link{pomp-methods},
-  \link{basic.probes},
-  \code{\link{probe.match}}
+  \link{pomp}, \link{Probe functions}, \link{spect},
+  and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
 }
 \keyword{models}
 \keyword{ts}
-
-
-
-
