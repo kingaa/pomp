@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.62-1}{
+  \itemize{
+    \item \code{mif}'s \code{pars} argument, which is redundant, is now ignored with a warning.
+    In a future release, this argument will be removed.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.61-1}{
   \itemize{
     \item When using \code{Csnippet}s or \code{pompBuilder}, it is no longer necessary to manually load and unload the dynamically loadable library.

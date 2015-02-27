@@ -11,7 +11,7 @@ guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.2*guess1[c('x1.0','x2.0','alph
 
 set.seed(64857673L)
 mif1a <- mif(ou2,Nmif=100,start=guess1,
-             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+             ivps=c('x1.0','x2.0'),
              rw.sd=c(
                x1.0=.5,x2.0=.5,
                alpha.2=0.1,alpha.3=0.1),
@@ -26,7 +26,7 @@ mif1a <- mif(ou2,Nmif=100,start=guess1,
              )
 
 mif2a <- mif(ou2,Nmif=100,start=guess1,
-             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+             ivps=c('x1.0','x2.0'),
              rw.sd=c(
                x1.0=0.5,x2.0=.5,
                alpha.2=0.1,alpha.3=0.1),
@@ -45,7 +45,7 @@ plot(c(mif1a,mif2a))
 
 set.seed(64857673L)
 mif1b <- mif(ou2,Nmif=50,start=guess1,
-             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+             ivps=c('x1.0','x2.0'),
              rw.sd=c(
                x1.0=.5,x2.0=.5,
                alpha.2=0.1,alpha.3=0.1),
@@ -60,7 +60,7 @@ mif1b <- mif(ou2,Nmif=50,start=guess1,
 mif1b <- continue(mif1b,Nmif=50)
 
 mif2b <- mif(ou2,Nmif=50,start=guess1,
-             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+             ivps=c('x1.0','x2.0'),
              rw.sd=c(
                x1.0=0.5,x2.0=.5,
                alpha.2=0.1,alpha.3=0.1),
@@ -77,7 +77,7 @@ mif2b <- mif(ou2,Nmif=50,start=guess1,
 mif2b <- continue(mif2b,Nmif=50)
 
 mif2c <- mif(ou2,Nmif=50,start=guess1,
-             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
+             ivps=c('x1.0','x2.0'),
              rw.sd=c(
                x1.0=0.5,x2.0=.5,
                alpha.2=0.1,alpha.3=0.1),

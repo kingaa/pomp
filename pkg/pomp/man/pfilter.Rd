@@ -103,8 +103,7 @@
   }
   \item{pars}{Names of parameters.}
   \item{\dots}{
-    By default, when \code{pfilter} pfilter is run on a \code{pfilterd.pomp} object, the settings in the original call are re-used.
-    This default behavior can be overridden by changing the settings (see Examples below).
+    additional arguments that override the defaults.
   }
 }
 \value{
@@ -170,9 +169,9 @@ plot(pf)
 logLik(pf)
 cond.logLik(pf)			## conditional log-likelihoods
 eff.sample.size(pf)             ## effective sample size
-logLik(pfilter(gompertz))      	## run it again with 1000 particles
-## run it with 2000 particles
-pf <- pfilter(gompertz,Np=2000,filter.mean=TRUE)
+logLik(pfilter(pf))      	## run it again with 1000 particles
+## run it again with 2000 particles
+pf <- pfilter(pf,Np=2000,filter.mean=TRUE)
 fm <- filter.mean(pf)    	## extract the filtering means
 }
 \references{

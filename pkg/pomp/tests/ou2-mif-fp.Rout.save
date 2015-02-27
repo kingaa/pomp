@@ -46,6 +46,9 @@ newly created object(s):
 +             max.fail=100,
 +             method="fp"
 +             )
+Warning message:
+mif warning: the 'pars' argument to 'mif' is unnecessary and deprecated and will be ignored.
+This behavior differs from that previous to 'pomp' version 0.62 
 > 
 > mif2 <- mif(ou2,Nmif=100,start=guess2,
 +             pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
@@ -61,6 +64,9 @@ newly created object(s):
 +             max.fail=100,
 +             method="fp"
 +             )
+Warning message:
+mif warning: the 'pars' argument to 'mif' is unnecessary and deprecated and will be ignored.
+This behavior differs from that previous to 'pomp' version 0.62 
 > 
 > plot(c(mif1,mif2))
 > 
@@ -70,4 +76,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 19.413   0.056  19.690 
+ 20.933   0.064  21.259 

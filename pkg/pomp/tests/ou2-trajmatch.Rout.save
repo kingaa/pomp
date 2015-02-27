@@ -175,4 +175,4 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > proc.time()
    user  system elapsed 
-  1.712   0.060   1.801 
+  2.188   0.040   2.279 

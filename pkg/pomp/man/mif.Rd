@@ -126,10 +126,7 @@
     \code{method="mif2"} implements an incomplete version of the iterated Bayes map method of Ionides (2015).
     The latter method is, by every indication, both more efficient and more stable.
   }
-  \item{tol}{
-    See the description under \code{\link{pfilter}}.
-  }
-  \item{max.fail}{
+  \item{tol, max.fail}{
     See the description under \code{\link{pfilter}}.
   }
   \item{verbose}{
@@ -137,13 +134,12 @@
   }
   \item{transform}{
     logical;
-    if \code{TRUE}, optimization is performed on the transformed scale.
+    if \code{TRUE}, optimization is performed on the transformed scale, as defined by the user-supplied parameter transformations (see \code{\link{pomp}}).
   }
   \item{\dots}{
     additional arguments that override the defaults.
   }
   \item{pars}{names of parameters.}
-  \item{x}{a \code{mif} object.}
 }
 \section{Re-running \code{mif} Iterations}{
   To re-run a sequence of \code{mif} iterations, one can use the \code{mif} method on a \code{mif} object.
