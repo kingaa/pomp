@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.62-2}{
+  \itemize{
+    \item Bug fix in \code{partrans} when transformations are implemented using \code{Csnippet}s.
+    \item Remove the \code{verhulst} example.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.62-1}{
   \itemize{
     \item \code{mif} now has the default value \code{var.factor=1}.

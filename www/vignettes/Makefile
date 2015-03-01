@@ -24,6 +24,7 @@ vignettes: advanced_topics_in_pomp.pdf advanced_topics_in_pomp.R intro_to_pomp.p
 
 clean:
 	$(RM) *.tex *.log *.aux *.blg *.bbl *.out *.Rout *.toc *.lof *.lot *.brf
-	$(RM) *.c *.o *.so
+	$(RM) -r cache figure
+	$(RM) *.c *.o *.so *.bak
 	$(RM) Rplots.pdf
 	$(RM) -r figure

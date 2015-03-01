@@ -9,9 +9,8 @@ x <- trajectory(ricker,times=tm)["N",,]
 y <- simulate(ricker,times=tm,states=TRUE)["N",,]
 stopifnot(identical(x,y))
 
-pompExample(verhulst)
-coef(verhulst,c("n.0","sigma")) <- c(15,0)
+pompExample(euler.sir)
 tm <- sort(runif(n=100,max=1))
-x <- trajectory(verhulst,times=tm)["n",,]
-y <- simulate(verhulst,times=tm,states=TRUE)["n",,]
+x <- trajectory(euler.sir,times=tm)["I",,]
+y <- simulate(euler.sir,times=tm,states=TRUE)["I",,]
 table(cut(x-y,breaks=c(-Inf,seq(-0.2,0.2,by=0.01),Inf),ordered=T))

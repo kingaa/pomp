@@ -28,8 +28,11 @@ as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 partrans.internal <- function (object, params, dir = c("forward","inverse"),
                                .getnativesymbolinfo = TRUE, ...) {
   if (!object@has.trans) return(params)
+  pompLoad(object)
   dir <- switch(match.arg(dir),forward=1L,inverse=-1L)
-  .Call(do_partrans,object,params,dir,.getnativesymbolinfo)
+  rv <- .Call(do_partrans,object,params,dir,.getnativesymbolinfo)
+  pompUnload(object)
+  rv
 }
 
 setMethod("partrans","pomp",
@@ -310,4 +313,3 @@ setMethod(
             invisible(NULL)
           }
           )
-
