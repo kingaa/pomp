@@ -94,7 +94,7 @@ ggplot(data=parus.dat,mapping=aes(x=year,y=pop))+
 step.fun <- Csnippet("
   double dW = rnorm(0,sqrt(dt));
   N += r*N*(1-N/K)*dt+sigma*N*dW;
-  ")
+")
 
 ## ----logistic-pomp1,cache=FALSE------------------------------------------
 parus <- pomp(data=parus.dat,time="year",t0=1959,
@@ -114,7 +114,7 @@ melt(simStates) %>%
 ## ----logistic-rmeasure---------------------------------------------------
 rmeas <- Csnippet("
   pop = rpois(phi*N);
-  ")
+")
 
 ## ----logistic-pomp2,cache=FALSE------------------------------------------
 parus <- pomp(parus,rmeasure=rmeas,paramnames="phi",statenames="N")
@@ -139,7 +139,7 @@ sim %>% melt() %>% dcast(rep+time~variable,value.var='value') %>%
 ## ----logistic-dmeasure---------------------------------------------------
 dmeas <- Csnippet("
   lik = dpois(pop,phi*N,give_log);
-  ")
+")
 
 ## ----logistic-pomp3,cache=FALSE------------------------------------------
 parus <- pomp(parus,dmeasure=dmeas,paramnames="phi",statenames="N")
@@ -151,7 +151,7 @@ logLik(pf)
 ## ----logistic-skeleton,cache=FALSE---------------------------------------
 skel <- Csnippet("
   DN = r*N*(1-N/K);
-  ")
+")
 
 parus <- pomp(parus,skeleton=skel,skeleton.type="vectorfield",statenames="N",paramnames=c("r","K"))
 
@@ -170,12 +170,12 @@ trajectory(parus,params=pars,times=seq(1959,1970,by=0.01),as.data.frame=TRUE) %>
 bh.step <- Csnippet("
   double eps = rlnorm(-sigma*sigma/2,sigma);
   N = a*N/(1+b*N)*eps;
-  ")
+")
 
 ## ----bh-skeleton---------------------------------------------------------
 bh.skel <- Csnippet("
   DN = a*N/(1+b*N);
-  ")
+")
 
 ## ----bh-pomp1,cache=FALSE------------------------------------------------
 parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=bh.skel,skeleton.type="map",skelmap.delta.t=1,statenames="N",paramnames=c("a","b","sigma"))
@@ -190,12 +190,12 @@ pf <- pfilter(parus.bh,Np=1000)
 partrans <- Csnippet("
   Tr = exp(r);
   TK = exp(K);
-  ")
+")
 
 parinvtrans <- Csnippet("
   Tr = log(r);
   TK = log(K);
-  ")
+")
 
 parus <- pomp(parus,parameter.transform=partrans,parameter.inv.transform=parinvtrans,
               paramnames=c("r","K"))

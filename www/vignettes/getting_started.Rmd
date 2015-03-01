@@ -83,18 +83,21 @@ In the following, we will illustrate and explain how one specifies the rprocess,
 We will illustrate this using some simple examples.
 
 -----------------------------------
-![schematic1](../graphics/pomp_schematic1.png)
 
-Schematic of the structure of a POMP showing causal relations and direction of information flow.
+The following is a schematic of the structure of a POMP showing causal relations between the process model, the measurement model, and the data.
 **The key perspective to keep in mind is that the model is to be viewed as the process that generated the data.**
 
+![schematic1](../graphics/pomp_schematic1.png)
+
 -----------------------------------
+
+Here is another POMP model schematic, showing dependence among model variables.
+
 ![schematic2](../graphics/pomp_schematic2.png)
 
-Another POMP model schematic, showing dependence among model variables.
-State variables, $x$, at time $t$ depend only on state variables at the previous timestep.
-Measurements, $y$, at time $t$ depend only on the state at that time.
-Formally, $\mathrm{Prob}[X_t|X_1,\dots,X_{t-1},Y_1,\dots,Y_{t-1}]=\mathrm{Prob}[X_t|X_{t-1}]$ and $\mathrm{Prob}[Y_t|X_1,\dots,X_{t},Y_1,\dots,Y_{t-1}]=\mathrm{Prob}[Y_t|X_{t}]$ for all $t=1,\dots,T$.
+State variables, $X$, at time $t$ depend only on state variables at the previous timestep.
+Measurements, $Y$, at time $t$ depend only on the state at that time.
+Formally, $$\mathrm{Prob}[X_t|X_0,\dots,X_{t-1},Y_1,\dots,Y_{t-1}]=\mathrm{Prob}[X_t|X_{t-1}]$$ and $$\mathrm{Prob}[Y_t|X_0,\dots,X_{t},Y_1,\dots,Y_{t-1}]=\mathrm{Prob}[Y_t|X_{t}],$$ for all $t=1,\dots,T$.
 
 -----------------------------------
 
@@ -209,7 +212,7 @@ The following is such a snippet for the stochastic logistic equation above.
 step.fun <- Csnippet("
   double dW = rnorm(0,sqrt(dt));
   N += r*N*(1-N/K)*dt+sigma*N*dW;
-  ")
+")
 ```
 
 This is just a snippet of C code: not all the variables are declared and the context of the snippet is not specified.
@@ -259,7 +262,7 @@ The following snippet encodes the rmeasure component for this model.
 ```{r logistic-rmeasure}
 rmeas <- Csnippet("
   pop = rpois(phi*N);
-  ")
+")
 ```
 In this snippet of code, `N` is the state variable, `phi` is another parameter, and `pop` is the name of our observable, as defined in the dataset `parus.dat`.
 The `rpois` function is part of the [`R` API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API): it takes a single argument---the Poisson distribution's parameter---and returns a pseudo-random draw from the Poisson distribution with that parameter.
@@ -295,7 +298,7 @@ The following snippet encodes the dmeasure component.
 ```{r logistic-dmeasure}
 dmeas <- Csnippet("
   lik = dpois(pop,phi*N,give_log);
-  ")
+")
 ```
 and we fold it into the `pomp` object via
 ```{r logistic-pomp3,cache=FALSE}
@@ -324,7 +327,7 @@ The following snippet encodes this deterministic skeleton and folds it into the 
 ```{r logistic-skeleton,cache=FALSE}
 skel <- Csnippet("
   DN = r*N*(1-N/K);
-  ")
+")
 
 parus <- pomp(parus,skeleton=skel,skeleton.type="vectorfield",statenames="N",paramnames=c("r","K"))
 ```
@@ -357,14 +360,14 @@ The following snippet simulates a single iteration of the stochastic Beverton-Ho
 bh.step <- Csnippet("
   double eps = rlnorm(-sigma*sigma/2,sigma);
   N = a*N/(1+b*N)*eps;
-  ")
+")
 ```
 A corresponding skeleton is the deterministic Beverton-Holt map obtained by setting $e_t=1$ in the above equation.
 A snippet that implements this map is
 ```{r bh-skeleton}
 bh.skel <- Csnippet("
   DN = a*N/(1+b*N);
-  ")
+")
 ```
 Note that, as in the continuous case, we indicate the new value of the state variable by prepending `D` to the variable name.
 
@@ -388,12 +391,12 @@ The following implements log transformation of the $r$ and $K$ parameters of the
 partrans <- Csnippet("
   Tr = exp(r);
   TK = exp(K);
-  ")
+")
 
 parinvtrans <- Csnippet("
   Tr = log(r);
   TK = log(K);
-  ")
+")
 
 parus <- pomp(parus,parameter.transform=partrans,parameter.inv.transform=parinvtrans,
               paramnames=c("r","K"))
