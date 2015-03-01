@@ -36,7 +36,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
       }
 
       switch (*mode) {
-      case native:
+      case native: 
 	{
 	  SEXP nsi;
 	  PROTECT(nsi = eval(lang3(install("getNativeSymbolInfo"),nf,pack),R_BaseEnv)); nprotect++;
@@ -51,7 +51,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 	  fname = (const char *) CHARACTER_DATA(STRING_ELT(nf,0));
 	  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
 	  ff = R_GetCCallable(pkg,fname);
-	  PROTECT(f = R_MakeExternalPtr(ff,pfun,R_NilValue)); nprotect++;
+	  PROTECT(f = R_MakeExternalPtr(ff,R_NilValue,R_NilValue)); nprotect++;
 	}
 	break;
       }
