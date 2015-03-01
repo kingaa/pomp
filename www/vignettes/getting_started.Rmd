@@ -1,7 +1,6 @@
 ---
 title: "Getting started with pomp"
 author: "Aaron A. King"
-date: "02/28/2015"
 output:
   html_document:
     theme: flatly
@@ -13,6 +12,8 @@ csl: ecology.csl
 Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](http://pomp.r-forge.r-project.org/graphics/cc-by-nc.png)
+
+This document compiled with `pomp` version `r packageVersion("pomp")`.
 
 ```{r opts,include=FALSE}
 library(knitr)
@@ -51,7 +52,7 @@ require(reshape2)
 require(magrittr)
 require(pomp)
 theme_set(theme_bw())
-stopifnot(packageVersion("pomp")>="0.62-1")
+stopifnot(packageVersion("pomp")>="0.62-2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -229,7 +230,7 @@ Note that `dt` is a variable that is defined in the context of this snippet; it 
 The `rnorm` function is part of the [`R` API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API): see the [manual on "Writing R Extensions"](http://cran.r-project.org/doc/manuals/r-release/R-exts.html) for a description of this and the other [distribution functions provided as part of the `R` API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions).
 Finally, note that the state variable `N` is over-written by this snippet: it's value when the first line is executed is overwritten by the second line.
 
-[A full set of rules for writing `pomp` C snippets is given below][rules].
+A full set of rules for writing `pomp` C snippets is given in the package help `?Csnippet`.
 
 With the process model in place, we can simulate the process model using the `simulate` function and plot several realizations for a given set of parameters.
 
@@ -328,7 +329,7 @@ skel <- Csnippet("
 parus <- pomp(parus,skeleton=skel,skeleton.type="vectorfield",statenames="N",paramnames=c("r","K"))
 ```
 Note that in this snippet, `DN` is filled with the value of the time-derivative of `N`. 
-[See below for a complete set of rules for writing C snippets for `pomp`][rules].
+See the package help (`?Csnippet`) for a complete set of rules for writing C snippets.
 
 With the deterministic skeleton in place we can generate several trajectories of the skeleton using `trajectory`, as follows, and plot the result.
 ```{r logistic-traj1}
@@ -403,59 +404,4 @@ coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
 stopifnot(all.equal(p,coef(parus)))
 ```
 
-## Rules for writing C snippets
-
-To fully understand how `pomp` makes use of C snippets, it is informative to have a look at the C file created by any call to `pomp` involving one or more C snippets.
-Run the following in an `R` session and view the C file that is created in the session's temporary directory.
-```{r tempfile-view,eval=FALSE}
-op <- options(verbose=TRUE)
-
-parus <- pomp(data=parus.dat,times="year",t0=1959,rprocess=euler.sim(step.fun,delta.t=1/365),
-     dmeasure=dmeas,rmeasure=rmeas,statenames="N",paramnames=c("r","phi","K","N.0","sigma"))
-
-options(op)
-```
-
-### General rules
-
-1. C snippets must be valid C.  They will embedded verbatim in a template file which will then be compiled by a call to `R CMD SHLIB`.  If the resulting file does not compile, an error message wil be generated.  No attempt is made by `pomp` to interpret this message.  Typically, compilation errors are due to either the snippet's being invalid C or one or more undeclared variables.
-1. Each state variable or parameter must be left undeclared in the snippet and declared in the corresponding argument to `pomp`, i.e., in either `statenames` or `paramnames`. Compiler errors that complain about undeclared state variables or parameters are likely due to failure to include these parameters in the appropriate vector of names.
-1. Names of observables are determined by their names in the data.  They must be referred to in measurement model snippets (rmeasure or dmeasure) by those names.
-1. If the `pomp` object contains a table of covariates (see `?pomp`), then the variables in the covariate table will be available by their names in the context within which the snippet is executed.
-1. `R` variables with names containing dots are replaced in the C codes by variable names in which all dots have been replaced by underscores ("_").
-1. A C snippet can declare local variables.  Be careful not to use names that match those of state variables, observables, or parameters.  The latter must never be declared within a snippet.
-1. The header `R.h`, provided with `R`, will be included, making all of the [`R` C API](http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API) available for use in the snippet.
-1. The header `pomp.h`, provided with `pomp`, will be included, making all of the `pomp` C API available for use in every snippet.  Do `file.show(system.file("include/pomp.h",package="pomp"))` to view this header file.
-1. Snippets of C code passed to the `globals` argument of `pomp` will be included at the head of the generated C file.  This can be used to define global variables, define useful functions, and include header files.
-
-### C snippets implementing Euler steps for use by `euler.sim`
-
-1. The ultimate goal of such a snippet is to replace the state variables with their new random values at the end of the time interval.  Accordingly, each state variable should be over-written with its new value.
-1. In addition to the states, parameters, covariates (if any), and observables, the variables `t` and `dt`, containing respectively the time at the beginning of the Euler step and the Euler step's duration, will be defined in the context in which the snippet is executed.
-
-### C snippets implementing the rmeasure component
-
-1. The ultimate goal of such a snippet is to fill the observables with random values drawn from the measurement model distribution.  Accordingly, each observable should be assigned a new value.
-1. In addition to the states, parameters, covariates (if any), and observables, the variable `t`, containing the time of the observation, will be defined in the context in which the snippet is executed.
-
-### C snippets implementing the dmeasure component
-
-1. The ultimate goal of such a snippet is to fill the `lik` variable with the likelihood of the data given the state.  Alternatively, if `give_log=1`, `lik` should be filled with the log likelihood.
-1. In addition to the states, parameters, covariates (if any), and observables, the variable `t`, containing the time of the observation, will be defined in the context in which the snippet is executed.
-
-### C snippets implementing the deterministic skeleton
-
-1. For each state variable, there is a corresponding component of the deterministic skeleton.  The goal of such a snippet is to compute all the components.  
-1. When the skeleton is a map, the component corresponding to state variable `x` is named `Dx` and is the new value of `x` after one iteration of the map.
-1. When the skeleton is a vectorfield, the component corresponding to state variable `x` is named `Dx` and is the value of $dx/dt$.
-1. As with the other C snippets, all states, parameters and covariates, as well as the current time, `t`, will be defined in the context within which the snippet is executed.
-
-### C snippets implementing parameter transformations
-
-1. The parameter transformation taking a parameter vector from the scale defined by the model codes to another scale is specified as the `parameter.inv.transform` whilst the transformation taking a parameter vector from the alternative scale to that on which the model is defined is specified as the `parameter.transform`.
-1. The goal of a either of these snippets is the computation of the values of the transformed parameters.  The value of transformed parameter `x` should be assigned to variable `Tx`.
-1. Time- and covariate-dependent transformations are not allowed.  Therefore, the variables `t` and any covariates will not be available in the context within which a parameter transformation snippet is executed.
-
 ## References
-
-[rules]:./getting_started.html##rules-for-writing-c-snippets "Rules for writing C snippets"

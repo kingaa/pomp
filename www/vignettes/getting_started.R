@@ -33,7 +33,7 @@ require(reshape2)
 require(magrittr)
 require(pomp)
 theme_set(theme_bw())
-stopifnot(packageVersion("pomp")>="0.62-1")
+stopifnot(packageVersion("pomp")>="0.62-2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -204,12 +204,4 @@ parus <- pomp(parus,parameter.transform=partrans,parameter.inv.transform=parinvt
 p <- c(r=1,K=200,phi=1,N.0=200,sigma=0.5)
 coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
 stopifnot(all.equal(p,coef(parus)))
-
-## ----tempfile-view,eval=FALSE--------------------------------------------
-## op <- options(verbose=TRUE)
-## 
-## parus <- pomp(data=parus.dat,times="year",t0=1959,rprocess=euler.sim(step.fun,delta.t=1/365),
-##      dmeasure=dmeas,rmeasure=rmeas,statenames="N",paramnames=c("r","phi","K","N.0","sigma"))
-## 
-## options(op)
 

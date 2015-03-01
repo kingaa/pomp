@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 0.62-2
-Date: 2015-02-28
+Version: 0.62-3
+Date: 2015-03-01
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -25,18 +25,18 @@ LazyData: true
 MailingList: Subscribe to pomp-announce@r-forge.r-project.org for announcements by going to http://lists.r-forge.r-project.org/mailman/listinfo/pomp-announce.
 Collate: aaa.R authors.R generics.R eulermultinom.R
 	 csnippet.R pomp-fun.R plugins.R builder.R
-	 parmat.R logmeanexp.R slice-design.R 
+	 parmat.R logmeanexp.R slice-design.R
 	 profile-design.R sobol.R bsplines.R sannbox.R
-	 pomp-class.R load.R pomp.R pomp-methods.R 
-	 rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R 
-	 dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R 
+	 pomp-class.R load.R pomp.R pomp-methods.R
+	 rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R
+	 dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R
 	 dprior-pomp.R rprior-pomp.R
-	 simulate-pomp.R trajectory-pomp.R plot-pomp.R 
-	 pfilter.R pfilter-methods.R minim.R traj-match.R 
+	 simulate-pomp.R trajectory-pomp.R plot-pomp.R
+	 pfilter.R pfilter-methods.R minim.R traj-match.R
 	 bsmc.R bsmc2.R
 	 mif.R mif-methods.R
 	 proposals.R pmcmc.R pmcmc-methods.R
- 	 nlf-funcs.R nlf-guts.R nlf-objfun.R nlf.R 
+ 	 nlf-funcs.R nlf-guts.R nlf-objfun.R nlf.R
 	 probe.R probe-match.R basic-probes.R spect.R spect-match.R
 	 abc.R abc-methods.R
 	 example.R
