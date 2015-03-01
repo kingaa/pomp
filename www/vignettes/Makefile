@@ -7,13 +7,16 @@ RM = rm -f
 
 default: vignettes clean
 
-vignettes: advanced_topics_in_pomp.pdf advanced_topics_in_pomp.R intro_to_pomp.pdf intro_to_pomp.R
+vignettes: intro_to_pomp.pdf intro_to_pomp.R getting_started.html getting_started.R
 
 %.R: %.Rnw
 	$(RSCRIPT) -e 'library(knitr); purl("$*.Rnw")'
 
 %.tex: %.Rnw
 	$(RSCRIPT) -e 'library(knitr); knit("$*.Rnw")'
+
+%.R: %.Rmd
+	$(RSCRIPT) -e 'library(knitr); purl("$*.Rmd")'
 
 %.pdf: %.tex
 	$(PDFLATEX) $*
@@ -27,4 +30,3 @@ clean:
 	$(RM) -r cache figure
 	$(RM) *.c *.o *.so *.bak
 	$(RM) Rplots.pdf
-	$(RM) -r figure
