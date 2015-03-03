@@ -11,6 +11,7 @@
 \alias{pomp,pomp-method}
 \alias{pomp-pomp}
 \alias{pomp-class}
+\alias{accumulator variables}
 \description{
   This function constructs a \code{pomp} object,
   encoding a partially-observed Markov process model together with a uni- or multivariate time series.
