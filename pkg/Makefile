@@ -40,16 +40,16 @@ pomp.vignettes: export POMP_BUILD_VIGNETTES=yes
 %.vignettes %.help %.data: export R_LIBS=$(CURDIR)/library
 %.bin %.check %.qcheck %.qqcheck %.xcheck %.crancheck %.upload %.publish %.clean %.install %.win: PKG = $*_$(shell perl -ne 'print $$1 if /Version:\s+(\d+\.\d+-\d+)/;' $*/DESCRIPTION)
 
-pomp.vignettes: pomp.install pomp.manual
+pomp.vignettes: pomp.install
 	(cd ../www/vignettes; make)
-	cp pomp.pdf ../www/vignettes
 	$(RCMD) Rdconv -t html pomp/inst/NEWS.Rd -o ../www/content/NEWS.html
 
 pompExamples.vignettes: pompExamples.install
 	(cd pompExamples/vignettes; make)
 
-pomp.help: pomp.install
+pomp.help: pomp.install pomp.manual
 	(cd ../www/help; make)
+	cp pomp.pdf ../www/help
 
 %.data: %.install
 	cd $*/inst/data-R; make
