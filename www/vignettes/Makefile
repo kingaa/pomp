@@ -7,7 +7,7 @@ RM = rm -f
 
 default: vignettes clean
 
-vignettes: intro_to_pomp.pdf intro_to_pomp.R getting_started.html getting_started.R
+vignettes: getting_started.html getting_started.R
 
 %.R: %.Rnw
 	$(RSCRIPT) -e 'library(knitr); purl("$*.Rnw")'
