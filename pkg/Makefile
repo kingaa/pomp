@@ -32,24 +32,21 @@ pomp.vignettes: export POMP_BUILD_VIGNETTES=yes
 %.dist %.manual %.vignettes: export R_QPDF=qpdf
 %.dist %.manual %.vignettes: export R_GSCMD=gs
 %.dist %.manual %.vignettes: export GS_QUALITY=ebook
-%.dist %.manual %.vignettes %.help: export R_HOME=$(shell $(REXE) RHOME)
+%.dist %.manual %.vignettes: export R_HOME=$(shell $(REXE) RHOME)
 %.check %.crancheck: export _R_CHECK_ALL_NON_ISO_C_=TRUE
 %.crancheck: export R_PROFILE_USER=./Rprofile
 %.check %.crancheck: export _R_CHECK_WALL_FORTRAN_=TRUE
 %.check %.xcheck: export POMP_FULL_TESTS=yes
-%.vignettes %.help %.data: export R_LIBS=$(CURDIR)/library
+%.vignettes %.data: export R_LIBS=$(CURDIR)/library
 %.bin %.check %.qcheck %.qqcheck %.xcheck %.crancheck %.upload %.publish %.clean %.install %.win: PKG = $*_$(shell perl -ne 'print $$1 if /Version:\s+(\d+\.\d+-\d+)/;' $*/DESCRIPTION)
 
-pomp.vignettes: pomp.install
+pomp.vignettes: pomp.install pomp.manual
 	(cd ../www/vignettes; make)
+	cp pomp.pdf ../www/vignettes
 	$(RCMD) Rdconv -t html pomp/inst/NEWS.Rd -o ../www/content/NEWS.html
 
 pompExamples.vignettes: pompExamples.install
 	(cd pompExamples/vignettes; make)
-
-pomp.help: pomp.install pomp.manual
-	(cd ../www/help; make)
-	cp pomp.pdf ../www/help
 
 %.data: %.install
 	cd $*/inst/data-R; make
