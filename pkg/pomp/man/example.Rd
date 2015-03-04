@@ -40,7 +40,9 @@ pompExample(example, \dots, envir = .GlobalEnv)
   pompExample(euler.sir)
   pompExample("gompertz")
   pompExample(ricker,envir=NULL)
+\dontrun{
   file.show(system.file("examples/bbs.R",package="pomp"))
+}
 }
 \seealso{
   \code{\link{blowflies}}, \code{\link{dacca}}, \code{\link{gompertz}},

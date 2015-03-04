@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: C code snippets for accelerating computations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for Csnippet {pomp}"><tr><td>Csnippet {pomp}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>C code snippets for accelerating computations</h2>
+
+<h3>Description</h3>
+
+<p>For including snippets of C code in <code>pomp</code> objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  Csnippet(text)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>text</code></td>
+<td>
+
+<p>character; a snippet of C code.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>Csnippet</code>.
+</p>
+
+
+<h3>Using C snippets to accelerate computations</h3>
+
+<p>From version 0.50, <span class="pkg">pomp</span> provides a facility whereby users can define their model's components using inline C code.
+Furnishing one or more <code>Csnippet</code>s as arguments to the <code>pomp</code> constructor causes them to be written to a C file stored in the <font face="Courier New,Courier" color="#666666"><b>R</b></font> session's temporary directory, which is then compiled (via <code><a href="../../utils/html/SHLIB.html">R CMD SHLIB</a></code>) into a dynamically loadable shared object file.
+This is then loaded as needed.
+</p>
+<p><STRONG>Note to Windows and Mac users:</STRONG>
+By default, your <font face="Courier New,Courier" color="#666666"><b>R</b></font> installation may not support <code><a href="../../utils/html/SHLIB.html">R CMD SHLIB</a></code>.
+Have a look at the tutorials on the package website for instructions on enabling this powerful feature of <font face="Courier New,Courier" color="#666666"><b>R</b></font>.
+</p>
+<p>In writing a <code>Csnippet</code> one must bear in mind both the <EM>goal</EM> of the snippet, i.e., what computation it is intended to perform, and the <EM>context</EM> in which it will be executed.
+Details of both of these are given below in the form of rules governing the use of <code>Csnippet</code>s.
+Illustrative examples are given in the tutorials on the <a href="http://pomp.r-forge.r-project.org">package website</a>.
+</p>
+
+
+<h3>General rules for writing C snippets</h3>
+
+
+<ol>
+<li><p> C snippets must be valid C.  They will embedded verbatim in a template file which will then be compiled by a call to <code>R CMD SHLIB</code>.  If the resulting file does not compile, an error message wil be generated.  No attempt is made by <span class="pkg">pomp</span> to interpret this message.  Typically, compilation errors are due to either invalid C syntax or undeclared variables.
+</p>
+</li>
+<li><p> State variables, parameters, observables, and covariates must be left undeclared in the snippet.  State variables and parameters must be declared in either the <code>statenames</code> or <code>paramnames</code> argument to <code>pomp</code>, as appropriate. Compiler errors that complain about undeclared state variables or parameters are usually due to failure to include these parameters in the appropriate vector of names.
+</p>
+</li>
+<li><p> A C snippet can declare local variables.  Be careful not to use names that match those of state variables, observables, or parameters.  The latter must never be declared within a snippet.
+</p>
+</li>
+<li><p> Names of observables are determined by their names in the data.  They must be referred to in measurement model snippets (rmeasure or dmeasure) by those names.
+</p>
+</li>
+<li><p> If the <code>pomp</code> object contains a table of covariates (see <code><a href="pomp.html">pomp</a></code>), then the variables in the covariate table will be available, by their names, in the context within which the snippet is executed.
+</p>
+</li>
+<li> <p><font face="Courier New,Courier" color="#666666"><b>R</b></font> variables with names containing dots (&lsquo;.&rsquo;) are replaced in the C codes by variable names in which all dots have been replaced by underscores (&lsquo;_&rsquo;).
+</p>
+</li>
+<li><p> The header &lsquo;<span class="file">R.h</span>&rsquo;, provided with <font face="Courier New,Courier" color="#666666"><b>R</b></font>, will be included in the generated C file, making all of the <a href="http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API"><font face="Courier New,Courier" color="#666666"><b>R</b></font> C API</a> available for use in the snippet.
+</p>
+</li>
+<li><p> The header &lsquo;<span class="file">pomp.h</span>&rsquo;, provided with <span class="pkg">pomp</span>, will also be included, making all of the <span class="pkg">pomp</span> C API available for use in every snippet.  Do </p>
+<PRE>file.show(system.file("include/pomp.h",package="pomp"))</PRE> to view this header file.
+</li>
+<li><p> Snippets of C code passed to the <code>globals</code> argument of <code>pomp</code> will be included at the head of the generated C file.  This can be used to declare global variables, define useful functions, and include arbitrary header files.
+</p>
+</li></ol>
+
+
+
+<h3>Rules for writing <code>rmeasure</code> snippets</h3>
+
+
+<ol>
+<li><p> The goal of such a snippet is to fill the observables with random values drawn from the measurement model distribution.  Accordingly, each observable should be assigned a new value.
+</p>
+</li>
+<li><p> In addition to the states, parameters, covariates (if any), and observables, the variable <code>t</code>, containing the time of the observation, will be defined in the context in which the snippet is executed.
+</p>
+</li></ol>
+
+
+
+<h3>Rules for writing <code>dmeasure</code> snippets</h3>
+
+
+<ol>
+<li><p> The goal of such a snippet is to fill the <code>lik</code> variable with the likelihood of the data given the state.  Alternatively, if <code>give_log=1</code>, <code>lik</code> should be filled with the log likelihood.
+</p>
+</li>
+<li><p> In addition to the states, parameters, covariates (if any), and observables, the variable <code>t</code>, containing the time of the observation, will be defined in the context in which the snippet is executed.
+</p>
+</li></ol>
+
+
+
+<h3>Rules for writing <code>euler.sim</code> and <code>discrete.time.sim</code> snippets</h3>
+
+
+<ol>
+<li><p> The goal of such a snippet is to replace the state variables with their new random values at the end of the time interval.  Accordingly, each state variable should be over-written with its new value.
+</p>
+</li>
+<li><p> In addition to the states, parameters, covariates (if any), and observables, the variables <code>t</code> and <code>dt</code>, containing respectively the time at the beginning of the Euler step and the Euler step's duration, will be defined in the context in which the snippet is executed.
+</p>
+</li></ol>
+
+
+
+<h3>Rules for writing <code>skeleton</code> snippets</h3>
+
+
+<ol>
+<li><p> For each state variable, there is a corresponding component of the deterministic skeleton.  The goal of such a snippet is to compute all the components.
+</p>
+</li>
+<li><p> When the skeleton is a map, the component corresponding to state variable <code>x</code> is named <code>Dx</code> and is the new value of <code>x</code> after one iteration of the map.
+</p>
+</li>
+<li><p> When the skeleton is a vectorfield, the component corresponding to state variable <code>x</code> is named <code>Dx</code> and is the value of $dx/dt$.
+</p>
+</li>
+<li><p> As with the other C snippets, all states, parameters and covariates, as well as the current time, <code>t</code>, will be defined in the context within which the snippet is executed.
+</p>
+</li></ol>
+
+
+
+<h3>Rules for writing parameter transformation snippets</h3>
+
+
+<ol>
+<li><p> The parameter transformation mapping a parameter vector from the scale defined by the model codes to another scale is specified as the <code>parameter.inv.transform</code> whilst the transformation mapping a parameter vector from the alternative scale to that on which the model is defined is specified as the <code>parameter.transform</code>.
+</p>
+</li>
+<li><p> The goal of a these snippets is the computation of the values of the transformed parameters.  The value of transformed parameter <code>x</code> should be assigned to variable <code>Tx</code>.
+</p>
+</li>
+<li><p> Time-, state-, and covariate-dependent transformations are not allowed.  Therefore, neither the time, nor any state variables, nor any of the covariates will be available in the context within which a parameter transformation snippet is executed.
+</p>
+</li></ol>
+
+
+
+<h3>Viewing the generated C code</h3>
+
+<p>It can be useful to view the C code generated by calling <code>pomp</code> with one or more <code>Csnippet</code> arguments.
+To do so, set <code>options(verbose=TRUE)</code> before calling <code>pomp</code>.
+A message giving the name of the generated C file (in the session temporary directory) will be printed.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King <a href="mailto:kingaa at umich dot edu">kingaa at umich dot edu</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pomp.html">pomp</a></code>, <code><a href="plugins.html">plugins</a></code>, and the tutorials on the <a href="http://pomp.r-forge.r-project.org">package website</a>.
+</p>
+
+<hr><div align="center">[Package <em>pomp</em> version 0.62-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

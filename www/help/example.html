@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Examples of the construction of POMP models</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head><body>
+
+<table width="100%" summary="page for Example pomp models {pomp}"><tr><td>Example pomp models {pomp}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Examples of the construction of POMP models</h2>
+
+<h3>Description</h3>
+
+<p><code>pompExample</code> loads pre-built example <code>pomp</code> objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pompExample(example, ..., envir = .GlobalEnv)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>example</code></td>
+<td>
+
+<p>example to load given as a name or literal character string.
+Evoked without an argument, <code>pompExample</code> lists all available examples.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>additional arguments define symbols in the environment within which the example code is executed.
+</p>
+</td></tr>
+<tr valign="top"><td><code>envir</code></td>
+<td>
+
+<p>the environment into which the objects should be loaded.
+If <code>envir=NULL</code>, then the created objects are returned in a list.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Directories listed in the global option <code>pomp.examples</code> (which can be changed using <code>options()</code>) are searched for file named &lsquo;<span class="file">&lt;example&gt;.R</span>&rsquo;.
+If found, this file will be <code>source</code>d in a temporary environment.
+Additional arguments to <code>pompExample</code> define variables within this environment and will therefore be available when the code in &lsquo;<span class="file">&lt;example&gt;.R</span>&rsquo; is <code>source</code>d.
+</p>
+<p>The codes that construct these <code>pomp</code> objects can be found in the &lsquo;<span class="file">examples</span>&rsquo; directory in the installed package.
+Do <code>system.file("examples",package="pomp"))</code> to find this directory.
+</p>
+
+
+<h3>Value</h3>
+
+<p>By default, <code>pompExample</code> has the side effect of creating one or more objects in the global workspace.
+If <code>envir=NULL</code>, there are no side effects; rather, the objects are returned as a list.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King <a href="mailto:kingaa at umich dot edu">kingaa at umich dot edu</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="blowflies.html">blowflies</a></code>, <code><a href="dacca.html">dacca</a></code>, <code><a href="gompertz.html">gompertz</a></code>,
+<code><a href="ou2.html">ou2</a></code>, <code><a href="ricker.html">ricker</a></code>, <code><a href="rw2.html">rw2</a></code>,
+<code><a href="sir.html">euler.sir</a></code>, <code><a href="sir.html">gillespie.sir</a></code>,
+<code><a href="sir.html">bbs</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class="r">  pompExample()
+</code></pre>
+
+<pre><code>## examples in /home/kingaa/projects/pomp/pkg/library/pomp/examples:
+## [1] &quot;bbs&quot;           &quot;blowflies&quot;     &quot;dacca&quot;         &quot;euler.sir&quot;    
+## [5] &quot;gillespie.sir&quot; &quot;gompertz&quot;      &quot;ou2&quot;           &quot;ricker&quot;       
+## [9] &quot;rw2&quot;
+</code></pre>
+
+<pre><code class="r">  pompExample(euler.sir)
+</code></pre>
+
+<pre><code>## newly created object(s):
+##  euler.sir
+</code></pre>
+
+<pre><code class="r">  pompExample(&quot;gompertz&quot;)
+</code></pre>
+
+<pre><code>## newly created object(s):
+##  gompertz
+</code></pre>
+
+<pre><code class="r">  pompExample(ricker,envir=NULL)
+## Not run: 
+##D   file.show(system.file(&quot;examples/bbs.R&quot;,package=&quot;pomp&quot;))
+## End(Not run)
+</code></pre>
+
+
+<hr><div align="center">[Package <em>pomp</em> version 0.62-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

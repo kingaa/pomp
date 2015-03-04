@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Parameter estimation my maximum simulated quasi-likelihood...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for Nonlinear forecasting {pomp}"><tr><td>Nonlinear forecasting {pomp}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Parameter estimation my maximum simulated quasi-likelihood (nonlinear forecasting)</h2>
+
+<h3>Description</h3>
+
+<p><code>nlf</code> calls an optimizer to maximize the nonlinear forecasting (NLF) goodness of fit.
+The latter is computed by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series, and quantifying the ability of the resulting fitted model to predict the data time series.
+NLF is an &lsquo;indirect inference&rsquo; method using a quasi-likelihood as the objective function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'pomp'
+nlf(object, start, est, lags, period = NA, tensor = FALSE,
+     nconverge=1000, nasymp=1000, seed = 1066,
+     transform.data, nrbf = 4,
+     method = c("subplex", "Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
+     skip.se = FALSE, verbose = getOption("verbose"),
+     bootstrap=FALSE, bootsamp = NULL,
+     lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE,
+     transform.params, transform = FALSE, ...)
+## S4 method for signature 'nlfd.pomp'
+nlf(object, start, est, lags, period, tensor,
+     nconverge, nasymp, seed, transform.data, nrbf, method,
+     lql.frac, se.par.frac, transform, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>A <code>pomp</code> object, with the data and model to fit to it.
+</p>
+</td></tr>
+<tr valign="top"><td><code>start</code></td>
+<td>
+
+<p>Named numeric vector with guessed parameters.
+</p>
+</td></tr>
+<tr valign="top"><td><code>est</code></td>
+<td>
+
+<p>Vector containing the names or indices of parameters to be estimated.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lags</code></td>
+<td>
+
+<p>A vector specifying the lags to use when constructing the nonlinear autoregressive prediction model.
+The first lag is the prediction interval.
+</p>
+</td></tr>
+<tr valign="top"><td><code>period</code></td>
+<td>
+
+<p>numeric; <code>period=NA</code> means the model is nonseasonal.
+period&gt;0 is the period of seasonal forcing in 'real time'.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tensor</code></td>
+<td>
+
+<p>logical;
+if FALSE, the fitted model is a generalized additive model with time mod period as one of the predictors, i.e., a gam with time-varying intercept. 
+If TRUE, the fitted model is a gam with lagged state variables as predictors and time-periodic coefficients, constructed using tensor products of basis functions of state variables with basis functions of time.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nconverge</code></td>
+<td>
+
+<p>Number of convergence timesteps to be discarded from the model simulation.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nasymp</code></td>
+<td>
+
+<p>Number of asymptotic timesteps to be recorded from the model simulation.
+</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+
+<p>Integer specifying the random number seed to use.
+When fitting, it is usually best to always run the simulations with the same sequence of random numbers, which is accomplished by setting <code>seed</code> to an integer.
+If you want a truly random simulation, set <code>seed=NULL</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>transform.params</code></td>
+<td>
+
+<p>deprecated.
+Will be removed in a future version.
+Use <code>transform</code> instead.
+</p>
+</td></tr>
+<tr valign="top"><td><code>transform</code></td>
+<td>
+
+<p>logical;
+if <code>TRUE</code>, parameters are optimized on the transformed scale.
+</p>
+</td></tr>
+<tr valign="top"><td><code>transform.data</code></td>
+<td>
+
+<p>optional function.
+If specified, forecasting is performed using data and model simulations transformed by this function.
+By default, <code>transform.data</code> is the identity function, i.e., no transformation is performed.
+The main purpose of <code>transform.data</code> is to achieve approximately multivariate normal forecasting errors.
+If data are univariate, <code>transform.data</code> should take a scalar and return a scalar.
+If data are multivariate, <code>transform.data</code> should assume a vector input and return a vector of the same length.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nrbf</code></td>
+<td>
+<p>A scalar specifying the number of radial basis functions to be used at each lag.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+
+<p>Optimization method.
+Choices are <code><a href="../../subplex/html/subplex.html">subplex</a></code> and any of the methods used by <code><a href="../../stats/html/optim.html">optim</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>skip.se</code></td>
+<td>
+
+<p>Logical; if <code>TRUE</code>, skip the computation of standard errors.
+</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+
+<p>Logical; if <code>TRUE</code>, the negative log quasilikelihood and parameter values are printed at each iteration of the optimizer.
+</p>
+</td></tr>
+<tr valign="top"><td><code>bootstrap</code></td>
+<td>
+
+<p>Logical;
+if <code>TRUE</code> the indices in <code>bootsamp</code> will determine which of the conditional likelihood values be used in computing the quasi-loglikelihood.
+</p>
+</td></tr>
+<tr valign="top"><td><code>bootsamp</code></td>
+<td>
+
+<p>Vector of integers;
+used to have the quasi-loglikelihood evaluated using a bootstrap re-sampling of the data set.
+</p>
+</td></tr> 
+<tr valign="top"><td><code>lql.frac</code></td>
+<td>
+
+<p>target fractional change in log quasi-likelihood for quadratic standard error estimate
+</p>
+</td></tr> 
+<tr valign="top"><td><code>se.par.frac</code></td>
+<td>
+
+<p>initial parameter-change fraction for quadratic standard error estimate
+</p>
+</td></tr> 
+<tr valign="top"><td><code>eval.only</code></td>
+<td>
+
+<p>logical; if <code>TRUE</code>, no optimization is attempted and the quasi-loglikelihood value is evaluated at the <code>start</code> parameters.
+</p>
+</td></tr> 
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Arguments that will be passed to <code>optim</code> or <code>subplex</code> in the <code>control</code> list.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This runs an optimizer to maximize <code>nlf.objfun</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>nlfd.pomp</code>.
+<code>logLik</code> applied to such an object returns the log quasi likelihood.
+The <code>$</code> method allows extraction of arbitrary slots from the <code>nlfd.pomp</code> object.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Stephen P. Ellner <a href="mailto:spe2 at cornell dot edu">spe2 at cornell dot edu</a>,
+Bruce E. Kendall <a href="mailto:kendall at bren dot ucsb dot edu">kendall at bren dot ucsb dot edu</a>,
+Aaron A. King <a href="mailto:kingaa at umich dot edu">kingaa at umich dot edu</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>The following papers describe and motivate the NLF approach to model fitting:
+</p>
+<p>Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B. T. and Nychka D. W. (1998)
+Noise and nonlinearity in measles epidemics: combining mechanistic and statistical approaches to population modeling.
+<EM>American Naturalist</EM> <B>151</B>, 425&ndash;440.
+</p>
+<p>Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P., McCauley, E., Nisbet, R. M. and Wood S. N. (1999)
+Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches.
+<EM>Ecology</EM> <B>80</B>, 1789&ndash;1805.
+</p>
+<p>Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J., Murdoch, W. W. and Turchin, P. (2005)
+Population cycles in the pine looper moth (<EM>Bupalus piniarius</EM>): dynamical tests of mechanistic hypotheses.
+<EM>Ecological Monographs</EM> <B>75</B>, 259&ndash;276.
+</p>
+
+<hr><div align="center">[Package <em>pomp</em> version 0.62-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

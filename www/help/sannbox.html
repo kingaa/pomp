@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Simulated annealing with box constraints.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for Simulated annealing {pomp}"><tr><td>Simulated annealing {pomp}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Simulated annealing with box constraints.</h2>
+
+<h3>Description</h3>
+
+<p><code>sannbox</code> is a straightforward implementation of simulated annealing with box constraints.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sannbox(par, fn, control = list(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>par</code></td>
+<td>
+
+<p>Initial values for the parameters to be optimized over.
+</p>
+</td></tr>
+<tr valign="top"><td><code>fn</code></td>
+<td>
+
+<p>A function to be minimized, with first argument the vector of parameters over which minimization is to take place.
+It should return a scalar result.
+</p>
+</td></tr>
+<tr valign="top"><td><code>control</code></td>
+<td>
+
+<p>A named list of control parameters.  See &lsquo;Details&rsquo;.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>ignored.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>control</code> argument is a list that can supply any of the following components:
+</p>
+
+<dl>
+<dt><code>trace</code></dt><dd>
+<p>Non-negative integer.
+If positive, tracing information on the progress of the optimization is produced.
+Higher values may produce more tracing information.
+</p>
+</dd>
+<dt><code>fnscale</code></dt><dd>
+<p>An overall scaling to be applied to the value of <code>fn</code> during optimization.
+If negative, turns the problem into a maximization problem.
+Optimization is performed on <code>fn(par)/fnscale</code>.
+</p>
+</dd>
+<dt><code>parscale</code></dt><dd>
+<p>A vector of scaling values for the parameters.
+Optimization is performed on <code>par/parscale</code> and these should be comparable in the sense that a unit change in any element produces about a unit change in the scaled value.
+</p>
+</dd>
+<dt><code>maxit</code></dt><dd>
+<p>The total number of function evaluations: there is no other stopping criterion.
+Defaults to <code>10000</code>.
+</p>
+</dd>
+<dt><code>temp</code></dt><dd>
+<p>starting temperature for the cooling schedule.
+Defaults to <code>1</code>.
+</p>
+</dd>
+<dt><code>tmax</code></dt><dd>
+<p>number of function evaluations at each temperature.
+Defaults to <code>10</code>.
+</p>
+</dd>
+<dt><code>candidate.dist</code></dt><dd>
+<p>function to randomly select a new candidate parameter vector.
+This should be a function with three arguments, the first being the current parameter vector, the second the temperature, and the third the parameter scaling.
+By default, <code>candidate.dist</code> is </p>
+<PRE>function(par,temp,scale) rnorm(n=length(par),mean=par,sd=scale*temp)</PRE>.
+</dd>
+<dt><code>sched</code></dt><dd>
+<p>cooling schedule.
+A function of a three arguments giving the temperature as a function of iteration number and the control parameters <code>temp</code> and <code>tmax</code>.
+By default, <code>sched</code> is </p>
+<PRE>function(k,temp,tmax) temp/log(((k-1)%/%tmax)*tmax+exp(1))</PRE>.
+Alternatively, one can supply a numeric vector of temperatures.
+This must be of length at least <code>maxit</code>.
+</dd>
+</dl>
+
+
+
+<h3>Value</h3>
+
+<p><code>sannbox</code> returns a list with components:
+</p>
+
+<dl>
+<dt>counts</dt><dd>
+<p>two-element integer vector.
+The first number gives the number of calls made to <code>fn</code>.
+The second number is provided for compatibility with <code><a href="../../stats/html/optim.html">optim</a></code> and will always be NA.
+</p>
+</dd>
+<dt>convergence</dt><dd><p>provided for compatibility with <code><a href="../../stats/html/optim.html">optim</a></code>; will always be 0.</p>
+</dd>
+<dt>final.params</dt><dd><p>last tried value of <code>par</code>.</p>
+</dd>
+<dt>final.value</dt><dd><p>value of <code>fn</code> corresponding to <code>final.params</code>.</p>
+</dd>
+<dt>par</dt><dd><p>best tried value of <code>par</code>.</p>
+</dd>
+<dt>value</dt><dd><p>value of <code>fn</code> corresponding to <code>par</code>.</p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Daniel Reuman, Imperial College London and Aaron A. King <a href="mailto:kingaa at umich dot edu">kingaa at umich dot edu</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="traj-match.html">traj.match</a></code>, <code><a href="probe.html">probe.match</a></code>.
+</p>
+
+<hr><div align="center">[Package <em>pomp</em> version 0.62-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

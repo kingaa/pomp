@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: pomp low-level interface</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head><body>
+
+<table width="100%" summary="page for Low-level-interface {pomp}"><tr><td>Low-level-interface {pomp}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>pomp low-level interface</h2>
+
+<h3>Description</h3>
+
+<p>A <code>pomp</code> object implements a partially observed Markov process (<acronym><span class="acronym">POMP</span></acronym>) model.
+Basic operations on this model (with shorthand terms) include:
+</p>
+
+<ol>
+<li><p> simulation of the state process given parameters (rprocess)
+</p>
+</li>
+<li><p> evaluation of the likelihood of a given state trajectory given parameters (dprocess)
+</p>
+</li>
+<li><p> simulation of the observation process given the states and parameters (rmeasure)
+</p>
+</li>
+<li><p> evaluation of the likelihood of a set of observations given the states and parameters (dmeasure)
+</p>
+</li>
+<li><p> simulation from the prior probability distribution (rprior)
+</p>
+</li>
+<li><p> evaluation of the prior probability density (dprior)
+</p>
+</li>
+<li><p> simulation from the distribution of initial states, given parameters (init.state)
+</p>
+</li>
+<li><p> evaluation of the deterministic skeleton at a point in state space, given parameters (skeleton)
+</p>
+</li>
+<li><p> computation of a trajetory of the deterministic skeleton given parameters (trajectory)
+</p>
+</li></ol>
+
+<p><span class="pkg">pomp</span> provides S4 methods that implement each of these basic operations.
+These operations can be combined to implement computations and statistical inference methods that depend only on a model's <acronym><span class="acronym">POMP</span></acronym> structure.
+For convenience, parameter transformations may also be enclosed in a <code>pomp</code> object.
+</p>
+<p>This page documents these elements.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'pomp'
+rprocess(object, xstart, times, params, offset = 0, ...)
+## S4 method for signature 'pomp'
+dprocess(object, x, times, params, log = FALSE, ...)
+## S4 method for signature 'pomp'
+rmeasure(object, x, times, params, ...)
+## S4 method for signature 'pomp'
+dmeasure(object, y, x, times, params, log = FALSE, ...)
+## S4 method for signature 'pomp'
+dprior(object, params, log = FALSE, ...)
+## S4 method for signature 'pomp'
+rprior(object, params, ...)
+## S4 method for signature 'pomp'
+init.state(object, params, t0, ...)
+## S4 method for signature 'pomp'
+skeleton(object, x, t, params, ...)
+## S4 method for signature 'pomp'
+trajectory(object, params, times, t0, as.data.frame = FALSE, ...)
+## S4 method for signature 'pomp'
+pompLoad(object, ...)
+## S4 method for signature 'pomp'
+pompUnload(object, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>an object of class <code>pomp</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>xstart</code></td>
+<td>
+
+<p>an <code>nvar</code> x <code>nrep</code> matrix containing the starting state of the system.
+Columns of <code>xstart</code> correspond to states; rows to components of the state vector.
+One independent simulation will be performed for each column.
+Note that in this case, <code>params</code> must also have <code>nrep</code> columns.
+</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+
+<p>a rank-3 array containing states of the unobserved process.
+The dimensions of <code>x</code> are <code>nvars</code> x <code>nrep</code> x <code>ntimes</code>, where <code>nvars</code> is the number of state variables, <code>nrep</code> is the number of replicates, and <code>ntimes</code> is the length of <code>times</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+
+<p>a matrix containing observations.
+The dimensions of <code>y</code> are <code>nobs</code> x <code>ntimes</code>, where <code>nobs</code> is the number of observables and <code>ntimes</code> is the length of <code>times</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>times, t</code></td>
+<td>
+
+<p>a numeric vector (length <code>ntimes</code>) containing times.
+These must be in non-decreasing order.
+</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+
+<p>a <code>npar</code> x <code>nrep</code> matrix of parameters.
+Each column is an independent parameter set and is paired with the corresponding column of <code>x</code> or <code>xstart</code>.
+</p>
+<p>In the case of <code>init.state</code>, <code>params</code> is a named vector of parameters.
+</p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+
+<p>integer;
+the first <code>offset</code> times in <code>times</code> will not be returned.
+</p>
+</td></tr>
+<tr valign="top"><td><code>t0</code></td>
+<td>
+<p>the initial time at which initial states are requested.</p>
+</td></tr>
+<tr valign="top"><td><code>log</code></td>
+<td>
+<p>if TRUE, log probabilities are returned.</p>
+</td></tr>
+<tr valign="top"><td><code>as.data.frame</code></td>
+<td>
+
+<p>logical; if <code>TRUE</code>, return the result as a data-frame.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>In <code>trajectory</code>, additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and ignored if it is a map.
+See <code><a href="../../deSolve/html/ode.html">ode</a></code> for a description of the additional arguments accepted.
+</p>
+<p>In all other cases, additional arguments are ignored.
+</p>
+</td></tr>
+</table>
+
+
+<h3>rprocess</h3>
+
+<p><code>rprocess</code> simulates the process-model portion of partially-observed Markov process.
+</p>
+<p>When <code>rprocess</code> is called, the first entry of <code>times</code> is taken to be the initial time
+(i.e., that corresponding to <code>xstart</code>).
+Subsequent times are the additional times at which the state of the simulated processes are required.
+</p>
+<p><code>rprocess</code> returns a rank-3 array with rownames.
+Suppose <code>x</code> is the array returned.
+Then </p>
+<PRE>dim(x)=c(nvars,nrep,ntimes-offset),</PRE> where <code>nvars</code> is the number of state variables (=<code>nrow(xstart)</code>), <code>nrep</code> is the number of independent realizations simulated (=<code>ncol(xstart)</code>), and <code>ntimes</code> is the length of the vector <code>times</code>.
+<code>x[,j,k]</code> is the value of the state process in the <code>j</code>-th realization at time <code>times[k+offset]</code>.
+The rownames of <code>x</code> must correspond to those of <code>xstart</code>.
+
+
+<h3>dprocess</h3>
+
+<p><code>dprocess</code> evaluates the probability density of a sequence of consecutive state transitions.
+</p>
+<p><code>dprocess</code> returns a matrix of dimensions <code>nrep</code> x <code>ntimes-1</code>.
+If <code>d</code> is the returned matrix, <code>d[j,k]</code> is the likelihood of the transition from state <code>x[,j,k-1]</code> at time <code>times[k-1]</code> to state <code>x[,j,k]</code> at time <code>times[k]</code>.
+</p>
+
+
+<h3>rmeasure</h3>
+
+<p><code>rmeasure</code> simulate the measurement model given states and parameters.
+</p>
+<p><code>rmeasure</code> returns a rank-3 array of dimensions <code>nobs</code> x <code>nrep</code> x <code>ntimes</code>, where <code>nobs</code> is the number of observed variables.
+</p>
+
+
+<h3>dmeasure</h3>
+
+<p><code>dmeasure</code> evaluates the probability density of observations given states.
+</p>
+<p><code>dmeasure</code> returns a matrix of dimensions <code>nreps</code> x <code>ntimes</code>.
+If <code>d</code> is the returned matrix, <code>d[j,k]</code> is the likelihood of the observation <code>y[,k]</code> at time <code>times[k]</code> given the state <code>x[,j,k]</code>.
+</p>
+
+
+<h3>dprior, rprior</h3>
+
+<p><code>dprior</code> evaluates the prior probability density and <code>rprior</code> simulates from the prior.
+</p>
+
+
+<h3>init.state</h3>
+
+<p><code>init.state</code> returns an <code>nvar</code> x <code>nrep</code> matrix of state-process initial conditions when given an <code>npar</code> x <code>nrep</code> matrix of parameters, <code>params</code>, and an initial time <code>t0</code>.
+By default, <code>t0</code> is the initial time defined when the <code>pomp</code> object ws constructed.
+</p>
+
+
+<h3>skeleton</h3>
+
+<p>The method <code>skeleton</code> evaluates the deterministic skeleton at a point or points in state space, given parameters.
+In the case of a discrete-time system, the skeleton is a map.
+In the case of a continuous-time system, the skeleton is a vectorfield.
+NB: <code>skeleton</code> just evaluates the deterministic skeleton;
+it does not iterate or integrate.
+</p>
+<p><code>skeleton</code> returns an array of dimensions <code>nvar</code> x <code>nrep</code> x <code>ntimes</code>.
+If <code>f</code> is the returned matrix, <code>f[i,j,k]</code> is the i-th component of the deterministic skeleton at time <code>times[k]</code> given the state <code>x[,j,k]</code> and parameters <code>params[,j]</code>.
+</p>
+
+
+<h3>trajectory</h3>
+
+<p><code>trajectory</code> computes a trajectory of the deterministic skeleton of a Markov process.
+In the case of a discrete-time system, the deterministic skeleton is a map and a trajectory is obtained by iterating the map.
+In the case of a continuous-time system, the deterministic skeleton is a vector-field; <code>trajectory</code> uses the numerical solvers in <span class="pkg"><a href="../../deSolve/html/deSolve.html">deSolve</a></span> to integrate the vectorfield.
+</p>
+<p><code>trajectory</code> returns an array of dimensions <code>nvar</code> x <code>nrep</code> x <code>ntimes</code>.
+If <code>x</code> is the returned matrix, <code>x[i,j,k]</code> is the i-th component of the state vector at time <code>times[k]</code> given parameters <code>params[,j]</code>.
+</p>
+<p>When the skeleton is a vectorfield, <code>trajectory</code> integrates it using <code><a href="../../deSolve/html/ode.html">ode</a></code>.
+When the skeleton is a map, <code>trajectory</code> iterates it.
+By default, time is advanced 1 unit per iteration.
+The user can change this behavior by specifying the desired timestep using the argument <code>skelmap.delta.t</code> in the construction of the <code>pomp</code> object.
+</p>
+
+
+<h3>Parameter transformations</h3>
+
+<p>User-defined parameter transformations enclosed in the <code>pomp</code> object can be accessed via <code><a href="pomp-methods.html">partrans</a></code>.
+</p>
+
+
+<h3><code>pompLoad</code>, <code>pompUnload</code></h3>
+
+<p><code>pompLoad</code> and <code>pompUnload</code> cause compiled codes associated with <code>object</code> to be dynamically linked or unlinked, respectively.
+When <code>Csnippet</code>s are used in the construction of a <code>pomp</code> object, the resulting shared-object library is dynamically loaded (linked) before each use, and unloaded afterward.
+These functions are provided because in some instances, greater control may be desired.
+These functions have no effect on shared-object libraries linked by the user.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King <a href="mailto:kingaa at umich dot edu">kingaa at umich dot edu</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pomp.html">pomp</a></code>, <a href="pomp-methods.html">pomp methods</a></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class="r">pompExample(ricker)
+</code></pre>
+
+<pre><code>## newly created object(s):
+##  ricker
+</code></pre>
+
+<pre><code class="r">p &lt;- parmat(c(r=42,phi=10,sigma=0.3,N.0=7,e.0=0),10)
+t &lt;- c(1:10,20,30)
+t0 &lt;- 0
+x0 &lt;- init.state(ricker,params=p,t0=t0)
+x &lt;- rprocess(ricker,xstart=x0,times=c(t0,t),params=p,offset=1)
+y &lt;- rmeasure(ricker,params=p,x=x,times=t)
+ll &lt;- dmeasure(ricker,y=y[,3,,drop=FALSE],x=x,times=t,params=p,log=TRUE)
+apply(ll,1,sum)
+</code></pre>
+
+<pre><code>##  [1] -1044.34005 -1809.94377   -24.14256 -1736.76875 -2685.32417
+##  [6] -1469.14377 -1404.25967 -2141.67191 -1731.08240 -2455.28198
+</code></pre>
+
+<pre><code class="r">f &lt;- skeleton(ricker,x=x,t=t,params=p)
+z &lt;- trajectory(ricker,params=p,times=t,t0=t0)
+
+## short arguments are recycled:
+p &lt;- c(r=42,phi=10,sigma=0.3,N.0=7,e.0=0)
+t &lt;- c(1:10,20,30)
+t0 &lt;- 0
+x0 &lt;- init.state(ricker,params=p,t0=t0)
+x &lt;- rprocess(ricker,xstart=x0,times=c(t0,t),params=p,offset=1)
+y &lt;- rmeasure(ricker,params=p,x=x,times=t)
+ll &lt;- dmeasure(ricker,y=y,x=x,times=t,params=p,log=TRUE)
+f &lt;- skeleton(ricker,x=x,t=t,params=p)
+z &lt;- trajectory(ricker,params=p,times=t,t0=t0)
+</code></pre>
+
+
+<hr><div align="center">[Package <em>pomp</em> version 0.62-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

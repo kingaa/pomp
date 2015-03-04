@@ -7,7 +7,7 @@ RM = rm -f
 
 default: vignettes clean
 
-vignettes: getting_started.html getting_started.R
+vignettes: getting_started.html getting_started.R pompjss.pdf pompjss.R
 
 %.R: %.Rnw
 	$(RSCRIPT) -e 'library(knitr); purl("$*.Rnw")'

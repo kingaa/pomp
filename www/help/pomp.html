@@ -1,0 +1,517 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Constructor of the basic POMP object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head><body>
+
+<table width="100%" summary="page for pomp constructor {pomp}"><tr><td>pomp constructor {pomp}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Constructor of the basic POMP object</h2>
+
+<h3>Description</h3>
+
+<p>This function constructs a <code>pomp</code> object,
+encoding a partially-observed Markov process model together with a uni- or multivariate time series.
+One implements the model by specifying its <EM>components</EM>, each of which can be written as <font face="Courier New,Courier" color="#666666"><b>R</b></font> functions or, for much greater computational efficiency, using C code.
+The preferred way to specify most components (as detailed below) is through the use of <code><a href="csnippet.html">Csnippet</a></code>s, snippets of C that are compiled and linked into a running <font face="Courier New,Courier" color="#666666"><b>R</b></font> session.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'data.frame'
+pomp(data, times, t0, ..., rprocess, dprocess, rmeasure, dmeasure,
+       measurement.model,
+       skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
+       initializer, rprior, dprior, params, covar, tcovar,
+       obsnames, statenames, paramnames, covarnames, zeronames,
+       PACKAGE, parameter.transform, parameter.inv.transform, globals)
+## S4 method for signature 'numeric'
+pomp(data, times, t0, ..., rprocess, dprocess, rmeasure, dmeasure,
+       measurement.model,
+       skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
+       initializer, rprior, dprior, params, covar, tcovar,
+       obsnames, statenames, paramnames, covarnames, zeronames,
+       PACKAGE, parameter.transform, parameter.inv.transform, globals)
+## S4 method for signature 'matrix'
+pomp(data, times, t0, ..., rprocess, dprocess, rmeasure, dmeasure,
+       measurement.model,
+       skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
+       initializer, rprior, dprior, params, covar, tcovar,
+       obsnames, statenames, paramnames, covarnames, zeronames,
+       PACKAGE, parameter.transform, parameter.inv.transform, globals)
+## S4 method for signature 'pomp'
+pomp(data, times, t0, ..., rprocess, dprocess, rmeasure, dmeasure,
+       measurement.model, skeleton, skeleton.type, skelmap.delta.t,
+       initializer, rprior, dprior, params, covar, tcovar,
+       obsnames, statenames, paramnames, covarnames, zeronames,
+       PACKAGE, parameter.transform, parameter.inv.transform, globals)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data, times</code></td>
+<td>
+
+<p>The time series data and times at which observations are made.
+<code>data</code> can be specified as a vector, a matrix, a data-frame.
+Alternatively, a <code>pomp</code> object can be supplied in the <code>data</code> argument.
+</p>
+<p>If <code>data</code> is a numeric vector, <code>times</code> must be a numeric vector of the same length.
+</p>
+<p>If <code>data</code> is a matrix, it should have dimensions <code>nobs</code> x <code>ntimes</code>, where <code>nobs</code> is the number of observed variables and <code>ntimes</code> is the number of times at which observations were made (i.e., each column is a distinct observation of the <code>nobs</code> variables).
+In this case, <code>times</code> must be given as a numeric vector (of length <code>ntimes</code>).
+</p>
+<p>If <code>data</code> is a data-frame, <code>times</code> must name the column of observation times.
+Note that, in this case, <code>data</code> will be internally coerced to an array with storage-mode &lsquo;double&rsquo;.
+</p>
+<p><code>times</code> must be numeric and strictly increasing.
+</p>
+</td></tr>
+<tr valign="top"><td><code>t0</code></td>
+<td>
+
+<p>The zero-time, at which the stochastic dynamical system is to be initialized.
+This must be no later than the time of the first observation, i.e., <code>t0 &lt;= times[1]</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>rprocess</code></td>
+<td>
+
+<p>optional function; a function of prototype </p>
+<PRE>rprocess(xstart,times,params,\dots)</PRE> that simulates from the unobserved process.
+The form of this function is given below.
+<span class="pkg">pomp</span> provides a number of <code><a href="plugins.html">plugins</a></code> that construct appropriate <code>rprocess</code> arguments corresponding to several common stochastic simulation algorithms.
+See below for more details.
+</td></tr>
+<tr valign="top"><td><code>dprocess</code></td>
+<td>
+
+<p>optional function; a function of prototype </p>
+<PRE>dprocess(x,times,params,log,\dots)</PRE> that evaluates the likelihood of a sequence of consecutive state transitions.
+The form of this function is given below.
+It is not typically necessary (or even feasible) to define <code>dprocess</code>.
+This functionality is provided to support future algorithm development.
+</td></tr>
+<tr valign="top"><td><code>rmeasure</code></td>
+<td>
+
+<p>optional; the measurement model simulator.
+This can be specified in one of four ways:
+</p>
+
+<ol>
+<li><p> as a function of prototype </p>
+<PRE>rmeasure(x,t,params,\dots)</PRE> that makes a draw from the observation process given states <code>x</code>, time <code>t</code>, and parameters <code>params</code>.
+</li>
+<li><p> as the name of a native (compiled) routine with prototype <code>pomp_measure_model_simulator</code> as defined in the header file &lsquo;<span class="file">pomp.h</span>&rsquo;.
+(To view the header file, execute </p>
+<PRE>file.show(system.file("include/pomp.h",package="pomp"))</PRE> in an <font face="Courier New,Courier" color="#666666"><b>R</b></font> session.)
+</li>
+<li><p> using the formula-based <code>measurement.model</code> facility (see below).
+</p>
+</li>
+<li><p> as a snippet of C code (via <code><a href="csnippet.html">Csnippet</a></code>) that draws from the observation process as above.
+The last is typically the preferred option, as it results in much faster code execution.
+</p>
+</li></ol>
+
+</td></tr>
+<tr valign="top"><td><code>dmeasure</code></td>
+<td>
+
+<p>optional; the measurement model probability density function.
+This can be specified in one of four ways:
+</p>
+
+<ol>
+<li><p> as a function of prototype </p>
+<PRE>dmeasure(y,x,t,params,log,\dots)</PRE> that computes the p.d.f. of <code>y</code> given <code>x</code>, <code>t</code>, and <code>params</code>.
+</li>
+<li><p> as the name of a native (compiled) routine with prototype <code>pomp_measure_model_density</code> as defined in the header file &lsquo;<span class="file">pomp.h</span>&rsquo;.
+(To view the header file, execute </p>
+<PRE>file.show(system.file("include/pomp.h",package="pomp"))</PRE> in an <font face="Courier New,Courier" color="#666666"><b>R</b></font> session.)
+</li>
+<li><p> using the formula-based <code>measurement.model</code> facility (see below).
+</p>
+</li>
+<li><p> as a snippet of C code (via <code><a href="csnippet.html">Csnippet</a></code>) that computes the p.d.f. as above.
+</p>
+</li></ol>
+
+<p>The last is typically the preferred option, as it results in much faster code execution.
+As might be expected, if <code>log=TRUE</code>, this function should return the log likelihood.
+</p>
+</td></tr>
+<tr valign="top"><td><code>measurement.model</code></td>
+<td>
+
+<p>optional; a formula or list of formulae, specifying the measurement model.
+These formulae are parsed internally to generate <code>rmeasure</code> and <code>dmeasure</code> functions.
+If <code>measurement.model</code> is given it overrides any specification of <code>rmeasure</code> or <code>dmeasure</code>.
+<STRONG>NB:</STRONG> This is a convenience function, primarily designed to facilitate exploration;
+it will typically be possible to acclerate measurement model computations by writing <code>dmeasure</code> and/or <code>rmeasure</code> using <code><a href="csnippet.html">Csnippet</a></code>s.
+</p>
+</td></tr>
+<tr valign="top"><td><code>skeleton, skeleton.type, skelmap.delta.t</code></td>
+<td>
+
+<p>The function <code>skeleton</code> specifies the deterministic skeleton of the unobserved Markov process.
+If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map:
+indicate this by specifying <code>skeleton.type="map"</code>.
+In this case, the default assumption is that time advances 1 unit per iteration of the map;
+to change this, set <code>skelmap.delta.t</code> to the appropriate time-step.
+If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield:
+indicate this by specifying <code>skeleton.type="vectorfield"</code>.
+</p>
+<p>The skeleton function can be specified in one of three ways:
+</p>
+
+<ol>
+<li><p> as an <font face="Courier New,Courier" color="#666666"><b>R</b></font> function of prototype </p>
+<PRE>skeleton(x,t,params,\dots)</PRE> that evaluates the deterministic skeleton at state <code>x</code> and time <code>t</code> given the parameters <code>params</code>,
+</li>
+<li><p> as the name of a native (compiled) routine with prototype <code>pomp_skeleton</code> as defined in the header file &lsquo;<span class="file">pomp.h</span>&rsquo;.
+(To view the header file, execute </p>
+<PRE>file.show(system.file("include/pomp.h",package="pomp"))</PRE> in an <font face="Courier New,Courier" color="#666666"><b>R</b></font> session.)
+</li>
+<li><p> as a snippet of C code (via <code><a href="csnippet.html">Csnippet</a></code>) that performs this evaluation.
+The latter is typically the preferred option, for reasons of computational efficiency.
+</p>
+</li></ol>
+
+</td></tr>
+<tr valign="top"><td><code>initializer</code></td>
+<td>
+
+<p>optional function of prototype </p>
+<PRE>initializer(params,t0,\dots)</PRE> that yields initial conditions for the state process when given a vector, <code>params</code>, of parameters.
+By default, any parameters in <code>params</code>, the names of which end in &ldquo;<code>.0</code>&rdquo;, are assumed to be initial values of states.
+To initialize the unobserved state process, these are simply copied over as initial conditions.
+The names of the resulting state variables are obtained by dropping the &ldquo;<code>.0</code>&rdquo; suffix.
+</td></tr>
+<tr valign="top"><td><code>rprior</code></td>
+<td>
+
+<p>optional; function drawing a sample from a prior distribution on parameters.
+This can be specified in one of three ways:
+</p>
+
+<ol>
+<li><p> as an <font face="Courier New,Courier" color="#666666"><b>R</b></font> function of prototype </p>
+<PRE>rprior(params,\dots)</PRE> that makes a draw from the prior distribution given <code>params</code>,
+</li>
+<li><p> as the name of a native (compiled) routine with prototype <code>pomp_rprior</code> as defined in the header file &lsquo;<span class="file">pomp.h</span>&rsquo;, or
+(To view the header file, execute </p>
+<PRE>file.show(system.file("include/pomp.h",package="pomp"))</PRE> in an <font face="Courier New,Courier" color="#666666"><b>R</b></font> session.)
+</li>
+<li><p> as a snippet of C code (via <code><a href="csnippet.html">Csnippet</a></code>).
+</p>
+</li></ol>
+
+<p>As above, the latter is typically preferable.
+</p>
+</td></tr>
+<tr valign="top"><td><code>dprior</code></td>
+<td>
+
+<p>optional; function evaluating the prior distribution.
+This can be specified in one of three ways:
+</p>
+
+<ol>
+<li><p> as an <font face="Courier New,Courier" color="#666666"><b>R</b></font> function of prototype </p>
+<PRE>dprior(params,log=FALSE,\dots)</PRE> that evaluates the prior probability density,
+</li>
+<li><p> as the name of a native (compiled) routine with prototype <code>pomp_dprior</code> as defined in the header file &lsquo;<span class="file">pomp.h</span>&rsquo;, or
+(To view the header file, execute </p>
+<PRE>file.show(system.file("include/pomp.h",package="pomp"))</PRE> in an <font face="Courier New,Courier" color="#666666"><b>R</b></font> session.)
+</li>
+<li><p> as a snippet of C code (via <code><a href="csnippet.html">Csnippet</a></code>).
+</p>
+</li></ol>
+
+<p>As above, the latter is typically preferable.
+</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+
+<p>optional named numeric vector of parameters.
+This will be coerced internally to storage mode <code>double</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>covar, tcovar</code></td>
+<td>
+
+<p>An optional matrix or data frame of covariates:
+<code>covar</code> is the table of covariates (one column per variable);
+<code>tcovar</code> the corresponding times (one entry per row of <code>covar</code>).
+</p>
+<p><code>covar</code> can be specified as either a matrix or a data frame.
+In either case the columns are taken to be distinct covariates.
+If <code>covar</code> is a data frame, <code>tcovar</code> can be either the name or the index of the time variable.
+</p>
+<p>If a covariate table is supplied, then the value of each of the covariates is interpolated as needed.
+The resulting interpolated values are passed to the corresponding functions as a numeric vector named <code>covars</code>;
+see below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>obsnames, statenames, paramnames, covarnames</code></td>
+<td>
+
+<p>Optional character vectors specifying the names of observables, state variables, parameters, and covariates, respectively.
+These are only used in the event that one or more of the basic functions (<code>rprocess</code>, <code>dprocess</code>, <code>rmeasure</code>, <code>dmeasure</code>, <code>skeleton</code>, <code>rprior</code>, <code>dprior</code>) are defined using <code><a href="csnippet.html">Csnippet</a></code> or native routines.
+</p>
+</td></tr>
+<tr valign="top"><td><code>zeronames</code></td>
+<td>
+
+<p>optional character vector specifying the names of accumulator variables (see below).
+</p>
+</td></tr>
+<tr valign="top"><td><code>PACKAGE</code></td>
+<td>
+
+<p>An optional string giving the name of the dynamically loaded library in which any native routines are to be found.
+</p>
+</td></tr>
+<tr valign="top"><td><code>parameter.transform, parameter.inv.transform</code></td>
+<td>
+
+<p>Optional functions specifying parameter transformations.
+These functions must have arguments <code>params</code> and <code>...</code>.
+<code>parameter.transform</code> should transform parameters to the scale that <code>rprocess</code>, <code>dprocess</code>, <code>rmeasure</code>, <code>dmeasure</code>, <code>skeleton</code>, and <code>initializer</code> will use internally.
+<code>parameter.inv.transform</code> should be the inverse of <code>parameter.transform</code>.
+The parameter transformations can be defined (as above) using either <font face="Courier New,Courier" color="#666666"><b>R</b></font> functions, native routines, or <code><a href="csnippet.html">Csnippet</a></code>s.
+</p>
+<p>Note that it is the user's responsibility to make sure that these transformations are mutually inverse.
+If <code>obj</code> is the constructed <code>pomp</code> object, and <code>coef(obj)</code> is non-empty, a simple check of this property is </p>
+<PRE>
+      x &lt;- coef(obj,transform=TRUE)
+      obj1 &lt;- obj
+      coef(obj1,transform=TRUE) &lt;- x
+      identical(coef(obj),coef(obj1))
+      identical(coef(obj1,transform=TRUE),x).
+    </PRE> By default, both functions are the identity transformation.
+See the demos, <PRE>demo(package="pomp"),</PRE> <code><a href="example.html">pompExample</a></code>, and the tutorials on the <a href="http://pomp.r-forge.r-project.org">package website</a> for examples.
+</td></tr>
+<tr valign="top"><td><code>globals</code></td>
+<td>
+
+<p>optional character;
+C code that will be included in the source for (and therefore hard-coded into) the shared-object library created when the call to <code>pomp</code> uses <code>Csnippets</code>.
+If no <code>Csnippet</code>s are used, <code>globals</code> has no effect.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Any additional arguments given to <code>pomp</code> will be stored in the <code><a href="pomp.html">pomp</a></code> object and passed as arguments to each of the basic functions whenever they are evaluated.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>pomp</code> returns an object of class <code>pomp</code>.
+If <code>data</code> is an object of class <code>pomp</code>, then by default the returned <code>pomp</code> object is identical to <code>data</code>.
+If additional arguments are given, these override the defaults.
+</p>
+
+
+<h3>Important note</h3>
+
+<p><STRONG>
+It is not typically necessary (or even feasible) to define all of the components <code>rprocess</code>, <code>dprocess</code>, <code>rmeasure</code>, <code>dmeasure</code>, and <code>skeleton</code> in any given problem.
+Each algorithm makes use of only a subset of these components.
+Any algorithm requiring a component that has not been defined will return an informative error.
+</STRONG>
+</p>
+
+
+<h3>The state process model</h3>
+
+<p>Specification of process-model codes <code>rprocess</code> and/or <code>dprocess</code> in most cases is facilitated by <span class="pkg">pomp</span>'s so-called <code><a href="plugins.html">plugins</a></code>, which have been developed to handle common use-cases.
+Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the <code><a href="plugins.html">euler.sim</a></code>, <code><a href="plugins.html">discrete.time.sim</a></code>, and <code><a href="plugins.html">onestep.sim</a></code> plugins for <code>rprocess</code> and <code><a href="plugins.html">onestep.dens</a></code> plugin for <code>dprocess</code> are available.
+In addition, for exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm is available (see <code><a href="plugins.html">gillespie.sim</a></code>).
+To learn more about the use of plugins, consult the help documentation (<code><a href="plugins.html">plugins</a></code>) and the tutorials on the <a href="http://pomp.r-forge.r-project.org">package website</a>.
+Several of the demos and examples make use of these as well.
+</p>
+<p>In specific cases, it may be possible to obtain increased computational efficiency by writing custom versions of <code>rprocess</code> and/or <code>dprocess</code> instead of using the plugins.
+If such custom versions are desired, the following describes how these functions should be written.
+</p>
+
+<dl>
+<dt><code>rprocess</code></dt><dd>
+<p>If the plugins are not used <code>rprocess</code> must be an <font face="Courier New,Courier" color="#666666"><b>R</b></font> function with at least the following arguments:
+<code>xstart</code>, <code>times</code>, <code>params</code>, and <code>...</code>.
+It can also take additional arguments.
+It is guaranteed that these will be filled with the corresponding elements the user has included as additional arguments in the construction of the <code>pomp</code> object.
+</p>
+<p>In calls to <code>rprocess</code>, <code>xstart</code> can be assumed to be an <code>nvar</code> x <code>nrep</code> matrix;
+its rows correspond to components of the state vector and columns correspond to independent realizations of the process.
+<code>params</code> will similarly be an <code>npar</code> x <code>nrep</code> matrix with rows corresponding to parameters and columns corresponding to independent realizations.
+Note that the columns of <code>params</code> correspond to those of <code>xstart</code>;
+in particular, they will agree in number.
+Both <code>xstart</code> and <code>params</code> are guaranteed to have rownames.
+</p>
+<p><code>rprocess</code> must return a rank-3 array with rownames.
+Suppose <code>x</code> is the array returned.
+Then <code>dim(x)=c(nvars,nrep,ntimes)</code>, where <code>ntimes</code> is the length of the vector <code>times</code>.
+<code>x[,j,k]</code> is the value of the state process in the <code>j</code>-th realization at time <code>times[k]</code>.
+In particular, <code>x[,,1]</code> must be identical to <code>xstart</code>.
+The rownames of <code>x</code> must correspond to those of <code>xstart</code>.
+</p>
+</dd>
+<dt><code>dprocess</code></dt><dd>
+<p>If the plugins are not used, <code>dprocess</code> must have at least the following arguments:
+<code>x</code>, <code>times</code>, <code>params</code>, <code>log</code>, and <code>...</code>.
+It may take additional arguments: again, these will be filled with the corresponding elements the user defines when the <code>pomp</code> object is constructed.
+</p>
+<p>In calls to <code>dprocess</code>, <code>x</code> may be assumed to be an <code>nvars</code> x <code>nrep</code> x <code>ntimes</code> array, where these terms have the same meanings as above.
+<code>params</code> will be a matrix with rows corresponding to individual parameters and columns corresponding to independent realizations.
+The columns of <code>params</code> correspond to those of <code>x</code>; in particular, they will agree in number.
+Both <code>x</code> and <code>params</code> are guaranteed to have rownames.
+</p>
+<p><code>dprocess</code> must return a <code>nrep</code> x <code>ntimes-1</code> matrix.
+Suppose <code>d</code> is the array returned.
+<code>d[j,k]</code> is the probability density of the transition from state <code>x[,j,k-1]</code> at time <code>times[k-1]</code> to state <code>x[,j,k]</code> at time <code>times[k]</code>.
+If <code>log=TRUE</code>, then the log of the pdf must be returned.
+</p>
+<p><STRONG>In writing this function, you may assume that the transitions are consecutive.</STRONG>
+It should be clear that, but for this assumption, it will in general be impossible to write the transition probabilities explicitly.
+In such cases, algorithms that make no use of <code>dprocess</code>, which are said to have the &ldquo;plug and play&rdquo; property, are useful.
+Most of the algorithms in <span class="pkg">pomp</span> have this property.
+In particular, <STRONG>at present, no methods in <span class="pkg">pomp</span> make use of <code>dprocess</code>.</STRONG>
+</p>
+</dd>
+</dl>
+
+
+
+<h3>The observation process model</h3>
+
+<p>The following is a guide to writing the measurement model components as <font face="Courier New,Courier" color="#666666"><b>R</b></font> functions.
+For a description on how to write these components using <code>Csnippet</code>s, see the tutorials on the <a href="http://pomp.r-forge.r-project.org">package website</a>.
+</p>
+
+<dl>
+<dt><code>rmeasure</code></dt><dd>
+<p>if provided, must take at least the arguments <code>x</code>, <code>t</code>, <code>params</code>, and <code>...</code>.
+It may take additional arguments, which will be filled with user-specified data as above.
+<code>x</code> will be a named numeric vector of length <code>nvars</code> (which has the same meaning as above).
+<code>t</code> will be a scalar quantity, the time at which the measurement is made.
+<code>params</code> will be a named numeric vector of length <code>npars</code>.
+The <code>rmeasure</code> function may take additional arguments which will be filled with user-specified data as above.
+</p>
+<p><code>rmeasure</code> must return a named numeric vector of length <code>nobs</code>, the number of observable variables.
+</p>
+</dd>
+<dt><code>dmeasure</code></dt><dd>
+<p>if provided, must take at least the arguments <code>y</code>, <code>x</code>, <code>t</code>, <code>params</code>, <code>log</code>, and <code>...</code>.
+<code>y</code> will be a named numeric vector of length <code>nobs</code> containing (actual or simulated) values of the observed variables;
+<code>x</code> will be a named numeric vector of length <code>nvar</code> containing state variables;
+<code>params</code> will be a named numeric vector containing parameters;
+and <code>t</code> will be a scalar, the corresponding observation time.
+The <code>dmeasure</code> function may take additional arguments which will be filled with user-specified data as above.
+</p>
+<p><code>dmeasure</code> must return a single numeric value, the probability density of <code>y</code> given <code>x</code> at time <code>t</code>.
+If <code>log=TRUE</code>, then <code>dmeasure</code> should return the log of the probability density.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>The deterministic skeleton</h3>
+
+<p>The following describes how to specify the deterministic skeleton as an <font face="Courier New,Courier" color="#666666"><b>R</b></font> function.
+For a description on how to write this component using <code>Csnippet</code>s, see the tutorials on the <a href="http://pomp.r-forge.r-project.org">package website</a>.
+</p>
+<p>If <code>skeleton</code> if provided, must have at least the arguments <code>x</code>, <code>t</code>, <code>params</code>, and <code>...</code>.
+<code>x</code> is a numeric vector containing the coordinates of a point in state space at which evaluation of the skeleton is desired.
+<code>t</code> is a numeric value giving the time at which evaluation of the skeleton is desired.
+Of course, these will be irrelevant in the case of an autonomous skeleton.
+<code>params</code> is a numeric vector holding the parameters.
+<code>skeleton</code> may take additional arguments, which will be filled, as above, with user-specified data.
+</p>
+<p><code>skeleton</code> must return a numeric vector of the same length as <code>x</code>, which contains the value vectorfield (if the dynamical system is continuous) or the value of the map (if the dynamical system is discrete), at the point <code>x</code> at time <code>t</code>.
+</p>
+
+
+<h3>The state-process initializer</h3>
+
+<p>if provided, must have at least the arguments <code>params</code>, <code>t0</code>, and <code>...</code>.
+<code>params</code> will be a named numeric vector of parameters.
+<code>t0</code> will be the time at which initial conditions are desired.
+<code>initializer</code> must return a named numeric vector of initial states.
+</p>
+
+
+<h3>Covariates</h3>
+
+<p>If the <code>pomp</code> object contains covariates (via the <code>covar</code> argument; see above), then whenever any of the <font face="Courier New,Courier" color="#666666"><b>R</b></font> functions described above are called, they will each be supplied with an additional argument <code>covars</code>.
+This will be a named numeric vector containing the (interpolated) values of the covariates at the time <code>t</code>.
+In particular, <code>covars</code> will have one value for each column of the covariate table.
+</p>
+
+
+<h3>Accumulator variables</h3>
+
+<p>In formulating models, one often wishes to define a state variable that will accumulate some quantity over the interval between successive observations.
+<span class="pkg">pomp</span> provides a facility to make such features more convenient.
+Specifically, variables named in the <code>pomp</code>'s <code>zeronames</code> argument will be set to zero immediately following each observation.
+See <code>euler.sir</code> and the tutorials on the <a href="http://pomp.r-forge.r-project.org">package website</a> for examples.
+</p>
+
+
+<h3>Warning</h3>
+
+<p>Some error checking is done by <code>pomp</code>, but complete error checking is impossible.  
+If the user-specified functions do not conform to the above specifications, then the results may be invalid.
+In particular, if both <code>rmeasure</code> and <code>dmeasure</code> are specified, the user should verify that these two functions correspond to the same probability distribution.
+If <code>skeleton</code> is specified, the user is responsible for verifying that it corresponds to a deterministic skeleton of the model.
+Each <span class="pkg">pomp</span>-package algorithm uses some subset of the five basic functions (<code>rprocess</code>, <code>dprocess</code>, <code>rmeasure</code>, <code>dmeasure</code>, <code>skeleton</code>).
+If an algorithm requires a component that has not been specified, an informative error will be generated.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King <a href="mailto:kingaa at umich dot edu">kingaa at umich dot edu</a></p>
+
+
+<h3>See Also</h3>
+
+<p><a href="pomp-methods.html">pomp methods</a>,
+<a href="lowlevel.html">pomp low-level interface</a>,
+<a href="plugins.html">process model plugins</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre><code class="r">## Not run: 
+##D pompExample()
+##D pomp.home &lt;- system.file(&quot;examples&quot;,package=&quot;pomp&quot;)
+##D pomp.examples &lt;- list.files(pomp.home)
+##D file.show(
+##D           file.path(pomp.home,pomp.examples),
+##D           header=paste(&quot;======&quot;,pomp.examples,&quot;=======&quot;)
+##D          )
+## End(Not run)
+</code></pre>
+
+
+<hr><div align="center">[Package <em>pomp</em> version 0.62-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

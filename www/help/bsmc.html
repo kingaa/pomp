@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: The Liu and West Bayesian particle filter</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for Bayesian sequential Monte Carlo {pomp}"><tr><td>Bayesian sequential Monte Carlo {pomp}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>The Liu and West Bayesian particle filter</h2>
+
+<h3>Description</h3>
+
+<p>Modified versions of the Liu and West (2001) algorithm.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'pomp'
+bsmc2(object, params, Np, est, smooth = 0.1,
+     tol = 1e-17, seed = NULL,
+     verbose = getOption("verbose"), max.fail = 0,
+     transform = FALSE, ...)
+## S4 method for signature 'pomp'
+bsmc(object, params, Np, est, smooth = 0.1,
+     ntries = 1, tol = 1e-17, lower = -Inf, upper = Inf, seed = NULL,
+     verbose = getOption("verbose"), max.fail = 0,
+     transform = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+
+<p>An object of class <code>pomp</code> or inheriting class <code>pomp</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>params, Np</code></td>
+<td>
+
+<p>Specifications for the prior distribution of particles.
+See details below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>est</code></td>
+<td>
+
+<p>Names of the rows of <code>params</code> that are to be estimated.
+No updates will be made to the other parameters.
+If <code>est</code> is not specified, all parameters for which there is variation in <code>params</code> will be estimated.
+</p>
+</td></tr>
+<tr valign="top"><td><code>smooth</code></td>
+<td>
+
+<p>Kernel density smoothing parameters.
+The compensating shrinkage factor will be <code>sqrt(1-smooth^2)</code>.
+Thus, <code>smooth=0</code> means that no noise will be added to parameters.
+Generally, the value of <code>smooth</code> should be chosen close to 0 (i.e., <code>shrink~0.1</code>).
+</p>
+</td></tr>
+<tr valign="top"><td><code>ntries</code></td>
+<td>
+
+<p>Number of draws from <code>rprocess</code> per particle used to estimate the expected value of the state process at time <code>t+1</code> given the state and parameters at time <code>t</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+
+<p>Particles with log likelihood below <code>tol</code> are considered to be &ldquo;lost&rdquo;.
+A filtering failure occurs when, at some time point, all particles are lost.
+When all particles are lost, the conditional log likelihood at that time point is set to be <code>log(tol)</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>lower, upper</code></td>
+<td>
+
+<p>optional; lower and upper bounds on the priors.
+This is useful in case there are box constraints satisfied by the priors.
+The posterior is guaranteed to lie within these bounds.
+</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+
+<p>optional; an object specifying if and how the random number generator should be initialized (&lsquo;seeded&rsquo;).
+If <code>seed</code> is an integer, it is passed to <code>set.seed</code> prior to any simulation and is returned as the &ldquo;seed&rdquo; element of the return list.
+By default, the state of the random number generator is not changed and the value of <code>.Random.seed</code> on the call is stored in the &ldquo;seed&rdquo; element of the return list.
+</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+
+<p>logical; if <code>TRUE</code>, print diagnostic messages.
+</p>
+</td></tr>
+<tr valign="top"><td><code>max.fail</code></td>
+<td>
+
+<p>The maximum number of filtering failures allowed.
+If the number of filtering failures exceeds this number, execution will terminate with an error.
+</p>
+</td></tr>
+<tr valign="top"><td><code>transform</code></td>
+<td>
+
+<p>logical;
+if <code>TRUE</code>, the algorithm operates on the transformed scale.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>currently ignored.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>There are two ways to specify the prior distribution of particles.
+If <code>params</code> is unspecified or is a named vector, <code>Np</code> draws are made from the prior distribution, as specified by <code><a href="lowlevel.html">rprior</a></code>.
+Alternatively, <code>params</code> can be specified as an <code>npars</code> x <code>Np</code> matrix (with rownames).
+</p>
+<p><code>bsmc</code> uses version of the original algorithm that includes a plug-and-play auxiliary particle filter.
+<code>bsmc2</code> discards this auxiliary particle filter and appears to give superior performance for the same amount of effort.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class &ldquo;bsmcd.pomp&rdquo;.
+The &ldquo;params&rdquo; slot of this object will hold the parameter posterior medians.
+The slots of this class include:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>post</code></td>
+<td>
+
+<p>A matrix containing draws from the approximate posterior distribution.
+</p>
+</td></tr>
+<tr valign="top"><td><code>prior</code></td>
+<td>
+
+<p>A matrix containing draws from the prior distribution (identical to <code>params</code> on call).
+</p>
+</td></tr>
+<tr valign="top"><td><code>eff.sample.size</code></td>
+<td>
+
+<p>A vector containing the effective number of particles at each time point.
+</p>
+</td></tr>
+<tr valign="top"><td><code>smooth</code></td>
+<td>
+
+<p>The smoothing parameter used (see above).
+</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+
+<p>The state of the random number generator at the time <code>bsmc</code> was called.
+If the argument <code>seed</code> was specified, this is a copy;
+if not, this is the internal state of the random number generator at the time of call.
+</p>
+</td></tr>
+<tr valign="top"><td><code>nfail</code></td>
+<td>
+
+<p>The number of filtering failures encountered.
+</p>
+</td></tr>
+<tr valign="top"><td><code>cond.log.evidence</code></td>
+<td>
+
+<p>A vector containing the conditional log evidence scores at each time point.
+</p>
+</td></tr>
+<tr valign="top"><td><code>log.evidence</code></td>
+<td>
+
+<p>The estimated log evidence.
+</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+
+<p>The resampling weights for each particle.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Michael Lavine (lavine at math dot umass dot edu),
+Matthew Ferrari (mferrari at psu dot edu),
+Aaron A. King (kingaa at umich dot edu),
+Edward L. Ionides (ionides at umich dot edu)
+</p>
+
+
+<h3>References</h3>
+
+<p>Liu, J. and M. West.
+Combining Parameter and State Estimation in Simulation-Based Filtering.
+In A. Doucet, N. de Freitas, and N. J. Gordon, editors,
+Sequential Monte Carlo Methods in Practice, pages 197-224.
+Springer, New York, 2001.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pomp.html">pomp</a></code>, <code><a href="pfilter.html">pfilter</a></code>
+</p>
+
+<hr><div align="center">[Package <em>pomp</em> version 0.62-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

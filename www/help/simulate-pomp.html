@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Simulations of a partially-observed Markov process</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/languages/r.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</head><body>
+
+<table width="100%" summary="page for POMP simulation {pomp}"><tr><td>POMP simulation {pomp}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Simulations of a partially-observed Markov process</h2>
+
+<h3>Description</h3>
+
+<p><code>simulate</code> generates simulations of the state and measurement processes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'pomp'
+simulate(object, nsim = 1, seed = NULL, params,
+         states = FALSE, obs = FALSE, times, t0,
+         as.data.frame = FALSE, include.data = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>An object of class <code>pomp</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>nsim</code></td>
+<td>
+
+<p>The number of simulations to perform.
+Note that the number of replicates will be <code>nsim</code> times <code>ncol(xstart)</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+
+<p>optional; if set, the pseudorandom number generator (RNG) will be initialized with <code>seed</code>.
+the random seed to use.
+The RNG will be restored to its original state afterward.
+</p>
+</td></tr>
+<tr valign="top"><td><code>params</code></td>
+<td>
+
+<p>either a named numeric vector or a numeric matrix with rownames.
+The parameters to use in simulating the model.
+If <code>params</code> is not given, then the contents of the <code>params</code> slot of <code>object</code> will be used, if they exist.
+</p>
+</td></tr>
+<tr valign="top"><td><code>states</code></td>
+<td>
+<p>Do we want the state trajectories?</p>
+</td></tr>
+<tr valign="top"><td><code>obs</code></td>
+<td>
+<p>Do we want data-frames of the simulated observations?</p>
+</td></tr>
+<tr valign="top"><td><code>times, t0</code></td>
+<td>
+
+<p><code>times</code> specifies the times at which simulated observations will be made.
+<code>t0</code> specifies the start time (the time at which the initial conditions hold).
+The default for <code>times</code> is is <code>times=time(object,t0=FALSE)</code> and <code>t0=timezero(object)</code>, respectively.
+</p>
+</td></tr>
+<tr valign="top"><td><code>as.data.frame, include.data</code></td>
+<td>
+
+<p>logical; if <code>as.data.frame=TRUE</code>, the results are returned as a data-frame.
+A factor variable, &lsquo;sim&rsquo;, distinguishes one simulation from another.
+If, in addition, <code>include.data=TRUE</code>, the original data are included as an additional &lsquo;simulation&rsquo;.
+If <code>as.data.frame=FALSE</code>, <code>include.data</code> is ignored.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments that are currently ignored.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Simulation of the state process and of the measurement process are each accomplished by a single call to the user-supplied <code>rprocess</code> and <code>rmeasure</code> functions, respectively.
+This makes it possible for the user to write highly optimized code for these potentially expensive computations.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>states=FALSE</code> and <code>obs=FALSE</code> (the default), a list of <code>nsim</code> <code>pomp</code> objects is returned.
+Each has a simulated data set, together with the parameters used (in slot <code>params</code>) and the state trajectories also (in slot <code>states</code>).
+If <code>times</code> is specified, then the simulated observations will be at times <code>times</code>.
+</p>
+<p>If <code>nsim=1</code>, then a single <code>pomp</code> object is returned (and not a singleton list).
+</p>
+<p>If <code>states=TRUE</code> and <code>obs=FALSE</code>, simulated state trajectories are returned as a rank-3 array with dimensions <code>nvar</code> x <code>(ncol(params)*nsim)</code> x <code>ntimes</code>.
+Here, <code>nvar</code> is the number of state variables and <code>ntimes</code> the length of the argument <code>times</code>.
+The measurement process is not simulated in this case.   
+</p>
+<p>If <code>states=FALSE</code> and <code>obs=TRUE</code>, simulated observations are returned as a rank-3 array with dimensions <code>nobs</code> x <code>(ncol(params)*nsim)</code> x <code>ntimes</code>.
+Here, <code>nobs</code> is the number of observables.
+</p>
+<p>If both <code>states=TRUE</code> and <code>obs=TRUE</code>, then a named list is returned.
+It contains the state trajectories and simulated observations as above.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King <a href="mailto:kingaa at umich dot edu">kingaa at umich dot edu</a></p>
+
+
+<h3>See Also</h3>
+
+<p><a href="pomp.html">pomp</a></p>
+
+
+<h3>Examples</h3>
+
+<pre><code class="r">pompExample(ou2)
+</code></pre>
+
+<pre><code>## newly created object(s):
+##  ou2
+</code></pre>
+
+<pre><code class="r">x &lt;- simulate(ou2,seed=3495485,nsim=10)
+x &lt;- simulate(ou2,seed=3495485,nsim=10,states=TRUE,obs=TRUE)
+x &lt;- simulate(ou2,seed=3495485,nsim=10,obs=TRUE,
+              as.data.frame=TRUE,include.data=TRUE)
+</code></pre>
+
+
+<hr><div align="center">[Package <em>pomp</em> version 0.62-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

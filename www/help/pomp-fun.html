@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Definition and methods of the &quot;pomp.fun&quot; class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
+</head><body>
+
+<table width="100%" summary="page for pomp-fun {pomp}"><tr><td>pomp-fun {pomp}</td><td align="right">R Documentation</td></tr></table>
+
+<h2>Definition and methods of the &quot;pomp.fun&quot; class</h2>
+
+<h3>Description</h3>
+
+<p>Definition and methods of the <code>pomp.fun</code> class</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'function'
+pomp.fun(f, proto = NULL, ...)
+## S4 method for signature 'character'
+pomp.fun(f, PACKAGE = NULL, 
+      obsnames = character(0), statenames = character(0),
+      paramnames = character(0), covarnames = character(0), ...)
+## S4 method for signature 'Csnippet'
+pomp.fun(f, slotname = NULL, libname = NULL,
+      obsnames = character(0), statenames = character(0),
+      paramnames = character(0), covarnames = character(0), ...)
+## S4 method for signature 'pomp.fun'
+pomp.fun(f, ...)
+## S4 method for signature 'missing'
+pomp.fun(f, ...)
+## S4 method for signature 'NULL'
+pomp.fun(f, ...)
+## S4 method for signature 'pomp.fun'
+show(object)
+## S4 method for signature 'pomp.fun'
+print(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>f</code></td>
+<td>
+<p>A function or the name of a native routine.</p>
+</td></tr>
+<tr valign="top"><td><code>PACKAGE</code></td>
+<td>
+
+<p>optional; the name of the dynamically-loadable library in which the native function <code>f</code> can be found.
+</p>
+</td></tr>
+<tr valign="top"><td><code>proto</code></td>
+<td>
+
+<p>optional string; a prototype against which <code>f</code> will be checked.
+</p>
+</td></tr>
+<tr valign="top"><td><code>object, x</code></td>
+<td>
+<p>The <code>pomp.fun</code> object.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>pomp.fun</code> class helps to settle common issues associated with user-defined functions which can be defined either via R code or by a native, compiled routine.
+It is not exported to userland.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Aaron A. King <a href="mailto:kingaa at umich dot edu">kingaa at umich dot edu</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pomp.html">pomp</a></code>
+</p>
+
+<hr><div align="center">[Package <em>pomp</em> version 0.62-5 <a href="00Index.html">Index</a>]</div>
+</body></html>
