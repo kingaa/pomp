@@ -408,8 +408,6 @@ setMethod(
 
             if (missing(Np))
               stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
-            if (missing(var.factor))
-              stop("mif error: ",sQuote("var.factor")," must be specified",call.=FALSE)
 
             cooling.type <- match.arg(cooling.type)
             
