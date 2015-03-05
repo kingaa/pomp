@@ -1,8 +1,8 @@
-pompCBuilder <- function (name = NULL,
+pompCBuilder <- function (name = NULL, dir = NULL,
                           statenames, paramnames, covarnames, obsnames,
                           rmeasure, dmeasure, step.fn, skeleton,
                           parameter.transform, parameter.inv.transform,
-                          rprior, dprior, globals, dir = NULL,
+                          rprior, dprior, globals,
                           verbose = getOption("verbose",FALSE))
 {
 

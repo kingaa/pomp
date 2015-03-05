@@ -9,7 +9,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               obsnames, statenames, paramnames, covarnames,
                               zeronames, PACKAGE,
                               parameter.transform, parameter.inv.transform,
-                              globals, userdata, ..., .solibfile,
+                              globals, userdata, ...,
+                              .solibfile, .filename, .filedir,
                               verbose = getOption("verbose",FALSE)) {
 
   ## preliminary error checking
@@ -18,6 +19,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
   if (missing(t0)) stop(sQuote("t0")," is a required argument")
   if (missing(params)) params <- numeric(0)
   if (missing(.solibfile)) .solibfile <- list()
+  if (missing(.filename)) .filename <- NULL
+  if (missing(.filedir)) .filedir <- NULL
   
   if (missing(userdata)) userdata <- list()
   added.userdata <- list(...)
@@ -144,6 +147,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                                   paramnames=paramnames,
                                   covarnames=covarnames,
                                   globals=globals,
+                                  name=.filename,
+                                  dir=.filedir,
                                   verbose=verbose
                                   ),
                              snips
