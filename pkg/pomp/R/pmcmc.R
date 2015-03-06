@@ -90,8 +90,8 @@ pmcmc.internal <- function (object, Nmcmc,
                      nrow=Nmcmc+1,
                      ncol=length(theta)+3,
                      dimnames=list(
-                       rownames=seq(from=0,to=Nmcmc,by=1),
-                       colnames=c('loglik','log.prior','nfail',names(theta))
+                       iteration=seq(from=0,to=Nmcmc,by=1),
+                       variable=c('loglik','log.prior','nfail',names(theta))
                        )
                      )
 
@@ -300,6 +300,7 @@ setMethod(
                                   object@conv.rec[,colnames(obj@conv.rec)],
                                   obj@conv.rec[-1,]
                                   )
+            names(dimnames(obj@conv.rec)) <- c("iteration","variable")
             obj@Nmcmc <- as.integer(ndone+Nmcmc)
             obj
           }

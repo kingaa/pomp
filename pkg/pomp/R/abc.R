@@ -85,8 +85,8 @@ abc.internal <- function (object, Nabc,
                      nrow=Nabc+1,
                      ncol=length(theta),
                      dimnames=list(
-                       rownames=seq(from=0,to=Nabc,by=1),
-                       colnames=names(theta)
+                       iteration=seq(from=0,to=Nabc,by=1),
+                       variable=names(theta)
                        )
                      )
 
@@ -283,6 +283,7 @@ setMethod(
                                   object@conv.rec[,colnames(obj@conv.rec)],
                                   obj@conv.rec[-1,]
                                   )
+            names(dimnames(obj@conv.rec)) <- c("iteration","variable")
             obj@Nabc <- as.integer(ndone+Nabc)
             
             obj

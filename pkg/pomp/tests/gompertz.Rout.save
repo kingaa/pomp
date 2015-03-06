@@ -77,13 +77,14 @@ The following transformed parameters are non-finite: 'r'
      K      r  sigma    tau    X.0 
 1.0478 0.1992 0.1000 0.1000 1.0000 
 > conv.rec(mf)
-  loglik nfail       K      r  sigma    tau X.0
-0  30.35     0 0.00000 -1.609 -2.303 -2.303   0
-1  30.59     0 0.01048 -1.609 -2.303 -2.303   0
-2  30.96     0 0.02378 -1.610 -2.303 -2.303   0
-3  29.78     0 0.03161 -1.607 -2.303 -2.303   0
-4  31.18     0 0.03785 -1.611 -2.303 -2.303   0
-5     NA    NA 0.04671 -1.613 -2.303 -2.303   0
+         variable
+iteration loglik nfail       K      r  sigma    tau X.0
+        0  30.35     0 0.00000 -1.609 -2.303 -2.303   0
+        1  30.59     0 0.01048 -1.609 -2.303 -2.303   0
+        2  30.96     0 0.02378 -1.610 -2.303 -2.303   0
+        3  29.78     0 0.03161 -1.607 -2.303 -2.303   0
+        4  31.18     0 0.03785 -1.611 -2.303 -2.303   0
+        5     NA    NA 0.04671 -1.613 -2.303 -2.303   0
 > conv.rec(mf,transform=TRUE)
       K      r sigma tau X.0 loglik nfail
 0 1.000 0.2000   0.1 0.1   1  30.35     0
@@ -93,21 +94,23 @@ The following transformed parameters are non-finite: 'r'
 4 1.039 0.1996   0.1 0.1   1  31.18     0
 5 1.048 0.1992   0.1 0.1   1     NA    NA
 > conv.rec(mf,c("loglik","r"))
-  loglik      r
-0  30.35 -1.609
-1  30.59 -1.609
-2  30.96 -1.610
-3  29.78 -1.607
-4  31.18 -1.611
-5     NA -1.613
+         variable
+iteration loglik      r
+        0  30.35 -1.609
+        1  30.59 -1.609
+        2  30.96 -1.610
+        3  29.78 -1.607
+        4  31.18 -1.611
+        5     NA -1.613
 > try(conv.rec(mf,c("loglik","r"),transform=FALSE))
-  loglik      r
-0  30.35 -1.609
-1  30.59 -1.609
-2  30.96 -1.610
-3  29.78 -1.607
-4  31.18 -1.611
-5     NA -1.613
+         variable
+iteration loglik      r
+        0  30.35 -1.609
+        1  30.59 -1.609
+        2  30.96 -1.610
+        3  29.78 -1.607
+        4  31.18 -1.611
+        5     NA -1.613
 > try(conv.rec(mf,c("loglik","r"),transform=TRUE))
   loglik      r
 0  30.35 0.2000
@@ -133,4 +136,4 @@ The following transformed parameters are non-finite: 'r'
 > 
 > proc.time()
    user  system elapsed 
-  1.576   0.052   1.652 
+  1.838   0.040   1.853 

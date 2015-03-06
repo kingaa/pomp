@@ -244,8 +244,8 @@ mif.internal <- function (object, Nmif,
                      nrow=Nmif+1,
                      ncol=length(theta)+2,
                      dimnames=list(
-                       seq(.ndone,.ndone+Nmif),
-                       c('loglik','nfail',names(theta))
+                       iteration=seq(.ndone,.ndone+Nmif),
+                       variable=c('loglik','nfail',names(theta))
                        )
                      )
   conv.rec[1L,] <- c(NA,NA,theta)
@@ -538,6 +538,7 @@ setMethod(
                                   object@conv.rec,
                                   obj@conv.rec[-1L,colnames(object@conv.rec)]
                                   )
+            names(dimnames(obj@conv.rec)) <- c("iteration","variable")
             obj@Nmif <- as.integer(ndone+Nmif)
             
             obj
