@@ -19,7 +19,6 @@ opts_chunk$set(
   fig.pos="h!",
   fig.align='center',
   fig.height=4,fig.width=6.83,
-  out.width="\\linewidth",
   dpi=300,
   dev='png',
   dev.args=list(bg='transparent')
@@ -37,7 +36,8 @@ stopifnot(packageVersion("pomp")>="0.62-2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
-  encoding="UTF-8"
+  encoding="UTF-8",
+  scipen=5
   )
 
 ## ----eval=FALSE----------------------------------------------------------
@@ -197,11 +197,25 @@ parinvtrans <- Csnippet("
   TK = log(K);
 ")
 
-parus <- pomp(parus,parameter.transform=partrans,parameter.inv.transform=parinvtrans,
+parus <- pomp(parus,parameter.transform=partrans,
+              parameter.inv.transform=parinvtrans,
               paramnames=c("r","K"))
 
 ## ----logistic-partrans-test,include=FALSE,cache=FALSE--------------------
 p <- c(r=1,K=200,phi=1,N.0=200,sigma=0.5)
 coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
 stopifnot(all.equal(p,coef(parus)))
+
+## ----parus-traj-match,cache=FALSE----------------------------------------
+tm <- traj.match(parus,start=c(r=1,K=200,phi=1,N.0=200,sigma=0.5),
+                 est=c("r","K","phi"),transform=TRUE)
+signif(coef(tm),3)
+
+## ----parus-tm-sim1,cache=FALSE-------------------------------------------
+coef(tm,"sigma") <- 0
+sim <- simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE)
+ggplot(data=sim,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
+  scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
+                     labels=c(`FALSE`="simulation",`TRUE`="data"))+
+  geom_line()
 

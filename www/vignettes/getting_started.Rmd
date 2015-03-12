@@ -13,7 +13,7 @@ Licensed under the [Creative Commons attribution-noncommercial license](http://c
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](http://pomp.r-forge.r-project.org/graphics/cc-by-nc.png)
 
-This document compiled with `pomp` version `r packageVersion("pomp")`.
+This document was produced using `pomp` version `r packageVersion("pomp")`.
 
 ```{r opts,include=FALSE}
 library(knitr)
@@ -36,7 +36,6 @@ opts_chunk$set(
   fig.pos="h!",
   fig.align='center',
   fig.height=4,fig.width=6.83,
-  out.width="\\linewidth",
   dpi=300,
   dev='png',
   dev.args=list(bg='transparent')
@@ -56,9 +55,19 @@ stopifnot(packageVersion("pomp")>="0.62-2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
-  encoding="UTF-8"
+  encoding="UTF-8",
+  scipen=5
   )
 ```
+
+## Introduction
+
+This tutorial aims to help you get started using `pomp` as a suite of tools for analysis of time series data based on dynamical systems models.
+First, we give some conceptual background regarding the class of models---partially observed Markov processes---that `pomp` handles.
+We then discuss some preliminaries: installing the package and so on.
+Next, using a basic question about ecological population regulation as an example, we load some data and implement some models as `R` objects of class `pomp`.
+Finally, we illustrate some of the package's capabilities by using its algorithms to fit and compare the models using various inference methods.
+
 
 ## Partially observed Markov process (POMP) models
 
@@ -375,7 +384,7 @@ We create a new `pomp` object based on this process model but with the same rmea
 ```{r bh-pomp1,cache=FALSE}
 parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=bh.skel,skeleton.type="map",skelmap.delta.t=1,statenames="N",paramnames=c("a","b","sigma"))
 ```
-The following codes compute some simulations, a trajectory of the skeleton, and run a particle filtering operation.
+The following codes test the above by computing some simulations, a trajectory of the skeleton, and running a particle filtering operation.
 ```{r bh-test}
 coef(parus.bh) <- c(a=1.1,b=5e-4,sigma=0.5,N.0=30,phi=1)
 sim <- simulate(parus.bh)
@@ -398,7 +407,8 @@ parinvtrans <- Csnippet("
   TK = log(K);
 ")
 
-parus <- pomp(parus,parameter.transform=partrans,parameter.inv.transform=parinvtrans,
+parus <- pomp(parus,parameter.transform=partrans,
+              parameter.inv.transform=parinvtrans,
               paramnames=c("r","K"))
 ```
 ```{r logistic-partrans-test,include=FALSE,cache=FALSE}
@@ -406,5 +416,32 @@ p <- c(r=1,K=200,phi=1,N.0=200,sigma=0.5)
 coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
 stopifnot(all.equal(p,coef(parus)))
 ```
+
+## Trajectory matching
+
+Trajectory matching is the method of fitting a deterministic model to data assuming independent errors.
+In `pomp`, the function `traj.match` searches parameter space to find parameters under which the likelihood of the data given a trajectory of the deterministic skeleton is maximized.
+
+```{r parus-traj-match,cache=FALSE}
+tm <- traj.match(parus,start=c(r=1,K=200,phi=1,N.0=200,sigma=0.5),
+                 est=c("r","K","phi"),transform=TRUE)
+signif(coef(tm),3)
+```
+
+We can simulate the fitted model and compare it against the data.
+```{r parus-tm-sim1,cache=FALSE}
+coef(tm,"sigma") <- 0
+sim <- simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE)
+ggplot(data=sim,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
+  scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
+                     labels=c(`FALSE`="simulation",`TRUE`="data"))+
+  geom_line()
+```
+
+## Maximizing the likelihood by iterated filtering
+
+## Sampling the posterior using particle Markov chain Monte Carlo
+
+## Model checking using probes
 
 ## References
