@@ -65,8 +65,8 @@ static R_INLINE double expit (double x) {
 // But note that when reulermultinom is called inside a pomp 'rprocess',
 // there is no need to call {Get,Put}RNGState() as this is handled by pomp
 
-static void reulermultinom (int m, double size, double *rate, 
-			    double dt, double *trans) {
+static R_INLINE void reulermultinom (int m, double size, double *rate, 
+				     double dt, double *trans) {
   double p = 0.0;
   int j, k;
   if ((size < 0.0) || (dt < 0.0) || (floor(size+0.5) != size)) {
@@ -114,8 +114,8 @@ static void reulermultinom (int m, double size, double *rate,
 // See '?deulermultinom' and vignettes for more on the Euler-multinomial 
 // distributions.
 
-static double deulermultinom (int m, double size, double *rate, double dt, 
-			      double *trans, int give_log) {
+static R_INLINE double deulermultinom (int m, double size, double *rate, 
+				       double dt, double *trans, int give_log) {
   double p = 0.0;
   double n = 0.0;
   double ff = 0.0;

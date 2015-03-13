@@ -335,21 +335,24 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         )
       warning("a covariate table has been given, yet the ",
               sQuote("skeleton")," function does not have ",
-              sQuote("covars")," as a formal argument",call.=FALSE)
+              sQuote("covars")," as a formal argument: see ",
+              sQuote("?pomp"),call.=FALSE)
     if (
         (rmeasure@mode==pompfunmode$Rfun)
         &&!("covars"%in%names(formals(rmeasure@R.fun)))
         )
       warning("a covariate table has been given, yet the ",
               sQuote("rmeasure")," function does not have ",
-              sQuote("covars")," as a formal argument",call.=FALSE)
+              sQuote("covars")," as a formal argument: see ",
+              sQuote("?pomp"),call.=FALSE)
     if (
         (dmeasure@mode==pompfunmode$Rfun)
         &&!("covars"%in%names(formals(dmeasure@R.fun)))
         )
       warning("a covariate table has been given, yet the ",
               sQuote("dmeasure")," function does not have ",
-              sQuote("covars")," as a formal argument",call.=FALSE)
+              sQuote("covars")," as a formal argument: see ",
+              sQuote("?pomp"),call.=FALSE)
   }
 
   if ((length(tcovar)>0)&&((min(tcovar)>t0)||(max(tcovar)<max(times)))) 
