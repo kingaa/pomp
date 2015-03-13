@@ -281,7 +281,7 @@ We suppose that $X_{0:N}$ and $Y_{1:N}$ have a joint density $f_{X_{0:N},Y_{1:N}
 The POMP structure implies that this joint density is determined by the initial density, $f_{X_{0}}(x_{0};\theta)$, together with the conditional transition probability density, $f_{X_{n}|X_{n-1}}(x_{n}\given x_{n-1}\giventh\theta)$, and the measurement density, $f_{Y_{n}|X_{n}}(y_{n}\given x_{n}\giventh\theta)$, for $1\leq n\leq N$.
 In particular, we have
 \begin{equation}\label{eq:joint-dens}
-  f_{X_{0:N},Y_{1:N}}(x_{0:n},y_{1:n};\theta) = f_{X_0}(x_0;\theta)\,\prod_{n=1}^N\!f_{X_n | X_{n-1}}(x_n|x_{n-1};\theta)\,f_{Y_n|X_n}(y_n|x_n;\theta).
+  f_{X_{0:N},Y_{1:N}}(x_{0:N},y_{1:N};\theta) = f_{X_0}(x_0;\theta)\,\prod_{n=1}^N\!f_{X_n | X_{n-1}}(x_n|x_{n-1};\theta)\,f_{Y_n|X_n}(y_n|x_n;\theta).
 \end{equation}
 Note that this formalism allows the transition density, $f_{X_{n}|X_{n-1}}$, and measurement density, $f_{Y_{n}|X_{n}}$, to depend explicitly on $n$.
 
