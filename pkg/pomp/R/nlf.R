@@ -115,26 +115,26 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
     opt <- list(params=params,value=val)
   } else {
     if (method == 'subplex') {
-      opt <- subplex(
-                     par=guess,
-                     fn=nlf.objfun,
-                     object=object,
-                     params=params,
-                     par.index=par.index, 
-                     transform=transform,
-                     times=times,
-                     t0=t0,
-                     lags=lags,
-                     period=period,
-                     tensor=tensor,
-                     seed=seed,
-                     transform.data=transform.data,
-                     nrbf=nrbf, 
-                     verbose=verbose,
-                     bootstrap=bootstrap,
-                     bootsamp=bootsamp,
-                     control=list(...)
-                     )
+      opt <- subplex::subplex(
+                              par=guess,
+                              fn=nlf.objfun,
+                              object=object,
+                              params=params,
+                              par.index=par.index, 
+                              transform=transform,
+                              times=times,
+                              t0=t0,
+                              lags=lags,
+                              period=period,
+                              tensor=tensor,
+                              seed=seed,
+                              transform.data=transform.data,
+                              nrbf=nrbf, 
+                              verbose=verbose,
+                              bootstrap=bootstrap,
+                              bootsamp=bootsamp,
+                              control=list(...)
+                              )
     } else {
       opt <- optim(
                    par=guess,

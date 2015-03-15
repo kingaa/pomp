@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.63-1}{
+  \itemize{
+    \item The optimization packages \pkg{nloptr} and \pkg{subplex} are no longer dependencies of \pkg{pomp} that will be loaded at the time \pkg{pomp} is.
+    Instead, they are imported as needed.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.62-2}{
   \itemize{
     \item Bug fix in \code{partrans} when transformations are implemented using \code{Csnippet}s.

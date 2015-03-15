@@ -138,6 +138,8 @@ ofun <- probe.match.objfun(ou2,est=c("alpha.1","alpha.2"),
                            probes=good$probes,nsim=100,
                            seed=349956868L
                            )
+
+require(nloptr)
 fit1 <- nloptr(
                coef(good,c("alpha.1","alpha.2")),
                ofun,
