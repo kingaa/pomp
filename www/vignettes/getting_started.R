@@ -25,7 +25,6 @@ opts_chunk$set(
   )
 
 ## ----prelims,echo=F,cache=F----------------------------------------------
-set.seed(594709947L)
 require(ggplot2)
 require(plyr)
 require(reshape2)
@@ -39,6 +38,15 @@ options(
   encoding="UTF-8",
   scipen=5
   )
+
+## ----parallel,include=FALSE,cache=FALSE----------------------------------
+require(foreach)
+require(doMC)
+options(cores=5)
+registerDoMC()
+set.seed(594709947L,kind="L'Ecuyer")
+mcopts <- list(set.seed=TRUE)
+paropts <- list(.options.multicore=mcopts)
 
 ## ----eval=FALSE----------------------------------------------------------
 ## install.packages("pomp",repos="http://R-Forge.R-Project.org")
@@ -210,12 +218,45 @@ stopifnot(all.equal(p,coef(parus)))
 tm <- traj.match(parus,start=c(r=1,K=200,phi=1,N.0=200,sigma=0.5),
                  est=c("r","K","phi"),transform=TRUE)
 signif(coef(tm),3)
+logLik(tm)
 
 ## ----parus-tm-sim1,cache=FALSE-------------------------------------------
 coef(tm,"sigma") <- 0
-sim <- simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE)
-ggplot(data=sim,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
+sim1 <- simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE)
+ggplot(data=sim1,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
   scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
                      labels=c(`FALSE`="simulation",`TRUE`="data"))+
   geom_line()
+
+## ----parus-mif,cache=TRUE------------------------------------------------
+mf <- mif(parus,Nmif=50,Np=1000,method="mif2",cooling.fraction=0.8,
+          rw.sd=c(r=0.02,K=0.02,phi=0.02,sigma=0.02),transform=TRUE)
+mf <- mif(mf)
+mle <- coef(mf); mle
+logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
+sim2 <- simulate(mf,nsim=10,as.data.frame=TRUE,include.data=TRUE)
+ggplot(data=sim2,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
+  scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
+                     labels=c(`FALSE`="simulation",`TRUE`="data"))+
+  geom_line()
+
+## ----parus-pmcmc,cache=TRUE----------------------------------------------
+dprior <- Csnippet("
+  lik = dunif(r,0,5,1)+dunif(K,100,800,1)+dunif(phi,0,2,1)+
+    dunif(sigma,0,2,1);
+  lik = (give_log) ? lik : exp(lik);
+  ")
+parus <- pomp(parus,dprior=dprior,paramnames=c("r","K","phi","sigma"))
+pchs <- foreach (i=1:5,.combine=c,
+                 .options.multicore=mcopts) %dopar% {
+  pmcmc(parus,Nmcmc=1000,Np=100,start=mle,
+        proposal=mvn.diag.rw(c(r=0.02,K=0.02,phi=0.02,sigma=0.02)))
+  }
+traces <- conv.rec(pchs,c("r","K","phi"))
+require(coda)
+plot(traces[,"r"])
+plot(traces[,"K"])
+plot(traces[,"phi"])
+gelman.plot(traces)
+gelman.diag(traces)
 
