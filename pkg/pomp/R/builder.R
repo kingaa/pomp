@@ -21,7 +21,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   if (.Platform$OS.type=="windows") {
     stem <- gsub("\\","/",stem,fixed=TRUE)
   }
-  modelfile <- paste0(stem,".c") 
+  modelfile <- paste0(stem,".c")
   solib <- paste0(stem,.Platform$dynlib.ext)
 
   if (.Platform$OS.type=="unix") {
@@ -29,9 +29,9 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   } else {
     pompheader <- system.file("include/pomp.h",package="pomp")
   }
-  
+
   out <- file(description=modelfile,open="w")
-  
+
   cat(file=out,render(header$file,name=name,pompheader=pompheader))
 
   for (f in utility.fns) {
@@ -42,24 +42,24 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   ## variable/parameter/observations definitions
   for (v in seq_along(paramnames)) {
-    cat(file=out,render(define$var,variable=paramnames[v],ptr='__p',ilist='__parindex',index=v-1))
+    cat(file=out,render(define$var,variable=paramnames[v],ptr='__p',ilist='__parindex',index=as.integer(v-1)))
   }
   for (v in seq_along(statenames)) {
-    cat(file=out,render(define$var,variable=statenames[v],ptr='__x',ilist='__stateindex',index=v-1))
+    cat(file=out,render(define$var,variable=statenames[v],ptr='__x',ilist='__stateindex',index=as.integer(v-1)))
   }
   for (v in seq_along(covarnames)) {
-    cat(file=out,render(define$var,variable=covarnames[v],ptr='__covars',ilist='__covindex',index=v-1))
+    cat(file=out,render(define$var,variable=covarnames[v],ptr='__covars',ilist='__covindex',index=as.integer(v-1)))
   }
   for (v in seq_along(obsnames)) {
-    cat(file=out,render(define$var,variable=obsnames[v],ptr='__y',ilist='__obsindex',index=v-1))
+    cat(file=out,render(define$var,variable=obsnames[v],ptr='__y',ilist='__obsindex',index=as.integer(v-1)))
   }
   for (v in seq_along(statenames)) {
-    cat(file=out,render(define$var,variable=paste0("D",statenames[v]),ptr='__f',ilist='__stateindex',index=v-1))
+    cat(file=out,render(define$var,variable=paste0("D",statenames[v]),ptr='__f',ilist='__stateindex',index=as.integer(v-1)))
   }
   for (v in seq_along(paramnames)) {
-    cat(file=out,render(define$var,variable=paste0("T",paramnames[v]),ptr='__pt',ilist='__parindex',index=v-1))
+    cat(file=out,render(define$var,variable=paste0("T",paramnames[v]),ptr='__pt',ilist='__parindex',index=as.integer(v-1)))
   }
-  cat(file=out,render(define$var.alt,variable="lik",ptr='__lik',index=0))
+  cat(file=out,render(define$var.alt,variable="lik",ptr='__lik',index=0L))
 
   ## list of functions to register
   registry <- c("load_stack_incr","load_stack_decr")
@@ -193,6 +193,7 @@ randomName <- function (stem = "pomp", size = 2) {
 cleanForC <- function (text) {
   text <- as.character(text)
   text <- gsub("\\.","_",text)
+  text <- gsub("-","_",text)
   text
 }
 
@@ -204,7 +205,7 @@ render <- function (template, ...) {
   short <- which(n==1)
   n <- max(n)
   for (i in short) vars[[i]] <- rep(vars[[i]],n)
-  
+
   retval <- vector(mode="list",length=n)
   for (i in seq_len(n)) {
     tpl <- template
@@ -226,7 +227,7 @@ pompBuilder <- function (data, times, t0, name,
                          parameter.transform, parameter.inv.transform,
                          rprior, dprior,
                          globals, ..., save = FALSE) {
-  
+
   if (!is.data.frame(data)) stop(sQuote("data")," must be a data-frame")
   obsnames <- names(data)
   obsnames <- setdiff(obsnames,times)
