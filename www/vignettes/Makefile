@@ -1,5 +1,5 @@
 RSCRIPT = $(R_HOME)/bin/Rscript --vanilla
-REXE = $(R_HOME)/bin/R --vanilla
+REXE = $(R_HOME)/bin/R --vanilla --slave
 LATEX = latex
 BIBTEX = bibtex
 PDFLATEX = pdflatex
