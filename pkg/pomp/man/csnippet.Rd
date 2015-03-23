@@ -50,7 +50,8 @@
 }
 \section{Rules for writing \code{dmeasure} snippets}{
   \enumerate{
-    \item The goal of such a snippet is to fill the \code{lik} variable with the likelihood of the data given the state.  Alternatively, if \code{give_log=1}, \code{lik} should be filled with the log likelihood.
+    \item The goal of such a snippet is to fill the \code{lik} variable with the likelihood of the data given the state.
+    Alternatively, if \code{give_log=1}, \code{lik} should be filled with the log likelihood.
     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
   }
 }
@@ -66,6 +67,24 @@
     \item When the skeleton is a map, the component corresponding to state variable \code{x} is named \code{Dx} and is the new value of \code{x} after one iteration of the map.
     \item When the skeleton is a vectorfield, the component corresponding to state variable \code{x} is named \code{Dx} and is the value of $dx/dt$.
     \item As with the other C snippets, all states, parameters and covariates, as well as the current time, \code{t}, will be defined in the context within which the snippet is executed.
+  }
+}
+\section{Rules for writing \code{rprior} snippets}{
+  \enumerate{
+    \item The goal of such a snippet is the replacement of parameters with values drawn from the prior distribution.
+    \item Within the context in which the snippet will be evaluated, only the parameters will be defined.
+    \item Hyperparameters can be included in the ordinary parameter list.
+    Obviously, hyperparameters should not be replaced with random draws.
+  }
+}
+\section{Rules for writing \code{dprior} snippets}{
+  \enumerate{
+    \item The goal of such a snippet is computation of the prior probability density, or the log of same, at a given point in parameter space.
+    This scalar value should be returned in the variable \code{lik}.
+    When \code{give_log=1}, the user should return the log of the prior probability density.
+    \item Within the context in which the snippet will be evaluated, only the parameters and \code{give_log} will be defined.
+    \item Hyperparameters can be included in the ordinary parameter list.
+    Obviously, hyperparameters should not be replaced with random draws.
   }
 }
 \section{Rules for writing parameter transformation snippets}{
