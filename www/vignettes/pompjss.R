@@ -11,7 +11,7 @@ require(plyr)
 require(reshape2)
 require(xtable)
 
-stopifnot(packageVersion("pomp")>="0.62-5")
+stopifnot(packageVersion("pomp")>="0.63-4")
 
 
 ## ----set-opts,include=F,cache=F------------------------------------------
@@ -58,6 +58,7 @@ opts_chunk$set(
 
 ## ----set-seed,cache=F,include=F------------------------------------------
 set.seed(5384959L)
+options(cores=10)
 
 
 ## ----bake,include=FALSE,cache=FALSE--------------------------------------
@@ -271,7 +272,7 @@ bake("gompertz-mif.rda",{
 
   require(doMC)
   require(foreach)
-  registerDoMC(10)
+  registerDoMC()
 
   save.seed <- .Random.seed
   set.seed(334388458L,kind="L'Ecuyer")
@@ -399,7 +400,7 @@ bake("pmcmc.rda",{
   tic <- Sys.time()
   require(doMC)
   require(foreach)
-  registerDoMC(5)
+  registerDoMC()
 
   save.seed <- .Random.seed
   set.seed(334388458L,kind="L'Ecuyer")
@@ -427,11 +428,11 @@ ess.pmcmc <- effectiveSize(pmcmc.traces)
 rm(pmcmc1,save.seed,tic,toc)
 })
 
-## ----pmcmc-diagnostics,results="hide",fig.show="hide",echo=F,eval=F------
-## gelman.diag(pmcmc.traces)
-## gelman.plot(pmcmc.traces)
-## autocorr.plot(pmcmc.traces[[1]])
-## hist(rle(unlist(pmcmc.traces[,"r"]))$length)
+## ----pmcmc-diagnostics,results="hide",fig.show="hide",echo=F,eval=T------
+gelman.diag(pmcmc.traces)
+gelman.plot(pmcmc.traces)
+autocorr.plot(pmcmc.traces[[1]])
+hist(rle(unlist(pmcmc.traces[,"r"]))$length)
 
 ## ----pmcmc-plot,echo=F,eval=T,results="hide",cache=TRUE------------------
 op <- par(mar=c(4,3.5,0,1),mfcol=c(3,2),mgp=c(2.5,1,0),cex.axis=1.5,cex.lab=2)
@@ -568,7 +569,7 @@ bake("ricker-comparison.rda",{
   require(magrittr)
   require(foreach)
   require(doMC)
-  registerDoMC(10)
+  registerDoMC()
 
   rbind(guess=guess,
         truth=coef(ricker),
@@ -644,7 +645,7 @@ bake("abc.rda",{
   tic <- Sys.time()
   require(doMC)
   require(foreach)
-  registerDoMC(5)
+  registerDoMC()
 
   save.seed <- .Random.seed
   set.seed(334388458L,kind="L'Ecuyer")
@@ -668,11 +669,11 @@ abcTime <- toc-tic
 abc.traces <- conv.rec(abc1,c("r","sigma","tau"))
 abc.traces <- window(abc.traces,start=2000001,thin=400)
 ess.abc <- effectiveSize(abc.traces)
-rm(abc1,save.seed,tic,toc)  
+rm(abc1,save.seed,tic,toc)
 })
 
 
-## ----abc-diagnostics,results="hide",fig.show="hide",echo=F---------------
+## ----abc-diagnostics,results="hide",fig.show="hide",echo=FALSE,eval=TRUE----
 gelman.diag(abc.traces)
 gelman.plot(abc.traces)
 autocorr.plot(abc.traces[[1]])
@@ -728,7 +729,7 @@ gompList <- simulate(gompertz,nsim=R)
 bake("nlf-mif-compare.rda",{
   require(doMC)
   require(foreach)
-  registerDoMC(10)
+  registerDoMC()
 
   save.seed <- .Random.seed
   set.seed(816326853L,kind="L'Ecuyer")
