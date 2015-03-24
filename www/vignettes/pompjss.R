@@ -361,15 +361,15 @@ par(op)
 ## ----gompertz-multi-mif-table,echo=F,results="asis"----------------------
 require(xtable)
 options(
-        xtable.sanitize.text.function=function(x)x,
-        xtable.floating=FALSE
-        )
+xtable.sanitize.text.function=function(x)x,
+xtable.floating=FALSE
+)
 print(xtable(results.table,align="r|cccccc",digits=c(0,4,4,4,2,2,2)))
 
 ## ----gompertz-dprior1,tidy=F---------------------------------------------
 hyperparams <- list(min = coef(gompertz)/10, max = coef(gompertz) * 10)
 
-## ----gompertz-dprior2----------------------------------------------------
+## ----gompertz-dprior2,tidy=FALSE-----------------------------------------
 gompertz.dprior <- function (params, ..., log) {
   f <- sum(dunif(params, min = hyperparams$min, max = hyperparams$max,
                  log = TRUE))
@@ -427,11 +427,11 @@ ess.pmcmc <- effectiveSize(pmcmc.traces)
 rm(pmcmc1,save.seed,tic,toc)
 })
 
-## ----pmcmc-diagnostics,results="hide",fig.show="hide",echo=F-------------
-gelman.diag(pmcmc.traces)
-gelman.plot(pmcmc.traces)
-autocorr.plot(pmcmc.traces[[1]])
-hist(rle(unlist(pmcmc.traces[,"r"]))$length)
+## ----pmcmc-diagnostics,results="hide",fig.show="hide",echo=F,eval=F------
+## gelman.diag(pmcmc.traces)
+## gelman.plot(pmcmc.traces)
+## autocorr.plot(pmcmc.traces[[1]])
+## hist(rle(unlist(pmcmc.traces[,"r"]))$length)
 
 ## ----pmcmc-plot,echo=F,eval=T,results="hide",cache=TRUE------------------
 op <- par(mar=c(4,3.5,0,1),mfcol=c(3,2),mgp=c(2.5,1,0),cex.axis=1.5,cex.lab=2)
@@ -465,14 +465,12 @@ par.trans <- "
    Tr = exp(r);
    Tsigma = exp(sigma);
    Tphi = exp(phi);
-   TN_0 = exp(N_0);
-"
+   TN_0 = exp(N_0);"
 par.inv.trans <- "
    Tr = log(r);
    Tsigma = log(sigma);
    Tphi = log(phi);
-   TN_0 = log(N_0);
-"
+   TN_0 = log(N_0);"
 
 ## ----ricker-pomp,tidy=F--------------------------------------------------
 pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA),
@@ -548,19 +546,19 @@ bake("ricker-probe-match.rda",{
 })
 
 ## ----ricker-mif-calc,eval=FALSE,tidy=FALSE-------------------------------
-## mf <- mif(ricker,start=guess,Nmif=100,Np=1000,transform=TRUE,
-##           cooling.fraction=0.95^50,var.factor=2,ic.lag=3,
-##           rw.sd=c(r=0.1,sigma=0.1,phi=0.1),max.fail=50)
-## mf <- continue(mf,Nmif=500,max.fail=20)
+## mf <- mif(ricker, start = guess, Nmif = 100, Np = 1000, transform = TRUE,
+##           cooling.fraction = 0.95^50, var.factor = 2, ic.lag = 3,
+##           rw.sd=c(r = 0.1, sigma = 0.1, phi = 0.1), max.fail = 50)
+## mf <- continue(mf, Nmif = 500, max.fail = 20)
 
 ## ----ricker-mif-eval,echo=F,eval=T,cache=F,results="hide"----------------
 bake("ricker-mif.rda",{
   save.seed <- .Random.seed
   set.seed(718086921L)
-  mf <- mif(ricker,start=guess,Nmif=100,Np=1000,transform=TRUE,
-            cooling.fraction=0.95^50,var.factor=2,ic.lag=3,
-            rw.sd=c(r=0.1,sigma=0.1,phi=0.1),max.fail=50)
-  mf <- continue(mf,Nmif=500,max.fail=20)
+  mf <- mif(ricker, start = guess, Nmif = 100, Np = 1000, transform = TRUE,
+            cooling.fraction = 0.95^50, var.factor = 2, ic.lag = 3,
+            rw.sd=c(r = 0.1, sigma = 0.1, phi = 0.1), max.fail = 50)
+  mf <- continue(mf, Nmif = 500, max.fail = 20)
   .Random.seed <<- save.seed
 })
 

@@ -31,6 +31,8 @@
 \Crefname{appendix}{Appendix}{Appendices}
 \crefname{algorithm}{Algorithm}{Algorithms}
 \Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{section}{Section}{Sections}
+\Crefname{section}{Section}{Sections}
 \crefname{AlgoLine}{line}{lines}
 \Crefname{AlgoLine}{Line}{Lines}
 
@@ -218,6 +220,7 @@ bigtick <- Sys.time()
 %% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
 
 \section {Introduction}
+
 A partially observed Markov process (POMP) model consists of incomplete and noisy measurements of a latent, unobserved Markov process.
 The far-reaching applicability of this class of models has motivated much software development \citep{commandeur11}.
 It has been a challenge to provide a software environment that can effectively handle broad classes of POMP models and take advantage of the wide range of statistical methodologies that have been proposed for such models.
@@ -265,7 +268,8 @@ The remainder of this paper is organized as follows.
 Finally, \cref{sec:conclusion} discusses extensions and applications of \pkg{pomp}.
 
 
-\section[POMP models and their representation in pomp]{POMP models and their representation in \pkg{pomp}}\label{sec:background}
+\section[POMP models and their representation in pomp]{POMP models and their representation in \pkg{pomp}}
+\label{sec:background}
 
 Let $\theta$ be a $p$-dimensional real-valued parameter, $\theta\in\R^p$.
 For each value of $\theta$, let $\{X(t\giventh\theta),t\in T\}$ be a Markov process,
@@ -286,7 +290,8 @@ In particular, we have
 Note that this formalism allows the transition density, $f_{X_{n}|X_{n-1}}$, and measurement density, $f_{Y_{n}|X_{n}}$, to depend explicitly on $n$.
 
 
-\subsection{Implementation of POMP models}\label{sec:implementation}
+\subsection{Implementation of POMP models}
+\label{sec:implementation}
 
 \pkg{pomp} is fully object-oriented:
 in the package, a POMP model is represented by an S4 object \citep{Chambers1998,genolini08} of \class{pomp}.
@@ -295,30 +300,32 @@ Methods for the \class{pomp} class use these components to carry out computation
 \Cref{tab:notation} gives the mathematical notation corresponding to the elementary methods that can be executed on a \class{pomp} object.
 
 \begin{table}[t]
-  \begin{tabular}{llll}
-\hline
-Method &Argument to the &Mathematical terminology \\
-& \code{pomp} constructor & \\
-\hline
-\code{rprocess} &\code{rprocess} &Simulate from $f_{X_n|X_{n-1}}( x_n \given x_{n-1}\giventh \theta)$\\
-\code{dprocess} &\code{dprocess} &Evaluate $f_{X_n|X_{n-1}}( x_n \given x_{n-1}\giventh \theta)$\\
-\code{rmeasure} &\code{rmeasure} &Simulate from $f_{Y_n|X_n}( y_n \given x_n\giventh \theta)$\\
-\code{dmeasure} &\code{dmeasure} &Evaluate $f_{Y_n|X_n}( y_n \given x_n\giventh \theta)$\\
-\code{rprior} &\code{rprior} &Simulate from the prior distribution $\pi(\theta)$\\
-\code{dprior} &\code{dprior} &Evaluate the prior density $\pi(\theta)$\\
-\code{init.state} &\code{initializer} &Simulate from $f_{X_0}( x_0 \giventh \theta)$\\
-\code{timezero} &\code{t0} &$t_0$\\
-\code{time} &\code{times} &$t_{1:N}$\\
-\code{obs} &\code{data} &$y^*_{1:N}$\\
-\code{states} & --- &$x_{0:N}$\\
-\code{coef} &\code{params} &$\theta$\\
-\hline
-\end{tabular}
-\caption{
-  Constituent methods for \class{pomp} objects and their translation into mathematical notation for POMP models.
-  For example, the \code{rprocess} method is set using the \code{rprocess} argument to the \code{pomp} constructor function.
-}
-\label{tab:notation}
+  \begin{center}
+    \begin{tabular}{llll}
+      \hline
+      Method &Argument to the &Mathematical terminology \\
+      & \code{pomp} constructor & \\
+      \hline
+      \code{rprocess} &\code{rprocess} &Simulate from $f_{X_n|X_{n-1}}( x_n \given x_{n-1}\giventh \theta)$\\
+      \code{dprocess} &\code{dprocess} &Evaluate $f_{X_n|X_{n-1}}( x_n \given x_{n-1}\giventh \theta)$\\
+      \code{rmeasure} &\code{rmeasure} &Simulate from $f_{Y_n|X_n}( y_n \given x_n\giventh \theta)$\\
+      \code{dmeasure} &\code{dmeasure} &Evaluate $f_{Y_n|X_n}( y_n \given x_n\giventh \theta)$\\
+      \code{rprior} &\code{rprior} &Simulate from the prior distribution $\pi(\theta)$\\
+      \code{dprior} &\code{dprior} &Evaluate the prior density $\pi(\theta)$\\
+      \code{init.state} &\code{initializer} &Simulate from $f_{X_0}( x_0 \giventh \theta)$\\
+      \code{timezero} &\code{t0} &$t_0$\\
+      \code{time} &\code{times} &$t_{1:N}$\\
+      \code{obs} &\code{data} &$y^*_{1:N}$\\
+      \code{states} & --- &$x_{0:N}$\\
+      \code{coef} &\code{params} &$\theta$\\
+      \hline
+    \end{tabular}
+  \end{center}
+  \caption{
+    Constituent methods for \class{pomp} objects and their translation into mathematical notation for POMP models.
+    For example, the \code{rprocess} method is set using the \code{rprocess} argument to the \code{pomp} constructor function.
+    \label{tab:notation}
+  }
 \end{table}
 
 The \code{rprocess}, \code{dprocess}, \code{rmeasure}, and \code{dmeasure} arguments specify the transition probabilities $f_{X_n|X_{n-1}}( x_n \given x_{n-1}\giventh \theta)$ and measurement densities $f_{Y_n|X_n}(y_n\given x_n\giventh \theta)$.
@@ -365,7 +372,8 @@ For example, it may be the case that $f_{X_n|X_{n-1}}(x_n\given x_{n-1}\giventh\
 The \code{covar} argument in the \pkg{pomp} constructor allows for time-varying covariates measured at times specified in the \code{tcovar} argument.
 A example using covariates is given in \cref{sec:EpidemicModel}.
 
-\section{Methodology for POMP models}\label{sec:methods}
+\section{Methodology for POMP models}
+\label{sec:methods}
 
 Data analysis typically involves identifying regions of parameter space within which a postulated model is statistically consistent with the data.
 Additionally, one frequently desires to assess the relative merits of alternative models as explanations of the data.
@@ -384,58 +392,58 @@ For many models of scientific interest, therefore, methods that leverage the POM
 Though \pkg{pomp} has sufficient flexibility to encode arbitrary POMP models and methods and therefore also provides a platform for the development of novel POMP inference methodology,
 \pkg{pomp}'s development to date has focused on plug-and-play methods.
 However, the package developers welcome contributions and collaborations to further expand \pkg{pomp}'s functionality in non-plug-and-play directions also.
-In the remainder of this Section, we describe and discuss several inference methods, all currently implemented in the package.
+In the remainder of this section, we describe and discuss several inference methods, all currently implemented in the package.
 
 \begin{table}[t]
-\begin{tabular}{l|p{0.35\linewidth}|p{0.35\linewidth}}
-\multicolumn{3}{l}{\bf (a) Plug-and-play \rule[-2mm]{0mm}{4mm}  }\tabularnewline
-\hline
-&Frequentist   & Bayesian  \tabularnewline
-\hline
-Full information&
-Iterated filtering (\code{mif}, \cref{sec:mif}) \raggedright
-&PMCMC (\code{pmcmc}, \cref{sec:pmcmc}) \raggedright \tabularnewline
-\hline
-Feature-based
-&Nonlinear forecasting (\code{nlf}, \cref{sec:nlf}), \raggedright
-&ABC (\code{abc}, \cref{sec:abc}) \raggedright \tabularnewline
-&synthetic likelihood (\code{probe.match}, \cref{sec:probe}) \raggedright
-& \tabularnewline
-\hline
-\multicolumn{3}{c}{}\tabularnewline
-\multicolumn{3}{l}{\bf (b) Not plug-and-play \rule[-2mm]{0mm}{4mm}} \tabularnewline
-\hline
-& Frequentist         & Bayesian  \tabularnewline
-\hline
-Full information
-& EM and Monte~Carlo~EM,  \raggedright
-& MCMC \raggedright \tabularnewline
-& Kalman filter \raggedright
-& \tabularnewline
-\hline
-Feature-based
-&Trajectory matching (\code{traj.match}),  \raggedright
-& Extended Kalman filter \tabularnewline
-&extended Kalman filter,  \raggedright
-& \tabularnewline
-&Yule-Walker equations  \raggedright
-& \tabularnewline
-\hline
-\end{tabular}
-\caption{
-  Inference methods for POMP models.
-  For those currently implemented in \pkg{pomp}, function name and a reference for  description are provided in parentheses.
-  Standard Expectation-Maximization (EM) and Markov chain Monte~Carlo (MCMC) algorithms are not plug-and-play since they require evaluation of $f_{X_n|X_{n-1}}(x_n\given x_{n-1}\giventh\theta)$.
-  The Kalman filter and extended Kalman filter are not plug-and-play since they cannot be implemented based on a model simulator.
-  The Kalman filter provides the likelihood for a linear, Gaussian model.
-  The extended Kalman filter employs a local linear Gaussian approximation which can be used for frequentist inference (via maximization of the resulting quasi-likelihood) or approximate Bayesian inference (by adding the parameters to the state vector).
-  The Yule-Walker equations for ARMA models provide an example of a closed-form method of moments estimator.
-}
-\label{tab:methods}
+  \begin{tabular}{l|p{0.35\linewidth}|p{0.35\linewidth}}
+    \multicolumn{3}{l}{\bf (a) Plug-and-play \rule[-2mm]{0mm}{4mm}  }\tabularnewline
+    \hline
+    &Frequentist   & Bayesian  \tabularnewline
+    \hline
+    Full information&
+    Iterated filtering (\code{mif}, \cref{sec:mif}) \raggedright
+    &PMCMC (\code{pmcmc}, \cref{sec:pmcmc}) \raggedright \tabularnewline
+    \hline
+    Feature-based
+    &Nonlinear forecasting (\code{nlf}, \cref{sec:nlf}), \raggedright
+    &ABC (\code{abc}, \cref{sec:abc}) \raggedright \tabularnewline
+    &synthetic likelihood (\code{probe.match}, \cref{sec:probe}) \raggedright
+    & \tabularnewline
+    \hline
+    \multicolumn{3}{c}{}\tabularnewline
+    \multicolumn{3}{l}{\bf (b) Not plug-and-play \rule[-2mm]{0mm}{4mm}} \tabularnewline
+    \hline
+    & Frequentist         & Bayesian  \tabularnewline
+    \hline
+    Full information
+    & EM and Monte~Carlo~EM,  \raggedright
+    & MCMC \raggedright \tabularnewline
+    & Kalman filter \raggedright
+    & \tabularnewline
+    \hline
+    Feature-based
+    &Trajectory matching (\code{traj.match}),  \raggedright
+    & Extended Kalman filter \tabularnewline
+    &extended Kalman filter,  \raggedright
+    & \tabularnewline
+    &Yule-Walker equations  \raggedright
+    & \tabularnewline
+    \hline
+  \end{tabular}
+  \caption{
+    Inference methods for POMP models.
+    For those currently implemented in \pkg{pomp}, function name and a reference for  description are provided in parentheses.
+    Standard Expectation-Maximization (EM) and Markov chain Monte~Carlo (MCMC) algorithms are not plug-and-play since they require evaluation of $f_{X_n|X_{n-1}}(x_n\given x_{n-1}\giventh\theta)$.
+    The Kalman filter and extended Kalman filter are not plug-and-play since they cannot be implemented based on a model simulator.
+    The Kalman filter provides the likelihood for a linear, Gaussian model.
+    The extended Kalman filter employs a local linear Gaussian approximation which can be used for frequentist inference (via maximization of the resulting quasi-likelihood) or approximate Bayesian inference (by adding the parameters to the state vector).
+    The Yule-Walker equations for ARMA models provide an example of a closed-form method of moments estimator.
+  }
+  \label{tab:methods}
 \end{table}
 
-
-\subsection{The likelihood function and sequential Monte Carlo}\label{sec:pfilter}
+\subsection{The likelihood function and sequential Monte Carlo}
+\label{sec:pfilter}
 
 %%%%  PFILTER PSEUDOCODE
 \begin{algorithm}[ht]
@@ -541,9 +549,11 @@ In \cref{alg:pfilter:systematic} of \cref{alg:pfilter}, systematic resampling (\
 In particular, if all the particle weights are equal then \cref{alg:systematic} has the appropriate behavior of leaving the particles unchanged.
 As pointed out by \citep{douc05}, stratified resampling performs better than multinomial sampling and \cref{alg:systematic} is in practice comparable in performance to stratified resampling and somewhat faster. 
 
+\pagebreak
 
 %%% ITERATED FILTERING
-\subsection{Iterated filtering}\label{sec:mif}
+\subsection{Iterated filtering}
+\label{sec:mif}
 
 % MIF PSEUDOCODE
 \begin{algorithm}[h]
@@ -631,7 +641,8 @@ Searching the parameter space using time-varying parameters is inefficient in th
 This approach has been used in a variety of previously proposed POMP methodologies \citep{kitagawa98,janeliu01,wan00} but iterated filtering is distinguished by having theoretical justification for convergence to the maximum likelihood estimate \citep{ionides11}.
 
 
-\subsection{Particle Markov chain Monte Carlo}\label{sec:pmcmc}
+\subsection{Particle Markov chain Monte Carlo}
+\label{sec:pmcmc}
 
 %% PMCMC PSEUDOCODE
 \begin{algorithm}[h]
@@ -680,7 +691,8 @@ PMMH is implemented in \code{pmcmc}, as described in \cref{alg:pmcmc}.
 In part because it gains only a single likelihood evaluation from each particle-filtering operation, PMCMC can be computationally relatively inefficient \citep{bhadra10,ionides15}.
 Nevertheless, its invention introduced the possibility of full-information plug-and-play Bayesian inferences in some situations where they had been unavailable.
 
-\subsection{Synthetic likelihood of summary statistics}\label{sec:probe}
+\subsection{Synthetic likelihood of summary statistics}
+\label{sec:probe}
 
 %%%%% SYNTHETIC LIKELIHOOD EVALUATION ALGORITHM
 \begin{algorithm}
@@ -823,7 +835,8 @@ In the same style as iterated filtering and PMCMC, we assume a Gaussian random w
 the package supports alternative choices of proposal distribution.
 
 
-\subsection{Nonlinear forecasting} \label{sec:nlf}
+\subsection{Nonlinear forecasting}
+\label{sec:nlf}
 
 %%%%% NLF QUASI LIKELIHOOD ALGORITHM %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{algorithm}[h]
@@ -904,9 +917,12 @@ However, some common components to model simulators, such as \code{rnbinom}, mak
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Model construction and data analysis: simple examples} \label{sec:examples}
+%% \clearpage
+\section{Model construction and data analysis: Simple examples}
+\label{sec:examples}
 
-\subsection{A first example: the Gompertz model}\label{sec:gompertz:setup}
+\subsection{A first example: The Gompertz model}
+\label{sec:gompertz:setup}
 
 The plug-and-play methods in \pkg{pomp} were designed to facilitate data analysis based on complicated models, but we will first demonstrate the basics of \pkg{pomp} using simple discrete-time models, the Gompertz and Ricker models for population growth \citep{Reddingius1971,Ricker1954}.
 The Ricker model will be introduced in \cref{sec:ricker:setup} and used in \cref{sec:ricker:probe.match}; the remainder of \cref{sec:examples} will use the Gompertz model.
@@ -1129,7 +1145,8 @@ One can reduce this error by using a larger number of particles and/or by re-run
 The latter approach has the advantage of allowing one to estimate the Monte Carlo error itself;
 we will demonstrate this in \cref{sec:gompertz:mif}.
 
-\subsection{Maximum likelihood estimation via iterated filtering}\label{sec:gompertz:mif}
+\subsection{Maximum likelihood estimation via iterated filtering}
+\label{sec:gompertz:mif}
 
 Let us use the iterated filtering approach described in \cref{sec:mif} to obtain an approximate maximum likelihood estimate for the data in \code{gompertz}.
 Since the parameters of \cref{eq:gompertz1,eq:gompertz-obs} are constrained to be positive, when estimating, we transform them to a scale on which they are unconstrained.
@@ -1283,6 +1300,16 @@ Usually, the last row and column of \cref{tab:gompertz-multi-mif-table} would no
 In this case, we see that the \code{mif} procedure is successfully maximizing the likelihood up to an error of about 0.1 log units.
 
 \begin{table}
+  \begin{center}
+    <<gompertz-multi-mif-table,echo=F,results="asis">>=
+    require(xtable)
+    options(
+    xtable.sanitize.text.function=function(x)x,
+    xtable.floating=FALSE
+    )
+    print(xtable(results.table,align="r|cccccc",digits=c(0,4,4,4,2,2,2)))
+    @
+  \end{center}
   \caption{
     Results of estimating parameters $r$, $\sigma$, and $\tau$ of the Gompertz model (\cref{eq:gompertz1,eq:gompertz-obs}) by maximum likelihood using iterated filtering (\cref{alg:mif}), compared with the exact MLE and with the true value of the parameter.
     The first three columns show the estimated values of the three parameters.
@@ -1293,20 +1320,11 @@ In this case, we see that the \code{mif} procedure is successfully maximizing th
     In this example, the \code{mif} MLE is close to the exact MLE, so it is reasonable to expect that profile likelihood confidence intervals and likelihood ratio tests constructed using the \code{mif} MLE have statistical properties similar to those based on the exact MLE.
     \label{tab:gompertz-multi-mif-table}
   }
-  \begin{center}
-<<gompertz-multi-mif-table,echo=F,results="asis">>=
-require(xtable)
-options(
-        xtable.sanitize.text.function=function(x)x,
-        xtable.floating=FALSE
-        )
-print(xtable(results.table,align="r|cccccc",digits=c(0,4,4,4,2,2,2)))
-@
-  \end{center}
 \end{table}
 
 
-\subsection{Full-information Bayesian inference via PMCMC}\label{sec:gompertz:pmcmc}
+\subsection{Full-information Bayesian inference via PMCMC}
+\label{sec:gompertz:pmcmc}
 
 To carry out Bayesian inference we need to specify a prior distribution on unknown parameters.
 The \code{pomp} constructor function provides the \code{rprior} and \code{dprior} arguments, which can be filled with functions that simulate from and evaluate the prior density, respectively.
@@ -1315,7 +1333,7 @@ Methods based on random-walk Metropolis-Hastings require evaluation of the prior
 <<gompertz-dprior1,tidy=F>>=
 hyperparams <- list(min = coef(gompertz)/10, max = coef(gompertz) * 10)
 @
-<<gompertz-dprior2>>=
+<<gompertz-dprior2,tidy=FALSE>>=
 gompertz.dprior <- function (params, ..., log) {
   f <- sum(dunif(params, min = hyperparams$min, max = hyperparams$max,
                  log = TRUE))
@@ -1373,7 +1391,7 @@ pmcmc.traces <- window(pmcmc.traces,start=20001,thin=40)
 ess.pmcmc <- effectiveSize(pmcmc.traces)
 rm(pmcmc1,save.seed,tic,toc)
 })
-<<pmcmc-diagnostics,results="hide",fig.show="hide",echo=F>>=
+<<pmcmc-diagnostics,results="hide",fig.show="hide",echo=F,eval=F>>=
 gelman.diag(pmcmc.traces)
 gelman.plot(pmcmc.traces)
 autocorr.plot(pmcmc.traces[[1]])
@@ -1414,7 +1432,8 @@ However, in practice, multiple runs from a range of starting points is always go
 To verify the convergence of the approach or to compare the performance with other approaches, we can use diagnostic plots produced by the \code{plot} command (see \cref{fig:pmcmc-plot}).
 
 
-\subsection{A second example: the Ricker model}\label{sec:ricker:setup}
+\subsection{A second example: The Ricker model}
+\label{sec:ricker:setup}
 
 In \cref{sec:ricker:probe.match}, we will illustrate probe matching (\cref{sec:probe}) using a stochastic version of the Ricker map \citep{Ricker1954}.
 We switch models to allow direct comparison with \citet{wood10}, whose synthetic likelihood computations are reproduced below.
@@ -1459,14 +1478,12 @@ par.trans <- "
    Tr = exp(r);
    Tsigma = exp(sigma);
    Tphi = exp(phi);
-   TN_0 = exp(N_0);
-"
+   TN_0 = exp(N_0);"
 par.inv.trans <- "
    Tr = log(r);
    Tsigma = log(sigma);
    Tphi = log(phi);
-   TN_0 = log(N_0);
-"
+   TN_0 = log(N_0);"
 @
 Note that in the foregoing \proglang{C} snippets, the prefix \code{T} designates the transformed version of the parameter.
 A full set of rules for using \code{Csnippet}s, including illustrative examples, is given in the package help system (\code{?Csnippet}).
@@ -1491,7 +1508,8 @@ dat2 <- as.data.frame(ricker)
 stopifnot(all.equal(dat1[c("time","y")],dat2[c("time","y")]))
 @
 
-\subsection{Feature-based synthetic likelihood maximization}\label{sec:ricker:probe.match}
+\subsection{Feature-based synthetic likelihood maximization}
+\label{sec:ricker:probe.match}
 
 In \pkg{pomp}, probes are simply functions that can be applied to an array of real or simulated data to yield a scalar or vector quantity.
 Several functions that create useful probes are included with the package, including those recommended by \citet{wood10}.
@@ -1578,10 +1596,10 @@ While \code{probe.match} provides substantial flexibility in choice of optimizat
 By way of putting the synthetic likelihood in context, let us compare the results of estimating the Ricker model parameters using probe-matching and using iterated filtering (IF), which is based on likelihood.
 The following code runs 600 IF iterations starting at \code{guess}:
 <<ricker-mif-calc,eval=FALSE,tidy=FALSE>>=
-mf <- mif(ricker,start=guess,Nmif=100,Np=1000,transform=TRUE,
-          cooling.fraction=0.95^50,var.factor=2,ic.lag=3,
-          rw.sd=c(r=0.1,sigma=0.1,phi=0.1),max.fail=50)
-mf <- continue(mf,Nmif=500,max.fail=20)
+mf <- mif(ricker, start = guess, Nmif = 100, Np = 1000, transform = TRUE,
+          cooling.fraction = 0.95^50, var.factor = 2, ic.lag = 3,
+          rw.sd=c(r = 0.1, sigma = 0.1, phi = 0.1), max.fail = 50)
+mf <- continue(mf, Nmif = 500, max.fail = 20)
 <<ricker-mif-eval,echo=F,eval=T,cache=F,results="hide">>=
 bake("ricker-mif.rda",{
   save.seed <- .Random.seed
@@ -1636,6 +1654,15 @@ bake("ricker-comparison.rda",{
 })
 @
 \begin{table}
+  \begin{center}
+<<ricker-comparison-show,echo=F,results="asis">>=
+require(xtable)
+colnames(comp) <- c("$r$","$\\sigma$","$\\phi$",
+                    "$\\loglikMC$","s.e.($\\loglikMC$)",
+                    "$\\synloglikMC$","s.e.($\\synloglikMC$)")
+print(xtable(comp,align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
+@
+  \end{center}
   \caption{\label{tab:ricker-comparison}
     Parameter estimation by means of maximum synthetic likelihood (\cref{alg:probe}) vs.\ by means of maximum likelihood via iterated filtering (\cref{alg:mif}).
     The row labeled ``guess'' contains the point at which both algorithms were initialized.
@@ -1647,18 +1674,10 @@ bake("ricker-comparison.rda",{
     While likelihood maximization results in an estimate for which both $\loglikMC$ and $\synloglikMC$ exceed their values at the truth,
     the value of $\loglikMC$ at the MSLE is smaller than at the truth, an indication of the relative statistical inefficiency of maximum synthetic likelihood.
   }
-  \begin{center}
-<<ricker-comparison-show,echo=F,results="asis">>=
-require(xtable)
-colnames(comp) <- c("$r$","$\\sigma$","$\\phi$",
-                    "$\\loglikMC$","s.e.($\\loglikMC$)",
-                    "$\\synloglikMC$","s.e.($\\synloglikMC$)")
-print(xtable(comp,align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
-@
-  \end{center}
 \end{table}
 
-\subsection{Bayesian feature matching via ABC} \label{sec:gompertz:abc}
+\subsection{Bayesian feature matching via ABC}
+\label{sec:gompertz:abc}
 
 Whereas synthetic likelihood carries out many simulations for each likelihood estimation, ABC (as described in \cref{sec:abc}) uses only one.
 Each iteration of ABC is therefore much quicker, essentially corresponding to the cost of SMC with a single particle or synthetic likelihood with a single simulation.
@@ -1776,7 +1795,8 @@ However, one should be aware of the possibility of losing substantial amounts of
 Despite this loss of statistical efficiency, points~B\ref{whyFeature1}--B\ref{whyFeature5} of \cref{sec:probe} identify situations in which ABC may be the only practical method available for Bayesian inference.
 
 
-\subsection{Parameter estimation by simulated quasi-likelihood}\label{sec:gompertz:nlf}
+\subsection{Parameter estimation by simulated quasi-likelihood}
+\label{sec:gompertz:nlf}
 
 Within the \pkg{pomp} environment, it is fairly easy to try a quick comparison to see how \code{nlf} (\cref{sec:nlf}) compares with \code{mif} (\cref{sec:mif}) on the Gompertz model.
 Carrying out a simulation study with a correctly specified POMP model is appropriate for assessing computational and statistical efficiency, but does not contribute to the debate on the role of two-step prediction criteria to fit misspecified models \citep{xia11,ionides11-statSci}.
@@ -1935,7 +1955,7 @@ It is hard to ensure a fair comparison between methods, and in practice there is
 If the motivation for using NLF is preference for 2-step prediction in place of the likelihood, a comparison with SMC-based likelihood evaluation and maximization is useful to inform the user of the consequences of that preference.
 
 
-\section{A more complex example: epidemics in continuous time}
+\section{A more complex example: Epidemics in continuous time}
 \label{sec:EpidemicModel}
 
 \begin{figure}
@@ -1983,7 +2003,7 @@ If the motivation for using NLF is preference for 2-step prediction in place of 
   \label{fig:SIR}
 \end{figure}
 
-\subsection{A stochastic, seasonal SIR model.}
+\subsection{A stochastic, seasonal SIR model}
 
 A mainstay of theoretical epidemiology, the SIR model describes the progress of a contagious, immunizing infection through a population of hosts \citep{Kermack1927,Anderson1991,Keeling2008a}.
 The hosts are divided into three classes, according to their status vis-{\`a}-vis the infection (\cref{fig:SIR}).
@@ -2179,7 +2199,7 @@ options(ops)
 \end{figure}
 
 \clearpage
-\subsection{Complications: seasonality, imported infections, extra-demographic stochasticity.}
+\subsection{Complications: Seasonality, imported infections, extra-demographic stochasticity}
 
 To illustrate the flexibility afforded by \pkg{pomp}'s plug-and-play methods, let us add a bit of real-world complexity to the simple SIR model.
 We will modify the model to take four facts into account:
@@ -2292,7 +2312,8 @@ options(ops)
   \label{fig:sir2-plot}
 \end{figure}
 
-\section{Conclusion}\label{sec:conclusion}
+\section{Conclusion}
+\label{sec:conclusion}
 
 The \pkg{pomp} package is designed to be both a tool for data analysis based on POMP models and a sound platform for the development of inference algorithms.
 The model specification language provided by \pkg{pomp} is very general.
