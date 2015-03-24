@@ -1,5 +1,5 @@
 year <- sub("-.*", "", meta$Date)
-note <- sprintf("R package version %s", meta$Version)
+note <- sprintf("R package, version %s", meta$Version)
 
 citHeader("To cite the pomp package in publications use:")
 
@@ -24,7 +24,7 @@ citEntry(
 	 url=meta$URL,
 	 textVersion=paste0(
            "A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, B. E. Kendall, M. Lavine, D. Nguyen, D. C. Reuman, H. Wearing, and S. N. Wood"," (",year,") ",
-	   "pomp: Statistical Inference for Partially Observed Markov Processes (R package). ",
-	   meta$URL
+	   "pomp: Statistical Inference for Partially Observed Markov Processes ",
+	   note,". ",meta$URL
 	  )	   
    )		 
