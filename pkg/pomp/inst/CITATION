@@ -1,8 +1,11 @@
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
 citHeader("To cite the pomp package in publications use:")
 
 citEntry(
          entry="Manual",
-         title="pomp: Statistical inference for partially observed Markov processes (R package)",
+         title="{pomp}: {S}tatistical Inference for Partially Observed {M}arkov Processes",
          author=personList(
  	   as.person("Aaron A. King"),
 	   as.person("Edward L. Ionides"),
@@ -16,13 +19,12 @@ citEntry(
 	   as.person("Helen Wearing"),
 	   as.person("Simon N. Wood")
 	   ),	   
-	 year=2014,
-	 url="http://pomp.r-forge.r-rproject.org",
-	 textVersion=paste(
-			   "A. A. King, E. L. Ionides, C. M. Bret\\'o, S. P. Ellner, M. J. Ferrari, B. E. Kendall, M. Lavine, D. Nguyen, D. C. Reuman, H. Wearing, and S. N. Wood",
-			   "pomp: Statistical inference for partially observed Markov processes (R package)",
-			   "http://pomp.r-forge.r-project.org"
-			  )	   
-	 )		 
-
-citFooter("As pomp is continually evolving, you may want to cite its version number. Find it with 'help(package=pomp)'.")
+	 year=year,
+	 note=note,
+	 url=meta$URL,
+	 textVersion=paste0(
+           "A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, B. E. Kendall, M. Lavine, D. Nguyen, D. C. Reuman, H. Wearing, and S. N. Wood"," (",year,") ",
+	   "pomp: Statistical Inference for Partially Observed Markov Processes (R package). ",
+	   meta$URL
+	  )	   
+   )		 
