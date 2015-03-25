@@ -1,9 +1,33 @@
 year <- sub("-.*", "", meta$Date)
-note <- sprintf("R package, version %s", meta$Version)
-
-citHeader("To cite the pomp package in publications use:")
+note1 <- sprintf("R~package, version~%s", meta$Version)
+note2 <- sprintf("(R package, version %s)", meta$Version)
 
 citEntry(
+         header=paste("To cite the",sQuote("pomp"),
+         "package in publications, please use:"),
+         entry="Article",
+         title="Statistical Inference for Partially Observed {M}arkov Processes via the {R} Package {pomp}",
+         author=personList(
+ 	   as.person("Aaron A. King"),
+	   as.person("Dao Nguyen"),
+	   as.person("Edward L. Ionides")
+           ),
+	 year=2015,
+         journal="Journal of Statistical Software",
+         volume="in press",
+#	 number=XX,
+#	 url="http://www.jstatsoft.org/vXX/iXX",
+	 textVersion=paste0(
+           "Aaron A. King, Dao Nguyen, Edward L. Ionides",
+	   " (2015) ",
+           "Statistical Inference for Partially Observed Markov Processes via the R Package pomp. ",
+           "Journal of Statistical Software, in press. "
+#	   "http://www.jstatsoft.org/vXX/iXX"
+	  )	   
+   )		 
+
+citEntry(
+         header="The correct citation of the package itself is:",
          entry="Manual",
          title="{pomp}: {S}tatistical Inference for Partially Observed {M}arkov Processes",
          author=personList(
@@ -20,11 +44,14 @@ citEntry(
 	   as.person("Simon N. Wood")
 	   ),	   
 	 year=year,
-	 note=note,
+	 note=note1,
 	 url=meta$URL,
 	 textVersion=paste0(
            "A. A. King, E. L. Ionides, C. M. Breto, S. P. Ellner, M. J. Ferrari, B. E. Kendall, M. Lavine, D. Nguyen, D. C. Reuman, H. Wearing, and S. N. Wood"," (",year,") ",
 	   "pomp: Statistical Inference for Partially Observed Markov Processes ",
-	   note,". ",meta$URL
+	   note2,". ",meta$URL
 	  )	   
    )		 
+
+citFooter("To obtain these citations in BibTeX format, do ",
+          sQuote("toBibtex(citation(\"pomp\"))"))
