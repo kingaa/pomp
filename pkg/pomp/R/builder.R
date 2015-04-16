@@ -158,7 +158,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
                 command=R.home("bin/R"),
                 args=c("CMD","SHLIB","-o",solib,modelfile),
                 env=cflags,
-                stdout=if (verbose) "" else NULL
+                stdout=if (verbose | .Platform$OS.type=="windows") "" else NULL
                 )
   if (rv!=0)
     stop("cannot compile shared-object library ",sQuote(solib))
