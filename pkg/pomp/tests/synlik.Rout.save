@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,8 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: subplex
-Loading required package: nloptr
 > 
 > pompExample(ou2)
 newly created object(s):
@@ -87,14 +85,14 @@ newly created object(s):
 	Kruskal-Wallis rank sum test
 
 data:  list(loglik.probe, loglik.pfilter)
-Kruskal-Wallis chi-squared = 10.5617, df = 1, p-value = 0.001155
+Kruskal-Wallis chi-squared = 10.562, df = 1, p-value = 0.001155
 
 > wilcox.test(loglik.probe,loglik.pfilter)
 
 	Wilcoxon rank sum test with continuity correction
 
 data:  loglik.probe and loglik.pfilter
-W = 139841, p-value = 0.001155
+W = 139840, p-value = 0.001155
 alternative hypothesis: true location shift is not equal to 0
 
 > ks.test(loglik.pfilter,loglik.probe)
@@ -116,4 +114,4 @@ alternative hypothesis: two-sided
 > 
 > proc.time()
    user  system elapsed 
-  7.286   0.042   7.322 
+  5.628   0.060   5.764 

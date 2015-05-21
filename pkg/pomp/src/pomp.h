@@ -65,7 +65,7 @@ static R_INLINE double expit (double x) {
 // But note that when reulermultinom is called inside a pomp 'rprocess',
 // there is no need to call {Get,Put}RNGState() as this is handled by pomp
 
-static R_INLINE void reulermultinom (int m, double size, double *rate, 
+static R_INLINE void reulermultinom (int m, double size, const double *rate, 
 				     double dt, double *trans) {
   double p = 0.0;
   int j, k;
@@ -114,7 +114,7 @@ static R_INLINE void reulermultinom (int m, double size, double *rate,
 // See '?deulermultinom' and vignettes for more on the Euler-multinomial 
 // distributions.
 
-static R_INLINE double deulermultinom (int m, double size, double *rate, 
+static R_INLINE double deulermultinom (int m, double size, const double *rate, 
 				       double dt, double *trans, int give_log) {
   double p = 0.0;
   double n = 0.0;
@@ -234,8 +234,8 @@ const double *get_pomp_userdata_double (const char *name);
 
 // prototype for stochastic simulation algorithm reaction-rate function, as used by "gillespie.sim":
 typedef double pomp_ssa_rate_fn(int j, double t, const double *x, const double *p,
-				int *stateindex, int *parindex, int *covindex,
-				int ncovar, double *covars);
+				const int *stateindex, const int *parindex, const int *covindex,
+				int ncovar, const double *covars);
 // Description:
 //  on input:
 // j          = integer specifying the number of the reaction whose rate is desired
@@ -283,7 +283,7 @@ typedef void pomp_onestep_sim(double *x, const double *p,
 
 // PROTOTYPE FOR ONE-STEP LOG PROBABILITY DENSITY FUNCTION, AS USED BY "ONESTEP.DENS":
 typedef void pomp_onestep_pdf(double *f, 
-			      double *x1, double *x2, double t1, double t2, const double *p, 
+			      const double *x1, const double *x2, double t1, double t2, const double *p, 
 			      const int *stateindex, const int *parindex, const int *covindex,
 			      int ncovars, const double *covars);
 // Description:
@@ -306,9 +306,9 @@ typedef void pomp_onestep_pdf(double *f,
 // f          = pointer to the probability density (a single scalar)
 
 // prototype for deterministic skeleton evaluation
-typedef void pomp_skeleton (double *f, double *x, double *p, 
-			    int *stateindex, int *parindex, int *covindex, 
-			    int ncovars, double *covars, double t);
+typedef void pomp_skeleton (double *f, const double *x, const double *p, 
+			    const int *stateindex, const int *parindex, const int *covindex, 
+			    int ncovars, const double *covars, double t);
 
 // Description:
 //  on input:
@@ -328,9 +328,9 @@ typedef void pomp_skeleton (double *f, double *x, double *p,
 // f          = pointer to value of the map or vectorfield (a vector of the same length as 'x')
 
 // prototype for measurement model simulation
-typedef void pomp_measure_model_simulator (double *y, double *x, double *p, 
-					   int *obsindex, int *stateindex, int *parindex, int *covindex,
-					   int ncovars, double *covars, double t);
+typedef void pomp_measure_model_simulator (double *y, const double *x, const double *p, 
+					   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
+					   int ncovars, const double *covars, double t);
 // Description:
 //  on input:
 // x          = pointer to state vector at time t
@@ -356,9 +356,9 @@ typedef void pomp_measure_model_simulator (double *y, double *x, double *p,
 
 
 // prototype for measurement model density evaluator
-typedef void pomp_measure_model_density (double *lik, double *y, double *x, double *p, int give_log,
-					 int *obsindex, int *stateindex, int *parindex, int *covindex,
-					 int ncovars, double *covars, double t);
+typedef void pomp_measure_model_density (double *lik, const double *y, const double *x, const double *p, int give_log,
+					 const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
+					 int ncovars, const double *covars, double t);
 // Description:
 //  on input:
 // y          = pointer to vector of observables at time t
@@ -381,7 +381,7 @@ typedef void pomp_measure_model_density (double *lik, double *y, double *x, doub
 // lik        = pointer to scalar containing (log) likelihood
 
 // prototype for prior simulation
-typedef void pomp_rprior (double *p, int *parindex);
+typedef void pomp_rprior (double *p, const int *parindex);
 // Description:
 //  on input:
 // p          = pointer to parameter vector
@@ -395,7 +395,7 @@ typedef void pomp_rprior (double *p, int *parindex);
 //     Inclusion of these calls in the user-defined function may result in significant slowdown.
 
 // prototype for prior density evaluation
-typedef void pomp_dprior (double *lik, double *p, int give_log, int *parindex);
+typedef void pomp_dprior (double *lik, const double *p, int give_log, const int *parindex);
 // Description:
 //  on input:
 // p          = pointer to parameter vector
@@ -406,6 +406,6 @@ typedef void pomp_dprior (double *lik, double *p, int give_log, int *parindex);
 // lik        = pointer to vector containing likelihoods
 
 // prototype for parameter transformation function.
-typedef void pomp_transform_fn (double *pt, double *p, int *parindex);
+typedef void pomp_transform_fn (double *pt, const double *p, const int *parindex);
 
 #endif
