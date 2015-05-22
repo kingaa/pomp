@@ -27,7 +27,7 @@ citEntry(
    )		 
 
 citEntry(
-         header="The correct citation of the package itself is:",
+         header="Additionally, please cite the package itself:",
          entry="Manual",
          title="{pomp}: {S}tatistical Inference for Partially Observed {M}arkov Processes",
          author=personList(

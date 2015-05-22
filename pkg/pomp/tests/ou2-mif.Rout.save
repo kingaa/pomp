@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,8 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: subplex
-Loading required package: nloptr
 > 
 > pompExample(ou2)
 newly created object(s):
@@ -137,7 +135,7 @@ mif warning: argument 'pars' is redundant and deprecated.  It will be removed in
 +         Np=100,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: 'cooling.fraction' must be specified
+Error : mif error: 'cooling.fraction.50' must be specified
 > 
 > try(
 +     mif(
@@ -279,4 +277,4 @@ Warning messages:
 > 
 > proc.time()
    user  system elapsed 
- 15.232   0.060  15.274 
+ 11.468   0.028  11.712 

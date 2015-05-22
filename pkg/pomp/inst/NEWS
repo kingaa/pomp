@@ -1,5 +1,21 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_4-_1:
+
+        • The ‘mif’ option ‘cooling.fraction’ has been replaced by the
+          more descriptive ‘cooling.fraction.50’.  Recall that this
+          parameter specifies the fraction of random-walk remaining
+          after 50 ‘mif’ iterations.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_3-_6:
+
+        • Fixed bug arising when using ‘pomp’ with ‘Csnippets’ under
+          windows.  Thanks to Hamish McCallum for reporting it.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_3-_3:
+
+        • Improvements to documentation.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_3-_1:
 
         • The optimization packages ‘nloptr’ and ‘subplex’ are no

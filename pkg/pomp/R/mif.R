@@ -13,7 +13,7 @@ setClass(
            var.factor='numeric',
            ic.lag='integer',
            cooling.type='character',
-           cooling.fraction='numeric',
+           cooling.fraction.50='numeric',
            method='character',
            random.walk.sd = 'numeric',
            conv.rec = 'matrix'
@@ -57,7 +57,7 @@ cooling.function <- function (type, perobs, fraction, ntimes) {
          hyperbolic={
            if (fraction>=1)
              stop(
-                  "mif error: ",sQuote("cooling.fraction"),
+                  "mif error: ",sQuote("cooling.fraction.50"),
                   " must be < 1 when cooling.type = ",
                   sQuote("hyperbolic"),
                   call.=FALSE
@@ -86,7 +86,7 @@ mif.internal <- function (object, Nmif,
                           particles,
                           rw.sd,
                           Np, var.factor, ic.lag,
-                          cooling.type, cooling.fraction,
+                          cooling.type, cooling.fraction.50,
                           method,
                           tol, max.fail,
                           verbose, transform, .ndone = 0L,
@@ -206,16 +206,16 @@ mif.internal <- function (object, Nmif,
             )
   }
   
-  if (missing(cooling.fraction))
-    stop("mif error: ",sQuote("cooling.fraction")," must be specified",call.=FALSE)
-  cooling.fraction <- as.numeric(cooling.fraction)
-  if ((length(cooling.fraction)!=1)||(cooling.fraction<0)||(cooling.fraction>1))
-    stop("mif error: ",sQuote("cooling.fraction")," must be a number between 0 and 1",call.=FALSE)
+  if (missing(cooling.fraction.50))
+    stop("mif error: ",sQuote("cooling.fraction.50")," must be specified",call.=FALSE)
+  cooling.fraction.50 <- as.numeric(cooling.fraction.50)
+  if ((length(cooling.fraction.50)!=1)||(cooling.fraction.50<0)||(cooling.fraction.50>1))
+    stop("mif error: ",sQuote("cooling.fraction.50")," must be a number between 0 and 1",call.=FALSE)
   
   cooling <- cooling.function(
                               type=cooling.type,
                               perobs=(method=="mif2"),
-                              fraction=cooling.fraction,
+                              fraction=cooling.fraction.50,
                               ntimes=ntimes
                               )
 
@@ -370,7 +370,7 @@ mif.internal <- function (object, Nmif,
       conv.rec=conv.rec,
       method=method,
       cooling.type=cooling.type,
-      cooling.fraction=cooling.fraction,
+      cooling.fraction.50=cooling.fraction.50,
       paramMatrix=if (method=="mif2") paramMatrix else array(data=numeric(0),dim=c(0,0))
       )
 }
@@ -384,7 +384,7 @@ setMethod(
                     particles, rw.sd,
                     Np, ic.lag, var.factor = 1,
                     cooling.type = c("geometric","hyperbolic"),
-                    cooling.fraction,
+                    cooling.fraction.50,
                     method = c("mif","unweighted","fp","mif2"),
                     tol = 1e-17, max.fail = Inf,
                     verbose = getOption("verbose"),
@@ -434,7 +434,7 @@ setMethod(
                          rw.sd=rw.sd,
                          Np=Np,
                          cooling.type=cooling.type,
-                         cooling.fraction=cooling.fraction,
+                         cooling.fraction.50=cooling.fraction.50,
                          var.factor=var.factor,
                          ic.lag=ic.lag,
                          method=method,
@@ -476,7 +476,7 @@ setMethod(
                     ivps,
                     particles, rw.sd,
                     Np, ic.lag, var.factor,
-                    cooling.type, cooling.fraction,
+                    cooling.type, cooling.fraction.50,
                     method,
                     tol,
                     transform,
@@ -490,7 +490,7 @@ setMethod(
             if (missing(ic.lag)) ic.lag <- object@ic.lag
             if (missing(var.factor)) var.factor <- object@var.factor
             if (missing(cooling.type)) cooling.type <- object@cooling.type
-            if (missing(cooling.fraction)) cooling.fraction <- object@cooling.fraction
+            if (missing(cooling.fraction.50)) cooling.fraction.50 <- object@cooling.fraction.50
             if (missing(method)) method <- object@method
             if (missing(transform)) transform <- object@transform
 
@@ -506,7 +506,7 @@ setMethod(
                 rw.sd=rw.sd,
                 Np=Np,
                 cooling.type=cooling.type,
-                cooling.fraction=cooling.fraction,
+                cooling.fraction.50=cooling.fraction.50,
                 var.factor=var.factor,
                 ic.lag=ic.lag,
                 method=method,

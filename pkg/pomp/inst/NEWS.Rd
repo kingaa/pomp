@@ -1,5 +1,22 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.64-1}{
+  \itemize{
+    \item The \code{mif} option \code{cooling.fraction} has been replaced by the more descriptive \code{cooling.fraction.50}.
+    Recall that this parameter specifies the fraction of random-walk remaining after 50 \code{mif} iterations.
+  }
+}
+\section{Changes in \pkg{pomp} version 0.63-6}{
+  \itemize{
+    \item Fixed bug arising when using \code{pomp} with \code{Csnippets} under windows.
+    Thanks to Hamish McCallum for reporting it.
+  }
+}
+\section{Changes in \pkg{pomp} version 0.63-3}{
+  \itemize{
+    \item Improvements to documentation.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.63-1}{
   \itemize{
     \item The optimization packages \pkg{nloptr} and \pkg{subplex} are no longer dependencies of \pkg{pomp} that will be loaded at the time \pkg{pomp} is.
