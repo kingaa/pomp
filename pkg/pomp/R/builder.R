@@ -312,14 +312,14 @@ undefine <- list(
 header <- list(
                file="/* pomp model file: {%name%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
                registration="\nvoid R_init_{%name%} (DllInfo *info)\n{\n",
-               rmeasure="\nvoid __pomp_rmeasure (double *__y, double *__x, double *__p, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
-               dmeasure= "\nvoid __pomp_dmeasure (double *__lik, double *__y, double *__x, double *__p, int give_log, int *__obsindex, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
+               rmeasure="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
+               dmeasure= "\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
                step.fn="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
-               skeleton="\nvoid __pomp_skelfn (double *__f, double *__x, double *__p, int *__stateindex, int *__parindex, int *__covindex, int __ncovars, double *__covars, double t)\n{\n",
-               parameter.transform="\nvoid __pomp_par_trans (double *__pt, double *__p, int *__parindex)\n{\n",
-               parameter.inv.transform="\nvoid __pomp_par_untrans (double *__pt, double *__p, int *__parindex)\n{\n",
-               rprior="\nvoid __pomp_rprior (double *__p, int *__parindex)\n{\n",
-               dprior="\nvoid __pomp_dprior (double *__lik, double *__p, int give_log, int *__parindex)\n{\n"
+               skeleton="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
+               parameter.transform="\nvoid __pomp_par_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
+               parameter.inv.transform="\nvoid __pomp_par_untrans (double *__pt, const double *__p, const int *__parindex)\n{\n",
+               rprior="\nvoid __pomp_rprior (double *__p, const int *__parindex)\n{\n",
+               dprior="\nvoid __pomp_dprior (double *__lik, const double *__p, int give_log, const int *__parindex)\n{\n"
                )
 
 fnames <- list(
