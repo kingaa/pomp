@@ -2,7 +2,7 @@ Package: pompExamples
 Type: Package
 Title: Additional pomp examples
 Version: 0.27-2
-Date: 2015-05-22
+Date: 2015-05-24
 Maintainer: Aaron A. King <kingaa@umich.edu>
 Authors@R: c(person(given=c("Aaron","A."),family="King",role=c("aut","cre"),
 	   email="kingaa@umich.edu"),
@@ -19,6 +19,7 @@ Description: More 'pomp' examples.
 Depends: R(>= 3.0.0), stats, graphics, pomp(>= 0.58-6)
 Suggests: plyr, reshape2, ggplot2, knitr, markdown
 LinkingTo: pomp
+Additional_repositories: http://r-forge.r-rproject.org
 License: GPL (>= 2)
 LazyData: false
 BuildVignettes: true

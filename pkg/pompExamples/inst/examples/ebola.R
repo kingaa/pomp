@@ -55,7 +55,7 @@ mutate(dat,deaths=NA) -> dat
 
 
 paruntrans <- Csnippet('
-  double *IC = &S_0;
+  const double *IC = &S_0;
   double *TIC = &TS_0;
   TN = log(N);
   TR0 = log(R0);
@@ -68,7 +68,7 @@ paruntrans <- Csnippet('
 ')
 
 partrans <- Csnippet('
-  double *IC = &S_0;
+  const double *IC = &S_0;
   double *TIC = &TS_0;
   TN = exp(N);
   TR0 = exp(R0);
@@ -146,7 +146,7 @@ rSim <- Csnippet('
 
 skel <- Csnippet('
   double lambda, beta;
-  double *E = &E1;
+  const double *E = &E1;
   double *DE = &DE1;
   beta = R0 * gamma; // Transmission rate
   lambda = beta * I / N; // Force of infection
