@@ -892,10 +892,10 @@ pomp(
        approx(x=day,y=y,xout=seq(from=0,to=14,by=1),rule=2)$y
        ),
 #     y.init=c(948, 948, 942, 930, 911, 885, 858, 833.7, 801, 748.3, 676, 589.8, 504, 434.9, 397),
-     parameter.inv.transform=function(params,...) {
+     toEstimationScale=function(params,...) {
        log(params)
      },
-     parameter.transform=function(params,...) {
+     fromEstimationScale=function(params,...) {
        exp(params)
      },
      initializer=function (params, t0, y.init, ...) {

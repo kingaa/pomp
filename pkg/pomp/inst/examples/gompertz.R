@@ -119,10 +119,10 @@ pomp(
      paramnames=c("r","K","sigma","tau"),
      statenames=c("X"),
      obsnames=c("Y"),
-     parameter.transform=function(params,...){
+     fromEstimationScale=function(params,...){
        exp(params)
      },
-     parameter.inv.transform=function(params,...){
+     toEstimationScale=function(params,...){
        log(params)
      }
      ) -> gompertz

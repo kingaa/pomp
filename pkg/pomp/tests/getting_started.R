@@ -1,11 +1,26 @@
+## ----prelims,echo=F,cache=F----------------------------------------------
 require(pomp)
-
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
-  encoding="UTF-8"
+  encoding="UTF-8",
+  scipen=5
   )
+set.seed(588665L)
 
+## ----eval=FALSE----------------------------------------------------------
+## install.packages("pomp",repos="http://R-Forge.R-Project.org")
+
+## ----eval=FALSE----------------------------------------------------------
+## cat("#include <R.h>
+##     void hello (void) {
+##     Rprintf(\"hello world!\\n\");
+##     }",file="hello.c")
+## system("R CMD SHLIB hello.c")
+## dyn.load(paste0("hello",.Platform$dynlib.ext))
+## .C("hello",PACKAGE="hello")
+
+## ----load-parus-data-----------------------------------------------------
 parus.dat <- read.csv(text="
                       year,pop
                       1960,148
@@ -73,6 +88,7 @@ parus <- pomp(parus,dmeasure=dmeas,paramnames="phi",statenames="N")
 
 ## ----logistic-pfilter----------------------------------------------------
 pf <- pfilter(parus,Np=1000,params=c(r=0.2,K=200,phi=0.5,sigma=0.5,N.0=200))
+logLik(pf)
 
 ## ----logistic-skeleton,cache=FALSE---------------------------------------
 skel <- Csnippet("
@@ -107,19 +123,39 @@ traj <- trajectory(parus.bh)
 pf <- pfilter(parus.bh,Np=1000)
 
 ## ----logistic-partrans,cache=FALSE---------------------------------------
-partrans <- Csnippet("
-  Tr = exp(r);
-  TK = exp(K);
-")
-
-parinvtrans <- Csnippet("
+logtrans <- Csnippet("
   Tr = log(r);
   TK = log(K);
 ")
 
-parus <- pomp(parus,parameter.transform=partrans,parameter.inv.transform=parinvtrans,paramnames=c("r","K"))
+exptrans <- Csnippet("
+  Tr = exp(r);
+  TK = exp(K);
+")
+
+parus <- pomp(parus,toEstimationScale=logtrans,
+              fromEstimationScale=exptrans,
+              paramnames=c("r","K"))
 
 ## ----logistic-partrans-test,include=FALSE,cache=FALSE--------------------
 p <- c(r=1,K=200,phi=1,N.0=200,sigma=0.5)
 coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
 stopifnot(all.equal(p,coef(parus)))
+
+## ----parus-traj-match,cache=FALSE----------------------------------------
+tm <- traj.match(parus,start=c(r=1,K=200,phi=1,N.0=200,sigma=0.5),
+                 est=c("r","K","phi"),transform=TRUE)
+signif(coef(tm),3)
+logLik(tm)
+
+## ----parus-tm-sim1,cache=FALSE-------------------------------------------
+coef(tm,"sigma") <- 0
+sim1 <- simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE)
+
+## ----parus-mif,cache=TRUE------------------------------------------------
+mf <- mif(parus,Nmif=50,Np=1000,method="mif2",cooling.fraction=0.8,
+          rw.sd=c(r=0.02,K=0.02,phi=0.02,sigma=0.02),transform=TRUE)
+mf <- mif(mf)
+mle <- coef(mf); mle
+logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
+sim2 <- simulate(mf,nsim=10,as.data.frame=TRUE,include.data=TRUE)

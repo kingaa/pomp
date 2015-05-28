@@ -12,7 +12,7 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
             rmeasure, dmeasure, step.fn, step.fn.delta.t,
             skeleton, skeleton.type = c("map","vectorfield"),
             skelmap.delta.t = 1,
-            parameter.transform, parameter.inv.transform,
+            fromEstimationScale, toEstimationScale,
             rprior, dprior, globals, \dots, save = FALSE)
 }
 \arguments{
@@ -44,10 +44,10 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
     As in \code{\link{pomp}}, \code{skeleton.type} indicates whether the skeleton is a map (discrete-time) or vectorfield (continuous-time).
     If the former, \code{skelmap.delta.t} is the time-step of the map.
   }
-  \item{parameter.transform, parameter.inv.transform}{
+  \item{fromEstimationScale, toEstimationScale}{
     optional C codes that implement parameter transformations.
-    \code{parameter.transform} maps parameters from the estimation scale to the natural scale;
-    \code{parameter.inv.transformation} maps them from the natural scale to the estimation scale.
+    \code{toEstimationScale} maps parameters from the model scale to the estimation scale.
+    \code{fromEstimationScale} maps them from the estimation scale to the model scale;
   }
   \item{rprior, dprior}{
     C codes implementing the prior distribution

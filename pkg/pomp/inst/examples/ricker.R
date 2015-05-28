@@ -69,11 +69,11 @@ pomp(
      paramnames=c("r","sigma","phi"),
      statenames=c("N","e"),
      obsnames=c("y"),
-     parameter.inv.transform=function(params,...) {
+     toEstimationScale=function(params,...) {
        params[c("r","sigma","phi","N.0")] <- log(params[c("r","sigma","phi","N.0")])
        params
      },
-     parameter.transform=function(params,...) {
+     fromEstimationScale=function(params,...) {
        params[c("r","sigma","phi","N.0")] <- exp(params[c("r","sigma","phi","N.0")])
        params
      },

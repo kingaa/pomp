@@ -1150,13 +1150,13 @@ Let us use the iterated filtering approach described in \cref{sec:mif} to obtain
 Since the parameters of \cref{eq:gompertz1,eq:gompertz-obs} are constrained to be positive, when estimating, we transform them to a scale on which they are unconstrained.
 The following encodes such a transformation and its inverse:
 <<gomp4>>=
-gompertz.tf <- function (params, ...) exp(params)
-gompertz.itf <- function (params, ...) log(params)
+gompertz.log.tf <- function (params, ...) log(params)
+gompertz.exp.tf <- function (params, ...) exp(params)
 @
 We add these to the existing \class{pomp} object via:
 <<gompertz-transforms,tidy=F>>=
-gompertz <- pomp(gompertz, parameter.transform = gompertz.tf,
-                 parameter.inv.transform = gompertz.itf)
+gompertz <- pomp(gompertz, toEstimationScale = gompertz.log.tf,
+                 fromEstimationScale = gompertz.exp.tf)
 @
 
 The following codes initialize the iterated filtering algorithm at several starting points around \code{theta.true} and estimate the parameters $r$, $\tau$, and $\sigma$.
@@ -1472,16 +1472,16 @@ Notice that, in these snippets, we never declare the variables;
 
 In a similar fashion, we can add transformations of the parameters to enforce constraints.
 <<ricker-trans,tidy=F>>=
-par.trans <- "
-   Tr = exp(r);
-   Tsigma = exp(sigma);
-   Tphi = exp(phi);
-   TN_0 = exp(N_0);"
-par.inv.trans <- "
+log.trans <- "
    Tr = log(r);
    Tsigma = log(sigma);
    Tphi = log(phi);
    TN_0 = log(N_0);"
+exp.trans <- "
+   Tr = exp(r);
+   Tsigma = exp(sigma);
+   Tphi = exp(phi);
+   TN_0 = exp(N_0);"
 @
 Note that in the foregoing \proglang{C} snippets, the prefix \code{T} designates the transformed version of the parameter.
 A full set of rules for using \code{Csnippet}s, including illustrative examples, is given in the package help system (\code{?Csnippet}).
@@ -1492,8 +1492,8 @@ pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA),
      rprocess = discrete.time.sim(step.fun = Csnippet(ricker.sim),
        delta.t = 1), rmeasure = Csnippet(ricker.rmeas),
      dmeasure = Csnippet(ricker.dmeas),
-     parameter.transform = Csnippet(par.trans),
-     parameter.inv.transform = Csnippet(par.inv.trans),
+     toEstimationScale = Csnippet(log.trans),
+     fromEstimationScale = Csnippet(exp.trans),
      paramnames = c("r", "sigma", "phi", "N.0", "e.0"),
      statenames = c("N", "e"), times = "time", t0 = 0,
      params = c(r = exp(3.8), sigma = 0.3, phi = 10,

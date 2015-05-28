@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,8 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: subplex
-Loading required package: nloptr
 > 
 > pompExample(gompertz)
 newly created object(s):
@@ -41,8 +39,8 @@ newly created object(s):
 > 
 > po <- pomp(
 +            gompertz,
-+            parameter.transform=new.trans,
-+            parameter.inv.transform=new.inv.trans
++            toEstimationScale=new.inv.trans,
++            fromEstimationScale=new.trans
 +            )
 > 
 > coef(po,transform=TRUE) <- new.inv.trans(pars)
@@ -50,6 +48,23 @@ newly created object(s):
 > stopifnot(identical(new.inv.trans(pars),coef(po,transform=TRUE)))
 > stopifnot(max(abs(coef(gompertz)-coef(po,names(coef(gompertz)))))<1e-16)
 > 
+> ## test for backward compatibility
+> po1 <- pomp(
++             gompertz,
++             parameter.transform=new.trans,
++             parameter.inv.transform=new.inv.trans
++             )
+Warning messages:
+1: the 'parameter.transform' argument of 'pomp' is deprecated, and will be removed in a future release.
+Use 'fromEstimationScale' instead. 
+2: the 'parameter.inv.transform' argument of 'pomp' is deprecated, and will be removed in a future release.
+Use 'toEstimationScale' instead. 
+> 
+> coef(po1,transform=TRUE) <- new.inv.trans(pars)
+> 
+> stopifnot(identical(new.inv.trans(pars),coef(po1,transform=TRUE)))
+> stopifnot(identical(coef(po,transform=TRUE),coef(po1,transform=TRUE)))
+> 
 > proc.time()
    user  system elapsed 
-  0.600   0.060   0.678 
+  0.504   0.024   0.526 

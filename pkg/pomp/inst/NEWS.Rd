@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.65-1}{
+  \itemize{
+    \item The unfortunately named \code{pomp} arguments \code{parameter.transform} and \code{parameter.inv.transform} have been deprecated in favor of the more mnemonic \code{toEstimationScale} and \code{fromEstimationScale}.
+    Using the old arguments will result in the same behavior as previously, but a warning will be generated.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.64-1}{
   \itemize{
     \item The \code{mif} option \code{cooling.fraction} has been replaced by the more descriptive \code{cooling.fraction.50}.

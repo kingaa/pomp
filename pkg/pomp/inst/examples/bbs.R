@@ -57,12 +57,12 @@ pomp(
        "S.0","I.0","R.0"
        ),
      logitvar="rho",
-     parameter.inv.transform=function (params, logvar, logitvar, ...) {
+     toEstimationScale=function (params, logvar, logitvar, ...) {
        params[logvar] <- log(params[logvar])
        params[logitvar] <- qlogis(params[logitvar])
        params
      },
-     parameter.transform=function (params, logvar, logitvar, ...) {
+     fromEstimationScale=function (params, logvar, logitvar, ...) {
        params[logvar] <- exp(params[logvar])
        params[logitvar] <- plogis(params[logitvar])
        params

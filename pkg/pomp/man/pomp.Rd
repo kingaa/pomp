@@ -24,24 +24,24 @@
        skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, parameter.transform, parameter.inv.transform, globals)
+       PACKAGE, fromEstimationScale, toEstimationScale, globals)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, parameter.transform, parameter.inv.transform, globals)
+       PACKAGE, fromEstimationScale, toEstimationScale, globals)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, parameter.transform, parameter.inv.transform, globals)
+       PACKAGE, fromEstimationScale, toEstimationScale, globals)
 \S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model, skeleton, skeleton.type, skelmap.delta.t,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, parameter.transform, parameter.inv.transform, globals)
+       PACKAGE, fromEstimationScale, toEstimationScale, globals)
 }
 \arguments{
   \item{data, times}{
@@ -181,11 +181,14 @@
   \item{PACKAGE}{
     An optional string giving the name of the dynamically loaded library in which any native routines are to be found.
   }
-  \item{parameter.transform, parameter.inv.transform}{
+  \item{fromEstimationScale, toEstimationScale}{
     Optional functions specifying parameter transformations.
+    Many algorithms for parameter estimation search an unconstrained space of parameters.
+    When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+    \code{toEstimationScale} and \code{fromEstimationScale} are transformations from the model scale to the estimation scale, and vice versa, respectively.
     These functions must have arguments \code{params} and \code{\dots}.
-    \code{parameter.transform} should transform parameters to the scale that \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, and \code{initializer} will use internally.
-    \code{parameter.inv.transform} should be the inverse of \code{parameter.transform}.
+    \code{toEstimationScale} should transform parameters from the scale that \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, and \code{initializer} use internally to the scale used in estimation.
+    \code{fromEstimationScale} should be the inverse of \code{toEstimationScale}.
     The parameter transformations can be defined (as above) using either \R functions, native routines, or \code{\link{Csnippet}}s.
 
     Note that it is the user's responsibility to make sure that these transformations are mutually inverse.

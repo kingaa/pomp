@@ -27,11 +27,11 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
   // extract the user-defined function
   switch (direc) {
   case 1:			// forward transformation
-    PROTECT(pompfun = GET_SLOT(object,install("par.trans"))); nprotect++;
+    PROTECT(pompfun = GET_SLOT(object,install("from.trans"))); nprotect++;
     PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
     break;
   case -1:			// inverse transformation
-    PROTECT(pompfun = GET_SLOT(object,install("par.untrans"))); nprotect++;
+    PROTECT(pompfun = GET_SLOT(object,install("to.trans"))); nprotect++;
     PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
     break;
   default:

@@ -31,7 +31,7 @@ require(reshape2)
 require(magrittr)
 require(pomp)
 theme_set(theme_bw())
-stopifnot(packageVersion("pomp")>="0.62-2")
+stopifnot(packageVersion("pomp")>="0.65-1")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -195,18 +195,18 @@ traj <- trajectory(parus.bh)
 pf <- pfilter(parus.bh,Np=1000)
 
 ## ----logistic-partrans,cache=FALSE---------------------------------------
-partrans <- Csnippet("
-  Tr = exp(r);
-  TK = exp(K);
-")
-
-parinvtrans <- Csnippet("
+logtrans <- Csnippet("
   Tr = log(r);
   TK = log(K);
 ")
 
-parus <- pomp(parus,parameter.transform=partrans,
-              parameter.inv.transform=parinvtrans,
+exptrans <- Csnippet("
+  Tr = exp(r);
+  TK = exp(K);
+")
+
+parus <- pomp(parus,toEstimationScale=logtrans,
+              fromEstimationScale=exptrans,
               paramnames=c("r","K"))
 
 ## ----logistic-partrans-test,include=FALSE,cache=FALSE--------------------

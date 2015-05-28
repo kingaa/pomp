@@ -1,7 +1,7 @@
 pompCBuilder <- function (name = NULL, dir = NULL,
                           statenames, paramnames, covarnames, obsnames,
                           rmeasure, dmeasure, step.fn, skeleton,
-                          parameter.transform, parameter.inv.transform,
+                          fromEstimationScale, toEstimationScale,
                           rprior, dprior, globals,
                           verbose = getOption("verbose",FALSE))
 {
@@ -65,19 +65,19 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   registry <- c("load_stack_incr","load_stack_decr")
 
   ## parameter transformation function
-  if (!missing(parameter.transform)) {
+  if (!missing(fromEstimationScale)) {
     registry <- c(registry,"par_trans")
-    cat(file=out,render(header$parameter.transform,name=name))
-    cat(file=out,callable.decl(parameter.transform))
-    cat(file=out,parameter.transform,footer$parameter.transform)
+    cat(file=out,render(header$fromEstimationScale,name=name))
+    cat(file=out,callable.decl(fromEstimationScale))
+    cat(file=out,fromEstimationScale,footer$fromEstimationScale)
   }
 
   ## inverse parameter transformation function
-  if (!missing(parameter.inv.transform)) {
+  if (!missing(toEstimationScale)) {
     registry <- c(registry,"par_untrans")
-    cat(file=out,render(header$parameter.inv.transform,name=name))
-    cat(file=out,callable.decl(parameter.inv.transform))
-    cat(file=out,parameter.inv.transform,footer$parameter.inv.transform)
+    cat(file=out,render(header$toEstimationScale,name=name))
+    cat(file=out,callable.decl(toEstimationScale))
+    cat(file=out,toEstimationScale,footer$toEstimationScale)
   }
 
   ## rmeasure function
@@ -224,7 +224,7 @@ pompBuilder <- function (data, times, t0, name,
                          rmeasure, dmeasure, step.fn, step.fn.delta.t,
                          skeleton, skeleton.type = c("map","vectorfield"),
                          skelmap.delta.t = 1,
-                         parameter.transform, parameter.inv.transform,
+                         fromEstimationScale, toEstimationScale,
                          rprior, dprior,
                          globals, ..., save = FALSE) {
 
@@ -245,8 +245,8 @@ pompBuilder <- function (data, times, t0, name,
   if (missing(statenames)) stop(sQuote("statenames")," must be supplied");
   if (missing(paramnames)) stop(sQuote("paramnames")," must be supplied");
 
-  mpt <- missing(parameter.transform)
-  mpit <- missing(parameter.inv.transform)
+  mpt <- missing(fromEstimationScale)
+  mpit <- missing(toEstimationScale)
   if (xor(mpt,mpit))
     stop("if you supply one transformation function, you must supply its inverse")
 
@@ -260,8 +260,8 @@ pompBuilder <- function (data, times, t0, name,
                dmeasure=dmeasure,
                step.fn=step.fn,
                skeleton=skeleton,
-               parameter.transform=parameter.transform,
-               parameter.inv.transform=parameter.inv.transform,
+               fromEstimationScale=fromEstimationScale,
+               toEstimationScale=toEstimationScale,
                rprior=rprior,
                dprior=dprior,
                globals=globals,
@@ -284,8 +284,8 @@ pompBuilder <- function (data, times, t0, name,
        skeleton=render(fnames$skeleton,name=name),
        skeleton.type=skeleton.type,
        skelmap.delta.t=skelmap.delta.t,
-       parameter.transform=render(fnames$parameter.transform,name=name),
-       parameter.inv.transform=render(fnames$parameter.inv.transform,name=name),
+       fromEstimationScale=render(fnames$fromEstimationScale,name=name),
+       toEstimationScale=render(fnames$toEstimationScale,name=name),
        rprior=render(fnames$rprior,name=name),
        dprior=render(fnames$dprior,name=name),
        PACKAGE=name,
@@ -316,8 +316,8 @@ header <- list(
                dmeasure= "\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
                step.fn="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
                skeleton="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
-               parameter.transform="\nvoid __pomp_par_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
-               parameter.inv.transform="\nvoid __pomp_par_untrans (double *__pt, const double *__p, const int *__parindex)\n{\n",
+               fromEstimationScale="\nvoid __pomp_par_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
+               toEstimationScale="\nvoid __pomp_par_untrans (double *__pt, const double *__p, const int *__parindex)\n{\n",
                rprior="\nvoid __pomp_rprior (double *__p, const int *__parindex)\n{\n",
                dprior="\nvoid __pomp_dprior (double *__lik, const double *__p, int give_log, const int *__parindex)\n{\n"
                )
@@ -327,8 +327,8 @@ fnames <- list(
                dmeasure= "__pomp_dmeasure",
                step.fn="__pomp_stepfn",
                skeleton="__pomp_skelfn",
-               parameter.transform="__pomp_par_trans",
-               parameter.inv.transform="__pomp_par_untrans",
+               fromEstimationScale="__pomp_par_trans",
+               toEstimationScale="__pomp_par_untrans",
                rprior="__pomp_rprior",
                dprior="__pomp_dprior"
                )
@@ -347,8 +347,8 @@ footer <- list(
                dmeasure="\n}\n\n",
                step.fn="\n}\n\n",
                skeleton="\n}\n\n",
-               parameter.transform="\n}\n\n",
-               parameter.inv.transform="\n}\n\n",
+               fromEstimationScale="\n}\n\n",
+               toEstimationScale="\n}\n\n",
                rprior="\n}\n\n",
                dprior="\n}\n\n",
                globals="\n",

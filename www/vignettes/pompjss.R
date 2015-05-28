@@ -209,12 +209,12 @@ loglik.guess <- logLik(pf)
 loglik.guess
 
 ## ----gomp4---------------------------------------------------------------
-gompertz.tf <- function (params, ...) exp(params)
-gompertz.itf <- function (params, ...) log(params)
+gompertz.log.tf <- function (params, ...) log(params)
+gompertz.exp.tf <- function (params, ...) exp(params)
 
 ## ----gompertz-transforms,tidy=F------------------------------------------
-gompertz <- pomp(gompertz, parameter.transform = gompertz.tf,
-                 parameter.inv.transform = gompertz.itf)
+gompertz <- pomp(gompertz, toEstimationScale = gompertz.log.tf,
+                 fromEstimationScale = gompertz.exp.tf)
 
 ## ----gompertz-mif-setup,echo=F,results="hide"----------------------------
 dat1 <- as.data.frame(gompertz)
@@ -462,24 +462,24 @@ ricker.dmeas <- "
 "
 
 ## ----ricker-trans,tidy=F-------------------------------------------------
-par.trans <- "
-   Tr = exp(r);
-   Tsigma = exp(sigma);
-   Tphi = exp(phi);
-   TN_0 = exp(N_0);"
-par.inv.trans <- "
+log.trans <- "
    Tr = log(r);
    Tsigma = log(sigma);
    Tphi = log(phi);
    TN_0 = log(N_0);"
+exp.trans <- "
+   Tr = exp(r);
+   Tsigma = exp(sigma);
+   Tphi = exp(phi);
+   TN_0 = exp(N_0);"
 
 ## ----ricker-pomp,tidy=F--------------------------------------------------
 pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA),
      rprocess = discrete.time.sim(step.fun = Csnippet(ricker.sim),
        delta.t = 1), rmeasure = Csnippet(ricker.rmeas),
      dmeasure = Csnippet(ricker.dmeas),
-     parameter.transform = Csnippet(par.trans),
-     parameter.inv.transform = Csnippet(par.inv.trans),
+     toEstimationScale = Csnippet(log.trans),
+     fromEstimationScale = Csnippet(exp.trans),
      paramnames = c("r", "sigma", "phi", "N.0", "e.0"),
      statenames = c("N", "e"), times = "time", t0 = 0,
      params = c(r = exp(3.8), sigma = 0.3, phi = 10,

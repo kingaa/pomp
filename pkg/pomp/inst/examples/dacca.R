@@ -128,8 +128,8 @@ pomp(
      all.state.names=c("S","I","Rs",paste("R",1:nrstage,sep=''),"M","W","count"),
      comp.names=c("S","I","Rs",paste("R",1:nrstage,sep='')),
      comp.ic.names=c("S.0","I.0","Rs.0",paste("R",1:nrstage,".0",sep='')),
-     parameter.transform="_cholmodel_trans",
-     parameter.inv.transform="_cholmodel_untrans",
+     fromEstimationScale="_cholmodel_trans",
+     toEstimationScale="_cholmodel_untrans",
      initializer = function (params, t0, covars, nrstage, comp.ic.names, comp.names, all.state.names, ...) {
        states <- numeric(length(all.state.names))
        names(states) <- all.state.names
