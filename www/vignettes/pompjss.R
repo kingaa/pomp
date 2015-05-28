@@ -11,7 +11,7 @@ require(plyr)
 require(reshape2)
 require(xtable)
 
-stopifnot(packageVersion("pomp")>="0.63-4")
+stopifnot(packageVersion("pomp")>="0.65-1")
 
 
 ## ----set-opts,include=F,cache=F------------------------------------------
