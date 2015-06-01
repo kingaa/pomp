@@ -68,7 +68,6 @@ pomp(
      skeleton="_ricker_skeleton",
      paramnames=c("r","sigma","phi"),
      statenames=c("N","e"),
-     obsnames=c("y"),
      toEstimationScale=function(params,...) {
        params[c("r","sigma","phi","N.0")] <- log(params[c("r","sigma","phi","N.0")])
        params

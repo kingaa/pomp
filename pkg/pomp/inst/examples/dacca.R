@@ -118,7 +118,6 @@ pomp(
      covar=covartable,
      tcovar='time',
      zeronames = c("M","count"),
-     obsnames = "cholera.deaths",
      statenames = c("S","I","Rs","R1","M","W","count"),
      paramnames = c("tau","gamma","eps","delta","deltaI",
        "log.omega1","sd.beta","beta.trend","log.beta1",

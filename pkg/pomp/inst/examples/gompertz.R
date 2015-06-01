@@ -118,7 +118,6 @@ pomp(
      skeleton="_gompertz_skeleton",
      paramnames=c("r","K","sigma","tau"),
      statenames=c("X"),
-     obsnames=c("Y"),
      fromEstimationScale=function(params,...){
        exp(params)
      },

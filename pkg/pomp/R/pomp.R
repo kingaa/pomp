@@ -25,7 +25,13 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
   
   if (missing(userdata)) userdata <- list()
   added.userdata <- list(...)
-  userdata[names(added.userdata)] <- added.userdata
+  if (length(added.userdata)>0) {
+    message("in ",sQuote("pomp"),
+            ": the following unrecognized argument(s) ",
+            "will be stored for use by user-defined functions: ",
+            paste(sQuote(names(added.userdata)),collapse=","))
+    userdata[names(added.userdata)] <- added.userdata
+  }
 
   ## name of shared object library
   if (missing(PACKAGE)) PACKAGE <- NULL

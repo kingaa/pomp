@@ -115,8 +115,7 @@ rw2 <- pomp(
               y1=rep(0,100),
               y2=rep(0,100)
               ),
-            t0=0,
-            useless=23
+            t0=0
             )
 
 examples <- simulate(rw2,params=p)

@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,8 +16,6 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-Loading required package: subplex
-Loading required package: nloptr
 > 
 > pompExample(ou2)
 newly created object(s):
@@ -45,6 +43,7 @@ particle filter log likelihood at truth
   -479.61      0.46 
 > 
 > pompExample(euler.sir)
+in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > pf <- pfilter(euler.sir,Np=100,seed=394343L)
@@ -77,4 +76,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  8.448   0.080   8.699 
+  8.196   0.048   8.417 

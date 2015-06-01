@@ -560,7 +560,6 @@ pomp(
      skeleton="_sir_ODE",
      measurement.model=reports~binom(size=cases,prob=rho),
      PACKAGE="pomp",
-     obsnames = c("reports"),
      statenames=c("S","I","R","N","cases"),
      paramnames=c(
        "gamma","mu","iota",

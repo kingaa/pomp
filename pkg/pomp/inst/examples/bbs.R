@@ -39,7 +39,6 @@ pomp(
      skeleton="_sir_ODE",
      measurement.model=reports~nbinom(mu=rho*cases,size=1/sigma^2),
      PACKAGE="pomp",
-     obsnames = c("reports"),
      statenames=c("S","I","R","cases","W"),
      paramnames=c(
        "gamma","mu","iota",

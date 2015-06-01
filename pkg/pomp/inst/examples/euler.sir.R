@@ -233,7 +233,6 @@ pomp(
      rmeasure="_sir_binom_rmeasure",
      dmeasure="_sir_binom_dmeasure",
      PACKAGE="pomp",
-     obsnames = c("reports"),
      statenames=c("S","I","R","cases","W"),
      paramnames=c(
        "gamma","mu","iota",
