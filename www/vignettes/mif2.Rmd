@@ -9,6 +9,12 @@ bibliography: pomp.bib
 csl: ecology.csl
 ---
 
+Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
+Please share and remix noncommercially, mentioning its origin.  
+![CC-BY_NC](../graphics/cc-by-nc.png)
+
+This document was produced using `pomp` version `r packageVersion("pomp")`.
+
 ```{r options,include=FALSE,cache=FALSE,purl=FALSE}
 library(knitr)
 prefix <- "mif2"
@@ -58,7 +64,7 @@ Iterated filtering is implemented in the `mif` function.
 @Ionides2015 describe an improvement on the original [@Ionides2006] algorithm.
 This "IF2" algorithm is currently implemented by setting the `method="mif2"` option in `mif`.
 
-Let's use iterated filtering to obtain an approximate MLE for the data in the Gompertz model example provided with `pomp`.
+Let's use IF2 to obtain an approximate MLE for the data in the Gompertz model example provided with `pomp`.
 We'll initialize the algorithm at several starting points around `theta.true` and just estimate the parameters $r$, $\tau$, and $\sigma$:
 ```{r gompertz-init,cache=FALSE}
 require(pomp)
