@@ -42,8 +42,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_2-_1
 
         • ‘mif’ now has the default value ‘var.factor=1’.  Since
           ‘var.factor’ has long been a required parameter, this change
-          is backward compatible.  Since ‘var.factor’ has long been a
-          required parameter, this change is backward compatible.
+          is backward compatible.
 
         • The long-deprecated ‘cooling.factor’ option to ‘mif’ has now
           been removed.
