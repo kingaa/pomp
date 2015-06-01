@@ -1,36 +1,5 @@
-## ----opts,include=FALSE--------------------------------------------------
-library(knitr)
-prefix <- "getting-started"
-opts_chunk$set(
-  progress=TRUE,
-  prompt=FALSE,tidy=FALSE,highlight=TRUE,
-  strip.white=TRUE,
-  warning=FALSE,
-  message=FALSE,
-  error=FALSE,
-  echo=TRUE,
-  cache=TRUE,
-  results='markup',
-  fig.show='asis',
-  size='small',
-  fig.lp="fig:",
-  fig.path=paste0("figure/",prefix,"-"),
-  cache.path=paste0("cache/",prefix,"-"),
-  fig.pos="h!",
-  fig.align='center',
-  fig.height=4,fig.width=6.83,
-  dpi=300,
-  dev='png',
-  dev.args=list(bg='transparent')
-  )
-
-## ----prelims,echo=F,cache=F----------------------------------------------
-require(ggplot2)
-require(plyr)
-require(reshape2)
-require(magrittr)
+## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 require(pomp)
-theme_set(theme_bw())
 stopifnot(packageVersion("pomp")>="0.65-1")
 options(
   keep.source=TRUE,
@@ -47,6 +16,13 @@ registerDoMC()
 set.seed(594709947L,kind="L'Ecuyer")
 mcopts <- list(set.seed=TRUE)
 paropts <- list(.options.multicore=mcopts)
+
+## ----prelims2,echo=FALSE,cache=FALSE-------------------------------------
+require(ggplot2)
+require(plyr)
+require(reshape2)
+require(magrittr)
+theme_set(theme_bw())
 
 ## ----eval=FALSE----------------------------------------------------------
 ## install.packages("pomp",repos="http://R-Forge.R-Project.org")

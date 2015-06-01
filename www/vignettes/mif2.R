@@ -1,34 +1,10 @@
-## ----options,include=FALSE,cache=FALSE-----------------------------------
-library(knitr)
-prefix <- "mif2"
-opts_chunk$set(
-  progress=TRUE,
-  prompt=FALSE,tidy=FALSE,highlight=TRUE,
-  strip.white=TRUE,
-  warning=FALSE,
-  message=FALSE,
-  error=FALSE,
-  echo=TRUE,
-  cache=TRUE,
-  results='markup',
-  fig.show='asis',
-  size='small',
-  fig.lp="fig:",
-  fig.path=paste0("figure/",prefix,"-"),
-  cache.path=paste0("cache/",prefix,"-"),
-  fig.pos="h!",
-  fig.align='center',
-  fig.height=4,fig.width=6.83,
-  dpi=300,
-  dev='png',
-  dev.args=list(bg='transparent')
-  )
+## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 require(ggplot2)
 require(plyr)
 require(reshape2)
 require(magrittr)
-require(pomp)
 theme_set(theme_bw())
+require(pomp)
 stopifnot(packageVersion("pomp")>="0.63-1")
 options(
   keep.source=TRUE,
@@ -83,13 +59,7 @@ mf <- foreach(i=1:10,
     list(mif=m1,ll=ll)
     }
 
-rbind(
-  mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif,2)),
-  truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true,2))
-  ) -> results.table
-
 ## ----gompertz-post-mif2--------------------------------------------------
-theta.true <- coef(gompertz)
 loglik.true <- replicate(n=10,logLik(pfilter(gompertz,Np=10000)))
 loglik.true <- logmeanexp(loglik.true,se=TRUE)
 theta.mif <- t(sapply(mf,function(x)coef(x$mif)))
@@ -97,8 +67,12 @@ loglik.mif <- t(sapply(mf,function(x)logmeanexp(x$ll,se=TRUE)))
 best <- which.max(loglik.mif[,1])
 theta.mif <- theta.mif[best,]
 loglik.mif <- loglik.mif[best,]
+rbind(
+  mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif,2)),
+  truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true,2))
+  ) -> results.table
 
-## ----mif2-plot,echo=FALSE,cache=FALSE------------------------------------
+## ----mif2-plot,echo=FALSE,cache=FALSE,fig.height=6-----------------------
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
 log.r <- sapply(mf,function(x)conv.rec(x$mif,"r"))

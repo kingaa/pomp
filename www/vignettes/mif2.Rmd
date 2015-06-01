@@ -9,7 +9,7 @@ bibliography: pomp.bib
 csl: ecology.csl
 ---
 
-```{r options,include=FALSE,cache=FALSE}
+```{r options,include=FALSE,cache=FALSE,purl=FALSE}
 library(knitr)
 prefix <- "mif2"
 opts_chunk$set(
@@ -34,12 +34,14 @@ opts_chunk$set(
   dev='png',
   dev.args=list(bg='transparent')
   )
+```
+```{r prelims,echo=FALSE,cache=FALSE}
 require(ggplot2)
 require(plyr)
 require(reshape2)
 require(magrittr)
-require(pomp)
 theme_set(theme_bw())
+require(pomp)
 stopifnot(packageVersion("pomp")>="0.63-1")
 options(
   keep.source=TRUE,
