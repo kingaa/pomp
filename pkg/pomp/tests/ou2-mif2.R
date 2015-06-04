@@ -108,18 +108,16 @@ guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.5*guess1[c('x1.0','x2.0','alph
 guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 
 m1 <- pomp:::mif2(ou2,Nmif=100,start=guess1,Np=1000,
-                  rw.sd=pomp:::mif2.sd(
-                    x1.0=pomp:::ivphypcool(0.5,0.05),
-                    x2.0=pomp:::ivphypcool(0.5,0.05),
-                    alpha.2=pomp:::hypcool(0.1,0.05,ntimes=100),
-                    alpha.3=pomp:::hypcool(0.1,0.05,ntimes=100)))
+                  cooling.type="hyperbolic",cooling.fraction.50=0.05,
+                  rw.sd=pomp:::rw.sd(
+                    x1.0=ivp(0.5),x2.0=ivp(0.5),
+                    alpha.2=0.1,alpha.3=0.1))
 
 m2 <- pomp:::mif2(ou2,Nmif=100,start=guess2,Np=1000,
-                  rw.sd=pomp:::mif2.sd(
-                    x1.0=pomp:::ivphypcool(0.5,0.05),
-                    x2.0=pomp:::ivphypcool(0.5,0.05),
-                    alpha.2=pomp:::hypcool(0.1,0.05,ntimes=100),
-                    alpha.3=pomp:::hypcool(0.1,0.05,ntimes=100)))
+                  cooling.type="hyperbolic",cooling.fraction.50=0.05,
+                  rw.sd=pomp:::rw.sd(
+                    x1.0=ivp(0.5),x2.0=ivp(0.5),
+                    alpha.2=0.1,alpha.3=0.1))
 
 plot(c(m1,m2))
 

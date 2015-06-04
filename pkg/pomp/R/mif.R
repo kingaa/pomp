@@ -37,7 +37,7 @@ default.mif.particles.fun <- function (Np, center, sd, ...) {
          )
 }
 
-mif1.cooling.function <- function (type, perobs, fraction, ntimes) {
+mif.cooling.function <- function (type, perobs, fraction, ntimes) {
   switch(
          type,
          geometric={
@@ -55,13 +55,6 @@ mif1.cooling.function <- function (type, perobs, fraction, ntimes) {
            }
          },
          hyperbolic={
-           if (fraction>=1)
-             stop(
-                  "mif error: ",sQuote("cooling.fraction.50"),
-                  " must be < 1 when cooling.type = ",
-                  sQuote("hyperbolic"),
-                  call.=FALSE
-                  )
            if (perobs) {
              scal <- (50*ntimes*fraction-1)/(1-fraction)
              function (nt, m) {
@@ -93,27 +86,27 @@ mif.internal <- function (object, Nmif,
                           paramMatrix = NULL,
                           .getnativesymbolinfo = TRUE,
                           ...) {
-  
+
   pompLoad(object)
 
   gnsi <- as.logical(.getnativesymbolinfo)
 
   transform <- as.logical(transform)
-  
+
   if (length(start)==0)
     stop(
          "mif error: ",sQuote("start")," must be specified if ",
          sQuote("coef(object)")," is NULL",
          call.=FALSE
          )
-  
+
   if (transform)
     start <- partrans(object,start,dir="toEstimationScale")
-  
+
   start.names <- names(start)
   if (is.null(start.names))
     stop("mif error: ",sQuote("start")," must be a named vector",call.=FALSE)
-  
+
   rw.names <- names(rw.sd)
   if (is.null(rw.names) || any(rw.sd<0))
     stop("mif error: ",sQuote("rw.sd")," must be a named non-negative numerical vector",call.=FALSE)
@@ -122,12 +115,12 @@ mif.internal <- function (object, Nmif,
   rw.names <- names(rw.sd[rw.sd>0])
   if (length(rw.names) == 0)
     stop("mif error: ",sQuote("rw.sd")," must have one positive entry for each parameter to be estimated",call.=FALSE)
-  
+
   if (is.null(pars))
     pars <- rw.names[!(rw.names%in%ivps)]
   else
     warning("mif warning: argument ",sQuote("pars")," is redundant and deprecated.  It will be removed in a future release.",call.=FALSE)
-  
+
   if (
       !is.character(pars) ||
       !is.character(ivps) ||
@@ -147,7 +140,7 @@ mif.internal <- function (object, Nmif,
          sQuote("rw.sd"),
          call.=FALSE
          )
-  
+
   if (!all(rw.names%in%c(pars,ivps))) {
     extra.rws <- rw.names[!(rw.names%in%c(pars,ivps))]
     warning(
@@ -164,7 +157,7 @@ mif.internal <- function (object, Nmif,
   }
   rw.sd <- rw.sd[c(pars,ivps)]
   rw.names <- names(rw.sd)
-  
+
   ntimes <- length(time(object))
   if (is.null(Np)) stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
   if (is.function(Np)) {
@@ -184,7 +177,7 @@ mif.internal <- function (object, Nmif,
   if (!is.numeric(Np))
     stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
   Np <- as.integer(Np)
-  
+
   ic.lag <- as.integer(ic.lag)
   if ((length(ic.lag)!=1)||(ic.lag<1))
     stop("mif error: ",sQuote("ic.lag")," must be a positive integer",call.=FALSE)
@@ -205,40 +198,40 @@ mif.internal <- function (object, Nmif,
             call.=FALSE
             )
   }
-  
+
   if (missing(cooling.fraction.50))
     stop("mif error: ",sQuote("cooling.fraction.50")," must be specified",call.=FALSE)
   cooling.fraction.50 <- as.numeric(cooling.fraction.50)
   if ((length(cooling.fraction.50)!=1)||(cooling.fraction.50<0)||(cooling.fraction.50>1))
     stop("mif error: ",sQuote("cooling.fraction.50")," must be a number between 0 and 1",call.=FALSE)
-  
-  cooling <- mif1.cooling.function(
-                                   type=cooling.type,
-                                   perobs=(method=="mif2"),
-                                   fraction=cooling.fraction.50,
-                                   ntimes=ntimes
-                                   )
+
+  cooling <- mif.cooling.function(
+                                  type=cooling.type,
+                                  perobs=(method=="mif2"),
+                                  fraction=cooling.fraction.50,
+                                  ntimes=ntimes
+                                  )
 
   if ((method=="mif2")&&(Np[1L]!=Np[ntimes+1]))
     stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"))
-  
+
   if ((length(var.factor)!=1)||(var.factor < 0))
     stop("mif error: ",sQuote("var.factor")," must be a positive number",call.=FALSE)
-  
+
   Nmif <- as.integer(Nmif)
   if (Nmif<0)
     stop("mif error: ",sQuote("Nmif")," must be a positive integer",call.=FALSE)
 
   theta <- start
-  
+
   sigma <- rep(0,length(start))
   names(sigma) <- start.names
-  
+
   rw.sd <- rw.sd[c(pars,ivps)]
   rw.names <- names(rw.sd)
-  
+
   sigma[rw.names] <- rw.sd
-  
+
   conv.rec <- matrix(
                      data=NA,
                      nrow=Nmif+1,
@@ -249,7 +242,7 @@ mif.internal <- function (object, Nmif,
                        )
                      )
   conv.rec[1L,] <- c(NA,NA,theta)
-  
+
   if (!all(is.finite(theta[c(pars,ivps)]))) {
     stop(
          sQuote("mif")," cannot estimate non-finite parameters.\n",
@@ -261,15 +254,15 @@ mif.internal <- function (object, Nmif,
          call.=FALSE
          )
   }
-  
+
   obj <- as(object,"pomp")
-  
+
   if (Nmif>0) {
     tmp.mif <- new("mif",object,particles=particles,Np=Np[1L])
   } else {
     pfp <- obj
   }
-  
+
   have.parmat <- !(is.null(paramMatrix) || length(paramMatrix)==0)
 
   for (n in seq_len(Nmif)) { ## iterate the filtering
@@ -277,7 +270,7 @@ mif.internal <- function (object, Nmif,
     ## get the intensity of artificial noise from the cooling schedule
     cool.sched <- cooling(nt=1,m=.ndone+n)
     sigma.n <- sigma*cool.sched$alpha
-    
+
     ## initialize the parameter portions of the particles
     P <- try(
              particles(
@@ -288,7 +281,7 @@ mif.internal <- function (object, Nmif,
                        ),
              silent = FALSE
              )
-    if (inherits(P,"try-error")) 
+    if (inherits(P,"try-error"))
       stop("mif error: error in ",sQuote("particles"),call.=FALSE)
 
     if ((method=="mif2") && ((n>1) || have.parmat)) {
@@ -299,7 +292,7 @@ mif.internal <- function (object, Nmif,
     pfp <- try(
                pfilter.internal(
                                 object=obj,
-                                params=P, 
+                                params=P,
                                 Np=Np,
                                 tol=tol,
                                 max.fail=max.fail,
@@ -311,18 +304,18 @@ mif.internal <- function (object, Nmif,
                                 .mif2=(method=="mif2"),
                                 .rw.sd=sigma.n[pars],
                                 .transform=transform,
-                                save.states=FALSE, 
+                                save.states=FALSE,
                                 save.params=FALSE,
                                 verbose=verbose,
                                 .getnativesymbolinfo=gnsi
                                 ),
                silent=FALSE
                )
-    if (inherits(pfp,"try-error")) 
+    if (inherits(pfp,"try-error"))
       stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
 
     gnsi <- FALSE
-    
+
     ## update parameters
     switch(
            method,
@@ -344,14 +337,14 @@ mif.internal <- function (object, Nmif,
     theta[ivps] <- pfp@filter.mean[ivps,ic.lag]
     conv.rec[n+1,-c(1,2)] <- theta
     conv.rec[n,c(1,2)] <- c(pfp@loglik,pfp@nfail)
-    
+
     if (verbose) cat("MIF iteration ",n," of ",Nmif," completed\n")
-    
+
   } ### end of main loop
 
   ## back transform the parameter estimate if necessary
   if (transform) theta <- partrans(pfp,theta,dir="fromEstimationScale")
-  
+
   pompUnload(object)
 
   new(
@@ -390,9 +383,9 @@ setMethod(
                     verbose = getOption("verbose"),
                     transform = FALSE,
                     ...) {
-            
+
             method <- match.arg(method)
-            
+
             if (missing(start)) start <- coef(object)
             if (missing(rw.sd))
               stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
@@ -410,7 +403,7 @@ setMethod(
               stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
 
             cooling.type <- match.arg(cooling.type)
-            
+
             if (missing(particles)) { # use default: normal distribution
               particles <- default.mif.particles.fun
             } else {
@@ -424,7 +417,7 @@ setMethod(
                      call.=FALSE
                      )
             }
-            
+
             mif.internal(
                          object=object,
                          Nmif=Nmif,
@@ -444,7 +437,7 @@ setMethod(
                          transform=transform,
                          ...
                          )
-            
+
           }
           )
 
@@ -454,10 +447,10 @@ setMethod(
           signature=signature(object="pfilterd.pomp"),
           function (object, Nmif = 1, Np, tol,
                     ...) {
-            
+
             if (missing(Np)) Np <- object@Np
             if (missing(tol)) tol <- object@tol
-            
+
             mif(
                 object=as(object,"pomp"),
                 Nmif=Nmif,
@@ -481,7 +474,7 @@ setMethod(
                     tol,
                     transform,
                     ...) {
-            
+
             if (missing(Nmif)) Nmif <- object@Nmif
             if (missing(start)) start <- coef(object)
             if (missing(ivps)) ivps <- object@ivps
@@ -522,9 +515,9 @@ setMethod(
           signature=signature(object='mif'),
           function (object, Nmif = 1,
                     ...) {
-            
+
             ndone <- object@Nmif
-            
+
             obj <- mif(
                        object=object,
                        Nmif=Nmif,
@@ -532,7 +525,7 @@ setMethod(
                        paramMatrix=object@paramMatrix,
                        ...
                        )
-            
+
             object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1L,c('loglik','nfail')]
             obj@conv.rec <- rbind(
                                   object@conv.rec,
@@ -540,7 +533,7 @@ setMethod(
                                   )
             names(dimnames(obj@conv.rec)) <- c("iteration","variable")
             obj@Nmif <- as.integer(ndone+Nmif)
-            
+
             obj
           }
           )

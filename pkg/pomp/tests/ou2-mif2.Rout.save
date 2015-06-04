@@ -139,32 +139,30 @@ Error in validObject(.Object) :
 > guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 > 
 > m1 <- pomp:::mif2(ou2,Nmif=100,start=guess1,Np=1000,
-+                   rw.sd=pomp:::mif2.sd(
-+                     x1.0=pomp:::ivphypcool(0.5,0.05),
-+                     x2.0=pomp:::ivphypcool(0.5,0.05),
-+                     alpha.2=pomp:::hypcool(0.1,0.05,ntimes=100),
-+                     alpha.3=pomp:::hypcool(0.1,0.05,ntimes=100)))
++                   cooling.type="hyperbolic",cooling.fraction.50=0.05,
++                   rw.sd=pomp:::rw.sd(
++                     x1.0=ivp(0.5),x2.0=ivp(0.5),
++                     alpha.2=0.1,alpha.3=0.1))
 > 
 > m2 <- pomp:::mif2(ou2,Nmif=100,start=guess2,Np=1000,
-+                   rw.sd=pomp:::mif2.sd(
-+                     x1.0=pomp:::ivphypcool(0.5,0.05),
-+                     x2.0=pomp:::ivphypcool(0.5,0.05),
-+                     alpha.2=pomp:::hypcool(0.1,0.05,ntimes=100),
-+                     alpha.3=pomp:::hypcool(0.1,0.05,ntimes=100)))
++                   cooling.type="hyperbolic",cooling.fraction.50=0.05,
++                   rw.sd=pomp:::rw.sd(
++                     x1.0=ivp(0.5),x2.0=ivp(0.5),
++                     alpha.2=0.1,alpha.3=0.1))
 > 
 > plot(c(m1,m2))
 > 
 > rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
 +       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
 +       truth=c(coef(ou2),loglik=logLik(pfilter(m1,Np=1000))))
-      alpha.1    alpha.2  alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau      x1.0
-mle1      0.8 -0.4342775 0.341218     0.9       3    -0.5       2   1 -2.445886
-mle2      0.8 -0.5406991 0.326855     0.9       3    -0.5       2   1 -4.132440
-truth     0.8 -0.5000000 0.300000     0.9       3    -0.5       2   1 -3.000000
-          x2.0    loglik
-mle1  1.897252 -481.8861
-mle2  2.828333 -485.8904
-truth 4.000000 -482.0197
+      alpha.1    alpha.2   alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau
+mle1      0.8 -0.4489983 0.3184109     0.9       3    -0.5       2   1
+mle2      0.8 -0.5080060 0.2439865     0.9       3    -0.5       2   1
+truth     0.8 -0.5000000 0.3000000     0.9       3    -0.5       2   1
+           x1.0     x2.0    loglik
+mle1  -1.442418 1.585629 -481.6106
+mle2  -2.696841 3.157511 -482.3154
+truth -3.000000 4.000000 -481.9939
 > 
 > dev.off()
 null device 
@@ -172,4 +170,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 68.784   0.092  69.269 
+ 70.828   0.064  71.333 
