@@ -75,15 +75,19 @@ rw.sd(\dots)
   \item{rw.sd}{
     specification of the magnitude of the random-walk perturbations that will be applied to some or all model parameters.
     Parameters that are to be estimated should have positive perturbations specified here.
-    The specification is given using the \code{rw.sd} function (see below), which creates a list of unevaluated expressions.
+    The specification is given using the \code{rw.sd} function, which creates a list of unevaluated expressions.
     The latter are evaluated in a context where the model time variable is defined (as \code{time}).
     The expression \code{ivp(s)} can be used in this context as shorthand for \preformatted{ifelse(time==time[1],s,0).}
     Likewise, \code{ivp(s,lag)} is equivalent to \preformatted{ifelse(time==time[lag],s,0).}
     See below for some examples.
+    The perturbations that are applied are normally distributed with the specified s.d.
+    If \code{transform = TRUE}, then they are applied on the estimation scale.
   }
   \item{transform}{
     logical;
     if \code{TRUE}, optimization is performed on the estimation scale, as defined by the user-supplied parameter transformations (see \code{\link{pomp}}).
+    This can be used, for example, to enforce positivity or interval constraints on model parameters.
+    See the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website} for examples.
   }
   \item{cooling.type, cooling.fraction.50}{
     specifications for the cooling schedule, i.e., the manner in which the intensity of the parameter perturbations is reduced with successive filtering iterations.
@@ -114,6 +118,18 @@ rw.sd(\dots)
   This function simply returns a list containing its arguments as unevaluated expressions.
   These are then evaluated in a context containing the model \code{time} variable.
   This allows for easy specification of the structure of the perturbations that are to be applied.
+  For example,
+  \preformatted{
+    rw.sd(a=0.05,
+          b=rep(0.2,length(time)),
+          c=ivp(0.2),
+          d=ifelse(time==time[13],0.2,0),
+	  e=ivp(0.2,lag=13),
+	  f=ifelse(time<23,0.02,0)
+	}
+  results in perturbations of parameter \code{a} with s.d. 0.05 at every time step, while parameters \code{b} and \code{c} both get perturbations of s.d. 0.2 only before the first observation.
+  Parameters \code{d} and \code{e}, by contrast, get perturbations of s.d. 0.2 only before the thirteenth observation.
+  Finally, parameter \code{f} gets a random perturbation of size 0.02 before every observation falling before \eqn{t=23}.
 }
 \section{Re-running \code{mif2} Iterations}{
   To re-run a sequence of \code{mif2} iterations, one can use the \code{mif2} method on a \code{mif2d.pomp} object.
