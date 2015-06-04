@@ -48,7 +48,7 @@ require(reshape2)
 require(magrittr)
 theme_set(theme_bw())
 require(pomp)
-stopifnot(packageVersion("pomp")>="0.65-1")
+stopifnot(packageVersion("pomp")>="0.66-2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -60,12 +60,12 @@ options(
 
 Iterated filtering is a technique for maximizing the likelihood obtained by filtering.
 In `pomp`, it is the particle filter that is iterated.
-Iterated filtering is implemented in the `mif` function.
+The iterated filtering of @Ionides2006 is implemented in the `mif` function.
 @Ionides2015 describe an improvement on the original [@Ionides2006] algorithm.
-This "IF2" algorithm is currently implemented by setting the `method="mif2"` option in `mif`.
+This "IF2" algorithm is implemented in the `mif2` function.
 
-Let's use IF2 to obtain an approximate MLE for the data in the Gompertz model example provided with `pomp`.
-We'll initialize the algorithm at several starting points around `theta.true` and just estimate the parameters $r$, $\tau$, and $\sigma$:
+The following constructs the Gompertz example that is provided with `pomp` (see `?gompertz`) and extracts the parameters at which the data were generated.
+
 ```{r gompertz-init,cache=FALSE}
 require(pomp)
 pompExample(gompertz)
@@ -73,8 +73,8 @@ theta <- coef(gompertz)
 theta.true <- theta
 ```
 
-Note that we've set `transform=TRUE` in the above.
-This means that the likelihood maximization is done on the estimation scale (see the section above on Parameter Transformations).
+Let's use IF2 to obtain an approximate MLE for these data.
+We'll initialize the algorithm at several starting points around `theta.true` and just estimate the parameters $r$, $\tau$, and $\sigma$:
 
 ```{r gompertz-multi-mif2-eval,results='hide'}
 require(foreach)
@@ -96,17 +96,14 @@ mf <- foreach(i=1:10,
       meanlog=log(theta.guess[estpars]),
       sdlog=1
       )
-    m1 <- mif(
+    m1 <- mif2(
       gompertz,
       Nmif=50,
-      method="mif2",
       start=theta.guess,
       transform=TRUE,
-      rw.sd=c(r=0.02,sigma=0.02,tau=0.05),
-      Np=2000,
-      var.factor=2,
-      cooling.type="hyperbolic",
-      cooling.fraction=0.95
+      rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),
+      cooling.fraction.50=0.95,
+      Np=2000
       )
     m1 <- continue(m1,Nmif=50,cooling.fraction=0.8)
     m1 <- continue(m1,Nmif=50,cooling.fraction=0.6)
@@ -115,6 +112,15 @@ mf <- foreach(i=1:10,
     list(mif=m1,ll=ll)
     }
 ```
+
+Note that we've set `transform=TRUE` in the above to search for the MLE with the parameters transformed to enforce their positivity.
+See the `pomp` documentation (`?pomp`) and the section on Parameter Transformations in the [Getting Started vignette](http://pomp.r-forge.r-project.org/vignettes/getting_started.html)).
+
+Each of the `r length(mf)` `mif2` runs ends up at a different point estimate.
+We focus on that with the highest estimated likelihood, having evaluated the likelihood several times to reduce the Monte Carlo error in the likelihood evaluation.
+The particle filter produces an unbiased estimate of the likelihood; 
+therefore, we will average the likelihoods, not the log likelihoods.
+
 ```{r gompertz-post-mif2}
 loglik.true <- replicate(n=10,logLik(pfilter(gompertz,Np=10000)))
 loglik.true <- logmeanexp(loglik.true,se=TRUE)
@@ -129,15 +135,8 @@ rbind(
   ) -> results.table
 ```
 
-Each of the `r length(mf)` `mif` runs ends up at a different place.
-In this case (but by no means in every case), we can average across these parameter estimates to get an approximate maximum likelihood estimate.
-We'll evaluate the likelihood several times at this estimate to get an idea of the Monte Carlo error in our likelihood estimate.
-The particle filter produces an unbiased estimate of the likelihood;
-therefore, we'll average the likelihoods, not the log likelihoods.
-
-
 Convergence plots can be used to help diagnose convergence of the iterated filtering algorithm.
-The following shows part of the output of `plot(mf)`.
+Something like the following can be obtained by executing `plot(mf)`.
 
 ```{r mif2-plot,echo=FALSE,cache=FALSE,fig.height=6}
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
@@ -156,5 +155,6 @@ Here is a summary of the results.
 ```{r first-mif-results-table,echo=FALSE,cache=FALSE}
 print(results.table)
 ```
+The fact that the likelihood at the putative MLE is higher than it is at the truth is evidence that this parameter is actually close to the true MLE.
 
 ## References

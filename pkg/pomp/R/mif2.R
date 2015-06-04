@@ -18,10 +18,13 @@ pkern.sd <- function (rw.sd, time, paramnames) {
   sds <- lapply(rw.sd,eval,envir=list(time=time,ivp=ivp))
   for (n in names(sds)) {
     len <- length(sds[[n]])
-    if (len!=1 && len!=length(time))
+    if (len==1) {
+      sds[[n]] <- rep(sds[[n]],length(time))
+    } else if (len!=length(time)) {
       stop(sQuote("mif2")," error: ",sQuote("rw.sd")," spec for parameter ",
            sQuote(n)," does not evaluate to a vector of the correct length (",
            length(time),")",call.=FALSE)
+    }
   }
   do.call(rbind,sds)
 }

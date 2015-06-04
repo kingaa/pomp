@@ -5,7 +5,7 @@ require(reshape2)
 require(magrittr)
 theme_set(theme_bw())
 require(pomp)
-stopifnot(packageVersion("pomp")>="0.63-1")
+stopifnot(packageVersion("pomp")>="0.66-2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -40,17 +40,14 @@ mf <- foreach(i=1:10,
       meanlog=log(theta.guess[estpars]),
       sdlog=1
       )
-    m1 <- mif(
+    m1 <- mif2(
       gompertz,
       Nmif=50,
-      method="mif2",
       start=theta.guess,
       transform=TRUE,
-      rw.sd=c(r=0.02,sigma=0.02,tau=0.05),
-      Np=2000,
-      var.factor=2,
-      cooling.type="hyperbolic",
-      cooling.fraction=0.95
+      rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),
+      cooling.fraction.50=0.95,
+      Np=2000
       )
     m1 <- continue(m1,Nmif=50,cooling.fraction=0.8)
     m1 <- continue(m1,Nmif=50,cooling.fraction=0.6)
