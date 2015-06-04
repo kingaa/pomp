@@ -48,7 +48,7 @@ require(reshape2)
 require(magrittr)
 theme_set(theme_bw())
 require(pomp)
-stopifnot(packageVersion("pomp")>="0.63-1")
+stopifnot(packageVersion("pomp")>="0.65-1")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
