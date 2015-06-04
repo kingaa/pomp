@@ -40,10 +40,6 @@ setMethod(
           }
           )
 
-
-## extract the estimated log likelihood
-setMethod('logLik','mif',function(object,...)object@loglik)
-
 ## extract the convergence record
 conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
   if (transform) {

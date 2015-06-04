@@ -9,6 +9,7 @@
 \alias{pfilter,pfilterd.pomp-method}
 \alias{pfilter-pfilterd.pomp}
 \alias{pfilterd.pomp-class}
+\alias{pfilterd.pomp}
 \alias{logLik,pfilterd.pomp-method}
 \alias{logLik-pfilterd.pomp}
 \alias{$,pfilterd.pomp-method}

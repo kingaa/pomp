@@ -1,0 +1,201 @@
+\name{Iterated filtering 2}
+\title{IF2: Maximum likelihood by iterated, perturbed Bayes maps}
+\docType{methods}
+\alias{mif2}
+\alias{mif2,mif2d.pomp-method}
+\alias{mif2-mif2d.pomp}
+\alias{mif2,pfilterd.pomp-method}
+\alias{mif2-pfilterd.pomp}
+\alias{mif2,pomp-method}
+\alias{mif2-pomp}
+\alias{continue,mif2d.pomp-method}
+\alias{continue-mif2d.pomp}
+\alias{mif2d.pomp-class}
+\alias{mif2d.pomp-methods}
+\alias{conv.rec,mif2d.pomp-method}
+\alias{conv.rec-mif2d.pomp}
+\alias{conv.rec,mif2List-method}
+\alias{conv.rec-mif2List}
+\alias{plot-mif2d.pomp}
+\alias{plot,mif2d.pomp-method}
+\alias{plot-mif2List}
+\alias{plot,mif2List-method}
+\alias{mif2List-class}
+\alias{c-mif2d.pomp}
+\alias{c,mif2d.pomp-method}
+\alias{c-mif2List}
+\alias{c,mif2List-method}
+\alias{[-mif2List}
+\alias{[,mif2List-method}
+\alias{rw.sd}
+\description{
+  An iterated filtering algorithm for estimating the parameters of a partially-observed Markov process.
+  Running \code{mif2} causes the improved iterated filtering algorithm (IF2) to run for a specified number of particle-filter iterations.
+  At each iteration, the particle filter is performed on a perturbed version of the model.
+  Specifically, parameters to be estimated are subjected to random perturbations at each observation.
+  This extra variability effectively smooths the likelihood surface and introduces diversity into the population of particles to combat depletion.
+  At the iterations progress, the magnitude of the perturbations is diminished according to a user-specified cooling schedule.
+  The algorithm is presented and justified in Ionides et al. (2015).
+}
+\usage{
+\S4method{mif2}{pomp}(object, Nmif = 1, start, Np, rw.sd, transform = FALSE,
+    cooling.type = c("hyperbolic", "geometric"),
+    cooling.fraction.50, tol = 1e-17, max.fail = Inf,
+    verbose = getOption("verbose"), \dots)
+\S4method{mif2}{pfilterd.pomp}(object, Nmif = 1, Np, tol, \dots)
+\S4method{mif2}{mif2d.pomp}(object, Nmif, start, Np, rw.sd,
+    transform, cooling.type, cooling.fraction.50, tol, \dots)
+\S4method{continue}{mif2d.pomp}(object, Nmif = 1, \dots)
+\S4method{conv.rec}{mif2d.pomp}(object, pars, transform = FALSE, \dots)
+\S4method{conv.rec}{mif2List}(object, \dots)
+rw.sd(\dots)
+}
+\arguments{
+  \item{object}{
+    An object of class \code{pomp}.
+  }
+  \item{Nmif}{
+    The number of filtering iterations to perform.
+  }
+  \item{start}{
+    named numerical vector;
+    the starting guess of the parameters.
+    By default, \code{start=coef(object)}.
+  }
+  \item{Np}{
+    the number of particles to use in filtering.
+    This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
+    Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object,t0=TRUE))}) or as a function taking a positive integer argument.
+    In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
+    \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
+    \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
+    and so on, while when \code{T=length(time(object,t0=TRUE))},
+    \code{Np(T)} is the number of particles to sample at the end of the time-series.
+  }
+  \item{rw.sd}{
+    specification of the magnitude of the random-walk perturbations that will be applied to some or all model parameters.
+    Parameters that are to be estimated should have positive perturbations specified here.
+    The specification is given using the \code{rw.sd} function (see below), which creates a list of unevaluated expressions.
+    The latter are evaluated in a context where the model time variable is defined (as \code{time}).
+    The expression \code{ivp(s)} can be used in this context as shorthand for \preformatted{ifelse(time==time[1],s,0).}
+    Likewise, \code{ivp(s,lag)} is equivalent to \preformatted{ifelse(time==time[lag],s,0).}
+    See below for some examples.
+  }
+  \item{transform}{
+    logical;
+    if \code{TRUE}, optimization is performed on the estimation scale, as defined by the user-supplied parameter transformations (see \code{\link{pomp}}).
+  }
+  \item{cooling.type, cooling.fraction.50}{
+    specifications for the cooling schedule, i.e., the manner in which the intensity of the parameter perturbations is reduced with successive filtering iterations.
+    \code{cooling.type} specifies the nature of the cooling schedule.
+
+    When \code{cooling.type="geometric"}, on the n-th \code{mif} iteration, the relative perturbation intensity is \code{cooling.fraction.50^(n/50)}.
+
+    When \code{cooling.type="hyperbolic"}, on the n-th \code{mif} iteration, the relative perturbation intensity is \code{(s+1)/(s+n)}, where \code{(s+1)/(s+50)=cooling.fraction.50}.
+    \code{cooling.fraction.50} is the relative magnitude of the parameter perturbations after 50 \code{mif} iterations.
+  }
+  \item{tol, max.fail}{
+    passed to the particle filter.
+    See the descriptions under \code{\link{pfilter}}.
+  }
+  \item{verbose}{
+    logical; if TRUE, print progress reports.
+  }
+  \item{\dots}{
+    additional arguments that override the defaults.
+  }
+  \item{pars}{names of parameters.}
+}
+\value{
+  Upon successful completion, \code{mif2} returns an object of class \code{mif2d.pomp}.
+  This class inherits from the \code{\link{pfilterd.pomp}} and \code{\link{pomp}} classes.
+}
+\section{The \code{rw.sd} function}{
+  This function simply returns a list containing its arguments as unevaluated expressions.
+  These are then evaluated in a context containing the model \code{time} variable.
+  This allows for easy specification of the structure of the perturbations that are to be applied.
+}
+\section{Re-running \code{mif2} Iterations}{
+  To re-run a sequence of \code{mif2} iterations, one can use the \code{mif2} method on a \code{mif2d.pomp} object.
+  By default, the same parameters used for the original \code{mif2} run are re-used (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
+  If one does specify additional arguments, these will override the defaults.
+}
+\section{Continuing \code{mif2} Iterations}{
+  One can resume a series of \code{mif2} iterations from where one left off using the \code{continue} method.
+  A call to \code{mif2} to perform \code{Nmif=m} iterations followed by a call to \code{continue} to perform \code{Nmif=n} iterations will produce precisely the same effect as a single call to \code{mif2} to perform \code{Nmif=m+n} iterations.
+  By default, all the algorithmic parameters are the same as used in the original call to \code{mif2}.
+  Additional arguments will override these defaults.
+}
+\section{Methods}{
+  Methods that can be used to manipulate, display, or extract information from a \code{mif2d.pomp} object:
+  \describe{
+    \item{conv.rec}{
+      \code{conv.rec(object, pars = NULL)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
+      By default, all rows are returned.
+    }
+    \item{logLik}{
+      Returns the value in the \code{loglik} slot.
+      NB: this is \emph{not} the same as the likelihood of the model at the MLE!
+    }
+    \item{c}{
+      Concatenates \code{mif2d.pomp} objects into a \code{mif2List}.
+    }
+    \item{plot}{
+      Plots a series of diagnostic plots when applied to a \code{mif2d.pomp} or \code{mif2List} object.
+    }
+  }
+}
+\section{Details}{
+  If \code{particles} is not specified, the default behavior is to draw the particles from a multivariate normal distribution.
+  \strong{It is the user's responsibility to ensure that, if the optional \code{particles} argument is given, that the \code{particles} function satisfies the following conditions:}
+
+  \code{particles} has at least the following arguments:
+  \code{Np}, \code{center}, \code{sd}, and \code{\dots}.
+  \code{Np} may be assumed to be a positive integer;
+  \code{center} and \code{sd} will be named vectors of the same length.
+  Additional arguments may be specified;
+  these will be filled with the elements of the \code{userdata} slot of the underlying \code{pomp} object (see \code{\link{pomp}}).
+
+  \code{particles} returns a \code{length(center)} x \code{Np} matrix with rownames matching the names of \code{center} and \code{sd}.
+  Each column represents a distinct particle.
+
+  The center of the particle distribution returned by \code{particles} should be \code{center}.
+  The width of the particle distribution should vary monotonically with \code{sd}.
+  In particular, when \code{sd=0}, the \code{particles} should return matrices with \code{Np} identical columns, each given by the parameters specified in \code{center}.
+}
+\examples{
+\dontrun{
+pompExample(ou2)
+
+guess1 <- guess2 <- coef(ou2)
+guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
+guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
+
+m1 <- mif2(ou2,Nmif=100,start=guess1,Np=1000,
+           cooling.type="hyperbolic",cooling.fraction.50=0.05,
+           rw.sd=rw.sd(x1.0=ivp(0.5),x2.0=ivp(0.5),
+             alpha.2=0.1,alpha.3=0.1))
+
+m2 <- mif2(ou2,Nmif=100,start=guess2,Np=1000,
+           cooling.type="hyperbolic",cooling.fraction.50=0.05,
+           rw.sd=rw.sd(x1.0=ivp(0.5),x2.0=ivp(0.5),
+             alpha.2=0.1,alpha.3=0.1))
+
+plot(c(m1,m2))
+
+rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
+      mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
+      truth=c(coef(ou2),loglik=logLik(pfilter(m1,Np=1000))))
+}
+}
+\references{
+  E. L. Ionides, D. Nguyen, Y. Atchad{\\'e}, S. Stoev, and A. A. King. 
+  Inference for dynamic and latent variable models via iterated, perturbed Bayes maps.
+  Proc. Natl. Acad. Sci. U.S.A., 112:719--724, 2015.
+}
+\author{Aaron A. King \email{kingaa at umich dot edu}, Edward L. Ionides, and Dao Nguyen}
+\seealso{
+  \code{\link{pomp}}, \code{\link{pfilter}}, \code{\link{mif}}, and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+}
+\keyword{optimize}
+\keyword{ts}

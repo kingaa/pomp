@@ -74,6 +74,7 @@ setGeneric('nlf',function(object,...)standardGeneric("nlf"))
 
 ## iterated filtering
 setGeneric('mif',function(object,...)standardGeneric("mif"))
+setGeneric("mif2",function(object,...)standardGeneric("mif2"))
 ## generate new particles
 setGeneric('particles',function(object,...)standardGeneric("particles"))
 

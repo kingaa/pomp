@@ -113,11 +113,12 @@ m1 <- mif2(ou2,Nmif=100,start=guess1,Np=1000,
              x1.0=ivp(0.5),x2.0=ivp(0.5),
              alpha.2=0.1,alpha.3=0.1))
 
-m2 <- mif2(ou2,Nmif=100,start=guess2,Np=1000,
+m2 <- mif2(ou2,Nmif=50,start=guess2,Np=1000,
            cooling.type="hyperbolic",cooling.fraction.50=0.05,
            rw.sd=rw.sd(
              x1.0=ivp(0.5),x2.0=ivp(0.5),
              alpha.2=0.1,alpha.3=0.1))
+m2 <- continue(m2,Nmif=50)
 
 plot(c(m1,m2))
 
