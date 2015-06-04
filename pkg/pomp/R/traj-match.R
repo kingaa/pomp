@@ -42,7 +42,7 @@ tmof.internal <- function (object, params, est, transform, ...) {
   if ((!is.numeric(params))||(is.null(names(params))))
     stop(sQuote("params")," must be a named numeric vector")
   if (transform)
-    params <- partrans(object,params,dir="inverse")
+    params <- partrans(object,params,dir="toEstimationScale")
   par.est.idx <- match(est,names(params))
   if (any(is.na(par.est.idx)))
     stop("parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"))
@@ -51,7 +51,7 @@ tmof.internal <- function (object, params, est, transform, ...) {
     pompLoad(object)
     params[par.est.idx] <- par
     if (transform)
-      tparams <- partrans(object,params,dir="forward")
+      tparams <- partrans(object,params,dir="fromEstimationScale")
     d <- dmeasure(
                   object,
                   y=object@data,

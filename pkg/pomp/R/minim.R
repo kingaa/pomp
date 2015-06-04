@@ -10,10 +10,10 @@ minim.internal <- function(objfun, start, est, object, method, transform, verbos
     stop(sQuote("start")," must be supplied")
 
   if (transform) {
-    start <- partrans(object,start,dir="inverse")
+    start <- partrans(object,start,dir="toEstimationScale")
     if (is.null(names(start))||(!all(est%in%names(start))))
       stop(sQuote("est")," must refer to parameters named in ",
-           sQuote("partrans(object,start,dir=\"inverse\")"))
+           sQuote("partrans(object,start,dir=\"toEstimationScale\")"))
     guess <- start[est]
   } else {
     if (is.null(names(start))||(!all(est%in%names(start))))
@@ -62,7 +62,7 @@ minim.internal <- function(objfun, start, est, object, method, transform, verbos
   }
 
   if (transform)
-    start <- partrans(object,start,dir='forward')
+    start <- partrans(object,start,dir="fromEstimationScale")
   
   pompUnload(object)
 

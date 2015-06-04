@@ -21,7 +21,7 @@ setClass(
          )
 
 
-default.pomp.particles.fun <- function (Np, center, sd, ...) {
+default.mif.particles.fun <- function (Np, center, sd, ...) {
   matrix(
          data=rnorm(
            n=Np*length(center),
@@ -37,7 +37,7 @@ default.pomp.particles.fun <- function (Np, center, sd, ...) {
          )
 }
 
-cooling.function <- function (type, perobs, fraction, ntimes) {
+mif1.cooling.function <- function (type, perobs, fraction, ntimes) {
   switch(
          type,
          geometric={
@@ -108,7 +108,7 @@ mif.internal <- function (object, Nmif,
          )
   
   if (transform)
-    start <- partrans(object,start,dir="inverse")
+    start <- partrans(object,start,dir="toEstimationScale")
   
   start.names <- names(start)
   if (is.null(start.names))
@@ -212,12 +212,12 @@ mif.internal <- function (object, Nmif,
   if ((length(cooling.fraction.50)!=1)||(cooling.fraction.50<0)||(cooling.fraction.50>1))
     stop("mif error: ",sQuote("cooling.fraction.50")," must be a number between 0 and 1",call.=FALSE)
   
-  cooling <- cooling.function(
-                              type=cooling.type,
-                              perobs=(method=="mif2"),
-                              fraction=cooling.fraction.50,
-                              ntimes=ntimes
-                              )
+  cooling <- mif1.cooling.function(
+                                   type=cooling.type,
+                                   perobs=(method=="mif2"),
+                                   fraction=cooling.fraction.50,
+                                   ntimes=ntimes
+                                   )
 
   if ((method=="mif2")&&(Np[1L]!=Np[ntimes+1]))
     stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"))
@@ -350,7 +350,7 @@ mif.internal <- function (object, Nmif,
   } ### end of main loop
 
   ## back transform the parameter estimate if necessary
-  if (transform) theta <- partrans(pfp,theta,dir="forward")
+  if (transform) theta <- partrans(pfp,theta,dir="fromEstimationScale")
   
   pompUnload(object)
 
@@ -412,7 +412,7 @@ setMethod(
             cooling.type <- match.arg(cooling.type)
             
             if (missing(particles)) { # use default: normal distribution
-              particles <- default.pomp.particles.fun
+              particles <- default.mif.particles.fun
             } else {
               particles <- match.fun(particles)
               if (!all(c('Np','center','sd','...')%in%names(formals(particles))))

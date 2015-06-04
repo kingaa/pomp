@@ -47,7 +47,7 @@ bsmc2.internal <- function (object, params, Np, est,
     params <- rprior(object,params=parmat(params,Np))
   
   if (transform)
-    params <- partrans(object,params,dir="inverse",
+    params <- partrans(object,params,dir="toEstimationScale",
                        .getnativesymbolinfo=ptsi.inv)
   ptsi.inv <- FALSE
   
@@ -76,7 +76,7 @@ bsmc2.internal <- function (object, params, Np, est,
   xstart <- init.state(
                        object,
                        params=if (transform) {
-                         partrans(object,params,dir="forward",
+                         partrans(object,params,dir="fromEstimationScale",
                                   .getnativesymbolinfo=ptsi.for)
                        } else {
                          params
@@ -134,7 +134,7 @@ bsmc2.internal <- function (object, params, Np, est,
     params[estind,] <- m[estind,]+t(pert)
 
     if (transform)
-      tparams <- partrans(object,params,dir="forward",
+      tparams <- partrans(object,params,dir="fromEstimationScale",
                           .getnativesymbolinfo=ptsi.for)
     
     xpred <- rprocess(

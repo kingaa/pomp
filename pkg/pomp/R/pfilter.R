@@ -109,7 +109,7 @@ pfilter.internal <- function (object, params, Np,
   x <- init.state(
                   object,
                   params=if (transform) {
-                    partrans(object,params,dir="forward",
+                    partrans(object,params,dir="fromEstimationScale",
                              .getnativesymbolinfo=ptsi.for)
                   } else {
                     params
@@ -210,7 +210,7 @@ pfilter.internal <- function (object, params, Np,
     }
     
     ## transform the parameters if necessary
-    if (transform) tparams <- partrans(object,params,dir="forward",
+    if (transform) tparams <- partrans(object,params,dir="fromEstimationScale",
                                        .getnativesymbolinfo=ptsi.for)
     ptsi.for <- FALSE
     

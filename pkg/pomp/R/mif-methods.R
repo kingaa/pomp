@@ -54,7 +54,7 @@ conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
                       partrans(
                                object,
                                params=t(object@conv.rec[,pars.proper]),
-                               dir="forward"
+                               dir="fromEstimationScale"
                                )
                       ),
                     object@conv.rec[,pars.improper]

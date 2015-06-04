@@ -15,7 +15,7 @@ NLF.LQL <- function (params.fitted, object, params, par.index, transform = FALSE
   params[par.index] <- params.fitted
   
   if (transform)
-    params <- partrans(object,params,dir="forward")
+    params <- partrans(object,params,dir="fromEstimationScale")
 
   ## Evaluates the NLF objective function given a POMP object.
   ## Version 0.1, 3 Dec. 2007, Bruce E. Kendall & Stephen P. Ellner

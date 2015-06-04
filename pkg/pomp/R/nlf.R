@@ -64,7 +64,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
   if (eval.only) est <- character(0)
   if (missing(start)) start <- coef(object)
   if (transform)
-    params <- partrans(object,start,dir="inverse")
+    params <- partrans(object,start,dir="toEstimationScale")
   else
     params <- start
 
@@ -161,7 +161,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
     }
 
     params[par.index] <- opt$par
-    opt$params <- if (transform) partrans(object,params,dir="forward") else params
+    opt$params <- if (transform) partrans(object,params,dir="fromEstimationScale") else params
     
   }
 

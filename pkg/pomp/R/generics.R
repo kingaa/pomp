@@ -26,7 +26,7 @@ setGeneric("coef<-",function(object,...,value)standardGeneric("coef<-"))
 setGeneric("states",function(object,...)standardGeneric("states"))
 setGeneric("timezero",function(object,...)standardGeneric("timezero"))
 setGeneric("timezero<-",function(object,...,value)standardGeneric("timezero<-"))
-setGeneric("partrans",function(object,params,dir=c("forward","inverse"),...)standardGeneric("partrans"))
+setGeneric("partrans",function(object,params,dir,...)standardGeneric("partrans"))
 setGeneric("logLik",function(object,...)standardGeneric("logLik"))
 
 ## internals

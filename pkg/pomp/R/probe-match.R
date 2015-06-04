@@ -47,7 +47,7 @@ pmof.internal <- function (object, params, est, probes,
   if ((!is.numeric(params))||(is.null(names(params))))
     stop(sQuote("params")," must be a named numeric vector")
   if (transform)
-    params <- partrans(object,params,dir="inverse")
+    params <- partrans(object,params,dir="toEstimationScale")
   par.est.idx <- match(est,names(params))
   if (any(is.na(par.est.idx)))
     stop("parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"))
@@ -70,7 +70,7 @@ pmof.internal <- function (object, params, est, probes,
     params[par.est.idx] <- par
     
     if (transform)
-      tparams <- partrans(object,params,dir="forward")
+      tparams <- partrans(object,params,dir="fromEstimationScale")
 
     ## apply probes to model simulations
     simval <- .Call(

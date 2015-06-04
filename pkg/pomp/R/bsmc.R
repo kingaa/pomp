@@ -72,7 +72,7 @@ bsmc.internal <- function (object, params, Np, est,
     params <- rprior(object,params=parmat(params,Np))
   
   if (transform)
-    params <- partrans(object,params,dir="inverse",
+    params <- partrans(object,params,dir="toEstimationScale",
                        .getnativesymbolinfo=ptsi.inv)
   ptsi.inv <- FALSE
   
@@ -127,7 +127,7 @@ bsmc.internal <- function (object, params, Np, est,
   xstart <- init.state(
                        object,
                        params=if (transform) {
-                         partrans(object,params,dir="forward",
+                         partrans(object,params,dir="fromEstimationScale",
                                   .getnativesymbolinfo=ptsi.for)
                        } else {
                          params
@@ -172,7 +172,7 @@ bsmc.internal <- function (object, params, Np, est,
                       xstart=parmat(x,nrep=ntries),
                       times=times[c(nt,nt+1)],
                       params=if (transform) {
-                        partrans(object,params,dir="forward",
+                        partrans(object,params,dir="fromEstimationScale",
                                  .getnativesymbolinfo=ptsi.for)
                       } else {
                         params
@@ -194,7 +194,7 @@ bsmc.internal <- function (object, params, Np, est,
                   x=mu,
                   times=times[nt+1],
                   params=if (transform) {
-                    partrans(object,m,dir="forward",
+                    partrans(object,m,dir="fromEstimationScale",
                              .getnativesymbolinfo=ptsi.for)
                   } else {
                     m
@@ -227,7 +227,7 @@ bsmc.internal <- function (object, params, Np, est,
     params[estind,] <- m[estind,]+t(pvec)
 
     if (transform)
-      tparams <- partrans(object,params,dir="forward",
+      tparams <- partrans(object,params,dir="fromEstimationScale",
                           .getnativesymbolinfo=ptsi.for)
     
     ## sample current state vector x^(g)_(t+1) as per L&W AGM (4)
@@ -436,8 +436,8 @@ setMethod(
             if (missing(pars)) pars <- x@est
             if (missing(thin)) thin <- Inf
             bsmc.plot(
-                      prior=if (x@transform) partrans(x,x@prior,dir="forward") else x@prior,
-                      post=if (x@transform) partrans(x,x@post,dir="forward") else x@post,
+                      prior=if (x@transform) partrans(x,x@prior,dir="fromEstimationScale") else x@prior,
+                      post=if (x@transform) partrans(x,x@post,dir="fromEstimationScale") else x@post,
                       pars=pars,
                       thin=thin,
                       ...
