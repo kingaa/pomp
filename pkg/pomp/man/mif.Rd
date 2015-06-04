@@ -34,6 +34,7 @@
 \alias{compare.mif}
 \description{
   Iterated filtering algorithms for estimating the parameters of a partially-observed Markov process.
+  Running \code{mif} causes the iterated filtering algorithm to run for a specified number of iterations.
 }
 \usage{
 \S4method{mif}{pomp}(object, Nmif = 1, start, ivps = character(0),
