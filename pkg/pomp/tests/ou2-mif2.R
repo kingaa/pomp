@@ -39,7 +39,7 @@ mif2a <- mif(ou2,Nmif=100,start=guess1,
              max.fail=100,
              method="mif",
              tol=1e-8
-             )  
+             )
 
 plot(c(mif1a,mif2a))
 
@@ -73,7 +73,7 @@ mif2b <- mif(ou2,Nmif=50,start=guess1,
              cooling.fraction=0.95^50,
              max.fail=100,
              method="mif"
-             )  
+             )
 mif2b <- continue(mif2b,Nmif=50)
 
 mif2c <- mif(ou2,Nmif=50,start=guess1,
@@ -88,7 +88,7 @@ mif2c <- mif(ou2,Nmif=50,start=guess1,
              cooling.fraction=0.05,
              max.fail=100,
              method="mif2"
-             )  
+             )
 mif2c <- continue(mif2c,Nmif=50)
 
 plot(c(mif1b,mif2b))
@@ -102,5 +102,29 @@ mfl2 <- c(mfl1,mif2c)
 mfl3 <- c(mif2a,mfl1)
 
 try(c(mif2a,continue(mif2b,Nmif=1)))
+
+guess2 <- guess1 <- coef(ou2)
+guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
+guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
+
+m1 <- pomp:::mif2(ou2,Nmif=100,start=guess1,Np=1000,
+                  rw.sd=pomp:::mif2.sd(
+                    x1.0=pomp:::ivphypcool(0.5,0.05),
+                    x2.0=pomp:::ivphypcool(0.5,0.05),
+                    alpha.2=pomp:::hypcool(0.1,0.05,ntimes=100),
+                    alpha.3=pomp:::hypcool(0.1,0.05,ntimes=100)))
+
+m2 <- pomp:::mif2(ou2,Nmif=100,start=guess2,Np=1000,
+                  rw.sd=pomp:::mif2.sd(
+                    x1.0=pomp:::ivphypcool(0.5,0.05),
+                    x2.0=pomp:::ivphypcool(0.5,0.05),
+                    alpha.2=pomp:::hypcool(0.1,0.05,ntimes=100),
+                    alpha.3=pomp:::hypcool(0.1,0.05,ntimes=100)))
+
+plot(c(m1,m2))
+
+rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
+      mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
+      truth=c(coef(ou2),loglik=logLik(pfilter(m1,Np=1000))))
 
 dev.off()
