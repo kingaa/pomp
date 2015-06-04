@@ -1,46 +1,51 @@
+require(pomp)
+
 ## MIF2 algorithm functions
 
 ## define a class of perturbation magnitudes
 setClass(
-         "mif2.perturb.sd",
-         slots=c(
-           sds="list",
-           cooling.fraction.50="numeric",
-           cooling.type="character",
-           ivps="character",
-           rwnames="character",
-           transform="logical"
-           ),
-         prototype=prototype(
-           sds=list(),
-           cooling.fraction.50=1.0,
-           cooling.type="hyperbolic",
-           ivps=character(0),
-           rwnames=character(0)
-           )
-         )
+  "mif2.perturb.sd",
+  slots=c(
+    sds="list",
+    rwnames="character"
+  ),
+  prototype=prototype(
+    sds=list(),
+    rwnames=character(0)
+  )
+)
 
-mif2.sd <- function (..., .cooling.fraction.50 = 1,
-                     .cooling.type = c("hyperbolic","geometric"),
-                     .ivps = character(0), transform = FALSE) {
+## define the mif2d.pomp class
+setClass(
+  'mif2d.pomp',
+  contains='pfilterd.pomp',
+  slots=c(
+    Nmif = 'integer',
+    perturb.fn = 'function',
+    rw.sd = 'mif2.perturb.sd',
+    conv.rec = 'matrix'
+  )
+)
+
+mif2.sd <- function (...) {
   sds <- list(...)
   if (length(sds)==0)
-    stop(sQuote("mif2.sd")," error: at least one parameter should be perturbed",
-         call.=FALSE)
+    stop(sQuote("mif2.sd")," error: at least one parameter should be perturbed",call.=FALSE)
   rwnames <- names(sds)
   if (is.null(rwnames) || any(names(rwnames)==""))
     stop(sQuote("mif2.sd")," accepts only named arguments",call.=FALSE)
-  .cooling.fraction.50 <- as.numeric(.cooling.fraction.50)
-  if (.cooling.fraction.50 <= 0 || .cooling.fraction.50 > 1)
-    stop(sQuote(".cooling.fraction.50")," must be in (0,1]",call.=FALSE)
-  .cooling.type <- match.arg(.cooling.type)
-  .ivps <- as.character(.ivps)
-  transform <- as.logical(transform)
-  new("mif2.perturb.sd",sds=sds,cooling.fraction.50=.cooling.fraction.50,
-      cooling.type=.cooling.type,ivps=.ivps,rwnames=rwnames,transform=transform)
+  for (n in rwnames) {
+    sds[[n]] <- try(match.fun(sds[[n]]),silent=TRUE)
+    if (inherits(sds[[n]],"try-error"))
+      stop(sQuote("mif2.sd")," error: ",sQuote(n)," is not a function",call.=FALSE)
+  }
+  new("mif2.perturb.sd",sds=sds,rwnames=rwnames)
 }
 
-setMethod("cooling_fn",signature=signature(object="mif2.perturb.sd"),
+setGeneric("cooling_fn",function(object,...)standardGeneric("cooling_fn"))
+
+setMethod("cooling_fn",
+          signature=signature(object="mif2.perturb.sd"),
           definition=function (object, paramnames) {
             if (!all(object@rwnames %in% paramnames)) {
               unrec <- object@rwnames[!object@rwnames %in% paramnames]
@@ -49,175 +54,197 @@ setMethod("cooling_fn",signature=signature(object="mif2.perturb.sd"),
                    paste(sapply(sQuote,unrec),collapse=","),
                    call.=FALSE)
             }
-            for (p in object@rwnames) {
-              sds[[p]] <- match.fun(sds[[p]])
+            function (mifiter, timept) {
+              rw.sd <- setNames(numeric(length(object@rwnames)),object@rwnames)
+              for (nm in object@rwnames) {
+                rw.sd[nm] <- object@sds[[nm]](mifiter,timept)
+              }
+              rw.sd
             }
           })
 
-## define the mif2d.pomp class
-setClass(
-         'mif2d.pomp',
-         contains='pfilterd.pomp',
-         slots=c(
-           transform = "logical",
-           Nmif = 'integer',
-           perturbn = 'function',
-           pertsd = 'mif2.perturb.sd',
-           conv.rec = 'matrix'
-           )
-         )
+geomcool <- function (sd, cooling.fraction.50 = 1) {
+  if (missing(sd))
+    stop(sQuote("geomcool")," error: ",sQuote("sd")," must be supplied",call.=FALSE)
+  sd <- as.numeric(sd)
+  if (sd <= 0)
+    stop(sQuote("geomcool")," error: ",sQuote("sd")," must be non-negative",call.=FALSE)
+  cooling.fraction.50 <- as.numeric(cooling.fraction.50)
+  if (cooling.fraction.50 <= 0 || cooling.fraction.50 > 1)
+    stop(sQuote("cooling.fraction.50")," must be in (0,1]",call.=FALSE)
+  factor <- cooling.fraction.50^(1/50)
+  function (mifiter, timept) {
+    sd*(factor^(mifiter-1))
+  }
+}
+
+hypcool <- function (sd, cooling.fraction.50 = 1, ntimes = NULL) {
+  if (missing(sd))
+    stop(sQuote("hypcool")," error: ",sQuote("sd")," must be supplied",call.=FALSE)
+  sd <- as.numeric(sd)
+  if (sd <= 0)
+    stop(sQuote("hypcool")," error: ",sQuote("sd")," must be non-negative",call.=FALSE)
+  cooling.fraction.50 <- as.numeric(cooling.fraction.50)
+  if (cooling.fraction.50 <= 0 || cooling.fraction.50 > 1)
+    stop(sQuote("cooling.fraction.50")," must be in (0,1]",call.=FALSE)
+  if (is.null(ntimes)) {
+    scal <- (50*cooling.fraction.50-1)/(1-cooling.fraction.50)
+    function (mifiter, timept) {
+      (1+scal)/(mifiter+scal)
+    }
+  } else {
+    scal <- (50*ntimes*cooling.fraction.50-1)/(1-cooling.fraction.50)
+    function (mifiter, timept) {
+      sd*(1+scal)/(timept+ntimes*(mifiter-1)+scal)
+    }
+  }
+}
+
+ivphypcool <- function (sd, cooling.fraction.50 = 1) {
+  if (missing(sd))
+    stop(sQuote("ivphypcool")," error: ",sQuote("sd")," must be supplied",call.=FALSE)
+  sd <- as.numeric(sd)
+  if (sd <= 0)
+    stop(sQuote("ivphypcool")," error: ",sQuote("sd")," must be non-negative",call.=FALSE)
+  cooling.fraction.50 <- as.numeric(cooling.fraction.50)
+  if (cooling.fraction.50 <= 0 || cooling.fraction.50 > 1)
+    stop(sQuote("cooling.fraction.50")," must be in (0,1]",call.=FALSE)
+  scal <- (50*cooling.fraction.50-1)/(1-cooling.fraction.50)
+  function (mifiter, timept) {
+    if (timept==1L)
+      sd*(1+scal)/(mifiter+scal)
+    else 0.0
+  }
+}
+
+ivpgeomcool <- function (sd, cooling.fraction.50 = 1) {
+  if (missing(sd))
+    stop(sQuote("ivpgeomcool")," error: ",sQuote("sd")," must be supplied",call.=FALSE)
+  sd <- as.numeric(sd)
+  if (sd <= 0)
+    stop(sQuote("ivpgeomcool")," error: ",sQuote("sd")," must be non-negative",call.=FALSE)
+  cooling.fraction.50 <- as.numeric(cooling.fraction.50)
+  if (cooling.fraction.50 <= 0 || cooling.fraction.50 > 1)
+    stop(sQuote("cooling.fraction.50")," must be in (0,1]",call.=FALSE)
+  factor <- cooling.fraction.50^(1/50)
+  function (mifiter, timept) {
+    if (timept==1L)
+      sd*factor^(mifiter-1)
+    else 0.0
+  }
+}
 
 mif2.pfilter <- function (object, params, Np,
-                          tol, max.fail,
-                          pred.mean, pred.var, filter.mean,
-                          mifiter, perturb.fn,
-                          transform, verbose,
+                          mifiter, cooling.fn, perturb.fn,
+                          tol = 1e-17, max.fail = Inf,
+                          transform = FALSE, verbose = FALSE,
+                          filter.mean = FALSE,
                           .getnativesymbolinfo = TRUE) {
-  
-  ptsi.inv <- ptsi.for <- gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
+
+  gnsi <- as.logical(.getnativesymbolinfo)
   transform <- as.logical(transform)
+  verbose <- as.logical(verbose)
+  filter.mean <- as.logical(filter.mean)
   mifiter <- as.integer(mifiter)
   Np <- as.integer(Np)
-  Np <- c(Np,Np[1])
-  
+
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
-  
+
   paramnames <- rownames(params)
   npars <- nrow(params)
 
-  ## perturb parameters
-  params <- apply(params,2L,perturb.fn,mifiter=mifiter,timeno=1L)
-    
-  ## transform parameters if necessary
-  if (transform) {
-    tparams <- partrans(object,params,dir="forward",
-                        .getnativesymbolinfo=ptsi.for)
-    ptsi.for <- FALSE
-  }
-
-  ## get initial states
-  x <- init.state(
-                  object,
-                  params=if (transform) tparams else params,
-                  )
-  statenames <- rownames(x)
-  nvars <- nrow(x)
-  
   loglik <- rep(NA,ntimes)
   eff.sample.size <- numeric(ntimes)
   nfail <- 0
-  
-  ## set up storage for prediction means, variances, etc.
-  if (pred.mean)
-    pred.m <- matrix(
-                     data=0,
-                     nrow=nvars+npars,
-                     ncol=ntimes,
-                     dimnames=list(c(statenames,paramnames),NULL)
-                     )
-  else
-    pred.m <- array(data=numeric(0),dim=c(0,0))
-  
-  if (pred.var)
-    pred.v <- matrix(
-                     data=0,
-                     nrow=nvars+npars,
-                     ncol=ntimes,
-                     dimnames=list(c(statenames,paramnames),NULL)
-                     )
-  else
-    pred.v <- array(data=numeric(0),dim=c(0,0))
-  
-  if (filter.mean)
-    filt.m <- matrix(
-                     data=0,
-                     nrow=nvars+length(paramnames),
-                     ncol=ntimes,
-                     dimnames=list(c(statenames,paramnames),NULL)
-                     )
-  else
-    filt.m <- array(data=numeric(0),dim=c(0,0))
 
   for (nt in seq_len(ntimes)) {
 
-    if (nt > 1) {
-      ## perturb parameters
-      params <- apply(params,2L,perturb.fn,mifiter=mifiter,timeno=nt)
-      ## transform parameters if necessary
-      if (transform) {
-        tparams <- partrans(object,params,dir="forward",
-                            .getnativesymbolinfo=ptsi.for)
-      }
+    ## perturb parameters
+    params <- perturb.fn(params,sd=cooling.fn(mifiter,nt))
+
+    if (nt == 1L) {
+      ## get initial states
+      x <- init.state(object,params=params)
+
+      if (filter.mean)
+        filt.m <- array(dim=c(nrow(x),ntimes),
+                        dimnames=list(rownames(x),NULL))
+      else
+        filt.m <- array(dim=c(0,0))
     }
-    
+
     ## advance the state variables according to the process model
     X <- try(
-             rprocess(
-                      object,
-                      xstart=x,
-                      times=times[c(nt,nt+1)],
-                      params=if (transform) tparams else params,
-                      offset=1,
-                      .getnativesymbolinfo=gnsi.rproc
-                      ),
-             silent=FALSE
-             )
+      rprocess(
+        object,
+        xstart=x,
+        times=times[c(nt,nt+1)],
+        params=params,
+        offset=1,
+        .getnativesymbolinfo=gnsi
+      ),
+      silent=FALSE
+    )
     if (inherits(X,'try-error'))
       stop(sQuote("mif2.pfilter")," error: process simulation error")
-    gnsi.rproc <- FALSE
-    
+
     ## determine the weights
     weights <- try(
-                   dmeasure(
-                            object,
-                            y=object@data[,nt,drop=FALSE],
-                            x=X,
-                            times=times[nt+1],
-                            params=if (transform) tparams else params,
-                            log=FALSE,
-                            .getnativesymbolinfo=gnsi.dmeas
-                            ),
-                   silent=FALSE
-                   )
+      dmeasure(
+        object,
+        y=object@data[,nt,drop=FALSE],
+        x=X,
+        times=times[nt+1],
+        params=params,
+        log=FALSE,
+        .getnativesymbolinfo=gnsi
+      ),
+      silent=FALSE
+    )
     if (inherits(weights,'try-error'))
       stop(sQuote("mif2.pfilter")," error: error in calculation of weights")
     if (any(!is.finite(weights))) {
       stop(sQuote("mif2.pfilter")," error: ",sQuote("dmeasure"),
            " returns non-finite value")
     }
-    gnsi.dmeas <- FALSE
-    
-    ## compute prediction mean, prediction variance, filtering mean,
-    ## effective sample size, log-likelihood
+    gnsi <- FALSE
+
+    ## compute weighted mean at last timestep
+    if (nt == ntimes)
+      coef(object) <- apply(params,1L,weighted.mean,w=weights)
+
+    ## compute effective sample size, log-likelihood
     ## also do resampling if filtering has not failed
     xx <- try(
-              .Call(
-                    pomp:::pfilter_computations,
-                    X,params,Np[nt+1],
-                    FALSE,numeric(0),
-                    pred.mean,pred.var,filter.mean,
-                    FALSE,weights,tol
-                    ),
-              silent=FALSE
-              )
+      .Call(
+        pomp:::pfilter_computations,
+        x=X,
+        params=params,
+        Np=Np[nt+1],
+        rw=FALSE,
+        rw_sd=numeric(0),
+        predmean=FALSE,
+        predvar=FALSE,
+        filtmean=filter.mean,
+        onepar=FALSE,
+        weights=weights,
+        tol=tol
+      ),
+      silent=FALSE
+    )
     if (inherits(xx,'try-error')) {
       stop(sQuote("mif2.pfilter")," error",call.=FALSE)
     }
     all.fail <- xx$fail
     loglik[nt] <- xx$loglik
     eff.sample.size[nt] <- xx$ess
-    
+
     x <- xx$states
     params <- xx$params
-    
-    if (pred.mean)
-      pred.m[,nt] <- xx$pm
-    if (pred.var)
-      pred.v[,nt] <- xx$pv
     if (filter.mean)
       filt.m[,nt] <- xx$fm
-    
+
     if (all.fail) { ## all particles are lost
       nfail <- nfail+1
       if (verbose)
@@ -225,89 +252,58 @@ mif2.pfilter <- function (object, params, Np,
       if (nfail>max.fail)
         stop(sQuote("mif2.pfilter")," error: too many filtering failures",call.=FALSE)
     }
-    
+
     if (verbose && (nt%%5==0))
       cat("mif2 pfilter timestep",nt,"of",ntimes,"finished\n")
-    
+
   }
-  
+
   if (nfail>0)
     warning(sprintf(ngettext(nfail,msg1="%d filtering failure occurred in ",
                              msg2="%d filtering failures occurred in "),nfail),
             sQuote("mif2.pfilter"),call.=FALSE)
 
   new(
-      "pfilterd.pomp",
-      object,
-      pred.mean=pred.m,
-      pred.var=pred.v,
-      filter.mean=filt.m,
-      paramMatrix=params,
-      eff.sample.size=eff.sample.size,
-      cond.loglik=loglik,
-      saved.states=list(),
-      saved.params=list(),
-      seed=as.integer(NULL),
-      Np=as.integer(head(Np,-1)),
-      tol=tol,
-      nfail=as.integer(nfail),
-      loglik=sum(loglik)
-      )
+    "pfilterd.pomp",
+    object,
+    paramMatrix=params,
+    eff.sample.size=eff.sample.size,
+    cond.loglik=loglik,
+    Np=Np,
+    tol=tol,
+    nfail=as.integer(nfail),
+    loglik=sum(loglik)
+  )
 }
 
-mif2.internal <- function (object, Nmif,
-                           start, Np, perturb.fn,
-                           tol, max.fail,
-                           verbose, transform, .ndone = 0L,
+mif2.internal <- function (object, Nmif, start, Np,
+                           rw.sd, perturb.fn = NULL,
+                           tol = 1e17, max.fail = Inf,
+                           verbose = FALSE, .ndone = 0L,
                            .getnativesymbolinfo = TRUE,
                            ...) {
-  
-  gnsi <- as.logical(.getnativesymbolinfo)
-  transform <- as.logical(transform)
-  
-  Nmif <- as.integer(Nmif)
-  if (Nmif<0)
-    stop("mif error: ",sQuote("Nmif")," must be a positive integer",call.=FALSE)
 
-  if (transform)
-    start <- partrans(object,start,dir="inverse")
-  
+  pompLoad(object)
+
+  gnsi <- as.logical(.getnativesymbolinfo)
+
+  Nmif <- as.integer(Nmif)
+  if (Nmif<0) stop(sQuote("mif2")," error: ",sQuote("Nmif"),
+                   " must be a positive integer",call.=FALSE)
+
   ntimes <- length(time(object))
 
-  start.names <- names(start)
-  if (is.null(start.names))
-    stop("mif2 error: ",sQuote("start")," must be a named vector")
-  
-  if (!is.function(perturb.fn))
-    stop("mif2 error: ",sQuote("perturb.fn")," must be a function")
-
-  if (is.function(Np)) {
-    Np <- try(
-              vapply(seq.int(from=1,to=ntimes,by=1),Np,numeric(1)),
-              silent=FALSE
-              )
-    if (inherits(Np,"try-error"))
-      stop("if ",sQuote("Np")," is a function, it must return a single positive integer")
-  }
-  if (length(Np)==1)
-    Np <- rep(Np,times=ntimes)
-  else if (length(Np)!=ntimes)
-    stop(sQuote("Np")," must have length 1 or length ",ntimes)
-  if (any(Np<=0))
-    stop("number of particles, ",sQuote("Np"),", must always be positive")
-  if (!is.numeric(Np))
-    stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
   Np <- as.integer(Np)
-  
-  conv.rec <- matrix(
-                     data=NA,
-                     nrow=Nmif+1,
-                     ncol=length(start)+2,
-                     dimnames=list(
-                       seq(.ndone,.ndone+Nmif),
-                       c('loglik','nfail',names(start))
-                       )
-                     )
+
+  if (is.null(names(start)))
+    stop(sQuote("mif2")," error: ",sQuote("start")," must be a named vector",
+         call.=FALSE)
+
+  cooling.fn <- cooling_fn(rw.sd,paramnames=names(start))
+
+  conv.rec <- array(data=NA,dim=c(Nmif+1,length(start)+2),
+                    dimnames=list(seq.int(.ndone,.ndone+Nmif),
+                                  c('loglik','nfail',names(start))))
   conv.rec[1L,] <- c(NA,NA,start)
 
   if (.ndone > 0) {                     # call is from 'continue'
@@ -316,205 +312,371 @@ mif2.internal <- function (object, Nmif,
     paramMatrix <- array(data=start,dim=c(length(start),Np[1L]),
                          dimnames=list(names(start),NULL))
   } else {                              # no work to do
-    paramMatrix <- array(data=numeric(0),dim=c(0,0))
+    paramMatrix <- array(dim=c(0,0))
   }
 
   object <- as(object,"pomp")
-    
-  for (n in seq_len(Nmif)) { ## iterate the filtering
+
+  ## iterate the filtering
+  for (n in seq_len(Nmif)) {
 
     pfp <- try(
-               mif2.pfilter(
-                            object=object,
-                            params=paramMatrix,
-                            Np=Np,
-                            tol=tol,
-                            max.fail=max.fail,
-                            pred.mean=(n==Nmif),
-                            pred.var=(n==Nmif),
-                            filter.mean=(n==Nmif),
-                            mifiter=.ndone+n,
-                            perturb.fn=perturb.fn,
-                            transform=transform,
-                            verbose=verbose,
-                            .getnativesymbolinfo=gnsi
-                            ),
-               silent=FALSE
-               )
-    if (inherits(pfp,"try-error")) 
+      mif2.pfilter(
+        object=object,
+        params=paramMatrix,
+        Np=Np,
+        mifiter=.ndone+n,
+        cooling.fn=cooling.fn,
+        perturb.fn=perturb.fn,
+        tol=tol,
+        max.fail=max.fail,
+        verbose=verbose,
+        filter.mean=(n==Nmif),
+        .getnativesymbolinfo=gnsi
+      ),
+      silent=FALSE
+    )
+    if (inherits(pfp,"try-error"))
       stop("mif2 particle-filter error")
 
     gnsi <- FALSE
-    
-    theta <- rowMeans(pfp@paramMatrix[,,drop=FALSE])
 
-    conv.rec[n+1,-c(1,2)] <- theta
+    paramMatrix <- pfp@paramMatrix
+    conv.rec[n+1,-c(1,2)] <- coef(pfp)
     conv.rec[n,c(1,2)] <- c(pfp@loglik,pfp@nfail)
-    
-    if (verbose) cat("MIF2 iteration ",n," of ",Nmif," completed\n")
-    
-  } ### end of main loop
 
-  ## back transform the parameter estimate if necessary
-  if (transform) theta <- partrans(pfp,theta,dir="forward")
-  
-  new(
-      "mif2d.pomp",
-      pfp,
-      params=theta,
-      paramMatrix=pfp@paramMatrix,
-      transform=transform,
-      Nmif=Nmif,
-      perturb.fn=perturb.fn,
-      conv.rec=conv.rec,
-      tol=tol
-      )
-}
+    if (verbose) cat("mif2 iteration ",n," of ",Nmif," completed\n")
 
-setMethod(
-          "mif2",
-          signature=signature(object="pomp"),
-          function (object, Nmif = 1,
-                    start, Np, perturb.fn,
-                    tol = 1e-17, max.fail = Inf,
-                    verbose = getOption("verbose"),
-                    transform = FALSE,
-                    ...) {
-            
-            if (missing(start)) start <- coef(object)
-            if (length(start)==0)
-              stop(
-                   "mif2 error: ",sQuote("start")," must be specified if ",
-                   sQuote("coef(object)")," is NULL",
-                   call.=FALSE
-                   )
-
-            if (missing(Np))
-              stop("mif2 error: ",sQuote("Np")," must be specified",call.=FALSE)
-
-            if (missing(perturb.fn))
-              stop("mif2 error: ",sQuote("perturb.fn")," must be specified",call.=FALSE)
-            perturb.fn <- match.fun(perturb.fn)
-            if (!all(c('params','mifiter','timeno','...')%in%names(formals(perturb.fn)))) {
-              stop(
-                   "mif2 error: ",
-                   sQuote("perturb.fn"),
-                   " must be a function of prototype ",
-                   sQuote("perturb.fn(params,mifiter,timeno,...)"),
-                   call.=FALSE
-                   )
-            }
-            
-            mif2.internal(
-                          object=object,
-                          Nmif=Nmif,
-                          start=start,
-                          Np=Np,
-                          perturb.fn=perturb.fn,
-                          tol=tol,
-                          max.fail=max.fail,
-                          transform=transform,
-                          verbose=verbose,
-                          ...
-                          )
-            
-          }
-          )
-
-
-setMethod(
-          "mif2",
-          signature=signature(object="pfilterd.pomp"),
-          function (object, Nmif = 1, Np, tol, ...) {
-            
-            if (missing(Np)) Np <- object@Np
-            if (missing(tol)) tol <- object@tol
-
-            mif2(
-                 object=as(object,"pomp"),
-                 Nmif=Nmif,
-                 Np=Np,
-                 tol=tol,
-                 ...
-                 )
-          }
-          )
-
-setMethod(
-          "mif2",
-          signature=signature(object="mif2d.pomp"),
-          function (object, Nmif, start,
-                    Np, perturb.fn,
-                    tol, transform,
-                    ...) {
-            
-            if (missing(Nmif)) Nmif <- object@Nmif
-            if (missing(start)) start <- coef(object)
-            if (missing(perturb.fn)) perturb.fn <- object@perturb.fn
-            if (missing(transform)) transform <- object@transform
-
-            if (missing(Np)) Np <- object@Np
-            if (missing(tol)) tol <- object@tol
-
-            mif2(
-                 object=as(object,"pomp"),
-                 Nmif=Nmif,
-                 start=start,
-                 Np=Np,
-                 perturb.fn=perturb.fn,
-                 tol=tol,
-                 transform=transform,
-                 ...
-                 )
-          }
-          )
-
-setMethod(
-          'continue',
-          signature=signature(object='mif2d.pomp'),
-          function (object, Nmif = 1,
-                    ...) {
-            
-            ndone <- object@Nmif
-            
-            obj <- mif2(
-                        object=object,
-                        Nmif=Nmif,
-                        .ndone=ndone,
-                        ...
-                        )
-            
-            object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1L,c('loglik','nfail')]
-            obj@conv.rec <- rbind(
-                                  object@conv.rec,
-                                  obj@conv.rec[-1L,colnames(object@conv.rec)]
-                                  )
-            obj@Nmif <- as.integer(ndone+Nmif)
-            
-            obj
-          }
-          )
-
-default.cooling <- function (object, fraction, par.sd, ic.sd) {
-  
-  nT <- length(time(object))
-  theta <- (1-fraction)/fraction/(50*nT-1)
-
-  function (params, mifiter, timeno, ...) {
-    pert <- params
-    sigma <- 1/(1+theta*((mifiter-1)*nT+timeno-1))
-    if (timeno==1) {
-      pert[names(ic.sd)] <- rnorm(
-                                  n=length(ic.sd),
-                                  mean=pert[names(ic.sd)],
-                                  sd=ic.sd*sigma
-                                  )
-    }
-    pert[names(par.sd)] <- rnorm(
-                                 n=length(par.sd),
-                                 mean=pert[names(par.sd)],
-                                 sd=par.sd*sigma
-                                 )
-    pert
   }
+
+  pompUnload(object)
+
+  new(
+    "mif2d.pomp",
+    pfp,
+    Nmif=Nmif,
+    rw.sd=rw.sd,
+    perturb.fn=perturb.fn,
+    conv.rec=conv.rec,
+    tol=tol
+  )
 }
+
+setGeneric("mif2",function(object,...)standardGeneric("mif2"))
+
+setMethod(
+  "mif2",
+  signature=signature(object="pomp"),
+  definition = function (object, Nmif = 1, start, Np, rw.sd, perturb.fn,
+                         tol = 1e-17, max.fail = Inf, verbose = getOption("verbose"), transform = FALSE, ...) {
+
+    if (missing(start)) start <- coef(object)
+    if (length(start)==0)
+      stop(
+        sQuote("mif2")," error: ",sQuote("start")," must be specified if ",
+        sQuote("coef(object)")," is NULL",
+        call.=FALSE
+      )
+
+    ntimes <- length(time(object))
+    if (missing(Np)) {
+      stop(sQuote("mif2")," error: ",sQuote("Np")," must be specified",call.=FALSE) }
+    else if (is.function(Np)) {
+      Np <- try(
+        vapply(seq.int(1,ntimes),Np,numeric(1)),
+        silent=FALSE
+      )
+      if (inherits(Np,"try-error"))
+        stop(sQuote("mif2")," error: if ",sQuote("Np"),
+             " is a function, it must return a single positive integer")
+    } else if (!is.numeric(Np))
+      stop(sQuote("mif2")," error: ",sQuote("Np"),
+           " must be a number, a vector of numbers, or a function")
+    if (length(Np)==1) {
+      Np <- rep(Np,times=ntimes+1)
+    } else if (length(Np)==ntimes) {
+      Np <- c(Np,Np[1L])
+    } else if (length(Np)>ntimes) {
+      if (Np[1L] != Np[ntimes+1])
+        stop(sQuote("mif2")," error: Np[ntimes+1] != Np[1]")
+      if (length(Np)>ntimes+1)
+        warning("in ",sQuote("mif2"),": Np[k] ignored for k > ntimes")
+    }
+    if (any(Np<=0))
+      stop("number of particles, ",sQuote("Np"),", must always be positive")
+
+    if (missing(perturb.fn)) {
+      ptsi <- TRUE
+      perturb.fn <- function (theta, sd) {
+        if (transform) theta <- partrans(object,theta,dir="toEstimationScale",
+                                         .getnativesymbolinfo=ptsi)
+        theta[names(sd),] <- rnorm(n=length(sd)*ncol(theta),mean=theta[names(sd),],sd=sd)
+        if (transform) theta <- partrans(object,theta,dir="fromEstimationScale",
+                                         .getnativesymbolinfo=ptsi)
+        ptsi <<- FALSE
+        theta
+      }
+    } else {
+      perturb.fn <- match.fun(perturb.fn)
+      if (!all(c('theta','sd')%in%names(formals(perturb.fn)))) {
+        stop(
+          sQuote("mif2")," error: ",
+          sQuote("perturb.fn"),
+          " must be a function of prototype ",
+          sQuote("perturb.fn(theta,sd)"),
+          call.=FALSE
+        )
+      }
+    }
+
+    mif2.internal(
+      object=object,
+      Nmif=Nmif,
+      start=start,
+      Np=Np,
+      rw.sd=rw.sd,
+      perturb.fn=perturb.fn,
+      tol=tol,
+      max.fail=max.fail,
+      transform=transform,
+      verbose=verbose,
+      ...
+    )
+
+  }
+)
+
+
+setMethod(
+  "mif2",
+  signature=signature(object="pfilterd.pomp"),
+  definition = function (object, Nmif = 1, Np, tol, ...) {
+
+    if (missing(Np)) Np <- object@Np
+    if (missing(tol)) tol <- object@tol
+
+    mif2(
+      object=as(object,"pomp"),
+      Nmif=Nmif,
+      Np=Np,
+      tol=tol,
+      ...
+    )
+  }
+)
+
+setMethod(
+  "mif2",
+  signature=signature(object="mif2d.pomp"),
+  definition = function (object, Nmif, start, Np, rw.sd, perturb.fn, tol, ...) {
+
+    if (missing(Nmif)) Nmif <- object@Nmif
+    if (missing(start)) start <- coef(object)
+    if (missing(rw.sd)) rw.sd <- object@rw.sd
+    if (missing(perturb.fn)) perturb.fn <- object@perturb.fn
+
+    if (missing(Np)) Np <- object@Np
+    if (missing(tol)) tol <- object@tol
+
+    f <- selectMethod("mif2","pomp")
+
+    f(object,Nmif=Nmif,start=start,Np=Np,rw.sd=rw.sd,
+      perturb.fn=perturb.fn,tol=tol,...)
+  }
+)
+
+setMethod(
+  'continue',
+  signature=signature(object='mif2d.pomp'),
+  definition = function (object, Nmif = 1, ...) {
+
+    ndone <- object@Nmif
+
+    obj <- mif2(object=object,Nmif=Nmif,.ndone=ndone,...)
+
+    object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1L,c('loglik','nfail')]
+    obj@conv.rec <- rbind(
+      object@conv.rec,
+      obj@conv.rec[-1L,colnames(object@conv.rec)]
+    )
+    obj@Nmif <- as.integer(ndone+Nmif)
+
+    obj
+  }
+)
+
+## extract the estimated log likelihood
+setMethod('logLik','mif2d.pomp',function(object,...)object@loglik)
+
+setMethod('conv.rec','mif2d.pomp',
+          function (object, pars, transform = FALSE, ...) {
+            pomp:::conv.rec.internal(object=object,pars=pars,transform=transform,...)
+          }
+)
+
+## mifList class
+setClass(
+  'mif2List',
+  contains='list',
+  validity=function (object) {
+    if (!all(sapply(object,is,'mif2d.pomp'))) {
+      retval <- paste0(
+        "error in ",sQuote("c"),
+        ": dissimilar objects cannot be combined"
+      )
+      return(retval)
+    }
+    d <- sapply(object,function(x)dim(x@conv.rec))
+    if (!all(apply(d,1,diff)==0)) {
+      retval <- paste0(
+        "error in ",sQuote("c"),
+        ": to be combined, ",sQuote("mif2d.pomp"),
+        " objects must equal numbers of iterations"
+      )
+      return(retval)
+    }
+    TRUE
+  }
+)
+
+setMethod(
+  'c',
+  signature=signature(x='mif2d.pomp'),
+  definition=function (x, ...) {
+    y <- list(...)
+    if (length(y)==0) {
+      new("mif2List",list(x))
+    } else {
+      p <- sapply(y,is,'mif2d.pomp')
+      pl <- sapply(y,is,'mif2List')
+      if (any(!(p||pl)))
+        stop("cannot mix ",sQuote("mif2d.pomp"),
+             " and non-",sQuote("mif2d.pomp")," objects")
+      y[p] <- lapply(y[p],list)
+      y[pl] <- lapply(y[pl],as,"list")
+      new("mif2List",c(list(x),y,recursive=TRUE))
+    }
+  }
+)
+
+setMethod(
+  'c',
+  signature=signature(x='mif2List'),
+  definition=function (x, ...) {
+    y <- list(...)
+    if (length(y)==0) {
+      x
+    } else {
+      p <- sapply(y,is,'mif2d.pomp')
+      pl <- sapply(y,is,'mif2List')
+      if (any(!(p||pl)))
+        stop("cannot mix ",sQuote("mif2d.pomp"),
+             " and non-",sQuote("mif2d.pomp")," objects")
+      y[p] <- lapply(y[p],list)
+      y[pl] <- lapply(y[pl],as,"list")
+      new("mif2List",c(as(x,"list"),y,recursive=TRUE))
+    }
+  }
+)
+
+setMethod(
+  "[",
+  signature=signature(x="mif2List"),
+  definition=function(x, i, ...) {
+    new('mif2List',as(x,"list")[i])
+  }
+)
+
+setMethod(
+  'conv.rec',
+  signature=signature(object='mif2List'),
+  definition=function (object, ...) {
+    lapply(object,conv.rec,...)
+  }
+)
+
+require(ggplot2)
+require(plyr)
+require(reshape2)
+require(magrittr)
+theme_set(theme_bw())
+require(pomp)
+stopifnot(packageVersion("pomp")>="0.65-1")
+options(
+  keep.source=TRUE,
+  stringsAsFactors=FALSE,
+  encoding="UTF-8",
+  scipen=5,
+  cores=5
+)
+
+## ----gompertz-init,cache=FALSE-------------------------------------------
+require(pomp)
+pompExample(gompertz)
+theta <- coef(gompertz)
+theta.true <- theta
+
+## ----gompertz-multi-mif2-eval,results='hide'-----------------------------
+require(foreach)
+require(doMC)
+registerDoMC()
+
+save.seed <- .Random.seed
+set.seed(334388458L,kind="L'Ecuyer")
+
+estpars <- c("r","sigma","tau")
+mf <- foreach(i=1:10,
+              .inorder=FALSE,
+              .options.multicore=list(set.seed=TRUE)
+) %dopar%
+{
+  theta.guess <- theta.true
+  theta.guess[estpars] <- rlnorm(
+    n=length(estpars),
+    meanlog=log(theta.guess[estpars]),
+    sdlog=1
+  )
+  m1 <- mif2(
+    gompertz,
+    Nmif=50,
+    start=theta.guess,
+    transform=TRUE,
+    rw.sd=mif2.sd(
+      r=hypcool(0.02,0.95),
+      sigma=hypcool(0.02,0.95),
+      tau=hypcool(0.05,0.95)
+    ),
+    Np=2000
+  )
+  m1 <- continue(m1,Nmif=50)
+  ll <- replicate(n=10,logLik(pfilter(m1,Np=10000)))
+  list(mif=m1,ll=ll)
+}
+
+## ----gompertz-post-mif2--------------------------------------------------
+loglik.true <- replicate(n=10,logLik(pfilter(gompertz,Np=10000)))
+loglik.true <- logmeanexp(loglik.true,se=TRUE)
+theta.mif <- t(sapply(mf,function(x)coef(x$mif)))
+loglik.mif <- t(sapply(mf,function(x)logmeanexp(x$ll,se=TRUE)))
+best <- which.max(loglik.mif[,1])
+theta.mif <- theta.mif[best,]
+loglik.mif <- loglik.mif[best,]
+rbind(
+  mle=c(signif(theta.mif[estpars],3),loglik=round(loglik.mif,2)),
+  truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true,2))
+) -> results.table
+
+## ----mif2-plot,echo=FALSE,cache=FALSE,fig.height=6-----------------------
+op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
+loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
+log.r <- sapply(mf,function(x)log(conv.rec(x$mif,"r")))
+log.sigma <- sapply(mf,function(x)log(conv.rec(x$mif,"sigma")))
+log.tau <- sapply(mf,function(x)log(conv.rec(x$mif,"tau")))
+matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
+matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
+matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
+matplot(log.tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(log~tau))
+par(op)
+
+## ----first-mif-results-table,echo=FALSE,cache=FALSE----------------------
+print(results.table)
