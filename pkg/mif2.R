@@ -21,6 +21,7 @@ setClass(
   contains='pfilterd.pomp',
   slots=c(
     Nmif = 'integer',
+    transform = 'logical',
     perturb.fn = 'function',
     rw.sd = 'mif2.perturb.sd',
     conv.rec = 'matrix'
@@ -163,9 +164,13 @@ mif2.pfilter <- function (object, params, Np,
     ## perturb parameters
     params <- perturb.fn(params,sd=cooling.fn(mifiter,nt))
 
+    if (transform)
+      tparams <- partrans(object,params,dir="fromEstimationScale",
+                          .getnativesymbolinfo=gnsi)
+
     if (nt == 1L) {
       ## get initial states
-      x <- init.state(object,params=params)
+      x <- init.state(object,params=if (transform) tparams else params)
 
       if (filter.mean)
         filt.m <- array(dim=c(nrow(x),ntimes),
@@ -180,7 +185,7 @@ mif2.pfilter <- function (object, params, Np,
         object,
         xstart=x,
         times=times[c(nt,nt+1)],
-        params=params,
+        params=if (transform) tparams else params,
         offset=1,
         .getnativesymbolinfo=gnsi
       ),
@@ -196,23 +201,23 @@ mif2.pfilter <- function (object, params, Np,
         y=object@data[,nt,drop=FALSE],
         x=X,
         times=times[nt+1],
-        params=params,
+        params=if (transform) tparams else params,
         log=FALSE,
         .getnativesymbolinfo=gnsi
       ),
       silent=FALSE
     )
     if (inherits(weights,'try-error'))
-      stop(sQuote("mif2.pfilter")," error: error in calculation of weights")
+      stop(sQuote("mif2.pfilter")," error: error in calculation of weights",call.=FALSE)
     if (any(!is.finite(weights))) {
       stop(sQuote("mif2.pfilter")," error: ",sQuote("dmeasure"),
-           " returns non-finite value")
+           " returns non-finite value",call.=FALSE)
     }
     gnsi <- FALSE
 
     ## compute weighted mean at last timestep
     if (nt == ntimes)
-      coef(object) <- apply(params,1L,weighted.mean,w=weights)
+      coef(object,transform=transform) <- apply(params,1L,weighted.mean,w=weights)
 
     ## compute effective sample size, log-likelihood
     ## also do resampling if filtering has not failed
@@ -263,12 +268,13 @@ mif2.pfilter <- function (object, params, Np,
                              msg2="%d filtering failures occurred in "),nfail),
             sQuote("mif2.pfilter"),call.=FALSE)
 
-  new(
+ new(
     "pfilterd.pomp",
     object,
     paramMatrix=params,
     eff.sample.size=eff.sample.size,
     cond.loglik=loglik,
+    filter.mean=filt.m,
     Np=Np,
     tol=tol,
     nfail=as.integer(nfail),
@@ -276,12 +282,10 @@ mif2.pfilter <- function (object, params, Np,
   )
 }
 
-mif2.internal <- function (object, Nmif, start, Np,
-                           rw.sd, perturb.fn = NULL,
-                           tol = 1e17, max.fail = Inf,
+mif2.internal <- function (object, Nmif, start, Np, rw.sd, perturb.fn = NULL,
+                           tol = 1e17, max.fail = Inf, transform = FALSE,
                            verbose = FALSE, .ndone = 0L,
-                           .getnativesymbolinfo = TRUE,
-                           ...) {
+                           .getnativesymbolinfo = TRUE, ...) {
 
   pompLoad(object)
 
@@ -317,6 +321,10 @@ mif2.internal <- function (object, Nmif, start, Np,
 
   object <- as(object,"pomp")
 
+  if (transform)
+    paramMatrix <- partrans(object,paramMatrix,dir="toEstimationScale",
+                            .getnativesymbolinfo=gnsi)
+
   ## iterate the filtering
   for (n in seq_len(Nmif)) {
 
@@ -332,6 +340,7 @@ mif2.internal <- function (object, Nmif, start, Np,
         max.fail=max.fail,
         verbose=verbose,
         filter.mean=(n==Nmif),
+        transform=transform,
         .getnativesymbolinfo=gnsi
       ),
       silent=FALSE
@@ -349,6 +358,10 @@ mif2.internal <- function (object, Nmif, start, Np,
 
   }
 
+  if (transform)
+    pfp@paramMatrix <- partrans(object,paramMatrix,dir="fromEstimationScale",
+                                .getnativesymbolinfo=gnsi)
+
   pompUnload(object)
 
   new(
@@ -357,6 +370,7 @@ mif2.internal <- function (object, Nmif, start, Np,
     Nmif=Nmif,
     rw.sd=rw.sd,
     perturb.fn=perturb.fn,
+    transform=transform,
     conv.rec=conv.rec,
     tol=tol
   )
@@ -368,7 +382,8 @@ setMethod(
   "mif2",
   signature=signature(object="pomp"),
   definition = function (object, Nmif = 1, start, Np, rw.sd, perturb.fn,
-                         tol = 1e-17, max.fail = Inf, verbose = getOption("verbose"), transform = FALSE, ...) {
+                         tol = 1e-17, max.fail = Inf, transform = FALSE,
+                         verbose = getOption("verbose"),...) {
 
     if (missing(start)) start <- coef(object)
     if (length(start)==0)
@@ -406,14 +421,8 @@ setMethod(
       stop("number of particles, ",sQuote("Np"),", must always be positive")
 
     if (missing(perturb.fn)) {
-      ptsi <- TRUE
       perturb.fn <- function (theta, sd) {
-        if (transform) theta <- partrans(object,theta,dir="toEstimationScale",
-                                         .getnativesymbolinfo=ptsi)
         theta[names(sd),] <- rnorm(n=length(sd)*ncol(theta),mean=theta[names(sd),],sd=sd)
-        if (transform) theta <- partrans(object,theta,dir="fromEstimationScale",
-                                         .getnativesymbolinfo=ptsi)
-        ptsi <<- FALSE
         theta
       }
     } else {
@@ -468,12 +477,14 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(object="mif2d.pomp"),
-  definition = function (object, Nmif, start, Np, rw.sd, perturb.fn, tol, ...) {
+  definition = function (object, Nmif, start, Np, rw.sd, perturb.fn, tol,
+                         transform, ...) {
 
     if (missing(Nmif)) Nmif <- object@Nmif
     if (missing(start)) start <- coef(object)
     if (missing(rw.sd)) rw.sd <- object@rw.sd
     if (missing(perturb.fn)) perturb.fn <- object@perturb.fn
+    if (missing(transform)) transform <- object@transform
 
     if (missing(Np)) Np <- object@Np
     if (missing(tol)) tol <- object@tol
@@ -481,7 +492,7 @@ setMethod(
     f <- selectMethod("mif2","pomp")
 
     f(object,Nmif=Nmif,start=start,Np=Np,rw.sd=rw.sd,
-      perturb.fn=perturb.fn,tol=tol,...)
+      perturb.fn=perturb.fn,tol=tol,transform=transform,...)
   }
 )
 
@@ -625,7 +636,7 @@ save.seed <- .Random.seed
 set.seed(334388458L,kind="L'Ecuyer")
 
 estpars <- c("r","sigma","tau")
-mf <- foreach(i=1:10,
+mf <- foreach(i=1:5,
               .inorder=FALSE,
               .options.multicore=list(set.seed=TRUE)
 ) %dopar%
@@ -642,13 +653,27 @@ mf <- foreach(i=1:10,
     start=theta.guess,
     transform=TRUE,
     rw.sd=mif2.sd(
-      r=hypcool(0.02,0.95),
-      sigma=hypcool(0.02,0.95),
-      tau=hypcool(0.05,0.95)
+      r=hypcool(0.02,0.95,ntimes=101),
+      sigma=hypcool(0.02,0.95,ntimes=101),
+      tau=hypcool(0.05,0.95,ntimes=101)
     ),
     Np=2000
   )
-  m1 <- continue(m1,Nmif=50)
+  m1 <- continue(m1,Nmif=50,rw.sd=mif2.sd(
+    r=hypcool(0.02,0.8,ntimes=101),
+    sigma=hypcool(0.02,0.8,ntimes=101),
+    tau=hypcool(0.05,0.8,ntimes=101)
+  ))
+  m1 <- continue(m1,Nmif=50,rw.sd=mif2.sd(
+    r=hypcool(0.02,0.6,ntimes=101),
+    sigma=hypcool(0.02,0.6,ntimes=101),
+    tau=hypcool(0.05,0.6,ntimes=101)
+  ))
+  m1 <- continue(m1,Nmif=50,rw.sd=mif2.sd(
+    r=hypcool(0.02,0.2,ntimes=101),
+    sigma=hypcool(0.02,0.2,ntimes=101),
+    tau=hypcool(0.05,0.2,ntimes=101)
+  ))
   ll <- replicate(n=10,logLik(pfilter(m1,Np=10000)))
   list(mif=m1,ll=ll)
 }
@@ -666,6 +691,8 @@ rbind(
   truth=c(signif(theta.true[estpars],3),loglik=round(loglik.true,2))
 ) -> results.table
 
+.Random.seed <<- save.seed
+
 ## ----mif2-plot,echo=FALSE,cache=FALSE,fig.height=6-----------------------
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
@@ -674,8 +701,11 @@ log.sigma <- sapply(mf,function(x)log(conv.rec(x$mif,"sigma")))
 log.tau <- sapply(mf,function(x)log(conv.rec(x$mif,"tau")))
 matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
 matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
+abline(h=log(theta.true["r"]),lty=2)
 matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
+abline(h=log(theta.true["sigma"]),lty=2)
 matplot(log.tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(log~tau))
+abline(h=log(theta.true["tau"]),lty=2)
 par(op)
 
 ## ----first-mif-results-table,echo=FALSE,cache=FALSE----------------------
