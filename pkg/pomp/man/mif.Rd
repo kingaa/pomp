@@ -104,9 +104,10 @@
     For \code{method="mif2"}, the default is \code{ic.lag=length(times)}.
   }
   \item{var.factor}{
-    a positive number;
+    optional positive scalar;
     the scaling coefficient relating the width of the starting particle distribution to \code{rw.sd}.
     In particular, the width of the distribution of particles at the start of the first \code{mif} iteration will be \code{random.walk.sd*var.factor}.
+    By default, \code{var.factor=1}.
   }
   \item{cooling.type, cooling.fraction.50}{
     specifications for the cooling schedule, i.e., the manner in which the intensity of the parameter perturbations is reduced with successive filtering iterations.
