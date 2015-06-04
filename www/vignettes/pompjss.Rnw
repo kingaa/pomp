@@ -133,7 +133,6 @@ It is provided under the \href{http://creativecommons.org/licenses/by/3.0/}{Crea
 %% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 <<packages,include=F,cache=F>>=
-require(knitr)
 require(pomp)
 require(coda)
 require(foreach)
@@ -161,6 +160,8 @@ options(
         xtable.comment=FALSE
         )
 
+<<knitr-opts,include=F,cache=F,purl=F>>=
+require(knitr)
 opts_chunk$set(
                progress=TRUE,prompt=TRUE,highlight=FALSE,
                tidy=TRUE,

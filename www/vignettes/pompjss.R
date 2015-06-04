@@ -1,5 +1,4 @@
 ## ----packages,include=F,cache=F------------------------------------------
-require(knitr)
 require(pomp)
 require(coda)
 require(foreach)
@@ -27,33 +26,6 @@ options(
         reindent.spaces=2,
         xtable.comment=FALSE
         )
-
-opts_chunk$set(
-               progress=TRUE,prompt=TRUE,highlight=FALSE,
-               tidy=TRUE,
-               tidy.opts=list(
-                 keep.blank.line=FALSE
-                 ),
-               comment="",
-               warning=FALSE,message=FALSE,error=TRUE,
-               echo=TRUE,
-               strip.white=TRUE,
-               results="markup",
-               indent=NA,
-               background="#FFFFFF00",
-               size="normalsize",
-               fig.path="figure/pompjss-",
-               fig.lp="fig:",
-               fig.align="left",
-               fig.show="asis",
-               fig.height=5,fig.width=8,
-               dpi=300,
-               dev="png",
-               dev.args=list(
-                 bg="transparent",
-                 pointsize=12
-                 )
-               )
 
 
 ## ----set-seed,cache=F,include=F------------------------------------------
