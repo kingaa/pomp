@@ -124,9 +124,8 @@ rw.sd(\dots)
           b=rep(0.2,length(time)),
           c=ivp(0.2),
           d=ifelse(time==time[13],0.2,0),
-	  e=ivp(0.2,lag=13),
-	  f=ifelse(time<23,0.02,0)
-	}
+          e=ivp(0.2,lag=13),
+          f=ifelse(time<23,0.02,0))}
   results in perturbations of parameter \code{a} with s.d. 0.05 at every time step, while parameters \code{b} and \code{c} both get perturbations of s.d. 0.2 only before the first observation.
   Parameters \code{d} and \code{e}, by contrast, get perturbations of s.d. 0.2 only before the thirteenth observation.
   Finally, parameter \code{f} gets a random perturbation of size 0.02 before every observation falling before \eqn{t=23}.
