@@ -180,12 +180,12 @@ Loading required package: pomp
 > mf <- mif2(mf)
 > mle <- coef(mf); mle
           r           K         phi         N.0       sigma 
-  4.3268371 219.8355772   1.0220978 200.0000000   0.6898461 
+  4.2778799 513.3313256   0.4662866 200.0000000   0.6687420 
 > logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
-                     se 
--144.743699    0.301315 
+                       se 
+-147.8597938    0.2437791 
 > sim2 <- simulate(mf,nsim=10,as.data.frame=TRUE,include.data=TRUE)
 > 
 > proc.time()
    user  system elapsed 
- 77.812   0.492  80.066 
+ 77.892   0.420  80.054 

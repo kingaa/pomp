@@ -71,8 +71,7 @@ mif2.pfilter <- function (object, params, Np,
 
     ## perturb parameters
     pmag <- cooling.fn(nt,mifiter)$alpha*rw.sd[,nt]
-    params[rwnames,] <- rnorm(n=length(rwnames)*ncol(params),
-                              mean=params[rwnames,],sd=pmag)
+    params <- .Call(mif2_computations,params,pmag)
 
     if (transform)
       tparams <- partrans(object,params,dir="fromEstimationScale",

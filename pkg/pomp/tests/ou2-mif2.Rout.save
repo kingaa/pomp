@@ -156,14 +156,14 @@ Error in validObject(.Object) :
 > rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
 +       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
 +       truth=c(coef(ou2),loglik=logLik(pfilter(m1,Np=1000))))
-      alpha.1    alpha.2   alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau
-mle1      0.8 -0.4489983 0.3184109     0.9       3    -0.5       2   1
-mle2      0.8 -0.5080060 0.2439865     0.9       3    -0.5       2   1
-truth     0.8 -0.5000000 0.3000000     0.9       3    -0.5       2   1
-           x1.0     x2.0    loglik
-mle1  -1.442418 1.585629 -481.6106
-mle2  -2.696841 3.157511 -482.3154
-truth -3.000000 4.000000 -481.9939
+      alpha.1    alpha.2  alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau      x1.0
+mle1      0.8 -0.5340410 0.253315     0.9       3    -0.5       2   1 -2.205438
+mle2      0.8 -0.5023659 0.222089     0.9       3    -0.5       2   1 -2.127518
+truth     0.8 -0.5000000 0.300000     0.9       3    -0.5       2   1 -3.000000
+           x2.0    loglik
+mle1  0.8962661 -481.2306
+mle2  4.4259163 -482.6415
+truth 4.0000000 -481.0150
 > 
 > m3 <- mif2(ou2,Nmif=3,start=guess1,Np=200,
 +            cooling.fraction=0.2,
@@ -182,4 +182,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 68.756   0.088  69.231 
+ 65.808   0.092  66.257 

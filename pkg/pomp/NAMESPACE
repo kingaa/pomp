@@ -11,6 +11,7 @@ useDynLib(
           SSA_simulator,
           R_Euler_Multinom,D_Euler_Multinom,R_GammaWN,
           mif_update,
+          mif2_computations,
           pfilter_computations,
           simulation_computations,
           iterate_map,traj_transp_and_copy,
