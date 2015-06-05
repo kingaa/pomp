@@ -453,9 +453,9 @@ ggplot(data=sim1,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
 
 Iterated filtering [@Ionides2015; @Ionides2006] is a method for maximizing the likelihood by repeatedly applying a particle filter.  The following codes apply the IF2 algorithm [@Ionides2015].
 ```{r parus-mif,cache=TRUE}
-mf <- mif(parus,Nmif=50,Np=1000,method="mif2",cooling.fraction=0.8,
-          rw.sd=c(r=0.02,K=0.02,phi=0.02,sigma=0.02),transform=TRUE)
-mf <- mif(mf)
+mf <- mif2(parus,Nmif=50,Np=1000,cooling.fraction=0.8,
+           rw.sd=rw.sd(r=0.02,K=0.02,phi=0.02,sigma=0.02),transform=TRUE)
+mf <- mif2(mf)
 mle <- coef(mf); mle
 logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
 sim2 <- simulate(mf,nsim=10,as.data.frame=TRUE,include.data=TRUE)
@@ -465,7 +465,7 @@ ggplot(data=sim2,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
   geom_line()
 ```
 
-The first command runs 50 iterations of the algorithm; the second re-runs the algorithm from where the first run ended up.
+The first command runs 50 iterations of the algorithm; the second re-runs the algorithm, starting from where the first run ended up.
 The next line extracts and displays the MLE. 
 The fourth command runs 5 replicate particle filters to compute the log likelihood at the estimated parameters and averages these appropriately to get an estimate of this likelihood and of the standard Monte Carlo error.
 Finally, the above plots the data and 10 simulated realizations of the model process on the same axes.

@@ -205,9 +205,9 @@ ggplot(data=sim1,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
   geom_line()
 
 ## ----parus-mif,cache=TRUE------------------------------------------------
-mf <- mif(parus,Nmif=50,Np=1000,method="mif2",cooling.fraction=0.8,
-          rw.sd=c(r=0.02,K=0.02,phi=0.02,sigma=0.02),transform=TRUE)
-mf <- mif(mf)
+mf <- mif2(parus,Nmif=50,Np=1000,cooling.fraction=0.8,
+           rw.sd=rw.sd(r=0.02,K=0.02,phi=0.02,sigma=0.02),transform=TRUE)
+mf <- mif2(mf)
 mle <- coef(mf); mle
 logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
 sim2 <- simulate(mf,nsim=10,as.data.frame=TRUE,include.data=TRUE)
