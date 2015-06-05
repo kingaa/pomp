@@ -1,5 +1,13 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_6-_4:
+
+        • A full-featured version of IF2, an improved iterated
+          filtering algorithm, is now available as ‘mif2’.  This allows
+          a more general structure for the random perturbations applied
+          to parameters and is generally more efficient and stable than
+          IF1.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_5-_1:
 
         • The unfortunately named ‘pomp’ arguments

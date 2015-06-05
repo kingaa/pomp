@@ -1,11 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: News for package 'pomp'</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="R.css" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: News for package 'pomp'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="R.css">
 </head><body>
 
-<table width="100%" summary="page for NEWS"><tr><td>NEWS</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for NEWS"><tr><td>NEWS</td><td align="right">R Documentation</td></tr></table>
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
+
+<h3>Changes in <span class="pkg">pomp</span> version 0.66-4</h3>
+
+
+<ul>
+<li><p> A full-featured version of IF2, an improved iterated filtering algorithm, is now available as <code>mif2</code>.
+This allows a more general structure for the random perturbations applied to parameters and is generally more efficient and stable than IF1.
+</p>
+</li></ul>
+
+
 
 <h3>Changes in <span class="pkg">pomp</span> version 0.65-1</h3>
 
@@ -1546,7 +1558,7 @@ This has been accomplished through the addition of slots <code>tcovar</code>, <c
 <li> <p><code>rmeasure</code>, <code>dmeasure</code>, and <code>skeleton</code> are now specified by a function (or native routine) that does the computation for ONE state vector and ONE parameter vector.
 This is analogous to the way that <code>init.state</code> has operated from the beginning.
 It greatly simplifies model specification from the user's point of view without changing the low-level methods interfaces (pomp methods <code>rmeasure</code>, <code>dmeasure</code>, <code>skeleton</code>, <code>init.states</code>).
-However, <strong>this change is not backward-compatible</strong>: users will need to rewrite code for the <code>rmeasure</code>, <code>dmeasure</code>, and <code>skeleton</code> slots.
+However, <STRONG>this change is not backward-compatible</STRONG>: users will need to rewrite code for the <code>rmeasure</code>, <code>dmeasure</code>, and <code>skeleton</code> slots.
 In practice, this should not be difficult.
 It involves removing loops over <code>times</code> and columns of <code>params</code> and (if covariates are used in the measurement model or deterministic skeleton) making use of the <code>covars</code> argument passed to the user function.
 </p>

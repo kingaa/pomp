@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.66-4}{
+  \itemize{
+    \item A full-featured version of IF2, an improved iterated filtering algorithm, is now available as \code{mif2}.
+    This allows a more general structure for the random perturbations applied to parameters and is generally more efficient and stable than IF1.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.65-1}{
   \itemize{
     \item The unfortunately named \code{pomp} arguments \code{parameter.transform} and \code{parameter.inv.transform} have been deprecated in favor of the more mnemonic \code{toEstimationScale} and \code{fromEstimationScale}.
