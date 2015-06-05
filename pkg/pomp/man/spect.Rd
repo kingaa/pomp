@@ -124,7 +124,7 @@ spect.match(object, start, est = character(0),
     \item{detrend}{detrending option used.}
   }
   
-  \code{spect.match} returns an object of class \code{spect.matched.pomp}, which is derived from class \code{{spect.pomp}} and therefore has all the slots of that class.
+  \code{spect.match} returns an object of class \code{spect.matched.pomp}, which is derived from class \code{spect.pomp} and therefore has all the slots of that class.
   In addition, \code{spect.matched.pomp} objects have the following slots:
   \describe{
     \item{est, weights, fail.value}{values of the corresponding arguments in the call to \code{spect.match}.}

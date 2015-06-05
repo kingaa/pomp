@@ -60,7 +60,7 @@ rw.sd(\dots)
   \item{start}{
     named numerical vector;
     the starting guess of the parameters.
-    By default, \code{start=coef(object)}.
+    By default, \preformatted{start=coef(object).}
   }
   \item{Np}{
     the number of particles to use in filtering.

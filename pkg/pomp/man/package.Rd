@@ -20,7 +20,8 @@
   \enumerate{
     \item simulation of stochastic dynamical systems; see \code{\link[=simulate-pomp]{simulate}}
     \item particle filtering (AKA sequential Monte Carlo or sequential importance sampling); see \code{\link{pfilter}}
-    \item the iterated filtering method of Ionides et al. (2006, 2011, 2015); see \code{\link{mif}}
+    \item the iterated filtering methods of Ionides et al. (2006, 2011, 2015);
+    see \code{\link{mif}} and \code{\link{mif2}}
     \item the nonlinear forecasting algorithm of Kendall et al. (2005); see \code{\link{nlf}}
     \item the particle MCMC approach of Andrieu et al. (2010); see \code{\link{pmcmc}}
     \item the probe-matching method of Kendall et al. (1999, 2005); see \code{\link{probe.match}}

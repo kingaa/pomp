@@ -80,7 +80,7 @@
     This can be specified in one of four ways:
     \enumerate{
       \item as a function of prototype \preformatted{rmeasure(x,t,params,\dots)} that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
-      \item as the name of a native (compiled) routine with prototype \code{pomp_measure_model_simulator} as defined in the header file \file{pomp.h}.
+      \item as the name of a native (compiled) routine of type \preformatted{pomp_measure_model_simulator} as defined in the header file \file{pomp.h}.
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item using the formula-based \code{measurement.model} facility (see below).
       \item as a snippet of C code (via \code{\link{Csnippet}}) that draws from the observation process as above.
@@ -92,7 +92,7 @@
     This can be specified in one of four ways:
     \enumerate{
       \item as a function of prototype \preformatted{dmeasure(y,x,t,params,log,\dots)} that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
-      \item as the name of a native (compiled) routine with prototype \code{pomp_measure_model_density} as defined in the header file \file{pomp.h}.
+      \item as the name of a native (compiled) routine of type \preformatted{pomp_measure_model_density} as defined in the header file \file{pomp.h}.
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item using the formula-based \code{measurement.model} facility (see below).
       \item as a snippet of C code (via \code{\link{Csnippet}}) that computes the p.d.f. as above.
@@ -119,7 +119,7 @@
     The skeleton function can be specified in one of three ways:
     \enumerate{
       \item as an \R function of prototype \preformatted{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params},
-      \item as the name of a native (compiled) routine with prototype \code{pomp_skeleton} as defined in the header file \file{pomp.h}.
+      \item as the name of a native (compiled) routine of type \preformatted{pomp_skeleton} as defined in the header file \file{pomp.h}.
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item as a snippet of C code (via \code{\link{Csnippet}}) that performs this evaluation.
       The latter is typically the preferred option, for reasons of computational efficiency.
@@ -137,7 +137,7 @@
     This can be specified in one of three ways:
     \enumerate{
       \item as an \R function of prototype \preformatted{rprior(params,\dots)} that makes a draw from the prior distribution given \code{params},
-      \item as the name of a native (compiled) routine with prototype \code{pomp_rprior} as defined in the header file \file{pomp.h}, or
+      \item as the name of a native (compiled) routine of type \preformatted{pomp_rprior} as defined in the header file \file{pomp.h}, or
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item as a snippet of C code (via \code{\link{Csnippet}}).
     }
@@ -148,7 +148,7 @@
     This can be specified in one of three ways:
     \enumerate{
       \item as an \R function of prototype \preformatted{dprior(params,log=FALSE,\dots)} that evaluates the prior probability density,
-      \item as the name of a native (compiled) routine with prototype \code{pomp_dprior} as defined in the header file \file{pomp.h}, or
+      \item as the name of a native (compiled) routine of type \preformatted{pomp_dprior} as defined in the header file \file{pomp.h}, or
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item as a snippet of C code (via \code{\link{Csnippet}}).
     }
@@ -187,7 +187,7 @@
     When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
     \code{toEstimationScale} and \code{fromEstimationScale} are transformations from the model scale to the estimation scale, and vice versa, respectively.
     These functions must have arguments \code{params} and \code{\dots}.
-    \code{toEstimationScale} should transform parameters from the scale that \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, and \code{initializer} use internally to the scale used in estimation.
+    \code{toEstimationScale} should transform parameters from the scale that \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, and \code{skeleton} use internally to the scale used in estimation.
     \code{fromEstimationScale} should be the inverse of \code{toEstimationScale}.
     The parameter transformations can be defined (as above) using either \R functions, native routines, or \code{\link{Csnippet}}s.
 
@@ -203,7 +203,7 @@
   }
   \item{globals}{
     optional character;
-    C code that will be included in the source for (and therefore hard-coded into) the shared-object library created when the call to \code{pomp} uses \code{Csnippets}.
+    C code that will be included in the source for (and therefore hard-coded into) the shared-object library created when the call to \code{pomp} uses \code{\link{Csnippet}}s.
     If no \code{Csnippet}s are used, \code{globals} has no effect.
   }
   \item{\dots}{
@@ -277,7 +277,7 @@
 }
 \section{The observation process model}{
   The following is a guide to writing the measurement model components as \R functions.
-  For a description on how to write these components using \code{Csnippet}s, see the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  For a description on how to write these components using \code{\link{Csnippet}}s, see the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
   \describe{
     \item{\code{rmeasure}}{
       if provided, must take at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
@@ -304,7 +304,7 @@
 }
 \section{The deterministic skeleton}{
   The following describes how to specify the deterministic skeleton as an \R function.
-  For a description on how to write this component using \code{Csnippet}s, see the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  For a description on how to write this component using \code{\link{Csnippet}}s, see the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website} and the \code{\link{Csnippet}} help.
 
   If \code{skeleton} if provided, must have at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
   \code{x} is a numeric vector containing the coordinates of a point in state space at which evaluation of the skeleton is desired.
