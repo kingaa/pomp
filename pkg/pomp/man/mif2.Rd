@@ -29,22 +29,21 @@
 \alias{[,mif2List-method}
 \alias{rw.sd}
 \description{
-  An iterated filtering algorithm for estimating the parameters of a partially-observed Markov process.
-  Running \code{mif2} causes the improved iterated filtering algorithm (IF2) to run for a specified number of particle-filter iterations.
+  An improved iterated filtering algorithm for estimating the parameters of a partially-observed Markov process.
+  Running \code{mif2} causes the algorithm to run for a specified number of particle-filter iterations.
   At each iteration, the particle filter is performed on a perturbed version of the model.
   Specifically, parameters to be estimated are subjected to random perturbations at each observation.
-  This extra variability effectively smooths the likelihood surface and introduces diversity into the population of particles to combat depletion.
-  At the iterations progress, the magnitude of the perturbations is diminished according to a user-specified cooling schedule.
+  This extra variability effectively smooths the likelihood surface and introduces diversity into the particle population to combat depletion.
+  As the iterations progress, the magnitude of the perturbations is diminished according to a user-specified cooling schedule.
   The algorithm is presented and justified in Ionides et al. (2015).
 }
 \usage{
 \S4method{mif2}{pomp}(object, Nmif = 1, start, Np, rw.sd, transform = FALSE,
-    cooling.type = c("hyperbolic", "geometric"),
-    cooling.fraction.50, tol = 1e-17, max.fail = Inf,
-    verbose = getOption("verbose"), \dots)
+    cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
+    tol = 1e-17, max.fail = Inf, verbose = getOption("verbose"), \dots)
 \S4method{mif2}{pfilterd.pomp}(object, Nmif = 1, Np, tol, \dots)
-\S4method{mif2}{mif2d.pomp}(object, Nmif, start, Np, rw.sd,
-    transform, cooling.type, cooling.fraction.50, tol, \dots)
+\S4method{mif2}{mif2d.pomp}(object, Nmif, start, Np, rw.sd, transform,
+    cooling.type, cooling.fraction.50, tol, \dots)
 \S4method{continue}{mif2d.pomp}(object, Nmif = 1, \dots)
 \S4method{conv.rec}{mif2d.pomp}(object, pars, transform = FALSE, \dots)
 \S4method{conv.rec}{mif2List}(object, \dots)
@@ -67,10 +66,10 @@ rw.sd(\dots)
     This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
     Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object,t0=TRUE))}) or as a function taking a positive integer argument.
     In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
-    \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
-    \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
-    and so on, while when \code{T=length(time(object,t0=TRUE))},
-    \code{Np(T)} is the number of particles to sample at the end of the time-series.
+    \code{Np(1)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
+    \code{Np(2)}, from \code{time(object)[1]} to \code{time(object)[2]},
+    and so on.
+    \strong{Note that this behavior differs from that of \code{\link{mif}}!}
   }
   \item{rw.sd}{
     specification of the magnitude of the random-walk perturbations that will be applied to some or all model parameters.
@@ -92,11 +91,7 @@ rw.sd(\dots)
   \item{cooling.type, cooling.fraction.50}{
     specifications for the cooling schedule, i.e., the manner in which the intensity of the parameter perturbations is reduced with successive filtering iterations.
     \code{cooling.type} specifies the nature of the cooling schedule.
-
-    When \code{cooling.type="geometric"}, on the n-th \code{mif} iteration, the relative perturbation intensity is \code{cooling.fraction.50^(n/50)}.
-
-    When \code{cooling.type="hyperbolic"}, on the n-th \code{mif} iteration, the relative perturbation intensity is \code{(s+1)/(s+n)}, where \code{(s+1)/(s+50)=cooling.fraction.50}.
-    \code{cooling.fraction.50} is the relative magnitude of the parameter perturbations after 50 \code{mif} iterations.
+    See below (under \dQuote{Specifying the perturbations}) for more detail.
   }
   \item{tol, max.fail}{
     passed to the particle filter.
@@ -114,7 +109,7 @@ rw.sd(\dots)
   Upon successful completion, \code{mif2} returns an object of class \code{mif2d.pomp}.
   This class inherits from the \code{\link{pfilterd.pomp}} and \code{\link{pomp}} classes.
 }
-\section{The \code{rw.sd} function}{
+\section{Specifying the perturbations: the \code{rw.sd} function}{
   This function simply returns a list containing its arguments as unevaluated expressions.
   These are then evaluated in a context containing the model \code{time} variable.
   This allows for easy specification of the structure of the perturbations that are to be applied.
@@ -129,6 +124,16 @@ rw.sd(\dots)
   results in perturbations of parameter \code{a} with s.d. 0.05 at every time step, while parameters \code{b} and \code{c} both get perturbations of s.d. 0.2 only before the first observation.
   Parameters \code{d} and \code{e}, by contrast, get perturbations of s.d. 0.2 only before the thirteenth observation.
   Finally, parameter \code{f} gets a random perturbation of size 0.02 before every observation falling before \eqn{t=23}.
+
+  On the \eqn{m}-th IF2 iteration, prior to time-point \eqn{k}, the \eqn{d}-th parameter is given a random increment normally distributed with mean \eqn{0} and standard deviation \eqn{c_{m,n} \sigma_{d,n}}{c[m,n] sigma[d,n]}, where \eqn{c} is the cooling schedule and \eqn{\sigma}{sigma} is specified using \code{rw.sd}, as described above.
+  Let \eqn{N} be the length of the time series and \eqn{\alpha=}{alpha=}\code{cooling.fraction.50}.
+  Then, when \code{cooling.type="geometric"}, we have
+  \deqn{c_{m,n}=\alpha^{\frac{n-1+(m-1)N}{50N}}.}{c[m,n]=alpha^((n-1+(m-1)N)/(50N)).}
+  When \code{cooling.type="hyperbolic"}, we have
+  \deqn{c_{m,n}=\frac{s+1}{s+n+(m-1)N},}{c[m,n]=(s+1)/(s+n+(m-1)N),}
+  where \eqn{s} satisfies
+  \deqn{\frac{s+1}{s+50N}=\alpha.}{(s+1)/(s+50N)=alpha.}
+  Thus, in either case, the perturbations at the end of 50 IF2 iterations are a fraction \eqn{\alpha}{alpha} smaller than they are at first.
 }
 \section{Re-running \code{mif2} Iterations}{
   To re-run a sequence of \code{mif2} iterations, one can use the \code{mif2} method on a \code{mif2d.pomp} object.
@@ -159,24 +164,6 @@ rw.sd(\dots)
       Plots a series of diagnostic plots when applied to a \code{mif2d.pomp} or \code{mif2List} object.
     }
   }
-}
-\section{Details}{
-  If \code{particles} is not specified, the default behavior is to draw the particles from a multivariate normal distribution.
-  \strong{It is the user's responsibility to ensure that, if the optional \code{particles} argument is given, that the \code{particles} function satisfies the following conditions:}
-
-  \code{particles} has at least the following arguments:
-  \code{Np}, \code{center}, \code{sd}, and \code{\dots}.
-  \code{Np} may be assumed to be a positive integer;
-  \code{center} and \code{sd} will be named vectors of the same length.
-  Additional arguments may be specified;
-  these will be filled with the elements of the \code{userdata} slot of the underlying \code{pomp} object (see \code{\link{pomp}}).
-
-  \code{particles} returns a \code{length(center)} x \code{Np} matrix with rownames matching the names of \code{center} and \code{sd}.
-  Each column represents a distinct particle.
-
-  The center of the particle distribution returned by \code{particles} should be \code{center}.
-  The width of the particle distribution should vary monotonically with \code{sd}.
-  In particular, when \code{sd=0}, the \code{particles} should return matrices with \code{Np} identical columns, each given by the parameters specified in \code{center}.
 }
 \examples{
 \dontrun{
