@@ -10,6 +10,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   if (is.null(dir)) dir <- tempdir()
 
   if (missing(globals)) globals <- character(0)
+  if (is(globals,"Csnippet")) globals <- globals@text
 
   name <- cleanForC(name)
   statenames <- cleanForC(statenames)
