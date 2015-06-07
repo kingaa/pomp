@@ -17,6 +17,8 @@ Type 'q()' to quit R.
 
 > library(pomp)
 > 
+> set.seed(1178744046L)
+> 
 > pompExample(ou2)
 newly created object(s):
  ou2 
@@ -136,4 +138,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 23.849   0.080  24.151 
+ 23.761   0.072  24.043 

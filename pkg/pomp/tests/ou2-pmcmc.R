@@ -1,5 +1,7 @@
 library(pomp)
 
+set.seed(1178744046L)
+
 pompExample(ou2)
 
 dprior.ou2 <- function (params, log, ...) {

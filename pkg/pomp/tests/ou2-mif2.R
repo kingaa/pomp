@@ -131,7 +131,7 @@ m3 <- mif2(ou2,Nmif=3,start=guess1,Np=200,
            rw.sd=rw.sd(
              x1.0=c(0.5,rep(0.2,99)),
              x2.0=ivp(0.5),
-             alpha.2=if (time==1) 0.2 else 0.1,
+             alpha.2=ifelse(time==1,0.2,0.1),
              alpha.3=0.2*(time<10)))
 
 dev.off()

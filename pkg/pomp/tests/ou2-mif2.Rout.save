@@ -170,11 +170,8 @@ truth 4.0000000 -481.0150
 +            rw.sd=rw.sd(
 +              x1.0=c(0.5,rep(0.2,99)),
 +              x2.0=ivp(0.5),
-+              alpha.2=if (time==1) 0.2 else 0.1,
++              alpha.2=ifelse(time==1,0.2,0.1),
 +              alpha.3=0.2*(time<10)))
-Warning message:
-In if (time == 1) 0.2 else 0.1 :
-  the condition has length > 1 and only the first element will be used
 > 
 > dev.off()
 null device 
@@ -182,4 +179,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 65.808   0.092  66.257 
+ 65.656   0.092  66.121 
