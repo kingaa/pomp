@@ -30,10 +30,9 @@
 \alias{rw.sd}
 \description{
   An improved iterated filtering algorithm for estimating the parameters of a partially-observed Markov process.
-  Running \code{mif2} causes the algorithm to run for a specified number of particle-filter iterations.
-  At each iteration, the particle filter is performed on a perturbed version of the model.
-  Specifically, parameters to be estimated are subjected to random perturbations at each observation.
-  This extra variability effectively smooths the likelihood surface and introduces diversity into the particle population to combat depletion.
+  Running \code{mif2} causes the algorithm to perform a specified number of particle-filter iterations.
+  At each iteration, the particle filter is performed on a perturbed version of the model, in which the parameters to be estimated are subjected to random perturbations at each observation.
+  This extra variability effectively smooths the likelihood surface and combats particle depletion by introducing diversity into particle population.
   As the iterations progress, the magnitude of the perturbations is diminished according to a user-specified cooling schedule.
   The algorithm is presented and justified in Ionides et al. (2015).
 }
@@ -64,7 +63,7 @@ rw.sd(\dots)
   \item{Np}{
     the number of particles to use in filtering.
     This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
-    Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object,t0=TRUE))}) or as a function taking a positive integer argument.
+    Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object))}) or as a function taking a positive integer argument.
     In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
     \code{Np(1)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
     \code{Np(2)}, from \code{time(object)[1]} to \code{time(object)[2]},

@@ -54,6 +54,7 @@ mif2.pfilter <- function (object, params, Np,
   verbose <- as.logical(verbose)
   filter.mean <- as.logical(filter.mean)
   mifiter <- as.integer(mifiter)
+  Np <- c(Np,Np[1L])
   Np <- as.integer(Np)
 
   times <- time(object,t0=TRUE)
@@ -308,7 +309,6 @@ setMethod(
               stop(sQuote("mif2")," error: ",sQuote("start")," must be a named vector",
                    call.=FALSE)
 
-
             ntimes <- length(time(object))
 
             if (missing(Np)) {
@@ -325,16 +325,14 @@ setMethod(
               stop(sQuote("mif2")," error: ",sQuote("Np"),
                    " must be a number, a vector of numbers, or a function")
             if (length(Np)==1) {
-              Np <- rep(Np,times=ntimes+1)
-            } else if (length(Np)==ntimes) {
-              Np <- c(Np,Np[1L])
+              Np <- rep(Np,times=ntimes)
             } else if (length(Np)>ntimes) {
-              if (Np[1L] != Np[ntimes+1])
-                stop(sQuote("mif2")," error: Np[ntimes+1] != Np[1]")
-              if (length(Np)>ntimes+1)
+              if (Np[1L] != Np[ntimes+1] || length(Np) > ntimes+1) {
                 warning("in ",sQuote("mif2"),": Np[k] ignored for k > ntimes")
+              }
+              Np <- head(Np,ntimes)
             }
-            if (any(Np<=0))
+            if (any(Np <= 0))
               stop("number of particles, ",sQuote("Np"),", must always be positive")
 
             cooling.type <- match.arg(cooling.type)
