@@ -190,7 +190,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x343cff8>
+<environment: 0x3dd6360>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -199,7 +199,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x3479380>
+<environment: 0x3e1ce38>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -272,7 +272,7 @@ parameter(s):
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.7381604 secs
+Time difference of 0.75108 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -289,7 +289,7 @@ Time difference of 0.7381604 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.4446917 secs
+Time difference of 0.4465754 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -333,7 +333,7 @@ variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
 > 
 > ## now repeat using the compiled native codes built into the package
 > pompExample(euler.sir)
-in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > po <- euler.sir
@@ -344,7 +344,7 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.498907 secs
+Time difference of 2.476219 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -352,7 +352,7 @@ Time difference of 2.498907 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01583052 secs
+Time difference of 0.01562929 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -406,7 +406,7 @@ null device
 > ## test of vectorfield integrator
 > 
 > pompExample(euler.sir)
-in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > 
@@ -450,4 +450,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
-  4.624   0.056   4.894 
+  4.596   0.056   4.826 

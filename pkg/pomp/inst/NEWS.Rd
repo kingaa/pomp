@@ -6,6 +6,13 @@
     This allows a more general structure for the random perturbations applied to parameters and is generally more efficient and stable than IF1.
   }
 }
+\section{Changes in \pkg{pomp} version 0.65-2}{
+  \itemize{
+    \item In the \code{pomp} constructor, unrecognized arguments are stored internally for use with user-supplied model functions.
+    As of this version, an informative message is generated when this happens.
+    Previously, this silent behavior was a source of confusion for some users.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.65-1}{
   \itemize{
     \item The unfortunately named \code{pomp} arguments \code{parameter.transform} and \code{parameter.inv.transform} have been deprecated in favor of the more mnemonic \code{toEstimationScale} and \code{fromEstimationScale}.

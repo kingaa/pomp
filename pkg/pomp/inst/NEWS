@@ -8,6 +8,14 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_6-_4
           to parameters and is generally more efficient and stable than
           IF1.
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_5-_2:
+
+        • In the ‘pomp’ constructor, unrecognized arguments are stored
+          internally for use with user-supplied model functions.  As of
+          this version, an informative message is generated when this
+          happens.  Previously, this silent behavior was a source of
+          confusion for some users.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_5-_1:
 
         • The unfortunately named ‘pomp’ arguments

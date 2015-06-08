@@ -43,7 +43,7 @@ particle filter log likelihood at truth
   -479.61      0.46 
 > 
 > pompExample(euler.sir)
-in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > pf <- pfilter(euler.sir,Np=100,seed=394343L)
@@ -76,4 +76,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  8.196   0.048   8.417 
+  8.224   0.052   8.455 

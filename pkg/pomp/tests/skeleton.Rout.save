@@ -41,7 +41,7 @@ newly created object(s):
 > ## non-autonomous case
 > 
 > pompExample(euler.sir)
-in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > euler.sir <- simulate(euler.sir,seed=266045243L)
@@ -93,4 +93,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.660   0.044   0.811 
+  0.644   0.068   0.813 

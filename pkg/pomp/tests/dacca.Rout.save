@@ -20,7 +20,7 @@ Type 'q()' to quit R.
 > set.seed(1420306530L)
 > 
 > pompExample(dacca)
-in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nrstage','all.state.names','comp.names','comp.ic.names'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nrstage','all.state.names','comp.names','comp.ic.names'
 newly created object(s):
  dacca 
 > 
@@ -106,4 +106,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
- 10.412   0.040  10.482 
+ 10.344   0.068  10.445 

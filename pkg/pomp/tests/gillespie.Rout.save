@@ -115,7 +115,7 @@ Type 'q()' to quit R.
 105 0.1666667
 > 
 > pompExample(gillespie.sir)
-in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
 newly created object(s):
  gillespie.sir 
 > 
@@ -130,4 +130,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
-  2.372   0.056   2.454 
+  2.396   0.040   2.574 

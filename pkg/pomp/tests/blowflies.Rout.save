@@ -18,8 +18,8 @@ Type 'q()' to quit R.
 > library(pomp)
 > 
 > pompExample(blowflies)
-in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
-in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
 newly created object(s):
  blowflies1 blowflies2 
 > 
@@ -72,4 +72,4 @@ variable [,1]
 > 
 > proc.time()
    user  system elapsed 
-  1.172   0.044   1.218 
+  1.144   0.048   1.193 

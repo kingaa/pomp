@@ -67,4 +67,4 @@ Use 'toEstimationScale' instead.
 > 
 > proc.time()
    user  system elapsed 
-  0.472   0.052   0.520 
+  0.444   0.076   0.521 

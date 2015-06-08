@@ -54,7 +54,6 @@ mif2.pfilter <- function (object, params, Np,
   verbose <- as.logical(verbose)
   filter.mean <- as.logical(filter.mean)
   mifiter <- as.integer(mifiter)
-  Np <- c(Np,Np[1L])
   Np <- as.integer(Np)
 
   times <- time(object,t0=TRUE)
@@ -203,6 +202,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
   transform <- as.logical(transform)
   verbose <- as.logical(verbose)
   gnsi <- as.logical(.getnativesymbolinfo)
+  Np <- c(Np,Np[1L])
 
   cooling.fn <- mif.cooling.function(
                                      type=cooling.type,
