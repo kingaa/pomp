@@ -126,11 +126,19 @@
     }
   }
   \item{initializer}{
-    optional function of prototype \preformatted{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
+    The initializer gives the parameterization of the initial state of the unobserved Markov process.
+    Specifically, given a vector of parameters, \code{params} and an initial time, \code{t0}, the initializer determines the state vector at time \code{t0}.
 
     By default, any parameters in \code{params}, the names of which end in \dQuote{\code{.0}}, are assumed to be initial values of states.
     To initialize the unobserved state process, these are simply copied over as initial conditions.
     The names of the resulting state variables are obtained by dropping the \dQuote{\code{.0}} suffix.
+
+    A custom initializer can be supplied here in one of two formats:
+    \enumerate{
+      \item as an \R function of prototype \preformatted{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
+      \item as a snippet of C code (via \code{\link{Csnippet}}).
+      See the \code{\link{Csnippet}} help for rules on writing a custom initializer.
+    }
   }
   \item{rprior}{
     optional; function drawing a sample from a prior distribution on parameters.
