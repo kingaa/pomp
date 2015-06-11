@@ -2,6 +2,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
                           statenames, paramnames, covarnames, obsnames,
                           rmeasure, dmeasure, step.fn, skeleton,
                           fromEstimationScale, toEstimationScale,
+                          initializer,
                           rprior, dprior, globals,
                           verbose = getOption("verbose",FALSE))
 {
@@ -64,6 +65,14 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   ## list of functions to register
   registry <- c("load_stack_incr","load_stack_decr")
+
+  ## initializer function
+  if (!missing(initializer)) {
+    registry <- c(registry,"initializer")
+    cat(file=out,render(header$initializer,name=name))
+    cat(file=out,callable.decl(initializer))
+    cat(file=out,initializer,footer$initializer)
+  }
 
   ## parameter transformation function
   if (!missing(fromEstimationScale)) {
@@ -317,6 +326,7 @@ header <- list(
                dmeasure= "\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
                step.fn="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
                skeleton="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
+               initializer="\nvoid __pomp_initializer (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
                fromEstimationScale="\nvoid __pomp_par_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
                toEstimationScale="\nvoid __pomp_par_untrans (double *__pt, const double *__p, const int *__parindex)\n{\n",
                rprior="\nvoid __pomp_rprior (double *__p, const int *__parindex)\n{\n",
@@ -328,6 +338,7 @@ fnames <- list(
                dmeasure= "__pomp_dmeasure",
                step.fn="__pomp_stepfn",
                skeleton="__pomp_skelfn",
+               skeleton="__pomp_initializer",
                fromEstimationScale="__pomp_par_trans",
                toEstimationScale="__pomp_par_untrans",
                rprior="__pomp_rprior",
@@ -348,6 +359,7 @@ footer <- list(
                dmeasure="\n}\n\n",
                step.fn="\n}\n\n",
                skeleton="\n}\n\n",
+               initializer="\n}\n\n",
                fromEstimationScale="\n}\n\n",
                toEstimationScale="\n}\n\n",
                rprior="\n}\n\n",

@@ -46,8 +46,6 @@ pomp(
        "S.0","I.0","R.0"
        ),
      zeronames=c("cases"),
-     comp.names=c("S","I","R"),
-     ic.names=c("S.0","I.0","R.0"),
      nbasis=1L,
      degree=0L,
      period=1.0,
@@ -66,14 +64,7 @@ pomp(
        params[logitvar] <- plogis(params[logitvar])
        params
      },
-     initializer=function(params, t0, comp.names, ic.names, ...) {
-       snames <- c("S","I","R","cases","W")
-       fracs <- params[ic.names]
-       x0 <- numeric(length(snames))
-       names(x0) <- snames
-       x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
-       x0
-     }
+     initializer="_sir_init"
      ) -> bbs
 
 c("bbs")

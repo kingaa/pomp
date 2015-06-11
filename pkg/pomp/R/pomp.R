@@ -142,11 +142,25 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
   storage.mode(tcovar) <- "double"
   storage.mode(covar) <- "double"
   
-  ## check initializer
-  if (missing(initializer)) initializer <- default.initializer
-  if (!is.function(initializer))
-    stop("pomp error: ",sQuote("initializer")," must be a function")
+  ## handle initializer
+  default.init <- missing(initializer) || (is(initializer,"pomp.fun") && initializer@mode == pompfunmode$undef)
 
+  if (default.init) {
+    initializer <- pomp.fun()
+  } else {
+    initializer <- pomp.fun(
+                            f=initializer,
+                            PACKAGE=PACKAGE,
+                            proto=quote(initializer(params,t0,...)),
+                            slotname="initializer",
+                            libname=libname,
+                            statenames=statenames,
+                            paramnames=paramnames,
+                            obsnames=obsnames,
+                            covarnames=covarnames
+                            )
+  }
+  
   ## default rprocess & dprocess
   if (missing(rprocess))
     rprocess <- function (xstart,times,params,...) stop(sQuote("rprocess")," not specified")
@@ -173,6 +187,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     snips <- c(snips,fromEstimationScale=fromEstimationScale@text)
   if (is(toEstimationScale,"Csnippet"))
     snips <- c(snips,toEstimationScale=toEstimationScale@text)
+  if (is(initializer,"Csnippet"))
+    snips <- c(snips,initializer=initializer@text)
   if (length(snips)>0) {
     libname <- try(
                    do.call(
@@ -412,6 +428,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
       data = data,
       times = times,
       t0 = t0,
+      default.init = default.init,
       initializer = initializer,
       params = params,
       covar = covar,

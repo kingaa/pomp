@@ -1,14 +1,3 @@
-## this is the initial-condition setting function that is used by default
-## it simply finds all parameters in the vector 'params' that have a name ending in '.0'
-## and returns a vector with their values with names stripped of '.0'
-default.initializer <- function (params, t0, ...) {
-  ivpnames <- grep("\\.0$",names(params),value=TRUE)
-  if (length(ivpnames)<1)
-    stop("default initializer error: no parameter names ending in ",
-         sQuote(".0")," found: see ",sQuote("pomp")," documentation")
-  setNames(params[ivpnames],sub("\\.0$","",ivpnames))
-}
-
 ## define the pomp class
 setClass(
          'pomp',
@@ -25,7 +14,8 @@ setClass(
            skeleton.type = 'character',
            skeleton = 'pomp.fun',
            skelmap.delta.t = 'numeric',
-           initializer = 'function',
+           default.init = 'logical',
+           initializer = 'pomp.fun',
            states = 'array',
            params = 'numeric',
            covar = 'matrix',
@@ -50,7 +40,8 @@ setClass(
            skeleton.type="map",
            skeleton=pomp.fun(),
            skelmap.delta.t=as.numeric(NA),
-           initializer=default.initializer,
+           default.init=TRUE,
+           initializer=pomp.fun(),
            states=array(data=numeric(0),dim=c(0,0)),
            params=numeric(0),
            covar=array(data=numeric(0),dim=c(0,0)),
@@ -95,14 +86,6 @@ setClass(
                               paste(
                                     sQuote("dprocess"),"must be a function of prototype",
                                     sQuote("dprocess(x,times,params,log,...)")
-                                    )
-                              )
-           if (!all(c('params','t0','...')%in%names(formals(object@initializer))))
-             retval <- append(
-                              retval,
-                              paste(
-                                    sQuote("initializer"),"must be a function of prototype",
-                                    sQuote("initializer(params,t0,...)")
                                     )
                               )
            if (length(object@tcovar)!=nrow(object@covar)) {

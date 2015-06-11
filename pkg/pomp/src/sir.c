@@ -70,6 +70,18 @@ void _sir_par_trans (double *pt, double *p, int *parindex)
   from_log_barycentric(pt+parindex[7],&S0,3);
 }
 
+void _sir_init (double *x, const double *p, double t, 
+		const int *stateindex, const int *parindex, const int *covindex,
+		const double *covars) {
+  double m;
+  m = POPSIZE/(S0+I0+R0);
+  SUSC = nearbyint(m*S0);
+  INFD = nearbyint(m*I0);
+  RCVD = nearbyint(m*R0);
+  CASE = 0;
+  W = 0;
+}
+
 void _sir_binom_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
 			  int *obsindex, int *stateindex, int *parindex, int *covindex,
 			  int ncovars, double *covars, double t) {

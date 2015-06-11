@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.67-1}{
+  \itemize{
+    \item A 'pomp' object's initializer can now be specified as a Csnippet.
+    \item The default initializer is now considerably faster.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.66-4}{
   \itemize{
     \item A full-featured version of IF2, an improved iterated filtering algorithm, is now available as \code{mif2}.

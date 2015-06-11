@@ -50,7 +50,7 @@ SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t);
 SEXP systematic_resampling(SEXP weights);
 
 // initstate.c
-SEXP do_init_state (SEXP object, SEXP params, SEXP t0);
+SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi);
 
 // rprocess.c
 SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset, SEXP gnsi);
