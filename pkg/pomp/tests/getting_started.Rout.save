@@ -188,4 +188,4 @@ Loading required package: pomp
 > 
 > proc.time()
    user  system elapsed 
- 77.372   0.508  80.185 
+ 75.636   0.428  77.786 

@@ -18,7 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 > 
 > pompExample(bbs)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period','logvar','logitvar'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period','logvar','logitvar'
 newly created object(s):
  bbs 
 > 
@@ -72,4 +72,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
-  5.836   0.080   5.930 
+  5.636   0.048   5.699 

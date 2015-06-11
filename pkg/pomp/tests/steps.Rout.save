@@ -29,7 +29,7 @@ newly created object(s):
 > stopifnot(identical(x,y))
 > 
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > tm <- sort(runif(n=100,max=1))
@@ -58,4 +58,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
-  0.476   0.052   0.526 
+  0.492   0.052   0.541 
