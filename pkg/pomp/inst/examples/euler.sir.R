@@ -220,7 +220,7 @@ pomp(
        beta1=400,beta2=480,beta3=320,
        beta.sd=1e-3,
        pop=2.1e6,
-       rho=0.6,overdisp=1,
+       rho=0.6,
        S.0=26/400,I.0=0.001,R.0=1-26/400
        ),
      rprocess=euler.sim(
@@ -236,7 +236,7 @@ pomp(
      statenames=c("S","I","R","cases","W"),
      paramnames=c(
        "gamma","mu","iota",
-       "beta1","beta.sd","pop","rho","overdisp",
+       "beta1","beta.sd","pop","rho",
        "S.0","I.0","R.0"
        ),
      zeronames=c("cases"),

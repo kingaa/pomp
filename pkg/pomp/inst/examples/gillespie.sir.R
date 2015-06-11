@@ -575,8 +575,7 @@ pomp(
      degree=3L,
      period=1.0,
      initializer=function(params, t0, comp.names, ic.names, ...) {
-       x0 <- numeric(5)
-       names(x0) <- c("S","I","R","N","cases")
+       x0 <- setNames(numeric(5),c("S","I","R","N","cases"))
        fracs <- params[ic.names]
        x0["N"] <- params["pop"]
        x0[comp.names] <- round(params["pop"]*fracs/sum(fracs))

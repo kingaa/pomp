@@ -42,7 +42,7 @@ pomp(
      statenames=c("S","I","R","cases","W"),
      paramnames=c(
        "gamma","mu","iota",
-       "beta","beta.sd","pop","rho","sigma",
+       "beta","beta.sd","pop","rho",
        "S.0","I.0","R.0"
        ),
      zeronames=c("cases"),
