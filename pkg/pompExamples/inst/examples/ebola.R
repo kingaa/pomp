@@ -163,6 +163,18 @@ skel <- Csnippet('
   DN_IR = gamma * I;
 ')
 
+initlzr <- Csnippet("
+  int j;
+  double m, *E;
+  E = &E1;
+  m = N/(S_0+E_0+I_0+R_0);
+  S = nearbyint(m*S_0);
+  I = nearbyint(m*I_0);
+  R = nearbyint(m*R_0);
+  m = nearbyint(m*E_0/nstageE);
+  for (j = 0; j < nstageE; j++) E[j] = m;
+")
+
 
 ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfrica"),
                         data = NULL,
@@ -219,26 +231,18 @@ ebolaModel <- function (country=c("Guinea", "SierraLeone", "Liberia", "WestAfric
        params=theta,
        globals=globs,
        obsnames=c("cases","deaths"),
-       statenames=c("S","E1","I","R","N_EI","N_IR"),
+       statenames=c("S",sprintf("E%d",1:nstageE),"I","R","N_EI","N_IR"),
        zeronames=if (type=="raw") c("N_EI","N_IR") else character(0),
        paramnames=c("N","R0","alpha","gamma","rho","k","cfr",
          "S_0","E_0","I_0","R_0"),
-       nstageE=nstageE,
        dmeasure=if (least.sq) dObsLS else dObs,
        rmeasure=if (least.sq) rObsLS else rObs,
        rprocess=discrete.time.sim(step.fun=rSim,delta.t=timestep),
        skeleton=skel,
        skeleton.type="vectorfield",
-       parameter.transform=partrans,
-       parameter.inv.transform=paruntrans,
-       initializer=function (params, t0, nstageE, ...) {
-         all.state.names <- c("S",paste0("E",1:nstageE),"I","R","N_EI","N_IR")
-         comp.names <- c("S",paste0("E",1:nstageE),"I","R")
-         x0 <- setNames(numeric(length(all.state.names)),all.state.names)
-         frac <- c(params["S_0"],rep(params["E_0"]/nstageE,nstageE),params["I_0"],params["R_0"])
-         x0[comp.names] <- round(params["N"]*frac/sum(frac))
-         x0
-       }
+       fromEstimationScale=partrans,
+       toEstimationScale=paruntrans,
+       initializer=initlzr
        ) -> po
 }
 

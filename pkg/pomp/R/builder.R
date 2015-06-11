@@ -338,7 +338,7 @@ fnames <- list(
                dmeasure= "__pomp_dmeasure",
                step.fn="__pomp_stepfn",
                skeleton="__pomp_skelfn",
-               skeleton="__pomp_initializer",
+               initializer="__pomp_initializer",
                fromEstimationScale="__pomp_par_trans",
                toEstimationScale="__pomp_par_untrans",
                rprior="__pomp_rprior",

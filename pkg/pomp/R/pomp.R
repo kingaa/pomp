@@ -144,22 +144,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
   
   ## handle initializer
   default.init <- missing(initializer) || (is(initializer,"pomp.fun") && initializer@mode == pompfunmode$undef)
-
-  if (default.init) {
-    initializer <- pomp.fun()
-  } else {
-    initializer <- pomp.fun(
-                            f=initializer,
-                            PACKAGE=PACKAGE,
-                            proto=quote(initializer(params,t0,...)),
-                            slotname="initializer",
-                            libname=libname,
-                            statenames=statenames,
-                            paramnames=paramnames,
-                            obsnames=obsnames,
-                            covarnames=covarnames
-                            )
-  }
+  if (default.init) initializer <- pomp.fun()
   
   ## default rprocess & dprocess
   if (missing(rprocess))
@@ -218,6 +203,21 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     }
   } else {
     libname <- ''
+  }
+  
+  ## handle initializer
+  if (!default.init) {
+    initializer <- pomp.fun(
+                            f=initializer,
+                            PACKAGE=PACKAGE,
+                            proto=quote(initializer(params,t0,...)),
+                            slotname="initializer",
+                            libname=libname,
+                            statenames=statenames,
+                            paramnames=paramnames,
+                            obsnames=obsnames,
+                            covarnames=covarnames
+                            )
   }
   
   ## handle rprocess
