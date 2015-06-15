@@ -64,7 +64,7 @@ rw.sd(\dots)
     the number of particles to use in filtering.
     This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
     Alternatively, if one wishes the number of particles to vary across timestep, one may specify \code{Np} either as a vector of positive integers (of length \code{length(time(object))}) or as a function taking a positive integer argument.
-    In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
+    In the latter case, \code{Np(n)} must be a single positive integer, representing the number of particles to be used at the \code{n}-th timestep:
     \code{Np(1)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
     \code{Np(2)}, from \code{time(object)[1]} to \code{time(object)[2]},
     and so on.
@@ -115,7 +115,7 @@ rw.sd(\dots)
   For example,
   \preformatted{
     rw.sd(a=0.05,
-          b=rep(0.2,length(time)),
+          b=ifelse(0.2,time==time[1],0),
           c=ivp(0.2),
           d=ifelse(time==time[13],0.2,0),
           e=ivp(0.2,lag=13),
@@ -124,7 +124,7 @@ rw.sd(\dots)
   Parameters \code{d} and \code{e}, by contrast, get perturbations of s.d. 0.2 only before the thirteenth observation.
   Finally, parameter \code{f} gets a random perturbation of size 0.02 before every observation falling before \eqn{t=23}.
 
-  On the \eqn{m}-th IF2 iteration, prior to time-point \eqn{k}, the \eqn{d}-th parameter is given a random increment normally distributed with mean \eqn{0} and standard deviation \eqn{c_{m,n} \sigma_{d,n}}{c[m,n] sigma[d,n]}, where \eqn{c} is the cooling schedule and \eqn{\sigma}{sigma} is specified using \code{rw.sd}, as described above.
+  On the \eqn{m}-th IF2 iteration, prior to time-point \eqn{n}, the \eqn{d}-th parameter is given a random increment normally distributed with mean \eqn{0} and standard deviation \eqn{c_{m,n} \sigma_{d,n}}{c[m,n] sigma[d,n]}, where \eqn{c} is the cooling schedule and \eqn{\sigma}{sigma} is specified using \code{rw.sd}, as described above.
   Let \eqn{N} be the length of the time series and \eqn{\alpha=}{alpha=}\code{cooling.fraction.50}.
   Then, when \code{cooling.type="geometric"}, we have
   \deqn{c_{m,n}=\alpha^{\frac{n-1+(m-1)N}{50N}}.}{c[m,n]=alpha^((n-1+(m-1)N)/(50N)).}
