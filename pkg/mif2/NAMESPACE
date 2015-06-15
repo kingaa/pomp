@@ -1,6 +1,0 @@
-import(pomp)
-import(methods)
-
-exportClasses(mif2d.pomp)
-exportMethods(mif2,continue,plot,conv.rec,logLik)
-export()
