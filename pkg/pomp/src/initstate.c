@@ -182,8 +182,8 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
 	int j;
 
 	PROTECT(Snames = GET_SLOT(pompfun,install("statenames"))); nprotect++;
-	PROTECT(Cnames = GET_SLOT(pompfun,install("covarnames"))); nprotect++;
-
+	PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
+	
 	// construct state, parameter, covariate, observable indices
 	sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames"))); nprotect++;
 	pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames"))); nprotect++;
