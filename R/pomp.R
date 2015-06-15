@@ -9,7 +9,6 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               obsnames, statenames, paramnames, covarnames,
                               zeronames, PACKAGE,
                               fromEstimationScale, toEstimationScale,
-                              parameter.transform = NULL, parameter.inv.transform = NULL,
                               globals, userdata, ...,
                               .solibs = list(),
                               verbose = getOption("verbose",FALSE)) {
@@ -33,7 +32,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     ## name of shared object library
     if (missing(PACKAGE)) PACKAGE <- NULL
     PACKAGE <- as.character(PACKAGE)
-
+    
     if (missing(globals)) globals <- NULL
     if (!is(globals,"Csnippet"))
         globals <- as.character(globals)
@@ -47,36 +46,6 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (missing(fromEstimationScale)) fromEstimationScale <- NULL
     if (missing(toEstimationScale)) toEstimationScale <- NULL
     
-    ## deal with deprecated arguments
-    if (!is.null(parameter.transform)) {
-        warning("the ",sQuote("parameter.transform")," argument of ",
-                sQuote("pomp")," is deprecated, ",
-                "and will be removed in a future release.\n",
-                "Use ",sQuote("fromEstimationScale")," instead.",call.=FALSE)
-        if (!is.null(fromEstimationScale) && !is(fromEstimationScale,"pomp.fun")) {
-            warning("both ",sQuote("fromEstimationScale")," and ",
-                    sQuote("parameter.transform")," have been specified in a call to ",
-                    sQuote("pomp"),".\n",
-                    "The latter will be ignored.",call.=FALSE)
-        } else {
-            fromEstimationScale <- parameter.transform
-        }
-    }
-    if (!is.null(parameter.inv.transform)) {
-        warning("the ",sQuote("parameter.inv.transform")," argument of ",
-                sQuote("pomp")," is deprecated, ",
-                "and will be removed in a future release.\n",
-                "Use ",sQuote("toEstimationScale")," instead.",call.=FALSE)
-        if (!is.null(toEstimationScale) && !is(toEstimationScale,"pomp.fun")) {
-            warning("both ",sQuote("toEstimationScale")," and ",
-                    sQuote("parameter.inv.transform")," have been specified in a call to ",
-                    sQuote("pomp"),".\n",
-                    "The latter will be ignored.",call.=FALSE)
-        } else {
-            toEstimationScale <- parameter.inv.transform
-        }
-    }
-
     ## defaults for names of states, parameters, and accumulator variables
     if (missing(statenames)) statenames <- character(0)
     if (missing(paramnames)) paramnames <- character(0)

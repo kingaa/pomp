@@ -78,14 +78,9 @@
   }
   \item{rw.sd}{
     numeric vector with names; the intensity of the random walk to be applied to parameters.
-    The random walk is only applied to parameters named in \code{pars} (i.e., not to those named in \code{ivps}).
-    The algorithm requires that the random walk be nontrivial, so each element in \code{rw.sd[pars]} must be positive.
-    \code{rw.sd} is also used to scale the initial-value parameters (via the \code{particles} function).
-    Therefore, each element of \code{rw.sd[ivps]} must be positive.
-    The following must be satisfied:
     \code{names(rw.sd)} must be a subset of \code{names(start)},
-    \code{rw.sd} must be non-negative (zeros are simply ignored),
-    the name of every positive element of \code{rw.sd} must be in either \code{pars} or \code{ivps}.
+    The random walk is not dynamically added to the initial-value parameters (named in \code{ivps}).
+    The algorithm requires that the random walk be nontrivial, so that \code{rw.sd} be positive for at least one element.
   }
   \item{Np}{
     the number of particles to use in filtering.
@@ -169,7 +164,7 @@
 }
 \section{Using \code{mif} to estimate initial-value parameters only}{
   One can use \code{mif}'s fixed-lag smoothing to estimate only initial value parameters (IVPs).
-  In this case, \code{pars} is left empty and the IVPs to be estimated are named in \code{ivps}.
+  In this case, the IVPs to be estimated are named in \code{ivps} and no positive entries in \code{rw.sd} correspond to any parameters not named in \code{ivps}.
   If \code{theta} is the current parameter vector, then at each \code{mif} iteration, \code{Np} particles are drawn from a distribution centered at \code{theta} and with width proportional to \code{var.factor*rw.sd}, a particle filtering operation is performed, and \code{theta} is replaced by the filtering mean at \code{time(object)[ic.lag]}.
   Note the implication that, when \code{mif} is used in this way on a time series any longer than \code{ic.lag}, unnecessary work is done.
   If the time series in \code{object} is longer than \code{ic.lag}, consider replacing \code{object} with \code{window(object,end=ic.lag)}. 
