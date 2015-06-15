@@ -24,9 +24,6 @@
 \alias{obs,pomp-method}
 \alias{obs-pomp}
 \alias{obs}
-\alias{data.array,pomp-method}
-\alias{data.array-pomp}
-\alias{data.array}
 \alias{states,pomp-method}
 \alias{states-pomp}
 \alias{states}

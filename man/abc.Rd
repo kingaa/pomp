@@ -33,8 +33,8 @@
   The approximate Bayesian computation (ABC) algorithm for estimating the parameters of a partially-observed Markov process.
 }
 \usage{
-\S4method{abc}{pomp}(object, Nabc = 1, start, proposal,
-    pars, rw.sd, probes, scale, epsilon,
+\S4method{abc}{pomp}(object, Nabc = 1, start,
+    proposal, probes, scale, epsilon,
     verbose = getOption("verbose"), \dots)
 \S4method{abc}{probed.pomp}(object, probes,
     verbose = getOption("verbose"), \dots)
@@ -64,10 +64,6 @@
     it is the user's responsibility to ensure that it is.
     Several functions that construct appropriate proposal function are provided:
     see \link{MCMC proposal functions} for more information.
-  }
-  \item{rw.sd}{
-    Deprecated.  Will be removed in a future release.
-    Specifying \code{rw.sd} is equivalent to setting \code{proposal=mvn.diag.rw(rw.sd)}.
   }
   \item{probes}{
     List of probes (AKA summary statistics).

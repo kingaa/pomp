@@ -224,22 +224,8 @@ setMethod(
             
             if (missing(proposal)) proposal <- NULL
 
-            if (!missing(rw.sd)) {
-              warning("pmcmc warning: ",sQuote("rw.sd")," is a deprecated argument.",
-                      "Use ",sQuote("proposal")," instead.",call.=FALSE)
-              if (is.null(proposal)) {
-                proposal <- mvn.diag.rw(rw.sd=rw.sd)
-              } else {
-                warning("pmcmc warning: since ",sQuote("proposal"),
-                        " has been specified, ",sQuote("rw.sd")," is ignored.")
-              }
-            }
-
             if (is.null(proposal))
               stop("pmcmc error: ",sQuote("proposal")," must be specified",call.=FALSE)
-
-            if (!missing(pars))
-              warning("pmcmc warning: ",sQuote("pars")," is a deprecated argument and will be ignored.",call.=FALSE)
 
             pmcmc.internal(
                            object=object,

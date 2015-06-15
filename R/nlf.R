@@ -414,15 +414,9 @@ setMethod(
             verbose = getOption("verbose"),
             bootstrap = FALSE, bootsamp = NULL,
             lql.frac = 0.1, se.par.frac = 0.1,
-            eval.only = FALSE, transform.params,
+            eval.only = FALSE,
             transform = FALSE, ...)
           {
-            if (!missing(transform.params)) {
-              warning("argument ",sQuote("transform.params"),
-                      " is deprecated and will be removed in a future release.\n",
-                      "Use ",sQuote("transform")," instead.")
-              if (missing(transform)) transform <- transform.params
-            }
             transform <- as.logical(transform)
             if (missing(transform.data)) transform.data <- identity
             transform.data <- match.fun(transform.data)

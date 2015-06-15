@@ -59,7 +59,6 @@
     Several functions that construct appropriate proposal function are provided:
     see \link{MCMC proposal functions} for more information.
   }
-  \item{pars, rw.sd}{Deprecated.  Will be removed in a future release.}
   \item{Np}{
     a positive integer;
     the number of particles to use in each filtering operation.

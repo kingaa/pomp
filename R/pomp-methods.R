@@ -60,12 +60,6 @@ obs.internal <- function (object, vars, ...) {
 
 ## a simple method to extract the data array
 setMethod("obs","pomp",obs.internal)
-setMethod("data.array","pomp",function (object, ...) {
-  warning(sQuote("data.array")," is deprecated and will be removed ",
-          "in a future release.  Use ",sQuote("obs")," instead.")
-  obs.internal(object,...)
-})
-
 
 ## a simple method to extract the array of states
 states.internal <- function (object, vars, ...) {

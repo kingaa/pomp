@@ -161,7 +161,7 @@ setMethod(
           "abc",
           signature=signature(object="pomp"),
           function (object, Nabc = 1,
-                    start, proposal, pars, rw.sd,
+                    start, proposal,
                     probes, scale, epsilon,
                     verbose = getOption("verbose"),
                     ...) {
@@ -171,22 +171,8 @@ setMethod(
 
             if (missing(proposal)) proposal <- NULL
 
-            if (!missing(rw.sd)) {
-              warning("abc warning: ",sQuote("rw.sd")," is a deprecated argument: ",
-                      "Use ",sQuote("proposal")," instead.",call.=FALSE)
-              if (is.null(proposal)) {
-                proposal <- mvn.diag.rw(rw.sd=rw.sd)
-              } else {
-                warning("abc warning: since ",sQuote("proposal"),
-                        " has been specified, ",sQuote("rw.sd")," is ignored.")
-              }
-            }
-
             if (is.null(proposal))
               stop("abc error: ",sQuote("proposal")," must be specified",call.=FALSE)
-
-            if (!missing(pars))
-              warning("abc warning: ",sQuote("pars")," is a deprecated argument and will be ignored.",call.=FALSE)
 
             if (missing(probes))
               stop("abc error: ",sQuote("probes")," must be specified",

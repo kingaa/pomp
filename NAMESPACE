@@ -69,7 +69,7 @@ exportMethods(
               pompLoad,pompUnload,
               dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
               dprior,rprior,
-              data.array,obs,partrans,coef,"coef<-",
+              obs,partrans,coef,"coef<-",
               time,"time<-",timezero,"timezero<-",
               simulate,pfilter,
               eff.sample.size,cond.logLik,
