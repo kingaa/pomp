@@ -65,8 +65,6 @@ abc.internal <- function (object, Nabc,
   if (!all(sapply(probes,function(f)length(formals(f))==1)))
     stop("each probe must be a function of a single argument")
 
-  ntimes <- length(time(object))
-  
   if (verbose) {
     cat("performing",Nabc,"ABC iteration(s)\n")
   }

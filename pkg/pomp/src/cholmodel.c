@@ -40,7 +40,7 @@
 
 void _cholmodel_untrans (double *pt, double *p, int *parindex) 
 {
-  int k, nrstage = (int) NRSTAGE;
+  int nrstage = (int) NRSTAGE;
   pt[parindex[0]] = log(TAU);
   pt[parindex[1]] = log(GAMMA);
   pt[parindex[2]] = log(EPS);
@@ -56,7 +56,7 @@ void _cholmodel_untrans (double *pt, double *p, int *parindex)
  
 void _cholmodel_trans (double *pt, double *p, int *parindex) 
 {
-  int k, nrstage = (int) NRSTAGE;
+  int nrstage = (int) NRSTAGE;
   pt[parindex[0]] = exp(TAU);
   pt[parindex[1]] = exp(GAMMA);
   pt[parindex[2]] = exp(EPS);

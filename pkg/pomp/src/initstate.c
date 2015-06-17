@@ -103,7 +103,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
     case Rfun:			// use R function
 
       {
-	SEXP par, rho, x1, x2, mindex;
+	SEXP par, rho, x1, x2;
 	double *p, *pp, *xp, *xt;
 	int j, *midx;
 

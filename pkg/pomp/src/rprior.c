@@ -109,7 +109,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   case native:			// use native routine
 
     {
-      double *pp, *ps;
+      double *ps;
       int *pidx = 0;
       pomp_rprior *ff = NULL;
       int j;

@@ -42,8 +42,7 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
   case Rfun:			// use R function
 
     {
-      SEXP pvec, rho, ans;
-      int use_names = 0;
+      SEXP pvec, rho;
       double *pp, *ps, *pt;
       int j;
 

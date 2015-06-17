@@ -68,7 +68,6 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
     if (obs && states) {
       dm <- dim(retval$obs)
       nsim <- dm[2L]
-      ntimes <- dm[3L]
       nm <- rownames(retval$obs)
       dim(retval$obs) <- c(dm[1L],prod(dm[-1L]))
       rownames(retval$obs) <- nm
@@ -86,7 +85,6 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
     } else if (obs || states) {
       dm <- dim(retval)
       nsim <- dm[2L]
-      ntimes <- dm[3L]
       nm <- rownames(retval)
       dim(retval) <- c(dm[1L],prod(dm[-1L]))
       rownames(retval) <- nm

@@ -59,10 +59,6 @@ mif2.pfilter <- function (object, params, Np,
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
 
-  paramnames <- rownames(params)
-  npars <- nrow(params)
-  rwnames <- rownames(rw.sd)
-
   loglik <- rep(NA,ntimes)
   eff.sample.size <- numeric(ntimes)
   nfail <- 0

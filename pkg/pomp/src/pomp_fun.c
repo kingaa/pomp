@@ -68,7 +68,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 
     break;
 
-  default:
+  case undef: default:
     error("operation cannot be completed: some needed function has not been specified");
     break;
   }

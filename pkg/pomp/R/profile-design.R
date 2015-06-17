@@ -7,7 +7,6 @@ profileDesign <- function (..., lower, upper, nprof,
   ovars <- names(lower)
   if (!all(sort(ovars)==sort(names(upper))))
     stop(sQuote("profileDesign"),": names of ",sQuote("lower")," and ",sQuote("upper")," must match!")
-  vars <- ovars[!(ovars%in%pvars)]
   x <- expand.grid(...,stringsAsFactors=stringsAsFactors)
   y <- sobolDesign(lower=lower,upper=upper,nseq=nprof)
   z <- vector(mode='list',length=nrow(x)*nprof)

@@ -57,7 +57,6 @@ sannbox <- function (par, fn, control = list(), ...) {
     control$upper <- rep(control$upper,npar)
 
   ## initialization for the algorithm
-  laststep <- 0
   thetabest <- thetacurrent <- par
   ycurrent <- fn(thetacurrent,...)/control$fnscale
   if (!is.finite(ycurrent)) ycurrent <- big

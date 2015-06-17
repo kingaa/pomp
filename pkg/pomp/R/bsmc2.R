@@ -82,7 +82,6 @@ bsmc2.internal <- function (object, params, Np, est,
                          params
                        }
                        )
-  statenames <- rownames(xstart)
   nvars <- nrow(xstart)
   ptsi.for <- FALSE
   

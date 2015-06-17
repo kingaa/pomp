@@ -46,7 +46,7 @@ pfilter.internal <- function (object, params, Np,
 
   pompLoad(object)
 
-  ptsi.inv <- ptsi.for <- gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
+  ptsi.for <- gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
   mif2 <- as.logical(.mif2)
   transform <- as.logical(.transform)
   

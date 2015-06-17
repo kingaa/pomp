@@ -14,7 +14,6 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   SEXP ans, ans_names;
   SEXP po, popo;
   SEXP statenames, paramnames, obsnames, statedim, obsdim;
-  SEXP rmeas;
   int nsims, nparsets, nreps, npars, nvars, ntimes, nobs;
   int qobs, qstates;
   int *dim, dims[3];
