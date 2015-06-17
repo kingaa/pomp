@@ -15,7 +15,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
   SEXP Snames, Pnames, Cnames, Onames;
   SEXP tvec, xvec, pvec, cvec;
-  SEXP fun, fn, fcall, rho, ans, nm;
+  SEXP fn, fcall, rho, ans, nm;
   SEXP pompfun;
   SEXP Y;
   int *dim;
