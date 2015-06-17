@@ -1,18 +1,40 @@
-%\VignetteIndexEntry{Parus major example}
-%\VignetteEngine{knitr::knitr}
+---
+title: "Analysis of Parus Major data from Wytham Wood"
+author: "Aaron A. King"
+output:
+  html_document:
+    theme: flatly
+    toc: yes
+bibliography: pomp.bib
+csl: ecology.csl
+---
 
-# Analysis of Parus Major data from Wytham Wood  
-***Aaron A. King***
+Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
+Please share and remix noncommercially, mentioning its origin.  
+![CC-BY_NC](../graphics/cc-by-nc.png)
+
+This document was produced using `pomp` version `r packageVersion("pomp")` and `pompExamples` version `r packageVersion("pompExamples")`.
 
 ```{r setup,include=FALSE}
 require(pomp)
+stopifnot(packageVersion("pomp")>="0.65-1")
+
+options(
+  keep.source=TRUE,
+  stringsAsFactors=FALSE,
+  encoding="UTF-8",
+  scipen=5
+  )
+
 require(plyr)
 require(reshape2)
-options(stringsAsFactors=FALSE,keep.source=TRUE,encoding="UTF-8")
 
 require(ggplot2)
 theme_set(theme_bw())
 
+set.seed(862663052L)
+```
+```{r knitr-options,include=FALSE,purl=FALSE}
 require(knitr)
 opts_knit$set(out.format="html")
 opts_chunk$set(
@@ -26,9 +48,6 @@ opts_chunk$set(
   fig.height=5,fig.width=10,
   dpi=100
   )
-
-require(pompExamples)
-set.seed(862663052L)
 ```
 
 First, a little function to cache the results of expensive computations.
@@ -48,6 +67,7 @@ bake <- function (file, expr) {
 ### Load and plot the data
 
 ```{r}
+require(pompExamples)
 pompExample(parus)
 pGP <- parus(proc='Gompertz',meas='Poisson')
 plot(pGP)
