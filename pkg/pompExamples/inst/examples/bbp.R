@@ -87,12 +87,12 @@ pomp(data=subset(dat,select=c(week,deaths)),
 ###     dmeasure=Csnippet("lik=dnbinom_mu(deaths,theta,ratio*exp(y),give_log);"),
      logvar=c("beta","delta","ratio","sigma","theta","mu"),
      logitvar=c("y0"),
-     parameter.inv.transform=function (params, logvar, logitvar, ...) {
+     toEstimationScale=function (params, logvar, logitvar, ...) {
        params[logvar] <- log(params[logvar])
        params[logitvar] <- qlogis(params[logitvar])
        params
      },
-     parameter.transform=function (params, logvar, logitvar, ...) {
+     fromEstimationScale=function (params, logvar, logitvar, ...) {
        params[logvar] <- exp(params[logvar])
        params[logitvar] <- plogis(params[logitvar])
        params

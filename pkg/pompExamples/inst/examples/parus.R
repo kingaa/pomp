@@ -91,10 +91,10 @@ parus <- function (proc = c("Gompertz","Ricker"),
        paramnames=c("r","K","sigma","theta"),
        statenames=c("N"),
        obsnames=c("pop"),
-       parameter.transform=function(params,...){
+       fromEstimationScale=function(params,...){
          exp(params)
        },
-       parameter.inv.transform=function(params,...){
+       toEstimationScale=function(params,...){
          log(params)
        },
        PACKAGE="pompExamples"

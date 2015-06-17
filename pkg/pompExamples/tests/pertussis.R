@@ -21,7 +21,7 @@ logLik(pf)
 pttest <- function (po, digits = 15) {
   identical(
             signif(coef(po),digits=digits),
-            signif(partrans(po,partrans(po,coef(po),dir='inv'),dir='for'),digits=digits)
+            signif(partrans(po,partrans(po,coef(po),dir='to'),dir='from'),digits=digits)
             )
 }
 
@@ -30,7 +30,7 @@ stopifnot(all(sapply(pt,pttest)))
 pttest <- function (po, digits = 15) {
   identical(
             signif(coef(po,trans=T),digits=digits),
-            signif(partrans(po,partrans(po,coef(po,trans=T),dir='f'),dir='inv'),digits=digits)
+            signif(partrans(po,partrans(po,coef(po,trans=T),dir='from'),dir='to'),digits=digits)
             )
 }
 

@@ -77,13 +77,13 @@ budmoth.example <- function (which = c("food","para1","para2","tri")) {
                   "g","delta","a","w","sig.a","beta1","sigQobs",
                   "sigNobs", "sigSobs","N.0"
                   ),
-                parameter.transform=function (params, logitvar,
+                fromEstimationScale=function (params, logitvar,
                   logvar, ...) {
                   params[logitvar] <- plogis(params[logitvar])
                   params[logvar] <- exp(params[logvar])
                   params
                 },
-                parameter.inv.transform=function (params, logitvar,
+                toEstimationScale=function (params, logitvar,
                   logvar, ...) {
                   params[logitvar] <- qlogis(params[logitvar])
                   params[logvar] <- log(params[logvar])

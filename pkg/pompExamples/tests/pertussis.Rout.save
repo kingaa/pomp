@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.1.3 (2015-03-09) -- "Smooth Sidewalk"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -17,12 +17,18 @@ Type 'q()' to quit R.
 
 > library(pompExamples)
 Loading required package: pomp
-Loading required package: subplex
-Loading required package: nloptr
 > 
 > all <- c("SEIR.small","SEIR.big","SEIRS.small","SEIRS.big","SEIRR.small","SEIRR.big","full.small","full.big")
 > 
 > sapply(all,function(n)eval(bquote(pertussis.sim(.(n))))) -> pt
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
 > 
 > names(pt)
 [1] "SEIR.small"  "SEIR.big"    "SEIRS.small" "SEIRS.big"   "SEIRR.small"
@@ -111,6 +117,7 @@ $full.big
 
 > 
 > x <- simulate(pertussis.sim(full.big),seed=395885L,as.data.frame=TRUE)
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
 > tail(x)
          time reports      S    E    I      R1      R2 cases          W err
 1036 19.90385     432 662434 5677 9458 3201351 1118149  4831 -0.4801610   7
@@ -128,6 +135,7 @@ $full.big
 1041 4997213   1
 > 
 > y <- trajectory(pertussis.sim(SEIRS.small),as.data.frame=TRUE)
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
 > tail(y)
             S        E         I       R1       R2    cases W err simpop
 1036 81409.73 558.4599  942.3100 227353.0 189736.5 487.2963 0   0  5e+05
@@ -145,13 +153,14 @@ $full.big
 1041 20.00000    1
 > 
 > pf <- pfilter(pertussis.sim(full.small),seed=3445886L,Np=1000)
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'ivps','comp.names','varnames'
 > logLik(pf)
 [1] -3829.33
 > 
 > pttest <- function (po, digits = 15) {
 +   identical(
 +             signif(coef(po),digits=digits),
-+             signif(partrans(po,partrans(po,coef(po),dir='inv'),dir='for'),digits=digits)
++             signif(partrans(po,partrans(po,coef(po),dir='to'),dir='from'),digits=digits)
 +             )
 + }
 > 
@@ -160,7 +169,7 @@ $full.big
 > pttest <- function (po, digits = 15) {
 +   identical(
 +             signif(coef(po,trans=T),digits=digits),
-+             signif(partrans(po,partrans(po,coef(po,trans=T),dir='f'),dir='inv'),digits=digits)
++             signif(partrans(po,partrans(po,coef(po,trans=T),dir='from'),dir='to'),digits=digits)
 +             )
 + }
 > 
@@ -168,4 +177,4 @@ $full.big
 > 
 > proc.time()
    user  system elapsed 
- 23.862   0.074  23.943 
+ 23.602   0.053  23.659 

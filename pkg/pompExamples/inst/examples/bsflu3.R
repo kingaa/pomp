@@ -97,8 +97,8 @@ pomp(
      skeleton.type="map",
      rmeasure=Csnippet(rmeas),
      dmeasure=Csnippet(dmeas),
-     parameter.transform=Csnippet(partrans),
-     parameter.inv.transform=Csnippet(paruntrans),
+     fromEstimationScale=Csnippet(partrans),
+     toEstimationScale=Csnippet(paruntrans),
      obsnames = c("confined","convalescent"),
      statenames=c("S","I","R1","R2","R3","C"),
      paramnames=c(
