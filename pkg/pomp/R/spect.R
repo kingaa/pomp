@@ -36,12 +36,13 @@ pomp.detrend <- function (tseries, type)
          type,
          mean=tseries-mean(tseries),
          linear={
-           x <- seq_along(tseries)
-           lm(tseries~x)$residuals
+           m <- cbind(1,seq_along(tseries))
+           .lm.fit(m,tseries)$residuals
          },
          quadratic={
            x <- seq_along(tseries)
-           lm(tseries~x+I(x^2))$residuals
+           m <- cbind(1,x,x*x)
+           .lm.fit(m,tseries)$residuals
          },
          tseries
          )

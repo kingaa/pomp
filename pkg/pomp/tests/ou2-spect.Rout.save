@@ -20,12 +20,19 @@ Type 'q()' to quit R.
 newly created object(s):
  ou2 
 > 
+> set.seed(362083261L)
+> 
+> pdf(file="ou2-spect.pdf")
+> 
 > gm1 <- spect.match(ou2,
 +                   kernel.width=3,
 +                   detrend="mean",
 +                   nsim=50,
 +                   est=c("alpha.1","alpha.4"),
 +                   method="Nelder-Mead")
+> gm1@value
+[1] 64.89552
+> plot(gm1)
 > 
 > gm2 <- spect.match(ou2,
 +                    kernel.width=3,
@@ -33,7 +40,34 @@ newly created object(s):
 +                    nsim=49,
 +                    est=c("alpha.1","alpha.4"),
 +                    method="Nelder-Mead")
+> gm2@value
+[1] 73.42989
+> plot(gm2)
+> 
+> gm3 <- spect.match(ou2,
++                    kernel.width=3,
++                    detrend="linear",
++                    nsim=50,
++                    est=c("alpha.1","alpha.4"),
++                    method="Nelder-Mead")
+> gm3@value
+[1] 60.4426
+> plot(gm3)
+> 
+> gm4 <- spect.match(ou2,
++                    kernel.width=3,
++                    detrend="quadratic",
++                    nsim=50,
++                    est=c("alpha.1","alpha.4"),
++                    method="Nelder-Mead")
+> gm4@value
+[1] 66.11778
+> plot(gm4)
+> 
+> dev.off()
+null device 
+          1 
 > 
 > proc.time()
    user  system elapsed 
- 16.957   0.040  17.048 
+ 40.234   0.068  40.591 

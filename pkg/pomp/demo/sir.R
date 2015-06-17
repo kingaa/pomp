@@ -114,8 +114,6 @@ paruntrans <- "
   to_log_barycentric(&TS_0,&S_0,3);
 "
 
-data(LondonYorke)
-
 cbind(
       time=seq(from=1928,to=1934,by=0.01),
       as.data.frame(

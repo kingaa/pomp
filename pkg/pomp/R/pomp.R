@@ -11,7 +11,9 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               fromEstimationScale, toEstimationScale,
                               parameter.transform = NULL, parameter.inv.transform = NULL,
                               globals, userdata, ...,
-                              .solibfile, .filename, .filedir,
+                              .solibfile = list(),
+                              .filename = NULL,
+                              .filedir = getOption("pomp.file.dir",NULL),
                               verbose = getOption("verbose",FALSE)) {
 
   ## preliminary error checking
@@ -19,9 +21,6 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
   if (missing(times)) stop(sQuote("times")," is a required argument")
   if (missing(t0)) stop(sQuote("t0")," is a required argument")
   if (missing(params)) params <- numeric(0)
-  if (missing(.solibfile)) .solibfile <- list()
-  if (missing(.filename)) .filename <- NULL
-  if (missing(.filedir)) .filedir <- NULL
   
   if (missing(userdata)) userdata <- list()
   added.userdata <- list(...)

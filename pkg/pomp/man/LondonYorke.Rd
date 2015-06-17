@@ -6,11 +6,9 @@
   \code{LondonYorke} is a data-frame containing the monthly number of reported cases of chickenpox, measles, and mumps from two American cities (Baltimore and New York) in the mid-20th century (1928--1972).
 }
 \usage{
-data(LondonYorke)
+LondonYorke
 }
 \examples{
-data(LondonYorke)
-
 plot(cases~time,data=LondonYorke,subset=disease=="measles",type='n',main="measles",bty='l')
 lines(cases~time,data=LondonYorke,subset=disease=="measles"&town=="Baltimore",col="red")
 lines(cases~time,data=LondonYorke,subset=disease=="measles"&town=="New York",col="blue")
