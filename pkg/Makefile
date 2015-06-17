@@ -1,6 +1,6 @@
 REPOS=/var/www/html/R/
 SRCREPOS=src/contrib
-WINREPOS=bin/windows/contrib/3.1
+WINREPOS=bin/windows/contrib/3.2
 DOCREPOS=doc/packages
 ARCHIVE=./dists
 INSTALL_DIR=./library
@@ -33,10 +33,9 @@ pomp.vignettes: export POMP_BUILD_VIGNETTES=yes
 %.dist %.manual %.vignettes: export R_GSCMD=gs
 %.dist %.manual %.vignettes: export GS_QUALITY=ebook
 %.dist %.manual %.vignettes: export R_HOME=$(shell $(REXE) RHOME)
-%.check %.crancheck: export _R_CHECK_ALL_NON_ISO_C_=TRUE
-%.crancheck: export R_PROFILE_USER=./Rprofile
-%.check %.crancheck: export _R_CHECK_WALL_FORTRAN_=TRUE
 %.check %.xcheck: export POMP_FULL_TESTS=yes
+%.crancheck: export R_PROFILE_USER=./Rprofile
+%.crancheck: export R_PROFILE_USER=$(CURDIR)/Rprofile
 %.vignettes %.data: export R_LIBS=$(CURDIR)/library
 %.bin %.check %.qcheck %.qqcheck %.xcheck %.crancheck %.upload %.publish %.clean %.install %.win: PKG = $*_$(shell perl -ne 'print $$1 if /Version:\s+(\d+\.\d+-\d+)/;' $*/DESCRIPTION)
 
