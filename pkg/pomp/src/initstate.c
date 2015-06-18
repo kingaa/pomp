@@ -80,7 +80,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
 
   } else {			// user-supplied initializer
     
-    SEXP pompfun, fcall, fn, tcovar, covar, covars;
+    SEXP pompfun, fcall, fn, tcovar, covar, covars = R_NilValue;
     pompfunmode mode = undef;
     double *cp = NULL;
 

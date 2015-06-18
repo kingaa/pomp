@@ -16,8 +16,9 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
   SEXP Snames, Pnames, Cnames, Onames;
   SEXP pompfun;
-  SEXP tvec, xvec, yvec, pvec, cvec;
-  SEXP fn, fcall, rho, ans;
+  SEXP cvec, tvec = R_NilValue;
+  SEXP xvec = R_NilValue, yvec = R_NilValue, pvec = R_NilValue;
+  SEXP fn, ans, fcall, rho = R_NilValue;
   SEXP F;
   int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
   int *dim;

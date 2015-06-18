@@ -12,12 +12,14 @@ SEXP euler_model_simulator (SEXP func,
   pompfunmode mode = undef;
   int nstep, nvars, npars, nreps, ntimes, nzeros, ncovars, covlen;
   SEXP X;
-  SEXP fn, fcall, rho, ans, nm;
+  SEXP ans, nm, fn, fcall = R_NilValue, rho = R_NilValue;
   SEXP Snames, Pnames, Cnames;
-  SEXP tvec, xvec, pvec, cvec, dtvec;
+  SEXP cvec, tvec = R_NilValue;
+  SEXP xvec = R_NilValue, pvec = R_NilValue, dtvec = R_NilValue;
   int *pidx = 0, *sidx = 0, *cidx = 0, *zidx = 0;
   pomp_onestep_sim *ff = NULL;
-  int meth = *(INTEGER(AS_INTEGER(method))); // 0 = Euler, 1 = one-step, 2 = fixed step
+  int meth = *(INTEGER(AS_INTEGER(method))); 
+  // meth: 0 = Euler, 1 = one-step, 2 = fixed step
 
   {
     int *dim;
@@ -252,9 +254,11 @@ SEXP euler_model_density (SEXP func,
   int give_log;
   int nvars, npars, nreps, ntimes, ncovars, covlen;
   pomp_onestep_pdf *ff = NULL;
-  SEXP t1vec, t2vec, x1vec, x2vec, pvec, cvec;
+  SEXP cvec, pvec = R_NilValue;
+  SEXP t1vec = R_NilValue, t2vec = R_NilValue;
+  SEXP x1vec = R_NilValue, x2vec = R_NilValue;
   SEXP Snames, Pnames, Cnames;
-  SEXP rho, fcall, fn;
+  SEXP fn, rho = R_NilValue, fcall = R_NilValue;
   SEXP F;
   int *pidx = 0, *sidx = 0, *cidx = 0;
 
