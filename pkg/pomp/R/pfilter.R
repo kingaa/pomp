@@ -136,7 +136,7 @@ pfilter.internal <- function (object, params, Np,
     rw.names <- names(.rw.sd)
     if (is.null(rw.names)||!is.numeric(.rw.sd))
       stop(sQuote("pfilter")," error: ",sQuote(".rw.sd")," must be a named vector",call.=FALSE)
-    if (any(!(rw.names%in%paramnames)))
+    if (!all(rw.names%in%paramnames))
       stop(
            sQuote("pfilter")," error: the rownames of ",
            sQuote("params")," must include all of the names of ",
@@ -266,9 +266,8 @@ pfilter.internal <- function (object, params, Np,
                    )
     if (inherits(weights,'try-error'))
       stop(sQuote("pfilter")," error: error in calculation of weights",call.=FALSE)
-    if (any(!is.finite(weights))) {
+    if (!all(is.finite(weights)))
       stop(sQuote("pfilter")," error: ",sQuote("dmeasure")," returns non-finite value",call.=FALSE)
-    }
     gnsi.dmeas <- FALSE
     
     ## compute prediction mean, prediction variance, filtering mean,

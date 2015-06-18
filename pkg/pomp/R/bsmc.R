@@ -222,7 +222,7 @@ bsmc.internal <- function (object, params, Np, est,
                 )
     if (inherits(pvec,"try-error"))
       stop(error.prefix,"error in ",sQuote("rmvnorm"),call.=FALSE)
-    if (any(!is.finite(pvec)))
+    if (!all(is.finite(pvec)))
       stop(error.prefix,"extreme particle depletion",call.=FALSE)
     params[estind,] <- m[estind,]+t(pvec)
 
@@ -282,7 +282,7 @@ bsmc.internal <- function (object, params, Np, est,
       ##               )
       ##   if (inherits(pvec,"try-error"))
       ##     stop(error.prefix,"error in ",sQuote("rmvnorm"),call.=FALSE)
-      ##   if (any(!is.finite(pvec)))
+      ##   if (!all(is.finite(pvec)))
       ##     stop(error.prefix,"extreme particle depletion",call.=FALSE)
       ##   params[estind,j] <- m[estind,j]+pvec[1,]
       ## }

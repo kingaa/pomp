@@ -38,7 +38,7 @@ setMethod(
             } else {
               p <- sapply(y,is,'pmcmc')
               pl <- sapply(y,is,'pmcmcList')
-              if (any(!(p||pl)))
+              if (!all(p||pl))
                 stop("cannot mix ",sQuote("pmcmc"),
                      " and non-",sQuote("pmcmc")," objects")
               y[p] <- lapply(y[p],list)
@@ -58,7 +58,7 @@ setMethod(
             } else {
               p <- sapply(y,is,'pmcmc')
               pl <- sapply(y,is,'pmcmcList')
-              if (any(!(p||pl)))
+              if (!all(p||pl))
                 stop("cannot mix ",sQuote("pmcmc"),
                      " and non-",sQuote("pmcmc")," objects")
               y[p] <- lapply(y[p],list)

@@ -128,7 +128,7 @@ bsmc2.internal <- function (object, params, Np, est,
                 )
     if (inherits(pert,"try-error"))
       stop(error.prefix,"error in ",sQuote("rmvnorm"),call.=FALSE)
-    if (any(!is.finite(pert)))
+    if (!all(is.finite(pert)))
       stop(error.prefix,"extreme particle depletion",call.=FALSE)
     params[estind,] <- m[estind,]+t(pert)
 

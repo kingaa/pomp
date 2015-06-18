@@ -41,7 +41,7 @@ setMethod(
             } else {
               p <- sapply(y,is,'mif2d.pomp')
               pl <- sapply(y,is,'mif2List')
-              if (any(!(p||pl)))
+              if (!all(p||pl))
                 stop("cannot mix ",sQuote("mif2d.pomp"),
                      " and non-",sQuote("mif2d.pomp")," objects")
               y[p] <- lapply(y[p],list)
@@ -61,7 +61,7 @@ setMethod(
             } else {
               p <- sapply(y,is,'mif2d.pomp')
               pl <- sapply(y,is,'mif2List')
-              if (any(!(p||pl)))
+              if (!all(p||pl))
                 stop("cannot mix ",sQuote("mif2d.pomp"),
                      " and non-",sQuote("mif2d.pomp")," objects")
               y[p] <- lapply(y[p],list)

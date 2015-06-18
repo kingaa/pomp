@@ -114,10 +114,9 @@ mif2.pfilter <- function (object, params, Np,
                    )
     if (inherits(weights,'try-error'))
       stop(sQuote("mif2.pfilter")," error: error in calculation of weights",call.=FALSE)
-    if (any(!is.finite(weights))) {
+    if (!all(is.finite(weights)))
       stop(sQuote("mif2.pfilter")," error: ",sQuote("dmeasure"),
            " returns non-finite value",call.=FALSE)
-    }
     gnsi <- FALSE
 
     ## compute weighted mean at last timestep

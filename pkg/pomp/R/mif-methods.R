@@ -129,7 +129,7 @@ setMethod(
             } else {
               p <- sapply(y,is,'mif')
               pl <- sapply(y,is,'mifList')
-              if (any(!(p||pl)))
+              if (!all(p||pl))
                 stop("cannot mix ",sQuote("mif"),
                      " and non-",sQuote("mif")," objects")
               y[p] <- lapply(y[p],list)
@@ -149,7 +149,7 @@ setMethod(
             } else {
               p <- sapply(y,is,'mif')
               pl <- sapply(y,is,'mifList')
-              if (any(!(p||pl)))
+              if (!all(p||pl))
                 stop("cannot mix ",sQuote("mif"),
                      " and non-",sQuote("mif")," objects")
               y[p] <- lapply(y[p],list)
