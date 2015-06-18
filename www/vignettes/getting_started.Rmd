@@ -40,18 +40,18 @@ opts_chunk$set(
   dev='png',
   dev.args=list(bg='transparent')
   )
-options(pomp.file.dir="cache/")
 ```
 
 
 ```{r prelims,echo=FALSE,cache=FALSE}
 require(pomp)
-stopifnot(packageVersion("pomp")>="0.65-1")
+stopifnot(packageVersion("pomp")>="0.68-2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
-  scipen=5
+  scipen=5,
+  pomp.cache="./cache"
   )
 ```
 ```{r parallel,include=FALSE,cache=FALSE}
@@ -239,7 +239,7 @@ This is just a snippet of C code: not all the variables are declared and the con
 When given this snippet, `pomp` will provide the necessary declarations and context, compile the resulting C code, dynamically link to it, and use it to simulate realizations of the process model.
 We cause all this to happen when we construct an object of class `pomp` via a call to the constructor function, which is also named `pomp`:
 
-```{r logistic-pomp1,cache=FALSE}
+```{r logistic-pomp1}
 parus <- pomp(data=parus.dat,time="year",t0=1959,
               rprocess=euler.sim(step.fun=step.fun,delta.t=1/365),
               statenames="N",paramnames=c("r","K","sigma"))
@@ -289,7 +289,7 @@ The `rpois` function is part of the [`R` API](http://cran.r-project.org/doc/manu
 As with the `step.fun` snippet above, execution of this snippet causes `pop` to be overwritten.
 
 To fold this into our `pomp` object, we do
-```{r logistic-pomp2,cache=FALSE}
+```{r logistic-pomp2}
 parus <- pomp(parus,rmeasure=rmeas,paramnames="phi",statenames="N")
 ```
 Note that, again, we must tell `pomp` which of the variables is a parameter and which is a state variable.
@@ -321,7 +321,7 @@ dmeas <- Csnippet("
 ")
 ```
 and we fold it into the `pomp` object via
-```{r logistic-pomp3,cache=FALSE}
+```{r logistic-pomp3}
 parus <- pomp(parus,dmeasure=dmeas,paramnames="phi",statenames="N")
 ```
 
@@ -344,7 +344,7 @@ logLik(pf)
 A deterministic skeleton of the logistic model is obtained by taking $\sigma\to 0$, which leads to the deterministic differential equation
 $$\frac{dN}{dt} = r\,N\,\left(1-\frac{N}{K}\right).$$
 The following snippet encodes this deterministic skeleton and folds it into the `pomp` object.
-```{r logistic-skeleton,cache=FALSE}
+```{r logistic-skeleton}
 skel <- Csnippet("
   DN = r*N*(1-N/K);
 ")
@@ -392,7 +392,7 @@ bh.skel <- Csnippet("
 Note that, as in the continuous case, we indicate the new value of the state variable by prepending `D` to the variable name.
 
 We create a new `pomp` object based on this process model but with the same rmeasure and dmeasure components as in `parus` by executing
-```{r bh-pomp1,cache=FALSE}
+```{r bh-pomp1}
 parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=bh.skel,skeleton.type="map",skelmap.delta.t=1,statenames="N",paramnames=c("a","b","sigma"))
 ```
 The following codes test the above by computing some simulations, a trajectory of the skeleton, and running a particle filtering operation.
@@ -407,7 +407,7 @@ pf <- pfilter(parus.bh,Np=1000)
 
 We can specify model-specific parameter transformations using C snippets.
 The following implements log transformation of the $r$ and $K$ parameters of the logistic model and folds them into the `pomp` object `parus`.
-```{r logistic-partrans,cache=FALSE}
+```{r logistic-partrans}
 logtrans <- Csnippet("
   Tr = log(r);
   TK = log(K);
@@ -422,7 +422,7 @@ parus <- pomp(parus,toEstimationScale=logtrans,
               fromEstimationScale=exptrans,
               paramnames=c("r","K"))
 ```
-```{r logistic-partrans-test,include=FALSE,cache=FALSE}
+```{r logistic-partrans-test,include=FALSE}
 p <- c(r=1,K=200,phi=1,N.0=200,sigma=0.5)
 coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
 stopifnot(all.equal(p,coef(parus)))
@@ -433,7 +433,7 @@ stopifnot(all.equal(p,coef(parus)))
 Trajectory matching is the method of fitting a deterministic model to data assuming independent errors.
 In `pomp`, the function `traj.match` searches parameter space to find parameters under which the likelihood of the data given a trajectory of the deterministic skeleton is maximized.
 
-```{r parus-traj-match,cache=FALSE}
+```{r parus-traj-match}
 tm <- traj.match(parus,start=c(r=1,K=200,phi=1,N.0=200,sigma=0.5),
                  est=c("r","K","phi"),transform=TRUE)
 signif(coef(tm),3)
@@ -441,7 +441,7 @@ logLik(tm)
 ```
 
 We can simulate the fitted model and compare it against the data.
-```{r parus-tm-sim1,cache=FALSE}
+```{r parus-tm-sim1}
 coef(tm,"sigma") <- 0
 sim1 <- simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE)
 ggplot(data=sim1,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+

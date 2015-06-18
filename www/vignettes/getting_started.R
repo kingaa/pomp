@@ -1,11 +1,12 @@
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 require(pomp)
-stopifnot(packageVersion("pomp")>="0.65-1")
+stopifnot(packageVersion("pomp")>="0.68-2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
-  scipen=5
+  scipen=5,
+  pomp.cache="./cache"
   )
 
 ## ----parallel,include=FALSE,cache=FALSE----------------------------------
@@ -80,7 +81,7 @@ step.fun <- Csnippet("
   N += r*N*(1-N/K)*dt+sigma*N*dW;
 ")
 
-## ----logistic-pomp1,cache=FALSE------------------------------------------
+## ----logistic-pomp1------------------------------------------------------
 parus <- pomp(data=parus.dat,time="year",t0=1959,
               rprocess=euler.sim(step.fun=step.fun,delta.t=1/365),
               statenames="N",paramnames=c("r","K","sigma"))
@@ -100,7 +101,7 @@ rmeas <- Csnippet("
   pop = rpois(phi*N);
 ")
 
-## ----logistic-pomp2,cache=FALSE------------------------------------------
+## ----logistic-pomp2------------------------------------------------------
 parus <- pomp(parus,rmeasure=rmeas,paramnames="phi",statenames="N")
 
 ## ----logistic-simul2-----------------------------------------------------
@@ -125,14 +126,14 @@ dmeas <- Csnippet("
   lik = dpois(pop,phi*N,give_log);
 ")
 
-## ----logistic-pomp3,cache=FALSE------------------------------------------
+## ----logistic-pomp3------------------------------------------------------
 parus <- pomp(parus,dmeasure=dmeas,paramnames="phi",statenames="N")
 
 ## ----logistic-pfilter----------------------------------------------------
 pf <- pfilter(parus,Np=1000,params=c(r=0.2,K=200,phi=0.5,sigma=0.5,N.0=200))
 logLik(pf)
 
-## ----logistic-skeleton,cache=FALSE---------------------------------------
+## ----logistic-skeleton---------------------------------------------------
 skel <- Csnippet("
   DN = r*N*(1-N/K);
 ")
@@ -161,7 +162,7 @@ bh.skel <- Csnippet("
   DN = a*N/(1+b*N);
 ")
 
-## ----bh-pomp1,cache=FALSE------------------------------------------------
+## ----bh-pomp1------------------------------------------------------------
 parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=bh.skel,skeleton.type="map",skelmap.delta.t=1,statenames="N",paramnames=c("a","b","sigma"))
 
 ## ----bh-test-------------------------------------------------------------
@@ -170,7 +171,7 @@ sim <- simulate(parus.bh)
 traj <- trajectory(parus.bh)
 pf <- pfilter(parus.bh,Np=1000)
 
-## ----logistic-partrans,cache=FALSE---------------------------------------
+## ----logistic-partrans---------------------------------------------------
 logtrans <- Csnippet("
   Tr = log(r);
   TK = log(K);
@@ -185,18 +186,18 @@ parus <- pomp(parus,toEstimationScale=logtrans,
               fromEstimationScale=exptrans,
               paramnames=c("r","K"))
 
-## ----logistic-partrans-test,include=FALSE,cache=FALSE--------------------
+## ----logistic-partrans-test,include=FALSE--------------------------------
 p <- c(r=1,K=200,phi=1,N.0=200,sigma=0.5)
 coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
 stopifnot(all.equal(p,coef(parus)))
 
-## ----parus-traj-match,cache=FALSE----------------------------------------
+## ----parus-traj-match----------------------------------------------------
 tm <- traj.match(parus,start=c(r=1,K=200,phi=1,N.0=200,sigma=0.5),
                  est=c("r","K","phi"),transform=TRUE)
 signif(coef(tm),3)
 logLik(tm)
 
-## ----parus-tm-sim1,cache=FALSE-------------------------------------------
+## ----parus-tm-sim1-------------------------------------------------------
 coef(tm,"sigma") <- 0
 sim1 <- simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE)
 ggplot(data=sim1,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
