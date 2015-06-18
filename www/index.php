@@ -11,7 +11,7 @@ preg_match("/<tr>\\n*<td>Version:<\/td>\\n*<td>(.+?)<\/td>/",$crancontents,$matc
 $cranversion = $matches[1];
 $rforgepage = file_get_contents($rforgepkgs);
 preg_match_all("/Rev\.: <b>(.+?)<\/b>/",$rforgepage,&$matches);
-$svnrevision = $matches[1][1];
+$svnrevision = $matches[1][0];
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
 <!DOCTYPE html
