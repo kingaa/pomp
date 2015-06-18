@@ -35,7 +35,7 @@ setClass(
          contains='pfilterd.pomp',
          slots=c(
            Nmif = 'integer',
-           rw.sd = 'list',
+           rw.sd = 'matrix',
            cooling.type = 'character',
            cooling.fraction.50 = 'numeric',
            transform = 'logical',
@@ -206,8 +206,6 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                                      ntimes=length(time(object))
                                      )
 
-  rw.sd.mat <- pkern.sd(rw.sd,time=time(object),paramnames=names(start))
-
   conv.rec <- array(data=NA,dim=c(Nmif+1,length(start)+2),
                     dimnames=list(seq.int(.ndone,.ndone+Nmif),
                       c('loglik','nfail',names(start))))
@@ -238,7 +236,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                             Np=Np,
                             mifiter=.ndone+n,
                             cooling.fn=cooling.fn,
-                            rw.sd=rw.sd.mat,
+                            rw.sd=rw.sd,
                             tol=tol,
                             max.fail=max.fail,
                             verbose=verbose,
@@ -329,6 +327,12 @@ setMethod(
             }
             if (any(Np <= 0))
               stop("number of particles, ",sQuote("Np"),", must always be positive")
+
+            if (missing(rw.sd))
+              stop(sQuote("mif2")," error: ",sQuote("rw.sd")," must be specified!",call.=FALSE)
+            if (!is.matrix(rw.sd)) {
+              rw.sd <- pkern.sd(rw.sd,time=time(object),paramnames=names(start))
+            }
 
             cooling.type <- match.arg(cooling.type)
 
