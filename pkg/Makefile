@@ -37,6 +37,7 @@ pomp.vignettes: export POMP_BUILD_VIGNETTES=yes
 %.crancheck: export R_PROFILE_USER=./Rprofile
 %.crancheck: export R_PROFILE_USER=$(CURDIR)/Rprofile
 %.vignettes %.data: export R_LIBS=$(CURDIR)/library
+%.xcheck: export R_LIBS=$(CURDIR)/check
 %.bin %.check %.qcheck %.qqcheck %.xcheck %.crancheck %.upload %.publish %.clean %.install %.win: PKG = $*_$(shell perl -ne 'print $$1 if /Version:\s+(\d+\.\d+-\d+)/;' $*/DESCRIPTION)
 
 pomp.vignettes: pomp.install pomp.manual
@@ -73,9 +74,9 @@ pompExamples.vignettes: pompExamples.install
 	$(RM) -r cran/$*/tests 
 	$(TOUCH) $@
 
-%.xcheck: %.dist
+%.xcheck: %.check
 	mkdir -p check
-	$(RCMD) check --use-gct --use-valgrind --timings --library=check $(PKG).tar.gz
+	$(REXE) -d "valgrind --tool=memcheck --track-origins=yes --leak-check=full" < $*.Rcheck/$*-Ex.R
 	$(TOUCH) $@
 
 %.check: %.dist
@@ -113,7 +114,7 @@ pompExamples.vignettes: pompExamples.install
 	$(TOUCH) $@
 
 %.clean: clean
-	$(RM) $*.dist $*.check $*.qcheck $*.qqcheck $*.crancheck $*.manual $*.cransrc
+	$(RM) $*.dist $*.check $*.qcheck $*.qqcheck $*.xcheck $*.crancheck $*.manual $*.cransrc
 	$(RM) -r $*.Rcheck check/$* cran/$*
 	$(RM) $*/src/*.o $*/src/*.so $*/src/symbols.rds $*/vignettes/Rplots.*
 	$(RM) $(PKG).tar.gz $(PKG).zip $*.pdf
