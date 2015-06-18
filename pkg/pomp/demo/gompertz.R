@@ -43,10 +43,10 @@ pomp(
        f <- dlnorm(x=Y,meanlog=log(X),sdlog=tau,log=log)
        return(f)
      },
-     parameter.inv.transform=function(params,...){
+     toEstimationScale=function(params,...){
        log(params)
      },
-     parameter.transform=function(params,...){
+     fromEstimationScale=function(params,...){
        exp(params)
      }
      ) -> gompertz
@@ -76,19 +76,19 @@ skel <- "
 "
 
 partrans <- "
-  Tr = exp(r);
-  TK = exp(K);
-  Tsigma = exp(sigma);
-  TX_0 = exp(X_0);
-  Ttau = exp(tau);
-"
-
-paruntrans <- "
   Tr = log(r);
   TK = log(K);
   Tsigma = log(sigma);
   TX_0 = log(X_0);
   Ttau = log(tau);
+"
+
+paruntrans <- "
+  Tr = exp(r);
+  TK = exp(K);
+  Tsigma = exp(sigma);
+  TX_0 = exp(X_0);
+  Ttau = exp(tau);
 "
 
 pomp(
@@ -106,8 +106,8 @@ pomp(
      skeleton=Csnippet(skel),
      skeleton.type="map",
      skelmap.delta.t=1,
-     parameter.inv.transform=Csnippet(partrans),
-     parameter.transform=Csnippet(paruntrans)
+     toEstimationScale=Csnippet(partrans),
+     fromEstimationScale=Csnippet(paruntrans)
      ) -> Gompertz
 
 ## simulate some data

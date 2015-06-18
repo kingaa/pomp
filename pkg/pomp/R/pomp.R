@@ -13,7 +13,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               globals, userdata, ...,
                               .solibfile = list(),
                               .filename = NULL,
-                              .filedir = getOption("pomp.file.dir",NULL),
+                              .filedir = getOption("pomp.cache",NULL),
                               verbose = getOption("verbose",FALSE)) {
 
   ## preliminary error checking

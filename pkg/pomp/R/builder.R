@@ -9,6 +9,14 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   if (is.null(name)) name <- randomName()
   if (is.null(dir)) dir <- tempdir()
+  else {
+    try(
+        rv <- dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700"),
+        silent=TRUE
+        )
+    if (inherits(rv,"try-error"))
+      stop("cannot create cache directory ",sQuote(dir),call.=TRUE)
+  } 
 
   if (missing(globals)) globals <- character(0)
   if (is(globals,"Csnippet")) globals <- globals@text

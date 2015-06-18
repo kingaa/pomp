@@ -54,7 +54,6 @@ skel <- '
   double rate[6];		// transition rates
   double term[6];		// transition numbers
   double beta;			// transmission rate
-  double dW;			// white noise increment
   int k;
   
   for (k = 0, beta = 0.0; k < nbasis; k++)
@@ -90,6 +89,19 @@ skel <- '
 ## adjacent memory locations, in that order
 partrans <- "
   int k;
+  Tgamma = log(gamma);
+  Tmu = log(mu);
+  Tiota = log(iota);
+  for (k = 0; k < nbasis; k++)
+    (&Tbeta1)[k] = log((&beta1)[k]);
+  Tbeta_sd = log(beta_sd);
+  Trho = logit(rho);
+  Ttheta = log(theta);
+  to_log_barycentric(&TS_0,&S_0,3);
+"
+
+paruntrans <- "
+  int k;
   Tgamma = exp(gamma);
   Tmu = exp(mu);
   Tiota = exp(iota);
@@ -101,17 +113,13 @@ partrans <- "
   from_log_barycentric(&TS_0,&S_0,3);
 "
 
-paruntrans <- "
-  int k;
-  Tgamma = log(gamma);
-  Tmu = log(mu);
-  Tiota = log(iota);
-  for (k = 0; k < nbasis; k++)
-    (&Tbeta1)[k] = log((&beta1)[k]);
-  Tbeta_sd = log(beta_sd);
-  Trho = logit(rho);
-  Ttheta = log(theta);
-  to_log_barycentric(&TS_0,&S_0,3);
+initlzr <- "
+  double m = popsize/(S_0+I_0+R_0);
+  S = nearbyint(m*S_0);
+  I = nearbyint(m*I_0);
+  R = nearbyint(m*R_0);
+  incid = 0;
+  W = 0;
 "
 
 cbind(
@@ -145,23 +153,15 @@ pomp(
      skeleton=Csnippet(skel),
      covar=covar,
      tcovar="time",
-     parameter.transform=Csnippet(partrans),
-     parameter.inv.transform=Csnippet(paruntrans),
+     toEstimationScale=Csnippet(partrans),
+     fromEstimationScale=Csnippet(paruntrans),
      statenames=c("S","I","R","incid","W"),
      paramnames=c(
        "gamma","mu","iota","beta1","beta.sd",
        "popsize","rho","theta","S.0","I.0","R.0"
        ), 
      zeronames=c("incid","W"),
-     comp.names=c("S","I","R"),
-     ic.names=c("S.0","I.0","R.0"),
-     initializer=function(params, t0, comp.names, ic.names, ...) {
-       x0 <- numeric(5)
-       names(x0) <- c("S","I","R","incid","W")
-       fracs <- params[ic.names]
-       x0[comp.names] <- round(params['popsize']*fracs/sum(fracs))
-       x0
-     }
+     initializer=Csnippet(initlzr)
      ) -> po
 
 coef(po) <- c(

@@ -1,9 +1,9 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 0.68-1}{
+\section{Changes in \pkg{pomp} version 0.68-2}{
   \itemize{
     \item When using \code{Csnippet}s, by default, the C codes and shared-object files are stored in the R session's temporary directory.
-    One can override this behavior by setting the global \code{pomp.file.dir} option.
+    One can override this behavior by setting the global \code{pomp.cache} option.
   }
 }
 \section{Changes in \pkg{pomp} version 0.67-1}{

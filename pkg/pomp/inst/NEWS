@@ -1,11 +1,11 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_8-_1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_8-_2:
 
         • When using ‘Csnippet’s, by default, the C codes and
           shared-object files are stored in the R session's temporary
           directory.  One can override this behavior by setting the
-          global ‘pomp.file.dir’ option.
+          global ‘pomp.cache’ option.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_7-_1:
 
