@@ -128,7 +128,7 @@ Formally, $$\mathrm{Prob}[X_t|X_0,\dots,X_{t-1},Y_1,\dots,Y_{t-1}]=\mathrm{Prob}
 To get started, we must install `pomp`, if it is not already installed.
 The package can be downloaded from CRAN, but the latest version is always available at the package homepage on R-Forge.
 Run the following to install this to download and install the latest version.
-```{r eval=FALSE}
+```{r install-packages,eval=FALSE}
 install.packages("pomp",repos="http://R-Forge.R-Project.org")
 ```
 
@@ -150,7 +150,7 @@ Although a variety of compilers are freely available for the Mac platform, they 
 
 The `Csnippet` functionality in essence requires that you be able to use `R CMD SHLIB`.
 To see if you can do this, execute the following in an `R` session.
-```{r eval=FALSE}
+```{r hello-world,eval=FALSE}
 cat("#include <R.h>
     void hello (void) {
     Rprintf(\"hello world!\\n\");
