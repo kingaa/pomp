@@ -7,7 +7,7 @@
   \code{LondonYorke} is a data-frame containing the monthly number of reported cases of chickenpox, measles, and mumps from two American cities (Baltimore and New York) in the mid-20th century (1928--1972).
 
   \code{ewmeas} is a data-frame containing weekly reported cases of measles in England and Wales 1948--1966.
-  These data were made available by Ben Bolker, who writes:
+  These data were kindly provided by Ben Bolker, who writes:
   \dQuote{Most of these data have been manually entered from published records by various people, and are prone to errors at several levels. All data are provided as is; use at your own risk.}
   One questionable data point has been replaced with an NA.
 }
