@@ -25,10 +25,10 @@ require(reshape2)
 require(magrittr)
 theme_set(theme_bw())
 
-## ----eval=FALSE----------------------------------------------------------
+## ----install-packages,eval=FALSE-----------------------------------------
 ## install.packages("pomp",repos="http://R-Forge.R-Project.org")
 
-## ----eval=FALSE----------------------------------------------------------
+## ----hello-world,eval=FALSE----------------------------------------------
 ## cat("#include <R.h>
 ##     void hello (void) {
 ##     Rprintf(\"hello world!\\n\");
