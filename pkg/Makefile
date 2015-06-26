@@ -175,4 +175,7 @@ clean:
 	$(RM) *.o *.so *.tex *.log *.aux *.out *.nav *.snm *.toc *.bak
 	$(RM) Rplots.ps Rplots.pdf
 
+fresh: clean
+	$(RM) -r library check cran
+
 .SECONDARY:
