@@ -5,7 +5,7 @@ pompExample(bbs)
 guess <- c(
            mu=0,gamma=1/3,beta=1,beta.sd=0,iota=0,
            pop=1400,rho=0.9,sigma=3.6,
-           S.0=1390,I.0=1,R.0=0
+           S_0=1390,I_0=1,R_0=0
            )
 est <- c("beta","gamma")
 

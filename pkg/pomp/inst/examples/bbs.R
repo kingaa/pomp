@@ -28,7 +28,7 @@ pomp(
        beta.sd=0,
        pop=1400,
        rho=0.9,sigma=3.6,
-       S.0=0.999,I.0=0.001,R.0=0
+       S_0=0.999,I_0=0.001,R_0=0
        ),
      rprocess=euler.sim(
        step.fun="_sir_euler_simulator",
@@ -43,7 +43,7 @@ pomp(
      paramnames=c(
        "gamma","mu","iota",
        "beta","beta.sd","pop","rho",
-       "S.0","I.0","R.0"
+       "S_0","I_0","R_0"
        ),
      zeronames=c("cases"),
      nbasis=1L,
@@ -51,7 +51,7 @@ pomp(
      period=1.0,
      logvar=c(
        "beta","gamma","mu","iota","sigma","beta.sd",
-       "S.0","I.0","R.0"
+       "S_0","I_0","R_0"
        ),
      logitvar="rho",
      toEstimationScale=function (params, logvar, logitvar, ...) {

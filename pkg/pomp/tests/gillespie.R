@@ -8,10 +8,10 @@ params <- c(
             beta3=490,
             gamma=24,
             iota=0.1,
-            S.0=0.05,
-            I.0=1e-4,
-            R.0=0.95,
-            N.0=1000000
+            S_0=0.05,
+            I_0=1e-4,
+            R_0=0.95,
+            N_0=1000000
             )
 
 seasonality <- data.frame(
@@ -65,13 +65,13 @@ simulate(
               measurement.model=reports~binom(size=cases,prob=0.1),
               initializer=function(params, t0, ...){
                 comp.names <- c("S","I","R")
-                icnames <- paste(comp.names,"0",sep=".")
+                icnames <- paste(comp.names,"0",sep="_")
                 snames <- c("S","I","R","N","cases")
                 fracs <- params[icnames]
                 x0 <- numeric(length(snames))
                 names(x0) <- snames
-                x0["N"] <- params["N.0"]
-                x0[comp.names] <- round(params['N.0']*fracs/sum(fracs))
+                x0["N"] <- params["N_0"]
+                x0[comp.names] <- round(params['N_0']*fracs/sum(fracs))
                 x0
               }
               ),

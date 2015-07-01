@@ -221,7 +221,7 @@ pomp(
        beta.sd=1e-3,
        pop=2.1e6,
        rho=0.6,
-       S.0=26/400,I.0=0.001,R.0=1-26/400
+       S_0=26/400,I_0=0.001,R_0=1-26/400
        ),
      rprocess=euler.sim(
        step.fun="_sir_euler_simulator",
@@ -237,7 +237,7 @@ pomp(
      paramnames=c(
        "gamma","mu","iota",
        "beta1","beta.sd","pop","rho",
-       "S.0","I.0","R.0"
+       "S_0","I_0","R_0"
        ),
      zeronames=c("cases"),
      fromEstimationScale="_sir_par_trans",

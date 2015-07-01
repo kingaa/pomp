@@ -532,7 +532,7 @@ pomp(
        gamma=24,mu=1/70,iota=0.1,
        beta1=330,beta2=410,beta3=490,
        rho=0.1,
-       S.0=0.05,I.0=1e-4,R.0=0.95,
+       S_0=0.05,I_0=1e-4,R_0=0.95,
        pop=1000000,
        beta.sd=0
        ),
@@ -564,11 +564,11 @@ pomp(
      paramnames=c(
        "gamma","mu","iota",
        "beta1","beta.sd","pop","rho",
-       "S.0","I.0","R.0"
+       "S_0","I_0","R_0"
        ),
      zeronames=c("cases"),
      comp.names=c("S","I","R"),
-     ic.names=c("S.0","I.0","R.0"),
+     ic.names=c("S_0","I_0","R_0"),
      fromEstimationScale="_sir_par_trans",
      toEstimationScale="_sir_par_untrans",
      nbasis=3L,
