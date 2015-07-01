@@ -1,3 +1,5 @@
+### pomp to-do list
+
 - documentation on 'mifList', 'pmcmcList', etc.
 - 'transform' argument for pmcmc?
 - 'initializer' -> 'rinit' and perhaps 'dinit'
