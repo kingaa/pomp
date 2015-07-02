@@ -160,9 +160,9 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
   model.residuals <- matrix(0,dim(model.pred)[1],nvar)
 
   for (jvar in seq_len(nvar)) {
-    model.lm <- lm(model.pred[,jvar]~rbfbasis.model-1)
-    model.residuals[,jvar] <- residuals(model.lm)
-    ck <- coef(model.lm)
+    model.lm <- .lm.fit(rbfbasis.model,model.pred[,jvar])
+    model.residuals[,jvar] <- model.lm$residuals
+    ck <- model.lm$coefficients
     if (verbose) {
       print(ck)
       print(summary(model.lm))

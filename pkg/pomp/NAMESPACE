@@ -38,10 +38,9 @@ importFrom(graphics,plot,par,abline,pairs,matplot,box,axis,mtext,
            points,polygon,lines,plot.default,legend,hist,rect,text)		
 importFrom(grDevices,rgb,dev.interactive)
 importFrom(stats,simulate,time,coef,logLik,window,
-           lm,residuals,fitted,sd,
-           dnorm,cov,runif,median,density,
-           spec.pgram,rnorm,weighted.mean,optim,.lm.fit,
-           setNames,cor,kernel,quantile)
+           dnorm,runif,sd,cov,cor,median,density,
+           spec.pgram,rnorm,weighted.mean,optim,
+           .lm.fit,setNames,kernel,quantile)
 importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(subplex,subplex)
 importFrom(deSolve,ode)
