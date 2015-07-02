@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.69-2}{
+  \itemize{
+    \item Measles data from England and Wales, kindly provided by Ben Bolker, are now included as \code{ewmeas} and \code{ewcitmeas}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.68-2}{
   \itemize{
     \item When using \code{Csnippet}s, by default, the C codes and shared-object files are stored in the R session's temporary directory.
