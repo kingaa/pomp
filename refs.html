@@ -9,19 +9,19 @@ title: references to the POMP literature
 
   <dt>{{ rec.author }} ({{ rec.year }})</dt>
   <dd>{{ rec.title }}.<br>
-{% if rec.journal %}
+{% if rec.journal != "" %}
     <i>{{ rec.journal }}</i>,
 {% endif %}
-{% if rec.volume %}
+{% if rec.volume != "" %}
     <b>{{ rec.volume }}</b>:&nbsp;
 {% endif %}
-{% if rec.booktitle %}
+{% if rec.booktitle != "" %}
     In: <i>{{ rec.booktitle }}</i>,
 {% endif %}
-{% if rec.editor %}
+{% if rec.editor != "" %}
     (edited by {{ rec.editor }})&nbsp;;
 {% endif %}
-{% if rec.pages %}
+{% if rec.pages != "" %}
     {{ rec.pages }}.
 {% endif %}
     <br></dd>
