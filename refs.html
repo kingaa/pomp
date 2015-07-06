@@ -8,7 +8,7 @@ title: references to the POMP literature
 {% for rec in site.data.pubs %}
 
   <dt>{{ rec.author }} ({{ rec.year }})</dt>
-  <dd>{{ rec.title }}.<br>
+  <dd>{{ rec.title }}.
 {% if rec.journal != "" %}
     <i>{{ rec.journal }}</i>,
 {% endif %}
@@ -19,12 +19,12 @@ title: references to the POMP literature
     In: <i>{{ rec.booktitle }}</i>,
 {% endif %}
 {% if rec.editor != "" %}
-    (edited by {{ rec.editor }})&nbsp;;
+    (edited by {{ rec.editor }})
 {% endif %}
 {% if rec.pages != "" %}
-    {{ rec.pages }}.
+    {{ rec.pages }}
 {% endif %}
-    <br></dd>
+  </dd>
 
 {% endfor %}
 </dl>
