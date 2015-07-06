@@ -1,3 +1,0 @@
-vignettes/Makefile
-inst/data-R/Makefile
-vignettes/(.+?)\.pbs$

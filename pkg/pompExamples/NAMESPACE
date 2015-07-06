@@ -1,3 +1,0 @@
-useDynLib(pompExamples)
-import(pomp)
-export(pertussis.sim)
