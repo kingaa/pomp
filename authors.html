@@ -5,20 +5,7 @@ title: pomp authors
 <h2>Authors</h2>
 
 <dl>
-  <dd><a href="http://kinglab.eeb.lsa.umich.edu/king/">Aaron A. King</a></dd>
-
-  <dd><a href="http://www.stat.lsa.umich.edu/~ionides/">Ed Ionides</a></dd>
-
-  <dd>Carles Bret&oacute; Martínez</dd>
-
-  <dd><a href="http://www.eeb.cornell.edu/Ellner/default.html">Steve Ellner</a></dd>
-
-  <dd><a href="http://www.bren.ucsb.edu/people/Faculty/bruce_kendall.htm">Bruce Kendall</a></dd>
-
-  <dd><a href="http://www.cidd.psu.edu/people/mjf283">Matt Ferrari</a></dd>
-
-  <dd><a href="http://www.math.umass.edu/~lavine/">Michael Lavine</a></dd>
-
-  <dd><a href="http://reumanlab.ku.edu/">Dan Reuman</a></dd>
-
+{% for author in site.data.authors %}
+  <dd><a href="{{ author.url }}">{{ author.name }}</a></dd>
+{% endfor %}
 </dl>
