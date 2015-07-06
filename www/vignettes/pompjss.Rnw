@@ -1,5 +1,5 @@
 \documentclass[article,pdftex,shortnames,nojss]{jss}
-
+%\VignetteEngine{knitr::knitr}
 \usepackage[ruled,noline,linesnumbered]{algorithm2e}
 \SetKwFor{For}{for}{do}{end}
 \SetKwFor{While}{while}{do}{end}
