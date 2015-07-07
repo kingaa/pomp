@@ -2,9 +2,9 @@
 layout: pomp
 title: pomp, an R package for statistical inference using partially observed Markov processes
 ---
-<p><strong>pomp</strong> provides a very general realization of nonlinear partially-observed Markov processes (AKA nonlinear stochastic dynamical systems). These are a generalization of the familiar state-space and hidden Markov models to nonlinear, non-Gaussian processes in either discrete or continuous time. In <strong>pomp</strong>, one can implement a model by specifying its unobserved process and measurement components; the package uses these functions in algorithms to simulate, analyze, and fit the model to data.</p>
+<p><strong>pomp</strong> provides a very general realization of nonlinear partially-observed Markov processes (AKA nonlinear stochastic dynamical systems). These are a generalization of linear state-space and hidden Markov models to nonlinear, non-Gaussian processes in either discrete or continuous time. In <strong>pomp</strong>, one can implement a model by specifying its unobserved process and measurement components; the package uses these functions in algorithms to simulate, analyze, and fit the model to data.  The motivation, structure, and contents of the package are described, with examples, in a <i>Journal of Statistical Software</i> paper, <a target="_blank" href="./vignettes/pompjss.pdf">an updated version of which is provided on this site</a>.</p>
 
-<p>At the moment, support is provided for</p>
+<p>Currently, <strong>pomp</strong> provides support for</p>
 
 <ul>
   <li>basic particle filtering (AKA sequential importance sampling or sequential Monte Carlo),</li>
@@ -19,7 +19,9 @@ title: pomp, an R package for statistical inference using partially observed Mar
 
   <li>the iterated filtering method of Ionides,&nbsp;Breto,&nbsp;&amp;&nbsp;King&nbsp;(2006),</li>
 
-  <li>probe-matching methods (e.g., Kendall et al. 1999)</li>
+  <li>the improved iterated filtering method (Ionides et al. 2015),</li>
+
+  <li>probe-matching methods (e.g., Kendall et al. 1999, Wood et al. 2010)</li>
 
   <li>the nonlinear forecasting method of Ellner&nbsp;&amp;&nbsp;Kendall,and</li>
 
@@ -28,9 +30,9 @@ title: pomp, an R package for statistical inference using partially observed Mar
 
 <p>Simple worked examples are provided in <a href="./vignettes/">vignettes</a> and in the <code>examples</code> directory of the installed package.</p>
 
-<p>Future support for a variety of other algorithms is envisioned.</p>
+<p>Future support for a variety of other algorithms is envisioned.  In particular, <strong>pomp</strong> is a platform upon which general inference algorithms for partially observed Markov processes can be implemented.  We welcome contributions!</p>
 
-<p>Please let the developers know if you find <strong>pomp</strong> useful, if you publish results obtained using it, if you come up with improvements, find bugs, or have suggestions or feature requests!</p>
+<p>Please let the developers know if you find <strong>pomp</strong> useful, if you publish results obtained using it, <a target="_blank" href="http://github.com/kingaa/pomp/issues">if you come up with improvements, find bugs, or have suggestions or feature requests!</a></p>  There is also a <a target="_blank" href="https://github.com/kingaa/pomp/wiki">wiki</a>: you are invited to contribute snippets of code, interesting results, references to papers, and so on.
 
 <p>The package is provided under the GPL. Contributions are welcome, as are comments, suggestions, feature requests, examples, and bug reports. Please send these to <code>kingaa at umich dot edu</code>. <strong>pomp</strong> is under active development: new features are being added and old features are being improved. Although the developers will make efforts to preserve backward compatibility, we cannot absolutely guarantee backward compatibility. We will be sure to include warnings of changes that break backward compatibility in the NEWS file and the <a href="https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/pomp-announce" target="_top"><i>pomp-announce</i> mailing list</a>.</p>
 

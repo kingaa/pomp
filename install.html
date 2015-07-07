@@ -14,20 +14,19 @@ To use it, you will need to install it from source.
 <p>
 The easiest way to install the development version uses the <code>devtools</code> package.
 In an <code>R</code> session, do
-<pre><code>
-require(devtools)
-install_github(&quot;kingaa/pomp&quot;)
-</code></pre>
+<pre><code>require(devtools)
+install_github(&quot;kingaa/pomp&quot;)</code></pre>
 </p>
 
 <p>
 Alternatively, you can download the <a href="http://github.com/kingaa/pomp/tarball/master">source as a tarball</a>
 or as a <a href="http://github.com/kingaa/pomp/zipball/master">zip file</a>.
-Unpack the tarball or zipfile (thereby creating a directory named, say, kingaa-pomp-XXXXXXX) and build the package source by executing
-<pre><code>R CMD build kingaa-pomp-XXXXXXX</code></pre>
+Unpack the tarball or zipfile (thereby creating a directory named, say, <code>kingaa-pomp-xxxxxxx</code>) and build the package source by executing
+<pre><code>R CMD build kingaa-pomp-xxxxxxx</code></pre>
 Then install the package from the <code>R</code> command line:
 <pre><code>install.packages(&quot;pomp_X.X-X.tar.gz&quot;)</code></pre>
 </p>
+
 
 <h3>Stable version</h3>
 
@@ -36,3 +35,23 @@ Source and binaries for the <a target="_blank" href="http://cran.at.r-project.or
 </p>
 
 
+<h3>Important note for Windows users</h3>
+
+<p>
+To compile the package from source, and to make use of its facilities for accelerated computation using compiled C code, you will need the ability to compile C code and dynamically link it into an <code>R</code> session. 
+For this reason, you must install the <code>Rtools</code> suite, which can be downloaded from <a href="http://cran.r-project.org/bin/windows/Rtools">http://cran.r-project.org/bin/windows/Rtools</a>.
+<code>Rtools</code> is needed <i>both</i> to compile and install the development version from source <i>and</i> to obtain full value from any version of the package.
+</p>
+
+
+<h3>Important note for Mac OS X users</h3>
+
+<p>
+To compile the package from source, and to be able to make use of its facilities for accelerated computation using compiled C code, you will need the ability to compile C code and dynamically link it into an <code>R</code> session.
+These facilities are provided in the <code>Xcode</code> app, which is free and can be installed via the App Store or downloaded from <a href="https://developer.apple.com/xcode/downloads/">https://developer.apple.com/xcode/downloads/</a>.
+</p>
+
+<p>
+Some users report that <code>gfortran</code> is not installed by default in all versions of <code>Xcode</code>.
+For instructions on installing a suitable version of <code>gfortran</code> (and other libraries you may need), see <a href="http://cran.r-project.org/bin/macosx/tools">http://cran.r-project.org/bin/macosx/tools</a> for the R project's recommendations on development tools and libraries for Mac OS X.
+</p>
