@@ -7,8 +7,9 @@ title: references to the POMP literature
 <dl compact>
 {% for rec in site.data.pubs %}
 
-  <dt>{{ rec.author }} ({{ rec.year }})</dt>
-  <dd>{{ rec.title }}.
+  <dd>
+    {{ rec.author }} ({{ rec.year }})
+    {{ rec.title }}.
 {% if rec.journal != "" %}
     <i>{{ rec.journal }}</i>,
 {% endif %}
