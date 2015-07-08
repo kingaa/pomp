@@ -6,7 +6,7 @@ output:
   html_document:
     theme: flatly
     toc: yes
-bibliography: sbied.bib
+bibliography: pomp.bib
 csl: ecology.csl
 
 ---
