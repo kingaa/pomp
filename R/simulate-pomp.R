@@ -104,18 +104,18 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
         retval <- do.call(rbind,retval)
       } else {
         retval <- as.data.frame(retval)
-        retval$sim <- 1
+        retval$sim <- 1L
       }
     }
 
     if (include.data) {
       od <- as.data.frame(object)
-      od$sim <- 0
+      od$sim <- 0L
       retval <- merge(od,retval,all=TRUE)
     }
 
     retval$sim <- ordered(retval$sim)
-    if (include.data) levels(retval$sim)[1] <- "data"
+    if (include.data) levels(retval$sim)[1L] <- "data"
     retval <- retval[order(retval$sim,retval$time),]
 
   }
