@@ -94,7 +94,7 @@ stopifnot(packageVersion("pomp")>="0.70-1")
 ## Data and covariates
 
 Now we'll load the data and covariates.
-The data are measles reports from 20 cities in England and Wales.
+The data are measles reports from 20 cities in England and Wales, digitized from the printed public records and graciously provided by Prof.&nbsp;Bryan Grenfell.
 We also have information on the population sizes and birth-rates in these cities;
 we'll treat these variables as covariates.
 
