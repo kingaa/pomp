@@ -79,9 +79,8 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                       as.data.frame(t(retval$obs)),
                       as.data.frame(t(retval$states))
                       )
-      retval$sim <- as.character(seq_len(nsim))
+      retval$sim <- seq_len(nsim)
       retval$time <- rep(times,each=nsim)
-      retval <- retval[order(retval$sim,retval$time),]
     } else if (obs || states) {
       dm <- dim(retval)
       nsim <- dm[2L]
@@ -89,9 +88,8 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
       dim(retval) <- c(dm[1L],prod(dm[-1L]))
       rownames(retval) <- nm
       retval <- as.data.frame(t(retval))
-      retval$sim <- as.character(seq_len(nsim))
+      retval$sim <- seq_len(nsim)
       retval$time <- rep(times,each=nsim)
-      retval <- retval[order(retval$sim,retval$time),]
     } else {
       nsim <- length(retval)
       if (nsim > 1) {
@@ -104,20 +102,21 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                          }
                          )
         retval <- do.call(rbind,retval)
-        retval$sim <- as.character(retval$sim)
       } else {
         retval <- as.data.frame(retval)
-        retval$sim <- "1"
+        retval$sim <- 1
       }
     }
 
     if (include.data) {
       od <- as.data.frame(object)
-      od$sim <- "data"
+      od$sim <- 0
       retval <- merge(od,retval,all=TRUE)
     }
 
-    retval$sim <- factor(retval$sim)
+    retval$sim <- ordered(retval$sim)
+    if (include.data) levels(retval$sim)[1] <- "data"
+    retval <- retval[order(retval$sim,retval$time),]
 
   }
 
