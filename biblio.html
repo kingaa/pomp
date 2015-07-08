@@ -2,11 +2,13 @@
 layout: pomp
 title: references to the POMP literature
 ---
-<h2>References</h2>
+<h2>Bibliography</h2>
 
 <dl>
-{% for rec in site.data.pubs %}
+{% assign sorted = site.data.biblio | sort:"year" | reverse %}
+{% for rec in sorted %}
 
+  <dt>&nbsp;</dt>
   <dd>
     {{ rec.author }} ({{ rec.year }})
     {{ rec.title }}.
@@ -24,6 +26,9 @@ title: references to the POMP literature
 {% endif %}
 {% if rec.pages %}
     {{ rec.pages }}
+{% endif %}
+{% if rec.doi %}
+    <a target="_blank" href="{{ rec.doi }}">Link</a>
 {% endif %}
   </dd>
 
