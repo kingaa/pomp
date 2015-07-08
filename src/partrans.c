@@ -71,6 +71,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     PROTECT(rho = (CLOENV(fn))); nprotect++;
 
     if (qmat) {		// matrix case
+      const char *dimnm[2] = {"variable","rep"};
       ps = REAL(params);
       pp = REAL(pvec);
 
@@ -87,6 +88,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
       ndim[0] = npar2; ndim[1] = nreps;
       PROTECT(tparams = makearray(2,ndim)); nprotect++;
       setrownames(tparams,nm,2);
+      fixdimnames(tparams,dimnm,2);
       pt = REAL(tparams);
 
       pa = REAL(AS_NUMERIC(ans));
