@@ -98,7 +98,6 @@ rproc <- Csnippet("
   S += births   - trans[0] - trans[1];
   E += trans[0] - trans[2] - trans[3];
   I += trans[2] - trans[4] - trans[5];
-  R = pop - S - E - I;
   W += (dw - dt)/sigmaSE;  // standardized i.i.d. white noise
   C += trans[4];           // true incidence
 ")
@@ -109,7 +108,6 @@ initlz <- Csnippet("
   S = nearbyint(m*S_0);
   E = nearbyint(m*E_0);
   I = nearbyint(m*I_0);
-  R = nearbyint(m*R_0);
   W = 0;
   C = 0;
 ")
@@ -183,7 +181,7 @@ dat %>%
        covar=covar,
        tcovar="time",
        zeronames=c("C","W"),
-       statenames=c("S","E","I","R","C","W"),
+       statenames=c("S","E","I","C","W"),
        paramnames=c("R0","mu","sigma","gamma","alpha","iota",
                     "rho","sigmaSE","psi","cohort","amplitude",
                     "S_0","E_0","I_0","R_0")
