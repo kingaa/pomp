@@ -174,6 +174,9 @@ pmcmc.internal <- function (object, Nmcmc,
       log.prior <- log.prior.prop
     }
 
+    ## add filtered trajectory to the store
+    filt.t[,n,] <- pfp@filter.traj[,1L,]
+
     ## store a record of this iteration
     conv.rec[n+1,names(theta)] <- theta
     conv.rec[n+1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
