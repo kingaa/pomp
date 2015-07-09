@@ -28,19 +28,23 @@ pmcmc.internal <- function (object, Nmcmc,
 
   object <- as(object,"pomp")
   gnsi <- as.logical(.getnativesymbolinfo)
+  verbose <- as.logical(verbose)
   .ndone <- as.integer(.ndone)
 
   pompLoad(object)
 
   if (missing(start))
-    stop(sQuote("start")," must be specified",call.=FALSE)
+    stop(sQuote("start")," must be specified")
   if (length(start)==0)
-    stop(
-         sQuote("start")," must be specified if ",
-         sQuote("coef(object)")," is NULL"
-         )
+    stop(sQuote("start")," must be specified if ",
+         sQuote("coef(object)")," is NULL")
   if (is.null(names(start)))
-    stop("pmcmc error: ",sQuote("start")," must be a named vector",call.=FALSE)
+    stop(sQuote("pmcmc")," error: ",
+         sQuote("start")," must be a named vector",call.=FALSE)
+
+
+
+
 
   if (!is.function(proposal))
     stop(sQuote("proposal")," must be a function")
@@ -48,9 +52,10 @@ pmcmc.internal <- function (object, Nmcmc,
   ## test proposal distribution
   theta <- try(proposal(start))
   if (inherits(theta,"try-error"))
-    stop("pmcmc error: error in proposal function",call.=FALSE)
+    stop(sQuote("pmcmc")," error: error in proposal function",call.=FALSE)
   if (is.null(names(theta)) || !is.numeric(theta))
-    stop("pmcmc error: ",sQuote("proposal")," must return a named numeric vector",call.=FALSE)
+    stop(sQuote("pmcmc")," error: ",sQuote("proposal"),
+         " must return a named numeric vector",call.=FALSE)
 
   ntimes <- length(time(object))
   if (missing(Np))
@@ -80,10 +85,8 @@ pmcmc.internal <- function (object, Nmcmc,
     stop("pmcmc error: ",sQuote("Nmcmc")," must be a positive integer",call.=FALSE)
 
   if (verbose) {
-    cat("performing",Nmcmc,"PMCMC iteration(s) using",Np,"particles\n")
+    cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
   }
-
-  theta <- start
 
   conv.rec <- matrix(
                      data=NA,
@@ -106,10 +109,11 @@ pmcmc.internal <- function (object, Nmcmc,
                                 pred.mean=FALSE,
                                 pred.var=FALSE,
                                 filter.mean=TRUE,
+                                filter.traj=TRUE,
                                 save.states=FALSE,
                                 save.params=FALSE,
                                 .transform=FALSE,
-                                verbose=verbose,
+                                verbose=FALSE,
                                 .getnativesymbolinfo=gnsi
                                 ),
                silent=FALSE
@@ -121,9 +125,17 @@ pmcmc.internal <- function (object, Nmcmc,
   } else { ## has been computed previously
     pfp <- .prev.pfp
     log.prior <- .prev.log.prior
+    pfp@filter.traj <- pfp@filter.traj[,.ndone,,drop=FALSE]
   }
   conv.rec[1,names(theta)] <- theta
   conv.rec[1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
+
+  filt.t <- array(
+                  data=0,
+                  dim=replace(dim(pfp@filter.traj),2L,Nmcmc),
+                  dimnames=replace(dimnames(pfp@filter.traj),2L,
+                    list(as.character(seq_len(Nmcmc))))
+                  )
 
   for (n in seq_len(Nmcmc)) { # main loop
 
@@ -140,10 +152,11 @@ pmcmc.internal <- function (object, Nmcmc,
                                      pred.mean=FALSE,
                                      pred.var=FALSE,
                                      filter.mean=TRUE,
+                                     filter.traj=TRUE,
                                      save.states=FALSE,
                                      save.params=FALSE,
                                      .transform=FALSE,
-                                     verbose=verbose,
+                                     verbose=FALSE,
                                      .getnativesymbolinfo=gnsi
                                      ),
                     silent=FALSE
@@ -184,7 +197,8 @@ pmcmc.internal <- function (object, Nmcmc,
       Np=Np,
       tol=tol,
       conv.rec=conv.rec,
-      log.prior=log.prior
+      log.prior=log.prior, 
+      filter.traj=filt.t
       )
 }
 
@@ -200,7 +214,7 @@ setMethod(
             if (missing(start)) start <- coef(object)
             if (missing(Np))
               stop("pmcmc error: ",sQuote("Np")," must be specified",call.=FALSE)
-              
+            
             if (missing(proposal)) proposal <- NULL
 
             if (!missing(rw.sd)) {
@@ -302,6 +316,12 @@ setMethod(
                                   obj@conv.rec[-1,]
                                   )
             names(dimnames(obj@conv.rec)) <- c("iteration","variable")
+            ft <- array(dim=replace(dim(obj@filter.traj),2L,ndone+Nmcmc),
+                        dimnames=replace(dimnames(obj@filter.traj),2L,
+                          list(seq_len(ndone+Nmcmc))))
+            ft[,seq_len(ndone),] <- object@filter.traj
+            ft[,ndone+seq_len(Nmcmc),] <- obj@filter.traj
+            obj@filter.traj <- ft
             obj@Nmcmc <- as.integer(ndone+Nmcmc)
             obj
           }

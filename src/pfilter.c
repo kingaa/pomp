@@ -51,20 +51,21 @@ SEXP systematic_resampling (SEXP weights)
 SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 			   SEXP rw, SEXP rw_sd,
 			   SEXP predmean, SEXP predvar,
-			   SEXP filtmean, SEXP onepar,
+			   SEXP filtmean, SEXP trackancestry, SEXP onepar,
 			   SEXP weights, SEXP tol)
 {
   int nprotect = 0;
-  SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue;
+  SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue, anc = R_NilValue;
   SEXP rw_names, ess, fail, loglik;
   SEXP newstates = R_NilValue, newparams = R_NilValue;
   SEXP retval, retvalnames;
   const char *dimnm[2] = {"variable","rep"};
   double *xpm = 0, *xpv = 0, *xfm = 0, *xw = 0, *xx = 0, *xp = 0;
+  int *xanc = 0;
   SEXP dimX, dimP, newdim, Xnames, Pnames, pindex;
   int *dim, *pidx, lv, np;
   int nvars, npars = 0, nrw = 0, nreps, offset, nlost;
-  int do_rw, do_pm, do_pv, do_fm, do_par_resamp, all_fail = 0;
+  int do_rw, do_pm, do_pv, do_fm, do_ta, do_par_resamp, all_fail = 0;
   double sum, sumsq, vsq, ws, w, toler;
   int j, k;
 
@@ -81,7 +82,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     error("'states' and 'params' do not agree in second dimension");
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
 
-  np = INTEGER(AS_INTEGER(Np))[0]; // number of particles to resample
+  np = *(INTEGER(AS_INTEGER(Np))); // number of particles to resample
 
   PROTECT(rw_names = GET_NAMES(rw_sd)); nprotect++; // names of parameters undergoing random walk
 
@@ -89,6 +90,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   do_pm = *(LOGICAL(AS_LOGICAL(predmean))); // calculate prediction means?
   do_pv = *(LOGICAL(AS_LOGICAL(predvar)));  // calculate prediction variances?
   do_fm = *(LOGICAL(AS_LOGICAL(filtmean))); // calculate filtering means?
+  do_ta = *(LOGICAL(AS_LOGICAL(trackancestry))); // track ancestry?
   do_par_resamp = *(LOGICAL(AS_LOGICAL(onepar))); // are all cols of 'params' the same?
   do_par_resamp = !do_par_resamp || do_rw || (np != nreps); // should we do parameter resampling?
 
@@ -148,6 +150,11 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
       PROTECT(fm = NEW_NUMERIC(nvars)); nprotect++;
     }
     xfm = REAL(fm);
+  }
+
+  if (do_ta) {
+    PROTECT(anc = NEW_INTEGER(np)); nprotect++;
+    xanc = INTEGER(anc);
   }
 
   for (j = 0; j < nvars; j++) {	// state variables
@@ -249,6 +256,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 	for (j = 0, xp = ps+npars*sample[k]; j < npars; j++, pt++, xp++) 
 	  *pt = *xp;
       }
+      if (do_ta) xanc[k] = sample[k]+1;
     }
 
   } else { // don't resample: just drop 3rd dimension in x prior to return
@@ -260,6 +268,8 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     setrownames(x,Xnames,2);
     fixdimnames(x,dimnm,2);
 
+    if (do_ta) 
+      for (k = 0; k < np; k++) xanc[k] = k+1;
   }
 
   if (do_rw) { // if random walk, adjust prediction variance and move particles
@@ -280,8 +290,8 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 
   PutRNGstate();
 
-  PROTECT(retval = NEW_LIST(8)); nprotect++;
-  PROTECT(retvalnames = NEW_CHARACTER(8)); nprotect++;
+  PROTECT(retval = NEW_LIST(9)); nprotect++;
+  PROTECT(retvalnames = NEW_CHARACTER(9)); nprotect++;
   SET_STRING_ELT(retvalnames,0,mkChar("fail"));
   SET_STRING_ELT(retvalnames,1,mkChar("loglik"));
   SET_STRING_ELT(retvalnames,2,mkChar("ess"));
@@ -290,6 +300,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   SET_STRING_ELT(retvalnames,5,mkChar("pm"));
   SET_STRING_ELT(retvalnames,6,mkChar("pv"));
   SET_STRING_ELT(retvalnames,7,mkChar("fm"));
+  SET_STRING_ELT(retvalnames,8,mkChar("ancestry"));
   SET_NAMES(retval,retvalnames);
 
   SET_ELEMENT(retval,0,fail);
@@ -316,6 +327,9 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   }
   if (do_fm) {
     SET_ELEMENT(retval,7,fm);
+  }
+  if (do_ta) {
+    SET_ELEMENT(retval,8,anc);
   }
 
   UNPROTECT(nprotect);

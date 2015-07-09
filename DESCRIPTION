@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 0.71-1
-Date: 2015-07-08
+Version: 0.72-1
+Date: 2015-07-09
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -14,7 +14,8 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",
 	  person(given="Dao",family="Nguyen",role=c("ctb")),
 	  person(given=c("Daniel","C."),family="Reuman",role=c("ctb")),
 	  person(given=c("Helen"),family="Wearing",role=c("ctb")),
-	  person(given=c("Simon","N."),family="Wood",role=c("ctb"))
+	  person(given=c("Simon","N."),family="Wood",role=c("ctb")),
+	  person(given="Sebastian",family="Funk",role=c("ctb"))
 	  )
 URL: http://pomp.r-forge.r-project.org
 Description: Tools for working with partially observed Markov processes (POMPs, AKA stochastic dynamical systems, state-space models).  'pomp' provides facilities for implementing POMP models, simulating them, and fitting them to time series data by a variety of frequentist and Bayesian methods.  It is also a platform for the implementation of new inference methods.

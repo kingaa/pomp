@@ -76,8 +76,7 @@
     logical; if TRUE, print progress reports.
   }
   \item{\dots}{
-    Additional arguments.
-    These are currently ignored.
+    additional arguments that override the defaults.
   }
 }
 \value{
@@ -103,6 +102,9 @@
   \describe{
     \item{conv.rec}{
       \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars} as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
+    }
+    \item{filter.traj}{
+      \code{filter.traj(object, vars)} returns filter trajectories
     }
     \item{plot}{
       Diagnostic plots.

@@ -23,6 +23,9 @@
 \alias{filter.mean}
 \alias{filter.mean,pfilterd.pomp-method}
 \alias{filter.mean-pfilterd.pomp}
+\alias{filter.traj}
+\alias{filter.traj,pfilterd.pomp-method}
+\alias{filter.traj-pfilterd.pomp}
 \alias{eff.sample.size}
 \alias{eff.sample.size,pfilterd.pomp-method}
 \alias{eff.sample.size-pfilterd.pomp}
@@ -39,7 +42,7 @@
 \usage{
 \S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
     max.fail = Inf, pred.mean = FALSE, pred.var = FALSE,
-    filter.mean = FALSE, save.states = FALSE,
+    filter.mean = FALSE, filter.traj = FALSE, save.states = FALSE,
     save.params = FALSE, seed = NULL,
     verbose = getOption("verbose"), \dots)
 \S4method{pfilter}{pfilterd.pomp}(object, params, Np, tol, \dots)
@@ -49,6 +52,7 @@
 \S4method{pred.mean}{pfilterd.pomp}(object, pars, \dots)
 \S4method{pred.var}{pfilterd.pomp}(object, pars, \dots)
 \S4method{filter.mean}{pfilterd.pomp}(object, pars, \dots)
+\S4method{filter.traj}{pfilterd.pomp}(object, vars, \dots)
 }
 \arguments{
   \item{object}{
@@ -89,6 +93,9 @@
   \item{filter.mean}{
     logical; if \code{TRUE}, the filtering means are calculated for the state variables and parameters.
   }
+  \item{filter.traj}{
+    logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.
+  }
   \item{save.states, save.params}{
     logical.
     If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \code{\link[=pfilterd.pomp-class]{pfilterd.pomp}} object.
@@ -103,6 +110,7 @@
     logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.
   }
   \item{pars}{Names of parameters.}
+  \item{vars}{Names of state variables.}
   \item{\dots}{
     additional arguments that override the defaults.
   }
@@ -114,6 +122,9 @@
     \item{pred.mean, pred.var, filter.mean}{
       matrices of prediction means, variances, and filter means, respectively.
       In each of these, the rows correspond to states and parameters (if appropriate), in that order, the columns to successive observations in the time series contained in \code{object}.
+    }
+    \item{filter.traj}{
+      filtered trajectories returned by the particle filter
     }
     \item{eff.sample.size}{
       numeric vector containing the effective number of particles at each time point.

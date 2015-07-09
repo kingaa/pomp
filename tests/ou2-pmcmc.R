@@ -16,7 +16,7 @@ f1 <- pmcmc(
             Nmcmc=20,
             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
             Np=100,
-            max.fail=100, 
+            max.fail=100,
             verbose=FALSE
             )
 f1 <- continue(f1,Nmcmc=20,max.fail=100)
@@ -33,6 +33,7 @@ f2 <- pmcmc(
 
 f3 <- pmcmc(f2)
 f4 <- continue(f3,Nmcmc=20)
+filter.traj(f4)[,40,95:100]
 
 plot(c(f2,f3))
 
@@ -103,6 +104,7 @@ f7 <- pmcmc(
             verbose=FALSE
             )
 plot(f7)
+filter.traj(f7,"x1")[1,30,1:5]
 
 dev.off()
 

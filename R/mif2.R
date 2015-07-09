@@ -136,6 +136,7 @@ mif2.pfilter <- function (object, params, Np,
                     predmean=FALSE,
                     predvar=FALSE,
                     filtmean=filter.mean,
+                    trackancestry=FALSE,
                     onepar=FALSE,
                     weights=weights,
                     tol=tol

@@ -58,3 +58,13 @@ setMethod(
             object@filter.mean[pars,]
           }
           )
+
+## extract the filtered trajectory
+setMethod(
+          "filter.traj",
+          "pfilterd.pomp",
+          function (object, vars, ...) {
+            if (missing(vars)) vars <- rownames(object@filter.traj)
+            object@filter.traj[vars,,,drop=FALSE]
+          }
+          )

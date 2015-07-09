@@ -39,6 +39,8 @@ setGeneric("pred.mean",function(object,...)standardGeneric("pred.mean"))
 setGeneric("pred.var",function(object,...)standardGeneric("pred.var"))
 ## filter mean
 setGeneric("filter.mean",function(object,...)standardGeneric("filter.mean"))
+## filter trajectory
+setGeneric("filter.traj",function(object,...)standardGeneric("filter.traj"))
 ## conditional log likelihood
 setGeneric("cond.logLik",function(object,...)standardGeneric("cond.logLik"))
 ## effective sample size

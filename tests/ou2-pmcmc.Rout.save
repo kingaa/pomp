@@ -1,5 +1,5 @@
 
-R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+R version 3.2.1 (2015-06-18) -- "World-Famous Astronaut"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -35,7 +35,7 @@ newly created object(s):
 +             Nmcmc=20,
 +             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
 +             Np=100,
-+             max.fail=100, 
++             max.fail=100,
 +             verbose=FALSE
 +             )
 > f1 <- continue(f1,Nmcmc=20,max.fail=100)
@@ -54,6 +54,11 @@ pmcmc warning: 'rw.sd' is a deprecated argument.Use 'proposal' instead.
 > 
 > f3 <- pmcmc(f2)
 > f4 <- continue(f3,Nmcmc=20)
+> filter.traj(f4)[,40,95:100]
+        time
+variable        94         95        96        97        98        99
+      x1  1.855673 -0.3164115  2.548962  3.104878 -1.829905 -5.273791
+      x2 -4.491955 -2.7773696 -6.574778 -4.857627 -8.930757 -5.031346
 > 
 > plot(c(f2,f3))
 > 
@@ -130,6 +135,9 @@ Error in c(ff, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
 +             verbose=FALSE
 +             )
 > plot(f7)
+> filter.traj(f7,"x1")[1,30,1:5]
+          0           1           2           3           4 
+-3.00000000 -1.93554957  0.02894512  5.24999666  3.80645521 
 > 
 > dev.off()
 null device 
@@ -138,4 +146,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 21.905   0.076  22.217 
+ 24.841   0.076  25.100 
