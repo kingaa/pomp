@@ -17,7 +17,7 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",
 	  person(given=c("Simon","N."),family="Wood",role=c("ctb")),
 	  person(given="Sebastian",family="Funk",role=c("ctb"))
 	  )
-URL: http://pomp.r-forge.r-project.org
+URL: http://kingaa.github.io/pomp
 Description: Tools for working with partially observed Markov processes (POMPs, AKA stochastic dynamical systems, state-space models).  'pomp' provides facilities for implementing POMP models, simulating them, and fitting them to time series data by a variety of frequentist and Bayesian methods.  It is also a platform for the implementation of new inference methods.
 Depends: R(>= 3.0.0), methods
 Imports: stats, graphics, mvtnorm, deSolve, coda, subplex, nloptr
