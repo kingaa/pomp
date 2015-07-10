@@ -2332,7 +2332,7 @@ These analyses require only embarrassingly parallel computations and need no spe
 The package contains more examples (via \code{pompExample}), which can be used as templates for implementation of new models;
 the \proglang{R} and \proglang{C} code underlying these examples is provided with the package.
 In addition, \pkg{pomp} provides a number of interactive demos (via \code{demo}).
-Further documentation and an introductory tutorial are provided with the package and on the \pkg{pomp} website, \url{http://pomp.r-forge.r-project.org}.
+Further documentation and an introductory tutorial are provided with the package and on the \pkg{pomp} website, \url{http://kingaa.github.io/pomp}.
 
 \paragraph*{Acknowledgments}
 
