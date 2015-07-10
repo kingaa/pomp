@@ -1,5 +1,23 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.72-1}{
+  \itemize{
+    \item \code{pmcmc} and \code{pfilter} now have the capability of saving filtered trajectories.
+    These can be extracted using the new method \code{filter.traj}.
+    The principal use will be in conjunction with \code{pmcmc}, where, upon assuming convergence to the posterior, samples from the filtered trajectories are draws from the posterior \eqn{P[x_{1:T} | y_{1:T}]}{P[x[1:T] | y[1:T]]}.
+    Thanks for Sebastian Funk for initiating this development.
+  }
+}
+\section{Changes in \pkg{pomp} version 0.71-1}{
+  \itemize{
+    \item \code{partrans} and \code{parmat} have been jiggered to make them play better with \code{reshape2::melt}.
+  }
+}
+\section{Changes in \pkg{pomp} version 0.70-1}{
+  \itemize{
+    \item Some of the underpinnings of \code{nlf} have been streamlined for speed.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.69-2}{
   \itemize{
     \item Measles data from England and Wales, kindly provided by Ben Bolker, are now included as \code{ewmeas} and \code{ewcitmeas}.
