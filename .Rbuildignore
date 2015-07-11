@@ -3,4 +3,5 @@ inst/doc/(.+?)\.bst$
 inst/doc/(.+?)\.R$
 inst/doc/(.+?)\.png$
 README\.md
+TODO\.md
 \.gitignore
