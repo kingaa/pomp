@@ -1,7 +1,7 @@
 ---
 title: "Measles in large and small populations"
 author: "Aaron A. King"
-date: "07/07/2015"
+date: "2015-07-11"
 output:
   html_document:
     theme: flatly
@@ -26,7 +26,11 @@ The intentions are to:
 - establish baseline likelihoods for these data against which future analyses can be compared
 - illustrate the construction of a complex model in `pomp`
 
-Whilst @He2010 examined measles in 20 towns, we will focus on London alone.
+```{r select-town,echo=FALSE}
+TOWN <- "London"
+```
+
+Whilst @He2010 examined measles in 20 towns, we will focus on `r TOWN` alone.
 The full 20 city dataset is available on [the `pomp` website](http://kingaa.github.io/pomp/vignettes/) and the MLEs obtained by @He2010 ata for the full 20 towns are included in the R code accompanying this document.
 
 ```{r knitr-opts,include=FALSE,cache=FALSE,purl=FALSE}
@@ -102,10 +106,11 @@ we'll treat these variables as covariates.
 ```{r load-data}
 load("twentycities.rda")
 measles %>% 
-  subset(town=="London" & year>=1950 & year<1964) %>%
+  mutate(year=as.integer(format(date,"%Y"))) %>%
+  subset(town==TOWN & year>=1950 & year<1964) %>%
   mutate(time=(julian(date,origin=as.Date("1950-01-01")))/365.25+1950) %>%
   subset(time>1950 & time<1964, select=c(time,cases)) -> dat
-demog %>% subset(town=="London",select=-town) -> demog
+demog %>% subset(town==TOWN,select=-town) -> demog
 ```
 
 Let's plot the data and covariates.
@@ -351,7 +356,7 @@ Sheffield,-2810.7,0.21,0.02,4,54.3,62.2,0.649,33.1,0.313,1.02,0.853,0.225,0.175,
 ",stringsAsFactors=FALSE) -> mles
 ```
 ```{r mle}
-mles %>% subset(town=="London") -> mle
+mles %>% subset(town==TOWN) -> mle
 paramnames <- c("R0","mu","sigma","gamma","alpha","iota",
                 "rho","sigmaSE","psi","cohort","amplitude",
                 "S_0","E_0","I_0","R_0")
