@@ -1,3 +1,6 @@
+## ----select-town,echo=FALSE----------------------------------------------
+TOWN <- "London"
+
 ## ----opts,include=FALSE,cache=FALSE--------------------------------------
 options(
   keep.source=TRUE,
@@ -28,10 +31,11 @@ stopifnot(packageVersion("pomp")>="0.70-1")
 ## ----load-data-----------------------------------------------------------
 load("twentycities.rda")
 measles %>% 
-  subset(town=="London" & year>=1950 & year<1964) %>%
+  mutate(year=as.integer(format(date,"%Y"))) %>%
+  subset(town==TOWN & year>=1950 & year<1964) %>%
   mutate(time=(julian(date,origin=as.Date("1950-01-01")))/365.25+1950) %>%
   subset(time>1950 & time<1964, select=c(time,cases)) -> dat
-demog %>% subset(town=="London",select=-town) -> demog
+demog %>% subset(town==TOWN,select=-town) -> demog
 
 ## ----data-plot-----------------------------------------------------------
 dat %>% ggplot(aes(x=time,y=cases))+geom_line()
@@ -220,7 +224,7 @@ Sheffield,-2810.7,0.21,0.02,4,54.3,62.2,0.649,33.1,0.313,1.02,0.853,0.225,0.175,
 ",stringsAsFactors=FALSE) -> mles
 
 ## ----mle-----------------------------------------------------------------
-mles %>% subset(town=="London") -> mle
+mles %>% subset(town==TOWN) -> mle
 paramnames <- c("R0","mu","sigma","gamma","alpha","iota",
                 "rho","sigmaSE","psi","cohort","amplitude",
                 "S_0","E_0","I_0","R_0")
