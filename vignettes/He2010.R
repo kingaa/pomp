@@ -238,8 +238,10 @@ require(foreach)
 require(doMC)
 registerDoMC()
 
-foreach(i=1:4,
-        .packages="pomp",
+set.seed(998468235L,kind="L'Ecuyer")
+mcopts <- list(preschedule=FALSE,set.seed=TRUE)
+
+foreach(i=1:4,.packages="pomp",
         .options.multicore=mcopts) %dopar% {
   pfilter(m1,params=theta,Np=10000)
 } -> pfs

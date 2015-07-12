@@ -14,7 +14,13 @@ csl: ecology.csl
 Licensed under the Creative Commons attribution-noncommercial license, http://creativecommons.org/licenses/by-nc/3.0/.
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](http://kinglab.eeb.lsa.umich.edu/graphics/cc-by-nc.png)
-Produced using `pomp` version `r packageVersion("pomp")`.
+
+Produced using *R* version `r getRversion()` and **pomp** version `r packageVersion("pomp")`.
+
+
+```{r select-town,echo=FALSE}
+TOWN <- "London"
+```
 
 ## Introduction
 
@@ -22,16 +28,12 @@ This document shows how the results of @He2010 can be reproduced.
 Specifically, it implements the model of that paper and computes the likelihood of the data under that model.
 The intentions are to:
 
-- facilitate new data analyses based on variants of this model by showing how it is implemented in `pomp`
+- facilitate new data analyses based on variants of this model by showing how it is implemented in **pomp**
 - establish baseline likelihoods for these data against which future analyses can be compared
-- illustrate the construction of a complex model in `pomp`
-
-```{r select-town,echo=FALSE}
-TOWN <- "London"
-```
+- illustrate the construction of a complex model in **pomp**
 
 Whilst @He2010 examined measles in 20 towns, we will focus on `r TOWN` alone.
-The full 20 city dataset is available on [the `pomp` website](http://kingaa.github.io/pomp/vignettes/) and the MLEs obtained by @He2010 ata for the full 20 towns are included in the R code accompanying this document.
+The full 20 city dataset is available on [the **pomp** website](http://kingaa.github.io/pomp/vignettes/) and the MLEs obtained by @He2010 for the full 20 towns are included in the R code accompanying this document.
 
 ```{r knitr-opts,include=FALSE,cache=FALSE,purl=FALSE}
 library(knitr)
@@ -77,8 +79,8 @@ theme_set(theme_bw())
 
 ## Preliminaries
 
-To get started, we must install `pomp` if it is not already installed.
-The following commands install `pomp` from source (on github).
+To get started, we must install **pomp** if it is not already installed.
+The following commands install **pomp** from source (on github).
 ```{r pomp-install,eval=FALSE}
 require(devtools)
 install_github("kingaa/pomp")
@@ -328,7 +330,7 @@ m1 %>% as.data.frame() %>%
 ## Likelihood computation
 
 We extract the MLE computed by @He2010.
-See the R code for the MLEs from all 20 cities.
+[See the R code](./He2010.R) for the MLEs from all 20 cities.
 
 ```{r load-mle,echo=FALSE}
 read.csv(text="
@@ -367,14 +369,18 @@ kable(subset(mle,select=-c(town,mu,loglik.sd,delay,S_0,E_0,I_0,R_0)),row.names=F
 ```
 
 The following codes compute the likelihood using the particle filter.
+We use the **foreach** and **doMC** packages to parallelize the computations on a multicore machine.
+Note the use of the L'Ecuyer parallel random number generator.
 
 ```{r pfilter1}
 require(foreach)
 require(doMC)
 registerDoMC()
 
-foreach(i=1:4,
-        .packages="pomp",
+set.seed(998468235L,kind="L'Ecuyer")
+mcopts <- list(preschedule=FALSE,set.seed=TRUE)
+
+foreach(i=1:4,.packages="pomp",
         .options.multicore=mcopts) %dopar% {
   pfilter(m1,params=theta,Np=10000)
 } -> pfs
