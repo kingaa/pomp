@@ -37,7 +37,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
   PACKAGE <- as.character(PACKAGE)
 
   if (missing(globals)) globals <- NULL
-  globals <- as.character(globals)
+  if (!is(globals,"Csnippet"))
+    globals <- as.character(globals)
   
   ## deal with missing components
   if (missing(skeleton)) skeleton <- NULL
