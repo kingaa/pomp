@@ -118,6 +118,5 @@ export(
        probe.marginal,
        sannbox,
        spect.match,
-       pompBuilder,
        pompExample
        )
