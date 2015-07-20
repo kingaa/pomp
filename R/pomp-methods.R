@@ -99,7 +99,6 @@ setMethod(
             if (!is.numeric(value))
               stop(sQuote("value")," must be a numeric vector",call.=TRUE)
             storage.mode(value) <- "double"
-            tt0 <- object@t0
             tt <- object@times
             dd <- object@data
             ss <- object@states
