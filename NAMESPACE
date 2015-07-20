@@ -35,9 +35,10 @@ useDynLib(
 
 import(methods)
 importFrom(graphics,plot,par,abline,pairs,matplot,box,axis,mtext,
-           points,polygon,lines,plot.default,legend,hist,rect,text)		
+           points,polygon,lines,plot.default,legend,hist,rect,text,title)	
+importFrom(utils,head)
 importFrom(grDevices,rgb,dev.interactive)
-importFrom(stats,simulate,time,coef,logLik,window,
+importFrom(stats,simulate,time,coef,logLik,window,fitted,
            dnorm,runif,sd,cov,cor,median,density,
            spec.pgram,rnorm,weighted.mean,optim,
            .lm.fit,setNames,kernel,quantile)
