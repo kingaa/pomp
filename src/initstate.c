@@ -54,7 +54,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
     
     nvar = LENGTH(ivpnames);
     if (nvar < 1) {
-      error("default initializer error: no parameter names ending in '.0' found: see 'pomp' documentation");
+      error("initializer error: how shall I initialize the state process? See '?pomp'.");
     }
     pidx = INTEGER(PROTECT(match(Pnames,ivpnames,0))); nprotect++;
     for (k = 0; k < nvar; k++) pidx[k]--;
