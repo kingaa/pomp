@@ -87,6 +87,7 @@ S3method(as.data.frame,pfilterd.pomp)
 S3method(as.data.frame,probed.pomp)
 
 export(
+       bake,stew,
        Csnippet,
        reulermultinom,
        deulermultinom,

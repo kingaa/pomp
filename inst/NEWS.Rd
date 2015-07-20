@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.73-1}{
+  \itemize{
+    \item The new functions \code{bake} and \code{stew} faciliate storing expensive calculations for later retrieval in a transparent fashion.
+    \item \code{pompBuilder}, which has not been actively maintained for time due to the fact that its facilities are all provided by \code{pomp} via \code{Csnippet}s, is now no longer exported.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.72-1}{
   \itemize{
     \item \code{pmcmc} and \code{pfilter} now have the capability of saving filtered trajectories.
