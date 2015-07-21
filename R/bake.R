@@ -5,7 +5,7 @@ bake <- function (file, expr, seed,
   } else {
     rng.control <- !missing(seed)
     if (rng.control) {
-      if (!exists(".Random.seed",envir=.GlobalEnv)) runif(1)
+      if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
       save.seed <- get(".Random.seed",envir=.GlobalEnv)
       set.seed(seed,kind=kind,normal.kind=normal.kind)
     }
@@ -28,7 +28,7 @@ stew <- function (file, expr, seed,
     expr <- substitute(expr)
     e <- new.env()
     if (rng.control) {
-      if (!exists(".Random.seed",envir=.GlobalEnv)) runif(1)
+      if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
       save.seed <- get(".Random.seed",envir=.GlobalEnv)
       set.seed(seed,kind=kind,normal.kind=normal.kind)
     }
@@ -47,7 +47,7 @@ freeze <- function (expr, seed,
                     kind = NULL, normal.kind = NULL) {
   rng.control <- !missing(seed)
   if (rng.control) {
-    if (!exists(".Random.seed",envir=.GlobalEnv)) runif(1)
+    if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
     save.seed <- get(".Random.seed",envir=.GlobalEnv)
     set.seed(seed,kind=kind,normal.kind=normal.kind)
   } else warning("seed not set!")
