@@ -1,16 +1,22 @@
-\name{bake}
+\name{Utilities for reproducibility}
 \alias{bake}
 \alias{stew}
-\title{Run a computation only if needed, saving the results for later use.}
+\alias{freeze}
+\title{Tools for reproducible computations.}
 \description{
   On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.
   The \code{bake} and \code{stew} functions perform analogously:
   an \R computation is performed and stored in a named file.
   If the function is called again and the file is present, the computation is not executed; rather, the results are loaded from the file in which they were previously stored.
+  Moreover, via their optional \code{seed} argument, \code{bake} and \code{stew} can control the pseudorandom-number generator (RNG) for greater reproducibility.
+  After the computation is finished, these functions restore the pre-existing RNG state to avoid side effects.
+
+  The \code{freeze} function doesn't save results, but does set the RNG state to the specified value and restore it after the computation is complete.
 }
 \usage{
-bake(file, expr)
-stew(file, expr)
+bake(file, expr, seed, kind = NULL, normal.kind = NULL)
+stew(file, expr, seed, kind = NULL, normal.kind = NULL)
+freeze(expr, seed, kind = NULL, normal.kind = NULL)
 }
 \arguments{
   \item{file}{
@@ -20,6 +26,11 @@ stew(file, expr)
   }
   \item{expr}{
     Expression to be evaluated.
+  }
+  \item{seed, kind, normal.kind}{
+    Optional.
+    To set the state and, optionally, kind of RNG used.
+    See \code{\link{set.seed}}.
   }
 }
 \examples{
@@ -36,6 +47,9 @@ stew(file, expr)
 
   plot(x,y)  
   }
+
+  freeze(runif(3),seed=5886730)
+  freeze(runif(3),seed=5886730)
 }
 \details{
   Both \code{bake} and \code{stew} first test to see whether \code{file} exists.
@@ -48,5 +62,13 @@ stew(file, expr)
   The name of that object is not saved.
   By contrast, \code{stew} creates a local environment within which \code{expr}is evaluated;
   all objects in that environment are saved (by name) in \code{file}.
+}
+\value{
+  \code{bake} returns the value of the evaluated expression \code{expr}.
+
+  \code{stew} returns the names of the objects created during the evaluation of \code{expr}.
+  After \code{stew} completes, these objects exist in the environment from which \code{stew} was called.
+
+  \code{freeze} returns \code{NULL}, invisibly.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
