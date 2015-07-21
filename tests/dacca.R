@@ -7,8 +7,8 @@ pompExample(dacca)
 x <- as.data.frame(dacca)
 x <- simulate(dacca,nsim=3,as.data.frame=TRUE)
 
-pf <- pfilter(dacca,Np=1000,seed=5886855L)
-pf1 <- pfilter(simulate(dacca),Np=1000,seed=5886855L)
+pf <- pfilter(dacca,Np=1000)
+pf1 <- pfilter(simulate(dacca),Np=1000)
 
 ## to investigate the rogue crash:
 

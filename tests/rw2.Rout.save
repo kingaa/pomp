@@ -1,5 +1,5 @@
 
-R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -163,7 +163,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x355c888>
+<environment: 0x2b15e38>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -176,7 +176,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x355c888>
+<environment: 0x2b15e38>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -340,4 +340,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.848   0.028   0.875 
+  0.824   0.076   0.900 

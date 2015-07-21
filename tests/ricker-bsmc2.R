@@ -17,7 +17,7 @@ po <- pomp(
 
 Np <- 10000
 
-fit <- bsmc(po,Np=1000,est=c("r","sigma"),transform=TRUE,smooth=0.2)
+fit <- bsmc2(po,Np=1000,est=c("r","sigma"),transform=TRUE,smooth=0.2)
 
 invisible(apply(fit$prior[c("r","sigma"),],1,mean))
 

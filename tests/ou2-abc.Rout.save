@@ -1,5 +1,5 @@
 
-R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -137,4 +137,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  9.084   0.060   9.367 
+  8.736   0.052   8.975 

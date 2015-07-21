@@ -16,11 +16,10 @@
 }
 \usage{
 \S4method{bsmc2}{pomp}(object, params, Np, est, smooth = 0.1,
-     tol = 1e-17, seed = NULL,
-     verbose = getOption("verbose"), max.fail = 0,
+     tol = 1e-17, verbose = getOption("verbose"), max.fail = 0,
      transform = FALSE, \dots)
 \S4method{bsmc}{pomp}(object, params, Np, est, smooth = 0.1,
-     ntries = 1, tol = 1e-17, lower = -Inf, upper = Inf, seed = NULL,
+     ntries = 1, tol = 1e-17, lower = -Inf, upper = Inf,
      verbose = getOption("verbose"), max.fail = 0,
      transform = FALSE, \dots)
 }
@@ -56,11 +55,6 @@
     This is useful in case there are box constraints satisfied by the priors.
     The posterior is guaranteed to lie within these bounds.
   }
-  \item{seed}{
-    optional; an object specifying if and how the random number generator should be initialized (\sQuote{seeded}).
-    If \code{seed} is an integer, it is passed to \code{set.seed} prior to any simulation and is returned as the \dQuote{seed} element of the return list.
-    By default, the state of the random number generator is not changed and the value of \code{.Random.seed} on the call is stored in the \dQuote{seed} element of the return list.
-  }
   \item{verbose}{
     logical; if \code{TRUE}, print diagnostic messages.
   }
@@ -91,11 +85,6 @@
   }
   \item{smooth}{
     The smoothing parameter used (see above).
-  }
-  \item{seed}{
-    The state of the random number generator at the time \code{bsmc} was called.
-    If the argument \code{seed} was specified, this is a copy;
-    if not, this is the internal state of the random number generator at the time of call.
   }
   \item{nfail}{
     The number of filtering failures encountered.

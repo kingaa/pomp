@@ -21,7 +21,6 @@ setClass(
            est="character",
            eff.sample.size="numeric",
            smooth="numeric",
-           seed="integer",
            nfail="integer",
            cond.log.evidence="numeric",
            log.evidence="numeric"
@@ -46,13 +45,10 @@ bsmc.internal <- function (object, params, Np, est,
   ptsi.inv <- ptsi.for <- TRUE
   transform <- as.logical(transform)
 
-  if (missing(seed)) seed <- NULL
-  if (!is.null(seed)) {
-    if (!exists(".Random.seed",where=.GlobalEnv))
-      runif(n=1L) ## need to initialize the RNG
-    save.seed <- get(".Random.seed",pos=.GlobalEnv)
-    set.seed(seed)
-  }
+  if (!is.null(seed))
+    warning("in ",sQuote("bsmc"),": argument ",sQuote("seed"),
+            " now has no effect.  Consider using ",
+            sQuote("freeze"),".")
 
   error.prefix <- paste(sQuote("bsmc"),"error: ")
 
@@ -329,11 +325,6 @@ bsmc.internal <- function (object, params, Np, est,
     
   }
 
-  if (!is.null(seed)) {
-    assign(".Random.seed",save.seed,pos=.GlobalEnv)
-    seed <- save.seed
-  }
-  
   ## replace parameters with point estimate (posterior median)
   coef(object,transform=transform) <- apply(params,1,median)
 
@@ -348,7 +339,6 @@ bsmc.internal <- function (object, params, Np, est,
       est=as.character(est),
       eff.sample.size=eff.sample.size,
       smooth=smooth,
-      seed=as.integer(seed),
       nfail=as.integer(nfail),
       cond.log.evidence=evidence,
       log.evidence=sum(evidence)
@@ -363,7 +353,6 @@ setMethod(
             ntries = 1,
             tol = 1e-17,
             lower = -Inf, upper = Inf,
-            seed = NULL,
             verbose = getOption("verbose"),
             max.fail = 0,
             transform = FALSE,
@@ -378,7 +367,6 @@ setMethod(
                           tol=tol,
                           lower=lower,
                           upper=upper,
-                          seed=seed,
                           verbose=verbose,
                           max.fail=max.fail,
                           transform=transform,

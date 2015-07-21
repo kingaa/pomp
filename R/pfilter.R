@@ -13,7 +13,6 @@ setClass(
            cond.loglik="numeric",
            saved.states="list",
            saved.params="list",
-           seed="integer",
            Np="integer",
            tol="numeric",
            nfail="integer",
@@ -29,7 +28,6 @@ setClass(
            cond.loglik=numeric(0),
            saved.states=list(),
            saved.params=list(),
-           seed=as.integer(NA),
            Np=as.integer(NA),
            tol=as.double(NA),
            nfail=as.integer(NA),
@@ -45,7 +43,7 @@ pfilter.internal <- function (object, params, Np,
                               filter.traj = FALSE, 
                               cooling, cooling.m,
                               .mif2 = FALSE,
-                              .rw.sd, seed,
+                              .rw.sd, seed = NULL,
                               verbose = FALSE,
                               save.states = FALSE,
                               save.params = FALSE,
@@ -65,14 +63,10 @@ pfilter.internal <- function (object, params, Np,
   save.params <- as.logical(save.params)
   transform <- as.logical(.transform)
   
-  if (missing(seed)) seed <- NULL
-  if (!is.null(seed)) {
-    if (!exists(".Random.seed",where=.GlobalEnv)) { # need to initialize the RNG
-      runif(1)
-    }
-    save.seed <- get(".Random.seed",pos=.GlobalEnv)
-    set.seed(seed)
-  }
+  if (!is.null(seed))
+    warning("in ",sQuote("pfilter"),": argument ",sQuote("seed"),
+            " now has no effect.  Consider using ",
+            sQuote("freeze"),".",call.=FALSE)
   
   if (length(params)==0)
     stop(sQuote("pfilter")," error: ",sQuote("params")," must be specified",call.=FALSE)
@@ -380,11 +374,6 @@ pfilter.internal <- function (object, params, Np,
   
   if (!save.states) xparticles <- list()
   
-  if (!is.null(seed)) {
-    assign(".Random.seed",save.seed,pos=.GlobalEnv)
-    seed <- save.seed
-  }
-
   if (nfail>0)
     warning(sprintf(ngettext(nfail,msg1="%d filtering failure occurred in ",
                              msg2="%d filtering failures occurred in "),nfail),
@@ -404,7 +393,6 @@ pfilter.internal <- function (object, params, Np,
       cond.loglik=loglik,
       saved.states=xparticles,
       saved.params=pparticles,
-      seed=as.integer(seed),
       Np=as.integer(Np),
       tol=tol,
       nfail=as.integer(nfail),
@@ -424,7 +412,6 @@ setMethod(
                     filter.traj = FALSE,
                     save.states = FALSE,
                     save.params = FALSE,
-                    seed = NULL,
                     verbose = getOption("verbose"),
                     ...) {
             if (missing(params)) params <- coef(object)
@@ -440,7 +427,6 @@ setMethod(
                              filter.traj=filter.traj,
                              save.states=save.states,
                              save.params=save.params,
-                             seed=seed,
                              verbose=verbose,
                              .transform=FALSE,
                              ...

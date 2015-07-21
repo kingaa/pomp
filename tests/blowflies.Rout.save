@@ -1,5 +1,5 @@
 
-R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -16,6 +16,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+> 
+> set.seed(599688L)
 > 
 > pompExample(blowflies)
 In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
@@ -46,9 +48,9 @@ variable  [,1]
      e     0.0
      eps   0.0
 > x1 <- simulate(blowflies1)
-> f1 <- pfilter(blowflies1,Np=1000,seed=599688L)
+> f1 <- pfilter(blowflies1,Np=1000)
 > logLik(f1)
-[1] -1466.694
+[1] -1470.151
 > 
 > init.state(blowflies2)
         rep
@@ -66,10 +68,10 @@ variable [,1]
      e      0
      eps    0
 > x2 <- simulate(blowflies2)
-> f2 <- pfilter(blowflies2,Np=1000,seed=599688L)
+> f2 <- pfilter(blowflies2,Np=1000)
 > logLik(f2)
-[1] -1471.781
+[1] -1474.521
 > 
 > proc.time()
    user  system elapsed 
-  1.188   0.052   1.243 
+  1.100   0.040   1.148 

@@ -1,5 +1,5 @@
 
-R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -57,7 +57,7 @@ newly created object(s):
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 2.067623 secs
+Time difference of 1.892551 secs
 > 
 > print(
 +       cbind(
@@ -90,13 +90,13 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 +             }
 +             )
 > 
-> smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=648651945L)
+> smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames)
 > print(smc$eff.sample.size)
- [1] 186.40437  36.29100  57.56951  29.30424 180.23722  34.63366 156.94264
- [8]  24.49006 178.39269 125.05970
+ [1] 291.938189  95.235945  73.223733  55.591668  75.806935   2.847529
+ [7] 141.271300 102.140197  23.267750  45.084097
 > print(smc$log.evidence)
-[1] 37.68127
+[1] 38.82058
 > 
 > proc.time()
    user  system elapsed 
-  3.540   0.048   3.595 
+  3.236   0.060   3.304 

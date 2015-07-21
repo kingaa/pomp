@@ -57,6 +57,6 @@ ou2 <- pomp(ou2,
             }
             )
 
-smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,seed=648651945L)
+smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames)
 print(smc$eff.sample.size)
 print(smc$log.evidence)

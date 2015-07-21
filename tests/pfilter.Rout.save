@@ -1,5 +1,5 @@
 
-R version 3.2.1 (2015-06-18) -- "World-Famous Astronaut"
+R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -25,14 +25,14 @@ newly created object(s):
 > 
 > pdf(file="pfilter.pdf")
 > 
-> pf <- pfilter(ou2,Np=1000,seed=343439L)
+> pf <- pfilter(ou2,Np=1000)
 > print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
    x1.0    x2.0 alpha.1 alpha.4 
    -3.0     4.0     0.8     0.9 
 > cat("particle filter log likelihood at truth\n")
 particle filter log likelihood at truth
 > print(pf$loglik,digits=4)
-[1] -476.6
+[1] -478
 > 
 > pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
 > pf.ll <- sapply(pf,logLik)
@@ -40,32 +40,32 @@ particle filter log likelihood at truth
 > ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
 > print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
    loglik loglik.se 
-  -479.61      0.46 
+  -478.05      0.91 
 > 
 > pompExample(euler.sir)
 In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
-> pf <- pfilter(euler.sir,Np=100,seed=394343L)
+> pf <- pfilter(euler.sir,Np=100)
 > print(coef(pf))
    gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
 2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
      rho      S_0      I_0      R_0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(pf$loglik,digits=4)
-[1] -947.4
+[1] -935.7
 > 
 > p <- coef(euler.sir)
 > euler.sir@params <- numeric(0)
 > p["iota"] <- 1
-> pf <- pfilter(euler.sir,params=p,Np=100,seed=394343L,filter.mean=TRUE)
+> pf <- pfilter(euler.sir,params=p,Np=100,filter.mean=TRUE)
 > print(coef(pf))
    gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
 2.60e+01 2.00e-02 1.00e+00 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
      rho      S_0      I_0      R_0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(logLik(pf),digits=4)
-[1] -945.4
+[1] -943.7
 > plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
 > plot(ess~time,data=as(pf,"data.frame"),type='l')
 > plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
@@ -76,4 +76,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  8.475   0.034   8.491 
+  6.480   0.060   6.658 

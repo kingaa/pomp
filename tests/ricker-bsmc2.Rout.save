@@ -1,5 +1,5 @@
 
-R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -36,7 +36,7 @@ newly created object(s):
 > 
 > Np <- 10000
 > 
-> fit <- bsmc(po,Np=1000,est=c("r","sigma"),transform=TRUE,smooth=0.2)
+> fit <- bsmc2(po,Np=1000,est=c("r","sigma"),transform=TRUE,smooth=0.2)
 > 
 > invisible(apply(fit$prior[c("r","sigma"),],1,mean))
 > 
@@ -52,4 +52,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.180   0.056   2.372 
+  0.936   0.064   1.106 

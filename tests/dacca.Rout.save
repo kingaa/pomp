@@ -1,5 +1,5 @@
 
-R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
+R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -27,8 +27,8 @@ newly created object(s):
 > x <- as.data.frame(dacca)
 > x <- simulate(dacca,nsim=3,as.data.frame=TRUE)
 > 
-> pf <- pfilter(dacca,Np=1000,seed=5886855L)
-> pf1 <- pfilter(simulate(dacca),Np=1000,seed=5886855L)
+> pf <- pfilter(dacca,Np=1000)
+> pf1 <- pfilter(simulate(dacca),Np=1000)
 > 
 > ## to investigate the rogue crash:
 > 
@@ -106,4 +106,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
- 10.464   0.044  10.537 
+ 10.528   0.056  10.612 
