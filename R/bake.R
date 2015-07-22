@@ -51,8 +51,8 @@ freeze <- function (expr, seed,
     save.seed <- get(".Random.seed",envir=.GlobalEnv)
     set.seed(seed,kind=kind,normal.kind=normal.kind)
   } else warning("seed not set!")
-  eval(expr)
+  val <- eval(expr)
   if (rng.control)
     assign(".Random.seed",save.seed,envir=.GlobalEnv)
-  invisible(NULL)
+  invisible(val)
 }

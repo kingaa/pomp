@@ -1,5 +1,16 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.74-1}{
+  \itemize{
+    \item The functions \code{bake} and \code{stew} have arguments that allow the control of the RNG.
+    These functions can now set the state (and kind) of the RNG and restore it when they return.
+    \item The new function \code{freeze} allows control of the RNG similarly.
+    \item The \code{seed} argument of \code{bsmc} and \code{bsmc2} has been removed.
+    Its use now generates a warning, stating that it has no effect.
+    \item The \code{seed} argument to \code{pfilter} is now deprecated and will be removed soon.
+    Equivalent functionality is provided via \code{freeze}, \code{bake}, or \code{stew}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.73-1}{
   \itemize{
     \item The new functions \code{bake} and \code{stew} faciliate storing expensive calculations for later retrieval in a transparent fashion.

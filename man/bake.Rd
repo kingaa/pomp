@@ -69,6 +69,6 @@ freeze(expr, seed, kind = NULL, normal.kind = NULL)
   \code{stew} returns the names of the objects created during the evaluation of \code{expr}.
   After \code{stew} completes, these objects exist in the environment from which \code{stew} was called.
 
-  \code{freeze} returns \code{NULL}, invisibly.
+  \code{freeze} returns the value of evaluated expression \code{expr}, invisibly.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
