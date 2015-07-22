@@ -43,7 +43,7 @@ pfilter.internal <- function (object, params, Np,
                               filter.traj = FALSE,
                               cooling, cooling.m,
                               .mif2 = FALSE,
-                              .rw.sd, seed = NULL,
+                              .rw.sd,
                               verbose = FALSE,
                               save.states = FALSE,
                               save.params = FALSE,
@@ -63,19 +63,7 @@ pfilter.internal <- function (object, params, Np,
   save.states <- as.logical(save.states)
   save.params <- as.logical(save.params)
   transform <- as.logical(.transform)
-
-  if (!is.null(seed))
-    warning("in ",sQuote("pfilter"),": argument ",sQuote("seed"),
-            " is deprecated and will be removed soon.  Consider using ",
-            sQuote("freeze"),".")
-
-  seed <- as.integer(seed)
-  if (length(seed)>0) {
-    if (!exists(".Random.seed",where=.GlobalEnv)) set.seed(NULL)
-    save.seed <- get(".Random.seed",pos=.GlobalEnv)
-    set.seed(seed)
-  }
-
+  
   if (length(params)==0)
     stop(sQuote("pfilter")," error: ",sQuote("params")," must be specified",call.=FALSE)
 
@@ -386,11 +374,6 @@ pfilter.internal <- function (object, params, Np,
   }
 
   if (!save.states) xparticles <- list()
-
-  if (length(seed)>0) {
-    assign(".Random.seed",save.seed,pos=.GlobalEnv)
-    seed <- save.seed
-  }
 
   if (nfail>0)
     warning(sprintf(ngettext(nfail,msg1="%d filtering failure occurred in ",
