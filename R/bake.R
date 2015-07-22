@@ -54,5 +54,5 @@ freeze <- function (expr, seed,
   val <- eval(expr)
   if (rng.control)
     assign(".Random.seed",save.seed,envir=.GlobalEnv)
-  invisible(val)
+  val
 }

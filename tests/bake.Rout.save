@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
+R version 3.2.1 (2015-06-18) -- "World-Famous Astronaut"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -21,16 +21,18 @@ Type 'q()' to quit R.
 > 
 > set.seed(5499)
 > w1 <- runif(2)
-> freeze({runif(10)},seed=499586)
+> freeze({runif(5)},seed=499586)
+[1] 0.6719240 0.5092283 0.0643100 0.3672672 0.7148970
 > w2 <- runif(2)
-> freeze(runif(10),seed=499586)
+> freeze(runif(5),seed=499586)
+[1] 0.6719240 0.5092283 0.0643100 0.3672672 0.7148970
 > set.seed(5499)
 > w3 <- runif(4)
 > stopifnot(all.equal(c(w1,w2),w3))
 >           
-> set.seed(5499)
+> set.seed(32765883)
 > x1 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
-> x2 <- bake({runif(4)},file=file.path(tempdir(),"bake2.rds"),seed=5499)
+> x2 <- bake({runif(4)},file=file.path(tempdir(),"bake2.rds"),seed=32765883)
 > x3 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
 > stopifnot(all.equal(x1,x2))
 > stopifnot(all.equal(x1,x3))
@@ -46,4 +48,4 @@ Error in mode(current) : object 'y3' not found
 > 
 > proc.time()
    user  system elapsed 
-  0.476   0.032   0.508 
+  0.415   0.038   0.432 

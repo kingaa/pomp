@@ -65,10 +65,12 @@ freeze(expr, seed, kind = NULL, normal.kind = NULL)
 }
 \value{
   \code{bake} returns the value of the evaluated expression \code{expr}.
+  Other objects created in the evaluation of \code{expr} are discarded along with the temporary, local environment created for the evaluation.
 
-  \code{stew} returns the names of the objects created during the evaluation of \code{expr}.
-  After \code{stew} completes, these objects exist in the environment from which \code{stew} was called.
+  The latter behavior differs from that of \code{stew}, which returns the names of the objects created during the evaluation of \code{expr}.
+  After \code{stew} completes, these objects exist in the parent environment (that from which \code{stew} was called).
 
-  \code{freeze} returns the value of evaluated expression \code{expr}, invisibly.
+  \code{freeze} returns the value of evaluated expression \code{expr}.
+  However, \code{freeze} evaluates \code{expr} within the parent environment, so other objects created  in the evaluation of \code{expr} will therefore exist after \code{freeze} completes.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
