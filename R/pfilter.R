@@ -50,6 +50,7 @@ pfilter.internal <- function (object, params, Np,
                               .transform = FALSE,
                               .getnativesymbolinfo = TRUE) {
 
+  object <- as(object,"pomp")
   pompLoad(object)
 
   ptsi.for <- gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
