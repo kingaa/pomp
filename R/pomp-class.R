@@ -24,7 +24,7 @@ setClass(
            has.trans = 'logical',
            from.trans = 'pomp.fun',
            to.trans = 'pomp.fun',
-           solibfile = 'list',
+           solibs = 'list',
            userdata = 'list'
            ),
          prototype=prototype(
@@ -50,7 +50,7 @@ setClass(
            has.trans=FALSE,
            from.trans=pomp.fun(),
            to.trans=pomp.fun(),
-           solibfile=list(),
+           solibs=list(),
            userdata=list()
            ),
          validity=function (object) {

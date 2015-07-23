@@ -8,15 +8,6 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 {
 
   if (is.null(name)) name <- randomName()
-  if (is.null(dir)) dir <- tempdir()
-  else {
-    try(
-        rv <- dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700"),
-        silent=TRUE
-        )
-    if (inherits(rv,"try-error"))
-      stop("cannot create cache directory ",sQuote(dir),call.=TRUE)
-  } 
 
   if (missing(globals)) globals <- character(0)
   if (is(globals,"Csnippet")) globals <- globals@text
@@ -27,20 +18,14 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   covarnames <- cleanForC(covarnames)
   obsnames <- cleanForC(obsnames)
 
-  stem <- file.path(dir,name)
-  if (.Platform$OS.type=="windows") {
-    stem <- gsub("\\","/",stem,fixed=TRUE)
-  }
-  modelfile <- paste0(stem,".c")
-  solib <- paste0(stem,.Platform$dynlib.ext)
-
   if (.Platform$OS.type=="unix") {
     pompheader <- "pomp.h"
   } else {
     pompheader <- system.file("include/pomp.h",package="pomp")
   }
 
-  out <- file(description=modelfile,open="w")
+  csrc <- ""
+  out <- textConnection(object="csrc",open="w",local=TRUE)
 
   cat(file=out,render(header$file,name=name,pompheader=pompheader))
 
@@ -168,10 +153,44 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   close(out)
 
+  csrc <- paste(csrc,collapse="\n")
+
+  pompCompile(name=name,direc=pompSrcDir(dir),src=csrc,verbose=verbose)
+  
+  invisible(list(name=name,dir=dir,src=csrc))
+}
+
+pompSrcDir <- function (dir) {
+  if (is.null(dir)) {
+    dir <- tempdir()
+  } else {
+    try(
+        rv <- dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700"),
+        silent=TRUE
+        )
+    if (inherits(rv,"try-error"))
+      stop("cannot create cache directory ",sQuote(dir),call.=TRUE)
+  }
+  dir
+}
+
+pompCompile <- function (name, direc, src, verbose) {
+
+  stem <- file.path(direc,name)
+  if (.Platform$OS.type=="windows") {
+    stem <- gsub("\\","/",stem,fixed=TRUE)
+  }
+  modelfile <- paste0(stem,".c")
+
+  cat(src,file=modelfile)
+  if (verbose) cat("model codes written to",sQuote(modelfile))
+
   cflags <- paste0("PKG_CFLAGS=\"",
                   Sys.getenv("PKG_CFLAGS"),
                   " -I",system.file("include",package="pomp"),"\"")
 
+  solib <- paste0(stem,.Platform$dynlib.ext)
+  if (verbose) cat("compiling",sQuote(solib),"\n")
   rv <- system2(
                 command=R.home("bin/R"),
                 args=c("CMD","SHLIB","-o",solib,modelfile),
@@ -181,10 +200,9 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   if (rv!=0)
     stop("cannot compile shared-object library ",sQuote(solib))
   else if (verbose)
-    cat("model codes written to",sQuote(modelfile),
-        "\nlink to shared-object library",sQuote(solib),"\n")
-
-  invisible(c(name,solib))
+    cat("link to shared-object library",sQuote(solib),"\n")
+  
+  invisible(solib)
 }
 
 callable.decl <- function (code) {
@@ -286,7 +304,7 @@ pompBuilder <- function (data, times, t0, name,
                dir=if (save) getwd() else NULL
                ) -> solib
 
-  name <- solib[1]
+  name <- solib$name
 
   pomp(
        data=data,
@@ -312,7 +330,7 @@ pompBuilder <- function (data, times, t0, name,
        tcovar=tcovar,
        covar=covar,
        ...,
-       .solibfile=list(solib)
+       .solibs=list(solib)
        )
 }
 

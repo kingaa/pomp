@@ -11,9 +11,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               fromEstimationScale, toEstimationScale,
                               parameter.transform = NULL, parameter.inv.transform = NULL,
                               globals, userdata, ...,
-                              .solibfile = list(),
+                              .solibs = list(),
                               .filename = NULL,
-                              .filedir = getOption("pomp.cache",NULL),
                               verbose = getOption("verbose",FALSE)) {
 
   ## preliminary error checking
@@ -186,7 +185,6 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                                   covarnames=covarnames,
                                   globals=globals,
                                   name=.filename,
-                                  dir=.filedir,
                                   verbose=verbose
                                   ),
                              snips
@@ -198,8 +196,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
       stop("in ",sQuote("pomp"),": error in building shared-object library from Csnippets:\n",
            libname,call.=FALSE)
     } else {
-      .solibfile <- c(.solibfile,list(libname))
-      libname <- libname[1]
+      .solibs <- c(.solibs,list(libname))
+      libname <- libname$name
     }
   } else {
     libname <- ''
@@ -437,7 +435,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
       has.trans = has.trans,
       from.trans = from.trans,
       to.trans = to.trans,
-      solibfile = .solibfile,
+      solibs = .solibs,
       userdata = userdata
       )
 }
@@ -766,7 +764,7 @@ setMethod(
                              toEstimationScale=to.trans,
                              params=params,
                              globals=globals,
-                             .solibfile=data@solibfile,
+                             .solibs=data@solibs,
                              userdata=data@userdata,
                              ...
                              )
