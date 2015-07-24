@@ -13,6 +13,7 @@ bsmc2.internal <- function (object, params, Np, est,
                             max.fail, transform, .getnativesymbolinfo = TRUE,
                             ...) {
 
+  object <- as(object,"pomp")
   pompLoad(object)
             
   gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
@@ -113,18 +114,19 @@ bsmc2.internal <- function (object, params, Np, est,
     
     ## sample new parameter vector as per L&W AGM (3) and Liu & West eq(3.2)
     pert <- try(
-                mvtnorm::rmvnorm(
-                                 n=Np,
-                                 mean=rep(0,npars.est),
-                                 sigma=hsq*params.var,
-                                 method="svd"
-                                 ),
+                rmvnorm(
+                        n=Np,
+                        mean=rep(0,npars.est),
+                        sigma=hsq*params.var,
+                        method="svd"
+                        ),
                 silent=FALSE
                 )
     if (inherits(pert,"try-error"))
       stop(error.prefix,"error in ",sQuote("rmvnorm"),call.=FALSE)
     if (!all(is.finite(pert)))
       stop(error.prefix,"extreme particle depletion",call.=FALSE)
+
     params[estind,] <- m[estind,]+t(pert)
 
     if (transform)
@@ -195,7 +197,6 @@ bsmc2.internal <- function (object, params, Np, est,
     ## Matrix with samples (columns) from filtering distribution theta.t | Y.t
     if (!all.fail) {
       smp <- .Call(systematic_resampling,weights)
-###      smp <- sample.int(n=Np,size=Np,replace=TRUE,prob=weights)
       x <- x[,smp,drop=FALSE]
       params[estind,] <- params[estind,smp,drop=FALSE]
     }
@@ -203,7 +204,7 @@ bsmc2.internal <- function (object, params, Np, est,
     .getnativesymbolinfo <- FALSE
     
   }
-
+  
   ## replace parameters with point estimate (posterior median)
   coef(object,transform=transform) <- apply(params,1,median)
 
