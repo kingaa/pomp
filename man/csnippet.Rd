@@ -21,8 +21,6 @@
   Furnishing one or more \code{Csnippet}s as arguments to the \code{pomp} constructor causes them to be written to a C file stored in the \R session's temporary directory, which is then compiled (via \code{\link[=SHLIB]{R CMD SHLIB}}) into a dynamically loadable shared object file.
   This is then loaded as needed.
 
-  One can choose to store these files in a different directory by setting the global option \code{pomp.cache}, e.g.: \preformatted{options(pomp.cache=getwd())}.
-
   \strong{Note to Windows and Mac users:}
   By default, your \R installation may not support \code{\link[=SHLIB]{R CMD SHLIB}}.
   The package website contains installation instructions that show how to enable this powerful feature of \R.

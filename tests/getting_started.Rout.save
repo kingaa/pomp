@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
+R version 3.2.1 (2015-06-18) -- "World-Famous Astronaut"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -107,7 +107,7 @@ Loading required package: pomp
 > ## ----logistic-pfilter----------------------------------------------------
 > pf <- pfilter(parus,Np=1000,params=c(r=0.2,K=200,phi=0.5,sigma=0.5,N.0=200))
 > logLik(pf)
-[1] -155.7788
+[1] -156.7072
 > 
 > ## ----logistic-skeleton,cache=FALSE---------------------------------------
 > skel <- Csnippet("
@@ -180,12 +180,12 @@ Loading required package: pomp
 > mf <- mif2(mf)
 > mle <- coef(mf); mle
           r           K         phi         N.0       sigma 
-  4.2778799 513.3313256   0.4662866 200.0000000   0.6687420 
+  3.2628796 372.6872250   0.6063705 200.0000000   0.6594260 
 > logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
-                       se 
--147.8597938    0.2437791 
+                     se 
+-144.227080    0.476505 
 > sim2 <- simulate(mf,nsim=10,as.data.frame=TRUE,include.data=TRUE)
 > 
 > proc.time()
    user  system elapsed 
- 76.168   0.460  78.469 
+ 82.189   0.344  84.170 

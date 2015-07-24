@@ -42,6 +42,7 @@ importFrom(stats,simulate,time,coef,logLik,window,fitted,
            dnorm,runif,sd,cov,cor,median,density,
            spec.pgram,rnorm,weighted.mean,optim,
            .lm.fit,setNames,kernel,quantile)
+importFrom(digest,digest)
 importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(subplex,subplex)
 importFrom(deSolve,ode)

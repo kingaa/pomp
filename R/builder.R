@@ -7,12 +7,12 @@ pompCBuilder <- function (name = NULL, dir = NULL,
                           verbose = getOption("verbose",FALSE))
 {
 
-  if (is.null(name)) name <- randomName()
-
+  if (!is.null(name)) name <- cleanForC(name)
+  id <- randomName(7)
+  
   if (missing(globals)) globals <- character(0)
   if (is(globals,"Csnippet")) globals <- globals@text
 
-  name <- cleanForC(name)
   statenames <- cleanForC(statenames)
   paramnames <- cleanForC(paramnames)
   covarnames <- cleanForC(covarnames)
@@ -27,7 +27,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   csrc <- ""
   out <- textConnection(object="csrc",open="w",local=TRUE)
 
-  cat(file=out,render(header$file,name=name,pompheader=pompheader))
+  cat(file=out,render(header$file,pompheader=pompheader,id=id))
 
   for (f in utility.fns) {
     cat(file=out,f)
@@ -62,7 +62,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   ## initializer function
   if (!missing(initializer)) {
     registry <- c(registry,"initializer")
-    cat(file=out,render(header$initializer,name=name))
+    cat(file=out,render(header$initializer))
     cat(file=out,callable.decl(initializer))
     cat(file=out,initializer,footer$initializer)
   }
@@ -70,7 +70,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   ## parameter transformation function
   if (!missing(fromEstimationScale)) {
     registry <- c(registry,"par_trans")
-    cat(file=out,render(header$fromEstimationScale,name=name))
+    cat(file=out,render(header$fromEstimationScale))
     cat(file=out,callable.decl(fromEstimationScale))
     cat(file=out,fromEstimationScale,footer$fromEstimationScale)
   }
@@ -78,7 +78,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   ## inverse parameter transformation function
   if (!missing(toEstimationScale)) {
     registry <- c(registry,"par_untrans")
-    cat(file=out,render(header$toEstimationScale,name=name))
+    cat(file=out,render(header$toEstimationScale))
     cat(file=out,callable.decl(toEstimationScale))
     cat(file=out,toEstimationScale,footer$toEstimationScale)
   }
@@ -86,19 +86,19 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   ## rmeasure function
   if (!missing(rmeasure)) {
     registry <- c(registry,"rmeasure")
-    cat(file=out,render(header$rmeasure,name=name),rmeasure,footer$rmeasure)
+    cat(file=out,render(header$rmeasure),rmeasure,footer$rmeasure)
   }
 
   ## dmeasure function
   if (!missing(dmeasure)) {
     registry <- c(registry,"dmeasure")
-    cat(file=out,render(header$dmeasure,name=name),dmeasure,footer$dmeasure)
+    cat(file=out,render(header$dmeasure),dmeasure,footer$dmeasure)
   }
 
   ## Euler step function
   if (!missing(step.fn)) {
     registry <- c(registry,"stepfn")
-    cat(file=out,render(header$step.fn,name=name))
+    cat(file=out,render(header$step.fn))
     cat(file=out,callable.decl(step.fn))
     cat(file=out,step.fn,footer$step.fn)
   }
@@ -106,7 +106,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   ## skeleton function
   if (!missing(skeleton)) {
     registry <- c(registry,"skelfn")
-    cat(file=out,render(header$skeleton,name=name))
+    cat(file=out,render(header$skeleton))
     cat(file=out,callable.decl(skeleton))
     cat(file=out,skeleton,footer$skeleton)
   }
@@ -114,13 +114,13 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   ## rprior function
   if (!missing(rprior)) {
     registry <- c(registry,"rprior")
-    cat(file=out,render(header$rprior,name=name),rprior,footer$rprior)
+    cat(file=out,render(header$rprior),rprior,footer$rprior)
   }
 
   ## dprior function
   if (!missing(dprior)) {
     registry <- c(registry,"dprior")
-    cat(file=out,render(header$dprior,name=name),dprior,footer$dprior)
+    cat(file=out,render(header$dprior),dprior,footer$dprior)
   }
 
   ## undefine variables
@@ -146,16 +146,21 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   cat(file=out,stackhandling)
 
   ## registration
-  cat(file=out,render(header$registration,name=name))
+  cat(file=out,render(header$registration))
   for (v in registry)
-    cat(file=out,render(registration,name=name,fun=v))
+    cat(file=out,render(registration,fun=v))
   cat(file=out,footer$registration)
 
   close(out)
 
   csrc <- paste(csrc,collapse="\n")
 
-  pompCompile(name=name,direc=pompSrcDir(dir),src=csrc,verbose=verbose)
+  if (is.null(name)) 
+    name <- paste0("pomp_",digest(csrc,serialize=FALSE))
+
+  csrc <- render(csrc,name=name)
+
+  pompCompile(fname=name,direc=pompSrcDir(dir),src=csrc,verbose=verbose)
   
   invisible(list(name=name,dir=dir,src=csrc))
 }
@@ -174,12 +179,13 @@ pompSrcDir <- function (dir) {
   dir
 }
 
-pompCompile <- function (name, direc, src, verbose) {
+pompCompile <- function (fname, direc, src, verbose) {
 
-  stem <- file.path(direc,name)
+  stem <- file.path(direc,fname)
   if (.Platform$OS.type=="windows") {
     stem <- gsub("\\","/",stem,fixed=TRUE)
   }
+
   modelfile <- paste0(stem,".c")
 
   cat(src,file=modelfile)
@@ -214,7 +220,7 @@ missing.fun <- function (name) {
   paste0("  error(\"'",name,"' not defined\");")
 }
 
-randomName <- function (stem = "pomp", size = 2) {
+randomName <- function (size = 2, stem = "") {
   paste0(stem,
          paste(
                format(
@@ -235,6 +241,7 @@ cleanForC <- function (text) {
 
 render <- function (template, ...) {
   vars=list(...)
+  if (length(vars)==0) return(template)
   n <- sapply(vars,length)
   if (!all((n==max(n))|(n==1)))
     stop("incommensurate lengths of replacements")
@@ -346,7 +353,7 @@ undefine <- list(
                  )
 
 header <- list(
-               file="/* pomp model file: {%name%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
+               file="/* pomp model file: {%name%} */\n/* {%id%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
                registration="\nvoid R_init_{%name%} (DllInfo *info)\n{\n",
                rmeasure="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
                dmeasure= "\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",

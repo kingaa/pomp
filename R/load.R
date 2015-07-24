@@ -6,7 +6,7 @@ pompLoad.internal <- function (object, ..., verbose = getOption("verbose",FALSE)
       if (file.exists(solib)) {
         dyn.load(solib)
       } else {
-        pompCompile(name=lib$name,direc=dir,src=lib$src,verbose=verbose)
+        pompCompile(fname=lib$name,direc=dir,src=lib$src,verbose=verbose)
         dyn.load(solib)
       }
       if (verbose) cat("loading",sQuote(solib),"\n")

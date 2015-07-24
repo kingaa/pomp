@@ -12,7 +12,6 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               parameter.transform = NULL, parameter.inv.transform = NULL,
                               globals, userdata, ...,
                               .solibs = list(),
-                              .filename = NULL,
                               verbose = getOption("verbose",FALSE)) {
 
   ## preliminary error checking
@@ -184,7 +183,6 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                                   paramnames=paramnames,
                                   covarnames=covarnames,
                                   globals=globals,
-                                  name=.filename,
                                   verbose=verbose
                                   ),
                              snips
