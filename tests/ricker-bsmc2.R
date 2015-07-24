@@ -2,7 +2,7 @@ library(pomp)
 
 pompExample(ricker)
 
-pdf(file="ricker-bsmc.pdf")
+pdf(file="ricker-bsmc2.pdf")
 
 set.seed(6457673L)
 

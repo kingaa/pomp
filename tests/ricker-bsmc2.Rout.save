@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
+R version 3.2.1 (2015-06-18) -- "World-Famous Astronaut"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -21,7 +21,7 @@ Type 'q()' to quit R.
 newly created object(s):
  ricker 
 > 
-> pdf(file="ricker-bsmc.pdf")
+> pdf(file="ricker-bsmc2.pdf")
 > 
 > set.seed(6457673L)
 > 
@@ -52,4 +52,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.936   0.064   1.106 
+  0.932   0.027   0.932 
