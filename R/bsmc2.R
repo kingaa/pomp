@@ -6,8 +6,6 @@
 ##          these should be drawn from the prior distribution for the parameters
 ## est = names of parameters to estimate; other parameters are not updated.
 ## smooth = parameter 'h' from AGM
-## ntries = number of samplesto draw from x_{t+1} | x(k)_{t} to estimate
-##          mean of mu(k)_t+1 as in sect 2.2 Liu & West
 
 bsmc2.internal <- function (object, params, Np, est,
                             smooth, tol, seed = NULL,
