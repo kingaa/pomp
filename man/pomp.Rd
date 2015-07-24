@@ -207,7 +207,7 @@
       identical(coef(obj),coef(obj1))
       identical(coef(obj1,transform=TRUE),x).
     } By default, both functions are the identity transformation.
-    See the demos, \preformatted{demo(package="pomp"),} \code{\link{pompExample}}, and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website} for examples.
+    See the demos, \preformatted{demo(package="pomp"),} \code{\link{pompExample}}, and the tutorials on the \href{http://kingaa.github.io/pomp}{package website} for examples.
   }
   \item{globals}{
     optional character;
@@ -234,7 +234,7 @@
   Specification of process-model codes \code{rprocess} and/or \code{dprocess} in most cases is facilitated by \pkg{pomp}'s so-called \code{\link{plugins}}, which have been developed to handle common use-cases.
   Currently, if one's process model evolves in discrete time or one is willing to make such an approximation (e.g., via an Euler approximation), then the \code{\link{euler.sim}}, \code{\link{discrete.time.sim}}, and \code{\link{onestep.sim}} plugins for \code{rprocess} and \code{\link{onestep.dens}} plugin for \code{dprocess} are available.
   In addition, for exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm is available (see \code{\link{gillespie.sim}}).
-  To learn more about the use of plugins, consult the help documentation (\code{\link{plugins}}) and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  To learn more about the use of plugins, consult the help documentation (\code{\link{plugins}}) and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
   Several of the demos and examples make use of these as well.
 
   In specific cases, it may be possible to obtain increased computational efficiency by writing custom versions of \code{rprocess} and/or \code{dprocess} instead of using the plugins.
@@ -285,7 +285,7 @@
 }
 \section{The observation process model}{
   The following is a guide to writing the measurement model components as \R functions.
-  For a description on how to write these components using \code{\link{Csnippet}}s, see the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  For a description on how to write these components using \code{\link{Csnippet}}s, see the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
   \describe{
     \item{\code{rmeasure}}{
       if provided, must take at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
@@ -312,7 +312,7 @@
 }
 \section{The deterministic skeleton}{
   The following describes how to specify the deterministic skeleton as an \R function.
-  For a description on how to write this component using \code{\link{Csnippet}}s, see the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website} and the \code{\link{Csnippet}} help.
+  For a description on how to write this component using \code{\link{Csnippet}}s, see the tutorials on the \href{http://kingaa.github.io/pomp}{package website} and the \code{\link{Csnippet}} help.
 
   If \code{skeleton} if provided, must have at least the arguments \code{x}, \code{t}, \code{params}, and \code{\dots}.
   \code{x} is a numeric vector containing the coordinates of a point in state space at which evaluation of the skeleton is desired.
@@ -338,7 +338,7 @@
   In formulating models, one often wishes to define a state variable that will accumulate some quantity over the interval between successive observations.
   \pkg{pomp} provides a facility to make such features more convenient.
   Specifically, variables named in the \code{pomp}'s \code{zeronames} argument will be set to zero immediately following each observation.
-  See \code{euler.sir} and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website} for examples.
+  See \code{euler.sir} and the tutorials on the \href{http://kingaa.github.io/pomp}{package website} for examples.
 }
 \examples{
 \dontrun{

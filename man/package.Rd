@@ -14,7 +14,7 @@
   The first step in using \pkg{pomp} is to encode one's model(s) and data in objects of class \code{pomp}.
   One does this via a call to \code{\link{pomp}}, which involves specifying the unobserved state process and the measurement process of the model.
   Details on this are given in the documentation for the \code{\link{pomp}} constructor function.
-  Examples are given in the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}, in the demos (\code{demo(package='pomp')}), and via the \code{\link{pompExample}} function.
+  Examples are given in the tutorials on the \href{http://kingaa.github.io/pomp}{package website}, in the demos (\code{demo(package='pomp')}), and via the \code{\link{pompExample}} function.
 
   \pkg{pomp} version \Sexpr[echo=F,stage=install,results=text]{packageDescription("pomp",fields="Version")} provides algorithms for
   \enumerate{
@@ -42,10 +42,10 @@
 }
 \section{Comments, bug reports, feature requests}{
   Contributions are welcome, as are comments, feature requests, and bug reports.
-  See the package website \url{http://pomp.r-forge.r-project.org} for more information, access to the package mailing list, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
+  See the package website \url{http://kingaa.github.io/pomp} for more information, access to the package mailing list, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
 }
 \section{Documentation}{
-  A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the package homepage: \url{http://pomp.r-forge.r-project.org}.
+  A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the package homepage: \url{http://kingaa.github.io/pomp}.
   Several examples of the construction of \code{pomp} objects are provided with the package and are documented in the help pages: to view a full list of these, execute \code{pompExample()}.
   In addition, there are a number of demos, which can be viewed by executing \code{demo(package="pomp")}.
 }    
@@ -56,7 +56,7 @@
   \pkg{pomp} is provided under the \acronym{GNU} Public License (\acronym{GPL}).
 }
 \references{
-  See the package website, \url{http://pomp.r-forge.r-project.org}, for the references.
+  See the package website, \url{http://kingaa.github.io/pomp}, for the references.
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{

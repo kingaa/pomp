@@ -25,11 +25,11 @@
 
   \strong{Note to Windows and Mac users:}
   By default, your \R installation may not support \code{\link[=SHLIB]{R CMD SHLIB}}.
-  Have a look at the tutorials on the package website for instructions on enabling this powerful feature of \R.
+  The package website contains installation instructions that show how to enable this powerful feature of \R.
 
   In writing a \code{Csnippet} one must bear in mind both the \emph{goal} of the snippet, i.e., what computation it is intended to perform, and the \emph{context} in which it will be executed.
   Details of both of these are given below in the form of rules governing the use of \code{Csnippet}s.
-  Illustrative examples are given in the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  Illustrative examples are given in the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 }
 \section{General rules for writing C snippets}{
   \enumerate{
@@ -112,7 +112,7 @@
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \code{\link{pomp}}, \code{\link{plugins}}, and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  \code{\link{pomp}}, \code{\link{plugins}}, and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 }
 \keyword{programming}
 \keyword{interface}

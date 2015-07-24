@@ -248,7 +248,7 @@ plot(bad)
 }
 \seealso{
   \link{pomp}, \link{probe functions}, \link{spect},
-  and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 }
 \keyword{optimize}
 \keyword{ts}

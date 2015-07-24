@@ -136,6 +136,6 @@
 }
 \author{Edward L. Ionides \email{ionides at umich dot edu}, Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \code{\link{pomp}}, \code{\link{probe}}, and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.  
+  \code{\link{pomp}}, \code{\link{probe}}, and the tutorials on the \href{http://kingaa.github.io/pomp/}{package website}.  
 }
 \keyword{ts}

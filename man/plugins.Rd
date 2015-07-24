@@ -24,7 +24,7 @@ onestep.dens(dens.fun, PACKAGE)
     The latter is the preferred option.
     It should be written to take a single Euler step from a single point in state space.
 
-    For an explanation and examples on the use of \code{\link{Csnippet}} to write fast simulators, see the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+    For an explanation and examples on the use of \code{\link{Csnippet}} to write fast simulators, see the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 
     If it is an \R function, it should have prototype \preformatted{step.fun(x,t,params,delta.t,...).}
     Here, \code{x} is a named numeric vector containing the value of the state process at time \code{t},
@@ -42,7 +42,7 @@ onestep.dens(dens.fun, PACKAGE)
     \code{x} is a named numeric vector containing the value of the state process at time \code{t} and 
     \code{params} is a named numeric vector containing parameters.
 
-    For examples on the use of \code{\link{Csnippet}} to write fast simulators easily, see tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+    For examples on the use of \code{\link{Csnippet}} to write fast simulators easily, see tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 
     If \code{rate.fun} is a native function, it must be of type \preformatted{pomp_ssa_rate_fn} as defined in the header \file{pomp.h}, which is included with the package.
     For details on how to write such codes, see Details.
@@ -129,6 +129,6 @@ onestep.dens(dens.fun, PACKAGE)
 }
 \author{Aaron A. King \email{kingaa at umich dot edu}}
 \seealso{
-  \code{\link{pomp}} and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  \code{\link{pomp}} and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 }
 \keyword{models}
