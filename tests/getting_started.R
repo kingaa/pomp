@@ -6,10 +6,11 @@ options(
   encoding="UTF-8",
   scipen=5
   )
-set.seed(588665L)
 
+set.seed(588665L)
 ## ----eval=FALSE----------------------------------------------------------
-## install.packages("pomp",repos="http://R-Forge.R-Project.org")
+## require(devtools)
+## install_github("kingaa/pomp")
 
 ## ----eval=FALSE----------------------------------------------------------
 ## cat("#include <R.h>

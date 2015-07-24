@@ -1,5 +1,14 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.75-1}{
+  \itemize{
+    \item By default, when \code{Csnippet}s are used, the source code is now stored internally to the \code{pomp} object.
+    When a \code{pomp} object is used, a test is first performed to see if the needed shared-object file exists.
+    If it does not, the source code is written to a file in the session's temporary directory, which is then compiled and loaded.
+    This feature allows \code{pomp} objects to be stored and reused across \R sessions.
+    The name of the file is constructed using a hash of the file's contents.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.74-1}{
   \itemize{
     \item The functions \code{bake} and \code{stew} have arguments that allow the control of the RNG.

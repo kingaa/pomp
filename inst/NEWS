@@ -1,5 +1,17 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_5-_1:
+
+        • By default, when ‘Csnippet’s are used, the source code is now
+          stored internally to the ‘pomp’ object.  When a ‘pomp’ object
+          is used, a test is first performed to see if the needed
+          shared-object file exists.  If it does not, the source code
+          is written to a file in the session's temporary directory,
+          which is then compiled and loaded.  This feature allows
+          ‘pomp’ objects to be stored and reused across R sessions.
+          The name of the file is constructed using a hash of the
+          file's contents.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_4-_1:
 
         • The functions ‘bake’ and ‘stew’ have arguments that allow the
