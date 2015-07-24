@@ -11,7 +11,7 @@ csl: ecology.csl
 
 Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
 Please share and remix noncommercially, mentioning its origin.  
-![CC-BY_NC](../graphics/cc-by-nc.png)
+![CC-BY_NC](http://kingaa.github.io/images/cc-by-nc.png)
 
 This document was produced using `pomp` version `r packageVersion("pomp")` and `pompExamples` version `r packageVersion("pompExamples")`.
 

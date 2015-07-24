@@ -5,8 +5,7 @@ TOWN <- "London"
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
-  encoding="UTF-8",
-  pomp.cache="cache"
+  encoding="UTF-8"
   )
 
 set.seed(998468235L,kind="L'Ecuyer")

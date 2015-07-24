@@ -9,6 +9,10 @@ default: vignettes clean
 
 vignettes: getting_started.html getting_started.R pompjss.pdf pompjss.R mif2.html mif2.R He2010.html He2010.R
 
+%.html: %.Rmd
+	PATH=/usr/lib/rstudio/bin/pandoc:$$PATH \
+	Rscript --vanilla -e "rmarkdown::render(\"$*.Rmd\",output_format=\"html_document\")"
+
 %.R: %.Rnw
 	$(RSCRIPT) -e 'library(knitr); purl("$*.Rnw")'
 

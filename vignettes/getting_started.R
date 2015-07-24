@@ -5,8 +5,7 @@ options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
-  scipen=5,
-  pomp.cache="./cache"
+  scipen=5
   )
 
 ## ----parallel,include=FALSE,cache=FALSE----------------------------------
@@ -26,7 +25,8 @@ require(magrittr)
 theme_set(theme_bw())
 
 ## ----install-packages,eval=FALSE-----------------------------------------
-## install.packages("pomp",repos="http://R-Forge.R-Project.org")
+## require(devtools)
+## install_github("kingaa/pomp")
 
 ## ----hello-world,eval=FALSE----------------------------------------------
 ## cat("#include <R.h>
