@@ -6,6 +6,9 @@ title: pomp blog
 
 <ul>
   {% for post in site.posts %}
-  <li><a href="{{ post.url }}"><b>{{ post.title }}</b></a></li>
+  <li>
+    <a href="{{ post.url }}"><b>{{ post.title }}</b></a>
+    {{ post.excerpt }}
+  </li>
   {% endfor %}
 </ul>
