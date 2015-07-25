@@ -1,7 +1,13 @@
 ---
-layout: rss
 title: pomp rss feed
 ---
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:kingaa.github.io,2008:/kingaa/pomp</id>
+  <link type="text/html" rel="alternate" href="https://kingaa.github.io/pomp"/>
+  <link type="application/atom+xml" rel="self" href="https://kingaa.github.io/pomp/pomp.atom"/>
+  <title>pomp blog</title>
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
 {% for post in site.posts %}
   <entry>
     <id>{{ post.id }}</id>
@@ -19,3 +25,4 @@ title: pomp rss feed
     </content>
   </entry>
 {% endfor %}
+</feed>
