@@ -1,0 +1,21 @@
+---
+layout: rss
+title: pomp rss feed
+---
+{% for post in site.posts %}
+  <entry>
+    <id>{{ post.id }}</id>
+    <published>{{ post.date }}</published>
+    <link type="text/html" rel="alternate" href="https://kingaa.github.io/pomp/blog.html"/>
+    <title type="html">{{ post.title }}</title>
+    <author>
+      <name>Aaron A. King</name>
+      <email></email>
+      <uri>{{ post.url }}</uri>
+    </author>
+    <content type="html">
+      <b>{{ post.title }}</b>
+      {{ post.excerpt }}
+    </content>
+  </entry>
+{% endfor %}
