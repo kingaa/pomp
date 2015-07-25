@@ -1,32 +1,11 @@
 ---
+layout: pomp
 title: pomp blog
 ---
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
-    <meta name="keywords" content="stochastic dynamics, inference, hidden Markov model, state space model, pomp, R">
-    <link href="http://kingaa.github.io/whitestyle.css" rel="stylesheet" type="text/css">
-    <link rel="shortcut icon" href="bluefish.ico" type="image/ico">
-    <title>{{ page.title }}</title>
-  </head>
-  <body>
-    <hr width="80%" align="left">
-    <h2>{{ page.title}}</h2>
-    <hr width="80%" align="left">
-    <table width="80%">
-      <tr>
-	<td width="10%">
-	  <img height="90" align="bottom" src="{{ site.url}}/images/bluefish.png">
-	</td>
-	<td width="90%">
-	  <ul>
-	    {% for post in site.posts %}
-	    <li><a href="{{ post.url }}"><b>{{ post.title }}</b></a></li>
-	    {% endfor %}
-	  </ul>
-	</td>
-      </tr>
-    </table>
-  </body>
-</html>
+<h2><strong>pomp</strong> announcements</h2>
+
+<ul>
+  {% for post in site.posts %}
+  <li><a href="{{ post.url }}"><b>{{ post.title }}</b></a></li>
+  {% endfor %}
+</ul>
