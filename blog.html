@@ -4,9 +4,11 @@ title: pomp news feed
 ---
 <h2><strong>pomp</strong> newsfeed</h2>
 
-<hr style="size: 1px; color: #eeeeee;">
+<hr style="size: 1px; color: #eeeeee;"/>
 {% for post in site.posts %}
 <h3>{{ post.title }}</h3>
     {{ post.content }}
-<hr style="size: 1px; color: #eeeeee;">
+<hr style="size: 1px; color: #eeeeee;"/>
 {% endfor %}
+
+<p style="text-align: right;"><a href="http://{{ site.url }}/pomp/pomp.atom">Subscribe to this newsfeed</a>&nbsp;<a style="vertical-align: top;" href="{{ site.url }}/pomp/pomp.atom"><img style="vertical-align: top;" src="http://kingaa.github.io/images/rss.png"></a></p>
