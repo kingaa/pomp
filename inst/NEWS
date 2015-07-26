@@ -44,10 +44,10 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_2-_1
         • ‘pmcmc’ and ‘pfilter’ now have the capability of saving
           filtered trajectories.  These can be extracted using the new
           method ‘filter.traj’.  The principal use will be in
-          conjunction with ‘pmcmc’, where, upon assuming convergence to
-          the posterior, samples from the filtered trajectories are
-          draws from the posterior P[x[1:T] | y[1:T]].  Thanks for
-          Sebastian Funk for initiating this development.
+          conjunction with ‘pmcmc’, where, upon convergence to the
+          posterior, samples from the filtered trajectories are draws
+          from the posterior P[x[1:T] | y[1:T]].  Thanks to Sebastian
+          Funk for initiating this development.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_1-_1:
 
