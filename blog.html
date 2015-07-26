@@ -1,14 +1,12 @@
 ---
 layout: pomp
-title: pomp blog
+title: pomp news feed
 ---
-<h2><strong>pomp</strong> blog</h2>
+<h2><strong>pomp</strong> newsfeed</h2>
 
-<ul>
-  {% for post in site.posts %}
-  <li>
-    <b>{{ post.title }}</b>
+<hr style="size: 1px; color: #eeeeee;">
+{% for post in site.posts %}
+<h3>{{ post.title }}</h3>
     {{ post.content }}
-  </li>
-  {% endfor %}
-</ul>
+<hr style="size: 1px; color: #eeeeee;">
+{% endfor %}
