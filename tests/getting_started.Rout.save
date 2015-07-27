@@ -183,10 +183,10 @@ Loading required package: pomp
           r           K         phi         N.0       sigma 
   3.2628796 372.6872250   0.6063705 200.0000000   0.6594260 
 > logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
-                     se 
--144.227080    0.476505 
+                       se 
+-144.2270798    0.2254515 
 > sim2 <- simulate(mf,nsim=10,as.data.frame=TRUE,include.data=TRUE)
 > 
 > proc.time()
    user  system elapsed 
- 82.113   0.428  84.127 
+152.384   0.489 153.584 

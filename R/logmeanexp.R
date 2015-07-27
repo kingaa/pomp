@@ -2,8 +2,11 @@ logmeanexp <- function (x, se = FALSE) {
   mx <- max(x)
   mean <- mx+log(mean(exp(x-mx)))
   if (se) {
-    se <- sd(exp(x-mx))/exp(mean-mx)
-    c(mean,se=se)
+    n <- length(x)
+    jk <- vapply(seq_len(n),
+                 function(k) logmeanexp(x[-k]),
+                 numeric(1))
+    c(mean,se=(n-1)*sd(jk)/sqrt(n))
   } else {
     mean
   }
