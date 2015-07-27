@@ -6,6 +6,7 @@ title: pomp news blog
 
 <hr style="size: 1px; color: #eeeeee;"/>
 {% for post in site.posts %}
+<a id="{{ post.title | slugify }}"></a>
 <h3>{{ post.title }}</h3>
     {{ post.content }}
 <hr style="size: 1px; color: #eeeeee;"/>

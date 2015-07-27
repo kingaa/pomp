@@ -12,12 +12,12 @@ title: pomp rss feed
   <entry>
     <id>{{ post.id }}</id>
     <published>{{ post.date }}</published>
-    <link type="text/html" rel="alternate" href="http://kingaa.github.io/pomp/blog.html"/>
+    <link type="text/html" rel="alternate" href="http://kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}"/>
     <title type="html">{{ post.title }}</title>
     <author>
       <name>Aaron A. King</name>
       <email></email>
-      <uri>{{ post.url }}</uri>
+      <uri>http://kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}</uri>
     </author>
     <content type="html">
       <a href="{{ post.url }}"><b>{{ post.title }}</b></a>
