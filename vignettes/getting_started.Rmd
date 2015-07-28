@@ -472,30 +472,4 @@ The next line extracts and displays the MLE.
 The fourth command runs 5 replicate particle filters to compute the log likelihood at the estimated parameters and averages these appropriately to get an estimate of this likelihood and of the standard Monte Carlo error.
 Finally, the above plots the data and 10 simulated realizations of the model process on the same axes.
 
-## Sampling the posterior using particle Markov chain Monte Carlo
-
-The following codes cause 5 parallel pMCMC chains to be run, beginning at the MLE obtained above.
-```{r parus-pmcmc,cache=TRUE}
-dprior <- Csnippet("
-  lik = dunif(r,0,5,1)+dunif(K,100,800,1)+dunif(phi,0,2,1)+
-    dunif(sigma,0,2,1);
-  lik = (give_log) ? lik : exp(lik);
-  ")
-parus <- pomp(parus,dprior=dprior,paramnames=c("r","K","phi","sigma"))
-pchs <- foreach (i=1:5,.combine=c,
-                 .options.multicore=mcopts) %dopar% {
-  pmcmc(parus,Nmcmc=1000,Np=100,start=mle,
-        proposal=mvn.diag.rw(c(r=0.02,K=0.02,phi=0.02,sigma=0.02)))
-  }
-traces <- conv.rec(pchs,c("r","K","phi"))
-require(coda)
-plot(traces[,"r"])
-plot(traces[,"K"])
-plot(traces[,"phi"])
-gelman.plot(traces)
-gelman.diag(traces)
-```
-
-## Model checking using probes
-
 ## References

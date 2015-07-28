@@ -217,23 +217,3 @@ ggplot(data=sim2,mapping=aes(x=time,y=pop,group=sim,alpha=(sim=="data")))+
                      labels=c(`FALSE`="simulation",`TRUE`="data"))+
   geom_line()
 
-## ----parus-pmcmc,cache=TRUE----------------------------------------------
-dprior <- Csnippet("
-  lik = dunif(r,0,5,1)+dunif(K,100,800,1)+dunif(phi,0,2,1)+
-    dunif(sigma,0,2,1);
-  lik = (give_log) ? lik : exp(lik);
-  ")
-parus <- pomp(parus,dprior=dprior,paramnames=c("r","K","phi","sigma"))
-pchs <- foreach (i=1:5,.combine=c,
-                 .options.multicore=mcopts) %dopar% {
-  pmcmc(parus,Nmcmc=1000,Np=100,start=mle,
-        proposal=mvn.diag.rw(c(r=0.02,K=0.02,phi=0.02,sigma=0.02)))
-  }
-traces <- conv.rec(pchs,c("r","K","phi"))
-require(coda)
-plot(traces[,"r"])
-plot(traces[,"K"])
-plot(traces[,"phi"])
-gelman.plot(traces)
-gelman.diag(traces)
-
