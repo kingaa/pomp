@@ -16,7 +16,7 @@
   Details on this are given in the documentation for the \code{\link{pomp}} constructor function.
   Examples are given in the tutorials on the \href{http://kingaa.github.io/pomp}{package website}, in the demos (\code{demo(package='pomp')}), and via the \code{\link{pompExample}} function.
 
-  \pkg{pomp} version \Sexpr[echo=F,stage=install,results=text]{packageDescription("pomp",fields="Version")} provides algorithms for
+  \pkg{pomp} version \Sexpr[echo=FALSE,stage=build,results=text]{packageDescription("pomp",fields="Version")} provides algorithms for
   \enumerate{
     \item simulation of stochastic dynamical systems; see \code{\link[=simulate-pomp]{simulate}}
     \item particle filtering (AKA sequential Monte Carlo or sequential importance sampling); see \code{\link{pfilter}}
