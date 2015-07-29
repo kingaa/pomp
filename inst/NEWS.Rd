@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.76-2}{
+  \itemize{
+    \item The default value of \code{max.fail} for \code{pmcmc} is now \code{Inf}.
+    That is, by default \code{pmcmc} will not halt (but will issue a warning) when filtering failure occurs (i.e., no particles are consistent with the data, as defined by the likelihood threshold \code{tol}).
+  }
+}
 \section{Changes in \pkg{pomp} version 0.76-1}{
   \itemize{
     \item \code{logmeanexp} has used a delta-method estimate of the variance in \eqn{log(mean(exp(x)))} when \code{se = TRUE}.

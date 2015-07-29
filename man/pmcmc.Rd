@@ -35,10 +35,10 @@
 }
 \usage{
 \S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, proposal, pars, rw.sd, Np,
-    tol = 1e-17, max.fail = 0, verbose = getOption("verbose"), \dots)
+    tol = 1e-17, max.fail = Inf, verbose = getOption("verbose"), \dots)
 \S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, Np, tol, \dots)
 \S4method{pmcmc}{pmcmc}(object, Nmcmc, start, proposal, Np, tol,
-    max.fail = 0, verbose = getOption("verbose"), \dots)
+    max.fail = Inf, verbose = getOption("verbose"), \dots)
 \S4method{continue}{pmcmc}(object, Nmcmc = 1, \dots)
 }
 \arguments{
