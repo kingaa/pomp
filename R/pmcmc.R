@@ -42,10 +42,6 @@ pmcmc.internal <- function (object, Nmcmc,
     stop(sQuote("pmcmc")," error: ",
          sQuote("start")," must be a named vector",call.=FALSE)
 
-
-
-
-
   if (!is.function(proposal))
     stop(sQuote("proposal")," must be a function")
 
@@ -141,37 +137,43 @@ pmcmc.internal <- function (object, Nmcmc,
 
     theta.prop <- proposal(theta)
 
-    ## run the particle filter on the proposed new parameter values
-    pfp.prop <- try(
-                    pfilter.internal(
-                                     object=pfp,
-                                     params=theta.prop,
-                                     Np=Np,
-                                     tol=tol,
-                                     max.fail=max.fail,
-                                     pred.mean=FALSE,
-                                     pred.var=FALSE,
-                                     filter.mean=TRUE,
-                                     filter.traj=TRUE,
-                                     save.states=FALSE,
-                                     save.params=FALSE,
-                                     .transform=FALSE,
-                                     verbose=FALSE,
-                                     .getnativesymbolinfo=gnsi
-                                     ),
-                    silent=FALSE
-                    )
-    if (inherits(pfp.prop,'try-error'))
-      stop("pmcmc error: error in ",sQuote("pfilter"),call.=FALSE)
-    log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,.getnativesymbolinfo=gnsi)
-    gnsi <- FALSE
+    ## compute log prior
+    log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,
+                             .getnativesymbolinfo=gnsi)
 
-    ## PMCMC update rule (OK because proposal is symmetric)
-    alpha <- exp(pfp.prop@loglik+log.prior.prop-pfp@loglik-log.prior)
-    if (is.finite(log.prior.prop) && runif(1) < alpha) {
-      pfp <- pfp.prop
-      theta <- theta.prop
-      log.prior <- log.prior.prop
+    if (is.finite(log.prior.prop)) {
+    
+      ## run the particle filter on the proposed new parameter values
+      pfp.prop <- try(
+                      pfilter.internal(
+                                       object=pfp,
+                                       params=theta.prop,
+                                       Np=Np,
+                                       tol=tol,
+                                       max.fail=max.fail,
+                                       pred.mean=FALSE,
+                                       pred.var=FALSE,
+                                       filter.mean=TRUE,
+                                       filter.traj=TRUE,
+                                       save.states=FALSE,
+                                       save.params=FALSE,
+                                       .transform=FALSE,
+                                       verbose=FALSE,
+                                       .getnativesymbolinfo=gnsi
+                                       ),
+                      silent=FALSE
+                      )
+      if (inherits(pfp.prop,'try-error'))
+        stop("pmcmc error: error in ",sQuote("pfilter"),call.=FALSE)
+      gnsi <- FALSE
+
+      ## PMCMC update rule (OK because proposal is symmetric)
+      alpha <- exp(pfp.prop@loglik+log.prior.prop-pfp@loglik-log.prior)
+      if (runif(1) < alpha) {
+        pfp <- pfp.prop
+        theta <- theta.prop
+        log.prior <- log.prior.prop
+      }
     }
 
     ## add filtered trajectory to the store
