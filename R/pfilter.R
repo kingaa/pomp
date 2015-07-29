@@ -365,8 +365,12 @@ pfilter.internal <- function (object, params, Np,
   } ## end of main loop
 
   if (filter.traj) { ## select a single trajectory
-    b <- sample.int(n=length(weights),size=1L,
-                    prob=weights,replace=TRUE)
+    if (max(weights)>0) {
+      b <- sample.int(n=length(weights),size=1L,
+                      prob=weights,replace=TRUE)
+    } else {
+      b <- 1L
+    }
     filt.t[,1L,ntimes+1] <- xparticles[[ntimes]][,b]
     for (nt in seq.int(from=ntimes-1,to=1L,by=-1L)) {
       b <- pedigree[[nt+1]][b]
