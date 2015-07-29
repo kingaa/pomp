@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.76-1}{
+  \itemize{
+    \item \pkg{pomp} now includes \pkg{magrittr}, \pkg{plyr}, \pkg{reshape2}, \pkg{ggplot2}, and \pkg{knitr} in its \code{Suggests} field:
+    these packages are available for use in \code{pompExample}s and package tests.
+    \item There is now a \code{coef} method for \code{mifList} and \code{mif2List} objects.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.75-1}{
   \itemize{
     \item By default, when \code{Csnippet}s are used, the source code is now stored internally to the \code{pomp} object.
