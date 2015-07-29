@@ -20,7 +20,7 @@ title: pomp rss feed
       <uri>http://kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}</uri>
     </author>
     <content type="html">
-      <a href="{{ post.url }}"><b>{{ post.title }}</b></a>
+      <a href="kingaa.github.io/pomp/blog.html#{{ post.title | slugify }}"><h2>{{ post.title }}</h2></a>
       {{ post.excerpt }}
     </content>
   </entry>
