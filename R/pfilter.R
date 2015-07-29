@@ -369,7 +369,8 @@ pfilter.internal <- function (object, params, Np,
       b <- sample.int(n=length(weights),size=1L,
                       prob=weights,replace=TRUE)
     } else {
-      b <- 1L
+      b <- sample.int(n=length(weights),size=1L,
+                      replace=TRUE)
     }
     filt.t[,1L,ntimes+1] <- xparticles[[ntimes]][,b]
     for (nt in seq.int(from=ntimes-1,to=1L,by=-1L)) {
