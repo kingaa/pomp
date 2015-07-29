@@ -1,5 +1,14 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_6-_1:
+
+        • ‘logmeanexp’ has used a delta-method estimate of the variance
+          in log(mean(exp(x))) when ‘se = TRUE’.  This gave
+          misleadingly small values when the variance in exp(x) was
+          large.  The new ‘logmeanexp’ uses a jackknife estimate of the
+          variance.  This is still conservative, in that it is biased
+          upwards, but is more robust.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_5-_1:
 
         • By default, when ‘Csnippet’s are used, the source code is now

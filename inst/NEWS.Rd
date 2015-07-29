@@ -2,6 +2,10 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 0.76-1}{
   \itemize{
+    \item \code{logmeanexp} has used a delta-method estimate of the variance in \eqn{log(mean(exp(x)))} when \code{se = TRUE}.
+    This gave misleadingly small values when the variance in \eqn{exp(x)} was large.
+    The new \code{logmeanexp} uses a jackknife estimate of the variance.
+    This is still conservative, in that it is biased upwards, but is more robust.
     \item \pkg{pomp} now includes \pkg{magrittr}, \pkg{plyr}, \pkg{reshape2}, \pkg{ggplot2}, and \pkg{knitr} in its \code{Suggests} field:
     these packages are available for use in \code{pompExample}s and package tests.
     \item There is now a \code{coef} method for \code{mifList} and \code{mif2List} objects.
