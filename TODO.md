@@ -1,9 +1,9 @@
 ### pomp to-do list
 
+- easier interface for lists of probes in 'probe'
 - documentation on 'mifList', 'pmcmcList', etc.
 - 'initializer' -> 'rinit' and perhaps 'dinit'
 - documentation: "regular parameters" instead of "non-IVP"
-- add 'coef' method for 'mifList' objects
 - objective function for spectrum matching
 - one-point SCQL function for possible use in fitting initial conditions
 - save particle filtering variance?
