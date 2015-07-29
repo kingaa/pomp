@@ -9,6 +9,14 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_6-_1
           variance.  This is still conservative, in that it is biased
           upwards, but is more robust.
 
+        • ‘pomp’ now includes ‘magrittr’, ‘plyr’, ‘reshape2’,
+          ‘ggplot2’, and ‘knitr’ in its ‘Suggests’ field: these
+          packages are available for use in ‘pompExample’s and package
+          tests.
+
+        • There is now a ‘coef’ method for ‘mifList’ and ‘mif2List’
+          objects.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_5-_1:
 
         • By default, when ‘Csnippet’s are used, the source code is now
