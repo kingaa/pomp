@@ -18,6 +18,8 @@
 \alias{conv.rec-mif}
 \alias{conv.rec,mifList-method}
 \alias{conv.rec-mifList}
+\alias{coef,mifList-method}
+\alias{coef.rec-mifList}
 \alias{plot-mif}
 \alias{plot,mif-method}
 \alias{plot-mifList}

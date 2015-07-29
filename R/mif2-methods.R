@@ -87,6 +87,14 @@ setMethod(
           }
           )
 
+setMethod(
+          'coef',
+          signature=signature(object='mif2List'),
+          definition=function (object, ...) {
+            do.call(rbind,lapply(object,coef,...))
+          }
+          )
+
 mif2.diagnostics <- function (z) {
   ## assumes that z is a list of mif2d.pomps with identical structure
   mar.multi <- c(0,5.1,0,2.1)

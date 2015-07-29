@@ -52,6 +52,7 @@ plot(mif1)
 plot(mif2)
 try(plot(mif1,mif2))
 plot(c(mif1,mif2))
+coef(c(mif1,mif2))
 dev.off()
 
 set.seed(33848585L)

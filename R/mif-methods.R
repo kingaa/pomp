@@ -176,6 +176,14 @@ setMethod(
           )
 
 setMethod(
+          'coef',
+          signature=signature(object='mifList'),
+          definition=function (object, ...) {
+            do.call(rbind,lapply(object,coef,...))
+          }
+          )
+
+setMethod(
           "plot",
           signature=signature(x='mifList'),
           definition=function (x, y, ...) {

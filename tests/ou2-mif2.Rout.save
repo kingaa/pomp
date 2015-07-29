@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
+R version 3.2.1 (2015-06-18) -- "World-Famous Astronaut"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -152,6 +152,13 @@ Error in validObject(.Object) :
 > m2 <- continue(m2,Nmif=50)
 > 
 > plot(c(m1,m2))
+> coef(c(m1,m2))
+     alpha.1    alpha.2  alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau      x1.0
+[1,]     0.8 -0.5340410 0.253315     0.9       3    -0.5       2   1 -2.205438
+[2,]     0.8 -0.5023659 0.222089     0.9       3    -0.5       2   1 -2.127518
+          x2.0
+[1,] 0.8962661
+[2,] 4.4259163
 > 
 > rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
 +       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
@@ -199,4 +206,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 53.995   0.072  54.427 
+ 71.836   0.067  71.989 

@@ -16,6 +16,8 @@
 \alias{conv.rec-mif2d.pomp}
 \alias{conv.rec,mif2List-method}
 \alias{conv.rec-mif2List}
+\alias{coef,mif2List-method}
+\alias{coef.rec-mif2List}
 \alias{plot-mif2d.pomp}
 \alias{plot,mif2d.pomp-method}
 \alias{plot-mif2List}

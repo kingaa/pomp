@@ -121,6 +121,7 @@ m2 <- mif2(ou2,Nmif=50,start=guess2,Np=1000,
 m2 <- continue(m2,Nmif=50)
 
 plot(c(m1,m2))
+coef(c(m1,m2))
 
 rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
