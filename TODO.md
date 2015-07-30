@@ -3,6 +3,7 @@
 - easier interface for lists of probes in 'probe'
 - documentation on 'mifList', 'pmcmcList', etc.
 - 'initializer' -> 'rinit' and perhaps 'dinit'
+- 'proposal' -> 'rproposal' and 'dproposal' ?
 - documentation: "regular parameters" instead of "non-IVP"
 - objective function for spectrum matching
 - one-point SCQL function for possible use in fitting initial conditions
