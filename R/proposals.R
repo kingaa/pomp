@@ -27,7 +27,7 @@ mvn.rw <- function (rw.var) {
   oo <- order(attr(ch,"pivot"))
   Q <- ch[,oo]
   function (theta) {
-    theta[parnm] <- theta[parnm]+Q%*%rnorm(n=n,mean=0,sd=1)
+    theta[parnm] <- theta[parnm]+rnorm(n=n,mean=0,sd=1)%*%Q
     theta
   }
 }

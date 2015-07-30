@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.76-3}{
+  \itemize{
+    \item Bug fix in \code{mvn.rw}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.76-2}{
   \itemize{
     \item The default value of \code{max.fail} for \code{pmcmc} is now \code{Inf}.
