@@ -8,17 +8,20 @@
   Functions to construct proposal distributions for use with MCMC methods.
 }
 \usage{
-  mvn.diag.rw(rw.sd)
-  mvn.rw(rw.var)
+  mvn.rw(rw.var, log = FALSE)
+  mvn.diag.rw(rw.sd, log = FALSE)
 }
 \arguments{
+  \item{rw.var}{
+    square numeric matrix with row- and column-names.
+    Specifies the variance-covariance matrix for a multivariate normal random-walk proposal distribution.
+  }
   \item{rw.sd}{
     named numeric vector;
     random-walk SDs for a multivariate normal random-walk proposal with diagonal variance-covariance matrix.
   }
-  \item{rw.var}{
-    square numeric matrix with row- and column-names.
-    Specifies the variance-covariance matrix for a multivariate normal random-walk proposal distribution.
+  \item{log}{
+    logical; if \code{TRUE}, a log-normal proposal distribution is used.
   }
 }
 \value{
@@ -27,4 +30,4 @@
 }
 \seealso{\code{\link{pmcmc}}, \code{\link{abc}}}
 \author{Aaron A. King \email{kingaa at umich dot edu}}
-\keyword{models}
+\keyword{programming}

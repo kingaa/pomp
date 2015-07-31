@@ -107,4 +107,3 @@ plot(f7)
 filter.traj(f7,"x1")[1,30,1:5]
 
 dev.off()
-

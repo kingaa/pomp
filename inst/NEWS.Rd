@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.77-1}{
+  \itemize{
+    \item The MCMC proposal distributions \code{mvn.rw} and \code{mvn.rw.diag} now support a lognormal proposal, which is useful when parameters are constrained to be positive.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.76-3}{
   \itemize{
     \item Bug fix in \code{mvn.rw}.
