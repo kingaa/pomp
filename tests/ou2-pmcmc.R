@@ -16,10 +16,9 @@ f1 <- pmcmc(
             Nmcmc=20,
             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
             Np=100,
-            max.fail=100,
             verbose=FALSE
             )
-f1 <- continue(f1,Nmcmc=20,max.fail=100)
+f1 <- continue(f1,Nmcmc=20)
 plot(f1)
 
 ff <- pfilter(f1)
@@ -27,7 +26,6 @@ f2 <- pmcmc(
             ff,
             Nmcmc=20,
             rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-            max.fail=100, 
             verbose=FALSE
             )
 
@@ -40,10 +38,7 @@ plot(c(f2,f3))
 try(ff <- c(f3,f4))
 
 if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
-  f2a <- pmcmc(
-               f1,Nmcmc=1000,Np=100,max.fail=100,
-               verbose=FALSE
-               )
+  f2a <- pmcmc(f1,Nmcmc=1000,Np=100,verbose=FALSE)
   plot(f2a)
   runs <- rle(as.numeric(conv.rec(f2a,'loglik')))$lengths
   plot(sort(runs))
@@ -60,10 +55,9 @@ f5 <- pmcmc(
             Nmcmc=20,
             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
             Np=100,
-            max.fail=100, 
             verbose=FALSE
             )
-f6 <- continue(f5,Nmcmc=20,max.fail=100)
+f6 <- continue(f5,Nmcmc=20)
 plot(f6)
 
 ff <- c(f4,f6)
@@ -100,10 +94,21 @@ f7 <- pmcmc(
             Nmcmc=30,
             proposal=mvn.rw(sig),
             Np=100,
-            max.fail=100, 
             verbose=FALSE
             )
 plot(f7)
 filter.traj(f7,"x1")[1,30,1:5]
+
+mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01)) -> f
+
+f8 <- pmcmc(
+            pomp(ou2,dprior=dprior.ou2),
+            Nmcmc=5000,
+##            proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.001,alpha.3=0.001)),
+            proposal=f,
+            Np=500,
+            verbose=FALSE
+            )
+plot(f8)
 
 dev.off()

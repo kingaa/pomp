@@ -46,7 +46,7 @@ pmcmc.internal <- function (object, Nmcmc,
     stop(sQuote("proposal")," must be a function")
 
   ## test proposal distribution
-  theta <- try(proposal(start))
+  theta <- try(proposal(start,.n=0))
   if (inherits(theta,"try-error"))
     stop(sQuote("pmcmc")," error: error in proposal function",call.=FALSE)
   if (is.null(names(theta)) || !is.numeric(theta))
@@ -134,9 +134,12 @@ pmcmc.internal <- function (object, Nmcmc,
                     list(as.character(seq_len(Nmcmc))))
                   )
 
+  accepts <- 0
+
   for (n in seq_len(Nmcmc)) { # main loop
 
-    theta.prop <- proposal(theta)
+    theta.prop <- proposal(theta,.n=n,.traces=conv.rec,
+                           .accepts=accepts)
 
     ## compute log prior
     log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,
@@ -175,6 +178,7 @@ pmcmc.internal <- function (object, Nmcmc,
         pfp <- pfp.prop
         theta <- theta.prop
         log.prior <- log.prior.prop
+        accepts <- accepts+1
       }
     }
 
