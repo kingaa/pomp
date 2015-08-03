@@ -114,8 +114,9 @@ pmcmc.internal <- function (object, Nmcmc,
                                 ),
                silent=FALSE
                )
-    if (inherits(pfp,'try-error'))
-      stop("pmcmc error: error in ",sQuote("pfilter"),call.=FALSE)
+    if (inherits(pfp,'try-error')) {
+      stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
+           ": ",pfp,call.=FALSE)
     log.prior <- dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
     gnsi <- FALSE
   } else { ## has been computed previously
@@ -163,8 +164,9 @@ pmcmc.internal <- function (object, Nmcmc,
                                        ),
                       silent=FALSE
                       )
-      if (inherits(pfp.prop,'try-error'))
-        stop("pmcmc error: error in ",sQuote("pfilter"),call.=FALSE)
+      if (inherits(pfp.prop,'try-error')) {
+        stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
+             ": ",pfp.prop,call.=FALSE)
       gnsi <- FALSE
 
       ## PMCMC update rule (OK because proposal is symmetric)
