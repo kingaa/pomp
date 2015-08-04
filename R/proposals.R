@@ -63,8 +63,7 @@ mvn.rw.adaptive <- function (rw.sd, rw.var,
                              scale.cooling = 0.999,
                              shape.start = NA,
                              target = 0.234,
-                             max.scaling = 50,
-                             ...) {
+                             max.scaling = 50) {
   if (!xor(missing(rw.sd),missing(rw.var))) {
     stop(sQuote("mvn.rw.adaptive")," error: exactly one of ",
          sQuote("rw.sd")," and ",sQuote("rw.var"),

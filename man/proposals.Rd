@@ -12,7 +12,7 @@
   mvn.rw(rw.var, log = FALSE)
   mvn.diag.rw(rw.sd, log = FALSE)
   mvn.rw.adaptive(rw.sd, rw.var, scale.start = NA, scale.cooling = 0.999,
-                  shape.start = NA, target = 0.234, max.scaling = 50, \dots)
+                  shape.start = NA, target = 0.234, max.scaling = 50)
 }
 \arguments{
   \item{rw.var}{
