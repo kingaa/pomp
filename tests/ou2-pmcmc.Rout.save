@@ -139,7 +139,7 @@ Error in c(ff, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
 +             }),
 +             Nmcmc=1000,Np=500,verbose=FALSE,
 +             proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-+               size.start=100,shape.start=100))
++               scale.start=100,shape.start=100))
 > f8 <- continue(f8,Nmcmc=500,verbose=FALSE)
 > plot(f8)
 > require(coda)
@@ -147,37 +147,37 @@ Loading required package: coda
 > trace <- window(conv.rec(f8,c("alpha.2","alpha.3")),start=500)
 > rejectionRate(trace)
   alpha.2   alpha.3 
-0.9020979 0.9020979 
+0.9100899 0.9100899 
 > effectiveSize(trace)
  alpha.2  alpha.3 
-27.11484 21.93372 
+13.93905 45.84404 
 > autocorr.diag(trace)
-         alpha.2    alpha.3
-Lag 0  1.0000000 1.00000000
-Lag 1  0.9472532 0.93529850
-Lag 5  0.7753192 0.71724779
-Lag 10 0.6021192 0.55419107
-Lag 50 0.1903170 0.05719756
+         alpha.2   alpha.3
+Lag 0  1.0000000 1.0000000
+Lag 1  0.9216697 0.8633038
+Lag 5  0.7203876 0.4632027
+Lag 10 0.6370753 0.2740626
+Lag 50 0.3156442 0.2527065
 > trace <- window(trace,thin=50)
 > plot(trace)
 > heidel.diag(trace)
                                       
         Stationarity start     p-value
         test         iteration        
-alpha.2 passed       1         0.270  
-alpha.3 passed       1         0.517  
+alpha.2 passed       6         0.2099 
+alpha.3 passed       8         0.0776 
                                   
         Halfwidth Mean   Halfwidth
         test                      
-alpha.2 passed    -0.546 0.0211   
-alpha.3 passed     0.315 0.0177   
+alpha.2 passed    -0.558 0.0136   
+alpha.3 passed     0.264 0.0207   
 > geweke.diag(trace)
 
 Fraction in 1st window = 0.1
 Fraction in 2nd window = 0.5 
 
 alpha.2 alpha.3 
- 0.4931  2.1665 
+  2.774   2.240 
 
 > 
 > dev.off()
@@ -186,4 +186,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 97.695   0.025  97.833 
+140.696   0.053 140.955 

@@ -106,7 +106,7 @@ f8 <- pmcmc(
             }),
             Nmcmc=1000,Np=500,verbose=FALSE,
             proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-              size.start=100,shape.start=100))
+              scale.start=100,shape.start=100))
 f8 <- continue(f8,Nmcmc=500,verbose=FALSE)
 plot(f8)
 require(coda)
