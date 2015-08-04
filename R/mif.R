@@ -309,7 +309,7 @@ mif.internal <- function (object, Nmif,
                                 verbose=verbose,
                                 .getnativesymbolinfo=gnsi
                                 ),
-               silent=FALSE
+               silent=TRUE
                )
     if (inherits(pfp,"try-error"))
       stop("in ",sQuote("mif"),": error in ",sQuote("pfilter"),

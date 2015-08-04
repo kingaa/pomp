@@ -112,7 +112,7 @@ pmcmc.internal <- function (object, Nmcmc,
                                 verbose=FALSE,
                                 .getnativesymbolinfo=gnsi
                                 ),
-               silent=FALSE
+               silent=TRUE
                )
     if (inherits(pfp,'try-error'))
       stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
@@ -162,7 +162,7 @@ pmcmc.internal <- function (object, Nmcmc,
                                        verbose=FALSE,
                                        .getnativesymbolinfo=gnsi
                                        ),
-                      silent=FALSE
+                      silent=TRUE
                       )
       if (inherits(pfp.prop,'try-error'))
         stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
