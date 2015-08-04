@@ -191,7 +191,9 @@ pmcmc.internal <- function (object, Nmcmc,
     conv.rec[n+1,names(theta)] <- theta
     conv.rec[n+1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
 
-    if (verbose) cat("PMCMC iteration ",n," of ",Nmcmc," completed\n")
+    if (verbose) cat("PMCMC iteration",n+.ndone,"of",Nmcmc+.ndone,
+                     "completed\nacceptance ratio:",
+                     round(.accepts/(n+.ndone),3),"\n")
 
   }
 
