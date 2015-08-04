@@ -59,7 +59,10 @@ mvn.rw <- function (rw.var, log = FALSE) {
 
 ## a stateful function implementing an adaptive proposal
 mvn.rw.adaptive <- function (rw.sd, rw.var,
-                             memory = 100, target = 0.234,
+                             scale.start = NA,
+                             scale.cooling = 0.999,
+                             shape.start = NA,
+                             target = 0.234,
                              max.scaling = 50,
                              ...) {
   if (!xor(missing(rw.sd),missing(rw.var))) {
@@ -87,11 +90,18 @@ mvn.rw.adaptive <- function (rw.sd, rw.var,
     dimnames(rw.var) <- list(parnm,parnm)
   }
 
-  memory <- as.integer(memory) ## duration of memory
-  if (memory < 0) {
-    stop(sQuote("mvn.rw.adaptive")," error: ",
-         sQuote("memory")," must be a positive integer",call.=FALSE)
-  }
+  scale.start <- as.integer(scale.start)
+  scale.cooling <- as.numeric(scale.cooling)
+  shape.start <- as.integer(shape.start)
+  if (!is.na(scale.start) && (scale.start < 0))
+    stop("in ",sQuote("mvn.rw.adaptive"),": ",
+         sQuote("scale.start")," must be a positive integer",call.=FALSE)
+  if ((scale.cooling <= 0) || (scale.cooling > 1))
+    stop("in ",sQuote("mvn.rw.adaptive"),": ",
+         sQuote("scale.cooling")," must be in (0,1]",call.=FALSE)
+  if (!is.na(shape.start) && (shape.start < 0))
+    stop("in ",sQuote("mvn.rw.adaptive"),": ",
+         sQuote("shape.start")," must be a positive integer",call.=FALSE)
   target <- as.numeric(target) ## target acceptance ratio
   if (target <= 0 || target >= 1) {
     stop(sQuote("mvn.rw.adaptive")," error: ",
@@ -99,39 +109,40 @@ mvn.rw.adaptive <- function (rw.sd, rw.var,
   }
   
   ## variables that will follow 'f'
-  scaling <- 2
+  scaling <- 1
   theta.mean <- NULL
-  acc.ratio <- NA
-  naccept <- NA
+  covmat.emp <- array(data=0,dim=dim(rw.var),dimnames=dimnames(rw.var))
   
-  function (theta, .n, .traces, .accepts, verbose, ...) {
-    if (.n == 0) return(theta) ## to handle initial test run by pmcmc
-    if (.n >= memory) {    ## do adaptation
-      if (.n == memory) {  ## look at empirical mean and variance and acceptance ratio
-        theta.mean <<- colMeans(.traces[1:memory,parnm])
-        rw.var <<- var(.traces[1:memory,parnm])
-        acc.ratio <<- .accepts/.n
-      } else { ## update mean, variance, and acceptance ratio
-        theta.mean <<- ((memory-1)*theta.mean+theta[parnm])/memory
-        rw.var <<- ((memory-1)*rw.var+tcrossprod(theta[parnm]-theta.mean))/memory
-        acc.ratio <<- ((memory-1)*acc.ratio+(.accepts>naccept))/memory
-      }
-      ## store this just so we can see when the last move was an acceptance
-      naccept <<- .accepts 
-      ## adjustment to size of proposals
-      scaling <<- min(exp(acc.ratio-target),max.scaling)
-      rw.var <<- scaling^2*rw.var
-      if (verbose) cat("acceptance ratio = ",acc.ratio,"\n")
+  function (theta, .n, .accepts, verbose, ...) {
+    if (.n == 0) return(theta) ## handle initial test run by pmcmc
+    if (is.null(theta.mean)) theta.mean <<- theta[parnm]
+    if (!is.na(scale.start) && .n >= scale.start &&
+        (is.na(shape.start) || .accepts < shape.start)) {
+      ## adapt size of covmat until we get enough accepted jumps
+      scaling <<- min(scaling*exp(scale.cooling^(.n-scale.start)*
+                                  (.accepts/.n-target)),
+                      max.scaling)
+      covmat <- scaling^2*rw.var
+    } else if (!is.na(shape.start) && .accepts >= shape.start) {
+      scaling <<- 2.38^2/length(parnm)
+      covmat <- scaling*covmat.emp
+    } else {
+      covmat <- rw.var
     }
     if (verbose) {
       cat("proposal covariance matrix:\n")
-      print(rw.var)
+      print(covmat)
     }
-    ch <- try (chol(rw.var,pivot=TRUE))
+    if (!is.na(shape.start)) {
+      theta.mean <<- ((.n-1)*theta.mean+theta[parnm])/.n
+      covmat.emp <<- ((.n-1)*covmat.emp+tcrossprod(theta[parnm]-theta.mean))/.n
+    }
+    ch <- try(chol(covmat,pivot=TRUE))
     ## we should worry more about degeneracy than this:
     if (inherits(ch,"try-error")) stop("Choleski factorization problem")
-    if (verbose) cat("rank of proposal distribution ",attr(ch,"rank"),"\n")
-###    if (attr(ch,"rank")<length(parnm)) stop("degenerate proposal")
+    if (attr(ch,"rank")<length(parnm))
+      warning("in ",sQuote("mvn.rw.adaptive")," degenerate proposal",
+              call.=FALSE)
     oo <- order(attr(ch,"pivot"))
     Q <- ch[,oo]
     theta[parnm] <- theta[parnm]+rnorm(n=length(parnm),mean=0,sd=1)%*%Q

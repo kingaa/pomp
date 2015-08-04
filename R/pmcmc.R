@@ -140,8 +140,8 @@ pmcmc.internal <- function (object, Nmcmc,
 
   for (n in seq_len(Nmcmc)) { # main loop
 
-    theta.prop <- proposal(theta,.n=n+.ndone,.traces=conv.rec,
-                           .accepts=.accepts,verbose=verbose)
+    theta.prop <- proposal(theta,.n=n+.ndone,.accepts=.accepts,
+                           verbose=verbose)
 
     ## compute log prior
     log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,

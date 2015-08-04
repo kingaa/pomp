@@ -35,10 +35,9 @@ newly created object(s):
 +             Nmcmc=20,
 +             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
 +             Np=100,
-+             max.fail=100,
 +             verbose=FALSE
 +             )
-> f1 <- continue(f1,Nmcmc=20,max.fail=100)
+> f1 <- continue(f1,Nmcmc=20)
 > plot(f1)
 > 
 > ff <- pfilter(f1)
@@ -46,7 +45,6 @@ newly created object(s):
 +             ff,
 +             Nmcmc=20,
 +             rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-+             max.fail=100, 
 +             verbose=FALSE
 +             )
 Warning message:
@@ -67,10 +65,7 @@ Error in validObject(.Object) :
   invalid class "pmcmcList" object: error in 'c': to be combined, 'pmcmc' objects must have chains of equal length
 > 
 > if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
-+   f2a <- pmcmc(
-+                f1,Nmcmc=1000,Np=100,max.fail=100,
-+                verbose=FALSE
-+                )
++   f2a <- pmcmc(f1,Nmcmc=1000,Np=100,verbose=FALSE)
 +   plot(f2a)
 +   runs <- rle(as.numeric(conv.rec(f2a,'loglik')))$lengths
 +   plot(sort(runs))
@@ -87,10 +82,9 @@ Error in validObject(.Object) :
 +             Nmcmc=20,
 +             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
 +             Np=100,
-+             max.fail=100, 
 +             verbose=FALSE
 +             )
-> f6 <- continue(f5,Nmcmc=20,max.fail=100)
+> f6 <- continue(f5,Nmcmc=20)
 > plot(f6)
 > 
 > ff <- c(f4,f6)
@@ -131,7 +125,6 @@ Error in c(ff, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
 +             Nmcmc=30,
 +             proposal=mvn.rw(sig),
 +             Np=100,
-+             max.fail=100, 
 +             verbose=FALSE
 +             )
 > plot(f7)
@@ -139,10 +132,58 @@ Error in c(ff, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
           0           1           2           3           4 
 -3.00000000 -0.07848356  1.00259137  3.81840027  5.64324143 
 > 
+> f8 <- pmcmc(
++             pomp(ou2,dprior=function (params, log, ...) {
++               f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
++               if (log) f else exp(f)
++             }),
++             Nmcmc=1000,Np=500,verbose=FALSE,
++             proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
++               size.start=100,shape.start=100))
+> f8 <- continue(f8,Nmcmc=500,verbose=FALSE)
+> plot(f8)
+> require(coda)
+Loading required package: coda
+> trace <- window(conv.rec(f8,c("alpha.2","alpha.3")),start=500)
+> rejectionRate(trace)
+  alpha.2   alpha.3 
+0.9020979 0.9020979 
+> effectiveSize(trace)
+ alpha.2  alpha.3 
+27.11484 21.93372 
+> autocorr.diag(trace)
+         alpha.2    alpha.3
+Lag 0  1.0000000 1.00000000
+Lag 1  0.9472532 0.93529850
+Lag 5  0.7753192 0.71724779
+Lag 10 0.6021192 0.55419107
+Lag 50 0.1903170 0.05719756
+> trace <- window(trace,thin=50)
+> plot(trace)
+> heidel.diag(trace)
+                                      
+        Stationarity start     p-value
+        test         iteration        
+alpha.2 passed       1         0.270  
+alpha.3 passed       1         0.517  
+                                  
+        Halfwidth Mean   Halfwidth
+        test                      
+alpha.2 passed    -0.546 0.0211   
+alpha.3 passed     0.315 0.0177   
+> geweke.diag(trace)
+
+Fraction in 1st window = 0.1
+Fraction in 2nd window = 0.5 
+
+alpha.2 alpha.3 
+ 0.4931  2.1665 
+
+> 
 > dev.off()
 null device 
           1 
 > 
 > proc.time()
    user  system elapsed 
- 27.557   0.056  28.197 
+ 97.695   0.025  97.833 

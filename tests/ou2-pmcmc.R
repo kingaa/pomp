@@ -100,14 +100,23 @@ plot(f7)
 filter.traj(f7,"x1")[1,30,1:5]
 
 f8 <- pmcmc(
-            pomp(ou2,dprior=dprior.ou2),
-            Nmcmc=1000,
+            pomp(ou2,dprior=function (params, log, ...) {
+              f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+              if (log) f else exp(f)
+            }),
+            Nmcmc=1000,Np=500,verbose=FALSE,
             proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-              memory=200),
-            Np=500,
-            verbose=TRUE
-            )
-f8 <- continue(f8,Nmcmc=4000,verbose=TRUE)
+              size.start=100,shape.start=100))
+f8 <- continue(f8,Nmcmc=500,verbose=FALSE)
 plot(f8)
+require(coda)
+trace <- window(conv.rec(f8,c("alpha.2","alpha.3")),start=500)
+rejectionRate(trace)
+effectiveSize(trace)
+autocorr.diag(trace)
+trace <- window(trace,thin=50)
+plot(trace)
+heidel.diag(trace)
+geweke.diag(trace)
 
 dev.off()
