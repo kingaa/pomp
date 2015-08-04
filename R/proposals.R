@@ -8,13 +8,13 @@ mvn.diag.rw <- function (rw.sd, log = FALSE) {
   if (is.null(parnm))
     stop(sQuote("rw.sd")," must have names")
   if (log) {
-    function (theta) {
+    function (theta, ...) {
       theta[parnm] <- rlnorm(n=n,meanlog=log(theta[parnm]),
                              sdlog=rw.sd)
       theta
     }
   } else {
-    function (theta) {
+    function (theta, ...) {
       theta[parnm] <- rnorm(n=n,mean=theta[parnm],sd=rw.sd)
       theta
     }
@@ -43,12 +43,12 @@ mvn.rw <- function (rw.var, log = FALSE) {
   e$n <- ncol(rw.var)
   e$parnm <- parnm
   if (log) {
-    f <- function (theta) {
+    f <- function (theta, ...) {
       theta[parnm] <- theta[parnm]*exp(rnorm(n=n,mean=0,sd=1)%*%Q)
       theta
     }
   } else {
-    f <- function (theta) {
+    f <- function (theta, ...) {
       theta[parnm] <- theta[parnm]+rnorm(n=n,mean=0,sd=1)%*%Q
       theta
     }
