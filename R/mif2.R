@@ -97,7 +97,8 @@ mif2.pfilter <- function (object, params, Np,
              silent=FALSE
              )
     if (inherits(X,'try-error'))
-      stop(sQuote("mif2.pfilter")," error: process simulation error")
+      stop("in ",sQuote("mif2.pfilter"),": process simulation error:",
+           X,call.=FALSE)
 
     ## determine the weights
     weights <- try(
@@ -113,7 +114,8 @@ mif2.pfilter <- function (object, params, Np,
                    silent=FALSE
                    )
     if (inherits(weights,'try-error'))
-      stop(sQuote("mif2.pfilter")," error: error in calculation of weights",call.=FALSE)
+      stop("in ",sQuote("mif2.pfilter"),": error in calculation of weights: ",
+           weights,call.=FALSE)
     if (!all(is.finite(weights)))
       stop(sQuote("mif2.pfilter")," error: ",sQuote("dmeasure"),
            " returns non-finite value",call.=FALSE)
@@ -144,7 +146,8 @@ mif2.pfilter <- function (object, params, Np,
               silent=FALSE
               )
     if (inherits(xx,'try-error')) {
-      stop(sQuote("mif2.pfilter")," error",call.=FALSE)
+      stop("in ",sQuote("mif2.pfilter"),": pfilter computation error: ",
+           xx,call.=FALSE)
     }
     all.fail <- xx$fail
     loglik[nt] <- xx$loglik
@@ -248,7 +251,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                silent=FALSE
                )
     if (inherits(pfp,"try-error"))
-      stop("mif2 particle-filter error")
+      stop("in ",sQuote("mif2"),": particle-filter error:",pfp,call.=FALSE)
 
     gnsi <- FALSE
 

@@ -312,7 +312,8 @@ mif.internal <- function (object, Nmif,
                silent=FALSE
                )
     if (inherits(pfp,"try-error"))
-      stop("mif error: error in ",sQuote("pfilter"),call.=FALSE)
+      stop("in ",sQuote("mif"),": error in ",sQuote("pfilter"),
+           ": ",pfp,call.=FALSE)
 
     gnsi <- FALSE
 
