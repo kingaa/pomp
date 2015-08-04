@@ -9,8 +9,8 @@
   Functions to construct proposal distributions for use with MCMC methods.
 }
 \usage{
-  mvn.rw(rw.var, log = FALSE)
-  mvn.diag.rw(rw.sd, log = FALSE)
+  mvn.rw(rw.var)
+  mvn.diag.rw(rw.sd)
   mvn.rw.adaptive(rw.sd, rw.var, scale.start = NA, scale.cooling = 0.999,
                   shape.start = NA, target = 0.234, max.scaling = 50)
 }
@@ -22,9 +22,6 @@
   \item{rw.sd}{
     named numeric vector;
     random-walk SDs for a multivariate normal random-walk proposal with diagonal variance-covariance matrix.
-  }
-  \item{log}{
-    logical; if \code{TRUE}, a log-normal proposal distribution is used.
   }
   \item{scale.start, scale.cooling, shape.start, target, max.scaling}{
     parameters to control the proposal adaptation algorithm.

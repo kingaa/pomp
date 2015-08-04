@@ -1,4 +1,4 @@
-mvn.diag.rw <- function (rw.sd, log = FALSE) {
+mvn.diag.rw <- function (rw.sd) {
   if (!is.numeric(rw.sd)) {
     stop(sQuote("rw.sd")," must be a named numeric vector")
   }
@@ -7,22 +7,13 @@ mvn.diag.rw <- function (rw.sd, log = FALSE) {
   n <- length(rw.sd)
   if (is.null(parnm))
     stop(sQuote("rw.sd")," must have names")
-  if (log) {
-    function (theta, ...) {
-      theta[parnm] <- rlnorm(n=n,meanlog=log(theta[parnm]),
-                             sdlog=rw.sd)
-      theta
-    }
-  } else {
-    function (theta, ...) {
-      theta[parnm] <- rnorm(n=n,mean=theta[parnm],sd=rw.sd)
-      theta
-    }
+  function (theta, ...) {
+    theta[parnm] <- rnorm(n=n,mean=theta[parnm],sd=rw.sd)
+    theta
   }
 }
 
-mvn.rw <- function (rw.var, log = FALSE) {
-  log <- as.logical(log)
+mvn.rw <- function (rw.var) {
   rw.var <- as.matrix(rw.var)
   parnm <- colnames(rw.var)
   if (is.null(parnm))
@@ -42,16 +33,9 @@ mvn.rw <- function (rw.var, log = FALSE) {
   e$Q <- ch[,oo]
   e$n <- ncol(rw.var)
   e$parnm <- parnm
-  if (log) {
-    f <- function (theta, ...) {
-      theta[parnm] <- theta[parnm]*exp(rnorm(n=n,mean=0,sd=1)%*%Q)
-      theta
-    }
-  } else {
-    f <- function (theta, ...) {
-      theta[parnm] <- theta[parnm]+rnorm(n=n,mean=0,sd=1)%*%Q
-      theta
-    }
+  f <- function (theta, ...) {
+    theta[parnm] <- theta[parnm]+rnorm(n=n,mean=0,sd=1)%*%Q
+    theta
   }
   environment(f) <- e
   f
