@@ -5,6 +5,7 @@ setClass(
          slots=c(
            pars = 'character',
            Nmcmc = 'integer',
+           accepts = 'integer',
            proposal = 'function',
            conv.rec = 'array',
            log.prior = 'numeric'
@@ -12,6 +13,7 @@ setClass(
          prototype=prototype(
            pars = character(0),
            Nmcmc = 0L,
+           accepts = 0L,
            proposal = function (...) stop("proposal not specified"),
            conv.rec=array(dim=c(0,0)),
            log.prior=numeric(0)
@@ -23,6 +25,7 @@ pmcmc.internal <- function (object, Nmcmc,
                             Np, tol, max.fail,
                             verbose,
                             .ndone = 0L,
+                            .accepts = 0L,
                             .prev.pfp = NULL, .prev.log.prior = NULL,
                             .getnativesymbolinfo = TRUE) {
 
@@ -30,7 +33,8 @@ pmcmc.internal <- function (object, Nmcmc,
   gnsi <- as.logical(.getnativesymbolinfo)
   verbose <- as.logical(verbose)
   .ndone <- as.integer(.ndone)
-
+  .accepts <- as.integer(.accepts)
+  
   pompLoad(object)
 
   if (missing(start))
@@ -112,7 +116,7 @@ pmcmc.internal <- function (object, Nmcmc,
                                 verbose=FALSE,
                                 .getnativesymbolinfo=gnsi
                                 ),
-               silent=FALSE
+               silent=TRUE
                )
     if (inherits(pfp,'try-error'))
       stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
@@ -134,12 +138,10 @@ pmcmc.internal <- function (object, Nmcmc,
                     list(as.character(seq_len(Nmcmc))))
                   )
 
-  accepts <- 0
-
-  for (n in seq_len(Nmcmc)) { # main loop
+  for (n in .ndone+seq_len(Nmcmc)) { # main loop
 
     theta.prop <- proposal(theta,.n=n,.traces=conv.rec,
-                           .accepts=accepts)
+                           .accepts=.accepts,verbose=verbose)
 
     ## compute log prior
     log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,
@@ -165,7 +167,7 @@ pmcmc.internal <- function (object, Nmcmc,
                                        verbose=FALSE,
                                        .getnativesymbolinfo=gnsi
                                        ),
-                      silent=FALSE
+                      silent=TRUE
                       )
       if (inherits(pfp.prop,'try-error'))
         stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
@@ -178,7 +180,7 @@ pmcmc.internal <- function (object, Nmcmc,
         pfp <- pfp.prop
         theta <- theta.prop
         log.prior <- log.prior.prop
-        accepts <- accepts+1
+        .accepts <- .accepts+1
       }
     }
 
@@ -312,12 +314,14 @@ setMethod(
           function (object, Nmcmc = 1, ...) {
 
             ndone <- object@Nmcmc
+            accepts <- object@accepts
 
             obj <- pmcmc(
                          object=object,
                          Nmcmc=Nmcmc,
                          ...,
                          .ndone=ndone,
+                         .accepts=accepts,
                          .prev.pfp=as(object,"pfilterd.pomp"),
                          .prev.log.prior=object@log.prior
                          )

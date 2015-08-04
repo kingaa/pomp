@@ -99,16 +99,15 @@ f7 <- pmcmc(
 plot(f7)
 filter.traj(f7,"x1")[1,30,1:5]
 
-mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01)) -> f
-
 f8 <- pmcmc(
             pomp(ou2,dprior=dprior.ou2),
-            Nmcmc=5000,
-##            proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.001,alpha.3=0.001)),
-            proposal=f,
+            Nmcmc=1000,
+            proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+              memory=200),
             Np=500,
-            verbose=FALSE
+            verbose=TRUE
             )
+f8 <- continue(f8,Nmcmc=4000,verbose=TRUE)
 plot(f8)
 
 dev.off()

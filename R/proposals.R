@@ -60,6 +60,7 @@ mvn.rw <- function (rw.var, log = FALSE) {
 ## a stateful function implementing an adaptive proposal
 mvn.rw.adaptive <- function (rw.sd, rw.var,
                              memory = 100, target = 0.234,
+                             max.scaling = 50,
                              ...) {
   if (!xor(missing(rw.sd),missing(rw.var))) {
     stop(sQuote("mvn.rw.adaptive")," error: exactly one of ",
@@ -97,47 +98,43 @@ mvn.rw.adaptive <- function (rw.sd, rw.var,
          sQuote("target")," must be a number in (0,1)",call.=FALSE)
   }
   
-  ## create environment to hold state of proposal distribution
-  e <- new.env()
-  e$covmat <- rw.var
-  e$memory <- memory
-  e$parnm <- parnm
-  e$target <- target
-  e$scaling <- 2
-  e$theta.mean <- NULL
-  e$acc.ratio <- NA
-  e$naccept <- NA
+  ## variables that will follow 'f'
+  scaling <- 2
+  theta.mean <- NULL
+  acc.ratio <- NA
+  naccept <- NA
   
-  f <- function (theta, .n, .traces, .accepts, ...) {
-    if (.n == 0) return(theta) ## to handle initial test that pmcmc runs
+  function (theta, .n, .traces, .accepts, verbose, ...) {
+    if (.n == 0) return(theta) ## to handle initial test run by pmcmc
     if (.n >= memory) {    ## do adaptation
       if (.n == memory) {  ## look at empirical mean and variance and acceptance ratio
-        assign(theta.mean <<- colMeans(.traces[1:memory,parnm])
-        covmat <<- var(.traces[1:memory,parnm])
+        theta.mean <<- colMeans(.traces[1:memory,parnm])
+        rw.var <<- var(.traces[1:memory,parnm])
         acc.ratio <<- .accepts/.n
       } else { ## update mean, variance, and acceptance ratio
         theta.mean <<- ((memory-1)*theta.mean+theta[parnm])/memory
-        covmat <<- ((memory-1)*covmat+tcrossprod(theta[parnm]-theta.mean))/memory
+        rw.var <<- ((memory-1)*rw.var+tcrossprod(theta[parnm]-theta.mean))/memory
         acc.ratio <<- ((memory-1)*acc.ratio+(.accepts>naccept))/memory
       }
-      naccept <<- .accepts # store this so we can see when we have an acceptance
-      scaling <<- min(exp(acc.ratio-target),50) # adjustment to size of proposals
-      covmat <<- scaling^2*covmat
+      ## store this just so we can see when the last move was an acceptance
+      naccept <<- .accepts 
+      ## adjustment to size of proposals
+      scaling <<- min(exp(acc.ratio-target),max.scaling)
+      rw.var <<- scaling^2*rw.var
+      if (verbose) cat("acceptance ratio = ",acc.ratio,"\n")
     }
     if (verbose) {
       cat("proposal covariance matrix:\n")
-      print(covmat)
+      print(rw.var)
     }
-    ch <- try (chol(covmat,pivot=TRUE))
+    ch <- try (chol(rw.var,pivot=TRUE))
     ## we should worry more about degeneracy than this:
     if (inherits(ch,"try-error")) stop("Choleski factorization problem")
-    if (attr(ch,"rank")<length(parnm)) stop("degenerate proposal")
+    if (verbose) cat("rank of proposal distribution ",attr(ch,"rank"),"\n")
+###    if (attr(ch,"rank")<length(parnm)) stop("degenerate proposal")
     oo <- order(attr(ch,"pivot"))
     Q <- ch[,oo]
     theta[parnm] <- theta[parnm]+rnorm(n=length(parnm),mean=0,sd=1)%*%Q
     theta
   }
-
-  environment(f) <- e
-  f
 }
