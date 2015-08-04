@@ -94,7 +94,7 @@ mif2.pfilter <- function (object, params, Np,
                       offset=1,
                       .getnativesymbolinfo=gnsi
                       ),
-             silent=FALSE
+             silent=TRUE
              )
     if (inherits(X,'try-error'))
       stop("in ",sQuote("mif2.pfilter"),": process simulation error:",
@@ -111,7 +111,7 @@ mif2.pfilter <- function (object, params, Np,
                             log=FALSE,
                             .getnativesymbolinfo=gnsi
                             ),
-                   silent=FALSE
+                   silent=TRUE
                    )
     if (inherits(weights,'try-error'))
       stop("in ",sQuote("mif2.pfilter"),": error in calculation of weights: ",
@@ -143,7 +143,7 @@ mif2.pfilter <- function (object, params, Np,
                     weights=weights,
                     tol=tol
                     ),
-              silent=FALSE
+              silent=TRUE
               )
     if (inherits(xx,'try-error')) {
       stop("in ",sQuote("mif2.pfilter"),": pfilter computation error: ",
@@ -248,7 +248,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                             transform=transform,
                             .getnativesymbolinfo=gnsi
                             ),
-               silent=FALSE
+               silent=TRUE
                )
     if (inherits(pfp,"try-error"))
       stop("in ",sQuote("mif2"),": particle-filter error:",pfp,call.=FALSE)
