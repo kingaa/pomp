@@ -138,9 +138,9 @@ pmcmc.internal <- function (object, Nmcmc,
                     list(as.character(seq_len(Nmcmc))))
                   )
 
-  for (n in .ndone+seq_len(Nmcmc)) { # main loop
+  for (n in seq_len(Nmcmc)) { # main loop
 
-    theta.prop <- proposal(theta,.n=n,.traces=conv.rec,
+    theta.prop <- proposal(theta,.n=n+.ndone,.traces=conv.rec,
                            .accepts=.accepts,verbose=verbose)
 
     ## compute log prior
@@ -180,7 +180,7 @@ pmcmc.internal <- function (object, Nmcmc,
         pfp <- pfp.prop
         theta <- theta.prop
         log.prior <- log.prior.prop
-        .accepts <- .accepts+1
+        .accepts <- .accepts+1L
       }
     }
 
@@ -206,6 +206,7 @@ pmcmc.internal <- function (object, Nmcmc,
       params=theta,
       pars=pars,
       Nmcmc=Nmcmc,
+      accepts=.accepts,
       proposal=proposal,
       Np=Np,
       tol=tol,
@@ -331,6 +332,7 @@ setMethod(
                                   obj@conv.rec[-1,]
                                   )
             names(dimnames(obj@conv.rec)) <- c("iteration","variable")
+            obj@accepts <- accepts+obj@accepts
             ft <- array(dim=replace(dim(obj@filter.traj),2L,ndone+Nmcmc),
                         dimnames=replace(dimnames(obj@filter.traj),2L,
                           list(seq_len(ndone+Nmcmc))))
