@@ -114,7 +114,7 @@ pmcmc.internal <- function (object, Nmcmc,
                                 ),
                silent=FALSE
                )
-    if (inherits(pfp,'try-error')) {
+    if (inherits(pfp,'try-error'))
       stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
            ": ",pfp,call.=FALSE)
     log.prior <- dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
@@ -126,7 +126,7 @@ pmcmc.internal <- function (object, Nmcmc,
   }
   conv.rec[1,names(theta)] <- theta
   conv.rec[1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
-
+  
   filt.t <- array(
                   data=0,
                   dim=replace(dim(pfp@filter.traj),2L,Nmcmc),
@@ -143,7 +143,7 @@ pmcmc.internal <- function (object, Nmcmc,
                              .getnativesymbolinfo=gnsi)
 
     if (is.finite(log.prior.prop)) {
-    
+      
       ## run the particle filter on the proposed new parameter values
       pfp.prop <- try(
                       pfilter.internal(
@@ -164,7 +164,7 @@ pmcmc.internal <- function (object, Nmcmc,
                                        ),
                       silent=FALSE
                       )
-      if (inherits(pfp.prop,'try-error')) {
+      if (inherits(pfp.prop,'try-error'))
         stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
              ": ",pfp.prop,call.=FALSE)
       gnsi <- FALSE
