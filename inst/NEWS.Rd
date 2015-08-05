@@ -2,7 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 0.77-1}{
   \itemize{
-    \item The MCMC proposal distributions \code{mvn.rw} and \code{mvn.rw.diag} now support a lognormal proposal, which is useful when parameters are constrained to be positive.
+    \item There is a new, adaptive MCMC proposal function, \code{mvn.rw.adaptive} that can be used in \code{pmcmc}. 
   }
 }
 \section{Changes in \pkg{pomp} version 0.76-2}{
