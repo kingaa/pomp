@@ -1,10 +1,9 @@
 ### pomp to-do list
 
 - easier interface for lists of probes in 'probe'
+- support for asymmetric MCMC proposals
 - documentation on 'mifList', 'pmcmcList', etc.
 - 'initializer' -> 'rinit' and perhaps 'dinit'
-- 'proposal' -> 'rproposal' and 'dproposal' ?
-- documentation: "regular parameters" instead of "non-IVP"
 - objective function for spectrum matching
 - one-point SCQL function for possible use in fitting initial conditions
 - save particle filtering variance?
@@ -21,5 +20,3 @@
 - plugin for compartmental models
 - adaptive particle numbers in pfilter (?)
 - parallel 'pfilter' algorithm (?)
-- 'transform' argument for pmcmc?
-    this leads to problems with the prior (?)

@@ -70,7 +70,7 @@
   \item{ivps}{
     optional character vector naming the initial-value parameters (IVPs) to be estimated.
     Every parameter named in \code{ivps} must have a positive random-walk standard deviation specified in \code{rw.sd}.
-    If there are no non-IVP parameters with positive \code{rw.sd}, i.e., only IVPs are to be estimated, see below \dQuote{"Using \code{mif} to estimate initial-value parameters only"}.
+    If there are no regular parameters with positive \code{rw.sd}, i.e., only IVPs are to be estimated, see below \dQuote{"Using \code{mif} to estimate initial-value parameters only"}.
   }
   \item{particles}{
     Function of prototype \code{particles(Np,center,sd,...)} which sets up the starting particle matrix by drawing a sample of size \code{Np} from the starting particle distribution centered at \code{center} and of width \code{sd}.
@@ -150,6 +150,11 @@
 }
 \section{IF2}{
   A more full-featured version of the improved iterated filtering algorithm (IF2) is implemented as \code{\link{mif2}}.
+}
+\section{Regular parameters vs initial-value parameters}{
+  Initial-value parameters (IVPs) differ from regular parameters in that the majority of the information about these parameters is restricted to the early part of the time series.
+  That is, increasing the length of the time series provides progressively less additional information about IVPs than it does about regular parameters.
+  In \code{mif}, while regular parameters are perturbed at the initial time and after every observation, IVPs are perturbed only at the initial time.
 }
 \section{Re-running \code{mif} Iterations}{
   To re-run a sequence of \code{mif} iterations, one can use the \code{mif} method on a \code{mif} object.
