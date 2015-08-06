@@ -7,6 +7,53 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 0.77-1</h3>
+
+
+<ul>
+<li><p> The deprecated <code>transform.params</code> argument from <code>nlf</code> has been removed.
+</p>
+</li>
+<li><p> The deprecated <code>pars</code> and <code>rw.sd</code> arguments from <code>abc</code> and <code>pmcmc</code> have been removed.
+</p>
+</li>
+<li><p> The deprecated <code>data.array</code> method has been removed.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 0.76-2</h3>
+
+
+<ul>
+<li><p> The default value of <code>max.fail</code> for <code>pmcmc</code> is now <code>Inf</code>.
+That is, by default <code>pmcmc</code> will not halt (but will issue a warning) when filtering failure occurs (i.e., no particles are consistent with the data, as defined by the likelihood threshold <code>tol</code>).
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 0.76-1</h3>
+
+
+<ul>
+<li> <p><code>logmeanexp</code> has used a delta-method estimate of the variance in <i>log(mean(exp(x)))</i> when <code>se = TRUE</code>.
+This gave misleadingly small values when the variance in <i>exp(x)</i> was large.
+The new <code>logmeanexp</code> uses a jackknife estimate of the variance.
+This is still conservative, in that it is biased upwards, but is more robust.
+</p>
+</li>
+<li> <p><span class="pkg">pomp</span> now includes <span class="pkg">magrittr</span>, <span class="pkg">plyr</span>, <span class="pkg">reshape2</span>, <span class="pkg">ggplot2</span>, and <span class="pkg">knitr</span> in its <code>Suggests</code> field:
+these packages are available for use in <code>pompExample</code>s and package tests.
+</p>
+</li>
+<li><p> There is now a <code>coef</code> method for <code>mifList</code> and <code>mif2List</code> objects.
+</p>
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 0.75-1</h3>
 
 
@@ -114,7 +161,7 @@ One can override this behavior by setting the global <code>pomp.cache</code> opt
 
 
 <ul>
-<li><p> A 'pomp' object's initializer can now be specified as a Csnippet.
+<li><p> A <code>pomp</code> object's initializer can now be specified as a Csnippet.
 </p>
 </li>
 <li><p> The default initializer is now considerably faster.
@@ -1107,7 +1154,7 @@ Rownames are not strictly required for the <code>data</code> slot.
 </li>
 <li><p> The <code>sannbox</code> algorithm now should work even when the objective function throws a non-finite value.
 The behavior now is to replace non-finite values with a large number.
-This behavior follows that of the 'SANN' method in <code>optim</code>.
+This behavior follows that of the <code>SANN</code> method in <code>optim</code>.
 </p>
 </li></ul>
 
@@ -1134,7 +1181,7 @@ Thanks to Micaela Martinez-Bakker for catching this.
 
 
 <ul>
-<li><p> When <code>po</code> is a <code>pomp</code>-class object with covariates, <code>as.data.frame(po)</code> and <code>as(po,"data.frame")</code> now contain columns for the covariates. 
+<li><p> When <code>po</code> is a <code>pomp</code>-class object with covariates, <code>as.data.frame(po)</code> and <code>as(po,"data.frame")</code> now contain columns for the covariates.
 The latter are interpolated, if necessary, at the observation times.
 </p>
 </li>
@@ -1257,11 +1304,11 @@ The <code>Np</code> argument may be specified as a single number as before, or n
 Specify a discrete-time skeleton using <code>skeleton.type="map"</code> and a continuous-time skeleton via <code>skeleton.type="vectorfield"</code>.
 </p>
 </li>
-<li> <p><code>pomp</code> is now a generic function.  
+<li> <p><code>pomp</code> is now a generic function.
 Calling it on a <code>pomp</code> object copies the object; one can optionally modify some of the slots.
 </p>
 </li>
-<li><p> Two new files &lsquo;<span class="file">gompertz.R</span>&rsquo; and &lsquo;<span class="file">gompertz.c</span>&rsquo; are in the &lsquo;<span class="file">examples</span>&rsquo; directory.  
+<li><p> Two new files &lsquo;<span class="file">gompertz.R</span>&rsquo; and &lsquo;<span class="file">gompertz.c</span>&rsquo; are in the &lsquo;<span class="file">examples</span>&rsquo; directory.
 These contain codes needed to reproduce the Gompertz example in the &ldquo;intro_to_pomp&rdquo; vignette.
 </p>
 </li>
@@ -1406,7 +1453,7 @@ There is a new argument, <code>t0</code>, which specifies the time at which the 
 The default for <code>t0</code> is <code>timezero(object)</code>.
 The default for <code>times</code> is now <code>time(object,t0=FALSE)</code> (it was <code>time(object,t0=TRUE)</code>).
 This change eliminates an infelicity in which <code>simulate</code> and <code>trajectory</code> returned undesired values at the initial time.
-Users can ensure that their codes will continue to function as intended by specifying the values of the <code>times</code> and <code>t0</code> arguments to these functions, thus removing dependence on the defaults. 
+Users can ensure that their codes will continue to function as intended by specifying the values of the <code>times</code> and <code>t0</code> arguments to these functions, thus removing dependence on the defaults.
 To aid users in  modifying their codes, a warning is now displayed whenever a potentially affected call is made.
 These warnings will be removed in a future release.
 See the documentation (<code>pomp?simulate</code>, <code>pomp?trajectory</code>) for a description of the new default behaviors.
@@ -1423,7 +1470,7 @@ This is a change from the earlier behavior in which the <code>states</code> slot
 It is synonymous with <code>data.array</code>.
 </p>
 </li>
-<li><p> A banner is now displayed on package attachment.  
+<li><p> A banner is now displayed on package attachment.
 </p>
 </li>
 <li> <p><code>coef&lt;-</code> now behaves like ordinary vector assignment.
@@ -1435,7 +1482,7 @@ It is synonymous with <code>data.array</code>.
 <li> <p><code>probe.cov</code> and <code>probe.cor</code> have been removed in favor of <code>probe.acf</code> and <code>probe.ccf</code>.
 </p>
 </li>
-<li><p> The functions <code>euler.simulate</code>, <code>onestep.simulate</code>, and <code>onestep.density</code>, deprecated since version 0.29-1, have been removed.  
+<li><p> The functions <code>euler.simulate</code>, <code>onestep.simulate</code>, and <code>onestep.density</code>, deprecated since version 0.29-1, have been removed.
 </p>
 </li></ul>
 
@@ -1534,7 +1581,7 @@ These are functions that write the <code>rprocess</code> and <code>dprocess</cod
 <li><p> Several example pomps are now loadable via the <code>data()</code> command.
 </p>
 </li>
-<li><p> There are changes in the C interface to measurement models that are NOT BACKWARD COMPATIBLE.  
+<li><p> There are changes in the C interface to measurement models that are NOT BACKWARD COMPATIBLE.
 Existing user measurement model codes will need to be modified, but these changes are minor.
 </p>
 </li>
@@ -1649,7 +1696,7 @@ It is now slightly more straightforward to set up a <code>struct lookup_table</c
 See the examples (&lsquo;<span class="file">include/examples</span>&rsquo;).
 </p>
 </li>
-<li><p> Added &lsquo;<span class="file">logistic.R</span>&rsquo; to the &lsquo;<span class="file">tests</span>&rsquo; directory.  
+<li><p> Added &lsquo;<span class="file">logistic.R</span>&rsquo; to the &lsquo;<span class="file">tests</span>&rsquo; directory.
 This is a one-variable stochastic differential equation simulated using Euler-Maruyama.
 </p>
 </li>
