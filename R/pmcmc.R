@@ -198,7 +198,7 @@ pmcmc.internal <- function (object, Nmcmc,
   }
 
   pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
-  pars <- names(pars[pars])
+  pars <- setdiff(names(pars[pars]),c("loglik","log.prior","nfail"))
 
   pompUnload(object)
 

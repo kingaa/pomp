@@ -105,17 +105,17 @@ f8 <- pmcmc(
               f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
               if (log) f else exp(f)
             }),
-            Nmcmc=1000,Np=500,verbose=FALSE,
+            Nmcmc=500,Np=500,verbose=FALSE,
             proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-              scale.start=100,shape.start=100))
-f8 <- continue(f8,Nmcmc=500,verbose=FALSE)
+              scale.start=50,shape.start=50))
+f8 <- continue(f8,Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
 plot(f8)
 require(coda)
 trace <- window(conv.rec(f8,c("alpha.2","alpha.3")),start=500)
 rejectionRate(trace)
 effectiveSize(trace)
 autocorr.diag(trace)
-trace <- window(trace,thin=50)
+trace <- window(trace,thin=5)
 plot(trace)
 heidel.diag(trace)
 geweke.diag(trace)

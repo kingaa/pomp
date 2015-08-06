@@ -1,7 +1,7 @@
 
-R version 3.2.1 (2015-06-18) -- "World-Famous Astronaut"
+R Under development (unstable) (2015-08-05 r68847) -- "Unsuffered Consequences"
 Copyright (C) 2015 The R Foundation for Statistical Computing
-Platform: x86_64-unknown-linux-gnu (64-bit)
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -136,47 +136,49 @@ Error in c(ff, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
 +               f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
 +               if (log) f else exp(f)
 +             }),
-+             Nmcmc=1000,Np=500,verbose=FALSE,
++             Nmcmc=500,Np=500,verbose=FALSE,
 +             proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-+               scale.start=100,shape.start=100))
-> f8 <- continue(f8,Nmcmc=500,verbose=FALSE)
++               scale.start=50,shape.start=50))
+Warning message:
+1 filtering failure occurred in 'pfilter' 
+> f8 <- continue(f8,Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
 > plot(f8)
 > require(coda)
 Loading required package: coda
 > trace <- window(conv.rec(f8,c("alpha.2","alpha.3")),start=500)
 > rejectionRate(trace)
   alpha.2   alpha.3 
-0.9100899 0.9100899 
+0.8902196 0.8902196 
 > effectiveSize(trace)
  alpha.2  alpha.3 
-13.93905 45.84404 
+11.94706 25.81551 
 > autocorr.diag(trace)
-         alpha.2   alpha.3
-Lag 0  1.0000000 1.0000000
-Lag 1  0.9216697 0.8633038
-Lag 5  0.7203876 0.4632027
-Lag 10 0.6370753 0.2740626
-Lag 50 0.3156442 0.2527065
-> trace <- window(trace,thin=50)
+          alpha.2   alpha.3
+Lag 0  1.00000000 1.0000000
+Lag 1  0.95341777 0.9019938
+Lag 5  0.77683987 0.6235047
+Lag 10 0.58321322 0.3463772
+Lag 50 0.07735154 0.2017194
+> trace <- window(trace,thin=5)
 > plot(trace)
 > heidel.diag(trace)
                                       
         Stationarity start     p-value
         test         iteration        
-alpha.2 passed       6         0.2099 
-alpha.3 passed       8         0.0776 
+alpha.2 passed       12        0.814  
+alpha.3 passed        1        0.119  
                                   
         Halfwidth Mean   Halfwidth
         test                      
-alpha.2 passed    -0.558 0.0136   
-alpha.3 passed     0.264 0.0207   
+alpha.2 passed    -0.529 0.0252   
+alpha.3 passed     0.271 0.0186   
 > geweke.diag(trace)
 
 Fraction in 1st window = 0.1
 Fraction in 2nd window = 0.5 
 
 alpha.2 alpha.3 
-  2.774   2.240 
+ -5.948  -3.239 
 
 > 
 > dev.off()
@@ -185,4 +187,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 30.425   0.040  30.482 
+ 66.084   0.040  66.601 

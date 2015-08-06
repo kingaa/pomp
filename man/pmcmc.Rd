@@ -23,6 +23,10 @@
 \alias{plot-pmcmcList}
 \alias{plot,pmcmcList-method}
 \alias{pmcmcList-class}
+\alias{covmat,pmcmc-method}
+\alias{covmat-pmcmc}
+\alias{covmat,pmcmcList-method}
+\alias{covmat-pmcmcList}
 \alias{c-pmcmc}
 \alias{c,pmcmc-method}
 \alias{c-pmcmcList}
@@ -114,7 +118,47 @@
     \item{c}{
       Concatenates \code{pmcmc} objects into a \code{pmcmcList}.
     }
+    \item{covmat}{
+      \code{covmat(object, start, thin, expand)} computes the empirical covariance matrix of the MCMC samples beginning with iteration \code{start} and thinning by factor \code{thin}.
+      It expands this by a factor \code{expand^2/n}, where \code{n} is the number of parameters estimated.
+      By default, \code{expand=2.38}.
+      The intention is that the resulting matrix is a suitable input to the proposal function \code{\link{mvn.rw}}.
+    }
   }
+}
+\examples{
+\dontrun{
+library(pomp)
+
+pompExample(ou2)
+
+pmcmc(
+      pomp(ou2,dprior=Csnippet("
+   lik = dnorm(alpha_2,-0.5,1,1) + dnorm(alpha_3,0.3,1,1);
+   lik = (give_log) ? lik : exp(lik);"),
+           paramnames=c("alpha.2","alpha.3")),
+      Nmcmc=2000,Np=500,verbose=TRUE,
+      proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+        scale.start=200,shape.start=100)) -> chain
+continue(chain,Nmcmc=2000,proposal=mvn.rw(covmat(chain))) -> chain
+plot(chain)
+chain <- pmcmc(chain)
+plot(chain)
+
+require(coda)
+trace <- window(conv.rec(chain,c("alpha.2","alpha.3")),start=2000)
+rejectionRate(trace)
+effectiveSize(trace)
+autocorr.diag(trace)
+
+plot(trace)
+heidel.diag(trace)
+geweke.diag(trace)
+}
+}
+\seealso{
+  \code{\link{pomp}}, \code{\link{pfilter}}, \link{MCMC proposal distributions},
+  and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
 }
 \references{
   C. Andrieu, A. Doucet and R. Holenstein, 
