@@ -1,8 +1,16 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.78-1}{
+  \itemize{
+    \item There is a new, adaptive MCMC proposal function, \code{mvn.rw.adaptive} that can be used in \code{pmcmc}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.77-1}{
   \itemize{
     \item There is a new, adaptive MCMC proposal function, \code{mvn.rw.adaptive} that can be used in \code{pmcmc}. 
+    \item The deprecated \code{transform.params} argument from \code{nlf} has been removed.
+    \item The deprecated \code{pars} and \code{rw.sd} arguments from \code{abc} and \code{pmcmc} have been removed.
+    \item The deprecated \code{data.array} method has been removed.
   }
 }
 \section{Changes in \pkg{pomp} version 0.76-2}{
@@ -79,7 +87,7 @@
 }
 \section{Changes in \pkg{pomp} version 0.67-1}{
   \itemize{
-    \item A 'pomp' object's initializer can now be specified as a Csnippet.
+    \item A \code{pomp} object's initializer can now be specified as a Csnippet.
     \item The default initializer is now considerably faster.
   }
 }
@@ -599,7 +607,7 @@
     Rownames are not strictly required for the \code{data} slot.
     \item The \code{sannbox} algorithm now should work even when the objective function throws a non-finite value.
     The behavior now is to replace non-finite values with a large number.
-    This behavior follows that of the 'SANN' method in \code{optim}.
+    This behavior follows that of the \code{SANN} method in \code{optim}.
   }
 }
 \section{Changes in \pkg{pomp} version 0.39-3}{
@@ -612,7 +620,7 @@
 }
 \section{Changes in \pkg{pomp} version 0.39-2}{
   \itemize{
-    \item When \code{po} is a \code{pomp}-class object with covariates, \code{as.data.frame(po)} and \code{as(po,"data.frame")} now contain columns for the covariates. 
+    \item When \code{po} is a \code{pomp}-class object with covariates, \code{as.data.frame(po)} and \code{as(po,"data.frame")} now contain columns for the covariates.
     The latter are interpolated, if necessary, at the observation times.
     \item Bug fix: when \code{pfilter} is called with a single parameter vector supplied in the \code{params} argument, these parameters are copied into the \code{params} slot of the resulting \code{pfilterd.pomp} object.
     Before, this failed when the \code{params} slot of the \code{pomp} object was empty.
@@ -675,9 +683,9 @@
   \itemize{
     \item The arguments \code{skeleton.map} and \code{skeleton.vectorfield} are now deprecated.
     Specify a discrete-time skeleton using \code{skeleton.type="map"} and a continuous-time skeleton via \code{skeleton.type="vectorfield"}.
-    \item \code{pomp} is now a generic function.  
+    \item \code{pomp} is now a generic function.
     Calling it on a \code{pomp} object copies the object; one can optionally modify some of the slots.
-    \item Two new files \file{gompertz.R} and \file{gompertz.c} are in the \file{examples} directory.  
+    \item Two new files \file{gompertz.R} and \file{gompertz.c} are in the \file{examples} directory.
     These contain codes needed to reproduce the Gompertz example in the \dQuote{intro_to_pomp} vignette.
     \item The warning messages to do with the default behaviors of \code{simulate} and \code{trajectory} with respect to the arguments \code{times} and \code{t0} have been removed.
     These warnings were introduced in version 0.34-1 to alert users to changes in the default behavior of \code{simulate} and \code{trajectory} introduced with that version.
@@ -745,7 +753,7 @@
     The default for \code{t0} is \code{timezero(object)}.
     The default for \code{times} is now \code{time(object,t0=FALSE)} (it was \code{time(object,t0=TRUE)}).
     This change eliminates an infelicity in which \code{simulate} and \code{trajectory} returned undesired values at the initial time.
-    Users can ensure that their codes will continue to function as intended by specifying the values of the \code{times} and \code{t0} arguments to these functions, thus removing dependence on the defaults. 
+    Users can ensure that their codes will continue to function as intended by specifying the values of the \code{times} and \code{t0} arguments to these functions, thus removing dependence on the defaults.
     To aid users in  modifying their codes, a warning is now displayed whenever a potentially affected call is made.
     These warnings will be removed in a future release.
     See the documentation (\code{pomp?simulate}, \code{pomp?trajectory}) for a description of the new default behaviors.
@@ -754,11 +762,11 @@
     \item \code{simulate} has been re-implemented in C for speed.
     \item A new method \code{obs} for \code{pomp} objects returns the contents of the \code{data} slot.
     It is synonymous with \code{data.array}.
-    \item A banner is now displayed on package attachment.  
+    \item A banner is now displayed on package attachment.
     \item \code{coef<-} now behaves like ordinary vector assignment.
     \item \code{probe} and \code{spect} now take an argument \code{params}.
     \item \code{probe.cov} and \code{probe.cor} have been removed in favor of \code{probe.acf} and \code{probe.ccf}.
-    \item The functions \code{euler.simulate}, \code{onestep.simulate}, and \code{onestep.density}, deprecated since version 0.29-1, have been removed.  
+    \item The functions \code{euler.simulate}, \code{onestep.simulate}, and \code{onestep.density}, deprecated since version 0.29-1, have been removed.
   }
 }
 \section{Changes in \pkg{pomp} version 0.33-1}{
@@ -808,7 +816,7 @@
     \item A plugin for continuous-time Markov process models using the Gillespie algorithm is available.
     \item A plugin for discrete-time Markov processes is now available.
     \item Several example pomps are now loadable via the \code{data()} command.
-    \item There are changes in the C interface to measurement models that are NOT BACKWARD COMPATIBLE.  
+    \item There are changes in the C interface to measurement models that are NOT BACKWARD COMPATIBLE.
     Existing user measurement model codes will need to be modified, but these changes are minor.
     \item The changes are documented in detail in the file \file{CHANGES_0.29-1.txt}.
   }
@@ -864,7 +872,7 @@
     \item The lookup_table (see file \file{include/pomp.h}) interface for C codes has been streamlined.
     It is now slightly more straightforward to set up a \code{struct lookup_table}.
     See the examples (\file{include/examples}).
-    \item Added \file{logistic.R} to the \file{tests} directory.  
+    \item Added \file{logistic.R} to the \file{tests} directory.
     This is a one-variable stochastic differential equation simulated using Euler-Maruyama.
     \item The SIR example (\file{examples/sir.R}) now includes two pomps: one with native routines implementing rprocess, dprocess, and skeleton, the other using R files.
     The comparison may be instructive.

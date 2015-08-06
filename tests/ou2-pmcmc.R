@@ -25,7 +25,8 @@ ff <- pfilter(f1)
 f2 <- pmcmc(
             ff,
             Nmcmc=20,
-            rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+            proposal=mvn.diag.rw(c(alpha.2=0.01,alpha.3=0.01)),
+            max.fail=100, 
             verbose=FALSE
             )
 

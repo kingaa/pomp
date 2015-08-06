@@ -1,5 +1,5 @@
 
-R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
+R version 3.2.1 (2015-06-18) -- "World-Famous Astronaut"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-unknown-linux-gnu (64-bit)
 
@@ -73,10 +73,8 @@ newly created object(s):
 +             probes=probes.good,
 +             scale=scale.dat,
 +             epsilon=2,
-+             rw.sd=c(alpha.1=0.01,alpha.2=0.01)
++             proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
 +             )
-Warning message:
-abc warning: 'rw.sd' is a deprecated argument: Use 'proposal' instead. 
 > abc3 <- continue(abc3,Nabc=3000)
 > plot(abc3)
 > 
@@ -117,8 +115,6 @@ abc warning: 'rw.sd' is a deprecated argument: Use 'proposal' instead.
 +             epsilon=1,
 +             proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
 +             )
-Warning message:
-abc warning: 'pars' is a deprecated argument and will be ignored. 
 > plot(abc6)
 > 
 > try(abc7 <- c(abc2,abc3))
@@ -137,4 +133,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  8.736   0.052   8.975 
+ 10.591   0.041  10.630 
