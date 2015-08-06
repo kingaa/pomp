@@ -34,7 +34,7 @@
   Running \code{pmcmc} causes a particle random-walk Metropolis-Hastings Markov chain algorithm to run for the specified number of proposals.
 }
 \usage{
-\S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, proposal, pars, rw.sd, Np,
+\S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, proposal, Np,
     tol = 1e-17, max.fail = Inf, verbose = getOption("verbose"), \dots)
 \S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, Np, tol, \dots)
 \S4method{pmcmc}{pmcmc}(object, Nmcmc, start, proposal, Np, tol,

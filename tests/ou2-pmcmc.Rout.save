@@ -45,12 +45,10 @@ newly created object(s):
 > f2 <- pmcmc(
 +             ff,
 +             Nmcmc=20,
-+             rw.sd=c(alpha.2=0.01,alpha.3=0.01),
++             proposal=mvn.diag.rw(c(alpha.2=0.01,alpha.3=0.01)),
 +             max.fail=100, 
 +             verbose=FALSE
 +             )
-Warning message:
-pmcmc warning: 'rw.sd' is a deprecated argument.Use 'proposal' instead. 
 > 
 > f3 <- pmcmc(f2)
 > f4 <- continue(f3,Nmcmc=20)
@@ -146,4 +144,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 28.041   0.044  28.426 
+ 30.425   0.040  30.482 

@@ -53,7 +53,7 @@ abc3 <- abc(po,
             probes=probes.good,
             scale=scale.dat,
             epsilon=2,
-            rw.sd=c(alpha.1=0.01,alpha.2=0.01)
+            proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
             )
 abc3 <- continue(abc3,Nabc=3000)
 plot(abc3)

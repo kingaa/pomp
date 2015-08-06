@@ -213,7 +213,7 @@ setMethod(
           "pmcmc",
           signature=signature(object="pomp"),
           function (object, Nmcmc = 1,
-                    start, proposal, pars, rw.sd, Np,
+                    start, proposal, Np,
                     tol = 1e-17, max.fail = Inf,
                     verbose = getOption("verbose"),
                     ...) {

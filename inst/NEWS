@@ -1,8 +1,14 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_6-_3:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_7-_1:
 
-        • Bug fix in ‘mvn.rw’.
+        • The deprecated ‘transform.params’ argument from ‘nlf’ has
+          been removed.
+
+        • The deprecated ‘pars’ and ‘rw.sd’ arguments from ‘abc’ and
+          ‘pmcmc’ have been removed.
+
+        • The deprecated ‘data.array’ method has been removed.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_6-_2:
 
@@ -102,7 +108,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_8-_2
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._6_7-_1:
 
-        • A 'pomp' object's initializer can now be specified as a
+        • A ‘pomp’ object's initializer can now be specified as a
           Csnippet.
 
         • The default initializer is now considerably faster.
@@ -781,7 +787,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._3_9-_4
         • The ‘sannbox’ algorithm now should work even when the
           objective function throws a non-finite value.  The behavior
           now is to replace non-finite values with a large number.
-          This behavior follows that of the 'SANN' method in ‘optim’.
+          This behavior follows that of the ‘SANN’ method in ‘optim’.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._3_9-_3:
 
