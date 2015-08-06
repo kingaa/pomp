@@ -42,7 +42,7 @@
   The \code{pomp.fun} class helps to settle common issues associated with user-defined functions which can be defined either via R code or by a native, compiled routine.
   It is not exported to userland.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{
   \code{\link{pomp}}
 }

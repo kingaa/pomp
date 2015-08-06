@@ -130,10 +130,6 @@
  Population cycles in the pine looper moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
  \emph{Ecological Monographs} \bold{75}, 259--276.
 }
-\author{
-  Stephen P. Ellner \email{spe2 at cornell dot edu},
-  Bruce E. Kendall \email{kendall at bren dot ucsb dot edu},
-  Aaron A. King \email{kingaa at umich dot edu}
-}
+\author{Stephen P. Ellner, Bruce E. Kendall, Aaron A. King}
 \keyword{optimize}
 \keyword{ts}

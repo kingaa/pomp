@@ -19,7 +19,7 @@ logmeanexp(x, se = FALSE)
 \details{
   When \code{se = TRUE}, \code{logmeanexp} uses a jackknife estimate of the variance in \eqn{log(x)}.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \examples{
   ## generate a bifurcation diagram for the Ricker map
   pompExample(ricker)

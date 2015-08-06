@@ -204,6 +204,6 @@ ll <- dmeasure(ricker,y=y,x=x,times=t,params=p,log=TRUE)
 f <- skeleton(ricker,x=x,t=t,params=p)
 z <- trajectory(ricker,params=p,times=t,t0=t0)
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{\code{\link{pomp}}, \link{pomp methods}}
 \keyword{programming}

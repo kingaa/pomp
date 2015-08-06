@@ -125,9 +125,5 @@
   The pseudo-marginal approach for efficient computation,
   Ann. Stat. 37:697-725, 2009.
 }
-\author{Edward L. Ionides \email{ionides at umich dot edu}, Aaron A. King \email{kingaa at umich dot edu}}
-\seealso{
-  \code{\link{pomp}}, \code{\link{pfilter}},
-  and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
-}
+\author{Edward L. Ionides, Aaron A. King, Sebastian Funk}
 \keyword{ts}

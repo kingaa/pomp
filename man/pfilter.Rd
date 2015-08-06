@@ -187,7 +187,7 @@ fm <- filter.mean(pf)    	## extract the filtering means
   A Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian Bayesian Tracking.
   IEEE Trans. Sig. Proc. 50:174--188, 2002.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{
   \code{\link{pomp}}, \code{\link{mif}}, \code{\link{pmcmc}}, \code{\link{bsmc2}},
   and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.

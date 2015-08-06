@@ -35,5 +35,5 @@
   Given a parameter vector, each returns a single draw from the corresponding proposal distribution.
 }
 \seealso{\code{\link{pmcmc}}, \code{\link{abc}}}
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \keyword{programming}

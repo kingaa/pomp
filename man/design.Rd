@@ -73,5 +73,5 @@ plot(x)
   Numerical Recipes in C,
   Cambridge University Press, 1992
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \keyword{design}

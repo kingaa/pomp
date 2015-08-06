@@ -83,6 +83,6 @@ pompBuilder(data, times, t0, name, statenames, paramnames,
 \seealso{
   \code{\link{pomp}}, \code{\link{Csnippet}}
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \keyword{programming}
 \keyword{internal}

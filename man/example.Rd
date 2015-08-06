@@ -34,7 +34,7 @@ pompExample(example, \dots, envir = .GlobalEnv)
   By default, \code{pompExample} has the side effect of creating one or more objects in the global workspace.
   If \code{envir=NULL}, there are no side effects; rather, the objects are returned as a list.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \examples{
   pompExample()
   pompExample(euler.sir)

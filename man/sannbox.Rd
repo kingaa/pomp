@@ -80,9 +80,7 @@ sannbox(par, fn, control = list(), \dots)
     \item{value}{value of \code{fn} corresponding to \code{par}.}
   }
 }
-\author{
-  Daniel Reuman, Imperial College London and Aaron A. King \email{kingaa at umich dot edu}
-}
+\author{Daniel Reuman, Aaron A. King}
 \seealso{
   \code{\link{traj.match}}, \code{\link{probe.match}}.
 }

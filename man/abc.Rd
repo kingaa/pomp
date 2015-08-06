@@ -130,8 +130,8 @@
   Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems
   Journal of the Royal Society, Interface 6:187--202, 2009.
 }
-\author{Edward L. Ionides \email{ionides at umich dot edu}, Aaron A. King \email{kingaa at umich dot edu}}
+\author{Edward L. Ionides, Aaron A. King}
 \seealso{
-  \code{\link{pomp}}, \code{\link{probe}}, and the tutorials on the \href{http://kingaa.github.io/pomp/}{package website}.  
+  \code{\link{pomp}}, \code{\link{probe}}, \link{MCMC proposal distributions}, and the tutorials on the \href{http://kingaa.github.io/pomp/}{package website}.  
 }
 \keyword{ts}

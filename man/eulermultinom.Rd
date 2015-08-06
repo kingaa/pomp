@@ -62,7 +62,7 @@ rgammawn(n = 1, sigma, dt)
   An interface for C codes using these functions is provided by the package.
   At an \R prompt, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view the header file that defines and explains the API.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \examples{
 print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=0.1))
 deulermultinom(x=dn,size=100,rate=c(1,2,3),dt=0.1)

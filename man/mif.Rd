@@ -228,7 +228,7 @@
   Inapparent infections and cholera dynamics,
   Nature, 454:877--880, 2008.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{
   \code{\link{pomp}}, \code{\link{pfilter}}, \code{\link{mif2}}
 }

@@ -196,7 +196,7 @@ rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
   Inference for dynamic and latent variable models via iterated, perturbed Bayes maps.
   Proc. Natl. Acad. Sci. U.S.A., 112:719--724, 2015.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}, Edward L. Ionides, and Dao Nguyen}
+\author{Aaron A. King, Edward L. Ionides, and Dao Nguyen}
 \seealso{
   \code{\link{pomp}}, \code{\link{pfilter}}, \code{\link{mif}}, and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 }
