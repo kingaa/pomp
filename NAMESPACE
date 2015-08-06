@@ -39,7 +39,7 @@ importFrom(graphics,plot,par,abline,pairs,matplot,box,axis,mtext,
 importFrom(utils,head)
 importFrom(grDevices,rgb,dev.interactive)
 importFrom(stats,simulate,time,coef,logLik,window,fitted,
-           dnorm,runif,sd,cov,cor,median,density,
+           dnorm,runif,sd,var,cov,cor,median,density,
            spec.pgram,rnorm,weighted.mean,optim,
            .lm.fit,setNames,kernel,quantile)
 importFrom(digest,digest)
