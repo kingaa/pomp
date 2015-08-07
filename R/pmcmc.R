@@ -320,7 +320,6 @@ setMethod(
                                   obj@conv.rec[-1,]
                                   )
             names(dimnames(obj@conv.rec)) <- c("iteration","variable")
-            obj@accepts <- accepts+obj@accepts
             ft <- array(dim=replace(dim(obj@filter.traj),2L,ndone+Nmcmc),
                         dimnames=replace(dimnames(obj@filter.traj),2L,
                           list(seq_len(ndone+Nmcmc))))
@@ -328,6 +327,8 @@ setMethod(
             ft[,ndone+seq_len(Nmcmc),] <- obj@filter.traj
             obj@filter.traj <- ft
             obj@Nmcmc <- as.integer(ndone+Nmcmc)
+            obj@accepts <- as.integer(accepts+obj@accepts)
+
             obj
           }
           )

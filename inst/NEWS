@@ -3,7 +3,7 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _0._7_8-_1:
 
         • There is a new, adaptive MCMC proposal function,
-          ‘mvn.rw.adaptive’ that can be used in ‘pmcmc’.
+          ‘mvn.rw.adaptive’ that can be used in ‘pmcmc’ and ‘abc’.
 
         • The new ‘covmat’ method, applied to ‘abc’, ‘abcList’,
           ‘pmcmc’, or ‘pmcmcList’ objects, returns an inflated

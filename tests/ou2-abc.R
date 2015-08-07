@@ -89,7 +89,6 @@ dprior6 <- function (params, log, ...) {
 
 abc6 <- abc(pomp(po,dprior=dprior6),
             Nabc=2000,
-            pars=c("alpha.1","alpha.2"),
             probes=probes.good,
             scale=scale.dat,
             epsilon=1,
@@ -103,6 +102,28 @@ plot(abc7,scatter=TRUE)
 plot(conv.rec(c(abc2,abc4)))
 plot(conv.rec(c(abc7,abc6)))
 plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=1000))
+
+abc8 <- abc(
+            pomp(ou2,dprior=function (params, log, ...) {
+              f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+              if (log) f else exp(f)
+            }),
+            Nabc=2000,verbose=FALSE,
+            probes=probes.good,
+            scale=scale.dat,
+            epsilon=5,
+            proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+              scale.start=500,shape.start=100))
+abc8 <- continue(abc8,Nabc=10000,proposal=mvn.rw(covmat(abc8)))
+plot(abc8,scatter=T)
+plot(abc8)
+
+traces <- window(conv.rec(abc8,c("alpha.2","alpha.3")),start=2000)
+require(coda)
+rejectionRate(traces)
+autocorr.diag(traces)
+traces <- window(traces,thin=50)
+geweke.diag(traces)
 
 dev.off()
 
