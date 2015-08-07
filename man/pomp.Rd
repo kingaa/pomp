@@ -359,7 +359,7 @@ file.show(
   Each \pkg{pomp}-package algorithm uses some subset of the five basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}).
   If an algorithm requires a component that has not been specified, an informative error will be generated.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{
   \link{pomp methods},
   \link{pomp low-level interface},

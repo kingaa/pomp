@@ -42,7 +42,7 @@
 }
 \section{Comments, bug reports, feature requests}{
   Contributions are welcome, as are comments, feature requests, and bug reports.
-  See the package website \url{http://kingaa.github.io/pomp} for more information, access to the package mailing list, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
+  See the package website \url{http://kingaa.github.io/pomp} for more information, access to the package new RSS feed, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
 }
 \section{Documentation}{
   A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the package homepage: \url{http://kingaa.github.io/pomp}.
@@ -58,7 +58,7 @@
 \references{
   See the package website, \url{http://kingaa.github.io/pomp}, for the references.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{
   \code{\link{pomp}},
   \link{pomp low-level interface}, 

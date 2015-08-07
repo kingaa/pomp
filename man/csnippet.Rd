@@ -108,7 +108,7 @@
   To do so, set \code{options(verbose=TRUE)} before calling \code{pomp}.
   A message giving the name of the generated C file (in the session temporary directory) will be printed.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{
   \code{\link{pomp}}, \code{\link{plugins}}, and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 }

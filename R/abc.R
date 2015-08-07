@@ -5,6 +5,7 @@ setClass(
          slots=c(
            pars = 'character',
            Nabc = 'integer',
+           accepts = 'integer',
            probes='list',
            scale = 'numeric',
            epsilon = 'numeric',
@@ -14,6 +15,7 @@ setClass(
          prototype=prototype(
            pars = character(0),
            Nabc = 0L,
+           accepts = 0L,
            probes = list(),
            scale = numeric(0),
            epsilon = 1.0,
@@ -27,12 +29,15 @@ abc.internal <- function (object, Nabc,
                           epsilon, scale,
                           verbose,
                           .ndone = 0L,
+                          .accepts = 0L,
                           .getnativesymbolinfo = TRUE,
                           ...) {
 
   object <- as(object,'pomp')
   gnsi <- as.logical(.getnativesymbolinfo)
   Nabc <- as.integer(Nabc)
+  .ndone <- as.integer(.ndone)
+  .accepts <- as.integer(.accepts)
   epsilon <- as.numeric(epsilon)
   epssq <- epsilon*epsilon
 
@@ -53,7 +58,7 @@ abc.internal <- function (object, Nabc,
     stop(sQuote("proposal")," must be a function")
 
   ## test proposal distribution
-  theta <- try(proposal(start))
+  theta <- try(proposal(start,.n=0))
   if (inherits(theta,"try-error"))
     stop("abc error: error in proposal function",call.=FALSE)
   if (is.null(names(theta)) || !is.numeric(theta))
@@ -97,7 +102,8 @@ abc.internal <- function (object, Nabc,
 
   for (n in seq_len(Nabc)) { # main loop
 
-    theta.prop <- proposal(theta)
+    theta.prop <- proposal(theta,.n=n+.ndone,.accepts=.accepts,
+                           verbose=verbose)
     log.prior.prop <- dprior(object,params=theta.prop,log=TRUE)
 
     if (is.finite(log.prior.prop) &&
@@ -126,6 +132,7 @@ abc.internal <- function (object, Nabc,
       if( (is.finite(distance)) && (distance<epssq) ){ 
         theta <- theta.prop
         log.prior <- log.prior.prop
+        .accepts <- .accepts+1L
       }
 
     }
@@ -133,8 +140,9 @@ abc.internal <- function (object, Nabc,
     ## store a record of this iteration
     conv.rec[n+1,names(theta)] <- theta
     if (verbose && (n%%5==0))
-      cat("ABC iteration ",n," of ",Nabc," completed\n")
-
+      cat("ABC iteration",n+.ndone,"of",Nabc+.ndone,
+          "completed\nacceptance ratio:",
+          round(.accepts/(n+.ndone),3),"\n")
   }
 
   pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
@@ -148,6 +156,7 @@ abc.internal <- function (object, Nabc,
       params=theta,
       pars=pars,
       Nabc=Nabc,
+      accepts=.accepts,
       probes=probes,
       scale=scale,
       epsilon=epsilon,
@@ -208,11 +217,7 @@ setMethod(
 
             if (missing(probes)) probes <- object@probes
             f <- selectMethod("abc","pomp")
-            f(
-              object=object,
-              probes=probes,
-              ...
-              )
+            f(object=object,probes=probes,...)
           }
           )
 
@@ -254,12 +259,14 @@ setMethod(
           function (object, Nabc = 1, ...) {
 
             ndone <- object@Nabc
+            accepts <- object@accepts
             f <- selectMethod("abc","abc")
             
             obj <- f(
                      object=object,
                      Nabc=Nabc,
                      .ndone=ndone,
+                     .accepts=accepts,
                      ...
                      )
             
@@ -269,6 +276,7 @@ setMethod(
                                   )
             names(dimnames(obj@conv.rec)) <- c("iteration","variable")
             obj@Nabc <- as.integer(ndone+Nabc)
+            obj@accepts <- as.integer(accepts+obj@accepts)
             
             obj
           }

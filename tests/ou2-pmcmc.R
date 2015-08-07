@@ -16,10 +16,9 @@ f1 <- pmcmc(
             Nmcmc=20,
             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
             Np=100,
-            max.fail=100,
             verbose=FALSE
             )
-f1 <- continue(f1,Nmcmc=20,max.fail=100)
+f1 <- continue(f1,Nmcmc=20)
 plot(f1)
 
 ff <- pfilter(f1)
@@ -40,10 +39,7 @@ plot(c(f2,f3))
 try(ff <- c(f3,f4))
 
 if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
-  f2a <- pmcmc(
-               f1,Nmcmc=1000,Np=100,max.fail=100,
-               verbose=FALSE
-               )
+  f2a <- pmcmc(f1,Nmcmc=1000,Np=100,verbose=FALSE)
   plot(f2a)
   runs <- rle(as.numeric(conv.rec(f2a,'loglik')))$lengths
   plot(sort(runs))
@@ -60,10 +56,9 @@ f5 <- pmcmc(
             Nmcmc=20,
             proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
             Np=100,
-            max.fail=100, 
             verbose=FALSE
             )
-f6 <- continue(f5,Nmcmc=20,max.fail=100)
+f6 <- continue(f5,Nmcmc=20)
 plot(f6)
 
 ff <- c(f4,f6)
@@ -100,11 +95,29 @@ f7 <- pmcmc(
             Nmcmc=30,
             proposal=mvn.rw(sig),
             Np=100,
-            max.fail=100, 
             verbose=FALSE
             )
 plot(f7)
 filter.traj(f7,"x1")[1,30,1:5]
 
-dev.off()
+f8 <- pmcmc(
+            pomp(ou2,dprior=function (params, log, ...) {
+              f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+              if (log) f else exp(f)
+            }),
+            Nmcmc=500,Np=500,verbose=FALSE,
+            proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+              scale.start=50,shape.start=50))
+f8 <- continue(f8,Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
+plot(f8)
+require(coda)
+trace <- window(conv.rec(f8,c("alpha.2","alpha.3")),start=500)
+rejectionRate(trace)
+effectiveSize(trace)
+autocorr.diag(trace)
+trace <- window(trace,thin=5)
+plot(trace)
+heidel.diag(trace)
+geweke.diag(trace)
 
+dev.off()

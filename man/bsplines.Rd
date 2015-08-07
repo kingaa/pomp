@@ -40,7 +40,7 @@ periodic.bspline.basis(x, nbasis, degree = 3, period = 1, names = NULL)
   see the header file \file{pomp.h} for definition and documentation of the C API.
   At an \R prompt, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view this file.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \examples{
 x <- seq(0,2,by=0.01)
 y <- bspline.basis(x,degree=3,nbasis=9,names="basis")

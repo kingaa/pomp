@@ -32,6 +32,6 @@ particles(object, \dots)
   contains the state-variable portion of the particles; \code{params}
   contains the parameter portion.  Each has \code{Np} columns.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{\code{\link{mif}}, \link{mif-methods}, \code{\link{pomp}}, \link{pomp-class}}
 \keyword{ts}

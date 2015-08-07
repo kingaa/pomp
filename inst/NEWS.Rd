@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 0.78-1}{
+  \itemize{
+    \item There is a new, adaptive MCMC proposal function, \code{mvn.rw.adaptive} that can be used in \code{pmcmc} and \code{abc}.
+    \item The new \code{covmat} method, applied to \code{abc}, \code{abcList}, \code{pmcmc}, or \code{pmcmcList} objects, returns an inflated empirical covariance matrix suitable for use as input to the proposal generator \code{mvn.rw}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.77-1}{
   \itemize{
     \item The deprecated \code{transform.params} argument from \code{nlf} has been removed.

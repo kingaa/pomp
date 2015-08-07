@@ -23,6 +23,11 @@
 \alias{plot-abcList}
 \alias{plot,abcList-method}
 \alias{abcList-class}
+\alias{covmat}
+\alias{covmat,abc-method}
+\alias{covmat-abc}
+\alias{covmat,abcList-method}
+\alias{covmat-abcList}
 \alias{c-abc}
 \alias{c,abc-method}
 \alias{c-abcList}
@@ -119,6 +124,11 @@
     \item{plot}{
       Diagnostic plots.
     }
+    \item{covmat}{
+      \code{covmat(object, start, thin, expand)} computes the empirical covariance matrix of the ABC samples beginning with iteration \code{start} and thinning by factor \code{thin}.
+      It expands this by a factor \code{expand^2/n}, where \code{n} is the number of parameters estimated.
+      The intention is that the resulting matrix is a suitable input to the proposal function \code{\link{mvn.rw}}.
+    }
   }
 }
 \references{
@@ -130,8 +140,8 @@
   Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems
   Journal of the Royal Society, Interface 6:187--202, 2009.
 }
-\author{Edward L. Ionides \email{ionides at umich dot edu}, Aaron A. King \email{kingaa at umich dot edu}}
+\author{Edward L. Ionides, Aaron A. King}
 \seealso{
-  \code{\link{pomp}}, \code{\link{probe}}, and the tutorials on the \href{http://kingaa.github.io/pomp/}{package website}.  
+  \code{\link{pomp}}, \code{\link{probe}}, \link{MCMC proposal distributions}, and the tutorials on the \href{http://kingaa.github.io/pomp/}{package website}.  
 }
 \keyword{ts}

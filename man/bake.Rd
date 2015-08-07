@@ -73,4 +73,4 @@ freeze(expr, seed, kind = NULL, normal.kind = NULL)
   \code{freeze} returns the value of evaluated expression \code{expr}.
   However, \code{freeze} evaluates \code{expr} within the parent environment, so other objects created  in the evaluation of \code{expr} will therefore exist after \code{freeze} completes.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}

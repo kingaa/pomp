@@ -127,7 +127,7 @@ onestep.dens(dens.fun, PACKAGE)
 
   \code{onestep.dens} returns a function suitable for use as the argument \code{dprocess} in \code{\link{pomp}}.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{
   \code{\link{pomp}} and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 }

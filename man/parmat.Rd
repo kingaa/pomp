@@ -18,7 +18,7 @@ parmat(params, nrep = 1)
 \value{
   \code{parmat} returns a matrix consisting of \code{nrep} copies of \code{params}.
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \examples{
   ## generate a bifurcation diagram for the Ricker map
   pompExample(ricker)

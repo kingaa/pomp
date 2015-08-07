@@ -5,6 +5,7 @@ setClass(
          slots=c(
            pars = 'character',
            Nmcmc = 'integer',
+           accepts = 'integer',
            proposal = 'function',
            conv.rec = 'array',
            log.prior = 'numeric'
@@ -12,6 +13,7 @@ setClass(
          prototype=prototype(
            pars = character(0),
            Nmcmc = 0L,
+           accepts = 0L,
            proposal = function (...) stop("proposal not specified"),
            conv.rec=array(dim=c(0,0)),
            log.prior=numeric(0)
@@ -23,6 +25,7 @@ pmcmc.internal <- function (object, Nmcmc,
                             Np, tol, max.fail,
                             verbose,
                             .ndone = 0L,
+                            .accepts = 0L,
                             .prev.pfp = NULL, .prev.log.prior = NULL,
                             .getnativesymbolinfo = TRUE) {
 
@@ -30,7 +33,8 @@ pmcmc.internal <- function (object, Nmcmc,
   gnsi <- as.logical(.getnativesymbolinfo)
   verbose <- as.logical(verbose)
   .ndone <- as.integer(.ndone)
-
+  .accepts <- as.integer(.accepts)
+  
   pompLoad(object)
 
   if (missing(start))
@@ -46,7 +50,7 @@ pmcmc.internal <- function (object, Nmcmc,
     stop(sQuote("proposal")," must be a function")
 
   ## test proposal distribution
-  theta <- try(proposal(start))
+  theta <- try(proposal(start,.n=0))
   if (inherits(theta,"try-error"))
     stop(sQuote("pmcmc")," error: error in proposal function",call.=FALSE)
   if (is.null(names(theta)) || !is.numeric(theta))
@@ -136,7 +140,8 @@ pmcmc.internal <- function (object, Nmcmc,
 
   for (n in seq_len(Nmcmc)) { # main loop
 
-    theta.prop <- proposal(theta)
+    theta.prop <- proposal(theta,.n=n+.ndone,.accepts=.accepts,
+                           verbose=verbose)
 
     ## compute log prior
     log.prior.prop <- dprior(object,params=theta.prop,log=TRUE,
@@ -175,6 +180,7 @@ pmcmc.internal <- function (object, Nmcmc,
         pfp <- pfp.prop
         theta <- theta.prop
         log.prior <- log.prior.prop
+        .accepts <- .accepts+1L
       }
     }
 
@@ -185,12 +191,14 @@ pmcmc.internal <- function (object, Nmcmc,
     conv.rec[n+1,names(theta)] <- theta
     conv.rec[n+1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
 
-    if (verbose) cat("PMCMC iteration ",n," of ",Nmcmc," completed\n")
+    if (verbose) cat("PMCMC iteration",n+.ndone,"of",Nmcmc+.ndone,
+                     "completed\nacceptance ratio:",
+                     round(.accepts/(n+.ndone),3),"\n")
 
   }
 
   pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
-  pars <- names(pars[pars])
+  pars <- setdiff(names(pars[pars]),c("loglik","log.prior","nfail"))
 
   pompUnload(object)
 
@@ -200,6 +208,7 @@ pmcmc.internal <- function (object, Nmcmc,
       params=theta,
       pars=pars,
       Nmcmc=Nmcmc,
+      accepts=.accepts,
       proposal=proposal,
       Np=Np,
       tol=tol,
@@ -294,12 +303,14 @@ setMethod(
           function (object, Nmcmc = 1, ...) {
 
             ndone <- object@Nmcmc
+            accepts <- object@accepts
 
             obj <- pmcmc(
                          object=object,
                          Nmcmc=Nmcmc,
                          ...,
                          .ndone=ndone,
+                         .accepts=accepts,
                          .prev.pfp=as(object,"pfilterd.pomp"),
                          .prev.log.prior=object@log.prior
                          )
@@ -316,6 +327,8 @@ setMethod(
             ft[,ndone+seq_len(Nmcmc),] <- obj@filter.traj
             obj@filter.traj <- ft
             obj@Nmcmc <- as.integer(ndone+Nmcmc)
+            obj@accepts <- as.integer(accepts+obj@accepts)
+
             obj
           }
           )

@@ -71,7 +71,7 @@ x <- simulate(ou2,seed=3495485,nsim=10,states=TRUE,obs=TRUE)
 x <- simulate(ou2,seed=3495485,nsim=10,obs=TRUE,
               as.data.frame=TRUE,include.data=TRUE)
 }
-\author{Aaron A. King \email{kingaa at umich dot edu}}
+\author{Aaron A. King}
 \seealso{\link{pomp}}
 \keyword{models}
 \keyword{ts}
