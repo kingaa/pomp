@@ -31,8 +31,8 @@
   }
 }
 \value{
-  Functions taking a single argument.
-  Given a parameter vector, each returns a single draw from the corresponding proposal distribution.
+  Each of these constructs a function suitable for use as the \code{proposal} argument of \code{pmcmc} or \code{abc}.
+  Given a parameter vector, each such function returns a single draw from the corresponding proposal distribution.
 }
 \seealso{\code{\link{pmcmc}}, \code{\link{abc}}}
 \author{Aaron A. King}
