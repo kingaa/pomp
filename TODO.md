@@ -1,5 +1,7 @@
 ### pomp to-do list
 
+- add in Matteo Fasiolo's version of the 'dacca' example
+- add in Ebola example
 - easier interface for lists of probes in 'probe'
 - support for asymmetric MCMC proposals
 - documentation on 'mifList', 'pmcmcList', etc.
