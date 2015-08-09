@@ -103,11 +103,11 @@
 }
 \section{Methods}{
   \describe{
-    \item{conv.rec}{
-      \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars} as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
+    \item{\code{conv.rec(object, pars)}}{
+      returns the columns of the convergence-record matrix corresponding to the names in \code{pars} as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
     }
-    \item{filter.traj}{
-      \code{filter.traj(object, vars)} returns filter trajectories
+    \item{\code{filter.traj(object, vars)}}{
+      returns filter trajectories.
     }
     \item{plot}{
       Diagnostic plots.
@@ -118,8 +118,8 @@
     \item{c}{
       Concatenates \code{pmcmc} objects into a \code{pmcmcList}.
     }
-    \item{covmat}{
-      \code{covmat(object, start, thin, expand)} computes the empirical covariance matrix of the MCMC samples beginning with iteration \code{start} and thinning by factor \code{thin}.
+    \item{\code{covmat(object, start, thin, expand)}}{
+      computes the empirical covariance matrix of the MCMC samples beginning with iteration \code{start} and thinning by factor \code{thin}.
       It expands this by a factor \code{expand^2/n}, where \code{n} is the number of parameters estimated.
       By default, \code{expand=2.38}.
       The intention is that the resulting matrix is a suitable input to the proposal function \code{\link{mvn.rw}}.

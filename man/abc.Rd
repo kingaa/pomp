@@ -114,8 +114,8 @@
 \section{Methods}{
   Methods that can be used to manipulate, display, or extract information from an \code{abc} object:
   \describe{
-    \item{conv.rec}{
-      \code{conv.rec(object, pars)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
+    \item{\code{conv.rec(object, pars)} }{
+      returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
       By default, all rows are returned.
     }
     \item{c}{
@@ -124,8 +124,8 @@
     \item{plot}{
       Diagnostic plots.
     }
-    \item{covmat}{
-      \code{covmat(object, start, thin, expand)} computes the empirical covariance matrix of the ABC samples beginning with iteration \code{start} and thinning by factor \code{thin}.
+    \item{\code{covmat(object, start, thin, expand)}}{
+      computes the empirical covariance matrix of the ABC samples beginning with iteration \code{start} and thinning by factor \code{thin}.
       It expands this by a factor \code{expand^2/n}, where \code{n} is the number of parameters estimated.
       The intention is that the resulting matrix is a suitable input to the proposal function \code{\link{mvn.rw}}.
     }
