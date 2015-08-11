@@ -1,0 +1,123 @@
+---
+title: "Frequently Asked Questions"
+output:
+  html_document:
+    theme: default
+    toc: yes
+bibliography: pomp.bib
+csl: ecology.csl
+---
+
+## How can I submit an effective request for help?
+
+Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the help pages and/or the [package tutorials](http://kingaa.github.io/pomp/vignettes).
+Check to see if you are using the latest version of **pomp**: if not, check to see if the problem you have is solved by upgrading to the latest version.
+Read through the [Frequently Asked Questions](FAQ) to see if the answer to your question is there.
+
+If you still have a problem, then submit a request for help via the [Issues page](https://github.com/kingaa/pomp/issues).
+Include in your request---at a minimum---the code that you ran that produced the error, together with a transcript of the **R** session that gave the errors.
+Make sure to run `sessionInfo()` in your session, so that I can see what version of **pomp** you are using, what version of **R**, what kind of machine you have, etc.
+Better still, construct a minimal example that will reproduce the error: this allows for the most efficient solution of problems.
+
+## Why can't I run the demos, or use the `Csnippet` facility, or otherwise take advantage of the acceleration afforded by `pomp`'s use of compiled native codes?
+
+If your system does not support `R CMD SHLIB`, you won't be able to use these facilities.  To check this, run the following code snippet:
+```
+cat("#include <R.h>\nvoid hello (void) {Rprintf(\"hello world!\\n\");}",
+    file="hello.c")
+system("R CMD SHLIB hello.c")
+dyn.load(paste0("hello",.Platform$dynlib.ext))
+.C("hello",PACKAGE="hello")
+```
+If it works, you should see
+```
+hello world!
+list()
+```
+If it doesn't work, consult the [installation instructions](http://kingaa.github.io/pomp/install.html).
+
+## Why do I get an error message about `gfortran` when I try to install **pomp** from source on my Mac?
+
+Compilation of **pomp** requires a fortran compiler, which has not been installed (or not installed properly) on your system.
+See the [installation instructions](http://kingaa.github.io/pomp/install.html).
+If you do download a binary version of GCC fortran and wish to install it, first unpack the directory in a safe place (such as `~/gfortran`) and edit your `~/.R/Makevars` file to inform **R** as to where the compiler is.
+Thus for example, I did
+```
+mkdir ~/gfortran
+cd ~/gfortran
+curl -O http://r.research.att.com/libs/gfortran-4.8.2-darwin13.tar.bz2
+tar jxvf gfortran-4.8.2-darwin13.tar.bz2
+rm -f gfortran-4.8.2-darwin13.tar.bz2
+```
+then edited my `~/.R/Makevars` file to include the following lines
+```
+F77 = ~/gfortran/usr/local/bin/gfortran
+FC = ~/gfortran/usr/local/bin/gfortran
+FLIBS = -L~/gfortran/usr/local/lib
+```
+
+## Is the likelihood `mif` gives me the same as the likelihood I get from `pfilter`?
+
+No.  As its name suggests, iterated filtering (IF) algorithms (those implemented in **pomp** as `mif` and `mif2`) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model.
+In particular, IF pertubs the parameters of the model by adding random noise to them.
+Actually, if one were to simulate from this model, the parameters would be taking random walks.
+This effectively smooths the likelihood surface, combats particle depletion, and---critically for IF---allows local exploration of the parameter space.
+The likelihood that `mif` and `mif2` report is the estimated likelihood of this perturbed model.
+It can be either higher or lower than that of the focal model.
+Iterated filtering works by gradually reducing the magnitude of the perturbations with successive iterations ("cooling"), so that the perturbed model gradually becomes more similar to the focal model.
+
+To compute the likelihood at a point returned by `mif` or `mif2`, it is necessary to re-run the particle filter.
+By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.
+
+## What's the proper way to cite **pomp**?
+
+To cite the package, please be so kind as to follow the instructions given by executing 
+```
+citation("pomp")
+```
+in an **R** session.
+
+If you do use **pomp** in a publication, let us know!
+Send an email with the citation, and we'll include it in [the bibliography](http://kingaa.github.io/pomp/biblio.html).
+
+## How can I include a vector of variables in a `Csnippet`?
+
+A `Csnippet` can make use of any feature of the C language.
+In particular, we can use pointers to give access to arrays.
+For example, consider the following, which implement a simple chain of random variables.
+
+```
+rSim <- Csnippet("
+  double *x = &X1;
+  int i, n = (int) N;
+  for (i = 0; i < n-1; i++) x[i] = x[i+1];
+  x[n-1] = rnorm(0,1);
+")
+       
+rInit <- Csnippet("
+  double *x = &X1;
+  int i, n = (int) N;
+  for (i=0; i < n; i++) x[i] = 0.0;
+")
+```
+
+The following simulates and plots using the above.
+
+```
+require(magrittr)
+require(reshape2)
+require(ggplot2)
+        
+data.frame(Y1=NA,t=1:20) %>% 
+  pomp(times="t",t0=0,
+       rprocess=euler.sim(rSim,delta.t=1),
+       initializer=rInit,statenames=sprintf("X%d",1:5),
+       paramnames="N",params=c(N=5),
+	   measurement.model=Y1~norm(-X1,2)
+      ) %>%
+  simulate(as.data.frame=TRUE) %>%
+  melt(id=c('time','sim')) %>%
+  ggplot(aes(x=time,y=value,group=variable,color=variable))+
+    geom_line()+theme_bw()
+```
+
