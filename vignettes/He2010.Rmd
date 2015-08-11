@@ -4,7 +4,7 @@ author: "Aaron A. King"
 date: "2015-07-11"
 output:
   html_document:
-    theme: flatly
+    theme: default
     toc: yes
 bibliography: pomp.bib
 csl: ecology.csl

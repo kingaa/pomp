@@ -3,7 +3,7 @@ title: "An IF2 example"
 author: "Aaron A. King"
 output:
   html_document:
-    theme: flatly
+    theme: default
     toc: yes
 bibliography: pomp.bib
 csl: ecology.csl
