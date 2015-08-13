@@ -260,8 +260,8 @@ melt(simStates) %>%
 
 Although it is the process model that is usually the focus of an investigator's interest, the measurement model is equally important because it connects the process model to the data.
 For this example, let's model the observations using a Poisson distribution:
-$$P_t \sim \mathrm{Poisson}(N),$$
-where $P_t$ is our census population size at time $t$ and $N$ is the true population size.
+$$P_t \sim \mathrm{Poisson}(N_t),$$
+where, at time $t$, $P_t$ is our census count and $N_t$ is the true population size.
 
 ### The rmeasure component
 
@@ -587,8 +587,8 @@ simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
 ```
 
 If we desire an estimate of the smoothed state variables, i.e., the distribution of $N_t\,\vert\,P_{1960},\,\dots,\,P_{1986}$, for $t=1960,\,\dots\,1986$, we can use the `filter.traj` command to extract samples from this distribution.
-For example, the following codes run a particle filter at a sample of points from the posterior distribution (assuming that the PMCMC chains above have converged) and extract a single trajectory from each one.
-Collectively, as @Andrieu2010 showed, this is a sample from the smoothing distribution.
+For example, the following codes run a particle filter at a sample of points from the posterior distribution and extract a single trajectory from each one.
+Assuming that the PMCMC chains above have converged, these are, as @Andrieu2010 showed, samples from the smoothing distribution.
 ```{r parus-filter-traj}
 traces %>% window(thin=200) %>% as.array() %>% melt() %>% 
   dcast(chain+iter~var) -> points
