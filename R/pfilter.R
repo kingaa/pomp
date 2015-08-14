@@ -40,7 +40,7 @@ pfilter.internal <- function (object, params, Np,
                               pred.mean = FALSE,
                               pred.var = FALSE,
                               filter.mean = FALSE,
-                              filter.traj = FALSE, 
+                              filter.traj = FALSE,
                               cooling, cooling.m,
                               .mif2 = FALSE,
                               .rw.sd, seed = NULL,
@@ -63,7 +63,7 @@ pfilter.internal <- function (object, params, Np,
   save.states <- as.logical(save.states)
   save.params <- as.logical(save.params)
   transform <- as.logical(.transform)
-  
+
   if (!is.null(seed))
     warning("in ",sQuote("pfilter"),": argument ",sQuote("seed"),
             " is deprecated and will be removed soon.  Consider using ",
@@ -75,17 +75,17 @@ pfilter.internal <- function (object, params, Np,
     save.seed <- get(".Random.seed",pos=.GlobalEnv)
     set.seed(seed)
   }
-  
+
   if (length(params)==0)
     stop(sQuote("pfilter")," error: ",sQuote("params")," must be specified",call.=FALSE)
-  
+
   if (missing(tol))
     stop(sQuote("pfilter")," error: ",sQuote("tol")," must be specified",call.=FALSE)
-  
+
   one.par <- FALSE
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
-  
+
   if (missing(Np))
     Np <- NCOL(params)
   if (is.function(Np)) {
@@ -105,7 +105,7 @@ pfilter.internal <- function (object, params, Np,
   if (!is.numeric(Np))
     stop(sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
   Np <- as.integer(Np)
-  
+
   if (is.null(dim(params))) {
     one.par <- TRUE               # there is only one parameter vector
     coef(object) <- params        # set params slot to the parameters
@@ -122,7 +122,7 @@ pfilter.internal <- function (object, params, Np,
   paramnames <- rownames(params)
   if (is.null(paramnames))
     stop(sQuote("pfilter")," error: ",sQuote("params")," must have rownames",call.=FALSE)
-  
+
   init.x <- init.state(
                        object,
                        params=if (transform) {
@@ -136,7 +136,7 @@ pfilter.internal <- function (object, params, Np,
   nvars <- nrow(init.x)
   ptsi.for <- FALSE
   x <- init.x
-  
+
   ## set up storage for saving samples from filtering distributions
   if (save.states | filter.traj) {
     xparticles <- setNames(vector(mode="list",length=ntimes),time(object))
@@ -166,12 +166,12 @@ pfilter.internal <- function (object, params, Np,
     rw.names <- character(0)
     sigma <- NULL
   }
-  
+
   loglik <- rep(NA,ntimes)
   eff.sample.size <- numeric(ntimes)
   nfail <- 0
   npars <- length(rw.names)
-  
+
   ## set up storage for prediction means, variances, etc.
   if (pred.mean)
     pred.m <- matrix(
@@ -184,7 +184,7 @@ pfilter.internal <- function (object, params, Np,
                      )
   else
     pred.m <- array(data=numeric(0),dim=c(0,0))
-  
+
   if (pred.var)
     pred.v <- matrix(
                      data=0,
@@ -196,7 +196,7 @@ pfilter.internal <- function (object, params, Np,
                      )
   else
     pred.v <- array(data=numeric(0),dim=c(0,0))
-  
+
   if (filter.mean)
     if (random.walk)
       filt.m <- matrix(
@@ -222,7 +222,7 @@ pfilter.internal <- function (object, params, Np,
   if (filter.traj)
     filt.t <- array(
                     data=0,
-                    dim=c(nvars,1,ntimes+1), 
+                    dim=c(nvars,1,ntimes+1),
                     dimnames=list(
                       variable=statenames,
                       rep=1,
@@ -232,19 +232,19 @@ pfilter.internal <- function (object, params, Np,
     filt.t <- array(data=numeric(0),dim=c(0,0,0))
 
   for (nt in seq_len(ntimes)) { ## main loop
-    
-    if (mif2) {	  
+
+    if (mif2) {
       cool.sched <- cooling(nt=nt,m=cooling.m)
       sigma1 <- sigma*cool.sched$alpha
     } else {
       sigma1 <- sigma
     }
-    
+
     ## transform the parameters if necessary
     if (transform) tparams <- partrans(object,params,dir="fromEstimationScale",
                                        .getnativesymbolinfo=ptsi.for)
     ptsi.for <- FALSE
-    
+
     ## advance the state variables according to the process model
     X <- try(
              rprocess(
@@ -260,7 +260,7 @@ pfilter.internal <- function (object, params, Np,
     if (inherits(X,'try-error'))
       stop(sQuote("pfilter")," error: process simulation error",call.=FALSE)
     gnsi.rproc <- FALSE
-    
+
     if (pred.var) { ## check for nonfinite state variables and parameters
       problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])
       if (length(problem.indices)>0) {  # state variables
@@ -281,7 +281,7 @@ pfilter.internal <- function (object, params, Np,
         }
       }
     }
-    
+
     ## determine the weights
     weights <- try(
                    dmeasure(
@@ -296,11 +296,11 @@ pfilter.internal <- function (object, params, Np,
                    silent=FALSE
                    )
     if (inherits(weights,'try-error'))
-      stop(sQuote("pfilter")," error: error in calculation of weights",call.=FALSE)
+      stop("in ",sQuote("pfilter"),": error in calculation of weights.",call.=FALSE)
     if (!all(is.finite(weights)))
-      stop(sQuote("pfilter")," error: ",sQuote("dmeasure")," returns non-finite value",call.=FALSE)
+      stop("in ",sQuote("pfilter"),": ",sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
     gnsi.dmeas <- FALSE
-    
+
     ## compute prediction mean, prediction variance, filtering mean,
     ## effective sample size, log-likelihood
     ## also do resampling if filtering has not failed
@@ -328,10 +328,10 @@ pfilter.internal <- function (object, params, Np,
     all.fail <- xx$fail
     loglik[nt] <- xx$loglik
     eff.sample.size[nt] <- xx$ess
-    
+
     x <- xx$states
     params <- xx$params
-    
+
     if (pred.mean)
       pred.m[,nt] <- xx$pm
     if (pred.var)
@@ -340,7 +340,7 @@ pfilter.internal <- function (object, params, Np,
       filt.m[,nt] <- xx$fm
     if (filter.traj)
       pedigree[[nt]] <- xx$ancestry
-    
+
     if (all.fail) { ## all particles are lost
       nfail <- nfail+1
       if (verbose)
@@ -353,15 +353,15 @@ pfilter.internal <- function (object, params, Np,
       xparticles[[nt]] <- x
       dimnames(xparticles[[nt]]) <- setNames(dimnames(xparticles[[nt]]),c("variable","rep"))
     }
-    
+
     if (save.params) {
       pparticles[[nt]] <- params
       dimnames(pparticles[[nt]]) <- setNames(dimnames(pparticles[[nt]]),c("variable","rep"))
     }
-    
+
     if (verbose && (nt%%5==0))
       cat("pfilter timestep",nt,"of",ntimes,"finished\n")
-    
+
   } ## end of main loop
 
   if (filter.traj) { ## select a single trajectory
@@ -384,9 +384,9 @@ pfilter.internal <- function (object, params, Np,
       filt.t <- filt.t[,,-1L,drop=FALSE]
     }
   }
-  
+
   if (!save.states) xparticles <- list()
-  
+
   if (length(seed)>0) {
     assign(".Random.seed",save.seed,pos=.GlobalEnv)
     seed <- save.seed
@@ -405,7 +405,7 @@ pfilter.internal <- function (object, params, Np,
       pred.mean=pred.m,
       pred.var=pred.v,
       filter.mean=filt.m,
-      filter.traj=filt.t, 
+      filter.traj=filt.t,
       paramMatrix=if (mif2) params else array(data=numeric(0),dim=c(0,0)),
       eff.sample.size=eff.sample.size,
       cond.loglik=loglik,

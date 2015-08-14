@@ -37,18 +37,20 @@
   \pkg{pomp} provides a very general interface to the components of \acronym{POMP} models.
   All the inference algorithms in \pkg{pomp} interact with the models and data via this interface.
   One goal of the \pkg{pomp} project has been to facilitate the development of new algorithms in an environment where they can be tested and compared on a growing body of models and datasets.
-  
+
   The low-level interface relevant to developers is documented \link[=rprocess]{here}.
 }
 \section{Comments, bug reports, feature requests}{
   Contributions are welcome, as are comments, feature requests, and bug reports.
+  Please submit these via the issues page (\url{https://github.com/kingaa/pomp/issues}).
   See the package website \url{http://kingaa.github.io/pomp} for more information, access to the package new RSS feed, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
+  Help requests are welcome, but please read the FAQ (\url{http://kingaa.github.io/pomp/vignettes/FAQ.html#how-can-i-submit-an-effective-request-for-help}) before sending requests.
 }
 \section{Documentation}{
   A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the package homepage: \url{http://kingaa.github.io/pomp}.
   Several examples of the construction of \code{pomp} objects are provided with the package and are documented in the help pages: to view a full list of these, execute \code{pompExample()}.
   In addition, there are a number of demos, which can be viewed by executing \code{demo(package="pomp")}.
-}    
+}
 \section{History}{
   Much of the groundwork for \pkg{pomp} was laid by a working group of the National Center for Ecological Analysis and Synthesis (\acronym{NCEAS}), \dQuote{Inference for Mechanistic Models}.
 }
@@ -61,7 +63,7 @@
 \author{Aaron A. King}
 \seealso{
   \code{\link{pomp}},
-  \link{pomp low-level interface}, 
+  \link{pomp low-level interface},
   \code{\link{pfilter}},
   \code{\link[=simulate-pomp]{simulate}},
   \code{\link{mif}},
