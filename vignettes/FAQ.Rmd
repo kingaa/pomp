@@ -14,7 +14,7 @@ Before submitting a request, examine the error messages and try to figure out wh
 Check to see if you are using the latest version of **pomp**: if not, check to see if the problem you have is solved by upgrading to the latest version.
 Read through the [Frequently Asked Questions](FAQ) to see if the answer to your question is there.
 
-If you still have a problem, then submit a request for help via the [Issues page](https://github.com/kingaa/pomp/issues).
+If you still have a problem, then submit a request for help via the [Issues page](https://github.com/kingaa/pomp/issues) if possible or to Aaron King (kingaa at umich dot edu) if necessary.
 Include in your request---at a minimum---the code that you ran that produced the error, together with a transcript of the **R** session that gave the errors.
 Make sure to run `sessionInfo()` in your session, so that I can see what version of **pomp** you are using, what version of **R**, what kind of machine you have, etc.
 Better still, construct a minimal example that will reproduce the error: this allows for the most efficient solution of problems.
@@ -121,3 +121,21 @@ data.frame(Y1=NA,t=1:20) %>%
     geom_line()+theme_bw()
 ```
 
+## I see an error about `dmeasure` returning non-finite values.  What does it mean?
+
+A common error message is 
+```
+Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value
+```
+
+This error arises because your `dmeasure` function is giving a non-finite value of the likelihood.
+Common causes are:
+
+- negative or non-integer state variables when the dmeasure assumes non-negative or integer values,
+- missing data,
+- the `dmeasure` function or `Csnippet` returning the log likelihood when the likelihood is requested, or vice versa.
+
+See the help (`?Csnippet`) for information on how to properly write `dmeasure` `Csnippet`s.
+A useful way to help debug this is to put `Rprintf` statements in your `dmeasure` `Csnippet` to view the values of the data, state variables, and likelihoods.
+
+Remember, `dmeasure` has to be able to return the likelihood *or the log likelihood* upon request!
