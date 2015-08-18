@@ -10,7 +10,7 @@ require(plyr)
 require(reshape2)
 require(xtable)
 
-stopifnot(packageVersion("pomp")>="0.65-1")
+stopifnot(packageVersion("pomp")>="1.0.0.0")
 
 
 ## ----set-opts,include=F,cache=F------------------------------------------
@@ -31,22 +31,6 @@ options(
 ## ----set-seed,cache=F,include=F------------------------------------------
 set.seed(5384959L)
 options(cores=10)
-
-
-## ----bake,include=FALSE,cache=FALSE--------------------------------------
-bake <- function (file, expr) {
-  expr <- substitute(expr)
-  if (file.exists(file)) {
-    load(file,envir=parent.frame())
-  } else {
-    env <- new.env()
-    eval(expr,envir=env)
-    save(list=ls(envir=env),envir=env,file=file)
-    for (n in ls(envir=env))
-      assign(n,get(n,envir=env),envir=parent.frame())
-  }
-  invisible(NULL)
-}
 
 ## ----timing1,echo=F,cache=F----------------------------------------------
 bigtick <- Sys.time()
@@ -240,14 +224,11 @@ theta.true <- theta
 ## }
 
 ## ----gompertz-mif-eval,echo=F,results="hide",cache=F---------------------
-bake("gompertz-mif.rda",{
+stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
 
   require(doMC)
   require(foreach)
   registerDoMC()
-
-  save.seed <- .Random.seed
-  set.seed(334388458L,kind="L'Ecuyer")
 
   estpars <- c("r", "sigma", "tau")
 
@@ -271,7 +252,6 @@ bake("gompertz-mif.rda",{
    }
   toc <- Sys.time()
   mifTime <- toc-tic
-  .Random.seed <<- save.seed
 
   mf1 <- mif1[[which.max(pf1)]]
   theta.mif <- coef(mf1)
@@ -365,7 +345,7 @@ gompertz.dprior <- function (params, ..., log) {
 require(pomp)
 require(coda)
 
-bake("pmcmc.rda",{
+stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
 
   pompExample(gompertz)
 
@@ -373,9 +353,6 @@ bake("pmcmc.rda",{
   require(doMC)
   require(foreach)
   registerDoMC()
-
-  save.seed <- .Random.seed
-  set.seed(334388458L,kind="L'Ecuyer")
 
   pmcmc1 <- foreach(
     i=1:5,
@@ -392,12 +369,11 @@ bake("pmcmc.rda",{
 
 toc <- Sys.time()
 pmcmcTime <- toc-tic
-.Random.seed <<- save.seed
 
 pmcmc.traces <- conv.rec(pmcmc1,c("r","sigma","tau"))
 pmcmc.traces <- window(pmcmc.traces,start=20001,thin=40)
 ess.pmcmc <- effectiveSize(pmcmc.traces)
-rm(pmcmc1,save.seed,tic,toc)
+rm(pmcmc1,tic,toc)
 })
 
 ## ----pmcmc-diagnostics,results="hide",fig.show="hide",echo=F,eval=T------
@@ -506,7 +482,7 @@ plot(pb)
 ##                   )
 
 ## ----ricker-probe.match-eval,echo=F,eval=T,results="hide",cache=F--------
-bake("ricker-probe-match.rda",{
+stew(file="ricker-probe-match.rda",{
   pm <- probe.match(
                     pb.guess,
                     est=c("r","sigma","phi"),
@@ -525,18 +501,15 @@ bake("ricker-probe-match.rda",{
 ## mf <- continue(mf, Nmif = 500, max.fail = 20)
 
 ## ----ricker-mif-eval,echo=F,eval=T,cache=F,results="hide"----------------
-bake("ricker-mif.rda",{
-  save.seed <- .Random.seed
-  set.seed(718086921L)
+stew(file="ricker-mif.rda",seed=718086921L,{
   mf <- mif(ricker, start = guess, Nmif = 100, Np = 1000, transform = TRUE,
             cooling.fraction = 0.95^50, var.factor = 2, ic.lag = 3,
             rw.sd=c(r = 0.1, sigma = 0.1, phi = 0.1), max.fail = 50)
   mf <- continue(mf, Nmif = 500, max.fail = 20)
-  .Random.seed <<- save.seed
 })
 
 ## ----ricker-comparison,eval=T,echo=F,cache=F-----------------------------
-bake("ricker-comparison.rda",{
+stew(file="ricker-comparison.rda",seed=1182206495L,kind="L'Ecuyer",{
   require(plyr)
   require(magrittr)
   require(foreach)
@@ -547,9 +520,6 @@ bake("ricker-comparison.rda",{
         truth=coef(ricker),
         MLE=coef(mf),
         MSLE=coef(pm)) -> comp
-
-  save.seed <- .Random.seed
-  set.seed(1182206495L,kind="L'Ecuyer")
 
   foreach (theta=iter(comp,"row"),.combine=rbind) %do% {
 
@@ -567,7 +537,6 @@ bake("ricker-comparison.rda",{
     cbind(theta,loglik=pf[1],loglik.se=pf[2],logsynlik=pb[1],logsynlik.se=pb[2])
   } %>% subset(select=-c(N.0,e.0)) -> comp
 
-  .Random.seed <<- save.seed
 })
 
 ## ----ricker-comparison-show,echo=F,results="asis"------------------------
@@ -610,7 +579,7 @@ plist <- list(probe.mean(var = "Y", transform = sqrt),
 psim <- probe(gompertz, probes = plist, nsim = 500)
 scale.dat <- apply(psim$simvals, 2, sd)
 
-bake("abc.rda",{
+stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
 
   pompExample(gompertz)
 
@@ -618,9 +587,6 @@ bake("abc.rda",{
   require(doMC)
   require(foreach)
   registerDoMC()
-
-  save.seed <- .Random.seed
-  set.seed(334388458L,kind="L'Ecuyer")
 
   abc1 <- foreach(
     i=1:5,
@@ -636,12 +602,11 @@ bake("abc.rda",{
 
 toc <- Sys.time()
 abcTime <- toc-tic
-.Random.seed <<- save.seed
 
 abc.traces <- conv.rec(abc1,c("r","sigma","tau"))
 abc.traces <- window(abc.traces,start=2000001,thin=400)
 ess.abc <- effectiveSize(abc.traces)
-rm(abc1,save.seed,tic,toc)
+rm(abc1,tic,toc)
 })
 
 
@@ -698,13 +663,10 @@ gompList <- simulate(gompertz,nsim=R)
 
 
 ## ----nlf-mif-compare-eval,echo=F,eval=T,results="hide"-------------------
-bake("nlf-mif-compare.rda",{
+stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   require(doMC)
   require(foreach)
   registerDoMC()
-
-  save.seed <- .Random.seed
-  set.seed(816326853L,kind="L'Ecuyer")
 
   tic <- Sys.time()
   cmp1 <- foreach(gomp=gompList,
@@ -753,7 +715,6 @@ bake("nlf-mif-compare.rda",{
 }
 toc <- Sys.time()
 nlf.mif.time <- toc-tic
-.Random.seed <<- save.seed
 cmp1 <- as.data.frame(cmp1)
 })
 
@@ -852,17 +813,16 @@ ops <- options(scipen=-10)
 plot(sir1,mar=c(0,5,2,0))
 options(ops)
 
-## ----birthdat,eval=T,echo=F----------------------------------------------
+## ----birthdat,eval=T,echo=F,results="hide"-------------------------------
 birthdat <- data.frame(time=seq(-1,11,by=1/12))
 birthdat$births <- 5e5*bspline.basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
-save.seed <- .Random.seed
-set.seed(5853712L)
-birthdat$births <- ceiling(rlnorm(
-                                  n=nrow(birthdat),
-                                  meanlog=log(birthdat$births),
-                                  sdlog=0.001
-                                  ))
-.Random.seed <<- save.seed
+freeze(seed=5853712L,{
+  birthdat$births <- ceiling(rlnorm(
+                                    n=nrow(birthdat),
+                                    meanlog=log(birthdat$births),
+                                    sdlog=0.001
+                                    ))
+})
 
 ## ----complex-sir-def,echo=T,eval=T,results="hide",tidy=F-----------------
 seas.sir.step <- "

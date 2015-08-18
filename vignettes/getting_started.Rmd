@@ -43,30 +43,22 @@ opts_chunk$set(
   )
 ```
 
-
+```{r parallel,include=FALSE,cache=FALSE}
+require(foreach)
+require(doMPI)
+cl <- startMPIcluster()
+registerDoMPI(cl)
+```
 ```{r prelims,echo=FALSE,cache=FALSE}
 require(pomp)
-stopifnot(packageVersion("pomp")>="0.78-1")
+stopifnot(packageVersion("pomp")>="1.0.0.0")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
   scipen=5
   )
-```
-```{r parallel,include=FALSE,cache=FALSE}
-require(foreach)
-ncpus <- as.integer(Sys.getenv("PBS_NP"))
-use.mpi <- !is.na(ncpus)
-if (use.mpi) {
-  require(doMPI)
-  cl <- startMPIcluster(ncpus)
-  registerDoMPI(cl)
-} else {
-  require(doMC)
-  registerDoMC(cores=5)
-}
-set.seed(594709947L,kind="L'Ecuyer")
+set.seed(594709947L)
 ```
 ```{r prelims2,echo=FALSE,cache=FALSE}
 require(ggplot2)
@@ -449,7 +441,6 @@ bake(file="parus-mif.rds",{
                          upper=c(r=5,K=600,sigma=2,N.0=200),
                          nseq=100)
   foreach (guess=iter(guesses,"row"),.combine=rbind,
-           .options.multicore=list(set.seed=TRUE),
            .options.mpi=list(seed=334065675),
            .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% {
              parus %>% 
@@ -463,8 +454,8 @@ bake(file="parus-mif.rds",{
 }) -> mles
 ```
 In the above, we first use `sobolDesign` to construct a Latin hypercube design for the "starting points", i.e., the points in parameter space where we will begin our searches for the MLE.
-At each of these (`foreach`), we first run 50 iterations of the IF2 algorithm.
-We then re-run the algorithm, starting from where the first run ended up.
+At each of these (`foreach`), we first run 50 iterations of the IF2 algorithm (`mif2`).
+We then re-run the algorithm, starting from where the first run ended up (the second `mif2`).
 To obtain an estimate of the log likelihood at that (putative) MLE, we run 5 independent particle filtering operations (`pfilter`), averaging the likelihoods with proper attention paid to Jensen's inequality (`logmeanexp`).
 This gives us both an unbiased estimate of the log likelihood at that point and an estimate of the Monte Carlo error in that estimate.
 A useful way of displaying the results of such multi-start search is the pairwise scatterplot matrix:
@@ -547,7 +538,6 @@ bake(file="parus-pmcmc.rds",{
     subset(K > 100 & K < 600 & r < 5 & sigma < 2,
            select=-c(loglik,loglik.se)) -> starts
   foreach (start=iter(starts,"row"),.combine=c,
-           .options.multicore=list(set.seed=TRUE),
            .options.mpi=list(seed=23781975),
            .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% 
            {
@@ -595,7 +585,6 @@ traces %>% window(thin=200) %>% as.array() %>% melt() %>%
 
 bake(file="parus-ftraj.rds",{
   foreach (theta=iter(points,"row"),.combine=rbind,
-           .options.multicore=list(set.seed=TRUE),
            .options.mpi=list(seed=1358349284),
            .packages=c("pomp","magrittr","reshape2"),
            .errorhandling="pass") %dopar% 
@@ -623,10 +612,8 @@ trajs %>%
 ## References
 
 ```{r,stop-mpi,include=FALSE}
-if (use.mpi) {
-  closeCluster(cl)
-  try(detach("package:doMPI",unload=TRUE),silent=TRUE)
-  if (exists("mpi.exit")) mpi.exit()
-  try(detach("package:Rmpi",unload=TRUE),silent=TRUE)
-}
+closeCluster(cl)
+try(detach("package:doMPI",unload=TRUE),silent=TRUE)
+if (exists("mpi.exit")) mpi.exit()
+try(detach("package:Rmpi",unload=TRUE),silent=TRUE)
 ```

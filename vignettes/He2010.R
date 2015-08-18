@@ -230,6 +230,7 @@ paramnames <- c("R0","mu","sigma","gamma","alpha","iota",
 theta <- unlist(mle[paramnames])
 
 ## ----mle-table,echo=FALSE------------------------------------------------
+require(knitr)
 kable(subset(mle,select=-c(town,mu,loglik.sd,delay,S_0,E_0,I_0,R_0)),row.names=FALSE)
 
 ## ----pfilter1------------------------------------------------------------

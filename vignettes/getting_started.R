@@ -1,26 +1,19 @@
+## ----parallel,include=FALSE,cache=FALSE----------------------------------
+require(foreach)
+require(doMPI)
+cl <- startMPIcluster()
+registerDoMPI(cl)
+
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 require(pomp)
-stopifnot(packageVersion("pomp")>="0.78-1")
+stopifnot(packageVersion("pomp")>="1.0.0.0")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
   scipen=5
   )
-
-## ----parallel,include=FALSE,cache=FALSE----------------------------------
-require(foreach)
-ncpus <- as.integer(Sys.getenv("PBS_NP"))
-use.mpi <- !is.na(ncpus)
-if (use.mpi) {
-  require(doMPI)
-  cl <- startMPIcluster(ncpus)
-  registerDoMPI(cl)
-} else {
-  require(doMC)
-  registerDoMC(cores=5)
-}
-set.seed(594709947L,kind="L'Ecuyer")
+set.seed(594709947L)
 
 ## ----prelims2,echo=FALSE,cache=FALSE-------------------------------------
 require(ggplot2)
@@ -209,7 +202,6 @@ bake(file="parus-mif.rds",{
                          upper=c(r=5,K=600,sigma=2,N.0=200),
                          nseq=100)
   foreach (guess=iter(guesses,"row"),.combine=rbind,
-           .options.multicore=list(set.seed=TRUE),
            .options.mpi=list(seed=334065675),
            .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% {
              parus %>% 
@@ -288,7 +280,6 @@ bake(file="parus-pmcmc.rds",{
     subset(K > 100 & K < 600 & r < 5 & sigma < 2,
            select=-c(loglik,loglik.se)) -> starts
   foreach (start=iter(starts,"row"),.combine=c,
-           .options.multicore=list(set.seed=TRUE),
            .options.mpi=list(seed=23781975),
            .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% 
            {
@@ -325,7 +316,6 @@ traces %>% window(thin=200) %>% as.array() %>% melt() %>%
 
 bake(file="parus-ftraj.rds",{
   foreach (theta=iter(points,"row"),.combine=rbind,
-           .options.multicore=list(set.seed=TRUE),
            .options.mpi=list(seed=1358349284),
            .packages=c("pomp","magrittr","reshape2"),
            .errorhandling="pass") %dopar% 
@@ -350,10 +340,8 @@ trajs %>%
   geom_point(data=parus.dat,aes(x=year,y=P),color='black',size=2)
 
 ## ----stop-mpi,include=FALSE----------------------------------------------
-if (use.mpi) {
-  closeCluster(cl)
-  try(detach("package:doMPI",unload=TRUE),silent=TRUE)
-  if (exists("mpi.exit")) mpi.exit()
-  try(detach("package:Rmpi",unload=TRUE),silent=TRUE)
-}
+closeCluster(cl)
+try(detach("package:doMPI",unload=TRUE),silent=TRUE)
+if (exists("mpi.exit")) mpi.exit()
+try(detach("package:Rmpi",unload=TRUE),silent=TRUE)
 
