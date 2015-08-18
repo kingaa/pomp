@@ -11,13 +11,13 @@ csl: ecology.csl
 
 Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
 Please share and remix noncommercially, mentioning its origin.  
-![CC-BY_NC](../graphics/cc-by-nc.png)
+![CC-BY_NC](../../images/cc-by-nc.png)
 
 This document was produced using `pomp` version `r packageVersion("pomp")` and `pompExamples` version `r packageVersion("pompExamples")`.
 
 ```{r setup,include=FALSE}
 require(pomp)
-stopifnot(packageVersion("pomp")>="0.65-1")
+stopifnot(packageVersion("pomp")>="1.0.0.0")
 
 options(
   keep.source=TRUE,
@@ -48,20 +48,6 @@ opts_chunk$set(
   fig.height=5,fig.width=10,
   dpi=100
   )
-```
-
-First, a little function to cache the results of expensive computations.
-
-```{r bake}
-bake <- function (file, expr) {
-  if (file.exists(file)) {
-    readRDS(file)
-    } else {
-      val <- eval(expr)
-      saveRDS(val,file=file)
-      val
-      }
-  }
 ```
 
 ## Flu model with exponentially-distributed waiting times
