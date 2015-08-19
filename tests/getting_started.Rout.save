@@ -220,4 +220,4 @@ Loading required package: magrittr
 > 
 > proc.time()
    user  system elapsed 
-  3.757   0.690   4.445 
+  3.836   0.608   7.490 

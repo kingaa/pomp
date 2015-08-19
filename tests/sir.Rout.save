@@ -1,7 +1,7 @@
 
-R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
 Copyright (C) 2015 The R Foundation for Statistical Computing
-Platform: x86_64-unknown-linux-gnu (64-bit)
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -190,7 +190,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x181b868>
+<environment: 0x2faad08>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -199,7 +199,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x118fda8>
+<environment: 0x2fd83c8>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -272,7 +272,7 @@ parameter(s):
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.759764 secs
+Time difference of 0.7211013 secs
 > 
 > pdf(file='sir.pdf')
 > 
@@ -289,7 +289,7 @@ Time difference of 0.759764 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.4751971 secs
+Time difference of 0.4619653 secs
 > plot(t3,X3['I',1,],type='l')
 > 
 > f1 <- dprocess(
@@ -344,7 +344,7 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.476431 secs
+Time difference of 2.463336 secs
 > plot(x[[1]],variables=c("S","I","R","cases","W"))
 > 
 > t3 <- seq(0,20,by=1/52)
@@ -352,7 +352,7 @@ Time difference of 2.476431 secs
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01595879 secs
+Time difference of 0.01553464 secs
 > plot(t3,X4['I',1,],type='l')
 > 
 > g2 <- dmeasure(
@@ -450,4 +450,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
-  4.676   0.040   4.850 
+  4.560   0.048   4.885 

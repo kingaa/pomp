@@ -1,7 +1,7 @@
 
-R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
 Copyright (C) 2015 The R Foundation for Statistical Computing
-Platform: x86_64-unknown-linux-gnu (64-bit)
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -57,7 +57,7 @@ newly created object(s):
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 1.892551 secs
+Time difference of 1.926674 secs
 > 
 > print(
 +       cbind(
@@ -99,4 +99,4 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > proc.time()
    user  system elapsed 
-  3.236   0.060   3.304 
+  3.296   0.060   3.479 

@@ -1,7 +1,7 @@
 
-R Under development (unstable) (2015-07-21 r68707) -- "Unsuffered Consequences"
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
 Copyright (C) 2015 The R Foundation for Statistical Computing
-Platform: x86_64-unknown-linux-gnu (64-bit)
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -114,4 +114,4 @@ Warning message:
 > 
 > proc.time()
    user  system elapsed 
-  0.532   0.028   0.557 
+  0.536   0.044   0.691 
