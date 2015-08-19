@@ -493,26 +493,28 @@ bake("parus-profile.rds",{
     ll <- sapply(pf,logLik)
     ll <- logmeanexp(ll,se=TRUE)
     nfail <- sapply(pf,getElement,"nfail")  ## number of filtering failures
-
+    
     data.frame(as.list(coef(mf)),
                loglik = ll[1],
                loglik.se = ll[2],
                nfail.min = min(nfail),
                nfail.max = max(nfail))
-  }
-}) %>% mutate(r=signif(r,8)) -> r_prof
+  } %>% arrange(r,-loglik)
+}) -> r_prof
 ```
 
 ```{r parus-profile-plot}
 pairs(~loglik+r+K+sigma,data=r_prof,subset=loglik>max(loglik)-10)
 r_prof %>% 
+  mutate(r=signif(r,8)) %>%
   ddply(~r,subset,loglik==max(loglik)) %>%
   ggplot(aes(x=r,y=loglik))+geom_point()+geom_smooth()
 ```
 
 Now let us plot the data and 10 simulated realizations of the model process are plotted on the same axes.
 ```{r plot-mle-sims}
-subset(r_prof,loglik==max(loglik)) %>% unlist() -> mle
+r_prof %>% 
+  subset(loglik==max(loglik)) %>% unlist() -> mle
 simulate(parus,params=mle,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
   ggplot(mapping=aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
   scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
