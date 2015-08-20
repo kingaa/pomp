@@ -158,7 +158,7 @@ geweke.diag(trace)
 }
 \seealso{
   \code{\link{pomp}}, \code{\link{pfilter}}, \link{MCMC proposal distributions},
-  and the tutorials on the \href{http://pomp.r-forge.r-project.org}{package website}.
+  and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 }
 \references{
   C. Andrieu, A. Doucet and R. Holenstein, 
