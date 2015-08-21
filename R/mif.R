@@ -55,19 +55,24 @@ mif.cooling.function <- function (type, perobs, fraction, ntimes) {
            }
          },
          hyperbolic={
-           if (perobs) {
-             scal <- (50*ntimes*fraction-1)/(1-fraction)
-             function (nt, m) {
-               alpha <- (1+scal)/(scal+nt+ntimes*(m-1))
-               list(alpha=alpha,gamma=alpha^2)
+           if (fraction < 1) {
+             if (perobs) {
+               scal <- (50*ntimes*fraction-1)/(1-fraction)
+               function (nt, m) {
+                 alpha <- (1+scal)/(scal+nt+ntimes*(m-1))
+                 list(alpha=alpha,gamma=alpha^2)
+               }
+             } else {
+               scal <- (50*fraction-1)/(1-fraction)
+               function (nt, m) {
+                 alpha <- (1+scal)/(scal+m-1)
+                 list(alpha=alpha,gamma=alpha^2)
+               }
              }
            } else {
-             scal <- (50*fraction-1)/(1-fraction)
              function (nt, m) {
-               alpha <- (1+scal)/(scal+m-1)
-               list(alpha=alpha,gamma=alpha^2)
+               list(alpha=1,gamma=1)
              }
-
            }
          },
          stop("unrecognized cooling schedule type ",sQuote(type))
