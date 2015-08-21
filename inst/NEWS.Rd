@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.1.2.1}{
+  \itemize{
+    \item Fixed a bug in \code{mif} and \code{mif2} when \code{cooling.type="hyperbolic"} and \code{cooling.fraction.50=1}.
+  }
+}
 \section{Changes in \pkg{pomp} version 0.78-1}{
   \itemize{
     \item There is a new, adaptive MCMC proposal function, \code{mvn.rw.adaptive} that can be used in \code{pmcmc} and \code{abc}.
