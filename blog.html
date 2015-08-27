@@ -8,6 +8,7 @@ title: pomp news blog
 {% for post in site.posts %}
 <a id="{{ post.title | slugify }}"></a>
 <h3>{{ post.title }}</h3>
+<h5>{{ post.date | date_to_long_string }}</h5>
     {{ post.content }}
 <hr style="size: 1px; color: #eeeeee;"/>
 {% endfor %}
