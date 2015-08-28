@@ -22,10 +22,6 @@ require(reshape2)
 require(magrittr)
 theme_set(theme_bw())
 
-## ----install-packages,eval=FALSE-----------------------------------------
-## require(devtools)
-## install_github("kingaa/pomp")
-
 ## ----load-parus-data-----------------------------------------------------
 parus.dat <- read.csv(text="
                       year,P
@@ -290,11 +286,12 @@ bake(file="parus-pmcmc.rds",{
                      proposal=mvn.rw.adaptive(rw.sd=c(r=0.1,K=100,sigma=0.1),
                                               scale.start=100,shape.start=100)) -> chain
              chain %>% pmcmc(Nmcmc=10000,proposal=mvn.rw(covmat(chain)))
-           } %>% conv.rec()
-}) -> traces
+           }
+}) -> chains
 
 ## ----pmcmc-diagnostics---------------------------------------------------
 require(coda)
+chains %>% conv.rec() -> traces
 rejectionRate(traces[,c("r","K","sigma")])
 autocorr.diag(traces[,c("r","K","sigma")])
 traces <- window(traces,thin=50,start=1000)
@@ -313,24 +310,10 @@ simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
   geom_line()
 
 ## ----parus-filter-traj---------------------------------------------------
-traces %>% window(thin=200) %>% as.array() %>% melt() %>% 
-  dcast(chain+iter~var) -> points
-
-bake(file="parus-ftraj.rds",{
-  foreach (theta=iter(points,"row"),.combine=rbind,
-           .options.mpi=list(seed=1358349284),
-           .packages=c("pomp","magrittr","reshape2"),
-           .errorhandling="pass") %dopar% 
-           {
-             parus %>%
-               pfilter(Np=200,params=unlist(theta),filter.traj=TRUE) %>%
-               filter.traj() %>% 
-               melt() %>% 
-               dcast(rep+time~variable)
-           }
-}) -> trajs
-
-trajs %>%
+chains %>% laply(filter.traj) %>%
+  melt() %>% 
+  rename(c(Var1="chain",value="N")) %>%
+  subset(rep > 1000 & rep %% 50 == 0) %>%
   ddply(~time,summarize,
         prob=c(0.025,0.5,0.975),
         q=quantile(N,prob)) %>% 

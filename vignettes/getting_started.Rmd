@@ -124,11 +124,7 @@ Formally, $$\mathrm{Prob}[X_t|X_0,\dots,X_{t-1},Y_1,\dots,Y_{t-1}]=\mathrm{Prob}
 
 To get started, we must install **pomp**, if it is not already installed.
 The package can be downloaded from CRAN, but the latest version is always available at the package homepage on Github.
-Run the following to install this to download and install the latest version.
-```{r install-packages,eval=FALSE}
-require(devtools)
-install_github("kingaa/pomp")
-```
+See the [package website for installation instructions](http://kingaa.github.io/pomp/install.html).
 
 ### Important information for Windows and Mac users.
 
@@ -548,16 +544,17 @@ bake(file="parus-pmcmc.rds",{
                      proposal=mvn.rw.adaptive(rw.sd=c(r=0.1,K=100,sigma=0.1),
                                               scale.start=100,shape.start=100)) -> chain
              chain %>% pmcmc(Nmcmc=10000,proposal=mvn.rw(covmat(chain)))
-           } %>% conv.rec()
-}) -> traces
+           }
+}) -> chains
 ```
 
 In the above, we first subset out those `mif2` estimates that are consistent with our prior.
 At each of these, we then perform a number of MCMC moves, using an adaptive multivariate-normal random-walk proposal distribution `mvn.rw.adaptive`.
-To complete the inference, we do `r nrow(traces)` more MCMC iterations using a multivariate random-walk proposal (`mvn.rw`) with covariance matrix derived from the preceding computation (`covmat`).
+To complete the inference, we do `r nrow(chains[[1]])` more MCMC iterations using a multivariate random-walk proposal (`mvn.rw`) with covariance matrix derived from the preceding computation (`covmat`).
 
 ```{r pmcmc-diagnostics}
 require(coda)
+chains %>% conv.rec() -> traces
 rejectionRate(traces[,c("r","K","sigma")])
 autocorr.diag(traces[,c("r","K","sigma")])
 traces <- window(traces,thin=50,start=1000)
@@ -582,24 +579,10 @@ If we desire an estimate of the smoothed state variables, i.e., the distribution
 For example, the following codes run a particle filter at a sample of points from the posterior distribution and extract a single trajectory from each one.
 Assuming that the PMCMC chains above have converged, these are, as @Andrieu2010 showed, samples from the smoothing distribution.
 ```{r parus-filter-traj}
-traces %>% window(thin=200) %>% as.array() %>% melt() %>% 
-  dcast(chain+iter~var) -> points
-
-bake(file="parus-ftraj.rds",{
-  foreach (theta=iter(points,"row"),.combine=rbind,
-           .options.mpi=list(seed=1358349284),
-           .packages=c("pomp","magrittr","reshape2"),
-           .errorhandling="pass") %dopar% 
-           {
-             parus %>%
-               pfilter(Np=200,params=unlist(theta),filter.traj=TRUE) %>%
-               filter.traj() %>% 
-               melt() %>% 
-               dcast(rep+time~variable)
-           }
-}) -> trajs
-
-trajs %>%
+chains %>% laply(filter.traj) %>%
+  melt() %>% 
+  rename(c(Var1="chain",value="N")) %>%
+  subset(rep > 1000 & rep %% 50 == 0) %>%
   ddply(~time,summarize,
         prob=c(0.025,0.5,0.975),
         q=quantile(N,prob)) %>% 
