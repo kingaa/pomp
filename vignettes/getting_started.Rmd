@@ -552,6 +552,8 @@ In the above, we first subset out those `mif2` estimates that are consistent wit
 At each of these, we then perform a number of MCMC moves, using an adaptive multivariate-normal random-walk proposal distribution `mvn.rw.adaptive`.
 To complete the inference, we do `r nrow(chains[[1]])` more MCMC iterations using a multivariate random-walk proposal (`mvn.rw`) with covariance matrix derived from the preceding computation (`covmat`).
 
+Now we investigate the chains, to try and determine whether they have converged.
+
 ```{r pmcmc-diagnostics}
 require(coda)
 chains %>% conv.rec() -> traces
@@ -562,11 +564,13 @@ plot(traces[,"r"])
 plot(traces[,"K"])
 plot(traces[,"sigma"])
 gelman.diag(traces[,c("r","K","sigma")])
-summary(traces[,c("r","K","sigma")])
 ```
 
-Now let us simulate from the posterior median parameters.
+Insofar as we can tell, the MCMC iterations appear to have converged to their stationary distribution.
+Let us now examine the posterior distribution.
+We will also simulate from the posterior median parameters.
 ```{r pmcmc-sim}
+summary(traces[,c("r","K","sigma")])
 theta <- summary(traces)$quantiles[c("r","K","sigma","N.0"),'50%']
 simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
   ggplot(mapping=aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
@@ -576,10 +580,11 @@ simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
 ```
 
 If we desire an estimate of the smoothed state variables, i.e., the distribution of $N_t\,\vert\,P_{1960},\,\dots,\,P_{1986}$, for $t=1960,\,\dots\,1986$, we can use the `filter.traj` command to extract samples from this distribution.
-For example, the following codes run a particle filter at a sample of points from the posterior distribution and extract a single trajectory from each one.
-Assuming that the PMCMC chains above have converged, these are, as @Andrieu2010 showed, samples from the smoothing distribution.
+For example, the following codes extract a single trajectory from each MCMC sample.
+After thinning and discarding the burn-in, and assuming that the PMCMC chains above have converged, these are, as @Andrieu2010 showed, samples from the smoothing distribution.
 ```{r parus-filter-traj}
-chains %>% laply(filter.traj) %>%
+chains %>% 
+  laply(filter.traj) %>%
   melt() %>% 
   rename(c(Var1="chain",value="N")) %>%
   subset(rep > 1000 & rep %% 50 == 0) %>%
@@ -593,6 +598,7 @@ chains %>% laply(filter.traj) %>%
   geom_line(aes(x=time,y=med),color='blue')+
   geom_point(data=parus.dat,aes(x=year,y=P),color='black',size=2)
 ```
+
 
 ## References
 

@@ -299,9 +299,9 @@ plot(traces[,"r"])
 plot(traces[,"K"])
 plot(traces[,"sigma"])
 gelman.diag(traces[,c("r","K","sigma")])
-summary(traces[,c("r","K","sigma")])
 
 ## ----pmcmc-sim-----------------------------------------------------------
+summary(traces[,c("r","K","sigma")])
 theta <- summary(traces)$quantiles[c("r","K","sigma","N.0"),'50%']
 simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
   ggplot(mapping=aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
@@ -310,7 +310,8 @@ simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
   geom_line()
 
 ## ----parus-filter-traj---------------------------------------------------
-chains %>% laply(filter.traj) %>%
+chains %>% 
+  laply(filter.traj) %>%
   melt() %>% 
   rename(c(Var1="chain",value="N")) %>%
   subset(rep > 1000 & rep %% 50 == 0) %>%
