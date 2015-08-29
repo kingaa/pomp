@@ -96,6 +96,26 @@ setMethod(
           }
           )
 
+## extract the filtered trajectories from a pmcmc
+setMethod(
+          'filter.traj',
+          signature=signature(object='pmcmc'),
+          definition=function (object, ...) {
+            f <- selectMethod("filter.traj","pfilterd.pomp")
+            f(object,...)
+          }
+          )
+
+## extract the filtered trajectories from a pmcmcList
+setMethod(
+          'filter.traj',
+          signature=signature(object='pmcmcList'),
+          definition=function (object, ...) {
+            f <- selectMethod("filter.traj","pmcmc")
+            lapply(object,f,...)
+          }
+          )
+
 ## plot pmcmc object
 setMethod(
           "plot",

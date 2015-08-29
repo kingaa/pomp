@@ -1,4 +1,7 @@
 library(pomp)
+library(reshape2)
+library(plyr)
+library(magrittr)
 
 set.seed(1178744046L)
 
@@ -11,27 +14,26 @@ dprior.ou2 <- function (params, log, ...) {
 
 pdf(file="ou2-pmcmc.pdf")
 
-f1 <- pmcmc(
-            pomp(ou2,dprior=dprior.ou2),
-            Nmcmc=20,
-            proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
-            Np=100,
-            verbose=FALSE
-            )
-f1 <- continue(f1,Nmcmc=20)
-plot(f1)
+pmcmc(
+      pomp(ou2,dprior=dprior.ou2),
+      Nmcmc=20,
+      proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
+      Np=100,
+      verbose=FALSE
+      ) %>%
+  continue(Nmcmc=20) -> f1
+f1 %>% plot()
 
-ff <- pfilter(f1)
-f2 <- pmcmc(
-            ff,
-            Nmcmc=20,
-            proposal=mvn.diag.rw(c(alpha.2=0.01,alpha.3=0.01)),
-            max.fail=100, 
-            verbose=FALSE
-            )
+f1 %>% pfilter() %>%
+pmcmc(
+      Nmcmc=20,
+      proposal=mvn.diag.rw(c(alpha.2=0.01,alpha.3=0.01)),
+      max.fail=100, 
+      verbose=FALSE
+      ) -> f2
 
-f3 <- pmcmc(f2)
-f4 <- continue(f3,Nmcmc=20)
+f2 %>% pmcmc() -> f3
+f3 %>% continue(Nmcmc=20) -> f4
 filter.traj(f4)[,40,95:100]
 
 plot(c(f2,f3))
@@ -46,19 +48,18 @@ if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
   acf(conv.rec(f2a,c("alpha.2","alpha.3")))
 }
 
-f5 <- pmcmc(
-            pomp(ou2,
-                 dprior=function (params, log, ...) {
-                   f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
-                   if (log) f else exp(f)
-                 }
-                 ),
-            Nmcmc=20,
-            proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
-            Np=100,
-            verbose=FALSE
-            )
-f6 <- continue(f5,Nmcmc=20)
+ou2 %>%
+  pomp(dprior=function (params, log, ...) {
+    f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+    if (log) f else exp(f)
+  }) %>%
+pmcmc(
+      Nmcmc=20,
+      proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
+      Np=100,
+      verbose=FALSE
+      ) -> f5
+f5 %>% continue(Nmcmc=20) -> f6
 plot(f6)
 
 ff <- c(f4,f6)
@@ -85,33 +86,36 @@ sig <- array(data=c(0.1,-0.1,0,0.01),
                c("alpha.2","alpha.3")))
 sig <- crossprod(sig)
 
-f7 <- pmcmc(
-            pomp(ou2,
-                 dprior=function (params, log, ...) {
-                   f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
-                   if (log) f else exp(f)
-                 }
-                 ),
-            Nmcmc=30,
-            proposal=mvn.rw(sig),
-            Np=100,
-            verbose=FALSE
-            )
+ou2 %>%
+  pomp(dprior=function (params, log, ...) {
+    f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+    if (log) f else exp(f)
+  }) %>%
+  pmcmc(
+        Nmcmc=30,
+        proposal=mvn.rw(sig),
+        Np=100,
+        verbose=FALSE
+        ) -> f7
 plot(f7)
 filter.traj(f7,"x1")[1,30,1:5]
 
-f8 <- pmcmc(
-            pomp(ou2,dprior=function (params, log, ...) {
-              f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
-              if (log) f else exp(f)
-            }),
-            Nmcmc=500,Np=500,verbose=FALSE,
-            proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-              scale.start=50,shape.start=50))
-f8 <- continue(f8,Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
+ou2 %>%
+  pomp(dprior=function (params, log, ...) {
+    f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+    if (log) f else exp(f)
+  }) %>%
+  pmcmc(
+        Nmcmc=500,Np=500,verbose=FALSE,
+        proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+          scale.start=50,shape.start=50)) -> f8
+f8 %<>% continue(Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
 plot(f8)
+
 require(coda)
-trace <- window(conv.rec(f8,c("alpha.2","alpha.3")),start=500)
+
+f8 %>% conv.rec(c("alpha.2","alpha.3")) %>%
+  window(start=500) -> trace
 rejectionRate(trace)
 effectiveSize(trace)
 autocorr.diag(trace)
@@ -119,5 +123,19 @@ trace <- window(trace,thin=5)
 plot(trace)
 heidel.diag(trace)
 geweke.diag(trace)
+
+require(ggplot2)
+
+f8 %>%
+  filter.traj() %>%
+  melt() %>%
+  subset(rep %% 5 == 0) %>%
+  ddply(~time+variable,summarize,
+        prob=c(0.05,0.5,0.95),
+        q=quantile(value,prob=prob)
+        ) %>%
+  ggplot(aes(x=time,y=q,group=prob,color=factor(prob)))+
+  geom_line()+facet_grid(variable~.)+labs(color="quantile",y="value")+
+  theme_bw()
 
 dev.off()

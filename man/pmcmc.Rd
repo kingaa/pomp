@@ -18,6 +18,10 @@
 \alias{conv.rec-pmcmc}
 \alias{conv.rec,pmcmcList-method}
 \alias{conv.rec-pmcmcList}
+\alias{filter.traj,pmcmc-method}
+\alias{filter.traj,pmcmcList-method}
+\alias{filter.traj-pmcmc}
+\alias{filter.traj-pmcmcList}
 \alias{plot-pmcmc}
 \alias{plot,pmcmc-method}
 \alias{plot-pmcmcList}
@@ -103,20 +107,20 @@
 }
 \section{Methods}{
   \describe{
+    \item{c}{
+      Concatenates \code{pmcmc} objects into a \code{pmcmcList}.
+    }
     \item{\code{conv.rec(object, pars)}}{
       returns the columns of the convergence-record matrix corresponding to the names in \code{pars} as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
     }
     \item{\code{filter.traj(object, vars)}}{
-      returns filter trajectories.
+      returns filter trajectories from a \code{pmcmc} or \code{pmcmcList} object.
     }
     \item{plot}{
       Diagnostic plots.
     }
     \item{logLik}{
       Returns the value in the \code{loglik} slot.
-    }
-    \item{c}{
-      Concatenates \code{pmcmc} objects into a \code{pmcmcList}.
     }
     \item{\code{covmat(object, start, thin, expand)}}{
       computes the empirical covariance matrix of the MCMC samples beginning with iteration \code{start} and thinning by factor \code{thin}.
@@ -161,8 +165,8 @@ geweke.diag(trace)
   and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
 }
 \references{
-  C. Andrieu, A. Doucet and R. Holenstein, 
-  Particle Markov chain Monte Carlo methods, 
+  C. Andrieu, A. Doucet and R. Holenstein,
+  Particle Markov chain Monte Carlo methods,
   J. R. Stat. Soc. B, to appear, 2010.
 
   C. Andrieu and G.O. Roberts,
