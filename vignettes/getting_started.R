@@ -310,11 +310,9 @@ simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
   geom_line()
 
 ## ----parus-filter-traj---------------------------------------------------
-chains %>% 
-  laply(filter.traj) %>%
-  melt() %>% 
-  rename(c(Var1="chain",value="N")) %>%
+chains %>% filter.traj() %>% melt() %>% 
   subset(rep > 1000 & rep %% 50 == 0) %>%
+  dcast(L1+rep+time~variable) %>%
   ddply(~time,summarize,
         prob=c(0.025,0.5,0.975),
         q=quantile(N,prob)) %>% 
@@ -323,7 +321,8 @@ chains %>%
   ggplot()+
   geom_ribbon(aes(x=time,ymin=lo,ymax=hi),alpha=0.5,fill='blue')+
   geom_line(aes(x=time,y=med),color='blue')+
-  geom_point(data=parus.dat,aes(x=year,y=P),color='black',size=2)
+  geom_point(data=parus.dat,aes(x=year,y=P),color='black',size=2)+
+  labs(y="N")
 
 ## ----stop-mpi,include=FALSE----------------------------------------------
 closeCluster(cl)

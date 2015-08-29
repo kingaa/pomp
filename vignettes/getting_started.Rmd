@@ -13,7 +13,7 @@ Licensed under the [Creative Commons attribution-noncommercial license](http://c
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](http://kingaa.github.io/images/cc-by-nc.png)
 
-This document was produced using **pomp** version `r packageVersion("pomp")`.
+This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
 
 ```{r knitr-opts,include=FALSE,purl=FALSE}
 library(knitr)
@@ -582,12 +582,12 @@ simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
 If we desire an estimate of the smoothed state variables, i.e., the distribution of $N_t\,\vert\,P_{1960},\,\dots,\,P_{1986}$, for $t=1960,\,\dots\,1986$, we can use the `filter.traj` command to extract samples from this distribution.
 For example, the following codes extract a single trajectory from each MCMC sample.
 After thinning and discarding the burn-in, and assuming that the PMCMC chains above have converged, these are, as @Andrieu2010 showed, samples from the smoothing distribution.
+The following codes extract samples of the trajectories of $N$ from the posterior distribution (`filter.traj`), discard the burn-in and thin (`rep > 1000 & rep %% 50 == 0`), and plot the median and equal-tailed 95\% credible interval at each time point.
+
 ```{r parus-filter-traj}
-chains %>% 
-  laply(filter.traj) %>%
-  melt() %>% 
-  rename(c(Var1="chain",value="N")) %>%
+chains %>% filter.traj() %>% melt() %>% 
   subset(rep > 1000 & rep %% 50 == 0) %>%
+  dcast(L1+rep+time~variable) %>%
   ddply(~time,summarize,
         prob=c(0.025,0.5,0.975),
         q=quantile(N,prob)) %>% 
@@ -596,7 +596,8 @@ chains %>%
   ggplot()+
   geom_ribbon(aes(x=time,ymin=lo,ymax=hi),alpha=0.5,fill='blue')+
   geom_line(aes(x=time,y=med),color='blue')+
-  geom_point(data=parus.dat,aes(x=year,y=P),color='black',size=2)
+  geom_point(data=parus.dat,aes(x=year,y=P),color='black',size=2)+
+  labs(y="N")
 ```
 
 
