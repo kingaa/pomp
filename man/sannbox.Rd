@@ -53,16 +53,22 @@ sannbox(par, fn, control = list(), \dots)
     \item{\code{candidate.dist}}{
       function to randomly select a new candidate parameter vector.
       This should be a function with three arguments, the first being the current parameter vector, the second the temperature, and the third the parameter scaling.
-      By default, \code{candidate.dist} is \preformatted{function(par,temp,scale) rnorm(n=length(par),mean=par,sd=scale*temp)}.
+      By default, \code{candidate.dist} is \preformatted{function(par,temp,scale) rnorm(n=length(par),mean=par,sd=scale*temp).}
     }
     \item{\code{sched}}{
       cooling schedule.
       A function of a three arguments giving the temperature as a function of iteration number and the control parameters \code{temp} and \code{tmax}.
-      By default, \code{sched} is \preformatted{function(k,temp,tmax) temp/log(((k-1)\%/\%tmax)*tmax+exp(1))}.
+      By default, \code{sched} is \preformatted{function(k,temp,tmax) temp/log(((k-1)\%/\%tmax)*tmax+exp(1)).}
 
       Alternatively, one can supply a numeric vector of temperatures.
       This must be of length at least \code{maxit}.
     }
+    \item{\code{lower}, \code{upper}}{
+      optional numeric vectors.
+      These describe the lower and upper box constraints, respectively.
+      Each can be specified either as a single scalar (common to all parameters) or as a vector of the same length as \code{par}.
+      By default, \code{lower=-Inf} and \code{upper=Inf}, i.e., there are no constraints.
+    }   
   }
 }
 \value{
