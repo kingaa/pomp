@@ -1,11 +1,18 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 1.1.3.1}{
+\section{Changes in \pkg{pomp} version 1.1.4}{
+  \itemize{
+    \item Documentation improvements.
+    Specifically, the details of how step-sizes are chosen in the \code{euler.sim}, \code{discrete.time.sim}, and \code{onestep.sim} plugins has been spelled out explicitly.
+    Also, incompleteness in the \code{sannbox} documentation has been corrected.
+  }
+}
+\section{Changes in \pkg{pomp} version 1.1.3}{
   \itemize{
     \item Provide \code{filter.traj} method for \code{pmcmcList} objects.
   }
 }
-\section{Changes in \pkg{pomp} version 1.1.2.1}{
+\section{Changes in \pkg{pomp} version 1.1.2}{
   \itemize{
     \item Fixed a bug in \code{mif} and \code{mif2} when \code{cooling.type="hyperbolic"} and \code{cooling.fraction.50=1}.
   }

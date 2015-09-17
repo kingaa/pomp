@@ -1,10 +1,18 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1._3._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1._4:
+
+        • Documentation improvements.  Specifically, the details of how
+          step-sizes are chosen in the ‘euler.sim’,
+          ‘discrete.time.sim’, and ‘onestep.sim’ plugins has been
+          spelled out explicitly.  Also, incompleteness in the
+          ‘sannbox’ documentation has been corrected.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1._3:
 
         • Provide ‘filter.traj’ method for ‘pmcmcList’ objects.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1._2._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1._2:
 
         • Fixed a bug in ‘mif’ and ‘mif2’ when
           ‘cooling.type="hyperbolic"’ and ‘cooling.fraction.50=1’.
