@@ -67,7 +67,8 @@ onestep.dens(dens.fun, PACKAGE)
     For details on how to write such codes, see Details.
   }
   \item{delta.t}{
-    Size of Euler time-steps.
+    Size of time-steps.
+    See below.
   }
   \item{PACKAGE}{
     an optional argument that specifies to which dynamically loaded library we restrict the search for the native routines.
@@ -122,10 +123,22 @@ onestep.dens(dens.fun, PACKAGE)
   As above, any additional arguments will be filled by the correspondingly-named elements in the \code{userdata} slot of the \code{pomp} object (see \code{\link{pomp}}).
   If \code{dens.fun} is written in a native language, it must be a function of type \preformatted{pomp_onestep_pdf} as defined in the header \file{pomp.h} included with the package; see above for instructions on how to view this file.
 }
-\value{
-  \code{onestep.sim}, \code{euler.sim}, \code{discrete.time.sim}, and \code{gillespie.sim} each return functions suitable for use as the argument \code{rprocess} argument in \code{\link{pomp}}.
+\section{Size of time step}{
+  All the simulator plug-ins documented here work by taking discrete time steps.
+  They differ as to how this is done.
+  
+  \code{onestep.sim} takes a single step to go from any given time \eqn{t_1}{t1} to any other time \eqn{t_2}{t2} (\eqn{t_1 < t_2}{t1 < t2}).
+  Thus, this plugin is only useful if a closed-form solution to the process exists.
 
-  \code{onestep.dens} returns a function suitable for use as the argument \code{dprocess} in \code{\link{pomp}}.
+  To go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{euler.sim} takes \eqn{n} steps of equal size, where \eqn{n = ceiling((t_2-t_1)/delta.t)}{n = ceiling((t2-t2)/delta.t)}.
+
+  \code{discrete.time.sim} assumes that the process evolves in discrete time, where the interval between successive times is \code{delta.t}.
+  Thus, to go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{discrete.time.sim} takes \eqn{n} steps of size exactly \eqn{delta.t}, where \eqn{n = floor((t_2-t_2)/delta.t)}{n = floor((t2-t2)/delta.t)}.
+}
+\value{
+  \code{onestep.sim}, \code{euler.sim}, \code{discrete.time.sim}, and \code{gillespie.sim} each return functions for use as the arguments \code{rprocess} argument in \code{\link{pomp}}.
+
+  \code{onestep.dens} returns a function for use as the argument \code{dprocess} in \code{\link{pomp}}.
 }
 \author{Aaron A. King}
 \seealso{
