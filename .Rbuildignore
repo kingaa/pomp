@@ -5,3 +5,4 @@ inst/doc/(.+?)\.png$
 README\.md
 TODO\.md
 \.gitignore
+\.travis.yml
