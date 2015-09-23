@@ -40,7 +40,7 @@ plot(c(f2,f3))
 
 try(ff <- c(f3,f4))
 
-if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
+if (Sys.getenv("FULL_TESTS")=="yes") {
   f2a <- pmcmc(f1,Nmcmc=1000,Np=100,verbose=FALSE)
   plot(f2a)
   runs <- rle(as.numeric(conv.rec(f2a,'loglik')))$lengths

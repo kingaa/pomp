@@ -65,7 +65,7 @@ variable        94         95        96        97        98        99
 Error in validObject(.Object) : 
   invalid class "pmcmcList" object: error in 'c': to be combined, 'pmcmc' objects must have chains of equal length
 > 
-> if (Sys.getenv("POMP_FULL_TESTS")=="yes") {
+> if (Sys.getenv("FULL_TESTS")=="yes") {
 +   f2a <- pmcmc(f1,Nmcmc=1000,Np=100,verbose=FALSE)
 +   plot(f2a)
 +   runs <- rle(as.numeric(conv.rec(f2a,'loglik')))$lengths
@@ -206,4 +206,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 79.473   0.051  79.606 
+ 62.687   0.118  62.976 
