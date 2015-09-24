@@ -1,8 +1,8 @@
-inst/doc/Makefile
+inst/doc/Makefile$
 inst/doc/(.+?)\.bst$
 inst/doc/(.+?)\.R$
 inst/doc/(.+?)\.png$
-README\.md
-TODO\.md
-\.gitignore
-\.travis.yml
+README\.md$
+TODO\.md$
+^\.gitignore$
+^\.travis\.yml$
