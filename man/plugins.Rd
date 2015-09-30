@@ -130,10 +130,10 @@ onestep.dens(dens.fun, PACKAGE)
   \code{onestep.sim} takes a single step to go from any given time \eqn{t_1}{t1} to any other time \eqn{t_2}{t2} (\eqn{t_1 < t_2}{t1 < t2}).
   Thus, this plugin is only useful if a closed-form solution to the process exists.
 
-  To go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{euler.sim} takes \eqn{n} steps of equal size, where \eqn{n = ceiling((t_2-t_1)/delta.t)}{n = ceiling((t2-t2)/delta.t)}.
+  To go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{euler.sim} takes \eqn{n} steps of equal size, where \eqn{n = ceiling((t_2-t_1)/delta.t)}{n = ceiling((t2-t1)/delta.t)}.
 
   \code{discrete.time.sim} assumes that the process evolves in discrete time, where the interval between successive times is \code{delta.t}.
-  Thus, to go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{discrete.time.sim} takes \eqn{n} steps of size exactly \eqn{delta.t}, where \eqn{n = floor((t_2-t_2)/delta.t)}{n = floor((t2-t2)/delta.t)}.
+  Thus, to go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{discrete.time.sim} takes \eqn{n} steps of size exactly \eqn{delta.t}, where \eqn{n = floor((t_2-t_1)/delta.t)}{n = floor((t2-t1)/delta.t)}.
 }
 \value{
   \code{onestep.sim}, \code{euler.sim}, \code{discrete.time.sim}, and \code{gillespie.sim} each return functions for use as the arguments \code{rprocess} argument in \code{\link{pomp}}.
