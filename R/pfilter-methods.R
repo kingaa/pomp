@@ -34,7 +34,7 @@ setMethod(
           "pfilterd.pomp",
           function (object, pars, ...) {
             if (missing(pars)) pars <- rownames(object@pred.mean)
-            object@pred.mean[pars,]
+            object@pred.mean[pars,,drop=FALSE]
           }
           )
 
@@ -44,7 +44,7 @@ setMethod(
           "pfilterd.pomp",
           function (object, pars, ...) {
             if (missing(pars)) pars <- rownames(object@pred.var)
-            object@pred.var[pars,]
+            object@pred.var[pars,,drop=FALSE]
           }
           )
 
@@ -55,7 +55,7 @@ setMethod(
           signature="pfilterd.pomp",
           definition=function (object, pars, ...) {
             if (missing(pars)) pars <- rownames(object@filter.mean)
-            object@filter.mean[pars,]
+            object@filter.mean[pars,,drop=FALSE]
           }
           )
 

@@ -1,5 +1,13 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._2._1._2:
+
+        • Bug fix: for POMPs with a scalar state variable, the
+          ‘filter.mean’, ‘pred.mean’, and ‘pred.var’ methods dropped
+          the singleton dimension of the respective arrays, in conflict
+          with the assumptions of certain ‘plot’ methods.  This
+          resolves issue #3.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1._4:
 
         • Documentation improvements.  Specifically, the details of how

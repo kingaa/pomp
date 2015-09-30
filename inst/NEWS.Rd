@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.2.1.2}{
+  \itemize{
+    \item Bug fix: for POMPs with a scalar state variable, the \code{filter.mean}, \code{pred.mean}, and \code{pred.var} methods dropped the singleton dimension of the respective arrays, in conflict with the assumptions of certain \code{plot} methods.
+    This resolves issue #3.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.1.4}{
   \itemize{
     \item Documentation improvements.
