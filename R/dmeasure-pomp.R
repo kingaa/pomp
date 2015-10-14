@@ -7,8 +7,9 @@ dmeasure.internal <- function (object, y, x, times, params, log = FALSE, .getnat
   rv
 }
 
-setMethod("dmeasure",
-          signature=signature("pomp"),
-          function (object, y, x, times, params, log = FALSE, ...)
-          dmeasure.internal(object=object,y=y,x=x,times=times,params=params,log=log,...)
-          )
+setMethod(
+    "dmeasure",
+    signature=signature(object="pomp"),
+    definition=function (object, y, x, times, params, log = FALSE, ...)
+        dmeasure.internal(object=object,y=y,x=x,times=times,params=params,log=log,...)
+)
