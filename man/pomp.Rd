@@ -64,13 +64,13 @@
     This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.
   }
   \item{rprocess}{
-    optional function; a function of prototype \preformatted{rprocess(xstart,times,params,\dots)} that simulates from the unobserved process.
+    optional function; a function of prototype \preformatted{rprocess(xstart,times,params,...)} that simulates from the unobserved process.
     The form of this function is given below.
     \pkg{pomp} provides a number of \code{\link{plugins}} that construct appropriate \code{rprocess} arguments corresponding to several common stochastic simulation algorithms.
     See below for more details.
   }
   \item{dprocess}{
-    optional function; a function of prototype \preformatted{dprocess(x,times,params,log,\dots)} that evaluates the likelihood of a sequence of consecutive state transitions.
+    optional function; a function of prototype \preformatted{dprocess(x,times,params,log,...)} that evaluates the likelihood of a sequence of consecutive state transitions.
     The form of this function is given below.
     It is not typically necessary (or even feasible) to define \code{dprocess}.
     This functionality is provided to support future algorithm development.
@@ -79,7 +79,7 @@
     optional; the measurement model simulator.
     This can be specified in one of four ways:
     \enumerate{
-      \item as a function of prototype \preformatted{rmeasure(x,t,params,\dots)} that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
+      \item as a function of prototype \preformatted{rmeasure(x,t,params,...)} that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
       \item as the name of a native (compiled) routine of type \preformatted{pomp_measure_model_simulator} as defined in the header file \file{pomp.h}.
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item using the formula-based \code{measurement.model} facility (see below).
@@ -91,7 +91,7 @@
     optional; the measurement model probability density function.
     This can be specified in one of four ways:
     \enumerate{
-      \item as a function of prototype \preformatted{dmeasure(y,x,t,params,log,\dots)} that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
+      \item as a function of prototype \preformatted{dmeasure(y,x,t,params,log,...)} that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
       \item as the name of a native (compiled) routine of type \preformatted{pomp_measure_model_density} as defined in the header file \file{pomp.h}.
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item using the formula-based \code{measurement.model} facility (see below).
@@ -108,6 +108,7 @@
     it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} using \code{\link{Csnippet}}s.
   }
   \item{skeleton, skeleton.type, skelmap.delta.t}{
+    optional.
     The function \code{skeleton} specifies the deterministic skeleton of the unobserved Markov process.
     If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map:
     indicate this by specifying \code{skeleton.type="map"}.
@@ -118,7 +119,7 @@
 
     The skeleton function can be specified in one of three ways:
     \enumerate{
-      \item as an \R function of prototype \preformatted{skeleton(x,t,params,\dots)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params},
+      \item as an \R function of prototype \preformatted{skeleton(x,t,params,...)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params},
       \item as the name of a native (compiled) routine of type \preformatted{pomp_skeleton} as defined in the header file \file{pomp.h}.
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item as a snippet of C code (via \code{\link{Csnippet}}) that performs this evaluation.
@@ -126,6 +127,7 @@
     }
   }
   \item{initializer}{
+    optional.
     The initializer gives the parameterization of the initial state of the unobserved Markov process.
     Specifically, given a vector of parameters, \code{params} and an initial time, \code{t0}, the initializer determines the state vector at time \code{t0}.
 
@@ -135,7 +137,7 @@
 
     A custom initializer can be supplied here in one of two formats:
     \enumerate{
-      \item as an \R function of prototype \preformatted{initializer(params,t0,\dots)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
+      \item as an \R function of prototype \preformatted{initializer(params,t0,...)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
       \item as a snippet of C code (via \code{\link{Csnippet}}).
       See the \code{\link{Csnippet}} help for rules on writing a custom initializer.
     }
@@ -144,7 +146,7 @@
     optional; function drawing a sample from a prior distribution on parameters.
     This can be specified in one of three ways:
     \enumerate{
-      \item as an \R function of prototype \preformatted{rprior(params,\dots)} that makes a draw from the prior distribution given \code{params},
+      \item as an \R function of prototype \preformatted{rprior(params,...)} that makes a draw from the prior distribution given \code{params},
       \item as the name of a native (compiled) routine of type \preformatted{pomp_rprior} as defined in the header file \file{pomp.h}, or
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item as a snippet of C code (via \code{\link{Csnippet}}).
@@ -155,7 +157,7 @@
     optional; function evaluating the prior distribution.
     This can be specified in one of three ways:
     \enumerate{
-      \item as an \R function of prototype \preformatted{dprior(params,log=FALSE,\dots)} that evaluates the prior probability density,
+      \item as an \R function of prototype \preformatted{dprior(params,log=FALSE,...)} that evaluates the prior probability density,
       \item as the name of a native (compiled) routine of type \preformatted{pomp_dprior} as defined in the header file \file{pomp.h}, or
       (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
       \item as a snippet of C code (via \code{\link{Csnippet}}).
@@ -167,7 +169,7 @@
     This will be coerced internally to storage mode \code{double}.
   }
   \item{covar, tcovar}{
-    An optional matrix or data frame of covariates:
+    optional matrix or data frame of covariates:
     \code{covar} is the table of covariates (one column per variable);
     \code{tcovar} the corresponding times (one entry per row of \code{covar}).
 
@@ -180,17 +182,17 @@
     see below.
   }
   \item{obsnames, statenames, paramnames, covarnames}{
-    Optional character vectors specifying the names of observables, state variables, parameters, and covariates, respectively.
+    optional character vectors specifying the names of observables, state variables, parameters, and covariates, respectively.
     These are only used in the event that one or more of the basic functions (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{skeleton}, \code{rprior}, \code{dprior}) are defined using \code{\link{Csnippet}} or native routines.
   }
   \item{zeronames}{
     optional character vector specifying the names of accumulator variables (see below).
   }
   \item{PACKAGE}{
-    An optional string giving the name of the dynamically loaded library in which any native routines are to be found.
+    optional string giving the name of the dynamically loaded library in which any native routines are to be found.
   }
   \item{fromEstimationScale, toEstimationScale}{
-    Optional functions specifying parameter transformations.
+    optional parameter transformations.
     Many algorithms for parameter estimation search an unconstrained space of parameters.
     When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
     \code{toEstimationScale} and \code{fromEstimationScale} are transformations from the model scale to the estimation scale, and vice versa, respectively.

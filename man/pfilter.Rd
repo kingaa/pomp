@@ -111,21 +111,9 @@
 }
 \value{
   An object of class \code{pfilterd.pomp}.
-  This class inherits from class \code{\link[=pomp-class]{pomp}} and contains the following additional slots:
+  This class inherits from class \code{\link[=pomp-class]{pomp}}.
+  The following additional slots can be accessed via the \code{$} operator:
   \describe{
-    \item{pred.mean, pred.var, filter.mean}{
-      matrices of prediction means, variances, and filter means, respectively.
-      In each of these, the rows correspond to states and parameters (if appropriate), in that order, the columns to successive observations in the time series contained in \code{object}.
-    }
-    \item{filter.traj}{
-      filtered trajectories returned by the particle filter
-    }
-    \item{eff.sample.size}{
-      numeric vector containing the effective number of particles at each time point.
-    }
-    \item{cond.loglik}{
-      numeric vector containing the conditional log likelihoods at each time point.
-    }
     \item{saved.states}{
       If \code{pfilter} was called with \code{save.states=TRUE}, this is the list of state-vectors at each time point, for each particle.
       It is a length-\code{ntimes} list of \code{nvars}-by-\code{Np} arrays.
@@ -139,12 +127,7 @@
     \item{Np, tol, nfail}{
       the number of particles used, failure tolerance, and number of filtering failures, respectively.
     }
-    \item{loglik}{
-      the estimated log-likelihood.
-    }
   }
-  These can be accessed using the \code{$} operator as if the returned object were a list.
-  Note that if the argument \code{params} is a named vector, then these parameters are included in the \code{params} slot of the returned \code{pfilterd.pomp} object.
 }
 \section{Methods}{
   \describe{
