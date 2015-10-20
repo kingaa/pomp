@@ -32,7 +32,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     ## name of shared object library
     if (missing(PACKAGE)) PACKAGE <- NULL
     PACKAGE <- as.character(PACKAGE)
-    
+
     if (missing(globals)) globals <- NULL
     if (!is(globals,"Csnippet"))
         globals <- as.character(globals)
