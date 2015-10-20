@@ -194,7 +194,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                            cooling.type, cooling.fraction.50,
                            tol = 1e17, max.fail = Inf, 
                            verbose = FALSE, .ndone = 0L,
-                           .getnativesymbolinfo = TRUE, ...) {
+                           .getnativesymbolinfo = TRUE, .paramMatrix=NULL, ...) {
 
   pompLoad(object)
 
@@ -215,13 +215,17 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                       c('loglik','nfail',names(start))))
   conv.rec[1L,] <- c(NA,NA,start)
 
-  if (.ndone > 0) {                     # call is from 'continue'
-    paramMatrix <- object@paramMatrix
-  } else if (Nmif > 0) {                # initial call
-    paramMatrix <- array(data=start,dim=c(length(start),Np[1L]),
-                         dimnames=list(names(start),NULL))
-  } else {                              # no work to do
-    paramMatrix <- array(dim=c(0,0))
+  if(is.null(.paramMatrix)) {
+    if (.ndone > 0) {                     # call is from 'continue'
+      paramMatrix <- object@paramMatrix
+    } else if (Nmif > 0) {                # initial call
+      paramMatrix <- array(data=start,dim=c(length(start),Np[1L]),
+                           dimnames=list(names(start),NULL))
+    } else {                              # no work to do
+      paramMatrix <- array(dim=c(0,0))
+    }
+  } else { 
+    paramMatrix <- .paramMatrix
   }
 
   object <- as(object,"pomp")
