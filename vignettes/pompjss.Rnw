@@ -589,8 +589,8 @@ As pointed out by \citep{douc05}, stratified resampling performs better than mul
       Prediction variance: \nllabel{alg:mif:predvar}
       $[V_{n+1}]_i=(a^{m-1}\sigma_i)^2 + \sum_{j}\tilde{w}(n,j)\big([\Theta^P_{n,j}]_i - [\bar{\theta}_{n}]_i\big)^2$ for $i \not\in I$.\;
     }
-    Update non-IVP parameters: \nllabel{alg:mif:update}
-    $[\theta_m]_i=[\theta_{m-1}]_i+V_{1}^{i}\sum_{n=1}^{N}\left(V_{n}^{i}\right)^{-1}\left(\bar{\theta}_{n}^{i}-\bar{\theta}_{n-1}^{i}\right)$ for $i \not\in I$.\;
+    Update non-IVPs: \nllabel{alg:mif:update}
+    $[\theta_m]_i=[\theta_{m-1}]_i+ [V_1]_i \sum_{n=1}^{N} [V_{n}]_i^{-1}\left([\bar{\theta}_{n}]_{i}-[\bar{\theta}_{n-1}]_{i}\right)$ for $i \not\in I$.\;
     Update IVPs: \nllabel{alg:mif:updateivps}
     $[\theta_m]_i=\frac{1}{J}\sum_{j}\big[\Theta_{L,j}^F\big]_i$ for $i \in I$.\;
   }
