@@ -728,7 +728,7 @@ require(magrittr)
 plA <- cmp1 %>%
   ggplot(mapping=aes(y=mifLik-trueLik,x=nlfLik-trueLik))+
   geom_point()+
-  geom_abline(slope=1,yintercept=0,linetype=3)+
+  geom_abline(slope=1,intercept=0,linetype=3)+
   geom_hline(yintercept=0,linetype=3)+
   geom_vline(xintercept=0,linetype=3)+
   expand_limits(x=c(-1,1),y=c(-1,1))+
@@ -739,7 +739,7 @@ plA <- cmp1 %>%
 plB <- cmp1 %>%
   ggplot(mapping=aes(y=mifSQL-trueSQL,x=nlfSQL-trueSQL))+
   geom_point()+
-  geom_abline(slope=1,yintercept=0,linetype=3)+
+  geom_abline(slope=1,intercept=0,linetype=3)+
   geom_hline(yintercept=0,linetype=3)+
   geom_vline(xintercept=0,linetype=3)+
   expand_limits(x=c(-1,1),y=c(-1,1))+
