@@ -4,9 +4,12 @@ output:
   html_document:
     theme: default
     toc: yes
+    number_sections: true
 bibliography: pomp.bib
 csl: ecology.csl
 ---
+
+# General.
 
 ## How can I submit an effective request for help?
 
@@ -19,11 +22,26 @@ Include in your request---at a minimum---the code that you ran that produced the
 Make sure to run `sessionInfo()` in your session, so that I can see what version of **pomp** you are using, what version of **R**, what kind of machine you have, etc.
 Better still, construct a minimal example that will reproduce the error: this allows for the most efficient solution of problems.
 
-## Why can't I run the demos, or use the `Csnippet` facility, or otherwise take advantage of the acceleration afforded by `pomp`'s use of compiled native codes?
+## What's the proper way to cite **pomp**?
+
+To cite the package, please be so kind as to follow the instructions given by executing 
+```
+citation("pomp")
+```
+in an **R** session.
+
+If you use **pomp** in a publication, let us know!
+Send an email with the citation, and we'll include it in [the bibliography](http://kingaa.github.io/pomp/biblio.html).
+
+# Installation problems
+
+## Why can't I run the demos, or other codes that use the `Csnippet` facility?
 
 <a id="csnippet-problems"></a>
 
-If your system does not support `R CMD SHLIB`, you won't be able to use `Csnippet`s  To check this, run the following code snippet in an *R* session:
+If your system does not support `R CMD SHLIB`, you won't be able to use `Csnippet`s.
+**R** compiles native codes (C and FORTRAN) into shared-object libraries using `SHLIB`.
+To check whether your **R** installation is configured to use `SHLIB`, run the following code snippet in an **R** session:
 ```
 cat("#include <R.h>
 void hello (void) {
@@ -64,29 +82,7 @@ FC = ~/gfortran/usr/local/bin/gfortran
 FLIBS = -L~/gfortran/usr/local/lib
 ```
 
-## Is the likelihood `mif` gives me the same as the likelihood I get from `pfilter`?
-
-No.  As its name suggests, iterated filtering (IF) algorithms (those implemented in **pomp** as `mif` and `mif2`) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model.
-In particular, IF pertubs the parameters of the model by adding random noise to them.
-Actually, if one were to simulate from this model, the parameters would be taking random walks.
-This effectively smooths the likelihood surface, combats particle depletion, and---critically for IF---allows local exploration of the parameter space.
-The likelihood that `mif` and `mif2` report is the estimated likelihood of this perturbed model.
-It can be either higher or lower than that of the focal model.
-Iterated filtering works by gradually reducing the magnitude of the perturbations with successive iterations ("cooling"), so that the perturbed model gradually becomes more similar to the focal model.
-
-To compute the likelihood at a point returned by `mif` or `mif2`, it is necessary to re-run the particle filter.
-By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.
-
-## What's the proper way to cite **pomp**?
-
-To cite the package, please be so kind as to follow the instructions given by executing 
-```
-citation("pomp")
-```
-in an **R** session.
-
-If you do use **pomp** in a publication, let us know!
-Send an email with the citation, and we'll include it in [the bibliography](http://kingaa.github.io/pomp/biblio.html).
+# Implementing POMP models.
 
 ## How can I include a vector of variables in a `Csnippet`?
 
@@ -129,6 +125,8 @@ data.frame(Y1=NA,t=1:20) %>%
     geom_line()+theme_bw()
 ```
 
+# Error messages.
+
 ## I see an error about `dmeasure` returning non-finite values.  What does it mean?
 
 A common error message is 
@@ -147,3 +145,18 @@ See the help (`?Csnippet`) for information on how to properly write `dmeasure` `
 A useful way to help debug this is to put `Rprintf` statements in your `dmeasure` `Csnippet` to view the values of the data, state variables, and likelihoods.
 
 Remember, `dmeasure` has to be able to return the likelihood *or the log likelihood* upon request!
+
+# Interpreting results
+
+## Is the likelihood `mif` gives me the same as the likelihood I get from `pfilter`?
+
+No.  As its name suggests, iterated filtering (IF) algorithms (those implemented in **pomp** as `mif` and `mif2`) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model.
+In particular, IF pertubs the parameters of the model by adding random noise to them.
+Actually, if one were to simulate from this model, the parameters would be taking random walks.
+This effectively smooths the likelihood surface, combats particle depletion, and---critically for IF---allows local exploration of the parameter space.
+The likelihood that `mif` and `mif2` report is the estimated likelihood of this perturbed model.
+It can be either higher or lower than that of the focal model.
+Iterated filtering works by gradually reducing the magnitude of the perturbations with successive iterations ("cooling"), so that the perturbed model gradually becomes more similar to the focal model.
+
+To compute the likelihood at a point returned by `mif` or `mif2`, it is necessary to re-run the particle filter.
+By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.

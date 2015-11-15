@@ -65,26 +65,48 @@ img {
 
 <div id="TOC">
 <ul>
-<li><a href="#how-can-i-submit-an-effective-request-for-help">How can I submit an effective request for help?</a></li>
-<li><a href="#why-cant-i-run-the-demos-or-use-the-csnippet-facility-or-otherwise-take-advantage-of-the-acceleration-afforded-by-pomps-use-of-compiled-native-codes">Why can’t I run the demos, or use the <code>Csnippet</code> facility, or otherwise take advantage of the acceleration afforded by <code>pomp</code>’s use of compiled native codes?</a></li>
-<li><a href="#why-do-i-get-an-error-message-could-not-compile-shared-object-library-when-i-run-pomp">Why do I get an error message “Could not compile shared-object library” when I run <code>pomp</code>?</a></li>
-<li><a href="#why-do-i-get-an-error-message-about-gfortran-when-i-try-to-install-pomp-from-source-on-my-mac">Why do I get an error message about <code>gfortran</code> when I try to install <strong>pomp</strong> from source on my Mac?</a></li>
-<li><a href="#is-the-likelihood-mif-gives-me-the-same-as-the-likelihood-i-get-from-pfilter">Is the likelihood <code>mif</code> gives me the same as the likelihood I get from <code>pfilter</code>?</a></li>
-<li><a href="#whats-the-proper-way-to-cite-pomp">What’s the proper way to cite <strong>pomp</strong>?</a></li>
-<li><a href="#how-can-i-include-a-vector-of-variables-in-a-csnippet">How can I include a vector of variables in a <code>Csnippet</code>?</a></li>
-<li><a href="#i-see-an-error-about-dmeasure-returning-non-finite-values.-what-does-it-mean">I see an error about <code>dmeasure</code> returning non-finite values. What does it mean?</a></li>
+<li><a href="#general."><span class="toc-section-number">1</span> General.</a><ul>
+<li><a href="#how-can-i-submit-an-effective-request-for-help"><span class="toc-section-number">1.1</span> How can I submit an effective request for help?</a></li>
+<li><a href="#whats-the-proper-way-to-cite-pomp"><span class="toc-section-number">1.2</span> What’s the proper way to cite <strong>pomp</strong>?</a></li>
+</ul></li>
+<li><a href="#installation-problems"><span class="toc-section-number">2</span> Installation problems</a><ul>
+<li><a href="#why-cant-i-run-the-demos-or-other-codes-that-use-the-csnippet-facility"><span class="toc-section-number">2.1</span> Why can’t I run the demos, or other codes that use the <code>Csnippet</code> facility?</a></li>
+<li><a href="#why-do-i-get-an-error-message-could-not-compile-shared-object-library-when-i-run-pomp"><span class="toc-section-number">2.2</span> Why do I get an error message “Could not compile shared-object library” when I run <code>pomp</code>?</a></li>
+<li><a href="#why-do-i-get-an-error-message-about-gfortran-when-i-try-to-install-pomp-from-source-on-my-mac"><span class="toc-section-number">2.3</span> Why do I get an error message about <code>gfortran</code> when I try to install <strong>pomp</strong> from source on my Mac?</a></li>
+</ul></li>
+<li><a href="#implementing-pomp-models."><span class="toc-section-number">3</span> Implementing POMP models.</a><ul>
+<li><a href="#how-can-i-include-a-vector-of-variables-in-a-csnippet"><span class="toc-section-number">3.1</span> How can I include a vector of variables in a <code>Csnippet</code>?</a></li>
+</ul></li>
+<li><a href="#error-messages."><span class="toc-section-number">4</span> Error messages.</a><ul>
+<li><a href="#i-see-an-error-about-dmeasure-returning-non-finite-values.-what-does-it-mean"><span class="toc-section-number">4.1</span> I see an error about <code>dmeasure</code> returning non-finite values. What does it mean?</a></li>
+</ul></li>
+<li><a href="#interpreting-results"><span class="toc-section-number">5</span> Interpreting results</a><ul>
+<li><a href="#is-the-likelihood-mif-gives-me-the-same-as-the-likelihood-i-get-from-pfilter"><span class="toc-section-number">5.1</span> Is the likelihood <code>mif</code> gives me the same as the likelihood I get from <code>pfilter</code>?</a></li>
+</ul></li>
 </ul>
 </div>
 
+<div id="general." class="section level1">
+<h1><span class="header-section-number">1</span> General.</h1>
 <div id="how-can-i-submit-an-effective-request-for-help" class="section level2">
-<h2>How can I submit an effective request for help?</h2>
+<h2><span class="header-section-number">1.1</span> How can I submit an effective request for help?</h2>
 <p>Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the help pages and/or the <a href="http://kingaa.github.io/pomp/vignettes">package tutorials</a>. Check to see if you are using the latest version of <strong>pomp</strong>: if not, check to see if the problem you have is solved by upgrading to the latest version. Read through the <a href="FAQ">Frequently Asked Questions</a> to see if the answer to your question is there.</p>
 <p>If you still have a problem, then submit a request for help via the <a href="https://github.com/kingaa/pomp/issues">Issues page</a> if possible or to Aaron King (kingaa at umich dot edu) if necessary. Include in your request—at a minimum—the code that you ran that produced the error, together with a transcript of the <strong>R</strong> session that gave the errors. Make sure to run <code>sessionInfo()</code> in your session, so that I can see what version of <strong>pomp</strong> you are using, what version of <strong>R</strong>, what kind of machine you have, etc. Better still, construct a minimal example that will reproduce the error: this allows for the most efficient solution of problems.</p>
 </div>
-<div id="why-cant-i-run-the-demos-or-use-the-csnippet-facility-or-otherwise-take-advantage-of-the-acceleration-afforded-by-pomps-use-of-compiled-native-codes" class="section level2">
-<h2>Why can’t I run the demos, or use the <code>Csnippet</code> facility, or otherwise take advantage of the acceleration afforded by <code>pomp</code>’s use of compiled native codes?</h2>
+<div id="whats-the-proper-way-to-cite-pomp" class="section level2">
+<h2><span class="header-section-number">1.2</span> What’s the proper way to cite <strong>pomp</strong>?</h2>
+<p>To cite the package, please be so kind as to follow the instructions given by executing</p>
+<pre><code>citation(&quot;pomp&quot;)</code></pre>
+<p>in an <strong>R</strong> session.</p>
+<p>If you use <strong>pomp</strong> in a publication, let us know! Send an email with the citation, and we’ll include it in <a href="http://kingaa.github.io/pomp/biblio.html">the bibliography</a>.</p>
+</div>
+</div>
+<div id="installation-problems" class="section level1">
+<h1><span class="header-section-number">2</span> Installation problems</h1>
+<div id="why-cant-i-run-the-demos-or-other-codes-that-use-the-csnippet-facility" class="section level2">
+<h2><span class="header-section-number">2.1</span> Why can’t I run the demos, or other codes that use the <code>Csnippet</code> facility?</h2>
 <p><a id="csnippet-problems"></a></p>
-<p>If your system does not support <code>R CMD SHLIB</code>, you won’t be able to use <code>Csnippet</code>s To check this, run the following code snippet in an <em>R</em> session:</p>
+<p>If your system does not support <code>R CMD SHLIB</code>, you won’t be able to use <code>Csnippet</code>s. <strong>R</strong> compiles native codes (C and FORTRAN) into shared-object libraries using <code>SHLIB</code>. To check whether your <strong>R</strong> installation is configured to use <code>SHLIB</code>, run the following code snippet in an <strong>R</strong> session:</p>
 <pre><code>cat(&quot;#include &lt;R.h&gt;
 void hello (void) {
   Rprintf(\&quot;hello world!\\n\&quot;);
@@ -98,11 +120,11 @@ list()</code></pre>
 <p>If it doesn’t work, consult the <a href="http://kingaa.github.io/pomp/install.html">installation instructions</a>.</p>
 </div>
 <div id="why-do-i-get-an-error-message-could-not-compile-shared-object-library-when-i-run-pomp" class="section level2">
-<h2>Why do I get an error message “Could not compile shared-object library” when I run <code>pomp</code>?</h2>
+<h2><span class="header-section-number">2.2</span> Why do I get an error message “Could not compile shared-object library” when I run <code>pomp</code>?</h2>
 <p>See <a href="#csnippet-problems">the preceding FAQ</a>.</p>
 </div>
 <div id="why-do-i-get-an-error-message-about-gfortran-when-i-try-to-install-pomp-from-source-on-my-mac" class="section level2">
-<h2>Why do I get an error message about <code>gfortran</code> when I try to install <strong>pomp</strong> from source on my Mac?</h2>
+<h2><span class="header-section-number">2.3</span> Why do I get an error message about <code>gfortran</code> when I try to install <strong>pomp</strong> from source on my Mac?</h2>
 <p>Compilation of <strong>pomp</strong> requires a fortran compiler, which has not been installed (or not installed properly) on your system. See the <a href="http://kingaa.github.io/pomp/install.html">installation instructions</a>. If you do download a binary version of GCC fortran and wish to install it, first unpack the directory in a safe place (such as <code>~/gfortran</code>) and edit your <code>~/.R/Makevars</code> file to inform <strong>R</strong> as to where the compiler is. Thus for example, I did</p>
 <pre><code>mkdir ~/gfortran
 cd ~/gfortran
@@ -114,20 +136,11 @@ rm -f gfortran-4.8.2-darwin13.tar.bz2</code></pre>
 FC = ~/gfortran/usr/local/bin/gfortran
 FLIBS = -L~/gfortran/usr/local/lib</code></pre>
 </div>
-<div id="is-the-likelihood-mif-gives-me-the-same-as-the-likelihood-i-get-from-pfilter" class="section level2">
-<h2>Is the likelihood <code>mif</code> gives me the same as the likelihood I get from <code>pfilter</code>?</h2>
-<p>No. As its name suggests, iterated filtering (IF) algorithms (those implemented in <strong>pomp</strong> as <code>mif</code> and <code>mif2</code>) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model. In particular, IF pertubs the parameters of the model by adding random noise to them. Actually, if one were to simulate from this model, the parameters would be taking random walks. This effectively smooths the likelihood surface, combats particle depletion, and—critically for IF—allows local exploration of the parameter space. The likelihood that <code>mif</code> and <code>mif2</code> report is the estimated likelihood of this perturbed model. It can be either higher or lower than that of the focal model. Iterated filtering works by gradually reducing the magnitude of the perturbations with successive iterations (“cooling”), so that the perturbed model gradually becomes more similar to the focal model.</p>
-<p>To compute the likelihood at a point returned by <code>mif</code> or <code>mif2</code>, it is necessary to re-run the particle filter. By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.</p>
 </div>
-<div id="whats-the-proper-way-to-cite-pomp" class="section level2">
-<h2>What’s the proper way to cite <strong>pomp</strong>?</h2>
-<p>To cite the package, please be so kind as to follow the instructions given by executing</p>
-<pre><code>citation(&quot;pomp&quot;)</code></pre>
-<p>in an <strong>R</strong> session.</p>
-<p>If you do use <strong>pomp</strong> in a publication, let us know! Send an email with the citation, and we’ll include it in <a href="http://kingaa.github.io/pomp/biblio.html">the bibliography</a>.</p>
-</div>
+<div id="implementing-pomp-models." class="section level1">
+<h1><span class="header-section-number">3</span> Implementing POMP models.</h1>
 <div id="how-can-i-include-a-vector-of-variables-in-a-csnippet" class="section level2">
-<h2>How can I include a vector of variables in a <code>Csnippet</code>?</h2>
+<h2><span class="header-section-number">3.1</span> How can I include a vector of variables in a <code>Csnippet</code>?</h2>
 <p>A <code>Csnippet</code> can make use of any feature of the C language. In particular, we can use pointers to give access to arrays. For example, consider the following, which implement a simple chain of random variables.</p>
 <pre><code>rSim &lt;- Csnippet(&quot;
   double *x = &amp;X1;
@@ -158,8 +171,11 @@ data.frame(Y1=NA,t=1:20) %&gt;%
   ggplot(aes(x=time,y=value,group=variable,color=variable))+
     geom_line()+theme_bw()</code></pre>
 </div>
+</div>
+<div id="error-messages." class="section level1">
+<h1><span class="header-section-number">4</span> Error messages.</h1>
 <div id="i-see-an-error-about-dmeasure-returning-non-finite-values.-what-does-it-mean" class="section level2">
-<h2>I see an error about <code>dmeasure</code> returning non-finite values. What does it mean?</h2>
+<h2><span class="header-section-number">4.1</span> I see an error about <code>dmeasure</code> returning non-finite values. What does it mean?</h2>
 <p>A common error message is</p>
 <pre><code>Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value</code></pre>
 <p>This error arises because your <code>dmeasure</code> function is giving a non-finite value of the likelihood. Common causes are:</p>
@@ -170,8 +186,17 @@ data.frame(Y1=NA,t=1:20) %&gt;%
 </ul>
 <p>See the help (<code>?Csnippet</code>) for information on how to properly write <code>dmeasure</code> <code>Csnippet</code>s. A useful way to help debug this is to put <code>Rprintf</code> statements in your <code>dmeasure</code> <code>Csnippet</code> to view the values of the data, state variables, and likelihoods.</p>
 <p>Remember, <code>dmeasure</code> has to be able to return the likelihood <em>or the log likelihood</em> upon request!</p>
+</div>
+</div>
+<div id="interpreting-results" class="section level1">
+<h1><span class="header-section-number">5</span> Interpreting results</h1>
+<div id="is-the-likelihood-mif-gives-me-the-same-as-the-likelihood-i-get-from-pfilter" class="section level2">
+<h2><span class="header-section-number">5.1</span> Is the likelihood <code>mif</code> gives me the same as the likelihood I get from <code>pfilter</code>?</h2>
+<p>No. As its name suggests, iterated filtering (IF) algorithms (those implemented in <strong>pomp</strong> as <code>mif</code> and <code>mif2</code>) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model. In particular, IF pertubs the parameters of the model by adding random noise to them. Actually, if one were to simulate from this model, the parameters would be taking random walks. This effectively smooths the likelihood surface, combats particle depletion, and—critically for IF—allows local exploration of the parameter space. The likelihood that <code>mif</code> and <code>mif2</code> report is the estimated likelihood of this perturbed model. It can be either higher or lower than that of the focal model. Iterated filtering works by gradually reducing the magnitude of the perturbations with successive iterations (“cooling”), so that the perturbed model gradually becomes more similar to the focal model.</p>
+<p>To compute the likelihood at a point returned by <code>mif</code> or <code>mif2</code>, it is necessary to re-run the particle filter. By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.</p>
 <div class="references">
 
+</div>
 </div>
 </div>
 
