@@ -21,10 +21,14 @@ Better still, construct a minimal example that will reproduce the error: this al
 
 ## Why can't I run the demos, or use the `Csnippet` facility, or otherwise take advantage of the acceleration afforded by `pomp`'s use of compiled native codes?
 
-If your system does not support `R CMD SHLIB`, you won't be able to use these facilities.  To check this, run the following code snippet:
+<a id="csnippet-problems"></a>
+
+If your system does not support `R CMD SHLIB`, you won't be able to use `Csnippet`s  To check this, run the following code snippet in an *R* session:
 ```
-cat("#include <R.h>\nvoid hello (void) {Rprintf(\"hello world!\\n\");}",
-    file="hello.c")
+cat("#include <R.h>
+void hello (void) {
+  Rprintf(\"hello world!\\n\");
+}",file="hello.c")
 system("R CMD SHLIB hello.c")
 dyn.load(paste0("hello",.Platform$dynlib.ext))
 .C("hello",PACKAGE="hello")
@@ -35,6 +39,10 @@ hello world!
 list()
 ```
 If it doesn't work, consult the [installation instructions](http://kingaa.github.io/pomp/install.html).
+
+## Why do I get an error message "Could not compile shared-object library" when I run `pomp`?
+
+See [the preceding FAQ](#csnippet-problems).
 
 ## Why do I get an error message about `gfortran` when I try to install **pomp** from source on my Mac?
 

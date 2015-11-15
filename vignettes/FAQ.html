@@ -67,6 +67,7 @@ img {
 <ul>
 <li><a href="#how-can-i-submit-an-effective-request-for-help">How can I submit an effective request for help?</a></li>
 <li><a href="#why-cant-i-run-the-demos-or-use-the-csnippet-facility-or-otherwise-take-advantage-of-the-acceleration-afforded-by-pomps-use-of-compiled-native-codes">Why can’t I run the demos, or use the <code>Csnippet</code> facility, or otherwise take advantage of the acceleration afforded by <code>pomp</code>’s use of compiled native codes?</a></li>
+<li><a href="#why-do-i-get-an-error-message-could-not-compile-shared-object-library-when-i-run-pomp">Why do I get an error message “Could not compile shared-object library” when I run <code>pomp</code>?</a></li>
 <li><a href="#why-do-i-get-an-error-message-about-gfortran-when-i-try-to-install-pomp-from-source-on-my-mac">Why do I get an error message about <code>gfortran</code> when I try to install <strong>pomp</strong> from source on my Mac?</a></li>
 <li><a href="#is-the-likelihood-mif-gives-me-the-same-as-the-likelihood-i-get-from-pfilter">Is the likelihood <code>mif</code> gives me the same as the likelihood I get from <code>pfilter</code>?</a></li>
 <li><a href="#whats-the-proper-way-to-cite-pomp">What’s the proper way to cite <strong>pomp</strong>?</a></li>
@@ -82,9 +83,12 @@ img {
 </div>
 <div id="why-cant-i-run-the-demos-or-use-the-csnippet-facility-or-otherwise-take-advantage-of-the-acceleration-afforded-by-pomps-use-of-compiled-native-codes" class="section level2">
 <h2>Why can’t I run the demos, or use the <code>Csnippet</code> facility, or otherwise take advantage of the acceleration afforded by <code>pomp</code>’s use of compiled native codes?</h2>
-<p>If your system does not support <code>R CMD SHLIB</code>, you won’t be able to use these facilities. To check this, run the following code snippet:</p>
-<pre><code>cat(&quot;#include &lt;R.h&gt;\nvoid hello (void) {Rprintf(\&quot;hello world!\\n\&quot;);}&quot;,
-    file=&quot;hello.c&quot;)
+<p><a id="csnippet-problems"></a></p>
+<p>If your system does not support <code>R CMD SHLIB</code>, you won’t be able to use <code>Csnippet</code>s To check this, run the following code snippet in an <em>R</em> session:</p>
+<pre><code>cat(&quot;#include &lt;R.h&gt;
+void hello (void) {
+  Rprintf(\&quot;hello world!\\n\&quot;);
+}&quot;,file=&quot;hello.c&quot;)
 system(&quot;R CMD SHLIB hello.c&quot;)
 dyn.load(paste0(&quot;hello&quot;,.Platform$dynlib.ext))
 .C(&quot;hello&quot;,PACKAGE=&quot;hello&quot;)</code></pre>
@@ -92,6 +96,10 @@ dyn.load(paste0(&quot;hello&quot;,.Platform$dynlib.ext))
 <pre><code>hello world!
 list()</code></pre>
 <p>If it doesn’t work, consult the <a href="http://kingaa.github.io/pomp/install.html">installation instructions</a>.</p>
+</div>
+<div id="why-do-i-get-an-error-message-could-not-compile-shared-object-library-when-i-run-pomp" class="section level2">
+<h2>Why do I get an error message “Could not compile shared-object library” when I run <code>pomp</code>?</h2>
+<p>See <a href="#csnippet-problems">the preceding FAQ</a>.</p>
 </div>
 <div id="why-do-i-get-an-error-message-about-gfortran-when-i-try-to-install-pomp-from-source-on-my-mac" class="section level2">
 <h2>Why do I get an error message about <code>gfortran</code> when I try to install <strong>pomp</strong> from source on my Mac?</h2>
