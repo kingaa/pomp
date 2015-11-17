@@ -212,25 +212,25 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
         ntimes=length(time(object))
     )
 
-    if(is.null(.paramMatrix)) {
-        conv.rec.start <- start
-        if (.ndone > 0) {                     # call is from 'continue'
+    if (is.null(.paramMatrix)) {
+        if (.ndone > 0) {              # call is from 'continue'
             paramMatrix <- object@paramMatrix
-        } else if (Nmif > 0) {                # initial call
+            start <- apply(paramMatrix,1L,mean)
+        } else if (Nmif > 0) {         # initial call
             paramMatrix <- array(data=start,dim=c(length(start),Np[1L]),
                                  dimnames=list(names(start),NULL))
-        } else {                              # no work to do
+        } else {                        # no work to do
             paramMatrix <- array(dim=c(0,0))
         }
     } else { 
         paramMatrix <- .paramMatrix
-        conv.rec.start <- apply(paramMatrix,1,mean)
+        start <- apply(paramMatrix,1L,mean)
     }
 
-    conv.rec <- array(data=NA,dim=c(Nmif+1,length(conv.rec.start)+2),
+    conv.rec <- array(dim=c(Nmif+1,length(start)+2),
                       dimnames=list(seq.int(.ndone,.ndone+Nmif),
-                                    c('loglik','nfail',names(conv.rec.start))))
-    conv.rec[1L,] <- c(NA,NA,conv.rec.start)
+                                    c('loglik','nfail',names(start))))
+    conv.rec[1L,] <- c(NA,NA,start)
     
     object <- as(object,"pomp")
 
