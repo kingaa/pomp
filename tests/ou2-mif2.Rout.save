@@ -1,5 +1,5 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -30,7 +30,7 @@ newly created object(s):
 > 
 > set.seed(64857673L)
 > mif1a <- mif(ou2,Nmif=100,start=guess1,
-+              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
++              ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -43,11 +43,9 @@ newly created object(s):
 +              method="mif2",
 +              tol=1e-8
 +              )
-Warning message:
-mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > 
 > mif2a <- mif(ou2,Nmif=100,start=guess1,
-+              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
++              ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=0.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -61,14 +59,12 @@ mif warning: argument 'pars' is redundant and deprecated.  It will be removed in
 +              method="mif",
 +              tol=1e-8
 +              )
-Warning message:
-mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > 
 > plot(c(mif1a,mif2a))
 > 
 > set.seed(64857673L)
 > mif1b <- mif(ou2,Nmif=50,start=guess1,
-+              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
++              ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -80,12 +76,10 @@ mif warning: argument 'pars' is redundant and deprecated.  It will be removed in
 +              cooling.fraction=0.05,
 +              method="mif2"
 +              )
-Warning message:
-mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > mif1b <- continue(mif1b,Nmif=50)
 > 
 > mif2b <- mif(ou2,Nmif=50,start=guess1,
-+              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
++              ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=0.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -99,12 +93,10 @@ mif warning: argument 'pars' is redundant and deprecated.  It will be removed in
 +              max.fail=100,
 +              method="mif"
 +              )
-Warning message:
-mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > mif2b <- continue(mif2b,Nmif=50)
 > 
 > mif2c <- mif(ou2,Nmif=50,start=guess1,
-+              pars=c('alpha.2','alpha.3'),ivps=c('x1.0','x2.0'),
++              ivps=c('x1.0','x2.0'),
 +              rw.sd=c(
 +                x1.0=0.5,x2.0=.5,
 +                alpha.2=0.1,alpha.3=0.1),
@@ -116,8 +108,6 @@ mif warning: argument 'pars' is redundant and deprecated.  It will be removed in
 +              max.fail=100,
 +              method="mif2"
 +              )
-Warning message:
-mif warning: argument 'pars' is redundant and deprecated.  It will be removed in a future release. 
 > mif2c <- continue(mif2c,Nmif=50)
 > 
 > plot(c(mif1b,mif2b))
@@ -206,4 +196,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 53.691   0.068  54.211 
+ 57.668   0.172  57.838 

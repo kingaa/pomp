@@ -1,5 +1,17 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.2.3.1}{
+  This release removes several long-deprecated features.
+  \itemize{
+    \item The \code{seed} argument to \code{pfilter} has been removed.
+    Use \code{freeze} to obtain similar functionality.
+    \item The redundant \code{pars} argument to \code{mif} has been removed.
+    Names of parameters to be estimated are taken from the nonzero entries of \code{rw.sd}.
+    Initial-value parameters are designated using the \code{ivps} argument.
+    \item The old \code{parameter.transform} and \code{parameter.inv.transform} arguments to \code{pomp} have been removed.
+    They were superseded by the arguments \code{fromEstimationScale} and \code{toEstimationScale} in version 0.65-1.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.2.2.1}{
   \itemize{
     \item Some internal changes to \code{mif2} by C. Breto, in support of panel methods under development.

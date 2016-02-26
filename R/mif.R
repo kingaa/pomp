@@ -75,7 +75,7 @@ mif.cooling.function <- function (type, perobs, fraction, ntimes) {
                 }
             }
         },
-        stop("unrecognized cooling schedule type ",sQuote(type))
+        stop("unrecognized cooling schedule type ",sQuote(type),call.=FALSE)
     )
 }
 
@@ -135,16 +135,16 @@ mif.internal <- function (object, Nmif,
             silent=FALSE
         )
         if (inherits(Np,"try-error"))
-            stop("if ",sQuote("Np")," is a function, it must return a single positive integer")
+            stop("if ",sQuote("Np")," is a function, it must return a single positive integer",call.=FALSE)
     }
     if (length(Np)==1)
         Np <- rep(Np,times=ntimes+1)
     else if (length(Np)!=(ntimes+1))
         stop(sQuote("Np")," must have length 1 or length ",ntimes+1)
     if (any(Np<=0))
-        stop("number of particles, ",sQuote("Np"),", must always be positive")
+        stop("number of particles, ",sQuote("Np"),", must always be positive",call.=FALSE)
     if (!is.numeric(Np))
-        stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
+        stop(sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
     Np <- as.integer(Np)
 
     ic.lag <- as.integer(ic.lag)
@@ -182,7 +182,7 @@ mif.internal <- function (object, Nmif,
     )
 
     if ((method=="mif2")&&(Np[1L]!=Np[ntimes+1]))
-        stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"))
+        stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"),call.=FALSE)
 
     if ((length(var.factor)!=1)||(var.factor < 0))
         stop("mif error: ",sQuote("var.factor")," must be a positive number",call.=FALSE)
@@ -302,7 +302,7 @@ mif.internal <- function (object, Nmif,
                 paramMatrix <- pfp@paramMatrix
                 theta[pars] <- rowMeans(paramMatrix[pars,,drop=FALSE])
             },
-            stop("unrecognized method ",sQuote(method))
+            stop("unrecognized method ",sQuote(method),call.=FALSE)
         )
         theta[ivps] <- pfp@filter.mean[ivps,ic.lag]
         conv.rec[n+1,-c(1,2)] <- theta
