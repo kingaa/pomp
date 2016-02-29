@@ -7,19 +7,19 @@ title: install pomp
 <h3>Development version</h3>
 
 <p>
-The development version is usually several weeks ahead of the version on CRAN.
-To use it, you will need to install it from source.
+The development version is often several weeks ahead of the version on CRAN.
+You can install it from the Github repository by executing the following in an <code>R</code> session:
+<pre><code>install.packages(&quot;pomp&quot;,repos=&quot;http://kingaa.github.io&quot;)</code></pre>
 </p>
 
 <p>
-The easiest way to install the development version uses the <code>devtools</code> package.
-In an <code>R</code> session, do
+It is also easy to install from source using the <code>devtools</code> package:
 <pre><code>require(devtools)
 install_github(&quot;kingaa/pomp&quot;)</code></pre>
 </p>
 
 <p>
-Alternatively, you can download the <a href="http://github.com/kingaa/pomp/tarball/master">source as a tarball</a>
+Alternatively, you can download the source as a <a href="http://github.com/kingaa/pomp/tarball/master">tarball</a> 
 or as a <a href="http://github.com/kingaa/pomp/zipball/master">zip file</a>.
 Unpack the tarball or zipfile (thereby creating a directory named, say, <code>kingaa-pomp-xxxxxxx</code>) and build the package source by executing
 <pre><code>R CMD build kingaa-pomp-xxxxxxx</code></pre>
@@ -38,7 +38,7 @@ Source and binaries for the <a target="_blank" href="http://cran.r-project.org/p
 <h3>Important note for Windows users</h3>
 
 <p>
-To compile the package from source, and to make use of its facilities for accelerated computation using compiled C code, you will need the ability to compile C code and dynamically link it into an <code>R</code> session.
+To make use of <code>pomp</code>'s facilities for accelerated computation using compiled C code, and to compile the package from source, you will need the ability to compile C code and dynamically link it into an <code>R</code> session.
 For this reason, you must install the <code>Rtools</code> suite, which can be downloaded from <a href="http://cran.r-project.org/bin/windows/Rtools">http://cran.r-project.org/bin/windows/Rtools</a>.
 <code>Rtools</code> is needed <i>both</i> to compile and install the development version from source <i>and</i> to obtain full value from any version of the package.
 </p>
