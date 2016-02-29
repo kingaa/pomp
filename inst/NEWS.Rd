@@ -1,6 +1,6 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 1.2.3.1}{
+\section{Changes in \pkg{pomp} version 1.3.1.1}{
   This release removes several long-deprecated features.
   \itemize{
     \item The \code{seed} argument to \code{pfilter} has been removed.
