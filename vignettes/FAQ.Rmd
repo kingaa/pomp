@@ -9,6 +9,13 @@ bibliography: pomp.bib
 csl: ecology.csl
 ---
 
+```{r options,include=FALSE}
+require(knitr)
+require(pomp)
+knitr::opts_chunk$set(cache=FALSE,results="hide",echo=TRUE,fig.show="hide",
+                      message=FALSE,warning=TRUE,error=TRUE)
+```
+
 # General.
 
 ## How can I submit an effective request for help?
@@ -39,7 +46,7 @@ Send an email with the citation, and we'll include it in [the bibliography](http
 
 <a id="csnippet-problems"></a>
 
-If your system does not support `R CMD SHLIB`, you won't be able to use `Csnippet`s.
+If your system does not support `R CMD SHLIB`, you won't be able to use `Csnippets`.
 **R** compiles native codes (C and FORTRAN) into shared-object libraries using `SHLIB`.
 To check whether your **R** installation is configured to use `SHLIB`, run the following code snippet in an **R** session:
 ```
@@ -90,7 +97,7 @@ A `Csnippet` can make use of any feature of the C language.
 In particular, we can use pointers to give access to arrays.
 For example, consider the following, which implement a simple chain of random variables.
 
-```
+```{r vector-vars-csnips}
 rSim <- Csnippet("
   double *x = &X1;
   int i, n = (int) N;
@@ -107,7 +114,7 @@ rInit <- Csnippet("
 
 The following simulates and plots using the above.
 
-```
+```{r vector-vars-pomp}
 require(magrittr)
 require(reshape2)
 require(ggplot2)
@@ -115,14 +122,57 @@ require(ggplot2)
 data.frame(Y1=NA,t=1:20) %>% 
   pomp(times="t",t0=0,
        rprocess=euler.sim(rSim,delta.t=1),
-       initializer=rInit,statenames=sprintf("X%d",1:5),
+       initializer=rInit,
+       statenames=sprintf("X%d",1:5),
        paramnames="N",params=c(N=5),
-	   measurement.model=Y1~norm(-X1,2)
-      ) %>%
+       measurement.model=Y1~norm(-X1,2)
+  ) %>%
   simulate(as.data.frame=TRUE) %>%
   melt(id=c('time','sim')) %>%
   ggplot(aes(x=time,y=value,group=variable,color=variable))+
-    geom_line()+theme_bw()
+  geom_line()+theme_bw()
+```
+
+## Can I write a `pomp` for multivariate data?
+
+Yes, this is no problem.
+The `data` you supply to `pomp` can contain multiple variables.
+You simply refer to these variables by name in writing the `rmeasure` and `dmeasure` `Csnippets`.
+The following example illustrates this for a multivariate Ornstein-Uhlenbeck process (as in the `pompExample("ou2")`) with a slightly peculiar measurement model.
+```{r multivariate-data-pomp}
+require(magrittr)
+data.frame(t=1:100,y1=NA,y2=NA) %>%
+  pomp(
+    times="t", t0=0,
+    rmeasure=Csnippet("
+        y1 = rnorm(x1+x2,sigma1);
+        y2 = rnorm(x2-x1,sigma2);
+        "),
+    dmeasure=Csnippet("
+        lik = dnorm(y1,x1+x2,sigma1,1)+dnorm(y2,x2-x1,sigma2,1);
+        lik = (log) ? lik : exp(lik);
+        "),
+    rprocess=discrete.time.sim(
+      step.fun=Csnippet("
+        double tx1, tx2;
+        tx1 = rnorm(a11*x1 + a12*x2,nu1);
+        tx2 = rnorm(a21*x1 + a22*x2,nu2);
+        x1 = tx1; x2 = tx2;
+      "),
+      delta.t=1),
+    initializer=Csnippet("
+        x1 = 0;
+        x2 = 0;
+        "),
+    statenames=c("x1","x2"),
+    paramnames=c("a11","a12","a21","a22","sigma1","sigma2","nu1","nu2"),
+    params=c(a11=0.5,a12=-0.1,a21=0.2,a22=-1,nu1=0.3,nu2=0.1,sigma1=0.1,sigma2=0.3)
+  ) %>%
+  simulate() -> obj
+```
+
+```{r multivariate-data-check,include=FALSE}
+obj %>% pfilter(Np=1000) %>% logLik()
 ```
 
 # Error messages.
@@ -141,7 +191,7 @@ Common causes are:
 - missing data,
 - the `dmeasure` function or `Csnippet` returning the log likelihood when the likelihood is requested, or vice versa.
 
-See the help (`?Csnippet`) for information on how to properly write `dmeasure` `Csnippet`s.
+See the help (`?Csnippet`) for information on how to properly write `dmeasure` `Csnippets`.
 A useful way to help debug this is to put `Rprintf` statements in your `dmeasure` `Csnippet` to view the values of the data, state variables, and likelihoods.
 
 Remember, `dmeasure` has to be able to return the likelihood *or the log likelihood* upon request!
