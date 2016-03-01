@@ -223,7 +223,7 @@ data.frame(Y1=NA,t=1:20) %&gt;%
 </div>
 <div id="can-i-write-a-pomp-for-multivariate-data" class="section level2">
 <h2><span class="header-section-number">3.2</span> Can I write a <code>pomp</code> for multivariate data?</h2>
-<p>Yes, this is no problem. The <code>data</code> you supply to <code>pomp</code> can contain multiple variables. You simply refer to these variables by name in writing the <code>rmeasure</code> and <code>dmeasure</code> <code>Csnippets</code>. The following example illustrates this for a multivariate Ornstein-Uhlenbeck process (as in the <code>pompExample(&quot;ou2&quot;)</code>) with a slightly peculiar measurement model.</p>
+<p>Yes, this is no problem. The <code>data</code> you supply to <code>pomp</code> can contain multiple variables. You simply refer to these variables by name in writing the <code>rmeasure</code> and <code>dmeasure</code> <code>Csnippets</code>. The following example illustrates this for a multivariate Ornstein-Uhlenbeck process (as in <code>pompExample(&quot;ou2&quot;)</code>) with a slightly peculiar measurement model.</p>
 <pre class="r"><code>require(magrittr)
 data.frame(t=1:100,y1=NA,y2=NA) %&gt;%
   pomp(

@@ -138,7 +138,7 @@ data.frame(Y1=NA,t=1:20) %>%
 Yes, this is no problem.
 The `data` you supply to `pomp` can contain multiple variables.
 You simply refer to these variables by name in writing the `rmeasure` and `dmeasure` `Csnippets`.
-The following example illustrates this for a multivariate Ornstein-Uhlenbeck process (as in the `pompExample("ou2")`) with a slightly peculiar measurement model.
+The following example illustrates this for a multivariate Ornstein-Uhlenbeck process (as in `pompExample("ou2")`) with a slightly peculiar measurement model.
 ```{r multivariate-data-pomp}
 require(magrittr)
 data.frame(t=1:100,y1=NA,y2=NA) %>%
