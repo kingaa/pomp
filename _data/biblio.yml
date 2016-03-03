@@ -1,0 +1,296 @@
+- key: Andrieu2010
+  author: "C. Andrieu, A. Doucet, and R. Holenstein"
+  year: "2010"
+  title: "Particle Markov chain Monte Carlo methods"
+  journal: "J. R. Stat. Soc. B"
+  volume: "72"
+  pages: "269-342"
+  doi: "http://dx.doi.org/10.1111/j.1467-9868.2009.00736.x"
+
+- key: Arulampalam2002
+  author: "M. S. Arulampalam, S. Maskell, N. Gordon, and T. Clapp"
+  year: "2002"
+  title: "A tutorial on particle filters for online nonlinear, non-Gaussian Bayesian tracking"
+  journal: "IEEE Trans. Sig. Proc."
+  volume: "50"
+  pages: "174-188"
+  doi: "http://dx.doi.org/10.1109/78.978374"
+
+- key: Bhadra2010
+  author: "A. Bhadra"
+  year: "2010"
+  title: "Discussion of `Particle Markov chain Monte Carlo methods' by C. Andrieu, A. Doucet and R. Holenstein"
+  journal: "J. R. Stat. Soc. B"
+  volume: "72"
+  pages: "314-315"
+  doi: "http://dx.doi.org/10.1111/j.1467-9868.2009.00736.x"
+
+- key: Bhadra2011
+  author: "A. Bhadra, E. L. Ionides, K. Laneri, M. Pascual, M. Bouma, and R. C. Dhiman"
+  year: "2011"
+  title: "Malaria in Northwest India: Data analysis via partially observed stochastic differential equation models driven by L&eacute;vy noise"
+  journal: "J. Am. Stat. Assoc."
+  volume: "106"
+  pages: "440-451"
+  doi: "http://dx.doi.org/10.1198/jasa.2011.ap10323"
+
+- key: Blackwood2013
+  author: "J. C. Blackwood, D. A. T. Cummings, H&eacute;. Broutin, S. Iamsirithaworn, and P. Rohani"
+  year: "2013"
+  title: "Deciphering the impacts of vaccination and immunity on pertussis epidemiology in Thailand"
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "110"
+  pages: "9595-9600"
+  doi: "http://dx.doi.org/10.1073/pnas.1220908110"
+
+- key: Blackwood2013a
+  author: "J. C. Blackwood, D. G. Streicker, S. Altizer, and P. Rohani"
+  year: "2013"
+  title: "Resolving the roles of immunity, pathogenesis, and immigration for rabies persistence in vampire bats"
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "110"
+  pages: "20837-20842"
+  doi: "http://dx.doi.org/10.1073/pnas.1308817110"
+
+- key: Blake2014
+  author: "I. M. Blake, R. Martin, A. Goel, N. Khetsuriani, J. Everts, C. Wolff, S. Wassilak, R. B. Aylward, and N. C. Grassly"
+  year: "2014"
+  title: "The role of older children and adults in wild poliovirus transmission"
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "111"
+  pages: "10604-10609"
+  doi: "http://dx.doi.org/10.1073/pnas.1323688111"
+
+- key: Breto2011
+  author: "C. Bret&oacute; and E. L. Ionides"
+  year: "2011"
+  title: "Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems"
+  journal: "Stoch. Process. Their Appl."
+  volume: "121"
+  pages: "2571-2591"
+  doi: "http://dx.doi.org/10.1016/j.spa.2011.07.005"
+
+- key: Breto2009
+  author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
+  year: "2009"
+  title: "Time series analysis via mechanistic models"
+  journal: "Annals of Applied Statistics"
+  volume: "3"
+  pages: "319-348"
+  doi: "http://dx.doi.org/10.1214/08-AOAS201"
+
+- key: Camacho2011
+  author: "A. Camacho, S. Ballesteros, A. L. Graham, F. Carrat, O. Ratmann, and B. Cazelles"
+  year: "2011"
+  title: "Explaining rapid reinfections in multiple-wave influenza outbreaks: Tristan da Cunha 1971 epidemic as a case study"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "278"
+  pages: "3635-3643"
+  doi: "http://dx.doi.org/10.1098/rspb.2011.0300"
+
+- key: Ellner1998
+  author: "S. P. Ellner, B. A. Bailey, G. V. Bobashev, A. R. Gallant, B. T. Grenfell, and D. W. Nychka"
+  year: "1998"
+  title: "Noise and nonlinearity in measles epidemics: Combining mechanistic and statistical approaches to population modeling"
+  journal: "Am. Nat."
+  volume: "151"
+  pages: "425-440"
+
+- key: Gourieroux1996
+  author: "C. Gouri&eacute;roux and A. Monfort"
+  year: "1996"
+  title: "Simulation-based Econometric Methods"
+
+- key: Hayman2015
+  author: "D. T. S. Hayman"
+  year: "2015"
+  title: "Biannual birth pulses allow filoviruses to persist in bat populations"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "282"
+  pages: "20142591"
+  doi: "http://dx.doi.org/10.1098/rspb.2014.2591"
+
+- key: He2010
+  author: "D. He, E. L. Ionides, and A. A. King"
+  year: "2010"
+  title: "Plug-and-play inference for disease dynamics: measles in large and small populations as a case study"
+  journal: "Journal of the Royal Society Interface"
+  volume: "7"
+  pages: "271-283"
+  doi: "http://dx.doi.org/10.1098/rsif.2009.0151"
+
+- key: Ionides2011
+  author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
+  year: "2011"
+  title: "Iterated filtering"
+  journal: "Ann. Stat."
+  volume: "39"
+  pages: "1776-1802"
+  doi: "http://dx.doi.org/10.1214/11-AOS886"
+
+- key: Ionides2006
+  author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
+  year: "2006"
+  title: "Inference for nonlinear dynamical systems"
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "103"
+  pages: "18438-18443"
+  doi: "http://dx.doi.org/10.1073/pnas.0603181103"
+
+- key: Ionides2015
+  author: "E. L. Ionides, D. Nguyen, Y. Atchad&eacute;, S. Stoev, and A. A. King"
+  year: "2015"
+  title: "Inference for dynamic and latent variable models via iterated, perturbed Bayes maps"
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "112"
+  pages: "719-724"
+  doi: "http://dx.doi.org/10.1073/pnas.1410597112"
+
+- key: Kendall1999
+  author: "B. E. Kendall, C. J. Briggs, W. W. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, and S. N. Wood"
+  year: "1999"
+  title: "Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches"
+  journal: "Ecology"
+  volume: "80"
+  pages: "1789-1805"
+
+- key: Kendall2005
+  author: "B. E. Kendall, S. P. Ellner, E. McCauley, S. N. Wood, C. J. Briggs, W. M. Murdoch, and P. Turchin"
+  year: "2005"
+  title: "Population cycles in the pine looper moth: Dynamical tests of mechanistic hypotheses"
+  journal: "Ecol. Monogr."
+  volume: "75"
+  pages: "259-276"
+
+- key: King2015
+  author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
+  year: "2015"
+  title: "Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "282"
+  pages: "20150347"
+  doi: "http://dx.doi.org/10.1098/rspb.2015.0347"
+
+- key: King2008
+  author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
+  year: "2008"
+  title: "Inapparent infections and cholera dynamics"
+  journal: "Nature"
+  volume: "454"
+  pages: "877-880"
+  doi: "http://dx.doi.org/10.1038/nature07084"
+
+- key: Knape2011
+  author: "J. Knape and P. de Valpine"
+  year: "2011"
+  title: "Fitting complex population models by combining particle filters with Markov chain Monte Carlo"
+  journal: "Ecology"
+  volume: "93"
+  pages: "256-263"
+  doi: "http://dx.doi.org/10.1890/11-0797.1"
+
+- key: Laneri2010
+  author: "K. Laneri, A. Bhadra, E. L. Ionides, M. Bouma, R. C. Dhiman, R. S. Yadav, and M. Pascual"
+  year: "2010"
+  title: "Forcing versus feedback: epidemic malaria and monsoon rains in northwest India"
+  journal: "PLoS Comput. Biol."
+  volume: "6"
+  pages: "e1000898"
+  doi: "http://dx.doi.org/10.1371/journal.pcbi.1000898"
+
+- key: Laneri2015
+  author: "K. Laneri, R. E. Paul, A. Tall, J. Faye, F. Diene-Sarr, C. Sokhna, J.-F. Trape, and X. Rod&oacute;"
+  year: "2015"
+  title: "Dynamical malaria models reveal how immunity buffers effect of climate variability"
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "112"
+  pages: "8786-8791"
+  doi: "http://dx.doi.org/10.1073/pnas.1419047112"
+
+- key: Lavine2013
+  author: "J. S. Lavine, A. A. King, V. Andreasen, and O. N. Bj&oslash;rnstad"
+  year: "2013"
+  title: "Immune Boosting Explains Regime-Shifts in Prevaccine-Era Pertussis Dynamics"
+  journal: "PLoS ONE"
+  volume: "8"
+  pages: "e72086"
+  doi: "http://dx.doi.org/10.1371/journal.pone.0072086"
+
+- key: Liu2001b
+  author: "J. Liu and M. West"
+  year: "2001"
+  title: "Combining Parameter and State Estimation in Simulation-Based Filtering"
+  pages: "197-224"
+  booktitle: "Sequential Monte Carlo Methods in Practice"
+  editor: "A. Doucet, N. de Freitas, and N. J. Gordon"
+
+- key: Magpantay2015
+  author: "F. M. G. Magpantay, M. Domenech de Cell&egrave;s, P. Rohani, and A. A. King"
+  year: "2015"
+  title: "Pertussis immunity and epidemiology: mode and duration of vaccine-induced immunity."
+  journal: "Parasitol."
+  pages: "1-15"
+  doi: "http://dx.doi.org/10.1017/S0031182015000979"
+
+- key: Martinez-Bakker2015
+  author: "M. Martinez-Bakker, A. A. King, and P. Rohani"
+  year: "2015"
+  title: "Unraveling the Transmission Ecology of Polio"
+  journal: "PLoS Biol."
+  volume: "13"
+  pages: "e1002172"
+  doi: "http://dx.doi.org/10.1371/journal.pbio.1002172"
+
+- key: Reuman2006
+  author: "D. C. Reuman, R. A. Desharnais, R. F. Costantino, O. S. Ahmad, and J. E. Cohen"
+  year: "2006"
+  title: "Power spectra reveal the influence of stochasticity on nonlinear population dynamics"
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "103"
+  pages: "18860-18865 "
+
+- key: Romero-Severson2015
+  author: "E. O. Romero-Severson, E. Volz, J. S. Koopman, T. Leitner, and E. L. Ionides"
+  year: "2015"
+  title: "Dynamic Variation in Sexual Contact Rates in a Cohort of HIV-Negative Gay Men"
+  journal: "Am. J. Epidemiol."
+  volume: "182"
+  pages: "255-262"
+  doi: "http://dx.doi.org/10.1093/aje/kwv044"
+
+- key: Shrestha2011
+  author: "S. Shrestha, A. A. King, and P. Rohani"
+  year: "2011"
+  title: "Statistical Inference for Multi-Pathogen Systems"
+  journal: "PLoS Comput. Biol."
+  volume: "7"
+  pages: "e1002135"
+  doi: "http://dx.doi.org/10.1371%2Fjournal.pcbi.1002135"
+
+- key: Toni2010
+  author: "T. Toni and M. P. H. Stumpf"
+  year: "2010"
+  title: "Simulation-based model selection for dynamical systems in systems and population biology"
+  journal: "Bioinformatics"
+  volume: "26"
+  pages: "104-110"
+  doi: "http://dx.doi.org/10.1093/bioinformatics/btp619"
+
+- key: Toni2009a
+  author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
+  year: "2009"
+  title: "Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems"
+  journal: "J. R. Soc. Interface"
+  volume: "6"
+  pages: "187-202"
+  doi: "http://dx.doi.org/10.1098/rsif.2008.0172"
+
+- key: Wood2010
+  author: "S. N. Wood"
+  year: "2010"
+  title: "Statistical inference for noisy nonlinear ecological dynamic systems"
+  journal: "Nature"
+  volume: "466"
+  pages: "1102-1104"
+  doi: "http://dx.doi.org/10.1038/nature09319"
+

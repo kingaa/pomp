@@ -1,0 +1,20 @@
+- name: tao
+  url: http://github.com/kingaa/tao
+
+- name: pomp
+  url: http://kingaa.github.io/pomp
+
+- name: pompExamples
+  url: http://github.com/kingaa/pompExamples
+
+- name: subplex
+  url: http://github.com/kingaa/subplex
+
+- name: ouch
+  url: http://kingaa.github.io/ouch
+
+- name: mpifarm
+  url: http://github.com/kingaa/mpifarm
+
+- name: aakmisc
+  url: http://github.com/kingaa/aakmisc
