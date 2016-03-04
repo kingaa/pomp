@@ -23,3 +23,6 @@
 
 - title: Frequently Asked Questions
   html: FAQ.html
+
+- title: Package NEWS
+  html: NEWS.html
