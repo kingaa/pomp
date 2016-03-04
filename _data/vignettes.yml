@@ -22,4 +22,4 @@
   pdf: vignettes/pomp.pdf
 
 - title: Frequently Asked Questions
-  html: https://kingaa.github.io/pomp/vignettes/FAQ.html
+  html: FAQ.html

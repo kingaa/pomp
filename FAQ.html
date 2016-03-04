@@ -267,8 +267,8 @@ data.frame(t=1:100,y1=NA,y2=NA) %&gt;%
 <li>missing data,</li>
 <li>the <code>dmeasure</code> function or <code>Csnippet</code> returning the log likelihood when the likelihood is requested, or vice versa.</li>
 </ul>
-<p>See the help (<code>?Csnippet</code>) for information on how to properly write <code>dmeasure</code> <code>Csnippets</code>. A useful way to help debug this is to put <code>Rprintf</code> statements in your <code>dmeasure</code> <code>Csnippet</code> to view the values of the data, state variables, and likelihoods.</p>
-<p>Remember, <code>dmeasure</code> has to be able to return the likelihood <em>or the log likelihood</em> upon request!</p>
+<p>See the help (<code>?Csnippet</code>) for information on how to properly write <code>dmeasure</code> <code>Csnippets</code>. A useful way to help debug this is to put <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Printing"><code>Rprintf</code> statements</a> in your <code>dmeasure</code> <code>Csnippet</code> to view the values of the data, state variables, and likelihoods. <a href="https://github.com/kingaa/pomp/issues/13">Issue #13</a> has an example.</p>
+<p>Remember, <code>dmeasure</code> has to be able to return the likelihood—or the log likelihood—upon request!</p>
 </div>
 </div>
 <div id="interpreting-results" class="section level1">

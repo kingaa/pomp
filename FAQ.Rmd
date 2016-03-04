@@ -192,9 +192,10 @@ Common causes are:
 - the `dmeasure` function or `Csnippet` returning the log likelihood when the likelihood is requested, or vice versa.
 
 See the help (`?Csnippet`) for information on how to properly write `dmeasure` `Csnippets`.
-A useful way to help debug this is to put `Rprintf` statements in your `dmeasure` `Csnippet` to view the values of the data, state variables, and likelihoods.
+A useful way to help debug this is to put [`Rprintf` statements](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Printing) in your `dmeasure` `Csnippet` to view the values of the data, state variables, and likelihoods.
+[Issue #13](https://github.com/kingaa/pomp/issues/13) has an example.
 
-Remember, `dmeasure` has to be able to return the likelihood *or the log likelihood* upon request!
+Remember, `dmeasure` has to be able to return the likelihood---or the log likelihood---upon request!
 
 # Interpreting results
 
