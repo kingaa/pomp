@@ -104,13 +104,13 @@ We will illustrate this using some simple examples.
 The following is a schematic of the structure of a POMP showing causal relations between the process model, the measurement model, and the data.
 **The key perspective to keep in mind is that the model is to be viewed as the process that generated the data.**
 
-![schematic1](http://kingaa.github.io/images/pomp_schematic1.png)
+![schematic1](./pomp_schematic1.png)
 
 -----------------------------------
 
 Here is another POMP model schematic, showing dependence among model variables.
 
-![schematic2](http://kingaa.github.io/images/pomp_schematic2.png)
+![schematic2](./pomp_schematic2.png)
 
 State variables, $X$, at time $t$ depend only on state variables at the previous timestep.
 Measurements, $Y$, at time $t$ depend only on the state at that time.
