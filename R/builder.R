@@ -8,7 +8,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 {
 
     if (!is.null(name)) name <- cleanForC(name)
-    id <- randomName(7)
+    id <- randomName(4)
     
     if (missing(globals)) globals <- character(0)
     if (is(globals,"Csnippet")) globals <- globals@text
@@ -221,12 +221,10 @@ missing.fun <- function (name) {
 }
 
 randomName <- function (size = 2, stem = "") {
-    pid <- Sys.getpid()
     time <- Sys.time()
     paste0(stem,
-           " PID: ",pid,
            " Time: ",format(time,"%Y-%m-%d %H:%M:%OS3 %z"),
-           " ID: ",
+           " Salt: ",
            paste(
                format(
                    as.hexmode(ceiling(runif(n=size,max=2^24))),
