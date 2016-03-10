@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 1.3.1.2
-Date: 2016-02-29
+Version: 1.3.1.3
+Date: 2016-03-10
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -28,19 +28,19 @@ LazyData: true
 Contact: kingaa at umich dot edu
 BugReports: http://github.com/kingaa/pomp/issues
 Collate: aaa.R authors.R bake.R generics.R eulermultinom.R
-	 csnippet.R pomp-fun.R plugins.R builder.R
-	 parmat.R logmeanexp.R slice-design.R
-	 profile-design.R sobol.R bsplines.R sannbox.R
-	 pomp-class.R load.R pomp.R pomp-methods.R
-	 rmeasure-pomp.R rprocess-pomp.R init-state-pomp.R
-	 dmeasure-pomp.R dprocess-pomp.R skeleton-pomp.R
-	 dprior-pomp.R rprior-pomp.R
-	 simulate-pomp.R trajectory-pomp.R plot-pomp.R
-	 pfilter.R pfilter-methods.R minim.R traj-match.R
+	 csnippet.R pomp_fun.R plugins.R builder.R
+	 parmat.R logmeanexp.R slice_design.R
+	 profile_design.R sobol.R bsplines.R sannbox.R
+	 pomp_class.R load.R pomp.R pomp_methods.R
+	 rmeasure_pomp.R rprocess_pomp.R initstate_pomp.R
+	 dmeasure_pomp.R dprocess_pomp.R skeleton_pomp.R
+	 dprior_pomp.R rprior_pomp.R
+	 simulate_pomp.R trajectory_pomp.R plot_pomp.R
+	 pfilter.R pfilter_methods.R minim.R traj_match.R
 	 bsmc.R bsmc2.R
-	 mif.R mif-methods.R mif2.R mif2-methods.R
-	 proposals.R pmcmc.R pmcmc-methods.R
- 	 nlf-funcs.R nlf-guts.R nlf-objfun.R nlf.R
-	 probe.R probe-match.R basic-probes.R spect.R spect-match.R
-	 abc.R abc-methods.R covmat.R
+	 mif.R mif_methods.R mif2.R mif2_methods.R
+	 proposals.R pmcmc.R pmcmc_methods.R
+ 	 nlf_funcs.R nlf_guts.R nlf_objfun.R nlf.R
+	 probe.R probe_match.R basic_probes.R spect.R spect_match.R
+	 abc.R abc_methods.R covmat.R
 	 example.R
