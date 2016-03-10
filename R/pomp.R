@@ -9,7 +9,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               obsnames, statenames, paramnames, covarnames,
                               zeronames, PACKAGE,
                               fromEstimationScale, toEstimationScale,
-                              globals, userdata, ...,
+                              globals, cachedir, userdata,
+                              ...,
                               .solibs = list(),
                               verbose = getOption("verbose",FALSE)) {
 
@@ -18,7 +19,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (missing(times)) stop(sQuote("times")," is a required argument")
     if (missing(t0)) stop(sQuote("t0")," is a required argument")
     if (missing(params)) params <- numeric(0)
-    
+
+    if (missing(cachedir)) cachedir <- NULL
     if (missing(userdata)) userdata <- list()
     added.userdata <- list(...)
     if (length(added.userdata)>0) {
@@ -36,7 +38,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (missing(globals)) globals <- NULL
     if (!is(globals,"Csnippet"))
         globals <- as.character(globals)
-    
+
     ## deal with missing components
     if (missing(skeleton)) skeleton <- NULL
     if (missing(rmeasure)) rmeasure <- NULL
@@ -45,12 +47,12 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (missing(dprior)) dprior <- NULL
     if (missing(fromEstimationScale)) fromEstimationScale <- NULL
     if (missing(toEstimationScale)) toEstimationScale <- NULL
-    
+
     ## defaults for names of states, parameters, and accumulator variables
     if (missing(statenames)) statenames <- character(0)
     if (missing(paramnames)) paramnames <- character(0)
     if (missing(zeronames)) zeronames <- character(0)
-    
+
     ## check the parameters and force them to be double-precision
     if (length(params)>0) {
         if (is.null(names(params)) || !is.numeric(params))
@@ -64,12 +66,12 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     storage.mode(data) <- 'double'
     if (missing(obsnames) || length(obsnames)==0) obsnames <- rownames(data)
     obsnames <- as.character(obsnames)
-    
+
     ## check times
     if (!is.numeric(times) || !all(diff(times)>0))
         stop("pomp error: ",sQuote("times")," must be an increasing numeric vector")
     storage.mode(times) <- 'double'
-    
+
     ## check t0
     if (!is.numeric(t0) || length(t0) > 1)
         stop("pomp error: the zero-time ",sQuote("t0")," must be a single number")
@@ -108,11 +110,11 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     }
     storage.mode(tcovar) <- "double"
     storage.mode(covar) <- "double"
-    
+
     ## handle initializer
     default.init <- missing(initializer) || (is(initializer,"pomp.fun") && initializer@mode == pompfunmode$undef)
     if (default.init) initializer <- pomp.fun()
-    
+
     ## default rprocess & dprocess
     if (missing(rprocess))
         rprocess <- function (xstart,times,params,...) stop(sQuote("rprocess")," not specified")
@@ -126,7 +128,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (is(dprocess,"pompPlugin") && dprocess@csnippet)
         snips <- c(snips,setNames(list(slot(dprocess,dprocess@slotname)@text),dprocess@slotname))
     if (is(skeleton,"Csnippet"))
-        snips <- c(snips,skeleton=skeleton@text)  
+        snips <- c(snips,skeleton=skeleton@text)
     if (is(rmeasure,"Csnippet"))
         snips <- c(snips,rmeasure=rmeasure@text)
     if (is(dmeasure,"Csnippet"))
@@ -147,6 +149,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                 pompCBuilder,
                 c(
                     list(
+                        dir=cachedir,
                         obsnames=obsnames,
                         statenames=statenames,
                         paramnames=paramnames,
@@ -169,7 +172,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     } else {
         libname <- ''
     }
-    
+
     ## handle initializer
     if (!default.init) {
         initializer <- pomp.fun(
@@ -184,7 +187,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
             covarnames=covarnames
         )
     }
-    
+
     ## handle rprocess
     if (is(rprocess,"pompPlugin")) {
         rprocess <- plugin.handler(
@@ -212,7 +215,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     }
     if (!is.function(dprocess))
         stop("pomp error: ",sQuote("dprocess")," must be a function")
-    
+
     ## handle skeleton
     skeleton <- pomp.fun(
         f=skeleton,
@@ -247,7 +250,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         rmeasure <- mm$rmeasure
         dmeasure <- mm$dmeasure
     }
-    
+
     ## handle rmeasure
     rmeasure <- pomp.fun(
         f=rmeasure,
@@ -260,7 +263,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         obsnames=obsnames,
         covarnames=covarnames
     )
-    
+
     ## handle dmeasure
     dmeasure <- pomp.fun(
         f=dmeasure,
@@ -273,7 +276,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         obsnames=obsnames,
         covarnames=covarnames
     )
-    
+
     ## handle rprior
     rprior <- pomp.fun(
         f=rprior,
@@ -286,10 +289,10 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         obsnames=obsnames,
         covarnames=covarnames
     )
-    
+
     ## handle dprior
     if (is.null(dprior)) {
-        ## by default, use flat improper prior    
+        ## by default, use flat improper prior
         dprior <- pomp.fun(f="_pomp_default_dprior",PACKAGE="pomp")
     } else {
         dprior <- pomp.fun(
@@ -304,7 +307,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
             covarnames=covarnames
         )
     }
-    
+
     ## handle parameter transformations
     mpt <- is.null(fromEstimationScale)
     mpit <- is.null(toEstimationScale)
@@ -373,7 +376,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                     sQuote("?pomp"),call.=FALSE)
     }
 
-    if ((length(tcovar)>0)&&((min(tcovar)>t0)||(max(tcovar)<max(times)))) 
+    if ((length(tcovar)>0)&&((min(tcovar)>t0)||(max(tcovar)<max(times))))
         warning(
             "the supplied covariate covariate times ",sQuote("tcovar"),
             " do not embrace the data times: covariates may be extrapolated"
@@ -497,8 +500,8 @@ setMethod(
                          params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
-                         globals) {
-        
+                         globals, cachedir) {
+
         data <- t(sapply(data,as.numeric))
         if ((is.numeric(times) && (times<1 || times>nrow(data))) ||
             (is.character(times) && (!(times%in%rownames(data)))) ||
@@ -541,6 +544,7 @@ setMethod(
             fromEstimationScale=fromEstimationScale,
             toEstimationScale=toEstimationScale,
             globals=globals,
+            cachedir=cachedir,
             ...
         )
     }
@@ -556,8 +560,8 @@ setMethod(
                          initializer, rprior, dprior, params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
-                         globals) {
-        
+                         globals, cachedir) {
+
         pomp.constructor(
             data=data,
             times=times,
@@ -585,6 +589,7 @@ setMethod(
             fromEstimationScale=fromEstimationScale,
             toEstimationScale=toEstimationScale,
             globals=globals,
+            cachedir=cachedir,
             ...
         )
     }
@@ -601,7 +606,7 @@ setMethod(
                          initializer, rprior, dprior, params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
-                         globals) {
+                         globals, cachedir) {
 
         pomp.constructor(
             data=matrix(data,nrow=1,ncol=length(data)),
@@ -630,6 +635,7 @@ setMethod(
             fromEstimationScale=fromEstimationScale,
             toEstimationScale=toEstimationScale,
             globals=globals,
+            cachedir=cachedir,
             ...
         )
     }
@@ -644,8 +650,8 @@ setMethod(
                          initializer, rprior, dprior, params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
-                         globals) {
-        
+                         globals, cachedir) {
+
         if (missing(times)) times <- data@times
         if (missing(t0)) t0 <- data@t0
 
@@ -704,6 +710,7 @@ setMethod(
         if (missing(paramnames)) paramnames <- character(0)
         if (missing(covarnames)) covarnames <- character(0)
         if (missing(PACKAGE)) PACKAGE <- character(0)
+        if (missing(cachedir)) cachedir <- NULL
 
         pomp.constructor(
             data=data@data,
@@ -731,6 +738,7 @@ setMethod(
             toEstimationScale=to.trans,
             params=params,
             globals=globals,
+            cachedir=cachedir,
             .solibs=data@solibs,
             userdata=data@userdata,
             ...

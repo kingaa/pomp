@@ -167,15 +167,15 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
 pompSrcDir <- function (dir) {
     if (is.null(dir)) {
-        dir <- tempdir()
-    } else {
-        try(
-            rv <- dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700"),
-            silent=TRUE
-        )
-        if (inherits(rv,"try-error"))
-            stop("cannot create cache directory ",sQuote(dir),call.=TRUE)
+        pid <- Sys.getpid()
+        dir <- file.path(tempdir(),pid)
     }
+    try(
+        rv <- dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700"),
+        silent=TRUE
+    )
+    if (inherits(rv,"try-error"))
+        stop("cannot create cache directory ",sQuote(dir),call.=TRUE)
     dir
 }
 
