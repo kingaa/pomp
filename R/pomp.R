@@ -9,7 +9,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               obsnames, statenames, paramnames, covarnames,
                               zeronames, PACKAGE,
                               fromEstimationScale, toEstimationScale,
-                              globals, cachedir, userdata,
+                              globals, cdir, cfile, userdata,
                               ...,
                               .solibs = list(),
                               verbose = getOption("verbose",FALSE)) {
@@ -20,7 +20,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (missing(t0)) stop(sQuote("t0")," is a required argument")
     if (missing(params)) params <- numeric(0)
 
-    if (missing(cachedir)) cachedir <- NULL
+    if (missing(cdir)) cdir <- NULL
+    if (missing(cfile)) cfile <- NULL
     if (missing(userdata)) userdata <- list()
     added.userdata <- list(...)
     if (length(added.userdata)>0) {
@@ -149,7 +150,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                 pompCBuilder,
                 c(
                     list(
-                        dir=cachedir,
+                        dir=cdir,
+                        name=cfile,
                         obsnames=obsnames,
                         statenames=statenames,
                         paramnames=paramnames,
@@ -500,7 +502,7 @@ setMethod(
                          params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
-                         globals, cachedir) {
+                         globals, cdir, cfile) {
 
         data <- t(sapply(data,as.numeric))
         if ((is.numeric(times) && (times<1 || times>nrow(data))) ||
@@ -544,7 +546,8 @@ setMethod(
             fromEstimationScale=fromEstimationScale,
             toEstimationScale=toEstimationScale,
             globals=globals,
-            cachedir=cachedir,
+            cdir=cdir,
+            cfile=cfile,
             ...
         )
     }
@@ -560,7 +563,7 @@ setMethod(
                          initializer, rprior, dprior, params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
-                         globals, cachedir) {
+                         globals, cdir, cfile) {
 
         pomp.constructor(
             data=data,
@@ -589,7 +592,8 @@ setMethod(
             fromEstimationScale=fromEstimationScale,
             toEstimationScale=toEstimationScale,
             globals=globals,
-            cachedir=cachedir,
+            cdir=cdir,
+            cfile=cfile,
             ...
         )
     }
@@ -606,7 +610,7 @@ setMethod(
                          initializer, rprior, dprior, params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
-                         globals, cachedir) {
+                         globals, cdir, cfile) {
 
         pomp.constructor(
             data=matrix(data,nrow=1,ncol=length(data)),
@@ -635,7 +639,8 @@ setMethod(
             fromEstimationScale=fromEstimationScale,
             toEstimationScale=toEstimationScale,
             globals=globals,
-            cachedir=cachedir,
+            cdir=cdir,
+            cfile=cfile,
             ...
         )
     }
@@ -650,7 +655,7 @@ setMethod(
                          initializer, rprior, dprior, params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
-                         globals, cachedir) {
+                         globals, cdir, cfile) {
 
         if (missing(times)) times <- data@times
         if (missing(t0)) t0 <- data@t0
@@ -710,7 +715,6 @@ setMethod(
         if (missing(paramnames)) paramnames <- character(0)
         if (missing(covarnames)) covarnames <- character(0)
         if (missing(PACKAGE)) PACKAGE <- character(0)
-        if (missing(cachedir)) cachedir <- NULL
 
         pomp.constructor(
             data=data@data,
@@ -738,7 +742,8 @@ setMethod(
             toEstimationScale=to.trans,
             params=params,
             globals=globals,
-            cachedir=cachedir,
+            cdir=cdir,
+            cfile=cfile,
             .solibs=data@solibs,
             userdata=data@userdata,
             ...

@@ -24,24 +24,24 @@
        skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, fromEstimationScale, toEstimationScale, globals, cachedir)
+       PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, fromEstimationScale, toEstimationScale, globals, cachedir)
+       PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, fromEstimationScale, toEstimationScale, globals, cachedir)
+       PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
 \S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model, skeleton, skeleton.type, skelmap.delta.t,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, fromEstimationScale, toEstimationScale, globals, cachedir)
+       PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
 }
 \arguments{
   \item{data, times}{
@@ -216,10 +216,12 @@
     C code that will be included in the source for (and therefore hard-coded into) the shared-object library created when the call to \code{pomp} uses \code{\link{Csnippet}}s.
     If no \code{Csnippet}s are used, \code{globals} has no effect.
   }
-  \item{cachedir}{
-    optional character;
-    the name of the directory within which \code{Csnippet} code will be compiled.
+  \item{cdir, cfile}{
+    optional character.
+    \code{cdir} specifies the name of the directory within which \code{Csnippet} code will be compiled.
     By default, this is in a temporary directory specific to the running instance of \R.
+    \code{cfile} gives the name of the file (in directory \code{cdir}) into which \code{Csnippet} codes will be written.
+    By default, a random filename is used.
   }
   \item{\dots}{
     Any additional arguments given to \code{pomp} will be stored in the \code{\link[=pomp-class]{pomp}} object and passed as arguments to each of the basic functions whenever they are evaluated.

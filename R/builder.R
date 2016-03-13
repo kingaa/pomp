@@ -220,10 +220,9 @@ missing.fun <- function (name) {
     paste0("  error(\"'",name,"' not defined\");")
 }
 
-randomName <- function (size = 2, stem = "") {
-    time <- Sys.time()
+randomName <- function (size = 4, stem = "") {
     paste0(stem,
-           " Time: ",format(time,"%Y-%m-%d %H:%M:%OS3 %z"),
+           " Time: ",format(Sys.time(),"%Y-%m-%d %H:%M:%OS3 %z"),
            " Salt: ",
            paste(
                format(
@@ -263,85 +262,6 @@ render <- function (template, ...) {
         retval[[i]] <- tpl
     }
     do.call(paste0,retval)
-}
-
-pompBuilder <- function (data, times, t0, name,
-                         statenames, paramnames, tcovar, covar,
-                         rmeasure, dmeasure, step.fn, step.fn.delta.t,
-                         skeleton, skeleton.type = c("map","vectorfield"),
-                         skelmap.delta.t = 1,
-                         fromEstimationScale, toEstimationScale,
-                         rprior, dprior,
-                         globals, ..., save = FALSE) {
-
-    if (!is.data.frame(data)) stop(sQuote("data")," must be a data-frame")
-    obsnames <- names(data)
-    obsnames <- setdiff(obsnames,times)
-    if (!missing(covar)) {
-        if (!is.data.frame(covar)) stop(sQuote("covar")," must be a data-frame")
-        covarnames <- colnames(covar)
-        covarnames <- setdiff(covarnames,tcovar)
-    } else {
-        covar <- matrix(data=0,nrow=0,ncol=0)
-        tcovar <- numeric(0)
-        covarnames <- character(0)
-    }
-    skeleton.type <- match.arg(skeleton.type)
-
-    if (missing(statenames)) stop(sQuote("statenames")," must be supplied");
-    if (missing(paramnames)) stop(sQuote("paramnames")," must be supplied");
-
-    mpt <- missing(fromEstimationScale)
-    mpit <- missing(toEstimationScale)
-    if (xor(mpt,mpit))
-        stop("if you supply one transformation function, you must supply its inverse")
-
-    pompCBuilder(
-        name=name,
-        statenames=statenames,
-        paramnames=paramnames,
-        covarnames=covarnames,
-        obsnames=obsnames,
-        rmeasure=rmeasure,
-        dmeasure=dmeasure,
-        step.fn=step.fn,
-        skeleton=skeleton,
-        fromEstimationScale=fromEstimationScale,
-        toEstimationScale=toEstimationScale,
-        rprior=rprior,
-        dprior=dprior,
-        globals=globals,
-        dir=if (save) getwd() else NULL
-    ) -> solib
-
-    name <- solib$name
-
-    pomp(
-        data=data,
-        times=times,
-        t0=t0,
-        rprocess=euler.sim(
-            step.fun=render(fnames$step.fn,name=name),
-            delta.t=step.fn.delta.t,
-            PACKAGE=name
-        ),
-        rmeasure=render(fnames$rmeasure,name=name),
-        dmeasure=render(fnames$dmeasure,name=name),
-        skeleton=render(fnames$skeleton,name=name),
-        skeleton.type=skeleton.type,
-        skelmap.delta.t=skelmap.delta.t,
-        fromEstimationScale=render(fnames$fromEstimationScale,name=name),
-        toEstimationScale=render(fnames$toEstimationScale,name=name),
-        rprior=render(fnames$rprior,name=name),
-        dprior=render(fnames$dprior,name=name),
-        PACKAGE=name,
-        statenames=statenames,
-        paramnames=paramnames,
-        tcovar=tcovar,
-        covar=covar,
-        ...,
-        .solibs=list(solib)
-    )
 }
 
 ## TEMPLATES
