@@ -122,6 +122,10 @@
     \item{logLik}{
       Returns the value in the \code{loglik} slot.
     }
+    \item{coef}{
+      Returns the last state of the MCMC chain.
+      As such, it's not very useful for inference.
+    }
     \item{\code{covmat(object, start, thin, expand)}}{
       computes the empirical covariance matrix of the MCMC samples beginning with iteration \code{start} and thinning by factor \code{thin}.
       It expands this by a factor \code{expand^2/n}, where \code{n} is the number of parameters estimated.
@@ -155,7 +159,9 @@ rejectionRate(trace)
 effectiveSize(trace)
 autocorr.diag(trace)
 
+summary(trace)
 plot(trace)
+
 heidel.diag(trace)
 geweke.diag(trace)
 }
