@@ -1,5 +1,22 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.3.4.1}{
+  \itemize{
+    \item \code{conv.rec} on the results of a \code{mif2} computation now play nicely with \code{reshape2::melt}.
+  }
+}
+\section{Changes in \pkg{pomp} version 1.3.3.1}{
+  \itemize{
+    \item It is now possible to direct \code{pomp} to place \code{Csnippet} codes in a specified location.
+    This is accomplished via the new \code{cdir} and \code{cfile} arguments to \code{pomp}.
+  }
+}
+\section{Changes in \pkg{pomp} version 1.3.2.1}{
+  \itemize{
+    \item When several concurrent \R processes attempt to simultaneously compile \code{Csnipet} code from copies of a \code{pomp} object on the same machine, a race condition exists.
+    This release fixes this by ensuring that \code{Csnippet} codes are written and compiled in a process-specific directory.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.3.1.1}{
   This release removes several long-deprecated features.
   \itemize{

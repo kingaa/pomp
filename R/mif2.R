@@ -228,8 +228,8 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     }
 
     conv.rec <- array(dim=c(Nmif+1,length(start)+2),
-                      dimnames=list(seq.int(.ndone,.ndone+Nmif),
-                                    c('loglik','nfail',names(start))))
+                      dimnames=list(iteration=seq.int(.ndone,.ndone+Nmif),
+                                    variable=c('loglik','nfail',names(start))))
     conv.rec[1L,] <- c(NA,NA,start)
     
     object <- as(object,"pomp")
@@ -424,6 +424,7 @@ setMethod(
             object@conv.rec,
             obj@conv.rec[-1L,colnames(object@conv.rec)]
         )
+        names(dimnames(obj@conv.rec)) <- c("iteration","variable")
         obj@Nmif <- as.integer(ndone+Nmif)
 
         obj

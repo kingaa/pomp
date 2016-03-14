@@ -155,4 +155,18 @@ m4 <- mif2(pf,Nmif=2,
              alpha.2=ifelse(time==1,0.2,0.1),
              alpha.3=0.2*(time<10)))
 
+require(ggplot2)
+require(reshape2)
+require(magrittr)
+
+m4 %>% conv.rec() %>% melt() %>%
+    ggplot(aes(x=iteration,y=value,color=variable))+
+    geom_line()+
+    facet_wrap(~variable,scales='free_y',ncol=2)
+
+m4 %>% conv.rec(c("alpha.2","alpha.3","loglik")) %>% melt() %>%
+    ggplot(aes(x=iteration,y=value,color=variable))+
+    geom_line()+
+    facet_wrap(~variable,scales="free_y",ncol=1)
+
 dev.off()
