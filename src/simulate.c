@@ -64,7 +64,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   
   for (j = 1; j < ntimes; j++) { // copy times[2:ntimes] into alltimes[3:(ntimes+1)]
     if (tt >= *s)
-      error("'times' must be a nondecreasing sequence of times");
+      error("'times' must be an increasing sequence of times");
     tt = *(t++) = *(s++);
   }
 

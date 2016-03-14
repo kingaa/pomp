@@ -12,8 +12,8 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
   if (length(times)==0)
     stop(sQuote("times")," is empty, there is no work to do",call.=FALSE)
   
-  if (any(diff(times)<0))
-    stop(sQuote("times")," must be a nondecreasing sequence of times",call.=FALSE)
+  if (any(diff(times)<=0))
+    stop(sQuote("times")," must be an increasing sequence of times",call.=FALSE)
 
   if (missing(t0))
     t0 <- timezero(object)
