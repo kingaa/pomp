@@ -44,7 +44,7 @@
   Contributions are welcome, as are comments, feature requests, and bug reports.
   Please submit these via the issues page (\url{https://github.com/kingaa/pomp/issues}).
   See the package website \url{http://kingaa.github.io/pomp} for more information, access to the package new RSS feed, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
-  Help requests are welcome, but please read the FAQ (\url{http://kingaa.github.io/pomp/vignettes/FAQ.html#how-can-i-submit-an-effective-request-for-help}) before sending requests.
+  Help requests are welcome, but please read the FAQ (\url{http://kingaa.github.io/pomp/FAQ.html#how-can-i-submit-an-effective-request-for-help}) before sending requests.
 }
 \section{Documentation}{
   A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the package homepage: \url{http://kingaa.github.io/pomp}.
