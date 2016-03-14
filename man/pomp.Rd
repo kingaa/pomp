@@ -141,7 +141,8 @@
       \item as a snippet of C code (via \code{\link{Csnippet}}).
       See the \code{\link{Csnippet}} help for rules on writing a custom initializer.
     }
-    It can be accessed via \code{\link{init.state}}.
+
+    One can sample from the initial-state distribution using the \code{\link{init.state}} function.
   }
   \item{rprior}{
     optional; function drawing a sample from a prior distribution on parameters.
