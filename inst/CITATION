@@ -4,8 +4,8 @@ note2 <- sprintf("(R package, version %s)", meta$Version)
 
 c(
     bibentry(
-        mheader=paste("To cite the",sQuote("pomp"),
-                      "package in publications, please use:"),
+        header=paste("To cite the",sQuote("pomp"),
+                     "package in publications, please use:"),
         bibtype = "Article",
         title = "Statistical Inference for Partially Observed Markov Processes via the {R} Package {pomp}",
         author       = c(person(given = c("Aaron", "A."),
@@ -22,7 +22,6 @@ c(
         number       = "12",
         pages        = "1--43",
         doi          = "10.18637/jss.v069.i12",
-        header       = "To cite pomp in publications use:",
         textVersion  =
             paste("Aaron A. King, Dao Nguyen, Edward L. Ionides (2016).",
                   "Statistical Inference for Partially Observed Markov Processes via the R Package pomp.",
