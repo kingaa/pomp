@@ -1,16 +1,16 @@
 ## ----packages,include=F,cache=F------------------------------------------
-require(pomp)
-require(coda)
-require(foreach)
-require(doMC)
-require(ggplot2)
-require(grid)
-require(magrittr)
-require(plyr)
-require(reshape2)
-require(xtable)
+library("pomp")
+library("coda")
+library("foreach")
+library("doMC")
+library("ggplot2")
+library("grid")
+library("magrittr")
+library("plyr")
+library("reshape2")
+library("xtable")
 
-stopifnot(packageVersion("pomp")>="1.0.0.0")
+stopifnot(packageVersion("pomp")>="1.3.3.3")
 
 
 ## ----set-opts,include=F,cache=F------------------------------------------
@@ -22,7 +22,6 @@ options(
         continue="+  ",
         width=70,
         useFancyQuotes=FALSE,
-        knitr.package.concordance=TRUE,
         reindent.spaces=2,
         xtable.comment=FALSE
         )
@@ -34,20 +33,6 @@ options(cores=10)
 
 ## ----timing1,echo=F,cache=F----------------------------------------------
 bigtick <- Sys.time()
-
-## ----eval=F--------------------------------------------------------------
-## library("pomp")
-## pompExample(gompertz)
-
-## ----eval=F--------------------------------------------------------------
-## obs(gompertz)
-## states(gompertz)
-## as.data.frame(gompertz)
-## plot(gompertz)
-## timezero(gompertz)
-## time(gompertz)
-## coef(gompertz)
-## init.state(gompertz)
 
 ## ----gomp1---------------------------------------------------------------
 gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
@@ -79,9 +64,6 @@ set.seed(340398091L)
 
 ## ----gomp7---------------------------------------------------------------
 gompertz <- simulate(gompertz,params=theta)
-
-## ----gomp8,eval=F--------------------------------------------------------
-## plot(gompertz, variables = "Y")
 
 ## ----gompertz-plot,echo=F,fig.height=3,fig.width=5-----------------------
 op <- par(mar=c(3,3,2,0),mgp=c(2,1,0))
@@ -148,12 +130,6 @@ kalman <- function (x, object, params) {
 
 exact.loglik.truth <- -kalman(coef(gompertz),gompertz,coef(gompertz))
 
-## ----pfilter2-calc,eval=FALSE--------------------------------------------
-##  pf <- pfilter(gompertz,params=coef(gompertz),Np=1000)
-
-## ----pfilter3-calc,eval=FALSE--------------------------------------------
-##  pf <- pfilter(gompertz,Np=1000)
-
 ## ----pfilter4-setup,eval=T,echo=F,results="hide"-------------------------
 set.seed(334388458L)
 
@@ -180,48 +156,6 @@ dat2 <- as.data.frame(gompertz)
 stopifnot(all.equal(dat1[c("time","Y")],dat2[c("time","Y")]))
 theta <- coef(gompertz)
 theta.true <- theta
-
-## ----gompertz-mif-inner1,echo=F,eval=F-----------------------------------
-## theta.guess <- theta.true
-## rlnorm(n = length(estpars), meanlog = log(theta.guess[estpars]),
-##        sdlog = 1) -> theta.guess[estpars]
-
-## ----gompertz-mif-inner2,echo=F,eval=F-----------------------------------
-## mif(gompertz, Nmif = 100, start = theta.guess, transform = TRUE,
-##     Np = 2000, var.factor = 2, cooling.fraction = 0.7,
-##     rw.sd = c(r = 0.02, sigma = 0.02, tau = 0.02))
-
-## ----gompertz-mif-inner3,echo=F,eval=F-----------------------------------
-## pf <- replicate(n = 10, logLik(pfilter(mf, Np = 10000)))
-## logmeanexp(pf)
-
-## ----gompertz-mif-estpar,eval=F,echo=F-----------------------------------
-## estpars <- c("r", "sigma", "tau")
-
-## ----gompertz-mif-post,eval=F,echo=F-------------------------------------
-## mf1 <- mif1[[which.max(pf1)]]
-## theta.mif <- coef(mf1)
-## loglik.mif <- replicate(n = 10, logLik(pfilter(mf1,Np = 10000)))
-## loglik.mif <- logmeanexp(loglik.mif,se=TRUE)
-## theta.true <- coef(gompertz)
-## loglik.true <- replicate(n = 10, logLik(pfilter(gompertz, Np = 20000)))
-## loglik.true <- logmeanexp(loglik.true,se=TRUE)
-
-## ----gompertz-mif-demo,eval=F,echo=T,tidy=F------------------------------
-## estpars <- c("r", "sigma", "tau")
-## library("foreach")
-## mif1 <- foreach(i = 1:10, .combine = c) %dopar% {
-##   theta.guess <- theta.true
-##   rlnorm(n = length(estpars), meanlog = log(theta.guess[estpars]),
-##          sdlog = 1) -> theta.guess[estpars]
-##   mif(gompertz, Nmif = 100, start = theta.guess, transform = TRUE,
-##       Np = 2000, var.factor = 2, cooling.fraction = 0.7,
-##       rw.sd = c(r = 0.02, sigma = 0.02, tau = 0.02))
-## }
-## pf1 <- foreach(mf = mif1, .combine = c) %dopar% {
-##   pf <- replicate(n = 10, logLik(pfilter(mf, Np = 10000)))
-##   logmeanexp(pf)
-## }
 
 ## ----gompertz-mif-eval,echo=F,results="hide",cache=F---------------------
 stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
@@ -288,15 +222,6 @@ rbind(
      ) -> results.table
 pretty.pars <- c(r="$r$",sigma="$\\sigma$",tau="$\\tau$")
 colnames(results.table) <- c(pretty.pars[estpars],"$\\loglikMC$","s.e.","$\\loglik$")
-
-## ----mif3,echo=T,eval=F--------------------------------------------------
-## mf1 <- mif1[[which.max(pf1)]]
-## theta.mif <- coef(mf1)
-## loglik.mif <- replicate(n = 10, logLik(pfilter(mf1,Np = 10000)))
-## loglik.mif <- logmeanexp(loglik.mif,se=TRUE)
-## theta.true <- coef(gompertz)
-## loglik.true <- replicate(n = 10, logLik(pfilter(gompertz, Np = 20000)))
-## loglik.true <- logmeanexp(loglik.true,se=TRUE)
 
 ## ----mif-plot,echo=F,cache=TRUE,fig.height=6-----------------------------
 op <- par(mfrow=c(4,1),mar=c(3,4,0.3,0),mgp=c(2,1,0),
@@ -451,12 +376,6 @@ pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
 guess <- c(r=20,sigma=1,phi=20,N.0=7,e.0=0)
 pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
 
-## ----first-probe-plot,eval=F---------------------------------------------
-## summary(pb.truth)
-## summary(pb.guess)
-## plot(pb.truth)
-## plot(pb.guess)
-
 ## ----ricker-probe-plot,echo=F,cache=T,results="hide",dpi=600,dev.args=list(bg="transparent",pointsize=9),fig.height=4,fig.width=4,out.width="\\textwidth"----
   pb <- probe(ricker,
               probes=list(
@@ -469,17 +388,6 @@ pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
               seed=1066L
               )
 plot(pb)
-
-## ----ricker-probe-match-calc,eval=F,results="markup"---------------------
-## pm <- probe.match(
-##                   pb.guess,
-##                   est=c("r","sigma","phi"),
-##                   transform=TRUE,
-##                   method="Nelder-Mead",
-##                   maxit=2000,
-##                   seed=1066L,
-##                   reltol=1e-8
-##                   )
 
 ## ----ricker-probe.match-eval,echo=F,eval=T,results="hide",cache=F--------
 stew(file="ricker-probe-match.rda",{
@@ -546,32 +454,8 @@ colnames(comp) <- c("$r$","$\\sigma$","$\\phi$",
                     "$\\synloglikMC$","s.e.($\\synloglikMC$)")
 print(xtable(comp,align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
 
-## ----abc-load,eval=F,echo=F,tidy=F---------------------------------------
-## plist <- list(probe.mean(var = "Y", transform = sqrt),
-##               probe.acf("Y", lags = c(0, 5, 10, 20)),
-##               probe.marginal("Y", ref = obs(gompertz)))
-## psim <- probe(gompertz, probes = plist, nsim = 500)
-## scale.dat <- apply(psim$simvals, 2, sd)
-
-## ----abc-inner,eval=FALSE,echo=FALSE-------------------------------------
-## abc(pomp(gompertz, dprior = gompertz.dprior), Nabc = 4e6,
-##     probes = plist, epsilon = 2, scale = scale.dat,
-##     proposal=mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
-
-## ----abc-demo,eval=FALSE,tidy=FALSE--------------------------------------
-## plist <- list(probe.mean(var = "Y", transform = sqrt),
-##               probe.acf("Y", lags = c(0, 5, 10, 20)),
-##               probe.marginal("Y", ref = obs(gompertz)))
-## psim <- probe(gompertz, probes = plist, nsim = 500)
-## scale.dat <- apply(psim$simvals, 2, sd)
-## abc1 <- foreach(i = 1:5, .combine = c) %dopar% {
-##   abc(pomp(gompertz, dprior = gompertz.dprior), Nabc = 4e6,
-##       probes = plist, epsilon = 2, scale = scale.dat,
-##       proposal=mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
-## }
-
 ## ----abc-eval,echo=F,results="hide",cache=F------------------------------
-require(pomp)
+library("pomp")
 
 plist <- list(probe.mean(var = "Y", transform = sqrt),
               probe.acf("Y", lags = c(0, 5, 10, 20)),
@@ -610,18 +494,12 @@ rm(abc1,tic,toc)
 })
 
 
-## ----abc-diagnostics,results="hide",fig.show="hide",echo=FALSE,eval=TRUE----
-gelman.diag(abc.traces)
-gelman.plot(abc.traces)
-autocorr.plot(abc.traces[[1]])
-hist(rle(unlist(abc.traces[,"r"]))$length)
-
 ## ----abc-pmmc-compare,echo=F,fig.width=7,fig.height=3,cache=T------------
-require(ggplot2)
-require(grid)
-require(plyr)
-require(reshape2)
-require(magrittr)
+library("ggplot2")
+library("grid")
+library("plyr")
+library("reshape2")
+library("magrittr")
 
 ldply(list(pmcmc=ldply(pmcmc.traces),abc=ldply(abc.traces)),.id='method') %>%
   melt(id="method") %>%
@@ -646,11 +524,6 @@ traces %>%
         strip.background=element_rect(fill=NA,color=NA),
         strip.text=element_text(size=12),
         panel.margin=unit(4,"mm"))
-
-## ----first-nlf,eval=F,tidy=F---------------------------------------------
-## nlf1 <- nlf(gompertz, nasymp = 1000, nconverge = 1000, lags = c(2, 3),
-##             start = c(r = 1, K = 2, sigma = 0.5, tau = 0.5, X.0 = 1),
-##             est = c("r", "sigma", "tau"), transform = TRUE)
 
 ## ----nlf-mif-comp-setup,eval=T,echo=F,results="hide"---------------------
 pompExample(gompertz)
@@ -719,11 +592,11 @@ cmp1 <- as.data.frame(cmp1)
 })
 
 ## ----nlf-mif-plot,echo=F,fig.width=8,fig.height=3.5----------------------
-require(ggplot2)
-require(grid)
-require(plyr)
-require(reshape2)
-require(magrittr)
+library("ggplot2")
+library("grid")
+library("plyr")
+library("reshape2")
+library("magrittr")
 
 plA <- cmp1 %>%
   ggplot(mapping=aes(y=mifLik-trueLik,x=nlfLik-trueLik))+

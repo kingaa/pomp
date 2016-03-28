@@ -133,18 +133,18 @@ It is provided under the \href{http://creativecommons.org/licenses/by/3.0/}{Crea
 %% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 <<packages,include=F,cache=F>>=
-require(pomp)
-require(coda)
-require(foreach)
-require(doMC)
-require(ggplot2)
-require(grid)
-require(magrittr)
-require(plyr)
-require(reshape2)
-require(xtable)
+library("pomp")
+library("coda")
+library("foreach")
+library("doMC")
+library("ggplot2")
+library("grid")
+library("magrittr")
+library("plyr")
+library("reshape2")
+library("xtable")
 
-stopifnot(packageVersion("pomp")>="1.0.0.0")
+stopifnot(packageVersion("pomp")>="1.3.3.3")
 
 <<set-opts,include=F,cache=F>>=
 options(
@@ -155,13 +155,13 @@ options(
         continue="+  ",
         width=70,
         useFancyQuotes=FALSE,
-        knitr.package.concordance=TRUE,
         reindent.spaces=2,
         xtable.comment=FALSE
         )
 
 <<knitr-opts,include=F,cache=F,purl=F>>=
-require(knitr)
+library("knitr")
+opts_knit$set(concordance=TRUE)
 opts_chunk$set(
                progress=TRUE,prompt=TRUE,highlight=FALSE,
                tidy=TRUE,
@@ -176,7 +176,7 @@ opts_chunk$set(
                indent=NA,
                background="#FFFFFF00",
                size="normalsize",
-               fig.path="figure/pompjss-",
+               fig.path="Figures/jss1411-",
                fig.lp="fig:",
                fig.align="left",
                fig.show="asis",
@@ -192,7 +192,9 @@ opts_chunk$set(
 <<set-seed,cache=F,include=F>>=
 set.seed(5384959L)
 options(cores=10)
-@ 
+@
+
+\begin{document}
 
 <<timing1,echo=F,cache=F>>=
 bigtick <- Sys.time()
@@ -200,8 +202,6 @@ bigtick <- Sys.time()
 
 %% include your article here, just as usual
 %% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
-
-\begin{document}
 
 \section {Introduction}
 
@@ -322,14 +322,14 @@ Applying the \code{simulate} function to an object of \class{pomp} returns anoth
 
 To illustrate the specification of models in \pkg{pomp} and the use of the package's inference algorithms, we will use a simple example.
 The \citet{Gompertz1825} model can be constructed via
-<<eval=F>>=
+<<eval=F,purl=F>>=
 library("pomp")
 pompExample(gompertz)
 @
 which results in the creation of an object of \class{pomp}, named \code{gompertz}, in the workspace.
 The structure of this model and its implementation in \pkg{pomp} is described below, in \cref{sec:examples}.
 One can view the components of \code{gompertz} listed in \cref{tab:notation} by executing
-<<eval=F>>=
+<<eval=F,purl=F>>=
 obs(gompertz)
 states(gompertz)
 as.data.frame(gompertz)
@@ -873,13 +873,13 @@ the package supports alternative choices of proposal distribution.
 
 Nonlinear forecasting (NLF) uses simulations to build up an approximation to the one-step prediction distribution that is then evaluated on the data.
 We saw in \cref{sec:pfilter} that SMC evaluates the prediction density for the observation, $f_{Y_n|Y_{1:{n-1}}}(y_n^*\given y_{1:n-1}^*\giventh \theta)$, by first building an approximation to the prediction density of the latent process, $f_{X_n|Y_{1:{n-1}}}(x_n\given y_{1:n-1}^*\giventh \theta)$.
-NLF, by contrast, uses simulations to fit a linear regression model which predicts $Y_n$ based on a collection of $L$ lagged variables, $\{Y_{n-\lags_1},\dots,Y_{n-\lags_L}\}$.
+NLF, by contrast, uses simulations to fit a linear model which predicts $Y$ at time $n$ using its value at lags $\lags_1,\dots,\lags_L$, i.e., a linear regression of $Y_n$ on the $L$ variables $\{Y_{n-\lags_1},\dots,Y_{n-\lags_L}\}$.
 The prediction errors when this model is applied to the data give rise to a quantity called the quasi-likelihood, which behaves for many purposes like a likelihood \citep{smith93}.
 The implementation in \code{nlf} maximises the quasi-likelihood computed in \cref{alg:nlf}, using the \code{subplex} method \citep{Rowan1990,subplex} or any other optimizer offerered by \code{optim}.
 The construction of the quasi-likelihood in \code{nlf} follows the specific recommendations of \citet{kendall05}.
 In particular, the choice of radial basis functions, $f_k$, in \cref{alg:nlf:rbf} and the specification of $m_k$ and $s$ in \cref{alg:nlf:rbf:params1,alg:nlf:rbf:params2} were proposed by \citet{kendall05} based on trial and error.
 The quasi-likelihood is mathematically most similar to a likelihood when $\min(\lags_{1:L})=1$, so that $\loglik_{Q}(\theta)$ approximates the factorization of the likelihood in \cref{eq:loglik:factorization}.
-With this in mind, it is natural to set $\lags_{1:L}=1:L$.
+With this in mind, it is natural to choose contiguous lags $\lags_{1:L}=1:L$.
 However, \citet{kendall05} found that a two-step prediction criterion, with $\min(\lags_{1:L})=2$, led to improved numerical performance.
 It is natural to ask when one might choose to use quasi-likelihood estimation in place of full likelihood estimation implemented by SMC.
 Some considerations follow, closely related to the considerations for synthetic likelihood and ABC (\cref{sec:abc,sec:probe}).
@@ -1016,7 +1016,7 @@ gompertz <- simulate(gompertz,params=theta)
 Now \code{gompertz} is identical to what it was before, except that the missing data have been replaced by simulated data.
 The parameter vector (\code{theta}) at which the simulations were performed has also been saved internally to \code{gompertz}.
 We can plot the simulated data via
-<<gomp8,eval=F>>=
+<<gomp8,eval=F,purl=F>>=
 plot(gompertz, variables = "Y")
 @
 \Cref{fig:gompertz-first-simulation-plot} shows the results of this operation.
@@ -1107,11 +1107,11 @@ kalman <- function (x, object, params) {
 exact.loglik.truth <- -kalman(coef(gompertz),gompertz,coef(gompertz))
 @
 Since the true parameters (i.e., the parameters that generated the data) are stored within the \class{pomp} object \code{gompertz} and can be extracted by the \code{coef} function, we could have done
-<<pfilter2-calc,eval=FALSE>>=
+<<pfilter2-calc,eval=F,purl=F>>=
  pf <- pfilter(gompertz,params=coef(gompertz),Np=1000)
 @
 or simply
-<<pfilter3-calc,eval=FALSE>>=
+<<pfilter3-calc,eval=F,purl=F>>=
  pf <- pfilter(gompertz,Np=1000)
 @
 Now let us compute the log likelihood at a different point in parameter space, one for which $r$, $K$, and $\sigma$ are each 50\% higher than their true values.
@@ -1156,20 +1156,20 @@ dat2 <- as.data.frame(gompertz)
 stopifnot(all.equal(dat1[c("time","Y")],dat2[c("time","Y")]))
 theta <- coef(gompertz)
 theta.true <- theta
-<<gompertz-mif-inner1,echo=F,eval=F>>=
+<<gompertz-mif-inner1,echo=F,eval=F,purl=F>>=
 theta.guess <- theta.true
 rlnorm(n = length(estpars), meanlog = log(theta.guess[estpars]),
        sdlog = 1) -> theta.guess[estpars]
-<<gompertz-mif-inner2,echo=F,eval=F>>=
+<<gompertz-mif-inner2,echo=F,eval=F,purl=F>>=
 mif(gompertz, Nmif = 100, start = theta.guess, transform = TRUE,
     Np = 2000, var.factor = 2, cooling.fraction = 0.7,
     rw.sd = c(r = 0.02, sigma = 0.02, tau = 0.02))
-<<gompertz-mif-inner3,echo=F,eval=F>>=
+<<gompertz-mif-inner3,echo=F,eval=F,purl=F>>=
 pf <- replicate(n = 10, logLik(pfilter(mf, Np = 10000)))
 logmeanexp(pf)
-<<gompertz-mif-estpar,eval=F,echo=F>>=
+<<gompertz-mif-estpar,eval=F,purl=F,echo=F>>=
 estpars <- c("r", "sigma", "tau")
-<<gompertz-mif-post,eval=F,echo=F>>=
+<<gompertz-mif-post,eval=F,purl=F,echo=F>>=
 mf1 <- mif1[[which.max(pf1)]]
 theta.mif <- coef(mf1)
 loglik.mif <- replicate(n = 10, logLik(pfilter(mf1,Np = 10000)))
@@ -1177,7 +1177,7 @@ loglik.mif <- logmeanexp(loglik.mif,se=TRUE)
 theta.true <- coef(gompertz)
 loglik.true <- replicate(n = 10, logLik(pfilter(gompertz, Np = 20000)))
 loglik.true <- logmeanexp(loglik.true,se=TRUE)
-<<gompertz-mif-demo,eval=F,echo=T,tidy=F>>=
+<<gompertz-mif-demo,eval=F,purl=F,echo=T,tidy=F>>=
 <<gompertz-mif-estpar>>
 library("foreach")
 mif1 <- foreach(i = 1:10, .combine = c) %dopar% {
@@ -1250,7 +1250,7 @@ Each of the 10 \code{mif} runs ends up at a different point estimate (\cref{fig:
 We focus on that with the highest estimated likelihood, having evaluated the likelihood several times to reduce the Monte Carlo error in the likelihood evaluation.
 The particle filter produces an unbiased estimate of the likelihood;
 therefore, we will average the likelihoods, not the log likelihoods.
-<<mif3,echo=T,eval=F>>=
+<<mif3,echo=T,eval=F,purl=F>>=
 <<gompertz-mif-post>>
 @
 
@@ -1516,7 +1516,7 @@ guess <- c(r=20,sigma=1,phi=20,N.0=7,e.0=0)
 pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
 @
 Results summaries and diagnostic plots showing the model-data agreement and correlations among the probes can be obtained by
-<<first-probe-plot,eval=F>>=
+<<first-probe-plot,eval=F,purl=F>>=
 summary(pb.truth)
 summary(pb.guess)
 plot(pb.truth)
@@ -1552,7 +1552,7 @@ Among the quantities returned by \code{summary} is the synthetic likelihood (\cr
 One can attempt to identify parameters that maximize this quantity;
 this procedure is referred to in \pkg{pomp} as ``probe matching''.
 Let us now attempt to fit the Ricker model to the data using probe-matching.
-<<ricker-probe-match-calc,eval=F,results="markup">>=
+<<ricker-probe-match-calc,eval=F,purl=F,results="markup">>=
 pm <- probe.match(
                   pb.guess,
                   est=c("r","sigma","phi"),
@@ -1655,23 +1655,23 @@ Each iteration of ABC is therefore much quicker, essentially corresponding to th
 A consequence of this is that ABC cannot determine a good relative scaling of the features within each likelihood evaluation and this must be supplied in advance.
 One can imagine an adaptive version of ABC which modifies the scaling during the course of the algorithm, but here we do a preliminary calculation to accomplish this.
 We return to the Gompertz model to faciliate comparison between ABC and PMCMC.
-<<abc-load,eval=F,echo=F,tidy=F>>=
+<<abc-load,eval=F,purl=F,echo=F,tidy=F>>=
 plist <- list(probe.mean(var = "Y", transform = sqrt),
               probe.acf("Y", lags = c(0, 5, 10, 20)),
               probe.marginal("Y", ref = obs(gompertz)))
 psim <- probe(gompertz, probes = plist, nsim = 500)
 scale.dat <- apply(psim$simvals, 2, sd)
-<<abc-inner,eval=FALSE,echo=FALSE>>=
+<<abc-inner,eval=F,purl=F,echo=FALSE>>=
 abc(pomp(gompertz, dprior = gompertz.dprior), Nabc = 4e6,
     probes = plist, epsilon = 2, scale = scale.dat,
     proposal=mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
-<<abc-demo,eval=FALSE,tidy=FALSE>>=
+<<abc-demo,eval=F,purl=F,tidy=FALSE>>=
 <<abc-load>>
 abc1 <- foreach(i = 1:5, .combine = c) %dopar% {
   <<abc-inner>>
 }
 <<abc-eval,echo=F,results="hide",cache=F>>=
-require(pomp)
+library("pomp")
 
 <<abc-load>>
 
@@ -1703,7 +1703,7 @@ ess.abc <- effectiveSize(abc.traces)
 rm(abc1,tic,toc)
 })
 
-<<abc-diagnostics,results="hide",fig.show="hide",echo=FALSE,eval=TRUE>>=
+<<abc-diagnostics,results="hide",fig.show="hide",echo=FALSE,eval=FALSE,purl=F>>=
 gelman.diag(abc.traces)
 gelman.plot(abc.traces)
 autocorr.plot(abc.traces[[1]])
@@ -1713,11 +1713,11 @@ hist(rle(unlist(abc.traces[,"r"]))$length)
 \begin{figure}
 \begin{center}
 <<abc-pmmc-compare,echo=F,fig.width=7,fig.height=3,cache=T>>=
-require(ggplot2)
-require(grid)
-require(plyr)
-require(reshape2)
-require(magrittr)
+library("ggplot2")
+library("grid")
+library("plyr")
+library("reshape2")
+library("magrittr")
 
 ldply(list(pmcmc=ldply(pmcmc.traces),abc=ldply(abc.traces)),.id='method') %>%
   melt(id="method") %>%
@@ -1768,7 +1768,7 @@ Despite this loss of statistical efficiency, points~B\ref{whyFeature1}--B\ref{wh
 Within the \pkg{pomp} environment, it is fairly easy to try a quick comparison to see how \code{nlf} (\cref{sec:nlf}) compares with \code{mif} (\cref{sec:mif}) on the Gompertz model.
 Carrying out a simulation study with a correctly specified POMP model is appropriate for assessing computational and statistical efficiency, but does not contribute to the debate on the role of two-step prediction criteria to fit misspecified models \citep{xia11,ionides11-statSci}.
 The \code{nlf} implementation we will use to compare to the \code{mif} call from \cref{sec:gompertz:mif} is
-<<first-nlf,eval=F,tidy=F>>=
+<<first-nlf,eval=F,purl=F,tidy=F>>=
 nlf1 <- nlf(gompertz, nasymp = 1000, nconverge = 1000, lags = c(2, 3),
             start = c(r = 1, K = 2, sigma = 0.5, tau = 0.5, X.0 = 1),
             est = c("r", "sigma", "tau"), transform = TRUE)
@@ -1855,11 +1855,11 @@ cmp1 <- as.data.frame(cmp1)
 \begin{figure}
   \begin{center}
 <<nlf-mif-plot,echo=F,fig.width=8,fig.height=3.5>>=
-require(ggplot2)
-require(grid)
-require(plyr)
-require(reshape2)
-require(magrittr)
+library("ggplot2")
+library("grid")
+library("plyr")
+library("reshape2")
+library("magrittr")
 
 plA <- cmp1 %>%
   ggplot(mapping=aes(y=mifLik-trueLik,x=nlfLik-trueLik))+
@@ -2162,7 +2162,7 @@ options(ops)
 \end{figure}
 
 \clearpage
-\subsection{Complications: Seasonality, imported infections, extra-demographic stochasticity}
+\subsection{Adding realistic complexities}
 
 To illustrate the flexibility afforded by \pkg{pomp}'s plug-and-play methods, let us add a bit of real-world complexity to the simple SIR model.
 We will modify the model to take four facts into account:
