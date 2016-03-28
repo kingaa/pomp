@@ -80,20 +80,12 @@
   We discuss the specification of user-defined models and the development of additional methods within the programming environment provided by \pkg{pomp}.
 
   \noindent
-  *This document is an updated version of \emph{Journal of Statistical Software} \textbf{69}(12).
+  *This document is an updated version of \href{http://dx.doi.org/10.18637/jss.v069.i12}{\emph{Journal of Statistical Software} \textbf{69}(12)}.
   It is provided under the \href{http://creativecommons.org/licenses/by/3.0/}{Creative Commons Attribution License}.
 }
 
 \Keywords{Markov processes, hidden Markov model, state space model, stochastic dynamical system, maximum likelihood, plug-and-play, time series, mechanistic model, sequential Monte Carlo, \proglang{R}}
 \Plainkeywords{Markov processes, hidden Markov model, state space model, stochastic dynamical system, maximum likelihood, plug-and-play, time series, mechanistic model, sequential Monte Carlo, R}
-
-\Volume{69}
-\Issue{12}
-\Month{March}
-\Year{2016}
-\Submitdate{2014-07-01}
-\Acceptdate{2015-04-24}
-\DOI{10.18637/jss.v069.i12}
 
 \Address{
   Aaron A. King\\
@@ -140,6 +132,9 @@ options(
         xtable.comment=FALSE
         )
 
+##' Edit the following line to obtain better results using package 'doMC'.
+options(cores=10)
+
 <<knitr-opts,include=F,cache=F,purl=F>>=
 library("knitr")
 opts_knit$set(concordance=TRUE)
@@ -172,14 +167,13 @@ opts_chunk$set(
 
 <<set-seed,cache=F,include=F>>=
 set.seed(5384959L)
-options(cores=10)
 @
-
-\begin{document}
 
 <<timing1,echo=F,cache=F>>=
 bigtick <- Sys.time()
 @
+
+\begin{document}
 
 \section {Introduction}
 
@@ -214,9 +208,6 @@ probe matching \citep{kendall99},
 and
 synthetic likelihood \citep{wood10}.
 Although the \pkg{pomp} package provides a general environment for methods with and without the plug-and-play property, development of the package to date has emphasized plug-and-play methods.
-
-
-%In term of applications, the \proglang{R} package \pkg{pomp} \citep{king09-pomp-misc},\cite{atchade11-sc,camacho11,doucet2013derivative,doucet01tech,handel08,mayer2013successes,romero-severson12-draft,roy12,volz12-draft,wiki-malaria10,yang12,white1994newyork,HC-etal:,L08,Alonso:,anderson79,AndersonCollins:2007}
 
 The \pkg{pomp} package is philosophically neutral as to the merits of Bayesian inference.
 It enables a POMP model to be supplemented with prior distributions on parameters, and several Bayesian methods are implemented within the package.
@@ -917,6 +908,10 @@ The documentation (\code{?pomp}) spells out the usage of the \code{pomp} constru
 
 To begin, we will write a function that implements the process model simulator.
 This is a function that will simulate a single step ($t\to{t+\dlta{t}}$) of the unobserved process (\cref{eq:gompertz1}).
+<<gomp1-comment,include=F>>=
+##' ## Constructing a pomp object.
+##' The following codes construct the basic elements of the Gompertz model
+##' and construct the 'gompertz' pomp object.
 <<gomp1>>=
 gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
    eps <- exp(rnorm(n=1,mean=0,sd=params["sigma"]))
@@ -1021,6 +1016,10 @@ These include the nonlinear forecasting algorithm \code{nlf}, the probe-matching
 The plug-and-play full-information methods in \pkg{pomp}, however, require \code{dmeasure}, i.e., the ability to evaluate the likelihood of the data given the unobserved state.
 The \code{gompertz.meas.dens} above does this, but we must fold it into the \class{pomp} object in order to use it.
 We can do this with another call to \code{pomp}:
+<<gomp9-comment,include=F>>=
+##' ## The particle filter
+##' First, add in the measurement density function.
+@ 
 <<gomp9>>=
 gompertz <- pomp(gompertz,dmeasure=gompertz.meas.dens)
 @
@@ -1031,12 +1030,15 @@ We must decide how many concurrent realizations (\emph{particles}) to use:
 the larger the number of particles, the smaller the Monte Carlo error but the greater the computational burden.
 Here, we run \code{pfilter} with 1000 particles to estimate the likelihood at the true parameters:
 <<pfilter1-setup,eval=T,echo=F,results="hide">>=
+##' Compute the approximate log likelihood using the particle filter.
 set.seed(334388458L)
 <<pfilter1-calc,eval=T,cache=T,results="markup",echo=T>>=
 pf <- pfilter(gompertz,params=theta,Np=1000)
 loglik.truth <- logLik(pf)
 loglik.truth
 <<pfilter1-followup,echo=F,results="hide",eval=T,cache=T>>=
+##' Construct some functions to compute exact likelihoods for this model
+##' using the Kalman filter.
 kalman.filter <- function (Y, X0, r, K, sigma, tau) {
   ntimes <- length(Y)
   sigma.sq <- sigma^2
@@ -1067,10 +1069,9 @@ kalman.filter <- function (Y, X0, r, K, sigma, tau) {
   )
 }
 
+##' 'kalman' evaluates gompertz likelihood parameters X0 and K are fixed at 1.
+##' Other parameters are taken from x (or, if not in x, from params).
 kalman <- function (x, object, params) {
-  # evaluates gompertz likelihood
-  # parameters X0 and K are fixed at 1
-  # other parameters are taken from x (or, if not in x, from params)
   Y <- obs(object)
   p <- params
   p[names(x)] <- x
@@ -1082,6 +1083,7 @@ kalman <- function (x, object, params) {
   -kalman.filter(Y, X0, r, K, sigma, tau)$loglik
 }
 
+##' Exact log likelihood at the true parameters
 exact.loglik.truth <- -kalman(coef(gompertz),gompertz,coef(gompertz))
 @
 Since the true parameters (i.e., the parameters that generated the data) are stored within the \class{pomp} object \code{gompertz} and can be extracted by the \code{coef} function, we could have done
@@ -1095,6 +1097,7 @@ or simply
 Now let us compute the log likelihood at a different point in parameter space, one for which $r$, $K$, and $\sigma$ are each 50\% higher than their true values.
 <<pfilter4-setup,eval=T,echo=F,results="hide">>=
 set.seed(334388458L)
+##' Approximate log likelihood at an arbitrary parameter point
 <<pfilter4-calc,eval=T,results="markup",cache=T>>=
 theta.guess <- theta.true <- coef(gompertz)
 theta.guess[c("r","K","sigma")] <- 1.5*theta.true[c("r","K","sigma")]
@@ -1115,6 +1118,8 @@ we will demonstrate this in \cref{sec:gompertz:mif}.
 Let us use the iterated filtering approach described in \cref{sec:mif} to obtain an approximate maximum likelihood estimate for the data in \code{gompertz}.
 Since the parameters of \cref{eq:gompertz1,eq:gompertz-obs} are constrained to be positive, when estimating, we transform them to a scale on which they are unconstrained.
 The following encodes such a transformation and its inverse:
+<<gomp4-comment,include=F>>=
+##' Include some parameter transformations.
 <<gomp4>>=
 gompertz.log.tf <- function (params, ...) log(params)
 gompertz.exp.tf <- function (params, ...) exp(params)
@@ -1127,6 +1132,10 @@ gompertz <- pomp(gompertz, toEstimationScale = gompertz.log.tf,
 
 The following codes initialize the iterated filtering algorithm at several starting points around \code{theta.true} and estimate the parameters $r$, $\tau$, and $\sigma$.
 <<gompertz-mif-setup,echo=F,results="hide">>=
+##' ## Iterated filtering.
+##' First, retrieve the precompiled version of 'gompertz': much faster than
+##' the one just constructed.
+##' Simulate data to match the ones created before.
 dat1 <- as.data.frame(gompertz)
 pompExample(gompertz)
 gompertz <- simulate(window(gompertz,start=1),seed=340398091L)
@@ -1170,6 +1179,8 @@ Note that we have set \code{transform = TRUE} in the call to \code{mif} above:
 this causes the parameter transformations we have specified to be applied to enforce the positivity of parameters.
 Note also that we have used the \pkg{foreach} package \citep{foreach} to parallelize the computations.
 <<gompertz-mif-eval,echo=F,results="hide",cache=F>>=
+##' Perform some iterated filtering.
+##' These calculations took about 68 sec on my 16-core Intel Xeon 2.90GHz machine.
 stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
 
   require(doMC)
@@ -1215,6 +1226,7 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
   loglik.mle <- logmeanexp(loglik.mle,se=TRUE)
 })
 <<gompertz-mif-results,echo=F,eval=T,results="hide">>=
+##' Print out the comparison table.
 rbind(
       `truth`=c(signif(theta.true[estpars],3),round(loglik.true,2),round(exact.loglik.truth,2)),
       `\\code{mif} MLE`=c(signif(theta.mif[estpars],3),round(loglik.mif,2),round(exact.loglik.mif1,2)),
@@ -1234,6 +1246,7 @@ therefore, we will average the likelihoods, not the log likelihoods.
 
 \begin{figure}
 <<mif-plot,echo=F,cache=TRUE,fig.height=6>>=
+##' Plot the 'mif' diagnostics.
 op <- par(mfrow=c(4,1),mar=c(3,4,0.3,0),mgp=c(2,1,0),
           bty="l",cex.axis=1.2,cex.lab=1.4)
 loglik <- do.call(cbind,conv.rec(mif1,"loglik"))
@@ -1290,6 +1303,9 @@ To carry out Bayesian inference we need to specify a prior distribution on unkno
 The \code{pomp} constructor function provides the \code{rprior} and \code{dprior} arguments, which can be filled with functions that simulate from and evaluate the prior density, respectively.
 %% Although POMP models frequently have strong nonlinear dependencies between parameters, it is common practice to specify independent prior distributions for each parameter.
 Methods based on random-walk Metropolis-Hastings require evaluation of the prior density (\code{dprior}), but not simulation (\code{rprior}), so we specify \code{dprior} for the Gompertz model as follows.
+<<pmcmc-comments,include=F>>=
+##' ## Particle MCMC
+##' We'll need a prior density function:
 <<gompertz-dprior1,tidy=F>>=
 hyperparams <- list(min = coef(gompertz)/10, max = coef(gompertz) * 10)
 @
@@ -1316,6 +1332,10 @@ pmcmc1 <- foreach(i=1:5,.combine=c) %dopar% {
   <<pmcmc-inner>>
 }
 <<pmcmc-eval,echo=F,results="hide",cache=F>>=
+##' Do the PMCMC calculations.
+##' Again, delete 'pmcmc.rda' to reproduce the computations.
+##' This took about 16 min on my 16-core Intel Xeon 2.90GHz machine
+##' with 32GB of memory.
 require(pomp)
 require(coda)
 
@@ -1356,6 +1376,7 @@ hist(rle(unlist(pmcmc.traces[,"r"]))$length)
 
 \begin{figure}
 <<pmcmc-plot,echo=F,eval=T,results="hide",cache=TRUE>>=
+##' Plot the traces and densities.
 op <- par(mar=c(4,3.5,0,1),mfcol=c(3,2),mgp=c(2.5,1,0),cex.axis=1.5,cex.lab=2)
 traceplot(pmcmc.traces[,"r"],smooth=TRUE,xlab="",ylab=expression(r),lty=1)
 traceplot(pmcmc.traces[,"sigma"],smooth=TRUE,xlab="",ylab=expression(sigma),lty=1)
@@ -1411,6 +1432,9 @@ We have the option of writing these functions in \proglang{R}, as we did with th
 However, we can realize manyfold speed-ups by writing these in \proglang{C}.
 In particular, \pkg{pomp} allows us to write snippets of \proglang{C} code that it assembles, compiles, and dynamically links into a running \proglang{R} session.
 To begin the process, we will write snippets for the \code{rprocess}, \code{rmeasure}, and \code{dmeasure} components.
+<<ricker-comments,include=F>>=
+##' ## Second example: stochastic Ricker map.
+##' Some C snippets defining the process model simulator
 <<ricker-map-defn,tidy=F>>=
 ricker.sim <- "
    e = rnorm(0, sigma);
@@ -1458,6 +1482,8 @@ pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA),
        N.0 = 7, e.0 = 0)) -> ricker
 ricker <- simulate(ricker,seed=73691676L)
 <<get-ricker,echo=F,eval=T,results="hide">>=
+##' Again, retrieve a precompiled version, checking to make sure data
+##' are the same as in the paper.
 dat1 <- as.data.frame(ricker)
 pompExample(ricker)
 dat2 <- as.data.frame(ricker)
@@ -1477,6 +1503,11 @@ the probe's values are those of the regression coefficients.
 \code{probe.nlar} fits a simple nonlinear (polynomial) autoregressive model to the data;
 again, the coefficients of the fitted model are the probe's values.
 We construct a list of probes:
+<<probe-comments,include=F>>=
+##' ## Probe-matching via synthetic likelihood
+
+##' We'll need a list of summary statistics ('probes').
+##' The following are among those recommended by Wood (2010).
 <<probe-list,tidy=FALSE>>=
 plist <- list(probe.marginal("y", ref = obs(ricker), transform = sqrt),
               probe.acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
@@ -1488,6 +1519,8 @@ Each of these functions can be applied to the data in \code{ricker} and to simul
 Calling \pkg{pomp}'s function \code{probe} results in the application of these functions to the data, and to each of some large number, \code{nsim}, of simulated data sets, and finally to a comparison of the two.
 [Note that probe functions may be vector-valued, so a single probe taking values in $\R^k$ formally corresponds to a collection of $k$ probe functions in the terminology of \cref{sec:probe}.]
 Here, we will apply \code{probe} to the Ricker model at the true parameters and at a wild guess.
+<<first-probe-comment,include=F>>=
+##' Compute the probes at true parameters and arbitrary "guess".
 <<first-probe,eval=T,echo=T,cache=T>>=
 pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
 guess <- c(r=20,sigma=1,phi=20,N.0=7,e.0=0)
@@ -1503,6 +1536,7 @@ plot(pb.guess)
 
 \begin{figure}
 <<ricker-probe-plot,echo=F,cache=T,results="hide",dpi=600,dev.args=list(bg="transparent",pointsize=9),fig.height=4,fig.width=4,out.width="\\textwidth">>=
+##' An example of 'plot' applied to a 'probed.pomp' object.
   pb <- probe(ricker,
               probes=list(
                 probe.marginal("y",ref=obs(ricker),transform=sqrt,order=2),
@@ -1541,6 +1575,9 @@ pm <- probe.match(
                   reltol=1e-8
                   )
 <<ricker-probe.match-eval,echo=F,eval=T,results="hide",cache=F>>=
+##' Now we'll do some probe-matching.
+##' Again, delete the binary file to cause the computations to be reproduced.
+##' These calculations took less than 20 sec on my Intel Xeon 2.90GHz workstation.
 stew(file="ricker-probe-match.rda",{
   <<ricker-probe-match-calc>>
 })
@@ -1557,6 +1594,8 @@ mf <- mif(ricker, start = guess, Nmif = 100, Np = 1000, transform = TRUE,
           rw.sd=c(r = 0.1, sigma = 0.1, phi = 0.1), max.fail = 50)
 mf <- continue(mf, Nmif = 500, max.fail = 20)
 <<ricker-mif-eval,echo=F,eval=T,cache=F,results="hide">>=
+##' Now, for comparison, run 600 'mif' iterations.
+##' These serial calculations took about 3 minutes.
 stew(file="ricker-mif.rda",seed=718086921L,{
   <<ricker-mif-calc>>
 })
@@ -1572,6 +1611,8 @@ These results demonstrate that it is possible, and indeed not difficult, to maxi
 Since synthetic likelihood discards some of the information in the data, it is not surprising that \cref{tab:ricker-comparison} also shows the statistical inefficiency of maximum synthetic likelihood relative to that of likelihood.
 
 <<ricker-comparison,eval=T,echo=F,cache=F>>=
+##' The comparison, in terms of approximate likelihood and synthetic likelihood.
+##' Not a very expensive set of computations.
 stew(file="ricker-comparison.rda",seed=1182206495L,kind="L'Ecuyer",{
   require(plyr)
   require(magrittr)
@@ -1650,9 +1691,16 @@ abc1 <- foreach(i = 1:5, .combine = c) %dopar% {
 }
 <<abc-eval,echo=F,results="hide",cache=F>>=
 library("pomp")
+##' ## Approximate Bayesian computation
+##' We'll go back to working with the Gompertz model.
 
+##' Select a set of summary statistics ('probes').
+##' Use simulations to estimate the scale of variation of these probes.
 <<abc-load>>
 
+##' Do 5 long ABC chains in parallel.
+##' These computations took about 30 min on my
+##' 16-core Intel Xeon 2.90GHz machine with 32MB of RAM.
 stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
 
   pompExample(gompertz)
@@ -1696,7 +1744,7 @@ library("grid")
 library("plyr")
 library("reshape2")
 library("magrittr")
-
+##' Make density plots comparing posteriors from 'abc' and 'pmcmc'.
 ldply(list(pmcmc=ldply(pmcmc.traces),abc=ldply(abc.traces)),.id='method') %>%
   melt(id="method") %>%
   mutate(log.value=log10(value)) -> traces
@@ -1765,15 +1813,21 @@ larger values will give less variable parameter estimates, but will slow down th
 The computational demand of \code{nlf} is dominated by the time required to generate the model simulations, so efficient coding of \code{rprocess} is worthwhile.
 
 <<nlf-mif-comp-setup,eval=T,echo=F,results="hide">>=
+##' ## Nonlinear Forecasting
+
+##' Here, we'll do a comparison of NLF with MIF.
 pompExample(gompertz)
 set.seed(4897341L)
-##' number of replicates:
+
+##' Number of replicates:
 R <- 10
 
+##' Parameters to estimate:
 estpars <- c("r","sigma","tau")
 gompList <- simulate(gompertz,nsim=R)
 
 <<nlf-mif-compare-eval,echo=F,eval=T,results="hide">>=
+##' The following took 47 sec on my workstation.
 stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
   require(doMC)
   require(foreach)
@@ -1833,6 +1887,7 @@ cmp1 <- as.data.frame(cmp1)
 \begin{figure}
   \begin{center}
 <<nlf-mif-plot,echo=F,fig.width=8,fig.height=3.5>>=
+##' Plot the results.
 library("ggplot2")
 library("grid")
 library("plyr")
@@ -2017,6 +2072,10 @@ As in \cref{sec:ricker:setup}, we will write these components using \pkg{pomp}'s
 Recall that these are snippets of \proglang{C} code that \pkg{pomp} automatically assembles, compiles, and dynamically loads into the running \proglang{R} session.
 
 To start with, we will write snippets that specify the measurement model (\code{rmeasure} and \code{dmeasure}):
+<<sir-comments,include=F>>=
+##' ## More complex models.
+##' ### Simple SIR.
+##' C snippets expressing the two faces of the measurement model.
 <<sir-measmodel,tidy=F>>=
 rmeas <- "
   cases = rnbinom_mu(theta, rho * H);
@@ -2060,6 +2119,13 @@ Obviously, the Euler-multinomial distributions generalize to an arbitrary number
 
 The help page (\code{?euler.sim}) informs us that to use \code{euler.sim}, we need to specify a function that advances the states from $t$ to $t+\dlta{t}$.
 Again, we will write this in \proglang{C} to realize faster run-times:
+<<sir-step-comments,include=F>>=
+##' The process model simulator.
+##' This takes one step from time t -> t+dt
+##' The per-capita rates of the elementary transitions are stored in 'rate'.
+##' The numbers of individuals making each transition is stored in 'trans'.
+##' Births are Poisson, transitions are Euler-multinomial.
+##' 'H' accumulates the recoveries (and will be zeroed after each observation).
 <<sir-proc-sim-def,tidy=F>>=
 sir.step <- "
   double rate[6];
@@ -2103,6 +2169,8 @@ For the model to be consistent, they should be positive integers that sum to the
 We can enforce this constraint by customizing the parameterization of our initial conditions.
 We do this in by furnishing a custom \code{initializer} in the call to \code{pomp}.
 Let us construct it now and fill it with simulated data.
+<<sir-pomp-comment,include=F>>=
+##' Construct the pomp object and fill with simulated data.
 <<sir-pomp-def,eval=T,echo=T,results="hide",tidy=F>>=
 pomp(data = data.frame(cases = NA, time = seq(0, 10, by=1/52)),
      times = "time", t0 = -1/52, dmeasure = Csnippet(dmeas),
@@ -2169,6 +2237,7 @@ The package employs linear interpolation to provide a value of each variable in 
 from the user's perspective, a variable \code{births} will simply be available for use by the model codes.
 
 <<birthdat,eval=T,echo=F,results="hide">>=
+##' Construct some fake birthrate data.
 birthdat <- data.frame(time=seq(-1,11,by=1/12))
 birthdat$births <- 5e5*bspline.basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
 freeze(seed=5853712L,{
@@ -2194,6 +2263,15 @@ This model assumption attempts to capture variability in the timing of seasonal 
 As $\sigma$ varies, it can represent anything from a very mild modulation of the timing of the seasonal progression to much more intense variation.
 
 Let us modify the process-model simulator to incorporate these complexities.
+<<complex-sir-comment,include=F>>=
+##' ### Complex SIR model.
+##' This has seasonal forcing, covariates, extrademographic stochasticity,
+##' and imported infections.
+
+##' The main difference from 'sir1' is in the process model simulator.
+##' 'beta' is the transmission rate, which varies according to the random variable 'phase'.
+##' 'iota' is the effective number of imported infections (assumed constant).
+##' 'births' is interpolated from the covariate table 'birthdat'
 <<complex-sir-def,echo=T,eval=T,results="hide",tidy=F>>=
 seas.sir.step <- "
   double rate[6];
