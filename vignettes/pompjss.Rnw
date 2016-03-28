@@ -1,5 +1,10 @@
 \documentclass[article,pdftex,shortnames,nojss]{jss}
 %\VignetteEngine{knitr::knitr}
+\usepackage{paralist,amsmath,amssymb,thumbpdf,lmodern}
+\graphicspath{{figure/}}
+\shortcites{Blake2014,Kendall99,endall05,pomp}
+
+\usepackage{enumerate,alltt}
 \usepackage[ruled,noline,linesnumbered]{algorithm2e}
 \SetKwFor{For}{for}{do}{end}
 \SetKwFor{While}{while}{do}{end}
@@ -9,23 +14,14 @@
 \SetKwBlock{Begin}{procedure}{}
 \DontPrintSemicolon
 
-\usepackage{paralist}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{color}
-\usepackage{graphicx}
-\usepackage[all]{hypcap}
-
-\newcommand\ed[1]{\textcolor{red}{#1}}
-
 \usepackage[sort&compress]{cleveref}
 \newcommand{\crefrangeconjunction}{--}
-\crefname{figure}{Fig.}{Figs.}
-\Crefname{figure}{Fig.}{Figs.}
+\crefname{figure}{Figure}{Figures}
+\Crefname{figure}{Figure}{Figures}
 \crefname{table}{Table}{Tables}
 \Crefname{table}{Table}{Tables}
-\crefname{equation}{Eq.}{Eqs.}
-\Crefname{equation}{Eq.}{Eqs.}
+\crefname{equation}{Equation}{Equations}
+\Crefname{equation}{Equation}{Equations}
 \creflabelformat{equation}{#2#1#3}
 \crefname{appendix}{Appendix}{Appendices}
 \Crefname{appendix}{Appendix}{Appendices}
@@ -42,12 +38,11 @@
 \newcommand\synloglik{\loglik_{\featureFunc}}
 \newcommand\synloglikMC{\loglikMC_{\featureFunc}}
 \newcommand\R{\mathbb{R}}
-\newcommand\slot[1]{\textit{#1}}
-\newcommand\class[1]{class `\textrm{#1}'}
+\newcommand\slot[1]{\code{#1}}
+\newcommand\class[1]{class `\code{#1}'}
 \newcommand\prob[1]{\mathbb{P}\left[{#1}\right]}
 \newcommand\expect[1]{\mathbb{E}\left[{#1}\right]}
 \newcommand\var[1]{\mathrm{Var}\left[{#1}\right]}
-%\newcommand\dd[1]{\mathrm{d}{#1}}
 \newcommand\dd[1]{\mathrm{d}{#1}}
 \newcommand\given{{\,\vert\,}}
 \newcommand\equals{{{\,}={\,}}}
@@ -67,70 +62,56 @@
 \newcommand\nlfList{C}
 \newcommand\bigO[1]{\mathcal{O}\!\left({#1}\right)}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% declarations for jss.cls %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\author{Aaron A. King\\University of Michigan \And
+        Dao Nguyen\\University of Michigan \And
+        Edward L. Ionides\\University of Michigan}
+\Plainauthor{Aaron A. King, Dao Nguyen, Edward L. Ionides}
 
-%% almost as usual
-\author{Aaron A. King, Dao Nguyen, Edward L. Ionides\\University of Michigan\\ \today}
 \title{Statistical Inference for Partially Observed Markov Processes via the \proglang{R} Package \pkg{pomp}}
-%% for pretty printing and a nice hypersummary also set:
-\Plainauthor{Aaron A. King, Dao Nguyen, Edward L. Ionides} %% comma-separated
-\Plaintitle{Statistical inference for partially observed Markov processes via the R package pomp} %% without formatting
-\Shorttitle{Partially observed Markov processes}
+\Plaintitle{Statistical Inference for Partially Observed Markov Processes via the R Package pomp}
+\Shorttitle{\pkg{pomp}: Partially Observed Markov Processes in \proglang{R}}
 
-%% an abstract and keywords
 \Abstract{
-Partially observed Markov process (POMP) models, also known as hidden Markov models or state space models, are ubiquitous tools for time series analysis.
-The R package \pkg{pomp} provides a very flexible framework for Monte~Carlo statistical investigations using nonlinear, non-Gaussian POMP models.
-A range of modern statistical methods for POMP models have been implemented in this framework including sequential Monte~Carlo, iterated filtering, particle Markov chain Monte~Carlo, approximate Bayesian computation, maximum synthetic likelihood estimation, nonlinear forecasting, and trajectory matching.
-In this paper, we demonstrate the application of these methodologies using some simple toy problems.
-We also illustrate the specification of more complex POMP models, using a nonlinear epidemiological model with a discrete population, seasonality, and extra-demographic stochasticity.
-We discuss the specification of user-defined models and the development of additional methods within the programming environment provided by \pkg{pomp}.
+  Partially observed Markov process (POMP) models, also known as hidden Markov models or state space models, are ubiquitous tools for time series analysis.
+  The \proglang{R} package \pkg{pomp} provides a very flexible framework for Monte~Carlo statistical investigations using nonlinear, non-Gaussian POMP models.  
+  A range of modern statistical methods for POMP models have been implemented in this framework including sequential Monte~Carlo, iterated filtering, particle Markov chain Monte~Carlo, approximate Bayesian computation, maximum synthetic likelihood estimation, nonlinear forecasting, and trajectory matching.  
+  In this paper, we demonstrate the application of these methodologies using some simple toy problems.  
+  We also illustrate the specification of more complex POMP models, using a nonlinear epidemiological model with a discrete population, seasonality, and extra-demographic stochasticity.  
+  We discuss the specification of user-defined models and the development of additional methods within the programming environment provided by \pkg{pomp}.
 
-\noindent
-*This document is a version of a manuscript in press at the \emph{Journal of Statistical Software}.
-It is provided under the \href{http://creativecommons.org/licenses/by/3.0/}{Creative Commons Attribution License}.
+  \noindent
+  *This document is an updated version of \emph{Journal of Statistical Software} \textbf{69}(12).
+  It is provided under the \href{http://creativecommons.org/licenses/by/3.0/}{Creative Commons Attribution License}.
 }
-\Keywords{Markov processes, hidden Markov model, state space model, stochastic dynamical system, maximum likelihood, plug-and-play, time series, mechanistic model, sequential Monte Carlo, R}
+
+\Keywords{Markov processes, hidden Markov model, state space model, stochastic dynamical system, maximum likelihood, plug-and-play, time series, mechanistic model, sequential Monte Carlo, \proglang{R}}
 \Plainkeywords{Markov processes, hidden Markov model, state space model, stochastic dynamical system, maximum likelihood, plug-and-play, time series, mechanistic model, sequential Monte Carlo, R}
+
+\Volume{69}
+\Issue{12}
+\Month{March}
+\Year{2016}
+\Submitdate{2014-07-01}
+\Acceptdate{2015-04-24}
+\DOI{10.18637/jss.v069.i12}
+
 \Address{
   Aaron A. King\\
   Departments of Ecology \& Evolutionary Biology and Mathematics\\
   Center for the Study of Complex Systems\\
   University of Michigan\\
-  48109 Michigan, USA\\
+  48109 Michigan, United States of America\\
   E-mail: \email{kingaa@unich.edu}\\
   URL: \url{http://kinglab.eeb.lsa.umich.edu/}\\
 
-  Dao Nguyen\\
+  Dao Nguyen,   Edward Ionides\\
   Department of Statistics\\
   University of Michigan\\
-  48109 Michigan, USA\\
-  E-mail: \email{nguyenxd@unich.edu}\\
-
-  Edward Ionides\\
-  Department of Statistics\\
-  University of Michigan\\
-  48109 Michigan, USA\\
-  E-mail: \email{ionides@unich.edu}\\
-  URL: \url{http://www.stat.lsa.umich.edu/~ionides}\\
+  48109 Michigan, United States of America\\
+  E-mail: \email{nguyenxd@unich.edu}, \email{ionides@unich.edu}\\
+  URL: \url{http://www.stat.lsa.umich.edu/~ionides/}\\
 
 }
-%% It is also possible to add a telephone and fax number
-%% before the e-mail in the following format:
-%% Telephone: +43/512/507-7103
-%% Fax: +43/512/507-2851
-
-%% NOTE: Typically, this can be left commented and will be filled out by the technical editor
-%% \Volume{50}
-%% \Issue{9}
-%% \Month{June}
-%% \Year{2012}
-%% \Submitdate{2014-06-30}
-%% \Acceptdate{2012-06-04}
-
-%% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 <<packages,include=F,cache=F>>=
 library("pomp")
@@ -176,7 +157,7 @@ opts_chunk$set(
                indent=NA,
                background="#FFFFFF00",
                size="normalsize",
-               fig.path="Figures/jss1411-",
+               fig.path="figure/pompjss-",
                fig.lp="fig:",
                fig.align="left",
                fig.show="asis",
@@ -199,9 +180,6 @@ options(cores=10)
 <<timing1,echo=F,cache=F>>=
 bigtick <- Sys.time()
 @
-
-%% include your article here, just as usual
-%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
 
 \section {Introduction}
 
@@ -571,7 +549,7 @@ As pointed out by \citep{douc05}, stratified resampling performs better than mul
     Initialize filter mean for parameters:
     $\bar \theta_0=\theta_{m-1}$.\;
     Define 
-    $[V_1]_i=(C^2+1)a^{2m-2}\sigma_i^2$.\;
+    $[V_1]_i=(C^2+1)(a^{m-1}\sigma_i)^2$.\;
     \For {$n$ \textrm{in} $1\myto N$}{
       Perturb parameters: \nllabel{alg:mif:perturb}
       $\big[\Theta^P_{n,j}\big]_i\sim\normal\left(\big[\Theta^F_{n-1,j}\big]_i,(a^{m-1} \sigma_i)^2\right)$ for $i \not\in I$, $j$ in $1\myto J$.\;
@@ -873,7 +851,7 @@ the package supports alternative choices of proposal distribution.
 
 Nonlinear forecasting (NLF) uses simulations to build up an approximation to the one-step prediction distribution that is then evaluated on the data.
 We saw in \cref{sec:pfilter} that SMC evaluates the prediction density for the observation, $f_{Y_n|Y_{1:{n-1}}}(y_n^*\given y_{1:n-1}^*\giventh \theta)$, by first building an approximation to the prediction density of the latent process, $f_{X_n|Y_{1:{n-1}}}(x_n\given y_{1:n-1}^*\giventh \theta)$.
-NLF, by contrast, uses simulations to fit a linear model which predicts $Y$ at time $n$ using its value at lags $\lags_1,\dots,\lags_L$, i.e., a linear regression of $Y_n$ on the $L$ variables $\{Y_{n-\lags_1},\dots,Y_{n-\lags_L}\}$.
+By contrast, NLF uses simulations to fit a linear regression of $Y_n$ on the $L$ variables $Y_{n-\lags_1}$, \dots, $Y_{n-\lags_L}$, for some choice of positive lags $\lags_{1:L}$.
 The prediction errors when this model is applied to the data give rise to a quantity called the quasi-likelihood, which behaves for many purposes like a likelihood \citep{smith93}.
 The implementation in \code{nlf} maximises the quasi-likelihood computed in \cref{alg:nlf}, using the \code{subplex} method \citep{Rowan1990,subplex} or any other optimizer offerered by \code{optim}.
 The construction of the quasi-likelihood in \code{nlf} follows the specific recommendations of \citet{kendall05}.
@@ -1329,11 +1307,11 @@ For this reason, PMCMC is relatively inefficient at traversing parameter space.
 When Bayesian inference is the goal, it is therefore advisable to first locate a neighborhood of the MLE using, for example, iterated filtering.
 PMCMC can then be initialized in this neighborhood to sample from the posterior distribution.
 The following adopts this approach, running 5 independent PMCMC chains using a multivariate normal random-walk proposal (with diagonal variance-covariance matrix, see \code{?mvn.diag.rw}).
-<<pmcmc-inner,eval=F,echo=F>>=
+<<pmcmc-inner,eval=F,purl=F,echo=F>>=
 pmcmc(pomp(gompertz, dprior = gompertz.dprior), start = theta.mif,
       Nmcmc = 40000, Np = 100, max.fail = Inf,
       proposal=mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
-<<pmcmc-demo,eval=FALSE,echo=T,tidy=F>>=
+<<pmcmc-demo,eval=F,purl=F,echo=T,tidy=F>>=
 pmcmc1 <- foreach(i=1:5,.combine=c) %dopar% {
   <<pmcmc-inner>>
 }
@@ -1369,7 +1347,7 @@ pmcmc.traces <- window(pmcmc.traces,start=20001,thin=40)
 ess.pmcmc <- effectiveSize(pmcmc.traces)
 rm(pmcmc1,tic,toc)
 })
-<<pmcmc-diagnostics,results="hide",fig.show="hide",echo=F,eval=T>>=
+<<pmcmc-diagnostics,results="hide",fig.show="hide",echo=F,eval=F,purl=F>>=
 gelman.diag(pmcmc.traces)
 gelman.plot(pmcmc.traces)
 autocorr.plot(pmcmc.traces[[1]])
@@ -1395,8 +1373,8 @@ par(op)
 \caption{
   Diagnostic plots for the PMCMC algorithm.
   The trace plots in the left column show the evolution of \Sexpr{length(pmcmc.traces)} independent MCMC chains after a burn-in period of length \Sexpr{start(pmcmc.traces)-1}.
-  Kernel density estimates of the marginal posterior distributions are shown at right.
-  The effective sample size of the \Sexpr{length(pmcmc.traces)} MCMC chains combined is lowest for the $r$ variable and is \Sexpr{signif(min(ess.pmcmc),2)}:
+  Kernel density estimates of the marginal posterior distributions are shown in the right column.
+  The effective sample size of the \Sexpr{length(pmcmc.traces)} MCMC chains combined is lowest for the $r$ variable, being equal to \Sexpr{signif(min(ess.pmcmc),2)}:
   the use of \Sexpr{end(pmcmc.traces)-1} proposal steps in this case is a modest number.
   The density plots at right show the estimated marginal posterior distributions.
   The vertical line corresponds to the true value of each parameter.
@@ -1573,7 +1551,7 @@ While \code{probe.match} provides substantial flexibility in choice of optimizat
 
 By way of putting the synthetic likelihood in context, let us compare the results of estimating the Ricker model parameters using probe-matching and using iterated filtering (IF), which is based on likelihood.
 The following code runs 600 IF iterations starting at \code{guess}:
-<<ricker-mif-calc,eval=FALSE,tidy=FALSE>>=
+<<ricker-mif-calc,eval=F,purl=F,tidy=FALSE>>=
 mf <- mif(ricker, start = guess, Nmif = 100, Np = 1000, transform = TRUE,
           cooling.fraction = 0.95^50, var.factor = 2, ic.lag = 3,
           rw.sd=c(r = 0.1, sigma = 0.1, phi = 0.1), max.fail = 50)
@@ -1789,9 +1767,9 @@ The computational demand of \code{nlf} is dominated by the time required to gene
 <<nlf-mif-comp-setup,eval=T,echo=F,results="hide">>=
 pompExample(gompertz)
 set.seed(4897341L)
-## number of replicates:
+##' number of replicates:
 R <- 10
-pompExample(gompertz)
+
 estpars <- c("r","sigma","tau")
 gompList <- simulate(gompertz,nsim=R)
 
@@ -2162,7 +2140,7 @@ options(ops)
 \end{figure}
 
 \clearpage
-\subsection{Adding realistic complexities}
+\subsection{Incorporating additional model complexity}
 
 To illustrate the flexibility afforded by \pkg{pomp}'s plug-and-play methods, let us add a bit of real-world complexity to the simple SIR model.
 We will modify the model to take four facts into account:

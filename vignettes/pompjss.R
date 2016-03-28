@@ -254,18 +254,6 @@ gompertz.dprior <- function (params, ..., log) {
   if (log) f else exp(f)
 }
 
-## ----pmcmc-inner,eval=F,echo=F-------------------------------------------
-## pmcmc(pomp(gompertz, dprior = gompertz.dprior), start = theta.mif,
-##       Nmcmc = 40000, Np = 100, max.fail = Inf,
-##       proposal=mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
-
-## ----pmcmc-demo,eval=FALSE,echo=T,tidy=F---------------------------------
-## pmcmc1 <- foreach(i=1:5,.combine=c) %dopar% {
-##   pmcmc(pomp(gompertz, dprior = gompertz.dprior), start = theta.mif,
-##         Nmcmc = 40000, Np = 100, max.fail = Inf,
-##         proposal=mvn.diag.rw(c(r = 0.01, sigma = 0.01, tau = 0.01)))
-## }
-
 ## ----pmcmc-eval,echo=F,results="hide",cache=F----------------------------
 require(pomp)
 require(coda)
@@ -300,12 +288,6 @@ pmcmc.traces <- window(pmcmc.traces,start=20001,thin=40)
 ess.pmcmc <- effectiveSize(pmcmc.traces)
 rm(pmcmc1,tic,toc)
 })
-
-## ----pmcmc-diagnostics,results="hide",fig.show="hide",echo=F,eval=T------
-gelman.diag(pmcmc.traces)
-gelman.plot(pmcmc.traces)
-autocorr.plot(pmcmc.traces[[1]])
-hist(rle(unlist(pmcmc.traces[,"r"]))$length)
 
 ## ----pmcmc-plot,echo=F,eval=T,results="hide",cache=TRUE------------------
 op <- par(mar=c(4,3.5,0,1),mfcol=c(3,2),mgp=c(2.5,1,0),cex.axis=1.5,cex.lab=2)
@@ -401,12 +383,6 @@ stew(file="ricker-probe-match.rda",{
                     reltol=1e-8
                     )
 })
-
-## ----ricker-mif-calc,eval=FALSE,tidy=FALSE-------------------------------
-## mf <- mif(ricker, start = guess, Nmif = 100, Np = 1000, transform = TRUE,
-##           cooling.fraction = 0.95^50, var.factor = 2, ic.lag = 3,
-##           rw.sd=c(r = 0.1, sigma = 0.1, phi = 0.1), max.fail = 50)
-## mf <- continue(mf, Nmif = 500, max.fail = 20)
 
 ## ----ricker-mif-eval,echo=F,eval=T,cache=F,results="hide"----------------
 stew(file="ricker-mif.rda",seed=718086921L,{
@@ -528,9 +504,9 @@ traces %>%
 ## ----nlf-mif-comp-setup,eval=T,echo=F,results="hide"---------------------
 pompExample(gompertz)
 set.seed(4897341L)
-## number of replicates:
+##' number of replicates:
 R <- 10
-pompExample(gompertz)
+
 estpars <- c("r","sigma","tau")
 gompList <- simulate(gompertz,nsim=R)
 
