@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.4.1.1}{
+  \itemize{
+    Following the publication of the Journal of Statistical Software announcement paper, the \file{CITATION} has been modified to include the appropriate citation.
+    Please use \code{citation("pomp")} to learn about how to cite \pkg{pomp} correctly.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.3.4.1}{
   \itemize{
     \item \code{conv.rec} on the results of a \code{mif2} computation now play nicely with \code{reshape2::melt}.
