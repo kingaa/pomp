@@ -15,6 +15,9 @@
   R: vignettes/He2010.R
   data: vignettes/twentycities.rda
 
+- title: More examples
+  html: http://github.com/kingaa/pompExamples
+
 - title: Simulation-based Inference for Epidemiological Dynamics<br/> (a short course)
   html: http://kingaa.github.io/sbied/
 
