@@ -95,6 +95,7 @@
   journal: "Am. Nat."
   volume: "151"
   pages: "425-440"
+  doi: "http://dx.doi.org/10.1086/286130"
 
 - key: Gourieroux1996
   author: "C. Gouri&eacute;roux and A. Monfort"
@@ -266,6 +267,7 @@
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "103"
   pages: "18860-18865 "
+  doi: "http://dx.doi.org/10.1073/pnas.0608571103"
 
 - key: Romero-Severson2015
   author: "E. O. Romero-Severson, E. Volz, J. S. Koopman, T. Leitner, and E. L. Ionides"
