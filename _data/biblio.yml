@@ -153,6 +153,7 @@
   journal: "Ecology"
   volume: "80"
   pages: "1789-1805"
+  doi: "http://dx.doi.org/10.1890/0012-9658(1999)080[1789:WDPCAS]2.0.CO;2"
 
 - key: Kendall2005
   author: "B. E. Kendall, S. P. Ellner, E. McCauley, S. N. Wood, C. J. Briggs, W. M. Murdoch, and P. Turchin"
@@ -161,6 +162,7 @@
   journal: "Ecol. Monogr."
   volume: "75"
   pages: "259-276"
+  doi: "http://dx.doi.org/10.1890/03-4056"
 
 - key: King2015
   author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
