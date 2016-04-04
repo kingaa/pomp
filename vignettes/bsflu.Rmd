@@ -16,7 +16,7 @@ Please share and remix noncommercially, mentioning its origin.
 This document was produced using `pomp` version `r packageVersion("pomp")` and `pompExamples` version `r packageVersion("pompExamples")`.
 
 ```{r setup,include=FALSE}
-require(pomp)
+library(pomp)
 stopifnot(packageVersion("pomp")>="1.0.0.0")
 
 options(
@@ -26,16 +26,16 @@ options(
   scipen=5
   )
 
-require(plyr)
-require(reshape2)
+library(plyr)
+library(reshape2)
 
-require(ggplot2)
+library(ggplot2)
 theme_set(theme_bw())
 
 set.seed(862663052L)
 ```
 ```{r knitr-options,include=FALSE,purl=FALSE}
-require(knitr)
+library(knitr)
 opts_knit$set(out.format="html")
 opts_chunk$set(
   progress=TRUE,
@@ -53,7 +53,7 @@ opts_chunk$set(
 ## Flu model with exponentially-distributed waiting times
 
 ```{r bsflu1,cache=FALSE}
-require(pompExamples)
+library(pompExamples)
 pompExample(bsflu)
 coef(bsflu)
 ```

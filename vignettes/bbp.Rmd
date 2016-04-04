@@ -5,15 +5,15 @@
 ***Aaron A. King***
 
 ```{r setup,include=FALSE}
-require(pomp)
-require(plyr)
-require(reshape2)
+library(pomp)
+library(plyr)
+library(reshape2)
 options(stringsAsFactors=FALSE,keep.source=TRUE,encoding="UTF-8")
 
-require(ggplot2)
+library(ggplot2)
 theme_set(theme_bw())
 
-require(knitr)
+library(knitr)
 opts_knit$set(out.format="html")
 opts_chunk$set(
   progress=TRUE,
@@ -27,7 +27,7 @@ opts_chunk$set(
   dpi=100
   )
 
-require(pompExamples)
+library(pompExamples)
 set.seed(864919428L)
 ```
 
@@ -51,9 +51,9 @@ Let's look at an historical outbreak of plague in Bombay in 1905--1906 [@Kermack
 Download and plot the data by doing
 
 ```{r bombay-plague}
-require(plyr)
-require(reshape2)
-require(ggplot2)
+library(plyr)
+library(reshape2)
+library(ggplot2)
 options(stringsAsFactors=FALSE)
 pompExample(bbp)
 ggplot(data=as.data.frame(bbp),mapping=aes(x=time,y=deaths))+

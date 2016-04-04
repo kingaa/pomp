@@ -15,16 +15,16 @@ library(ggplot2)
 theme_set(theme_bw())
 
 ## ----pomp-install,eval=FALSE---------------------------------------------
-## require(devtools)
+## library(devtools)
 ## install_github("kingaa/pomp")
 
 ## ----prelims,cache=FALSE-------------------------------------------------
 set.seed(594709947L)
-require(ggplot2)
-require(plyr)
-require(reshape2)
-require(magrittr)
-require(pomp)
+library(ggplot2)
+library(plyr)
+library(reshape2)
+library(magrittr)
+library(pomp)
 stopifnot(packageVersion("pomp")>="0.70-1")
 
 ## ----load-data-----------------------------------------------------------
@@ -230,12 +230,12 @@ paramnames <- c("R0","mu","sigma","gamma","alpha","iota",
 theta <- unlist(mle[paramnames])
 
 ## ----mle-table,echo=FALSE------------------------------------------------
-require(knitr)
+library(knitr)
 kable(subset(mle,select=-c(town,mu,loglik.sd,delay,S_0,E_0,I_0,R_0)),row.names=FALSE)
 
 ## ----pfilter1------------------------------------------------------------
-require(foreach)
-require(doMC)
+library(foreach)
+library(doMC)
 registerDoMC()
 
 set.seed(998468235L,kind="L'Ecuyer")

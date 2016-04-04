@@ -1,10 +1,10 @@
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
-require(ggplot2)
-require(plyr)
-require(reshape2)
-require(magrittr)
+library(ggplot2)
+library(plyr)
+library(reshape2)
+library(magrittr)
 theme_set(theme_bw())
-require(pomp)
+library(pomp)
 stopifnot(packageVersion("pomp")>="0.66-2")
 options(
   keep.source=TRUE,
@@ -15,14 +15,14 @@ options(
   )
 
 ## ----gompertz-init,cache=FALSE-------------------------------------------
-require(pomp)
+library(pomp)
 pompExample(gompertz)
 theta <- coef(gompertz)
 theta.true <- theta
 
 ## ----gompertz-multi-mif2-eval,results='hide'-----------------------------
-require(foreach)
-require(doMC)
+library(foreach)
+library(doMC)
 registerDoMC()
 
 save.seed <- .Random.seed

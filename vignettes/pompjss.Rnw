@@ -1178,8 +1178,8 @@ Note also that we have used the \pkg{foreach} package \citep{JSSv055i14,foreach}
 ##' These calculations took about 68 sec on my 16-core Intel Xeon 2.90GHz machine.
 stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
 
-  require(doMC)
-  require(foreach)
+  library(doMC)
+  library(foreach)
   registerDoMC()
 
   <<gompertz-mif-estpar>>
@@ -1270,7 +1270,7 @@ In this case, we see that the \code{mif} procedure is successfully maximizing th
 \begin{table}[t!]
   \begin{center}
     <<gompertz-multi-mif-table,echo=F,results="asis">>=
-    require(xtable)
+    library(xtable)
     options(
     xtable.sanitize.text.function=function(x)x,
     xtable.floating=FALSE
@@ -1331,16 +1331,16 @@ pmcmc1 <- foreach(i = 1:5, .combine = c) %dopar% {
 ##' Again, delete 'pmcmc.rda' to reproduce the computations.
 ##' This took about 16 min on my 16-core Intel Xeon 2.90GHz machine
 ##' with 32GB of memory.
-require(pomp)
-require(coda)
+library(pomp)
+library(coda)
 
 stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
 
   pompExample(gompertz)
 
   tic <- Sys.time()
-  require(doMC)
-  require(foreach)
+  library(doMC)
+  library(foreach)
   registerDoMC()
 
   pmcmc1 <- foreach(
@@ -1608,10 +1608,10 @@ Since synthetic likelihood discards some of the information in the data, it is n
 ##' The comparison, in terms of approximate likelihood and synthetic likelihood.
 ##' Not a very expensive set of computations.
 stew(file="ricker-comparison.rda",seed=1182206495L,kind="L'Ecuyer",{
-  require(plyr)
-  require(magrittr)
-  require(foreach)
-  require(doMC)
+  library(plyr)
+  library(magrittr)
+  library(foreach)
+  library(doMC)
   registerDoMC()
 
   rbind(Guess=guess,
@@ -1640,7 +1640,7 @@ stew(file="ricker-comparison.rda",seed=1182206495L,kind="L'Ecuyer",{
 \begin{table}[t!]
   \begin{center}
 <<ricker-comparison-show,echo=F,results="asis">>=
-require(xtable)
+library(xtable)
 colnames(comp) <- c("$r$","$\\sigma$","$\\phi$",
                     "$\\loglikMC$","s.e.($\\loglikMC$)",
                     "$\\synloglikMC$","s.e.($\\synloglikMC$)")
@@ -1700,8 +1700,8 @@ stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
   pompExample(gompertz)
 
   tic <- Sys.time()
-  require(doMC)
-  require(foreach)
+  library(doMC)
+  library(foreach)
   registerDoMC()
 
   abc1 <- foreach(
@@ -1823,8 +1823,8 @@ gompList <- simulate(gompertz,nsim=R)
 <<nlf-mif-compare-eval,echo=F,eval=T,results="hide">>=
 ##' The following took 47 sec on my workstation.
 stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
-  require(doMC)
-  require(foreach)
+  library(doMC)
+  library(foreach)
   registerDoMC()
 
   tic <- Sys.time()

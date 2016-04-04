@@ -1,3 +1,4 @@
+## ----packages,include=F,cache=F------------------------------------------
 library("pomp")
 library("coda")
 library("foreach")
@@ -12,6 +13,7 @@ library("xtable")
 stopifnot(packageVersion("pomp")>="1.3.3.3")
 
 
+## ----set-opts,include=F,cache=F------------------------------------------
 options(
         scipen=2,
         help_type="html",
@@ -28,55 +30,71 @@ options(
 options(cores=10)
 
 
+## ----set-seed,cache=F,include=F------------------------------------------
 set.seed(5384959L)
 
+## ----timing1,echo=F,cache=F----------------------------------------------
 bigtick <- Sys.time()
 
+## ----gomp1-comment,include=F---------------------------------------------
 ##' ## Constructing a pomp object.
 ##' The following codes construct the basic elements of the Gompertz model
 ##' and construct the 'gompertz' pomp object.
 
+## ----gomp1---------------------------------------------------------------
 gompertz.proc.sim <- function (x, t, params, delta.t, ...) {
    eps <- exp(rnorm(n=1,mean=0,sd=params["sigma"]))
    S <- exp(-params["r"]*delta.t)
    setNames(params["K"]^(1-S)*x["X"]^S*eps,"X")
  }
 
+## ----gomp2,tidy.opts=list(width.cutoff=72)-------------------------------
 gompertz.meas.sim <- function (x, t, params, ...) {
    setNames(rlnorm(n=1,meanlog=log(x["X"]),sd=params["tau"]),"Y")
  }
 
+## ----gomp3,tidy.opts=list(width.cutoff=65)-------------------------------
 gompertz.meas.dens <- function (y, x, t, params, log, ...) {
    dlnorm(x=y["Y"],meanlog=log(x["X"]),sdlog=params["tau"],log=log)
  }
 
+## ----gomp5---------------------------------------------------------------
 gompertz <- pomp(data=data.frame(time=1:100, Y=NA), times="time",
                  rprocess=discrete.time.sim(step.fun=gompertz.proc.sim,
                    delta.t=1), rmeasure=gompertz.meas.sim, t0=0)
 
+## ----gomp6---------------------------------------------------------------
 theta <- c(r=0.1,K=1,sigma=0.1,tau=0.1,X.0=1)
 
+## ----gomp7-setup,echo=F,results="hide"-----------------------------------
 set.seed(340398091L)
 
+## ----gomp7---------------------------------------------------------------
 gompertz <- simulate(gompertz,params=theta)
 
+## ----gompertz-plot,echo=F,fig.height=3,fig.width=5-----------------------
 op <- par(mar=c(3,3,2,0),mgp=c(2,1,0))
 plot(Y~time,data=as.data.frame(gompertz),type="l")
 title("gompertz",line=1,cex.main=1)
 par(op)
 
+## ----gomp9-comment,include=F---------------------------------------------
 ##' ## The particle filter
 ##' First, add in the measurement density function.
 
+## ----gomp9---------------------------------------------------------------
 gompertz <- pomp(gompertz,dmeasure=gompertz.meas.dens)
 
+## ----pfilter1-setup,eval=T,echo=F,results="hide"-------------------------
 ##' Compute the approximate log likelihood using the particle filter.
 set.seed(334388458L)
 
+## ----pfilter1-calc,eval=T,cache=T,results="markup",echo=T----------------
 pf <- pfilter(gompertz,params=theta,Np=1000)
 loglik.truth <- logLik(pf)
 loglik.truth
 
+## ----pfilter1-followup,echo=F,results="hide",eval=T,cache=T--------------
 ##' Construct some functions to compute exact likelihoods for this model
 ##' using the Kalman filter.
 kalman.filter <- function (Y, X0, r, K, sigma, tau) {
@@ -126,23 +144,29 @@ kalman <- function (x, object, params) {
 ##' Exact log likelihood at the true parameters
 exact.loglik.truth <- -kalman(coef(gompertz),gompertz,coef(gompertz))
 
+## ----pfilter4-setup,eval=T,echo=F,results="hide"-------------------------
 set.seed(334388458L)
 ##' Approximate log likelihood at an arbitrary parameter point
 
+## ----pfilter4-calc,eval=T,results="markup",cache=T-----------------------
 theta.guess <- theta.true <- coef(gompertz)
 theta.guess[c("r","K","sigma")] <- 1.5 * theta.true[c("r","K","sigma")]
 pf <- pfilter(gompertz,params=theta.guess,Np=1000)
 loglik.guess <- logLik(pf)
 loglik.guess
 
+## ----gomp4-comment,include=F---------------------------------------------
 ##' Include some parameter transformations.
 
+## ----gomp4---------------------------------------------------------------
 gompertz.log.tf <- function (params, ...) log(params)
 gompertz.exp.tf <- function (params, ...) exp(params)
 
+## ----gompertz-transforms,tidy=F------------------------------------------
 gompertz <- pomp(gompertz, toEstimationScale = gompertz.log.tf,
                  fromEstimationScale = gompertz.exp.tf)
 
+## ----gompertz-mif-setup,echo=F,results="hide"----------------------------
 ##' ## Iterated filtering.
 ##' First, retrieve the precompiled version of 'gompertz': much faster than
 ##' the one just constructed.
@@ -155,12 +179,13 @@ stopifnot(all.equal(dat1[c("time","Y")],dat2[c("time","Y")]))
 theta <- coef(gompertz)
 theta.true <- theta
 
+## ----gompertz-mif-eval,echo=F,results="hide",cache=F---------------------
 ##' Perform some iterated filtering.
 ##' These calculations took about 68 sec on my 16-core Intel Xeon 2.90GHz machine.
 stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
 
-  require(doMC)
-  require(foreach)
+  library(doMC)
+  library(foreach)
   registerDoMC()
 
   estpars <- c("r", "sigma", "tau")
@@ -213,6 +238,7 @@ stew(file="gompertz-mif.rda",seed=334388458L,kind="L'Ecuyer",{
   loglik.mle <- logmeanexp(loglik.mle,se=TRUE)
 })
 
+## ----gompertz-mif-results,echo=F,eval=T,results="hide"-------------------
 ##' Print out the comparison table.
 rbind(
       `Truth`=c(signif(theta.true[estpars],3),round(loglik.true,2),round(exact.loglik.truth,2)),
@@ -222,6 +248,7 @@ rbind(
 pretty.pars <- c(r="$r$",sigma="$\\sigma$",tau="$\\tau$")
 colnames(results.table) <- c(pretty.pars[estpars],"$\\loglikMC$","s.e.","$\\loglik$")
 
+## ----mif-plot,echo=F,cache=TRUE,fig.height=6-----------------------------
 ##' Plot the 'mif' diagnostics.
 op <- par(mfrow=c(4,1),mar=c(3,4,0.3,0),mgp=c(2,1,0),
           bty="l",cex.axis=1.2,cex.lab=1.4)
@@ -235,38 +262,43 @@ matplot(log.sigma,type="l",lty=1,xlab="",ylab=expression(log~sigma),xaxt="n")
 matplot(log.tau,type="l",lty=1,xlab="mif iteration",ylab=expression(log~tau))
 par(op)
 
-require(xtable)
+## ----gompertz-multi-mif-table,echo=F,results="asis"----------------------
+library(xtable)
 options(
 xtable.sanitize.text.function=function(x)x,
 xtable.floating=FALSE
 )
 print(xtable(results.table,align="r|cccccc",digits=c(0,4,4,4,2,2,2)))
 
+## ----pmcmc-comments,include=F--------------------------------------------
 ##' ## Particle MCMC
 ##' We'll need a prior density function:
 
+## ----gompertz-dprior1,tidy=F---------------------------------------------
 hyperparams <- list(min = coef(gompertz)/10, max = coef(gompertz) * 10)
 
+## ----gompertz-dprior2,tidy=FALSE-----------------------------------------
 gompertz.dprior <- function (params, ..., log) {
   f <- sum(dunif(params, min = hyperparams$min, max = hyperparams$max,
                  log = TRUE))
   if (log) f else exp(f)
 }
 
+## ----pmcmc-eval,echo=F,results="hide",cache=F----------------------------
 ##' Do the PMCMC calculations.
 ##' Again, delete 'pmcmc.rda' to reproduce the computations.
 ##' This took about 16 min on my 16-core Intel Xeon 2.90GHz machine
 ##' with 32GB of memory.
-require(pomp)
-require(coda)
+library(pomp)
+library(coda)
 
 stew(file="pmcmc.rda",seed=334388458L,kind="L'Ecuyer",{
 
   pompExample(gompertz)
 
   tic <- Sys.time()
-  require(doMC)
-  require(foreach)
+  library(doMC)
+  library(foreach)
   registerDoMC()
 
   pmcmc1 <- foreach(
@@ -291,6 +323,7 @@ ess.pmcmc <- effectiveSize(pmcmc.traces)
 rm(pmcmc1,tic,toc)
 })
 
+## ----pmcmc-plot,echo=F,eval=T,results="hide",cache=TRUE------------------
 ##' Plot the traces and densities.
 op <- par(mar=c(4,3.5,0,1),mfcol=c(3,2),mgp=c(2.5,1,0),cex.axis=1.5,cex.lab=2)
 traceplot(pmcmc.traces[,"r"],smooth=TRUE,xlab="",ylab=expression(r),lty=1)
@@ -306,9 +339,11 @@ densplot(pmcmc.traces[,"tau"],show.obs=FALSE,xlab=expression(tau),main="")
 abline(v=coef(gompertz,"tau"))
 par(op)
 
+## ----ricker-comments,include=F-------------------------------------------
 ##' ## Second example: stochastic Ricker map.
 ##' Some C snippets defining the process model simulator
 
+## ----ricker-map-defn,tidy=F----------------------------------------------
 ricker.sim <- "
    e = rnorm(0, sigma);
    N = r * N * exp(-N + e);
@@ -320,6 +355,7 @@ ricker.dmeas <- "
    lik = dpois(y, phi * N, give_log);
 "
 
+## ----ricker-trans,tidy=F-------------------------------------------------
 log.trans <- "
    Tr = log(r);
    Tsigma = log(sigma);
@@ -331,6 +367,7 @@ exp.trans <- "
    Tphi = exp(phi);
    TN_0 = exp(N_0);"
 
+## ----ricker-pomp,tidy=F--------------------------------------------------
 ricker <- pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA),
      rprocess = discrete.time.sim(step.fun = Csnippet(ricker.sim),
        delta.t = 1), rmeasure = Csnippet(ricker.rmeas),
@@ -342,6 +379,7 @@ ricker <- pomp(data = data.frame(time = seq(0, 50, by = 1), y = NA),
      params = c(r = exp(3.8), sigma = 0.3, phi = 10, N.0 = 7, e.0 = 0))
 ricker <- simulate(ricker, seed = 73691676L)
 
+## ----get-ricker,echo=F,eval=T,results="hide"-----------------------------
 ##' Again, retrieve a precompiled version, checking to make sure data
 ##' are the same as in the paper.
 dat1 <- as.data.frame(ricker)
@@ -349,22 +387,27 @@ pompExample(ricker)
 dat2 <- as.data.frame(ricker)
 stopifnot(all.equal(dat1[c("time","y")],dat2[c("time","y")]))
 
+## ----probe-comments,include=F--------------------------------------------
 ##' ## Probe-matching via synthetic likelihood
 
 ##' We'll need a list of summary statistics ('probes').
 ##' The following are among those recommended by Wood (2010).
 
+## ----probe-list,tidy=FALSE-----------------------------------------------
 plist <- list(probe.marginal("y", ref = obs(ricker), transform = sqrt),
               probe.acf("y", lags = c(0, 1, 2, 3, 4), transform = sqrt),
               probe.nlar("y", lags = c(1, 1, 1, 2), powers = c(1, 2, 3, 1),
                          transform = sqrt))
 
+## ----first-probe-comment,include=F---------------------------------------
 ##' Compute the probes at true parameters and arbitrary "guess".
 
+## ----first-probe,eval=T,echo=T,cache=T-----------------------------------
 pb.truth <- probe(ricker,probes=plist,nsim=1000,seed=1066L)
 guess <- c(r=20,sigma=1,phi=20,N.0=7,e.0=0)
 pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
 
+## ----ricker-probe-plot,echo=F,cache=T,results="hide",dpi=600,dev.args=list(bg="transparent",pointsize=9),fig.height=4,fig.width=4----
 ##' An example of 'plot' applied to a 'probed.pomp' object.
   pb <- probe(ricker,
               probes=list(
@@ -378,6 +421,7 @@ pb.guess <- probe(ricker,params=guess,probes=plist,nsim=1000,seed=1066L)
               )
 plot(pb)
 
+## ----ricker-probe.match-eval,echo=F,eval=T,results="hide",cache=F--------
 ##' Now we'll do some probe-matching.
 ##' Again, delete the binary file to cause the computations to be reproduced.
 ##' These calculations took less than 20 sec on my Intel Xeon 2.90GHz workstation.
@@ -393,6 +437,7 @@ stew(file="ricker-probe-match.rda",{
                     )
 })
 
+## ----ricker-mif-eval,echo=F,eval=T,cache=F,results="hide"----------------
 ##' Now, for comparison, run 600 'mif' iterations.
 ##' These serial calculations took about 3 minutes.
 stew(file="ricker-mif.rda",seed=718086921L,{
@@ -402,13 +447,14 @@ stew(file="ricker-mif.rda",seed=718086921L,{
   mf <- continue(mf, Nmif = 500, max.fail = 20)
 })
 
+## ----ricker-comparison,eval=T,echo=F,cache=F-----------------------------
 ##' The comparison, in terms of approximate likelihood and synthetic likelihood.
 ##' Not a very expensive set of computations.
 stew(file="ricker-comparison.rda",seed=1182206495L,kind="L'Ecuyer",{
-  require(plyr)
-  require(magrittr)
-  require(foreach)
-  require(doMC)
+  library(plyr)
+  library(magrittr)
+  library(foreach)
+  library(doMC)
   registerDoMC()
 
   rbind(Guess=guess,
@@ -434,12 +480,14 @@ stew(file="ricker-comparison.rda",seed=1182206495L,kind="L'Ecuyer",{
 
 })
 
-require(xtable)
+## ----ricker-comparison-show,echo=F,results="asis"------------------------
+library(xtable)
 colnames(comp) <- c("$r$","$\\sigma$","$\\phi$",
                     "$\\loglikMC$","s.e.($\\loglikMC$)",
                     "$\\synloglikMC$","s.e.($\\synloglikMC$)")
 print(xtable(comp,align="r|ccccccc",digits=c(0,1,3,1,1,2,1,2)))
 
+## ----abc-eval,echo=F,results="hide",cache=F------------------------------
 library("pomp")
 ##' ## Approximate Bayesian computation
 ##' We'll go back to working with the Gompertz model.
@@ -460,8 +508,8 @@ stew(file="abc.rda",seed=334388458L,kind="L'Ecuyer",{
   pompExample(gompertz)
 
   tic <- Sys.time()
-  require(doMC)
-  require(foreach)
+  library(doMC)
+  library(foreach)
   registerDoMC()
 
   abc1 <- foreach(
@@ -486,6 +534,7 @@ rm(abc1,tic,toc)
 })
 
 
+## ----abc-pmmc-compare,echo=F,fig.width=7,fig.height=3,cache=T------------
 library("ggplot2")
 library("grid")
 library("plyr")
@@ -516,6 +565,7 @@ traces %>%
         strip.text=element_text(size=12),
         panel.margin=unit(4,"mm"))
 
+## ----nlf-mif-comp-setup,eval=T,echo=F,results="hide"---------------------
 ##' ## Nonlinear Forecasting
 
 ##' Here, we'll do a comparison of NLF with MIF.
@@ -530,10 +580,11 @@ estpars <- c("r","sigma","tau")
 gompList <- simulate(gompertz,nsim=R)
 
 
+## ----nlf-mif-compare-eval,echo=F,eval=T,results="hide"-------------------
 ##' The following took 47 sec on my workstation.
 stew(file="nlf-mif-compare.rda",seed=816326853L,kind="L'Ecuyer",{
-  require(doMC)
-  require(foreach)
+  library(doMC)
+  library(foreach)
   registerDoMC()
 
   tic <- Sys.time()
@@ -586,6 +637,7 @@ nlf.mif.time <- toc-tic
 cmp1 <- as.data.frame(cmp1)
 })
 
+## ----nlf-mif-plot,echo=F,fig.width=8,fig.height=3.5----------------------
 ##' Plot the results.
 library("ggplot2")
 library("grid")
@@ -629,10 +681,12 @@ grid.text("B",x=unit(0.1,"npc"),y=unit(1,"npc"),
           gp=gpar(fontsize=16,fontface="bold"))
 popViewport()
 
+## ----sir-comments,include=F----------------------------------------------
 ##' ## More complex models.
 ##' ### Simple SIR.
 ##' C snippets expressing the two faces of the measurement model.
 
+## ----sir-measmodel,tidy=F------------------------------------------------
 rmeas <- "
   cases = rnbinom_mu(theta, rho * H);
 "
@@ -640,6 +694,7 @@ dmeas <- "
   lik = dnbinom_mu(cases, theta, rho * H, give_log);
 "
 
+## ----sir-step-comments,include=F-----------------------------------------
 ##' The process model simulator.
 ##' This takes one step from time t -> t+dt
 ##' The per-capita rates of the elementary transitions are stored in 'rate'.
@@ -647,6 +702,7 @@ dmeas <- "
 ##' Births are Poisson, transitions are Euler-multinomial.
 ##' 'H' accumulates the recoveries (and will be zeroed after each observation).
 
+## ----sir-proc-sim-def,tidy=F---------------------------------------------
 sir.step <- "
   double rate[6];
   double dN[6];
@@ -668,8 +724,10 @@ sir.step <- "
   H += dN[1];
 "
 
+## ----sir-pomp-comment,include=F------------------------------------------
 ##' Construct the pomp object and fill with simulated data.
 
+## ----sir-pomp-def,eval=T,echo=T,results="hide",tidy=F--------------------
 sir1 <- pomp(data = data.frame(cases = NA, time = seq(0, 10, by = 1/52)),
      times = "time", t0 = -1/52, dmeasure = Csnippet(dmeas),
      rmeasure = Csnippet(rmeas), rprocess = euler.sim(
@@ -686,10 +744,12 @@ sir1 <- pomp(data = data.frame(cases = NA, time = seq(0, 10, by = 1/52)),
           I.0 = 0.002, R.0 = 1))
 sir1 <- simulate(sir1, seed = 1914679908L)
 
+## ----sir1-plot,echo=F,fig.height=5---------------------------------------
 ops <- options(scipen=-10)
 plot(sir1,mar=c(0,5,2,0))
 options(ops)
 
+## ----birthdat,eval=T,echo=F,results="hide"-------------------------------
 ##' Construct some fake birthrate data.
 birthdat <- data.frame(time=seq(-1,11,by=1/12))
 birthdat$births <- 5e5*bspline.basis(birthdat$time,nbasis=5)%*%c(0.018,0.019,0.021,0.019,0.015)
@@ -701,6 +761,7 @@ freeze(seed=5853712L,{
                                     ))
 })
 
+## ----complex-sir-comment,include=F---------------------------------------
 ##' ### Complex SIR model.
 ##' This has seasonal forcing, covariates, extrademographic stochasticity,
 ##' and imported infections.
@@ -710,6 +771,7 @@ freeze(seed=5853712L,{
 ##' 'iota' is the effective number of imported infections (assumed constant).
 ##' 'births' is interpolated from the covariate table 'birthdat'
 
+## ----complex-sir-def,echo=T,eval=T,results="hide",tidy=F-----------------
 seas.sir.step <- "
   double rate[6];
   double dN[6];
@@ -751,10 +813,12 @@ sir2 <- pomp(sir1, rprocess = euler.sim(
                 sigma = 0.3, S.0 = 0.055, I.0 = 0.002, R.0 = 0.94))
 sir2 <- simulate(sir2, seed = 619552910L)
 
+## ----sir2-plot,echo=F,fig.height=6.5-------------------------------------
 ops <- options(scipen=-10)
 plot(sir2,mar=c(0,5,2,0))
 options(ops)
 
+## ----timing2,cache=F-----------------------------------------------------
 bigtock <- Sys.time()
 totalSweaveTime <- bigtock-bigtick
 

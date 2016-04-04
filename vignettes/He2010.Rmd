@@ -82,7 +82,7 @@ theme_set(theme_bw())
 To get started, we must install **pomp** if it is not already installed.
 The following commands install **pomp** from source (on github).
 ```{r pomp-install,eval=FALSE}
-require(devtools)
+library(devtools)
 install_github("kingaa/pomp")
 ```
 If we were to run into trouble in the above, we would consult the [package website](http://kingaa.github.io/pomp/install.html).
@@ -90,11 +90,11 @@ If we were to run into trouble in the above, we would consult the [package websi
 Now we'll load the packages we'll need, and set the random seed, to allow reproducibility.
 ```{r prelims,cache=FALSE}
 set.seed(594709947L)
-require(ggplot2)
-require(plyr)
-require(reshape2)
-require(magrittr)
-require(pomp)
+library(ggplot2)
+library(plyr)
+library(reshape2)
+library(magrittr)
+library(pomp)
 stopifnot(packageVersion("pomp")>="0.70-1")
 ```
 
@@ -365,7 +365,7 @@ paramnames <- c("R0","mu","sigma","gamma","alpha","iota",
 theta <- unlist(mle[paramnames])
 ```
 ```{r mle-table,echo=FALSE}
-require(knitr)
+library(knitr)
 kable(subset(mle,select=-c(town,mu,loglik.sd,delay,S_0,E_0,I_0,R_0)),row.names=FALSE)
 ```
 
@@ -374,8 +374,8 @@ We use the **foreach** and **doMC** packages to parallelize the computations on 
 Note the use of the L'Ecuyer parallel random number generator.
 
 ```{r pfilter1}
-require(foreach)
-require(doMC)
+library(foreach)
+library(doMC)
 registerDoMC()
 
 set.seed(998468235L,kind="L'Ecuyer")
