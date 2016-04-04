@@ -119,7 +119,7 @@ plot(abc8,scatter=T)
 plot(abc8)
 
 traces <- window(conv.rec(abc8,c("alpha.2","alpha.3")),start=2000)
-require(coda)
+library(coda)
 rejectionRate(traces)
 autocorr.diag(traces)
 traces <- window(traces,thin=50)

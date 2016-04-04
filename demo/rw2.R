@@ -1,4 +1,4 @@
-require(pomp)
+library(pomp)
 
 ## a simple two-dimensional random walk
 ## this makes use of the 'onestep.sim' plugin

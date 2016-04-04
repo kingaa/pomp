@@ -1,5 +1,5 @@
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
-require(pomp)
+library(pomp)
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -9,10 +9,10 @@ options(
 set.seed(594709947L)
 
 ## ----prelims2,echo=FALSE,cache=FALSE-------------------------------------
-require(ggplot2)
-require(plyr)
-require(reshape2)
-require(magrittr)
+library(ggplot2)
+library(plyr)
+library(reshape2)
+library(magrittr)
 theme_set(theme_bw())
 
 ## ----load-parus-data-----------------------------------------------------

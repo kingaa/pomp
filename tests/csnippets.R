@@ -1,10 +1,10 @@
 library(pomp)
 set.seed(588400992L)
 
-require(ggplot2)
-require(plyr)
-require(reshape2)
-require(magrittr)
+library(ggplot2)
+library(plyr)
+library(reshape2)
+library(magrittr)
 theme_set(theme_bw())
 
 parus.dat <- read.csv(text="

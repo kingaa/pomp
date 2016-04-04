@@ -1,6 +1,6 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -57,7 +57,7 @@ newly created object(s):
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 1.926674 secs
+Time difference of 2.46642 secs
 > 
 > print(
 +       cbind(
@@ -99,4 +99,4 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > proc.time()
    user  system elapsed 
-  3.296   0.060   3.479 
+  4.196   0.124   4.285 

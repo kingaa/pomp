@@ -1,6 +1,6 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -33,7 +33,7 @@ newly created object(s):
 > ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.004959822 secs
+Time difference of 0.0105722 secs
 > 
 > coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 > 
@@ -44,4 +44,4 @@ Time difference of 0.004959822 secs
 > 
 > proc.time()
    user  system elapsed 
-  0.492   0.052   0.656 
+  0.664   0.056   0.676 

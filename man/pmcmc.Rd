@@ -153,7 +153,7 @@ plot(chain)
 chain <- pmcmc(chain)
 plot(chain)
 
-require(coda)
+library(coda)
 trace <- window(conv.rec(chain,c("alpha.2","alpha.3")),start=2000)
 rejectionRate(trace)
 effectiveSize(trace)

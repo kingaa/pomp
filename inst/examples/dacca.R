@@ -8,7 +8,7 @@
 ##
 ## Native codes are in the package source.
 
-require(pomp)
+library(pomp)
 
 mle <- c(
          gamma=20.8,eps=19.1,rho=0,

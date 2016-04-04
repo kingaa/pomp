@@ -1,4 +1,4 @@
-require(pomp)
+library(pomp)
 
 ## a stochastic version of the Verhulst-Pearl logistic model
 ## this evolves in continuous time, but we approximate the

@@ -67,8 +67,3 @@ ks.test(loglik.pfilter,loglik.probe)
 qqplot(loglik.pfilter,loglik.probe)
 abline(a=0,b=1)
 abline(v=loglik.truth)
-
-##require(ggplot2)
-##  x <- data.frame(probe=loglik.probe,pfilte=loglik.pfilter)
-##  ggplot(data=melt(x))+geom_bar(aes(x=value,fill=variable),position="dodge")
-

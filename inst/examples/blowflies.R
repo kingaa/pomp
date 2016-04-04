@@ -2,7 +2,7 @@
 ## here, set up for dt=1 and dt=2
 ## dt is hard-coded, and initial values are customized for each dt
 
-require(pomp)
+library(pomp)
 
 ## following xia and tong, the delay is treated as fixed at 14 days
 ## xia and tong claim to be using tau=8 bidays, but on inspection 

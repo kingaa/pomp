@@ -112,7 +112,7 @@ ou2 %>%
 f8 %<>% continue(Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
 plot(f8)
 
-require(coda)
+library(coda)
 
 f8 %>% conv.rec(c("alpha.2","alpha.3")) %>%
   window(start=500) -> trace
@@ -124,7 +124,7 @@ plot(trace)
 heidel.diag(trace)
 geweke.diag(trace)
 
-require(ggplot2)
+library(ggplot2)
 
 f8 %>%
   filter.traj() %>%

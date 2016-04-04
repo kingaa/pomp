@@ -1,4 +1,4 @@
-require(pomp)
+library(pomp)
 
 ## negative binomial measurement model
 ## E[cases|incid] = rho*incid

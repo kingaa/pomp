@@ -19,7 +19,7 @@ tm1 <- traj.match(bbs,start=guess,transform=TRUE,est=est,method="subplex",reltol
 
 tmf <- traj.match.objfun(bbs,params=guess,est=est,transform=TRUE,hmax=0.001)
 
-require(subplex)
+library(subplex)
 fit <- subplex(fn=tmf,par=log(guess[est]),control=list(reltol=1e-7))
 tm2 <- bbs
 coef(tm2) <- guess

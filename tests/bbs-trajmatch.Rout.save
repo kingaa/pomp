@@ -1,6 +1,6 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -53,8 +53,7 @@ newly created object(s):
 > 
 > tmf <- traj.match.objfun(bbs,params=guess,est=est,transform=TRUE,hmax=0.001)
 > 
-> require(subplex)
-Loading required package: subplex
+> library(subplex)
 > fit <- subplex(fn=tmf,par=log(guess[est]),control=list(reltol=1e-7))
 > tm2 <- bbs
 > coef(tm2) <- guess
@@ -81,4 +80,4 @@ Error : trajectory error: error in ODE integrator
 > 
 > proc.time()
    user  system elapsed 
-  2.032   0.056   2.210 
+  2.676   0.064   2.693 

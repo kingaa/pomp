@@ -1,4 +1,4 @@
-require(pomp)
+library(pomp)
 
 dat <- '"time";"y1";"y2"
 1;-1,70081613181228;4,24746468495763

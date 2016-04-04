@@ -1,4 +1,4 @@
-require(pomp)
+library(pomp)
 
 flu <- read.csv2(text="
 day;reports

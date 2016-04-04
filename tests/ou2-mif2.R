@@ -155,9 +155,9 @@ m4 <- mif2(pf,Nmif=2,
              alpha.2=ifelse(time==1,0.2,0.1),
              alpha.3=0.2*(time<10)))
 
-require(ggplot2)
-require(reshape2)
-require(magrittr)
+library(ggplot2)
+library(reshape2)
+library(magrittr)
 
 m4 %>% conv.rec() %>% melt() %>%
     ggplot(aes(x=iteration,y=value,color=variable))+

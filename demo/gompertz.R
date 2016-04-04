@@ -1,4 +1,4 @@
-require(pomp)
+library(pomp)
 
 ## First, code up the Gompertz example in R:
 

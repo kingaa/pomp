@@ -1,6 +1,6 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -107,11 +107,6 @@ alternative hypothesis: two-sided
 > abline(a=0,b=1)
 > abline(v=loglik.truth)
 > 
-> ##require(ggplot2)
-> ##  x <- data.frame(probe=loglik.probe,pfilte=loglik.pfilter)
-> ##  ggplot(data=melt(x))+geom_bar(aes(x=value,fill=variable),position="dodge")
-> 
-> 
 > proc.time()
    user  system elapsed 
-  3.724   0.064   3.966 
+  5.136   0.120   5.215 

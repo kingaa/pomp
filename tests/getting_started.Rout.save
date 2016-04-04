@@ -1,6 +1,6 @@
 
-R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -16,8 +16,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
-> require(pomp)
-Loading required package: pomp
+> library(pomp)
 > options(
 +   keep.source=TRUE,
 +   stringsAsFactors=FALSE,
@@ -27,14 +26,10 @@ Loading required package: pomp
 > set.seed(594709947L)
 > 
 > ## ----prelims2,echo=FALSE,cache=FALSE-------------------------------------
-> require(ggplot2)
-Loading required package: ggplot2
-> require(plyr)
-Loading required package: plyr
-> require(reshape2)
-Loading required package: reshape2
-> require(magrittr)
-Loading required package: magrittr
+> library(ggplot2)
+> library(plyr)
+> library(reshape2)
+> library(magrittr)
 > theme_set(theme_bw())
 > 
 > ## ----load-parus-data-----------------------------------------------------
@@ -220,4 +215,4 @@ Loading required package: magrittr
 > 
 > proc.time()
    user  system elapsed 
-  2.668   0.148   3.085 
+  6.936   0.884   8.672 

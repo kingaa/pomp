@@ -1,6 +1,6 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -145,8 +145,7 @@ Warning message:
 > f8 %<>% continue(Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
 > plot(f8)
 > 
-> require(coda)
-Loading required package: coda
+> library(coda)
 > 
 > f8 %>% conv.rec(c("alpha.2","alpha.3")) %>%
 +   window(start=500) -> trace
@@ -185,8 +184,7 @@ alpha.2 alpha.3
  -5.948  -3.239 
 
 > 
-> require(ggplot2)
-Loading required package: ggplot2
+> library(ggplot2)
 > 
 > f8 %>%
 +   filter.traj() %>%
@@ -206,4 +204,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 62.687   0.118  62.976 
+ 68.136   0.288  68.443 

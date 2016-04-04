@@ -1,6 +1,6 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -141,8 +141,7 @@ Error in validObject(.Object) :
 > plot(abc8)
 > 
 > traces <- window(conv.rec(abc8,c("alpha.2","alpha.3")),start=2000)
-> require(coda)
-Loading required package: coda
+> library(coda)
 > rejectionRate(traces)
   alpha.2   alpha.3 
 0.8543146 0.8543146 
@@ -170,4 +169,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 11.868   0.068  12.246 
+ 13.808   0.144  13.924 
