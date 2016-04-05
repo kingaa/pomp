@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.4.2.1}{
+  \itemize{
+    \item The \code{method="mif2"} option to \code{mif} is now deprecated.
+    It will be removed in a future release.
+    Use \code{mif2} instead.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.4.1.1}{
   \itemize{
     Following the publication of the Journal of Statistical Software announcement paper, the \file{CITATION} has been modified to include the appropriate citation.

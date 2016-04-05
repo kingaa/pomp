@@ -98,12 +98,6 @@ mif.pfilter <- function (object, params, Np,
     pred.var <- as.logical(pred.var)
     verbose <- as.logical(verbose)
     transform <- as.logical(.transform)
-    
-    if (length(params)==0)
-        stop(sQuote("pfilter")," error: ",sQuote("params")," must be specified",call.=FALSE)
-
-    if (missing(tol))
-        stop(sQuote("pfilter")," error: ",sQuote("tol")," must be specified",call.=FALSE)
 
     one.par <- FALSE
     times <- time(object,t0=TRUE)
@@ -144,7 +138,7 @@ mif.pfilter <- function (object, params, Np,
     }
     paramnames <- rownames(params)
     if (is.null(paramnames))
-        stop(sQuote("pfilter")," error: ",sQuote("params")," must have rownames",call.=FALSE)
+        stop(sQuote("mif")," error: ",sQuote("params")," must have rownames",call.=FALSE)
 
     init.x <- init.state(
         object,
@@ -164,10 +158,10 @@ mif.pfilter <- function (object, params, Np,
     if (random.walk) {
         rw.names <- names(.rw.sd)
         if (is.null(rw.names)||!is.numeric(.rw.sd))
-            stop(sQuote("pfilter")," error: ",sQuote(".rw.sd")," must be a named vector",call.=FALSE)
+            stop(sQuote("mif")," error: ",sQuote(".rw.sd")," must be a named vector",call.=FALSE)
         if (!all(rw.names%in%paramnames))
             stop(
-                sQuote("pfilter")," error: the rownames of ",
+                sQuote("mif")," error: the rownames of ",
                 sQuote("params")," must include all of the names of ",
                 sQuote(".rw.sd"),"",call.=FALSE
             )
@@ -255,14 +249,14 @@ mif.pfilter <- function (object, params, Np,
             silent=FALSE
         )
         if (inherits(X,'try-error'))
-            stop(sQuote("pfilter")," error: process simulation error",call.=FALSE)
+            stop(sQuote("mif")," error: process simulation error",call.=FALSE)
         gnsi.rproc <- FALSE
 
         if (pred.var) { ## check for nonfinite state variables and parameters
             problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])
             if (length(problem.indices)>0) {  # state variables
                 stop(
-                    sQuote("pfilter")," error: non-finite state variable(s): ",
+                    sQuote("mif")," error: non-finite state variable(s): ",
                     paste(rownames(X)[problem.indices],collapse=', '),
                     call.=FALSE
                 )
@@ -271,7 +265,7 @@ mif.pfilter <- function (object, params, Np,
                 problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1L])
                 if (length(problem.indices)>0) {
                     stop(
-                        sQuote("pfilter")," error: non-finite parameter(s): ",
+                        sQuote("mif")," error: non-finite parameter(s): ",
                         paste(rw.names[problem.indices],collapse=', '),
                         call.=FALSE
                     )
@@ -293,9 +287,9 @@ mif.pfilter <- function (object, params, Np,
             silent=FALSE
         )
         if (inherits(weights,'try-error'))
-            stop("in ",sQuote("pfilter"),": error in calculation of weights.",call.=FALSE)
+            stop("in ",sQuote("mif"),": error in calculation of weights.",call.=FALSE)
         if (!all(is.finite(weights)))
-            stop("in ",sQuote("pfilter"),": ",sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
+            stop("in ",sQuote("mif"),": ",sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
         gnsi.dmeas <- FALSE
 
         ## compute prediction mean, prediction variance, filtering mean,
@@ -320,7 +314,7 @@ mif.pfilter <- function (object, params, Np,
             silent=FALSE
         )
         if (inherits(xx,'try-error')) {
-            stop(sQuote("pfilter")," error",call.=FALSE)
+            stop(sQuote("mif")," error",call.=FALSE)
         }
         all.fail <- xx$fail
         loglik[nt] <- xx$loglik
@@ -340,7 +334,7 @@ mif.pfilter <- function (object, params, Np,
             if (verbose)
                 message("filtering failure at time t = ",times[nt+1])
             if (nfail>max.fail)
-                stop(sQuote("pfilter")," error: too many filtering failures",call.=FALSE)
+                stop(sQuote("mif")," error: too many filtering failures",call.=FALSE)
         }
 
         if (verbose && (nt%%5==0))
@@ -351,7 +345,7 @@ mif.pfilter <- function (object, params, Np,
     if (nfail>0)
         warning(sprintf(ngettext(nfail,msg1="%d filtering failure occurred in ",
                                  msg2="%d filtering failures occurred in "),nfail),
-                sQuote("pfilter"),call.=FALSE)
+                sQuote("mif"),call.=FALSE)
 
     pompUnload(object)
 
@@ -383,6 +377,12 @@ mif.internal <- function (object, Nmif,
                           paramMatrix = NULL,
                           .getnativesymbolinfo = TRUE,
                           ...) {
+
+    if (method=="mif2") {
+        warning(
+            "method=",sQuote("mif2")," is deprecated and will be removed in a future release.\n",
+            "Use ",sQuote("mif2")," instead.",call.=FALSE)
+    }
 
     pompLoad(object)
 
@@ -570,7 +570,7 @@ mif.internal <- function (object, Nmif,
             silent=TRUE
         )
         if (inherits(pfp,"try-error"))
-            stop("in ",sQuote("mif"),": error in ",sQuote("pfilter"),
+            stop("in ",sQuote("mif"),": error in ",sQuote("mif.pfilter"),
                  ":\n",pfp,call.=FALSE)
 
         gnsi <- FALSE

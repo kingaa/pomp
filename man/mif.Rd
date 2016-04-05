@@ -123,6 +123,8 @@
     \code{method="fp"} updates the parameter to the filtering mean at the end of the time series.
     \code{method="mif2"} implements an incomplete version of the iterated Bayes map method of Ionides (2015).
     The latter method is, by every indication, both more efficient and more stable.
+    The \dQuote{mif2} option is deprecated and will disappear in a future release:
+    use \code{\link{mif2}} instead.
   }
   \item{tol, max.fail}{
     See the description under \code{\link{pfilter}}.
