@@ -130,7 +130,7 @@ mif2.pfilter <- function (object, params, Np,
         ## also do resampling if filtering has not failed
         xx <- try(
             .Call(
-                pfilter_computations,
+                pfilter_computations1,
                 x=X,
                 params=params,
                 Np=Np[nt+1],

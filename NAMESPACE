@@ -13,6 +13,7 @@ useDynLib(
           mif_update,
           mif2_computations,
           pfilter_computations,
+          pfilter_computations1,
           simulation_computations,
           iterate_map,traj_transp_and_copy,
           apply_probe_data,apply_probe_sim,
