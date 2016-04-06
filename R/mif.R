@@ -125,29 +125,31 @@ mif.pfilter <- function (object, params, Np,
     nfail <- 0
 
     ## set up storage for prediction means, variances, etc.
-    if (pred.mean)
+    if (pred.mean) {
         pred.m <- matrix(
-        data=0,
-        nrow=nvars+npars,
-        ncol=ntimes,
-        dimnames=list(
-            variable=c(statenames,rw.names),
-            time=time(object))
-    )
-    else
+            data=0,
+            nrow=nvars+npars,
+            ncol=ntimes,
+            dimnames=list(
+                variable=c(statenames,rw.names),
+                time=time(object))
+        )
+    } else {
         pred.m <- array(data=numeric(0),dim=c(0,0))
+    }
 
-    if (pred.var)
+    if (pred.var) {
         pred.v <- matrix(
-        data=0,
-        nrow=nvars+npars,
-        ncol=ntimes,
-        dimnames=list(
-            variable=c(statenames,rw.names),
-            time=time(object))
-    )
-    else
+            data=0,
+            nrow=nvars+npars,
+            ncol=ntimes,
+            dimnames=list(
+                variable=c(statenames,rw.names),
+                time=time(object))
+        ) 
+    } else {
         pred.v <- array(data=numeric(0),dim=c(0,0))
+    }
 
     filt.m <- matrix(
         data=0,
@@ -236,7 +238,6 @@ mif.pfilter <- function (object, params, Np,
                 x=X,
                 params=params,
                 Np=Np[nt+1],
-                rw=TRUE,
                 rw_sd=sigma1,
                 predmean=pred.mean,
                 predvar=pred.var,
@@ -255,14 +256,14 @@ mif.pfilter <- function (object, params, Np,
         loglik[nt] <- xx$loglik
         eff.sample.size[nt] <- xx$ess
 
-        x <- xx$states
-        params <- xx$params
-
         if (pred.mean)
             pred.m[,nt] <- xx$pm
         if (pred.var)
             pred.v[,nt] <- xx$pv
         filt.m[,nt] <- xx$fm
+
+        x <- xx$states
+        params <- .Call(randwalk_perturbation,xx$params,sigma1)
 
         if (all.fail) { ## all particles are lost
             nfail <- nfail+1
@@ -270,6 +271,9 @@ mif.pfilter <- function (object, params, Np,
                 message("filtering failure at time t = ",times[nt+1])
             if (nfail>max.fail)
                 stop(sQuote("mif")," error: too many filtering failures",call.=FALSE)
+        } else {
+            if (pred.var)
+                pred.v[rw.names,nt] <- pred.v[rw.names,nt]+sigma1^2
         }
 
         if (verbose && (nt%%5==0))

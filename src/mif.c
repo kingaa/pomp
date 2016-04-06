@@ -49,7 +49,7 @@ SEXP mif_update (SEXP pfp, SEXP theta, SEXP gamma, SEXP varfactor,
 }
 
 SEXP mif_pfilter_comps (SEXP x, SEXP params, SEXP Np,
-			SEXP rw, SEXP rw_sd,
+			SEXP rw_sd,
 			SEXP predmean, SEXP predvar,
 			SEXP filtmean, SEXP trackancestry, SEXP onepar,
 			SEXP weights, SEXP tol)
@@ -86,7 +86,7 @@ SEXP mif_pfilter_comps (SEXP x, SEXP params, SEXP Np,
 
   PROTECT(rw_names = GET_NAMES(rw_sd)); nprotect++; // names of parameters undergoing random walk
 
-  do_rw = *(LOGICAL(AS_LOGICAL(rw))); // do random walk in parameters?
+  do_rw = LENGTH(rw_names) > 0; // do random walk in parameters?
   do_pm = *(LOGICAL(AS_LOGICAL(predmean))); // calculate prediction means?
   do_pv = *(LOGICAL(AS_LOGICAL(predvar)));  // calculate prediction variances?
   do_fm = *(LOGICAL(AS_LOGICAL(filtmean))); // calculate filtering means?
@@ -270,22 +270,6 @@ SEXP mif_pfilter_comps (SEXP x, SEXP params, SEXP Np,
 
     if (do_ta) 
       for (k = 0; k < np; k++) xanc[k] = k+1;
-  }
-
-  if (do_rw) { // if random walk, adjust prediction variance and move particles
-    xx = REAL(rw_sd);
-    xp = (all_fail || !do_par_resamp) ? REAL(params) : REAL(newparams);
-    nreps = (all_fail) ? nreps : np;
-
-    for (j = 0; j < nrw; j++) {
-      offset = pidx[j];
-      vsq = xx[j];
-      if (do_pv) {
-	xpv[nvars+j] += vsq*vsq;
-      }
-      for (k = 0; k < nreps; k++)
-	xp[offset+k*npars] += rnorm(0,vsq);
-    }
   }
 
   PutRNGstate();
