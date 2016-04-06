@@ -150,24 +150,3 @@ fit <- mif(
            rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
            cooling.fraction=0.95^50,ic.lag=10,var.factor=1
            )
-
-pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
-fit <- mif(
-           fit,
-           Nmif=10,
-           Np=1000,
-           particles=function(Np,center,sd,...){
-             matrix(
-                    data=runif(
-                      n=Np*length(center),
-                      min=center-sd,
-                      max=center+sd
-                      ),
-                    nrow=length(center),
-                    ncol=Np,
-                    dimnames=list(names(center),NULL)
-                    )
-           }
-           )
-pp <- particles(fit,Np=10,center=coef(fit),sd=abs(0.1*coef(fit)))
-

@@ -42,14 +42,14 @@
 }
 \usage{
 \S4method{mif}{pomp}(object, Nmif = 1, start, ivps = character(0),
-    particles, rw.sd, Np, ic.lag, var.factor = 1,
+    rw.sd, Np, ic.lag, var.factor = 1,
     cooling.type, cooling.fraction.50,
     method = c("mif","unweighted","fp","mif2"),
     tol = 1e-17, max.fail = Inf,
     verbose = getOption("verbose"), transform = FALSE, \dots)
 \S4method{mif}{pfilterd.pomp}(object, Nmif = 1, Np, tol, \dots)
 \S4method{mif}{mif}(object, Nmif, start, ivps,
-    particles, rw.sd, Np, ic.lag, var.factor,
+    rw.sd, Np, ic.lag, var.factor,
     cooling.type, cooling.fraction.50,
     method, tol, transform, \dots)
 \S4method{continue}{mif}(object, Nmif = 1, \dots)
@@ -71,10 +71,6 @@
     optional character vector naming the initial-value parameters (IVPs) to be estimated.
     Every parameter named in \code{ivps} must have a positive random-walk standard deviation specified in \code{rw.sd}.
     If there are no regular parameters with positive \code{rw.sd}, i.e., only IVPs are to be estimated, see below \dQuote{"Using \code{mif} to estimate initial-value parameters only"}.
-  }
-  \item{particles}{
-    Function of prototype \code{particles(Np,center,sd,...)} which sets up the starting particle matrix by drawing a sample of size \code{Np} from the starting particle distribution centered at \code{center} and of width \code{sd}.
-    If \code{particles} is not supplied by the user, the default behavior is to draw the particles from a multivariate normal distribution with mean \code{center} and standard deviation \code{sd}.
   }
   \item{rw.sd}{
     numeric vector with names; the intensity of the random walk to be applied to parameters.
@@ -167,7 +163,7 @@
 \section{Using \code{mif} to estimate initial-value parameters only}{
   One can use \code{mif}'s fixed-lag smoothing to estimate only initial value parameters (IVPs).
   In this case, the IVPs to be estimated are named in \code{ivps} and no positive entries in \code{rw.sd} correspond to any parameters not named in \code{ivps}.
-  If \code{theta} is the current parameter vector, then at each \code{mif} iteration, \code{Np} particles are drawn from a distribution centered at \code{theta} and with width proportional to \code{var.factor*rw.sd}, a particle filtering operation is performed, and \code{theta} is replaced by the filtering mean at \code{time(object)[ic.lag]}.
+  If \code{theta} is the current parameter vector, then at each \code{mif} iteration, \code{Np} particles are drawn from a normal distribution centered at \code{theta} and with width proportional to \code{var.factor*rw.sd}, a particle filtering operation is performed, and \code{theta} is replaced by the filtering mean at \code{time(object)[ic.lag]}.
   Note the implication that, when \code{mif} is used in this way on a time series any longer than \code{ic.lag}, unnecessary work is done.
   If the time series in \code{object} is longer than \code{ic.lag}, consider replacing \code{object} with \code{window(object,end=ic.lag)}. 
 }
@@ -189,24 +185,6 @@
       Plots a series of diagnostic plots when applied to a \code{mif} or \code{mifList} object.
     }
   }
-}
-\section{Details}{
-  If \code{particles} is not specified, the default behavior is to draw the particles from a multivariate normal distribution.
-  \strong{It is the user's responsibility to ensure that, if the optional \code{particles} argument is given, that the \code{particles} function satisfies the following conditions:}
-
-  \code{particles} has at least the following arguments:
-  \code{Np}, \code{center}, \code{sd}, and \code{\dots}.
-  \code{Np} may be assumed to be a positive integer;
-  \code{center} and \code{sd} will be named vectors of the same length.
-  Additional arguments may be specified;
-  these will be filled with the elements of the \code{userdata} slot of the underlying \code{pomp} object (see \code{\link{pomp}}).
-
-  \code{particles} returns a \code{length(center)} x \code{Np} matrix with rownames matching the names of \code{center} and \code{sd}.
-  Each column represents a distinct particle.
-
-  The center of the particle distribution returned by \code{particles} should be \code{center}.
-  The width of the particle distribution should vary monotonically with \code{sd}.
-  In particular, when \code{sd=0}, the \code{particles} should return matrices with \code{Np} identical columns, each given by the parameters specified in \code{center}.
 }
 \references{
   E. L. Ionides, C. Breto, & A. A. King,

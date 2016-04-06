@@ -9,7 +9,6 @@ setClass(
         ivps = 'character',
         pars = 'character',
         Nmif = 'integer',
-        particles = 'function',
         var.factor='numeric',
         ic.lag='integer',
         cooling.type='character',
@@ -20,7 +19,7 @@ setClass(
     )
 )
 
-default.mif.particles.fun <- function (Np, center, sd, ...) {
+mif.particles <- function (Np, center, sd, ...) {
     matrix(
         data=rnorm(
             n=Np*length(center),
@@ -233,7 +232,7 @@ mif.pfilter <- function (object, params, Np,
         ## also do resampling if filtering has not failed
         xx <- try(
             .Call(
-                pfilter_computations1,
+                mif_pfilter_comps,
                 x=X,
                 params=params,
                 Np=Np[nt+1],
@@ -303,7 +302,6 @@ mif.pfilter <- function (object, params, Np,
 
 mif.internal <- function (object, Nmif,
                           start, ivps,
-                          particles,
                           rw.sd,
                           Np, var.factor, ic.lag,
                           cooling.type, cooling.fraction.50,
@@ -452,14 +450,8 @@ mif.internal <- function (object, Nmif,
         )
     }
 
-    obj <- as(object,"pomp")
-
-    if (Nmif>0) {
-        tmp.mif <- new("mif",object,particles=particles,Np=Np[1L])
-    } else {
-        pfp <- obj
-    }
-
+    pfp <- as(object,"pomp")
+    
     have.parmat <- !(is.null(paramMatrix) || length(paramMatrix)==0)
 
     for (n in seq_len(Nmif)) { ## iterate the filtering
@@ -469,18 +461,12 @@ mif.internal <- function (object, Nmif,
         sigma.n <- sigma*cool.sched$alpha
 
         ## initialize the parameter portions of the particles
-        P <- try(
-            particles(
-                tmp.mif,
-                Np=Np[1L],
-                center=theta,
-                sd=sigma.n*var.factor
-            ),
-            silent = FALSE
+        P <- mif.particles(
+            Np=Np[1L],
+            center=theta,
+            sd=sigma.n*var.factor
         )
-        if (inherits(P,"try-error"))
-            stop("mif error: error in ",sQuote("particles"),call.=FALSE)
-
+        
         if ((method=="mif2") && ((n>1) || have.parmat)) {
             ## use pre-existing particle matrix
             P[pars,] <- paramMatrix[pars,]
@@ -488,7 +474,7 @@ mif.internal <- function (object, Nmif,
 
         pfp <- try(
             mif.pfilter(
-                object=obj,
+                object=pfp,
                 params=P,
                 Np=Np,
                 tol=tol,
@@ -550,7 +536,6 @@ mif.internal <- function (object, Nmif,
         ivps=ivps,
         pars=pars,
         Nmif=Nmif,
-        particles=particles,
         var.factor=var.factor,
         ic.lag=ic.lag,
         random.walk.sd=sigma[rw.names],
@@ -569,8 +554,7 @@ setMethod(
     function (object, Nmif = 1,
               start,
               ivps = character(0),
-              particles, rw.sd,
-              Np, ic.lag, var.factor = 1,
+              rw.sd, Np, ic.lag, var.factor = 1,
               cooling.type = c("geometric","hyperbolic"),
               cooling.fraction.50,
               method = c("mif","unweighted","fp","mif2"),
@@ -599,26 +583,11 @@ setMethod(
 
         cooling.type <- match.arg(cooling.type)
 
-        if (missing(particles)) { # use default: normal distribution
-            particles <- default.mif.particles.fun
-        } else {
-            particles <- match.fun(particles)
-            if (!all(c('Np','center','sd','...')%in%names(formals(particles))))
-                stop(
-                    "mif error: ",
-                    sQuote("particles"),
-                    " must be a function of prototype ",
-                    sQuote("particles(Np,center,sd,...)"),
-                    call.=FALSE
-                )
-        }
-
         mif.internal(
             object=object,
             Nmif=Nmif,
             start=start,
             ivps=ivps,
-            particles=particles,
             rw.sd=rw.sd,
             Np=Np,
             cooling.type=cooling.type,
@@ -660,9 +629,7 @@ setMethod(
     "mif",
     signature=signature(object="mif"),
     function (object, Nmif,
-              start,
-              ivps,
-              particles, rw.sd,
+              start, ivps, rw.sd,
               Np, ic.lag, var.factor,
               cooling.type, cooling.fraction.50,
               method,
@@ -673,7 +640,6 @@ setMethod(
         if (missing(Nmif)) Nmif <- object@Nmif
         if (missing(start)) start <- coef(object)
         if (missing(ivps)) ivps <- object@ivps
-        if (missing(particles)) particles <- object@particles
         if (missing(rw.sd)) rw.sd <- object@random.walk.sd
         if (missing(ic.lag)) ic.lag <- object@ic.lag
         if (missing(var.factor)) var.factor <- object@var.factor
@@ -690,7 +656,6 @@ setMethod(
             Nmif=Nmif,
             start=start,
             ivps=ivps,
-            particles=particles,
             rw.sd=rw.sd,
             Np=Np,
             cooling.type=cooling.type,
