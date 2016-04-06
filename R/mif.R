@@ -84,7 +84,7 @@ mif.pfilter <- function (object, params, Np,
                          pred.var = FALSE,
                          cooling, cooling.m,
                          .mif2 = FALSE,
-                         .rw.sd,
+                         rw.sd,
                          verbose = FALSE,
                          .transform = FALSE,
                          .getnativesymbolinfo = TRUE) {
@@ -99,48 +99,11 @@ mif.pfilter <- function (object, params, Np,
     verbose <- as.logical(verbose)
     transform <- as.logical(.transform)
 
-    one.par <- FALSE
     times <- time(object,t0=TRUE)
     ntimes <- length(times)-1
-
-    if (missing(Np))
-        Np <- NCOL(params)
-    if (is.function(Np)) {
-        Np <- try(
-            vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
-            silent=FALSE
-        )
-        if (inherits(Np,"try-error"))
-            stop("if ",sQuote("Np")," is a function, it must return a single positive integer",call.=FALSE)
-    }
-    if (length(Np)==1)
-        Np <- rep(Np,times=ntimes+1)
-    else if (length(Np)!=(ntimes+1))
-        stop(sQuote("Np")," must have length 1 or length ",ntimes+1,call.=FALSE)
-    if (any(Np<=0))
-        stop("number of particles, ",sQuote("Np"),", must always be positive",call.=FALSE)
-    if (!is.numeric(Np))
-        stop(sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
     Np <- as.integer(Np)
 
-    if (is.null(dim(params))) {
-        one.par <- TRUE               # there is only one parameter vector
-        coef(object) <- params        # set params slot to the parameters
-        params <- matrix(
-            params,
-            nrow=length(params),
-            ncol=Np[1L],
-            dimnames=list(
-                names(params),
-                NULL
-            )
-        )
-    }
-    paramnames <- rownames(params)
-    if (is.null(paramnames))
-        stop(sQuote("mif")," error: ",sQuote("params")," must have rownames",call.=FALSE)
-
-    init.x <- init.state(
+    x <- init.state(
         object,
         params=if (transform) {
                    partrans(object,params,dir="fromEstimationScale",
@@ -149,32 +112,18 @@ mif.pfilter <- function (object, params, Np,
                    params
                }
     )
-    statenames <- rownames(init.x)
-    nvars <- nrow(init.x)
     ptsi.for <- FALSE
-    x <- init.x
+    statenames <- rownames(x)
+    paramnames <- rownames(params)
 
-    random.walk <- !missing(.rw.sd)
-    if (random.walk) {
-        rw.names <- names(.rw.sd)
-        if (is.null(rw.names)||!is.numeric(.rw.sd))
-            stop(sQuote("mif")," error: ",sQuote(".rw.sd")," must be a named vector",call.=FALSE)
-        if (!all(rw.names%in%paramnames))
-            stop(
-                sQuote("mif")," error: the rownames of ",
-                sQuote("params")," must include all of the names of ",
-                sQuote(".rw.sd"),"",call.=FALSE
-            )
-        sigma <- .rw.sd
-    } else {
-        rw.names <- character(0)
-        sigma <- NULL
-    }
+    rw.names <- names(rw.sd)
+    sigma <- rw.sd
+    npars <- length(rw.names)
+    nvars <- nrow(x)
 
     loglik <- rep(NA,ntimes)
     eff.sample.size <- numeric(ntimes)
     nfail <- 0
-    npars <- length(rw.names)
 
     ## set up storage for prediction means, variances, etc.
     if (pred.mean)
@@ -201,27 +150,16 @@ mif.pfilter <- function (object, params, Np,
     else
         pred.v <- array(data=numeric(0),dim=c(0,0))
 
-    if (random.walk) {
-        filt.m <- matrix(
-            data=0,
-            nrow=nvars+length(paramnames),
-            ncol=ntimes,
-            dimnames=list(
-                variable=c(statenames,paramnames),
-                time=time(object)
-            )
+    filt.m <- matrix(
+        data=0,
+        nrow=nvars+length(paramnames),
+        ncol=ntimes,
+        dimnames=list(
+            variable=c(statenames,paramnames),
+            time=time(object)
         )
-    } else {
-        filt.m <- matrix(
-            data=0,
-            nrow=nvars,
-            ncol=ntimes,
-            dimnames=list(
-                variable=statenames,
-                time=time(object))
-        )
-    }
-
+    )
+    
     for (nt in seq_len(ntimes)) { ## main loop
 
         if (mif2) {
@@ -261,15 +199,13 @@ mif.pfilter <- function (object, params, Np,
                     call.=FALSE
                 )
             }
-            if (random.walk) { # parameters (need to be checked only if 'random.walk=TRUE')
-                problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1L])
-                if (length(problem.indices)>0) {
-                    stop(
-                        sQuote("mif")," error: non-finite parameter(s): ",
-                        paste(rw.names[problem.indices],collapse=', '),
-                        call.=FALSE
-                    )
-                }
+            problem.indices <- unique(which(!is.finite(params[rw.names,,drop=FALSE]),arr.ind=TRUE)[,1L])
+            if (length(problem.indices)>0) {
+                stop(
+                    sQuote("mif")," error: non-finite parameter(s): ",
+                    paste(rw.names[problem.indices],collapse=', '),
+                    call.=FALSE
+                )
             }
         }
 
@@ -301,13 +237,13 @@ mif.pfilter <- function (object, params, Np,
                 x=X,
                 params=params,
                 Np=Np[nt+1],
-                rw=random.walk,
+                rw=TRUE,
                 rw_sd=sigma1,
                 predmean=pred.mean,
                 predvar=pred.var,
                 filtmean=TRUE,
                 trackancestry=FALSE,
-                onepar=one.par,
+                onepar=FALSE,
                 weights=weights,
                 tol=tol
             ),
@@ -562,7 +498,7 @@ mif.internal <- function (object, Nmif,
                 cooling=cooling,
                 cooling.m=.ndone+n,
                 .mif2=(method=="mif2"),
-                .rw.sd=sigma.n[pars],
+                rw.sd=sigma.n[pars],
                 .transform=transform,
                 verbose=verbose,
                 .getnativesymbolinfo=gnsi
