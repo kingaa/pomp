@@ -3,7 +3,7 @@
 #include "pomp_internal.h"
 #include <Rdefines.h>
 
-SEXP mif2_computations (SEXP params, SEXP rw_sd)
+SEXP randwalk_perturbation (SEXP params, SEXP rw_sd)
 {
   int nprotect = 0;
   double *xp = 0, *rw, *xrw, *xs;

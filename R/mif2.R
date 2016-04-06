@@ -68,7 +68,7 @@ mif2.pfilter <- function (object, params, Np,
 
         ## perturb parameters
         pmag <- cooling.fn(nt,mifiter)$alpha*rw.sd[,nt]
-        params <- .Call(mif2_computations,params,pmag)
+        params <- .Call(randwalk_perturbation,params,pmag)
 
         if (transform)
             tparams <- partrans(object,params,dir="fromEstimationScale",
