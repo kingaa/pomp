@@ -234,7 +234,7 @@ mif.pfilter <- function (object, params, Np,
         ## also do resampling if filtering has not failed
         xx <- try(
             .Call(
-                mif_pfilter_comps,
+                pfilter_computations,
                 x=X,
                 params=params,
                 Np=Np[nt+1],

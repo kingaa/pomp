@@ -11,22 +11,23 @@
 // if length(weights) == 1, an unweighted average is computed.
 // returns all of the above in a named list
 SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
+			   SEXP rw_sd,
 			   SEXP predmean, SEXP predvar,
 			   SEXP filtmean, SEXP trackancestry, SEXP onepar,
 			   SEXP weights, SEXP tol)
 {
   int nprotect = 0;
   SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue, anc = R_NilValue;
-  SEXP ess, fail, loglik;
+  SEXP rw_names, ess, fail, loglik;
   SEXP newstates = R_NilValue, newparams = R_NilValue;
   SEXP retval, retvalnames;
   const char *dimnm[2] = {"variable","rep"};
   double *xpm = 0, *xpv = 0, *xfm = 0, *xw = 0, *xx = 0, *xp = 0;
   int *xanc = 0;
-  SEXP dimX, dimP, newdim, Xnames, Pnames;
-  int *dim, lv, np;
-  int nvars, npars = 0, nreps, nlost;
-  int do_pm, do_pv, do_fm, do_ta, do_par_resamp, all_fail = 0;
+  SEXP dimX, dimP, newdim, Xnames, Pnames, pindex;
+  int *dim, *pidx, lv, np;
+  int nvars, npars = 0, nrw = 0, nreps, offset, nlost;
+  int do_rw, do_pm, do_pv, do_fm, do_ta, do_par_resamp, all_fail = 0;
   double sum, sumsq, vsq, ws, w, toler;
   int j, k;
 
@@ -45,12 +46,18 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 
   np = *(INTEGER(AS_INTEGER(Np))); // number of particles to resample
 
+  do_rw = LENGTH(rw_sd) > 0;	// do random walk in parameters?
+  if (do_rw) {
+    // names of parameters undergoing random walk
+    PROTECT(rw_names = GET_NAMES(rw_sd)); nprotect++;
+  }
+
   do_pm = *(LOGICAL(AS_LOGICAL(predmean))); // calculate prediction means?
   do_pv = *(LOGICAL(AS_LOGICAL(predvar)));  // calculate prediction variances?
   do_fm = *(LOGICAL(AS_LOGICAL(filtmean))); // calculate filtering means?
   do_ta = *(LOGICAL(AS_LOGICAL(trackancestry))); // track ancestry?
   do_par_resamp = *(LOGICAL(AS_LOGICAL(onepar))); // are all cols of 'params' the same?
-  do_par_resamp = !do_par_resamp || (np != nreps); // should we do parameter resampling?
+  do_par_resamp = !do_par_resamp || do_rw || (np != nreps); // should we do parameter resampling?
 
   PROTECT(ess = NEW_NUMERIC(1)); nprotect++; // effective sample size
   PROTECT(loglik = NEW_NUMERIC(1)); nprotect++; // log likelihood
@@ -79,7 +86,17 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   }
   *(LOGICAL(fail)) = all_fail;
 
-  lv = nvars;
+  if (do_rw) {
+    // indices of parameters undergoing random walk
+    PROTECT(pindex = matchnames(Pnames,rw_names,"parameters")); nprotect++; 
+    xp = REAL(params);
+    pidx = INTEGER(pindex);
+    nrw = LENGTH(rw_names);
+    lv = nvars+nrw;
+  } else {
+    pidx = NULL;
+    lv = nvars;
+  }
 
   if (do_pm || do_pv) {
     PROTECT(pm = NEW_NUMERIC(lv)); nprotect++;
@@ -92,7 +109,11 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   }
 
   if (do_fm) {
-    PROTECT(fm = NEW_NUMERIC(nvars)); nprotect++;
+    if (do_rw) {
+      PROTECT(fm = NEW_NUMERIC(nvars+npars)); nprotect++;
+    } else {
+      PROTECT(fm = NEW_NUMERIC(nvars)); nprotect++;
+    }
     xfm = REAL(fm);
   }
 
@@ -130,6 +151,40 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
       }
     }
 
+  }
+
+  // compute means and variances for parameters (if needed)
+  if (do_rw) {
+    for (j = 0; j < nrw; j++) {
+      offset = pidx[j];		// position of the parameter
+
+      if (do_pm || do_pv) {
+	for (k = 0, sum = 0; k < nreps; k++) sum += xp[offset+k*npars];
+	sum /= ((double) nreps);
+	xpm[nvars+j] = sum;
+      }
+
+      if (do_pv) {
+	for (k = 0, sumsq = 0; k < nreps; k++) {
+	  vsq = xp[offset+k*npars]-sum;
+	  sumsq += vsq*vsq;
+	}
+	xpv[nvars+j] = sumsq / ((double) (nreps - 1));
+      }
+
+    }
+
+    if (do_fm) {
+      for (j = 0; j < npars; j++) {
+	if (all_fail) {		// unweighted average
+	  for (k = 0, ws = 0; k < nreps; k++) ws += xp[j+k*npars];
+	  xfm[nvars+j] = ws/((double) nreps);
+	} else {		// weighted average
+	  for (k = 0, ws = 0; k < nreps; k++) ws += xp[j+k*npars]*xw[k];
+	  xfm[nvars+j] = ws/w;
+	}
+      }
+    }
   }
 
   GetRNGstate();

@@ -10,7 +10,6 @@ useDynLib(
     load_stack_incr,load_stack_decr,
     SSA_simulator,
     R_Euler_Multinom,D_Euler_Multinom,R_GammaWN,
-    mif_pfilter_comps,
     mif_update,
     pfilter_computations,
     randwalk_perturbation,
