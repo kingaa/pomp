@@ -77,7 +77,7 @@
   We discuss the specification of user-defined models and the development of additional methods within the programming environment provided by \pkg{pomp}.
 
   \noindent
-  *This document is an updated version of \href{http://dx.doi.org/10.18637/jss.v069.i12}{\emph{Journal of Statistical Software} \textbf{69} (12)}.
+  *This document is an updated version of \href{http://dx.doi.org/10.18637/jss.v069.i12}{\emph{Journal of Statistical Software} \textbf{69}(12): 1--43}.
   It is provided under the \href{http://creativecommons.org/licenses/by/3.0/}{Creative Commons Attribution License}.
 }
 
