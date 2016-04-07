@@ -94,8 +94,6 @@
     The \code{mif} update for initial-value parameters consists of replacing them by their filtering mean at time \code{times[ic.lag]}, where \code{times=time(object)}.
     It makes no sense to set \code{ic.lag>length(times)};
     if it is so set, \code{ic.lag} is set to \code{length(times)} with a warning.
-
-    For \code{method="mif2"}, the default is \code{ic.lag=length(times)}.
   }
   \item{var.factor}{
     optional positive scalar;
@@ -117,10 +115,6 @@
     \code{method="mif"} uses the iterated filtering update rule (Ionides 2006, 2011);
     \code{method="unweighted"} updates the parameter to the unweighted average of the filtering means of the parameters at each time;
     \code{method="fp"} updates the parameter to the filtering mean at the end of the time series.
-    \code{method="mif2"} implements an incomplete version of the iterated Bayes map method of Ionides (2015).
-    The latter method is, by every indication, both more efficient and more stable.
-    The \dQuote{mif2} option is deprecated and will disappear in a future release:
-    use \code{\link{mif2}} instead.
   }
   \item{tol, max.fail}{
     See the description under \code{\link{pfilter}}.
@@ -140,9 +134,6 @@
 \value{
   Upon successful completion, \code{mif} returns an object of class \code{mif}.
   The latter inherits from the \code{\link{pfilterd.pomp}} and \code{\link{pomp}} classes.
-}
-\section{IF2}{
-  A more full-featured version of the improved iterated filtering algorithm (IF2) is implemented as \code{\link{mif2}}.
 }
 \section{Regular parameters vs initial-value parameters}{
   Initial-value parameters (IVPs) differ from regular parameters in that the majority of the information about these parameters is restricted to the early part of the time series.

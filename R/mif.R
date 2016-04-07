@@ -82,7 +82,6 @@ mif.pfilter <- function (object, params, Np,
                          pred.mean = FALSE,
                          pred.var = FALSE,
                          cooling, cooling.m,
-                         .mif2 = FALSE,
                          rw.sd,
                          verbose = FALSE,
                          .transform = FALSE,
@@ -92,7 +91,6 @@ mif.pfilter <- function (object, params, Np,
     pompLoad(object)
 
     ptsi.for <- gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
-    mif2 <- as.logical(.mif2)
     pred.mean <- as.logical(pred.mean)
     pred.var <- as.logical(pred.var)
     verbose <- as.logical(verbose)
@@ -112,6 +110,7 @@ mif.pfilter <- function (object, params, Np,
                }
     )
     ptsi.for <- FALSE
+
     statenames <- rownames(x)
     paramnames <- rownames(params)
 
@@ -163,12 +162,7 @@ mif.pfilter <- function (object, params, Np,
     
     for (nt in seq_len(ntimes)) { ## main loop
 
-        if (mif2) {
-            cool.sched <- cooling(nt=nt,m=cooling.m)
-            sigma1 <- sigma*cool.sched$alpha
-        } else {
-            sigma1 <- sigma
-        }
+        sigma1 <- sigma
 
         ## transform the parameters if necessary
         if (transform) tparams <- partrans(object,params,dir="fromEstimationScale",
@@ -294,7 +288,7 @@ mif.pfilter <- function (object, params, Np,
         pred.mean=pred.m,
         pred.var=pred.v,
         filter.mean=filt.m,
-        paramMatrix=if (mif2) params else array(data=numeric(0),dim=c(0,0)),
+        paramMatrix=array(data=numeric(0),dim=c(0,0)),
         eff.sample.size=eff.sample.size,
         cond.loglik=loglik,
         Np=as.integer(Np),
@@ -317,8 +311,8 @@ mif.internal <- function (object, Nmif,
                           ...) {
 
     if (method=="mif2") {
-        warning(
-            "method=",sQuote("mif2")," is deprecated and will be removed in a future release.\n",
+        stop(
+            "method=",sQuote("mif2")," has been removed.\n",
             "Use ",sQuote("mif2")," instead.",call.=FALSE)
     }
 
@@ -406,13 +400,10 @@ mif.internal <- function (object, Nmif,
 
     cooling <- mif.cooling.function(
         type=cooling.type,
-        perobs=(method=="mif2"),
+        perobs=FALSE,
         fraction=cooling.fraction.50,
         ntimes=ntimes
     )
-
-    if ((method=="mif2")&&(Np[1L]!=Np[ntimes+1]))
-        stop("the first and last values of ",sQuote("Np")," must agree when method = ",sQuote("mif2"),call.=FALSE)
 
     if ((length(var.factor)!=1)||(var.factor < 0))
         stop("mif error: ",sQuote("var.factor")," must be a positive number",call.=FALSE)
@@ -455,8 +446,6 @@ mif.internal <- function (object, Nmif,
     }
 
     pfp <- as(object,"pomp")
-    
-    have.parmat <- !(is.null(paramMatrix) || length(paramMatrix)==0)
 
     for (n in seq_len(Nmif)) { ## iterate the filtering
 
@@ -470,11 +459,6 @@ mif.internal <- function (object, Nmif,
             center=theta,
             sd=sigma.n*var.factor
         )
-        
-        if ((method=="mif2") && ((n>1) || have.parmat)) {
-            ## use pre-existing particle matrix
-            P[pars,] <- paramMatrix[pars,]
-        }
 
         pfp <- try(
             mif.pfilter(
@@ -487,7 +471,6 @@ mif.internal <- function (object, Nmif,
                 pred.var=((method=="mif")||(n==Nmif)),
                 cooling=cooling,
                 cooling.m=.ndone+n,
-                .mif2=(method=="mif2"),
                 rw.sd=sigma.n[pars],
                 .transform=transform,
                 verbose=verbose,
@@ -512,10 +495,6 @@ mif.internal <- function (object, Nmif,
             },
             fp={                         # fixed-point iteration
                 theta[pars] <- pfp@filter.mean[pars,ntimes,drop=FALSE]
-            },
-            mif2={                     # "efficient" iterated filtering
-                paramMatrix <- pfp@paramMatrix
-                theta[pars] <- rowMeans(paramMatrix[pars,,drop=FALSE])
             },
             stop("unrecognized method ",sQuote(method),call.=FALSE)
         )
@@ -548,7 +527,7 @@ mif.internal <- function (object, Nmif,
         method=method,
         cooling.type=cooling.type,
         cooling.fraction.50=cooling.fraction.50,
-        paramMatrix=if (method=="mif2") paramMatrix else array(data=numeric(0),dim=c(0,0))
+        paramMatrix=array(data=numeric(0),dim=c(0,0))
     )
 }
 
@@ -573,7 +552,7 @@ setMethod(
         if (missing(rw.sd))
             stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
         if (missing(ic.lag)) {
-            if (length(ivps)>0 && (method != "mif2")) {
+            if (length(ivps)>0) {
                 stop("mif error: ",sQuote("ic.lag"),
                      " must be specified if ",sQuote("ivps"),
                      " are",call.=FALSE)
