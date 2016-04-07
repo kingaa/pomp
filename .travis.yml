@@ -1,14 +1,23 @@
 language: r
-sudo: required
+sudo: false
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl -O http://kingaa.github.io/scripts/mac-fortran.sh; sh mac-fortran.sh; fi
 
 notifications:
   email:
     on_success: change
     on_failure: change
 
-env:
-  matrix:
-    - RVERSION=3.1.0
-    - RVERSION=oldrel
-    - RVERSION=release
-    - RVERSION=devel
+matrix:
+  include:
+    - os: linux
+      env: RVERSION=3.1.0
+    - os: linux
+      env: RVERSION=release
+    - os: linux
+      env: RVERSION=devel
+    - os: osx
+      env: RVERSION=release
+    - os: osx
+      env: RVERSION=devel
