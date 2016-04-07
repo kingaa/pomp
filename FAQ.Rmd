@@ -5,8 +5,6 @@ output:
     theme: default
     toc: yes
     number_sections: true
-bibliography: pomp.bib
-csl: ecology.csl
 ---
 
 ```{r options,include=FALSE}
@@ -87,6 +85,11 @@ then edited my `~/.R/Makevars` file to include the following lines
 F77 = ~/gfortran/usr/local/bin/gfortran
 FC = ~/gfortran/usr/local/bin/gfortran
 FLIBS = -L~/gfortran/usr/local/lib
+```
+To do all of the above, download and run the `mac-fortran.sh` script:
+```
+curl -O http://kingaa.github.io/scripts/mac-fortran.sh
+sh mac-fortran.sh
 ```
 
 # Implementing POMP models.
