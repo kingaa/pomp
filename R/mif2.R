@@ -4,7 +4,7 @@ rw.sd <- function (...) {
     as.list(match.call())[-1L]
 }
 
-pkern.sd <- function (rw.sd, time, paramnames) {
+pkern.sd <- function (rw.sd, time, paramnames, enclos) {
     if (!all(names(rw.sd) %in% paramnames)) {
         unrec <- names(rw.sd)[!names(rw.sd) %in% paramnames]
         stop(sQuote("mif2")," error: the following parameter(s), ",
@@ -15,7 +15,7 @@ pkern.sd <- function (rw.sd, time, paramnames) {
     ivp <- function (sd, lag = 1L) {
         sd*(seq_along(time)==lag)
     }
-    sds <- lapply(rw.sd,eval,envir=list(time=time,ivp=ivp))
+    sds <- lapply(rw.sd,eval,envir=list(time=time,ivp=ivp),enclos=enclos)
     for (n in names(sds)) {
         len <- length(sds[[n]])
         if (len==1) {
@@ -342,7 +342,8 @@ setMethod(
         if (missing(rw.sd))
             stop(sQuote("mif2")," error: ",sQuote("rw.sd")," must be specified!",call.=FALSE)
         if (!is.matrix(rw.sd)) {
-            rw.sd <- pkern.sd(rw.sd,time=time(object),paramnames=names(start))
+            rw.sd <- pkern.sd(rw.sd,time=time(object),paramnames=names(start),
+                              enclos=parent.frame())
         }
 
         cooling.type <- match.arg(cooling.type)

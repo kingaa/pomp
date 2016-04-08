@@ -50,11 +50,12 @@ m4 <- mif2(ou2,Nmif=3,start=guess1,
 m4 <- mif2(m4,Nmif=2,Np=c(rep(200,20),rep(100,80),200))
 m4 <- continue(m4,Nmif=2,cooling.fraction=0.1)
 pf <- pfilter(m4)
+half <- 0.5
 m4 <- mif2(pf,Nmif=2,
            cooling.fraction=0.2,
            rw.sd=rw.sd(
-             x1.0=c(0.5,rep(0.2,99)),
-             x2.0=ivp(0.5),
+             x1.0=c(half,rep(0.2,99)),
+             x2.0=ivp(half),
              alpha.2=ifelse(time==1,0.2,0.1),
              alpha.3=0.2*(time<10)))
 

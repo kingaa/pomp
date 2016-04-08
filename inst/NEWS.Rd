@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.4.5.1}{
+  \itemize{
+    \item A bug associated with the \code{rw.sd} argument to \code{mif2} on Windows platforms has been fixed.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.4.4.1}{
   \itemize{
     \item The \code{method="mif2"} option to \code{mif} has been removed.
