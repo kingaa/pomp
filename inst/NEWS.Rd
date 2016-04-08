@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.4.4.1}{
+  \itemize{
+    \item The \code{method="mif2"} option to \code{mif} has been removed.
+    Use \code{mif2} instead.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.4.3.1}{
   \itemize{
     \item The \code{particles} method (rarely if ever used), has been removed to streamline the \code{mif} codes.
