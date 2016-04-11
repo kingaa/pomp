@@ -32,9 +32,7 @@ plot(blowflies2)
   \deqn{y(t) \sim \mathrm{negbin}(N(t),1/\sigma_y^2)}{y[t] ~ negbin(N[t],1/sigma.y^2)}, i.e., the observations are assumed to be negative-binomially distributed with mean \eqn{N(t)}{N[t]} and variance \eqn{N(t)+(\sigma_y N(t))^2}{N[t]+(sigma.y N[t])^2}.
   
   Do
-
-  \code{file.show(system.file("examples","blowflies.R",package="pomp"))}
-
+  \preformatted{pompExample(blowflies,show=TRUE)}
   to view the code that constructs these pomp objects.
 }
 \seealso{\code{\link{pomp}}}

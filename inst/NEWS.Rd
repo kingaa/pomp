@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.4.7.1}{
+  \itemize{
+    \item The new argument \code{show} of \code{pompExamples} allows one to display the example code instead of executing it.
+    \item The minimum version of \R supported is now 3.1.2.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.4.6.1}{
   \itemize{
     \item \code{init.state} now has the optional argument \code{nsim}.

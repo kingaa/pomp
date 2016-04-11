@@ -1,7 +1,7 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 1.4.6.1
+Version: 1.4.7.1
 Date: 2016-04-11
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
@@ -19,7 +19,7 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",
 	  )
 URL: http://kingaa.github.io/pomp
 Description: Tools for working with partially observed Markov processes (POMPs, AKA stochastic dynamical systems, state-space models).  'pomp' provides facilities for implementing POMP models, simulating them, and fitting them to time series data by a variety of frequentist and Bayesian methods.  It is also a platform for the implementation of new inference methods.
-Depends: R(>= 3.1.0), methods
+Depends: R(>= 3.1.2), methods
 Imports: stats, graphics, digest, mvtnorm, deSolve, coda, subplex, nloptr
 Suggests: magrittr, plyr, reshape2, ggplot2, knitr
 SystemRequirements: For Windows users, Rtools (see http://cran.r-project.org/bin/windows/Rtools/).

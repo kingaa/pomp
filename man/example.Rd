@@ -7,7 +7,7 @@
   \code{pompExample} loads pre-built example \code{pomp} objects.
 }
 \usage{
-pompExample(example, \dots, envir = .GlobalEnv)
+pompExample(example, \dots, show = FALSE, envir = .GlobalEnv)
 }
 \arguments{
   \item{example}{
@@ -16,6 +16,9 @@ pompExample(example, \dots, envir = .GlobalEnv)
   }
   \item{\dots}{
     additional arguments define symbols in the environment within which the example code is executed.
+  }
+  \item{show}{
+    logical; if \code{TRUE}, display, but do not execute, the example \R code.
   }
   \item{envir}{
     the environment into which the objects should be loaded.
@@ -41,7 +44,7 @@ pompExample(example, \dots, envir = .GlobalEnv)
   pompExample("gompertz")
   pompExample(ricker,envir=NULL)
 \dontrun{
-  file.show(system.file("examples/bbs.R",package="pomp"))
+  pompExample(bbs,show=TRUE)
 }
 }
 \seealso{
