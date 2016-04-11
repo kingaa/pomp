@@ -62,7 +62,7 @@
 \S4method{dmeasure}{pomp}(object, y, x, times, params, log = FALSE, \dots)
 \S4method{dprior}{pomp}(object, params, log = FALSE, \dots)
 \S4method{rprior}{pomp}(object, params, \dots)
-\S4method{init.state}{pomp}(object, params, t0, \dots)
+\S4method{init.state}{pomp}(object, params, t0, nsim, \dots)
 \S4method{skeleton}{pomp}(object, x, t, params, \dots)
 \S4method{trajectory}{pomp}(object, params, times, t0, as.data.frame = FALSE, \dots)
 \S4method{pompLoad}{pomp}(object, \dots)
@@ -99,6 +99,10 @@
     the first \code{offset} times in \code{times} will not be returned.
   }
   \item{t0}{the initial time at which initial states are requested.}
+  \item{nsim}{
+    optional integer; the number of initial states to simulate.
+    By default, this is equal to the number of columns of \code{params}.
+  }
   \item{log}{if TRUE, log probabilities are returned.}
   \item{as.data.frame}{
     logical; if \code{TRUE}, return the result as a data-frame.
@@ -144,8 +148,9 @@
   \code{dprior} evaluates the prior probability density and \code{rprior} simulates from the prior.
 }
 \section{init.state}{
-  \code{init.state} returns an \code{nvar} x \code{nrep} matrix of state-process initial conditions when given an \code{npar} x \code{nrep} matrix of parameters, \code{params}, and an initial time \code{t0}.
+  \code{init.state} returns an \code{nvar} x \code{nsim} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
   By default, \code{t0} is the initial time defined when the \code{pomp} object ws constructed.
+  If \code{nsim} is not specified, then \code{nsim=ncol(params)}.
 }
 \section{skeleton}{
   The method \code{skeleton} evaluates the deterministic skeleton at a point or points in state space, given parameters.

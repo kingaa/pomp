@@ -12,20 +12,24 @@ typedef double pomp_initializer(double *x, const double *p, double t,
 				const int *stateindex, const int *parindex, const int *covindex,
 				const double *covars);
 
-SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
+SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 {
   int nprotect = 0;
   SEXP Pnames, Snames, x;
   int *dim;
-  int npar, nrep, nvar;
+  int npar, nrep, nvar, ns;
   int definit;
   int xdim[2];
   const char *dimnms[2] = {"variable","rep"};
 
+  ns = *(INTEGER(AS_INTEGER(nsim)));
   PROTECT(params = as_matrix(params)); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   dim = INTEGER(GET_DIM(params));
   npar = dim[0]; nrep = dim[1]; 
+
+  if (ns % nrep != 0) 
+    error("number of desired state-vectors 'nsim' is not a multiple of 'ncol(params)'");
 
   definit = *(INTEGER(GET_SLOT(object,install("default.init"))));
 
@@ -69,14 +73,16 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
     PROTECT(fcall = LCONS(install("sub"),fcall)); nprotect++;
     PROTECT(statenames = eval(fcall,R_BaseEnv)); nprotect++;
 
-    xdim[0] = nvar; xdim[1] = nrep;
+    xdim[0] = nvar; xdim[1] = ns;
     PROTECT(x = makearray(2,xdim)); nprotect++;
     setrownames(x,statenames,2);
     fixdimnames(x,dimnms,2);
 
-    for (j = 0, xp = REAL(x), pp = REAL(params); j < nrep; j++, pp += npar)
-      for (k = 0; k < nvar; k++, xp++)
+    for (j = 0, xp = REAL(x); j < ns; j++) {
+      pp = REAL(params) + npar*(j%nrep);
+      for (k = 0; k < nvar; k++, xp++) 
 	*xp = pp[pidx[k]];
+    }
 
   } else {			// user-supplied initializer
     
@@ -149,7 +155,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
 	  }
 	}
 	
-	xdim[0] = nvar; xdim[1] = nrep;
+	xdim[0] = nvar; xdim[1] = ns;
 	PROTECT(x = makearray(2,xdim)); nprotect++;
 	setrownames(x,Snames,2);
 	fixdimnames(x,dimnms,2);
@@ -157,8 +163,8 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
 	
 	memcpy(xt,xp,nvar*sizeof(double));
 	
-	for (j = 1, p += npar, xt += nvar; j < nrep; j++, p += npar, xt += nvar) {
-	  memcpy(pp,p,npar*sizeof(double));
+	for (j = 1, xt += nvar; j < ns; j++, xt += nvar) {
+	  memcpy(pp,p+npar*(j%nrep),npar*sizeof(double));
 	  PROTECT(x2 = eval(fcall,rho));
 	  xp = REAL(x2);
 	  if (LENGTH(x2)!=nvar)
@@ -193,7 +199,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
 	ff = (pomp_initializer *) R_ExternalPtrAddr(fn);
 	
 	nvar = LENGTH(Snames);
-	xdim[0] = nvar; xdim[1] = nrep;
+	xdim[0] = nvar; xdim[1] = ns;
 	PROTECT(x = makearray(2,xdim)); nprotect++;
 	setrownames(x,Snames,2);
 	fixdimnames(x,dimnms,2);
@@ -204,8 +210,8 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP gnsi)
 	time = *(REAL(t0));
 
 	// loop over replicates
-	for (j = 0, xt = REAL(x), ps = REAL(params); j < nrep; j++, xt += nvar, ps += npar)
-	  (*ff)(xt,ps,time,sidx,pidx,cidx,cp);
+	for (j = 0, xt = REAL(x), ps = REAL(params); j < ns; j++, xt += nvar)
+	  (*ff)(xt,ps+npar*(j%nrep),time,sidx,pidx,cidx,cp);
 
 	PutRNGstate();
 	unset_pomp_userdata();

@@ -10,15 +10,15 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
 {
   int nprotect = 0;
   SEXP xstart, x, y, alltimes, coef, yy, offset;
-  SEXP p = R_NilValue, x0 = R_NilValue, xx = R_NilValue;
+  SEXP xx = R_NilValue;
   SEXP ans, ans_names;
   SEXP po, popo;
-  SEXP statenames, paramnames, obsnames, statedim, obsdim;
+  SEXP statenames, paramnames, obsnames, statedim, obsdim, Nreps;
   int nsims, nparsets, nreps, npars, nvars, ntimes, nobs;
   int qobs, qstates;
-  int *dim, dims[3];
+  int *dim;
   double *s, *t, *xs, *xt, *ys, *yt, *ps, *pt, tt;
-  int i, j, k, np, nx;
+  int i, j, k;
 
   PROTECT(offset = NEW_INTEGER(1)); nprotect++;
   *(INTEGER(offset)) = 1;
@@ -38,9 +38,11 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   npars = dim[0]; nparsets = dim[1];
 
   nreps = nsims*nparsets;
+  PROTECT(Nreps = NEW_INTEGER(1)); nprotect++;
+  *INTEGER(Nreps) = nreps;
 
   // initialize the simulations
-  PROTECT(xstart = do_init_state(object,params,t0,gnsi)); nprotect++;
+  PROTECT(xstart = do_init_state(object,params,t0,Nreps,gnsi)); nprotect++;
   PROTECT(statenames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   dim = INTEGER(GET_DIM(xstart));
   nvars = dim[0];
@@ -69,31 +71,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   }
 
   // call 'rprocess' to simulate state process
-  if (nsims > 1) {	     // multiple simulations per parameter set
-
-    dims[0] = npars; dims[1] = nreps;
-    PROTECT(p = makearray(2,dims)); nprotect++;
-    setrownames(p,paramnames,2);
-
-    dims[0] = nvars;
-    PROTECT(x0 = makearray(2,dims)); nprotect++;
-    setrownames(x0,statenames,2);
-
-    // make 'nsims' copies of the parameters and initial states
-    ps = REAL(params); np = LENGTH(params);
-    xs = REAL(xstart); nx = LENGTH(xstart);
-    for (k = 0, pt = REAL(p), xt = REAL(x0); k < nsims; k++, pt += np, xt += nx) {
-      memcpy(pt,ps,np*sizeof(double));
-      memcpy(xt,xs,nx*sizeof(double));
-    }
-
-    PROTECT(x = do_rprocess(object,x0,alltimes,p,offset,gnsi)); nprotect++;
-
-  } else {			// nsim == 1
-
-    PROTECT(x = do_rprocess(object,xstart,alltimes,params,offset,gnsi)); nprotect++;
-
-  }
+  PROTECT(x = do_rprocess(object,xstart,alltimes,params,offset,gnsi)); nprotect++;
 
   if (!qobs && qstates) {	// obs=F,states=T: return states only
 
@@ -102,11 +80,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
 
   } else {			// we must do 'rmeasure'
 
-    if (nsims > 1) {
-      PROTECT(y = do_rmeasure(object,x,times,p,gnsi)); nprotect++;
-    } else {
-      PROTECT(y = do_rmeasure(object,x,times,params,gnsi)); nprotect++;
-    }
+    PROTECT(y = do_rmeasure(object,x,times,params,gnsi)); nprotect++;
     
     if (qobs) {
     
@@ -186,15 +160,15 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
 
 	xs = REAL(x); 
 	ys = REAL(y); 
-	ps = (nsims > 1) ? REAL(p) : REAL(params);
+	ps = REAL(params);
 
-	for (k = 0; k < nreps; k++, ps += npars) { // loop over replicates
+	for (k = 0; k < nreps; k++) { // loop over replicates
 
 	  PROTECT(popo = duplicate(po));
 
 	  // copy parameters
 	  pt = REAL(GET_SLOT(popo,install("params")));
-	  memcpy(pt,ps,npars*sizeof(double)); 
+	  memcpy(pt,ps+npars*(k%nparsets),npars*sizeof(double)); 
 	  
 	  // copy x[,k,] and y[,k,] into popo
 	  xt = REAL(GET_SLOT(popo,install("states"))); 
@@ -219,4 +193,3 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   }
 
 }
-

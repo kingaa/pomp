@@ -40,13 +40,14 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   PROTECT(dimP = GET_DIM(params)); nprotect++;
   dim = INTEGER(dimP);
   npars = dim[0];
-  if (nreps != dim[1])
-    error("'states' and 'params' do not agree in second dimension");
+  if (nreps % dim[1] != 0)
+    error("'ncol(states)' should be a multiple of 'ncol(params)'");
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
 
   np = *(INTEGER(AS_INTEGER(Np))); // number of particles to resample
 
-  do_rw = LENGTH(rw_sd) > 0;	// do random walk in parameters?
+  nrw = LENGTH(rw_sd);	     // number of parameters that are variable
+  do_rw = nrw > 0;	     // do random walk in parameters?
   if (do_rw) {
     // names of parameters undergoing random walk
     PROTECT(rw_names = GET_NAMES(rw_sd)); nprotect++;
@@ -57,7 +58,12 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   do_fm = *(LOGICAL(AS_LOGICAL(filtmean))); // calculate filtering means?
   do_ta = *(LOGICAL(AS_LOGICAL(trackancestry))); // track ancestry?
   do_par_resamp = *(LOGICAL(AS_LOGICAL(onepar))); // are all cols of 'params' the same?
-  do_par_resamp = !do_par_resamp || do_rw || (np != nreps); // should we do parameter resampling?
+  do_par_resamp = !do_par_resamp || do_rw; // should we do parameter resampling?
+
+  if (do_par_resamp) {
+    if (dim[1] != nreps) 
+      error("'ncol(states)' should be equal to 'ncol(params)'");
+  }
 
   PROTECT(ess = NEW_NUMERIC(1)); nprotect++; // effective sample size
   PROTECT(loglik = NEW_NUMERIC(1)); nprotect++; // log likelihood
@@ -91,7 +97,6 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     PROTECT(pindex = matchnames(Pnames,rw_names,"parameters")); nprotect++; 
     xp = REAL(params);
     pidx = INTEGER(pindex);
-    nrw = LENGTH(rw_names);
     lv = nvars+nrw;
   } else {
     pidx = NULL;

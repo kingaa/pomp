@@ -89,24 +89,17 @@ pfilter.internal <- function (object, params, Np,
         stop(sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
     Np <- as.integer(Np)
 
-    if (is.null(dim(params))) {
-        one.par <- TRUE               # there is only one parameter vector
-        coef(object) <- params        # set params slot to the parameters
-        params <- matrix(
-            params,
-            nrow=length(params),
-            ncol=Np[1L],
-            dimnames=list(
-                names(params),
-                NULL
-            )
-        )
+    if (NCOL(params)==1) {        # there is only one parameter vector
+        one.par <- TRUE
+        coef(object) <- params     # set params slot to the parameters
+        params <- as.matrix(params)
     }
+
     paramnames <- rownames(params)
     if (is.null(paramnames))
         stop(sQuote("pfilter")," error: ",sQuote("params")," must have rownames",call.=FALSE)
 
-    init.x <- init.state(object,params=params)
+    init.x <- init.state(object,params=params,nsim=Np[1L])
     statenames <- rownames(init.x)
     nvars <- nrow(init.x)
     x <- init.x

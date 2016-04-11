@@ -1,5 +1,14 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._6._1:
+
+        • ‘init.state’ now has the optional argument ‘nsim’.  Using
+          this, one can request multiple initial state vectors per
+          parameter vector.
+
+        • ‘pfilter’ now uses less memory when it is asked to run at a
+          single point in parameter space.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._5._1:
 
         • A bug associated with the ‘rw.sd’ argument to ‘mif2’ on

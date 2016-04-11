@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.4.6.1}{
+  \itemize{
+    \item \code{init.state} now has the optional argument \code{nsim}.
+    Using this, one can request multiple initial state vectors per parameter vector.
+    \item \code{pfilter} now uses less memory when it is asked to run at a single point in parameter space.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.4.5.1}{
   \itemize{
     \item A bug associated with the \code{rw.sd} argument to \code{mif2} on Windows platforms has been fixed.

@@ -80,7 +80,7 @@ mif2.pfilter <- function (object, params, Np,
 
             if (filter.mean)
                 filt.m <- array(dim=c(nrow(x),ntimes),
-                                dimnames=list(rownames(x),NULL))
+                                dimnames=list(variable=rownames(x),time=NULL))
             else
                 filt.m <- array(dim=c(0,0))
         }
@@ -217,7 +217,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
             start <- apply(paramMatrix,1L,mean)
         } else if (Nmif > 0) {         # initial call
             paramMatrix <- array(data=start,dim=c(length(start),Np[1L]),
-                                 dimnames=list(names(start),NULL))
+                                 dimnames=list(variable=names(start),rep=NULL))
         } else {                        # no work to do
             paramMatrix <- array(dim=c(0,0))
         }
