@@ -52,44 +52,8 @@ newly created object(s):
 +                nsim=500
 +                )
 > 
-> summary(pm.ou2)
-$coef
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
-
-$nsim
-[1] 500
-
-$quantiles
-y1.mean y2.mean   y1.sd   y2.sd 
-  0.126   0.518   0.034   0.076 
-
-$pvals
-   y1.mean    y2.mean      y1.sd      y2.sd 
-0.25548902 0.96606786 0.07185629 0.15568862 
-
-$synth.loglik
-[1] -4.347702
-
-> summary(pm.po)
-$coef
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.1    -0.5     0.3     0.2     3.0    -0.5     2.0     1.0     0.0     0.0 
-
-$nsim
-[1] 500
-
-$quantiles
-y1.mean y2.mean   y1.sd   y2.sd 
-  0.076   0.662   1.000   1.000 
-
-$pvals
-    y1.mean     y2.mean       y1.sd       y2.sd 
-0.155688623 0.678642715 0.003992016 0.003992016 
-
-$synth.loglik
-[1] -108.768
-
+> invisible(summary(pm.ou2))
+> invisible(summary(pm.po))
 > 
 > plot(pm.ou2)
 > plot(pm.po)
@@ -106,30 +70,7 @@ $synth.loglik
 Warning message:
 In probe.acf(var = "y1", lags = c(0, 1, 2), type = "corr") :
   useless zero lag discarded in 'probe.acf'
->                 
-> summary(pm.ou2)
-$coef
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
-
-$nsim
-[1] 500
-
-$quantiles
-y1acf.acf.1.y1 y1acf.acf.2.y1 y2acf.acf.0.y2 y2acf.acf.1.y2 y2acf.acf.2.y2 
-         0.106          0.040          0.062          0.066          0.068 
-  y12ccf.ccf.3   y12ccf.ccf.8 
-         0.054          0.362 
-
-$pvals
-y1acf.acf.1.y1 y1acf.acf.2.y1 y2acf.acf.0.y2 y2acf.acf.1.y2 y2acf.acf.2.y2 
-    0.21556886     0.08383234     0.12774451     0.13572854     0.13972056 
-  y12ccf.ccf.3   y12ccf.ccf.8 
-    0.11177645     0.72654691 
-
-$synth.loglik
-[1] -9.302747
-
+> plot(pm.ou2)
 > 
 > pb <- probe(
 +             ou2,
@@ -140,33 +81,7 @@ $synth.loglik
 +               ),
 +             nsim=200
 +             )
-> summary(pb)
-$coef
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
-
-$nsim
-[1] 200
-
-$quantiles
-  y1.10%   y1.20%   y1.30%   y1.40%   y1.50%   y1.60%   y1.70%   y1.80% 
-   0.735    0.750    0.810    0.585    0.325    0.135    0.025    0.005 
-  y1.90% acf.0.y1 acf.1.y1 acf.4.y1 acf.7.y1 acf.0.y2 acf.1.y2 acf.4.y2 
-   0.000    0.030    0.050    0.815    0.855    0.075    0.070    0.420 
-acf.7.y2       pd 
-   0.870    0.080 
-
-$pvals
-     y1.10%      y1.20%      y1.30%      y1.40%      y1.50%      y1.60% 
-0.537313433 0.507462687 0.388059701 0.835820896 0.656716418 0.278606965 
-     y1.70%      y1.80%      y1.90%    acf.0.y1    acf.1.y1    acf.4.y1 
-0.059701493 0.019900498 0.009950249 0.069651741 0.109452736 0.378109453 
-   acf.7.y1    acf.0.y2    acf.1.y2    acf.4.y2    acf.7.y2          pd 
-0.298507463 0.159203980 0.149253731 0.845771144 0.268656716 0.169154229 
-
-$synth.loglik
-[1] -25.89253
-
+> plot(pb)
 > 
 > po <- ou2
 > coef(po,c("alpha.2","alpha.3")) <- c(0,0)
@@ -207,25 +122,6 @@ In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
 +             seed=1066L
 +             )
 > plot(pb)
-> summary(pb)
-$coef
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
-
-$nsim
-[1] 1000
-
-$quantiles
-acf.0.y1 acf.1.y1 acf.2.y1    ccf.0    ccf.1    ccf.2 
-   0.860    0.857    0.840    0.860    0.857    0.840 
-
-$pvals
- acf.0.y1  acf.1.y1  acf.2.y1     ccf.0     ccf.1     ccf.2 
-0.2817183 0.2877123 0.3216783 0.2817183 0.2877123 0.3216783 
-
-$synth.loglik
-[1] 91.86621
-
 > 
 > pb <- probe(
 +             po,
@@ -234,25 +130,6 @@ $synth.loglik
 +             seed=1066L
 +             )
 > plot(pb)
-> summary(pb)
-$coef
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
-
-$nsim
-[1] 1000
-
-$quantiles
-ccf.-5 ccf.-3  ccf.1  ccf.4  ccf.8 
- 0.838  0.860  0.123  0.157  0.912 
-
-$pvals
-   ccf.-5    ccf.-3     ccf.1     ccf.4     ccf.8 
-0.3256743 0.2817183 0.2477522 0.3156843 0.1778222 
-
-$synth.loglik
-[1] -14.50221
-
 > 
 > pb <- probe(
 +             po,
@@ -261,25 +138,6 @@ $synth.loglik
 +             seed=1066L
 +             )
 > plot(pb)
-> summary(pb)
-$coef
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
-
-$nsim
-[1] 1000
-
-$quantiles
-ccf.-5 ccf.-3  ccf.1  ccf.4  ccf.8 
- 0.728  0.819  0.343  0.238  0.840 
-
-$pvals
-   ccf.-5    ccf.-3     ccf.1     ccf.4     ccf.8 
-0.5454545 0.3636364 0.6873127 0.4775225 0.3216783 
-
-$synth.loglik
-[1] 7.505796
-
 > 
 > head(as(pb,"data.frame"))
          ccf.-5    ccf.-3      ccf.1      ccf.4       ccf.8
@@ -340,4 +198,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  8.236   0.152   8.397 
+  8.404   0.136   8.585 

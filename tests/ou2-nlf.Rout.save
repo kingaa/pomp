@@ -60,7 +60,8 @@ newly created object(s):
 > 
 > m4 <- nlf(
 +           m3,
-+           est=estnames
++           est=estnames,
++           seed=300983678L
 +           )
 > 
 > options(scipen=3)
@@ -76,11 +77,11 @@ newly created object(s):
 +              )
 +       )
                alpha.2 alpha.3   tau se.alpha.2 se.alpha.3 se.tau    value
-fit.from.guess -0.4680  0.3052 1.433    0.03032    0.04439 0.4171   -553.0
-fit.from.truth -0.4681  0.3052 1.436    0.03030    0.04434 0.4161   -553.0
+fit.from.guess -0.5118  0.2988 1.263    0.04252    0.03079 0.4227   -548.7
+fit.from.truth -0.4681  0.3052 1.436    0.03030    0.04434 0.4161   -548.7
 guess          -0.7500  0.4500 1.500         NA         NA     NA -10350.0
 truth          -0.5000  0.3000 1.000         NA         NA     NA   -551.8
 > 
 > proc.time()
    user  system elapsed 
-  3.044   0.092   3.134 
+  2.664   0.084   2.740 

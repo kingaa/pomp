@@ -34,7 +34,6 @@ pmcmc(
 
 f2 %>% pmcmc() -> f3
 f3 %>% continue(Nmcmc=20) -> f4
-filter.traj(f4)[,40,95:100]
 
 plot(c(f2,f3))
 
@@ -98,7 +97,6 @@ ou2 %>%
         verbose=FALSE
         ) -> f7
 plot(f7)
-filter.traj(f7,"x1")[1,30,1:5]
 
 ou2 %>%
   pomp(dprior=function (params, log, ...) {
@@ -116,13 +114,9 @@ library(coda)
 
 f8 %>% conv.rec(c("alpha.2","alpha.3")) %>%
   window(start=500) -> trace
-rejectionRate(trace)
-effectiveSize(trace)
-autocorr.diag(trace)
 trace <- window(trace,thin=5)
 plot(trace)
-heidel.diag(trace)
-geweke.diag(trace)
+geweke.plot(trace)
 
 library(ggplot2)
 

@@ -41,7 +41,8 @@ m3 <- nlf(
 
 m4 <- nlf(
           m3,
-          est=estnames
+          est=estnames,
+          seed=300983678L
           )
 
 options(scipen=3)

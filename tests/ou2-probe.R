@@ -33,8 +33,8 @@ pm.po <- probe(
                nsim=500
                )
 
-summary(pm.ou2)
-summary(pm.po)
+invisible(summary(pm.ou2))
+invisible(summary(pm.po))
 
 plot(pm.ou2)
 plot(pm.po)
@@ -48,8 +48,7 @@ pm.ou2 <- probe(
                   ),
                 nsim=500
                 )
-                
-summary(pm.ou2)
+plot(pm.ou2)
 
 pb <- probe(
             ou2,
@@ -60,7 +59,7 @@ pb <- probe(
               ),
             nsim=200
             )
-summary(pb)
+plot(pb)
 
 po <- ou2
 coef(po,c("alpha.2","alpha.3")) <- c(0,0)
@@ -98,7 +97,6 @@ pb <- probe(
             seed=1066L
             )
 plot(pb)
-summary(pb)
 
 pb <- probe(
             po,
@@ -107,7 +105,6 @@ pb <- probe(
             seed=1066L
             )
 plot(pb)
-summary(pb)
 
 pb <- probe(
             po,
@@ -116,7 +113,6 @@ pb <- probe(
             seed=1066L
             )
 plot(pb)
-summary(pb)
 
 head(as(pb,"data.frame"))
 

@@ -187,12 +187,13 @@ Error in init.state.internal(object = object, params = params, t0 = t0,  :
 [1] 1.541761e-07 9.269916e-01 3.430565e+00
 > 
 > pars <- coef(ricker)
+> pars["r"] <- 10
 > xstart <- init.state(ricker,params=pars,nsim=8)
 > rprocess(po,xstart,times=0:5,params=pars)[,1,]
         time
-variable [,1]        [,2]       [,3]       [,4]      [,5]        [,6]
-       N    7  0.27734450  6.5138876  0.2204169 8.7364791  0.04371161
-       e    0 -0.02840502 -0.3662242 -0.6722834 0.1001587 -0.36116965
+variable [,1]        [,2]       [,3]       [,4]      [,5]       [,6]
+       N    7  0.06204410  0.4043021  1.3776879 3.8399622  0.5751731
+       e    0 -0.02840502 -0.3662242 -0.6722834 0.1001587 -0.3611697
 > simulate(ricker,params=pars1,nsim=2,times=0) %>%
 +     ldply(as.data.frame)
   time  y N e
@@ -203,39 +204,45 @@ variable [,1]        [,2]       [,3]       [,4]      [,5]        [,6]
 5    0 54 5 0
 6    0 64 7 0
 > simulate(ricker,params=pars1,nsim=1,times=0:1,as=T) %>%
-+     summary()
-      time           y               N                e           sim  
- Min.   :0.0   Min.   : 3.00   Min.   :0.5285   Min.   :-0.2032   1:2  
- 1st Qu.:0.0   1st Qu.:11.50   1st Qu.:1.6718   1st Qu.: 0.0000   2:2  
- Median :0.5   Median :37.50   Median :4.0000   Median : 0.0000   3:2  
- Mean   :0.5   Mean   :37.50   Mean   :4.1731   Mean   : 0.1048        
- 3rd Qu.:1.0   3rd Qu.:61.25   3rd Qu.:6.5000   3rd Qu.: 0.1615        
- Max.   :1.0   Max.   :75.00   Max.   :8.2813   Max.   : 0.6164        
++     mutate(N=signif(N,3),e=signif(e,3))
+  time  y     N      e sim
+1    0 25 3.000  0.000   1
+2    1 75 8.280  0.215   1
+3    0 50 5.000  0.000   2
+4    1  7 1.230 -0.203   2
+5    0 65 7.000  0.000   3
+6    1  3 0.529  0.616   3
 > simulate(ricker,params=pars1,nsim=1,as=T,include.data=T) %>%
-+     summary()
-      time          y            sim           N                  e           
- Min.   : 0   Min.   :  0.00   data:51   Min.   : 0.00000   Min.   :-0.75255  
- 1st Qu.:12   1st Qu.:  0.00   1   :51   1st Qu.: 0.00941   1st Qu.:-0.22254  
- Median :25   Median :  7.00   2   :51   Median : 0.78342   Median :-0.02106  
- Mean   :25   Mean   : 39.56   3   :51   Mean   : 3.79254   Mean   :-0.01496  
- 3rd Qu.:38   3rd Qu.: 57.00             3rd Qu.: 4.94300   3rd Qu.: 0.18576  
- Max.   :50   Max.   :378.00             Max.   :35.76485   Max.   : 0.85196  
-                                         NA's   :51         NA's   :51        
++     melt(id=c("time","sim")) %>%
++     na.omit() %>%
++     ddply(~variable+sim,summarize,mean=signif(mean(value),2))
+   variable  sim    mean
+1         y data 41.0000
+2         y    1 39.0000
+3         y    2 38.0000
+4         y    3 40.0000
+5         N    1  3.8000
+6         N    2  3.8000
+7         N    3  3.8000
+8         e    1  0.0091
+9         e    2 -0.0330
+10        e    3 -0.0210
 > simulate(ricker,params=pars1,nsim=2,times=0:1,states=T) %>%
-+     melt() %>% dcast(rep+time~variable)
-   rep time         N           e
-1    1    1 3.0000000  0.00000000
-2    1    2 5.0269813 -0.28379262
-3    2    1 5.0000000  0.00000000
-4    2    2 1.7992312  0.17792153
-5    3    1 7.0000000  0.00000000
-6    3    2 0.2891614  0.01331962
-7    4    1 3.0000000  0.00000000
-8    4    2 4.1937290 -0.46502196
-9    5    1 5.0000000  0.00000000
-10   5    2 1.4499359 -0.03791857
-11   6    1 7.0000000  0.00000000
-12   6    2 0.2572886 -0.10346717
++     melt() %>% dcast(rep+time~variable) %>%
++     mutate(N=signif(N,3),e=signif(e,3))
+   rep time     N       e
+1    1    1 3.000  0.0000
+2    1    2 5.030 -0.2840
+3    2    1 5.000  0.0000
+4    2    2 1.800  0.1780
+5    3    1 7.000  0.0000
+6    3    2 0.289  0.0133
+7    4    1 3.000  0.0000
+8    4    2 4.190 -0.4650
+9    5    1 5.000  0.0000
+10   5    2 1.450 -0.0379
+11   6    1 7.000  0.0000
+12   6    2 0.257 -0.1030
 > simulate(ricker,params=pars1,nsim=2,times=0:1,obs=T) %>%
 +     melt() %>% dcast(rep+time~variable)
    rep time   y
@@ -252,31 +259,32 @@ variable [,1]        [,2]       [,3]       [,4]      [,5]        [,6]
 11   6    1  80
 12   6    2   4
 > simulate(ricker,params=pars1,nsim=2,times=0:1,obs=T,states=T) %>%
-+     melt() %>% dcast(rep+time~variable)
-   rep time         N           e   y
-1    1    1 3.0000000  0.00000000  28
-2    1    2 8.9825494  0.29667145 111
-3    2    1 5.0000000  0.00000000  40
-4    2    2 1.5668286  0.03961568  23
-5    3    1 7.0000000  0.00000000  84
-6    3    2 0.2081004 -0.31564474   1
-7    4    1 3.0000000  0.00000000  39
-8    4    2 8.1240249  0.19621342  86
-9    5    1 5.0000000  0.00000000  52
-10   5    2 1.7752927  0.16452737  19
-11   6    1 7.0000000  0.00000000  67
-12   6    2 0.2481003 -0.13983220   2
++     melt() %>% dcast(rep+time~variable) %>%
++     mutate(N=signif(N,3),e=signif(e,3))
+   rep time     N       e   y
+1    1    1 3.000  0.0000  28
+2    1    2 8.980  0.2970 111
+3    2    1 5.000  0.0000  40
+4    2    2 1.570  0.0396  23
+5    3    1 7.000  0.0000  84
+6    3    2 0.208 -0.3160   1
+7    4    1 3.000  0.0000  39
+8    4    2 8.120  0.1960  86
+9    5    1 5.000  0.0000  52
+10   5    2 1.780  0.1650  19
+11   6    1 7.000  0.0000  67
+12   6    2 0.248 -0.1400   2
 > 
 > pomp(ricker,
 +      initializer=Csnippet("N = rnorm(7,1); e = 0;"),statenames=c("N","e")
 +      ) -> ricker
 > xstart <- init.state(ricker,nsim=6)
 > pars1 <- parmat(coef(ricker),3)
-> pars1["r",] <- 1:3
+> pars1["r",] <- c(2,5,10)
 > pars1["sigma",] <- 0.0
 > x <- rprocess(ricker,params=pars1,times=c(0,1),xstart=xstart)
 > stopifnot(all.equal(pars1["r",]*xstart[1,]*exp(-xstart[1,]),x["N",,2]))
 > 
 > proc.time()
    user  system elapsed 
-  0.568   0.044   0.647 
+  1.220   0.176   1.488 

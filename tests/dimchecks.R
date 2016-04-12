@@ -65,27 +65,32 @@ xstart <- init.state(po,params=pars1,nsim=6)
 rprocess(po,xstart,times=0:5,params=pars1)[1,4:6,6]
 
 pars <- coef(ricker)
+pars["r"] <- 10
 xstart <- init.state(ricker,params=pars,nsim=8)
 rprocess(po,xstart,times=0:5,params=pars)[,1,]
 simulate(ricker,params=pars1,nsim=2,times=0) %>%
     ldply(as.data.frame)
 simulate(ricker,params=pars1,nsim=1,times=0:1,as=T) %>%
-    summary()
+    mutate(N=signif(N,3),e=signif(e,3))
 simulate(ricker,params=pars1,nsim=1,as=T,include.data=T) %>%
-    summary()
+    melt(id=c("time","sim")) %>%
+    na.omit() %>%
+    ddply(~variable+sim,summarize,mean=signif(mean(value),2))
 simulate(ricker,params=pars1,nsim=2,times=0:1,states=T) %>%
-    melt() %>% dcast(rep+time~variable)
+    melt() %>% dcast(rep+time~variable) %>%
+    mutate(N=signif(N,3),e=signif(e,3))
 simulate(ricker,params=pars1,nsim=2,times=0:1,obs=T) %>%
     melt() %>% dcast(rep+time~variable)
 simulate(ricker,params=pars1,nsim=2,times=0:1,obs=T,states=T) %>%
-    melt() %>% dcast(rep+time~variable)
+    melt() %>% dcast(rep+time~variable) %>%
+    mutate(N=signif(N,3),e=signif(e,3))
 
 pomp(ricker,
      initializer=Csnippet("N = rnorm(7,1); e = 0;"),statenames=c("N","e")
      ) -> ricker
 xstart <- init.state(ricker,nsim=6)
 pars1 <- parmat(coef(ricker),3)
-pars1["r",] <- 1:3
+pars1["r",] <- c(2,5,10)
 pars1["sigma",] <- 0.0
 x <- rprocess(ricker,params=pars1,times=c(0,1),xstart=xstart)
 stopifnot(all.equal(pars1["r",]*xstart[1,]*exp(-xstart[1,]),x["N",,2]))
