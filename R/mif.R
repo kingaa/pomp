@@ -29,8 +29,8 @@ mif.particles <- function (Np, center, sd, ...) {
         nrow=length(center),
         ncol=Np,
         dimnames=list(
-            names(center),
-            NULL
+            variable=names(center),
+            rep=NULL
         )
     )
 }
@@ -257,7 +257,8 @@ mif.pfilter <- function (object, params, Np,
         filt.m[,nt] <- xx$fm
 
         x <- xx$states
-        params <- .Call(randwalk_perturbation,xx$params,sigma1)
+        params <- xx$params
+        .Call(randwalk_perturbation,params,sigma1) # NB: 'params' is modified!
 
         if (all.fail) { ## all particles are lost
             nfail <- nfail+1
