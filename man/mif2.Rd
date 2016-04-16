@@ -198,7 +198,7 @@ rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
 }
 \author{Aaron A. King, Edward L. Ionides, and Dao Nguyen}
 \seealso{
-  \code{\link{pomp}}, \code{\link{pfilter}}, \code{\link{mif}}, and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
+  \code{\link{pomp}}, \code{\link{pfilter}}, \code{\link{mif}}, and the \href{http://kingaa.github.io/pomp/vignettes/mif2.html}{IF2 tutorial} on the \href{http://kingaa.github.io/pomp}{package website}.
 }
 \keyword{optimize}
 \keyword{ts}
