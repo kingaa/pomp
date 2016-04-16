@@ -10,11 +10,10 @@ options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
-  scipen=5,
-  cores=5
+  scipen=5
   )
 
-## ----gompertz-init,cache=FALSE-------------------------------------------
+## ----gompertz-init,cache=FALSE,results="hide"----------------------------
 library(pomp)
 pompExample(gompertz)
 theta <- coef(gompertz)
@@ -22,8 +21,8 @@ theta.true <- theta
 
 ## ----gompertz-multi-mif2-eval,results='hide'-----------------------------
 library(foreach)
-library(doMC)
-registerDoMC()
+library(doParallel)
+registerDoParallel()
 
 save.seed <- .Random.seed
 set.seed(334388458L,kind="L'Ecuyer")

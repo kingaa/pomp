@@ -6,7 +6,7 @@
   html: vignettes/getting_started.html
   R: vignettes/getting_started.R
 
-- title: An example using IF2
+- title: IF2 Pseudocode and Example
   html: vignettes/mif2.html
   R: vignettes/mif2.R
 

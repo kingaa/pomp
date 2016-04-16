@@ -1,6 +1,6 @@
 ---
-title: "An IF2 example"
-author: "Aaron A. King"
+title: "Iterated Filtering 2 Pseudocode and Example"
+author: "Aaron A. King and Edward Ionides"
 output:
   html_document:
     theme: default
@@ -9,7 +9,7 @@ bibliography: pomp.bib
 csl: ecology.csl
 ---
 
-Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
+[Licensed under the Creative Commons Attribution-NonCommercial license](http://creativecommons.org/licenses/by-nc/4.0/).
 Please share and remix noncommercially, mentioning its origin.  
 ![CC-BY_NC](http://kingaa.github.io/images/cc-by-nc.png)
 
@@ -53,8 +53,7 @@ options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
   encoding="UTF-8",
-  scipen=5,
-  cores=5
+  scipen=5
   )
 ```
 
@@ -64,9 +63,43 @@ The iterated filtering of @Ionides2006 is implemented in the `mif` function.
 @Ionides2015 describe an improvement on the original [@Ionides2006] algorithm.
 This "IF2" algorithm is implemented in the `mif2` function.
 
-The following constructs the Gompertz example that is provided with **pomp** (see `?gompertz`) and extracts the parameters at which the data were generated.
+## IF2 algorithm pseudocode
 
-```{r gompertz-init,cache=FALSE}
+__model input__:
+Simulators for $f_{X_0}(x_0;\theta)$ and $f_{X_n|X_{n-1}}(x_n| x_{n-1}; \theta)$;
+evaluator for $f_{Y_n|X_n}(y_n| x_n;\theta)$;
+data, $y^*_{1:N}$ 
+
+__algorithmic parameters__:
+Number of iterations, $M$;
+number of particles, $J$;
+initial parameter swarm, $\{\Theta^0_j, j=1,\dots,J\}$;
+perturbation density, $h_n(\theta|\varphi;\sigma)$;
+perturbation scale, $\sigma_{1{:}M}$ 
+
+__output__:
+Final parameter swarm, $\{\Theta^M_j, j=1,\dots,J\}$ 
+
+
+1. $\quad$ For $m$ in $1{:} M$
+2. $\quad\quad\quad$ $\Theta^{F,m}_{0,j}\sim h_0(\theta|\Theta^{m-1}_{j}; \sigma_m)$ for $j$ in $1{:} J$
+3. $\quad\quad\quad$ $X_{0,j}^{F,m}\sim f_{X_0}(x_0 ; \Theta^{F,m}_{0,j})$ for $j$ in $1{:} J$
+4. $\quad\quad\quad$ For $n$ in $1{:} N$
+5. $\quad\quad\quad\quad\quad$ $\Theta^{P,m}_{n,j}\sim h_n(\theta|\Theta^{F,m}_{n-1,j},\sigma_m)$ for $j$ in $1{:} J$
+6. $\quad\quad\quad\quad\quad$ $X_{n,j}^{P,m}\sim f_{X_n|X_{n-1}}(x_n | X^{F,m}_{n-1,j}; \Theta^{P,m}_j)$ for $j$ in $1{:} J$
+7. $\quad\quad\quad\quad\quad$ $w_{n,j}^m = f_{Y_n|X_n}(y^*_n| X_{n,j}^{P,m} ; \Theta^{P,m}_{n,j})$ for $j$ in $1{:} J$
+8. $\quad\quad\quad\quad\quad$ Draw $k_{1{:}J}$ with $P[k_j=i]=  w_{n,i}^m\Big/\sum_{u=1}^J w_{n,u}^m$
+9.  $\quad\quad\quad\quad\quad$ $\Theta^{F,m}_{n,j}=\Theta^{P,m}_{n,k_j}$ and $X^{F,m}_{n,j}=X^{P,m}_{n,k_j}$ for $j$ in $1{:} J$
+10. $\quad\quad\quad$ End For
+11. $\quad\quad\quad$ Set $\Theta^{m}_{j}=\Theta^{F,m}_{N,j}$ for $j$ in $1{:} J$
+12. $\quad$ End For
+
+## An example
+
+The following constructs the Gompertz example that is provided with **pomp** (see `?gompertz`) and extracts the parameters at which the data were generated.
+It is meant to be directly comparable with the example displayed in the @King2016 [*J. Stat. Softw.* paper](http://kingaa.github.io/pomp/vignettes/pompjss.pdf).
+
+```{r gompertz-init,cache=FALSE,results="hide"}
 library(pomp)
 pompExample(gompertz)
 theta <- coef(gompertz)
@@ -78,8 +111,8 @@ We'll initialize the algorithm at several starting points around `theta.true` an
 
 ```{r gompertz-multi-mif2-eval,results='hide'}
 library(foreach)
-library(doMC)
-registerDoMC()
+library(doParallel)
+registerDoParallel()
 
 save.seed <- .Random.seed
 set.seed(334388458L,kind="L'Ecuyer")
@@ -156,5 +189,9 @@ Here is a summary of the results.
 print(results.table)
 ```
 The fact that the likelihood at the putative MLE is higher than it is at the truth is evidence that this parameter is actually close to the true MLE.
+
+## [**pomp** homepage](http://kingaa.github.io/pomp)
+
+## [**R** codes for this document](http://raw.githubusercontent.com/kingaa/pomp/gh-pages/vignettes/mif2.R)
 
 ## References
