@@ -84,18 +84,21 @@ These are also known as state-space model, hidden Markov models, and stochastic 
 Such models consist of an unobserved stochastic *state process*, connected to the data via an explicit model of the observation process.
 We refer to the former as the *process model* and the latter as the *measurement model*.
 Each model is, in fact, a probability distribution.
-If we let $Y_t$ denote the measurement process at time $t$ and $X_t$ the state process, then by definition, the process model is determined by the density $f_{X_t|X_{t-1}}$ and the measurement process by the density $f_{Y_t|X_t}$.
-We think of the data, $y^*_t$, $t=1,\dots,T$ as being a single realization of the $Y$ process.
+Suppose we have a sequence of measurements, $y^*_{n}$, made at times $t_n$, $n=1,\dots,N$.
+Let $Y_n$ denote the measurement process and $X_n$ the state process, then by definition, the process model is determined by the density $f_{X_n|X_{n-1}}$ and the initial density $f_{X_0}$.
+The measurement process is determined by the density $f_{Y_n|X_n}$.
+We think of the data, $y^*_n$, as being a single realization of the $Y$ process.
 To implement a POMP model in **pomp**, we have to specify the measurement and process distributions.
 
 Note however, that, for each of the process and the measurement model there are two distinct operations that we might wish to perform:
 
 1. we might wish to *simulate*, i.e., to draw a (pseudo)random sample from the distribution, or
-2. we might wish to *evaluate the density* itself at given values of $X_t$ and/or $Y_t$.
+2. we might wish to *evaluate the density* itself at given values of $X_n$ and/or $Y_n$.
 
-We refer to the simulation of $f_{X_t|X_{t-1}}$ as the *rprocess* component of the POMP model, the evaluation of $f_{X_t|X_{t-1}}$ as the *dprocess* component, the simulation of $f_{Y_t|X_t}$, as the *rmeasure* component, and the evaluation of $f_{Y_t|X_t}$ as the *dmeasure* component.
+Following the **R** convention, we refer to the simulation of $f_{X_n|X_{n-1}}$ as the *rprocess* component of the POMP model and the evaluation of $f_{X_n|X_{n-1}}$ as the *dprocess* component.
+Similarly, the simulation of $f_{Y_n|X_n}$ is the *rmeasure* component while the evaluation of $f_{Y_n|X_n}$ is the *dmeasure* component.
 Methods that make no use of the *dprocess* component are called "plug-and-play" methods.
-At present, **pomp** is focused on such methods, so there is no reason to focus on the dprocess component any further.
+At present, **pomp** is focused on such methods, so there is no reason to discuss the dprocess component further.
 In the following, we will illustrate and explain how one specifies the rprocess, rmeasure, and dmeasure components of a model in **pomp**.
 We will illustrate this using some simple examples.
 
@@ -110,11 +113,68 @@ The following is a schematic of the structure of a POMP showing causal relations
 
 Here is another POMP model schematic, showing dependence among model variables.
 
-![schematic2](./pomp_schematic2.png)
+```{r ssdiag2,echo=FALSE,purl=FALSE,fig.height=3,fig.width=6}
+library(grid)
+vp <- viewport(x=unit(0.5,"npc"),y=unit(0.54,"npc"),
+               width=unit(0.96,"npc"),height=unit(0.96,"npc"))
+pushViewport(vp)
 
-State variables, $X$, at time $t$ depend only on state variables at the previous timestep.
-Measurements, $Y$, at time $t$ depend only on the state at that time.
-Formally, $$\mathrm{Prob}[X_t|X_0,\dots,X_{t-1},Y_1,\dots,Y_{t-1}]=\mathrm{Prob}[X_t|X_{t-1}]$$ and $$\mathrm{Prob}[Y_t|X_0,\dots,X_{t},Y_1,\dots,Y_{t-1}]=\mathrm{Prob}[Y_t|X_{t}],$$ for all $t=1,\dots,T$.
+fs <- 12
+x1 <- 0.6; y1 <- 0.88
+gp <- gpar(lty=2,col=grey(0.6),fontsize=12)
+grid.text(x=x1,y=y1,label="measurement model",just="centre",gp=gpar(fontsize=fs,col=grey(0.6)))
+grid.lines(x=unit(c(x1,3/12),"npc")+unit(c(0,2),"points"),y=unit(c(y1,1/2),"npc")+unit(c(-fs/2,0),"points"),gp=gp)
+grid.lines(x=unit(c(x1,6/12),"npc")+unit(c(0,2),"points"),y=unit(c(y1,1/2),"npc")+unit(c(-fs/2,0),"points"),gp=gp)
+grid.lines(x=unit(c(x1,8/12),"npc")+unit(c(0,-2),"points"),y=unit(c(y1,1/2),"npc")+unit(c(-fs/2,0),"points"),gp=gp)
+grid.lines(x=unit(c(x1,10/12),"npc")+unit(c(0,-2),"points"),y=unit(c(y1,1/2),"npc")+unit(c(-fs/2,0),"points"),gp=gp)
+
+x1 <- 0.4; y1 <- 0.14
+grid.text(x=x1,y=y1,label="process model",just="centre",gp=gp)
+grid.lines(x=unit(c(x1,4/24),"npc"),y=unit(c(y1,1/3),"npc")+unit(c(fs/2,-fs/4),"points"),gp=gp)
+grid.lines(x=unit(c(x1,23/72),"npc"),y=unit(c(y1,1/3),"npc")+unit(c(fs/2,-fs/4),"points"),gp=gp)
+grid.lines(x=unit(c(x1,31/72),"npc"),y=unit(c(y1,1/3),"npc")+unit(c(fs/2,-fs/4),"points"),gp=gp)
+grid.lines(x=unit(c(x1,14/24),"npc"),y=unit(c(y1,1/3),"npc")+unit(c(fs/2,-fs/4),"points"),gp=gp)
+grid.lines(x=unit(c(x1,18/24),"npc"),y=unit(c(y1,1/3),"npc")+unit(c(fs/2,-fs/4),"points"),gp=gp)
+grid.lines(x=unit(c(x1,65/72),"npc"),y=unit(c(y1,1/3),"npc")+unit(c(fs/2,-fs/4),"points"),gp=gp)
+
+grid.text(x=1/72,y=c(1/3,2/3),label=c("states","observations"),just="centre",rot=90,gp=gp)
+
+x1 <- unit(c(1,3,6,8,10,3,6,8,10)/12,"npc")
+y1 <- unit(c(rep(1,5),rep(2,4))/3,"npc")
+w <- unit(1/12,"npc")
+h <- unit(1/6,"npc")
+
+grid.lines(x=c(1/48,47/48),y=1/12,arrow=arrow(length=unit(0.02,"npc")))
+grid.text(x=x1[1:5],y=1/24,label=c(expression(italic(t[0])),expression(italic(t[1])),expression(italic(t[n-1])),expression(italic(t[n])),expression(italic(t[n+1]))))
+
+grid.rect(x=x1,y=y1,width=w,height=h,just=c(0.5,0.5),gp=gpar(fill="white",lwd=2))
+grid.text(x=x1,y=y1,label=c(
+  expression(italic(X[0])),expression(italic(X[1])),
+  expression(italic(X[n-1])),expression(italic(X[n])),
+  expression(italic(X[n+1])),
+  expression(italic(Y[1])),expression(italic(Y[n-1])),
+  expression(italic(Y[n])),expression(italic(Y[n+1]))),
+  gp=gpar(fontface=3))
+grid.text(x=c(4.5,11.5)/12,y=unit(1/3,"npc")+unit(2,"point"),label=quote(phantom(0)~cdots~phantom(0)),gp=gpar(fontsize=15))
+grid.lines(x=c(1,3)/12+c(1,-1)/24,y=1/3,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+grid.lines(x=c(3,4)/12+c(1,1/3)/24,y=1/3,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+grid.lines(x=c(5,6)/12+c(-1/3,-1)/24,y=1/3,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+grid.lines(x=c(6,8)/12+c(1,-1)/24,y=1/3,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+grid.lines(x=c(8,10)/12+c(1,-1)/24,y=1/3,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+grid.lines(x=c(10,11)/12+c(1,1/3)/24,y=1/3,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+grid.lines(x=3/12,y=c(1,2)/3+c(1,-1)/12,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+grid.lines(x=6/12,y=c(1,2)/3+c(1,-1)/12,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+grid.lines(x=8/12,y=c(1,2)/3+c(1,-1)/12,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+grid.lines(x=10/12,y=c(1,2)/3+c(1,-1)/12,arrow=arrow(length=unit(0.02,"npc")),gp=gpar(lwd=2))
+
+popViewport()
+```
+
+The state process, $X_n$, is Markovian, i.e.,
+$$\mathrm{Prob}[X_n|X_0,\dots,X_{n-1},Y_1,\dots,Y_{n-1}]=\mathrm{Prob}[X_n|X_{n-1}].$$
+Moreover, the measurements, $Y_n$, depend only on the state at that time:
+$$\mathrm{Prob}[Y_n|X_0,\dots,X_{n},Y_1,\dots,Y_{n-1}]=\mathrm{Prob}[Y_n|X_{n}],$$
+for all $n=1,\dots,N$.
 
 -----------------------------------
 
