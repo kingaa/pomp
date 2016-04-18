@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.4.8.1}{
+  \itemize{
+    \item `mif2` no longer computes filter means.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.4.7.1}{
   \itemize{
     \item The new argument \code{show} of \code{pompExamples} allows one to display the example code instead of executing it.

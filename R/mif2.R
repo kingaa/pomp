@@ -47,13 +47,12 @@ setClass(
 mif2.pfilter <- function (object, params, Np,
                           mifiter, rw.sd, cooling.fn,
                           tol = 1e-17, max.fail = Inf,
-                          transform, verbose, filter.mean,
+                          transform, verbose,
                           .getnativesymbolinfo = TRUE) {
 
     gnsi <- as.logical(.getnativesymbolinfo)
     transform <- as.logical(transform)
     verbose <- as.logical(verbose)
-    filter.mean <- as.logical(filter.mean)
     mifiter <- as.integer(mifiter)
     Np <- as.integer(Np)
 
@@ -77,12 +76,6 @@ mif2.pfilter <- function (object, params, Np,
         if (nt == 1L) {
             ## get initial states
             x <- init.state(object,params=if (transform) tparams else params)
-
-            if (filter.mean)
-                filt.m <- array(dim=c(nrow(x),ntimes),
-                                dimnames=list(variable=rownames(x),time=NULL))
-            else
-                filt.m <- array(dim=c(0,0))
         }
 
         ## advance the state variables according to the process model
@@ -137,7 +130,7 @@ mif2.pfilter <- function (object, params, Np,
                 rw_sd=numeric(0),
                 predmean=FALSE,
                 predvar=FALSE,
-                filtmean=filter.mean,
+                filtmean=FALSE,
                 trackancestry=FALSE,
                 onepar=FALSE,
                 weights=weights,
@@ -155,8 +148,6 @@ mif2.pfilter <- function (object, params, Np,
 
         x <- xx$states
         params <- xx$params
-        if (filter.mean)
-            filt.m[,nt] <- xx$fm
 
         if (all.fail) { ## all particles are lost
             nfail <- nfail+1
@@ -182,7 +173,6 @@ mif2.pfilter <- function (object, params, Np,
         paramMatrix=params,
         eff.sample.size=eff.sample.size,
         cond.loglik=loglik,
-        filter.mean=filt.m,
         Np=Np,
         tol=tol,
         nfail=as.integer(nfail),
@@ -194,7 +184,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                            cooling.type, cooling.fraction.50,
                            tol = 1e17, max.fail = Inf, 
                            verbose = FALSE, .ndone = 0L,
-                           .paramMatrix = NULL, 
+                           .paramMatrix = NULL,
                            .getnativesymbolinfo = TRUE, ...) {
     
     pompLoad(object)
@@ -251,7 +241,6 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                 tol=tol,
                 max.fail=max.fail,
                 verbose=verbose,
-                filter.mean=(n==Nmif),
                 transform=transform,
                 .getnativesymbolinfo=gnsi
             ),
