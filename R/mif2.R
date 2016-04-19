@@ -48,6 +48,7 @@ mif2.pfilter <- function (object, params, Np,
                           mifiter, rw.sd, cooling.fn,
                           tol = 1e-17, max.fail = Inf,
                           transform, verbose,
+                          .indices = integer(0),
                           .getnativesymbolinfo = TRUE) {
 
     gnsi <- as.logical(.getnativesymbolinfo)
@@ -56,6 +57,10 @@ mif2.pfilter <- function (object, params, Np,
     mifiter <- as.integer(mifiter)
     Np <- as.integer(Np)
 
+    do_ta <- length(.indices)>0L
+    if (do_ta && length(.indices)!=Np[1L])
+        stop(".indices has improper length",call.=TRUE)
+    
     times <- time(object,t0=TRUE)
     ntimes <- length(times)-1
 
@@ -131,7 +136,7 @@ mif2.pfilter <- function (object, params, Np,
                 predmean=FALSE,
                 predvar=FALSE,
                 filtmean=FALSE,
-                trackancestry=FALSE,
+                trackancestry=do_ta,
                 onepar=FALSE,
                 weights=weights,
                 tol=tol
@@ -145,6 +150,9 @@ mif2.pfilter <- function (object, params, Np,
         all.fail <- xx$fail
         loglik[nt] <- xx$loglik
         eff.sample.size[nt] <- xx$ess
+        if (do_ta) {
+            .indices <- .indices[xx$ancestry]
+        }
 
         x <- xx$states
         params <- xx$params
@@ -173,6 +181,7 @@ mif2.pfilter <- function (object, params, Np,
         paramMatrix=params,
         eff.sample.size=eff.sample.size,
         cond.loglik=loglik,
+        indices=.indices,
         Np=Np,
         tol=tol,
         nfail=as.integer(nfail),
@@ -182,13 +191,14 @@ mif2.pfilter <- function (object, params, Np,
 
 mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                            cooling.type, cooling.fraction.50,
-                           tol = 1e17, max.fail = Inf, 
+                           tol = 1e17, max.fail = Inf,
                            verbose = FALSE, .ndone = 0L,
+                           .indices = integer(0),
                            .paramMatrix = NULL,
                            .getnativesymbolinfo = TRUE, ...) {
-    
+
     pompLoad(object)
-    
+
     transform <- as.logical(transform)
     verbose <- as.logical(verbose)
     gnsi <- as.logical(.getnativesymbolinfo)
@@ -211,7 +221,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
         } else {                        # no work to do
             paramMatrix <- array(dim=c(0,0))
         }
-    } else { 
+    } else {
         paramMatrix <- .paramMatrix
         start <- apply(paramMatrix,1L,mean)
     }
@@ -220,7 +230,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                       dimnames=list(iteration=seq.int(.ndone,.ndone+Nmif),
                                     variable=c('loglik','nfail',names(start))))
     conv.rec[1L,] <- c(NA,NA,start)
-    
+
     object <- as(object,"pomp")
 
     if (transform)
@@ -242,6 +252,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                 max.fail=max.fail,
                 verbose=verbose,
                 transform=transform,
+                 .indices=.indices,
                 .getnativesymbolinfo=gnsi
             ),
             silent=TRUE
@@ -254,7 +265,8 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
         paramMatrix <- pfp@paramMatrix
         conv.rec[n+1,-c(1,2)] <- coef(pfp)
         conv.rec[n,c(1,2)] <- c(pfp@loglik,pfp@nfail)
-
+        .indices <- pfp@indices
+        
         if (verbose) cat("mif2 iteration ",n," of ",Nmif," completed\n")
 
     }
@@ -306,17 +318,17 @@ setMethod(
 
         if (missing(Np)) {
             stop(sQuote("mif2")," error: ",sQuote("Np")," must be specified",call.=FALSE) }
-            else if (is.function(Np)) {
-                Np <- try(
-                    vapply(seq.int(1,ntimes),Np,numeric(1)),
-                    silent=FALSE
-                )
-                if (inherits(Np,"try-error"))
-                    stop(sQuote("mif2")," error: if ",sQuote("Np"),
-                         " is a function, it must return a single positive integer")
-            } else if (!is.numeric(Np))
-                stop(sQuote("mif2")," error: ",sQuote("Np"),
-                     " must be a number, a vector of numbers, or a function")
+        else if (is.function(Np)) {
+            Np <- try(
+                vapply(seq.int(1,ntimes),Np,numeric(1)),
+                silent=FALSE
+            )
+            if (inherits(Np,"try-error"))
+                stop(sQuote("mif2")," error: if ",sQuote("Np"),
+                     " is a function, it must return a single positive integer")
+        } else if (!is.numeric(Np))
+            stop(sQuote("mif2")," error: ",sQuote("Np"),
+                 " must be a number, a vector of numbers, or a function")
         if (length(Np)==1) {
             Np <- rep(Np,times=ntimes)
         } else if (length(Np)>ntimes) {
@@ -387,7 +399,7 @@ setMethod(
         if (missing(transform)) transform <- object@transform
         if (missing(cooling.type)) cooling.type <- object@cooling.type
         if (missing(cooling.fraction.50)) cooling.fraction.50 <- object@cooling.fraction.50
-        
+
         if (missing(Np)) Np <- object@Np
         if (missing(tol)) tol <- object@tol
 
