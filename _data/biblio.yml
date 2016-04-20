@@ -61,15 +61,6 @@
   pages: "10604-10609"
   doi: "http://dx.doi.org/10.1073/pnas.1323688111"
 
-- key: Breto2011
-  author: "C. Bret&oacute; and E. L. Ionides"
-  year: "2011"
-  title: "Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems"
-  journal: "Stoch. Process. Their Appl."
-  volume: "121"
-  pages: "2571-2591"
-  doi: "http://dx.doi.org/10.1016/j.spa.2011.07.005"
-
 - key: Breto2009
   author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
   year: "2009"
@@ -78,6 +69,15 @@
   volume: "3"
   pages: "319-348"
   doi: "http://dx.doi.org/10.1214/08-AOAS201"
+
+- key: Breto2011
+  author: "C. Bret&oacute; and E. L. Ionides"
+  year: "2011"
+  title: "Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems"
+  journal: "Stoch. Process. Their Appl."
+  volume: "121"
+  pages: "2571-2591"
+  doi: "http://dx.doi.org/10.1016/j.spa.2011.07.005"
 
 - key: Camacho2011
   author: "A. Camacho, S. Ballesteros, A. L. Graham, F. Carrat, O. Ratmann, and B. Cazelles"
@@ -120,15 +120,6 @@
   pages: "271-283"
   doi: "http://dx.doi.org/10.1098/rsif.2009.0151"
 
-- key: Ionides2011
-  author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
-  year: "2011"
-  title: "Iterated filtering"
-  journal: "Ann. Stat."
-  volume: "39"
-  pages: "1776-1802"
-  doi: "http://dx.doi.org/10.1214/11-AOS886"
-
 - key: Ionides2006
   author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
   year: "2006"
@@ -137,6 +128,15 @@
   volume: "103"
   pages: "18438-18443"
   doi: "http://dx.doi.org/10.1073/pnas.0603181103"
+
+- key: Ionides2011
+  author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
+  year: "2011"
+  title: "Iterated filtering"
+  journal: "Ann. Stat."
+  volume: "39"
+  pages: "1776-1802"
+  doi: "http://dx.doi.org/10.1214/11-AOS886"
 
 - key: Ionides2015
   author: "E. L. Ionides, D. Nguyen, Y. Atchad&eacute;, S. Stoev, and A. A. King"
@@ -165,15 +165,6 @@
   pages: "259-276"
   doi: "http://dx.doi.org/10.1890/03-4056"
 
-- key: King2015
-  author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
-  year: "2015"
-  title: "Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola"
-  journal: "Proc. R. Soc. Lond. B"
-  volume: "282"
-  pages: "20150347"
-  doi: "http://dx.doi.org/10.1098/rspb.2015.0347"
-
 - key: King2008
   author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
   year: "2008"
@@ -182,6 +173,15 @@
   volume: "454"
   pages: "877-880"
   doi: "http://dx.doi.org/10.1038/nature07084"
+
+- key: King2015
+  author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
+  year: "2015"
+  title: "Avoidable errors in the modelling of outbreaks of emerging pathogens, with special reference to Ebola"
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "282"
+  pages: "20150347"
+  doi: "http://dx.doi.org/10.1098/rspb.2015.0347"
 
 - key: King2016
   author: "A. A. King, D. Nguyen, and E. L. Ionides"
@@ -249,6 +249,8 @@
   year: "2016"
   title: "Differential and enhanced response to climate forcing in diarrheal disease due to rotavirus across a megacity of the developing world"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "113"
+  pages: "4092-4097"
   doi: "http://dx.doi.org/10.1073/pnas.1518977113"
 
 - key: Martinez-Bakker2015
@@ -278,15 +280,6 @@
   pages: "255-262"
   doi: "http://dx.doi.org/10.1093/aje/kwv044"
 
-- key: Shrestha2015
-  author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C. Viboud, and P. Rohani"
-  year: "2015"
-  title: "The role of influenza in the epidemiology of pneumonia"
-  journal: "Scientific Reports"
-  volume: "5"
-  pages: "15314-"
-  doi: "http://dx.doi.org/10.1038/srep15314"
-
 - key: Shrestha2011
   author: "S. Shrestha, A. A. King, and P. Rohani"
   year: "2011"
@@ -296,14 +289,14 @@
   pages: "e1002135"
   doi: "http://dx.doi.org/10.1371%2Fjournal.pcbi.1002135"
 
-- key: Toni2010
-  author: "T. Toni and M. P. H. Stumpf"
-  year: "2010"
-  title: "Simulation-based model selection for dynamical systems in systems and population biology"
-  journal: "Bioinformatics"
-  volume: "26"
-  pages: "104-110"
-  doi: "http://dx.doi.org/10.1093/bioinformatics/btp619"
+- key: Shrestha2015
+  author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C&eacute;. Viboud, and P. Rohani"
+  year: "2015"
+  title: "The role of influenza in the epidemiology of pneumonia"
+  journal: "Sci. Rep."
+  volume: "5"
+  pages: "15314-"
+  doi: "http://dx.doi.org/10.1038/srep15314"
 
 - key: Toni2009a
   author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
@@ -313,6 +306,15 @@
   volume: "6"
   pages: "187-202"
   doi: "http://dx.doi.org/10.1098/rsif.2008.0172"
+
+- key: Toni2010
+  author: "T. Toni and M. P. H. Stumpf"
+  year: "2010"
+  title: "Simulation-based model selection for dynamical systems in systems and population biology"
+  journal: "Bioinformatics"
+  volume: "26"
+  pages: "104-110"
+  doi: "http://dx.doi.org/10.1093/bioinformatics/btp619"
 
 - key: Wood2010
   author: "S. N. Wood"
