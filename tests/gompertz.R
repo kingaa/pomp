@@ -45,15 +45,3 @@ try(conv.rec(mf,c("loglik","r"),transform=TRUE))
 conv.rec(mf,c("loglik","r"),transform=TRUE)
 conv.rec(mf,c("loglik"),transform=TRUE)
 conv.rec(mf,c("K"),transform=TRUE)
-
-mf <- mif2(gompertz,Nmif=1,Np=1000,
-           transform=TRUE,
-           .indices=seq.int(1000),
-           rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
-           cooling.fraction=0.5)
-
-mf <- mif2(gompertz,Nmif=4,Np=100,
-           transform=TRUE,
-           .indices=as.list(seq.int(100)),
-           rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
-           cooling.fraction=0.5)

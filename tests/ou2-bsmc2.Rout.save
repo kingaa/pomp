@@ -54,7 +54,7 @@ newly created object(s):
 > post <- smc$post
 > 
 > print(etime <- toc-tic)
-Time difference of 1.152809 secs
+Time difference of 0.8701155 secs
 > 
 > print(
 +       cbind(
@@ -96,4 +96,4 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > proc.time()
    user  system elapsed 
-  2.432   0.096   2.479 
+  1.608   0.036   1.637 

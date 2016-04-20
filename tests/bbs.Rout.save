@@ -72,4 +72,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
-  6.304   0.112   6.375 
+  4.492   0.020   4.503 
