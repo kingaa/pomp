@@ -58,9 +58,8 @@
     An object of class \code{pomp} or inheriting class \code{pomp}.
   }
   \item{params}{
-    A \code{npars} x \code{Np} numeric matrix containing the parameters corresponding to the initial state values in \code{xstart}.
-    This must have a \sQuote{rownames} attribute.
-    If it desired that all particles should share the same parameter values, one one may supply \code{params} as a named numeric vector.
+    optional named numeric vector containing the parameters at which the filtering should be performed.
+    By default, \code{params = coef(object)}.
   }
   \item{Np}{
     the number of particles to use.
