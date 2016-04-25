@@ -61,6 +61,10 @@ setGeneric("traj.match",function(object,...)standardGeneric("traj.match"))
 ## ABC algorithm functions
 setGeneric('abc',function(object,...)standardGeneric("abc"))
 
+## Kalman filter methods
+setGeneric("enkf",function(object,...)standardGeneric("enkf"))
+setGeneric("eakf",function(object,...)standardGeneric("eakf"))
+
 ## Bayesian SMC (Liu & West)
 setGeneric("bsmc",function(object,...)standardGeneric("bsmc"))
 setGeneric("bsmc2",function(object,...)standardGeneric("bsmc2"))

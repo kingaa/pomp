@@ -52,6 +52,7 @@ importFrom(coda,mcmc,mcmc.list)
 exportClasses(
     pomp,
     pfilterd.pomp,
+    kalmand.pomp,
     mif,mifList,
     mif2d.pomp,mif2List,
     pmcmc,pmcmcList,
@@ -72,6 +73,7 @@ exportMethods(
     obs,partrans,coef,"coef<-",
     time,"time<-",timezero,"timezero<-",
     simulate,pfilter,
+    enkf,eakf,
     eff.sample.size,cond.logLik,
     states,trajectory,
     mif,mif2,continue,
