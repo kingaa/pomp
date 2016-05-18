@@ -61,15 +61,6 @@
   pages: "10604-10609"
   doi: "http://dx.doi.org/10.1073/pnas.1323688111"
 
-- key: Breto2009
-  author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
-  year: "2009"
-  title: "Time series analysis via mechanistic models"
-  journal: "Annals of Applied Statistics"
-  volume: "3"
-  pages: "319-348"
-  doi: "http://dx.doi.org/10.1214/08-AOAS201"
-
 - key: Breto2011
   author: "C. Bret&oacute; and E. L. Ionides"
   year: "2011"
@@ -78,6 +69,15 @@
   volume: "121"
   pages: "2571-2591"
   doi: "http://dx.doi.org/10.1016/j.spa.2011.07.005"
+
+- key: Breto2009
+  author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
+  year: "2009"
+  title: "Time series analysis via mechanistic models"
+  journal: "Annals of Applied Statistics"
+  volume: "3"
+  pages: "319-348"
+  doi: "http://dx.doi.org/10.1214/08-AOAS201"
 
 - key: Camacho2011
   author: "A. Camacho, S. Ballesteros, A. L. Graham, F. Carrat, O. Ratmann, and B. Cazelles"
@@ -120,15 +120,6 @@
   pages: "271-283"
   doi: "http://dx.doi.org/10.1098/rsif.2009.0151"
 
-- key: Ionides2006
-  author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
-  year: "2006"
-  title: "Inference for nonlinear dynamical systems"
-  journal: "Proc. Natl. Acad. Sci. U.S.A."
-  volume: "103"
-  pages: "18438-18443"
-  doi: "http://dx.doi.org/10.1073/pnas.0603181103"
-
 - key: Ionides2011
   author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
   year: "2011"
@@ -137,6 +128,15 @@
   volume: "39"
   pages: "1776-1802"
   doi: "http://dx.doi.org/10.1214/11-AOS886"
+
+- key: Ionides2006
+  author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
+  year: "2006"
+  title: "Inference for nonlinear dynamical systems"
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "103"
+  pages: "18438-18443"
+  doi: "http://dx.doi.org/10.1073/pnas.0603181103"
 
 - key: Ionides2015
   author: "E. L. Ionides, D. Nguyen, Y. Atchad&eacute;, S. Stoev, and A. A. King"
@@ -165,15 +165,6 @@
   pages: "259-276"
   doi: "http://dx.doi.org/10.1890/03-4056"
 
-- key: King2008
-  author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
-  year: "2008"
-  title: "Inapparent infections and cholera dynamics"
-  journal: "Nature"
-  volume: "454"
-  pages: "877-880"
-  doi: "http://dx.doi.org/10.1038/nature07084"
-
 - key: King2015
   author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
   year: "2015"
@@ -182,6 +173,15 @@
   volume: "282"
   pages: "20150347"
   doi: "http://dx.doi.org/10.1098/rspb.2015.0347"
+
+- key: King2008
+  author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
+  year: "2008"
+  title: "Inapparent infections and cholera dynamics"
+  journal: "Nature"
+  volume: "454"
+  pages: "877-880"
+  doi: "http://dx.doi.org/10.1038/nature07084"
 
 - key: King2016
   author: "A. A. King, D. Nguyen, and E. L. Ionides"
@@ -236,12 +236,13 @@
   booktitle: "Sequential Monte Carlo Methods in Practice"
   editor: "A. Doucet, N. de Freitas, and N. J. Gordon"
 
-- key: Magpantay2015
+- key: Magpantay2016
   author: "F. M. G. Magpantay, M. Domenech de Cell&egrave;s, P. Rohani, and A. A. King"
-  year: "2015"
-  title: "Pertussis immunity and epidemiology: mode and duration of vaccine-induced immunity."
-  journal: "Parasitol."
-  pages: "1-15"
+  year: "2016"
+  title: "Pertussis immunity and epidemiology: mode and duration of vaccine-induced immunity"
+  journal: "Parasitology"
+  volume: "143"
+  pages: "835-849"
   doi: "http://dx.doi.org/10.1017/S0031182015000979"
 
 - key: Martinez2016
@@ -280,15 +281,6 @@
   pages: "255-262"
   doi: "http://dx.doi.org/10.1093/aje/kwv044"
 
-- key: Shrestha2011
-  author: "S. Shrestha, A. A. King, and P. Rohani"
-  year: "2011"
-  title: "Statistical Inference for Multi-Pathogen Systems"
-  journal: "PLoS Comput. Biol."
-  volume: "7"
-  pages: "e1002135"
-  doi: "http://dx.doi.org/10.1371%2Fjournal.pcbi.1002135"
-
 - key: Shrestha2015
   author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C&eacute;. Viboud, and P. Rohani"
   year: "2015"
@@ -298,14 +290,14 @@
   pages: "15314-"
   doi: "http://dx.doi.org/10.1038/srep15314"
 
-- key: Toni2009a
-  author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
-  year: "2009"
-  title: "Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems"
-  journal: "J. R. Soc. Interface"
-  volume: "6"
-  pages: "187-202"
-  doi: "http://dx.doi.org/10.1098/rsif.2008.0172"
+- key: Shrestha2011
+  author: "S. Shrestha, A. A. King, and P. Rohani"
+  year: "2011"
+  title: "Statistical Inference for Multi-Pathogen Systems"
+  journal: "PLoS Comput. Biol."
+  volume: "7"
+  pages: "e1002135"
+  doi: "http://dx.doi.org/10.1371%2Fjournal.pcbi.1002135"
 
 - key: Toni2010
   author: "T. Toni and M. P. H. Stumpf"
@@ -315,6 +307,15 @@
   volume: "26"
   pages: "104-110"
   doi: "http://dx.doi.org/10.1093/bioinformatics/btp619"
+
+- key: Toni2009a
+  author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
+  year: "2009"
+  title: "Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems"
+  journal: "J. R. Soc. Interface"
+  volume: "6"
+  pages: "187-202"
+  doi: "http://dx.doi.org/10.1098/rsif.2008.0172"
 
 - key: Wood2010
   author: "S. N. Wood"
