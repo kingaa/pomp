@@ -15,11 +15,14 @@
   R: vignettes/He2010.R
   data: vignettes/twentycities.rda
 
-- title: More examples
+- title: More <code>pomp</code> examples
   html: http://github.com/kingaa/pompExamples
 
 - title: Simulation-based Inference for Epidemiological Dynamics<br/> (a short course)
   html: http://kingaa.github.io/sbied/
+
+- title: Model-based Inference in Ecology and Epidemiology (a short course)
+  html: http://kingaa.github.io/short-course/
 
 - title: <strong>pomp</strong> package manual
   pdf: http://kingaa.github.io/manuals/pomp.pdf
