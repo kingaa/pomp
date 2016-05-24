@@ -88,7 +88,7 @@ Final parameter swarm, $\{\Theta^M_j, j=1,\dots,J\}$
 3. $\quad\quad\quad$ $X_{0,j}^{F,m}\sim f_{X_0}(x_0 ; \Theta^{F,m}_{0,j})$ for $j$ in $1{:} J$
 4. $\quad\quad\quad$ For $n$ in $1{:} N$
 5. $\quad\quad\quad\quad\quad$ $\Theta^{P,m}_{n,j}\sim h_n(\theta|\Theta^{F,m}_{n-1,j},\sigma_m)$ for $j$ in $1{:} J$
-6. $\quad\quad\quad\quad\quad$ $X_{n,j}^{P,m}\sim f_{X_n|X_{n-1}}(x_n | X^{F,m}_{n-1,j}; \Theta^{P,m}_j)$ for $j$ in $1{:} J$
+6. $\quad\quad\quad\quad\quad$ $X_{n,j}^{P,m}\sim f_{X_n|X_{n-1}}(x_n | X^{F,m}_{n-1,j}; \Theta^{P,m}_{n,j})$ for $j$ in $1{:} J$
 7. $\quad\quad\quad\quad\quad$ $w_{n,j}^m = f_{Y_n|X_n}(y^*_n| X_{n,j}^{P,m} ; \Theta^{P,m}_{n,j})$ for $j$ in $1{:} J$
 8. $\quad\quad\quad\quad\quad$ Draw $k_{1{:}J}$ with $P[k_j=i]=  w_{n,i}^m\Big/\sum_{u=1}^J w_{n,u}^m$
 9.  $\quad\quad\quad\quad\quad$ $\Theta^{F,m}_{n,j}=\Theta^{P,m}_{n,k_j}$ and $X^{F,m}_{n,j}=X^{P,m}_{n,k_j}$ for $j$ in $1{:} J$
@@ -254,13 +254,13 @@ Something like the following can be obtained by executing `plot(mf)`.
 ```{r mif2-plot,echo=FALSE,cache=FALSE,fig.height=6}
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
-log.r <- sapply(mf,function(x)conv.rec(x$mif,"r"))
-log.sigma <- sapply(mf,function(x)conv.rec(x$mif,"sigma"))
-log.tau <- sapply(mf,function(x)conv.rec(x$mif,"tau"))
+r <- sapply(mf,function(x)conv.rec(x$mif,"r"))
+sigma <- sapply(mf,function(x)conv.rec(x$mif,"sigma"))
+tau <- sapply(mf,function(x)conv.rec(x$mif,"tau"))
 matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
-matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
-matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
-matplot(log.tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(log~tau))
+matplot(r,type='l',lty=1,xlab="",ylab=expression(r),xaxt='n')
+matplot(sigma,type='l',lty=1,xlab="",ylab=expression(sigma),xaxt='n')
+matplot(tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(tau))
 par(op)
 ```
 

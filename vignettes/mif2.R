@@ -149,13 +149,13 @@ rbind(`Truth`=theta.true[estpars],
 ## ----mif2-plot,echo=FALSE,cache=FALSE,fig.height=6-----------------------
 op <- par(mfrow=c(4,1),mar=c(3,3,0,0),mgp=c(2,1,0),bty='l')
 loglik <- sapply(mf,function(x)conv.rec(x$mif,"loglik"))
-log.r <- sapply(mf,function(x)conv.rec(x$mif,"r"))
-log.sigma <- sapply(mf,function(x)conv.rec(x$mif,"sigma"))
-log.tau <- sapply(mf,function(x)conv.rec(x$mif,"tau"))
+r <- sapply(mf,function(x)conv.rec(x$mif,"r"))
+sigma <- sapply(mf,function(x)conv.rec(x$mif,"sigma"))
+tau <- sapply(mf,function(x)conv.rec(x$mif,"tau"))
 matplot(loglik,type='l',lty=1,xlab="",ylab=expression(log~L),xaxt='n',ylim=max(loglik,na.rm=T)+c(-12,3))
-matplot(log.r,type='l',lty=1,xlab="",ylab=expression(log~r),xaxt='n')
-matplot(log.sigma,type='l',lty=1,xlab="",ylab=expression(log~sigma),xaxt='n')
-matplot(log.tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(log~tau))
+matplot(r,type='l',lty=1,xlab="",ylab=expression(r),xaxt='n')
+matplot(sigma,type='l',lty=1,xlab="",ylab=expression(sigma),xaxt='n')
+matplot(tau,type='l',lty=1,xlab="MIF iteration",ylab=expression(tau))
 par(op)
 
 ## ----first-mif-results-table,echo=FALSE,cache=FALSE----------------------
