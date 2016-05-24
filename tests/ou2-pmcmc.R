@@ -116,7 +116,6 @@ f8 %>% conv.rec(c("alpha.2","alpha.3")) %>%
   window(start=500) -> trace
 trace <- window(trace,thin=5)
 plot(trace)
-geweke.plot(trace)
 
 library(ggplot2)
 

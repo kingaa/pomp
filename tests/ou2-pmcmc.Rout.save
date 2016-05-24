@@ -143,10 +143,6 @@ Warning message:
 +   window(start=500) -> trace
 > trace <- window(trace,thin=5)
 > plot(trace)
-> geweke.plot(trace)
-Warning message:
-In array(dim = c(length(ystart), nvar(x), nchain(x)), dimnames = c(ystart,  :
-  non-list dimnames are disregarded; will be an error in R 3.3.0
 > 
 > library(ggplot2)
 > 
@@ -168,4 +164,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 61.084   0.024  61.033 
+ 71.868   0.376  72.325 
