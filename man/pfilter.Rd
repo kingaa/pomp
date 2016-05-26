@@ -73,12 +73,11 @@
     When \code{object} is of class \code{mif}, this is by default the same number of particles used in the \code{mif} iterations.
   }
   \item{tol}{
-    positive numeric scalar; particles with likelihood less than \code{tol} are considered to be \dQuote{lost}.
-    A filtering failure occurs when, at some time point, all particles are lost.
-    When all particles are lost, the conditional likelihood at that time point is set to \code{tol}.
+    positive numeric scalar; particles with likelihood less than \code{tol} are considered to be incompatible with the data.
+    See the section on \emph{Filtering Failures} below for more information.
   }
   \item{max.fail}{
-    integer; the maximum number of filtering failures allowed.
+    integer; the maximum number of filtering failures allowed (see below).
     If the number of filtering failures exceeds this number, execution will terminate with an error.
     By default, \code{max.fail} is set to infinity, so no error can be triggered.
   }
@@ -124,7 +123,7 @@
       In particular, \code{saved.params[[t]][,i]} is the parameter portion of the i-th particle at time \eqn{t}.
     }
     \item{Np, tol, nfail}{
-      the number of particles used, failure tolerance, and number of filtering failures, respectively.
+      the number of particles used, failure tolerance, and number of filtering failures (see below), respectively.
     }
   }
 }
@@ -151,6 +150,13 @@
       Extract the mean of the filtering distribution, which is that of \deqn{X_t \vert y_1,\dots,y_t,}{X_t | y_1,\dots,y_t,} where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively, at time \eqn{t}.
     }
   }
+}
+\section{Filtering failures}{
+  If the degree of disagreement between model and data becomes sufficiently large, a \dQuote{filtering failure} results.
+  A filtering failure occurs when, at some time point, none of the \code{Np} particles is compatible with the data.
+  In particular, if the conditional likelihood of a particle at any time is below the tolerance value \code{tol}, then that particle is considered to be uninformative and its likelihood is taken to be zero.
+  A filtering failure occurs when this is the case for all particles.
+  A warning is generated when this occurs unless the cumulative number of failures exceeds \code{max.fail}, in which case an error is generated.
 }
 \examples{
 pompExample(gompertz)
