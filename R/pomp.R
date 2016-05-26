@@ -1,9 +1,7 @@
 ## basic constructor of the pomp class
 pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               rmeasure, dmeasure, measurement.model,
-                              skeleton,
-                              skeleton.type = c("map","vectorfield"),
-                              skelmap.delta.t,
+                              skeleton, skeleton.type, skelmap.delta.t,
                               initializer, rprior, dprior,
                               params, covar, tcovar,
                               obsnames, statenames, paramnames, covarnames,
@@ -233,10 +231,10 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
 
     ## type of skeleton (map or vectorfield)
     ## skelmap.delta.t has no meaning in the latter case
-    skeleton.type <- match.arg(skeleton.type)
+    skeleton.type <- match.arg(skeleton.type,c("map","vectorfield"))
     skelmap.delta.t <- as.numeric(skelmap.delta.t)
     if (skelmap.delta.t <= 0)
-        stop(sQuote("skelmap.delta.t")," must be positive")
+        stop("skeleton ",sQuote("delta.t")," must be positive",call.=FALSE)
 
     ## if 'measurement model' is specified as a formula, this overrides
     ## specification of 'rmeasure' or 'dmeasure'
@@ -496,8 +494,7 @@ setMethod(
     signature=signature(data="data.frame"),
     definition=function (data, times, t0, ..., rprocess, dprocess,
                          rmeasure, dmeasure, measurement.model,
-                         skeleton, skeleton.type = c("map","vectorfield"),
-                         skelmap.delta.t = 1,
+                         skeleton, skeleton.type, skelmap.delta.t,
                          initializer, rprior, dprior,
                          params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
@@ -518,6 +515,49 @@ setMethod(
         }
         times <- data[tpos,,drop=TRUE]
         data <- data[-tpos,,drop=FALSE]
+
+        if (missing(skeleton.type)) {
+            skeleton.type <- "undef"
+        } else {
+            warning("The ",sQuote("skeleton.type"),
+                    " argument is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
+        }
+        if (missing(skelmap.delta.t)) {
+            skelmap.delta.t <- 1
+        } else {
+            warning("The ",sQuote("skelmap.delta.t"),
+                    " argument is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
+        }
+        if (!missing(skeleton)) {
+            skeleton <- substitute(skeleton)
+            map <- function (f, delta.t = 1) {
+                skeleton.type <<- "map"
+                if (delta.t <= 0)
+                    stop("in ",sQuote("map"),", ",sQuote("delta.t"),
+                         " must be positive",call.=FALSE)
+                skelmap.delta.t <<- as.numeric(delta.t)
+                f
+            }
+            vectorfield <- function (f) {
+                skeleton.type <<- "vectorfield"
+                f
+            }
+            assign("map",map)
+            assign("vectorfield",vectorfield)
+            skeleton <- eval(skeleton)
+            if (skeleton.type=="undef") {
+                warning("In ",sQuote("pomp"),", the default ",sQuote("skeleton.type=\"map\""),
+                        " is deprecated and will be removed in a future release.\n",
+                        "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                        call.=FALSE)
+                skeleton.type <- "map"
+            }
+        }
+        if (skeleton.type=="undef") skeleton.type <- "map"
 
         pomp.constructor(
             data=data,
@@ -558,12 +598,54 @@ setMethod(
     signature=signature(data="matrix"),
     definition=function (data, times, t0, ..., rprocess, dprocess,
                          rmeasure, dmeasure, measurement.model,
-                         skeleton, skeleton.type = c("map","vectorfield"),
-                         skelmap.delta.t = 1,
+                         skeleton, skeleton.type, skelmap.delta.t,
                          initializer, rprior, dprior, params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
                          globals, cdir, cfile) {
+
+        if (missing(skeleton.type)) {
+            skeleton.type <- "undef"
+        } else {
+            warning("The ",sQuote("skeleton.type"),
+                    " argument is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
+        }
+        if (missing(skelmap.delta.t)) {
+            skelmap.delta.t <- 1
+        } else {
+            warning("The ",sQuote("skelmap.delta.t"),
+                    " argument is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
+        }
+        if (!missing(skeleton)) {
+            skeleton <- substitute(skeleton)
+            map <- function (f, delta.t = 1) {
+                skeleton.type <<- "map"
+                if (delta.t <= 0)
+                    stop("in ",sQuote("map"),", ",sQuote("delta.t"),
+                         " must be positive",call.=FALSE)
+                skelmap.delta.t <<- as.numeric(delta.t)
+                f
+            }
+            vectorfield <- function (f) {
+                skeleton.type <<- "vectorfield"
+                f
+            }
+            assign("map",map)
+            assign("vectorfield",vectorfield)
+            skeleton <- eval(skeleton)
+            if (skeleton.type=="undef") {
+                warning("In ",sQuote("pomp"),", the default ",sQuote("skeleton.type=\"map\""),
+                        " is deprecated and will be removed in a future release.\n",
+                        "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                        call.=FALSE)
+                skeleton.type <- "map"
+            }
+        }
+        if (skeleton.type=="undef") skeleton.type <- "map"
 
         pomp.constructor(
             data=data,
@@ -605,12 +687,54 @@ setMethod(
     signature=signature(data="numeric"),
     definition=function (data, times, t0, ..., rprocess, dprocess,
                          rmeasure, dmeasure, measurement.model,
-                         skeleton, skeleton.type = c("map","vectorfield"),
-                         skelmap.delta.t = 1,
+                         skeleton, skeleton.type, skelmap.delta.t,
                          initializer, rprior, dprior, params, covar, tcovar,
                          obsnames, statenames, paramnames, covarnames, zeronames,
                          PACKAGE, fromEstimationScale, toEstimationScale,
                          globals, cdir, cfile) {
+
+        if (missing(skeleton.type)) {
+            skeleton.type <- "undef"
+        } else {
+            warning("The ",sQuote("skeleton.type"),
+                    " argument is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
+        }
+        if (missing(skelmap.delta.t)) {
+            skelmap.delta.t <- 1
+        } else {
+            warning("The ",sQuote("skelmap.delta.t"),
+                    " argument is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
+        }
+        if (!missing(skeleton)) {
+            skeleton <- substitute(skeleton)
+            map <- function (f, delta.t = 1) {
+                skeleton.type <<- "map"
+                if (delta.t <= 0)
+                    stop("in ",sQuote("map"),", ",sQuote("delta.t"),
+                         " must be positive",call.=FALSE)
+                skelmap.delta.t <<- as.numeric(delta.t)
+                f
+            }
+            vectorfield <- function (f) {
+                skeleton.type <<- "vectorfield"
+                f
+            }
+            assign("map",map)
+            assign("vectorfield",vectorfield)
+            skeleton <- eval(skeleton)
+            if (skeleton.type=="undef") {
+                warning("In ",sQuote("pomp"),", the default ",sQuote("skeleton.type=\"map\""),
+                        " is deprecated and will be removed in a future release.\n",
+                        "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                        call.=FALSE)
+                skeleton.type <- "map"
+            }
+        }
+        if (skeleton.type=="undef") skeleton.type <- "map"
 
         pomp.constructor(
             data=matrix(data,nrow=1,ncol=length(data)),
@@ -687,9 +811,41 @@ setMethod(
         if (missing(covar)) covar <- data@covar
         if (missing(tcovar)) tcovar <- data@tcovar
         if (missing(zeronames)) zeronames <- data@zeronames
-        if (missing(skeleton.type)) skeleton.type <- data@skeleton.type
-        if (missing(skeleton)) skeleton <- data@skeleton
-        if (missing(skelmap.delta.t)) skelmap.delta.t <- data@skelmap.delta.t
+        if (missing(skeleton.type)) {
+            skeleton.type <- data@skeleton.type
+        } else {
+            warning("The ",sQuote("skeleton.type")," argument is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
+        }
+        if (missing(skelmap.delta.t)) {
+            skelmap.delta.t <- data@skelmap.delta.t
+        } else {
+            warning("The ",sQuote("skelmap.delta.t"),
+                    " argument is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
+        }
+        if (missing(skeleton)) {
+            skeleton <- data@skeleton
+        } else {
+            skeleton <- substitute(skeleton)
+            map <- function (f, delta.t = 1) {
+                skeleton.type <<- "map"
+                if (delta.t <= 0)
+                    stop("in ",sQuote("map"),", ",sQuote("delta.t"),
+                         " must be positive",call.=FALSE)
+                skelmap.delta.t <<- as.numeric(delta.t)
+                f
+            }
+            vectorfield <- function (f) {
+                skeleton.type <<- "vectorfield"
+                f
+            }
+            assign("map",map)
+            assign("vectorfield",vectorfield)
+            skeleton <- eval(skeleton)
+        }
         if (missing(fromEstimationScale)) {
             if (missing(toEstimationScale)) {
                 from.trans <- data@from.trans

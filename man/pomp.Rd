@@ -21,19 +21,19 @@
 \usage{
 \S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
-       skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
+       skeleton, skeleton.type, skelmap.delta.t,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
 \S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
-       skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
+       skeleton, skeleton.type, skelmap.delta.t,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
 \S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
-       skeleton, skeleton.type = c("map","vectorfield"), skelmap.delta.t = 1,
+       skeleton, skeleton.type, skelmap.delta.t,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
@@ -107,24 +107,32 @@
     \strong{NB:} This is a convenience function, primarily designed to facilitate exploration;
     it will typically be possible to acclerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} using \code{\link{Csnippet}}s.
   }
-  \item{skeleton, skeleton.type, skelmap.delta.t}{
+  \item{skeleton}{
     optional.
-    The function \code{skeleton} specifies the deterministic skeleton of the unobserved Markov process.
-    If we are dealing with a discrete-time Markov process, its deterministic skeleton is a map:
-    indicate this by specifying \code{skeleton.type="map"}.
-    In this case, the default assumption is that time advances 1 unit per iteration of the map;
-    to change this, set \code{skelmap.delta.t} to the appropriate time-step.
-    If we are dealing with a continuous-time Markov process, its deterministic skeleton is a vectorfield:
-    indicate this by specifying \code{skeleton.type="vectorfield"}.
+    The \code{skeleton} argument specifies the deterministic skeleton of the unobserved Markov process.
 
-    The skeleton function can be specified in one of three ways:
+    If the model is a discrete-time Markov process, its deterministic skeleton is a map:
+    indicate this by specifying \code{skeleton=map(f, delta.t)}, where
+    \code{f} is specifies the map and \code{delta.t} is the time interval corresponding to one application of the map.
+    Unless otherwise specified, \code{delta.t = 1}.
+
+    If the model is a continuous-time Markov process, its deterministic skeleton is a vectorfield:
+    indicate this by specifying \code{skeleton=vectorfield(f)}, where \code{f} specifies the vectorfield.
+
+    In either case, \code{f} can be specified in one of three ways:
     \enumerate{
-      \item as an \R function of prototype \preformatted{skeleton(x,t,params,...)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params},
+      \item as an \R function of prototype \preformatted{f(x,t,params,...)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params},
       \item as the name of a native (compiled) routine of type \preformatted{pomp_skeleton} as defined in the header file \file{pomp.h}.
-      (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
+      (To view the header file, execute \preformatted{
+	file.show(system.file("include/pomp.h",package="pomp"))
+      }
+      in an \R session.)
       \item as a snippet of C code (via \code{\link{Csnippet}}) that performs this evaluation.
       The latter is typically the preferred option, for reasons of computational efficiency.
     }
+  }
+  \item{skeleton.type, skelmap.delta.t}{
+    Deprecated.
   }
   \item{initializer}{
     optional.
@@ -150,7 +158,10 @@
     \enumerate{
       \item as an \R function of prototype \preformatted{rprior(params,...)} that makes a draw from the prior distribution given \code{params},
       \item as the name of a native (compiled) routine of type \preformatted{pomp_rprior} as defined in the header file \file{pomp.h}, or
-      (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
+      (To view the header file, execute \preformatted{
+	file.show(system.file("include/pomp.h",package="pomp"))
+      }
+      in an \R session.)
       \item as a snippet of C code (via \code{\link{Csnippet}}).
     }
     As above, the latter is typically preferable.
