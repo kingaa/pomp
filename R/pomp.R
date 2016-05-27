@@ -830,6 +830,7 @@ setMethod(
             skeleton <- data@skeleton
         } else {
             skeleton <- substitute(skeleton)
+            skeleton.type <- "undef"
             map <- function (f, delta.t = 1) {
                 skeleton.type <<- "map"
                 if (delta.t <= 0)
@@ -845,6 +846,13 @@ setMethod(
             assign("map",map)
             assign("vectorfield",vectorfield)
             skeleton <- eval(skeleton)
+            if (skeleton.type=="undef") {
+                warning("In ",sQuote("pomp"),", the default ",sQuote("skeleton.type=\"map\""),
+                        " is deprecated and will be removed in a future release.\n",
+                        "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                        call.=FALSE)
+                skeleton.type <- "map"
+            }
         }
         if (missing(fromEstimationScale)) {
             if (missing(toEstimationScale)) {

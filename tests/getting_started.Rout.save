@@ -1,5 +1,5 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -22,7 +22,7 @@ Type 'q()' to quit R.
 +   stringsAsFactors=FALSE,
 +   encoding="UTF-8",
 +   scipen=5
-+   )
++ )
 > set.seed(594709947L)
 > pdf(file="getting_started.pdf")
 > 
@@ -63,7 +63,7 @@ Type 'q()' to quit R.
 +                       1984,214
 +                       1985,175
 +                       1986,211"
-+                       )
++ )
 > 
 > ## ----parus-plot----------------------------------------------------------
 > ggplot(data=parus.dat,mapping=aes(x=year,y=P))+
@@ -86,7 +86,7 @@ Type 'q()' to quit R.
 > simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),states=TRUE)
 > 
 > ## ----logistic-plot1,echo=FALSE-------------------------------------------
-> melt(simStates) %>% 
+> melt(simStates) %>%
 +   dcast(rep+time~variable) %>%
 +   ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
 +   geom_line()+guides(color=FALSE)+
@@ -105,7 +105,7 @@ Type 'q()' to quit R.
 +                 nsim=10,obs=TRUE,states=TRUE)
 > 
 > ## ----logistic-plot2,echo=FALSE-------------------------------------------
-> sim %>% melt() %>% 
+> sim %>% melt() %>%
 +   ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
 +   geom_line()+
 +   guides(color=FALSE)+scale_y_sqrt()+
@@ -160,6 +160,12 @@ Type 'q()' to quit R.
 + ")
 > 
 > ## ----bh-pomp1------------------------------------------------------------
+> parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),
++                  skeleton=bh.skel,
++                  statenames="N",paramnames=c("a","b","sigma"))
+Warning message:
+In 'pomp', the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
 > parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),
 +                  skeleton=map(bh.skel,delta.t=1),
 +                  statenames="N",paramnames=c("a","b","sigma"))
@@ -222,4 +228,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.608   0.320   3.224 
+  6.284   1.004   8.429 
