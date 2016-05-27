@@ -55,7 +55,7 @@ skel <- '
   double term[6];		// transition numbers
   double beta;			// transmission rate
   int k;
-  
+
   for (k = 0, beta = 0.0; k < nbasis; k++)
      beta += (&beta1)[k]*(&seas1)[k];
 
@@ -149,8 +149,7 @@ pomp(
        step.fun=Csnippet(step.fun),
        delta.t=1/52/20
        ),
-     skeleton.type="vectorfield",
-     skeleton=Csnippet(skel),
+     skeleton=vectorfield(Csnippet(skel)),
      covar=covar,
      tcovar="time",
      toEstimationScale=Csnippet(partrans),
@@ -159,7 +158,7 @@ pomp(
      paramnames=c(
        "gamma","mu","iota","beta1","beta.sd",
        "popsize","rho","theta","S.0","I.0","R.0"
-       ), 
+       ),
      zeronames=c("incid","W"),
      initializer=Csnippet(initlzr)
      ) -> po

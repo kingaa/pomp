@@ -35,8 +35,7 @@ pomp(
        delta.t=1/12,
        PACKAGE="pomp"
        ),
-     skeleton.type="vectorfield",
-     skeleton="_sir_ODE",
+     skeleton=vectorfield("_sir_ODE"),
      measurement.model=reports~nbinom(mu=rho*cases,size=1/sigma^2),
      PACKAGE="pomp",
      statenames=c("S","I","R","cases","W"),

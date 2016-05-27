@@ -228,8 +228,7 @@ pomp(
        delta.t=1/52/20,
        PACKAGE="pomp"
        ),
-     skeleton.type="vectorfield",
-     skeleton="_sir_ODE",
+     skeleton=vectorfield("_sir_ODE"),
      rmeasure="_sir_binom_rmeasure",
      dmeasure="_sir_binom_dmeasure",
      PACKAGE="pomp",

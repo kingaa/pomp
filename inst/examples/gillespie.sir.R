@@ -556,8 +556,7 @@ pomp(
          rdeath=c(0,0,1,0,0)
          )
        ),
-     skeleton.type="vectorfield",
-     skeleton="_sir_ODE",
+     skeleton=vectorfield("_sir_ODE"),
      measurement.model=reports~binom(size=cases,prob=rho),
      PACKAGE="pomp",
      statenames=c("S","I","R","N","cases"),

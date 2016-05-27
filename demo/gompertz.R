@@ -103,9 +103,7 @@ pomp(
        step.fun=Csnippet(step.fun),
        delta.t=1
        ),
-     skeleton=Csnippet(skel),
-     skeleton.type="map",
-     skelmap.delta.t=1,
+     skeleton=map(Csnippet(skel),delta.t=1),
      toEstimationScale=Csnippet(partrans),
      fromEstimationScale=Csnippet(paruntrans)
      ) -> Gompertz

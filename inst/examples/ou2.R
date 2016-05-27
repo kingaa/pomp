@@ -111,8 +111,7 @@ pomp(
      dprocess=onestep.dens("ou2_pdf",PACKAGE="pomp"),
      dmeasure = "ou2_dmeasure",
      rmeasure = "ou2_rmeasure",
-     skeleton.type="map",
-     skeleton = "ou2_skel",
+     skeleton = map("ou2_skel",delta.t=1),
      PACKAGE="pomp",
      paramnames = c(
        "alpha.1","alpha.2","alpha.3","alpha.4",

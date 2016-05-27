@@ -1,17 +1,32 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._8._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._9:
 
-        • `mif2` no longer computes filter means.
+        • A better interface for specifying a model's deterministic
+          skeleton is provided.  One specifies
+          ‘skeleton=map(f,delta.t)’ for a discrete-time skeleton (a
+          map) and ‘skeleton=vectorfield(f)’ for a continuous-time
+          skeleton (a vectorfield).  The old arguments ‘skeleton.type’
+          and ‘skelmap.delta.t’ are deprecated and will be removed in a
+          future release.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._7._1:
+        • The ‘pfilter’ help page has been improved.  Specifically, the
+          discussion of filtering failures is better.
+
+        • Miscellaneous improvements to the help pages.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._8:
+
+        • ‘mif2’ no longer computes filter means.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._7:
 
         • The new argument ‘show’ of ‘pompExamples’ allows one to
           display the example code instead of executing it.
 
         • The minimum version of R supported is now 3.1.2.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._6._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._6:
 
         • ‘init.state’ now has the optional argument ‘nsim’.  Using
           this, one can request multiple initial state vectors per
@@ -20,46 +35,46 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._6._
         • ‘pfilter’ now uses less memory when it is asked to run at a
           single point in parameter space.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._5._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._5:
 
         • A bug associated with the ‘rw.sd’ argument to ‘mif2’ on
           Windows platforms has been fixed.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._4._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._4:
 
         • The ‘method="mif2"’ option to ‘mif’ has been removed.  Use
           ‘mif2’ instead.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._3._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._3:
 
         • The ‘particles’ method (rarely if ever used), has been
           removed to streamline the ‘mif’ codes.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._2._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._2:
 
         • The ‘method="mif2"’ option to ‘mif’ is now deprecated.  It
           will be removed in a future release.  Use ‘mif2’ instead.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._1._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._1:
 
-          Following the publication of the Journal of Statistical
+        • Following the publication of the Journal of Statistical
           Software announcement paper, the ‘CITATION’ has been modified
           to include the appropriate citation.  Please use
           ‘citation("pomp")’ to learn about how to cite ‘pomp’
           correctly.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._4._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._4:
 
         • ‘conv.rec’ on the results of a ‘mif2’ computation now play
           nicely with ‘reshape2::melt’.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._3._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._3:
 
         • It is now possible to direct ‘pomp’ to place ‘Csnippet’ codes
           in a specified location.  This is accomplished via the new
           ‘cdir’ and ‘cfile’ arguments to ‘pomp’.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._2._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._2:
 
         • When several concurrent R processes attempt to simultaneously
           compile ‘Csnipet’ code from copies of a ‘pomp’ object on the
@@ -67,7 +82,7 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._2._
           this by ensuring that ‘Csnippet’ codes are written and
           compiled in a process-specific directory.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._1._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._1:
 
      This release removes several long-deprecated features.
 
@@ -84,12 +99,12 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._3._1._
           by the arguments ‘fromEstimationScale’ and
           ‘toEstimationScale’ in version 0.65-1.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._2._2._1:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._2._2:
 
         • Some internal changes to ‘mif2’ by C. Breto, in support of
           panel methods under development.
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._2._1._2:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._2._1:
 
         • Bug fix: for POMPs with a scalar state variable, the
           ‘filter.mean’, ‘pred.mean’, and ‘pred.var’ methods dropped

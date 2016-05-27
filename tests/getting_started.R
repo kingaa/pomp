@@ -5,8 +5,9 @@ options(
   stringsAsFactors=FALSE,
   encoding="UTF-8",
   scipen=5
-  )
+)
 set.seed(594709947L)
+pdf(file="getting_started.pdf")
 
 ## ----prelims2,echo=FALSE,cache=FALSE-------------------------------------
 library(ggplot2)
@@ -45,7 +46,7 @@ parus.dat <- read.csv(text="
                       1984,214
                       1985,175
                       1986,211"
-                      )
+)
 
 ## ----parus-plot----------------------------------------------------------
 ggplot(data=parus.dat,mapping=aes(x=year,y=P))+
@@ -68,7 +69,7 @@ parus <- pomp(data=parus.dat,time="year",t0=1959,
 simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),states=TRUE)
 
 ## ----logistic-plot1,echo=FALSE-------------------------------------------
-melt(simStates) %>% 
+melt(simStates) %>%
   dcast(rep+time~variable) %>%
   ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
   geom_line()+guides(color=FALSE)+
@@ -87,7 +88,7 @@ sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),
                 nsim=10,obs=TRUE,states=TRUE)
 
 ## ----logistic-plot2,echo=FALSE-------------------------------------------
-sim %>% melt() %>% 
+sim %>% melt() %>%
   ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
   geom_line()+
   guides(color=FALSE)+scale_y_sqrt()+
@@ -116,7 +117,7 @@ skel <- Csnippet("
   DN = r*N*(1-N/K);
 ")
 
-parus <- pomp(parus,skeleton=skel,skeleton.type="vectorfield",statenames="N",paramnames=c("r","K"))
+parus <- pomp(parus,skeleton=vectorfield(skel),statenames="N",paramnames=c("r","K"))
 
 ## ----logistic-traj1------------------------------------------------------
 pars <- parmat(c(r=1,K=200,sigma=0.5,N.0=20),5)
@@ -141,7 +142,9 @@ bh.skel <- Csnippet("
 ")
 
 ## ----bh-pomp1------------------------------------------------------------
-parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=bh.skel,skeleton.type="map",skelmap.delta.t=1,statenames="N",paramnames=c("a","b","sigma"))
+parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),
+                 skeleton=map(bh.skel,delta.t=1),
+                 statenames="N",paramnames=c("a","b","sigma"))
 
 ## ----bh-test-------------------------------------------------------------
 coef(parus.bh) <- c(a=1.1,b=5e-4,sigma=0.5,N.0=30)
@@ -191,3 +194,5 @@ parus %<>%
     lik = dunif(r,0,5,1)+dunif(K,100,600,1)+dunif(sigma,0,2,1);
     lik = (give_log) ? lik : exp(lik);
   "),paramnames=c("r","K","sigma"))
+
+dev.off()

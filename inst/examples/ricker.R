@@ -64,8 +64,7 @@ pomp(
        ),
      rmeasure="_ricker_poisson_rmeasure",
      dmeasure="_ricker_poisson_dmeasure",
-     skeleton.type="map",
-     skeleton="_ricker_skeleton",
+     skeleton=map("_ricker_skeleton",delta.t=1),
      paramnames=c("r","sigma","phi"),
      statenames=c("N","e"),
      toEstimationScale=function(params,...) {

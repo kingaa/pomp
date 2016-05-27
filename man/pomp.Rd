@@ -64,13 +64,17 @@
     This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.
   }
   \item{rprocess}{
-    optional function; a function of prototype \preformatted{rprocess(xstart,times,params,...)} that simulates from the unobserved process.
+    optional function; a function of prototype \preformatted{
+      rprocess(xstart,times,params,...)
+    } that simulates from the unobserved process.
     The form of this function is given below.
     \pkg{pomp} provides a number of \code{\link{plugins}} that construct appropriate \code{rprocess} arguments corresponding to several common stochastic simulation algorithms.
     See below for more details.
   }
   \item{dprocess}{
-    optional function; a function of prototype \preformatted{dprocess(x,times,params,log,...)} that evaluates the likelihood of a sequence of consecutive state transitions.
+    optional function; a function of prototype \preformatted{
+      dprocess(x,times,params,log,...)
+    } that evaluates the likelihood of a sequence of consecutive state transitions.
     The form of this function is given below.
     It is not typically necessary (or even feasible) to define \code{dprocess}.
     This functionality is provided to support future algorithm development.
@@ -79,9 +83,13 @@
     optional; the measurement model simulator.
     This can be specified in one of four ways:
     \enumerate{
-      \item as a function of prototype \preformatted{rmeasure(x,t,params,...)} that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
-      \item as the name of a native (compiled) routine of type \preformatted{pomp_measure_model_simulator} as defined in the header file \file{pomp.h}.
-      (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
+      \item as a function of prototype \preformatted{
+	rmeasure(x,t,params,...)
+      } that makes a draw from the observation process given states \code{x}, time \code{t}, and parameters \code{params}.
+      \item as the name of a native (compiled) routine of type \code{pomp_measure_model_simulator} as defined in the header file \file{pomp.h}.
+      (To view the header file, execute \preformatted{
+	file.show(system.file("include/pomp.h",package="pomp"))
+      } in an \R session.)
       \item using the formula-based \code{measurement.model} facility (see below).
       \item as a snippet of C code (via \code{\link{Csnippet}}) that draws from the observation process as above.
       The last is typically the preferred option, as it results in much faster code execution.
@@ -91,9 +99,13 @@
     optional; the measurement model probability density function.
     This can be specified in one of four ways:
     \enumerate{
-      \item as a function of prototype \preformatted{dmeasure(y,x,t,params,log,...)} that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
-      \item as the name of a native (compiled) routine of type \preformatted{pomp_measure_model_density} as defined in the header file \file{pomp.h}.
-      (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
+      \item as a function of prototype \preformatted{
+	dmeasure(y,x,t,params,log,...)
+      } that computes the p.d.f. of \code{y} given \code{x}, \code{t}, and \code{params}.
+      \item as the name of a native (compiled) routine of type \code{pomp_measure_model_density} as defined in the header file \file{pomp.h}.
+      (To view the header file, execute \preformatted{
+	file.show(system.file("include/pomp.h",package="pomp"))
+      } in an \R session.)
       \item using the formula-based \code{measurement.model} facility (see below).
       \item as a snippet of C code (via \code{\link{Csnippet}}) that computes the p.d.f. as above.
     }
@@ -112,17 +124,19 @@
     The \code{skeleton} argument specifies the deterministic skeleton of the unobserved Markov process.
 
     If the model is a discrete-time Markov process, its deterministic skeleton is a map:
-    indicate this by specifying \code{skeleton=map(f, delta.t)}, where
+    indicate this by \code{skeleton=map(f, delta.t)}, where
     \code{f} is specifies the map and \code{delta.t} is the time interval corresponding to one application of the map.
     Unless otherwise specified, \code{delta.t = 1}.
 
     If the model is a continuous-time Markov process, its deterministic skeleton is a vectorfield:
-    indicate this by specifying \code{skeleton=vectorfield(f)}, where \code{f} specifies the vectorfield.
+    indicate this by \code{skeleton=vectorfield(f)}, where \code{f} specifies the vectorfield.
 
     In either case, \code{f} can be specified in one of three ways:
     \enumerate{
-      \item as an \R function of prototype \preformatted{f(x,t,params,...)} that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params},
-      \item as the name of a native (compiled) routine of type \preformatted{pomp_skeleton} as defined in the header file \file{pomp.h}.
+      \item as an \R function of prototype \preformatted{
+	f(x,t,params,...)
+      } that evaluates the deterministic skeleton at state \code{x} and time \code{t} given the parameters \code{params},
+      \item as the name of a native (compiled) routine of type \code{pomp_skeleton} as defined in the header file \file{pomp.h}.
       (To view the header file, execute \preformatted{
 	file.show(system.file("include/pomp.h",package="pomp"))
       }
@@ -145,7 +159,9 @@
 
     A custom initializer can be supplied here in one of two formats:
     \enumerate{
-      \item as an \R function of prototype \preformatted{initializer(params,t0,...)} that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
+      \item as an \R function of prototype \preformatted{
+	initializer(params,t0,...)
+      } that yields initial conditions for the state process when given a vector, \code{params}, of parameters.
       \item as a snippet of C code (via \code{\link{Csnippet}}).
       See the \code{\link{Csnippet}} help for rules on writing a custom initializer.
     }
@@ -156,8 +172,10 @@
     optional; function drawing a sample from a prior distribution on parameters.
     This can be specified in one of three ways:
     \enumerate{
-      \item as an \R function of prototype \preformatted{rprior(params,...)} that makes a draw from the prior distribution given \code{params},
-      \item as the name of a native (compiled) routine of type \preformatted{pomp_rprior} as defined in the header file \file{pomp.h}, or
+      \item as an \R function of prototype \preformatted{
+	rprior(params,...)
+      } that makes a draw from the prior distribution given \code{params},
+      \item as the name of a native (compiled) routine of type \code{pomp_rprior} as defined in the header file \file{pomp.h}, or
       (To view the header file, execute \preformatted{
 	file.show(system.file("include/pomp.h",package="pomp"))
       }
@@ -170,9 +188,13 @@
     optional; function evaluating the prior distribution.
     This can be specified in one of three ways:
     \enumerate{
-      \item as an \R function of prototype \preformatted{dprior(params,log=FALSE,...)} that evaluates the prior probability density,
-      \item as the name of a native (compiled) routine of type \preformatted{pomp_dprior} as defined in the header file \file{pomp.h}, or
-      (To view the header file, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} in an \R session.)
+      \item as an \R function of prototype \preformatted{
+	dprior(params,log=FALSE,...)
+      } that evaluates the prior probability density,
+      \item as the name of a native (compiled) routine of type \code{pomp_dprior} as defined in the header file \file{pomp.h}, or
+      (To view the header file, execute \preformatted{
+	file.show(system.file("include/pomp.h",package="pomp"))
+      } in an \R session.)
       \item as a snippet of C code (via \code{\link{Csnippet}}).
     }
     As above, the latter is typically preferable.
@@ -222,7 +244,9 @@
       identical(coef(obj),coef(obj1))
       identical(coef(obj1,transform=TRUE),x).
     } By default, both functions are the identity transformation.
-    See the demos, \preformatted{demo(package="pomp"),} \code{\link{pompExample}}, and the tutorials on the \href{http://kingaa.github.io/pomp}{package website} for examples.
+    See the demos, \preformatted{
+      demo(package="pomp"),
+    } \code{\link{pompExample}}, and the tutorials on the \href{http://kingaa.github.io/pomp}{package website} for examples.
   }
   \item{globals}{
     optional character;

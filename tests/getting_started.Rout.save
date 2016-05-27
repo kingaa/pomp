@@ -24,6 +24,7 @@ Type 'q()' to quit R.
 +   scipen=5
 +   )
 > set.seed(594709947L)
+> pdf(file="getting_started.pdf")
 > 
 > ## ----prelims2,echo=FALSE,cache=FALSE-------------------------------------
 > library(ggplot2)
@@ -134,7 +135,7 @@ Type 'q()' to quit R.
 +   DN = r*N*(1-N/K);
 + ")
 > 
-> parus <- pomp(parus,skeleton=skel,skeleton.type="vectorfield",statenames="N",paramnames=c("r","K"))
+> parus <- pomp(parus,skeleton=vectorfield(skel),statenames="N",paramnames=c("r","K"))
 > 
 > ## ----logistic-traj1------------------------------------------------------
 > pars <- parmat(c(r=1,K=200,sigma=0.5,N.0=20),5)
@@ -159,7 +160,9 @@ Type 'q()' to quit R.
 + ")
 > 
 > ## ----bh-pomp1------------------------------------------------------------
-> parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=bh.skel,skeleton.type="map",skelmap.delta.t=1,statenames="N",paramnames=c("a","b","sigma"))
+> parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),
++                  skeleton=map(bh.skel,delta.t=1),
++                  statenames="N",paramnames=c("a","b","sigma"))
 > 
 > ## ----bh-test-------------------------------------------------------------
 > coef(parus.bh) <- c(a=1.1,b=5e-4,sigma=0.5,N.0=30)
@@ -213,6 +216,10 @@ Type 'q()' to quit R.
 +     lik = (give_log) ? lik : exp(lik);
 +   "),paramnames=c("r","K","sigma"))
 > 
+> dev.off()
+null device 
+          1 
+> 
 > proc.time()
    user  system elapsed 
-  2.544   0.160   2.952 
+  2.608   0.320   3.224 
