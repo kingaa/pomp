@@ -51,7 +51,7 @@ registerDoMPI(cl)
 ```
 ```{r prelims,echo=FALSE,cache=FALSE}
 library(pomp)
-stopifnot(packageVersion("pomp")>="1.0.0.0")
+stopifnot(packageVersion("pomp")>="1.4.9.1")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -384,7 +384,7 @@ skel <- Csnippet("
   DN = r*N*(1-N/K);
 ")
 
-parus <- pomp(parus,skeleton=skel,skeleton.type="vectorfield",statenames="N",paramnames=c("r","K"))
+parus <- pomp(parus,skeleton=vectorfield(skel),statenames="N",paramnames=c("r","K"))
 ```
 Note that in this snippet, `DN` is filled with the value of the time-derivative of `N`. 
 See the package help (`?Csnippet`) for a complete set of rules for writing C snippets.
@@ -428,7 +428,7 @@ Note that, as in the continuous case, we indicate the new value of the state var
 
 We create a new `pomp` object based on this process model but with the same rmeasure and dmeasure components as in `parus` by executing
 ```{r bh-pomp1}
-parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=bh.skel,skeleton.type="map",skelmap.delta.t=1,statenames="N",paramnames=c("a","b","sigma"))
+parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=map(bh.skel,delta.t=1),statenames="N",paramnames=c("a","b","sigma"))
 ```
 The following codes test the above by computing some simulations, a trajectory of the skeleton, and running a particle filtering operation.
 ```{r bh-test}
@@ -468,7 +468,7 @@ stopifnot(all.equal(p,coef(parus)))
 ## Trajectory matching
 
 Trajectory matching is the method of fitting a deterministic model to data assuming independent errors.
-In **pomp**, the function `traj.match` searches parameter space to find parameters under which the likelihood of the data given a trajectory of the deterministic skeleton is maximized.
+In **pomp**, the function `traj.match` searches parameter space to find parameters under which the likelihood of the data, given a trajectory of the deterministic skeleton, is maximized.
 
 ```{r parus-traj-match}
 tm <- traj.match(parus,start=c(r=1,K=200,N.0=200,sigma=0.5),

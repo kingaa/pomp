@@ -7,17 +7,36 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.4.8.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.4.9</h3>
 
 
 <ul>
-<li><p> 'mif2' no longer computes filter means.
+<li><p> A better interface for specifying a model's deterministic skeleton is provided.
+One specifies <code>skeleton=map(f,delta.t)</code> for a discrete-time skeleton (a map) and <code>skeleton=vectorfield(f)</code> for a continuous-time skeleton (a vectorfield).
+The old arguments <code>skeleton.type</code> and <code>skelmap.delta.t</code> are deprecated and will be removed in a future release.
+</p>
+</li>
+<li><p> The <code>pfilter</code> help page has been improved.
+Specifically, the discussion of filtering failures is better.
+</p>
+</li>
+<li><p> Miscellaneous improvements to the help pages.
 </p>
 </li></ul>
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.4.7.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.4.8</h3>
+
+
+<ul>
+<li> <p><code>mif2</code> no longer computes filter means.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 1.4.7</h3>
 
 
 <ul>
@@ -30,7 +49,7 @@
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.4.6.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.4.6</h3>
 
 
 <ul>
@@ -44,7 +63,7 @@ Using this, one can request multiple initial state vectors per parameter vector.
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.4.5.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.4.5</h3>
 
 
 <ul>
@@ -54,7 +73,7 @@ Using this, one can request multiple initial state vectors per parameter vector.
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.4.4.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.4.4</h3>
 
 
 <ul>
@@ -65,7 +84,7 @@ Use <code>mif2</code> instead.
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.4.3.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.4.3</h3>
 
 
 <ul>
@@ -75,7 +94,7 @@ Use <code>mif2</code> instead.
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.4.2.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.4.2</h3>
 
 
 <ul>
@@ -87,16 +106,18 @@ Use <code>mif2</code> instead.
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.4.1.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.4.1</h3>
 
 
-<p>Following the publication of the Journal of Statistical Software announcement paper, the &lsquo;<span class="file">CITATION</span>&rsquo; has been modified to include the appropriate citation.
+<ul>
+<li><p> Following the publication of the Journal of Statistical Software announcement paper, the &lsquo;<span class="file">CITATION</span>&rsquo; has been modified to include the appropriate citation.
 Please use <code>citation("pomp")</code> to learn about how to cite <span class="pkg">pomp</span> correctly.
-
 </p>
+</li></ul>
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.3.4.1</h3>
+
+<h3>Changes in <span class="pkg">pomp</span> version 1.3.4</h3>
 
 
 <ul>
@@ -106,7 +127,7 @@ Please use <code>citation("pomp")</code> to learn about how to cite <span class=
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.3.3.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.3.3</h3>
 
 
 <ul>
@@ -117,7 +138,7 @@ This is accomplished via the new <code>cdir</code> and <code>cfile</code> argume
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.3.2.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.3.2</h3>
 
 
 <ul>
@@ -128,7 +149,7 @@ This release fixes this by ensuring that <code>Csnippet</code> codes are written
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.3.1.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.3.1</h3>
 
 <p>This release removes several long-deprecated features.
 </p>
@@ -150,7 +171,7 @@ They were superseded by the arguments <code>fromEstimationScale</code> and <code
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.2.2.1</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.2.2</h3>
 
 
 <ul>
@@ -160,7 +181,7 @@ They were superseded by the arguments <code>fromEstimationScale</code> and <code
 
 
 
-<h3>Changes in <span class="pkg">pomp</span> version 1.2.1.2</h3>
+<h3>Changes in <span class="pkg">pomp</span> version 1.2.1</h3>
 
 
 <ul>

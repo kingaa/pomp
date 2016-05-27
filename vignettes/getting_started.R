@@ -6,7 +6,7 @@ registerDoMPI(cl)
 
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 library(pomp)
-stopifnot(packageVersion("pomp")>="1.0.0.0")
+stopifnot(packageVersion("pomp")>="1.4.9.1")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -123,7 +123,7 @@ skel <- Csnippet("
   DN = r*N*(1-N/K);
 ")
 
-parus <- pomp(parus,skeleton=skel,skeleton.type="vectorfield",statenames="N",paramnames=c("r","K"))
+parus <- pomp(parus,skeleton=vectorfield(skel),statenames="N",paramnames=c("r","K"))
 
 ## ----logistic-traj1------------------------------------------------------
 pars <- parmat(c(r=1,K=200,sigma=0.5,N.0=20),5)
@@ -148,7 +148,7 @@ bh.skel <- Csnippet("
 ")
 
 ## ----bh-pomp1------------------------------------------------------------
-parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=bh.skel,skeleton.type="map",skelmap.delta.t=1,statenames="N",paramnames=c("a","b","sigma"))
+parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),skeleton=map(bh.skel,delta.t=1),statenames="N",paramnames=c("a","b","sigma"))
 
 ## ----bh-test-------------------------------------------------------------
 coef(parus.bh) <- c(a=1.1,b=5e-4,sigma=0.5,N.0=30)
