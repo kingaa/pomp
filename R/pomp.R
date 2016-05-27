@@ -231,7 +231,12 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
 
     ## type of skeleton (map or vectorfield)
     ## skelmap.delta.t has no meaning in the latter case
-    skeleton.type <- match.arg(skeleton.type,c("map","vectorfield"))
+    skeleton.type <- try(
+        match.arg(skeleton.type,c("map","vectorfield")),
+        silent=TRUE)
+    if (inherits(skeleton.type,"try-error")) {
+        stop("the deterministic skeleton must be either a map or a vectorfield: see ",sQuote("?pomp"),call.=FALSE)
+    }
     skelmap.delta.t <- as.numeric(skelmap.delta.t)
     if (skelmap.delta.t <= 0)
         stop("skeleton ",sQuote("delta.t")," must be positive",call.=FALSE)

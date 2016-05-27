@@ -146,7 +146,8 @@
     }
   }
   \item{skeleton.type, skelmap.delta.t}{
-    Deprecated.
+    deprecated.
+    See above for information on the specification of the model's deterministic skeleton.
   }
   \item{initializer}{
     optional.
