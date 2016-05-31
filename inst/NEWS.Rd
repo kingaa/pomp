@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.5.1}{
+  \itemize{
+    \item New methods for the Ensemble Kalman Filter (\code{enkf}) and Ensemble Adjustment Kalman Filter (\code{eakf}) have been added to the package.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.4.9}{
   \itemize{
     \item A better interface for specifying a model's deterministic skeleton is provided.
