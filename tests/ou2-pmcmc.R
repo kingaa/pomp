@@ -72,6 +72,7 @@ try(ff <- c(f4,ou2))
 try(ff <- c(ff,ou2))
 
 plot(ff <- c(ff,f5))
+print(signif(covmat(ff),2))
 plot(conv.rec(c(f2,ff),c("alpha.2","alpha.3")))
 plot(conv.rec(ff[2],c("alpha.2")))
 plot(conv.rec(ff[2:3],c("alpha.3")))

@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -118,12 +120,16 @@ newly created object(s):
 > 
 > try(abc7 <- c(abc2,abc3))
 Error in validObject(.Object) : 
-  invalid class "abcList" object: error in 'c': to be combined, 'abc' objects must have chains of equal length
+  invalid class “abcList” object: error in ‘c’: to be combined, ‘abc’ objects must have chains of equal length
 > plot(abc7 <- c(abc2,abc4))
 > plot(abc7,scatter=TRUE)
 > plot(conv.rec(c(abc2,abc4)))
 > plot(conv.rec(c(abc7,abc6)))
 > plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=1000))
+> print(signif(covmat(abc7),2))
+        alpha.1 alpha.2
+alpha.1   0.340   0.024
+alpha.2   0.024   0.074
 > 
 > abc8 <- abc(
 +             pomp(ou2,dprior=function (params, log, ...) {
@@ -166,7 +172,6 @@ alpha.2 alpha.3
 null device 
           1 
 > 
-> 
 > proc.time()
    user  system elapsed 
- 10.604   0.056  10.643 
+ 11.152   0.024  11.151 

@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -46,6 +48,8 @@ Type 'q()' to quit R.
 > try(stopifnot(all.equal(y1,y3)))
 Error in mode(current) : object 'y3' not found
 > 
+> detach("package:pomp", unload=TRUE)
+> 
 > proc.time()
    user  system elapsed 
-  0.300   0.008   0.302 
+  0.396   0.008   0.386 

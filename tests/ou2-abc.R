@@ -102,6 +102,7 @@ plot(abc7,scatter=TRUE)
 plot(conv.rec(c(abc2,abc4)))
 plot(conv.rec(c(abc7,abc6)))
 plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=1000))
+print(signif(covmat(abc7),2))
 
 abc8 <- abc(
             pomp(ou2,dprior=function (params, log, ...) {
@@ -126,4 +127,3 @@ traces <- window(traces,thin=50)
 geweke.diag(traces)
 
 dev.off()
-
