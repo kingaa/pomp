@@ -1,0 +1,20 @@
+library(pomp)
+png(filename="bsplines%03d.png",res=100)
+
+x <- seq(0,2,by=0.01)
+try(y <- bspline.basis(x,degree=3,nbasis=9,names=c("basis1","basis2")))
+y <- bspline.basis(x,degree=3,nbasis=9)
+try(y <- bspline.basis(x,degree=3,nbasis=3,names=letters[1:3]))
+y <- bspline.basis(x,degree=3,nbasis=12,names=letters[1:12])
+y <- bspline.basis(x,degree=3,nbasis=9,names="basis")
+y <- bspline.basis(x,degree=3,nbasis=9,names="basis%02d")
+matplot(x,y,type='l',ylim=c(0,1.1))
+lines(x,apply(y,1,sum),lwd=2)
+
+x <- seq(-1,2,by=0.01)
+try(y <- periodic.bspline.basis(x,nbasis=6,names=letters[1:2]))
+y <- periodic.bspline.basis(x,nbasis=6,names=tail(letters,6))
+y <- periodic.bspline.basis(x,nbasis=5,names="spline%d")
+matplot(x,y,type='l')
+
+dev.off()

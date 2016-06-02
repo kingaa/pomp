@@ -1,11 +1,13 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -19,8 +21,11 @@ Type 'q()' to quit R.
 > library(reshape2)
 > library(plyr)
 > library(magrittr)
+> library(ggplot2)
 > library(mvtnorm)
 > set.seed(1638125322)
+> 
+> png(filename="kfs%03d.png",res=100)
 > 
 > t <- seq(1,100)
 > 
@@ -91,10 +96,55 @@ Type 'q()' to quit R.
 > c(kf=kf$loglik,
 +   pf=logLik(pf),
 +   enkf=logLik(enkf),
-+   eakf=logLik(eakf))
-       kf        pf      enkf      eakf 
--391.0491 -391.6436 -390.5480 -390.7969 
++   eakf=logLik(eakf)) %>%
++     round(1)
+    kf     pf   enkf   eakf 
+-391.0 -391.6 -390.5 -390.8 
+> 
+> enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
++     ddply(~variable,summarize,n=length(value))
+         variable   n
+1              y1 100
+2              y2 100
+3     cond.loglik 100
+4    pred.mean.x1 100
+5    pred.mean.x2 100
+6    pred.mean.x3 100
+7    pred.mean.x4 100
+8  filter.mean.x1 100
+9  filter.mean.x2 100
+10 filter.mean.x3 100
+11 filter.mean.x4 100
+> eakf %>% as.data.frame() %>% melt(id.vars="time") %>%
++     ddply(~variable,summarize,n=length(value))
+         variable   n
+1              y1 100
+2              y2 100
+3     cond.loglik 100
+4    pred.mean.x1 100
+5    pred.mean.x2 100
+6    pred.mean.x3 100
+7    pred.mean.x4 100
+8  filter.mean.x1 100
+9  filter.mean.x2 100
+10 filter.mean.x3 100
+11 filter.mean.x4 100
+> 
+> enkf$forecast %>% melt() %>% 
++     ggplot(aes(x=time,y=value,group=variable,color=variable))+
++     geom_line()+theme_bw()
+> 
+> identical(eakf$cond.loglik,cond.logLik(eakf))
+[1] TRUE
+> identical(enkf$pred.mean,pred.mean(enkf))
+[1] TRUE
+> identical(eakf$filter.mean,filter.mean(eakf))
+[1] TRUE
+> 
+> dev.off()
+null device 
+          1 
 > 
 > proc.time()
    user  system elapsed 
- 11.972   0.040  11.993 
+ 16.512   0.244  16.945 

@@ -2,8 +2,11 @@ library(pomp)
 library(reshape2)
 library(plyr)
 library(magrittr)
+library(ggplot2)
 library(mvtnorm)
 set.seed(1638125322)
+
+png(filename="kfs%03d.png",res=100)
 
 t <- seq(1,100)
 
@@ -74,4 +77,20 @@ eakf <- eakf(pf,C=C,R=R,Np=1000)
 c(kf=kf$loglik,
   pf=logLik(pf),
   enkf=logLik(enkf),
-  eakf=logLik(eakf))
+  eakf=logLik(eakf)) %>%
+    round(1)
+
+enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
+    ddply(~variable,summarize,n=length(value))
+eakf %>% as.data.frame() %>% melt(id.vars="time") %>%
+    ddply(~variable,summarize,n=length(value))
+
+enkf$forecast %>% melt() %>% 
+    ggplot(aes(x=time,y=value,group=variable,color=variable))+
+    geom_line()+theme_bw()
+
+identical(eakf$cond.loglik,cond.logLik(eakf))
+identical(enkf$pred.mean,pred.mean(enkf))
+identical(eakf$filter.mean,filter.mean(eakf))
+
+dev.off()
