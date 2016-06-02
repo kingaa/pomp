@@ -4,8 +4,11 @@ sudo: false
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then curl -O http://kingaa.github.io/scripts/mac-fortran.sh; sh mac-fortran.sh; rm -f mac-fortran.sh; fi
 
+r_github_packages:
+  - jimhester/covr
+
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - Rscript -e 'covr::codecov()'
 
 notifications:
   email:
