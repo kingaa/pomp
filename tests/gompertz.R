@@ -45,3 +45,10 @@ try(conv.rec(mf,c("loglik","r"),transform=TRUE))
 conv.rec(mf,c("loglik","r"),transform=TRUE)
 conv.rec(mf,c("loglik"),transform=TRUE)
 conv.rec(mf,c("K"),transform=TRUE)
+
+gg <- pomp(gompertz,skeleton=map(function(x,t,params,...){
+  xx <- x["X"]*exp(params["r"]*(1-x["X"]/params["K"]))
+  c(X=unname(xx))
+}))
+coef(gg,c("X.0","r")) <- c(1.5,3)
+trajectory(gg,as.data.frame=TRUE,times=seq(0,10))

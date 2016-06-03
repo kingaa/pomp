@@ -31,7 +31,7 @@ setMethod("covmat",signature=signature(object="pmcmc"),
 setMethod("covmat",signature=signature(object="pmcmcList"),
           definition=function (object, start = 1, thin = 1,
             expand = 2.38, ...) {
-            pars <- do.call(unique,lapply(object,slot,"pars"))
+            pars <- unique(c(sapply(object,slot,"pars")))
             covmat.internal(traces=as.array(conv.rec(object,pars)),
                             start=start,thin=thin,
                             expand=expand)
@@ -48,7 +48,7 @@ setMethod("covmat",signature=signature(object="abc"),
 setMethod("covmat",signature=signature(object="abcList"),
           definition=function (object, start = 1, thin = 1,
             expand = 2.38, ...) {
-            pars <- do.call(unique,lapply(object,slot,"pars"))
+            pars <- unique(c(sapply(object,slot,"pars")))
             covmat.internal(traces=as.array(conv.rec(object,pars)),
                             start=start,thin=thin,
                             expand=expand)

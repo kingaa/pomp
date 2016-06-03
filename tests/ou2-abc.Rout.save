@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -120,7 +118,7 @@ newly created object(s):
 > 
 > try(abc7 <- c(abc2,abc3))
 Error in validObject(.Object) : 
-  invalid class “abcList” object: error in ‘c’: to be combined, ‘abc’ objects must have chains of equal length
+  invalid class "abcList" object: error in 'c': to be combined, 'abc' objects must have chains of equal length
 > plot(abc7 <- c(abc2,abc4))
 > plot(abc7,scatter=TRUE)
 > plot(conv.rec(c(abc2,abc4)))
@@ -174,4 +172,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 11.152   0.024  11.151 
+ 11.156   0.048  11.183 

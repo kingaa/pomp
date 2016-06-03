@@ -6,6 +6,8 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._5._1:
           Ensemble Adjustment Kalman Filter (‘eakf’) have been added to
           the package.
 
+        • Improved the test suite to obtain better code coverage.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._4._9:
 
         • A better interface for specifying a model's deterministic
