@@ -1,5 +1,8 @@
 library(pomp)
-options(digits=4)
+library(reshape2)
+library(magrittr)
+
+options(digits=3)
 
 pompExample(gompertz)
 
@@ -14,17 +17,24 @@ coef(po,transform=TRUE)
 guess <- coef(po)
 guess["r"] <- 0
 
+set.seed(5868684L)
+simulate(gompertz,states=TRUE,obs=TRUE) %>% melt() %>% head()
+pfilter(gompertz,Np=1000) -> pf
+round(logLik(pf))
+round(pf$loglik)
+trajectory(gompertz) %>% melt() %>% head()
+
 try(
     mf <- mif(
-              po,
-              start=guess,
-              Nmif=5,Np=1000,
-              transform=TRUE,
-              ic.lag=1,var.factor=1,
-              cooling.fraction=0.99^50,
-              rw.sd=c(r=0.02,K=0.02)
-              )
+        po,
+        start=guess,
+        Nmif=5,Np=1000,
+        transform=TRUE,
+        ic.lag=1,var.factor=1,
+        cooling.fraction=0.99^50,
+        rw.sd=c(r=0.02,K=0.02)
     )
+)
 
 set.seed(93848585L)
 mf <- mif(

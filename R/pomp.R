@@ -248,7 +248,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
             warning(
                 "specifying ",sQuote("measurement.model"),
                 " overrides specification of ",
-                sQuote("rmeasure")," and ",sQuote("dmeasure")
+                sQuote("rmeasure")," and ",sQuote("dmeasure"),
+                call.=FALSE
             )
         }
         mm <- measform2pomp(measurement.model)

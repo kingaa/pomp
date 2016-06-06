@@ -44,69 +44,69 @@ probe.quantile <- function (var, prob, transform = identity) {
   function (y) quantile(transform(y[var,]),probs=prob)
 }
 
-probe.cov <- function (
-                       vars,
-                       lag,
-                       method = c("pearson", "kendall", "spearman"),
-                       transform = identity
-                       ) {
-  method <- match.arg(method)
-  lag <- as.integer(lag)
-  transform <- match.fun(transform)
-  var1 <- vars[1L]
-  if (length(vars)>1)
-    var2 <- vars[2L]
-  else
-    var2 <- var1
-  function (y) {
-    if (lag>=0) {
-      val <- cov(
-                 x=transform(y[var1,seq(from=1+lag,to=ncol(y),by=1)]),
-                 y=transform(y[var2,seq(from=1,to=ncol(y)-lag,by=1)]),
-                 method=method
-                 )
-    } else {
-      val <- cov(
-                 x=transform(y[var1,seq(from=1,to=ncol(y)+lag,by=1)]),
-                 y=transform(y[var2,seq(from=-lag,to=ncol(y),by=1)]),
-                 method=method
-                 )
-    }
-    val
-  }
-}
+## probe.cov <- function (
+##                        vars,
+##                        lag,
+##                        method = c("pearson", "kendall", "spearman"),
+##                        transform = identity
+##                        ) {
+##   method <- match.arg(method)
+##   lag <- as.integer(lag)
+##   transform <- match.fun(transform)
+##   var1 <- vars[1L]
+##   if (length(vars)>1)
+##     var2 <- vars[2L]
+##   else
+##     var2 <- var1
+##   function (y) {
+##     if (lag>=0) {
+##       val <- cov(
+##                  x=transform(y[var1,seq(from=1+lag,to=ncol(y),by=1)]),
+##                  y=transform(y[var2,seq(from=1,to=ncol(y)-lag,by=1)]),
+##                  method=method
+##                  )
+##     } else {
+##       val <- cov(
+##                  x=transform(y[var1,seq(from=1,to=ncol(y)+lag,by=1)]),
+##                  y=transform(y[var2,seq(from=-lag,to=ncol(y),by=1)]),
+##                  method=method
+##                  )
+##     }
+##     val
+##   }
+## }
 
-probe.cor <- function (
-                       vars,
-                       lag,
-                       method = c("pearson", "kendall", "spearman"),
-                       transform = identity
-                       ) {
-  method <- match.arg(method)
-  lag <- as.integer(lag)
-  transform <- match.fun(transform)
-  var1 <- vars[1L]
-  if (length(vars)>1)
-    var2 <- vars[2L]
-  else
-    var2 <- var1
-  function (y) {
-    if (lag>=0) {
-      val <- cor(
-                 x=transform(y[var1,seq(from=1+lag,to=ncol(y),by=1)]),
-                 y=transform(y[var2,seq(from=1,to=ncol(y)-lag,by=1)]),
-                 method=method
-                 )
-    } else {
-      val <- cor(
-                 x=transform(y[var1,seq(from=1,to=ncol(y)+lag,by=1)]),
-                 y=transform(y[var2,seq(from=-lag,to=ncol(y),by=1)]),
-                 method=method
-                 )
-    }
-    val
-  }
-}
+## probe.cor <- function (
+##                        vars,
+##                        lag,
+##                        method = c("pearson", "kendall", "spearman"),
+##                        transform = identity
+##                        ) {
+##   method <- match.arg(method)
+##   lag <- as.integer(lag)
+##   transform <- match.fun(transform)
+##   var1 <- vars[1L]
+##   if (length(vars)>1)
+##     var2 <- vars[2L]
+##   else
+##     var2 <- var1
+##   function (y) {
+##     if (lag>=0) {
+##       val <- cor(
+##                  x=transform(y[var1,seq(from=1+lag,to=ncol(y),by=1)]),
+##                  y=transform(y[var2,seq(from=1,to=ncol(y)-lag,by=1)]),
+##                  method=method
+##                  )
+##     } else {
+##       val <- cor(
+##                  x=transform(y[var1,seq(from=1,to=ncol(y)+lag,by=1)]),
+##                  y=transform(y[var2,seq(from=-lag,to=ncol(y),by=1)]),
+##                  method=method
+##                  )
+##     }
+##     val
+##   }
+## }
 
 probe.acf <- function (var, lags, type = c("covariance", "correlation"), transform = identity) {
   type <- match.arg(type)

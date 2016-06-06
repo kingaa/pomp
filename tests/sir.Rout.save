@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -121,7 +123,6 @@ Type 'q()' to quit R.
 +                 }
 +             )
 +         }),
-+                                         #           measurement.model=reports~binom(size=cases,prob=rho),
 +     rmeasure=function(x,t,params,covars,...){
 +         with(
 +             as.list(c(x,params)),
@@ -190,7 +191,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x32a7458>
+<environment: 0x2f30f78>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -199,7 +200,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x322d418>
+<environment: 0x2f8b930>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -229,7 +230,7 @@ function (y, x, t, params, log, covars, ...)
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
-native function '_pomp_default_dprior', dynamically loaded from 'pomp'
+native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
 skeleton ( vectorfield ) = 
 function (x, t, params, covars, ...) 
 {
@@ -244,7 +245,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x398c170>
+<environment: 0x2dda148>
 initializer = 
 function (params, t0, ...) 
 {
@@ -267,17 +268,21 @@ parameter(s):
      rho      S.0      I.0      R.0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > 
+> x <- pomp(po,measurement.model=reports~binom(size=cases,prob=rho),
++           rmeasure=function(x,t,params,covars,...){1})
+Warning message:
+In .local(data, ...) :
+  specifying ‘measurement.model’ overrides specification of ‘rmeasure’ and ‘dmeasure’
+> 
 > set.seed(3049953)
 > ## simulate from the model
 > tic <- Sys.time()
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.6628528 secs
+Time difference of 0.6693676 secs
 > 
-> pdf(file='sir.pdf')
-> 
-> plot(x[[1]],variables=c("S","I","R","cases","W"))
+> png(filename='sir%02d.pdf',res=100)
 > 
 > t1 <- seq(0,4/52,by=1/52/25)
 > X1 <- simulate(po,nsim=10,states=TRUE,obs=TRUE,times=t1)
@@ -290,8 +295,7 @@ Time difference of 0.6628528 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.5375493 secs
-> plot(t3,X3['I',1,],type='l')
+Time difference of 0.4585462 secs
 > 
 > f1 <- dprocess(
 +     po,
@@ -334,10 +338,23 @@ variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
 > 
 > ## now repeat using the compiled native codes built into the package
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 newly created object(s):
  euler.sir 
 > po <- euler.sir
+> 
+> coef(po,trans=FALSE)
+   gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
+2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
+     rho      S_0      I_0      R_0 
+6.00e-01 6.50e-02 1.00e-03 9.35e-01 
+> coef(po,trans=TRUE)
+        gamma            mu          iota         beta1         beta2 
+ 3.258097e+00 -3.912023e+00 -4.605170e+00  5.991465e+00  6.173786e+00 
+        beta3       beta.sd           pop           rho           S_0 
+ 5.768321e+00 -6.907755e+00  2.100000e+06  4.054651e-01 -2.734368e+00 
+          I_0           R_0 
+-6.908755e+00 -6.820825e-02 
 > 
 > set.seed(3049953)
 > ## simulate from the model
@@ -345,16 +362,14 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.37732 secs
-> plot(x[[1]],variables=c("S","I","R","cases","W"))
+Time difference of 2.354278 secs
 > 
 > t3 <- seq(0,20,by=1/52)
 > tic <- Sys.time()
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01623082 secs
-> plot(t3,X4['I',1,],type='l')
+Time difference of 0.01425314 secs
 > 
 > g2 <- dmeasure(
 +     po,
@@ -394,11 +409,9 @@ variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
 > invisible(states(simulate(po))[,1:3])
 > 
 > po <- window(euler.sir,start=1,end=2)
-> plot(simulate(po))
 > timezero(po)
 [1] 0
 > timezero(po)<-2*time(po)[1]-time(po)[2]
-> plot(simulate(po))
 > 
 > dev.off()
 null device 
@@ -407,7 +420,7 @@ null device
 > ## test of vectorfield integrator
 > 
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 newly created object(s):
  euler.sir 
 > 
@@ -452,4 +465,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
-  4.352   0.016   4.356 
+  4.140   0.044   4.163 

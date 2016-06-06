@@ -54,6 +54,6 @@ print(
                    guess=c(theta.guess[estnames],se=rep(NA,length(estnames)),value=logLik(m3)),
                    truth=c(theta.truth[estnames],se=rep(NA,length(estnames)),value=logLik(m1))
                    ),
-             4
+             2
              )
       )

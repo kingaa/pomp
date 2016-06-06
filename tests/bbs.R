@@ -15,9 +15,7 @@ bbs <- pomp(bbs,
             }
             )
 
-fit1 <- bsmc(bbs,params=coef(bbs),Np=1000,ntries=5,transform=TRUE,
-             est=c("beta","sigma"),smooth=0.2)
-signif(coef(fit1),3)
+pf <- pfilter(bbs,Np=1000)
 
 fit2 <- bsmc2(bbs,params=coef(bbs),Np=5000,transform=TRUE,
               est=c("beta","sigma"),smooth=0.2)

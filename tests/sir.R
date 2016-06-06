@@ -104,7 +104,6 @@ po <- pomp(
                 }
             )
         }),
-                                        #           measurement.model=reports~binom(size=cases,prob=rho),
     rmeasure=function(x,t,params,covars,...){
         with(
             as.list(c(x,params)),
@@ -146,6 +145,9 @@ po <- pomp(
 
 show(po)
 
+x <- pomp(po,measurement.model=reports~binom(size=cases,prob=rho),
+          rmeasure=function(x,t,params,covars,...){1})
+
 set.seed(3049953)
 ## simulate from the model
 tic <- Sys.time()
@@ -153,9 +155,7 @@ x <- simulate(po,nsim=3)
 toc <- Sys.time()
 print(toc-tic)
 
-pdf(file='sir.pdf')
-
-plot(x[[1]],variables=c("S","I","R","cases","W"))
+png(filename='sir%02d.pdf',res=100)
 
 t1 <- seq(0,4/52,by=1/52/25)
 X1 <- simulate(po,nsim=10,states=TRUE,obs=TRUE,times=t1)
@@ -168,7 +168,6 @@ tic <- Sys.time()
 X3 <- trajectory(po,times=t3,hmax=1/52)
 toc <- Sys.time()
 print(toc-tic)
-plot(t3,X3['I',1,],type='l')
 
 f1 <- dprocess(
     po,
@@ -201,20 +200,21 @@ print(h1[c("S","I","R"),,],digits=4)
 pompExample(euler.sir)
 po <- euler.sir
 
+coef(po,trans=FALSE)
+coef(po,trans=TRUE)
+
 set.seed(3049953)
 ## simulate from the model
 tic <- Sys.time()
 x <- simulate(po,nsim=100)
 toc <- Sys.time()
 print(toc-tic)
-plot(x[[1]],variables=c("S","I","R","cases","W"))
 
 t3 <- seq(0,20,by=1/52)
 tic <- Sys.time()
 X4 <- trajectory(po,times=t3,hmax=1/52)
 toc <- Sys.time()
 print(toc-tic)
-plot(t3,X4['I',1,],type='l')
 
 g2 <- dmeasure(
     po,
@@ -243,10 +243,8 @@ invisible(states(po)[,1:3])
 invisible(states(simulate(po))[,1:3])
 
 po <- window(euler.sir,start=1,end=2)
-plot(simulate(po))
 timezero(po)
 timezero(po)<-2*time(po)[1]-time(po)[2]
-plot(simulate(po))
 
 dev.off()
 

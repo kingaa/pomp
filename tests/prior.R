@@ -33,3 +33,20 @@ rprior(po,params=coef(po))
 
 coef(po,"alpha.sd") <- 1
 mean(dprior(po,params=rprior(po,params=parmat(coef(po),10000)),log=TRUE))+0.5*(1+log(2*pi))*4
+
+po <- pomp(po,
+           rprior=Csnippet("
+              alpha_1 = rnorm(0.8,alpha_sd);
+              alpha_2 = rnorm(-0.5,alpha_sd);
+              alpha_3 = rnorm(0.3,alpha_sd);
+              alpha_4 = rnorm(0.9,alpha_sd);"),
+           dprior=Csnippet("
+              lik = 0;
+              lik += dnorm(alpha_1,0.8,alpha_sd,1);
+              lik += dnorm(alpha_2,-0.5,alpha_sd,1);
+              lik += dnorm(alpha_3,0.3,alpha_sd,1);
+              lik += dnorm(alpha_4,0.9,alpha_sd,1);
+              lik = (give_log) ? lik : exp(lik);"),
+           paramnames=c("alpha.1","alpha.2","alpha.3","alpha.4","alpha.sd"))
+rprior(po,params=coef(po))
+mean(dprior(po,params=rprior(po,params=parmat(coef(po),10000))))
