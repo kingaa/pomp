@@ -86,13 +86,17 @@ pompCBuilder <- function (name = NULL, dir = NULL,
     ## rmeasure function
     if (!missing(rmeasure)) {
         registry <- c(registry,"rmeasure")
-        cat(file=out,render(header$rmeasure),rmeasure,footer$rmeasure)
+        cat(file=out,render(header$rmeasure))
+        cat(file=out,callable.decl(rmeasure))
+        cat(file=out,rmeasure,footer$rmeasure)
     }
 
     ## dmeasure function
     if (!missing(dmeasure)) {
         registry <- c(registry,"dmeasure")
-        cat(file=out,render(header$dmeasure),dmeasure,footer$dmeasure)
+        cat(file=out,render(header$dmeasure))
+        cat(file=out,callable.decl(dmeasure))
+        cat(file=out,dmeasure,footer$dmeasure)
     }
 
     ## Euler step function
@@ -114,13 +118,17 @@ pompCBuilder <- function (name = NULL, dir = NULL,
     ## rprior function
     if (!missing(rprior)) {
         registry <- c(registry,"rprior")
-        cat(file=out,render(header$rprior),rprior,footer$rprior)
+        cat(file=out,render(header$rprior))
+        cat(file=out,callable.decl(rprior))
+        cat(file=out,rprior,footer$rprior)
     }
 
     ## dprior function
     if (!missing(dprior)) {
         registry <- c(registry,"dprior")
-        cat(file=out,render(header$dprior),dprior,footer$dprior)
+        cat(file=out,render(header$dprior))
+        cat(file=out,callable.decl(dprior))
+        cat(file=out,dprior,footer$dprior)
     }
 
     ## undefine variables

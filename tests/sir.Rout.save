@@ -1,5 +1,5 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -191,7 +191,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x2f30f78>
+<environment: 0x1c7e2a8>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -200,7 +200,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x2f8b930>
+<environment: 0x166c248>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -245,7 +245,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x2dda148>
+<environment: 0x21e78a0>
 initializer = 
 function (params, t0, ...) 
 {
@@ -280,7 +280,7 @@ In .local(data, ...) :
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.6693676 secs
+Time difference of 0.8378692 secs
 > 
 > png(filename='sir%02d.pdf',res=100)
 > 
@@ -295,7 +295,7 @@ Time difference of 0.6693676 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.4585462 secs
+Time difference of 0.5565634 secs
 > 
 > f1 <- dprocess(
 +     po,
@@ -362,14 +362,14 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.354278 secs
+Time difference of 2.883064 secs
 > 
 > t3 <- seq(0,20,by=1/52)
 > tic <- Sys.time()
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01425314 secs
+Time difference of 0.01709366 secs
 > 
 > g2 <- dmeasure(
 +     po,
@@ -463,6 +463,19 @@ newly created object(s):
 > stopifnot(identical(round(x1$I,3),round(x2$I,3)))
 > stopifnot(identical(round(x1$cases,3),round(x2$cases,3)))
 > 
+> pomp(euler.sir,
++      rmeasure=Csnippet("
++        const SEXP bob = get_pomp_userdata(\"bob\");
++        double mean = rho*cases;
++        double sd = sqrt(cases*rho*(1-rho));
++        reports = nearbyint(rnorm(mean,sd));
++        reports = (reports > 0) ? reports : 0;"),
++     statenames=c("cases"),
++     paramnames=c("rho"),bob=33L) -> po
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
+> 
+> simulate(po) -> po
+> 
 > proc.time()
    user  system elapsed 
-  4.140   0.044   4.163 
+  5.628   0.152   5.890 

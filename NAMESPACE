@@ -2,7 +2,6 @@ useDynLib(
     pomp,
     bspline_basis,
     periodic_bspline_basis,
-    bspline_basis_function,
     systematic_resampling,
     euler_model_simulator,
     euler_model_density,

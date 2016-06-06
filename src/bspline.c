@@ -39,22 +39,22 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree) {
   return(y);
 }
 
-SEXP bspline_basis_function (SEXP x, SEXP i, SEXP degree, SEXP knots) {
-  int nprotect = 0;
-  SEXP y;
-  int nx = length(x);
-  int nknots = length(knots);
-  int ival = INTEGER_VALUE(i);
-  int deg = INTEGER_VALUE(degree);
+// SEXP bspline_basis_function (SEXP x, SEXP i, SEXP degree, SEXP knots) {
+//   int nprotect = 0;
+//   SEXP y;
+//   int nx = length(x);
+//   int nknots = length(knots);
+//   int ival = INTEGER_VALUE(i);
+//   int deg = INTEGER_VALUE(degree);
 
-  if ((ival < 0) || (deg < 0) || (ival + deg >= nknots-1)) 
-    error("bad arguments in 'bspline'");
+//   if ((ival < 0) || (deg < 0) || (ival + deg >= nknots-1)) 
+//     error("bad arguments in 'bspline'");
 
-  PROTECT(y = NEW_NUMERIC(nx)); nprotect++;
-  bspline_internal(REAL(y),REAL(x),nx,ival,deg,REAL(knots));
-  UNPROTECT(nprotect);
-  return(y);
-}
+//   PROTECT(y = NEW_NUMERIC(nx)); nprotect++;
+//   bspline_internal(REAL(y),REAL(x),nx,ival,deg,REAL(knots));
+//   UNPROTECT(nprotect);
+//   return(y);
+// }
 
 
 SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period) {

@@ -290,3 +290,15 @@ x2 <- trajectory(window(euler.sir,end=2),hmax=1/52,as.data.frame=T)
 stopifnot(identical(round(x1$S,3),round(x2$S,3)))
 stopifnot(identical(round(x1$I,3),round(x2$I,3)))
 stopifnot(identical(round(x1$cases,3),round(x2$cases,3)))
+
+pomp(euler.sir,
+     rmeasure=Csnippet("
+       const SEXP bob = get_pomp_userdata(\"bob\");
+       double mean = rho*cases;
+       double sd = sqrt(cases*rho*(1-rho));
+       reports = nearbyint(rnorm(mean,sd));
+       reports = (reports > 0) ? reports : 0;"),
+    statenames=c("cases"),
+    paramnames=c("rho"),bob=33L) -> po
+
+simulate(po) -> po

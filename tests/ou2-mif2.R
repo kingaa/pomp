@@ -2,9 +2,10 @@ library(pomp)
 
 pompExample(ou2)
 
-pdf(file="ou2-mif2.pdf")
+png(file="ou2-mif2-%02d.png",res=100)
 
 set.seed(64857673L)
+options(digits=3)
 
 guess2 <- guess1 <- coef(ou2)
 guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
@@ -23,8 +24,13 @@ m2 <- mif2(ou2,Nmif=50,start=guess2,Np=1000,
              alpha.2=0.1,alpha.3=0.1))
 m2 <- continue(m2,Nmif=50)
 
-plot(c(m1,m2))
-coef(c(m1,m2))
+plot(m1)
+plot(m12 <- c(m1,m2))
+coef(m12)
+dim(coef(c(m12,m12)))
+dim(coef(c(m12,m1)))
+dim(coef(c(m1,m12)))
+dim(coef(m12[2]))
 
 rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
