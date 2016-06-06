@@ -8,12 +8,13 @@ sliceDesign <- function (center, ...) {
   if (!all(slnm%in%names(center))) {
     problems <- slnm[!(slnm%in%names(center))]
     stop(
-         sQuote("sliceDesign"),
-         " error: variable(s) ",
-         sQuote(paste(problems,collapse=",")),
-         " do not appear in ",
-         sQuote("center")
-         )
+        "in ",sQuote("sliceDesign"),": ",
+        ngettext(length(problems),"variable ","variables "),
+        paste(sapply(problems,sQuote),collapse=","),
+        ngettext(length(problems)," does "," do "),
+        "not appear in ",sQuote("center"),
+        call.=FALSE
+    )
   }
   nslice <- length(slices)
   nvars <- length(center)

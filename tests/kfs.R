@@ -78,7 +78,7 @@ c(kf=kf$loglik,
   pf=logLik(pf),
   enkf=logLik(enkf),
   eakf=logLik(eakf)) %>%
-    round(1)
+    signif(3)
 
 enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
     ddply(~variable,summarize,n=length(value))

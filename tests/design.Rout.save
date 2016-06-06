@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -36,6 +36,10 @@ Type 'q()' to quit R.
 > plot(x)
 > 
 > ## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.
+> try(x <- sliceDesign(center=c(A=3,C=0),B=seq(0,10,by=1)))
+Error : in ‘sliceDesign’: variable ‘B’ does not appear in ‘center’
+> try(x <- sliceDesign(center=c(A=3),B=seq(0,10,by=1),C=c(1,2,3)))
+Error : in ‘sliceDesign’: variables ‘B’,‘C’ do not appear in ‘center’
 > x <- sliceDesign(center=c(A=3,B=8,C=0),B=seq(0,10,by=1))
 > dim(x)
 [1] 11  4
@@ -53,4 +57,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.868   0.084   0.989 
+  0.584   0.024   0.591 

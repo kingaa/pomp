@@ -11,7 +11,7 @@ void ou2_rmeasure (double *y, double *x, double *p,
 void ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
 		   int *obsindex, int *stateindex, int *parindex, int *covindex,
 		   int covdim, double *covar, double t);
-void ou2_adv (double *x, double *xstart, double *par, double *times, int *n);
+// void ou2_adv (double *x, double *xstart, double *par, double *times, int *n);
 void ou2_step (double *x, const double *p,
 	       const int *stateindex, const int *parindex, const int *covindex,
 	       int ncovars, const double *covars,
@@ -27,69 +27,69 @@ static double dens_ou2 (double x1, double x2, double z1, double z2,
 			double alpha1, double alpha2, double alpha3, double alpha4, 
 			double sigma1, double sigma2, double sigma3, int give_log);
 
-#define ALPHA1     (pp[0])
-#define ALPHA2     (pp[1])
-#define ALPHA3     (pp[2])
-#define ALPHA4     (pp[3])
-#define SIGMA1     (pp[4])
-#define SIGMA2     (pp[5])
-#define SIGMA3     (pp[6])
+// #define ALPHA1     (pp[0])
+// #define ALPHA2     (pp[1])
+// #define ALPHA3     (pp[2])
+// #define ALPHA4     (pp[3])
+// #define SIGMA1     (pp[4])
+// #define SIGMA2     (pp[5])
+// #define SIGMA3     (pp[6])
 
 // advance the matrix of particles from times[0] to the other times given
 // note that you cannot assume that you can only assume that times[k]-times[k-1]>=0
 // i.e., you cannot assume that successive times are consecutive, nor can you assume that
 // they are distinct.
-void ou2_adv (double *x, double *xstart, double *par, double *times, int *n)
-{
-  int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3], incr;
-  double tnow, tgoal, dt = 1.0;
-  double *xp0, *xp1, *pp;
-  int i, j, k;
+// void ou2_adv (double *x, double *xstart, double *par, double *times, int *n)
+// {
+//   int nvar = n[0], npar = n[1], nrep = n[2], ntimes = n[3], incr;
+//   double tnow, tgoal, dt = 1.0;
+//   double *xp0, *xp1, *pp;
+//   int i, j, k;
 
-  incr = nrep*nvar;
+//   incr = nrep*nvar;
 
-  GetRNGstate();       // initialize R's pseudorandom number generator
+//   GetRNGstate();       // initialize R's pseudorandom number generator
 
-  for (j = 0; j < nrep; j++) {
+//   for (j = 0; j < nrep; j++) {
 
-    R_CheckUserInterrupt();	// check for an interrupt signal
+//     R_CheckUserInterrupt();	// check for an interrupt signal
 
-    xp0 = &xstart[nvar*j];     // pointer to j-th starting state
-    xp1 = &x[nvar*j];	       // pointer to j-th state vector
-    pp = &par[npar*j];	       // pointer to j-th parameter vector
+//     xp0 = &xstart[nvar*j];     // pointer to j-th starting state
+//     xp1 = &x[nvar*j];	       // pointer to j-th state vector
+//     pp = &par[npar*j];	       // pointer to j-th parameter vector
 
-    for (i = 0; i < nvar; i++) xp1[i] = xp0[i]; // copy xstart into the first slice of x
+//     for (i = 0; i < nvar; i++) xp1[i] = xp0[i]; // copy xstart into the first slice of x
 
-    tnow = times[0];		// initial time
+//     tnow = times[0];		// initial time
 
-    for (k = 1; k < ntimes; k++) { // loop over times
+//     for (k = 1; k < ntimes; k++) { // loop over times
     
-      xp0 = xp1;
-      xp1 += incr;
+//       xp0 = xp1;
+//       xp1 += incr;
 
-      for (i = 0; i < nvar; i++) xp1[i] = xp0[i]; // copy state vector
+//       for (i = 0; i < nvar; i++) xp1[i] = xp0[i]; // copy state vector
 
-      tgoal = times[k];
+//       tgoal = times[k];
 
-      while (tnow < tgoal) {
-	sim_ou2(&xp1[0],&xp1[1],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3); // advance state
-	tnow += dt;		// advance time
-      }
+//       while (tnow < tgoal) {
+// 	sim_ou2(&xp1[0],&xp1[1],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3); // advance state
+// 	tnow += dt;		// advance time
+//       }
 
-    }
+//     }
 
-  }
+//   }
 
-  PutRNGstate();	  // finished with R's random number generator
-}
+//   PutRNGstate();	  // finished with R's random number generator
+// }
 
-#undef ALPHA1
-#undef ALPHA2
-#undef ALPHA3
-#undef ALPHA4
-#undef SIGMA1
-#undef SIGMA2
-#undef SIGMA3
+// #undef ALPHA1
+// #undef ALPHA2
+// #undef ALPHA3
+// #undef ALPHA4
+// #undef SIGMA1
+// #undef SIGMA2
+// #undef SIGMA3
 
 #define ALPHA1     (p[parindex[0]])
 #define ALPHA2     (p[parindex[1]])

@@ -15,6 +15,8 @@ dim(x)
 plot(x)
 
 ## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.
+try(x <- sliceDesign(center=c(A=3,C=0),B=seq(0,10,by=1)))
+try(x <- sliceDesign(center=c(A=3),B=seq(0,10,by=1),C=c(1,2,3)))
 x <- sliceDesign(center=c(A=3,B=8,C=0),B=seq(0,10,by=1))
 dim(x)
 plot(x)

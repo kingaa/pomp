@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -97,9 +97,9 @@ Type 'q()' to quit R.
 +   pf=logLik(pf),
 +   enkf=logLik(enkf),
 +   eakf=logLik(eakf)) %>%
-+     round(1)
-    kf     pf   enkf   eakf 
--391.0 -391.6 -390.5 -390.8 
++     signif(3)
+  kf   pf enkf eakf 
+-391 -392 -391 -391 
 > 
 > enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
 +     ddply(~variable,summarize,n=length(value))
@@ -147,4 +147,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 16.512   0.244  16.945 
+ 12.452   0.076  12.521 
