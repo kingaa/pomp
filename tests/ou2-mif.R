@@ -3,6 +3,7 @@ library(pomp)
 pompExample(ou2)
 
 set.seed(64857673L)
+options(digits=3)
 
 obs(window(ou2,end=20,start=15))
 obs(window(ou2,end=5),"y1")
@@ -47,12 +48,14 @@ mif2 <- mif(ou2,Nmif=30,start=guess2,
             max.fail=100
             )
 
-pdf(file="ou2-mif.pdf")
+png(file="ou2-mif-%02d.png",res=100)
 plot(mif1)
-plot(mif2)
-try(plot(mif1,mif2))
-plot(c(mif1,mif2))
-coef(c(mif1,mif2))
+plot(mif12 <- c(mif1,mif2))
+coef(mif2)
+dim(coef(mif12))
+dim(coef(c(mif12,mif2)))
+dim(coef(c(mif1,mif12)))
+dim(coef(mif12[2]))
 dev.off()
 
 set.seed(33848585L)

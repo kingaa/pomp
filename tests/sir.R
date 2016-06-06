@@ -294,6 +294,9 @@ stopifnot(identical(round(x1$cases,3),round(x2$cases,3)))
 pomp(euler.sir,
      rmeasure=Csnippet("
        const SEXP bob = get_pomp_userdata(\"bob\");
+       if (*INTEGER(bob) != 33) {
+         Rprintf(\"error!\");
+       }
        double mean = rho*cases;
        double sd = sqrt(cases*rho*(1-rho));
        reports = nearbyint(rnorm(mean,sd));

@@ -191,7 +191,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x1c7e2a8>
+<environment: 0x2a142a8>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -200,7 +200,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x166c248>
+<environment: 0x2402248>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -245,7 +245,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x21e78a0>
+<environment: 0x2f7d8a0>
 initializer = 
 function (params, t0, ...) 
 {
@@ -280,7 +280,7 @@ In .local(data, ...) :
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.8378692 secs
+Time difference of 0.916847 secs
 > 
 > png(filename='sir%02d.pdf',res=100)
 > 
@@ -295,7 +295,7 @@ Time difference of 0.8378692 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.5565634 secs
+Time difference of 0.606636 secs
 > 
 > f1 <- dprocess(
 +     po,
@@ -362,14 +362,14 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.883064 secs
+Time difference of 3.19298 secs
 > 
 > t3 <- seq(0,20,by=1/52)
 > tic <- Sys.time()
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01709366 secs
+Time difference of 0.01712346 secs
 > 
 > g2 <- dmeasure(
 +     po,
@@ -466,6 +466,9 @@ newly created object(s):
 > pomp(euler.sir,
 +      rmeasure=Csnippet("
 +        const SEXP bob = get_pomp_userdata(\"bob\");
++        if (*INTEGER(bob) != 33) {
++          Rprintf(\"error!\");
++        }
 +        double mean = rho*cases;
 +        double sd = sqrt(cases*rho*(1-rho));
 +        reports = nearbyint(rnorm(mean,sd));
@@ -478,4 +481,4 @@ In ‘pomp’: the following unrecognized argument(s) will be stored for use by 
 > 
 > proc.time()
    user  system elapsed 
-  5.628   0.152   5.890 
+  6.048   0.244   6.529 

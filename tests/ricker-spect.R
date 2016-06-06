@@ -19,6 +19,10 @@ spp <- spect.match(sp,eval.only=TRUE)
 plot(spp)
 invisible(summary(sp))
 
+spp <- spect.match(sp,nsim=100,est=c("sigma","phi"))
+plot(spp)
+invisible(summary(sp))
+
 po <- ricker
 coef(po,"r") <- 5
 sp <- spect(
