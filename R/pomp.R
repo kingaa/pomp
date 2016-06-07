@@ -13,9 +13,9 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                               verbose = getOption("verbose",FALSE)) {
 
     ## preliminary error checking
-    if (missing(data)) stop(sQuote("data")," is a required argument")
-    if (missing(times)) stop(sQuote("times")," is a required argument")
-    if (missing(t0)) stop(sQuote("t0")," is a required argument")
+    if (missing(data)) stop(sQuote("data")," is a required argument",call.=FALSE)
+    if (missing(times)) stop(sQuote("times")," is a required argument",call.=FALSE)
+    if (missing(t0)) stop(sQuote("t0")," is a required argument",call.=FALSE)
     if (missing(params)) params <- numeric(0)
 
     if (missing(cdir)) cdir <- NULL
@@ -55,25 +55,30 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     ## check the parameters and force them to be double-precision
     if (length(params)>0) {
         if (is.null(names(params)) || !is.numeric(params))
-            stop("pomp error: ",sQuote("params")," must be a named numeric vector")
+            stop(sQuote("pomp")," error: ",
+                 sQuote("params")," must be a named numeric vector",
+                 call.=FALSE)
     }
     storage.mode(params) <- 'double'
 
     ## check the data and store it as double-precision matrix
     if (!is.numeric(data))
-        stop("pomp error: ",sQuote("data")," must be numeric")
+        stop(sQuote("pomp")," error: ",
+             sQuote("data")," must be numeric",call.=FALSE)
     storage.mode(data) <- 'double'
     if (missing(obsnames) || length(obsnames)==0) obsnames <- rownames(data)
     obsnames <- as.character(obsnames)
 
     ## check times
     if (!is.numeric(times) || !all(diff(times)>0))
-        stop("pomp error: ",sQuote("times")," must be an increasing numeric vector")
+        stop(sQuote("pomp")," error: ",sQuote("times"),
+             " must be an increasing numeric vector",call.=FALSE)
     storage.mode(times) <- 'double'
 
     ## check t0
     if (!is.numeric(t0) || length(t0) > 1)
-        stop("pomp error: the zero-time ",sQuote("t0")," must be a single number")
+        stop(sQuote("pomp")," error: the zero-time ",sQuote("t0"),
+             " must be a single number",call.=FALSE)
     storage.mode(t0) <- 'double'
 
     ## check and arrange covariates
@@ -81,14 +86,14 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         covar <- matrix(data=0,nrow=0,ncol=0)
         tcovar <- numeric(0)
     } else if (missing(tcovar)) {
-        stop("pomp error: if ",sQuote("covar")," is supplied, ",
-             sQuote("tcovar")," must also be supplied")
+        stop(sQuote("pomp")," error: if ",sQuote("covar")," is supplied, ",
+             sQuote("tcovar")," must also be supplied",call.=FALSE)
     } else if (is.data.frame(covar)) {
         if ((is.numeric(tcovar) && (tcovar<1 || tcovar>length(covar))) ||
             (is.character(tcovar) && (!(tcovar%in%names(covar)))) ||
             (!is.numeric(tcovar) && !is.character(tcovar))) {
-            stop("pomp error: if ",sQuote("covar")," is a data frame, ",
-                 sQuote("tcovar")," should indicate the time variable")
+            stop(sQuote("pomp")," error: if ",sQuote("covar")," is a data frame, ",
+                 sQuote("tcovar")," should indicate the time variable",call.=FALSE)
         } else if (is.numeric(tcovar)) {
             tpos <- tcovar
             tcovar <- covar[[tpos]]
@@ -104,8 +109,9 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (missing(covarnames) || length(covarnames)==0) covarnames <- as.character(colnames(covar))
     if (!all(covarnames%in%colnames(covar))) {
         missing <- covarnames[!(covarnames%in%colnames(covar))]
-        stop("pomp error: covariate(s) ",paste(missing,collapse=","),
-             " are not among the columns of ",sQuote("covar"))
+        stop(sQuote("pomp")," error: covariate(s) ",
+             paste(sapply(sQuote,missing),collapse=","),
+             " are not among the columns of ",sQuote("covar"),call.=FALSE)
     }
     storage.mode(tcovar) <- "double"
     storage.mode(covar) <- "double"
@@ -116,9 +122,9 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
 
     ## default rprocess & dprocess
     if (missing(rprocess))
-        rprocess <- function (xstart,times,params,...) stop(sQuote("rprocess")," not specified")
+        rprocess <- function (xstart,times,params,...) stop(sQuote("rprocess")," not specified",call.=FALSE)
     if (missing(dprocess))
-        dprocess <- function (x,times,params,log=FALSE,...) stop(sQuote("dprocess")," not specified")
+        dprocess <- function (x,times,params,log=FALSE,...) stop(sQuote("dprocess")," not specified",call.=FALSE)
 
     ## handle C snippets
     snips <- list()
@@ -163,8 +169,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
             silent=FALSE
         )
         if (inherits(libname,"try-error")) {
-            stop("in ",sQuote("pomp"),": error in building shared-object library from Csnippets:\n",
-                 libname,call.=FALSE)
+            stop("in ",sQuote("pomp"),": error in building shared-object library from Csnippets:\n",libname,call.=FALSE)
         } else {
             .solibs <- c(.solibs,list(libname))
             libname <- libname$name
@@ -200,7 +205,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         )
     }
     if (!is.function(rprocess))
-        stop("pomp error: ",sQuote("rprocess")," must be a function")
+        stop(sQuote("pomp")," error: ",sQuote("rprocess")," must be a function",call.=FALSE)
 
     ## handle dprocess
     if (is(dprocess,"pompPlugin")) {
@@ -214,7 +219,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         )
     }
     if (!is.function(dprocess))
-        stop("pomp error: ",sQuote("dprocess")," must be a function")
+        stop(sQuote("pomp")," error: ",sQuote("dprocess")," must be a function",call.=FALSE)
 
     ## handle skeleton
     skeleton <- pomp.fun(
@@ -320,7 +325,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (xor(mpt,mpit)) {
         stop("if one of ",sQuote("fromEstimationScale"),", ",
              sQuote("toEstimationScale"),
-             " is supplied, then so must the other")
+             " is supplied, then so must the other",call.=FALSE)
     }
     has.trans <- !mpt
     if (has.trans) {
@@ -385,7 +390,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if ((length(tcovar)>0)&&((min(tcovar)>t0)||(max(tcovar)<max(times))))
         warning(
             "the supplied covariate covariate times ",sQuote("tcovar"),
-            " do not embrace the data times: covariates may be extrapolated"
+            " do not embrace the data times: covariates may be extrapolated",
+            call.=FALSE
         )
 
     new(
@@ -421,10 +427,10 @@ measform2pomp <- function (formulae) {
         formulae <- list(formulae)
     nobs <- length(formulae)
     if (nobs < 1)
-        stop("pomp error: to use ",sQuote("measurement.model")," you must provide at least one formula",call.=FALSE)
+        stop(sQuote("pomp")," error: to use ",sQuote("measurement.model")," you must provide at least one formula",call.=FALSE)
     for (k in seq_len(nobs)) {
         if (!inherits(formulae[[k]],"formula"))
-            stop("pomp error: ",sQuote("measurement.model")," takes formulae as arguments",call.=FALSE)
+            stop(sQuote("pomp")," error: ",sQuote("measurement.model")," takes formulae as arguments",call.=FALSE)
     }
     obsnames <- unlist(lapply(formulae,function(x)x[[2L]]))
     distrib <- lapply(formulae,function(x)as.character(x[[3L]][[1L]]))
@@ -436,13 +442,13 @@ measform2pomp <- function (formulae) {
             silent=TRUE
         )
         if (inherits(res,'try-error'))
-            stop("pomp error: distribution function ",ddistrib[[k]]," not found")
+            stop(sQuote("pomp")," error: distribution function ",ddistrib[[k]]," not found",call.=FALSE)
         res <- try(
             match.fun(rdistrib[[k]]),
             silent=TRUE
         )
         if (inherits(res,'try-error'))
-            stop("pomp error: random deviate function ",rdistrib[[k]]," not found")
+            stop(sQuote("pomp")," error: random deviate function ",rdistrib[[k]]," not found",call.=FALSE)
     }
     pred.args <- lapply(formulae,function(x)as.list(x[[3L]][-1L]))
     dcalls <- vector(mode='list',length=nobs)
@@ -512,8 +518,9 @@ setMethod(
             (is.character(times) && (!(times%in%rownames(data)))) ||
             (!is.numeric(times) && !is.character(times)) ||
             length(times)!=1)
-            stop("pomp error: ",sQuote("times"),
-                 " must identify a single column of ",sQuote("data"))
+            stop(sQuote("pomp")," error: ",sQuote("times"),
+                 " must identify a single column of ",sQuote("data"),
+                 call.=FALSE)
         if (is.numeric(times)) {
             tpos <- times
         } else if (is.character(times)) {
@@ -798,7 +805,8 @@ setMethod(
                 warning(
                     "specifying ",sQuote("measurement.model"),
                     " overrides specification of ",
-                    sQuote("rmeasure")," and ",sQuote("dmeasure")
+                    sQuote("rmeasure")," and ",sQuote("dmeasure"),
+                    call.=FALSE
                 )
             mm <- measform2pomp(measurement.model)
             rmeasure <- mm$rmeasure
@@ -865,15 +873,17 @@ setMethod(
                 from.trans <- data@from.trans
                 to.trans <- data@to.trans
             } else {
-                stop("pomp error: if ",sQuote("toEstimationScale"),
+                stop(sQuote("pomp")," error: if ",sQuote("toEstimationScale"),
                      " is supplied, then " ,
-                     sQuote("fromEstimationScale")," must also be supplied")
+                     sQuote("fromEstimationScale")," must also be supplied",
+                     call.=FALSE)
             }
         } else {
             if (missing(toEstimationScale)) {
-                stop("pomp error: if ",sQuote("fromEstimationScale"),
+                stop(sQuote("pomp")," error: if ",sQuote("fromEstimationScale"),
                      " is supplied, then " ,
-                     sQuote("toEstimationScale")," must also be supplied")
+                     sQuote("toEstimationScale")," must also be supplied",
+                     call.=FALSE)
             } else {
                 from.trans <- fromEstimationScale
                 to.trans <- toEstimationScale

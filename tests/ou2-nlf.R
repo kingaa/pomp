@@ -45,15 +45,5 @@ m4 <- nlf(
           seed=300983678L
           )
 
-options(scipen=3)
-print(
-      signif(
-             rbind(
-                   fit.from.guess=c(coef(m4,estnames),se=m4$se,value=logLik(m4)),
-                   fit.from.truth=c(coef(m2,estnames),se=m2$se,value=logLik(m4)),
-                   guess=c(theta.guess[estnames],se=rep(NA,length(estnames)),value=logLik(m3)),
-                   truth=c(theta.truth[estnames],se=rep(NA,length(estnames)),value=logLik(m1))
-                   ),
-             2
-             )
-      )
+stopifnot(max(abs(1-c(coef(m4,estnames),se=m4$se,value=logLik(m4))/c(-0.51,0.30,1.3,0.043,0.031,0.42,-550)))<0.03)
+stopifnot(max(abs(1-c(coef(m2,estnames),se=m2$se,value=logLik(m4))/c(-0.47,0.31,1.4,0.030,0.044,0.42,-550)))<0.03)

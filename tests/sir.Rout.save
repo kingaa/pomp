@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -191,7 +189,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x2a142a8>
+<environment: 0x3994c28>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -200,7 +198,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x2402248>
+<environment: 0x39e9b50>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -230,7 +228,7 @@ function (y, x, t, params, log, covars, ...)
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
-native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton ( vectorfield ) = 
 function (x, t, params, covars, ...) 
 {
@@ -245,7 +243,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x2f7d8a0>
+<environment: 0x3002c38>
 initializer = 
 function (params, t0, ...) 
 {
@@ -271,8 +269,7 @@ parameter(s):
 > x <- pomp(po,measurement.model=reports~binom(size=cases,prob=rho),
 +           rmeasure=function(x,t,params,covars,...){1})
 Warning message:
-In .local(data, ...) :
-  specifying ‘measurement.model’ overrides specification of ‘rmeasure’ and ‘dmeasure’
+specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
 > 
 > set.seed(3049953)
 > ## simulate from the model
@@ -280,7 +277,7 @@ In .local(data, ...) :
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.916847 secs
+Time difference of 0.8334277 secs
 > 
 > png(filename='sir%02d.pdf',res=100)
 > 
@@ -295,7 +292,7 @@ Time difference of 0.916847 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.606636 secs
+Time difference of 0.5515144 secs
 > 
 > f1 <- dprocess(
 +     po,
@@ -338,7 +335,7 @@ variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
 > 
 > ## now repeat using the compiled native codes built into the package
 > pompExample(euler.sir)
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > po <- euler.sir
@@ -362,14 +359,14 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 3.19298 secs
+Time difference of 2.858102 secs
 > 
 > t3 <- seq(0,20,by=1/52)
 > tic <- Sys.time()
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01712346 secs
+Time difference of 0.01652527 secs
 > 
 > g2 <- dmeasure(
 +     po,
@@ -420,7 +417,7 @@ null device
 > ## test of vectorfield integrator
 > 
 > pompExample(euler.sir)
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > 
@@ -475,10 +472,10 @@ newly created object(s):
 +        reports = (reports > 0) ? reports : 0;"),
 +     statenames=c("cases"),
 +     paramnames=c("rho"),bob=33L) -> po
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'bob'
 > 
 > simulate(po) -> po
 > 
 > proc.time()
    user  system elapsed 
-  6.048   0.244   6.529 
+  5.684   0.172   5.976 

@@ -1,5 +1,5 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -36,7 +36,11 @@ newly created object(s):
 > 
 > spp <- spect.match(sp,eval.only=TRUE)
 > plot(spp)
-> invisible(summary(sp))
+> invisible(summary(spp))
+> 
+> spp <- spect.match(sp,nsim=100,est=c("sigma","phi"))
+> plot(spp)
+> invisible(summary(spp))
 > 
 > po <- ricker
 > coef(po,"r") <- 5
@@ -68,4 +72,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  1.604   0.012   1.609 
+ 11.916   0.148  12.128 

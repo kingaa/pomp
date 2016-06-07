@@ -1,13 +1,11 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
-
-  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -23,7 +21,7 @@ Type 'q()' to quit R.
 +                     system.file("examples",package="pomp")))
 > 
 > pompExample()
-examples in /home/kingaa/R/x86_64-pc-linux-gnu-library/3.2/pomp/examples:
+examples in /userdata/kingaa/projects/Rpkg/check/pomp/examples:
 [1] "bbs"           "blowflies"     "dacca"         "euler.sir"    
 [5] "gillespie.sir" "gompertz"      "ou2"           "ricker"       
 [9] "rw2"          
@@ -163,15 +161,15 @@ c("gompertz")
 > options(pomp.examples=list(getOption("pomp.examples"),
 +                            getOption("pomp.examples")))
 > pompExample()
-examples in /home/kingaa/R/x86_64-pc-linux-gnu-library/3.2/pomp/examples:
+examples in /userdata/kingaa/projects/Rpkg/check/pomp/examples:
 [1] "bbs"           "blowflies"     "dacca"         "euler.sir"    
 [5] "gillespie.sir" "gompertz"      "ou2"           "ricker"       
 [9] "rw2"          
-examples in /home/kingaa/R/x86_64-pc-linux-gnu-library/3.2/pomp/examples:
+examples in /userdata/kingaa/projects/Rpkg/check/pomp/examples:
 [1] "bbs"           "blowflies"     "dacca"         "euler.sir"    
 [5] "gillespie.sir" "gompertz"      "ou2"           "ricker"       
 [9] "rw2"          
 > 
 > proc.time()
    user  system elapsed 
-  0.360   0.028   0.371 
+  0.576   0.084   0.667 

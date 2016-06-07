@@ -28,3 +28,31 @@ r4 <- pomp(
 coef(r4) <- coef(r2)
 y4 <- obs(simulate(r4,seed=1066L))
 max(abs(y1-y4))
+
+dat <- as.data.frame(ricker)
+try(pomp(dat) -> po)
+try(pomp(dat,times="time",t0=0,covar=dat) -> po)
+try(pomp(dat,times="time",t0=0,covar=dat,tcovar=3) -> po)
+pomp(dat,times="time",t0=0,covar=dat,tcovar=1) -> po
+try(pomp(dat,times="time",t0=0,covar=dat,tcovar="bob") -> po)
+try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
+try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
+pomp(dat$y,times=dat$time,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po
+pomp(dat$y,times=dat$time,t0=0,
+     skeleton=function(x,t,params,...){x}) -> po
+try(pomp(as.matrix(dat),times=dat$time,t0=0) -> po)
+pomp(t(as.matrix(dat)),times=dat$time,t0=0,
+     skeleton.type="map",skelmap.delta.t=1) -> po
+pomp(t(as.matrix(dat)),times=dat$time,t0=0,
+     skeleton=function(x,t,params,...){x}) -> po
+pomp(dat$y,times=dat$time,t0=0) -> po
+pomp(dat$y,times=dat$time,t0=0,
+     skeleton.type="map",skelmap.delta.t=1) -> po
+pomp(dat$y,times=dat$time,t0=0,
+     skeleton=function(x,t,params,...){x}) -> po
+try(pomp(dat$y,times=dat$time[1:10],t0=0) -> po)
+pomp(ricker,skeleton.type="map",skelmap.delta.t=1) -> po
+try(pomp(ricker,skeleton=identity(identity)) -> po)
+try(pomp(ricker,toEstimationScale=identity) -> po)
+try(pomp(ricker,fromEstimationScale=identity) -> po)
+pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po

@@ -1,13 +1,11 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
-
-  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -84,8 +82,8 @@ newly created object(s):
 +         rw.sd=c(r=0.02,K=0.02)
 +     )
 + )
-Error : ‘mif’ cannot estimate non-finite parameters.
-The following transformed parameters are non-finite: ‘r’
+Error : 'mif' cannot estimate non-finite parameters.
+The following transformed parameters are non-finite: 'r'
 > 
 > set.seed(93848585L)
 > mf <- mif(
@@ -181,4 +179,4 @@ iteration loglik     r
 > 
 > proc.time()
    user  system elapsed 
-  1.476   0.016   1.472 
+  1.916   0.076   1.966 
