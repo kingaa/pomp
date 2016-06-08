@@ -1,11 +1,13 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -91,13 +93,7 @@ Type 'q()' to quit R.
 > enkf <- enkf(pf,h=function(x)C%*%x,R=R,Np=1000)
 > eakf <- eakf(pf,C=C,R=R,Np=1000)
 > 
-> c(kf=kf$loglik,
-+   pf=logLik(pf),
-+   enkf=logLik(enkf),
-+   eakf=logLik(eakf)) %>%
-+     signif(3)
-  kf   pf enkf eakf 
--391 -392 -391 -391 
+> stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-391.0,-391.6,-390.5,-390.8)))<0.1)
 > 
 > enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
 +     ddply(~variable,summarize,n=length(value))
@@ -145,4 +141,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 14.828   0.192  15.018 
+ 12.368   0.040  12.385 
