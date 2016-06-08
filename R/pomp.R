@@ -594,7 +594,8 @@ setMethod(
     "pomp",
     signature=signature(data="numeric"),
     definition=function (data, times, t0, ...) {
-        pomp(data=matrix(data,nrow=1,ncol=length(data)),
+        pomp(data=matrix(data,nrow=1,ncol=length(data),
+                         dimnames=list("data",NULL)),
              times=times,t0=t0,...)
     }
 )

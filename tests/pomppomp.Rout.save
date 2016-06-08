@@ -17,6 +17,8 @@ Type 'q()' to quit R.
 
 > library(pomp)
 > 
+> png(filename="pomppomp-%02d.png",res=100)
+> 
 > pompExample(ricker)
 newly created object(s):
  ricker 
@@ -72,6 +74,7 @@ Warning messages:
 See '?pomp' for an explanation of the new syntax. 
 2: The 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
+> plot(po)
 > pomp(dat$y,times=dat$time,t0=0,
 +      skeleton=function(x,t,params,...){x}) -> po
 Warning message:
@@ -127,6 +130,10 @@ Error : 'pomp' error: if 'fromEstimationScale' is supplied, then 'toEstimationSc
 Warning message:
 specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
 > 
+> dev.off()
+null device 
+          1 
+> 
 > proc.time()
    user  system elapsed 
-  0.624   0.060   0.660 
+  0.712   0.076   0.765 
