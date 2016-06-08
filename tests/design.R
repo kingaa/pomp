@@ -1,5 +1,5 @@
 library(pomp)
-png(filename="design%03d.png",res=100)
+png(filename="design-%02d.png",res=100)
 
 ## Sobol' low-discrepancy design
 plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))

@@ -1,5 +1,7 @@
 library(pomp)
 
+pdf(file="bsmc2.pdf")
+
 set.seed(398585L)
 pompExample(ou2)
 
@@ -57,3 +59,30 @@ ou2 <- pomp(ou2,
 smc <- bsmc2(ou2,Np=25000,smooth=0.1,est=estnames)
 print(smc$eff.sample.size)
 print(smc$log.evidence)
+
+pompExample(ricker)
+
+set.seed(6457673L)
+
+po <- pomp(
+           ricker,
+           rprior=function (params, ...) {
+             params["r"] <- exp(runif(n=1,min=2,max=5))
+             params["sigma"] <- runif(n=1,min=0.1,max=1)
+             params
+           }
+           )
+
+Np <- 10000
+
+fit <- bsmc2(po,Np=100,est=c("r","sigma"),transform=TRUE,smooth=0.2)
+
+invisible(apply(fit$prior[c("r","sigma"),],1,mean))
+
+invisible(apply(fit$post[c("r","sigma"),],1,mean))
+
+invisible(coef(fit))
+
+plot(fit,thin=300)
+
+dev.off()

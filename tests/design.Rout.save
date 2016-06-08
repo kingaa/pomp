@@ -16,7 +16,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
-> png(filename="design%03d.png",res=100)
+> png(filename="design-%02d.png",res=100)
 > 
 > ## Sobol' low-discrepancy design
 > plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
@@ -55,4 +55,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.876   0.056   0.941 
+  0.872   0.064   0.954 

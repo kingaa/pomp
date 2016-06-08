@@ -1,9 +1,15 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.5.2}{
+  \itemize{
+    \item Improved the test suite to obtain better code coverage.
+    \item Some minor improvements to error messages.
+    \item A bug restricting access in C code to \code{userdata} has been fixed.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.5.1}{
   \itemize{
     \item New methods for the Ensemble Kalman Filter (\code{enkf}) and Ensemble Adjustment Kalman Filter (\code{eakf}) have been added to the package.
-    \item Improved the test suite to obtain better code coverage.
   }
 }
 \section{Changes in \pkg{pomp} version 1.4.9}{

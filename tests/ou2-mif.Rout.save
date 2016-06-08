@@ -222,4 +222,4 @@ pfilter timestep 100 of 100 finished
 > 
 > proc.time()
    user  system elapsed 
-  9.280   0.084   9.412 
+  9.080   0.088   9.195 

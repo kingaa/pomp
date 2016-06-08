@@ -129,4 +129,4 @@ specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasu
 > 
 > proc.time()
    user  system elapsed 
-  0.620   0.060   0.652 
+  0.624   0.060   0.660 

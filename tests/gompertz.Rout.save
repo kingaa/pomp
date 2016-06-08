@@ -179,4 +179,4 @@ iteration loglik     r
 > 
 > proc.time()
    user  system elapsed 
-  1.916   0.076   1.966 
+  1.916   0.088   1.970 

@@ -189,7 +189,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x3994c28>
+<environment: 0x271e358>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -198,7 +198,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x39e9b50>
+<environment: 0x27732c0>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -243,7 +243,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x3002c38>
+<environment: 0x1d8cdb8>
 initializer = 
 function (params, t0, ...) 
 {
@@ -277,7 +277,7 @@ specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasu
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.8334277 secs
+Time difference of 0.8180735 secs
 > 
 > png(filename='sir%02d.pdf',res=100)
 > 
@@ -292,7 +292,7 @@ Time difference of 0.8334277 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.5515144 secs
+Time difference of 0.4243145 secs
 > 
 > f1 <- dprocess(
 +     po,
@@ -340,18 +340,13 @@ newly created object(s):
  euler.sir 
 > po <- euler.sir
 > 
-> coef(po,trans=FALSE)
-   gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
-2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
-     rho      S_0      I_0      R_0 
-6.00e-01 6.50e-02 1.00e-03 9.35e-01 
-> coef(po,trans=TRUE)
-        gamma            mu          iota         beta1         beta2 
- 3.258097e+00 -3.912023e+00 -4.605170e+00  5.991465e+00  6.173786e+00 
-        beta3       beta.sd           pop           rho           S_0 
- 5.768321e+00 -6.907755e+00  2.100000e+06  4.054651e-01 -2.734368e+00 
-          I_0           R_0 
--6.908755e+00 -6.820825e-02 
+> stopifnot(all.equal(
++     partrans(po,coef(po,trans=FALSE),dir="to"),
++     coef(po,trans=TRUE)))
+> stopifnot(all.equal(
++     partrans(po,coef(po,trans=TRUE),dir="from"),
++     coef(po,trans=FALSE),
++     tolerance=1.5e-6))
 > 
 > set.seed(3049953)
 > ## simulate from the model
@@ -359,14 +354,14 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.858102 secs
+Time difference of 2.87808 secs
 > 
 > t3 <- seq(0,20,by=1/52)
 > tic <- Sys.time()
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01652527 secs
+Time difference of 0.01694155 secs
 > 
 > g2 <- dmeasure(
 +     po,
@@ -478,4 +473,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  5.684   0.172   5.976 
+  5.464   0.248   5.806 

@@ -200,8 +200,13 @@ print(h1[c("S","I","R"),,],digits=4)
 pompExample(euler.sir)
 po <- euler.sir
 
-coef(po,trans=FALSE)
-coef(po,trans=TRUE)
+stopifnot(all.equal(
+    partrans(po,coef(po,trans=FALSE),dir="to"),
+    coef(po,trans=TRUE)))
+stopifnot(all.equal(
+    partrans(po,coef(po,trans=TRUE),dir="from"),
+    coef(po,trans=FALSE),
+    tolerance=1.5e-6))
 
 set.seed(3049953)
 ## simulate from the model

@@ -1,0 +1,71 @@
+
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> set.seed(2130639172L)
+> 
+> reulermultinom(n=5,size=100,rate=c(1,2,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    5    6    7   11    5
+[2,]   18   17   16   16   20
+[3,]   20   22   21   23   20
+> reulermultinom(n=5,size=-3,rate=c(1,2,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]  NaN  NaN  NaN  NaN  NaN
+[2,]  NaN  NaN  NaN  NaN  NaN
+[3,]  NaN  NaN  NaN  NaN  NaN
+> reulermultinom(n=5,size=100,rate=c(1,-2,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]  NaN  NaN  NaN  NaN  NaN
+[2,]  NaN  NaN  NaN  NaN  NaN
+[3,]  NaN  NaN  NaN  NaN  NaN
+> reulermultinom(n=5,size=100,rate=c(1,NA,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    0    0    0    0
+[2,]    0    0    0    0    0
+[3,]    0    0    0    0    0
+> reulermultinom(n=5,size=100.3,rate=c(1,2,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]  NaN  NaN  NaN  NaN  NaN
+[2,]  NaN  NaN  NaN  NaN  NaN
+[3,]  NaN  NaN  NaN  NaN  NaN
+> reulermultinom(n=0,size=100,rate=c(1,2,3),dt=0.1)
+    
+[1,]
+[2,]
+[3,]
+> try(reulermultinom(n=-2,size=100,rate=c(1,2,3),dt=0.1))
+Error in .Call(R_Euler_Multinom, n, size, rate, dt) : 
+  negative length vectors are not allowed
+> reulermultinom(n=1,size=100,rate=c(1,2e400,3),dt=0.1)
+     [,1]
+[1,]    0
+[2,]  NaN
+[3,]  NaN
+Warning messages:
+1: In reulermultinom(n = 1, size = 100, rate = c(1, Inf, 3), dt = 0.1) :
+  reulermultinom: result of binomial draw is not finite
+2: In reulermultinom(n = 1, size = 100, rate = c(1, Inf, 3), dt = 0.1) :
+  reulermultinom: result of binomial draw is not finite
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  0.728   0.060   0.864 
