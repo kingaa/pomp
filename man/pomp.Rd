@@ -19,24 +19,15 @@
   The preferred way to specify most components (as detailed below) is through the use of \code{\link{Csnippet}}s, snippets of C that are compiled and linked into a running \R session.
 }
 \usage{
-\S4method{pomp}{data.frame}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
+\S4method{pomp}{matrix}(data, times, t0, \dots,
+       rprocess, dprocess, rmeasure, dmeasure,
        measurement.model,
        skeleton, skeleton.type, skelmap.delta.t,
        initializer, rprior, dprior, params, covar, tcovar,
        obsnames, statenames, paramnames, covarnames, zeronames,
        PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
-\S4method{pomp}{numeric}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model,
-       skeleton, skeleton.type, skelmap.delta.t,
-       initializer, rprior, dprior, params, covar, tcovar,
-       obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
-\S4method{pomp}{matrix}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model,
-       skeleton, skeleton.type, skelmap.delta.t,
-       initializer, rprior, dprior, params, covar, tcovar,
-       obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
+\S4method{pomp}{data.frame}(data, times, t0, \dots)
+\S4method{pomp}{numeric}(data, times, t0, \dots)
 \S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
        measurement.model, skeleton, skeleton.type, skelmap.delta.t,
        initializer, rprior, dprior, params, covar, tcovar,
@@ -46,8 +37,8 @@
 \arguments{
   \item{data, times}{
     The time series data and times at which observations are made.
-    \code{data} can be specified as a vector, a matrix, a data-frame.
-    Alternatively, a \code{pomp} object can be supplied in the \code{data} argument.
+    \code{data} can be specified as a vector, a matrix, or a data-frame.
+    In addition, a \code{pomp} object can be supplied in the \code{data} argument.
 
     If \code{data} is a numeric vector, \code{times} must be a numeric vector of the same length.
 
