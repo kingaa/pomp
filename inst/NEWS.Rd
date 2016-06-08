@@ -5,6 +5,7 @@
     \item Improved the test suite to obtain better code coverage.
     \item Some minor improvements to error messages.
     \item A bug restricting access in C code to \code{userdata} has been fixed.
+    \item Fixed bug in \code{pompExample(...,show=TRUE)}.
   }
 }
 \section{Changes in \pkg{pomp} version 1.5.1}{

@@ -8,3 +8,5 @@ pompExample(gompertz,show=TRUE)
 options(pomp.examples=list(getOption("pomp.examples"),
                            getOption("pomp.examples")))
 pompExample()
+names(pompExample(gompertz,envir=NULL))
+

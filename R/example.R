@@ -20,11 +20,12 @@ pompExample <- function (example, ..., show = FALSE, envir = .GlobalEnv) {
         if (length(file)>1) {
             warning("using ",sQuote(file[1])," from ",sQuote(names(file)[1]))
         }
-        objs <- source(file[1],local=evalEnv)
         if (show) {
             file.show(file[1])
             return(invisible(NULL))
-        } else if (is.null(envir)) {
+        }
+        objs <- source(file[1],local=evalEnv)
+        if (is.null(envir)) {
             obj <- setNames(lapply(objs$value,get,envir=evalEnv),objs$value)
         } else if (is.environment(envir)) {
             for (i in seq_along(objs$value)) {
