@@ -74,7 +74,7 @@ y %>% melt() %>% dcast(time~variable) %>%
 enkf <- enkf(pf,h=function(x)C%*%x,R=R,Np=1000)
 eakf <- eakf(pf,C=C,R=R,Np=1000)
 
-stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-391.0,-391.6,-390.5,-390.8)))<0.1)
+stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-391.0,-391.6,-390.5,-390.8)))<1)
 
 enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
     ddply(~variable,summarize,n=length(value))
