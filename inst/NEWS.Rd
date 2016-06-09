@@ -3,6 +3,8 @@
 \section{Changes in \pkg{pomp} version 1.5.2}{
   \itemize{
     \item Improved the test suite to obtain better code coverage.
+    \item \code{pomp} is no longer an S4 method.
+    Its new status as an ordinary function abbreviates and consolidates the code and simplifies the documentation.
     \item Some minor improvements to error messages.
     \item A bug restricting access in C code to \code{userdata} has been fixed.
     \item Fixed bug in \code{pompExample(...,show=TRUE)}.
