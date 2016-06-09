@@ -2,7 +2,7 @@ library(pomp)
 
 pompExample(ou2)
 
-png(file="ou2-mif2-%02d.png",res=100)
+png(file="mif2-%02d.png",res=100)
 
 set.seed(64857673L)
 options(digits=3)

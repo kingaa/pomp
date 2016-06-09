@@ -12,7 +12,7 @@ dprior.ou2 <- function (params, log, ...) {
   if (log) f else exp(f)
 }
 
-pdf(file="ou2-pmcmc.pdf")
+pdf(file="pmcmc.pdf")
 
 pmcmc(
       pomp(ou2,dprior=dprior.ou2),

@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -21,7 +23,7 @@ Type 'q()' to quit R.
 newly created object(s):
  ou2 
 > 
-> png(file="ou2-mif2-%02d.png",res=100)
+> png(file="mif2-%02d.png",res=100)
 > 
 > set.seed(64857673L)
 > options(digits=3)
@@ -123,4 +125,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 18.280   0.144  18.557 
+ 20.292   0.164  20.602 

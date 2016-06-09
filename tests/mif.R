@@ -2,6 +2,8 @@ library(pomp)
 
 pompExample(ou2)
 
+png(file="mif-%02d.png",res=100)
+
 set.seed(64857673L)
 options(digits=3)
 
@@ -48,7 +50,6 @@ mif2 <- mif(ou2,Nmif=30,start=guess2,
             max.fail=100
             )
 
-png(file="ou2-mif-%02d.png",res=100)
 plot(mif1)
 plot(mif12 <- c(mif1,mif2))
 coef(mif2)

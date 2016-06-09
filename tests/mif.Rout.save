@@ -1,5 +1,5 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -22,6 +22,8 @@ Type 'q()' to quit R.
 > pompExample(ou2)
 newly created object(s):
  ou2 
+> 
+> png(file="mif-%02d.png",res=100)
 > 
 > set.seed(64857673L)
 > options(digits=3)
@@ -81,7 +83,6 @@ particle filter log likelihood at truth
 +             max.fail=100
 +             )
 > 
-> png(file="ou2-mif-%02d.png",res=100)
 > plot(mif1)
 > plot(mif12 <- c(mif1,mif2))
 > coef(mif2)
@@ -227,4 +228,4 @@ Use ‘mif2’ instead.
 > 
 > proc.time()
    user  system elapsed 
-  7.764   0.032   7.771 
+ 10.548   0.112  10.797 
