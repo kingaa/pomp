@@ -153,3 +153,4 @@ fit <- mif(
            rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
            cooling.fraction=0.95^50,ic.lag=10,var.factor=1
            )
+try(mif(fit,Nmif=2,method="mif2"))

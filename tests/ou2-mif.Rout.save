@@ -1,11 +1,13 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -108,7 +110,7 @@ null device
 +         Np=100,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: 'cooling.fraction.50' must be specified
+Error : mif error: ‘cooling.fraction.50’ must be specified
 > 
 > try(
 +     mif(
@@ -120,7 +122,7 @@ Error : mif error: 'cooling.fraction.50' must be specified
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : number of particles, 'Np', must always be positive
+Error : number of particles, ‘Np’, must always be positive
 > 
 > try(
 +     mif(
@@ -132,7 +134,7 @@ Error : number of particles, 'Np', must always be positive
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: 'Nmif' must be a positive integer
+Error : mif error: ‘Nmif’ must be a positive integer
 > 
 > try(
 +     mif(
@@ -145,8 +147,8 @@ Error : mif error: 'Nmif' must be a positive integer
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : 'mif' cannot estimate non-finite parameters.
-The following parameters are non-finite: 'alpha.4'
+Error : ‘mif’ cannot estimate non-finite parameters.
+The following parameters are non-finite: ‘alpha.4’
 > 
 > try(
 +     mif(
@@ -159,8 +161,8 @@ The following parameters are non-finite: 'alpha.4'
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : 'mif' cannot estimate non-finite parameters.
-The following parameters are non-finite: 'x2.0'
+Error : ‘mif’ cannot estimate non-finite parameters.
+The following parameters are non-finite: ‘x2.0’
 > 
 > fit <- mif(
 +            ou2,
@@ -219,7 +221,10 @@ pfilter timestep 100 of 100 finished
 +            rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
 +            cooling.fraction=0.95^50,ic.lag=10,var.factor=1
 +            )
+> try(mif(fit,Nmif=2,method="mif2"))
+Error : method=‘mif2’ has been removed.
+Use ‘mif2’ instead.
 > 
 > proc.time()
    user  system elapsed 
-  9.080   0.088   9.195 
+  7.764   0.032   7.771 

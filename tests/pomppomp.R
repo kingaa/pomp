@@ -36,6 +36,7 @@ try(pomp(dat) -> po)
 try(pomp(dat,times="time",t0=0,covar=dat) -> po)
 try(pomp(dat,times="time",t0=0,covar=dat,tcovar=3) -> po)
 pomp(dat,times="time",t0=0,covar=dat,tcovar=1) -> po
+pomp(dat,times=1,t0=0,covar=dat,tcovar=1) -> po
 try(pomp(dat,times="time",t0=0,covar=dat,tcovar="bob") -> po)
 try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
 try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)

@@ -3,7 +3,7 @@
 library(pomp) 
 pompExample(ou2)
 
-pdf(file='ou2-abc.pdf')
+pdf(file='abc.pdf')
 
 set.seed(2079015564L)
 
