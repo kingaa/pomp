@@ -8,9 +8,6 @@ before_install:
 r_github_packages:
   - jimhester/covr
 
-after_success:
-  - travis_wait 20 Rscript -e 'covr::codecov()'
-
 notifications:
   email:
     on_success: change
@@ -22,6 +19,8 @@ matrix:
       env: RVERSION=3.1.2
     - os: linux
       env: RVERSION=release
+      after_success:
+        - travis_wait 20 Rscript -e 'covr::codecov()'
     - os: linux
       env: RVERSION=devel
     - os: osx
