@@ -1,16 +1,8 @@
 \name{pomp constructor}
 \title{Constructor of the basic POMP object}
-\alias{pomp constructor}
 \alias{pomp}
-\alias{pomp,data.frame-method}
-\alias{data.frame-pomp}
-\alias{pomp,numeric-method}
-\alias{numeric-pomp}
-\alias{pomp,matrix-method}
-\alias{matrix-pomp}
-\alias{pomp,pomp-method}
-\alias{pomp-pomp}
 \alias{pomp-class}
+\alias{pomp constructor}
 \alias{accumulator variables}
 \description{
   This function constructs a \code{pomp} object,
@@ -19,36 +11,23 @@
   The preferred way to specify most components (as detailed below) is through the use of \code{\link{Csnippet}}s, snippets of C that are compiled and linked into a running \R session.
 }
 \usage{
-\S4method{pomp}{matrix}(data, times, t0, \dots,
-       rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model,
-       skeleton, skeleton.type, skelmap.delta.t,
-       initializer, rprior, dprior, params, covar, tcovar,
-       obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
-\S4method{pomp}{data.frame}(data, times, t0, \dots)
-\S4method{pomp}{numeric}(data, times, t0, \dots)
-\S4method{pomp}{pomp}(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-       measurement.model, skeleton, skeleton.type, skelmap.delta.t,
-       initializer, rprior, dprior, params, covar, tcovar,
-       obsnames, statenames, paramnames, covarnames, zeronames,
-       PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
+pomp(data, times, t0, \dots,
+     rprocess, dprocess, rmeasure, dmeasure, measurement.model,
+     skeleton, skeleton.type, skelmap.delta.t,
+     initializer, rprior, dprior, params, covar, tcovar,
+     obsnames, statenames, paramnames, covarnames, zeronames,
+     PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
 }
 \arguments{
   \item{data, times}{
     The time series data and times at which observations are made.
-    \code{data} can be specified as a vector, a matrix, or a data-frame.
-    In addition, a \code{pomp} object can be supplied in the \code{data} argument.
-
-    If \code{data} is a numeric vector, \code{times} must be a numeric vector of the same length.
-
-    If \code{data} is a matrix, it should have dimensions \code{nobs} x \code{ntimes}, where \code{nobs} is the number of observed variables and \code{ntimes} is the number of times at which observations were made (i.e., each column is a distinct observation of the \code{nobs} variables).
-    In this case, \code{times} must be given as a numeric vector (of length \code{ntimes}).
-
-    If \code{data} is a data-frame, \code{times} must name the column of observation times.
-    Note that, in this case, \code{data} will be internally coerced to an array with storage-mode \sQuote{double}.
-
+    \code{data} should typically be given as a data-frame and \code{times} must indicate the column of observation times by name or index.
     \code{times} must be numeric and strictly increasing.
+    Internally, \code{data} will be internally coerced to an array with storage-mode \sQuote{double}.
+
+    In addition, a \code{pomp} object can be supplied in the \code{data} argument.
+    In this case, additional arguments will add or replace elements of the \code{pomp} object.
+    See below under \bold{Value} for an explanation.
   }
   \item{t0}{
     The zero-time, at which the stochastic dynamical system is to be initialized.
@@ -257,9 +236,9 @@
   }
 }
 \value{
-  \code{pomp} returns an object of class \code{pomp}.
-  If \code{data} is an object of class \code{pomp}, then by default the returned \code{pomp} object is identical to \code{data}.
-  If additional arguments are given, these override the defaults.
+  The \code{pomp} constructor function returns an object, call it \code{P}, of class \code{pomp}.
+  \code{P} contains, in addition to the data, any elements of the model that have been specified as arguments to the \code{pomp} constructor function.
+  One can add or modify elements of \code{P} by means of further calls to \code{pomp}, using \code{P} as the first argument in such calls.
 }
 \section{Important note}{
   \strong{

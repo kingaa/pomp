@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -55,7 +55,7 @@ newly created object(s):
 > 
 > dat <- as.data.frame(ricker)
 > try(pomp(dat) -> po)
-Error in .local(data, ...) : argument "times" is missing, with no default
+Error in pomp(dat) : argument "times" is missing, with no default
 > try(pomp(dat,times="time",t0=0,covar=dat) -> po)
 Error : 'pomp' error: if 'covar' is supplied, 'tcovar' must also be supplied
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=3) -> po)
@@ -136,4 +136,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.712   0.076   0.765 
+  0.392   0.024   0.405 

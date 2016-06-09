@@ -1,6 +1,4 @@
-## basic constructor
-setGeneric("pomp",function(data,...)standardGeneric("pomp"))
-
+## basic methods
 setGeneric("print",function(x,...)standardGeneric("print"))
 setGeneric("plot",function(x,y,...)standardGeneric("plot"))
 setGeneric("summary",function(object,...)standardGeneric("summary"))

@@ -64,7 +64,6 @@ exportClasses(
 )
 
 exportMethods(
-    pomp,
     plot,show,print,coerce,summary,logLik,window,"$",
     pompLoad,pompUnload,
     dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
@@ -91,6 +90,7 @@ S3method(as.data.frame,pfilterd.pomp)
 S3method(as.data.frame,probed.pomp)
 
 export(
+    pomp,
     bake,stew,freeze,
     Csnippet,
     reulermultinom,
