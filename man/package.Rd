@@ -14,21 +14,22 @@
   The first step in using \pkg{pomp} is to encode one's model(s) and data in objects of class \code{pomp}.
   One does this via a call to \code{\link{pomp}}, which involves specifying the unobserved state process and the measurement process of the model.
   Details on this are given in the documentation for the \code{\link{pomp}} constructor function.
-  Examples are given in the tutorials on the \href{http://kingaa.github.io/pomp}{package website}, in the demos (\code{demo(package='pomp')}), and via the \code{\link{pompExample}} function.
+  Examples are given in the tutorials on the \href{http://kingaa.github.io/pomp}{package website}, in the demos, and via the \code{\link{pompExample}} function.
+  See a list of the demos via \preformatted{demo(package='pomp').}
 
   \pkg{pomp} version \Sexpr[echo=FALSE,stage=build,results=text]{packageDescription("pomp",fields="Version")} provides algorithms for
   \enumerate{
     \item simulation of stochastic dynamical systems; see \code{\link[=simulate-pomp]{simulate}}
     \item particle filtering (AKA sequential Monte Carlo or sequential importance sampling); see \code{\link{pfilter}}
     \item the iterated filtering methods of Ionides et al. (2006, 2011, 2015);
-    see \code{\link{mif}} and \code{\link{mif2}}
+    see \code{\link{mif2}}
     \item the nonlinear forecasting algorithm of Kendall et al. (2005); see \code{\link{nlf}}
     \item the particle MCMC approach of Andrieu et al. (2010); see \code{\link{pmcmc}}
     \item the probe-matching method of Kendall et al. (1999, 2005); see \code{\link{probe.match}}
     \item a spectral probe-matching method (Reuman et al. 2006, 2008); see \code{\link{spect.match}}
     \item synthetic likelihood a la Wood (2010); see \code{\link{probe}}
     \item approximate Bayesian computation (Toni et al. 2009); see \code{\link{abc}}
-    \item the approximate Bayesian sequential Monte Carlo scheme of Liu & West (2001); see \code{\link{bsmc}}
+    \item the approximate Bayesian sequential Monte Carlo scheme of Liu & West (2001); see \code{\link{bsmc2}}
     \item simple trajectory matching; see \code{\link{traj.match}}.
   }
   The package also provides various tools for plotting and extracting information on models and data.
@@ -42,12 +43,12 @@
 }
 \section{Comments, bug reports, feature requests}{
   Contributions are welcome, as are comments, feature requests, and bug reports.
-  Please submit these via the issues page (\url{https://github.com/kingaa/pomp/issues}).
-  See the package website \url{http://kingaa.github.io/pomp} for more information, access to the package new RSS feed, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
-  Help requests are welcome, but please read the FAQ (\url{http://kingaa.github.io/pomp/FAQ.html#how-can-i-submit-an-effective-request-for-help}) before sending requests.
+  Please submit these via the \href{https://github.com/kingaa/pomp/issues}{issues page}.
+  See the \href{http://kingaa.github.io/pomp}{package website} for more information, access to the package new RSS feed, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
+  Help requests are welcome, but please read the \href{http://kingaa.github.io/pomp/FAQ.html#how-can-i-submit-an-effective-request-for-help}{FAQ} before sending requests.
 }
 \section{Documentation}{
-  A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the package homepage: \url{http://kingaa.github.io/pomp}.
+  A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the \href{http://kingaa.github.io/pomp/docs.html}{package webpage}.
   Several examples of the construction of \code{pomp} objects are provided with the package and are documented in the help pages: to view a full list of these, execute \code{pompExample()}.
   In addition, there are a number of demos, which can be viewed by executing \code{demo(package="pomp")}.
 }

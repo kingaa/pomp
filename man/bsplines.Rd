@@ -37,7 +37,7 @@ periodic.bspline.basis(x, nbasis, degree = 3, period = 1, names = NULL)
 }
 \section{C API}{
   Access to the underlying C routines is available:
-  see the header file \file{pomp.h} for definition and documentation of the C API.
+  see the header file \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}} for definition and documentation of the C API.
   At an \R prompt, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view this file.
 }
 \author{Aaron A. King}

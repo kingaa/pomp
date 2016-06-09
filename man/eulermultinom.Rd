@@ -60,7 +60,7 @@ rgammawn(n = 1, sigma, dt)
 }
 \section{C API}{
   An interface for C codes using these functions is provided by the package.
-  At an \R prompt, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view the header file that defines and explains the API.
+  At an \R prompt, execute \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view the \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h} header file} that defines and explains the API.
 }
 \author{Aaron A. King}
 \examples{

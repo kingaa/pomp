@@ -133,8 +133,8 @@
     \item{coef}{
       \code{coef(object)} returns the contents of the \code{params} slot of \code{object}.
       \code{coef(object,pars)} returns only those parameters named in \code{pars}.
-      \preformatted{coef(object,transform=TRUE)} returns \preformatted{parameter.inv.transform(coef(object))}, where \code{parameter.inv.transform} is the user parameter inverse transformation function specified when \code{object} was created.
-      Likewise, \preformatted{coef(object,pars,transform=TRUE)} returns \preformatted{parameter.inv.transform(coef(object))[pars]}.
+      \preformatted{coef(object,transform=TRUE)} returns \preformatted{parameter.inv.transform(coef(object)),} where \code{parameter.inv.transform} is the user parameter inverse transformation function specified when \code{object} was created.
+      Likewise, \preformatted{coef(object,pars,transform=TRUE)} returns \preformatted{parameter.inv.transform(coef(object))[pars].}
     }
     \item{coef<-}{
       Assigns values to the \code{params} slot of the \code{pomp} object.
