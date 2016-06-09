@@ -189,7 +189,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x271e358>
+<environment: 0x3bc6550>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -198,7 +198,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x27732c0>
+<environment: 0x3a04e68>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -243,7 +243,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x1d8cdb8>
+<environment: 0x353ac80>
 initializer = 
 function (params, t0, ...) 
 {
@@ -277,7 +277,7 @@ specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasu
 > x <- simulate(po,nsim=3)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.8180735 secs
+Time difference of 0.8451374 secs
 > 
 > png(filename='sir%02d.pdf',res=100)
 > 
@@ -292,7 +292,7 @@ Time difference of 0.8180735 secs
 > X3 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.4243145 secs
+Time difference of 0.6435506 secs
 > 
 > f1 <- dprocess(
 +     po,
@@ -354,14 +354,14 @@ newly created object(s):
 > x <- simulate(po,nsim=100)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 2.87808 secs
+Time difference of 3.129058 secs
 > 
 > t3 <- seq(0,20,by=1/52)
 > tic <- Sys.time()
 > X4 <- trajectory(po,times=t3,hmax=1/52)
 > toc <- Sys.time()
 > print(toc-tic)
-Time difference of 0.01694155 secs
+Time difference of 0.01715994 secs
 > 
 > g2 <- dmeasure(
 +     po,
@@ -473,4 +473,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  5.464   0.248   5.806 
+  6.068   0.248   6.428 

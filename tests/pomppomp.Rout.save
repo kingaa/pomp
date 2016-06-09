@@ -1,13 +1,11 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
-
-  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -57,31 +55,86 @@ newly created object(s):
 > 
 > dat <- as.data.frame(ricker)
 > try(pomp(dat) -> po)
-Error in .local(data, ...) : argument "times" is missing, with no default
+Error in pomp(dat) : argument "times" is missing, with no default
 > try(pomp(dat,times="time",t0=0,covar=dat) -> po)
-Error in pomp.constructor(data = data, times = times, t0 = t0, rprocess = rprocess,  : 
-  pomp error: if ‘covar’ is supplied, ‘tcovar’ must also be supplied
+Error : 'pomp' error: if 'covar' is supplied, 'tcovar' must also be supplied
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=3) -> po)
-Error in pomp.constructor(data = data, times = times, t0 = t0, rprocess = rprocess,  : 
-  pomp error: if ‘covar’ is a data frame, ‘tcovar’ should indicate the time variable
+Error : 'pomp' error: if 'covar' is a data frame, 'tcovar' should indicate the time variable
 > pomp(dat,times="time",t0=0,covar=dat,tcovar=1) -> po
 > pomp(dat,times=1,t0=0,covar=dat,tcovar=1) -> po
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar="bob") -> po)
-Error in pomp.constructor(data = data, times = times, t0 = t0, rprocess = rprocess,  : 
-  pomp error: if ‘covar’ is a data frame, ‘tcovar’ should indicate the time variable
+Error : 'pomp' error: if 'covar' is a data frame, 'tcovar' should indicate the time variable
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
-Error in pomp.constructor(data = data, times = times, t0 = t0, rprocess = rprocess,  : 
-  pomp error: covariate(s) henry are not among the columns of ‘covar’
+Error in get(as.character(FUN), mode = "function", envir = envir) : 
+  object 'henry' of mode 'function' was not found
 > try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
-Error in pomp.constructor(data = data, times = times, t0 = t0, rprocess = rprocess,  : 
-  if one of ‘fromEstimationScale’, ‘toEstimationScale’ is supplied, then so must the other
+Error : if one of 'fromEstimationScale', 'toEstimationScale' is supplied, then so must the other
 > pomp(dat$y,times=dat$time,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po
 Warning messages:
-1: The ‘skeleton.type’ argument is deprecated and will be removed in a future release.
-See ‘?pomp’ for an explanation of the new syntax. 
-2: The ‘skelmap.delta.t’ argument is deprecated and will be removed in a future release.
-See ‘?pomp’ for an explanation of the new syntax. 
+1: The 'skeleton.type' argument is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+2: The 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
 > plot(po)
-Error in `[.data.frame`(X, vv) : undefined columns selected
-Calls: plot ... plotpomp.internal -> plotpomp -> NCOL -> [ -> [.data.frame
-Execution halted
+> pomp(dat$y,times=dat$time,t0=0,
++      skeleton=function(x,t,params,...){x}) -> po
+Warning message:
+In 'pomp', the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+> try(pomp(as.matrix(dat),times=dat$time,t0=0) -> po)
+Error in validObject(.Object) : 
+  invalid class "pomp" object: the length of 'times' should match the number of observations
+> pomp(t(as.matrix(dat)),times=dat$time,t0=0,
++      skeleton.type="map",skelmap.delta.t=1) -> po
+Warning messages:
+1: The 'skeleton.type' argument is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+2: The 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+> pomp(t(as.matrix(dat)),times=dat$time,t0=0,
++      skeleton=function(x,t,params,...){x}) -> po
+Warning message:
+In 'pomp', the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+> pomp(dat$y,times=dat$time,t0=0) -> po
+> pomp(dat$y,times=dat$time,t0=0,
++      skeleton.type="map",skelmap.delta.t=1) -> po
+Warning messages:
+1: The 'skeleton.type' argument is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+2: The 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+> pomp(dat$y,times=dat$time,t0=0,
++      skeleton=function(x,t,params,...){x}) -> po
+Warning message:
+In 'pomp', the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+> try(pomp(dat$y,times=dat$time[1:10],t0=0) -> po)
+Error in validObject(.Object) : 
+  invalid class "pomp" object: the length of 'times' should match the number of observations
+> pomp(ricker,skeleton.type="map",skelmap.delta.t=1) -> po
+Warning messages:
+1: The 'skeleton.type' argument is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+2: The 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+> try(pomp(ricker,skeleton=identity(identity)) -> po)
+Error : 'skeleton' must be a function of prototype skeleton(x, t, params, ...)
+In addition: Warning message:
+In 'pomp', the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+> try(pomp(ricker,toEstimationScale=identity) -> po)
+Error : 'pomp' error: if 'toEstimationScale' is supplied, then 'fromEstimationScale' must also be supplied
+> try(pomp(ricker,fromEstimationScale=identity) -> po)
+Error : 'pomp' error: if 'fromEstimationScale' is supplied, then 'toEstimationScale' must also be supplied
+> pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
+Warning message:
+specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
+> 
+> dev.off()
+null device 
+          1 
+> 
+> proc.time()
+   user  system elapsed 
+  0.652   0.088   0.741 

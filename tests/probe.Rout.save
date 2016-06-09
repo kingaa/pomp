@@ -1,13 +1,11 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
-
-  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -71,7 +69,7 @@ newly created object(s):
 +                 )
 Warning message:
 In probe.acf(var = "y1", lags = c(0, 1, 2), type = "corr") :
-  useless zero lag discarded in ‘probe.acf’
+  useless zero lag discarded in 'probe.acf'
 > plot(pm.ou2)
 > 
 > pb <- probe(
@@ -102,7 +100,7 @@ In probe.acf(var = "y1", lags = c(0, 1, 2), type = "corr") :
 +             )
 Warning message:
 In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
-  useless zero lag discarded in ‘probe.acf’
+  useless zero lag discarded in 'probe.acf'
 > x <- as.data.frame(po)
 > mx <- sapply(x,mean)
 > x <- sweep(x,2,mx)
@@ -469,4 +467,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 15.808   0.088  15.865 
+ 19.152   0.232  19.402 

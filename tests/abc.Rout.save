@@ -1,13 +1,11 @@
 
-R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
-
-  Natural language support but running in an English locale
 
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
@@ -120,7 +118,7 @@ newly created object(s):
 > 
 > try(abc7 <- c(abc2,abc3))
 Error in validObject(.Object) : 
-  invalid class “abcList” object: error in ‘c’: to be combined, ‘abc’ objects must have chains of equal length
+  invalid class "abcList" object: error in 'c': to be combined, 'abc' objects must have chains of equal length
 > plot(abc7 <- c(abc2,abc4))
 > plot(abc7,scatter=TRUE)
 > plot(conv.rec(c(abc2,abc4)))
@@ -174,4 +172,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 11.288   0.040  11.297 
+ 14.220   0.128  14.344 

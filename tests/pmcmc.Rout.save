@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -60,7 +58,7 @@ newly created object(s):
 > 
 > try(ff <- c(f3,f4))
 Error in validObject(.Object) : 
-  invalid class “pmcmcList” object: error in ‘c’: to be combined, ‘pmcmc’ objects must have chains of equal length
+  invalid class "pmcmcList" object: error in 'c': to be combined, 'pmcmc' objects must have chains of equal length
 > 
 > if (Sys.getenv("FULL_TESTS")=="yes") {
 +   f2a <- pmcmc(f1,Nmcmc=1000,Np=100,verbose=FALSE)
@@ -92,15 +90,85 @@ Error in validObject(.Object) :
 > 
 > try(ff <- c(ff,f4,f6))
 Error in validObject(.Object) : 
-  invalid class “pmcmcList” object: error in ‘c’: to be combined, ‘pmcmc’ objects must have chains of equal length
+  invalid class "pmcmcList" object: error in 'c': to be combined, 'pmcmc' objects must have chains of equal length
 > try(ff <- c(f4,ou2))
-Error in c(f4, ou2) : cannot mix ‘pmcmc’ and non-‘pmcmc’ objects
+Error in c(f4, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
 > try(ff <- c(ff,ou2))
-Error in c(ff, ou2) : cannot mix ‘pmcmc’ and non-‘pmcmc’ objects
+Error in c(ff, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
 > 
 > plot(ff <- c(ff,f5))
 > print(signif(covmat(ff),2))
-Error in unique.default(c("alpha.2", "alpha.3"), c("alpha.2", "alpha.3" : 
-  'fromLast' must be TRUE or FALSE
-Calls: print ... covmat -> .local -> do.call -> <Anonymous> -> unique.default
-Execution halted
+        alpha.2 alpha.3
+alpha.2 1.9e-04 2.3e-05
+alpha.3 2.3e-05 2.4e-05
+Warning message:
+In covmat.internal(traces = as.array(conv.rec(object, pars)), start = start,  :
+  only 21 points being used to estimate covariance matrix
+> plot(conv.rec(c(f2,ff),c("alpha.2","alpha.3")))
+> plot(conv.rec(ff[2],c("alpha.2")))
+> plot(conv.rec(ff[2:3],c("alpha.3")))
+> plot(window(conv.rec(ff[2:3],c("alpha.3")),thin=3,start=2))
+> plot(conv.rec(ff[[3]],c("alpha.3")))
+> 
+> sig <- array(data=c(0.1,-0.1,0,0.01),
++              dim=c(2,2),
++              dimnames=list(
++                c("alpha.2","alpha.3"),
++                c("alpha.2","alpha.3")))
+> sig <- crossprod(sig)
+> 
+> ou2 %>%
++   pomp(dprior=function (params, log, ...) {
++     f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
++     if (log) f else exp(f)
++   }) %>%
++   pmcmc(
++         Nmcmc=30,
++         proposal=mvn.rw(sig),
++         Np=100,
++         verbose=FALSE
++         ) -> f7
+> plot(f7)
+> 
+> ou2 %>%
++   pomp(dprior=function (params, log, ...) {
++     f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
++     if (log) f else exp(f)
++   }) %>%
++   pmcmc(
++         Nmcmc=500,Np=500,verbose=FALSE,
++         proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
++           scale.start=50,shape.start=50)) -> f8
+Warning message:
+1 filtering failure occurred in 'pfilter' 
+> f8 %<>% continue(Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
+> plot(f8)
+> 
+> library(coda)
+> 
+> f8 %>% conv.rec(c("alpha.2","alpha.3")) %>%
++   window(start=500) -> trace
+> trace <- window(trace,thin=5)
+> plot(trace)
+> 
+> library(ggplot2)
+> 
+> f8 %>%
++   filter.traj() %>%
++   melt() %>%
++   subset(rep %% 5 == 0) %>%
++   ddply(~time+variable,summarize,
++         prob=c(0.05,0.5,0.95),
++         q=quantile(value,prob=prob)
++         ) %>%
++   ggplot(aes(x=time,y=q,group=prob,color=factor(prob)))+
++   geom_line()+facet_grid(variable~.)+labs(color="quantile",y="value")+
++   theme_bw()
+> 
+> dev.off()
+null device 
+          1 
+> 
+> proc.time()
+   user  system elapsed 
+  72.42    0.26   72.75 

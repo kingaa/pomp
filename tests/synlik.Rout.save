@@ -109,4 +109,4 @@ alternative hypothesis: two-sided
 > 
 > proc.time()
    user  system elapsed 
-  3.584   0.072   3.627 
+  4.052   0.112   4.139 
