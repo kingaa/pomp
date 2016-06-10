@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -104,10 +104,13 @@ Error in validObject(.Object) :
 +       ) -> f5
 > f5 %>% continue(Nmcmc=20) -> f6
 > plot(f6)
+> invisible(logLik(f6))
+> invisible(conv.rec(c(f6)))
 > 
 > ff <- c(f4,f6)
 > plot(ff)
 > plot(conv.rec(ff,c("alpha.2","alpha.3","loglik")))
+> invisible(filter.traj(ff))
 > 
 > ff <- c(f2,f3)
 > 
@@ -192,4 +195,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 16.708   0.148  16.856 
+ 16.964   0.156  17.123 

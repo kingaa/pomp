@@ -70,10 +70,13 @@ pmcmc(
       ) -> f5
 f5 %>% continue(Nmcmc=20) -> f6
 plot(f6)
+invisible(logLik(f6))
+invisible(conv.rec(c(f6)))
 
 ff <- c(f4,f6)
 plot(ff)
 plot(conv.rec(ff,c("alpha.2","alpha.3","loglik")))
+invisible(filter.traj(ff))
 
 ff <- c(f2,f3)
 
