@@ -564,21 +564,21 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         } else {
             skeleton <- substitute(skeleton)
             skeleton.type <- "undef"
-            map <- function (f, delta.t = 1) {
-                skeleton.type <<- "map"
-                if (delta.t <= 0)
-                    stop("in ",sQuote("map"),", ",sQuote("delta.t"),
-                         " must be positive",call.=FALSE)
-                skelmap.delta.t <<- as.numeric(delta.t)
-                f
-            }
-            vectorfield <- function (f) {
-                skeleton.type <<- "vectorfield"
-                f
-            }
-            assign("map",map)
-            assign("vectorfield",vectorfield)
-            skeleton <- eval(skeleton)
+            flist <- list(
+                map=function (f, delta.t = 1) {
+                    skeleton.type <<- "map"
+                    if (delta.t <= 0)
+                        stop("in ",sQuote("map"),", ",sQuote("delta.t"),
+                             " must be positive",call.=FALSE)
+                    skelmap.delta.t <<- as.numeric(delta.t)
+                    f
+                },
+                vectorfield=function (f) {
+                    skeleton.type <<- "vectorfield"
+                    f
+                }
+            )
+            skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
             if (skeleton.type=="undef") {
                 warning("In ",sQuote("pomp"),", the default ",sQuote("skeleton.type=\"map\""),
                         " is deprecated and will be removed in a future release.\n",
@@ -697,21 +697,21 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         }
         if (!missing(skeleton)) {
             skeleton <- substitute(skeleton)
-            map <- function (f, delta.t = 1) {
-                skeleton.type <<- "map"
-                if (delta.t <= 0)
-                    stop("in ",sQuote("map"),", ",sQuote("delta.t"),
-                         " must be positive",call.=FALSE)
-                skelmap.delta.t <<- as.numeric(delta.t)
-                f
-            }
-            vectorfield <- function (f) {
-                skeleton.type <<- "vectorfield"
-                f
-            }
-            assign("map",map)
-            assign("vectorfield",vectorfield)
-            skeleton <- eval(skeleton)
+            flist <- list(
+                map=function (f, delta.t = 1) {
+                    skeleton.type <<- "map"
+                    if (delta.t <= 0)
+                        stop("in ",sQuote("map"),", ",sQuote("delta.t"),
+                             " must be positive",call.=FALSE)
+                    skelmap.delta.t <<- as.numeric(delta.t)
+                    f
+                },
+                vectorfield=function (f) {
+                    skeleton.type <<- "vectorfield"
+                    f
+                }
+            )
+            skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
             if (skeleton.type=="undef") {
                 warning("In ",sQuote("pomp"),", the default ",sQuote("skeleton.type=\"map\""),
                         " is deprecated and will be removed in a future release.\n",

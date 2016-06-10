@@ -4,6 +4,7 @@
   \itemize{
     \item More improvements to the test suite.
     \item Fixed bugs found as a result of improved testing.
+    \item Fixed bug in specification of skeleton in pompExamples.
   }
 }
 \section{Changes in \pkg{pomp} version 1.5.2}{
