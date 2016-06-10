@@ -20,18 +20,41 @@ Type 'q()' to quit R.
 > library(plyr)
 > library(magrittr)
 > 
+> pdf(file="pmcmc.pdf")
+> 
 > set.seed(1178744046L)
 > 
 > pompExample(ou2)
 newly created object(s):
  ou2 
 > 
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),rw.var=3,scale.start=50,shape.start=50)))
+Error : 'mvn.rw.adaptive' error: exactly one of 'rw.sd' and 'rw.var' must be supplied
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(scale.start=50,shape.start=50)))
+Error : 'mvn.rw.adaptive' error: exactly one of 'rw.sd' and 'rw.var' must be supplied
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=c(3,2,5,1),scale.start=50,shape.start=50)))
+Error in mvn.rw.adaptive(rw.var = c(3, 2, 5, 1), scale.start = 50, shape.start = 50) : 
+  'rw.var' must have row- and column-names
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1),2,2,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2"))),scale.start=50,shape.start=50)))
+Error in mvn.rw.adaptive(rw.var = matrix(c(3, 2, 5, 1), 2, 2, dimnames = list(c("alpha.2",  : 
+  row- and column-names of 'rw.var' must agree
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1,5,5),2,3,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2","bob"))),scale.start=50,shape.start=50)))
+Error in mvn.rw.adaptive(rw.var = matrix(c(3, 2, 5, 1, 5, 5), 2, 3, dimnames = list(c("alpha.2",  : 
+  'rw.var' must be a square matrix
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(0.01,0.01),scale.start=50,shape.start=50)))
+Error in mvn.rw.adaptive(rw.sd = c(0.01, 0.01), scale.start = 50, shape.start = 50) : 
+  'rw.sd' must be a named numeric vector
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),target=3,scale.start=50,shape.start=50)))
+Error : 'mvn.rw.adaptive' error: 'target' must be a number in (0,1)
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c(0.01,0.01),scale.start=50,shape.start=50),verbose=TRUE))
+Error in mvn.diag.rw(rw.sd = c(0.01, 0.01), scale.start = 50, shape.start = 50) : 
+  unused arguments (scale.start = 50, shape.start = 50)
+> capture.output(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50),verbose=TRUE) -> ignore) -> msg
+> 
 > dprior.ou2 <- function (params, log, ...) {
 +   f <- sum(dunif(params,min=coef(ou2)-1,max=coef(ou2)+1,log=TRUE))
 +   if (log) f else exp(f)
 + }
-> 
-> pdf(file="pmcmc.pdf")
 > 
 > pmcmc(
 +       pomp(ou2,dprior=dprior.ou2),
@@ -61,7 +84,7 @@ Error in validObject(.Object) :
   invalid class "pmcmcList" object: error in 'c': to be combined, 'pmcmc' objects must have chains of equal length
 > 
 > if (Sys.getenv("FULL_TESTS")=="yes") {
-+   f2a <- pmcmc(f1,Nmcmc=1000,Np=100,verbose=FALSE)
++   f2a <- pmcmc(f1,Nmcmc=300,Np=100,verbose=FALSE)
 +   plot(f2a)
 +   runs <- rle(as.numeric(conv.rec(f2a,'loglik')))$lengths
 +   plot(sort(runs))
@@ -97,10 +120,7 @@ Error in c(f4, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
 Error in c(ff, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
 > 
 > plot(ff <- c(ff,f5))
-> print(signif(covmat(ff),2))
-        alpha.2 alpha.3
-alpha.2 1.9e-04 2.3e-05
-alpha.3 2.3e-05 2.4e-05
+> invisible(covmat(ff))
 Warning message:
 In covmat.internal(traces = as.array(conv.rec(object, pars)), start = start,  :
   only 21 points being used to estimate covariance matrix
@@ -136,18 +156,19 @@ In covmat.internal(traces = as.array(conv.rec(object, pars)), start = start,  :
 +     if (log) f else exp(f)
 +   }) %>%
 +   pmcmc(
-+         Nmcmc=500,Np=500,verbose=FALSE,
++         Nmcmc=50,Np=500,verbose=FALSE,
 +         proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
 +           scale.start=50,shape.start=50)) -> f8
+> f8 %<>% continue(Nmcmc=50,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
 Warning message:
-1 filtering failure occurred in 'pfilter' 
-> f8 %<>% continue(Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
+In covmat.internal(traces = as.matrix(conv.rec(object, object@pars)),  :
+  only 51 points being used to estimate covariance matrix
 > plot(f8)
 > 
 > library(coda)
 > 
 > f8 %>% conv.rec(c("alpha.2","alpha.3")) %>%
-+   window(start=500) -> trace
++   window(start=50) -> trace
 > trace <- window(trace,thin=5)
 > plot(trace)
 > 
@@ -171,4 +192,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  72.42    0.26   72.75 
+ 16.708   0.148  16.856 

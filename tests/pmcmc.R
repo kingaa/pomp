@@ -3,16 +3,26 @@ library(reshape2)
 library(plyr)
 library(magrittr)
 
+pdf(file="pmcmc.pdf")
+
 set.seed(1178744046L)
 
 pompExample(ou2)
+
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),rw.var=3,scale.start=50,shape.start=50)))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(scale.start=50,shape.start=50)))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=c(3,2,5,1),scale.start=50,shape.start=50)))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1),2,2,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2"))),scale.start=50,shape.start=50)))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1,5,5),2,3,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2","bob"))),scale.start=50,shape.start=50)))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(0.01,0.01),scale.start=50,shape.start=50)))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),target=3,scale.start=50,shape.start=50)))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c(0.01,0.01),scale.start=50,shape.start=50),verbose=TRUE))
+capture.output(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50),verbose=TRUE) -> ignore) -> msg
 
 dprior.ou2 <- function (params, log, ...) {
   f <- sum(dunif(params,min=coef(ou2)-1,max=coef(ou2)+1,log=TRUE))
   if (log) f else exp(f)
 }
-
-pdf(file="pmcmc.pdf")
 
 pmcmc(
       pomp(ou2,dprior=dprior.ou2),
@@ -40,7 +50,7 @@ plot(c(f2,f3))
 try(ff <- c(f3,f4))
 
 if (Sys.getenv("FULL_TESTS")=="yes") {
-  f2a <- pmcmc(f1,Nmcmc=1000,Np=100,verbose=FALSE)
+  f2a <- pmcmc(f1,Nmcmc=300,Np=100,verbose=FALSE)
   plot(f2a)
   runs <- rle(as.numeric(conv.rec(f2a,'loglik')))$lengths
   plot(sort(runs))
@@ -72,7 +82,7 @@ try(ff <- c(f4,ou2))
 try(ff <- c(ff,ou2))
 
 plot(ff <- c(ff,f5))
-print(signif(covmat(ff),2))
+invisible(covmat(ff))
 plot(conv.rec(c(f2,ff),c("alpha.2","alpha.3")))
 plot(conv.rec(ff[2],c("alpha.2")))
 plot(conv.rec(ff[2:3],c("alpha.3")))
@@ -105,16 +115,16 @@ ou2 %>%
     if (log) f else exp(f)
   }) %>%
   pmcmc(
-        Nmcmc=500,Np=500,verbose=FALSE,
+        Nmcmc=50,Np=500,verbose=FALSE,
         proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
           scale.start=50,shape.start=50)) -> f8
-f8 %<>% continue(Nmcmc=500,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
+f8 %<>% continue(Nmcmc=50,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
 plot(f8)
 
 library(coda)
 
 f8 %>% conv.rec(c("alpha.2","alpha.3")) %>%
-  window(start=500) -> trace
+  window(start=50) -> trace
 trace <- window(trace,thin=5)
 plot(trace)
 

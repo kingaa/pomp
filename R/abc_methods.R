@@ -119,11 +119,12 @@ setMethod(
 )
 
 abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
-    if (missing(pars))
-        pars <- unique(do.call(c,lapply(z,slot,'pars')))
-
+    if (missing(pars)) {
+        pars <- unique(do.call(c,lapply(z,slot,"pars")))
+        if (length(pars)<1)
+            pars <- unique(do.call(c,lapply(z,function(x)names(x@params))))
+    }
     if (scatter) {
-
         x <- lapply(z,function(x)as.matrix(conv.rec(x,pars)))
         x <- lapply(seq_along(x),function(n)cbind(x[[n]],.num=n))
         x <- do.call(rbind,x)
@@ -132,9 +133,7 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
         } else {
             pairs(x[,pars],col=x[,'.num'],...)
         }
-
     } else {
-
         mar.multi <- c(0,5.1,0,2.1)
         oma.multi <- c(6,0,5,0)
         xx <- z[[1]]
@@ -175,7 +174,6 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
             low <- hi+1
             mtext("ABC convergence diagnostics",3,line=2,outer=TRUE)
         }
-
     }
     invisible(NULL)
 }

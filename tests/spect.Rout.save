@@ -73,7 +73,7 @@ newly created object(s):
 > sp <- spect(
 +             ricker,
 +             kernel.width=3,
-+             nsim=1000,
++             nsim=500,
 +             seed=838775L
 +             )
 > plot(sp)
@@ -92,7 +92,7 @@ newly created object(s):
 > sp <- spect(
 +             po,
 +             kernel.width=3,
-+             nsim=1000,
++             nsim=500,
 +             seed=838775L
 +             )
 > plot(sp)
@@ -103,7 +103,7 @@ newly created object(s):
 > sp <- spect(
 +             po,
 +             kernel.width=3,
-+             nsim=1000,
++             nsim=500,
 +             seed=838775L
 +             )
 > plot(sp)
@@ -117,4 +117,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 51.640   0.272  51.920 
+ 45.800   0.092  45.901 

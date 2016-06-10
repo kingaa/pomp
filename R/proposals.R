@@ -58,11 +58,11 @@ mvn.rw.adaptive <- function (rw.sd, rw.var,
     parnm <- colnames(rw.var)
     if (is.null(parnm))
       stop(sQuote("rw.var")," must have row- and column-names")
+    if (nrow(rw.var)!=ncol(rw.var))
+      stop(sQuote("rw.var")," must be a square matrix")
     if (any(parnm!=rownames(rw.var)))
       stop("row- and column-names of ",sQuote("rw.var"),
            " must agree")
-    if (nrow(rw.var)!=ncol(rw.var))
-      stop(sQuote("rw.var")," must be a square matrix")
   } else if (!missing(rw.sd)) { ## sd supplied (diagonal)
     if (!is.numeric(rw.sd) || is.null(names(rw.sd))) {
       stop(sQuote("rw.sd")," must be a named numeric vector")
