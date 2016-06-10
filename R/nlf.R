@@ -184,7 +184,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                   times=times, t0=t0,
                   lags=lags, period=period, tensor=tensor, seed=seed,
                   transform.data=transform.data, nrbf=4, 
-                  verbose=FALSE
+                  verbose=verbose
                   )
     F0 <- mean(f0,na.rm=T)
 
@@ -207,7 +207,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                                transform=transform,
                                times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform.data=transform.data,nrbf=4,
-                               verbose=FALSE
+                               verbose=verbose
                                ),
                        na.rm=T
                        )
@@ -219,7 +219,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                                transform=transform,
                                times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform.data=transform.data, nrbf=4, 
-                               verbose=FALSE
+                               verbose=verbose
                                ),
                        na.rm=T
                        )
@@ -231,7 +231,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                                transform=transform,
                                times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform.data=transform.data, nrbf=4, 
-                               verbose=FALSE
+                               verbose=verbose
                                ),
                        na.rm=T
                        )
@@ -243,7 +243,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                                transform=transform,
                                times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                                seed=seed, transform.data=transform.data, nrbf=4, 
-                               verbose=FALSE
+                               verbose=verbose
                                ),
                        na.rm=T
                        )
@@ -265,7 +265,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                       transform=transform,
                       times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                       seed=seed, transform.data=transform.data, nrbf=4, 
-                      verbose=FALSE
+                      verbose=verbose
                       )
       F.up <- mean(f.up,na.rm=T)
 
@@ -274,7 +274,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                        transform=transform,
                        times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                        seed=seed, transform.data=transform.data, nrbf=4, 
-                       verbose=FALSE
+                       verbose=verbose
                        )
 
       if (verbose) cat("Fitted param ", i, F.up, mean(f.up2,na.rm=T)," up in ",sQuote("nlf"),"\n")
@@ -286,7 +286,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                         transform=transform,
                         times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                         seed=seed, transform.data=transform.data, nrbf=4, 
-                        verbose=FALSE
+                        verbose=verbose
                         )
       F.down <- mean(f.down,na.rm=T)
 
@@ -308,7 +308,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                              transform=transform,
                              times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform.data=transform.data, nrbf=4, 
-                             verbose=FALSE
+                             verbose=verbose
                              ),
                      na.rm=T
                      )
@@ -322,7 +322,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                              transform=transform,
                              times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform.data=transform.data, nrbf=4, 
-                             verbose=FALSE
+                             verbose=verbose
                              ),
                      na.rm=T
                      ) 
@@ -336,7 +336,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                              transform=transform,
                              times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform.data=transform.data, nrbf=4, 
-                             verbose=FALSE
+                             verbose=verbose
                              ),
                      na.rm=T
                      ) 
@@ -350,7 +350,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                              transform=transform,
                              times=times, t0=t0, lags=lags, period=period, tensor=tensor,
                              seed=seed, transform.data=transform.data, nrbf=4,
-                             verbose=FALSE
+                             verbose=verbose
                              ),
                      na.rm=T
                      ) 

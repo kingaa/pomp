@@ -40,8 +40,21 @@ newly created object(s):
 +   prior[n,] <- runif(n=Np,min=prior.bounds[n,1],max=prior.bounds[n,2])
 + }
 > 
+> garb <- ou2
+> coef(garb) <- numeric(0)
+> try(garb <- bsmc(garb))
+Error : 'bsmc' error: 'params' must be supplied
+> 
 > ##Run Liu & West particle filter
-> tic <- Sys.time()
+> smc <- bsmc2(
++     ou2,
++     est="alpha.2",
++     params=prior,
++     smooth=0.02
++ )
+> prior <- smc$prior
+> post <- smc$post
+> 
 > smc <- bsmc(
 +             ou2,
 +             params=prior,
@@ -51,13 +64,9 @@ newly created object(s):
 +             lower=prior.bounds[estnames,"lower"],
 +             upper=prior.bounds[estnames,"upper"]
 +             )
-> toc <- Sys.time()
 > 
 > prior <- smc$prior
 > post <- smc$post
-> 
-> print(etime <- toc-tic)
-Time difference of 2.18272 secs
 > 
 > print(
 +       cbind(
@@ -69,8 +78,8 @@ Time difference of 2.18272 secs
 +       )
         prior.mean posterior.mean truth       2.5%        50%      97.5%
 alpha.1  0.8000000      0.8000000   0.8  0.8000000  0.8000000  0.8000000
-alpha.2 -0.4999287     -0.5105023  -0.5 -0.5402483 -0.4993459 -0.4536930
-alpha.3  0.2996065      0.3148637   0.3  0.2823821  0.3260754  0.3388949
+alpha.2 -0.4999287     -0.5008916  -0.5 -0.5444153 -0.4954470 -0.4534014
+alpha.3  0.2996065      0.3082688   0.3  0.2698214  0.3215036  0.3441872
 alpha.4  0.9000000      0.9000000   0.9  0.9000000  0.9000000  0.9000000
 sigma.1  3.0000000      3.0000000   3.0  3.0000000  3.0000000  3.0000000
 sigma.2 -0.5000000     -0.5000000  -0.5 -0.5000000 -0.5000000 -0.5000000
@@ -80,9 +89,9 @@ x1.0    -3.0000000     -3.0000000  -3.0 -3.0000000 -3.0000000 -3.0000000
 x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > print(min(smc$eff.sample.size))
-[1] 22.94863
+[1] 11.21188
 > print(smc$log.evidence)
-[1] 45.47584
+[1] 44.84313
 > 
 > ou2 <- pomp(ou2,
 +             rprior=function(params,...){
@@ -90,13 +99,13 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 +             }
 +             )
 > 
-> smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames)
+> capture.output(smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,verbose=TRUE)) -> ignore
 > print(smc$eff.sample.size)
- [1] 291.938189  95.235945  73.223733  55.591668  75.806935   2.847529
- [7] 141.271300 102.140197  23.267750  45.084097
+ [1] 249.309151  49.462264  14.950102   2.481658 188.207873   4.060218
+ [7] 311.306012  30.238604 100.296865 116.817460
 > print(smc$log.evidence)
-[1] 38.82058
+[1] 39.46375
 > 
 > proc.time()
    user  system elapsed 
-  3.932   0.076   3.979 
+  3.936   0.132   4.042 

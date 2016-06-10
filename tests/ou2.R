@@ -10,10 +10,7 @@ p <- c(
        x1.0=50,x2.0=-50       
        )
 
-tic <- Sys.time()
 ou2.sim <- simulate(ou2,params=p,nsim=100,seed=32043858)
-toc <- Sys.time()
-print(toc-tic)
 
 coef(ou2,c('x1.0','x2.0')) <- c(-50,50)
 
@@ -21,6 +18,14 @@ ou2.sim <- simulate(ou2)
 x <- simulate(ou2,nsim=3,states=T)
 y <- simulate(ou2,nsim=3,obs=T)
 z <- simulate(ou2,nsim=3,obs=T,states=T)
+window(ou2.sim,end=50) -> ignore
+window(ou2.sim,end=150) -> ignore
+time(ignore) <- seq(2,50,by=2)
+try(coef(ignore,transform=TRUE) <- c(3,3))
+coef(ignore) <- numeric(0)
+try(coef(ignore) <- c(3,2))
+coef(ignore) <- c(a=3,b=2)
+coef(ignore,transform=TRUE) <- c(a=3,b=2)
 
 set.seed(577639485L)
 
@@ -88,11 +93,7 @@ print(loglik.guess <- -kalman(p.guess,ou2,p.truth),digits=4)
 
 # find MLE using Kalman filter starting at the guess
 cat("running Kalman filter estimation\n")
-tic <- Sys.time()
 kalm.fit1 <- optim(p.guess,kalman,object=ou2,params=p.truth,hessian=T,control=list(trace=2))
-toc <- Sys.time()
-print(toc-tic)
-tic <- Sys.time()
 print(loglik.mle <- -kalm.fit1$value,digits=4)
 
 cat("summary of results\n")

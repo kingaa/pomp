@@ -21,8 +21,20 @@ for (n in estnames) {
   prior[n,] <- runif(n=Np,min=prior.bounds[n,1],max=prior.bounds[n,2])
 }
 
+garb <- ou2
+coef(garb) <- numeric(0)
+try(garb <- bsmc(garb))
+
 ##Run Liu & West particle filter
-tic <- Sys.time()
+smc <- bsmc2(
+    ou2,
+    est="alpha.2",
+    params=prior,
+    smooth=0.02
+)
+prior <- smc$prior
+post <- smc$post
+
 smc <- bsmc(
             ou2,
             params=prior,
@@ -32,12 +44,9 @@ smc <- bsmc(
             lower=prior.bounds[estnames,"lower"],
             upper=prior.bounds[estnames,"upper"]
             )
-toc <- Sys.time()
 
 prior <- smc$prior
 post <- smc$post
-
-print(etime <- toc-tic)
 
 print(
       cbind(
@@ -57,6 +66,6 @@ ou2 <- pomp(ou2,
             }
             )
 
-smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames)
+capture.output(smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,verbose=TRUE)) -> ignore
 print(smc$eff.sample.size)
 print(smc$log.evidence)

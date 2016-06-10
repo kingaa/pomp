@@ -431,27 +431,26 @@ void pomp_desolve_takedown (void) {
 #undef NAT
 
 // copy t(x[-1,-1]) -> y[,rep,]
-SEXP traj_transp_and_copy (SEXP y, SEXP x, SEXP rep) {
-  int nprotect = 0;
-  SEXP ans = R_NilValue;
-  int nvars, nreps, ntimes;
-  int i, j, k, m, n;
-  double *xp, *yp;
+// SEXP traj_transp_and_copy (SEXP y, SEXP x, SEXP rep) {
+//   int nprotect = 0;
+//   SEXP ans = R_NilValue;
+//   int nvars, nreps, ntimes;
+//   int i, j, k, m, n;
+//   double *xp, *yp;
 
-  j = INTEGER(rep)[0]-1;
-  nvars = INTEGER(GET_DIM(y))[0];
-  nreps = INTEGER(GET_DIM(y))[1];
-  ntimes = INTEGER(GET_DIM(y))[2];
-  n = INTEGER(GET_DIM(x))[0];
-  m = nvars*nreps;
+//   j = INTEGER(rep)[0]-1;
+//   nvars = INTEGER(GET_DIM(y))[0];
+//   nreps = INTEGER(GET_DIM(y))[1];
+//   ntimes = INTEGER(GET_DIM(y))[2];
+//   n = INTEGER(GET_DIM(x))[0];
+//   m = nvars*nreps;
 
-  for (i = 0, xp = REAL(x)+n+1; i < nvars; i++, xp += n) {
-    for (k = 0, yp = REAL(y)+i+nvars*j; k < ntimes; k++, yp += m) {
-      *yp = xp[k];
-    }
-  }
+//   for (i = 0, xp = REAL(x)+n+1; i < nvars; i++, xp += n) {
+//     for (k = 0, yp = REAL(y)+i+nvars*j; k < ntimes; k++, yp += m) {
+//       *yp = xp[k];
+//     }
+//   }
 
-  UNPROTECT(nprotect);
-  return ans;
-}
-
+//   UNPROTECT(nprotect);
+//   return ans;
+// }

@@ -42,21 +42,28 @@ newly created object(s):
 +   prior[n,] <- runif(n=Np,min=prior.bounds[n,1],max=prior.bounds[n,2])
 + }
 > 
-> ##Run Liu & West particle filter
-> tic <- Sys.time()
-> smc <- bsmc2(
-+              ou2,
-+              params=prior,
-+              est=estnames,
-+              smooth=0.02
-+              )
-> toc <- Sys.time()
+> garb <- ou2
+> coef(garb) <- numeric(0)
+> try(garb <- bsmc2(garb))
+Error : 'bsmc2' error: 'params' must be supplied
 > 
+> ##Run Liu & West particle filter
+> smc <- bsmc2(
++     ou2,
++     est="alpha.2",
++     params=prior,
++     smooth=0.02
++ )
 > prior <- smc$prior
 > post <- smc$post
 > 
-> print(etime <- toc-tic)
-Time difference of 1.138964 secs
+> smc <- bsmc2(
++              ou2,
++              params=prior,
++              smooth=0.02
++              )
+> prior <- smc$prior
+> post <- smc$post
 > 
 > print(
 +       cbind(
@@ -67,21 +74,21 @@ Time difference of 1.138964 secs
 +             )
 +       )
         prior.mean posterior.mean truth       2.5%        50%      97.5%
-alpha.1  0.8000000      0.8000000   0.8  0.8000000  0.8000000  0.8000000
-alpha.2 -0.4999934     -0.5041799  -0.5 -0.5484110 -0.5061110 -0.4524724
-alpha.3  0.2998071      0.3015016   0.3  0.2526553  0.3020846  0.3478032
-alpha.4  0.9000000      0.9000000   0.9  0.9000000  0.9000000  0.9000000
-sigma.1  3.0000000      3.0000000   3.0  3.0000000  3.0000000  3.0000000
-sigma.2 -0.5000000     -0.5000000  -0.5 -0.5000000 -0.5000000 -0.5000000
-sigma.3  2.0000000      2.0000000   2.0  2.0000000  2.0000000  2.0000000
-tau      1.0000000      1.0000000   1.0  1.0000000  1.0000000  1.0000000
-x1.0    -3.0000000     -3.0000000  -3.0 -3.0000000 -3.0000000 -3.0000000
-x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
+alpha.1  0.8000000       0.800000   0.8  0.8000000  0.8000000  0.8000000
+alpha.2 -0.4999934      -0.504508  -0.5 -0.5481925 -0.5073802 -0.4542522
+alpha.3  0.2998071       0.303110   0.3  0.2534805  0.3048255  0.3468498
+alpha.4  0.9000000       0.900000   0.9  0.9000000  0.9000000  0.9000000
+sigma.1  3.0000000       3.000000   3.0  3.0000000  3.0000000  3.0000000
+sigma.2 -0.5000000      -0.500000  -0.5 -0.5000000 -0.5000000 -0.5000000
+sigma.3  2.0000000       2.000000   2.0  2.0000000  2.0000000  2.0000000
+tau      1.0000000       1.000000   1.0  1.0000000  1.0000000  1.0000000
+x1.0    -3.0000000      -3.000000  -3.0 -3.0000000 -3.0000000 -3.0000000
+x2.0     4.0000000       4.000000   4.0  4.0000000  4.0000000  4.0000000
 > 
 > print(min(smc$eff.sample.size))
-[1] 3362.331
+[1] 3290.482
 > print(smc$log.evidence)
-[1] -44.40479
+[1] -44.41102
 > 
 > ou2 <- pomp(ou2,
 +             rprior=function(params,...){
@@ -89,12 +96,13 @@ x2.0     4.0000000      4.0000000   4.0  4.0000000  4.0000000  4.0000000
 +             }
 +             )
 > 
-> smc <- bsmc2(ou2,Np=25000,smooth=0.1,est=estnames)
+> capture.output(smc <- bsmc2(ou2,Np=25000,smooth=0.1,est=estnames,
++                             verbose=TRUE)) -> ignore
 > print(smc$eff.sample.size)
- [1] 5932.259 3951.272 3017.252 3235.642 5643.630 1860.697 4980.986 1556.705
- [9] 5012.330 3868.048
+ [1] 5991.784 4006.889 2997.875 3268.267 5599.638 1948.143 4879.928 1582.434
+ [9] 5079.565 3774.104
 > print(smc$log.evidence)
-[1] -44.41944
+[1] -44.38694
 > 
 > pompExample(ricker)
 newly created object(s):
@@ -129,4 +137,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.568   0.136   2.684 
+  2.908   0.100   2.986 

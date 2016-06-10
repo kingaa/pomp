@@ -1,5 +1,7 @@
 library(pomp)
 
+png(filename='sir%02d.pdf',res=100)
+
 tbasis <- seq(0,25,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3,names="seas%d")
 
@@ -150,12 +152,7 @@ x <- pomp(po,measurement.model=reports~binom(size=cases,prob=rho),
 
 set.seed(3049953)
 ## simulate from the model
-tic <- Sys.time()
 x <- simulate(po,nsim=3)
-toc <- Sys.time()
-print(toc-tic)
-
-png(filename='sir%02d.pdf',res=100)
 
 t1 <- seq(0,4/52,by=1/52/25)
 X1 <- simulate(po,nsim=10,states=TRUE,obs=TRUE,times=t1)
@@ -164,10 +161,7 @@ t2 <- seq(0,2,by=1/52)
 X2 <- simulate(po,nsim=1,states=TRUE,obs=TRUE,times=t2)
 
 t3 <- seq(0,20,by=1/52)
-tic <- Sys.time()
 X3 <- trajectory(po,times=t3,hmax=1/52)
-toc <- Sys.time()
-print(toc-tic)
 
 f1 <- dprocess(
     po,
@@ -210,16 +204,9 @@ stopifnot(all.equal(
 
 set.seed(3049953)
 ## simulate from the model
-tic <- Sys.time()
 x <- simulate(po,nsim=100)
-toc <- Sys.time()
-print(toc-tic)
-
 t3 <- seq(0,20,by=1/52)
-tic <- Sys.time()
 X4 <- trajectory(po,times=t3,hmax=1/52)
-toc <- Sys.time()
-print(toc-tic)
 
 g2 <- dmeasure(
     po,

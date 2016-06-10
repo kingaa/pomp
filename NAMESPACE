@@ -13,7 +13,7 @@ useDynLib(
     pfilter_computations,
     randwalk_perturbation,
     simulation_computations,
-    iterate_map,traj_transp_and_copy,
+    iterate_map,
     apply_probe_data,apply_probe_sim,
     probe_marginal_setup,probe_marginal_solve,
     probe_acf,probe_ccf,
