@@ -324,7 +324,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   In formulating models, one often wishes to define a state variable that will accumulate some quantity over the interval between successive observations.
   \pkg{pomp} provides a facility to make such features more convenient.
   Specifically, variables named in the \code{pomp}'s \code{zeronames} argument will be set to zero immediately following each observation.
-  See \code{euler.sir} and the tutorials on the \href{http://kingaa.github.io/pomp}{package website} for examples.
+  See \link{\code{euler.sir}} and the tutorials on the \href{http://kingaa.github.io/pomp}{package website} for examples.
 }
 \examples{
 \dontrun{

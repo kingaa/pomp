@@ -70,7 +70,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     obsnames <- as.character(obsnames)
 
     ## check times
-    if (!is.numeric(times) || !all(diff(times)>0))
+    if (!is.numeric(times) || any(is.na(times)) || !all(diff(times)>0))
         stop(sQuote("pomp")," error: ",sQuote("times"),
              " must be an increasing numeric vector",call.=FALSE)
     storage.mode(times) <- 'double'
