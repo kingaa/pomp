@@ -4,7 +4,7 @@ pompExample(ou2)
 
 set.seed(9994847L)
 
-pdf(file="pfilter.pdf")
+png(filename="pfilter-%02d.png",res=100)
 
 pf <- pfilter(ou2,Np=1000)
 print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)

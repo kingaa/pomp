@@ -23,7 +23,7 @@ newly created object(s):
 > 
 > set.seed(9994847L)
 > 
-> pdf(file="pfilter.pdf")
+> png(filename="pfilter-%02d.png",res=100)
 > 
 > pf <- pfilter(ou2,Np=1000)
 > print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
@@ -76,4 +76,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  8.060   0.080   8.119 
+  7.444   0.076   7.527 
