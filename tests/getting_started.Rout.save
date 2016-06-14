@@ -226,6 +226,8 @@ See '?pomp' for an explanation of the new syntax.
 null device 
           1 
 > 
+> capture.output(show(parus)) -> ignore
+> 
 > proc.time()
    user  system elapsed 
-  6.568   1.188   8.835 
+  6.456   1.148   8.793 

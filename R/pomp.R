@@ -110,7 +110,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (!all(covarnames%in%colnames(covar))) {
         missing <- covarnames[!(covarnames%in%colnames(covar))]
         stop(sQuote("pomp")," error: covariate(s) ",
-             paste(sapply(sQuote,missing),collapse=","),
+             paste(sapply(missing,sQuote),collapse=","),
              " are not among the columns of ",sQuote("covar"),call.=FALSE)
     }
     storage.mode(tcovar) <- "double"

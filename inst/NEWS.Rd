@@ -1,5 +1,14 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.5.4}{
+  \itemize{
+    \item More improvements to the test suite.
+    \item Fixed bugs found as a result of improved testing.
+    \item In \code{mif2}, it is now required that \code{Nmif>0}.
+    \item The package now Suggests \pkg{foreach} and \pkg{doParallel}.
+    A test of \code{pomp} building in parallel is included.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.5.3}{
   \itemize{
     \item More improvements to the test suite.

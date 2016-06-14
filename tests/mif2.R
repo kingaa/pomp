@@ -11,6 +11,27 @@ guess2 <- guess1 <- coef(ou2)
 guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 
+try(mif2(ou2,Nmif=10,start=guess2,
+         cooling.type="hyperbolic",cooling.fraction.50=0.05,
+         rw.sd=rw.sd(
+             x1.0=ivp(0.5),x2.0=ivp(0.5),
+             alpha.2=0.1,alpha.3=0.1)) -> ignore)
+try(mif2(ou2,Nmif=1,start=guess2,Np=rep(10,102),
+         cooling.type="hyperbolic",cooling.fraction.50=0.05,
+         rw.sd=rw.sd(
+             x1.0=ivp(0.5),x2.0=ivp(0.5),
+             alpha.2=0.1,alpha.3=0.1)) -> ignore)
+try(mif2(ou2,Nmif=1,start=guess2,Np=seq_len(101),
+         cooling.type="hyperbolic",cooling.fraction.50=0.05,
+         rw.sd=rw.sd(
+             x1.0=ivp(0.5),x2.0=ivp(0.5),
+             alpha.2=0.1,alpha.3=0.1)) -> ignore)
+try(mif2(ou2,Nmif=0,start=guess2,Np=1000,
+         cooling.type="hyperbolic",cooling.fraction.50=0.05,
+         rw.sd=rw.sd(
+             x1.0=ivp(0.5),x2.0=ivp(0.5),
+             alpha.2=0.1,alpha.3=0.1)) -> ignore)
+
 m1 <- mif2(ou2,Nmif=100,start=guess1,Np=1000,
            cooling.type="hyperbolic",cooling.fraction.50=0.05,
            rw.sd=rw.sd(
@@ -23,14 +44,19 @@ m2 <- mif2(ou2,Nmif=50,start=guess2,Np=1000,
              x1.0=ivp(0.5),x2.0=ivp(0.5),
              alpha.2=0.1,alpha.3=0.1))
 m2 <- continue(m2,Nmif=50)
+try(continue(m2,Nmif=50,rw.sd=rw.sd(beta=0.1,alpha.2=0.1)))
+try(continue(m2,Nmif=50,rw.sd=rw.sd(alpha.2=rep(0.1,3))))
 
-plot(m1)
-plot(m12 <- c(m1,m2))
-coef(m12)
+plot(m1,y=NA)
+dim(coef(c(m1)))
+plot(m12 <- c(m1,m2),y=33)
+coef(c(m12))
+dim(coef(m12))
 dim(coef(c(m12,m12)))
 dim(coef(c(m12,m1)))
 dim(coef(c(m1,m12)))
 dim(coef(m12[2]))
+sapply(conv.rec(m12),dim)
 
 rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),

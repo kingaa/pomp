@@ -65,8 +65,7 @@ Error : 'pomp' error: if 'covar' is a data frame, 'tcovar' should indicate the t
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar="bob") -> po)
 Error : 'pomp' error: if 'covar' is a data frame, 'tcovar' should indicate the time variable
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
-Error in get(as.character(FUN), mode = "function", envir = envir) : 
-  object 'henry' of mode 'function' was not found
+Error : 'pomp' error: covariate(s) 'henry' are not among the columns of 'covar'
 > try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
 Error : if one of 'fromEstimationScale', 'toEstimationScale' is supplied, then so must the other
 > pomp(dat$y,times=dat$time,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po
@@ -137,4 +136,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.652   0.088   0.741 
+  0.728   0.076   0.807 

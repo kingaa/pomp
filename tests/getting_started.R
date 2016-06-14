@@ -199,3 +199,5 @@ parus %<>%
   "),paramnames=c("r","K","sigma"))
 
 dev.off()
+
+capture.output(show(parus)) -> ignore

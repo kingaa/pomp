@@ -22,6 +22,11 @@ guess <- coef(po)
 coef(po) <- numeric(0)
 coef(po,transform=TRUE) <- partrans(po,guess,dir='to')
 coef(po) <- numeric(0)
+coef(po,c("K","r","sigma","tau","X.0"),
+     transform=TRUE) <- partrans(po,guess,dir='to')
+coef(po) <- numeric(0)
+coef(po,c("K","r","sigma","tau","X.0")) <- unname(guess)
+coef(po) <- numeric(0)
 coef(po) <- guess
 guess["r"] <- 0
 

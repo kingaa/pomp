@@ -9,7 +9,7 @@ pkern.sd <- function (rw.sd, time, paramnames, enclos) {
         unrec <- names(rw.sd)[!names(rw.sd) %in% paramnames]
         stop(sQuote("mif2")," error: the following parameter(s), ",
              "which are supposed to be estimated, are not present: ",
-             paste(sapply(sQuote,unrec),collapse=","),
+             paste(sapply(unrec,sQuote),collapse=","),
              call.=FALSE)
     }
     ivp <- function (sd, lag = 1L) {
@@ -204,6 +204,9 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     gnsi <- as.logical(.getnativesymbolinfo)
     Np <- c(Np,Np[1L])
 
+    if (Nmif <= 0) stop(sQuote("mif2")," error: ",sQuote("Nmif"),
+                        " must be a positive integer",call.=FALSE)
+    
     cooling.fn <- mif.cooling.function(
         type=cooling.type,
         perobs=TRUE,
@@ -212,14 +215,12 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     )
 
     if (is.null(.paramMatrix)) {
-        if (.ndone > 0) {              # call is from 'continue'
+        if (.ndone > 0) {               # call is from 'continue'
             paramMatrix <- object@paramMatrix
             start <- apply(paramMatrix,1L,mean)
-        } else if (Nmif > 0) {         # initial call
+        } else {                         # initial call
             paramMatrix <- array(data=start,dim=c(length(start),Np[1L]),
                                  dimnames=list(variable=names(start),rep=NULL))
-        } else {                        # no work to do
-            paramMatrix <- array(dim=c(0,0))
         }
     } else {
         paramMatrix <- .paramMatrix
@@ -300,8 +301,6 @@ setMethod(
                            verbose = getOption("verbose"),...) {
 
         Nmif <- as.integer(Nmif)
-        if (Nmif<0) stop(sQuote("mif2")," error: ",sQuote("Nmif"),
-                         " must be a positive integer",call.=FALSE)
 
         if (missing(start)) start <- coef(object)
         if (length(start)==0)
@@ -325,20 +324,23 @@ setMethod(
             )
             if (inherits(Np,"try-error"))
                 stop(sQuote("mif2")," error: if ",sQuote("Np"),
-                     " is a function, it must return a single positive integer")
+                     " is a function, it must return a single positive integer",
+                     call.=FALSE)
         } else if (!is.numeric(Np))
             stop(sQuote("mif2")," error: ",sQuote("Np"),
-                 " must be a number, a vector of numbers, or a function")
+                 " must be a number, a vector of numbers, or a function",
+                 call.=FALSE)
         if (length(Np)==1) {
             Np <- rep(Np,times=ntimes)
         } else if (length(Np)>ntimes) {
             if (Np[1L] != Np[ntimes+1] || length(Np) > ntimes+1) {
-                warning("in ",sQuote("mif2"),": Np[k] ignored for k > ntimes")
+                warning("in ",sQuote("mif2"),": Np[k] ignored for k > ntimes",call.=FALSE)
             }
             Np <- head(Np,ntimes)
         }
         if (any(Np <= 0))
-            stop("number of particles, ",sQuote("Np"),", must always be positive")
+            stop(sQuote("mif2")," error: number of particles, ",
+                 sQuote("Np"),", must always be positive",call.=FALSE)
 
         if (missing(rw.sd))
             stop(sQuote("mif2")," error: ",sQuote("rw.sd")," must be specified!",call.=FALSE)
@@ -418,7 +420,8 @@ setMethod(
 
         ndone <- object@Nmif
 
-        obj <- mif2(object=object,Nmif=Nmif,.ndone=ndone,...)
+        f <- selectMethod("mif2","mif2d.pomp")
+        obj <- f(object=object,Nmif=Nmif,.ndone=ndone,...)
 
         object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1L,c('loglik','nfail')]
         obj@conv.rec <- rbind(
