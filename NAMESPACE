@@ -88,6 +88,7 @@ exportMethods(
 S3method(as.data.frame,pomp)
 S3method(as.data.frame,pfilterd.pomp)
 S3method(as.data.frame,probed.pomp)
+S3method(as.data.frame,kalmand.pomp)
 
 export(
     pomp,
