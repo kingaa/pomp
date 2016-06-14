@@ -16,7 +16,6 @@ setGeneric("skeleton",function(object,...)standardGeneric("skeleton"))
 
 ## functions to extract or call the components of a "pomp" object
 setGeneric("obs",function(object,...)standardGeneric("obs"))
-setGeneric("data.array",function(object,...)standardGeneric("data.array"))
 setGeneric("time",function(x,...)standardGeneric("time"))
 setGeneric("time<-",function(object,...,value)standardGeneric("time<-"))  
 setGeneric("coef",function(object,...)standardGeneric("coef"))

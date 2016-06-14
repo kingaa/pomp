@@ -1,7 +1,7 @@
 library(pomp)
 set.seed(1066L)
 
-pdf(file="probe.pdf")
+png(filename="probe-%02d.png",res=100)
 
 pompExample(ou2)
 
@@ -36,9 +36,6 @@ pm.po <- probe(
 invisible(summary(pm.ou2))
 invisible(summary(pm.po))
 
-plot(pm.ou2)
-plot(pm.po)
-
 pm.ou2 <- probe(
     ou2,
     probes=list(
@@ -48,7 +45,6 @@ pm.ou2 <- probe(
     ),
     nsim=500
 )
-plot(pm.ou2)
 
 pb <- probe(
     ou2,
@@ -59,7 +55,6 @@ pb <- probe(
     ),
     nsim=200
 )
-plot(pb)
 
 po <- ou2
 coef(po,c("alpha.2","alpha.3")) <- c(0,0)
@@ -96,7 +91,6 @@ pb <- probe(
     nsim=1000,
     seed=1066L
 )
-plot(pb)
 
 pb <- probe(
     po,
@@ -104,7 +98,6 @@ pb <- probe(
     nsim=1000,
     seed=1066L
 )
-plot(pb)
 
 pb <- probe(
     po,
@@ -112,7 +105,6 @@ pb <- probe(
     nsim=1000,
     seed=1066L
 )
-plot(pb)
 
 head(as(pb,"data.frame"))
 head(as.data.frame(pb))
@@ -171,7 +163,6 @@ pb <- probe(
     nsim=1000,
     seed=838775L
 )
-plot(pb)
 invisible(summary(pb))
 
 pb <- probe(
@@ -180,7 +171,6 @@ pb <- probe(
     nsim=1000,
     seed=838775L
 )
-plot(pb)
 invisible(summary(pb))
 
 pb <- probe(
@@ -189,7 +179,6 @@ pb <- probe(
     nsim=1000,
     seed=838775L
 )
-plot(pb)
 invisible(summary(pb))
 
 pb <- probe(
@@ -215,7 +204,6 @@ pb <- probe(
 )
 invisible(pb$datvals)
 invisible(summary(pb))
-plot(pb)
 
 pb <- probe(
     po,
@@ -238,13 +226,13 @@ pb <- probe(
 )
 invisible(pb$datvals)
 invisible(summary(pb))
-plot(pb)
 
 print(pb@seed)
 pbm <- probe.match(pb,est=c("r","sigma","phi"),
                    method="nloptr",transform=TRUE,
                    algorithm="NLOPT_LN_SBPLX",
                    xtol_rel=1e-5)
+dim(values(pbm))
 plot(pbm)
 invisible(summary(pbm))
 
@@ -264,7 +252,6 @@ pb <- probe(
 )
 invisible(pb$datvals)
 invisible(summary(pb))
-plot(pb)
 
 pm <- probe.match(
     pb,
@@ -277,7 +264,6 @@ pm <- probe.match(
     reltol=1e-7,
     fail.value=1e9
 )
-plot(pm)
 
 invisible(cbind(truth=coef(ricker),est=coef(pm),guess=coef(po)))
 
@@ -294,7 +280,6 @@ pb <- probe(
 )
 invisible(pb$datvals)
 invisible(summary(pb))
-plot(pb)
 
 pm <- probe.match(
     pb,
@@ -308,9 +293,9 @@ pm <- probe.match(
     fail.value=1e9
 )
 plot(pm)
-plot(as(pm,"pomp"),variables="y")
+invisible(as(pm,"pomp"))
 pm <- probe.match(pm,seed=613980375L)
-plot(simulate(pm),variables="y")
+invisible(simulate(pm,states=TRUE,obs=TRUE))
 
 invisible(cbind(truth=coef(ricker),est=coef(pm),guess=coef(po)))
 
@@ -328,7 +313,6 @@ pb <- probe(
 )
 invisible(pb$datvals)
 invisible(summary(pb))
-plot(pb)
 
 pb <- probe(
     ricker,
@@ -343,7 +327,6 @@ pb <- probe(
 )
 invisible(pb$datvals)
 invisible(summary(pb))
-plot(pb)
 
 pb <- probe(
     ricker,
@@ -358,7 +341,7 @@ pb <- probe(
 )
 invisible(pb$datvals)
 invisible(summary(pb))
-plot(pb)
+dim(values(pb))
 
 pb <- probe(
     ricker,
@@ -382,7 +365,6 @@ pb <- probe(
 )
 invisible(pb$datvals)
 invisible(summary(pb))
-plot(pb)
 
 try(
     probe(

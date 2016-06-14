@@ -43,9 +43,16 @@ m2 <- mif2(ou2,Nmif=50,start=guess2,Np=1000,
            rw.sd=rw.sd(
              x1.0=ivp(0.5),x2.0=ivp(0.5),
              alpha.2=0.1,alpha.3=0.1))
-m2 <- continue(m2,Nmif=50)
+freeze(continue(m2,Nmif=5,.paramMatrix=m2@paramMatrix),seed=595996) -> m2a
+freeze(continue(m2,Nmif=5),seed=595996) -> m2
+all.equal(coef(m2),coef(m2a))
+m2 <- continue(m2,Nmif=45)
+
 try(continue(m2,Nmif=50,rw.sd=rw.sd(beta=0.1,alpha.2=0.1)))
 try(continue(m2,Nmif=50,rw.sd=rw.sd(alpha.2=rep(0.1,3))))
+
+m2a <- continue(m2,Nmif=2,.paramMatrix=m2@paramMatrix)
+dim(conv.rec(m2a))
 
 plot(m1,y=NA)
 dim(coef(c(m1)))

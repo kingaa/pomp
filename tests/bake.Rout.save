@@ -50,4 +50,4 @@ Error in mode(current) : object 'y3' not found
 > 
 > proc.time()
    user  system elapsed 
-  0.592   0.072   0.663 
+  0.604   0.060   0.635 

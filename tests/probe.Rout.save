@@ -18,7 +18,7 @@ Type 'q()' to quit R.
 > library(pomp)
 > set.seed(1066L)
 > 
-> pdf(file="probe.pdf")
+> png(filename="probe-%02d.png",res=100)
 > 
 > pompExample(ou2)
 newly created object(s):
@@ -55,9 +55,6 @@ newly created object(s):
 > invisible(summary(pm.ou2))
 > invisible(summary(pm.po))
 > 
-> plot(pm.ou2)
-> plot(pm.po)
-> 
 > pm.ou2 <- probe(
 +     ou2,
 +     probes=list(
@@ -70,7 +67,6 @@ newly created object(s):
 Warning message:
 In probe.acf(var = "y1", lags = c(0, 1, 2), type = "corr") :
   useless zero lag discarded in 'probe.acf'
-> plot(pm.ou2)
 > 
 > pb <- probe(
 +     ou2,
@@ -81,7 +77,6 @@ In probe.acf(var = "y1", lags = c(0, 1, 2), type = "corr") :
 +     ),
 +     nsim=200
 + )
-> plot(pb)
 > 
 > po <- ou2
 > coef(po,c("alpha.2","alpha.3")) <- c(0,0)
@@ -121,7 +116,6 @@ In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
 +     nsim=1000,
 +     seed=1066L
 + )
-> plot(pb)
 > 
 > pb <- probe(
 +     po,
@@ -129,7 +123,6 @@ In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
 +     nsim=1000,
 +     seed=1066L
 + )
-> plot(pb)
 > 
 > pb <- probe(
 +     po,
@@ -137,7 +130,6 @@ In probe.acf(var = c("y1", "y2"), lags = c(0, 1), type = "cor") :
 +     nsim=1000,
 +     seed=1066L
 + )
-> plot(pb)
 > 
 > head(as(pb,"data.frame"))
          ccf.-5    ccf.-3      ccf.1      ccf.4       ccf.8
@@ -215,7 +207,6 @@ newly created object(s):
 +     nsim=1000,
 +     seed=838775L
 + )
-> plot(pb)
 > invisible(summary(pb))
 > 
 > pb <- probe(
@@ -224,7 +215,6 @@ newly created object(s):
 +     nsim=1000,
 +     seed=838775L
 + )
-> plot(pb)
 > invisible(summary(pb))
 > 
 > pb <- probe(
@@ -233,7 +223,6 @@ newly created object(s):
 +     nsim=1000,
 +     seed=838775L
 + )
-> plot(pb)
 > invisible(summary(pb))
 > 
 > pb <- probe(
@@ -259,7 +248,6 @@ newly created object(s):
 + )
 > invisible(pb$datvals)
 > invisible(summary(pb))
-> plot(pb)
 > 
 > pb <- probe(
 +     po,
@@ -282,7 +270,6 @@ newly created object(s):
 + )
 > invisible(pb$datvals)
 > invisible(summary(pb))
-> plot(pb)
 > 
 > print(pb@seed)
 [1] 838775
@@ -290,6 +277,8 @@ newly created object(s):
 +                    method="nloptr",transform=TRUE,
 +                    algorithm="NLOPT_LN_SBPLX",
 +                    xtol_rel=1e-5)
+> dim(values(pbm))
+[1] 1001    9
 > plot(pbm)
 > invisible(summary(pbm))
 > 
@@ -309,7 +298,6 @@ newly created object(s):
 + )
 > invisible(pb$datvals)
 > invisible(summary(pb))
-> plot(pb)
 > 
 > pm <- probe.match(
 +     pb,
@@ -322,7 +310,6 @@ newly created object(s):
 +     reltol=1e-7,
 +     fail.value=1e9
 + )
-> plot(pm)
 > 
 > invisible(cbind(truth=coef(ricker),est=coef(pm),guess=coef(po)))
 > 
@@ -339,7 +326,6 @@ newly created object(s):
 + )
 > invisible(pb$datvals)
 > invisible(summary(pb))
-> plot(pb)
 > 
 > pm <- probe.match(
 +     pb,
@@ -353,9 +339,9 @@ newly created object(s):
 +     fail.value=1e9
 + )
 > plot(pm)
-> plot(as(pm,"pomp"),variables="y")
+> invisible(as(pm,"pomp"))
 > pm <- probe.match(pm,seed=613980375L)
-> plot(simulate(pm),variables="y")
+> invisible(simulate(pm,states=TRUE,obs=TRUE))
 > 
 > invisible(cbind(truth=coef(ricker),est=coef(pm),guess=coef(po)))
 > 
@@ -373,7 +359,6 @@ newly created object(s):
 + )
 > invisible(pb$datvals)
 > invisible(summary(pb))
-> plot(pb)
 > 
 > pb <- probe(
 +     ricker,
@@ -388,7 +373,6 @@ newly created object(s):
 + )
 > invisible(pb$datvals)
 > invisible(summary(pb))
-> plot(pb)
 > 
 > pb <- probe(
 +     ricker,
@@ -403,7 +387,8 @@ newly created object(s):
 + )
 > invisible(pb$datvals)
 > invisible(summary(pb))
-> plot(pb)
+> dim(values(pb))
+[1] 1001    6
 > 
 > pb <- probe(
 +     ricker,
@@ -427,7 +412,6 @@ newly created object(s):
 + )
 > invisible(pb$datvals)
 > invisible(summary(pb))
-> plot(pb)
 > 
 > try(
 +     probe(
@@ -481,4 +465,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 34.200   0.220  34.483 
+ 35.276   0.372  35.677 
