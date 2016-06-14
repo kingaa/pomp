@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -24,6 +26,72 @@ Type 'q()' to quit R.
 > pompExample(gompertz)
 newly created object(s):
  gompertz 
+> show(gompertz)
+101 records of 1 observables, recorded from t = 0 to 100 
+summary of data:
+       Y        
+ Min.   :0.609  
+ 1st Qu.:0.918  
+ Median :1.136  
+ Mean   :1.133  
+ 3rd Qu.:1.297  
+ Max.   :1.880  
+zero time, t0 = 0
+process model simulator, rprocess = 
+function (xstart, times, params, ..., zeronames = character(0), 
+    tcovar, covar, .getnativesymbolinfo = TRUE) 
+{
+    .Call(euler_model_simulator, func = efun, xstart = xstart, 
+        times = times, params = params, dt = object@delta.t, 
+        method = 2L, zeronames = zeronames, tcovar = tcovar, 
+        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
+}
+<environment: 0x2613930>
+process model density, dprocess = 
+function (x, times, params, log = FALSE, ...) 
+stop(sQuote("dprocess"), " not specified", call. = FALSE)
+<environment: 0x246ada8>
+measurement model simulator, rmeasure = 
+native function ‘_gompertz_normal_rmeasure’
+measurement model density, dmeasure = 
+native function ‘_gompertz_normal_dmeasure’
+prior simulator, rprior = 
+function not specified
+prior density, dprior = 
+native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+skeleton ( map ) = 
+native function ‘_gompertz_skeleton’
+initializer = 
+function not specified
+parameter transformation (to estimation scale) = 
+function (params, ...) 
+{
+    log(params)
+}
+<environment: 0x1185c70>
+parameter transformation (from estimation scale) = 
+function (params, ...) 
+{
+    exp(params)
+}
+<environment: 0x1185c70>
+parameter(s):
+    K     r sigma   tau   X.0 
+  1.0   0.1   0.1   0.1   1.0 
+> print(gompertz@rmeasure)
+native function ‘_gompertz_normal_rmeasure’
+> print(gompertz@dmeasure)
+native function ‘_gompertz_normal_dmeasure’
+> print(gompertz@rprocess)
+function (xstart, times, params, ..., zeronames = character(0), 
+    tcovar, covar, .getnativesymbolinfo = TRUE) 
+{
+    .Call(euler_model_simulator, func = efun, xstart = xstart, 
+        times = times, params = params, dt = object@delta.t, 
+        method = 2L, zeronames = zeronames, tcovar = tcovar, 
+        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
+}
+<environment: 0x2613930>
 > 
 > po <- gompertz
 > coef(po)
@@ -46,6 +114,10 @@ newly created object(s):
     K     r sigma   tau   X.0 
  0.00 -1.61 -2.30 -2.30  0.00 
 > guess <- coef(po)
+> coef(po) <- numeric(0)
+> coef(po,transform=TRUE) <- partrans(po,guess,dir='to')
+> coef(po) <- numeric(0)
+> coef(po) <- guess
 > guess["r"] <- 0
 > 
 > set.seed(5868684L)
@@ -82,8 +154,8 @@ newly created object(s):
 +         rw.sd=c(r=0.02,K=0.02)
 +     )
 + )
-Error : 'mif' cannot estimate non-finite parameters.
-The following transformed parameters are non-finite: 'r'
+Error : ‘mif’ cannot estimate non-finite parameters.
+The following transformed parameters are non-finite: ‘r’
 > 
 > set.seed(93848585L)
 > mf <- mif(
@@ -179,4 +251,4 @@ iteration loglik     r
 > 
 > proc.time()
    user  system elapsed 
-  2.060   0.124   2.152 
+  1.960   0.164   2.280 

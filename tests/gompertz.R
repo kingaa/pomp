@@ -5,6 +5,10 @@ library(magrittr)
 options(digits=3)
 
 pompExample(gompertz)
+show(gompertz)
+print(gompertz@rmeasure)
+print(gompertz@dmeasure)
+print(gompertz@rprocess)
 
 po <- gompertz
 coef(po)
@@ -15,6 +19,10 @@ coef(po,c("r","K")) <- c(0.2,1)
 coef(po)
 coef(po,transform=TRUE)
 guess <- coef(po)
+coef(po) <- numeric(0)
+coef(po,transform=TRUE) <- partrans(po,guess,dir='to')
+coef(po) <- numeric(0)
+coef(po) <- guess
 guess["r"] <- 0
 
 set.seed(5868684L)
