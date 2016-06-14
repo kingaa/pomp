@@ -29,7 +29,7 @@ pf <- pfilter(euler.sir,params=p,Np=100,filter.mean=TRUE)
 print(coef(pf))
 print(logLik(pf),digits=4)
 plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
-plot(ess~time,data=as(pf,"data.frame"),type='l')
+plot(ess~time,data=as.data.frame(pf),type='l')
 plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
 
 dev.off()

@@ -115,6 +115,7 @@ pb <- probe(
 plot(pb)
 
 head(as(pb,"data.frame"))
+head(as.data.frame(pb))
 
 pompExample(ou2)
 
@@ -239,7 +240,11 @@ invisible(pb$datvals)
 invisible(summary(pb))
 plot(pb)
 
-pbm <- probe.match(pb)
+print(pb@seed)
+pbm <- probe.match(pb,est=c("r","sigma","phi"),
+                   method="nloptr",transform=TRUE,
+                   algorithm="NLOPT_LN_SBPLX",
+                   xtol_rel=1e-5)
 plot(pbm)
 invisible(summary(pbm))
 

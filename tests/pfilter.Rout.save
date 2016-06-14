@@ -67,7 +67,7 @@ newly created object(s):
 > print(logLik(pf),digits=4)
 [1] -943.7
 > plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
-> plot(ess~time,data=as(pf,"data.frame"),type='l')
+> plot(ess~time,data=as.data.frame(pf),type='l')
 > plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
 > 
 > dev.off()
@@ -76,4 +76,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  7.444   0.076   7.527 
+  7.844   0.104   7.938 
