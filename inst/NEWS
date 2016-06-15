@@ -8,10 +8,6 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._5._4:
 
         • In ‘mif2’, it is now required that ‘Nmif>0’.
 
-        • The package now Suggests ‘foreach’ and ‘doParallel’.  A test
-          of ‘pomp’ building in parallel is included (but not under
-          windows).
-
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._5._3:
 
         • More improvements to the test suite.
