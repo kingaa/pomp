@@ -50,7 +50,6 @@ NLF.LQL <- function (params.fitted, object, params, par.index, transform = FALSE
                       period=period,
                       tensor=tensor, 
                       nrbf=nrbf,
-                      verbose=verbose,
                       bootstrap,
                       bootsamp
                       ),

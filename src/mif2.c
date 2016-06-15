@@ -14,6 +14,8 @@ SEXP randwalk_perturbation (SEXP params, SEXP rw_sd)
   int nrw = 0, npars, nreps;
   int j, k;
 
+  PROTECT(params = duplicate(params)); nprotect++;
+
   // unpack parameter matrix
   xp = REAL(params);
   dim = INTEGER(GET_DIM(params)); npars = dim[0]; nreps = dim[1];
@@ -38,5 +40,5 @@ SEXP randwalk_perturbation (SEXP params, SEXP rw_sd)
   PutRNGstate();
 
   UNPROTECT(nprotect);
-  return(R_NilValue);
+  return(params);
 }

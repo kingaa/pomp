@@ -1,5 +1,5 @@
-NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period,
-                      tensor, nrbf = 4, verbose = FALSE,
+NLF.guts <- function (data.mat, data.times, model.mat, model.times,
+                      lags, period, tensor, nrbf = 4,
                       bootstrap = FALSE, bootsamp = NULL) {
 
     ## Version 1.0, 4 December 2007, S.P. Ellner and Bruce E. Kendall
@@ -18,7 +18,6 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
     ## model.mat = matrix of model time series, nobs x ntimes.sim 
     ## lags = vector of lag times for forecasting y(t) = f(y(t-lag1),y(t-lag2),....)+error
     ## nrbf = number of radial basis functions
-    ## verbose: logical, print stuff out as it runs?
     ## period: period=NA means the model is nonseasonal. period=integer>0 is the period of
     ##         seasonal forcing in 'real time' (the units of model.times). 
     ## tensor: logical. if FALSE, the fitted model is a gam with time(mod period) as
@@ -50,7 +49,6 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
 
 
     FAILED = -999999999; 
-    if (verbose) print("NLF multivariate version 1.0")
 
     nvar <- nrow(data.mat)
     multivar <- (nvar>1)
@@ -90,11 +88,6 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
 
     data.pred <- matrix(Lags.data$y,ncol=1)
     model.pred <- matrix(Lags.model$y,ncol=1)
-
-    if (verbose) {
-        print("calculating ridge functions")
-        print(date())
-    }
 
     rbfbasis.model <- make.rbfbasis(Lags.model$x,knots=rbf.knots,fac=fac)
     rbfbasis.data <- make.rbfbasis(Lags.data$x,knots=rbf.knots,fac=fac)
@@ -137,10 +130,6 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
             rbfbasis.model <- cbind(rbfbasis.model,make.rbfbasis(Lags.model$x,knots=rbf.knots,fac=fac))
             rbfbasis.data <- cbind(rbfbasis.data,make.rbfbasis(Lags.data$x,knots=rbf.knots,fac=fac))
             
-            if (verbose) {
-                print("done with ridge functions")
-                print(date())
-            }
         }
     }
 
@@ -163,11 +152,6 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times, lags, period
         model.lm <- .lm.fit(rbfbasis.model,model.pred[,jvar])
         model.residuals[,jvar] <- model.lm$residuals
         ck <- model.lm$coefficients
-        if (verbose) {
-            print(ck)
-            print(summary(model.lm))
-        }  
-
         fitted.data <- rbfbasis.data%*%matrix(ck,ncol=1)
         prediction.errors[,jvar] <- data.pred[,jvar]-fitted.data
     }

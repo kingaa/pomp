@@ -257,8 +257,7 @@ mif.pfilter <- function (object, params, Np,
         filt.m[,nt] <- xx$fm
 
         x <- xx$states
-        params <- xx$params
-        .Call(randwalk_perturbation,params,sigma1) # NB: 'params' is modified!
+        params <- .Call(randwalk_perturbation,xx$params,sigma1)
 
         if (all.fail) { ## all particles are lost
             nfail <- nfail+1

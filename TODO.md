@@ -1,6 +1,8 @@
 ### pomp to-do list
 
-- extended Kalman filter
+- better testing under windows (eliminate spurious diffs)
+- revisit 'invisible' and 'capture.output' calls in tests
+- better unit tests for 'sannbox'
 - write Csnippet support for 'onestep.dens' and 'gillespie.sim' plugins.
 - SDE examples
 - easier interface for lists of probes in 'probe'
@@ -13,10 +15,10 @@
     Prediction means are optional.
 	Only interesting for end-user if one wants to look at residuals.
 - parameter transformations: put 'transform' option into each estimation routine (spect.match)
-- unit tests for 'sannbox'
-- partial rejection control for 'pfilter'?
 - add plugin for adaptive tau leaping algorithm.
-- add LPA model examples
+- add LPA beetle examples
+- add budmoth examples
 - plugin for compartmental models
+- partial rejection control for 'pfilter'?
 - adaptive particle numbers in pfilter (?)
 - parallel 'pfilter' algorithm (?)

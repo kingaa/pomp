@@ -269,15 +269,8 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                       )
       F.up <- mean(f.up,na.rm=T)
 
-      f.up2 <- NLF.LQL(
-                       guess.up,object=object, params=params, par.index=par.index, 
-                       transform=transform,
-                       times=times, t0=t0, lags=lags, period=period, tensor=tensor,
-                       seed=seed, transform.data=transform.data, nrbf=4, 
-                       verbose=verbose
-                       )
-
-      if (verbose) cat("Fitted param ", i, F.up, mean(f.up2,na.rm=T)," up in ",sQuote("nlf"),"\n")
+      if (verbose)
+          cat("fitted param ", i, F.up, " up in ",sQuote("nlf"),"\n")
 
       guess.down <- fitted
       guess.down[i] <- guess.down[i]-eps[i]
@@ -290,7 +283,8 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                         )
       F.down <- mean(f.down,na.rm=T)
 
-      if (verbose) cat("Fitted param ",i, F.down," down in ",sQuote("NLF"),"\n")
+      if (verbose)
+          cat("fitted param ",i, F.down," down in ",sQuote("nlf"),"\n")
 
       Jhat[i,i] <- (F.up + F.down-2*F0)/(eps[i]*eps[i])
       Imat[,i] <- (f.up-f.down)/(2*eps[i])

@@ -101,7 +101,7 @@ bsmc2.internal <- function (object, params, Np, est,
     params.var  <- cov(t(params[estind,,drop=FALSE]))
 
     if (verbose) {
-      cat("at step",nt,"(time =",times[nt+1],")\n")
+      cat("at step ",nt," (time =",times[nt+1],")\n",sep="")
       print(
             rbind(
                   prior.mean=params.mean[estind],

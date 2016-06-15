@@ -72,7 +72,7 @@ mif2.pfilter <- function (object, params, Np,
 
         ## perturb parameters
         pmag <- cooling.fn(nt,mifiter)$alpha*rw.sd[,nt]
-        .Call(randwalk_perturbation,params,pmag) # NB: 'params' is modified!
+        params <- .Call(randwalk_perturbation,params,pmag)
 
         if (transform)
             tparams <- partrans(object,params,dir="fromEstimationScale",
@@ -191,7 +191,7 @@ mif2.pfilter <- function (object, params, Np,
 
 mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                            cooling.type, cooling.fraction.50,
-                           tol = 1e17, max.fail = Inf,
+                           tol = 1e-17, max.fail = Inf,
                            verbose = FALSE, .ndone = 0L,
                            .indices = integer(0),
                            .paramMatrix = NULL,
