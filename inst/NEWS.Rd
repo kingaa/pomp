@@ -6,7 +6,7 @@
     \item Fixed bugs found as a result of improved testing.
     \item In \code{mif2}, it is now required that \code{Nmif>0}.
     \item The package now Suggests \pkg{foreach} and \pkg{doParallel}.
-    A test of \code{pomp} building in parallel is included.
+    A test of \code{pomp} building in parallel is included (but not under windows).
   }
 }
 \section{Changes in \pkg{pomp} version 1.5.3}{
