@@ -58,31 +58,26 @@ in 'mif2': Np[k] ignored for k > ntimes
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
 Error : 'mif2' error: 'Nmif' must be a positive integer
 > 
-> m1 <- mif2(ou2,Nmif=100,start=guess1,Np=1000,
+> m1 <- mif2(ou2,Nmif=50,start=guess1,Np=1000,
 +            cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +            rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1))
-> 
-> m2 <- mif2(ou2,Nmif=50,start=guess2,Np=1000,
+> m2 <- mif2(ou2,Nmif=30,start=guess2,Np=1000,
 +            cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +            rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1))
-> freeze(continue(m2,Nmif=5,.paramMatrix=m2@paramMatrix),seed=595996) -> m2a
-> freeze(continue(m2,Nmif=5),seed=595996) -> m2
-> all.equal(coef(m2),coef(m2a))
-[1] "Mean relative difference: 0.0153"
-> m2 <- continue(m2,Nmif=45)
+> m2 <- continue(m2,Nmif=20)
 > 
-> try(continue(m2,Nmif=50,rw.sd=rw.sd(beta=0.1,alpha.2=0.1)))
+> freeze(continue(m2,Nmif=2,.paramMatrix=m2@paramMatrix),seed=595996) -> m2a
+> freeze(continue(m2,Nmif=2),seed=595996) -> m2b
+> stopifnot(all.equal(coef(m2a),coef(m2b)))
+> 
+> try(continue(m2,Nmif=10,rw.sd=rw.sd(beta=0.1,alpha.2=0.1)))
 Error : 'mif2' error: the following parameter(s), which are supposed to be estimated, are not present: 'beta'
-> try(continue(m2,Nmif=50,rw.sd=rw.sd(alpha.2=rep(0.1,3))))
+> try(continue(m2,Nmif=10,rw.sd=rw.sd(alpha.2=rep(0.1,3))))
 Error : 'mif2' error: 'rw.sd' spec for parameter 'alpha.2' does not evaluate to a vector of the correct length (100)
-> 
-> m2a <- continue(m2,Nmif=2,.paramMatrix=m2@paramMatrix)
-> dim(conv.rec(m2a))
-[1] 103  12
 > 
 > plot(m1,y=NA)
 Warning message:
@@ -94,8 +89,8 @@ Warning message:
 In plot(m12 <- c(m1, m2), y = 33) : '33' is ignored
 > coef(c(m12))
      alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau  x1.0 x2.0
-[1,]     0.8   -0.46   0.329     0.9       3    -0.5       2   1 -2.09 1.84
-[2,]     0.8   -0.50   0.277     0.9       3    -0.5       2   1 -3.21 3.89
+[1,]     0.8  -0.605   0.407     0.9       3    -0.5       2   1 -2.00 1.90
+[2,]     0.8  -0.530   0.247     0.9       3    -0.5       2   1 -2.95 2.97
 > dim(coef(m12))
 [1]  2 10
 > dim(coef(c(m12,m12)))
@@ -108,20 +103,20 @@ In plot(m12 <- c(m1, m2), y = 33) : '33' is ignored
 [1]  1 10
 > sapply(conv.rec(m12),dim)
      [,1] [,2]
-[1,]  101  101
+[1,]   51   51
 [2,]   12   12
 > 
 > rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
 +       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
 +       truth=c(coef(ou2),loglik=logLik(pfilter(m1,Np=1000))))
       alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau  x1.0 x2.0
-mle1      0.8   -0.46   0.329     0.9       3    -0.5       2   1 -2.09 1.84
-mle2      0.8   -0.50   0.277     0.9       3    -0.5       2   1 -3.21 3.89
-truth     0.8   -0.50   0.300     0.9       3    -0.5       2   1 -3.00 4.00
+mle1      0.8  -0.605   0.407     0.9       3    -0.5       2   1 -2.00 1.90
+mle2      0.8  -0.530   0.247     0.9       3    -0.5       2   1 -2.95 2.97
+truth     0.8  -0.500   0.300     0.9       3    -0.5       2   1 -3.00 4.00
       loglik
-mle1    -481
-mle2    -479
-truth   -479
+mle1    -485
+mle2    -484
+truth   -484
 > 
 > m3 <- mif2(ou2,Nmif=3,start=guess1,Np=200,
 +            cooling.fraction=0.2,
@@ -140,17 +135,19 @@ truth   -479
 +              alpha.2=ifelse(time==1,0.2,0.1),
 +              alpha.3=0.2*(time<10)))
 > 
-> m4 <- mif2(m4,Nmif=2,Np=c(rep(200,20),rep(100,80),200))
-> m4 <- continue(m4,Nmif=2,cooling.fraction=0.1)
+> m4 <- mif2(m4,Nmif=10,Np=c(rep(200,20),rep(100,80),200))
+> m4 <- continue(m4,Nmif=10,cooling.fraction=0.1)
 > pf <- pfilter(m4)
 > half <- 0.5
-> m4 <- mif2(pf,Nmif=2,
+> m4 <- mif2(pf,Nmif=10,
 +            cooling.fraction=0.2,
 +            rw.sd=rw.sd(
 +              x1.0=c(half,rep(0.2,99)),
 +              x2.0=ivp(half),
 +              alpha.2=ifelse(time==1,0.2,0.1),
 +              alpha.3=0.2*(time<10)))
+Warning message:
+1 filtering failure occurred in 'mif2.pfilter' 
 > 
 > library(ggplot2)
 > library(reshape2)
@@ -176,4 +173,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  20.12    0.18   20.39 
+ 12.488   0.124  12.693 

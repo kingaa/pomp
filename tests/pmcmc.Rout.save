@@ -50,6 +50,9 @@ Error : 'mvn.rw.adaptive' error: 'target' must be a number in (0,1)
 Error in mvn.diag.rw(rw.sd = c(0.01, 0.01), scale.start = 50, shape.start = 50) : 
   unused arguments (scale.start = 50, shape.start = 50)
 > capture.output(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50),verbose=TRUE) -> ignore) -> msg
+> stopifnot(length(msg)==13)
+> stopifnot(sum(grepl("proposal covariance",msg))!=3)
+> stopifnot(sum(grepl("performing 2 PMCMC iteration(s) using 100 particles",msg))!=1)
 > 
 > dprior.ou2 <- function (params, log, ...) {
 +   f <- sum(dunif(params,min=coef(ou2)-1,max=coef(ou2)+1,log=TRUE))
@@ -195,4 +198,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 16.380   0.144  16.529 
+ 16.692   0.136  16.815 

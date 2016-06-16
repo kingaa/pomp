@@ -30,8 +30,6 @@ newly created object(s):
 +                   nsim=50,
 +                   est=c("alpha.1","alpha.4"),
 +                   method="Nelder-Mead")
-> gm1@value
-[1] 64.89552
 > plot(gm1)
 > 
 > gm2 <- spect.match(ou2,
@@ -40,8 +38,6 @@ newly created object(s):
 +                    nsim=49,
 +                    est=c("alpha.1","alpha.4"),
 +                    method="Nelder-Mead")
-> gm2@value
-[1] 73.42989
 > plot(gm2)
 > 
 > gm3 <- spect.match(ou2,
@@ -50,8 +46,6 @@ newly created object(s):
 +                    nsim=50,
 +                    est=c("alpha.1","alpha.4"),
 +                    method="Nelder-Mead")
-> gm3@value
-[1] 60.4426
 > plot(gm3)
 > 
 > gm4 <- spect.match(ou2,
@@ -60,8 +54,6 @@ newly created object(s):
 +                    nsim=50,
 +                    est=c("alpha.1","alpha.4"),
 +                    method="Nelder-Mead")
-> gm4@value
-[1] 66.11778
 > plot(gm4)
 > 
 > pompExample(ricker)
@@ -117,4 +109,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 46.788   0.140  46.925 
+ 46.624   0.112  46.739 

@@ -52,4 +52,6 @@ stopifnot(max(abs(1-c(coef(m2,estnames),se=m2$se,value=logLik(m4))/c(-0.47,0.31,
 m5 <- nlf(m3,tensor=TRUE,period=10,est=estnames,seed=427458351L)
 m5 <- nlf(m5,seed=469007824L)
 stopifnot(max(abs(1-c(coef(m5,estnames),m5$se,logLik(m5))/c(-0.46,0.32,1.58,0.033,0.0328,0.417,-548)))<0.03)
-capture.output(m6 <- nlf(m5,seed=469007824L,tensor=FALSE,verbose=TRUE)) -> ignore
+capture.output(m6 <- nlf(m5,seed=469007824L,tensor=FALSE,verbose=TRUE)) -> msg
+stopifnot(length(msg)==8)
+stopifnot(sum(grepl("fitted param",msg))==6)

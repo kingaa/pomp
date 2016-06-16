@@ -61,4 +61,12 @@ try(pomp(ricker,toEstimationScale=identity) -> po)
 try(pomp(ricker,fromEstimationScale=identity) -> po)
 pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
 
+pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
+simulate(po) -> po
+## force recompile
+file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
+                       pattern=paste0(po@solibs[[1]]$name,".*"),
+                       full.names=TRUE))
+simulate(po) -> po
+
 dev.off()

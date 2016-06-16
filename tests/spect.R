@@ -11,7 +11,6 @@ gm1 <- spect.match(ou2,
                   nsim=50,
                   est=c("alpha.1","alpha.4"),
                   method="Nelder-Mead")
-gm1@value
 plot(gm1)
 
 gm2 <- spect.match(ou2,
@@ -20,7 +19,6 @@ gm2 <- spect.match(ou2,
                    nsim=49,
                    est=c("alpha.1","alpha.4"),
                    method="Nelder-Mead")
-gm2@value
 plot(gm2)
 
 gm3 <- spect.match(ou2,
@@ -29,7 +27,6 @@ gm3 <- spect.match(ou2,
                    nsim=50,
                    est=c("alpha.1","alpha.4"),
                    method="Nelder-Mead")
-gm3@value
 plot(gm3)
 
 gm4 <- spect.match(ou2,
@@ -38,7 +35,6 @@ gm4 <- spect.match(ou2,
                    nsim=50,
                    est=c("alpha.1","alpha.4"),
                    method="Nelder-Mead")
-gm4@value
 plot(gm4)
 
 pompExample(ricker)

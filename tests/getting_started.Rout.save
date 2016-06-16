@@ -226,8 +226,10 @@ See '?pomp' for an explanation of the new syntax.
 null device 
           1 
 > 
-> capture.output(show(parus)) -> ignore
+> capture.output(show(parus)) -> msg
+> stopifnot(length(msg)==43)
+> stopifnot(sum(grepl("function not specified",msg))==2)
 > 
 > proc.time()
    user  system elapsed 
-  6.376   1.184   8.851 
+  6.352   1.196   8.789 

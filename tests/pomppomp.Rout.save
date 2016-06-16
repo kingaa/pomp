@@ -130,10 +130,19 @@ Error : 'pomp' error: if 'fromEstimationScale' is supplied, then 'toEstimationSc
 Warning message:
 specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
 > 
+> pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
+> simulate(po) -> po
+> ## force recompile
+> file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
++                        pattern=paste0(po@solibs[[1]]$name,".*"),
++                        full.names=TRUE))
+[1] TRUE TRUE TRUE
+> simulate(po) -> po
+> 
 > dev.off()
 null device 
           1 
 > 
 > proc.time()
    user  system elapsed 
-  0.652   0.096   0.745 
+  1.376   0.340   2.052 
