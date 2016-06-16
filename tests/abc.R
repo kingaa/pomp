@@ -115,12 +115,7 @@ abc8 <- abc(
             epsilon=5,
             proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
               scale.start=500,shape.start=100))
-capture.output(
-    abc8 <- continue(abc8,Nabc=2000,proposal=mvn.rw(covmat(abc8)),verbose=TRUE)
-) -> msg
-stopifnot(length(msg)==801)
-stopifnot(sum(grepl("ABC",msg))==401)
-stopifnot(sum(grepl("acceptance ratio",msg))==400)
+abc8 <- continue(abc8,Nabc=2000,proposal=mvn.rw(covmat(abc8)))
 
 plot(abc8,scatter=T)
 plot(abc8)

@@ -226,4 +226,4 @@ Use 'mif2' instead.
 > 
 > proc.time()
    user  system elapsed 
- 11.040   0.088  11.141 
+  9.380   0.088   9.491 

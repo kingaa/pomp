@@ -17,10 +17,10 @@ try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1,5,
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(0.01,0.01),scale.start=50,shape.start=50)))
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),target=3,scale.start=50,shape.start=50)))
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c(0.01,0.01),scale.start=50,shape.start=50),verbose=TRUE))
-capture.output(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50),verbose=TRUE) -> ignore) -> msg
-stopifnot(length(msg)==13)
-stopifnot(sum(grepl("proposal covariance",msg))!=3)
-stopifnot(sum(grepl("performing 2 PMCMC iteration(s) using 100 particles",msg))!=1)
+pmcmc(ou2,Nmcmc=2,Np=100,
+      proposal=mvn.rw.adaptive(
+          rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+          scale.start=50,shape.start=50)) -> ignore
 
 dprior.ou2 <- function (params, log, ...) {
   f <- sum(dunif(params,min=coef(ou2)-1,max=coef(ou2)+1,log=TRUE))

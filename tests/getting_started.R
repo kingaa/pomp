@@ -199,7 +199,3 @@ parus %<>%
   "),paramnames=c("r","K","sigma"))
 
 dev.off()
-
-capture.output(show(parus)) -> msg
-stopifnot(length(msg)==43)
-stopifnot(sum(grepl("function not specified",msg))==2)

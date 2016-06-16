@@ -68,8 +68,6 @@ ou2 <- pomp(ou2,
             }
             )
 
-capture.output(smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames,verbose=TRUE)) -> msg
-stopifnot(length(msg)==50)
-stopifnot(sum(grepl("effective sample size",msg))==10)
+smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames)
 print(smc$eff.sample.size)
 print(smc$log.evidence)

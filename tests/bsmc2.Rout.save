@@ -98,9 +98,7 @@ x2.0           4.0            4.0   4.0  4.00  4.00  4.00
 +             }
 +             )
 > 
-> capture.output(smc <- bsmc2(ou2,Np=25000,smooth=0.1,est=estnames,verbose=TRUE)) -> msg
-> stopifnot(length(msg)==50)
-> stopifnot(sum(grepl("effective sample size",msg))==10)
+> smc <- bsmc2(ou2,Np=25000,smooth=0.1,est=estnames)
 > print(smc$eff.sample.size)
  [1] 5992 4007 2998 3268 5600 1948 4880 1582 5080 3774
 > print(smc$log.evidence)
@@ -139,4 +137,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-   3.04    0.13    3.15 
+   2.99    0.12    3.08 
