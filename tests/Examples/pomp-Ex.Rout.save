@@ -1,0 +1,1084 @@
+
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "pomp"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('pomp')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("bake")
+> ### * bake
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Utilities for reproducibility
+> ### Title: Tools for reproducible computations.
+> ### Aliases: bake stew freeze
+> 
+> ### ** Examples
+> 
+>   ## Not run: 
+> ##D   bake(file="example1.rds",{
+> ##D     x <- runif(1000)
+> ##D     mean(x)
+> ##D   })
+> ##D 
+> ##D   stew(file="example2.rda",{
+> ##D     x <- runif(10)
+> ##D     y <- rnorm(n=10,mean=3*x+5,sd=2)
+> ##D   })
+> ##D 
+> ##D   plot(x,y)  
+> ##D   
+> ## End(Not run)
+> 
+>   freeze(runif(3),seed=5886730)
+[1] 0.4397338 0.2147983 0.9993408
+>   freeze(runif(3),seed=5886730)
+[1] 0.4397338 0.2147983 0.9993408
+> 
+> 
+> 
+> cleanEx()
+> nameEx("blowflies")
+> ### * blowflies
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: blowflies
+> ### Title: Model for Nicholson's blowflies.
+> ### Aliases: blowflies blowflies1 blowflies2
+> ### Keywords: models datasets
+> 
+> ### ** Examples
+> 
+> pompExample(blowflies)
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘y.init’
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘y.init’
+newly created object(s):
+ blowflies1 blowflies2 
+> plot(blowflies1)
+> plot(blowflies2)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("bsplines")
+> ### * bsplines
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: B-splines
+> ### Title: B-spline bases
+> ### Aliases: bspline.basis periodic.bspline.basis
+> ### Keywords: smooth
+> 
+> ### ** Examples
+> 
+> x <- seq(0,2,by=0.01)
+> y <- bspline.basis(x,degree=3,nbasis=9,names="basis")
+> matplot(x,y,type='l',ylim=c(0,1.1))
+> lines(x,apply(y,1,sum),lwd=2)
+> 
+> x <- seq(-1,2,by=0.01)
+> y <- periodic.bspline.basis(x,nbasis=5,names="spline%d")
+> matplot(x,y,type='l')
+> 
+> 
+> 
+> cleanEx()
+> nameEx("dacca")
+> ### * dacca
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: dacca
+> ### Title: Model of cholera transmission for historic Bengal.
+> ### Aliases: dacca
+> ### Keywords: models datasets
+> 
+> ### ** Examples
+> 
+> pompExample(dacca)
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nrstage’,‘all.state.names’,‘comp.names’,‘comp.ic.names’
+newly created object(s):
+ dacca 
+> plot(dacca)
+> #MLEs on the natural scale
+> coef(dacca)
+       gamma          eps          rho        delta       deltaI         clin 
+20.800000000 19.100000000  0.000000000  0.020000000  0.060000000  1.000000000 
+       alpha   beta.trend    log.beta1    log.beta2    log.beta3    log.beta4 
+ 1.000000000 -0.004980000  0.747000000  6.380000000 -3.440000000  4.230000000 
+   log.beta5    log.beta6   log.omega1   log.omega2   log.omega3   log.omega4 
+ 3.330000000  4.550000000 -1.692819521 -2.543383580 -2.840439389 -4.691817993 
+  log.omega5   log.omega6      sd.beta          tau          S.0          I.0 
+-8.477972478 -4.390058806  3.130000000  0.230000000  0.621000000  0.378000000 
+        Rs.0         R1.0         R2.0         R3.0       nbasis      nrstage 
+ 0.000000000  0.000843000  0.000972000  0.000000116  6.000000000  3.000000000 
+> #MLEs on the transformed scale
+> coef(dacca,transform=TRUE)
+      gamma         eps         rho       delta      deltaI        clin 
+  3.0349530   2.9496883        -Inf  -3.9120230  -2.8134107         Inf 
+      alpha  beta.trend   log.beta1   log.beta2   log.beta3   log.beta4 
+  0.0000000  -0.0049800   0.7470000   6.3800000  -3.4400000   4.2300000 
+  log.beta5   log.beta6  log.omega1  log.omega2  log.omega3  log.omega4 
+  3.3300000   4.5500000  -1.6928195  -2.5433836  -2.8404394  -4.6918180 
+ log.omega5  log.omega6     sd.beta         tau         S.0         I.0 
+ -8.4779725  -4.3900588   1.1410330  -1.4696760  -0.4772390  -0.9736759 
+       Rs.0        R1.0        R2.0        R3.0      nbasis     nrstage 
+       -Inf  -7.0793584  -6.9369695 -15.9704904   6.0000000   3.0000000 
+> plot(simulate(dacca))
+> # now change 'eps' and simulate again
+> coef(dacca,"eps") <- 1
+> plot(simulate(dacca))
+> 
+> 
+> 
+> cleanEx()
+> nameEx("design")
+> ### * design
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: design
+> ### Title: Design matrices for pomp calculations
+> ### Aliases: profileDesign sobolDesign sobol sliceDesign
+> ### Keywords: design
+> 
+> ### ** Examples
+> 
+> ## Sobol' low-discrepancy design
+> plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
+> 
+> ## A one-parameter profile design:
+> x <- profileDesign(p=1:10,lower=c(a=0,b=0),upper=c(a=1,b=5),nprof=20)
+> dim(x)
+[1] 200   3
+> plot(x)
+> 
+> ## A two-parameter profile design:
+> x <- profileDesign(p=1:10,q=3:5,lower=c(a=0,b=0),upper=c(b=5,a=1),nprof=20)
+> dim(x)
+[1] 600   4
+> plot(x)
+> 
+> ## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.
+> x <- sliceDesign(center=c(A=3,B=8,C=0),B=seq(0,10,by=1))
+> dim(x)
+[1] 11  4
+> plot(x)
+> 
+> ## Two slices through the same point along the A and C directions.
+> x <- sliceDesign(c(A=3,B=8,C=0),A=seq(0,5,by=1),C=seq(0,5,length=11))
+> dim(x)
+[1] 17  4
+> plot(x)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("eulermultinom")
+> ### * eulermultinom
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: eulermultinom
+> ### Title: The Euler-multinomial distributions and Gamma white-noise
+> ###   processes
+> ### Aliases: eulermultinom reulermultinom deulermultinom rgammawn
+> ### Keywords: distribution
+> 
+> ### ** Examples
+> 
+> print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=0.1))
+  [,1] [,2] [,3] [,4] [,5]
+a    8   11    5   12    3
+b   20   13   13   11   17
+c   19   17   26   23   27
+> deulermultinom(x=dn,size=100,rate=c(1,2,3),dt=0.1)
+[1] 0.0005240720 0.0002860055 0.0008286945 0.0002705089 0.0002207030
+> ## an Euler-multinomial with overdispersed transitions:
+> dt <- 0.1
+> dW <- rgammawn(sigma=0.1,dt=dt)
+> print(dn <- reulermultinom(5,size=100,rate=c(a=1,b=2,c=3),dt=dW))
+  [,1] [,2] [,3] [,4] [,5]
+a   11   13   10   12    6
+b   23   21   15   20   18
+c   33   27   24   27   39
+> 
+> 
+> 
+> cleanEx()
+> nameEx("example")
+> ### * example
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Example pomp models
+> ### Title: Examples of the construction of POMP models
+> ### Aliases: pompExample 'Example pomp models' pompExample
+> ### Keywords: models datasets
+> 
+> ### ** Examples
+> 
+>   pompExample()
+examples in /userdata/kingaa/projects/Rpkg/check/pomp/examples:
+[1] "bbs"           "blowflies"     "dacca"         "euler.sir"    
+[5] "gillespie.sir" "gompertz"      "ou2"           "ricker"       
+[9] "rw2"          
+>   pompExample(euler.sir)
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+newly created object(s):
+ euler.sir 
+>   pompExample("gompertz")
+newly created object(s):
+ gompertz 
+>   pompExample(ricker,envir=NULL)
+> ## Not run: 
+> ##D   pompExample(bbs,show=TRUE)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("gompertz")
+> ### * gompertz
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: gompertz
+> ### Title: Gompertz model with log-normal observations.
+> ### Aliases: gompertz
+> ### Keywords: models datasets
+> 
+> ### ** Examples
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> plot(gompertz)
+> coef(gompertz)
+    K     r sigma   tau   X.0 
+  1.0   0.1   0.1   0.1   1.0 
+> coef(gompertz,transform=TRUE)
+        K         r     sigma       tau       X.0 
+ 0.000000 -2.302585 -2.302585 -2.302585  0.000000 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("logmeanexp")
+> ### * logmeanexp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: logmeanexp
+> ### Title: The log-mean-exp trick
+> ### Aliases: logmeanexp
+> 
+> ### ** Examples
+> 
+>   ## generate a bifurcation diagram for the Ricker map
+>   pompExample(ricker)
+newly created object(s):
+ ricker 
+>   ll <- replicate(n=5,logLik(pfilter(ricker,Np=1000)))
+>   ## an estimate of the log likelihood:
+>   logmeanexp(ll)
+[1] -139.3884
+>   ## with standard error:
+>   logmeanexp(ll,se=TRUE)
+                         se 
+-139.38840472    0.06185906 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("lowlevel")
+> ### * lowlevel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Low-level-interface
+> ### Title: pomp low-level interface
+> ### Aliases: 'pomp low-level interface' rprocess rprocess,pomp-method
+> ###   rprocess-pomp dprocess dprocess,pomp-method dprocess-pomp rmeasure
+> ###   rmeasure,pomp-method rmeasure-pomp dmeasure dmeasure,pomp-method
+> ###   dmeasure-pomp dprior dprior,pomp-method dprior-pomp rprior
+> ###   rprior,pomp-method rprior-pomp init.state init.state,pomp-method
+> ###   init.state-pomp skeleton skeleton,pomp-method skeleton-pomp
+> ###   trajectory trajectory,pomp-method trajectory-pomp pompLoad
+> ###   pompLoad-pomp pompLoad,pomp-method pompUnload pompUnload-pomp
+> ###   pompUnload,pomp-method
+> ### Keywords: programming
+> 
+> ### ** Examples
+> 
+> pompExample(ricker)
+newly created object(s):
+ ricker 
+> 
+> p <- parmat(c(r=42,phi=10,sigma=0.3,N.0=7,e.0=0),10)
+> t <- c(1:10,20,30)
+> t0 <- 0
+> x0 <- init.state(ricker,params=p,t0=t0)
+> x <- rprocess(ricker,xstart=x0,times=c(t0,t),params=p,offset=1)
+> y <- rmeasure(ricker,params=p,x=x,times=t)
+> ll <- dmeasure(ricker,y=y[,3,,drop=FALSE],x=x,times=t,params=p,log=TRUE)
+> apply(ll,1,sum)
+ [1]  -783.39730 -1692.42728   -28.73029 -3067.80648 -3307.08486 -2230.38738
+ [7]  -977.49821 -2290.60530  -848.09684  -840.80998
+> f <- skeleton(ricker,x=x,t=t,params=p)
+> z <- trajectory(ricker,params=p,times=t,t0=t0)
+> 
+> ## short arguments are recycled:
+> p <- c(r=42,phi=10,sigma=0.3,N.0=7,e.0=0)
+> t <- c(1:10,20,30)
+> t0 <- 0
+> x0 <- init.state(ricker,params=p,t0=t0)
+> x <- rprocess(ricker,xstart=x0,times=c(t0,t),params=p,offset=1)
+> y <- rmeasure(ricker,params=p,x=x,times=t)
+> ll <- dmeasure(ricker,y=y,x=x,times=t,params=p,log=TRUE)
+> f <- skeleton(ricker,x=x,t=t,params=p)
+> z <- trajectory(ricker,params=p,times=t,t0=t0)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("measles")
+> ### * measles
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Childhood disease incidence data
+> ### Title: Historical childhood disease incidence data
+> ### Aliases: LondonYorke ewmeas ewcitmeas
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> plot(cases~time,data=LondonYorke,subset=disease=="measles",type='n',main="measles",bty='l')
+> lines(cases~time,data=LondonYorke,subset=disease=="measles"&town=="Baltimore",col="red")
+> lines(cases~time,data=LondonYorke,subset=disease=="measles"&town=="New York",col="blue")
+> legend("topright",legend=c("Baltimore","New York"),lty=1,col=c("red","blue"),bty='n')
+> 
+> plot(
++      cases~time,
++      data=LondonYorke,
++      subset=disease=="chickenpox"&town=="New York",
++      type='l',col="blue",main="chickenpox, New York",
++      bty='l'
++     )
+> 
+> plot(
++      cases~time,
++      data=LondonYorke,
++      subset=disease=="mumps"&town=="New York",
++      type='l',col="blue",main="mumps, New York",
++      bty='l'
++     )
+> 
+> plot(reports~time,data=ewmeas,type='l')
+> 
+> plot(reports~date,data=ewcitmeas,subset=city=="Liverpool",type='l')
+> 
+> 
+> 
+> cleanEx()
+> nameEx("mif2")
+> ### * mif2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Iterated filtering 2
+> ### Title: IF2: Maximum likelihood by iterated, perturbed Bayes maps
+> ### Aliases: mif2 mif2,mif2d.pomp-method mif2-mif2d.pomp
+> ###   mif2,pfilterd.pomp-method mif2-pfilterd.pomp mif2,pomp-method
+> ###   mif2-pomp continue,mif2d.pomp-method continue-mif2d.pomp
+> ###   mif2d.pomp-class mif2d.pomp-methods conv.rec,mif2d.pomp-method
+> ###   conv.rec-mif2d.pomp conv.rec,mif2List-method conv.rec-mif2List
+> ###   coef,mif2List-method coef.rec-mif2List plot-mif2d.pomp
+> ###   plot,mif2d.pomp-method plot-mif2List plot,mif2List-method
+> ###   mif2List-class c-mif2d.pomp c,mif2d.pomp-method c-mif2List
+> ###   c,mif2List-method [-mif2List [,mif2List-method rw.sd
+> ### Keywords: optimize ts
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D pompExample(ou2)
+> ##D 
+> ##D guess1 <- guess2 <- coef(ou2)
+> ##D guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
+> ##D guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
+> ##D 
+> ##D m1 <- mif2(ou2,Nmif=100,start=guess1,Np=1000,
+> ##D            cooling.type="hyperbolic",cooling.fraction.50=0.05,
+> ##D            rw.sd=rw.sd(x1.0=ivp(0.5),x2.0=ivp(0.5),
+> ##D              alpha.2=0.1,alpha.3=0.1))
+> ##D 
+> ##D m2 <- mif2(ou2,Nmif=100,start=guess2,Np=1000,
+> ##D            cooling.type="hyperbolic",cooling.fraction.50=0.05,
+> ##D            rw.sd=rw.sd(x1.0=ivp(0.5),x2.0=ivp(0.5),
+> ##D              alpha.2=0.1,alpha.3=0.1))
+> ##D 
+> ##D plot(c(m1,m2))
+> ##D 
+> ##D rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
+> ##D       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
+> ##D       truth=c(coef(ou2),loglik=logLik(pfilter(m1,Np=1000))))
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ou2")
+> ### * ou2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ou2
+> ### Title: Two-dimensional discrete-time Ornstein-Uhlenbeck process
+> ### Aliases: ou2
+> ### Keywords: models datasets
+> 
+> ### ** Examples
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> plot(ou2)
+> coef(ou2)
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+> x <- simulate(ou2)
+> plot(x)
+> pf <- pfilter(ou2,Np=1000)
+> logLik(pf)
+[1] -480.217
+> 
+> 
+> 
+> cleanEx()
+> nameEx("parmat")
+> ### * parmat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: parmat
+> ### Title: Create a matrix of parameters
+> ### Aliases: parmat
+> 
+> ### ** Examples
+> 
+>   ## generate a bifurcation diagram for the Ricker map
+>   pompExample(ricker)
+newly created object(s):
+ ricker 
+>   p <- parmat(coef(ricker),nrep=500)
+>   p["r",] <- exp(seq(from=1.5,to=4,length=500))
+>   x <- trajectory(ricker,times=seq(from=1000,to=2000,by=1),params=p)
+>   matplot(p["r",],x["N",,],pch='.',col='black',xlab="log(r)",ylab="N",log='x')
+> 
+> 
+> 
+> cleanEx()
+> nameEx("pfilter")
+> ### * pfilter
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Particle filter
+> ### Title: Particle filter
+> ### Aliases: 'particle filter' 'sequential Monte Carlo' SMC pfilter
+> ###   pfilter,pomp-method pfilter-pomp pfilter,pfilterd.pomp-method
+> ###   pfilter-pfilterd.pomp pfilterd.pomp-class pfilterd.pomp
+> ###   logLik,pfilterd.pomp-method logLik-pfilterd.pomp
+> ###   $,pfilterd.pomp-method $-pfilterd.pomp pred.mean
+> ###   pred.mean,pfilterd.pomp-method pred.mean-pfilterd.pomp pred.var
+> ###   pred.var,pfilterd.pomp-method pred.var-pfilterd.pomp filter.mean
+> ###   filter.mean,pfilterd.pomp-method filter.mean-pfilterd.pomp
+> ###   filter.traj filter.traj,pfilterd.pomp-method
+> ###   filter.traj-pfilterd.pomp eff.sample.size
+> ###   eff.sample.size,pfilterd.pomp-method eff.sample.size-pfilterd.pomp
+> ###   cond.logLik cond.logLik,pfilterd.pomp-method
+> ###   cond.logLik-pfilterd.pomp as,pfilterd.pomp-method
+> ###   as.data.frame.pfilterd.pomp coerce,pfilterd.pomp,data.frame-method
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> pf <- pfilter(gompertz,Np=1000)	## use 1000 particles
+> plot(pf)
+> logLik(pf)
+[1] 31.45438
+> cond.logLik(pf)			## conditional log-likelihoods
+  [1]  1.014323888  0.590061556  0.026833119 -0.087013704 -0.144913149
+  [6]  1.033164752  0.428789895  0.739369851  0.548844383  0.617900553
+ [11]  0.774018805  0.576671979  0.009136343  0.598304486  0.772426471
+ [16]  0.203091876  0.392363444  0.748474089  0.741799428  0.065224576
+ [21]  0.625584207 -0.771446913  0.834712431  0.852147724 -0.014622511
+ [26] -1.474852559 -0.665771630  1.169233034  0.897107676  1.049316183
+ [31]  0.406748190  0.368550160 -0.949609161 -0.121207451  0.877283626
+ [36]  1.146763954 -0.780060239  0.459627064  0.788049024  0.612089171
+ [41]  0.828378610  0.311219035  0.621193016  0.694946620  0.815474459
+ [46]  0.847569319  1.005825505  0.800660202  0.967187112  0.698905295
+ [51]  0.444517469  0.851056766  0.624729850  1.112545350  0.715361971
+ [56]  0.397030930  0.109587683 -2.310575013 -0.532026088  0.623674882
+ [61] -0.089819160  0.540248806  0.715216075  0.047056879 -0.635544179
+ [66] -0.287554453 -0.629750115  0.316310389  0.486778894  0.444677108
+ [71]  0.183314816  0.320629347  0.441536729  0.706962103  0.652374593
+ [76]  0.100030433  0.362310983  0.454969557  0.583439925  0.601340131
+ [81]  0.688073679 -1.070346756  0.521309462 -0.695517684  0.025957365
+ [86]  0.368097496 -2.060467205 -1.480562849  0.667254307  0.331698807
+ [91] -0.409327390 -0.028502785  1.009898604 -0.308404576  0.865047618
+ [96]  0.870019437  0.105185606  0.786876412  0.728201339  0.597754094
+[101]  0.041825923
+> eff.sample.size(pf)             ## effective sample size
+  [1] 1000.00000  690.58126  347.99771  419.73020  306.27311  786.62527
+  [7]  565.62708  729.35688  663.65099  719.16088  794.99639  715.82602
+ [13]  510.18131  693.08235  771.35344  572.74340  669.50456  798.63406
+ [19]  787.32139  527.27630  780.19594  215.33420  792.51334  773.47235
+ [25]  473.20982  122.85688  173.98192  805.67309  711.69149  752.36220
+ [31]  399.42472  365.36712  204.89848  260.99437  658.39602  756.94685
+ [37]  232.07551  594.77946  663.32387  664.33325  711.35469  553.32489
+ [43]  711.81183  654.37261  697.24281  673.19040  792.76368  626.31218
+ [49]  767.23669  560.38992  551.50207  663.87514  501.85229  744.69020
+ [55]  631.37029  538.77812  495.12378   90.52282  378.27605  805.90516
+ [61]  393.54611  710.62921  796.89059  525.17347  367.12148  474.93228
+ [67]  412.94380  761.08716  814.69150  790.02242  666.62499  648.66266
+ [73]  645.13001  779.99506  769.20615  555.60544  686.82253  741.83824
+ [79]  786.65138  742.86138  788.52258  257.84035  686.98241  341.79104
+ [85]  446.84001  662.20033   76.99094  179.05472  777.86157  651.05499
+ [91]  293.27228  344.84719  786.81793  357.65728  799.74787  782.22216
+ [97]  506.04978  757.17493  759.71635  613.61567  481.46808
+> logLik(pfilter(pf))      	## run it again with 1000 particles
+[1] 30.83428
+> ## run it again with 2000 particles
+> pf <- pfilter(pf,Np=2000,filter.mean=TRUE)
+> fm <- filter.mean(pf)    	## extract the filtering means
+> 
+> 
+> 
+> cleanEx()
+> nameEx("pmcmc")
+> ### * pmcmc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Particle Markov Chain Monte Carlo
+> ### Title: The particle Markov chain Metropolis-Hastings algorithm
+> ### Aliases: pmcmc pmcmc,pmcmc-method pmcmc-pmcmc
+> ###   pmcmc,pfilterd.pomp-method pmcmc-pfilterd.pomp pmcmc,pomp-method
+> ###   pmcmc-pomp continue,pmcmc-method continue-pmcmc pmcmc-class
+> ###   pmcmc-methods logLik,pmcmc-method logLik-pmcmc conv.rec,pmcmc-method
+> ###   conv.rec-pmcmc conv.rec,pmcmcList-method conv.rec-pmcmcList
+> ###   filter.traj,pmcmc-method filter.traj,pmcmcList-method
+> ###   filter.traj-pmcmc filter.traj-pmcmcList plot-pmcmc plot,pmcmc-method
+> ###   plot-pmcmcList plot,pmcmcList-method pmcmcList-class
+> ###   covmat,pmcmc-method covmat-pmcmc covmat,pmcmcList-method
+> ###   covmat-pmcmcList c-pmcmc c,pmcmc-method c-pmcmcList
+> ###   c,pmcmcList-method [-pmcmcList [,pmcmcList-method
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D library(pomp)
+> ##D 
+> ##D pompExample(ou2)
+> ##D 
+> ##D pmcmc(
+> ##D       pomp(ou2,dprior=Csnippet("
+> ##D    lik = dnorm(alpha_2,-0.5,1,1) + dnorm(alpha_3,0.3,1,1);
+> ##D    lik = (give_log) ? lik : exp(lik);"),
+> ##D            paramnames=c("alpha.2","alpha.3")),
+> ##D       Nmcmc=2000,Np=500,verbose=TRUE,
+> ##D       proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+> ##D         scale.start=200,shape.start=100)) -> chain
+> ##D continue(chain,Nmcmc=2000,proposal=mvn.rw(covmat(chain))) -> chain
+> ##D plot(chain)
+> ##D chain <- pmcmc(chain)
+> ##D plot(chain)
+> ##D 
+> ##D library(coda)
+> ##D trace <- window(conv.rec(chain,c("alpha.2","alpha.3")),start=2000)
+> ##D rejectionRate(trace)
+> ##D effectiveSize(trace)
+> ##D autocorr.diag(trace)
+> ##D 
+> ##D summary(trace)
+> ##D plot(trace)
+> ##D 
+> ##D heidel.diag(trace)
+> ##D geweke.diag(trace)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("pomp")
+> ### * pomp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: pomp constructor
+> ### Title: Constructor of the basic POMP object
+> ### Aliases: pomp pomp-class 'pomp constructor' 'accumulator variables'
+> ### Keywords: models interface programming ts
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D pompExample()
+> ##D pomp.home <- system.file("examples",package="pomp")
+> ##D pomp.examples <- list.files(pomp.home)
+> ##D file.show(
+> ##D           file.path(pomp.home,pomp.examples),
+> ##D           header=paste("======",pomp.examples,"=======")
+> ##D          )
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("probe")
+> ### * probe
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Probes and synthetic likelihood
+> ### Title: Probe a partially-observed Markov process by computing summary
+> ###   statistics and the synthetic likelihood.
+> ### Aliases: 'Probes and synthetic likelihood' probe probe,pomp-method
+> ###   probe,probed.pomp-method probe-pomp probe-probed.pomp probe.match
+> ###   probe.match,pomp-method probe.match,probed.pomp-method
+> ###   probe.match,probe.matched.pomp-method probe.match-pomp
+> ###   probe.match-probed.pomp probe.match-probe.matched.pomp
+> ###   probed.pomp-class probe.matched.pomp-class probe.match.objfun
+> ###   probe.match.objfun,pomp-method probe.match.objfun,probed.pomp-method
+> ###   probe.match.objfun-pomp probe.match.objfun-probed.pomp
+> ###   probed.pomp-methods probe.matched.pomp-methods spect.pomp-methods
+> ###   spect.matched.pomp-methods summary,probed.pomp-method
+> ###   summary,probe.matched.pomp-method summary-probed.pomp
+> ###   summary-probe.matched.pomp values values,probed.pomp-method
+> ###   values,probe.matched.pomp-method values-probed.pomp
+> ###   values-probe.matched.pomp plot,probed.pomp-method
+> ###   plot,probe.matched.pomp-method plot-probed.pomp
+> ###   plot-probe.matched.pomp summary,spect.pomp-method
+> ###   summary,spect.matched.pomp-method summary-spect.pomp
+> ###   summary-spect.matched.pomp plot,spect.pomp-method
+> ###   plot,spect.matched.pomp-method plot,spect.pomp-method plot-spect.pomp
+> ###   as,probed.pomp-method logLik,probed.pomp-method logLik-probed.pomp
+> ###   $,probed.pomp-method $-probed.pomp $,probe.matched.pomp-method
+> ###   $-probe.matched.pomp coerce,probed.pomp,data.frame-method
+> ### Keywords: optimize ts
+> 
+> ### ** Examples
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> good <- probe(
++               ou2,
++               probes=list(
++                 y1.mean=probe.mean(var="y1"),
++                 y2.mean=probe.mean(var="y2"),
++                 y1.sd=probe.sd(var="y1"),
++                 y2.sd=probe.sd(var="y2"),
++                 extra=function(x)max(x["y1",])
++                 ),
++               nsim=500
++               )
+> summary(good)
+$coef
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+
+$nsim
+[1] 500
+
+$quantiles
+y1.mean y2.mean   y1.sd   y2.sd   extra 
+  0.096   0.474   0.024   0.040   0.058 
+
+$pvals
+   y1.mean    y2.mean      y1.sd      y2.sd      extra 
+0.19560878 0.95009980 0.05189621 0.08383234 0.11976048 
+
+$synth.loglik
+[1] -6.4696
+
+> plot(good)
+> 
+> bad <- probe(
++              ou2,
++              params=c(alpha.1=0.1,alpha.4=0.2,x1.0=0,x2.0=0,
++                       alpha.2=-0.5,alpha.3=0.3,
++                       sigma.1=3,sigma.2=-0.5,sigma.3=2,
++                       tau=1),
++              probes=list(
++                y1.mean=probe.mean(var="y1"),
++                y2.mean=probe.mean(var="y2"),
++                y1.sd=probe.sd(var="y1"),
++                y2.sd=probe.sd(var="y2"),
++                extra=function(x)range(x["y1",])
++                ),
++              nsim=500
++              )
+> summary(bad)
+$coef
+alpha.1 alpha.4    x1.0    x2.0 alpha.2 alpha.3 sigma.1 sigma.2 sigma.3     tau 
+    0.1     0.2     0.0     0.0    -0.5     0.3     3.0    -0.5     2.0     1.0 
+
+$nsim
+[1] 500
+
+$quantiles
+y1.mean y2.mean   y1.sd   y2.sd  extra1  extra2 
+  0.074   0.588   1.000   1.000   0.042   0.964 
+
+$pvals
+    y1.mean     y2.mean       y1.sd       y2.sd      extra1      extra2 
+0.151696607 0.826347305 0.003992016 0.003992016 0.087824351 0.075848303 
+
+$synth.loglik
+[1] -114.4377
+
+> plot(bad)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ricker")
+> ### * ricker
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ricker
+> ### Title: Ricker model with Poisson observations.
+> ### Aliases: ricker
+> ### Keywords: datasets models
+> 
+> ### ** Examples
+> 
+> pompExample(ricker)
+newly created object(s):
+ ricker 
+> plot(ricker)
+> coef(ricker)
+       r    sigma      phi      N.0      e.0 
+44.70118  0.30000 10.00000  7.00000  0.00000 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("rw2")
+> ### * rw2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: rw2
+> ### Title: Two-dimensional random-walk process
+> ### Aliases: rw2
+> ### Keywords: datasets models
+> 
+> ### ** Examples
+> 
+> pompExample(rw2)
+newly created object(s):
+ rw2 
+> plot(rw2)
+> x <- simulate(rw2,nsim=10,seed=20348585L,params=c(x1.0=0,x2.0=0,s1=1,s2=3,tau=1))
+> plot(x[[1]])
+> 
+> 
+> 
+> cleanEx()
+> nameEx("simulate-pomp")
+> ### * simulate-pomp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: POMP simulation
+> ### Title: Simulations of a partially-observed Markov process
+> ### Aliases: 'POMP simulation' simulate,pomp-method simulate-pomp
+> ### Keywords: models ts
+> 
+> ### ** Examples
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> x <- simulate(ou2,seed=3495485,nsim=10)
+> x <- simulate(ou2,seed=3495485,nsim=10,states=TRUE,obs=TRUE)
+> x <- simulate(ou2,seed=3495485,nsim=10,obs=TRUE,
++               as.data.frame=TRUE,include.data=TRUE)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("sir")
+> ### * sir
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sir
+> ### Title: Compartmental epidemiological models
+> ### Aliases: euler.sir gillespie.sir bbs
+> ### Keywords: datasets models
+> 
+> ### ** Examples
+> 
+> pompExample(euler.sir)
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+newly created object(s):
+ euler.sir 
+> plot(euler.sir)
+> plot(simulate(euler.sir,seed=20348585))
+> coef(euler.sir)
+   gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
+2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
+     rho      S_0      I_0      R_0 
+6.00e-01 6.50e-02 1.00e-03 9.35e-01 
+> 
+> pompExample(gillespie.sir)
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘comp.names’,‘ic.names’,‘nbasis’,‘degree’,‘period’
+newly created object(s):
+ gillespie.sir 
+> plot(gillespie.sir)
+> plot(simulate(gillespie.sir,seed=20348585))
+> coef(gillespie.sir)
+       gamma           mu         iota        beta1        beta2        beta3 
+2.400000e+01 1.428571e-02 1.000000e-01 3.300000e+02 4.100000e+02 4.900000e+02 
+         rho          S_0          I_0          R_0          pop      beta.sd 
+1.000000e-01 5.000000e-02 1.000000e-04 9.500000e-01 1.000000e+06 0.000000e+00 
+> 
+> pompExample(bbs)
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’,‘logvar’,‘logitvar’
+newly created object(s):
+ bbs 
+> plot(bbs)
+> coef(bbs)
+       gamma           mu         iota         beta      beta.sd          pop 
+   0.3333333    0.0000000    0.0000000    1.4000000    0.0000000 1400.0000000 
+         rho        sigma          S_0          I_0          R_0 
+   0.9000000    3.6000000    0.9990000    0.0010000    0.0000000 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("spect")
+> ### * spect
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Power spectrum computation and matching
+> ### Title: Power spectrum computation and spectrum-matching for
+> ###   partially-observed Markov processes
+> ### Aliases: 'Power spectrum computation and matching' 'power spectrum
+> ###   computation and matching' spect spect,pomp-method spect-pomp
+> ###   spect,spect.pomp-method spect-spect.pomp spect.match
+> ###   spect.match,pomp-method spect.match-pomp
+> ###   spect.match,spect.pomp-method spect.match-spect.pomp spect.pomp-class
+> ###   spect.matched.pomp-class
+> ### Keywords: optimize ts
+> 
+> ### ** Examples
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> good <- spect(
++               ou2,
++               vars=c("y1","y2"),
++               kernel.width=3,
++               detrend="mean",
++               nsim=500
++               )
+> summary(good)
+$coef
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+
+$nsim
+[1] 500
+
+$pvals
+       y1        y2       all 
+0.4111776 0.4131737 0.4411178 
+
+> plot(good)
+> 
+> ou2.bad <- ou2
+> coef(ou2.bad,c("x1.0","x2.0","alpha.1","alpha.4")) <- c(0,0,0.1,0.2)
+> bad <- spect(
++              ou2.bad,
++              vars=c("y1","y2"),
++              kernel.width=3,
++              detrend="mean",
++              nsim=500
++              )
+> summary(bad)
+$coef
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.1    -0.5     0.3     0.2     3.0    -0.5     2.0     1.0     0.0     0.0 
+
+$nsim
+[1] 500
+
+$pvals
+         y1          y2         all 
+0.001996008 0.001996008 0.001996008 
+
+> plot(bad)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("traj-match")
+> ### * traj-match
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Trajectory matching
+> ### Title: Parameter estimation by fitting the trajectory of a model's
+> ###   deterministic skeleton to data
+> ### Aliases: 'Trajectory matching' traj.match traj.match-pomp
+> ###   traj.match,pomp-method traj.match-traj.matched.pomp
+> ###   traj.match,traj.matched.pomp-method logLik,traj.matched.pomp-method
+> ###   logLik-traj.matched.pomp $,traj.matched.pomp-method
+> ###   $-traj.matched.pomp summary,traj.matched.pomp-method
+> ###   summary-traj.matched.pomp traj.matched.pomp-class traj.match.objfun
+> ###   traj.match.objfun-pomp traj.match.objfun,pomp-method
+> ### Keywords: optimize ts
+> 
+> ### ** Examples
+> 
+>   pompExample(ou2)
+newly created object(s):
+ ou2 
+>   true.p <- c(
++ 	      alpha.1=0.9,alpha.2=0,alpha.3=-0.4,alpha.4=0.99,
++ 	      sigma.1=2,sigma.2=0.1,sigma.3=2,
++ 	      tau=1,
++               x1.0=50,x2.0=-50
++ 	      )
+>   simdata <- simulate(ou2,nsim=1,params=true.p,seed=43553)
+>   guess.p <- true.p
+>   res <- traj.match(
++ 		    simdata,
++ 		    start=guess.p,
++ 		    est=c('alpha.1','alpha.3','alpha.4','x1.0','x2.0','tau'),
++ 		    maxit=2000,
++ 		    method="Nelder-Mead",
++ 		    reltol=1e-8
++ 		    )
+> 
+>   summary(res)
+$params
+    alpha.1     alpha.2     alpha.3     alpha.4     sigma.1     sigma.2 
+  0.9152842   0.0000000  -0.3440927   0.9846510   2.0000000   0.1000000 
+    sigma.3         tau        x1.0        x2.0 
+  2.0000000   7.7347208  39.2445881 -63.8254689 
+
+$loglik
+[1] -691.9203
+
+$eval
+[1] 657  NA
+
+$convergence
+[1] 0
+
+> 
+>   plot(range(time(res)),range(c(obs(res),states(res))),type='n',xlab="time",ylab="x,y")
+>   points(y1~time,data=as(res,"data.frame"),col='blue')
+>   points(y2~time,data=as(res,"data.frame"),col='red')
+>   lines(x1~time,data=as(res,"data.frame"),col='blue')
+>   lines(x2~time,data=as(res,"data.frame"),col='red')
+> 
+>   pompExample(ricker)
+newly created object(s):
+ ricker 
+>   ofun <- traj.match.objfun(ricker,est=c("r","phi"),transform=TRUE)
+>   optim(fn=ofun,par=c(2,0),method="BFGS")
+$par
+[1] 2.062053 2.985564
+
+$value
+[1] 2135.11
+
+$counts
+function gradient 
+      77       13 
+
+$convergence
+[1] 0
+
+$message
+NULL
+
+> 
+>   pompExample(bbs)
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’,‘logvar’,‘logitvar’
+newly created object(s):
+ bbs 
+>   ## some options are passed to the ODE integrator
+>   ofun <- traj.match.objfun(bbs,est=c("beta","gamma"),transform=TRUE,hmax=0.001,rtol=1e-6)
+>   optim(fn=ofun,par=c(0,-1),method="Nelder-Mead",control=list(reltol=1e-10))
+$par
+[1]  0.7277326 -0.2751144
+
+$value
+[1] 94.01269
+
+$counts
+function gradient 
+      95       NA 
+
+$convergence
+[1] 0
+
+$message
+NULL
+
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  9.428 0.156 9.635 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')
