@@ -7,6 +7,10 @@ true.p <- coef(ou2)
 simdata <- simulate(ou2,nsim=5,params=true.p,seed=394885)
 guess.p <- true.p
 
+x <- ou2
+coef(x) <- numeric()
+try(trajectory(x))
+
 x <- sapply(
             simdata,
             function (d) {

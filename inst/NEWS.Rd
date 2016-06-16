@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.5.5}{
+  \itemize{
+    \item Many improvements to the test suite.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.5.4}{
   \itemize{
     \item More improvements to the test suite.

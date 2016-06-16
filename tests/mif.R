@@ -155,3 +155,11 @@ fit <- mif(
            cooling.fraction=0.95^50,ic.lag=10,var.factor=1
            )
 try(mif(fit,Nmif=2,method="mif2"))
+fit <- continue(fit,Nmif=1,ic.lag=10000)
+fit <- continue(fit,Nmif=1,ic.lag=2,rw.sd=c(x1.0=5,x2.0=5))
+fit <- continue(fit,Nmif=3,ic.lag=100,method="unweighted")
+try(mif(ff,Nmif=2,ivps=c("x1.0","x2.0"),
+        rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
+        cooling.fraction=0.95^50,var.factor=1))
+coef(fit,"alpha.4") <- 0
+try(fit <- continue(fit,Np=2,Nmif=3,max.fail=1))

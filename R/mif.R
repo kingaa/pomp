@@ -218,9 +218,11 @@ mif.pfilter <- function (object, params, Np,
             silent=FALSE
         )
         if (inherits(weights,'try-error'))
-            stop("in ",sQuote("mif"),": error in calculation of weights.",call.=FALSE)
+            stop("in ",sQuote("mif"),
+                 ": error in calculation of weights.",call.=FALSE)
         if (!all(is.finite(weights)))
-            stop("in ",sQuote("mif"),": ",sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
+            stop("in ",sQuote("mif"),": ",sQuote("dmeasure"),
+                 " returns non-finite value.",call.=FALSE)
         gnsi.dmeas <- FALSE
 
         ## compute prediction mean, prediction variance, filtering mean,
@@ -264,7 +266,7 @@ mif.pfilter <- function (object, params, Np,
             if (verbose)
                 message("filtering failure at time t = ",times[nt+1])
             if (nfail>max.fail)
-                stop(sQuote("mif")," error: too many filtering failures",call.=FALSE)
+                stop(sQuote("mif")," error: too many filtering failures.",call.=FALSE)
         } else {
             if (pred.var)
                 pred.v[rw.names,nt] <- pred.v[rw.names,nt]+sigma1^2
@@ -324,7 +326,8 @@ mif.internal <- function (object, Nmif,
 
     if (length(start)==0)
         stop(
-            "mif error: ",sQuote("start")," must be specified if ",
+            "in ",sQuote("mif"),": ",sQuote("start"),
+            " must be specified if ",
             sQuote("coef(object)")," is NULL",
             call.=FALSE
         )
@@ -334,46 +337,58 @@ mif.internal <- function (object, Nmif,
 
     start.names <- names(start)
     if (is.null(start.names))
-        stop("mif error: ",sQuote("start")," must be a named vector",call.=FALSE)
+        stop("in ",sQuote("mif"),": ",sQuote("start"),
+             " must be a named vector",call.=FALSE)
 
     rw.names <- names(rw.sd)
     if (is.null(rw.names) || any(rw.sd<0))
-        stop("mif error: ",sQuote("rw.sd")," must be a named non-negative numerical vector",call.=FALSE)
+        stop("in ",sQuote("mif"),": ",sQuote("rw.sd"),
+             " must be a named non-negative numerical vector",call.=FALSE)
     if (!all(rw.names%in%start.names))
-        stop("mif error: all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
+        stop("mif error: all the names of ",sQuote("rw.sd"),
+             " must be names of ",sQuote("start"),call.=FALSE)
     rw.names <- rw.names[rw.sd>0]
     rw.sd <- rw.sd[rw.sd>0]
     if (length(rw.names) == 0)
-        stop("mif error: ",sQuote("rw.sd")," must have one positive entry for each parameter to be estimated",call.=FALSE)
+        stop("in ",sQuote("mif"),": ",sQuote("rw.sd"),
+             " must have one positive entry for each parameter to be estimated",call.=FALSE)
 
     pars <- rw.names[!(rw.names%in%ivps)]
     
     if (!is.character(ivps) || !all(ivps%in%start.names))
-        stop("mif error: ",sQuote("ivps")," must name model parameters",call.=FALSE)
+        stop("in ",sQuote("mif"),": ",sQuote("ivps"),
+             " must name model parameters",call.=FALSE)
 
     ntimes <- length(time(object))
-    if (is.null(Np)) stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
+    if (is.null(Np)) stop("in ",sQuote("mif"),": ",sQuote("Np"),
+                          " must be specified",call.=FALSE)
     if (is.function(Np)) {
         Np <- try(
             vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
             silent=FALSE
         )
         if (inherits(Np,"try-error"))
-            stop("if ",sQuote("Np")," is a function, it must return a single positive integer",call.=FALSE)
+            stop("if ",sQuote("Np"),
+                 " is a function, it must return a single positive integer",
+                 call.=FALSE)
     }
     if (length(Np)==1)
         Np <- rep(Np,times=ntimes+1)
     else if (length(Np)!=(ntimes+1))
         stop(sQuote("Np")," must have length 1 or length ",ntimes+1)
     if (any(Np<=0))
-        stop("number of particles, ",sQuote("Np"),", must always be positive",call.=FALSE)
+        stop("number of particles, ",sQuote("Np"),
+             ", must always be positive",call.=FALSE)
     if (!is.numeric(Np))
-        stop(sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
+        stop(sQuote("Np"),
+             " must be a number, a vector of numbers, or a function",
+             call.=FALSE)
     Np <- as.integer(Np)
 
     ic.lag <- as.integer(ic.lag)
     if ((length(ic.lag)!=1)||(ic.lag<1))
-        stop("mif error: ",sQuote("ic.lag")," must be a positive integer",call.=FALSE)
+        stop("in ",sQuote("mif"),": ",sQuote("ic.lag"),
+             " must be a positive integer",call.=FALSE)
     if (ic.lag>ntimes) {
         warning(
             "mif warning: ",sQuote("ic.lag")," = ",ic.lag," > ",ntimes,
@@ -385,7 +400,8 @@ mif.internal <- function (object, Nmif,
     }
     if ((length(pars)==0)&&(ic.lag<length(time(object)))) {
         warning(
-            "mif warning: only IVPs are to be estimated, yet ",sQuote("ic.lag")," = ",ic.lag,
+            "mif warning: only IVPs are to be estimated, yet ",
+            sQuote("ic.lag")," = ",ic.lag,
             " < ",ntimes," = length(time(",sQuote("object"),")),",
             " so unnecessary work is to be done.",
             call.=FALSE
@@ -393,10 +409,12 @@ mif.internal <- function (object, Nmif,
     }
 
     if (missing(cooling.fraction.50))
-        stop("mif error: ",sQuote("cooling.fraction.50")," must be specified",call.=FALSE)
+        stop("in ",sQuote("mif"),": ",sQuote("cooling.fraction.50"),
+             " must be specified",call.=FALSE)
     cooling.fraction.50 <- as.numeric(cooling.fraction.50)
     if ((length(cooling.fraction.50)!=1)||(cooling.fraction.50<0)||(cooling.fraction.50>1))
-        stop("mif error: ",sQuote("cooling.fraction.50")," must be a number between 0 and 1",call.=FALSE)
+        stop("in ",sQuote("mif"),": ",sQuote("cooling.fraction.50"),
+             " must be a number between 0 and 1",call.=FALSE)
 
     cooling <- mif.cooling.function(
         type=cooling.type,
@@ -406,11 +424,13 @@ mif.internal <- function (object, Nmif,
     )
 
     if ((length(var.factor)!=1)||(var.factor < 0))
-        stop("mif error: ",sQuote("var.factor")," must be a positive number",call.=FALSE)
+        stop("in ",sQuote("mif"),": ",sQuote("var.factor"),
+             " must be a positive number",call.=FALSE)
 
     Nmif <- as.integer(Nmif)
     if (Nmif<0)
-        stop("mif error: ",sQuote("Nmif")," must be a positive integer",call.=FALSE)
+        stop("in ",sQuote("mif"),": ",sQuote("Nmif"),
+             " must be a positive integer",call.=FALSE)
 
     theta <- start
 
@@ -550,19 +570,20 @@ setMethod(
 
         if (missing(start)) start <- coef(object)
         if (missing(rw.sd))
-            stop("mif error: ",sQuote("rw.sd")," must be specified",call.=FALSE)
+            stop("in ",sQuote("mif"),": ",sQuote("rw.sd")," must be specified",call.=FALSE)
         if (missing(ic.lag)) {
             if (length(ivps)>0) {
-                stop("mif error: ",sQuote("ic.lag"),
+                stop("in ",sQuote("mif"),": ",sQuote("ic.lag"),
                      " must be specified if ",sQuote("ivps"),
-                     " are",call.=FALSE)
+                     " are.",call.=FALSE)
             } else {
                 ic.lag <- length(time(object))
             }
         }
 
         if (missing(Np))
-            stop("mif error: ",sQuote("Np")," must be specified",call.=FALSE)
+            stop("in ",sQuote("mif"),": ",sQuote("Np"),
+                 " must be specified",call.=FALSE)
 
         cooling.type <- match.arg(cooling.type)
 

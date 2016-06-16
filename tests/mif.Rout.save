@@ -109,7 +109,7 @@ null device
 +         Np=100,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: 'cooling.fraction.50' must be specified
+Error : in 'mif': 'cooling.fraction.50' must be specified
 > 
 > try(
 +     mif(
@@ -133,7 +133,7 @@ Error : number of particles, 'Np', must always be positive
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : mif error: 'Nmif' must be a positive integer
+Error : in 'mif': 'Nmif' must be a positive integer
 > 
 > try(
 +     mif(
@@ -223,7 +223,23 @@ pfilter timestep 100 of 100 finished
 > try(mif(fit,Nmif=2,method="mif2"))
 Error : method='mif2' has been removed.
 Use 'mif2' instead.
+> fit <- continue(fit,Nmif=1,ic.lag=10000)
+Warning message:
+mif warning: 'ic.lag' = 10000 > 100 = length(time('object')) is nonsensical.  Setting 'ic.lag' = 100. 
+> fit <- continue(fit,Nmif=1,ic.lag=2,rw.sd=c(x1.0=5,x2.0=5))
+Warning message:
+mif warning: only IVPs are to be estimated, yet 'ic.lag' = 2 < 100 = length(time('object')), so unnecessary work is to be done. 
+> fit <- continue(fit,Nmif=3,ic.lag=100,method="unweighted")
+> try(mif(ff,Nmif=2,ivps=c("x1.0","x2.0"),
++         rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
++         cooling.fraction=0.95^50,var.factor=1))
+Error : in 'mif': 'ic.lag' must be specified if 'ivps' are.
+> coef(fit,"alpha.4") <- 0
+> try(fit <- continue(fit,Np=2,Nmif=3,max.fail=1))
+Error : in 'mif': error in 'mif.pfilter':
+Error : 'mif' error: too many filtering failures.
+
 > 
 > proc.time()
    user  system elapsed 
-  9.380   0.088   9.491 
+   10.8     0.1    10.9 

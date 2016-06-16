@@ -26,6 +26,11 @@ newly created object(s):
 > simdata <- simulate(ou2,nsim=5,params=true.p,seed=394885)
 > guess.p <- true.p
 > 
+> x <- ou2
+> coef(x) <- numeric()
+> try(trajectory(x))
+Error : trajectory error: 'params' must be supplied
+> 
 > x <- sapply(
 +             simdata,
 +             function (d) {
@@ -173,4 +178,4 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > proc.time()
    user  system elapsed 
-  2.036   0.088   2.098 
+  1.940   0.076   2.021 
