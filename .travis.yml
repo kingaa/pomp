@@ -12,7 +12,7 @@ matrix:
     - os: linux
       env: RVERSION=release
       r_github_packages:
-        - jimhester/covr
+        - jimhester/covr@68b8ea92994
       after_success:
         - travis_wait 40 Rscript -e 'covr::codecov()'
     - os: linux
