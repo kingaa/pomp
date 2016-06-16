@@ -4,6 +4,7 @@ library(magrittr)
 
 options(digits=3)
 
+try(pompExample(gompertz,envir=3))
 pompExample(gompertz)
 show(gompertz)
 print(gompertz@rmeasure)

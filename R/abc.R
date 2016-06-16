@@ -27,7 +27,7 @@ setClass(
 abc.internal <- function (object, Nabc,
                           start, proposal, probes,
                           epsilon, scale,
-                          verbose,
+                          verbose = FALSE,
                           .ndone = 0L,
                           .accepts = 0L,
                           .getnativesymbolinfo = TRUE,
@@ -40,6 +40,7 @@ abc.internal <- function (object, Nabc,
     .accepts <- as.integer(.accepts)
     epsilon <- as.numeric(epsilon)
     epssq <- epsilon*epsilon
+    verbose <- as.logical(verbose)
 
     pompLoad(object)
 

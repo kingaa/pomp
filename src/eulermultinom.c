@@ -88,4 +88,3 @@ SEXP R_GammaWN (SEXP n, SEXP sigma, SEXP deltat) {
   UNPROTECT(nprotect);
   return ans;
 }
-

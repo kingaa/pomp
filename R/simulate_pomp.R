@@ -53,12 +53,12 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                       states,
                       .getnativesymbolinfo
                       ),
-                silent=FALSE
+                silent=TRUE
                 )
   .getnativesymbolinfo <- FALSE
   
   if (inherits(retval,'try-error'))
-    stop(sQuote("simulate")," error",call.=FALSE)
+    stop(sQuote("simulate")," error\n",retval,call.=FALSE)
 
   ## restore the RNG state
   if (length(seed)>0) {                 

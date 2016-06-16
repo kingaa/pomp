@@ -11,7 +11,7 @@ guess2 <- guess1 <- p.truth
 guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.25*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 4*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 
-mif1 <- mif(ou2,Nmif=100,start=guess1,
+mif1 <- mif(ou2,Nmif=30,start=guess1,
             ivps=c('x1.0','x2.0'),
             rw.sd=c(
               x1.0=5,x2.0=5,
@@ -26,7 +26,7 @@ mif1 <- mif(ou2,Nmif=100,start=guess1,
             method="fp"
             )
 
-mif2 <- mif(ou2,Nmif=100,start=guess2,
+mif2 <- mif(ou2,Nmif=30,start=guess2,
             ivps=c('x1.0','x2.0'),
             rw.sd=c(
               x1.0=5,x2.0=5,

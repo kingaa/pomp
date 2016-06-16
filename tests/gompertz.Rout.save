@@ -21,6 +21,9 @@ Type 'q()' to quit R.
 > 
 > options(digits=3)
 > 
+> try(pompExample(gompertz,envir=3))
+Error in pompExample(gompertz, envir = 3) : 
+  'envir' must be an environment or NULL
 > pompExample(gompertz)
 newly created object(s):
  gompertz 
@@ -44,11 +47,11 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 2L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x43b2dc0>
+<environment: 0x2e337f8>
 process model density, dprocess = 
 function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x43435b8>
+<environment: 0x2dec778>
 measurement model simulator, rmeasure = 
 native function '_gompertz_normal_rmeasure'
 measurement model density, dmeasure = 
@@ -66,13 +69,13 @@ function (params, ...)
 {
     log(params)
 }
-<environment: 0x428b550>
+<environment: 0x2da4988>
 parameter transformation (from estimation scale) = 
 function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x428b550>
+<environment: 0x2da4988>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -89,7 +92,7 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 2L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
 }
-<environment: 0x43b2dc0>
+<environment: 0x2e337f8>
 > 
 > po <- gompertz
 > coef(po)
@@ -256,4 +259,4 @@ iteration loglik     r
 > 
 > proc.time()
    user  system elapsed 
-  1.944   0.096   2.009 
+  1.896   0.108   1.984 

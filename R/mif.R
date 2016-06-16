@@ -241,10 +241,10 @@ mif.pfilter <- function (object, params, Np,
                 weights=weights,
                 tol=tol
             ),
-            silent=FALSE
+            silent=TRUE
         )
         if (inherits(xx,'try-error')) {
-            stop(sQuote("mif")," error",call.=FALSE)
+            stop(sQuote("mif")," error\n",xx,call.=FALSE)
         }
         all.fail <- xx$fail
         loglik[nt] <- xx$loglik

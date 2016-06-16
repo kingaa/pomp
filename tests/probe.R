@@ -1,5 +1,6 @@
 library(pomp)
 set.seed(1066L)
+options(digits=3)
 
 png(filename="probe-%02d.png",res=100)
 
@@ -13,7 +14,7 @@ pm.ou2 <- probe(
         y1.sd=probe.sd(var="y1"),
         y2.sd=probe.sd(var="y2")
     ),
-    nsim=500
+    nsim=200
 )
 
 pm.po <- probe(
@@ -30,7 +31,7 @@ pm.po <- probe(
         y1.sd=probe.sd(var="y1"),
         y2.sd=probe.sd(var="y2")
     ),
-    nsim=500
+    nsim=200
 )
 
 invisible(summary(pm.ou2))
@@ -43,7 +44,7 @@ pm.ou2 <- probe(
         y2acf=probe.acf(var=c("y2"),lags=c(0,1,2)),
         y12ccf=probe.ccf(var=c("y2","y1"),lags=c(3,8))
     ),
-    nsim=500
+    nsim=200
 )
 
 pb <- probe(
@@ -68,7 +69,7 @@ pb <- probe(
         probe.nlar("y1",lags=1,powers=1),
         probe.nlar("y2",lags=1,powers=1)
     ),
-    nsim=1000,
+    nsim=300,
     seed=1066L
 )
 x <- as.data.frame(po)
@@ -88,21 +89,21 @@ pb <- probe(
         probe.acf(var=c("y1"),lags=c(0,1,2),type="cov"),
         probe.ccf(vars=c("y1","y1"),lags=c(0,1,2),type="cov")
     ),
-    nsim=1000,
+    nsim=200,
     seed=1066L
 )
 
 pb <- probe(
     po,
     probes=probe.ccf(vars=c("y1","y2"),lags=c(-5,-3,1,4,8)),
-    nsim=1000,
+    nsim=200,
     seed=1066L
 )
 
 pb <- probe(
     po,
     probes=probe.ccf(vars=c("y1","y2"),lags=c(-5,-3,1,4,8),type="corr"),
-    nsim=1000,
+    nsim=200,
     seed=1066L
 )
 
@@ -160,7 +161,7 @@ po <- ricker
 pb <- probe(
     po,
     probes=probe.median("y"),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 invisible(summary(pb))
@@ -168,7 +169,7 @@ invisible(summary(pb))
 pb <- probe(
     po,
     probes=probe.nlar("y",lags=c(1,2,3),powers=c(1,1,1),transform="sqrt"),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 invisible(summary(pb))
@@ -176,7 +177,7 @@ invisible(summary(pb))
 pb <- probe(
     po,
     probes=probe.nlar("y",lags=c(1,2,3),powers=1,transform="sqrt"),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 invisible(summary(pb))
@@ -184,7 +185,7 @@ invisible(summary(pb))
 pb <- probe(
     po,
     probes=probe.nlar("y",lags=1,powers=c(1,2,3),transform="sqrt"),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 plot(pb)
@@ -199,7 +200,7 @@ pb <- probe(
         diff=1,
         order=3
     ),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 invisible(pb$datvals)
@@ -221,7 +222,7 @@ pb <- probe(
         ),
         mean=probe.mean(var="y",transform=sqrt)
     ),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 invisible(pb$datvals)
@@ -247,7 +248,7 @@ pb <- probe(
         diff=1,
         order=3
     ),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 invisible(pb$datvals)
@@ -258,7 +259,7 @@ pm <- probe.match(
     est=c("r","phi","N.0"),
     transform=TRUE,
     parscale=c(0.1,0.1,0.1),
-    nsim=1000,
+    nsim=200,
     seed=838775L,
     method="Nelder-Mead",
     reltol=1e-7,
@@ -275,7 +276,7 @@ pb <- probe(
         lags=1,
         powers=c(1,2,3)
     ),
-    nsim=1000,
+    nsim=300,
     seed=838775L
 )
 invisible(pb$datvals)
@@ -286,7 +287,7 @@ pm <- probe.match(
     est=c("r","phi","N.0"),
     transform=TRUE,
     parscale=c(0.1,0.1,0.1),
-    nsim=1000,
+    nsim=333,
     seed=838775L,
     method="Nelder-Mead",
     reltol=1e-7,
@@ -308,7 +309,7 @@ pb <- probe(
         diff=2,
         order=3
     ),
-    nsim=1000,
+    nsim=257,
     seed=838775L
 )
 invisible(pb$datvals)
@@ -322,7 +323,7 @@ pb <- probe(
         lags=seq.int(from=0,to=5),
         type="cov"
     ),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 invisible(pb$datvals)
@@ -336,7 +337,7 @@ pb <- probe(
         lags=seq.int(from=1,to=5),
         type="cor"
     ),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 invisible(pb$datvals)
@@ -360,7 +361,7 @@ pb <- probe(
             powers=1
         )
     ),
-    nsim=1000,
+    nsim=200,
     seed=838775L
 )
 invisible(pb$datvals)
