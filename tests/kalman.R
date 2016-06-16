@@ -6,7 +6,7 @@ library(ggplot2)
 library(mvtnorm)
 set.seed(1638125322)
 
-png(filename="kfs%03d.png",res=100)
+png(filename="kalman-%02d.png",res=100)
 
 t <- seq(1,100)
 

@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > library(mvtnorm)
 > set.seed(1638125322)
 > 
-> png(filename="kfs%03d.png",res=100)
+> png(filename="kalman-%02d.png",res=100)
 > 
 > t <- seq(1,100)
 > 
@@ -139,4 +139,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 15.464   0.164  15.622 
+ 16.444   0.208  16.649 

@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.2.4 Revised (2016-03-16 r70336) -- "Very Secure Dishes"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -17,7 +17,7 @@ Type 'q()' to quit R.
 
 > library(pomp)
 > 
-> png(filename="pomppomp-%02d.png",res=100)
+> png(filename="pomp-%02d.png",res=100)
 > 
 > pompExample(ricker)
 newly created object(s):
@@ -145,4 +145,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  1.376   0.340   2.052 
+  1.560   0.352   2.238 

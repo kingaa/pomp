@@ -1,6 +1,6 @@
 library(pomp)
 
-png(filename="pomppomp-%02d.png",res=100)
+png(filename="pomp-%02d.png",res=100)
 
 pompExample(ricker)
 y1 <- obs(simulate(ricker,seed=1066L))
