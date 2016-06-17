@@ -7,11 +7,7 @@ typedef double (*_pomp_rxnrate) (const int *j, const double *t, const double *x,
 			   int *stateindex, int *parindex, int *covarindex, 
 			   int *ncovar, double *covar);
 
-void F77_SUB(rndstart)(void) { GetRNGstate(); }
-void F77_SUB(rndend)(void) { PutRNGstate(); }
 double F77_SUB(unifrnd)(void) { return unif_rand(); }
-double F77_SUB(normrnd)(void) { return norm_rand(); }
-double F77_SUB(poisrnd)(double lambda) { return rpois(lambda); }
 double F77_SUB(gammarnd)(double shape, double scale) { return rgamma(shape,scale); }
 void F77_SUB(multinomrnd)(int N, double *p, int ncat, int *ix) { rmultinom(N,p,ncat,ix); }
 
