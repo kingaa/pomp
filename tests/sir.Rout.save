@@ -186,21 +186,28 @@ process model simulator, rprocess =
 function (xstart, times, params, ..., zeronames = character(0), 
     tcovar, covar, .getnativesymbolinfo = TRUE) 
 {
-    .Call(euler_model_simulator, func = efun, xstart = xstart, 
+    tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
         times = times, params = params, dt = object@delta.t, 
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
-        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo)
+        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
+        error = function(e) {
+            stop("in ", sQuote("euler.sim"), " plugin: ", conditionMessage(e), 
+                call. = FALSE)
+        })
 }
-<environment: 0x3b226c8>
+<environment: 0x1eea838>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
 {
-    .Call(euler_model_density, func = efun, x = x, times = times, 
+    tryCatch(.Call(euler_model_density, func = efun, x = x, times = times, 
         params = params, tcovar = tcovar, covar = covar, log = log, 
-        args = pairlist(...), gnsi = .getnativesymbolinfo)
+        args = pairlist(...), gnsi = .getnativesymbolinfo), error = function(e) {
+        stop("in ", sQuote("onestep.dens"), " plugin: ", conditionMessage(e), 
+            call. = FALSE)
+    })
 }
-<environment: 0x3da1cb8>
+<environment: 0x1fd46c8>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -245,7 +252,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x363c7c8>
+<environment: 0xc6c9e8>
 initializer = 
 function (params, t0, ...) 
 {
@@ -456,4 +463,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  5.896   0.188   6.213 
+  5.440   0.200   5.772 

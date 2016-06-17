@@ -74,4 +74,4 @@ variable [,1]
 > 
 > proc.time()
    user  system elapsed 
-  1.584   0.052   1.608 
+  1.440   0.064   1.480 

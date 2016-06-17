@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.5.6}{
+  \itemize{
+    \item There is a new plugin for \code{rprocess} called \code{kleap.sim}.
+    This implements the so-called \dQuote{K-leap method} of Cai & Xu (2007).
+  }
+}
 \section{Changes in \pkg{pomp} version 1.5.5}{
   \itemize{
     \item Many improvements to the test suite.

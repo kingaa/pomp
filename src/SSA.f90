@@ -1,6 +1,6 @@
       subroutine driverSSA(fprob,nvar,nevent,npar,nreps,ntimes,kflag,&
            xstart,times,params,xout,e,v,d,nzero,izero,istate,ipar,ncovar,&
-           icovar,lcov,mcov,tcov,cov)
+           icovar,lcov,mcov,tcov,cov,iflag)
       implicit integer (i-n)
       implicit double precision (a-h,o-z)
       dimension xstart(nvar,nreps), times(ntimes)
@@ -16,14 +16,14 @@
          call SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,&
               ntimes,kflag,xstart,times,params,xout,e,v,d,&
               nzero,izero,istate,ipar,ncovar,icovar,lcov,mcov,&
-              tcov,cov)
+              tcov,cov,iflag)
       enddo
       return
       end
 
       subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,&
            ntimes,kflag,xstart,times,params,xout,e,v,d,nzero,&
-           izero,istate,ipar,ncovar,icovar,lcov,mcov,tcov,cov)
+           izero,istate,ipar,ncovar,icovar,lcov,mcov,tcov,cov,iflag)
       implicit integer (i-n)
       implicit double precision (a-h,o-z)
       dimension xstart(nvar,nreps), times(ntimes)
@@ -43,7 +43,6 @@
 !================
       t=times(1)
       tmax=times(ntimes)
-      iflag=0
       icount=2
       do i=1,npar
          par(i)=params(i,irep)
@@ -88,8 +87,8 @@
             call gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,&
                  jevent,iflag,istate,ipar,ncovar,icovar,&
                  mcov,covars)
-            if(iflag.eq.1)goto 100
-         else                   !if(kflag.eq.1)then
+            if(iflag.ne.0)goto 100
+         else
 !=================
 ! Determine kappa (most accurate but slowest method)
 !=================
@@ -103,12 +102,12 @@
                call gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,&
                     jevent,iflag,istate,ipar,ncovar,icovar,&
                     mcov,covars)
-               if(iflag.eq.1)goto 100
+               if(iflag.ne.0)goto 100
             else
                call kleap(fprob,kappa,t,f,y,v,d,par,n,m,ntreeh,npar,&
                     k,iflag,istate,ipar,ncovar,icovar,&
                     mcov,covars)
-               if(iflag.eq.1)goto 100
+               if(iflag.ne.0)goto 100
             endif
          endif
 !     
@@ -156,6 +155,9 @@
       if(fsum.gt.0.0)then
          tstep=-log(p1)/fsum
          t=t+tstep
+      elseif(fsum.lt.0.0)then
+         iflag=2
+         goto 500
       else
          iflag=1
          goto 500
@@ -227,6 +229,9 @@
       if(fsum.gt.0.0d0)then
          tstep=gammarnd(kappa,fsum)
          t=t+tstep
+      elseif(fsum.lt.0.0)then
+         iflag=2
+         goto 500
       else
          iflag=1
          goto 500

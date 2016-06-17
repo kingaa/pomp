@@ -7,6 +7,7 @@
 \alias{discrete.time.sim}
 \alias{onestep.dens}
 \alias{gillespie.sim}
+\alias{kleap.sim}
 \description{
   The functions documented here can be used to specify the \code{rprocess} and \code{dprocess} slots for a \code{pomp} model.
   There are options for discrete- and continuous-time Markov processes.
@@ -16,6 +17,7 @@ onestep.sim(step.fun, PACKAGE)
 euler.sim(step.fun, delta.t, PACKAGE)
 discrete.time.sim(step.fun, delta.t = 1, PACKAGE)
 gillespie.sim(rate.fun, v, d, PACKAGE)
+kleap.sim(rate.fun, e, v, d, PACKAGE)
 onestep.dens(dens.fun, PACKAGE)
 }
 \arguments{
@@ -46,6 +48,12 @@ onestep.dens(dens.fun, PACKAGE)
 
     If \code{rate.fun} is a native function, it must be of type \preformatted{pomp_ssa_rate_fn} as defined in the header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, which is included with the package.
     For details on how to write such codes, see Details.
+  }
+  \item{e}{
+    a numeric vector of containing the error tolerances for the K leap method.
+    \code{e} should have length equal to the number of state variables.
+    \code{e[i]} corresponds to row \code{i} of the \code{v} and \code{d} matrices (see below) and we must have \eqn{0\le e[i]\le 1}{0 <= e[i] <= 1}.
+    The leap size, \eqn{K}, is chosen so that \eqn{K\le\max{\min{e[i]x[i]},1}}{K <= max(min(e[i]*y[i]),1)}.
   }
   \item{v, d}{
     Matrices that specify the continuous-time Markov process in terms of its elementary events.
@@ -124,24 +132,37 @@ onestep.dens(dens.fun, PACKAGE)
   If \code{dens.fun} is written in a native language, it must be a function of type \preformatted{pomp_onestep_pdf} as defined in the header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}} included with the package; see above for instructions on how to view this file.
 }
 \section{Size of time step}{
-  All the simulator plug-ins documented here work by taking discrete time steps.
+  The simulator plug-ins \code{discrete.time.sim}, \code{euler.sim}, and \code{onestep.sim} work by taking discrete time steps.
   They differ as to how this is done.
-  
-  \code{onestep.sim} takes a single step to go from any given time \eqn{t_1}{t1} to any other time \eqn{t_2}{t2} (\eqn{t_1 < t_2}{t1 < t2}).
-  Thus, this plugin is only useful if a closed-form solution to the process exists.
+  Specifically,
+  \enumerate{
+    \item \code{onestep.sim} takes a single step to go from any given time \eqn{t_1}{t1} to any other time \eqn{t_2}{t2} (\eqn{t_1 < t_2}{t1 < t2}).
+    Thus, this plugin is only useful if a closed-form solution to the process exists.
+    \item To go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{euler.sim} takes \eqn{n} steps of equal size, where \eqn{n = ceiling((t_2-t_1)/delta.t)}{n = ceiling((t2-t1)/delta.t)}.
+    \item \code{discrete.time.sim} assumes that the process evolves in discrete time, where the interval between successive times is \code{delta.t}.
+    Thus, to go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{discrete.time.sim} takes \eqn{n} steps of size exactly \eqn{delta.t}, where \eqn{n = floor((t_2-t_1)/delta.t)}{n = floor((t2-t1)/delta.t)}.
+  }
 
-  To go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{euler.sim} takes \eqn{n} steps of equal size, where \eqn{n = ceiling((t_2-t_1)/delta.t)}{n = ceiling((t2-t1)/delta.t)}.
-
-  \code{discrete.time.sim} assumes that the process evolves in discrete time, where the interval between successive times is \code{delta.t}.
-  Thus, to go from \eqn{t_1}{t1} to \eqn{t_2}{t2}, \code{discrete.time.sim} takes \eqn{n} steps of size exactly \eqn{delta.t}, where \eqn{n = floor((t_2-t_1)/delta.t)}{n = floor((t2-t1)/delta.t)}.
+  The \code{gillespie.sim} and \code{kleap.sim} simulator plug-ins work differently.
+  \code{gillespie.sim} implements the exact stochastic simulation algorithm of Gillespie (1977).
+  \code{kleap.sim} implements the \dQuote{K-leap} method, an approximation due to Cai and Xu (2007).
 }
 \value{
-  \code{onestep.sim}, \code{euler.sim}, \code{discrete.time.sim}, and \code{gillespie.sim} each return functions for use as the arguments \code{rprocess} argument in \code{\link{pomp}}.
+  \code{onestep.sim}, \code{euler.sim}, \code{discrete.time.sim}, \code{gillespie.sim}, and \code{kleap.sim} are each suitiable for use as the \code{rprocess} argument in a call to \code{\link{pomp}}.
 
-  \code{onestep.dens} returns a function for use as the argument \code{dprocess} in \code{\link{pomp}}.
+  \code{onestep.dens} is suitable for use as the \code{dprocess} argument in a call to \code{\link{pomp}}.
 }
-\author{Aaron A. King}
+\author{Aaron A. King, Helen J. Wearing}
 \seealso{
   \code{\link{pomp}} and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
+}
+\references{
+  D. T. Gillespie,
+  Exact stochastic simulation of coupled chemical reactions,
+  Journal of Physical Chemistry, 81:2340--2361, 1977.
+
+  X. Cai and Z. Xu,
+  K-leap method for accelerating stochastic simulation of coupled chemical reactions,
+  Journal of Chemical Physics, 126:074102, 2007.
 }
 \keyword{models}

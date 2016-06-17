@@ -102,6 +102,7 @@ export(
     onestep.sim,
     onestep.dens,
     gillespie.sim,
+    kleap.sim,
     mvn.diag.rw,mvn.rw,
     mvn.rw.adaptive,
     rw.sd,

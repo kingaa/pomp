@@ -14,7 +14,7 @@ matrix:
       r_github_packages:
         - jimhester/covr
       after_success:
-        - travis_wait 40 Rscript -e 'covr::codecov()'
+        - travis_wait 30 Rscript -e 'covr::codecov(line_exclusions="src/pomp.h")'
     - os: linux
       env: RVERSION=3.1.2
     - os: linux

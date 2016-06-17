@@ -20,7 +20,7 @@ void F77_SUB(multinomrnd)(int *N, double *p, int *ncat, int *ix) {
 void F77_NAME(driverssa)(_pomp_rxnrate fprob, int *nvar, int *nevent, int *npar, int *nreps, int *ntimes, 
 			 int *kflag, double *xstart, double *times, double *params, double *xout,
 			 double *e, double *v, double *d, int *nzero, int *izero, int *istate, 
-			 int *ipar, int *ncov, int *icov, int *lcov, int *mcov, double *tcov, double *cov);
+			 int *ipar, int *ncov, int *icov, int *lcov, int *mcov, double *tcov, double *cov, int *iflag);
 
 // these global objects will pass the needed information to the user-defined function (see 'default_ssa_internal_fn')
 // each of these is allocated once, globally, and refilled many times
@@ -79,7 +79,7 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
   if (FIRST) {
     if (LENGTH(ans) != 1) {
       UNPROTECT(nprotect);
-      error("user 'rates' must return a single scalar rate");
+      error("user 'rates' must return a single scalar rate.");
     }
     FIRST = 0;
   }
@@ -104,6 +104,7 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   SEXP X, pindex, sindex, cindex, zindex;
   int *sidx, *pidx, *cidx, *zidx;
   SEXP fn, Snames, Pnames, Cnames;
+  int iflag = 0;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
@@ -193,13 +194,17 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   		      INTEGER(mflag),REAL(xstart),REAL(times),REAL(params),
   		      REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),
   		      &nzeros,zidx,sidx,pidx,&ncovars,cidx,
-  		      &covlen,&covdim,REAL(tcovar),REAL(covar));
-
+  		      &covlen,&covdim,REAL(tcovar),REAL(covar),&iflag);
   PutRNGstate();
 
   if (use_native) {
     unset_pomp_userdata();
   }
+
+  if (iflag == 1) 
+    error("zero event rate in stochastic simulation algorithm.");
+  else if (iflag == 2) 
+    error("negative event rate in stochastic simulation algorithm.");
 
   UNPROTECT(nprotect);
   return X;

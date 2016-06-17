@@ -79,9 +79,6 @@ pompExample(gillespie.sir)
 gsir2 <- simulate(gillespie.sir,params=coef(gsir),
                   times=time(gsir),t0=timezero(gsir),seed=806867104L)
 
-tail(as(gsir,"data.frame"))
-tail(as.data.frame(gsir2))
-
 list(R=as.data.frame(gsir),
      C=as.data.frame(gsir2)) %>%
     melt(id="time") %>%
@@ -91,34 +88,39 @@ list(R=as.data.frame(gsir),
     geom_line()+
     theme_bw()+theme(legend.position=c(0.2,0.8)) -> pl1
 
-freeze(
-    .Call(pomp:::SSA_simulator,
-          func=pomp:::pomp.fun(rate.fun),mflag=0L,
-          xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
-          e=rep(0,5),vmatrix=Vmatrix,dmatrix=Dmatrix,
-          tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
-          args=pairlist(),gsni=FALSE),
-    seed=95424809L) -> exact
-freeze(
-    .Call(pomp:::SSA_simulator,
-          func=pomp:::pomp.fun(rate.fun),mflag=1L,
-          xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
-          e=as.double(rep(0.1,5)),vmatrix=Vmatrix,dmatrix=Dmatrix,
-          tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
-          args=pairlist(),gsni=FALSE),
-    seed=95424809L) -> kleap
+gsir %>%
+    pomp(
+        rprocess=kleap.sim(
+            rate.fun=rate.fun,
+            e=rep(0.1,5),
+            v=Vmatrix,
+            d=Dmatrix),
+    ) -> gsir2
 
-names(dimnames(exact)) <- c("variable","rep","time")
-names(dimnames(kleap)) <- c("variable","rep","time")
+simulate(gsir,seed=95424809L,as.data.frame=TRUE) -> exact
+simulate(gsir2,seed=95424809L,as.data.frame=TRUE) -> kleap
 
 list(exact=exact,`K leap`=kleap) %>%
-    melt() %>%
+    melt(id=c("time","sim")) %>%
     subset(variable=="cases") %>%
-    ggplot(aes(x=time,y=value,group=interaction(rep,L1),color=L1))+
+    ggplot(aes(x=time,y=value,group=interaction(sim,L1),color=L1))+
     labs(color="",y="cases")+
     geom_line()+
     theme_bw()+theme(legend.position=c(0.2,0.8)) -> pl2
 
+rate.fun.bad <- function(j, x, t, params, covars, ...) {
+    -rate.fun(j,x,t,params,covars,...)
+}
+
+try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
+
+rate.fun.bad <- function(j, x, t, params, covars, ...) {
+    0
+}
+
+try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
+
 ggsave(plot=pl1,filename="gillespie-01.png",dpi=100,height=4,width=4)
 ggsave(plot=pl2,filename="gillespie-02.png",dpi=100,height=4,width=4)
-

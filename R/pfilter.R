@@ -62,10 +62,10 @@ pfilter.internal <- function (object, params, Np,
     save.params <- as.logical(save.params)
     
     if (length(params)==0)
-        stop(sQuote("pfilter")," error: ",sQuote("params")," must be specified",call.=FALSE)
+        stop("in ",sQuote("pfilter"),": ",sQuote("params")," must be specified",call.=FALSE)
 
     if (missing(tol))
-        stop(sQuote("pfilter")," error: ",sQuote("tol")," must be specified",call.=FALSE)
+        stop("in ",sQuote("pfilter"),": ",sQuote("tol")," must be specified",call.=FALSE)
 
     one.par <- FALSE
     times <- time(object,t0=TRUE)
@@ -179,7 +179,7 @@ pfilter.internal <- function (object, params, Np,
     for (nt in seq_len(ntimes)) { ## main loop
 
         ## advance the state variables according to the process model
-        X <- try(
+        X <- tryCatch(
             rprocess(
                 object,
                 xstart=x,
@@ -188,10 +188,11 @@ pfilter.internal <- function (object, params, Np,
                 offset=1,
                 .getnativesymbolinfo=gnsi.rproc
             ),
-            silent=FALSE
+            error = function (e) {
+                stop("in ",sQuote("pfilter"),": process simulation error: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(X,'try-error'))
-            stop(sQuote("pfilter")," error: process simulation error",call.=FALSE)
         gnsi.rproc <- FALSE
 
         if (pred.var) { ## check for nonfinite state variables and parameters
@@ -206,7 +207,7 @@ pfilter.internal <- function (object, params, Np,
         }
 
         ## determine the weights
-        weights <- try(
+        weights <- tryCatch(
             dmeasure(
                 object,
                 y=object@data[,nt,drop=FALSE],
@@ -216,10 +217,12 @@ pfilter.internal <- function (object, params, Np,
                 log=FALSE,
                 .getnativesymbolinfo=gnsi.dmeas
             ),
-            silent=FALSE
+            error = function (e) {
+                stop("in ",sQuote("pfilter"),
+                     ": error in calculation of weights: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(weights,'try-error'))
-            stop("in ",sQuote("pfilter"),": error in calculation of weights.",call.=FALSE)
         if (!all(is.finite(weights)))
             stop("in ",sQuote("pfilter"),": ",sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
         gnsi.dmeas <- FALSE
@@ -227,7 +230,7 @@ pfilter.internal <- function (object, params, Np,
         ## compute prediction mean, prediction variance, filtering mean,
         ## effective sample size, log-likelihood
         ## also do resampling if filtering has not failed
-        xx <- try(
+        xx <- tryCatch(
             .Call(
                 pfilter_computations,
                 x=X,
@@ -242,11 +245,11 @@ pfilter.internal <- function (object, params, Np,
                 weights=weights,
                 tol=tol
             ),
-            silent=TRUE
+            error = function (e) {
+                stop("in ",sQuote("pfilter"),": ",
+                    conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(xx,'try-error')) {
-            stop(sQuote("pfilter")," error\n",xx,call.=FALSE)
-        }
         all.fail <- xx$fail
         loglik[nt] <- xx$loglik
         eff.sample.size[nt] <- xx$ess
