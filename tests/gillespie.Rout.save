@@ -34,13 +34,12 @@ Type 'q()' to quit R.
 +         params["mu"]*x["N"],            # birth
 +         params["mu"]*x["S"],            # susceptible death
 +         {                               # infection
-+             beta <- periodic.bspline.basis(t,degree=3,period=1,nbasis=3) %*%
-+                 params[c("beta1","beta2","beta3")]
++             beta <- sum(covars*params[c("beta1","beta2","beta3")])
 +             (beta*x["I"]+params["iota"])*x["S"]/x["N"]
 +         },
 +         params["mu"]*x["I"],            # infected death
 +         params["gamma"]*x["I"],         # recovery
-+         params["mu"]*x["R"],            # recovered death
++         params["mu"]*x["R"],           # recovered death
 +         stop("unrecognized event ",j)
 +     )
 + }
@@ -72,6 +71,12 @@ Type 'q()' to quit R.
 +         t0=0,
 +         rprocess=gillespie.sim(rate.fun=rate.fun,v=Vmatrix,d=Dmatrix),
 +         zeronames=c("cases"),
++         covar=data.frame(
++             t=seq(0,2,by=1/52/10),
++             seas=periodic.bspline.basis(
++                 seq(0,2,by=1/52/10),
++                 degree=3,period=1,nbasis=3)),
++         tcovar="t",
 +         measurement.model=reports~binom(size=cases,prob=rho),
 +         initializer=function(params, t0, ...){
 +             comp.names <- c("S","I","R")
@@ -95,13 +100,20 @@ newly created object(s):
 +                   times=time(gsir),t0=timezero(gsir),seed=806867104L)
 > 
 > tail(as(gsir,"data.frame"))
-        time reports     S   I      R       N cases
-100 1.903846       2 53254 115 947043 1000412    59
-101 1.923077       6 53470 104 946834 1000408    48
-102 1.942308       4 53713  98 946607 1000418    43
-103 1.961538       5 53902  89 946383 1000374    48
-104 1.980769       4 54127  94 946132 1000353    36
-105 2.000000       4 54326  76 945893 1000295    41
+        time reports     S   I      R       N cases    seas.1     seas.2
+100 1.903846       2 53254 115 947043 1000412    59 0.5954581 0.06404093
+101 1.923077       6 53470 104 946834 1000408    48 0.6195570 0.07790927
+102 1.942308       4 53713  98 946607 1000418    43 0.6393034 0.09510602
+103 1.961538       5 53902  89 946383 1000374    48 0.6541212 0.11563116
+104 1.980769       4 54126  94 946132 1000352    36 0.6634343 0.13948471
+105 2.000000       4 54326  76 945893 1000295    41 0.6666667 0.16666667
+       seas.3
+100 0.3405010
+101 0.3025338
+102 0.2655906
+103 0.2302477
+104 0.1970810
+105 0.1666667
 > tail(as.data.frame(gsir2))
         time reports     S   I      R       N cases
 100 1.903846      14 53194 114 947109 1000417    57
@@ -111,8 +123,8 @@ newly created object(s):
 104 1.980769       2 54064  87 946195 1000346    42
 105 2.000000       4 54262  74 945960 1000296    40
 > 
-> list(Rfun=as.data.frame(gsir),
-+      Cfun=as.data.frame(gsir2)) %>%
+> list(R=as.data.frame(gsir),
++      C=as.data.frame(gsir2)) %>%
 +     melt(id="time") %>%
 +     subset(variable=="reports") %>%
 +     ggplot(aes(x=time,y=value,color=L1))+
@@ -120,20 +132,22 @@ newly created object(s):
 +     geom_line()+
 +     theme_bw()+theme(legend.position=c(0.2,0.8)) -> pl1
 > 
-> set.seed(1272341230L)
-> 
-> .Call(pomp:::SSA_simulator,
-+       func=pomp:::pomp.fun(rate.fun),mflag=0L,
-+       xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
-+       e=rep(0.0,4),vmatrix=Vmatrix,dmatrix=Dmatrix,
-+       tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
-+       args=pairlist(),gsni=FALSE) -> exact
-> .Call(pomp:::SSA_simulator,
-+       func=pomp:::pomp.fun(rate.fun),mflag=1L,
-+       xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
-+       e=rep(0.0,4),vmatrix=Vmatrix,dmatrix=Dmatrix,
-+       tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
-+       args=pairlist(),gsni=FALSE) -> kleap
+> freeze(
++     .Call(pomp:::SSA_simulator,
++           func=pomp:::pomp.fun(rate.fun),mflag=0L,
++           xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
++           e=rep(0,5),vmatrix=Vmatrix,dmatrix=Dmatrix,
++           tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
++           args=pairlist(),gsni=FALSE),
++     seed=95424809L) -> exact
+> freeze(
++     .Call(pomp:::SSA_simulator,
++           func=pomp:::pomp.fun(rate.fun),mflag=1L,
++           xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
++           e=as.double(rep(0.1,5)),vmatrix=Vmatrix,dmatrix=Dmatrix,
++           tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
++           args=pairlist(),gsni=FALSE),
++     seed=95424809L) -> kleap
 > 
 > names(dimnames(exact)) <- c("variable","rep","time")
 > names(dimnames(kleap)) <- c("variable","rep","time")
@@ -152,4 +166,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
- 11.656   0.120  11.787 
+  7.148   0.180   7.327 

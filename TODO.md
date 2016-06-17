@@ -1,7 +1,7 @@
 ### pomp to-do list
 
-- better testing under windows (eliminate spurious diffs)
-- revisit 'invisible' and 'capture.output' calls in tests
+- revisit 'invisible' calls in tests
+- error handling in 'SSA.f90'
 - better unit tests for 'sannbox'
 - write Csnippet support for 'onestep.dens' and 'gillespie.sim' plugins.
 - SDE examples

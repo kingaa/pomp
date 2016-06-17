@@ -17,13 +17,12 @@ rate.fun <- function(j, x, t, params, covars, ...) {
         params["mu"]*x["N"],            # birth
         params["mu"]*x["S"],            # susceptible death
         {                               # infection
-            beta <- periodic.bspline.basis(t,degree=3,period=1,nbasis=3) %*%
-                params[c("beta1","beta2","beta3")]
+            beta <- sum(covars*params[c("beta1","beta2","beta3")])
             (beta*x["I"]+params["iota"])*x["S"]/x["N"]
         },
         params["mu"]*x["I"],            # infected death
         params["gamma"]*x["I"],         # recovery
-        params["mu"]*x["R"],            # recovered death
+        params["mu"]*x["R"],           # recovered death
         stop("unrecognized event ",j)
     )
 }
@@ -55,6 +54,12 @@ data.frame(
         t0=0,
         rprocess=gillespie.sim(rate.fun=rate.fun,v=Vmatrix,d=Dmatrix),
         zeronames=c("cases"),
+        covar=data.frame(
+            t=seq(0,2,by=1/52/10),
+            seas=periodic.bspline.basis(
+                seq(0,2,by=1/52/10),
+                degree=3,period=1,nbasis=3)),
+        tcovar="t",
         measurement.model=reports~binom(size=cases,prob=rho),
         initializer=function(params, t0, ...){
             comp.names <- c("S","I","R")
@@ -77,8 +82,8 @@ gsir2 <- simulate(gillespie.sir,params=coef(gsir),
 tail(as(gsir,"data.frame"))
 tail(as.data.frame(gsir2))
 
-list(Rfun=as.data.frame(gsir),
-     Cfun=as.data.frame(gsir2)) %>%
+list(R=as.data.frame(gsir),
+     C=as.data.frame(gsir2)) %>%
     melt(id="time") %>%
     subset(variable=="reports") %>%
     ggplot(aes(x=time,y=value,color=L1))+
@@ -86,20 +91,22 @@ list(Rfun=as.data.frame(gsir),
     geom_line()+
     theme_bw()+theme(legend.position=c(0.2,0.8)) -> pl1
 
-set.seed(1272341230L)
-
-.Call(pomp:::SSA_simulator,
-      func=pomp:::pomp.fun(rate.fun),mflag=0L,
-      xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
-      e=rep(0.0,4),vmatrix=Vmatrix,dmatrix=Dmatrix,
-      tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
-      args=pairlist(),gsni=FALSE) -> exact
-.Call(pomp:::SSA_simulator,
-      func=pomp:::pomp.fun(rate.fun),mflag=1L,
-      xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
-      e=rep(0.0,4),vmatrix=Vmatrix,dmatrix=Dmatrix,
-      tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
-      args=pairlist(),gsni=FALSE) -> kleap
+freeze(
+    .Call(pomp:::SSA_simulator,
+          func=pomp:::pomp.fun(rate.fun),mflag=0L,
+          xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
+          e=rep(0,5),vmatrix=Vmatrix,dmatrix=Dmatrix,
+          tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
+          args=pairlist(),gsni=FALSE),
+    seed=95424809L) -> exact
+freeze(
+    .Call(pomp:::SSA_simulator,
+          func=pomp:::pomp.fun(rate.fun),mflag=1L,
+          xstart=init.state(gsir),times=time(gsir,t0=T),params=as.matrix(coef(gsir)),
+          e=as.double(rep(0.1,5)),vmatrix=Vmatrix,dmatrix=Dmatrix,
+          tcovar=gsir@tcovar,covar=gsir@covar,zeronames=gsir@zeronames,
+          args=pairlist(),gsni=FALSE),
+    seed=95424809L) -> kleap
 
 names(dimnames(exact)) <- c("variable","rep","time")
 names(dimnames(kleap)) <- c("variable","rep","time")

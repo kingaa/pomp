@@ -8,8 +8,14 @@ typedef double (*_pomp_rxnrate) (const int *j, const double *t, const double *x,
 			   int *ncovar, double *covar);
 
 double F77_SUB(unifrnd)(void) { return unif_rand(); }
-double F77_SUB(gammarnd)(double shape, double scale) { return rgamma(shape,scale); }
-void F77_SUB(multinomrnd)(int N, double *p, int ncat, int *ix) { rmultinom(N,p,ncat,ix); }
+double F77_SUB(gammarnd)(int *shapep, double *rate) { 
+  double shape = (double) *shapep;
+  double scale = 1.0/(*rate);
+  return rgamma(shape,scale);
+}
+void F77_SUB(multinomrnd)(int *N, double *p, int *ncat, int *ix) { 
+  rmultinom(*N,p,*ncat,ix); 
+}
 
 void F77_NAME(driverssa)(_pomp_rxnrate fprob, int *nvar, int *nevent, int *npar, int *nreps, int *ntimes, 
 			 int *kflag, double *xstart, double *times, double *params, double *xout,
