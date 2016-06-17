@@ -18,13 +18,13 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
 
   ntimes = length(times);
   if (ntimes < 2)
-    error("dprocess error: length(times)==0: no transitions, no work to do");
+    error("dprocess error: length(times)<2: with no transitions, there is no work to do.");
 
   PROTECT(x = as_state_array(x)); nprotect++;
   xdim = INTEGER(GET_DIM(x)); 
   nvars = xdim[0]; nrepsx = xdim[1];
   if (ntimes != xdim[2])
-    error("dprocess error: length of 'times' and 3rd dimension of 'x' do not agree");
+    error("dprocess error: the length of 'times' and 3rd dimension of 'x' do not agree.");
 
   PROTECT(params = as_matrix(params)); nprotect++;
   xdim = INTEGER(GET_DIM(params)); 
@@ -32,7 +32,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
 
   if (nrepsx > nreps) {         // more states than parameters
     if (nrepsx % nreps != 0) {
-      error("dprocess error: larger number of replicates is not a multiple of smaller");
+      error("dprocess error: the larger number of replicates is not a multiple of smaller.");
     } else {
       SEXP copy;
       double *src, *tgt;
@@ -53,7 +53,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
     nreps = nrepsx;
   } else if (nrepsx < nreps) {  // more parameters than states
     if (nreps % nrepsx != 0) {
-      error("dprocess error: larger number of replicates is not a multiple of smaller");
+      error("dprocess error: the larger number of replicates is not a multiple of smaller.");
     } else {
       SEXP copy;
       double *src, *tgt;
@@ -102,12 +102,12 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
   PROTECT(dimF = GET_DIM(X)); nprotect++;
   if ((isNull(dimF)) || (length(dimF) != 2)) {
     UNPROTECT(nprotect);
-    error("dprocess error: user 'dprocess' must return a rank-2 array");
+    error("dprocess error: user 'dprocess' must return a rank-2 array.");
   }
   xdim = INTEGER(dimF);
   if ((xdim[0] != nreps) || (xdim[1] != ntimes-1)) {
     UNPROTECT(nprotect);
-    error("dprocess error: user 'dprocess' must return a %d x %d array",nreps,ntimes-1);
+    error("dprocess error: user 'dprocess' must return a %d x %d array.",nreps,ntimes-1);
   }
   {
     const char *dimnms[2] = {"rep","time"};

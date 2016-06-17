@@ -94,3 +94,70 @@ pars1["r",] <- c(2,5,10)
 pars1["sigma",] <- 0.0
 x <- rprocess(ricker,params=pars1,times=c(0,1),xstart=xstart)
 stopifnot(all.equal(pars1["r",]*xstart[1,]*exp(-xstart[1,]),x["N",,2]))
+
+pompExample(ou2)
+
+stopifnot(identical(dim(x0 <- init.state(ou2,params=coef(ou2))),c(2L,1L)))
+stopifnot(identical(dim(init.state(ou2,params=parmat(coef(ou2),5))),c(2L,5L)))
+try(rprocess(ou2,xstart=x0,times=0,params=coef(ou2),offset=0))
+try(rprocess(ou2,xstart=x0,times=seq(0,10),params=coef(ou2),offset=-5))
+stopifnot(identical(
+    dim(rprocess(ou2,xstart=x0,times=seq(0,10),params=coef(ou2),offset=10)),
+    c(2L,1L,1L)))
+try(rprocess(ou2,xstart=x0,times=seq(0,10),params=coef(ou2),offset=11))
+stopifnot(identical(
+    dim(rprocess(ou2,xstart=x0,times=seq(0,10),params=coef(ou2),offset=0,ignored=3)),
+    c(2L,1L,11L)))
+stopifnot(identical(
+    dim(rprocess(ou2,xstart=parmat(x0,3),times=seq(0,10),params=coef(ou2),offset=1)),
+    c(2L,3L,10L)))
+stopifnot(identical(
+    dim(rprocess(ou2,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),3),offset=1)),
+    c(2L,3L,10L)))
+stopifnot(identical(
+    dim(x <- rprocess(ou2,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),6),offset=1)),
+    c(2L,6L,10L)))
+try(rprocess(ou2,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),5),offset=1))
+try(rprocess(ou2,xstart=parmat(x0,11),times=seq(0,10),params=parmat(coef(ou2),5),offset=1))
+
+pomp(ou2,rprocess=function(xstart,times,params,...){xstart}) -> po
+try(rprocess(po,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),1),offset=1))
+pomp(ou2,rprocess=function(xstart,times,params,...){x <- xstart; dim(x) <- c(nrow(xstart),1,ncol(xstart)); x}) -> po
+try(rprocess(po,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),1),offset=1))
+pomp(ou2,rprocess=function(xstart,times,params,...){array(runif(66),dim=c(2,3,11))}) -> po
+try(rprocess(po,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),1),offset=1))
+
+try(dprocess(ou2,x=x[,3,1],times=1,params=coef(ou2),log=TRUE))
+stopifnot(identical(
+    dim(dprocess(ou2,x=x[,3,1:3],times=1:3,params=coef(ou2),log=TRUE)),
+    c(1L,2L)))
+stopifnot(identical(
+    dim(dprocess(ou2,x=x[,3:5,],times=1:10,params=coef(ou2),log=TRUE)),
+    c(3L,9L)))
+try(dprocess(ou2,x=x[,3:5,],times=1:8,params=coef(ou2),log=TRUE))
+stopifnot(identical(
+    dim(dprocess(ou2,x=x[,3:5,],times=1:10,params=parmat(coef(ou2),1))),
+    c(3L,9L)))
+stopifnot(identical(
+    dim(dprocess(ou2,x=x[,3:5,],times=1:10,params=parmat(coef(ou2),3))),
+    c(3L,9L)))
+try(dprocess(ou2,x=x[,3:5,],times=1:10,params=parmat(coef(ou2),2)))
+stopifnot(identical(
+    dim(dprocess(ou2,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),2))),
+    c(4L,9L)))
+try(dprocess(ou2,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),3)))
+stopifnot(identical(
+    dim(dprocess(ou2,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4))),
+    c(4L,9L)))
+
+pomp(ou2,dprocess=function(x,times,params,log,...){0}) -> po
+try(dprocess(po,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4)))
+pomp(ou2,dprocess=function(x,times,params,log,...){array(0,dim=c(1,1))}) -> po
+try(dprocess(po,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4)))
+pomp(ou2,dprocess=function(x,times,params,log,...){array(0,dim=c(dim(x)[2],length(times)-1))}) -> po
+stopifnot(identical(
+    dim(dprocess(po,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4))),
+    c(4L,9L)))
+stopifnot(identical(
+    dim(dprocess(po,x=x,times=1:10,params=parmat(coef(ou2),2))),
+    c(6L,9L)))
