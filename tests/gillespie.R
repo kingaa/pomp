@@ -56,7 +56,6 @@ data.frame(
         rprocess=gillespie.sim(rate.fun=rate.fun,v=Vmatrix,d=Dmatrix),
         zeronames=c("cases"),
         measurement.model=reports~binom(size=cases,prob=rho),
-        paramnames="rho",statenames=c("cases"),
         initializer=function(params, t0, ...){
             comp.names <- c("S","I","R")
             icnames <- paste(comp.names,"0",sep="_")
