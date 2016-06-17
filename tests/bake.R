@@ -25,4 +25,9 @@ print(stew({y3 <- runif(4)},file=file.path(tempdir(),"stew1.rds")))
 stopifnot(all.equal(y1,y2))
 try(stopifnot(all.equal(y1,y3)))
 
+pompExample(gillespie.sir)
+simulate(gillespie.sir,seed=1347484107L) -> x
+freeze(simulate(gillespie.sir),seed=1347484107L) -> y
+stopifnot(identical(x,y))
+
 detach("package:pomp", unload=TRUE)

@@ -46,8 +46,16 @@ Type 'q()' to quit R.
 > try(stopifnot(all.equal(y1,y3)))
 Error in mode(current) : object 'y3' not found
 > 
+> pompExample(gillespie.sir)
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+newly created object(s):
+ gillespie.sir 
+> simulate(gillespie.sir,seed=1347484107L) -> x
+> freeze(simulate(gillespie.sir),seed=1347484107L) -> y
+> stopifnot(identical(x,y))
+> 
 > detach("package:pomp", unload=TRUE)
 > 
 > proc.time()
    user  system elapsed 
-  0.608   0.060   0.638 
+  4.156   0.056   4.185 
