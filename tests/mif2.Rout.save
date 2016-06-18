@@ -35,7 +35,7 @@ newly created object(s):
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
-Error : 'mif2' error: 'Np' must be specified
+Error : in 'mif2': 'Np' must be specified
 > try(mif2(ou2,Nmif=1,start=guess2,Np=rep(10,102),
 +          cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +          rw.sd=rw.sd(
@@ -56,7 +56,7 @@ in 'mif2': Np[k] ignored for k > ntimes
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
-Error : 'mif2' error: 'Nmif' must be a positive integer
+Error : in 'mif2': 'Nmif' must be a positive integer
 > 
 > m1 <- mif2(ou2,Nmif=50,start=guess1,Np=1000,
 +            cooling.type="hyperbolic",cooling.fraction.50=0.05,
@@ -75,9 +75,9 @@ Error : 'mif2' error: 'Nmif' must be a positive integer
 > stopifnot(all.equal(coef(m2a),coef(m2b)))
 > 
 > try(continue(m2,Nmif=10,rw.sd=rw.sd(beta=0.1,alpha.2=0.1)))
-Error : 'mif2' error: the following parameter(s), which are supposed to be estimated, are not present: 'beta'
+Error : in 'mif2': the following parameter(s), which are supposed to be estimated, are not present: 'beta'
 > try(continue(m2,Nmif=10,rw.sd=rw.sd(alpha.2=rep(0.1,3))))
-Error : 'mif2' error: 'rw.sd' spec for parameter 'alpha.2' does not evaluate to a vector of the correct length (100)
+Error : in 'mif2': 'rw.sd' spec for parameter 'alpha.2' does not evaluate to a vector of the correct length (100)
 > 
 > plot(m1,y=NA)
 Warning message:
@@ -173,4 +173,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 12.564   0.124  12.809 
+ 11.928   0.128  12.181 

@@ -170,7 +170,7 @@ mif.pfilter <- function (object, params, Np,
         ptsi.for <- FALSE
 
         ## advance the state variables according to the process model
-        X <- try(
+        X <- tryCatch(
             rprocess(
                 object,
                 xstart=x,
@@ -179,10 +179,11 @@ mif.pfilter <- function (object, params, Np,
                 offset=1,
                 .getnativesymbolinfo=gnsi.rproc
             ),
-            silent=FALSE
+            error = function (e) {
+                stop("in ",sQuote("mif"),": process simulation error: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(X,'try-error'))
-            stop(sQuote("mif")," error: process simulation error",call.=FALSE)
         gnsi.rproc <- FALSE
 
         if (pred.var) { ## check for nonfinite state variables and parameters
@@ -205,7 +206,7 @@ mif.pfilter <- function (object, params, Np,
         }
 
         ## determine the weights
-        weights <- try(
+        weights <- tryCatch(
             dmeasure(
                 object,
                 y=object@data[,nt,drop=FALSE],
@@ -215,11 +216,11 @@ mif.pfilter <- function (object, params, Np,
                 log=FALSE,
                 .getnativesymbolinfo=gnsi.dmeas
             ),
-            silent=FALSE
+            error = function (e) {
+                stop("in ",sQuote("mif"),": error in calculation of weights.",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(weights,'try-error'))
-            stop("in ",sQuote("mif"),
-                 ": error in calculation of weights.",call.=FALSE)
         if (!all(is.finite(weights)))
             stop("in ",sQuote("mif"),": ",sQuote("dmeasure"),
                  " returns non-finite value.",call.=FALSE)
@@ -228,7 +229,7 @@ mif.pfilter <- function (object, params, Np,
         ## compute prediction mean, prediction variance, filtering mean,
         ## effective sample size, log-likelihood
         ## also do resampling if filtering has not failed
-        xx <- try(
+        xx <- tryCatch(
             .Call(
                 pfilter_computations,
                 x=X,
@@ -243,11 +244,11 @@ mif.pfilter <- function (object, params, Np,
                 weights=weights,
                 tol=tol
             ),
-            silent=TRUE
+            error = function (e) {
+                stop("in ",sQuote("mif"),": particle-filter error: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(xx,'try-error')) {
-            stop(sQuote("mif")," error\n",xx,call.=FALSE)
-        }
         all.fail <- xx$fail
         loglik[nt] <- xx$loglik
         eff.sample.size[nt] <- xx$ess
@@ -266,7 +267,7 @@ mif.pfilter <- function (object, params, Np,
             if (verbose)
                 message("filtering failure at time t = ",times[nt+1])
             if (nfail>max.fail)
-                stop(sQuote("mif")," error: too many filtering failures.",call.=FALSE)
+                stop("too many filtering failures.",call.=FALSE)
         } else {
             if (pred.var)
                 pred.v[rw.names,nt] <- pred.v[rw.names,nt]+sigma1^2
@@ -363,14 +364,13 @@ mif.internal <- function (object, Nmif,
     if (is.null(Np)) stop("in ",sQuote("mif"),": ",sQuote("Np"),
                           " must be specified",call.=FALSE)
     if (is.function(Np)) {
-        Np <- try(
+        Np <- tryCatch(
             vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
-            silent=FALSE
+            error = function (e) {
+                stop("if ",sQuote("Np")," is a function, ",
+                     "it must return a single positive integer",call.=FALSE)
+            }
         )
-        if (inherits(Np,"try-error"))
-            stop("if ",sQuote("Np"),
-                 " is a function, it must return a single positive integer",
-                 call.=FALSE)
     }
     if (length(Np)==1)
         Np <- rep(Np,times=ntimes+1)
@@ -480,7 +480,7 @@ mif.internal <- function (object, Nmif,
             sd=sigma.n*var.factor
         )
 
-        pfp <- try(
+        pfp <- tryCatch(
             mif.pfilter(
                 object=pfp,
                 params=P,
@@ -496,11 +496,11 @@ mif.internal <- function (object, Nmif,
                 verbose=verbose,
                 .getnativesymbolinfo=gnsi
             ),
-            silent=TRUE
+            error = function (e) {
+                stop("in ",sQuote("mif"),": ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(pfp,"try-error"))
-            stop("in ",sQuote("mif"),": error in ",sQuote("mif.pfilter"),
-                 ":\n",pfp,call.=FALSE)
 
         gnsi <- FALSE
 

@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 1.5.6}{
   \itemize{
+    \item Major overhaul of error handling system and error messages.
     \item There is a new plugin for \code{rprocess} called \code{kleap.sim}.
     This implements the so-called \dQuote{K-leap method} of Cai & Xu (2007).
   }

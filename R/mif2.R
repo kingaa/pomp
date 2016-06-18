@@ -7,7 +7,7 @@ rw.sd <- function (...) {
 pkern.sd <- function (rw.sd, time, paramnames, enclos) {
     if (!all(names(rw.sd) %in% paramnames)) {
         unrec <- names(rw.sd)[!names(rw.sd) %in% paramnames]
-        stop(sQuote("mif2")," error: the following parameter(s), ",
+        stop("in ",sQuote("mif2"),": the following parameter(s), ",
              "which are supposed to be estimated, are not present: ",
              paste(sapply(unrec,sQuote),collapse=","),
              call.=FALSE)
@@ -21,7 +21,7 @@ pkern.sd <- function (rw.sd, time, paramnames, enclos) {
         if (len==1) {
             sds[[n]] <- rep(sds[[n]],length(time))
         } else if (len!=length(time)) {
-            stop(sQuote("mif2")," error: ",sQuote("rw.sd"),
+            stop("in ",sQuote("mif2"),": ",sQuote("rw.sd"),
                  " spec for parameter ",sQuote(n),
                  " does not evaluate to a vector of the correct length (",
                  length(time),")",call.=FALSE)
@@ -51,6 +51,8 @@ mif2.pfilter <- function (object, params, Np,
                           .indices = integer(0),
                           .getnativesymbolinfo = TRUE) {
 
+    error.prefix <- paste0("in ",sQuote("mif2"),": ")
+
     gnsi <- as.logical(.getnativesymbolinfo)
     transform <- as.logical(transform)
     verbose <- as.logical(verbose)
@@ -59,7 +61,8 @@ mif2.pfilter <- function (object, params, Np,
 
     do_ta <- length(.indices)>0L
     if (do_ta && length(.indices)!=Np[1L])
-        stop(".indices has improper length",call.=TRUE)
+        stop(error.prefix,sQuote(".indices"),
+             " has improper length",call.=FALSE)
     
     times <- time(object,t0=TRUE)
     ntimes <- length(times)-1
@@ -84,7 +87,7 @@ mif2.pfilter <- function (object, params, Np,
         }
 
         ## advance the state variables according to the process model
-        X <- try(
+        X <- tryCatch(
             rprocess(
                 object,
                 xstart=x,
@@ -93,14 +96,14 @@ mif2.pfilter <- function (object, params, Np,
                 offset=1,
                 .getnativesymbolinfo=gnsi
             ),
-            silent=TRUE
+            error = function (e) {
+                stop(error.prefix,"process simulation error: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(X,'try-error'))
-            stop("in ",sQuote("mif2.pfilter"),": process simulation error:",
-                 X,call.=FALSE)
 
         ## determine the weights
-        weights <- try(
+        weights <- tryCatch(
             dmeasure(
                 object,
                 y=object@data[,nt,drop=FALSE],
@@ -110,13 +113,13 @@ mif2.pfilter <- function (object, params, Np,
                 log=FALSE,
                 .getnativesymbolinfo=gnsi
             ),
-            silent=TRUE
+            error = function (e) {
+                stop(error.prefix,"error in calculation of weights: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(weights,'try-error'))
-            stop("in ",sQuote("mif2.pfilter"),": error in calculation of weights: ",
-                 weights,call.=FALSE)
         if (!all(is.finite(weights)))
-            stop(sQuote("mif2.pfilter")," error: ",sQuote("dmeasure"),
+            stop(error.prefix,sQuote("dmeasure"),
                  " returns non-finite value",call.=FALSE)
         gnsi <- FALSE
 
@@ -126,7 +129,7 @@ mif2.pfilter <- function (object, params, Np,
 
         ## compute effective sample size, log-likelihood
         ## also do resampling if filtering has not failed
-        xx <- try(
+        xx <- tryCatch(
             .Call(
                 pfilter_computations,
                 x=X,
@@ -141,12 +144,11 @@ mif2.pfilter <- function (object, params, Np,
                 weights=weights,
                 tol=tol
             ),
-            silent=TRUE
+            error = function (e) {
+                stop(error.prefix,"particle filter computation error: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(xx,'try-error')) {
-            stop("in ",sQuote("mif2.pfilter"),": pfilter computation error: ",
-                 xx,call.=FALSE)
-        }
         all.fail <- xx$fail
         loglik[nt] <- xx$loglik
         eff.sample.size[nt] <- xx$ess
@@ -162,7 +164,7 @@ mif2.pfilter <- function (object, params, Np,
             if (verbose)
                 message("filtering failure at time t = ",times[nt+1])
             if (nfail>max.fail)
-                stop(sQuote("mif2.pfilter")," error: too many filtering failures",call.=FALSE)
+                stop(error.prefix,"too many filtering failures",call.=FALSE)
         }
 
         if (verbose && (nt%%5==0))
@@ -197,6 +199,8 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                            .paramMatrix = NULL,
                            .getnativesymbolinfo = TRUE, ...) {
 
+    error.prefix <- paste0("in ",sQuote("mif2"),": ")
+
     pompLoad(object)
 
     transform <- as.logical(transform)
@@ -204,7 +208,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     gnsi <- as.logical(.getnativesymbolinfo)
     Np <- c(Np,Np[1L])
 
-    if (Nmif <= 0) stop(sQuote("mif2")," error: ",sQuote("Nmif"),
+    if (Nmif <= 0) stop(error.prefix,sQuote("Nmif"),
                         " must be a positive integer",call.=FALSE)
     
     cooling.fn <- mif.cooling.function(
@@ -241,7 +245,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     ## iterate the filtering
     for (n in seq_len(Nmif)) {
 
-        pfp <- try(
+        pfp <- tryCatch(
             mif2.pfilter(
                 object=object,
                 params=paramMatrix,
@@ -253,13 +257,14 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
                 max.fail=max.fail,
                 verbose=verbose,
                 transform=transform,
-                 .indices=.indices,
+                .indices=.indices,
                 .getnativesymbolinfo=gnsi
             ),
-            silent=TRUE
+            error = function (e) {
+                stop(error.prefix,"particle-filter error: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(pfp,"try-error"))
-            stop("in ",sQuote("mif2"),": particle-filter error:",pfp,call.=FALSE)
 
         gnsi <- FALSE
 
@@ -300,34 +305,33 @@ setMethod(
                            tol = 1e-17, max.fail = Inf,
                            verbose = getOption("verbose"),...) {
 
+        error.prefix <- paste0("in ",sQuote("mif2"),": ")
+
         Nmif <- as.integer(Nmif)
 
         if (missing(start)) start <- coef(object)
         if (length(start)==0)
-            stop(
-                sQuote("mif2")," error: ",sQuote("start")," must be specified if ",
-                sQuote("coef(object)")," is NULL",
-                call.=FALSE
-            )
+            stop(error.prefix,sQuote("start")," must be specified if ",
+                 sQuote("coef(object)")," is NULL",call.=FALSE)
         if (is.null(names(start)))
-            stop(sQuote("mif2")," error: ",sQuote("start")," must be a named vector",
+            stop(error.prefix,sQuote("start")," must be a named vector",
                  call.=FALSE)
 
         ntimes <- length(time(object))
 
-        if (missing(Np)) {
-            stop(sQuote("mif2")," error: ",sQuote("Np")," must be specified",call.=FALSE) }
+        if (missing(Np))
+            stop(error.prefix,sQuote("Np")," must be specified",call.=FALSE)
         else if (is.function(Np)) {
-            Np <- try(
-                vapply(seq.int(1,ntimes),Np,numeric(1)),
-                silent=FALSE
+            Np <- tryCatch(
+                vapply(seq_len(ntimes),Np,numeric(1)),
+                error = function (e) {
+                    stop(error.prefix,"if ",sQuote("Np"),
+                         " is a function, it must return a single positive integer",
+                         call.=FALSE)
+                }
             )
-            if (inherits(Np,"try-error"))
-                stop(sQuote("mif2")," error: if ",sQuote("Np"),
-                     " is a function, it must return a single positive integer",
-                     call.=FALSE)
         } else if (!is.numeric(Np))
-            stop(sQuote("mif2")," error: ",sQuote("Np"),
+            stop(error.prefix,sQuote("Np"),
                  " must be a number, a vector of numbers, or a function",
                  call.=FALSE)
         if (length(Np)==1) {
@@ -339,11 +343,11 @@ setMethod(
             Np <- head(Np,ntimes)
         }
         if (any(Np <= 0))
-            stop(sQuote("mif2")," error: number of particles, ",
+            stop(error.prefix,"number of particles, ",
                  sQuote("Np"),", must always be positive",call.=FALSE)
 
         if (missing(rw.sd))
-            stop(sQuote("mif2")," error: ",sQuote("rw.sd")," must be specified!",call.=FALSE)
+            stop(error.prefix,sQuote("rw.sd")," must be specified!",call.=FALSE)
         if (!is.matrix(rw.sd)) {
             rw.sd <- pkern.sd(rw.sd,time=time(object),paramnames=names(start),
                               enclos=parent.frame())
@@ -353,8 +357,8 @@ setMethod(
 
         cooling.fraction.50 <- as.numeric(cooling.fraction.50)
         if (cooling.fraction.50 <= 0 || cooling.fraction.50 > 1)
-            stop(sQuote("mif2")," error: ",
-                 sQuote("cooling.fraction.50")," must be in (0,1]",call.=FALSE)
+            stop(error.prefix,sQuote("cooling.fraction.50"),
+                 " must be in (0,1]",call.=FALSE)
 
         mif2.internal(
             object=object,

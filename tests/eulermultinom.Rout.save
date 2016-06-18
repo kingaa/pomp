@@ -102,4 +102,4 @@ In deulermultinom(x, size = 100, rate = c(3, 2, 1), dt = c(0.1,  :
 > 
 > proc.time()
    user  system elapsed 
-  0.540   0.068   0.582 
+  0.536   0.056   0.562 

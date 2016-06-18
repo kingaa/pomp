@@ -49,6 +49,8 @@ pfilter.internal <- function (object, params, Np,
                               save.params = FALSE,
                               .getnativesymbolinfo = TRUE) {
 
+    error.prefix <- paste0("in ",sQuote("pfilter"),": ")
+    
     object <- as(object,"pomp")
     pompLoad(object)
 
@@ -62,10 +64,10 @@ pfilter.internal <- function (object, params, Np,
     save.params <- as.logical(save.params)
     
     if (length(params)==0)
-        stop("in ",sQuote("pfilter"),": ",sQuote("params")," must be specified",call.=FALSE)
+        stop(error.prefix,sQuote("params")," must be specified",call.=FALSE)
 
     if (missing(tol))
-        stop("in ",sQuote("pfilter"),": ",sQuote("tol")," must be specified",call.=FALSE)
+        stop(error.prefix,sQuote("tol")," must be specified",call.=FALSE)
 
     one.par <- FALSE
     times <- time(object,t0=TRUE)
@@ -74,21 +76,22 @@ pfilter.internal <- function (object, params, Np,
     if (missing(Np))
         Np <- NCOL(params)
     if (is.function(Np)) {
-        Np <- try(
+        Np <- tryCatch(
             vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
-            silent=FALSE
+            error = function (e) {
+                stop(error.prefix,"if ",sQuote("Np")," is a function, ",
+                     "it must return a single positive integer",call.=FALSE)
+            }
         )
-        if (inherits(Np,"try-error"))
-            stop("if ",sQuote("Np")," is a function, it must return a single positive integer",call.=FALSE)
     }
     if (length(Np)==1)
         Np <- rep(Np,times=ntimes+1)
     else if (length(Np)!=(ntimes+1))
-        stop(sQuote("Np")," must have length 1 or length ",ntimes+1,call.=FALSE)
+        stop(error.prefix,sQuote("Np")," must have length 1 or length ",ntimes+1,call.=FALSE)
     if (any(Np<=0))
-        stop("number of particles, ",sQuote("Np"),", must always be positive",call.=FALSE)
+        stop(error.prefix,"number of particles, ",sQuote("Np"),", must always be positive",call.=FALSE)
     if (!is.numeric(Np))
-        stop(sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
+        stop(error.prefix,sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
     Np <- as.integer(Np)
 
     if (NCOL(params)==1) {        # there is only one parameter vector
@@ -99,7 +102,7 @@ pfilter.internal <- function (object, params, Np,
 
     paramnames <- rownames(params)
     if (is.null(paramnames))
-        stop(sQuote("pfilter")," error: ",sQuote("params")," must have rownames",call.=FALSE)
+        stop(error.prefix,sQuote("params")," must have rownames",call.=FALSE)
 
     init.x <- init.state(object,params=params,nsim=Np[1L])
     statenames <- rownames(init.x)
@@ -189,7 +192,7 @@ pfilter.internal <- function (object, params, Np,
                 .getnativesymbolinfo=gnsi.rproc
             ),
             error = function (e) {
-                stop("in ",sQuote("pfilter"),": process simulation error: ",
+                stop(error.prefix,"process simulation error: ",
                      conditionMessage(e),call.=FALSE)
             }
         )
@@ -199,7 +202,7 @@ pfilter.internal <- function (object, params, Np,
             problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])
             if (length(problem.indices)>0) {  # state variables
                 stop(
-                    sQuote("pfilter")," error: non-finite state variable(s): ",
+                    error.prefix,"non-finite state variable(s): ",
                     paste(rownames(X)[problem.indices],collapse=', '),
                     call.=FALSE
                 )
@@ -218,13 +221,12 @@ pfilter.internal <- function (object, params, Np,
                 .getnativesymbolinfo=gnsi.dmeas
             ),
             error = function (e) {
-                stop("in ",sQuote("pfilter"),
-                     ": error in calculation of weights: ",
+                stop(error.prefix,"error in calculation of weights: ",
                      conditionMessage(e),call.=FALSE)
             }
         )
         if (!all(is.finite(weights)))
-            stop("in ",sQuote("pfilter"),": ",sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
+            stop(error.prefix,sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
         gnsi.dmeas <- FALSE
 
         ## compute prediction mean, prediction variance, filtering mean,
@@ -246,8 +248,7 @@ pfilter.internal <- function (object, params, Np,
                 tol=tol
             ),
             error = function (e) {
-                stop("in ",sQuote("pfilter"),": ",
-                    conditionMessage(e),call.=FALSE)
+                stop(error.prefix,conditionMessage(e),call.=FALSE)
             }
         )
         all.fail <- xx$fail
@@ -271,7 +272,7 @@ pfilter.internal <- function (object, params, Np,
             if (verbose)
                 message("filtering failure at time t = ",times[nt+1])
             if (nfail>max.fail)
-                stop(sQuote("pfilter")," error: too many filtering failures",call.=FALSE)
+                stop(error.prefix,"too many filtering failures",call.=FALSE)
         }
 
         if (save.states | filter.traj) {
@@ -313,10 +314,16 @@ pfilter.internal <- function (object, params, Np,
     if (!save.states) xparticles <- list()
 
     if (nfail>0)
-        warning(sprintf(ngettext(nfail,msg1="%d filtering failure occurred in ",
-                                 msg2="%d filtering failures occurred in "),nfail),
-                sQuote("pfilter"),call.=FALSE)
-
+        warning(
+            error.prefix,nfail,
+            ngettext(
+                nfail,
+                msg1=" filtering failure occurred.",
+                msg2=" filtering failures occurred."
+            ),
+            call.=FALSE
+        )
+    
     pompUnload(object)
 
     new(

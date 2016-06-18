@@ -9,56 +9,57 @@ NLF.LQL <- function (params.fitted, object, params, par.index, transform = FALSE
 ### so a large NEGATIVE value is used to flag bad parameters 
 ###>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-  transform <- as.logical(transform)
+    transform <- as.logical(transform)
 
-  FAILED =  -99999999999
-  params[par.index] <- params.fitted
-  
-  if (transform)
-    params <- partrans(object,params,dir="fromEstimationScale")
+    FAILED =  -99999999999
+    params[par.index] <- params.fitted
+    
+    if (transform)
+        params <- partrans(object,params,dir="fromEstimationScale")
 
-  ## Evaluates the NLF objective function given a POMP object.
-  ## Version 0.1, 3 Dec. 2007, Bruce E. Kendall & Stephen P. Ellner
-  ## Version 0.2, May 2008, Stephen P. Ellner  
+    ## Evaluates the NLF objective function given a POMP object.
+    ## Version 0.1, 3 Dec. 2007, Bruce E. Kendall & Stephen P. Ellner
+    ## Version 0.2, May 2008, Stephen P. Ellner  
 
-  data.ts <- obs(object)
-  
-  y <- try(
-           simulate(object,times=times,t0=t0,params=params,seed=seed,obs=TRUE,states=FALSE),
-           silent=FALSE
-           )
-  if (inherits(y,"try-error"))
-    stop(sQuote("NLF.LQL")," reports: error in simulation")
+    data.ts <- obs(object)
+    
+    y <- tryCatch(
+        simulate(object,times=times,t0=t0,params=params,seed=seed,obs=TRUE,states=FALSE),
+        error = function (e) {
+            stop("in ",sQuote("NLF.LQL"),": error in simulation: ",
+                 conditionMessage(e),call.=FALSE)
+        }
+    )
 
-  ## Test whether the model time series is valid
-  if (!all(is.finite(y))) return(FAILED)
+    ## Test whether the model time series is valid
+    if (!all(is.finite(y))) return(FAILED)
 
-  model.ts <- array(
-                    dim=c(nrow(data.ts),length(times)),
-                    dimnames=list(rownames(data.ts),NULL)
-                    )
-  model.ts[,] <- apply(y[,1,,drop=FALSE],c(2,3),transform.data)
-  data.ts[,] <- apply(data.ts,2,transform.data)
-  
-  LQL <- try(
-             NLF.guts(
-                      data.mat=data.ts,
-                      data.times=time(object),
-                      model.mat=model.ts,
-                      model.times=times,
-                      lags=lags,
-                      period=period,
-                      tensor=tensor, 
-                      nrbf=nrbf,
-                      bootstrap,
-                      bootsamp
-                      ),
-             silent=FALSE
-             )
-  if (inherits(LQL,"try-error"))
-    stop(sQuote("NLF.LQL")," reports: error in ",sQuote("NLF.guts"))
-  LQL 
+    model.ts <- array(
+        dim=c(nrow(data.ts),length(times)),
+        dimnames=list(rownames(data.ts),NULL)
+    )
+    model.ts[,] <- apply(y[,1,,drop=FALSE],c(2,3),transform.data)
+    data.ts[,] <- apply(data.ts,2,transform.data)
+    
+    tryCatch(
+        NLF.guts(
+            data.mat=data.ts,
+            data.times=time(object),
+            model.mat=model.ts,
+            model.times=times,
+            lags=lags,
+            period=period,
+            tensor=tensor, 
+            nrbf=nrbf,
+            bootstrap,
+            bootsamp
+        ),
+        error = function (e) {
+            stop("in ",sQuote("NLF.LQL"),": ",
+                 conditionMessage(e),call.=FALSE)
+        }
+    )
 }
 
 nlf.objfun <- function (...) 
-  -sum(NLF.LQL(...),na.rm=TRUE)
+    -sum(NLF.LQL(...),na.rm=TRUE)

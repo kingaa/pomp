@@ -59,9 +59,13 @@ abc.internal <- function (object, Nabc,
         stop(sQuote("proposal")," must be a function")
 
     ## test proposal distribution
-    theta <- try(proposal(start,.n=0))
-    if (inherits(theta,"try-error"))
-        stop("abc error: error in proposal function",call.=FALSE)
+    theta <- tryCatch(
+        proposal(start,.n=0),
+        error = function (e) {
+            stop("in ",sQuote("abc"),": in proposal function: ",
+                 conditionMessage(e),call.=FALSE)
+        }
+    )
     if (is.null(names(theta)) || !is.numeric(theta))
         stop("abc error: ",sQuote("proposal")," must return a named numeric vector",call.=FALSE)
 
@@ -95,9 +99,13 @@ abc.internal <- function (object, Nabc,
     )
 
     ## apply probes to data
-    datval <- try(.Call(apply_probe_data,object,probes),silent=FALSE)
-    if (inherits(datval,'try-error'))
-        stop("abc error: error in ",sQuote("apply_probe_data"),call.=FALSE)
+    datval <- tryCatch(
+        .Call(apply_probe_data,object,probes),
+        error = function (e) {
+            stop("in ",sQuote("abc"),": in ",sQuote("apply_probe_data"),
+                 ": ",conditionMessage(e),call.=FALSE)
+        }
+    )
 
     conv.rec[1,names(theta)] <- theta
 
@@ -112,7 +120,7 @@ abc.internal <- function (object, Nabc,
 
             ## compute the probes for the proposed new parameter values
 
-            simval <- try(
+            simval <- tryCatch(
                 .Call(
                     apply_probe_sim,
                     object=object,
@@ -122,11 +130,11 @@ abc.internal <- function (object, Nabc,
                     probes=probes,
                     datval=datval
                 ),
-                silent=FALSE
+                error = function (e) {
+                    stop("in ",sQuote("abc"),": in ",sQuote("apply_probe_sim"),
+                         ": ",conditionMessage(e),call.=FALSE)
+                }
             )
-
-            if (inherits(simval,'try-error'))
-                stop("abc error: error in ",sQuote("apply_probe_sim"),call.=FALSE)
 
             ## ABC update rule
             distance <- sum(((datval-simval)/scale)^2)

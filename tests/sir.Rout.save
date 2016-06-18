@@ -195,7 +195,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 call. = FALSE)
         })
 }
-<environment: 0x1eea838>
+<environment: 0x22cbb38>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -207,7 +207,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
             call. = FALSE)
     })
 }
-<environment: 0x1fd46c8>
+<environment: 0x23bd9b8>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -252,7 +252,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0xc6c9e8>
+<environment: 0x103b4a8>
 initializer = 
 function (params, t0, ...) 
 {
@@ -278,7 +278,7 @@ parameter(s):
 > x <- pomp(po,measurement.model=reports~binom(size=cases,prob=rho),
 +           rmeasure=function(x,t,params,covars,...){1})
 Warning message:
-specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
+in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
 > 
 > set.seed(3049953)
 > ## simulate from the model
@@ -463,4 +463,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  5.440   0.200   5.772 
+  5.396   0.164   5.710 

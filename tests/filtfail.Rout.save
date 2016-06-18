@@ -110,8 +110,8 @@ filtering failure at time t = 16
 filtering failure at time t = 17
 filtering failure at time t = 18
 Warning message:
-4 filtering failures occurred in 'pfilter' 
+in 'pfilter': 4 filtering failures occurred. 
 > 
 > proc.time()
    user  system elapsed 
-  0.624   0.052   0.638 
+  0.604   0.052   0.625 

@@ -73,9 +73,13 @@ enkf.internal <- function (object, params, h, R, Np, verbose) {
     forecast <- array(dim=c(nobs,ntimes),dimnames=dimnames(y))
     condlogLik <- numeric(ntimes)
 
-    sqrtR <- try(t(chol(R)))            # t(sqrtR)%*%sqrtR == R
-    if (inherits(sqrtR,"try-error"))
-        stop("error in ",sQuote("enkf"),": degenerate ",sQuote("R"),call.=FALSE)
+    sqrtR <- tryCatch(
+        t(chol(R)),                     # t(sqrtR)%*%sqrtR == R
+        error = function (e) {
+            stop("in ",sQuote("enkf"),": degenerate ",sQuote("R"),
+                 ": ",conditionMessage(e),call.=FALSE)
+        }
+    )
 
     for (k in seq_len(ntimes)) {
         ## advance ensemble according to state process
@@ -164,9 +168,13 @@ eakf.internal <- function (object, params, C, R, Np, verbose) {
     forecast <- array(dim=c(nobs,ntimes),dimnames=dimnames(y))
     condlogLik <- numeric(ntimes)
 
-    ri <- try(solve(R))
-    if (inherits(ri,"try-error"))
-        stop("error in ",sQuote("eakf"),": degenerate ",sQuote("R"),call.=FALSE)
+    ri <- tryCatch(
+        solve(R),
+        error = function (e) {
+            stop("in ",sQuote("eakf"),": degenerate ",sQuote("R"),
+                 ": ",conditionMessage(e),call.=FALSE)
+        }
+    )
 
     for (k in seq_len(ntimes)) {
 
@@ -212,37 +220,37 @@ eakf.internal <- function (object, params, C, R, Np, verbose) {
 }
 
 kalmanFilter <- function (t, y, X0, A, Q, C, R) {
-  N <- ncol(y)
-  nvar <- length(X0)
-  nobs <- nrow(y)
-  filterMeans <- array(dim=c(nvar,N),
-                       dimnames=list(variable=names(X0),time=NULL))
-  predMeans <- filterMeans
-  forecast <- array(dim=c(nobs,N),dimnames=dimnames(y))
-  condlogLik <- numeric(N)
-  ri <- solve(R)
-  cric <- crossprod(C,ri)%*%C
-  fm <- X0
-  fv <- matrix(0,nvar,nvar)
-  for (k in seq_along(t)) {
-    predMeans[,k] <- pm <- A%*%fm      # prediction mean
-    pv <- A%*%tcrossprod(fv,A)+Q       # prediction variance    
-    svdV <- svd(pv,nv=0)
-    resid <- y[,k]-C%*%pm              # forecast error
-    w <- tcrossprod(C%*%pv,C)+R        # forecast variance
-    svdW <- svd(w,nv=0)
-    condlogLik[k] <- sum(dnorm(x=crossprod(svdW$u,resid),mean=0,sd=sqrt(svdW$d),log=TRUE))
-    pvi <- svdV$u%*%(t(svdV$u)/svdV$d) # prediction precision
-    fvi <- pvi+cric                    # filter precision
-    svdv <- svd(fvi,nv=0)
-    fv <- svdv$u%*%(t(svdv$u)/svdv$d)  # filter variance
-    K <- fv%*%crossprod(C,ri)          # Kalman gain
-    filterMeans[,k] <- fm <- pm+K%*%resid  # filter mean
-    forecast[,k] <- C %*% pm
-  }
-  list(filterMeans=filterMeans,
-       predMeans=predMeans,
-       forecast=forecast,
-       cond.loglik=condlogLik,
-       loglik=sum(condlogLik))
+    N <- ncol(y)
+    nvar <- length(X0)
+    nobs <- nrow(y)
+    filterMeans <- array(dim=c(nvar,N),
+                         dimnames=list(variable=names(X0),time=NULL))
+    predMeans <- filterMeans
+    forecast <- array(dim=c(nobs,N),dimnames=dimnames(y))
+    condlogLik <- numeric(N)
+    ri <- solve(R)
+    cric <- crossprod(C,ri)%*%C
+    fm <- X0
+    fv <- matrix(0,nvar,nvar)
+    for (k in seq_along(t)) {
+        predMeans[,k] <- pm <- A%*%fm      # prediction mean
+        pv <- A%*%tcrossprod(fv,A)+Q       # prediction variance    
+        svdV <- svd(pv,nv=0)
+        resid <- y[,k]-C%*%pm              # forecast error
+        w <- tcrossprod(C%*%pv,C)+R        # forecast variance
+        svdW <- svd(w,nv=0)
+        condlogLik[k] <- sum(dnorm(x=crossprod(svdW$u,resid),mean=0,sd=sqrt(svdW$d),log=TRUE))
+        pvi <- svdV$u%*%(t(svdV$u)/svdV$d) # prediction precision
+        fvi <- pvi+cric                    # filter precision
+        svdv <- svd(fvi,nv=0)
+        fv <- svdv$u%*%(t(svdv$u)/svdv$d)  # filter variance
+        K <- fv%*%crossprod(C,ri)          # Kalman gain
+        filterMeans[,k] <- fm <- pm+K%*%resid  # filter mean
+        forecast[,k] <- C %*% pm
+    }
+    list(filterMeans=filterMeans,
+         predMeans=predMeans,
+         forecast=forecast,
+         cond.loglik=condlogLik,
+         loglik=sum(condlogLik))
 }

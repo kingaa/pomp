@@ -47,7 +47,7 @@ newly created object(s):
 > garb <- ou2
 > coef(garb) <- numeric(0)
 > try(garb <- bsmc2(garb))
-Error : 'bsmc2' error: 'params' must be supplied
+Error : in 'bsmc2': 'params' must be supplied
 > 
 > ##Run Liu & West particle filter
 > smc <- bsmc2(
@@ -137,4 +137,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-   2.81    0.12    2.91 
+   2.77    0.17    2.91 

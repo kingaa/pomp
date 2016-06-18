@@ -164,7 +164,7 @@ Type 'q()' to quit R.
 +                  skeleton=bh.skel,
 +                  statenames="N",paramnames=c("a","b","sigma"))
 Warning message:
-In 'pomp', the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
+in 'pomp': the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
 > parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),
 +                  skeleton=map(bh.skel,delta.t=1),
@@ -228,4 +228,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  6.508   1.064   8.825 
+  6.308   1.036   8.690 

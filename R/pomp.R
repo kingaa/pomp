@@ -1,21 +1,23 @@
-## basic constructor of the pomp class
-pomp.constructor <- function (data, times, t0, rprocess, dprocess,
-                              rmeasure, dmeasure, measurement.model,
-                              skeleton, skeleton.type, skelmap.delta.t,
-                              initializer, rprior, dprior,
-                              params, covar, tcovar,
-                              obsnames, statenames, paramnames, covarnames,
-                              zeronames, PACKAGE,
-                              fromEstimationScale, toEstimationScale,
-                              globals, cdir, cfile, userdata,
-                              ...,
-                              .solibs = list(),
-                              verbose = getOption("verbose",FALSE)) {
+## This file defines 'pomp', the basic constructor of the pomp class
+pomp.internal <- function (data, times, t0, rprocess, dprocess,
+                           rmeasure, dmeasure, measurement.model,
+                           skeleton, skeleton.type, skelmap.delta.t,
+                           initializer, rprior, dprior,
+                           params, covar, tcovar,
+                           obsnames, statenames, paramnames, covarnames,
+                           zeronames, PACKAGE,
+                           fromEstimationScale, toEstimationScale,
+                           globals, cdir, cfile, userdata,
+                           ...,
+                           .solibs = list(),
+                           verbose = getOption("verbose",FALSE)) {
+
+    error.prefix <- paste0("in ",sQuote("pomp"),": ")
 
     ## preliminary error checking
-    if (missing(data)) stop(sQuote("data")," is a required argument",call.=FALSE)
-    if (missing(times)) stop(sQuote("times")," is a required argument",call.=FALSE)
-    if (missing(t0)) stop(sQuote("t0")," is a required argument",call.=FALSE)
+    if (missing(data)) stop(error.prefix,sQuote("data")," is a required argument",call.=FALSE)
+    if (missing(times)) stop(error.prefix,sQuote("times")," is a required argument",call.=FALSE)
+    if (missing(t0)) stop(error.prefix,sQuote("t0")," is a required argument",call.=FALSE)
     if (missing(params)) params <- numeric(0)
 
     if (missing(cdir)) cdir <- NULL
@@ -55,7 +57,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     ## check the parameters and force them to be double-precision
     if (length(params)>0) {
         if (is.null(names(params)) || !is.numeric(params))
-            stop(sQuote("pomp")," error: ",
+            stop(error.prefix,
                  sQuote("params")," must be a named numeric vector",
                  call.=FALSE)
     }
@@ -63,21 +65,19 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
 
     ## check the data and store it as double-precision matrix
     if (!is.numeric(data))
-        stop(sQuote("pomp")," error: ",
-             sQuote("data")," must be numeric",call.=FALSE)
+        stop(error.prefix,sQuote("data")," must be numeric",call.=FALSE)
     storage.mode(data) <- 'double'
     if (missing(obsnames) || length(obsnames)==0) obsnames <- rownames(data)
     obsnames <- as.character(obsnames)
 
     ## check times
     if (!is.numeric(times) || any(is.na(times)) || !all(diff(times)>0))
-        stop(sQuote("pomp")," error: ",sQuote("times"),
-             " must be an increasing numeric vector",call.=FALSE)
+        stop(error.prefix,sQuote("times")," must be an increasing numeric vector",call.=FALSE)
     storage.mode(times) <- 'double'
 
     ## check t0
     if (!is.numeric(t0) || length(t0) > 1)
-        stop(sQuote("pomp")," error: the zero-time ",sQuote("t0"),
+        stop(error.prefix,"the zero-time ",sQuote("t0"),
              " must be a single number",call.=FALSE)
     storage.mode(t0) <- 'double'
 
@@ -86,13 +86,13 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         covar <- matrix(data=0,nrow=0,ncol=0)
         tcovar <- numeric(0)
     } else if (missing(tcovar)) {
-        stop(sQuote("pomp")," error: if ",sQuote("covar")," is supplied, ",
+        stop(error.prefix,"if ",sQuote("covar")," is supplied, ",
              sQuote("tcovar")," must also be supplied",call.=FALSE)
     } else if (is.data.frame(covar)) {
         if ((is.numeric(tcovar) && (tcovar<1 || tcovar>length(covar))) ||
             (is.character(tcovar) && (!(tcovar%in%names(covar)))) ||
             (!is.numeric(tcovar) && !is.character(tcovar))) {
-            stop(sQuote("pomp")," error: if ",sQuote("covar")," is a data frame, ",
+            stop(error.prefix,"if ",sQuote("covar")," is a data frame, ",
                  sQuote("tcovar")," should indicate the time variable",call.=FALSE)
         } else if (is.numeric(tcovar)) {
             tpos <- tcovar
@@ -109,7 +109,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (missing(covarnames) || length(covarnames)==0) covarnames <- as.character(colnames(covar))
     if (!all(covarnames%in%colnames(covar))) {
         missing <- covarnames[!(covarnames%in%colnames(covar))]
-        stop(sQuote("pomp")," error: covariate(s) ",
+        stop(error.prefix,"covariate(s) ",
              paste(sapply(missing,sQuote),collapse=","),
              " are not among the columns of ",sQuote("covar"),call.=FALSE)
     }
@@ -149,7 +149,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     if (is(initializer,"Csnippet"))
         snips <- c(snips,initializer=initializer@text)
     if (length(snips)>0) {
-        libname <- try(
+        libname <- tryCatch(
             do.call(
                 pompCBuilder,
                 c(
@@ -166,14 +166,14 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
                     snips
                 )
             ),
-            silent=FALSE
+            error = function (e) {
+                stop(error.prefix,
+                     "error in building shared-object library from Csnippets: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
-        if (inherits(libname,"try-error")) {
-            stop("in ",sQuote("pomp"),": error in building shared-object library from Csnippets:\n",libname,call.=FALSE)
-        } else {
-            .solibs <- c(.solibs,list(libname))
-            libname <- libname$name
-        }
+        .solibs <- c(.solibs,list(libname))
+        libname <- libname$name
     } else {
         libname <- ''
     }
@@ -205,7 +205,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         )
     }
     if (!is.function(rprocess))
-        stop(sQuote("pomp")," error: ",sQuote("rprocess")," must be a function",call.=FALSE)
+        stop(error.prefix,sQuote("rprocess")," must be a function",call.=FALSE)
 
     ## handle dprocess
     if (is(dprocess,"pompPlugin")) {
@@ -219,7 +219,7 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         )
     }
     if (!is.function(dprocess))
-        stop(sQuote("pomp")," error: ",sQuote("dprocess")," must be a function",call.=FALSE)
+        stop(error.prefix,sQuote("dprocess")," must be a function",call.=FALSE)
 
     ## handle skeleton
     skeleton <- pomp.fun(
@@ -236,21 +236,24 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
 
     ## type of skeleton (map or vectorfield)
     ## skelmap.delta.t has no meaning in the latter case
-    skeleton.type <- try(
+    skeleton.type <- tryCatch(
         match.arg(skeleton.type,c("map","vectorfield")),
-        silent=TRUE)
-    if (inherits(skeleton.type,"try-error")) {
-        stop("the deterministic skeleton must be either a map or a vectorfield: see ",sQuote("?pomp"),call.=FALSE)
-    }
+        error = function (e) {
+            stop(error.prefix,
+                 "the deterministic skeleton must be either a map or a vectorfield: ",
+                 "see ",sQuote("?pomp"),call.=FALSE)
+        }
+    )
     skelmap.delta.t <- as.numeric(skelmap.delta.t)
     if (skelmap.delta.t <= 0)
-        stop("skeleton ",sQuote("delta.t")," must be positive",call.=FALSE)
+        stop(error.prefix,"skeleton ",sQuote("delta.t")," must be positive",call.=FALSE)
 
     ## if 'measurement model' is specified as a formula, this overrides
     ## specification of 'rmeasure' or 'dmeasure'
     if (!missing(measurement.model)) {
         if (!(is.null(dmeasure)&&is.null(rmeasure))) {
             warning(
+                error.prefix,
                 "specifying ",sQuote("measurement.model"),
                 " overrides specification of ",
                 sQuote("rmeasure")," and ",sQuote("dmeasure"),
@@ -323,8 +326,8 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
     mpt <- is.null(fromEstimationScale)
     mpit <- is.null(toEstimationScale)
     if (xor(mpt,mpit)) {
-        stop("if one of ",sQuote("fromEstimationScale"),", ",
-             sQuote("toEstimationScale"),
+        stop(error.prefix,"if one of ",
+             sQuote("fromEstimationScale"),", ",sQuote("toEstimationScale"),
              " is supplied, then so must the other",call.=FALSE)
     }
     has.trans <- !mpt
@@ -365,30 +368,37 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
         (skeleton@mode==pompfunmode$Rfun)
         &&!("covars"%in%names(formals(skeleton@R.fun)))
         )
-            warning("a covariate table has been given, yet the ",
-                    sQuote("skeleton")," function does not have ",
-                    sQuote("covars")," as a formal argument: see ",
-                    sQuote("?pomp"),call.=FALSE)
+            warning(
+                error.prefix,
+                "a covariate table has been given, yet the ",
+                sQuote("skeleton")," function does not have ",
+                sQuote("covars")," as a formal argument: see ",
+                sQuote("?pomp"),call.=FALSE)
         if (
         (rmeasure@mode==pompfunmode$Rfun)
         &&!("covars"%in%names(formals(rmeasure@R.fun)))
         )
-            warning("a covariate table has been given, yet the ",
-                    sQuote("rmeasure")," function does not have ",
-                    sQuote("covars")," as a formal argument: see ",
-                    sQuote("?pomp"),call.=FALSE)
+            warning(
+                error.prefix,
+                "a covariate table has been given, yet the ",
+                sQuote("rmeasure")," function does not have ",
+                sQuote("covars")," as a formal argument: see ",
+                sQuote("?pomp"),call.=FALSE)
         if (
         (dmeasure@mode==pompfunmode$Rfun)
         &&!("covars"%in%names(formals(dmeasure@R.fun)))
         )
-            warning("a covariate table has been given, yet the ",
-                    sQuote("dmeasure")," function does not have ",
-                    sQuote("covars")," as a formal argument: see ",
-                    sQuote("?pomp"),call.=FALSE)
+            warning(
+                error.prefix,
+                "a covariate table has been given, yet the ",
+                sQuote("dmeasure")," function does not have ",
+                sQuote("covars")," as a formal argument: see ",
+                sQuote("?pomp"),call.=FALSE)
     }
 
     if ((length(tcovar)>0)&&((min(tcovar)>t0)||(max(tcovar)<max(times))))
         warning(
+            error.prefix,
             "the supplied covariate covariate times ",sQuote("tcovar"),
             " do not embrace the data times: covariates may be extrapolated",
             call.=FALSE
@@ -423,32 +433,34 @@ pomp.constructor <- function (data, times, t0, rprocess, dprocess,
 }
 
 measform2pomp <- function (formulae) {
+
+    error.prefix <- paste0("in ",sQuote("pomp"),": ")
+
     if (!is.list(formulae))
         formulae <- list(formulae)
     nobs <- length(formulae)
     if (nobs < 1)
-        stop(sQuote("pomp")," error: to use ",sQuote("measurement.model")," you must provide at least one formula",call.=FALSE)
+        stop(error.prefix,"to use ",sQuote("measurement.model"),
+             " you must provide at least one formula",call.=FALSE)
     for (k in seq_len(nobs)) {
         if (!inherits(formulae[[k]],"formula"))
-            stop(sQuote("pomp")," error: ",sQuote("measurement.model")," takes formulae as arguments",call.=FALSE)
+            stop(error.prefix,sQuote("measurement.model")," takes formulae as arguments",call.=FALSE)
     }
     obsnames <- unlist(lapply(formulae,function(x)x[[2L]]))
     distrib <- lapply(formulae,function(x)as.character(x[[3L]][[1L]]))
     ddistrib <- lapply(distrib,function(x)paste0("d",x))
     rdistrib <- lapply(distrib,function(x)paste0("r",x))
     for (k in seq_len(nobs)) {
-        res <- try(
+        tryCatch(
             match.fun(ddistrib[[k]]),
-            silent=TRUE
+            error = function (e)
+                stop(error.prefix,"distribution function ",ddistrib[[k]]," not found",call.=FALSE)
         )
-        if (inherits(res,'try-error'))
-            stop(sQuote("pomp")," error: distribution function ",ddistrib[[k]]," not found",call.=FALSE)
-        res <- try(
+        tryCatch(
             match.fun(rdistrib[[k]]),
-            silent=TRUE
+            error = function (e)
+                stop(error.prefix,"random deviate function ",rdistrib[[k]]," not found",call.=FALSE)
         )
-        if (inherits(res,'try-error'))
-            stop(sQuote("pomp")," error: random deviate function ",rdistrib[[k]]," not found",call.=FALSE)
     }
     pred.args <- lapply(formulae,function(x)as.list(x[[3L]][-1L]))
     dcalls <- vector(mode='list',length=nobs)
@@ -509,6 +521,8 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                   PACKAGE, fromEstimationScale, toEstimationScale,
                   globals, cdir, cfile) {
     
+    error.prefix <- paste0("in ",sQuote("pomp"),": ")
+
     if (is(data,"pomp")) {
         ## 'data' is a pomp object:
         ## extract missing arguments from it        
@@ -522,11 +536,11 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         if (mmg) {
             if (dmg||rmg)
                 warning(
+                    error.prefix,
                     "specifying ",sQuote("measurement.model"),
                     " overrides specification of ",
                     sQuote("rmeasure")," and ",sQuote("dmeasure"),
-                    call.=FALSE
-                )
+                    call.=FALSE)
             mm <- measform2pomp(measurement.model)
             rmeasure <- mm$rmeasure
             dmeasure <- mm$dmeasure
@@ -547,17 +561,21 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         if (missing(skeleton.type)) {
             skeleton.type <- data@skeleton.type
         } else {
-            warning("The ",sQuote("skeleton.type")," argument is deprecated and will be removed in a future release.\n",
-                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                    call.=FALSE)
+            warning(
+                error.prefix,
+                "The ",sQuote("skeleton.type")," argument is deprecated and will be removed in a future release.\n",
+                "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                call.=FALSE)
         }
         if (missing(skelmap.delta.t)) {
             skelmap.delta.t <- data@skelmap.delta.t
         } else {
-            warning("The ",sQuote("skelmap.delta.t"),
-                    " argument is deprecated and will be removed in a future release.\n",
-                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                    call.=FALSE)
+            warning(
+                error.prefix,
+                "The ",sQuote("skelmap.delta.t"),
+                " argument is deprecated and will be removed in a future release.\n",
+                "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                call.=FALSE)
         }
         if (missing(skeleton)) {
             skeleton <- data@skeleton
@@ -580,10 +598,12 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
             )
             skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
             if (skeleton.type=="undef") {
-                warning("In ",sQuote("pomp"),", the default ",sQuote("skeleton.type=\"map\""),
-                        " is deprecated and will be removed in a future release.\n",
-                        "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                        call.=FALSE)
+                warning(
+                    error.prefix,
+                    "the default ",sQuote("skeleton.type=\"map\""),
+                    " is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
                 skeleton.type <- "map"
             }
         }
@@ -592,14 +612,14 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                 from.trans <- data@from.trans
                 to.trans <- data@to.trans
             } else {
-                stop(sQuote("pomp")," error: if ",sQuote("toEstimationScale"),
+                stop(error.prefix,"if ",sQuote("toEstimationScale"),
                      " is supplied, then " ,
                      sQuote("fromEstimationScale")," must also be supplied",
                      call.=FALSE)
             }
         } else {
             if (missing(toEstimationScale)) {
-                stop(sQuote("pomp")," error: if ",sQuote("fromEstimationScale"),
+                stop(error.prefix,"if ",sQuote("fromEstimationScale"),
                      " is supplied, then " ,
                      sQuote("toEstimationScale")," must also be supplied",
                      call.=FALSE)
@@ -615,7 +635,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         if (missing(covarnames)) covarnames <- character(0)
         if (missing(PACKAGE)) PACKAGE <- character(0)
 
-        pomp.constructor(
+        pomp.internal(
             data=data@data,
             times=times,
             t0=t0,
@@ -658,7 +678,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                 (is.character(times) && (!(times%in%rownames(data)))) ||
                 (!is.numeric(times) && !is.character(times)) ||
                 length(times)!=1)
-                stop(sQuote("pomp")," error: when ",sQuote("data"),
+                stop(error.prefix,"when ",sQuote("data"),
                      " is a data frame, ",sQuote("times"),
                      " must identify a single column of ",sQuote("data"),
                      call.=FALSE)
@@ -674,26 +694,30 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
             data=matrix(data,nrow=1,ncol=length(data),
                         dimnames=list("data",NULL))
         } else if (!is.matrix(data)) {
-            stop(sQuote("pomp")," error: ",sQuote("data"),
-                 "must be a data frame, a matrix, a numeric vector, or an object of class ",
+            stop(error.prefix,sQuote("data"),
+                 "must be a data frame, a numeric vector, or an object of class ",
                  sQuote("pomp"),call.=FALSE)
         }
         
         if (missing(skeleton.type)) {
             skeleton.type <- "undef"
         } else {
-            warning("The ",sQuote("skeleton.type"),
-                    " argument is deprecated and will be removed in a future release.\n",
-                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                    call.=FALSE)
+            warning(
+                error.prefix,
+                "The ",sQuote("skeleton.type"),
+                " argument is deprecated and will be removed in a future release.\n",
+                "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                call.=FALSE)
         }
         if (missing(skelmap.delta.t)) {
             skelmap.delta.t <- 1
         } else {
-            warning("The ",sQuote("skelmap.delta.t"),
-                    " argument is deprecated and will be removed in a future release.\n",
-                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                    call.=FALSE)
+            warning(
+                error.prefix,
+                "The ",sQuote("skelmap.delta.t"),
+                " argument is deprecated and will be removed in a future release.\n",
+                "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                call.=FALSE)
         }
         if (!missing(skeleton)) {
             skeleton <- substitute(skeleton)
@@ -713,16 +737,18 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
             )
             skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
             if (skeleton.type=="undef") {
-                warning("In ",sQuote("pomp"),", the default ",sQuote("skeleton.type=\"map\""),
-                        " is deprecated and will be removed in a future release.\n",
-                        "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                        call.=FALSE)
+                warning(
+                    error.prefix,
+                    "the default ",sQuote("skeleton.type=\"map\""),
+                    " is deprecated and will be removed in a future release.\n",
+                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                    call.=FALSE)
                 skeleton.type <- "map"
             }
         }
         if (skeleton.type=="undef") skeleton.type <- "map"
 
-        pomp.constructor(
+        pomp.internal(
             data=data,
             times=times,
             t0=t0,
@@ -755,3 +781,4 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         )
     }
 }
+
