@@ -118,9 +118,17 @@ mif2.pfilter <- function (object, params, Np,
                      conditionMessage(e),call.=FALSE)
             }
         )
-        if (!all(is.finite(weights)))
-            stop(ep,sQuote("dmeasure"),
-                 " returns non-finite value",call.=FALSE)
+        if (!all(is.finite(weights))) {
+            first <- which(!is.finite(weights))[1L]
+            datvals <- object@data[,nt]
+            weight <- weights[first]
+            states <- X[,first,1L]
+            params <- params[,first]
+            cat("Non-finite likelihood computed:\n")
+            cat("likelihood, data, states, and parameters are:\n")
+            print(c(lik=weight,datvals,states,params))
+            stop(ep,sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
+        }
         gnsi <- FALSE
 
         ## compute weighted mean at last timestep

@@ -225,8 +225,17 @@ pfilter.internal <- function (object, params, Np,
                      conditionMessage(e),call.=FALSE)
             }
         )
-        if (!all(is.finite(weights)))
+        if (!all(is.finite(weights))) {
+            first <- which(!is.finite(weights))[1L]
+            datvals <- object@data[,nt]
+            weight <- weights[first]
+            states <- X[,first,1L]
+            params <- if (one.par) params[,1L] else params[,first]
+            cat("Non-finite likelihood computed:\n")
+            cat("likelihood, data, states, and parameters are:\n")
+            print(c(lik=weight,datvals,states,params))
             stop(ep,sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
+        }
         gnsi.dmeas <- FALSE
 
         ## compute prediction mean, prediction variance, filtering mean,
