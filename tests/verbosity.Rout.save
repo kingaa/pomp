@@ -1,0 +1,474 @@
+
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> options(digits=3,verbose=TRUE)
+> 
+> set.seed(398585L)
+> pompExample(ou2)
+'envir' chosen:<environment: 0x19f48a8>
+encoding = "native.enc" chosen
+--> parsed 4 expressions; now eval(.)ing them:
+
+>>>> eval(expression_nr. 1 )
+		 =================
+
+> library(pomp)
+curr.fun: symbol library
+ .. after 'expression(library(pomp))'
+
+>>>> eval(expression_nr. 2 )
+		 =================
+
+> dat <- "\"time\";\"y1\";\"y2\"\n1;-1,70081613181228;4,24746468495763\n2;0,242170113354698;7,03941580692464\n3;3,76758938785925;2,97520908716299\n4;5 ..." ... [TRUNCATED] 
+curr.fun: symbol <-
+ .. after 'expression(dat <- "\"time\";\"y1\";\"y2\"\n1;-1,70081613181228;4,24746468495763\n2;0,242170113354698;7,03941580692464\n3;3,76758938785925;2,97520908716299\n4;5,68588808149477;-1,47040054732921\n5;3,77452601600709;-4,43380857201258\n6;-3,08021312625511;-3,91887931755601\n7;-2,62344860290795;-1,03202457662666\n8;-2,86592128836057;4,35432873921529\n9;-0,57760946681527;3,39758289565346\n10;2,74097620676726;4,91071465265353\n11;-0,95441253676346;10,1937011763325\n12;-0,991464112428821;6,61823476151473\n13;3,84297778313153;7,16145392465002\n14;11,0789623105051;4,16444989466932\n15;8,59819025333584;-4,90334695500249\n16;2,19964347503517;-10,2511439107283\n17;-1,13492397511025;-10,3624312929729\n18;-2,56413579798821;-8,16885880550387\n19;-4,91536849799727;-7,2203116145846\n20;-4,33899642531645;-2,31022153289937\n21;-1,35937286561288;2,99698279033669\n22;-4,0242840268505;3,69116465405162\n23;2,9387644957218;6,15414586126603\n24;4,31828658150857;5,69290844809883\n25;3,53319543208941;3,46054629112961\n26;6,44281783433088;-4,79748856413256\n27;0,718035321052913;-7,62976005316743\n28;1,28027528075623;-6,25270934959545\n29;3,70910008919496;-9,94125507650066\n30;1,48104366840107;-10,2850854614516\n31;-0,209117126395869;-8,80046618352614\n32;-5,81639714549404;-13,2283385097361\n33;-10,0225182259708;-6,4113389217938\n34;-6,89506104214256;-0,998400718547352\n35;-6,08611873904796;1,29299352993825\n36;-7,74305796307499;5,90263448168222\n37;0,0287081408447805;5,88274335246936\n38;9,62512958922631;2,54860024892302\n39;4,61772012246597;-4,51699357410536\n40;-1,40028864684968;-3,66192759013006\n41;-6,10811040670547;-4,38003912739696\n42;-0,658058036920092;-1,7236046423518\n43;-3,49326574531689;-4,14959269754278\n44;2,54826871576915;-1,40873093710545\n45;-0,640114486048052;0,896862978414845\n46;-1,67566665036179;0,379384529694427\n47;0,488141779118929;2,07741847310818\n48;0,975197260459797;2,83822178936221\n49;-1,0207098675894;0,112186038274661\n50;0,0342598900248652;3,50605179482128\n51;-2,39842556182189;2,92854885312383\n52;5,19015239107048;-0,0089221935515531\n53;4,14310779510487;0,268899079252409\n54;2,63260618646816;1,60371893328454\n55;-1,55607266713321;-0,764379706108408\n56;-0,545766983243217;-0,837246196106889\n57;1,34912551213756;-4,15285169037281\n58;0,970330264719094;0,379978231358855\n59;-5,04652345030695;-0,444477177942712\n60;-3,97209430320528;1,10490455647656\n61;-3,20325965055922;5,69632695844117\n62;1,03436272221434;7,86129746544832\n63;0,667898750837872;10,4068175981576\n64;3,50430639591665;9,2816749036714\n65;0,925079731276049;5,05429708955105\n66;1,46558192088153;0,403851869094214\n67;2,69317536547979;-4,51756265008713\n68;-2,41608073604264;-8,3370959564069\n69;-4,53015031919341;-3,20513929382432\n70;-11,0133845324347;-1,33315487824171\n71;-10,7508370993112;5,17621264446314\n72;-10,5218612264298;8,61966772995883\n73;-8,57143649619155;11,4982952428018\n74;-3,99562214384817;12,5937325399812\n75;-2,71455145450133;15,5796601067951\n76;0,512617531996642;16,8599826830534\n77;8,77766626349685;11,8289064956647\n78;9,92868196527894;5,40891154021026\n79;4,66011726941136;1,15575075091348\n80;2,67821752937628;-0,585565498904033\n81;1,15068730079675;-5,26069159041533\n82;-2,203829735812;-7,73574749590483\n83;-1,36113119160702;-6,51696428184672\n84;-4,49088592785424;-6,88875950760792\n85;-6,95435086585582;-5,73210381080353\n86;-7,54286719246903;-2,04743677554387\n87;-7,25975156626116;-1,10509448997233\n88;-5,31555444374504;2,94363686064014\n89;1,9728018375925;4,08030586218171\n90;2,87436582964618;1,2087743319357\n91;2,96600944673318;1,85680168956727\n92;4,63179378892858;3,07085679112279\n93;5,62360583343836;-2,89483235988436\n94;1,87661311794902;-3,00789937429844\n95;-0,0144619140532691;-2,67204400181558\n96;1,94214418106964;-6,14711561527305\n97;1,98468512734267;-5,61898548532659\n98;-1,41012196458721;-11,086585198673\n99;-7,29715227580992;-4,07855448780968\n100;-4,81538906352058;-1,00365875150418\n")'
+
+>>>> eval(expression_nr. 3 )
+		 =================
+
+> ou2 <- pomp(data = read.csv2(text = dat), times = "time", 
++     t0 = 0, rprocess = discrete.time.sim("ou2_step", PACKAGE = "pomp"), 
++     dprocess .... [TRUNCATED] 
+curr.fun: symbol <-
+ .. after 'expression(ou2 <- pomp(data = read.csv2(text = dat), times = "time", ''    t0 = 0, rprocess = discrete.time.sim("ou2_step", PACKAGE = "pomp"), ''    dprocess = onestep.dens("ou2_pdf", PACKAGE = "pomp"), dmeasure = "ou2_dmeasure", ''    rmeasure = "ou2_rmeasure", skeleton = map("ou2_skel", delta.t = 1), ''    PACKAGE = "pomp", paramnames = c("alpha.1", "alpha.2", "alpha.3", ''        "alpha.4", "sigma.1", "sigma.2", "sigma.3", "tau"), statenames = c("x1", ''        "x2"), params = c(alpha.1 = 0.8, alpha.2 = -0.5, alpha.3 = 0.3, ''        alpha.4 = 0.9, sigma.1 = 3, sigma.2 = -0.5, sigma.3 = 2, ''        tau = 1, x1.0 = -3, x2.0 = 4)))'
+
+>>>> eval(expression_nr. 4 )
+		 =================
+
+> c("ou2")
+curr.fun: symbol c
+[1] "ou2"
+ .. after 'expression(c("ou2"))'
+newly created object(s):
+ ou2 
+Warning messages:
+1: In find.package(package, lib.loc, quiet = TRUE) :
+  package 'pomp' found more than once,
+using the one found in '/userdata/kingaa/projects/Rpkg/check/pomp'
+2: In library(pomp) : package 'pomp' already present in search()
+> 
+> time(ou2) <- 1:20
+> 
+> Np <- 100
+> 
+> prior.bounds <- rbind(
++                       alpha.2=c(-0.55,-0.45),
++                       alpha.3=c(0.25,0.35)
++                       )
+> 
+> pomp(ou2,
++      rprior=function(params,...) {
++          params[c("alpha.2","alpha.3")] <-
++              runif(n=1,min=prior.bounds[,1],max=prior.bounds[,2])
++          params
++      },
++      dprior=function(params,log,...) {
++          f <- sum(dunif(params,min=coef(ou2)-1,max=coef(ou2)+1,log=TRUE))
++          if (log) f else exp(f)
++      }
++      ) -> ou2
+> 
+> f1 <- bsmc(ou2,est="alpha.2",Np=100,smooth=0.02)
+at step 1 (time =1)
+           alpha.2
+prior.mean -0.4994
+prior.sd    0.0266
+effective sample size = 10.5 
+at step 2 (time =2)
+           alpha.2
+prior.mean -0.5130
+prior.sd    0.0295
+effective sample size = 7.8 
+at step 3 (time =3)
+           alpha.2
+prior.mean -0.4969
+prior.sd    0.0242
+effective sample size = 2.6 
+at step 4 (time =4)
+            alpha.2
+prior.mean -0.49030
+prior.sd    0.00459
+effective sample size = 8.2 
+at step 5 (time =5)
+             alpha.2
+prior.mean -0.488201
+prior.sd    0.000169
+effective sample size = 7.5 
+at step 6 (time =6)
+             alpha.2
+prior.mean -4.88e-01
+prior.sd    7.78e-05
+effective sample size = 1.1 
+at step 7 (time =7)
+             alpha.2
+prior.mean -4.88e-01
+prior.sd    1.18e-05
+effective sample size = 5.5 
+at step 8 (time =8)
+             alpha.2
+prior.mean -4.88e-01
+prior.sd    2.46e-07
+effective sample size = 4.9 
+at step 9 (time =9)
+             alpha.2
+prior.mean -4.88e-01
+prior.sd    2.99e-07
+effective sample size = 18.2 
+at step 10 (time =10)
+             alpha.2
+prior.mean -4.88e-01
+prior.sd    1.55e-07
+effective sample size = 3.1 
+at step 11 (time =11)
+             alpha.2
+prior.mean -4.88e-01
+prior.sd    1.46e-07
+effective sample size = 1.1 
+at step 12 (time =12)
+             alpha.2
+prior.mean -4.88e-01
+prior.sd    7.33e-10
+effective sample size = 1.1 
+at step 13 (time =13)
+             alpha.2
+prior.mean -4.88e-01
+prior.sd    4.97e-12
+effective sample size = 1 
+at step 14 (time =14)
+           alpha.2
+prior.mean  -0.488
+prior.sd     0.000
+effective sample size = 1.1 
+at step 15 (time =15)
+           alpha.2
+prior.mean  -0.488
+prior.sd     0.000
+effective sample size = 2.1 
+at step 16 (time =16)
+           alpha.2
+prior.mean  -0.488
+prior.sd     0.000
+effective sample size = 2.7 
+at step 17 (time =17)
+           alpha.2
+prior.mean  -0.488
+prior.sd     0.000
+effective sample size = 1.6 
+at step 18 (time =18)
+           alpha.2
+prior.mean  -0.488
+prior.sd     0.000
+effective sample size = 2.2 
+at step 19 (time =19)
+           alpha.2
+prior.mean  -0.488
+prior.sd     0.000
+effective sample size = 1 
+at step 20 (time =20)
+           alpha.2
+prior.mean  -0.488
+prior.sd     0.000
+effective sample size = 7.5 
+> f1 <- bsmc2(ou2,est="alpha.2",Np=100,smooth=0.02)
+at step 1 (time =1)
+           alpha.2
+prior.mean -0.5036
+prior.sd    0.0276
+effective sample size = 19.4 
+at step 2 (time =2)
+           alpha.2
+prior.mean -0.5024
+prior.sd    0.0242
+effective sample size = 7.3 
+at step 3 (time =3)
+           alpha.2
+prior.mean  -0.513
+prior.sd     0.023
+effective sample size = 1.2 
+at step 4 (time =4)
+           alpha.2
+prior.mean -0.5428
+prior.sd    0.0118
+effective sample size = 3.8 
+at step 5 (time =5)
+            alpha.2
+prior.mean -0.54503
+prior.sd    0.00015
+effective sample size = 24.2 
+at step 6 (time =6)
+             alpha.2
+prior.mean -0.545052
+prior.sd    0.000131
+effective sample size = 1.2 
+at step 7 (time =7)
+             alpha.2
+prior.mean -5.45e-01
+prior.sd    5.24e-07
+effective sample size = 23.8 
+at step 8 (time =8)
+             alpha.2
+prior.mean -5.45e-01
+prior.sd    4.04e-07
+effective sample size = 10.3 
+at step 9 (time =9)
+             alpha.2
+prior.mean -5.45e-01
+prior.sd    1.16e-08
+effective sample size = 11.9 
+at step 10 (time =10)
+             alpha.2
+prior.mean -5.45e-01
+prior.sd    1.01e-08
+effective sample size = 3.2 
+at step 11 (time =11)
+             alpha.2
+prior.mean -5.45e-01
+prior.sd    1.14e-08
+effective sample size = 1.2 
+at step 12 (time =12)
+             alpha.2
+prior.mean -5.45e-01
+prior.sd    6.24e-09
+effective sample size = 5.8 
+at step 13 (time =13)
+             alpha.2
+prior.mean -5.45e-01
+prior.sd    1.21e-08
+effective sample size = 3.2 
+at step 14 (time =14)
+             alpha.2
+prior.mean -5.45e-01
+prior.sd    1.14e-08
+effective sample size = 1 
+at step 15 (time =15)
+           alpha.2
+prior.mean  -0.545
+prior.sd     0.000
+effective sample size = 7.2 
+at step 16 (time =16)
+           alpha.2
+prior.mean  -0.545
+prior.sd     0.000
+effective sample size = 1.6 
+at step 17 (time =17)
+           alpha.2
+prior.mean  -0.545
+prior.sd     0.000
+effective sample size = 3.9 
+at step 18 (time =18)
+           alpha.2
+prior.mean  -0.545
+prior.sd     0.000
+effective sample size = 3.3 
+at step 19 (time =19)
+           alpha.2
+prior.mean  -0.545
+prior.sd     0.000
+effective sample size = 1.1 
+at step 20 (time =20)
+           alpha.2
+prior.mean  -0.545
+prior.sd     0.000
+effective sample size = 9.5 
+> prop <- mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001))
+> f2 <- pmcmc(ou2,Nmcmc=20,proposal=prop,Np=100)
+performing 20 PMCMC iteration(s) using 100 particles
+PMCMC iteration 1 of 20 completed
+acceptance ratio: 0 
+PMCMC iteration 2 of 20 completed
+acceptance ratio: 0.5 
+PMCMC iteration 3 of 20 completed
+acceptance ratio: 0.333 
+PMCMC iteration 4 of 20 completed
+acceptance ratio: 0.25 
+PMCMC iteration 5 of 20 completed
+acceptance ratio: 0.2 
+PMCMC iteration 6 of 20 completed
+acceptance ratio: 0.167 
+PMCMC iteration 7 of 20 completed
+acceptance ratio: 0.143 
+PMCMC iteration 8 of 20 completed
+acceptance ratio: 0.125 
+PMCMC iteration 9 of 20 completed
+acceptance ratio: 0.111 
+PMCMC iteration 10 of 20 completed
+acceptance ratio: 0.1 
+PMCMC iteration 11 of 20 completed
+acceptance ratio: 0.091 
+PMCMC iteration 12 of 20 completed
+acceptance ratio: 0.083 
+PMCMC iteration 13 of 20 completed
+acceptance ratio: 0.077 
+PMCMC iteration 14 of 20 completed
+acceptance ratio: 0.071 
+PMCMC iteration 15 of 20 completed
+acceptance ratio: 0.067 
+PMCMC iteration 16 of 20 completed
+acceptance ratio: 0.125 
+PMCMC iteration 17 of 20 completed
+acceptance ratio: 0.118 
+PMCMC iteration 18 of 20 completed
+acceptance ratio: 0.111 
+PMCMC iteration 19 of 20 completed
+acceptance ratio: 0.105 
+PMCMC iteration 20 of 20 completed
+acceptance ratio: 0.1 
+> f3 <- pfilter(ou2,Np=100)
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+> f4 <- mif(f3,Nmif=10,rw.sd=c(alpha.2=0.01,alpha.3=0.01),cooling.fraction.50=0.1)
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  1  of  10  completed
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  2  of  10  completed
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  3  of  10  completed
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  4  of  10  completed
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  5  of  10  completed
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  6  of  10  completed
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  7  of  10  completed
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  8  of  10  completed
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  9  of  10  completed
+pfilter timestep 5 of 20 finished
+pfilter timestep 10 of 20 finished
+pfilter timestep 15 of 20 finished
+pfilter timestep 20 of 20 finished
+MIF iteration  10  of  10  completed
+> f5 <- mif2(f3,Nmif=10,rw.sd=rw.sd(alpha.2=0.01,alpha.3=0.01),
++            cooling.fraction.50=0.1)
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  1  of  10  completed
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  2  of  10  completed
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  3  of  10  completed
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  4  of  10  completed
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  5  of  10  completed
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  6  of  10  completed
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  7  of  10  completed
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  8  of  10  completed
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  9  of  10  completed
+mif2 pfilter timestep 5 of 20 finished
+mif2 pfilter timestep 10 of 20 finished
+mif2 pfilter timestep 15 of 20 finished
+mif2 pfilter timestep 20 of 20 finished
+mif2 iteration  10  of  10  completed
+> plist <- list(
++     y1.mean=probe.mean(var="y1"),
++     y2.mean=probe.mean(var="y2"),
++     probe.acf(var="y1",lags=c(0,5)),
++     probe.acf(var="y2",lags=c(0,5)),
++     probe.ccf(vars=c("y1","y2"),lags=0)
++ )
+> f6 <- probe(ou2,probes=plist,nsim=200)
+> f7 <- probe.match(f6,est=c("alpha.2","alpha.3"))
+> f8 <- abc(f7,Nabc=20,est=c("alpha.2","alpha.3"),
++           proposal=prop,scale=1,epsilon=20)
+performing 20 ABC iteration(s)
+ABC iteration 5 of 20 completed
+acceptance ratio: 0 
+ABC iteration 10 of 20 completed
+acceptance ratio: 0 
+ABC iteration 15 of 20 completed
+acceptance ratio: 0.067 
+ABC iteration 20 of 20 completed
+acceptance ratio: 0.1 
+> f9 <- nlf(ou2,lags=c(1,2),est=c("alpha.2","alpha.3","tau"),
++           nconverge=100,nasymp=2000,lql.frac=0.025,
++           seed=426094906L,maxit=200,method="Nelder-Mead")
+h in NLF = 0.1 
+epsilon in NLF = 0.162 0.168 0.356 
+fitted param 1 -4.71 up in 'nlf' 
+fitted param 1 -34.2 down in 'nlf' 
+fitted param 2 -158 up in 'nlf' 
+fitted param 2 -4.71 down in 'nlf' 
+fitted param 3 -4.68 up in 'nlf' 
+fitted param 3 -4.67 down in 'nlf' 
+> 
+> proc.time()
+   user  system elapsed 
+  5.264   0.132   5.365 

@@ -1,3 +1,7 @@
+## Evaluates the NLF objective function given a POMP object.
+## Version 0.1, 3 Dec. 2007, Bruce E. Kendall & Stephen P. Ellner
+## Version 0.2, May 2008, Stephen P. Ellner  
+
 NLF.LQL <- function (params.fitted, object, params, par.index, transform = FALSE,
                      times, t0, lags, period, tensor, seed = NULL,
                      transform.data = identity, nrbf = 4, verbose = FALSE,
@@ -16,10 +20,6 @@ NLF.LQL <- function (params.fitted, object, params, par.index, transform = FALSE
     
     if (transform)
         params <- partrans(object,params,dir="fromEstimationScale")
-
-    ## Evaluates the NLF objective function given a POMP object.
-    ## Version 0.1, 3 Dec. 2007, Bruce E. Kendall & Stephen P. Ellner
-    ## Version 0.2, May 2008, Stephen P. Ellner  
 
     data.ts <- obs(object)
     
@@ -50,8 +50,8 @@ NLF.LQL <- function (params.fitted, object, params, par.index, transform = FALSE
             period=period,
             tensor=tensor, 
             nrbf=nrbf,
-            bootstrap,
-            bootsamp
+            bootstrap=bootstrap,
+            bootsamp=bootsamp
         ),
         error = function (e) {
             stop("in ",sQuote("NLF.LQL"),": ",conditionMessage(e),call.=FALSE)

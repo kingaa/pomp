@@ -14,6 +14,17 @@ m1 <- nlf(
     lags=c(4,6),
     nconverge=100,
     nasymp=2000,
+    seed=426094906L,
+    lql.frac = 0.025
+)
+
+m1 <- nlf(
+    object=ou2,
+    start=theta.truth,
+    lags=c(4,6),
+    nconverge=100,
+    nasymp=2000,
+    est=estnames,
     eval.only=TRUE,
     seed=426094906L,
     lql.frac = 0.025

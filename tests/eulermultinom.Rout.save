@@ -79,4 +79,4 @@ in 'deulermultinom': only the first element of 'dt' is meaningful
 > 
 > proc.time()
    user  system elapsed 
-  0.552   0.060   0.584 
+  0.556   0.068   0.583 

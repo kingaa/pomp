@@ -63,7 +63,6 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
     pompLoad(object)
 
     if (eval.only) est <- character(0)
-    if (missing(start)) start <- coef(object)
     if (transform)
         params <- partrans(object,start,dir="toEstimationScale")
     else
@@ -180,21 +179,27 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
             fitted,
             object=object,
             params=params,
-            par.index=par.index, 
+            par.index=par.index,
             transform=transform,
-            times=times, t0=t0,
-            lags=lags, period=period, tensor=tensor, seed=seed,
-            transform.data=transform.data, nrbf=4, 
+            times=times,
+            t0=t0,
+            lags=lags,
+            period=period,
+            tensor=tensor,
+            seed=seed,
+            transform.data=transform.data,
+            nrbf=4,
             verbose=verbose
         )
-        F0 <- mean(f0,na.rm=T)
+        F0 <- mean(f0,na.rm=TRUE)
 
         npts <- length(f0)
-        nlags <- round(5*npts^0.2) ## Number of lags to use in Newey-West covariance estimator 
+        ## Number of lags to use in Newey-West covariance estimator:
+        nlags <- round(5*npts^0.2)
 
         ## find a good epsilon 
         h <- se.par.frac
-        if (verbose) cat("h in NLF = ", h, "\n")
+        if (verbose) cat("h in NLF =",h,"\n")
         eps <- rep(h,nfitted)
 
         for (i in seq_len(nfitted)) {
@@ -210,7 +215,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                     seed=seed, transform.data=transform.data,nrbf=4,
                     verbose=verbose
                 ),
-                na.rm=T
+                na.rm=TRUE
             )
             guess <- fitted
             guess[i] <- fitted[i]-h*abs(fitted[i])
@@ -222,7 +227,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                     seed=seed, transform.data=transform.data, nrbf=4, 
                     verbose=verbose
                 ),
-                na.rm=T
+                na.rm=TRUE
             )
             guess <- fitted
             guess[i] <- fitted[i]+h*abs(fitted[i])
@@ -234,7 +239,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                     seed=seed, transform.data=transform.data, nrbf=4, 
                     verbose=verbose
                 ),
-                na.rm=T
+                na.rm=TRUE
             )
             guess <- fitted
             guess[i] <- fitted[i]+sqrt(2)*h*abs(fitted[i])
@@ -246,7 +251,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                     seed=seed, transform.data=transform.data, nrbf=4, 
                     verbose=verbose
                 ),
-                na.rm=T
+                na.rm=TRUE
             )
             FAILED <- -999999
             Fvals[Fvals < FAILED+10] <- NA
@@ -255,7 +260,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
             eps[i] <- sqrt(abs(lql.frac/c2))
         }
 
-        if (verbose) cat("epsilon in NLF =",t(eps), "\n")
+        if (verbose) cat("epsilon in NLF =",t(eps),"\n")
 
         Imat <- matrix(0,npts,nfitted)
         for (i in seq_len(nfitted)) {
@@ -268,10 +273,10 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                 seed=seed, transform.data=transform.data, nrbf=4, 
                 verbose=verbose
             )
-            F.up <- mean(f.up,na.rm=T)
+            F.up <- mean(f.up,na.rm=TRUE)
 
             if (verbose)
-                cat("fitted param ", i, F.up, " up in ",sQuote("nlf"),"\n")
+                cat("fitted param",i,F.up,"up in",sQuote("nlf"),"\n")
 
             guess.down <- fitted
             guess.down[i] <- guess.down[i]-eps[i]
@@ -282,10 +287,10 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                 seed=seed, transform.data=transform.data, nrbf=4, 
                 verbose=verbose
             )
-            F.down <- mean(f.down,na.rm=T)
+            F.down <- mean(f.down,na.rm=TRUE)
 
             if (verbose)
-                cat("fitted param ",i, F.down," down in ",sQuote("nlf"),"\n")
+                cat("fitted param",i,F.down,"down in",sQuote("nlf"),"\n")
 
             Jhat[i,i] <- (F.up + F.down-2*F0)/(eps[i]*eps[i])
             Imat[,i] <- (f.up-f.down)/(2*eps[i])
@@ -305,7 +310,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                         seed=seed, transform.data=transform.data, nrbf=4, 
                         verbose=verbose
                     ),
-                    na.rm=T
+                    na.rm=TRUE
                 )
 
                 guess.ud <- fitted 
@@ -319,7 +324,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                         seed=seed, transform.data=transform.data, nrbf=4, 
                         verbose=verbose
                     ),
-                    na.rm=T
+                    na.rm=TRUE
                 ) 
 
                 guess.du <- fitted 
@@ -333,7 +338,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                         seed=seed, transform.data=transform.data, nrbf=4, 
                         verbose=verbose
                     ),
-                    na.rm=T
+                    na.rm=TRUE
                 ) 
 
                 guess.dd <- fitted 
@@ -347,7 +352,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                         seed=seed, transform.data=transform.data, nrbf=4,
                         verbose=verbose
                     ),
-                    na.rm=T
+                    na.rm=TRUE
                 ) 
 
                 dij <- (F.uu+F.dd)-(F.ud+F.du)
@@ -431,11 +436,13 @@ setMethod(
         nconverge <- as.integer(nconverge)
 
         method <- match.arg(method)
-        
+
+        if (missing(est) || length(est)==0) eval.only <- TRUE
         if (eval.only) est <- character(0)
         if (missing(start)) start <- coef(object)
         if (!is.character(est))
-            stop(ep,sQuote("est")," must name the parameters to be estimated",call.=FALSE)
+            stop(ep,sQuote("est")," must name the parameters to be estimated",
+                 call.=FALSE)
         if (!all(est%in%names(start)))
             stop(ep,"parameters named in ",sQuote("est"),
                  " must exist in ",sQuote("start"),call.=FALSE)

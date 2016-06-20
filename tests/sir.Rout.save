@@ -195,7 +195,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 call. = FALSE)
         })
 }
-<environment: 0x22cbb38>
+<environment: 0x2c7a7b0>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -207,7 +207,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
             call. = FALSE)
     })
 }
-<environment: 0x23bd9b8>
+<environment: 0x2ca3d60>
 measurement model simulator, rmeasure = 
 function (x, t, params, covars, ...) 
 {
@@ -252,7 +252,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x103b4a8>
+<environment: 0x1d2e4d8>
 initializer = 
 function (params, t0, ...) 
 {
@@ -463,4 +463,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  5.396   0.164   5.710 
+  6.032   0.216   6.393 

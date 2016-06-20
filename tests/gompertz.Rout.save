@@ -50,11 +50,11 @@ function (xstart, times, params, ..., zeronames = character(0),
                 conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3841d28>
+<environment: 0x3decce8>
 process model density, dprocess = 
 function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x37f6518>
+<environment: 0x3da14d8>
 measurement model simulator, rmeasure = 
 native function '_gompertz_normal_rmeasure'
 measurement model density, dmeasure = 
@@ -72,13 +72,13 @@ function (params, ...)
 {
     log(params)
 }
-<environment: 0x37ac588>
+<environment: 0x3d56da0>
 parameter transformation (from estimation scale) = 
 function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x37ac588>
+<environment: 0x3d56da0>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -99,7 +99,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3841d28>
+<environment: 0x3decce8>
 > 
 > po <- gompertz
 > coef(po)
@@ -266,4 +266,4 @@ iteration loglik     r
 > 
 > proc.time()
    user  system elapsed 
-  1.920   0.092   1.987 
+  1.924   0.084   1.984 

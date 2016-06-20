@@ -33,6 +33,17 @@ newly created object(s):
 +     lags=c(4,6),
 +     nconverge=100,
 +     nasymp=2000,
++     seed=426094906L,
++     lql.frac = 0.025
++ )
+> 
+> m1 <- nlf(
++     object=ou2,
++     start=theta.truth,
++     lags=c(4,6),
++     nconverge=100,
++     nasymp=2000,
++     est=estnames,
 +     eval.only=TRUE,
 +     seed=426094906L,
 +     lql.frac = 0.025
@@ -75,4 +86,4 @@ newly created object(s):
 > 
 > proc.time()
    user  system elapsed 
- 11.548   0.116  11.650 
+ 11.832   0.100  11.908 

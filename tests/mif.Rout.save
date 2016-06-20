@@ -240,4 +240,4 @@ Error : in 'mif': in 'mif.pfilter': too many filtering failures.
 > 
 > proc.time()
    user  system elapsed 
-  9.840   0.104   9.962 
+   9.87    0.08    9.99 
