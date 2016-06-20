@@ -97,6 +97,7 @@ abc6 <- abc(pomp(po,dprior=dprior6),
 plot(abc6)
 
 abc7 <- c(abc2)
+abc7 <- c(abc7)
 try(abc7 <- c(abc2,abc3))
 try(abc7 <- c(abc7,abc3))
 plot(abc7 <- c(abc2,abc4))

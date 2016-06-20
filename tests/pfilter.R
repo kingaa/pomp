@@ -22,6 +22,9 @@ pf <- pfilter(euler.sir,Np=100)
 print(coef(pf))
 print(pf$loglik,digits=4)
 
+coef(pf,"rho") <- -1
+try(pfilter(pf))
+
 p <- coef(euler.sir)
 euler.sir@params <- numeric(0)
 p["iota"] <- 1

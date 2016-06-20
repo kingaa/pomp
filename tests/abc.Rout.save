@@ -117,6 +117,7 @@ newly created object(s):
 > plot(abc6)
 > 
 > abc7 <- c(abc2)
+> abc7 <- c(abc7)
 > try(abc7 <- c(abc2,abc3))
 Error in validObject(.Object) : 
   invalid class "abcList" object: error in 'c': to be combined, 'abc' objects must have chains of equal length
@@ -185,4 +186,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  4.280   0.100   4.353 
+  4.272   0.120   4.370 

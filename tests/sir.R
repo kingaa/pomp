@@ -106,16 +106,11 @@ po <- pomp(
                 }
             )
         }),
-    rmeasure=function(x,t,params,covars,...){
-        with(
-            as.list(c(x,params)),
-            {
-                rep <- round(rnorm(n=1,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases)))
-                if (rep<0) rep <- 0
-                c(reports=rep)
-            }
-        )
-    },
+    rmeasure=Csnippet("
+        reports = nearbyint(rnorm(rho*cases,sqrt(rho*(1-rho)*cases)));
+        if (reports < 0) reports = 0;
+        "),
+    paramnames="rho",statenames="cases",
     dmeasure=function(y,x,t,params,log,covars,...){
         with(
             as.list(c(x,params)),

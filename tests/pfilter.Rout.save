@@ -55,6 +55,20 @@ newly created object(s):
 > print(pf$loglik,digits=4)
 [1] -935.7
 > 
+> coef(pf,"rho") <- -1
+> try(pfilter(pf))
+Non-finite likelihood computed:
+likelihood, data, states, and parameters are:
+          lik       reports             S             I             R 
+          NaN  6.170000e+02  1.360940e+05  2.093000e+03  1.961851e+06 
+        cases             W         gamma            mu          iota 
+ 1.025000e+03  2.296806e-02  2.600000e+01  2.000000e-02  1.000000e-02 
+        beta1         beta2         beta3       beta.sd           pop 
+ 4.000000e+02  4.800000e+02  3.200000e+02  1.000000e-03  2.100000e+06 
+          rho           S_0           I_0           R_0 
+-1.000000e+00  6.500000e-02  1.000000e-03  9.350000e-01 
+Error : in 'pfilter': 'dmeasure' returns non-finite value.
+> 
 > p <- coef(euler.sir)
 > euler.sir@params <- numeric(0)
 > p["iota"] <- 1
@@ -65,7 +79,7 @@ newly created object(s):
      rho      S_0      I_0      R_0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(logLik(pf),digits=4)
-[1] -943.7
+[1] -941.3
 > plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
 > plot(ess~time,data=as.data.frame(pf),type='l')
 > plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
@@ -76,4 +90,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  7.296   0.084   7.373 
+  7.488   0.084   7.573 

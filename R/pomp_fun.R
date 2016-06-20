@@ -134,7 +134,7 @@ setMethod(
             } else if (mode==pompfunmode$regNative) { # built from Csnippets
               cat("native function ",sQuote(object@native.fun),sep="")
               if (length(object@PACKAGE)>0)
-                cat(", dynamically loaded from ",sQuote(object@PACKAGE),sep="")
+                cat(", defined by a Csnippet",sep="")
               cat ("\n")
             } else {
               cat("function not specified\n")

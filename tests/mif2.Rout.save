@@ -148,6 +148,8 @@ truth   -484
 +              alpha.3=0.2*(time<10)))
 Warning message:
 in 'mif2.pfilter': 1 filtering failure occurred. 
+> coef(m4,"alpha.4") <- Inf
+> try(m4 <- continue(m4,Np=100,Nmif=2))
 > 
 > library(ggplot2)
 > library(reshape2)
@@ -173,4 +175,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 12.120   0.156  12.376 
+ 12.176   0.116  12.366 

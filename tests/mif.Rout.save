@@ -237,7 +237,29 @@ Error : in 'mif': 'ic.lag' must be specified if 'ivps' are.
 > coef(fit,"alpha.4") <- 0
 > try(fit <- continue(fit,Np=2,Nmif=3,max.fail=1))
 Error : in 'mif': in 'mif.pfilter': too many filtering failures.
+> coef(fit,"tau") <- NaN
+> try(fit <- continue(fit,Np=100,Nmif=2))
+Non-finite likelihood computed:
+likelihood, data, states, and parameters are:
+    lik      y1      y2      x1      x2 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 
+    NaN  -1.701   4.247  -2.756   1.245   0.800  -0.501   0.439   0.000   3.000 
+sigma.2 sigma.3     tau    x1.0    x2.0 
+ -0.500   2.000     NaN  -4.014   1.381 
+Error : in 'mif': in 'mif.pfilter': 'dmeasure' returns non-finite value.
+In addition: Warning message:
+In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
+> coef(fit,"alpha.2") <- -Inf
+> try(fit <- continue(fit,Np=100,Nmif=2))
+Non-finite likelihood computed:
+likelihood, data, states, and parameters are:
+    lik      y1      y2      x1      x2 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 
+    NaN  -1.701   4.247  -3.580  -2.138   0.800    -Inf   0.439   0.000   3.000 
+sigma.2 sigma.3     tau    x1.0    x2.0 
+ -0.500   2.000     NaN  -3.580  -2.138 
+Error : in 'mif': in 'mif.pfilter': 'dmeasure' returns non-finite value.
+In addition: Warning message:
+In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > 
 > proc.time()
    user  system elapsed 
-   9.87    0.08    9.99 
+ 11.140   0.096  11.253 

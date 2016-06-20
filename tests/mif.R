@@ -163,3 +163,7 @@ try(mif(ff,Nmif=2,ivps=c("x1.0","x2.0"),
         cooling.fraction=0.95^50,var.factor=1))
 coef(fit,"alpha.4") <- 0
 try(fit <- continue(fit,Np=2,Nmif=3,max.fail=1))
+coef(fit,"tau") <- NaN
+try(fit <- continue(fit,Np=100,Nmif=2))
+coef(fit,"alpha.2") <- -Inf
+try(fit <- continue(fit,Np=100,Nmif=2))

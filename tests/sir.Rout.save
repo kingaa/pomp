@@ -123,16 +123,11 @@ Type 'q()' to quit R.
 +                 }
 +             )
 +         }),
-+     rmeasure=function(x,t,params,covars,...){
-+         with(
-+             as.list(c(x,params)),
-+             {
-+                 rep <- round(rnorm(n=1,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases)))
-+                 if (rep<0) rep <- 0
-+                 c(reports=rep)
-+             }
-+         )
-+     },
++     rmeasure=Csnippet("
++         reports = nearbyint(rnorm(rho*cases,sqrt(rho*(1-rho)*cases)));
++         if (reports < 0) reports = 0;
++         "),
++     paramnames="rho",statenames="cases",
 +     dmeasure=function(y,x,t,params,log,covars,...){
 +         with(
 +             as.list(c(x,params)),
@@ -195,7 +190,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 call. = FALSE)
         })
 }
-<environment: 0x2c7a7b0>
+<environment: 0x2496578>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -207,18 +202,9 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
             call. = FALSE)
     })
 }
-<environment: 0x2ca3d60>
+<environment: 0x24cbe88>
 measurement model simulator, rmeasure = 
-function (x, t, params, covars, ...) 
-{
-    with(as.list(c(x, params)), {
-        rep <- round(rnorm(n = 1, mean = rho * cases, sd = sqrt(rho * 
-            (1 - rho) * cases)))
-        if (rep < 0) 
-            rep <- 0
-        c(reports = rep)
-    })
-}
+native function '__pomp_rmeasure', defined by a Csnippet
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -252,7 +238,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x1d2e4d8>
+<environment: 0x140d578>
 initializer = 
 function (params, t0, ...) 
 {
@@ -463,4 +449,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  6.032   0.216   6.393 
+  6.952   0.384   7.628 

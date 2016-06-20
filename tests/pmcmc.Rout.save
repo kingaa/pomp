@@ -113,6 +113,7 @@ Error in validObject(.Object) :
 > invisible(filter.traj(ff))
 > 
 > ff <- c(f2,f3)
+> ff <- c(ff)
 > 
 > try(ff <- c(ff,f4,f6))
 Error in validObject(.Object) : 
@@ -193,4 +194,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 16.604   0.128  16.731 
+ 16.952   0.168  17.104 
