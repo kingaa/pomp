@@ -103,7 +103,8 @@
 \section{Details}{
   \code{pmcmc} implements an MCMC algorithm in which the true likelihood of the data is replaced by an unbiased estimate computed by a particle filter.
   This gives an asymptotically correct Bayesian procedure for parameter estimation (Andrieu and Roberts, 2009).
-  An extension to give a correct Bayesian posterior distribution of unobserved state variables (as in Andrieu et al, 2010) has not yet been implemented.
+
+  \strong{Note} that \code{pmcmc} does not make use of any parameter transformations supplied by the user.
 }
 \section{Methods}{
   \describe{
