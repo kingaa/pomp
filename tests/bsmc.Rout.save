@@ -57,6 +57,11 @@ Error : in 'bsmc': 'params' must be supplied
 > prior <- smc$prior
 > post <- smc$post
 > 
+> try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=0,upper=c(0,1)))
+Error : in 'bsmc': parameter(s) 'alpha.2' in column 1 in 'params' is/are outside the box defined by 'lower' and 'upper'
+> try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=-100,upper=c(111,33,222)))
+Error : in 'bsmc': 'lower' and 'upper' must each have length 1 or length equal to that of 'est'
+> 
 > smc <- bsmc(
 +             ou2,
 +             params=prior,
@@ -109,4 +114,4 @@ x2.0           4.0           4.00   4.0  4.00  4.00  4.00
 > 
 > proc.time()
    user  system elapsed 
-   3.55    0.11    3.64 
+   3.53    0.06    3.57 

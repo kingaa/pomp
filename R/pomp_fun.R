@@ -18,7 +18,8 @@ setClass(
            ),
          prototype=prototype(
            R.fun=function (...) {
-             stop("unreachable error: please report this bug!")
+             stop("in ",sQuote("pomp.fun"),
+                  ": unreachable error: please report this bug!",call.=FALSE)
            },
            native.fun=character(0),
            PACKAGE=character(0),
@@ -52,13 +53,15 @@ setMethod(
           definition=function (f, proto = NULL, ...) {
             if (!is.null(proto)) {
               if (!is.call(proto))
-                stop(sQuote("proto")," must be an unevaluated call")
+                stop("in ",sQuote("pomp.fun"),": ",
+                     sQuote("proto")," must be an unevaluated call",call.=FALSE)
               prototype <- as.character(proto)
               fname <- prototype[1]
               args <- prototype[-1]
               if (is.function(f)&&(!all(args%in%names(formals(f)))))
-                stop(sQuote(fname)," must be a function of prototype ",
-                     deparse(proto),call.=FALSE)
+                  stop("in ",sQuote("pomp.fun"),": ",
+                       sQuote(fname)," must be a function of prototype ",
+                       deparse(proto),call.=FALSE)
             }
             new("pomp.fun",R.fun=f,mode=pompfunmode$Rfun)
           }
@@ -90,9 +93,11 @@ setMethod(
             obsnames = character(0), statenames = character(0),
             paramnames = character(0), covarnames = character(0), ...) {
             if (is.null(slotname))
-              stop("pomp.fun error: unspecified",sQuote("slotname"))
+              stop("in ",sQuote("pomp.fun"),": unspecified ",
+                   sQuote("slotname"),call.=FALSE)
             if (is.null(libname))
-              stop("pomp.fun error: unspecified",sQuote("libname"))
+              stop("in ",sQuote("pomp.fun"),": unspecified ",
+                   sQuote("libname"),call.=FALSE)
             slotname <- as.character(slotname)
             libname <- as.character(libname)            
             new(

@@ -5,7 +5,8 @@ make.lags.NLF <- function(x, lags, cov = NULL, nobs = 10000) {
   N <- min(nobs,nrow(x)-max(lags))
   n <- min(nobs,N)
   if (N > nobs)
-    warning(" series length truncated to default in make.lags")
+    warning("in ",sQuote("make.lags.NLF"),
+            ": series length truncated to default in make.lags",call.=FALSE)
   start <- max(lags)+1
   temp <- matrix(0,ncol=xd*length(lags),nrow=n)
   for (k in seq_len(length(lags))) {
@@ -76,7 +77,8 @@ Newey.West <- function(x,y,maxlag) {
 
 
 make.tensorbasis.NLF <- function(A,B) {
-  if(nrow(A)!=nrow(B)) stop("Incompatible matrices in make.tensorbasis")
+  if(nrow(A)!=nrow(B)) stop("in ",sQuote("make.tensorbasis.NLF"),
+                            ": incompatible matrices in make.tensorbasis",call.=FALSE)
   ncol.A <- ncol(A)
   ncol.B <- ncol(B)
   Tmat <- matrix(0,nrow(A),ncol.A*ncol.B)

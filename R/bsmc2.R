@@ -13,6 +13,8 @@ bsmc2.internal <- function (object, params, Np, est,
                             max.fail, transform, .getnativesymbolinfo = TRUE,
                             ...) {
 
+    ep <- paste0("in ",sQuote("bsmc2"),": ")
+
     object <- as(object,"pomp")
     pompLoad(object)
     
@@ -21,23 +23,22 @@ bsmc2.internal <- function (object, params, Np, est,
     transform <- as.logical(transform)
 
     if (!is.null(seed))
-        warning("in ",sQuote("bsmc2"),": argument ",sQuote("seed"),
+        warning(ep,"argument ",sQuote("seed"),
                 " now has no effect.  Consider using ",
-                sQuote("freeze"),".")
-
-    error.prefix <- paste0("in ",sQuote("bsmc2"),": ")
+                sQuote("freeze"),".",call.=FALSE)
 
     if (missing(params)) {
         if (length(coef(object))>0) {
             params <- coef(object)
         } else {
-            stop(error.prefix,sQuote("params")," must be supplied",call.=FALSE)
+            stop(ep,sQuote("params")," must be supplied",call.=FALSE)
         }
     }
 
     if (missing(Np)) Np <- NCOL(params)
     else if (is.matrix(params)&&(Np!=ncol(params)))
-        warning(sQuote("Np")," is ignored when ",sQuote("params")," is a matrix")
+        warning(ep,sQuote("Np")," is ignored when ",sQuote("params"),
+                " is a matrix",call.=FALSE)
 
     if ((!is.matrix(params)) && (Np > 1))
         params <- rprior(object,params=parmat(params,Np))
@@ -58,13 +59,13 @@ bsmc2.internal <- function (object, params, Np, est,
     npars.est <- length(estind)
     
     if (npars.est<1)
-        stop(error.prefix,"no parameters to estimate",call.=FALSE)
+        stop(ep,"no parameters to estimate",call.=FALSE)
 
     if (is.null(paramnames))
-        stop(error.prefix,sQuote("params")," must have rownames",call.=FALSE)
+        stop(ep,sQuote("params")," must have rownames",call.=FALSE)
 
     if ((length(smooth)!=1)||(smooth>1)||(smooth<=0))
-        stop(error.prefix,sQuote("smooth")," must be a scalar in [0,1)",call.=FALSE)
+        stop(ep,sQuote("smooth")," must be a scalar in [0,1)",call.=FALSE)
 
     hsq <- smooth^2             #  see Liu & West eq(10.3.12)
     shrink <- sqrt(1-hsq)       #  'a' parameter of Liu & West
@@ -121,12 +122,12 @@ bsmc2.internal <- function (object, params, Np, est,
                 method="svd"
             ),
             error = function (e) {
-                stop(error.prefix,sQuote("rmvnorm"),"error: ",
+                stop(ep,sQuote("rmvnorm"),"error: ",
                      conditionMessage(e),call.=FALSE)
             }
         )
         if (!all(is.finite(pert)))
-            stop(error.prefix,"extreme particle depletion",call.=FALSE)
+            stop(ep,"extreme particle depletion",call.=FALSE)
 
         params[estind,] <- m[estind,]+t(pert)
 
@@ -178,7 +179,7 @@ bsmc2.internal <- function (object, params, Np, est,
             }
             nfail <- nfail+1
             if (nfail > max.fail)
-                stop(error.prefix,"too many filtering failures",call.=FALSE)
+                stop(ep,"too many filtering failures",call.=FALSE)
             evidence[nt] <- log(tol)          # worst log-likelihood
             weights <- rep(1/Np,Np)
             eff.sample.size[nt] <- 0

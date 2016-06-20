@@ -116,11 +116,26 @@ newly created object(s):
 +             )
 > plot(abc6)
 > 
+> abc7 <- c(abc2)
 > try(abc7 <- c(abc2,abc3))
 Error in validObject(.Object) : 
   invalid class "abcList" object: error in 'c': to be combined, 'abc' objects must have chains of equal length
+> try(abc7 <- c(abc7,abc3))
+Error in validObject(.Object) : 
+  invalid class "abcList" object: error in 'c': to be combined, 'abc' objects must have chains of equal length
 > plot(abc7 <- c(abc2,abc4))
-> plot(abc7,scatter=TRUE)
+> abc2 <- abc7[1]
+> abc2 <- abc2[[1]]
+> plot(abc2,scatter=TRUE,y=NA)
+Warning message:
+in 'plot-abc': 'y' is ignored 
+> plot(abc7,scatter=TRUE,y=NA)
+Warning message:
+in 'plot-abc': 'y' is ignored 
+> try(plot(abc7,pars=c("alpha.1"),scatter=TRUE,y=NA))
+Error : in 'plot-abc': can't make a scatterplot with only one variable
+In addition: Warning message:
+in 'plot-abc': 'y' is ignored 
 > plot(conv.rec(c(abc2,abc4)))
 > plot(conv.rec(c(abc7,abc6)))
 > plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=100))
@@ -170,4 +185,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  4.152   0.100   4.230 
+  4.248   0.116   4.345 

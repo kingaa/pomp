@@ -1,10 +1,11 @@
 sliceDesign <- function (center, ...) {
   slices <- list(...)
   if ((!is.numeric(center))||is.null(names(center)))
-    stop(sQuote("sliceDesign"),": ",sQuote("center")," must be a named numeric vector")
+    stop("in ",sQuote("sliceDesign"),": ",
+         sQuote("center")," must be a named numeric vector",call.=FALSE)
   slnm <- names(slices)
   if (any(slnm==""))
-    stop(sQuote("sliceDesign"),": you cannot slice along an unnamed parameter")
+    stop("in ",sQuote("sliceDesign"),": you cannot slice along an unnamed parameter",call.=FALSE)
   if (!all(slnm%in%names(center))) {
     problems <- slnm[!(slnm%in%names(center))]
     stop(

@@ -384,4 +384,4 @@ Error in dprocess.internal(object = object, x = x, times = times, params = param
 > 
 > proc.time()
    user  system elapsed 
-  1.284   0.224   1.687 
+  1.316   0.196   1.697 

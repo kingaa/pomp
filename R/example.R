@@ -1,5 +1,6 @@
 pompExample <- function (example, ..., show = FALSE, envir = .GlobalEnv) {
     example <- as.character(substitute(example))
+    ep <- paste0("in ",sQuote("pompExample"),": ")
     pomp.dir <- system.file("examples",package="pomp")
     exampleDirs <- getOption("pomp.examples",default=pomp.dir)
     names(exampleDirs) <- exampleDirs
@@ -18,7 +19,7 @@ pompExample <- function (example, ..., show = FALSE, envir = .GlobalEnv) {
                          full.names=TRUE),
                   recursive=TRUE)
         if (length(file)>1) {
-            warning("using ",sQuote(file[1])," from ",sQuote(names(file)[1]))
+            warning(ep,"using ",sQuote(file[1])," from ",sQuote(names(file)[1]),call.=FALSE)
         }
         if (show) {
             file.show(file[1])
@@ -36,7 +37,7 @@ pompExample <- function (example, ..., show = FALSE, envir = .GlobalEnv) {
             cat("newly created object(s):\n",objs$value,"\n")
             obj <- NULL
         } else {
-            stop(sQuote("envir")," must be an environment or NULL")
+            stop(ep,sQuote("envir")," must be an environment or NULL",call.=FALSE)
         }
         invisible(obj)
     }

@@ -56,12 +56,11 @@ newly created object(s):
 > try(
 +     coef(po,"log.r")
 +     )
-Error in .local(object, ...) : 
-  in 'coef': name(s) 'log.r' correspond to no parameter(s)
+Error : in 'coef': name(s) 'log.r' correspond to no parameter(s)
 > coef(po,c("r","phi")) <- c(0,0)
 > coef(po,c("r","phi")) <- c(a=0,b=1)
 Warning message:
-in 'coef<-' names of 'value' are being discarded 
+in 'coef<-':  names of 'value' are being discarded 
 > coef(po,c("r","phi")) <- 1
 > coef(po) <- c(phi=1,r=3.5,N.0=10,e.0=0,sigma=0)
 > coef(po)
@@ -81,4 +80,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.692   0.072   0.741 
+  0.708   0.076   0.758 

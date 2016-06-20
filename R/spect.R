@@ -1,7 +1,7 @@
-                                        # Authors:
-                                        # Cai GoGwilt, MIT
-                                        # Daniel Reuman, Imperial College London
-                                        # Aaron A. King, U of Michigan
+## Authors:
+## Cai GoGwilt, MIT
+## Daniel Reuman, Imperial College London
+## Aaron A. King, U of Michigan
 
 setClass(
     "spect.pomp",
@@ -59,14 +59,15 @@ reuman.kernel <- function (kernel.width) {
 }
 
 compute.spect.data <- function (object, vars, transform, detrend, ker) {
+    ep <- paste0("in ",sQuote("spect"),": ")
     dat <- obs(object,vars)
     if (any(is.na(dat)))
-        stop(sQuote("spect")," is incompatible with NAs in the data")
+        stop(ep,"cannot handle NAs in the data",call.=FALSE)
     dt <- diff(time(object,t0=FALSE))
     base.freq <- 1/mean(dt)
     dt.tol <- 0.025
     if (max(dt)-min(dt)>dt.tol*mean(dt))
-        stop(sQuote("spect")," assumes evenly spaced times")
+        stop(ep,sQuote("spect")," assumes evenly spaced times",call.=FALSE)
     for (j in seq_along(vars)) {
         sp <- spec.pgram(
             pomp.detrend(
@@ -93,6 +94,7 @@ compute.spect.data <- function (object, vars, transform, detrend, ker) {
 }
 
 compute.spect.sim <- function (object, params, vars, nsim, seed, transform, detrend, ker) {
+    ep <- paste0("in ",sQuote("spect"),": ")
     sims <- tryCatch(
         simulate(
             object,
@@ -104,13 +106,12 @@ compute.spect.sim <- function (object, params, vars, nsim, seed, transform, detr
             t0=timezero(object)
         ),
         error = function (e) {
-            stop("in ",sQuote("spect"),": simulation error: ",
-                 conditionMessage(e),call.=FALSE)
+            stop(ep,"simulation error: ",conditionMessage(e),call.=FALSE)
         }
     )
     sims <- sims[vars,,,drop=FALSE]
     if (any(is.na(sims)))
-        stop("NA in simulated data series")
+        stop(ep,"NA in simulated data series",call.=FALSE)
     nobs <- length(vars)
     for (j in seq_len(nobs)) {
         for (k in seq_len(nsim)) {
@@ -146,6 +147,8 @@ setMethod(
               detrend = c("none","mean","linear","quadratic"),
               ...) {
 
+        ep <- paste0("in ",sQuote("spect"),": ")
+        
         pompLoad(object)
         
         if (missing(params)) params <- coef(object)
@@ -154,9 +157,9 @@ setMethod(
             vars <- rownames(object@data)
         
         if (missing(kernel.width))
-            stop(sQuote("kernel.width")," must be specified")
+            stop(ep,sQuote("kernel.width")," must be specified",call.=FALSE)
         if (missing(nsim)||(nsim<1))
-            stop(sQuote("nsim")," must be specified as a positive integer")
+            stop(ep,sQuote("nsim")," must be specified as a positive integer",call.=FALSE)
 
         detrend <- match.arg(detrend)
         ker <- reuman.kernel(kernel.width)
@@ -251,6 +254,8 @@ setMethod(
               quantiles = c(.025, .25, .5, .75, .975),
               quantile.styles = list(lwd=1, lty=1, col="gray70"),
               data.styles = list(lwd=2, lty=2, col="black")) {
+
+        ep <- paste0("in ",sQuote("plot-spect.pomp"),": ")
         spomp <- x
         nquants <- length(quantiles)
         
@@ -261,15 +266,14 @@ setMethod(
                 if (length(quantile.styles[[i]])==1)
                     quantile.styles[[i]] <- rep(quantile.styles[[i]],nquants)
                 if (length(quantile.styles[[i]])<nquants) {
-                    warning(
-                        sQuote("quantile.styles"),
-                        " contains an element with more than 1 entry but fewer entries than quantiles"
-                    )
+                    warning(ep,sQuote("quantile.styles"),
+                            " contains an element with more than 1 entry but fewer entries than quantiles",
+                            call.=FALSE)
                     quantile.styles[[i]]<-rep(quantile.styles[[i]],nquants)
                 }
             }
         } else {
-            stop(sQuote("quantile.styles")," must be a list")
+            stop(ep,sQuote("quantile.styles")," must be a list",call.=FALSE)
         }
         
         if (plot.data) {
@@ -281,15 +285,14 @@ setMethod(
                     if(length(data.styles[[i]])==1)
                         data.styles[[i]] <- rep(data.styles[[i]],nreps)
                     if(length(data.styles[[i]]) < nreps) {
-                        warning(
-                            sQuote("data.styles"),
-                            "contains an element with more than 1 entry but fewer entries of observed variables"
-                        )
+                        warning(ep,sQuote("data.styles"),
+                                "contains an element with more than 1 entry but fewer entries of observed variables",
+                                call.=FALSE)
                         data.styles[[i]] <- rep(data.styles[[i]],nreps)
                     }
                 }
             } else {
-                stop(sQuote("data.styles")," must be a list")
+                stop(ep,sQuote("data.styles")," must be a list",call.=FALSE)
             }
         }
 

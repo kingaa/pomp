@@ -39,6 +39,8 @@ bsmc.internal <- function (object, params, Np, est,
                            .getnativesymbolinfo = TRUE,
                            ...) {
 
+    ep <- paste0("in ",sQuote("bsmc"),": ")
+
     pompLoad(object)
 
     gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
@@ -46,23 +48,22 @@ bsmc.internal <- function (object, params, Np, est,
     transform <- as.logical(transform)
 
     if (!is.null(seed))
-        warning("in ",sQuote("bsmc"),": argument ",sQuote("seed"),
+        warning(ep,"argument ",sQuote("seed"),
                 " now has no effect.  Consider using ",
-                sQuote("freeze"),".")
-
-    error.prefix <- paste0("in ",sQuote("bsmc"),": ")
+                sQuote("freeze"),".",call.=FALSE)
 
     if (missing(params)) {
         if (length(coef(object))>0) {
             params <- coef(object)
         } else {
-            stop(error.prefix,sQuote("params")," must be supplied",call.=FALSE)
+            stop(ep,sQuote("params")," must be supplied",call.=FALSE)
         }
     }
 
     if (missing(Np)) Np <- NCOL(params)
     else if (is.matrix(params)&&(Np!=ncol(params)))
-        warning(sQuote("Np")," is ignored when ",sQuote("params")," is a matrix")
+        warning(ep,sQuote("Np")," is ignored when ",sQuote("params"),
+                " is a matrix",call.=FALSE)
 
     if ((!is.matrix(params)) && (Np > 1))
         params <- rprior(object,params=parmat(params,Np))
@@ -83,35 +84,30 @@ bsmc.internal <- function (object, params, Np, est,
     npars.est <- length(estind)
     
     if (npars.est<1)
-        stop(error.prefix,"no parameters to estimate",call.=FALSE)
+        stop(ep,"no parameters to estimate",call.=FALSE)
 
     if (is.null(paramnames))
-        stop(error.prefix,sQuote("params")," must have rownames",call.=FALSE)
+        stop(ep,sQuote("params")," must have rownames",call.=FALSE)
 
     if ((length(smooth)!=1)||(smooth>1)||(smooth<=0))
-        stop(error.prefix,sQuote("smooth")," must be a scalar in [0,1)",call.=FALSE)
+        stop(ep,sQuote("smooth")," must be a scalar in [0,1)",call.=FALSE)
 
     hsq <- smooth^2             #  see Liu & West eq(3.6) p10
     shrink <- sqrt(1-hsq)
 
-    if (
-    ((length(lower)>1)&&(length(lower)!=npars.est))||
-    ((length(upper)>1)&&(length(upper)!=npars.est))
-    ) {
-        stop(
-            error.prefix,
-            sQuote("lower")," and ",sQuote("upper"),
-            " must each have length 1 or length equal to that of ",sQuote("est"),
-            call.=FALSE                   
+    if (((length(lower)>1)&&(length(lower)!=npars.est))||
+        ((length(upper)>1)&&(length(upper)!=npars.est))) {
+        stop(ep,sQuote("lower")," and ",sQuote("upper"),
+            " must each have length 1 or length equal to that of ",
+            sQuote("est"),call.=FALSE                   
         )
     }
 
     for (j in seq_len(Np)) {
         if (any((params[estind,j]<lower)|(params[estind,j]>upper))) {
             ind <- which((params[estind,j]<lower)|(params[estind,j]>upper))
-            stop(
-                error.prefix,
-                "parameter(s) ",paste(paramnames[estind[ind]],collapse=","),
+            stop(ep,"parameter(s) ",
+                paste(sapply(paramnames[estind[ind]],sQuote),collapse=","),
                 " in column ",j," in ",sQuote("params"),
                 " is/are outside the box defined by ",
                 sQuote("lower")," and ",sQuote("upper"),
@@ -215,12 +211,12 @@ bsmc.internal <- function (object, params, Np, est,
                 method="svd"
             ),
             error = function (e) {
-                stop(error.prefix,sQuote("rmvnorm"),"error: ",
+                stop(ep,sQuote("rmvnorm"),"error: ",
                      conditionMessage(e),call.=FALSE)
             }
         )
         if (!all(is.finite(pvec)))
-            stop(error.prefix,"extreme particle depletion",call.=FALSE)
+            stop(ep,"extreme particle depletion",call.=FALSE)
         params[estind,] <- m[estind,]+t(pvec)
 
         if (transform)
@@ -278,9 +274,9 @@ bsmc.internal <- function (object, params, Np, est,
             ##               silent=FALSE
             ##               )
             ##   if (inherits(pvec,"try-error"))
-            ##     stop(error.prefix,"error in ",sQuote("rmvnorm"),call.=FALSE)
+            ##     stop(ep,"error in ",sQuote("rmvnorm"),call.=FALSE)
             ##   if (!all(is.finite(pvec)))
-            ##     stop(error.prefix,"extreme particle depletion",call.=FALSE)
+            ##     stop(ep,"extreme particle depletion",call.=FALSE)
             ##   params[estind,j] <- m[estind,j]+pvec[1,]
             ## }
         }
@@ -297,7 +293,7 @@ bsmc.internal <- function (object, params, Np, est,
             }
             nfail <- nfail+1
             if (nfail > max.fail)
-                stop(error.prefix,"too many filtering failures",call.=FALSE)
+                stop(ep,"too many filtering failures",call.=FALSE)
             evidence[nt] <- log(tol)          # worst log-likelihood
             weights <- rep(1/Np,Np)
             eff.sample.size[nt] <- 0
@@ -386,7 +382,8 @@ bsmc.plot <- function (prior, post, pars, thin, ...) {
     p2 <- sample.int(n=ncol(post),size=min(thin,ncol(post)))
     if (!all(pars%in%rownames(prior))) {
         missing <- which(!(pars%in%rownames(prior)))
-        stop("unrecognized parameters: ",paste(sQuote(pars[missing]),collapse=","))
+        stop("in ",sQuote("plot-bsmcd.pomp"),": unrecognized parameters: ",
+             paste(sQuote(pars[missing]),collapse=","),call.=FALSE)
         
     }
     prior <- t(prior[pars,])
@@ -421,7 +418,8 @@ setMethod(
     signature(x="bsmcd.pomp"),
     function (x, y, ..., pars, thin) {
         if (!missing(y))
-            warning(sQuote("y")," is ignored")
+            warning("in ",sQuote("plot-bsmcd.pomp"),": ",
+                    sQuote("y")," is ignored",call.=FALSE)
         if (missing(pars)) pars <- x@est
         if (missing(thin)) thin <- Inf
         bsmc.plot(

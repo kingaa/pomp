@@ -22,8 +22,7 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > try(pompExample(gompertz,envir=3))
-Error in pompExample(gompertz, envir = 3) : 
-  'envir' must be an environment or NULL
+Error : in 'pompExample': 'envir' must be an environment or NULL
 > pompExample(gompertz)
 newly created object(s):
  gompertz 
@@ -51,11 +50,11 @@ function (xstart, times, params, ..., zeronames = character(0),
                 conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x2cc6ed0>
+<environment: 0x3841d28>
 process model density, dprocess = 
 function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x2c7afa8>
+<environment: 0x37f6518>
 measurement model simulator, rmeasure = 
 native function '_gompertz_normal_rmeasure'
 measurement model density, dmeasure = 
@@ -73,13 +72,13 @@ function (params, ...)
 {
     log(params)
 }
-<environment: 0x2c30870>
+<environment: 0x37ac588>
 parameter transformation (from estimation scale) = 
 function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x2c30870>
+<environment: 0x37ac588>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -100,7 +99,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x2cc6ed0>
+<environment: 0x3841d28>
 > 
 > po <- gompertz
 > coef(po)
@@ -129,7 +128,7 @@ function (xstart, times, params, ..., zeronames = character(0),
 > coef(po,c("K","r","sigma","tau","X.0"),
 +      transform=TRUE) <- partrans(po,guess,dir='to')
 Warning message:
-in 'coef<-' names of 'value' are being discarded 
+in 'coef<-':  names of 'value' are being discarded 
 > coef(po) <- numeric(0)
 > coef(po,c("K","r","sigma","tau","X.0")) <- unname(guess)
 > coef(po) <- numeric(0)
@@ -170,7 +169,7 @@ in 'coef<-' names of 'value' are being discarded
 +         rw.sd=c(r=0.02,K=0.02)
 +     )
 + )
-Error : 'mif' cannot estimate non-finite parameters.
+Error : in 'mif': 'mif' cannot estimate non-finite parameters.
 The following transformed parameters are non-finite: 'r'
 > 
 > set.seed(93848585L)
@@ -267,4 +266,4 @@ iteration loglik     r
 > 
 > proc.time()
    user  system elapsed 
-  1.920   0.104   1.997 
+  1.920   0.092   1.987 

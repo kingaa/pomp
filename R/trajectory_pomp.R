@@ -1,5 +1,7 @@
 trajectory.internal <- function (object, params, times, t0, as.data.frame = FALSE, .getnativesymbolinfo = TRUE, ...) {
 
+    ep <- paste0("in ",sQuote("trajectory"),": ")
+
     pompLoad(object)
     
     if (missing(times))
@@ -10,10 +12,10 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
     as.data.frame <- as.logical(as.data.frame)
 
     if (length(times)==0)
-        stop(sQuote("times")," is empty, there is no work to do",call.=FALSE)
+        stop(ep,sQuote("times")," is empty, there is no work to do",call.=FALSE)
     
     if (any(diff(times)<=0))
-        stop(sQuote("times")," must be an increasing sequence of times",call.=FALSE)
+        stop(ep,sQuote("times")," must be an increasing sequence of times",call.=FALSE)
 
     if (missing(t0))
         t0 <- timezero(object)
@@ -21,20 +23,20 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
         t0 <- as.numeric(t0)
     
     if (t0>times[1L])
-        stop("the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
+        stop(ep,"the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
     ntimes <- length(times)
     
     if (missing(params)) {
         params <- coef(object)
         if (length(params)==0) {
-            stop("trajectory error: ",sQuote("params")," must be supplied",call.=FALSE)
+            stop(ep,sQuote("params")," must be supplied",call.=FALSE)
         }
     }
     params <- as.matrix(params)
     nrep <- ncol(params)
     paramnames <- rownames(params)
     if (is.null(paramnames))
-        stop("trajectory error: ",sQuote("params")," must have rownames",call.=FALSE)
+        stop(ep,sQuote("params")," must have rownames",call.=FALSE)
 
     x0 <- init.state(object,params=params,t0=t0)
     nvar <- nrow(x0)
@@ -45,7 +47,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
     type <- object@skeleton.type          # map or vectorfield?
     
     if (is.na(type))
-        stop("trajectory error: 'skeleton.type' unspecified",call.=FALSE)
+        stop(ep,sQuote("skeleton.type")," unspecified",call.=FALSE)
 
     if (type=="map") {
 
@@ -72,15 +74,14 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
                 ...
             ),
             error = function (e) {
-                stop("in ",sQuote("trajectory"),": error in ODE integrator: ",
-                     conditionMessage(e),call.=FALSE)
+                stop(ep,"error in ODE integrator: ",conditionMessage(e),call.=FALSE)
             }
         )
 
         .Call(pomp_desolve_takedown)
 
         if (attr(X,'istate')[1L]!=2)
-            warning("abnormal exit from ODE integrator, istate = ",attr(X,'istate'),call.=FALSE)
+            warning(ep,"abnormal exit from ODE integrator, istate = ",attr(X,'istate'),call.=FALSE)
 
         x <- array(data=t(X[-1L,-1L]),dim=c(nvar,nrep,ntimes),
                    dimnames=list(statenames,NULL,NULL))
@@ -91,7 +92,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
         
     } else {
         
-        stop("deterministic skeleton not specified")
+        stop(ep,"deterministic skeleton not specified",call.=FALSE)
 
     }
 

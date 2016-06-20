@@ -54,7 +54,8 @@ obs.internal <- function (object, vars, ...) {
     if (missing(vars))
         vars <- varnames
     else if (!all(vars%in%varnames))
-        stop("some elements of ",sQuote("vars")," correspond to no observed variable")
+        stop("in ",sQuote("obs"),": some elements of ",
+             sQuote("vars")," correspond to no observed variable",call.=FALSE)
     y <- object@data[vars,,drop=FALSE]
     dimnames(y) <- list(variable=rownames(y),time=time(object))
     y
@@ -100,8 +101,9 @@ setMethod(
     "time<-",
     signature=signature(object="pomp"),
     definition=function (object, t0 = FALSE, ..., value) {
+        ep <- paste0("in ",sQuote("time<-"),": ")
         if (!is.numeric(value))
-            stop(sQuote("value")," must be a numeric vector",call.=TRUE)
+            stop(ep,sQuote("value")," must be a numeric vector",call.=FALSE)
         storage.mode(value) <- "double"
         tt <- object@times
         dd <- object@data
@@ -113,9 +115,9 @@ setMethod(
             object@times <- value
         }
         if (!all(diff(object@times)>0))
-            stop("the times specified must be an increasing sequence",call.=TRUE)
+            stop(ep,"the times specified must be an increasing sequence",call.=FALSE)
         if (object@t0>object@times[1])
-            stop("the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=TRUE)
+            stop(ep,"the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
         object@data <- array(
             data=NA,
             dim=c(nrow(dd),length(object@times)),
@@ -163,11 +165,14 @@ setMethod(
     "timezero<-",
     signature=signature(object="pomp"),
     definition=function(object,...,value) {
+        ep <- paste0("in ",sQuote("timezero<-"),": ")
         if (value>object@times[1])
             if (!is.numeric(value) || length(value) > 1)
-                stop("the zero-time ",sQuote("t0")," must be a single number",call.=TRUE)
+                stop(ep,"the zero-time ",sQuote("t0"),
+                     " must be a single number",call.=FALSE)
         if (value > object@times[1])
-            stop("the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=TRUE)
+            stop(ep,"the zero-time ",sQuote("t0"),
+                 " must occur no later than the first observation",call.=FALSE)
         storage.mode(value) <- "double"
         object@t0 <- value
         object
@@ -189,11 +194,10 @@ setMethod(
             else {
                 excl <- setdiff(pars,names(params))
                 if (length(excl)>0) {
-                    stop(
-                        "in ",sQuote("coef"),": name(s) ",
-                        paste(sQuote(excl),collapse=","),
-                        " correspond to no parameter(s)"
-                    )
+                    stop("in ",sQuote("coef"),": name(s) ",
+                         paste(sQuote(excl),collapse=","),
+                         " correspond to no parameter(s)",
+                         call.=FALSE)
                 }
             }
             params[pars]
@@ -208,6 +212,7 @@ setMethod(
     "coef<-",
     signature=signature(object="pomp"),
     definition=function (object, pars, transform = FALSE, ..., value) {
+        ep <- paste0("in ",sQuote("coef<-"),": ")
         if (missing(pars)) {          ## replace the whole params slot with 'value'
             if (length(value)>0) {
                 if (transform) 
@@ -215,19 +220,16 @@ setMethod(
                 pars <- names(value)
                 if (is.null(pars)) {
                     if (transform)
-                        stop(sQuote("parameter.transform(value)")," must be a named vector")
+                        stop(ep,"parameter.transform(",sQuote("value"),
+                             ") must be a named vector",call.=FALSE)
                     else
-                        stop(sQuote("value")," must be a named vector")
+                        stop(ep,sQuote("value")," must be a named vector",call.=FALSE)
                 }
             }
             object@params <- value
         } else { ## replace or append only the parameters named in 'pars'
             if (!is.null(names(value))) ## we ignore the names of 'value'
-                warning(
-                    "in ",sQuote("coef<-"),
-                    " names of ",sQuote("value")," are being discarded",
-                    call.=FALSE
-                )
+                warning(ep," names of ",sQuote("value")," are being discarded",call.=FALSE)
             if (length(object@params)==0) { ## no pre-existing 'params' slot
                 val <- numeric(length(pars))
                 names(val) <- pars
@@ -242,13 +244,11 @@ setMethod(
                 val[] <- value
                 excl <- !(pars%in%names(params)) ## new parameter names
                 if (any(excl)) { ## append parameters
-                    warning(
-                        "in ",sQuote("coef<-"),": name(s) ",
+                    warning(ep,"name(s) ",
                         paste(sQuote(pars[excl]),collapse=","),
                         " do not refer to existing parameter(s);",
                         " they are being concatenated",
-                        call.=FALSE
-                    )
+                        call.=FALSE)
                     params <- c(params,val[excl])
                 }
                 params[pars] <- val

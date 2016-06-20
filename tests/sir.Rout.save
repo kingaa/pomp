@@ -123,16 +123,10 @@ Type 'q()' to quit R.
 +                 }
 +             )
 +         }),
-+     rmeasure=function(x,t,params,covars,...){
-+         with(
-+             as.list(c(x,params)),
-+             {
-+                 rep <- round(rnorm(n=1,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases)))
-+                 if (rep<0) rep <- 0
-+                 c(reports=rep)
-+             }
-+         )
-+     },
++     rmeasure=Csnippet("
++         reports = nearbyint(rnorm(rho*cases,sqrt(rho*(1-rho)*cases)));
++         if (reports < 0) reports = 0;"),
++     statenames=c("cases"),paramnames=c("rho"),
 +     dmeasure=function(y,x,t,params,log,covars,...){
 +         with(
 +             as.list(c(x,params)),
@@ -195,7 +189,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 call. = FALSE)
         })
 }
-<environment: 0x22cbb38>
+<environment: 0x36eb918>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -207,18 +201,9 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
             call. = FALSE)
     })
 }
-<environment: 0x23bd9b8>
+<environment: 0x3721228>
 measurement model simulator, rmeasure = 
-function (x, t, params, covars, ...) 
-{
-    with(as.list(c(x, params)), {
-        rep <- round(rnorm(n = 1, mean = rho * cases, sd = sqrt(rho * 
-            (1 - rho) * cases)))
-        if (rep < 0) 
-            rep <- 0
-        c(reports = rep)
-    })
-}
+native function '__pomp_rmeasure', dynamically loaded from 'pomp_c5e8e2f12151779b8ee701b558266796'
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -252,7 +237,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x103b4a8>
+<environment: 0x2666850>
 initializer = 
 function (params, t0, ...) 
 {
@@ -463,4 +448,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  5.396   0.164   5.710 
+  6.540   0.372   7.220 

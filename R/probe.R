@@ -14,13 +14,15 @@ setClass(
 
 probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) {
 
+    ep <- paste0("in ",sQuote("probe"),": ")
+
     pompLoad(object)
 
     if (!is.list(probes)) probes <- list(probes)
     if (!all(sapply(probes,is.function)))
-        stop(sQuote("probes")," must be a function or a list of functions")
+        stop(ep,sQuote("probes")," must be a function or a list of functions",call.=FALSE)
     if (!all(sapply(probes,function(f)length(formals(f))==1)))
-        stop("each probe must be a function of a single argument")
+        stop(ep,"each probe must be a function of a single argument",call.=FALSE)
 
     seed <- as.integer(seed)
     
@@ -30,7 +32,9 @@ probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) 
     datval <- .Call(apply_probe_data,object,probes)
     nprobes <- length(datval)
     if (nprobes > nsim)
-        stop(sQuote("nsim"),"(=",nsim,") should be (much) larger than the number of probes (=",nprobes,")")
+        stop(ep,sQuote("nsim"),"(=",nsim,
+             ") should be (much) larger than the number of probes (=",
+             nprobes,")",call.=FALSE)
 
     ## apply probes to model simulations
     simval <- .Call(
@@ -178,7 +182,8 @@ setMethod("plot",
           signature=signature(x="probed.pomp"), 
           definition=function (x, y, ...) {
               if (!missing(y))
-                  warning(sQuote("y")," is ignored")
+                  warning("in ",sQuote("plot-probed.pomp"),": ",
+                          sQuote("y")," is ignored",call.=FALSE)
               probeplot.internal(x=x,...)
           }
           )

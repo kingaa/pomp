@@ -151,4 +151,4 @@ Error : in 'simulate': in 'kleap.sim' plugin: zero event rate in stochastic simu
 > 
 > proc.time()
    user  system elapsed 
-  6.848   0.096   6.944 
+  6.804   0.140   6.936 

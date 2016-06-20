@@ -1,24 +1,25 @@
 minim.internal <- function(objfun, start, est, object, method, transform, verbose, ...)
 {
 
+    ep <- paste0("in ",sQuote("minim"),": ")
     pompLoad(object)
 
     transform <- as.logical(transform)
     est <- as.character(est)
     
     if (length(start)<1)
-        stop(sQuote("start")," must be supplied")
+        stop(ep,sQuote("start")," must be supplied",call.=FALSE)
 
     if (transform) {
         start <- partrans(object,start,dir="toEstimationScale")
         if (is.null(names(start))||(!all(est%in%names(start))))
-            stop(sQuote("est")," must refer to parameters named in ",
-                 sQuote("partrans(object,start,dir=\"toEstimationScale\")"))
+            stop(ep,sQuote("est")," must refer to parameters named in ",
+                 sQuote("partrans(object,start,dir=\"toEstimationScale\")"),call.=FALSE)
         guess <- start[est]
     } else {
         if (is.null(names(start))||(!all(est%in%names(start))))
-            stop(sQuote("est")," must refer to parameters named in ",
-                 sQuote("start"))
+            stop(ep,sQuote("est")," must refer to parameters named in ",
+                 sQuote("start"),call.=FALSE)
         guess <- start[est]
     }
     

@@ -96,9 +96,15 @@ abc6 <- abc(pomp(po,dprior=dprior6),
             )
 plot(abc6)
 
+abc7 <- c(abc2)
 try(abc7 <- c(abc2,abc3))
+try(abc7 <- c(abc7,abc3))
 plot(abc7 <- c(abc2,abc4))
-plot(abc7,scatter=TRUE)
+abc2 <- abc7[1]
+abc2 <- abc2[[1]]
+plot(abc2,scatter=TRUE,y=NA)
+plot(abc7,scatter=TRUE,y=NA)
+try(plot(abc7,pars=c("alpha.1"),scatter=TRUE,y=NA))
 plot(conv.rec(c(abc2,abc4)))
 plot(conv.rec(c(abc7,abc6)))
 plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=100))

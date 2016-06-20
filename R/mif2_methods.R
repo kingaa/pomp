@@ -42,8 +42,8 @@ setMethod(
             p <- sapply(y,is,'mif2d.pomp')
             pl <- sapply(y,is,'mif2List')
             if (!all(p||pl))
-                stop("cannot mix ",sQuote("mif2d.pomp"),
-                     " and non-",sQuote("mif2d.pomp")," objects")
+                stop("in ",sQuote("c"),": cannot mix ",sQuote("mif2d.pomp"),
+                     " and non-",sQuote("mif2d.pomp")," objects",call.=FALSE)
             y[p] <- lapply(y[p],list)
             y[pl] <- lapply(y[pl],as,"list")
             new("mif2List",c(list(x),y,recursive=TRUE))
@@ -62,8 +62,8 @@ setMethod(
             p <- sapply(y,is,'mif2d.pomp')
             pl <- sapply(y,is,'mif2List')
             if (!all(p||pl))
-                stop("cannot mix ",sQuote("mif2d.pomp"),
-                     " and non-",sQuote("mif2d.pomp")," objects")
+                stop("in ",sQuote("c"),": cannot mix ",sQuote("mif2d.pomp"),
+                     " and non-",sQuote("mif2d.pomp")," objects",call.=FALSE)
             y[p] <- lapply(y[p],list)
             y[pl] <- lapply(y[pl],as,"list")
             new("mif2List",c(as(x,"list"),y,recursive=TRUE))
@@ -186,10 +186,9 @@ setMethod(
     "plot",
     "mif2d.pomp",
     function (x, y, ...) {
-        if (!missing(y)) {
-            y <- substitute(y)
-            warning(sQuote(y)," is ignored")
-        }
+        if (!missing(y))
+            warning("in ",sQuote("plot-mif2d.pomp"),": ",
+                    sQuote("y")," is ignored",call.=FALSE)
         mif2.diagnostics(list(x))
     }
 )
@@ -198,10 +197,9 @@ setMethod(
     "plot",
     signature=signature(x='mif2List'),
     definition=function (x, y, ...) {
-        if (!missing(y)) {
-            y <- substitute(y)
-            warning(sQuote(y)," is ignored")
-        }
+        if (!missing(y))
+            warning("in ",sQuote("plot-mif2d.pomp"),": ",
+                    sQuote("y")," is ignored",call.=FALSE)
         mif2.diagnostics(x)
     }
 )

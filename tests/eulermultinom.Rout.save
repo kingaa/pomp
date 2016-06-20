@@ -50,34 +50,16 @@ Type 'q()' to quit R.
 [2,]
 [3,]
 > try(reulermultinom(n=-2,size=100,rate=c(1,2,3),dt=0.1))
-Error in .Call(R_Euler_Multinom, n, size, rate, dt) : 
-  negative length vectors are not allowed
+Error : in 'reulermultinom': negative length vectors are not allowed
 > reulermultinom(n=1,size=100,rate=c(1,2e400,3),dt=0.1)
-     [,1]
-[1,]    0
-[2,]  NaN
-[3,]  NaN
-Warning messages:
-1: In reulermultinom(n = 1, size = 100, rate = c(1, Inf, 3), dt = 0.1) :
-  reulermultinom: result of binomial draw is not finite
-2: In reulermultinom(n = 1, size = 100, rate = c(1, Inf, 3), dt = 0.1) :
-  reulermultinom: result of binomial draw is not finite
+Warning message:
+in 'reulermultinom': result of binomial draw is not finite 
 > reulermultinom(n=1,size=100,rate=c(1,2,3),dt=c(0.1,0.2,0.3,Inf))
-     [,1]
-[1,]   11
-[2,]   16
-[3,]   25
 Warning message:
-In reulermultinom(n = 1, size = 100, rate = c(1, 2, 3), dt = c(0.1,  :
-  reulermultinom: only the first element of 'dt' is meaningful
+in 'reulermultinom': only the first element of 'dt' is meaningful 
 > reulermultinom(n=1,size=c(100,200,300),rate=c(1,2,3),dt=0.2)
-     [,1]
-[1,]    9
-[2,]   22
-[3,]   39
 Warning message:
-In reulermultinom(n = 1, size = c(100, 200, 300), rate = c(1, 2,  :
-  reulermultinom: only the first element of 'size' is meaningful
+in 'reulermultinom': only the first element of 'size' is meaningful 
 > reulermultinom(n=1,size=0,rate=c(1,2,3),dt=0.2)
      [,1]
 [1,]    0
@@ -85,21 +67,16 @@ In reulermultinom(n = 1, size = c(100, 200, 300), rate = c(1, 2,  :
 [3,]    0
 > x <- reulermultinom(n=3,size=100,rate=c(3,2,1),dt=0.1)
 > try(deulermultinom(rbind(x,c(0,1,0)),size=100,rate=c(3,2,1),dt=0.1))
-Error in deulermultinom(rbind(x, c(0, 1, 0)), size = 100, rate = c(3,  : 
-  deulermultinom: 'NROW(x)' should match length of 'rate'
+Error : in 'deulermultinom': NROW('x') should match length of 'rate'
 > deulermultinom(x,size=c(100,NA),rate=c(3,2,1),dt=0.1)
-[1] 0.0002229822 0.0008576482 0.0009731019
 Warning message:
-In deulermultinom(x, size = c(100, NA), rate = c(3, 2, 1), dt = 0.1) :
-  deulermultinom: only the first element of 'size' is meaningful
+in 'deulermultinom': only the first element of 'size' is meaningful 
 > deulermultinom(x,size=100,rate=c(3,2,1),dt=c(0.1,0.2,0.3,Inf))
-[1] 0.0002229822 0.0008576482 0.0009731019
 Warning message:
-In deulermultinom(x, size = 100, rate = c(3, 2, 1), dt = c(0.1,  :
-  deulermultinom: only the first element of 'dt' is meaningful
+in 'deulermultinom': only the first element of 'dt' is meaningful 
 > deulermultinom(x,size=100,rate=c(3,2,1),dt=Inf)
 [1] 0 0 0
 > 
 > proc.time()
    user  system elapsed 
-  0.536   0.056   0.562 
+  0.552   0.060   0.584 

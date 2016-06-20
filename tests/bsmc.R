@@ -37,6 +37,9 @@ smc <- bsmc2(
 prior <- smc$prior
 post <- smc$post
 
+try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=0,upper=c(0,1)))
+try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=-100,upper=c(111,33,222)))
+
 smc <- bsmc(
             ou2,
             params=prior,

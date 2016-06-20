@@ -19,7 +19,8 @@ setClass(
         probes = list(),
         scale = numeric(0),
         epsilon = 1.0,
-        proposal = function (...) stop("proposal not specified"),
+        proposal = function (...)
+            stop("in ",sQuote("abc"),": proposal not specified",call.=FALSE),
         conv.rec=array(dim=c(0,0))
     )
 )
@@ -33,6 +34,8 @@ abc.internal <- function (object, Nabc,
                           .getnativesymbolinfo = TRUE,
                           ...) {
 
+    ep <- paste0("in ",sQuote("abc"),": ")
+
     object <- as(object,'pomp')
     gnsi <- as.logical(.getnativesymbolinfo)
     Nabc <- as.integer(Nabc)
@@ -45,35 +48,33 @@ abc.internal <- function (object, Nabc,
     pompLoad(object)
 
     if (length(start)==0)
-        stop(
-            "abc error: ",sQuote("start")," must be specified if ",
-            sQuote("coef(object)")," is NULL",
-            call.=FALSE
-        )
+        stop(ep,sQuote("start")," must be specified if ",
+             sQuote("coef(object)")," is NULL",
+             call.=FALSE)
 
     start.names <- names(start)
     if (is.null(start.names))
-        stop("abc error: ",sQuote("start")," must be a named vector",call.=FALSE)
+        stop(ep,sQuote("start")," must be a named vector",call.=FALSE)
 
     if (!is.function(proposal))
-        stop(sQuote("proposal")," must be a function")
+        stop(ep,sQuote("proposal")," must be a function",call.=FALSE)
 
     ## test proposal distribution
     theta <- tryCatch(
         proposal(start,.n=0),
         error = function (e) {
-            stop("in ",sQuote("abc"),": in proposal function: ",
+            stop(ep,"in proposal function: ",
                  conditionMessage(e),call.=FALSE)
         }
     )
     if (is.null(names(theta)) || !is.numeric(theta))
-        stop("abc error: ",sQuote("proposal")," must return a named numeric vector",call.=FALSE)
+        stop(ep,sQuote("proposal")," must return a named numeric vector",call.=FALSE)
 
     if (!is.list(probes)) probes <- list(probes)
     if (!all(sapply(probes,is.function)))
-        stop(sQuote("probes")," must be a function or a list of functions")
+        stop(ep,sQuote("probes")," must be a function or a list of functions",call.=FALSE)
     if (!all(sapply(probes,function(f)length(formals(f))==1)))
-        stop("each probe must be a function of a single argument")
+        stop(ep,"each probe must be a function of a single argument",call.=FALSE)
 
     if (verbose) {
         cat("performing",Nabc,"ABC iteration(s)\n")
@@ -82,8 +83,8 @@ abc.internal <- function (object, Nabc,
     theta <- start
     log.prior <- dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
     if (!is.finite(log.prior))
-        stop("inadmissible value of ",sQuote("dprior"),
-             " at parameters ",sQuote("start"))
+        stop(ep,"inadmissible value of ",sQuote("dprior"),
+             " at parameters ",sQuote("start"),call.=FALSE)
     ## we suppose that theta is a "match",
     ## which does the right thing for continue() and
     ## should have negligible effect unless doing many short calls to continue()
@@ -102,7 +103,7 @@ abc.internal <- function (object, Nabc,
     datval <- tryCatch(
         .Call(apply_probe_data,object,probes),
         error = function (e) {
-            stop("in ",sQuote("abc"),": in ",sQuote("apply_probe_data"),
+            stop(ep,"in ",sQuote("apply_probe_data"),
                  ": ",conditionMessage(e),call.=FALSE)
         }
     )
@@ -131,7 +132,7 @@ abc.internal <- function (object, Nabc,
                     datval=datval
                 ),
                 error = function (e) {
-                    stop("in ",sQuote("abc"),": in ",sQuote("apply_probe_sim"),
+                    stop(ep,"in ",sQuote("apply_probe_sim"),
                          ": ",conditionMessage(e),call.=FALSE)
                 }
             )
@@ -184,24 +185,24 @@ setMethod(
                          verbose = getOption("verbose"),
                          ...) {
         
+        ep <- paste0("in ",sQuote("abc"),": ")
+
         if (missing(start))
             start <- coef(object)
 
         if (missing(proposal)) proposal <- NULL
 
         if (is.null(proposal))
-            stop("abc error: ",sQuote("proposal")," must be specified",call.=FALSE)
+            stop(ep,sQuote("proposal")," must be specified",call.=FALSE)
 
         if (missing(probes))
-            stop("abc error: ",sQuote("probes")," must be specified",
-                 call.=FALSE)
+            stop(ep,sQuote("probes")," must be specified",call.=FALSE)
 
         if (missing(scale))
-            stop("abc error: ",sQuote("scale")," must be specified",
-                 call.=FALSE)
+            stop(ep,sQuote("scale")," must be specified",call.=FALSE)
 
         if (missing(epsilon))
-            stop("abc error: abc match criterion, ",sQuote("epsilon"),
+            stop(ep,"abc match criterion, ",sQuote("epsilon"),
                  ", must be specified",call.=FALSE)
 
         abc.internal(

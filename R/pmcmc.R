@@ -14,7 +14,8 @@ setClass(
         pars = character(0),
         Nmcmc = 0L,
         accepts = 0L,
-        proposal = function (...) stop("proposal not specified"),
+        proposal = function (...)
+            stop("in ",sQuote("pmcmc"),": proposal not specified",call.=FALSE),
         conv.rec=array(dim=c(0,0)),
         log.prior=numeric(0)
     )
@@ -35,40 +36,41 @@ pmcmc.internal <- function (object, Nmcmc,
     .ndone <- as.integer(.ndone)
     .accepts <- as.integer(.accepts)
     
+    ep <- paste0("in ",sQuote("pmcmc"),": ")
+
     pompLoad(object)
 
     if (missing(start))
-        stop(sQuote("start")," must be specified")
+        stop(ep,sQuote("start")," must be specified",call.=FALSE)
     if (length(start)==0)
-        stop(sQuote("start")," must be specified if ",
-             sQuote("coef(object)")," is NULL")
+        stop(ep,sQuote("start")," must be specified if ",
+             sQuote("coef(object)")," is NULL",call.=FALSE)
     if (is.null(names(start)))
-        stop(sQuote("pmcmc")," error: ",
-             sQuote("start")," must be a named vector",call.=FALSE)
+        stop(ep,sQuote("start")," must be a named vector",call.=FALSE)
 
     if (!is.function(proposal))
-        stop(sQuote("proposal")," must be a function")
+        stop(ep,sQuote("proposal")," must be a function",call.=FALSE)
 
     ## test proposal distribution
     theta <- tryCatch(
         proposal(start,.n=0),
         error = function (e) {
-            stop("in ",sQuote("pmcmc"),": error in proposal function: ",
+            stop(ep,"error in proposal function: ",
                  conditionMessage(e),call.=FALSE)
         }
     )
     if (is.null(names(theta)) || !is.numeric(theta))
-        stop(sQuote("pmcmc")," error: ",sQuote("proposal"),
+        stop(ep,sQuote("proposal"),
              " must return a named numeric vector",call.=FALSE)
 
     ntimes <- length(time(object))
     if (missing(Np))
-        stop("pmcmc error: ",sQuote("Np")," must be specified",call.=FALSE)
+        stop(ep,sQuote("Np")," must be specified",call.=FALSE)
     if (is.function(Np)) {
         Np <- tryCatch(
             vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
             error = function (e) {
-                stop("if ",sQuote("Np")," is a function, ",
+                stop(ep,"if ",sQuote("Np")," is a function, ",
                      "it must return a single positive integer",call.=FALSE)
             }
         )
@@ -76,18 +78,18 @@ pmcmc.internal <- function (object, Nmcmc,
     if (length(Np)==1)
         Np <- rep(Np,times=ntimes+1)
     else if (length(Np)!=(ntimes+1))
-        stop(sQuote("Np")," must have length 1 or length ",ntimes+1)
+        stop(ep,sQuote("Np")," must have length 1 or length ",ntimes+1,call.=FALSE)
     if (any(Np<=0))
-        stop("number of particles, ",sQuote("Np"),", must always be positive")
+        stop(ep,"number of particles, ",sQuote("Np"),", must always be positive",call.=FALSE)
     if (!is.numeric(Np))
-        stop(sQuote("Np")," must be a number, a vector of numbers, or a function")
+        stop(ep,sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
     Np <- as.integer(Np)
 
     if (missing(Nmcmc))
-        stop("pmcmc error: ",sQuote("Nmcmc")," must be specified",call.=FALSE)
+        stop(ep,sQuote("Nmcmc")," must be specified",call.=FALSE)
     Nmcmc <- as.integer(Nmcmc)
     if (Nmcmc<0)
-        stop("pmcmc error: ",sQuote("Nmcmc")," must be a positive integer",call.=FALSE)
+        stop(ep,sQuote("Nmcmc")," must be a positive integer",call.=FALSE)
 
     if (verbose) {
         cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
@@ -121,8 +123,7 @@ pmcmc.internal <- function (object, Nmcmc,
                 .getnativesymbolinfo=gnsi
             ),
             error = function (e) {
-                stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
-                     ": ",conditionMessage(e),call.=FALSE)
+                stop(ep,conditionMessage(e),call.=FALSE)
             }
         )
         log.prior <- dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
@@ -171,8 +172,7 @@ pmcmc.internal <- function (object, Nmcmc,
                     .getnativesymbolinfo=gnsi
                 ),
                 error = function (e) {
-                    stop("in ",sQuote("pmcmc"),": error in ",sQuote("pfilter"),
-                         ": ",conditionMessage(e),call.=FALSE)
+                    stop(ep,conditionMessage(e),call.=FALSE)
                 }
             )
             gnsi <- FALSE
@@ -230,14 +230,16 @@ setMethod(
               verbose = getOption("verbose"),
               ...) {
         
+        ep <- paste0("in ",sQuote("pmcmc"),": ")
+        
         if (missing(start)) start <- coef(object)
         if (missing(Np))
-            stop("pmcmc error: ",sQuote("Np")," must be specified",call.=FALSE)
+            stop(ep,sQuote("Np")," must be specified",call.=FALSE)
         
         if (missing(proposal)) proposal <- NULL
 
         if (is.null(proposal))
-            stop("pmcmc error: ",sQuote("proposal")," must be specified",call.=FALSE)
+            stop(ep,sQuote("proposal")," must be specified",call.=FALSE)
 
         pmcmc.internal(
             object=object,
@@ -261,13 +263,9 @@ setMethod(
         if (missing(Np)) Np <- object@Np
         if (missing(tol)) tol <- object@tol
         
-        pmcmc(
-            object=as(object,"pomp"),
-            Nmcmc=Nmcmc,
-            Np=Np,
-            tol=tol,
-            ...
-        )
+        f <- selectMethod("pmcmc","pomp")
+
+        f(object,Nmcmc=Nmcmc,Np=Np,tol=tol,...)
     }
 )
 
@@ -286,17 +284,10 @@ setMethod(
         if (missing(Np)) Np <- object@Np
         if (missing(tol)) tol <- object@tol
 
-        pmcmc(
-            object=as(object,"pomp"),
-            Nmcmc=Nmcmc,
-            start=start,
-            proposal=proposal,
-            Np=Np,
-            tol=tol,
-            max.fail=max.fail,
-            verbose=verbose,
-            ...
-        )
+        f <- selectMethod("pmcmc","pomp")
+        
+        f(object,Nmcmc=Nmcmc,start=start,proposal=proposal,
+          Np=Np,tol=tol,max.fail=max.fail,verbose=verbose,...)
     }
 )
 

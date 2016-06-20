@@ -41,12 +41,10 @@ newly created object(s):
 > window(ou2.sim,end=150) -> ignore
 > time(ignore) <- seq(2,50,by=2)
 > try(coef(ignore,transform=TRUE) <- c(3,3))
-Error in .local(object, ..., value = value) : 
-  'parameter.transform(value)' must be a named vector
+Error : in 'coef<-': parameter.transform('value') must be a named vector
 > coef(ignore) <- numeric(0)
 > try(coef(ignore) <- c(3,2))
-Error in .local(object, ..., value = value) : 
-  'value' must be a named vector
+Error : in 'coef<-': 'value' must be a named vector
 > coef(ignore) <- c(a=3,b=2)
 > coef(ignore,transform=TRUE) <- c(a=3,b=2)
 > 
@@ -214,4 +212,4 @@ loglik  -479.0 -477.241     NA
 > 
 > proc.time()
    user  system elapsed 
-  2.688   0.108   2.771 
+  2.736   0.076   2.788 

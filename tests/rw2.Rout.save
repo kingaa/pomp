@@ -163,7 +163,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x135e660>
+<environment: 0x27c4028>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -176,7 +176,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x135e660>
+<environment: 0x27c4028>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -320,13 +320,11 @@ data, states, and covariates:
 > try(
 +     time(rw2) <- seq(-20,1000,by=20)
 +     )
-Error in .local(object, ..., value = value) : 
-  the zero-time 't0' must occur no later than the first observation
+Error : in 'time<-': the zero-time 't0' must occur no later than the first observation
 > try(
 +     time(rw2) <- c(0,5,10,15,12,20)
 +     )
-Error in .local(object, ..., value = value) : 
-  the times specified must be an increasing sequence
+Error : in 'time<-': the times specified must be an increasing sequence
 > time(rw2,t0=TRUE) <- seq(-20,1000,by=20)
 > x <- simulate(rw2)
 > time(rw2) <- c(0,20,25.8,50,60)
@@ -336,4 +334,4 @@ Error in .local(object, ..., value = value) :
 > 
 > proc.time()
    user  system elapsed 
-  0.928   0.068   0.971 
+  0.964   0.072   1.010 

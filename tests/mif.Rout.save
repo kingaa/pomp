@@ -121,7 +121,7 @@ Error : in 'mif': 'cooling.fraction.50' must be specified
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : number of particles, 'Np', must always be positive
+Error : in 'mif': number of particles, 'Np', must always be positive
 > 
 > try(
 +     mif(
@@ -146,7 +146,7 @@ Error : in 'mif': 'Nmif' must be a positive integer
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : 'mif' cannot estimate non-finite parameters.
+Error : in 'mif': 'mif' cannot estimate non-finite parameters.
 The following parameters are non-finite: 'alpha.4'
 > 
 > try(
@@ -160,7 +160,7 @@ The following parameters are non-finite: 'alpha.4'
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : 'mif' cannot estimate non-finite parameters.
+Error : in 'mif': 'mif' cannot estimate non-finite parameters.
 The following parameters are non-finite: 'x2.0'
 > 
 > fit <- mif(
@@ -221,14 +221,14 @@ pfilter timestep 100 of 100 finished
 +            cooling.fraction=0.95^50,ic.lag=10,var.factor=1
 +            )
 > try(mif(fit,Nmif=2,method="mif2"))
-Error : method='mif2' has been removed.
+Error : in 'mif': method='mif2' has been removed.
 Use 'mif2' instead.
 > fit <- continue(fit,Nmif=1,ic.lag=10000)
 Warning message:
-mif warning: 'ic.lag' = 10000 > 100 = length(time('object')) is nonsensical.  Setting 'ic.lag' = 100. 
+in 'mif': 'ic.lag' = 10000 > 100 = length(time('object')) is nonsensical.  Setting 'ic.lag' = 100. 
 > fit <- continue(fit,Nmif=1,ic.lag=2,rw.sd=c(x1.0=5,x2.0=5))
 Warning message:
-mif warning: only IVPs are to be estimated, yet 'ic.lag' = 2 < 100 = length(time('object')), so unnecessary work is to be done. 
+in 'mif': only IVPs are to be estimated, yet 'ic.lag' = 2 < 100 = length(time('object')), so unnecessary work is to be done. 
 > fit <- continue(fit,Nmif=3,ic.lag=100,method="unweighted")
 > try(mif(ff,Nmif=2,ivps=c("x1.0","x2.0"),
 +         rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
@@ -236,8 +236,8 @@ mif warning: only IVPs are to be estimated, yet 'ic.lag' = 2 < 100 = length(time
 Error : in 'mif': 'ic.lag' must be specified if 'ivps' are.
 > coef(fit,"alpha.4") <- 0
 > try(fit <- continue(fit,Np=2,Nmif=3,max.fail=1))
-Error : in 'mif': too many filtering failures.
+Error : in 'mif': in 'mif.pfilter': too many filtering failures.
 > 
 > proc.time()
    user  system elapsed 
- 10.068   0.072  10.163 
+  9.840   0.104   9.962 

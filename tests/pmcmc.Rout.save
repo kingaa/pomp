@@ -29,28 +29,23 @@ newly created object(s):
  ou2 
 > 
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),rw.var=3,scale.start=50,shape.start=50)))
-Error : 'mvn.rw.adaptive' error: exactly one of 'rw.sd' and 'rw.var' must be supplied
+Error : in 'mvn.rw.adaptive': exactly one of 'rw.sd' and 'rw.var' must be supplied
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(scale.start=50,shape.start=50)))
-Error : 'mvn.rw.adaptive' error: exactly one of 'rw.sd' and 'rw.var' must be supplied
+Error : in 'mvn.rw.adaptive': exactly one of 'rw.sd' and 'rw.var' must be supplied
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=c(3,2,5,1),scale.start=50,shape.start=50)))
-Error in mvn.rw.adaptive(rw.var = c(3, 2, 5, 1), scale.start = 50, shape.start = 50) : 
-  'rw.var' must have row- and column-names
+Error : in 'mvn.rw.adaptive': 'rw.var' must have row- and column-names
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1),2,2,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2"))),scale.start=50,shape.start=50)))
-Error in mvn.rw.adaptive(rw.var = matrix(c(3, 2, 5, 1), 2, 2, dimnames = list(c("alpha.2",  : 
-  row- and column-names of 'rw.var' must agree
+Error : in 'mvn.rw.adaptive': row- and column-names of 'rw.var' must agree
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1,5,5),2,3,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2","bob"))),scale.start=50,shape.start=50)))
-Error in mvn.rw.adaptive(rw.var = matrix(c(3, 2, 5, 1, 5, 5), 2, 3, dimnames = list(c("alpha.2",  : 
-  'rw.var' must be a square matrix
+Error : in 'mvn.rw.adaptive': 'rw.var' must be a square matrix
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(0.01,0.01),scale.start=50,shape.start=50)))
-Error in mvn.rw.adaptive(rw.sd = c(0.01, 0.01), scale.start = 50, shape.start = 50) : 
-  'rw.sd' must be a named numeric vector
+Error : in 'mvn.rw.adaptive': 'rw.sd' must be a named numeric vector
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),target=3,scale.start=50,shape.start=50)))
-Error : 'mvn.rw.adaptive' error: 'target' must be a number in (0,1)
+Error : in 'mvn.rw.adaptive': 'target' must be a number in (0,1)
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c("A","B")),verbose=TRUE))
-Error in mvn.diag.rw(rw.sd = c("A", "B")) : 
-  'rw.sd' must be a named numeric vector
+Error : in 'mvn.diag.rw': 'rw.sd' must be a named numeric vector
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c(0.01,0.01)),verbose=TRUE))
-Error in mvn.diag.rw(rw.sd = c(0.01, 0.01)) : 'rw.sd' must have names
+Error : in 'mvn.diag.rw': 'rw.sd' must have names
 > pmcmc(ou2,Nmcmc=2,Np=100,
 +       proposal=mvn.rw.adaptive(
 +           rw.sd=c(alpha.2=0.01,alpha.3=0.01),
@@ -123,15 +118,14 @@ Error in validObject(.Object) :
 Error in validObject(.Object) : 
   invalid class "pmcmcList" object: error in 'c': to be combined, 'pmcmc' objects must have chains of equal length
 > try(ff <- c(f4,ou2))
-Error in c(f4, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
+Error : in 'c': cannot mix 'pmcmc' and non-'pmcmc' objects
 > try(ff <- c(ff,ou2))
-Error in c(ff, ou2) : cannot mix 'pmcmc' and non-'pmcmc' objects
+Error : in 'c': cannot mix 'pmcmc' and non-'pmcmc' objects
 > 
 > plot(ff <- c(ff,f5))
 > invisible(covmat(ff))
 Warning message:
-In covmat.internal(traces = as.array(conv.rec(object, pars)), start = start,  :
-  only 21 points being used to estimate covariance matrix
+in 'covmat': only 21 points being used to estimate covariance matrix 
 > plot(conv.rec(c(f2,ff),c("alpha.2","alpha.3")))
 > plot(conv.rec(ff[2],c("alpha.2")))
 > plot(conv.rec(ff[2:3],c("alpha.3")))
@@ -169,8 +163,7 @@ In covmat.internal(traces = as.array(conv.rec(object, pars)), start = start,  :
 +           scale.start=50,shape.start=50)) -> f8
 > f8 %<>% continue(Nmcmc=50,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
 Warning message:
-In covmat.internal(traces = as.matrix(conv.rec(object, object@pars)),  :
-  only 51 points being used to estimate covariance matrix
+in 'covmat': only 51 points being used to estimate covariance matrix 
 > plot(f8)
 > 
 > library(coda)
@@ -200,4 +193,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 16.180   0.136  16.315 
+ 16.072   0.148  16.214 

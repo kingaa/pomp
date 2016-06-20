@@ -26,8 +26,7 @@ NLF.LQL <- function (params.fitted, object, params, par.index, transform = FALSE
     y <- tryCatch(
         simulate(object,times=times,t0=t0,params=params,seed=seed,obs=TRUE,states=FALSE),
         error = function (e) {
-            stop("in ",sQuote("NLF.LQL"),": error in simulation: ",
-                 conditionMessage(e),call.=FALSE)
+            stop("in ",sQuote("NLF.LQL"),conditionMessage(e),call.=FALSE)
         }
     )
 
@@ -55,8 +54,7 @@ NLF.LQL <- function (params.fitted, object, params, par.index, transform = FALSE
             bootsamp
         ),
         error = function (e) {
-            stop("in ",sQuote("NLF.LQL"),": ",
-                 conditionMessage(e),call.=FALSE)
+            stop("in ",sQuote("NLF.LQL"),": ",conditionMessage(e),call.=FALSE)
         }
     )
 }

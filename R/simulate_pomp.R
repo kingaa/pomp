@@ -6,7 +6,7 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
                                include.data = FALSE,
                                .getnativesymbolinfo = TRUE, ...) {
 
-    error.prefix <- paste0("in ",sQuote("simulate"),": ")
+    ep <- paste0("in ",sQuote("simulate"),": ")
 
     pompLoad(object)
 
@@ -29,7 +29,7 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
         params <- coef(object)
     
     if (length(params)==0)
-        stop(error.prefix,"no ",sQuote("params")," specified",call.=FALSE)
+        stop(ep,"no ",sQuote("params")," specified",call.=FALSE)
 
     params <- as.matrix(params)
 
@@ -57,7 +57,7 @@ simulate.internal <- function (object, nsim = 1, seed = NULL, params,
             .getnativesymbolinfo
         ),
         error = function (e) {
-            stop(error.prefix,conditionMessage(e),call.=FALSE)
+            stop(ep,conditionMessage(e),call.=FALSE)
         }
     )
     .getnativesymbolinfo <- FALSE

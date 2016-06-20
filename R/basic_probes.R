@@ -1,28 +1,28 @@
 probe.mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
-  if (length(var)>1) stop(sQuote("probe.mean")," is a univariate probe")
+  if (length(var)>1) stop(sQuote("probe.mean")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)
   function(y) mean(x=transform(y[var,]),trim=trim,na.rm=na.rm)
 }
 
 probe.median <- function (var, na.rm = TRUE) {
-  if (length(var)>1) stop(sQuote("probe.median")," is a univariate probe")
+  if (length(var)>1) stop(sQuote("probe.median")," is a univariate probe",call.=FALSE)
   function(y) median(x=as.numeric(y[var,]),na.rm=na.rm)
 }
 
 probe.var <- function (var, transform = identity, na.rm = TRUE) {
-  if (length(var)>1) stop(sQuote("probe.var")," is a univariate probe")
+  if (length(var)>1) stop(sQuote("probe.var")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)
   function(y) var(x=transform(y[var,]),na.rm=na.rm)
 }
 
 probe.sd <- function (var, transform = identity, na.rm = TRUE) {
-  if (length(var)>1) stop(sQuote("probe.sd")," is a univariate probe")
+  if (length(var)>1) stop(sQuote("probe.sd")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)
   function(y) sd(x=transform(y[var,]),na.rm=na.rm)
 }
 
 probe.period <- function (var, kernel.width, transform = identity) {
-  if (length(var)>1) stop(sQuote("probe.period")," is a univariate probe")
+  if (length(var)>1) stop(sQuote("probe.period")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)
   function (y) {
     zz <- spec.pgram(
@@ -39,7 +39,7 @@ probe.period <- function (var, kernel.width, transform = identity) {
 }
 
 probe.quantile <- function (var, prob, transform = identity) {
-  if (length(var)>1) stop(sQuote("probe.quantile")," is a univariate probe")
+  if (length(var)>1) stop(sQuote("probe.quantile")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)
   function (y) quantile(transform(y[var,]),probs=prob)
 }
@@ -113,7 +113,8 @@ probe.acf <- function (var, lags, type = c("covariance", "correlation"), transfo
   corr <- type=="correlation"
   transform <- match.fun(transform)
   if (corr && any(lags==0)) {
-    warning("useless zero lag discarded in ",sQuote("probe.acf"))
+    warning("in ",sQuote("probe.acf"),
+            ": useless zero lag discarded in ",sQuote("probe.acf"),call.=FALSE)
     lags <- lags[lags!=0]
   }
   lags <- as.integer(lags)
@@ -130,7 +131,8 @@ probe.ccf <- function (vars, lags, type = c("covariance", "correlation"), transf
   corr <- type=="correlation"
   transform <- match.fun(transform)
   if (length(vars)!=2)
-    stop(sQuote("vars")," must name two variables")
+    stop("in ",sQuote("probe.ccf"),": ",
+         sQuote("vars")," must name two variables",call.=FALSE)
   lags <- as.integer(lags)
   function (y) .Call(
                      probe_ccf,
@@ -142,7 +144,7 @@ probe.ccf <- function (vars, lags, type = c("covariance", "correlation"), transf
 }
 
 probe.marginal <- function (var, ref, order = 3, diff = 1, transform = identity) {
-  if (length(var)>1) stop(sQuote("probe.marginal")," is a univariate probe")
+  if (length(var)>1) stop(sQuote("probe.marginal")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)
   setup <- .Call(probe_marginal_setup,transform(ref),order,diff)
   function (y) .Call(
@@ -154,15 +156,20 @@ probe.marginal <- function (var, ref, order = 3, diff = 1, transform = identity)
 }
 
 probe.nlar <- function (var, lags, powers, transform = identity) {
-  if (length(var)>1) stop(sQuote("probe.nlar")," is a univariate probe")
+  if (length(var)>1) stop(sQuote("probe.nlar")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)
+  ep <- paste0("in ",sQuote("probe.nlar"),": ")
   if (any(lags<1)||any(powers<1))
-    stop(sQuote("lags")," and ",sQuote("powers")," must be positive integers")
+    stop(ep,sQuote("lags")," and ",sQuote("powers")," must be positive integers",call.=FALSE)
   if (length(lags)<length(powers)) {
-    if (length(lags)>1) stop(sQuote("lags")," must match ",sQuote("powers")," in length, or have length 1")
+    if (length(lags)>1)
+        stop(ep,sQuote("lags")," must match ",sQuote("powers"),
+             " in length, or have length 1",call.=FALSE)
     lags <- rep(lags,length(powers))
   } else if (length(lags)>length(powers)) {
-    if (length(powers)>1) stop(sQuote("powers")," must match ",sQuote("lags")," in length, or have length 1")
+    if (length(powers)>1)
+        stop(ep,sQuote("powers")," must match ",sQuote("lags"),
+             " in length, or have length 1",call.=FALSE)
     powers <- rep(powers,length(lags))
   }
   lags <- as.integer(lags)

@@ -43,7 +43,7 @@ Error : in 'mif2': 'Np' must be specified
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
 Warning messages:
 1: in 'mif2': Np[k] ignored for k > ntimes 
-2: 1 filtering failure occurred in 'mif2.pfilter' 
+2: in 'mif2.pfilter': 1 filtering failure occurred. 
 > try(mif2(ou2,Nmif=1,start=guess2,Np=seq_len(101),
 +          cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +          rw.sd=rw.sd(
@@ -81,12 +81,12 @@ Error : in 'mif2': 'rw.sd' spec for parameter 'alpha.2' does not evaluate to a v
 > 
 > plot(m1,y=NA)
 Warning message:
-In plot(m1, y = NA) : 'NA' is ignored
+in 'plot-mif2d.pomp': 'y' is ignored 
 > dim(coef(c(m1)))
 [1]  1 10
 > plot(m12 <- c(m1,m2),y=33)
 Warning message:
-In plot(m12 <- c(m1, m2), y = 33) : '33' is ignored
+in 'plot-mif2d.pomp': 'y' is ignored 
 > coef(c(m12))
      alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau  x1.0 x2.0
 [1,]     0.8  -0.605   0.407     0.9       3    -0.5       2   1 -2.00 1.90
@@ -147,7 +147,7 @@ truth   -484
 +              alpha.2=ifelse(time==1,0.2,0.1),
 +              alpha.3=0.2*(time<10)))
 Warning message:
-1 filtering failure occurred in 'mif2.pfilter' 
+in 'mif2.pfilter': 1 filtering failure occurred. 
 > 
 > library(ggplot2)
 > library(reshape2)
@@ -173,4 +173,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 11.928   0.128  12.181 
+  11.92    0.12   12.14 

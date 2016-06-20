@@ -70,9 +70,9 @@ Error : in 'pomp': covariate(s) 'henry' are not among the columns of 'covar'
 Error : in 'pomp': if one of 'fromEstimationScale', 'toEstimationScale' is supplied, then so must the other
 > pomp(dat$y,times=dat$time,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po
 Warning messages:
-1: in 'pomp': The 'skeleton.type' argument is deprecated and will be removed in a future release.
+1: in 'pomp': the 'skeleton.type' argument is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
-2: in 'pomp': The 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
+2: in 'pomp': the 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
 > plot(po)
 > pomp(dat$y,times=dat$time,t0=0,
@@ -86,9 +86,9 @@ Error in validObject(.Object) :
 > pomp(t(as.matrix(dat)),times=dat$time,t0=0,
 +      skeleton.type="map",skelmap.delta.t=1) -> po
 Warning messages:
-1: in 'pomp': The 'skeleton.type' argument is deprecated and will be removed in a future release.
+1: in 'pomp': the 'skeleton.type' argument is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
-2: in 'pomp': The 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
+2: in 'pomp': the 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
 > pomp(t(as.matrix(dat)),times=dat$time,t0=0,
 +      skeleton=function(x,t,params,...){x}) -> po
@@ -99,9 +99,9 @@ See '?pomp' for an explanation of the new syntax.
 > pomp(dat$y,times=dat$time,t0=0,
 +      skeleton.type="map",skelmap.delta.t=1) -> po
 Warning messages:
-1: in 'pomp': The 'skeleton.type' argument is deprecated and will be removed in a future release.
+1: in 'pomp': the 'skeleton.type' argument is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
-2: in 'pomp': The 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
+2: in 'pomp': the 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
 > pomp(dat$y,times=dat$time,t0=0,
 +      skeleton=function(x,t,params,...){x}) -> po
@@ -113,12 +113,12 @@ Error in validObject(.Object) :
   invalid class "pomp" object: the length of 'times' should match the number of observations
 > pomp(ricker,skeleton.type="map",skelmap.delta.t=1) -> po
 Warning messages:
-1: in 'pomp': The 'skeleton.type' argument is deprecated and will be removed in a future release.
+1: in 'pomp': the 'skeleton.type' argument is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
-2: in 'pomp': The 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
+2: in 'pomp': the 'skelmap.delta.t' argument is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
 > try(pomp(ricker,skeleton=identity(identity)) -> po)
-Error : 'skeleton' must be a function of prototype skeleton(x, t, params, ...)
+Error : in 'pomp.fun': 'skeleton' must be a function of prototype skeleton(x, t, params, ...)
 In addition: Warning message:
 in 'pomp': the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
@@ -145,4 +145,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  1.472   0.252   2.023 
+  1.420   0.320   2.072 

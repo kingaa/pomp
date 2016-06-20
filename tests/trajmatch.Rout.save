@@ -29,7 +29,7 @@ newly created object(s):
 > x <- ou2
 > coef(x) <- numeric()
 > try(trajectory(x))
-Error : trajectory error: 'params' must be supplied
+Error : in 'trajectory': 'params' must be supplied
 > 
 > x <- sapply(
 +             simdata,
@@ -131,11 +131,9 @@ $msg
 [1] 3327.081
 > 
 > try(ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','bob','alpha.4','harry')))
-Error in tmof.internal(object = object, params = params, est = est, transform = transform,  : 
-  parameter(s): 'bob''harry' not found in 'params'
+Error : in 'traj.match.objfun': parameter(s): 'bob','harry' not found in 'params'
 > try(traj.match(ou2,est=c('x1.0','x2.0','bob','alpha.4','tau')))
-Error in minim.internal(objfun = traj.match.objfun(object = object, params = start,  : 
-  'est' must refer to parameters named in 'start'
+Error : in 'minim': 'est' must refer to parameters named in 'start'
 > 
 > fit <- optim(par=c(0,0,1,0.5,0.5),fn=ofun,method="Nelder-Mead",control=list(maxit=400))
 > print(fit)
@@ -178,4 +176,4 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > proc.time()
    user  system elapsed 
-  1.780   0.064   1.840 
+  1.832   0.072   1.895 
