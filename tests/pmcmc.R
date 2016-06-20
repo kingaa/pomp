@@ -37,6 +37,8 @@ pmcmc(
       ) %>%
   continue(Nmcmc=20) -> f1
 f1 %>% plot()
+try(continue(f1,Np=function(k)if(k<10) "B" else 500))
+try(continue(f1,Np=function(k)if(k<10) c(10,-20) else 500))
 
 f1 %>% pfilter() %>%
 pmcmc(

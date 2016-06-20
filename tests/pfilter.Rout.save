@@ -34,6 +34,8 @@ particle filter log likelihood at truth
 > print(pf$loglik,digits=4)
 [1] -478
 > 
+> try(replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) c(100,200) else 500)))
+Error : in 'pfilter': if 'Np' is a function, it must return a single positive integer
 > pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
 > pf.ll <- sapply(pf,logLik)
 > ll.est <- log(mean(exp(pf.ll-mean(pf.ll))))+mean(pf.ll)
@@ -90,4 +92,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  7.488   0.084   7.573 
+  7.952   0.124   8.073 

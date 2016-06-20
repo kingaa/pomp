@@ -85,6 +85,9 @@ m4 <- mif2(ou2,Nmif=3,start=guess1,
 
 m4 <- mif2(m4,Nmif=10,Np=c(rep(200,20),rep(100,80),200))
 m4 <- continue(m4,Nmif=10,cooling.fraction=0.1)
+try(continue(m4,Np=function(k)if(k<10) "B" else 500))
+try(continue(m4,Np=function(k)if(k<10) -30 else 500))
+
 pf <- pfilter(m4)
 half <- 0.5
 m4 <- mif2(pf,Nmif=10,
@@ -94,8 +97,9 @@ m4 <- mif2(pf,Nmif=10,
              x2.0=ivp(half),
              alpha.2=ifelse(time==1,0.2,0.1),
              alpha.3=0.2*(time<10)))
-coef(m4,"alpha.4") <- Inf
-try(m4 <- continue(m4,Np=100,Nmif=2))
+m5 <- m4
+coef(m5,"alpha.2") <- -Inf
+try(mif2(m5,Np=100,Nmif=2))
 
 library(ggplot2)
 library(reshape2)

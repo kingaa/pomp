@@ -11,6 +11,7 @@ print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
 cat("particle filter log likelihood at truth\n")
 print(pf$loglik,digits=4)
 
+try(replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) c(100,200) else 500)))
 pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
 pf.ll <- sapply(pf,logLik)
 ll.est <- log(mean(exp(pf.ll-mean(pf.ll))))+mean(pf.ll)

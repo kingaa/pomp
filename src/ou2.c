@@ -179,16 +179,6 @@ static void sim_ou2 (double *x1, double *x2,
 {
   double eps[2], xnew[2];
 
-  if (!(R_FINITE(*x1))) return;
-  if (!(R_FINITE(*x2))) return;
-  if (!(R_FINITE(alpha1))) return;
-  if (!(R_FINITE(alpha2))) return;
-  if (!(R_FINITE(alpha3))) return;
-  if (!(R_FINITE(alpha4))) return;
-  if (!(R_FINITE(sigma1))) return;
-  if (!(R_FINITE(sigma2))) return;
-  if (!(R_FINITE(sigma3))) return;
-
   eps[0] = rnorm(0,1);
   eps[1] = rnorm(0,1);
 
@@ -206,18 +196,6 @@ static double dens_ou2 (double x1, double x2, double z1, double z2,
 			double sigma1, double sigma2, double sigma3, int give_log)
 {
   double eps[2], val;
-
-  if (!(R_FINITE(x1))) return R_NaReal;
-  if (!(R_FINITE(x2))) return R_NaReal;
-  if (!(R_FINITE(z1))) return R_NaReal;
-  if (!(R_FINITE(z2))) return R_NaReal;
-  if (!(R_FINITE(alpha1))) return R_NaReal;
-  if (!(R_FINITE(alpha2))) return R_NaReal;
-  if (!(R_FINITE(alpha3))) return R_NaReal;
-  if (!(R_FINITE(alpha4))) return R_NaReal;
-  if (!(R_FINITE(sigma1))) return R_NaReal;
-  if (!(R_FINITE(sigma2))) return R_NaReal;
-  if (!(R_FINITE(sigma3))) return R_NaReal;
 
   // compute residuals
   eps[0] = z1-alpha1*x1-alpha3*x2;

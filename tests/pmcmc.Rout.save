@@ -65,6 +65,10 @@ Error : in 'mvn.diag.rw': 'rw.sd' must have names
 +       ) %>%
 +   continue(Nmcmc=20) -> f1
 > f1 %>% plot()
+> try(continue(f1,Np=function(k)if(k<10) "B" else 500))
+Error : in 'pmcmc': if 'Np' is a function, it must return a single positive integer
+> try(continue(f1,Np=function(k)if(k<10) c(10,-20) else 500))
+Error : in 'pmcmc': if 'Np' is a function, it must return a single positive integer
 > 
 > f1 %>% pfilter() %>%
 + pmcmc(
@@ -194,4 +198,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 16.952   0.168  17.104 
+ 16.260   0.120  16.383 

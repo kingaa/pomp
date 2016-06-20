@@ -134,6 +134,8 @@ fit <- mif(
            cooling.type="geometric",cooling.fraction=0.95^50,
            ic.lag=10,var.factor=1
            )
+try(continue(fit,Np=function(k)if(k<10) c(20,30) else 500))
+
 fit <- continue(fit)
 fit <- continue(fit,Nmif=2)
 ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100,verbose=T)
