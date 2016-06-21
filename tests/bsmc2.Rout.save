@@ -19,7 +19,7 @@ Type 'q()' to quit R.
 > 
 > options(digits=2)
 > 
-> pdf(file="bsmc2.pdf")
+> png(filename="bsmc2.png",res=100)
 > 
 > set.seed(398585L)
 > pompExample(ou2)
@@ -28,7 +28,7 @@ newly created object(s):
 > 
 > time(ou2) <- 1:10
 > 
-> Np <- 50000
+> Np <- 20000
 > 
 > prior.bounds <- rbind(
 +                       alpha.2=c(-0.55,-0.45),
@@ -50,20 +50,11 @@ newly created object(s):
 Error : in 'bsmc2': 'params' must be supplied
 > 
 > ##Run Liu & West particle filter
-> smc <- bsmc2(
-+     ou2,
-+     est="alpha.2",
-+     params=prior,
-+     smooth=0.02
-+ )
+> smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
 > prior <- smc$prior
 > post <- smc$post
 > 
-> smc <- bsmc2(
-+              ou2,
-+              params=prior,
-+              smooth=0.02
-+              )
+> smc <- bsmc2(ou2,params=prior,smooth=0.02)
 > prior <- smc$prior
 > post <- smc$post
 > 
@@ -78,7 +69,7 @@ Error : in 'bsmc2': 'params' must be supplied
         prior.mean posterior.mean truth  2.5%   50%   98%
 alpha.1        0.8            0.8   0.8  0.80  0.80  0.80
 alpha.2       -0.5           -0.5  -0.5 -0.55 -0.51 -0.45
-alpha.3        0.3            0.3   0.3  0.25  0.30  0.35
+alpha.3        0.3            0.3   0.3  0.26  0.30  0.35
 alpha.4        0.9            0.9   0.9  0.90  0.90  0.90
 sigma.1        3.0            3.0   3.0  3.00  3.00  3.00
 sigma.2       -0.5           -0.5  -0.5 -0.50 -0.50 -0.50
@@ -88,19 +79,14 @@ x1.0          -3.0           -3.0  -3.0 -3.00 -3.00 -3.00
 x2.0           4.0            4.0   4.0  4.00  4.00  4.00
 > 
 > print(min(smc$eff.sample.size))
-[1] 3290
+[1] 1320
 > print(smc$log.evidence)
 [1] -44
 > 
-> ou2 <- pomp(ou2,
-+             rprior=function(params,...){
-+               params
-+             }
-+             )
-> 
-> smc <- bsmc2(ou2,Np=25000,smooth=0.1,est=estnames)
+> ou2 <- pomp(ou2,rprior=function(params,...)params)
+> smc <- bsmc2(ou2,Np=5000,smooth=0.1,est=estnames)
 > print(smc$eff.sample.size)
- [1] 5992 4007 2998 3268 5600 1948 4880 1582 5080 3774
+ [1] 1182  793  613  663 1119  372  993  326  977  760
 > print(smc$log.evidence)
 [1] -44
 > 
@@ -122,13 +108,9 @@ newly created object(s):
 > Np <- 10000
 > 
 > fit <- bsmc2(po,Np=100,est=c("r","sigma"),transform=TRUE,smooth=0.2)
-> 
 > invisible(apply(fit$prior[c("r","sigma"),],1,mean))
-> 
 > invisible(apply(fit$post[c("r","sigma"),],1,mean))
-> 
 > invisible(coef(fit))
-> 
 > plot(fit,thin=300)
 > 
 > dev.off()
@@ -137,4 +119,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-   2.82    0.12    2.91 
+   1.74    0.13    1.85 

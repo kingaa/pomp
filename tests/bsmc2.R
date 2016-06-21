@@ -2,14 +2,14 @@ library(pomp)
 
 options(digits=2)
 
-pdf(file="bsmc2.pdf")
+png(filename="bsmc2.png",res=100)
 
 set.seed(398585L)
 pompExample(ou2)
 
 time(ou2) <- 1:10
 
-Np <- 50000
+Np <- 20000
 
 prior.bounds <- rbind(
                       alpha.2=c(-0.55,-0.45),
@@ -30,20 +30,11 @@ coef(garb) <- numeric(0)
 try(garb <- bsmc2(garb))
 
 ##Run Liu & West particle filter
-smc <- bsmc2(
-    ou2,
-    est="alpha.2",
-    params=prior,
-    smooth=0.02
-)
+smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
 prior <- smc$prior
 post <- smc$post
 
-smc <- bsmc2(
-             ou2,
-             params=prior,
-             smooth=0.02
-             )
+smc <- bsmc2(ou2,params=prior,smooth=0.02)
 prior <- smc$prior
 post <- smc$post
 
@@ -59,13 +50,8 @@ print(
 print(min(smc$eff.sample.size))
 print(smc$log.evidence)
 
-ou2 <- pomp(ou2,
-            rprior=function(params,...){
-              params
-            }
-            )
-
-smc <- bsmc2(ou2,Np=25000,smooth=0.1,est=estnames)
+ou2 <- pomp(ou2,rprior=function(params,...)params)
+smc <- bsmc2(ou2,Np=5000,smooth=0.1,est=estnames)
 print(smc$eff.sample.size)
 print(smc$log.evidence)
 
@@ -85,13 +71,9 @@ po <- pomp(
 Np <- 10000
 
 fit <- bsmc2(po,Np=100,est=c("r","sigma"),transform=TRUE,smooth=0.2)
-
 invisible(apply(fit$prior[c("r","sigma"),],1,mean))
-
 invisible(apply(fit$post[c("r","sigma"),],1,mean))
-
 invisible(coef(fit))
-
 plot(fit,thin=300)
 
 dev.off()

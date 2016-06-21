@@ -31,6 +31,9 @@ try(bsmc(ou2,est="alpha.2",Np=2,smooth=0.02))
 f1 <- bsmc2(ou2,est="alpha.2",Np=100,smooth=0.02)
 try(bsmc2(ou2,est="alpha.2",Np=1,smooth=0.02))
 try(bsmc2(ou2,est="alpha.2",Np=2,smooth=0.02))
+f1 <- ou2
+f1@data[,c(3,20)] <- c(10000,10000)
+try(f1 <- bsmc2(f1,est=c("alpha.2","alpha.4"),Np=100,smooth=0.01,max.fail=3))
 prop <- mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001))
 f2 <- pmcmc(ou2,Nmcmc=20,proposal=prop,Np=100)
 f3 <- ou2
