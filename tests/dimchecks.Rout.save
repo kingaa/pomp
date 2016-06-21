@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -384,4 +384,4 @@ Error in dprocess.internal(object = object, x = x, times = times, params = param
 > 
 > proc.time()
    user  system elapsed 
-  1.320   0.224   1.714 
+  1.300   0.228   1.659 

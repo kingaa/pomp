@@ -271,4 +271,4 @@ In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > 
 > proc.time()
    user  system elapsed 
-  9.828   0.104   9.939 
+  9.748   0.096   9.874 

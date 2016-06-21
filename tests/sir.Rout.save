@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -190,7 +190,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 call. = FALSE)
         })
 }
-<environment: 0x2496578>
+<environment: 0x3ce4358>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -202,7 +202,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
             call. = FALSE)
     })
 }
-<environment: 0x24cbe88>
+<environment: 0x3d19c68>
 measurement model simulator, rmeasure = 
 native function '__pomp_rmeasure', defined by a Csnippet
 measurement model density, dmeasure = 
@@ -238,7 +238,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x140d578>
+<environment: 0x2c57c08>
 initializer = 
 function (params, t0, ...) 
 {
@@ -449,4 +449,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  6.952   0.384   7.628 
+  6.760   0.336   7.375 

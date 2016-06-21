@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -46,11 +44,11 @@ newly created object(s):
 > plot(gm4,plot.data=FALSE,quantile.styles=list(col=1:5))
 > plot(gm4,quantile.styles=list(lwd=c(1,2,3)))
 Warning message:
-in ‘plot-spect.pomp’: ‘quantile.styles’ contains an element with more than 1 entry but fewer entries than quantiles 
+in 'plot-spect.pomp': 'quantile.styles' contains an element with more than 1 entry but fewer entries than quantiles 
 > try(plot(gm4,plot.data=FALSE,quantile.styles=c(lwd=c(1,2,3))))
-Error : in ‘plot-spect.pomp’: ‘quantile.styles’ must be a list
+Error : in 'plot-spect.pomp': 'quantile.styles' must be a list
 > try(plot(gm4,data.styles=c(lty=c(1,2,3))))
-Error : in ‘plot-spect.pomp’: ‘data.styles’ must be a list
+Error : in 'plot-spect.pomp': 'data.styles' must be a list
 > plot(gm4,data.styles=list(lty=c(1,2,3)))
 > plot(gm4,data.styles=list(lty=1))
 > 
@@ -75,24 +73,24 @@ newly created object(s):
 > po <- ricker
 > coef(po,"phi") <- 30
 > try(spect(po,nsim=100,seed=838775L))
-Error : in ‘spect’: ‘kernel.width’ must be specified
+Error : in 'spect': 'kernel.width' must be specified
 > sp <- spect(po,kernel.width=11,nsim=100,seed=838775L)
 > invisible(summary(sp))
 > 
 > plot(simulate(sp),variables="y")
 > 
 > try(spect.match(spp,est=spp@est,weights="A"))
-Error : in ‘spect.match’: ‘weights’ must be specified as a vector or as a function
+Error : in 'spect.match': 'weights' must be specified as a vector or as a function
 > try(spect.match(spp,est=spp@est,weights=rep(1,5)))
-Error : in ‘spect.match’: if ‘weights’ is provided as a vector, it must have length 25
+Error : in 'spect.match': if 'weights' is provided as a vector, it must have length 25
 > spp <- spect.match(spp,est=spp@est,
 +                    weights=function(freq)ifelse(freq<0.2,1,0))
 > try(spect.match(spp,est=spp@est,
 +                 weights=function(freq)ifelse(freq<0.2,1,NA)))
-Error : in ‘spect.match’: ‘weights’ should be nonnegative and finite
+Error : in 'spect.match': 'weights' should be nonnegative and finite
 > try(spect.match(spp,est=spp@est,
 +                 weights=function(freq)ifelse(freq<0.2,1,"C")))
-Error : in ‘spect.match’: problem with ‘weights’ function: values must be type 'double',
+Error : in 'spect.match': problem with 'weights' function: values must be type 'double',
  but FUN(X[[11]]) result is type 'character'
 > 
 > 
@@ -102,4 +100,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 27.268   0.112  27.520 
+ 29.984   0.200  30.234 

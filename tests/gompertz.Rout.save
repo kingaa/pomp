@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -50,11 +50,11 @@ function (xstart, times, params, ..., zeronames = character(0),
                 conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3decce8>
+<environment: 0x2ae4778>
 process model density, dprocess = 
 function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x3da14d8>
+<environment: 0x2a98f68>
 measurement model simulator, rmeasure = 
 native function '_gompertz_normal_rmeasure'
 measurement model density, dmeasure = 
@@ -72,13 +72,13 @@ function (params, ...)
 {
     log(params)
 }
-<environment: 0x3d56da0>
+<environment: 0x2a4e868>
 parameter transformation (from estimation scale) = 
 function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x3d56da0>
+<environment: 0x2a4e868>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -99,7 +99,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3decce8>
+<environment: 0x2ae4778>
 > 
 > po <- gompertz
 > coef(po)
@@ -266,4 +266,4 @@ iteration loglik     r
 > 
 > proc.time()
    user  system elapsed 
-  1.924   0.084   1.984 
+   1.94    0.08    1.98 

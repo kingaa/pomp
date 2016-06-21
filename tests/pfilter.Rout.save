@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -92,4 +92,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  7.952   0.124   8.073 
+  7.480   0.072   7.544 
