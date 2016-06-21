@@ -1,18 +1,16 @@
 library(pomp)
-pompExample(ou2)
-
 set.seed(362083261L)
 
 png(filename="spect-%02d.png",res=100)
 
+pompExample(ou2)
+
 gm1 <- spect.match(ou2,kernel.width=3,detrend="mean",nsim=50,
                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
                    method="Nelder-Mead")
-
 gm2 <- spect.match(ou2,kernel.width=3,detrend="mean",nsim=49,
                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
                    method="Nelder-Mead")
-
 gm3 <- spect.match(ou2,kernel.width=3,detrend="linear",nsim=50,
                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
                    method="Nelder-Mead")
@@ -23,6 +21,13 @@ gm5 <- spect.match(ou2,kernel.width=3,nsim=50,
                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
                    method="Nelder-Mead")
 plot(gm4)
+plot(gm4,plot.data=FALSE)
+plot(gm4,plot.data=FALSE,quantile.styles=list(col=1:5))
+plot(gm4,quantile.styles=list(lwd=c(1,2,3)))
+try(plot(gm4,plot.data=FALSE,quantile.styles=c(lwd=c(1,2,3))))
+try(plot(gm4,data.styles=c(lty=c(1,2,3))))
+plot(gm4,data.styles=list(lty=c(1,2,3)))
+plot(gm4,data.styles=list(lty=1))
 
 pompExample(ricker)
 
