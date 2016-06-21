@@ -28,40 +28,19 @@ coef(garb) <- numeric(0)
 try(garb <- bsmc(garb))
 
 ##Run Liu & West particle filter
-smc <- bsmc2(
-    ou2,
-    est="alpha.2",
-    params=prior,
-    smooth=0.02
-)
+smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
 prior <- smc$prior
 post <- smc$post
 
 try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=0,upper=c(0,1)))
 try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=-100,upper=c(111,33,222)))
 
-smc <- bsmc(
-            ou2,
-            params=prior,
-            est=estnames,
-            ntries=5,
-            smooth=0.02,
+smc <- bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,
             lower=prior.bounds[estnames,"lower"],
             upper=prior.bounds[estnames,"upper"]
             )
-
 prior <- smc$prior
 post <- smc$post
-
-print(
-      cbind(
-            prior.mean=apply(prior,1,mean),
-            posterior.mean=apply(post,1,mean),
-            truth=coef(ou2),
-            t(apply(post,1,quantile,c(0.025,0.5,0.975)))
-            )
-      )
-
 print(min(smc$eff.sample.size))
 print(smc$log.evidence)
 
@@ -72,5 +51,6 @@ ou2 <- pomp(ou2,
             )
 
 smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames)
+smc <- bsmc(ou2,ntries=5,transform=TRUE,Np=5000,smooth=0.1,est=estnames)
 print(smc$eff.sample.size)
 print(smc$log.evidence)
