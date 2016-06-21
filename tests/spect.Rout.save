@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -22,41 +22,24 @@ newly created object(s):
 > 
 > set.seed(362083261L)
 > 
-> pdf(file="spect.pdf")
+> png(filename="spect-%02d.png",res=100)
 > 
-> gm1 <- spect.match(ou2,
-+                   kernel.width=3,
-+                   detrend="mean",
-+                   nsim=50,
-+                   est=c("alpha.1","alpha.4"),
-+                   reltol=1e-3,maxit=100,
-+                   method="Nelder-Mead")
-> plot(gm1)
-> 
-> gm2 <- spect.match(ou2,
-+                    kernel.width=3,
-+                    detrend="mean",
-+                    nsim=49,
-+                    est=c("alpha.1","alpha.4"),
-+                    reltol=1e-3,maxit=100,
+> gm1 <- spect.match(ou2,kernel.width=3,detrend="mean",nsim=50,
++                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
 +                    method="Nelder-Mead")
-> plot(gm2)
 > 
-> gm3 <- spect.match(ou2,
-+                    kernel.width=3,
-+                    detrend="linear",
-+                    nsim=50,
-+                    est=c("alpha.1","alpha.4"),
-+                    reltol=1e-3,maxit=100,
+> gm2 <- spect.match(ou2,kernel.width=3,detrend="mean",nsim=49,
++                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
 +                    method="Nelder-Mead")
-> plot(gm3)
 > 
-> gm4 <- spect.match(ou2,
-+                    kernel.width=5,
-+                    detrend="quadratic",
-+                    nsim=50,
-+                    est=c("alpha.1","alpha.4"),
-+                    reltol=1e-3,maxit=100,
+> gm3 <- spect.match(ou2,kernel.width=3,detrend="linear",nsim=50,
++                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
++                    method="Nelder-Mead")
+> gm4 <- spect.match(ou2,kernel.width=5,detrend="quadratic",nsim=50,
++                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
++                    method="Nelder-Mead")
+> gm5 <- spect.match(ou2,kernel.width=3,nsim=50,
++                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
 +                    method="Nelder-Mead")
 > plot(gm4)
 > 
@@ -64,33 +47,43 @@ newly created object(s):
 newly created object(s):
  ricker 
 > 
-> set.seed(6457673L)
-> 
 > sp <- spect(ricker,kernel.width=3,nsim=100,seed=838775L)
-> plot(sp)
 > invisible(summary(sp))
 > 
 > spp <- spect.match(sp,eval.only=TRUE)
-> plot(spp)
 > invisible(summary(spp))
 > 
 > spp <- spect.match(sp,nsim=100,est=c("sigma","phi"),reltol=1e-3,maxit=100)
-> plot(spp)
 > invisible(summary(spp))
 > 
 > po <- ricker
 > coef(po,"r") <- 5
 > sp <- spect(po,kernel.width=1,nsim=100,seed=838775L)
-> plot(sp)
 > invisible(summary(sp))
 > 
 > po <- ricker
 > coef(po,"phi") <- 30
+> try(spect(po,nsim=100,seed=838775L))
+Error : in 'spect': 'kernel.width' must be specified
 > sp <- spect(po,kernel.width=11,nsim=100,seed=838775L)
-> plot(sp)
 > invisible(summary(sp))
 > 
 > plot(simulate(sp),variables="y")
+> 
+> try(spect.match(spp,est=spp@est,weights="A"))
+Error : in 'spect.match': 'weights' must be specified as a vector or as a function
+> try(spect.match(spp,est=spp@est,weights=rep(1,5)))
+Error : in 'spect.match': if 'weights' is provided as a vector, it must have length 25
+> spp <- spect.match(spp,est=spp@est,
++                    weights=function(freq)ifelse(freq<0.2,1,0))
+> try(spect.match(spp,est=spp@est,
++                 weights=function(freq)ifelse(freq<0.2,1,NA)))
+Error : in 'spect.match': 'weights' should be nonnegative and finite
+> try(spect.match(spp,est=spp@est,
++                 weights=function(freq)ifelse(freq<0.2,1,"C")))
+Error : in 'spect.match': problem with 'weights' function: values must be type 'double',
+ but FUN(X[[11]]) result is type 'character'
+> 
 > 
 > dev.off()
 null device 
@@ -98,4 +91,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 15.120   0.116  15.217 
+ 27.548   0.096  27.639 

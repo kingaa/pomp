@@ -139,14 +139,24 @@ spect.match <- function(object, start, est = character(0),
         if (length(weights)==1)
             weights <- rep(weights,length(ds$freq))
         if ((length(weights)!=length(ds$freq)))
-            stop(ep,"if ",sQuote("weights")," is provided as a vector, it must have length ",length(ds$freq),call.=FALSE)
+            stop(ep,"if ",sQuote("weights"),
+                 " is provided as a vector, it must have length ",
+                 length(ds$freq),call.=FALSE)
     } else if (is.function(weights)) {
-        weights <- vapply(ds$freq,weights,numeric(1))
+        weights <- tryCatch(
+            vapply(ds$freq,weights,numeric(1)),
+            error = function (e) {
+                stop(ep,"problem with ",sQuote("weights")," function: ",
+                     conditionMessage(e),call.=FALSE)
+            }
+        )
     } else {
-        stop(ep,sQuote("weights")," must be specified as a vector or as a function",call.=FALSE)
+        stop(ep,sQuote("weights"),
+             " must be specified as a vector or as a function",call.=FALSE)
     }
     if (any((!is.finite(weights))|(weights<0)))
-        stop(ep,sQuote("weights")," should be nonnegative and finite",call.=FALSE)
+        stop(ep,sQuote("weights"),
+             " should be nonnegative and finite",call.=FALSE)
     weights <- weights/mean(weights)
 
     fail.value <- as.numeric(fail.value)
