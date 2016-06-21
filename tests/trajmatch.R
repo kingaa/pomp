@@ -10,6 +10,9 @@ guess.p <- true.p
 x <- ou2
 coef(x) <- numeric()
 try(trajectory(x))
+try(trajectory(pomp(ou2,skeleton=NULL)))
+pompExample(euler.sir)
+try(trajectory(euler.sir,atol=-100))
 
 x <- sapply(
             simdata,

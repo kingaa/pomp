@@ -29,7 +29,7 @@ newly created object(s):
 +                   detrend="mean",
 +                   nsim=50,
 +                   est=c("alpha.1","alpha.4"),
-+                   reltol=1e-3,
++                   reltol=1e-3,maxit=100,
 +                   method="Nelder-Mead")
 > plot(gm1)
 > 
@@ -38,7 +38,7 @@ newly created object(s):
 +                    detrend="mean",
 +                    nsim=49,
 +                    est=c("alpha.1","alpha.4"),
-+                    reltol=1e-3,
++                    reltol=1e-3,maxit=100,
 +                    method="Nelder-Mead")
 > plot(gm2)
 > 
@@ -47,7 +47,7 @@ newly created object(s):
 +                    detrend="linear",
 +                    nsim=50,
 +                    est=c("alpha.1","alpha.4"),
-+                    reltol=1e-3,
++                    reltol=1e-3,maxit=100,
 +                    method="Nelder-Mead")
 > plot(gm3)
 > 
@@ -56,7 +56,7 @@ newly created object(s):
 +                    detrend="quadratic",
 +                    nsim=50,
 +                    est=c("alpha.1","alpha.4"),
-+                    reltol=1e-3,
++                    reltol=1e-3,maxit=100,
 +                    method="Nelder-Mead")
 > plot(gm4)
 > 
@@ -66,7 +66,7 @@ newly created object(s):
 > 
 > set.seed(6457673L)
 > 
-> sp <- spect(ricker,kernel.width=3,nsim=500,seed=838775L)
+> sp <- spect(ricker,kernel.width=3,nsim=100,seed=838775L)
 > plot(sp)
 > invisible(summary(sp))
 > 
@@ -74,19 +74,19 @@ newly created object(s):
 > plot(spp)
 > invisible(summary(spp))
 > 
-> spp <- spect.match(sp,nsim=100,est=c("sigma","phi"),reltol=1e-3)
+> spp <- spect.match(sp,nsim=100,est=c("sigma","phi"),reltol=1e-3,maxit=100)
 > plot(spp)
 > invisible(summary(spp))
 > 
 > po <- ricker
 > coef(po,"r") <- 5
-> sp <- spect(po,kernel.width=1,nsim=500,seed=838775L)
+> sp <- spect(po,kernel.width=1,nsim=100,seed=838775L)
 > plot(sp)
 > invisible(summary(sp))
 > 
 > po <- ricker
 > coef(po,"phi") <- 30
-> sp <- spect(po,kernel.width=11,nsim=500,seed=838775L)
+> sp <- spect(po,kernel.width=11,nsim=100,seed=838775L)
 > plot(sp)
 > invisible(summary(sp))
 > 
@@ -98,4 +98,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 40.176   0.112  40.280 
+ 15.120   0.116  15.217 

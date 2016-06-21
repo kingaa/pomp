@@ -18,6 +18,10 @@ pompExample <- function (example, ..., show = FALSE, envir = .GlobalEnv) {
                          pattern=paste0(example,".R"),
                          full.names=TRUE),
                   recursive=TRUE)
+        if (length(file)<1) {
+            stop(ep,"cannot find file ",
+                 sQuote(paste0(example,".R")),call.=FALSE)
+        }
         if (length(file)>1) {
             warning(ep,"using ",sQuote(file[1])," from ",sQuote(names(file)[1]),call.=FALSE)
         }

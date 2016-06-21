@@ -59,8 +59,12 @@ pomp(ricker,skeleton.type="map",skelmap.delta.t=1) -> po
 try(pomp(ricker,skeleton=identity(identity)) -> po)
 try(pomp(ricker,toEstimationScale=identity) -> po)
 try(pomp(ricker,fromEstimationScale=identity) -> po)
+try(pomp("banana"))
 pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
 
+try(pompExample(bob))
+try(pompExample("bob"))
+pompExample("ricker")
 pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
 simulate(po) -> po
 ## force recompile
@@ -68,5 +72,8 @@ file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
                        pattern=paste0(po@solibs[[1]]$name,".*"),
                        full.names=TRUE))
 simulate(po) -> po
+
+show(pomp:::plugin.handler(function(x)x))
+try(show(pomp:::plugin.handler(33)))
 
 dev.off()

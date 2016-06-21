@@ -126,10 +126,19 @@ See '?pomp' for an explanation of the new syntax.
 Error : in 'pomp': if 'toEstimationScale' is supplied, then 'fromEstimationScale' must also be supplied
 > try(pomp(ricker,fromEstimationScale=identity) -> po)
 Error : in 'pomp': if 'fromEstimationScale' is supplied, then 'toEstimationScale' must also be supplied
+> try(pomp("banana"))
+Error : in 'pomp': 'data'must be a data frame, a numeric vector, or an object of class 'pomp'
 > pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
 Warning message:
 in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
 > 
+> try(pompExample(bob))
+Error : in 'pompExample': cannot find file 'bob.R'
+> try(pompExample("bob"))
+Error : in 'pompExample': cannot find file 'bob.R'
+> pompExample("ricker")
+newly created object(s):
+ ricker 
 > pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
 > simulate(po) -> po
 > ## force recompile
@@ -139,10 +148,16 @@ in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' 
 [1] TRUE TRUE TRUE
 > simulate(po) -> po
 > 
+> show(pomp:::plugin.handler(function(x)x))
+function (x) 
+x
+> try(show(pomp:::plugin.handler(33)))
+Error : plugin has an invalid form.
+> 
 > dev.off()
 null device 
           1 
 > 
 > proc.time()
    user  system elapsed 
-  1.388   0.388   2.146 
+  1.464   0.304   2.119 

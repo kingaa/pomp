@@ -30,6 +30,23 @@ newly created object(s):
 > coef(x) <- numeric()
 > try(trajectory(x))
 Error : in 'trajectory': 'params' must be supplied
+> try(trajectory(pomp(ou2,skeleton=NULL)))
+Error in trajectory.internal(object = object, params = params, times = times,  : 
+  operation cannot be completed: some needed function has not been specified
+In addition: Warning message:
+in 'pomp': the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
+> pompExample(euler.sir)
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
+newly created object(s):
+ euler.sir 
+> try(trajectory(euler.sir,atol=-100))
+DLSODA-  ATOL(I1) is R1 .lt. 0.0        
+In above message, I1 = 1
+ 
+In above message, R1 = -100
+ 
+Error : in 'trajectory': error in ODE integrator: illegal input detected before taking any integration steps - see written message
 > 
 > x <- sapply(
 +             simdata,
@@ -176,4 +193,4 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > proc.time()
    user  system elapsed 
-  1.840   0.064   1.902 
+  1.892   0.064   1.929 

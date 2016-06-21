@@ -48,6 +48,8 @@ bsmc2.internal <- function (object, params, Np, est,
                            .getnativesymbolinfo=ptsi.inv)
     ptsi.inv <- FALSE
     
+    params <- as.matrix(params)
+
     ntimes <- length(time(object))
     npars <- nrow(params)
     paramnames <- rownames(params)
@@ -122,8 +124,7 @@ bsmc2.internal <- function (object, params, Np, est,
                 method="svd"
             ),
             error = function (e) {
-                stop(ep,sQuote("rmvnorm"),"error: ",
-                     conditionMessage(e),call.=FALSE)
+                stop(ep,"in ",sQuote("rmvnorm"),": ",conditionMessage(e),call.=FALSE)
             }
         )
         if (!all(is.finite(pert)))

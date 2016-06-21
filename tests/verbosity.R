@@ -27,9 +27,16 @@ pomp(ou2,
      ) -> ou2
 
 f1 <- bsmc(ou2,est="alpha.2",Np=100,smooth=0.02)
+try(bsmc(ou2,est="alpha.2",Np=2,smooth=0.02))
 f1 <- bsmc2(ou2,est="alpha.2",Np=100,smooth=0.02)
+try(bsmc2(ou2,est="alpha.2",Np=1,smooth=0.02))
+try(bsmc2(ou2,est="alpha.2",Np=2,smooth=0.02))
 prop <- mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001))
 f2 <- pmcmc(ou2,Nmcmc=20,proposal=prop,Np=100)
+f3 <- ou2
+f3@data[,20] <- c(1000,1000)
+timezero(f3) <- 1
+f3 <- pfilter(f3,Np=10,filter.traj=TRUE)
 f3 <- pfilter(ou2,Np=100)
 f4 <- mif(f3,Nmif=10,rw.sd=c(alpha.2=0.01,alpha.3=0.01),cooling.fraction.50=0.1)
 f5 <- mif2(f3,Nmif=10,rw.sd=rw.sd(alpha.2=0.01,alpha.3=0.01),
@@ -48,3 +55,7 @@ f8 <- abc(f7,Nabc=20,est=c("alpha.2","alpha.3"),
 f9 <- nlf(ou2,lags=c(1,2),est=c("alpha.2","alpha.3","tau"),
           nconverge=100,nasymp=2000,lql.frac=0.025,
           seed=426094906L,maxit=200,method="Nelder-Mead")
+f10 <- traj.match(f9,est=c("alpha.2","alpha.3","tau"))
+
+pompExample(ricker)
+try(pomp(ricker,rmeasure=Csnippet("y=rpois(N)"),statenames="N") -> po)
