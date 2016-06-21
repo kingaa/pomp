@@ -43,6 +43,8 @@ summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="su
 
 summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",trace=1,parscale=0.1,maxit=100))
 
+try(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",parscale=0.1,maxit=100,sched=rep(1,10)))
+
 summary(traj.match(ou2))
 
 ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','alpha.1','alpha.4','tau'))

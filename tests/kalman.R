@@ -89,4 +89,16 @@ identical(eakf$cond.loglik,cond.logLik(eakf))
 identical(enkf$pred.mean,pred.mean(enkf))
 identical(eakf$filter.mean,filter.mean(eakf))
 
+try({
+    ev <- eigen(R)
+    enkf(pf,h=function(x)C%*%x,Np=1000,
+         R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
+})
+
+try({
+    ev <- eigen(R)
+    eakf(pf,C=C,Np=1000,
+         R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
+})
+
 dev.off()

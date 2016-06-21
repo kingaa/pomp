@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -458,10 +458,12 @@ Error in probe.internal(object = object, probes = probes, params = params,  :
 Error in probe.internal(object = object, probes = probes, params = params,  : 
   probes return different number of values on different datasets
 > 
+> plot(probe(ricker,nsim=20,probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
+> 
 > dev.off()
 null device 
           1 
 > 
 > proc.time()
    user  system elapsed 
- 13.888   0.108  14.006 
+ 14.048   0.144  14.197 

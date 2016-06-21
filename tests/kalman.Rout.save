@@ -1,5 +1,5 @@
 
-R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -133,10 +133,24 @@ Type 'q()' to quit R.
 > identical(eakf$filter.mean,filter.mean(eakf))
 [1] TRUE
 > 
+> try({
++     ev <- eigen(R)
++     enkf(pf,h=function(x)C%*%x,Np=1000,
++          R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
++ })
+Error : in 'enkf': degenerate 'R': the leading minor of order 2 is not positive definite
+> 
+> try({
++     ev <- eigen(R)
++     eakf(pf,C=C,Np=1000,
++          R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
++ })
+Error : in 'eakf': degenerate 'R': Lapack routine dgesv: system is exactly singular: U[2,2] = 0
+> 
 > dev.off()
 null device 
           1 
 > 
 > proc.time()
    user  system elapsed 
- 15.160   0.148  15.302 
+ 15.120   0.172  15.289 

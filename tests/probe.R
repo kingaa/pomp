@@ -407,4 +407,6 @@ try(
     )
 )
 
+plot(probe(ricker,nsim=20,probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
+
 dev.off()

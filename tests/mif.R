@@ -52,11 +52,15 @@ mif2 <- mif(ou2,Nmif=30,start=guess2,
 
 plot(mif1)
 plot(mif12 <- c(mif1,mif2))
+mif12 <- c(mif12)
+mif1a <- c(mif1)
 coef(mif2)
 dim(coef(mif12))
 dim(coef(c(mif12,mif2)))
 dim(coef(c(mif1,mif12)))
+dim(coef(c(mif1a,mif12)))
 dim(coef(mif12[2]))
+dim(conv.rec(mif12))
 dev.off()
 
 set.seed(33848585L)
