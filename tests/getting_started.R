@@ -198,4 +198,46 @@ parus %<>%
     lik = (give_log) ? lik : exp(lik);
   "),paramnames=c("r","K","sigma"))
 
+## Extra tests of discrete-time map with zeronames
+pomp(parus.bh,
+     rprocess=discrete.time.sim(Csnippet("
+         double eps = rlnorm(-sigma*sigma/2,sigma);
+         N = a*N/(1+b*N)*eps;
+         S += 1;")),
+     skeleton=map(Csnippet("DN=a*N/(1+b*N);DS=S+1;"),delta.t=1),
+     initializer=Csnippet("N=N_0;S=0;"),
+     statenames=c("N","S"),paramnames=c("a","b","N_0","sigma"),
+     zeronames="S",params=c(a=1.1,b=0.0005,sigma=0.5,N_0=30)) -> po
+po %>% trajectory(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
+po %>% simulate(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
+pomp(parus.bh,
+     rprocess=discrete.time.sim(function(x,t,params,...){
+         stop("yikes!")
+     }),
+     skeleton=map(function(x,t,params,...){
+         with(as.list(c(x,params)),
+              setNames(unname(c(a*N/(1+b*N),S+1)),c("N","S")))
+        },delta.t=1),params=c(a=1.1,b=0.0005,sigma=0.5,N.0=30,S.0=0),
+     zeronames="S") -> po
+coef(po,"S.0") <- 0
+try(po %>% simulate(times=1960:2000))
+pomp(po,
+     rprocess=discrete.time.sim(function(x,t,params,...){
+         with(as.list(c(x,params)),{
+             eps <- rlnorm(n=1,-sigma*sigma/2,sigma)
+             setNames(unname(c(a*N/(1+b*N)*eps,S+1,33)),
+                      c("N","S","bob"))
+         })
+     })) -> po
+try(po %>% simulate(times=1960:2000))
+po %>% trajectory(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
+pomp(po,
+     skeleton=map(function(x,t,params,...){
+         with(as.list(c(x,params)),
+              setNames(unname(c(a*N/(1+b*N),S+1,3)),c("N","S","bob")))
+        },delta.t=1),params=c(a=1.1,b=0.0005,sigma=0.5,N.0=30,S.0=0),
+     zeronames="clarence") -> po
+try(po %>% simulate(times=1960:2000))
+try(po %>% trajectory(times=1960:2000))
+
 dev.off()

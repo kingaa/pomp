@@ -304,7 +304,7 @@ setMethod(
         cat("prior density, dprior = \n")
         show(object@dprior)
         if (!is.na(object@skeleton.type)) {
-            cat("skeleton (",object@skeleton.type,") = \n")
+            cat("skeleton (",object@skeleton.type,") = \n",sep="")
             show(object@skeleton)
         }
         cat("initializer = \n")
