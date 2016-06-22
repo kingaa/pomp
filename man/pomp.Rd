@@ -39,7 +39,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     See below for more details.
   }
   \item{dprocess}{
-    optional function; a function of prototype \preformatted{dprocess(x,times,params,log,...)} that evaluates the likelihood of a sequence of consecutive state transitions.
+    optional function;
+    a function of prototype \preformatted{dprocess(x,times,params,log,...)} that evaluates the likelihood of a sequence of consecutive state transitions.
     The form of this function is given below.
     It is not typically necessary (or even feasible) to define \code{dprocess}.
     This functionality is provided to support future algorithm development.

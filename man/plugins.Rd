@@ -64,7 +64,7 @@ onestep.dens(dens.fun, PACKAGE)
     \code{d[i,j]} will have value 1 if event rate \code{j} must be updated as a result of a change in state variable \code{i} and 0 otherwise
     }
   \item{dens.fun}{
-    This can be either an R function, a \code{\link{Csnippet}}, or a compiled, dynamically loaded native function containing the model transition log probability density function.
+    This can be either an R function or a compiled, dynamically loaded native function containing the model transition log probability density function.
 
     If it is an R function, it should be of the form \preformatted{dens.fun(x1,x2,t1,t2,params,...).}
     Here, \code{x1} and \code{x2} are named numeric vectors containing the values of the state process at times \code{t1} and \code{t2},
