@@ -152,3 +152,7 @@ stopifnot(identical(
 stopifnot(identical(
     dim(dprocess(po,x=x,times=1:10,params=parmat(coef(ou2),2))),
     c(6L,9L)))
+
+try(simulate(ou2,nsim=0))
+try(class(simulate(ou2,nsim=c(1,20))))
+try(simulate(ou2,nsim=numeric(0)))

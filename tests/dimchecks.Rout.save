@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -387,6 +385,21 @@ Error in dprocess.internal(object = object, x = x, times = times, params = param
 +     dim(dprocess(po,x=x,times=1:10,params=parmat(coef(ou2),2))),
 +     c(6L,9L)))
 > 
+> try(simulate(ou2,nsim=0))
+NULL
+Warning message:
+In doTryCatch(return(expr), name, parentenv, handler) :
+  in 'simulate': nsim < 1: no work to do
+> try(class(simulate(ou2,nsim=c(1,20))))
+[1] "pomp"
+attr(,"package")
+[1] "pomp"
+Warning message:
+In doTryCatch(return(expr), name, parentenv, handler) :
+  in 'simulate': only the first number in 'nsim' is significant
+> try(simulate(ou2,nsim=numeric(0)))
+Error : in 'simulate': 'nsim' must be a single integer
+> 
 > proc.time()
    user  system elapsed 
-  0.560   0.064   0.643 
+  0.560   0.056   0.654 

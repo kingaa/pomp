@@ -1,6 +1,6 @@
 ## simulate a partially-observed Markov process
 
-simulate.internal <- function (object, nsim = 1, seed = NULL, params,
+simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
                                states = FALSE, obs = FALSE,
                                times, t0, as.data.frame = FALSE,
                                include.data = FALSE,

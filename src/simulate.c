@@ -23,11 +23,17 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   PROTECT(offset = NEW_INTEGER(1)); nprotect++;
   *(INTEGER(offset)) = 1;
 
-  nsims = INTEGER(AS_INTEGER(nsim))[0]; // number of simulations per parameter set
+  if (LENGTH(nsim)<1)
+    error("'nsim' must be a single integer");
   if (LENGTH(nsim)>1)
-    warning("only the first number in 'nsim' is significant");
-  if (nsims < 1) 
-    return R_NilValue;		// no work to do  
+    warning("in 'simulate': only the first number in 'nsim' is significant");
+
+  nsims = INTEGER(AS_INTEGER(nsim))[0]; // number of simulations per parameter set
+  if (nsims < 1) {			// no work to do  
+    warning("in 'simulate': nsim < 1: no work to do");
+    UNPROTECT(nprotect);
+    return R_NilValue;
+  }
 
   qobs = *(LOGICAL(AS_LOGICAL(obs)));	    // 'obs' flag set?
   qstates = *(LOGICAL(AS_LOGICAL(states))); // 'states' flag set?

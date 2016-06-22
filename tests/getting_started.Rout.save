@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -166,8 +164,8 @@ Type 'q()' to quit R.
 +                  skeleton=bh.skel,
 +                  statenames="N",paramnames=c("a","b","sigma"))
 Warning message:
-in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
-See ‘?pomp’ for an explanation of the new syntax. 
+in 'pomp': the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
+See '?pomp' for an explanation of the new syntax. 
 > parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),
 +                  skeleton=map(bh.skel,delta.t=1),
 +                  statenames="N",paramnames=c("a","b","sigma"))
@@ -253,7 +251,7 @@ See ‘?pomp’ for an explanation of the new syntax.
 +      zeronames="S") -> po
 > coef(po,"S.0") <- 0
 > try(po %>% simulate(times=1960:2000))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yikes!
+Error : in 'simulate': in 'discrete.time.sim' plugin: yikes!
 > 
 > pomp(po,
 +      rprocess=discrete.time.sim(function(x,t,params,...){
@@ -264,7 +262,7 @@ Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yikes!
 +          })
 +      })) -> po
 > try(po %>% simulate(times=1960:2000))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: user 'step.fun' returns a vector of 3 state variables but 2 are expected: compare initial conditions?
+Error : in 'simulate': in 'discrete.time.sim' plugin: user 'step.fun' returns a vector of 3 state variables but 2 are expected: compare initial conditions?
 > po %>% trajectory(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
 [1] 1
 > 
@@ -275,7 +273,7 @@ Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: user 'step.fun' re
 +         },delta.t=1),params=c(a=1.1,b=0.0005,sigma=0.5,N.0=30,S.0=0),
 +      zeronames="clarence") -> po
 > try(po %>% simulate(times=1960:2000))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: variable 'clarence' not found among the state variables
+Error : in 'simulate': in 'discrete.time.sim' plugin: variable 'clarence' not found among the state variables
 > try(po %>% trajectory(times=1960:2000))
 Error in trajectory.internal(object = object, params = params, times = times,  : 
   variable 'clarence' not found among the state variables
@@ -300,4 +298,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.588   0.268   3.140 
+  2.832   0.392   3.646 
