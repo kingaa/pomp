@@ -210,10 +210,14 @@ pomp(parus.bh,
      zeronames="S",params=c(a=1.1,b=0.0005,sigma=0.5,N_0=30)) -> po
 po %>% trajectory(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
 po %>% simulate(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
+
 pomp(parus.bh,
      rprocess=discrete.time.sim(function(x,t,params,...){
          stop("yikes!")
      }),
+     dmeasure=function(y,x,t,params,log,...){
+         c(33,22)
+     },
      skeleton=map(function(x,t,params,...){
          with(as.list(c(x,params)),
               setNames(unname(c(a*N/(1+b*N),S+1)),c("N","S")))
@@ -221,6 +225,7 @@ pomp(parus.bh,
      zeronames="S") -> po
 coef(po,"S.0") <- 0
 try(po %>% simulate(times=1960:2000))
+
 pomp(po,
      rprocess=discrete.time.sim(function(x,t,params,...){
          with(as.list(c(x,params)),{
@@ -231,6 +236,7 @@ pomp(po,
      })) -> po
 try(po %>% simulate(times=1960:2000))
 po %>% trajectory(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
+
 pomp(po,
      skeleton=map(function(x,t,params,...){
          with(as.list(c(x,params)),
@@ -239,5 +245,15 @@ pomp(po,
      zeronames="clarence") -> po
 try(po %>% simulate(times=1960:2000))
 try(po %>% trajectory(times=1960:2000))
+
+pomp(parus.bh,
+     dmeasure=function(y,x,t,params,log,...){
+         c(33,22)
+     },
+     rmeasure=function(y,x,t,params,log,...){
+         c(N=33,S=22)
+     }) -> po
+try(dmeasure(po,x=simulate(parus.bh,states=T),y=obs(po),times=time(po),params=coef(po)))
+try(rmeasure(po,x=simulate(parus.bh,states=T),y=obs(po),times=time(po),params=coef(po)))
 
 dev.off()

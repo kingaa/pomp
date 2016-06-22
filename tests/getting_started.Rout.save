@@ -238,10 +238,14 @@ See ‘?pomp’ for an explanation of the new syntax.
 [1] 1
 > po %>% simulate(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
 [1] 1
+> 
 > pomp(parus.bh,
 +      rprocess=discrete.time.sim(function(x,t,params,...){
 +          stop("yikes!")
 +      }),
++      dmeasure=function(y,x,t,params,log,...){
++          c(33,22)
++      },
 +      skeleton=map(function(x,t,params,...){
 +          with(as.list(c(x,params)),
 +               setNames(unname(c(a*N/(1+b*N),S+1)),c("N","S")))
@@ -250,6 +254,7 @@ See ‘?pomp’ for an explanation of the new syntax.
 > coef(po,"S.0") <- 0
 > try(po %>% simulate(times=1960:2000))
 Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yikes!
+> 
 > pomp(po,
 +      rprocess=discrete.time.sim(function(x,t,params,...){
 +          with(as.list(c(x,params)),{
@@ -262,6 +267,7 @@ Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yikes!
 Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: user 'step.fun' returns a vector of 3 state variables but 2 are expected: compare initial conditions?
 > po %>% trajectory(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
 [1] 1
+> 
 > pomp(po,
 +      skeleton=map(function(x,t,params,...){
 +          with(as.list(c(x,params)),
@@ -274,10 +280,24 @@ Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: variable 'clarence
 Error in trajectory.internal(object = object, params = params, times = times,  : 
   variable 'clarence' not found among the state variables
 > 
+> pomp(parus.bh,
++      dmeasure=function(y,x,t,params,log,...){
++          c(33,22)
++      },
++      rmeasure=function(y,x,t,params,log,...){
++          c(N=33,S=22)
++      }) -> po
+> try(dmeasure(po,x=simulate(parus.bh,states=T),y=obs(po),times=time(po),params=coef(po)))
+Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
+  user 'dmeasure' return a vector of length 2 when it should return a scalar
+> try(rmeasure(po,x=simulate(parus.bh,states=T),y=obs(po),times=time(po),params=coef(po)))
+Error in rmeasure.internal(object = object, x = x, times = times, params = params,  : 
+  user 'rmeasure' returns a vector of 2 observables but 1 are expected: compare 'data' slot?
+> 
 > dev.off()
 null device 
           1 
 > 
 > proc.time()
    user  system elapsed 
-  2.612   0.220   3.123 
+  2.588   0.268   3.140 
