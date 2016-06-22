@@ -4,10 +4,6 @@ reulermultinom <- function (n = 1, size, rate, dt) {
         error = function (e) {
             stop("in ",sQuote("reulermultinom"),": ",
                  conditionMessage(e),call.=FALSE)
-        },
-        warning = function (e) {
-            warning("in ",sQuote("reulermultinom"),": ",
-                    conditionMessage(e),call.=FALSE)
         }
     )
 }
@@ -18,10 +14,6 @@ deulermultinom <- function (x, size, rate, dt, log = FALSE) {
         error = function (e) {
             stop("in ",sQuote("deulermultinom"),": ",
                  conditionMessage(e),call.=FALSE)
-        },
-        warning = function (e) {
-            warning("in ",sQuote("deulermultinom"),": ",
-                    conditionMessage(e),call.=FALSE)
         }
     )
 }
@@ -32,10 +24,6 @@ rgammawn <- function (n = 1, sigma, dt) {
         error = function (e) {
             stop("in ",sQuote("rgammwn"),": ",
                  conditionMessage(e),call.=FALSE)
-        },
-        warning = function (e) {
-            warning("in ",sQuote("rgammawn"),": ",
-                    conditionMessage(e),call.=FALSE)
         }
     )
 }
