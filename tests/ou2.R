@@ -27,6 +27,11 @@ try(coef(ignore) <- c(3,2))
 coef(ignore) <- c(a=3,b=2)
 coef(ignore,transform=TRUE) <- c(a=3,b=2)
 
+try(simulate(ou2,times=c(3,2,1)))
+try(simulate(ou2,times=c(1,2,2)))
+try(simulate(ou2,times=c(-1,0,1)))
+try(simulate(ou2,times=numeric()))
+
 set.seed(577639485L)
 
 kalman.filter <- function (y, x0, a, b, sigma, tau) {

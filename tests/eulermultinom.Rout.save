@@ -117,4 +117,4 @@ Error : in 'rgammwn': negative length vectors are not allowed
 > 
 > proc.time()
    user  system elapsed 
-  0.276   0.000   0.268 
+  0.568   0.048   0.589 

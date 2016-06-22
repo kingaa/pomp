@@ -184,7 +184,7 @@ newly created object(s):
 > pars1["N.0",] <- c(3,5,7)
 > try(xstart <- init.state(po,params=pars1,nsim=8))
 Error in init.state.internal(object = object, params = params, t0 = t0,  : 
-  number of desired state-vectors 'nsim' is not a multiple of 'ncol(params)'
+  in 'init.state': number of desired state-vectors 'nsim' is not a multiple of ncol('params')
 > xstart <- init.state(po,params=pars1,nsim=6)
 > rprocess(po,xstart,times=0:5,params=pars1)[1,4:6,6]
 [1] 1.541761e-07 9.269916e-01 3.430565e+00
@@ -402,4 +402,4 @@ Error : in 'simulate': 'nsim' must be a single integer
 > 
 > proc.time()
    user  system elapsed 
-  0.560   0.056   0.654 
+  1.432   0.216   1.825 

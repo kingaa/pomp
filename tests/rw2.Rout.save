@@ -163,7 +163,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x388a570>
+<environment: 0x33a2ef8>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -176,12 +176,12 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x388a570>
+<environment: 0x33a2ef8>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
 native function '_pomp_default_dprior', dynamically loaded from 'pomp'
-skeleton ( map ) = 
+skeleton (map) = 
 function not specified
 initializer = 
 function (params, t0, ...) 
@@ -203,14 +203,14 @@ $useless
 > try(
 +     simulate(rw2,params=p)
 +     )
-Error : in 'simulate': a state variable and a parameter share a single name: 'x1.0'
+Error : in 'simulate': in 'init.state': a state variable and a parameter share a single name: 'x1.0'
 > 
 > rw2 <- pomp(rw2,initializer=crap.initializer)
 > 
 > try(
 +     simulate(rw2,params=p)
 +     )
-Error : in 'simulate': user initializer returns vectors of non-uniform length
+Error : in 'simulate': in 'init.state': user initializer returns vectors of non-uniform length
 > 
 > rw2 <- pomp(
 +             rprocess = rw.rprocess,
@@ -334,4 +334,4 @@ Error : in 'time<-': the times specified must be an increasing sequence
 > 
 > proc.time()
    user  system elapsed 
-  0.976   0.056   0.993 
+  1.008   0.048   1.034 
