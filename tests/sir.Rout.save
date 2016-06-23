@@ -190,7 +190,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 call. = FALSE)
         })
 }
-<environment: 0x3ce4358>
+<environment: 0x2878890>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -202,7 +202,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
             call. = FALSE)
     })
 }
-<environment: 0x3d19c68>
+<environment: 0x28ae1a0>
 measurement model simulator, rmeasure = 
 native function '__pomp_rmeasure', defined by a Csnippet
 measurement model density, dmeasure = 
@@ -224,7 +224,7 @@ prior simulator, rprior =
 function not specified
 prior density, dprior = 
 native function '_pomp_default_dprior', dynamically loaded from 'pomp'
-skeleton ( vectorfield ) = 
+skeleton (vectorfield) = 
 function (x, t, params, covars, ...) 
 {
     xdot <- rep(0, length(x))
@@ -238,7 +238,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x2c57c08>
+<environment: 0x17ddbc8>
 initializer = 
 function (params, t0, ...) 
 {
@@ -449,4 +449,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  6.760   0.336   7.375 
+  7.068   0.280   7.664 

@@ -26,11 +26,11 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   if (LENGTH(nsim)<1)
     error("'nsim' must be a single integer");
   if (LENGTH(nsim)>1)
-    warning("in 'simulate': only the first number in 'nsim' is significant");
+    warningcall(R_NilValue,"in 'simulate': only the first number in 'nsim' is significant");
 
   nsims = INTEGER(AS_INTEGER(nsim))[0]; // number of simulations per parameter set
   if (nsims < 1) {			// no work to do  
-    warning("in 'simulate': nsim < 1: no work to do");
+    warningcall(R_NilValue,"in 'simulate': nsim < 1: no work to do");
     UNPROTECT(nprotect);
     return R_NilValue;
   }

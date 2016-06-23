@@ -388,18 +388,16 @@ Error in dprocess.internal(object = object, x = x, times = times, params = param
 > try(simulate(ou2,nsim=0))
 NULL
 Warning message:
-In doTryCatch(return(expr), name, parentenv, handler) :
-  in 'simulate': nsim < 1: no work to do
+in 'simulate': nsim < 1: no work to do 
 > try(class(simulate(ou2,nsim=c(1,20))))
 [1] "pomp"
 attr(,"package")
 [1] "pomp"
 Warning message:
-In doTryCatch(return(expr), name, parentenv, handler) :
-  in 'simulate': only the first number in 'nsim' is significant
+in 'simulate': only the first number in 'nsim' is significant 
 > try(simulate(ou2,nsim=numeric(0)))
 Error : in 'simulate': 'nsim' must be a single integer
 > 
 > proc.time()
    user  system elapsed 
-  1.432   0.216   1.825 
+  1.296   0.212   1.662 
