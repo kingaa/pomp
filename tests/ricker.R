@@ -46,4 +46,31 @@ coef(po,"new") <- 3
 plot(simulate(po))
 coef(po)
 
+pomp(ricker,
+     rprocess=discrete.time.sim(
+         Csnippet("if (runif(0,1)<0.5) error(\"yow!\");")),
+     skeleton=map(Csnippet("error(\"yipes!\");"))
+     ) -> po
+try(simulate(po))
+try(pfilter(po,Np=1000))
+try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
+try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
+try(trajectory(po))
+try(probe(po,probes=list(mean=probe.mean("y"))))
+try(spect(po,kernel.width=3,nsim=c(100,0)))
+
+pomp(ricker,
+     rmeasure=Csnippet("if (runif(0,1)<0.5) error(\"yikes!\");")
+     ) -> po
+try(simulate(po))
+try(probe(po,probes=list(mean=probe.mean("y"))))
+try(spect(po,kernel.width=3,nsim=100))
+
+pomp(ricker,
+     dmeasure=Csnippet("error(\"oof!\");")
+     ) -> po
+try(pfilter(po,Np=1000))
+try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
+try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
+
 dev.off()

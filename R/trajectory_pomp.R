@@ -51,7 +51,13 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
 
     if (type=="map") {
 
-        x <- .Call(iterate_map,object,times,t0,x0,params,.getnativesymbolinfo)
+        x <- tryCatch(
+            .Call(iterate_map,object,times,t0,x0,params,.getnativesymbolinfo),
+            error = function (e) {
+                stop(ep,"in map iterator: ",
+                     conditionMessage(e),call.=FALSE)
+            }
+        )
         .getnativesymbolinfo <- FALSE
         
     } else if (type=="vectorfield") {
