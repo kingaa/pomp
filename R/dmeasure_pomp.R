@@ -1,10 +1,14 @@
 ## evaluate the measurement model density function
 
 dmeasure.internal <- function (object, y, x, times, params, log = FALSE, .getnativesymbolinfo = TRUE, ...) {
-  pompLoad(object)
-  rv <- .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)
-  pompUnload(object)
-  rv
+    storage.mode(y) <- "double"
+    storage.mode(x) <- "double"
+    storage.mode(times) <- "double"
+    storage.mode(params) <- "double"
+    pompLoad(object)
+    rv <- .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)
+    pompUnload(object)
+    rv
 }
 
 setMethod(

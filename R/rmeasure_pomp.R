@@ -2,6 +2,9 @@
 
 rmeasure.internal <- function (object, x, times, params,
                                .getnativesymbolinfo = TRUE, ...) {
+    storage.mode(x) <- "double"
+    storage.mode(times) <- "double"
+    storage.mode(params) <- "double"
     pompLoad(object)
     rv <- .Call(do_rmeasure,object,x,times,params,.getnativesymbolinfo)
     pompUnload(object)

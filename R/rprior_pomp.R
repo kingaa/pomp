@@ -1,6 +1,7 @@
 ## simulate from the prior
 
 rprior.internal <- function (object, params, .getnativesymbolinfo = TRUE, ...) {
+    storage.mode(params) <- "double"
     pompLoad(object)
     rv <- .Call(do_rprior,object,params,.getnativesymbolinfo)
     pompUnload(object)

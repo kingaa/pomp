@@ -31,6 +31,8 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
         if (length(params)==0) {
             stop(ep,sQuote("params")," must be supplied",call.=FALSE)
         }
+    } else {
+        storage.mode(params) <- "double"
     }
     params <- as.matrix(params)
     nrep <- ncol(params)
