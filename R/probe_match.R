@@ -177,16 +177,23 @@ setMethod(
 
         coef(object) <- m$params
         
-        pompUnload(object)
-        
-        new(
-            "probe.matched.pomp",
+        pb <- tryCatch(
             probe(
                 object,
                 probes=probes,
                 nsim=nsim,
                 seed=seed
             ),
+            error = function (e) {
+                stop(ep,conditionMessage(e),call.=FALSE)
+            }
+        )
+
+        pompUnload(object)
+        
+        new(
+            "probe.matched.pomp",
+            pb,
             transform=transform,
             est=est,
             fail.value=fail.value,
@@ -204,21 +211,14 @@ setMethod(
     function(object, probes, nsim, seed, ...,
              verbose = getOption("verbose"))
     {            
-
         if (missing(probes)) probes <- object@probes
         if (missing(nsim)) nsim <- nrow(object@simvals)
         if (missing(seed)) seed <- object@seed
         
         f <- selectMethod("probe.match","pomp")
 
-        f(
-            object=object,
-            probes=probes,
-            nsim=nsim,
-            seed=seed,
-            verbose=verbose,
-            ...
-        )
+        f(object=object,probes=probes,nsim=nsim,seed=seed,
+          verbose=verbose,...)
     }
 )
 
@@ -228,7 +228,6 @@ setMethod(
     function(object, est, probes, nsim, seed, transform,
              fail.value, ..., verbose = getOption("verbose"))
     {
-
         if (missing(est)) est <- object@est
         if (missing(probes)) probes <- object@probes
         if (missing(nsim)) nsim <- nrow(object@simvals)
@@ -238,16 +237,7 @@ setMethod(
         
         f <- selectMethod("probe.match","pomp")
 
-        f(
-            object=object,
-            est=est,
-            probes=probes,
-            nsim=nsim,
-            seed=seed,
-            transform=transform,
-            fail.value=fail.value,
-            verbose=verbose,
-            ...
-        )
+        f(object=object,est=est,probes=probes,nsim=nsim,seed=seed,
+            transform=transform,fail.value=fail.value,verbose=verbose,...)
     }
 )
