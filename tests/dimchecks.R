@@ -156,3 +156,40 @@ stopifnot(identical(
 try(simulate(ou2,nsim=0))
 try(class(simulate(ou2,nsim=c(1,20))))
 try(simulate(ou2,nsim=numeric(0)))
+
+po <- simulate(ou2,times=1:5)
+xs <- xstart <- init.state(po)
+tt <- t <- time(po)
+xx <- x <- states(po)
+pp <- p <- coef(po)
+yy <- y <- obs(po)
+storage.mode(xs) <- "integer"
+storage.mode(xx) <- "integer"
+storage.mode(pp) <- "integer"
+storage.mode(tt) <- "integer"
+storage.mode(yy) <- "integer"
+dim(rprocess(po,xstart=xs,times=t,params=p))
+dim(rprocess(po,xstart=xstart,times=t,params=pp))
+dim(rprocess(po,xstart=xs,times=t,params=p))
+dim(rprocess(po,xstart=xstart,times=tt,params=p))
+dim(rmeasure(po,x=xx,params=p,times=t))
+dim(rmeasure(po,x=x,params=pp,times=t))
+dim(rmeasure(po,x=x,params=p,times=tt))
+dim(dprocess(po,x=xx,params=p,times=t))
+dim(dprocess(po,x=x,params=pp,times=t))
+dim(dprocess(po,x=x,params=p,times=tt))
+dim(dmeasure(po,y=yy,x=x,params=p,times=t))
+dim(dmeasure(po,y=y,x=xx,params=p,times=t))
+dim(dmeasure(po,y=y,x=x,params=pp,times=t))
+dim(dmeasure(po,y=y,x=x,params=p,times=tt))
+dim(init.state(po,params=p,t0=t))
+dim(init.state(po,params=pp,t0=t))
+dim(init.state(po,params=p,t0=tt))
+dim(skeleton(po,x=xx,t=t,params=p))
+dim(skeleton(po,x=x,t=tt,params=p))
+dim(skeleton(po,x=x,t=t,params=pp))
+dim(trajectory(po,times=tt,params=p))
+dim(trajectory(po,times=t,params=pp))
+length(dprior(po,params=p))
+length(dprior(po,params=pp))
+

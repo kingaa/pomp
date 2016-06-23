@@ -2,7 +2,6 @@
 
 dprocess.internal <- function (object, x, times, params, log = FALSE, .getnativesymbolinfo = TRUE, ...) {
     storage.mode(x) <- "double"
-    storage.mode(times) <- "double"
     storage.mode(params) <- "double"
     pompLoad(object)
     rv <- .Call(do_dprocess,object,x,times,params,log,.getnativesymbolinfo)

@@ -3,7 +3,6 @@
 dmeasure.internal <- function (object, y, x, times, params, log = FALSE, .getnativesymbolinfo = TRUE, ...) {
     storage.mode(y) <- "double"
     storage.mode(x) <- "double"
-    storage.mode(times) <- "double"
     storage.mode(params) <- "double"
     pompLoad(object)
     rv <- .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)

@@ -374,6 +374,67 @@ in 'simulate': only the first number in 'nsim' is significant
 > try(simulate(ou2,nsim=numeric(0)))
 Error : in 'simulate': 'nsim' must be a single integer
 > 
+> po <- simulate(ou2,times=1:5)
+> xs <- xstart <- init.state(po)
+> tt <- t <- time(po)
+> xx <- x <- states(po)
+> pp <- p <- coef(po)
+> yy <- y <- obs(po)
+> storage.mode(xs) <- "integer"
+> storage.mode(xx) <- "integer"
+> storage.mode(pp) <- "integer"
+> storage.mode(tt) <- "integer"
+> storage.mode(yy) <- "integer"
+> dim(rprocess(po,xstart=xs,times=t,params=p))
+[1] 2 1 5
+> dim(rprocess(po,xstart=xstart,times=t,params=pp))
+[1] 2 1 5
+> dim(rprocess(po,xstart=xs,times=t,params=p))
+[1] 2 1 5
+> dim(rprocess(po,xstart=xstart,times=tt,params=p))
+[1] 2 1 5
+> dim(rmeasure(po,x=xx,params=p,times=t))
+[1] 2 1 5
+> dim(rmeasure(po,x=x,params=pp,times=t))
+[1] 2 1 5
+> dim(rmeasure(po,x=x,params=p,times=tt))
+[1] 2 1 5
+> dim(dprocess(po,x=xx,params=p,times=t))
+[1] 1 4
+> dim(dprocess(po,x=x,params=pp,times=t))
+[1] 1 4
+> dim(dprocess(po,x=x,params=p,times=tt))
+[1] 1 4
+> dim(dmeasure(po,y=yy,x=x,params=p,times=t))
+[1] 1 5
+> dim(dmeasure(po,y=y,x=xx,params=p,times=t))
+[1] 1 5
+> dim(dmeasure(po,y=y,x=x,params=pp,times=t))
+[1] 1 5
+> dim(dmeasure(po,y=y,x=x,params=p,times=tt))
+[1] 1 5
+> dim(init.state(po,params=p,t0=t))
+[1] 2 1
+> dim(init.state(po,params=pp,t0=t))
+[1] 2 1
+> dim(init.state(po,params=p,t0=tt))
+[1] 2 1
+> dim(skeleton(po,x=xx,t=t,params=p))
+[1] 2 1 5
+> dim(skeleton(po,x=x,t=tt,params=p))
+[1] 2 1 5
+> dim(skeleton(po,x=x,t=t,params=pp))
+[1] 2 1 5
+> dim(trajectory(po,times=tt,params=p))
+[1] 2 1 5
+> dim(trajectory(po,times=t,params=pp))
+[1] 2 1 5
+> length(dprior(po,params=p))
+[1] 1
+> length(dprior(po,params=pp))
+[1] 1
+> 
+> 
 > proc.time()
    user  system elapsed 
-  0.532   0.068   0.639 
+  1.372   0.196   1.743 
