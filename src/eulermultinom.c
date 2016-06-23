@@ -50,7 +50,7 @@ SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP dt, SEXP log) {
   SEXP f;
   dim = INTEGER(GET_DIM(x));
   if (dim[0] != ntrans)
-    error("NROW('x') should match length of 'rate'");
+    errorcall(R_NilValue,"NROW('x') should match length of 'rate'");
   n = dim[1];
   if (length(size)>1)
     warningcall(R_NilValue,"in 'deulermultinom': only the first element of 'size' is meaningful");

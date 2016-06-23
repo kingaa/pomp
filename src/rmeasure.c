@@ -26,14 +26,14 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
   if (ntimes < 1)
-    error("rmeasure error: length('times') = 0, no work to do");
+    errorcall(R_NilValue,"in 'rmeasure': length('times') = 0, no work to do");
 
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepsx = dim[1]; 
 
   if (ntimes != dim[2])
-    error("rmeasure error: length of 'times' and 3rd dimension of 'x' do not agree");
+    errorcall(R_NilValue,"in 'rmeasure': length of 'times' and 3rd dimension of 'x' do not agree");
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
@@ -42,7 +42,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
   if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
-    error("rmeasure error: larger number of replicates is not a multiple of smaller");
+    errorcall(R_NilValue,"in 'rmeasure': larger number of replicates is not a multiple of smaller");
 
   dim = INTEGER(GET_DIM(GET_SLOT(object,install("data"))));
   nobs = dim[0];
@@ -115,7 +115,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   default:
 
-    error("unrecognized 'mode' slot in 'rmeasure'");
+    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'");
     break;
 
   }
@@ -157,7 +157,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 	    // evaluate the call
 	    PROTECT(ans = eval(fcall,rho)); nprotect++;
 	    if (LENGTH(ans) != nobs) {
-	      error("user 'rmeasure' returns a vector of %d observables but %d are expected: compare 'data' slot?",
+	      errorcall(R_NilValue,"in 'rmeasure': user 'rmeasure' returns a vector of %d observables but %d are expected: compare 'data' slot?",
 		    LENGTH(ans),nobs);
 	    }
 
@@ -231,7 +231,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   default:
 
-    error("unrecognized 'mode' slot in 'rmeasure'");
+    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'");
     break;
 
   }

@@ -114,4 +114,4 @@ in 'pfilter': 4 filtering failures occurred.
 > 
 > proc.time()
    user  system elapsed 
-  0.604   0.044   0.620 
+  0.280   0.024   0.294 

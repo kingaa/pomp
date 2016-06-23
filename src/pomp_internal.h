@@ -100,7 +100,7 @@ static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
   idx = INTEGER(index);
   for (k = 0; k < n; k++) {
     if (idx[k]==0) 
-      error("variable '%s' not found among the %s",
+      errorcall(R_NilValue,"variable '%s' not found among the %s",
 	    CHARACTER_DATA(STRING_ELT(nm,k)),
 	    where);
     idx[k] -= 1;

@@ -18,8 +18,8 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree) {
   double knots[nk];
   double *xdata, *ydata;
   int i;
-  if (deg < 0) error("bspline.basis error: must have degree > 0");
-  if (nb <= deg) error("bspline.basis error: must have nbasis > degree");
+  if (deg < 0) errorcall(R_NilValue,"must have degree > 0");
+  if (nb <= deg) errorcall(R_NilValue,"must have nbasis > degree");
   PROTECT(xr = AS_NUMERIC(x)); nprotect++;
   PROTECT(y = allocMatrix(REALSXP,nx,nb)); nprotect++;
   xdata = REAL(xr);
@@ -48,7 +48,7 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree) {
 //   int deg = INTEGER_VALUE(degree);
 
 //   if ((ival < 0) || (deg < 0) || (ival + deg >= nknots-1)) 
-//     error("bad arguments in 'bspline'");
+//     errorcall(R_NilValue,"bad arguments in 'bspline'");
 
 //   PROTECT(y = NEW_NUMERIC(nx)); nprotect++;
 //   bspline_internal(REAL(y),REAL(x),nx,ival,deg,REAL(knots));
@@ -66,10 +66,10 @@ SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period) {
   double pd = NUMERIC_VALUE(period);
   int j, k;
   double *xrd, *ydata, *val;
-  if (deg < 0) error("periodic_bspline_basis error: must have degree >= 0");
-  if (nb <= 0) error("periodic_bspline_basis error: must have nbasis > 0");
-  if (nb < deg) error("periodic_bspline_basis error: must have nbasis >= degree");
-  if (pd <= 0.0) error("periodic_bspline_basis error: must have period > 0");
+  if (deg < 0) errorcall(R_NilValue,"must have degree >= 0");
+  if (nb <= 0) errorcall(R_NilValue,"must have nbasis > 0");
+  if (nb < deg) errorcall(R_NilValue,"must have nbasis >= degree");
+  if (pd <= 0.0) errorcall(R_NilValue,"must have period > 0");
   PROTECT(xr = AS_NUMERIC(x)); nprotect++;
   xrd = REAL(xr);
   PROTECT(y = allocMatrix(REALSXP,nx,nb)); nprotect++;
@@ -91,10 +91,10 @@ void periodic_bspline_basis_eval (double x, double period, int degree, int nbasi
   double dx;
   int j, k;
 
-  if (period <= 0.0) error("periodic_bspline_basis_eval error: must have period > 0");
-  if (nbasis <= 0) error("periodic_bspline_basis_eval error: must have nbasis > 0");
-  if (degree < 0) error("periodic_bspline_basis_eval error: must have degree >= 0");
-  if (nbasis < degree) error("periodic_bspline_basis_eval error: must have nbasis >= degree");
+  if (period <= 0.0) errorcall(R_NilValue,"must have period > 0");
+  if (nbasis <= 0) errorcall(R_NilValue,"must have nbasis > 0");
+  if (degree < 0) errorcall(R_NilValue,"must have degree >= 0");
+  if (nbasis < degree) errorcall(R_NilValue,"must have nbasis >= degree");
 
   knots = (double *) Calloc(nknots+degree+1,double);
   yy = (double *) Calloc(nknots,double);

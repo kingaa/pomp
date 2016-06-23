@@ -20,12 +20,12 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
 
   ntimes = length(times);
   if (ntimes < 2) {
-    error("rprocess error: length(times)<2: with no transitions, there is no work to do.");
+    errorcall(R_NilValue,"in 'rprocess': length(times)<2: with no transitions, there is no work to do.");
   }
 
   off = *(INTEGER(AS_INTEGER(offset)));
   if ((off < 0)||(off>=ntimes))
-    error("illegal 'offset' value %d",off);
+    errorcall(R_NilValue,"illegal 'offset' value %d",off);
 
   PROTECT(xstart = as_matrix(xstart)); nprotect++;
   PROTECT(dimXstart = GET_DIM(xstart)); nprotect++;
@@ -39,7 +39,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
 
   if (nrepsx > nreps) {		// more ICs than parameters
     if (nrepsx % nreps != 0) {
-      error("rprocess error: the larger number of replicates is not a multiple of smaller.");
+      errorcall(R_NilValue,"in 'rprocess': the larger number of replicates is not a multiple of smaller.");
     } else {
       double *src, *tgt;
       int dims[2];
@@ -59,7 +59,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     nreps = nrepsx;
   } else if (nrepsx < nreps) {	// more parameters than ICs
     if (nreps % nrepsx != 0) {
-      error("rprocess error: the larger number of replicates is not a multiple of smaller.");
+      errorcall(R_NilValue,"in 'rprocess': the larger number of replicates is not a multiple of smaller.");
     } else {
       double *src, *tgt;
       int dims[2];
@@ -101,14 +101,14 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   PROTECT(X = eval(fcall,rho)); nprotect++; // do the call
   PROTECT(dimX = GET_DIM(X)); nprotect++;
   if ((isNull(dimX)) || (length(dimX) != 3)) {
-    error("rprocess error: user 'rprocess' must return a rank-3 array");
+    errorcall(R_NilValue,"in 'rprocess': user 'rprocess' must return a rank-3 array");
   }
   xdim = INTEGER(dimX);
   if ((xdim[0] != nvars) || (xdim[1] != nreps) || (xdim[2] != ntimes)) {
-    error("rprocess error: user 'rprocess' must return a %d x %d x %d array",nvars,nreps,ntimes);
+    errorcall(R_NilValue,"in 'rprocess': user 'rprocess' must return a %d x %d x %d array",nvars,nreps,ntimes);
   }
   if (isNull(GET_ROWNAMES(GET_DIMNAMES(X)))) {
-    error("rprocess error: user 'rprocess' must return an array with rownames");
+    errorcall(R_NilValue,"in 'rprocess': user 'rprocess' must return an array with rownames");
   }
   if (off > 0) {
     xdim[2] -= off;

@@ -30,7 +30,7 @@ SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t) {
   length = dim[0]; width = dim[1];
   if (length != LENGTH(ttable)) {
     UNPROTECT(nprotect);
-    error("incommensurate dimensions in 'lookup_in_table'");
+    errorcall(R_NilValue,"in 'lookup_in_table': incommensurate dimensions");
   }
 
   if (nt > 1) {
@@ -60,7 +60,7 @@ void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt)
   tab->index = findInterval(tab->x,tab->length,x,TRUE,TRUE,tab->index,&flag);
   // warn only if we are *outside* the interval
   if ((x < tab->x[0]) || (x > tab->x[(tab->length)-1]))
-    warning("in 'table_lookup': extrapolating at %le", x);
+    warningcall(R_NilValue,"in 'table_lookup': extrapolating at %le", x);
   e = (x - tab->x[tab->index-1]) / (tab->x[tab->index] - tab->x[tab->index-1]);
   for (j = 0; j < tab->width; j++) {
     k = j*(tab->length)+(tab->index);

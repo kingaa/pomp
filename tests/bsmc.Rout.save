@@ -83,4 +83,4 @@ Error : in 'bsmc': 'lower' and 'upper' must each have length 1 or length equal t
 > 
 > proc.time()
    user  system elapsed 
-   4.32    0.11    4.41 
+  3.456   0.032   3.475 

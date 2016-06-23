@@ -89,7 +89,7 @@ SEXP euler_model_simulator (SEXP func,
     break;
 
   default:
-    error("unrecognized 'mode' %d in 'euler_simulator'",mode);
+    errorcall(R_NilValue,"unrecognized 'mode' %d",mode);
     break;
   }
 
@@ -128,7 +128,7 @@ SEXP euler_model_simulator (SEXP func,
       R_CheckUserInterrupt();
 	
       if (t > time[step]) {
-	error("'times' is not an increasing sequence");
+	errorcall(R_NilValue,"'times' is not an increasing sequence");
       }
 
       memcpy(xt,xs,nreps*nvars*sizeof(double));
@@ -152,7 +152,7 @@ SEXP euler_model_simulator (SEXP func,
 	nstep = num_map_steps(t,time[step],dt);
 	break;
       default:
-	error("unrecognized 'method' in 'euler_model_simulator'");
+	errorcall(R_NilValue,"unrecognized 'method'");
 	break;
       }
 
@@ -183,7 +183,7 @@ SEXP euler_model_simulator (SEXP func,
 
 	      	PROTECT(ans = eval(fcall,rho));	nprotect++; // evaluate the call
 	      	if (LENGTH(ans) != nvars) {
-	      	  error("user 'step.fun' returns a vector of %d state variables but %d are expected: compare initial conditions?",
+	      	  errorcall(R_NilValue,"user 'step.fun' returns a vector of %d state variables but %d are expected: compare initial conditions?",
 	      		LENGTH(ans),nvars);
 	      	}
 		
@@ -219,7 +219,7 @@ SEXP euler_model_simulator (SEXP func,
 	    break;
 
 	  default:
-	    error("unrecognized 'mode' %d in 'euler_simulator'",mode);
+	    errorcall(R_NilValue,"unrecognized 'mode' %d",mode);
 	    break;
 	  }
 
@@ -329,7 +329,7 @@ SEXP euler_model_density (SEXP func,
     break;
 
   default:
-    error("unrecognized 'mode' %d in 'euler_model_density'",mode);
+    errorcall(R_NilValue,"unrecognized 'mode' %d",mode);
     break;
   }
 
@@ -419,7 +419,7 @@ SEXP euler_model_density (SEXP func,
     break;
 
   default:
-    error("unrecognized 'mode' %d in 'euler_model_density'",mode);
+    errorcall(R_NilValue,"unrecognized 'mode' %d",mode);
     break;
 
   }

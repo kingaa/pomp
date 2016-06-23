@@ -79,7 +79,7 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
   if (FIRST) {
     if (LENGTH(ans) != 1) {
       UNPROTECT(nprotect);
-      error("user 'rates' must return a single scalar rate.");
+      errorcall(R_NilValue,"user 'rates' must return a single scalar rate.");
     }
     FIRST = 0;
   }
@@ -202,9 +202,9 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   }
 
   if (iflag == 1) 
-    error("zero event rate in stochastic simulation algorithm.");
+    errorcall(R_NilValue,"zero event rate in stochastic simulation algorithm.");
   else if (iflag == 2) 
-    error("negative event rate in stochastic simulation algorithm.");
+    errorcall(R_NilValue,"negative event rate in stochastic simulation algorithm.");
 
   UNPROTECT(nprotect);
   return X;

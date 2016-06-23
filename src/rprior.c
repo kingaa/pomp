@@ -73,8 +73,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 	  // evaluate the call
 	  PROTECT(ans = eval(fcall,rho)); nprotect++;
 	  if (LENGTH(ans) != npars) {
-	    error("user 'rprior' returns a vector of %d parameters but %d are expected",
-		  LENGTH(ans),npars);
+	    errorcall(R_NilValue,"in 'rprior': user 'rprior' returns a vector of %d parameters but %d are expected",LENGTH(ans),npars);
 	  }
 	  
 	  // get name information to fix potential alignment problems
@@ -139,7 +138,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
   default:
 
-    error("unrecognized 'mode' slot in 'rprior'");
+    errorcall(R_NilValue,"in 'rprior': unrecognized 'mode'");
     break;
 
   }

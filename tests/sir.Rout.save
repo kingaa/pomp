@@ -190,7 +190,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 call. = FALSE)
         })
 }
-<environment: 0x2878890>
+<environment: 0x28203a8>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -202,7 +202,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
             call. = FALSE)
     })
 }
-<environment: 0x28ae1a0>
+<environment: 0x2856590>
 measurement model simulator, rmeasure = 
 native function '__pomp_rmeasure', defined by a Csnippet
 measurement model density, dmeasure = 
@@ -238,7 +238,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x17ddbc8>
+<environment: 0x177ca38>
 initializer = 
 function (params, t0, ...) 
 {
@@ -449,4 +449,4 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 > 
 > proc.time()
    user  system elapsed 
-  7.068   0.280   7.664 
+  4.608   0.100   4.800 

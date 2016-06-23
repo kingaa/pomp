@@ -15,7 +15,7 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
   for (i = 0; i < nprobe; i++) {
     SET_ELEMENT(vals,i,eval(lang2(VECTOR_ELT(probes,i),data),CLOENV(VECTOR_ELT(probes,i))));
     if (!IS_NUMERIC(VECTOR_ELT(vals,i))) {
-      error("probe %ld returns a non-numeric result",i);
+      errorcall(R_NilValue,"probe %ld returns a non-numeric result",i);
     }
   }
 
@@ -36,7 +36,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
 
   PROTECT(nsim = AS_INTEGER(nsim)); nprotect++;
   if ((LENGTH(nsim)>1) || (INTEGER(nsim)[0]<=0))
-    error("'nsim' must be a positive integer");
+    errorcall(R_NilValue,"'nsim' must be a positive integer");
 
   // 'names' holds the names of the probe values
   // we get these from a previous call to 'apply_probe_data'
@@ -98,17 +98,17 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
       // evaluate the probe on the simulated data
       PROTECT(val = eval(lang2(VECTOR_ELT(probes,p),x),CLOENV(VECTOR_ELT(probes,p))));
       if (!IS_NUMERIC(val)) {
-	error("probe %ld returns a non-numeric result",p);
+	errorcall(R_NilValue,"probe %ld returns a non-numeric result",p);
       }
 
       len = LENGTH(val);
       if (s == 0)
 	len0 = len;
       else if (len != len0) {
-	error("variable-sized results returned by probe %ld",p);
+	errorcall(R_NilValue,"variable-sized results returned by probe %ld",p);
       }
       if (k+len > nvals)
-	error("probes return different number of values on different datasets");
+	errorcall(R_NilValue,"probes return different number of values on different datasets");
 
       xp = REAL(retval); yp = REAL(val);
       for (i = 0; i < len; i++) xp[s+nsims*(i+k)] = yp[i];
@@ -118,7 +118,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
     
   }
   if (k != nvals)
-    error("probes return different number of values on different datasets");
+    errorcall(R_NilValue,"probes return different number of values on different datasets");
   
   UNPROTECT(nprotect);
   return retval;

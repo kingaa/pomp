@@ -29,7 +29,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
   npar = dim[0]; nrep = dim[1]; 
 
   if (ns % nrep != 0) 
-    error("in 'init.state': number of desired state-vectors 'nsim' is not a multiple of ncol('params')");
+    errorcall(R_NilValue,"in 'init.state': number of desired state-vectors 'nsim' is not a multiple of ncol('params')");
 
   definit = *(INTEGER(GET_SLOT(object,install("default.init"))));
 
@@ -58,7 +58,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     
     nvar = LENGTH(ivpnames);
     if (nvar < 1) {
-      error("in 'init.state': how shall I initialize the state process? See '?pomp'.");
+      errorcall(R_NilValue,"in 'init.state': how shall I initialize the state process? See '?pomp'.");
     }
     pidx = INTEGER(PROTECT(match(Pnames,ivpnames,0))); nprotect++;
     for (k = 0; k < nvar; k++) pidx[k]--;
@@ -141,7 +141,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	
 	if (!IS_NUMERIC(x1) || isNull(Snames)) {
 	  UNPROTECT(nprotect);
-	  error("in 'init.state': user 'initializer' must return a named numeric vector");
+	  errorcall(R_NilValue,"in 'init.state': user 'initializer' must return a named numeric vector");
 	}
 	
 	nvar = LENGTH(x1);
@@ -151,7 +151,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	for (j = 0; j < nvar; j++) {
 	  if (midx[j]!=0) {
 	    UNPROTECT(nprotect);
-	    error("in 'init.state': a state variable and a parameter share a single name: '%s'",CHARACTER_DATA(STRING_ELT(Snames,j)));
+	    errorcall(R_NilValue,"in 'init.state': a state variable and a parameter share a single name: '%s'",CHARACTER_DATA(STRING_ELT(Snames,j)));
 	  }
 	}
 	
@@ -168,7 +168,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	  PROTECT(x2 = eval(fcall,rho));
 	  xp = REAL(x2);
 	  if (LENGTH(x2)!=nvar)
-	    error("in 'init.state': user initializer returns vectors of non-uniform length");
+	    errorcall(R_NilValue,"in 'init.state': user initializer returns vectors of non-uniform length");
 	  memcpy(xt,xp,nvar*sizeof(double));
 	  UNPROTECT(1);
 	} 
@@ -222,7 +222,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       
     default:
       
-      error("unrecognized 'mode' slot in 'init.state'");
+      errorcall(R_NilValue,"in 'init.state': unrecognized 'mode'");
       break;
 
     }

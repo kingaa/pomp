@@ -275,8 +275,7 @@ Error : in 'simulate': in 'discrete.time.sim' plugin: user 'step.fun' returns a 
 > try(po %>% simulate(times=1960:2000))
 Error : in 'simulate': in 'discrete.time.sim' plugin: variable 'clarence' not found among the state variables
 > try(po %>% trajectory(times=1960:2000))
-Error in trajectory.internal(object = object, params = params, times = times,  : 
-  variable 'clarence' not found among the state variables
+Error : variable 'clarence' not found among the state variables
 > 
 > pomp(parus.bh,
 +      dmeasure=function(y,x,t,params,log,...){
@@ -286,11 +285,9 @@ Error in trajectory.internal(object = object, params = params, times = times,  :
 +          c(N=33,S=22)
 +      }) -> po
 > try(dmeasure(po,x=simulate(parus.bh,states=T),y=obs(po),times=time(po),params=coef(po)))
-Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
-  user 'dmeasure' return a vector of length 2 when it should return a scalar
+Error : in 'dmeasure': user 'dmeasure' returns a vector of length 2 when it should return a scalar
 > try(rmeasure(po,x=simulate(parus.bh,states=T),y=obs(po),times=time(po),params=coef(po)))
-Error in rmeasure.internal(object = object, x = x, times = times, params = params,  : 
-  user 'rmeasure' returns a vector of 2 observables but 1 are expected: compare 'data' slot?
+Error : in 'rmeasure': user 'rmeasure' returns a vector of 2 observables but 1 are expected: compare 'data' slot?
 > 
 > dev.off()
 null device 
@@ -298,4 +295,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  2.832   0.392   3.646 
+  2.876   0.324   3.624 

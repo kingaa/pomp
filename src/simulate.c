@@ -24,7 +24,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   *(INTEGER(offset)) = 1;
 
   if (LENGTH(nsim)<1)
-    error("'nsim' must be a single integer");
+    errorcall(R_NilValue,"'nsim' must be a single integer");
   if (LENGTH(nsim)>1)
     warningcall(R_NilValue,"in 'simulate': only the first number in 'nsim' is significant");
 
@@ -57,7 +57,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   ntimes = LENGTH(times);
 
   if (ntimes < 1)
-    error("if 'times' is empty, there is no work to do");
+    errorcall(R_NilValue,"if 'times' is empty, there is no work to do");
   
   PROTECT(alltimes = NEW_NUMERIC(ntimes+1)); nprotect++;
   tt = *(REAL(t0));
@@ -65,14 +65,14 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   t = REAL(alltimes);
 
   if (tt > *s)
-    error("the zero-time 't0' must occur no later than the first observation 'times[1]'");
+    errorcall(R_NilValue,"the zero-time 't0' must occur no later than the first observation 'times[1]'");
   
   *(t++) = tt;			// copy t0 into alltimes[1]
   tt = *(t++) = *(s++);		// copy times[1] into alltimes[2]
   
   for (j = 1; j < ntimes; j++) { // copy times[2:ntimes] into alltimes[3:(ntimes+1)]
     if (tt >= *s)
-      error("'times' must be an increasing sequence of times");
+      errorcall(R_NilValue,"'times' must be an increasing sequence of times");
     tt = *(t++) = *(s++);
   }
 

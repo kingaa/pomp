@@ -163,7 +163,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x33a2ef8>
+<environment: 0x3b72650>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -176,7 +176,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x33a2ef8>
+<environment: 0x3b72650>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -334,4 +334,4 @@ Error : in 'time<-': the times specified must be an increasing sequence
 > 
 > proc.time()
    user  system elapsed 
-  1.008   0.048   1.034 
+  0.556   0.008   0.554 

@@ -31,8 +31,7 @@ newly created object(s):
 > try(trajectory(x))
 Error : in 'trajectory': 'params' must be supplied
 > try(trajectory(pomp(ou2,skeleton=NULL)))
-Error in trajectory.internal(object = object, params = params, times = times,  : 
-  operation cannot be completed: some needed function has not been specified
+Error : operation cannot be completed: some needed function has not been specified
 In addition: Warning message:
 in 'pomp': the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
@@ -196,4 +195,4 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > proc.time()
    user  system elapsed 
-  1.876   0.104   1.942 
+  1.176   0.032   1.197 

@@ -29,7 +29,13 @@ probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) 
     if (missing(params)) params <- coef(object)
 
     ## apply probes to data
-    datval <- .Call(apply_probe_data,object,probes)
+    datval <- tryCatch(
+        .Call(apply_probe_data,object,probes),
+        error = function (e) {
+            stop(ep,"applying probes to actual data: ",
+                 conditionMessage(e),call.=FALSE)
+        }
+    )
     nprobes <- length(datval)
     if (nprobes > nsim)
         stop(ep,sQuote("nsim"),"(=",nsim,
@@ -37,14 +43,20 @@ probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) 
              nprobes,")",call.=FALSE)
 
     ## apply probes to model simulations
-    simval <- .Call(
-        apply_probe_sim,
-        object=object,
-        nsim=nsim,
-        params=params,
-        seed=seed,
-        probes=probes,
-        datval=datval
+    simval <- tryCatch(
+        .Call(
+            apply_probe_sim,
+            object=object,
+            nsim=nsim,
+            params=params,
+            seed=seed,
+            probes=probes,
+            datval=datval
+        ),
+        error = function (e) {
+            stop(ep,"applying probes to simulated data: ",
+                 conditionMessage(e),call.=FALSE)
+        }
     )
     
     pvals <- numeric(nprobes)

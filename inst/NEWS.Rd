@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.5.8}{
+  \itemize{
+    \item Major improvements to error and warning handling.
+    \item Fix bugs that might arise in rare circumstances in \code{simulate} and \code{eulermultinom} functions.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.5.7}{
   \itemize{
     \item Many improvements to the test suite.

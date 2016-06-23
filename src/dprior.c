@@ -104,7 +104,7 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 
   default:
 
-    error("unrecognized 'mode' slot in 'dprior'");
+    errorcall(R_NilValue,"in 'dprior': unrecognized 'mode'");
     break;
 
   }

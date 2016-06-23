@@ -11,7 +11,7 @@ void nosort_resamp (int nw, double *w, int np, int *p, int offset)
   for (j = 1; j < nw; j++) w[j] += w[j-1];
 
   if (w[nw-1] <= 0.0)
-    error("non-positive sum of weights");
+    errorcall(R_NilValue,"non-positive sum of weights");
 
   du = w[nw-1] / ((double) np);
   u = runif(-du,0);

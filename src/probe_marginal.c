@@ -18,7 +18,7 @@ SEXP probe_marginal_setup (SEXP ref, SEXP order, SEXP diff) {
   nx = n - df;			      // nx = rows in model matrix
   dim[0] = nx; dim[1] = np;	      // dimensions of model matrix
 
-  if (nx < 1) error("must have diff < number of observations");
+  if (nx < 1) errorcall(R_NilValue,"must have diff < number of observations");
 
   PROTECT(z = duplicate(AS_NUMERIC(ref))); nprotect++;
   PROTECT(mm = makearray(2,dim)); nprotect++;
@@ -59,7 +59,7 @@ SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff) {
   nx = INTEGER(GET_DIM(mm))[0];	// nx = number of rows in model matrix
   np = INTEGER(GET_DIM(mm))[1];	// np = order of polynomial
   
-  if (n-df != nx) error("length of 'ref' must equal length of data");
+  if (n-df != nx) errorcall(R_NilValue,"length of 'ref' must equal length of data");
   PROTECT(X = duplicate(AS_NUMERIC(x))); nprotect++; 
    
   PROTECT(beta = NEW_NUMERIC(np)); nprotect++;

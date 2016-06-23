@@ -35,7 +35,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
     break;
   default:
-    error("impossible error");
+    errorcall(R_NilValue,"impossible error");
     break;
   }
   
@@ -81,7 +81,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
       PROTECT(nm = GET_NAMES(ans)); nprotect++;
       if (isNull(nm))
-	error("user transformation functions must return a named numeric vector");
+	errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
       
       // set up matrix to hold the results
       npar2 = LENGTH(ans);
@@ -106,7 +106,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
       
       PROTECT(tparams = eval(fcall,rho)); nprotect++;
       if (isNull(GET_NAMES(tparams)))
-	error("user transformation functions must return a named numeric vector");
+	errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
       
     }
 
@@ -136,7 +136,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     break;
 
   default:
-    error("unrecognized 'mode' slot in 'partrans'");
+    errorcall(R_NilValue,"in 'partrans': unrecognized 'mode'");
   }
 
   UNPROTECT(nprotect);

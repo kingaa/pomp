@@ -123,7 +123,7 @@ void ou2_pdf (double *f,
 	      int ncovars, const double *covars)
 {
   if (t2-t1 != 1)
-    error("ou2_pdf error: transitions must be consecutive");
+    errorcall(R_NilValue,"ou2_pdf error: transitions must be consecutive");
   f[0] = dens_ou2(x[X1],x[X2],z[X1],z[X2],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3,1);
 }
 

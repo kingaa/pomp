@@ -5,7 +5,12 @@ sobol <- function (vars, n) {
     if (!all(sapply(vars,function(x)is.numeric(x)&&(length(x)==2))))
         stop(ep,"each entry in ",sQuote("vars")," must specify a range",call.=FALSE)
     d <- length(vars)
-    x <- .Call("sobol_sequence",as.integer(c(d,n)))
+    x <- tryCatch(
+        .Call("sobol_sequence",as.integer(c(d,n))),
+        error = function (e) {
+            stop(ep,conditionMessage(e),call.=FALSE)
+        }
+    )
     y <- vapply(
         seq_len(d),
         function (k) {

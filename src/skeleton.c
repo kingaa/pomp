@@ -62,7 +62,7 @@ void eval_skeleton_R (double *f,
       if (first) {
 	PROTECT(ans = eval(fcall,rho)); nprotect++;
 	if (LENGTH(ans)!=nvars)
-	  error("user 'skeleton' returns a vector of %d state variables but %d are expected",LENGTH(ans),nvars);
+	  errorcall(R_NilValue,"in 'skeleton': user 'skeleton' returns a vector of %d state variables but %d are expected",LENGTH(ans),nvars);
 	// get name information to fix possible alignment problems
 	PROTECT(nm = GET_NAMES(ans)); nprotect++;
 	use_names = !isNull(nm);
@@ -103,7 +103,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepx = dim[1];
   if (ntimes != dim[2])
-    error("skeleton error: length of 't' and 3rd dimension of 'x' do not agree");
+    errorcall(R_NilValue,"in 'skeleton': length of 't' and 3rd dimension of 'x' do not agree");
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
@@ -112,7 +112,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   // 2nd dimension of 'x' and 'params' need not agree
   nreps = (nrepp > nrepx) ? nrepp : nrepx;
   if ((nreps % nrepp != 0) || (nreps % nrepx != 0))
-    error("skeleton error: 2nd dimensions of 'x' and 'params' are incompatible");
+    errorcall(R_NilValue,"in 'skeleton': 2nd dimensions of 'x' and 'params' are incompatible");
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
@@ -194,7 +194,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
     }
     break;
   default:
-    error("unrecognized 'mode' slot in 'skeleton'");
+    errorcall(R_NilValue,"in 'skeleton': unrecognized 'mode'");
     break;
   }
 

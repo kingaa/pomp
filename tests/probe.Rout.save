@@ -424,8 +424,7 @@ newly created object(s):
 +         seed=838775L
 +     )
 + )
-Error in probe.internal(object = object, probes = probes, params = params,  : 
-  variable-sized results returned by probe 2
+Error : in 'probe': applying probes to simulated data: variable-sized results returned by probe 2
 > 
 > try(
 +     probe(
@@ -439,8 +438,7 @@ Error in probe.internal(object = object, probes = probes, params = params,  :
 +         seed=838775L
 +     )
 + )
-Error in probe.internal(object = object, probes = probes, params = params,  : 
-  probes return different number of values on different datasets
+Error : in 'probe': applying probes to simulated data: probes return different number of values on different datasets
 > 
 > 
 > try(
@@ -455,8 +453,7 @@ Error in probe.internal(object = object, probes = probes, params = params,  :
 +         seed=838775L
 +     )
 + )
-Error in probe.internal(object = object, probes = probes, params = params,  : 
-  probes return different number of values on different datasets
+Error : in 'probe': applying probes to simulated data: probes return different number of values on different datasets
 > 
 > plot(probe(ricker,nsim=20,probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
 > 
@@ -466,4 +463,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 13.804   0.116  13.929 
+  14.04    0.04   14.05 

@@ -69,8 +69,7 @@ void iterate_map_R (double *X, double *time, double *p,
 	if (first) {
 	  PROTECT(ans = eval(fcall,rho)); nprotect++;
 	  if (LENGTH(ans)!=nvars)
-	    error("user 'skeleton' returns a vector of %d state variables but %d are expected",
-		  LENGTH(ans),nvars);
+	    errorcall(R_NilValue,"in 'trajectory': user 'skeleton' returns a vector of %d state variables but %d are expected",LENGTH(ans),nvars);
 	  // get name information to fix possible alignment problems
 	  PROTECT(nm = GET_NAMES(ans)); nprotect++;
 	  use_names = !isNull(nm);
@@ -121,7 +120,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   npars = dim[0];
 
   if (nreps != dim[1])
-    error("dimension mismatch in 'iterate_map' between 'x0' and 'params'");
+    errorcall(R_NilValue,"in 'trajectory': dimension mismatch between 'x0' and 'params'");
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = LENGTH(times);
@@ -208,7 +207,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
     }
     break;
   default:
-    error("unrecognized 'mode' in 'iterate_map'");
+    errorcall(R_NilValue,"in 'iterate_map': unrecognized 'mode'");
     break;
   }
 
@@ -351,7 +350,7 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
 
     break;
   default:
-    error("unrecognized 'mode' in 'pomp_desolve_setup'");
+    errorcall(R_NilValue,"in 'pomp_desolve_setup': unrecognized 'mode'");
     break;
   }
   UNPROTECT(nprotect);
@@ -377,7 +376,7 @@ void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, i
 			 &COMMON(covar_table),NAT(fun),NAT(args));
     break;
   default:
-    error("unrecognized 'mode' in 'pomp_vf_eval'");
+    errorcall(R_NilValue,"in 'pomp_vf_eval': unrecognized 'mode'");
     break;
   }
 }
@@ -420,7 +419,7 @@ void pomp_desolve_takedown (void) {
     NAT(cindex) = R_NilValue;
     break;
   default:
-    error("unrecognized 'mode' in 'pomp_desolve_takedown'");
+    errorcall(R_NilValue,"in 'pomp_desolve_takedown': unrecognized 'mode'");
     break;
   }
   COMMON(mode) = -1;

@@ -221,4 +221,4 @@ loglik  -479.0 -477.241     NA
 > 
 > proc.time()
    user  system elapsed 
-  2.728   0.092   2.793 
+  2.212   0.024   2.223 

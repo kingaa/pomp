@@ -72,7 +72,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
     break;
 
     case undef: default:
-      error("operation cannot be completed: some needed function has not been specified");
+      errorcall(R_NilValue,"operation cannot be completed: some needed function has not been specified");
   }
 
   UNPROTECT(nprotect);
@@ -96,7 +96,7 @@ SEXP load_stack_decr (SEXP pack) {
   pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
   ff = (void (*)(int *)) R_GetCCallable(pkg,"__pomp_load_stack_decr");
   ff(INTEGER(s));
-  if (*(INTEGER(s)) < 0) error("impossible!");
+  if (*(INTEGER(s)) < 0) errorcall(R_NilValue,"impossible!");
   UNPROTECT(1);
   return s;
 }

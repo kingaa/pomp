@@ -59,8 +59,14 @@ pmof.internal <- function (object, params, est, probes,
         stop(ep,sQuote("probes")," must be a function or a list of functions",call.=FALSE)
     if (!all(sapply(probes,function(f)length(formals(f))==1)))
         stop(ep,"each probe must be a function of a single argument",call.=FALSE)
-    
-    datval <- .Call(apply_probe_data,object,probes) # apply probes to data
+    ## apply probes to data
+    datval <- tryCatch(
+        .Call(apply_probe_data,object,probes),
+        error = function (e) {
+            stop(ep,"applying probes to actual data: ",
+                 conditionMessage(e),call.=FALSE)
+        }
+    )
     nprobes <- length(datval)
     if (nprobes > nsim)
         stop(ep,sQuote("nsim"),"(=",nsim,
@@ -76,14 +82,20 @@ pmof.internal <- function (object, params, est, probes,
             tparams <- partrans(object,params,dir="fromEstimationScale")
 
         ## apply probes to model simulations
-        simval <- .Call(
-            apply_probe_sim,
-            object=object,
-            nsim=nsim,
-            params=if (transform) tparams else params,
-            seed=seed,
-            probes=probes,
-            datval=datval
+        simval <- tryCatch(
+            .Call(
+                apply_probe_sim,
+                object=object,
+                nsim=nsim,
+                params=if (transform) tparams else params,
+                seed=seed,
+                probes=probes,
+                datval=datval
+            ),
+            error = function (e) {
+                stop(ep,"applying probes to simulated data: ",
+                     conditionMessage(e),call.=FALSE)
+            }
         )
         
         ll <- .Call(synth_loglik,simval,datval)
