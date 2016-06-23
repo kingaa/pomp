@@ -80,6 +80,8 @@ See '?pomp' for an explanation of the new syntax.
 Warning message:
 in 'pomp': the default 'skeleton.type="map"' is deprecated and will be removed in a future release.
 See '?pomp' for an explanation of the new syntax. 
+> try(pomp())
+Error : in 'pomp': 'data' is a required argument
 > try(pomp(as.matrix(dat),times=dat$time,t0=0) -> po)
 Error in validObject(.Object) : 
   invalid class "pomp" object: the length of 'times' should match the number of observations
@@ -139,6 +141,7 @@ Error : in 'pompExample': cannot find file 'bob.R'
 > pompExample("ricker")
 newly created object(s):
  ricker 
+> pomp(ricker) -> ricker
 > pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
 > simulate(po) -> po
 > ## force recompile
@@ -160,4 +163,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
-  0.572   0.068   0.731 
+  1.536   0.288   2.158 

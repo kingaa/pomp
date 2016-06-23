@@ -15,7 +15,6 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     ep <- paste0("in ",sQuote("pomp"),": ")
 
     ## preliminary error checking
-    if (missing(data)) stop(ep,sQuote("data")," is a required argument",call.=FALSE)
     if (missing(times)) stop(ep,sQuote("times")," is a required argument",call.=FALSE)
     if (missing(t0)) stop(ep,sQuote("t0")," is a required argument",call.=FALSE)
     if (missing(params)) params <- numeric(0)
@@ -506,12 +505,17 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                   obsnames, statenames, paramnames, covarnames, zeronames,
                   PACKAGE, fromEstimationScale, toEstimationScale,
                   globals, cdir, cfile) {
-    
+
     ep <- paste0("in ",sQuote("pomp"),": ")
+
+    if (missing(data))
+        stop(ep,sQuote("data")," is a required argument",call.=FALSE)
 
     if (is(data,"pomp")) {
         ## 'data' is a pomp object:
-        ## extract missing arguments from it        
+        ## extract missing arguments from it
+
+        if (nargs()==1) return(data)
 
         if (missing(times)) times <- data@times
         if (missing(t0)) t0 <- data@t0
@@ -754,4 +758,3 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         )
     }
 }
-

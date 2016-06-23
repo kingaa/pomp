@@ -44,6 +44,7 @@ pomp(dat$y,times=dat$time,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po
 plot(po)
 pomp(dat$y,times=dat$time,t0=0,
      skeleton=function(x,t,params,...){x}) -> po
+try(pomp())
 try(pomp(as.matrix(dat),times=dat$time,t0=0) -> po)
 pomp(t(as.matrix(dat)),times=dat$time,t0=0,
      skeleton.type="map",skelmap.delta.t=1) -> po
@@ -65,6 +66,7 @@ pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
 try(pompExample(bob))
 try(pompExample("bob"))
 pompExample("ricker")
+pomp(ricker) -> ricker
 pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
 simulate(po) -> po
 ## force recompile
