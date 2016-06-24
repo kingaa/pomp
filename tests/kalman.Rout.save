@@ -136,16 +136,14 @@ Type 'q()' to quit R.
 [1] TRUE
 > 
 > try({
-+     ev <- eigen(R)
-+     enkf(pf,h=function(x)C%*%x,Np=1000,
-+          R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
++     R <- matrix(c(1,0,1,0),2,2)
++     enkf(pf,h=function(x)C%*%x,Np=1000,R=R)
 + })
 Error : in ‘enkf’: degenerate ‘R’: the leading minor of order 2 is not positive definite
 > 
 > try({
 +     ev <- eigen(R)
-+     eakf(pf,C=C,Np=1000,
-+          R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
++     eakf(pf,C=C,Np=1000,R=R)
 + })
 Error : in ‘eakf’: degenerate ‘R’: Lapack routine dgesv: system is exactly singular: U[2,2] = 0
 > 

@@ -90,15 +90,13 @@ identical(enkf$pred.mean,pred.mean(enkf))
 identical(eakf$filter.mean,filter.mean(eakf))
 
 try({
-    ev <- eigen(R)
-    enkf(pf,h=function(x)C%*%x,Np=1000,
-         R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
+    R <- matrix(c(1,0,1,0),2,2)
+    enkf(pf,h=function(x)C%*%x,Np=1000,R=R)
 })
 
 try({
     ev <- eigen(R)
-    eakf(pf,C=C,Np=1000,
-         R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
+    eakf(pf,C=C,Np=1000,R=R)
 })
 
 dev.off()
