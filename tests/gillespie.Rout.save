@@ -139,9 +139,7 @@ Error : in ‘simulate’: in ‘gillespie.sim’ plugin: negative event rate in
 > try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 Error : in ‘simulate’: in ‘kleap.sim’ plugin: negative event rate in stochastic simulation algorithm.
 > 
-> rate.fun.bad <- function(j, x, t, params, covars, ...) {
-+     0
-+ }
+> rate.fun.bad <- function(j, x, t, params, covars, ...) 0
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
 Error : in ‘simulate’: in ‘gillespie.sim’ plugin: zero event rate in stochastic simulation algorithm.

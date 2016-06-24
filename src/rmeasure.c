@@ -229,11 +229,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     
     break;
 
-  default:
-
-    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'");
-    break;
-
   }
 
   UNPROTECT(nprotect);

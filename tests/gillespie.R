@@ -115,9 +115,7 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
 try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
 try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 
-rate.fun.bad <- function(j, x, t, params, covars, ...) {
-    0
-}
+rate.fun.bad <- function(j, x, t, params, covars, ...) 0
 
 try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
 try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())

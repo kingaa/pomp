@@ -87,7 +87,6 @@
             call gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,&
                  jevent,iflag,istate,ipar,ncovar,icovar,&
                  mcov,covars)
-            if(iflag.ne.0)goto 100
          else
 !=================
 ! Determine kappa (most accurate but slowest method)
@@ -102,14 +101,13 @@
                call gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,&
                     jevent,iflag,istate,ipar,ncovar,icovar,&
                     mcov,covars)
-               if(iflag.ne.0)goto 100
             else
                call kleap(fprob,kappa,t,f,y,v,d,par,n,m,ntreeh,npar,&
                     k,iflag,istate,ipar,ncovar,icovar,&
                     mcov,covars)
-               if(iflag.ne.0)goto 100
             endif
          endif
+         if(iflag.ne.0)goto 100
 !     
 ! Recording output at required time points
 !     
@@ -152,10 +150,10 @@
 ! Determine time interval and update time
 !=========================================
       fsum=f(1,ntreeh)
-      if(fsum.gt.0.0)then
+      if(fsum>0.0)then
          tstep=-log(p1)/fsum
          t=t+tstep
-      elseif(fsum.lt.0.0)then
+      elseif(fsum<0.0)then
          iflag=2
          goto 500
       else
@@ -226,10 +224,10 @@
 ! Determine time interval and update time
 !=========================================
       fsum=f(1,ntreeh)
-      if(fsum.gt.0.0d0)then
+      if(fsum>0.0d0)then
          tstep=gammarnd(kappa,fsum)
          t=t+tstep
-      elseif(fsum.lt.0.0)then
+      elseif(fsum<0.0)then
          iflag=2
          goto 500
       else

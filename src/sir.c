@@ -261,9 +261,6 @@ double _sir_rates (int j, double t, double *x, double *p,
   case 6:			// recovered death
     rate = MU*RCVD;
     break;
-  default:
-    errorcall(R_NilValue,"unrecognized rate code %d",j);
-    break;
   }
   return rate;
 }
