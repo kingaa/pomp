@@ -158,8 +158,8 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
 	R_CheckUserInterrupt();	// check for user interrupt
 
-	*tp = *time;				   // copy the time
-	table_lookup(&covariate_table,*time,cp,0); // interpolate the covariates
+	*tp = *time;				 // copy the time
+	table_lookup(&covariate_table,*time,cp); // interpolate the covariates
 
 	memcpy(yp,ys,nobs*sizeof(double));
 
@@ -210,7 +210,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 	R_CheckUserInterrupt();	// check for user interrupt
 
 	// interpolate the covar functions for the covariates
-	table_lookup(&covariate_table,*time,cp,0);
+	table_lookup(&covariate_table,*time,cp);
 
 	for (j = 0; j < nreps; j++, ft++) { // loop over replicates
 	

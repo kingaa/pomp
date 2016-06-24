@@ -24,7 +24,7 @@ void eval_skeleton_native (double *f,
   for (k = 0; k < ntimes; k++, time++) { // loop over times
     R_CheckUserInterrupt();	// check for user interrupt
     // interpolate the covar functions for the covariates
-    table_lookup(covar_table,*time,covars,0);
+    table_lookup(covar_table,*time,covars);
     for (j = 0; j < nreps; j++, f += nvars) { // loop over replicates
       xp = &x[nvars*((j%nrepx)+nrepx*k)];
       pp = &p[npars*(j%nrepp)];
@@ -55,7 +55,7 @@ void eval_skeleton_R (double *f,
     R_CheckUserInterrupt();	// check for user interrupt
     *tp = *time;		// copy the time
     // interpolate the covar functions for the covariates
-    table_lookup(covar_table,*time,cp,0);
+    table_lookup(covar_table,*time,cp);
     for (j = 0; j < nreps; j++, f += nvars) { // loop over replicates
       memcpy(xp,&x[nvars*((j%nrepx)+nrepx*k)],nvars*sizeof(double));
       memcpy(pp,&p[npars*(j%nrepp)],npars*sizeof(double));

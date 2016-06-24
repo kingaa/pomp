@@ -159,7 +159,7 @@ SEXP euler_model_simulator (SEXP func,
       for (k = 0; k < nstep; k++) { // loop over Euler steps
 
 	// interpolate the covar functions for the covariates
-	table_lookup(&covariate_table,t,cp,0);
+	table_lookup(&covariate_table,t,cp);
 
 	for (j = 0, pm = ps, xm = xt; j < nreps; j++, pm += npars, xm += nvars) { // loop over replicates
 	  
@@ -365,7 +365,7 @@ SEXP euler_model_density (SEXP func,
 	*t1p = *t1s; *t2p = *t2s;
 
 	// interpolate the covariates at time t1, store the results in cvec
-	table_lookup(&covariate_table,*t1p,cp,0);
+	table_lookup(&covariate_table,*t1p,cp);
     
 	for (j = 0, ps = REAL(params); j < nreps; j++, fs++, x1s += nvars, x2s += nvars, ps += npars) { // loop over replicates
       
@@ -402,7 +402,7 @@ SEXP euler_model_density (SEXP func,
 	R_CheckUserInterrupt();
 
 	// interpolate the covariates at time t1, store the results in cvec
-	table_lookup(&covariate_table,*t1s,cp,0);
+	table_lookup(&covariate_table,*t1s,cp);
     
 	for (j = 0, ps = REAL(params); j < nreps; j++, fs++, x1s += nvars, x2s += nvars, ps += npars) { // loop over replicates
       

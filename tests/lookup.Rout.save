@@ -1,0 +1,42 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> set.seed(364121008L)
+> tt <- seq(0,10)
+> xx <- cbind(x=runif(11),y=runif(11))
+> 
+> .Call("lookup_in_table",ttable=tt,xtable=xx,t=runif(5))
+       [,1]      [,2]      [,3]      [,4]      [,5]
+x 0.4487819 0.4458939 0.4262695 0.4706191 0.4420908
+y 0.3256547 0.3167708 0.2564017 0.3928307 0.3050716
+> .Call("lookup_in_table",ttable=runif(11),xtable=xx,t=runif(5))
+       [,1]      [,2]      [,3]      [,4]      [,5]
+x 0.4048015 0.4147248 0.4440850 0.6055901 0.4514326
+y 0.1913714 0.2683122 0.4959581 0.8080316 0.5529284
+Warning messages:
+1: in 'table_lookup': extrapolating at 3.328643e-01 
+2: in 'table_lookup': extrapolating at 4.422636e-01 
+3: in 'table_lookup': extrapolating at 7.659449e-01 
+4: in 'table_lookup': extrapolating at 1.507850e-02 
+5: in 'table_lookup': extrapolating at 8.469489e-01 
+> try(.Call("lookup_in_table",ttable=tt[1:3],xtable=xx,t=runif(5)))
+Error : in 'lookup_in_table': incommensurate dimensions
+> 

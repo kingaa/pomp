@@ -25,7 +25,7 @@ void iterate_map_native (double *X, double *time, double *p,
 	*xs = 0.0;
     nsteps = num_map_steps(t,*time,deltat);
     for (h = 0; h < nsteps; h++) {
-      table_lookup(covar_table,t,covars,0);
+      table_lookup(covar_table,t,covars);
       for (j = 0, Xs = X, xs = x, ps = p; j < nreps; j++, Xs += nvars, xs += nvars, ps += npars) {
 	(*ff)(Xs,xs,ps,sidx,pidx,cidx,ncovars,covars,t);
       }
@@ -61,7 +61,7 @@ void iterate_map_R (double *X, double *time, double *p,
       for (j = 0, xs = &x[zidx[i]]; j < nreps; j++, xs += nvars)
 	*xs = 0.0;
     for (h = 0; h < nsteps; h++) {
-      table_lookup(covar_table,t,cp,0);
+      table_lookup(covar_table,t,cp);
       for (j = 0, xs = x, ps = p; j < nreps; j++, xs += nvars, ps += npars) {
 	*tp = t;
 	memcpy(xp,xs,nvars*sizeof(double));

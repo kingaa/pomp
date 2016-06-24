@@ -28,9 +28,10 @@ int num_map_steps (double t1, double t2, double dt);
 int num_euler_steps (double t1, double t2, double *dt);
 
 // simple linear interpolation of the lookup table (with derivative if desired)
-// setting dydt = 0 in the call to 'table_lookup' will bypass computation of the derivative
-void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt);
+void table_lookup (struct lookup_table *tab, double x, double *y);
 struct lookup_table make_covariate_table (SEXP object, int *ncovars);
+// setting dydt = 0 in the call to 'table_lookup' will bypass computation of the derivative
+// void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt);
 
 // bspline.c
 SEXP bspline_basis(SEXP x, SEXP degree, SEXP knots);

@@ -213,5 +213,5 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
 void F77_SUB(tlook) (int *length, int *width, double *tcov, double *cov, double *t, double *y) 
 {
   struct lookup_table tab = {*length, *width, 0, tcov, cov};
-  table_lookup(&tab,*t,y,0);
+  table_lookup(&tab,*t,y);
 }
