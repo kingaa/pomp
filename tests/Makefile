@@ -9,3 +9,5 @@ default: $(SAVED) clean
 	$(RCMD) BATCH --no-timing --no-save $*.R $*.Rout.save
 clean:
 	$(RM) *.pdf
+fresh: clean
+	$(RM) *.png

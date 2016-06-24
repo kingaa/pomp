@@ -2,7 +2,7 @@ library(pomp)
 
 options(digits=2)
 
-png(filename="bsmc2.png",res=100)
+png(filename="bsmc2-%02d.png",res=100)
 
 set.seed(398585L)
 pompExample(ou2)
