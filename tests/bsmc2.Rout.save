@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -47,7 +49,7 @@ newly created object(s):
 > garb <- ou2
 > coef(garb) <- numeric(0)
 > try(garb <- bsmc2(garb))
-Error : in 'bsmc2': 'params' must be supplied
+Error : in ‘bsmc2’: ‘params’ must be supplied
 > 
 > ##Run Liu & West particle filter
 > smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
@@ -117,6 +119,3 @@ newly created object(s):
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
-  1.148   0.024   1.162 

@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -110,8 +112,5 @@ filtering failure at time t = 16
 filtering failure at time t = 17
 filtering failure at time t = 18
 Warning message:
-in 'pfilter': 4 filtering failures occurred. 
+in ‘pfilter’: 4 filtering failures occurred. 
 > 
-> proc.time()
-   user  system elapsed 
-  0.280   0.024   0.294 

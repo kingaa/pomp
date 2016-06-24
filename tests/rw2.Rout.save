@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -107,7 +109,7 @@ Type 'q()' to quit R.
 +             t0=0,
 +             useless=23
 +             )
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'useless'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘useless’
 > 
 > invisible(show(rw2))
 100 records of 2 observables, recorded from t = 1 to 100 
@@ -163,7 +165,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x3b72650>
+<environment: 0x1854368>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -176,11 +178,11 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x3b72650>
+<environment: 0x1854368>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
-native function '_pomp_default_dprior', dynamically loaded from 'pomp'
+native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
 skeleton (map) = 
 function not specified
 initializer = 
@@ -203,14 +205,14 @@ $useless
 > try(
 +     simulate(rw2,params=p)
 +     )
-Error : in 'simulate': in 'init.state': a state variable and a parameter share a single name: 'x1.0'
+Error : in ‘simulate’: in 'init.state': a state variable and a parameter share a single name: 'x1.0'
 > 
 > rw2 <- pomp(rw2,initializer=crap.initializer)
 > 
 > try(
 +     simulate(rw2,params=p)
 +     )
-Error : in 'simulate': in 'init.state': user initializer returns vectors of non-uniform length
+Error : in ‘simulate’: in 'init.state': user initializer returns vectors of non-uniform length
 > 
 > rw2 <- pomp(
 +             rprocess = rw.rprocess,
@@ -320,11 +322,11 @@ data, states, and covariates:
 > try(
 +     time(rw2) <- seq(-20,1000,by=20)
 +     )
-Error : in 'time<-': the zero-time 't0' must occur no later than the first observation
+Error : in ‘time<-’: the zero-time ‘t0’ must occur no later than the first observation
 > try(
 +     time(rw2) <- c(0,5,10,15,12,20)
 +     )
-Error : in 'time<-': the times specified must be an increasing sequence
+Error : in ‘time<-’: the times specified must be an increasing sequence
 > time(rw2,t0=TRUE) <- seq(-20,1000,by=20)
 > x <- simulate(rw2)
 > time(rw2) <- c(0,20,25.8,50,60)
@@ -332,6 +334,3 @@ Error : in 'time<-': the times specified must be an increasing sequence
 > time(rw2,t0=TRUE) <- c(0,0,20,25.8,50,60)
 > time(rw2) <- c(0,20,25.8,50,60)
 > 
-> proc.time()
-   user  system elapsed 
-  0.556   0.008   0.554 

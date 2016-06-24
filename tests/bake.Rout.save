@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -47,7 +49,7 @@ Type 'q()' to quit R.
 Error in mode(current) : object 'y3' not found
 > 
 > pompExample(gillespie.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘comp.names’,‘ic.names’,‘nbasis’,‘degree’,‘period’
 newly created object(s):
  gillespie.sir 
 > simulate(gillespie.sir,seed=1347484107L) -> x
@@ -56,6 +58,3 @@ newly created object(s):
 > 
 > detach("package:pomp", unload=TRUE)
 > 
-> proc.time()
-   user  system elapsed 
-  3.260   0.012   3.259 

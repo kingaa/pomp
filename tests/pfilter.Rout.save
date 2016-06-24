@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -35,7 +37,7 @@ particle filter log likelihood at truth
 [1] -478
 > 
 > try(replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) c(100,200) else 500)))
-Error : in 'pfilter': if 'Np' is a function, it must return a single positive integer
+Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single positive integer
 > pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
 > pf.ll <- sapply(pf,logLik)
 > ll.est <- log(mean(exp(pf.ll-mean(pf.ll))))+mean(pf.ll)
@@ -45,7 +47,7 @@ Error : in 'pfilter': if 'Np' is a function, it must return a single positive in
   -478.05      0.91 
 > 
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 newly created object(s):
  euler.sir 
 > pf <- pfilter(euler.sir,Np=100)
@@ -69,7 +71,7 @@ likelihood, data, states, and parameters are:
  4.000000e+02  4.800000e+02  3.200000e+02  1.000000e-03  2.100000e+06 
           rho           S_0           I_0           R_0 
 -1.000000e+00  6.500000e-02  1.000000e-03  9.350000e-01 
-Error : in 'pfilter': 'dmeasure' returns non-finite value.
+Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value.
 > 
 > p <- coef(euler.sir)
 > euler.sir@params <- numeric(0)
@@ -90,6 +92,3 @@ Error : in 'pfilter': 'dmeasure' returns non-finite value.
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
-  5.852   0.020   5.857 

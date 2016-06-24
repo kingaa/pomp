@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -20,10 +22,10 @@ Type 'q()' to quit R.
 > 
 > x <- seq(0,2,by=0.01)
 > try(y <- bspline.basis(x,degree=3,nbasis=9,names=c("basis1","basis2")))
-Error : in 'bspline.basis': length('names') must be either 1 or 9
+Error : in ‘bspline.basis’: length(‘names’) must be either 1 or 9
 > y <- bspline.basis(x,degree=3,nbasis=9)
 > try(y <- bspline.basis(x,degree=3,nbasis=3,names=letters[1:3]))
-Error : in 'bspline.basis': must have nbasis > degree
+Error : in ‘bspline.basis’: must have nbasis > degree
 > y <- bspline.basis(x,degree=3,nbasis=12,names=letters[1:12])
 > y <- bspline.basis(x,degree=3,nbasis=9,names="basis")
 > y <- bspline.basis(x,degree=3,nbasis=9,names="basis%02d")
@@ -32,7 +34,7 @@ Error : in 'bspline.basis': must have nbasis > degree
 > 
 > x <- seq(-1,2,by=0.01)
 > try(y <- periodic.bspline.basis(x,nbasis=6,names=letters[1:2]))
-Error : in 'periodic.bspline.basis': length('names') must be either 1 or 6
+Error : in ‘periodic.bspline.basis’: length(‘names’) must be either 1 or 6
 > y <- periodic.bspline.basis(x,nbasis=6,names=tail(letters,6))
 > y <- periodic.bspline.basis(x,nbasis=5,names="spline%d")
 > matplot(x,y,type='l')
@@ -41,6 +43,3 @@ Error : in 'periodic.bspline.basis': length('names') must be either 1 or 6
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
-  0.308   0.024   0.321 

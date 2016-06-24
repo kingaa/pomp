@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -35,28 +37,28 @@ newly created object(s):
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
-Error : in 'mif2': 'Np' must be specified
+Error : in ‘mif2’: ‘Np’ must be specified
 > try(mif2(ou2,Nmif=1,start=guess2,Np=rep(10,102),
 +          cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
 Warning messages:
-1: in 'mif2': Np[k] ignored for k > ntimes 
-2: in 'mif2.pfilter': 1 filtering failure occurred. 
+1: in ‘mif2’: Np[k] ignored for k > ntimes 
+2: in ‘mif2.pfilter’: 1 filtering failure occurred. 
 > try(mif2(ou2,Nmif=1,start=guess2,Np=seq_len(101),
 +          cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
 Warning message:
-in 'mif2': Np[k] ignored for k > ntimes 
+in ‘mif2’: Np[k] ignored for k > ntimes 
 > try(mif2(ou2,Nmif=0,start=guess2,Np=1000,
 +          cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
-Error : in 'mif2': 'Nmif' must be a positive integer
+Error : in ‘mif2’: ‘Nmif’ must be a positive integer
 > 
 > m1 <- mif2(ou2,Nmif=50,start=guess1,Np=1000,
 +            cooling.type="hyperbolic",cooling.fraction.50=0.05,
@@ -75,18 +77,18 @@ Error : in 'mif2': 'Nmif' must be a positive integer
 > stopifnot(all.equal(coef(m2a),coef(m2b)))
 > 
 > try(continue(m2,Nmif=10,rw.sd=rw.sd(beta=0.1,alpha.2=0.1)))
-Error : in 'mif2': the following parameter(s), which are supposed to be estimated, are not present: 'beta'
+Error : in ‘mif2’: the following parameter(s), which are supposed to be estimated, are not present: ‘beta’
 > try(continue(m2,Nmif=10,rw.sd=rw.sd(alpha.2=rep(0.1,3))))
-Error : in 'mif2': 'rw.sd' spec for parameter 'alpha.2' does not evaluate to a vector of the correct length (100)
+Error : in ‘mif2’: ‘rw.sd’ spec for parameter ‘alpha.2’ does not evaluate to a vector of the correct length (100)
 > 
 > plot(m1,y=NA)
 Warning message:
-in 'plot-mif2d.pomp': 'y' is ignored 
+in ‘plot-mif2d.pomp’: ‘y’ is ignored 
 > dim(coef(c(m1)))
 [1]  1 10
 > plot(m12 <- c(m1,m2),y=33)
 Warning message:
-in 'plot-mif2d.pomp': 'y' is ignored 
+in ‘plot-mif2d.pomp’: ‘y’ is ignored 
 > coef(c(m12))
      alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau  x1.0 x2.0
 [1,]     0.8  -0.605   0.407     0.9       3    -0.5       2   1 -2.00 1.90
@@ -138,9 +140,9 @@ truth   -484
 > m4 <- mif2(m4,Nmif=10,Np=c(rep(200,20),rep(100,80),200))
 > m4 <- continue(m4,Nmif=10,cooling.fraction=0.1)
 > try(continue(m4,Np=function(k)if(k<10) "B" else 500))
-Error : in 'mif2': if 'Np' is a function, it must return a single positive integer
+Error : in ‘mif2’: if ‘Np’ is a function, it must return a single positive integer
 > try(continue(m4,Np=function(k)if(k<10) -30 else 500))
-Error : in 'mif2': number of particles, 'Np', must always be positive
+Error : in ‘mif2’: number of particles, ‘Np’, must always be positive
 > 
 > pf <- pfilter(m4)
 > half <- 0.5
@@ -152,7 +154,7 @@ Error : in 'mif2': number of particles, 'Np', must always be positive
 +              alpha.2=ifelse(time==1,0.2,0.1),
 +              alpha.3=0.2*(time<10)))
 Warning message:
-in 'mif2.pfilter': 1 filtering failure occurred. 
+in ‘mif2.pfilter’: 1 filtering failure occurred. 
 > m5 <- m4
 > coef(m5,"alpha.2") <- -Inf
 > try(mif2(m5,Np=100,Nmif=2))
@@ -162,7 +164,7 @@ likelihood, data, states, and parameters are:
     NaN   0.242   7.039     Inf     NaN   0.800    -Inf   0.213   0.900   3.000 
 sigma.2 sigma.3     tau    x1.0    x2.0 
  -0.500   2.000   1.000  -6.044   0.663 
-Error : in 'mif2': in 'mif2.pfilter': 'dmeasure' returns non-finite value.
+Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
 > 
 > library(ggplot2)
 > library(reshape2)
@@ -186,6 +188,3 @@ Removed 1 rows containing missing values (geom_path).
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
-   9.58    0.04    9.60 

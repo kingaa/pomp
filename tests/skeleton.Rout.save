@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -41,7 +43,7 @@ newly created object(s):
 > ## non-autonomous case
 > 
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 newly created object(s):
  euler.sir 
 > euler.sir <- simulate(euler.sir,seed=266045243L)
@@ -91,6 +93,3 @@ newly created object(s):
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
-  0.468   0.000   0.457 

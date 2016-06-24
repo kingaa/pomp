@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -48,6 +50,3 @@ newly created object(s):
 > stopifnot(identical(new.inv.trans(pars),coef(po,transform=TRUE)))
 > stopifnot(max(abs(coef(gompertz)-coef(po,names(coef(gompertz)))))<1e-16)
 > 
-> proc.time()
-   user  system elapsed 
-  0.280   0.012   0.283 

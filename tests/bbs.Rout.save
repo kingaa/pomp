@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -18,7 +20,7 @@ Type 'q()' to quit R.
 > library(pomp)
 > 
 > pompExample(bbs)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period','logvar','logitvar'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’,‘logvar’,‘logitvar’
 newly created object(s):
  bbs 
 > 
@@ -64,6 +66,3 @@ newly created object(s):
 > sim2 <- simulate(bbs,nsim=20,as.data.frame=TRUE,obs=TRUE,include.data=TRUE)
 > sim3 <- simulate(bbs,nsim=20,as.data.frame=TRUE,states=TRUE,include.data=TRUE)
 > 
-> proc.time()
-   user  system elapsed 
-  3.128   0.020   3.135 

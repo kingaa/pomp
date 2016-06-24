@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -29,23 +31,23 @@ newly created object(s):
  ou2 
 > 
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),rw.var=3,scale.start=50,shape.start=50)))
-Error : in 'mvn.rw.adaptive': exactly one of 'rw.sd' and 'rw.var' must be supplied
+Error : in ‘mvn.rw.adaptive’: exactly one of ‘rw.sd’ and ‘rw.var’ must be supplied
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(scale.start=50,shape.start=50)))
-Error : in 'mvn.rw.adaptive': exactly one of 'rw.sd' and 'rw.var' must be supplied
+Error : in ‘mvn.rw.adaptive’: exactly one of ‘rw.sd’ and ‘rw.var’ must be supplied
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=c(3,2,5,1),scale.start=50,shape.start=50)))
-Error : in 'mvn.rw.adaptive': 'rw.var' must have row- and column-names
+Error : in ‘mvn.rw.adaptive’: ‘rw.var’ must have row- and column-names
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1),2,2,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2"))),scale.start=50,shape.start=50)))
-Error : in 'mvn.rw.adaptive': row- and column-names of 'rw.var' must agree
+Error : in ‘mvn.rw.adaptive’: row- and column-names of ‘rw.var’ must agree
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1,5,5),2,3,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2","bob"))),scale.start=50,shape.start=50)))
-Error : in 'mvn.rw.adaptive': 'rw.var' must be a square matrix
+Error : in ‘mvn.rw.adaptive’: ‘rw.var’ must be a square matrix
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(0.01,0.01),scale.start=50,shape.start=50)))
-Error : in 'mvn.rw.adaptive': 'rw.sd' must be a named numeric vector
+Error : in ‘mvn.rw.adaptive’: ‘rw.sd’ must be a named numeric vector
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),target=3,scale.start=50,shape.start=50)))
-Error : in 'mvn.rw.adaptive': 'target' must be a number in (0,1)
+Error : in ‘mvn.rw.adaptive’: ‘target’ must be a number in (0,1)
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c("A","B")),verbose=TRUE))
-Error : in 'mvn.diag.rw': 'rw.sd' must be a named numeric vector
+Error : in ‘mvn.diag.rw’: ‘rw.sd’ must be a named numeric vector
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c(0.01,0.01)),verbose=TRUE))
-Error : in 'mvn.diag.rw': 'rw.sd' must have names
+Error : in ‘mvn.diag.rw’: ‘rw.sd’ must have names
 > pmcmc(ou2,Nmcmc=2,Np=100,
 +       proposal=mvn.rw.adaptive(
 +           rw.sd=c(alpha.2=0.01,alpha.3=0.01),
@@ -66,9 +68,9 @@ Error : in 'mvn.diag.rw': 'rw.sd' must have names
 +   continue(Nmcmc=20) -> f1
 > f1 %>% plot()
 > try(continue(f1,Np=function(k)if(k<10) "B" else 500))
-Error : in 'pmcmc': if 'Np' is a function, it must return a single positive integer
+Error : in ‘pmcmc’: if ‘Np’ is a function, it must return a single positive integer
 > try(continue(f1,Np=function(k)if(k<10) c(10,-20) else 500))
-Error : in 'pmcmc': if 'Np' is a function, it must return a single positive integer
+Error : in ‘pmcmc’: if ‘Np’ is a function, it must return a single positive integer
 > 
 > f1 %>% pfilter() %>%
 + pmcmc(
@@ -85,7 +87,7 @@ Error : in 'pmcmc': if 'Np' is a function, it must return a single positive inte
 > 
 > try(ff <- c(f3,f4))
 Error in validObject(.Object) : 
-  invalid class "pmcmcList" object: error in 'c': to be combined, 'pmcmc' objects must have chains of equal length
+  invalid class “pmcmcList” object: error in ‘c’: to be combined, ‘pmcmc’ objects must have chains of equal length
 > 
 > if (Sys.getenv("FULL_TESTS")=="yes") {
 +   f2a <- pmcmc(f1,Nmcmc=300,Np=100,verbose=FALSE)
@@ -121,16 +123,16 @@ Error in validObject(.Object) :
 > 
 > try(ff <- c(ff,f4,f6))
 Error in validObject(.Object) : 
-  invalid class "pmcmcList" object: error in 'c': to be combined, 'pmcmc' objects must have chains of equal length
+  invalid class “pmcmcList” object: error in ‘c’: to be combined, ‘pmcmc’ objects must have chains of equal length
 > try(ff <- c(f4,ou2))
-Error : in 'c': cannot mix 'pmcmc' and non-'pmcmc' objects
+Error : in ‘c’: cannot mix ‘pmcmc’ and non-‘pmcmc’ objects
 > try(ff <- c(ff,ou2))
-Error : in 'c': cannot mix 'pmcmc' and non-'pmcmc' objects
+Error : in ‘c’: cannot mix ‘pmcmc’ and non-‘pmcmc’ objects
 > 
 > plot(ff <- c(ff,f5))
 > invisible(covmat(ff))
 Warning message:
-in 'covmat': only 21 points being used to estimate covariance matrix 
+in ‘covmat’: only 21 points being used to estimate covariance matrix 
 > plot(conv.rec(c(f2,ff),c("alpha.2","alpha.3")))
 > plot(conv.rec(ff[2],c("alpha.2")))
 > plot(conv.rec(ff[2:3],c("alpha.3")))
@@ -168,7 +170,7 @@ in 'covmat': only 21 points being used to estimate covariance matrix
 +           scale.start=50,shape.start=50)) -> f8
 > f8 %<>% continue(Nmcmc=50,proposal=mvn.rw(covmat(f8)),verbose=FALSE)
 Warning message:
-in 'covmat': only 51 points being used to estimate covariance matrix 
+in ‘covmat’: only 51 points being used to estimate covariance matrix 
 > plot(f8)
 > 
 > library(coda)
@@ -196,6 +198,3 @@ in 'covmat': only 51 points being used to estimate covariance matrix
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
- 14.324   0.020  14.319 

@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -84,6 +86,3 @@ newly created object(s):
 > stopifnot(max(abs(1-c(coef(m5,estnames),m5$se,logLik(m5))/c(-0.46,0.32,1.58,0.033,0.0328,0.417,-548)))<0.03)
 > m6 <- nlf(m5,seed=469007824L,tensor=FALSE)
 > 
-> proc.time()
-   user  system elapsed 
- 10.748   0.036  10.762 

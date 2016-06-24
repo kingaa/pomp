@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -20,7 +22,7 @@ Type 'q()' to quit R.
 > set.seed(1420306530L)
 > 
 > pompExample(dacca)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nrstage','all.state.names','comp.names','comp.ic.names'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nrstage’,‘all.state.names’,‘comp.names’,‘comp.ic.names’
 newly created object(s):
  dacca 
 > 
@@ -101,6 +103,3 @@ newly created object(s):
 > 
 > options(op)
 > 
-> proc.time()
-   user  system elapsed 
-  9.584   0.012   9.574 

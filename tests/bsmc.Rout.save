@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -45,7 +47,7 @@ newly created object(s):
 > garb <- ou2
 > coef(garb) <- numeric(0)
 > try(garb <- bsmc(garb))
-Error : in 'bsmc': 'params' must be supplied
+Error : in ‘bsmc’: ‘params’ must be supplied
 > 
 > ##Run Liu & West particle filter
 > smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
@@ -53,9 +55,9 @@ Error : in 'bsmc': 'params' must be supplied
 > post <- smc$post
 > 
 > try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=0,upper=c(0,1)))
-Error : in 'bsmc': parameter(s) 'alpha.2' in column 1 in 'params' is/are outside the box defined by 'lower' and 'upper'
+Error : in ‘bsmc’: parameter(s) ‘alpha.2’ in column 1 in ‘params’ is/are outside the box defined by ‘lower’ and ‘upper’
 > try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=-100,upper=c(111,33,222)))
-Error : in 'bsmc': 'lower' and 'upper' must each have length 1 or length equal to that of 'est'
+Error : in ‘bsmc’: ‘lower’ and ‘upper’ must each have length 1 or length equal to that of ‘est’
 > 
 > smc <- bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,
 +             lower=prior.bounds[estnames,"lower"],
@@ -81,6 +83,3 @@ Error : in 'bsmc': 'lower' and 'upper' must each have length 1 or length equal t
 > print(smc$log.evidence)
 [1] 40
 > 
-> proc.time()
-   user  system elapsed 
-  3.456   0.032   3.475 

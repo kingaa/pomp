@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -190,7 +192,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 call. = FALSE)
         })
 }
-<environment: 0x28203a8>
+<environment: 0x3ca4910>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -202,9 +204,9 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
             call. = FALSE)
     })
 }
-<environment: 0x2856590>
+<environment: 0x3cd2680>
 measurement model simulator, rmeasure = 
-native function '__pomp_rmeasure', defined by a Csnippet
+native function ‘__pomp_rmeasure’, defined by a Csnippet
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -223,7 +225,7 @@ function (y, x, t, params, log, covars, ...)
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
-native function '_pomp_default_dprior', dynamically loaded from 'pomp'
+native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
 skeleton (vectorfield) = 
 function (x, t, params, covars, ...) 
 {
@@ -238,7 +240,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x177ca38>
+<environment: 0x3676830>
 initializer = 
 function (params, t0, ...) 
 {
@@ -264,7 +266,7 @@ parameter(s):
 > x <- pomp(po,measurement.model=reports~binom(size=cases,prob=rho),
 +           rmeasure=function(x,t,params,covars,...){1})
 Warning message:
-in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
+in ‘pomp’: specifying ‘measurement.model’ overrides specification of ‘rmeasure’ and ‘dmeasure’ 
 > 
 > set.seed(3049953)
 > ## simulate from the model
@@ -320,7 +322,7 @@ variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
 > 
 > ## now repeat using the compiled native codes built into the package
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 newly created object(s):
  euler.sir 
 > po <- euler.sir
@@ -388,7 +390,7 @@ null device
 > ## test of vectorfield integrator
 > 
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 newly created object(s):
  euler.sir 
 > 
@@ -443,10 +445,7 @@ newly created object(s):
 +        reports = (reports > 0) ? reports : 0;"),
 +     statenames=c("cases"),
 +     paramnames=c("rho"),bob=33L) -> po
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'bob'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
 > 
 > simulate(po) -> po
 > 
-> proc.time()
-   user  system elapsed 
-  4.608   0.100   4.800 

@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -50,7 +52,7 @@ Type 'q()' to quit R.
 [2,]
 [3,]
 > try(reulermultinom(n=-2,size=100,rate=c(1,2,3),dt=0.1))
-Error : in 'reulermultinom': negative length vectors are not allowed
+Error : in ‘reulermultinom’: negative length vectors are not allowed
 > reulermultinom(n=1,size=100,rate=c(1,2e400,3),dt=0.1)
      [,1]
 [1,]    0
@@ -80,7 +82,7 @@ in 'reulermultinom': only the first element of 'size' is meaningful
 [3,]    0
 > x <- reulermultinom(n=3,size=100,rate=c(3,2,1),dt=0.1)
 > try(deulermultinom(rbind(x,c(0,1,0)),size=100,rate=c(3,2,1),dt=0.1))
-Error : in 'deulermultinom': NROW('x') should match length of 'rate'
+Error : in ‘deulermultinom’: NROW('x') should match length of 'rate'
 > deulermultinom(x,size=c(100,NA),rate=c(3,2,1),dt=0.1)
 [1] 0.0002229822 0.0008576482 0.0009731019
 Warning message:
@@ -106,9 +108,6 @@ in 'deulermultinom': only the first element of 'dt' is meaningful
 > rgammawn(n=2,sigma=0,dt=1)
 [1] 1 1
 > try(rgammawn(n=-5,sigma=-5,dt=-1))
-Error : in 'rgammwn': negative length vectors are not allowed
+Error : in ‘rgammwn’: negative length vectors are not allowed
 > 
 > 
-> proc.time()
-   user  system elapsed 
-  0.276   0.004   0.271 

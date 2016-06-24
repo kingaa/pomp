@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -56,11 +58,11 @@ newly created object(s):
 > try(
 +     coef(po,"log.r")
 +     )
-Error : in 'coef': name(s) 'log.r' correspond to no parameter(s)
+Error : in ‘coef’: name(s) ‘log.r’ correspond to no parameter(s)
 > coef(po,c("r","phi")) <- c(0,0)
 > coef(po,c("r","phi")) <- c(a=0,b=1)
 Warning message:
-in 'coef<-':  names of 'value' are being discarded 
+in ‘coef<-’:  names of ‘value’ are being discarded 
 > coef(po,c("r","phi")) <- 1
 > coef(po) <- c(phi=1,r=3.5,N.0=10,e.0=0,sigma=0)
 > coef(po)
@@ -68,7 +70,7 @@ in 'coef<-':  names of 'value' are being discarded
   1.0   3.5  10.0   0.0   0.0 
 > coef(po,"new") <- 3
 Warning message:
-in 'coef<-': name(s) 'new' do not refer to existing parameter(s); they are being concatenated 
+in ‘coef<-’: name(s) ‘new’ do not refer to existing parameter(s); they are being concatenated 
 > plot(simulate(po))
 > coef(po)
   phi     r   N.0   e.0 sigma   new 
@@ -80,19 +82,19 @@ in 'coef<-': name(s) 'new' do not refer to existing parameter(s); they are being
 +      skeleton=map(Csnippet("error(\"yipes!\");"))
 +      ) -> po
 > try(simulate(po))
-Error : in 'simulate': in 'discrete.time.sim' plugin: yow!
+Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yow!
 > try(pfilter(po,Np=1000))
-Error : in 'pfilter': process simulation error: in 'discrete.time.sim' plugin: yow!
+Error : in ‘pfilter’: process simulation error: in ‘discrete.time.sim’ plugin: yow!
 > try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
-Error : in 'mif': in 'mif.pfilter': process simulation error: in 'discrete.time.sim' plugin: yow!
+Error : in ‘mif’: in ‘mif.pfilter’: process simulation error: in ‘discrete.time.sim’ plugin: yow!
 > try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
-Error : in 'mif2': in 'mif2.pfilter': process simulation error: in 'discrete.time.sim' plugin: yow!
+Error : in ‘mif2’: in ‘mif2.pfilter’: process simulation error: in ‘discrete.time.sim’ plugin: yow!
 > try(trajectory(po))
-Error : in 'trajectory': in map iterator: yipes!
+Error : in ‘trajectory’: in map iterator: yipes!
 > try(probe(po,probes=list(mean=probe.mean("y"))))
-Error : in 'probe': applying probes to simulated data: in 'simulate': in 'discrete.time.sim' plugin: yow!
+Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: in ‘discrete.time.sim’ plugin: yow!
 > try(spect(po,kernel.width=3,nsim=c(100,0)))
-Error : in 'spect': simulation error: in 'simulate': in 'discrete.time.sim' plugin: yow!
+Error : in ‘spect’: simulation error: in ‘simulate’: in ‘discrete.time.sim’ plugin: yow!
 In addition: Warning message:
 in 'simulate': only the first number in 'nsim' is significant 
 > 
@@ -100,26 +102,23 @@ in 'simulate': only the first number in 'nsim' is significant
 +      rmeasure=Csnippet("if (runif(0,1)<0.5) error(\"yikes!\");")
 +      ) -> po
 > try(simulate(po))
-Error : in 'simulate': yikes!
+Error : in ‘simulate’: yikes!
 > try(probe(po,probes=list(mean=probe.mean("y"))))
-Error : in 'probe': applying probes to simulated data: in 'simulate': yikes!
+Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: yikes!
 > try(spect(po,kernel.width=3,nsim=100))
-Error : in 'spect': simulation error: in 'simulate': yikes!
+Error : in ‘spect’: simulation error: in ‘simulate’: yikes!
 > 
 > pomp(ricker,
 +      dmeasure=Csnippet("error(\"oof!\");")
 +      ) -> po
 > try(pfilter(po,Np=1000))
-Error : in 'pfilter': error in calculation of weights: oof!
+Error : in ‘pfilter’: error in calculation of weights: oof!
 > try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
-Error : in 'mif': in 'mif.pfilter': error in calculation of weights.oof!
+Error : in ‘mif’: in ‘mif.pfilter’: error in calculation of weights.oof!
 > try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
-Error : in 'mif2': in 'mif2.pfilter': error in calculation of weights: oof!
+Error : in ‘mif2’: in ‘mif2.pfilter’: error in calculation of weights: oof!
 > 
 > dev.off()
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
-  0.684   0.112   0.931 

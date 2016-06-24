@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -22,7 +24,7 @@ Type 'q()' to quit R.
 > options(digits=3)
 > 
 > try(pompExample(gompertz,envir=3))
-Error : in 'pompExample': 'envir' must be an environment or NULL
+Error : in ‘pompExample’: ‘envir’ must be an environment or NULL
 > pompExample(gompertz)
 newly created object(s):
  gompertz 
@@ -50,21 +52,21 @@ function (xstart, times, params, ..., zeronames = character(0),
                 conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3712610>
+<environment: 0x2ea5e88>
 process model density, dprocess = 
 function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x36c6e00>
+<environment: 0x2e5a6b0>
 measurement model simulator, rmeasure = 
-native function '_gompertz_normal_rmeasure'
+native function ‘_gompertz_normal_rmeasure’
 measurement model density, dmeasure = 
-native function '_gompertz_normal_dmeasure'
+native function ‘_gompertz_normal_dmeasure’
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
-native function '_pomp_default_dprior', dynamically loaded from 'pomp'
+native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
 skeleton (map) = 
-native function '_gompertz_skeleton'
+native function ‘_gompertz_skeleton’
 initializer = 
 function not specified
 parameter transformation (to estimation scale) = 
@@ -72,20 +74,20 @@ function (params, ...)
 {
     log(params)
 }
-<environment: 0x367d668>
+<environment: 0x2e10218>
 parameter transformation (from estimation scale) = 
 function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x367d668>
+<environment: 0x2e10218>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
 > print(gompertz@rmeasure)
-native function '_gompertz_normal_rmeasure'
+native function ‘_gompertz_normal_rmeasure’
 > print(gompertz@dmeasure)
-native function '_gompertz_normal_dmeasure'
+native function ‘_gompertz_normal_dmeasure’
 > print(gompertz@rprocess)
 function (xstart, times, params, ..., zeronames = character(0), 
     tcovar, covar, .getnativesymbolinfo = TRUE) 
@@ -99,7 +101,7 @@ function (xstart, times, params, ..., zeronames = character(0),
                 conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3712610>
+<environment: 0x2ea5e88>
 > 
 > po <- gompertz
 > coef(po)
@@ -128,7 +130,7 @@ function (xstart, times, params, ..., zeronames = character(0),
 > coef(po,c("K","r","sigma","tau","X.0"),
 +      transform=TRUE) <- partrans(po,guess,dir='to')
 Warning message:
-in 'coef<-':  names of 'value' are being discarded 
+in ‘coef<-’:  names of ‘value’ are being discarded 
 > coef(po) <- numeric(0)
 > coef(po,c("K","r","sigma","tau","X.0")) <- unname(guess)
 > coef(po) <- numeric(0)
@@ -169,8 +171,8 @@ in 'coef<-':  names of 'value' are being discarded
 +         rw.sd=c(r=0.02,K=0.02)
 +     )
 + )
-Error : in 'mif': 'mif' cannot estimate non-finite parameters.
-The following transformed parameters are non-finite: 'r'
+Error : in ‘mif’: ‘mif’ cannot estimate non-finite parameters.
+The following transformed parameters are non-finite: ‘r’
 > 
 > set.seed(93848585L)
 > mf <- mif(
@@ -264,6 +266,3 @@ iteration loglik     r
 10 1.9953    9    1
 11 0.1008   10    1
 > 
-> proc.time()
-   user  system elapsed 
-  1.328   0.016   1.333 

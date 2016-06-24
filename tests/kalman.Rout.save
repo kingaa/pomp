@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -138,19 +140,16 @@ Type 'q()' to quit R.
 +     enkf(pf,h=function(x)C%*%x,Np=1000,
 +          R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
 + })
-Error : in 'enkf': degenerate 'R': the leading minor of order 2 is not positive definite
+Error : in ‘enkf’: degenerate ‘R’: the leading minor of order 2 is not positive definite
 > 
 > try({
 +     ev <- eigen(R)
 +     eakf(pf,C=C,Np=1000,
 +          R=ev$vectors%*%diag(c(ev$values[1],0))%*%t(ev$vectors))
 + })
-Error : in 'eakf': degenerate 'R': Lapack routine dgesv: system is exactly singular: U[2,2] = 0
+Error : in ‘eakf’: degenerate ‘R’: Lapack routine dgesv: system is exactly singular: U[2,2] = 0
 > 
 > dev.off()
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
- 12.120   0.048  12.145 

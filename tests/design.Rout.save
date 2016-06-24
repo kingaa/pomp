@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -35,9 +37,9 @@ Type 'q()' to quit R.
 > 
 > ## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.
 > try(x <- sliceDesign(center=c(A=3,C=0),B=seq(0,10,by=1)))
-Error : in 'sliceDesign': variable 'B' does not appear in 'center'
+Error : in ‘sliceDesign’: variable ‘B’ does not appear in ‘center’
 > try(x <- sliceDesign(center=c(A=3),B=seq(0,10,by=1),C=c(1,2,3)))
-Error : in 'sliceDesign': variables 'B','C' do not appear in 'center'
+Error : in ‘sliceDesign’: variables ‘B’,‘C’ do not appear in ‘center’
 > x <- sliceDesign(center=c(A=3,B=8,C=0),B=seq(0,10,by=1))
 > dim(x)
 [1] 11  4
@@ -53,6 +55,3 @@ Error : in 'sliceDesign': variables 'B','C' do not appear in 'center'
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
-  0.456   0.012   0.455 

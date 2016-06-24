@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -115,7 +117,7 @@ null device
 +         Np=100,ic.lag=10,var.factor=1
 +         )
 +     )
-Error : in 'mif': 'cooling.fraction.50' must be specified
+Error : in ‘mif’: ‘cooling.fraction.50’ must be specified
 > 
 > try(
 +     mif(
@@ -127,7 +129,7 @@ Error : in 'mif': 'cooling.fraction.50' must be specified
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : in 'mif': number of particles, 'Np', must always be positive
+Error : in ‘mif’: number of particles, ‘Np’, must always be positive
 > 
 > try(
 +     mif(
@@ -139,7 +141,7 @@ Error : in 'mif': number of particles, 'Np', must always be positive
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : in 'mif': 'Nmif' must be a positive integer
+Error : in ‘mif’: ‘Nmif’ must be a positive integer
 > 
 > try(
 +     mif(
@@ -152,8 +154,8 @@ Error : in 'mif': 'Nmif' must be a positive integer
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : in 'mif': 'mif' cannot estimate non-finite parameters.
-The following parameters are non-finite: 'alpha.4'
+Error : in ‘mif’: ‘mif’ cannot estimate non-finite parameters.
+The following parameters are non-finite: ‘alpha.4’
 > 
 > try(
 +     mif(
@@ -166,8 +168,8 @@ The following parameters are non-finite: 'alpha.4'
 +         ic.lag=10,var.factor=1
 +         )
 +     )
-Error : in 'mif': 'mif' cannot estimate non-finite parameters.
-The following parameters are non-finite: 'x2.0'
+Error : in ‘mif’: ‘mif’ cannot estimate non-finite parameters.
+The following parameters are non-finite: ‘x2.0’
 > 
 > fit <- mif(
 +            ou2,
@@ -187,7 +189,7 @@ The following parameters are non-finite: 'x2.0'
 +            ic.lag=10,var.factor=1
 +            )
 > try(continue(fit,Np=function(k)if(k<10) c(20,30) else 500))
-Error : in 'mif': if 'Np' is a function, it must return a single positive integer
+Error : in ‘mif’: if ‘Np’ is a function, it must return a single positive integer
 > 
 > fit <- continue(fit)
 > fit <- continue(fit,Nmif=2)
@@ -230,22 +232,22 @@ pfilter timestep 100 of 100 finished
 +            cooling.fraction=0.95^50,ic.lag=10,var.factor=1
 +            )
 > try(mif(fit,Nmif=2,method="mif2"))
-Error : in 'mif': method='mif2' has been removed.
-Use 'mif2' instead.
+Error : in ‘mif’: method=‘mif2’ has been removed.
+Use ‘mif2’ instead.
 > fit <- continue(fit,Nmif=1,ic.lag=10000)
 Warning message:
-in 'mif': 'ic.lag' = 10000 > 100 = length(time('object')) is nonsensical.  Setting 'ic.lag' = 100. 
+in ‘mif’: ‘ic.lag’ = 10000 > 100 = length(time(‘object’)) is nonsensical.  Setting ‘ic.lag’ = 100. 
 > fit <- continue(fit,Nmif=1,ic.lag=2,rw.sd=c(x1.0=5,x2.0=5))
 Warning message:
-in 'mif': only IVPs are to be estimated, yet 'ic.lag' = 2 < 100 = length(time('object')), so unnecessary work is to be done. 
+in ‘mif’: only IVPs are to be estimated, yet ‘ic.lag’ = 2 < 100 = length(time(‘object’)), so unnecessary work is to be done. 
 > fit <- continue(fit,Nmif=3,ic.lag=100,method="unweighted")
 > try(mif(ff,Nmif=2,ivps=c("x1.0","x2.0"),
 +         rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.2),
 +         cooling.fraction=0.95^50,var.factor=1))
-Error : in 'mif': 'ic.lag' must be specified if 'ivps' are.
+Error : in ‘mif’: ‘ic.lag’ must be specified if ‘ivps’ are.
 > coef(fit,"alpha.4") <- 0
 > try(fit <- continue(fit,Np=2,Nmif=3,max.fail=1))
-Error : in 'mif': in 'mif.pfilter': too many filtering failures.
+Error : in ‘mif’: in ‘mif.pfilter’: too many filtering failures.
 > coef(fit,"tau") <- NaN
 > try(fit <- continue(fit,Np=100,Nmif=2))
 Non-finite likelihood computed:
@@ -254,7 +256,7 @@ likelihood, data, states, and parameters are:
     NaN  -1.701   4.247  -2.756   1.245   0.800  -0.501   0.439   0.000   3.000 
 sigma.2 sigma.3     tau    x1.0    x2.0 
  -0.500   2.000     NaN  -4.014   1.381 
-Error : in 'mif': in 'mif.pfilter': 'dmeasure' returns non-finite value.
+Error : in ‘mif’: in ‘mif.pfilter’: ‘dmeasure’ returns non-finite value.
 In addition: Warning message:
 In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > coef(fit,"alpha.2") <- -Inf
@@ -265,10 +267,7 @@ likelihood, data, states, and parameters are:
     NaN  -1.701   4.247  -6.277     Inf   0.800    -Inf   0.439   0.000   3.000 
 sigma.2 sigma.3     tau    x1.0    x2.0 
  -0.500   2.000     NaN  -3.580  -2.138 
-Error : in 'mif': in 'mif.pfilter': 'dmeasure' returns non-finite value.
+Error : in ‘mif’: in ‘mif.pfilter’: ‘dmeasure’ returns non-finite value.
 In addition: Warning message:
 In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > 
-> proc.time()
-   user  system elapsed 
-  8.244   0.028   8.252 

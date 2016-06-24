@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -22,7 +24,7 @@ newly created object(s):
  ou2 
 > coef(ou2,"alpha.sd") <- 5
 Warning message:
-in 'coef<-': name(s) 'alpha.sd' do not refer to existing parameter(s); they are being concatenated 
+in ‘coef<-’: name(s) ‘alpha.sd’ do not refer to existing parameter(s); they are being concatenated 
 > 
 > set.seed(1835425749L)
 > 
@@ -100,6 +102,3 @@ variable         [,1]
 > mean(dprior(po,params=rprior(po,params=parmat(coef(po),10000))))
 [1] 0.006377317
 > 
-> proc.time()
-   user  system elapsed 
-  0.456   0.076   0.574 

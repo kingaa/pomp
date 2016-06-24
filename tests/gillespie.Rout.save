@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -93,7 +95,7 @@ Type 'q()' to quit R.
 +     simulate(params=params,seed=806867104L) -> gsir
 > 
 > pompExample(gillespie.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘comp.names’,‘ic.names’,‘nbasis’,‘degree’,‘period’
 newly created object(s):
  gillespie.sir 
 > gsir2 <- simulate(gillespie.sir,params=coef(gsir),
@@ -133,22 +135,19 @@ newly created object(s):
 + }
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
-Error : in 'simulate': in 'gillespie.sim' plugin: negative event rate in stochastic simulation algorithm.
+Error : in ‘simulate’: in ‘gillespie.sim’ plugin: negative event rate in stochastic simulation algorithm.
 > try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
-Error : in 'simulate': in 'kleap.sim' plugin: negative event rate in stochastic simulation algorithm.
+Error : in ‘simulate’: in ‘kleap.sim’ plugin: negative event rate in stochastic simulation algorithm.
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) {
 +     0
 + }
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
-Error : in 'simulate': in 'gillespie.sim' plugin: zero event rate in stochastic simulation algorithm.
+Error : in ‘simulate’: in ‘gillespie.sim’ plugin: zero event rate in stochastic simulation algorithm.
 > try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
-Error : in 'simulate': in 'kleap.sim' plugin: zero event rate in stochastic simulation algorithm.
+Error : in ‘simulate’: in ‘kleap.sim’ plugin: zero event rate in stochastic simulation algorithm.
 > 
 > ggsave(plot=pl1,filename="gillespie-01.png",dpi=100,height=4,width=4)
 > ggsave(plot=pl2,filename="gillespie-02.png",dpi=100,height=4,width=4)
 > 
-> proc.time()
-   user  system elapsed 
-  5.688   0.024   5.697 

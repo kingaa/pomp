@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -66,7 +68,7 @@ newly created object(s):
 +     nsim=200
 + )
 Warning message:
-in 'probe.acf': useless zero lag discarded in 'probe.acf' 
+in ‘probe.acf’: useless zero lag discarded in ‘probe.acf’ 
 > 
 > pb <- probe(
 +     ou2,
@@ -94,7 +96,7 @@ in 'probe.acf': useless zero lag discarded in 'probe.acf'
 +     seed=1066L
 + )
 Warning message:
-in 'probe.acf': useless zero lag discarded in 'probe.acf' 
+in ‘probe.acf’: useless zero lag discarded in ‘probe.acf’ 
 > x <- as.data.frame(po)
 > mx <- sapply(x,mean)
 > x <- sweep(x,2,mx)
@@ -424,7 +426,7 @@ newly created object(s):
 +         seed=838775L
 +     )
 + )
-Error : in 'probe': applying probes to simulated data: variable-sized results returned by probe 2
+Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 2
 > 
 > try(
 +     probe(
@@ -438,7 +440,7 @@ Error : in 'probe': applying probes to simulated data: variable-sized results re
 +         seed=838775L
 +     )
 + )
-Error : in 'probe': applying probes to simulated data: probes return different number of values on different datasets
+Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets
 > 
 > 
 > try(
@@ -453,7 +455,7 @@ Error : in 'probe': applying probes to simulated data: probes return different n
 +         seed=838775L
 +     )
 + )
-Error : in 'probe': applying probes to simulated data: probes return different number of values on different datasets
+Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets
 > 
 > plot(probe(ricker,nsim=20,probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
 > 
@@ -461,6 +463,3 @@ Error : in 'probe': applying probes to simulated data: probes return different n
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
-  14.04    0.04   14.05 
