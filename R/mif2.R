@@ -287,7 +287,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
         conv.rec[n,c(1,2)] <- c(pfp@loglik,pfp@nfail)
         .indices <- pfp@indices
         
-        if (verbose) cat("mif2 iteration ",n," of ",Nmif," completed\n")
+        if (verbose) cat("mif2 iteration",n,"of",Nmif,"completed\n")
 
     }
 

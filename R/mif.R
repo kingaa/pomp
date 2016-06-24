@@ -535,7 +535,7 @@ mif.internal <- function (object, Nmif,
         conv.rec[n+1,-c(1,2)] <- theta
         conv.rec[n,c(1,2)] <- c(pfp@loglik,pfp@nfail)
 
-        if (verbose) cat("MIF iteration ",n," of ",Nmif," completed\n")
+        if (verbose) cat("mif iteration",n,"of",Nmif,"completed\n")
 
     } ### end of main loop
 
