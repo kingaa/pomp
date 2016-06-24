@@ -50,3 +50,9 @@ po <- pomp(po,
            paramnames=c("alpha.1","alpha.2","alpha.3","alpha.4","alpha.sd"))
 rprior(po,params=coef(po))
 mean(dprior(po,params=rprior(po,params=parmat(coef(po),10000))))
+
+po <- pomp(po,rprior=function(params,...)runif(length(params)))
+rprior(po,params=coef(po))
+
+po <- pomp(po,rprior=function(params,...)runif(2))
+try(rprior(po,params=coef(po)))

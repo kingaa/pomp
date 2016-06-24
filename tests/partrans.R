@@ -28,3 +28,8 @@ coef(po,transform=TRUE) <- new.inv.trans(pars)
 
 stopifnot(identical(new.inv.trans(pars),coef(po,transform=TRUE)))
 stopifnot(max(abs(coef(gompertz)-coef(po,names(coef(gompertz)))))<1e-16)
+
+pomp(po,toEstimationScale=function(params,...)runif(length(params)),
+     fromEstimationScale=function(params,...)runif(3)) -> po
+try(coef(po,transform=TRUE))
+try(partrans(po,params=parmat(coef(po),10),dir="to"))

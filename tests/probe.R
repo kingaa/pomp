@@ -409,4 +409,11 @@ try(
 
 plot(probe(ricker,nsim=20,probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
 
+try(probe(ricker,nsim=numeric(),probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
+try(probe(ricker,nsim=c(20,30),probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
+try(probe(ricker,nsim=20,probes=list(garbage=function(x)"A")))
+try(probe(ricker,nsim=20,probes=list(garbage=function(x){
+    n <- sample(c(1,2,3),size=1)
+    runif(n=n)})))
+
 dev.off()

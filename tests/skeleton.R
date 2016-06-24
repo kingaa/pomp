@@ -49,7 +49,6 @@ for (i in 1:3) {
   }
 }
 
-
 pomp.skeleton <- function(times,y,p,more) {
 # Turns a skeleton function from a 'pomp' object into the right hand
 # side of and ODE for use in CollocInfer
@@ -64,5 +63,11 @@ f <- skeleton(ricker,x=x,params=p,t=time(ricker))
 g <- pomp.skeleton(time(ricker),x,p,list(pomp.obj=ricker))
 
 stopifnot(identical(f,g))
+
+pomp(ricker,skeleton=vectorfield(function(x,t,params,...)runif(2))) -> po
+simulate(po) -> po
+try(skeleton(po,params=coef(po),x=c(N=1),t=0))
+try(skeleton(po,params=coef(po),x=states(po),t=0))
+try(skeleton(po,params=parmat(coef(po),2),x=array(runif(30),dim=c(1,5,6)),t=0:5))
 
 dev.off()

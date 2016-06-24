@@ -73,7 +73,6 @@ newly created object(s):
 +   }
 + }
 > 
-> 
 > pomp.skeleton <- function(times,y,p,more) {
 + # Turns a skeleton function from a 'pomp' object into the right hand
 + # side of and ODE for use in CollocInfer
@@ -88,6 +87,15 @@ newly created object(s):
 > g <- pomp.skeleton(time(ricker),x,p,list(pomp.obj=ricker))
 > 
 > stopifnot(identical(f,g))
+> 
+> pomp(ricker,skeleton=vectorfield(function(x,t,params,...)runif(2))) -> po
+> simulate(po) -> po
+> try(skeleton(po,params=coef(po),x=c(N=1),t=0))
+Error : in 'skeleton': user 'skeleton' returns a vector of 2 state variables but 1 are expected
+> try(skeleton(po,params=coef(po),x=states(po),t=0))
+Error : in 'skeleton': length of 't' and 3rd dimension of 'x' do not agree
+> try(skeleton(po,params=parmat(coef(po),2),x=array(runif(30),dim=c(1,5,6)),t=0:5))
+Error : in 'skeleton': 2nd dimensions of 'x' and 'params' are incompatible
 > 
 > dev.off()
 null device 

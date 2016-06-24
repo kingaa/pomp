@@ -35,7 +35,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   int p, s, i, j, k, len0 = 0, len = 0;
 
   PROTECT(nsim = AS_INTEGER(nsim)); nprotect++;
-  if ((LENGTH(nsim)>1) || (INTEGER(nsim)[0]<=0))
+  if ((LENGTH(nsim)!=1) || (INTEGER(nsim)[0]<=0))
     errorcall(R_NilValue,"'nsim' must be a positive integer");
 
   // 'names' holds the names of the probe values

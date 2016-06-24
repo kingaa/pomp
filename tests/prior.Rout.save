@@ -102,3 +102,23 @@ variable         [,1]
 > mean(dprior(po,params=rprior(po,params=parmat(coef(po),10000))))
 [1] 0.006377317
 > 
+> po <- pomp(po,rprior=function(params,...)runif(length(params)))
+> rprior(po,params=coef(po))
+          rep
+variable         [,1]
+  alpha.1  0.36246742
+  alpha.2  0.66257846
+  alpha.3  0.66771427
+  alpha.4  0.44162904
+  sigma.1  0.10259724
+  sigma.2  0.56184969
+  sigma.3  0.52009949
+  tau      0.60814897
+  x1.0     0.14629950
+  x2.0     0.01524557
+  alpha.sd 0.88020641
+> 
+> po <- pomp(po,rprior=function(params,...)runif(2))
+> try(rprior(po,params=coef(po)))
+Error : in 'rprior': user 'rprior' returns a vector of 2 parameters but 11 are expected
+> 

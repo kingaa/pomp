@@ -12,7 +12,7 @@ setClass(
     )
 )
 
-probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) {
+probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL, ...) {
 
     ep <- paste0("in ",sQuote("probe"),": ")
 
@@ -37,10 +37,6 @@ probe.internal <- function (object, probes, params, nsim = 1, seed = NULL, ...) 
         }
     )
     nprobes <- length(datval)
-    if (nprobes > nsim)
-        stop(ep,sQuote("nsim"),"(=",nsim,
-             ") should be (much) larger than the number of probes (=",
-             nprobes,")",call.=FALSE)
 
     ## apply probes to model simulations
     simval <- tryCatch(

@@ -459,6 +459,17 @@ Error : in ‘probe’: applying probes to simulated data: probes return differe
 > 
 > plot(probe(ricker,nsim=20,probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
 > 
+> try(probe(ricker,nsim=numeric(),probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
+Error : in ‘probe’: applying probes to simulated data: 'nsim' must be a positive integer
+> try(probe(ricker,nsim=c(20,30),probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
+Error : in ‘probe’: applying probes to simulated data: 'nsim' must be a positive integer
+> try(probe(ricker,nsim=20,probes=list(garbage=function(x)"A")))
+Error : in ‘probe’: applying probes to actual data: probe 0 returns a non-numeric result
+> try(probe(ricker,nsim=20,probes=list(garbage=function(x){
++     n <- sample(c(1,2,3),size=1)
++     runif(n=n)})))
+Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets
+> 
 > dev.off()
 null device 
           1 
