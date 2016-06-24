@@ -8,12 +8,12 @@ pdf(file='abc.pdf')
 set.seed(2079015564L)
 
 probes.good <- list(
-                    y1.mean=probe.mean(var="y1"),
-                    y2.mean=probe.mean(var="y2"),
-                    probe.acf(var="y1",lags=c(0,5)),
-                    probe.acf(var="y2",lags=c(0,5)),
-                    probe.ccf(vars=c("y1","y2"),lags=0)
-                    )
+    y1.mean=probe.mean(var="y1"),
+    y2.mean=probe.mean(var="y2"),
+    probe.acf(var="y1",lags=c(0,5)),
+    probe.acf(var="y2",lags=c(0,5)),
+    probe.ccf(vars=c("y1","y2"),lags=0)
+)
 psim <- probe(ou2,probes=probes.good,nsim=200)
 plot(psim)
 ## why do simulations sometimes seem extreme with respect to these probes?
@@ -61,7 +61,7 @@ plot(abc3)
 sig <- array(data=c(0.1,0.02,0,0.1),
              dim=c(2,2),
              dimnames=list(c("alpha.1","alpha.2"),
-               c("alpha.1","alpha.2")))
+                           c("alpha.1","alpha.2")))
 sig <- crossprod(sig)
 
 abc4 <- abc(probe(po,probes=probes.good,nsim=200),
@@ -76,15 +76,15 @@ abc5 <- abc(abc4,Nabc=250)
 plot(abc5)
 
 dprior6 <- function (params, log, ...) {
-  ll <- sum(
-            dnorm(
-                  x=params[c("alpha.1","alpha.2","alpha.3","alpha.4")],
-                  mean=c(0.8,-0.5,0.3,0.9),
-                  sd=5,
-                  log=TRUE
-                  )
-            )
-  if (log) ll else exp(ll)
+    ll <- sum(
+        dnorm(
+            x=params[c("alpha.1","alpha.2","alpha.3","alpha.4")],
+            mean=c(0.8,-0.5,0.3,0.9),
+            sd=5,
+            log=TRUE
+        )
+    )
+    if (log) ll else exp(ll)
 }
 
 abc6 <- abc(pomp(po,dprior=dprior6),
@@ -111,17 +111,22 @@ plot(conv.rec(c(abc7,abc6)))
 plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=100))
 invisible(covmat(abc7))
 
-abc8 <- abc(
-            pomp(ou2,dprior=function (params, log, ...) {
-              f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
-              if (log) f else exp(f)
-            }),
-            Nabc=500,verbose=FALSE,
-            probes=probes.good,
-            scale=scale.dat,
-            epsilon=5,
-            proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-              scale.start=500,shape.start=100))
+capture.output(
+    abc8 <- abc(
+        pomp(ou2,dprior=function (params, log, ...) {
+            f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+            if (log) f else exp(f)
+        }),
+        Nabc=500,verbose=TRUE,
+        probes=probes.good,
+        scale=scale.dat,
+        epsilon=5,
+        proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+                                 scale.start=500,shape.start=100))
+    ) -> out
+stopifnot(length(out)==2201)
+stopifnot(sum(grepl("acceptance ratio",out))==100)
+
 abc8 <- continue(abc8,Nabc=2000,proposal=mvn.rw(covmat(abc8)))
 
 plot(abc8,scatter=T)

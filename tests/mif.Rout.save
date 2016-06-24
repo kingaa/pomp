@@ -68,20 +68,26 @@ particle filter log likelihood at truth
 +             max.fail=100
 +             )
 > 
-> mif2 <- mif(ou2,Nmif=30,start=guess2,
-+             ivps=c('x1.0','x2.0'),
-+             transform=TRUE,
-+             rw.sd=c(
-+               x1.0=5,x2.0=5,
-+               alpha.2=0.1,alpha.3=0.1
-+               ),
-+             Np=1000,
-+             var.factor=1,
-+             ic.lag=10,
-+             cooling.type="geometric",
-+             cooling.fraction=0.95^50,
-+             max.fail=100
-+             )
+> capture.output(
++     mif2 <- mif(ou2,Nmif=30,start=guess2,
++                 ivps=c('x1.0','x2.0'),
++                 transform=TRUE,
++                 verbose=TRUE,
++                 rw.sd=c(
++                     x1.0=5,x2.0=5,
++                     alpha.2=0.1,alpha.3=0.1
++                 ),
++                 Np=1000,
++                 var.factor=1,
++                 ic.lag=10,
++                 cooling.type="geometric",
++                 cooling.fraction=0.95^50,
++                 max.fail=100
++                 )
++     ) -> out
+> stopifnot(length(out)==630)
+> stopifnot(sum(grepl("pfilter timestep",out))==600)
+> stopifnot(sum(grepl("mif iteration",out))==30)
 > 
 > plot(mif1)
 > plot(mif12 <- c(mif1,mif2))
@@ -193,27 +199,10 @@ Error : in ‘mif’: if ‘Np’ is a function, it must return a single positiv
 > 
 > fit <- continue(fit)
 > fit <- continue(fit,Nmif=2)
-> ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100,verbose=T)
-pfilter timestep 5 of 100 finished
-pfilter timestep 10 of 100 finished
-pfilter timestep 15 of 100 finished
-pfilter timestep 20 of 100 finished
-pfilter timestep 25 of 100 finished
-pfilter timestep 30 of 100 finished
-pfilter timestep 35 of 100 finished
-pfilter timestep 40 of 100 finished
-pfilter timestep 45 of 100 finished
-pfilter timestep 50 of 100 finished
-pfilter timestep 55 of 100 finished
-pfilter timestep 60 of 100 finished
-pfilter timestep 65 of 100 finished
-pfilter timestep 70 of 100 finished
-pfilter timestep 75 of 100 finished
-pfilter timestep 80 of 100 finished
-pfilter timestep 85 of 100 finished
-pfilter timestep 90 of 100 finished
-pfilter timestep 95 of 100 finished
-pfilter timestep 100 of 100 finished
+> capture.output(
++     ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100,verbose=TRUE)) -> out
+> stopifnot(length(out)==20)
+> stopifnot(sum(grepl("pfilter timestep",out))==20)
 > ff <- pfilter(ff)
 > fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.1))
 > fit <- continue(fit,Nmif=2,ivps=c("x1.0"))

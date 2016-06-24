@@ -28,14 +28,19 @@ dprior.ou2 <- function (params, log, ...) {
   if (log) f else exp(f)
 }
 
-pmcmc(
-      pomp(ou2,dprior=dprior.ou2),
-      Nmcmc=20,
-      proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
-      Np=100,
-      verbose=FALSE
-      ) %>%
-  continue(Nmcmc=20) -> f1
+capture.output(
+    pmcmc(
+        pomp(ou2,dprior=dprior.ou2),
+        Nmcmc=20,
+        proposal=mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001)),
+        Np=100,
+        verbose=TRUE
+    ) %>%
+    continue(Nmcmc=20) -> f1
+) -> out
+stopifnot(length(out)==41)
+stopifnot(sum(grepl("PMCMC iteration",out))==21)
+stopifnot(sum(grepl("acceptance ratio",out))==20)
 f1 %>% plot()
 try(continue(f1,Np=function(k)if(k<10) "B" else 500))
 try(continue(f1,Np=function(k)if(k<10) c(10,-20) else 500))

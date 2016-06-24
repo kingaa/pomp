@@ -78,10 +78,14 @@ po <- pomp(
 
 simpo <- simulate(po,params=c(p=0.05,rho=0.5,beta=0.1,S.0=6,I.0=2))
 
-pf <- pfilter(
-              po,
-              params=c(p=0.05,rho=0.5,beta=0.01,S.0=6,I.0=2),
-              Np=10,
-              max.fail=20,
-              verbose=TRUE
-              )
+capture.output(
+    pf <- pfilter(
+        po,
+        params=c(p=0.05,rho=0.5,beta=0.01,S.0=6,I.0=2),
+        Np=10,
+        max.fail=20,
+        verbose=TRUE
+    )
+) -> out
+stopifnot(length(out)==3)
+stopifnot(sum(grepl("pfilter timestep",out))==3)

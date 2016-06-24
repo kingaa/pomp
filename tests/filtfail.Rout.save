@@ -97,20 +97,21 @@ Type 'q()' to quit R.
 > 
 > simpo <- simulate(po,params=c(p=0.05,rho=0.5,beta=0.1,S.0=6,I.0=2))
 > 
-> pf <- pfilter(
-+               po,
-+               params=c(p=0.05,rho=0.5,beta=0.01,S.0=6,I.0=2),
-+               Np=10,
-+               max.fail=20,
-+               verbose=TRUE
-+               )
+> capture.output(
++     pf <- pfilter(
++         po,
++         params=c(p=0.05,rho=0.5,beta=0.01,S.0=6,I.0=2),
++         Np=10,
++         max.fail=20,
++         verbose=TRUE
++     )
++ ) -> out
 filtering failure at time t = 4
-pfilter timestep 5 of 19 finished
-pfilter timestep 10 of 19 finished
-pfilter timestep 15 of 19 finished
 filtering failure at time t = 16
 filtering failure at time t = 17
 filtering failure at time t = 18
 Warning message:
 in ‘pfilter’: 4 filtering failures occurred. 
+> stopifnot(length(out)==3)
+> stopifnot(sum(grepl("pfilter timestep",out))==3)
 > 

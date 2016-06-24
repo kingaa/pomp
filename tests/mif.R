@@ -35,20 +35,26 @@ mif1 <- mif(ou2,Nmif=30,start=guess1,
             max.fail=100
             )
 
-mif2 <- mif(ou2,Nmif=30,start=guess2,
-            ivps=c('x1.0','x2.0'),
-            transform=TRUE,
-            rw.sd=c(
-              x1.0=5,x2.0=5,
-              alpha.2=0.1,alpha.3=0.1
-              ),
-            Np=1000,
-            var.factor=1,
-            ic.lag=10,
-            cooling.type="geometric",
-            cooling.fraction=0.95^50,
-            max.fail=100
-            )
+capture.output(
+    mif2 <- mif(ou2,Nmif=30,start=guess2,
+                ivps=c('x1.0','x2.0'),
+                transform=TRUE,
+                verbose=TRUE,
+                rw.sd=c(
+                    x1.0=5,x2.0=5,
+                    alpha.2=0.1,alpha.3=0.1
+                ),
+                Np=1000,
+                var.factor=1,
+                ic.lag=10,
+                cooling.type="geometric",
+                cooling.fraction=0.95^50,
+                max.fail=100
+                )
+    ) -> out
+stopifnot(length(out)==630)
+stopifnot(sum(grepl("pfilter timestep",out))==600)
+stopifnot(sum(grepl("mif iteration",out))==30)
 
 plot(mif1)
 plot(mif12 <- c(mif1,mif2))
@@ -142,7 +148,10 @@ try(continue(fit,Np=function(k)if(k<10) c(20,30) else 500))
 
 fit <- continue(fit)
 fit <- continue(fit,Nmif=2)
-ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100,verbose=T)
+capture.output(
+    ff <- pfilter(fit,pred.mean=T,filter.mean=T,pred.var=T,max.fail=100,verbose=TRUE)) -> out
+stopifnot(length(out)==20)
+stopifnot(sum(grepl("pfilter timestep",out))==20)
 ff <- pfilter(ff)
 fit <- mif(fit,rw.sd=c(x1.0=5,x2.0=5,alpha.2=0.1,alpha.3=0.1))
 fit <- continue(fit,Nmif=2,ivps=c("x1.0"))
