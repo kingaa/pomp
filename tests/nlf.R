@@ -64,3 +64,27 @@ m5 <- nlf(m3,tensor=TRUE,period=10,est=estnames,seed=427458351L)
 m5 <- nlf(m5,seed=469007824L)
 stopifnot(max(abs(1-c(coef(m5,estnames),m5$se,logLik(m5))/c(-0.46,0.32,1.58,0.033,0.0328,0.417,-548)))<0.03)
 m6 <- nlf(m5,seed=469007824L,tensor=FALSE)
+
+pompExample(gompertz)
+
+r1 <- nlf(gompertz,est=c("K","r"),lags=c(1,2,3),
+          nconverge=200,nasymp=1000,method="Nelder-Mead",
+          seed=34999695L,verbose=TRUE)
+
+lags <- 2
+ndata <- length(obs(gompertz))
+nboot <- ndata-max(lags)
+nreps <- 3
+pars <- matrix(0,nreps,2)
+bootsamp <- replicate(n=nreps,sample.int(nboot,replace=TRUE))
+library(plyr)
+ldply(seq_len(nreps),function (j) {
+    fit <- nlf(gompertz,transform=TRUE,est=c("K","r"),lags=lags,
+               seed=7639873,skip.se=TRUE,
+               method="Nelder-Mead",
+               bootstrap=TRUE,bootsamp=bootsamp[,j],
+               nasymp=2000
+               )
+    data.frame(as.list(coef(fit,c("K","r"))),lql=logLik(fit))
+}) -> pars
+dim(pars)

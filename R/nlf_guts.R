@@ -82,8 +82,7 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times,
     if (bootstrap) {
         Lags.data$x <- Lags.data$x[bootsamp,]
         Lags.data$y <- Lags.data$y[bootsamp]
-        if (seas) 
-            Lags.data$cov <- Lags.data$cov[bootsamp]
+        if (seas) Lags.data$cov <- Lags.data$cov[bootsamp]
     }	
 
     data.pred <- matrix(Lags.data$y,ncol=1)
