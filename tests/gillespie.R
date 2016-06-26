@@ -88,6 +88,9 @@ list(R=as.data.frame(gsir),
     geom_line()+
     theme_bw()+theme(legend.position=c(0.2,0.8)) -> pl1
 
+try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix),d=Dmatrix)))
+try(gsir %>% pomp(rprocess=kleap.sim(rate.fun=rate.fun,e=rep(0.1,5),v=as.numeric(Vmatrix),d=Dmatrix)))
+
 gsir %>%
     pomp(
         rprocess=kleap.sim(

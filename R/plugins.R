@@ -95,6 +95,11 @@ euler.sim <- function (step.fun, delta.t, PACKAGE) {
 
 gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
     if (missing(PACKAGE)) PACKAGE <- character(0)
+    if (!is.matrix(v) || !is.matrix(d)) {
+        stop("in ",sQuote("gillespie.sim"),
+             sQuote("v")," and ",sQuote("d")," must be matrices.",
+             call.=FALSE)
+    }
     new("gillespieRprocessPlugin",
         rate.fn=rate.fun,v=v,d=d,
         slotname="rate.fn",
@@ -104,6 +109,11 @@ gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
 
 kleap.sim <- function (rate.fun, e, v, d, PACKAGE) {
     if (missing(PACKAGE)) PACKAGE <- character(0)
+    if (!is.matrix(v) || !is.matrix(d)) {
+        stop("in ",sQuote("kleap.sim"),
+             sQuote("v")," and ",sQuote("d")," must be matrices.",
+             call.=FALSE)
+    }
     new("kleapRprocessPlugin",
         rate.fn=rate.fun,e=e,v=v,d=d,
         slotname="rate.fn",
@@ -257,9 +267,6 @@ setMethod(
     "plugin.handler",
     signature=signature(object='gillespieRprocessPlugin'),
     definition=function (object, ...) {
-        if (!(is.matrix(object@d)&&is.matrix(object@v))) {
-            stop(sQuote("v")," and ",sQuote("d")," must be matrices.",call.=FALSE)
-        }
         nvar <- nrow(object@v)
         nevent <- ncol(object@v)
         if ((nvar!=nrow(object@d))||(nevent!=ncol(object@d)))
