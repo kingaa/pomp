@@ -1,0 +1,281 @@
+---
+title: "Nonlinear forecasting in pomp"
+author: "Aaron A. King and Stephen P. Ellner"
+output:
+  html_document:
+    theme: default
+    toc: yes
+bibliography: pomp.bib
+csl: ecology.csl
+nocite: |
+  @Ellner1998, @Kendall1999
+---
+
+Licensed under the [Creative Commons attribution-noncommercial license](http://creativecommons.org/licenses/by-nc/3.0).
+Please share and remix noncommercially, mentioning its origin.  
+![CC-BY_NC](http://kingaa.github.io/images/cc-by-nc.png)
+
+This document was produced using **pomp** version `r packageVersion("pomp")` and **R** version `r getRversion()`.
+
+```{r knitr-opts,include=FALSE,purl=FALSE}
+library(knitr)
+prefix <- "nlf"
+opts_chunk$set(
+  progress=TRUE,
+  prompt=FALSE,tidy=FALSE,highlight=TRUE,
+  strip.white=TRUE,
+  warning=FALSE,
+  message=FALSE,
+  error=FALSE,
+  echo=TRUE,
+  cache=TRUE,
+  cache.extra=rand_seed,
+  results='markup',
+  fig.show='asis',
+  size='small',
+  fig.lp="fig:",
+  fig.path=paste0("figure/",prefix,"-"),
+  cache.path=paste0("cache/",prefix,"-"),
+  fig.pos="h!",
+  fig.align='center',
+  fig.height=4,fig.width=6.83,
+  dpi=300,
+  dev='png',
+  dev.args=list(bg='transparent')
+  )
+```
+
+```{r prelims,include=FALSE,cache=FALSE}
+library(pomp)
+library(magrittr)
+library(foreach)
+library(doParallel)
+registerDoParallel()
+set.seed(676155890L)
+```
+
+NLF is an indirect inference approach [@Gourieroux1996], meaning that an intermediate statistical model is used to quantify the model's goodness of fit to the data. 
+Specifically, NLF is a \emph{Simulated Quasi-Maximum Likelihood} (SQML) method. 
+The quasilikelihood function is defined by fitting a convenient statistical model to a long simulation output from the model of interest, and then evaluating the statistical model's likelihood function on the data. 
+The intermediate statistical model in `nlf` is a multivariate generalized additive autoregressive model, using radial basis functions as the ridge functions and multivariate Gaussian process noise. 
+@Smith1993 first proposed SQML and developed the underlying statistical theory, @Tidd1993 independently proposed a similar method, and @Kendall2005 describe in detail the methods used by `nlf` and use them to fit and compare models for insect population cycles. 
+
+As a simple example we can use `nlf` to estimate the parameters `K` and `r` of the Gompertz model.
+An example of a minimal call, accepting the defaults for most arguments, is 
+```{r first-nlf,eval=TRUE,results='hide'}
+pompExample(gompertz)
+fit <- nlf(
+           gompertz,
+           start=c(r=1,K=2,sigma=0.5,tau=0.5,X.0=1),
+           transform=TRUE,
+           est=c("K","r"),
+           lags=c(1,2)
+           )
+``` 
+where the first argument is the `pomp` object,
+`start` is a vector containing model parameters at which `nlf`'s search will begin, 
+`est` contains the names of parameters `nlf` will estimate, and 
+`lags` specifies which past values are to be used in the autoregressive model. 
+In the call above `lags = c(1,2)` specifies that the autoregressive model predicts each observation, $y_t$ using $y_{t-1}$ and $y_{t-2}$, the two most recent past observations. 
+The set of lags need not include the most recent observation, and skips are allowed, so that `lags=c(2,3,6)` is also "legal". 
+
+The quasilikelihood is optimized numerically, so the reliability of the optimization should be assessed by doing multiple fits with different starting parameter values. 
+Because of the way `nlf` controls the random number seed, starting values should all be chosen before the calls to `nlf`: 
+```{r nlf-gompertz-starts}
+starts <- parmat(coef(gompertz),5)
+starts["K",] <- rlnorm(n=5,meanlog=log(coef(gompertz,"K")),sdlog=0.1)
+starts["r",] <- rlnorm(n=5,meanlog=log(coef(gompertz,"r")),sdlog=0.1)
+``` 
+Then to make the results from different starts comparable, use the `seed` argument to initialize the random number generator the same way for each fit: 
+```{r nlf-gompertz-fits,eval=FALSE}
+foreach (start=iter(starts,by="column"),.combine=rbind) %dopar% {
+    nlf(
+        gompertz,
+        start=start[,1],
+        transform.data=log,
+        transform=TRUE,
+        est=c("K","r"),
+        lags=c(1,2),
+        seed=7639873L,
+        method="Nelder-Mead",
+        skip.se=TRUE,
+        nasymp=5000
+    ) -> fit
+    data.frame(as.list(coef(fit,c("r","K"))),value=logLik(fit))
+} -> fits
+```
+```{r nlf-gompertz-fits-eval,eval=TRUE,include=FALSE}
+bake(file="nlf-gompertz-fits.rds",{
+    <<nlf-gompertz-fits>>
+}) -> fits
+``` 
+The results in this case are very encouraging,
+```{r eval=T}
+fits
+``` 
+so below we will trust that repeated optimization isn't needed.
+
+The call above also used the `method` argument to specify that the Nelder-Mead option in `optim` is used to maximize the quasilikelihood, and the `trace` argument is passed to `optim`; other arguments can be passed to `optim` in the same way. 
+`nasymp` sets the length of the Gompertz model simulation on which the quasilikelihood is based; 
+larger values will give less variable parameter estimates, but will slow down the fitting process. 
+The slowdown is dominated by the time required to generate the model simulations, so efficient coding of `rprocess` is essential. 
+
+The choice of lags affects the accuracy of the intermediate statistical model and therefore the accuracy of parameter estimates, so it is worth putting some effort into choosing good lags. 
+Given enough time, a user could generate many artificial data sets, fit them all with several candidate lags, and evaluate the precision and accuracy of estimates. 
+A quicker approach is to explore the shape and variability of the quasilikelihood function near pilot parameter estimates for several candidate sets of lags, using `nlf` with `eval.only=TRUE` to evaluate the quasilikelihood without performing optimization. 
+
+For the Gompertz model the complete state vector is observed, so it is plausible that forecasting based on the one most recent observation is optimal, i.e. `lags=1`. 
+But because of measurement error, prediction based on multiple lags might be more accurate and more sensitive to parameter values, and longer-term forecasting might be beneficial if the effects of parameters are amplified over time. 
+The plot below shows results for several candidate lags suggested by these considerations. 
+To reduce Monte Carlo error in the objective function, we used `simulate` to create a very long "data set":
+```{r nlf-my-pomp,eval=T}
+long.gomp <- simulate(gompertz,times=1:1000)
+theta <- coef(long.gomp)
+``` 
+and then evaluated the quasilikelihood for a range of parameter values: 
+```{r nlf-lag-tests,eval=TRUE}
+lags <- list(1,2,c(1,2),c(2,3))
+params <- sliceDesign(center=theta,
+                      r=theta["r"]*exp(seq(-0.69,0.69,length=25)),
+                      K=theta["K"]*exp(seq(-0.15,0.15,length=25)))
+foreach (pars = iter(params,by="row"), .combine=rbind) %:%
+  foreach (lag = lags, .combine=rbind) %dopar% 
+  {
+    start <- unlist(subset(pars,select=-slice))
+    fit <- nlf(long.gomp, start=start, nasymp=5000, lags=lag, eval.only=TRUE)
+    data.frame(pars,lag=deparse(lag),lql=logLik(fit))
+  } -> slices
+``` 
+
+The plot below shows values of the NLF objective function (log quasilikelihood, as calculated above, relative to its maximum value) for the Gompertz model as a function of the parameters $r$, $K$ for various choices of the `lags` argument. 
+The objective function was evaluated on an artificial data set (`long.gomp`) of length `r length(obs(long.gomp))` that was generated assuming $r=`r signif(theta["r"],2)`$, $K=`r theta["K"]`$, indicated by the vertical blue lines.
+
+```{r nlf-gompertz-plot,fig.height=3,fig.width=6,echo=FALSE}
+library(plyr)
+library(reshape2)
+library(ggplot2)
+theme_set(theme_bw())
+slices %>%
+  ddply(~lag,mutate,dlql=lql-max(lql)) %>%
+  subset(dlql>-50,select=c(r,K,slice,lag,dlql)) %>%
+  melt(measure.vars=c("r","K")) %>% 
+  subset(variable==slice) %>%
+  ggplot(aes(x=value,y=dlql,group=lag,color=lag))+
+  geom_line()+
+  geom_point()+
+  facet_wrap(~slice,nrow=1,scales="free_x")+
+  theme(legend.position="right")+
+  labs(x="",y=expression(Delta~LQL))
+``` 
+
+Based on the plot above, `lags = 2` seems like a good choice. 
+Another consideration is the variability of parameter estimates on multiple short data sets: 
+```{r nlf-multi-short,eval=FALSE}
+sims <- simulate(gompertz,times=1:60,nsim=100)
+foreach (sim = sims, .combine=rbind) %:%
+    foreach (lag = lags, .combine=cbind) %dopar%
+    {
+        fit <- nlf(sim, nasymp=5000, lags=lag, eval.only=TRUE)
+        exp(logLik(fit)/60)
+    } -> fvals
+```
+```{r nlf-multi-short-eval,eval=TRUE,include=FALSE}
+bake(file="nlf-multi-short.rds",seed=1919414423L,{
+    <<nlf-multi-short>>
+}) -> fvals
+``` 
+The last line above expresses the objective function as the geometric mean (quasi)likelihood per data point. 
+The variability across data sets was nearly the same for all lags:
+```{r}
+apply(fvals,2,function(x)sd(x)/mean(x))
+``` 
+so we proceed to fit with `lags=2`. 
+```{r nlf-fit-from-truth,eval=TRUE}
+true.fit <- nlf(gompertz, transform=TRUE, est=c("K","r"), lags=2, seed=7639873,
+                method="Nelder-Mead", nasymp=5000)
+``` 
+From `coef(true.fit)` and `true.fit$se` we get the estimates ($\pm$ 1 standard error)
+${r}=`r signif(coef(true.fit,"r"),2)` \pm `r signif(coef(true.fit,"r")*true.fit$se["r"],2)`$
+and ${K}=`r signif(coef(true.fit,"K"),2)`\pm`r signif(coef(true.fit,"K")*true.fit$se["K"],2)`$. 
+
+The standard errors provided by `nlf` are based on a Newey-West estimate of the variance-covariance matrix that is generally
+somewhat biased downward. 
+More importantly, these rough-and-ready standard error estimates can be unstable.
+This is because they are obtained from finite differences of the NLF objective function.
+This function, in turn, is approximated using simulated time series of finite length, which typically gives rise to fine-scale wrinkles.
+Therefore, when time permits, bootstrap standard errors are preferable. 
+When `nlf` is called with `bootstrap=TRUE`, the quasilikelihood function is evaluated on the bootstrap sample of the time series specified in `bootsamp`.  
+The first `max(lags)` observations cannot be forecast by the autoregressive model, so the size of the bootstrap sample is the length of the data series minus `max(lags)`: 
+```{r nlf-boot,eval=FALSE}
+lags <- 2
+nboot <- length(time(gompertz))-max(lags)
+bootsamp <- replicate(n=100,sample(nboot,replace=TRUE))
+foreach (j = seq_len(ncol(bootsamp)), .combine=rbind) %dopar% {
+    fit <- nlf(
+        gompertz,
+        start=coef(gompertz),
+        transform=TRUE,
+        est=c("K","r"),
+        lags=lags,
+        seed=7639873, 
+        bootstrap=TRUE, 
+        bootsamp=bootsamp[,j],
+        skip.se=TRUE, 
+        method="Nelder-Mead",
+        trace=4,
+        nasymp=5000
+    )
+    coef(fit,c("r","K"))
+}
+``` 
+```{r nlf-boot-eval,eval=TRUE,include=FALSE}
+bake(file="nlf-boot.rds",seed=441606384L,{
+  <<nlf-boot>>
+}) -> pars
+``` 
+```{r}
+apply(pars,2,sd)
+``` 
+In this case, the bootstrap standard errors don't differ much from the Newey-West estimates.
+
+The code above implements a "resampling cases" approach to bootstrapping the data set to which the intermediate autoregressive model is fitted. 
+This is valid when observations are conditionally independent given the past observations, which is only true for a Markov process if the complete state is observed. 
+Otherwise there may be correlations, and we need to use methods for bootstrapping time series.
+In `nlf` it is relatively easy to implement the "blocks of blocks" resampling method [@Davison1997] (p. 398).
+For example, with block length $l=3$ we resample (with replacement) observations in groups of length 3: 
+```{r block-bootsamp,eval=FALSE}
+lags <- 2
+nboot <- length(obs(gompertz))-max(lags)
+bootsamp <- replicate(100,sample(nboot-2,size=floor(nboot/3),replace=TRUE))
+bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
+``` 
+and otherwise proceed exactly as above. 
+```{r nlf-block-boot,eval=FALSE}
+foreach (j = seq_len(nreps),.combine=rbind) %dopar% {
+    fit <- nlf(
+        gompertz,
+        transform=TRUE,
+        est=c("K","r"),
+        lags=lags,
+        seed=7639873L,
+        bootstrap=TRUE, 
+        bootsamp=bootsamp[,j],
+        skip.se=TRUE, 
+        method="Nelder-Mead",
+        trace=4,
+        nasymp=5000
+    )
+    coef(fit,c("r","K"))
+} -> pars
+``` 
+
+```{r nlf-block-boot-eval,eval=TRUE,include=FALSE}
+bake(file="nlf-block-boot.rds",{
+  <<nlf-block-boot>>
+}) -> pars
+```
+```{r}
+apply(pars,2,sd)
+``` 
+
+## References
