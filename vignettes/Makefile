@@ -34,3 +34,5 @@ clean:
 	$(RM) -r cache figure
 	$(RM) *.c *.o *.so *.bak
 	$(RM) Rplots.pdf
+
+fresh: clean
