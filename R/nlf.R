@@ -412,7 +412,7 @@ setMethod(
                          ),
                          skip.se = FALSE,
                          verbose = getOption("verbose"),
-                         bootstrap = FALSE, bootsamp = NULL,
+                         bootsamp = NULL,
                          lql.frac = 0.1, se.par.frac = 0.1,
                          eval.only = FALSE,
                          transform = FALSE, ...)
@@ -428,7 +428,7 @@ setMethod(
         seed <- as.integer(seed)
         lql.frac <- as.numeric(lql.frac)
         se.par.frac <- as.numeric(se.par.frac)
-        bootstrap <- as.logical(bootstrap)
+        bootstrap <- !is.null(bootsamp)
         bootsamp <- as.integer(bootsamp)
         lags <- as.integer(lags)
         nrbf <- as.integer(nrbf)

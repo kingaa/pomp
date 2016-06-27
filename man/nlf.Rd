@@ -21,8 +21,7 @@
      nconverge=1000, nasymp=1000, seed = 1066,
      transform.data, nrbf = 4,
      method = c("subplex", "Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
-     skip.se = FALSE, verbose = getOption("verbose"),
-     bootstrap=FALSE, bootsamp = NULL,
+     skip.se = FALSE, verbose = getOption("verbose"), bootsamp = NULL,
      lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE,
      transform = FALSE, \dots)
 \S4method{nlf}{nlfd.pomp}(object, start, est, lags, period, tensor,
@@ -43,23 +42,23 @@
     A vector specifying the lags to use when constructing the nonlinear autoregressive prediction model.
     The first lag is the prediction interval.
   }
- \item{period}{
-   numeric; \code{period=NA} means the model is nonseasonal.
-   period>0 is the period of seasonal forcing in 'real time'.
- }
- \item{tensor}{
-   logical;
-   if FALSE, the fitted model is a generalized additive model with time mod period as one of the predictors, i.e., a gam with time-varying intercept. 
-   If TRUE, the fitted model is a gam with lagged state variables as predictors and time-periodic coefficients, constructed using tensor products of basis functions of state variables with basis functions of time.
-   }
-   \item{nconverge}{
-     Number of convergence timesteps to be discarded from the model simulation.
-   }
+  \item{period}{
+    numeric; \code{period=NA} means the model is nonseasonal.
+    period>0 is the period of seasonal forcing in 'real time'.
+  }
+  \item{tensor}{
+    logical;
+    if FALSE, the fitted model is a generalized additive model with time mod period as one of the predictors, i.e., a gam with time-varying intercept. 
+    If TRUE, the fitted model is a gam with lagged state variables as predictors and time-periodic coefficients, constructed using tensor products of basis functions of state variables with basis functions of time.
+  }
+  \item{nconverge}{
+    number of convergence timesteps to be discarded from the model simulation.
+  }
   \item{nasymp}{
-    Number of asymptotic timesteps to be recorded from the model simulation.
+    number of asymptotic timesteps to be recorded from the model simulation.
   }
   \item{seed}{
-    Integer specifying the random number seed to use.
+    integer specifying the random number seed to use.
     When fitting, it is usually best to always run the simulations with the same sequence of random numbers, which is accomplished by setting \code{seed} to an integer.
     If you want a truly random simulation, set \code{seed=NULL}.
   }
@@ -75,23 +74,22 @@
     If data are univariate, \code{transform.data} should take a scalar and return a scalar.
     If data are multivariate, \code{transform.data} should assume a vector input and return a vector of the same length.
   }
-  \item{nrbf}{A scalar specifying the number of radial basis functions to be used at each lag.}
+  \item{nrbf}{
+    integer scalar;
+    the number of radial basis functions to be used at each lag.
+  }
   \item{method}{
     Optimization method.
     Choices are \code{\link[subplex]{subplex}} and any of the methods used by \code{\link{optim}}.
   }
   \item{skip.se}{
-    Logical; if \code{TRUE}, skip the computation of standard errors.
+    logical; if \code{TRUE}, skip the computation of standard errors.
   }
   \item{verbose}{
-    Logical; if \code{TRUE}, the negative log quasilikelihood and parameter values are printed at each iteration of the optimizer.
-  }
-  \item{bootstrap}{
-    Logical;
-    if \code{TRUE} the indices in \code{bootsamp} will determine which of the conditional likelihood values be used in computing the quasi-loglikelihood.
+    logical; if \code{TRUE}, the negative log quasilikelihood and parameter values are printed at each iteration of the optimizer.
   }
   \item{bootsamp}{
-    Vector of integers;
+    vector of integers;
     used to have the quasi-loglikelihood evaluated using a bootstrap re-sampling of the data set.
   } 
   \item{lql.frac}{
@@ -116,19 +114,19 @@
   The \code{$} method allows extraction of arbitrary slots from the \code{nlfd.pomp} object.
 }
 \references{
- The following papers describe and motivate the NLF approach to model fitting:
+  The following papers describe and motivate the NLF approach to model fitting:
 
- Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B. T. and Nychka D. W. (1998)
- Noise and nonlinearity in measles epidemics: combining mechanistic and statistical approaches to population modeling.
- \emph{American Naturalist} \bold{151}, 425--440.
+  Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B. T. and Nychka D. W. (1998)
+  Noise and nonlinearity in measles epidemics: combining mechanistic and statistical approaches to population modeling.
+  \emph{American Naturalist} \bold{151}, 425--440.
 
- Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P., McCauley, E., Nisbet, R. M. and Wood S. N. (1999)
- Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches.
- \emph{Ecology} \bold{80}, 1789--1805.
+  Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P., McCauley, E., Nisbet, R. M. and Wood S. N. (1999)
+  Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches.
+  \emph{Ecology} \bold{80}, 1789--1805.
 
- Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J., Murdoch, W. W. and Turchin, P. (2005)
- Population cycles in the pine looper moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
- \emph{Ecological Monographs} \bold{75}, 259--276.
+  Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J., Murdoch, W. W. and Turchin, P. (2005)
+  Population cycles in the pine looper moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
+  \emph{Ecological Monographs} \bold{75}, 259--276.
 }
 \author{Stephen P. Ellner, Bruce E. Kendall, Aaron A. King}
 \keyword{optimize}
