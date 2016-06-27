@@ -204,7 +204,7 @@ More importantly, these rough-and-ready standard error estimates can be unstable
 This is because they are obtained from finite differences of the NLF objective function.
 This function, in turn, is approximated using simulated time series of finite length, which typically gives rise to fine-scale wrinkles.
 Therefore, when time permits, bootstrap standard errors are preferable. 
-When `nlf` is called with `bootstrap=TRUE`, the quasilikelihood function is evaluated on the bootstrap sample of the time series specified in `bootsamp`.  
+When `nlf` is called with a non-NULL value of `bootsamp`, the quasilikelihood function is evaluated on the bootstrap sample of the time series specified in `bootsamp`.
 The first `max(lags)` observations cannot be forecast by the autoregressive model, so the size of the bootstrap sample is the length of the data series minus `max(lags)`: 
 ```{r nlf-boot,eval=FALSE}
 lags <- 2
@@ -218,7 +218,6 @@ foreach (j = seq_len(ncol(bootsamp)), .combine=rbind) %dopar% {
         est=c("K","r"),
         lags=lags,
         seed=7639873, 
-        bootstrap=TRUE, 
         bootsamp=bootsamp[,j],
         skip.se=TRUE, 
         method="Nelder-Mead",
@@ -258,7 +257,6 @@ foreach (j = seq_len(nreps),.combine=rbind) %dopar% {
         est=c("K","r"),
         lags=lags,
         seed=7639873L,
-        bootstrap=TRUE, 
         bootsamp=bootsamp[,j],
         skip.se=TRUE, 
         method="Nelder-Mead",
