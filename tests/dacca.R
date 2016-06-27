@@ -10,6 +10,10 @@ x <- simulate(dacca,nsim=3,as.data.frame=TRUE)
 pf <- pfilter(dacca,Np=1000)
 pf1 <- pfilter(simulate(dacca),Np=1000)
 
+dacca2 <- dacca
+coef(dacca2,c("rho","clin")) <- c(2,0.1)
+pf2 <- pfilter(simulate(dacca2),Np=1000)
+
 ## to investigate the rogue crash:
 
 param.tab <- read.csv2(text='

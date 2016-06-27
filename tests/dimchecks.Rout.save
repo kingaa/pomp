@@ -436,4 +436,7 @@ Error : in ‘simulate’: 'nsim' must be a single integer
 > length(dprior(po,params=pp))
 [1] 1
 > 
+> pomp(ou2,skeleton=map(function(x,t,params,...) sample(c(c(x1=0,x2=0),c(x1=0)),size=1))) -> po
+> try(trajectory(po))
+Error : in ‘trajectory’: in map iterator: in 'trajectory': user 'skeleton' returns a vector of 1 state variables but 2 are expected
 > 

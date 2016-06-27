@@ -193,3 +193,5 @@ dim(trajectory(po,times=t,params=pp))
 length(dprior(po,params=p))
 length(dprior(po,params=pp))
 
+pomp(ou2,skeleton=map(function(x,t,params,...) sample(c(c(x1=0,x2=0),c(x1=0)),size=1))) -> po
+try(trajectory(po))
