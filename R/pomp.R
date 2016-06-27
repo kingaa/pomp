@@ -1,6 +1,6 @@
 ## This file defines 'pomp', the basic constructor of the pomp class
 pomp.internal <- function (data, times, t0, rprocess, dprocess,
-                           rmeasure, dmeasure, measurement.model,
+                           rmeasure, dmeasure, 
                            skeleton, skeleton.type, skelmap.delta.t,
                            initializer, rprior, dprior,
                            params, covar, tcovar,
@@ -232,31 +232,10 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
 
     ## type of skeleton (map or vectorfield)
     ## skelmap.delta.t has no meaning in the latter case
-    skeleton.type <- tryCatch(
-        match.arg(skeleton.type,c("map","vectorfield")),
-        error = function (e) {
-            stop(ep,"the deterministic skeleton must be either a map or a vectorfield: ",
-                 "see ",sQuote("?pomp"),call.=FALSE)
-        }
-    )
+    skeleton.type <- match.arg(skeleton.type,c("map","vectorfield","undef"))
     skelmap.delta.t <- as.numeric(skelmap.delta.t)
     if (skelmap.delta.t <= 0)
         stop(ep,"skeleton ",sQuote("delta.t")," must be positive",call.=FALSE)
-
-    ## if 'measurement model' is specified as a formula, this overrides
-    ## specification of 'rmeasure' or 'dmeasure'
-    if (!missing(measurement.model)) {
-        if (!(is.null(dmeasure)&&is.null(rmeasure))) {
-            warning(ep,"specifying ",sQuote("measurement.model"),
-                    " overrides specification of ",
-                    sQuote("rmeasure")," and ",sQuote("dmeasure"),
-                    call.=FALSE
-            )
-        }
-        mm <- measform2pomp(measurement.model)
-        rmeasure <- mm$rmeasure
-        dmeasure <- mm$dmeasure
-    }
 
     ## handle rmeasure
     rmeasure <- pomp.fun(
@@ -725,6 +704,21 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         }
         if (skeleton.type=="undef") skeleton.type <- "map"
 
+        ## if 'measurement model' is specified as a formula, this overrides
+        ## specification of 'rmeasure' or 'dmeasure'
+        if (!missing(measurement.model)) {
+            if (!(missing(dmeasure) && missing(rmeasure))) {
+                warning(ep,"specifying ",sQuote("measurement.model"),
+                        " overrides specification of ",
+                        sQuote("rmeasure")," and ",sQuote("dmeasure"),
+                        call.=FALSE
+                        )
+            }
+            mm <- measform2pomp(measurement.model)
+            rmeasure <- mm$rmeasure
+            dmeasure <- mm$dmeasure
+        }
+
         pomp.internal(
             data=data,
             times=times,
@@ -733,7 +727,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
             dprocess=dprocess,
             rmeasure=rmeasure,
             dmeasure=dmeasure,
-            measurement.model=measurement.model,
             dprior=dprior,
             rprior=rprior,
             skeleton=skeleton,
