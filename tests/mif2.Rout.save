@@ -227,6 +227,8 @@ Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite 
 Warning message:
 in ‘mif2.pfilter’: 97 filtering failures occurred. 
 > 
+> mif2(m4,Nmif=2,cooling.type="hyperbolic",cooling.fraction.50=1) -> m6
+> 
 > dev.off()
 null device 
           1 

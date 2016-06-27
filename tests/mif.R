@@ -30,7 +30,7 @@ mif1 <- mif(ou2,Nmif=30,start=guess1,
             Np=1000,
             var.factor=1,
             ic.lag=10,
-            cooling.type="geometric",
+            cooling.type="hyperbolic",
             cooling.fraction=0.95^50,
             max.fail=100
             )

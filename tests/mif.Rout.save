@@ -63,7 +63,7 @@ particle filter log likelihood at truth
 +             Np=1000,
 +             var.factor=1,
 +             ic.lag=10,
-+             cooling.type="geometric",
++             cooling.type="hyperbolic",
 +             cooling.fraction=0.95^50,
 +             max.fail=100
 +             )

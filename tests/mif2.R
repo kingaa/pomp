@@ -143,4 +143,6 @@ coef(gompertz,"K") <- 10
 try(gb <- mif2(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),
               cooling.fraction.50=0.2,transform=TRUE))
 
+mif2(m4,Nmif=2,cooling.type="hyperbolic",cooling.fraction.50=1) -> m6
+
 dev.off()
