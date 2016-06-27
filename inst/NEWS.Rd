@@ -1,9 +1,16 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.5.9}{
+  \itemize{
+    \item Redundant \code{bootstrap} argument to \code{nlf} has been removed.
+    \item More improvements to the testing suite.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.5.8}{
   \itemize{
     \item Major improvements to error and warning handling.
     \item Fix bugs that might arise in rare circumstances in \code{simulate} and \code{eulermultinom} functions.
+    \item More improvements to the testing suite.
   }
 }
 \section{Changes in \pkg{pomp} version 1.5.7}{

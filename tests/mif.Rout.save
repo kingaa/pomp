@@ -108,9 +108,6 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 [1]  1 10
 > dim(conv.rec(mif12))
 NULL
-> dev.off()
-null device 
-          1 
 > 
 > set.seed(33848585L)
 > 
@@ -259,4 +256,42 @@ sigma.2 sigma.3     tau    x1.0    x2.0
 Error : in ‘mif’: in ‘mif.pfilter’: ‘dmeasure’ returns non-finite value.
 In addition: Warning message:
 In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> 
+> coef(gompertz,"K") <- -1
+> try(mif(gompertz,Np=1000,rw.sd=c(K=0.1,r=0.1),cooling.fraction.50=0.5))
+Error : in ‘mif’: in ‘mif.pfilter’: non-finite state variable(s): X
+> try(mif(gompertz,Np=1000,rw.sd=rw.sd(K=0.1,r=0.1),cooling.fraction.50=0.5))
+Error in sigma * cool.sched$alpha : 
+  non-numeric argument to binary operator
+> 
+> pomp(gompertz,
++      toEstimationScale=function (params,...){
++          params["r"] <- log(params["r"])
++          params
++      },
++      fromEstimationScale=function (params,...){
++          params["r"] <- exp(params["r"])
++          params
++      }) -> po
+> 
+> try(mif(po,Nmif=3,Np=1000,rw.sd=c(K=5,r=5),cooling.fraction.50=0.5))
+Error : in ‘mif’: in ‘mif.pfilter’: non-finite state variable(s): X
+> try(mif(po,Nmif=3,Np=1000,rw.sd=c(K=5,r=Inf),cooling.fraction.50=0.5))
+Error : in ‘mif’: in ‘mif.pfilter’: non-finite parameter(s): r
+In addition: Warning message:
+In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
+> 
+> coef(gompertz,"K") <- 10
+> try(gb <- mif(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),
++               cooling.fraction.50=0.2,transform=TRUE))
+Warning message:
+in ‘mif.pfilter’: 97 filtering failures occurred. 
+> 
+> dev.off()
+null device 
+          1 
 > 

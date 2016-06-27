@@ -35,45 +35,29 @@ mif.particles <- function (Np, center, sd, ...) {
     )
 }
 
-mif.cooling.function <- function (type, perobs, fraction, ntimes) {
+mif.cooling <- function (type, fraction, ntimes) {
     switch(
         type,
         geometric={
             factor <- fraction^(1/50)
-            if (perobs) {
-                function (nt, m) {
-                    alpha <- factor^(nt/ntimes+m-1)
-                    list(alpha=alpha,gamma=alpha^2)
-                }
-            } else {
-                function (nt, m) {
-                    alpha <- factor^(m-1)
-                    list(alpha=alpha,gamma=alpha^2)
-                }
+            function (nt, m) {
+                alpha <- factor^(m-1)
+                list(alpha=alpha,gamma=alpha^2)
             }
         },
         hyperbolic={
             if (fraction < 1) {
-                if (perobs) {
-                    scal <- (50*ntimes*fraction-1)/(1-fraction)
-                    function (nt, m) {
-                        alpha <- (1+scal)/(scal+nt+ntimes*(m-1))
-                        list(alpha=alpha,gamma=alpha^2)
-                    }
-                } else {
-                    scal <- (50*fraction-1)/(1-fraction)
-                    function (nt, m) {
-                        alpha <- (1+scal)/(scal+m-1)
-                        list(alpha=alpha,gamma=alpha^2)
-                    }
+                scal <- (50*fraction-1)/(1-fraction)
+                function (nt, m) {
+                    alpha <- (1+scal)/(scal+m-1)
+                    list(alpha=alpha,gamma=alpha^2)
                 }
             } else {
                 function (nt, m) {
                     list(alpha=1,gamma=1)
                 }
             }
-        },
-        stop("unrecognized cooling schedule type ",sQuote(type),call.=FALSE)
+        }
     )
 }
 
@@ -432,9 +416,8 @@ mif.internal <- function (object, Nmif,
         stop(ep,sQuote("cooling.fraction.50"),
              " must be a number between 0 and 1",call.=FALSE)
 
-    cooling <- mif.cooling.function(
+    cooling <- mif.cooling(
         type=cooling.type,
-        perobs=FALSE,
         fraction=cooling.fraction.50,
         ntimes=ntimes
     )

@@ -1,11 +1,19 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._5._9:
+
+        • Redundant ‘bootstrap’ argument to ‘nlf’ has been removed.
+
+        • More improvements to the testing suite.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._5._8:
 
         • Major improvements to error and warning handling.
 
         • Fix bugs that might arise in rare circumstances in ‘simulate’
           and ‘eulermultinom’ functions.
+
+        • More improvements to the testing suite.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._5._7:
 

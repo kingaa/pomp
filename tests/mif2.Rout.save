@@ -192,6 +192,41 @@ Removed 2 rows containing missing values (geom_path).
 Warning message:
 Removed 1 rows containing missing values (geom_path). 
 > 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> 
+> coef(gompertz,"K") <- -1
+> try(mif2(gompertz,Np=1000,rw.sd=rw.sd(K=0.1,r=0.1),cooling.fraction.50=0.5))
+Non-finite likelihood computed:
+likelihood, data, states, and parameters are:
+    lik       Y       X       K       r   sigma     tau     X.0 
+    NaN  1.1186     NaN -1.1194 -0.0291  0.1000  0.1000  1.0000 
+Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
+> 
+> pomp(gompertz,
++      toEstimationScale=function (params,...){
++          params["r"] <- log(params["r"])
++          params
++      },
++      fromEstimationScale=function (params,...){
++          params["r"] <- exp(params["r"])
++          params
++      }) -> po
+> 
+> try(mif2(po,Nmif=3,Np=1000,rw.sd=rw.sd(K=5,r=Inf),cooling.fraction.50=0.5))
+Non-finite likelihood computed:
+likelihood, data, states, and parameters are:
+  lik     Y     X     K     r sigma   tau   X.0 
+  NaN  1.12   NaN 10.06   NaN  0.10  0.10  1.00 
+Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
+> 
+> coef(gompertz,"K") <- 10
+> try(gb <- mif2(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),
++               cooling.fraction.50=0.2,transform=TRUE))
+Warning message:
+in ‘mif2.pfilter’: 97 filtering failures occurred. 
+> 
 > dev.off()
 null device 
           1 

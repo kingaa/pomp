@@ -44,6 +44,32 @@ setClass(
     )
 )
 
+mif2.cooling <- function (type, fraction, ntimes) {
+    switch(
+        type,
+        geometric={
+            factor <- fraction^(1/50)
+            function (nt, m) {
+                alpha <- factor^(nt/ntimes+m-1)
+                list(alpha=alpha,gamma=alpha^2)
+            }
+        },
+        hyperbolic={
+            if (fraction < 1) {
+                scal <- (50*ntimes*fraction-1)/(1-fraction)
+                function (nt, m) {
+                    alpha <- (1+scal)/(scal+nt+ntimes*(m-1))
+                    list(alpha=alpha,gamma=alpha^2)
+                }
+            } else {
+                function (nt, m) {
+                    list(alpha=1,gamma=1)
+                }
+            }
+        }
+    )
+}
+
 mif2.pfilter <- function (object, params, Np,
                           mifiter, rw.sd, cooling.fn,
                           tol = 1e-17, max.fail = Inf,
@@ -226,9 +252,8 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     if (Nmif <= 0) stop(ep,sQuote("Nmif"),
                         " must be a positive integer",call.=FALSE)
     
-    cooling.fn <- mif.cooling.function(
+    cooling.fn <- mif2.cooling(
         type=cooling.type,
-        perobs=TRUE,
         fraction=cooling.fraction.50,
         ntimes=length(time(object))
     )

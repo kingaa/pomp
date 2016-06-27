@@ -67,7 +67,6 @@ dim(coef(c(mif1,mif12)))
 dim(coef(c(mif1a,mif12)))
 dim(coef(mif12[2]))
 dim(conv.rec(mif12))
-dev.off()
 
 set.seed(33848585L)
 
@@ -182,3 +181,28 @@ coef(fit,"tau") <- NaN
 try(fit <- continue(fit,Np=100,Nmif=2))
 coef(fit,"alpha.2") <- -Inf
 try(fit <- continue(fit,Np=100,Nmif=2))
+
+pompExample(gompertz)
+
+coef(gompertz,"K") <- -1
+try(mif(gompertz,Np=1000,rw.sd=c(K=0.1,r=0.1),cooling.fraction.50=0.5))
+try(mif(gompertz,Np=1000,rw.sd=rw.sd(K=0.1,r=0.1),cooling.fraction.50=0.5))
+
+pomp(gompertz,
+     toEstimationScale=function (params,...){
+         params["r"] <- log(params["r"])
+         params
+     },
+     fromEstimationScale=function (params,...){
+         params["r"] <- exp(params["r"])
+         params
+     }) -> po
+
+try(mif(po,Nmif=3,Np=1000,rw.sd=c(K=5,r=5),cooling.fraction.50=0.5))
+try(mif(po,Nmif=3,Np=1000,rw.sd=c(K=5,r=Inf),cooling.fraction.50=0.5))
+
+coef(gompertz,"K") <- 10
+try(gb <- mif(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),
+              cooling.fraction.50=0.2,transform=TRUE))
+
+dev.off()

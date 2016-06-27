@@ -122,4 +122,25 @@ m4 %>% conv.rec(c("alpha.2","alpha.3","loglik")) %>% melt() %>%
     geom_line()+
     facet_wrap(~variable,scales="free_y",ncol=1)
 
+pompExample(gompertz)
+
+coef(gompertz,"K") <- -1
+try(mif2(gompertz,Np=1000,rw.sd=rw.sd(K=0.1,r=0.1),cooling.fraction.50=0.5))
+
+pomp(gompertz,
+     toEstimationScale=function (params,...){
+         params["r"] <- log(params["r"])
+         params
+     },
+     fromEstimationScale=function (params,...){
+         params["r"] <- exp(params["r"])
+         params
+     }) -> po
+
+try(mif2(po,Nmif=3,Np=1000,rw.sd=rw.sd(K=5,r=Inf),cooling.fraction.50=0.5))
+
+coef(gompertz,"K") <- 10
+try(gb <- mif2(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),
+              cooling.fraction.50=0.2,transform=TRUE))
+
 dev.off()
