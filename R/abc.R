@@ -81,7 +81,12 @@ abc.internal <- function (object, Nabc,
     }
 
     theta <- start
-    log.prior <- dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi)
+    log.prior <- tryCatch(
+        dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi),
+        error = function (e) {
+            stop(ep,sQuote("dprior")," error: ",conditionMessage(e),call.=FALSE)
+        }
+    )
     if (!is.finite(log.prior))
         stop(ep,"inadmissible value of ",sQuote("dprior"),
              " at parameters ",sQuote("start"),call.=FALSE)
@@ -114,7 +119,12 @@ abc.internal <- function (object, Nabc,
 
         theta.prop <- proposal(theta,.n=n+.ndone,.accepts=.accepts,
                                verbose=verbose)
-        log.prior.prop <- dprior(object,params=theta.prop,log=TRUE)
+        log.prior.prop <- tryCatch(
+            dprior(object,params=theta.prop,log=TRUE),
+            error = function (e) {
+                stop(ep,sQuote("dprior")," error: ",conditionMessage(e),call.=FALSE)
+            }
+        )
 
         if (is.finite(log.prior.prop) &&
             runif(1) < exp(log.prior.prop-log.prior)) {

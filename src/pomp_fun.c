@@ -70,7 +70,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
     break;
 
     case undef: default:
-      errorcall(R_NilValue,"operation cannot be completed: some needed function has not been specified");
+      errorcall(R_NilValue,"operation cannot be completed: needed function has not been specified");
   }
 
   UNPROTECT(nprotect);

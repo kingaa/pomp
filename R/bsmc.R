@@ -187,19 +187,25 @@ bsmc.internal <- function (object, params, Np, est,
         gnsi.rproc <- FALSE
         
         ## evaluate probability of obervation given mean value of parameters and states (used in L&W AGM (5) below)
-        g <- dmeasure( 
-            object,
-            y=object@data[,nt,drop=FALSE],
-            x=mu,
-            times=times[nt+1],
-            params=if (transform) {
-                       partrans(object,m,dir="fromEstimationScale",
-                                .getnativesymbolinfo=ptsi.for)
-                   } else {
-                       m
-                   },
-            .getnativesymbolinfo=gnsi.dmeas
-        )	
+        g <- tryCatch(
+            dmeasure( 
+                object,
+                y=object@data[,nt,drop=FALSE],
+                x=mu,
+                times=times[nt+1],
+                params=if (transform) {
+                           partrans(object,m,dir="fromEstimationScale",
+                                    .getnativesymbolinfo=ptsi.for)
+                       } else {
+                           m
+                       },
+                .getnativesymbolinfo=gnsi.dmeas
+            ),
+            error = function (e) {
+                stop(ep,sQuote("dmeasure")," error: ",conditionMessage(e),
+                     call.=FALSE)
+            }
+        )
         gnsi.dmeas <- FALSE
         storeForEvidence1 <- log(sum(g))
         ## sample indices -- From L&W AGM (2)
@@ -245,20 +251,26 @@ bsmc.internal <- function (object, params, Np, est,
         )
 
         ## evaluate likelihood of observation given X (from L&W AGM (4))
-        numer <- dmeasure(
-            object,
-            y=object@data[,nt,drop=FALSE],
-            x=X,
-            times=times[nt+1],
-            params=if (transform) {
-                       tparams
-                   } else {
-                       params
-                   },
-            .getnativesymbolinfo=gnsi.dmeas
+        numer <- tryCatch(
+            dmeasure(
+                object,
+                y=object@data[,nt,drop=FALSE],
+                x=X,
+                times=times[nt+1],
+                params=if (transform) {
+                           tparams
+                       } else {
+                           params
+                       },
+                .getnativesymbolinfo=gnsi.dmeas
+            ),
+            error = function (e) {
+                stop(ep,sQuote("dmeasure")," error: ",conditionMessage(e),
+                     call.=FALSE)
+            }
         )
-        ## evaluate weights as per L&W AGM (5)
 
+        ## evaluate weights as per L&W AGM (5)
         weights <- numer/g
         storeForEvidence2 <- log(mean(weights))
         

@@ -11,7 +11,7 @@ nlf.objfun <- function (...)
     -sum(nlf.lql(...),na.rm=TRUE)
 
 nlf.lql <- function (params.fitted, object, params, par.index,
-                     transform = false,
+                     transform = FALSE,
                      times, t0, lags, period, tensor, seed = NULL,
                      transform.data = identity, nrbf = 4, verbose = FALSE,
                      bootstrap = FALSE, bootsamp = NULL) {

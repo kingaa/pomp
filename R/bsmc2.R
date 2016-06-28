@@ -158,18 +158,25 @@ bsmc2.internal <- function (object, params, Np, est,
         gnsi.rproc <- FALSE
 
         ## evaluate likelihood of observation given xpred (from L&W AGM (4))
-        weights <- dmeasure(
-            object,
-            y=object@data[,nt,drop=FALSE],
-            x=xpred,
-            times=times[nt+1],
-            params=if (transform) {
-                       tparams
-                   } else {
-                       params
-                   },
-            .getnativesymbolinfo=gnsi.dmeas
+        weights <- tryCatch(
+            dmeasure(
+                object,
+                y=object@data[,nt,drop=FALSE],
+                x=xpred,
+                times=times[nt+1],
+                params=if (transform) {
+                           tparams
+                       } else {
+                           params
+                       },
+                .getnativesymbolinfo=gnsi.dmeas
+            ),
+            error = function (e) {
+                stop(ep,sQuote("dmeasure")," error: ",conditionMessage(e),
+                     call.=FALSE)
+            }
         )
+            
         gnsi.dmeas <- FALSE
         ## evaluate weights as per L&W AGM (5)
 
