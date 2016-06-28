@@ -651,13 +651,17 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
             }
             times <- data[tpos,,drop=TRUE]
             data <- data[-tpos,,drop=FALSE]
+        } else if (is.array(data) && !is.matrix(data)) {
+            stop(ep,sQuote("data"),
+                 "must be a data frame or an object of class ",
+                 sQuote("pomp"),call.=FALSE)
         } else if (is.numeric(data) && !is.matrix(data)) {
             ## 'data' is a numeric vector
             data=matrix(data,nrow=1,ncol=length(data),
                         dimnames=list("data",NULL))
         } else if (!is.matrix(data)) {
             stop(ep,sQuote("data"),
-                 "must be a data frame, a numeric vector, or an object of class ",
+                 "must be a data frame or an object of class ",
                  sQuote("pomp"),call.=FALSE)
         }
         

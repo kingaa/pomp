@@ -131,7 +131,7 @@ Error : in ‘pomp’: if ‘toEstimationScale’ is supplied, then ‘fromEstim
 > try(pomp(ricker,fromEstimationScale=identity) -> po)
 Error : in ‘pomp’: if ‘fromEstimationScale’ is supplied, then ‘toEstimationScale’ must also be supplied
 > try(pomp("banana"))
-Error : in ‘pomp’: ‘data’must be a data frame, a numeric vector, or an object of class ‘pomp’
+Error : in ‘pomp’: ‘data’must be a data frame or an object of class ‘pomp’
 > pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
 Warning message:
 in ‘pomp’: specifying ‘measurement.model’ overrides specification of ‘rmeasure’ and ‘dmeasure’ 
