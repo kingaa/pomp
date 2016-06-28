@@ -65,8 +65,15 @@ bsmc.internal <- function (object, params, Np, est,
         warning(ep,sQuote("Np")," is ignored when ",sQuote("params"),
                 " is a matrix",call.=FALSE)
 
-    if ((!is.matrix(params)) && (Np > 1))
-        params <- rprior(object,params=parmat(params,Np))
+    if ((!is.matrix(params)) && (Np > 1)) {
+        params <- tryCatch(
+            rprior(object,params=parmat(params,Np)),
+            error = function (e) {
+                stop(ep,sQuote("rprior")," error: ",
+                     conditionMessage(e),call.=FALSE)
+            }
+        )
+    }
     
     if (transform)
         params <- partrans(object,params,dir="toEstimationScale",
@@ -98,21 +105,21 @@ bsmc.internal <- function (object, params, Np, est,
     if (((length(lower)>1)&&(length(lower)!=npars.est))||
         ((length(upper)>1)&&(length(upper)!=npars.est))) {
         stop(ep,sQuote("lower")," and ",sQuote("upper"),
-            " must each have length 1 or length equal to that of ",
-            sQuote("est"),call.=FALSE                   
-        )
+             " must each have length 1 or length equal to that of ",
+             sQuote("est"),call.=FALSE                   
+             )
     }
 
     for (j in seq_len(Np)) {
         if (any((params[estind,j]<lower)|(params[estind,j]>upper))) {
             ind <- which((params[estind,j]<lower)|(params[estind,j]>upper))
             stop(ep,"parameter(s) ",
-                paste(sapply(paramnames[estind[ind]],sQuote),collapse=","),
-                " in column ",j," in ",sQuote("params"),
-                " is/are outside the box defined by ",
-                sQuote("lower")," and ",sQuote("upper"),
-                call.=FALSE
-            )
+                 paste(sapply(paramnames[estind[ind]],sQuote),collapse=","),
+                 " in column ",j," in ",sQuote("params"),
+                 " is/are outside the box defined by ",
+                 sQuote("lower")," and ",sQuote("upper"),
+                 call.=FALSE
+                 )
         }
     }
 
@@ -321,6 +328,17 @@ bsmc.internal <- function (object, params, Np, est,
         .getnativesymbolinfo <- FALSE
         
     }
+
+    if (nfail>0)
+        warning(
+            ep,nfail,
+            ngettext(
+                nfail,
+                msg1=" filtering failure occurred.",
+                msg2=" filtering failures occurred."
+            ),
+            call.=FALSE
+        )
 
     ## replace parameters with point estimate (posterior median)
     coef(object,transform=transform) <- apply(params,1,median)

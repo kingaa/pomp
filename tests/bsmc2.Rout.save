@@ -32,6 +32,10 @@ newly created object(s):
 > 
 > Np <- 20000
 > 
+> try(smc <- bsmc2(ou2,Np=2,smooth=0.01,est=estnames,
++                  tol=1e-2,max.fail=100))
+Error : in ‘bsmc2’: ‘rprior’ error: operation cannot be completed: some needed function has not been specified
+> 
 > prior.bounds <- rbind(
 +                       alpha.2=c(-0.55,-0.45),
 +                       alpha.3=c(0.25,0.35)
@@ -114,6 +118,11 @@ newly created object(s):
 > invisible(apply(fit$post[c("r","sigma"),],1,mean))
 > invisible(coef(fit))
 > plot(fit,thin=300)
+> 
+> smc <- bsmc2(ou2,transform=TRUE,Np=2,smooth=0.01,est=estnames,
++              tol=1e-2,max.fail=100)
+Warning message:
+in ‘bsmc2’: 7 filtering failures occurred. 
 > 
 > dev.off()
 null device 

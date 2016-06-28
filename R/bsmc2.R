@@ -40,8 +40,15 @@ bsmc2.internal <- function (object, params, Np, est,
         warning(ep,sQuote("Np")," is ignored when ",sQuote("params"),
                 " is a matrix",call.=FALSE)
 
-    if ((!is.matrix(params)) && (Np > 1))
-        params <- rprior(object,params=parmat(params,Np))
+    if ((!is.matrix(params)) && (Np > 1)) {
+        params <- tryCatch(
+            rprior(object,params=parmat(params,Np)),
+            error = function (e) {
+                stop(ep,sQuote("rprior")," error: ",
+                     conditionMessage(e),call.=FALSE)
+            }
+        )
+    }
     
     if (transform)
         params <- partrans(object,params,dir="toEstimationScale",
@@ -213,6 +220,17 @@ bsmc2.internal <- function (object, params, Np, est,
         
     }
     
+    if (nfail>0)
+        warning(
+            ep,nfail,
+            ngettext(
+                nfail,
+                msg1=" filtering failure occurred.",
+                msg2=" filtering failures occurred."
+            ),
+            call.=FALSE
+        )
+
     ## replace parameters with point estimate (posterior median)
     coef(object,transform=transform) <- apply(params,1,median)
 

@@ -9,6 +9,9 @@ time(ou2) <- 1:10
 
 Np <- 10000
 
+try(smc <- bsmc(ou2,Np=2,smooth=0.01,est=estnames,
+                 tol=1e-2,max.fail=100))
+
 prior.bounds <- rbind(
                       alpha.2=c(-0.55,-0.45),
                       alpha.3=c(0.25,0.35)

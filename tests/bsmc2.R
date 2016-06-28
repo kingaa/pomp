@@ -11,6 +11,9 @@ time(ou2) <- 1:10
 
 Np <- 20000
 
+try(smc <- bsmc2(ou2,Np=2,smooth=0.01,est=estnames,
+                 tol=1e-2,max.fail=100))
+
 prior.bounds <- rbind(
                       alpha.2=c(-0.55,-0.45),
                       alpha.3=c(0.25,0.35)
@@ -75,5 +78,8 @@ invisible(apply(fit$prior[c("r","sigma"),],1,mean))
 invisible(apply(fit$post[c("r","sigma"),],1,mean))
 invisible(coef(fit))
 plot(fit,thin=300)
+
+smc <- bsmc2(ou2,transform=TRUE,Np=2,smooth=0.01,est=estnames,
+             tol=1e-2,max.fail=100)
 
 dev.off()

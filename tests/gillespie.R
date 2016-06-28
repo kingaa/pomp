@@ -123,5 +123,10 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) 0
 try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
 try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 
+rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
+
+try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
+
 ggsave(plot=pl1,filename="gillespie-01.png",dpi=100,height=4,width=4)
 ggsave(plot=pl2,filename="gillespie-02.png",dpi=100,height=4,width=4)

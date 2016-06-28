@@ -103,8 +103,8 @@ newly created object(s):
 > r1 <- nlf(gompertz,est=c("K","r"),lags=c(1,2,3),
 +           nconverge=200,nasymp=1000,method="Nelder-Mead",
 +           seed=34999695L,verbose=TRUE)
-h in NLF = 0.1 
-epsilon in NLF = 0.2879638 0.2283782 
+h in ‘nlf’ = 0.1 
+epsilon in ‘nlf’ = 0.2879638 0.2283782 
 fitted param 1 0.2112649 up in ‘nlf’ 
 fitted param 1 0.06441471 down in ‘nlf’ 
 fitted param 2 0.236051 up in ‘nlf’ 
