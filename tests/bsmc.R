@@ -52,5 +52,9 @@ ou2 <- pomp(ou2,
 
 smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames)
 smc <- bsmc(ou2,ntries=5,transform=TRUE,Np=5000,smooth=0.1,est=estnames)
+try(plot(smc,pars=c("george","gracie")))
 print(smc$eff.sample.size)
 print(smc$log.evidence)
+
+smc <- bsmc(ou2,ntries=1,transform=TRUE,Np=2,smooth=0.01,est=estnames,
+            tol=1e-2,max.fail=100)

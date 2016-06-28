@@ -94,12 +94,17 @@ euler.sim <- function (step.fun, delta.t, PACKAGE) {
 }
 
 gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
+    ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
     if (missing(PACKAGE)) PACKAGE <- character(0)
     if (!is.matrix(v) || !is.matrix(d)) {
-        stop("in ",sQuote("gillespie.sim"),
-             sQuote("v")," and ",sQuote("d")," must be matrices.",
+        stop(ep,sQuote("v")," and ",sQuote("d")," must be matrices.",
              call.=FALSE)
     }
+    nvar <- nrow(v)
+    nevent <- ncol(v)
+    if ((nvar!=nrow(d))||(nevent!=ncol(d)))
+        stop(ep,sQuote("v")," and ",sQuote("d")," must agree in dimension.",
+             call.=FALSE)
     new("gillespieRprocessPlugin",
         rate.fn=rate.fun,v=v,d=d,
         slotname="rate.fn",
@@ -108,12 +113,23 @@ gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
 }
 
 kleap.sim <- function (rate.fun, e, v, d, PACKAGE) {
+    ep <- paste0("in ",sQuote("kleap.sim")," plugin: ")
     if (missing(PACKAGE)) PACKAGE <- character(0)
     if (!is.matrix(v) || !is.matrix(d)) {
-        stop("in ",sQuote("kleap.sim"),
-             sQuote("v")," and ",sQuote("d")," must be matrices.",
+        stop(ep,sQuote("v")," and ",sQuote("d")," must be matrices.",
              call.=FALSE)
     }
+    nvar <- nrow(v)
+    nevent <- ncol(v)
+    if ((nvar!=nrow(d))||(nevent!=ncol(d)))
+        stop(ep,sQuote("v")," and ",sQuote("d")," must agree in dimension.",
+             call.=FALSE)
+    e <- as.numeric(e)
+    if (nvar!=length(e))
+        stop(ep,sQuote("e")," must have one entry for each state variable.",
+             call.=FALSE)
+    if (any((e>1)|(e<0)))
+        stop(ep,"each element of ",sQuote("e")," must be in [0,1].",call.=FALSE)
     new("kleapRprocessPlugin",
         rate.fn=rate.fun,e=e,v=v,d=d,
         slotname="rate.fn",
@@ -269,8 +285,6 @@ setMethod(
     definition=function (object, ...) {
         nvar <- nrow(object@v)
         nevent <- ncol(object@v)
-        if ((nvar!=nrow(object@d))||(nevent!=ncol(object@d)))
-            stop(sQuote("v")," and ",sQuote("d")," must agree in dimension.",call.=FALSE)
         efun <- pomp.fun(
             f=object@rate.fn,
             PACKAGE=object@PACKAGE,
@@ -314,20 +328,8 @@ setMethod(
     "plugin.handler",
     signature=signature(object='kleapRprocessPlugin'),
     definition=function (object, ...) {
-        if (!(is.matrix(object@d)&&is.matrix(object@v))) {
-            stop(sQuote("v")," and ",sQuote("d")," must be matrices.",call.=FALSE)
-        }
         nvar <- nrow(object@v)
         nevent <- ncol(object@v)
-        if ((nvar!=nrow(object@d))||(nevent!=ncol(object@d)))
-            stop(sQuote("v")," and ",sQuote("d")," must agree in dimension.",call.=FALSE)
-        object@e <- as.numeric(object@e)
-        if (nvar!=length(object@e))
-            stop(sQuote("e")," must have one entry for each state variable.",call.=FALSE)
-        
-        if (any((object@e>1)|(object@e<0)))
-            stop("each element of ",sQuote("e")," must be in [0,1].",call.=FALSE)
-        
         efun <- pomp.fun(
             f=object@rate.fn,
             PACKAGE=object@PACKAGE,
