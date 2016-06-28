@@ -80,13 +80,13 @@ In the call above `lags = c(1,2)` specifies that the autoregressive model predic
 The set of lags need not include the most recent observation, and skips are allowed, so that `lags=c(2,3,6)` is also "legal". 
 
 The quasilikelihood is optimized numerically, so the reliability of the optimization should be assessed by doing multiple fits with different starting parameter values. 
-Because of the way `nlf` controls the random number seed, starting values should all be chosen before the calls to `nlf`: 
+Let us choose some starting values distributed about the true values of the parameters:
 ```{r nlf-gompertz-starts}
 starts <- parmat(coef(gompertz),5)
 starts["K",] <- rlnorm(n=5,meanlog=log(coef(gompertz,"K")),sdlog=0.1)
 starts["r",] <- rlnorm(n=5,meanlog=log(coef(gompertz,"r")),sdlog=0.1)
 ``` 
-Then to make the results from different starts comparable, use the `seed` argument to initialize the random number generator the same way for each fit: 
+To make the results from different starts comparable, use the `seed` argument to initialize the random number generator the same way for each fit: 
 ```{r nlf-gompertz-fits,eval=FALSE}
 foreach (start=iter(starts,by="column"),.combine=rbind) %dopar% {
     nlf(
@@ -95,6 +95,7 @@ foreach (start=iter(starts,by="column"),.combine=rbind) %dopar% {
         transform.data=log,
         transform=TRUE,
         est=c("K","r"),
+        trace=4,
         lags=c(1,2),
         seed=7639873L,
         method="Nelder-Mead",
@@ -115,10 +116,12 @@ fits
 ``` 
 so below we will trust that repeated optimization isn't needed.
 
-The call above also used the `method` argument to specify that the Nelder-Mead option in `optim` is used to maximize the quasilikelihood, and the `trace` argument is passed to `optim`; other arguments can be passed to `optim` in the same way. 
+The call above also used the `method` argument to specify that the Nelder-Mead option in `optim` is used to maximize the quasilikelihood.
+The `trace` argument is passed to `optim`;
+other arguments can be passed to `optim`, or the alternative optimizers, in the same way. 
 `nasymp` sets the length of the Gompertz model simulation on which the quasilikelihood is based; 
 larger values will give less variable parameter estimates, but will slow down the fitting process. 
-The slowdown is dominated by the time required to generate the model simulations, so efficient coding of `rprocess` is essential. 
+The slowdown is dominated by the time required to generate the model simulations, so coding of `rprocess` using `Csnippet`s is a good idea.
 
 The choice of lags affects the accuracy of the intermediate statistical model and therefore the accuracy of parameter estimates, so it is worth putting some effort into choosing good lags. 
 Given enough time, a user could generate many artificial data sets, fit them all with several candidate lags, and evaluate the precision and accuracy of estimates. 
@@ -156,7 +159,7 @@ library(reshape2)
 library(ggplot2)
 theme_set(theme_bw())
 slices %>%
-  ddply(~lag,mutate,dlql=lql-max(lql)) %>%
+  ddply(~lag+slice,mutate,dlql=lql-max(lql)) %>%
   subset(dlql>-50,select=c(r,K,slice,lag,dlql)) %>%
   melt(measure.vars=c("r","K")) %>% 
   subset(variable==slice) %>%
@@ -241,8 +244,8 @@ The code above implements a "resampling cases" approach to bootstrapping the dat
 This is valid when observations are conditionally independent given the past observations, which is only true for a Markov process if the complete state is observed. 
 Otherwise there may be correlations, and we need to use methods for bootstrapping time series.
 In `nlf` it is relatively easy to implement the "blocks of blocks" resampling method [@Davison1997] (p. 398).
-For example, with block length $l=3$ we resample (with replacement) observations in groups of length 3: 
-```{r block-bootsamp,eval=FALSE}
+For example, with block length $l=3$ we resample (with replacement) observations in groups of length 3:
+```{r nlf-block-bootsamp}
 lags <- 2
 nboot <- length(obs(gompertz))-max(lags)
 bootsamp <- replicate(100,sample(nboot-2,size=floor(nboot/3),replace=TRUE))
@@ -250,7 +253,7 @@ bootsamp <- rbind(bootsamp,bootsamp+1,bootsamp+2)
 ``` 
 and otherwise proceed exactly as above. 
 ```{r nlf-block-boot,eval=FALSE}
-foreach (j = seq_len(nreps),.combine=rbind) %dopar% {
+foreach (j = seq_len(ncol(bootsamp)), .combine=rbind) %dopar% {
     fit <- nlf(
         gompertz,
         transform=TRUE,
