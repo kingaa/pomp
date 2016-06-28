@@ -1,11 +1,11 @@
-make.lags.NLF <- function(x, lags, cov = NULL, nobs = 10000) {
+make.lags.nlf <- function(x, lags, cov = NULL, nobs = 10000) {
   x <- as.matrix(x)
   xd <- ncol(x)
   m <- length(lags)
   N <- min(nobs,nrow(x)-max(lags))
   n <- min(nobs,N)
   if (N > nobs)
-    warning("in ",sQuote("make.lags.NLF"),
+    warning("in ",sQuote("make.lags.nlf"),
             ": series length truncated to default in make.lags",call.=FALSE)
   start <- max(lags)+1
   temp <- matrix(0,ncol=xd*length(lags),nrow=n)
@@ -25,8 +25,6 @@ make.lags.NLF <- function(x, lags, cov = NULL, nobs = 10000) {
   if (!is.null(cov)) {
     cov <- as.matrix(cov)
     cov <- cov[a:b,,drop=FALSE]
-    ##temp <- cbind(temp, cov[a:b,  ])
-    ##cat(a, b)
     skip <- (1:ncol(cov))+m*xd
   }
   if(xd == 1)
@@ -75,9 +73,9 @@ Newey.West <- function(x, y, maxlag) {
 } 
 
 
-make.tensorbasis.NLF <- function(A,B) {
+make.tensorbasis.nlf <- function(A,B) {
   if(nrow(A)!=nrow(B))
-      stop("in ",sQuote("make.tensorbasis.NLF"),
+      stop("in ",sQuote("make.tensorbasis.nlf"),
            ": incompatible matrices in make.tensorbasis",call.=FALSE)
   ncol.A <- ncol(A)
   ncol.B <- ncol(B)

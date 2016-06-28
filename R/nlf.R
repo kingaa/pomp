@@ -175,7 +175,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
     if (!skip.se && nfitted>0) { 
         Jhat <- matrix(0,nfitted,nfitted)
         Ihat <- Jhat
-        f0 <- NLF.LQL(
+        f0 <- nlf.lql(
             fitted,
             object=object,
             params=params,
@@ -199,7 +199,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
 
         ## find a good epsilon 
         h <- se.par.frac
-        if (verbose) cat("h in NLF =",h,"\n")
+        if (verbose) cat("h in",sQuote("nlf"),"=",h,"\n")
         eps <- rep(h,nfitted)
 
         for (i in seq_len(nfitted)) {
@@ -208,7 +208,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
             guess <- fitted
             guess[i] <- fitted[i]-sqrt(2)*h*abs(fitted[i])  
             Fvals[1] <- mean(
-                NLF.LQL(
+                nlf.lql(
                     guess,object=object, params=params, par.index=par.index, 
                     transform=transform,
                     times=times, t0=t0, lags=lags, period=period, tensor=tensor,
@@ -220,7 +220,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
             guess <- fitted
             guess[i] <- fitted[i]-h*abs(fitted[i])
             Fvals[2] <- mean(
-                NLF.LQL(
+                nlf.lql(
                     guess,object=object, params=params, par.index=par.index, 
                     transform=transform,
                     times=times, t0=t0, lags=lags, period=period, tensor=tensor,
@@ -232,7 +232,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
             guess <- fitted
             guess[i] <- fitted[i]+h*abs(fitted[i])
             Fvals[4] <- mean(
-                NLF.LQL(
+                nlf.lql(
                     guess,object=object, params=params, par.index=par.index, 
                     transform=transform,
                     times=times, t0=t0, lags=lags, period=period, tensor=tensor,
@@ -244,7 +244,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
             guess <- fitted
             guess[i] <- fitted[i]+sqrt(2)*h*abs(fitted[i])
             Fvals[5] <- mean(
-                NLF.LQL(
+                nlf.lql(
                     guess,object=object, params=params, par.index=par.index, 
                     transform=transform,
                     times=times, t0=t0, lags=lags, period=period, tensor=tensor,
@@ -260,13 +260,13 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
             eps[i] <- sqrt(abs(lql.frac/c2))
         }
 
-        if (verbose) cat("epsilon in NLF =",t(eps),"\n")
+        if (verbose) cat("epsilon in",sQuote("nlf"),"=",t(eps),"\n")
 
         Imat <- matrix(0,npts,nfitted)
         for (i in seq_len(nfitted)) {
             guess.up <- fitted
             guess.up[i] <- guess.up[i]+eps[i]
-            f.up <- NLF.LQL(
+            f.up <- nlf.lql(
                 guess.up,object=object, params=params, par.index=par.index, 
                 transform=transform,
                 times=times, t0=t0, lags=lags, period=period, tensor=tensor,
@@ -280,7 +280,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
 
             guess.down <- fitted
             guess.down[i] <- guess.down[i]-eps[i]
-            f.down <- NLF.LQL(
+            f.down <- nlf.lql(
                 guess.down,object=object, params=params, par.index=par.index, 
                 transform=transform,
                 times=times, t0=t0, lags=lags, period=period, tensor=tensor,
@@ -303,7 +303,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                 guess.uu[i] <- guess.uu[i]+eps[i]
                 guess.uu[j] <- guess.uu[j]+eps[j]
                 F.uu <- mean(
-                    NLF.LQL(
+                    nlf.lql(
                         guess.uu,object=object, params=params, par.index=par.index,
                         transform=transform,
                         times=times, t0=t0, lags=lags, period=period, tensor=tensor,
@@ -317,7 +317,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                 guess.ud[i] <- guess.ud[i]+eps[i]
                 guess.ud[j] <- guess.ud[j]-eps[j]
                 F.ud <- mean(
-                    NLF.LQL(
+                    nlf.lql(
                         guess.ud,object=object, params=params, par.index=par.index,
                         transform=transform,
                         times=times, t0=t0, lags=lags, period=period, tensor=tensor,
@@ -331,7 +331,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                 guess.du[i] <- guess.du[i]-eps[i]
                 guess.du[j] <- guess.du[j]+eps[j]
                 F.du <- mean(
-                    NLF.LQL(
+                    nlf.lql(
                         guess.du,object=object, params=params, par.index=par.index,
                         transform=transform,
                         times=times, t0=t0, lags=lags, period=period, tensor=tensor,
@@ -345,7 +345,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
                 guess.dd[i] <- guess.dd[i]-eps[i]
                 guess.dd[j] <- guess.dd[j]-eps[j] 
                 F.dd <- mean(
-                    NLF.LQL(
+                    nlf.lql(
                         guess.dd,object=object, params=params, par.index=par.index,
                         transform=transform,
                         times=times, t0=t0, lags=lags, period=period, tensor=tensor,

@@ -1,4 +1,4 @@
-NLF.guts <- function (data.mat, data.times, model.mat, model.times,
+nlf.guts <- function (data.mat, data.times, model.mat, model.times,
                       lags, period, tensor, nrbf = 4,
                       bootstrap = FALSE, bootsamp = NULL) {
 
@@ -76,8 +76,8 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times,
     }
 
     ## Lag the data and set up the predicted values & seasonal indices
-    Lags.model <- make.lags.NLF(model.ts,lags=lags,cov=seas.sim)
-    Lags.data <- make.lags.NLF(data.ts,lags=lags,cov=seas.data)
+    Lags.model <- make.lags.nlf(model.ts,lags=lags,cov=seas.sim)
+    Lags.data <- make.lags.nlf(data.ts,lags=lags,cov=seas.data)
 
     if (bootstrap) {
         Lags.data$x <- Lags.data$x[bootsamp,]
@@ -116,8 +116,8 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times,
             if (fac==0) return(FAILED)
             
             ## Lag the data and set up the predicted values & seasonal indices
-            Lags.model <- make.lags.NLF(model.ts,lags=lags,cov=seas.sim)
-            Lags.data <- make.lags.NLF(data.ts,lags=lags,cov=seas.data)
+            Lags.model <- make.lags.nlf(model.ts,lags=lags,cov=seas.sim)
+            Lags.data <- make.lags.nlf(data.ts,lags=lags,cov=seas.data)
             
             if (bootstrap) {
                 Lags.data$x=Lags.data$x[bootsamp,]
@@ -135,8 +135,8 @@ NLF.guts <- function (data.mat, data.times, model.mat, model.times,
     if (seas) {
         if (tensor) { 
             ## make gam coefficients time-dependent
-            rbfbasis.model <- make.tensorbasis.NLF(rbfbasis.model,rbfbasis.cov.model)      
-            rbfbasis.data <- make.tensorbasis.NLF(rbfbasis.data,rbfbasis.cov.data)
+            rbfbasis.model <- make.tensorbasis.nlf(rbfbasis.model,rbfbasis.cov.model)      
+            rbfbasis.data <- make.tensorbasis.nlf(rbfbasis.data,rbfbasis.cov.data)
         } else { 
             ## add time-varying intercept  
             rbfbasis.model <- cbind(rbfbasis.model,rbfbasis.cov.model)
