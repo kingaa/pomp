@@ -88,6 +88,13 @@ Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value.
 > plot(ess~time,data=as.data.frame(pf),type='l')
 > plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
 > 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> coef(gompertz,"sigma") <- Inf
+> try(pfilter(gompertz,Np=1000,pred.var=TRUE))
+Error : in ‘pfilter’: non-finite state variable(s): X
+> 
 > dev.off()
 null device 
           1 

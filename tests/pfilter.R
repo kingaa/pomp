@@ -36,4 +36,8 @@ plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
 plot(ess~time,data=as.data.frame(pf),type='l')
 plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
 
+pompExample(gompertz)
+coef(gompertz,"sigma") <- Inf
+try(pfilter(gompertz,Np=1000,pred.var=TRUE))
+
 dev.off()
