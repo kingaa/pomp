@@ -283,8 +283,6 @@ setMethod(
     "plugin.handler",
     signature=signature(object='gillespieRprocessPlugin'),
     definition=function (object, ...) {
-        nvar <- nrow(object@v)
-        nevent <- ncol(object@v)
         efun <- pomp.fun(
             f=object@rate.fn,
             PACKAGE=object@PACKAGE,
@@ -305,7 +303,7 @@ setMethod(
                     xstart=xstart,
                     times=times,
                     params=params,
-                    e=rep(0,nvar),
+                    e=numeric(0),
                     vmatrix=object@v,
                     dmatrix=object@d,
                     tcovar=tcovar,
@@ -328,8 +326,6 @@ setMethod(
     "plugin.handler",
     signature=signature(object='kleapRprocessPlugin'),
     definition=function (object, ...) {
-        nvar <- nrow(object@v)
-        nevent <- ncol(object@v)
         efun <- pomp.fun(
             f=object@rate.fn,
             PACKAGE=object@PACKAGE,
