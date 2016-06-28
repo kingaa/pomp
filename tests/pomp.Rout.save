@@ -136,6 +136,13 @@ Error : in ‘pomp’: ‘data’must be a data frame or an object of class ‘p
 Warning message:
 in ‘pomp’: specifying ‘measurement.model’ overrides specification of ‘rmeasure’ and ‘dmeasure’ 
 > 
+> xdat <- ricker@data
+> nm <- dimnames(xdat)
+> dim(xdat) <- c(nrow(xdat),1,ncol(xdat))
+> dimnames(xdat) <- list(nm[[1]],NULL,nm[[2]])
+> try(pomp(xdat,times=dat$time,t0=0) -> po)
+Error : in ‘pomp’: ‘data’must be a data frame or an object of class ‘pomp’
+> 
 > try(pompExample(bob))
 Error : in ‘pompExample’: cannot find file ‘bob.R’
 > try(pompExample("bob"))

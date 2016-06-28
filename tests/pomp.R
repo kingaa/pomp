@@ -63,6 +63,12 @@ try(pomp(ricker,fromEstimationScale=identity) -> po)
 try(pomp("banana"))
 pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
 
+xdat <- ricker@data
+nm <- dimnames(xdat)
+dim(xdat) <- c(nrow(xdat),1,ncol(xdat))
+dimnames(xdat) <- list(nm[[1]],NULL,nm[[2]])
+try(pomp(xdat,times=dat$time,t0=0) -> po)
+
 try(pompExample(bob))
 try(pompExample("bob"))
 pompExample("ricker")
