@@ -652,14 +652,25 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
             times <- data[tpos,,drop=TRUE]
             data <- data[-tpos,,drop=FALSE]
         } else if (is.array(data) && !is.matrix(data)) {
+            ## 'data' is a non-matrix array
             stop(ep,sQuote("data"),
                  "must be a data frame or an object of class ",
                  sQuote("pomp"),call.=FALSE)
         } else if (is.numeric(data) && !is.matrix(data)) {
             ## 'data' is a numeric vector
+            warning(ep,sQuote("data")," should be a data frame or an object of class ",sQuote("pomp"),
+                    ". The option to provide a numeric vector for the ",sQuote("data"),
+                    " argument is deprecated and will be removed in a future release.",
+                    call.=FALSE)
             data=matrix(data,nrow=1,ncol=length(data),
                         dimnames=list("data",NULL))
-        } else if (!is.matrix(data)) {
+        } else if (is.matrix(data)) {
+            ## 'data' is a matrix
+            warning(ep,sQuote("data")," should be a data frame or an object of class ",sQuote("pomp"),
+                    ". The option to provide a matrix for the ",sQuote("data"),
+                    " argument is deprecated and will be removed in a future release.",
+                    call.=FALSE)
+        } else {
             stop(ep,sQuote("data"),
                  "must be a data frame or an object of class ",
                  sQuote("pomp"),call.=FALSE)
