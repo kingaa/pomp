@@ -7,7 +7,7 @@ layout: pomp
 
 ### Development version
 
-The development version is often several weeks ahead of the version on CRAN.
+The development version is usually several weeks ahead of the version on CRAN.
 You can install it from the Github repository by executing the following in an **R** session:
 
 ```

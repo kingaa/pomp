@@ -19,7 +19,8 @@ knitr::opts_chunk$set(cache=FALSE,results="hide",echo=TRUE,fig.show="hide",
 ## How can I submit an effective request for help?
 
 Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the help pages and/or the [package tutorials](http://kingaa.github.io/pomp/vignettes).
-Check to see if you are using the latest version of **pomp**: if not, check to see if the problem you have is solved by upgrading to the latest version.
+Check to see if you are using the latest version of **pomp**:
+if not, check to see if the problem you have is solved by upgrading to the latest version.
 Read through the [Frequently Asked Questions](FAQ) to see if the answer to your question is there.
 
 If you still have a problem, then submit a request for help via the [Issues page](https://github.com/kingaa/pomp/issues) if possible or to Aaron King (kingaa at umich dot edu) if necessary.
