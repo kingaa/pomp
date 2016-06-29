@@ -1,5 +1,15 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._5._1_0:
+
+        • The matrix and numeric vector options for the ‘data’ argument
+          to ‘pomp’ are now deprecated and will be removed in a future
+          release.  In calls to ‘pomp’, ‘data’ should be either a data
+          frame or a ‘pomp’-class object.
+
+        • Many more errors are now trapped and reported with more
+          informative messages.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._5._9:
 
         • Redundant ‘bootstrap’ argument to ‘nlf’ has been removed.

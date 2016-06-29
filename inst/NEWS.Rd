@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.5.10}{
+  \itemize{
+    \item The matrix and numeric vector options for the \code{data} argument to \code{pomp} are now deprecated and will be removed in a future release.
+    In calls to \code{pomp}, \code{data} should be either a data frame or a \code{pomp}-class object.
+    \item Many more errors are now trapped and reported with more informative messages.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.5.9}{
   \itemize{
     \item Redundant \code{bootstrap} argument to \code{nlf} has been removed.
