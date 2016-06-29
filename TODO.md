@@ -1,7 +1,5 @@
 ### pomp to-do list
 
-- revisit 'invisible' calls in tests
-- error handling in 'SSA.f90'
 - better unit tests for 'sannbox'
 - write Csnippet support for 'onestep.dens' and 'gillespie.sim' plugins.
 - SDE examples
