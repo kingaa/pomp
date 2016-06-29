@@ -18,8 +18,11 @@ params <- c(
 ## set up the pomp object
 ## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
 po <- pomp(
-    times=1/52*seq.int(length=4*52),
-    data=rbind(reports=numeric(52*4)),
+    data=data.frame(
+        time=1/52*seq.int(length=4*52),
+        reports=numeric(52*4)
+    ),
+    times="time",
     params=params,
     t0=0,
     tcovar=tbasis,

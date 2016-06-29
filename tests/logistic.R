@@ -1,8 +1,10 @@
 library(pomp)
 
+po <- pomp(data=rbind(obs=rep(0,1000)),times=0.1*seq.int(length=1000),t0=0)
+
 po <- pomp(
-  data=rbind(obs=rep(0,1000)),
-  times=0.1*seq.int(length=1000),
+  data=data.frame(obs=rep(0,1000),time=0.1*seq.int(length=1000)),
+  times="time",
   t0=0,
   rprocess=euler.sim(
     step.fun=function(x,t,params,delta.t,...){

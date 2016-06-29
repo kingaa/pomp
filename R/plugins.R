@@ -166,12 +166,18 @@ setMethod(
     "plugin.handler",
     signature=signature(object='onestepRprocessPlugin'),
     definition=function (object, ...) {
-        efun <- pomp.fun(
-            f=object@step.fn,
-            PACKAGE=object@PACKAGE,
-            proto=quote(step.fun(x,t,params,delta.t,...)),
-            slotname=object@slotname,
-            ...
+        ep <- paste0("in ",sQuote("onestep.sim")," plugin: ")
+        efun <- tryCatch(
+            pomp.fun(
+                f=object@step.fn,
+                PACKAGE=object@PACKAGE,
+                proto=quote(step.fun(x,t,params,delta.t,...)),
+                slotname=object@slotname,
+                ...
+            ),
+            error = function (e) {
+                stop(ep,conditionMessage(e),call.=FALSE)
+            }
         )
         function (xstart, times, params, ...,
                   zeronames = character(0),
@@ -193,8 +199,7 @@ setMethod(
                     gnsi=.getnativesymbolinfo
                 ),
                 error = function (e) {
-                    stop("in ",sQuote("onestep.sim")," plugin: ",
-                         conditionMessage(e),call.=FALSE)
+                    stop(ep,conditionMessage(e),call.=FALSE)
                 }
             )
         }
@@ -205,12 +210,18 @@ setMethod(
     "plugin.handler",
     signature=signature(object='eulerRprocessPlugin'),
     definition=function (object, ...) {
-        efun <- pomp.fun(
-            f=object@step.fn,
-            PACKAGE=object@PACKAGE,
-            proto=quote(step.fun(x,t,params,delta.t,...)),
-            slotname=object@slotname,
-            ...
+        ep <- paste0("in ",sQuote("euler.sim")," plugin: ")
+        efun <- tryCatch(
+            pomp.fun(
+                f=object@step.fn,
+                PACKAGE=object@PACKAGE,
+                proto=quote(step.fun(x,t,params,delta.t,...)),
+                slotname=object@slotname,
+                ...
+            ),
+            error = function (e) {
+                stop(ep,conditionMessage(e),call.=FALSE)
+            }
         )
         function (xstart, times, params, ...,
                   zeronames = character(0),
@@ -232,8 +243,7 @@ setMethod(
                     gnsi=.getnativesymbolinfo
                 ),
                 error = function (e) {
-                    stop("in ",sQuote("euler.sim")," plugin: ",
-                         conditionMessage(e),call.=FALSE)
+                    stop(ep,conditionMessage(e),call.=FALSE)
                 }
             )                
         }
@@ -244,12 +254,18 @@ setMethod(
     "plugin.handler",
     signature=signature(object='discreteRprocessPlugin'),
     definition=function (object, ...) {
-        efun <- pomp.fun(
-            f=object@step.fn,
-            PACKAGE=object@PACKAGE,
-            proto=quote(step.fun(x,t,params,...)),
-            slotname=object@slotname,
-            ...
+        ep <- paste0("in ",sQuote("discrete.time.sim")," plugin: ")
+        efun <- tryCatch(
+            pomp.fun(
+                f=object@step.fn,
+                PACKAGE=object@PACKAGE,
+                proto=quote(step.fun(x,t,params,...)),
+                slotname=object@slotname,
+                ...
+            ),
+            error = function (e) {
+                stop(ep,conditionMessage(e),call.=FALSE)
+            }
         )
         function (xstart, times, params, ...,
                   zeronames = character(0),
@@ -271,8 +287,7 @@ setMethod(
                     gnsi=.getnativesymbolinfo
                 ),
                 error = function (e) {
-                    stop("in ",sQuote("discrete.time.sim")," plugin: ",
-                         conditionMessage(e),call.=FALSE)
+                    stop(ep,conditionMessage(e),call.=FALSE)
                 }
             )
         }
@@ -283,12 +298,18 @@ setMethod(
     "plugin.handler",
     signature=signature(object='gillespieRprocessPlugin'),
     definition=function (object, ...) {
-        efun <- pomp.fun(
-            f=object@rate.fn,
-            PACKAGE=object@PACKAGE,
-            proto=quote(rate.fun(j,x,t,params,...)),
-            slotname=object@slotname,
-            ...
+        ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
+        efun <- tryCatch(
+            pomp.fun(
+                f=object@rate.fn,
+                PACKAGE=object@PACKAGE,
+                proto=quote(rate.fun(j,x,t,params,...)),
+                slotname=object@slotname,
+                ...
+            ),
+            error = function (e) {
+                stop(ep,conditionMessage(e),call.=FALSE)
+            }
         )
         function (xstart, times, params,
                   zeronames = character(0),
@@ -313,8 +334,7 @@ setMethod(
                     gnsi=.getnativesymbolinfo
                 ),
                 error = function (e) {
-                    stop("in ",sQuote("gillespie.sim")," plugin: ",
-                         conditionMessage(e),call.=FALSE)
+                    stop(ep,conditionMessage(e),call.=FALSE)
                 }
             )
         }
@@ -326,12 +346,18 @@ setMethod(
     "plugin.handler",
     signature=signature(object='kleapRprocessPlugin'),
     definition=function (object, ...) {
-        efun <- pomp.fun(
-            f=object@rate.fn,
-            PACKAGE=object@PACKAGE,
-            proto=quote(rate.fun(j,x,t,params,...)),
-            slotname=object@slotname,
-            ...
+        ep <- paste0("in ",sQuote("kleap.sim")," plugin: ")
+        efun <- tryCatch(
+            pomp.fun(
+                f=object@rate.fn,
+                PACKAGE=object@PACKAGE,
+                proto=quote(rate.fun(j,x,t,params,...)),
+                slotname=object@slotname,
+                ...
+            ),
+            error = function (e) {
+                stop(ep,conditionMessage(e),call.=FALSE)
+            }
         )
         function (xstart, times, params,
                   zeronames = character(0),
@@ -356,8 +382,7 @@ setMethod(
                     gnsi=.getnativesymbolinfo
                 ),
                 error = function (e) {
-                    stop("in ",sQuote("kleap.sim")," plugin: ",
-                         conditionMessage(e),call.=FALSE)
+                    stop(ep,conditionMessage(e),call.=FALSE)
                 }
             )
         }
@@ -368,12 +393,18 @@ setMethod(
     "plugin.handler",
     signature=signature(object='onestepDprocessPlugin'),
     definition=function (object, ...) {
-        efun <- pomp.fun(
-            f=object@dens.fn,
-            PACKAGE=object@PACKAGE,
-            proto=quote(dens.fun(x1,x2,t1,t2,params,...)),
-            slotname=object@slotname,
-            ...
+        ep <- paste0("in ",sQuote("onestep.dens")," plugin: ")
+        efun <- tryCatch(
+            pomp.fun(
+                f=object@dens.fn,
+                PACKAGE=object@PACKAGE,
+                proto=quote(dens.fun(x1,x2,t1,t2,params,...)),
+                slotname=object@slotname,
+                ...
+            ),
+            error = function (e) {
+                stop(ep,conditionMessage(e),call.=FALSE)
+            }
         )
         function (x, times, params, ...,
                   tcovar, covar, log = FALSE,
@@ -392,8 +423,7 @@ setMethod(
                     gnsi=.getnativesymbolinfo
                 ),
                 error = function (e) {
-                    stop("in ",sQuote("onestep.dens")," plugin: ",
-                         conditionMessage(e),call.=FALSE)
+                    stop(ep,conditionMessage(e),call.=FALSE)
                 }
             )
         }

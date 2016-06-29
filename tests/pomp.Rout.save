@@ -72,49 +72,59 @@ Error : in ‘pomp’: covariate(s) ‘henry’ are not among the columns of ‘
 Error : in ‘pomp’: if one of ‘fromEstimationScale’, ‘toEstimationScale’ is supplied, then so must the other
 > pomp(dat$y,times=dat$time,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po
 Warning messages:
-1: in ‘pomp’: the ‘skeleton.type’ argument is deprecated and will be removed in a future release.
+1: in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a numeric vector for the ‘data’ argument is deprecated and will be removed in a future release. 
+2: in ‘pomp’: the ‘skeleton.type’ argument is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
-2: in ‘pomp’: the ‘skelmap.delta.t’ argument is deprecated and will be removed in a future release.
+3: in ‘pomp’: the ‘skelmap.delta.t’ argument is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
 > plot(po)
 > pomp(dat$y,times=dat$time,t0=0,
 +      skeleton=function(x,t,params,...){x}) -> po
-Warning message:
-in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
+Warning messages:
+1: in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a numeric vector for the ‘data’ argument is deprecated and will be removed in a future release. 
+2: in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
 > try(pomp())
 Error : in ‘pomp’: ‘data’ is a required argument
 > try(pomp(as.matrix(dat),times=dat$time,t0=0) -> po)
-Error in validObject(.Object) : 
-  invalid class “pomp” object: the length of ‘times’ should match the number of observations
+Error : in ‘pomp’: invalid class “pomp” object: the length of ‘times’ should match the number of observations
+In addition: Warning message:
+in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a matrix for the ‘data’ argument is deprecated and will be removed in a future release. 
 > pomp(t(as.matrix(dat)),times=dat$time,t0=0,
 +      skeleton.type="map",skelmap.delta.t=1) -> po
 Warning messages:
-1: in ‘pomp’: the ‘skeleton.type’ argument is deprecated and will be removed in a future release.
+1: in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a matrix for the ‘data’ argument is deprecated and will be removed in a future release. 
+2: in ‘pomp’: the ‘skeleton.type’ argument is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
-2: in ‘pomp’: the ‘skelmap.delta.t’ argument is deprecated and will be removed in a future release.
+3: in ‘pomp’: the ‘skelmap.delta.t’ argument is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
 > pomp(t(as.matrix(dat)),times=dat$time,t0=0,
 +      skeleton=function(x,t,params,...){x}) -> po
-Warning message:
-in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
+Warning messages:
+1: in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a matrix for the ‘data’ argument is deprecated and will be removed in a future release. 
+2: in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
 > pomp(dat$y,times=dat$time,t0=0) -> po
+Warning message:
+in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a numeric vector for the ‘data’ argument is deprecated and will be removed in a future release. 
 > pomp(dat$y,times=dat$time,t0=0,
 +      skeleton.type="map",skelmap.delta.t=1) -> po
 Warning messages:
-1: in ‘pomp’: the ‘skeleton.type’ argument is deprecated and will be removed in a future release.
+1: in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a numeric vector for the ‘data’ argument is deprecated and will be removed in a future release. 
+2: in ‘pomp’: the ‘skeleton.type’ argument is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
-2: in ‘pomp’: the ‘skelmap.delta.t’ argument is deprecated and will be removed in a future release.
+3: in ‘pomp’: the ‘skelmap.delta.t’ argument is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
 > pomp(dat$y,times=dat$time,t0=0,
 +      skeleton=function(x,t,params,...){x}) -> po
-Warning message:
-in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
+Warning messages:
+1: in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a numeric vector for the ‘data’ argument is deprecated and will be removed in a future release. 
+2: in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
 > try(pomp(dat$y,times=dat$time[1:10],t0=0) -> po)
-Error in validObject(.Object) : 
-  invalid class “pomp” object: the length of ‘times’ should match the number of observations
+Error : in ‘pomp’: invalid class “pomp” object: the length of ‘times’ should match the number of observations
+In addition: Warning message:
+in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a numeric vector for the ‘data’ argument is deprecated and will be removed in a future release. 
 > pomp(ricker,skeleton.type="map",skelmap.delta.t=1) -> po
 Warning messages:
 1: in ‘pomp’: the ‘skeleton.type’ argument is deprecated and will be removed in a future release.
@@ -122,7 +132,7 @@ See ‘?pomp’ for an explanation of the new syntax.
 2: in ‘pomp’: the ‘skelmap.delta.t’ argument is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
 > try(pomp(ricker,skeleton=identity(identity)) -> po)
-Error : in ‘pomp.fun’: ‘skeleton’ must be a function of prototype skeleton(x, t, params, ...)
+Error : in ‘pomp’: in ‘skeleton’: ‘skeleton’ must be a function of prototype skeleton(x, t, params, ...)
 In addition: Warning message:
 in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 

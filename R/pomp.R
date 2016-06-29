@@ -15,8 +15,8 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     ep <- paste0("in ",sQuote("pomp"),": ")
 
     ## preliminary error checking
-    if (missing(times)) stop(ep,sQuote("times")," is a required argument",call.=FALSE)
-    if (missing(t0)) stop(ep,sQuote("t0")," is a required argument",call.=FALSE)
+    if (missing(times)) stop(sQuote("times")," is a required argument",call.=FALSE)
+    if (missing(t0)) stop(sQuote("t0")," is a required argument",call.=FALSE)
     if (missing(params)) params <- numeric(0)
 
     if (missing(cdir)) cdir <- NULL
@@ -56,26 +56,26 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     ## check the parameters and force them to be double-precision
     if (length(params)>0) {
         if (is.null(names(params)) || !is.numeric(params))
-            stop(ep,sQuote("params")," must be a named numeric vector",
+            stop(sQuote("params")," must be a named numeric vector",
                  call.=FALSE)
     }
     storage.mode(params) <- 'double'
 
     ## check the data and store it as double-precision matrix
     if (!is.numeric(data))
-        stop(ep,sQuote("data")," must be numeric",call.=FALSE)
+        stop(sQuote("data")," must be numeric",call.=FALSE)
     storage.mode(data) <- 'double'
     if (missing(obsnames) || length(obsnames)==0) obsnames <- rownames(data)
     obsnames <- as.character(obsnames)
 
     ## check times
     if (!is.numeric(times) || any(is.na(times)) || !all(diff(times)>0))
-        stop(ep,sQuote("times")," must be an increasing numeric vector",call.=FALSE)
+        stop(sQuote("times")," must be an increasing numeric vector",call.=FALSE)
     storage.mode(times) <- 'double'
 
     ## check t0
     if (!is.numeric(t0) || length(t0) > 1)
-        stop(ep,"the zero-time ",sQuote("t0")," must be a single number",call.=FALSE)
+        stop("the zero-time ",sQuote("t0")," must be a single number",call.=FALSE)
     storage.mode(t0) <- 'double'
 
     ## check and arrange covariates
@@ -83,13 +83,13 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
         covar <- matrix(data=0,nrow=0,ncol=0)
         tcovar <- numeric(0)
     } else if (missing(tcovar)) {
-        stop(ep,"if ",sQuote("covar")," is supplied, ",
+        stop("if ",sQuote("covar")," is supplied, ",
              sQuote("tcovar")," must also be supplied",call.=FALSE)
     } else if (is.data.frame(covar)) {
         if ((is.numeric(tcovar) && (tcovar<1 || tcovar>length(covar))) ||
             (is.character(tcovar) && (!(tcovar%in%names(covar)))) ||
             (!is.numeric(tcovar) && !is.character(tcovar))) {
-            stop(ep,"if ",sQuote("covar")," is a data frame, ",
+            stop("if ",sQuote("covar")," is a data frame, ",
                  sQuote("tcovar")," should indicate the time variable",call.=FALSE)
         } else if (is.numeric(tcovar)) {
             tpos <- tcovar
@@ -106,7 +106,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     if (missing(covarnames) || length(covarnames)==0) covarnames <- as.character(colnames(covar))
     if (!all(covarnames%in%colnames(covar))) {
         missing <- covarnames[!(covarnames%in%colnames(covar))]
-        stop(ep,"covariate(s) ",
+        stop("covariate(s) ",
              paste(sapply(missing,sQuote),collapse=","),
              " are not among the columns of ",sQuote("covar"),call.=FALSE)
     }
@@ -164,7 +164,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
                 )
             ),
             error = function (e) {
-                stop(ep,"error in building shared-object library from Csnippets: ",
+                stop("error in building shared-object library from Csnippets: ",
                      conditionMessage(e),call.=FALSE)
             }
         )
@@ -201,7 +201,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
         )
     }
     if (!is.function(rprocess))
-        stop(ep,sQuote("rprocess")," must be a function",call.=FALSE)
+        stop(sQuote("rprocess")," must be a function",call.=FALSE)
 
     ## handle dprocess
     if (is(dprocess,"pompPlugin")) {
@@ -215,7 +215,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
         )
     }
     if (!is.function(dprocess))
-        stop(ep,sQuote("dprocess")," must be a function",call.=FALSE)
+        stop(sQuote("dprocess")," must be a function",call.=FALSE)
 
     ## handle skeleton
     skeleton <- pomp.fun(
@@ -235,7 +235,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     skeleton.type <- match.arg(skeleton.type,c("map","vectorfield","undef"))
     skelmap.delta.t <- as.numeric(skelmap.delta.t)
     if (skelmap.delta.t <= 0)
-        stop(ep,"skeleton ",sQuote("delta.t")," must be positive",call.=FALSE)
+        stop("skeleton ",sQuote("delta.t")," must be positive",call.=FALSE)
 
     ## handle rmeasure
     rmeasure <- pomp.fun(
@@ -298,7 +298,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     mpt <- is.null(fromEstimationScale)
     mpit <- is.null(toEstimationScale)
     if (xor(mpt,mpit)) {
-        stop(ep,"if one of ",
+        stop("if one of ",
              sQuote("fromEstimationScale"),", ",sQuote("toEstimationScale"),
              " is supplied, then so must the other",call.=FALSE)
     }
@@ -597,39 +597,43 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         if (missing(covarnames)) covarnames <- character(0)
         if (missing(PACKAGE)) PACKAGE <- character(0)
 
-        pomp.internal(
-            data=data@data,
-            times=times,
-            t0=t0,
-            rprocess=rprocess,
-            dprocess=dprocess,
-            rmeasure=rmeasure,
-            dmeasure=dmeasure,
-            dprior=dprior,
-            rprior=rprior,
-            skeleton=skeleton,
-            skeleton.type=skeleton.type,
-            skelmap.delta.t=skelmap.delta.t,
-            initializer=initializer,
-            covar=covar,
-            tcovar=tcovar,
-            obsnames=obsnames,
-            statenames=statenames,
-            paramnames=paramnames,
-            covarnames=covarnames,
-            zeronames=zeronames,
-            PACKAGE=PACKAGE,
-            fromEstimationScale=from.trans,
-            toEstimationScale=to.trans,
-            params=params,
-            globals=globals,
-            cdir=cdir,
-            cfile=cfile,
-            .solibs=data@solibs,
-            userdata=data@userdata,
-            ...
+        tryCatch(
+            pomp.internal(
+                data=data@data,
+                times=times,
+                t0=t0,
+                rprocess=rprocess,
+                dprocess=dprocess,
+                rmeasure=rmeasure,
+                dmeasure=dmeasure,
+                dprior=dprior,
+                rprior=rprior,
+                skeleton=skeleton,
+                skeleton.type=skeleton.type,
+                skelmap.delta.t=skelmap.delta.t,
+                initializer=initializer,
+                covar=covar,
+                tcovar=tcovar,
+                obsnames=obsnames,
+                statenames=statenames,
+                paramnames=paramnames,
+                covarnames=covarnames,
+                zeronames=zeronames,
+                PACKAGE=PACKAGE,
+                fromEstimationScale=from.trans,
+                toEstimationScale=to.trans,
+                params=params,
+                globals=globals,
+                cdir=cdir,
+                cfile=cfile,
+                .solibs=data@solibs,
+                userdata=data@userdata,
+                ...
+            ),
+            error = function (e) {
+                stop(ep,conditionMessage(e),call.=FALSE)
+            }
         )
-
     } else {
         ## construct a pomp object de novo
         
@@ -734,35 +738,40 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
             dmeasure <- mm$dmeasure
         }
 
-        pomp.internal(
-            data=data,
-            times=times,
-            t0=t0,
-            rprocess=rprocess,
-            dprocess=dprocess,
-            rmeasure=rmeasure,
-            dmeasure=dmeasure,
-            dprior=dprior,
-            rprior=rprior,
-            skeleton=skeleton,
-            skeleton.type=skeleton.type,
-            skelmap.delta.t=skelmap.delta.t,
-            initializer=initializer,
-            params=params,
-            covar=covar,
-            tcovar=tcovar,
-            obsnames=obsnames,
-            statenames=statenames,
-            paramnames=paramnames,
-            covarnames=covarnames,
-            zeronames=zeronames,
-            PACKAGE=PACKAGE,
-            fromEstimationScale=fromEstimationScale,
-            toEstimationScale=toEstimationScale,
-            globals=globals,
-            cdir=cdir,
-            cfile=cfile,
-            ...
-        )
+        tryCatch(
+            pomp.internal(
+                data=data,
+                times=times,
+                t0=t0,
+                rprocess=rprocess,
+                dprocess=dprocess,
+                rmeasure=rmeasure,
+                dmeasure=dmeasure,
+                dprior=dprior,
+                rprior=rprior,
+                skeleton=skeleton,
+                skeleton.type=skeleton.type,
+                skelmap.delta.t=skelmap.delta.t,
+                initializer=initializer,
+                params=params,
+                covar=covar,
+                tcovar=tcovar,
+                obsnames=obsnames,
+                statenames=statenames,
+                paramnames=paramnames,
+                covarnames=covarnames,
+                zeronames=zeronames,
+                PACKAGE=PACKAGE,
+                fromEstimationScale=fromEstimationScale,
+                toEstimationScale=toEstimationScale,
+                globals=globals,
+                cdir=cdir,
+                cfile=cfile,
+                ...
+            ),
+            error = function (e) {
+                stop(ep,conditionMessage(e),call.=FALSE)
+            }
+        )            
     }
 }

@@ -37,8 +37,11 @@ Type 'q()' to quit R.
 > ## set up the pomp object
 > ## the C codes "sir_euler_simulator" and "sir_euler_density" are included in the "examples" directory (file "sir.c")
 > po <- pomp(
-+     times=1/52*seq.int(length=4*52),
-+     data=rbind(reports=numeric(52*4)),
++     data=data.frame(
++         time=1/52*seq.int(length=4*52),
++         reports=numeric(52*4)
++     ),
++     times="time",
 +     params=params,
 +     t0=0,
 +     tcovar=tbasis,
@@ -188,11 +191,10 @@ function (xstart, times, params, ..., zeronames = character(0),
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
         error = function(e) {
-            stop("in ", sQuote("euler.sim"), " plugin: ", conditionMessage(e), 
-                call. = FALSE)
+            stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x296c910>
+<environment: 0x3176f30>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -200,11 +202,10 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
     tryCatch(.Call(euler_model_density, func = efun, x = x, times = times, 
         params = params, tcovar = tcovar, covar = covar, log = log, 
         args = pairlist(...), gnsi = .getnativesymbolinfo), error = function(e) {
-        stop("in ", sQuote("onestep.dens"), " plugin: ", conditionMessage(e), 
-            call. = FALSE)
+        stop(ep, conditionMessage(e), call. = FALSE)
     })
 }
-<environment: 0x299a680>
+<environment: 0x319f4f0>
 measurement model simulator, rmeasure = 
 native function ‘__pomp_rmeasure’, defined by a Csnippet
 measurement model density, dmeasure = 
@@ -240,7 +241,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x233e830>
+<environment: 0x29d98c8>
 initializer = 
 function (params, t0, ...) 
 {

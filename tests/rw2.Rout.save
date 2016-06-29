@@ -100,12 +100,32 @@ Type 'q()' to quit R.
 +         y1 ~ norm(mean=x1,sd=tau),
 +         y2 ~ norm(mean=x2,sd=tau)
 +     ),
-+     
 +     initializer=bad.initializer,
 +     times=1:100,
 +     data=rbind(
 +         y1=rep(0,100),
 +         y2=rep(0,100)
++     ),
++     t0=0,
++     useless=23
++ )
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘useless’
+Warning message:
+in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a matrix for the ‘data’ argument is deprecated and will be removed in a future release. 
+> 
+> rw2 <- pomp(
++     rprocess = rw.rprocess,
++     dprocess = rw.dprocess,
++     measurement.model=list(
++         y1 ~ norm(mean=x1,sd=tau),
++         y2 ~ norm(mean=x2,sd=tau)
++     ),
++     initializer=bad.initializer,
++     times="time",
++     data=data.frame(
++         y1=rep(0,100),
++         y2=rep(0,100),
++         time=1:100
 +     ),
 +     t0=0,
 +     useless=23
@@ -166,7 +186,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x1dca6c8>
+<environment: 0x353f7f8>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -179,7 +199,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x1dca6c8>
+<environment: 0x353f7f8>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 
@@ -224,10 +244,11 @@ Error : in ‘simulate’: in 'init.state': user initializer returns vectors of 
 +     ),
 +     rmeasure=Csnippet("sid"),
 +     dmeasure=Csnippet("nancy"),
-+     times=1:100,
-+     data=rbind(
++     times="time",
++     data=data.frame(
 +         y1=rep(0,100),
-+         y2=rep(0,100)
++         y2=rep(0,100),
++         time=1:100
 +     ),
 +     t0=0
 + )

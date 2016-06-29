@@ -81,12 +81,29 @@ rw2 <- pomp(
         y1 ~ norm(mean=x1,sd=tau),
         y2 ~ norm(mean=x2,sd=tau)
     ),
-    
     initializer=bad.initializer,
     times=1:100,
     data=rbind(
         y1=rep(0,100),
         y2=rep(0,100)
+    ),
+    t0=0,
+    useless=23
+)
+
+rw2 <- pomp(
+    rprocess = rw.rprocess,
+    dprocess = rw.dprocess,
+    measurement.model=list(
+        y1 ~ norm(mean=x1,sd=tau),
+        y2 ~ norm(mean=x2,sd=tau)
+    ),
+    initializer=bad.initializer,
+    times="time",
+    data=data.frame(
+        y1=rep(0,100),
+        y2=rep(0,100),
+        time=1:100
     ),
     t0=0,
     useless=23
@@ -113,10 +130,11 @@ rw2 <- pomp(
     ),
     rmeasure=Csnippet("sid"),
     dmeasure=Csnippet("nancy"),
-    times=1:100,
-    data=rbind(
+    times="time",
+    data=data.frame(
         y1=rep(0,100),
-        y2=rep(0,100)
+        y2=rep(0,100),
+        time=1:100
     ),
     t0=0
 )

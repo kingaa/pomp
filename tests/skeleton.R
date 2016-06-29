@@ -70,4 +70,7 @@ try(skeleton(po,params=coef(po),x=c(N=1),t=0))
 try(skeleton(po,params=coef(po),x=states(po),t=0))
 try(skeleton(po,params=parmat(coef(po),2),x=array(runif(30),dim=c(1,5,6)),t=0:5))
 
+try(pomp(ricker,skeleton=euler.sim(Csnippet("N = exp(log(r)+log(N)-N);"),delta.t=1),
+         statenames="N",paramnames="r"))
+
 dev.off()

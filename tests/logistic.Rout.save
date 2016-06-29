@@ -19,9 +19,13 @@ Type 'q()' to quit R.
 
 > library(pomp)
 > 
+> po <- pomp(data=rbind(obs=rep(0,1000)),times=0.1*seq.int(length=1000),t0=0)
+Warning message:
+in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a matrix for the ‘data’ argument is deprecated and will be removed in a future release. 
+> 
 > po <- pomp(
-+   data=rbind(obs=rep(0,1000)),
-+   times=0.1*seq.int(length=1000),
++   data=data.frame(obs=rep(0,1000),time=0.1*seq.int(length=1000)),
++   times="time",
 +   t0=0,
 +   rprocess=euler.sim(
 +     step.fun=function(x,t,params,delta.t,...){

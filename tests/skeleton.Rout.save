@@ -97,6 +97,13 @@ Error : in 'skeleton': length of 't' and 3rd dimension of 'x' do not agree
 > try(skeleton(po,params=parmat(coef(po),2),x=array(runif(30),dim=c(1,5,6)),t=0:5))
 Error : in 'skeleton': 2nd dimensions of 'x' and 'params' are incompatible
 > 
+> try(pomp(ricker,skeleton=euler.sim(Csnippet("N = exp(log(r)+log(N)-N);"),delta.t=1),
++          statenames="N",paramnames="r"))
+Error : in ‘pomp’: bad option for ‘skeleton’ argument
+In addition: Warning message:
+in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
+See ‘?pomp’ for an explanation of the new syntax. 
+> 
 > dev.off()
 null device 
           1 
