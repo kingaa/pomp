@@ -59,7 +59,7 @@ pmcmc.internal <- function (object, Nmcmc,
                  conditionMessage(e),call.=FALSE)
         }
     )
-    if (is.null(names(theta)) || !is.numeric(theta))
+    if (is.null(names(theta)) || !is.numeric(theta) || any(names(theta)==""))
         stop(ep,sQuote("proposal"),
              " must return a named numeric vector",call.=FALSE)
 

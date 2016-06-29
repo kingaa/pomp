@@ -67,7 +67,7 @@ abc.internal <- function (object, Nabc,
                  conditionMessage(e),call.=FALSE)
         }
     )
-    if (is.null(names(theta)) || !is.numeric(theta))
+    if (is.null(names(theta)) || !is.numeric(theta) || any(names(theta)==""))
         stop(ep,sQuote("proposal")," must return a named numeric vector",call.=FALSE)
 
     if (!is.list(probes)) probes <- list(probes)
