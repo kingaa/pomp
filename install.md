@@ -49,8 +49,6 @@ For this reason, you must install the **Rtools** suite, which can be downloaded 
 When installing **Rtools**, it is sufficient to choose the "Package authoring installation" option.
 Also during the installation, tick the "edit system PATH" box.
 
-Installation of **pomp** from source on Windows has been tested with versions 3.2 and 3.3 of **Rtools** under **R** version 3.2.3.
-
 ### Important note for Mac OS X users
 
 To make use of the package facilities for accelerated computation using compiled C code, you will need the ability to compile C code and dynamically link it into an **R** session.
