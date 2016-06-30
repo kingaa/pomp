@@ -54,7 +54,9 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 	  PROTECT(f = R_MakeExternalPtr(ff,R_NilValue,R_NilValue)); nprotect++;
 	}
 	break;
-
+      
+      case Rfun: case undef: default:
+	break;
       }
 
       SET_SLOT(pfun,install("address"),f);
@@ -69,8 +71,8 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 
     break;
 
-    case undef: default:
-      errorcall(R_NilValue,"operation cannot be completed: needed function has not been specified");
+  case undef: default:
+    errorcall(R_NilValue,"operation cannot be completed: needed function has not been specified");
   }
 
   UNPROTECT(nprotect);

@@ -1,6 +1,6 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 1.5.11}{
+\section{Changes in \pkg{pomp} version 1.6.1}{
   \itemize{
     \item Major revisions to the package help pages and manual.
     The separate documentation on C snippets and process-model plugins has been merged into the main \code{pomp} help page, which now has comprehensive instructions on building a \code{pomp} object.
