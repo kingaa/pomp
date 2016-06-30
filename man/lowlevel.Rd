@@ -39,18 +39,18 @@
   A \code{pomp} object implements a partially observed Markov process (\acronym{POMP}) model.
   Basic operations on this model (with shorthand terms) include:
   \enumerate{
-    \item simulation of the state process given parameters (rprocess)
-    \item evaluation of the likelihood of a given state trajectory given parameters (dprocess)
-    \item simulation of the observation process given the states and parameters (rmeasure)
-    \item evaluation of the likelihood of a set of observations given the states and parameters (dmeasure)
-    \item simulation from the prior probability distribution (rprior)
-    \item evaluation of the prior probability density (dprior)
-    \item simulation from the distribution of initial states, given parameters (init.state)
-    \item evaluation of the deterministic skeleton at a point in state space, given parameters (skeleton)
-    \item computation of a trajetory of the deterministic skeleton given parameters (trajectory)
+    \item simulation of the state process given parameters (\code{rprocess})
+    \item evaluation of the likelihood of a given state trajectory given parameters (\code{dprocess})
+    \item simulation of the observation process given the states and parameters (\code{rmeasure})
+    \item evaluation of the likelihood of a set of observations given the states and parameters (\code{dmeasure})
+    \item simulation from the prior probability distribution (\code{rprior})
+    \item evaluation of the prior probability density (\code{dprior})
+    \item simulation from the distribution of initial states, given parameters (\code{init.state})
+    \item evaluation of the deterministic skeleton at a point in state space, given parameters (\code{skeleton})
+    \item computation of a trajectory of the deterministic skeleton given parameters (\code{trajectory})
   }
   \pkg{pomp} provides S4 methods that implement each of these basic operations.
-  These operations can be combined to implement computations and statistical inference methods that depend only on a model's \acronym{POMP} structure.
+  These operations can be combined to implement statistical inference methods that depend only on a model's \acronym{POMP} structure.
   For convenience, parameter transformations may also be enclosed in a \code{pomp} object.
 
   This page documents these elements.
@@ -180,7 +180,7 @@
 }
 \section{\code{pompLoad}, \code{pompUnload}}{
   \code{pompLoad} and \code{pompUnload} cause compiled codes associated with \code{object} to be dynamically linked or unlinked, respectively.
-  When \code{Csnippet}s are used in the construction of a \code{pomp} object, the resulting shared-object library is dynamically loaded (linked) before each use, and unloaded afterward.
+  When C snippets are used in the construction of a \code{pomp} object, the resulting shared-object library is dynamically loaded (linked) before each use, and unloaded afterward.
   These functions are provided because in some instances, greater control may be desired.
   These functions have no effect on shared-object libraries linked by the user.
 }
