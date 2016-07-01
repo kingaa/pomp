@@ -10,7 +10,7 @@ output:
 ```{r options,include=FALSE}
 require(knitr)
 require(pomp)
-knitr::opts_chunk$set(cache=FALSE,results="hide",echo=TRUE,fig.show="hide",
+knitr::opts_chunk$set(cache=FALSE,results="hide",echo=TRUE,fig.show="asis",
                       message=FALSE,warning=TRUE,error=TRUE)
 ```
 
@@ -41,63 +41,16 @@ Send an email with the citation, and we'll include it in [the bibliography](http
 
 # Installation problems
 
-## Why can't I run the demos, or other codes that use the `Csnippet` facility?
-
-<a id="csnippet-problems"></a>
-
-If your system does not support `R CMD SHLIB`, you won't be able to use `Csnippets`.
-**R** compiles native codes (C and FORTRAN) into shared-object libraries using `SHLIB`.
-To check whether your **R** installation is configured to use `SHLIB`, run the following code snippet in an **R** session:
-```
-cat("#include <R.h>
-void hello (void) {
-  Rprintf(\"hello world!\\n\");
-}",file="hello.c")
-system("R CMD SHLIB hello.c")
-dyn.load(paste0("hello",.Platform$dynlib.ext))
-.C("hello",PACKAGE="hello")
-```
-If it works, you should see
-```
-hello world!
-list()
-```
-If it doesn't work, consult the [installation instructions](http://kingaa.github.io/pomp/install.html).
-
-## Why do I get an error message "Could not compile shared-object library" when I run `pomp`?
-
-See [the preceding FAQ](#csnippet-problems).
-
 ## Why do I get an error message about `gfortran` when I try to install **pomp** from source on my Mac?
 
-Compilation of **pomp** requires a fortran compiler, which has not been installed (or not installed properly) on your system.
-See the [installation instructions](http://kingaa.github.io/pomp/install.html).
-If you do download a binary version of GCC fortran and wish to install it, first unpack the directory in a safe place (such as `~/gfortran`) and edit your `~/.R/Makevars` file to inform **R** as to where the compiler is.
-Thus for example, I did
-```
-mkdir ~/gfortran
-cd ~/gfortran
-curl -O http://r.research.att.com/libs/gfortran-4.8.2-darwin13.tar.bz2
-tar jxvf gfortran-4.8.2-darwin13.tar.bz2
-rm -f gfortran-4.8.2-darwin13.tar.bz2
-```
-then edited my `~/.R/Makevars` file to include the following lines
-```
-F77 = ~/gfortran/usr/local/bin/gfortran
-FC = ~/gfortran/usr/local/bin/gfortran
-FLIBS = -L~/gfortran/usr/local/lib
-```
-To do all of the above, download and run the `mac-fortran.sh` script:
-```
-curl -O http://kingaa.github.io/scripts/mac-fortran.sh
-sh mac-fortran.sh
-```
+Compilation of **pomp** requires a FORTRAN compiler, which has not been installed (or not installed properly) on your system.
+See the [installation instructions](http://kingaa.github.io/pomp/install.html#important-note-for-mac-os-x-users).
 
 # Implementing POMP models.
 
-## How can I include a vector of variables in a `Csnippet`?
+## How can I include a vector of variables in a C snippet?
 
-A `Csnippet` can make use of any feature of the C language.
+A C snippet can make use of any feature of the C language.
 In particular, we can use pointers to give access to arrays.
 For example, consider the following, which implement a simple chain of random variables.
 
@@ -141,7 +94,7 @@ data.frame(Y1=NA,t=1:20) %>%
 
 Yes, this is no problem.
 The `data` you supply to `pomp` can contain multiple variables.
-You simply refer to these variables by name in writing the `rmeasure` and `dmeasure` `Csnippets`.
+You simply refer to these variables by name in writing the `rmeasure` and `dmeasure` C snippets.
 The following example illustrates this for a multivariate Ornstein-Uhlenbeck process (as in `pompExample("ou2")`) with a slightly peculiar measurement model.
 ```{r multivariate-data-pomp}
 require(magrittr)
