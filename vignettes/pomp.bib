@@ -2,6 +2,26 @@
 % Encoding: UTF8
 
 
+@Article{Anderson2001a,
+  title                    = {An Ensemble Adjustment Kalman Filter for Data Assimilation},
+  author                   = {Anderson, Jeffrey L.},
+  journal                  = {Mon. Wea. Rev.},
+  year                     = {2001},
+
+  month                    = dec,
+  number                   = {12},
+  pages                    = {2884--2903},
+  volume                   = {129},
+
+  booktitle                = {Monthly Weather Review},
+  doi                      = {10.1175/1520-0493(2001)129<2884:AEAKFF>2.0.CO;2},
+  file                     = {:Anderson2001a.pdf:PDF},
+  owner                    = {kingaa},
+  pomp                     = {yes},
+  publisher                = {American Meteorological Society},
+  timestamp                = {2013.02.05}
+}
+
 @Article{Andrieu2010,
   title                    = {{P}article {M}arkov chain {M}onte {C}arlo methods},
   author                   = {Andrieu, Christophe and Doucet, Arnaud and Holenstein, Roman},
@@ -51,6 +71,22 @@
   timestamp                = {2016.05.31}
 }
 
+@MastersThesis{Barrows2016,
+  title                    = {A Comparative Study of Techniques for Estimation and Inference of Nonlinear Stochastic Time Series},
+  author                   = {Barrows, Dexter},
+  school                   = {McMaster University},
+  year                     = {2016},
+  note                     = {Advisor: Benjamin Bolker},
+
+  abstract                 = {Forecasting tools play an important role in public response to epidemics. Despite this, limited work has been done in comparing best-in-class techniques across the broad spectrum of time series forecasting methodologies. Forecasting frameworks were developed that utilised three methods designed to work with nonlinear dynamics: Iterated Filtering (IF) 2, Hamiltonian MCMC (HMC), and S-mapping. These were compared in several forecasting scenarios including a seasonal epidemic and a spatiotemporal epidemic. IF2 combined with parametric bootstrapping produced superior predictions in all scenarios. S-mapping combined with Dewdrop Regression produced forecasts slightly less-accurate than IF2 and HMC, but demonstrated vastly reduced running times. Hence, S-mapping with or without Dewdrop Regression should be used to glean initial insight into future epidemic behaviour, while IF2 and parametric bootstrapping should be used to refine forecast estimates in time.},
+  file                     = {:Barrows2016.pdf:PDF},
+  keywords                 = {Forecasting, Time series, Estimation, Fitting},
+  owner                    = {kingaa},
+  pomp                     = {yes},
+  timestamp                = {2016.07.01},
+  url                      = {http://hdl.handle.net/11375/19103}
+}
+
 @Article{Bhadra2010,
   title                    = {{D}iscussion of `{P}article {M}arkov chain {M}onte {C}arlo methods' by {C}.\ {A}ndrieu, {A}.\ {D}oucet and {R}.\ {H}olenstein},
   author                   = {Bhadra, Anindya},
@@ -96,7 +132,6 @@
   __markedentry            = {[kingaa:]},
   abstract                 = {Pertussis is a highly infectious respiratory disease that is currently responsible for nearly 300,000 annual deaths worldwide, primarily in infants in developing countries. Despite sustained high vaccine uptake, a resurgence in pertussis incidence has been reported in a number of countries. This resurgence has led to critical questions regarding the transmission impacts of vaccination and pertussis immunology. We analyzed pertussis incidence in Thailand--both age-stratified and longitudinal aggregate reports--over the past 30 y. To dissect the contributions of waning pertussis immunity and repeat infections to pertussis epidemiology in Thailand following a pronounced increase in vaccine uptake, we used likelihood-based statistical inference methods to evaluate the support for multiple competing transmission models. We found that, in contrast to other settings, there is no evidence for pertussis resurgence in Thailand, with each model examined pointing to a substantial rise in herd immunity over the past 30 y. Using a variety of empirical metrics, we verified our findings by documenting signatures of changing herd immunity over the study period. Importantly, this work leads to the conclusion that repeat infections have played little role in shaping pertussis epidemiology in Thailand. Our results are surprisingly emphatic in support of measurable impact of herd immunity given the uncertainty associated with pertussis epidemiology.},
   doi                      = {10.1073/pnas.1220908110},
-  institution              = {Department of Ecology and Evolutionary Biology and Center for the Study of Complex Systems, University of Michigan, Ann Arbor, MI 48109, USA. juliecb@umich.edu},
   keywords                 = {Age Factors; Bacterial Vaccines, immunology; Humans; Immunity, Herd, immunology; Incidence; Likelihood Functions; Longitudinal Studies; Models, Immunological; Thailand, epidemiology; Vaccination, statistics /&/ numerical data; Whooping Cough, epidemiology/immunology/prevention /&/ control/transmission},
   language                 = {eng},
   medline-pst              = {ppublish},
@@ -121,7 +156,6 @@
   __markedentry            = {[kingaa:]},
   abstract                 = {Bats are important reservoirs for emerging infectious diseases, yet the mechanisms that allow highly virulent pathogens to persist within bat populations remain obscure. In Latin America, vampire-bat-transmitted rabies virus represents a key example of how such uncertainty can impede efforts to prevent cross-species transmission. Despite decades of agricultural and human health losses, control efforts have had limited success. To establish persistence mechanisms of vampire-bat-transmitted rabies virus in Latin America, we use data from a spatially replicated, longitudinal field study of vampire bats in Peru to parameterize a series of mechanistic transmission models. We find that single-colony persistence cannot occur. Instead, dispersal of bats between colonies, combined with a high frequency of immunizing nonlethal infections, is necessary to maintain rabies virus at levels consistent with field observations. Simulations show that the strong spatial component to transmission dynamics could explain the failure of bat culls to eliminate rabies and suggests that geographic coordination of control efforts might reduce transmission to humans and domestic animals. These findings offer spatial dynamics as a mechanism for rabies persistence in bats that might be important for the understanding and control of other bat-borne pathogens.},
   doi                      = {10.1073/pnas.1308817110},
-  institution              = {Department of Ecology and Evolutionary Biology, and Center for the Study of Complex Systems, University of Michigan, Ann Arbor, MI 48109.},
   keywords                 = {Animal Migration; Animals; Chiroptera, immunology/virology; Humans; Immunization; Models, Biological; Peru, epidemiology; Rabies virus, immunology; Rabies, epidemiology/immunology/prevention /&/ control/transmission},
   language                 = {eng},
   medline-pst              = {ppublish},
@@ -147,7 +181,6 @@
   abstract                 = {As polio eradication inches closer, the absence of poliovirus circulation in most of the world and imperfect vaccination coverage are resulting in immunity gaps and polio outbreaks affecting adults. Furthermore, imperfect, waning intestinal immunity among older children and adults permits reinfection and poliovirus shedding, prompting calls to extend the age range of vaccination campaigns even in the absence of cases in these age groups. The success of such a strategy depends on the contribution to poliovirus transmission by older ages, which has not previously been estimated. We fit a mathematical model of poliovirus transmission to time series data from two large outbreaks that affected adults (Tajikistan 2010, Republic of Congo 2010) using maximum-likelihood estimation based on iterated particle-filtering methods. In Tajikistan, the contribution of unvaccinated older children and adults to transmission was minimal despite a significant number of cases in these age groups [reproduction number, R = 0.46 (95\% confidence interval, 0.42-0.52) for >5-y-olds compared to 2.18 (2.06-2.45) for 0- to 5-y-olds]. In contrast, in the Republic of Congo, the contribution of older children and adults was significant [R = 1.85 (1.83-4.00)], perhaps reflecting sanitary and socioeconomic variables favoring efficient virus transmission. In neither setting was there evidence for a significant role of imperfect intestinal immunity in the transmission of poliovirus. Bringing the immunization response to the Tajikistan outbreak forward by 2 wk would have prevented an additional 130 cases (21\%), highlighting the importance of early outbreak detection and response.},
   doi                      = {10.1073/pnas.1323688111},
   file                     = {Blake2014.pdf:Blake2014.pdf:PDF},
-  institution              = {Medical Research Council Centre for Outbreak Analysis and Modelling, Department of Infectious Disease Epidemiology, Imperial College London, London W2 1PG, United Kingdom;},
   keywords                 = {Adolescent; Adult; Age Distribution; Child; Child, Preschool; Congo, epidemiology; Disease Outbreaks, statistics /&/ numerical data; Geography; Humans; Infant; Infant, Newborn; Models, Biological; Poliomyelitis, epidemiology/transmission/virology; Poliovirus, physiology; Tajikistan, epidemiology},
   language                 = {eng},
   owner                    = {kingaa},
@@ -210,7 +243,6 @@
   abstract                 = {Influenza usually spreads through the human population in multiple-wave outbreaks. Successive reinfection of individuals over a short time interval has been explicitly reported during past pandemics. However, the causes of rapid reinfection and the role of reinfection in driving multiple-wave outbreaks remain poorly understood. To investigate these issues, we focus on a two-wave influenza A/H3N2 epidemic that occurred on the remote island of Tristan da Cunha in 1971. Over 59 days, 273 (96\%) of 284 islanders experienced at least one attack and 92 (32\%) experienced two attacks. We formulate six mathematical models invoking a variety of antigenic and immunological reinfection mechanisms. Using a maximum-likelihood analysis to confront model predictions with the reported incidence time series, we demonstrate that only two mechanisms can be retained: some hosts with either a delayed or deficient humoral immune response to the primary influenza infection were reinfected by the same strain, thus initiating the second epidemic wave. Both mechanisms are supported by previous empirical studies and may arise from a combination of genetic and ecological causes. We advocate that a better understanding and account of heterogeneity in the human immune response are essential to analysis of multiple-wave influenza outbreaks and pandemic planning.},
   doi                      = {10.1098/rspb.2011.0300},
   file                     = {Camacho2011.pdf:Camacho2011.pdf:PDF},
-  institution              = {Laboratoire Eco-Evolution Mathématique, UMR 7625, CNRS-UPMC-ENS-AgroParisTech, 75230 Paris Cedex 05, France. camacho@biologie.ens.fr},
   keywords                 = {Atlantic Islands, epidemiology; Epidemics; Geography; Humans; Immunity, Humoral; Incidence; Influenza A Virus, H3N2 Subtype, immunology; Influenza, Human, epidemiology/immunology/transmission; Likelihood Functions; Models, Immunological},
   language                 = {eng},
   medline-pst              = {ppublish},
@@ -247,6 +279,39 @@
   owner                    = {kingaa},
   pomp                     = {yes},
   timestamp                = {2009.09.22}
+}
+
+@Book{Evensen2009,
+  title                    = {Data assimilation : the ensemble {K}alman filter},
+  author                   = {Evensen, Geir},
+  publisher                = {Springer},
+  year                     = {2009},
+
+  address                  = {Dordrecht New York},
+
+  file                     = {:Evensen2009.pdf:PDF},
+  isbn                     = {3642037100},
+  owner                    = {kingaa},
+  pomp                     = {yes},
+  timestamp                = {2016.07.01}
+}
+
+@Article{Evensen1994,
+  title                    = {Sequential data assimilation with a nonlinear quasi-geostrophic model using Monte Carlo methods to forecast error statistics},
+  author                   = {Evensen, Geir},
+  journal                  = {Journal of Geophysical Research: Oceans},
+  year                     = {1994},
+  number                   = {C5},
+  pages                    = {10143--10162},
+  volume                   = {99},
+
+  __markedentry            = {[kingaa:]},
+  doi                      = {10.1029/94JC00572},
+  file                     = {:Evensen1994.pdf:PDF},
+  owner                    = {kingaa},
+  pomp                     = {yes},
+  publisher                = {Wiley Online Library},
+  timestamp                = {2016.07.01}
 }
 
 @Article{Gillespie1977a,
@@ -288,7 +353,6 @@
   abstract                 = {Filoviruses Ebolavirus (EBOV) and Marburgvirus (MARV) cause haemorrhagic fevers with high mortality rates, posing significant threats to public health. To understand transmission into human populations, filovirus dynamics within reservoir host populations must be understood. Studies have directly linked filoviruses to bats, but the mechanisms allowing viral persistence within bat populations are poorly understood. Theory suggests seasonal birthing may decrease the probability of pathogen persistence within populations, but data suggest MARV may persist within colonies of seasonally breeding Egyptian fruit bats, Rousettus aegyptiacus. I synthesize available filovirus and bat data in a stochastic compartmental model to explore fundamental questions relating to filovirus ecology: can filoviruses persist within isolated bat colonies; do critical community sizes exist; and how do host-pathogen relationships affect spillover transmission potential? Synchronous annual breeding and shorter incubation periods did not allow filovirus persistence, whereas bi-annual breeding and longer incubation periods, such as reported for Egyptian fruit bats and EBOV in experimental studies, allowed persistence in colony sizes often found in nature. Serological data support the findings, with bats from species with two annual birth pulses more likely to be seropositive (odds ratio (OR) 4.4, 95\% confidence interval (CI) 2.5-8.7) than those with one, suggesting that biannual birthing is necessary for filovirus persistence.},
   doi                      = {10.1098/rspb.2014.2591},
   file                     = {:Hayman2015.pdf:PDF},
-  institution              = {Molecular Epidemiology and Public Health Laboratory, Hopkirk Research Institute, Massey University, Private Bag 11 222, Palmerston North 4442, New Zealand d.t.s.hayman@massey.ac.nz.},
   language                 = {eng},
   medline-pst              = {ppublish},
   owner                    = {kingaa},
@@ -296,6 +360,63 @@
   pmid                     = {25673678},
   pomp                     = {yes},
   timestamp                = {2015.07.20}
+}
+
+@Article{He2011,
+  title                    = {Mechanistic modelling of the three waves of the 1918 influenza pandemic},
+  author                   = {He, Daihai and Dushoff, Jonathan and Day, Troy and Ma, Junling and Earn, David},
+  journal                  = {Theoretical Ecology},
+  year                     = {2011},
+  pages                    = {1-6},
+  volume                   = {4},
+
+  doi                      = {10.1007/s12080-011-0123-3},
+  keyword                  = {Life Sciences},
+  owner                    = {kingaa},
+  pomp                     = {yes},
+  timestamp                = {2014.06.30}
+}
+
+@Article{He2013a,
+  title                    = {Inferring the causes of the three waves of the 1918 influenza pandemic in England and Wales.},
+  author                   = {He, Daihai and Dushoff, Jonathan and Day, Troy and Ma, Junling and Earn, David J D.},
+  journal                  = {Proc. R. Soc. Lond. B},
+  year                     = {2013},
+
+  month                    = {Sep},
+  number                   = {1766},
+  pages                    = {20131345},
+  volume                   = {280},
+
+  abstract                 = {Past influenza pandemics appear to be characterized by multiple waves of incidence, but the mechanisms that account for this phenomenon remain unclear. We propose a simple epidemic model, which incorporates three factors that might contribute to the generation of multiple waves: (i) schools opening and closing, (ii) temperature changes during the outbreak, and (iii) changes in human behaviour in response to the outbreak. We fit this model to the reported influenza mortality during the 1918 pandemic in 334 UK administrative units and estimate the epidemiological parameters. We then use information criteria to evaluate how well these three factors explain the observed patterns of mortality. Our results indicate that all three factors are important but that behavioural responses had the largest effect. The parameter values that produce the best fit are biologically reasonable and yield epidemiological dynamics that match the observed data well.},
+  doi                      = {10.1098/rspb.2013.1345},
+  keywords                 = {Disease Outbreaks; England, epidemiology; Humans; Incidence; Influenza, Human, epidemiology/mortality; Models, Theoretical; Schools; Seasons; Temperature; Time Factors; Wales, epidemiology},
+  language                 = {eng},
+  owner                    = {kingaa},
+  pmid                     = {23843396},
+  pomp                     = {yes},
+  timestamp                = {2014.05.22}
+}
+
+@Article{He2013,
+  title                    = {Patterns of spread of influenza A in Canada.},
+  author                   = {He, Daihai and Dushoff, Jonathan and Eftimie, Raluca and Earn, David J D.},
+  journal                  = {Proc. R. Soc. Lond. B},
+  year                     = {2013},
+
+  month                    = {Nov},
+  number                   = {1770},
+  pages                    = {20131174},
+  volume                   = {280},
+
+  abstract                 = {Understanding spatial patterns of influenza transmission is important for designing control measures. We investigate spatial patterns of laboratory-confirmed influenza A across Canada from October 1999 to August 2012. A statistical analysis (generalized linear model) of the seasonal epidemics in this time period establishes a clear spatio-temporal pattern, with influenza emerging earlier in western provinces. Early emergence is also correlated with low temperature and low absolute humidity in the autumn. For the richer data from the 2009 pandemic, a mechanistic mathematical analysis, based on a transmission model, shows that both school terms and weather had important effects on pandemic influenza transmission.},
+  doi                      = {10.1098/rspb.2013.1174},
+  keywords                 = {Canada, epidemiology; Humans; Humidity; Incidence; Influenza A Virus, H1N1 Subtype, physiology; Influenza, Human, epidemiology/microbiology/transmission; Linear Models; Models, Theoretical; Pandemics; Seasons; Temperature; Time Factors},
+  language                 = {eng},
+  owner                    = {kingaa},
+  pmid                     = {24026815},
+  pomp                     = {yes},
+  timestamp                = {2014.05.22}
 }
 
 @Article{He2010,
@@ -314,6 +435,22 @@
   owner                    = {kingaa},
   pomp                     = {yes},
   timestamp                = {2009.06.26}
+}
+
+@Article{Houtekamer1998,
+  title                    = {Data assimilation using an ensemble Kalman filter technique},
+  author                   = {Houtekamer, Peter L and Mitchell, Herschel L},
+  journal                  = {Mon. Wea. Rev.},
+  year                     = {1998},
+  number                   = {3},
+  pages                    = {796--811},
+  volume                   = {126},
+
+  __markedentry            = {[kingaa:]},
+  doi                      = {10.1175/1520-0493(1998)126%3C0796:DAUAEK%3E2.0.CO;2},
+  file                     = {:Houtekamer1998.pdf:PDF},
+  owner                    = {kingaa},
+  timestamp                = {2016.07.01}
 }
 
 @Article{Ionides2011,
@@ -529,7 +666,6 @@
   abstract                 = {Assessing the influence of climate on the incidence of Plasmodium falciparum malaria worldwide and how it might impact local malaria dynamics is complex and extrapolation to other settings or future times is controversial. This is especially true in the light of the particularities of the short- and long-term immune responses to infection. In sites of epidemic malaria transmission, it is widely accepted that climate plays an important role in driving malaria outbreaks. However, little is known about the role of climate in endemic settings where clinical immunity develops early in life. To disentangle these differences among high- and low-transmission settings we applied a dynamical model to two unique adjacent cohorts of mesoendemic seasonal and holoendemic perennial malaria transmission in Senegal followed for two decades, recording daily P. falciparum cases. As both cohorts are subject to similar meteorological conditions, we were able to analyze the relevance of different immunological mechanisms compared with climatic forcing in malaria transmission. Transmission was first modeled by using similarly unique datasets of entomological inoculation rate. A stochastic nonlinear human-mosquito model that includes rainfall and temperature covariates, drug treatment periods, and population variability is capable of simulating the complete dynamics of reported malaria cases for both villages. We found that under moderate transmission intensity climate is crucial; however, under high endemicity the development of clinical immunity buffers any effect of climate. Our models open the possibility of forecasting malaria from climate in endemic regions but only after accounting for the interaction between climate and immunity.},
   doi                      = {10.1073/pnas.1419047112},
   file                     = {:Laneri2015.pdf:PDF},
-  institution              = {Institut Català de Ciències del Clima, Climate Dynamics and Impacts Unit, 08005 Barcelona, Catalonia, Spain; Institució Catalana de Recerca i Estudis Avançats, 08010 Barcelona, Catalonia, Spain.},
   language                 = {eng},
   medline-pst              = {ppublish},
   owner                    = {kingaa},
@@ -631,7 +767,6 @@
   abstract                 = {Sustained and coordinated vaccination efforts have brought polio eradication within reach. Anticipating the eradication of wild poliovirus (WPV) and the subsequent challenges in preventing its re-emergence, we look to the past to identify why polio rose to epidemic levels in the mid-20th century, and how WPV persisted over large geographic scales. We analyzed an extensive epidemiological dataset, spanning the 1930s to the 1950s and spatially replicated across each state in the United States, to glean insight into the drivers of polio's historical expansion and the ecological mode of its persistence prior to vaccine introduction. We document a latitudinal gradient in polio's seasonality. Additionally, we fitted and validated mechanistic transmission models to data from each US state independently. The fitted models revealed that: (1) polio persistence was the product of a dynamic mosaic of source and sink populations; (2) geographic heterogeneity of seasonal transmission conditions account for the latitudinal structure of polio epidemics; (3) contrary to the prevailing "disease of development" hypothesis, our analyses demonstrate that polio's historical expansion was straightforwardly explained by demographic trends rather than improvements in sanitation and hygiene; and (4) the absence of clinical disease is not a reliable indicator of polio transmission, because widespread polio transmission was likely in the multiyear absence of clinical disease. As the world edges closer to global polio eradication and continues the strategic withdrawal of the Oral Polio Vaccine (OPV), the regular identification of, and rapid response to, these silent chains of transmission is of the utmost importance.},
   doi                      = {10.1371/journal.pbio.1002172},
   file                     = {:Martinez-Bakker2015.pdf:PDF;:Martinez-Bakker2015_SI.pdf:PDF},
-  institution              = { Evolutionary Biology, University of Michigan, Ann Arbor, Michigan, United States of America; Center for the Study of Complex Systems, University of Michigan, Ann Arbor, Michigan, United States of America; Fogarty International Center, National Institutes of Health, Bethesda, Maryland, United States of America.},
   king                     = {yes},
   lab                      = {yes},
   language                 = {eng},
@@ -678,23 +813,6 @@
   timestamp                = {2016.04.02}
 }
 
-@Article{Roberts2001a,
-  title                    = {Optimal Scaling for Various {M}etropolis-{H}astings Algorithms},
-  author                   = {Roberts, Gareth O. and Rosenthal, Jeffrey S.},
-  journal                  = {Stat. Sci.},
-  year                     = {2001},
-  number                   = {4},
-  pages                    = {351--367},
-  volume                   = {16},
-
-  abstract                 = {We review and extend results related to optimal scaling of Metropolis-Hastings algorithms. We present various theoretical results for the high-dimensional limit. We also present simulation studies which confirm the theoretical results in finite-dimensional contexts.},
-  file                     = {:Roberts2001a.pdf:PDF},
-  owner                    = {kingaa},
-  publisher                = {Institute of Mathematical Statistics},
-  timestamp                = {2009.05.06},
-  url                      = {http://www.jstor.org/stable/3182776}
-}
-
 @Article{Roberts2009,
   title                    = {Examples of Adaptive MCMC},
   author                   = {Roberts, Gareth O. and Rosenthal, Jeffrey S.},
@@ -715,6 +833,23 @@
   owner                    = {kingaa},
   publisher                = {Taylor \& Francis},
   timestamp                = {2015.08.06}
+}
+
+@Article{Roberts2001a,
+  title                    = {Optimal Scaling for Various {M}etropolis-{H}astings Algorithms},
+  author                   = {Roberts, Gareth O. and Rosenthal, Jeffrey S.},
+  journal                  = {Stat. Sci.},
+  year                     = {2001},
+  number                   = {4},
+  pages                    = {351--367},
+  volume                   = {16},
+
+  abstract                 = {We review and extend results related to optimal scaling of Metropolis-Hastings algorithms. We present various theoretical results for the high-dimensional limit. We also present simulation studies which confirm the theoretical results in finite-dimensional contexts.},
+  file                     = {:Roberts2001a.pdf:PDF},
+  owner                    = {kingaa},
+  publisher                = {Institute of Mathematical Statistics},
+  timestamp                = {2009.05.06},
+  url                      = {http://www.jstor.org/stable/3182776}
 }
 
 @Article{Romero-Severson2015,
@@ -757,6 +892,21 @@
   pomp                     = {yes},
   publisher                = {Nature Publishing Group},
   timestamp                = {2016.04.03}
+}
+
+@Article{Shrestha2013,
+  title                    = {Identifying the Interaction between Influenza and Pneumococcal Pneumonia Using Incidence Data},
+  author                   = {Shrestha, Sourya and Foxman, Betsy and Weinberger, Daniel M. and Steiner, Claudia and Viboud, C\'{e}cile and Rohani, Pejman},
+  journal                  = {Science Translational Medicine},
+  year                     = {2013},
+  number                   = {191},
+  pages                    = {191ra84},
+  volume                   = {5},
+
+  doi                      = {10.1126/scitranslmed.3005982},
+  owner                    = {kingaa},
+  pomp                     = {yes},
+  timestamp                = {2014.07.24}
 }
 
 @Article{Shrestha2011,
@@ -845,7 +995,6 @@
   abstract                 = {Approximate Bayesian computation (ABC) methods can be used to evaluate posterior distributions without having to calculate likelihoods. In this paper, we discuss and apply an ABC method based on sequential Monte Carlo (SMC) to estimate parameters of dynamical models. We show that ABC SMC provides information about the inferability of parameters and model sensitivity to changes in parameters, and tends to perform better than other ABC approaches. The algorithm is applied to several well-known biological systems, for which parameters and their credible intervals are inferred. Moreover, we develop ABC SMC as a tool for model selection; given a range of different mathematical descriptions, ABC SMC is able to choose the best model using the standard Bayesian model selection apparatus.},
   doi                      = {10.1098/rsif.2008.0172},
   file                     = {Toni2009a.pdf:Toni2009a.pdf:PDF},
-  institution              = {Centre for Bioinformatics, Division of Molecular Biosciences, Imperial College London, London SW7 2AZ, UK. ttoni@imperial.ac.uk},
   keywords                 = {Algorithms; Bayes Theorem; Common Cold, epidemiology; Communicable Diseases, epidemiology; Computer Simulation; Models, Biological; Models, Statistical; Monte Carlo Method},
   language                 = {eng},
   owner                    = {kingaa},
@@ -867,7 +1016,6 @@
   abstract                 = {Case notifications of pertussis have shown an increase in a number of countries with high rates of routine pediatric immunization. This has led to significant public health concerns over a possible pertussis re-emergence. A leading proposed explanation for the observed increase in incidence is the loss of immunity to pertussis, which is known to occur after both natural infection and vaccination. Little is known, however, about the typical duration of immunity and its epidemiological implications. Here, we analyze a simple mathematical model, exploring specifically the inter-epidemic period and fade-out frequency. These predictions are then contrasted with detailed incidence data for England and Wales. We find model output to be most sensitive to assumptions concerning naturally acquired immunity, which allows us to estimate the average duration of immunity. Our results support a period of natural immunity that is, on average, long-lasting (at least 30 years) but inherently variable.},
   doi                      = {10.1371/journal.ppat.1000647},
   file                     = {:Wearing2009.pdf:PDF},
-  institution              = { Statistics, University of New Mexico, Albuquerque, New Mexico, USA. hwearing@unm.edu},
   language                 = {eng},
   medline-pst              = {ppublish},
   owner                    = {kingaa},

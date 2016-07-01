@@ -1,3 +1,13 @@
+- key: Anderson2001a
+  author: "J. L. Anderson"
+  year: "2001"
+  title: "An Ensemble Adjustment Kalman Filter for Data Assimilation"
+  journal: "Mon. Wea. Rev."
+  volume: "129"
+  pages: "2884-2903"
+  booktitle: "Monthly Weather Review"
+  doi: "http://dx.doi.org/10.1175/1520-0493(2001)129<2884:AEAKFF>2.0.CO;2"
+
 - key: Andrieu2010
   author: "C. Andrieu, A. Doucet, and R. Holenstein"
   year: "2010"
@@ -23,6 +33,13 @@
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   pages: "-"
   doi: "http://dx.doi.org/10.1073/pnas.1523941113"
+
+- key: Barrows2016
+  author: "D. Barrows"
+  year: "2016"
+  title: "A Comparative Study of Techniques for Estimation and Inference of Nonlinear Stochastic Time Series"
+  school: "McMaster University"
+  url: "http://hdl.handle.net/11375/19103"
 
 - key: Bhadra2010
   author: "A. Bhadra"
@@ -69,15 +86,6 @@
   pages: "10604-10609"
   doi: "http://dx.doi.org/10.1073/pnas.1323688111"
 
-- key: Breto2009
-  author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
-  year: "2009"
-  title: "Time series analysis via mechanistic models"
-  journal: "Annals of Applied Statistics"
-  volume: "3"
-  pages: "319-348"
-  doi: "http://dx.doi.org/10.1214/08-AOAS201"
-
 - key: Breto2011
   author: "C. Bret&oacute; and E. L. Ionides"
   year: "2011"
@@ -86,6 +94,15 @@
   volume: "121"
   pages: "2571-2591"
   doi: "http://dx.doi.org/10.1016/j.spa.2011.07.005"
+
+- key: Breto2009
+  author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
+  year: "2009"
+  title: "Time series analysis via mechanistic models"
+  journal: "Annals of Applied Statistics"
+  volume: "3"
+  pages: "319-348"
+  doi: "http://dx.doi.org/10.1214/08-AOAS201"
 
 - key: Camacho2011
   author: "A. Camacho, S. Ballesteros, A. L. Graham, F. Carrat, O. Ratmann, and B. Cazelles"
@@ -105,6 +122,20 @@
   pages: "425-440"
   doi: "http://dx.doi.org/10.1086/286130"
 
+- key: Evensen2009
+  author: "G. Evensen"
+  year: "2009"
+  title: "Data assimilation : the ensemble Kalman filter"
+
+- key: Evensen1994
+  author: "G. Evensen"
+  year: "1994"
+  title: "Sequential data assimilation with a nonlinear quasi-geostrophic model using Monte Carlo methods to forecast error statistics"
+  journal: "Journal of Geophysical Research: Oceans"
+  volume: "99"
+  pages: "10143-10162"
+  doi: "http://dx.doi.org/10.1029/94JC00572"
+
 - key: Gourieroux1996
   author: "C. Gouri&eacute;roux and A. Monfort"
   year: "1996"
@@ -119,6 +150,33 @@
   pages: "20142591"
   doi: "http://dx.doi.org/10.1098/rspb.2014.2591"
 
+- key: He2011
+  author: "D. He, J. Dushoff, T. Day, J. Ma, and D. Earn"
+  year: "2011"
+  title: "Mechanistic modelling of the three waves of the 1918 influenza pandemic"
+  journal: "Theoretical Ecology"
+  volume: "4"
+  pages: "1-6"
+  doi: "http://dx.doi.org/10.1007/s12080-011-0123-3"
+
+- key: He2013a
+  author: "D. He, J. Dushoff, T. Day, J. Ma, and D. J. D. Earn"
+  year: "2013"
+  title: "Inferring the causes of the three waves of the 1918 influenza pandemic in England and Wales."
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "280"
+  pages: "20131345"
+  doi: "http://dx.doi.org/10.1098/rspb.2013.1345"
+
+- key: He2013
+  author: "D. He, J. Dushoff, R. Eftimie, and D. J. D. Earn"
+  year: "2013"
+  title: "Patterns of spread of influenza A in Canada."
+  journal: "Proc. R. Soc. Lond. B"
+  volume: "280"
+  pages: "20131174"
+  doi: "http://dx.doi.org/10.1098/rspb.2013.1174"
+
 - key: He2010
   author: "D. He, E. L. Ionides, and A. A. King"
   year: "2010"
@@ -128,15 +186,6 @@
   pages: "271-283"
   doi: "http://dx.doi.org/10.1098/rsif.2009.0151"
 
-- key: Ionides2006
-  author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
-  year: "2006"
-  title: "Inference for nonlinear dynamical systems"
-  journal: "Proc. Natl. Acad. Sci. U.S.A."
-  volume: "103"
-  pages: "18438-18443"
-  doi: "http://dx.doi.org/10.1073/pnas.0603181103"
-
 - key: Ionides2011
   author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
   year: "2011"
@@ -145,6 +194,15 @@
   volume: "39"
   pages: "1776-1802"
   doi: "http://dx.doi.org/10.1214/11-AOS886"
+
+- key: Ionides2006
+  author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
+  year: "2006"
+  title: "Inference for nonlinear dynamical systems"
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "103"
+  pages: "18438-18443"
+  doi: "http://dx.doi.org/10.1073/pnas.0603181103"
 
 - key: Ionides2015
   author: "E. L. Ionides, D. Nguyen, Y. Atchad&eacute;, S. Stoev, and A. A. King"
@@ -173,15 +231,6 @@
   pages: "259-276"
   doi: "http://dx.doi.org/10.1890/03-4056"
 
-- key: King2008
-  author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
-  year: "2008"
-  title: "Inapparent infections and cholera dynamics"
-  journal: "Nature"
-  volume: "454"
-  pages: "877-880"
-  doi: "http://dx.doi.org/10.1038/nature07084"
-
 - key: King2015
   author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
   year: "2015"
@@ -190,6 +239,15 @@
   volume: "282"
   pages: "20150347"
   doi: "http://dx.doi.org/10.1098/rspb.2015.0347"
+
+- key: King2008
+  author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
+  year: "2008"
+  title: "Inapparent infections and cholera dynamics"
+  journal: "Nature"
+  volume: "454"
+  pages: "877-880"
+  doi: "http://dx.doi.org/10.1038/nature07084"
 
 - key: King2016
   author: "A. A. King, D. Nguyen, and E. L. Ionides"
@@ -289,15 +347,6 @@
   pages: "255-262"
   doi: "http://dx.doi.org/10.1093/aje/kwv044"
 
-- key: Shrestha2011
-  author: "S. Shrestha, A. A. King, and P. Rohani"
-  year: "2011"
-  title: "Statistical Inference for Multi-Pathogen Systems"
-  journal: "PLoS Comput. Biol."
-  volume: "7"
-  pages: "e1002135"
-  doi: "http://dx.doi.org/10.1371%2Fjournal.pcbi.1002135"
-
 - key: Shrestha2015
   author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C&eacute;. Viboud, and P. Rohani"
   year: "2015"
@@ -307,14 +356,23 @@
   pages: "15314-"
   doi: "http://dx.doi.org/10.1038/srep15314"
 
-- key: Toni2009a
-  author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
-  year: "2009"
-  title: "Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems"
-  journal: "J. R. Soc. Interface"
-  volume: "6"
-  pages: "187-202"
-  doi: "http://dx.doi.org/10.1098/rsif.2008.0172"
+- key: Shrestha2013
+  author: "S. Shrestha, B. Foxman, D. M. Weinberger, C. Steiner, C. Viboud, and P. Rohani"
+  year: "2013"
+  title: "Identifying the Interaction between Influenza and Pneumococcal Pneumonia Using Incidence Data"
+  journal: "Science Translational Medicine"
+  volume: "5"
+  pages: "191ra84"
+  doi: "http://dx.doi.org/10.1126/scitranslmed.3005982"
+
+- key: Shrestha2011
+  author: "S. Shrestha, A. A. King, and P. Rohani"
+  year: "2011"
+  title: "Statistical Inference for Multi-Pathogen Systems"
+  journal: "PLoS Comput. Biol."
+  volume: "7"
+  pages: "e1002135"
+  doi: "http://dx.doi.org/10.1371%2Fjournal.pcbi.1002135"
 
 - key: Toni2010
   author: "T. Toni and M. P. H. Stumpf"
@@ -324,6 +382,15 @@
   volume: "26"
   pages: "104-110"
   doi: "http://dx.doi.org/10.1093/bioinformatics/btp619"
+
+- key: Toni2009a
+  author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
+  year: "2009"
+  title: "Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems"
+  journal: "J. R. Soc. Interface"
+  volume: "6"
+  pages: "187-202"
+  doi: "http://dx.doi.org/10.1098/rsif.2008.0172"
 
 - key: Wood2010
   author: "S. N. Wood"
