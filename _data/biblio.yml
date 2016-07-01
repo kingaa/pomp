@@ -104,6 +104,15 @@
   pages: "319-348"
   doi: "http://dx.doi.org/10.1214/08-AOAS201"
 
+- key: Cai2007
+  author: "X. Cai and Z. Xu"
+  year: "2007"
+  title: "K-leap method for accelerating stochastic simulation of coupled chemical reactions"
+  journal: "J Chem Phys"
+  volume: "126"
+  pages: "074102"
+  doi: "http://dx.doi.org/10.1063/1.2436869"
+
 - key: Camacho2011
   author: "A. Camacho, S. Ballesteros, A. L. Graham, F. Carrat, O. Ratmann, and B. Cazelles"
   year: "2011"
@@ -135,6 +144,14 @@
   volume: "99"
   pages: "10143-10162"
   doi: "http://dx.doi.org/10.1029/94JC00572"
+
+- key: Gillespie1977a
+  author: "D. T. Gillespie"
+  year: "1977"
+  title: "Exact Stochastic Simulation of Coupled Chemical Reactions"
+  journal: "J Phys Chem"
+  volume: "81"
+  pages: "2340-2361"
 
 - key: Gourieroux1996
   author: "C. Gouri&eacute;roux and A. Monfort"
