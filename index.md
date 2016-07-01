@@ -19,7 +19,8 @@ Currently, **pomp** provides support for
 - the improved iterated filtering method (Ionides et al. 2015),
 - probe-matching methods (e.g., Kendall et al. 1999, Wood et al. 2010)
 - the nonlinear forecasting method of Ellner&nbsp;&amp;&nbsp;Kendall,
-- the ensemble and ensemble adjusted Kalman filters, and
+- the ensemble Kalman filter of Evensen (1994, 2009), and
+- the ensemble adjustment Kalman filter of Anderson (2001), and
 - power-spectrum-matching methods of Reuman et al. (2006).
 
 Future support for a variety of other algorithms is envisioned.
