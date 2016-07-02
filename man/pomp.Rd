@@ -492,11 +492,11 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
 
 pomp(data = data.frame(t = 1:100, y = NA),
      times = "t", t0 = 0,
-     covar = data.frame(t=0:100,K=seq(from=200,to=50,length=101)),
+     covar = data.frame(t=0:100,K=seq(from=50,to=200,length=101)),
      tcovar = "t",
      rprocess = discrete.time.sim(Csnippet("double e = rnorm(0,sigma);
-                                            n = r*n*exp(-n/K+e);"), delta.t = 1),
-     skeleton = map(Csnippet("Dn = r*n*exp(-n/K);"), delta.t = 1),
+                                            n = r*n*exp(1-n/K+e);"), delta.t = 1),
+     skeleton = map(Csnippet("Dn = r*n*exp(1-n/K);"), delta.t = 1),
      rmeasure = Csnippet("y = rpois(n);"),
      dmeasure = Csnippet("lik = dpois(y,n,give_log);"),
      rprior = Csnippet("r = rgamma(1,1); sigma = rgamma(1,1);"),
@@ -510,7 +510,7 @@ pomp(data = data.frame(t = 1:100, y = NA),
 
 ## fill it with simulated data:
 
-rick <- simulate(rick, params = c(r=17, sigma = 1, n_0 = 100))
+rick <- simulate(rick, params = c(r=17, sigma = 0.1, n_0 = 50))
 plot(rick)     
 
 \dontrun{
