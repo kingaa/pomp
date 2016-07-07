@@ -41,3 +41,7 @@ newly created object(s):
 > try(simulate(gompertz))
 Error : in ‘simulate’: in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
 > 
+> gompertz %<>% pomp(initializer=function (params, t0, ...) 5)
+> try(init.state(gompertz))
+Error : in 'init.state': user 'initializer' must return a named numeric vector
+> 

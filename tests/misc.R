@@ -13,3 +13,6 @@ try(simulate(euler.sir))
 pompExample(gompertz)
 coef(gompertz) <- coef(gompertz)[-5]
 try(simulate(gompertz))
+
+gompertz %<>% pomp(initializer=function (params, t0, ...) 5)
+try(init.state(gompertz))
