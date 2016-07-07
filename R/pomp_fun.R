@@ -14,7 +14,8 @@ setClass(
         obsnames = 'character',
         statenames = 'character',
         paramnames = 'character',
-        covarnames = 'character'
+        covarnames = 'character',
+        purpose = 'character'
     ),
     prototype=prototype(
         R.fun=function (...) {
@@ -27,23 +28,24 @@ setClass(
         obsnames = character(0),
         statenames = character(0),
         paramnames = character(0),
-        covarnames = character(0)
+        covarnames = character(0),
+        purpose = "a needed function"
     )
 )
 
 setMethod(
     "pomp.fun",
     signature=signature(f="missing"),
-    definition=function (f, ...) {
-        new("pomp.fun")
+    definition=function (f, slotname = NULL, ...) {
+        new("pomp.fun",purpose=as.character(slotname))
     }
 )
 
 setMethod(
     "pomp.fun",
     signature=signature(f="NULL"),
-    definition=function (f, ...) {
-        new("pomp.fun")
+    definition=function (f, slotname = NULL, ...) {
+        new("pomp.fun",purpose=as.character(slotname))
     }
 )
 
@@ -71,7 +73,7 @@ setMethod(
                      sQuote(fname)," must be a function of prototype ",
                      deparse(proto),call.=FALSE)
         }
-        new("pomp.fun",R.fun=f,mode=pompfunmode$Rfun)
+        new("pomp.fun",R.fun=f,mode=pompfunmode$Rfun,purpose=as.character(slotname))
     }
 )
 
@@ -80,7 +82,8 @@ setMethod(
     signature=signature(f="character"),
     definition=function (f, PACKAGE = NULL,
                          obsnames = character(0), statenames = character(0),
-                         paramnames = character(0), covarnames = character(0), ...) {
+                         paramnames = character(0), covarnames = character(0),
+                         slotname = NULL, ...) {
         new(
             "pomp.fun",
             native.fun=f,
@@ -89,7 +92,8 @@ setMethod(
             obsnames=obsnames,
             statenames=statenames,
             paramnames=paramnames,
-            covarnames=covarnames
+            covarnames=covarnames,
+            purpose=as.character(slotname)
         )
     }
 )
@@ -116,7 +120,8 @@ setMethod(
             obsnames=obsnames,
             statenames=statenames,
             paramnames=paramnames,
-            covarnames=covarnames
+            covarnames=covarnames,
+            purpose=slotname
         )
     }
 )

@@ -32,7 +32,7 @@ newly created object(s):
 > 
 > try(smc <- bsmc(ou2,Np=2,smooth=0.01,est=estnames,
 +                  tol=1e-2,max.fail=100))
-Error : in ‘bsmc’: ‘rprior’ error: operation cannot be completed: needed function has not been specified
+Error : in ‘bsmc’: ‘rprior’ error: operation cannot be completed: rprior has not been specified
 > 
 > prior.bounds <- rbind(
 +                       alpha.2=c(-0.55,-0.45),

@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.6.3}{
+  \itemize{
+    \item Improve error messages for missing basic components.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.6.2}{
   \itemize{
     \item Fix typos in one of the help-page examples.

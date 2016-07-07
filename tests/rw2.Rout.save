@@ -186,7 +186,7 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x353f7f8>
+<environment: 0x3b0d610>
 measurement model density, dmeasure = 
 function (y, x, t, params, log, covars, ...) 
 {
@@ -199,7 +199,7 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x353f7f8>
+<environment: 0x3b0d610>
 prior simulator, rprior = 
 function not specified
 prior density, dprior = 

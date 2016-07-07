@@ -33,7 +33,7 @@ newly created object(s):
 > try(trajectory(x))
 Error : in ‘trajectory’: ‘params’ must be supplied
 > try(trajectory(pomp(ou2,skeleton=NULL)))
-Error : in ‘trajectory’: in map iterator: operation cannot be completed: needed function has not been specified
+Error : in ‘trajectory’: in map iterator: operation cannot be completed: skeleton has not been specified
 In addition: Warning message:
 in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 
@@ -194,4 +194,11 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > print(p,digits=4)
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
     0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+> 
+> pomp(ou2,skeleton=map(function (x, t, params, ...) {unname(x+1)})) -> po
+> trajectory(po,params=p,t0=-10,as.data.frame=TRUE) -> x
+> sapply(x[,1:2],range)
+      x1  x2
+[1,]   8  15
+[2,] 107 114
 > 

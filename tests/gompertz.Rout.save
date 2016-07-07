@@ -51,11 +51,11 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x349eb98>
+<environment: 0x3787398>
 process model density, dprocess = 
 function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x34533c0>
+<environment: 0x37272d0>
 measurement model simulator, rmeasure = 
 native function ‘_gompertz_normal_rmeasure’
 measurement model density, dmeasure = 
@@ -73,13 +73,13 @@ function (params, ...)
 {
     log(params)
 }
-<environment: 0x3409108>
+<environment: 0x36d4e40>
 parameter transformation (from estimation scale) = 
 function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x3409108>
+<environment: 0x36d4e40>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -99,7 +99,7 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x349eb98>
+<environment: 0x3787398>
 > 
 > po <- gompertz
 > coef(po)

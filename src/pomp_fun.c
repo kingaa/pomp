@@ -72,7 +72,12 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
     break;
 
   case undef: default:
-    errorcall(R_NilValue,"operation cannot be completed: needed function has not been specified");
+    {
+      const char *purp = (const char *) CHARACTER_DATA(STRING_ELT(GET_SLOT(pfun,install("purpose")),0));
+
+      errorcall(R_NilValue,"operation cannot be completed: %s has not been specified",purp);
+    }
+
   }
 
   UNPROTECT(nprotect);

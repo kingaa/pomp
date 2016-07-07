@@ -65,3 +65,7 @@ print(coef(res),digits=4)
 res <- traj.match(res,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),maxit=2000,reltol=1e-8)
 print(coef(res),digits=4)
 print(p,digits=4)
+
+pomp(ou2,skeleton=map(function (x, t, params, ...) {unname(x+1)})) -> po
+trajectory(po,params=p,t0=-10,as.data.frame=TRUE) -> x
+sapply(x[,1:2],range)

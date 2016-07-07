@@ -1,0 +1,43 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> library(magrittr)
+> set.seed(807969746L)
+> 
+> w <- runif(100)
+> k <- .Call(pomp:::systematic_resampling,w)
+> try(k <- .Call(pomp:::systematic_resampling,-w))
+Error : in 'systematic_resampling': non-positive sum of weights
+> 
+> pompExample(euler.sir)
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+newly created object(s):
+ euler.sir 
+> euler.sir %<>% pomp(initializer=NULL)
+> try(simulate(euler.sir))
+Error : in ‘simulate’: operation cannot be completed: initializer has not been specified
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> coef(gompertz) <- coef(gompertz)[-5]
+> try(simulate(gompertz))
+Error : in ‘simulate’: in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
+> 

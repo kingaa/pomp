@@ -194,7 +194,7 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3176f30>
+<environment: 0x3b69450>
 process model density, dprocess = 
 function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
@@ -205,7 +205,7 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         stop(ep, conditionMessage(e), call. = FALSE)
     })
 }
-<environment: 0x319f4f0>
+<environment: 0x3b944f8>
 measurement model simulator, rmeasure = 
 native function ‘__pomp_rmeasure’, defined by a Csnippet
 measurement model density, dmeasure = 
@@ -241,7 +241,7 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x29d98c8>
+<environment: 0x3354e68>
 initializer = 
 function (params, t0, ...) 
 {
