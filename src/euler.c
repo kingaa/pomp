@@ -12,6 +12,7 @@ SEXP euler_model_simulator (SEXP func,
   pompfunmode mode = undef;
   int nvars, npars, nreps, ntimes, nzeros, ncovars, covlen;
   int nstep = 0;
+  double dt, dtt;
   SEXP X;
   SEXP ans, nm, fn, fcall = R_NilValue, rho = R_NilValue;
   SEXP Snames, Pnames, Cnames;
@@ -21,6 +22,10 @@ SEXP euler_model_simulator (SEXP func,
   pomp_onestep_sim *ff = NULL;
   int meth = *(INTEGER(AS_INTEGER(method))); 
   // meth: 0 = Euler, 1 = one-step, 2 = fixed step
+
+  dtt = *(REAL(AS_NUMERIC(deltat)));
+  if (dtt <= 0) 
+    errorcall(R_NilValue,"'delta.t' should be a positive number");
 
   {
     int *dim;
@@ -121,7 +126,6 @@ SEXP euler_model_simulator (SEXP func,
     double *cp = REAL(cvec);
     double *ps = REAL(params);
     double t = time[0];
-    double dt;
     double *pm, *xm;
     int i, j, k, step;
 
@@ -142,7 +146,7 @@ SEXP euler_model_simulator (SEXP func,
 
       switch (meth) {
       case 0:			// Euler method
-	dt = *(REAL(deltat));
+	dt = dtt;
 	nstep = num_euler_steps(t,time[step],&dt);
 	break;
       case 1:			// one step 
@@ -150,7 +154,7 @@ SEXP euler_model_simulator (SEXP func,
 	nstep = (dt > 0) ? 1 : 0;
 	break;
       case 2:			// fixed step
-	dt = *(REAL(deltat));
+	dt = dtt;
 	nstep = num_map_steps(t,time[step],dt);
 	break;
       default:
