@@ -1,5 +1,10 @@
-RSCRIPT = $(R_HOME)/bin/Rscript --vanilla
-REXE = $(R_HOME)/bin/R --vanilla --slave
+ifneq ($(R_HOME),)
+	RSCRIPT = $(R_HOME)/bin/Rscript --vanilla
+	REXE = $(R_HOME)/bin/R --vanilla --slave
+else
+	RSCRIPT = Rscript --vanilla
+	REXE = R --vanilla --slave
+endif
 LATEX = latex
 BIBTEX = bibtex
 PDFLATEX = pdflatex
