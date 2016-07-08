@@ -470,6 +470,21 @@ Error : in ‘probe’: applying probes to actual data: probe 0 returns a non-nu
 +     runif(n=n)})))
 Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets
 > 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> ou2@data["y1",] <- NA
+> try(probe(ou2,probes=probe.acf("y1",lags=0:3),nsim=100))
+Error : in ‘probe’: applying probes to actual data: in ‘probe.acf’: series 1 has no data
+> try(probe(ou2,probes=probe.ccf(c("y1","y2"),lags=0:3),nsim=100))
+Error : in ‘probe’: applying probes to actual data: in ‘probe.ccf’: series 1 has no data
+> try(probe(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=100))
+Error : in ‘probe’: applying probes to actual data: in ‘probe.ccf’: series 2 has no data
+> try(probe(ou2,nsim=100,probes=function(x)"a"))
+Error : in ‘probe’: applying probes to actual data: probe 0 returns a non-numeric result
+> try(probe(ou2,nsim=100,probes=function(x)runif(n=sample(c(1,2),size=1))))
+Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 0
+> 
 > dev.off()
 null device 
           1 
