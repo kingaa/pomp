@@ -103,7 +103,8 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     } else {
         covar <- as.matrix(covar)
     }
-    if (missing(covarnames) || length(covarnames)==0) covarnames <- as.character(colnames(covar))
+    if (missing(covarnames) || length(covarnames)==0)
+        covarnames <- as.character(colnames(covar))
     if (!all(covarnames%in%colnames(covar))) {
         missing <- covarnames[!(covarnames%in%colnames(covar))]
         stop("covariate(s) ",
@@ -113,9 +114,9 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     storage.mode(tcovar) <- "double"
     storage.mode(covar) <- "double"
 
-    ## handle initializer
+    ## use default initializer?
     default.init <- missing(initializer) || (is(initializer,"pomp.fun") && initializer@mode == pompfunmode$undef)
-    if (default.init) initializer <- pomp.fun()
+    if (default.init) initializer <- pomp.fun(slotname="initializer")
 
     ## default rprocess & dprocess
     if (missing(rprocess))
@@ -296,60 +297,49 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
              sQuote("fromEstimationScale"),", ",sQuote("toEstimationScale"),
              " is supplied, then so must the other",call.=FALSE)
     }
-    has.trans <- !mpt
-    if (has.trans) {
-        from.trans <- pomp.fun(
-            f=fromEstimationScale,
-            PACKAGE=PACKAGE,
-            proto=quote(from.trans(params,...)),
-            slotname="fromEstimationScale",
-            libname=libname,
-            statenames=statenames,
-            paramnames=paramnames,
-            obsnames=obsnames,
-            covarnames=covarnames
-        )
-        to.trans <- pomp.fun(
-            f=toEstimationScale,
-            PACKAGE=PACKAGE,
-            proto=quote(to.trans(params,...)),
-            slotname="toEstimationScale",
-            libname=libname,
-            statenames=statenames,
-            paramnames=paramnames,
-            obsnames=obsnames,
-            covarnames=covarnames
-        )
-    } else {
-        from.trans <- pomp.fun()
-        to.trans <- pomp.fun()
-    }
-    if (has.trans &&
-        from.trans@mode==pompfunmode$undef &&
-        to.trans@mode==pompfunmode$undef
-        ) has.trans <- FALSE
+    from.trans <- pomp.fun(
+        f=fromEstimationScale,
+        PACKAGE=PACKAGE,
+        proto=quote(from.trans(params,...)),
+        slotname="fromEstimationScale",
+        libname=libname,
+        statenames=statenames,
+        paramnames=paramnames,
+        obsnames=obsnames,
+        covarnames=covarnames
+    )
+    to.trans <- pomp.fun(
+        f=toEstimationScale,
+        PACKAGE=PACKAGE,
+        proto=quote(to.trans(params,...)),
+        slotname="toEstimationScale",
+        libname=libname,
+        statenames=statenames,
+        paramnames=paramnames,
+        obsnames=obsnames,
+        covarnames=covarnames
+    )
 
-    if (nrow(covar)>0) {
-        if (
-        (skeleton@mode==pompfunmode$Rfun)
-        &&!("covars"%in%names(formals(skeleton@R.fun)))
-        )
+    has.trans <- !mpt &&
+        from.trans@mode!=pompfunmode$undef &&
+        to.trans@mode!=pompfunmode$undef
+
+    ## check to make sure 'covars' is included as an argument where needed
+    if (nrow(covar) > 0) {
+        if ((skeleton@mode==pompfunmode$Rfun) &&
+            !("covars"%in%names(formals(skeleton@R.fun))))
             warning(ep,"a covariate table has been given, yet the ",
                     sQuote("skeleton")," function does not have ",
                     sQuote("covars")," as a formal argument: see ",
                     sQuote("?pomp"),call.=FALSE)
-        if (
-        (rmeasure@mode==pompfunmode$Rfun)
-        &&!("covars"%in%names(formals(rmeasure@R.fun)))
-        )
+        if ((rmeasure@mode==pompfunmode$Rfun) &&
+            !("covars"%in%names(formals(rmeasure@R.fun))))
             warning(ep,"a covariate table has been given, yet the ",
                     sQuote("rmeasure")," function does not have ",
                     sQuote("covars")," as a formal argument: see ",
                     sQuote("?pomp"),call.=FALSE)
-        if (
-        (dmeasure@mode==pompfunmode$Rfun)
-        &&!("covars"%in%names(formals(dmeasure@R.fun)))
-        )
+        if ((dmeasure@mode==pompfunmode$Rfun) &&
+            !("covars"%in%names(formals(dmeasure@R.fun))))
             warning(ep,"a covariate table has been given, yet the ",
                     sQuote("dmeasure")," function does not have ",
                     sQuote("covars")," as a formal argument: see ",
