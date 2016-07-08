@@ -222,6 +222,8 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       break;
       
     default:
+      
+      errorcall(R_NilValue,"in 'init.state': unrecognized 'mode'");
 
       break;
 

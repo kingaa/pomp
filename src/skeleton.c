@@ -200,6 +200,8 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 
   default:
 
+    errorcall(R_NilValue,"in 'skeleton': unrecognized 'mode'");
+
     break;
 
   }

@@ -141,6 +141,8 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
   default:
 
+    errorcall(R_NilValue,"in 'rprior': unrecognized 'mode'");
+
     break;
 
   }

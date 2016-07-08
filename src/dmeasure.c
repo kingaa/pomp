@@ -122,6 +122,8 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   default:
 
+    errorcall(R_NilValue,"in 'dmeasure': unrecognized 'mode'");
+
     break;
 
   }
@@ -227,6 +229,8 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     break;
 
   default:
+
+    errorcall(R_NilValue,"in 'dmeasure': unrecognized 'mode'");
 
     break;
 
