@@ -266,8 +266,7 @@ setMethod(
     "print",
     signature=signature(x="pomp"),
     definition=function (x, ...) {
-        cat("data, states, and covariates:\n")
-        print(as(x,"data.frame"))
+        cat("<object of class ",sQuote("pomp"),">\n",sep="")
         invisible(x)
     }
 )

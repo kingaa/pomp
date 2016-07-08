@@ -73,4 +73,14 @@ try(pfilter(po,Np=1000))
 try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
 try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
 
+try(
+    simulate(
+        pomp(ricker,
+             rprocess = discrete.time.sim(
+                 Csnippet("e = rnorm(0,sigma);
+                       N = r*N*exp(1-N+e);"),
+                 delta.t = 0),
+             statenames=c("e","N"),
+             paramnames=c("r","sigma"))))
+
 dev.off()

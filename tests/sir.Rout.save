@@ -186,14 +186,14 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
     tcovar, covar, .getnativesymbolinfo = TRUE) 
 {
     tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
-        times = times, params = params, dt = object@delta.t, 
+        times = times, params = params, deltat = object@delta.t, 
         method = 0L, zeronames = zeronames, tcovar = tcovar, 
         covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
         error = function(e) {
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x30c4400>
+<environment: 0x3514458>
 process model density, dprocess = function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
 {
@@ -203,7 +203,7 @@ process model density, dprocess = function (x, times, params, ..., tcovar, covar
         stop(ep, conditionMessage(e), call. = FALSE)
     })
 }
-<environment: 0x3108e40>
+<environment: 0x3558358>
 measurement model simulator, rmeasure = native function ‘__pomp_rmeasure’, defined by a Csnippet
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
@@ -234,7 +234,7 @@ skeleton (vectorfield) = function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x28f2fb0>
+<environment: 0x2d3d778>
 initializer = function (params, t0, ...) 
 {
     with(as.list(params), {

@@ -81,7 +81,4 @@ file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
                        full.names=TRUE))
 simulate(po) -> po
 
-show(pomp:::plugin.handler(function(x)x))
-try(show(pomp:::plugin.handler(33)))
-
 dev.off()

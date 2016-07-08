@@ -178,11 +178,11 @@
       By default, \code{start} is the time of the first observation and \code{end} is the time of the last.
     }
     \item{show}{Displays the \code{pomp} object.}
+    \item{print}{Print method.}
     \item{plot}{
       Plots the data and state trajectories (if the latter exist).
       Additional arguments are passed to the low-level plotting routine.
     }
-    \item{print}{Prints the \code{pomp} object in a nice way.}
     \item{as}{
       A \code{pomp} object can be coerced to a data frame via \preformatted{as(object,"data.frame").}
       The data frame contains the times, the data, and the state trajectories, if they exist.
