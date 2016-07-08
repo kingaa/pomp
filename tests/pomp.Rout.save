@@ -174,7 +174,7 @@ newly created object(s):
 function (x) 
 x
 > try(show(pomp:::plugin.handler(33)))
-Error : plugin has an invalid form.
+Error : in ‘pomp’:  plugin has an invalid form.
 > 
 > dev.off()
 null device 

@@ -174,6 +174,28 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
         libname <- ''
     }
 
+    ## handle rprocess
+    rprocess <- plugin.handler(
+        rprocess,
+        libname=libname,
+        statenames=statenames,
+        paramnames=paramnames,
+        obsnames=obsnames,
+        covarnames=covarnames,
+        purpose = sQuote("rprocess")
+    )
+
+    ## handle dprocess
+    dprocess <- plugin.handler(
+        dprocess,
+        libname=libname,
+        statenames=statenames,
+        paramnames=paramnames,
+        obsnames=obsnames,
+        covarnames=covarnames,
+        purpose = sQuote("dprocess")
+    )
+    
     ## handle initializer
     if (!default.init) {
         initializer <- pomp.fun(
@@ -188,34 +210,6 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
             covarnames=covarnames
         )
     }
-
-    ## handle rprocess
-    if (is(rprocess,"pompPlugin")) {
-        rprocess <- plugin.handler(
-            rprocess,
-            libname=libname,
-            statenames=statenames,
-            paramnames=paramnames,
-            obsnames=obsnames,
-            covarnames=covarnames
-        )
-    }
-    if (!is.function(rprocess))
-        stop(sQuote("rprocess")," must be a function",call.=FALSE)
-
-    ## handle dprocess
-    if (is(dprocess,"pompPlugin")) {
-        dprocess <- plugin.handler(
-            dprocess,
-            libname=libname,
-            statenames=statenames,
-            paramnames=paramnames,
-            obsnames=obsnames,
-            covarnames=covarnames
-        )
-    }
-    if (!is.function(dprocess))
-        stop(sQuote("dprocess")," must be a function",call.=FALSE)
 
     ## handle skeleton
     skeleton <- pomp.fun(
