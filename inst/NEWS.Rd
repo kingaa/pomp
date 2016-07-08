@@ -2,7 +2,12 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 1.6.4}{
   \itemize{
+    \item Remove the automatic \dQuote{verbose} setting during compilation under Windows.
+    This was introduced in version 0.63-6 as a workaround.
+    It appears no longer to be necessary.
     \item Improve the \code{show} method for \code{pomp} objects.
+    \item Change the \code{print} method for \code{pomp} objects.
+    \item Improve messages for plugin errors.
     \item Some internal refactoring.
   }
 }
