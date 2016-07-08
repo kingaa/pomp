@@ -136,7 +136,8 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     break;
 
   default:
-    errorcall(R_NilValue,"in 'partrans': unrecognized 'mode'");
+
+    break;
   }
 
   UNPROTECT(nprotect);

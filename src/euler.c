@@ -10,7 +10,8 @@ SEXP euler_model_simulator (SEXP func,
 {
   int nprotect = 0;
   pompfunmode mode = undef;
-  int nstep, nvars, npars, nreps, ntimes, nzeros, ncovars, covlen;
+  int nvars, npars, nreps, ntimes, nzeros, ncovars, covlen;
+  int nstep = 0;
   SEXP X;
   SEXP ans, nm, fn, fcall = R_NilValue, rho = R_NilValue;
   SEXP Snames, Pnames, Cnames;
@@ -89,7 +90,6 @@ SEXP euler_model_simulator (SEXP func,
     break;
 
   default:
-    errorcall(R_NilValue,"unrecognized 'mode' %d",mode);
     break;
   }
 
@@ -152,7 +152,6 @@ SEXP euler_model_simulator (SEXP func,
 	nstep = num_map_steps(t,time[step],dt);
 	break;
       default:
-	errorcall(R_NilValue,"unrecognized 'method'");
 	break;
       }
 
@@ -219,7 +218,6 @@ SEXP euler_model_simulator (SEXP func,
 	    break;
 
 	  default:
-	    errorcall(R_NilValue,"unrecognized 'mode' %d",mode);
 	    break;
 	  }
 
@@ -329,7 +327,6 @@ SEXP euler_model_density (SEXP func,
     break;
 
   default:
-    errorcall(R_NilValue,"unrecognized 'mode' %d",mode);
     break;
   }
 
@@ -419,7 +416,6 @@ SEXP euler_model_density (SEXP func,
     break;
 
   default:
-    errorcall(R_NilValue,"unrecognized 'mode' %d",mode);
     break;
 
   }

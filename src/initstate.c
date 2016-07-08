@@ -15,7 +15,8 @@ typedef double pomp_initializer(double *x, const double *p, double t,
 SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 {
   int nprotect = 0;
-  SEXP Pnames, Snames, x;
+  SEXP Pnames, Snames;
+  SEXP x = R_NilValue;
   int *dim;
   int npar, nrep, nvar, ns;
   int definit;
@@ -222,7 +223,6 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       
     default:
       
-      errorcall(R_NilValue,"in 'init.state': unrecognized 'mode'");
       break;
 
     }

@@ -17,7 +17,8 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
   int nprotect = 0;
   pompfunmode mode = undef;
   int npars, nreps;
-  SEXP Pnames, P, fn, fcall;
+  SEXP Pnames, fn, fcall;
+  SEXP P = R_NilValue;
   SEXP pompfun;
   int *dim;
   const char *dimnms[2] = {"variable","rep"};
@@ -50,6 +51,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
       // to store results
       PROTECT(P = makearray(2,dim)); nprotect++;
       setrownames(P,Pnames,2);
+      fixdimnames(P,dimnms,2);
       
       // temporary storage
       PROTECT(pvec = NEW_NUMERIC(npars)); nprotect++;
@@ -114,6 +116,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
       int j;
 
       PROTECT(P = duplicate(params)); nprotect++;
+      fixdimnames(P,dimnms,2);
 
       // construct state, parameter, covariate, observable indices
       pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames"))); nprotect++;
@@ -138,12 +141,10 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'rprior': unrecognized 'mode'");
     break;
 
   }
 
   UNPROTECT(nprotect);
-  fixdimnames(P,dimnms,2);
   return P;
 }

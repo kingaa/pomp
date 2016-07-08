@@ -104,7 +104,6 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'dprior': unrecognized 'mode'");
     break;
 
   }
