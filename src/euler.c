@@ -227,7 +227,7 @@ SEXP euler_model_simulator (SEXP func,
 
 	t += dt;
 	
-	if ((method == 0) && (k == nstep-2)) { // penultimate step
+	if ((meth == 0) && (k == nstep-2)) { // penultimate step
 	  dt = time[step]-t;
 	  t = time[step]-dt;
 	}

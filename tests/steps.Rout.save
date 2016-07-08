@@ -18,6 +18,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > library(pomp)
+> png(filename="steps-%02d.png",res=100)
 > 
 > set.seed(54588699L)
 > 
@@ -57,4 +58,30 @@ newly created object(s):
             0             0             0             0             0 
    (0.19,0.2]    (0.2, Inf] 
             0             4 
+> 
+> pompExample(ricker)
+newly created object(s):
+ ricker 
+> ricker <- pomp(ricker,
++                rprocess=euler.sim(
++                    Csnippet("double dW = rnorm(0,sqrt(dt));
++                              N += r*N*(1-N)*dt+sigma*dW;
++                              e += dW;
++                              step += 1;"),
++                    delta.t=0.1),
++                skeleton=NULL,
++                initializer=Csnippet("e=0; N = N_0; step = 0;"),
++                zeronames="step",
++                params=c(r=0.5,N.0=0.5,sigma=0.1,phi=10),
++                paramnames=c("sigma","r","N.0"),statenames=c("N","e","step"))
+Warning message:
+in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
+See ‘?pomp’ for an explanation of the new syntax. 
+> time(ricker) <- sort(runif(n=20,max=50))
+> ricker <- simulate(ricker)
+> plot(ricker)
+> 
+> dev.off()
+null device 
+          1 
 > 
