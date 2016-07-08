@@ -216,7 +216,7 @@ pompCompile <- function (fname, direc, src, verbose) {
         command=R.home("bin/R"),
         args=c("CMD","SHLIB","-o",solib,modelfile),
         env=cflags,
-        stdout=if (verbose | .Platform$OS.type=="windows") "" else NULL
+        stdout=if (verbose) "" else NULL
     )
     if (rv!=0)
         stop("cannot compile shared-object library ",sQuote(solib),call.=FALSE)
