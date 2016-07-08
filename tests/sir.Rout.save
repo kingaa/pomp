@@ -193,7 +193,7 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x2241780>
+<environment: 0x30c4400>
 process model density, dprocess = function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
 {
@@ -203,7 +203,7 @@ process model density, dprocess = function (x, times, params, ..., tcovar, covar
         stop(ep, conditionMessage(e), call. = FALSE)
     })
 }
-<environment: 0x22869b8>
+<environment: 0x3108e40>
 measurement model simulator, rmeasure = native function ‘__pomp_rmeasure’, defined by a Csnippet
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
@@ -234,7 +234,7 @@ skeleton (vectorfield) = function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x1a6e7b8>
+<environment: 0x28f2fb0>
 initializer = function (params, t0, ...) 
 {
     with(as.list(params), {
@@ -435,6 +435,25 @@ newly created object(s):
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
 > 
 > simulate(po) -> po
+> 
+> try(simulate(pomp(euler.sir,rprocess=euler.sim(Csnippet("error(\"yikes!\");"),delta.t=0.1))))
+Error : in ‘simulate’: in ‘euler.sim’ plugin: yikes!
+> try(simulate(pomp(euler.sir,rprocess=discrete.time.sim(Csnippet("error(\"yikes!\");"),delta.t=0.1))))
+Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yikes!
+> try(simulate(pomp(euler.sir,rprocess=onestep.sim(Csnippet("error(\"yikes!\");")))))
+Error : in ‘simulate’: in ‘onestep.sim’ plugin: attempt to use zero-length variable name
+> 
+> try(pomp(euler.sir,rprocess=euler.sim(3,delta.t=0.1)))
+Error : in ‘pomp’: in ‘euler.sim’ plugin: bad option for ‘step.fn’ argument
+> try(pomp(euler.sir,rprocess=onestep.sim(3)))
+Error : in ‘pomp’: in ‘onestep.sim’ plugin: bad option for ‘step.fn’ argument
+> try(pomp(euler.sir,rprocess=discrete.time.sim(3)))
+Error : in ‘pomp’: in ‘discrete.time.sim’ plugin: bad option for ‘step.fn’ argument
+> try(pomp(euler.sir,dprocess=onestep.dens(3)))
+Error : in ‘pomp’: in ‘onestep.dens’ plugin: bad option for ‘dens.fn’ argument
+> 
+> try(simulate(pomp(euler.sir,rprocess=discrete.time.sim(NULL))))
+Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: operation cannot be completed: step.fn has not been specified
 > 
 > dev.off()
 null device 

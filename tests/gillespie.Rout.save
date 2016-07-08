@@ -158,6 +158,13 @@ Error : in ‘simulate’: in ‘gillespie.sim’ plugin: user 'rates' must retu
 > try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 Error : in ‘simulate’: in ‘kleap.sim’ plugin: user 'rates' must return a single scalar rate.
 > 
+> try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix,d=Dmatrix)) %>% simulate())
+Error : in ‘pomp’: in ‘gillespie.sim’ plugin: bad option for ‘rate.fn’ argument
+> try(pomp(gsir,rprocess=kleap.sim(rate.fun=3,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
+Error : in ‘pomp’: in ‘kleap.sim’ plugin: bad option for ‘rate.fn’ argument
+> try(pomp(gsir,rprocess=kleap.sim(rate.fun="bob",e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
+Error : in ‘simulate’: in ‘kleap.sim’ plugin: no such symbol bob
+> 
 > ggsave(plot=pl1,filename="gillespie-01.png",dpi=100,height=4,width=4)
 > ggsave(plot=pl2,filename="gillespie-02.png",dpi=100,height=4,width=4)
 > 
