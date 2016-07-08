@@ -19,7 +19,7 @@ Type 'q()' to quit R.
 
 > library(pomp)
 > 
-> png(filename='sir%02d.pdf',res=100)
+> png(filename='sir%02d.png',res=100)
 > 
 > tbasis <- seq(0,25,by=1/52)
 > basis <- periodic.bspline.basis(tbasis,nbasis=3,names="seas%d")
@@ -182,8 +182,7 @@ summary of covariates:
  Mean   :0.33359   Mean   :0.33321   Mean   :0.33321  
  3rd Qu.:0.56758   3rd Qu.:0.54719   3rd Qu.:0.54719  
  Max.   :0.66667   Max.   :0.66630   Max.   :0.66630  
-process model simulator, rprocess = 
-function (xstart, times, params, ..., zeronames = character(0), 
+process model simulator, rprocess = function (xstart, times, params, ..., zeronames = character(0), 
     tcovar, covar, .getnativesymbolinfo = TRUE) 
 {
     tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
@@ -194,9 +193,8 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3b69450>
-process model density, dprocess = 
-function (x, times, params, ..., tcovar, covar, log = FALSE, 
+<environment: 0x3ea3218>
+process model density, dprocess = function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
 {
     tryCatch(.Call(euler_model_density, func = efun, x = x, times = times, 
@@ -205,11 +203,9 @@ function (x, times, params, ..., tcovar, covar, log = FALSE,
         stop(ep, conditionMessage(e), call. = FALSE)
     })
 }
-<environment: 0x3b944f8>
-measurement model simulator, rmeasure = 
-native function ‘__pomp_rmeasure’, defined by a Csnippet
-measurement model density, dmeasure = 
-function (y, x, t, params, log, covars, ...) 
+<environment: 0x3ece2c0>
+measurement model simulator, rmeasure = native function ‘__pomp_rmeasure’, defined by a Csnippet
+measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     with(as.list(c(x, params)), {
         if (y > 0) 
@@ -223,12 +219,9 @@ function (y, x, t, params, log, covars, ...)
         else f
     })
 }
-prior simulator, rprior = 
-function not specified
-prior density, dprior = 
-native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
-skeleton (vectorfield) = 
-function (x, t, params, covars, ...) 
+prior simulator, rprior = not specified
+prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+skeleton (vectorfield) = function (x, t, params, covars, ...) 
 {
     xdot <- rep(0, length(x))
     with(as.list(c(x, params)), {
@@ -241,9 +234,8 @@ function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x3354e68>
-initializer = 
-function (params, t0, ...) 
+<environment: 0x3690e78>
+initializer = function (params, t0, ...) 
 {
     with(as.list(params), {
         fracs <- c(S.0, I.0, R.0)
@@ -254,10 +246,8 @@ function (params, t0, ...)
         x0
     })
 }
-parameter transformation (to estimation scale) = 
-function not specified
-parameter transformation (from estimation scale) = 
-function not specified
+parameter transformation (to estimation scale) = not specified
+parameter transformation (from estimation scale) = not specified
 parameter(s):
    gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
 2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
@@ -384,10 +374,6 @@ variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
 [1] 0
 > timezero(po)<-2*time(po)[1]-time(po)[2]
 > 
-> dev.off()
-null device 
-          1 
-> 
 > ## test of vectorfield integrator
 > 
 > pompExample(euler.sir)
@@ -449,4 +435,8 @@ newly created object(s):
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
 > 
 > simulate(po) -> po
+> 
+> dev.off()
+null device 
+          1 
 > 

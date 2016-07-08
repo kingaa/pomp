@@ -1,6 +1,6 @@
 library(pomp)
 
-png(filename='sir%02d.pdf',res=100)
+png(filename='sir%02d.png',res=100)
 
 tbasis <- seq(0,25,by=1/52)
 basis <- periodic.bspline.basis(tbasis,nbasis=3,names="seas%d")
@@ -236,8 +236,6 @@ po <- window(euler.sir,start=1,end=2)
 timezero(po)
 timezero(po)<-2*time(po)[1]-time(po)[2]
 
-dev.off()
-
 ## test of vectorfield integrator
 
 pompExample(euler.sir)
@@ -295,3 +293,5 @@ pomp(euler.sir,
     paramnames=c("rho"),bob=33L) -> po
 
 simulate(po) -> po
+
+dev.off()

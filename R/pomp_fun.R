@@ -150,7 +150,7 @@ setMethod(
                 cat(", defined by a Csnippet",sep="")
             cat ("\n")
         } else {
-            cat("function not specified\n")
+            cat("not specified\n")
         }
     }
 )

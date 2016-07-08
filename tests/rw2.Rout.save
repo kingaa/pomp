@@ -143,8 +143,7 @@ summary of data:
  3rd Qu.:0   3rd Qu.:0  
  Max.   :0   Max.   :0  
 zero time, t0 = 0
-process model simulator, rprocess = 
-function (params, xstart, times, ...) 
+process model simulator, rprocess = function (params, xstart, times, ...) 
 {
     nvars <- nrow(xstart)
     nreps <- ncol(params)
@@ -160,8 +159,7 @@ function (params, xstart, times, ...)
     }
     x
 }
-process model density, dprocess = 
-function (x, times, params, log = FALSE, ...) 
+process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 {
     nreps <- ncol(params)
     ntimes <- length(times)
@@ -175,8 +173,7 @@ function (x, times, params, log = FALSE, ...)
         d
     else exp(d)
 }
-measurement model simulator, rmeasure = 
-function (x, t, params, covars, ...) 
+measurement model simulator, rmeasure = function (x, t, params, covars, ...) 
 {
     y <- numeric(length = nobs)
     names(y) <- obsnames
@@ -186,9 +183,8 @@ function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x3b0d610>
-measurement model density, dmeasure = 
-function (y, x, t, params, log, covars, ...) 
+<environment: 0x23d03d8>
+measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     f <- 0
     for (k in seq_len(nobs)) {
@@ -199,29 +195,20 @@ function (y, x, t, params, log, covars, ...)
         f
     else exp(f)
 }
-<environment: 0x3b0d610>
-prior simulator, rprior = 
-function not specified
-prior density, dprior = 
-native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
-skeleton (map) = 
-function not specified
-initializer = 
-function (params, t0, ...) 
+<environment: 0x23d03d8>
+prior simulator, rprior = not specified
+prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+skeleton (map) = not specified
+initializer = function (params, t0, ...) 
 {
     ivpnames <- c("x1.0", "x2.0")
     x <- params[ivpnames]
     x
 }
-parameter transformation (to estimation scale) = 
-function not specified
-parameter transformation (from estimation scale) = 
-function not specified
+parameter transformation (to estimation scale) = not specified
+parameter transformation (from estimation scale) = not specified
 parameter(s) unspecified
-userdata = 
-$useless
-[1] 23
-
+extra user-defined variables:  ‘useless’ 
 > 
 > try(
 +     simulate(rw2,params=p)
