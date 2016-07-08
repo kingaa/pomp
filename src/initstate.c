@@ -222,7 +222,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       break;
       
     default:
-      
+
       break;
 
     }

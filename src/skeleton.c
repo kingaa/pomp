@@ -139,6 +139,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 
   // first do setup
   switch (mode) {
+
   case Rfun: 			// R skeleton
     {
       int nprotect = 0;
@@ -172,7 +173,9 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
       
       UNPROTECT(nprotect);
     }
+
     break;
+
   case native:			// native skeleton
     {
       int nprotect = 0;
@@ -192,9 +195,13 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 			   );
       UNPROTECT(nprotect);
     }
+
     break;
+
   default:
+
     break;
+
   }
 
   UNPROTECT(nprotect);

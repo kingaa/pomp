@@ -90,7 +90,9 @@ SEXP euler_model_simulator (SEXP func,
     break;
 
   default:
+
     break;
+
   }
 
   // create array to hold results
@@ -215,10 +217,13 @@ SEXP euler_model_simulator (SEXP func,
 	  case native: 		// native code
 
 	    (*ff)(xm,pm,sidx,pidx,cidx,ncovars,cp,t,dt);
+
 	    break;
 
 	  default:
+
 	    break;
+
 	  }
 
 	}
@@ -327,7 +332,9 @@ SEXP euler_model_density (SEXP func,
     break;
 
   default:
+
     break;
+
   }
 
   // create array to hold results
@@ -416,6 +423,7 @@ SEXP euler_model_density (SEXP func,
     break;
 
   default:
+
     break;
 
   }

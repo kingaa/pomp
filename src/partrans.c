@@ -138,6 +138,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
   default:
 
     break;
+
   }
 
   UNPROTECT(nprotect);
