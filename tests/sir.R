@@ -301,6 +301,7 @@ try(simulate(pomp(euler.sir,rprocess=onestep.sim(Csnippet("error(\"yikes!\");"))
 try(pomp(euler.sir,rprocess=euler.sim(3,delta.t=0.1)))
 try(pomp(euler.sir,rprocess=onestep.sim(3)))
 try(pomp(euler.sir,rprocess=discrete.time.sim(3)))
+try(pomp(euler.sir,rprocess=3))
 try(pomp(euler.sir,dprocess=onestep.dens(3)))
 
 try(simulate(pomp(euler.sir,rprocess=discrete.time.sim(NULL))))

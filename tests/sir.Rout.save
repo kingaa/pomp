@@ -193,7 +193,7 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3514458>
+<environment: 0x2485f28>
 process model density, dprocess = function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
 {
@@ -203,7 +203,7 @@ process model density, dprocess = function (x, times, params, ..., tcovar, covar
         stop(ep, conditionMessage(e), call. = FALSE)
     })
 }
-<environment: 0x3558358>
+<environment: 0x24c9e28>
 measurement model simulator, rmeasure = native function ‘__pomp_rmeasure’, defined by a Csnippet
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
@@ -234,7 +234,7 @@ skeleton (vectorfield) = function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x2d3d778>
+<environment: 0x1cb0778>
 initializer = function (params, t0, ...) 
 {
     with(as.list(params), {
@@ -449,6 +449,8 @@ Error : in ‘pomp’: in ‘euler.sim’ plugin: bad option for ‘step.fn’ a
 Error : in ‘pomp’: in ‘onestep.sim’ plugin: bad option for ‘step.fn’ argument
 > try(pomp(euler.sir,rprocess=discrete.time.sim(3)))
 Error : in ‘pomp’: in ‘discrete.time.sim’ plugin: bad option for ‘step.fn’ argument
+> try(pomp(euler.sir,rprocess=3))
+Error : in ‘pomp’: in ‘pomp’: ‘rprocess’ plugin has an invalid form.
 > try(pomp(euler.sir,dprocess=onestep.dens(3)))
 Error : in ‘pomp’: in ‘onestep.dens’ plugin: bad option for ‘dens.fn’ argument
 > 

@@ -158,7 +158,7 @@ setMethod(
     "plugin.handler",
     signature=signature(object='ANY'),
     definition=function (object, purpose = "\b", ...) {
-        stop("in ",sQuote("pomp"),": ",purpose," plugin has an invalid form.",call.=FALSE)
+        stop(purpose," plugin has an invalid form.",call.=FALSE)
     }
 )
 
