@@ -223,7 +223,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       
     default:
       
-      errorcall(R_NilValue,"in 'init.state': unrecognized 'mode'");
+      errorcall(R_NilValue,"in 'init.state': unrecognized 'mode'"); // # nocov
 
       break;
 

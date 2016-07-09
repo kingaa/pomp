@@ -123,7 +123,7 @@ pmcmc.internal <- function (object, Nmcmc,
                 .getnativesymbolinfo=gnsi
             ),
             error = function (e) {
-                stop(ep,conditionMessage(e),call.=FALSE)
+                stop(ep,conditionMessage(e),call.=FALSE) # nocov
             }
         )
         log.prior <- tryCatch(
@@ -181,7 +181,7 @@ pmcmc.internal <- function (object, Nmcmc,
                     .getnativesymbolinfo=gnsi
                 ),
                 error = function (e) {
-                    stop(ep,conditionMessage(e),call.=FALSE)
+                    stop(ep,conditionMessage(e),call.=FALSE) # nocov
                 }
             )
             gnsi <- FALSE

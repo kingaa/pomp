@@ -115,7 +115,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'");
+    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'"); // # nocov
 
     break;
 
@@ -232,7 +232,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'");
+    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'"); // # nocov
 
     break;
 

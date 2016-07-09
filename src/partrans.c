@@ -35,7 +35,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
     break;
   default:
-    errorcall(R_NilValue,"impossible error");
+    errorcall(R_NilValue,"impossible error"); // # nocov
     break;
   }
   
@@ -137,7 +137,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'partrans': unrecognized 'mode'");
+    errorcall(R_NilValue,"in 'partrans': unrecognized 'mode'"); // # nocov
 
     break;
 

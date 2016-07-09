@@ -257,7 +257,7 @@ pfilter.internal <- function (object, params, Np,
                 tol=tol
             ),
             error = function (e) {
-                stop(ep,conditionMessage(e),call.=FALSE)
+                stop(ep,conditionMessage(e),call.=FALSE) # nocov
             }
         )
         all.fail <- xx$fail
