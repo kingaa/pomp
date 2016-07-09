@@ -426,7 +426,7 @@ newly created object(s):
 +         seed=838775L
 +     )
 + )
-Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 2
+Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 3
 > 
 > try(
 +     probe(
@@ -464,7 +464,7 @@ Error : in ‘probe’: applying probes to simulated data: 'nsim' must be a posi
 > try(probe(ricker,nsim=c(20,30),probes=list(mn=probe.mean("y",transform=sqrt,trim=0.1))))
 Error : in ‘probe’: applying probes to simulated data: 'nsim' must be a positive integer
 > try(probe(ricker,nsim=20,probes=list(garbage=function(x)"A")))
-Error : in ‘probe’: applying probes to actual data: probe 0 returns a non-numeric result
+Error : in ‘probe’: applying probes to actual data: probe 1 returns a non-numeric result
 > try(probe(ricker,nsim=20,probes=list(garbage=function(x){
 +     n <- sample(c(1,2,3),size=1)
 +     runif(n=n)})))
@@ -481,9 +481,11 @@ Error : in ‘probe’: applying probes to actual data: in ‘probe.ccf’: seri
 > try(probe(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=100))
 Error : in ‘probe’: applying probes to actual data: in ‘probe.ccf’: series 2 has no data
 > try(probe(ou2,nsim=100,probes=function(x)"a"))
-Error : in ‘probe’: applying probes to actual data: probe 0 returns a non-numeric result
+Error : in ‘probe’: applying probes to actual data: probe 1 returns a non-numeric result
 > try(probe(ou2,nsim=100,probes=function(x)runif(n=sample(c(1,2),size=1))))
-Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 0
+Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 1
+> try(probe(ou2,nsim=100,probes=function(x)sample(list("a",2,3),size=1)[[1]]))
+Error : in ‘probe’: applying probes to simulated data: probe 1 returns a non-numeric result
 > 
 > dev.off()
 null device 
