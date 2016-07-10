@@ -44,14 +44,10 @@ Error : in ‘periodic.bspline.basis’: length(‘names’) must be either 1 or
 Error : in ‘bspline.basis’: must have degree > 0
 > try(bspline.basis(x,degree=5,nbasis=3))
 Error : in ‘bspline.basis’: must have nbasis > degree
-> try(bspline.basis(x,degree=3,nbasis=2e9))
-Error : in ‘bspline.basis’: 'Calloc' could not allocate memory (2000000004 of 8 bytes)
 > try(periodic.bspline.basis(x,degree=-1,nbasis=9))
 Error : in ‘periodic.bspline.basis’: must have degree >= 0
 > try(periodic.bspline.basis(x,degree=5,nbasis=4))
 Error : in ‘periodic.bspline.basis’: must have nbasis >= degree
-> try(periodic.bspline.basis(x,degree=3,nbasis=2e9))
-Error : in ‘periodic.bspline.basis’: cannot allocate vector of size 74.5 Gb
 > 
 > dev.off()
 null device 
