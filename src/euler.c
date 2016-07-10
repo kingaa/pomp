@@ -20,10 +20,10 @@ SEXP euler_model_simulator (SEXP func,
   SEXP xvec = R_NilValue, pvec = R_NilValue, dtvec = R_NilValue;
   int *pidx = 0, *sidx = 0, *cidx = 0, *zidx = 0;
   pomp_onestep_sim *ff = NULL;
-  int meth = *(INTEGER(AS_INTEGER(method))); 
+  int meth = INTEGER_VALUE(method);
   // meth: 0 = Euler, 1 = one-step, 2 = fixed step
 
-  dtt = *(REAL(AS_NUMERIC(deltat)));
+  dtt = NUMERIC_VALUE(deltat);
   if (dtt <= 0) 
     errorcall(R_NilValue,"'delta.t' should be a positive number");
 

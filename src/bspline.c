@@ -10,16 +10,17 @@ static void bspline_internal (double *y, const double *x, int nx, int i, int p, 
 SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree) {
   int nprotect = 0;
   SEXP y, xr;
-  int nx = length(x);
+  int nx = LENGTH(x);
   int nb = INTEGER_VALUE(nbasis);
   int deg = INTEGER_VALUE(degree);
   int nk = nb+deg+1;
   double dx, minx, maxx;
-  double knots[nk];
+  double *knots = NULL;
   double *xdata, *ydata;
   int i;
   if (deg < 0) errorcall(R_NilValue,"must have degree > 0");
   if (nb <= deg) errorcall(R_NilValue,"must have nbasis > degree");
+  knots = (double *) Calloc(nk,double);
   PROTECT(xr = AS_NUMERIC(x)); nprotect++;
   PROTECT(y = allocMatrix(REALSXP,nx,nb)); nprotect++;
   xdata = REAL(xr);
@@ -35,6 +36,7 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree) {
     bspline_internal(ydata,xdata,nx,i,deg,&knots[0]);
     ydata += nx;
   }
+  Free(knots);
   UNPROTECT(nprotect);
   return(y);
 }
@@ -42,8 +44,8 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree) {
 // SEXP bspline_basis_function (SEXP x, SEXP i, SEXP degree, SEXP knots) {
 //   int nprotect = 0;
 //   SEXP y;
-//   int nx = length(x);
-//   int nknots = length(knots);
+//   int nx = LENGTH(x);
+//   int nknots = LENGTH(knots);
 //   int ival = INTEGER_VALUE(i);
 //   int deg = INTEGER_VALUE(degree);
 
@@ -60,7 +62,7 @@ SEXP bspline_basis (SEXP x, SEXP nbasis, SEXP degree) {
 SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period) {
   int nprotect = 0;
   SEXP y, xr;
-  int nx = length(x);
+  int nx = LENGTH(x);
   int nb = INTEGER_VALUE(nbasis);
   int deg = INTEGER_VALUE(degree);
   double pd = NUMERIC_VALUE(period);

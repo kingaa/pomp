@@ -17,4 +17,12 @@ y <- periodic.bspline.basis(x,nbasis=6,names=tail(letters,6))
 y <- periodic.bspline.basis(x,nbasis=5,names="spline%d")
 matplot(x,y,type='l')
 
+x <- seq(0,1,length=5)
+try(bspline.basis(x,degree=-1,nbasis=9))
+try(bspline.basis(x,degree=5,nbasis=3))
+try(bspline.basis(x,degree=3,nbasis=2e9))
+try(periodic.bspline.basis(x,degree=-1,nbasis=9))
+try(periodic.bspline.basis(x,degree=5,nbasis=4))
+try(periodic.bspline.basis(x,degree=3,nbasis=2e9))
+
 dev.off()
