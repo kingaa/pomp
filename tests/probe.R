@@ -424,5 +424,11 @@ try(probe(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=100))
 try(probe(ou2,nsim=100,probes=function(x)"a"))
 try(probe(ou2,nsim=100,probes=function(x)runif(n=sample(c(1,2),size=1))))
 try(probe(ou2,nsim=100,probes=function(x)sample(list("a",2,3),size=1)[[1]]))
+try(probe.match(ou2,probes=probe.acf("y1",lags=0:3),nsim=100))
+try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=100))
+
+pompExample(ou2)
+try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=2))
+try(probe(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=2))
 
 dev.off()

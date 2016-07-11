@@ -486,6 +486,18 @@ Error : in ‘probe’: applying probes to actual data: probe 1 returns a non-nu
 Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 1
 > try(probe(ou2,nsim=100,probes=function(x)sample(list("a",2,3),size=1)[[1]]))
 Error : in ‘probe’: applying probes to simulated data: probe 1 returns a non-numeric result
+> try(probe.match(ou2,probes=probe.acf("y1",lags=0:3),nsim=100))
+Error : in ‘probe.match.objfun’: applying probes to actual data: in ‘probe.acf’: series 1 has no data
+> try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=100))
+Error : in ‘probe.match.objfun’: applying probes to actual data: in ‘probe.ccf’: series 2 has no data
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=2))
+Error : in ‘probe.match.objfun’: in synthetic likelihood computation: 'nsim' (=2) should be (much) larger than the number of probes (=4)
+> try(probe(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=2))
+Error : in ‘probe’: in synthetic likelihood computation: 'nsim' (=2) should be (much) larger than the number of probes (=4)
 > 
 > dev.off()
 null device 

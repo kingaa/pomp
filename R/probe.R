@@ -64,7 +64,12 @@ probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL, ...)
         quants[k] <- sum(simval[,k]<datval[k])/nsim
     }
 
-    ll <- .Call(synth_loglik,simval,datval)
+    ll <- tryCatch(
+        .Call(synth_loglik,simval,datval),
+        error = function (e) {
+            stop(ep,"in synthetic likelihood computation: ",conditionMessage(e),call.=FALSE)
+        }
+    )
 
     coef(object) <- params
 

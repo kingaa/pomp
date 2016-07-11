@@ -42,6 +42,8 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   // we get these from a previous call to 'apply_probe_data'
   nprobe = LENGTH(probes);
   nvals = LENGTH(datval);
+  if (nsim < nvals) 
+    errorcall(R_NilValue,"'nsim' (=%ld) should be (much) larger than the number of probes (=%ld)",nsim,nvals);
   PROTECT(names = GET_NAMES(datval)); nprotect++; 
   PROTECT(t0 = GET_SLOT(object,install("t0"))); nprotect++;
   PROTECT(times = GET_SLOT(object,install("times"))); nprotect++;

@@ -28,6 +28,9 @@ void robust_synth_loglik (double *y, int *dim, double *ydat, double *loglik) {
   y1 = (double *) R_alloc(nrow*ncol,sizeof(double));
   y2 = (double *) R_alloc(nrow*ncol,sizeof(double));
 
+  if (nrow < ncol)
+    errorcall(R_NilValue,"'nsim' (=%ld) should be (much) larger than the number of probes (=%ld)",nrow,ncol);
+
   // compute column means, center each column, precondition
   memcpy(y1,y,nrow*ncol*sizeof(double));
   for (yp = y1, j = 0; j < ncol; j++, yp += nrow) {
