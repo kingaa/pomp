@@ -213,6 +213,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     }
 
     ## handle skeleton
+    if (is.null(skeleton)) skeleton.type <- "undef"
     skeleton <- pomp.fun(
         f=skeleton,
         PACKAGE=PACKAGE,
@@ -553,6 +554,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                 skeleton.type <- "map"
             }
         }
+
         if (missing(fromEstimationScale)) {
             if (missing(toEstimationScale)) {
                 from.trans <- data@from.trans

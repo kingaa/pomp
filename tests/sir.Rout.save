@@ -193,7 +193,7 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x262a518>
+<environment: 0x3d96d60>
 process model density, dprocess = function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
 {
@@ -203,7 +203,7 @@ process model density, dprocess = function (x, times, params, ..., tcovar, covar
         stop(ep, conditionMessage(e), call. = FALSE)
     })
 }
-<environment: 0x266e0d0>
+<environment: 0x3dda580>
 measurement model simulator, rmeasure = native function ‘__pomp_rmeasure’, defined by a Csnippet
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
@@ -234,7 +234,7 @@ skeleton (vectorfield) = function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x1e53018>
+<environment: 0x35c1f50>
 initializer = function (params, t0, ...) 
 {
     with(as.list(params), {

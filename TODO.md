@@ -1,9 +1,11 @@
 ### pomp to-do list
 
+- trap errors for LAPACK
+- remove deprecated skeleton specification style
 - methods to change data (`obs<-`)
 - write Csnippet support for `onestep.dens` and `gillespie.sim` plugins.
 - plugin for compartmental models
-- on-the-fly modification of basic components
+- on-the-fly modification of basic components (pomp 2?)
 - SDE examples
 - better unit tests for `sannbox`
 - easier interface for lists of probes in `probe`

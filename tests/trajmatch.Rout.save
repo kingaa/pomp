@@ -33,7 +33,7 @@ newly created object(s):
 > try(trajectory(x))
 Error : in ‘trajectory’: ‘params’ must be supplied
 > try(trajectory(pomp(ou2,skeleton=NULL)))
-Error : in ‘trajectory’: in map iterator: operation cannot be completed: skeleton has not been specified
+Error : in ‘trajectory’: deterministic skeleton has not been specified
 In addition: Warning message:
 in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
 See ‘?pomp’ for an explanation of the new syntax. 

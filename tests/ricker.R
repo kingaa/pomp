@@ -59,6 +59,10 @@ try(trajectory(po))
 try(probe(po,probes=list(mean=probe.mean("y"))))
 try(spect(po,kernel.width=3,nsim=c(100,0)))
 
+pomp(ricker,skeleton=NULL) -> po
+show(po)
+try(trajectory(po))
+
 pomp(ricker,
      rmeasure=Csnippet("if (runif(0,1)<0.5) error(\"yikes!\");")
      ) -> po

@@ -98,6 +98,62 @@ Error : in ‘spect’: simulation error: in ‘simulate’: in ‘discrete.time
 In addition: Warning message:
 in 'simulate': only the first number in 'nsim' is significant 
 > 
+> pomp(ricker,skeleton=NULL) -> po
+Warning message:
+in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
+See ‘?pomp’ for an explanation of the new syntax. 
+> show(po)
+51 records of 1 observables, recorded from t = 0 to 50 
+summary of data:
+       y         
+ Min.   :  0.00  
+ 1st Qu.:  0.00  
+ Median :  8.00  
+ Mean   : 41.39  
+ 3rd Qu.: 71.00  
+ Max.   :275.00  
+zero time, t0 = 0
+process model simulator, rprocess = function (xstart, times, params, ..., zeronames = character(0), 
+    tcovar, covar, .getnativesymbolinfo = TRUE) 
+{
+    tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
+        times = times, params = params, deltat = object@delta.t, 
+        method = 2L, zeronames = zeronames, tcovar = tcovar, 
+        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
+        error = function(e) {
+            stop(ep, conditionMessage(e), call. = FALSE)
+        })
+}
+<environment: 0x2c5adb0>
+process model density, dprocess = function (x, times, params, log = FALSE, ...) 
+stop(sQuote("dprocess"), " not specified", call. = FALSE)
+<environment: 0x3685570>
+measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
+measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
+prior simulator, rprior = not specified
+prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+skeleton = not specified
+initializer = not specified
+parameter transformation (to estimation scale) = function (params, ...) 
+{
+    params[c("r", "sigma", "phi", "N.0")] <- log(params[c("r", 
+        "sigma", "phi", "N.0")])
+    params
+}
+<environment: 0x3997d18>
+parameter transformation (from estimation scale) = function (params, ...) 
+{
+    params[c("r", "sigma", "phi", "N.0")] <- exp(params[c("r", 
+        "sigma", "phi", "N.0")])
+    params
+}
+<environment: 0x3997d18>
+parameter(s):
+       r    sigma      phi      N.0      e.0 
+44.70118  0.30000 10.00000  7.00000  0.00000 
+> try(trajectory(po))
+Error : in ‘trajectory’: deterministic skeleton has not been specified
+> 
 > pomp(ricker,
 +      rmeasure=Csnippet("if (runif(0,1)<0.5) error(\"yikes!\");")
 +      ) -> po

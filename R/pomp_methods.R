@@ -302,10 +302,12 @@ setMethod(
         show(object@rprior)
         cat("prior density, dprior = ")
         show(object@dprior)
-        if (!is.na(object@skeleton.type)) {
-            cat("skeleton (",object@skeleton.type,") = ",sep="")
-            show(object@skeleton)
-        }
+        cat("skeleton ",
+            if (object@skeleton.type!="undef")
+                paste0("(",object@skeleton.type,") ")
+            else "",
+            "= ",sep="")
+        show(object@skeleton)
         cat("initializer = ")
         show(object@initializer)
         cat("parameter transformation (to estimation scale) = ")
