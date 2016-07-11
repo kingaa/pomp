@@ -69,8 +69,7 @@ bsmc.internal <- function (object, params, Np, est,
         params <- tryCatch(
             rprior(object,params=parmat(params,Np)),
             error = function (e) {
-                stop(ep,sQuote("rprior")," error: ",
-                     conditionMessage(e),call.=FALSE)
+                stop(ep,sQuote("rprior")," error: ",conditionMessage(e),call.=FALSE)
             }
         )
     }
@@ -202,8 +201,7 @@ bsmc.internal <- function (object, params, Np, est,
                 .getnativesymbolinfo=gnsi.dmeas
             ),
             error = function (e) {
-                stop(ep,sQuote("dmeasure")," error: ",conditionMessage(e),
-                     call.=FALSE)
+                stop(ep,sQuote("dmeasure")," error: ",conditionMessage(e),call.=FALSE)
             }
         )
         gnsi.dmeas <- FALSE
@@ -224,8 +222,7 @@ bsmc.internal <- function (object, params, Np, est,
                 method="svd"
             ),
             error = function (e) {
-                stop(ep,sQuote("rmvnorm"),"error: ",
-                     conditionMessage(e),call.=FALSE)
+                stop(ep,sQuote("rmvnorm"),"error: ",conditionMessage(e),call.=FALSE)
             }
         )
         if (!all(is.finite(pvec)))
@@ -265,8 +262,7 @@ bsmc.internal <- function (object, params, Np, est,
                 .getnativesymbolinfo=gnsi.dmeas
             ),
             error = function (e) {
-                stop(ep,sQuote("dmeasure")," error: ",conditionMessage(e),
-                     call.=FALSE)
+                stop(ep,sQuote("dmeasure")," error: ",conditionMessage(e),call.=FALSE)
             }
         )
 

@@ -55,13 +55,11 @@ pmcmc.internal <- function (object, Nmcmc,
     theta <- tryCatch(
         proposal(start,.n=0),
         error = function (e) {
-            stop(ep,"error in proposal function: ",
-                 conditionMessage(e),call.=FALSE)
+            stop(ep,"error in proposal function: ",conditionMessage(e),call.=FALSE)
         }
     )
     if (is.null(names(theta)) || !is.numeric(theta) || any(names(theta)==""))
-        stop(ep,sQuote("proposal"),
-             " must return a named numeric vector",call.=FALSE)
+        stop(ep,sQuote("proposal")," must return a named numeric vector",call.=FALSE)
 
     ntimes <- length(time(object))
     if (missing(Np))
@@ -70,8 +68,7 @@ pmcmc.internal <- function (object, Nmcmc,
         Np <- tryCatch(
             vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
             error = function (e) {
-                stop(ep,"if ",sQuote("Np")," is a function, ",
-                     "it must return a single positive integer",call.=FALSE)
+                stop(ep,"if ",sQuote("Np")," is a function, it must return a single positive integer",call.=FALSE)
             }
         )
     }

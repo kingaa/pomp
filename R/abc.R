@@ -63,8 +63,7 @@ abc.internal <- function (object, Nabc,
     theta <- tryCatch(
         proposal(start,.n=0),
         error = function (e) {
-            stop(ep,"in proposal function: ",
-                 conditionMessage(e),call.=FALSE)
+            stop(ep,"in proposal function: ",conditionMessage(e),call.=FALSE)
         }
     )
     if (is.null(names(theta)) || !is.numeric(theta) || any(names(theta)==""))
@@ -88,8 +87,7 @@ abc.internal <- function (object, Nabc,
         }
     )
     if (!is.finite(log.prior))
-        stop(ep,"inadmissible value of ",sQuote("dprior"),
-             " at parameters ",sQuote("start"),call.=FALSE)
+        stop(ep,"inadmissible value of ",sQuote("dprior")," at parameters ",sQuote("start"),call.=FALSE)
     ## we suppose that theta is a "match",
     ## which does the right thing for continue() and
     ## should have negligible effect unless doing many short calls to continue()
@@ -108,8 +106,7 @@ abc.internal <- function (object, Nabc,
     datval <- tryCatch(
         .Call(apply_probe_data,object,probes),
         error = function (e) {
-            stop(ep,"in ",sQuote("apply_probe_data"),
-                 ": ",conditionMessage(e),call.=FALSE)
+            stop(ep,"in ",sQuote("apply_probe_data"),": ",conditionMessage(e),call.=FALSE)
         }
     )
 
@@ -142,8 +139,7 @@ abc.internal <- function (object, Nabc,
                     datval=datval
                 ),
                 error = function (e) {
-                    stop(ep,"in ",sQuote("apply_probe_sim"),
-                         ": ",conditionMessage(e),call.=FALSE)
+                    stop(ep,"in ",sQuote("apply_probe_sim"),": ",conditionMessage(e),call.=FALSE)
                 }
             )
 

@@ -286,7 +286,7 @@ setMethod(
                         data.styles[[i]] <- rep(data.styles[[i]],nreps)
                     if(length(data.styles[[i]]) < nreps) {
                         warning(ep,sQuote("data.styles"),
-                                "contains an element with more than 1 entry but fewer entries of observed variables",
+                                "contains an element with more than 1 entry but fewer entries than observed variables",
                                 call.=FALSE)
                         data.styles[[i]] <- rep(data.styles[[i]],nreps)
                     }

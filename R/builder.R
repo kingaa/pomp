@@ -29,9 +29,9 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
     cat(file=out,render(header$file,pompheader=pompheader,id=id))
 
-    for (f in utility.fns) {
-        cat(file=out,f)
-    }
+##    for (f in utility.fns) {
+##        cat(file=out,f)
+##    }
 
     cat(file=out,globals,footer$globals)
 
@@ -171,8 +171,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
     tryCatch(
         pompCompile(fname=name,direc=pompSrcDir(dir),src=csrc,verbose=verbose),
         error = function (e) {
-            stop("in ",sQuote("pompCBuilder"),": compilation error: ",
-                 conditionMessage(e),call.=FALSE)
+            stop("in ",sQuote("pompCBuilder"),": compilation error: ",conditionMessage(e),call.=FALSE)
         }
     )
     
@@ -187,8 +186,7 @@ pompSrcDir <- function (dir) {
     tryCatch(
         dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700"),
         error = function (e) {
-            stop("cannot create cache directory ",sQuote(dir),": ",
-                 conditionMessage(e),call.=FALSE)
+            stop("cannot create cache directory ",sQuote(dir),": ",conditionMessage(e),call.=FALSE)
         }
     )
     dir
@@ -261,8 +259,7 @@ render <- function (template, ...) {
     if (length(vars)==0) return(template)
     n <- sapply(vars,length)
     if (!all((n==max(n))|(n==1)))
-        stop("in ",sQuote("render"),
-             "incommensurate lengths of replacements",call.=FALSE)
+        stop("in ",sQuote("render"),"incommensurate lengths of replacements",call.=FALSE)
     short <- which(n==1)
     n <- max(n)
     for (i in short) vars[[i]] <- rep(vars[[i]],n)
@@ -349,4 +346,4 @@ void __pomp_load_stack_decr (int *val) {
   *val = --__pomp_load_stack;
 }\n"
 
-utility.fns <- list()
+## utility.fns <- list()

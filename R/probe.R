@@ -32,8 +32,7 @@ probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL, ...)
     datval <- tryCatch(
         .Call(apply_probe_data,object,probes),
         error = function (e) {
-            stop(ep,"applying probes to actual data: ",
-                 conditionMessage(e),call.=FALSE)
+            stop(ep,"applying probes to actual data: ",conditionMessage(e),call.=FALSE)
         }
     )
     nprobes <- length(datval)
@@ -50,8 +49,7 @@ probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL, ...)
             datval=datval
         ),
         error = function (e) {
-            stop(ep,"applying probes to simulated data: ",
-                 conditionMessage(e),call.=FALSE)
+            stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)
         }
     )
     

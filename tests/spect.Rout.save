@@ -58,6 +58,9 @@ Error : in ‘plot-spect.pomp’: ‘data.styles’ must be a list
 newly created object(s):
  ricker 
 > 
+> try(spect(ricker,nsim=100))
+Error : in ‘spect’: ‘kernel.width’ must be specified
+> 
 > sp <- spect(ricker,kernel.width=3,nsim=100,seed=838775L)
 > invisible(summary(sp))
 > 

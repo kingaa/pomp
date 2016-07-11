@@ -179,8 +179,7 @@ mif2.pfilter <- function (object, params, Np,
                 tol=tol
             ),
             error = function (e) {
-                stop(ep,"particle-filter error: ",
-                     conditionMessage(e),call.=FALSE)
+                stop(ep,"particle-filter error: ",conditionMessage(e),call.=FALSE) # nocov
             }
         )
         all.fail <- xx$fail

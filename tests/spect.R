@@ -31,6 +31,8 @@ plot(gm4,data.styles=list(lty=1))
 
 pompExample(ricker)
 
+try(spect(ricker,nsim=100))
+
 sp <- spect(ricker,kernel.width=3,nsim=100,seed=838775L)
 invisible(summary(sp))
 

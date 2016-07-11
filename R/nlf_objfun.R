@@ -32,7 +32,7 @@ nlf.lql <- function (params.fitted, object, params, par.index,
         simulate(object,times=times,t0=t0,params=params,seed=seed,
                  obs=TRUE,states=FALSE),
         error = function (e) {
-            stop(ep,"simulation error: ",conditionMessage(e),call.=FALSE)
+            stop(ep,"simulation error: ",conditionMessage(e),call.=FALSE) # nocov
         }
     )
 
@@ -60,7 +60,7 @@ nlf.lql <- function (params.fitted, object, params, par.index,
             bootsamp=bootsamp
         ),
         error = function (e) {
-            stop(ep,conditionMessage(e),call.=FALSE)
+            stop(ep,conditionMessage(e),call.=FALSE) # nocov
         }
     )
 }

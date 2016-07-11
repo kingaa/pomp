@@ -63,8 +63,7 @@ pmof.internal <- function (object, params, est, probes,
     datval <- tryCatch(
         .Call(apply_probe_data,object,probes),
         error = function (e) {
-            stop(ep,"applying probes to actual data: ",
-                 conditionMessage(e),call.=FALSE)
+            stop(ep,"applying probes to actual data: ",conditionMessage(e),call.=FALSE)
         }
     )
     nprobes <- length(datval)
@@ -93,8 +92,7 @@ pmof.internal <- function (object, params, est, probes,
                 datval=datval
             ),
             error = function (e) {
-                stop(ep,"applying probes to simulated data: ",
-                     conditionMessage(e),call.=FALSE)
+                stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)
             }
         )
         
