@@ -51,9 +51,9 @@ Error : in ‘coef<-’: ‘value’ must be a named vector
 > coef(ignore,transform=TRUE) <- c(a=3,b=2)
 > 
 > try(simulate(ou2,times=c(3,2,1)))
-Error : in ‘simulate’: 'times' must be an increasing sequence of times
+Error : in ‘simulate’: 'times' must be an increasing sequence
 > try(simulate(ou2,times=c(1,2,2)))
-Error : in ‘simulate’: 'times' must be an increasing sequence of times
+Error : in ‘simulate’: 'times' must be an increasing sequence
 > try(simulate(ou2,times=c(-1,0,1)))
 Error : in ‘simulate’: the zero-time 't0' must occur no later than the first observation 'times[1]'
 > try(simulate(ou2,times=numeric()))

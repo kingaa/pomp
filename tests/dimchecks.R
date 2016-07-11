@@ -137,6 +137,7 @@ stopifnot(identical(
     dim(dprocess(ou2,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),2))),
     c(4L,9L)))
 try(dprocess(ou2,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),3)))
+try(dprocess(ou2,x=x[,1:2,],times=1:10,params=parmat(coef(ou2),5)))
 stopifnot(identical(
     dim(dprocess(ou2,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4))),
     c(4L,9L)))

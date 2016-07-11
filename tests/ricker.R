@@ -83,4 +83,6 @@ try(
              statenames=c("e","N"),
              paramnames=c("r","sigma"))))
 
+try(rprocess(ricker,xstart=init.state(ricker),params=coef(ricker),times=runif(10,max=5)))
+
 dev.off()

@@ -129,6 +129,9 @@ Error : in ‘mif2’: in ‘mif2.pfilter’: error in calculation of weights: o
 +              paramnames=c("r","sigma"))))
 Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: 'delta.t' should be a positive number
 > 
+> try(rprocess(ricker,xstart=init.state(ricker),params=coef(ricker),times=runif(10,max=5)))
+Error : in ‘discrete.time.sim’ plugin: 'times' is not an increasing sequence
+> 
 > dev.off()
 null device 
           1 

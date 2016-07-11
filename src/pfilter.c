@@ -41,7 +41,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   dim = INTEGER(dimP);
   npars = dim[0];
   if (nreps % dim[1] != 0)
-    errorcall(R_NilValue,"ncol('states') should be a multiple of ncol('params')");
+    errorcall(R_NilValue,"ncol('states') should be a multiple of ncol('params')"); // # nocov
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
 
   np = *(INTEGER(AS_INTEGER(Np))); // number of particles to resample
@@ -62,7 +62,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 
   if (do_par_resamp) {
     if (dim[1] != nreps) 
-      errorcall(R_NilValue,"ncol('states') should be equal to ncol('params')");
+      errorcall(R_NilValue,"ncol('states') should be equal to ncol('params')"); // # nocov
   }
 
   PROTECT(ess = NEW_NUMERIC(1)); nprotect++; // effective sample size

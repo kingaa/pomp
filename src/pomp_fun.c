@@ -56,7 +56,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 	break;
       
       case Rfun: case undef: default:
-	break;
+	break;			// # nocov
       }
 
       SET_SLOT(pfun,install("address"),f);

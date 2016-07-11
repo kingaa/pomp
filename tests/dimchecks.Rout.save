@@ -345,6 +345,8 @@ Error : in 'dprocess': the larger number of replicates is not a multiple of smal
 +     c(4L,9L)))
 > try(dprocess(ou2,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),3)))
 Error : in 'dprocess': the larger number of replicates is not a multiple of smaller.
+> try(dprocess(ou2,x=x[,1:2,],times=1:10,params=parmat(coef(ou2),5)))
+Error : in 'dprocess': the larger number of replicates is not a multiple of smaller.
 > stopifnot(identical(
 +     dim(dprocess(ou2,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4))),
 +     c(4L,9L)))

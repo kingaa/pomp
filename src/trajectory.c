@@ -120,7 +120,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   npars = dim[0];
 
   if (nreps != dim[1])
-    errorcall(R_NilValue,"in 'trajectory': dimension mismatch between 'x0' and 'params'");
+    errorcall(R_NilValue,"in 'trajectory': dimension mismatch between 'x0' and 'params'"); // # nocov
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = LENGTH(times);
