@@ -3,7 +3,6 @@ png(filename="design-%02d.png",res=100)
 
 ## Sobol' low-discrepancy design
 plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
-try(sobolDesign(lower=c(a=0),upper=c(a=1),n=2e9))
 
 ## A one-parameter profile design:
 x <- profileDesign(p=1:10,lower=c(a=0,b=0),upper=c(a=1,b=5),nprof=20)
