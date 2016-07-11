@@ -229,10 +229,6 @@ callable.decl <- function (code) {
     do.call(paste0,decl[fns])
 }
 
-missing.fun <- function (name) {
-    paste0("  error(\"'",name,"' not defined\");")
-}
-
 randomName <- function (size = 4, stem = "") {
     paste0(stem,
            " Time: ",format(Sys.time(),"%Y-%m-%d %H:%M:%OS3 %z"),
