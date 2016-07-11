@@ -21,7 +21,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
     if (.Platform$OS.type=="unix") {
         pompheader <- "pomp.h"
     } else {
-        pompheader <- system.file("include/pomp.h",package="pomp")
+        pompheader <- system.file("include/pomp.h",package="pomp") # nocov
     }
 
     csrc <- ""
@@ -195,9 +195,8 @@ pompSrcDir <- function (dir) {
 pompCompile <- function (fname, direc, src, verbose) {
 
     stem <- file.path(direc,fname)
-    if (.Platform$OS.type=="windows") {
-        stem <- gsub("\\","/",stem,fixed=TRUE)
-    }
+    if (.Platform$OS.type=="windows")
+        stem <- gsub("\\","/",stem,fixed=TRUE) # nocov
 
     modelfile <- paste0(stem,".c")
 
