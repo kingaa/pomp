@@ -132,7 +132,7 @@ abc.internal <- function (object, Nabc,
                 .Call(
                     apply_probe_sim,
                     object=object,
-                    nsim=1,
+                    nsim=1L,
                     params=theta.prop,
                     seed=NULL,
                     probes=probes,
