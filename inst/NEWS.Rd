@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.6.5}{
+  \itemize{
+    \item Several obscure bug-fixes.
+    \item Improvement of the test suite and of error messages.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.6.4}{
   \itemize{
     \item Remove the automatic \dQuote{verbose} setting during compilation under Windows.
