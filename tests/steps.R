@@ -17,6 +17,7 @@ y <- simulate(euler.sir,times=tm,states=TRUE)["I",,]
 table(cut(x-y,breaks=c(-Inf,seq(-0.2,0.2,by=0.01),Inf),ordered=T))
 
 pompExample(ricker)
+try(pomp(ricker,initializer=Csnippet("e=0; N = N_0; step = 0;")))
 ricker <- pomp(ricker,
                rprocess=euler.sim(
                    Csnippet("double dW = rnorm(0,sqrt(dt));

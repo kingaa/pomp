@@ -144,8 +144,11 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
         snips <- c(snips,fromEstimationScale=fromEstimationScale@text)
     if (is(toEstimationScale,"Csnippet"))
         snips <- c(snips,toEstimationScale=toEstimationScale@text)
-    if (is(initializer,"Csnippet"))
+    if (is(initializer,"Csnippet")) {
+        if (length(statenames)==0)
+            stop(ep,"when ",sQuote("initializer")," is provided as a C snippet, you must also provide ",sQuote("statenames"),call.=FALSE)
         snips <- c(snips,initializer=initializer@text)
+    }
     if (length(snips)>0) {
         libname <- tryCatch(
             do.call(
@@ -351,7 +354,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
         warning(ep,"the supplied covariate covariate times ",sQuote("tcovar"),
                 " do not embrace the data times: covariates may be extrapolated",
                 call.=FALSE
-        )
+                )
 
     new(
         'pomp',
