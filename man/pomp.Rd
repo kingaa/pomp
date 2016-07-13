@@ -162,22 +162,22 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   \enumerate{
     \item C snippets must be valid C.
     They will embedded verbatim in a template file which will then be compiled by a call to \code{R CMD SHLIB}.
-    If the resulting file does not compile, an error message wil be generated.
+    If the resulting file does not compile, an error message will be generated.
     No attempt is made by \pkg{pomp} to interpret this message.
     Typically, compilation errors are due to either invalid C syntax or undeclared variables.
     \item State variables, parameters, observables, and covariates must be left undeclared in the snippet.
-    State variables and parameters must be declared in either the \code{statenames} or \code{paramnames} argument to \code{pomp}, as appropriate.
+    State variables and parameters are declared via the \code{statenames} or \code{paramnames} argument to \code{pomp}, respectively.
     Compiler errors that complain about undeclared state variables or parameters are usually due to failure to include these parameters in the appropriate vector of names.
     \item A C snippet can declare local variables.
     Be careful not to use names that match those of state variables, observables, or parameters.
-    The latter must never be declared within a snippet.
+    The latter must never be declared within a C snippet.
     \item Names of observables are determined by their names in the data.
-    They must be referred to in measurement model snippets (\code{rmeasure} or \code{dmeasure}) by those names.
-    \item If the \code{pomp} object contains a table of covariates (see \code{\link{pomp}}), then the variables in the covariate table will be available, by their names, in the context within which the snippet is executed.
+    They must be referred to in measurement model C snippets (\code{rmeasure} or \code{dmeasure}) by those names.
+    \item If the \code{pomp} object contains a table of covariates (see above), then the variables in the covariate table will be available, by their names, in the context within which the C snippet is executed.
     \item Because the dot \sQuote{.} has syntactic meaning in C, \R variables with names containing dots (\sQuote{.}) are replaced in the C codes by variable names in which all dots have been replaced by underscores (\sQuote{_}).
-    \item The header \file{R.h}, provided with \R, will be included in the generated C file, making all of the \href{http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the snippet.
+    \item The header \file{R.h}, provided with \R, will be included in the generated C file, making all of the \href{http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the C snippet.
     This makes a great many useful functions available, including all of \R's \href{https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions}{statistical distribution functions}.
-    \item The header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, provided with \pkg{pomp}, will also be included, making all of the \pkg{pomp} C API available for use in every snippet.
+    \item The header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, provided with \pkg{pomp}, will also be included, making all of the \pkg{pomp} C API available for use in every C snippet.
     Do \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view this header file.
     \item Snippets of C code passed to the \code{globals} argument of \code{pomp} will be included at the head of the generated C file.
     This can be used to declare global variables, define useful functions, and include arbitrary header files.
@@ -221,7 +221,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Again, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
     The form of \code{f} should be as above (in the discrete-time or Euler cases).
   
-    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm is available, via the \code{gillespie.sim} plug-in.
+    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} plug-in.
     In this case, furnish \preformatted{
       rprocess = gillespie.sim(rate.fun = f, v, d)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.
@@ -240,17 +240,13 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \code{d} is a binary matrix that describes the dependencies of elementary event rates on state variables:
     \code{d[i,j]} will have value 1 if event rate \code{j} must be updated as a result of a change in state variable \code{i} and 0 otherwise.
 
-    A faster, but approximate, version of the Gillepie algorithm, the so-called \dQuote{K-leap} method, is implemented in the \code{kleap.sim} plug-in.
+    A faster, but approximate, version of the Gillepie algorithm, the so-called \dQuote{K-leap} method of Cai and Xu (2007), is implemented in the \code{kleap.sim} plug-in.
     To use it, supply \preformatted{
       rprocess = kleap.sim(rate.fun, e, v, d)}
     to \code{pomp}, where \code{rate.fun}, \code{v}, and \code{d} are as above, and \code{e} gives relative error tolerances for each of the state variables.
     \code{e} should have length equal to the number of state variables.
     \code{e[i]} corresponds to row \code{i} of the \code{v} and \code{d} matrices and we must have \eqn{0\le e[i]\le 1}{0 <= e[i] <= 1}.
     The leap size, \eqn{K}, is chosen so that \eqn{K\le\max(\min(e[i]x[i]),1)}{K <= max(min(e[i]*y[i]),1)}.
-
-    The \code{gillespie.sim} and \code{kleap.sim} simulator plug-ins work differently.
-    \code{gillespie.sim} implements the exact stochastic simulation algorithm of Gillespie (1977).
-    \code{kleap.sim} implements the \dQuote{K-leap} method, an approximation due to Cai and Xu (2007).
   }
 
   \subsection{Size of time step}{
@@ -428,7 +424,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \item Within the context in which the snippet will be evaluated, only the parameters and \code{give_log} will be defined.
     \item The goal of such a snippet is computation of the prior probability density, or the log of same, at a given point in parameter space.
     This scalar value should be returned in the variable \code{lik}.
-    When \code{give_log == 1}, the user should return the log of the prior probability density.
+    When \code{give_log == 1}, \code{lik} should contain the log of the prior probability density.
     \item Hyperparameters can be included in the ordinary parameter list.
   }
 
