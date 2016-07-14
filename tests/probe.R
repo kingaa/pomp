@@ -431,4 +431,7 @@ pompExample(ou2)
 try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=2))
 try(probe(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=2))
 
+coef(ou2,c("alpha.2","alpha.4","sigma.2","sigma.3","tau")) <- 0
+ignore <- probe(ou2,probes=probe.nlar("y2",lags=1:3,powers=c(1,2,2)),nsim=100)
+
 dev.off()
