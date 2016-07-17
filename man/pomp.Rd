@@ -141,7 +141,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
 \section{Important note}{
   \strong{
     It is not typically necessary (or even feasible) to define all of the basic components for any given purpose.
-    Each algorithm makes use of only a subset of these components.
+    Each \pkg{pomp} algorithm makes use of only a subset of these components.
     Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.
   }
 }
@@ -165,14 +165,14 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     If the resulting file does not compile, an error message will be generated.
     No attempt is made by \pkg{pomp} to interpret this message.
     Typically, compilation errors are due to either invalid C syntax or undeclared variables.
-    \item State variables, parameters, observables, and covariates must be left undeclared in the snippet.
-    State variables and parameters are declared via the \code{statenames} or \code{paramnames} argument to \code{pomp}, respectively.
-    Compiler errors that complain about undeclared state variables or parameters are usually due to failure to include these parameters in the appropriate vector of names.
+    \item State variables, parameters, observables, and covariates must be left undeclared within the snippet.
+    State variables and parameters are declared via the \code{statenames} or \code{paramnames} arguments to \code{pomp}, respectively.
+    Compiler errors that complain about undeclared state variables or parameters are usually due to failure to declare these in \code{statenames} or \code{paramnames}, as appropriate.
     \item A C snippet can declare local variables.
     Be careful not to use names that match those of state variables, observables, or parameters.
     The latter must never be declared within a C snippet.
     \item Names of observables are determined by their names in the data.
-    They must be referred to in measurement model C snippets (\code{rmeasure} or \code{dmeasure}) by those names.
+    They must be referred to in measurement model C snippets (\code{rmeasure} and \code{dmeasure}) by those names.
     \item If the \code{pomp} object contains a table of covariates (see above), then the variables in the covariate table will be available, by their names, in the context within which the C snippet is executed.
     \item Because the dot \sQuote{.} has syntactic meaning in C, \R variables with names containing dots (\sQuote{.}) are replaced in the C codes by variable names in which all dots have been replaced by underscores (\sQuote{_}).
     \item The header \file{R.h}, provided with \R, will be included in the generated C file, making all of the \href{http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the C snippet.
