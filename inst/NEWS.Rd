@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.6.7}{
+  \itemize{
+    \item Replace the automatic \dQuote{verbose} setting during compilation under Windows.
+    This was dropped in version 1.6.4.3, when it no longer appeared to be necessary.
+    Apparently, it is, at least under some Windows OS/R combinations.
+  }
+}  
 \section{Changes in \pkg{pomp} version 1.6.6}{
   \itemize{
     \item Fix \code{probe} bug introduced in version 1.6.5.9.
