@@ -6,7 +6,7 @@ registerDoMPI(cl)
 
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 library(pomp)
-stopifnot(packageVersion("pomp")>="1.4.9.1")
+stopifnot(packageVersion("pomp")>="1.6")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -58,7 +58,7 @@ parus.dat <- read.csv(text="
 ggplot(data=parus.dat,mapping=aes(x=year,y=P))+
   geom_line()+geom_point()+
   expand_limits(y=0)+
-  theme_classic()
+  theme_bw()
 
 ## ----logistic-step-fun---------------------------------------------------
 step.fun <- Csnippet("
@@ -79,7 +79,7 @@ melt(simStates) %>%
   dcast(rep+time~variable) %>%
   ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
   geom_line()+guides(color=FALSE)+
-  theme_classic()
+  theme_bw()
 
 ## ----logistic-rmeasure---------------------------------------------------
 rmeas <- Csnippet("
