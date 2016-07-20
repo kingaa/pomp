@@ -198,9 +198,9 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
       int *sidx, *pidx, *cidx;
       pomp_skeleton *ff = (pomp_skeleton *) R_ExternalPtrAddr(fn);
       // construct state, parameter, covariate indices
-      sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames"))); nprotect++;
-      pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames"))); nprotect++;
-      cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames"))); nprotect++;
+      sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
+      pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
+      cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
 
       iterate_map_native(REAL(X),REAL(times),REAL(params),deltat,t,REAL(x0),
 			 ntimes,nvars,npars,ncovars,nzeros,nreps,
@@ -343,9 +343,9 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
     // set aside userdata
     NAT(args) = args;
     // construct index vectors
-    PROTECT(NAT(sindex) = name_index(Snames,pompfun,"statenames")); nprotect++;
-    PROTECT(NAT(pindex) = name_index(Pnames,pompfun,"paramnames")); nprotect++;
-    PROTECT(NAT(cindex) = name_index(Cnames,pompfun,"covarnames")); nprotect++;
+    PROTECT(NAT(sindex) = name_index(Snames,pompfun,"statenames","state variables")); nprotect++;
+    PROTECT(NAT(pindex) = name_index(Pnames,pompfun,"paramnames","parameters")); nprotect++;
+    PROTECT(NAT(cindex) = name_index(Cnames,pompfun,"covarnames","covariates")); nprotect++;
     // extract pointer to user-defined function
     NAT(fun) = (pomp_skeleton *) R_ExternalPtrAddr(fn);
 

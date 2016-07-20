@@ -117,9 +117,9 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     ff = (pomp_transform_fn *) R_ExternalPtrAddr(fn);
     
     if (qmat) {
-      idx = INTEGER(PROTECT(name_index(GET_ROWNAMES(GET_DIMNAMES(params)),pompfun,"paramnames"))); nprotect++;
+      idx = INTEGER(PROTECT(name_index(GET_ROWNAMES(GET_DIMNAMES(params)),pompfun,"paramnames","parameters"))); nprotect++;
     } else {
-      idx = INTEGER(PROTECT(name_index(GET_NAMES(params),pompfun,"paramnames"))); nprotect++;
+      idx = INTEGER(PROTECT(name_index(GET_NAMES(params),pompfun,"paramnames","parameters"))); nprotect++;
     }
 
     set_pomp_userdata(fcall);

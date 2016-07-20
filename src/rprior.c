@@ -119,7 +119,7 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
       fixdimnames(P,dimnms,2);
 
       // construct state, parameter, covariate, observable indices
-      pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames"))); nprotect++;
+      pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
       
       // address of native routine
       ff = (pomp_rprior *) R_ExternalPtrAddr(fn);

@@ -103,10 +103,10 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   case native:				// use native routine
 
     // construct state, parameter, covariate, observable indices
-    oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames"))); nprotect++;
-    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames"))); nprotect++;
-    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames"))); nprotect++;
-    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames"))); nprotect++;
+    oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames","observables"))); nprotect++;
+    sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
+    pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
+    cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
 
     // address of native routine
     ff = (pomp_measure_model_simulator *) R_ExternalPtrAddr(fn);

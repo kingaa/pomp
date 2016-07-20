@@ -102,19 +102,19 @@ static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
   for (k = 0; k < n; k++) {
     if (idx[k]==0) 
       errorcall(R_NilValue,"variable '%s' not found among the %s",
-	    CHARACTER_DATA(STRING_ELT(nm,k)),
-	    where);
+		CHARACTER_DATA(STRING_ELT(nm,k)),
+		where);
     idx[k] -= 1;
   }
   UNPROTECT(2);
   return index;
 }
 
-static R_INLINE SEXP name_index (SEXP names, SEXP object, const char *slot) {
+static R_INLINE SEXP name_index (SEXP names, SEXP object, const char *slot, const char *humanreadable) {
   SEXP slotnames, index;
   PROTECT(slotnames = GET_SLOT(object,install(slot)));
   if (LENGTH(slotnames) > 0) {
-    PROTECT(index = matchnames(names,slotnames,slot));
+    PROTECT(index = matchnames(names,slotnames,humanreadable));
   } else {
     PROTECT(index = NEW_INTEGER(0));
   }
