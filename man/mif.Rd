@@ -2,13 +2,14 @@
 \title{Maximum likelihood by iterated filtering}
 \docType{methods}
 \alias{mif}
+\alias{mif,ANY-method}
+\alias{mif,missing-method}
 \alias{mif,mif-method}
 \alias{mif-mif}
 \alias{mif,pfilterd.pomp-method}
 \alias{mif-pfilterd.pomp}
 \alias{mif,pomp-method}
 \alias{mif-pomp}
-\alias{continue}
 \alias{continue,mif-method}
 \alias{continue-mif}
 \alias{mif-class}

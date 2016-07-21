@@ -2,6 +2,8 @@
 \title{Simulations of a partially-observed Markov process}
 \docType{methods}
 \alias{POMP simulation}
+\alias{simulate,missing-method}
+\alias{simulate,ANY-method}
 \alias{simulate,pomp-method}
 \alias{simulate-pomp}
 \description{

@@ -2,11 +2,15 @@
 \title{Probe a partially-observed Markov process by computing summary statistics and the synthetic likelihood.}
 \alias{Probes and synthetic likelihood}
 \alias{probe}
+\alias{probe,missing-method}
+\alias{probe,ANY-method}
 \alias{probe,pomp-method}
 \alias{probe,probed.pomp-method}
 \alias{probe-pomp}
 \alias{probe-probed.pomp}
 \alias{probe.match}
+\alias{probe.match,ANY-method}
+\alias{probe.match,missing-method}
 \alias{probe.match,pomp-method}
 \alias{probe.match,probed.pomp-method}
 \alias{probe.match,probe.matched.pomp-method}
@@ -16,6 +20,8 @@
 \alias{probed.pomp-class}
 \alias{probe.matched.pomp-class}
 \alias{probe.match.objfun}
+\alias{probe.match.objfun,ANY-method}
+\alias{probe.match.objfun,missing-method}
 \alias{probe.match.objfun,pomp-method}
 \alias{probe.match.objfun,probed.pomp-method}
 \alias{probe.match.objfun-pomp}

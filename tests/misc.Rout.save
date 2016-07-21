@@ -45,3 +45,72 @@ Error : in ‘simulate’: in default 'initializer': there are no parameters wit
 > try(init.state(gompertz))
 Error : in 'init.state': user 'initializer' must return a named numeric vector
 > 
+> try(traj.match())
+Error : in ‘traj.match’: ‘object’ is a required argument
+> try(traj.match(3))
+Error : ‘traj.match’ is not defined when ‘object’ is of class ‘numeric’
+> try(traj.match.objfun())
+Error : in ‘traj.match.objfun’: ‘object’ is a required argument
+> try(traj.match.objfun(3))
+Error : ‘traj.match.objfun’ is not defined when ‘object’ is of class ‘numeric’
+> try(abc())
+Error : in ‘abc’: ‘object’ is a required argument
+> try(abc(3))
+Error : ‘abc’ is not defined when ‘object’ is of class ‘numeric’
+> try(enkf())
+Error : in ‘enkf’: ‘object’ is a required argument
+> try(enkf("3"))
+Error : ‘enkf’ is not defined when ‘object’ is of class ‘character’
+> try(eakf())
+Error : in ‘eakf’: ‘object’ is a required argument
+> try(eakf("3"))
+Error : ‘eakf’ is not defined when ‘object’ is of class ‘character’
+> try(bsmc())
+Error : in ‘bsmc’: ‘object’ is a required argument
+> try(bsmc("3"))
+Error : ‘bsmc’ is not defined when ‘object’ is of class ‘character’
+> try(bsmc2())
+Error : in ‘bsmc2’: ‘object’ is a required argument
+> try(bsmc2(3L))
+Error : ‘bsmc2’ is not defined when ‘object’ is of class ‘integer’
+> try(pfilter())
+Error : in ‘pfilter’: ‘object’ is a required argument
+> try(pfilter("bob"))
+Error : ‘pfilter’ is not defined when ‘object’ is of class ‘character’
+> try(pmcmc())
+Error : in ‘pmcmc’: ‘object’ is a required argument
+> try(pmcmc("bob"))
+Error : ‘pmcmc’ is not defined when ‘object’ is of class ‘character’
+> try(nlf())
+Error : in ‘nlf’: ‘object’ is a required argument
+> try(nlf(3L))
+Error : ‘nlf’ is not defined when ‘object’ is of class ‘integer’
+> try(mif())
+Error : in ‘mif’: ‘object’ is a required argument
+> try(mif(3L))
+Error : ‘mif’ is not defined when ‘object’ is of class ‘integer’
+> try(mif2())
+Error : in ‘mif2’: ‘object’ is a required argument
+> try(mif2(3L))
+Error : ‘mif2’ is not defined when ‘object’ is of class ‘integer’
+> try(probe(probes="harry"))
+Error : in ‘probe’: ‘object’ is a required argument
+> try(probe(33L))
+Error : ‘probe’ is not defined when ‘object’ is of class ‘integer’
+> try(probe.match())
+Error : in ‘probe.match’: ‘object’ is a required argument
+> try(probe.match(33L))
+Error : ‘probe.match’ is not defined when ‘object’ is of class ‘integer’
+> try(probe.match.objfun())
+Error : in ‘probe.match.objfun’: ‘object’ is a required argument
+> try(probe.match.objfun(33L))
+Error : ‘probe.match.objfun’ is not defined when ‘object’ is of class ‘integer’
+> try(spect())
+Error : in ‘spect’: ‘object’ is a required argument
+> try(spect(3))
+Error : ‘spect’ is not defined when ‘object’ is of class ‘numeric’
+> try(continue())
+Error : in ‘continue’: ‘object’ is a required argument
+> try(continue(44))
+Error : ‘continue’ is not defined when ‘object’ is of class ‘numeric’
+> 

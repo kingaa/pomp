@@ -4,6 +4,8 @@
 \alias{sequential Monte Carlo}
 \alias{SMC}
 \alias{pfilter}
+\alias{pfilter,ANY-method}
+\alias{pfilter,missing-method}
 \alias{pfilter,pomp-method}
 \alias{pfilter-pomp}
 \alias{pfilter,pfilterd.pomp-method}

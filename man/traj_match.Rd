@@ -3,6 +3,8 @@
 \alias{Trajectory matching}
 \alias{traj.match}
 \alias{traj.match-pomp}
+\alias{traj.match,ANY-method}
+\alias{traj.match,missing-method}
 \alias{traj.match,pomp-method}
 \alias{traj.match-traj.matched.pomp}
 \alias{traj.match,traj.matched.pomp-method}
@@ -15,6 +17,8 @@
 \alias{traj.matched.pomp-class}
 \alias{traj.match.objfun}
 \alias{traj.match.objfun-pomp}
+\alias{traj.match.objfun,ANY-method}
+\alias{traj.match.objfun,missing-method}
 \alias{traj.match.objfun,pomp-method}
 \description{
   This function attempts to match trajectories of a model's deterministic skeleton to data.

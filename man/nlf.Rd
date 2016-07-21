@@ -2,6 +2,8 @@
 \title{Parameter estimation my maximum simulated quasi-likelihood (nonlinear forecasting)}
 \alias{Nonlinear forecasting}
 \alias{nlf}
+\alias{nlf,ANY-method}
+\alias{nlf,missing-method}
 \alias{nlf,pomp-method}
 \alias{nlf-pomp}
 \alias{nlf,nlfd.pomp-method}

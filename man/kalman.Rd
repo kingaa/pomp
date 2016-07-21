@@ -3,6 +3,10 @@
 \alias{ensembe Kalman filter}
 \alias{ensemble adjustment Kalman filter}
 \alias{enkf}
+\alias{enkf,ANY-method}
+\alias{eakf,ANY-method}
+\alias{enkf,missing-method}
+\alias{eakf,missing-method}
 \alias{enkf,pomp-method}
 \alias{enkf-pomp}
 \alias{eakf}

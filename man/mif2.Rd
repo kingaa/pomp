@@ -2,12 +2,17 @@
 \title{IF2: Maximum likelihood by iterated, perturbed Bayes maps}
 \docType{methods}
 \alias{mif2}
+\alias{mif2,ANY-method}
+\alias{mif2,missing-method}
 \alias{mif2,mif2d.pomp-method}
 \alias{mif2-mif2d.pomp}
 \alias{mif2,pfilterd.pomp-method}
 \alias{mif2-pfilterd.pomp}
 \alias{mif2,pomp-method}
 \alias{mif2-pomp}
+\alias{continue}
+\alias{continue,ANY-method}
+\alias{continue,missing-method}
 \alias{continue,mif2d.pomp-method}
 \alias{continue-mif2d.pomp}
 \alias{mif2d.pomp-class}

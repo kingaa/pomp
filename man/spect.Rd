@@ -5,9 +5,13 @@
 \alias{spect}
 \alias{spect,pomp-method}
 \alias{spect-pomp}
+\alias{spect,ANY-method}
+\alias{spect,missing-method}
 \alias{spect,spect.pomp-method}
 \alias{spect-spect.pomp}
 \alias{spect.match}
+\alias{spect.match,ANY-method}
+\alias{spect.match,missing-method}
 \alias{spect.match,pomp-method}
 \alias{spect.match-pomp}
 \alias{spect.match,spect.pomp-method}

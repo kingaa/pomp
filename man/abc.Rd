@@ -5,6 +5,8 @@
 \alias{ABC}
 \alias{abc-abc}
 \alias{abc,probed.pomp-method}
+\alias{abc,ANY-method}
+\alias{abc,missing-method}
 \alias{abc-probed.pomp}
 \alias{abc,pomp-method}
 \alias{abc-pomp}

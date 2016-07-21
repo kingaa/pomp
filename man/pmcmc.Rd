@@ -2,6 +2,8 @@
 \title{The particle Markov chain Metropolis-Hastings algorithm}
 \docType{methods}
 \alias{pmcmc}
+\alias{pmcmc,missing-method}
+\alias{pmcmc,ANY-method}
 \alias{pmcmc,pmcmc-method}
 \alias{pmcmc-pmcmc}
 \alias{pmcmc,pfilterd.pomp-method}

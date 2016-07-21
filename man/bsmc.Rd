@@ -6,6 +6,10 @@
 \alias{bsmc,pomp-method}
 \alias{bsmc2}
 \alias{bsmc2-pomp}
+\alias{bsmc,ANY-method}
+\alias{bsmc2,ANY-method}
+\alias{bsmc,missing-method}
+\alias{bsmc2,missing-method}
 \alias{bsmc2,pomp-method}
 \alias{$,bsmcd.pomp-method}
 \alias{$-bsmcd.pomp}
