@@ -469,6 +469,10 @@ Error : in ‘probe’: applying probes to actual data: probe 1 returns a non-nu
 +     n <- sample(c(1,2,3),size=1)
 +     runif(n=n)})))
 Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets
+> try(probe(ricker,nsim=20,probes=list(garbage=function(x){
++     n <- if (x[12]==0) 5 else 1
++     runif(n=n)})))
+Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets
 > 
 > pompExample(ou2)
 newly created object(s):

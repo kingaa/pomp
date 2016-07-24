@@ -415,6 +415,9 @@ try(probe(ricker,nsim=20,probes=list(garbage=function(x)"A")))
 try(probe(ricker,nsim=20,probes=list(garbage=function(x){
     n <- sample(c(1,2,3),size=1)
     runif(n=n)})))
+try(probe(ricker,nsim=20,probes=list(garbage=function(x){
+    n <- if (x[12]==0) 5 else 1
+    runif(n=n)})))
 
 pompExample(ou2)
 ou2@data["y1",] <- NA

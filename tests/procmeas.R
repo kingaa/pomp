@@ -10,6 +10,7 @@ pmat <- parmat(coef(po),3)
 sims <- simulate(po,states=T,obs=T,params=pmat)
 
 dp <- dprocess(po,x=sims$states,times=time(po),params=pmat,log=T)
+try(dprocess(po,x=sims$states[,,c(1,2,4)],times=time(po)[c(1,2,4)],params=pmat))
 dm <- dmeasure(po,x=sims$states,y=obs(po),times=time(po),params=pmat,log=T)
 
 apply(dp,1,sum)

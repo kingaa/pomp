@@ -26,6 +26,9 @@ Type 'q()' to quit R.
 > try(k <- .Call(pomp:::systematic_resampling,-w))
 Error : in 'systematic_resampling': non-positive sum of weights
 > 
+> try(.Call(pomp:::probe_ccf,runif(100),runif(10),c(1,2,3),1))
+Error : 'x' and 'y' must have equal lengths
+> 
 > pompExample(euler.sir)
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 newly created object(s):

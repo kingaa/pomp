@@ -6,6 +6,8 @@ w <- runif(100)
 k <- .Call(pomp:::systematic_resampling,w)
 try(k <- .Call(pomp:::systematic_resampling,-w))
 
+try(.Call(pomp:::probe_ccf,runif(100),runif(10),c(1,2,3),1))
+
 pompExample(euler.sir)
 euler.sir %<>% pomp(initializer=NULL)
 try(simulate(euler.sir))
