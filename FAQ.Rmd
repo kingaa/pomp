@@ -425,7 +425,7 @@ If it doesn't work, consult the [installation instructions](http://kingaa.github
 
 ## Why do I get an error message "Could not compile shared-object library" when I run `pomp`?
 
-See [the preceding FAQ](#csnippet-problems).
+See [the preceding FAQ](#why-cant-i-run-the-demos-or-other-codes-that-use-the-c-snippet-facility).
 
 # Interpreting results
 
