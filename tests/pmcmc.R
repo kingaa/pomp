@@ -157,4 +157,14 @@ f8 %>%
   geom_line()+facet_grid(variable~.)+labs(color="quantile",y="value")+
   theme_bw()
 
+try(ou2 %>%
+    pomp(dprior=function (params, log, ...) {
+        if (runif(1) < 0.1) stop("oops")
+        else if (log) 0 else 1
+    }) %>%
+    pmcmc(
+        Nmcmc=50,Np=500,verbose=FALSE,
+        proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+                                 scale.start=50,shape.start=50)))
+
 dev.off()
