@@ -144,7 +144,7 @@ setMethod(
             if (length(object@PACKAGE)>0)
                 cat(", dynamically loaded from ",sQuote(object@PACKAGE),sep="")
             cat ("\n")
-        } else if (mode==pompfunmode$regNative) { # built from Csnippets
+        } else if (mode==pompfunmode$regNative) { # built from C snippets
             cat("native function ",sQuote(object@native.fun),sep="")
             if (length(object@PACKAGE)>0)
                 cat(", defined by a Csnippet",sep="")

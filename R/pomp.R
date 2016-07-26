@@ -168,7 +168,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
                 )
             ),
             error = function (e) {
-                stop("error in building shared-object library from Csnippets: ",
+                stop("error in building shared-object library from C snippets: ",
                      conditionMessage(e),call.=FALSE)
             }
         )

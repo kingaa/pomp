@@ -184,10 +184,13 @@ pompSrcDir <- function (dir) {
         dir <- file.path(tempdir(),pid)
     }
     tryCatch(
-        dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700"),
-        error = function (e) {
-            stop("cannot create cache directory ",sQuote(dir),": ",conditionMessage(e),call.=FALSE)
-        }
+    {
+        dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700")
+        stopifnot(dir.exists(dir))
+    },
+    error = function (e) {
+        stop("cannot create cache directory ",sQuote(dir),call.=FALSE)
+    }
     )
     dir
 }

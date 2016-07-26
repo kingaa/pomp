@@ -46,6 +46,16 @@ coef(po,"new") <- 3
 plot(simulate(po))
 coef(po)
 
+file.create("bob")
+try(
+    pomp(ricker,
+         rprocess=discrete.time.sim(
+             Csnippet("if (runif(0,1)<0.5) error(\"yow!\");")),
+         skeleton=map(Csnippet("error(\"yipes!\");")),
+         cdir="bob"
+         )
+    )
+file.remove("bob")
 pomp(ricker,
      rprocess=discrete.time.sim(
          Csnippet("if (runif(0,1)<0.5) error(\"yow!\");")),

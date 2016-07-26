@@ -76,6 +76,19 @@ in ‘coef<-’: name(s) ‘new’ do not refer to existing parameter(s); they a
   phi     r   N.0   e.0 sigma   new 
   1.0   3.5  10.0   0.0   0.0   3.0 
 > 
+> file.create("bob")
+[1] TRUE
+> try(
++     pomp(ricker,
++          rprocess=discrete.time.sim(
++              Csnippet("if (runif(0,1)<0.5) error(\"yow!\");")),
++          skeleton=map(Csnippet("error(\"yipes!\");")),
++          cdir="bob"
++          )
++     )
+Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot create cache directory ‘bob’
+> file.remove("bob")
+[1] TRUE
 > pomp(ricker,
 +      rprocess=discrete.time.sim(
 +          Csnippet("if (runif(0,1)<0.5) error(\"yow!\");")),
@@ -124,10 +137,10 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x10448f8>
+<environment: 0x3ac73c0>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x1a6ff78>
+<environment: 0x3a3c010>
 measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
 measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
 prior simulator, rprior = not specified
@@ -140,14 +153,14 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "N.0")])
     params
 }
-<environment: 0x1d811f0>
+<environment: 0x30565b0>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "N.0")])
     params
 }
-<environment: 0x1d811f0>
+<environment: 0x30565b0>
 parameter(s):
        r    sigma      phi      N.0      e.0 
 44.70118  0.30000 10.00000  7.00000  0.00000 
