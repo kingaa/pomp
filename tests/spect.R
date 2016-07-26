@@ -64,5 +64,23 @@ try(spect.match(spp,est=spp@est,
 try(spect.match(spp,est=spp@est,
                 weights=function(freq)ifelse(freq<0.2,1,"C")))
 
+dat <- as.data.frame(matrix(runif(60),20,3))
+names(dat) <- letters[1:3]
+dat$time <- 1:20
+pomp(dat,times='time',t0=0,
+     rprocess=euler.sim(Csnippet("
+       x = rnorm(0,1);
+       y = rnorm(0,1);
+       z = rnorm(0,1);"),delta.t=1),
+     rmeasure=Csnippet("
+       a = rnorm(x,1);
+       b = rnorm(y,1);
+       c = rnorm(z,1);"),
+     initializer=Csnippet("x = y = z = 0;"),
+     statenames=tail(letters,3),
+     params=c(dummy=1)) -> bob
+
+plot(spect(bob,kernel.width=3,nsim=500),
+     data.style=list(lwd=c(2,3),lty=2,col='red'))
 
 dev.off()
