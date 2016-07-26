@@ -7,11 +7,14 @@ output:
     number_sections: true
 ---
 
-```{r options,include=FALSE}
+```{r options,include=FALSE,cache=FALSE}
 require(knitr)
 require(pomp)
 knitr::opts_chunk$set(cache=FALSE,results="hide",echo=TRUE,fig.show="asis",
                       message=FALSE,warning=TRUE,error=TRUE)
+require(ggplot2)
+theme_set(theme_bw())
+set.seed(1810027260)
 ```
 
 # General.
@@ -139,7 +142,6 @@ Missing data are a common complication.
 For example, look at the following variant of [the SIR model describing the influenza outbreak in a boarding school](http://kingaa.github.io/sbied/stochsim/stochsim.html):
 
 ```{r}
-library(pomp)
 library(magrittr)
 library(ggplot2)
 
@@ -163,17 +165,18 @@ NA,5
 ") -> dat
 
 dat %>%
-  na.omit() %>%
   ggplot(aes(x=day, y=B)) +
   geom_line() + geom_point()
 ```
 
 Data are missing at days 0 and 5.
 
-We create a `pomp` object implementing a simple SIR process model and a binomial measurement model, as in the [original example](http://kingaa.github.io/short-course/stochsim/stochsim.html#the-boarding-school-flu-outbreak) (see also `pompExample(bsflu)`).
+We create a `pomp` object implementing a simple SIR process model and a binomial measurement model, as in the [original example](http://kingaa.github.io/short-course/stochsim/stochsim.html#the-boarding-school-flu-outbreak).
 The only difference is in the `dmeasure`:
 
 ```{r}
+library(pomp)
+
 sir_step <- Csnippet("
   double dN_SI = rbinom(S,1-exp(-Beta*I/N*dt));
   double dN_IR = rbinom(I,1-exp(-gamma*dt));
@@ -210,11 +213,13 @@ dat %>%
        ) -> sir_na
 ```
 
+In the above, to check for missing data, we use the `ISNA` macro, which is [part of **R**'s C API](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Missing-and-special-values).
 Note that the `dmeasure` returns a likelihood of 1 (log likelihood 0) for the missing data.
 [What's the probability of seeing something if you don't look?]
 When there is an observation, it returns a binomial likelihood as usual.
 
-Our simulations now include simulations of the missing data,
+Our simulations now fill in simulated values for the missing data,
+
 ```{r}
 sir_na %>%
   simulate(params=c(Beta=3,gamma=2,rho=0.9,N=2600),
@@ -233,7 +238,6 @@ library(reshape2)
 sir_na %>%
   pfilter(Np=1000,params=c(Beta=3,gamma=2,rho=0.9,N=2600)) %>%
   as.data.frame() %>%
-  subset(select=-cond.loglik) %>%
   melt(id="time") %>%
   ggplot(aes(x=time,y=value,color=variable))+
   guides(color=FALSE)+
@@ -242,12 +246,13 @@ sir_na %>%
   theme_bw()
 ```
 
-In the above particle filter computation, notice that the effective sample size (ess) is full, as it should be, when the missing data contribute no information.
+In the above particle filter computation, notice that the effective sample size (ESS) is full, as it should be, when the missing data contribute no information.
+
 
 ## I have t0 much less than t[1].  How do I deal with accumulator variables in this case?
 
 As described in the documentation (`?pomp`), **pomp** allows you to define "accumulator variables" that collect events occurring between observations.
-The example [above](#how-do-i-deal-with-missing-data) illustrates this.
+The example [above](#how-to-handle-missing-data) illustrates this.
 
 In that example, we took `t0` equal to the first observation time.
 Sometimes we want to take `t0` to be much earlier.
@@ -255,6 +260,7 @@ For example, if we wish to posit that the initial state of the unobserved Markov
 
 This is straightforward, but the presence of accumulator variables leads to a small twist.
 Let's look at the boarding-school flu example to illustrate.
+
 ```{r}
 library(pomp)
 library(magrittr)
@@ -313,7 +319,7 @@ dat %>%
        ) -> bsflu
 ```
 
-Note that, as [above](#how-do-i-deal-with-missing-data), we've allowed for the possibility of NAs in the data.
+Note that, as [above](#how-to-handle-missing-data), we've allowed for the possibility of NAs in the data.
 
 Now let's look at the data and some simulations from the model.
 
