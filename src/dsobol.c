@@ -23,7 +23,7 @@ static void dsobol (double *data, int dim, int n)
   int flag[2], taus = 0;
   int k;
   F77_CALL(insobl)(flag, &dim, &n, &taus);
-  if (!flag[0]) errorcall(R_NilValue,"dimension is not OK in 'dsobol'");
-  if (!flag[1]) errorcall(R_NilValue,"number of points requested is not OK in 'dsobol'");
+  if (!flag[0]) errorcall(R_NilValue,"dimension is too high");
+  if (!flag[1]) errorcall(R_NilValue,"too many points requested");
   for (k = 0; k < n; k++) F77_CALL(gosobl)(data + k*dim);
 }
