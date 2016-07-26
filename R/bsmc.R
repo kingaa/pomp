@@ -207,7 +207,6 @@ bsmc.internal <- function (object, params, Np, est,
         gnsi.dmeas <- FALSE
         storeForEvidence1 <- log(sum(g))
         ## sample indices -- From L&W AGM (2)
-        ##              k <- .Call(systematic_resampling,g)
         k <- sample.int(n=Np,size=Np,replace=TRUE,prob=g)
         params <- params[,k]
         m <- m[,k]
@@ -327,7 +326,6 @@ bsmc.internal <- function (object, params, Np, est,
 
         ## Matrix with samples (columns) from filtering distribution theta.t | Y.t
         if (!all.fail) {
-            ## smp <- .Call(systematic_resampling,weights)
             smp <- sample.int(n=Np,size=Np,replace=TRUE,prob=weights)
             x <- x[,smp,drop=FALSE]
             params[estind,] <- params[estind,smp,drop=FALSE]

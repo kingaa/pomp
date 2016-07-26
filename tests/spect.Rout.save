@@ -64,6 +64,9 @@ Error : in ‘spect’: ‘kernel.width’ must be specified
 > sp <- spect(ricker,kernel.width=3,nsim=100,seed=838775L)
 > invisible(summary(sp))
 > 
+> try(spect.match(ricker,nsim=100,seed=838775L,est=c("r","phi")))
+Error : in ‘spect.match’: ‘kernel.width’ must be specified
+> 
 > spp <- spect.match(sp,eval.only=TRUE)
 > invisible(summary(spp))
 > 
