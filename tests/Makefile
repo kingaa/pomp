@@ -3,11 +3,16 @@ RCMD = $(REXE) CMD
 
 SAVED = $(shell ls *.Rout.save)
 
-default: $(SAVED) clean
+default: $(SAVED) demos.Rout verbosity.Rout clean
 
 %.Rout.save: %.R
 	$(RCMD) BATCH --no-timing --no-save $*.R $*.Rout.save
+
+%.Rout: %.R
+	$(RCMD) BATCH --no-timing --no-save $*.R $*.Rout
+
 clean:
-	$(RM) *.pdf
+	$(RM) *.pdf *.Rout
+
 fresh: clean
 	$(RM) *.png
