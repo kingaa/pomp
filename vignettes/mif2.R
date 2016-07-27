@@ -25,7 +25,7 @@ gompertz %<>%
     window(start=1) %>%
     simulate(seed=340398091L)
 
-## ----gompertz-mif2,results='hide'----------------------------------------
+## ----gompertz-mif2-1,results='hide'--------------------------------------
 library(magrittr)
 library(foreach)
 library(doParallel)
@@ -33,36 +33,38 @@ registerDoParallel()
 
 estpars <- c("r","sigma","tau")
 
+## ----gompertz-mif2-2-eval,eval=TRUE,purl=TRUE,include=FALSE--------------
 bake(file="gompertz-mif2.rds",
      seed=334388458L,kind="L'Ecuyer",{
-       foreach(i=1:10,
-               .inorder=FALSE,
-               .options.multicore=list(set.seed=TRUE)
-       ) %dopar%
-       {
-         theta.guess <- theta.true
-         theta.guess[estpars] <- rlnorm(
-           n=length(estpars),
-           meanlog=log(theta.guess[estpars]),
-           sdlog=1
-         )
-         mif2(
-           gompertz,
-           Nmif=50,
-           start=theta.guess,
-           transform=TRUE,
-           rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),
-           cooling.fraction.50=0.95,
-           Np=2000
-         ) %>%
-           continue(Nmif=50,cooling.fraction=0.8) %>%
-           continue(Nmif=50,cooling.fraction=0.6) %>%
-           continue(Nmif=50,cooling.fraction=0.2) -> m1
-         ll <- replicate(n=10,logLik(pfilter(m1,Np=10000)))
-         list(mif=m1,ll=logmeanexp(ll,se=TRUE))
-       }
+         foreach(i=1:10,
+                 .inorder=FALSE,
+                 .options.multicore=list(set.seed=TRUE)
+                 ) %dopar%
+             {
+                 theta.guess <- theta.true
+                 theta.guess[estpars] <- rlnorm(
+                     n=length(estpars),
+                     meanlog=log(theta.guess[estpars]),
+                     sdlog=1
+                 )
+                 mif2(
+                     gompertz,
+                     Nmif=50,
+                     start=theta.guess,
+                     transform=TRUE,
+                     rw.sd=rw.sd(r=0.02,sigma=0.02,tau=0.05),
+                     cooling.fraction.50=0.95,
+                     Np=2000
+                 ) %>%
+                     continue(Nmif=50,cooling.fraction=0.8) %>%
+                     continue(Nmif=50,cooling.fraction=0.6) %>%
+                     continue(Nmif=50,cooling.fraction=0.2) -> m1
+                 ll <- replicate(n=10,logLik(pfilter(m1,Np=10000)))
+                 list(mif=m1,ll=logmeanexp(ll,se=TRUE))
+             } -> mf
      }) -> mf
 
+## ----gompertz-mif-3------------------------------------------------------
 lls <- sapply(mf,getElement,"ll")
 best <- which.max(sapply(mf,getElement,"ll")[1,])
 theta.mif <- coef(mf[[best]]$mif)
