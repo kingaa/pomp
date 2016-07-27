@@ -192,28 +192,28 @@ simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
                      labels=c(`FALSE`="simulation",`TRUE`="data"))+
   geom_line()
 
-## ----parus-mif-----------------------------------------------------------
+## ----parus-mif-eval,include=FALSE,eval=TRUE,purl=TRUE--------------------
 bake(file="parus-mif.rds",{
-  guesses <- sobolDesign(lower=c(r=0,K=100,sigma=0,N.0=200),
-                         upper=c(r=5,K=600,sigma=2,N.0=200),
-                         nseq=100)
-  foreach (guess=iter(guesses,"row"),.combine=rbind,
-           .options.mpi=list(seed=334065675),
-           .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% {
-             parus %>% 
-               mif2(start=unlist(guess),Nmif=50,Np=1000,transform=TRUE,
-                    cooling.fraction.50=0.8,cooling.type="geometric",
-                    rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02)) %>%
-               mif2() -> mf
-             ll <- logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
-             data.frame(loglik=ll[1],loglik.se=ll[2],as.list(coef(mf)))
-           }
+    guesses <- sobolDesign(lower=c(r=0,K=100,sigma=0,N.0=200),
+                           upper=c(r=5,K=600,sigma=2,N.0=200),
+                           nseq=100)
+    foreach (guess=iter(guesses,"row"),.combine=rbind,
+             .options.mpi=list(seed=334065675),
+             .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% {
+                 parus %>% 
+                     mif2(start=unlist(guess),Nmif=50,Np=1000,transform=TRUE,
+                          cooling.fraction.50=0.8,cooling.type="geometric",
+                          rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02)) %>%
+                     mif2() -> mf
+                 ll <- logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
+                 data.frame(loglik=ll[1],loglik.se=ll[2],as.list(coef(mf)))
+             } -> mles
 }) -> mles
 
 ## ----plot-mles-----------------------------------------------------------
 pairs(~loglik+r+K+sigma,data=mles)
 
-## ----parus-profile-------------------------------------------------------
+## ----parus-profile1------------------------------------------------------
 profileDesign(
   r=seq(from=0.1,to=5,length=21),
   lower=c(K=100,sigma=0.01,N.0=200),upper=c(K=600,sigma=0.2,N.0=200),
@@ -222,31 +222,33 @@ profileDesign(
 dim(pd)
 pairs(~r+K+sigma+N.0,data=pd)
 
+## ----parus-profile-eval,include=FALSE,purl=TRUE,eval=TRUE----------------
 bake("parus-profile.rds",{
-  foreach (p=iter(pd,"row"),
-           .combine=rbind,
-           .errorhandling="remove",
-           .packages=c("pomp","magrittr","reshape2","plyr"),
-           .inorder=FALSE,
-           .options.mpi=list(seed=1680158025)
-  ) %dopar% {
-    parus %>% 
-      mif2(start=unlist(p),Nmif=50,Np=1000,transform=TRUE,
-           cooling.fraction.50=0.8,cooling.type="geometric",
-           rw.sd=rw.sd(K=0.02,sigma=0.02)) %>%
-      mif2() -> mf
-    
-    pf <- replicate(5,pfilter(mf,Np=1000))  ## independent particle filters
-    ll <- sapply(pf,logLik)
-    ll <- logmeanexp(ll,se=TRUE)
-    nfail <- sapply(pf,getElement,"nfail")  ## number of filtering failures
-    
-    data.frame(as.list(coef(mf)),
-               loglik = ll[1],
-               loglik.se = ll[2],
-               nfail.min = min(nfail),
-               nfail.max = max(nfail))
-  } %>% arrange(r,-loglik)
+    foreach (p=iter(pd,"row"),
+             .combine=rbind,
+             .errorhandling="remove",
+             .packages=c("pomp","magrittr","reshape2","plyr"),
+             .inorder=FALSE,
+             .options.mpi=list(seed=1680158025)
+             ) %dopar%
+        {
+            parus %>% 
+                mif2(start=unlist(p),Nmif=50,Np=1000,transform=TRUE,
+                     cooling.fraction.50=0.8,cooling.type="geometric",
+                     rw.sd=rw.sd(K=0.02,sigma=0.02)) %>%
+                mif2() -> mf
+            
+            pf <- replicate(5,pfilter(mf,Np=1000))  ## independent particle filters
+            ll <- sapply(pf,logLik)
+            ll <- logmeanexp(ll,se=TRUE)
+            nfail <- sapply(pf,getElement,"nfail")  ## number of filtering failures
+            
+            data.frame(as.list(coef(mf)),
+                       loglik = ll[1],
+                       loglik.se = ll[2],
+                       nfail.min = min(nfail),
+                       nfail.max = max(nfail))
+        } %>% arrange(r,-loglik) -> r_prof
 }) -> r_prof
 
 ## ----parus-profile-plot--------------------------------------------------
@@ -272,21 +274,21 @@ parus %<>%
     lik = (give_log) ? lik : exp(lik);
   "),paramnames=c("r","K","sigma"))
 
-## ----parus-pmcmc---------------------------------------------------------
+## ----parus-pmcmc-eval,eval=TRUE,purl=TRUE,include=FALSE------------------
 bake(file="parus-pmcmc.rds",{
-  r_prof %>% ddply(~r,subset,loglik==max(loglik)) %>%
-    subset(K > 100 & K < 600 & r < 5 & sigma < 2,
-           select=-c(loglik,loglik.se)) -> starts
-  foreach (start=iter(starts,"row"),.combine=c,
-           .options.mpi=list(seed=23781975),
-           .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% 
-           {
-             parus %>%
-               pmcmc(Nmcmc=2000,Np=200,start=unlist(start),
-                     proposal=mvn.rw.adaptive(rw.sd=c(r=0.1,K=100,sigma=0.1),
-                                              scale.start=100,shape.start=100)) -> chain
-             chain %>% pmcmc(Nmcmc=10000,proposal=mvn.rw(covmat(chain)))
-           }
+    r_prof %>% ddply(~r,subset,loglik==max(loglik)) %>%
+        subset(K > 100 & K < 600 & r < 5 & sigma < 2,
+               select=-c(loglik,loglik.se)) -> starts
+    foreach (start=iter(starts,"row"),.combine=c,
+             .options.mpi=list(seed=23781975),
+             .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% 
+        {
+            parus %>%
+                pmcmc(Nmcmc=2000,Np=200,start=unlist(start),
+                      proposal=mvn.rw.adaptive(rw.sd=c(r=0.1,K=100,sigma=0.1),
+                                               scale.start=100,shape.start=100)) -> chain
+            chain %>% pmcmc(Nmcmc=10000,proposal=mvn.rw(covmat(chain)))
+        } -> chains
 }) -> chains
 
 ## ----pmcmc-diagnostics---------------------------------------------------

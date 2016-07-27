@@ -491,22 +491,25 @@ simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
 
 Iterated filtering [@Ionides2015; @Ionides2006] is a method for maximizing the likelihood by repeatedly applying a particle filter.  
 The following codes apply the IF2 algorithm [@Ionides2015].
-```{r parus-mif}
-bake(file="parus-mif.rds",{
-  guesses <- sobolDesign(lower=c(r=0,K=100,sigma=0,N.0=200),
-                         upper=c(r=5,K=600,sigma=2,N.0=200),
-                         nseq=100)
-  foreach (guess=iter(guesses,"row"),.combine=rbind,
-           .options.mpi=list(seed=334065675),
-           .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% {
+```{r parus-mif,purl=FALSE,eval=FALSE}
+guesses <- sobolDesign(lower=c(r=0,K=100,sigma=0,N.0=200),
+                       upper=c(r=5,K=600,sigma=2,N.0=200),
+                       nseq=100)
+foreach (guess=iter(guesses,"row"),.combine=rbind,
+         .options.mpi=list(seed=334065675),
+         .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% {
              parus %>% 
-               mif2(start=unlist(guess),Nmif=50,Np=1000,transform=TRUE,
-                    cooling.fraction.50=0.8,cooling.type="geometric",
-                    rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02)) %>%
-               mif2() -> mf
+                 mif2(start=unlist(guess),Nmif=50,Np=1000,transform=TRUE,
+                      cooling.fraction.50=0.8,cooling.type="geometric",
+                      rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02)) %>%
+                 mif2() -> mf
              ll <- logmeanexp(replicate(5,logLik(pfilter(mf))),se=TRUE)
              data.frame(loglik=ll[1],loglik.se=ll[2],as.list(coef(mf)))
-           }
+         } -> mles
+```
+```{r parus-mif-eval,include=FALSE,eval=TRUE,purl=TRUE}
+bake(file="parus-mif.rds",{
+    <<parus-mif>>
 }) -> mles
 ```
 In the above, we first use `sobolDesign` to construct a Latin hypercube design for the "starting points", i.e., the points in parameter space where we will begin our searches for the MLE.
@@ -522,7 +525,7 @@ pairs(~loglik+r+K+sigma,data=mles)
 We can improve the quality of our estimates and obtain likelihood-ratio-test based confidence intervals by constructing *profile likelihoods*.
 In a likelihood profile, one varies the focal parameter (or subset of parameters) across some range, maximizing the likelihood at each value of the focal parameter over the remaining parameters.
 The following codes construct a likelihood profile over $r$.
-```{r parus-profile}
+```{r parus-profile1}
 profileDesign(
   r=seq(from=0.1,to=5,length=21),
   lower=c(K=100,sigma=0.01,N.0=200),upper=c(K=600,sigma=0.2,N.0=200),
@@ -530,32 +533,37 @@ profileDesign(
 ) -> pd
 dim(pd)
 pairs(~r+K+sigma+N.0,data=pd)
-
+```
+```{r parus-profile2,eval=FALSE,purl=FALSE}
+foreach (p=iter(pd,"row"),
+         .combine=rbind,
+         .errorhandling="remove",
+         .packages=c("pomp","magrittr","reshape2","plyr"),
+         .inorder=FALSE,
+         .options.mpi=list(seed=1680158025)
+         ) %dopar%
+    {
+        parus %>% 
+            mif2(start=unlist(p),Nmif=50,Np=1000,transform=TRUE,
+                 cooling.fraction.50=0.8,cooling.type="geometric",
+                 rw.sd=rw.sd(K=0.02,sigma=0.02)) %>%
+            mif2() -> mf
+        
+        pf <- replicate(5,pfilter(mf,Np=1000))  ## independent particle filters
+        ll <- sapply(pf,logLik)
+        ll <- logmeanexp(ll,se=TRUE)
+        nfail <- sapply(pf,getElement,"nfail")  ## number of filtering failures
+        
+        data.frame(as.list(coef(mf)),
+                   loglik = ll[1],
+                   loglik.se = ll[2],
+                   nfail.min = min(nfail),
+                   nfail.max = max(nfail))
+    } %>% arrange(r,-loglik) -> r_prof
+```
+```{r parus-profile-eval,include=FALSE,purl=TRUE,eval=TRUE}
 bake("parus-profile.rds",{
-  foreach (p=iter(pd,"row"),
-           .combine=rbind,
-           .errorhandling="remove",
-           .packages=c("pomp","magrittr","reshape2","plyr"),
-           .inorder=FALSE,
-           .options.mpi=list(seed=1680158025)
-  ) %dopar% {
-    parus %>% 
-      mif2(start=unlist(p),Nmif=50,Np=1000,transform=TRUE,
-           cooling.fraction.50=0.8,cooling.type="geometric",
-           rw.sd=rw.sd(K=0.02,sigma=0.02)) %>%
-      mif2() -> mf
-    
-    pf <- replicate(5,pfilter(mf,Np=1000))  ## independent particle filters
-    ll <- sapply(pf,logLik)
-    ll <- logmeanexp(ll,se=TRUE)
-    nfail <- sapply(pf,getElement,"nfail")  ## number of filtering failures
-    
-    data.frame(as.list(coef(mf)),
-               loglik = ll[1],
-               loglik.se = ll[2],
-               nfail.min = min(nfail),
-               nfail.max = max(nfail))
-  } %>% arrange(r,-loglik)
+    <<parus-profile2>>
 }) -> r_prof
 ```
 
@@ -590,21 +598,24 @@ parus %<>%
   "),paramnames=c("r","K","sigma"))
 ```
 The following codes cause parallel pMCMC chains to be run, each beginning at one of the estimates obtained using `mif2`.
-```{r parus-pmcmc}
-bake(file="parus-pmcmc.rds",{
-  r_prof %>% ddply(~r,subset,loglik==max(loglik)) %>%
+```{r parus-pmcmc,eval=FALSE,purl=FALSE}
+r_prof %>% ddply(~r,subset,loglik==max(loglik)) %>%
     subset(K > 100 & K < 600 & r < 5 & sigma < 2,
            select=-c(loglik,loglik.se)) -> starts
-  foreach (start=iter(starts,"row"),.combine=c,
-           .options.mpi=list(seed=23781975),
-           .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% 
-           {
-             parus %>%
-               pmcmc(Nmcmc=2000,Np=200,start=unlist(start),
-                     proposal=mvn.rw.adaptive(rw.sd=c(r=0.1,K=100,sigma=0.1),
-                                              scale.start=100,shape.start=100)) -> chain
-             chain %>% pmcmc(Nmcmc=10000,proposal=mvn.rw(covmat(chain)))
-           }
+foreach (start=iter(starts,"row"),.combine=c,
+         .options.mpi=list(seed=23781975),
+         .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% 
+    {
+        parus %>%
+            pmcmc(Nmcmc=2000,Np=200,start=unlist(start),
+                  proposal=mvn.rw.adaptive(rw.sd=c(r=0.1,K=100,sigma=0.1),
+                                           scale.start=100,shape.start=100)) -> chain
+        chain %>% pmcmc(Nmcmc=10000,proposal=mvn.rw(covmat(chain)))
+    } -> chains
+```
+```{r parus-pmcmc-eval,eval=TRUE,purl=TRUE,include=FALSE}
+bake(file="parus-pmcmc.rds",{
+    <<parus-pmcmc>>
 }) -> chains
 ```
 
