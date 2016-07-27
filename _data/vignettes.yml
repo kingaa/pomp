@@ -30,5 +30,8 @@
 - title: Frequently Asked Questions
   html: FAQ.html
 
+- title: Pimp my pomp
+  html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp
+
 - title: Package NEWS
   html: NEWS.html
