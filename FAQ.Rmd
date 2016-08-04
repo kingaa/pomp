@@ -110,7 +110,7 @@ data.frame(t=1:100,y1=NA,y2=NA) %>%
         "),
     dmeasure=Csnippet("
         lik = dnorm(y1,x1+x2,sigma1,1)+dnorm(y2,x2-x1,sigma2,1);
-        lik = (log) ? lik : exp(lik);
+        lik = (give_log) ? lik : exp(lik);
         "),
     rprocess=discrete.time.sim(
       step.fun=Csnippet("
