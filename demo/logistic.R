@@ -6,8 +6,10 @@ library(pomp)
 ## (plugin 'euler.sim') with fixed step-size
 
 po <- pomp(
-  data=rbind(obs=rep(0,1000)),
-  times=seq(0.1,by=0.1,length=1000),
+  data=data.frame(
+      N=rep(0,1000),
+      t=seq(0.1,by=0.1,length=1000)),
+  times="t",
   t0=0,
   rprocess=euler.sim(
     step.fun=function(x,t,params,delta.t,...){
@@ -36,7 +38,7 @@ po <- pomp(
       )
     }
   ),
-  measurement.model=obs~lnorm(meanlog=log(n),sdlog=log(1+tau)),
+  measurement.model=N~lnorm(meanlog=log(n),sdlog=log(1+tau)),
   skeleton=vectorfield(
     function(x,t,params,...){
       with(
@@ -58,7 +60,6 @@ traj <- trajectory(po,params=params,as.data.frame=TRUE)
 traj <- reshape(traj,dir="wide",idvar="time",timevar="traj")
 sim <- simulate(po,params=params,as.data.frame=TRUE,seed=34597368L)
 sim <- reshape(sim,dir="wide",idvar="time",timevar="sim")
-matplot(range(time(po)),range(c(traj[-1],sim[-1])),type='n',bty='l',lty=1,xlab="time",ylab="n",
-        main="simulations vs trajectories")
+matplot(range(time(po)),range(c(traj[-1],sim[-1])),type='n',bty='l',lty=1,xlab="time",ylab="n",main="simulations vs trajectories")
 matlines(traj$time,traj[-1],type='l',bty='l',lty=1,xlab="time",ylab="n")
 matlines(sim$time,sim[c("n.1","n.2")],type='l',bty='l',lty=1,xlab="time",ylab="n")
