@@ -37,7 +37,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
      measurement.model, skeleton, skeleton.type, skelmap.delta.t,
      initializer, rprior, dprior, params, covar, tcovar,
      obsnames, statenames, paramnames, covarnames, zeronames,
-     PACKAGE, fromEstimationScale, toEstimationScale, globals, cdir, cfile)
+     PACKAGE, fromEstimationScale, toEstimationScale, globals,
+     cdir, cfile, shlib.args)
 }
 \arguments{
   \item{data, times}{
@@ -121,12 +122,13 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     C code that will be included in the source for (and therefore hard-coded into) the shared-object library created when the call to \code{pomp} uses C snippets.
     If no C snippets are used, \code{globals} has no effect.
   }
-  \item{cdir, cfile}{
-    optional character.
+  \item{cdir, cfile, shlib.args}{
+    optional character variables.
     \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
     By default, this is in a temporary directory specific to the running instance of \R.
     \code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
     By default, a random filename is used.
+    The \code{shlib.args} can be used to pass command-line arguments to the \code{R CMD SHLIB} call that will compile the C snippets.
   }
   \item{\dots}{
     Any additional arguments given to \code{pomp} will be made available to each of the basic components.

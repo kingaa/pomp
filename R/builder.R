@@ -3,7 +3,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
                           rmeasure, dmeasure, step.fn, skeleton,
                           fromEstimationScale, toEstimationScale,
                           initializer,
-                          rprior, dprior, globals,
+                          rprior, dprior, globals, shlib.args = NULL,
                           verbose = getOption("verbose",FALSE))
 {
 
@@ -169,7 +169,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
     csrc <- render(csrc,name=name)
 
     tryCatch(
-        pompCompile(fname=name,direc=pompSrcDir(dir),src=csrc,verbose=verbose),
+        pompCompile(fname=name,direc=pompSrcDir(dir),src=csrc,shlib.args=shlib.args,verbose=verbose),
         error = function (e) {
             stop("in ",sQuote("pompCBuilder"),": compilation error: ",conditionMessage(e),call.=FALSE)
         }
@@ -195,7 +195,7 @@ pompSrcDir <- function (dir) {
     dir
 }
 
-pompCompile <- function (fname, direc, src, verbose) {
+pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
 
     stem <- file.path(direc,fname)
     if (.Platform$OS.type=="windows")
@@ -210,11 +210,13 @@ pompCompile <- function (fname, direc, src, verbose) {
                      Sys.getenv("PKG_CFLAGS"),
                      " -I",system.file("include",package="pomp"),"\"")
 
+    shlib.args <- as.character(shlib.args)
+
     solib <- paste0(stem,.Platform$dynlib.ext)
     if (verbose) cat("compiling",sQuote(solib),"\n")
     rv <- system2(
         command=R.home("bin/R"),
-        args=c("CMD","SHLIB","-o",solib,modelfile),
+        args=c("CMD","SHLIB","-o",solib,modelfile,shlib.args),
         env=cflags,
         stdout=if (verbose | .Platform$OS.type=="windows") "" else NULL
     )

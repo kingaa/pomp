@@ -1,5 +1,20 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.7.3}{
+  \itemize{
+    \item Add the \code{shlib.args} option to \code{pomp}, allowing arbitrary options to be passed to the compiler when C snippets are used.
+  }
+}  
+\section{Changes in \pkg{pomp} version 1.7.2}{
+  \itemize{
+    \item Modify the demos to use best practices.
+  }
+}  
+\section{Changes in \pkg{pomp} version 1.7.1}{
+  \itemize{
+    \item Improve the test suite.
+  }
+}  
 \section{Changes in \pkg{pomp} version 1.6.7}{
   \itemize{
     \item Improve the test suite and error messages.
