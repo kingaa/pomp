@@ -81,4 +81,6 @@ file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
                        full.names=TRUE))
 simulate(po) -> po
 
+plot(po,yax.flip=TRUE)
+
 dev.off()

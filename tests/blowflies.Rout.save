@@ -19,6 +19,8 @@ Type 'q()' to quit R.
 
 > library(pomp)
 > 
+> png(filename="blowflies-%02d.png",res=100)
+> 
 > set.seed(599688L)
 > 
 > pompExample(blowflies)
@@ -50,9 +52,11 @@ variable  [,1]
      e     0.0
      eps   0.0
 > x1 <- simulate(blowflies1)
+> plot(x1)
 > f1 <- pfilter(blowflies1,Np=1000)
 > logLik(f1)
 [1] -1470.151
+> 
 > 
 > init.state(blowflies2)
         rep
@@ -70,7 +74,12 @@ variable [,1]
      e      0
      eps    0
 > x2 <- simulate(blowflies2)
+> plot(x2,yax.flip=TRUE)
 > f2 <- pfilter(blowflies2,Np=1000)
 > logLik(f2)
 [1] -1474.521
+> 
+> dev.off()
+null device 
+          1 
 > 

@@ -91,7 +91,7 @@ plotpomp.internal <- function (x, y,
     on.exit(par(op))
   }
   v1 <- 1
-  v2 <- min(v1+plots.per.page,length(vars))
+  v2 <- min(v1+plots.per.page-1,length(vars))
   for (page in seq_len(n.page)) {
     vv <- vars[seq(from=v1,to=v2)]
     plotpomp(
@@ -106,7 +106,7 @@ plotpomp.internal <- function (x, y,
              ...
              )
     v1 <- v2+1
-    v2 <- min(v2+plots.per.page,length(vars))    
+    v2 <- min(v2+plots.per.page-1,length(vars))    
   }
   invisible(NULL)
 }

@@ -170,6 +170,8 @@ newly created object(s):
 [1] TRUE TRUE TRUE
 > simulate(po) -> po
 > 
+> plot(po,yax.flip=TRUE)
+> 
 > dev.off()
 null device 
           1 
