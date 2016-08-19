@@ -2,17 +2,20 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._7._3:
 
-        • Add the ‘shlib.args’ option to ‘pomp’, allowing arbitrary
+        • Fixed a bug in ‘plot’ on ‘pomp’ objects with more than 10
+          variables to plot.
+
+        • Added the ‘shlib.args’ option to ‘pomp’, allowing arbitrary
           options to be passed to the compiler when C snippets are
           used.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._7._2:
 
-        • Modify the demos to use best practices.
+        • Modified the demos to use best practices.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._7._1:
 
-        • Improve the test suite.
+        • Improved the test suite.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._6._7:
 

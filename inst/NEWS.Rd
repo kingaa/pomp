@@ -2,17 +2,18 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 1.7.3}{
   \itemize{
-    \item Add the \code{shlib.args} option to \code{pomp}, allowing arbitrary options to be passed to the compiler when C snippets are used.
+    \item Fixed a bug in \code{plot} on \code{pomp} objects with more than 10 variables to plot.
+    \item Added the \code{shlib.args} option to \code{pomp}, allowing arbitrary options to be passed to the compiler when C snippets are used.
   }
 }  
 \section{Changes in \pkg{pomp} version 1.7.2}{
   \itemize{
-    \item Modify the demos to use best practices.
+    \item Modified the demos to use best practices.
   }
 }  
 \section{Changes in \pkg{pomp} version 1.7.1}{
   \itemize{
-    \item Improve the test suite.
+    \item Improved the test suite.
   }
 }  
 \section{Changes in \pkg{pomp} version 1.6.7}{
