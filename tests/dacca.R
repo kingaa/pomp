@@ -17,10 +17,10 @@ pf2 <- pfilter(simulate(dacca2),Np=1000)
 ## to investigate the rogue crash:
 
 param.tab <- read.csv2(text='
-"";"gamma";"eps";"rho";"delta";"deltaI";"clin";"alpha";"beta.trend";"log.beta1";"log.beta2";"log.beta3";"log.beta4";"log.beta5";"log.beta6";"log.omega1";"log.omega2";"log.omega3";"log.omega4";"log.omega5";"log.omega6";"sd.beta";"tau";"S.0";"I.0";"Rs.0";"R1.0";"R2.0";"R3.0";"nbasis";"nrstage"
-"mle1";20,8;19,1;0;0,02;0,06;1;1;-0,00498;0,747;6,38;-3,44;4,23;3,33;4,55;-1,6928195214;-2,5433835795;-2,8404393891;-4,6918179927;-8,4779724783;-4,3900588064;3,13;0,23;0,621;0,378;0;0,000843;0,000972;1,16e-07;6;3
-"box_min";10;0,2;0;0,02;0,03;1;1;-0,01;-4;0;-4;0;0;0;-10;-10;-10;-10;-10;-10;1;0,1;0;0;0;0;0;0;6;3
-"box_max";40;30;0;0,02;0,6;1;1;0;4;8;4;8;8;8;0;0;0;0;0;0;5;0,5;1;1;0;1;1;1;6;3
+"";"gamma";"eps";"rho";"delta";"deltaI";"clin";"alpha";"beta_trend";"logbeta1";"logbeta2";"logbeta3";"logbeta4";"logbeta5";"logbeta6";"logomega1";"logomega2";"logomega3";"logomega4";"logomega5";"logomega6";"sd_beta";"tau";"S_0";"I_0";"Y_0";"R1_0";"R2_0";"R3_0"
+"mle1";20,8;19,1;0;0,02;0,06;1;1;-0,00498;0,747;6,38;-3,44;4,23;3,33;4,55;-1,6928195214;-2,5433835795;-2,8404393891;-4,6918179927;-8,4779724783;-4,3900588064;3,13;0,23;0,621;0,378;0;0,000843;0,000972;1,16e-07
+"box_min";10;0,2;0;0,02;0,03;1;1;-0,01;-4;0;-4;0;0;0;-10;-10;-10;-10;-10;-10;1;0,1;0;0;0;0;0;0
+"box_max";40;30;0;0,02;0,6;1;1;0;4;8;4;8;8;8;0;0;0;0;0;0;5;0,5;1;1;0;1;1;1
 ',
                        row.names=1
                        )
@@ -46,14 +46,14 @@ m7 <- mif2(dacca,
            Np=100,
            rw.sd=rw.sd(
                gamma=0.1, eps=0.1, deltaI=0.1,
-               beta.trend=0.1,
-               log.beta1=0.1, log.beta2=0.1, log.beta3=0.1,
-               log.beta4=0.1, log.beta5=0.1, log.beta6=0.1,
-               log.omega1=0.1, log.omega2=0.1, log.omega3=0.1,
-               log.omega4=0.1, log.omega5=0.1, log.omega6=0.1,
-               sd.beta=0.1, tau=0.1,
-               S.0=ivp(0.2), I.0=ivp(0.2), R1.0=ivp(0.2),
-               R2.0=ivp(0.2), R3.0=ivp(0.2)
+               beta_trend=0.1,
+               logbeta1=0.1, logbeta2=0.1, logbeta3=0.1,
+               logbeta4=0.1, logbeta5=0.1, logbeta6=0.1,
+               logomega1=0.1, logomega2=0.1, logomega3=0.1,
+               logomega4=0.1, logomega5=0.1, logomega6=0.1,
+               sd_beta=0.1, tau=0.1,
+               S_0=ivp(0.2), I_0=ivp(0.2), R1_0=ivp(0.2),
+               R2_0=ivp(0.2), R3_0=ivp(0.2)
            ),
            cooling.type="geometric",
            cooling.fraction.50=sqrt(0.1),
@@ -69,14 +69,14 @@ m1 <- mif2(dacca,
            start=th.draw,
            rw.sd=rw.sd(
                gamma=0.1, eps=0.1, deltaI=0.1,
-               beta.trend=0.1,
-               log.beta1=0.1, log.beta2=0.1, log.beta3=0.1,
-               log.beta4=0.1, log.beta5=0.1, log.beta6=0.1,
-               log.omega1=0.1, log.omega2=0.1, log.omega3=0.1,
-               log.omega4=0.1, log.omega5=0.1, log.omega6=0.1,
-               sd.beta=0.1, tau=0.1,
-               S.0=ivp(0.2), I.0=ivp(0.2), R1.0=ivp(0.2),
-               R2.0=ivp(0.2), R3.0=ivp(0.2)
+               beta_trend=0.1,
+               logbeta1=0.1, logbeta2=0.1, logbeta3=0.1,
+               logbeta4=0.1, logbeta5=0.1, logbeta6=0.1,
+               logomega1=0.1, logomega2=0.1, logomega3=0.1,
+               logomega4=0.1, logomega5=0.1, logomega6=0.1,
+               sd_beta=0.1, tau=0.1,
+               S_0=ivp(0.2), I_0=ivp(0.2), R1_0=ivp(0.2),
+               R2_0=ivp(0.2), R3_0=ivp(0.2)
            ),
            cooling.type="geometric",
            cooling.fraction.50=sqrt(0.1),

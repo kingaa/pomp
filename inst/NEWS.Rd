@@ -3,6 +3,7 @@
 \section{Changes in \pkg{pomp} version 1.7.3}{
   \itemize{
     \item Fixed a bug in \code{plot} on \code{pomp} objects with more than 10 variables to plot.
+    \item Modified the \dQuote{dacca} example to use C snippets.
     \item Added the \code{shlib.args} option to \code{pomp}, allowing arbitrary options to be passed to the compiler when C snippets are used.
   }
 }  

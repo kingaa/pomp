@@ -10,15 +10,17 @@
 
 library(pomp)
 
+nrstage <- 3L
+nbasis <- 6L
+
 mle <- c(
          gamma=20.8,eps=19.1,rho=0,
          delta=0.02, deltaI=0.06, clin=1, alpha=1,
-         beta.trend=-0.00498,
-         log.beta1=0.747, log.beta2=6.38, log.beta3=-3.44, log.beta4=4.23, log.beta5=3.33, log.beta6=4.55,
-         log.omega1=log(0.184), log.omega2=log(0.0786), log.omega3=log(0.0584), log.omega4=log(0.00917), log.omega5=log(0.000208), log.omega6=log(0.0124),
-         sd.beta=3.13, tau=0.23,
-         S.0=0.621, I.0=0.378, Rs.0=0, R1.0=0.000843, R2.0=0.000972, R3.0=1.16e-07,
-         nbasis=6, nrstage=3
+         beta_trend=-0.00498,
+         logbeta1=0.747, logbeta2=6.38, logbeta3=-3.44, logbeta4=4.23, logbeta5=3.33, logbeta6=4.55,
+         logomega1=log(0.184), logomega2=log(0.0786), logomega3=log(0.0584), logomega4=log(0.00917), logomega5=log(0.000208), logomega6=log(0.0124),
+         sd_beta=3.13, tau=0.23,
+         S_0=0.621, I_0=0.378, Y_0=0, R1_0=0.000843, R2_0=0.000972, R3_0=1.16e-07
          )
 
 census <- data.frame(
@@ -88,55 +90,189 @@ cholera <- data.frame(
                       )
 
 covar.dt <- 0.01
-nbasis <- as.integer(mle["nbasis"])
-nrstage <- as.integer(mle["nrstage"])
 
 t0 <- with(cholera,2*time[1]-time[2])
 tcovar <- seq(from=t0,to=max(cholera$time)+2/12,by=covar.dt)
 covartable <- data.frame(
                          time=tcovar,
-                         seas=periodic.bspline.basis(tcovar-1/12,nbasis=nbasis,degree=3,period=1),
+                         periodic.bspline.basis(tcovar-1/12,nbasis=nbasis,degree=3,period=1,names="seas%d"),
                          pop=predict(smooth.spline(x=census$year,y=census$census),x=tcovar)$y,
                          dpopdt=predict(smooth.spline(x=census$year,y=census$census),x=tcovar,deriv=1)$y,
                          trend=tcovar-mean(tcovar)
                          )
+
+to_est <- Csnippet("
+  Ttau = log(tau);
+  Tgamma = log(gamma);
+  Teps = log(eps);
+  Tdelta = log(delta);
+  TdeltaI = log(deltaI);
+  Tsd_beta = log(sd_beta);
+  Talpha = log(alpha);
+  Trho = log(rho);
+  Tclin = logit(clin);
+  to_log_barycentric(&TS_0,&S_0,nrstage+3);
+")
+ 
+from_est <- Csnippet("
+  Ttau = exp(tau);
+  Tgamma = exp(gamma);
+  Teps = exp(eps);
+  Tdelta = exp(delta);
+  TdeltaI = exp(deltaI);
+  Tsd_beta = exp(sd_beta);
+  Talpha = exp(alpha);
+  Trho = exp(rho);
+  Tclin = expit(clin);
+  from_log_barycentric(&TS_0,&S_0,nrstage+3);
+")
+
+rinit <- Csnippet("
+  int k;
+  double sum = S_0+I_0+Y_0;
+  double *R = &R1;
+  const double *R0 = &R1_0;
+  for (k = 0; k < nrstage; k++) sum += R0[k];
+  S = nearbyint(pop*S_0/sum);
+  I = nearbyint(pop*I_0/sum);
+  Y = nearbyint(pop*Y_0/sum);
+  for (k = 0; k < nrstage; k++) R[k] = nearbyint(pop*R0[k]/sum);
+  W = 0;
+  deaths = 0;
+  count = 0;
+")
+
+norm_rmeas <- Csnippet("
+  double v, tol = 1.0e-18;
+  v = deaths*tau;
+  if ((count > 0) || (!(R_FINITE(v)))) {
+    cholera_deaths = R_NaReal;
+  } else {
+    cholera_deaths = rnorm(deaths,v+tol);
+  }
+")
+
+norm_dmeas <- Csnippet("
+  double v, tol = 1.0e-18;
+  v = deaths*tau;
+  if ((count>0.0) || (!(R_FINITE(v)))) {
+    lik = tol;
+  } else {
+    lik = dnorm(cholera_deaths,deaths,v+tol,0)+tol;
+  }
+  if (give_log) lik = log(lik);
+")
+
+## two-path SIRS cholera model using SDEs
+## exponent (alpha) on I/n
+## only "severe" infections are infectious
+## truncation is not used
+## instead, particles with negative states are killed
+
+cholmodel_one <- Csnippet("
+  double births;
+  double infections;
+  double sdeaths;
+  double ideaths;
+  double ydeaths;
+  double rdeaths[nrstage];
+  double disease;
+  double wanings;
+  double passages[nrstage+1];
+  double effI;
+  double neps;
+  double beta;
+  double omega;
+  double dw;
+  double *pt;
+  int j;
+
+  if (count != 0.0) return;
+
+  neps = eps*nrstage;
+
+  beta = exp(dot_product(nbasis,&seas1,&logbeta1)+beta_trend*trend);
+  omega = exp(dot_product(nbasis,&seas1,&logomega1));
+
+  dw = rnorm(0,sqrt(dt));	// white noise
+
+  effI = pow(I/pop,alpha);
+  births = dpopdt + delta*pop;	// births
+
+  passages[0] = gamma*I;	// recovery
+  ideaths = delta*I;	        // natural i deaths
+  disease = deltaI*I;	        // disease death
+  ydeaths = delta*Y;     	// natural rs deaths
+  wanings = rho*Y;		// loss of immunity
+
+  for (pt = &R1, j = 0; j < nrstage; j++, pt++) {
+    rdeaths[j] = *pt*delta;	// natural R deaths
+    passages[j+1] = *pt*neps;	// passage to the next immunity class
+  }
+
+  infections = (omega+(beta+sd_beta*dw/dt)*effI)*S; // infection
+  sdeaths = delta*S;	        // natural S deaths
+
+  S += (births - infections - sdeaths + passages[nrstage] + wanings)*dt;
+  I += (clin*infections - disease - ideaths - passages[0])*dt;
+  Y += ((1-clin)*infections - ydeaths - wanings)*dt;
+  for (pt = &R1, j = 0; j < nrstage; j++, pt++) 
+    *pt += (passages[j] - passages[j+1] - rdeaths[j])*dt;
+  deaths += disease*dt;		// cumulative deaths due to disease
+  W += dw;
+
+  // check for violations of positivity constraints
+  // nonzero 'count' variable signals violation
+  if (S < 0.0) {
+    S = 0.0; I = 0.0; Y = 0.0; 
+    count += 1; 
+  }
+  if (I < 0.0) {
+    I = 0.0; S = 0.0; 
+    count += 1e3; 
+  }
+  if (Y < 0.0) { 
+    Y = 0.0; S = 0.0; 
+    count += 1e6; 
+  }
+  if (deaths < 0.0) { 
+    deaths = 0.0; 
+    count += 1e9; 
+  }
+  for (pt = &R1, j = 0; j < nrstage-1; j++, pt++) {
+    if (*pt < 0.0) {
+      *pt = 0.0; *(pt+1) = 0.0;
+      count += 1e12; 
+    }
+  }
+  if (*pt < 0.0) {
+    *pt = 0.0; S = 0.0;
+    count += 1e12;
+  }
+")
 
 pomp(
      data=cholera,
      times='time',
      t0=t0,
      params=mle,
-     nrstage = nrstage,
+     globals = sprintf("int nrstage = %d, nbasis = %d;",nrstage,nbasis),
      rprocess = euler.sim(
-       step.fun = "_cholmodel_one",
-       PACKAGE="pomp",
+       step.fun = cholmodel_one,
        delta.t=1/240
        ),
-     dmeasure = "_cholmodel_norm_dmeasure",
-     rmeasure="_cholmodel_norm_rmeasure",
-     PACKAGE = "pomp",
+     dmeasure = norm_dmeas,
+     rmeasure=norm_rmeas,
      covar=covartable,
      tcovar='time',
-     zeronames = c("M","count"),
-     statenames = c("S","I","Rs","R1","M","W","count"),
+     zeronames = c("deaths","count"),
+     statenames = c("S","I","Y",sprintf("R%d",seq_len(nrstage)),"deaths","W","count"),
      paramnames = c("tau","gamma","eps","delta","deltaI",
-       "log.omega1","sd.beta","beta.trend","log.beta1",
-       "alpha","rho","clin","nbasis","nrstage",
-       "S.0","I.0","Rs.0","R1.0"),
-     covarnames = c("pop","dpopdt","seas.1","trend"),
-     all.state.names=c("S","I","Rs",paste("R",1:nrstage,sep=''),"M","W","count"),
-     comp.names=c("S","I","Rs",paste("R",1:nrstage,sep='')),
-     comp.ic.names=c("S.0","I.0","Rs.0",paste("R",1:nrstage,".0",sep='')),
-     fromEstimationScale="_cholmodel_trans",
-     toEstimationScale="_cholmodel_untrans",
-     initializer = function (params, t0, covars, nrstage, comp.ic.names, comp.names, all.state.names, ...) {
-       states <- numeric(length(all.state.names))
-       names(states) <- all.state.names
-       ## translate fractions into initial conditions
-       frac <- params[comp.ic.names]
-       states[comp.names] <- round(covars['pop']*frac/sum(frac))
-       states
-     }
+       "logomega1","sd_beta","beta_trend","logbeta1",
+       "alpha","rho","clin","S_0","I_0","Y_0","R1_0"),
+     fromEstimationScale=from_est,
+     toEstimationScale=to_est,
+     initializer=rinit
      ) -> dacca
 
 c("dacca")
