@@ -567,7 +567,9 @@ setMethod(
 
         if (missing(start)) start <- coef(object)
         if (missing(rw.sd))
-            stop(ep,sQuote("rw.sd")," must be specified",call.=FALSE)
+            stop(ep,sQuote("rw.sd")," must be specified.",call.=FALSE)
+        if (!is.numeric(rw.sd))
+            stop(ep,sQuote("rw.sd")," must be a named numeric vector.",call.=FALSE)
         if (missing(ic.lag)) {
             if (length(ivps)>0) {
                 stop(ep,sQuote("ic.lag"),

@@ -1,15 +1,20 @@
 ## MIF2 algorithm functions
 
 rw.sd <- function (...) {
-    as.list(match.call())[-1L]
+    match.call()
 }
 
 pkern.sd <- function (rw.sd, time, paramnames, enclos) {
+    if (is.matrix(rw.sd)) return(rw.sd)
+    if (is.call(rw.sd)) rw.sd <- as.list(rw.sd)[-1L]
+    if (is.null(names(rw.sd)) | any(names(rw.sd)==""))
+        stop("in ",sQuote("rw.sd"),": parameters must be referenced by name.",
+             call.=FALSE)
     if (!all(names(rw.sd) %in% paramnames)) {
         unrec <- names(rw.sd)[!names(rw.sd) %in% paramnames]
         stop("in ",sQuote("mif2"),": the following parameter(s), ",
-             "which are supposed to be estimated, are not present: ",
-             paste(sapply(unrec,sQuote),collapse=","),
+             "given random walks in ",sQuote("rw.sd"),", are not present in ",
+             sQuote("start"),": ",paste(sapply(unrec,sQuote),collapse=","),
              call.=FALSE)
     }
     ivp <- function (sd, lag = 1L) {
@@ -386,10 +391,8 @@ setMethod(
 
         if (missing(rw.sd))
             stop(ep,sQuote("rw.sd")," must be specified!",call.=FALSE)
-        if (!is.matrix(rw.sd)) {
-            rw.sd <- pkern.sd(rw.sd,time=time(object),paramnames=names(start),
-                              enclos=parent.frame())
-        }
+        rw.sd <- pkern.sd(rw.sd,time=time(object),paramnames=names(start),
+                          enclos=parent.frame())
 
         cooling.type <- match.arg(cooling.type)
 
