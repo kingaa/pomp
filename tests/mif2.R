@@ -145,4 +145,11 @@ try(gb <- mif2(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),
 
 mif2(m4,Nmif=2,cooling.type="hyperbolic",cooling.fraction.50=1) -> m6
 
+IVPRW <- 0.5
+RPRW <- 0.1
+m3 <- mif2(ou2,Nmif=2,start=guess2,Np=1000,
+           cooling.type="hyperbolic",cooling.fraction.50=0.05,
+           rw.sd=rw.sd(x1.0=ivp(IVPRW),x2.0=ivp(IVPRW),
+                       alpha.2=RPRW,alpha.3=RPRW))
+
 dev.off()
