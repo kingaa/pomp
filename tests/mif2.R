@@ -141,15 +141,34 @@ try(mif2(po,Nmif=3,Np=1000,rw.sd=rw.sd(K=5,r=Inf),cooling.fraction.50=0.5))
 
 coef(gompertz,"K") <- 10
 try(gb <- mif2(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),
-              cooling.fraction.50=0.2,transform=TRUE))
+               cooling.fraction.50=0.2,transform=TRUE))
 
 mif2(m4,Nmif=2,cooling.type="hyperbolic",cooling.fraction.50=1) -> m6
 
-IVPRW <- 0.5
-RPRW <- 0.1
-m3 <- mif2(ou2,Nmif=2,start=guess2,Np=1000,
+ep <- 0.1
+m5 <- mif2(ou2,Nmif=2,start=guess2,Np=1000,
            cooling.type="hyperbolic",cooling.fraction.50=0.05,
-           rw.sd=rw.sd(x1.0=ivp(IVPRW),x2.0=ivp(IVPRW),
-                       alpha.2=RPRW,alpha.3=RPRW))
+           rw.sd=rw.sd(x1.0=ivp(ep),x2.0=ivp(ep),alpha.2=ep,alpha.3=ep))
+stopifnot(is(m5,"mif2d.pomp"))
+
+f <- function () {
+    ep <- 0.2
+    m <- mif2(ou2,Nmif=2,start=guess2,Np=1000,
+              cooling.type="hyperbolic",cooling.fraction.50=0.05,
+              rw.sd=rw.sd(x1.0=ivp(ep),alpha.2=ep))
+    as.numeric(m@rw.sd[,1:2])
+}
+
+stopifnot(all.equal(f(),c(0.2,0.2,0.0,0.2)))
+
+rr <- rw.sd(x1.0=ivp(ep),alpha.2=ep)
+f <- function () {
+    m <- mif2(ou2,Nmif=2,start=guess2,Np=1000,
+              cooling.type="hyperbolic",cooling.fraction.50=0.05,
+              rw.sd=rr)
+    as.numeric(m@rw.sd[,1:2])
+}
+
+stopifnot(all.equal(f(),c(0.1,0.1,0.0,0.1)))
 
 dev.off()
