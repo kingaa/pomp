@@ -21,6 +21,8 @@ Type 'q()' to quit R.
 > 
 > png(filename="pomp-%02d.png",res=100)
 > 
+> set.seed(3488585L)
+> 
 > pompExample(ricker)
 newly created object(s):
  ricker 

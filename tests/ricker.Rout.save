@@ -100,7 +100,7 @@ Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yow!
 Error : in ‘pfilter’: process simulation error: in ‘discrete.time.sim’ plugin: yow!
 > try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
 Error : in ‘mif’: in ‘mif.pfilter’: process simulation error: in ‘discrete.time.sim’ plugin: yow!
-> try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
+> try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=rw.sd(r=0.1)))
 Error : in ‘mif2’: in ‘mif2.pfilter’: process simulation error: in ‘discrete.time.sim’ plugin: yow!
 > try(trajectory(po))
 Error : in ‘trajectory’: in map iterator: yipes!
@@ -137,10 +137,10 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3ac73c0>
+<environment: 0x2fa75a0>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x3a3c010>
+<environment: 0x2e4f978>
 measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
 measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
 prior simulator, rprior = not specified
@@ -153,14 +153,14 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "N.0")])
     params
 }
-<environment: 0x30565b0>
+<environment: 0x2526538>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "N.0")])
     params
 }
-<environment: 0x30565b0>
+<environment: 0x2526538>
 parameter(s):
        r    sigma      phi      N.0      e.0 
 44.70118  0.30000 10.00000  7.00000  0.00000 
@@ -184,7 +184,7 @@ Error : in ‘spect’: simulation error: in ‘simulate’: yikes!
 Error : in ‘pfilter’: error in calculation of weights: oof!
 > try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
 Error : in ‘mif’: in ‘mif.pfilter’: error in calculation of weights.oof!
-> try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
+> try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=rw.sd(r=0.1)))
 Error : in ‘mif2’: in ‘mif2.pfilter’: error in calculation of weights: oof!
 > 
 > try(

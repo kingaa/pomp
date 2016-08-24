@@ -2,6 +2,8 @@ library(pomp)
 
 png(filename="pomp-%02d.png",res=100)
 
+set.seed(3488585L)
+
 pompExample(ricker)
 y1 <- obs(simulate(ricker,seed=1066L))
 r2 <- pomp(ricker,measurement.model=y~pois(lambda=N*phi))

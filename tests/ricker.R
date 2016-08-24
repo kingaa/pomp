@@ -64,7 +64,7 @@ pomp(ricker,
 try(simulate(po))
 try(pfilter(po,Np=1000))
 try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
-try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
+try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=rw.sd(r=0.1)))
 try(trajectory(po))
 try(probe(po,probes=list(mean=probe.mean("y"))))
 try(spect(po,kernel.width=3,nsim=c(100,0)))
@@ -85,7 +85,7 @@ pomp(ricker,
      ) -> po
 try(pfilter(po,Np=1000))
 try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
-try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
+try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=rw.sd(r=0.1)))
 
 try(
     simulate(
