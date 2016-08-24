@@ -1,17 +1,15 @@
 ## MIF2 algorithm functions
 
 rw.sd <- function (...) {
-    call <- match.call()
-    attr(call,"envir") <- parent.frame()
-    call
+    new("safecall",call=match.call(),envir=parent.frame())
 }
 
 pkern.sd <- function (rw.sd, time, paramnames) {
     ep <- paste0("in ",sQuote("mif2"),": ")
     if (is.matrix(rw.sd)) return(rw.sd)
-    if (is.call(rw.sd)) {
-        enclos <- attr(rw.sd,"envir")
-        rw.sd <- as.list(rw.sd)[-1L]
+    if (is(rw.sd,"safecall")) {
+        enclos <- rw.sd@envir
+        rw.sd <- as.list(rw.sd@call)[-1L]
     } else {
         stop(ep,sQuote("rw.sd")," should be specified using the ",sQuote("rw.sd"),
              " function. See ",sQuote("?mif2"),".",call.=FALSE)
