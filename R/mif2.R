@@ -1,8 +1,6 @@
 ## MIF2 algorithm functions
 
-rw.sd <- function (...) {
-    new("safecall",call=match.call(),envir=parent.frame())
-}
+rw.sd <- safecall
 
 pkern.sd <- function (rw.sd, time, paramnames) {
     ep <- paste0("in ",sQuote("mif2"),": ")
