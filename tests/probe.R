@@ -419,6 +419,7 @@ try(probe(ricker,nsim=20,probes=list(garbage=function(x){
     n <- if (x[12]==0) 5 else 1
     runif(n=n)})))
 
+## weird cases
 pompExample(ou2)
 ou2@data["y1",] <- NA
 try(probe(ou2,probes=probe.acf("y1",lags=0:3),nsim=100))
@@ -429,6 +430,14 @@ try(probe(ou2,nsim=100,probes=function(x)runif(n=sample(c(1,2),size=1))))
 try(probe(ou2,nsim=100,probes=function(x)sample(list("a",2,3),size=1)[[1]]))
 try(probe.match(ou2,probes=probe.acf("y1",lags=0:3),nsim=100))
 try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=100))
+
+## elaborate test to trigger rare error
+nprobe <- 0
+sizes <- c(5,rep(1,100))
+try(probe(ou2,nsim=100,probes=function(x){
+    nprobe <<- nprobe+1
+    runif(n=sizes[nprobe])
+}))
 
 pompExample(ou2)
 try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=2))

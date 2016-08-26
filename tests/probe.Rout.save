@@ -474,6 +474,7 @@ Error : in ‘probe’: applying probes to simulated data: probes return differe
 +     runif(n=n)})))
 Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets
 > 
+> ## weird cases
 > pompExample(ou2)
 newly created object(s):
  ou2 
@@ -494,6 +495,15 @@ Error : in ‘probe’: applying probes to simulated data: probe 1 returns a non
 Error : in ‘probe.match.objfun’: applying probes to actual data: in ‘probe.acf’: series 1 has no data
 > try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=100))
 Error : in ‘probe.match.objfun’: applying probes to actual data: in ‘probe.ccf’: series 2 has no data
+> 
+> ## elaborate test to trigger rare error
+> nprobe <- 0
+> sizes <- c(5,rep(1,100))
+> try(probe(ou2,nsim=100,probes=function(x){
++     nprobe <<- nprobe+1
++     runif(n=sizes[nprobe])
++ }))
+Error : in ‘probe’: applying probes to simulated data: probes return different number of values on different datasets
 > 
 > pompExample(ou2)
 newly created object(s):
