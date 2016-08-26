@@ -9,6 +9,9 @@ rnames <- sprintf("n%04d",1:5000)
 try(sobolDesign(lower=setNames(runif(5000),rnames),
                 upper=setNames(runif(5000,min=-1,max=0),rnames),
                 100))
+x <- sobolDesign(lower=setNames(runif(15),head(rnames,15)),
+                 upper=setNames(runif(15,min=1,max=2),head(rnames,15)),
+                 100)
 
 ## A one-parameter profile design:
 x <- profileDesign(p=1:10,lower=c(a=0,b=0),upper=c(a=1,b=5),nprof=20)

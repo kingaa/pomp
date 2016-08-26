@@ -1,5 +1,15 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._7._5:
+
+        • Improved testing suite.
+
+        • Made ‘rw.sd’ even more robust via new ‘safecall’ class.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._7._4:
+
+        • Refactored ‘rw.sd’ for greater stability.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._7._3:
 
         • Fixed a bug in ‘plot’ on ‘pomp’ objects with more than 10

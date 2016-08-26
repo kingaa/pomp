@@ -30,6 +30,9 @@ Error : in ‘sobolDesign’: too many points requested
 +                 upper=setNames(runif(5000,min=-1,max=0),rnames),
 +                 100))
 Error : in ‘sobolDesign’: dimension is too high
+> x <- sobolDesign(lower=setNames(runif(15),head(rnames,15)),
++                  upper=setNames(runif(15,min=1,max=2),head(rnames,15)),
++                  100)
 > 
 > ## A one-parameter profile design:
 > x <- profileDesign(p=1:10,lower=c(a=0,b=0),upper=c(a=1,b=5),nprof=20)

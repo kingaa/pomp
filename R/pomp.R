@@ -53,7 +53,10 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     if (missing(statenames)) statenames <- character(0)
     if (missing(paramnames)) paramnames <- character(0)
     if (missing(zeronames)) zeronames <- character(0)
-
+    statenames <- as.character(statenames)
+    paramnames <- as.character(paramnames)
+    zeronames <- as.character(zeronames)
+    
     ## check the parameters and force them to be double-precision
     if (length(params)>0) {
         if (is.null(names(params)) || !is.numeric(params))

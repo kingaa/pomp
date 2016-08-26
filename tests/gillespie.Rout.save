@@ -22,6 +22,10 @@ Type 'q()' to quit R.
 > library(reshape2)
 > library(ggplot2)
 > 
+> set.seed(754646834L)
+> 
+> png(filename="gillespie-%02d.png",res=100)
+> 
 > c(gamma=24,mu=1/70,iota=0.1,
 +   beta1=330,beta2=410,beta3=490,
 +   beta.sd=0,
@@ -94,6 +98,22 @@ Type 'q()' to quit R.
 +     ) %>%
 +     simulate(params=params,seed=806867104L) -> gsir
 > 
+> gsir %>%
++     pomp(zeronames=NULL) %>%
++     simulate() %>%
++     plot()
+> 
+> gsir %>%
++     pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
++                                 v=Vmatrix,d=Dmatrix),
++          nbasis=3L,degree=3L,period=1.0,
++          paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
++          statenames=c("S","I","R","cases")
++          ) %>%
++     simulate() %>%
++     plot()
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+> 
 > pompExample(gillespie.sir)
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘comp.names’,‘ic.names’,‘nbasis’,‘degree’,‘period’
 newly created object(s):
@@ -108,7 +128,7 @@ newly created object(s):
 +     ggplot(aes(x=time,y=value,color=L1))+
 +     labs(color="",y="reports")+
 +     geom_line()+
-+     theme_bw()+theme(legend.position=c(0.2,0.8)) -> pl1
++     theme_bw()+theme(legend.position=c(0.2,0.8))
 > 
 > try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix),d=Dmatrix)))
 Error : in ‘pomp’: in ‘gillespie.sim’ plugin: ‘v’ and ‘d’ must be matrices.
@@ -133,7 +153,7 @@ Error : in ‘pomp’: in ‘kleap.sim’ plugin: ‘v’ and ‘d’ must be ma
 +     ggplot(aes(x=time,y=value,group=interaction(sim,L1),color=L1))+
 +     labs(color="",y="cases")+
 +     geom_line()+
-+     theme_bw()+theme(legend.position=c(0.2,0.8)) -> pl2
++     theme_bw()+theme(legend.position=c(0.2,0.8))
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) {
 +     -rate.fun(j,x,t,params,covars,...)
@@ -165,6 +185,7 @@ Error : in ‘pomp’: in ‘kleap.sim’ plugin: bad option for ‘rate.fn’ a
 > try(pomp(gsir,rprocess=kleap.sim(rate.fun="bob",e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 Error : in ‘simulate’: in ‘kleap.sim’ plugin: no such symbol bob
 > 
-> ggsave(plot=pl1,filename="gillespie-01.png",dpi=100,height=4,width=4)
-> ggsave(plot=pl2,filename="gillespie-02.png",dpi=100,height=4,width=4)
+> dev.off()
+null device 
+          1 
 > 

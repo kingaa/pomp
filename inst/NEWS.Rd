@@ -1,5 +1,16 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.7.5}{
+  \itemize{
+    \item Improved testing suite.
+    \item Made \code{rw.sd} even more robust via new \code{safecall} class.
+  }
+}  
+\section{Changes in \pkg{pomp} version 1.7.4}{
+  \itemize{
+    \item Refactored \code{rw.sd} for greater stability.
+  }
+}  
 \section{Changes in \pkg{pomp} version 1.7.3}{
   \itemize{
     \item Fixed a bug in \code{plot} on \code{pomp} objects with more than 10 variables to plot.

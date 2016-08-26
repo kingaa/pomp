@@ -3,6 +3,10 @@ library(magrittr)
 library(reshape2)
 library(ggplot2)
 
+set.seed(754646834L)
+
+png(filename="gillespie-%02d.png",res=100)
+
 c(gamma=24,mu=1/70,iota=0.1,
   beta1=330,beta2=410,beta3=490,
   beta.sd=0,
@@ -75,6 +79,21 @@ data.frame(
     ) %>%
     simulate(params=params,seed=806867104L) -> gsir
 
+gsir %>%
+    pomp(zeronames=NULL) %>%
+    simulate() %>%
+    plot()
+
+gsir %>%
+    pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
+                                v=Vmatrix,d=Dmatrix),
+         nbasis=3L,degree=3L,period=1.0,
+         paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
+         statenames=c("S","I","R","cases")
+         ) %>%
+    simulate() %>%
+    plot()
+
 pompExample(gillespie.sir)
 gsir2 <- simulate(gillespie.sir,params=coef(gsir),
                   times=time(gsir),t0=timezero(gsir),seed=806867104L)
@@ -86,7 +105,7 @@ list(R=as.data.frame(gsir),
     ggplot(aes(x=time,y=value,color=L1))+
     labs(color="",y="reports")+
     geom_line()+
-    theme_bw()+theme(legend.position=c(0.2,0.8)) -> pl1
+    theme_bw()+theme(legend.position=c(0.2,0.8))
 
 try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix),d=Dmatrix)))
 try(gsir %>% pomp(rprocess=kleap.sim(rate.fun=rate.fun,e=rep(0.1,5),v=as.numeric(Vmatrix),d=Dmatrix)))
@@ -109,7 +128,7 @@ list(exact=exact,`K leap`=kleap) %>%
     ggplot(aes(x=time,y=value,group=interaction(sim,L1),color=L1))+
     labs(color="",y="cases")+
     geom_line()+
-    theme_bw()+theme(legend.position=c(0.2,0.8)) -> pl2
+    theme_bw()+theme(legend.position=c(0.2,0.8))
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) {
     -rate.fun(j,x,t,params,covars,...)
@@ -132,5 +151,4 @@ try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix,d=Dmatrix)) %>% simula
 try(pomp(gsir,rprocess=kleap.sim(rate.fun=3,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 try(pomp(gsir,rprocess=kleap.sim(rate.fun="bob",e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 
-ggsave(plot=pl1,filename="gillespie-01.png",dpi=100,height=4,width=4)
-ggsave(plot=pl2,filename="gillespie-02.png",dpi=100,height=4,width=4)
+dev.off()
