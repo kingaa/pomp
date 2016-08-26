@@ -35,6 +35,7 @@
 \alias{[-mif2List}
 \alias{[,mif2List-method}
 \alias{rw.sd}
+\alias{ivp}
 \description{
   An improved iterated filtering algorithm for estimating the parameters of a partially-observed Markov process.
   Running \code{mif2} causes the algorithm to perform a specified number of particle-filter iterations.

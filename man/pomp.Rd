@@ -14,6 +14,8 @@
 \alias{kleap.sim}
 \alias{Csnippet}
 \alias{Csnippet-class}
+\alias{vectorfield}
+\alias{map}
 \description{
   This function constructs a \code{pomp} object,
   encoding a partially-observed Markov process model together with a uni- or multi-variate time series.
