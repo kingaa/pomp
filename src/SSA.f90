@@ -1,12 +1,13 @@
 subroutine driverSSA(fprob,nvar,nevent,npar,nreps,ntimes,kflag,&
-     xstart,times,params,xout,e,v,d,nzero,izero,istate,ipar,ncovar,&
+     xstart,times,params,xout,e,v,d,ndeps,ideps,&
+     nzero,izero,istate,ipar,ncovar,&
      icovar,lcov,mcov,tcov,cov,iflag)
   implicit integer (i-n)
   implicit double precision (a-h,o-z)
   dimension xstart(nvar,nreps), times(ntimes)
   dimension params(npar,nreps)
   dimension xout(nvar,nreps,ntimes)
-  dimension e(nvar),v(nvar,nevent),d(nvar,nevent)
+  dimension e(nvar),v(nvar,nevent),d(nvar,nevent),ideps(ndeps)
   dimension izero(nzero)
   dimension istate(nvar), ipar(npar), icovar(ncovar)
   dimension tcov(lcov), cov(lcov,mcov)
@@ -15,7 +16,7 @@ subroutine driverSSA(fprob,nvar,nevent,npar,nreps,ntimes,kflag,&
   if(iflag.ne.0)return
   do irep=1,nreps
      call SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,&
-          ntimes,kflag,xstart,times,params,xout,e,v,d,&
+          ntimes,kflag,xstart,times,params,xout,e,v,d,ndeps,ideps,&
           nzero,izero,istate,ipar,ncovar,icovar,lcov,mcov,&
           tcov,cov,iflag)
      if(iflag.eq.2)return
@@ -23,8 +24,8 @@ subroutine driverSSA(fprob,nvar,nevent,npar,nreps,ntimes,kflag,&
   return
 end subroutine driverSSA
 
-subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,&
-     ntimes,kflag,xstart,times,params,xout,e,v,d,nzero,&
+subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,ntimes,&
+     kflag,xstart,times,params,xout,e,v,d,ndeps,ideps,nzero,&
      izero,istate,ipar,ncovar,icovar,lcov,mcov,tcov,cov,iflag)
   implicit integer (i-n)
   implicit double precision (a-h,o-z)
@@ -32,7 +33,7 @@ subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,&
   dimension params(npar,nreps), par(npar)
   dimension xout(nvar,nreps,ntimes)
   dimension y(nvar),f(nevent,ntreeh),k(nevent)
-  dimension e(nvar),v(nvar,nevent),d(nvar,nevent)
+  dimension e(nvar),v(nvar,nevent),d(nvar,nevent),ideps(ndeps)
   dimension izero(nzero)
   dimension istate(nvar), ipar(npar), icovar(ncovar)
   dimension tcov(lcov), cov(lcov,mcov)
@@ -94,8 +95,8 @@ subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,&
         ! Determine kappa (most accurate but slowest method)
         !=================
         dum=10d8
-        do i=1,n
-           dum=min(e(i)*y(i),dum)
+        do i=1,ndeps
+           dum=min(e(ideps(i))*y(ideps(i)),dum)
            if(dum.le.1.0)goto 50
         enddo
 50      kappa=int(max(dum,1.0d0))

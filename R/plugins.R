@@ -245,7 +245,7 @@ setMethod(
                 error = function (e) {
                     stop(ep,conditionMessage(e),call.=FALSE)
                 }
-            )                
+            )
         }
     }
 )
@@ -327,6 +327,7 @@ setMethod(
                     e=numeric(0),
                     vmatrix=object@v,
                     dmatrix=object@d,
+                    deps=integer(0),
                     tcovar=tcovar,
                     covar=covar,
                     zeronames=zeronames,
@@ -359,6 +360,7 @@ setMethod(
                 stop(ep,conditionMessage(e),call.=FALSE)
             }
         )
+        deps <- as.integer(which(apply(object@d!=0,1,any)))
         function (xstart, times, params,
                   zeronames = character(0),
                   tcovar, covar,
@@ -375,6 +377,7 @@ setMethod(
                     e=object@e,
                     vmatrix=object@v,
                     dmatrix=object@d,
+                    deps=deps,
                     tcovar=tcovar,
                     covar=covar,
                     zeronames=zeronames,

@@ -19,8 +19,10 @@ void F77_SUB(multinomrnd)(int *N, double *p, int *ncat, int *ix) {
 
 void F77_NAME(driverssa)(_pomp_rxnrate fprob, int *nvar, int *nevent, int *npar, int *nreps, int *ntimes,
 			 int *kflag, double *xstart, double *times, double *params, double *xout,
-			 double *e, double *v, double *d, int *nzero, int *izero, int *istate,
-			 int *ipar, int *ncov, int *icov, int *lcov, int *mcov, double *tcov, double *cov, int *iflag);
+			 double *e, double *v, double *d, int *ndeps, int *ideps,
+			 int *nzero, int *izero, int *istate,
+			 int *ipar, int *ncov, int *icov, int *lcov, int *mcov,
+			 double *tcov, double *cov, int *iflag);
 
 // these global objects will pass the needed information to the user-defined function (see 'default_ssa_internal_fn')
 // each of these is allocated once, globally, and refilled many times
@@ -90,19 +92,19 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
 }
 
 SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
-		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP tcovar, SEXP covar,
+		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP deps, SEXP tcovar, SEXP covar,
 		    SEXP zeronames, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   int *dim, xdim[3];
-  int nvar, nevent, npar, nrep, ntimes;
+  int nvar, nevent, npar, nrep, ntimes, ndeps;
   int covlen, covdim;
   SEXP statenames, paramnames, covarnames;
   int nstates, nparams, ncovars;
   int nzeros = LENGTH(zeronames);
   int use_native = 0;
   SEXP X, pindex, sindex, cindex, zindex;
-  int *sidx, *pidx, *cidx, *zidx;
+  int *sidx, *pidx, *cidx, *zidx, *didx = 0;
   SEXP fn, Snames, Pnames, Cnames;
   int iflag = 0;
 
@@ -111,6 +113,9 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
   dim = INTEGER(GET_DIM(vmatrix)); nevent = dim[1];
   ntimes = LENGTH(times);
+
+  ndeps = LENGTH(deps);
+  if (ndeps > 0) didx = INTEGER(deps);
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
@@ -192,7 +197,7 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   GetRNGstate();
   F77_CALL(driverssa)(F77_SUB(reactionrate),&nvar,&nevent,&npar,&nrep,&ntimes,
   		      INTEGER(mflag),REAL(xstart),REAL(times),REAL(params),
-  		      REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),
+  		      REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),&ndeps,didx,
   		      &nzeros,zidx,sidx,pidx,&ncovars,cidx,
   		      &covlen,&covdim,REAL(tcovar),REAL(covar),&iflag);
   PutRNGstate();
