@@ -9,3 +9,5 @@ TODO\.md$
 ^\.gitignore$
 ^\.travis\.yml$
 ^codecov\.yml$
+^.*\.Rproj$
+^\.Rproj\.user$
