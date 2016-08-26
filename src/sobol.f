@@ -1050,7 +1050,7 @@ c
 
       end
 
-      subroutine gosobl(quasi, cheat)
+      subroutine gosobl(quasi)
 c
 c     this subroutine generates a new
 c     quasirandom vector with each call
@@ -1062,10 +1062,14 @@ c
 c     the user must call "insobl" before calling
 c     "gosobl".  after calling "insobl", test
 c     flag(1) and flag(2);  if either is false,
-c     do not call "gosobl".  "gosobl" checks
+c     do not call "gosobl".  
+c
+c     the original version of "gosobl" checks
 c     that the user does not make more calls
 c     than he said he would : see the comments
 c     to "insobl".
+c
+c     in this version, we do not make this check.
 c
 c     inputs:
 c       from user's calling program:
@@ -1083,7 +1087,8 @@ c
 c     find the position of the right-hand zero in count
 c
 c     .. parameters ..
-      integer maxdim,maxbit,cheat
+c      integer maxdim,maxbit,cheat
+      integer maxdim,maxbit
       parameter (maxdim=1111,maxbit=30)
 c     ..
 c     .. array arguments ..
@@ -1121,13 +1126,9 @@ c     ..
 
       end if
 c
-c     check that the user is not cheating !
+c     we no longer check that the user is not cheating !
 c
 c      if (l.gt.maxcol) stop ' too many calls on gosobl'
-      if (l.gt.maxcol) then
-         cheat = 1
-         return
-      end if
 c
 c     calculate the new components of quasi,
 c     first the numerators, then normalized
