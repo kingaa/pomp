@@ -12,10 +12,9 @@ subroutine driverSSA(fprob,nvar,nevent,npar,nreps,ntimes,kflag,&
   dimension istate(nvar), ipar(npar), icovar(ncovar)
   dimension tcov(lcov), cov(lcov,mcov)
   external fprob
-  ntreeh=1+int(log(nevent*1.0)/log(2.0)+1)
   if(iflag.ne.0)return
   do irep=1,nreps
-     call SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,&
+     call SSA(fprob,irep,nvar,nevent,npar,nreps,&
           ntimes,kflag,xstart,times,params,xout,e,v,d,ndeps,ideps,&
           nzero,izero,istate,ipar,ncovar,icovar,lcov,mcov,&
           tcov,cov,iflag)
@@ -24,7 +23,7 @@ subroutine driverSSA(fprob,nvar,nevent,npar,nreps,ntimes,kflag,&
   return
 end subroutine driverSSA
 
-subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,ntimes,&
+subroutine SSA(fprob,irep,nvar,nevent,npar,nreps,ntimes,&
      kflag,xstart,times,params,xout,e,v,d,ndeps,ideps,nzero,&
      izero,istate,ipar,ncovar,icovar,lcov,mcov,tcov,cov,iflag)
   implicit integer (i-n)
@@ -32,7 +31,7 @@ subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,ntimes,&
   dimension xstart(nvar,nreps), times(ntimes)
   dimension params(npar,nreps), par(npar)
   dimension xout(nvar,nreps,ntimes)
-  dimension y(nvar),f(nevent,ntreeh),k(nevent)
+  dimension y(nvar),f(nevent)
   dimension e(nvar),v(nvar,nevent),d(nvar,nevent),ideps(ndeps)
   dimension izero(nzero)
   dimension istate(nvar), ipar(npar), icovar(ncovar)
@@ -69,26 +68,14 @@ subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,ntimes,&
   ! Initialise propensity functions & tree
   !========================================
   do j=1,m
-     f(j,1)=fprob(j,t,y,par,istate,ipar,icovar,mcov,covars)
-  enddo
-  jdum=m
-  do itree=2,ntreeh
-     jend=int((jdum+1)/2)
-     do j=1,jend
-        if(2*j.le.jdum)then
-           f(j,itree)=f(2*j-1,itree-1)+f(2*j,itree-1)
-        else
-           f(j,itree)=f(2*j-1,itree-1)
-        endif
-     enddo
-     jdum=jend
+     f(j)=fprob(j,t,y,par,istate,ipar,icovar,mcov,covars)
   enddo
   !=====
   do while(icount.le.ntimes)
      call rchkusr
      if(kflag.eq.0)then
-        call gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,&
-             jevent,iflag,istate,ipar,ncovar,icovar,&
+        call gillespie(fprob,t,f,y,v,d,par,n,m,npar,&
+             iflag,istate,ipar,ncovar,icovar,&
              mcov,covars)
      else
         !=================
@@ -97,20 +84,20 @@ subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,ntimes,&
         dum=10d8
         do i=1,ndeps
            dum=min(e(ideps(i))*y(ideps(i)),dum)
-           if(dum.le.1.0)goto 50
+           if (dum.le.1.0) goto 50
         enddo
 50      kappa=int(max(dum,1.0d0))
         if(kappa.eq.1)then
-           call gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,&
-                jevent,iflag,istate,ipar,ncovar,icovar,&
+           call gillespie(fprob,t,f,y,v,d,par,n,m,npar,&
+                iflag,istate,ipar,ncovar,icovar,&
                 mcov,covars)
         else
-           call kleap(fprob,kappa,t,f,y,v,d,par,n,m,ntreeh,npar,&
-                k,iflag,istate,ipar,ncovar,icovar,&
+           call kleap(fprob,kappa,t,f,y,v,d,par,n,m,npar,&
+                iflag,istate,ipar,ncovar,icovar,&
                 mcov,covars)
         endif
      endif
-     if(iflag.eq.2)goto 100
+     if (iflag.eq.2) goto 100
      !
      ! Recording output at required time points
      !
@@ -140,11 +127,11 @@ subroutine SSA(fprob,irep,nvar,nevent,ntreeh,npar,nreps,ntimes,&
 100 return
 end subroutine SSA
 
-subroutine gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,jevent,&
+subroutine gillespie(fprob,t,f,y,v,d,par,n,m,npar,&
      iflag,istate,ipar,ncovar,icovar,mcov,cov)
   implicit integer (i-n)
   implicit double precision (a-h,o-z)
-  dimension y(n),f(m,ntreeh),v(n,m),d(n,m),par(npar),ichangey(n)
+  dimension y(n),f(m),v(n,m),d(n,m),par(npar),ichangey(n)
   dimension istate(n),ipar(npar),icovar(ncovar),cov(mcov)
   external unifrnd,fprob
   !=================================
@@ -155,7 +142,10 @@ subroutine gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,jevent,&
   !=========================================
   ! Determine time interval and update time
   !=========================================
-  fsum=f(1,ntreeh)
+  fsum = 0.0d0
+  do j=1,m
+     fsum = fsum + f(j)
+  enddo
   if(fsum>0.0d0)then
      iflag=0
      tstep=-log(p1)/fsum
@@ -170,29 +160,19 @@ subroutine gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,jevent,&
   !=========================================
   ! Determine event, update pops & events
   !=========================================
-  jtree=1
   temp=p2*fsum
-  do itree=ntreeh-1,1,-1
-     if(itree.eq.1)then
-        if(temp.lt.f(jtree,itree))then
-           jevent=jtree
-        else
-           jevent=jtree+1
-        endif
+  jevent = m
+  do j=1,m-1
+     if (temp.gt.f(j)) then
+        temp = temp-f(j)
      else
-        if(temp.lt.f(jtree,itree))then
-           jtree=2*jtree-1
-        else
-           temp=temp-f(jtree,itree)
-           jtree=2*jtree+1
-        endif
+        jevent = j
+        exit
      endif
   enddo
   do i=1,n
      ichangey(i)=0
-  enddo
-  do i = 1,n
-     if(v(i,jevent).ne.0)then
+     if (v(i,jevent).ne.0) then
         y(i) = y(i) + v(i,jevent)
         ichangey(i)=1
      endif
@@ -202,15 +182,8 @@ subroutine gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,jevent,&
   !
   do j=1,m
      do i=1,n
-        if(ichangey(i).ne.0.and.d(i,j).ne.0)then
-           fold=f(j,1)
-           f(j,1)=fprob(j,t,y,par,istate,ipar,icovar,mcov,cov)
-           diff=f(j,1)-fold
-           jdum=int((j+1)/2)
-           do itree=2,ntreeh
-              f(jdum,itree)=f(jdum,itree)+diff
-              jdum=int((jdum+1)/2)
-           enddo
+        if ((ichangey(i).ne.0).and.(d(i,j).ne.0)) then
+           f(j)=fprob(j,t,y,par,istate,ipar,icovar,mcov,cov)
            goto 400
         endif
      enddo
@@ -219,18 +192,21 @@ subroutine gillespie(fprob,t,f,y,v,d,par,n,m,ntreeh,npar,jevent,&
 500 return
 end subroutine gillespie
 
-subroutine kleap(fprob,kappa,t,f,y,v,d,par,n,m,ntreeh,npar,k,&
+subroutine kleap(fprob,kappa,t,f,y,v,d,par,n,m,npar,&
      iflag,istate,ipar,ncovar,icovar,mcov,cov)
   implicit integer (i-n)
   implicit double precision (a-h,o-z)
-  dimension y(n),f(m,ntreeh),p(m),v(n,m),d(n,m),par(npar)
+  dimension y(n),f(m),p(m),v(n,m),d(n,m),par(npar)
   dimension k(m),ichangey(n)
   dimension istate(n),ipar(npar),icovar(ncovar),cov(mcov)
   external gammarnd,multinomrnd,fprob
   !=========================================
   ! Determine time interval and update time
   !=========================================
-  fsum=f(1,ntreeh)
+  fsum = 0.0d0
+  do j=1,m
+     fsum = fsum + f(j)
+  enddo
   if(fsum>0.0d0)then
      iflag=0
      tstep=gammarnd(kappa,fsum)
@@ -246,7 +222,7 @@ subroutine kleap(fprob,kappa,t,f,y,v,d,par,n,m,ntreeh,npar,k,&
   ! Determine frequency of events, update pops & events
   !=====================================================
   do j=1,m
-     p(j)=f(j,1)/fsum
+     p(j)=f(j)/fsum
   enddo
   call multinomrnd(kappa,p,m,k)
   !
@@ -259,7 +235,7 @@ subroutine kleap(fprob,kappa,t,f,y,v,d,par,n,m,ntreeh,npar,k,&
      if(k(j).ne.0)then
         temp=k(j)
         do i = 1,n
-           if(v(i,j).ne.0)then
+           if (v(i,j).ne.0) then
               y(i) = y(i) + temp*v(i,j)
               ichangey(i)=1
            endif
@@ -271,15 +247,8 @@ subroutine kleap(fprob,kappa,t,f,y,v,d,par,n,m,ntreeh,npar,k,&
   !
   do j=1,m
      do i=1,n
-        if(ichangey(i).ne.0.and.d(i,j).ne.0)then
-           fold=f(j,1)
-           f(j,1)=fprob(j,t,y,par,istate,ipar,icovar,mcov,cov)
-           diff=f(j,1)-fold
-           jdum=int((j+1)/2)
-           do itree=2,ntreeh
-              f(jdum,itree)=f(jdum,itree)+diff
-              jdum=int((jdum+1)/2)
-           enddo
+        if ((ichangey(i).ne.0).and.(d(i,j).ne.0)) then
+           f(j)=fprob(j,t,y,par,istate,ipar,icovar,mcov,cov)
            goto 400
         endif
      enddo
