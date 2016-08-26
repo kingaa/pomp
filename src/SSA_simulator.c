@@ -4,22 +4,22 @@
 #include <R_ext/Constants.h>
 
 typedef double (*_pomp_rxnrate) (const int *j, const double *t, const double *x, const double *p,
-			   int *stateindex, int *parindex, int *covarindex, 
-			   int *ncovar, double *covar);
+				 int *stateindex, int *parindex, int *covarindex,
+				 int *ncovar, double *covar);
 
 double F77_SUB(unifrnd)(void) { return unif_rand(); }
-double F77_SUB(gammarnd)(int *shapep, double *rate) { 
+double F77_SUB(gammarnd)(int *shapep, double *rate) {
   double shape = (double) *shapep;
   double scale = 1.0/(*rate);
   return rgamma(shape,scale);
 }
-void F77_SUB(multinomrnd)(int *N, double *p, int *ncat, int *ix) { 
-  rmultinom(*N,p,*ncat,ix); 
+void F77_SUB(multinomrnd)(int *N, double *p, int *ncat, int *ix) {
+  rmultinom(*N,p,*ncat,ix);
 }
 
-void F77_NAME(driverssa)(_pomp_rxnrate fprob, int *nvar, int *nevent, int *npar, int *nreps, int *ntimes, 
+void F77_NAME(driverssa)(_pomp_rxnrate fprob, int *nvar, int *nevent, int *npar, int *nreps, int *ntimes,
 			 int *kflag, double *xstart, double *times, double *params, double *xout,
-			 double *e, double *v, double *d, int *nzero, int *izero, int *istate, 
+			 double *e, double *v, double *d, int *nzero, int *izero, int *istate,
 			 int *ipar, int *ncov, int *icov, int *lcov, int *mcov, double *tcov, double *cov, int *iflag);
 
 // these global objects will pass the needed information to the user-defined function (see 'default_ssa_internal_fn')
@@ -49,14 +49,14 @@ static pomp_ssa_rate_fn *ssa_internal_rxrate; // function computing reaction rat
 #define RXR     (ssa_internal_rxrate)
 
 static double F77_SUB(reactionrate) (const int *j, const double *t, const double *x, const double *p,
-				     int *stateindex, int *parindex, int *covarindex, 
+				     int *stateindex, int *parindex, int *covarindex,
 				     int *ncovar, double *covar)
 {
   return (*RXR)(*j,*t,x,p,stateindex,parindex,covarindex,*ncovar,covar);
 }
 
 static double default_ssa_rate_fn (int j, double t, const double *x, const double *p,
-				   int *stateindex, int *parindex, int *covindex, 
+				   int *stateindex, int *parindex, int *covindex,
 				   int ncovar, double *covar)
 {
   int nprotect = 0;
@@ -89,7 +89,7 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
   return rate;
 }
 
-SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params, 
+SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
 		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP tcovar, SEXP covar,
 		    SEXP zeronames, SEXP args, SEXP gnsi)
 {
@@ -201,16 +201,14 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
     unset_pomp_userdata();
   }
 
-  if (iflag == 1) 
-    errorcall(R_NilValue,"zero event rate in stochastic simulation algorithm.");
-  else if (iflag == 2) 
+  if (iflag == 2)
     errorcall(R_NilValue,"negative event rate in stochastic simulation algorithm.");
 
   UNPROTECT(nprotect);
   return X;
 }
 
-void F77_SUB(tlook) (int *length, int *width, double *tcov, double *cov, double *t, double *y) 
+void F77_SUB(tlook) (int *length, int *width, double *tcov, double *cov, double *t, double *y)
 {
   struct lookup_table tab = {*length, *width, 0, tcov, cov};
   table_lookup(&tab,*t,y);
