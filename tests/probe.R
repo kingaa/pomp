@@ -446,4 +446,21 @@ try(probe(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=2))
 coef(ou2,c("alpha.2","alpha.4","sigma.2","sigma.3","tau")) <- 0
 ignore <- probe(ou2,probes=probe.nlar("y2",lags=1:3,powers=c(1,2,2)),nsim=100)
 
+neval <- 0
+try(probe(ou2,nsim=100,
+          probes=probe.marginal("y1",transform=function(x) {
+              neval <<- neval+1
+              if (neval>1) stop("oof!")
+              else x
+          },
+          ref=obs(ou2,"y1"),diff=2,order=3)))
+neval <- 0
+try(probe(ou2,nsim=100,
+          probes=probe.nlar("y1",transform=function(x) {
+              neval <<- neval+1
+              if (neval>1) stop("urp!")
+              else x
+          },
+          lags=c(1,2,2),powers=c(1,1,2))))
+
 dev.off()
