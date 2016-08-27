@@ -75,8 +75,7 @@ subroutine SSA(fprob,irep,nvar,nevent,npar,nreps,ntimes,&
      call rchkusr
      if(kflag.eq.0)then
         call gillespie(fprob,t,f,y,v,d,par,n,m,npar,&
-             iflag,istate,ipar,ncovar,icovar,&
-             mcov,covars)
+             iflag,istate,ipar,ncovar,icovar,mcov,covars)
      else
         !=================
         ! Determine kappa (most accurate but slowest method)
@@ -89,12 +88,10 @@ subroutine SSA(fprob,irep,nvar,nevent,npar,nreps,ntimes,&
 50      kappa=int(max(dum,1.0d0))
         if(kappa.eq.1)then
            call gillespie(fprob,t,f,y,v,d,par,n,m,npar,&
-                iflag,istate,ipar,ncovar,icovar,&
-                mcov,covars)
+                iflag,istate,ipar,ncovar,icovar,mcov,covars)
         else
            call kleap(fprob,kappa,t,f,y,v,d,par,n,m,npar,&
-                iflag,istate,ipar,ncovar,icovar,&
-                mcov,covars)
+                iflag,istate,ipar,ncovar,icovar,mcov,covars)
         endif
      endif
      if (iflag.eq.2) goto 100
