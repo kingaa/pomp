@@ -360,7 +360,7 @@ setMethod(
                 stop(ep,conditionMessage(e),call.=FALSE)
             }
         )
-        deps <- as.integer(which(apply(object@d!=0,1,any)))
+        deps <- as.integer(which(apply(object@d!=0,1,any))-1)
         function (xstart, times, params,
                   zeronames = character(0),
                   tcovar, covar,
