@@ -15,8 +15,6 @@ int gillespie (pomp_ssa_rate_fn *ratefun, double *t, double *f,
   if (fsum > 0.0) {
     tstep = -log(p)/fsum;
     *t = *t+tstep;
-  } else if (fsum <0.0) {
-    return 2;
   } else {
     *t = R_PosInf;
     return 1;
@@ -44,6 +42,8 @@ int gillespie (pomp_ssa_rate_fn *ratefun, double *t, double *f,
     for (i = 0; i < nvar; i++) {
       if ((change[i] != 0) && (d[i*nvar*j] != 0)) {
         f[j] = (*ratefun)(j+1,*t,y,par,istate,ipar,icovar,mcov,cov);
+	if (f[j] < 0.0) 
+	  errorcall(R_NilValue,"'rate.fun' returns a negative rate");
         break;
       }
     }
@@ -67,8 +67,6 @@ int kleap (pomp_ssa_rate_fn *ratefun, double kappa, double *t, double *f,
   if (fsum > 0.0) {
     tstep = rgamma(kappa,1.0/fsum);
     *t = *t+tstep;
-  } else if (fsum < 0.0) {
-    return 2;
   } else {
     *t = R_PosInf;
     return 1;
@@ -94,6 +92,8 @@ int kleap (pomp_ssa_rate_fn *ratefun, double kappa, double *t, double *f,
     for (i = 0; i < nvar; i++) {
       if ((change[i] != 0) && (d[i*nvar*j] != 0)) {
         f[j] = (*ratefun)(j+1,*t,y,par,istate,ipar,icovar,mcov,cov);
+	if (f[j] < 0.0) 
+	  errorcall(R_NilValue,"'rate.fun' returns a negative rate");
         break;
       }
     }
@@ -101,14 +101,14 @@ int kleap (pomp_ssa_rate_fn *ratefun, double kappa, double *t, double *f,
   return 0;
 }
 
-int SSA (pomp_ssa_rate_fn *ratefun, int irep,
-         int nvar, int nevent, int npar, int nrep, int ntimes,
-         int method,
-         double *xstart, const double *times, const double *params, double *xout,
-         const double *e, const double *v, const double *d,
-         int ndeps, const int *ideps, int nzero, const int *izero,
-         const int *istate, const int *ipar, int ncovar, const int *icovar,
-         int lcov, int mcov, double *tcov, double *cov) {
+void SSA (pomp_ssa_rate_fn *ratefun, int irep,
+	  int nvar, int nevent, int npar, int nrep, int ntimes,
+	  int method,
+	  double *xstart, const double *times, const double *params, double *xout,
+	  const double *e, const double *v, const double *d,
+	  int ndeps, const int *ideps, int nzero, const int *izero,
+	  const int *istate, const int *ipar, int ncovar, const int *icovar,
+	  int lcov, int mcov, double *tcov, double *cov) {
   int flag = 0;
   double t = times[0];
   double tmax = times[ntimes-1];
@@ -125,8 +125,11 @@ int SSA (pomp_ssa_rate_fn *ratefun, int irep,
   // Initialize the covariate vector
   if (mcov > 0) table_lookup(&tab,t,covars);
   // Initialise propensity functions & tree
-  for (j = 0; j < nevent; j++)
+  for (j = 0; j < nevent; j++) {
     f[j] = ratefun(j+1,t,y,par,istate,ipar,icovar,mcov,covars);
+    if (f[j] < 0.0) 
+      errorcall(R_NilValue,"'rate.fun' returns a negative rate");
+  }
   int icount = 1;
   while (icount < ntimes) {
     R_CheckUserInterrupt();
@@ -149,8 +152,6 @@ int SSA (pomp_ssa_rate_fn *ratefun, int irep,
         flag = kleap(ratefun,kappa,&t,f,y,v,d,par,nvar,nevent,npar,istate,ipar,ncovar,icovar,mcov,covars);
       }
     }
-    // Error encountered, return:
-    if (flag > 1) return flag;
     // Record output at required time points
     while ((icount < ntimes) && (t >= times[icount])) {
       for (i = 0; i < nvar; i++)
@@ -158,11 +159,10 @@ int SSA (pomp_ssa_rate_fn *ratefun, int irep,
       // Set appropriate states to zero
       for (i = 0; i < nzero; i++) y[izero[i]] =0.0;
       // Recompute if zero event-rate encountered
-      if (flag == 1) t = times[icount];
+      if (flag) t = times[icount];
       icount++;
     }
 
     if ((mcov > 0) && (t <= tmax)) table_lookup(&tab,t,covars);
   }
-  return flag;
 }

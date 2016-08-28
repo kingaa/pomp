@@ -63,14 +63,14 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
   return rate;
 }
 
-int SSA (pomp_ssa_rate_fn *ratefun, int irep,
-         int nvar, int nevent, int npar, int nrep, int ntimes,
-         int method,
-         double *xstart, double *times, double *params, double *xout,
-         double *e, double *v, double *d,
-         int ndeps, int *ideps, int nzero, int *izero,
-         int *istate, int *ipar, int ncovar, int *icovar,
-         int lcov, int mcov, double *tcov, double *cov);
+void SSA (pomp_ssa_rate_fn *ratefun, int irep,
+	  int nvar, int nevent, int npar, int nrep, int ntimes,
+	  int method,
+	  double *xstart, double *times, double *params, double *xout,
+	  double *e, double *v, double *d,
+	  int ndeps, int *ideps, int nzero, int *izero,
+	  int *istate, int *ipar, int ncovar, int *icovar,
+	  int lcov, int mcov, double *tcov, double *cov);
 
 SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
 		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP deps, SEXP tcovar, SEXP covar,
@@ -180,12 +180,11 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   {
     int i;
     for (i = 0; i < nrep; i++) {
-      flag = SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
-                 method,REAL(xstart),REAL(times),REAL(params),
-                 REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),ndeps,didx,
-                 nzeros,zidx,sidx,pidx,ncovars,cidx,covlen,covdim,
-                 REAL(tcovar),REAL(covar));
-      if (flag > 1) break;
+      SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
+	  method,REAL(xstart),REAL(times),REAL(params),
+	  REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),ndeps,didx,
+	  nzeros,zidx,sidx,pidx,ncovars,cidx,covlen,covdim,
+	  REAL(tcovar),REAL(covar));
     }
   }
   PutRNGstate();
@@ -193,9 +192,6 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   if (use_native) {
     unset_pomp_userdata();
   }
-
-  if (flag == 2)
-    errorcall(R_NilValue,"negative event rate in stochastic simulation algorithm.");
 
   UNPROTECT(nprotect);
   return X;
