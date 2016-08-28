@@ -7,6 +7,55 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 1.7.7</h3>
+
+
+<ul>
+<li><p> The stochastic simulation algorithms underlying the Gillespie and K-leap methods (<code>gillespie.sim</code>, <code>kleap.sim</code>) have been refactored in C.
+In addition, errors due to accumulation of round-off error have been repaired.
+The result will be more accurate, but somewhat slower when there are a very large number of reactions.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 1.7.6</h3>
+
+
+<ul>
+<li><p> In Sobol' sequence generation (<code>sobolDesign</code>, <code>profileDesign</code>), we now use the suggestion of Joe &amp; Kuo (2003) to choose a better sequence start point.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 1.7.5</h3>
+
+
+<ul>
+<li><p> The generation of Sobol' sequences (<code>sobolDesign</code>, <code>profileDesign</code>) is now performed using the <span class="pkg">NLopt</span> routines written in C instead of the original <acronym><span class="acronym">TOMS</span></acronym> 659 FORTRAN codes.
+The copyright notices are located in the source code.
+</p>
+</li>
+<li><p> Improved testing suite.
+</p>
+</li>
+<li><p> Made <code>rw.sd</code> even more robust via new <code>safecall</code> class.
+</p>
+</li></ul>
+
+
+
+<h3>Changes in <span class="pkg">pomp</span> version 1.7.4</h3>
+
+
+<ul>
+<li><p> Refactored <code>rw.sd</code> for greater stability.
+</p>
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 1.7.3</h3>
 
 
