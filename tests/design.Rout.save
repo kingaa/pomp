@@ -24,7 +24,7 @@ Type 'q()' to quit R.
 > plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
 > 
 > try(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),2^30+1))
-Error : in ‘sobolDesign’: cannot allocate vector of size 16.0 Gb
+Error : in ‘sobolDesign’: too many points requested
 > rnames <- sprintf("n%04d",1:5000)
 > try(sobolDesign(lower=setNames(runif(5000),rnames),
 +                 upper=setNames(runif(5000,min=-1,max=0),rnames),
