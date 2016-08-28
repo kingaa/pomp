@@ -143,9 +143,9 @@ void SSA (pomp_ssa_rate_fn *ratefun, int irep,
         k = ideps[i];
         tmp = e[k]*y[k];
         kappa = (tmp < kappa) ? tmp : kappa;
-        if (kappa <= 1.0) break;
+        if (kappa < 2.0) break;
       }
-      if (kappa <= 1.0) {
+      if (kappa < 2.0) {
         flag = gillespie(ratefun,&t,f,y,v,d,par,nvar,nevent,npar,istate,ipar,ncovar,icovar,mcov,covars);
       } else {
         kappa = floor(kappa);
