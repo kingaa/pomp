@@ -2,6 +2,11 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._7._5:
 
+        • The generation of Sobol' sequences (‘sobolDesign’,
+          ‘profileDesign’) is now performed using the ‘NLopt’ routines
+          written in C instead of the original TOMS 659 FORTRAN codes.
+          The copyright notices are located in the source code.
+
         • Improved testing suite.
 
         • Made ‘rw.sd’ even more robust via new ‘safecall’ class.

@@ -37,8 +37,8 @@ struct lookup_table make_covariate_table (SEXP object, int *ncovars);
 SEXP bspline_basis(SEXP x, SEXP degree, SEXP knots);
 SEXP bspline_basis_function(SEXP x, SEXP i, SEXP degree, SEXP knots);
 
-// dsobol.c
-SEXP sobol_sequence(SEXP dim);
+// sobolseq.c
+SEXP sobol_sequence (SEXP dim, SEXP length);
 
 // pomp_fun.c
 typedef enum {undef=-1,Rfun=0,native=1,regNative=2} pompfunmode;
@@ -63,8 +63,8 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi);
 // skeleton.c
 SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
 void eval_skeleton_native (double *f, double *time, double *x, double *p,
-			   int nvars, int npars, int ncovars, int ntimes, 
-			   int nrepx, int nrepp, int nreps, 
+			   int nvars, int npars, int ncovars, int ntimes,
+			   int nrepx, int nrepp, int nreps,
 			   int *sidx, int *pidx, int *cidx,
 			   lookup_table *covar_table,
 			   pomp_skeleton *fun, SEXP args);
@@ -83,7 +83,7 @@ static R_INLINE SEXP makearray (int rank, int *dim) {
   double *xp;
   SEXP dimx, x;
   PROTECT(dimx = NEW_INTEGER(rank));
-  dimp = INTEGER(dimx); 
+  dimp = INTEGER(dimx);
   for (k = 0; k < rank; k++) dimp[k] = dim[k];
   PROTECT(x = allocArray(REALSXP,dimx));
   xp = REAL(x);
@@ -100,7 +100,7 @@ static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
   PROTECT(index = match(x,names,0));
   idx = INTEGER(index);
   for (k = 0; k < n; k++) {
-    if (idx[k]==0) 
+    if (idx[k]==0)
       errorcall(R_NilValue,"variable '%s' not found among the %s",
 		CHARACTER_DATA(STRING_ELT(nm,k)),
 		where);

@@ -44,6 +44,9 @@ sliceDesign(center, \dots)
   \code{profileDesign} returns a data frame with \code{nprof} points per profile point.
   The other parameters in \code{vars} are sampled using \code{sobol}.
 }
+\details{
+  The Sobol' sequence generation is performed using codes from the \href{http://ab-initio.mit.edu/nlopt}{\pkg{NLopt} library} by S. Johnson.
+}
 \examples{
 ## Sobol' low-discrepancy design
 plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
@@ -72,6 +75,18 @@ plot(x)
   W. H. Press, S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery,
   Numerical Recipes in C,
   Cambridge University Press, 1992
+
+  P. Bratley and B. L. Fox,
+  Algorithm 659 Implementing Sobol’s quasirandom sequence generator,
+  ACM Trans. Math. Soft. 14, 88--100, 1988.
+
+  S. Joe and F. Y. Kuo,
+  Remark on algorithm 659: Implementing Sobol's quasirandom sequence generator
+  ACM Trans. Math. Soft 29, 49--57, 2003.
+
+  Steven G. Johnson,
+  The \pkg{NLopt} nonlinear-optimization package,
+  \url{http://ab-initio.mit.edu/nlopt}
 }
 \author{Aaron A. King}
 \keyword{design}

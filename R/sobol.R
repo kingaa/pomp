@@ -5,8 +5,10 @@ sobol <- function (vars, n) {
     if (!all(sapply(vars,function(x)is.numeric(x)&&(length(x)==2))))
         stop(ep,"each entry in ",sQuote("vars")," must specify a range",call.=FALSE)
     d <- length(vars)
+    if (!is.finite(n) || (n > 1073741824L))
+        stop(ep,"too many points requested",call.=FALSE);
     x <- tryCatch(
-        .Call("sobol_sequence",as.integer(c(d,n))),
+        .Call("sobol_sequence",as.integer(d),as.integer(n)),
         error = function (e) {
             stop(ep,conditionMessage(e),call.=FALSE)
         }

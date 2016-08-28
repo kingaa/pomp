@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 1.7.5}{
   \itemize{
+    \item The generation of Sobol' sequences (\code{sobolDesign}, \code{profileDesign}) is now performed using the \pkg{NLopt} routines written in C instead of the original \acronym{TOMS} 659 FORTRAN codes.
+    The copyright notices are located in the source code.
     \item Improved testing suite.
     \item Made \code{rw.sd} even more robust via new \code{safecall} class.
   }
