@@ -60,7 +60,6 @@ typedef Int32 uint32_t;
 typedef struct nlopt_soboldata_s *nlopt_sobol;
 static nlopt_sobol nlopt_sobol_create(unsigned sdim);
 static void nlopt_sobol_destroy(nlopt_sobol s);
-static void nlopt_sobol_next01(nlopt_sobol s, double *x);
 static void nlopt_sobol_skip(nlopt_sobol s, unsigned n, double *x);
 
 typedef struct nlopt_soboldata_s {
@@ -203,11 +202,11 @@ static void nlopt_sobol_destroy (nlopt_sobol s)
 }
 
 /* next vector x[sdim] in Sobol sequence, with each x[i] in (0,1) */
-void nlopt_sobol_next01 (nlopt_sobol s, double *x)
-{
-  if (!sobol_gen(s, x))
-    errorcall(R_NilValue,"too many points requested");
-}
+// void nlopt_sobol_next01 (nlopt_sobol s, double *x)
+// {
+//   if (!sobol_gen(s, x))
+//     errorcall(R_NilValue,"too many points requested");
+// }
 
 /* next vector in Sobol sequence, scaled to (lb[i], ub[i]) interval */
 // void nlopt_sobol_next (nlopt_sobol s, double *x,
@@ -243,7 +242,7 @@ SEXP sobol_sequence (SEXP dim, SEXP length)
   if (s==0) errorcall(R_NilValue,"dimension is too high");
   PROTECT(data = allocMatrix(REALSXP,d,n)); dp = REAL(data);
   nlopt_sobol_skip(s,n,dp);
-  for (k = 1; k < n; k++) nlopt_sobol_next01(s,dp+k*d);
+  for (k = 1; k < n; k++) sobol_gen(s,dp+k*d);
   nlopt_sobol_destroy(s);
   UNPROTECT(1);
   return(data);
