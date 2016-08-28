@@ -176,4 +176,6 @@ try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix,d=Dmatrix)) %>% simula
 try(pomp(gsir,rprocess=kleap.sim(rate.fun=3,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 try(pomp(gsir,rprocess=kleap.sim(rate.fun="bob",e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 
+try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun,e=rep(1e-6,5),v=Vmatrix,d=Dmatrix)) %>% simulate() %>% plot())
+
 dev.off()

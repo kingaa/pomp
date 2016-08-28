@@ -209,6 +209,8 @@ Error : in ‘pomp’: in ‘kleap.sim’ plugin: bad option for ‘rate.fn’ a
 > try(pomp(gsir,rprocess=kleap.sim(rate.fun="bob",e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 Error : in ‘simulate’: in ‘kleap.sim’ plugin: no such symbol bob
 > 
+> try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun,e=rep(1e-6,5),v=Vmatrix,d=Dmatrix)) %>% simulate() %>% plot())
+> 
 > dev.off()
 null device 
           1 
