@@ -244,8 +244,8 @@ SEXP sobol_sequence (SEXP dim, SEXP length)
   nlopt_sobol s = nlopt_sobol_create((unsigned int) d);
   if (s==0) errorcall(R_NilValue,"dimension is too high");
   PROTECT(data = allocMatrix(REALSXP,d,n)); dp = REAL(data);
-  //  nlopt_sobol_skip(s,n,dp);
-  for (k = 0; k < n; k++) nlopt_sobol_next01(s,dp+k*d);
+  nlopt_sobol_skip(s,n,dp);
+  for (k = 1; k < n; k++) nlopt_sobol_next01(s,dp+k*d);
   nlopt_sobol_destroy(s);
   UNPROTECT(1);
   return(data);
