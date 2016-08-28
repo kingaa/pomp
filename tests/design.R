@@ -14,7 +14,7 @@ x <- sobolDesign(lower=setNames(runif(15),head(rnames,15)),
                  100)
 
 ## A one-parameter profile design:
-x <- profileDesign(p=1:10,lower=c(a=0,b=0),upper=c(a=1,b=5),nprof=20)
+x <- profileDesign(p=1:10,lower=c(q=3,a=0,b=0),upper=c(q=5,a=1,b=5),nprof=20)
 dim(x)
 plot(x)
 
