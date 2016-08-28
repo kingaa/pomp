@@ -77,7 +77,7 @@ plot(x)
   Cambridge University Press, 1992
 
   P. Bratley and B. L. Fox,
-  Algorithm 659 Implementing Sobol’s quasirandom sequence generator,
+  Algorithm 659 Implementing Sobol's quasirandom sequence generator,
   ACM Trans. Math. Soft. 14, 88--100, 1988.
 
   S. Joe and F. Y. Kuo,
