@@ -61,8 +61,6 @@ typedef struct nlopt_soboldata_s *nlopt_sobol;
 static nlopt_sobol nlopt_sobol_create(unsigned sdim);
 static void nlopt_sobol_destroy(nlopt_sobol s);
 static void nlopt_sobol_next01(nlopt_sobol s, double *x);
-static void nlopt_sobol_next(nlopt_sobol s, double *x,
-                             const double *lb, const double *ub);
 static void nlopt_sobol_skip(nlopt_sobol s, unsigned n, double *x);
 
 typedef struct nlopt_soboldata_s {
