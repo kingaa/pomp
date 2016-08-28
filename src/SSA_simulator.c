@@ -87,7 +87,6 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   SEXP X, pindex, sindex, cindex, zindex;
   int *sidx, *pidx, *cidx, *zidx, *didx = 0;
   SEXP fn, Snames, Pnames, Cnames;
-  int flag = 0;
 
   int method = *(INTEGER(mflag));
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];

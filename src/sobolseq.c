@@ -212,14 +212,14 @@ void nlopt_sobol_next01 (nlopt_sobol s, double *x)
 }
 
 /* next vector in Sobol sequence, scaled to (lb[i], ub[i]) interval */
-void nlopt_sobol_next (nlopt_sobol s, double *x,
-		       const double *lb, const double *ub)
-{
-  unsigned i, sdim;
-  nlopt_sobol_next01(s, x);
-  for (sdim = s->sdim, i = 0; i < sdim; ++i)
-    x[i] = lb[i] + (ub[i] - lb[i]) * x[i];
-}
+// void nlopt_sobol_next (nlopt_sobol s, double *x,
+// 		       const double *lb, const double *ub)
+// {
+//   unsigned i, sdim;
+//   nlopt_sobol_next01(s, x);
+//   for (sdim = s->sdim, i = 0; i < sdim; ++i)
+//     x[i] = lb[i] + (ub[i] - lb[i]) * x[i];
+// }
 
 /* if we know in advance how many points (n) we want to compute, then
    adopt the suggestion of the Joe and Kuo paper, which in turn
