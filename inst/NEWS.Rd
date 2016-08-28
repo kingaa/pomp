@@ -1,5 +1,17 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.7.7}{
+  \itemize{
+    \item The stochastic simulation algorithms underlying the Gillespie and K-leap methods (\code{gillespie.sim}, \code{kleap.sim}) have been refactored in C.
+    In addition, errors due to accumulation of round-off error have been repaired.
+    The result will be more accurate, but somewhat slower when there are a very large number of reactions.
+  }
+}
+\section{Changes in \pkg{pomp} version 1.7.6}{
+  \itemize{
+    \item In Sobol' sequence generation (\code{sobolDesign}, \code{profileDesign}), we now use the suggestion of Joe & Kuo (2003) to choose a better sequence start point.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.7.5}{
   \itemize{
     \item The generation of Sobol' sequences (\code{sobolDesign}, \code{profileDesign}) is now performed using the \pkg{NLopt} routines written in C instead of the original \acronym{TOMS} 659 FORTRAN codes.
