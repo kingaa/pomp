@@ -233,12 +233,13 @@ const double *get_pomp_userdata_double (const char *name);
 // THEY CANNOT BE USED WITHIN C SNIPPETS.
 
 // prototype for stochastic simulation algorithm reaction-rate function, as used by "gillespie.sim":
-typedef double pomp_ssa_rate_fn(int j, double t, const double *x, const double *p,
+typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const double *p,
 				const int *stateindex, const int *parindex, const int *covindex,
 				int ncovar, const double *covars);
 // Description:
 //  on input:
-// j          = integer specifying the number of the reaction whose rate is desired
+// event      = integer specifying the number of the reaction whose rate is desired 
+//                (the first is event is '1')
 // t          = time at which the rates are to be evaluated
 // x          = vector of state variables
 // p          = vector of parameters
