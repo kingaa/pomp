@@ -1,9 +1,12 @@
 REXE = R --vanilla
 RCMD = $(REXE) CMD
 
-SAVED = $(shell ls *.Rout.save)
+SAVED = $(shell ls *.Rout.save *.Rout)
+DEMOS = $(shell ls ../demo/*R)
 
-default: $(SAVED) demos.Rout verbosity.Rout link.Rout clean
+default: $(SAVED) clean
+
+demos.Rout: $(DEMOS)
 
 %.Rout.save: %.R
 	$(RCMD) BATCH --no-timing --no-save $*.R $*.Rout.save

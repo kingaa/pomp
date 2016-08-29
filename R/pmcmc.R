@@ -147,8 +147,12 @@ pmcmc.internal <- function (object, Nmcmc,
 
     for (n in seq_len(Nmcmc)) { # main loop
 
-        theta.prop <- proposal(theta,.n=n+.ndone,.accepts=.accepts,
-                               verbose=verbose)
+        theta.prop <- tryCatch(
+            proposal(theta,.n=n+.ndone,.accepts=.accepts,verbose=verbose),
+            error = function (e) {
+                stop(ep,"error in proposal function: ",conditionMessage(e),call.=FALSE)
+            }
+        )
 
         ## compute log prior
         log.prior.prop <- tryCatch(

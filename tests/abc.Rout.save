@@ -230,7 +230,6 @@ Error : in ‘abc’: in ‘apply_probe_data’: pow!
 +         }))
 Error : in ‘abc’: in ‘apply_probe_sim’: paf!
 > 
-> 
 > dev.off()
 null device 
           1 

@@ -201,14 +201,27 @@ in ‘covmat’: only 51 points being used to estimate covariance matrix
 > 
 > try(ou2 %>%
 +     pomp(dprior=function (params, log, ...) {
-+         if (runif(1) < 0.1) stop("oops")
-+         else if (log) 0 else 1
++         stop("oops!")
 +     }) %>%
 +     pmcmc(
 +         Nmcmc=50,Np=500,verbose=FALSE,
-+         proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-+                                  scale.start=50,shape.start=50)))
-Error : in ‘pmcmc’: ‘dprior’ error: oops
++         proposal=mvn.diag.rw(c(alpha.2=0.01,alpha.3=0.01))))
+Error : in ‘pmcmc’: ‘dprior’ error: oops!
+> try(ou2 %>% pmcmc(Nmcmc=50,Np=500,verbose=FALSE,
++                   proposal=function(theta,...)stop("eeps!")))
+Error : in ‘pmcmc’: error in proposal function: eeps!
+> try(ou2 %>% pmcmc(Nmcmc=50,Np=500,verbose=FALSE,
++                   proposal=function(theta,...) {
++                       stop("yow!")
++                   }))
+Error : in ‘pmcmc’: error in proposal function: yow!
+> neval <- 0
+> try(ou2 %>% pmcmc(Nmcmc=50,Np=500,verbose=FALSE,
++                   proposal=function(theta,...) {
++                       neval <<- neval+1
++                       if (neval>1) stop("yikes!") else theta
++                   }))
+Error : in ‘pmcmc’: error in proposal function: yikes!
 > 
 > dev.off()
 null device 

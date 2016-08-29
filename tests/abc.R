@@ -176,5 +176,4 @@ try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
             else 0
         }))
 
-
 dev.off()

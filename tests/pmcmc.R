@@ -159,12 +159,22 @@ f8 %>%
 
 try(ou2 %>%
     pomp(dprior=function (params, log, ...) {
-        if (runif(1) < 0.1) stop("oops")
-        else if (log) 0 else 1
+        stop("oops!")
     }) %>%
     pmcmc(
         Nmcmc=50,Np=500,verbose=FALSE,
-        proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-                                 scale.start=50,shape.start=50)))
+        proposal=mvn.diag.rw(c(alpha.2=0.01,alpha.3=0.01))))
+try(ou2 %>% pmcmc(Nmcmc=50,Np=500,verbose=FALSE,
+                  proposal=function(theta,...)stop("eeps!")))
+try(ou2 %>% pmcmc(Nmcmc=50,Np=500,verbose=FALSE,
+                  proposal=function(theta,...) {
+                      stop("yow!")
+                  }))
+neval <- 0
+try(ou2 %>% pmcmc(Nmcmc=50,Np=500,verbose=FALSE,
+                  proposal=function(theta,...) {
+                      neval <<- neval+1
+                      if (neval>1) stop("yikes!") else theta
+                  }))
 
 dev.off()
