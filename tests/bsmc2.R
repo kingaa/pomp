@@ -85,7 +85,6 @@ smc <- bsmc2(ou2,transform=TRUE,Np=2,smooth=0.01,est=estnames,
 try(bsmc2(pomp(po,dmeasure=function(y,x,t,params,log,...) stop("oof!")),
           Np=100,est=c("r","sigma"),transform=TRUE,smooth=0.2))
 
-try(bsmc2(pomp(po,dmeasure=function(y,x,t,params,log,...) stop("oof!")),
-          Np=100,est=c("r","bob"),transform=TRUE,smooth=0.2))
+try(bsmc2(po,Np=100,est=c("r","bob"),transform=TRUE,smooth=0.2))
 
 dev.off()

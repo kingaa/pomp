@@ -128,8 +128,7 @@ in ‘bsmc2’: 7 filtering failures occurred.
 +           Np=100,est=c("r","sigma"),transform=TRUE,smooth=0.2))
 Error : in ‘bsmc2’: ‘dmeasure’ error: oof!
 > 
-> try(bsmc2(pomp(po,dmeasure=function(y,x,t,params,log,...) stop("oof!")),
-+           Np=100,est=c("r","bob"),transform=TRUE,smooth=0.2))
+> try(bsmc2(po,Np=100,est=c("r","bob"),transform=TRUE,smooth=0.2))
 Error : in ‘bsmc2’: parameter(s) ‘bob’ not found.
 > 
 > dev.off()

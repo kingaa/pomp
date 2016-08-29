@@ -66,6 +66,13 @@ smc <- bsmc(ou2,ntries=1,transform=TRUE,Np=2,smooth=0.01,est=estnames,
 
 try(bsmc(pomp(ou2,dmeasure=function(y,x,t,params,log,...) stop("oof!")),
          Np=100,est=c("alpha.1","alpha.2"),transform=TRUE,smooth=0.2))
+neval <- 0
+try(bsmc(pomp(ou2,
+              dmeasure=function(y,x,t,params,log,...) {
+                  neval <<- neval+1
+                  if (neval>100) stop("oof!") else if (log) 0 else 1
+              }),
+         Np=100,est=c("alpha.1","alpha.2"),transform=TRUE,smooth=0.2))
 
 try(bsmc(ou2,Np=100,est=c("alpha.1","bob"),transform=TRUE,smooth=1))
 
