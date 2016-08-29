@@ -73,6 +73,7 @@ bsmc.internal <- function (object, params, Np, est,
             }
         )
     }
+    params <- as.matrix(params)
     
     if (transform)
         params <- partrans(object,params,dir="toEstimationScale",
@@ -88,6 +89,12 @@ bsmc.internal <- function (object, params, Np, est,
         est <- paramnames[apply(params,1,function(x)diff(range(x))>0)]
     estind <- match(est,paramnames)
     npars.est <- length(estind)
+    if (any(is.na(estind))) {
+        ind <- which(is.na(estind))
+        stop(ep,"parameter(s) ",
+             paste(sapply(est[ind],sQuote),collapse=","),
+             " not found.",call.=FALSE)
+    }
     
     if (npars.est<1)
         stop(ep,"no parameters to estimate",call.=FALSE)
@@ -221,7 +228,7 @@ bsmc.internal <- function (object, params, Np, est,
                 method="svd"
             ),
             error = function (e) {
-                stop(ep,sQuote("rmvnorm"),"error: ",conditionMessage(e),call.=FALSE)
+                stop(ep,"in ",sQuote("rmvnorm"),": ",conditionMessage(e),call.=FALSE)
             }
         )
         if (!all(is.finite(pvec)))

@@ -85,4 +85,11 @@ pomp(dat,times='time',t0=0,
 plot(spect(bob,kernel.width=3,nsim=500),
      data.style=list(lwd=c(2,3),lty=2,col='red'))
 
+## designed to fail
+po <- ou2
+coef(po,c("sigma.1","sigma.2","sigma.3","tau")) <- 0
+spp <- spect.match(po,kernel.width=3,nsim=100,maxit=10,reltol=0.1,
+                   est=c("alpha.1","alpha.2"))
+stopifnot(is.na(spp@value))
+
 dev.off()

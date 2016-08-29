@@ -122,6 +122,13 @@ Error : in ‘spect.match’: problem with ‘weights’ function: values must b
 Warning message:
 in ‘plot-spect.pomp’: ‘data.styles’contains an element with more than 1 entry but fewer entries than observed variables 
 > 
+> ## designed to fail
+> po <- ou2
+> coef(po,c("sigma.1","sigma.2","sigma.3","tau")) <- 0
+> spp <- spect.match(po,kernel.width=3,nsim=100,maxit=10,reltol=0.1,
++                    est=c("alpha.1","alpha.2"))
+> stopifnot(is.na(spp@value))
+> 
 > dev.off()
 null device 
           1 

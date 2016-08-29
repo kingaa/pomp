@@ -164,6 +164,15 @@ try(ou2 %>%
     pmcmc(
         Nmcmc=50,Np=500,verbose=FALSE,
         proposal=mvn.diag.rw(c(alpha.2=0.01,alpha.3=0.01))))
+neval <- 0
+try(ou2 %>%
+    pomp(dprior=function (params, log, ...) {
+        neval <<- neval+1
+        if (neval>2) stop("yipes!") else if (log) 0 else 1
+    }) %>%
+    pmcmc(
+        Nmcmc=50,Np=500,verbose=FALSE,
+        proposal=mvn.diag.rw(c(alpha.2=0.01,alpha.3=0.01))))
 try(ou2 %>% pmcmc(Nmcmc=50,Np=500,verbose=FALSE,
                   proposal=function(theta,...)stop("eeps!")))
 try(ou2 %>% pmcmc(Nmcmc=50,Np=500,verbose=FALSE,

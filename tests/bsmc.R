@@ -2,6 +2,8 @@ library(pomp)
 
 options(digits=2)
 
+png(filename="bsmc-%02d.png",res=100)
+
 set.seed(398585L)
 pompExample(ou2)
 
@@ -61,3 +63,10 @@ print(smc$log.evidence)
 
 smc <- bsmc(ou2,ntries=1,transform=TRUE,Np=2,smooth=0.01,est=estnames,
             tol=1e-2,max.fail=100)
+
+try(bsmc(pomp(ou2,dmeasure=function(y,x,t,params,log,...) stop("oof!")),
+         Np=100,est=c("alpha.1","alpha.2"),transform=TRUE,smooth=0.2))
+
+try(bsmc(ou2,Np=100,est=c("alpha.1","bob"),transform=TRUE,smooth=1))
+
+dev.off()

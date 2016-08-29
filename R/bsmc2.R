@@ -65,6 +65,12 @@ bsmc2.internal <- function (object, params, Np, est,
         est <- paramnames[apply(params,1,function(x)diff(range(x))>0)]
     estind <- match(est,paramnames)
     npars.est <- length(estind)
+    if (any(is.na(estind))) {
+        ind <- which(is.na(estind))
+        stop(ep,"parameter(s) ",
+             paste(sapply(est[ind],sQuote),collapse=","),
+             " not found.",call.=FALSE)
+    }
     
     if (npars.est<1)
         stop(ep,"no parameters to estimate",call.=FALSE)
