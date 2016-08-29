@@ -1,9 +1,7 @@
-inst/doc/Makefile$
-inst/doc/(.+?)\.bst$
-inst/doc/(.+?)\.R$
-inst/doc/(.+?)\.png$
 tests/Makefile
 tests/(.+?)\.png$
+tests/(.+?)\.pdf$
+tests/(.+?)\.Rout$
 README\.md$
 TODO\.md$
 ^\.gitignore$

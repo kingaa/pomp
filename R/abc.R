@@ -114,8 +114,12 @@ abc.internal <- function (object, Nabc,
 
     for (n in seq_len(Nabc)) { # main loop
 
-        theta.prop <- proposal(theta,.n=n+.ndone,.accepts=.accepts,
-                               verbose=verbose)
+        theta.prop <- tryCatch(
+            proposal(theta,.n=n+.ndone,.accepts=.accepts,verbose=verbose),
+            error = function (e) {
+                stop(ep,"in proposal function: ",conditionMessage(e),call.=FALSE)
+            }
+        )
         log.prior.prop <- tryCatch(
             dprior(object,params=theta.prop,log=TRUE),
             error = function (e) {
@@ -145,14 +149,14 @@ abc.internal <- function (object, Nabc,
 
             ## ABC update rule
             distance <- sum(((datval-simval)/scale)^2)
-            if( (is.finite(distance)) && (distance<epssq) ){ 
+            if( (is.finite(distance)) && (distance<epssq) ){
                 theta <- theta.prop
                 log.prior <- log.prior.prop
                 .accepts <- .accepts+1L
             }
 
         }
-        
+
         ## store a record of this iteration
         conv.rec[n+1,names(theta)] <- theta
         if (verbose && (n%%5==0))
@@ -190,7 +194,7 @@ setMethod(
                          probes, scale, epsilon,
                          verbose = getOption("verbose"),
                          ...) {
-        
+
         ep <- paste0("in ",sQuote("abc"),": ")
 
         if (missing(start))
@@ -274,7 +278,7 @@ setMethod(
         ndone <- object@Nabc
         accepts <- object@accepts
         f <- selectMethod("abc","abc")
-        
+
         obj <- f(
             object=object,
             Nabc=Nabc,
@@ -282,7 +286,7 @@ setMethod(
             .accepts=accepts,
             ...
         )
-        
+
         obj@conv.rec <- rbind(
             object@conv.rec[,colnames(obj@conv.rec)],
             obj@conv.rec[-1,]
@@ -290,7 +294,7 @@ setMethod(
         names(dimnames(obj@conv.rec)) <- c("iteration","variable")
         obj@Nabc <- as.integer(ndone+Nabc)
         obj@accepts <- as.integer(accepts+obj@accepts)
-        
+
         obj
     }
 )

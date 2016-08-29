@@ -12,7 +12,7 @@ default: $(SAVED) demos.Rout verbosity.Rout link.Rout clean
 	$(RCMD) BATCH --no-timing --no-save $*.R $*.Rout
 
 clean:
-	$(RM) *.pdf *.Rout *.c *.o *.so 
+	$(RM) *.c *.o *.so 
 
 fresh: clean
 	$(RM) *.png

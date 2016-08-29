@@ -1,6 +1,6 @@
 ### OU2 test of abc for pomp
 
-library(pomp) 
+library(pomp)
 pompExample(ou2)
 
 pdf(file='abc.pdf')
@@ -123,7 +123,7 @@ capture.output(
         epsilon=5,
         proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
                                  scale.start=500,shape.start=100))
-    ) -> out
+) -> out
 stopifnot(length(out)==2201)
 stopifnot(sum(grepl("acceptance ratio",out))==100)
 
@@ -138,5 +138,43 @@ rejectionRate(traces)
 autocorr.diag(traces)
 traces <- window(traces,thin=50)
 geweke.diag(traces)
+
+try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
+        proposal=function(theta,...)stop("urp!")))
+try(abc(pomp(ou2,dprior=function(params,log,...)stop("oof!")),
+        Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
+        proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
+neval <- 0
+try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
+        proposal=function(theta,...) {
+            neval <<- neval+1
+            if (neval>1) stop("bif!") else theta
+        }))
+neval <- 0
+try(abc(
+    pomp(ou2,dprior=function(params,log,...) {
+        neval <<- neval+1
+        if (neval>10) stop("eep!")
+        else if (log) 0
+        else 1
+    }),Nabc=20,probes=probes.good,scale=scale.dat,epsilon=1,
+    proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
+neval <- 0
+try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
+        proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
+        probes=function(y) {
+            neval <<- neval+1
+            if (neval>0) stop("pow!")
+            else 0
+        }))
+neval <- 0
+try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
+        proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
+        probes=function(y) {
+            neval <<- neval+1
+            if (neval>1) stop("paf!")
+            else 0
+        }))
+
 
 dev.off()

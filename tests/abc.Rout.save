@@ -19,7 +19,7 @@ Type 'q()' to quit R.
 
 > ### OU2 test of abc for pomp
 > 
-> library(pomp) 
+> library(pomp)
 > pompExample(ou2)
 newly created object(s):
  ou2 
@@ -156,7 +156,7 @@ in ‘plot-abc’: ‘y’ is ignored
 +         epsilon=5,
 +         proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
 +                                  scale.start=500,shape.start=100))
-+     ) -> out
++ ) -> out
 > stopifnot(length(out)==2201)
 > stopifnot(sum(grepl("acceptance ratio",out))==100)
 > 
@@ -186,6 +186,50 @@ Fraction in 2nd window = 0.5
 alpha.2 alpha.3 
  2.1049 -0.9592 
 
+> 
+> try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
++         proposal=function(theta,...)stop("urp!")))
+Error : in ‘abc’: in proposal function: urp!
+> try(abc(pomp(ou2,dprior=function(params,log,...)stop("oof!")),
++         Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
++         proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
+Error : in ‘abc’: ‘dprior’ error: oof!
+> neval <- 0
+> try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
++         proposal=function(theta,...) {
++             neval <<- neval+1
++             if (neval>1) stop("bif!") else theta
++         }))
+Error : in ‘abc’: in proposal function: bif!
+> neval <- 0
+> try(abc(
++     pomp(ou2,dprior=function(params,log,...) {
++         neval <<- neval+1
++         if (neval>10) stop("eep!")
++         else if (log) 0
++         else 1
++     }),Nabc=20,probes=probes.good,scale=scale.dat,epsilon=1,
++     proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
+Error : in ‘abc’: ‘dprior’ error: eep!
+> neval <- 0
+> try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
++         proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
++         probes=function(y) {
++             neval <<- neval+1
++             if (neval>0) stop("pow!")
++             else 0
++         }))
+Error : in ‘abc’: in ‘apply_probe_data’: pow!
+> neval <- 0
+> try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
++         proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
++         probes=function(y) {
++             neval <<- neval+1
++             if (neval>1) stop("paf!")
++             else 0
++         }))
+Error : in ‘abc’: in ‘apply_probe_sim’: paf!
+> 
 > 
 > dev.off()
 null device 
