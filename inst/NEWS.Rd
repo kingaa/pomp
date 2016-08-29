@@ -5,6 +5,7 @@
     \item The stochastic simulation algorithms underlying the Gillespie and K-leap methods (\code{gillespie.sim}, \code{kleap.sim}) have been refactored in C.
     In addition, errors due to accumulation of round-off error have been repaired.
     The result will be more accurate, but somewhat slower when there are a very large number of reactions.
+    \item Further improvements to the test suite.
   }
 }
 \section{Changes in \pkg{pomp} version 1.7.6}{
