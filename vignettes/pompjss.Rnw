@@ -146,7 +146,6 @@ opts_chunk$set(
     echo=TRUE,
     strip.white=TRUE,
     results="markup",
-    indent=NA,
     background="#FFFFFF00",
     size="normalsize",
     fig.path="figure/pompjss-",
