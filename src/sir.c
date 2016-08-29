@@ -133,20 +133,6 @@ void _sir_euler_simulator (double *x, const double *p,
   for (k = 0, beta = 0; k < nbasis; k++)
     beta += seasonality[k]*BETA[k];
 
-  //  test to make sure the parameters and state variable values are sane
-  if (!(R_FINITE(beta)) || 
-      !(R_FINITE(GAMMA)) ||
-      !(R_FINITE(MU)) ||
-      !(R_FINITE(BETA_SD)) ||
-      !(R_FINITE(IOTA)) ||
-      !(R_FINITE(POPSIZE)) ||
-      !(R_FINITE(SUSC)) ||
-      !(R_FINITE(INFD)) ||
-      !(R_FINITE(RCVD)) ||
-      !(R_FINITE(CASE)) ||
-      !(R_FINITE(W)))
-    return;
-
   dW = rgammawn(BETA_SD,dt); // gamma noise, mean=dt, variance=(beta_sd^2 dt)
 
   // compute the transition rates

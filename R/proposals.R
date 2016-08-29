@@ -23,9 +23,7 @@ mvn.rw <- function (rw.var) {
         stop(ep,sQuote("rw.var")," must have row- and column-names",call.=FALSE)
     if (nrow(rw.var)!=ncol(rw.var))
         stop(ep,sQuote("rw.var")," must be a square matrix",call.=FALSE)
-    ch <- try (chol(rw.var,pivot=TRUE))
-    if (inherits(ch,"try-error"))
-        stop(ep,"error in Choleski factorization",call.=FALSE)
+    ch <- chol(rw.var,pivot=TRUE)
     if (attr(ch,"rank") < ncol(ch))
         warning(ep,"rank-deficient covariance matrix",call.=FALSE)
     oo <- order(attr(ch,"pivot"))
@@ -71,7 +69,7 @@ mvn.rw.adaptive <- function (rw.sd, rw.var,
         }
         rw.sd <- rw.sd[rw.sd>0]
         parnm <- names(rw.sd)
-        rw.var <- diag(rw.sd^2)
+        rw.var <- diag(rw.sd^2,nrow=length(rw.sd),ncol=length(rw.sd))
         dimnames(rw.var) <- list(parnm,parnm)
     }
 
@@ -88,12 +86,12 @@ mvn.rw.adaptive <- function (rw.sd, rw.var,
     if (target <= 0 || target >= 1) {
         stop(ep,sQuote("target")," must be a number in (0,1)",call.=FALSE)
     }
-    
+
     ## variables that will follow 'f'
     scaling <- 1
     theta.mean <- NULL
     covmat.emp <- array(data=0,dim=dim(rw.var),dimnames=dimnames(rw.var))
-    
+
     function (theta, .n, .accepts, verbose, ...) {
         if (.n == 0) return(theta) ## handle initial test run by pmcmc
         if (is.null(theta.mean)) theta.mean <<- theta[parnm]
@@ -118,14 +116,7 @@ mvn.rw.adaptive <- function (rw.sd, rw.var,
             theta.mean <<- ((.n-1)*theta.mean+theta[parnm])/.n
             covmat.emp <<- ((.n-1)*covmat.emp+tcrossprod(theta[parnm]-theta.mean))/.n
         }
-        ch <- tryCatch(
-            chol(covmat,pivot=TRUE),
-            error = function (e) {
-                ## we should worry more about degeneracy than this:
-                stop(ep,"Choleski factorization problem",
-                     conditionMessage(e),call.=FALSE)
-            }
-        )
+        ch <- chol(covmat,pivot=TRUE)
         if (attr(ch,"rank")<length(parnm))
             warning(ep,"degenerate proposal",call.=FALSE)
         oo <- order(attr(ch,"pivot"))

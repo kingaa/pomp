@@ -6,6 +6,7 @@
     In addition, errors due to accumulation of round-off error have been repaired.
     The result will be more accurate, but somewhat slower when there are a very large number of reactions.
     \item Further improvements to the test suite.
+    Code coverage is now 100\%.
   }
 }
 \section{Changes in \pkg{pomp} version 1.7.6}{

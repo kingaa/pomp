@@ -129,7 +129,7 @@ stopifnot(sum(grepl("acceptance ratio",out))==100)
 
 abc8 <- continue(abc8,Nabc=2000,proposal=mvn.rw(covmat(abc8)))
 
-plot(abc8,scatter=T)
+plot(abc8,scatter=TRUE)
 plot(abc8)
 
 traces <- window(conv.rec(abc8,c("alpha.2","alpha.3")),start=500)
@@ -138,6 +138,13 @@ rejectionRate(traces)
 autocorr.diag(traces)
 traces <- window(traces,thin=50)
 geweke.diag(traces)
+
+vmat <- matrix(c(1,0,0,0),ncol=2,nrow=2,
+               dimnames=list(c("alpha.1","alpha.2"),
+                             c("alpha.1","alpha.2")))
+abc9 <- abc(
+    abc8,Nabc=1,probes=probes.good,scale=scale.dat,epsilon=5,
+    proposal=mvn.rw.adaptive(rw.var=vmat,scale.start=500,shape.start=100))
 
 try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
         proposal=function(theta,...)stop("urp!")))
