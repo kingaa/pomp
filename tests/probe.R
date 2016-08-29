@@ -463,4 +463,20 @@ try(probe(ou2,nsim=100,
           },
           lags=c(1,2,2),powers=c(1,1,2))))
 
+neval <- 0
+try(probe.match(ricker,est=c("r","phi","N.0"),nsim=100,
+                probes=function(y)stop("yipes!")))
+try(probe.match(ricker,est=c("r","phi","N.0"),nsim=100,
+                probes=function(y){
+                    neval <<- neval+1
+                    if (neval>1) stop("jeepers!")
+                    else 1
+                }))
+neval <- 0
+try(probe.match(pm,nsim=100,maxit=10,seed=404375241L,
+            probes=function(y){
+              neval <<- neval+1
+              if (neval<1402) pm@probes[[1]](y) else stop("criminy!")
+            }) -> ignore)
+
 dev.off()

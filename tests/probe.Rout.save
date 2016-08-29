@@ -535,6 +535,25 @@ Error : in ‘probe’: applying probes to actual data: in ‘probe.marginal’:
 +           lags=c(1,2,2),powers=c(1,1,2))))
 Error : in ‘probe’: applying probes to simulated data: in ‘probe.nlar’: urp!
 > 
+> neval <- 0
+> try(probe.match(ricker,est=c("r","phi","N.0"),nsim=100,
++                 probes=function(y)stop("yipes!")))
+Error : in ‘probe.match.objfun’: applying probes to actual data: yipes!
+> try(probe.match(ricker,est=c("r","phi","N.0"),nsim=100,
++                 probes=function(y){
++                     neval <<- neval+1
++                     if (neval>1) stop("jeepers!")
++                     else 1
++                 }))
+Error : in ‘probe.match.objfun’: applying probes to simulated data: jeepers!
+> neval <- 0
+> try(probe.match(pm,nsim=100,maxit=10,seed=404375241L,
++             probes=function(y){
++               neval <<- neval+1
++               if (neval<1402) pm@probes[[1]](y) else stop("criminy!")
++             }) -> ignore)
+Error : in ‘probe.match’: in ‘probe’: applying probes to simulated data: criminy!
+> 
 > dev.off()
 null device 
           1 
