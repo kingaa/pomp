@@ -122,7 +122,9 @@ SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi)
       pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
       
       // address of native routine
+#pragma GCC diagnostic ignored "-Wpedantic"
       ff = (pomp_rprior *) R_ExternalPtrAddr(fn);
+#pragma GCC diagnostic pop	
 
       R_CheckUserInterrupt();	// check for user interrupt
 

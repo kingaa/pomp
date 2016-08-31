@@ -113,9 +113,13 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   PROTECT(fn = pomp_fun_handler(func,gnsi,&use_native)); nprotect++;
 
   if (use_native) {
+#pragma GCC diagnostic ignored "-Wpedantic"
     RXR = (pomp_ssa_rate_fn *) R_ExternalPtrAddr(fn);
+#pragma GCC diagnostic pop	
   } else {
+#pragma GCC diagnostic ignored "-Wpedantic"
     RXR = (pomp_ssa_rate_fn *) default_ssa_rate_fn;
+#pragma GCC diagnostic pop	
     PROTECT(RHO = (CLOENV(fn))); nprotect++;
     NVAR = nvar;
     NPAR = npar;

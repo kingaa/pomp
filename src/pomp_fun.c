@@ -51,7 +51,9 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 	  fname = (const char *) CHARACTER_DATA(STRING_ELT(nf,0));
 	  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
 	  ff = R_GetCCallable(pkg,fname);
+#pragma GCC diagnostic ignored "-Wpedantic"
 	  PROTECT(f = R_MakeExternalPtr(ff,R_NilValue,R_NilValue)); nprotect++;
+#pragma GCC diagnostic pop	
 	}
 	break;
       

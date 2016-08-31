@@ -85,7 +85,9 @@ SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi)
       pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
       
       // address of native routine
+#pragma GCC diagnostic ignored "-Wpedantic"
       ff = (pomp_dprior *) R_ExternalPtrAddr(fn);
+#pragma GCC diagnostic pop	
 
       give_log = *(INTEGER(AS_INTEGER(log)));
 
