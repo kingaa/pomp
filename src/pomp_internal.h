@@ -259,9 +259,6 @@ static R_INLINE SEXP getPairListElement (SEXP list, const char *name)
   return CAR(list);
 }
 
-// Defined externally in R base (why no header?)
-SEXP R_MakeExternalPtrFn(DL_FUNC p, SEXP tag, SEXP prot);
-
 #ifdef __cplusplus
 
 template <class Scalar>
