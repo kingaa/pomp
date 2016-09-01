@@ -90,9 +90,7 @@ SEXP euler_model_simulator (SEXP func,
     pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames")),"parameters"))); nprotect++;
     cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames")),"covariates"))); nprotect++;
 
-#pragma GCC diagnostic ignored "-Wpedantic"
-    ff = (pomp_onestep_sim *) R_ExternalPtrAddr(fn);
-#pragma GCC diagnostic pop	
+    *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
     break;
 
@@ -338,9 +336,7 @@ SEXP euler_model_density (SEXP func,
     pidx = INTEGER(PROTECT(matchnames(Pnames,GET_SLOT(func,install("paramnames")),"parameters"))); nprotect++;
     cidx = INTEGER(PROTECT(matchnames(Cnames,GET_SLOT(func,install("covarnames")),"covariates"))); nprotect++;
 
-#pragma GCC diagnostic ignored "-Wpedantic"
-    ff = (pomp_onestep_pdf *) R_ExternalPtrAddr(fn);
-#pragma GCC diagnostic pop	
+    *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
     break;
 

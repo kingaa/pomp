@@ -197,9 +197,8 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
 	
 	// address of native routine
-#pragma GCC diagnostic ignored "-Wpedantic"
-	ff = (pomp_initializer *) R_ExternalPtrAddr(fn);
-#pragma GCC diagnostic pop	
+	*((void **) (&ff)) = R_ExternalPtrAddr(fn);
+	
 	nvar = LENGTH(Snames);
 	xdim[0] = nvar; xdim[1] = ns;
 	PROTECT(x = makearray(2,xdim)); nprotect++;

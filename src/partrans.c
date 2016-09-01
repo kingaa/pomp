@@ -114,9 +114,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 
   case native:			// use native routine
 
-#pragma GCC diagnostic ignored "-Wpedantic"
-    ff = (pomp_transform_fn *) R_ExternalPtrAddr(fn);
-#pragma GCC diagnostic pop	
+    *((void **) (&ff)) = R_ExternalPtrAddr(fn);
     
     if (qmat) {
       idx = INTEGER(PROTECT(name_index(GET_ROWNAMES(GET_DIMNAMES(params)),pompfun,"paramnames","parameters"))); nprotect++;

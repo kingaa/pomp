@@ -116,9 +116,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
     cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
 
     // address of native routine
-#pragma GCC diagnostic ignored "-Wpedantic"
-    ff = (pomp_measure_model_density *) R_ExternalPtrAddr(fn);
-#pragma GCC diagnostic pop	
+    *((void **) (&ff)) = R_ExternalPtrAddr(fn);
 
     break;
 

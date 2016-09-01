@@ -46,14 +46,16 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 
       case regNative:
 	{
+	  // We use some trickery to avoid the ISO C proscription of
+	  //     (void *) <-> (function *) conversion.
+	  // This is cadged from 'R_MakeExternalPtrFn', 
+	  // which is not (yet) part of the R API.
 	  const char *fname, *pkg;
-	  DL_FUNC ff;
+	  union {void *p; DL_FUNC fn;} trick;
 	  fname = (const char *) CHARACTER_DATA(STRING_ELT(nf,0));
 	  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
-	  ff = R_GetCCallable(pkg,fname);
-#pragma GCC diagnostic ignored "-Wpedantic"
-	  PROTECT(f = R_MakeExternalPtr(ff,R_NilValue,R_NilValue)); nprotect++;
-#pragma GCC diagnostic pop	
+	  trick.fn = R_GetCCallable(pkg,fname);
+	  PROTECT(f = R_MakeExternalPtr(trick.p,R_NilValue,R_NilValue)); nprotect++;
 	}
 	break;
       
