@@ -5,9 +5,9 @@ layout: pomp
 
 ## Installation instructions
 
-### Development version
+### From Github:
 
-The development version is usually several weeks ahead of the version on CRAN.
+The github version is usually several weeks ahead of the version on CRAN.
 You can install it from the Github repository by executing the following in an **R** session:
 
 ```
@@ -21,21 +21,7 @@ require(devtools)
 install_github("kingaa/pomp")
 ```
 
-Alternatively, you can download the source as a [tarball](http://github.com/kingaa/pomp/tarball/master)
-or as a [zip file](http://github.com/kingaa/pomp/zipball/master).
-Unpack the tarball or zipfile (thereby creating a directory named, say, `kingaa-pomp-xxxxxxx`) and build the package source by executing
-
-```
-R CMD build kingaa-pomp-xxxxxxx
-```
-
-Then install the package from the **R** command line:
-
-```
-install.packages("pomp_X.X.X.X.tar.gz")
-```
-
-### Stable version
+### From CRAN:
 
 Source and binaries for the [CRAN version are available here](http://cran.r-project.org/package=pomp).
 
