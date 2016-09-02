@@ -168,10 +168,10 @@ in ‘mif2.pfilter’: 1 filtering failure occurred.
 > try(mif2(m5,Np=100,Nmif=2))
 Non-finite likelihood computed:
 likelihood, data, states, and parameters are:
-    lik      y1      y2      x1      x2 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 
-    NaN   0.242   7.039     Inf     NaN   0.800    -Inf   0.213   0.900   3.000 
-sigma.2 sigma.3     tau    x1.0    x2.0 
- -0.500   2.000   1.000  -6.044   0.663 
+   time     lik      y1      y2      x1      x2 alpha.1 alpha.2 alpha.3 alpha.4 
+  2.000     NaN   0.242   7.039     Inf     NaN   0.800    -Inf   0.213   0.900 
+sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+  3.000  -0.500   2.000   1.000  -6.044   0.663 
 Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
 > 
 > library(ggplot2)
@@ -200,8 +200,8 @@ newly created object(s):
 > try(mif2(gompertz,Np=1000,rw.sd=rw.sd(K=0.1,r=0.1),cooling.fraction.50=0.5))
 Non-finite likelihood computed:
 likelihood, data, states, and parameters are:
-    lik       Y       X       K       r   sigma     tau     X.0 
-    NaN  1.1186     NaN -1.1194 -0.0291  0.1000  0.1000  1.0000 
+   time     lik       Y       X       K       r   sigma     tau     X.0 
+ 1.0000     NaN  1.1186     NaN -1.1194 -0.0291  0.1000  0.1000  1.0000 
 Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
 > 
 > pomp(gompertz,
@@ -217,8 +217,8 @@ Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite 
 > try(mif2(po,Nmif=3,Np=1000,rw.sd=rw.sd(K=5,r=Inf),cooling.fraction.50=0.5))
 Non-finite likelihood computed:
 likelihood, data, states, and parameters are:
-  lik     Y     X     K     r sigma   tau   X.0 
-  NaN  1.12   NaN 10.06   NaN  0.10  0.10  1.00 
+ time   lik     Y     X     K     r sigma   tau   X.0 
+ 1.00   NaN  1.12   NaN 10.06   NaN  0.10  0.10  1.00 
 Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
 > 
 > coef(gompertz,"K") <- 10
@@ -253,6 +253,21 @@ Error : in ‘mif2’: ‘rw.sd’ should be specified using the ‘rw.sd’ fun
 + }
 > 
 > stopifnot(all.equal(f(),c(0.1,0.1,0.0,0.1)))
+> 
+> m7 <- m1
+> coef(m7,"tau") <- 0
+> m7 <- mif2(m7,Nmif=2)
+Warning messages:
+1: in ‘mif2.pfilter’: filtering failure at last filter iteration, using unweighted mean for ‘coef’ 
+2: in ‘mif2.pfilter’: 100 filtering failures occurred. 
+3: in ‘mif2.pfilter’: filtering failure at last filter iteration, using unweighted mean for ‘coef’ 
+4: in ‘mif2.pfilter’: 100 filtering failures occurred. 
+> m7 <- mif2(m7)
+Warning messages:
+1: in ‘mif2.pfilter’: filtering failure at last filter iteration, using unweighted mean for ‘coef’ 
+2: in ‘mif2.pfilter’: 100 filtering failures occurred. 
+3: in ‘mif2.pfilter’: filtering failure at last filter iteration, using unweighted mean for ‘coef’ 
+4: in ‘mif2.pfilter’: 100 filtering failures occurred. 
 > 
 > dev.off()
 null device 

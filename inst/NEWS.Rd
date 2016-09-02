@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.8.9}{
+  \itemize{
+    \item A bug in \code{mif2} arising when filtering fails in the final timestep has been fixed.
+    In this case, when all particles are deemed inconsistent with the data, we use an unweighted mean (with a warning) in place of the default weighted mean.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.7.7}{
   \itemize{
     \item The stochastic simulation algorithms underlying the Gillespie and K-leap methods (\code{gillespie.sim}, \code{kleap.sim}) have been refactored in C.

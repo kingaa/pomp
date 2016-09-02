@@ -1,5 +1,12 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._8._9:
+
+        • A bug in ‘mif2’ arising when filtering fails in the final
+          timestep has been fixed.  In this case, when all particles
+          are deemed inconsistent with the data, we use an unweighted
+          mean (with a warning) in place of the default weighted mean.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._7._7:
 
         • The stochastic simulation algorithms underlying the Gillespie

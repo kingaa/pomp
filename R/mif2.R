@@ -160,14 +160,21 @@ mif2.pfilter <- function (object, params, Np,
             params <- params[,first]
             cat("Non-finite likelihood computed:\n")
             cat("likelihood, data, states, and parameters are:\n")
-            print(c(lik=weight,datvals,states,params))
+            print(c(time=times[nt+1],lik=weight,datvals,states,params))
             stop(ep,sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
         }
         gnsi <- FALSE
         
         ## compute weighted mean at last timestep
-        if (nt == ntimes)
-            coef(object,transform=transform) <- apply(params,1L,weighted.mean,w=weights)
+        if (nt == ntimes) {
+            if (any(weights>0)) {
+                coef(object,transform=transform) <- apply(params,1L,weighted.mean,w=weights)
+            } else {
+                warning(ep,"filtering failure at last filter iteration, using unweighted mean for ",
+                        sQuote("coef"),call.=FALSE)
+                coef(object,transform=transform) <- apply(params,1L,mean)
+            }
+        }
         
         ## compute effective sample size, log-likelihood
         ## also do resampling if filtering has not failed

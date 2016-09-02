@@ -171,4 +171,9 @@ f <- function () {
 
 stopifnot(all.equal(f(),c(0.1,0.1,0.0,0.1)))
 
+m7 <- m1
+coef(m7,"tau") <- 0
+m7 <- mif2(m7,Nmif=2)
+m7 <- mif2(m7)
+
 dev.off()
