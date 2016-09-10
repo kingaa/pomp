@@ -145,6 +145,14 @@
   pages: "10143-10162"
   doi: "http://dx.doi.org/10.1029/94JC00572"
 
+- key: Fasiolo2016
+  author: "M. Fasiolo, N. Pya, and S. N. Wood"
+  year: "2016"
+  title: "A Comparison of Inferential Methods for Highly Nonlinear State Space Models in Ecology and Epidemiology"
+  journal: "Statistical Science"
+  pages: "96-118"
+  doi: "http://dx.doi.org/10.1214/15-STS534"
+
 - key: Gillespie1977a
   author: "D. T. Gillespie"
   year: "1977"
