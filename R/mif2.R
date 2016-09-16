@@ -13,7 +13,7 @@ pkern.sd <- function (rw.sd, time, paramnames) {
              " function. See ",sQuote("?mif2"),".",call.=FALSE)
     }
     if (is.null(names(rw.sd)) | any(names(rw.sd)==""))
-        stop(ep,"parameters must be referenced by name.",call.=FALSE)
+        stop(ep,"in ",sQuote("rw.sd"),": parameters must be referenced by name.",call.=FALSE)
     if (!all(names(rw.sd) %in% paramnames)) {
         unrec <- names(rw.sd)[!names(rw.sd) %in% paramnames]
         stop(ep,"the following parameter(s), ",
