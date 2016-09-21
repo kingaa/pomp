@@ -4,6 +4,7 @@
 #include <Rdefines.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
+#include <Rversion.h>
 
 #include "pomp_internal.h"
 
@@ -46,16 +47,23 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 
       case regNative:
 	{
-	  // We use some trickery to avoid the ISO C proscription of
+	  // Before svn version 71180, R_MakeExternalPtrFn is not part of the R API.
+	  // Therefore, we must use some trickery to avoid the ISO C proscription of
 	  //     (void *) <-> (function *) conversion.
-	  // This is cadged from 'R_MakeExternalPtrFn', 
-	  // which is not (yet) part of the R API.
 	  const char *fname, *pkg;
-	  union {void *p; DL_FUNC fn;} trick;
 	  fname = (const char *) CHARACTER_DATA(STRING_ELT(nf,0));
 	  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
+	  int svn = R_SVN_REVISION;
+#if (R_SVN_REVISION < 71180)
+	  // This is cadged from 'R_MakeExternalPtrFn'.
+	  union {void *p; DL_FUNC fn;} trick;
 	  trick.fn = R_GetCCallable(pkg,fname);
 	  PROTECT(f = R_MakeExternalPtr(trick.p,R_NilValue,R_NilValue)); nprotect++;
+#else
+	  DL_FUNC fn;
+	  fn = R_GetCCallable(pkg,fname);
+	  PROTECT(f = R_MakeExternalPtrFn(fn,R_NilValue,R_NilValue)); nprotect++;
+#endif
 	}
 	break;
       
