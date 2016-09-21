@@ -53,7 +53,6 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 	  const char *fname, *pkg;
 	  fname = (const char *) CHARACTER_DATA(STRING_ELT(nf,0));
 	  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
-	  int svn = R_SVN_REVISION;
 #if (R_SVN_REVISION < 71180)
 	  // This is cadged from 'R_MakeExternalPtrFn'.
 	  union {void *p; DL_FUNC fn;} trick;
