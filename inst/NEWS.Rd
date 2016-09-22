@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.8.10}{
+  \itemize{
+    \item C codes have been modified to take advantage of changes to the \pkg{R} API (R SVN REVISION 71180).
+  }
+}
 \section{Changes in \pkg{pomp} version 1.8.9}{
   \itemize{
     \item A bug in \code{mif2} arising when filtering fails in the final timestep has been fixed.
