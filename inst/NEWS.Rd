@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.8.11}{
+  \itemize{
+    \item During particle filtering, when non-finite \code{dmeasure} values are generated, an error is generated and the offending parameters, states, data, and time are reported.
+    In methods that use parameter transformations (\code{transform=TRUE}), the reported parameters were on the transformed (estimation) scale, which can be confusing.
+    The error message now gives the parameters on the natural (model) scale.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.8.10}{
   \itemize{
     \item C codes have been modified to take advantage of changes to the \pkg{R} API (R SVN REVISION 71180).

@@ -157,7 +157,7 @@ mif2.pfilter <- function (object, params, Np,
             datvals <- object@data[,nt]
             weight <- weights[first]
             states <- X[,first,1L]
-            params <- params[,first]
+            params <- if (transform) tparams[,first] else params[,first]
             cat("Non-finite likelihood computed:\n")
             cat("likelihood, data, states, and parameters are:\n")
             print(c(time=times[nt+1],lik=weight,datvals,states,params))
