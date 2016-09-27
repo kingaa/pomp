@@ -78,9 +78,6 @@ probe.quantile(var, prob, transform = identity)
   \item{diff}{
     order of differencing to perform.
   }
-  \item{\dots}{
-    Additional arguments to be passed through to the probe computation.
-  }
 }
 \value{
   A call to any one of these functions returns a probe function, suitable for use in \code{\link{probe}} or \code{\link{probe.match}}.
