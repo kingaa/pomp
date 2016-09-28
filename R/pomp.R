@@ -521,18 +521,18 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         if (missing(skeleton.type)) {
             skeleton.type <- data@skeleton.type
         } else {
-            warning(ep,"the ",sQuote("skeleton.type"),
-                    " argument is deprecated and will be removed in a future release.\n",
-                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                    call.=FALSE)
+            stop(ep,"the ",sQuote("skeleton.type"),
+                 " argument is no longer used.\n",
+                 "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                 call.=FALSE)
         }
         if (missing(skelmap.delta.t)) {
             skelmap.delta.t <- data@skelmap.delta.t
         } else {
-            warning(ep,"the ",sQuote("skelmap.delta.t"),
-                    " argument is deprecated and will be removed in a future release.\n",
-                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                    call.=FALSE)
+            stop(ep,"the ",sQuote("skelmap.delta.t"),
+                 " argument is no longer used.\n",
+                 "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                 call.=FALSE)
         }
         if (missing(skeleton)) {
             skeleton <- data@skeleton
@@ -554,13 +554,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                 }
             )
             skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
-            if (skeleton.type=="undef") {
-                warning(ep,"the default ",sQuote("skeleton.type=\"map\""),
-                        " is deprecated and will be removed in a future release.\n",
-                        "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                        call.=FALSE)
-                skeleton.type <- "map"
-            }
         }
 
         if (missing(fromEstimationScale)) {
@@ -650,46 +643,27 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
             }
             times <- data[tpos,,drop=TRUE]
             data <- data[-tpos,,drop=FALSE]
-        } else if (is.array(data) && !is.matrix(data)) {
-            ## 'data' is a non-matrix array
-            stop(ep,sQuote("data"),
-                 "must be a data frame or an object of class ",
-                 sQuote("pomp"),call.=FALSE)
-        } else if (is.numeric(data) && !is.matrix(data)) {
-            ## 'data' is a numeric vector
-            warning(ep,sQuote("data")," should be a data frame or an object of class ",sQuote("pomp"),
-                    ". The option to provide a numeric vector for the ",sQuote("data"),
-                    " argument is deprecated and will be removed in a future release.",
-                    call.=FALSE)
-            data=matrix(data,nrow=1,ncol=length(data),
-                        dimnames=list("data",NULL))
-        } else if (is.matrix(data)) {
-            ## 'data' is a matrix
-            warning(ep,sQuote("data")," should be a data frame or an object of class ",sQuote("pomp"),
-                    ". The option to provide a matrix for the ",sQuote("data"),
-                    " argument is deprecated and will be removed in a future release.",
-                    call.=FALSE)
         } else {
             stop(ep,sQuote("data"),
-                 "must be a data frame or an object of class ",
+                 " must be a data frame or an object of class ",
                  sQuote("pomp"),call.=FALSE)
         }
         
         if (missing(skeleton.type)) {
             skeleton.type <- "undef"
         } else {
-            warning(ep,"the ",sQuote("skeleton.type"),
-                    " argument is deprecated and will be removed in a future release.\n",
-                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                    call.=FALSE)
+            stop(ep,"the ",sQuote("skeleton.type"),
+                 " argument is no longer used.\n",
+                 "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                 call.=FALSE)
         }
         if (missing(skelmap.delta.t)) {
             skelmap.delta.t <- 1
         } else {
-            warning(ep,"the ",sQuote("skelmap.delta.t"),
-                    " argument is deprecated and will be removed in a future release.\n",
-                    "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                    call.=FALSE)
+            stop(ep,"the ",sQuote("skelmap.delta.t"),
+                 " argument is no longer used.\n",
+                 "See ",sQuote("?pomp")," for an explanation of the new syntax.",
+                 call.=FALSE)
         }
         if (!missing(skeleton)) {
             skeleton <- substitute(skeleton)
@@ -708,15 +682,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
                 }
             )
             skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
-            if (skeleton.type=="undef") {
-                warning(ep,"the default ",sQuote("skeleton.type=\"map\""),
-                        " is deprecated and will be removed in a future release.\n",
-                        "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-                        call.=FALSE)
-                skeleton.type <- "map"
-            }
         }
-        if (skeleton.type=="undef") skeleton.type <- "map"
 
         ## if 'measurement model' is specified as a formula, this overrides
         ## specification of 'rmeasure' or 'dmeasure'

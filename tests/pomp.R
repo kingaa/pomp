@@ -42,23 +42,21 @@ pomp(dat,times=1,t0=0,covar=dat,tcovar=1) -> po
 try(pomp(dat,times="time",t0=0,covar=dat,tcovar="bob") -> po)
 try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
 try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
-pomp(dat$y,times=dat$time,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po
+try(pomp(dat$y,times=dat$time,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po)
+try(pomp(dat,times=1,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po)
 plot(po)
-pomp(dat$y,times=dat$time,t0=0,
-     skeleton=function(x,t,params,...){x}) -> po
+pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
 try(pomp())
 try(pomp(as.matrix(dat),times=dat$time,t0=0) -> po)
-pomp(t(as.matrix(dat)),times=dat$time,t0=0,
-     skeleton.type="map",skelmap.delta.t=1) -> po
-pomp(t(as.matrix(dat)),times=dat$time,t0=0,
-     skeleton=function(x,t,params,...){x}) -> po
-pomp(dat$y,times=dat$time,t0=0) -> po
-pomp(dat$y,times=dat$time,t0=0,
-     skeleton.type="map",skelmap.delta.t=1) -> po
-pomp(dat$y,times=dat$time,t0=0,
-     skeleton=function(x,t,params,...){x}) -> po
+try(pomp(t(as.matrix(dat)),times=dat$time,t0=0,
+         skeleton.type="map",skelmap.delta.t=1) -> po)
+try(pomp(dat,times=1,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po)
+pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
+try(pomp(dat$y,times=dat$time,t0=0) -> po)
+try(pomp(dat,times=1,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po)
+pomp(dat,times=1,t0=0,skeleton=function(x,t,params,...){x}) -> po
 try(pomp(dat$y,times=dat$time[1:10],t0=0) -> po)
-pomp(ricker,skeleton.type="map",skelmap.delta.t=1) -> po
+try(pomp(ricker,skeleton.type="map",skelmap.delta.t=1) -> po)
 try(pomp(ricker,skeleton=identity(identity)) -> po)
 try(pomp(ricker,toEstimationScale=identity) -> po)
 try(pomp(ricker,fromEstimationScale=identity) -> po)

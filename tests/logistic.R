@@ -3,7 +3,7 @@ set.seed(73658676L)
 
 png(file='logistic-%02d.png',res=100)
 
-po <- pomp(data=rbind(obs=rep(0,1000)),times=0.1*seq.int(length=1000),t0=0)
+try(pomp(data=rbind(obs=rep(0,1000)),times=0.1*seq.int(length=1000),t0=0))
 
 po <- pomp(
     data=data.frame(obs=rep(0,1000),time=0.1*seq.int(length=1000)),

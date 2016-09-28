@@ -82,11 +82,12 @@ rw2 <- pomp(
         y2 ~ norm(mean=x2,sd=tau)
     ),
     initializer=bad.initializer,
-    times=1:100,
-    data=rbind(
+    data=data.frame(
+        t=1:100,
         y1=rep(0,100),
         y2=rep(0,100)
     ),
+    times=1,
     t0=0,
     useless=23
 )
