@@ -14,6 +14,6 @@ pompExample(ricker)
 plot(ricker)
 coef(ricker)
 }
-\seealso{\code{\link{pomp}}, \code{\link{gompertz}}, and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.}
+\seealso{\code{\link{pomp}}, \code{\link{gompertz}}, and the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.}
 \keyword{datasets}
 \keyword{models}

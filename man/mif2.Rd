@@ -93,7 +93,7 @@ rw.sd(\dots)
     logical;
     if \code{TRUE}, optimization is performed on the estimation scale, as defined by the user-supplied parameter transformations (see \code{\link{pomp}}).
     This can be used, for example, to enforce positivity or interval constraints on model parameters.
-    See the tutorials on the \href{http://kingaa.github.io/pomp}{package website} for examples.
+    See the tutorials on the \href{https://kingaa.github.io/pomp}{package website} for examples.
   }
   \item{cooling.type, cooling.fraction.50}{
     specifications for the cooling schedule, i.e., the manner in which the intensity of the parameter perturbations is reduced with successive filtering iterations.
@@ -204,7 +204,7 @@ rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
 }
 \author{Aaron A. King, Edward L. Ionides, and Dao Nguyen}
 \seealso{
-  \code{\link{pomp}}, \code{\link{pfilter}}, \code{\link{mif}}, and the \href{http://kingaa.github.io/pomp/vignettes/mif2.html}{IF2 tutorial} on the \href{http://kingaa.github.io/pomp}{package website}.
+  \code{\link{pomp}}, \code{\link{pfilter}}, \code{\link{mif}}, and the \href{https://kingaa.github.io/pomp/vignettes/mif2.html}{IF2 tutorial} on the \href{https://kingaa.github.io/pomp}{package website}.
 }
 \keyword{optimize}
 \keyword{ts}

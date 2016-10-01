@@ -254,7 +254,7 @@ plot(bad)
 }
 \seealso{
   \link{pomp}, \link{probe functions}, \link{spect},
-  and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
+  and the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 }
 \keyword{optimize}
 \keyword{ts}

@@ -94,7 +94,7 @@
 \author{Aaron A. King}
 \seealso{
   \code{\link{pomp}}, \code{\link{pfilter}},
-  and the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
+  and the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 }
 \references{
   Evensen, G. (1994)

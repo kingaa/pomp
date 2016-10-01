@@ -144,6 +144,6 @@
 }
 \author{Edward L. Ionides, Aaron A. King}
 \seealso{
-  \code{\link{pomp}}, \code{\link{probe}}, \link{MCMC proposal distributions}, and the tutorials on the \href{http://kingaa.github.io/pomp/}{package website}.  
+  \code{\link{pomp}}, \code{\link{probe}}, \link{MCMC proposal distributions}, and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.  
 }
 \keyword{ts}

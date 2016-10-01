@@ -41,18 +41,18 @@
 \section{Comments, bug reports, feature requests}{
   Contributions are welcome, as are comments, feature requests, and bug reports.
   Please submit these via the \href{https://github.com/kingaa/pomp/issues}{issues page}.
-  See the \href{http://kingaa.github.io/pomp}{package website} for more information, access to the package new RSS feed, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
-  Help requests are welcome, but please read the \href{http://kingaa.github.io/pomp/FAQ.html#how-can-i-submit-an-effective-request-for-help}{FAQ} before sending requests.
+  See the \href{https://kingaa.github.io/pomp}{package website} for more information, access to the package new RSS feed, links to the authors' websites, references to the literature, and up-to-date versions of the package source and documentation.
+  Help requests are welcome, but please read the \href{https://kingaa.github.io/pomp/FAQ.html#how-can-i-submit-an-effective-request-for-help}{FAQ} before sending requests.
 
   We are very interested in improving the documentation and the package error and warning messages.
   If you find a portion of the documentation impenetrable, please let us know, preferably with suggestions for improvement.
   If you find an error message that is uninformative or misleading, please be sure to let us know.
   The best way to do so is via the \href{https://github.com/kingaa/pomp/issues}{package issues page}.
-  Please do read the \href{http://kingaa.github.io/pomp/FAQ.html#how-can-i-submit-an-effective-request-for-help}{FAQ} before reporting an issue.
+  Please do read the \href{https://kingaa.github.io/pomp/FAQ.html#how-can-i-submit-an-effective-request-for-help}{FAQ} before reporting an issue.
 }
 \section{Documentation}{
-  A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the \href{http://kingaa.github.io/pomp/docs.html}{package webpage}.
-  Examples are given in the tutorials on the \href{http://kingaa.github.io/pomp}{package website}, in the demos, and via the \code{\link{pompExample}} function.
+  A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the \href{https://kingaa.github.io/pomp/docs.html}{package webpage}.
+  Examples are given in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}, in the demos, and via the \code{\link{pompExample}} function.
   See a list of the demos via \preformatted{
     demo(package="pomp")}
   and a list of the included examples via \preformatted{
@@ -68,9 +68,9 @@
   A. A. King, D. Nguyen, and E. L. Ionides (2016)
   Statistical Inference for Partially Observed Markov Processes via the \R Package \pkg{pomp}.
   \emph{Journal of Statistical Software} 69(12): 1--43.
-  An updated version of this paper is available on the \href{http://kingaa.github.io/pomp/docs.html}{package website}.
+  An updated version of this paper is available on the \href{https://kingaa.github.io/pomp/docs.html}{package website}.
 
-  See the package website, \url{http://kingaa.github.io/pomp}, for more references.
+  See the package website, \url{https://kingaa.github.io/pomp}, for more references.
 }
 \author{Aaron A. King}
 \seealso{

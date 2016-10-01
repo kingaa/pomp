@@ -32,7 +32,7 @@
     \item{dprior}{which evaluates the prior probability density function;}
     \item{skeleton}{which computes the deterministic skeleton of the unobserved state process.}
   }
-  The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{http://kingaa.github.io/pomp}{package website}.
+  The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp}{package website}.
 }
 \usage{
 pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
@@ -156,13 +156,13 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
 
   \strong{Note to Windows and Mac users:}
   By default, your \R installation may not support \code{\link[=SHLIB]{R CMD SHLIB}}.
-  The \href{http://kingaa.github.io/pomp/install.html}{package website contains installation instructions} that explain how to enable this powerful feature of \R.
+  The \href{https://kingaa.github.io/pomp/install.html}{package website contains installation instructions} that explain how to enable this powerful feature of \R.
 }
 \section{General rules for writing C snippets}{
   In writing a C snippet one must bear in mind both the \emph{goal} of the snippet, i.e., what computation it is intended to perform, and the \emph{context} in which it will be executed.
   These are explained here in the form of general rules.
   Additional specific rules apply according to the function of the particular C snippet.
-  Illustrative examples are given in the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
+  Illustrative examples are given in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
   \enumerate{
     \item C snippets must be valid C.
     They will embedded verbatim in a template file which will then be compiled by a call to \code{R CMD SHLIB}.
@@ -200,7 +200,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Accordingly, each state variable should be over-written with its new value.
     In addition to the states, parameters, covariates (if any), and observables, the variables \code{t} and \code{dt}, containing respectively the time at the beginning of the step and the step's duration, will be defined in the context in which the C snippet is executed.
     See below under \dQuote{General rules for C snippet writing} for more details.
-    Examples are to be found in the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
+    Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
     
     If \code{f} is given as an \R function, it should have prototype \preformatted{
       f(x, t, params, delta.t, ...)}
@@ -280,7 +280,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \code{f} should return the \emph{log} likelihood of a transition from \code{x1} at time \code{t1} to \code{x2} at time \code{t2}, assuming that no intervening transitions have occurred.
   }
   
-  To see examples, consult the tutorials on the \href{http://kingaa.github.io/pomp}{package website}.
+  To see examples, consult the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 
 }
 \section{The Measurement Model}{
@@ -296,7 +296,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
   }
   General rules for writing C snippets are provided below.
-  The tutorials on the \href{http://kingaa.github.io/pomp}{package website} give examples as well.
+  The tutorials on the \href{https://kingaa.github.io/pomp}{package website} give examples as well.
 
   It is also possible, though far less efficient, to specify \code{rmeasure} using an \R function.
   In this case, specify the measurement model simulator by furnishing \preformatted{
@@ -366,7 +366,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \item When the skeleton is a vectorfield, the component corresponding to state variable \code{x} is named \code{Dx} and is the value of $dx/dt$.
     \item As with the other C snippets, all states, parameters and covariates, as well as the current time, \code{t}, will be defined in the context within which the snippet is executed.
   }
-  The tutorials on the \href{http://kingaa.github.io/pomp}{package website} give some examples.
+  The tutorials on the \href{https://kingaa.github.io/pomp}{package website} give some examples.
 
   If \code{f} is an \R function, it must be of prototype \preformatted{
     f(x, t, params, \dots)}
@@ -478,7 +478,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   In formulating models, one sometimes wishes to define a state variable that will accumulate some quantity over the interval between successive observations.
   \pkg{pomp} provides a facility to make such features more convenient.
   Specifically, variables named in the \code{pomp}'s \code{zeronames} argument will be set to zero immediately following each observation.
-  See \code{\link{euler.sir}} and the tutorials on the \href{http://kingaa.github.io/pomp}{package website} for examples.
+  See \code{\link{euler.sir}} and the tutorials on the \href{https://kingaa.github.io/pomp}{package website} for examples.
 }
 \section{Viewing generated C code}{
   It can be useful to view the C code generated by calling \code{pomp} with one or more C snippet arguments.

@@ -18,7 +18,7 @@ coef(gompertz)
 coef(gompertz,transform=TRUE)
 }
 \seealso{
-  \code{pomp}, \code{ricker}, and the tutorials at \url{http://kingaa.github.io/pomp}.
+  \code{pomp}, \code{ricker}, and the tutorials at \url{https://kingaa.github.io/pomp}.
 }
 \keyword{models}
 \keyword{datasets}
