@@ -179,8 +179,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     They must be referred to in measurement model C snippets (\code{rmeasure} and \code{dmeasure}) by those names.
     \item If the \code{pomp} object contains a table of covariates (see above), then the variables in the covariate table will be available, by their names, in the context within which the C snippet is executed.
     \item Because the dot \sQuote{.} has syntactic meaning in C, \R variables with names containing dots (\sQuote{.}) are replaced in the C codes by variable names in which all dots have been replaced by underscores (\sQuote{_}).
-    \item The header \file{R.h}, provided with \R, will be included in the generated C file, making all of the \href{http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the C snippet.
-    This makes a great many useful functions available, including all of \R's \href{https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions}{statistical distribution functions}.
+    \item The header \file{R.h}, provided with \R, will be included in the generated C file, making all of the \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the C snippet.
+    This makes a great many useful functions available, including all of \R's \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions}{statistical distribution functions}.
     \item The header \href{https://github.com/kingaa/pomp/blob/master/inst/include/pomp.h}{\file{pomp.h}}, provided with \pkg{pomp}, will also be included, making all of the \pkg{pomp} C API available for use in every C snippet.
     Do \preformatted{file.show(system.file("include/pomp.h",package="pomp"))} to view this header file.
     \item Snippets of C code passed to the \code{globals} argument of \code{pomp} will be included at the head of the generated C file.
