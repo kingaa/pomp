@@ -5,6 +5,7 @@
     \item During particle filtering, when non-finite \code{dmeasure} values are generated, an error is generated and the offending parameters, states, data, and time are reported.
     In methods that use parameter transformations (\code{transform=TRUE}), the reported parameters were on the transformed (estimation) scale, which can be confusing.
     The error message now gives the parameters on the natural (model) scale.
+    \item Modified \file{src/ssa.c} to fix UBSAN errors.
   }
 }
 \section{Changes in \pkg{pomp} version 1.8.10}{
