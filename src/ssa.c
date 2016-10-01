@@ -114,9 +114,14 @@ void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   int flag = 0;
   double t = times[0];
   double tmax = times[ntimes-1];
-  double covars[mcov], par[npar], y[nvar], f[nevent];
+  double *covars = NULL;
+  double *f = NULL;
+  double par[npar], y[nvar];
   struct lookup_table tab = {lcov, mcov, 0, tcov, cov};
   int i, j;
+
+  if (mcov > 0) covars = (double *) Calloc(mcov,double);
+  if (nevent > 0) f = (double *) Calloc(nevent,double);
 
   // Copy parameters and states
   for (i = 0; i < npar; i++) par[i] = params[i+npar*irep];
@@ -166,5 +171,8 @@ void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     }
 
     if ((mcov > 0) && (t <= tmax)) table_lookup(&tab,t,covars);
+
   }
+  if (mcov > 0) Free(covars);
+  if (nevent > 0) Free(f);
 }
