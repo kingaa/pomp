@@ -53,15 +53,15 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 	  const char *fname, *pkg;
 	  fname = (const char *) CHARACTER_DATA(STRING_ELT(nf,0));
 	  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
-#if (R_SVN_REVISION < 71180)
+#if (R_SVN_REVISION > 71179)
+	  DL_FUNC fn;
+	  fn = R_GetCCallable(pkg,fname);
+	  PROTECT(f = R_MakeExternalPtrFn(fn,R_NilValue,R_NilValue)); nprotect++;
+#else
 	  // This is cadged from 'R_MakeExternalPtrFn'.
 	  union {void *p; DL_FUNC fn;} trick;
 	  trick.fn = R_GetCCallable(pkg,fname);
 	  PROTECT(f = R_MakeExternalPtr(trick.p,R_NilValue,R_NilValue)); nprotect++;
-#else
-	  DL_FUNC fn;
-	  fn = R_GetCCallable(pkg,fname);
-	  PROTECT(f = R_MakeExternalPtrFn(fn,R_NilValue,R_NilValue)); nprotect++;
 #endif
 	}
 	break;

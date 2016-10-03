@@ -262,7 +262,7 @@ SEXP euler_model_density (SEXP func,
 			  SEXP tcovar, SEXP covar, SEXP log, SEXP args, SEXP gnsi) 
 {
   int nprotect = 0;
-  int mode;
+  pompfunmode mode = undef;
   int give_log;
   int nvars, npars, nreps, ntimes, ncovars, covlen;
   pomp_onestep_pdf *ff = NULL;

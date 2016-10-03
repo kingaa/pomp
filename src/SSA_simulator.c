@@ -83,7 +83,7 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   SEXP statenames, paramnames, covarnames;
   int nstates, nparams, ncovars;
   int nzeros = LENGTH(zeronames);
-  int use_native = 0;
+  pompfunmode use_native = undef;
   SEXP X, pindex, sindex, cindex, zindex;
   int *sidx, *pidx, *cidx, *zidx, *didx = 0;
   SEXP fn, Snames, Pnames, Cnames;
