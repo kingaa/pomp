@@ -18,7 +18,7 @@
   \item{object}{An object of class \code{pomp}.}
   \item{nsim}{
     The number of simulations to perform.
-    Note that the number of replicates will be \code{nsim} times \code{ncol(xstart)}.
+    Note that the number of replicates will be \code{nsim} times \code{ncol(params)}.
   }
   \item{seed}{
     optional; if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.
