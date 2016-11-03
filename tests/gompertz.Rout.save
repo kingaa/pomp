@@ -50,10 +50,10 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x2cdeb58>
+<environment: 0x3c73b30>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x2c78fb0>
+<environment: 0x3bf9588>
 measurement model simulator, rmeasure = native function ‘_gompertz_normal_rmeasure’
 measurement model density, dmeasure = native function ‘_gompertz_normal_dmeasure’
 prior simulator, rprior = not specified
@@ -64,12 +64,12 @@ parameter transformation (to estimation scale) = function (params, ...)
 {
     log(params)
 }
-<environment: 0x2c2f770>
+<environment: 0x3baf5a0>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x2c2f770>
+<environment: 0x3baf5a0>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -89,7 +89,7 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x2cdeb58>
+<environment: 0x3c73b30>
 > 
 > po <- gompertz
 > coef(po)
@@ -260,4 +260,7 @@ iteration loglik     r
 > x <- rprocess(gompertz,xstart=x0,times=1:2,params=cc,offset=1)
 > x <- array(data=x,dim=1,dimnames=list(rownames(x)))
 > y <- rmeasure(gompertz,x=x,y=0,params=cc,times=2)
+> x <- array(data=x,dim=c(1,1,1,1,1),dimnames=list(rownames(x)))
+> y <- rmeasure(gompertz,x=x,y=0,params=cc,times=2)
+> 
 > 

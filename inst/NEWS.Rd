@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.9.1}{
+  \itemize{
+    \item Source code fixes to eliminate warnings during compilation.
+    \item Improved test suite.
+    \item Minor documentation correction.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.8.11}{
   \itemize{
     \item During particle filtering, when non-finite \code{dmeasure} values are generated, an error is generated and the offending parameters, states, data, and time are reported.

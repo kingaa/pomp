@@ -83,3 +83,6 @@ x0 <- init.state(gompertz,params=cc)
 x <- rprocess(gompertz,xstart=x0,times=1:2,params=cc,offset=1)
 x <- array(data=x,dim=1,dimnames=list(rownames(x)))
 y <- rmeasure(gompertz,x=x,y=0,params=cc,times=2)
+x <- array(data=x,dim=c(1,1,1,1,1),dimnames=list(rownames(x)))
+y <- rmeasure(gompertz,x=x,y=0,params=cc,times=2)
+
