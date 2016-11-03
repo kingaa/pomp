@@ -76,3 +76,10 @@ gg <- pomp(gompertz,skeleton=map(function(x,t,params,...){
 }))
 coef(gg,c("X.0","r")) <- c(1.5,3)
 trajectory(gg,as.data.frame=TRUE,times=seq(0,10))
+
+# test coercion in internals for one-d arrays
+cc <- array(data=coef(gompertz),dim=5,dimnames=list(names(coef(gompertz))))
+x0 <- init.state(gompertz,params=cc)
+x <- rprocess(gompertz,xstart=x0,times=1:2,params=cc,offset=1)
+x <- array(data=x,dim=1,dimnames=list(rownames(x)))
+y <- rmeasure(gompertz,x=x,y=0,params=cc,times=2)

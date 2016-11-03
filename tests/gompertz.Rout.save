@@ -1,5 +1,5 @@
 
-R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -50,10 +50,10 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3599828>
+<environment: 0x2cdeb58>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x3539c28>
+<environment: 0x2c78fb0>
 measurement model simulator, rmeasure = native function ‘_gompertz_normal_rmeasure’
 measurement model density, dmeasure = native function ‘_gompertz_normal_dmeasure’
 prior simulator, rprior = not specified
@@ -64,12 +64,12 @@ parameter transformation (to estimation scale) = function (params, ...)
 {
     log(params)
 }
-<environment: 0x34e6f68>
+<environment: 0x2c2f770>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x34e6f68>
+<environment: 0x2c2f770>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -89,7 +89,7 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x3599828>
+<environment: 0x2cdeb58>
 > 
 > po <- gompertz
 > coef(po)
@@ -253,4 +253,11 @@ iteration loglik     r
 9  0.5988    8    1
 10 1.9953    9    1
 11 0.1008   10    1
+> 
+> # test coercion in internals for one-d arrays
+> cc <- array(data=coef(gompertz),dim=5,dimnames=list(names(coef(gompertz))))
+> x0 <- init.state(gompertz,params=cc)
+> x <- rprocess(gompertz,xstart=x0,times=1:2,params=cc,offset=1)
+> x <- array(data=x,dim=1,dimnames=list(rownames(x)))
+> y <- rmeasure(gompertz,x=x,y=0,params=cc,times=2)
 > 
