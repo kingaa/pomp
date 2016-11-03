@@ -7,6 +7,22 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 1.9.1</h3>
+
+
+<ul>
+<li><p> Source code fixes to eliminate warnings during compilation.
+</p>
+</li>
+<li><p> Improved test suite.
+</p>
+</li>
+<li><p> Minor documentation correction.
+</p>
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 1.8.11</h3>
 
 
@@ -14,6 +30,9 @@
 <li><p> During particle filtering, when non-finite <code>dmeasure</code> values are generated, an error is generated and the offending parameters, states, data, and time are reported.
 In methods that use parameter transformations (<code>transform=TRUE</code>), the reported parameters were on the transformed (estimation) scale, which can be confusing.
 The error message now gives the parameters on the natural (model) scale.
+</p>
+</li>
+<li><p> Modified &lsquo;<span class="file">src/ssa.c</span>&rsquo; to fix UBSAN errors.
 </p>
 </li></ul>
 
