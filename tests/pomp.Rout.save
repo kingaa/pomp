@@ -95,6 +95,9 @@ Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘
 > try(pomp(dat,times=1,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po)
 Error : in ‘pomp’: the ‘skeleton.type’ argument is no longer used.
 See ‘?pomp’ for an explanation of the new syntax.
+> try(pomp(dat,times=1,t0=0,skelmap.delta.t=1) -> po)
+Error : in ‘pomp’: the ‘skelmap.delta.t’ argument is no longer used.
+See ‘?pomp’ for an explanation of the new syntax.
 > pomp(dat,times=1,t0=0,skeleton=function(x,t,params,...){x}) -> po
 > try(pomp(dat$y,times=dat$time[1:10],t0=0) -> po)
 Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’
