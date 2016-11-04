@@ -101,17 +101,16 @@ Type 'q()' to quit R.
 +         y2 ~ norm(mean=x2,sd=tau)
 +     ),
 +     initializer=bad.initializer,
-+     times=1:100,
-+     data=rbind(
++     data=data.frame(
++         t=1:100,
 +         y1=rep(0,100),
 +         y2=rep(0,100)
 +     ),
++     times=1,
 +     t0=0,
 +     useless=23
 + )
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘useless’
-Warning message:
-in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a matrix for the ‘data’ argument is deprecated and will be removed in a future release. 
 > 
 > rw2 <- pomp(
 +     rprocess = rw.rprocess,
@@ -183,7 +182,7 @@ measurement model simulator, rmeasure = function (x, t, params, covars, ...)
     }
     y
 }
-<environment: 0x3a05458>
+<environment: 0x2ceca10>
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     f <- 0
@@ -195,7 +194,7 @@ measurement model density, dmeasure = function (y, x, t, params, log, covars, ..
         f
     else exp(f)
 }
-<environment: 0x3a05458>
+<environment: 0x2ceca10>
 prior simulator, rprior = not specified
 prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
 skeleton = not specified

@@ -144,7 +144,10 @@ bh.skel <- Csnippet("
 ## ----bh-pomp1------------------------------------------------------------
 parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),
                  skeleton=bh.skel,
-                 statenames="N",paramnames=c("a","b","sigma"))
+                 statenames="N",paramnames=c("a","b","sigma"),
+                 params=c(a=1.1,b=5e-4,sigma=0.5,N.0=30))
+try(traj <- trajectory(parus.bh))
+
 parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),
                  skeleton=map(bh.skel,delta.t=1),
                  statenames="N",paramnames=c("a","b","sigma"))

@@ -1,5 +1,5 @@
 
-R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -33,10 +33,7 @@ newly created object(s):
 > try(trajectory(x))
 Error : in ‘trajectory’: ‘params’ must be supplied
 > try(trajectory(pomp(ou2,skeleton=NULL)))
-Error : in ‘trajectory’: deterministic skeleton has not been specified
-In addition: Warning message:
-in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
-See ‘?pomp’ for an explanation of the new syntax. 
+Error : in ‘trajectory’: deterministic skeleton has not been properly specified
 > pompExample(euler.sir)
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 newly created object(s):

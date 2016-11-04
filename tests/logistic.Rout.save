@@ -22,9 +22,8 @@ Type 'q()' to quit R.
 > 
 > png(file='logistic-%02d.png',res=100)
 > 
-> po <- pomp(data=rbind(obs=rep(0,1000)),times=0.1*seq.int(length=1000),t0=0)
-Warning message:
-in ‘pomp’: ‘data’ should be a data frame or an object of class ‘pomp’. The option to provide a matrix for the ‘data’ argument is deprecated and will be removed in a future release. 
+> try(pomp(data=rbind(obs=rep(0,1000)),times=0.1*seq.int(length=1000),t0=0))
+Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’
 > 
 > po <- pomp(
 +     data=data.frame(obs=rep(0,1000),time=0.1*seq.int(length=1000)),

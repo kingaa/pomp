@@ -1,5 +1,5 @@
 
-R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
 Copyright (C) 2016 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -112,9 +112,6 @@ In addition: Warning message:
 in 'simulate': only the first number in 'nsim' is significant 
 > 
 > pomp(ricker,skeleton=NULL) -> po
-Warning message:
-in ‘pomp’: the default ‘skeleton.type="map"’ is deprecated and will be removed in a future release.
-See ‘?pomp’ for an explanation of the new syntax. 
 > show(po)
 51 records of 1 observables, recorded from t = 0 to 50 
 summary of data:
@@ -137,10 +134,10 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x2fa75a0>
+<environment: 0x24f5930>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x2e4f978>
+<environment: 0x22157a8>
 measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
 measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
 prior simulator, rprior = not specified
@@ -153,19 +150,19 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "N.0")])
     params
 }
-<environment: 0x2526538>
+<environment: 0x111f8d0>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "N.0")])
     params
 }
-<environment: 0x2526538>
+<environment: 0x111f8d0>
 parameter(s):
        r    sigma      phi      N.0      e.0 
 44.70118  0.30000 10.00000  7.00000  0.00000 
 > try(trajectory(po))
-Error : in ‘trajectory’: deterministic skeleton has not been specified
+Error : in ‘trajectory’: deterministic skeleton has not been properly specified
 > 
 > pomp(ricker,
 +      rmeasure=Csnippet("if (runif(0,1)<0.5) error(\"yikes!\");")

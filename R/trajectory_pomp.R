@@ -100,7 +100,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
         
     } else {
         
-        stop(ep,"deterministic skeleton has not been specified",call.=FALSE)
+        stop(ep,"deterministic skeleton has not been properly specified",call.=FALSE)
 
     }
 
