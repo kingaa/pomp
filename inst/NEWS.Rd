@@ -1,5 +1,15 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.9.2}{
+  \itemize{
+    \item The deprecated option to supply a matrix or numeric vector as the \code{data} argument to \code{pomp} have been removed and an error is now generated.
+    \code{data} must be provided as either a data frame or an object of class \code{pomp}.
+    See \code{?pomp} for details.
+    \item The deprecated \code{skeleton.type} and \code{skelmap.delta.t} arguments to \code{pomp} have been removed.
+    Using these arguments will now generate an error message.
+    The correct method of specifiying the deterministic skeleton is now explained in the help pages (\code{?pomp}).
+  }
+}
 \section{Changes in \pkg{pomp} version 1.9.1}{
   \itemize{
     \item Source code fixes to eliminate warnings during compilation.
@@ -47,12 +57,12 @@
     \item Improved testing suite.
     \item Made \code{rw.sd} even more robust via new \code{safecall} class.
   }
-}  
+}
 \section{Changes in \pkg{pomp} version 1.7.4}{
   \itemize{
     \item Refactored \code{rw.sd} for greater stability.
   }
-}  
+}
 \section{Changes in \pkg{pomp} version 1.7.3}{
   \itemize{
     \item Fixed a bug in \code{plot} on \code{pomp} objects with more than 10 variables to plot.
@@ -61,17 +71,17 @@
     \item Refactored \code{rw.sd} for greater stability.
     \item Made Sobol' codes more robust.
   }
-}  
+}
 \section{Changes in \pkg{pomp} version 1.7.2}{
   \itemize{
     \item Modified the demos to use best practices.
   }
-}  
+}
 \section{Changes in \pkg{pomp} version 1.7.1}{
   \itemize{
     \item Improved the test suite.
   }
-}  
+}
 \section{Changes in \pkg{pomp} version 1.6.7}{
   \itemize{
     \item Improve the test suite and error messages.
@@ -79,12 +89,12 @@
     This was dropped in version 1.6.4.3, when it no longer appeared to be necessary.
     Apparently, it is, at least under some Windows OS/R combinations.
   }
-}  
+}
 \section{Changes in \pkg{pomp} version 1.6.6}{
   \itemize{
     \item Fix \code{probe} bug introduced in version 1.6.5.9.
   }
-}  
+}
 \section{Changes in \pkg{pomp} version 1.6.5}{
   \itemize{
     \item Several obscure bug-fixes.
