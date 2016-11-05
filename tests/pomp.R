@@ -58,6 +58,7 @@ try(pomp(dat,times=1,t0=0,skelmap.delta.t=1) -> po)
 pomp(dat,times=1,t0=0,skeleton=function(x,t,params,...){x}) -> po
 try(pomp(dat$y,times=dat$time[1:10],t0=0) -> po)
 try(pomp(ricker,skeleton.type="map",skelmap.delta.t=1) -> po)
+try(pomp(ricker,skelmap.delta.t=1) -> po)
 try(pomp(ricker,skeleton=identity(identity)) -> po)
 try(pomp(ricker,toEstimationScale=identity) -> po)
 try(pomp(ricker,fromEstimationScale=identity) -> po)
