@@ -87,6 +87,7 @@ ff <- c(f4,f6)
 plot(ff)
 plot(conv.rec(ff,c("alpha.2","alpha.3","loglik")))
 invisible(filter.traj(ff))
+invisible(logLik(ff))
 
 ff <- c(f2,f3)
 ff <- c(ff)

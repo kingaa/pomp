@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.9.3}{
+  \itemize{
+    \item New \code{logLik} method for \code{pmcmcList} objects.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.9.2}{
   \itemize{
     \item The deprecated option to supply a matrix or numeric vector as the \code{data} argument to \code{pomp} have been removed and an error is now generated.

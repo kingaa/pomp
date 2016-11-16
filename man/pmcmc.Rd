@@ -16,6 +16,8 @@
 \alias{pmcmc-methods}
 \alias{logLik,pmcmc-method}
 \alias{logLik-pmcmc}
+\alias{logLik,pmcmcList-method}
+\alias{logLik-pmcmcList}
 \alias{conv.rec,pmcmc-method}
 \alias{conv.rec-pmcmc}
 \alias{conv.rec,pmcmcList-method}

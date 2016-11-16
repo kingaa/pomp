@@ -1,8 +1,5 @@
 ## this file defines methods for the 'pmcmc' and 'pmcmcList' classes
 
-## extract the estimated log likelihood
-setMethod('logLik','pmcmc',function(object,...)object@loglik)
-
 ## pmcmcList class
 setClass(
     'pmcmcList',
@@ -155,7 +152,7 @@ pmcmc.diagnostics <- function (z) {
     nc <- if (n.per.page<=4) 1 else 2
     nr <- ceiling(n.per.page/nc)
     oldpar <- par(mar=mar.multi,oma=oma.multi,mfcol=c(nr,nc))
-    on.exit(par(oldpar)) 
+    on.exit(par(oldpar))
     low <- 1
     hi <- 0
     iteration <- seq(0,xx@Nmcmc)
@@ -165,7 +162,7 @@ pmcmc.diagnostics <- function (z) {
             n <- i-low+1
             dat <- sapply(z,conv.rec,pars=plotnames[i])
             matplot(
-                y=dat, 
+                y=dat,
                 x=iteration,
                 axes = FALSE,
                 xlab = "",
@@ -179,9 +176,14 @@ pmcmc.diagnostics <- function (z) {
             do.xax <- (n%%nr==0||n==n.per.page)
             if (do.xax) axis(1,xpd=NA)
             if (do.xax) mtext("PMCMC iteration",side=1,line=3)
-        }  
+        }
         low <- hi+1
         mtext("PMCMC convergence diagnostics",3,line=2,outer=TRUE)
     }
     invisible(NULL)
 }
+
+## extract the estimated log likelihood
+setMethod('logLik','pmcmc',function(object,...)object@loglik)
+setMethod('logLik','pmcmcList',function(object,...)sapply(object,slot,"loglik"))
+

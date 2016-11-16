@@ -1,10 +1,4 @@
-## ancillary methods for working with 'mif2d.pomp' objects
-
-setMethod('conv.rec','mif2d.pomp',
-          function (object, pars, transform = FALSE, ...) {
-              conv.rec.internal(object=object,pars=pars,transform=transform,...)
-          }
-          )
+## ancillary methods for working with 'mif2d.pomp' and 'mif2List' objects
 
 ## mif2List class
 setClass(
@@ -77,6 +71,12 @@ setMethod(
     definition=function(x, i, ...) {
         new('mif2List',as(x,"list")[i])
     }
+)
+
+setMethod('conv.rec','mif2d.pomp',
+          function (object, pars, transform = FALSE, ...) {
+            conv.rec.internal(object=object,pars=pars,transform=transform,...)
+          }
 )
 
 setMethod(
