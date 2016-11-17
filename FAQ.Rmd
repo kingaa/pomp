@@ -4,6 +4,10 @@ output:
   html_document:
     theme: default
     toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: FALSE
+      smooth_scroll: TRUE
     number_sections: true
 ---
 
@@ -441,3 +445,36 @@ Iterated filtering works by gradually reducing the magnitude of the perturbation
 
 To compute the likelihood at a point returned by `mif` or `mif2`, it is necessary to re-run the particle filter.
 By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.
+
+## Why does the likelihood seem to be decreasing, not increasing, with `mif2` iterations?
+
+In [Issue 27](https://github.com/kingaa/pomp/issues/27), @theresasophia asked this question.
+She provided codes for an estimation procedure based on `mif2`.
+The plot below illustrates what she found.
+
+-----------------------
+
+![**FAQ 5.2:** Iterated filtering is supposed to maximize the likelihood, but it appears to be declining!](_assets/faq_5-2.png)
+
+-----------------------
+
+The plots above show that, after a few iterations during which it rapidly increases, the `mif2` likelihood displays a slow downward trend.
+However, the `mif2` likelihood is not identical to the true likelihood (see [FAQ 5.1](#51_is_the_likelihood_mif_gives_me_the_same_as_the_likelihood_i_get_from_pfilter)).
+This is because `mif2` adds extra variability to the model in the form of random perturbations to the parameters.
+In effect, the model `mif2` sees is different from the model of interest.
+Indeed, `mif2` works by gradually reducing the intensity of this extra variability, allowing one model to converge to the other.
+We refer to this gradual reduction as "cooling".
+In the following, "MOI" refers to the model of interest and "MM" to the corresponding model that `mif2` sees.
+You can estimate the true likelihood of the MOI using `pfilter`.
+For example, it is informative to compare the MOI likelihood at the end of the 200 `mif2` iterations above to that after, say, iteration 20.
+
+Doing so will reveal that either (1) the MOI likelihood is stable or growing or (2) the MOI likelihood, like the MM likelihood, is declining.
+These two cases have different interpretations.
+
+1. If the MOI likelihood is stable or growing, then `mif2` is doing its job, which is to maximize the likelihood of the MOI. 
+2. If the MOI likelihood is dropping, one possibility is that the `mif2` cooling is happening too quickly.
+3. Alternatively, if the MOI likelihood is indeed dropping, it is possible that the MM fits the data somewhat better than the MOI. 
+This in turn suggests that the MOI may lack the variability needed to explain the data well. 
+In other words, a model with more variability than is possible in the MOI may be needed to explain the variability in the data, at least in the parameter regimes so far explored.
+
+See also [Issue 27](https://github.com/kingaa/pomp/issues/27).

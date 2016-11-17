@@ -1,4 +1,5 @@
 name: Aaron A. King
 markdown: kramdown
 excerpt_separator: "<!--more-->"
+exclude: [_assets]
 encoding: utf-8
