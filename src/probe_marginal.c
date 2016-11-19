@@ -97,7 +97,8 @@ static void order_reg_model_matrix (double *z, double *X, double *tau, int *pivo
   // z is now an nx-vector
 
   // center z
-  for (j = 0, xx = 0.0; j < nx; j++) xx += z[j]; xx /= nx; // xx = mean(z)
+  for (j = 0, xx = 0.0; j < nx; j++) xx += z[j]; 
+  xx /= nx; // xx = mean(z)
   for (j = 0; j < nx; j++) z[j] -= xx;
 
   // now sort
@@ -128,7 +129,8 @@ static void order_reg_solve (double *beta, double *x, double *mm, double *tau, i
   // x is now an nx-vector
 
   // center x
-  for (j = 0, xx = 0.0; j < nx; j++) xx += x[j]; xx /= nx; // xx = mean(x)
+  for (j = 0, xx = 0.0; j < nx; j++) xx += x[j]; 
+  xx /= nx; // xx = mean(x)
   for (j = 0; j < nx; j++) x[j] -= xx;
 
   // now sort

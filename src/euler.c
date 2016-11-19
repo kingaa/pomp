@@ -121,7 +121,7 @@ SEXP euler_model_simulator (SEXP func,
   {
     int first = 1;
     int use_names = 0;
-    int *posn;
+    int *posn = 0;
     double *time = REAL(times);
     double *xs = REAL(X);
     double *xt = REAL(X)+nvars*nreps;
