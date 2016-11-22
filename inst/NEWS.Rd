@@ -7,12 +7,12 @@
 }
 \section{Changes in \pkg{pomp} version 1.9.2}{
   \itemize{
-    \item The deprecated option to supply a matrix or numeric vector as the \code{data} argument to \code{pomp} have been removed and an error is now generated.
-    \code{data} must be provided as either a data frame or an object of class \code{pomp}.
+    \item The deprecated options to supply a matrix or numeric vector as the \code{data} argument to \code{pomp} have been removed and doing so now generates an error.
+    The first argument to \code{pomp}, \code{data}, must now be provided either as a data frame or as an object of class \code{pomp}.
     See \code{?pomp} for details.
     \item The deprecated \code{skeleton.type} and \code{skelmap.delta.t} arguments to \code{pomp} have been removed.
     Using these arguments will now generate an error message.
-    The correct method of specifiying the deterministic skeleton is now explained in the help pages (\code{?pomp}).
+    The correct method of specifying the deterministic skeleton is now explained in the help pages (\code{?pomp}).
   }
 }
 \section{Changes in \pkg{pomp} version 1.9.1}{
