@@ -90,6 +90,12 @@ Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘
 Error : in ‘pomp’: the ‘skeleton.type’ argument is no longer used.
 See ‘?pomp’ for an explanation of the new syntax.
 > pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
+> try(pomp(dat,times="bob",t0=0,skeleton=function(x,t,params,...){x}) -> po)
+Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
+> try(pomp(dat,times=11,t0=0,skeleton=function(x,t,params,...){x}) -> po)
+Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
+> try(pomp(dat,times=1.1,t0=0,skeleton=function(x,t,params,...){x}) -> po)
+Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
 > try(pomp(dat$y,times=dat$time,t0=0) -> po)
 Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’
 > try(pomp(dat,times=1,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po)

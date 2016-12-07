@@ -52,6 +52,9 @@ try(pomp(t(as.matrix(dat)),times=dat$time,t0=0,
          skeleton.type="map",skelmap.delta.t=1) -> po)
 try(pomp(dat,times=1,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po)
 pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
+try(pomp(dat,times="bob",t0=0,skeleton=function(x,t,params,...){x}) -> po)
+try(pomp(dat,times=11,t0=0,skeleton=function(x,t,params,...){x}) -> po)
+try(pomp(dat,times=1.1,t0=0,skeleton=function(x,t,params,...){x}) -> po)
 try(pomp(dat$y,times=dat$time,t0=0) -> po)
 try(pomp(dat,times=1,t0=0,skeleton.type="map",skelmap.delta.t=1) -> po)
 try(pomp(dat,times=1,t0=0,skelmap.delta.t=1) -> po)
