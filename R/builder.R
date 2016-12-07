@@ -208,7 +208,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
     tryCatch(
       cat(src,file=modelfile),
       error = function (e) {
-        stop("cannot write file ",sQuote(modelfile),call.=FALSE)
+        stop("cannot write file ",sQuote(modelfile),call.=FALSE)   #nocov
       }
     )
     if (verbose) cat("model codes written to",sQuote(modelfile))
@@ -231,7 +231,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
         )
       },
       error = function (e) {
-        stop("error compiling Csnippets: ",conditionMessage(e),call.=FALSE)
+        stop("error compiling Csnippets: ",conditionMessage(e),call.=FALSE) #nocov
       }
     )
     if (rv!=0)
