@@ -1,6 +1,6 @@
 ## This file defines 'pomp', the basic constructor of the pomp class
 pomp.internal <- function (data, times, t0, rprocess, dprocess,
-                           rmeasure, dmeasure, 
+                           rmeasure, dmeasure,
                            skeleton, skeleton.type, skelmap.delta.t,
                            initializer, rprior, dprior,
                            params, covar, tcovar,
@@ -56,7 +56,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     statenames <- as.character(statenames)
     paramnames <- as.character(paramnames)
     zeronames <- as.character(zeronames)
-    
+
     ## check the parameters and force them to be double-precision
     if (length(params)>0) {
         if (is.null(names(params)) || !is.numeric(params))
@@ -204,7 +204,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
         covarnames=covarnames,
         purpose = sQuote("dprocess")
     )
-    
+
     ## handle initializer
     if (!default.init) {
         initializer <- pomp.fun(
@@ -491,7 +491,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
 
         if (missing(times)) times <- data@times
         if (missing(t0)) t0 <- data@t0
-        
+
         mmg <- !missing(measurement.model)
         dmg <- !missing(dmeasure)
         rmg <- !missing(rmeasure)
@@ -624,31 +624,31 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         )
     } else {
         ## construct a pomp object de novo
-        
+
         if (is.data.frame(data)) {
             ## 'data' is a data frame
-            data <- t(sapply(data,as.numeric))
-            if ((is.numeric(times) && (times<1 || times>nrow(data))) ||
-                (is.character(times) && (!(times%in%rownames(data)))) ||
-                (!is.numeric(times) && !is.character(times)) ||
-                length(times)!=1)
-                stop(ep,"when ",sQuote("data"),
-                     " is a data frame, ",sQuote("times"),
-                     " must identify a single column of ",sQuote("data"),
-                     call.=FALSE)
-            if (is.numeric(times)) {
-                tpos <- times
-            } else if (is.character(times)) {
-                tpos <- match(times,rownames(data))
-            }
-            times <- data[tpos,,drop=TRUE]
-            data <- data[-tpos,,drop=FALSE]
+          if ((is.numeric(times) && (times<1 || times>ncol(data))) ||
+              (is.character(times) && (!(times%in%names(data)))) ||
+              (!is.numeric(times) && !is.character(times)) ||
+              length(times)!=1) {
+            stop(ep,"when ",sQuote("data")," is a data frame, ",sQuote("times"),
+                 " must identify a single column of ",sQuote("data"),
+                 " either by name or by index.",call.=FALSE)
+
+          }
+          if (is.numeric(times)) {
+            tpos <- as.integer(times)
+          } else if (is.character(times)) {
+            tpos <- match(times,names(data))
+          }
+          times <- data[[tpos]]
+          data <- t(sapply(data[-tpos],as.numeric))
         } else {
             stop(ep,sQuote("data"),
-                 " must be a data frame or an object of class ",
-                 sQuote("pomp"),call.=FALSE)
+                 " must be a data frame or an object of class ",sQuote("pomp"),
+                 call.=FALSE)
         }
-        
+
         if (missing(skeleton.type)) {
             skeleton.type <- "undef"
         } else {
@@ -734,6 +734,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
             error = function (e) {
                 stop(ep,conditionMessage(e),call.=FALSE)
             }
-        )            
+        )
     }
 }

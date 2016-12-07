@@ -55,6 +55,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   \item{t0}{
     The zero-time, at which the stochastic dynamical system is to be initialized.
     This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.
+    This argument is required whenever \code{data} is a data-frame.
   }
   \item{rprocess, dprocess}{
     optional; specification of the simulator and probability density evaluation function of the unobserved state process.
@@ -201,7 +202,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     In addition to the states, parameters, covariates (if any), and observables, the variables \code{t} and \code{dt}, containing respectively the time at the beginning of the step and the step's duration, will be defined in the context in which the C snippet is executed.
     See below under \dQuote{General rules for C snippet writing} for more details.
     Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
-    
+
     If \code{f} is given as an \R function, it should have prototype \preformatted{
       f(x, t, params, delta.t, ...)}
     When \code{f} is called, \code{x} will be a named numeric vector containing the value of the state process at time \code{t},
@@ -217,14 +218,14 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     to \code{pomp} in this case.
     As before, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
     The form of \code{f} will be the same as above (in the discrete-time case).
-    
+
     If you have a procedure that allows you, given the value of the state process at any time, to simulate it at an arbitrary time in the future, use the \code{onestep.sim} plug-in.
     To do so, furnish \preformatted{
       rprocess = onestep.sim(step.fun = f)}
     to \code{pomp}.
     Again, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
     The form of \code{f} should be as above (in the discrete-time or Euler cases).
-  
+
     If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} plug-in.
     In this case, furnish \preformatted{
       rprocess = gillespie.sim(rate.fun = f, v, d)}
@@ -233,7 +234,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
       f(j, x, t, params, ...)}
     When \code{f} is called,
     the integer \code{j} will be the number of the elementary event (corresponding to the columns of matrices \code{v} and \code{d}, see below),
-    \code{x} will be a named numeric vector containing the value of the state process at time \code{t} and 
+    \code{x} will be a named numeric vector containing the value of the state process at time \code{t} and
     \code{params} is a named numeric vector containing parameters.
     \code{f} should return a single numerical value, representing the rate of that elementary event at that point in state space and time.
 
@@ -279,7 +280,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     and \code{params} will be a named numeric vector containing parameters.
     \code{f} should return the \emph{log} likelihood of a transition from \code{x1} at time \code{t1} to \code{x2} at time \code{t2}, assuming that no intervening transitions have occurred.
   }
-  
+
   To see examples, consult the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 
 }
@@ -311,7 +312,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \item \code{params} will be a named numeric vector of length \code{npar}, the number of parameters.
   }
   \code{f} must return a named numeric vector of length \code{nobs}, the number of observable variables.
-  
+
   In writing a \code{dmeasure} C snippet, observe that:
   \enumerate{
     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation,
@@ -356,7 +357,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   To specify it, supply \preformatted{
     skeleton = vectorfield(f)}
   to \code{pomp}, where \code{f} implements the vectorfield, i.e., the right-hand-size of the differential equations.
-  
+
   In either case, \code{f} can be furnished either as a C snippet (the preferred choice), or an \R function.
   In writing a \code{skeleton} C snippet, be aware that:
   \enumerate{
@@ -459,7 +460,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \item Time-, state-, and covariate-dependent transformations are not allowed.
     Therefore, neither the time, nor any state variables, nor any of the covariates will be available in the context within which a parameter transformation snippet is executed.
   }
-  
+
   These transformations can also be specified using \R functions with arguments \code{params} and \code{\dots}.
   In this case, \code{toEstimationScale} should transform parameters from the scale that the basic components use internally to the scale used in estimation.
   \code{fromEstimationScale} should be the inverse of \code{toEstimationScale}.
@@ -511,7 +512,7 @@ pomp(data = data.frame(t = 1:100, y = NA),
 ## fill it with simulated data:
 
 rick <- simulate(rick, params = c(r=17, sigma = 0.1, n_0 = 50))
-plot(rick)     
+plot(rick)
 
 \dontrun{
     pompExample()
@@ -519,7 +520,7 @@ plot(rick)
 }
 }
 \section{Warning}{
-  Some error checking is done by \code{pomp}, but complete error checking for arbitrary models is impossible.  
+  Some error checking is done by \code{pomp}, but complete error checking for arbitrary models is impossible.
   If the user-specified functions do not conform to the above specifications, then the results may be invalid.
   In particular, if both \code{rmeasure} and \code{dmeasure} are specified, the user should verify that these two functions correspond to the same probability distribution.
   If \code{skeleton} is specified, the user is responsible for verifying that it corresponds to a deterministic skeleton of the model.
@@ -533,7 +534,7 @@ plot(rick)
   D. T. Gillespie (1977)
   Exact stochastic simulation of coupled chemical reactions.
   Journal of Physical Chemistry 81:2340--2361.
-  
+
   X. Cai and Z. Xu (2007)
   K-leap method for accelerating stochastic simulation of coupled chemical reactions.
   Journal of Chemical Physics 126:074102.
