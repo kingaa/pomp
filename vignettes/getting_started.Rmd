@@ -671,6 +671,7 @@ chains %>% filter.traj() %>% melt() %>%
   labs(y="N")
 ```
 
+## [**R** codes for this document](getting_started.R)
 
 ## References
 
