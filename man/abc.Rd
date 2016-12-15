@@ -134,6 +134,10 @@
   }
 }
 \references{
+  J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder,
+  Approximate Bayesian computational methods.
+  Statistics and Compuing 22:1167--1180, 2012.
+
   T. Toni and M. P. H. Stumpf,
   Simulation-based model selection for dynamical systems in systems and population biology,
   Bioinformatics 26:104--110, 2010.
