@@ -90,7 +90,7 @@
   author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
   year: "2009"
   title: "Time series analysis via mechanistic models"
-  journal: "Annals of Applied Statistics"
+  journal: "Ann. Appl. Stat."
   volume: "3"
   pages: "319-348"
   doi: "http://doi.org/10.1214/08-AOAS201"
@@ -149,7 +149,7 @@
   author: "M. Fasiolo, N. Pya, and S. N. Wood"
   year: "2016"
   title: "A Comparison of Inferential Methods for Highly Nonlinear State Space Models in Ecology and Epidemiology"
-  journal: "Statistical Science"
+  journal: "Stat. Sci."
   pages: "96-118"
   doi: "http://doi.org/10.1214/15-STS534"
 
@@ -179,7 +179,7 @@
   author: "D. He, J. Dushoff, T. Day, J. Ma, and D. Earn"
   year: "2011"
   title: "Mechanistic modelling of the three waves of the 1918 influenza pandemic"
-  journal: "Theoretical Ecology"
+  journal: "Theor. Ecol."
   volume: "4"
   pages: "1-6"
   doi: "http://doi.org/10.1007/s12080-011-0123-3"
@@ -206,7 +206,7 @@
   author: "D. He, E. L. Ionides, and A. A. King"
   year: "2010"
   title: "Plug-and-play inference for disease dynamics: measles in large and small populations as a case study"
-  journal: "Journal of the Royal Society Interface"
+  journal: "J. R. Soc. Interface"
   volume: "7"
   pages: "271-283"
   doi: "http://doi.org/10.1098/rsif.2009.0151"
@@ -336,6 +336,15 @@
   pages: "835-849"
   doi: "http://doi.org/10.1017/S0031182015000979"
 
+- key: Marin2012
+  author: "J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder"
+  year: "2012"
+  title: "Approximate Bayesian computational methods"
+  journal: "Stat. Comp."
+  volume: "22"
+  pages: "1167-1180"
+  doi: "http://doi.org/10.1007/s11222-011-9288-2"
+
 - key: Martinez2016
   author: "P. P. Martinez, A. A. King, M. Yunus, A. S. G. Faruque, and M. Pascual"
   year: "2016"
@@ -360,7 +369,7 @@
   title: "Power spectra reveal the influence of stochasticity on nonlinear population dynamics"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "103"
-  pages: "18860-18865 "
+  pages: "18860-18865"
   doi: "http://doi.org/10.1073/pnas.0608571103"
 
 - key: Romero-Severson2015
@@ -385,7 +394,7 @@
   author: "S. Shrestha, B. Foxman, D. M. Weinberger, C. Steiner, C. Viboud, and P. Rohani"
   year: "2013"
   title: "Identifying the Interaction between Influenza and Pneumococcal Pneumonia Using Incidence Data"
-  journal: "Science Translational Medicine"
+  journal: "Sci. Transl. Med."
   volume: "5"
   pages: "191ra84"
   doi: "http://doi.org/10.1126/scitranslmed.3005982"
