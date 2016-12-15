@@ -9,15 +9,9 @@ bake <- function (file, expr, seed,
       save.seed <- get(".Random.seed",envir=.GlobalEnv)
       set.seed(seed,kind=kind,normal.kind=normal.kind)
     }
-    tm <- system.time(val <- eval(expr))
+    val <- eval(expr)
     if (rng.control)
       assign(".Random.seed",save.seed,envir=.GlobalEnv)
-    attr(val,"system.time") <- tm
-    if (rng.control) {
-      attr(val,"seed") <- seed
-      attr(val,"kind") <- kind
-      attr(val,"normal.kind") <- normal.kind
-    }
     saveRDS(val,file=file)
     val
   }

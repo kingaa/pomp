@@ -1,6 +1,6 @@
 ### test of reproducibility utilities
 
-library(pomp)
+library(pomp) 
 
 set.seed(5499)
 w1 <- runif(2)
@@ -10,13 +10,13 @@ freeze(runif(5),seed=499586)
 set.seed(5499)
 w3 <- runif(4)
 stopifnot(all.equal(c(w1,w2),w3))
-
+          
 set.seed(32765883)
 x1 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
 x2 <- bake({runif(4)},file=file.path(tempdir(),"bake2.rds"),seed=32765883)
 x3 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
-stopifnot(all.equal(as.numeric(x1),as.numeric(x2)))
-stopifnot(all.equal(as.numeric(x1),as.numeric(x3)))
+stopifnot(all.equal(x1,x2))
+stopifnot(all.equal(x1,x3))
 
 set.seed(113848)
 stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rds"))
