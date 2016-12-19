@@ -45,7 +45,7 @@ freeze(expr, seed, kind = NULL, normal.kind = NULL)
     y <- rnorm(n=10,mean=3*x+5,sd=2)
   })
 
-  plot(x,y)  
+  plot(x,y)
   }
 
   freeze(runif(3),seed=5886730)
@@ -72,5 +72,9 @@ freeze(expr, seed, kind = NULL, normal.kind = NULL)
 
   \code{freeze} returns the value of evaluated expression \code{expr}.
   However, \code{freeze} evaluates \code{expr} within the parent environment, so other objects created  in the evaluation of \code{expr} will therefore exist after \code{freeze} completes.
+
+  All these functions return information about the time used in evaluating the expression.
+  This is recorded in the \code{system.time} attribute of the return value.
+  In addition, if \code{seed} is specified, information about the seed (and the kind of random-number generator used) are stored as attributes of the return value.
 }
 \author{Aaron A. King}

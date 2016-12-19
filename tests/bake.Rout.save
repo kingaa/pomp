@@ -19,25 +19,35 @@ Type 'q()' to quit R.
 
 > ### test of reproducibility utilities
 > 
-> library(pomp) 
+> library(pomp)
 > 
 > set.seed(5499)
 > w1 <- runif(2)
 > freeze({runif(5)},seed=499586)
 [1] 0.6719240 0.5092283 0.0643100 0.3672672 0.7148970
+attr(,"seed")
+[1] 499586
+attr(,"system.time")
+   user  system elapsed 
+      0       0       0 
 > w2 <- runif(2)
 > freeze(runif(5),seed=499586)
 [1] 0.6719240 0.5092283 0.0643100 0.3672672 0.7148970
+attr(,"seed")
+[1] 499586
+attr(,"system.time")
+   user  system elapsed 
+      0       0       0 
 > set.seed(5499)
 > w3 <- runif(4)
 > stopifnot(all.equal(c(w1,w2),w3))
->           
+> 
 > set.seed(32765883)
 > x1 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
 > x2 <- bake({runif(4)},file=file.path(tempdir(),"bake2.rds"),seed=32765883)
 > x3 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
-> stopifnot(all.equal(x1,x2))
-> stopifnot(all.equal(x1,x3))
+> stopifnot(all.equal(as.numeric(x1),as.numeric(x2)))
+> stopifnot(all.equal(as.numeric(x1),as.numeric(x3)))
 > 
 > set.seed(113848)
 > stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rds"))
@@ -54,6 +64,10 @@ newly created object(s):
  gillespie.sir 
 > simulate(gillespie.sir,seed=1347484107L) -> x
 > freeze(simulate(gillespie.sir),seed=1347484107L) -> y
+> attr(y,"system.time") <- NULL
+> attr(y,"seed") <- NULL
+> attr(y,"kind") <- NULL
+> attr(y,"normal.kind") <- NULL
 > stopifnot(identical(x,y))
 > 
 > detach("package:pomp", unload=TRUE)

@@ -28,6 +28,10 @@ try(stopifnot(all.equal(y1,y3)))
 pompExample(gillespie.sir)
 simulate(gillespie.sir,seed=1347484107L) -> x
 freeze(simulate(gillespie.sir),seed=1347484107L) -> y
+attr(y,"system.time") <- NULL
+attr(y,"seed") <- NULL
+attr(y,"kind") <- NULL
+attr(y,"normal.kind") <- NULL
 stopifnot(identical(x,y))
 
 detach("package:pomp", unload=TRUE)

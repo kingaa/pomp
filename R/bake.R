@@ -9,15 +9,15 @@ bake <- function (file, expr, seed,
       save.seed <- get(".Random.seed",envir=.GlobalEnv)
       set.seed(seed,kind=kind,normal.kind=normal.kind)
     }
-    tm <- system.time(val <- eval(expr))
+    tmg <- system.time(val <- eval(expr))
     if (rng.control)
       assign(".Random.seed",save.seed,envir=.GlobalEnv)
-    attr(val,"system.time") <- tm
     if (rng.control) {
       attr(val,"seed") <- seed
       attr(val,"kind") <- kind
       attr(val,"normal.kind") <- normal.kind
     }
+    attr(val,"system.time") <- tmg
     saveRDS(val,file=file)
     val
   }
@@ -38,13 +38,19 @@ stew <- function (file, expr, seed,
       save.seed <- get(".Random.seed",envir=.GlobalEnv)
       set.seed(seed,kind=kind,normal.kind=normal.kind)
     }
-    eval(expr,envir=e)
+    tmg <- system.time(eval(expr,envir=e))
     if (rng.control)
       assign(".Random.seed",save.seed,envir=.GlobalEnv)
     objlist <- objects(envir=e)
     save(list=objlist,file=file,envir=e)
     for (obj in objlist)
       assign(obj,get(obj,envir=e),envir=parent.frame())
+    if (rng.control) {
+      attr(objlist,"seed") <- seed
+      attr(objlist,"kind") <- kind
+      attr(objlist,"normal.kind") <- normal.kind
+    }
+    attr(objlist,"system.time") <- tmg
   }
   invisible(objlist)
 }
@@ -57,8 +63,13 @@ freeze <- function (expr, seed,
     save.seed <- get(".Random.seed",envir=.GlobalEnv)
     set.seed(seed,kind=kind,normal.kind=normal.kind)
   } else warning("in ",sQuote("freeze"),": seed not set!",call.=FALSE)
-  val <- eval(expr)
-  if (rng.control)
+  tmg <- system.time(val <- eval(expr))
+  if (rng.control) {
     assign(".Random.seed",save.seed,envir=.GlobalEnv)
+    attr(val,"seed") <- seed
+    attr(val,"kind") <- kind
+    attr(val,"normal.kind") <- normal.kind
+  }
+  attr(val,"system.time") <- tmg
   val
 }
