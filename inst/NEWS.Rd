@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.9.4}{
+  \itemize{
+    \item The functions \code{bake}, \code{stew}, and \code{freeze} now preserve information about the system time used in computation as an attribute of the returned object.
+    In addition, these functions store information about the RNG settings.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.9.3}{
   \itemize{
     \item New \code{logLik} method for \code{pmcmcList} objects.
