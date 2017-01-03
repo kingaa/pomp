@@ -184,16 +184,18 @@ pompSrcDir <- function (dir, verbose) {
         pid <- Sys.getpid()
         dir <- file.path(tempdir(),pid)
     }
-    if (verbose) cat("creating Csnippet directory ",dir)
-    tryCatch(
-    {
-        dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700")
-        stopifnot(dir.exists(dir))
-    },
-    error = function (e) {
-        stop("cannot create cache directory ",sQuote(dir),call.=FALSE)
+    if (!dir.exists(dir)) {
+      if (verbose) cat("creating Csnippet directory ",dir)
+      tryCatch(
+        {
+          dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700")
+          stopifnot(dir.exists(dir))
+        },
+        error = function (e) {
+          stop("cannot create cache directory ",sQuote(dir),call.=FALSE)
+        }
+      )
     }
-    )
     dir
 }
 
