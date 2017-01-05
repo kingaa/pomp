@@ -1,0 +1,235 @@
+
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> png(filename="demos-%02d.png",res=100)
+> 
+> set.seed(47575684L)
+> 
+> demos <- list.files(path=system.file("demo",package="pomp"),
++                     pattern=".\\.R$",
++                     full.names=TRUE)
+> 
+> for (d in demos) {
++   source(d,local=TRUE,echo=TRUE)
++ }
+
+> library(pomp)
+
+> gompertz <- pomp(data = data.frame(time = 1:100, Y = NA), 
++     times = "time", t0 = 0, rprocess = discrete.time.sim(step.fun = function(x, 
++      .... [TRUNCATED] 
+
+> dmeas <- "\n    lik = dlnorm(Y,log(X),tau,give_log);\n"
+
+> rmeas <- "\n    Y = rlnorm(log(X),tau);\n"
+
+> step.fun <- "\n  double S = exp(-r*dt);\n  double logeps = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;\n  /* note that X is over-written by the next line  ..." ... [TRUNCATED] 
+
+> skel <- "\n  double dt = 1.0;\n  double S = exp(-r*dt);\n  /* note that X is not over-written in the skeleton function */\n  DX = pow(K,1-S)*pow(X,S ..." ... [TRUNCATED] 
+
+> partrans <- "\n  Tr = log(r);\n  TK = log(K);\n  Tsigma = log(sigma);\n  TX_0 = log(X_0);\n  Ttau = log(tau);\n"
+
+> paruntrans <- "\n  Tr = exp(r);\n  TK = exp(K);\n  Tsigma = exp(sigma);\n  TX_0 = exp(X_0);\n  Ttau = exp(tau);\n"
+
+> Gompertz <- pomp(data = data.frame(t = 1:100, Y = NA), 
++     times = "t", t0 = 0, paramnames = c("r", "K", "sigma", "X.0", 
++         "tau"), state .... [TRUNCATED] 
+
+> Gompertz <- simulate(Gompertz, params = c(K = 1, r = 0.1, 
++     sigma = 0.1, tau = 0.1, X.0 = 1))
+
+> p <- parmat(coef(Gompertz), nrep = 4)
+
+> p["X.0", ] <- c(0.5, 0.9, 1.1, 1.5)
+
+> tic <- Sys.time()
+
+> X <- trajectory(Gompertz, params = p, as.data.frame = TRUE)
+
+> toc <- Sys.time()
+
+> print(toc - tic)
+Time difference of 0.004119873 secs
+
+> X <- reshape(X, dir = "wide", v.names = "X", timevar = "traj", 
++     idvar = "time")
+
+> matplot(X$time, X[-1], type = "l", lty = 1, bty = "l", 
++     xlab = "time", ylab = "X", main = "Gompertz model\ndeterministic trajectories")
+
+> tic <- Sys.time()
+
+> x <- simulate(Gompertz, params = p, as.data.frame = TRUE)
+
+> toc <- Sys.time()
+
+> print(toc - tic)
+Time difference of 0.003840208 secs
+
+> x <- reshape(x, dir = "wide", v.names = c("Y", "X"), 
++     timevar = "sim", idvar = "time")
+
+> op <- par(mfrow = c(2, 1), mgp = c(2, 1, 0), mar = c(3, 
++     3, 0, 0), bty = "l")
+
+> matplot(x$time, x[c("X.1", "X.2", "X.3")], lty = 1, 
++     type = "l", xlab = "time", ylab = "X", main = "Gompertz model\nstochastic simulations")
+
+> matplot(x$time, x[c("Y.1", "Y.2", "Y.3")], lty = 1, 
++     type = "l", xlab = "time", ylab = "Y")
+
+> par(op)
+
+> tic <- Sys.time()
+
+> pf <- replicate(n = 10, pfilter(Gompertz, Np = 500))
+
+> toc <- Sys.time()
+
+> print(toc - tic)
+Time difference of 0.4673727 secs
+
+> print(logmeanexp(sapply(pf, logLik), se = TRUE))
+                   se 
+52.5439755  0.1352122 
+
+> library(pomp)
+
+> po <- pomp(data = data.frame(N = rep(0, 1000), t = seq(0.1, 
++     by = 0.1, length = 1000)), times = "t", t0 = 0, rprocess = euler.sim(step.fun = f .... [TRUNCATED] 
+
+> params <- c(n.0 = 10000, K = 10000, r = 0.9, sigma = 0.4, 
++     tau = 0.1)
+
+> set.seed(73658676)
+
+> po <- simulate(po, params = params)
+
+> params <- cbind(c(n.0 = 100, K = 10000, r = 0.2, sigma = 0.4, 
++     tau = 0.1), c(n.0 = 1000, K = 11000, r = 0.1, sigma = 0.4, 
++     tau = 0.1))
+
+> traj <- trajectory(po, params = params, as.data.frame = TRUE)
+
+> traj <- reshape(traj, dir = "wide", idvar = "time", 
++     timevar = "traj")
+
+> sim <- simulate(po, params = params, as.data.frame = TRUE, 
++     seed = 34597368)
+
+> sim <- reshape(sim, dir = "wide", idvar = "time", 
++     timevar = "sim")
+
+> matplot(range(time(po)), range(c(traj[-1], sim[-1])), 
++     type = "n", bty = "l", lty = 1, xlab = "time", ylab = "n", 
++     main = "simulations v ..." ... [TRUNCATED] 
+
+> matlines(traj$time, traj[-1], type = "l", bty = "l", 
++     lty = 1, xlab = "time", ylab = "n")
+
+> matlines(sim$time, sim[c("n.1", "n.2")], type = "l", 
++     bty = "l", lty = 1, xlab = "time", ylab = "n")
+
+> library(pomp)
+
+> rw2 <- pomp(rprocess = onestep.sim(step.fun = function(x, 
++     t, params, delta.t, ...) {
++     c(x1 = rnorm(n = 1, mean = x["x1"], sd = params["s ..." ... [TRUNCATED] 
+
+> rw2 <- simulate(rw2, params = c(s1 = 3, s2 = 1, x1.0 = 0, 
++     x2.0 = 1, tau = 10))
+
+> plot(rw2)
+
+> library(pomp)
+
+> rmeas <- "\n  cases = rnbinom_mu(theta,rho*incid);\n"
+
+> globals <- "\n  static int nbasis = 3;\n"
+
+> step.fun <- "\n  double rate[6];\t\t// transition rates\n  double trans[6];\t\t// transition numbers\n  double beta;\t\t\t// transmission rate\n  do ..." ... [TRUNCATED] 
+
+> skel <- "\n  double rate[6];\t\t// transition rates\n  double term[6];\t\t// transition numbers\n  double beta;\t\t\t// transmission rate\n  int k;\ ..." ... [TRUNCATED] 
+
+> partrans <- "\n  int k;\n  Tgamma = log(gamma);\n  Tmu = log(mu);\n  Tiota = log(iota);\n  for (k = 0; k < nbasis; k++)\n    (&Tbeta1)[k] = log((&be ..." ... [TRUNCATED] 
+
+> paruntrans <- "\n  int k;\n  Tgamma = exp(gamma);\n  Tmu = exp(mu);\n  Tiota = exp(iota);\n  for (k = 0; k < nbasis; k++)\n    (&Tbeta1)[k] = exp((& ..." ... [TRUNCATED] 
+
+> initlzr <- "\n  double m = popsize/(S_0+I_0+R_0);\n  S = nearbyint(m*S_0);\n  I = nearbyint(m*I_0);\n  R = nearbyint(m*R_0);\n  incid = 0;\n  W = 0; ..." ... [TRUNCATED] 
+
+> covar <- cbind(time = seq(from = 1928, to = 1934, 
++     by = 0.01), as.data.frame(periodic.bspline.basis(x = seq(from = 1928, 
++     to = 1934, by  .... [TRUNCATED] 
+
+> po <- pomp(data = subset(LondonYorke, subset = town == 
++     "New York" & disease == "measles" & year >= 1928 & year <= 
++     1933, select = c(tim .... [TRUNCATED] 
+
+> coef(po) <- c(gamma = 26, mu = 0.02, iota = 0.01, 
++     beta1 = 120, beta2 = 140, beta3 = 100, beta.sd = 0.01, popsize = 5e+06, 
++     rho = 0.1, t .... [TRUNCATED] 
+
+> tic <- Sys.time()
+
+> X <- trajectory(po, hmax = 1/52, as.data.frame = TRUE)
+
+> toc <- Sys.time()
+
+> print(toc - tic)
+Time difference of 0.003728628 secs
+
+> plot(incid ~ time, data = X, type = "l")
+
+> tic <- Sys.time()
+
+> x <- simulate(po, nsim = 3, as.data.frame = TRUE)
+
+> toc <- Sys.time()
+
+> print(toc - tic)
+Time difference of 0.03100204 secs
+
+> plot(incid ~ time, data = x, col = as.factor(x$sim), 
++     pch = 16)
+
+> po <- pomp(po, dmeasure = Csnippet("\n  lik = dnbinom_mu(cases,theta,rho*incid,give_log);\n"), 
++     statenames = c("S", "I", "R", "incid", "W"), p .... [TRUNCATED] 
+
+> tic <- Sys.time()
+
+> logLik(pfilter(po, Np = 1000))
+[1] -646.7357
+
+> toc <- Sys.time()
+
+> print(toc - tic)
+Time difference of 7.479967 secs
+Warning messages:
+1: in 'table_lookup': extrapolating at 1.934011e+03 
+2: in 'table_lookup': extrapolating at 1.934011e+03 
+> 
+> dev.off()
+null device 
+          1 
+> 
+> print(packageVersion("pomp"))
+[1] ‘1.10.4.2’
+> 

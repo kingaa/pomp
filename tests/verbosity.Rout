@@ -1,0 +1,133 @@
+
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> capture.output({
++ 
++     library(pomp)
++     
++     options(digits=3,verbose=TRUE)
++     
++     set.seed(398585L)
++     pompExample(ou2)
++ 
++     time(ou2) <- 1:20
++ 
++     Np <- 100
++ 
++     prior.bounds <- rbind(
++         alpha.2=c(-0.55,-0.45),
++         alpha.3=c(0.25,0.35)
++     )
++ 
++     pomp(ou2,
++          rprior=function(params,...) {
++              params[c("alpha.2","alpha.3")] <-
++                  runif(n=1,min=prior.bounds[,1],max=prior.bounds[,2])
++              params
++          },
++          dprior=function(params,log,...) {
++              f <- sum(dunif(params,min=coef(ou2)-1,max=coef(ou2)+1,log=TRUE))
++              if (log) f else exp(f)
++          }
++          ) -> ou2
++ 
++     f1 <- bsmc(ou2,est="alpha.2",Np=100,smooth=0.02)
++     try(bsmc(ou2,est="alpha.2",Np=2,smooth=0.02))
++     f1 <- bsmc2(ou2,est="alpha.2",Np=100,smooth=0.02)
++     try(bsmc(ou2,est=c("alpha.1","alpha.2"),Np=1,smooth=0.02))
++     try(bsmc2(ou2,est="alpha.2",Np=1,smooth=0.02))
++     try(bsmc2(ou2,est="alpha.2",Np=2,smooth=0.02))
++     f1 <- ou2
++     f1@data[,c(3,20)] <- c(10000,10000)
++     try(f1 <- bsmc2(f1,est=c("alpha.2","alpha.4"),Np=100,smooth=0.01,max.fail=3))
++     prop <- mvn.diag.rw(c(alpha.2=0.001,alpha.3=0.001))
++     f2 <- pmcmc(ou2,Nmcmc=20,proposal=prop,Np=100)
++     f3 <- ou2
++     f3@data[,20] <- c(1000,1000)
++     timezero(f3) <- 1
++     f3 <- pfilter(f3,Np=10,filter.traj=TRUE)
++     f3 <- pfilter(ou2,Np=100)
++     f4 <- mif(f3,Nmif=10,rw.sd=c(alpha.2=0.01,alpha.3=0.01),cooling.fraction.50=0.1)
++     f5 <- mif2(f3,Nmif=10,rw.sd=rw.sd(alpha.2=0.01,alpha.3=0.01),
++                cooling.fraction.50=0.1)
++     plist <- list(
++         y1.mean=probe.mean(var="y1"),
++         y2.mean=probe.mean(var="y2"),
++         probe.acf(var="y1",lags=c(0,5)),
++         probe.acf(var="y2",lags=c(0,5)),
++         probe.ccf(vars=c("y1","y2"),lags=0)
++     )
++     f6 <- probe(ou2,probes=plist,nsim=200)
++     f7 <- probe.match(f6,est=c("alpha.2","alpha.3"))
++     f8 <- abc(f7,Nabc=20,est=c("alpha.2","alpha.3"),
++               proposal=prop,scale=1,epsilon=20)
++     f9 <- nlf(ou2,lags=c(1,2),est=c("alpha.2","alpha.3","tau"),
++               nconverge=100,nasymp=2000,lql.frac=0.025,
++               seed=426094906L,maxit=200,method="Nelder-Mead")
++     f10 <- traj.match(f9,est=c("alpha.2","alpha.3","tau"))
++ 
++     pompExample(ricker)
++     try(pomp(ricker,rmeasure=Csnippet("y=rpois(N)"),statenames="N") -> po)
++ }) -> out
+filtering failure at time t = 12
+Error : in ‘bsmc’: too many filtering failures
+In addition: Warning messages:
+1: In find.package(package, lib.loc, quiet = TRUE) :
+  package ‘pomp’ found more than once,
+using the one found in ‘/userdata/kingaa/projects/Rpkg/library/pomp’
+2: In library(pomp) : package ‘pomp’ already present in search()
+Error : in ‘bsmc’: in ‘rmvnorm’: infinite or missing values in 'x'
+Error : in ‘bsmc2’: in ‘rmvnorm’: infinite or missing values in 'x'
+filtering failure at time t = 4
+Error : in ‘bsmc2’: too many filtering failures
+filtering failure at time t = 3
+filtering failure at time t = 20
+filtering failure at time t = 20
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I/usr/local/apps/R/R-3.3.2/lib64/R/include -DNDEBUG  -I/usr/local/include    -I/userdata/kingaa/projects/Rpkg/library/pomp/include -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpDaD07c/74873/pomp_73cb0ec88b7ba4439552693336a04a45.c -o /tmp/RtmpDaD07c/74873/pomp_73cb0ec88b7ba4439552693336a04a45.o
+/tmp/RtmpDaD07c/74873/pomp_73cb0ec88b7ba4439552693336a04a45.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpDaD07c/74873/pomp_73cb0ec88b7ba4439552693336a04a45.c:16:1: error: expected ‘;’ before ‘}’ token
+ }
+ ^
+make[2]: *** [/tmp/RtmpDaD07c/74873/pomp_73cb0ec88b7ba4439552693336a04a45.o] Error 1
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot compile shared-object library ‘/tmp/RtmpDaD07c/74873/pomp_73cb0ec88b7ba4439552693336a04a45.so’
+In addition: Warning messages:
+1: in ‘bsmc2’: 2 filtering failures occurred. 
+2: in ‘pfilter’: 1 filtering failure occurred. 
+3: In find.package(package, lib.loc, quiet = TRUE) :
+  package ‘pomp’ found more than once,
+using the one found in ‘/userdata/kingaa/projects/Rpkg/library/pomp’
+4: In library(pomp) : package ‘pomp’ already present in search()
+5: In find.package(package, lib.loc, quiet = TRUE) :
+  package ‘pomp’ found more than once,
+using the one found in ‘/userdata/kingaa/projects/Rpkg/library/pomp’
+> stopifnot(length(out)==625)
+> stopifnot(sum(grepl("mif2 pfilter",out))==40)
+> stopifnot(sum(grepl("model codes written",out))==1)
+> stopifnot(sum(grepl("fitted param",out))==6)
+> stopifnot(sum(grepl("ABC iteration",out))==5)
+> stopifnot(sum(grepl("acceptance ratio:",out))==24)
+> stopifnot(sum(grepl("pfilter timestep",out))==88)
+> stopifnot(sum(grepl("mif iteration",out))==10)
+> stopifnot(sum(grepl("prior.mean",out))==78)
+> stopifnot(sum(grepl("effective sample size",out))==74)
+> stopifnot(sum(grepl("mif2 iteration",out))==10)
+> stopifnot(sum(grepl("h in",out))==1)
+> 
