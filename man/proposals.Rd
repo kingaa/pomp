@@ -35,5 +35,10 @@
   Given a parameter vector, each such function returns a single draw from the corresponding proposal distribution.
 }
 \seealso{\code{\link{pmcmc}}, \code{\link{abc}}}
-\author{Aaron A. King}
+\references{
+  Gareth O. Roberts and Jeffrey S. Rosenthal.
+  Examples of Adaptive MCMC.
+  J. Comput. Graph. Stat., 18:349--367, 2009.
+}
+\author{Aaron A. King, Sebastian Funk}
 \keyword{programming}
