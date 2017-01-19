@@ -26,14 +26,15 @@
   \item{scale.start, scale.cooling, shape.start, target, max.scaling}{
     parameters to control the proposal adaptation algorithm.
     Beginning with MCMC iteration \code{scale.start}, the scale of the proposal covariance matrix will be adjusted in an effort to match the \code{target} acceptance ratio.
-    This initial scale adjustment is "cooled", that is the adjustment diminishes as the chain moves along.
-    The parameter \code{scale.cooling} specifies the cooling schedule: at n iterations after \code{scale.start}, the current scaling factor is multiplied with \code{scale.cooling}^n.
-    A maximum scaling factor can be specified with \code{max.scaling}.
-    After \code{shape.start} accepted proposal, a scaled empirical covariance matrix will be used for the proposals according to Roberts and Rosenthal (2009).
+    This initial scale adjustment is \dQuote{cooled}, i.e., the adjustment diminishes as the chain moves along.
+    The parameter \code{scale.cooling} specifies the cooling schedule:
+    at n iterations after \code{scale.start}, the current scaling factor is multiplied with \code{scale.cooling^n}.
+    The maximum scaling factor allowed at any one iteration is \code{max.scaling}.
+    After \code{shape.start} accepted proposals have accumulated, a scaled empirical covariance matrix will be used for the proposals, following Roberts and Rosenthal (2009).
   }
 }
 \value{
-  Each of these constructs a function suitable for use as the \code{proposal} argument of \code{pmcmc} or \code{abc}.
+  Each of these calls constructs a function suitable for use as the \code{proposal} argument of \code{pmcmc} or \code{abc}.
   Given a parameter vector, each such function returns a single draw from the corresponding proposal distribution.
 }
 \seealso{\code{\link{pmcmc}}, \code{\link{abc}}}
