@@ -26,8 +26,10 @@
   \item{scale.start, scale.cooling, shape.start, target, max.scaling}{
     parameters to control the proposal adaptation algorithm.
     Beginning with MCMC iteration \code{scale.start}, the scale of the proposal covariance matrix will be adjusted in an effort to match the \code{target} acceptance ratio.
-    The parameters \code{scale.cooling} and \code{max.scaling} adjust the scale adaptation.
-    Beginning with iteration \code{shape.start}, a scaled empirical covariance matrix will be used for the proposals.
+    This initial scale adjustment is "cooled", that is the adjustment diminishes as the chain moves along.
+    The parameter \code{scale.cooling} specifies the cooling schedule: at n iterations after \code{scale.start}, the current scaling factor is multiplied with \code{scale.cooling}^n.
+    A maximum scaling factor can be specified with \code{max.scaling}.
+    After \code{shape.start} accepted proposal, a scaled empirical covariance matrix will be used for the proposals according to Roberts and Rosenthal (2009).
   }
 }
 \value{
