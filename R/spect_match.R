@@ -71,7 +71,7 @@ spect.match <- function(object, start, est = character(0),
                         eval.only = FALSE, fail.value = NA, ...) {
 
     ep <- paste0("in ",sQuote("spect.match"),": ")
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
 
     obj.fn <- spect.mismatch
 
@@ -229,7 +229,7 @@ spect.match <- function(object, start, est = character(0),
         msg <- opt$message
     }
 
-    pompUnload(object)
+    pompUnload(object,verbose=verbose)
 
     new(
         "spect.matched.pomp",

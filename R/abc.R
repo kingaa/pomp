@@ -45,7 +45,7 @@ abc.internal <- function (object, Nabc,
     epssq <- epsilon*epsilon
     verbose <- as.logical(verbose)
 
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
 
     if (length(start)==0)
         stop(ep,sQuote("start")," must be specified if ",
@@ -168,7 +168,7 @@ abc.internal <- function (object, Nabc,
     pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
     pars <- names(pars[pars])
 
-    pompUnload(object)
+    pompUnload(object,verbose=verbose)
 
     new(
         'abc',

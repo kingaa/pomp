@@ -1,4 +1,4 @@
-pompLoad.internal <- function (object, ..., verbose = getOption("verbose",FALSE)) {
+pompLoad.internal <- function (object, ..., verbose = FALSE) {
   for (lib in object@solibs) {
     if (!is.loaded("__pomp_load_stack_incr",PACKAGE=lib$name)) {
       dir <- pompSrcDir(lib$dir,verbose=verbose)
@@ -15,8 +15,8 @@ pompLoad.internal <- function (object, ..., verbose = getOption("verbose",FALSE)
   }
   invisible(NULL)
 }
- 
-pompUnload.internal <- function (object, ..., verbose = getOption("verbose",FALSE)) {
+
+pompUnload.internal <- function (object, ..., verbose = FALSE) {
   for (lib in object@solibs) {
     if (is.loaded("__pomp_load_stack_decr",PACKAGE=lib$name)) {
       st <- .Call(load_stack_decr,lib$name)

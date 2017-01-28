@@ -38,7 +38,7 @@ pmcmc.internal <- function (object, Nmcmc,
     
     ep <- paste0("in ",sQuote("pmcmc"),": ")
 
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
 
     if (missing(start))
         stop(ep,sQuote("start")," must be specified",call.=FALSE)
@@ -213,7 +213,7 @@ pmcmc.internal <- function (object, Nmcmc,
     pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
     pars <- setdiff(names(pars[pars]),c("loglik","log.prior","nfail"))
 
-    pompUnload(object)
+    pompUnload(object,verbose=verbose)
 
     new(
         "pmcmc",

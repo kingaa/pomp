@@ -74,7 +74,7 @@ mif.pfilter <- function (object, params, Np,
     object <- as(object,"pomp")
     ep <- paste0("in ",sQuote("mif.pfilter"),": ")
 
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
 
     ptsi.for <- gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
     pred.mean <- as.logical(pred.mean)
@@ -282,7 +282,7 @@ mif.pfilter <- function (object, params, Np,
         )
     }
 
-    pompUnload(object)
+    pompUnload(object,verbose=verbose)
 
     new(
         "pfilterd.pomp",
@@ -319,7 +319,7 @@ mif.internal <- function (object, Nmif,
              "Use ",sQuote("mif2")," instead.",call.=FALSE)
     }
 
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
 
     gnsi <- as.logical(.getnativesymbolinfo)
 
@@ -524,7 +524,7 @@ mif.internal <- function (object, Nmif,
     ## back transform the parameter estimate if necessary
     if (transform) theta <- partrans(pfp,theta,dir="fromEstimationScale")
 
-    pompUnload(object)
+    pompUnload(object,verbose=verbose)
 
     new(
         "mif",

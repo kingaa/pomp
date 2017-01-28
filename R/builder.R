@@ -185,7 +185,7 @@ pompSrcDir <- function (dir, verbose) {
         dir <- file.path(tempdir(),pid)
     }
     if (!dir.exists(dir)) {
-      if (verbose) cat("creating Csnippet directory ",dir)
+      if (verbose) cat("creating Csnippet directory ",sQuote(dir),"\n")
       tryCatch(
         {
           dir.create(dir,recursive=TRUE,showWarnings=FALSE,mode="0700")
@@ -213,7 +213,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
         stop("cannot write file ",sQuote(modelfile),call.=FALSE)   #nocov
       }
     )
-    if (verbose) cat("model codes written to",sQuote(modelfile))
+    if (verbose) cat("model codes written to",sQuote(modelfile),"\n")
 
     cflags <- paste0("PKG_CFLAGS=\"",
                      Sys.getenv("PKG_CFLAGS"),
@@ -227,7 +227,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
       {
         rv <- system2(
           command=R.home("bin/R"),
-          args=c("CMD","SHLIB","-o",solib,modelfile,shlib.args),
+          args=c("CMD","SHLIB","-c","-o",solib,modelfile,shlib.args),
           env=cflags,
           stdout=if (verbose | .Platform$OS.type=="windows") "" else NULL
         )
@@ -237,7 +237,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
       }
     )
     if (rv!=0)
-        stop("cannot compile shared-object library ",sQuote(solib),call.=FALSE)
+        stop("cannot compile shared-object library ",sQuote(solib),": status = ",rv,call.=FALSE)
     else if (verbose)
         cat("link to shared-object library",sQuote(solib),"\n")
 

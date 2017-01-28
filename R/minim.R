@@ -1,12 +1,13 @@
-minim.internal <- function(objfun, start, est, object, method, transform, verbose, ...)
+minim.internal <- function(objfun, start, est, object, method, transform,
+                           verbose = getOption("verbose", FALSE), ...)
 {
 
     ep <- paste0("in ",sQuote("minim"),": ")
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
 
     transform <- as.logical(transform)
     est <- as.character(est)
-    
+
     if (length(start)<1)
         stop(ep,sQuote("start")," must be supplied",call.=FALSE)
 
@@ -22,14 +23,14 @@ minim.internal <- function(objfun, start, est, object, method, transform, verbos
                  sQuote("start"),call.=FALSE)
         guess <- start[est]
     }
-    
+
     if (length(est)==0) {
 
         val <- objfun(guess)
         conv <- NA
         evals <- as.integer(c(1,0))
         msg <- "no optimization performed"
-        
+
     } else {
 
         opts <- list(...)
@@ -52,7 +53,7 @@ minim.internal <- function(objfun, start, est, object, method, transform, verbos
             start[est] <- unname(opt$solution)
             conv <- opt$status
             evals <- opt$iterations
-            
+
         } else {
 
             val <- opt$value
@@ -65,8 +66,8 @@ minim.internal <- function(objfun, start, est, object, method, transform, verbos
 
     if (transform)
         start <- partrans(object,start,dir="fromEstimationScale")
-    
-    pompUnload(object)
+
+    pompUnload(object,verbose=verbose)
 
     list(
         params=start,

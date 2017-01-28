@@ -66,7 +66,7 @@ capture.output({
     pompExample(ricker)
     try(pomp(ricker,rmeasure=Csnippet("y=rpois(N)"),statenames="N") -> po)
 }) -> out
-stopifnot(length(out)==625)
+stopifnot(length(out)==627)
 stopifnot(sum(grepl("mif2 pfilter",out))==40)
 stopifnot(sum(grepl("model codes written",out))==1)
 stopifnot(sum(grepl("fitted param",out))==6)

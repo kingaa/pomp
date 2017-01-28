@@ -4,11 +4,12 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
                                states = FALSE, obs = FALSE,
                                times, t0, as.data.frame = FALSE,
                                include.data = FALSE,
-                               .getnativesymbolinfo = TRUE, ...) {
+                               .getnativesymbolinfo = TRUE,
+                               verbose = getOption("verbose", FALSE), ...) {
 
     ep <- paste0("in ",sQuote("simulate"),": ")
 
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
 
     if (missing(times))
         times <- time(object,t0=FALSE)
@@ -19,7 +20,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
         t0 <- timezero(object)
     else
         t0 <- as.numeric(t0)
-    
+
     obs <- as.logical(obs)
     states <- as.logical(states)
     as.data.frame <- as.logical(as.data.frame)
@@ -27,7 +28,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
 
     if (missing(params))
         params <- coef(object)
-    
+
     if (length(params)==0)
         stop(ep,"no ",sQuote("params")," specified",call.=FALSE)
 
@@ -40,7 +41,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
         save.seed <- get('.Random.seed',envir=.GlobalEnv)
         set.seed(seed)
     }
-    
+
     if (!obs && !states)
         object <- as(object,"pomp")
 
@@ -61,9 +62,9 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
         }
     )
     .getnativesymbolinfo <- FALSE
-    
+
     ## restore the RNG state
-    if (length(seed)>0) {                 
+    if (length(seed)>0) {
         assign('.Random.seed',save.seed,envir=.GlobalEnv)
     }
 
@@ -123,7 +124,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
 
     }
 
-    pompUnload(object)
+    pompUnload(object,verbose=verbose)
 
     retval
 }
@@ -133,7 +134,8 @@ setMethod(
     signature=signature(object="pomp"),
     definition=function (object, nsim = 1, seed = NULL, params,
                          states = FALSE, obs = FALSE,
-                         times, t0, as.data.frame = FALSE, include.data = FALSE,
+                         times, t0, as.data.frame = FALSE,
+                         include.data = FALSE,
                          ...)
         simulate.internal(
             object=object,

@@ -35,7 +35,7 @@ pmof.internal <- function (object, params, est, probes,
                            nsim, seed = NULL, fail.value = NA,
                            transform = FALSE, ...)
 {
-    
+
     ep <- paste0("in ",sQuote("probe.match.objfun"),": ")
     object <- as(object,"pomp")
     transform <- as.logical(transform)
@@ -53,7 +53,7 @@ pmof.internal <- function (object, params, est, probes,
     par.est.idx <- match(est,names(params))
     if (any(is.na(par.est.idx)))
         stop(ep,"parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"),call.=FALSE)
-    
+
     if (!is.list(probes)) probes <- list(probes)
     if (!all(sapply(probes,is.function)))
         stop(ep,sQuote("probes")," must be a function or a list of functions",call.=FALSE)
@@ -66,13 +66,13 @@ pmof.internal <- function (object, params, est, probes,
             stop(ep,"applying probes to actual data: ",conditionMessage(e),call.=FALSE)
         }
     )
-    
+
     function (par) {
-        
+
         pompLoad(object)
 
         params[par.est.idx] <- par
-        
+
         if (transform)
             tparams <- partrans(object,params,dir="fromEstimationScale")
 
@@ -91,7 +91,7 @@ pmof.internal <- function (object, params, est, probes,
                 stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)
             }
         )
-        
+
         ll <- tryCatch(
             .Call(synth_loglik,simval,datval),
             error = function (e) {
@@ -130,7 +130,7 @@ setMethod(
         if (missing(probes)) probes <- object@probes
         if (missing(nsim)) nsim <- nrow(object@simvals)
         if (missing(seed)) seed <- object@seed
-        
+
         probe.match.objfun(
             object=as(object,"pomp"),
             probes=probes,
@@ -148,15 +148,15 @@ setMethod(
              probes, nsim, seed = NULL,
              method = c("subplex","Nelder-Mead","SANN","BFGS",
                         "sannbox","nloptr"),
-             verbose = getOption("verbose"), 
+             verbose = getOption("verbose"),
              fail.value = NA,
              transform = FALSE,
              ...) {
 
         ep <- paste0("in ",sQuote("probe.match"),": ")
 
-        pompLoad(object)
-        
+        pompLoad(object,verbose=verbose)
+
         if (missing(start)) start <- coef(object)
         if (missing(probes)) stop(ep,sQuote("probes")," must be supplied",call.=FALSE)
         if (missing(nsim)) stop(ep,sQuote("nsim")," must be supplied",call.=FALSE)
@@ -165,7 +165,7 @@ setMethod(
         est <- as.character(est)
         transform <- as.logical(transform)
         fail.value <- as.numeric(fail.value)
-        
+
         m <- minim.internal(
             objfun=probe.match.objfun(
                 object=object,
@@ -187,7 +187,7 @@ setMethod(
         )
 
         coef(object) <- m$params
-        
+
         pb <- tryCatch(
             probe(
                 object,
@@ -200,8 +200,8 @@ setMethod(
             }
         )
 
-        pompUnload(object)
-        
+        pompUnload(object,verbose=verbose)
+
         new(
             "probe.matched.pomp",
             pb,
@@ -221,11 +221,11 @@ setMethod(
     signature=signature(object="probed.pomp"),
     function(object, probes, nsim, seed, ...,
              verbose = getOption("verbose"))
-    {            
+    {
         if (missing(probes)) probes <- object@probes
         if (missing(nsim)) nsim <- nrow(object@simvals)
         if (missing(seed)) seed <- object@seed
-        
+
         f <- selectMethod("probe.match","pomp")
 
         f(object=object,probes=probes,nsim=nsim,seed=seed,
@@ -245,7 +245,7 @@ setMethod(
         if (missing(seed)) seed <- object@seed
         if (missing(transform)) transform <- object@transform
         if (missing(fail.value)) fail.value <- object@fail.value
-        
+
         f <- selectMethod("probe.match","pomp")
 
         f(object=object,est=est,probes=probes,nsim=nsim,seed=seed,

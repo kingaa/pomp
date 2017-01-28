@@ -60,7 +60,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
 {
     
     ep <- paste0("in ",sQuote("nlf"),": ")
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
 
     if (eval.only) est <- character(0)
     if (transform)
@@ -372,7 +372,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
         opt$npts <- npts
     }
     
-    pompUnload(object)
+    pompUnload(object,verbose=verbose)
 
     new(
         "nlfd.pomp",

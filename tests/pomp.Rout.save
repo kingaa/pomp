@@ -146,7 +146,7 @@ newly created object(s):
 > file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
 +                        pattern=paste0(po@solibs[[1]]$name,".*"),
 +                        full.names=TRUE))
-[1] TRUE TRUE TRUE
+[1] TRUE TRUE
 > simulate(po) -> po
 > 
 > plot(po,yax.flip=TRUE)

@@ -50,9 +50,9 @@ pfilter.internal <- function (object, params, Np,
                               .getnativesymbolinfo = TRUE) {
 
     ep <- paste0("in ",sQuote("pfilter"),": ")
-    
+
     object <- as(object,"pomp")
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
 
     gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
     pred.mean <- as.logical(pred.mean)
@@ -62,7 +62,7 @@ pfilter.internal <- function (object, params, Np,
     verbose <- as.logical(verbose)
     save.states <- as.logical(save.states)
     save.params <- as.logical(save.params)
-    
+
     if (length(params)==0)
         stop(ep,sQuote("params")," must be specified",call.=FALSE)
 
@@ -152,7 +152,7 @@ pfilter.internal <- function (object, params, Np,
     } else {
         pred.v <- array(data=numeric(0),dim=c(0,0))
     }
-    
+
     if (filter.mean) {
         filt.m <- matrix(
             data=0,
@@ -332,8 +332,8 @@ pfilter.internal <- function (object, params, Np,
             ),
             call.=FALSE
         )
-    
-    pompUnload(object)
+
+    pompUnload(object,verbose=verbose)
 
     new(
         "pfilterd.pomp",

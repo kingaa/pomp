@@ -256,7 +256,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     
     ep <- paste0("in ",sQuote("mif2"),": ")
     
-    pompLoad(object)
+    pompLoad(object,verbose=verbose)
     
     transform <- as.logical(transform)
     verbose <- as.logical(verbose)
@@ -334,7 +334,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
         pfp@paramMatrix <- partrans(object,paramMatrix,dir="fromEstimationScale",
                                     .getnativesymbolinfo=gnsi)
     
-    pompUnload(object)
+    pompUnload(object,verbose=verbose)
     
     new(
         "mif2d.pomp",
