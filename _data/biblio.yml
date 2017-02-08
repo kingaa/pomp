@@ -41,6 +41,15 @@
   school: "McMaster University"
   url: "http://hdl.handle.net/11375/19103"
 
+- key: Becker2016
+  author: "A. D. Becker, R. B. Birger, A. Teillant, P. A. Gastanaduy, G. S. Wallace, and B. T. Grenfell"
+  year: "2016"
+  title: "Estimating enhanced prevaccination measles transmission hotspots in the context of cross-scale dynamics."
+  journal: "Proc. Natl. Acad. Sci. U.S.A."
+  volume: "113"
+  pages: "14595-14600"
+  doi: "http://doi.org/10.1073/pnas.1604976113"
+
 - key: Bhadra2010
   author: "A. Bhadra"
   year: "2010"
@@ -407,6 +416,15 @@
   volume: "7"
   pages: "e1002135"
   doi: "10.1371%2Fjournal.pcbi.1002135"
+
+- key: Tavakoli2016
+  author: "S. Tavakoli and V. M. Panaretos"
+  year: "2016"
+  title: "Detecting and localizing differences in functional time series dynamics: a case study in molecular biophysics"
+  journal: "J. Am. Stat. Assoc."
+  volume: "111"
+  pages: "1020-1035"
+  doi: "http://doi.org/10.1080/01621459.2016.1147355"
 
 - key: Toni2010
   author: "T. Toni and M. P. H. Stumpf"
