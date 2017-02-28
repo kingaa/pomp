@@ -868,11 +868,13 @@ blowfly.data <- '"day";"y";"set"
 718;8103;4
 720;6803;4
 '
+
 raw.data <- subset(
                    read.csv2(text=blowfly.data,comment.char="#"),
                    set==4,
                    select=-set
                    )
+
 pomp(
      data=subset(raw.data,day>14&day<400),
      times="day",
@@ -920,12 +922,6 @@ pomp(
      #y.init=c(948, 942, 911, 858, 801, 676, 504, 397),
      paramnames=c("P","N0","delta","sigma.P","sigma.d","sigma.y"),
      statenames=c("N1","R","S","e","eps"),
-     initializer=function (params, t0, y.init, ...) {
-       ntau <- length(y.init)
-       n <- y.init[ntau:1]
-       names(n) <- paste("N",seq_len(ntau),sep="")
-       c(n,R=0,S=0,e=0,eps=0)
-     }
      ) -> blowflies2
 
 ## mle from search to date
@@ -947,28 +943,5 @@ coef(blowflies2,transform=TRUE) <- c(
                   sigma.d = -0.274, 
                   sigma.y = -4.524
                   )
-
-test <- FALSE
-if(test){
-  sim1 <- simulate(blowflies1,nsim=1)
-  plot(obs(sim1)['y',],ty='l')
-  lines(obs(blowflies1)['y',],lty="dashed")
-  states(sim1)[,1]
-
-  sim2 <- simulate(blowflies2,nsim=1)
-  plot(obs(sim2)['y',],ty='l')
-  lines(obs(blowflies2)['y',],lty="dashed")
-  states(sim2)[,1]
-
-  ## check that it matches the deterministic skeleton when noise is small
-  params.1.skel <- coef(blowflies1)
-  params.1.skel["sigma.P"] <- 0.00001
-  params.1.skel["sigma.d"] <- 0.00001
-  params.1.skel["sigma.y"] <- 0.00001
-  simulate(blowflies1,params=params.1.skel,nsim=1,seed=73691676L) -> b1.skel
-  plot(obs(blowflies1)['y',],ty='l',lty="dashed")
-  lines(obs(b1.skel)['y',],ty='l')
-  
-} 
 
 c("blowflies1","blowflies2")
