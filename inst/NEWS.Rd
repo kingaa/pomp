@@ -1,9 +1,30 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 1.9.4}{
+\section{Changes in \pkg{pomp} version 1.10.5}{
+  \itemize{
+    \item More verbosity is provided with \code{verbose=TRUE}.
+  }
+}
+\section{Changes in \pkg{pomp} version 1.10.4}{
   \itemize{
     \item The functions \code{bake}, \code{stew}, and \code{freeze} now preserve information about the system time used in computation as an attribute of the returned object.
     In addition, these functions store information about the RNG settings.
+    \item Some documentation improvements, courtesy of Sebastian Funk.
+  }
+}
+\section{Changes in \pkg{pomp} version 1.10.3}{
+  \itemize{
+    \item Documentation improvements.
+  }
+}
+\section{Changes in \pkg{pomp} version 1.10.2}{
+  \itemize{
+    \item More verbosity in building of Csnippets.
+  }
+}
+\section{Changes in \pkg{pomp} version 1.10.1}{
+  \itemize{
+    \item Better handling of \code{pomp}'s \code{times} argument.
   }
 }
 \section{Changes in \pkg{pomp} version 1.9.3}{

@@ -1,11 +1,29 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
-_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._9._4:
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_0._5:
+
+        • More verbosity is provided with ‘verbose=TRUE’.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_0._4:
 
         • The functions ‘bake’, ‘stew’, and ‘freeze’ now preserve
           information about the system time used in computation as an
           attribute of the returned object.  In addition, these
           functions store information about the RNG settings.
+
+        • Some documentation improvements, courtesy of Sebastian Funk.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_0._3:
+
+        • Documentation improvements.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_0._2:
+
+        • More verbosity in building of Csnippets.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_0._1:
+
+        • Better handling of ‘pomp’'s ‘times’ argument.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._9._3:
 
