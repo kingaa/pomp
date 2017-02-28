@@ -5,12 +5,43 @@
 #include <Rdefines.h>
 #include "pomp_internal.h"
 
+// simple 2D Ornstein-Uhlenbeck process simulation
 static void sim_ou2 (double *x1, double *x2,
 		     double alpha1, double alpha2, double alpha3, double alpha4, 
-		     double sigma1, double sigma2, double sigma3);
+		     double sigma1, double sigma2, double sigma3)
+{
+  double eps[2], xnew[2];
+
+  eps[0] = rnorm(0,1);
+  eps[1] = rnorm(0,1);
+
+  xnew[0] = alpha1*(*x1)+alpha3*(*x2)+sigma1*eps[0];
+  xnew[1] = alpha2*(*x1)+alpha4*(*x2)+sigma2*eps[0]+sigma3*eps[1];
+
+  *x1 = xnew[0];
+  *x2 = xnew[1];
+}
+
+// simple 2D Ornstein-Uhlenbeck process transition density
+// transition (x1,x2) -> (z1,z2) in 1 unit of time
 static double dens_ou2 (double x1, double x2, double z1, double z2,
 			double alpha1, double alpha2, double alpha3, double alpha4, 
-			double sigma1, double sigma2, double sigma3, int give_log);
+			double sigma1, double sigma2, double sigma3, int give_log)
+{
+  double eps[2], val;
+
+  // compute residuals
+  eps[0] = z1-alpha1*x1-alpha3*x2;
+  eps[1] = z2-alpha2*x1-alpha4*x2;
+
+  // backsolve
+  eps[0] /= sigma1;
+  eps[1] -= sigma2*eps[0];
+  eps[1] /= sigma3;
+
+  val = dnorm(eps[0],0.0,1.0,1)+dnorm(eps[1],0.0,1.0,1)-log(sigma1)-log(sigma3);
+  return ((give_log) ? val : exp(val));
+}
 
 // #define ALPHA1     (pp[0])
 // #define ALPHA2     (pp[1])
@@ -92,38 +123,38 @@ static double dens_ou2 (double x1, double x2, double z1, double z2,
 #define Y2    (y[obsindex[1]])
 
 // onestep simulator for use in 'discrete.time.sim' plug-in
-void ou2_step (double *x, const double *p,
-	       const int *stateindex, const int *parindex, const int *covindex,
-	       int ncovars, const double *covars,
-	       double t, double dt) 
+void _ou2_step (double *x, const double *p,
+		const int *stateindex, const int *parindex, const int *covindex,
+		int ncovars, const double *covars,
+		double t, double dt) 
 {
   sim_ou2(&x[X1],&x[X2],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3);
 }
 
 // onestep transition probability density for use in 'onestep.dens' plug-in
 // transition from x to z as time goes from t1 to t2
-void ou2_pdf (double *f, 
-	      double *x, double *z, double t1, double t2, const double *p, 
-	      const int *stateindex, const int *parindex, const int *covindex,
-	      int ncovars, const double *covars)
+void _ou2_pdf (double *f, 
+	       double *x, double *z, double t1, double t2, const double *p, 
+	       const int *stateindex, const int *parindex, const int *covindex,
+	       int ncovars, const double *covars)
 {
   if (t2-t1 != 1)
     errorcall(R_NilValue,"ou2_pdf error: transitions must be consecutive");
   f[0] = dens_ou2(x[X1],x[X2],z[X1],z[X2],ALPHA1,ALPHA2,ALPHA3,ALPHA4,SIGMA1,SIGMA2,SIGMA3,1);
 }
 
-void ou2_skel (double *f, double *x, double *p, 
-	       int *stateindex, int *parindex, int *covindex, 
-	       int ncovars, double *covars, double t)
+void _ou2_skel (double *f, double *x, double *p, 
+		int *stateindex, int *parindex, int *covindex, 
+		int ncovars, double *covars, double t)
 {
   f[X1] = ALPHA1*x[X1]+ALPHA3*x[X2];
   f[X2] = ALPHA2*x[X1]+ALPHA4*x[X2];
 }
 
 // bivariate normal measurement error density
-void ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
-		   int *obsindex, int *stateindex, int *parindex, int *covindex,
-		   int covdim, double *covar, double t) 
+void _ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
+		    int *obsindex, int *stateindex, int *parindex, int *covindex,
+		    int covdim, double *covar, double t) 
 {
   double sd = fabs(TAU);
   double f = 0.0;
@@ -133,10 +164,10 @@ void ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log,
 }
 
 // bivariate normal measurement error simulator
-void ou2_rmeasure (double *y, double *x, double *p, 
-		   int *obsindex, int *stateindex, int *parindex, int *covindex,
-		   int ncovar, double *covar, 
-		   double t) 
+void _ou2_rmeasure (double *y, double *x, double *p, 
+		    int *obsindex, int *stateindex, int *parindex, int *covindex,
+		    int ncovar, double *covar, 
+		    double t) 
 {
   double sd = fabs(TAU);
   Y1 = rnorm(x[X1],sd);
@@ -156,41 +187,3 @@ void ou2_rmeasure (double *y, double *x, double *p,
 #undef X2
 #undef Y1
 #undef Y2
-
-// simple 2D Ornstein-Uhlenbeck process simulation
-static void sim_ou2 (double *x1, double *x2,
-		     double alpha1, double alpha2, double alpha3, double alpha4, 
-		     double sigma1, double sigma2, double sigma3)
-{
-  double eps[2], xnew[2];
-
-  eps[0] = rnorm(0,1);
-  eps[1] = rnorm(0,1);
-
-  xnew[0] = alpha1*(*x1)+alpha3*(*x2)+sigma1*eps[0];
-  xnew[1] = alpha2*(*x1)+alpha4*(*x2)+sigma2*eps[0]+sigma3*eps[1];
-
-  *x1 = xnew[0];
-  *x2 = xnew[1];
-}
-
-// simple 2D Ornstein-Uhlenbeck process transition density
-// transition (x1,x2) -> (z1,z2) in 1 unit of time
-static double dens_ou2 (double x1, double x2, double z1, double z2,
-			double alpha1, double alpha2, double alpha3, double alpha4, 
-			double sigma1, double sigma2, double sigma3, int give_log)
-{
-  double eps[2], val;
-
-  // compute residuals
-  eps[0] = z1-alpha1*x1-alpha3*x2;
-  eps[1] = z2-alpha2*x1-alpha4*x2;
-
-  // backsolve
-  eps[0] /= sigma1;
-  eps[1] -= sigma2*eps[0];
-  eps[1] /= sigma3;
-
-  val = dnorm(eps[0],0.0,1.0,1)+dnorm(eps[1],0.0,1.0,1)-log(sigma1)-log(sigma3);
-  return ((give_log) ? val : exp(val));
-}

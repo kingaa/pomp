@@ -4,7 +4,7 @@
 
 #include "pomp_internal.h"
 
-void reulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *dt, double *trans) {
+static void reulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *dt, double *trans) {
   int k;
   int m = *ntrans;
   for (k = 0; k < *n; k++) {
@@ -13,7 +13,7 @@ void reulermultinom_multi (int *n, int *ntrans, double *size, double *rate, doub
   }
 }
 
-void deulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *dt, double *trans, int *give_log, double *f) {
+static void deulermultinom_multi (int *n, int *ntrans, double *size, double *rate, double *dt, double *trans, int *give_log, double *f) {
   int k;
   int m = *ntrans;
   for (k = 0; k < *n; k++) {

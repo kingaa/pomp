@@ -10,7 +10,7 @@
 // with additional pre-conditioning for numerical stability
 // translated into C from R code by Simon N. Wood
 
-void robust_synth_loglik (double *y, int *dim, double *ydat, double *loglik) {
+static void robust_synth_loglik (double *y, int *dim, double *ydat, double *loglik) {
   // 'ydat' is destroyed
   // 'y' is preserved
   int nrow = dim[0];

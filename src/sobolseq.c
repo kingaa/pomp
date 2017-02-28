@@ -185,7 +185,7 @@ static void sobol_destroy (soboldata *sd)
 /* NLopt API to Sobol sequence creation, which hides soboldata structure
    behind an opaque pointer */
 
-nlopt_sobol nlopt_sobol_create (unsigned sdim)
+static nlopt_sobol nlopt_sobol_create (unsigned sdim)
 {
   nlopt_sobol s = (nlopt_sobol) Calloc(1,soboldata);
   if (!s) return 0;
@@ -222,7 +222,7 @@ static void nlopt_sobol_destroy (nlopt_sobol s)
    adopt the suggestion of the Joe and Kuo paper, which in turn
    is taken from Acworth et al (1998), of skipping a number of
    points equal to the largest power of 2 smaller than n */
-void nlopt_sobol_skip(nlopt_sobol s, unsigned n, double *x)
+static void nlopt_sobol_skip(nlopt_sobol s, unsigned n, double *x)
 {
   if (s) {
     unsigned k = 1;

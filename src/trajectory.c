@@ -5,12 +5,12 @@
 
 #include "pomp_internal.h"
 
-void iterate_map_native (double *X, double *time, double *p,
-			 double deltat, double t, double *x,
-			 int ntimes, int nvars, int npars, int ncovars, int nzeros, int nreps,
-			 int *sidx, int *pidx, int *cidx, int *zidx,
-			 lookup_table *covar_table,
-			 pomp_skeleton *ff, SEXP args) 
+static void iterate_map_native (double *X, double *time, double *p,
+				double deltat, double t, double *x,
+				int ntimes, int nvars, int npars, int ncovars, int nzeros, int nreps,
+				int *sidx, int *pidx, int *cidx, int *zidx,
+				lookup_table *covar_table,
+				pomp_skeleton *ff, SEXP args) 
 {
   double *covars = NULL;
   int nsteps;
@@ -38,12 +38,12 @@ void iterate_map_native (double *X, double *time, double *p,
   unset_pomp_userdata();
 }
 
-void iterate_map_R (double *X, double *time, double *p, 
-		    double deltat, double t, double *x,
-		    double *tp, double *xp, double *pp, double *cp,
-		    int ntimes, int nvars, int npars, int nzeros, int nreps,
-		    lookup_table *covar_table, int *zidx,
-		    SEXP Snames, SEXP fcall, SEXP rho)
+static void iterate_map_R (double *X, double *time, double *p, 
+			   double deltat, double t, double *x,
+			   double *tp, double *xp, double *pp, double *cp,
+			   int ntimes, int nvars, int npars, int nzeros, int nreps,
+			   lookup_table *covar_table, int *zidx,
+			   SEXP Snames, SEXP fcall, SEXP rho)
 {
   int nprotect = 0;
   int first = 1;
