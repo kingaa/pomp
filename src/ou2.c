@@ -3,23 +3,8 @@
 #include <R.h>
 #include <Rmath.h>
 #include <Rdefines.h>
+#include "pomp_internal.h"
 
-// prototypes
-void ou2_rmeasure (double *y, double *x, double *p, 
-		   int *obsindex, int *stateindex, int *parindex, int *covindex,
-		   int ncovar, double *covar, double t);
-void ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
-		   int *obsindex, int *stateindex, int *parindex, int *covindex,
-		   int covdim, double *covar, double t);
-// void ou2_adv (double *x, double *xstart, double *par, double *times, int *n);
-void ou2_step (double *x, const double *p,
-	       const int *stateindex, const int *parindex, const int *covindex,
-	       int ncovars, const double *covars,
-	       double t, double dt);
-void ou2_pdf (double *f, 
-	      double *x1, double *x2, double t1, double t2, const double *p, 
-	      const int *stateindex, const int *parindex, const int *covindex,
-	      int ncovars, const double *covars);
 static void sim_ou2 (double *x1, double *x2,
 		     double alpha1, double alpha2, double alpha3, double alpha4, 
 		     double sigma1, double sigma2, double sigma3);

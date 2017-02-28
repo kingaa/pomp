@@ -36,29 +36,104 @@ struct lookup_table make_covariate_table (SEXP object, int *ncovars);
 // bspline.c
 SEXP bspline_basis(SEXP x, SEXP degree, SEXP knots);
 SEXP bspline_basis_function(SEXP x, SEXP i, SEXP degree, SEXP knots);
+SEXP periodic_bspline_basis (SEXP x, SEXP nbasis, SEXP degree, SEXP period);
 
-// sobolseq.c
-SEXP sobol_sequence (SEXP dim, SEXP length);
+// dmeasure.c
+SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
+
+// dprior.c
+SEXP do_dprior (SEXP object, SEXP params, SEXP log, SEXP gnsi);
+
+// dprocess.c
+SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
+
+// euler.c
+SEXP euler_model_simulator (SEXP func, 
+                            SEXP xstart, SEXP times, SEXP params, 
+                            SEXP deltat, SEXP method, SEXP zeronames,
+                            SEXP tcovar, SEXP covar, SEXP args, SEXP gnsi);
+SEXP euler_model_density (SEXP func, 
+			  SEXP x, SEXP times, SEXP params,
+			  SEXP tcovar, SEXP covar, SEXP log, SEXP args, 
+			  SEXP gnsi);
+
+// eulermultinom.c
+SEXP R_Euler_Multinom (SEXP n, SEXP size, SEXP rate, SEXP dt);
+SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP dt, SEXP log);
+SEXP R_GammaWN (SEXP n, SEXP sigma, SEXP deltat);
+
+// initstate.c
+SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi);
+
+// lookup_table.c
+SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t);
+
+// mif.c
+SEXP mif_update (SEXP pfp, SEXP theta, SEXP gamma, SEXP varfactor, 
+		 SEXP sigma, SEXP pars);
+
+// mif2.c
+SEXP randwalk_perturbation (SEXP params, SEXP rw_sd);
+
+// ou2.c
+void ou2_rmeasure (double *y, double *x, double *p, 
+		   int *obsindex, int *stateindex, int *parindex, int *covindex,
+		   int ncovar, double *covar, double t);
+void ou2_dmeasure (double *lik, double *y, double *x, double *p, int give_log, 
+		   int *obsindex, int *stateindex, int *parindex, int *covindex,
+		   int covdim, double *covar, double t);
+void ou2_step (double *x, const double *p,
+	       const int *stateindex, const int *parindex, const int *covindex,
+	       int ncovars, const double *covars,
+	       double t, double dt);
+void ou2_pdf (double *f, 
+	      double *x1, double *x2, double t1, double t2, const double *p, 
+	      const int *stateindex, const int *parindex, const int *covindex,
+	      int ncovars, const double *covars);
+
+// partrans.c
+SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi);
+
+// pfilter.c
+SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
+			   SEXP rw_sd,
+			   SEXP predmean, SEXP predvar,
+			   SEXP filtmean, SEXP trackancestry, SEXP onepar,
+			   SEXP weights, SEXP tol);
 
 // pomp_fun.c
 typedef enum {undef=-1,Rfun=0,native=1,regNative=2} pompfunmode;
 SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode);
+SEXP load_stack_incr (SEXP pack);
+SEXP load_stack_decr (SEXP pack);
 
-// lookup_table.c
-SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t);
+// probe.c
+SEXP apply_probe_data (SEXP object, SEXP probes);
+SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval);
+
+// probe_acf.c
+SEXP probe_acf (SEXP x, SEXP lags, SEXP corr);
+SEXP probe_ccf (SEXP x, SEXP y, SEXP lags, SEXP corr);
+
+// probe_marginal.c
+SEXP probe_marginal_setup (SEXP ref, SEXP order, SEXP diff);
+SEXP probe_marginal_solve (SEXP x, SEXP setup, SEXP diff);
+
+// probe_nlar.c
+SEXP probe_nlar (SEXP x, SEXP lags, SEXP powers);
 
 // resample.c
 void nosort_resamp (int nw, double *w, int np, int *p, int offset);
 SEXP systematic_resampling(SEXP weights);
 
-// initstate.c
-SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi);
+// rmeasure.c
+SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi);
+
+// rprior.c
+SEXP do_rprior (SEXP object, SEXP params, SEXP gnsi);
 
 // rprocess.c
 SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset, SEXP gnsi);
-
-// rmeasure.c
-SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi);
 
 // skeleton.c
 SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
@@ -73,6 +148,27 @@ void eval_skeleton_R (double *f, double *time, double *x, double *p,
 		      double *tp, double *xp, double *pp, double *cp,
 		      int nvars, int npars, int ntimes,
 		      int nrepx, int nrepp, int nreps, lookup_table *covar_table);
+
+// simulate.c
+SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, 
+			      SEXP nsim, SEXP obs, SEXP states, SEXP gnsi);
+
+// sobolseq.c
+SEXP sobol_sequence (SEXP dim, SEXP length);
+
+// SSA_simulator.c
+SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
+		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP deps, 
+		    SEXP tcovar, SEXP covar,
+		    SEXP zeronames, SEXP args, SEXP gnsi);
+
+// synthlik.c
+SEXP synth_loglik (SEXP ysim, SEXP ydat);
+
+// trajectory.c
+SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP gnsi);
+SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi);
+void pomp_desolve_takedown (void);
 
 //userdata.c
 void set_pomp_userdata (SEXP object);

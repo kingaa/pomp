@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.10.6}{
+  \itemize{
+    \item Callable routines are now registered.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.10.5}{
   \itemize{
     \item More verbosity is provided with \code{verbose=TRUE}.

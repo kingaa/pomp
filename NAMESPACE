@@ -1,36 +1,4 @@
-useDynLib(			
-    pomp,
-    bspline_basis,
-    periodic_bspline_basis,
-    systematic_resampling,
-    euler_model_simulator,
-    euler_model_density,
-    lookup_in_table,
-    load_stack_incr,load_stack_decr,
-    SSA_simulator,
-    R_Euler_Multinom,D_Euler_Multinom,R_GammaWN,
-    mif_update,
-    pfilter_computations,
-    randwalk_perturbation,
-    simulation_computations,
-    iterate_map,
-    apply_probe_data,apply_probe_sim,
-    probe_marginal_setup,probe_marginal_solve,
-    probe_acf,probe_ccf,
-    probe_nlar,
-    synth_loglik,
-    pomp_desolve_setup,pomp_desolve_takedown,
-    pomp_vf_eval,
-    do_partrans,
-    do_rprocess,
-    do_dprocess,
-    do_rmeasure,
-    do_dmeasure,
-    do_rprior,
-    do_dprior,
-    do_skeleton,
-    do_init_state
-)
+useDynLib(pomp,.registration=TRUE)
 
 import(methods)
 importFrom(graphics,plot,par,abline,pairs,matplot,box,axis,mtext,

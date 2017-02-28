@@ -8,7 +8,7 @@ sobol <- function (vars, n) {
     if (!is.finite(n) || (n > 1073741824L))
         stop(ep,"too many points requested",call.=FALSE);
     x <- tryCatch(
-        .Call("sobol_sequence",as.integer(d),as.integer(n)),
+        .Call(sobol_sequence,as.integer(d),as.integer(n)),
         error = function (e) {
             stop(ep,conditionMessage(e),call.=FALSE)
         }
