@@ -2,6 +2,7 @@
 
 - on-the-fly modification of basic components (pomp 2?)
 - `initializer` -> `rinit` and perhaps `dinit`
+- come up with better scheme for indicating transformed variables in Csnippet parameter transformations
 - parameter transformations: put `transform` option into each estimation routine (`spect.match`)
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)

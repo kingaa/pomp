@@ -8,9 +8,6 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
-// FACILITY FOR EVALUATING A SET OF PERIODIC BSPLINE BASIS FUNCTIONS
-void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
-
 // UTILITY FOR GAMMA WHITENOISE
 // This function draws a random increment of a gamma whitenoise process.
 // This will have expectation=dt and variance=(sigma^2*dt)
@@ -223,6 +220,9 @@ double theta, int give_log) {
   double f = lchoose(size+x-1,size-1)-lbeta(a,b)+lbeta(a+size,b+x);
   return (give_log) ? f : exp(f);
 }
+
+// FACILITY FOR EVALUATING A SET OF PERIODIC BSPLINE BASIS FUNCTIONS
+void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
 
 // FACILITIES FOR EXTRACTING R OBJECTS FROM THE 'USERDATA' SLOT
 const SEXP get_pomp_userdata (const char *name);

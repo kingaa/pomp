@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.11.1}{
+  \itemize{
+    \item Some streamlining of codes.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.10.6}{
   \itemize{
     \item Callable routines are now registered.
