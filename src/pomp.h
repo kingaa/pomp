@@ -222,17 +222,19 @@ double theta, int give_log) {
 }
 
 // FACILITY FOR EVALUATING A SET OF PERIODIC BSPLINE BASIS FUNCTIONS
-void periodic_bspline_basis_eval (double x, double period, int degree, int nbasis, double *y);
+extern void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
 
 // FACILITIES FOR EXTRACTING R OBJECTS FROM THE 'USERDATA' SLOT
-const SEXP get_pomp_userdata (const char *name);
-const int *get_pomp_userdata_int (const char *name);
-const double *get_pomp_userdata_double (const char *name);
+extern const SEXP get_pomp_userdata(const char *name);
+extern const int *get_pomp_userdata_int(const char *name);
+extern const double *get_pomp_userdata_double(const char *name);
 
-// THE FOLLOWING ARE C PROTOTYPES FOR COMPONENTS OF POMP MODELS.  
+// THE FOLLOWING ARE C PROTOTYPES FOR COMPONENTS OF POMP MODELS
+// FOR USE WHEN THE LATTER ARE SPECIFIED USING NATIVE CODES COMPILED INTO 
+// A MANUALLY-LINKED LIBRARY.
 // THEY CANNOT BE USED WITHIN C SNIPPETS.
 
-// prototype for stochastic simulation algorithm reaction-rate function, as used by "gillespie.sim":
+// PROTOTYPE FOR STOCHASTIC SIMULATION ALGORITHM REACTION-RATE FUNCTION, AS USED BY "GILLESPIE.SIM":
 typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const double *p,
 				const int *stateindex, const int *parindex, const int *covindex,
 				int ncovar, const double *covars);
@@ -254,7 +256,7 @@ typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const doub
 //                from the covariate table supplied to 'SSA.simulator'
 //  returns the rate of the j-th reaction
 
-// prototype for one-step simulator, as used by "euler.sim" and "onestep.sim":
+// PROTOTYPE FOR ONE-STEP SIMULATOR, AS USED BY "EULER.SIM" AND "ONESTEP.SIM":
 typedef void pomp_onestep_sim(double *x, const double *p, 
 			      const int *stateindex, const int *parindex, const int *covindex,
 			      int ncovars, const double *covars,
@@ -281,7 +283,6 @@ typedef void pomp_onestep_sim(double *x, const double *p,
 //     The RNG is initialized before any call to this function, and the RNG state is written afterward.
 //     Inclusion of these calls in the user-defined function may result in significant slowdown.
 
-
 // PROTOTYPE FOR ONE-STEP LOG PROBABILITY DENSITY FUNCTION, AS USED BY "ONESTEP.DENS":
 typedef void pomp_onestep_pdf(double *f, 
 			      const double *x1, const double *x2, double t1, double t2, const double *p, 
@@ -306,7 +307,7 @@ typedef void pomp_onestep_pdf(double *f,
 //  on output:
 // f          = pointer to the probability density (a single scalar)
 
-// prototype for deterministic skeleton evaluation
+// PROTOTYPE FOR DETERMINISTIC SKELETON EVALUATION
 typedef void pomp_skeleton (double *f, const double *x, const double *p, 
 			    const int *stateindex, const int *parindex, const int *covindex, 
 			    int ncovars, const double *covars, double t);
@@ -328,7 +329,7 @@ typedef void pomp_skeleton (double *f, const double *x, const double *p,
 //  on output:
 // f          = pointer to value of the map or vectorfield (a vector of the same length as 'x')
 
-// prototype for measurement model simulation
+// PROTOTYPE FOR MEASUREMENT MODEL SIMULATION
 typedef void pomp_measure_model_simulator (double *y, const double *x, const double *p, 
 					   const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
 					   int ncovars, const double *covars, double t);
@@ -355,8 +356,7 @@ typedef void pomp_measure_model_simulator (double *y, const double *x, const dou
 //     The RNG is initialized before any call to this function, and the RNG state is written afterward.
 //     Inclusion of these calls in the user-defined function may result in significant slowdown.
 
-
-// prototype for measurement model density evaluator
+// PROTOTYPE FOR MEASUREMENT MODEL DENSITY EVALUATOR
 typedef void pomp_measure_model_density (double *lik, const double *y, const double *x, const double *p, int give_log,
 					 const int *obsindex, const int *stateindex, const int *parindex, const int *covindex,
 					 int ncovars, const double *covars, double t);
@@ -381,7 +381,7 @@ typedef void pomp_measure_model_density (double *lik, const double *y, const dou
 //  on output:
 // lik        = pointer to scalar containing (log) likelihood
 
-// prototype for prior simulation
+// PROTOTYPE FOR PRIOR SIMULATION
 typedef void pomp_rprior (double *p, const int *parindex);
 // Description:
 //  on input:
@@ -395,7 +395,7 @@ typedef void pomp_rprior (double *p, const int *parindex);
 //     The RNG is initialized before any call to this function, and the RNG state is written afterward.
 //     Inclusion of these calls in the user-defined function may result in significant slowdown.
 
-// prototype for prior density evaluation
+// PROTOTYPE FOR PRIOR DENSITY EVALUATION
 typedef void pomp_dprior (double *lik, const double *p, int give_log, const int *parindex);
 // Description:
 //  on input:
@@ -406,7 +406,14 @@ typedef void pomp_dprior (double *lik, const double *p, int give_log, const int 
 //  on output:
 // lik        = pointer to vector containing likelihoods
 
-// prototype for parameter transformation function.
+// PROTOTYPE FOR PARAMETER TRANSFORMATION FUNCTION.
 typedef void pomp_transform_fn (double *pt, const double *p, const int *parindex);
+// Description:
+//  on input:
+// p          = pointer to parameter vector
+// parindex   = pointer to vector of integers indexing the parameters 
+//              in 'p' in the order specified by the 'paramnames' slot
+//  on output:
+// pt         = pointer to transformed parameter vector
 
 #endif
