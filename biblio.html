@@ -14,6 +14,8 @@ title: references to the POMP literature
     {{ rec.title }}.
 {% if rec.journal %}
     <i>{{ rec.journal }}</i>,
+{% elsif rec.school %}
+    Thesis: {{ rec.school }}.
 {% endif %}
 {% if rec.volume %}
     <b>{{ rec.volume }}</b>:
