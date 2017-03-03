@@ -1,0 +1,20 @@
+#!/bin/bash
+#PBS -S /bin/bash
+#PBS -V
+#PBS -m abe
+#PBS -M kingaa@umich.edu
+#PBS -q flux
+#PBS -A kingaa_flux
+#PBS -l qos=flux
+
+cd $PBS_O_WORKDIR
+
+export OMPI_MCA_mpi_warn_on_fork=0
+#export OMPI_MCA_btl='^openib'
+#export OMPI_MCA_mtl='^mxm'
+
+RSCRIPT='Rscript --vanilla'
+RFILE=$PBS_JOBNAME.R
+ROUTFILE=$PBS_JOBNAME.Rout
+
+orterun -np $PBS_NP $RSCRIPT $RFILE > $ROUTFILE 2>&1

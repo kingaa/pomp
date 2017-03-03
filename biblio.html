@@ -29,6 +29,8 @@ title: references to the POMP literature
 {% endif %}
 {% if rec.doi %}
     <a target="_blank" href="{{ rec.doi }}">Link</a>
+{% elsif rec.url %}
+    <a target="_blank" href="{{ rec.url }}">Link</a>
 {% endif %}
   </dd>
 
