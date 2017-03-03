@@ -175,9 +175,10 @@
   author: "D. T. Gillespie"
   year: "1977"
   title: "Exact stochastic simulation of coupled chemical reactions"
-  journal: "J Phys Chem"
+  journal: "J. Phys. Chem."
   volume: "81"
   pages: "2340-2361"
+  doi: "http://doi.org/10.1021/j100540a008"
 
 - key: Gourieroux1996
   author: "C. Gouri&eacute;roux and A. Monfort"
