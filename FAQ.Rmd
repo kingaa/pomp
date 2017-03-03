@@ -378,6 +378,14 @@ bsflu %>%
   theme_bw()
 ```
 
+## What is the best measurement model to use?
+
+The answer to this question depends on the nature of the data.
+The measurement model is as much a part of the model as the latent process model. Accordingly, the choice of the measurement model is governed by the same considerations: Which model fits the data best? 
+Which model has the greater predictive power?
+
+Nor is the choice of the measurement model without consequences for the choice of the latent process model.
+Despite the fact that one typically is much more interested in the latent process than in the measurement, if one does not pay careful attention to both, one risks making incorrect or suboptimal inference.
 
 # Error messages.
 
@@ -478,3 +486,4 @@ This in turn suggests that the MOI may lack the variability needed to explain th
 In other words, a model with more variability than is possible in the MOI may be needed to explain the variability in the data, at least in the parameter regimes so far explored.
 
 See also [Issue 27](https://github.com/kingaa/pomp/issues/27).
+

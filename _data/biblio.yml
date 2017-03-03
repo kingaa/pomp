@@ -2,7 +2,7 @@
   author: "J. L. Anderson"
   year: "2001"
   title: "An ensemble adjustment Kalman filter for data assimilation"
-  journal: "Mon. Wea. Rev."
+  journal: "Mon. Weather Rev."
   volume: "129"
   pages: "2884-2903"
   booktitle: "Monthly Weather Review"
@@ -125,7 +125,7 @@
   author: "X. Cai and Z. Xu"
   year: "2007"
   title: "K-leap method for accelerating stochastic simulation of coupled chemical reactions"
-  journal: "J Chem Phys"
+  journal: "J. Chem. Phys."
   volume: "126"
   pages: "074102"
   doi: "http://doi.org/10.1063/1.2436869"
@@ -160,7 +160,7 @@
 - key: Evensen2009
   author: "G. Evensen"
   year: "2009"
-  title: "Data assimilation : the ensemble Kalman filter"
+  title: "Data Assimilation : The Ensemble Kalman Filter"
 
 - key: Fasiolo2016
   author: "M. Fasiolo, N. Pya, and S. N. Wood"
@@ -297,7 +297,7 @@
   author: "A. A. King, D. Nguyen, and E. L. Ionides"
   year: "2016"
   title: "Statistical inference for partially observed Markov processes via the R package pomp"
-  journal: "J. Stat. Soft."
+  journal: "J. Stat. Softw."
   volume: "69"
   pages: "1-43"
   doi: "http://doi.org/10.18637/jss.v069.i12"
