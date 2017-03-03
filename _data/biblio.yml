@@ -96,6 +96,15 @@
   pages: "10604-10609"
   doi: "http://doi.org/10.1073/pnas.1323688111"
 
+- key: Breto2014
+  author: "C. Bret&oacute;"
+  year: "2014"
+  title: "On idiosyncratic stochasticity of financial leverage effects"
+  journal: "Stat. Prob. Lett."
+  volume: "91"
+  pages: "20-26"
+  doi: "http://doi.org/10.1016/j.spl.2014.04.003"
+
 - key: Breto2009
   author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
   year: "2009"
