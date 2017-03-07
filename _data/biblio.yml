@@ -382,6 +382,15 @@
   pages: "4092-4097"
   doi: "http://doi.org/10.1073/pnas.1518977113"
 
+- key: Martinez2017
+  author: "P. P. Martinez, R. C. Reiner Jr, M. Roy, B. A. Cash, M. Yunus, A. S. G. Faruque, S. Huq, A. A. King, and M. Pascual"
+  year: "2017"
+  title: "Cholera forecast for Dhaka, Bangladesh, with the 2015--2016 El Ni&ntilde;o: Lessons learned"
+  journal: "PLoS ONE"
+  volume: "12"
+  pages: "e0172355"
+  doi: "http://doi.org/10.1371/journal.pone.0172355"
+
 - key: Martinez-Bakker2015
   author: "M. Martinez-Bakker, A. A. King, and P. Rohani"
   year: "2015"
