@@ -4,7 +4,7 @@
   title: "An ensemble adjustment Kalman filter for data assimilation"
   journal: "Mon. Weather Rev."
   volume: "129"
-  pages: "2884-2903"
+  pages: "2884&#x2013;2903"
   booktitle: "Monthly Weather Review"
   doi: "http://doi.org/10.1175/1520-0493(2001)129%3C2884:AEAKFF%3E2.0.CO;2"
 
@@ -14,7 +14,7 @@
   title: "Particle Markov chain Monte Carlo methods"
   journal: "J. R. Stat. Soc. B"
   volume: "72"
-  pages: "269-342"
+  pages: "269&#x2013;342"
   doi: "http://doi.org/10.1111/j.1467-9868.2009.00736.x"
 
 - key: Arulampalam2002
@@ -23,7 +23,7 @@
   title: "A tutorial on particle filters for online nonlinear, non-Gaussian Bayesian tracking"
   journal: "IEEE Trans. Sig. Proc."
   volume: "50"
-  pages: "174-188"
+  pages: "174&#x2013;188"
   doi: "http://doi.org/10.1109/78.978374"
 
 - key: Bakker2016
@@ -32,7 +32,7 @@
   title: "Digital epidemiology reveals global childhood disease seasonality and the effects of immunization"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "113"
-  pages: "6689-6694"
+  pages: "6689&#x2013;6694"
   doi: "http://doi.org/10.1073/pnas.1523941113"
 
 - key: Barrows2016
@@ -48,7 +48,7 @@
   title: "Estimating enhanced prevaccination measles transmission hotspots in the context of cross-scale dynamics"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "113"
-  pages: "14595-14600"
+  pages: "14595&#x2013;14600"
   doi: "http://doi.org/10.1073/pnas.1604976113"
 
 - key: Bhadra2010
@@ -57,7 +57,7 @@
   title: "Discussion of `Particle Markov chain Monte Carlo methods' by C. Andrieu, A. Doucet and R. Holenstein"
   journal: "J. R. Stat. Soc. B"
   volume: "72"
-  pages: "314-315"
+  pages: "314&#x2013;315"
   doi: "http://doi.org/10.1111/j.1467-9868.2009.00736.x"
 
 - key: Bhadra2011
@@ -66,7 +66,7 @@
   title: "Malaria in northwest India: data analysis via partially observed stochastic differential equation models driven by L&eacute;vy noise"
   journal: "J. Am. Stat. Assoc."
   volume: "106"
-  pages: "440-451"
+  pages: "440&#x2013;451"
   doi: "http://doi.org/10.1198/jasa.2011.ap10323"
 
 - key: Blackwood2013
@@ -75,7 +75,7 @@
   title: "Deciphering the impacts of vaccination and immunity on pertussis epidemiology in Thailand"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "110"
-  pages: "9595-9600"
+  pages: "9595&#x2013;9600"
   doi: "http://doi.org/10.1073/pnas.1220908110"
 
 - key: Blackwood2013a
@@ -84,7 +84,7 @@
   title: "Resolving the roles of immunity, pathogenesis, and immigration for rabies persistence in vampire bats"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "110"
-  pages: "20837-20842"
+  pages: "20837&#x2013;20842"
   doi: "http://doi.org/10.1073/pnas.1308817110"
 
 - key: Blake2014
@@ -93,7 +93,7 @@
   title: "The role of older children and adults in wild poliovirus transmission"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "111"
-  pages: "10604-10609"
+  pages: "10604&#x2013;10609"
   doi: "http://doi.org/10.1073/pnas.1323688111"
 
 - key: Breto2014
@@ -102,7 +102,7 @@
   title: "On idiosyncratic stochasticity of financial leverage effects"
   journal: "Stat. Prob. Lett."
   volume: "91"
-  pages: "20-26"
+  pages: "20&#x2013;26"
   doi: "http://doi.org/10.1016/j.spl.2014.04.003"
 
 - key: Breto2009
@@ -111,7 +111,7 @@
   title: "Time series analysis via mechanistic models"
   journal: "Ann. Appl. Stat."
   volume: "3"
-  pages: "319-348"
+  pages: "319&#x2013;348"
   doi: "http://doi.org/10.1214/08-AOAS201"
 
 - key: Breto2011
@@ -120,7 +120,7 @@
   title: "Compound Markov counting processes and their applications to modeling infinitesimally over-dispersed systems"
   journal: "Stoch. Process. Their Appl."
   volume: "121"
-  pages: "2571-2591"
+  pages: "2571&#x2013;2591"
   doi: "http://doi.org/10.1016/j.spa.2011.07.005"
 
 - key: Buhnerkempe2017
@@ -145,7 +145,7 @@
   title: "Explaining rapid reinfections in multiple-wave influenza outbreaks: Tristan da Cunha 1971 epidemic as a case study"
   journal: "Proc. R. Soc. Lond. B"
   volume: "278"
-  pages: "3635-3643"
+  pages: "3635&#x2013;3643"
   doi: "http://doi.org/10.1098/rspb.2011.0300"
 
 - key: Ellner1998
@@ -154,7 +154,7 @@
   title: "Noise and nonlinearity in measles epidemics: Combining mechanistic and statistical approaches to population modeling"
   journal: "Am. Nat."
   volume: "151"
-  pages: "425-440"
+  pages: "425&#x2013;440"
   doi: "http://doi.org/10.1086/286130"
 
 - key: Evensen1994
@@ -163,13 +163,14 @@
   title: "Sequential data assimilation with a nonlinear quasi-geostrophic model using Monte Carlo methods to forecast error statistics"
   journal: "Journal of Geophysical Research: Oceans"
   volume: "99"
-  pages: "10143-10162"
+  pages: "10143&#x2013;10162"
   doi: "http://doi.org/10.1029/94JC00572"
 
 - key: Evensen2009
   author: "G. Evensen"
   year: "2009"
   title: "Data Assimilation : The Ensemble Kalman Filter"
+  url: "http://www.isbnsearch.org/isbn/3642037100"
 
 - key: Fasiolo2016
   author: "M. Fasiolo, N. Pya, and S. N. Wood"
@@ -177,7 +178,7 @@
   title: "A comparison of inferential methods for highly nonlinear state space models in ecology and epidemiology"
   journal: "Stat. Sci."
   volume: "31"
-  pages: "96-118"
+  pages: "96&#x2013;118"
   doi: "http://doi.org/10.1214/15-sts534"
 
 - key: Gillespie1977a
@@ -186,13 +187,14 @@
   title: "Exact stochastic simulation of coupled chemical reactions"
   journal: "J. Phys. Chem."
   volume: "81"
-  pages: "2340-2361"
+  pages: "2340&#x2013;2361"
   doi: "http://doi.org/10.1021/j100540a008"
 
 - key: Gourieroux1996
   author: "C. Gouri&eacute;roux and A. Monfort"
-  year: "1996"
+  year: "1997"
   title: "Simulation-based Econometric Methods"
+  url: "http://www.isbnsearch.org/isbn/9780198774754"
 
 - key: Hayman2015
   author: "D. T. S. Hayman"
@@ -209,7 +211,7 @@
   title: "Mechanistic modelling of the three waves of the 1918 influenza pandemic"
   journal: "Theor. Ecol."
   volume: "4"
-  pages: "1-6"
+  pages: "1&#x2013;6"
   doi: "http://doi.org/10.1007/s12080-011-0123-3"
 
 - key: He2013a
@@ -236,7 +238,7 @@
   title: "Plug-and-play inference for disease dynamics: measles in large and small populations as a case study"
   journal: "J. R. Soc. Interface"
   volume: "7"
-  pages: "271-283"
+  pages: "271&#x2013;283"
   doi: "http://doi.org/10.1098/rsif.2009.0151"
 
 - key: Ionides2011
@@ -245,7 +247,7 @@
   title: "Iterated filtering"
   journal: "Ann. Stat."
   volume: "39"
-  pages: "1776-1802"
+  pages: "1776&#x2013;1802"
   doi: "http://doi.org/10.1214/11-AOS886"
 
 - key: Ionides2006
@@ -254,7 +256,7 @@
   title: "Inference for nonlinear dynamical systems"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "103"
-  pages: "18438-18443"
+  pages: "18438&#x2013;18443"
   doi: "http://doi.org/10.1073/pnas.0603181103"
 
 - key: Ionides2015
@@ -263,7 +265,7 @@
   title: "Inference for dynamic and latent variable models via iterated, perturbed Bayes maps"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "112"
-  pages: "719-724"
+  pages: "719&#x2013;724"
   doi: "http://doi.org/10.1073/pnas.1410597112"
 
 - key: Kendall1999
@@ -272,7 +274,7 @@
   title: "Why do populations cycle? A synthesis of statistical and mechanistic modeling approaches"
   journal: "Ecology"
   volume: "80"
-  pages: "1789-1805"
+  pages: "1789&#x2013;1805"
   doi: "http://doi.org/10.1890/0012-9658(1999)080%5B1789:WDPCAS%5D2.0.CO;2"
 
 - key: Kendall2005
@@ -281,7 +283,7 @@
   title: "Population cycles in the pine looper moth: Dynamical tests of mechanistic hypotheses"
   journal: "Ecol. Monogr."
   volume: "75"
-  pages: "259-276"
+  pages: "259&#x2013;276"
   doi: "http://doi.org/10.1890/03-4056"
 
 - key: King2015
@@ -299,7 +301,7 @@
   title: "Inapparent infections and cholera dynamics"
   journal: "Nature"
   volume: "454"
-  pages: "877-880"
+  pages: "877&#x2013;880"
   doi: "http://doi.org/10.1038/nature07084"
 
 - key: King2016
@@ -308,7 +310,7 @@
   title: "Statistical inference for partially observed Markov processes via the R package pomp"
   journal: "J. Stat. Softw."
   volume: "69"
-  pages: "1-43"
+  pages: "1&#x2013;43"
   doi: "http://doi.org/10.18637/jss.v069.i12"
 
 - key: Knape2011
@@ -317,7 +319,7 @@
   title: "Fitting complex population models by combining particle filters with Markov chain Monte Carlo"
   journal: "Ecology"
   volume: "93"
-  pages: "256-263"
+  pages: "256&#x2013;263"
   doi: "http://doi.org/10.1890/11-0797.1"
 
 - key: Laneri2010
@@ -335,7 +337,7 @@
   title: "Dynamical malaria models reveal how immunity buffers effect of climate variability"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "112"
-  pages: "8786-8791"
+  pages: "8786&#x2013;8791"
   doi: "http://doi.org/10.1073/pnas.1419047112"
 
 - key: Lavine2013
@@ -351,7 +353,7 @@
   author: "J. Liu and M. West"
   year: "2001"
   title: "Combining parameter and state estimation in simulation-based filtering"
-  pages: "197-224"
+  pages: "197&#x2013;224"
   booktitle: "Sequential Monte Carlo Methods in Practice"
   editor: "A. Doucet, N. de Freitas, and N. J. Gordon"
 
@@ -361,7 +363,7 @@
   title: "Pertussis immunity and epidemiology: mode and duration of vaccine-induced immunity"
   journal: "Parasitol."
   volume: "143"
-  pages: "835-849"
+  pages: "835&#x2013;849"
   doi: "http://doi.org/10.1017/S0031182015000979"
 
 - key: Marin2012
@@ -370,7 +372,7 @@
   title: "Approximate Bayesian computational methods"
   journal: "Stat. Comp."
   volume: "22"
-  pages: "1167-1180"
+  pages: "1167&#x2013;1180"
   doi: "http://doi.org/10.1007/s11222-011-9288-2"
 
 - key: Martinez2016
@@ -379,13 +381,13 @@
   title: "Differential and enhanced response to climate forcing in diarrheal disease due to rotavirus across a megacity of the developing world"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "113"
-  pages: "4092-4097"
+  pages: "4092&#x2013;4097"
   doi: "http://doi.org/10.1073/pnas.1518977113"
 
 - key: Martinez2017
   author: "P. P. Martinez, R. C. Reiner Jr, M. Roy, B. A. Cash, M. Yunus, A. S. G. Faruque, S. Huq, A. A. King, and M. Pascual"
   year: "2017"
-  title: "Cholera forecast for Dhaka, Bangladesh, with the 2015--2016 El Ni&ntilde;o: Lessons learned"
+  title: "Cholera forecast for Dhaka, Bangladesh, with the 2015&#x2013;2016 El Ni&ntilde;o: Lessons learned"
   journal: "PLoS ONE"
   volume: "12"
   pages: "e0172355"
@@ -406,7 +408,7 @@
   title: "Power spectra reveal the influence of stochasticity on nonlinear population dynamics"
   journal: "Proc. Natl. Acad. Sci. U.S.A."
   volume: "103"
-  pages: "18860-18865"
+  pages: "18860&#x2013;18865"
   doi: "http://doi.org/10.1073/pnas.0608571103"
 
 - key: Romero-Severson2015
@@ -415,7 +417,7 @@
   title: "Dynamic variation in sexual contact rates in a cohort of HIV-negative gay men"
   journal: "Am. J. Epidemiol."
   volume: "182"
-  pages: "255-262"
+  pages: "255&#x2013;262"
   doi: "http://doi.org/10.1093/aje/kwv044"
 
 - key: Shrestha2015
@@ -424,7 +426,7 @@
   title: "The role of influenza in the epidemiology of pneumonia"
   journal: "Sci. Rep."
   volume: "5"
-  pages: "15314-"
+  pages: "15314&#x2013;"
   doi: "http://doi.org/10.1038/srep15314"
 
 - key: Shrestha2013
@@ -451,7 +453,7 @@
   title: "Detecting and localizing differences in functional time series dynamics: a case study in molecular biophysics"
   journal: "J. Am. Stat. Assoc."
   volume: "111"
-  pages: "1020-1035"
+  pages: "1020&#x2013;1035"
   doi: "http://doi.org/10.1080/01621459.2016.1147355"
 
 - key: Toni2010
@@ -460,7 +462,7 @@
   title: "Simulation-based model selection for dynamical systems in systems and population biology"
   journal: "Bioinformatics"
   volume: "26"
-  pages: "104-110"
+  pages: "104&#x2013;110"
   doi: "http://doi.org/10.1093/bioinformatics/btp619"
 
 - key: Toni2009a
@@ -469,7 +471,7 @@
   title: "Approximate Bayesian computation scheme for parameter inference and model selection in dynamical systems"
   journal: "J. R. Soc. Interface"
   volume: "6"
-  pages: "187-202"
+  pages: "187&#x2013;202"
   doi: "http://doi.org/10.1098/rsif.2008.0172"
 
 - key: Wood2010
@@ -478,6 +480,6 @@
   title: "Statistical inference for noisy nonlinear ecological dynamic systems"
   journal: "Nature"
   volume: "466"
-  pages: "1102-1104"
+  pages: "1102&#x2013;1104"
   doi: "http://doi.org/10.1038/nature09319"
 
