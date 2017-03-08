@@ -240,6 +240,15 @@
   pages: "271&#x2013;283"
   doi: "http://doi.org/10.1098/rsif.2009.0151"
 
+- key: Ionides2011a
+  author: "E. L. Ionides"
+  year: "2011"
+  title: "Discussion of ``Feature Matching in Time Series Modeling'' by Y. Xia and H. Tong"
+  journal: "Stat. Sci."
+  volume: "26"
+  pages: "49&#x2013;52"
+  doi: "http://doi.org/10.1214/11-sts345c"
+
 - key: Ionides2011
   author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
   year: "2011"
