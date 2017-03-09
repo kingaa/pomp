@@ -491,3 +491,12 @@
   pages: "1102&#x2013;1104"
   doi: "http://doi.org/10.1038/nature09319"
 
+- key: Xia2011
+  author: "Y. Xia and H. Tong"
+  year: "2011"
+  title: "Feature matching in time series modeling"
+  journal: "Stat. Sci."
+  volume: "26"
+  pages: "21&#x2013;46"
+  doi: "http://doi.org/10.1214/10-sts345"
+
