@@ -53,7 +53,7 @@
 - key: Bhadra2010
   author: "A. Bhadra"
   year: "2010"
-  title: "Discussion of `Particle Markov chain Monte Carlo methods' by C. Andrieu, A. Doucet and R. Holenstein"
+  title: "Discussion of &lsquo;Particle Markov chain Monte Carlo methods&rsquo; by C. Andrieu, A. Doucet and R. Holenstein"
   journal: "J. R. Stat. Soc. B"
   volume: "72"
   pages: "314&#x2013;315"
@@ -168,7 +168,7 @@
 - key: Evensen2009
   author: "G. Evensen"
   year: "2009"
-  title: "Data Assimilation : The Ensemble Kalman Filter"
+  title: "Data Assimilation: The Ensemble Kalman Filter"
   url: "http://www.isbnsearch.org/isbn/3642037100"
 
 - key: Fasiolo2016
@@ -243,7 +243,7 @@
 - key: Ionides2011a
   author: "E. L. Ionides"
   year: "2011"
-  title: "Discussion of ``Feature Matching in Time Series Modeling'' by Y. Xia and H. Tong"
+  title: "Discussion of &ldquo;Feature Matching in Time Series Modeling&rdquo; by Y. Xia and H. Tong"
   journal: "Stat. Sci."
   volume: "26"
   pages: "49&#x2013;52"
