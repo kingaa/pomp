@@ -231,10 +231,16 @@ pfilter.internal <- function (object, params, Np,
             weight <- weights[first]
             states <- X[,first,1L]
             params <- if (one.par) params[,1L] else params[,first]
-            cat("Non-finite likelihood computed:\n")
-            cat("likelihood, data, states, and parameters are:\n")
-            print(c(lik=weight,datvals,states,params))
-            stop(ep,sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
+            msg <- paste0(
+                sQuote("dmeasure")," returns non-finite value.\n",
+                "likelihood, data, states, and parameters are:\n",
+                "time: ",times[nt+1],"\n",
+                "lik: ",weight,"\n",
+                paste0(names(datvals),": ",datvals,collapse="\n"),"\n",
+                paste0(names(states),": ",states,collapse="\n"),"\n",
+                paste0(names(params),": ",params,collapse="\n")
+            )
+            stop(ep,msg,call.=FALSE)
         }
         gnsi.dmeas <- FALSE
 

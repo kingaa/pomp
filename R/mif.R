@@ -131,7 +131,7 @@ mif.pfilter <- function (object, params, Np,
             dimnames=list(
                 variable=c(statenames,rw.names),
                 time=time(object))
-        ) 
+        )
     } else {
         pred.v <- array(data=numeric(0),dim=c(0,0))
     }
@@ -145,7 +145,7 @@ mif.pfilter <- function (object, params, Np,
             time=time(object)
         )
     )
-    
+
     for (nt in seq_len(ntimes)) { ## main loop
 
         sigma1 <- sigma
@@ -212,10 +212,16 @@ mif.pfilter <- function (object, params, Np,
             weight <- weights[first]
             states <- X[,first,1L]
             params <- if (transform) tparams[,first] else params[,first]
-            cat("Non-finite likelihood computed:\n")
-            cat("likelihood, data, states, and parameters are:\n")
-            print(c(lik=weight,datvals,states,params))
-            stop(ep,sQuote("dmeasure")," returns non-finite value.",call.=FALSE)
+            msg <- paste0(
+                sQuote("dmeasure")," returns non-finite value.\n",
+                "likelihood, data, states, and parameters are:\n",
+                "time: ",times[nt+1],"\n",
+                "lik: ",weight,"\n",
+                paste0(names(datvals),": ",datvals,collapse="\n"),"\n",
+                paste0(names(states),": ",states,collapse="\n"),"\n",
+                paste0(names(params),": ",params,collapse="\n")
+            )
+            stop(ep,msg,call.=FALSE)
         }
         gnsi.dmeas <- FALSE
 
@@ -355,7 +361,7 @@ mif.internal <- function (object, Nmif,
              " must have one positive entry for each parameter to be estimated",call.=FALSE)
 
     pars <- rw.names[!(rw.names%in%ivps)]
-    
+
     if (!is.character(ivps) || !all(ivps%in%start.names))
         stop(ep,sQuote("ivps"),
              " must name model parameters",call.=FALSE)
