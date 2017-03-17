@@ -1,6 +1,6 @@
 
-R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
-Copyright (C) 2016 The R Foundation for Statistical Computing
+R version 3.3.3 (2017-03-06) -- "Another Canoe"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -44,7 +44,7 @@ Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single pos
 > ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
 > print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
    loglik loglik.se 
-  -478.05      0.91 
+  -479.87      0.58 
 > 
 > pompExample(euler.sir)
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
@@ -61,17 +61,28 @@ newly created object(s):
 > 
 > coef(pf,"rho") <- -1
 > try(pfilter(pf))
-Non-finite likelihood computed:
-likelihood, data, states, and parameters are:
-          lik       reports             S             I             R 
-          NaN  6.170000e+02  1.360940e+05  2.093000e+03  1.961851e+06 
-        cases             W         gamma            mu          iota 
- 1.025000e+03  2.296806e-02  2.600000e+01  2.000000e-02  1.000000e-02 
-        beta1         beta2         beta3       beta.sd           pop 
- 4.000000e+02  4.800000e+02  3.200000e+02  1.000000e-03  2.100000e+06 
-          rho           S_0           I_0           R_0 
--1.000000e+00  6.500000e-02  1.000000e-03  9.350000e-01 
 Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value.
+likelihood, data, states, and parameters are:
+time: 0.0192307692307692
+lik: NaN
+reports: 617
+S: 136094
+I: 2093
+R: 1961851
+cases: 1025
+W: 0.0229680628337717
+gamma: 26
+mu: 0.02
+iota: 0.01
+beta1: 400
+beta2: 480
+beta3: 320
+beta.sd: 0.001
+pop: 2100000
+rho: -1
+S_0: 0.065
+I_0: 0.001
+R_0: 0.935
 > 
 > p <- coef(euler.sir)
 > euler.sir@params <- numeric(0)

@@ -1,6 +1,6 @@
 
-R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
-Copyright (C) 2016 The R Foundation for Statistical Computing
+R version 3.3.3 (2017-03-06) -- "Another Canoe"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -134,10 +134,10 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x2e23278>
+<environment: 0x2c94a78>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x2d4bee8>
+<environment: 0x2bbe5e0>
 measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
 measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
 prior simulator, rprior = not specified
@@ -150,14 +150,14 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "N.0")])
     params
 }
-<environment: 0x21e0bc0>
+<environment: 0x20549e0>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "N.0")])
     params
 }
-<environment: 0x21e0bc0>
+<environment: 0x20549e0>
 parameter(s):
        r    sigma      phi      N.0      e.0 
 44.70118  0.30000 10.00000  7.00000  0.00000 

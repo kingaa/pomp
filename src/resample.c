@@ -3,7 +3,7 @@
 #include "pomp_internal.h"
 #include <Rdefines.h>
 
-void nosort_resamp (int nw, double *w, int np, int *p, int offset) 
+void nosort_resamp (int nw, double *w, int np, int *p, int offset)
 {
   int i, j;
   double du, u;
@@ -18,7 +18,9 @@ void nosort_resamp (int nw, double *w, int np, int *p, int offset)
 
   for (i = 0, j = 0; j < np; j++) {
     u += du;
-    while (u > w[i]) i++;
+    // In the following line, the second test is needed to correct 
+    // the infamous Bug of St. Patrick, 2017-03-17.
+    while ((u > w[i]) && (i < np-1)) i++;
     p[j] = i;
   }
   if (offset)			// add offset if needed

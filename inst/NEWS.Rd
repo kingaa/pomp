@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.11.2}{
+  \itemize{
+    \item The rare and fascinating \dQuote{Bug of St. Patrick} has been fixed.
+    Thanks to Carles Breto for finding the bug and helping to isolate it.
+    \item More informative error messages are generated when \code{dmeasure} returns a non-finite likelihood in any of the particle filtering codes.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.11.1}{
   \itemize{
     \item Some streamlining of codes.

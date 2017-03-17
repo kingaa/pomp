@@ -1,6 +1,6 @@
 
-R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
-Copyright (C) 2016 The R Foundation for Statistical Computing
+R version 3.3.3 (2017-03-06) -- "Another Canoe"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -156,9 +156,6 @@ Error : in ‘mif2’: number of particles, ‘Np’, must always be positive
 +                    alpha.2=ifelse(time==1,0.2,0.1),
 +                    alpha.3=0.2*(time<10)))
 + ) -> out
-filtering failure at time t = 38
-Warning message:
-in ‘mif2.pfilter’: 1 filtering failure occurred. 
 > stopifnot(length(out)==210)
 > stopifnot(sum(grepl("mif2 iteration",out))==10)
 > stopifnot(sum(grepl("mif2 pfilter",out))==200)
@@ -166,13 +163,24 @@ in ‘mif2.pfilter’: 1 filtering failure occurred.
 > m5 <- m4
 > coef(m5,"alpha.2") <- -Inf
 > try(mif2(m5,Np=100,Nmif=2))
-Non-finite likelihood computed:
-likelihood, data, states, and parameters are:
-   time     lik      y1      y2      x1      x2 alpha.1 alpha.2 alpha.3 alpha.4 
-  2.000     NaN   0.242   7.039     Inf     NaN   0.800    -Inf   0.213   0.900 
-sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-  3.000  -0.500   2.000   1.000  -6.044   0.663 
 Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
+likelihood, data, states, and parameters are:
+time: 2
+lik: NaN
+y1: 0.242170113354698
+y2: 7.03941580692464
+x1: Inf
+x2: NaN
+alpha.1: 0.8
+alpha.2: -Inf
+alpha.3: 0.89374983028469
+alpha.4: 0.9
+sigma.1: 3
+sigma.2: -0.5
+sigma.3: 2
+tau: 1
+x1.0: -0.261846633665601
+x2.0: 2.07732276228613
 > 
 > library(ggplot2)
 > library(reshape2)
@@ -198,11 +206,17 @@ newly created object(s):
 > 
 > coef(gompertz,"K") <- -1
 > try(mif2(gompertz,Np=1000,rw.sd=rw.sd(K=0.1,r=0.1),cooling.fraction.50=0.5))
-Non-finite likelihood computed:
-likelihood, data, states, and parameters are:
-   time     lik       Y       X       K       r   sigma     tau     X.0 
- 1.0000     NaN  1.1186     NaN -1.1194 -0.0291  0.1000  0.1000  1.0000 
 Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
+likelihood, data, states, and parameters are:
+time: 1
+lik: NaN
+Y: 1.11861594539405
+X: NaN
+K: -0.951697610552792
+r: 0.136091951970101
+sigma: 0.1
+tau: 0.1
+X.0: 1
 > 
 > pomp(gompertz,
 +      toEstimationScale=function (params,...){
@@ -215,11 +229,17 @@ Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite 
 +      }) -> po
 > 
 > try(mif2(po,Nmif=3,Np=1000,rw.sd=rw.sd(K=5,r=Inf),cooling.fraction.50=0.5))
-Non-finite likelihood computed:
-likelihood, data, states, and parameters are:
- time   lik     Y     X     K     r sigma   tau   X.0 
- 1.00   NaN  1.12   NaN 10.06   NaN  0.10  0.10  1.00 
 Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
+likelihood, data, states, and parameters are:
+time: 1
+lik: NaN
+Y: 1.11861594539405
+X: NaN
+K: -11.6552550070594
+r: NaN
+sigma: 0.1
+tau: 0.1
+X.0: 1
 > 
 > coef(gompertz,"K") <- 10
 > try(gb <- mif2(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),

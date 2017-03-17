@@ -1,6 +1,6 @@
 
-R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
-Copyright (C) 2016 The R Foundation for Statistical Computing
+R version 3.3.3 (2017-03-06) -- "Another Canoe"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -238,24 +238,46 @@ Error : in ‘mif’: ‘ic.lag’ must be specified if ‘ivps’ are.
 Error : in ‘mif’: in ‘mif.pfilter’: too many filtering failures.
 > coef(fit,"tau") <- NaN
 > try(fit <- continue(fit,Np=100,Nmif=2))
-Non-finite likelihood computed:
-likelihood, data, states, and parameters are:
-    lik      y1      y2      x1      x2 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 
-    NaN  -1.701   4.247  -2.756   1.245   0.800  -0.501   0.439   0.000   3.000 
-sigma.2 sigma.3     tau    x1.0    x2.0 
- -0.500   2.000     NaN  -4.014   1.381 
 Error : in ‘mif’: in ‘mif.pfilter’: ‘dmeasure’ returns non-finite value.
+likelihood, data, states, and parameters are:
+time: 1
+lik: NaN
+y1: -1.70081613181228
+y2: 4.24746468495763
+x1: -2.75634755997992
+x2: 1.24450194398381
+alpha.1: 0.8
+alpha.2: -0.500596320312449
+alpha.3: 0.438821994914721
+alpha.4: 0
+sigma.1: 3
+sigma.2: -0.5
+sigma.3: 2
+tau: NaN
+x1.0: -4.01407339362499
+x2.0: 1.38079605588371
 In addition: Warning message:
 In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > coef(fit,"alpha.2") <- -Inf
 > try(fit <- continue(fit,Np=100,Nmif=2))
-Non-finite likelihood computed:
-likelihood, data, states, and parameters are:
-    lik      y1      y2      x1      x2 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 
-    NaN  -1.701   4.247  -6.277     Inf   0.800    -Inf   0.439   0.000   3.000 
-sigma.2 sigma.3     tau    x1.0    x2.0 
- -0.500   2.000     NaN  -3.580  -2.138 
 Error : in ‘mif’: in ‘mif.pfilter’: ‘dmeasure’ returns non-finite value.
+likelihood, data, states, and parameters are:
+time: 1
+lik: NaN
+y1: -1.70081613181228
+y2: 4.24746468495763
+x1: -6.27710553913673
+x2: Inf
+alpha.1: 0.8
+alpha.2: -Inf
+alpha.3: 0.438821994914721
+alpha.4: 0
+sigma.1: 3
+sigma.2: -0.5
+sigma.3: 2
+tau: NaN
+x1.0: -3.58024297548629
+x2.0: -2.13820656324065
 In addition: Warning message:
 In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > 

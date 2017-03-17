@@ -1,6 +1,6 @@
 
-R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
-Copyright (C) 2016 The R Foundation for Statistical Computing
+R version 3.3.3 (2017-03-06) -- "Another Canoe"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -90,7 +90,7 @@ Error : in ‘bsmc’: too many filtering failures
 In addition: Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
   package ‘pomp’ found more than once,
-using the one found in ‘/home/kingaa/projects/Rpkg/library/pomp’
+using the one found in ‘/userdata/kingaa/projects/Rpkg/library/pomp’
 2: In library(pomp) : package ‘pomp’ already present in search()
 Error : in ‘bsmc’: in ‘rmvnorm’: infinite or missing values in 'x'
 Error : in ‘bsmc2’: in ‘rmvnorm’: infinite or missing values in 'x'
@@ -99,27 +99,27 @@ Error : in ‘bsmc2’: too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I/usr/local/apps/R/R-3.3.2/lib64/R/include -DNDEBUG  -I/usr/local/include    -I/home/kingaa/projects/Rpkg/library/pomp/include -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpBxpuAO/9556/pomp_9cbe21c26d6b0e33669fa93470aaa0bf.c -o /tmp/RtmpBxpuAO/9556/pomp_9cbe21c26d6b0e33669fa93470aaa0bf.o
-/tmp/RtmpBxpuAO/9556/pomp_9cbe21c26d6b0e33669fa93470aaa0bf.c: In function ‘__pomp_rmeasure’:
-/tmp/RtmpBxpuAO/9556/pomp_9cbe21c26d6b0e33669fa93470aaa0bf.c:16:1: error: expected ‘;’ before ‘}’ token
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I/usr/local/apps/R/R-3.3.3/lib64/R/include -DNDEBUG  -I/usr/local/include    -I/userdata/kingaa/projects/Rpkg/library/pomp/include -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpIjwMw1/62371/pomp_1e7bd5fe43610a1cd6cf00d749cdf156.c -o /tmp/RtmpIjwMw1/62371/pomp_1e7bd5fe43610a1cd6cf00d749cdf156.o
+/tmp/RtmpIjwMw1/62371/pomp_1e7bd5fe43610a1cd6cf00d749cdf156.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpIjwMw1/62371/pomp_1e7bd5fe43610a1cd6cf00d749cdf156.c:16:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/RtmpBxpuAO/9556/pomp_9cbe21c26d6b0e33669fa93470aaa0bf.o] Error 1
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
-Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot compile shared-object library ‘/tmp/RtmpBxpuAO/9556/pomp_9cbe21c26d6b0e33669fa93470aaa0bf.so’: status = 1
+make[2]: *** [/tmp/RtmpIjwMw1/62371/pomp_1e7bd5fe43610a1cd6cf00d749cdf156.o] Error 1
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot compile shared-object library ‘/tmp/RtmpIjwMw1/62371/pomp_1e7bd5fe43610a1cd6cf00d749cdf156.so’: status = 1
 In addition: Warning messages:
 1: in ‘bsmc2’: 2 filtering failures occurred. 
 2: in ‘pfilter’: 1 filtering failure occurred. 
 3: In find.package(package, lib.loc, quiet = TRUE) :
   package ‘pomp’ found more than once,
-using the one found in ‘/home/kingaa/projects/Rpkg/library/pomp’
+using the one found in ‘/userdata/kingaa/projects/Rpkg/library/pomp’
 4: In library(pomp) : package ‘pomp’ already present in search()
 5: In find.package(package, lib.loc, quiet = TRUE) :
   package ‘pomp’ found more than once,
-using the one found in ‘/home/kingaa/projects/Rpkg/library/pomp’
+using the one found in ‘/userdata/kingaa/projects/Rpkg/library/pomp’
 > stopifnot(length(out)==627)
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)
 > stopifnot(sum(grepl("model codes written",out))==1)
