@@ -263,8 +263,8 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     gnsi <- as.logical(.getnativesymbolinfo)
     Np <- c(Np,Np[1L])
     
-    if (Nmif <= 0) stop(ep,sQuote("Nmif"),
-                        " must be a positive integer",call.=FALSE)
+    if (Nmif <= 0)
+        stop(ep,sQuote("Nmif")," must be a positive integer",call.=FALSE)
     
     cooling.fn <- mif2.cooling(
         type=cooling.type,
