@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.11.3}{
+  \itemize{
+    \item Some changes have been made to the use of random numbers in some codes (the stochastic simulations in \code{gillespie.sim} and the resampling in the particle-filtering codes).
+    These changes will mean that calculations performed before will not be reproducible in perfect detail, but will be statistically equivalent.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.11.2}{
   \itemize{
     \item The rare and fascinating \dQuote{Bug of St. Patrick} has been fixed.
