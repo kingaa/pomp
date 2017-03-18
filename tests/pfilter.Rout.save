@@ -63,26 +63,26 @@ newly created object(s):
 > try(pfilter(pf))
 Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value.
 likelihood, data, states, and parameters are:
-time: 0.0192307692307692
-lik: NaN
-reports: 617
-S: 136094
-I: 2093
-R: 1961851
-cases: 1025
-W: 0.0229680628337717
-gamma: 26
-mu: 0.02
-iota: 0.01
-beta1: 400
-beta2: 480
-beta3: 320
-beta.sd: 0.001
-pop: 2100000
-rho: -1
-S_0: 0.065
-I_0: 0.001
-R_0: 0.935
+   time:    0.0192308
+    lik:          NaN
+reports:          617
+      S:       136094
+      I:         2093
+      R:  1.96185e+06
+  cases:         1025
+      W:    0.0229681
+  gamma:           26
+     mu:         0.02
+   iota:         0.01
+  beta1:          400
+  beta2:          480
+  beta3:          320
+beta.sd:        0.001
+    pop:      2.1e+06
+    rho:           -1
+    S_0:        0.065
+    I_0:        0.001
+    R_0:        0.935
 > 
 > p <- coef(euler.sir)
 > euler.sir@params <- numeric(0)
