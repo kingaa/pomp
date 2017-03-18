@@ -5,7 +5,7 @@ library(reshape2)
 library(magrittr)
 theme_set(theme_bw())
 library(pomp)
-stopifnot(packageVersion("pomp")>="1.4.7")
+stopifnot(packageVersion("pomp")>="1.11.2.2")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,

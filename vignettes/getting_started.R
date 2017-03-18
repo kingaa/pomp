@@ -6,7 +6,7 @@ registerDoMPI(cl)
 
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 library(pomp)
-stopifnot(packageVersion("pomp")>="1.6")
+stopifnot(packageVersion("pomp")>="1.11")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
