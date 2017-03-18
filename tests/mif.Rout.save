@@ -47,7 +47,7 @@ coefficients at `truth'
 > cat("particle filter log likelihood at truth\n")
 particle filter log likelihood at truth
 > print(fit1.pfilter$loglik,digits=4)
-[1] -481.6
+[1] -480.1
 > 
 > p.truth <- coef(ou2)
 > guess2 <- guess1 <- p.truth
@@ -97,7 +97,7 @@ particle filter log likelihood at truth
 > mif1a <- c(mif1)
 > coef(mif2)
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-  0.800  -0.469   0.364   0.900   3.000  -0.500   2.000   1.000  -4.268   2.497 
+  0.800  -0.481   0.343   0.900   3.000  -0.500   2.000   1.000  -3.294   2.481 
 > dim(coef(mif12))
 [1]  2 10
 > dim(coef(c(mif12,mif2)))
@@ -244,18 +244,18 @@ likelihood, data, states, and parameters are:
     lik:          NaN
      y1:     -1.70082
      y2:      4.24746
-     x1:     -2.75635
-     x2:       1.2445
+     x1:     -2.82582
+     x2:      1.12013
 alpha.1:          0.8
-alpha.2:    -0.500596
-alpha.3:     0.438822
+alpha.2:    -0.462756
+alpha.3:     0.471476
 alpha.4:            0
 sigma.1:            3
 sigma.2:         -0.5
 sigma.3:            2
     tau:          NaN
-   x1.0:     -4.01407
-   x2.0:       1.3808
+   x1.0:     -4.07355
+   x2.0:      1.23873
 In addition: Warning message:
 In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > coef(fit,"alpha.2") <- -Inf
@@ -266,18 +266,18 @@ likelihood, data, states, and parameters are:
     lik:          NaN
      y1:     -1.70082
      y2:      4.24746
-     x1:     -6.27711
+     x1:     -6.46149
      x2:          Inf
 alpha.1:          0.8
 alpha.2:         -Inf
-alpha.3:     0.438822
+alpha.3:     0.471476
 alpha.4:            0
 sigma.1:            3
 sigma.2:         -0.5
 sigma.3:            2
     tau:          NaN
-   x1.0:     -3.58024
-   x2.0:     -2.13821
+   x1.0:     -3.63972
+   x2.0:     -2.28028
 In addition: Warning message:
 In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > 

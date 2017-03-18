@@ -14,8 +14,7 @@ static int gillespie (pomp_ssa_rate_fn *ratefun, double *t, double *f,
   double fsum = 0;
   for (j = 0; j < nevent; j++) fsum += f[j];
   if (fsum > 0.0) {
-    p = unif_rand();
-    tstep = -log(p)/fsum;
+    tstep = exp_rand()/fsum;
     *t = *t+tstep;
   } else {
     *t = R_PosInf;

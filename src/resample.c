@@ -14,7 +14,7 @@ void nosort_resamp (int nw, double *w, int np, int *p, int offset)
     errorcall(R_NilValue,"in 'systematic_resampling': non-positive sum of weights");
 
   du = w[nw-1] / ((double) np);
-  u = runif(-du,0);
+  u = -du*unif_rand();
 
   for (i = 0, j = 0; j < np; j++) {
     u += du;

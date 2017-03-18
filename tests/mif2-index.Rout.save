@@ -33,8 +33,8 @@ newly created object(s):
 +            cooling.fraction=0.5)
 > table(mf@indices)
 
-532 956 
-634 366 
+217 801 
+765 235 
 > 
 > set.seed(962724905)
 > 
@@ -45,6 +45,6 @@ newly created object(s):
 +            cooling.fraction=0.5)
 > table(unlist(mf@indices))
 
- 18 
+ 21 
 100 
 > 

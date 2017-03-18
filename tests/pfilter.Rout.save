@@ -34,7 +34,7 @@ newly created object(s):
 > cat("particle filter log likelihood at truth\n")
 particle filter log likelihood at truth
 > print(pf$loglik,digits=4)
-[1] -478
+[1] -478.2
 > 
 > try(replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) c(100,200) else 500)))
 Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single positive integer
@@ -44,7 +44,7 @@ Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single pos
 > ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
 > print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
    loglik loglik.se 
-  -479.87      0.58 
+  -480.47      0.90 
 > 
 > pompExample(euler.sir)
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
@@ -57,7 +57,7 @@ newly created object(s):
      rho      S_0      I_0      R_0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(pf$loglik,digits=4)
-[1] -935.7
+[1] -938.9
 > 
 > coef(pf,"rho") <- -1
 > try(pfilter(pf))
@@ -66,11 +66,11 @@ likelihood, data, states, and parameters are:
    time:    0.0192308
     lik:          NaN
 reports:          617
-      S:       136094
-      I:         2093
-      R:  1.96185e+06
-  cases:         1025
-      W:    0.0229681
+      S:       136062
+      I:         2140
+      R:  1.96182e+06
+  cases:         1059
+      W:   -0.0289022
   gamma:           26
      mu:         0.02
    iota:         0.01
@@ -94,7 +94,7 @@ beta.sd:        0.001
      rho      S_0      I_0      R_0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(logLik(pf),digits=4)
-[1] -941.3
+[1] -945
 > plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
 > plot(ess~time,data=as.data.frame(pf),type='l')
 > plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')

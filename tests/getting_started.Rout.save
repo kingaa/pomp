@@ -130,7 +130,7 @@ Type 'q()' to quit R.
 > ## ----logistic-pfilter----------------------------------------------------
 > pf <- pfilter(parus,Np=1000,params=c(r=0.2,K=200,sigma=0.5,N.0=200))
 > logLik(pf)
-[1] -152.1487
+[1] -152.0506
 > 
 > ## ----logistic-skeleton---------------------------------------------------
 > skel <- Csnippet("
