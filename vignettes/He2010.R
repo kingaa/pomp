@@ -25,7 +25,7 @@ library(plyr)
 library(reshape2)
 library(magrittr)
 library(pomp)
-stopifnot(packageVersion("pomp")>="0.70-1")
+stopifnot(packageVersion("pomp")>="1.11.3")
 
 ## ----load-data-----------------------------------------------------------
 load("twentycities.rda")
