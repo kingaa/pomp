@@ -1,8 +1,10 @@
 ## ----parallel,include=FALSE,cache=FALSE----------------------------------
 library(foreach)
 library(doMPI)
+library(doRNG)
 cl <- startMPIcluster()
 registerDoMPI(cl)
+registerDoRNG(348885445L)
 
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
 library(pomp)
@@ -198,8 +200,8 @@ bake(file="parus-mif.rds",{
                            upper=c(r=5,K=600,sigma=2,N.0=200),
                            nseq=100)
     foreach (guess=iter(guesses,"row"),.combine=rbind,
-             .options.mpi=list(seed=334065675),
-             .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% {
+             .packages=c("pomp","magrittr"),.errorhandling="remove",
+             .export="parus",.inorder=FALSE) %dopar% {
                  parus %>% 
                      mif2(start=unlist(guess),Nmif=50,Np=1000,transform=TRUE,
                           cooling.fraction.50=0.8,cooling.type="geometric",
@@ -228,8 +230,7 @@ bake("parus-profile.rds",{
              .combine=rbind,
              .errorhandling="remove",
              .packages=c("pomp","magrittr","reshape2","plyr"),
-             .inorder=FALSE,
-             .options.mpi=list(seed=1680158025)
+             .export="parus",.inorder=FALSE
              ) %dopar%
         {
             parus %>% 
@@ -280,8 +281,8 @@ bake(file="parus-pmcmc.rds",{
         subset(K > 100 & K < 600 & r < 5 & sigma < 2,
                select=-c(loglik,loglik.se)) -> starts
     foreach (start=iter(starts,"row"),.combine=c,
-             .options.mpi=list(seed=23781975),
-             .packages=c("pomp","magrittr"),.errorhandling="remove") %dopar% 
+             .packages=c("pomp","magrittr"),.errorhandling="remove",
+             .export="parus",.inorder=FALSE) %dopar% 
         {
             parus %>%
                 pmcmc(Nmcmc=2000,Np=200,start=unlist(start),
