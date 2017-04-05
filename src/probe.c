@@ -18,8 +18,8 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
       errorcall(R_NilValue,"probe %ld returns a non-numeric result",i+1);
     }
   }
-
-  PROTECT(retval = eval(LCONS(install("c"),VectorToPairList(vals)),R_BaseEnv)); nprotect++;
+  PROTECT(vals = VectorToPairList(vals)); nprotect++;
+  PROTECT(retval = eval(LCONS(install("c"),vals),R_BaseEnv)); nprotect++;
 
   UNPROTECT(nprotect);
   return retval;
@@ -42,7 +42,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   // we get these from a previous call to 'apply_probe_data'
   nprobe = LENGTH(probes);
   nvals = LENGTH(datval);
-  PROTECT(names = GET_NAMES(datval)); nprotect++; 
+  PROTECT(names = GET_NAMES(datval)); nprotect++;
   PROTECT(t0 = GET_SLOT(object,install("t0"))); nprotect++;
   PROTECT(times = GET_SLOT(object,install("times"))); nprotect++;
 
@@ -92,34 +92,34 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
       xp = REAL(x);
       yp = REAL(y)+nvars*s;
       for (j = 0; j < ntimes; j++, yp += nvars*nsims) {
-	for (i = 0; i < nvars; i++, xp++) *xp = yp[i];
+        for (i = 0; i < nvars; i++, xp++) *xp = yp[i];
       }
 
       // evaluate the probe on the simulated data
       PROTECT(val = eval(lang2(VECTOR_ELT(probes,p),x),CLOENV(VECTOR_ELT(probes,p))));
       if (!IS_NUMERIC(val)) {
-	errorcall(R_NilValue,"probe %ld returns a non-numeric result",p+1);
+        errorcall(R_NilValue,"probe %ld returns a non-numeric result",p+1);
       }
 
       len = LENGTH(val);
       if (s == 0)
-	len0 = len;
+        len0 = len;
       else if (len != len0) {
-	errorcall(R_NilValue,"variable-sized results returned by probe %ld",p+1);
+        errorcall(R_NilValue,"variable-sized results returned by probe %ld",p+1);
       }
       if (k+len > nvals)
-	errorcall(R_NilValue,"probes return different number of values on different datasets");
+        errorcall(R_NilValue,"probes return different number of values on different datasets");
 
       xp = REAL(retval); yp = REAL(val);
       for (i = 0; i < len; i++) xp[s+nsims*(i+k)] = yp[i];
 
       UNPROTECT(1);
     }
-    
+
   }
   if (k != nvals)
     errorcall(R_NilValue,"probes return different number of values on different datasets");
-  
+
   UNPROTECT(nprotect);
   return retval;
 }
