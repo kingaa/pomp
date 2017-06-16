@@ -115,7 +115,16 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
         if (include.data) {
             od <- as.data.frame(object)
             od$sim <- 0L
-            retval <- merge(od,retval,all=TRUE)
+            tryCatch(
+            {
+                retval <- merge(od,retval,all=TRUE)
+            },
+            error = function (e) {
+                stop(ep,"error in merging actual and simulated data.\n",
+                     "Check names of data, covariates, and states for conflicts.\n",
+                     sQuote("merge")," error message: ",conditionMessage(e),call.=FALSE)
+            }
+            )
         }
 
         retval$sim <- ordered(retval$sim)

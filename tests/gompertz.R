@@ -86,3 +86,7 @@ y <- rmeasure(gompertz,x=x,y=0,params=cc,times=2)
 x <- array(data=x,dim=c(1,1,1,1,1),dimnames=list(rownames(x)))
 y <- rmeasure(gompertz,x=x,y=0,params=cc,times=2)
 
+gg <- pomp(gompertz,tcovar="ctime",
+           covar=data.frame(ctime=time(gompertz),
+                            time=seq_along(time(gompertz))))
+try(simulate(gg,as.data.frame=TRUE,include.data=T))
