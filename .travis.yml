@@ -34,7 +34,7 @@ matrix:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
     - os: osx
       osx_image: xcode6.4
-      env: RVERSION=3.3.3
+      env: RVERSION=3.3.2
       after_success:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
     - os: osx
