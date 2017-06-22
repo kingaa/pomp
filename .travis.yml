@@ -18,16 +18,14 @@ matrix:
         - travis_wait 30 Rscript -e 'covr::codecov(line_exclusions="src/pomp.h")'
     - os: linux
       env: RVERSION=3.1.2
+      after_success:
+        - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
     - os: linux
       env: RVERSION=devel
       after_success:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
     - os: osx
       env: RVERSION=release
-      before_install:
-        - curl -O http://kingaa.github.io/scripts/mac-fortran.sh
-        - sh mac-fortran.sh
-        - rm -f mac-fortran.sh
       after_success:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
     - os: osx
@@ -36,11 +34,7 @@ matrix:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
     - os: osx
       osx_image: xcode6.4
-      env: RVERSION=release
-      before_install:
-        - curl -O http://kingaa.github.io/scripts/mac-fortran.sh
-        - sh mac-fortran.sh
-        - rm -f mac-fortran.sh
+      env: RVERSION=3.3.3
       after_success:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
     - os: osx
