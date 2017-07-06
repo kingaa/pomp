@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.12.2}{
+  \itemize{
+    \item The Ricker example has a new parameter, \eqn{c}, which scales the (unobserved) population size.
+    By default, \eqn{c=1}, so that the behavior is as before.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.12.1}{
   \itemize{
     \item Improved error trapping.
