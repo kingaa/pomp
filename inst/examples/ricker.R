@@ -58,21 +58,21 @@ pomp(
      data=read.csv2(text=dat),
      times="time",
      t0=0,
-     params=c(r=exp(3.8),sigma=0.3,phi=10,N.0=7,e.0=0), # originally used to generate the data
+     params=c(r=exp(3.8),sigma=0.3,phi=10,c=1,N.0=7,e.0=0), # originally used to generate the data
      rprocess=discrete.time.sim(
        step.fun="_ricker_simulator"
        ),
      rmeasure="_ricker_poisson_rmeasure",
      dmeasure="_ricker_poisson_dmeasure",
      skeleton=map("_ricker_skeleton",delta.t=1),
-     paramnames=c("r","sigma","phi"),
+     paramnames=c("r","sigma","phi","c"),
      statenames=c("N","e"),
      toEstimationScale=function(params,...) {
-       params[c("r","sigma","phi","N.0")] <- log(params[c("r","sigma","phi","N.0")])
+       params[c("r","sigma","phi","c","N.0")] <- log(params[c("r","sigma","phi","c","N.0")])
        params
      },
      fromEstimationScale=function(params,...) {
-       params[c("r","sigma","phi","N.0")] <- exp(params[c("r","sigma","phi","N.0")])
+       params[c("r","sigma","phi","c","N.0")] <- exp(params[c("r","sigma","phi","c","N.0")])
        params
      },
      PACKAGE="pomp"

@@ -36,7 +36,7 @@ newly created object(s):
 +            ricker,
 +            dmeasure="_ricker_poisson_dmeasure",
 +            PACKAGE="pomp",
-+            paramnames=c("r","sigma","phi"),
++            paramnames=c("r","sigma","phi","c"),
 +            statenames=c("N","e"),
 +            obsnames=c("y")
 +            )
@@ -48,7 +48,7 @@ newly created object(s):
 +            r2,
 +            rmeasure="_ricker_poisson_rmeasure",
 +            PACKAGE="pomp",
-+            paramnames=c("r","sigma","phi"),
++            paramnames=c("r","sigma","phi","c"),
 +            statenames=c("N","e"),
 +            obsnames=c("y")
 +            )

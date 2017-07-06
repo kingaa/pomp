@@ -7,6 +7,7 @@
 #define R       (p[parindex[0]]) // growth rate
 #define SIGMA   (p[parindex[1]]) // process noise level
 #define PHI     (p[parindex[2]]) // measurement scale parameter
+#define C       (p[parindex[3]]) // population scale
 
 #define N       (x[stateindex[0]]) // population size
 #define E       (x[stateindex[1]]) // process noise
@@ -34,7 +35,7 @@ void _ricker_simulator (double *x, const double *p,
 			double t, double dt)
 {
   double e = (SIGMA > 0.0) ? rnorm(0,SIGMA) : 0.0;
-  N = exp(log(R)+log(N)-N+e);
+  N = exp(log(R)+log(N)-C*N+e);
   E = e;
 }
 
@@ -42,7 +43,7 @@ void _ricker_skeleton (double *f, double *x, const double *p,
 		       const int *stateindex, const int *parindex, const int *covindex,
 		       int covdim, const double *covar, double t) 
 {
-  f[0] = exp(log(R)+log(N)-N);
+  f[0] = exp(log(R)+log(N)-C*N);
   f[1] = 0.0;
 }
 
@@ -52,3 +53,4 @@ void _ricker_skeleton (double *f, double *x, const double *p,
 #undef R
 #undef SIGMA
 #undef PHI
+#undef C

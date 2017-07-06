@@ -14,7 +14,7 @@ r3 <- pomp(
            ricker,
            dmeasure="_ricker_poisson_dmeasure",
            PACKAGE="pomp",
-           paramnames=c("r","sigma","phi"),
+           paramnames=c("r","sigma","phi","c"),
            statenames=c("N","e"),
            obsnames=c("y")
            )
@@ -25,7 +25,7 @@ r4 <- pomp(
            r2,
            rmeasure="_ricker_poisson_rmeasure",
            PACKAGE="pomp",
-           paramnames=c("r","sigma","phi"),
+           paramnames=c("r","sigma","phi","c"),
            statenames=c("N","e"),
            obsnames=c("y")
            )

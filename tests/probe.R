@@ -237,7 +237,7 @@ dim(values(pbm))
 plot(pbm)
 invisible(summary(pbm))
 
-coef(po) <- c(r=10,sigma=0.3,phi=20,N.0=5,e.0=0)
+coef(po) <- c(r=10,sigma=0.3,c=1,phi=20,N.0=5,e.0=0)
 
 pb <- probe(
     po,

@@ -40,7 +40,7 @@ try(
 coef(po,c("r","phi")) <- c(0,0)
 coef(po,c("r","phi")) <- c(a=0,b=1)
 coef(po,c("r","phi")) <- 1
-coef(po) <- c(phi=1,r=3.5,N.0=10,e.0=0,sigma=0)
+coef(po) <- c(phi=1,r=3.5,N.0=10,e.0=0,sigma=0,c=1)
 coef(po)
 coef(po,"new") <- 3
 plot(simulate(po))
@@ -99,16 +99,16 @@ try(
 
 try(rprocess(ricker,xstart=init.state(ricker),params=coef(ricker),times=runif(10,max=5)))
 try(simulate(ricker,params=c(r=1.5)))
-try(simulate(ricker,params=c(r=1.5,sigma=0.1,N.0=1,e.0=0)))
-try(simulate(ricker,params=c(r=1.5,phi=1,N.0=1,e.0=0)))
+try(simulate(ricker,params=c(r=1.5,sigma=0.1,N.0=1,e.0=0,c=1)))
+try(simulate(ricker,params=c(r=1.5,phi=1,N.0=1,e.0=0,c=1)))
 try(simulate(pomp(ricker,initializer=Csnippet("N = N_0; e = 0;"),
                   statenames=c("N","e"),paramnames=c("N_0")),
-                  params=c(r=1.5,sigma=0.1,phi=1)))
+                  params=c(r=1.5,sigma=0.1,phi=1,c=1)))
 try(simulate(pomp(ricker,initializer=Csnippet("m = N_0; e = 0;"),
                   statenames=c("m","e"),paramnames=c("N_0"),
-                  params=c(r=1.5,sigma=0.1,phi=1,N_0=1))))
+                  params=c(r=1.5,sigma=0.1,phi=1,N_0=1,c=1))))
 try(simulate(pomp(ricker,rmeasure=Csnippet("z = rpois(phi*N);"),
                   statenames=c("N"),obsnames=c("z"),paramnames=c("phi")),
-                  params=c(r=1.5,sigma=0.1,phi=1,N.0=1,e.0=0)))
+                  params=c(r=1.5,sigma=0.1,phi=1,N.0=1,e.0=0,c=1)))
 
 dev.off()

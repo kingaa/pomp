@@ -28,7 +28,7 @@ ricker <- pomp(ricker,
                skeleton=NULL,
                initializer=Csnippet("e=0; N = N_0; step = 0;"),
                zeronames="step",
-               params=c(r=0.5,N.0=0.5,sigma=0.1,phi=10),
+               params=c(r=0.5,N.0=0.5,sigma=0.1,phi=10,c=1),
                paramnames=c("sigma","r","N.0"),statenames=c("N","e","step"))
 time(ricker) <- sort(runif(n=20,max=50))
 ricker <- simulate(ricker)
