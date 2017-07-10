@@ -269,6 +269,15 @@
   pages: "18438&#x2013;18443"
   doi: "http://doi.org/10.1073/pnas.0603181103"
 
+- key: Ionides2017
+  author: "E. L. Ionides, C. Breto, J. Park, R. A. Smith, and A. A. King"
+  year: "2017"
+  title: "Monte Carlo profile confidence intervals for dynamic systems"
+  journal: "Journal of the Royal Society, Interface"
+  volume: "14"
+  pages: "20170126"
+  doi: "http://doi.org/10.1098/rsif.2017.0126"
+
 - key: Ionides2015
   author: "E. L. Ionides, D. Nguyen, Y. Atchad&eacute;, S. Stoev, and A. A. King"
   year: "2015"
