@@ -164,8 +164,11 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     while ((icount < ntimes) && (t >= times[icount])) {
       for (i = 0; i < nvar; i++)
         xout[i+nvar*(irep+nrep*icount)] = ylast[i];
-      // Set appropriate states to zero
-      for (i = 0; i < nzero; i++) y[izero[i]] =0.0;
+      // Set appropriate states to zero at time of last observation
+      for (i = 0; i < nzero; i++) {
+	y[izero[i]] -= ylast[izero[i]];
+	ylast[izero[i]] = 0;
+      }
       // Recompute if zero event-rate encountered
       if (flag) t = times[icount];
       icount++;
