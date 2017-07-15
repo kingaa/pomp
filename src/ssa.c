@@ -116,7 +116,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   double tmax = times[ntimes-1];
   double *covars = NULL;
   double *f = NULL;
-  double par[npar], y[nvar];
+  double par[npar], y[nvar], ylast[nvar];
   struct lookup_table tab = {lcov, mcov, 0, tcov, cov};
   int i, j;
 
@@ -140,6 +140,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   int icount = 1;
   while (icount < ntimes) {
     R_CheckUserInterrupt();
+    memcpy(ylast, y, nvar * sizeof(double));
     if (method == 0) {	// Gillespie's next reaction method
       flag = gillespie(ratefun,&t,f,y,v,d,par,nvar,nevent,npar,istate,ipar,ncovar,icovar,mcov,covars);
     } else {	 // Cai's K-leap method
@@ -162,7 +163,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     // Record output at required time points
     while ((icount < ntimes) && (t >= times[icount])) {
       for (i = 0; i < nvar; i++)
-        xout[i+nvar*(irep+nrep*icount)] = y[i];
+        xout[i+nvar*(irep+nrep*icount)] = ylast[i];
       // Set appropriate states to zero
       for (i = 0; i < nzero; i++) y[izero[i]] =0.0;
       // Recompute if zero event-rate encountered
