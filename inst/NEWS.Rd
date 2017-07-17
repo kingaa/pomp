@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.12.3}{
+  \itemize{
+    \item Fix bug in \code{onestep.sim}.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.12.2}{
   \itemize{
     \item The Ricker example has a new parameter, \eqn{c}, which scales the (unobserved) population size.
