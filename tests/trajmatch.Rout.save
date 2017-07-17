@@ -1,5 +1,5 @@
 
-R version 3.3.3 (2017-03-06) -- "Another Canoe"
+R version 3.4.1 (2017-06-30) -- "Single Candle"
 Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -101,7 +101,7 @@ $convergence
 [1] -1
 
 $msg
-[1] "number of function evaluations exceeds `maxit'"
+[1] "number of function evaluations exceeds 'maxit'"
 
 > 
 > summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",trace=1,parscale=0.1,maxit=100))

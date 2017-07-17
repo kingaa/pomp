@@ -1,5 +1,5 @@
 
-R version 3.3.3 (2017-03-06) -- "Another Canoe"
+R version 3.4.1 (2017-06-30) -- "Single Candle"
 Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -23,9 +23,9 @@ Type 'q()' to quit R.
 > 
 > cat("double simplefun (double x) { return(x+3); }",file="simplefun.c")
 > system2(R.home("bin/R"),args=c("CMD","COMPILE","simplefun.c"))
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 make[2]: *** No rule to make target `wB'.  Stop.
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 > 
 > pompExample(ricker)
 newly created object(s):

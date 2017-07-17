@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 1.12.3}{
   \itemize{
+    \item Fix bug found by Eamon O'Dea in \code{gillespie.sim}.
     \item Fix bug in \code{onestep.sim}.
   }
 }

@@ -1,0 +1,154 @@
+
+R version 3.4.1 (2017-06-30) -- "Single Candle"
+Copyright (C) 2017 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> library(ggplot2)
+> library(plyr)
+> library(reshape2)
+> library(magrittr)
+> 
+> set.seed(49596868L)
+> 
+> png(filename="dp-%02d.png",res=100)
+> 
+> create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
++                            simulator = c("gillespie","kleap","euler","onestep")) {
++     data <- data.frame(time = times, reports = NA)
++     d <- cbind(death = c(1,0))
++     v <- cbind(death = c(-1,1))
++     e <- c(0.03,0)
++     f <- function(j, x, t, params, ...){
++         params["mu"] * x[1]
++     }
++     simulator <- match.arg(simulator)
++     switch(
++         simulator,
++         gillespie=gillespie.sim(rate.fun = f, v = v, d = d),
++         kleap=kleap.sim(rate.fun = f, v = v, d = d, e = e),
++         euler=euler.sim(
++             Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;"),
++             delta.t=0.1
++         ),
++         onestep=onestep.sim(
++             Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;")
++         )
++     ) -> rprocess
++     initializer <- function(params, t0, ...) {
++         c(N=N_0,ct=12)
++     }
++     pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
++          rprocess = rprocess, initializer = initializer, zeronames="ct",
++          paramnames=c("mu"), statenames=c("N","ct"))
++ }
+> 
+> create_example(simulator="gillespie",times=c(0,1,10,100,1000)) %>%
++     simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000) %>%
++     count(~time+N) %>%
++     ddply(~time,mutate,freq=freq/sum(freq)) %>%
++     dcast(time~N,value.var="freq")
+  time     0     1
+1    0    NA 1.000
+2    1 0.002 0.998
+3   10 0.013 0.987
+4  100 0.098 0.902
+5 1000 0.646 0.354
+> create_example(times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
++     simulate(nsim=100,as.data.frame=TRUE, states=TRUE) -> sims
+> sims %>%
++     subset(sim<=4) %>%
++     melt(id=c("time","sim")) %>%
++     ggplot(aes(x=time,y=value,group=interaction(sim,variable)))+
++     geom_step()+
++     facet_grid(variable~sim,scales="free_y")
+> stopifnot(sims %>% ddply(~sim,mutate,s=cumsum(ct),Nn=(N+s)==100) %>%
++           subset(!Nn) %>% nrow() %>% equals(0))
+> 
+> create_example(simulator="onestep",times=c(0,1,10,100,1000)) %>%
++     simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000) %>%
++     count(~time+N) %>%
++     ddply(~time,mutate,freq=freq/sum(freq)) %>%
++     dcast(time~N,value.var="freq")
+  time     0     1
+1    0    NA 1.000
+2    1 0.001 0.999
+3   10 0.007 0.993
+4  100 0.104 0.896
+5 1000 0.644 0.356
+> create_example(simulator="onestep",
++                times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
++     simulate(nsim=100,as.data.frame=TRUE, states=TRUE) -> sims
+> sims %>%
++     subset(sim<=4) %>%
++     melt(id=c("time","sim")) %>%
++     ggplot(aes(x=time,y=value,group=interaction(sim,variable)))+
++     geom_step()+
++     facet_grid(variable~sim,scales="free_y")
+> stopifnot(sims %>% ddply(~sim,mutate,s=cumsum(ct),Nn=(N+s)==100) %>%
++           subset(!Nn) %>% nrow() %>% equals(0))
+> 
+> create_example(simulator="euler",times=c(0,1,10,100,1000)) %>%
++     simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000) %>%
++     count(~time+N) %>%
++     ddply(~time,mutate,freq=freq/sum(freq)) %>%
++     dcast(time~N,value.var="freq")
+  time     0     1
+1    0    NA 1.000
+2    1    NA 1.000
+3   10 0.017 0.983
+4  100 0.118 0.882
+5 1000 0.644 0.356
+> create_example(simulator="euler",
++                times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
++     simulate(nsim=100,as.data.frame=TRUE, states=TRUE) -> sims
+> sims %>%
++     subset(sim<=4) %>%
++     melt(id=c("time","sim")) %>%
++     ggplot(aes(x=time,y=value,group=interaction(sim,variable)))+
++     geom_step()+
++     facet_grid(variable~sim,scales="free_y")
+> stopifnot(sims %>% ddply(~sim,mutate,s=cumsum(ct),Nn=(N+s)==100) %>%
++           subset(!Nn) %>% nrow() %>% equals(0))
+> 
+> create_example(simulator="kleap",times=c(0,1,10,100,1000)) %>%
++     simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000) %>%
++     count(~time+N) %>%
++     ddply(~time,mutate,freq=freq/sum(freq)) %>%
++     dcast(time~N,value.var="freq")
+  time     0     1
+1    0    NA 1.000
+2    1 0.001 0.999
+3   10 0.007 0.993
+4  100 0.098 0.902
+5 1000 0.623 0.377
+> create_example(simulator="kleap",mu=0.01,N_0=100,
++                times=seq(0,50,by=0.2)) %>%
++     simulate(nsim=100,as.data.frame=TRUE, states=TRUE) -> sims
+> sims %>%
++     subset(sim<=4) %>%
++     melt(id=c("time","sim")) %>%
++     ggplot(aes(x=time,y=value,group=interaction(sim,variable)))+
++     geom_step()+
++     facet_grid(variable~sim,scales="free_y")
+> stopifnot(sims %>% ddply(~sim,mutate,s=cumsum(ct),Nn=(N+s)==100) %>%
++           subset(!Nn) %>% nrow() %>% equals(0))
+> 
+> dev.off()
+null device 
+          1 
+> 

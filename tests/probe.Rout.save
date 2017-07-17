@@ -1,5 +1,5 @@
 
-R version 3.3.3 (2017-03-06) -- "Another Canoe"
+R version 3.4.1 (2017-06-30) -- "Single Candle"
 Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -545,7 +545,7 @@ Error : in ‘probe.match.objfun’: applying probes to actual data: yipes!
 +                     if (neval>1) stop("jeepers!")
 +                     else 1
 +                 }))
-Error : in ‘probe.match.objfun’: applying probes to simulated data: jeepers!
+Error : in ‘subplex’: in ‘probe.match.objfun’: applying probes to simulated data: jeepers!
 > neval <- 0
 > try(probe.match(pm,nsim=100,maxit=10,seed=404375241L,
 +             probes=function(y){
