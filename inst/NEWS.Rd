@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.13.1}{
+  \itemize{
+    \item Fix buffer-flow problem identified by \code{valgrind}.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.12.3}{
   \itemize{
     \item Fix bug found by Eamon O'Dea in \code{gillespie.sim}.

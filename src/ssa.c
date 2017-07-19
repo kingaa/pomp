@@ -166,7 +166,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 
     // Record output at required time points
     if (t >= times[icount]) {
-      while ((t >= times[icount]) && (icount < ntimes)) {
+      while ((icount < ntimes) && (t >= times[icount])) {
         memcpy(xout+nvar*(irep+nrep*icount),y,nvar*sizeof(double));
         // Set appropriate states to zero at time of last observation
         for (i = 0; i < nzero; i++) y[izero[i]] = 0;

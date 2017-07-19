@@ -1,5 +1,9 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_3._1:
+
+        • Fix buffer-flow problem identified by ‘valgrind’.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_2._3:
 
         • Fix bug found by Eamon O'Dea in ‘gillespie.sim’.
