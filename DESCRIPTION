@@ -1,7 +1,7 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 1.13.1.2
+Version: 1.13.2.1
 Date: 2017-07-19
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
@@ -24,7 +24,7 @@ Depends: R(>= 3.1.2), methods
 Imports: stats, graphics, digest, mvtnorm, deSolve, coda, subplex, nloptr
 Suggests: magrittr, plyr, reshape2, ggplot2, knitr
 SystemRequirements: For Windows users, Rtools (see http://cran.r-project.org/bin/windows/Rtools/).
-License: GPL(>= 2)
+License: GPL(>= 3)
 LazyData: true
 Contact: kingaa at umich dot edu
 BugReports: http://github.com/kingaa/pomp/issues

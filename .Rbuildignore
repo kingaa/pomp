@@ -2,7 +2,7 @@ tests/Makefile
 tests/(.+?)\.png$
 tests/(.+?)\.pdf$
 tests/(.+?)\.Rout$
-LICENSE\.txt$
+LICENSE\.md$
 README\.md$
 TODO\.md$
 ^\.gitignore$

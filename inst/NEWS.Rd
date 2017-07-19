@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.13.2}{
+  \itemize{
+    \item Upgrade license to GPL version 3.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.13.1}{
   \itemize{
     \item Fix buffer-flow problem identified by \code{valgrind}.
