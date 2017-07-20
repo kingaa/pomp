@@ -439,6 +439,15 @@
   pages: "255&#x2013;262"
   doi: "http://doi.org/10.1093/aje/kwv044"
 
+- key: Roy2012
+  author: "M. Roy, M. J. Bouma, E. L. Ionides, R. C. Dhiman, and M. Pascual"
+  year: "2012"
+  title: "The Potential Elimination of Plasmodium Vivax Malaria by Relapse Treatment: Insights from a Transmission Model and Surveillance Data from NW India"
+  journal: "PLoS Neglected Tropical Diseases"
+  volume: "7"
+  pages: "e1979"
+  doi: "http://doi.org/10.1371/journal.pntd.0001979"
+
 - key: Shrestha2015
   author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C. Viboud, and P. Rohani"
   year: "2015"
