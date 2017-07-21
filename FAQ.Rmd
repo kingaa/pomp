@@ -11,6 +11,13 @@ output:
     number_sections: true
 ---
 
+<style type="text/css">
+.header-section-number:after {
+  content: ".";
+}
+
+</style>
+
 ```{r options,include=FALSE,cache=FALSE}
 require(knitr)
 require(pomp)
@@ -438,6 +445,26 @@ If it doesn't work, consult the [installation instructions](http://kingaa.github
 ## Why do I get an error message "Could not compile shared-object library" when I run `pomp`?
 
 See [the preceding FAQ](#why-cant-i-run-the-demos-or-other-codes-that-use-the-c-snippet-facility).
+
+## I get the error message 'could not find symbol "recursive" in environment of the generic function' when I use the `c` operator to concatenate certain kinds of **pomp** structures. How do I fix this?
+
+This appears to arise from incompatibility between certain **R** installations and binary versions of the **pomp** package from CRAN.
+Try installing the latest version from the github site:
+
+```{r eval=FALSE}
+install.packages("pomp",repos="https://kingaa.github.io/")
+```
+
+If you continue to see the error, try installing from source.
+The easiest way to do this is to use **devtools**:
+
+```{r eval=FALSE}
+devtools::install_github("kingaa/pomp")
+```
+
+For more help with installation, see the [installation instructions](./install.html).
+
+If these steps do not solve the problem, please [contact me via the issues page](https://github.com/kingaa/pomp/issues).
 
 # Interpreting results
 
