@@ -17,6 +17,8 @@ output:
 }
 </style>
 
+<a id="top"></a>
+
 ```{r options,include=FALSE,cache=FALSE}
 require(knitr)
 require(pomp)
@@ -533,7 +535,7 @@ See also [Issue 27](https://github.com/kingaa/pomp/issues/27).
 
 -----------------------------------
 
-#### [Top](./FAQ.html) {.unnumbered .toc-ignore}
+#### [Top](#top) {.unnumbered .toc-ignore}
 #### [Back](./index.html) {.unnumbered .toc-ignore}
 
 -----------------------------------
