@@ -17,8 +17,6 @@ output:
 }
 </style>
 
-<a id="top"></a>
-
 ```{r options,include=FALSE,cache=FALSE}
 require(knitr)
 require(pomp)
@@ -36,6 +34,8 @@ set.seed(1810027260)
 
 
 -----------------------------------
+
+<a id="top"></a>
 
 # General.
 
