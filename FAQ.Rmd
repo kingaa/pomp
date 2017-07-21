@@ -15,7 +15,6 @@ output:
 .header-section-number:after {
   content: ".";
 }
-
 </style>
 
 ```{r options,include=FALSE,cache=FALSE}
@@ -28,21 +27,29 @@ theme_set(theme_bw())
 set.seed(1810027260)
 ```
 
+-----------------------------------
+
+
+#### [Back to **pomp** homepage](./index.html) {.unnumbered .toc-ignore}
+
+
+-----------------------------------
+
 # General.
 
-## How can I submit an effective request for help?
+## How can I submit an effective request for help? {#effective-request}
 
 Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the help pages and/or the [package tutorials](./docs.html).
 Check to see if you are using the latest version of **pomp**:
 if not, check to see if the problem you have is solved by upgrading to the latest version.
-Read through the [Frequently Asked Questions](FAQ) to see if the answer to your question is there.
+Read through the [Frequently Asked Questions](./FAQ.html) to see if the answer to your question is there.
 
 If you still have a problem, then submit a request for help via the [Issues page](https://github.com/kingaa/pomp/issues) if possible or to Aaron King (kingaa at umich dot edu) if necessary.
 Include in your request---at a minimum---the code that you ran that produced the error, together with a transcript of the **R** session that gave the errors.
 Make sure to run `sessionInfo()` in your session, so that I can see what version of **pomp** you are using, what version of **R**, what kind of machine you have, etc.
 Better still, construct a minimal example that will reproduce the error: this allows for the most efficient solution of problems.
 
-## What's the proper way to cite **pomp**?
+## What's the proper way to cite **pomp**? {#cite-pomp}
 
 To cite the package, please be so kind as to follow the instructions given by executing 
 ```
@@ -53,15 +60,19 @@ in an **R** session.
 If you use **pomp** in a publication, let us know!
 Send an email with the citation, and we'll include it in [the bibliography](http://kingaa.github.io/pomp/biblio.html).
 
-## I have an error message that I don't understand, and my question isn't answered [below](./FAQ.html#4_error_messages). How can I get help?
+## I have an error message that I don't understand, and my question isn't answered [below](./FAQ.html#error-messages). How can I get help?
 
 The pomp developers have a goal of replacing all unhelpful error messages with helpful ones.
 Please help us while we help you!
 You can do this by submitting a help request via the package [issues page](https://github.com/kingaa/pomp/issues).
 Display the error message you get and document how it arises.
-In doing so, please [follow the instructions in FAQ 1.1 above](./FAQ.html#11_how_can_i_submit_an_effective_request_for_help).
+In doing so, please [follow the instructions in FAQ 1.1 above](./FAQ.html#effective-request).
 
 # Installation problems
+
+## How do I install **pomp**?
+
+See the [installation instructions](./install.html).
 
 ## Why do I get an error message about `gfortran` when I try to install **pomp** from source on my Mac?
 
@@ -70,7 +81,7 @@ See the [installation instructions](http://kingaa.github.io/pomp/install.html#im
 
 # Implementing POMP models.
 
-## How can I include a vector of variables in a C snippet?
+## How can I include a vector of variables in a C snippet? {#vector-in-csnippet}
 
 A C snippet can make use of any feature of the C language.
 In particular, we can use pointers to give access to arrays.
@@ -112,7 +123,7 @@ data.frame(Y1=NA,t=1:20) %>%
   geom_line()+theme_bw()
 ```
 
-## Can I write a `pomp` for multivariate data?
+## Can I write a `pomp` for multivariate data? {#multivariate-data-pomp}
 
 Yes, this is no problem.
 The `data` you supply to `pomp` can contain multiple variables.
@@ -154,7 +165,7 @@ data.frame(t=1:100,y1=NA,y2=NA) %>%
 obj %>% pfilter(Np=1000) %>% logLik()
 ```
 
-## How do I deal with missing data?
+## How do I deal with missing data? {#how-to-handle-missing-data}
 
 Missing data are a common complication.
 **pomp** can handle NAs in the data, but the measurement model probability density function, `dmeasure`, if it is needed, must be written so as to deal with NAs appropriately.
@@ -402,9 +413,9 @@ Which model has the greater predictive power?
 Nor is the choice of the measurement model without consequences for the choice of the latent process model.
 Despite the fact that one typically is much more interested in the latent process than in the measurement, if one does not pay careful attention to both, one risks making incorrect or suboptimal inference.
 
-# Error messages.
+# Error messages. {#error-messages}
 
-## I see an error about `dmeasure` returning non-finite values.  What does it mean?
+## I see an error about `dmeasure` returning non-finite values.  What does it mean? {#non-finite-dmeasure}
 
 A common error message is 
 ```
@@ -426,9 +437,7 @@ A useful way to do this is to put [`Rprintf` statements](https://cran.r-project.
 
 Remember, `dmeasure` has to be able to return the likelihood---or the log likelihood---upon request!
 
-## Why can't I run the demos, or other codes that use the C snippet facility?
-
-<a id="csnippet-problems"></a>
+## Why can't I run the demos, or other codes that use the C snippet facility? {#why-cant-i-run-csnippets}
 
 If your system does not support `R CMD SHLIB`, you won't be able to use C snippets.
 **R** compiles native codes (C and FORTRAN) into shared-object libraries using `SHLIB`.
@@ -452,7 +461,7 @@ If it doesn't work, consult the [installation instructions](http://kingaa.github
 
 ## Why do I get an error message "Could not compile shared-object library" when I run `pomp`?
 
-See [the preceding FAQ](#why-cant-i-run-the-demos-or-other-codes-that-use-the-c-snippet-facility).
+See [the preceding FAQ](#why-cant-i-run-csnippets).
 
 ## I get the error message 'could not find symbol "recursive" in environment of the generic function' when I use the `c` operator to concatenate certain kinds of **pomp** structures. How do I fix this?
 
@@ -476,7 +485,7 @@ If these steps do not solve the problem, please [contact me via the issues page]
 
 # Interpreting results
 
-## Is the likelihood `mif` gives me the same as the likelihood I get from `pfilter`?
+## Is the likelihood `mif` gives me the same as the likelihood I get from `pfilter`? {#mif-vs-pfilter-likelihood}
 
 No.  As its name suggests, iterated filtering (IF) algorithms (those implemented in **pomp** as `mif` and `mif2`) work by iteratively performing particle filtering on a model, but that model is slightly different from the focal model.
 In particular, IF pertubs the parameters of the model by adding random noise to them.
@@ -502,7 +511,7 @@ The plot below illustrates what she found.
 -----------------------
 
 The plots above show that, after a few iterations during which it rapidly increases, the `mif2` likelihood displays a slow downward trend.
-However, the `mif2` likelihood is not identical to the true likelihood (see [FAQ 5.1](#51_is_the_likelihood_mif_gives_me_the_same_as_the_likelihood_i_get_from_pfilter)).
+However, the `mif2` likelihood is not identical to the true likelihood (see [FAQ 5.1](#mif-vs-pfilter-likelihood)).
 This is because `mif2` adds extra variability to the model in the form of random perturbations to the parameters.
 In effect, the model `mif2` sees is different from the model of interest.
 Indeed, `mif2` works by gradually reducing the intensity of this extra variability, allowing one model to converge to the other.
@@ -522,3 +531,9 @@ In other words, a model with more variability than is possible in the MOI may be
 
 See also [Issue 27](https://github.com/kingaa/pomp/issues/27).
 
+-----------------------------------
+
+#### [Top](./FAQ.html) {.unnumbered .toc-ignore}
+#### [Back](./index.html) {.unnumbered .toc-ignore}
+
+-----------------------------------
