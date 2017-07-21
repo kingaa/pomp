@@ -1,13 +1,9 @@
 ---
-title: "Frequently Asked Questions"
 output:
   html_document:
-    theme: default
+    theme: null
     toc: yes
     toc_depth: 4
-    toc_float:
-      collapsed: FALSE
-      smooth_scroll: TRUE
     number_sections: true
 ---
 
@@ -26,16 +22,6 @@ require(ggplot2)
 theme_set(theme_bw())
 set.seed(1810027260)
 ```
-
------------------------------------
-
-
-#### [Back to **pomp** homepage](./index.html) {.unnumbered .toc-ignore}
-
-
------------------------------------
-
-<a id="top"></a>
 
 # General.
 
@@ -62,13 +48,13 @@ in an **R** session.
 If you use **pomp** in a publication, let us know!
 Send an email with the citation, and we'll include it in [the bibliography](http://kingaa.github.io/pomp/biblio.html).
 
-## I have an error message that I don't understand, and my question isn't answered [below](./FAQ.html#error-messages). How can I get help?
+## I have an error message that I don't understand, and my question isn't answered below. How can I get help?
 
 The pomp developers have a goal of replacing all unhelpful error messages with helpful ones.
 Please help us while we help you!
 You can do this by submitting a help request via the package [issues page](https://github.com/kingaa/pomp/issues).
 Display the error message you get and document how it arises.
-In doing so, please [follow the instructions in FAQ 1.1 above](./FAQ.html#effective-request).
+In doing so, please [follow the instructions in FAQ 1.1 above](#effective-request).
 
 # Installation problems
 
@@ -508,7 +494,7 @@ The plot below illustrates what she found.
 
 -----------------------
 
-![**FAQ 5.2:** Iterated filtering is supposed to maximize the likelihood, but it appears to be declining!](_assets/faq_5-2.png)
+![**FAQ 5.2:** Iterated filtering is supposed to maximize the likelihood, but it appears to be declining!](../_assets/faq_5-2.png)
 
 -----------------------
 
@@ -532,10 +518,3 @@ This in turn suggests that the MOI may lack the variability needed to explain th
 In other words, a model with more variability than is possible in the MOI may be needed to explain the variability in the data, at least in the parameter regimes so far explored.
 
 See also [Issue 27](https://github.com/kingaa/pomp/issues/27).
-
------------------------------------
-
-#### [Top](#top) {.unnumbered .toc-ignore}
-#### [Back](./index.html) {.unnumbered .toc-ignore}
-
------------------------------------
