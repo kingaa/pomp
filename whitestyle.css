@@ -24,6 +24,7 @@ body {
     font-size: 40px; 
     line-height: 30px;
     vertical-align: top;
+    padding-right: 5px;
 }
 
 code {
