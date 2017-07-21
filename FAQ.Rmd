@@ -32,7 +32,7 @@ set.seed(1810027260)
 
 ## How can I submit an effective request for help?
 
-Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the help pages and/or the [package tutorials](http://kingaa.github.io/pomp/vignettes).
+Before submitting a request, examine the error messages and try to figure out what they are telling you by reading the help pages and/or the [package tutorials](./docs.html).
 Check to see if you are using the latest version of **pomp**:
 if not, check to see if the problem you have is solved by upgrading to the latest version.
 Read through the [Frequently Asked Questions](FAQ) to see if the answer to your question is there.
@@ -52,6 +52,14 @@ in an **R** session.
 
 If you use **pomp** in a publication, let us know!
 Send an email with the citation, and we'll include it in [the bibliography](http://kingaa.github.io/pomp/biblio.html).
+
+## I have an error message that I don't understand, and my question isn't answered [below](./FAQ.html#4_error_messages). How can I get help?
+
+The pomp developers have a goal of replacing all unhelpful error messages with helpful ones.
+Please help us while we help you!
+You can do this by submitting a help request via the package [issues page](https://github.com/kingaa/pomp/issues).
+Display the error message you get and document how it arises.
+In doing so, please [follow the instructions in FAQ 1.1 above](./FAQ.html#11_how_can_i_submit_an_effective_request_for_help).
 
 # Installation problems
 
