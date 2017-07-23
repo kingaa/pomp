@@ -27,8 +27,8 @@ Future support for a variety of other algorithms is envisioned.
 In particular, **pomp** is a platform upon which general inference algorithms for partially observed Markov processes can be implemented.
 We welcome contributions in the form of codes, examples, improvements to the documentation, bug reports, feature requests, and requests for help!
 
-Please let the developers know if you find **pomp** useful, if you publish results obtained using it, [if you come up with improvements, find bugs, or have suggestions or feature requests!](http://github.com/kingaa/pomp/issues)</a>
-There is also a [wiki](https://github.com/kingaa/pomp/wiki):
+Please let the developers know if you find **pomp** useful, if you publish results obtained using it, [if you come up with improvements, find bugs, or have suggestions or feature requests!](https://github.com/kingaa/pomp/issues)
+There is also a [wiki](https://github.com/kingaa/pomp/wiki/pimp-my-pomp):
 you are invited to contribute snippets of code, interesting results, references to papers, and so on.
 
 The package is provided under the GNU Public License. 
