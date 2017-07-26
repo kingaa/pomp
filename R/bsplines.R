@@ -18,7 +18,7 @@ bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL) {
     } else if (length(names)==nbasis) {
       colnames(y) <- names
     } else {
-      stop(ep,sQuote("names"),"must be of length 1 or ",nbasis,call.=FALSE)
+      stop(ep,sQuote("names")," must be of length 1 or ",nbasis,call.=FALSE)
     }
   }
   y
@@ -45,7 +45,7 @@ periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1,
     } else if (length(names)==nbasis) {
       colnames(y) <- names
     } else {
-      stop(ep,sQuote("names"),"must be of length 1 or ",nbasis,call.=FALSE)
+      stop(ep,sQuote("names")," must be of length 1 or ",nbasis,call.=FALSE)
     }
   }
   y
