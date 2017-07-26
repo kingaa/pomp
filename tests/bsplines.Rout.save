@@ -42,16 +42,16 @@ Error : in ‘periodic.bspline.basis’: ‘names’must be of length 1 or 6
 > x <- seq(0,1,length=5)
 > try(bspline.basis(x,degree=-1,nbasis=9))
 Error : in ‘bspline.basis’: must have degree > 0
-In addition: Warning message:
-in ‘bspline.basis’: returning 0 since ‘deriv’, > ‘degree’ 
 > try(bspline.basis(x,degree=5,nbasis=3))
 Error : in ‘bspline.basis’: must have nbasis > degree
+> try(bspline.basis(x,degree=4,nbasis=30,deriv=-5))
+Error : in ‘bspline.basis’: must have deriv >= 0
 > try(periodic.bspline.basis(x,degree=-1,nbasis=9))
 Error : in ‘periodic.bspline.basis’: must have degree >= 0
-In addition: Warning message:
-in ‘periodic.bspline.basis’: returning 0 since ‘deriv’, > ‘degree’ 
 > try(periodic.bspline.basis(x,degree=5,nbasis=4))
 Error : in ‘periodic.bspline.basis’: must have nbasis >= degree
+> try(periodic.bspline.basis(x,degree=4,nbasis=5,deriv=-1))
+Error : in ‘periodic.bspline.basis’: must have deriv >= 0
 > 
 > ## now test derivatives
 > deg <- 5
@@ -91,6 +91,11 @@ Error : in ‘periodic.bspline.basis’: must have nbasis >= degree
 > matplot(d,dd,type='l')
 > abline(a=0,b=1)
 > stopifnot(all(signif(diag(cor(d,dd)),6)==1))
+> 
+> B <- bspline.basis(x,degree=0,nbasis=4)
+> B <- bspline.basis(x,degree=0,nbasis=4,deriv=1)
+Warning message:
+in ‘bspline.basis’: returning 0 since ‘deriv’ > ‘degree’ 
 > 
 > dev.off()
 null device 
