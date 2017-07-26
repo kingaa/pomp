@@ -66,5 +66,8 @@ stopifnot(all(signif(diag(cor(d,dd)),6)==1))
 
 B <- bspline.basis(x,degree=0,nbasis=4)
 B <- bspline.basis(x,degree=0,nbasis=4,deriv=1)
+stopifnot(isTRUE(all(B==0)))
+B <- periodic.bspline.basis(x,degree=8,nbasis=30,deriv=11)
+stopifnot(isTRUE(all(B==0)))
 
 dev.off()

@@ -130,23 +130,25 @@ void periodic_bspline_basis_eval_deriv (double x, double period, int degree,
 static void bspline_internal (double *y, const double *x, int nx,
   int i, int p, int d, const double *knots)
 {
-  int j, i2 = i+1;
-  if (d > 0) {
-    int p2 = p-1;
+  int j;
+  if (d > p) {
+    for (j = 0; j < nx; j++) y[j] = 0.0;
+  } else if (d > 0) {
+    int i2 = i+1, p2 = p-1, d2 = d-1;
     double *y1 = (double *) Calloc(nx,double);
     double *y2 = (double *) Calloc(nx,double);
     double a, b;
-    bspline_internal(y1,x,nx,i,p2,d-1,knots);
-    bspline_internal(y2,x,nx,i2,p2,d-1,knots);
+    bspline_internal(y1,x,nx,i,p2,d2,knots);
+    bspline_internal(y2,x,nx,i2,p2,d2,knots);
     for (j = 0; j < nx; j++) {
       a = p / (knots[i+p]-knots[i]);
       b = p / (knots[i2+p]-knots[i2]);
       y[j] = a * y1[j] - b * y2[j];
     }
     Free(y1); Free(y2);
-  } else if (d == 0) {
+  } else { // d == 0
+    int i2 = i+1, p2 = p-1;
     if (p > 0) {  // case d < p
-      int p2 = p-1;
       double *y1 = (double *) Calloc(nx,double);
       double *y2 = (double *) Calloc(nx,double);
       double a, b;
@@ -161,11 +163,6 @@ static void bspline_internal (double *y, const double *x, int nx,
     } else if (p == 0) { // case d == p
       for (j = 0; j < nx; j++)
         y[j] = (double) ((knots[i] <= x[j]) && (x[j] < knots[i2]));
-    } else {  // case d > p
-      for (j = 0; j < nx; j++)
-        y[j] = 0.0;
     }
-  } else {
-    errorcall(R_NilValue,"must have deriv >= 0");
   }
 }
