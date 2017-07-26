@@ -1,5 +1,13 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.13.3}{
+  \itemize{
+    \item \code{bspline.basis} and \code{periodic.bspline.basis} now take an optional non-negative integer argument \code{deriv}.
+    When \code{deriv > 0}, the order-\code{deriv} derivative of each basis function is returned.
+    \item A new function, \code{periodic_bspline_basis_eval_deriv}, has been added to the C API.
+    This function gives access, at the C level, to evaluation of the derivatives of periodic B-splines.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.13.2}{
   \itemize{
     \item Upgrade license to GPL version 3.

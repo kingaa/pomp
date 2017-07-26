@@ -8,14 +8,16 @@
   \code{periodic.bspline.basis} gives a basis of periodic spline functions.
 }
 \usage{
-bspline.basis(x, nbasis, degree = 3, names = NULL)
-periodic.bspline.basis(x, nbasis, degree = 3, period = 1, names = NULL)
+bspline.basis(x, nbasis, degree = 3, deriv = 0, names = NULL)
+periodic.bspline.basis(x, nbasis, degree = 3, period = 1, deriv = 0,
+                       names = NULL)
 }
 \arguments{
   \item{x}{Vector at which the spline functions are to be evaluated.}
   \item{nbasis}{The number of basis functions to return.}
   \item{degree}{Degree of requested B-splines.}
   \item{period}{The period of the requested periodic B-splines.}
+  \item{deriv}{The order of the derivative required.}
   \item{names}{
     optional; the names to be given to the basis functions.
     These will be the column-names of the matrix returned.
@@ -29,10 +31,12 @@ periodic.bspline.basis(x, nbasis, degree = 3, period = 1, names = NULL)
   \item{bspline.basis}{
     Returns a matrix with \code{length(x)} rows and \code{nbasis} columns.
     Each column contains the values one of the spline basis functions.
+    If \code{deriv>0}, the derivatives of the corresponding spline basis functions are returned.
   }
   \item{periodic.bspline.basis}{
     Returns a matrix with \code{length(x)} rows and \code{nbasis} columns.
     The basis functions returned are periodic with period \code{period}.
+    If \code{deriv>0}, the derivatives of the corresponding spline basis functions are returned.
   }
 }
 \section{C API}{

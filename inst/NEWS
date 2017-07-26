@@ -1,5 +1,17 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_3._3:
+
+        • ‘bspline.basis’ and ‘periodic.bspline.basis’ now take an
+          optional non-negative integer argument ‘deriv’.  When ‘deriv
+          > 0’, the order-‘deriv’ derivative of each basis function is
+          returned.
+
+        • A new function, ‘periodic_bspline_basis_eval_deriv’, has been
+          added to the C API.  This function gives access, at the C
+          level, to evaluation of the derivatives of periodic
+          B-splines.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_3._2:
 
         • Upgrade license to GPL version 3.

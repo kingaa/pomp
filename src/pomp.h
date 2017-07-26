@@ -223,6 +223,7 @@ double theta, int give_log) {
 
 // FACILITY FOR EVALUATING A SET OF PERIODIC BSPLINE BASIS FUNCTIONS
 extern void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
+extern void periodic_bspline_basis_eval_deriv(double x, double period, int degree, int nbasis, int deriv, double *y);
 
 // FACILITIES FOR EXTRACTING R OBJECTS FROM THE 'USERDATA' SLOT
 extern const SEXP get_pomp_userdata(const char *name);

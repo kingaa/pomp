@@ -2,8 +2,8 @@
 #include <R_ext/Rdynload.h>
 
 static const R_CallMethodDef callMethods[] = {
-  {"bspline_basis", (DL_FUNC) &bspline_basis, 3},
-  {"periodic_bspline_basis", (DL_FUNC) &periodic_bspline_basis, 4},
+  {"bspline_basis", (DL_FUNC) &bspline_basis, 4},
+  {"periodic_bspline_basis", (DL_FUNC) &periodic_bspline_basis, 5},
   {"systematic_resampling", (DL_FUNC) &systematic_resampling, 1},
   {"euler_model_simulator", (DL_FUNC) &euler_model_simulator, 11},
   {"euler_model_density", (DL_FUNC) &euler_model_density, 9},
