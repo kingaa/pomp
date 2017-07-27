@@ -80,6 +80,23 @@ in 'reulermultinom': only the first element of 'size' is meaningful
 [1,]    0
 [2,]    0
 [3,]    0
+> reulermultinom(n=1,size=10,rate=c(1,Inf,1),0.1)
+     [,1]
+[1,]    0
+[2,]  NaN
+[3,]  NaN
+Warning messages:
+1: in 'reulermultinom': result of binomial draw is not finite 
+2: in 'reulermultinom': result of binomial draw is not finite 
+> reulermultinom(n=1,size=Inf,rate=c(1,100,1),0.1)
+     [,1]
+[1,]    0
+[2,]    0
+[3,]  NaN
+Warning messages:
+1: in 'reulermultinom': result of binomial draw is not finite 
+2: in 'reulermultinom': result of binomial draw is not finite 
+3: in 'reulermultinom': result of binomial draw is not finite 
 > x <- reulermultinom(n=3,size=100,rate=c(3,2,1),dt=0.1)
 > try(deulermultinom(rbind(x,c(0,1,0)),size=100,rate=c(3,2,1),dt=0.1))
 Error : in ‘deulermultinom’: NROW('x') should match length of 'rate'
@@ -93,6 +110,18 @@ Warning message:
 in 'deulermultinom': only the first element of 'dt' is meaningful 
 > deulermultinom(x,size=100,rate=c(3,2,1),dt=Inf)
 [1] 0 0 0
+> deulermultinom(x=c(3,4,0),size=10,rate=c(1,1,1),dt=0-.1)
+[1] NaN
+Warning message:
+in 'deulermultinom': NaNs produced 
+> deulermultinom(x=c(3,4,0),size=10,rate=c(1,1,-1),dt=0.1)
+[1] NaN
+Warning message:
+in 'deulermultinom': NaNs produced 
+> deulermultinom(x=c(3,-4,0),size=10,rate=c(1,1,1),dt=0.1)
+[1] 0
+> deulermultinom(x=c(3,6,3),size=10,rate=c(1,1,0),dt=0.1,log=TRUE)
+[1] -Inf
 > rgammawn(n=5,sigma=2,dt=0.1)
 [1] 2.593438e-18 2.417425e-05 5.489565e-25 1.344180e-18 3.775061e-03
 > rgammawn(n=5,sigma=1:5,dt=0.1)
@@ -109,5 +138,4 @@ in 'deulermultinom': only the first element of 'dt' is meaningful
 [1] 1 1
 > try(rgammawn(n=-5,sigma=-5,dt=-1))
 Error : in ‘rgammwn’: negative length vectors are not allowed
-> 
 > 

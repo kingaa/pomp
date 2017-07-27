@@ -143,9 +143,6 @@ static R_INLINE double deulermultinom (int m, double size, const double *rate,
     if ((n > 0) && (p > 0)) {
       if (rate[k] > p) p = rate[k];
       ff += dbinom(trans[k],n,rate[k]/p,1);
-    } else if (trans[k] > 0.0) {
-      ff = R_NegInf;
-      return ff;
     }
     n -= trans[k];
     p -= rate[k];
