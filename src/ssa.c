@@ -111,17 +111,13 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 		 int ndeps, const int *ideps, int nzero, const int *izero,
 		 const int *istate, const int *ipar, int ncovar, const int *icovar,
 		 int lcov, int mcov, double *tcov, double *cov) {
-  int flag = 0;
   double t = times[0];
   double tmax = times[ntimes-1];
-  double *covars = NULL;
-  double *f = NULL;
-  double par[npar], y[nvar], ynext[nvar];
+  double covars[mcov];
+  double par[npar], y[nvar], ysave[nvar];
+  double f[nevent], fsave[nevent];
   struct lookup_table tab = {lcov, mcov, 0, tcov, cov};
   int i, j;
-
-  if (mcov > 0) covars = (double *) Calloc(mcov,double);
-  if (nevent > 0) f = (double *) Calloc(nevent,double);
 
   // Copy parameters and states
   memcpy(par,params+npar*irep,npar*sizeof(double));
@@ -129,60 +125,61 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   memcpy(xout+nvar*irep,xstart+nvar*irep,nvar*sizeof(double));
   // Set appropriate states to zero
   for (i = 0; i < nzero; i++) y[izero[i]] = 0.0;
-  memcpy(ynext,y,nvar*sizeof(double));
   // Initialize the covariate vector
   if (mcov > 0) table_lookup(&tab,t,covars);
   // Initialise propensity functions & tree
   for (j = 0; j < nevent; j++) {
-    f[j] = ratefun(j+1,t,ynext,par,istate,ipar,icovar,mcov,covars);
+    f[j] = ratefun(j+1,t,y,par,istate,ipar,icovar,mcov,covars);
     if (f[j] < 0.0)
       errorcall(R_NilValue,"'rate.fun' returns a negative rate");
   }
+
+  memcpy(ysave,y,nvar*sizeof(double));
+  memcpy(fsave,f,nevent*sizeof(double));
+
   int icount = 1;
   while (icount < ntimes) {
     R_CheckUserInterrupt();
     if (method == 0) {	// Gillespie's next reaction method
-      flag = gillespie(ratefun,&t,f,ynext,v,d,par,nvar,nevent,npar,istate,ipar,
-        ncovar,icovar,mcov,covars);
+      gillespie(ratefun,&t,f,y,v,d,par,nvar,nevent,npar,istate,ipar,
+		ncovar,icovar,mcov,covars);
     } else {	 // Cai's K-leap method
       // Determine kappa (most accurate but slowest method)
       double kappa, tmp;
       int k;
       for (i = 0, kappa = 1e9; i < ndeps; i++) {
         k = ideps[i];
-        tmp = e[k]*ynext[k];
+        tmp = e[k]*y[k];
         kappa = (tmp < kappa) ? tmp : kappa;
         if (kappa < 2.0) break;
       }
       if (kappa < 2.0) {
-        flag = gillespie(ratefun,&t,f,ynext,v,d,par,nvar,nevent,npar,istate,
-          ipar,ncovar,icovar,mcov,covars);
+        gillespie(ratefun,&t,f,y,v,d,par,nvar,nevent,npar,istate,
+		  ipar,ncovar,icovar,mcov,covars);
       } else {
         kappa = floor(kappa);
-        flag = kleap(ratefun,kappa,&t,f,ynext,v,d,par,nvar,nevent,npar,istate,
-          ipar,ncovar,icovar,mcov,covars);
+        kleap(ratefun,kappa,&t,f,y,v,d,par,nvar,nevent,npar,istate,
+	      ipar,ncovar,icovar,mcov,covars);
       }
     }
 
     // Record output at required time points
     if (t >= times[icount]) {
-      while ((icount < ntimes) && (t >= times[icount])) {
-        memcpy(xout+nvar*(irep+nrep*icount),y,nvar*sizeof(double));
-        // Set appropriate states to zero at time of last observation
-        for (i = 0; i < nzero; i++) y[izero[i]] = 0;
-        // Recompute if zero event-rate encountered
-        if (flag) t = times[icount];
-        icount++;
-      }
-      memcpy(y,ynext,nvar*sizeof(double));
-      for (i = 0; i < nzero; i++) ynext[izero[i]] = 0;
+      memcpy(xout+nvar*(irep+nrep*icount),ysave,nvar*sizeof(double));
+      // Set appropriate states to zero at time of last observation
+      t = times[icount];
+      for (i = 0; i < nzero; i++) ysave[izero[i]] = 0;
+      memcpy(y,ysave,nvar*sizeof(double));
+      memcpy(f,fsave,nevent*sizeof(double));
+      icount++;
+    } else {
+      memcpy(ysave,y,nvar*sizeof(double));
+      memcpy(fsave,f,nevent*sizeof(double));
     }
 
     if ((mcov > 0) && (t <= tmax)) table_lookup(&tab,t,covars);
 
   }
-  if (mcov > 0) Free(covars);
-  if (nevent > 0) Free(f);
 }
 
 // these global objects will pass the needed information to the user-defined function (see 'default_ssa_internal_fn')

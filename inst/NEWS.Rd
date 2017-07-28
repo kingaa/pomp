@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.13.4}{
+  \itemize{
+    \item Eamon O'Dea pointed out that the bug in \code{gillespie.sim}, addressed by version 1.12.3, was not completely fixed.
+    This problem has now been resolved.
+    In addition, covariates are now guaranteed to be evaluated at least once per observation interval.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.13.3}{
   \itemize{
     \item \code{bspline.basis} and \code{periodic.bspline.basis} now take an optional non-negative integer argument \code{deriv}.

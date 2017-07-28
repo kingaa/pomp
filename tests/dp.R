@@ -105,4 +105,39 @@ sims %>%
 stopifnot(sims %>% ddply(~sim,mutate,s=cumsum(ct),Nn=(N+s)==100) %>%
           subset(!Nn) %>% nrow() %>% equals(0))
 
+create_example(mu=1) %>%
+  simulate(as.data.frame=TRUE, states=TRUE, times = c(1), nsim = 1000, seed=1066) %>%
+  count(~N)
+create_example(mu=1) %>%
+  simulate(as.data.frame=TRUE, states=TRUE, times = c(0,1), nsim = 1000, seed=1066) %>%
+  subset(time>0) %>%
+  count(~N)
+create_example() %>%
+  simulate(as.data.frame=TRUE, states=TRUE, times = c(1e4), nsim = 10000, seed=1066) %>%
+  count(~N)
+
+create_example(N_0=1000,mu=0.02,simulator="gillespie",times=c(0,1,10,100,1000)) %>%
+  simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000, seed=374244) %>%
+  ggplot(aes(x=N,group=time))+
+  geom_histogram(aes(y=..density..),binwidth=10)+
+  facet_grid(time~.)
+
+create_example(N_0=1000,mu=0.02,simulator="kleap",times=c(0,1,10,100,1000)) %>%
+  simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000, seed=374244) %>%
+  ggplot(aes(x=N,group=time))+
+  geom_histogram(aes(y=..density..),binwidth=10)+
+  facet_grid(time~.)
+
+create_example(N_0=1000,mu=0.02,simulator="onestep",times=c(0,1,10,100,1000)) %>%
+  simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000, seed=374244) %>%
+  ggplot(aes(x=N,group=time))+
+  geom_histogram(aes(y=..density..),binwidth=10)+
+  facet_grid(time~.)
+
+create_example(N_0=1000,mu=0.02,simulator="euler",times=c(0,1,10,100,1000)) %>%
+  simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000, seed=374244) %>%
+  ggplot(aes(x=N,group=time))+
+  geom_histogram(aes(y=..density..),binwidth=10)+
+  facet_grid(time~.)
+
 dev.off()
