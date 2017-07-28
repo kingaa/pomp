@@ -115,7 +115,8 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   double tmax = times[ntimes-1];
   double *f = NULL, *fsave = NULL;
   double *covars = NULL;
-  double par[npar], y[nvar], ysave[nvar];
+  const double *par;
+  double y[nvar], ysave[nvar];
   struct lookup_table tab = {lcov, mcov, 0, tcov, cov};
   int i, j;
 
@@ -125,8 +126,8 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     fsave = (double *) Calloc(nevent,double);
   }
 
-  // Copy parameters and states
-  memcpy(par,params+npar*irep,npar*sizeof(double));
+  par = params+npar*irep;
+  // Copy state variables
   memcpy(y,xstart+nvar*irep,nvar*sizeof(double));
   memcpy(xout+nvar*irep,xstart+nvar*irep,nvar*sizeof(double));
   // Set appropriate states to zero
