@@ -165,18 +165,18 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     }
 
     // Record output at required time points
-    if (t >= times[icount]) {
-      while ((icount < ntimes) && (t >= times[icount])) {
-        memcpy(xout+nvar*(irep+nrep*icount),y,nvar*sizeof(double));
-        // Set appropriate states to zero at time of last observation
-        for (i = 0; i < nzero; i++) y[izero[i]] = 0;
-        // Recompute if zero event-rate encountered
-        if (flag) t = times[icount];
-        icount++;
+    while ((icount < ntimes) && (t >= times[icount])) {
+      memcpy(xout+nvar*(irep+nrep*icount),y,nvar*sizeof(double));
+      // Set appropriate states to zero at time of last observation
+      for (i = 0; i < nzero; i++) {
+	ynext[izero[i]] -= y[izero[i]];
+	y[izero[i]] = 0;
       }
-      memcpy(y,ynext,nvar*sizeof(double));
-      for (i = 0; i < nzero; i++) ynext[izero[i]] = 0;
+      // Recompute if zero event-rate encountered
+      if (flag) t = times[icount];
+      icount++;
     }
+    memcpy(y,ynext,nvar*sizeof(double));
 
     if ((mcov > 0) && (t <= tmax)) table_lookup(&tab,t,covars);
 
