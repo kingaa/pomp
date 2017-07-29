@@ -49,17 +49,6 @@ setClass(
 )
 
 setClass(
-  "kleapRprocessPlugin",
-  contains="pompPlugin",
-  slots=c(
-    rate.fn="ANY",
-    e="numeric",
-    v="matrix",
-    d="matrix"
-  )
-)
-
-setClass(
   "onestepDprocessPlugin",
   contains="pompPlugin",
   slots=c(
@@ -108,31 +97,6 @@ gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
       call.=FALSE)
   new("gillespieRprocessPlugin",
     rate.fn=rate.fun,v=v,d=d,
-    slotname="rate.fn",
-    csnippet=is(rate.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
-}
-
-kleap.sim <- function (rate.fun, e, v, d, PACKAGE) {
-  ep <- paste0("in ",sQuote("kleap.sim")," plugin: ")
-  if (missing(PACKAGE)) PACKAGE <- character(0)
-  if (!is.matrix(v) || !is.matrix(d)) {
-    stop(ep,sQuote("v")," and ",sQuote("d")," must be matrices.",
-      call.=FALSE)
-  }
-  nvar <- nrow(v)
-  nevent <- ncol(v)
-  if ((nvar!=nrow(d))||(nevent!=ncol(d)))
-    stop(ep,sQuote("v")," and ",sQuote("d")," must agree in dimension.",
-      call.=FALSE)
-  e <- as.numeric(e)
-  if (nvar!=length(e))
-    stop(ep,sQuote("e")," must have one entry for each state variable.",
-      call.=FALSE)
-  if (any((e>1)|(e<0)))
-    stop(ep,"each element of ",sQuote("e")," must be in [0,1].",call.=FALSE)
-  new("kleapRprocessPlugin",
-    rate.fn=rate.fun,e=e,v=v,d=d,
     slotname="rate.fn",
     csnippet=is(rate.fun,"Csnippet"),
     PACKAGE=PACKAGE)
@@ -321,7 +285,6 @@ setMethod(
         .Call(
           SSA_simulator,
           func=efun,
-          mflag=0L, ## Gillespie's algorithm
           xstart=xstart,
           times=times,
           params=params,
@@ -343,55 +306,6 @@ setMethod(
   }
 )
 
-
-setMethod(
-  "plugin.handler",
-  signature=signature(object='kleapRprocessPlugin'),
-  definition=function (object, ...) {
-    ep <- paste0("in ",sQuote("kleap.sim")," plugin: ")
-    efun <- tryCatch(
-      pomp.fun(
-        f=object@rate.fn,
-        PACKAGE=object@PACKAGE,
-        proto=quote(rate.fun(j,x,t,params,...)),
-        slotname=object@slotname,
-        ...
-      ),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-    deps <- as.integer(which(apply(object@d!=0,1,any))-1)
-    function (xstart, times, params,
-      zeronames = character(0),
-      tcovar, covar,
-      .getnativesymbolinfo = TRUE,
-      ...) {
-      tryCatch(
-        .Call(
-          SSA_simulator,
-          func=efun,
-          mflag=1L, ## K-leap algorithm
-          xstart=xstart,
-          times=times,
-          params=params,
-          e=object@e,
-          vmatrix=object@v,
-          dmatrix=object@d,
-          deps=deps,
-          tcovar=tcovar,
-          covar=covar,
-          zeronames=zeronames,
-          args=pairlist(...),
-          gnsi=.getnativesymbolinfo
-        ),
-        error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE)
-        }
-      )
-    }
-  }
-)
 
 setMethod(
   "plugin.handler",

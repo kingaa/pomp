@@ -108,35 +108,9 @@ list(R=as.data.frame(gsir),
     theme_bw()+theme(legend.position=c(0.2,0.8))
 
 try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix),d=Dmatrix)))
-try(gsir %>% pomp(rprocess=kleap.sim(rate.fun=rate.fun,e=rep(0.1,5),v=as.numeric(Vmatrix),d=Dmatrix)))
-
-gsir %>%
-    pomp(
-        rprocess=kleap.sim(
-            rate.fun=rate.fun,
-            e=rep(0.1,5),
-            v=Vmatrix,
-            d=Dmatrix),
-        ) -> gsir2
-
-simulate(gsir,seed=95424809L,as.data.frame=TRUE) -> exact
-simulate(gsir2,seed=95424809L,as.data.frame=TRUE) -> kleap
-
-list(exact=exact,`K leap`=kleap) %>%
-    melt(id=c("time","sim")) %>%
-    subset(variable=="cases") %>%
-    ggplot(aes(x=time,y=value,group=interaction(sim,L1),color=L1))+
-    labs(color="",y="cases")+
-    geom_line()+
-    theme_bw()+theme(legend.position=c(0.2,0.8))
 
 stopifnot(
     gsir %>%
-    simulate(params=c(gamma=0,mu=0,iota=0,beta1=0,beta2=0,beta3=0,beta.sd=0,
-                      rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) %>%
-    states() %>% apply(1,diff) %>% equals(0) %>% all())
-stopifnot(
-    gsir2 %>%
     simulate(params=c(gamma=0,mu=0,iota=0,beta1=0,beta2=0,beta3=0,beta.sd=0,
                       rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) %>%
     states() %>% apply(1,diff) %>% equals(0) %>% all())
@@ -150,7 +124,6 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
 }
 
 try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate() %>% plot())
-try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate() %>% plot())
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) {
     if (t>1) {
@@ -161,7 +134,6 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
 }
 
 try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
-try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(1,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) -1
 
@@ -170,12 +142,7 @@ try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix))
 rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
 
 try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
-try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun.bad,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
 
 try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix,d=Dmatrix)) %>% simulate())
-try(pomp(gsir,rprocess=kleap.sim(rate.fun=3,e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
-try(pomp(gsir,rprocess=kleap.sim(rate.fun="bob",e=rep(0.2,5),v=Vmatrix,d=Dmatrix)) %>% simulate())
-
-try(pomp(gsir,rprocess=kleap.sim(rate.fun=rate.fun,e=rep(1e-6,5),v=Vmatrix,d=Dmatrix)) %>% simulate() %>% plot())
 
 dev.off()

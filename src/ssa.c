@@ -1,11 +1,11 @@
 #include "pomp_internal.h"
 #include <R_ext/Constants.h>
 
-static int gillespie (pomp_ssa_rate_fn *ratefun, double *t, double *f,
-		      double *y, const double *v, const double *d, const double *par,
-		      int nvar, int nevent, int npar,
-		      const int *istate, const int *ipar, int ncovar, const int *icovar,
-		      int mcov, const double *cov) {
+static void gillespie (pomp_ssa_rate_fn *ratefun, double *t, double tmax, double *f,
+		       double *y, const double *v, const double *d, const double *par,
+		       int nvar, int nevent, int npar,
+		       const int *istate, const int *ipar, int ncovar, const int *icovar,
+		       int mcov, const double *cov) {
   double tstep, p;
   int change[nvar];
   double vv;
@@ -17,119 +17,66 @@ static int gillespie (pomp_ssa_rate_fn *ratefun, double *t, double *f,
     tstep = exp_rand()/fsum;
     *t = *t+tstep;
   } else {
-    *t = R_PosInf;
-    return 1;
+    *t = tmax;
   }
-  // Determine event, update pops & events
-  p = fsum*unif_rand();
-  int jevent = nevent-1;
-  for (j = 0; j < jevent; j++) {
-    if (p > f[j]) {
-      p -= f[j];
-    } else {
-      jevent = j;
-      break;
-    }
-  }
-  for (i = 0; i < nvar; i++) {
-    change[i] = 0;
-    vv = v[i+nvar*jevent];
-    if (vv != 0) {
-      y[i] += vv;
-      change[i] = 1;
-    }
-  }
-  // only updating events & tree entries that have changed
-  for (j = 0; j < nevent; j++) {
-    for (i = 0; i < nvar; i++) {
-      if ((change[i] != 0) && (d[i+nvar*j] != 0)) {
-        f[j] = (*ratefun)(j+1,*t,y,par,istate,ipar,icovar,mcov,cov);
-        if (f[j] < 0.0)
-          errorcall(R_NilValue,"'rate.fun' returns a negative rate");
-        break;
-      }
-    }
-  }
-  return 0;
-}
-
-static int kleap (pomp_ssa_rate_fn *ratefun, double kappa, double *t, double *f,
-		  double *y, const double *v, const double *d, const double *par,
-		  int nvar, int nevent, int npar,
-		  const int *istate, const int *ipar, int ncovar, const int *icovar,
-		  int mcov, const double *cov) {
-  double prob[nevent];
-  int k[nevent];
-  double kk, tstep;
-  int change[nvar];
-  int i, j;
-  // Determine time interval and update time
-  double fsum = 0;
-  for (j = 0; j < nevent; j++) fsum += f[j];
-  if (fsum > 0.0) {
-    tstep = rgamma(kappa,1.0/fsum);
-    *t = *t+tstep;
+  if (*t >= tmax) {
+    *t = tmax;
   } else {
-    *t = R_PosInf;
-    return 1;
-  }
-  // Determine frequency of events, update pops & events
-  for (j = 0; j < nevent; j++) prob[j] = f[j]/fsum;
-  rmultinom((int)kappa,prob,nevent,k);
-  // some matrix-vector multiplication but only where necessary
-  for (i = 0; i < nvar; i++) change[i] = 0;
-  for (j = 0; j < nevent; j++) {
-    if (k[j] != 0) {
-      kk = (double) k[j];
-      for (i = 0; i < nvar; i++) {
-        if (v[i+nvar*j] != 0) {
-          y[i] += kk*v[i+nvar*j];
-          change[i] = 1;
-        }
+    // Determine event, update pops & events
+    p = fsum*unif_rand();
+    int jevent = nevent-1;
+    for (j = 0; j < jevent; j++) {
+      if (p > f[j]) {
+	p -= f[j];
+      } else {
+	jevent = j;
+	break;
       }
     }
-  }
-  // only updating events & tree entries that have changed
-  for (j = 0; j < nevent; j++) {
     for (i = 0; i < nvar; i++) {
-      if ((change[i] != 0) && (d[i+nvar*j] != 0)) {
-        f[j] = (*ratefun)(j+1,*t,y,par,istate,ipar,icovar,mcov,cov);
-        if (f[j] < 0.0)
-          errorcall(R_NilValue,"'rate.fun' returns a negative rate");
-        break;
+      change[i] = 0;
+      vv = v[i+nvar*jevent];
+      if (vv != 0) {
+	y[i] += vv;
+	change[i] = 1;
+      }
+    }
+    // only updating events & tree entries that have changed
+    for (j = 0; j < nevent; j++) {
+      for (i = 0; i < nvar; i++) {
+	if ((change[i] != 0) && (d[i+nvar*j] != 0)) {
+	  f[j] = (*ratefun)(j+1,*t,y,par,istate,ipar,icovar,mcov,cov);
+	  if (f[j] < 0.0)
+	    errorcall(R_NilValue,"'rate.fun' returns a negative rate");
+	  break;
+	}
       }
     }
   }
-  return 0;
 }
 
 static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 		 int nvar, int nevent, int npar, int nrep, int ntimes,
-		 int method,
 		 double *xstart, const double *times, const double *params, double *xout,
 		 const double *e, const double *v, const double *d,
 		 int ndeps, const int *ideps, int nzero, const int *izero,
 		 const int *istate, const int *ipar, int ncovar, const int *icovar,
 		 int lcov, int mcov, double *tcov, double *cov) {
   double t = times[0];
-  double tmax = times[ntimes-1];
-  double *f = NULL, *fsave = NULL;
+  double *f = NULL;
   double *covars = NULL;
   const double *par;
-  double y[nvar], ysave[nvar];
+  double y[nvar];
   struct lookup_table tab = {lcov, mcov, 0, tcov, cov};
   int i, j;
 
   if (mcov > 0) covars = (double *) Calloc(mcov,double);
-  if (nevent > 0) {
-    f = (double *) Calloc(nevent,double);
-    fsave = (double *) Calloc(nevent,double);
-  }
+  if (nevent > 0) f = (double *) Calloc(nevent,double);
 
   par = params+npar*irep;
   // Copy state variables
   memcpy(y,xstart+nvar*irep,nvar*sizeof(double));
-  memcpy(xout+nvar*irep,xstart+nvar*irep,nvar*sizeof(double));
+  memcpy(xout+nvar*irep,y,nvar*sizeof(double));
   // Set appropriate states to zero
   for (i = 0; i < nzero; i++) y[izero[i]] = 0.0;
   // Initialize the covariate vector
@@ -141,57 +88,27 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
       errorcall(R_NilValue,"'rate.fun' returns a negative rate");
   }
 
-  memcpy(ysave,y,nvar*sizeof(double));
-  memcpy(fsave,f,nevent*sizeof(double));
-
   int icount = 1;
   while (icount < ntimes) {
     R_CheckUserInterrupt();
-    if (method == 0) {	// Gillespie's next reaction method
-      gillespie(ratefun,&t,f,y,v,d,par,nvar,nevent,npar,istate,ipar,
-		ncovar,icovar,mcov,covars);
-    } else {	 // Cai's K-leap method
-      // Determine kappa (most accurate but slowest method)
-      double kappa, tmp;
-      int k;
-      for (i = 0, kappa = 1e9; i < ndeps; i++) {
-        k = ideps[i];
-        tmp = e[k]*y[k];
-        kappa = (tmp < kappa) ? tmp : kappa;
-        if (kappa < 2.0) break;
-      }
-      if (kappa < 2.0) {
-        gillespie(ratefun,&t,f,y,v,d,par,nvar,nevent,npar,istate,
-		  ipar,ncovar,icovar,mcov,covars);
-      } else {
-        kappa = floor(kappa);
-        kleap(ratefun,kappa,&t,f,y,v,d,par,nvar,nevent,npar,istate,
-	      ipar,ncovar,icovar,mcov,covars);
-      }
-    }
+    gillespie(ratefun,&t,times[icount],f,y,v,d,par,nvar,nevent,npar,istate,ipar,
+	      ncovar,icovar,mcov,covars);
 
     // Record output at required time points
     if (t >= times[icount]) {
-      memcpy(xout+nvar*(irep+nrep*icount),ysave,nvar*sizeof(double));
+      memcpy(xout+nvar*(irep+nrep*icount),y,nvar*sizeof(double));
       // Set appropriate states to zero at time of last observation
-      t = times[icount];
-      for (i = 0; i < nzero; i++) ysave[izero[i]] = 0;
-      memcpy(y,ysave,nvar*sizeof(double));
-      memcpy(f,fsave,nevent*sizeof(double));
+      for (i = 0; i < nzero; i++) y[izero[i]] = 0;
       icount++;
-    } else {
-      memcpy(ysave,y,nvar*sizeof(double));
-      memcpy(fsave,f,nevent*sizeof(double));
     }
 
-    if ((mcov > 0) && (t <= tmax)) table_lookup(&tab,t,covars);
+    if (mcov > 0) table_lookup(&tab,t,covars);
 
   }
 
   if (mcov > 0) Free(covars);
-  if (nevent > 0) {
-    Free(f); Free(fsave);
-  }
+  if (nevent > 0) Free(f);
+
 }
 
 // these global objects will pass the needed information to the user-defined function (see 'default_ssa_internal_fn')
@@ -254,7 +171,7 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
   return rate;
 }
 
-SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
+SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP deps, SEXP tcovar, SEXP covar,
 		    SEXP zeronames, SEXP args, SEXP gnsi)
 {
@@ -270,7 +187,6 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
   int *sidx, *pidx, *cidx, *zidx, *didx = 0;
   SEXP fn, Snames, Pnames, Cnames;
 
-  int method = *(INTEGER(mflag));
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
@@ -362,7 +278,7 @@ SEXP SSA_simulator (SEXP func, SEXP mflag, SEXP xstart, SEXP times, SEXP params,
     int i;
     for (i = 0; i < nrep; i++) {
       SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
-	  method,REAL(xstart),REAL(times),REAL(params),
+	  REAL(xstart),REAL(times),REAL(params),
 	  REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),ndeps,didx,
 	  nzeros,zidx,sidx,pidx,ncovars,cidx,covlen,covdim,
 	  REAL(tcovar),REAL(covar));

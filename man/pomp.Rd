@@ -11,7 +11,6 @@
 \alias{discrete.time.sim}
 \alias{onestep.dens}
 \alias{gillespie.sim}
-\alias{kleap.sim}
 \alias{Csnippet}
 \alias{Csnippet-class}
 \alias{vectorfield}
@@ -245,13 +244,6 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \code{d} is a binary matrix that describes the dependencies of elementary event rates on state variables:
     \code{d[i,j]} will have value 1 if event rate \code{j} must be updated as a result of a change in state variable \code{i} and 0 otherwise.
 
-    A faster, but approximate, version of the Gillepie algorithm, the so-called \dQuote{K-leap} method of Cai and Xu (2007), is implemented in the \code{kleap.sim} plug-in.
-    To use it, supply \preformatted{
-      rprocess = kleap.sim(rate.fun, e, v, d)}
-    to \code{pomp}, where \code{rate.fun}, \code{v}, and \code{d} are as above, and \code{e} gives relative error tolerances for each of the state variables.
-    \code{e} should have length equal to the number of state variables.
-    \code{e[i]} corresponds to row \code{i} of the \code{v} and \code{d} matrices and we must have \eqn{0\le e[i]\le 1}{0 <= e[i] <= 1}.
-    The leap size, \eqn{K}, is chosen so that \eqn{K\le\max(\min(e[i]x[i]),1)}{K <= max(min(e[i]*y[i]),1)}.
   }
 
   \subsection{Size of time step}{
@@ -534,10 +526,6 @@ plot(rick)
   D. T. Gillespie (1977)
   Exact stochastic simulation of coupled chemical reactions.
   Journal of Physical Chemistry 81:2340--2361.
-
-  X. Cai and Z. Xu (2007)
-  K-leap method for accelerating stochastic simulation of coupled chemical reactions.
-  Journal of Chemical Physics 126:074102.
 }
 \seealso{
   \link{pomp methods},
