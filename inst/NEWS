@@ -8,6 +8,12 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_3._4
           now guaranteed to be evaluated at least once per observation
           interval.
 
+        • The K-leap method has been removed.  Its accuracy is low on
+          test problems and it is difficult to make it compatible with
+          the pomp paradigm.  In particular, it does not readily
+          accomodate time-varying covariates in a sensible way, nor
+          does it lend itself to simulations at pre-specified times.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_3._3:
 
         • ‘bspline.basis’ and ‘periodic.bspline.basis’ now take an

@@ -5,7 +5,10 @@
     \item Eamon O'Dea pointed out that the bug in \code{gillespie.sim}, addressed by version 1.12.3, was not completely fixed.
     This problem has now been resolved.
     In addition, covariates are now guaranteed to be evaluated at least once per observation interval.
-  }
+    \item The K-leap method has been removed.
+    Its accuracy is low on test problems and it is difficult to make it compatible with the pomp paradigm.
+    In particular, it does not readily accomodate time-varying covariates in a sensible way, nor does it lend itself to simulations at pre-specified times.
+}
 }
 \section{Changes in \pkg{pomp} version 1.13.3}{
   \itemize{
