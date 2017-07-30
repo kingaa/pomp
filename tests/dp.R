@@ -49,7 +49,8 @@ sims %>%
     melt(id=c("time","sim")) %>%
     ggplot(aes(x=time,y=value,group=interaction(sim,variable)))+
     geom_step()+
-    facet_grid(variable~sim,scales="free_y")
+    facet_grid(variable~sim,scales="free_y")+
+    labs(title="death process, Gillespie",subtitle=expression(mu==0.01))
 stopifnot(sims %>% ddply(~sim,mutate,s=cumsum(ct),Nn=(N+s)==100) %>%
           subset(!Nn) %>% nrow() %>% equals(0))
 
@@ -66,7 +67,8 @@ sims %>%
     melt(id=c("time","sim")) %>%
     ggplot(aes(x=time,y=value,group=interaction(sim,variable)))+
     geom_step()+
-    facet_grid(variable~sim,scales="free_y")
+    facet_grid(variable~sim,scales="free_y")+
+    labs(title="death process, onestep",subtitle=expression(mu==0.01))
 stopifnot(sims %>% ddply(~sim,mutate,s=cumsum(ct),Nn=(N+s)==100) %>%
           subset(!Nn) %>% nrow() %>% equals(0))
 
@@ -83,7 +85,8 @@ sims %>%
     melt(id=c("time","sim")) %>%
     ggplot(aes(x=time,y=value,group=interaction(sim,variable)))+
     geom_step()+
-    facet_grid(variable~sim,scales="free_y")
+    facet_grid(variable~sim,scales="free_y")+
+    labs(title="death process, Euler",subtitle=expression(mu==0.01))
 stopifnot(sims %>% ddply(~sim,mutate,s=cumsum(ct),Nn=(N+s)==100) %>%
           subset(!Nn) %>% nrow() %>% equals(0))
 
@@ -102,18 +105,21 @@ create_example(N_0=1000,mu=0.02,simulator="gillespie",times=c(0,1,10,100,1000)) 
   simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000, seed=374244) %>%
   ggplot(aes(x=N,group=time))+
   geom_histogram(aes(y=..density..),binwidth=10)+
-  facet_grid(time~.)
+  facet_grid(time~.)+
+  labs(title="death process, Gillespie",subtitle=expression(mu==0.02))
 
 create_example(N_0=1000,mu=0.02,simulator="onestep",times=c(0,1,10,100,1000)) %>%
   simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000, seed=374244) %>%
   ggplot(aes(x=N,group=time))+
   geom_histogram(aes(y=..density..),binwidth=10)+
-  facet_grid(time~.)
+  facet_grid(time~.)+
+  labs(title="death process, onestep",subtitle=expression(mu==0.02))
 
 create_example(N_0=1000,mu=0.02,simulator="euler",times=c(0,1,10,100,1000)) %>%
   simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000, seed=374244) %>%
   ggplot(aes(x=N,group=time))+
   geom_histogram(aes(y=..density..),binwidth=10)+
-  facet_grid(time~.)
+  facet_grid(time~.)+
+  labs(title="death process, Euler",subtitle=expression(mu==0.02))
 
 dev.off()

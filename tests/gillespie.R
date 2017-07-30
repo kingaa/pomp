@@ -82,7 +82,7 @@ data.frame(
 gsir %>%
     pomp(zeronames=NULL) %>%
     simulate() %>%
-    plot()
+    plot(main="Gillespie SIR, no zeroing")
 
 gsir %>%
     pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
@@ -92,7 +92,7 @@ gsir %>%
          statenames=c("S","I","R","cases")
          ) %>%
     simulate() %>%
-    plot()
+    plot(main="Gillespie SIR, with zeroing")
 
 pompExample(gillespie.sir)
 gsir2 <- simulate(gillespie.sir,params=coef(gsir),
@@ -103,7 +103,7 @@ list(R=as.data.frame(gsir),
     melt(id="time") %>%
     subset(variable=="reports") %>%
     ggplot(aes(x=time,y=value,color=L1))+
-    labs(color="",y="reports")+
+    labs(color="",y="reports",title="C vs R implementations")+
     geom_line()+
     theme_bw()+theme(legend.position=c(0.2,0.8))
 
@@ -123,7 +123,9 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
     }
 }
 
-try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate() %>% plot())
+pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% 
+  simulate() %>% 
+  plot(main="freeze at time 1")
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) {
     if (t>1) {

@@ -101,7 +101,7 @@ Type 'q()' to quit R.
 > gsir %>%
 +     pomp(zeronames=NULL) %>%
 +     simulate() %>%
-+     plot()
++     plot(main="Gillespie SIR, no zeroing")
 > 
 > gsir %>%
 +     pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
@@ -111,7 +111,7 @@ Type 'q()' to quit R.
 +          statenames=c("S","I","R","cases")
 +          ) %>%
 +     simulate() %>%
-+     plot()
++     plot(main="Gillespie SIR, with zeroing")
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 > 
 > pompExample(gillespie.sir)
@@ -126,7 +126,7 @@ newly created object(s):
 +     melt(id="time") %>%
 +     subset(variable=="reports") %>%
 +     ggplot(aes(x=time,y=value,color=L1))+
-+     labs(color="",y="reports")+
++     labs(color="",y="reports",title="C vs R implementations")+
 +     geom_line()+
 +     theme_bw()+theme(legend.position=c(0.2,0.8))
 > 
@@ -147,7 +147,9 @@ Error : in ‘pomp’: in ‘gillespie.sim’ plugin: ‘v’ and ‘d’ must b
 +     }
 + }
 > 
-> try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate() %>% plot())
+> pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% 
++   simulate() %>% 
++   plot(main="freeze at time 1")
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) {
 +     if (t>1) {
