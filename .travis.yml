@@ -15,7 +15,7 @@ matrix:
         - jimhester/covr
       after_success:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
-        - travis_wait 30 Rscript -e 'covr::codecov()'
+        - travis_wait 60 Rscript -e 'covr::codecov()'
     - os: linux
       env: RVERSION=3.1.2
       after_success:
