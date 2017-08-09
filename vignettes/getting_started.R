@@ -7,7 +7,6 @@ registerDoMPI(cl)
 registerDoRNG(348885445L)
 
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
-library(pomp)
 stopifnot(packageVersion("pomp")>="1.11")
 options(
   keep.source=TRUE,
@@ -57,6 +56,7 @@ ggplot(data=parus.dat,mapping=aes(x=year,y=P))+
   theme_bw()
 
 ## ----logistic-step-fun---------------------------------------------------
+library(pomp)
 step.fun <- Csnippet("
   double dW = rnorm(0,sqrt(dt));
   N += r*N*(1-N/K)*dt+sigma*N*dW;

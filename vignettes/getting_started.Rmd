@@ -52,7 +52,6 @@ registerDoMPI(cl)
 registerDoRNG(348885445L)
 ```
 ```{r prelims,echo=FALSE,cache=FALSE}
-library(pomp)
 stopifnot(packageVersion("pomp")>="1.11")
 options(
   keep.source=TRUE,
@@ -260,6 +259,7 @@ The best way to do this is to write a snippet of code in the C language.
 The following is such a snippet for the stochastic logistic equation above.
 
 ```{r logistic-step-fun}
+library(pomp)
 step.fun <- Csnippet("
   double dW = rnorm(0,sqrt(dt));
   N += r*N*(1-N/K)*dt+sigma*N*dW;
