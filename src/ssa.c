@@ -1,27 +1,30 @@
 #include "pomp_internal.h"
 #include <R_ext/Constants.h>
 
-static void gillespie (pomp_ssa_rate_fn *ratefun, double *t, double tmax, double *f,
-		       double *y, const double *v, const double *d, const double *par,
-		       int nvar, int nevent, int npar,
-		       const int *istate, const int *ipar, int ncovar, const int *icovar,
-		       int mcov, const double *cov) {
+static void gillespie (double *t, double tmax, double *f, double *y, 
+		       const double *v, int nvar, int nevent) {
   double tstep, p;
-  int change[nvar];
   double vv;
   int i, j;
+
   // Determine time interval and update time
   double fsum = 0;
   for (j = 0; j < nevent; j++) fsum += f[j];
+
   if (fsum > 0.0) {
     tstep = exp_rand()/fsum;
     *t = *t+tstep;
   } else {
     *t = tmax;
+    return;
   }
+
   if (*t >= tmax) {
+
     *t = tmax;
+
   } else {
+
     // Determine event, update pops & events
     p = fsum*unif_rand();
     int jevent = nevent-1;
@@ -33,25 +36,14 @@ static void gillespie (pomp_ssa_rate_fn *ratefun, double *t, double tmax, double
 	break;
       }
     }
+
     for (i = 0; i < nvar; i++) {
-      change[i] = 0;
       vv = v[i+nvar*jevent];
       if (vv != 0) {
 	y[i] += vv;
-	change[i] = 1;
       }
     }
-    // only updating events & tree entries that have changed
-    for (j = 0; j < nevent; j++) {
-      for (i = 0; i < nvar; i++) {
-	if ((change[i] != 0) && (d[i+nvar*j] != 0)) {
-	  f[j] = (*ratefun)(j+1,*t,y,par,istate,ipar,icovar,mcov,cov);
-	  if (f[j] < 0.0)
-	    errorcall(R_NilValue,"'rate.fun' returns a negative rate");
-	  break;
-	}
-      }
-    }
+
   }
 }
 
@@ -61,8 +53,9 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 		 const double *e, const double *v, const double *d,
 		 int ndeps, const int *ideps, int nzero, const int *izero,
 		 const int *istate, const int *ipar, int ncovar, const int *icovar,
-		 int lcov, int mcov, double *tcov, double *cov) {
+		 int lcov, int mcov, double *tcov, double *cov, const double *hmax) {
   double t = times[0];
+  double tmax;
   double *f = NULL;
   double *covars = NULL;
   const double *par;
@@ -90,9 +83,19 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 
   int icount = 1;
   while (icount < ntimes) {
+
     R_CheckUserInterrupt();
-    gillespie(ratefun,&t,times[icount],f,y,v,d,par,nvar,nevent,npar,istate,ipar,
-	      ncovar,icovar,mcov,covars);
+    tmax = t + *hmax;
+    tmax = (tmax > times[icount]) ? times[icount] : tmax;
+    gillespie(&t,tmax,f,y,v,nvar,nevent);
+
+    if (mcov > 0) table_lookup(&tab,t,covars);
+
+    for (j = 0; j < nevent; j++) {
+      f[j] = ratefun(j+1,t,y,par,istate,ipar,icovar,mcov,covars);
+      if (f[j] < 0.0)
+	errorcall(R_NilValue,"'rate.fun' returns a negative rate");
+    }
 
     // Record output at required time points
     if (t >= times[icount]) {
@@ -101,8 +104,6 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
       for (i = 0; i < nzero; i++) y[izero[i]] = 0;
       icount++;
     }
-
-    if (mcov > 0) table_lookup(&tab,t,covars);
 
   }
 
@@ -173,7 +174,7 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
 
 SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP deps, SEXP tcovar, SEXP covar,
-		    SEXP zeronames, SEXP args, SEXP gnsi)
+		    SEXP zeronames, SEXP hmax, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   int *dim, xdim[3];
@@ -207,6 +208,8 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   nstates = LENGTH(statenames);
   nparams = LENGTH(paramnames);
   ncovars = LENGTH(covarnames);
+
+  PROTECT(hmax = AS_NUMERIC(hmax)); nprotect++;
 
   PROTECT(fn = pomp_fun_handler(func,gnsi,&use_native)); nprotect++;
 
@@ -281,7 +284,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 	  REAL(xstart),REAL(times),REAL(params),
 	  REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),ndeps,didx,
 	  nzeros,zidx,sidx,pidx,ncovars,cidx,covlen,covdim,
-	  REAL(tcovar),REAL(covar));
+	  REAL(tcovar),REAL(covar),REAL(hmax));
     }
   }
   PutRNGstate();

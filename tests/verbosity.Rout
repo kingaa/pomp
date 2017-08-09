@@ -100,16 +100,16 @@ filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
 make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I/usr/local/apps/R/R-3.4.1/lib64/R/include -DNDEBUG   -I/usr/local/include   -I/userdata/kingaa/projects/Rpkg/library/pomp/include -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpxCaaIB/40708/pomp_02889a419e05a4dc30de3a6bfe370f67.c -o /tmp/RtmpxCaaIB/40708/pomp_02889a419e05a4dc30de3a6bfe370f67.o
-/tmp/RtmpxCaaIB/40708/pomp_02889a419e05a4dc30de3a6bfe370f67.c: In function ‘__pomp_rmeasure’:
-/tmp/RtmpxCaaIB/40708/pomp_02889a419e05a4dc30de3a6bfe370f67.c:16:1: error: expected ‘;’ before ‘}’ token
+gcc -std=gnu99 -I/usr/local/apps/R/R-3.4.1/lib64/R/include -DNDEBUG   -I/usr/local/include   -I/userdata/kingaa/projects/Rpkg/library/pomp/include -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpI9VPAW/54471/pomp_6e5645f3c6b43d54c540c1904ee8b1a0.c -o /tmp/RtmpI9VPAW/54471/pomp_6e5645f3c6b43d54c540c1904ee8b1a0.o
+/tmp/RtmpI9VPAW/54471/pomp_6e5645f3c6b43d54c540c1904ee8b1a0.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpI9VPAW/54471/pomp_6e5645f3c6b43d54c540c1904ee8b1a0.c:16:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/RtmpxCaaIB/40708/pomp_02889a419e05a4dc30de3a6bfe370f67.o] Error 1
+make[2]: *** [/tmp/RtmpI9VPAW/54471/pomp_6e5645f3c6b43d54c540c1904ee8b1a0.o] Error 1
 make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot compile shared-object library ‘/tmp/RtmpxCaaIB/40708/pomp_02889a419e05a4dc30de3a6bfe370f67.so’: status = 1
+Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot compile shared-object library ‘/tmp/RtmpI9VPAW/54471/pomp_6e5645f3c6b43d54c540c1904ee8b1a0.so’: status = 1
 In addition: Warning messages:
 1: in ‘bsmc2’: 2 filtering failures occurred. 
 2: in ‘pfilter’: 1 filtering failure occurred. 

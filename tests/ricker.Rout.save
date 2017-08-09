@@ -134,10 +134,10 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<environment: 0x35ad9c8>
+<environment: 0x2298290>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<environment: 0x3c20628>
+<environment: 0x259a988>
 measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
 measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
 prior simulator, rprior = not specified
@@ -150,14 +150,14 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x3f91308>
+<environment: 0x30ce008>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "c", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x3f91308>
+<environment: 0x30ce008>
 parameter(s):
        r    sigma      phi        c      N.0      e.0 
 44.70118  0.30000 10.00000  1.00000  7.00000  0.00000 

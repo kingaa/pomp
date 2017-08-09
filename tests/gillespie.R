@@ -56,7 +56,7 @@ data.frame(
     pomp(
         times="time",
         t0=0,
-        rprocess=gillespie.sim(rate.fun=rate.fun,v=Vmatrix,d=Dmatrix),
+        rprocess=gillespie.sim(rate.fun=rate.fun,v=Vmatrix,d=Dmatrix,hmax=1/52/10),
         zeronames=c("cases"),
         covar=data.frame(
             t=seq(0,2,by=1/52/10),
@@ -86,7 +86,7 @@ gsir %>%
 
 gsir %>%
     pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
-                                v=Vmatrix,d=Dmatrix),
+                                v=Vmatrix,d=Dmatrix,hmax=1/52/10),
          nbasis=3L,degree=3L,period=1.0,
          paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
          statenames=c("S","I","R","cases")

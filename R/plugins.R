@@ -43,6 +43,7 @@ setClass(
   contains="pompPlugin",
   slots=c(
     rate.fn="ANY",
+    hmax="numeric",
     v="matrix",
     d="matrix"
   )
@@ -83,7 +84,7 @@ euler.sim <- function (step.fun, delta.t, PACKAGE) {
     PACKAGE=PACKAGE)
 }
 
-gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
+gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
   if (missing(PACKAGE)) PACKAGE <- character(0)
   if (!is.matrix(v) || !is.matrix(d)) {
@@ -96,7 +97,7 @@ gillespie.sim <- function (rate.fun, v, d, PACKAGE) {
     stop(ep,sQuote("v")," and ",sQuote("d")," must agree in dimension.",
       call.=FALSE)
   new("gillespieRprocessPlugin",
-    rate.fn=rate.fun,v=v,d=d,
+    rate.fn=rate.fun,v=v,d=d,hmax=hmax,
     slotname="rate.fn",
     csnippet=is(rate.fun,"Csnippet"),
     PACKAGE=PACKAGE)
@@ -295,6 +296,7 @@ setMethod(
           tcovar=tcovar,
           covar=covar,
           zeronames=zeronames,
+          hmax=object@hmax,
           args=pairlist(...),
           gnsi=.getnativesymbolinfo
         ),

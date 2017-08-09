@@ -227,7 +227,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
 
     If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} plug-in.
     In this case, furnish \preformatted{
-      rprocess = gillespie.sim(rate.fun = f, v, d)}
+      rprocess = gillespie.sim(rate.fun = f, v, d, hmax = Inf)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.
     Here, \code{f} must be an \R function of the form \preformatted{
       f(j, x, t, params, ...)}
@@ -244,6 +244,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \code{d} is a binary matrix that describes the dependencies of elementary event rates on state variables:
     \code{d[i,j]} will have value 1 if event rate \code{j} must be updated as a result of a change in state variable \code{i} and 0 otherwise.
 
+    When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
+    By default, the elementary event rates will be recomputed at least once per observation interval.
   }
 
   \subsection{Size of time step}{

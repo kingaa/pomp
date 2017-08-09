@@ -10,7 +10,7 @@ static const R_CallMethodDef callMethods[] = {
   {"lookup_in_table", (DL_FUNC) &lookup_in_table, 3},
   {"load_stack_incr", (DL_FUNC) &load_stack_incr, 1},
   {"load_stack_decr", (DL_FUNC) &load_stack_decr, 1},
-  {"SSA_simulator", (DL_FUNC) &SSA_simulator, 13},
+  {"SSA_simulator", (DL_FUNC) &SSA_simulator, 14},
   {"R_Euler_Multinom", (DL_FUNC) &R_Euler_Multinom, 4},
   {"D_Euler_Multinom", (DL_FUNC) &D_Euler_Multinom, 5},
   {"R_GammaWN", (DL_FUNC) &R_GammaWN, 3},

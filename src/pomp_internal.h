@@ -376,7 +376,7 @@ extern SEXP do_skeleton(SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi);
 extern SEXP sobol_sequence(SEXP dim, SEXP length);
 
 // ssa.c
-extern SEXP SSA_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP deps, SEXP tcovar, SEXP covar, SEXP zeronames, SEXP args, SEXP gnsi);
+extern SEXP SSA_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP deps, SEXP tcovar, SEXP covar, SEXP zeronames, SEXP hmax, SEXP args, SEXP gnsi);
 
 // synth_lik.c
 extern SEXP synth_loglik(SEXP ysim, SEXP ydat);
