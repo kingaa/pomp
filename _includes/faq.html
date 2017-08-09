@@ -393,6 +393,7 @@ bsflu %&gt;%
 <li>negative or non-integer state variables when the dmeasure assumes non-negative or integer values,</li>
 <li>missing data,</li>
 <li>the <code>dmeasure</code> function or C snippet returning the log likelihood when the likelihood is requested, or vice versa.</li>
+<li><code>lik</code> has not been set properly. Note that, when the snippet is executed, <code>lik</code> will be undefined. In particular, you cannot assume that it has value 0.</li>
 </ul>
 <p>See the help (<code>?Csnippet</code>) for information on how to properly write <code>dmeasure</code> C snippets. As of version 1.5.6.3, when this error occurs, the values of the likelihood, parameters, and states are printed. If this alone doesn’t make the underlying cause clear, explore the model behavior further. A useful way to do this is to put <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Printing"><code>Rprintf</code> statements</a> in your <code>dmeasure</code> and <code>rprocess</code> C snippets to view the values of the data, state variables, and likelihoods. <a href="https://github.com/kingaa/pomp/issues/13">Issue #13</a> has an example.</p>
 <p>Remember, <code>dmeasure</code> has to be able to return the likelihood—or the log likelihood—upon request!</p>

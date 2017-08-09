@@ -416,6 +416,7 @@ Common causes are:
 - negative or non-integer state variables when the dmeasure assumes non-negative or integer values,
 - missing data,
 - the `dmeasure` function or C snippet returning the log likelihood when the likelihood is requested, or vice versa.
+- `lik` has not been set properly. Note that, when the snippet is executed, `lik` will be undefined. In particular, you cannot assume that it has value 0.
 
 See the help (`?Csnippet`) for information on how to properly write `dmeasure` C snippets.
 As of version 1.5.6.3, when this error occurs, the values of the likelihood, parameters, and states are printed.
