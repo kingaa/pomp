@@ -267,7 +267,7 @@ sir_na %>%
 In the above particle filter computation, notice that the effective sample size (ESS) is full, as it should be, when the missing data contribute no information.
 
 
-## I have t0 much less than t[1].  How do I deal with accumulator variables in this case?  {#accumulator-variables-howto}
+## I have t0 much less than t[1].  How do I deal with accumulator variables in this case?  {#t0-much-less-than-t1-accumulators}
 
 As described in the documentation (`?pomp`), **pomp** allows you to define "accumulator variables" that collect events occurring between observations.
 The example [above](#how-to-handle-missing-data) illustrates this.
