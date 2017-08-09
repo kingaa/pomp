@@ -17,13 +17,6 @@ options(
   )
 set.seed(594709947L)
 
-## ----prelims2,echo=FALSE,cache=FALSE-------------------------------------
-library(ggplot2)
-library(plyr)
-library(reshape2)
-library(magrittr)
-theme_set(theme_bw())
-
 ## ----load-parus-data-----------------------------------------------------
 parus.dat <- read.csv(text="
                       year,P
@@ -57,6 +50,7 @@ parus.dat <- read.csv(text="
                       )
 
 ## ----parus-plot----------------------------------------------------------
+library(ggplot2)
 ggplot(data=parus.dat,mapping=aes(x=year,y=P))+
   geom_line()+geom_point()+
   expand_limits(y=0)+
@@ -77,11 +71,15 @@ parus <- pomp(data=parus.dat,time="year",t0=1959,
 simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),states=TRUE)
 
 ## ----logistic-plot1,echo=FALSE-------------------------------------------
-melt(simStates) %>% 
-  dcast(rep+time~variable) %>%
-  ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
-  geom_line()+guides(color=FALSE)+
-  theme_bw()
+library(magrittr)
+library(reshape2)
+
+simStates %>% 
+    melt() %>% 
+    dcast(rep+time~variable) %>%
+    ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
+    geom_line()+guides(color=FALSE)+
+    theme_bw()
 
 ## ----logistic-rmeasure---------------------------------------------------
 rmeas <- Csnippet("
@@ -97,16 +95,18 @@ sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),
 
 ## ----logistic-plot2,echo=FALSE-------------------------------------------
 sim %>% melt() %>% 
-  ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
-  geom_line()+
-  guides(color=FALSE)+scale_y_sqrt()+
-  facet_grid(variable~.,scales="free_y")
+    ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
+    geom_line()+
+    guides(color=FALSE)+scale_y_sqrt()+
+    facet_grid(variable~.,scales="free_y")+
+    theme_bw()
 
 sim %>% melt() %>% dcast(rep+time~variable,value.var='value') %>%
-  ggplot(mapping=aes(x=N,y=P,color=factor(rep)))+
-  geom_point()+scale_x_sqrt()+scale_y_sqrt()+
-  coord_equal()+
-  guides(color=FALSE)
+    ggplot(mapping=aes(x=N,y=P,color=factor(rep)))+
+    geom_point()+scale_x_sqrt()+scale_y_sqrt()+
+    coord_equal()+
+    guides(color=FALSE)+
+    theme_bw()
 
 ## ----logistic-dmeasure---------------------------------------------------
 dmeas <- Csnippet("
@@ -134,9 +134,10 @@ traj <- trajectory(parus,params=pars,times=seq(1959,1970,by=0.01))
 
 ## ----logistic-plot3,echo=FALSE-------------------------------------------
 trajectory(parus,params=pars,times=seq(1959,1970,by=0.01),as.data.frame=TRUE) %>%
-  ggplot(mapping=aes(x=time,y=N,group=traj,color=traj))+
-  guides(color=FALSE)+
-  geom_line()
+    ggplot(mapping=aes(x=time,y=N,group=traj,color=traj))+
+    guides(color=FALSE)+
+    geom_line()+
+    theme_bw()
 
 ## ----bh-stepfun----------------------------------------------------------
 bh.step <- Csnippet("
@@ -190,15 +191,18 @@ logLik(tm)
 coef(tm,"sigma") <- 0
 simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
   ggplot(aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
-  scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
-                     labels=c(`FALSE`="simulation",`TRUE`="data"))+
-  geom_line()
+    scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
+                       labels=c(`FALSE`="simulation",`TRUE`="data"))+
+    geom_line()+
+    theme_bw()
 
 ## ----parus-mif-eval,include=FALSE,eval=TRUE,purl=TRUE--------------------
 bake(file="parus-mif.rds",{
     guesses <- sobolDesign(lower=c(r=0,K=100,sigma=0,N.0=200),
                            upper=c(r=5,K=600,sigma=2,N.0=200),
                            nseq=100)
+    
+    library(foreach)
     foreach (guess=iter(guesses,"row"),.combine=rbind,
              .packages=c("pomp","magrittr"),.errorhandling="remove",
              .export="parus",.inorder=FALSE) %dopar% {
@@ -254,19 +258,26 @@ bake("parus-profile.rds",{
 
 ## ----parus-profile-plot--------------------------------------------------
 pairs(~loglik+r+K+sigma,data=r_prof,subset=loglik>max(loglik)-10)
+
+library(plyr)
 r_prof %>% 
-  mutate(r=signif(r,8)) %>%
-  ddply(~r,subset,loglik==max(loglik)) %>%
-  ggplot(aes(x=r,y=loglik))+geom_point()+geom_smooth()
+    mutate(r=signif(r,8)) %>%
+    ddply(~r,subset,loglik==max(loglik)) %>%
+    ggplot(aes(x=r,y=loglik))+
+    geom_point()+geom_smooth()+
+    theme_bw()
 
 ## ----plot-mle-sims-------------------------------------------------------
 r_prof %>% 
   subset(loglik==max(loglik)) %>% unlist() -> mle
-simulate(parus,params=mle,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
-  ggplot(mapping=aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
-  scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
-                     labels=c(`FALSE`="simulation",`TRUE`="data"))+
-  geom_line()
+
+parus %>%
+    simulate(params=mle,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
+    ggplot(mapping=aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
+    scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
+                       labels=c(`FALSE`="simulation",`TRUE`="data"))+
+    geom_line()+
+    theme_bw()
 
 ## ----parus-dprior--------------------------------------------------------
 parus %<>%
@@ -308,9 +319,10 @@ summary(traces[,c("r","K","sigma")])
 theta <- summary(traces)$quantiles[c("r","K","sigma","N.0"),'50%']
 simulate(parus,params=theta,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
   ggplot(mapping=aes(x=time,y=P,group=sim,alpha=(sim=="data")))+
-  scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
-                     labels=c(`FALSE`="simulation",`TRUE`="data"))+
-  geom_line()
+    scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
+                       labels=c(`FALSE`="simulation",`TRUE`="data"))+
+    geom_line()+
+    theme_bw()
 
 ## ----parus-filter-traj---------------------------------------------------
 chains %>% filter.traj() %>% melt() %>% 
@@ -322,10 +334,11 @@ chains %>% filter.traj() %>% melt() %>%
   mutate(qq=mapvalues(prob,from=c(0.025,0.5,0.975),to=c("lo","med","hi"))) %>%
   dcast(time~qq,value.var='q') %>% 
   ggplot()+
-  geom_ribbon(aes(x=time,ymin=lo,ymax=hi),alpha=0.5,fill='blue')+
-  geom_line(aes(x=time,y=med),color='blue')+
-  geom_point(data=parus.dat,aes(x=year,y=P),color='black',size=2)+
-  labs(y="N")
+    geom_ribbon(aes(x=time,ymin=lo,ymax=hi),alpha=0.5,fill='blue')+
+    geom_line(aes(x=time,y=med),color='blue')+
+    geom_point(data=parus.dat,aes(x=year,y=P),color='black',size=2)+
+    labs(y="N")+
+    theme_bw()
 
 ## ----stop-mpi,include=FALSE----------------------------------------------
 closeCluster(cl)
