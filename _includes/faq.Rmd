@@ -48,7 +48,7 @@ in an **R** session.
 If you use **pomp** in a publication, let us know!
 Send an email with the citation, and we'll include it in [the bibliography](http://kingaa.github.io/pomp/biblio.html).
 
-## I have an error message that I don't understand, and my question isn't answered below. How can I get help?
+## I have an error message that I don't understand, and my question isn't answered below. How can I get help? {#help-with-error-message}
 
 The pomp developers have a goal of replacing all unhelpful error messages with helpful ones.
 Please help us while we help you!
@@ -58,11 +58,11 @@ In doing so, please [follow the instructions in FAQ 1.1 above](#effective-reques
 
 # Installation problems
 
-## How do I install **pomp**?
+## How do I install **pomp**? {#install-pomp}
 
 See the [installation instructions](./install.html).
 
-## Why do I get an error message about `gfortran` when I try to install **pomp** from source on my Mac?
+## Why do I get an error message about `gfortran` when I try to install **pomp** from source on my Mac? {#mac-gfortran}
 
 Compilation of **pomp** requires a FORTRAN compiler, which has not been installed (or not installed properly) on your system.
 See the [installation instructions](http://kingaa.github.io/pomp/install.html#important-note-for-mac-os-x-users).
@@ -267,7 +267,7 @@ sir_na %>%
 In the above particle filter computation, notice that the effective sample size (ESS) is full, as it should be, when the missing data contribute no information.
 
 
-## I have t0 much less than t[1].  How do I deal with accumulator variables in this case?
+## I have t0 much less than t[1].  How do I deal with accumulator variables in this case?  {#accumulator-variables-howto}
 
 As described in the documentation (`?pomp`), **pomp** allows you to define "accumulator variables" that collect events occurring between observations.
 The example [above](#how-to-handle-missing-data) illustrates this.
@@ -392,7 +392,7 @@ bsflu %>%
   theme_bw()
 ```
 
-## What is the best measurement model to use?
+## What is the best measurement model to use? {#what-is-the-best-measurement-model}
 
 The answer to this question depends on the nature of the data.
 The measurement model is as much a part of the model as the latent process model. Accordingly, the choice of the measurement model is governed by the same considerations: Which model fits the data best? 
@@ -401,7 +401,7 @@ Which model has the greater predictive power?
 Nor is the choice of the measurement model without consequences for the choice of the latent process model.
 Despite the fact that one typically is much more interested in the latent process than in the measurement, if one does not pay careful attention to both, one risks making incorrect or suboptimal inference.
 
-# Error messages. {#error-messages}
+# Error messages and warnings. {#error-messages}
 
 ## I see an error about `dmeasure` returning non-finite values.  What does it mean? {#non-finite-dmeasure}
 
@@ -447,11 +447,11 @@ list()
 If it doesn't work, consult the [installation instructions](http://kingaa.github.io/pomp/install.html).
 
 
-## Why do I get an error message "Could not compile shared-object library" when I run `pomp`?
+## Why do I get an error message "Could not compile shared-object library" when I run `pomp`? {#could-not-compile}
 
 See [the preceding FAQ](#why-cant-i-run-csnippets).
 
-## I get the error message 'could not find symbol "recursive" in environment of the generic function' when I use the `c` operator to concatenate certain kinds of **pomp** structures. How do I fix this?
+## I get the error message 'could not find symbol "recursive" in environment of the generic function' when I use the `c` operator to concatenate certain kinds of **pomp** structures. How do I fix this?  {#could-not-find-symbol-recursive}
 
 This appears to arise from incompatibility between certain **R** installations and binary versions of the **pomp** package from CRAN.
 Try installing the latest version from the github site:
@@ -471,6 +471,19 @@ For more help with installation, see the [installation instructions](./install.h
 
 If these steps do not solve the problem, please [contact me via the issues page](https://github.com/kingaa/pomp/issues).
 
+## I get warnings about extrapolation in 'table_lookup'. What is this about? {#extrapolation-warnings}
+
+**pomp** incorporates time-varying covariates via a lookup table.
+Whenever your model needs the value of a covariate at a particular time, it uses the lookup table provided (via the `covar` and `tcovar` options of `pomp`), linearly interpolating if necessary.
+It can happen that the required computation depends on values of the covariates *outside* the time interval covered by the lookup table.
+When this happens, **pomp** does linear extrapolation, with a warning.
+
+This can be a problem if the linear extrapolation is not accurate.
+To avoid this, be sure to give values for the covariates over a time interval that covers the full range of relevant times, i.e., `t0` to the time of the last observation.
+
+Note that the ODE integration algorithms underlying `trajectory` can sometimes evaluate the covariates beyond the last observation time.
+To avoid warnings (and the potential inaccuracy they signal) in this case, it may be necessary to supply values for the covariates somewhat beyond the final observation time.
+
 # Interpreting results
 
 ## Is the likelihood `mif` gives me the same as the likelihood I get from `pfilter`? {#mif-vs-pfilter-likelihood}
@@ -486,7 +499,7 @@ Iterated filtering works by gradually reducing the magnitude of the perturbation
 To compute the likelihood at a point returned by `mif` or `mif2`, it is necessary to re-run the particle filter.
 By doing the latter several times, one can obtain a more accurate estimate of the likelihood along with a measure of the associated uncertainty.
 
-## Why does the likelihood seem to be decreasing, not increasing, with `mif2` iterations?
+## Why does the likelihood seem to be decreasing, not increasing, with `mif2` iterations? {#decreasing-mif-likelihood}
 
 In [Issue 27](https://github.com/kingaa/pomp/issues/27), @theresasophia asked this question.
 She provided codes for an estimation procedure based on `mif2`.
