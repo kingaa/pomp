@@ -81,3 +81,6 @@ dt, dd {
 dt {
     font-weight: bold;
 }
+#TOC, .menu {
+    list-style: none;
+}
