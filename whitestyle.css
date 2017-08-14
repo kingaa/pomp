@@ -81,6 +81,12 @@ dt, dd {
 dt {
     font-weight: bold;
 }
-#TOC, .menu {
+#TOC ul li {
     list-style: none;
+}
+.menu {
+    list-style: none;
+}
+.header-section-number:after, .toc-section-number:after {
+  content: ".";
 }

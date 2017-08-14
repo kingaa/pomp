@@ -7,12 +7,6 @@ output:
     number_sections: true
 ---
 
-<style type="text/css">
-.header-section-number:after {
-  content: ".";
-}
-</style>
-
 ```{r options,include=FALSE,cache=FALSE}
 require(knitr)
 require(pomp)
