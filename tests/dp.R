@@ -13,14 +13,13 @@ create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
     data <- data.frame(time = times, reports = NA)
     d <- cbind(death = c(1,0))
     v <- cbind(death = c(-1,1))
-    e <- c(0.03,0)
-    f <- function(j, x, t, params, ...){
-        params["mu"] * x[1]
-    }
     simulator <- match.arg(simulator)
     switch(
         simulator,
-        gillespie=gillespie.sim(rate.fun = f, v = v, d = d),
+        gillespie=gillespie.sim(
+            Csnippet("rate = mu * N;"),
+            v = v, d = d
+        ),
         euler=euler.sim(
             Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;"),
             delta.t=0.1
