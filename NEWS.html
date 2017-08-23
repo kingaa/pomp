@@ -15,6 +15,14 @@
 This problem has now been resolved.
 In addition, covariates are now guaranteed to be evaluated at least once per observation interval.
 </p>
+</li>
+<li><p> The new argument <code>hmax</code> to <code>gillespie.sim</code> allows the user to specify the maximum step size that will be taken before covariates are evaluated.
+</p>
+</li>
+<li><p> The K-leap method has been removed.
+Its accuracy is low on test problems and it is difficult to make it compatible with the pomp paradigm.
+In particular, it does not readily accomodate time-varying covariates in a sensible way, nor does it lend itself to simulations at pre-specified times.
+</p>
 </li></ul>
 
 
