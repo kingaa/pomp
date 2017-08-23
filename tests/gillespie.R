@@ -31,6 +31,33 @@ rate.fun <- function(j, x, t, params, covars, ...) {
     )
 }
 
+rate.fun.snip <- Csnippet("
+  double beta;
+  switch (j) {
+  case 1: 			// birth
+    rate = mu * N;
+    break;
+  case 2:			// susceptible death
+    rate = mu * S;
+    break;
+  case 3:			// infection
+    beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;
+    rate = (beta * I + iota) * S / N;
+    break;
+  case 4:			// infected death
+    rate = mu * I;
+    break;
+  case 5:			// recovery
+    rate = gamma * I;
+    break;
+  case 6:			// recovered death
+    rate = mu * R;
+    break;
+  default:
+    error(\"unrecognized event %d\",j);
+    break;
+  }")
+
 cbind(
     birth=c(1,0,0,1,0),
     sdeath=c(-1,0,0,-1,0),
@@ -94,11 +121,20 @@ gsir %>%
     simulate() %>%
     plot(main="Gillespie SIR, with zeroing")
 
+gsir %>%
+    pomp(rprocess=gillespie.sim(rate.fun=rate.fun.snip,
+                                v=Vmatrix,d=Dmatrix,hmax=1/52/10),
+         paramnames = names(params),
+         statenames = c("S","I","R", "N", "cases"),
+         ) %>%
+    simulate(seed=806867104L) -> gsir1
+
 pompExample(gillespie.sir)
 gsir2 <- simulate(gillespie.sir,params=coef(gsir),
                   times=time(gsir),t0=timezero(gsir),seed=806867104L)
 
 list(R=as.data.frame(gsir),
+     Csnippet=as.data.frame(gsir1),
      C=as.data.frame(gsir2)) %>%
     melt(id="time") %>%
     subset(variable=="reports") %>%
@@ -123,8 +159,8 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
     }
 }
 
-pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% 
-  simulate() %>% 
+pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>%
+  simulate() %>%
   plot(main="freeze at time 1")
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) {
