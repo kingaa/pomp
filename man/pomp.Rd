@@ -231,13 +231,14 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     To use \code{gillespie.sim}, furnish \preformatted{
       rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.
-    Here, \code{f} must be an \R function of the form \preformatted{
+    Here, \code{f} may again be either an \R function or a C snippet. \R functions should be of the form \preformatted{
       f(j, x, t, params, ...)}
     When \code{f} is called,
     the integer \code{j} will be the number of the elementary event (corresponding to the column the matrix \code{v}, see below),
     \code{x} will be a named numeric vector containing the value of the state process at time \code{t} and
     \code{params} is a named numeric vector containing parameters.
     \code{f} should return a single numerical value, representing the rate of that elementary event at that point in state space and time.
+    A C snippet should assign the correct value to a variable \code{rate} based on the value of \code{j}. The variable \code{rate} will exist in the context of the snippet, in addition to the states, parameters, covariates, observables, and the time \code{t}.
 
     Matrix \code{v} specifies the continuous-time Markov process in terms of its elementary events.
     It should have dimensions \code{nvar} x \code{nevent}, where \code{nvar} is the number of state variables and \code{nevent} is the number of elementary events.

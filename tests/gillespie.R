@@ -129,6 +129,14 @@ gsir %>%
          ) %>%
     simulate(seed=806867104L) -> gsir1
 
+gsir %>%
+    pomp(rprocess=gillespie.sim(rate.fun=rate.fun.snip,
+                                v=Vmatrix,d=Dmatrix,hmax=1/52/10),
+         paramnames = names(params),
+         statenames = c("S","I","R", "N", "cases"),
+         ) %>%
+    simulate(seed=806867104L) -> gsir1
+
 pompExample(gillespie.sir)
 gsir2 <- simulate(gillespie.sir,params=coef(gsir),
                   times=time(gsir),t0=timezero(gsir),seed=806867104L)
