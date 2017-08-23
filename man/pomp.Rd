@@ -199,7 +199,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The goal of such a C snippet is to replace the state variables with their new random values at the end of the time interval.
     Accordingly, each state variable should be over-written with its new value.
     In addition to the states, parameters, covariates (if any), and observables, the variables \code{t} and \code{dt}, containing respectively the time at the beginning of the step and the step's duration, will be defined in the context in which the C snippet is executed.
-    See below under \dQuote{General rules for C snippet writing} for more details.
+    See above under \dQuote{General rules for C snippet writing} for more details.
     Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 
     If \code{f} is given as an \R function, it should have prototype \preformatted{
@@ -229,13 +229,14 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     In this case, furnish \preformatted{
       rprocess = gillespie.sim(rate.fun = f, v, d, hmax = Inf)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.
-    Here, \code{f} must be an \R function of the form \preformatted{
+    Here, \code{f} may again be either an \R function or a C snippet. \R functions should be of the form \preformatted{
       f(j, x, t, params, ...)}
     When \code{f} is called,
     the integer \code{j} will be the number of the elementary event (corresponding to the columns of matrices \code{v} and \code{d}, see below),
     \code{x} will be a named numeric vector containing the value of the state process at time \code{t} and
     \code{params} is a named numeric vector containing parameters.
     \code{f} should return a single numerical value, representing the rate of that elementary event at that point in state space and time.
+    A C snippet should assign the correct value to a variable \code{rate} based on the value of \code{j}. The variable \code{rate} will exist in the context of the snippet, in addition to the states, parameters, covariates, observables, and the time \code{t}.
 
     Matrices \code{v} and \code{d} specify the continuous-time Markov process in terms of its elementary events.
     Each should have dimensions \code{nvar} x \code{nevent}, where \code{nvar} is the number of state variables and \code{nevent} is the number of elementary events.
