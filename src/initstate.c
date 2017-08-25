@@ -141,7 +141,6 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	PROTECT(Snames = GET_NAMES(x1)); nprotect++;
 	
 	if (!IS_NUMERIC(x1) || isNull(Snames)) {
-	  UNPROTECT(nprotect);
 	  errorcall(R_NilValue,"in 'init.state': user 'initializer' must return a named numeric vector");
 	}
 	
@@ -151,7 +150,6 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	
 	for (j = 0; j < nvar; j++) {
 	  if (midx[j]!=0) {
-	    UNPROTECT(nprotect);
 	    errorcall(R_NilValue,"in 'init.state': a state variable and a parameter share a single name: '%s'",CHARACTER_DATA(STRING_ELT(Snames,j)));
 	  }
 	}
