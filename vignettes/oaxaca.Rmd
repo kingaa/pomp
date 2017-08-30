@@ -1020,7 +1020,7 @@ This consists of **R** and C functions that give access to the basic model compo
 
 To see these in action, we examine the following ancient piece of **pomp** code.
 
-```{r}
+```{r purl=FALSE}
 pfilter <-  function (object, params, Np,
                       tol = 1e-17, warn = TRUE,
                       max.fail = 0,
