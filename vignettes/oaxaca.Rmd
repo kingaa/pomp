@@ -12,8 +12,8 @@ csl: ecology.csl
 \newcommand\prob[1]{\mathbb{P}\left[{#1}\right]}
 \newcommand\expect[1]{\mathbb{E}\left[{#1}\right]}
 \newcommand\var[1]{\mathrm{Var}\left[{#1}\right]}
-\newcommand\dist[2]{\mathrm{#1}\left(#2\right)}
 \newcommand\dlta[1]{{\Delta}{#1}}
+\newcommand\dist[2]{\mathrm{#1}\left(#2\right)}
 \newcommand\cp[2]{N_{{#1}{#2}}}
 \newcommand\BirthDeath{\bullet}
 \newcommand\lik{\mathcal{L}}
