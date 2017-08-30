@@ -1,5 +1,5 @@
 name: Aaron A. King
 markdown: kramdown
 excerpt_separator: "<!--more-->"
-exclude: [_assets]
+exclude: [_assets, vignettes/oaxaca.Rmd]
 encoding: utf-8
