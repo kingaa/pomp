@@ -12,7 +12,7 @@ RM = rm -f
 
 default: vignettes clean
 
-vignettes: getting_started.html getting_started.R pompjss.pdf pompjss.R mif2.html mif2.R He2010.html He2010.R nlf.html
+vignettes: getting_started.html getting_started.R pompjss.pdf pompjss.R mif2.html mif2.R He2010.html He2010.R nlf.html oaxaca.html oaxaca.R
 
 %.html: %.Rmd
 	PATH=/usr/lib/rstudio/bin/pandoc:$$PATH \
