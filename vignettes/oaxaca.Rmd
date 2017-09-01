@@ -1,5 +1,5 @@
 ---
-title: "Introduction to **pomp**: two perspectives"
+title: "Two perspectives on the **pomp** project"
 author: "Aaron A. King"
 output:
   html_document:
@@ -1120,6 +1120,8 @@ To go deeper, we'll go to the [source](https://github.com/kingaa/pomp/).
 ------------------------------
 
 ## [**R** codes for this document](oaxaca.R)
+## [**Rmarkdown** source code for this document](oaxaca.Rmd)
+## [**pomp** homepage](https://kingaa.github.io/pomp/)
 
 --------------------
 
