@@ -1,5 +1,6 @@
 ---
 title: "Two perspectives on the **pomp** project"
+subtitle: "An introduction to **pomp** for the CMO-BIRS Workshop \"New Perspectives on State Space Models\", Oaxaca, 28&nbsp;Aug.--1 Sept.&nbsp;2017"
 author: "Aaron A. King"
 output:
   html_document:
