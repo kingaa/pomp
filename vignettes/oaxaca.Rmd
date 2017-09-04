@@ -10,8 +10,6 @@ bibliography: oaxaca.bib
 csl: ecology.csl
 ---
 
-<!--
-{% raw %}
 \newcommand\prob[1]{\mathbb{P}\left[{#1}\right]}
 \newcommand\expect[1]{\mathbb{E}\left[{#1}\right]}
 \newcommand\var[1]{\mathrm{Var}\left[{#1}\right]}
@@ -23,8 +21,6 @@ csl: ecology.csl
 \newcommand\loglik{\ell}
 \newcommand\myequals{\hspace{0.5mm}{=}\hspace{0.5mm}}
 \newcommand\given{{\,\vert\,}}
-{% endraw %}
--->
 
 [Licensed under the Creative Commons Attribution-NonCommercial license](http://creativecommons.org/licenses/by-nc/4.0/).
 Please share and remix noncommercially, mentioning its origin.  
@@ -206,7 +202,7 @@ for all $n=1,\dots,N$.
 ----------------
 
 
-## POMP models viewed algorithmically
+### POMP models viewed algorithmically
 
 To think algorithmically, we define some function calls:
 
@@ -223,7 +219,7 @@ To think algorithmically, we define some function calls:
 -------------
 
 
-### The **pomp** package for POMP models
+#### The **pomp** package for POMP models
 
 * **pomp** is an  **R**  package for data analysis using partially observed Markov process (POMP) models.
 
@@ -234,7 +230,7 @@ upper case POMP is a class of models.
  
 ------------
 
-### What does it mean for methodology to be __simulation-based__?
+#### What does it mean for methodology to be __simulation-based__?
 
 * Simulating random processes is often much easier than evaluating their transition probabilities.
 
@@ -250,7 +246,7 @@ upper case POMP is a class of models.
 
 ------------
 
-### Algorithms currently implemented in **pomp**
+#### Algorithms currently implemented in **pomp**
 
 As of v. 1.14.
 
@@ -622,7 +618,7 @@ The critical feature from the inference point of view, however, is that no relat
 
 Under the above assumptions, the number of individuals leaving any of the classes by all available routes over a particular time interval is a multinomial process.
 For example, if $\dlta{\cp{S}{I}}$ and $\dlta{\cp{S}{\BirthDeath}}$ are the numbers of S individuals acquiring infection and dying, respectively, over the Euler simulation interval $[t,t+\dlta{t})$, then
-$$(\dlta{\cp{S}{I}},\dlta{\cp{S}{}},S-\dlta{\cp{S}{I}}-\dlta{\cp{S}{}})\sim\mathrm{Multinom}\left(S(t);p_{SI},p_{S\BirthDeath},1-p_{SI}-p_{S\BirthDeath}\right),$$
+$$(\dlta{\cp{S}{I}},\dlta{\cp{S}{}},S-\dlta{\cp{S}{I}}-\dlta{\cp{S}{\BirthDeath}})\sim\mathrm{Multinom}\left(S(t);p_{SI},p_{S\BirthDeath},1-p_{SI}-p_{S\BirthDeath}\right),$$
 where
 $$\begin{aligned}
     p_{SI} &= \frac{\lambda(t)}{\lambda(t)+\mu}\,\left(1-e^{-(\lambda(t)+\mu)\,\dlta{t}}\right),\\
@@ -643,7 +639,7 @@ sir.step <- "
   double P;
   P = S + I + R;
   rate[0] = mu * P;       // birth
-  rate[1] = beta * I / P; // transmission
+  rate[1] = Beta * I / P; // transmission
   rate[2] = mu;           // death from S
   rate[3] = gamma;        // recovery
   rate[4] = mu;           // death from I
@@ -693,7 +689,7 @@ sir1 <- pomp(
   rmeasure = Csnippet(rmeas), 
   rprocess = euler.sim(step.fun = Csnippet(sir.step), delta.t = 1/52/20),
   statenames = c("S", "I", "R", "H"),
-  paramnames = c("gamma", "mu", "theta", "beta", "popsize",
+  paramnames = c("gamma", "mu", "theta", "Beta", "popsize",
                  "rho", "S.0", "I.0", "R.0"), 
   zeronames = "H",
   initializer = Csnippet("
@@ -703,7 +699,7 @@ sir1 <- pomp(
     R = nearbyint(popsize * R_0 / sum);
     H = 0;
     "),
-  params = c(popsize = 500000, beta = 400, gamma = 26,
+  params = c(popsize = 500000, Beta = 400, gamma = 26,
              mu = 1/50, rho = 0.1, theta = 100, S.0 = 26/400,
              I.0 = 0.002, R.0 = 1))
 
@@ -1123,9 +1119,11 @@ To go deeper, we'll go to the [source](https://github.com/kingaa/pomp/).
 
 ------------------------------
 
-## [**R** codes for this document](oaxaca.R)
-## [**Rmarkdown** source code for this document](oaxaca.Rmd)
-## [**pomp** homepage](https://kingaa.github.io/pomp/)
+## Links
+
+### [**R** codes for this document]((https://github.com/kingaa/pomp/blob/gh-pages/vignettes/oaxaca.R)
+### [**Rmarkdown** source code for this document](https://github.com/kingaa/pomp/blob/gh-pages/vignettes/oaxaca.Rmd)
+### [**pomp** homepage](https://kingaa.github.io/pomp/)
 
 --------------------
 

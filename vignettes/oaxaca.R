@@ -132,7 +132,7 @@ sir.step <- "
   double P;
   P = S + I + R;
   rate[0] = mu * P;       // birth
-  rate[1] = beta * I / P; // transmission
+  rate[1] = Beta * I / P; // transmission
   rate[2] = mu;           // death from S
   rate[3] = gamma;        // recovery
   rate[4] = mu;           // death from I
@@ -155,7 +155,7 @@ sir1 <- pomp(
   rmeasure = Csnippet(rmeas), 
   rprocess = euler.sim(step.fun = Csnippet(sir.step), delta.t = 1/52/20),
   statenames = c("S", "I", "R", "H"),
-  paramnames = c("gamma", "mu", "theta", "beta", "popsize",
+  paramnames = c("gamma", "mu", "theta", "Beta", "popsize",
                  "rho", "S.0", "I.0", "R.0"), 
   zeronames = "H",
   initializer = Csnippet("
@@ -165,7 +165,7 @@ sir1 <- pomp(
     R = nearbyint(popsize * R_0 / sum);
     H = 0;
     "),
-  params = c(popsize = 500000, beta = 400, gamma = 26,
+  params = c(popsize = 500000, Beta = 400, gamma = 26,
              mu = 1/50, rho = 0.1, theta = 100, S.0 = 26/400,
              I.0 = 0.002, R.0 = 1))
 
