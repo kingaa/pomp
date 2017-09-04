@@ -15,9 +15,6 @@
   R: vignettes/He2010.R
   data: vignettes/twentycities.rda
 
-- title: More <code>pomp</code> examples
-  html: https://github.com/kingaa/pompExamples
-
 - title: Simulation-based Inference for Epidemiological Dynamics<br/> (a short course)
   html: https://kingaa.github.io/sbied/
 
@@ -32,6 +29,9 @@
 
 - title: Frequently Asked Questions
   html: FAQ.html
+
+- title: More <strong>pomp</strong> examples
+  html: https://github.com/kingaa/pompExamples
 
 - title: Pimp my pomp
   html: https://github.com/kingaa/pomp/wiki/pimp-my-pomp
