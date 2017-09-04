@@ -318,7 +318,7 @@ Y_t = Y_t, \qquad \theta = (r, c, \phi, N_0)
 \end{gathered}$$
 
 
------
+----------
 
 #### Putting the Ricker model into **pomp**.
 
@@ -356,6 +356,8 @@ Plot the new `pomp` object:
 plot(parus)
 ```
 
+----------
+
 ##### Adding in the process model simulator and initializer
 
 We can add the stochastic Ricker model to `parus` by writing a procedure that simulates one realization of the stochastic process, from an arbitary time $t$ to $t+1$, given arbitrary states and parameters.
@@ -391,6 +393,8 @@ sim <- simulate(parus, params=c(N_0=1,r=12,c=1,sigma=0.5),
 
 plot(N~time,data=sim,type='o')
 ```
+
+----------
 
 ##### Adding in the measurement model and parameters
 
@@ -441,6 +445,7 @@ ggplot(data=sims,
   facet_wrap(~sim,ncol=1,scales="free_y")
 ```
 
+----------
 
 #### Working with the Ricker model in **pomp**.
 
@@ -575,6 +580,8 @@ where $\dlta{\cp{S}{I}}(t_1,t_2)$ is the true incidence (the accumulated number 
 $$\expect{C(t_1,t_2)\given \dlta{\cp{S}{I}}(t_1,t_2)=H}=\rho\,H$$ and 
 $$\var{C(t_1,t_2)\given \dlta{\cp{S}{I}}(t_1,t_2)=H}=\rho\,H+\frac{\rho^2\,H^2}{\theta}.$$
 The fact that the observed data are linked to an accumulation, as opposed to an instantaneous value, introduces a slight complication, which we discuss below.
+
+----------
 
 #### Implementing the SIR model in **pomp**
 
@@ -717,6 +724,8 @@ plot(sir1,mar=c(0,5,2,0))
 options(ops)
 ```
 
+----------
+
 #### More model complexity: time-dependence, covariates, extra-demographic stochasticity
 
 To illustrate the flexibility afforded by **pomp**'s plug-and-play methods, let us add a bit of real-world complexity to the simple SIR model.
@@ -857,6 +866,8 @@ ll <- sapply(pf,logLik)
 logmeanexp(ll,se=TRUE)
 ```
 
+----------
+
 #### Iterated filtering
 
 Although our filtering is just barely possible, we can use iterated filtering to rapidly improve the likelihood.
@@ -878,6 +889,8 @@ pf <- replicate(5, pfilter(mf,Np=1000))
 ll <- sapply(pf,logLik)
 logmeanexp(ll,se=TRUE)
 ```
+
+----------
 
 #### Diagnostics
 
@@ -914,6 +927,8 @@ A variety of useful probes (many suggested by @Wood2010) are provided.
 It is also easy to apply custom probes.
 
 
+----------
+
 #### Probe-matching via synthetic likelihood
 
 A reduced-information approach to parameter estimation is afforded by the synthetic likelihood of @Wood2010.
@@ -933,6 +948,8 @@ summary(pm)
 In the above, one has a choice of optimization algorithm (via the `method` argument).
 
 One can also construct a self-contained objective function via a call to `probe.match.objfun` and use this in an arbitrary optimization routine. 
+
+----------
 
 #### Particle MCMC
 
