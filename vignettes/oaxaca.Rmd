@@ -10,6 +10,8 @@ bibliography: oaxaca.bib
 csl: ecology.csl
 ---
 
+<!--
+{% raw %}
 \newcommand\prob[1]{\mathbb{P}\left[{#1}\right]}
 \newcommand\expect[1]{\mathbb{E}\left[{#1}\right]}
 \newcommand\var[1]{\mathrm{Var}\left[{#1}\right]}
@@ -21,7 +23,8 @@ csl: ecology.csl
 \newcommand\loglik{\ell}
 \newcommand\myequals{\hspace{0.5mm}{=}\hspace{0.5mm}}
 \newcommand\given{{\,\vert\,}}
-
+{% endraw %}
+-->
 
 [Licensed under the Creative Commons Attribution-NonCommercial license](http://creativecommons.org/licenses/by-nc/4.0/).
 Please share and remix noncommercially, mentioning its origin.  

@@ -24,7 +24,7 @@
 - title: Model-based Inference in Ecology and Epidemiology (a short course)
   html: https://kingaa.github.io/short-course/
 
-- title: Two perspectives on the **pomp** project
+- title: Two perspectives on the <strong>pomp</strong> project
   html: vignettes/oaxaca.html
 
 - title: <strong>pomp</strong> package manual
