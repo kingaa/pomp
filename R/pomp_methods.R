@@ -24,6 +24,8 @@ setAs(
 
 as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 
+setIs("pomp","data.frame")
+
 ## parameter transformations
 partrans.internal <- function (object, params,
                                dir = c("fromEstimationScale",
