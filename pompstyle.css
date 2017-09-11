@@ -15,7 +15,7 @@ body {
 }
 
 .emph {
-    color: #3333ff; 
+    color: #cc3333; 
     font-weight: bold;
 }
 
@@ -61,7 +61,7 @@ a:link, a:visited {
     text-decoration: none;
 }
 a:hover, a:active {
-    color: #ff3333;
+    color: #cc3333;
     text-decoration: none;
 }
 thead {

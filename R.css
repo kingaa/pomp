@@ -1,62 +1,42 @@
 body {
-    background: white;
-    color: black;
+    color: #000000;
+    background: #ffffff;
+    font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
+    max-width: 800px;
+    width: 800px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
-a:link {
-    background: white;
-    color: blue;
+a:link, a:visited {
+    color: #0000ff;
+    text-decoration: none;
 }
 
-a:visited {
-    background: white;
-    color: rgb(50%, 0%, 50%);
+a:hover, a:active {
+    color: #ff3333;
+    text-decoration: none;
 }
 
+h1, h2, h3, h4 {
+    font-family: "DejaVu Sans", "Arial Sans", Arial, sans;
+    font-weight: bold;
+    font-variant: normal;
+}
 h1 {
-    background: white;
-    color: rgb(55%, 55%, 55%);
-    font-family: monospace;
-    font-size: x-large;
-    text-align: center;
+    font-size: 1.5em;
 }
-
 h2 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
-    font-size: large;
-    text-align: center;
+    font-size: 1.375em;
 }
-
 h3 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
-    font-size: large;
+    font-size: 1.25em;
 }
-
 h4 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
-    font-style: italic;
-    font-size: large;
+    font-size: 1.125em;
 }
-
-h5 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
-}
-
-h6 {
-    background: white;
-    color: rgb(40%, 40%, 40%);
-    font-family: monospace;
-    font-style: italic;
-}
-		
 img.toplogo {
     width: 4em;
     vertical-align: middle;
