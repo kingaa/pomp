@@ -5,16 +5,17 @@ title: pomp user guides and tutorials
 <h2>User guides and tutorials</h2>
 
 <table>
-{% for doc in site.data.vignettes %}
-<tr>
-<td style="padding: 5px;">{{ doc.title }}</td>
-<td>&nbsp;&nbsp;&nbsp;</td>
-<td style="padding: 5px; width: 30%;">
-{% if doc.pdf %}<a target="_blank" href="{{ doc.pdf }}">(PDF)</a>
-{% endif %}{% if doc.html %}<a target="_blank" href="{{ doc.html }}">(HTML)</a>
-{% endif %}{% if doc.R %}<a target="_blank" href="https://raw.githubusercontent.com/kingaa/pomp/gh-pages/{{ doc.R }}">(R)</a>
-{% endif %}{% if doc.data %}<a href="{{ doc.data }}">(data)</a>
-{% endif %}</td>
-</tr>
-{% endfor %}
+  {% for doc in site.data.vignettes %}
+  <tr>
+    <td style="padding: 5px; width: 70%;">{{ doc.title }}</td>
+    <td>&nbsp;&nbsp;&nbsp;</td>
+    <td style="padding: 5px; width: 20%;">
+      {% if doc.pdf %}<a target="_blank" href="{{ doc.pdf }}">(PDF)</a>
+      {% endif %}{% if doc.html %}<a target="_blank" href="{{ doc.html }}">(HTML)</a>
+      {% endif %}{% if doc.R %}<a target="_blank" href="https://raw.githubusercontent.com/kingaa/pomp/gh-pages/{{ doc.R }}">(R)</a>
+      {% endif %}{% if doc.data %}<a href="{{ doc.data }}">(data)</a>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
 </table>

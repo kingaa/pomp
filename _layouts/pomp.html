@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta name="keywords" content="stochastic dynamics, inference, hidden Markov model, state space model, pomp, R" />
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="stochastic dynamics, inference, hidden Markov model, state space model, pomp, R" />
+    <title>{{ page.title }}</title>
+    <link href="whitestyle.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="header">
 
-  <title>{{ page.title }}</title>
-  <link href="whitestyle.css" rel="stylesheet" type="text/css" />
-</head>
+      <h2><span class="emph">pomp</span>:<br/>
+	statistical inference for <br/>
+	<span class="emph">p</span>artially-<span class="emph">o</span>bserved&nbsp;<span class="emph">M</span>arkov&nbsp;<span class="emph">p</span>rocesses
+      </h2>
+    </div>
+    <div id="menu">
+      {% include menu.html %}
+    </div>    
 
-<body>
-  <table style="max-width: 800; width: 80%; text-align: left; border-style: none; padding: 10px;">
-    <tr>
-      <td>
-	{% include menu.html %}
-      </td>
-    </tr>
+    <div id="content">
 
-    <tr>
-      <td>{{ content }}</td>
-    </tr>
+      {{ content }}
 
-    <tr><td><div style="text-align: right;"><a href="#top">Top&nbsp;&nbsp;&nbsp;&nbsp;</a></div></td></tr>
+      <div id="toplink">
+	<a href="#top">Top&nbsp;&nbsp;&nbsp;&nbsp;</a>
+      </div>
 
-    <tr>
-      <td>
+      <div id="thanks">
 	{% include thanks.html %}
-      </td>
-    </tr>
-
-  </table>
-</body>
+      </div>
+    </div>
+  </body>
 </html>
