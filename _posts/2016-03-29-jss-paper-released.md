@@ -10,4 +10,4 @@ Its aim is to give an introduction **pomp** both as a scientific tool and as a p
 Please cite this paper (do `citation("pomp")` in an **R** session to see how) when you use the package.
 <!--more-->
 Coinciding with the paper's release is a [new version of **pomp**](https://cran.r-project.org/web/packages/pomp/) which is on CRAN now.
-See the package [**NEWS**](http://kingaa.github.io/pomp/NEWS.html) for details on the new release.
+See the package [**NEWS**](https://kingaa.github.io/pomp/NEWS.html) for details on the new release.
