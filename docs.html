@@ -7,9 +7,9 @@ title: pomp user guides and tutorials
 <table>
   {% for doc in site.data.vignettes %}
   <tr>
-    <td style="padding: 5px; width: 70%;">{{ doc.title }}</td>
+    <td style="padding: 5px; width: 60%;">{{ doc.title }}</td>
     <td>&nbsp;&nbsp;&nbsp;</td>
-    <td style="padding: 5px; width: 20%;">
+    <td style="padding: 5px; width: 30%;">
       {% if doc.pdf %}<a target="_blank" href="{{ doc.pdf }}">(PDF)</a>
       {% endif %}{% if doc.html %}<a target="_blank" href="{{ doc.html }}">(HTML)</a>
       {% endif %}{% if doc.R %}<a target="_blank" href="https://raw.githubusercontent.com/kingaa/pomp/gh-pages/{{ doc.R }}">(R)</a>
