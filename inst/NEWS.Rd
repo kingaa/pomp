@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.14.1}{
+  \itemize{
+    \item Improved tests.
+    \item Fixed bugs emerging in R-devel.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.13.4}{
   \itemize{
     \item Eamon O'Dea pointed out that the bug in \code{gillespie.sim}, addressed by version 1.12.3, was not completely fixed.
