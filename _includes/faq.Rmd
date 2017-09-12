@@ -27,7 +27,7 @@ if not, check to see if the problem you have is solved by upgrading to the lates
 Read through the [Frequently Asked Questions](./FAQ.html) to see if the answer to your question is there.
 
 If you still have a problem, then submit a request for help via the [Issues page](https://github.com/kingaa/pomp/issues) if possible or to Aaron King (kingaa at umich dot edu) if necessary.
-Include in your request---at a minimum---the code that you ran that produced the error, together with a transcript of the **R** session that gave the errors.
+***Include in your request---at a minimum---the code that you ran that produced the error, together with a transcript of the **R** session that gave the errors.***
 Make sure to run `sessionInfo()` in your session, so that I can see what version of **pomp** you are using, what version of **R**, what kind of machine you have, etc.
 Better still, construct a minimal example that will reproduce the error: this allows for the most efficient solution of problems.
 
