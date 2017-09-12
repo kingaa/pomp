@@ -23,7 +23,7 @@ stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rds"))
 stew({y2 <- runif(4)},file=file.path(tempdir(),"stew2.rds"),seed=113848)
 print(stew({y3 <- runif(4)},file=file.path(tempdir(),"stew1.rds")))
 stopifnot(all.equal(y1,y2))
-try(stopifnot(all.equal(y1,y3)))
+stopifnot(!exists("y3"))
 
 pompExample(gillespie.sir)
 simulate(gillespie.sir,seed=1347484107L) -> x

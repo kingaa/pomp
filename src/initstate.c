@@ -150,7 +150,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	
 	for (j = 0; j < nvar; j++) {
 	  if (midx[j]!=0) {
-	    errorcall(R_NilValue,"in 'init.state': a state variable and a parameter share a single name: '%s'",CHARACTER_DATA(STRING_ELT(Snames,j)));
+	    errorcall(R_NilValue,"in 'init.state': a state variable and a parameter share a single name: '%s'",CHAR(STRING_ELT(Snames,j)));
 	  }
 	}
 	

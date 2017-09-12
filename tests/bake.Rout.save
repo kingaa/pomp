@@ -55,8 +55,7 @@ attr(,"system.time")
 > print(stew({y3 <- runif(4)},file=file.path(tempdir(),"stew1.rds")))
 [1] "y1"
 > stopifnot(all.equal(y1,y2))
-> try(stopifnot(all.equal(y1,y3)))
-Error in mode(current) : object 'y3' not found
+> stopifnot(!exists("y3"))
 > 
 > pompExample(gillespie.sir)
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘comp.names’,‘ic.names’,‘nbasis’,‘degree’,‘period’
