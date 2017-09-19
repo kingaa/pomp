@@ -250,9 +250,9 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     To use \code{gillespie.snip.sim}, furnish \preformatted{
       rprocess = gillespie.snip.sim(..., hmax = Inf)}
     to \code{pomp}, where \code{...} provides a set of arguments that allow a suitable C snippet to be constructed.
-    Each argument should have a unique name and be a list whose first element is a string and whose second element is a named integer vector.
+    Each argument should have a unique name and be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
     Each argument provides the details for a single elementary event.
-    The string contains C code that should assign the variable rate to the correct value for the event.
+    The string or snippet contains C code that should assign the variable rate to the correct value for the event.
     The variable \code{rate} will exist in the context of the code, in addition to the states, parameters, covariates, observables, and the time \code{t}.
     The elements of the integer vector are the stochiometric coefficients of each of the state variables in the event.
     Thus the set of names of the state variables should be identical to the set of the names of the integer vector.

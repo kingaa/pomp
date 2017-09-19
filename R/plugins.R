@@ -105,8 +105,21 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
 gillespie.snip.sim <- function(..., hmax = Inf){
   args <- list(...)
   if (anyDuplicated(names(args))) {
-    stop("arguments must have unique names",call.=FALSE)
+    stop("event arguments must have unique names",call.=FALSE)
   }
+  code <- lapply(args, "[[", 1)
+  stoch <- lapply(args, "[[", 2)
+  codecheck <- function(x) {
+    if(!inherits(x, what =c("Csnippet", "character"))) {
+      stop("the first list element of each event argument should be a Csnippet or",
+           " string", call.=FALSE)
+    }
+    if (length(x) != 1){
+      stop("the length of the first list element of each event argument should",
+           " be equal to 1", call.=FALSE)
+    }
+  }
+  lapply(code, codecheck)
 }
 
 onestep.dens <- function (dens.fun, PACKAGE) {
