@@ -231,14 +231,13 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     To use \code{gillespie.sim}, furnish \preformatted{
       rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.
-    Here, \code{f} may again be either an \R function or a C snippet. \R functions should be of the form \preformatted{
+    Here, \code{f} must be an \R function of the form \preformatted{
       f(j, x, t, params, ...)}
     When \code{f} is called,
     the integer \code{j} will be the number of the elementary event (corresponding to the column the matrix \code{v}, see below),
     \code{x} will be a named numeric vector containing the value of the state process at time \code{t} and
     \code{params} is a named numeric vector containing parameters.
     \code{f} should return a single numerical value, representing the rate of that elementary event at that point in state space and time.
-    A C snippet should assign the correct value to a variable \code{rate} based on the value of \code{j}. The variable \code{rate} will exist in the context of the snippet, in addition to the states, parameters, covariates, observables, and the time \code{t}.
 
     Matrix \code{v} specifies the continuous-time Markov process in terms of its elementary events.
     It should have dimensions \code{nvar} x \code{nevent}, where \code{nvar} is the number of state variables and \code{nevent} is the number of elementary events.
@@ -251,9 +250,9 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     To use \code{gillespie.snip.sim}, furnish \preformatted{
       rprocess = gillespie.snip.sim(..., hmax = Inf)}
     to \code{pomp}, where \code{...} provides a set of arguments that allow a suitable C snippet to be constructed.
-    Each argument should have a unique name and be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
+    Each argument should have a unique name and be a list whose first element is a string and whose second element is a named integer vector.
     Each argument provides the details for a single elementary event.
-    The string or snippet contains C code that should assign the variable rate to the correct value for the event.
+    The string contains C code that should assign the variable rate to the correct value for the event.
     The variable \code{rate} will exist in the context of the code, in addition to the states, parameters, covariates, observables, and the time \code{t}.
     The elements of the integer vector are the stochiometric coefficients of each of the state variables in the event.
     Thus the set of names of the state variables should be identical to the set of the names of the integer vector.
@@ -304,7 +303,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Accordingly, each observable should be assigned a new value.
     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
   }
-  General rules for writing C snippets are provided above.
+  General rules for writing C snippets are provided below.
   The tutorials on the \href{https://kingaa.github.io/pomp}{package website} give examples as well.
 
   It is also possible, though far less efficient, to specify \code{rmeasure} using an \R function.
