@@ -2,7 +2,7 @@ useDynLib(pomp,.registration=TRUE)
 
 import(methods)
 importFrom(graphics,plot,par,abline,pairs,matplot,box,axis,mtext,
-           points,polygon,lines,plot.default,legend,hist,rect,text,title)	
+           points,polygon,lines,plot.default,legend,hist,rect,text,title)
 importFrom(utils,head)
 importFrom(grDevices,rgb,dev.interactive)
 importFrom(stats,simulate,time,coef,logLik,window,fitted,
@@ -70,6 +70,7 @@ export(
     onestep.sim,
     onestep.dens,
     gillespie.sim,
+    gillespie.snip.sim,
     mvn.diag.rw,mvn.rw,
     mvn.rw.adaptive,
     rw.sd,

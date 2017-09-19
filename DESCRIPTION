@@ -46,3 +46,4 @@ Collate: aaa.R authors.R bake.R generics.R eulermultinom.R
 	 probe.R probe_match.R basic_probes.R spect.R spect_match.R
 	 abc.R abc_methods.R covmat.R
 	 example.R
+RoxygenNote: 6.0.1
