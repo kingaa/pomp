@@ -1,0 +1,149 @@
+
+R version 3.4.1 (2017-06-30) -- "Single Candle"
+Copyright (C) 2017 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> library(magrittr)
+> library(reshape2)
+> library(plyr)
+> library(ggplot2)
+> library(grid)
+> 
+> png(filename='sir2-%02d.png',res=100)
+> 
+> Csnippet("
++   double m;
++   m = pop /(S0+I10+I20+R0);
++   S = nearbyint(m*S0);
++   I1 = nearbyint(m*I10);
++   I2 = nearbyint(m*I20);
++   R = nearbyint(m*R0);
++   H = 0;
++ ") -> rinit
+> 
+> Csnippet("
++   int nrate = 9;
++   double rate[nrate];
++   double trans[nrate];
++   double beta;
++   double dW;
++ 
++   beta = Beta*(1+eps*sin(M_2PI*t));
++   dW = rgammawn(sigma,dt);
++ 
++   rate[0] = mu*pop;
++   rate[1] = (iota+beta*I1)/pop*dW/dt;
++   rate[2] = (iota+beta*I2)/pop*dW/dt;
++   rate[3] = mu;
++   rate[4] = gamma1;
++   rate[5] = mu;
++   rate[6] = gamma2;
++   rate[7] = mu;
++   rate[8] = mu;
++ 
++   trans[0] = rpois(rate[0]*dt);	// births are Poisson
++   reulermultinom(3,S,&rate[1],dt,&trans[1]);
++   reulermultinom(2,I1,&rate[4],dt,&trans[4]);
++   reulermultinom(2,I2,&rate[6],dt,&trans[6]);
++   reulermultinom(1,R,&rate[8],dt,&trans[8]);
++ 
++   // balance the equations
++   S  += trans[0]-trans[1]-trans[2]-trans[3];
++   I1 += trans[1]-trans[4]-trans[5];
++   I2 += trans[2]-trans[6]-trans[7];
++   R  += trans[4]+trans[6]-trans[8];
++   H  += trans[1]+trans[2];
++ ") -> rproc
+> 
+> Csnippet("
++   cases = rnbinom_mu(1/tau,rho*H);
++   s1 = rbinom(cases,I1/(I1+I2));
++   s2 = cases-s1;
++ ") -> rmeas
+> 
+> Csnippet("
++   double l[2], i[2], s[2];
++   i[0] = I1; i[1] = I2;
++   s[0] = s1; s[1] = s2;
++   l[0] = dnbinom_mu(cases,1/tau,rho*H,give_log);
++   l[1] = dmultinom(2,i,s,give_log);
++   lik = (give_log) ? l[0]+l[1] : l[0]*l[1];
++ ") -> dmeas
+> 
+> data.frame(
++     time=seq(0,2,by=1/52),
++     cases=NA,
++     s1=NA,
++     s2=NA
++     ) %>%
++     pomp(
++         times="time",t0=-1/52,
++         initializer=rinit,
++         rprocess=euler.sim(rproc,delta.t=1/52/10),
++         rmeasure=rmeas,dmeasure=dmeas,
++         statenames=c("S","I1","I2","R","H"),
++         paramnames=c("Beta","eps","sigma",
++                      "gamma1","gamma2","rho","tau",
++                      "iota","mu","pop",
++                      "S0","I10","I20","R0"),
++         zeronames="H",
++         params=c(Beta=400,eps=0.2,sigma=0.01,
++                  gamma1=50,gamma2=48,rho=0.4,tau=0.1,
++                  mu=0.05,pop=1e7,iota=20,
++                  S0=0.100,I10=0.002,I20=0.0001,R0=0.9)
++         ) -> sir2
+> 
+> simulate(sir2,seed=1557380195L) -> sir2
+> freeze(pfilter(sir2,Np=1000),seed=1274726073L) -> pf
+> 
+> logLik(pf)
+[1] -1192.396
+> 
+> sir2 %>%
++     as.data.frame() %>%
++     melt(id="time") %>%
++     subset(variable %in% c("s1","s2")) %>%
++     mutate(variable=mapvalues(variable,
++                               from=c("s1","s2"),
++                               to=c("strain 1","strain 2"))) %>%
++     ggplot(aes(x=time,y=value,fill=variable))+
++     geom_area()+
++     labs(title="two-strain model",y="cases",fill="")+
++     theme_bw()+
++     theme(legend.position=c(0.3,0.7)) -> pl1
+> 
+> sir2 %>%
++     as.data.frame() %>%
++     mutate(s1=s1/cases,s2=s2/cases) %>%
++     melt(id="time") %>%
++     subset(variable %in% c("s1","s2")) %>%
++     ggplot(aes(x=time,y=value,fill=variable))+
++     geom_area()+
++     guides(fill=FALSE)+
++     theme_bw()+
++     labs(y="fraction") -> pl2
+> 
+> print(pl1,vp=viewport(0.5,0.75,1,0.5))
+> print(pl2,vp=viewport(0.5,0.25,1,0.5))
+> 
+> plot(pf,main="two-strain model particle filter")
+> 
+> dev.off()
+null device 
+          1 
+> 
