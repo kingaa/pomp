@@ -51,8 +51,8 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 	  // Therefore, we must use some trickery to avoid the ISO C proscription of
 	  //     (void *) <-> (function *) conversion.
 	  const char *fname, *pkg;
-	  fname = (const char *) CHARACTER_DATA(STRING_ELT(nf,0));
-	  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
+	  fname = (const char *) CHAR(STRING_ELT(nf,0));
+	  pkg = (const char *) CHAR(STRING_ELT(pack,0));
 #if (R_VERSION < 197632) // before 3.4.0
 	  // This is cadged from 'R_MakeExternalPtrFn'.
 	  union {void *p; DL_FUNC fn;} trick;
@@ -84,7 +84,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 
   case undef: default:
     {
-      const char *purp = (const char *) CHARACTER_DATA(STRING_ELT(GET_SLOT(pfun,install("purpose")),0));
+      const char *purp = (const char *) CHAR(STRING_ELT(GET_SLOT(pfun,install("purpose")),0));
 
       errorcall(R_NilValue,"operation cannot be completed: %s has not been specified",purp);
     }
@@ -98,7 +98,7 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
 SEXP load_stack_incr (SEXP pack) {
   const char *pkg;
   void (*ff)(void);
-  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
+  pkg = (const char *) CHAR(STRING_ELT(pack,0));
   ff = (void (*)(void)) R_GetCCallable(pkg,"__pomp_load_stack_incr");
   ff();
   return R_NilValue;
@@ -109,7 +109,7 @@ SEXP load_stack_decr (SEXP pack) {
   const char *pkg;
   void (*ff)(int *);
   PROTECT(s = NEW_INTEGER(1));
-  pkg = (const char *) CHARACTER_DATA(STRING_ELT(pack,0));
+  pkg = (const char *) CHAR(STRING_ELT(pack,0));
   ff = (void (*)(int *)) R_GetCCallable(pkg,"__pomp_load_stack_decr");
   ff(INTEGER(s));
   if (*(INTEGER(s)) < 0) errorcall(R_NilValue,"impossible!");

@@ -158,7 +158,6 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 
   case Rfun:                       // R function
     {
-      int nprotect = 0;
       SEXP cvec, tvec, xvec, pvec;
       SEXP fcall, rho;
       PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
@@ -186,15 +185,12 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 		    REAL(tvec),REAL(xvec),REAL(pvec),REAL(cvec),
 		    ntimes,nvars,npars,nzeros,nreps,
 		    &covariate_table,zidx,Snames,fcall,rho);
-
-      UNPROTECT(nprotect);
     }
 
     break;
 
   case native:                       // native skeleton
     {
-      int nprotect = 0;
       int *sidx, *pidx, *cidx;
       pomp_skeleton *ff;
       *((void **) (&ff)) = R_ExternalPtrAddr(fn);
@@ -207,7 +203,6 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 			 ntimes,nvars,npars,ncovars,nzeros,nreps,
 			 sidx,pidx,cidx,zidx,&covariate_table,ff,args);
 
-      UNPROTECT(nprotect);
     }
 
     break;

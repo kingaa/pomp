@@ -156,13 +156,13 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
 	PROTECT(xx = makearray(2,INTEGER(statedim)));
 	setrownames(xx,statenames,2);
 	SET_SLOT(po,install("states"),xx);
-	UNPROTECT(1);
 
 	// create an array for the 'data' slot
 	PROTECT(yy = makearray(2,INTEGER(obsdim)));
 	setrownames(yy,obsnames,2);
 	SET_SLOT(po,install("data"),yy);
-	UNPROTECT(1);
+
+	UNPROTECT(2);
 
 	xs = REAL(x); 
 	ys = REAL(y); 

@@ -359,7 +359,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \item For each state variable, there is a corresponding component of the deterministic skeleton.
     The goal of such a snippet is to compute all the components.
     \item When the skeleton is a map, the component corresponding to state variable \code{x} is named \code{Dx} and is the new value of \code{x} after one iteration of the map.
-    \item When the skeleton is a vectorfield, the component corresponding to state variable \code{x} is named \code{Dx} and is the value of $dx/dt$.
+    \item When the skeleton is a vectorfield, the component corresponding to state variable \code{x} is named \code{Dx} and is the value of \eqn{dx/dt}.
     \item As with the other C snippets, all states, parameters and covariates, as well as the current time, \code{t}, will be defined in the context within which the snippet is executed.
   }
   The tutorials on the \href{https://kingaa.github.io/pomp}{package website} give some examples.

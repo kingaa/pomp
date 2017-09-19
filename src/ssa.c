@@ -161,7 +161,6 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
 
   if (FIRST) {
     if (LENGTH(ans) != 1) {
-      UNPROTECT(nprotect);
       errorcall(R_NilValue,"user 'rates' must return a single scalar rate.");
     }
     FIRST = 0;

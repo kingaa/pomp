@@ -130,7 +130,7 @@ SEXP probe_acf (SEXP x, SEXP lags, SEXP corr) {
   PROTECT(ans_names = NEW_STRING(nlag*nvars)); nprotect++;
   for (j = 0, l = 0; j < nvars; j++) {
     for (k = 0; k < nlag; k++, l++) {
-      nm = (char *) CHARACTER_DATA(STRING_ELT(X_names,j));
+      nm = (char *) CHAR(STRING_ELT(X_names,j));
       snprintf(tmp,BUFSIZ,"acf.%d.%s",lag[k],nm);
       SET_STRING_ELT(ans_names,l,mkChar(tmp));
     }

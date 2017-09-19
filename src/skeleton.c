@@ -142,7 +142,6 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 
   case Rfun: 			// R skeleton
     {
-      int nprotect = 0;
       SEXP tvec, xvec, pvec, cvec, fcall, rho;
 
       PROTECT(tvec = NEW_NUMERIC(1)); nprotect++;
@@ -170,15 +169,12 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 		      fcall,rho,Snames,
 		      REAL(tvec),REAL(xvec),REAL(pvec),REAL(cvec),
 		      nvars,npars,ntimes,nrepx,nrepp,nreps,&covariate_table);
-      
-      UNPROTECT(nprotect);
     }
 
     break;
 
   case native:			// native skeleton
     {
-      int nprotect = 0;
       int *sidx, *pidx, *cidx;
       pomp_skeleton *ff = NULL;
       // construct state, parameter, covariate, observable indices
@@ -193,7 +189,6 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
 			   nvars,npars,ncovars,ntimes,nrepx,nrepp,nreps,
 			   sidx,pidx,cidx,&covariate_table,ff,args
 			   );
-      UNPROTECT(nprotect);
     }
 
     break;

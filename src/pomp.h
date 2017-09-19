@@ -151,6 +151,53 @@ static R_INLINE double deulermultinom (int m, double size, const double *rate,
   return ff;
 }
 
+// dmultinom: multinomial probabilities
+// Description:
+//  on input:
+// m        = (positive integer) dimension of the random variable
+// prob     = pointer to m-vector of probabilities
+// x        = pointer to m-vector containing the data
+// give_log = 1 if log probability is desired; 0 if probability is desired
+//  return value: probability or log probability (as requested)
+
+static R_INLINE double dmultinom (int m, const double *prob, double *x, int give_log) {
+  double p = 0.0;
+  double n = 0.0;
+  double ff = 0.0;
+  int k;
+
+  for (k = 0; k < m; k++) {
+    if (prob[k] < 0.0) {
+      warningcall(R_NilValue,"in 'dmultinom': NaNs produced");
+      return R_NaN;
+    }
+
+    if ((x[k] < 0.0) || (floor(x[k]+0.5) != x[k])) {
+      ff = (give_log) ? R_NegInf: 0.0;
+      return ff;
+    }
+    
+    p += prob[k]; // sum of probabilities
+    n += x[k]; // total number of events
+  }
+
+  for (k = 0; k < m; k++) {
+    if ((n > 0) && (p > 0)) {
+      if (prob[k] > p) p = prob[k];
+      ff += dbinom(x[k],n,prob[k]/p,1);
+    } else if (x[k] < 0.0) {
+      ff = R_NegInf;
+      return ff;
+    }
+
+    n -= x[k];
+    p -= prob[k];
+  }
+
+  ff = (give_log) ? ff : exp(ff);
+  return ff;
+}
+
 // C-LEVEL DEFINITIONS OF LOG-BARYCENTRIC TRANSFORMATION.
 // USEFUL FOR WORKING WITH PARAMETERS CONSTRAINED TO SUM TO 1
 

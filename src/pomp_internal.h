@@ -48,7 +48,7 @@ static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
   for (k = 0; k < n; k++) {
     if (idx[k]==0)
       errorcall(R_NilValue,"variable '%s' not found among the %s",
-		CHARACTER_DATA(STRING_ELT(nm,k)),
+		CHAR(STRING_ELT(nm,k)),
 		where);
     idx[k] -= 1;
   }

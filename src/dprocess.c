@@ -101,12 +101,10 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
 
   PROTECT(dimF = GET_DIM(X)); nprotect++;
   if ((isNull(dimF)) || (length(dimF) != 2)) {
-    UNPROTECT(nprotect);
     errorcall(R_NilValue,"in 'dprocess': user 'dprocess' must return a rank-2 array.");
   }
   xdim = INTEGER(dimF);
   if ((xdim[0] != nreps) || (xdim[1] != ntimes-1)) {
-    UNPROTECT(nprotect);
     errorcall(R_NilValue,"in 'dprocess': user 'dprocess' must return a %d x %d array.",nreps,ntimes-1);
   }
   {
