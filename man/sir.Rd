@@ -23,7 +23,7 @@ coef(euler.sir)
 
 pompExample(gillespie.sir)
 plot(gillespie.sir)
-plot(simulate(gillespie.sir,seed=20348585))
+plot(simulate(window(gillespie.sir,end=3),seed=20348585))
 coef(gillespie.sir)
 
 pompExample(bbs)
