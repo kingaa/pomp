@@ -70,7 +70,7 @@ export(
     onestep.sim,
     onestep.dens,
     gillespie.sim,
-    gillespie.snip.sim,
+    gillespie.ez.sim,
     mvn.diag.rw,mvn.rw,
     mvn.rw.adaptive,
     rw.sd,

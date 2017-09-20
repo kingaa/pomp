@@ -11,7 +11,7 @@
 \alias{discrete.time.sim}
 \alias{onestep.dens}
 \alias{gillespie.sim}
-\alias{gillespie.snip.sim}
+\alias{gillespie.ez.sim}
 \alias{Csnippet}
 \alias{Csnippet-class}
 \alias{vectorfield}
@@ -226,7 +226,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Again, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
     The form of \code{f} should be as above (in the discrete-time or Euler cases).
 
-    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} and \code{gillespie.snip.sim} plug-ins.
+    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} and \code{gillespie.ez.sim} plug-ins.
     The former allows for the rate function to be provided as an \R function while the latter provides a means of specifying the rate function via a C snippet.
     To use \code{gillespie.sim}, furnish \preformatted{
       rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)}
@@ -247,9 +247,9 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
     By default, the elementary event rates will be recomputed at least once per observation interval.
 
-    To use \code{gillespie.snip.sim}, furnish \preformatted{
-      rprocess = gillespie.snip.sim(..., .pre = "", .post = "", hmax = Inf)}
-    Each argument in \code{...} should have a unique name and be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
+    To use \code{gillespie.ez.sim}, furnish \preformatted{
+      rprocess = gillespie.ez.sim(..., .pre = "", .post = "", hmax = Inf)}
+    Each argument in \code{...} should be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
     Each of these arguments provides the details for a single elementary event.
     The string or snippet contains C code that should assign the variable rate to the correct value for the event.
     The variable \code{rate} will exist in the context of the code, in addition to the states, parameters, covariates, observables, and the time \code{t}.
@@ -258,8 +258,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
     These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
     Here's how a simple birth-death model could be specified: \preformatted{
-      gillespie.snip.sim(birth=list("rate = b*N;",c(N=1)),
-        death=list("rate = m*N;",c(N=-1)), hmax=0.1)}
+      gillespie.ez.sim(birth=list("rate = b*N;",c(N=1)),
+        death=list("rate = m*N;",c(N=-1)))}
     }
 
   \subsection{Size of time step}{
