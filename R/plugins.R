@@ -88,7 +88,7 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
   if (missing(PACKAGE)) PACKAGE <- character(0)
   if (!missing(d)){
-    warning("argument", sQuote("d"), "is deprecated; updates to the simulation",
+    warning(ep, "argument", sQuote("d"), "is deprecated; updates to the simulation",
             "algorithm have made it unnecessary", call. = FALSE)
   }
   if (!is.matrix(v)) {
@@ -103,23 +103,43 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
 }
 
 gillespie.snip.sim <- function(..., hmax = Inf){
-  args <- list(...)
-  if (anyDuplicated(names(args))) {
-    stop("event arguments must have unique names",call.=FALSE)
-  }
-  code <- lapply(args, "[[", 1)
-  stoch <- lapply(args, "[[", 2)
-  codecheck <- function(x) {
-    if(!inherits(x, what =c("Csnippet", "character"))) {
-      stop("the first list element of each event argument should be a Csnippet or",
-           " string", call.=FALSE)
+    ep <- paste0("in ",sQuote("gillespie.snip.sim")," plugin: ")
+    PACKAGE <- character(0) # TODO need this?
+    args <- list(...)
+    if (anyDuplicated(names(args))) { # TODO does this checker serve any purpose?
+        stop("event arguments must have unique names",call.=FALSE)
+    }
+    code <- lapply(args, "[[", 1)
+    codecheck <- function(x) {
+    if(!inherits(x, what = c("Csnippet", "character"))) {
+        stop(ep, "the first list element of each event argument should be a"
+             " Csnippet or string", call.=FALSE)
     }
     if (length(x) != 1){
-      stop("the length of the first list element of each event argument should",
-           " be equal to 1", call.=FALSE)
+        stop(ep, "the length of the first list element of each event",
+             "argument should be equal to 1", call.=FALSE)
     }
-  }
-  lapply(code, codecheck)
+    lapply(code, codecheck)
+    stoich <- lapply(args, "[[", 2)
+    stoichcheck <- function(x){
+        if (! typeof(x) %in%  c("integer", "double")){
+            stop(ep, "the second list element of each event argument should be",
+                 "a numeric or integer vector", call.=FALSE)
+        }
+    }
+    lapply(stoich, stoichcheck)
+    ## By coercing the vectors to a data frame and then using rbind,
+    ## we can ensure that all stochiometric coefficients for the same
+    ## state variables are in the same column even if the vectors in
+    ## stoich have differently ordered names. Also, rbind will fail if
+    ## the set of variables in each data frame is not the same.
+    stoichdf <- sapply(stoich, function(x) data.frame(as.list(x)))
+    v <- do.call(rbind, stoichdf)
+    new("gillespieRprocessPlugin",
+      rate.fn=code,v=v, hmax=hmax, # TODO need to check names of v for match to statevars in plugin handler
+      slotname="rate.fn",
+      csnippet=is(rate.fun,"Csnippet"), # TODO need this?
+      PACKAGE=PACKAGE)
 }
 
 onestep.dens <- function (dens.fun, PACKAGE) {
