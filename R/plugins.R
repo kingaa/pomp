@@ -101,27 +101,32 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
     PACKAGE=PACKAGE)
 }
 
-gillespie.snip.sim <- function(..., .pre = "", .post = "", hmax = Inf){
-    ep <- paste0("in ",sQuote("gillespie.snip.sim")," plugin: ")
+gillespie.ez.sim <- function(..., .pre = "", .post = "", hmax = Inf){
+    ep <- paste0("in ",sQuote("gillespie.ez.sim")," plugin: ")
     PACKAGE <- character(0) # TODO need this?
     args <- list(...)
-    if (anyDuplicated(names(args))) { # TODO does this checker serve any purpose?
-        stop(ep,"event arguments must have unique names",call.=FALSE)
-    }
-    code <- lapply(args, "[[", 1)
-    codecheck <- function(x) {
-      if(!inherits(x, what = c("Csnippet", "character"))) {
+
+    code_chunks <- lapply(args, "[[", 1)
+    check_code <- function(x) {
+      inh <- inherits(x, what = c("Csnippet", "character"), which = TRUE)
+      if(!any(inh)) {
         stop(ep,"the first list element of each event argument should be a",
              " Csnippet or string", call.=FALSE)
       }
       if (length(x) != 1){
         stop(ep,"the length of the first list element of each event",
-             "argument should be equal to 1", call.=FALSE)
+             " argument should be equal to 1", call.=FALSE)
+      }
+      if (inh == 1) {
+        x@text
+      } else {
+        x
       }
     }
-    lapply(code, codecheck)
-    codecheck(.pre)
-    codecheck(.post)
+    code_chunks <- lapply(code_chunks, check_code)
+    .pre <- check_code(.pre)
+    .post <- check_code(.post)
+
     stoich <- lapply(args, "[[", 2)
     stoichcheck <- function(x){
         if (! typeof(x) %in%  c("integer", "double")){
@@ -130,6 +135,21 @@ gillespie.snip.sim <- function(..., .pre = "", .post = "", hmax = Inf){
         }
     }
     lapply(stoich, stoichcheck)
+
+    ## Create C snippet of switch statement
+    inds <- seq_along(args)
+    case_maker <- function(i, code_chunk){
+      label <- paste0("case ", i, ":{")
+      endcase <- "break;\n}"
+      paste(label, code_chunk, endcase, sep="\n")
+    }
+    cases <- Map(case_maker, inds, code_chunks)
+    last_case <- "default:\nerror(\"unrecognized event %d\",j);\nbreak;\n"
+    head <- paste0(.pre, "\nswitch (j) {")
+    tail <- paste0(last_case, "}\n", .post)
+    rate.fn <- Csnippet(paste(head, cases, tail, sep="\n"))
+
+    ### Create v matrix
     ## By coercing the vectors to a data frame and then using rbind,
     ## we can ensure that all stochiometric coefficients for the same
     ## state variables are in the same column even if the vectors in
@@ -138,9 +158,9 @@ gillespie.snip.sim <- function(..., .pre = "", .post = "", hmax = Inf){
     stoichdf <- sapply(stoich, function(x) data.frame(as.list(x)))
     v <- do.call(rbind, stoichdf)
     new("gillespieRprocessPlugin",
-      rate.fn=code,v=v, hmax=hmax, # TODO need to check names of v for match to statevars in plugin handler
+      rate.fn=rate.fn,v=v, hmax=hmax, # TODO need to check names of v for match to statevars in plugin handler
       slotname="rate.fn",
-      csnippet=TRUE, # TODO need this?
+      csnippet=TRUE,
       PACKAGE=PACKAGE)
 }
 
