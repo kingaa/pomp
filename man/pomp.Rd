@@ -199,7 +199,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The goal of such a C snippet is to replace the state variables with their new random values at the end of the time interval.
     Accordingly, each state variable should be over-written with its new value.
     In addition to the states, parameters, covariates (if any), and observables, the variables \code{t} and \code{dt}, containing respectively the time at the beginning of the step and the step's duration, will be defined in the context in which the C snippet is executed.
-    See below under \dQuote{General rules for C snippet writing} for more details.
+    See above under \dQuote{General rules for C snippet writing} for more details.
     Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 
     If \code{f} is given as an \R function, it should have prototype \preformatted{
@@ -290,7 +290,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Accordingly, each observable should be assigned a new value.
     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
   }
-  General rules for writing C snippets are provided below.
+  General rules for writing C snippets are provided above.
   The tutorials on the \href{https://kingaa.github.io/pomp}{package website} give examples as well.
 
   It is also possible, though far less efficient, to specify \code{rmeasure} using an \R function.
