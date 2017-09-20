@@ -117,7 +117,7 @@ gillespie.ez.sim <- function(..., .pre = "", .post = "", hmax = Inf){
         stop(ep,"the length of the first list element of each event",
              " argument should be equal to 1", call.=FALSE)
       }
-      if (inh == 1) {
+      if (inh[1] == 1) {
         x@text
       } else {
         x
