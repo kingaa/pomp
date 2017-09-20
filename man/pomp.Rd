@@ -11,6 +11,7 @@
 \alias{discrete.time.sim}
 \alias{onestep.dens}
 \alias{gillespie.sim}
+\alias{gillespie.snip.sim}
 \alias{Csnippet}
 \alias{Csnippet-class}
 \alias{vectorfield}
@@ -199,7 +200,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The goal of such a C snippet is to replace the state variables with their new random values at the end of the time interval.
     Accordingly, each state variable should be over-written with its new value.
     In addition to the states, parameters, covariates (if any), and observables, the variables \code{t} and \code{dt}, containing respectively the time at the beginning of the step and the step's duration, will be defined in the context in which the C snippet is executed.
-    See below under \dQuote{General rules for C snippet writing} for more details.
+    See above under \dQuote{General rules for C snippet writing} for more details.
     Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 
     If \code{f} is given as an \R function, it should have prototype \preformatted{
@@ -225,28 +226,41 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Again, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
     The form of \code{f} should be as above (in the discrete-time or Euler cases).
 
-    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} plug-in.
-    In this case, furnish \preformatted{
-      rprocess = gillespie.sim(rate.fun = f, v, d, hmax = Inf)}
+    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} and \code{gillespie.snip.sim} plug-ins.
+    The former allows for the rate function to be provided as an \R function while the latter provides a means of specifying the rate function via a C snippet.
+    To use \code{gillespie.sim}, furnish \preformatted{
+      rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.
-    Here, \code{f} must be an \R function of the form \preformatted{
+    Here, \code{f} may be an \R function of the form \preformatted{
       f(j, x, t, params, ...)}
     When \code{f} is called,
-    the integer \code{j} will be the number of the elementary event (corresponding to the columns of matrices \code{v} and \code{d}, see below),
+    the integer \code{j} will be the number of the elementary event (corresponding to the column the matrix \code{v}, see below),
     \code{x} will be a named numeric vector containing the value of the state process at time \code{t} and
     \code{params} is a named numeric vector containing parameters.
     \code{f} should return a single numerical value, representing the rate of that elementary event at that point in state space and time.
 
-    Matrices \code{v} and \code{d} specify the continuous-time Markov process in terms of its elementary events.
-    Each should have dimensions \code{nvar} x \code{nevent}, where \code{nvar} is the number of state variables and \code{nevent} is the number of elementary events.
+    Matrix \code{v} specifies the continuous-time Markov process in terms of its elementary events.
+    It should have dimensions \code{nvar} x \code{nevent}, where \code{nvar} is the number of state variables and \code{nevent} is the number of elementary events.
     \code{v} describes the changes that occur in each elementary event:
     it will usually comprise the values 1, -1, and 0 according to whether a state variable is incremented, decremented, or unchanged in an elementary event.
-    \code{d} is a binary matrix that describes the dependencies of elementary event rates on state variables:
-    \code{d[i,j]} will have value 1 if event rate \code{j} must be updated as a result of a change in state variable \code{i} and 0 otherwise.
 
     When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
     By default, the elementary event rates will be recomputed at least once per observation interval.
-  }
+
+    To use \code{gillespie.snip.sim}, furnish \preformatted{
+      rprocess = gillespie.snip.sim(..., _pre = "", _post = "", hmax = Inf)}
+    Each argument in \code{...} should have a unique name and be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
+    Each of these arguments provides the details for a single elementary event.
+    The string or snippet contains C code that should assign the variable rate to the correct value for the event.
+    The variable \code{rate} will exist in the context of the code, in addition to the states, parameters, covariates, observables, and the time \code{t}.
+    The elements of the integer vector are the stochiometric coefficients of each of the state variables in the event.
+    Thus the set of names of the state variables should be identical to the set of the names of the integer vector.
+    The arguments \code{_pre} and \code{_post} can be used to provide C code that will run either before or after the code in the event arguments.
+    These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
+    Here's how a simple birth-death model could be specified: \preformatted{
+      gillespie.snip.sim(birth=list("rate = b*N;",c(N=1)),
+        death=list("rate = m*N;",c(N=-1)), hmax=0.1)}
+    }
 
   \subsection{Size of time step}{
     The simulator plug-ins \code{discrete.time.sim}, \code{euler.sim}, and \code{onestep.sim} all work by taking discrete time steps.

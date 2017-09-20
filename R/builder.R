@@ -1,6 +1,6 @@
 pompCBuilder <- function (name = NULL, dir = NULL,
                           statenames, paramnames, covarnames, obsnames,
-                          rmeasure, dmeasure, step.fn, skeleton,
+                          rmeasure, dmeasure, step.fn, rate.fn, skeleton,
                           fromEstimationScale, toEstimationScale,
                           initializer,
                           rprior, dprior, globals, shlib.args = NULL,
@@ -105,6 +105,14 @@ pompCBuilder <- function (name = NULL, dir = NULL,
         cat(file=out,render(header$step.fn))
         cat(file=out,callable.decl(step.fn))
         cat(file=out,step.fn,footer$step.fn)
+    }
+
+    ## Gillespie rate function
+    if (!missing(rate.fn)) {
+        registry <- c(registry,"ratefn")
+        cat(file=out,render(header$rate.fn))
+        cat(file=out,callable.decl(rate.fn))
+        cat(file=out,rate.fn,footer$rate.fn)
     }
 
     ## skeleton function
@@ -310,6 +318,7 @@ header <- list(
     rmeasure="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
     dmeasure= "\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
     step.fn="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
+    rate.fn="\ndouble __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars){\n  double rate = 0.0;  \n",
     skeleton="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
     initializer="\nvoid __pomp_initializer (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
     fromEstimationScale="\nvoid __pomp_par_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
@@ -322,6 +331,7 @@ fnames <- list(
     rmeasure="__pomp_rmeasure",
     dmeasure= "__pomp_dmeasure",
     step.fn="__pomp_stepfn",
+    rate.fn="__pomp_ratefn",
     skeleton="__pomp_skelfn",
     initializer="__pomp_initializer",
     fromEstimationScale="__pomp_par_trans",
@@ -343,6 +353,7 @@ footer <- list(
     rmeasure="\n}\n\n",
     dmeasure="\n}\n\n",
     step.fn="\n}\n\n",
+    rate.fn="  return rate;\n}\n\n",
     skeleton="\n}\n\n",
     initializer="\n}\n\n",
     fromEstimationScale="\n}\n\n",

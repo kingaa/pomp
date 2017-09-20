@@ -7,8 +7,6 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
-  Natural language support but running in an English locale
-
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -32,14 +30,13 @@ Type 'q()' to quit R.
 +     data <- data.frame(time = times, reports = NA)
 +     d <- cbind(death = c(1,0))
 +     v <- cbind(death = c(-1,1))
-+     e <- c(0.03,0)
-+     f <- function(j, x, t, params, ...){
-+         params["mu"] * x[1]
-+     }
 +     simulator <- match.arg(simulator)
 +     switch(
 +         simulator,
-+         gillespie=gillespie.sim(rate.fun = f, v = v, d = d),
++         gillespie=gillespie.sim(
++             Csnippet("rate = mu * N;"),
++             v = v, d = d
++         ),
 +         euler=euler.sim(
 +             Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;"),
 +             delta.t=0.1
@@ -66,7 +63,7 @@ Type 'q()' to quit R.
 2    1    NA 1.000
 3   10 0.005 0.995
 4  100 0.091 0.909
-5 1000 0.656 0.344
+5 1000 0.655 0.345
 > create_example(times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
 +     simulate(nsim=100,as.data.frame=TRUE, states=TRUE) -> sims
 > sims %>%
