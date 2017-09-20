@@ -44,8 +44,7 @@ setClass(
   slots=c(
     rate.fn="ANY",
     hmax="numeric",
-    v="matrix",
-    d="matrix"
+    v="matrix"
   )
 )
 
@@ -102,28 +101,30 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
     PACKAGE=PACKAGE)
 }
 
-gillespie.snip.sim <- function(..., hmax = Inf){
+gillespie.snip.sim <- function(..., _pre = "", _post = "", hmax = Inf){
     ep <- paste0("in ",sQuote("gillespie.snip.sim")," plugin: ")
     PACKAGE <- character(0) # TODO need this?
     args <- list(...)
     if (anyDuplicated(names(args))) { # TODO does this checker serve any purpose?
-        stop("event arguments must have unique names",call.=FALSE)
+        stop(ep,"event arguments must have unique names",call.=FALSE)
     }
     code <- lapply(args, "[[", 1)
     codecheck <- function(x) {
     if(!inherits(x, what = c("Csnippet", "character"))) {
-        stop(ep, "the first list element of each event argument should be a"
+        stop(ep,"the first list element of each event argument should be a"
              " Csnippet or string", call.=FALSE)
     }
     if (length(x) != 1){
-        stop(ep, "the length of the first list element of each event",
+        stop(ep,"the length of the first list element of each event",
              "argument should be equal to 1", call.=FALSE)
     }
     lapply(code, codecheck)
+    codecheck(_pre)
+    codecheck(_post)
     stoich <- lapply(args, "[[", 2)
     stoichcheck <- function(x){
         if (! typeof(x) %in%  c("integer", "double")){
-            stop(ep, "the second list element of each event argument should be",
+            stop(ep,"the second list element of each event argument should be",
                  "a numeric or integer vector", call.=FALSE)
         }
     }
