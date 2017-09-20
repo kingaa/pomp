@@ -87,20 +87,39 @@ euler.sim <- function (step.fun, delta.t, PACKAGE) {
 gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
   if (missing(PACKAGE)) PACKAGE <- character(0)
-  if (!is.matrix(v) || !is.matrix(d)) {
-    stop(ep,sQuote("v")," and ",sQuote("d")," must be matrices.",
+  if (!missing(d)){
+    warning("argument", sQuote("d"), "is deprecated; updates to the simulation",
+            "algorithm have made it unnecessary", call. = FALSE)
+  }
+  if (!is.matrix(v)) {
+    stop(ep,sQuote("v")," must be a matrix.",
       call.=FALSE)
   }
-  nvar <- nrow(v)
-  nevent <- ncol(v)
-  if ((nvar!=nrow(d))||(nevent!=ncol(d)))
-    stop(ep,sQuote("v")," and ",sQuote("d")," must agree in dimension.",
-      call.=FALSE)
   new("gillespieRprocessPlugin",
-    rate.fn=rate.fun,v=v,d=d,hmax=hmax,
+    rate.fn=rate.fun,v=v, hmax=hmax,
     slotname="rate.fn",
     csnippet=is(rate.fun,"Csnippet"),
     PACKAGE=PACKAGE)
+}
+
+gillespie.snip.sim <- function(..., hmax = Inf){
+  args <- list(...)
+  if (anyDuplicated(names(args))) {
+    stop("event arguments must have unique names",call.=FALSE)
+  }
+  code <- lapply(args, "[[", 1)
+  stoch <- lapply(args, "[[", 2)
+  codecheck <- function(x) {
+    if(!inherits(x, what =c("Csnippet", "character"))) {
+      stop("the first list element of each event argument should be a Csnippet or",
+           " string", call.=FALSE)
+    }
+    if (length(x) != 1){
+      stop("the length of the first list element of each event argument should",
+           " be equal to 1", call.=FALSE)
+    }
+  }
+  lapply(code, codecheck)
 }
 
 onestep.dens <- function (dens.fun, PACKAGE) {
