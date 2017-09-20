@@ -11,15 +11,11 @@ png(filename="dp-%02d.png",res=100)
 create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
                            simulator = c("gillespie","euler","onestep")) {
     data <- data.frame(time = times, reports = NA)
-    d <- cbind(death = c(1,0))
     v <- cbind(death = c(-1,1))
     simulator <- match.arg(simulator)
     switch(
         simulator,
-        gillespie=gillespie.sim(
-            Csnippet("rate = mu * N;"),
-            v = v, d = d
-        ),
+        gillespie=gillespie.sim(Csnippet("rate = mu * N;"), v = v),
         euler=euler.sim(
             Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;"),
             delta.t=0.1

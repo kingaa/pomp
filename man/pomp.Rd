@@ -248,14 +248,14 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     By default, the elementary event rates will be recomputed at least once per observation interval.
 
     To use \code{gillespie.snip.sim}, furnish \preformatted{
-      rprocess = gillespie.snip.sim(..., _pre = "", _post = "", hmax = Inf)}
+      rprocess = gillespie.snip.sim(..., .pre = "", .post = "", hmax = Inf)}
     Each argument in \code{...} should have a unique name and be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
     Each of these arguments provides the details for a single elementary event.
     The string or snippet contains C code that should assign the variable rate to the correct value for the event.
     The variable \code{rate} will exist in the context of the code, in addition to the states, parameters, covariates, observables, and the time \code{t}.
     The elements of the integer vector are the stochiometric coefficients of each of the state variables in the event.
     Thus the set of names of the state variables should be identical to the set of the names of the integer vector.
-    The arguments \code{_pre} and \code{_post} can be used to provide C code that will run either before or after the code in the event arguments.
+    The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
     These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
     Here's how a simple birth-death model could be specified: \preformatted{
       gillespie.snip.sim(birth=list("rate = b*N;",c(N=1)),
