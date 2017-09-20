@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 1.14.2.2
-Date: 2017-09-19
+Version: 1.15.1.2
+Date: 2017-09-20
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -18,16 +18,16 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",
 	  person(given="Sebastian",family="Funk",role=c("ctb")),
 	  person(given=c("Steven","G."),family="Johnson",role=c("ctb"))
 	  )
-URL: http://kingaa.github.io/pomp
+URL: https://kingaa.github.io/pomp/
 Description: Tools for working with partially observed Markov process (POMP) models (also known as stochastic dynamical systems, hidden Markov models, and nonlinear, non-Gaussian, state-space models).  The package provides facilities for implementing POMP models, simulating them, and fitting them to time series data by a variety of frequentist and Bayesian methods.  It is also a versatile platform for implementation of inference methods for general POMP models.
 Depends: R(>= 3.1.2), methods
 Imports: stats, graphics, digest, mvtnorm, deSolve, coda, subplex, nloptr
 Suggests: magrittr, plyr, reshape2, ggplot2, knitr
-SystemRequirements: For Windows users, Rtools (see http://cran.r-project.org/bin/windows/Rtools/).
+SystemRequirements: For Windows users, Rtools (see https://cran.r-project.org/bin/windows/Rtools/).
 License: GPL-3
 LazyData: true
 Contact: kingaa at umich dot edu
-BugReports: http://github.com/kingaa/pomp/issues
+BugReports: https://github.com/kingaa/pomp/issues/
 Collate: aaa.R authors.R bake.R generics.R eulermultinom.R
 	 csnippet.R safecall.R pomp_fun.R plugins.R builder.R
 	 parmat.R logmeanexp.R slice_design.R
