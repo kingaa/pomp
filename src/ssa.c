@@ -50,8 +50,7 @@ static void gillespie (double *t, double tmax, double *f, double *y,
 static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 		 int nvar, int nevent, int npar, int nrep, int ntimes,
 		 double *xstart, const double *times, const double *params, double *xout,
-		 const double *e, const double *v, const double *d,
-		 int ndeps, const int *ideps, int nzero, const int *izero,
+		 const double *v, int nzero, const int *izero,
 		 const int *istate, const int *ipar, int ncovar, const int *icovar,
 		 int lcov, int mcov, double *tcov, double *cov, const double *hmax) {
   double t = times[0];
@@ -172,7 +171,7 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
 }
 
 SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
-		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP deps, SEXP tcovar, SEXP covar,
+		    SEXP vmatrix, SEXP tcovar, SEXP covar,
 		    SEXP zeronames, SEXP hmax, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
@@ -281,7 +280,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     for (i = 0; i < nrep; i++) {
       SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
 	  REAL(xstart),REAL(times),REAL(params),
-	  REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),ndeps,didx,
+	  REAL(X),REAL(vmatrix),
 	  nzeros,zidx,sidx,pidx,ncovars,cidx,covlen,covdim,
 	  REAL(tcovar),REAL(covar),REAL(hmax));
     }
