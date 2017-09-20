@@ -32,6 +32,29 @@ create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
          paramnames=c("mu"), statenames=c("N","ct"))
 }
 
+create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
+                           simulator = c("gillespie","euler","onestep")) {
+    data <- data.frame(time = times, reports = NA)
+    simulator <- match.arg(simulator)
+    switch(
+        simulator,
+        gillespie=gillespie.ez.sim(list("rate = mu * N;", c(N=-1, ct=1))),
+        euler=euler.sim(
+            Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;"),
+            delta.t=0.1
+        ),
+        onestep=onestep.sim(
+            Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;")
+        )
+    ) -> rprocess
+    initializer <- function(params, t0, ...) {
+        c(N=N_0,ct=12)
+    }
+    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
+         rprocess = rprocess, initializer = initializer, zeronames="ct",
+         paramnames=c("mu"), statenames=c("N","ct"))
+}
+
 create_example(simulator="gillespie",times=c(0,1,10,100,1000)) %>%
     simulate(as.data.frame=TRUE, states=TRUE, nsim = 1000) %>%
     count(~time+N) %>%
