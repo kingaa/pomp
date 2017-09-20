@@ -176,14 +176,14 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 {
   int nprotect = 0;
   int *dim, xdim[3];
-  int nvar, nevent, npar, nrep, ntimes, ndeps;
+  int nvar, nevent, npar, nrep, ntimes;
   int covlen, covdim;
   SEXP statenames, paramnames, covarnames;
   int nstates, nparams, ncovars;
   int nzeros = LENGTH(zeronames);
   pompfunmode use_native = undef;
   SEXP X, pindex, sindex, cindex, zindex;
-  int *sidx, *pidx, *cidx, *zidx, *didx = 0;
+  int *sidx, *pidx, *cidx, *zidx;
   SEXP fn, Snames, Pnames, Cnames;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
@@ -191,9 +191,6 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
   dim = INTEGER(GET_DIM(vmatrix)); nevent = dim[1];
   ntimes = LENGTH(times);
-
-  ndeps = LENGTH(deps);
-  if (ndeps > 0) didx = INTEGER(deps);
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;

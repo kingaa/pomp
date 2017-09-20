@@ -546,14 +546,6 @@ pomp(
          ideath=c(0,-1,0,-1,0),
          recovery=c(0,-1,1,0,1),
          rdeath=c(0,0,-1,-1,0)
-         ),
-       d=cbind(
-         birth=c(0,0,0,1,0),
-         sdeath=c(1,0,0,0,0),
-         infection=c(1,1,0,1,0),
-         ideath=c(0,1,0,0,0),
-         recovery=c(0,1,0,0,0),
-         rdeath=c(0,0,1,0,0)
          )
        ),
      skeleton=vectorfield("_sir_ODE"),

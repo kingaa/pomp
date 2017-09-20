@@ -87,7 +87,7 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
   if (missing(PACKAGE)) PACKAGE <- character(0)
   if (!missing(d)){
-    warning(ep, "argument", sQuote("d"), "is deprecated; updates to the simulation",
+    warning(ep, "argument ",sQuote("d")," is deprecated; updates to the simulation ",
             "algorithm have made it unnecessary", call. = FALSE)
   }
   if (!is.matrix(v)) {
@@ -101,7 +101,7 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
     PACKAGE=PACKAGE)
 }
 
-gillespie.snip.sim <- function(..., _pre = "", _post = "", hmax = Inf){
+gillespie.snip.sim <- function(..., .pre = "", .post = "", hmax = Inf){
     ep <- paste0("in ",sQuote("gillespie.snip.sim")," plugin: ")
     PACKAGE <- character(0) # TODO need this?
     args <- list(...)
@@ -110,17 +110,18 @@ gillespie.snip.sim <- function(..., _pre = "", _post = "", hmax = Inf){
     }
     code <- lapply(args, "[[", 1)
     codecheck <- function(x) {
-    if(!inherits(x, what = c("Csnippet", "character"))) {
-        stop(ep,"the first list element of each event argument should be a"
+      if(!inherits(x, what = c("Csnippet", "character"))) {
+        stop(ep,"the first list element of each event argument should be a",
              " Csnippet or string", call.=FALSE)
-    }
-    if (length(x) != 1){
+      }
+      if (length(x) != 1){
         stop(ep,"the length of the first list element of each event",
              "argument should be equal to 1", call.=FALSE)
+      }
     }
     lapply(code, codecheck)
-    codecheck(_pre)
-    codecheck(_post)
+    codecheck(.pre)
+    codecheck(.post)
     stoich <- lapply(args, "[[", 2)
     stoichcheck <- function(x){
         if (! typeof(x) %in%  c("integer", "double")){
@@ -139,7 +140,7 @@ gillespie.snip.sim <- function(..., _pre = "", _post = "", hmax = Inf){
     new("gillespieRprocessPlugin",
       rate.fn=code,v=v, hmax=hmax, # TODO need to check names of v for match to statevars in plugin handler
       slotname="rate.fn",
-      csnippet=is(rate.fun,"Csnippet"), # TODO need this?
+      csnippet=TRUE, # TODO need this?
       PACKAGE=PACKAGE)
 }
 
