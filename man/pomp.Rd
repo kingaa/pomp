@@ -227,7 +227,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The form of \code{f} should be as above (in the discrete-time or Euler cases).
 
     If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} and \code{gillespie.ez.sim} plug-ins.
-    The former allows for the rate function to be provided as an \R function while the latter provides a means of specifying the rate function via a C snippet.
+    The former allows for the rate function to be provided as an \R function while the latter provides a means of specifying the rate function via a C snippet. (TODO explain how to use C snippet with former)
     To use \code{gillespie.sim}, furnish \preformatted{
       rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.

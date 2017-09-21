@@ -143,11 +143,11 @@ gillespie.ez.sim <- function(..., .pre = "", .post = "", hmax = Inf){
       endcase <- "break;\n}"
       paste(label, code_chunk, endcase, sep="\n")
     }
-    cases <- Map(case_maker, inds, code_chunks)
+    body <- Map(case_maker, inds, code_chunks)
     last_case <- "default:\nerror(\"unrecognized event %d\",j);\nbreak;\n"
-    head <- paste0(.pre, "\nswitch (j) {")
-    tail <- paste0(last_case, "}\n", .post)
-    rate.fn <- Csnippet(paste(head, cases, tail, sep="\n"))
+    header <- paste0(.pre, "\nswitch (j) {")
+    footer <- paste0(last_case, "}\n", .post)
+    rate.fn <- Csnippet(paste(header, body, footer, sep="\n"))
 
     ### Create v matrix
     ## By coercing the vectors to a data frame and then using rbind,
@@ -155,10 +155,10 @@ gillespie.ez.sim <- function(..., .pre = "", .post = "", hmax = Inf){
     ## state variables are in the same column even if the vectors in
     ## stoich have differently ordered names. Also, rbind will fail if
     ## the set of variables in each data frame is not the same.
-    stoichdf <- sapply(stoich, function(x) data.frame(as.list(x)))
-    v <- do.call(rbind, stoichdf)
+    stoichdf <- lapply(stoich, function(x) data.frame(as.list(x)))
+    v <- data.matrix(do.call(rbind, stoichdf))
     new("gillespieRprocessPlugin",
-      rate.fn=rate.fn,v=v, hmax=hmax, # TODO need to check names of v for match to statevars in plugin handler
+      rate.fn=rate.fn,v=v, hmax=hmax, # TODO need to check names of v for match to statevars in C code
       slotname="rate.fn",
       csnippet=TRUE,
       PACKAGE=PACKAGE)
@@ -338,6 +338,7 @@ setMethod(
         stop(ep,conditionMessage(e),call.=FALSE)
       }
     )
+    args <- list(...)
     function (xstart, times, params,
       zeronames = character(0),
       tcovar, covar,
