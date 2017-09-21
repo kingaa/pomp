@@ -156,9 +156,9 @@ gillespie.ez.sim <- function(..., .pre = "", .post = "", hmax = Inf){
     ## stoich have differently ordered names. Also, rbind will fail if
     ## the set of variables in each data frame is not the same.
     stoichdf <- lapply(stoich, function(x) data.frame(as.list(x)))
-    v <- data.matrix(do.call(rbind, stoichdf))
+    v <- t(data.matrix(do.call(rbind, stoichdf)))
     new("gillespieRprocessPlugin",
-      rate.fn=rate.fn,v=v, hmax=hmax, # TODO need to check names of v for match to statevars in C code
+      rate.fn=rate.fn, v=v, hmax=hmax, # TODO need to check names of v for match to statevars in C code
       slotname="rate.fn",
       csnippet=TRUE,
       PACKAGE=PACKAGE)
