@@ -2,7 +2,8 @@
 #include <R_ext/Constants.h>
 
 static void gillespie (double *t, double tmax, double *f, double *y, 
-		       const double *v, int nvar, int nevent) {
+		       const double *v, int nvar, int nevent, int nvname,
+		       const int *ivmat) {
   double tstep, p;
   double vv;
   int i, j;
@@ -40,7 +41,11 @@ static void gillespie (double *t, double tmax, double *f, double *y,
     for (i = 0; i < nvar; i++) {
       vv = v[i+nvar*jevent];
       if (vv != 0) {
-	y[i] += vv;
+	if (nvname > 0) {
+	  y[ivmat[i]] += vv;
+	} else {
+	  y[i] += vv;
+	}
       }
     }
 
@@ -52,6 +57,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 		 double *xstart, const double *times, const double *params, double *xout,
 		 const double *v, int nzero, const int *izero,
 		 const int *istate, const int *ipar, int ncovar, const int *icovar,
+		 int nvname, const int *ivmat,
 		 int lcov, int mcov, double *tcov, double *cov, const double *hmax) {
   double t = times[0];
   double tmax;
@@ -86,7 +92,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     R_CheckUserInterrupt();
     tmax = t + *hmax;
     tmax = (tmax > times[icount]) ? times[icount] : tmax;
-    gillespie(&t,tmax,f,y,v,nvar,nevent);
+    gillespie(&t,tmax,f,y,v,nvar,nevent,nvname,ivmat);
 
     if (mcov > 0) table_lookup(&tab,t,covars);
 
@@ -176,7 +182,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 {
   int nprotect = 0;
   int *dim, xdim[3];
-  int nvar, nevent, npar, nrep, ntimes;
+  int nvar, nvarv, nevent, npar, nrep, ntimes;
   int covlen, covdim;
   SEXP statenames, paramnames, covarnames;
   int nstates, nparams, ncovars, nvnames;
@@ -189,7 +195,10 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
-  dim = INTEGER(GET_DIM(vmatrix)); nevent = dim[1];
+  dim = INTEGER(GET_DIM(vmatrix)); nvarv = dim[0]; nevent = dim[1];
+  if (nvarv != nvar) {
+    errorcall(R_NilValue,"number of state variables must equal the number of rows in v.");
+  }
   ntimes = LENGTH(times);
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
@@ -269,7 +278,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     zidx = 0;
   }
   if (nvnames > 0) {
-    PROTECT(vindex = MATCHROWNAMES(vmatrix,Snames,"row names of v")); nprotect++;
+    PROTECT(vindex = MATCHROWNAMES(xstart,Vnames,"state variables")); nprotect++;
     vidx = INTEGER(vindex);
   } else {
     vidx = 0;
@@ -286,7 +295,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
       SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
 	  REAL(xstart),REAL(times),REAL(params),
 	  REAL(X),REAL(vmatrix),
-	  nzeros,zidx,sidx,pidx,ncovars,cidx,covlen,covdim,
+	  nzeros,zidx,sidx,pidx,ncovars,cidx,nvnames,vidx,covlen,covdim,
 	  REAL(tcovar),REAL(covar),REAL(hmax));
     }
   }
