@@ -57,6 +57,17 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   paramnames <- as.character(paramnames)
   zeronames <- as.character(zeronames)
 
+  ## check for duplicate names
+  if (anyDuplicated(statenames)) {
+    stop("all ",sQuote("statenames")," must be unique", call.=FALSE)
+  }
+  if (anyDuplicated(paramnames)) {
+    stop("all ",sQuote("paramnames")," must be unique", call.=FALSE)
+  }
+  if (anyDuplicated(zeronames)) {
+    stop("all ",sQuote("zeronames")," must be unique", call.=FALSE)
+  }
+
   ## check the parameters and force them to be double-precision
   if (length(params)>0) {
     if (is.null(names(params)) || !is.numeric(params))

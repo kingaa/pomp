@@ -256,7 +256,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Each argument in \code{...} should be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
     Each of these arguments provides the details for a single elementary event.
     The string or snippet contains C code that should assign the variable rate to the correct value for the event.
-    The variable \code{rate} will exist in the context of the code, in addition to the state variables, parameters, covariates, and the time \code{t}.
+    The variable \code{rate} will exist in the context of the code, as will the covariates variables in \code{covar} and the time \code{t}.
+    The state variables and parameters also be available provided that the \code{statenames} and \code{paramnames} arguments are provided to \code{pomp}.
     The elements of the integer vector are changes in the value of each of the state variables in the event.
     Thus there should be named value for each of the names of the state variables returned by the initializer.
     The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
