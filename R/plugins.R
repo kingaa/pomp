@@ -103,7 +103,7 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
 
 gillespie.ez.sim <- function(..., .pre = "", .post = "", hmax = Inf){
     ep <- paste0("in ",sQuote("gillespie.ez.sim")," plugin: ")
-    PACKAGE <- character(0) # TODO need this?
+    PACKAGE <- character(0)
     args <- list(...)
 
     code_chunks <- lapply(args, "[[", 1)
@@ -158,7 +158,7 @@ gillespie.ez.sim <- function(..., .pre = "", .post = "", hmax = Inf){
     stoichdf <- lapply(stoich, function(x) data.frame(as.list(x)))
     v <- t(data.matrix(do.call(rbind, stoichdf)))
     new("gillespieRprocessPlugin",
-      rate.fn=rate.fn, v=v, hmax=hmax, # TODO need to check names of v for match to statevars in C code
+      rate.fn=rate.fn, v=v, hmax=hmax,
       slotname="rate.fn",
       csnippet=TRUE,
       PACKAGE=PACKAGE)
@@ -343,7 +343,10 @@ setMethod(
       zeronames = character(0),
       tcovar, covar,
       .getnativesymbolinfo = TRUE,
-      ...) {
+              ...) {
+      if (anyDuplicated(rownames(object@v))){
+        stop(ep,"duplicates in rownames of ",sQuote("v"), call.=FALSE)
+      }
       tryCatch(
         .Call(
           SSA_simulator,
