@@ -246,7 +246,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The rows of \code{v} may be unnamed or named.
     If the rows are unnamed, they are assumed to be in the same order as the vector of state variables returned by the initializer.
     If the rows are named, the names of the state variables returned by the initializer will be matched to the rows of \code{v} to ensure a correct mapping.
-    If any of the row names of \code{v} cannot be found among the state variables, an error will occur.
+    If any of the row names of \code{v} cannot be found among the state variables or if any row names of \code{v} are duplicated, an error will occur.
 
     When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
     By default, the elementary event rates will be recomputed at least once per observation interval.
@@ -256,7 +256,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Each argument in \code{...} should be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
     Each of these arguments provides the details for a single elementary event.
     The string or snippet contains C code that should assign the variable rate to the correct value for the event.
-    The variable \code{rate} will exist in the context of the code, in addition to the states, parameters, covariates, observables, and the time \code{t}.
+    The variable \code{rate} will exist in the context of the code, in addition to the state variables, parameters, covariates, and the time \code{t}.
     The elements of the integer vector are changes in the value of each of the state variables in the event.
     Thus there should be named value for each of the names of the state variables returned by the initializer.
     The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
