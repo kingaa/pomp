@@ -243,10 +243,10 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     It should have dimensions \code{nvar} x \code{nevent}, where \code{nvar} is the number of state variables and \code{nevent} is the number of elementary events.
     \code{v} describes the changes that occur in each elementary event:
     it will usually comprise the values 1, -1, and 0 according to whether a state variable is incremented, decremented, or unchanged in an elementary event.
-    The columns of \code{v} may be unnamed or named.
-    If the columns are unnamed, they are assumed to be in the same order as the vector of state variables returned by the initializer.
-    If the columns are named, the names of the state variables returned by the initializer will be matched to the columns of \code{v} to ensure a correct mapping.
-    If the names of any of the state variable cannot be found among the column names of \code{v}, an error will occur.
+    The rows of \code{v} may be unnamed or named.
+    If the rows are unnamed, they are assumed to be in the same order as the vector of state variables returned by the initializer.
+    If the rows are named, the names of the state variables returned by the initializer will be matched to the rows of \code{v} to ensure a correct mapping.
+    If the names of any of the state variable names cannot be found among the row names of \code{v}, an error will occur.
 
     When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
     By default, the elementary event rates will be recomputed at least once per observation interval.

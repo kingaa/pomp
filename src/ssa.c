@@ -179,12 +179,12 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   int nvar, nevent, npar, nrep, ntimes;
   int covlen, covdim;
   SEXP statenames, paramnames, covarnames;
-  int nstates, nparams, ncovars;
+  int nstates, nparams, ncovars, nvnames;
   int nzeros = LENGTH(zeronames);
   pompfunmode use_native = undef;
-  SEXP X, pindex, sindex, cindex, zindex;
-  int *sidx, *pidx, *cidx, *zidx;
-  SEXP fn, Snames, Pnames, Cnames;
+  SEXP X, pindex, sindex, cindex, zindex, vindex;
+  int *sidx, *pidx, *cidx, *zidx, *vidx;
+  SEXP fn, Snames, Pnames, Cnames, Vnames;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
@@ -195,6 +195,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
+  PROTECT(Vnames = GET_ROWNAMES(GET_DIMNAMES(vmatrix))); nprotect++;
 
   PROTECT(statenames = GET_SLOT(func,install("statenames"))); nprotect++;
   PROTECT(paramnames = GET_SLOT(func,install("paramnames"))); nprotect++;
@@ -203,6 +204,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   nstates = LENGTH(statenames);
   nparams = LENGTH(paramnames);
   ncovars = LENGTH(covarnames);
+  nvnames = LENGTH(Vnames);
 
   PROTECT(hmax = AS_NUMERIC(hmax)); nprotect++;
 
@@ -265,6 +267,12 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     zidx = INTEGER(zindex);
   } else {
     zidx = 0;
+  }
+  if (nvnames > 0) {
+    PROTECT(vindex = MATCHROWNAMES(vmatrix,Snames,"row names of v")); nprotect++;
+    vidx = INTEGER(vindex);
+  } else {
+    vidx = 0;
   }
 
   if (use_native) {
