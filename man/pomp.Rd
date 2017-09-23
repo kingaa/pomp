@@ -11,7 +11,7 @@
 \alias{discrete.time.sim}
 \alias{onestep.dens}
 \alias{gillespie.sim}
-\alias{gillespie.ez.sim}
+\alias{gillespie.hl.sim}
 \alias{Csnippet}
 \alias{Csnippet-class}
 \alias{vectorfield}
@@ -226,8 +226,9 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Again, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
     The form of \code{f} should be as above (in the discrete-time or Euler cases).
 
-    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} and \code{gillespie.ez.sim} plug-ins.
-    The former allows for the rate function to be provided as an \R function while the latter provides a means of specifying the rate function via a C snippet. (TODO explain how to use C snippet with former)
+    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} and \code{gillespie.hl.sim} plug-ins.
+    The former allows for the rate function to be provided as an \R function while the latter provides a means of specifying the rate function via a C snippets.
+
     To use \code{gillespie.sim}, furnish \preformatted{
       rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.
@@ -251,21 +252,27 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
     By default, the elementary event rates will be recomputed at least once per observation interval.
 
-    \code{gillespie.ez.sim} provide a higher-level interface to the simulator. To use it, set rprocess to \preformatted{
-      gillespie.ez.sim(..., .pre = "", .post = "", hmax = Inf)}
+    \code{gillespie.hl.sim} provide a higher-level interface to the simulator. To use it, set rprocess to \preformatted{
+      gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)}
     Each argument in \code{...} should be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
     Each of these arguments provides the details for a single elementary event.
     The string or snippet contains C code that should assign the variable rate to the correct value for the event.
     The variable \code{rate} will exist in the context of the code, as will the covariates variables in \code{covar} and the time \code{t}.
-    The state variables and parameters also be available provided that the \code{statenames} and \code{paramnames} arguments are provided to \code{pomp}.
+    The state variables and parameters will also be available provided that the \code{statenames} and \code{paramnames} arguments are provided to \code{pomp}.
     The elements of the integer vector are changes in the value of each of the state variables in the event.
     Thus there should be named value for each of the names of the state variables returned by the initializer.
     The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
     These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
     Here's how a simple birth-death model could be specified: \preformatted{
-      gillespie.ez.sim(birth=list("rate = b*N;",c(N=1)),
+      gillespie.hl.sim(birth=list("rate = b*N;",c(N=1)),
         death=list("rate = m*N;",c(N=-1)))}
     }
+
+    It is also possible a C snippet to be provided via the \code{rate.fn} argument to \code{gillespie.sim}.
+    The snippet should assign the correct value to a \code{rate} variable depending on the value of \code{j}.
+    The same variables will be available as for the C code provided to \code{gillespie.hl.sim}.
+    This lower-level inteface may be preferable if it is easier to write code that calculates the correct rate based on \code{j} rather than to write a snippet for each possible value of \code{j}.
+    For example, if the number of possible values of \code{j} is large and the rates vary according to a few simple rules, the lower level interface may provide the easier way of specifying the rates.
 
   \subsection{Size of time step}{
     The simulator plug-ins \code{discrete.time.sim}, \code{euler.sim}, and \code{onestep.sim} all work by taking discrete time steps.

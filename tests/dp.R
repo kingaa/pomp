@@ -38,7 +38,7 @@ create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
     simulator <- match.arg(simulator)
     switch(
         simulator,
-        gillespie=gillespie.ez.sim(list("rate = mu * N;", c(N=-1, ct=1))),
+        gillespie=gillespie.hl.sim(list("rate = mu * N;", c(N=-1, ct=1))),
         euler=euler.sim(
             Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;"),
             delta.t=0.1
