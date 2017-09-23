@@ -214,7 +214,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   nstates = LENGTH(statenames);
   nparams = LENGTH(paramnames);
   ncovars = LENGTH(covarnames);
-  hasvnames = Vnames != R_NilValue;
+  hasvnames = !isNull(Vnames);
 
   PROTECT(hmax = AS_NUMERIC(hmax)); nprotect++;
 
