@@ -101,8 +101,8 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
     PACKAGE=PACKAGE)
 }
 
-gillespie.ez.sim <- function(..., .pre = "", .post = "", hmax = Inf){
-    ep <- paste0("in ",sQuote("gillespie.ez.sim")," plugin: ")
+gillespie.hl.sim <- function(..., .pre = "", .post = "", hmax = Inf){
+    ep <- paste0("in ",sQuote("gillespie.hl.sim")," plugin: ")
     PACKAGE <- character(0)
     args <- list(...)
 
