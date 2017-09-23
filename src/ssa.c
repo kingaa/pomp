@@ -2,7 +2,7 @@
 #include <R_ext/Constants.h>
 
 static void gillespie (double *t, double tmax, double *f, double *y, 
-		       const double *v, int nvar, int nevent, int nvname,
+		       const double *v, int nvar, int nevent, Rboolean hasvname,
 		       const int *ivmat) {
   double tstep, p;
   double vv;
@@ -41,7 +41,7 @@ static void gillespie (double *t, double tmax, double *f, double *y,
     for (i = 0; i < nvar; i++) {
       vv = v[i+nvar*jevent];
       if (vv != 0) {
-	if (nvname > 0) {
+	if (hasvname) {
 	  y[ivmat[i]] += vv;
 	} else {
 	  y[i] += vv;
@@ -57,7 +57,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 		 double *xstart, const double *times, const double *params, double *xout,
 		 const double *v, int nzero, const int *izero,
 		 const int *istate, const int *ipar, int ncovar, const int *icovar,
-		 int nvname, const int *ivmat,
+		 Rboolean hasvname, const int *ivmat,
 		 int lcov, int mcov, double *tcov, double *cov, const double *hmax) {
   double t = times[0];
   double tmax;
@@ -92,7 +92,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     R_CheckUserInterrupt();
     tmax = t + *hmax;
     tmax = (tmax > times[icount]) ? times[icount] : tmax;
-    gillespie(&t,tmax,f,y,v,nvar,nevent,nvname,ivmat);
+    gillespie(&t,tmax,f,y,v,nvar,nevent,hasvname,ivmat);
 
     if (mcov > 0) table_lookup(&tab,t,covars);
 
@@ -185,12 +185,13 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   int nvar, nvarv, nevent, npar, nrep, ntimes;
   int covlen, covdim;
   SEXP statenames, paramnames, covarnames;
-  int nstates, nparams, ncovars, nvnames;
+  int nstates, nparams, ncovars;
   int nzeros = LENGTH(zeronames);
   pompfunmode use_native = undef;
   SEXP X, pindex, sindex, cindex, zindex, vindex;
   int *sidx, *pidx, *cidx, *zidx, *vidx;
   SEXP fn, Snames, Pnames, Cnames, Vnames;
+  Rboolean hasvnames;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
@@ -213,7 +214,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   nstates = LENGTH(statenames);
   nparams = LENGTH(paramnames);
   ncovars = LENGTH(covarnames);
-  nvnames = LENGTH(Vnames);
+  hasvnames = Vnames != R_NilValue;
 
   PROTECT(hmax = AS_NUMERIC(hmax)); nprotect++;
 
@@ -277,7 +278,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   } else {
     zidx = 0;
   }
-  if (nvnames > 0) {
+  if (hasvnames) {
     PROTECT(vindex = MATCHROWNAMES(xstart,Vnames,"state variables")); nprotect++;
     vidx = INTEGER(vindex);
   } else {
@@ -295,7 +296,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
       SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
 	  REAL(xstart),REAL(times),REAL(params),
 	  REAL(X),REAL(vmatrix),
-	  nzeros,zidx,sidx,pidx,ncovars,cidx,nvnames,vidx,covlen,covdim,
+	  nzeros,zidx,sidx,pidx,ncovars,cidx,hasvnames,vidx,covlen,covdim,
 	  REAL(tcovar),REAL(covar),REAL(hmax));
     }
   }
