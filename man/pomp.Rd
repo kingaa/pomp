@@ -309,7 +309,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Accordingly, each observable should be assigned a new value.
     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
   }
-  General rules for writing C snippets are provided below.
+  General rules for writing C snippets are provided above.
   The tutorials on the \href{https://kingaa.github.io/pomp}{package website} give examples as well.
 
   It is also possible, though far less efficient, to specify \code{rmeasure} using an \R function.
