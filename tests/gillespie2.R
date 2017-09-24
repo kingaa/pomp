@@ -2,7 +2,6 @@ library(magrittr)
 library(pomp)
 
 v <- cbind(death = c(-1,1))
-d <- cbind(c(1,0))
 
 works <- function(times = c(1), t0 = 0, mu = 0.001, N_0 = 1) {
     data <- data.frame(time = times, reports = NA)
@@ -17,6 +16,11 @@ works <- function(times = c(1), t0 = 0, mu = 0.001, N_0 = 1) {
 }
 mwe <- simulate(works(), seed=1L)
 
+d <- cbind(c(1,0))
+try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=v, d=d),
+                 zeronames="ct", paramnames=c("mu"), statenames=c("N","ct")) %>%
+    simulate() %>% invisible())
+
 vdup <- cbind(death = c(N=-1,N=1))
 try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
                  zeronames="ct", paramnames=c("mu"), statenames=c("N","ct")) %>%
@@ -29,6 +33,10 @@ try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
 try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
                  zeronames="ct", paramnames=c("mu", "mu"),
                  statenames=c("N","ct")) %>% simulate() %>% invisible())
+
+mwe %>% pomp(rprocess=gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(N=-1, ct=1))),
+                 zeronames="ct", paramnames=c("mu"),
+                 statenames=c("N","ct")) %>% simulate() %>% invisible()
 
 try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(3L, c(N=-1, ct=1))),
                  zeronames="ct", paramnames=c("mu"),

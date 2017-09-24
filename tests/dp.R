@@ -70,7 +70,7 @@ create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
 
     switch(
         simulator,
-        gillespie=gillespie.sim(rate.fun = rate.fun, v=rbind(N=1, N=-1)),
+        gillespie=gillespie.sim(rate.fun = rate.fun, v=rbind(ct=1, N=-1)),
         euler=euler.sim(
             Csnippet("double x = rbinom(N,1-exp(-mu*dt)); N -= x; ct += x;"),
             delta.t=0.1
@@ -80,7 +80,7 @@ create_example <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1,
         )
     ) -> rprocess
     initializer <- function(params, t0, ...) {
-        c(N=N_0,Ct=12)
+        c(N=N_0,ct=12)
     }
     pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
          rprocess = rprocess, initializer = initializer, zeronames="ct",
