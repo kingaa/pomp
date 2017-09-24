@@ -88,7 +88,7 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   if (!missing(d)){
     warning("argument", sQuote("d"), "is deprecated; updates to the simulation",
-            "algorithm have made it unnecessary", call. = FALSE)
+            " algorithm have made it unnecessary", call. = FALSE)
   }
   if (!is.matrix(v)) {
     stop(ep,sQuote("v")," must be a matrix.",
