@@ -1,5 +1,9 @@
 library(magrittr)
 library(pomp)
+library(ggplot2)
+library(reshape2)
+
+## tests of argument checking
 
 v <- cbind(death = c(-1,1))
 
@@ -70,8 +74,7 @@ try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"),
                  zeronames="ct", paramnames=c("mu"),
                  statenames=c("N","ct")) %>% simulate() %>% invisible())
 
-library(ggplot2)
-library(reshape2)
+## compare simulation output of various model specifications that should all be statistically equivalent
 
 png(filename="gillespie2-%02d.png",res=100)
 
