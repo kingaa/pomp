@@ -148,6 +148,7 @@ gillespie.hl.sim <- function(..., .pre = "", .post = "", hmax = Inf){
       paste(label, chunk, endcase, sep="\n")
     }
     body <- Map(makeCase, inds, codeChunks)
+    body <- paste(body, collapse="\n")
     lastCase <- "default:\nerror(\"unrecognized event %d\",j);\nbreak;\n"
     header <- paste0(.pre, "\nswitch (j) {")
     footer <- paste0(lastCase, "}\n", .post)
