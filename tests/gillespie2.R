@@ -173,9 +173,7 @@ gsir %>%
          ) %>%
     simulate(seed=806867104L) -> gsir1
 
-pompExample(gillespie.sir)
-gsir2 <- simulate(gillespie.sir,params=coef(gsir),
-                  times=time(gsir),t0=timezero(gsir),seed=806867104L)
+all.equal(as.data.frame(gsir), as.data.frame(gsir1))
 
 hl.args <- list(list("rate = mu * N;",    c(S= 1,I= 0,R= 0,N= 1,cases= 0)),
                 list("rate = mu * S;",    c(S=-1,I= 0,R= 0,N=-1,cases= 0)),
@@ -192,21 +190,67 @@ gsir %>%
          paramnames = names(params),
          statenames = c("S","I","R", "N", "cases"),
          ) %>%
-    simulate(seed=806867104L) -> gsirhl
+    simulate(seed=806867100L) -> gsirhl
+
+hl.args1 <- list(list("rate = mu * N;",    c(R= 0,S= 1,I= 0,cases =0,N= 1)),
+                 list("rate = mu * S;",    c(S=-1,I= 0,R= 0,N=-1,cases= 0)),
+                 list("rate = mu * R;",    c(S= 0,I= 0,R=-1,N=-1,cases= 0)),
+                 list("rate = gamma * I;", c(S= 0,I=-1,R= 1,N= 0,cases= 1)),
+                 list("rate = mu * I;",    c(S= 0,I=-1,R= 0,N=-1,cases= 0)),
+                list(paste("double beta;",
+                           "beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;",
+                           "rate = (beta * I + iota) * S / N;", sep = "\n"),
+                     c(cases= 0,S=-1,I= 1,R= 0,N= 0)))
+
+gsir %>%
+    pomp(rprocess=do.call(gillespie.hl.sim, c(hl.args1, list(hmax=1/52/10))),
+         paramnames = names(params),
+         statenames = c("S","I","R", "N", "cases"),
+         ) %>%
+    simulate(seed=806867101L) -> gsirhl1
+
+hl.args2 <- list(list("rate = mu * N;",    c(S= 1,I= 0,R= 0,N= 1,cases= 0)),
+                list("rate = mu * S;",    c(S=-1,I= 0,R= 0,N=-1,cases= 0)),
+                list("rate = mu * I;",    c(S= 0,I=-1,R= 0,N=-1,cases= 0)),
+                list("rate = mu * R;",    c(S= 0,I= 0,R=-1,N=-1,cases= 0)),
+                list("rate = gamma * I;", c(S= 0,I=-1,R= 1,N= 0,cases= 1)),
+                list(paste("beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;",
+                           "rate = (beta * I + iota) * S / N;", sep = "\n"),
+                     c(S=-1,I= 1,R= 0,N= 0,cases= 0)),
+                .pre = "double beta;")
+
+gsir %>%
+    pomp(rprocess=do.call(gillespie.hl.sim, c(hl.args2, list(hmax=1/52/10))),
+         paramnames = names(params),
+         statenames = c("S","I","R", "N", "cases"),
+         ) %>%
+    simulate(seed=806867102L) -> gsirhl2
+
+hl.args3 <- list(list("rate = mu * N / 2;",    c(S= 1,I= 0,R= 0,N= 1,cases= 0)),
+                list("rate = mu * S / 2;",    c(S=-1,I= 0,R= 0,N=-1,cases= 0)),
+                list("rate = mu * I/ 2;",    c(S= 0,I=-1,R= 0,N=-1,cases= 0)),
+                list("rate = mu * R/ 2;",    c(S= 0,I= 0,R=-1,N=-1,cases= 0)),
+                list("rate = gamma * I / 2;", c(S= 0,I=-1,R= 1,N= 0,cases= 1)),
+                list(paste("beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;",
+                           "rate = (beta * I + iota) * S / N / 2;", sep = "\n"),
+                     c(S=-1,I= 1,R= 0,N= 0,cases= 0)),
+                .pre = "double beta;", .post = "rate *= 2;")
+
+gsir %>%
+    pomp(rprocess=do.call(gillespie.hl.sim, c(hl.args3, list(hmax=1/52/10))),
+         paramnames = names(params),
+         statenames = c("N", "S","I","R", "cases"),
+         ) %>%
+    simulate(seed=806867103L) -> gsirhl3
 
 list(gill.sim.R=as.data.frame(gsir),
-     gill.sim.Csnippet=as.data.frame(gsir1),
-     gill.hl.sim=as.data.frame(gsirhl)) %>%
+     gill.hl.sim=as.data.frame(gsirhl),
+     gill.hl.sim1=as.data.frame(gsirhl1),
+     gill.hl.sim2=as.data.frame(gsirhl2),
+     gill.hl.sim3=as.data.frame(gsirhl3)) %>%
   melt(id="time") %>%
   subset(variable=="reports") %>%
   ggplot(aes(x=time,y=value,color=L1))+
   labs(color="",y="reports",title="various implementations of same SIR model")+
   geom_line()+
-  theme_bw()+theme(legend.position=c(0.2,0.8))
-
-all.equal(as.data.frame(gsir), as.data.frame(gsir1))
-
-## vnames in different order than statevars
-## order of names for each elementary event different
-## Cnsippets in hl.sim, .sim, and R function in .sim all are consistent
-## use .pre and .post
+  theme_bw()+theme(legend.position=c(0.8,0.8))
