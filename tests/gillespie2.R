@@ -34,6 +34,10 @@ try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
                  zeronames="ct", paramnames=c("mu", "mu"),
                  statenames=c("N","ct")) %>% simulate() %>% invisible())
 
+try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
+                 zeronames=c("ct", "ct"), paramnames=c("mu"),
+                 statenames=c("N","ct")) %>% simulate() %>% invisible())
+
 mwe %>% pomp(rprocess=gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(N=-1, ct=1))),
                  zeronames="ct", paramnames=c("mu"),
                  statenames=c("N","ct")) %>% simulate() %>% invisible()
