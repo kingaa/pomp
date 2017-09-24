@@ -67,15 +67,6 @@ cbind(
   rdeath=c(0,0,-1,-1,0)
 ) -> Vmatrix
 
-cbind(
-  birth=c(0,0,0,1,0),
-  sdeath=c(1,0,0,0,0),
-  infection=c(1,1,0,1,0),
-  ideath=c(0,1,0,0,0),
-  recovery=c(0,1,0,0,0),
-  rdeath=c(0,0,1,0,0)
-) -> Dmatrix
-
 data.frame(
   time=seq(from=0,to=2,by=1/52),
   reports=NA
@@ -83,7 +74,7 @@ data.frame(
   pomp(
     times="time",
     t0=0,
-    rprocess=gillespie.sim(rate.fun=rate.fun,v=Vmatrix,d=Dmatrix,hmax=1/52/10),
+    rprocess=gillespie.sim(rate.fun=rate.fun,v=Vmatrix,hmax=1/52/10),
     zeronames=c("cases"),
     covar=data.frame(
       t=seq(0,2,by=1/52/10),
@@ -113,7 +104,7 @@ gsir %>%
 
 gsir %>%
   pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
-                              v=Vmatrix,d=Dmatrix,hmax=1/52/10),
+                              v=Vmatrix,hmax=1/52/10),
        nbasis=3L,degree=3L,period=1.0,
        paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
        statenames=c("S","I","R","cases")
@@ -123,7 +114,7 @@ gsir %>%
 
 gsir %>%
     pomp(rprocess=gillespie.sim(rate.fun=rate.fun.snip,
-                                v=Vmatrix,d=Dmatrix,hmax=1/52/10),
+                                v=Vmatrix,hmax=1/52/10),
          paramnames = names(params),
          statenames = c("S","I","R", "N", "cases"),
          ) %>%
@@ -143,7 +134,7 @@ list(R=as.data.frame(gsir),
   geom_line()+
   theme_bw()+theme(legend.position=c(0.2,0.8))
 
-try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix),d=Dmatrix)))
+try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix))))
 
 stopifnot(
   gsir %>%
@@ -159,7 +150,7 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
   }
 }
 
-pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>%
+pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>%
   simulate() %>%
   plot(main="freeze at time 1")
 
@@ -171,17 +162,17 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) {
   }
 }
 
-try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) -1
 
-try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
 
-try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 
-try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix,d=Dmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix)) %>% simulate())
 
 create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
   data <- data.frame(time = times, reports = NA)
@@ -189,7 +180,7 @@ create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
   rate.fun <- function(j, x, t, params, covars, ...) {
     switch(j, params["mu"]*x["N"], stop("unrecognized event ",j))
   }
-  rprocess <- gillespie.sim(rate.fun = rate.fun, v=rbind(N=-1, ct=1), d=rbind(1, 0))
+  rprocess <- gillespie.sim(rate.fun = rate.fun, v=rbind(N=-1, ct=1))
   initializer <- function(params, t0, ...) {
     c(N=N_0,ct=12)
   }
