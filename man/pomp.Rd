@@ -259,7 +259,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The string or snippet contains C code that should assign the variable rate to the correct value for the event.
     The variable \code{rate} will exist in the context of the code, as will the covariates variables in \code{covar} and the time \code{t}.
     The state variables and parameters will also be available provided that the \code{statenames} and \code{paramnames} arguments are provided to \code{pomp}.
-    The elements of the integer vector are changes in the value of each of the state variables in the event.
+    The elements of the vector are changes in the value of each of the state variables in the event.
+    Typically, these changes will be integers but floating point values are permissible.
     Thus there should be named value for each of the names of the state variables returned by the initializer.
     The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
     These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
