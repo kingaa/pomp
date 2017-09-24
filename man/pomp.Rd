@@ -272,7 +272,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     It is also possible a C snippet to be provided via the \code{rate.fn} argument to \code{gillespie.sim}.
     The snippet should assign the correct value to a \code{rate} variable depending on the value of \code{j}.
     The same variables will be available as for the C code provided to \code{gillespie.hl.sim}.
-    This lower-level inteface may be preferable if it is easier to write code that calculates the correct rate based on \code{j} rather than to write a snippet for each possible value of \code{j}.
+    This lower-level interface may be preferable if it is easier to write code that calculates the correct rate based on \code{j} rather than to write a snippet for each possible value of \code{j}.
     For example, if the number of possible values of \code{j} is large and the rates vary according to a few simple rules, the lower level interface may provide the easier way of specifying the rates.
 
   \subsection{Size of time step}{
