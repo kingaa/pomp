@@ -193,4 +193,23 @@ create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
 simulate(create_example(times = 1), as.data.frame=TRUE)
 simulate(create_example(times = c(1,2)), as.data.frame=TRUE)
 
+create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
+  data <- data.frame(time = times, reports = NA)
+  mmodel <- reports ~ pois(ct)
+  rate.fun <- function(j, x, t, params, covars, ...) {
+    switch(j, params["mu"]*x["N"], stop("unrecognized event ",j))
+  }
+  rprocess <- gillespie.sim(rate.fun = rate.fun, v=rbind(N=-1, ct=1), d=rbind(1, 0))
+  initializer <- function(params, t0, ...) {
+    c(N=N_0,ct=12)
+  }
+  pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
+       rprocess = rprocess, initializer = initializer,
+       zeronames="ct", paramnames=c("mu"), statenames=c("N","ct"),
+       measurement.model = mmodel)
+}
+
+simulate(create_example(times = 1), as.data.frame=TRUE)
+simulate(create_example(times = c(1,2)), as.data.frame=TRUE)
+
 dev.off()
