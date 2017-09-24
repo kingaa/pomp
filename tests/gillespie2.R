@@ -1,130 +1,62 @@
-
+library(magrittr)
 library(pomp)
 
-deprecated_args <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
-    data <- data.frame(time = times, reports = NA)
-    v <- cbind(death = c(-1,1))
-    d <- cbind(c(1,0))
-    rprocess <- gillespie.sim(Csnippet("rate = mu * N;"), v = v, d=d)
-    initializer <- function(params, t0, ...) {
-        c(N=N_0,ct=12)
-    }
-    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu"), statenames=c("N","ct"))
-}
-invisible(deprecated_args())
+v <- cbind(death = c(-1,1))
+d <- cbind(c(1,0))
 
-dup_vnames <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
+works <- function(times = c(1), t0 = 0, mu = 0.001, N_0 = 1) {
     data <- data.frame(time = times, reports = NA)
-    v <- cbind(death = c(N=-1,N=1))
+    rmeasure <- Csnippet("reports = ct;")
     rprocess <- gillespie.sim(Csnippet("rate = mu * N;"), v = v)
     initializer <- function(params, t0, ...) {
         c(N=N_0,ct=12)
     }
     pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu"), statenames=c("N","ct"))
+         rprocess = rprocess, rmeasure = rmeasure, initializer = initializer,
+         zeronames="ct", paramnames=c("mu"), statenames=c("N","ct"))
 }
-try(simulate(dup_vnames(), states=TRUE))
+mwe <- simulate(works(), seed=1L)
 
-dup_statenames <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
-    data <- data.frame(time = times, reports = NA)
-    v <- cbind(death = c(N=-1,ct=1))
-    rprocess <- gillespie.sim(Csnippet("rate = mu * N;"), v = v)
-    initializer <- function(params, t0, ...) {
-        c(N=N_0,ct=12)
-    }
-    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu"), statenames=c("N","ct", "N"))
-}
-try(simulate(dup_statenames(), states=TRUE))
+vdup <- cbind(death = c(N=-1,N=1))
+try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
+                 zeronames="ct", paramnames=c("mu"), statenames=c("N","ct")) %>%
+    simulate() %>% invisible())
 
-dup_paramnames <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
-    data <- data.frame(time = times, reports = NA)
-    v <- cbind(death = c(N=-1,ct=1))
-    rprocess <- gillespie.sim(Csnippet("rate = mu * N;"), v = v)
-    initializer <- function(params, t0, ...) {
-        c(N=N_0,ct=12)
-    }
-    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu", "mu"), statenames=c("N","ct"))
-}
-try(simulate(dup_paramnames(), states=TRUE))
+try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
+                 zeronames="ct", paramnames=c("mu"),
+                 statenames=c("N","ct", "N")) %>% simulate() %>% invisible())
 
-bad_code <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
-    data <- data.frame(time = times, reports = NA)
-    rprocess <- gillespie.hl.sim(list(3L, c(N=-1, ct=1)))
-    initializer <- function(params, t0, ...) {
-        c(N=N_0,ct=12)
-    }
-    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu"), statenames=c("N","ct"))
-}
-try(simulate(bad_code(), states=TRUE))
+try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
+                 zeronames="ct", paramnames=c("mu", "mu"),
+                 statenames=c("N","ct")) %>% simulate() %>% invisible())
 
-bad_code <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
-    data <- data.frame(time = times, reports = NA)
-    rprocess <- gillespie.hl.sim(list(c("rate = mu * N;", "mistake"), c(N=-1, ct=1)))
-    initializer <- function(params, t0, ...) {
-        c(N=N_0,ct=12)
-    }
-    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu"), statenames=c("N","ct"))
-}
-try(simulate(bad_code(), states=TRUE))
+try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(3L, c(N=-1, ct=1))),
+                 zeronames="ct", paramnames=c("mu"),
+                 statenames=c("N","ct")) %>% simulate() %>% invisible())
 
-bad_changes <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
-    data <- data.frame(time = times, reports = NA)
-    rprocess <- gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(N="-1", ct="1")))
-    initializer <- function(params, t0, ...) {
-        c(N=N_0,ct=12)
-    }
-    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu"), statenames=c("N","ct"))
-}
-try(simulate(bad_changes(), states=TRUE))
+try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;", "mistake"),
+                                                c(N=-1, ct=1))),
+                 zeronames="ct", paramnames=c("mu"),
+                 statenames=c("N","ct")) %>% simulate() %>% invisible())
 
-mismatch_nvar <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
-    data <- data.frame(time = times, reports = NA)
-    rprocess <- gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(N=-1)))
-    initializer <- function(params, t0, ...) {
-        c(N=N_0,ct=12)
-    }
-    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu"), statenames=c("N","ct"))
-}
-try(simulate(mismatch_nvar(), states=TRUE))
+try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"),
+                                                c(N="-1", ct=1))),
+                 zeronames="ct", paramnames=c("mu"),
+                 statenames=c("N","ct")) %>% simulate() %>% invisible())
 
-wrong_vnames <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
-    data <- data.frame(time = times, reports = NA)
-    rprocess <- gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(N=-1, Ct=1)))
-    initializer <- function(params, t0, ...) {
-        c(N=N_0,ct=12)
-    }
-    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu"), statenames=c("N","ct"))
-}
-try(simulate(wrong_vnames(), states=TRUE))
+try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"), c(N=-1))),
+                 zeronames="ct", paramnames=c("mu"),
+                 statenames=c("N","ct")) %>% simulate() %>% invisible())
 
-no_vnames <- function(times = 1, t0 = 0, mu = 0.001, N_0 = 1) {
-    data <- data.frame(time = times, reports = NA)
-    rprocess <- gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(-1, 1)))
-    initializer <- function(params, t0, ...) {
-        c(N=N_0,ct=12)
-    }
-    pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-         rprocess = rprocess, initializer = initializer, zeronames="ct",
-         paramnames=c("mu"), statenames=c("N","ct"))
-}
-try(simulate(no_vnames(), states=TRUE))
+try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"),
+                                                c(N=-1, Ct=1))),
+                 zeronames="ct", paramnames=c("mu"),
+                 statenames=c("N","ct")) %>% simulate() %>% invisible())
+
+try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"),
+                                                c(-1, 1))),
+                 zeronames="ct", paramnames=c("mu"),
+                 statenames=c("N","ct")) %>% simulate() %>% invisible())
 
 ## vnames in different order than statevars
 ## order of names for each elementary event different
