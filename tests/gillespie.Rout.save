@@ -32,86 +32,86 @@ Type 'q()' to quit R.
 +   rho=0.1,
 +   S_0=0.07,I_0=1e-4,R_0=0.93,
 +   pop=1000000
-+   ) -> params
++ ) -> params
 > 
 > rate.fun <- function(j, x, t, params, covars, ...) {
-+     switch(
-+         j,
-+         params["mu"]*x["N"],            # birth
-+         params["mu"]*x["S"],            # susceptible death
-+         {                               # infection
-+             beta <- sum(covars*params[c("beta1","beta2","beta3")])
-+             (beta*x["I"]+params["iota"])*x["S"]/x["N"]
-+         },
-+         params["mu"]*x["I"],            # infected death
-+         params["gamma"]*x["I"],         # recovery
-+         params["mu"]*x["R"],           # recovered death
-+         stop("unrecognized event ",j)
-+     )
++   switch(
++     j,
++     params["mu"]*x["N"],            # birth
++     params["mu"]*x["S"],            # susceptible death
++     {                               # infection
++       beta <- sum(covars*params[c("beta1","beta2","beta3")])
++       (beta*x["I"]+params["iota"])*x["S"]/x["N"]
++     },
++     params["mu"]*x["I"],            # infected death
++     params["gamma"]*x["I"],         # recovery
++     params["mu"]*x["R"],           # recovered death
++     stop("unrecognized event ",j)
++   )
 + }
 > 
 > cbind(
-+     birth=c(1,0,0,1,0),
-+     sdeath=c(-1,0,0,-1,0),
-+     infection=c(-1,1,0,0,0),
-+     ideath=c(0,-1,0,-1,0),
-+     recovery=c(0,-1,1,0,1),
-+     rdeath=c(0,0,-1,-1,0)
++   birth=c(1,0,0,1,0),
++   sdeath=c(-1,0,0,-1,0),
++   infection=c(-1,1,0,0,0),
++   ideath=c(0,-1,0,-1,0),
++   recovery=c(0,-1,1,0,1),
++   rdeath=c(0,0,-1,-1,0)
 + ) -> Vmatrix
 > 
 > cbind(
-+     birth=c(0,0,0,1,0),
-+     sdeath=c(1,0,0,0,0),
-+     infection=c(1,1,0,1,0),
-+     ideath=c(0,1,0,0,0),
-+     recovery=c(0,1,0,0,0),
-+     rdeath=c(0,0,1,0,0)
++   birth=c(0,0,0,1,0),
++   sdeath=c(1,0,0,0,0),
++   infection=c(1,1,0,1,0),
++   ideath=c(0,1,0,0,0),
++   recovery=c(0,1,0,0,0),
++   rdeath=c(0,0,1,0,0)
 + ) -> Dmatrix
 > 
 > data.frame(
-+     time=seq(from=0,to=2,by=1/52),
-+     reports=NA
++   time=seq(from=0,to=2,by=1/52),
++   reports=NA
 + ) %>%
-+     pomp(
-+         times="time",
-+         t0=0,
-+         rprocess=gillespie.sim(rate.fun=rate.fun,v=Vmatrix,d=Dmatrix,hmax=1/52/10),
-+         zeronames=c("cases"),
-+         covar=data.frame(
-+             t=seq(0,2,by=1/52/10),
-+             seas=periodic.bspline.basis(
-+                 seq(0,2,by=1/52/10),
-+                 degree=3,period=1,nbasis=3)),
-+         tcovar="t",
-+         measurement.model=reports~binom(size=cases,prob=rho),
-+         initializer=function(params, t0, ...){
-+             comp.names <- c("S","I","R")
-+             icnames <- paste(comp.names,"0",sep="_")
-+             snames <- c("S","I","R","N","cases")
-+             fracs <- params[icnames]
-+             x0 <- numeric(length(snames))
-+             names(x0) <- snames
-+             x0["N"] <- params["pop"]
-+             x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
-+             x0
-+         }
-+     ) %>%
-+     simulate(params=params,seed=806867104L) -> gsir
++   pomp(
++     times="time",
++     t0=0,
++     rprocess=gillespie.sim(rate.fun=rate.fun,v=Vmatrix,d=Dmatrix,hmax=1/52/10),
++     zeronames=c("cases"),
++     covar=data.frame(
++       t=seq(0,2,by=1/52/10),
++       seas=periodic.bspline.basis(
++         seq(0,2,by=1/52/10),
++         degree=3,period=1,nbasis=3)),
++     tcovar="t",
++     measurement.model=reports~binom(size=cases,prob=rho),
++     initializer=function(params, t0, ...){
++       comp.names <- c("S","I","R")
++       icnames <- paste(comp.names,"0",sep="_")
++       snames <- c("S","I","R","N","cases")
++       fracs <- params[icnames]
++       x0 <- numeric(length(snames))
++       names(x0) <- snames
++       x0["N"] <- params["pop"]
++       x0[comp.names] <- round(params['pop']*fracs/sum(fracs))
++       x0
++     }
++   ) %>%
++   simulate(params=params,seed=806867104L) -> gsir
 > 
 > gsir %>%
-+     pomp(zeronames=NULL) %>%
-+     simulate() %>%
-+     plot(main="Gillespie SIR, no zeroing")
++   pomp(zeronames=NULL) %>%
++   simulate() %>%
++   plot(main="Gillespie SIR, no zeroing")
 > 
 > gsir %>%
-+     pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
-+                                 v=Vmatrix,d=Dmatrix,hmax=1/52/10),
-+          nbasis=3L,degree=3L,period=1.0,
-+          paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
-+          statenames=c("S","I","R","cases")
-+          ) %>%
-+     simulate() %>%
-+     plot(main="Gillespie SIR, with zeroing")
++   pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
++                               v=Vmatrix,d=Dmatrix,hmax=1/52/10),
++        nbasis=3L,degree=3L,period=1.0,
++        paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
++        statenames=c("S","I","R","cases")
++   ) %>%
++   simulate() %>%
++   plot(main="Gillespie SIR, with zeroing")
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 > 
 > pompExample(gillespie.sir)
@@ -123,40 +123,40 @@ newly created object(s):
 > 
 > list(R=as.data.frame(gsir),
 +      C=as.data.frame(gsir2)) %>%
-+     melt(id="time") %>%
-+     subset(variable=="reports") %>%
-+     ggplot(aes(x=time,y=value,color=L1))+
-+     labs(color="",y="reports",title="C vs R implementations")+
-+     geom_line()+
-+     theme_bw()+theme(legend.position=c(0.2,0.8))
++   melt(id="time") %>%
++   subset(variable=="reports") %>%
++   ggplot(aes(x=time,y=value,color=L1))+
++   labs(color="",y="reports",title="C vs R implementations")+
++   geom_line()+
++   theme_bw()+theme(legend.position=c(0.2,0.8))
 > 
 > try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix),d=Dmatrix)))
 Error : in ‘pomp’: in ‘gillespie.sim’ plugin: ‘v’ and ‘d’ must be matrices.
 > 
 > stopifnot(
-+     gsir %>%
++   gsir %>%
 +     simulate(params=c(gamma=0,mu=0,iota=0,beta1=0,beta2=0,beta3=0,beta.sd=0,
 +                       rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) %>%
 +     states() %>% apply(1,diff) %>% equals(0) %>% all())
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) {
-+     if (t>1) {
-+         as.numeric(0)
-+     } else {
-+         rate.fun(j,x,t,params,covars,...)
-+     }
++   if (t>1) {
++     as.numeric(0)
++   } else {
++     rate.fun(j,x,t,params,covars,...)
++   }
 + }
 > 
-> pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% 
-+   simulate() %>% 
+> pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>%
++   simulate() %>%
 +   plot(main="freeze at time 1")
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) {
-+     if (t>1) {
-+         -rate.fun(j,x,t,params,covars,...)
-+     } else {
-+         rate.fun(j,x,t,params,covars,...)
-+     }
++   if (t>1) {
++     -rate.fun(j,x,t,params,covars,...)
++   } else {
++     rate.fun(j,x,t,params,covars,...)
++   }
 + }
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix,d=Dmatrix)) %>% simulate())
@@ -174,6 +174,30 @@ Error : in ‘simulate’: in ‘gillespie.sim’ plugin: user 'rates' must retu
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix,d=Dmatrix)) %>% simulate())
 Error : in ‘pomp’: in ‘gillespie.sim’ plugin: bad option for ‘rate.fn’ argument
+> 
+> create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
++   data <- data.frame(time = times, reports = NA)
++   mmodel <- reports ~ pois(ct)
++   rate.fun <- function(j, x, t, params, covars, ...) {
++     switch(j, params["mu"]*x["N"], stop("unrecognized event ",j))
++   }
++   rprocess <- gillespie.sim(rate.fun = rate.fun, v=rbind(N=-1, ct=1), d=rbind(1, 0))
++   initializer <- function(params, t0, ...) {
++     c(N=N_0,ct=12)
++   }
++   pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
++        rprocess = rprocess, initializer = initializer,
++        zeronames="ct", paramnames=c("mu"), statenames=c("N","ct"),
++        measurement.model = mmodel)
++ }
+> 
+> simulate(create_example(times = 1), as.data.frame=TRUE)
+  time reports N ct sim
+1    1       0 1  0   1
+> simulate(create_example(times = c(1,2)), as.data.frame=TRUE)
+  time reports N ct sim
+1    1       0 1  0   1
+2    2       0 1  0   1
 > 
 > dev.off()
 null device 

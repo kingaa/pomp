@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.15.1}{
+  \itemize{
+    \item Eamon O'Dea identified a bug (Issue #54) occurring when \code{pomp} is called with a single-row data frame.
+    This has been fixed using his contributed patch.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.14.2}{
   \itemize{
     \item A new \code{dmultinom} function is provided in \sQuote{pomp.h}.
