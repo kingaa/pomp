@@ -106,8 +106,8 @@ gillespie.hl.sim <- function(..., .pre = "", .post = "", hmax = Inf){
     PACKAGE <- character(0)
     args <- list(...)
 
-    code_chunks <- lapply(args, "[[", 1)
-    check_code <- function(x) {
+    codeChunks <- lapply(args, "[[", 1)
+    checkCode <- function(x) {
       inh <- inherits(x, what = c("Csnippet", "character"), which = TRUE)
       if(!any(inh)) {
         stop(ep,"the first list element of each event argument should be a",
@@ -123,35 +123,39 @@ gillespie.hl.sim <- function(..., .pre = "", .post = "", hmax = Inf){
         x
       }
     }
-    code_chunks <- lapply(code_chunks, check_code)
-    .pre <- check_code(.pre)
-    .post <- check_code(.post)
+    codeChunks <- lapply(codeChunks, checkCode)
+    .pre <- checkCode(.pre)
+    .post <- checkCode(.post)
 
     stoich <- lapply(args, "[[", 2)
-    stoichcheck <- function(x){
+    checkStoic <- function(x){
         if (! typeof(x) %in%  c("integer", "double")){
             stop(ep,"the second list element of each event argument should be",
-                 "a numeric or integer vector", call.=FALSE)
+                 " a numeric or integer vector", call.=FALSE)
+        }
+        if (is.null(names(x))) {
+            stop(ep,"the second list element of each event argument should be",
+                 " a named vector", call.=FALSE)
         }
     }
-    lapply(stoich, stoichcheck)
+    lapply(stoich, checkStoic)
 
     ## Create C snippet of switch statement
     inds <- seq_along(args)
-    case_maker <- function(i, code_chunk){
+    makeCase <- function(i, chunk){
       label <- paste0("case ", i, ":{")
       endcase <- "break;\n}"
-      paste(label, code_chunk, endcase, sep="\n")
+      paste(label, chunk, endcase, sep="\n")
     }
-    body <- Map(case_maker, inds, code_chunks)
-    last_case <- "default:\nerror(\"unrecognized event %d\",j);\nbreak;\n"
+    body <- Map(makeCase, inds, codeChunks)
+    lastCase <- "default:\nerror(\"unrecognized event %d\",j);\nbreak;\n"
     header <- paste0(.pre, "\nswitch (j) {")
-    footer <- paste0(last_case, "}\n", .post)
+    footer <- paste0(lastCase, "}\n", .post)
     rate.fn <- Csnippet(paste(header, body, footer, sep="\n"))
 
     ### Create v matrix
     ## By coercing the vectors to a data frame and then using rbind,
-    ## we can ensure that all stochiometric coefficients for the same
+    ## we can ensure that all stoichiometric coefficients for the same
     ## state variables are in the same column even if the vectors in
     ## stoich have differently ordered names. Also, rbind will fail if
     ## the set of variables in each data frame is not the same.
