@@ -652,7 +652,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         tpos <- match(times,names(data))
       }
       times <- data[[tpos]]
-      data <- t(sapply(data[-tpos],as.numeric))
+      data <- do.call(rbind, lapply(data[-tpos], as.numeric))
     } else {
       stop(ep,sQuote("data"),
            " must be a data frame or an object of class ",sQuote("pomp"),
