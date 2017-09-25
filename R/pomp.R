@@ -483,8 +483,7 @@ measform2pomp <- function (formulae) {
 
 pomp <- function (data, times, t0, ..., rprocess, dprocess,
                   rmeasure, dmeasure, measurement.model,
-                  skeleton, skeleton.type, skelmap.delta.t,
-                  initializer, rprior, dprior, params, covar, tcovar,
+                  skeleton, initializer, rprior, dprior, params, covar, tcovar,
                   obsnames, statenames, paramnames, covarnames, zeronames,
                   PACKAGE, fromEstimationScale, toEstimationScale,
                   globals, cdir, cfile, shlib.args) {
@@ -529,22 +528,8 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     if (missing(covar)) covar <- data@covar
     if (missing(tcovar)) tcovar <- data@tcovar
     if (missing(zeronames)) zeronames <- data@zeronames
-    if (missing(skeleton.type)) {
-      skeleton.type <- data@skeleton.type
-    } else {
-      stop(ep,"the ",sQuote("skeleton.type"),
-           " argument is no longer used.\n",
-           "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-           call.=FALSE)
-    }
-    if (missing(skelmap.delta.t)) {
-      skelmap.delta.t <- data@skelmap.delta.t
-    } else {
-      stop(ep,"the ",sQuote("skelmap.delta.t"),
-           " argument is no longer used.\n",
-           "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-           call.=FALSE)
-    }
+    skeleton.type <- data@skeleton.type
+    skelmap.delta.t <- data@skelmap.delta.t
     if (missing(skeleton)) {
       skeleton <- data@skeleton
     } else {
@@ -659,22 +644,8 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
            call.=FALSE)
     }
 
-    if (missing(skeleton.type)) {
-      skeleton.type <- "undef"
-    } else {
-      stop(ep,"the ",sQuote("skeleton.type"),
-           " argument is no longer used.\n",
-           "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-           call.=FALSE)
-    }
-    if (missing(skelmap.delta.t)) {
-      skelmap.delta.t <- 1
-    } else {
-      stop(ep,"the ",sQuote("skelmap.delta.t"),
-           " argument is no longer used.\n",
-           "See ",sQuote("?pomp")," for an explanation of the new syntax.",
-           call.=FALSE)
-    }
+    skeleton.type <- "undef"
+    skelmap.delta.t <- 1
     if (!missing(skeleton)) {
       skeleton <- substitute(skeleton)
       flist <- list(
