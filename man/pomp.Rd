@@ -252,7 +252,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
     By default, the elementary event rates will be recomputed at least once per observation interval.
 
-    \code{gillespie.hl.sim} provide a higher-level interface to the simulator. To use it, set rprocess to \preformatted{
+    \code{gillespie.hl.sim} provide a higher-level interface to the simulator.
+    To use it, set rprocess to \preformatted{
       gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)}
     Each argument in \code{...} should be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
     Each of these arguments provides the details for a single elementary event.
