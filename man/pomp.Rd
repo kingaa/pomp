@@ -223,9 +223,30 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The form of \code{f} should be as above (in the discrete-time or Euler cases).
 
     If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} and \code{gillespie.hl.sim} plug-ins.
-    The former allows for the rate function to be provided as an \R function while the latter provides a means of specifying the rate function via a C snippets.
+    The former allows for the rate function to be provided as an \R function or a single C snippet, while the latter provides a means of specifying the elementary events via a list of C snippets.
 
-    To use \code{gillespie.sim}, furnish \preformatted{
+    A high-level interface to the simulator is provided by \code{gillespie.hl.sim}.
+    To use it, supply \preformatted{
+      rprocess = gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)}
+    to \code{pomp}.
+    Each argument in \code{...} corresponds to a single elementary event and should be a list containing two elements.
+    The first should be a string or C snippet;
+    the second should be a named integer vector.
+    The string contains C code that assigns to the variable \code{rate} the corresponding elementary event rate.
+    The variable \code{rate} will exist in the context of the code, as will the covariates (as named in \code{covar}) and the time \code{t}.
+    The state variables and parameters will also be available provided that the \code{statenames} and \code{paramnames} arguments are provided to \code{pomp}.
+    The named integer vector contains the changes to the state variables corresponding to the elementary event.
+    There should be named value for each of the state variables returned by the initializer.
+    Typically, these changes will be integers but floating point values are permissible.
+    The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
+    These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
+    Here's how a simple birth-death model might be specified: \preformatted{
+      gillespie.hl.sim(
+        birth=list("rate = b*N;",c(N=1)),
+        death=list("rate = m*N;",c(N=-1)))}
+    In the above, the state variable \code{N} represents the population size and parameters \code{b}, \code{m} are the birth and death rates, respectively.
+
+    To use the lower-level \code{gillespie.sim} interface, furnish \preformatted{
       rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.
     Here, \code{f} may be an \R function of the form \preformatted{
@@ -245,33 +266,15 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     If the rows are named, the names of the state variables returned by the initializer will be matched to the rows of \code{v} to ensure a correct mapping.
     If any of the row names of \code{v} cannot be found among the state variables or if any row names of \code{v} are duplicated, an error will occur.
 
-    When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
-    By default, the elementary event rates will be recomputed at least once per observation interval.
-
-    \code{gillespie.hl.sim} provide a higher-level interface to the simulator.
-    To use it, set rprocess to \preformatted{
-      gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)}
-    Each argument in \code{...} should be a list whose first element is a string or Csnippet and whose second element is a named integer vector.
-    Each of these arguments provides the details for a single elementary event.
-    The string or snippet contains C code that should assign the variable rate to the correct value for the event.
-    The variable \code{rate} will exist in the context of the code, as will the covariates variables in \code{covar} and the time \code{t}.
-    The state variables and parameters will also be available provided that the \code{statenames} and \code{paramnames} arguments are provided to \code{pomp}.
-    The elements of the vector are changes in the value of each of the state variables in the event.
-    There should be named value for each of the state variables returned by the initializer.
-    Typically, these changes will be integers but floating point values are permissible.
-    The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
-    These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
-    Here's how a simple birth-death model could be specified: \preformatted{
-      gillespie.hl.sim(birth=list("rate = b*N;",c(N=1)),
-        death=list("rate = m*N;",c(N=-1)))}
-    }
-
-    It is also possible for a C snippet to be provided via the \code{rate.fn} argument to \code{gillespie.sim}.
-    The snippet should assign the correct value to a \code{rate} variable depending on the value of \code{j}.
+    It is also possible to provide a C snippet via the \code{rate.fn} argument to \code{gillespie.sim}.
+    Such a snippet should assign the correct value to a \code{rate} variable depending on the value of \code{j}.
     The same variables will be available as for the C code provided to \code{gillespie.hl.sim}.
     This lower-level interface may be preferable if it is easier to write code that calculates the correct rate based on \code{j} rather than to write a snippet for each possible value of \code{j}.
     For example, if the number of possible values of \code{j} is large and the rates vary according to a few simple rules, the lower-level interface may provide the easier way of specifying the model.
 
+    When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
+    By default, the elementary event rates will be recomputed at least once per observation interval.
+  }
   \subsection{Size of time step}{
     The simulator plug-ins \code{discrete.time.sim}, \code{euler.sim}, and \code{onestep.sim} all work by taking discrete time steps.
     They differ as to how this is done.
@@ -286,7 +289,6 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
 	n = floor((t2-t1)/delta.t).}
     }
   }
-
   \subsection{Specifying \code{dprocess}}{
     If you have a procedure that allows you to compute the probability density of an arbitrary transition from state \eqn{x_1}{x1} at time \eqn{t_1}{t1} to state \eqn{x_2}{x2} at time \eqn{t_2>t_1}{t2}, assuming that the state remains unchanged between \eqn{t_1}{t1} and \eqn{t_2}{t2}, then you can use the \code{onestep.dens} plug-in.
     This is accomplished by furnishing \preformatted{
@@ -556,7 +558,7 @@ plot(rick)
 \seealso{
   \link{pomp methods},
   \link{pomp low-level interface}
- }
+}
 \keyword{models}
 \keyword{interface}
 \keyword{programming}
