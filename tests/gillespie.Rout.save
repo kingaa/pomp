@@ -244,13 +244,13 @@ Error : in 'pomp': in 'gillespie.sim' plugin: bad option for 'rate.fn' argument
   time reports N ct sim
 1    1       0 1  0   1
 Warning message:
-argument'd'is deprecated; updates to the simulationalgorithm have made it unnecessary 
+argument 'd' is deprecated; updates to the simulation algorithm have made it unnecessary 
 > simulate(create_example(times = c(1,2)), as.data.frame=TRUE)
   time reports N ct sim
 1    1       0 1  0   1
 2    2       0 1  0   1
 Warning message:
-argument'd'is deprecated; updates to the simulationalgorithm have made it unnecessary 
+argument 'd' is deprecated; updates to the simulation algorithm have made it unnecessary 
 > 
 > dev.off()
 null device 
@@ -258,4 +258,4 @@ null device
 > 
 > proc.time()
    user  system elapsed 
- 30.786   0.358  31.124 
+ 30.924   0.299  31.233 

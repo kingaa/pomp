@@ -42,7 +42,7 @@ Type 'q()' to quit R.
 +                  zeronames="ct", paramnames=c("mu"), statenames=c("N","ct")) %>%
 +     simulate() %>% invisible())
 Warning message:
-argument'd'is deprecated; updates to the simulationalgorithm have made it unnecessary 
+argument 'd' is deprecated; updates to the simulation algorithm have made it unnecessary 
 > 
 > vdup <- cbind(death = c(N=-1,N=1))
 > try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
@@ -290,4 +290,4 @@ Error : in 'pomp': in 'gillespie.hl.sim' plugin: the second list element of each
 > 
 > proc.time()
    user  system elapsed 
- 18.676   2.041  20.793 
+ 18.797   1.933  20.717 
