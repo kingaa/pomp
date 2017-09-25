@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -42,28 +44,28 @@ Type 'q()' to quit R.
 +                  zeronames="ct", paramnames=c("mu"), statenames=c("N","ct")) %>%
 +     simulate() %>% invisible())
 Warning message:
-argument 'd' is deprecated; updates to the simulation algorithm have made it unnecessary 
+argument ‘d’ is deprecated; updates to the simulation algorithm have made it unnecessary 
 > 
 > vdup <- cbind(death = c(N=-1,N=1))
 > try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
 +                  zeronames="ct", paramnames=c("mu"), statenames=c("N","ct")) %>%
 +     simulate() %>% invisible())
-Error : in 'simulate': in 'gillespie.sim' plugin: duplicates in rownames of 'v'
+Error : in ‘simulate’: in ‘gillespie.sim’ plugin: duplicates in rownames of ‘v’
 > 
 > try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct", "N")) %>% simulate() %>% invisible())
-Error : in 'pomp': all 'statenames' must be unique
+Error : in ‘pomp’: all ‘statenames’ must be unique
 > 
 > try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
 +                  zeronames="ct", paramnames=c("mu", "mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in 'pomp': all 'paramnames' must be unique
+Error : in ‘pomp’: all ‘paramnames’ must be unique
 > 
 > try(mwe %>% pomp(rprocess=gillespie.sim(Csnippet("rate = mu * N;"),v=vdup),
 +                  zeronames=c("ct", "ct"), paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in 'pomp': all 'zeronames' must be unique
+Error : in ‘pomp’: all ‘zeronames’ must be unique
 > 
 > mwe %>% pomp(rprocess=gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(N=-1, ct=1))),
 +                  zeronames="ct", paramnames=c("mu"),
@@ -72,36 +74,36 @@ Error : in 'pomp': all 'zeronames' must be unique
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(3L, c(N=-1, ct=1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in 'pomp': in 'gillespie.hl.sim' plugin: the first list element of each event argument should be a Csnippet or string
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: the first list element of each event argument should be a Csnippet or string
 > 
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;", "mistake"),
 +                                                 c(N=-1, ct=1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in 'pomp': in 'gillespie.hl.sim' plugin: the length of the first list element of each event argument should be equal to 1
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: the length of the first list element of each event argument should be equal to 1
 > 
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"),
 +                                                 c(N="-1", ct=1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in 'pomp': in 'gillespie.hl.sim' plugin: the second list element of each event argument should be a numeric or integer vector
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: the second list element of each event argument should be a numeric or integer vector
 > 
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"), c(N=-1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in 'simulate': in 'gillespie.sim' plugin: number of state variables must equal the number of rows in v.
+Error : in ‘simulate’: in ‘gillespie.sim’ plugin: number of state variables must equal the number of rows in v.
 > 
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"),
 +                                                 c(N=-1, Ct=1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in 'simulate': in 'gillespie.sim' plugin: variable 'Ct' not found among the state variables
+Error : in ‘simulate’: in ‘gillespie.sim’ plugin: variable 'Ct' not found among the state variables
 > 
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"),
 +                                                 c(-1, 1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in 'pomp': in 'gillespie.hl.sim' plugin: the second list element of each event argument should be a named vector
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: the second list element of each event argument should be a named vector
 > 
 > ## compare simulation output of various model specifications that should all be statistically equivalent
 > 
@@ -288,6 +290,3 @@ Error : in 'pomp': in 'gillespie.hl.sim' plugin: the second list element of each
 +   geom_line()+
 +   theme_bw()+theme(legend.position=c(0.8,0.8))
 > 
-> proc.time()
-   user  system elapsed 
- 18.797   1.933  20.717 

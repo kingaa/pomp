@@ -7,6 +7,8 @@ R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 
+  Natural language support but running in an English locale
+
 R is a collaborative project with many contributors.
 Type 'contributors()' for more information and
 'citation()' on how to cite R or R packages in publications.
@@ -128,7 +130,7 @@ Type 'q()' to quit R.
 +   ) %>%
 +   simulate() %>%
 +   plot(main="Gillespie SIR, with zeroing")
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
 > 
 > gsir %>%
 +     pomp(rprocess=gillespie.sim(rate.fun=rate.fun.snip,
@@ -139,7 +141,7 @@ In 'pomp': the following unrecognized argument(s) will be stored for use by user
 +     simulate(seed=806867104L) -> gsir1
 > 
 > pompExample(gillespie.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘comp.names’,‘ic.names’,‘nbasis’,‘degree’,‘period’
 newly created object(s):
  gillespie.sir 
 > gsir2 <- simulate(gillespie.sir,params=coef(gsir),
@@ -156,7 +158,7 @@ newly created object(s):
 +   theme_bw()+theme(legend.position=c(0.2,0.8))
 > 
 > try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix))))
-Error : in 'pomp': in 'gillespie.sim' plugin: 'v' must be a matrix.
+Error : in ‘pomp’: in ‘gillespie.sim’ plugin: ‘v’ must be a matrix.
 > 
 > stopifnot(
 +   gsir %>%
@@ -185,20 +187,20 @@ Error : in 'pomp': in 'gillespie.sim' plugin: 'v' must be a matrix.
 + }
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
-Error : in 'simulate': in 'gillespie.sim' plugin: 'rate.fun' returns a negative rate
+Error : in ‘simulate’: in ‘gillespie.sim’ plugin: 'rate.fun' returns a negative rate
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) -1
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
-Error : in 'simulate': in 'gillespie.sim' plugin: 'rate.fun' returns a negative rate
+Error : in ‘simulate’: in ‘gillespie.sim’ plugin: 'rate.fun' returns a negative rate
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
-Error : in 'simulate': in 'gillespie.sim' plugin: user 'rates' must return a single scalar rate.
+Error : in ‘simulate’: in ‘gillespie.sim’ plugin: user 'rates' must return a single scalar rate.
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix)) %>% simulate())
-Error : in 'pomp': in 'gillespie.sim' plugin: bad option for 'rate.fn' argument
+Error : in ‘pomp’: in ‘gillespie.sim’ plugin: bad option for ‘rate.fn’ argument
 > 
 > create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
 +   data <- data.frame(time = times, reports = NA)
@@ -224,38 +226,7 @@ Error : in 'pomp': in 'gillespie.sim' plugin: bad option for 'rate.fn' argument
 1    1       0 1  0   1
 2    2       0 1  0   1
 > 
-> create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
-+   data <- data.frame(time = times, reports = NA)
-+   mmodel <- reports ~ pois(ct)
-+   rate.fun <- function(j, x, t, params, covars, ...) {
-+     switch(j, params["mu"]*x["N"], stop("unrecognized event ",j))
-+   }
-+   rprocess <- gillespie.sim(rate.fun = rate.fun, v=rbind(N=-1, ct=1), d=rbind(1, 0))
-+   initializer <- function(params, t0, ...) {
-+     c(N=N_0,ct=12)
-+   }
-+   pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-+        rprocess = rprocess, initializer = initializer,
-+        zeronames="ct", paramnames=c("mu"), statenames=c("N","ct"),
-+        measurement.model = mmodel)
-+ }
-> 
-> simulate(create_example(times = 1), as.data.frame=TRUE)
-  time reports N ct sim
-1    1       0 1  0   1
-Warning message:
-argument 'd' is deprecated; updates to the simulation algorithm have made it unnecessary 
-> simulate(create_example(times = c(1,2)), as.data.frame=TRUE)
-  time reports N ct sim
-1    1       0 1  0   1
-2    2       0 1  0   1
-Warning message:
-argument 'd' is deprecated; updates to the simulation algorithm have made it unnecessary 
-> 
 > dev.off()
 null device 
           1 
 > 
-> proc.time()
-   user  system elapsed 
- 30.924   0.299  31.233 
