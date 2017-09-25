@@ -14,6 +14,7 @@
 \alias{gillespie.hl.sim}
 \alias{Csnippet}
 \alias{Csnippet-class}
+\alias{coerce,Csnippet,character-method}
 \alias{vectorfield}
 \alias{map}
 \description{
