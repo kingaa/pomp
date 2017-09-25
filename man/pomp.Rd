@@ -260,8 +260,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The variable \code{rate} will exist in the context of the code, as will the covariates variables in \code{covar} and the time \code{t}.
     The state variables and parameters will also be available provided that the \code{statenames} and \code{paramnames} arguments are provided to \code{pomp}.
     The elements of the vector are changes in the value of each of the state variables in the event.
+    There should be named value for each of the state variables returned by the initializer.
     Typically, these changes will be integers but floating point values are permissible.
-    Thus there should be named value for each of the names of the state variables returned by the initializer.
     The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
     These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
     Here's how a simple birth-death model could be specified: \preformatted{
@@ -269,11 +269,11 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
         death=list("rate = m*N;",c(N=-1)))}
     }
 
-    It is also possible a C snippet to be provided via the \code{rate.fn} argument to \code{gillespie.sim}.
+    It is also possible for a C snippet to be provided via the \code{rate.fn} argument to \code{gillespie.sim}.
     The snippet should assign the correct value to a \code{rate} variable depending on the value of \code{j}.
     The same variables will be available as for the C code provided to \code{gillespie.hl.sim}.
     This lower-level interface may be preferable if it is easier to write code that calculates the correct rate based on \code{j} rather than to write a snippet for each possible value of \code{j}.
-    For example, if the number of possible values of \code{j} is large and the rates vary according to a few simple rules, the lower level interface may provide the easier way of specifying the rates.
+    For example, if the number of possible values of \code{j} is large and the rates vary according to a few simple rules, the lower-level interface may provide the easier way of specifying the model.
 
   \subsection{Size of time step}{
     The simulator plug-ins \code{discrete.time.sim}, \code{euler.sim}, and \code{onestep.sim} all work by taking discrete time steps.
