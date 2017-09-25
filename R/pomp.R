@@ -1,7 +1,7 @@
 ## This file defines 'pomp', the basic constructor of the pomp class
 pomp.internal <- function (data, times, t0, rprocess, dprocess,
                            rmeasure, dmeasure,
-                           skeleton, skeleton.type, skelmap.delta.t,
+                           skeleton, skel.type, skel.delta.t,
                            initializer, rprior, dprior,
                            params, covar, tcovar,
                            obsnames, statenames, paramnames, covarnames,
@@ -232,7 +232,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   }
 
   ## handle skeleton
-  if (is.null(skeleton)) skeleton.type <- "undef"
+  if (is.null(skeleton)) skel.type <- "undef"
   skeleton <- pomp.fun(
     f=skeleton,
     PACKAGE=PACKAGE,
@@ -246,10 +246,10 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   )
 
   ## type of skeleton (map or vectorfield)
-  ## skelmap.delta.t has no meaning in the latter case
-  skeleton.type <- match.arg(skeleton.type,c("map","vectorfield","undef"))
-  skelmap.delta.t <- as.numeric(skelmap.delta.t)
-  if (skelmap.delta.t <= 0)
+  ## skel.delta.t has no meaning in the latter case
+  skel.type <- match.arg(skel.type,c("map","vectorfield","undef"))
+  skel.delta.t <- as.numeric(skel.delta.t)
+  if (skel.delta.t <= 0)
     stop("skeleton ",sQuote("delta.t")," must be positive",call.=FALSE)
 
   ## handle rmeasure
@@ -381,8 +381,8 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     dprior = dprior,
     rprior = rprior,
     skeleton = skeleton,
-    skeleton.type = skeleton.type,
-    skelmap.delta.t = skelmap.delta.t,
+    skeleton.type = skel.type,
+    skelmap.delta.t = skel.delta.t,
     data = data,
     times = times,
     t0 = t0,
@@ -528,24 +528,24 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     if (missing(covar)) covar <- data@covar
     if (missing(tcovar)) tcovar <- data@tcovar
     if (missing(zeronames)) zeronames <- data@zeronames
-    skeleton.type <- data@skeleton.type
-    skelmap.delta.t <- data@skelmap.delta.t
+    skel.type <- data@skeleton.type
+    skel.delta.t <- data@skelmap.delta.t
     if (missing(skeleton)) {
       skeleton <- data@skeleton
     } else {
       skeleton <- substitute(skeleton)
-      skeleton.type <- "undef"
+      skel.type <- "undef"
       flist <- list(
         map=function (f, delta.t = 1) {
-          skeleton.type <<- "map"
+          skel.type <<- "map"
           if (delta.t <= 0)
             stop("in ",sQuote("map"),", ",sQuote("delta.t"),
                  " must be positive",call.=FALSE)
-          skelmap.delta.t <<- as.numeric(delta.t)
+          skel.delta.t <<- as.numeric(delta.t)
           f
         },
         vectorfield=function (f) {
-          skeleton.type <<- "vectorfield"
+          skel.type <<- "vectorfield"
           f
         }
       )
@@ -592,8 +592,8 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         dprior=dprior,
         rprior=rprior,
         skeleton=skeleton,
-        skeleton.type=skeleton.type,
-        skelmap.delta.t=skelmap.delta.t,
+        skel.type=skel.type,
+        skel.delta.t=skel.delta.t,
         initializer=initializer,
         covar=covar,
         tcovar=tcovar,
@@ -644,21 +644,21 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
            call.=FALSE)
     }
 
-    skeleton.type <- "undef"
-    skelmap.delta.t <- 1
+    skel.type <- "undef"
+    skel.delta.t <- 1
     if (!missing(skeleton)) {
       skeleton <- substitute(skeleton)
       flist <- list(
         map=function (f, delta.t = 1) {
-          skeleton.type <<- "map"
+          skel.type <<- "map"
           if (delta.t <= 0)
             stop("in ",sQuote("map"),", ",sQuote("delta.t"),
                  " must be positive",call.=FALSE)
-          skelmap.delta.t <<- as.numeric(delta.t)
+          skel.delta.t <<- as.numeric(delta.t)
           f
         },
         vectorfield=function (f) {
-          skeleton.type <<- "vectorfield"
+          skel.type <<- "vectorfield"
           f
         }
       )
@@ -692,8 +692,8 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
         dprior=dprior,
         rprior=rprior,
         skeleton=skeleton,
-        skeleton.type=skeleton.type,
-        skelmap.delta.t=skelmap.delta.t,
+        skel.type=skel.type,
+        skel.delta.t=skel.delta.t,
         initializer=initializer,
         params=params,
         covar=covar,
