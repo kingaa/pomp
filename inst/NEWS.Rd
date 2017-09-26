@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 1.15.2}{
   \itemize{
+    \item A new facility, \code{gillespie.hl.sim}, allows implementation of Gillespie's algorithm for exact stochastic simulation of continuous-time Markov processes via a streamlined C snippet interface.
+    \item The old facility for Gillespie simulations, \code{gillespie.sim}, now accepts C snippets for faster calculation of event rates.
     \item The old \code{skeleton.type} and \code{skelmap.delta.t} arguments of the \code{pomp} constructor, which have generated error messages since version 1.9.2, have been done away with completely.
   }
 }
