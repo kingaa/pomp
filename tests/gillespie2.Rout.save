@@ -74,19 +74,19 @@ Error : in ‘pomp’: all ‘zeronames’ must be unique
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(3L, c(N=-1, ct=1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: the first list element of each event argument should be a Csnippet or string
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: for each event, the first list-element should be a C snippet or string.
 > 
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;", "mistake"),
 +                                                 c(N=-1, ct=1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: the length of the first list element of each event argument should be equal to 1
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: for each event, the length of the first list-element should be 1.
 > 
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"),
 +                                                 c(N="-1", ct=1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: the second list element of each event argument should be a numeric or integer vector
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: for each event, the second list-element should be a named numeric vector
 > 
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(c("rate = mu * N;"), c(N=-1))),
 +                  zeronames="ct", paramnames=c("mu"),
@@ -103,7 +103,7 @@ Error : in ‘simulate’: in ‘gillespie.sim’ plugin: variable 'Ct' not foun
 +                                                 c(-1, 1))),
 +                  zeronames="ct", paramnames=c("mu"),
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
-Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: the second list element of each event argument should be a named vector
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: for each event, the second list-element should be a named numeric vector
 > 
 > ## compare simulation output of various model specifications that should all be statistically equivalent
 > 

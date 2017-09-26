@@ -59,123 +59,124 @@ setClass(
 onestep.sim <- function (step.fun, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("onestepRprocessPlugin",
-    step.fn=step.fun,
-    slotname="step.fn",
-    csnippet=is(step.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      step.fn=step.fun,
+      slotname="step.fn",
+      csnippet=is(step.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
 }
 
 discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("discreteRprocessPlugin",
-    step.fn=step.fun,delta.t=delta.t,
-    slotname="step.fn",
-    csnippet=is(step.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      step.fn=step.fun,delta.t=delta.t,
+      slotname="step.fn",
+      csnippet=is(step.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
 }
 
 euler.sim <- function (step.fun, delta.t, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("eulerRprocessPlugin",
-    step.fn=step.fun,delta.t=delta.t,
-    slotname="step.fn",
-    csnippet=is(step.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      step.fn=step.fun,delta.t=delta.t,
+      slotname="step.fn",
+      csnippet=is(step.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
 }
 
 gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
   if (missing(PACKAGE)) PACKAGE <- character(0)
-  if (!missing(d)){
+  if (!missing(d)) {
     warning("argument ",sQuote("d")," is deprecated; updates to the simulation",
             " algorithm have made it unnecessary", call. = FALSE)
   }
   if (!is.matrix(v)) {
     stop(ep,sQuote("v")," must be a matrix.",
-      call.=FALSE)
+         call.=FALSE)
   }
   new("gillespieRprocessPlugin",
-    rate.fn=rate.fun,v=v, hmax=hmax,
-    slotname="rate.fn",
-    csnippet=is(rate.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      rate.fn=rate.fun,v=v, hmax=hmax,
+      slotname="rate.fn",
+      csnippet=is(rate.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
 }
 
-gillespie.hl.sim <- function(..., .pre = "", .post = "", hmax = Inf){
-    ep <- paste0("in ",sQuote("gillespie.hl.sim")," plugin: ")
-    PACKAGE <- character(0)
-    args <- list(...)
+gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
+  ep <- paste0("in ",sQuote("gillespie.hl.sim")," plugin: ")
+  args <- list(...)
 
-    codeChunks <- lapply(args, "[[", 1)
-    checkCode <- function(x) {
-      inh <- inherits(x, what = c("Csnippet", "character"), which = TRUE)
-      if(!any(inh)) {
-        stop(ep,"the first list element of each event argument should be a",
-             " Csnippet or string", call.=FALSE)
-      }
-      if (length(x) != 1){
-        stop(ep,"the length of the first list element of each event",
-             " argument should be equal to 1", call.=FALSE)
-      }
-      if (inh[1] == 1) {
-        x@text
-      } else {
-        x
-      }
+  for (k in seq_along(args)) {
+    if (!is.list(args[[k]]) || length(args[[k]]) != 2) {
+      stop(ep,"each of the events should be specified using a length-2 list",
+           call.=FALSE)
     }
-    codeChunks <- lapply(codeChunks, checkCode)
-    .pre <- checkCode(.pre)
-    .post <- checkCode(.post)
+  }
 
-    stoich <- lapply(args, "[[", 2)
-    checkStoic <- function(x){
-        if (! typeof(x) %in%  c("integer", "double")){
-            stop(ep,"the second list element of each event argument should be",
-                 " a numeric or integer vector", call.=FALSE)
-        }
-        if (is.null(names(x))) {
-            stop(ep,"the second list element of each event argument should be",
-                 " a named vector", call.=FALSE)
-        }
+  codeChunks <- lapply(args, "[[", 1)
+  stoich <- lapply(args, "[[", 2)
+
+  checkCode <- function(x) {
+    inh <- inherits(x, what = c("Csnippet", "character"), which = TRUE)
+    if (!any(inh)) {
+      stop(ep,"for each event, the first list-element should be a",
+           " C snippet or string.", call.=FALSE)
     }
-    lapply(stoich, checkStoic)
-
-    ## Create C snippet of switch statement
-    inds <- seq_along(args)
-    makeCase <- function(i, chunk){
-      label <- paste0("case ", i, ":{")
-      endcase <- "break;\n}"
-      paste(label, chunk, endcase, sep="\n")
+    if (length(x) != 1){
+      stop(ep,"for each event, the length of the first list-element",
+           " should be 1.", call.=FALSE)
     }
-    body <- Map(makeCase, inds, codeChunks)
-    body <- paste(body, collapse="\n")
-    lastCase <- "default:\nerror(\"unrecognized event %d\",j);\nbreak;\n"
-    header <- paste0(.pre, "\nswitch (j) {")
-    footer <- paste0(lastCase, "}\n", .post)
-    rate.fn <- Csnippet(paste(header, body, footer, sep="\n"))
+    as(x,"character")
+  }
 
-    ### Create v matrix
-    ## By coercing the vectors to a data frame and then using rbind,
-    ## we can ensure that all stoichiometric coefficients for the same
-    ## state variables are in the same column even if the vectors in
-    ## stoich have differently ordered names. Also, rbind will fail if
-    ## the set of variables in each data frame is not the same.
-    stoichdf <- lapply(stoich, function(x) data.frame(as.list(x)))
-    v <- t(data.matrix(do.call(rbind, stoichdf)))
-    new("gillespieRprocessPlugin",
+  codeChunks <- lapply(codeChunks, checkCode)
+
+  tryCatch({
+    .pre <- paste(as.character(.pre),collapse="\n")
+    .post <- paste(as.character(.post),collapse="\n")
+  },
+  error = function (e) {
+    stop(ep,sQuote(".pre")," and ",sQuote(".post"),
+         "must be C snippets or strings.",call.=FALSE)
+  })
+
+  for (k in seq_along(stoich)) {
+    if (!is.numeric(stoich[[k]]) || is.null(names(stoich[[k]]))) {
+      stop(ep,"for each event, the second list-element should be",
+           " a named numeric vector", call.=FALSE)
+    }
+  }
+
+  ## Create C snippet of switch statement
+  header <- paste0(.pre, "\nswitch (j) {")
+  body <- paste0(
+    sprintf("case %d:\n{\n%s\n}\nbreak;\n",seq_along(codeChunks),codeChunks),
+    collapse="\n"
+  )
+  footer <- paste0("default:\nerror(\"unrecognized event %d\",j);\nbreak;\n}\n",.post)
+  rate.fn <- Csnippet(paste(header, body, footer, sep="\n"))
+
+  ## Create v matrix
+  ## By coercing the vectors to a data frame and then using rbind,
+  ## we can ensure that all stoichiometric coefficients for the same
+  ## state variables are in the same column even if the vectors in
+  ## stoich have differently ordered names. Also, rbind will fail if
+  ## the set of variables in each data frame is not the same.
+  stoichdf <- lapply(stoich, function (x) data.frame(as.list(x)))
+  v <- t(data.matrix(do.call(rbind, stoichdf)))
+
+  new("gillespieRprocessPlugin",
       rate.fn=rate.fn, v=v, hmax=hmax,
       slotname="rate.fn",
-      csnippet=TRUE,
-      PACKAGE=PACKAGE)
+      csnippet=TRUE)
 }
 
 onestep.dens <- function (dens.fun, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("onestepDprocessPlugin",
-    dens.fn=dens.fun,
-    slotname="dens.fn",
-    csnippet=is(dens.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      dens.fn=dens.fun,
+      slotname="dens.fn",
+      csnippet=is(dens.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
 }
 
 setMethod(
@@ -212,9 +213,9 @@ setMethod(
       }
     )
     function (xstart, times, params, ...,
-      zeronames = character(0),
-      tcovar, covar,
-      .getnativesymbolinfo = TRUE) {
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE) {
       tryCatch(
         .Call(
           euler_model_simulator,
@@ -256,9 +257,9 @@ setMethod(
       }
     )
     function (xstart, times, params, ...,
-      zeronames = character(0),
-      tcovar, covar,
-      .getnativesymbolinfo = TRUE) {
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE) {
       tryCatch(
         .Call(
           euler_model_simulator,
@@ -300,9 +301,9 @@ setMethod(
       }
     )
     function (xstart, times, params, ...,
-      zeronames = character(0),
-      tcovar, covar,
-      .getnativesymbolinfo = TRUE) {
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE) {
       tryCatch(
         .Call(
           euler_model_simulator,
@@ -343,11 +344,10 @@ setMethod(
         stop(ep,conditionMessage(e),call.=FALSE)
       }
     )
-    args <- list(...)
     function (xstart, times, params,
-      zeronames = character(0),
-      tcovar, covar,
-      .getnativesymbolinfo = TRUE,
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE,
               ...) {
       if (anyDuplicated(rownames(object@v))){
         stop(ep,"duplicates in rownames of ",sQuote("v"), call.=FALSE)
@@ -375,7 +375,6 @@ setMethod(
   }
 )
 
-
 setMethod(
   "plugin.handler",
   signature=signature(object='onestepDprocessPlugin'),
@@ -394,8 +393,8 @@ setMethod(
       }
     )
     function (x, times, params, ...,
-      tcovar, covar, log = FALSE,
-      .getnativesymbolinfo = TRUE) {
+              tcovar, covar, log = FALSE,
+              .getnativesymbolinfo = TRUE) {
       tryCatch(
         .Call(
           euler_model_density,
