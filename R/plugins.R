@@ -136,7 +136,7 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   },
   error = function (e) {
     stop(ep,sQuote(".pre")," and ",sQuote(".post"),
-         "must be C snippets or strings.",call.=FALSE)
+         " must be C snippets or strings.",call.=FALSE)
   })
 
   for (k in seq_along(stoich)) {

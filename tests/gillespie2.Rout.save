@@ -67,9 +67,24 @@ Error : in ‘pomp’: all ‘paramnames’ must be unique
 +                  statenames=c("N","ct")) %>% simulate() %>% invisible())
 Error : in ‘pomp’: all ‘zeronames’ must be unique
 > 
-> mwe %>% pomp(rprocess=gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(N=-1, ct=1))),
+> try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(N=-1, ct=1), "bob")),
 +                  zeronames="ct", paramnames=c("mu"),
-+                  statenames=c("N","ct")) %>% simulate() %>% invisible()
++                  statenames=c("N","ct")) %>% simulate() %>% invisible())
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: each of the events should be specified using a length-2 list
+> 
+> try(mwe %>% pomp(rprocess=gillespie.hl.sim(.pre=function(x)x,list(Csnippet("rate = mu * N;"), c(N=-1, ct=1))),
++              zeronames="ct", paramnames=c("mu"),
++              statenames=c("N","ct")) %>% simulate() %>% invisible())
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: ‘.pre’ and ‘.post’ must be C snippets or strings.
+> 
+> try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(function(N) mu*N, c(N=-1, ct=1))),
++                  zeronames="ct", paramnames=c("mu"),
++                  statenames=c("N","ct")) %>% simulate() %>% invisible())
+Error : in ‘pomp’: in ‘gillespie.hl.sim’ plugin: for each event, the first list-element should be a C snippet or string.
+> 
+> mwe %>% pomp(rprocess=gillespie.hl.sim(list(Csnippet("rate = mu * N;"), c(N=-1, ct=1))),
++              zeronames="ct", paramnames=c("mu"),
++              statenames=c("N","ct")) %>% simulate() %>% invisible()
 > 
 > try(mwe %>% pomp(rprocess=gillespie.hl.sim(list(3L, c(N=-1, ct=1))),
 +                  zeronames="ct", paramnames=c("mu"),
