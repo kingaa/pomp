@@ -1,8 +1,8 @@
 Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
-Version: 1.15.1.3
-Date: 2017-09-24
+Version: 1.15.2.1
+Date: 2017-09-25
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -16,7 +16,8 @@ Authors@R: c(person(given=c("Aaron","A."),family="King",
 	  person(given=c("Helen"),family="Wearing",role=c("ctb")),
 	  person(given=c("Simon","N."),family="Wood",role=c("ctb")),
 	  person(given="Sebastian",family="Funk",role=c("ctb")),
-	  person(given=c("Steven","G."),family="Johnson",role=c("ctb"))
+	  person(given=c("Steven","G."),family="Johnson",role=c("ctb")),
+	  person(given=c("Eamon"),family="O'Dea",role=c("ctb"))
 	  )
 URL: https://kingaa.github.io/pomp/
 Description: Tools for working with partially observed Markov process (POMP) models (also known as stochastic dynamical systems, hidden Markov models, and nonlinear, non-Gaussian, state-space models).  The package provides facilities for implementing POMP models, simulating them, and fitting them to time series data by a variety of frequentist and Bayesian methods.  It is also a versatile platform for implementation of inference methods for general POMP models.

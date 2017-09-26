@@ -11,8 +11,10 @@
 \alias{discrete.time.sim}
 \alias{onestep.dens}
 \alias{gillespie.sim}
+\alias{gillespie.hl.sim}
 \alias{Csnippet}
 \alias{Csnippet-class}
+\alias{coerce,Csnippet,character-method}
 \alias{vectorfield}
 \alias{map}
 \description{
@@ -31,14 +33,14 @@
     \item{dprior}{which evaluates the prior probability density function;}
     \item{skeleton}{which computes the deterministic skeleton of the unobserved state process.}
   }
-  The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp}{package website}.
+  The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp/}{package website}.
 }
 \usage{
 pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-     measurement.model, skeleton, skeleton.type, skelmap.delta.t,
-     initializer, rprior, dprior, params, covar, tcovar,
-     obsnames, statenames, paramnames, covarnames, zeronames,
-     PACKAGE, fromEstimationScale, toEstimationScale, globals,
+     measurement.model, skeleton, initializer, rprior, dprior,
+     params, covar, tcovar, obsnames, statenames, paramnames,
+     covarnames, zeronames, PACKAGE,
+     fromEstimationScale, toEstimationScale, globals,
      cdir, cfile, shlib.args)
 }
 \arguments{
@@ -71,10 +73,6 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   \item{skeleton}{
     optional; the deterministic skeleton of the unobserved state process.
     See below under \dQuote{The Deterministic Skeleton} for details.
-  }
-  \item{skeleton.type, skelmap.delta.t}{
-    deprecated.
-    These will be removed in a future release.
   }
   \item{initializer}{
     optional; draws from the distribution of initial values of the unobserved Markov state process.
@@ -162,7 +160,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   In writing a C snippet one must bear in mind both the \emph{goal} of the snippet, i.e., what computation it is intended to perform, and the \emph{context} in which it will be executed.
   These are explained here in the form of general rules.
   Additional specific rules apply according to the function of the particular C snippet.
-  Illustrative examples are given in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
+  Illustrative examples are given in the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
   \enumerate{
     \item C snippets must be valid C.
     They will embedded verbatim in a template file which will then be compiled by a call to \code{R CMD SHLIB}.
@@ -200,7 +198,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Accordingly, each state variable should be over-written with its new value.
     In addition to the states, parameters, covariates (if any), and observables, the variables \code{t} and \code{dt}, containing respectively the time at the beginning of the step and the step's duration, will be defined in the context in which the C snippet is executed.
     See above under \dQuote{General rules for C snippet writing} for more details.
-    Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
+    Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 
     If \code{f} is given as an \R function, it should have prototype \preformatted{
       f(x, t, params, delta.t, ...)}
@@ -225,29 +223,59 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     Again, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
     The form of \code{f} should be as above (in the discrete-time or Euler cases).
 
-    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} plug-in.
-    In this case, furnish \preformatted{
-      rprocess = gillespie.sim(rate.fun = f, v, d, hmax = Inf)}
+    If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available, via the \code{gillespie.sim} and \code{gillespie.hl.sim} plug-ins.
+    The former allows for the rate function to be provided as an \R function or a single C snippet, while the latter provides a means of specifying the elementary events via a list of C snippets.
+
+    A high-level interface to the simulator is provided by \code{gillespie.hl.sim}.
+    To use it, supply \preformatted{
+      rprocess = gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)}
+    to \code{pomp}.
+    Each argument in \code{...} corresponds to a single elementary event and should be a list containing two elements.
+    The first should be a string or C snippet;
+    the second should be a named integer vector.
+    The string contains C code that assigns to the variable \code{rate} the corresponding elementary event rate.
+    The variable \code{rate} will exist in the context of the code, as will the covariates (as named in \code{covar}) and the time \code{t}.
+    The state variables and parameters will also be available provided that the \code{statenames} and \code{paramnames} arguments are provided to \code{pomp}.
+    The named integer vector contains the changes to the state variables corresponding to the elementary event.
+    There should be named value for each of the state variables returned by the initializer.
+    Typically, these changes will be integers but floating point values are permissible.
+    The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
+    These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
+    Here's how a simple birth-death model might be specified: \preformatted{
+      gillespie.hl.sim(
+        birth=list("rate = b*N;",c(N=1)),
+        death=list("rate = m*N;",c(N=-1)))}
+    In the above, the state variable \code{N} represents the population size and parameters \code{b}, \code{m} are the birth and death rates, respectively.
+
+    To use the lower-level \code{gillespie.sim} interface, furnish \preformatted{
+      rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)}
     to \code{pomp}, where \code{f} gives the rates of the elementary events.
-    Here, \code{f} must be an \R function of the form \preformatted{
+    Here, \code{f} may be an \R function of the form \preformatted{
       f(j, x, t, params, ...)}
     When \code{f} is called,
-    the integer \code{j} will be the number of the elementary event (corresponding to the columns of matrices \code{v} and \code{d}, see below),
+    the integer \code{j} will be the number of the elementary event (corresponding to the column the matrix \code{v}, see below),
     \code{x} will be a named numeric vector containing the value of the state process at time \code{t} and
     \code{params} is a named numeric vector containing parameters.
     \code{f} should return a single numerical value, representing the rate of that elementary event at that point in state space and time.
 
-    Matrices \code{v} and \code{d} specify the continuous-time Markov process in terms of its elementary events.
-    Each should have dimensions \code{nvar} x \code{nevent}, where \code{nvar} is the number of state variables and \code{nevent} is the number of elementary events.
+    Matrix \code{v} specifies the continuous-time Markov process in terms of its elementary events.
+    It should have dimensions \code{nvar} x \code{nevent}, where \code{nvar} is the number of state variables and \code{nevent} is the number of elementary events.
     \code{v} describes the changes that occur in each elementary event:
     it will usually comprise the values 1, -1, and 0 according to whether a state variable is incremented, decremented, or unchanged in an elementary event.
-    \code{d} is a binary matrix that describes the dependencies of elementary event rates on state variables:
-    \code{d[i,j]} will have value 1 if event rate \code{j} must be updated as a result of a change in state variable \code{i} and 0 otherwise.
+    The rows of \code{v} may be unnamed or named.
+    If the rows are unnamed, they are assumed to be in the same order as the vector of state variables returned by the initializer.
+    If the rows are named, the names of the state variables returned by the initializer will be matched to the rows of \code{v} to ensure a correct mapping.
+    If any of the row names of \code{v} cannot be found among the state variables or if any row names of \code{v} are duplicated, an error will occur.
+
+    It is also possible to provide a C snippet via the \code{rate.fn} argument to \code{gillespie.sim}.
+    Such a snippet should assign the correct value to a \code{rate} variable depending on the value of \code{j}.
+    The same variables will be available as for the C code provided to \code{gillespie.hl.sim}.
+    This lower-level interface may be preferable if it is easier to write code that calculates the correct rate based on \code{j} rather than to write a snippet for each possible value of \code{j}.
+    For example, if the number of possible values of \code{j} is large and the rates vary according to a few simple rules, the lower-level interface may provide the easier way of specifying the model.
 
     When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
     By default, the elementary event rates will be recomputed at least once per observation interval.
   }
-
   \subsection{Size of time step}{
     The simulator plug-ins \code{discrete.time.sim}, \code{euler.sim}, and \code{onestep.sim} all work by taking discrete time steps.
     They differ as to how this is done.
@@ -262,7 +290,6 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
 	n = floor((t2-t1)/delta.t).}
     }
   }
-
   \subsection{Specifying \code{dprocess}}{
     If you have a procedure that allows you to compute the probability density of an arbitrary transition from state \eqn{x_1}{x1} at time \eqn{t_1}{t1} to state \eqn{x_2}{x2} at time \eqn{t_2>t_1}{t2}, assuming that the state remains unchanged between \eqn{t_1}{t1} and \eqn{t_2}{t2}, then you can use the \code{onestep.dens} plug-in.
     This is accomplished by furnishing \preformatted{
@@ -275,7 +302,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \code{f} should return the \emph{log} likelihood of a transition from \code{x1} at time \code{t1} to \code{x2} at time \code{t2}, assuming that no intervening transitions have occurred.
   }
 
-  To see examples, consult the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
+  To see examples, consult the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 
 }
 \section{The Measurement Model}{
@@ -291,7 +318,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
   }
   General rules for writing C snippets are provided above.
-  The tutorials on the \href{https://kingaa.github.io/pomp}{package website} give examples as well.
+  The tutorials on the \href{https://kingaa.github.io/pomp/}{package website} give examples as well.
 
   It is also possible, though far less efficient, to specify \code{rmeasure} using an \R function.
   In this case, specify the measurement model simulator by furnishing \preformatted{
@@ -361,7 +388,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \item When the skeleton is a vectorfield, the component corresponding to state variable \code{x} is named \code{Dx} and is the value of \eqn{dx/dt}.
     \item As with the other C snippets, all states, parameters and covariates, as well as the current time, \code{t}, will be defined in the context within which the snippet is executed.
   }
-  The tutorials on the \href{https://kingaa.github.io/pomp}{package website} give some examples.
+  The tutorials on the \href{https://kingaa.github.io/pomp/}{package website} give some examples.
 
   If \code{f} is an \R function, it must be of prototype \preformatted{
     f(x, t, params, \dots)}
@@ -473,7 +500,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   In formulating models, one sometimes wishes to define a state variable that will accumulate some quantity over the interval between successive observations.
   \pkg{pomp} provides a facility to make such features more convenient.
   Specifically, variables named in the \code{pomp}'s \code{zeronames} argument will be set to zero immediately following each observation.
-  See \code{\link{euler.sir}} and the tutorials on the \href{https://kingaa.github.io/pomp}{package website} for examples.
+  See \code{\link{euler.sir}} and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website} for examples.
 }
 \section{Viewing generated C code}{
   It can be useful to view the C code generated by calling \code{pomp} with one or more C snippet arguments.
@@ -532,7 +559,7 @@ plot(rick)
 \seealso{
   \link{pomp methods},
   \link{pomp low-level interface}
- }
+}
 \keyword{models}
 \keyword{interface}
 \keyword{programming}

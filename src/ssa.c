@@ -2,7 +2,8 @@
 #include <R_ext/Constants.h>
 
 static void gillespie (double *t, double tmax, double *f, double *y, 
-		       const double *v, int nvar, int nevent) {
+		       const double *v, int nvar, int nevent, Rboolean hasvname,
+		       const int *ivmat) {
   double tstep, p;
   double vv;
   int i, j;
@@ -40,7 +41,11 @@ static void gillespie (double *t, double tmax, double *f, double *y,
     for (i = 0; i < nvar; i++) {
       vv = v[i+nvar*jevent];
       if (vv != 0) {
-	y[i] += vv;
+	if (hasvname) {
+	  y[ivmat[i]] += vv;
+	} else {
+	  y[i] += vv;
+	}
       }
     }
 
@@ -50,9 +55,9 @@ static void gillespie (double *t, double tmax, double *f, double *y,
 static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
 		 int nvar, int nevent, int npar, int nrep, int ntimes,
 		 double *xstart, const double *times, const double *params, double *xout,
-		 const double *e, const double *v, const double *d,
-		 int ndeps, const int *ideps, int nzero, const int *izero,
+		 const double *v, int nzero, const int *izero,
 		 const int *istate, const int *ipar, int ncovar, const int *icovar,
+		 Rboolean hasvname, const int *ivmat,
 		 int lcov, int mcov, double *tcov, double *cov, const double *hmax) {
   double t = times[0];
   double tmax;
@@ -87,7 +92,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     R_CheckUserInterrupt();
     tmax = t + *hmax;
     tmax = (tmax > times[icount]) ? times[icount] : tmax;
-    gillespie(&t,tmax,f,y,v,nvar,nevent);
+    gillespie(&t,tmax,f,y,v,nvar,nevent,hasvname,ivmat);
 
     if (mcov > 0) table_lookup(&tab,t,covars);
 
@@ -172,33 +177,35 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
 }
 
 SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
-		    SEXP e, SEXP vmatrix, SEXP dmatrix, SEXP deps, SEXP tcovar, SEXP covar,
+		    SEXP vmatrix, SEXP tcovar, SEXP covar,
 		    SEXP zeronames, SEXP hmax, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   int *dim, xdim[3];
-  int nvar, nevent, npar, nrep, ntimes, ndeps;
+  int nvar, nvarv, nevent, npar, nrep, ntimes;
   int covlen, covdim;
   SEXP statenames, paramnames, covarnames;
   int nstates, nparams, ncovars;
   int nzeros = LENGTH(zeronames);
   pompfunmode use_native = undef;
-  SEXP X, pindex, sindex, cindex, zindex;
-  int *sidx, *pidx, *cidx, *zidx, *didx = 0;
-  SEXP fn, Snames, Pnames, Cnames;
+  SEXP X, pindex, sindex, cindex, zindex, vindex;
+  int *sidx, *pidx, *cidx, *zidx, *vidx;
+  SEXP fn, Snames, Pnames, Cnames, Vnames;
+  Rboolean hasvnames;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
   dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
-  dim = INTEGER(GET_DIM(vmatrix)); nevent = dim[1];
+  dim = INTEGER(GET_DIM(vmatrix)); nvarv = dim[0]; nevent = dim[1];
+  if (nvarv != nvar) {
+    errorcall(R_NilValue,"number of state variables must equal the number of rows in v.");
+  }
   ntimes = LENGTH(times);
-
-  ndeps = LENGTH(deps);
-  if (ndeps > 0) didx = INTEGER(deps);
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
+  PROTECT(Vnames = GET_ROWNAMES(GET_DIMNAMES(vmatrix))); nprotect++;
 
   PROTECT(statenames = GET_SLOT(func,install("statenames"))); nprotect++;
   PROTECT(paramnames = GET_SLOT(func,install("paramnames"))); nprotect++;
@@ -207,6 +214,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   nstates = LENGTH(statenames);
   nparams = LENGTH(paramnames);
   ncovars = LENGTH(covarnames);
+  hasvnames = !isNull(Vnames);
 
   PROTECT(hmax = AS_NUMERIC(hmax)); nprotect++;
 
@@ -270,6 +278,12 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
   } else {
     zidx = 0;
   }
+  if (hasvnames) {
+    PROTECT(vindex = MATCHROWNAMES(xstart,Vnames,"state variables")); nprotect++;
+    vidx = INTEGER(vindex);
+  } else {
+    vidx = 0;
+  }
 
   if (use_native) {
     set_pomp_userdata(args);
@@ -281,8 +295,8 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     for (i = 0; i < nrep; i++) {
       SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
 	  REAL(xstart),REAL(times),REAL(params),
-	  REAL(X),REAL(e),REAL(vmatrix),REAL(dmatrix),ndeps,didx,
-	  nzeros,zidx,sidx,pidx,ncovars,cidx,covlen,covdim,
+	  REAL(X),REAL(vmatrix),
+	  nzeros,zidx,sidx,pidx,ncovars,cidx,hasvnames,vidx,covlen,covdim,
 	  REAL(tcovar),REAL(covar),REAL(hmax));
     }
   }

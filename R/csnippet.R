@@ -16,3 +16,11 @@ Csnippet <- function (text) {
       text=as.character(text)
       )
 }
+
+setAs(
+  from="Csnippet",
+  to="character",
+  def = function (from) {
+    from@text
+  }
+)

@@ -44,8 +44,7 @@ setClass(
   slots=c(
     rate.fn="ANY",
     hmax="numeric",
-    v="matrix",
-    d="matrix"
+    v="matrix"
   )
 )
 
@@ -60,56 +59,124 @@ setClass(
 onestep.sim <- function (step.fun, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("onestepRprocessPlugin",
-    step.fn=step.fun,
-    slotname="step.fn",
-    csnippet=is(step.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      step.fn=step.fun,
+      slotname="step.fn",
+      csnippet=is(step.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
 }
 
 discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("discreteRprocessPlugin",
-    step.fn=step.fun,delta.t=delta.t,
-    slotname="step.fn",
-    csnippet=is(step.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      step.fn=step.fun,delta.t=delta.t,
+      slotname="step.fn",
+      csnippet=is(step.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
 }
 
 euler.sim <- function (step.fun, delta.t, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("eulerRprocessPlugin",
-    step.fn=step.fun,delta.t=delta.t,
-    slotname="step.fn",
-    csnippet=is(step.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      step.fn=step.fun,delta.t=delta.t,
+      slotname="step.fn",
+      csnippet=is(step.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
 }
 
 gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
   if (missing(PACKAGE)) PACKAGE <- character(0)
-  if (!is.matrix(v) || !is.matrix(d)) {
-    stop(ep,sQuote("v")," and ",sQuote("d")," must be matrices.",
-      call.=FALSE)
+  if (!missing(d)) {
+    warning("argument ",sQuote("d")," is deprecated; updates to the simulation",
+            " algorithm have made it unnecessary", call. = FALSE)
   }
-  nvar <- nrow(v)
-  nevent <- ncol(v)
-  if ((nvar!=nrow(d))||(nevent!=ncol(d)))
-    stop(ep,sQuote("v")," and ",sQuote("d")," must agree in dimension.",
-      call.=FALSE)
+  if (!is.matrix(v)) {
+    stop(ep,sQuote("v")," must be a matrix.",
+         call.=FALSE)
+  }
   new("gillespieRprocessPlugin",
-    rate.fn=rate.fun,v=v,d=d,hmax=hmax,
-    slotname="rate.fn",
-    csnippet=is(rate.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      rate.fn=rate.fun,v=v, hmax=hmax,
+      slotname="rate.fn",
+      csnippet=is(rate.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
+}
+
+gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
+  ep <- paste0("in ",sQuote("gillespie.hl.sim")," plugin: ")
+  args <- list(...)
+
+  for (k in seq_along(args)) {
+    if (!is.list(args[[k]]) || length(args[[k]]) != 2) {
+      stop(ep,"each of the events should be specified using a length-2 list",
+           call.=FALSE)
+    }
+  }
+
+  codeChunks <- lapply(args, "[[", 1)
+  stoich <- lapply(args, "[[", 2)
+
+  checkCode <- function(x) {
+    inh <- inherits(x, what = c("Csnippet", "character"), which = TRUE)
+    if (!any(inh)) {
+      stop(ep,"for each event, the first list-element should be a",
+           " C snippet or string.", call.=FALSE)
+    }
+    if (length(x) != 1){
+      stop(ep,"for each event, the length of the first list-element",
+           " should be 1.", call.=FALSE)
+    }
+    as(x,"character")
+  }
+
+  codeChunks <- lapply(codeChunks, checkCode)
+
+  tryCatch({
+    .pre <- paste(as.character(.pre),collapse="\n")
+    .post <- paste(as.character(.post),collapse="\n")
+  },
+  error = function (e) {
+    stop(ep,sQuote(".pre")," and ",sQuote(".post"),
+         "must be C snippets or strings.",call.=FALSE)
+  })
+
+  for (k in seq_along(stoich)) {
+    if (!is.numeric(stoich[[k]]) || is.null(names(stoich[[k]]))) {
+      stop(ep,"for each event, the second list-element should be",
+           " a named numeric vector", call.=FALSE)
+    }
+  }
+
+  ## Create C snippet of switch statement
+  header <- paste0(.pre, "\nswitch (j) {")
+  body <- paste0(
+    sprintf("case %d:\n{\n%s\n}\nbreak;\n",seq_along(codeChunks),codeChunks),
+    collapse="\n"
+  )
+  footer <- paste0("default:\nerror(\"unrecognized event %d\",j);\nbreak;\n}\n",.post)
+  rate.fn <- Csnippet(paste(header, body, footer, sep="\n"))
+
+  ## Create v matrix
+  ## By coercing the vectors to a data frame and then using rbind,
+  ## we can ensure that all stoichiometric coefficients for the same
+  ## state variables are in the same column even if the vectors in
+  ## stoich have differently ordered names. Also, rbind will fail if
+  ## the set of variables in each data frame is not the same.
+  stoichdf <- lapply(stoich, function (x) data.frame(as.list(x)))
+  v <- t(data.matrix(do.call(rbind, stoichdf)))
+
+  new("gillespieRprocessPlugin",
+      rate.fn=rate.fn, v=v, hmax=hmax,
+      slotname="rate.fn",
+      csnippet=TRUE)
 }
 
 onestep.dens <- function (dens.fun, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("onestepDprocessPlugin",
-    dens.fn=dens.fun,
-    slotname="dens.fn",
-    csnippet=is(dens.fun,"Csnippet"),
-    PACKAGE=PACKAGE)
+      dens.fn=dens.fun,
+      slotname="dens.fn",
+      csnippet=is(dens.fun,"Csnippet"),
+      PACKAGE=PACKAGE)
 }
 
 setMethod(
@@ -146,9 +213,9 @@ setMethod(
       }
     )
     function (xstart, times, params, ...,
-      zeronames = character(0),
-      tcovar, covar,
-      .getnativesymbolinfo = TRUE) {
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE) {
       tryCatch(
         .Call(
           euler_model_simulator,
@@ -190,9 +257,9 @@ setMethod(
       }
     )
     function (xstart, times, params, ...,
-      zeronames = character(0),
-      tcovar, covar,
-      .getnativesymbolinfo = TRUE) {
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE) {
       tryCatch(
         .Call(
           euler_model_simulator,
@@ -234,9 +301,9 @@ setMethod(
       }
     )
     function (xstart, times, params, ...,
-      zeronames = character(0),
-      tcovar, covar,
-      .getnativesymbolinfo = TRUE) {
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE) {
       tryCatch(
         .Call(
           euler_model_simulator,
@@ -278,10 +345,13 @@ setMethod(
       }
     )
     function (xstart, times, params,
-      zeronames = character(0),
-      tcovar, covar,
-      .getnativesymbolinfo = TRUE,
-      ...) {
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE,
+              ...) {
+      if (anyDuplicated(rownames(object@v))){
+        stop(ep,"duplicates in rownames of ",sQuote("v"), call.=FALSE)
+      }
       tryCatch(
         .Call(
           SSA_simulator,
@@ -289,10 +359,7 @@ setMethod(
           xstart=xstart,
           times=times,
           params=params,
-          e=numeric(0),
           vmatrix=object@v,
-          dmatrix=object@d,
-          deps=integer(0),
           tcovar=tcovar,
           covar=covar,
           zeronames=zeronames,
@@ -307,7 +374,6 @@ setMethod(
     }
   }
 )
-
 
 setMethod(
   "plugin.handler",
@@ -327,8 +393,8 @@ setMethod(
       }
     )
     function (x, times, params, ...,
-      tcovar, covar, log = FALSE,
-      .getnativesymbolinfo = TRUE) {
+              tcovar, covar, log = FALSE,
+              .getnativesymbolinfo = TRUE) {
       tryCatch(
         .Call(
           euler_model_density,

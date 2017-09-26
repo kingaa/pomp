@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.15.2}{
+  \itemize{
+    \item The old \code{skeleton.type} and \code{skelmap.delta.t} arguments of the \code{pomp} constructor, which have generated error messages since version 1.9.2, have been done away with completely.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.15.1}{
   \itemize{
     \item Eamon O'Dea identified a bug (Issue #54) occurring when \code{pomp} is called with a single-row data frame.
