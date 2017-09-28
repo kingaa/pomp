@@ -34,6 +34,15 @@
   pages: "6689&#x2013;6694"
   doi: "http://doi.org/10.1073/pnas.1523941113"
 
+- key: Baracchini2017
+  author: "T. Baracchini, A. A. King, M. J. Bouma, X. Rod&oacute;, E. Bertuzzo, and M. Pascual"
+  year: "2017"
+  title: "Seasonality in cholera dynamics: a rainfall-driven model explains the wide range of patterns in endemic areas"
+  journal: "Advances in Water Resources"
+  volume: "108C"
+  pages: "357&#x2013;366"
+  doi: "http://doi.org/10.1016/j.advwatres.2016.11.012"
+
 - key: Barrows2016
   author: "D. Barrows"
   year: "2016"
