@@ -1,6 +1,7 @@
 ### pomp to-do list
 
 - on-the-fly modification of basic components (pomp 2?)
+- `time` variable could retain its original name?
 - `initializer` -> `rinit` and perhaps `dinit`
 - come up with better scheme for indicating transformed variables in Csnippet parameter transformations
 - parameter transformations: put `transform` option into each estimation routine (`spect.match`)

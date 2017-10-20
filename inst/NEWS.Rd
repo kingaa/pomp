@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.15.3}{
+  \itemize{
+    \item More informative error messages are given when \code{bake} or \code{freeze} return \code{NULL}.
+    In such a case, these functions now generate a warning and return a character-string message, with attributes.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.15.2}{
   \itemize{
     \item A new facility, \code{gillespie.hl.sim}, allows implementation of Gillespie's algorithm for exact stochastic simulation of continuous-time Markov processes via a streamlined C snippet interface.

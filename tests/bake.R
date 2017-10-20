@@ -34,4 +34,8 @@ attr(y,"kind") <- NULL
 attr(y,"normal.kind") <- NULL
 stopifnot(identical(x,y))
 
+freeze({rnorm(5); NULL},seed=3494995)
+bake({rnorm(5); NULL},seed=3494995,
+     file=file.path(tempdir(),"bake3.rds"))
+
 detach("package:pomp", unload=TRUE)

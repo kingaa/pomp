@@ -12,6 +12,10 @@ bake <- function (file, expr, seed,
     tmg <- system.time(val <- eval(expr))
     if (rng.control)
       assign(".Random.seed",save.seed,envir=.GlobalEnv)
+    if (is.null(val)) {
+      warning("in ",sQuote("bake"),": expression evaluates to NULL",call.=FALSE)
+      val <- paste0("NULL result returned by ",sQuote("bake"))
+    }
     if (rng.control) {
       attr(val,"seed") <- seed
       attr(val,"kind") <- kind
@@ -64,6 +68,10 @@ freeze <- function (expr, seed,
     set.seed(seed,kind=kind,normal.kind=normal.kind)
   } else warning("in ",sQuote("freeze"),": seed not set!",call.=FALSE)
   tmg <- system.time(val <- eval(expr))
+  if (is.null(val)) {
+    warning("in ",sQuote("freeze"),": expression evaluates to NULL",call.=FALSE)
+    val <- paste0("NULL result returned by ",sQuote("freeze"))
+  }
   if (rng.control) {
     assign(".Random.seed",save.seed,envir=.GlobalEnv)
     attr(val,"seed") <- seed
