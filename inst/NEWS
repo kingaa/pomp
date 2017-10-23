@@ -2,6 +2,10 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_5._3:
 
+        • Issue #56, in which covariate names are discarded when
+          coercing a pomp object to a data frame, has been fixed.
+          Thanks to Eamon O'Dea for reporting this bug.
+
         • More informative error messages are given when ‘bake’ or
           ‘freeze’ return ‘NULL’.  In such a case, these functions now
           generate a warning and return a character-string message,

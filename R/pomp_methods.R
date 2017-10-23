@@ -13,10 +13,10 @@ setAs(
             names(x) <- c(nm,rownames(from@states))
         }
         if (length(from@covar)>0) {
-            nm <- names(x)
+            nm <- c(names(x),colnames(from@covar))
             y <- .Call(lookup_in_table,from@tcovar,from@covar,from@times)
             x <- cbind(x,t(y))
-            names(x) <- c(nm,rownames(y))
+            names(x) <- nm
         }
         x
     }
@@ -185,7 +185,7 @@ setMethod(
     signature=signature(object="pomp"),
     definition=function (object, pars, transform = FALSE, ...) {
         if (length(object@params)>0) {
-            if (transform) 
+            if (transform)
                 params <- partrans(object,params=object@params,dir="toEstimationScale")
             else
                 params <- object@params
@@ -215,7 +215,7 @@ setMethod(
         ep <- paste0("in ",sQuote("coef<-"),": ")
         if (missing(pars)) {          ## replace the whole params slot with 'value'
             if (length(value)>0) {
-                if (transform) 
+                if (transform)
                     value <- partrans(object,params=value,dir="fromEstimationScale")
                 pars <- names(value)
                 if (is.null(pars)) {

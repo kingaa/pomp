@@ -5,8 +5,8 @@
 
 #include "pomp_internal.h"
 
-SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0, 
-			      SEXP nsim, SEXP obs, SEXP states, SEXP gnsi)
+SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
+                              SEXP nsim, SEXP obs, SEXP states, SEXP gnsi)
 {
   int nprotect = 0;
   SEXP xstart, x, y, alltimes, coef, yy, offset;
@@ -29,7 +29,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
     warningcall(R_NilValue,"in 'simulate': only the first number in 'nsim' is significant");
 
   nsims = INTEGER(AS_INTEGER(nsim))[0]; // number of simulations per parameter set
-  if (nsims < 1) {			// no work to do  
+  if (nsims < 1) {			// no work to do
     warningcall(R_NilValue,"in 'simulate': nsim < 1: no work to do");
     UNPROTECT(nprotect);
     return R_NilValue;
@@ -58,7 +58,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
 
   if (ntimes < 1)
     errorcall(R_NilValue,"if 'times' is empty, there is no work to do");
-  
+
   PROTECT(alltimes = NEW_NUMERIC(ntimes+1)); nprotect++;
   tt = *(REAL(t0));
   s = REAL(times);
@@ -66,10 +66,10 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
 
   if (tt > *s)
     errorcall(R_NilValue,"the zero-time 't0' must occur no later than the first observation 'times[1]'");
-  
+
   *(t++) = tt;			// copy t0 into alltimes[1]
   tt = *(t++) = *(s++);		// copy times[1] into alltimes[2]
-  
+
   for (j = 1; j < ntimes; j++) { // copy times[2:ntimes] into alltimes[3:(ntimes+1)]
     if (tt >= *s)
       errorcall(R_NilValue,"'times' must be an increasing sequence");
@@ -87,27 +87,27 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   } else {			// we must do 'rmeasure'
 
     PROTECT(y = do_rmeasure(object,x,times,params,gnsi)); nprotect++;
-    
+
     if (qobs) {
-    
+
       if (qstates) { // obs=T,states=T: return a list with states and obs'ns
 
-	PROTECT(ans = NEW_LIST(2)); nprotect++;
-	PROTECT(ans_names = NEW_CHARACTER(2)); nprotect++;
-	SET_STRING_ELT(ans_names,0,mkChar("states"));
-	SET_STRING_ELT(ans_names,1,mkChar("obs"));
-	SET_NAMES(ans,ans_names);
-	SET_ELEMENT(ans,0,x);
-	SET_ELEMENT(ans,1,y);
-	UNPROTECT(nprotect);
-	return ans;
+        PROTECT(ans = NEW_LIST(2)); nprotect++;
+        PROTECT(ans_names = NEW_CHARACTER(2)); nprotect++;
+        SET_STRING_ELT(ans_names,0,mkChar("states"));
+        SET_STRING_ELT(ans_names,1,mkChar("obs"));
+        SET_NAMES(ans,ans_names);
+        SET_ELEMENT(ans,0,x);
+        SET_ELEMENT(ans,1,y);
+        UNPROTECT(nprotect);
+        return ans;
 
       } else {		   // obs=T,states=F: return observations only
 
-	UNPROTECT(nprotect);
-	return y;
+        UNPROTECT(nprotect);
+        return y;
 
-      } 
+      }
 
     } else {	    // obs=F,states=F: return one or more pomp objects
 
@@ -131,66 +131,66 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
       SET_SLOT(po,install("params"),coef);
 
       if (nreps == 1) {
-      
-	SET_DIM(y,obsdim);
-	setrownames(y,obsnames,2);
-	SET_SLOT(po,install("data"),y);
-      
-	SET_DIM(x,statedim);
-	setrownames(x,statenames,2);
-	SET_SLOT(po,install("states"),x);
 
-	ps = REAL(params);
-	pt = REAL(GET_SLOT(po,install("params")));
-	memcpy(pt,ps,npars*sizeof(double));
+        SET_DIM(y,obsdim);
+        setrownames(y,obsnames,2);
+        SET_SLOT(po,install("data"),y);
 
-	UNPROTECT(nprotect);
-	return po;
+        SET_DIM(x,statedim);
+        setrownames(x,statenames,2);
+        SET_SLOT(po,install("states"),x);
+
+        ps = REAL(params);
+        pt = REAL(GET_SLOT(po,install("params")));
+        memcpy(pt,ps,npars*sizeof(double));
+
+        UNPROTECT(nprotect);
+        return po;
 
       } else {
-      
-	// a list to hold the pomp objects
-	PROTECT(ans = NEW_LIST(nreps)); nprotect++; 
 
-	// create an array for the 'states' slot
-	PROTECT(xx = makearray(2,INTEGER(statedim)));
-	setrownames(xx,statenames,2);
-	SET_SLOT(po,install("states"),xx);
+        // a list to hold the pomp objects
+        PROTECT(ans = NEW_LIST(nreps)); nprotect++;
 
-	// create an array for the 'data' slot
-	PROTECT(yy = makearray(2,INTEGER(obsdim)));
-	setrownames(yy,obsnames,2);
-	SET_SLOT(po,install("data"),yy);
+        // create an array for the 'states' slot
+        PROTECT(xx = makearray(2,INTEGER(statedim)));
+        setrownames(xx,statenames,2);
+        SET_SLOT(po,install("states"),xx);
 
-	UNPROTECT(2);
+        // create an array for the 'data' slot
+        PROTECT(yy = makearray(2,INTEGER(obsdim)));
+        setrownames(yy,obsnames,2);
+        SET_SLOT(po,install("data"),yy);
 
-	xs = REAL(x); 
-	ys = REAL(y); 
-	ps = REAL(params);
+        UNPROTECT(2);
 
-	for (k = 0; k < nreps; k++) { // loop over replicates
+        xs = REAL(x);
+        ys = REAL(y);
+        ps = REAL(params);
 
-	  PROTECT(popo = duplicate(po));
+        for (k = 0; k < nreps; k++) { // loop over replicates
 
-	  // copy parameters
-	  pt = REAL(GET_SLOT(popo,install("params")));
-	  memcpy(pt,ps+npars*(k%nparsets),npars*sizeof(double)); 
-	  
-	  // copy x[,k,] and y[,k,] into popo
-	  xt = REAL(GET_SLOT(popo,install("states"))); 
-	  yt = REAL(GET_SLOT(popo,install("data")));
-	  for (j = 0; j < ntimes; j++) {
-	    for (i = 0; i < nvars; i++, xt++) *xt = xs[i+nvars*(k+nreps*j)];
-	    for (i = 0; i < nobs; i++, yt++) *yt = ys[i+nobs*(k+nreps*j)];
-	  }
+          PROTECT(popo = duplicate(po));
 
-	  SET_ELEMENT(ans,k,popo);
-	  UNPROTECT(1);
+          // copy parameters
+          pt = REAL(GET_SLOT(popo,install("params")));
+          memcpy(pt,ps+npars*(k%nparsets),npars*sizeof(double));
 
-	}
+          // copy x[,k,] and y[,k,] into popo
+          xt = REAL(GET_SLOT(popo,install("states")));
+          yt = REAL(GET_SLOT(popo,install("data")));
+          for (j = 0; j < ntimes; j++) {
+            for (i = 0; i < nvars; i++, xt++) *xt = xs[i+nvars*(k+nreps*j)];
+            for (i = 0; i < nobs; i++, yt++) *yt = ys[i+nobs*(k+nreps*j)];
+          }
 
-	UNPROTECT(nprotect);
-	return ans;
+          SET_ELEMENT(ans,k,popo);
+          UNPROTECT(1);
+
+        }
+
+        UNPROTECT(nprotect);
+        return ans;
 
       }
 

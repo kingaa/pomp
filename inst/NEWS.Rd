@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 1.15.3}{
   \itemize{
+    \item Issue #56, in which covariate names are discarded when coercing a pomp object to a data frame, has been fixed.
+    Thanks to Eamon O'Dea for reporting this bug.
     \item More informative error messages are given when \code{bake} or \code{freeze} return \code{NULL}.
     In such a case, these functions now generate a warning and return a character-string message, with attributes.
   }
