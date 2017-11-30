@@ -190,69 +190,71 @@ gsir %>%
 
 all.equal(as.data.frame(gsir), as.data.frame(gsir1))
 
-hl.args <- list(list("rate = mu * N;",    c(S= 1,I= 0,R= 0,N= 1,cases= 0)),
-                list("rate = mu * S;",    c(S=-1,I= 0,R= 0,N=-1,cases= 0)),
-                list("rate = mu * I;",    c(S= 0,I=-1,R= 0,N=-1,cases= 0)),
-                list("rate = mu * R;",    c(S= 0,I= 0,R=-1,N=-1,cases= 0)),
-                list("rate = gamma * I;", c(S= 0,I=-1,R= 1,N= 0,cases= 1)),
-                list(paste("double beta;",
-                           "beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;",
-                           "rate = (beta * I + iota) * S / N;", sep = "\n"),
-                     c(S=-1,I= 1,R= 0,N= 0,cases= 0)))
+gsir %>%
+  pomp(rprocess=gillespie.hl.sim(
+    list("rate = mu * N;",c(S=1,I=0,R=0,N=1,cases=0)),
+    list("rate = mu * S;",c(S=-1,I=0,R=0,N=-1,cases=0)),
+    list("rate = mu * I;",c(S=0,I=-1,R=0,N=-1,cases=0)),
+    list("rate = mu * R;",c(S=0,I=0,R=-1,N=-1,cases=0)),
+    list("rate = gamma * I;",c(S=0,I=-1,R=1,N=0,cases=1)),
+    list("double beta;
+          beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;
+          rate = (beta * I + iota) * S / N;",
+      c(S=-1,I=1,R=0,N=0,cases=0)),
+    hmax=1/52/10),
+    paramnames = names(params),
+    statenames = c("S","I","R", "N", "cases"),
+  ) %>%
+  simulate(seed=806867100L) -> gsirhl
 
 gsir %>%
-    pomp(rprocess=do.call(gillespie.hl.sim, c(hl.args, list(hmax=1/52/10))),
-         paramnames = names(params),
-         statenames = c("S","I","R", "N", "cases"),
-         ) %>%
-    simulate(seed=806867100L) -> gsirhl
-
-hl.args1 <- list(list("rate = mu * N;",    c(R= 0,S= 1,I= 0,cases =0,N= 1)),
-                 list("rate = mu * S;",    c(S=-1,I= 0,R= 0,N=-1,cases= 0)),
-                 list("rate = mu * R;",    c(S= 0,I= 0,R=-1,N=-1,cases= 0)),
-                 list("rate = gamma * I;", c(S= 0,I=-1,R= 1,N= 0,cases= 1)),
-                 list("rate = mu * I;",    c(S= 0,I=-1,R= 0,N=-1,cases= 0)),
-                list(paste("double beta;",
-                           "beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;",
-                           "rate = (beta * I + iota) * S / N;", sep = "\n"),
-                     c(cases= 0,S=-1,I= 1,R= 0,N= 0)))
-
-gsir %>%
-    pomp(rprocess=do.call(gillespie.hl.sim, c(hl.args1, list(hmax=1/52/10))),
+    pomp(rprocess=gillespie.hl.sim(
+             list("rate = mu * N;",c(R=0,S=1,I=0,cases =0,N=1)),
+             list("rate = mu * S;",c(S=-1,I=0,R=0,N=-1,cases=0)),
+             list("rate = mu * R;",c(S=0,I=0,R=-1,N=-1,cases=0)),
+             list("rate = gamma * I;",c(S=0,I=-1,R=1,N=0,cases=1)),
+             list("rate = mu * I;",c(S=0,I=-1,R=0,N=-1,cases=0)),
+             list("double beta;
+                   beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;
+                   rate = (beta * I + iota) * S / N;",
+                  c(cases=0,S=-1,I=1,R=0,N=0)),
+             hmax=1/52/10
+         ),
          paramnames = names(params),
          statenames = c("S","I","R", "N", "cases"),
          ) %>%
     simulate(seed=806867101L) -> gsirhl1
 
-hl.args2 <- list(list("rate = mu * N;",    c(S= 1,I= 0,R= 0,N= 1,cases= 0)),
-                list("rate = mu * S;",    c(S=-1,I= 0,R= 0,N=-1,cases= 0)),
-                list("rate = mu * I;",    c(S= 0,I=-1,R= 0,N=-1,cases= 0)),
-                list("rate = mu * R;",    c(S= 0,I= 0,R=-1,N=-1,cases= 0)),
-                list("rate = gamma * I;", c(S= 0,I=-1,R= 1,N= 0,cases= 1)),
-                list(paste("beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;",
-                           "rate = (beta * I + iota) * S / N;", sep = "\n"),
-                     c(S=-1,I= 1,R= 0,N= 0,cases= 0)),
-                .pre = "double beta;")
-
 gsir %>%
-    pomp(rprocess=do.call(gillespie.hl.sim, c(hl.args2, list(hmax=1/52/10))),
+    pomp(rprocess=gillespie.hl.sim(
+             .pre = "double beta;",
+             list("rate = mu * N;",c(S=1,I=0,R=0,N= 1,cases=0)),
+             list("rate = mu * S;",c(S=-1,I=0,R=0,N=-1,cases=0)),
+             list("rate = mu * I;",c(S=0,I=-1,R=0,N=-1,cases=0)),
+             list("rate = mu * R;",c(S=0,I=0,R=-1,N=-1,cases=0)),
+             list("rate = gamma * I;",c(S=0,I=-1,R=1,N=0,cases=1)),
+             list("beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;
+                   rate = (beta * I + iota) * S / N;",
+                  c(S=-1,I=1,R= 0,N=0,cases=0)),
+             hmax=1/52/10),
          paramnames = names(params),
          statenames = c("S","I","R", "N", "cases"),
          ) %>%
     simulate(seed=806867102L) -> gsirhl2
 
-hl.args3 <- list(list("rate = mu * N / 2;",    c(S= 1,I= 0,R= 0,N= 1,cases= 0)),
-                list("rate = mu * S / 2;",    c(S=-1,I= 0,R= 0,N=-1,cases= 0)),
-                list("rate = mu * I/ 2;",    c(S= 0,I=-1,R= 0,N=-1,cases= 0)),
-                list("rate = mu * R/ 2;",    c(S= 0,I= 0,R=-1,N=-1,cases= 0)),
-                list("rate = gamma * I / 2;", c(S= 0,I=-1,R= 1,N= 0,cases= 1)),
-                list(paste("beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;",
-                           "rate = (beta * I + iota) * S / N / 2;", sep = "\n"),
-                     c(S=-1,I= 1,R= 0,N= 0,cases= 0)),
-                .pre = "double beta;", .post = "rate *= 2;")
 
 gsir %>%
-    pomp(rprocess=do.call(gillespie.hl.sim, c(hl.args3, list(hmax=1/52/10))),
+    pomp(rprocess=gillespie.hl.sim(
+             .pre = "double beta;", .post = "rate *= 2;",
+             list("rate = mu * N / 2;",c(S=1,I=0,R=0,N=1,cases=0)),
+             list("rate = mu * S / 2;",c(S=-1,I=0,R=0,N=-1,cases=0)),
+             list("rate = mu * I/ 2;",c(S=0,I=-1,R=0,N=-1,cases=0)),
+             list("rate = mu * R/ 2;",c(S=0,I=0,R=-1,N=-1,cases=0)),
+             list("rate = gamma * I / 2;",c(S=0,I=-1,R=1,N=0,cases=1)),
+             list("beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;
+                   rate = (beta * I + iota) * S / N / 2;",
+                  c(S=-1,I=1,R=0,N=0,cases=0)),
+             hmax=1/52/10),
          paramnames = names(params),
          statenames = c("N", "S","I","R", "cases"),
          ) %>%
@@ -269,3 +271,5 @@ list(gill.sim.R=as.data.frame(gsir),
   labs(color="",y="reports",title="various implementations of same SIR model")+
   geom_line()+
   theme_bw()+theme(legend.position=c(0.8,0.8))
+
+dev.off()
