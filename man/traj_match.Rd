@@ -56,7 +56,8 @@
   }
   \item{method}{
     Optimization method.
-    Choices are \code{\link[subplex]{subplex}}, \dQuote{sannbox}, and any of the methods used by \code{\link{optim}}.
+    Choices are \code{\link[subplex]{subplex}}, \dQuote{sannbox}, any of the methods used by \code{\link{optim}}, and \code{nloptr}.
+    The latter makes available all the optimization algorithms of the \pkg{nloptr} package (\url{https://cran.r-project.org/package=nloptr}).
   }
   \item{transform}{
     logical;
@@ -111,40 +112,52 @@
   \code{traj.match.objfun} returns a function suitable for use as an objective function in an \code{\link{optim}}-like optimizer.
 }
 \examples{
-  pompExample(ou2)
-  true.p <- c(
-	      alpha.1=0.9,alpha.2=0,alpha.3=-0.4,alpha.4=0.99,
-	      sigma.1=2,sigma.2=0.1,sigma.3=2,
-	      tau=1,
-              x1.0=50,x2.0=-50
-	      )
-  simdata <- simulate(ou2,nsim=1,params=true.p,seed=43553)
-  guess.p <- true.p
-  res <- traj.match(
-		    simdata,
-		    start=guess.p,
-		    est=c('alpha.1','alpha.3','alpha.4','x1.0','x2.0','tau'),
-		    maxit=2000,
-		    method="Nelder-Mead",
-		    reltol=1e-8
-		    )
+pompExample(ou2)
+true.p <- c(
+    alpha.1=0.9,alpha.2=0,alpha.3=-0.4,alpha.4=0.99,
+    sigma.1=2,sigma.2=0.1,sigma.3=2,
+    tau=1,
+    x1.0=50,x2.0=-50
+)
+simdata <- simulate(ou2,nsim=1,params=true.p,seed=43553)
+guess.p <- true.p
+res <- traj.match(
+    simdata,
+    start=guess.p,
+    est=c('alpha.1','alpha.3','alpha.4','x1.0','x2.0','tau'),
+    maxit=2000,
+    method="Nelder-Mead",
+    reltol=1e-8
+)
 
-  summary(res)
+summary(res)
 
-  plot(range(time(res)),range(c(obs(res),states(res))),type='n',xlab="time",ylab="x,y")
-  points(y1~time,data=as(res,"data.frame"),col='blue')
-  points(y2~time,data=as(res,"data.frame"),col='red')
-  lines(x1~time,data=as(res,"data.frame"),col='blue')
-  lines(x2~time,data=as(res,"data.frame"),col='red')
+res1 <- traj.match(
+    simdata,
+    start=guess.p,
+    est=c('alpha.1','alpha.3','alpha.4','x1.0','x2.0','tau'),
+    maxit=2000,
+    method="nloptr",
+    algorithm="NLOPT_LN_SBPLX",
+    xtol_rel=1e-5, maxeval=1e5
+)
 
-  pompExample(ricker)
-  ofun <- traj.match.objfun(ricker,est=c("r","phi"),transform=TRUE)
-  optim(fn=ofun,par=c(2,0),method="BFGS")
+summary(res1)
 
-  pompExample(bbs)
-  ## some options are passed to the ODE integrator
-  ofun <- traj.match.objfun(bbs,est=c("beta","gamma"),transform=TRUE,hmax=0.001,rtol=1e-6)
-  optim(fn=ofun,par=c(0,-1),method="Nelder-Mead",control=list(reltol=1e-10))
+plot(range(time(res1)),range(c(obs(res1),states(res1))),type='n',xlab="time",ylab="x,y")
+points(y1~time,data=as(res1,"data.frame"),col='blue')
+points(y2~time,data=as(res1,"data.frame"),col='red')
+lines(x1~time,data=as(res1,"data.frame"),col='blue')
+lines(x2~time,data=as(res1,"data.frame"),col='red')
+
+pompExample(ricker)
+ofun <- traj.match.objfun(ricker,est=c("r","phi"),transform=TRUE)
+optim(fn=ofun,par=c(2,0),method="BFGS")
+
+pompExample(bbs)
+## some options are passed to the ODE integrator
+ofun <- traj.match.objfun(bbs,est=c("beta","gamma"),transform=TRUE,hmax=0.001,rtol=1e-6)
+optim(fn=ofun,par=c(0,-1),method="Nelder-Mead",control=list(reltol=1e-10))
 }
 \seealso{
   \code{\link{trajectory}},

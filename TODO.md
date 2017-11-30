@@ -1,5 +1,9 @@
 ### pomp to-do list
 
+- deprecate `obs` and `states` arguments in `simulate`
+- piecewise constant interpolation of covariates
+- number of processors stored in `bake`, `stew`, `freeze` outputs
+- digest of data stored in `bake`, `stew`, `freeze` outputs
 - on-the-fly modification of basic components (pomp 2?)
 - `time` variable could retain its original name?
 - `initializer` -> `rinit` and perhaps `dinit`
