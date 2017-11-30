@@ -132,6 +132,13 @@ res <- traj.match(
 
 summary(res)
 
+plot(range(time(res)),range(c(obs(res),states(res))),type='n',xlab="time",ylab="x,y")
+points(y1~time,data=as(res,"data.frame"),col='blue')
+points(y2~time,data=as(res,"data.frame"),col='red')
+lines(x1~time,data=as(res,"data.frame"),col='blue')
+lines(x2~time,data=as(res,"data.frame"),col='red')
+
+\dontrun{
 res1 <- traj.match(
     simdata,
     start=guess.p,
@@ -143,12 +150,7 @@ res1 <- traj.match(
 )
 
 summary(res1)
-
-plot(range(time(res1)),range(c(obs(res1),states(res1))),type='n',xlab="time",ylab="x,y")
-points(y1~time,data=as(res1,"data.frame"),col='blue')
-points(y2~time,data=as(res1,"data.frame"),col='red')
-lines(x1~time,data=as(res1,"data.frame"),col='blue')
-lines(x2~time,data=as(res1,"data.frame"),col='red')
+}
 
 pompExample(ricker)
 ofun <- traj.match.objfun(ricker,est=c("r","phi"),transform=TRUE)
