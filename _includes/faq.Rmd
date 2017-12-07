@@ -40,7 +40,7 @@ citation("pomp")
 in an **R** session.
 
 If you use **pomp** in a publication, let us know!
-Send an email with the citation, and we'll include it in [the bibliography](http://kingaa.github.io/pomp/biblio.html).
+Send an email with the citation, and we'll include it in [the bibliography](https://kingaa.github.io/pomp/biblio.html).
 
 ## I have an error message that I don't understand, and my question isn't answered below. How can I get help? {#help-with-error-message}
 
@@ -59,7 +59,18 @@ See the [installation instructions](./install.html).
 ## Why do I get an error message about `gfortran` when I try to install **pomp** from source on my Mac? {#mac-gfortran}
 
 Compilation of **pomp** requires a FORTRAN compiler, which has not been installed (or not installed properly) on your system.
-See the [installation instructions](http://kingaa.github.io/pomp/install.html#important-note-for-mac-os-x-users).
+See the [installation instructions](https://kingaa.github.io/pomp/install.html#important-note-for-mac-os-x-users).
+
+## I am using **R** version X. When I try to install the package, I get the error that "package **pomp** is not available (for R version X)". Yet it is stated that **pomp** is compatible with R(>=Y), where X > Y. What is going wrong?
+
+Firstly, as a general rule, it's very probably a good idea to simply install the latest version of **R**, since each new release fixes bugs, adds and improves features, etc.
+
+Usually, this warning arises because you are trying to install binaries from a repository on which binaries built for your version of **R** are no longer available.
+The preferred solution in this case is, again, to upgrade **R**, but if for some reason that is impossible or undesirable, you can always build the package from source using the source code retrieved from the [package website](https://kingaa.github.io/pomp/) or from one of the [CRAN mirrors](https://cran.r-project.org/mirrors.html).
+For more, see the [installation instructions](https://kingaa.github.io/pomp/install.html)
+
+To be clear: the statement that pomp will work for **R**(>=Y) is a guarantee that the code is compatible with those versions of **R**.
+It is not a promise that binaries will always be available for old versions of **R**.
 
 # Implementing POMP models.
 
@@ -151,7 +162,7 @@ obj %>% pfilter(Np=1000) %>% logLik()
 
 Missing data are a common complication.
 **pomp** can handle NAs in the data, but the measurement model probability density function, `dmeasure`, if it is needed, must be written so as to deal with NAs appropriately.
-For example, look at the following variant of [the SIR model describing the influenza outbreak in a boarding school](http://kingaa.github.io/sbied/stochsim/stochsim.html):
+For example, look at the following variant of [the SIR model describing the influenza outbreak in a boarding school](https://kingaa.github.io/sbied/stochsim/stochsim.html):
 
 ```{r}
 library(magrittr)
@@ -183,7 +194,7 @@ dat %>%
 
 Data are missing at days 0 and 5.
 
-We create a `pomp` object implementing a simple SIR process model and a binomial measurement model, as in the [original example](http://kingaa.github.io/short-course/stochsim/stochsim.html#the-boarding-school-flu-outbreak).
+We create a `pomp` object implementing a simple SIR process model and a binomial measurement model, as in the [original example](https://kingaa.github.io/short-course/stochsim/stochsim.html#the-boarding-school-flu-outbreak).
 The only difference is in the `dmeasure`:
 
 ```{r}
@@ -439,7 +450,7 @@ If it works, you should see
 hello world!
 list()
 ```
-If it doesn't work, consult the [installation instructions](http://kingaa.github.io/pomp/install.html).
+If it doesn't work, consult the [installation instructions](https://kingaa.github.io/pomp/install.html).
 
 
 ## Why do I get an error message "Could not compile shared-object library" when I run `pomp`? {#could-not-compile}
