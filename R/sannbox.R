@@ -6,7 +6,7 @@
 ## the parameters of this schedule can be changed via
 ## the 'control' argument, and k ranges from 0 to 'maxit'
 ##
-## modified from code originally written by 
+## modified from code originally written by
 ## Daniel Reuman, Imperial College London
 
 sannbox <- function (par, fn, control = list(), ...) {
@@ -16,7 +16,7 @@ sannbox <- function (par, fn, control = list(), ...) {
 
     npar <- length(par)
     neval <- 0
-    
+
     control.default <- list(
         maxit=10000,
         temp=1,
@@ -31,6 +31,8 @@ sannbox <- function (par, fn, control = list(), ...) {
     )
     control.default[names(control)] <- control
     control <- control.default
+    if (is.null(control$lower)) control$lower <- -Inf
+    if (is.null(control$upper)) control$upper <- Inf
 
     if (is.null(control$sched))           # default cooling schedule
         control$sched <- function (k, temp, tmax) temp/log(((k-1)%/%tmax)*tmax+exp(1))
@@ -49,7 +51,7 @@ sannbox <- function (par, fn, control = list(), ...) {
             stop(ep,"insufficiently many temperatures supplied in ",
                  sQuote("control$sched"),call.=FALSE)
     }
-    
+
     if (is.null(control$candidate.dist))
         candidate.dist <- function (par, temp, scale) rnorm(n=npar,mean=par,sd=scale*temp)
 
@@ -64,12 +66,12 @@ sannbox <- function (par, fn, control = list(), ...) {
     if (!is.finite(ycurrent)) ycurrent <- big
     ybest <- ycurrent
     neval <- 1
-    
+
     if (control$trace>0)
         cat("initial evaluation: ",ycurrent,"\n")
-    if (control$trace>2) 
+    if (control$trace>2)
         cat("initial parameters: ",thetacurrent,"\n")
-    
+
     ## main loop
     for (k in seq_len(control$maxit)) {
         ## get a candidate thetacand
@@ -88,7 +90,7 @@ sannbox <- function (par, fn, control = list(), ...) {
         ycand <- fn(thetacand,...)/control$fnscale
         if (!is.finite(ycand)) ycand <- big
         neval <- neval+1
-        
+
         ## see if you have a new best.params
         if (ycand<ybest) {
             ybest <- ycand
@@ -103,13 +105,13 @@ sannbox <- function (par, fn, control = list(), ...) {
 
         if (control$trace>1)
             cat("iter ",k," val=",ycurrent,", accept=",accept,"\n")
-        if (control$trace>3) 
+        if (control$trace>3)
             cat("proposed params: ",thetacand,"\n")
-        if (control$trace>2) 
+        if (control$trace>2)
             cat("current params: ",thetacurrent,"\n")
 
     }
-    
+
     if (control$trace>0)
         cat("best val=",ybest,"\n")
 

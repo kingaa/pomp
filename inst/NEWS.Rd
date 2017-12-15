@@ -1,11 +1,18 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.15.4}{
+  \itemize{
+    \item The bug reported in issue #57 has been fixed.
+    \item A bug arising when building pomp objects with Csnippets in certain Windows configurations has been fixed.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.15.3}{
   \itemize{
     \item Issue #56, in which covariate names are discarded when coercing a pomp object to a data frame, has been fixed.
     Thanks to Eamon O'Dea for reporting this bug.
     \item More informative error messages are given when \code{bake} or \code{freeze} return \code{NULL}.
     In such a case, these functions now generate a warning and return a character-string message, with attributes.
+    \item Improve documentation of \code{traj.match}, in response to Issue #57.
   }
 }
 \section{Changes in \pkg{pomp} version 1.15.2}{

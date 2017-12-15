@@ -1,5 +1,5 @@
 
-R version 3.4.1 (2017-06-30) -- "Single Candle"
+R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
 Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -47,31 +47,31 @@ In above message, R1 = -100
 Error : in ‘trajectory’: error in ODE integrator: illegal input detected before taking any integration steps - see written message
 > 
 > x <- sapply(
-+             simdata,
-+             function (d) {
-+               res <- traj.match(
-+                                 d,
-+                                 start=guess.p,
-+                                 est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),
-+                                 maxit=2000,
-+                                 reltol=1e-8
-+                                 )
-+               c(conv=res$convergence,loglik=logLik(res),coef(res))
-+             }
-+             )
++     simdata,
++     function (d) {
++         res <- traj.match(
++             d,
++             start=guess.p,
++             est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),
++             maxit=2000,
++             reltol=1e-8
++         )
++         c(conv=res$convergence,loglik=logLik(res),coef(res))
++     }
++ )
 > range(x['conv',])
 [1] 0 0
 > range(x['loglik',])
 [1] -687.0136 -614.8054
 > print(
-+       cbind(
-+             truth=true.p,
-+             mean.est=apply(x[names(true.p),],1,mean),
-+             bias=apply(x[names(true.p),],1,mean)-true.p,
-+             se=apply(x[names(true.p),],1,sd)
-+             ),
-+       digits=4
-+       )
++     cbind(
++         truth=true.p,
++         mean.est=apply(x[names(true.p),],1,mean),
++         bias=apply(x[names(true.p),],1,mean)-true.p,
++         se=apply(x[names(true.p),],1,sd)
++     ),
++     digits=4
++ )
         truth mean.est     bias     se
 alpha.1   0.8   0.7082 -0.09185 0.3813
 alpha.2  -0.5  -0.5000  0.00000 0.0000
@@ -198,4 +198,26 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
       x1  x2
 [1,]   8  15
 [2,] 107 114
+> 
+> pp <- p
+> pp[c("alpha.1","alpha.2","x1.0","x2.0","tau")] <- c(1,-1,-5,5,2)
+> traj.match(ou2,start=pp,est=c("alpha.1","alpha.2","x1.0","x2.0","tau"),
++            method="nloptr",algorithm="NLOPT_GN_MLSL",
++            lb=c(alpha.1=0,alpha.2=-1,x1.0=-10,x2.0=0,tau=0),
++            ub=c(alpha.1=2,alpha.2=0,x1.0=0,x2.0=10,tau=5),
++            xtol_rel=1e-6,maxeval=1000,
++            local_opts=list(algorithm="NLOPT_LN_NELDERMEAD",
++                            xtol_rel=1e-3)) -> tm
+> signif(logLik(tm),3)
+[1] -592
+> traj.match(ou2,start=pp,est=c("alpha.1","alpha.2","x1.0","x2.0","tau"),
++            method="nloptr",algorithm="NLOPT_GN_MLSL",
++            lower=c(0,-1,-10,0,0),
++            upper=c(2,0,0,10,5),
++            xtol_rel=1e-6,maxeval=1000,
++            local_opts=list(algorithm="NLOPT_LN_NELDERMEAD",
++                            xtol_rel=1e-3)) -> tm
+> signif(logLik(tm),3)
+[1] -592
+> 
 > 
