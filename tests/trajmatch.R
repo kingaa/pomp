@@ -79,7 +79,7 @@ traj.match(ou2,start=pp,est=c("alpha.1","alpha.2","x1.0","x2.0","tau"),
            xtol_rel=1e-6,maxeval=1000,
            local_opts=list(algorithm="NLOPT_LN_NELDERMEAD",
                            xtol_rel=1e-3)) -> tm
-signif(logLik(tm),3)
+stopifnot(summary(tm)$convergence==5)
 traj.match(ou2,start=pp,est=c("alpha.1","alpha.2","x1.0","x2.0","tau"),
            method="nloptr",algorithm="NLOPT_GN_MLSL",
            lower=c(0,-1,-10,0,0),
@@ -87,5 +87,4 @@ traj.match(ou2,start=pp,est=c("alpha.1","alpha.2","x1.0","x2.0","tau"),
            xtol_rel=1e-6,maxeval=1000,
            local_opts=list(algorithm="NLOPT_LN_NELDERMEAD",
                            xtol_rel=1e-3)) -> tm
-signif(logLik(tm),3)
-
+stopifnot(summary(tm)$convergence==5)

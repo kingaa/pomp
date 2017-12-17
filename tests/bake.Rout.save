@@ -1,5 +1,5 @@
 
-R version 3.4.1 (2017-06-30) -- "Single Candle"
+R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
 Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -69,23 +69,11 @@ newly created object(s):
 > attr(y,"normal.kind") <- NULL
 > stopifnot(identical(x,y))
 > 
-> freeze({rnorm(5); NULL},seed=3494995)
-[1] "NULL result returned by ‘freeze’"
-attr(,"seed")
-[1] 3494995
-attr(,"system.time")
-   user  system elapsed 
-  0.000   0.000   0.001 
+> invisible(freeze({rnorm(5); NULL},seed=3494995))
 Warning message:
 in ‘freeze’: expression evaluates to NULL 
-> bake({rnorm(5); NULL},seed=3494995,
-+      file=file.path(tempdir(),"bake3.rds"))
-[1] "NULL result returned by ‘bake’"
-attr(,"seed")
-[1] 3494995
-attr(,"system.time")
-   user  system elapsed 
-      0       0       0 
+> invisible(bake({rnorm(5); NULL},seed=3494995,
++                file=file.path(tempdir(),"bake3.rds")))
 Warning message:
 in ‘bake’: expression evaluates to NULL 
 > 
