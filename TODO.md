@@ -1,6 +1,7 @@
 ### pomp to-do list
 
 - deprecate `obs` and `states` arguments in `simulate`
+- graceful stopping for optimizers (at least for `nloptr`)
 - piecewise constant interpolation of covariates
 - number of processors stored in `bake`, `stew`, `freeze` outputs
 - digest of data stored in `bake`, `stew`, `freeze` outputs
