@@ -493,6 +493,11 @@
   pages: "e1002135"
   doi: "http://doi.org/10.1371/journal.pcbi.1002135"
 
+- key: Stocks2017
+  author: "T. Stocks"
+  year: "2017"
+  title: "Iterated filtering methods for Markov process epidemic models"
+
 - key: Tavakoli2016
   author: "S. Tavakoli and V. M. Panaretos"
   year: "2016"
