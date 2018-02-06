@@ -104,6 +104,15 @@
   pages: "10604&#x2013;10609"
   doi: "https://doi.org/10.1073/pnas.1323688111"
 
+- key: Breto2018
+  author: "C. Breto"
+  year: "2018"
+  title: "Modeling and Inference for Infectious Disease Dynamics: A Likelihood-Based Approach"
+  journal: "Statistical Science"
+  volume: "33"
+  pages: "57&#x2013;69"
+  doi: "https://doi.org/10.1214/17-STS636"
+
 - key: Breto2014
   author: "C. Bret&oacute;"
   year: "2014"
