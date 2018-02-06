@@ -1,5 +1,11 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.16.1}{
+  \itemize{
+    \item In \code{pfilter}, \code{Np} is now a required argument unless \code{params} is specified as a matrix of particles.
+    Thanks to Carles Breto for catching the unintended behavior.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.15.4}{
   \itemize{
     \item The bug reported in issue #57 has been fixed.

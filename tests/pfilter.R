@@ -37,6 +37,10 @@ plot(ess~time,data=as.data.frame(pf),type='l')
 plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
 
 pompExample(gompertz)
+pfilter(gompertz,params=parmat(coef(gompertz),100)) -> pf
+pfilter(gompertz,params=parmat(coef(gompertz),100),Np=100) -> pf
+try(pfilter(gompertz) -> pf)
+try(pfilter(gompertz,params=parmat(coef(gompertz),100),Np=1000) -> pf)
 coef(gompertz,"sigma") <- Inf
 try(pfilter(gompertz,Np=1000,pred.var=TRUE))
 

@@ -73,8 +73,13 @@ pfilter.internal <- function (object, params, Np,
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
 
-  if (missing(Np))
-    Np <- NCOL(params)
+  if (missing(Np)) {
+    if (is.matrix(params)) {
+      Np <- ncol(params)
+    } else {
+      stop(ep,sQuote("Np")," must be specified",call.=FALSE)
+    }
+  }
   if (is.function(Np)) {
     Np <- tryCatch(
       vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
@@ -93,6 +98,11 @@ pfilter.internal <- function (object, params, Np,
   if (!is.numeric(Np))
     stop(ep,sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
   Np <- as.integer(Np)
+  if (is.matrix(params)) {
+    if (!all(Np==ncol(params)))
+      stop(ep,"when ",sQuote("params")," is provided as a matrix, do not specify ",
+        sQuote("Np"),"!",call.=FALSE)
+  }
 
   if (NCOL(params)==1) {        # there is only one parameter vector
     one.par <- TRUE

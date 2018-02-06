@@ -1,5 +1,5 @@
 
-R version 3.4.1 (2017-06-30) -- "Single Candle"
+R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
 Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -102,6 +102,12 @@ beta.sd:        0.001
 > pompExample(gompertz)
 newly created object(s):
  gompertz 
+> pfilter(gompertz,params=parmat(coef(gompertz),100)) -> pf
+> pfilter(gompertz,params=parmat(coef(gompertz),100),Np=100) -> pf
+> try(pfilter(gompertz) -> pf)
+Error : in ‘pfilter’: ‘Np’ must be specified
+> try(pfilter(gompertz,params=parmat(coef(gompertz),100),Np=1000) -> pf)
+Error : in ‘pfilter’: when ‘params’ is provided as a matrix, do not specify ‘Np’!
 > coef(gompertz,"sigma") <- Inf
 > try(pfilter(gompertz,Np=1000,pred.var=TRUE))
 Error : in ‘pfilter’: non-finite state variable(s): X

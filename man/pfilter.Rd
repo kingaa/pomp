@@ -73,6 +73,9 @@
     and so on, while when \code{T=length(time(object,t0=TRUE))},
     \code{Np(T)} is the number of particles to sample at the end of the time-series.
     When \code{object} is of class \code{mif}, this is by default the same number of particles used in the \code{mif} iterations.
+
+    One should omit \code{Np} if \code{params} is a matrix of parameters, with one column for each particle.
+    In this case, obviously, the number of particles is \code{ncol(params)}.
   }
   \item{tol}{
     positive numeric scalar; particles with likelihood less than \code{tol} are considered to be incompatible with the data.
