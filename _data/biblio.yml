@@ -5,7 +5,7 @@
   journal: "Monthly Weather Review"
   volume: "129"
   pages: "2884&#x2013;2903"
-  doi: "https://doi.org/10.1175/1520-0493(2001)129%3C2884:AEAKFF%3E2.0.CO;2"
+  doi: "http://doi.org/10.1175/1520-0493(2001)129%3C2884:AEAKFF%3E2.0.CO;2"
 
 - key: Andrieu2010
   author: "C. Andrieu, A. Doucet, and R. Holenstein"
@@ -14,7 +14,7 @@
   journal: "Journal of the Royal Statistical Society, Series B"
   volume: "72"
   pages: "269&#x2013;342"
-  doi: "https://doi.org/10.1111/j.1467-9868.2009.00736.x"
+  doi: "http://doi.org/10.1111/j.1467-9868.2009.00736.x"
 
 - key: Arulampalam2002
   author: "M. S. Arulampalam, S. Maskell, N. Gordon, and T. Clapp"
@@ -23,7 +23,7 @@
   journal: "IEEE Transactions on Signal Processing"
   volume: "50"
   pages: "174&#x2013;188"
-  doi: "https://doi.org/10.1109/78.978374"
+  doi: "http://doi.org/10.1109/78.978374"
 
 - key: Bakker2016
   author: "K. M. Bakker, M. E. Martinez-Bakker, B. Helm, and T. J. Stevenson"
@@ -32,7 +32,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "113"
   pages: "6689&#x2013;6694"
-  doi: "https://doi.org/10.1073/pnas.1523941113"
+  doi: "http://doi.org/10.1073/pnas.1523941113"
 
 - key: Baracchini2017
   author: "T. Baracchini, A. A. King, M. J. Bouma, X. Rod&oacute;, E. Bertuzzo, and M. Pascual"
@@ -41,7 +41,7 @@
   journal: "Advances in Water Resources"
   volume: "108C"
   pages: "357&#x2013;366"
-  doi: "https://doi.org/10.1016/j.advwatres.2016.11.012"
+  doi: "http://doi.org/10.1016/j.advwatres.2016.11.012"
 
 - key: Barrows2016
   author: "D. Barrows"
@@ -57,7 +57,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "113"
   pages: "14595&#x2013;14600"
-  doi: "https://doi.org/10.1073/pnas.1604976113"
+  doi: "http://doi.org/10.1073/pnas.1604976113"
 
 - key: Bhadra2010
   author: "A. Bhadra"
@@ -66,7 +66,7 @@
   journal: "Journal of the Royal Statistical Society, Series B"
   volume: "72"
   pages: "314&#x2013;315"
-  doi: "https://doi.org/10.1111/j.1467-9868.2009.00736.x"
+  doi: "http://doi.org/10.1111/j.1467-9868.2009.00736.x"
 
 - key: Bhadra2011
   author: "A. Bhadra, E. L. Ionides, K. Laneri, M. Pascual, M. Bouma, and R. C. Dhiman"
@@ -75,7 +75,7 @@
   journal: "Journal of the American Statistical Association"
   volume: "106"
   pages: "440&#x2013;451"
-  doi: "https://doi.org/10.1198/jasa.2011.ap10323"
+  doi: "http://doi.org/10.1198/jasa.2011.ap10323"
 
 - key: Blackwood2013
   author: "J. C. Blackwood, D. A. T. Cummings, H. Broutin, S. Iamsirithaworn, and P. Rohani"
@@ -84,7 +84,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "110"
   pages: "9595&#x2013;9600"
-  doi: "https://doi.org/10.1073/pnas.1220908110"
+  doi: "http://doi.org/10.1073/pnas.1220908110"
 
 - key: Blackwood2013a
   author: "J. C. Blackwood, D. G. Streicker, S. Altizer, and P. Rohani"
@@ -93,7 +93,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "110"
   pages: "20837&#x2013;20842"
-  doi: "https://doi.org/10.1073/pnas.1308817110"
+  doi: "http://doi.org/10.1073/pnas.1308817110"
 
 - key: Blake2014
   author: "I. M. Blake, R. Martin, A. Goel, N. Khetsuriani, J. Everts, C. Wolff, S. Wassilak, R. B. Aylward, and N. C. Grassly"
@@ -102,7 +102,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "111"
   pages: "10604&#x2013;10609"
-  doi: "https://doi.org/10.1073/pnas.1323688111"
+  doi: "http://doi.org/10.1073/pnas.1323688111"
 
 - key: Breto2018
   author: "C. Breto"
@@ -111,7 +111,7 @@
   journal: "Statistical Science"
   volume: "33"
   pages: "57&#x2013;69"
-  doi: "https://doi.org/10.1214/17-STS636"
+  doi: "http://doi.org/10.1214/17-STS636"
 
 - key: Breto2014
   author: "C. Bret&oacute;"
@@ -120,7 +120,7 @@
   journal: "Statistics and Probability Letters"
   volume: "91"
   pages: "20&#x2013;26"
-  doi: "https://doi.org/10.1016/j.spl.2014.04.003"
+  doi: "http://doi.org/10.1016/j.spl.2014.04.003"
 
 - key: Breto2009
   author: "C. Bret&oacute;, D. He, E. L. Ionides, and A. A. King"
@@ -129,7 +129,7 @@
   journal: "Annals of Applied Statistics"
   volume: "3"
   pages: "319&#x2013;348"
-  doi: "https://doi.org/10.1214/08-AOAS201"
+  doi: "http://doi.org/10.1214/08-AOAS201"
 
 - key: Breto2011
   author: "C. Bret&oacute; and E. L. Ionides"
@@ -138,7 +138,7 @@
   journal: "Stochastic Processes and their Applications"
   volume: "121"
   pages: "2571&#x2013;2591"
-  doi: "https://doi.org/10.1016/j.spa.2011.07.005"
+  doi: "http://doi.org/10.1016/j.spa.2011.07.005"
 
 - key: Buhnerkempe2017
   author: "M. G. Buhnerkempe, K. C. Prager, C. C. Strelioff, D. J. Greig, J. L. Laake, S. R. Melin, R. L. DeLong, F. M. D. Gulland, and J. O. Lloyd-Smith"
@@ -147,7 +147,7 @@
   journal: "Journal of Animal Ecology"
   volume: "86"
   pages: "460&#x2013;472"
-  doi: "https://doi.org/10.1111/1365-2656.12656"
+  doi: "http://doi.org/10.1111/1365-2656.12656"
 
 - key: Cai2007
   author: "X. Cai and Z. Xu"
@@ -156,7 +156,7 @@
   journal: "Journal of Chemical Physics"
   volume: "126"
   pages: "074102"
-  doi: "https://doi.org/10.1063/1.2436869"
+  doi: "http://doi.org/10.1063/1.2436869"
 
 - key: Camacho2011
   author: "A. Camacho, S. Ballesteros, A. L. Graham, F. Carrat, O. Ratmann, and B. Cazelles"
@@ -165,7 +165,16 @@
   journal: "Proceedings of the Royal Society of London, Series B"
   volume: "278"
   pages: "3635&#x2013;3643"
-  doi: "https://doi.org/10.1098/rspb.2011.0300"
+  doi: "http://doi.org/10.1098/rspb.2011.0300"
+
+- key: DomenechdeCelles2018
+  author: "M. Domenech de Cell&egrave;s, F. M. G. Magpantay, A. A. King, and P. Rohani"
+  year: "2018"
+  title: "The impact of past vaccination coverage and immunity on pertussis resurgence"
+  journal: "Science Translational Medicine"
+  volume: "10"
+  pages: "eaaj1748"
+  doi: "http://doi.org/10.1126/scitranslmed.aaj1748"
 
 - key: Du2017
   author: "X. Du, A. A. King, R. J. Woods, and M. Pascual"
@@ -174,7 +183,7 @@
   journal: "Science Translational Medicine"
   volume: "9"
   pages: "eaan5325"
-  doi: "https://doi.org/10.1126/scitranslmed.aan5325"
+  doi: "http://doi.org/10.1126/scitranslmed.aan5325"
 
 - key: Ellner1998
   author: "S. P. Ellner, B. A. Bailey, G. V. Bobashev, A. R. Gallant, B. T. Grenfell, and D. W. Nychka"
@@ -183,7 +192,7 @@
   journal: "American Naturalist"
   volume: "151"
   pages: "425&#x2013;440"
-  doi: "https://doi.org/10.1086/286130"
+  doi: "http://doi.org/10.1086/286130"
 
 - key: Evensen1994
   author: "G. Evensen"
@@ -192,7 +201,7 @@
   journal: "Journal of Geophysical Research: Oceans"
   volume: "99"
   pages: "10143&#x2013;10162"
-  doi: "https://doi.org/10.1029/94JC00572"
+  doi: "http://doi.org/10.1029/94JC00572"
 
 - key: Evensen2009
   author: "G. Evensen"
@@ -207,7 +216,7 @@
   journal: "Statistical Science"
   volume: "31"
   pages: "96&#x2013;118"
-  doi: "https://doi.org/10.1214/15-sts534"
+  doi: "http://doi.org/10.1214/15-sts534"
 
 - key: Gillespie1977a
   author: "D. T. Gillespie"
@@ -216,7 +225,7 @@
   journal: "Journal of Physical Chemistry"
   volume: "81"
   pages: "2340&#x2013;2361"
-  doi: "https://doi.org/10.1021/j100540a008"
+  doi: "http://doi.org/10.1021/j100540a008"
 
 - key: Gourieroux1996
   author: "C. Gouri&eacute;roux and A. Monfort"
@@ -231,7 +240,7 @@
   journal: "Proceedings of the Royal Society of London, Series B"
   volume: "282"
   pages: "20142591"
-  doi: "https://doi.org/10.1098/rspb.2014.2591"
+  doi: "http://doi.org/10.1098/rspb.2014.2591"
 
 - key: He2011
   author: "D. He, J. Dushoff, T. Day, J. Ma, and D. Earn"
@@ -240,7 +249,7 @@
   journal: "Theoretical Ecology"
   volume: "4"
   pages: "1&#x2013;6"
-  doi: "https://doi.org/10.1007/s12080-011-0123-3"
+  doi: "http://doi.org/10.1007/s12080-011-0123-3"
 
 - key: He2013a
   author: "D. He, J. Dushoff, T. Day, J. Ma, and D. J. D. Earn"
@@ -249,7 +258,7 @@
   journal: "Proceedings of the Royal Society of London, Series B"
   volume: "280"
   pages: "20131345"
-  doi: "https://doi.org/10.1098/rspb.2013.1345"
+  doi: "http://doi.org/10.1098/rspb.2013.1345"
 
 - key: He2013
   author: "D. He, J. Dushoff, R. Eftimie, and D. J. D. Earn"
@@ -258,7 +267,7 @@
   journal: "Proceedings of the Royal Society of London, Series B"
   volume: "280"
   pages: "20131174"
-  doi: "https://doi.org/10.1098/rspb.2013.1174"
+  doi: "http://doi.org/10.1098/rspb.2013.1174"
 
 - key: He2010
   author: "D. He, E. L. Ionides, and A. A. King"
@@ -267,7 +276,7 @@
   journal: "Journal of the Royal Society, Interface"
   volume: "7"
   pages: "271&#x2013;283"
-  doi: "https://doi.org/10.1098/rsif.2009.0151"
+  doi: "http://doi.org/10.1098/rsif.2009.0151"
 
 - key: Ionides2011a
   author: "E. L. Ionides"
@@ -276,7 +285,7 @@
   journal: "Statistical Science"
   volume: "26"
   pages: "49&#x2013;52"
-  doi: "https://doi.org/10.1214/11-sts345c"
+  doi: "http://doi.org/10.1214/11-sts345c"
 
 - key: Ionides2011
   author: "E. L. Ionides, A. Bhadra, Y. Atchad&eacute;, and A. A. King"
@@ -285,7 +294,7 @@
   journal: "Annals of Statistics"
   volume: "39"
   pages: "1776&#x2013;1802"
-  doi: "https://doi.org/10.1214/11-AOS886"
+  doi: "http://doi.org/10.1214/11-AOS886"
 
 - key: Ionides2006
   author: "E. L. Ionides, C. Bret&oacute;, and A. A. King"
@@ -294,7 +303,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "103"
   pages: "18438&#x2013;18443"
-  doi: "https://doi.org/10.1073/pnas.0603181103"
+  doi: "http://doi.org/10.1073/pnas.0603181103"
 
 - key: Ionides2017
   author: "E. L. Ionides, C. Breto, J. Park, R. A. Smith, and A. A. King"
@@ -303,7 +312,7 @@
   journal: "Journal of the Royal Society, Interface"
   volume: "14"
   pages: "20170126"
-  doi: "https://doi.org/10.1098/rsif.2017.0126"
+  doi: "http://doi.org/10.1098/rsif.2017.0126"
 
 - key: Ionides2015
   author: "E. L. Ionides, D. Nguyen, Y. Atchad&eacute;, S. Stoev, and A. A. King"
@@ -312,7 +321,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "112"
   pages: "719&#x2013;724"
-  doi: "https://doi.org/10.1073/pnas.1410597112"
+  doi: "http://doi.org/10.1073/pnas.1410597112"
 
 - key: Kendall1999
   author: "B. E. Kendall, C. J. Briggs, W. W. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, and S. N. Wood"
@@ -321,7 +330,7 @@
   journal: "Ecology"
   volume: "80"
   pages: "1789&#x2013;1805"
-  doi: "https://doi.org/10.1890/0012-9658(1999)080%5B1789:wdpcas%5D2.0.co;2"
+  doi: "http://doi.org/10.1890/0012-9658(1999)080%5B1789:wdpcas%5D2.0.co;2"
 
 - key: Kendall2005
   author: "B. E. Kendall, S. P. Ellner, E. McCauley, S. N. Wood, C. J. Briggs, W. M. Murdoch, and P. Turchin"
@@ -330,7 +339,7 @@
   journal: "Ecological Monographs"
   volume: "75"
   pages: "259&#x2013;276"
-  doi: "https://doi.org/10.1890/03-4056"
+  doi: "http://doi.org/10.1890/03-4056"
 
 - key: King2015
   author: "A. A. King, M. Domenech de Cell&egrave;s, F. M. G. Magpantay, and P. Rohani"
@@ -339,7 +348,7 @@
   journal: "Proceedings of the Royal Society of London, Series B"
   volume: "282"
   pages: "20150347"
-  doi: "https://doi.org/10.1098/rspb.2015.0347"
+  doi: "http://doi.org/10.1098/rspb.2015.0347"
 
 - key: King2008
   author: "A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma"
@@ -348,7 +357,7 @@
   journal: "Nature"
   volume: "454"
   pages: "877&#x2013;880"
-  doi: "https://doi.org/10.1038/nature07084"
+  doi: "http://doi.org/10.1038/nature07084"
 
 - key: King2016
   author: "A. A. King, D. Nguyen, and E. L. Ionides"
@@ -357,7 +366,7 @@
   journal: "Journal of Statistical Software"
   volume: "69"
   pages: "1&#x2013;43"
-  doi: "https://doi.org/10.18637/jss.v069.i12"
+  doi: "http://doi.org/10.18637/jss.v069.i12"
 
 - key: Knape2011
   author: "J. Knape and P. de Valpine"
@@ -366,7 +375,7 @@
   journal: "Ecology"
   volume: "93"
   pages: "256&#x2013;263"
-  doi: "https://doi.org/10.1890/11-0797.1"
+  doi: "http://doi.org/10.1890/11-0797.1"
 
 - key: Laneri2010
   author: "K. Laneri, A. Bhadra, E. L. Ionides, M. Bouma, R. C. Dhiman, R. S. Yadav, and M. Pascual"
@@ -375,7 +384,7 @@
   journal: "PLoS Computational Biology"
   volume: "6"
   pages: "e1000898"
-  doi: "https://doi.org/10.1371/journal.pcbi.1000898"
+  doi: "http://doi.org/10.1371/journal.pcbi.1000898"
 
 - key: Laneri2015
   author: "K. Laneri, R. E. Paul, A. Tall, J. Faye, F. Diene-Sarr, C. Sokhna, J.-F. Trape, and X. Rod&oacute;"
@@ -384,7 +393,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "112"
   pages: "8786&#x2013;8791"
-  doi: "https://doi.org/10.1073/pnas.1419047112"
+  doi: "http://doi.org/10.1073/pnas.1419047112"
 
 - key: Lavine2013
   author: "J. S. Lavine, A. A. King, V. Andreasen, and O. N. Bj&oslash;rnstad"
@@ -393,7 +402,7 @@
   journal: "PLoS ONE"
   volume: "8"
   pages: "e72086"
-  doi: "https://doi.org/10.1371/journal.pone.0072086"
+  doi: "http://doi.org/10.1371/journal.pone.0072086"
 
 - key: Liu2001b
   author: "J. Liu and M. West"
@@ -410,7 +419,7 @@
   journal: "Parasitology"
   volume: "143"
   pages: "835&#x2013;849"
-  doi: "https://doi.org/10.1017/S0031182015000979"
+  doi: "http://doi.org/10.1017/S0031182015000979"
 
 - key: Marin2012
   author: "J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder"
@@ -419,7 +428,7 @@
   journal: "Statistics and Computing"
   volume: "22"
   pages: "1167&#x2013;1180"
-  doi: "https://doi.org/10.1007/s11222-011-9288-2"
+  doi: "http://doi.org/10.1007/s11222-011-9288-2"
 
 - key: Martinez2016
   author: "P. P. Martinez, A. A. King, M. Yunus, A. S. G. Faruque, and M. Pascual"
@@ -428,7 +437,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "113"
   pages: "4092&#x2013;4097"
-  doi: "https://doi.org/10.1073/pnas.1518977113"
+  doi: "http://doi.org/10.1073/pnas.1518977113"
 
 - key: Martinez2017
   author: "P. P. Martinez, R. C. Reiner Jr, M. Roy, B. A. Cash, M. Yunus, A. S. G. Faruque, S. Huq, A. A. King, and M. Pascual"
@@ -437,7 +446,7 @@
   journal: "PLoS ONE"
   volume: "12"
   pages: "e0172355"
-  doi: "https://doi.org/10.1371/journal.pone.0172355"
+  doi: "http://doi.org/10.1371/journal.pone.0172355"
 
 - key: Martinez-Bakker2015
   author: "M. Martinez-Bakker, A. A. King, and P. Rohani"
@@ -446,7 +455,7 @@
   journal: "PLoS Biology"
   volume: "13"
   pages: "e1002172"
-  doi: "https://doi.org/10.1371/journal.pbio.1002172"
+  doi: "http://doi.org/10.1371/journal.pbio.1002172"
 
 - key: Ranjeva2017
   author: "S. L. Ranjeva, E. B. Baskerville, V. Dukic, L. L. Villa, E. Lazcano-Ponce, A. R. Giuliano, G. Dwyer, and S. Cobey"
@@ -455,7 +464,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "114"
   pages: "13573&#x2013;13578"
-  doi: "https://doi.org/10.1073/pnas.1714712114"
+  doi: "http://doi.org/10.1073/pnas.1714712114"
 
 - key: Reuman2006
   author: "D. C. Reuman, R. A. Desharnais, R. F. Costantino, O. S. Ahmad, and J. E. Cohen"
@@ -464,7 +473,7 @@
   journal: "Proceedings of the National Academy of Sciences of the U.S.A."
   volume: "103"
   pages: "18860&#x2013;18865"
-  doi: "https://doi.org/10.1073/pnas.0608571103"
+  doi: "http://doi.org/10.1073/pnas.0608571103"
 
 - key: Romero-Severson2015
   author: "E. O. Romero-Severson, E. Volz, J. S. Koopman, T. Leitner, and E. L. Ionides"
@@ -473,7 +482,7 @@
   journal: "American Journal of Epidemiology"
   volume: "182"
   pages: "255&#x2013;262"
-  doi: "https://doi.org/10.1093/aje/kwv044"
+  doi: "http://doi.org/10.1093/aje/kwv044"
 
 - key: Roy2012
   author: "M. Roy, M. J. Bouma, E. L. Ionides, R. C. Dhiman, and M. Pascual"
@@ -482,7 +491,7 @@
   journal: "PLoS Neglected Tropical Diseases"
   volume: "7"
   pages: "e1979"
-  doi: "https://doi.org/10.1371/journal.pntd.0001979"
+  doi: "http://doi.org/10.1371/journal.pntd.0001979"
 
 - key: Shrestha2015
   author: "S. Shrestha, B. Foxman, J. Berus, W. G. van Panhuis, C. Steiner, C. Viboud, and P. Rohani"
@@ -491,7 +500,7 @@
   journal: "Scientific Reports"
   volume: "5"
   pages: "15314&#x2013;"
-  doi: "https://doi.org/10.1038/srep15314"
+  doi: "http://doi.org/10.1038/srep15314"
 
 - key: Shrestha2013
   author: "S. Shrestha, B. Foxman, D. M. Weinberger, C. Steiner, C. Viboud, and P. Rohani"
@@ -500,7 +509,7 @@
   journal: "Science Translational Medicine"
   volume: "5"
   pages: "191ra84"
-  doi: "https://doi.org/10.1126/scitranslmed.3005982"
+  doi: "http://doi.org/10.1126/scitranslmed.3005982"
 
 - key: Shrestha2011
   author: "S. Shrestha, A. A. King, and P. Rohani"
@@ -509,7 +518,7 @@
   journal: "PLoS Computational Biology"
   volume: "7"
   pages: "e1002135"
-  doi: "https://doi.org/10.1371/journal.pcbi.1002135"
+  doi: "http://doi.org/10.1371/journal.pcbi.1002135"
 
 - key: Stocks2017
   author: "T. Stocks"
@@ -524,7 +533,7 @@
   journal: "Journal of the American Statistical Association"
   volume: "111"
   pages: "1020&#x2013;1035"
-  doi: "https://doi.org/10.1080/01621459.2016.1147355"
+  doi: "http://doi.org/10.1080/01621459.2016.1147355"
 
 - key: Toni2010
   author: "T. Toni and M. P. H. Stumpf"
@@ -533,7 +542,7 @@
   journal: "Bioinformatics"
   volume: "26"
   pages: "104&#x2013;110"
-  doi: "https://doi.org/10.1093/bioinformatics/btp619"
+  doi: "http://doi.org/10.1093/bioinformatics/btp619"
 
 - key: Toni2009a
   author: "T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf"
@@ -542,7 +551,7 @@
   journal: "Journal of the Royal Society, Interface"
   volume: "6"
   pages: "187&#x2013;202"
-  doi: "https://doi.org/10.1098/rsif.2008.0172"
+  doi: "http://doi.org/10.1098/rsif.2008.0172"
 
 - key: Wood2010
   author: "S. N. Wood"
@@ -551,7 +560,7 @@
   journal: "Nature"
   volume: "466"
   pages: "1102&#x2013;1104"
-  doi: "https://doi.org/10.1038/nature09319"
+  doi: "http://doi.org/10.1038/nature09319"
 
 - key: Xia2011
   author: "Y. Xia and H. Tong"
@@ -560,7 +569,7 @@
   journal: "Statistical Science"
   volume: "26"
   pages: "21&#x2013;46"
-  doi: "https://doi.org/10.1214/10-sts345"
+  doi: "http://doi.org/10.1214/10-sts345"
 
 - key: Zhao2018
   author: "S. Zhao, L. Stone, D. Gao, and D. He"
@@ -569,5 +578,5 @@
   journal: "PLoS Neglected Tropical Diseases"
   volume: "12"
   pages: "e0006158"
-  doi: "https://doi.org/10.1371/journal.pntd.0006158"
+  doi: "http://doi.org/10.1371/journal.pntd.0006158"
 
