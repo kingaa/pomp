@@ -223,8 +223,8 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
   )
   if (verbose) cat("model codes written to",sQuote(modelfile),"\n")
 
-  cflags <- Sys.getenv("PKG_CFLAGS")
-  cflags <- paste0("PKG_CFLAGS=\"",
+  cflags <- Sys.getenv("PKG_CPPFLAGS")
+  cflags <- paste0("PKG_CPPFLAGS=\"",
     if (nchar(cflags)>0) paste0(cflags," ") else "",
     "-I",system.file("include",package="pomp"),"\"")
 
