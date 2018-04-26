@@ -29,7 +29,7 @@ attr(,"seed")
 [1] 499586
 attr(,"system.time")
    user  system elapsed 
-      0       0       0 
+  0.000   0.004   0.000 
 > w2 <- runif(2)
 > freeze(runif(5),seed=499586)
 [1] 0.6719240 0.5092283 0.0643100 0.3672672 0.7148970

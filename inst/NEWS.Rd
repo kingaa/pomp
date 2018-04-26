@@ -5,6 +5,7 @@
     \item Fix bug in \code{conv.rec} when only one parameter is requested.
     \item Correct and improve documentation for \code{conv.rec}.
     \item \code{coef<-} can now take a list of parameters: it simply applies \code{unlist} to turn the list into a numeric vector.
+    \item Simplify \code{conv.rec}.
   }
 }
 \section{Changes in \pkg{pomp} version 1.16.1}{

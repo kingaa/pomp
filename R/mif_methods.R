@@ -4,24 +4,19 @@
 conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
   transform <- as.logical(transform)
   if (transform) {
-    pars.proper <- names(coef(object))
-    pars.improper <- setdiff(colnames(object@conv.rec),pars.proper)
-    retval <- cbind(
-      t(
-        partrans(
-          object,
-          params=t(object@conv.rec[,pars.proper]),
-          dir="fromEstimationScale"
-        )
-      ),
-      object@conv.rec[,pars.improper]
+    retval <- t(
+      partrans(
+        object,
+        params=t(object@conv.rec),
+        dir="fromEstimationScale"
+      )
     )
   } else {
     retval <- object@conv.rec
   }
-  if (missing(pars))
+  if (missing(pars)) {
     retval
-  else {
+  } else {
     pars <- as.character(pars)
     bad.pars <- setdiff(pars,colnames(retval))
     if (length(bad.pars)>0)
