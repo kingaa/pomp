@@ -1,6 +1,6 @@
 
-R version 3.4.1 (2017-06-30) -- "Single Candle"
-Copyright (C) 2017 The R Foundation for Statistical Computing
+R version 3.5.0 (2018-04-23) -- "Joy in Playing"
+Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -50,12 +50,12 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x4e4d828>
-<environment: 0x45db628>
+<bytecode: 0x2eed858>
+<environment: 0x28b1740>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x47e28f8>
-<environment: 0x4d5d880>
+<bytecode: 0x38d63d8>
+<environment: 0x27a8a60>
 measurement model simulator, rmeasure = native function ‘_gompertz_normal_rmeasure’
 measurement model density, dmeasure = native function ‘_gompertz_normal_dmeasure’
 prior simulator, rprior = not specified
@@ -66,12 +66,12 @@ parameter transformation (to estimation scale) = function (params, ...)
 {
     log(params)
 }
-<environment: 0x577b448>
+<environment: 0x27b25a0>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x577b448>
+<environment: 0x27b25a0>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -91,8 +91,8 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x4e4d828>
-<environment: 0x45db628>
+<bytecode: 0x2eed858>
+<environment: 0x28b1740>
 > 
 > po <- gompertz
 > coef(po)
@@ -232,11 +232,21 @@ iteration loglik     r
 4   31.3 0.197
 5     NA 0.197
 > conv.rec(mf,c("loglik"),transform=TRUE)
-   0    1    2    3    4    5 
-30.1 30.7 30.9 30.6 31.3   NA 
+  loglik
+0   30.1
+1   30.7
+2   30.9
+3   30.6
+4   31.3
+5     NA
 > conv.rec(mf,c("K"),transform=TRUE)
-   0    1    2    3    4    5 
-1.00 1.01 1.02 1.03 1.04 1.04 
+     K
+0 1.00
+1 1.01
+2 1.02
+3 1.03
+4 1.04
+5 1.04
 > 
 > gg <- pomp(gompertz,skeleton=map(function(x,t,params,...){
 +   xx <- x["X"]*exp(params["r"]*(1-x["X"]/params["K"]))

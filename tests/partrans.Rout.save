@@ -1,6 +1,6 @@
 
-R version 3.4.1 (2017-06-30) -- "Single Candle"
-Copyright (C) 2017 The R Foundation for Statistical Computing
+R version 3.5.0 (2018-04-23) -- "Joy in Playing"
+Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -25,14 +25,14 @@ newly created object(s):
 > 
 > pars <- coef(gompertz)
 > 
-> new.trans <- function (params, ...) 
+> new.trans <- function (params, ...)
 + {
 +   params <- c(params[c("X.0","tau","sigma")], exp(params[c("log.r","log.K")]))
 +   names(params) <- c("X.0","tau","sigma","r","K")
 +   params
 + }
 > 
-> new.inv.trans <- function (params, ...) 
+> new.inv.trans <- function (params, ...)
 + {
 +   params <- c(params[c("X.0","tau","sigma")], log(params[c("r","K")]))
 +   names(params) <- c("X.0","tau","sigma","log.r","log.K")
@@ -56,4 +56,9 @@ newly created object(s):
 Error : in 'partrans': user transformation functions must return a named numeric vector
 > try(partrans(po,params=parmat(coef(po),10),dir="to"))
 Error : in 'partrans': user transformation functions must return a named numeric vector
+> 
+> coef(po) <- as.list(pars)
+> coef(po)
+    K     r sigma   tau   X.0 
+  1.0   0.1   0.1   0.1   1.0 
 > 

@@ -163,8 +163,9 @@
   Methods that can be used to manipulate, display, or extract information from a \code{mif} object:
   \describe{
     \item{conv.rec}{
-      \code{conv.rec(object, pars = NULL)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
-      By default, all rows are returned.
+      \code{conv.rec(object, pars, transform = FALSE)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
+      By default, all columns are returned.
+      If \code{transform=TRUE}, the parameters are transformed from the estimation scale.
     }
     \item{logLik}{
       Returns the value in the \code{loglik} slot.

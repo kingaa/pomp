@@ -1,6 +1,6 @@
 
-R version 3.4.1 (2017-06-30) -- "Single Candle"
-Copyright (C) 2017 The R Foundation for Statistical Computing
+R version 3.5.0 (2018-04-23) -- "Joy in Playing"
+Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -67,7 +67,7 @@ Type 'q()' to quit R.
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.0168221 secs
+Time difference of 0.00421381 secs
 
 > X <- reshape(X, dir = "wide", v.names = "X", timevar = "traj", 
 +     idvar = "time")
@@ -82,7 +82,7 @@ Time difference of 0.0168221 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.0512619 secs
+Time difference of 0.003628969 secs
 
 > x <- reshape(x, dir = "wide", v.names = c("Y", "X"), 
 +     timevar = "sim", idvar = "time")
@@ -105,7 +105,7 @@ Time difference of 0.0512619 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.417275 secs
+Time difference of 0.5936418 secs
 
 > print(logmeanexp(sapply(pf, logLik), se = TRUE))
                    se 
@@ -194,7 +194,7 @@ Time difference of 0.417275 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.2478364 secs
+Time difference of 0.00341177 secs
 
 > plot(incid ~ time, data = X, type = "l")
 
@@ -205,7 +205,7 @@ Time difference of 0.2478364 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.02054477 secs
+Time difference of 0.03117585 secs
 
 > plot(incid ~ time, data = x, col = as.factor(x$sim), 
 +     pch = 16)
@@ -221,7 +221,7 @@ Time difference of 0.02054477 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 6.30058 secs
+Time difference of 7.621823 secs
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 
@@ -231,5 +231,5 @@ null device
           1 
 > 
 > print(packageVersion("pomp"))
-[1] ‘1.15.2.1’
+[1] ‘1.16.2.1’
 > 
