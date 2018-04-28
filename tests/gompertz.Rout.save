@@ -1,7 +1,7 @@
 
-R version 3.5.0 (2018-04-23) -- "Joy in Playing"
+R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
 Copyright (C) 2018 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -39,23 +39,35 @@ summary of data:
  3rd Qu.:1.297  
  Max.   :1.880  
 zero time, t0 = 0
-process model simulator, rprocess = function (xstart, times, params, ..., zeronames = character(0), 
-    tcovar, covar, .getnativesymbolinfo = TRUE) 
-{
-    tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
-        times = times, params = params, deltat = object@delta.t, 
-        method = 2L, zeronames = zeronames, tcovar = tcovar, 
-        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
-        error = function(e) {
-            stop(ep, conditionMessage(e), call. = FALSE)
-        })
-}
-<bytecode: 0x2516858>
-<environment: 0x1eda740>
-process model density, dprocess = function (x, times, params, log = FALSE, ...) 
-stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x2eff3d8>
-<environment: 0x1dd1a60>
+process model simulator, rprocess = function (xstart, times, params, ...,
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE) {
+      tryCatch(
+        .Call(
+          euler_model_simulator,
+          func=efun,
+          xstart=xstart,
+          times=times,
+          params=params,
+          deltat=object@delta.t,
+          method=2L,
+          zeronames=zeronames,
+          tcovar=tcovar,
+          covar=covar,
+          args=pairlist(...),
+          gnsi=.getnativesymbolinfo
+        ),
+        error = function (e) {
+          stop(ep,conditionMessage(e),call.=FALSE)
+        }
+      )
+    }
+<bytecode: 0x7fa732d5cc70>
+<environment: 0x7fa7352d6548>
+process model density, dprocess = function (x,times,params,log=FALSE,...) stop(sQuote("dprocess")," not specified",call.=FALSE)
+<bytecode: 0x7fa7324fb548>
+<environment: 0x7fa732530d48>
 measurement model simulator, rmeasure = native function ‘_gompertz_normal_rmeasure’
 measurement model density, dmeasure = native function ‘_gompertz_normal_dmeasure’
 prior simulator, rprior = not specified
@@ -66,12 +78,12 @@ parameter transformation (to estimation scale) = function (params, ...)
 {
     log(params)
 }
-<environment: 0x1ddb5a0>
+<environment: 0x7fa7327a0788>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x1ddb5a0>
+<environment: 0x7fa7327a0788>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -80,19 +92,32 @@ native function ‘_gompertz_normal_rmeasure’
 > print(gompertz@dmeasure)
 native function ‘_gompertz_normal_dmeasure’
 > print(gompertz@rprocess)
-function (xstart, times, params, ..., zeronames = character(0), 
-    tcovar, covar, .getnativesymbolinfo = TRUE) 
-{
-    tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
-        times = times, params = params, deltat = object@delta.t, 
-        method = 2L, zeronames = zeronames, tcovar = tcovar, 
-        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
-        error = function(e) {
-            stop(ep, conditionMessage(e), call. = FALSE)
-        })
-}
-<bytecode: 0x2516858>
-<environment: 0x1eda740>
+function (xstart, times, params, ...,
+              zeronames = character(0),
+              tcovar, covar,
+              .getnativesymbolinfo = TRUE) {
+      tryCatch(
+        .Call(
+          euler_model_simulator,
+          func=efun,
+          xstart=xstart,
+          times=times,
+          params=params,
+          deltat=object@delta.t,
+          method=2L,
+          zeronames=zeronames,
+          tcovar=tcovar,
+          covar=covar,
+          args=pairlist(...),
+          gnsi=.getnativesymbolinfo
+        ),
+        error = function (e) {
+          stop(ep,conditionMessage(e),call.=FALSE)
+        }
+      )
+    }
+<bytecode: 0x7fa732d5cc70>
+<environment: 0x7fa7352d6548>
 > 
 > po <- gompertz
 > coef(po)
@@ -190,14 +215,17 @@ iteration loglik nfail      K     r sigma  tau X.0
         4   31.3     0 0.0347 -1.62  -2.3 -2.3   0
         5     NA    NA 0.0421 -1.63  -2.3 -2.3   0
 > conv.rec(mf,transform=TRUE)
-      variable
-rep      loglik nfail    K     r sigma tau X.0
-  [1,] 1.17e+13     1 1.00 0.200   0.1 0.1   1
-  [2,] 2.21e+13     1 1.01 0.199   0.1 0.1   1
-  [3,] 2.55e+13     1 1.02 0.197   0.1 0.1   1
-  [4,] 2.00e+13     1 1.03 0.197   0.1 0.1   1
-  [5,] 3.96e+13     1 1.04 0.197   0.1 0.1   1
-  [6,]       NA    NA 1.04 0.197   0.1 0.1   1
+         variable
+iteration loglik nfail    K     r sigma tau X.0
+        0   30.1     0 1.00 0.200   0.1 0.1   1
+        1   30.7     0 1.01 0.199   0.1 0.1   1
+        2   30.9     0 1.02 0.197   0.1 0.1   1
+        3   30.6     0 1.03 0.197   0.1 0.1   1
+        4   31.3     0 1.04 0.197   0.1 0.1   1
+        5     NA    NA 1.04 0.197   0.1 0.1   1
+> identical(conv.rec(mf)[,c("loglik","nfail")],
++           conv.rec(mf,transform=TRUE)[,c("loglik","nfail")])
+[1] TRUE
 > conv.rec(mf,c("loglik","r"))
          variable
 iteration loglik     r
@@ -217,41 +245,41 @@ iteration loglik     r
         4   31.3 -1.62
         5     NA -1.63
 > try(conv.rec(mf,c("loglik","r"),transform=TRUE))
-      variable
-rep      loglik     r
-  [1,] 1.17e+13 0.200
-  [2,] 2.21e+13 0.199
-  [3,] 2.55e+13 0.197
-  [4,] 2.00e+13 0.197
-  [5,] 3.96e+13 0.197
-  [6,]       NA 0.197
+         variable
+iteration loglik     r
+        0   30.1 0.200
+        1   30.7 0.199
+        2   30.9 0.197
+        3   30.6 0.197
+        4   31.3 0.197
+        5     NA 0.197
 > conv.rec(mf,c("loglik","r"),transform=TRUE)
-      variable
-rep      loglik     r
-  [1,] 1.17e+13 0.200
-  [2,] 2.21e+13 0.199
-  [3,] 2.55e+13 0.197
-  [4,] 2.00e+13 0.197
-  [5,] 3.96e+13 0.197
-  [6,]       NA 0.197
+         variable
+iteration loglik     r
+        0   30.1 0.200
+        1   30.7 0.199
+        2   30.9 0.197
+        3   30.6 0.197
+        4   31.3 0.197
+        5     NA 0.197
 > conv.rec(mf,c("loglik"),transform=TRUE)
-      variable
-rep      loglik
-  [1,] 1.17e+13
-  [2,] 2.21e+13
-  [3,] 2.55e+13
-  [4,] 2.00e+13
-  [5,] 3.96e+13
-  [6,]       NA
+         variable
+iteration loglik
+        0   30.1
+        1   30.7
+        2   30.9
+        3   30.6
+        4   31.3
+        5     NA
 > conv.rec(mf,c("K"),transform=TRUE)
-      variable
-rep       K
-  [1,] 1.00
-  [2,] 1.01
-  [3,] 1.02
-  [4,] 1.03
-  [5,] 1.04
-  [6,] 1.04
+         variable
+iteration    K
+        0 1.00
+        1 1.01
+        2 1.02
+        3 1.03
+        4 1.04
+        5 1.04
 > 
 > gg <- pomp(gompertz,skeleton=map(function(x,t,params,...){
 +   xx <- x["X"]*exp(params["r"]*(1-x["X"]/params["K"]))
