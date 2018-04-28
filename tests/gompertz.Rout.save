@@ -1,7 +1,7 @@
 
-R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+R version 3.5.0 (2018-04-23) -- "Joy in Playing"
 Copyright (C) 2018 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -39,35 +39,23 @@ summary of data:
  3rd Qu.:1.297  
  Max.   :1.880  
 zero time, t0 = 0
-process model simulator, rprocess = function (xstart, times, params, ...,
-              zeronames = character(0),
-              tcovar, covar,
-              .getnativesymbolinfo = TRUE) {
-      tryCatch(
-        .Call(
-          euler_model_simulator,
-          func=efun,
-          xstart=xstart,
-          times=times,
-          params=params,
-          deltat=object@delta.t,
-          method=2L,
-          zeronames=zeronames,
-          tcovar=tcovar,
-          covar=covar,
-          args=pairlist(...),
-          gnsi=.getnativesymbolinfo
-        ),
-        error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE)
-        }
-      )
-    }
-<bytecode: 0x7fa732d5cc70>
-<environment: 0x7fa7352d6548>
-process model density, dprocess = function (x,times,params,log=FALSE,...) stop(sQuote("dprocess")," not specified",call.=FALSE)
-<bytecode: 0x7fa7324fb548>
-<environment: 0x7fa732530d48>
+process model simulator, rprocess = function (xstart, times, params, ..., zeronames = character(0), 
+    tcovar, covar, .getnativesymbolinfo = TRUE) 
+{
+    tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
+        times = times, params = params, deltat = object@delta.t, 
+        method = 2L, zeronames = zeronames, tcovar = tcovar, 
+        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
+        error = function(e) {
+            stop(ep, conditionMessage(e), call. = FALSE)
+        })
+}
+<bytecode: 0x39702d8>
+<environment: 0x3332bc8>
+process model density, dprocess = function (x, times, params, log = FALSE, ...) 
+stop(sQuote("dprocess"), " not specified", call. = FALSE)
+<bytecode: 0x4354938>
+<environment: 0x3228d20>
 measurement model simulator, rmeasure = native function ‘_gompertz_normal_rmeasure’
 measurement model density, dmeasure = native function ‘_gompertz_normal_dmeasure’
 prior simulator, rprior = not specified
@@ -78,12 +66,12 @@ parameter transformation (to estimation scale) = function (params, ...)
 {
     log(params)
 }
-<environment: 0x7fa7327a0788>
+<environment: 0x32354a0>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x7fa7327a0788>
+<environment: 0x32354a0>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -92,32 +80,19 @@ native function ‘_gompertz_normal_rmeasure’
 > print(gompertz@dmeasure)
 native function ‘_gompertz_normal_dmeasure’
 > print(gompertz@rprocess)
-function (xstart, times, params, ...,
-              zeronames = character(0),
-              tcovar, covar,
-              .getnativesymbolinfo = TRUE) {
-      tryCatch(
-        .Call(
-          euler_model_simulator,
-          func=efun,
-          xstart=xstart,
-          times=times,
-          params=params,
-          deltat=object@delta.t,
-          method=2L,
-          zeronames=zeronames,
-          tcovar=tcovar,
-          covar=covar,
-          args=pairlist(...),
-          gnsi=.getnativesymbolinfo
-        ),
-        error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE)
-        }
-      )
-    }
-<bytecode: 0x7fa732d5cc70>
-<environment: 0x7fa7352d6548>
+function (xstart, times, params, ..., zeronames = character(0), 
+    tcovar, covar, .getnativesymbolinfo = TRUE) 
+{
+    tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
+        times = times, params = params, deltat = object@delta.t, 
+        method = 2L, zeronames = zeronames, tcovar = tcovar, 
+        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
+        error = function(e) {
+            stop(ep, conditionMessage(e), call. = FALSE)
+        })
+}
+<bytecode: 0x39702d8>
+<environment: 0x3332bc8>
 > 
 > po <- gompertz
 > coef(po)
@@ -177,28 +152,28 @@ in ‘coef<-’:  names of ‘value’ are being discarded
 6        X   1    6     1
 > 
 > try(
-+     mf <- mif(
-+         po,
-+         start=guess,
-+         Nmif=5,Np=1000,
-+         transform=TRUE,
-+         ic.lag=1,var.factor=1,
-+         cooling.fraction=0.99^50,
-+         rw.sd=c(r=0.02,K=0.02)
-+     )
++   mf <- mif(
++     po,
++     start=guess,
++     Nmif=5,Np=1000,
++     transform=TRUE,
++     ic.lag=1,var.factor=1,
++     cooling.fraction=0.99^50,
++     rw.sd=c(r=0.02,K=0.02)
++   )
 + )
 Error : in ‘mif’: ‘mif’ cannot estimate non-finite parameters.
 The following transformed parameters are non-finite: ‘r’
 > 
 > set.seed(93848585L)
 > mf <- mif(
-+           po,
-+           Nmif=5,Np=1000,
-+           transform=TRUE,
-+           ic.lag=1,var.factor=1,
-+           cooling.fraction=0.99^50,
-+           rw.sd=c(r=0.02,K=0.02)
-+           )
++   po,
++   Nmif=5,Np=1000,
++   transform=TRUE,
++   ic.lag=1,var.factor=1,
++   cooling.fraction=0.99^50,
++   rw.sd=c(r=0.02,K=0.02)
++ )
 > coef(mf,transform=TRUE)
       K       r   sigma     tau     X.0 
  0.0421 -1.6254 -2.3026 -2.3026  0.0000 

@@ -39,26 +39,26 @@ round(pf$loglik)
 trajectory(gompertz) %>% melt() %>% head()
 
 try(
-    mf <- mif(
-        po,
-        start=guess,
-        Nmif=5,Np=1000,
-        transform=TRUE,
-        ic.lag=1,var.factor=1,
-        cooling.fraction=0.99^50,
-        rw.sd=c(r=0.02,K=0.02)
-    )
+  mf <- mif(
+    po,
+    start=guess,
+    Nmif=5,Np=1000,
+    transform=TRUE,
+    ic.lag=1,var.factor=1,
+    cooling.fraction=0.99^50,
+    rw.sd=c(r=0.02,K=0.02)
+  )
 )
 
 set.seed(93848585L)
 mf <- mif(
-          po,
-          Nmif=5,Np=1000,
-          transform=TRUE,
-          ic.lag=1,var.factor=1,
-          cooling.fraction=0.99^50,
-          rw.sd=c(r=0.02,K=0.02)
-          )
+  po,
+  Nmif=5,Np=1000,
+  transform=TRUE,
+  ic.lag=1,var.factor=1,
+  cooling.fraction=0.99^50,
+  rw.sd=c(r=0.02,K=0.02)
+)
 coef(mf,transform=TRUE)
 coef(mf)
 conv.rec(mf)

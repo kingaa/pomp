@@ -37,9 +37,9 @@ conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
 }
 
 setMethod('conv.rec','mif',
-  function (object, pars, transform = FALSE, ...) {
-    conv.rec.internal(object=object,pars=pars,transform=transform,...)
-  }
+          function (object, pars, transform = FALSE, ...) {
+            conv.rec.internal(object=object,pars=pars,transform=transform,...)
+          }
 )
 
 ## plot mif object
@@ -49,7 +49,7 @@ setMethod(
   function (x, y, ...) {
     if (!missing(y))
       warning("in ",sQuote("plot-mif"),": ",
-        sQuote("y")," is ignored",call.=FALSE)
+              sQuote("y")," is ignored",call.=FALSE)
     mif.diagnostics(list(x))
   }
 )
@@ -91,7 +91,7 @@ setMethod(
       pl <- sapply(y,is,'mifList')
       if (!all(p||pl))
         stop("in ",sQuote("c"),": cannot mix ",sQuote("mif"),
-          " and non-",sQuote("mif")," objects",call.=FALSE)
+             " and non-",sQuote("mif")," objects",call.=FALSE)
       y[p] <- lapply(y[p],list)
       y[pl] <- lapply(y[pl],as,"list")
       new("mifList",c(list(x),y,recursive=TRUE))
@@ -111,7 +111,7 @@ setMethod(
       pl <- sapply(y,is,'mifList')
       if (!all(p||pl))
         stop("in ",sQuote("c"),": cannot mix ",sQuote("mif"),
-          " and non-",sQuote("mif")," objects",call.=FALSE)
+             " and non-",sQuote("mif")," objects",call.=FALSE)
       y[p] <- lapply(y[p],list)
       y[pl] <- lapply(y[pl],as,"list")
       new("mifList",c(as(x,"list"),y,recursive=TRUE))
@@ -149,7 +149,7 @@ setMethod(
   definition=function (x, y, ...) {
     if (!missing(y))
       warning("in ",sQuote("plot-mif"),": ",
-        sQuote("y")," is ignored",call.=FALSE)
+              sQuote("y")," is ignored",call.=FALSE)
     mif.diagnostics(x)
   }
 )
