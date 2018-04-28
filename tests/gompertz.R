@@ -63,6 +63,8 @@ coef(mf,transform=TRUE)
 coef(mf)
 conv.rec(mf)
 conv.rec(mf,transform=TRUE)
+identical(conv.rec(mf)[,c("loglik","nfail")],
+          conv.rec(mf,transform=TRUE)[,c("loglik","nfail")])
 conv.rec(mf,c("loglik","r"))
 try(conv.rec(mf,c("loglik","r"),transform=FALSE))
 try(conv.rec(mf,c("loglik","r"),transform=TRUE))

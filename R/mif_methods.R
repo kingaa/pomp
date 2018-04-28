@@ -4,13 +4,17 @@
 conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
   transform <- as.logical(transform)
   if (transform) {
-    retval <- t(
-      partrans(
-        object,
-        params=t(object@conv.rec),
-        dir="fromEstimationScale"
+    retval <- cbind(
+      object@conv.rec[,c(1,2)],
+      t(
+        partrans(
+          object,
+          params=t(object@conv.rec)[-c(1,2),,drop=FALSE],
+          dir="fromEstimationScale"
+        )
       )
     )
+    names(dimnames(retval)) <- names(dimnames(object@conv.rec))
   } else {
     retval <- object@conv.rec
   }
