@@ -106,7 +106,7 @@ plotpomp.internal <- function (x, y,
              ...
              )
     v1 <- v2+1
-    v2 <- min(v2+plots.per.page-1,length(vars))    
+    v2 <- min(v1+plots.per.page-1,length(vars))    
   }
   invisible(NULL)
 }
