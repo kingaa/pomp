@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 1.16.2}{
   \itemize{
+    \item Fix bug in systematic resampler when \code{np != nw}.
     \item Fix bug in \code{conv.rec} when only one parameter is requested.
     \item Correct and improve documentation for \code{conv.rec}.
     \item \code{coef<-} can now take a list of parameters: it simply applies \code{unlist} to turn the list into a numeric vector.

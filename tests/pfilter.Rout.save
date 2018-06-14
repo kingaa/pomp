@@ -44,7 +44,7 @@ Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single pos
 > ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
 > print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
    loglik loglik.se 
-  -480.47      0.90 
+  -479.79      0.41 
 > 
 > pompExample(euler.sir)
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’

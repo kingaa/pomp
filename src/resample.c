@@ -20,7 +20,7 @@ void nosort_resamp (int nw, double *w, int np, int *p, int offset)
     u += du;
     // In the following line, the second test is needed to correct 
     // the infamous Bug of St. Patrick, 2017-03-17.
-    while ((u > w[i]) && (i < np-1)) i++;
+    while ((u > w[i]) && (i < nw-1)) i++;
     p[j] = i;
   }
   if (offset)			// add offset if needed

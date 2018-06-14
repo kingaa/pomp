@@ -138,11 +138,10 @@ truth   -482
 +                alpha.3=0.2*(time<10)))
 > 
 > m4 <- mif2(m4,Nmif=10,Np=c(rep(200,20),rep(100,80),200))
-Warning message:
-in ‘mif2.pfilter’: 3 filtering failures occurred. 
+Warning messages:
+1: in ‘mif2.pfilter’: 17 filtering failures occurred. 
+2: in ‘mif2.pfilter’: 1 filtering failure occurred. 
 > m4 <- continue(m4,Nmif=10,cooling.fraction=0.1)
-Warning message:
-in ‘mif2.pfilter’: 25 filtering failures occurred. 
 > try(continue(m4,Np=function(k)if(k<10) "B" else 500))
 Error : in ‘mif2’: if ‘Np’ is a function, it must return a single positive integer
 > try(continue(m4,Np=function(k)if(k<10) -30 else 500))
@@ -160,31 +159,13 @@ Error : in ‘mif2’: number of particles, ‘Np’, must always be positive
 +                    alpha.2=ifelse(time==1,0.2,0.1),
 +                    alpha.3=0.2*(time<10)))
 + ) -> out
-filtering failure at time t = 33
-filtering failure at time t = 34
-filtering failure at time t = 35
-filtering failure at time t = 36
-filtering failure at time t = 37
-filtering failure at time t = 38
-filtering failure at time t = 39
-filtering failure at time t = 40
-filtering failure at time t = 41
-filtering failure at time t = 42
-filtering failure at time t = 43
-filtering failure at time t = 44
-filtering failure at time t = 45
-filtering failure at time t = 46
-filtering failure at time t = 47
-filtering failure at time t = 48
-filtering failure at time t = 49
-filtering failure at time t = 50
-filtering failure at time t = 51
-filtering failure at time t = 74
-filtering failure at time t = 75
 filtering failure at time t = 76
 filtering failure at time t = 77
+filtering failure at time t = 78
+filtering failure at time t = 79
+filtering failure at time t = 80
 Warning message:
-in ‘mif2.pfilter’: 23 filtering failures occurred. 
+in ‘mif2.pfilter’: 5 filtering failures occurred. 
 > stopifnot(length(out)==210)
 > stopifnot(sum(grepl("mif2 iteration",out))==10)
 > stopifnot(sum(grepl("mif2 pfilter",out))==200)
@@ -194,22 +175,22 @@ in ‘mif2.pfilter’: 23 filtering failures occurred.
 > try(mif2(m5,Np=100,Nmif=2))
 Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
 likelihood, data, states, and parameters are:
-   time:            3
+   time:            2
     lik:          NaN
-     y1:      3.76759
-     y2:      2.97521
+     y1:      0.24217
+     y2:      7.03942
      x1:          Inf
      x2:          NaN
 alpha.1:          0.8
 alpha.2:         -Inf
-alpha.3:     0.229848
+alpha.3:      0.85781
 alpha.4:          0.9
 sigma.1:            3
 sigma.2:         -0.5
 sigma.3:            2
     tau:            1
-   x1.0:     -8.67937
-   x2.0:      2.73245
+   x1.0:     0.121014
+   x2.0:      1.74011
 > 
 > library(ggplot2)
 > library(reshape2)
@@ -241,8 +222,8 @@ likelihood, data, states, and parameters are:
   lik:          NaN
     Y:      1.11862
     X:          NaN
-    K:     -0.95075
-    r:      0.14582
+    K:     -1.01089
+    r:      0.17549
 sigma:          0.1
   tau:          0.1
   X.0:            1
@@ -264,7 +245,7 @@ likelihood, data, states, and parameters are:
   lik:          NaN
     Y:      1.11862
     X:          NaN
-    K:      1.70288
+    K:      6.43134
     r:          NaN
 sigma:          0.1
   tau:          0.1
