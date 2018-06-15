@@ -232,7 +232,9 @@ newly created object(s):
 +     nsim=200,
 +     seed=838775L
 + )
-> plot(pb)
+> plot(pb,y=NA)
+Warning message:
+in ‘plot-probed.pomp’: ‘y’ is ignored 
 > invisible(summary(pb))
 > 
 > pb <- probe(

@@ -188,7 +188,7 @@ pb <- probe(
     nsim=200,
     seed=838775L
 )
-plot(pb)
+plot(pb,y=NA)
 invisible(summary(pb))
 
 pb <- probe(
