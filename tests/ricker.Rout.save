@@ -89,7 +89,7 @@ in ‘coef<-’: name(s) ‘new’ do not refer to existing parameter(s); they a
 +          cdir="bob"
 +          )
 +     )
-Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot create cache directory ‘bob’
+Error : in ‘pomp’: in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot create cache directory ‘bob’
 > file.remove("bob")
 [1] TRUE
 > pomp(ricker,
@@ -113,7 +113,65 @@ Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: in
 Error : in ‘spect’: simulation error: in ‘simulate’: in ‘discrete.time.sim’ plugin: yow!
 In addition: Warning message:
 in 'simulate': only the first number in 'nsim' is significant 
-> 
+> try(pomp(ricker,skeleton=map(function(x,t,params,...)x,delta.t=-1)))
+Error : in ‘map’, ‘delta.t’ must be positive
+> try(pomp(as.data.frame(ricker),times="time",t0=0,
++   skeleton=map(function(x,t,params,...)x,delta.t=-1)))
+Error : in ‘map’, ‘delta.t’ must be positive
+> try(pomp(as.data.frame(ricker),times="time",t0=0,
++   covar=data.frame(z=c(1,2,3),t=c(1,2,3)),tcovar="t",
++   skeleton=map(function(x,t,params,...)x,delta.t=1),
++   rmeasure=function(x,t,params,...)x,
++   dmeasure=function(x,y,t,params,log,...)1))
+51 records of 1 observables, recorded from t = 0 to 50 
+summary of data:
+       y         
+ Min.   :  0.00  
+ 1st Qu.:  0.00  
+ Median :  8.00  
+ Mean   : 41.39  
+ 3rd Qu.: 71.00  
+ Max.   :275.00  
+zero time, t0 = 0
+3 records of 1 covariates, recorded from t = 1 to 3 
+summary of covariates:
+       z      
+ Min.   :1.0  
+ 1st Qu.:1.5  
+ Median :2.0  
+ Mean   :2.0  
+ 3rd Qu.:2.5  
+ Max.   :3.0  
+process model simulator, rprocess = function (xstart, times, params, ...) 
+stop(sQuote("rprocess"), " not specified", call. = FALSE)
+<bytecode: 0x4509818>
+<environment: 0x3ff7fb0>
+process model density, dprocess = function (x, times, params, log = FALSE, ...) 
+stop(sQuote("dprocess"), " not specified", call. = FALSE)
+<bytecode: 0x4509460>
+<environment: 0x3ff7fb0>
+measurement model simulator, rmeasure = function (x, t, params, ...) 
+x
+measurement model density, dmeasure = function (x, y, t, params, log, ...) 
+1
+prior simulator, rprior = not specified
+prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+skeleton (map) = function (x, t, params, ...) 
+x
+<environment: 0x3ff6aa0>
+initializer = not specified
+parameter transformation (to estimation scale) = not specified
+parameter transformation (from estimation scale) = not specified
+parameter(s) unspecified
+Warning messages:
+1: in ‘pomp’: a covariate table has been given, yet the ‘skeleton’ function does not have ‘covars’ as a formal argument: see ‘?pomp’ 
+2: in ‘pomp’: a covariate table has been given, yet the ‘rmeasure’ function does not have ‘covars’ as a formal argument: see ‘?pomp’ 
+3: in ‘pomp’: a covariate table has been given, yet the ‘dmeasure’ function does not have ‘covars’ as a formal argument: see ‘?pomp’ 
+4: in ‘pomp’: the supplied covariate covariate times ‘tcovar’ do not embrace the data times: covariates may be extrapolated 
+> try(pomp(ricker,measurement.model=3))
+Error : in ‘pomp’: ‘measurement.model’ takes formulae as arguments
+> try(pomp(ricker,measurement.model=list()))
+Error : in ‘pomp’: to use ‘measurement.model’ you must provide at least one formula
 > pomp(ricker,skeleton=NULL) -> po
 > show(po)
 51 records of 1 observables, recorded from t = 0 to 50 
@@ -137,12 +195,12 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x1cfcc80>
-<environment: 0x1fc7260>
+<bytecode: 0x30b6ce0>
+<environment: 0x33a6880>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x3153660>
-<environment: 0x31559f0>
+<bytecode: 0x4509460>
+<environment: 0x450f5e8>
 measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
 measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
 prior simulator, rprior = not specified
@@ -155,14 +213,14 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x2f07eb0>
+<environment: 0x42bd5b0>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "c", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x2f07eb0>
+<environment: 0x42bd5b0>
 parameter(s):
        r    sigma      phi        c      N.0      e.0 
 44.70118  0.30000 10.00000  1.00000  7.00000  0.00000 

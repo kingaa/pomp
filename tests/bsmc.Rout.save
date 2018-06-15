@@ -46,9 +46,18 @@ Error : in ‘bsmc’: ‘rprior’ error: operation cannot be completed: rprior
 > 
 > prior <- matrix(data=coef(ou2),nrow=length(coef(ou2)),ncol=Np)
 > rownames(prior) <- names(coef(ou2))
+> try(bsmc(ou2,params=prior))
+Error : in ‘bsmc’: no parameters to estimate
 > for (n in estnames) {
 +   prior[n,] <- runif(n=Np,min=prior.bounds[n,1],max=prior.bounds[n,2])
 + }
+> try(bsmc(ou2,est=c("alpha.2","alpha.3"),params={p <- prior; rownames(p) <- NULL; p}))
+Error : in ‘bsmc’: ‘params’ must have rownames
+> try(bsmc(ou2,params=prior,smooth=2))
+Error : in ‘bsmc’: ‘smooth’ must be a scalar in (0,1]
+> 
+> try(bsmc(ou2,est=c("alpha.2","alpha.3"),Np=1,smooth=1e-100))
+Error : in ‘bsmc’: in ‘rmvnorm’: infinite or missing values in 'x'
 > 
 > garb <- ou2
 > coef(garb) <- numeric(0)
@@ -56,7 +65,11 @@ Error : in ‘bsmc’: ‘rprior’ error: operation cannot be completed: rprior
 Error : in ‘bsmc’: ‘params’ must be supplied
 > 
 > ##Run Liu & West particle filter
-> smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
+> bsmc(ou2,params=prior,smooth=0.02,seed=49959,Np=100) -> smc
+Warning messages:
+1: in ‘bsmc’: argument ‘seed’ now has no effect.  Consider using ‘freeze’. 
+2: in ‘bsmc’: ‘Np’ is ignored when ‘params’ is a matrix 
+> smc <- bsmc(ou2,est="alpha.2",params=prior,smooth=0.02)
 > prior <- smc$prior
 > post <- smc$post
 > 
@@ -72,9 +85,9 @@ Error : in ‘bsmc’: ‘lower’ and ‘upper’ must each have length 1 or le
 > prior <- smc$prior
 > post <- smc$post
 > print(min(smc$eff.sample.size))
-[1] 11
+[1] 18
 > print(smc$log.evidence)
-[1] 45
+[1] 46
 > 
 > ou2 <- pomp(ou2,
 +             rprior=function(params,...){
@@ -84,12 +97,15 @@ Error : in ‘bsmc’: ‘lower’ and ‘upper’ must each have length 1 or le
 > 
 > smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames)
 > smc <- bsmc(ou2,ntries=5,transform=TRUE,Np=5000,smooth=0.1,est=estnames)
+> plot(smc,y=NA)
+Warning message:
+in ‘plot-bsmcd.pomp’: ‘y’ is ignored 
 > try(plot(smc,pars=c("george","gracie")))
 Error : in ‘plot-bsmcd.pomp’: unrecognized parameters: ‘george’,‘gracie’
 > print(smc$eff.sample.size)
- [1] 376.1  53.8  60.5  36.8 323.1   9.6 187.1   1.5  74.4  81.6
+ [1] 285.7 225.9  73.9   3.5   3.4  14.3  84.4  27.1 100.2  90.7
 > print(smc$log.evidence)
-[1] 40
+[1] 39
 > 
 > smc <- bsmc(ou2,ntries=1,transform=TRUE,Np=2,smooth=0.01,est=estnames,
 +             tol=1e-2,max.fail=100)

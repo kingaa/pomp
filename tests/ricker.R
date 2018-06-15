@@ -70,7 +70,16 @@ try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=rw.sd(r=0.1)))
 try(trajectory(po))
 try(probe(po,probes=list(mean=probe.mean("y"))))
 try(spect(po,kernel.width=3,nsim=c(100,0)))
-
+try(pomp(ricker,skeleton=map(function(x,t,params,...)x,delta.t=-1)))
+try(pomp(as.data.frame(ricker),times="time",t0=0,
+  skeleton=map(function(x,t,params,...)x,delta.t=-1)))
+try(pomp(as.data.frame(ricker),times="time",t0=0,
+  covar=data.frame(z=c(1,2,3),t=c(1,2,3)),tcovar="t",
+  skeleton=map(function(x,t,params,...)x,delta.t=1),
+  rmeasure=function(x,t,params,...)x,
+  dmeasure=function(x,y,t,params,log,...)1))
+try(pomp(ricker,measurement.model=3))
+try(pomp(ricker,measurement.model=list()))
 pomp(ricker,skeleton=NULL) -> po
 show(po)
 try(trajectory(po))

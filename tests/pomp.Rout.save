@@ -71,7 +71,7 @@ Error : in ‘pomp’: if ‘covar’ is a data frame, ‘tcovar’ should indic
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
 Error : in ‘pomp’: covariate(s) ‘henry’ are not among the columns of ‘covar’
 > try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
-Error : in ‘pomp’: if one of ‘fromEstimationScale’, ‘toEstimationScale’ is supplied, then so must the other
+Error : in ‘pomp’: in ‘pomp’: if one of ‘fromEstimationScale’, ‘toEstimationScale’ is supplied, then so must the other
 > plot(po)
 > pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
 > try(pomp())
@@ -117,10 +117,17 @@ Error : in ‘pompExample’: cannot find file ‘bob.R’
 newly created object(s):
  ricker 
 > pomp(ricker) -> ricker
-> pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
+> capture.output(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
++   cfile="bob",verbose=TRUE) -> po) -> out
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpaTMPq5/68514/bob.c -o /tmp/RtmpaTMPq5/68514/bob.o
+gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -L/usr/local/lib64 -o /tmp/RtmpaTMPq5/68514/bob.so /tmp/RtmpaTMPq5/68514/bob.o -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -lR
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 > simulate(po,verbose=TRUE) -> po
-loading ‘/tmp/RtmpujBlyZ/99882/pomp_c5677f95124dd65b21526f9c1750c8fe.so’ 
-unloading ‘/tmp/RtmpujBlyZ/99882/pomp_c5677f95124dd65b21526f9c1750c8fe.so’ 
+loading ‘/tmp/RtmpaTMPq5/68514/bob.so’ 
+unloading ‘/tmp/RtmpaTMPq5/68514/bob.so’ 
 > try(pomp(po,params=c("A","B")))
 Error : in ‘pomp’: ‘params’ must be a named numeric vector
 > ## force recompile
@@ -146,6 +153,12 @@ Error : in ‘pomp’: ‘times’ must be an increasing numeric vector
 Error : in ‘pomp’: the zero-time ‘t0’ must be a single number
 > try(pomp(data.frame(t=1:10,y=1:10),times="t",t0="Q"))
 Error : in ‘pomp’: the zero-time ‘t0’ must be a single number
+> 
+> try(pomp:::render("bob is {%one%} and {%two%}",
++   one="good",
++   two=c("bad","five"),
++   three=c("yellow","red","green")))
+Error : in ‘render’ incommensurate lengths of replacements
 > 
 > dev.off()
 null device 

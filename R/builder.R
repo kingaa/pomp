@@ -246,8 +246,6 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
   )
   if (rv!=0)
     stop("cannot compile shared-object library ",sQuote(solib),": status = ",rv,call.=FALSE)
-  else if (verbose)
-    cat("link to shared-object library",sQuote(solib),"\n")
 
   invisible(solib)
 }
@@ -279,11 +277,11 @@ cleanForC <- function (text) {
 }
 
 render <- function (template, ...) {
-  vars=list(...)
+  vars <- list(...)
   if (length(vars)==0) return(template)
   n <- sapply(vars,length)
   if (!all((n==max(n))|(n==1)))
-    stop("in ",sQuote("render"),"incommensurate lengths of replacements",call.=FALSE)
+    stop("in ",sQuote("render")," incommensurate lengths of replacements",call.=FALSE)
   short <- which(n==1)
   n <- max(n)
   for (i in short) vars[[i]] <- rep(vars[[i]],n)

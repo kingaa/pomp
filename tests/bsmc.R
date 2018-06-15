@@ -24,16 +24,22 @@ estnames <- rownames(prior.bounds)
 
 prior <- matrix(data=coef(ou2),nrow=length(coef(ou2)),ncol=Np)
 rownames(prior) <- names(coef(ou2))
+try(bsmc(ou2,params=prior))
 for (n in estnames) {
   prior[n,] <- runif(n=Np,min=prior.bounds[n,1],max=prior.bounds[n,2])
 }
+try(bsmc(ou2,est=c("alpha.2","alpha.3"),params={p <- prior; rownames(p) <- NULL; p}))
+try(bsmc(ou2,params=prior,smooth=2))
+
+try(bsmc(ou2,est=c("alpha.2","alpha.3"),Np=1,smooth=1e-100))
 
 garb <- ou2
 coef(garb) <- numeric(0)
 try(garb <- bsmc(garb))
 
 ##Run Liu & West particle filter
-smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
+bsmc(ou2,params=prior,smooth=0.02,seed=49959,Np=100) -> smc
+smc <- bsmc(ou2,est="alpha.2",params=prior,smooth=0.02)
 prior <- smc$prior
 post <- smc$post
 
@@ -57,6 +63,7 @@ ou2 <- pomp(ou2,
 
 smc <- bsmc(ou2,ntries=5,Np=5000,smooth=0.1,est=estnames)
 smc <- bsmc(ou2,ntries=5,transform=TRUE,Np=5000,smooth=0.1,est=estnames)
+plot(smc,y=NA)
 try(plot(smc,pars=c("george","gracie")))
 print(smc$eff.sample.size)
 print(smc$log.evidence)

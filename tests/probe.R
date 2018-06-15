@@ -124,10 +124,14 @@ good <- probe(
     nsim=500
 )
 
+ofun <- probe.match.objfun(good)
+
 ofun <- probe.match.objfun(ou2,est=c("alpha.1","alpha.2"),
                            probes=good$probes,nsim=100,
                            seed=349956868L
                            )
+try(probe.match.objfun(ou2))
+try(probe.match.objfun(ou2,nsim=100))
 
 library(nloptr)
 fit1 <- nloptr(

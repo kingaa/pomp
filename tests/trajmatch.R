@@ -46,7 +46,8 @@ summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sa
 try(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",parscale=0.1,maxit=100,sched=rep(1,10)))
 
 summary(traj.match(ou2))
-
+ofun <- traj.match.objfun(ou2)
+try(traj.match.objfun(ou2,params=c("A")))
 ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','alpha.1','alpha.4','tau'))
 print(ofun(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4','tau'))))
 
@@ -65,6 +66,7 @@ print(coef(res),digits=4)
 res <- traj.match(res,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),maxit=2000,reltol=1e-8)
 print(coef(res),digits=4)
 print(p,digits=4)
+traj.match(res) -> res
 
 pomp(ou2,skeleton=map(function (x, t, params, ...) {unname(x+1)})) -> po
 trajectory(po,params=p,t0=-10,as.data.frame=TRUE) -> x

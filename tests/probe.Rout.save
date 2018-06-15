@@ -165,10 +165,16 @@ newly created object(s):
 +     nsim=500
 + )
 > 
+> ofun <- probe.match.objfun(good)
+> 
 > ofun <- probe.match.objfun(ou2,est=c("alpha.1","alpha.2"),
 +                            probes=good$probes,nsim=100,
 +                            seed=349956868L
 +                            )
+> try(probe.match.objfun(ou2))
+Error : in ‘probe.match.objfun’: ‘nsim’ must be specified
+> try(probe.match.objfun(ou2,nsim=100))
+Error : in ‘probe.match.objfun’: ‘probes’ must be supplied
 > 
 > library(nloptr)
 > fit1 <- nloptr(

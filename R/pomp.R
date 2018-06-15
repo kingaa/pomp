@@ -138,8 +138,8 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   snips <- list()
   if (is(rprocess,"pompPlugin") && rprocess@csnippet)
     snips <- c(snips,setNames(list(slot(rprocess,rprocess@slotname)@text),rprocess@slotname))
-  if (is(dprocess,"pompPlugin") && dprocess@csnippet)
-    snips <- c(snips,setNames(list(slot(dprocess,dprocess@slotname)@text),dprocess@slotname))
+  # if (is(dprocess,"pompPlugin") && dprocess@csnippet)
+  #   snips <- c(snips,setNames(list(slot(dprocess,dprocess@slotname)@text),dprocess@slotname))
   if (is(skeleton,"Csnippet"))
     snips <- c(snips,skeleton=skeleton@text)
   if (is(rmeasure,"Csnippet"))
@@ -156,7 +156,8 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
     snips <- c(snips,toEstimationScale=toEstimationScale@text)
   if (is(initializer,"Csnippet")) {
     if (length(statenames)==0)
-      stop(ep,"when ",sQuote("initializer")," is provided as a C snippet, you must also provide ",sQuote("statenames"),call.=FALSE)
+      stop(ep,"when ",sQuote("initializer")," is provided as a C snippet, ",
+        "you must also provide ",sQuote("statenames"),call.=FALSE)
     snips <- c(snips,initializer=initializer@text)
   }
   if (length(snips)>0) {
@@ -179,7 +180,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
         )
       ),
       error = function (e) {
-        stop("error in building shared-object library from C snippets: ",
+        stop(ep,"error in building shared-object library from C snippets: ",
              conditionMessage(e),call.=FALSE)
       }
     )
@@ -245,7 +246,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   skel.type <- match.arg(skel.type,c("map","vectorfield","undef"))
   skel.delta.t <- as.numeric(skel.delta.t)
   if (skel.delta.t <= 0)
-    stop("skeleton ",sQuote("delta.t")," must be positive",call.=FALSE)
+    stop(ep,"skeleton ",sQuote("delta.t")," must be positive",call.=FALSE) #nocov
 
   ## handle rmeasure
   rmeasure <- pomp.fun(
@@ -308,7 +309,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   mpt <- is.null(fromEstimationScale)
   mpit <- is.null(toEstimationScale)
   if (xor(mpt,mpit)) {
-    stop("if one of ",
+    stop(ep,"if one of ",
          sQuote("fromEstimationScale"),", ",sQuote("toEstimationScale"),
          " is supplied, then so must the other",call.=FALSE)
   }

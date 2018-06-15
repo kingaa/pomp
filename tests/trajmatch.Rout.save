@@ -143,7 +143,9 @@ $convergence
 $msg
 [1] "no optimization performed"
 
-> 
+> ofun <- traj.match.objfun(ou2)
+> try(traj.match.objfun(ou2,params=c("A")))
+Error : in ‘traj.match.objfun’: ‘params’ must be a named numeric vector
 > ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','alpha.1','alpha.4','tau'))
 > print(ofun(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4','tau'))))
 [1] 3327.081
@@ -191,6 +193,7 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > print(p,digits=4)
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
     0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+> traj.match(res) -> res
 > 
 > pomp(ou2,skeleton=map(function (x, t, params, ...) {unname(x+1)})) -> po
 > trajectory(po,params=p,t0=-10,as.data.frame=TRUE) -> x

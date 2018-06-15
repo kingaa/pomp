@@ -54,6 +54,7 @@ pmof.internal <- function (object, params, est, probes,
     if (any(is.na(par.est.idx)))
         stop(ep,"parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"),call.=FALSE)
 
+    if (missing(probes)) stop(ep,sQuote("probes")," must be supplied",call.=FALSE)
     if (!is.list(probes)) probes <- list(probes)
     if (!all(sapply(probes,is.function)))
         stop(ep,sQuote("probes")," must be a function or a list of functions",call.=FALSE)

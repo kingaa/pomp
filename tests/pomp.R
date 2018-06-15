@@ -69,7 +69,8 @@ try(pompExample(bob))
 try(pompExample("bob"))
 pompExample("ricker")
 pomp(ricker) -> ricker
-pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
+capture.output(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
+  cfile="bob",verbose=TRUE) -> po) -> out
 simulate(po,verbose=TRUE) -> po
 try(pomp(po,params=c("A","B")))
 ## force recompile
@@ -87,5 +88,10 @@ try(pomp(data.frame(t=c(1:9,NA),y=1:10),times="t",t0=0))
 try(pomp(data.frame(t="A",y=1:10),times="t",t0=0))
 try(pomp(data.frame(t=1:10,y=1:10),times="t",t0=c(3,4)))
 try(pomp(data.frame(t=1:10,y=1:10),times="t",t0="Q"))
+
+try(pomp:::render("bob is {%one%} and {%two%}",
+  one="good",
+  two=c("bad","five"),
+  three=c("yellow","red","green")))
 
 dev.off()

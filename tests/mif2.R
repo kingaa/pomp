@@ -63,6 +63,8 @@ dim(coef(c(m12,m1)))
 dim(coef(c(m1,m12)))
 dim(coef(m12[2]))
 sapply(conv.rec(m12),dim)
+try(c(m1,ou2))
+try(c(c(m1,m2),ou2))
 
 rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
