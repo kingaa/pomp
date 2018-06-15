@@ -2,7 +2,6 @@
 \title{Design matrices for pomp calculations}
 \alias{profileDesign}
 \alias{sobolDesign}
-\alias{sobol}
 \alias{sliceDesign}
 \description{
   These functions are useful for generating designs for the exploration of parameter space.
@@ -39,7 +38,7 @@ sliceDesign(center, \dots)
   }
 }
 \value{
-  \code{sobolDesign} 
+  \code{sobolDesign}
 
   \code{profileDesign} returns a data frame with \code{nprof} points per profile point.
   The other parameters in \code{vars} are sampled using \code{sobol}.

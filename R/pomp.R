@@ -14,9 +14,6 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
 
   ep <- paste0("in ",sQuote("pomp"),": ")
 
-  ## preliminary error checking
-  if (missing(times)) stop(sQuote("times")," is a required argument",call.=FALSE)
-  if (missing(t0)) stop(sQuote("t0")," is a required argument",call.=FALSE)
   if (missing(params)) params <- numeric(0)
 
   if (missing(cdir)) cdir <- NULL
@@ -76,9 +73,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   }
   storage.mode(params) <- 'double'
 
-  ## check the data and store it as double-precision matrix
-  if (!is.numeric(data))
-    stop(sQuote("data")," must be numeric",call.=FALSE)
+  ## store the data as double-precision matrix
   storage.mode(data) <- 'double'
   if (missing(obsnames) || length(obsnames)==0) obsnames <- rownames(data)
   obsnames <- as.character(obsnames)
@@ -623,6 +618,9 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
 
     if (is.data.frame(data)) {
       ## 'data' is a data frame
+      ## preliminary error checking
+      if (missing(times)) stop(sQuote("times")," is a required argument",call.=FALSE)
+      if (missing(t0)) stop(sQuote("t0")," is a required argument",call.=FALSE)
       if ((is.numeric(times) && (times<1 || times>ncol(data) ||times!=as.integer(times))) ||
           (is.character(times) && (!(times%in%names(data)))) ||
           (!is.numeric(times) && !is.character(times)) ||

@@ -24,4 +24,12 @@ pomp(ricker,rmeasure=Csnippet("
   globals="double simplefun (double);"
   ) -> po
 
+pomp(ricker,rmeasure=Csnippet("
+  double m = simplefun(N);
+  y = rpois(phi*m);"),
+  statenames="N",paramnames="phi",
+  shlib.args="simplefun.o",
+  globals=Csnippet("double simplefun (double);")
+) -> po
+
 x <- simulate(po)

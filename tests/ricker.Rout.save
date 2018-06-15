@@ -54,6 +54,9 @@ newly created object(s):
 > stopifnot(all(names(sm1)==c("y","sim","time")))
 > stopifnot(all(dim(sm1)==c(153,3)))
 > 
+> try(simulate(ricker,params=c()))
+Error : in ‘simulate’: no ‘params’ specified
+> 
 > po <- ricker
 > try(
 +     coef(po,"log.r")
@@ -90,10 +93,10 @@ Error : in ‘pomp’: error in building shared-object library from C snippets: 
 > file.remove("bob")
 [1] TRUE
 > pomp(ricker,
-+      rprocess=discrete.time.sim(
-+          Csnippet("if (runif(0,1)<0.5) error(\"yow!\");")),
-+      skeleton=map(Csnippet("error(\"yipes!\");"))
-+      ) -> po
++   rprocess=discrete.time.sim(
++     Csnippet("if (runif(0,1)<0.5) error(\"yow!\");")),
++   skeleton=map(Csnippet("error(\"yipes!\");"))
++ ) -> po
 > try(simulate(po))
 Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yow!
 > try(pfilter(po,Np=1000))
@@ -134,12 +137,12 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x38de4d0>
-<environment: 0x364c4f0>
+<bytecode: 0x1cfcc80>
+<environment: 0x1fc7260>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x4d3a368>
-<environment: 0x4d40410>
+<bytecode: 0x3153660>
+<environment: 0x31559f0>
 measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
 measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
 prior simulator, rprior = not specified
@@ -152,14 +155,14 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x4b076c8>
+<environment: 0x2f07eb0>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "c", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x4b076c8>
+<environment: 0x2f07eb0>
 parameter(s):
        r    sigma      phi        c      N.0      e.0 
 44.70118  0.30000 10.00000  1.00000  7.00000  0.00000 

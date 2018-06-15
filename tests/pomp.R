@@ -70,7 +70,8 @@ try(pompExample("bob"))
 pompExample("ricker")
 pomp(ricker) -> ricker
 pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
-simulate(po) -> po
+simulate(po,verbose=TRUE) -> po
+try(pomp(po,params=c("A","B")))
 ## force recompile
 file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
                        pattern=paste0(po@solibs[[1]]$name,".*"),
@@ -78,5 +79,13 @@ file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
 simulate(po) -> po
 
 plot(po,yax.flip=TRUE)
+
+try(pomp(as.data.frame(ricker)))
+try(pomp(as.data.frame(ricker),times="time"))
+try(pomp(data.frame(t=10:1,y=1:10),times="t",t0=0))
+try(pomp(data.frame(t=c(1:9,NA),y=1:10),times="t",t0=0))
+try(pomp(data.frame(t="A",y=1:10),times="t",t0=0))
+try(pomp(data.frame(t=1:10,y=1:10),times="t",t0=c(3,4)))
+try(pomp(data.frame(t=1:10,y=1:10),times="t",t0="Q"))
 
 dev.off()

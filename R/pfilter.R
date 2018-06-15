@@ -66,9 +66,6 @@ pfilter.internal <- function (object, params, Np,
   if (length(params)==0)
     stop(ep,sQuote("params")," must be specified",call.=FALSE)
 
-  if (missing(tol))
-    stop(ep,sQuote("tol")," must be specified",call.=FALSE)
-
   one.par <- FALSE
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1

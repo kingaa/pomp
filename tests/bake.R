@@ -38,4 +38,12 @@ invisible(freeze({rnorm(5); NULL},seed=3494995))
 invisible(bake({rnorm(5); NULL},seed=3494995,
                file=file.path(tempdir(),"bake3.rds")))
 
+rm(.Random.seed)
+invisible(bake({runif(4)},file=file.path(tempdir(),"b99.rds"),seed=32765883))
+rm(.Random.seed)
+invisible(stew({runif(4)},file=file.path(tempdir(),"s99.rda"),seed=32765883))
+rm(.Random.seed)
+invisible(freeze({runif(4)},seed=32765883))
+invisible(freeze({runif(4)}))
+
 detach("package:pomp", unload=TRUE)

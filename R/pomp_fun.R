@@ -62,9 +62,6 @@ setMethod(
     signature=signature(f="function"),
     definition=function (f, proto = NULL, slotname = NULL, ...) {
         if (!is.null(proto)) {
-            if (!is.call(proto))
-                stop("in ",sQuote("pomp.fun"),": ",
-                     sQuote("proto")," must be an unevaluated call",call.=FALSE)
             prototype <- as.character(proto)
             fname <- prototype[1]
             args <- prototype[-1]
@@ -101,17 +98,11 @@ setMethod(
 setMethod(
     "pomp.fun",
     signature=signature(f="Csnippet"),
-    definition=function (f, PACKAGE, slotname = NULL, libname = NULL, 
+    definition=function (f, PACKAGE, slotname = NULL, libname = NULL,
                          obsnames = character(0), statenames = character(0),
                          paramnames = character(0), covarnames = character(0), ...) {
-        if (is.null(slotname))
-            stop("in ",sQuote("pomp.fun"),": unspecified ",
-                 sQuote("slotname"),call.=FALSE)
-        if (is.null(libname))
-            stop("in ",sQuote("pomp.fun"),": unspecified ",
-                 sQuote("libname"),call.=FALSE)
         slotname <- as.character(slotname)
-        libname <- as.character(libname)            
+        libname <- as.character(libname)
         new(
             "pomp.fun",
             native.fun=render(fnames[[slotname]],name=libname),

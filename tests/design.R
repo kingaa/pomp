@@ -4,6 +4,10 @@ png(filename="design-%02d.png",res=100)
 ## Sobol' low-discrepancy design
 plot(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),100))
 
+try(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1,q=99),10))
+try(sobolDesign(lower=c(0,100),upper=c(b=200,a=1),10))
+try(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,c=1),10))
+
 try(sobolDesign(lower=c(a=0,b=100),upper=c(b=200,a=1),2^30+1))
 rnames <- sprintf("n%04d",1:5000)
 try(sobolDesign(lower=setNames(runif(5000),rnames),
@@ -23,9 +27,15 @@ x <- profileDesign(p=1:10,q=3:5,lower=c(a=0,b=0),upper=c(b=5,a=1),nprof=20)
 dim(x)
 plot(x)
 
+try(profileDesign(1:10,q=3:5,nprof=10))
+try(profileDesign(p=1:10,q=3:5,lower=c(a=0,c=0),upper=c(b=5,a=1),nprof=20))
+
 ## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.
 try(x <- sliceDesign(center=c(A=3,C=0),B=seq(0,10,by=1)))
 try(x <- sliceDesign(center=c(A=3),B=seq(0,10,by=1),C=c(1,2,3)))
+try(x <- sliceDesign(center=c(3),B=seq(0,10,by=1),C=c(1,2,3)))
+try(x <- sliceDesign(center=c(A="3"),B=seq(0,10,by=1),C=c(1,2,3)))
+try(x <- sliceDesign(center=c(A=3,B=2),seq(1,3),A=seq(0,5)))
 x <- sliceDesign(center=c(A=3,B=8,C=0),B=seq(0,10,by=1))
 dim(x)
 plot(x)

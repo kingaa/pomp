@@ -36,6 +36,19 @@ particle filter log likelihood at truth
 > print(pf$loglik,digits=4)
 [1] -478.2
 > 
+> try(pfilter(ou2,Np=1000,params=c()))
+Error : in ‘pfilter’: ‘params’ must be specified
+> 
+> try(pfilter(ou2,Np=c(1000,10)))
+Error : in ‘pfilter’: ‘Np’ must have length 1 or length 101
+> try(pfilter(ou2,Np=-100))
+Error : in ‘pfilter’: number of particles, ‘Np’, must always be positive
+> try(pfilter(ou2,Np="bob"))
+Error : in ‘pfilter’: ‘Np’ must be a number, a vector of numbers, or a function
+> try(pfilter(ou2,Np=100,params=matrix(0,nrow=3,ncol=100)))
+Error : in ‘pfilter’: ‘params’ must have rownames
+> try(pfilter(ou2,Np=1,max.fail=0))
+Error : in ‘pfilter’: too many filtering failures
 > try(replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) c(100,200) else 500)))
 Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single positive integer
 > pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
@@ -44,7 +57,7 @@ Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single pos
 > ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
 > print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
    loglik loglik.se 
-  -479.79      0.41 
+  -480.50      0.39 
 > 
 > pompExample(euler.sir)
 In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
@@ -57,7 +70,7 @@ newly created object(s):
      rho      S_0      I_0      R_0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(pf$loglik,digits=4)
-[1] -938.9
+[1] -938
 > 
 > coef(pf,"rho") <- -1
 > try(pfilter(pf))
@@ -66,11 +79,11 @@ likelihood, data, states, and parameters are:
    time:    0.0192308
     lik:          NaN
 reports:          617
-      S:       136062
-      I:         2140
+      S:       136068
+      I:         2098
       R:  1.96182e+06
-  cases:         1059
-      W:   -0.0289022
+  cases:         1026
+      W:   -0.0314294
   gamma:           26
      mu:         0.02
    iota:         0.01
@@ -94,7 +107,7 @@ beta.sd:        0.001
      rho      S_0      I_0      R_0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(logLik(pf),digits=4)
-[1] -945
+[1] -942.2
 > plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
 > plot(ess~time,data=as.data.frame(pf),type='l')
 > plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
@@ -104,6 +117,9 @@ newly created object(s):
  gompertz 
 > pfilter(gompertz,params=parmat(coef(gompertz),100)) -> pf
 > pfilter(gompertz,params=parmat(coef(gompertz),100),Np=100) -> pf
+> names(as.data.frame(pfilter(gompertz,Np=100,pred.mean=TRUE,pred.var=TRUE)))
+[1] "time"        "Y"           "ess"         "cond.loglik" "X"          
+[6] "X"          
 > try(pfilter(gompertz) -> pf)
 Error : in ‘pfilter’: ‘Np’ must be specified
 > try(pfilter(gompertz,params=parmat(coef(gompertz),100),Np=1000) -> pf)

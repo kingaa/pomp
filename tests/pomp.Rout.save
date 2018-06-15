@@ -59,7 +59,7 @@ newly created object(s):
 > 
 > dat <- as.data.frame(ricker)
 > try(pomp(dat) -> po)
-Error in pomp(dat) : argument "times" is missing, with no default
+Error : ‘times’ is a required argument
 > try(pomp(dat,times="time",t0=0,covar=dat) -> po)
 Error : in ‘pomp’: if ‘covar’ is supplied, ‘tcovar’ must also be supplied
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=3) -> po)
@@ -118,7 +118,11 @@ newly created object(s):
  ricker 
 > pomp(ricker) -> ricker
 > pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
-> simulate(po) -> po
+> simulate(po,verbose=TRUE) -> po
+loading ‘/tmp/RtmpujBlyZ/99882/pomp_c5677f95124dd65b21526f9c1750c8fe.so’ 
+unloading ‘/tmp/RtmpujBlyZ/99882/pomp_c5677f95124dd65b21526f9c1750c8fe.so’ 
+> try(pomp(po,params=c("A","B")))
+Error : in ‘pomp’: ‘params’ must be a named numeric vector
 > ## force recompile
 > file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
 +                        pattern=paste0(po@solibs[[1]]$name,".*"),
@@ -127,6 +131,21 @@ newly created object(s):
 > simulate(po) -> po
 > 
 > plot(po,yax.flip=TRUE)
+> 
+> try(pomp(as.data.frame(ricker)))
+Error : ‘times’ is a required argument
+> try(pomp(as.data.frame(ricker),times="time"))
+Error : ‘t0’ is a required argument
+> try(pomp(data.frame(t=10:1,y=1:10),times="t",t0=0))
+Error : in ‘pomp’: ‘times’ must be an increasing numeric vector
+> try(pomp(data.frame(t=c(1:9,NA),y=1:10),times="t",t0=0))
+Error : in ‘pomp’: ‘times’ must be an increasing numeric vector
+> try(pomp(data.frame(t="A",y=1:10),times="t",t0=0))
+Error : in ‘pomp’: ‘times’ must be an increasing numeric vector
+> try(pomp(data.frame(t=1:10,y=1:10),times="t",t0=c(3,4)))
+Error : in ‘pomp’: the zero-time ‘t0’ must be a single number
+> try(pomp(data.frame(t=1:10,y=1:10),times="t",t0="Q"))
+Error : in ‘pomp’: the zero-time ‘t0’ must be a single number
 > 
 > dev.off()
 null device 

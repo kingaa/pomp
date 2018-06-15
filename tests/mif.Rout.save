@@ -91,8 +91,12 @@ particle filter log likelihood at truth
 > stopifnot(sum(grepl("pfilter timestep",out))==600)
 > stopifnot(sum(grepl("mif iteration",out))==30)
 > 
-> plot(mif1)
-> plot(mif12 <- c(mif1,mif2))
+> plot(mif1,y=NA)
+Warning message:
+in ‘plot-mif’: ‘y’ is ignored 
+> plot(mif12 <- c(mif1,mif2),y=NA)
+Warning message:
+in ‘plot-mif’: ‘y’ is ignored 
 > mif12 <- c(mif12)
 > mif1a <- c(mif1)
 > coef(mif2)
@@ -110,6 +114,10 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 [1]  1 10
 > dim(conv.rec(mif12))
 NULL
+> try(c(mif1,ou2))
+Error : in ‘c’: cannot mix ‘mif’ and non-‘mif’ objects
+> try(c(mif12,ou2))
+Error : in ‘c’: cannot mix ‘mif’ and non-‘mif’ objects
 > 
 > set.seed(33848585L)
 > 

@@ -367,6 +367,8 @@ pb <- probe(
 invisible(pb$datvals)
 invisible(summary(pb))
 
+probe(pb) -> pb
+
 try(
     probe(
         ricker,
@@ -379,6 +381,22 @@ try(
         seed=838775L
     )
 )
+
+try(probe(ricker,probes=list(probe.mean(c("y","z"))),nsim=100))
+try(probe(ricker,probes=list(probe.median(c("y","z"))),nsim=100))
+try(probe(ricker,probes=list(probe.var(c("y","z"))),nsim=100))
+try(probe(ricker,probes=list(probe.sd(c("y","z"))),nsim=100))
+try(probe(ricker,probes=list(probe.period(c("y","z"))),nsim=100))
+try(probe(ricker,probes=list(probe.quantile(c("y","z"))),nsim=100))
+try(probe(ricker,probes=list(probe.ccf(c("y"))),nsim=100))
+try(probe(ricker,probes=list(probe.marginal(c("y","z"))),nsim=100))
+try(probe(ricker,probes=list(probe.nlar(c("y","z"))),nsim=100))
+try(probe(ricker,probes=list(probe.nlar("y",lags=c(-3,1))),nsim=100))
+try(probe(ricker,probes=list(probe.nlar("y",lags=c(1,2),powers=c(-1,2))),nsim=100))
+try(probe(ricker,probes=list(probe.nlar("y",lags=c(1,2),powers=c(2,3,1))),nsim=100))
+try(probe(ricker,probes=list(probe.nlar("y",lags=c(1,2,3),powers=c(2,3))),nsim=100))
+try(probe(ricker,probes="bob",nsim=100))
+try(probe(ricker,probes=function(x,y){x+y},nsim=100))
 
 try(
     probe(

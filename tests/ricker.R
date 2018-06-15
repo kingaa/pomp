@@ -33,6 +33,8 @@ sm1 <- simulate(ricker,nsim=3,obs=T,seed=343995,as.data.frame=TRUE)
 stopifnot(all(names(sm1)==c("y","sim","time")))
 stopifnot(all(dim(sm1)==c(153,3)))
 
+try(simulate(ricker,params=c()))
+
 po <- ricker
 try(
     coef(po,"log.r")
@@ -57,10 +59,10 @@ try(
     )
 file.remove("bob")
 pomp(ricker,
-     rprocess=discrete.time.sim(
-         Csnippet("if (runif(0,1)<0.5) error(\"yow!\");")),
-     skeleton=map(Csnippet("error(\"yipes!\");"))
-     ) -> po
+  rprocess=discrete.time.sim(
+    Csnippet("if (runif(0,1)<0.5) error(\"yow!\");")),
+  skeleton=map(Csnippet("error(\"yipes!\");"))
+) -> po
 try(simulate(po))
 try(pfilter(po,Np=1000))
 try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))

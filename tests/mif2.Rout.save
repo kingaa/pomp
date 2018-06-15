@@ -72,6 +72,9 @@ Error : in ‘mif2’: ‘Nmif’ must be a positive integer
 +                alpha.2=0.1,alpha.3=0.1))
 > m2 <- continue(m2,Nmif=20)
 > 
+> try(conv.rec(m2,c("bob","nancy")))
+Error : in ‘conv.rec’: name(s) ‘bob’,‘nancy’ correspond to no parameter(s) in ‘conv.rec(object,transform=FALSE)’
+> 
 > freeze(continue(m2,Nmif=2,.paramMatrix=m2@paramMatrix),seed=595996) -> m2a
 > freeze(continue(m2,Nmif=2),seed=595996) -> m2b
 > stopifnot(all.equal(coef(m2a),coef(m2b)))

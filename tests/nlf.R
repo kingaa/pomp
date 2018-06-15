@@ -89,3 +89,20 @@ fit <- nlf(gompertz,transform=TRUE,est=c("K","r"),lags=lags,
            bootsamp=sample.int(nboot,replace=TRUE),
            nasymp=2000
            )
+
+try(nlf(gompertz,lags=c(1,2,3),est=c(1,2,3),
+  nconverge=200,nasymp=1000,method="Nelder-Mead",
+  seed=34999695L,verbose=TRUE))
+try(nlf(gompertz,lags=c(1,2,3),est=c("bob"),
+  nconverge=200,nasymp=1000,method="Nelder-Mead",
+  seed=34999695L,verbose=TRUE))
+try(nlf(gompertz,est=c("K","r"),lags=c(1,2,3),
+  nconverge=200,nasymp=1000,method="Nelder-Mead",
+  seed=34999695L,lql.frac=2,verbose=TRUE))
+try(nlf(gompertz,est=c("K","r"),lags=c(1,2,3),
+  nconverge=200,nasymp=1000,method="Nelder-Mead",
+  seed=34999695L,se.par.frac=2,verbose=TRUE))
+try(nlf(simulate(gompertz,times=c(0:10,10.5)),
+  est=c("K","r"),lags=c(1,2,3),
+  nconverge=200,nasymp=1000,method="Nelder-Mead",
+  seed=34999695L,verbose=TRUE))

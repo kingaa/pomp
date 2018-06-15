@@ -119,3 +119,25 @@ fitted param 2 -1e+09 down in ‘nlf’
 +            nasymp=2000
 +            )
 > 
+> try(nlf(gompertz,lags=c(1,2,3),est=c(1,2,3),
++   nconverge=200,nasymp=1000,method="Nelder-Mead",
++   seed=34999695L,verbose=TRUE))
+Error : in ‘nlf’: ‘est’ must name the parameters to be estimated
+> try(nlf(gompertz,lags=c(1,2,3),est=c("bob"),
++   nconverge=200,nasymp=1000,method="Nelder-Mead",
++   seed=34999695L,verbose=TRUE))
+Error : in ‘nlf’: parameters named in ‘est’ must exist in ‘start’
+> try(nlf(gompertz,est=c("K","r"),lags=c(1,2,3),
++   nconverge=200,nasymp=1000,method="Nelder-Mead",
++   seed=34999695L,lql.frac=2,verbose=TRUE))
+Error : in ‘nlf’: ‘lql.frac’ must be in (0,1)
+> try(nlf(gompertz,est=c("K","r"),lags=c(1,2,3),
++   nconverge=200,nasymp=1000,method="Nelder-Mead",
++   seed=34999695L,se.par.frac=2,verbose=TRUE))
+Error : in ‘nlf’: ‘se.par.frac’ must be in (0,1)
+> try(nlf(simulate(gompertz,times=c(0:10,10.5)),
++   est=c("K","r"),lags=c(1,2,3),
++   nconverge=200,nasymp=1000,method="Nelder-Mead",
++   seed=34999695L,verbose=TRUE))
+Error : in ‘nlf’: ‘nlf’ requires evenly spaced sampling times
+> 

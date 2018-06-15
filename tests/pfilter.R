@@ -11,6 +11,13 @@ print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
 cat("particle filter log likelihood at truth\n")
 print(pf$loglik,digits=4)
 
+try(pfilter(ou2,Np=1000,params=c()))
+
+try(pfilter(ou2,Np=c(1000,10)))
+try(pfilter(ou2,Np=-100))
+try(pfilter(ou2,Np="bob"))
+try(pfilter(ou2,Np=100,params=matrix(0,nrow=3,ncol=100)))
+try(pfilter(ou2,Np=1,max.fail=0))
 try(replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) c(100,200) else 500)))
 pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
 pf.ll <- sapply(pf,logLik)
@@ -39,6 +46,7 @@ plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
 pompExample(gompertz)
 pfilter(gompertz,params=parmat(coef(gompertz),100)) -> pf
 pfilter(gompertz,params=parmat(coef(gompertz),100),Np=100) -> pf
+names(as.data.frame(pfilter(gompertz,Np=100,pred.mean=TRUE,pred.var=TRUE)))
 try(pfilter(gompertz) -> pf)
 try(pfilter(gompertz,params=parmat(coef(gompertz),100),Np=1000) -> pf)
 coef(gompertz,"sigma") <- Inf

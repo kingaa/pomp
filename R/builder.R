@@ -10,7 +10,6 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   if (!is.null(name)) name <- cleanForC(name)
   id <- randomName(4)
 
-  if (missing(globals)) globals <- character(0)
   if (is(globals,"Csnippet")) globals <- globals@text
 
   statenames <- cleanForC(statenames)

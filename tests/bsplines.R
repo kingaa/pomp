@@ -14,6 +14,7 @@ lines(x,apply(y,1,sum),lwd=2)
 x <- seq(-1,2,by=0.01)
 try(y <- periodic.bspline.basis(x,nbasis=6,names=letters[1:2]))
 y <- periodic.bspline.basis(x,nbasis=6,names=tail(letters,6))
+y <- periodic.bspline.basis(x,nbasis=5,names="spline")
 y <- periodic.bspline.basis(x,nbasis=5,names="spline%d")
 matplot(x,y,type='l')
 

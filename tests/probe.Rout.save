@@ -414,6 +414,8 @@ newly created object(s):
 > invisible(pb$datvals)
 > invisible(summary(pb))
 > 
+> probe(pb) -> pb
+> 
 > try(
 +     probe(
 +         ricker,
@@ -427,6 +429,37 @@ newly created object(s):
 +     )
 + )
 Error : in ‘probe’: applying probes to simulated data: variable-sized results returned by probe 3
+> 
+> try(probe(ricker,probes=list(probe.mean(c("y","z"))),nsim=100))
+Error : ‘probe.mean’ is a univariate probe
+> try(probe(ricker,probes=list(probe.median(c("y","z"))),nsim=100))
+Error : ‘probe.median’ is a univariate probe
+> try(probe(ricker,probes=list(probe.var(c("y","z"))),nsim=100))
+Error : ‘probe.var’ is a univariate probe
+> try(probe(ricker,probes=list(probe.sd(c("y","z"))),nsim=100))
+Error : ‘probe.sd’ is a univariate probe
+> try(probe(ricker,probes=list(probe.period(c("y","z"))),nsim=100))
+Error : ‘probe.period’ is a univariate probe
+> try(probe(ricker,probes=list(probe.quantile(c("y","z"))),nsim=100))
+Error : ‘probe.quantile’ is a univariate probe
+> try(probe(ricker,probes=list(probe.ccf(c("y"))),nsim=100))
+Error : in ‘probe.ccf’: ‘vars’ must name two variables
+> try(probe(ricker,probes=list(probe.marginal(c("y","z"))),nsim=100))
+Error : ‘probe.marginal’ is a univariate probe
+> try(probe(ricker,probes=list(probe.nlar(c("y","z"))),nsim=100))
+Error : ‘probe.nlar’ is a univariate probe
+> try(probe(ricker,probes=list(probe.nlar("y",lags=c(-3,1))),nsim=100))
+Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive integers
+> try(probe(ricker,probes=list(probe.nlar("y",lags=c(1,2),powers=c(-1,2))),nsim=100))
+Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive integers
+> try(probe(ricker,probes=list(probe.nlar("y",lags=c(1,2),powers=c(2,3,1))),nsim=100))
+Error : in ‘probe.nlar’: ‘lags’ must match ‘powers’ in length, or have length 1
+> try(probe(ricker,probes=list(probe.nlar("y",lags=c(1,2,3),powers=c(2,3))),nsim=100))
+Error : in ‘probe.nlar’: ‘powers’ must match ‘lags’ in length, or have length 1
+> try(probe(ricker,probes="bob",nsim=100))
+Error : in ‘probe’: ‘probes’ must be a function or a list of functions
+> try(probe(ricker,probes=function(x,y){x+y},nsim=100))
+Error : in ‘probe’: each probe must be a function of a single argument
 > 
 > try(
 +     probe(

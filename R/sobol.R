@@ -1,9 +1,5 @@
 sobol <- function (vars, n) {
     ep <- paste0("in ",sQuote("sobolDesign"),": ")
-    if (!is.list(vars) || is.null(names(vars)))
-        stop(ep,sQuote("vars")," must be a named list",call.=FALSE)
-    if (!all(sapply(vars,function(x)is.numeric(x)&&(length(x)==2))))
-        stop(ep,"each entry in ",sQuote("vars")," must specify a range",call.=FALSE)
     d <- length(vars)
     if (!is.finite(n) || (n > 1073741824L))
         stop(ep,"too many points requested",call.=FALSE);
