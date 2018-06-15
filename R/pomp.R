@@ -180,7 +180,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
         )
       ),
       error = function (e) {
-        stop(ep,"error in building shared-object library from C snippets: ",
+        stop("error in building shared-object library from C snippets: ",
              conditionMessage(e),call.=FALSE)
       }
     )
@@ -246,7 +246,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   skel.type <- match.arg(skel.type,c("map","vectorfield","undef"))
   skel.delta.t <- as.numeric(skel.delta.t)
   if (skel.delta.t <= 0)
-    stop(ep,"skeleton ",sQuote("delta.t")," must be positive",call.=FALSE) #nocov
+    stop("skeleton ",sQuote("delta.t")," must be positive",call.=FALSE) #nocov
 
   ## handle rmeasure
   rmeasure <- pomp.fun(
@@ -309,7 +309,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   mpt <- is.null(fromEstimationScale)
   mpit <- is.null(toEstimationScale)
   if (xor(mpt,mpit)) {
-    stop(ep,"if one of ",
+    stop("if one of ",
          sQuote("fromEstimationScale"),", ",sQuote("toEstimationScale"),
          " is supplied, then so must the other",call.=FALSE)
   }
