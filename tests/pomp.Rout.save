@@ -32,6 +32,25 @@ newly created object(s):
 > y2 <- obs(simulate(r2,seed=1066L))
 > max(abs(y1-y2))
 [1] 0
+> 
+> try(obs(r2,vars="bob"))
+Error : in ‘obs’: some elements of ‘vars’ correspond to no observed variable
+> try(time(r2) <- "nancy")
+Error : in ‘time<-’: ‘value’ must be a numeric vector
+> invisible(window(r2,start=3,end=9))
+> invisible(window(r2))
+> invisible(window(r2,start=3))
+> invisible(window(r2,end=11))
+> try({rr2 <- r2; timezero(rr2) <- c(4,11)})
+Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single number
+> try({rr2 <- r2; timezero(rr2) <- 4})
+Error : in ‘timezero<-’: the zero-time ‘t0’ must occur no later than the first observation
+> rr2 <- r2
+> coef(rr2,c("r","phi"),transform=TRUE) <- coef(r2,c("r","phi"),transform=TRUE)
+Warning message:
+in ‘coef<-’:  names of ‘value’ are being discarded 
+> stopifnot(all.equal(coef(rr2),coef(r2)))
+> 
 > r3 <- pomp(
 +            ricker,
 +            dmeasure="_ricker_poisson_dmeasure",
@@ -119,8 +138,8 @@ newly created object(s):
 > pomp(ricker) -> ricker
 > pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
 > simulate(po,verbose=TRUE) -> po
-loading ‘/tmp/RtmpzmjSS5/9792/pomp_14b4f84b3683060c0e42b2b829d307c9.so’ 
-unloading ‘/tmp/RtmpzmjSS5/9792/pomp_14b4f84b3683060c0e42b2b829d307c9.so’ 
+loading ‘/tmp/RtmptcN3A1/127974/pomp_fbbd730e6ecf0e9c83110583b1840480.so’ 
+unloading ‘/tmp/RtmptcN3A1/127974/pomp_fbbd730e6ecf0e9c83110583b1840480.so’ 
 > try(pomp(po,params=c("A","B")))
 Error : in ‘pomp’: ‘params’ must be a named numeric vector
 > ## force recompile

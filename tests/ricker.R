@@ -4,6 +4,11 @@ pompExample(ricker)
 
 pdf(file="ricker.pdf")
 
+try(trajectory(ricker,times=numeric(0)))
+try(trajectory(ricker,times=c(3,2,1)))
+try(trajectory(ricker,times=c(-1,0,1,2)))
+try(trajectory(ricker,params=numeric(5)))
+
 tj.1 <- trajectory(ricker)
 plot(time(ricker),tj.1[1,,],type='l')
 tj.2 <- trajectory(ricker,times=c(30:50),t0=0)

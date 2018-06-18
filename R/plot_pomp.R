@@ -11,13 +11,6 @@ plotpomp.internal <- function (x, y,
   X <- as(x,"data.frame")
   vars <- names(X)
   tpos <- match("time",vars)
-  if (is.na(tpos))
-    stop(
-         sQuote("pomp"),
-         " plot error: no data variable labeled ",
-         sQuote("time"),
-         call.=FALSE
-         )
   if (missing(variables)) {
     vars <- vars[-tpos]
     vars <- setdiff(vars,colnames(x@covar))
@@ -45,17 +38,10 @@ plotpomp.internal <- function (x, y,
       mtext(main,side=3,line=3,cex=cex.main,font=font.main,col=col.main,...)
     }
     nser <- NCOL(x)
-    if (nser > 10)
-      stop(sQuote("pomp")," plot error: cannot plot more than 10 series as ",dQuote("multiple"),call.=FALSE)
-    if (is.null(main))
-      main <- xlabel
+    if (is.null(main)) main <- xlabel
     nm <- ylab
-    if (is.null(nm))
-      nm <- colnames(x)
-    if (is.null(nm))
-      nm <- paste("Series",seq_len(nser))
-    if (is.null(nc))
-      nc <- if(nser>4){2}else{1}
+    if (is.null(nm)) nm <- colnames(x)
+    if (is.null(nc)) nc <- if(nser>4){2}else{1}
     nr <- ceiling(nser/nc)
     oldpar <- par(mar=mar,oma=oma,mfcol=c(nr,nc))
     on.exit(par(oldpar))

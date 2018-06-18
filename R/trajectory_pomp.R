@@ -48,9 +48,6 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
     
     type <- object@skeleton.type          # map or vectorfield?
     
-    if (is.na(type))
-        stop(ep,sQuote("skeleton.type")," unspecified",call.=FALSE)
-
     if (type=="map") {
 
         x <- tryCatch(
@@ -89,7 +86,7 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
         .Call(pomp_desolve_takedown)
 
         if (attr(X,'istate')[1L]!=2)
-            warning(ep,"abnormal exit from ODE integrator, istate = ",attr(X,'istate'),call.=FALSE)
+            warning(ep,"abnormal exit from ODE integrator, istate = ",attr(X,'istate'),call.=FALSE) # nocov
 
         x <- array(data=t(X[-1L,-1L]),dim=c(nvar,nrep,ntimes),
                    dimnames=list(statenames,NULL,NULL))

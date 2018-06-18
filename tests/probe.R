@@ -125,6 +125,7 @@ good <- probe(
 )
 
 ofun <- probe.match.objfun(good)
+ofun(coef(good))
 
 ofun <- probe.match.objfun(ou2,est=c("alpha.1","alpha.2"),
                            probes=good$probes,nsim=100,
@@ -243,6 +244,11 @@ invisible(summary(pbm))
 
 coef(po) <- c(r=10,sigma=0.3,c=1,phi=20,N.0=5,e.0=0)
 
+try(probe.match(po,params=numeric(3),nsim=20))
+try(probe.match.objfun(po,probes=probe.var("y"),est="bob",nsim=20))
+try(probe.match.objfun(po,probes="nancy",nsim=20))
+try(probe.match.objfun(po,probes=function(x,y)x,nsim=20))
+
 pb <- probe(
     po,
     probes=probe.marginal(
@@ -271,6 +277,8 @@ pm <- probe.match(
 )
 
 invisible(cbind(truth=coef(ricker),est=coef(pm),guess=coef(po)))
+
+probe.match(pm) -> pm
 
 pb <- probe(
     po,
@@ -452,6 +460,8 @@ try(probe(ou2,nsim=100,probes=function(x)runif(n=sample(c(1,2),size=1))))
 try(probe(ou2,nsim=100,probes=function(x)sample(list("a",2,3),size=1)[[1]]))
 try(probe.match(ou2,probes=probe.acf("y1",lags=0:3),nsim=100))
 try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=100))
+try(probe.match(ou2))
+try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3)))
 
 ## elaborate test to trigger rare error
 nprobe <- 0

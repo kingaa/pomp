@@ -25,6 +25,15 @@ newly created object(s):
 > 
 > pdf(file="ricker.pdf")
 > 
+> try(trajectory(ricker,times=numeric(0)))
+Error : in ‘trajectory’: ‘times’ is empty, there is no work to do
+> try(trajectory(ricker,times=c(3,2,1)))
+Error : in ‘trajectory’: ‘times’ must be an increasing sequence of times
+> try(trajectory(ricker,times=c(-1,0,1,2)))
+Error : in ‘trajectory’: the zero-time ‘t0’ must occur no later than the first observation
+> try(trajectory(ricker,params=numeric(5)))
+Error : in ‘trajectory’: ‘params’ must have rownames
+> 
 > tj.1 <- trajectory(ricker)
 > plot(time(ricker),tj.1[1,,],type='l')
 > tj.2 <- trajectory(ricker,times=c(30:50),t0=0)
@@ -89,7 +98,7 @@ in ‘coef<-’: name(s) ‘new’ do not refer to existing parameter(s); they a
 +          cdir="bob"
 +          )
 +     )
-Error : in ‘pomp’: in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot create cache directory ‘bob’
+Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot create cache directory ‘bob’
 > file.remove("bob")
 [1] TRUE
 > pomp(ricker,
@@ -144,12 +153,12 @@ summary of covariates:
  Max.   :3.0  
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x4509818>
-<environment: 0x3ff7fb0>
+<bytecode: 0x33b95e8>
+<environment: 0x2f45e68>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x4509460>
-<environment: 0x3ff7fb0>
+<bytecode: 0x33b9230>
+<environment: 0x2f45e68>
 measurement model simulator, rmeasure = function (x, t, params, ...) 
 x
 measurement model density, dmeasure = function (x, y, t, params, log, ...) 
@@ -158,7 +167,7 @@ prior simulator, rprior = not specified
 prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
 skeleton (map) = function (x, t, params, ...) 
 x
-<environment: 0x3ff6aa0>
+<environment: 0x2f3e800>
 initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
@@ -195,12 +204,12 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x30b6ce0>
-<environment: 0x33a6880>
+<bytecode: 0x1f66ce0>
+<environment: 0x2257028>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x4509460>
-<environment: 0x450f5e8>
+<bytecode: 0x33b9230>
+<environment: 0x33bf540>
 measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
 measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
 prior simulator, rprior = not specified
@@ -213,14 +222,14 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x42bd5b0>
+<environment: 0x316d2d8>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "c", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x42bd5b0>
+<environment: 0x316d2d8>
 parameter(s):
        r    sigma      phi        c      N.0      e.0 
 44.70118  0.30000 10.00000  1.00000  7.00000  0.00000 

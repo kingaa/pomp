@@ -10,6 +10,19 @@ r2 <- pomp(ricker,measurement.model=y~pois(lambda=N*phi))
 coef(r2) <- coef(ricker)
 y2 <- obs(simulate(r2,seed=1066L))
 max(abs(y1-y2))
+
+try(obs(r2,vars="bob"))
+try(time(r2) <- "nancy")
+invisible(window(r2,start=3,end=9))
+invisible(window(r2))
+invisible(window(r2,start=3))
+invisible(window(r2,end=11))
+try({rr2 <- r2; timezero(rr2) <- c(4,11)})
+try({rr2 <- r2; timezero(rr2) <- 4})
+rr2 <- r2
+coef(rr2,c("r","phi"),transform=TRUE) <- coef(r2,c("r","phi"),transform=TRUE)
+stopifnot(all.equal(coef(rr2),coef(r2)))
+
 r3 <- pomp(
            ricker,
            dmeasure="_ricker_poisson_dmeasure",

@@ -63,8 +63,8 @@ Warning messages:
 > prior <- smc$prior
 > post <- smc$post
 > 
-> try(bsmc(ou2,params=prior,smooth=2))
-Error : in ‘bsmc’: ‘smooth’ must be a scalar in (0,1]
+> try(bsmc2(ou2,params=prior,smooth=2))
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(0)),Np=2))
 Error : in ‘bsmc2’: ‘rprior’ error: in 'rprior': user 'rprior' returns a vector of 0 parameters but 10 are expected
 > try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(10)),Np=2))

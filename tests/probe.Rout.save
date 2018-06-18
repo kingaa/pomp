@@ -166,6 +166,8 @@ newly created object(s):
 + )
 > 
 > ofun <- probe.match.objfun(good)
+> ofun(coef(good))
+[1] 6.34
 > 
 > ofun <- probe.match.objfun(ou2,est=c("alpha.1","alpha.2"),
 +                            probes=good$probes,nsim=100,
@@ -293,6 +295,15 @@ in ‘plot-probed.pomp’: ‘y’ is ignored
 > 
 > coef(po) <- c(r=10,sigma=0.3,c=1,phi=20,N.0=5,e.0=0)
 > 
+> try(probe.match(po,params=numeric(3),nsim=20))
+Error : in ‘probe.match’: ‘probes’ must be supplied
+> try(probe.match.objfun(po,probes=probe.var("y"),est="bob",nsim=20))
+Error : in ‘probe.match.objfun’: parameter(s): ‘bob’ not found in ‘params’
+> try(probe.match.objfun(po,probes="nancy",nsim=20))
+Error : in ‘probe.match.objfun’: ‘probes’ must be a function or a list of functions
+> try(probe.match.objfun(po,probes=function(x,y)x,nsim=20))
+Error : in ‘probe.match.objfun’: each probe must be a function of a single argument
+> 
 > pb <- probe(
 +     po,
 +     probes=probe.marginal(
@@ -321,6 +332,8 @@ in ‘plot-probed.pomp’: ‘y’ is ignored
 + )
 > 
 > invisible(cbind(truth=coef(ricker),est=coef(pm),guess=coef(po)))
+> 
+> probe.match(pm) -> pm
 > 
 > pb <- probe(
 +     po,
@@ -536,6 +549,10 @@ Error : in ‘probe’: applying probes to simulated data: probe 1 returns a non
 Error : in ‘probe.match.objfun’: applying probes to actual data: in ‘probe.acf’: series 1 has no data
 > try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3),nsim=100))
 Error : in ‘probe.match.objfun’: applying probes to actual data: in ‘probe.ccf’: series 2 has no data
+> try(probe.match(ou2))
+Error : in ‘probe.match’: ‘probes’ must be supplied
+> try(probe.match(ou2,probes=probe.ccf(c("y2","y1"),lags=0:3)))
+Error : in ‘probe.match’: ‘nsim’ must be supplied
 > 
 > ## elaborate test to trigger rare error
 > nprobe <- 0

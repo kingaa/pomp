@@ -146,7 +146,7 @@ setMethod(
   definition=function (x, start, end, ...) {
     tm <- time(x,t0=FALSE)
     if (missing(start))
-      start <- tm[1]
+      start <- tm[1L]
     if (missing(end))
       end <- tm[length(tm)]
     tm <- tm[(tm>=start)&(tm<=end)]
@@ -166,11 +166,11 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function(object,...,value) {
     ep <- paste0("in ",sQuote("timezero<-"),": ")
-    if (value>object@times[1])
-      if (!is.numeric(value) || length(value) > 1)
+    if (value[1L]>object@times[1L])
+      if (!is.numeric(value) || length(value) > 1L)
         stop(ep,"the zero-time ",sQuote("t0"),
              " must be a single number",call.=FALSE)
-    if (value > object@times[1])
+    if (value > object@times[1L])
       stop(ep,"the zero-time ",sQuote("t0"),
            " must occur no later than the first observation",call.=FALSE)
     storage.mode(value) <- "double"
