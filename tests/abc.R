@@ -33,9 +33,16 @@ abc1 <- abc(po,
 
 plot(abc1,scatter=TRUE)
 plot(abc1)
+plot(abc1,pars=c("alpha.1","alpha.3"))
+abc1@pars <- character(0)
+plot(abc1)
 
 try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(po,Nabc=2000,probes=probes.good,start=unname(coef(po)),scale=scale.dat,
+  epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
+  epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,epsilon=1.7,proposal="bob"))
 try(abc(po,Nabc=2000,probes="probes.good",scale=scale.dat,
         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
@@ -207,3 +214,4 @@ try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
         }))
 
 dev.off()
+

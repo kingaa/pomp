@@ -90,3 +90,7 @@ traj.match(ou2,start=pp,est=c("alpha.1","alpha.2","x1.0","x2.0","tau"),
            local_opts=list(algorithm="NLOPT_LN_NELDERMEAD",
                            xtol_rel=1e-3)) -> tm
 stopifnot(summary(tm)$convergence==5)
+
+pompExample(ricker)
+try(traj.match(ricker,start=numeric(0)))
+try(traj.match(ricker,transform=TRUE,est=c("bob")))

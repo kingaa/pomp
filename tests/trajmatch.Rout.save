@@ -221,3 +221,11 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 +                            xtol_rel=1e-3)) -> tm
 > stopifnot(summary(tm)$convergence==5)
 > 
+> pompExample(ricker)
+newly created object(s):
+ ricker 
+> try(traj.match(ricker,start=numeric(0)))
+Error : in ‘minim’: ‘start’ must be supplied
+> try(traj.match(ricker,transform=TRUE,est=c("bob")))
+Error : in ‘minim’: ‘est’ must refer to parameters named in ‘partrans(object,start,dir="toEstimationScale")’
+> 

@@ -22,9 +22,9 @@ Type 'q()' to quit R.
 > capture.output({
 + 
 +     library(pomp)
-+     
++ 
 +     options(digits=3,verbose=TRUE)
-+     
++ 
 +     set.seed(398585L)
 +     pompExample(ou2)
 + 
@@ -96,17 +96,17 @@ Error : in ‘bsmc2’: too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpusavpN/12329/pomp_34bac4259c91014f5612998fbc861601.c -o /tmp/RtmpusavpN/12329/pomp_34bac4259c91014f5612998fbc861601.o
-/tmp/RtmpusavpN/12329/pomp_34bac4259c91014f5612998fbc861601.c: In function ‘__pomp_rmeasure’:
-/tmp/RtmpusavpN/12329/pomp_34bac4259c91014f5612998fbc861601.c:16:1: error: expected ‘;’ before ‘}’ token
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpUagKSY/127447/pomp_314363cfc968a937701582bd8d94752f.c -o /tmp/RtmpUagKSY/127447/pomp_314363cfc968a937701582bd8d94752f.o
+/tmp/RtmpUagKSY/127447/pomp_314363cfc968a937701582bd8d94752f.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpUagKSY/127447/pomp_314363cfc968a937701582bd8d94752f.c:16:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/RtmpusavpN/12329/pomp_34bac4259c91014f5612998fbc861601.o] Error 1
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
-Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot compile shared-object library ‘/tmp/RtmpusavpN/12329/pomp_34bac4259c91014f5612998fbc861601.so’: status = 1
+make[2]: *** [/tmp/RtmpUagKSY/127447/pomp_314363cfc968a937701582bd8d94752f.o] Error 1
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot compile shared-object library ‘/tmp/RtmpUagKSY/127447/pomp_314363cfc968a937701582bd8d94752f.so’: status = 1
 > stopifnot(length(out)==627)
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)
 > stopifnot(sum(grepl("model codes written",out))==1)
@@ -123,12 +123,20 @@ Error : in ‘pomp’: error in building shared-object library from C snippets: 
 > invisible(capture.output(pompExample(ricker)))
 > capture.output(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
 +   cfile="bob",verbose=TRUE) -> po) -> out
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpusavpN/12329/bob.c -o /tmp/RtmpusavpN/12329/bob.o
-gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -L/usr/local/lib64 -o /tmp/RtmpusavpN/12329/bob.so /tmp/RtmpusavpN/12329/bob.o -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -lR
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpUagKSY/127447/bob.c -o /tmp/RtmpUagKSY/127447/bob.o
+gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -L/usr/local/lib64 -o /tmp/RtmpUagKSY/127447/bob.so /tmp/RtmpUagKSY/127447/bob.o -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -lR
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 > gsub("(\\w+)\\s.+","\\1",out,perl=TRUE)
 [1] "model"     "compiling"
+> 
+> capture.output(invisible(mif2(window(ricker,end=10),Nmif=1,Np=1,rw.sd=rw.sd(r=1),
++   transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
++   type="message") -> out
+mif2 pfilter timestep 5 of 11 finished
+mif2 pfilter timestep 10 of 11 finished
+mif2 iteration 1 of 1 completed
+> stopifnot(sum(grepl("filtering failure at time",out))==4)
 > 

@@ -289,6 +289,8 @@ sigma.3:            2
 In addition: Warning message:
 In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > 
+> plot(mif(ou2,Nmif=1,rw.sd=c(alpha.1=0.1),Np=100,cooling.fraction.50=0.))
+> 
 > pompExample(gompertz)
 newly created object(s):
  gompertz 
@@ -320,7 +322,7 @@ In rnorm(n = Np * length(center), mean = center, sd = sd) : NAs produced
 > try(gb <- mif(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),
 +               cooling.fraction.50=0.2,transform=TRUE))
 Warning message:
-in ‘mif.pfilter’: 97 filtering failures occurred. 
+in ‘mif.pfilter’: 96 filtering failures occurred. 
 > 
 > dev.off()
 null device 

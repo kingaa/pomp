@@ -59,6 +59,22 @@ in ‘mif2’: Np[k] ignored for k > ntimes
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
 Error : in ‘mif2’: ‘Nmif’ must be a positive integer
+> try(mif2(ou2,Nmif=1,Np=1000,rw.sd=rw.sd(ivp(0.1))))
+Error : in ‘mif2’: in ‘rw.sd’: parameters must be referenced by name.
+> try(mif2(ou2,Nmif=1,Np=10,rw.sd=rw.sd(alpha.2=10),
++   cooling.fraction.50=1,max.fail=0))
+Error : in ‘mif2’: in ‘mif2.pfilter’: too many filtering failures
+> try(mif2(ou2,Nmif=1,Np=100,start=numeric(0)))
+Error : in ‘mif2’: ‘start’ must be specified if ‘coef(object)’ is NULL
+> try(mif2(ou2,Nmif=1,Np=100,start=unname(coef(ou2))))
+Error : in ‘mif2’: ‘start’ must be a named vector
+> try(mif2(ou2,Nmif=1,Np="100"))
+Error : in ‘mif2’: ‘Np’ must be a number, a vector of numbers, or a function
+> try(mif2(ou2,Nmif=1,Np=10,cooling.fraction.50=1))
+Error : in ‘mif2’: ‘rw.sd’ must be specified!
+> try(mif2(ou2,Nmif=1,Np=10,rw.sd=rw.sd(alpha.2=10),
++   cooling.fraction.50=2,max.fail=0))
+Error : in ‘mif2’: ‘cooling.fraction.50’ must be in (0,1]
 > 
 > m1 <- mif2(ou2,Nmif=50,start=guess1,Np=1000,
 +            cooling.type="hyperbolic",cooling.fraction.50=0.05,
@@ -93,9 +109,9 @@ in ‘plot-mif2d.pomp’: ‘y’ is ignored
 Warning message:
 in ‘plot-mif2d.pomp’: ‘y’ is ignored 
 > coef(c(m12))
-     alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau  x1.0 x2.0
-[1,]     0.8  -0.455   0.230     0.9       3    -0.5       2   1 -1.18 1.54
-[2,]     0.8  -0.558   0.244     0.9       3    -0.5       2   1 -2.73 2.46
+     alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau   x1.0  x2.0
+[1,]     0.8  -0.542   0.275     0.9       3    -0.5       2   1 -0.599 0.788
+[2,]     0.8  -0.474   0.350     0.9       3    -0.5       2   1 -2.676 2.431
 > dim(coef(m12))
 [1]  2 10
 > dim(coef(c(m12,m12)))
@@ -118,14 +134,14 @@ Error : in ‘c’: cannot mix ‘mif2d.pomp’ and non-‘mif2d.pomp’ objects
 > rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
 +       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
 +       truth=c(coef(ou2),loglik=logLik(pfilter(m1,Np=1000))))
-      alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau  x1.0 x2.0
-mle1      0.8  -0.455   0.230     0.9       3    -0.5       2   1 -1.18 1.54
-mle2      0.8  -0.558   0.244     0.9       3    -0.5       2   1 -2.73 2.46
-truth     0.8  -0.500   0.300     0.9       3    -0.5       2   1 -3.00 4.00
+      alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau   x1.0  x2.0
+mle1      0.8  -0.542   0.275     0.9       3    -0.5       2   1 -0.599 0.788
+mle2      0.8  -0.474   0.350     0.9       3    -0.5       2   1 -2.676 2.431
+truth     0.8  -0.500   0.300     0.9       3    -0.5       2   1 -3.000 4.000
       loglik
 mle1    -481
-mle2    -483
-truth   -482
+mle2    -481
+truth   -481
 > 
 > m3 <- mif2(ou2,Nmif=3,start=guess1,Np=200,
 +            cooling.fraction=0.2,
@@ -145,9 +161,6 @@ truth   -482
 +                alpha.3=0.2*(time<10)))
 > 
 > m4 <- mif2(m4,Nmif=10,Np=c(rep(200,20),rep(100,80),200))
-Warning messages:
-1: in ‘mif2.pfilter’: 17 filtering failures occurred. 
-2: in ‘mif2.pfilter’: 1 filtering failure occurred. 
 > m4 <- continue(m4,Nmif=10,cooling.fraction=0.1)
 > try(continue(m4,Np=function(k)if(k<10) "B" else 500))
 Error : in ‘mif2’: if ‘Np’ is a function, it must return a single positive integer
@@ -166,13 +179,6 @@ Error : in ‘mif2’: number of particles, ‘Np’, must always be positive
 +                    alpha.2=ifelse(time==1,0.2,0.1),
 +                    alpha.3=0.2*(time<10)))
 + ) -> out
-filtering failure at time t = 76
-filtering failure at time t = 77
-filtering failure at time t = 78
-filtering failure at time t = 79
-filtering failure at time t = 80
-Warning message:
-in ‘mif2.pfilter’: 5 filtering failures occurred. 
 > stopifnot(length(out)==210)
 > stopifnot(sum(grepl("mif2 iteration",out))==10)
 > stopifnot(sum(grepl("mif2 pfilter",out))==200)
@@ -190,14 +196,14 @@ likelihood, data, states, and parameters are:
      x2:          NaN
 alpha.1:          0.8
 alpha.2:         -Inf
-alpha.3:      0.85781
+alpha.3:     0.342175
 alpha.4:          0.9
 sigma.1:            3
 sigma.2:         -0.5
 sigma.3:            2
     tau:            1
-   x1.0:     0.121014
-   x2.0:      1.74011
+   x1.0:    -0.240228
+   x2.0:     0.352502
 > 
 > library(ggplot2)
 > library(reshape2)
@@ -229,8 +235,8 @@ likelihood, data, states, and parameters are:
   lik:          NaN
     Y:      1.11862
     X:          NaN
-    K:     -1.01089
-    r:      0.17549
+    K:    -0.952455
+    r:     0.227348
 sigma:          0.1
   tau:          0.1
   X.0:            1
@@ -252,7 +258,7 @@ likelihood, data, states, and parameters are:
   lik:          NaN
     Y:      1.11862
     X:          NaN
-    K:      6.43134
+    K:     -1.91576
     r:          NaN
 sigma:          0.1
   tau:          0.1

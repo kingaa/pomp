@@ -186,6 +186,8 @@ try(fit <- continue(fit,Np=100,Nmif=2))
 coef(fit,"alpha.2") <- -Inf
 try(fit <- continue(fit,Np=100,Nmif=2))
 
+plot(mif(ou2,Nmif=1,rw.sd=c(alpha.1=0.1),Np=100,cooling.fraction.50=0.))
+
 pompExample(gompertz)
 
 coef(gompertz,"K") <- -1

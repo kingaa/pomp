@@ -3,9 +3,9 @@ options(warn=-1)
 capture.output({
 
     library(pomp)
-    
+
     options(digits=3,verbose=TRUE)
-    
+
     set.seed(398585L)
     pompExample(ou2)
 
@@ -85,3 +85,8 @@ invisible(capture.output(pompExample(ricker)))
 capture.output(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
   cfile="bob",verbose=TRUE) -> po) -> out
 gsub("(\\w+)\\s.+","\\1",out,perl=TRUE)
+
+capture.output(invisible(mif2(window(ricker,end=10),Nmif=1,Np=1,rw.sd=rw.sd(r=1),
+  transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
+  type="message") -> out
+stopifnot(sum(grepl("filtering failure at time",out))==4)
