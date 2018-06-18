@@ -11,8 +11,7 @@ time(ou2) <- 1:10
 
 Np <- 20000
 
-try(smc <- bsmc2(ou2,Np=2,smooth=0.01,est=estnames,
-                 tol=1e-2,max.fail=100))
+try(bsmc2(ou2,Np=2,smooth=0.01,est=estnames,tol=1e-2,max.fail=100))
 
 prior.bounds <- rbind(
                       alpha.2=c(-0.55,-0.45),
@@ -37,6 +36,9 @@ bsmc2(ou2,params=prior,smooth=0.02,seed=49959,Np=100) -> smc
 smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
 prior <- smc$prior
 post <- smc$post
+
+try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(0)),Np=2))
+try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(10)),Np=2))
 
 smc <- bsmc2(ou2,params=prior,smooth=0.02)
 prior <- smc$prior

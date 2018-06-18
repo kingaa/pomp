@@ -79,12 +79,12 @@ ou2 %>%
         verbose=FALSE
     ) -> f5
 f5 %>% continue(Nmcmc=20) -> f6
-plot(f6)
+plot(f6,y=NA)
 invisible(logLik(f6))
 invisible(conv.rec(c(f6)))
 
 ff <- c(f4,f6)
-plot(ff)
+plot(ff,y=NA)
 plot(conv.rec(ff,c("alpha.2","alpha.3","loglik")))
 invisible(filter.traj(ff))
 invisible(logLik(ff))

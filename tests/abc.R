@@ -36,6 +36,8 @@ plot(abc1)
 plot(abc1,pars=c("alpha.1","alpha.3"))
 abc1@pars <- character(0)
 plot(abc1)
+invisible(covmat(abc1))
+invisible(covmat(c(abc1,abc1)))
 
 try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
@@ -214,4 +216,3 @@ try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
         }))
 
 dev.off()
-

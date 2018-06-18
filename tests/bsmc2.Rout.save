@@ -32,8 +32,7 @@ newly created object(s):
 > 
 > Np <- 20000
 > 
-> try(smc <- bsmc2(ou2,Np=2,smooth=0.01,est=estnames,
-+                  tol=1e-2,max.fail=100))
+> try(bsmc2(ou2,Np=2,smooth=0.01,est=estnames,tol=1e-2,max.fail=100))
 Error : in ‘bsmc2’: ‘rprior’ error: operation cannot be completed: rprior has not been specified
 > 
 > prior.bounds <- rbind(
@@ -63,6 +62,11 @@ Warning messages:
 > smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
 > prior <- smc$prior
 > post <- smc$post
+> 
+> try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(0)),Np=2))
+Error : in ‘bsmc2’: ‘rprior’ error: in 'rprior': user 'rprior' returns a vector of 0 parameters but 10 are expected
+> try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(10)),Np=2))
+Error : in ‘bsmc2’: no parameters to estimate
 > 
 > smc <- bsmc2(ou2,params=prior,smooth=0.02)
 > prior <- smc$prior
