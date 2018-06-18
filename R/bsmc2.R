@@ -141,7 +141,7 @@ bsmc2.internal <- function (object, params, Np, est,
       }
     )
     if (!all(is.finite(pert)))
-      stop(ep,"extreme particle depletion",call.=FALSE)
+      stop(ep,"extreme particle depletion",call.=FALSE) # nocov
 
     params[estind,] <- m[estind,]+t(pert)
 

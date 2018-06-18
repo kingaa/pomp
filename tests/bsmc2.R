@@ -37,8 +37,10 @@ smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
 prior <- smc$prior
 post <- smc$post
 
+try(bsmc(ou2,params=prior,smooth=2))
 try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(0)),Np=2))
 try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(10)),Np=2))
+try({p2 <- prior; rownames(p2) <- NULL; bsmc2(ou2,params=p2)})
 
 smc <- bsmc2(ou2,params=prior,smooth=0.02)
 prior <- smc$prior
