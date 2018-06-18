@@ -71,7 +71,7 @@ Error : in ‘pomp’: if ‘covar’ is a data frame, ‘tcovar’ should indic
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
 Error : in ‘pomp’: covariate(s) ‘henry’ are not among the columns of ‘covar’
 > try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
-Error : in ‘pomp’: in ‘pomp’: if one of ‘fromEstimationScale’, ‘toEstimationScale’ is supplied, then so must the other
+Error : in ‘pomp’: if one of ‘fromEstimationScale’, ‘toEstimationScale’ is supplied, then so must the other
 > plot(po)
 > pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
 > try(pomp())
@@ -117,17 +117,10 @@ Error : in ‘pompExample’: cannot find file ‘bob.R’
 newly created object(s):
  ricker 
 > pomp(ricker) -> ricker
-> capture.output(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
-+   cfile="bob",verbose=TRUE) -> po) -> out
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpaTMPq5/68514/bob.c -o /tmp/RtmpaTMPq5/68514/bob.o
-gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -L/usr/local/lib64 -o /tmp/RtmpaTMPq5/68514/bob.so /tmp/RtmpaTMPq5/68514/bob.o -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -lR
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+> pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
 > simulate(po,verbose=TRUE) -> po
-loading ‘/tmp/RtmpaTMPq5/68514/bob.so’ 
-unloading ‘/tmp/RtmpaTMPq5/68514/bob.so’ 
+loading ‘/tmp/RtmpzmjSS5/9792/pomp_14b4f84b3683060c0e42b2b829d307c9.so’ 
+unloading ‘/tmp/RtmpzmjSS5/9792/pomp_14b4f84b3683060c0e42b2b829d307c9.so’ 
 > try(pomp(po,params=c("A","B")))
 Error : in ‘pomp’: ‘params’ must be a named numeric vector
 > ## force recompile

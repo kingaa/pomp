@@ -55,6 +55,36 @@ newly created object(s):
 > plot(abc1,scatter=TRUE)
 > plot(abc1)
 > 
+> try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
++         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+Error : in ‘abc’: ‘start’ must be specified if ‘coef(object)’ is NULL
+> try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,epsilon=1.7,proposal="bob"))
+Error : in ‘abc’: ‘proposal’ must be a function
+> try(abc(po,Nabc=2000,probes="probes.good",scale=scale.dat,
++         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+Error : in ‘abc’: ‘probes’ must be a function or a list of functions
+> try(abc(po,Nabc=2000,probes=function(x,y)x,scale=scale.dat,
++         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+Error : in ‘abc’: each probe must be a function of a single argument
+> try(abc(pomp(po,dprior=function(params,log,...)Inf),Nabc=2000,probes=probes.good,
++         scale=scale.dat,epsilon=1.7,
++         proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+Error : in ‘abc’: inadmissible value of ‘dprior’ at parameters ‘start’
+> try(abc(pomp(po,Nabc=2000,probes=probes.good,
++         scale=scale.dat,epsilon=1.7)))
+In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘Nabc’,‘probes’,‘scale’,‘epsilon’
+Error : in ‘abc’: ‘proposal’ must be specified
+> try(abc(po,Nabc=2000,scale=scale.dat,
++         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+Error : in ‘abc’: ‘probes’ must be specified
+> try(abc(po,Nabc=2000,probes=probes.good,
++         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+Error : in ‘abc’: ‘scale’ must be specified
+> try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,
++         proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified
+> 
+> 
 > ## check how sticky the chain is:
 > runs <- rle(as.vector(conv.rec(abc1)[, "alpha.1"]))
 > hist(runs$lengths)
@@ -96,6 +126,7 @@ newly created object(s):
 > 
 > abc5 <- abc(abc4,Nabc=250)
 > plot(abc5)
+> abc5 <- abc(abc5)
 > 
 > dprior6 <- function (params, log, ...) {
 +     ll <- sum(
@@ -118,6 +149,10 @@ newly created object(s):
 +             )
 > plot(abc6)
 > 
+> try(c(abc6,ou2))
+Error : in ‘c’: cannot mix ‘abc’ and non-‘abc’ objects
+> try(c(c(abc6,abc6),ou2))
+Error : in ‘c’: cannot mix ‘abc’ and non-‘abc’ objects
 > abc7 <- c(abc2)
 > abc7 <- c(abc7)
 > try(abc7 <- c(abc2,abc3))
@@ -169,14 +204,14 @@ in ‘plot-abc’: ‘y’ is ignored
 > library(coda)
 > rejectionRate(traces)
   alpha.2   alpha.3 
-0.8045977 0.8045977 
+0.7811094 0.7811094 
 > autocorr.diag(traces)
           alpha.2    alpha.3
-Lag 0  1.00000000 1.00000000
-Lag 1  0.86986114 0.92718374
-Lag 5  0.50246355 0.70017421
-Lag 10 0.24584764 0.53746680
-Lag 50 0.02899736 0.05334259
+Lag 0   1.0000000  1.0000000
+Lag 1   0.9242671  0.8851208
+Lag 5   0.7035812  0.5642871
+Lag 10  0.5555509  0.3507134
+Lag 50 -0.1496715 -0.1685565
 > traces <- window(traces,thin=50)
 > geweke.diag(traces)
 
@@ -184,7 +219,7 @@ Fraction in 1st window = 0.1
 Fraction in 2nd window = 0.5 
 
 alpha.2 alpha.3 
- 2.1049 -0.9592 
+  1.098  -2.084 
 
 > 
 > vmat <- matrix(c(1,0,0,0),ncol=2,nrow=2,

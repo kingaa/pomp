@@ -1,3 +1,5 @@
+options(warn=-1)
+
 capture.output({
 
     library(pomp)
@@ -78,3 +80,8 @@ stopifnot(sum(grepl("prior.mean",out))==78)
 stopifnot(sum(grepl("effective sample size",out))==74)
 stopifnot(sum(grepl("mif2 iteration",out))==10)
 stopifnot(sum(grepl("h in",out))==1)
+
+invisible(capture.output(pompExample(ricker)))
+capture.output(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
+  cfile="bob",verbose=TRUE) -> po) -> out
+gsub("(\\w+)\\s.+","\\1",out,perl=TRUE)

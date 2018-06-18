@@ -69,8 +69,7 @@ try(pompExample(bob))
 try(pompExample("bob"))
 pompExample("ricker")
 pomp(ricker) -> ricker
-capture.output(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
-  cfile="bob",verbose=TRUE) -> po) -> out
+pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
 simulate(po,verbose=TRUE) -> po
 try(pomp(po,params=c("A","B")))
 ## force recompile

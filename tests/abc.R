@@ -34,6 +34,26 @@ abc1 <- abc(po,
 plot(abc1,scatter=TRUE)
 plot(abc1)
 
+try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
+        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,epsilon=1.7,proposal="bob"))
+try(abc(po,Nabc=2000,probes="probes.good",scale=scale.dat,
+        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(po,Nabc=2000,probes=function(x,y)x,scale=scale.dat,
+        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(pomp(po,dprior=function(params,log,...)Inf),Nabc=2000,probes=probes.good,
+        scale=scale.dat,epsilon=1.7,
+        proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(pomp(po,Nabc=2000,probes=probes.good,
+        scale=scale.dat,epsilon=1.7)))
+try(abc(po,Nabc=2000,scale=scale.dat,
+        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(po,Nabc=2000,probes=probes.good,
+        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,
+        proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+
+
 ## check how sticky the chain is:
 runs <- rle(as.vector(conv.rec(abc1)[, "alpha.1"]))
 hist(runs$lengths)
@@ -74,6 +94,7 @@ plot(abc4)
 
 abc5 <- abc(abc4,Nabc=250)
 plot(abc5)
+abc5 <- abc(abc5)
 
 dprior6 <- function (params, log, ...) {
     ll <- sum(
@@ -96,6 +117,8 @@ abc6 <- abc(pomp(po,dprior=dprior6),
             )
 plot(abc6)
 
+try(c(abc6,ou2))
+try(c(c(abc6,abc6),ou2))
 abc7 <- c(abc2)
 abc7 <- c(abc7)
 try(abc7 <- c(abc2,abc3))
