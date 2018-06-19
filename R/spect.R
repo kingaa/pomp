@@ -148,17 +148,14 @@ setMethod(
               ...) {
 
         ep <- paste0("in ",sQuote("spect"),": ")
-        
-        pompLoad(object)
-        
-        if (missing(params)) params <- coef(object)
 
-        if (missing(vars))
-            vars <- rownames(object@data)
-        
+        pompLoad(object)
+
+        if (missing(params)) params <- coef(object)
+        if (missing(vars)) vars <- rownames(object@data)
         if (missing(kernel.width))
             stop(ep,sQuote("kernel.width")," must be specified",call.=FALSE)
-        if (missing(nsim)||(nsim<1))
+        if (missing(nsim) || !is.finite(nsim) || (nsim<1))
             stop(ep,sQuote("nsim")," must be specified as a positive integer",call.=FALSE)
 
         detrend <- match.arg(detrend)
@@ -207,7 +204,7 @@ setMethod(
         coef(object) <- params
 
         pompUnload(object)
-        
+
         new(
             "spect.pomp",
             object,
@@ -227,7 +224,7 @@ setMethod(
     signature(object="spect.pomp"),
     function (object, params, vars, kernel.width, nsim, seed = NULL, transform, detrend, ...) {
         if (missing(params)) params <- coef(object)
-        if (missing(vars)) vars <- rownames(object@datspec)
+        if (missing(vars)) vars <- colnames(object@datspec)
         if (missing(kernel.width)) kernel.width <- object@kernel.width
         if (missing(nsim)) nsim <- nrow(object@simspec)
         if (missing(transform)) transform <- object@transform
@@ -258,7 +255,9 @@ setMethod(
         ep <- paste0("in ",sQuote("plot-spect.pomp"),": ")
         spomp <- x
         nquants <- length(quantiles)
-        
+
+        if (!missing(y)) warning(ep,sQuote("y")," is ignored",call.=FALSE)
+
         if (is.list(quantile.styles)) {
             for (i in c("lwd", "lty", "col")) {
                 if (is.null(quantile.styles[[i]]))
@@ -275,7 +274,7 @@ setMethod(
         } else {
             stop(ep,sQuote("quantile.styles")," must be a list",call.=FALSE)
         }
-        
+
         if (plot.data) {
             nreps <- ncol(spomp@datspec)
             if (is.list(data.styles)) {
@@ -340,7 +339,7 @@ setMethod(
                 lines(
                     x=spomp@freq,
                     y=spectraquants[,j],
-                    lwd=quantile.styles$lwd[j], 
+                    lwd=quantile.styles$lwd[j],
                     lty=quantile.styles$lty[j],
                     col=quantile.styles$col[j]
                 )
@@ -349,7 +348,7 @@ setMethod(
                 lines(
                     x=spomp@freq,
                     y=spomp@datspec[,i],
-                    lty=data.styles$lty[i], 
+                    lty=data.styles$lty[i],
                     lwd=data.styles$lwd[i],
                     col=data.styles$col[i]
                 )

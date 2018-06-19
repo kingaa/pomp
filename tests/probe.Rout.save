@@ -297,6 +297,8 @@ in ‘plot-probed.pomp’: ‘y’ is ignored
 > 
 > try(probe.match(po,params=numeric(3),nsim=20))
 Error : in ‘probe.match’: ‘probes’ must be supplied
+> try(probe.match.objfun(po,params=numeric(3),nsim=20))
+Error : in ‘probe.match.objfun’: ‘params’ must be a named numeric vector
 > try(probe.match.objfun(po,probes=probe.var("y"),est="bob",nsim=20))
 Error : in ‘probe.match.objfun’: parameter(s): ‘bob’ not found in ‘params’
 > try(probe.match.objfun(po,probes="nancy",nsim=20))

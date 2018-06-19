@@ -100,7 +100,7 @@ pmof.internal <- function (object, params, est, probes,
             }
         )
         pompUnload(object)
-        if (is.finite(ll)||is.na(fail.value)) -ll else fail.value
+        if (is.finite(ll)||is.na(fail.value)) -ll else fail.value  # nocov
     }
 }
 

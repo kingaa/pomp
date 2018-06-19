@@ -20,7 +20,7 @@ gm4 <- spect.match(ou2,kernel.width=5,detrend="quadratic",nsim=50,
 gm5 <- spect.match(ou2,kernel.width=3,nsim=50,
                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
                    method="Nelder-Mead")
-plot(gm4)
+plot(gm4,y=NA)
 plot(gm4,plot.data=FALSE)
 plot(gm4,plot.data=FALSE,quantile.styles=list(col=1:5))
 plot(gm4,quantile.styles=list(lwd=c(1,2,3)))
@@ -51,11 +51,23 @@ invisible(summary(sp))
 
 po <- ricker
 coef(po,"phi") <- 30
-try(spect(po,nsim=100,seed=838775L))
 sp <- spect(po,kernel.width=11,nsim=100,seed=838775L)
 invisible(summary(sp))
-
 plot(simulate(sp),variables="y")
+sp <- spect(sp)
+
+po <- ricker
+try(spect(po))
+try(spect(po,kernel.width=3,nsim=-5))
+try(spect(po,kernel.width=3,nsim=NA))
+po@data[3] <- NA
+try(spect(po,kernel.width=3,nsim=100))
+po <- simulate(po,times=c(1:50,53:100))
+try(spect(po,kernel.width=3,nsim=100))
+po <- ricker
+try(spect(pomp(po,rmeasure=function(x,t,params,...)
+  c(y=if(x["N"]<10)rpois(n=1,lambda=x)else NA)),kernel.width=7,nsim=100))
+
 
 try(spect.match(spp,est=spp@est,weights="A"))
 try(spect.match(spp,est=spp@est,weights=rep(1,5)))

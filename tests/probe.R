@@ -245,6 +245,7 @@ invisible(summary(pbm))
 coef(po) <- c(r=10,sigma=0.3,c=1,phi=20,N.0=5,e.0=0)
 
 try(probe.match(po,params=numeric(3),nsim=20))
+try(probe.match.objfun(po,params=numeric(3),nsim=20))
 try(probe.match.objfun(po,probes=probe.var("y"),est="bob",nsim=20))
 try(probe.match.objfun(po,probes="nancy",nsim=20))
 try(probe.match.objfun(po,probes=function(x,y)x,nsim=20))
