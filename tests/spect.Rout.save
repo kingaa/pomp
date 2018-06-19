@@ -60,16 +60,9 @@ Error : in ‘plot-spect.pomp’: ‘data.styles’ must be a list
 newly created object(s):
  ricker 
 > 
-> try(spect(ricker,nsim=100))
-Error : in ‘spect’: ‘kernel.width’ must be specified
-> 
 > sp <- spect(ricker,kernel.width=3,nsim=100,seed=838775L)
 > invisible(summary(sp))
-> 
-> try(spect.match(ricker,nsim=100,seed=838775L,est=c("r","phi")))
-Error : in ‘spect.match’: ‘kernel.width’ must be specified
-> 
-> spp <- spect.match(sp,eval.only=TRUE)
+> spp <- spect.match(sp,est="")
 > invisible(summary(spp))
 > 
 > spp <- spect.match(sp,nsim=100,est=c("sigma","phi"),reltol=1e-3,maxit=100)
@@ -106,14 +99,12 @@ Error : in ‘spect’: ‘spect’ assumes evenly spaced times
 Error : in ‘spect’: NA in simulated data series
 > 
 > 
-> try(spect.match(spp,est=spp@est,weights="A"))
+> try(spect.match(spp,weights="A"))
 Error : in ‘spect.match’: ‘weights’ must be specified as a vector or as a function
-> try(spect.match(spp,est=spp@est,weights=rep(1,5)))
+> try(spect.match(spp,weights=rep(1,5)))
 Error : in ‘spect.match’: if ‘weights’ is provided as a vector, it must have length 25
-> spp <- spect.match(spp,est=spp@est,
-+                    weights=function(freq)ifelse(freq<0.2,1,0))
-> try(spect.match(spp,est=spp@est,
-+                 weights=function(freq)ifelse(freq<0.2,1,NA)))
+> spp <- spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,0))
+> try(spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,NA)))
 Error : in ‘spect.match’: ‘weights’ should be nonnegative and finite
 > try(spect.match(spp,est=spp@est,
 +                 weights=function(freq)ifelse(freq<0.2,1,"C")))

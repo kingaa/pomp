@@ -17,7 +17,7 @@ setGeneric("skeleton",function(object,...)standardGeneric("skeleton"))
 ## functions to extract or call the components of a "pomp" object
 setGeneric("obs",function(object,...)standardGeneric("obs"))
 setGeneric("time",function(x,...)standardGeneric("time"))
-setGeneric("time<-",function(object,...,value)standardGeneric("time<-"))  
+setGeneric("time<-",function(object,...,value)standardGeneric("time<-"))
 setGeneric("coef",function(object,...)standardGeneric("coef"))
 setGeneric("coef<-",function(object,...,value)standardGeneric("coef<-"))
 setGeneric("states",function(object,...)standardGeneric("states"))
@@ -89,6 +89,7 @@ setGeneric("probe.match",function(object,...)standardGeneric("probe.match"))
 
 ## power spectrum
 setGeneric("spect",function(object,...)standardGeneric("spect"))
+setGeneric("spect.match",function(object,...)standardGeneric("spect.match"))
 
 ## continue an iteration
 setGeneric("continue",function(object,...)standardGeneric("continue"))

@@ -47,10 +47,9 @@ exportMethods(
     conv.rec,values,
     bsmc2,bsmc,pmcmc,abc,nlf,
     covmat,
-    traj.match.objfun,
-    probe.match.objfun,
-    spect,probe,probe.match,
-    traj.match
+    traj.match.objfun,traj.match,
+    probe.match.objfun,probe,probe.match,
+    spect,spect.match
 )
 
 S3method(as.data.frame,pomp)
@@ -92,6 +91,5 @@ export(
     probe.nlar,
     probe.marginal,
     sannbox,
-    spect.match,
     pompExample
 )

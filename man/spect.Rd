@@ -16,6 +16,8 @@
 \alias{spect.match-pomp}
 \alias{spect.match,spect.pomp-method}
 \alias{spect.match-spect.pomp}
+\alias{spect.match,spect.matched.pomp-method}
+\alias{spect.match-spect.matched.pomp}
 \alias{spect.pomp-class}
 \alias{spect.matched.pomp-class}
 \description{
@@ -27,18 +29,24 @@
 }
 \usage{
 \S4method{spect}{pomp}(object, params, vars, kernel.width, nsim, seed = NULL,
-     transform = identity,
-     detrend = c("none","mean","linear","quadratic"),
+     transform.data,detrend = c("none","mean","linear","quadratic"),
      \dots)
-\S4method{spect}{spect.pomp}(object, params, vars, kernel.width, nsim, seed = NULL, transform,
-     detrend, \dots)
-spect.match(object, start, est = character(0),
-            vars, nsim, seed = NULL,
-            kernel.width, transform = identity, 
-            detrend = c("none","mean","linear","quadratic"),
-            weights, method = c("subplex","Nelder-Mead","SANN"),
-            verbose = getOption("verbose"),
-            eval.only = FALSE, fail.value = NA, \dots)
+\S4method{spect}{spect.pomp}(object, params, vars, kernel.width, nsim, seed = NULL,
+     transform.data, detrend, \dots)
+\S4method{spect.match}{pomp}(object, start, est = character(0), vars, nsim,
+     seed = NULL, kernel.width, transform.data,
+     detrend = c("none","mean","linear","quadratic"), weights = 1,
+     method = c("subplex","Nelder-Mead","SANN"), verbose = getOption("verbose"),
+     fail.value = NA, \dots)
+\S4method{spect.match}{spect.pomp}(object, start, est, vars, nsim,
+     seed = NULL, kernel.width, transform.data, detrend, weights = 1,
+     method = c("subplex","Nelder-Mead","SANN"), verbose = getOption("verbose"),
+     fail.value = NA, \dots)
+\S4method{spect.match}{pomp}(object, start, est, vars, nsim,
+     seed = NULL, kernel.width, transform.data, detrend,
+     weights, method, verbose = getOption("verbose"),
+     fail.value, \dots)
+
 }
 \arguments{
   \item{object}{
@@ -63,7 +71,7 @@ spect.match(object, start, est = character(0),
     optional; if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
     See \code{\link[=simulate-pomp]{simulate}}.
   }
-  \item{transform}{
+  \item{transform.data}{
     function; this transformation will be applied to the observables prior to estimation of the spectrum, and prior to any detrending.
   }
   \item{detrend}{
@@ -86,14 +94,10 @@ spect.match(object, start, est = character(0),
   }
   \item{method}{
     Optimization method.
-    Choices are \code{\link[subplex]{subplex}} and any of the methods used by \code{\link{optim}}.
+    Choices are \code{\link[subplex]{subplex}}, \code{\link{sannbox}}, and any of the methods used by \code{\link{optim}}.
   }
   \item{verbose}{
     logical; print diagnostic messages?
-  }
-  \item{eval.only}{
-    logical; if \code{TRUE}, no optimization is attempted.
-    Instead, the probe-mismatch value is simply evaluated at the \code{start} parameters.
   }
   \item{fail.value}{
     optional scalar; if non-\code{NA}, this value is substituted for non-finite values of the objective function.
@@ -127,7 +131,7 @@ spect.match(object, start, est = character(0),
     }
     \item{detrend}{detrending option used.}
   }
-  
+
   \code{spect.match} returns an object of class \code{spect.matched.pomp}, which is derived from class \code{spect.pomp} and therefore has all the slots of that class.
   In addition, \code{spect.matched.pomp} objects have the following slots:
   \describe{
@@ -141,13 +145,13 @@ spect.match(object, start, est = character(0),
       Convergence code and message from the optimizer.
       See \code{\link{optim}}.
     }
-  }  
+  }
 }
 \references{
   D.C. Reuman, R.A. Desharnais, R.F. Costantino, O. Ahmad, J.E. Cohen (2006)
   Power spectra reveal the influence of stochasticity on nonlinear population dynamics.
   \emph{Proceedings of the National Academy of Sciences} \bold{103}, 18860-18865.
-  
+
   D.C. Reuman, R.F. Costantino, R.A. Desharnais, J.E. Cohen (2008)
   Color of environmental noise affects the nonlinear dynamics of cycling, stage-structured populations.
   \emph{Ecology Letters}, \bold{11}, 820-830.

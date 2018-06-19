@@ -31,14 +31,9 @@ plot(gm4,data.styles=list(lty=1))
 
 pompExample(ricker)
 
-try(spect(ricker,nsim=100))
-
 sp <- spect(ricker,kernel.width=3,nsim=100,seed=838775L)
 invisible(summary(sp))
-
-try(spect.match(ricker,nsim=100,seed=838775L,est=c("r","phi")))
-
-spp <- spect.match(sp,eval.only=TRUE)
+spp <- spect.match(sp,est="")
 invisible(summary(spp))
 
 spp <- spect.match(sp,nsim=100,est=c("sigma","phi"),reltol=1e-3,maxit=100)
@@ -69,12 +64,10 @@ try(spect(pomp(po,rmeasure=function(x,t,params,...)
   c(y=if(x["N"]<10)rpois(n=1,lambda=x)else NA)),kernel.width=7,nsim=100))
 
 
-try(spect.match(spp,est=spp@est,weights="A"))
-try(spect.match(spp,est=spp@est,weights=rep(1,5)))
-spp <- spect.match(spp,est=spp@est,
-                   weights=function(freq)ifelse(freq<0.2,1,0))
-try(spect.match(spp,est=spp@est,
-                weights=function(freq)ifelse(freq<0.2,1,NA)))
+try(spect.match(spp,weights="A"))
+try(spect.match(spp,weights=rep(1,5)))
+spp <- spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,0))
+try(spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,NA)))
 try(spect.match(spp,est=spp@est,
                 weights=function(freq)ifelse(freq<0.2,1,"C")))
 
