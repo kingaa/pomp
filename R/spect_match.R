@@ -234,14 +234,13 @@ setMethod("spect.match",
 
 setMethod("spect.match",
           signature=signature(object="spect.pomp"),
-          definition=function(object, start, est, vars, nsim, seed = NULL,
-                              kernel.width, transform.data, detrend,
-                              weights = 1,
+          definition=function(object, start, est = character(0), vars, nsim,
+                              seed = NULL, kernel.width, transform.data,
+                              detrend, weights = 1,
                               method = c("subplex","Nelder-Mead","SANN"),
                               verbose = getOption("verbose"), fail.value = NA,
                               ...) {
             if (missing(start)) start <- object@params
-            if (missing(est)) est <- object@est
             if (missing(vars)) vars <- object@vars
             if (missing(nsim)) nsim <- nrow(object@simspec)
             if (missing(kernel.width)) kernel.width <- object@kernel.width

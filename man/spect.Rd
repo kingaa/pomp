@@ -38,7 +38,7 @@
      detrend = c("none","mean","linear","quadratic"), weights = 1,
      method = c("subplex","Nelder-Mead","SANN"), verbose = getOption("verbose"),
      fail.value = NA, \dots)
-\S4method{spect.match}{spect.pomp}(object, start, est, vars, nsim,
+\S4method{spect.match}{spect.pomp}(object, start, est = character(0), vars, nsim,
      seed = NULL, kernel.width, transform.data, detrend, weights = 1,
      method = c("subplex","Nelder-Mead","SANN"), verbose = getOption("verbose"),
      fail.value = NA, \dots)

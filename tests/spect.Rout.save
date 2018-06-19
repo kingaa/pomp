@@ -102,7 +102,9 @@ Error : in 'spect': NA in simulated data series
 Error : in 'spect.match': 'weights' must be specified as a vector or as a function
 > try(spect.match(spp,weights=rep(1,5)))
 Error : in 'spect.match': if 'weights' is provided as a vector, it must have length 25
-> spp <- spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,0))
+> spp <- spect.match(spp,nsim=100,est="sigma",reltol=1e-3,maxit=100)
+> spp <- spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,0),
++                    reltol=1e-3,maxit=100)
 > try(spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,NA)))
 Error : in 'spect.match': 'weights' should be nonnegative and finite
 > try(spect.match(spp,est=spp@est,
@@ -117,6 +119,8 @@ Error : in 'spect.match': 'est' must refer to parameters named in 'start'
 [1] "no optimization performed"
 > summary(spect.match(po,est=NULL,nsim=10,kernel.width=3))$msg
 [1] "no optimization performed"
+> summary(spect.match(sp))$msg
+[1] "no optimization performed"
 > try(summary(spect.match(po,est=NULL,vars="bob",nsim=10,kernel.width=3)))
 Error : in 'spect.match': 'vars' must name data variables
 > try(summary(spect.match(po,est=NULL,nsim=NA,kernel.width=3)))
@@ -125,6 +129,10 @@ Error : in 'spect.match': 'nsim' must be specified as a positive integer
 Error : in 'spect.match': 'nsim' must be specified as a positive integer
 > try(summary(spect.match(po,est=NULL,nsim=-3,kernel.width=3)))
 Error : in 'spect.match': 'nsim' must be specified as a positive integer
+> try(summary(spect.match(po,est=NULL,kernel.width=3)))
+Error : in 'spect.match': 'nsim' must be supplied
+> try(summary(spect.match(po,est=NULL,nsim=20)))
+Error : in 'spect.match': 'kernel.width' must be specified
 > 
 > dat <- as.data.frame(matrix(runif(60),20,3))
 > names(dat) <- letters[1:3]
