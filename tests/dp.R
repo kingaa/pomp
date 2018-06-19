@@ -124,4 +124,3 @@ create_example(N_0=1000,mu=0.02,simulator="euler",
   theme(strip.text=element_text(size=6))
 
 dev.off()
-

@@ -41,7 +41,7 @@ print(
 
 summary(traj.match(ou2,est=c('alpha.1','alpha.4','x1.0','x2.0','tau'),method="subplex",maxit=100))
 
-summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",trace=1,parscale=0.1,maxit=100))
+invisible(capture.output(summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",trace=4,parscale=0.1,maxit=100))))
 
 try(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",parscale=0.1,maxit=100,sched=rep(1,10)))
 

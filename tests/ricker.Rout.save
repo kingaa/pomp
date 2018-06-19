@@ -153,12 +153,12 @@ summary of covariates:
  Max.   :3.0  
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x33b95e8>
-<environment: 0x2f45e68>
+<bytecode: 0x3dc67b0>
+<environment: 0x491e0e0>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x33b9230>
-<environment: 0x2f45e68>
+<bytecode: 0x3dc0fd8>
+<environment: 0x491e0e0>
 measurement model simulator, rmeasure = function (x, t, params, ...) 
 x
 measurement model density, dmeasure = function (x, y, t, params, log, ...) 
@@ -167,7 +167,7 @@ prior simulator, rprior = not specified
 prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
 skeleton (map) = function (x, t, params, ...) 
 x
-<environment: 0x2f3e800>
+<environment: 0x491ca80>
 initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
@@ -204,12 +204,12 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x1f66ce0>
-<environment: 0x2257028>
+<bytecode: 0x36619a0>
+<environment: 0x3362b70>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x33b9230>
-<environment: 0x33bf540>
+<bytecode: 0x3dc0fd8>
+<environment: 0x3dbb7f0>
 measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
 measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
 prior simulator, rprior = not specified
@@ -222,14 +222,14 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x316d2d8>
+<environment: 0x4c023a0>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "c", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x316d2d8>
+<environment: 0x4c023a0>
 parameter(s):
        r    sigma      phi        c      N.0      e.0 
 44.70118  0.30000 10.00000  1.00000  7.00000  0.00000 

@@ -32,6 +32,14 @@ newly created object(s):
 > 
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),rw.var=3,scale.start=50,shape.start=50)))
 Error : in ‘mvn.rw.adaptive’: exactly one of ‘rw.sd’ and ‘rw.var’ must be supplied
+> try(pmcmc(ou2,start=numeric(0),Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50)))
+Error : in ‘pmcmc’: ‘start’ must be specified if ‘coef(object)’ is NULL
+> try(pmcmc(ou2,start="A",Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50)))
+Error : in ‘pmcmc’: ‘start’ must be a named numeric vector
+> try(pmcmc(ou2,start=numeric(5),Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50)))
+Error : in ‘pmcmc’: ‘start’ must be a named numeric vector
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal="bob"))
+Error : in ‘pmcmc’: ‘proposal’ must be a function
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(scale.start=50,shape.start=50)))
 Error : in ‘mvn.rw.adaptive’: exactly one of ‘rw.sd’ and ‘rw.var’ must be supplied
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=c(3,2,5,1),scale.start=50,shape.start=50)))
@@ -44,10 +52,23 @@ Error : in ‘mvn.rw.adaptive’: ‘rw.var’ must be a square matrix
 Error : in ‘mvn.rw.adaptive’: ‘rw.sd’ must be a named numeric vector
 > try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),target=3,scale.start=50,shape.start=50)))
 Error : in ‘mvn.rw.adaptive’: ‘target’ must be a number in (0,1)
-> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c("A","B")),verbose=TRUE))
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c("A","B"))))
 Error : in ‘mvn.diag.rw’: ‘rw.sd’ must be a named numeric vector
-> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c(0.01,0.01)),verbose=TRUE))
+> try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c(0.01,0.01))))
 Error : in ‘mvn.diag.rw’: ‘rw.sd’ must have names
+> try(pmcmc(ou2,Nmcmc=2,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+Error : in ‘pmcmc’: ‘Np’ must be specified
+> try(pmcmc(ou2,Nmcmc=2,Np=c(100,200,300),proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+Error : in ‘pmcmc’: ‘Np’ must have length 1 or length 101
+> try(pmcmc(ou2,Nmcmc=2,Np=-100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+Error : in ‘pmcmc’: number of particles, ‘Np’, must always be positive
+> try(pmcmc(ou2,Nmcmc=2,Np="A",proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+Error : in ‘pmcmc’: ‘Np’ must be a number, a vector of numbers, or a function
+> try(pmcmc(ou2,Nmcmc=-2,Np=100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+Error : in ‘pmcmc’: ‘Nmcmc’ must be a positive integer
+> try(pmcmc(ou2,Nmcmc=NULL,Np=100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+Error : in ‘pmcmc’: ‘Nmcmc’ must be a positive integer
+> 
 > pmcmc(ou2,Nmcmc=2,Np=100,
 +       proposal=mvn.rw.adaptive(
 +           rw.sd=c(alpha.2=0.01,alpha.3=0.01),

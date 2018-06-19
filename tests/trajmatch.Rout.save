@@ -104,24 +104,7 @@ $msg
 [1] "number of function evaluations exceeds 'maxit'"
 
 > 
-> summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",trace=1,parscale=0.1,maxit=100))
-initial evaluation:  3327.081 
-best val= 890.7165 
-$params
-   alpha.1    alpha.2    alpha.3    alpha.4    sigma.1    sigma.2    sigma.3 
- 0.6135061 -0.5000000  0.3000000  0.6262185  3.0000000 -0.5000000  2.0000000 
-       tau       x1.0       x2.0 
- 2.2993891 -2.7057680  3.9029476 
-
-$loglik
-[1] -890.7165
-
-$eval
-[1] 101  NA
-
-$convergence
-[1] 0
-
+> invisible(capture.output(summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",trace=4,parscale=0.1,maxit=100))))
 > 
 > try(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",parscale=0.1,maxit=100,sched=rep(1,10)))
 Error : in ‘sannbox’: insufficiently many temperatures supplied in ‘control$sched’

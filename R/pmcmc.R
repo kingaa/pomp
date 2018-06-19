@@ -35,18 +35,16 @@ pmcmc.internal <- function (object, Nmcmc,
     verbose <- as.logical(verbose)
     .ndone <- as.integer(.ndone)
     .accepts <- as.integer(.accepts)
-    
+
     ep <- paste0("in ",sQuote("pmcmc"),": ")
 
     pompLoad(object,verbose=verbose)
 
-    if (missing(start))
-        stop(ep,sQuote("start")," must be specified",call.=FALSE)
     if (length(start)==0)
         stop(ep,sQuote("start")," must be specified if ",
              sQuote("coef(object)")," is NULL",call.=FALSE)
-    if (is.null(names(start)))
-        stop(ep,sQuote("start")," must be a named vector",call.=FALSE)
+    if (!is.numeric(start) || is.null(names(start)))
+        stop(ep,sQuote("start")," must be a named numeric vector",call.=FALSE)
 
     if (!is.function(proposal))
         stop(ep,sQuote("proposal")," must be a function",call.=FALSE)
@@ -62,8 +60,6 @@ pmcmc.internal <- function (object, Nmcmc,
         stop(ep,sQuote("proposal")," must return a named numeric vector",call.=FALSE)
 
     ntimes <- length(time(object))
-    if (missing(Np))
-        stop(ep,sQuote("Np")," must be specified",call.=FALSE)
     if (is.function(Np)) {
         Np <- tryCatch(
             vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
@@ -82,15 +78,11 @@ pmcmc.internal <- function (object, Nmcmc,
         stop(ep,sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
     Np <- as.integer(Np)
 
-    if (missing(Nmcmc))
-        stop(ep,sQuote("Nmcmc")," must be specified",call.=FALSE)
     Nmcmc <- as.integer(Nmcmc)
-    if (Nmcmc<0)
-        stop(ep,sQuote("Nmcmc")," must be a positive integer",call.=FALSE)
+    if (length(Nmcmc)!=1 || !is.finite(Nmcmc) || Nmcmc < 0)
+      stop(ep,sQuote("Nmcmc")," must be a positive integer",call.=FALSE)
 
-    if (verbose) {
-        cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
-    }
+    if (verbose) cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
 
     conv.rec <- matrix(
         data=NA,
@@ -137,7 +129,7 @@ pmcmc.internal <- function (object, Nmcmc,
     }
     conv.rec[1,names(theta)] <- theta
     conv.rec[1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
-    
+
     filt.t <- array(
         data=0,
         dim=replace(dim(pfp@filter.traj),2L,Nmcmc),
@@ -163,7 +155,7 @@ pmcmc.internal <- function (object, Nmcmc,
         )
 
         if (is.finite(log.prior.prop)) {
-            
+
             ## run the particle filter on the proposed new parameter values
             pfp.prop <- tryCatch(
                 pfilter.internal(
@@ -226,7 +218,7 @@ pmcmc.internal <- function (object, Nmcmc,
         Np=Np,
         tol=tol,
         conv.rec=conv.rec,
-        log.prior=log.prior, 
+        log.prior=log.prior,
         filter.traj=filt.t
     )
 }
@@ -239,13 +231,12 @@ setMethod(
               tol = 1e-17, max.fail = Inf,
               verbose = getOption("verbose"),
               ...) {
-        
+
         ep <- paste0("in ",sQuote("pmcmc"),": ")
-        
+
         if (missing(start)) start <- coef(object)
-        if (missing(Np))
-            stop(ep,sQuote("Np")," must be specified",call.=FALSE)
-        
+        if (missing(Np)) stop(ep,sQuote("Np")," must be specified",call.=FALSE)
+
         if (missing(proposal)) proposal <- NULL
 
         if (is.null(proposal))
@@ -272,7 +263,7 @@ setMethod(
 
         if (missing(Np)) Np <- object@Np
         if (missing(tol)) tol <- object@tol
-        
+
         f <- selectMethod("pmcmc","pomp")
 
         f(object,Nmcmc=Nmcmc,Np=Np,tol=tol,...)
@@ -295,7 +286,7 @@ setMethod(
         if (missing(tol)) tol <- object@tol
 
         f <- selectMethod("pmcmc","pomp")
-        
+
         f(object,Nmcmc=Nmcmc,start=start,proposal=proposal,
           Np=Np,tol=tol,max.fail=max.fail,verbose=verbose,...)
     }
@@ -318,7 +309,7 @@ setMethod(
             .prev.pfp=as(object,"pfilterd.pomp"),
             .prev.log.prior=object@log.prior
         )
-        
+
         obj@conv.rec <- rbind(
             object@conv.rec[,colnames(obj@conv.rec)],
             obj@conv.rec[-1,]

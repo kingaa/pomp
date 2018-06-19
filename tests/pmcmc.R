@@ -10,14 +10,25 @@ set.seed(1178744046L)
 pompExample(ou2)
 
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),rw.var=3,scale.start=50,shape.start=50)))
+try(pmcmc(ou2,start=numeric(0),Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50)))
+try(pmcmc(ou2,start="A",Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50)))
+try(pmcmc(ou2,start=numeric(5),Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),scale.start=50,shape.start=50)))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal="bob"))
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(scale.start=50,shape.start=50)))
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=c(3,2,5,1),scale.start=50,shape.start=50)))
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1),2,2,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2"))),scale.start=50,shape.start=50)))
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.var=matrix(c(3,2,5,1,5,5),2,3,dimnames=list(c("alpha.2","alpha.3"),c("alpha.3","alpha.2","bob"))),scale.start=50,shape.start=50)))
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(0.01,0.01),scale.start=50,shape.start=50)))
 try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),target=3,scale.start=50,shape.start=50)))
-try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c("A","B")),verbose=TRUE))
-try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c(0.01,0.01)),verbose=TRUE))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c("A","B"))))
+try(pmcmc(ou2,Nmcmc=2,Np=100,proposal=mvn.diag.rw(rw.sd=c(0.01,0.01))))
+try(pmcmc(ou2,Nmcmc=2,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+try(pmcmc(ou2,Nmcmc=2,Np=c(100,200,300),proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+try(pmcmc(ou2,Nmcmc=2,Np=-100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+try(pmcmc(ou2,Nmcmc=2,Np="A",proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+try(pmcmc(ou2,Nmcmc=-2,Np=100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+try(pmcmc(ou2,Nmcmc=NULL,Np=100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+
 pmcmc(ou2,Nmcmc=2,Np=100,
       proposal=mvn.rw.adaptive(
           rw.sd=c(alpha.2=0.01,alpha.3=0.01),

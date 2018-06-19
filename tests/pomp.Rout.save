@@ -138,8 +138,8 @@ newly created object(s):
 > pomp(ricker) -> ricker
 > pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
 > simulate(po,verbose=TRUE) -> po
-loading ‘/tmp/RtmptcN3A1/127974/pomp_fbbd730e6ecf0e9c83110583b1840480.so’ 
-unloading ‘/tmp/RtmptcN3A1/127974/pomp_fbbd730e6ecf0e9c83110583b1840480.so’ 
+loading ‘/tmp/RtmpwliR4X/31243/pomp_06ae515de03acd0bdd457b3ee1fa6a04.so’ 
+unloading ‘/tmp/RtmpwliR4X/31243/pomp_06ae515de03acd0bdd457b3ee1fa6a04.so’ 
 > try(pomp(po,params=c("A","B")))
 Error : in ‘pomp’: ‘params’ must be a named numeric vector
 > ## force recompile

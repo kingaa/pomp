@@ -10,3 +10,4 @@ TODO\.md$
 ^codecov\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+lib
