@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.16.3}{
+  \itemize{
+    \item Fix a minor bugs in \code{spect}.
+    \item Improve test coverage.
+    \item \code{spect.match} has been refactored, with small changes to the interface.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.16.2}{
   \itemize{
     \item Fix bug in systematic resampler when \code{np != nw}.
