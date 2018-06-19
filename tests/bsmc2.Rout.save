@@ -33,7 +33,7 @@ newly created object(s):
 > Np <- 20000
 > 
 > try(bsmc2(ou2,Np=2,smooth=0.01,est=estnames,tol=1e-2,max.fail=100))
-Error : in ‘bsmc2’: ‘rprior’ error: operation cannot be completed: rprior has not been specified
+Error : in 'bsmc2': 'rprior' error: operation cannot be completed: rprior has not been specified
 > 
 > prior.bounds <- rbind(
 +                       alpha.2=c(-0.55,-0.45),
@@ -52,25 +52,25 @@ Error : in ‘bsmc2’: ‘rprior’ error: operation cannot be completed: rprio
 > garb <- ou2
 > coef(garb) <- numeric(0)
 > try(garb <- bsmc2(garb))
-Error : in ‘bsmc2’: ‘params’ must be supplied
+Error : in 'bsmc2': 'params' must be supplied
 > 
 > ##Run Liu & West particle filter
 > bsmc2(ou2,params=prior,smooth=0.02,seed=49959,Np=100) -> smc
 Warning messages:
-1: in ‘bsmc2’: argument ‘seed’ now has no effect.  Consider using ‘freeze’. 
-2: in ‘bsmc2’: ‘Np’ is ignored when ‘params’ is a matrix 
+1: in 'bsmc2': argument 'seed' now has no effect.  Consider using 'freeze'. 
+2: in 'bsmc2': 'Np' is ignored when 'params' is a matrix 
 > smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
 > prior <- smc$prior
 > post <- smc$post
 > 
 > try(bsmc2(ou2,params=prior,smooth=2))
-Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
+Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
 > try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(0)),Np=2))
-Error : in ‘bsmc2’: ‘rprior’ error: in 'rprior': user 'rprior' returns a vector of 0 parameters but 10 are expected
+Error : in 'bsmc2': 'rprior' error: in 'rprior': user 'rprior' returns a vector of 0 parameters but 10 are expected
 > try(bsmc2(pomp(ou2,rprior=function(params,...)numeric(10)),Np=2))
-Error : in ‘bsmc2’: no parameters to estimate
+Error : in 'bsmc2': no parameters to estimate
 > try({p2 <- prior; rownames(p2) <- NULL; bsmc2(ou2,params=p2)})
-Error : in ‘bsmc2’: ‘params’ must have rownames
+Error : in 'bsmc2': 'params' must have rownames
 > 
 > smc <- bsmc2(ou2,params=prior,smooth=0.02)
 > prior <- smc$prior
@@ -134,14 +134,14 @@ newly created object(s):
 > smc <- bsmc2(ou2,transform=TRUE,Np=2,smooth=0.01,est=estnames,
 +              tol=1e-2,max.fail=100)
 Warning message:
-in ‘bsmc2’: 7 filtering failures occurred. 
+in 'bsmc2': 7 filtering failures occurred. 
 > 
 > try(bsmc2(pomp(po,dmeasure=function(y,x,t,params,log,...) stop("oof!")),
 +           Np=100,est=c("r","sigma"),transform=TRUE,smooth=0.2))
-Error : in ‘bsmc2’: ‘dmeasure’ error: oof!
+Error : in 'bsmc2': 'dmeasure' error: oof!
 > 
 > try(bsmc2(po,Np=100,est=c("r","bob"),transform=TRUE,smooth=0.2))
-Error : in ‘bsmc2’: parameter(s) ‘bob’ not found.
+Error : in 'bsmc2': parameter(s) 'bob' not found.
 > 
 > dev.off()
 null device 

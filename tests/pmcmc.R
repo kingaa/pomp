@@ -28,6 +28,7 @@ try(pmcmc(ou2,Nmcmc=2,Np=-100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=
 try(pmcmc(ou2,Nmcmc=2,Np="A",proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
 try(pmcmc(ou2,Nmcmc=-2,Np=100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
 try(pmcmc(ou2,Nmcmc=NULL,Np=100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
+try(pmcmc(ou2,Nmcmc=2,Np=100))
 
 pmcmc(ou2,Nmcmc=2,Np=100,
       proposal=mvn.rw.adaptive(

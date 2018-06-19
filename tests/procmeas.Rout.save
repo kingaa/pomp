@@ -32,7 +32,7 @@ newly created object(s):
 > 
 > dp <- dprocess(po,x=sims$states,times=time(po),params=pmat,log=T)
 > try(dprocess(po,x=sims$states[,,c(1,2,4)],times=time(po)[c(1,2,4)],params=pmat))
-Error : in ‘onestep.dens’ plugin: ou2_pdf error: transitions must be consecutive
+Error : in 'onestep.dens' plugin: ou2_pdf error: transitions must be consecutive
 > dm <- dmeasure(po,x=sims$states,y=obs(po),times=time(po),params=pmat,log=T)
 > 
 > apply(dp,1,sum)
@@ -56,5 +56,5 @@ Error : in ‘onestep.dens’ plugin: ou2_pdf error: transitions must be consecu
 > 
 > pomp(po,dprocess=onestep.dens(function(x1, x2, t1, t2, params, ...) stop("yikes!"))) -> po
 > try(dprocess(po,x=x,times=time(po),params=coef(po),log=T))
-Error : in ‘onestep.dens’ plugin: yikes!
+Error : in 'onestep.dens' plugin: yikes!
 > 

@@ -20,7 +20,7 @@ Type 'q()' to quit R.
 > library(pomp)
 > 
 > pompExample(bbs)
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’,‘logvar’,‘logitvar’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period','logvar','logitvar'
 newly created object(s):
  bbs 
 > 

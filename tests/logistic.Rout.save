@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 > png(file='logistic-%02d.png',res=100)
 > 
 > try(pomp(data=rbind(obs=rep(0,1000)),times=0.1*seq.int(length=1000),t0=0))
-Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’
+Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 > 
 > po <- pomp(
 +     data=data.frame(obs=rep(0,1000),time=0.1*seq.int(length=1000)),

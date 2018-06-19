@@ -58,7 +58,7 @@ attr(,"system.time")
 > stopifnot(!exists("y3"))
 > 
 > pompExample(gillespie.sir)
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘comp.names’,‘ic.names’,‘nbasis’,‘degree’,‘period’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names','nbasis','degree','period'
 newly created object(s):
  gillespie.sir 
 > simulate(gillespie.sir,seed=1347484107L) -> x
@@ -71,11 +71,11 @@ newly created object(s):
 > 
 > invisible(freeze({rnorm(5); NULL},seed=3494995))
 Warning message:
-in ‘freeze’: expression evaluates to NULL 
+in 'freeze': expression evaluates to NULL 
 > invisible(bake({rnorm(5); NULL},seed=3494995,
 +                file=file.path(tempdir(),"bake3.rds")))
 Warning message:
-in ‘bake’: expression evaluates to NULL 
+in 'bake': expression evaluates to NULL 
 > 
 > rm(.Random.seed)
 > invisible(bake({runif(4)},file=file.path(tempdir(),"b99.rds"),seed=32765883))
@@ -85,7 +85,7 @@ in ‘bake’: expression evaluates to NULL
 > invisible(freeze({runif(4)},seed=32765883))
 > invisible(freeze({runif(4)}))
 Warning message:
-in ‘freeze’: seed not set! 
+in 'freeze': seed not set! 
 > 
 > detach("package:pomp", unload=TRUE)
 > 

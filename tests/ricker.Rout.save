@@ -26,13 +26,13 @@ newly created object(s):
 > pdf(file="ricker.pdf")
 > 
 > try(trajectory(ricker,times=numeric(0)))
-Error : in ‘trajectory’: ‘times’ is empty, there is no work to do
+Error : in 'trajectory': 'times' is empty, there is no work to do
 > try(trajectory(ricker,times=c(3,2,1)))
-Error : in ‘trajectory’: ‘times’ must be an increasing sequence of times
+Error : in 'trajectory': 'times' must be an increasing sequence of times
 > try(trajectory(ricker,times=c(-1,0,1,2)))
-Error : in ‘trajectory’: the zero-time ‘t0’ must occur no later than the first observation
+Error : in 'trajectory': the zero-time 't0' must occur no later than the first observation
 > try(trajectory(ricker,params=numeric(5)))
-Error : in ‘trajectory’: ‘params’ must have rownames
+Error : in 'trajectory': 'params' must have rownames
 > 
 > tj.1 <- trajectory(ricker)
 > plot(time(ricker),tj.1[1,,],type='l')
@@ -64,17 +64,17 @@ Error : in ‘trajectory’: ‘params’ must have rownames
 > stopifnot(all(dim(sm1)==c(153,3)))
 > 
 > try(simulate(ricker,params=c()))
-Error : in ‘simulate’: no ‘params’ specified
+Error : in 'simulate': no 'params' specified
 > 
 > po <- ricker
 > try(
 +     coef(po,"log.r")
 +     )
-Error : in ‘coef’: name(s) ‘log.r’ correspond to no parameter(s)
+Error : in 'coef': name(s) 'log.r' correspond to no parameter(s)
 > coef(po,c("r","phi")) <- c(0,0)
 > coef(po,c("r","phi")) <- c(a=0,b=1)
 Warning message:
-in ‘coef<-’:  names of ‘value’ are being discarded 
+in 'coef<-':  names of 'value' are being discarded 
 > coef(po,c("r","phi")) <- 1
 > coef(po) <- c(phi=1,r=3.5,N.0=10,e.0=0,sigma=0,c=1)
 > coef(po)
@@ -82,7 +82,7 @@ in ‘coef<-’:  names of ‘value’ are being discarded
   1.0   3.5  10.0   0.0   0.0   1.0 
 > coef(po,"new") <- 3
 Warning message:
-in ‘coef<-’: name(s) ‘new’ do not refer to existing parameter(s); they are being concatenated 
+in 'coef<-': name(s) 'new' do not refer to existing parameter(s); they are being concatenated 
 > plot(simulate(po))
 > coef(po)
   phi     r   N.0   e.0 sigma     c   new 
@@ -98,7 +98,7 @@ in ‘coef<-’: name(s) ‘new’ do not refer to existing parameter(s); they a
 +          cdir="bob"
 +          )
 +     )
-Error : in ‘pomp’: error in building shared-object library from C snippets: in ‘pompCBuilder’: compilation error: cannot create cache directory ‘bob’
+Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot create cache directory 'bob'
 > file.remove("bob")
 [1] TRUE
 > pomp(ricker,
@@ -107,26 +107,26 @@ Error : in ‘pomp’: error in building shared-object library from C snippets: 
 +   skeleton=map(Csnippet("error(\"yipes!\");"))
 + ) -> po
 > try(simulate(po))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yow!
+Error : in 'simulate': in 'discrete.time.sim' plugin: yow!
 > try(pfilter(po,Np=1000))
-Error : in ‘pfilter’: process simulation error: in ‘discrete.time.sim’ plugin: yow!
+Error : in 'pfilter': process simulation error: in 'discrete.time.sim' plugin: yow!
 > try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
-Error : in ‘mif’: in ‘mif.pfilter’: process simulation error: in ‘discrete.time.sim’ plugin: yow!
+Error : in 'mif': in 'mif.pfilter': process simulation error: in 'discrete.time.sim' plugin: yow!
 > try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=rw.sd(r=0.1)))
-Error : in ‘mif2’: in ‘mif2.pfilter’: process simulation error: in ‘discrete.time.sim’ plugin: yow!
+Error : in 'mif2': in 'mif2.pfilter': process simulation error: in 'discrete.time.sim' plugin: yow!
 > try(trajectory(po))
-Error : in ‘trajectory’: in map iterator: yipes!
+Error : in 'trajectory': in map iterator: yipes!
 > try(probe(po,probes=list(mean=probe.mean("y"))))
-Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: in ‘discrete.time.sim’ plugin: yow!
+Error : in 'probe': applying probes to simulated data: in 'simulate': in 'discrete.time.sim' plugin: yow!
 > try(spect(po,kernel.width=3,nsim=c(100,0)))
-Error : in ‘spect’: simulation error: in ‘simulate’: in ‘discrete.time.sim’ plugin: yow!
+Error : in 'spect': simulation error: in 'simulate': in 'discrete.time.sim' plugin: yow!
 In addition: Warning message:
 in 'simulate': only the first number in 'nsim' is significant 
 > try(pomp(ricker,skeleton=map(function(x,t,params,...)x,delta.t=-1)))
-Error : in ‘map’, ‘delta.t’ must be positive
+Error : in 'map', 'delta.t' must be positive
 > try(pomp(as.data.frame(ricker),times="time",t0=0,
 +   skeleton=map(function(x,t,params,...)x,delta.t=-1)))
-Error : in ‘map’, ‘delta.t’ must be positive
+Error : in 'map', 'delta.t' must be positive
 > try(pomp(as.data.frame(ricker),times="time",t0=0,
 +   covar=data.frame(z=c(1,2,3),t=c(1,2,3)),tcovar="t",
 +   skeleton=map(function(x,t,params,...)x,delta.t=1),
@@ -153,34 +153,34 @@ summary of covariates:
  Max.   :3.0  
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x3dc67b0>
-<environment: 0x491e0e0>
+<bytecode: 0x2717890>
+<environment: 0x324f930>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x3dc0fd8>
-<environment: 0x491e0e0>
+<bytecode: 0x2717e08>
+<environment: 0x324f930>
 measurement model simulator, rmeasure = function (x, t, params, ...) 
 x
 measurement model density, dmeasure = function (x, y, t, params, log, ...) 
 1
 prior simulator, rprior = not specified
-prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton (map) = function (x, t, params, ...) 
 x
-<environment: 0x491ca80>
+<environment: 0x324e2d0>
 initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
 parameter(s) unspecified
 Warning messages:
-1: in ‘pomp’: a covariate table has been given, yet the ‘skeleton’ function does not have ‘covars’ as a formal argument: see ‘?pomp’ 
-2: in ‘pomp’: a covariate table has been given, yet the ‘rmeasure’ function does not have ‘covars’ as a formal argument: see ‘?pomp’ 
-3: in ‘pomp’: a covariate table has been given, yet the ‘dmeasure’ function does not have ‘covars’ as a formal argument: see ‘?pomp’ 
-4: in ‘pomp’: the supplied covariate covariate times ‘tcovar’ do not embrace the data times: covariates may be extrapolated 
+1: in 'pomp': a covariate table has been given, yet the 'skeleton' function does not have 'covars' as a formal argument: see '?pomp' 
+2: in 'pomp': a covariate table has been given, yet the 'rmeasure' function does not have 'covars' as a formal argument: see '?pomp' 
+3: in 'pomp': a covariate table has been given, yet the 'dmeasure' function does not have 'covars' as a formal argument: see '?pomp' 
+4: in 'pomp': the supplied covariate covariate times 'tcovar' do not embrace the data times: covariates may be extrapolated 
 > try(pomp(ricker,measurement.model=3))
-Error : in ‘pomp’: ‘measurement.model’ takes formulae as arguments
+Error : in 'pomp': 'measurement.model' takes formulae as arguments
 > try(pomp(ricker,measurement.model=list()))
-Error : in ‘pomp’: to use ‘measurement.model’ you must provide at least one formula
+Error : in 'pomp': to use 'measurement.model' you must provide at least one formula
 > pomp(ricker,skeleton=NULL) -> po
 > show(po)
 51 records of 1 observables, recorded from t = 0 to 50 
@@ -204,16 +204,16 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x36619a0>
-<environment: 0x3362b70>
+<bytecode: 0x24b2ee8>
+<environment: 0x1d1b560>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x3dc0fd8>
-<environment: 0x3dbb7f0>
-measurement model simulator, rmeasure = native function ‘_ricker_poisson_rmeasure’, dynamically loaded from ‘pomp’
-measurement model density, dmeasure = native function ‘_ricker_poisson_dmeasure’, dynamically loaded from ‘pomp’
+<bytecode: 0x2717e08>
+<environment: 0x2712c08>
+measurement model simulator, rmeasure = native function '_ricker_poisson_rmeasure', dynamically loaded from 'pomp'
+measurement model density, dmeasure = native function '_ricker_poisson_dmeasure', dynamically loaded from 'pomp'
 prior simulator, rprior = not specified
-prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton = not specified
 initializer = not specified
 parameter transformation (to estimation scale) = function (params, ...) 
@@ -222,39 +222,39 @@ parameter transformation (to estimation scale) = function (params, ...)
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x4c023a0>
+<environment: 0x35564a8>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     params[c("r", "sigma", "phi", "c", "N.0")] <- exp(params[c("r", 
         "sigma", "phi", "c", "N.0")])
     params
 }
-<environment: 0x4c023a0>
+<environment: 0x35564a8>
 parameter(s):
        r    sigma      phi        c      N.0      e.0 
 44.70118  0.30000 10.00000  1.00000  7.00000  0.00000 
 > try(trajectory(po))
-Error : in ‘trajectory’: deterministic skeleton has not been properly specified
+Error : in 'trajectory': deterministic skeleton has not been properly specified
 > 
 > pomp(ricker,
 +      rmeasure=Csnippet("if (runif(0,1)<0.5) error(\"yikes!\");")
 +      ) -> po
 > try(simulate(po))
-Error : in ‘simulate’: yikes!
+Error : in 'simulate': yikes!
 > try(probe(po,probes=list(mean=probe.mean("y"))))
-Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: yikes!
+Error : in 'probe': applying probes to simulated data: in 'simulate': yikes!
 > try(spect(po,kernel.width=3,nsim=100))
-Error : in ‘spect’: simulation error: in ‘simulate’: yikes!
+Error : in 'spect': simulation error: in 'simulate': yikes!
 > 
 > pomp(ricker,
 +      dmeasure=Csnippet("error(\"oof!\");")
 +      ) -> po
 > try(pfilter(po,Np=1000))
-Error : in ‘pfilter’: error in calculation of weights: oof!
+Error : in 'pfilter': error in calculation of weights: oof!
 > try(mif(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=c(r=0.1)))
-Error : in ‘mif’: in ‘mif.pfilter’: error in calculation of weights.oof!
+Error : in 'mif': in 'mif.pfilter': error in calculation of weights.oof!
 > try(mif2(po,Np=1000,Nmif=2,cooling.fraction.50=0.5,rw.sd=rw.sd(r=0.1)))
-Error : in ‘mif2’: in ‘mif2.pfilter’: error in calculation of weights: oof!
+Error : in 'mif2': in 'mif2.pfilter': error in calculation of weights: oof!
 > 
 > try(
 +     simulate(
@@ -265,28 +265,28 @@ Error : in ‘mif2’: in ‘mif2.pfilter’: error in calculation of weights: o
 +                  delta.t = 0),
 +              statenames=c("e","N"),
 +              paramnames=c("r","sigma"))))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: 'delta.t' should be a positive number
+Error : in 'simulate': in 'discrete.time.sim' plugin: 'delta.t' should be a positive number
 > 
 > try(rprocess(ricker,xstart=init.state(ricker),params=coef(ricker),times=runif(10,max=5)))
-Error : in ‘discrete.time.sim’ plugin: 'times' is not an increasing sequence
+Error : in 'discrete.time.sim' plugin: 'times' is not an increasing sequence
 > try(simulate(ricker,params=c(r=1.5)))
-Error : in ‘simulate’: in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
+Error : in 'simulate': in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
 > try(simulate(ricker,params=c(r=1.5,sigma=0.1,N.0=1,e.0=0,c=1)))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: variable 'phi' not found among the parameters
+Error : in 'simulate': in 'discrete.time.sim' plugin: variable 'phi' not found among the parameters
 > try(simulate(ricker,params=c(r=1.5,phi=1,N.0=1,e.0=0,c=1)))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: variable 'sigma' not found among the parameters
+Error : in 'simulate': in 'discrete.time.sim' plugin: variable 'sigma' not found among the parameters
 > try(simulate(pomp(ricker,initializer=Csnippet("N = N_0; e = 0;"),
 +                   statenames=c("N","e"),paramnames=c("N_0")),
 +                   params=c(r=1.5,sigma=0.1,phi=1,c=1)))
-Error : in ‘simulate’: variable 'N_0' not found among the parameters
+Error : in 'simulate': variable 'N_0' not found among the parameters
 > try(simulate(pomp(ricker,initializer=Csnippet("m = N_0; e = 0;"),
 +                   statenames=c("m","e"),paramnames=c("N_0"),
 +                   params=c(r=1.5,sigma=0.1,phi=1,N_0=1,c=1))))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: variable 'N' not found among the state variables
+Error : in 'simulate': in 'discrete.time.sim' plugin: variable 'N' not found among the state variables
 > try(simulate(pomp(ricker,rmeasure=Csnippet("z = rpois(phi*N);"),
 +                   statenames=c("N"),obsnames=c("z"),paramnames=c("phi")),
 +                   params=c(r=1.5,sigma=0.1,phi=1,N.0=1,e.0=0,c=1)))
-Error : in ‘simulate’: variable 'z' not found among the observables
+Error : in 'simulate': variable 'z' not found among the observables
 > 
 > dev.off()
 null device 

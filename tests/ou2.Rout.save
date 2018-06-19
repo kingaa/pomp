@@ -43,21 +43,21 @@ newly created object(s):
 > window(ou2.sim,end=150) -> ignore
 > time(ignore) <- seq(2,50,by=2)
 > try(coef(ignore,transform=TRUE) <- c(3,3))
-Error : in ‘coef<-’: parameter.transform(‘value’) must be a named vector
+Error : in 'coef<-': parameter.transform('value') must be a named vector
 > coef(ignore) <- numeric(0)
 > try(coef(ignore) <- c(3,2))
-Error : in ‘coef<-’: ‘value’ must be a named vector
+Error : in 'coef<-': 'value' must be a named vector
 > coef(ignore) <- c(a=3,b=2)
 > coef(ignore,transform=TRUE) <- c(a=3,b=2)
 > 
 > try(simulate(ou2,times=c(3,2,1)))
-Error : in ‘simulate’: 'times' must be an increasing sequence
+Error : in 'simulate': 'times' must be an increasing sequence
 > try(simulate(ou2,times=c(1,2,2)))
-Error : in ‘simulate’: 'times' must be an increasing sequence
+Error : in 'simulate': 'times' must be an increasing sequence
 > try(simulate(ou2,times=c(-1,0,1)))
-Error : in ‘simulate’: the zero-time 't0' must occur no later than the first observation 'times[1]'
+Error : in 'simulate': the zero-time 't0' must occur no later than the first observation 'times[1]'
 > try(simulate(ou2,times=numeric()))
-Error : in ‘simulate’: if 'times' is empty, there is no work to do
+Error : in 'simulate': if 'times' is empty, there is no work to do
 > 
 > set.seed(577639485L)
 > 

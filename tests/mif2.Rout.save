@@ -37,44 +37,44 @@ newly created object(s):
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
-Error : in ‘mif2’: ‘Np’ must be specified
+Error : in 'mif2': 'Np' must be specified
 > try(mif2(ou2,Nmif=1,start=guess2,Np=rep(10,102),
 +          cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
 Warning messages:
-1: in ‘mif2’: Np[k] ignored for k > ntimes 
-2: in ‘mif2.pfilter’: 23 filtering failures occurred. 
+1: in 'mif2': Np[k] ignored for k > ntimes 
+2: in 'mif2.pfilter': 23 filtering failures occurred. 
 > try(mif2(ou2,Nmif=1,start=guess2,Np=seq_len(101),
 +          cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
 Warning message:
-in ‘mif2’: Np[k] ignored for k > ntimes 
+in 'mif2': Np[k] ignored for k > ntimes 
 > try(mif2(ou2,Nmif=0,start=guess2,Np=1000,
 +          cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
-Error : in ‘mif2’: ‘Nmif’ must be a positive integer
+Error : in 'mif2': 'Nmif' must be a positive integer
 > try(mif2(ou2,Nmif=1,Np=1000,rw.sd=rw.sd(ivp(0.1))))
-Error : in ‘mif2’: in ‘rw.sd’: parameters must be referenced by name.
+Error : in 'mif2': in 'rw.sd': parameters must be referenced by name.
 > try(mif2(ou2,Nmif=1,Np=10,rw.sd=rw.sd(alpha.2=10),
 +   cooling.fraction.50=1,max.fail=0))
-Error : in ‘mif2’: in ‘mif2.pfilter’: too many filtering failures
+Error : in 'mif2': in 'mif2.pfilter': too many filtering failures
 > try(mif2(ou2,Nmif=1,Np=100,start=numeric(0)))
-Error : in ‘mif2’: ‘start’ must be specified if ‘coef(object)’ is NULL
+Error : in 'mif2': 'start' must be specified if 'coef(object)' is NULL
 > try(mif2(ou2,Nmif=1,Np=100,start=unname(coef(ou2))))
-Error : in ‘mif2’: ‘start’ must be a named vector
+Error : in 'mif2': 'start' must be a named vector
 > try(mif2(ou2,Nmif=1,Np="100"))
-Error : in ‘mif2’: ‘Np’ must be a number, a vector of numbers, or a function
+Error : in 'mif2': 'Np' must be a number, a vector of numbers, or a function
 > try(mif2(ou2,Nmif=1,Np=10,cooling.fraction.50=1))
-Error : in ‘mif2’: ‘rw.sd’ must be specified!
+Error : in 'mif2': 'rw.sd' must be specified!
 > try(mif2(ou2,Nmif=1,Np=10,rw.sd=rw.sd(alpha.2=10),
 +   cooling.fraction.50=2,max.fail=0))
-Error : in ‘mif2’: ‘cooling.fraction.50’ must be in (0,1]
+Error : in 'mif2': 'cooling.fraction.50' must be in (0,1]
 > 
 > m1 <- mif2(ou2,Nmif=50,start=guess1,Np=1000,
 +            cooling.type="hyperbolic",cooling.fraction.50=0.05,
@@ -89,25 +89,25 @@ Error : in ‘mif2’: ‘cooling.fraction.50’ must be in (0,1]
 > m2 <- continue(m2,Nmif=20)
 > 
 > try(conv.rec(m2,c("bob","nancy")))
-Error : in ‘conv.rec’: name(s) ‘bob’,‘nancy’ correspond to no parameter(s) in ‘conv.rec(object,transform=FALSE)’
+Error : in 'conv.rec': name(s) 'bob','nancy' correspond to no parameter(s) in 'conv.rec(object,transform=FALSE)'
 > 
 > freeze(continue(m2,Nmif=2,.paramMatrix=m2@paramMatrix),seed=595996) -> m2a
 > freeze(continue(m2,Nmif=2),seed=595996) -> m2b
 > stopifnot(all.equal(coef(m2a),coef(m2b)))
 > 
 > try(continue(m2,Nmif=10,rw.sd=rw.sd(beta=0.1,alpha.2=0.1)))
-Error : in ‘mif2’: the following parameter(s), given random walks in ‘rw.sd’, are not present in ‘start’: ‘beta’
+Error : in 'mif2': the following parameter(s), given random walks in 'rw.sd', are not present in 'start': 'beta'
 > try(continue(m2,Nmif=10,rw.sd=rw.sd(alpha.2=rep(0.1,3))))
-Error : in ‘mif2’: ‘rw.sd’ spec for parameter ‘alpha.2’ does not evaluate to a vector of the correct length (100).
+Error : in 'mif2': 'rw.sd' spec for parameter 'alpha.2' does not evaluate to a vector of the correct length (100).
 > 
 > plot(m1,y=NA)
 Warning message:
-in ‘plot-mif2d.pomp’: ‘y’ is ignored 
+in 'plot-mif2d.pomp': 'y' is ignored 
 > dim(coef(c(m1)))
 [1]  1 10
 > plot(m12 <- c(m1,m2),y=33)
 Warning message:
-in ‘plot-mif2d.pomp’: ‘y’ is ignored 
+in 'plot-mif2d.pomp': 'y' is ignored 
 > coef(c(m12))
      alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3 tau   x1.0  x2.0
 [1,]     0.8  -0.542   0.275     0.9       3    -0.5       2   1 -0.599 0.788
@@ -127,9 +127,9 @@ in ‘plot-mif2d.pomp’: ‘y’ is ignored
 [1,]   51   51
 [2,]   12   12
 > try(c(m1,ou2))
-Error : in ‘c’: cannot mix ‘mif2d.pomp’ and non-‘mif2d.pomp’ objects
+Error : in 'c': cannot mix 'mif2d.pomp' and non-'mif2d.pomp' objects
 > try(c(c(m1,m2),ou2))
-Error : in ‘c’: cannot mix ‘mif2d.pomp’ and non-‘mif2d.pomp’ objects
+Error : in 'c': cannot mix 'mif2d.pomp' and non-'mif2d.pomp' objects
 > 
 > rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
 +       mle2=c(coef(m2),loglik=logLik(pfilter(m1,Np=1000))),
@@ -163,9 +163,9 @@ truth   -481
 > m4 <- mif2(m4,Nmif=10,Np=c(rep(200,20),rep(100,80),200))
 > m4 <- continue(m4,Nmif=10,cooling.fraction=0.1)
 > try(continue(m4,Np=function(k)if(k<10) "B" else 500))
-Error : in ‘mif2’: if ‘Np’ is a function, it must return a single positive integer
+Error : in 'mif2': if 'Np' is a function, it must return a single positive integer
 > try(continue(m4,Np=function(k)if(k<10) -30 else 500))
-Error : in ‘mif2’: number of particles, ‘Np’, must always be positive
+Error : in 'mif2': number of particles, 'Np', must always be positive
 > 
 > pf <- pfilter(m4)
 > half <- 0.5
@@ -186,7 +186,7 @@ Error : in ‘mif2’: number of particles, ‘Np’, must always be positive
 > m5 <- m4
 > coef(m5,"alpha.2") <- -Inf
 > try(mif2(m5,Np=100,Nmif=2))
-Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
+Error : in 'mif2': in 'mif2.pfilter': 'dmeasure' returns non-finite value.
 likelihood, data, states, and parameters are:
    time:            2
     lik:          NaN
@@ -229,7 +229,7 @@ newly created object(s):
 > 
 > coef(gompertz,"K") <- -1
 > try(mif2(gompertz,Np=1000,rw.sd=rw.sd(K=0.1,r=0.1),cooling.fraction.50=0.5))
-Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
+Error : in 'mif2': in 'mif2.pfilter': 'dmeasure' returns non-finite value.
 likelihood, data, states, and parameters are:
  time:            1
   lik:          NaN
@@ -252,7 +252,7 @@ sigma:          0.1
 +      }) -> po
 > 
 > try(mif2(po,Nmif=3,Np=1000,rw.sd=rw.sd(K=5,r=Inf),cooling.fraction.50=0.5))
-Error : in ‘mif2’: in ‘mif2.pfilter’: ‘dmeasure’ returns non-finite value.
+Error : in 'mif2': in 'mif2.pfilter': 'dmeasure' returns non-finite value.
 likelihood, data, states, and parameters are:
  time:            1
   lik:          NaN
@@ -267,7 +267,7 @@ sigma:          0.1
 > coef(gompertz,"K") <- 10
 > try(gb <- mif2(gompertz,Nmif=1,Np=1,rw.sd=c(K=0.1,r=0.1),
 +                cooling.fraction.50=0.2,transform=TRUE))
-Error : in ‘mif2’: ‘rw.sd’ should be specified using the ‘rw.sd’ function. See ‘?mif2’.
+Error : in 'mif2': 'rw.sd' should be specified using the 'rw.sd' function. See '?mif2'.
 > 
 > mif2(m4,Nmif=2,cooling.type="hyperbolic",cooling.fraction.50=1) -> m6
 > 
@@ -301,16 +301,16 @@ Error : in ‘mif2’: ‘rw.sd’ should be specified using the ‘rw.sd’ fun
 > coef(m7,"tau") <- 0
 > m7 <- mif2(m7,Nmif=2)
 Warning messages:
-1: in ‘mif2.pfilter’: filtering failure at last filter iteration, using unweighted mean for ‘coef’ 
-2: in ‘mif2.pfilter’: 100 filtering failures occurred. 
-3: in ‘mif2.pfilter’: filtering failure at last filter iteration, using unweighted mean for ‘coef’ 
-4: in ‘mif2.pfilter’: 100 filtering failures occurred. 
+1: in 'mif2.pfilter': filtering failure at last filter iteration, using unweighted mean for 'coef' 
+2: in 'mif2.pfilter': 100 filtering failures occurred. 
+3: in 'mif2.pfilter': filtering failure at last filter iteration, using unweighted mean for 'coef' 
+4: in 'mif2.pfilter': 100 filtering failures occurred. 
 > m7 <- mif2(m7)
 Warning messages:
-1: in ‘mif2.pfilter’: filtering failure at last filter iteration, using unweighted mean for ‘coef’ 
-2: in ‘mif2.pfilter’: 100 filtering failures occurred. 
-3: in ‘mif2.pfilter’: filtering failure at last filter iteration, using unweighted mean for ‘coef’ 
-4: in ‘mif2.pfilter’: 100 filtering failures occurred. 
+1: in 'mif2.pfilter': filtering failure at last filter iteration, using unweighted mean for 'coef' 
+2: in 'mif2.pfilter': 100 filtering failures occurred. 
+3: in 'mif2.pfilter': filtering failure at last filter iteration, using unweighted mean for 'coef' 
+4: in 'mif2.pfilter': 100 filtering failures occurred. 
 > 
 > dev.off()
 null device 

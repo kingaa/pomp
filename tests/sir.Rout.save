@@ -193,8 +193,8 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x2481910>
-<environment: 0x1a5de98>
+<bytecode: 0x38b87e0>
+<environment: 0x2ac9c20>
 process model density, dprocess = function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
 {
@@ -204,9 +204,9 @@ process model density, dprocess = function (x, times, params, ..., tcovar, covar
         stop(ep, conditionMessage(e), call. = FALSE)
     })
 }
-<bytecode: 0x2427a88>
-<environment: 0x15dd5b8>
-measurement model simulator, rmeasure = native function ‘__pomp_rmeasure’, defined by a Csnippet
+<bytecode: 0x35b3540>
+<environment: 0x276b100>
+measurement model simulator, rmeasure = native function '__pomp_rmeasure', defined by a Csnippet
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     with(as.list(c(x, params)), {
@@ -222,7 +222,7 @@ measurement model density, dmeasure = function (y, x, t, params, log, covars, ..
     })
 }
 prior simulator, rprior = not specified
-prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton (vectorfield) = function (x, t, params, covars, ...) 
 {
     xdot <- rep(0, length(x))
@@ -236,7 +236,7 @@ skeleton (vectorfield) = function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x2ce5c98>
+<environment: 0x3d320b8>
 initializer = function (params, t0, ...) 
 {
     with(as.list(params), {
@@ -259,7 +259,7 @@ parameter(s):
 > x <- pomp(po,measurement.model=reports~binom(size=cases,prob=rho),
 +           rmeasure=function(x,t,params,covars,...){1})
 Warning message:
-in ‘pomp’: specifying ‘measurement.model’ overrides specification of ‘rmeasure’ and ‘dmeasure’ 
+in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
 > 
 > set.seed(3049953)
 > ## simulate from the model
@@ -315,7 +315,7 @@ variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
 > 
 > ## now repeat using the compiled native codes built into the package
 > pompExample(euler.sir)
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > po <- euler.sir
@@ -379,7 +379,7 @@ variable     [,9]    [,10]    [,11]    [,12]    [,13]  [,14]  [,15]  [,16]
 > ## test of vectorfield integrator
 > 
 > pompExample(euler.sir)
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > 
@@ -434,30 +434,30 @@ newly created object(s):
 +        reports = (reports > 0) ? reports : 0;"),
 +     statenames=c("cases"),
 +     paramnames=c("rho"),bob=33L) -> po
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'bob'
 > 
 > simulate(po) -> po
 > 
 > try(simulate(pomp(euler.sir,rprocess=euler.sim(Csnippet("error(\"yikes!\");"),delta.t=0.1))))
-Error : in ‘simulate’: in ‘euler.sim’ plugin: yikes!
+Error : in 'simulate': in 'euler.sim' plugin: yikes!
 > try(simulate(pomp(euler.sir,rprocess=discrete.time.sim(Csnippet("error(\"yikes!\");"),delta.t=0.1))))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yikes!
+Error : in 'simulate': in 'discrete.time.sim' plugin: yikes!
 > try(simulate(pomp(euler.sir,rprocess=onestep.sim(Csnippet("error(\"yikes!\");")))))
-Error : in ‘simulate’: in ‘onestep.sim’ plugin: yikes!
+Error : in 'simulate': in 'onestep.sim' plugin: yikes!
 > 
 > try(pomp(euler.sir,rprocess=euler.sim(3,delta.t=0.1)))
-Error : in ‘pomp’: in ‘euler.sim’ plugin: bad option for ‘step.fn’ argument
+Error : in 'pomp': in 'euler.sim' plugin: bad option for 'step.fn' argument
 > try(pomp(euler.sir,rprocess=onestep.sim(3)))
-Error : in ‘pomp’: in ‘onestep.sim’ plugin: bad option for ‘step.fn’ argument
+Error : in 'pomp': in 'onestep.sim' plugin: bad option for 'step.fn' argument
 > try(pomp(euler.sir,rprocess=discrete.time.sim(3)))
-Error : in ‘pomp’: in ‘discrete.time.sim’ plugin: bad option for ‘step.fn’ argument
+Error : in 'pomp': in 'discrete.time.sim' plugin: bad option for 'step.fn' argument
 > try(pomp(euler.sir,rprocess=3))
-Error : in ‘pomp’: ‘rprocess’ plugin has an invalid form.
+Error : in 'pomp': 'rprocess' plugin has an invalid form.
 > try(pomp(euler.sir,dprocess=onestep.dens(3)))
-Error : in ‘pomp’: in ‘onestep.dens’ plugin: bad option for ‘dens.fn’ argument
+Error : in 'pomp': in 'onestep.dens' plugin: bad option for 'dens.fn' argument
 > 
 > try(simulate(pomp(euler.sir,rprocess=discrete.time.sim(NULL))))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: operation cannot be completed: step.fn has not been specified
+Error : in 'simulate': in 'discrete.time.sim' plugin: operation cannot be completed: step.fn has not been specified
 > 
 > dev.off()
 null device 

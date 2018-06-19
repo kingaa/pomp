@@ -43,7 +43,7 @@ newly created object(s):
 > ## non-autonomous case
 > 
 > pompExample(euler.sir)
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > euler.sir <- simulate(euler.sir,seed=266045243L)
@@ -99,7 +99,7 @@ Error : in 'skeleton': 2nd dimensions of 'x' and 'params' are incompatible
 > 
 > try(pomp(ricker,skeleton=euler.sim(Csnippet("N = exp(log(r)+log(N)-N);"),delta.t=1),
 +          statenames="N",paramnames="r"))
-Error : in ‘pomp’: bad option for ‘skeleton’ argument
+Error : in 'pomp': bad option for 'skeleton' argument
 > 
 > dev.off()
 null device 

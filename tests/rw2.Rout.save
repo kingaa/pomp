@@ -110,7 +110,7 @@ Type 'q()' to quit R.
 +     t0=0,
 +     useless=23
 + )
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘useless’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'useless'
 > 
 > rw2 <- pomp(
 +     rprocess = rw.rprocess,
@@ -129,7 +129,7 @@ In ‘pomp’: the following unrecognized argument(s) will be stored for use by 
 +     t0=0,
 +     useless=23
 + )
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘useless’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'useless'
 > 
 > invisible(show(rw2))
 100 records of 2 observables, recorded from t = 1 to 100 
@@ -182,8 +182,8 @@ measurement model simulator, rmeasure = function (x, t, params, covars, ...)
     }
     y
 }
-<bytecode: 0x37ba928>
-<environment: 0x111d1f0>
+<bytecode: 0x3c8d8d0>
+<environment: 0x15ffba0>
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     f <- 0
@@ -195,10 +195,10 @@ measurement model density, dmeasure = function (y, x, t, params, log, covars, ..
         f
     else exp(f)
 }
-<bytecode: 0x37bb4f8>
-<environment: 0x111d1f0>
+<bytecode: 0x3c8ad00>
+<environment: 0x15ffba0>
 prior simulator, rprior = not specified
-prior density, dprior = native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton = not specified
 initializer = function (params, t0, ...) 
 {
@@ -209,19 +209,19 @@ initializer = function (params, t0, ...)
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
 parameter(s) unspecified
-extra user-defined variables:  ‘useless’ 
+extra user-defined variables:  'useless' 
 > 
 > try(
 +     simulate(rw2,params=p)
 + )
-Error : in ‘simulate’: in 'init.state': a state variable and a parameter share a single name: 'x1.0'
+Error : in 'simulate': in 'init.state': a state variable and a parameter share a single name: 'x1.0'
 > 
 > rw2 <- pomp(rw2,initializer=crap.initializer)
 > 
 > try(
 +     simulate(rw2,params=p)
 + )
-Error : in ‘simulate’: in 'init.state': user initializer returns vectors of non-uniform length
+Error : in 'simulate': in 'init.state': user initializer returns vectors of non-uniform length
 > 
 > rw2 <- pomp(
 +     rprocess = rw.rprocess,
@@ -241,7 +241,7 @@ Error : in ‘simulate’: in 'init.state': user initializer returns vectors of 
 +     t0=0
 + )
 Warning message:
-in ‘pomp’: specifying ‘measurement.model’ overrides specification of ‘rmeasure’ and ‘dmeasure’ 
+in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
 > 
 > examples <- simulate(rw2,params=p)
 > rw2 <- examples[[1]]
@@ -316,7 +316,7 @@ newly created object(s):
 > invisible(timezero(new))
 > timezero(new) <- 19
 > print(simulate(new))
-<object of class ‘pomp’>
+<object of class 'pomp'>
 > 
 > time(rw2) <- seq(1,1000,by=20)
 > x <- simulate(rw2)
@@ -324,11 +324,11 @@ newly created object(s):
 > try(
 +     time(rw2) <- seq(-20,1000,by=20)
 + )
-Error : in ‘time<-’: the zero-time ‘t0’ must occur no later than the first observation
+Error : in 'time<-': the zero-time 't0' must occur no later than the first observation
 > try(
 +     time(rw2) <- c(0,5,10,15,12,20)
 + )
-Error : in ‘time<-’: the times specified must be an increasing sequence
+Error : in 'time<-': the times specified must be an increasing sequence
 > time(rw2,t0=TRUE) <- seq(-20,1000,by=20)
 > x <- simulate(rw2)
 > time(rw2) <- c(0,20,25.8,50,60)

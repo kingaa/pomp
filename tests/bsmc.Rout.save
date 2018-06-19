@@ -34,7 +34,7 @@ newly created object(s):
 > 
 > try(smc <- bsmc(ou2,Np=2,smooth=0.01,est=estnames,
 +                  tol=1e-2,max.fail=100))
-Error : in ‘bsmc’: ‘rprior’ error: operation cannot be completed: rprior has not been specified
+Error : in 'bsmc': 'rprior' error: operation cannot be completed: rprior has not been specified
 > 
 > prior.bounds <- rbind(
 +                       alpha.2=c(-0.55,-0.45),
@@ -47,36 +47,36 @@ Error : in ‘bsmc’: ‘rprior’ error: operation cannot be completed: rprior
 > prior <- matrix(data=coef(ou2),nrow=length(coef(ou2)),ncol=Np)
 > rownames(prior) <- names(coef(ou2))
 > try(bsmc(ou2,params=prior))
-Error : in ‘bsmc’: no parameters to estimate
+Error : in 'bsmc': no parameters to estimate
 > for (n in estnames) {
 +   prior[n,] <- runif(n=Np,min=prior.bounds[n,1],max=prior.bounds[n,2])
 + }
 > try(bsmc(ou2,est=c("alpha.2","alpha.3"),params={p <- prior; rownames(p) <- NULL; p}))
-Error : in ‘bsmc’: ‘params’ must have rownames
+Error : in 'bsmc': 'params' must have rownames
 > try(bsmc(ou2,params=prior,smooth=2))
-Error : in ‘bsmc’: ‘smooth’ must be a scalar in (0,1]
+Error : in 'bsmc': 'smooth' must be a scalar in (0,1]
 > 
 > try(bsmc(ou2,est=c("alpha.2","alpha.3"),Np=1,smooth=1e-100))
-Error : in ‘bsmc’: in ‘rmvnorm’: infinite or missing values in 'x'
+Error : in 'bsmc': in 'rmvnorm': infinite or missing values in 'x'
 > 
 > garb <- ou2
 > coef(garb) <- numeric(0)
 > try(garb <- bsmc(garb))
-Error : in ‘bsmc’: ‘params’ must be supplied
+Error : in 'bsmc': 'params' must be supplied
 > 
 > ##Run Liu & West particle filter
 > bsmc(ou2,params=prior,smooth=0.02,seed=49959,Np=100) -> smc
 Warning messages:
-1: in ‘bsmc’: argument ‘seed’ now has no effect.  Consider using ‘freeze’. 
-2: in ‘bsmc’: ‘Np’ is ignored when ‘params’ is a matrix 
+1: in 'bsmc': argument 'seed' now has no effect.  Consider using 'freeze'. 
+2: in 'bsmc': 'Np' is ignored when 'params' is a matrix 
 > smc <- bsmc(ou2,est="alpha.2",params=prior,smooth=0.02)
 > prior <- smc$prior
 > post <- smc$post
 > 
 > try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=0,upper=c(0,1)))
-Error : in ‘bsmc’: parameter(s) ‘alpha.2’ in column 1 in ‘params’ is/are outside the box defined by ‘lower’ and ‘upper’
+Error : in 'bsmc': parameter(s) 'alpha.2' in column 1 in 'params' is/are outside the box defined by 'lower' and 'upper'
 > try(bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,lower=-100,upper=c(111,33,222)))
-Error : in ‘bsmc’: ‘lower’ and ‘upper’ must each have length 1 or length equal to that of ‘est’
+Error : in 'bsmc': 'lower' and 'upper' must each have length 1 or length equal to that of 'est'
 > 
 > smc <- bsmc(ou2,params=prior,est=estnames,ntries=5,smooth=0.02,
 +             lower=prior.bounds[estnames,"lower"],
@@ -99,9 +99,9 @@ Error : in ‘bsmc’: ‘lower’ and ‘upper’ must each have length 1 or le
 > smc <- bsmc(ou2,ntries=5,transform=TRUE,Np=5000,smooth=0.1,est=estnames)
 > plot(smc,y=NA)
 Warning message:
-in ‘plot-bsmcd.pomp’: ‘y’ is ignored 
+in 'plot-bsmcd.pomp': 'y' is ignored 
 > try(plot(smc,pars=c("george","gracie")))
-Error : in ‘plot-bsmcd.pomp’: unrecognized parameters: ‘george’,‘gracie’
+Error : in 'plot-bsmcd.pomp': unrecognized parameters: 'george','gracie'
 > print(smc$eff.sample.size)
  [1] 285.7 225.9  73.9   3.5   3.4  14.3  84.4  27.1 100.2  90.7
 > print(smc$log.evidence)
@@ -110,11 +110,11 @@ Error : in ‘plot-bsmcd.pomp’: unrecognized parameters: ‘george’,‘graci
 > smc <- bsmc(ou2,ntries=1,transform=TRUE,Np=2,smooth=0.01,est=estnames,
 +             tol=1e-2,max.fail=100)
 Warning message:
-in ‘bsmc’: 1 filtering failure occurred. 
+in 'bsmc': 1 filtering failure occurred. 
 > 
 > try(bsmc(pomp(ou2,dmeasure=function(y,x,t,params,log,...) stop("oof!")),
 +          Np=100,est=c("alpha.1","alpha.2"),transform=TRUE,smooth=0.2))
-Error : in ‘bsmc’: ‘dmeasure’ error: oof!
+Error : in 'bsmc': 'dmeasure' error: oof!
 > neval <- 0
 > try(bsmc(pomp(ou2,
 +               dmeasure=function(y,x,t,params,log,...) {
@@ -122,10 +122,10 @@ Error : in ‘bsmc’: ‘dmeasure’ error: oof!
 +                   if (neval>100) stop("oof!") else if (log) 0 else 1
 +               }),
 +          Np=100,est=c("alpha.1","alpha.2"),transform=TRUE,smooth=0.2))
-Error : in ‘bsmc’: ‘dmeasure’ error: oof!
+Error : in 'bsmc': 'dmeasure' error: oof!
 > 
 > try(bsmc(ou2,Np=100,est=c("alpha.1","bob"),transform=TRUE,smooth=1))
-Error : in ‘bsmc’: parameter(s) ‘bob’ not found.
+Error : in 'bsmc': parameter(s) 'bob' not found.
 > 
 > dev.off()
 null device 

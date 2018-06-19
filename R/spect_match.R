@@ -69,7 +69,7 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
   obj.fn <- spect.mismatch
 
   est <- as.character(est)
-  eval.only <- (length(est)<1) || est==""
+  eval.only <- (length(est)<1) || est=="" || is.na(est)
   if (!eval.only && !all(est %in% names(start)))
     stop(ep,sQuote("est")," must refer to parameters named in ",sQuote("start"),
          call.=FALSE)
@@ -80,7 +80,7 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
     stop(ep,sQuote("vars")," must name data variables",call.=FALSE)
 
   nsim <- as.integer(nsim)
-  if (!is.finite(nsim) || (nsim<1L))
+  if (length(nsim)<1 || !is.finite(nsim) || (nsim<1L))
     stop(ep,sQuote("nsim")," must be specified as a positive integer",call.=FALSE)
 
   ker <- reuman.kernel(kernel.width)

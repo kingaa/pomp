@@ -83,7 +83,7 @@ try(pompExample("bob"))
 pompExample("ricker")
 pomp(ricker) -> ricker
 pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
-simulate(po,verbose=TRUE) -> po
+simulate(po) -> po
 try(pomp(po,params=c("A","B")))
 ## force recompile
 file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),

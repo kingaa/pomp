@@ -63,13 +63,20 @@ po <- ricker
 try(spect(pomp(po,rmeasure=function(x,t,params,...)
   c(y=if(x["N"]<10)rpois(n=1,lambda=x)else NA)),kernel.width=7,nsim=100))
 
-
 try(spect.match(spp,weights="A"))
 try(spect.match(spp,weights=rep(1,5)))
 spp <- spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,0))
 try(spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,NA)))
 try(spect.match(spp,est=spp@est,
                 weights=function(freq)ifelse(freq<0.2,1,"C")))
+try(spect.match(po,est="bob",nsim=100,kernel.width=3))
+summary(spect.match(po,est="",nsim=10,kernel.width=3))$msg
+summary(spect.match(po,est=NA,nsim=10,kernel.width=3))$msg
+summary(spect.match(po,est=NULL,nsim=10,kernel.width=3))$msg
+try(summary(spect.match(po,est=NULL,vars="bob",nsim=10,kernel.width=3)))
+try(summary(spect.match(po,est=NULL,nsim=NA,kernel.width=3)))
+try(summary(spect.match(po,est=NULL,nsim=NULL,kernel.width=3)))
+try(summary(spect.match(po,est=NULL,nsim=-3,kernel.width=3)))
 
 dat <- as.data.frame(matrix(runif(60),20,3))
 names(dat) <- letters[1:3]

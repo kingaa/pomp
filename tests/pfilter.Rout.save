@@ -37,20 +37,20 @@ particle filter log likelihood at truth
 [1] -478.2
 > 
 > try(pfilter(ou2,Np=1000,params=c()))
-Error : in ‘pfilter’: ‘params’ must be specified
+Error : in 'pfilter': 'params' must be specified
 > 
 > try(pfilter(ou2,Np=c(1000,10)))
-Error : in ‘pfilter’: ‘Np’ must have length 1 or length 101
+Error : in 'pfilter': 'Np' must have length 1 or length 101
 > try(pfilter(ou2,Np=-100))
-Error : in ‘pfilter’: number of particles, ‘Np’, must always be positive
+Error : in 'pfilter': number of particles, 'Np', must always be positive
 > try(pfilter(ou2,Np="bob"))
-Error : in ‘pfilter’: ‘Np’ must be a number, a vector of numbers, or a function
+Error : in 'pfilter': 'Np' must be a number, a vector of numbers, or a function
 > try(pfilter(ou2,Np=100,params=matrix(0,nrow=3,ncol=100)))
-Error : in ‘pfilter’: ‘params’ must have rownames
+Error : in 'pfilter': 'params' must have rownames
 > try(pfilter(ou2,Np=1,max.fail=0))
-Error : in ‘pfilter’: too many filtering failures
+Error : in 'pfilter': too many filtering failures
 > try(replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) c(100,200) else 500)))
-Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single positive integer
+Error : in 'pfilter': if 'Np' is a function, it must return a single positive integer
 > pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
 > pf.ll <- sapply(pf,logLik)
 > ll.est <- log(mean(exp(pf.ll-mean(pf.ll))))+mean(pf.ll)
@@ -60,7 +60,7 @@ Error : in ‘pfilter’: if ‘Np’ is a function, it must return a single pos
   -480.50      0.39 
 > 
 > pompExample(euler.sir)
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > pf <- pfilter(euler.sir,Np=100)
@@ -74,7 +74,7 @@ newly created object(s):
 > 
 > coef(pf,"rho") <- -1
 > try(pfilter(pf))
-Error : in ‘pfilter’: ‘dmeasure’ returns non-finite value.
+Error : in 'pfilter': 'dmeasure' returns non-finite value.
 likelihood, data, states, and parameters are:
    time:    0.0192308
     lik:          NaN
@@ -121,12 +121,12 @@ newly created object(s):
 [1] "time"        "Y"           "ess"         "cond.loglik" "X"          
 [6] "X"          
 > try(pfilter(gompertz) -> pf)
-Error : in ‘pfilter’: ‘Np’ must be specified
+Error : in 'pfilter': 'Np' must be specified
 > try(pfilter(gompertz,params=parmat(coef(gompertz),100),Np=1000) -> pf)
-Error : in ‘pfilter’: when ‘params’ is provided as a matrix, do not specify ‘Np’!
+Error : in 'pfilter': when 'params' is provided as a matrix, do not specify 'Np'!
 > coef(gompertz,"sigma") <- Inf
 > try(pfilter(gompertz,Np=1000,pred.var=TRUE))
-Error : in ‘pfilter’: non-finite state variable(s): X
+Error : in 'pfilter': non-finite state variable(s): X
 > 
 > dev.off()
 null device 

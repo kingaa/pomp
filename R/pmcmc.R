@@ -237,10 +237,8 @@ setMethod(
         if (missing(start)) start <- coef(object)
         if (missing(Np)) stop(ep,sQuote("Np")," must be specified",call.=FALSE)
 
-        if (missing(proposal)) proposal <- NULL
-
-        if (is.null(proposal))
-            stop(ep,sQuote("proposal")," must be specified",call.=FALSE)
+        if (missing(proposal))
+          stop(ep,sQuote("proposal")," must be specified",call.=FALSE)
 
         pmcmc.internal(
             object=object,

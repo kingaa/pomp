@@ -31,11 +31,11 @@ newly created object(s):
 > x <- ou2
 > coef(x) <- numeric()
 > try(trajectory(x))
-Error : in ‘trajectory’: ‘params’ must be supplied
+Error : in 'trajectory': 'params' must be supplied
 > try(trajectory(pomp(ou2,skeleton=NULL)))
-Error : in ‘trajectory’: deterministic skeleton has not been properly specified
+Error : in 'trajectory': deterministic skeleton has not been properly specified
 > pompExample(euler.sir)
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘nbasis’,‘degree’,‘period’
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > try(trajectory(euler.sir,atol=-100))
@@ -44,7 +44,7 @@ In above message, I1 = 1
  
 In above message, R1 = -100
  
-Error : in ‘trajectory’: error in ODE integrator: illegal input detected before taking any integration steps - see written message
+Error : in 'trajectory': error in ODE integrator: illegal input detected before taking any integration steps - see written message
 > 
 > x <- sapply(
 +     simdata,
@@ -107,7 +107,7 @@ $msg
 > invisible(capture.output(summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",trace=4,parscale=0.1,maxit=100))))
 > 
 > try(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",parscale=0.1,maxit=100,sched=rep(1,10)))
-Error : in ‘sannbox’: insufficiently many temperatures supplied in ‘control$sched’
+Error : in 'sannbox': insufficiently many temperatures supplied in 'control$sched'
 > 
 > summary(traj.match(ou2))
 $params
@@ -128,15 +128,15 @@ $msg
 
 > ofun <- traj.match.objfun(ou2)
 > try(traj.match.objfun(ou2,params=c("A")))
-Error : in ‘traj.match.objfun’: ‘params’ must be a named numeric vector
+Error : in 'traj.match.objfun': 'params' must be a named numeric vector
 > ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','alpha.1','alpha.4','tau'))
 > print(ofun(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4','tau'))))
 [1] 3327.081
 > 
 > try(ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','bob','alpha.4','harry')))
-Error : in ‘traj.match.objfun’: parameter(s): ‘bob’,‘harry’ not found in ‘params’
+Error : in 'traj.match.objfun': parameter(s): 'bob','harry' not found in 'params'
 > try(traj.match(ou2,est=c('x1.0','x2.0','bob','alpha.4','tau')))
-Error : in ‘minim’: ‘est’ must refer to parameters named in ‘start’
+Error : in 'minim': 'est' must refer to parameters named in 'start'
 > 
 > fit <- optim(par=c(0,0,1,0.5,0.5),fn=ofun,method="Nelder-Mead",control=list(maxit=400))
 > print(fit)
@@ -208,7 +208,7 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 newly created object(s):
  ricker 
 > try(traj.match(ricker,start=numeric(0)))
-Error : in ‘minim’: ‘start’ must be supplied
+Error : in 'minim': 'start' must be supplied
 > try(traj.match(ricker,transform=TRUE,est=c("bob")))
-Error : in ‘minim’: ‘est’ must refer to parameters named in ‘partrans(object,start,dir="toEstimationScale")’
+Error : in 'minim': 'est' must refer to parameters named in 'partrans(object,start,dir="toEstimationScale")'
 > 

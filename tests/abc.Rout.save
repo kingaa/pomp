@@ -62,38 +62,38 @@ newly created object(s):
 > 
 > try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
 +         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘start’ must be specified if ‘coef(object)’ is NULL
+Error : in 'abc': 'start' must be specified if 'coef(object)' is NULL
 > try(abc(po,Nabc=2000,probes=probes.good,start=unname(coef(po)),scale=scale.dat,
 +   epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘start’ must be a named vector
+Error : in 'abc': 'start' must be a named vector
 > try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
 +   epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘start’ must be specified if ‘coef(object)’ is NULL
+Error : in 'abc': 'start' must be specified if 'coef(object)' is NULL
 > try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,epsilon=1.7,proposal="bob"))
-Error : in ‘abc’: ‘proposal’ must be a function
+Error : in 'abc': 'proposal' must be a function
 > try(abc(po,Nabc=2000,probes="probes.good",scale=scale.dat,
 +         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘probes’ must be a function or a list of functions
+Error : in 'abc': 'probes' must be a function or a list of functions
 > try(abc(po,Nabc=2000,probes=function(x,y)x,scale=scale.dat,
 +         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: each probe must be a function of a single argument
+Error : in 'abc': each probe must be a function of a single argument
 > try(abc(pomp(po,dprior=function(params,log,...)Inf),Nabc=2000,probes=probes.good,
 +         scale=scale.dat,epsilon=1.7,
 +         proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: inadmissible value of ‘dprior’ at parameters ‘start’
+Error : in 'abc': inadmissible value of 'dprior' at parameters 'start'
 > try(abc(pomp(po,Nabc=2000,probes=probes.good,
 +         scale=scale.dat,epsilon=1.7)))
-In ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘Nabc’,‘probes’,‘scale’,‘epsilon’
-Error : in ‘abc’: ‘proposal’ must be specified
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'Nabc','probes','scale','epsilon'
+Error : in 'abc': 'proposal' must be specified
 > try(abc(po,Nabc=2000,scale=scale.dat,
 +         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘probes’ must be specified
+Error : in 'abc': 'probes' must be specified
 > try(abc(po,Nabc=2000,probes=probes.good,
 +         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘scale’ must be specified
+Error : in 'abc': 'scale' must be specified
 > try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,
 +         proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified
+Error : in 'abc': abc match criterion, 'epsilon', must be specified
 > 
 > 
 > ## check how sticky the chain is:
@@ -161,30 +161,30 @@ Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified
 > plot(abc6)
 > 
 > try(c(abc6,ou2))
-Error : in ‘c’: cannot mix ‘abc’ and non-‘abc’ objects
+Error : in 'c': cannot mix 'abc' and non-'abc' objects
 > try(c(c(abc6,abc6),ou2))
-Error : in ‘c’: cannot mix ‘abc’ and non-‘abc’ objects
+Error : in 'c': cannot mix 'abc' and non-'abc' objects
 > abc7 <- c(abc2)
 > abc7 <- c(abc7)
 > try(abc7 <- c(abc2,abc3))
 Error in validObject(.Object) : 
-  invalid class “abcList” object: error in ‘c’: to be combined, ‘abc’ objects must have chains of equal length
+  invalid class "abcList" object: error in 'c': to be combined, 'abc' objects must have chains of equal length
 > try(abc7 <- c(abc7,abc3))
 Error in validObject(.Object) : 
-  invalid class “abcList” object: error in ‘c’: to be combined, ‘abc’ objects must have chains of equal length
+  invalid class "abcList" object: error in 'c': to be combined, 'abc' objects must have chains of equal length
 > plot(abc7 <- c(abc2,abc4))
 > abc2 <- abc7[1]
 > abc2 <- abc2[[1]]
 > plot(abc2,scatter=TRUE,y=NA)
 Warning message:
-in ‘plot-abc’: ‘y’ is ignored 
+in 'plot-abc': 'y' is ignored 
 > plot(abc7,scatter=TRUE,y=NA)
 Warning message:
-in ‘plot-abc’: ‘y’ is ignored 
+in 'plot-abc': 'y' is ignored 
 > try(plot(abc7,pars=c("alpha.1"),scatter=TRUE,y=NA))
-Error : in ‘plot-abc’: can't make a scatterplot with only one variable
+Error : in 'plot-abc': can't make a scatterplot with only one variable
 In addition: Warning message:
-in ‘plot-abc’: ‘y’ is ignored 
+in 'plot-abc': 'y' is ignored 
 > plot(conv.rec(c(abc2,abc4)))
 > plot(conv.rec(c(abc7,abc6)))
 > plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=100))
@@ -242,22 +242,22 @@ alpha.2 alpha.3
 Warning messages:
 1: In chol.default(covmat, pivot = TRUE) :
   the matrix is either rank-deficient or indefinite
-2: in ‘mvn.rw.adaptive’: degenerate proposal 
+2: in 'mvn.rw.adaptive': degenerate proposal 
 > 
 > try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
 +         proposal=function(theta,...)stop("urp!")))
-Error : in ‘abc’: in proposal function: urp!
+Error : in 'abc': in proposal function: urp!
 > try(abc(pomp(ou2,dprior=function(params,log,...)stop("oof!")),
 +         Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
 +         proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘dprior’ error: oof!
+Error : in 'abc': 'dprior' error: oof!
 > neval <- 0
 > try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
 +         proposal=function(theta,...) {
 +             neval <<- neval+1
 +             if (neval>1) stop("bif!") else theta
 +         }))
-Error : in ‘abc’: in proposal function: bif!
+Error : in 'abc': in proposal function: bif!
 > neval <- 0
 > try(abc(
 +     pomp(ou2,dprior=function(params,log,...) {
@@ -267,7 +267,7 @@ Error : in ‘abc’: in proposal function: bif!
 +         else 1
 +     }),Nabc=20,probes=probes.good,scale=scale.dat,epsilon=1,
 +     proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘dprior’ error: eep!
+Error : in 'abc': 'dprior' error: eep!
 > neval <- 0
 > try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
 +         proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
@@ -276,7 +276,7 @@ Error : in ‘abc’: ‘dprior’ error: eep!
 +             if (neval>0) stop("pow!")
 +             else 0
 +         }))
-Error : in ‘abc’: in ‘apply_probe_data’: pow!
+Error : in 'abc': in 'apply_probe_data': pow!
 > neval <- 0
 > try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
 +         proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
@@ -285,7 +285,7 @@ Error : in ‘abc’: in ‘apply_probe_data’: pow!
 +             if (neval>1) stop("paf!")
 +             else 0
 +         }))
-Error : in ‘abc’: in ‘apply_probe_sim’: paf!
+Error : in 'abc': in 'apply_probe_sim': paf!
 > 
 > dev.off()
 null device 

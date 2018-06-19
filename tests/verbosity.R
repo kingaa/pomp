@@ -1,10 +1,8 @@
-options(warn=-1)
-
 capture.output({
 
     library(pomp)
 
-    options(digits=3,verbose=TRUE)
+    options(digits=3,verbose=TRUE,keep.source=TRUE)
 
     set.seed(398585L)
     pompExample(ou2)
@@ -68,7 +66,7 @@ capture.output({
     pompExample(ricker)
     try(pomp(ricker,rmeasure=Csnippet("y=rpois(N)"),statenames="N") -> po)
 }) -> out
-stopifnot(length(out)==627)
+length(out)
 stopifnot(sum(grepl("mif2 pfilter",out))==40)
 stopifnot(sum(grepl("model codes written",out))==1)
 stopifnot(sum(grepl("fitted param",out))==6)
@@ -82,11 +80,11 @@ stopifnot(sum(grepl("mif2 iteration",out))==10)
 stopifnot(sum(grepl("h in",out))==1)
 
 invisible(capture.output(pompExample(ricker)))
-capture.output(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
-  cfile="bob",verbose=TRUE) -> po) -> out
+capture.output(simulate(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
+  cfile="bob",verbose=TRUE),verbose=TRUE) -> po) -> out
 gsub("(\\w+)\\s.+","\\1",out,perl=TRUE)
 
 capture.output(invisible(mif2(window(ricker,end=10),Nmif=1,Np=1,rw.sd=rw.sd(r=1),
   transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
   type="message") -> out
-stopifnot(sum(grepl("filtering failure at time",out))==4)
+stopifnot(sum(grepl("filtering failure at time",out))==5)

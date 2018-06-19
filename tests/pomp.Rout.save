@@ -34,21 +34,21 @@ newly created object(s):
 [1] 0
 > 
 > try(obs(r2,vars="bob"))
-Error : in ‘obs’: some elements of ‘vars’ correspond to no observed variable
+Error : in 'obs': some elements of 'vars' correspond to no observed variable
 > try(time(r2) <- "nancy")
-Error : in ‘time<-’: ‘value’ must be a numeric vector
+Error : in 'time<-': 'value' must be a numeric vector
 > invisible(window(r2,start=3,end=9))
 > invisible(window(r2))
 > invisible(window(r2,start=3))
 > invisible(window(r2,end=11))
 > try({rr2 <- r2; timezero(rr2) <- c(4,11)})
-Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single number
+Error : in 'timezero<-': the zero-time 't0' must be a single number
 > try({rr2 <- r2; timezero(rr2) <- 4})
-Error : in ‘timezero<-’: the zero-time ‘t0’ must occur no later than the first observation
+Error : in 'timezero<-': the zero-time 't0' must occur no later than the first observation
 > rr2 <- r2
 > coef(rr2,c("r","phi"),transform=TRUE) <- coef(r2,c("r","phi"),transform=TRUE)
 Warning message:
-in ‘coef<-’:  names of ‘value’ are being discarded 
+in 'coef<-':  names of 'value' are being discarded 
 > stopifnot(all.equal(coef(rr2),coef(r2)))
 > 
 > r3 <- pomp(
@@ -78,70 +78,68 @@ in ‘coef<-’:  names of ‘value’ are being discarded
 > 
 > dat <- as.data.frame(ricker)
 > try(pomp(dat) -> po)
-Error : ‘times’ is a required argument
+Error : 'times' is a required argument
 > try(pomp(dat,times="time",t0=0,covar=dat) -> po)
-Error : in ‘pomp’: if ‘covar’ is supplied, ‘tcovar’ must also be supplied
+Error : in 'pomp': if 'covar' is supplied, 'tcovar' must also be supplied
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=3) -> po)
-Error : in ‘pomp’: if ‘covar’ is a data frame, ‘tcovar’ should indicate the time variable
+Error : in 'pomp': if 'covar' is a data frame, 'tcovar' should indicate the time variable
 > pomp(dat,times="time",t0=0,covar=dat,tcovar=1) -> po
 > pomp(dat,times=1,t0=0,covar=dat,tcovar=1) -> po
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar="bob") -> po)
-Error : in ‘pomp’: if ‘covar’ is a data frame, ‘tcovar’ should indicate the time variable
+Error : in 'pomp': if 'covar' is a data frame, 'tcovar' should indicate the time variable
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
-Error : in ‘pomp’: covariate(s) ‘henry’ are not among the columns of ‘covar’
+Error : in 'pomp': covariate(s) 'henry' are not among the columns of 'covar'
 > try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
-Error : in ‘pomp’: if one of ‘fromEstimationScale’, ‘toEstimationScale’ is supplied, then so must the other
+Error : in 'pomp': if one of 'fromEstimationScale', 'toEstimationScale' is supplied, then so must the other
 > plot(po)
 > pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
 > try(pomp())
-Error : in ‘pomp’: ‘data’ is a required argument
+Error : in 'pomp': 'data' is a required argument
 > try(pomp(as.matrix(dat),times=dat$time,t0=0) -> po)
-Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’
+Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 > pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
 > try(pomp(dat,times="bob",t0=0,skeleton=function(x,t,params,...){x}) -> po)
-Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
+Error : in 'pomp': when 'data' is a data frame, 'times' must identify a single column of 'data' either by name or by index.
 > try(pomp(dat,times=11,t0=0,skeleton=function(x,t,params,...){x}) -> po)
-Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
+Error : in 'pomp': when 'data' is a data frame, 'times' must identify a single column of 'data' either by name or by index.
 > try(pomp(dat,times=1.1,t0=0,skeleton=function(x,t,params,...){x}) -> po)
-Error : in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
+Error : in 'pomp': when 'data' is a data frame, 'times' must identify a single column of 'data' either by name or by index.
 > try(pomp(dat$y,times=dat$time,t0=0) -> po)
-Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’
+Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 > pomp(dat,times=1,t0=0,skeleton=function(x,t,params,...){x}) -> po
 > try(pomp(dat$y,times=dat$time[1:10],t0=0) -> po)
-Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’
+Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 > try(pomp(ricker,skeleton=identity(identity)) -> po)
-Error : in ‘pomp’: in ‘skeleton’: ‘skeleton’ must be a function of prototype skeleton(x, t, params, ...)
+Error : in 'pomp': in 'skeleton': 'skeleton' must be a function of prototype skeleton(x, t, params, ...)
 > try(pomp(ricker,toEstimationScale=identity) -> po)
-Error : in ‘pomp’: if ‘toEstimationScale’ is supplied, then ‘fromEstimationScale’ must also be supplied
+Error : in 'pomp': if 'toEstimationScale' is supplied, then 'fromEstimationScale' must also be supplied
 > try(pomp(ricker,fromEstimationScale=identity) -> po)
-Error : in ‘pomp’: if ‘fromEstimationScale’ is supplied, then ‘toEstimationScale’ must also be supplied
+Error : in 'pomp': if 'fromEstimationScale' is supplied, then 'toEstimationScale' must also be supplied
 > try(pomp("banana"))
-Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’
+Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 > pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
 Warning message:
-in ‘pomp’: specifying ‘measurement.model’ overrides specification of ‘rmeasure’ and ‘dmeasure’ 
+in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
 > 
 > xdat <- ricker@data
 > nm <- dimnames(xdat)
 > dim(xdat) <- c(nrow(xdat),1,ncol(xdat))
 > dimnames(xdat) <- list(nm[[1]],NULL,nm[[2]])
 > try(pomp(xdat,times=dat$time,t0=0) -> po)
-Error : in ‘pomp’: ‘data’ must be a data frame or an object of class ‘pomp’
+Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 > 
 > try(pompExample(bob))
-Error : in ‘pompExample’: cannot find file ‘bob.R’
+Error : in 'pompExample': cannot find file 'bob.R'
 > try(pompExample("bob"))
-Error : in ‘pompExample’: cannot find file ‘bob.R’
+Error : in 'pompExample': cannot find file 'bob.R'
 > pompExample("ricker")
 newly created object(s):
  ricker 
 > pomp(ricker) -> ricker
 > pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N") -> po
-> simulate(po,verbose=TRUE) -> po
-loading ‘/tmp/RtmpwliR4X/31243/pomp_06ae515de03acd0bdd457b3ee1fa6a04.so’ 
-unloading ‘/tmp/RtmpwliR4X/31243/pomp_06ae515de03acd0bdd457b3ee1fa6a04.so’ 
+> simulate(po) -> po
 > try(pomp(po,params=c("A","B")))
-Error : in ‘pomp’: ‘params’ must be a named numeric vector
+Error : in 'pomp': 'params' must be a named numeric vector
 > ## force recompile
 > file.remove(list.files(path=file.path(tempdir(),Sys.getpid()),
 +                        pattern=paste0(po@solibs[[1]]$name,".*"),
@@ -152,25 +150,25 @@ Error : in ‘pomp’: ‘params’ must be a named numeric vector
 > plot(po,yax.flip=TRUE)
 > 
 > try(pomp(as.data.frame(ricker)))
-Error : ‘times’ is a required argument
+Error : 'times' is a required argument
 > try(pomp(as.data.frame(ricker),times="time"))
-Error : ‘t0’ is a required argument
+Error : 't0' is a required argument
 > try(pomp(data.frame(t=10:1,y=1:10),times="t",t0=0))
-Error : in ‘pomp’: ‘times’ must be an increasing numeric vector
+Error : in 'pomp': 'times' must be an increasing numeric vector
 > try(pomp(data.frame(t=c(1:9,NA),y=1:10),times="t",t0=0))
-Error : in ‘pomp’: ‘times’ must be an increasing numeric vector
+Error : in 'pomp': 'times' must be an increasing numeric vector
 > try(pomp(data.frame(t="A",y=1:10),times="t",t0=0))
-Error : in ‘pomp’: ‘times’ must be an increasing numeric vector
+Error : in 'pomp': 'times' must be an increasing numeric vector
 > try(pomp(data.frame(t=1:10,y=1:10),times="t",t0=c(3,4)))
-Error : in ‘pomp’: the zero-time ‘t0’ must be a single number
+Error : in 'pomp': the zero-time 't0' must be a single number
 > try(pomp(data.frame(t=1:10,y=1:10),times="t",t0="Q"))
-Error : in ‘pomp’: the zero-time ‘t0’ must be a single number
+Error : in 'pomp': the zero-time 't0' must be a single number
 > 
 > try(pomp:::render("bob is {%one%} and {%two%}",
 +   one="good",
 +   two=c("bad","five"),
 +   three=c("yellow","red","green")))
-Error : in ‘render’ incommensurate lengths of replacements
+Error : in 'render' incommensurate lengths of replacements
 > 
 > dev.off()
 null device 

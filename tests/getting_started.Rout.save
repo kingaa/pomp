@@ -167,7 +167,7 @@ Type 'q()' to quit R.
 +                  statenames="N",paramnames=c("a","b","sigma"),
 +                  params=c(a=1.1,b=5e-4,sigma=0.5,N.0=30))
 > try(traj <- trajectory(parus.bh))
-Error : in ‘trajectory’: deterministic skeleton has not been properly specified
+Error : in 'trajectory': deterministic skeleton has not been properly specified
 > 
 > parus.bh <- pomp(parus,rprocess=discrete.time.sim(bh.step,delta.t=1),
 +                  skeleton=map(bh.skel,delta.t=1),
@@ -254,7 +254,7 @@ Error : in ‘trajectory’: deterministic skeleton has not been properly specif
 +      zeronames="S") -> po
 > coef(po,"S.0") <- 0
 > try(po %>% simulate(times=1960:2000))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yikes!
+Error : in 'simulate': in 'discrete.time.sim' plugin: yikes!
 > 
 > pomp(po,
 +      rprocess=discrete.time.sim(function(x,t,params,...){
@@ -265,7 +265,7 @@ Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: yikes!
 +          })
 +      })) -> po
 > try(po %>% simulate(times=1960:2000))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: user 'step.fun' returns a vector of 3 state variables but 2 are expected: compare initial conditions?
+Error : in 'simulate': in 'discrete.time.sim' plugin: user 'step.fun' returns a vector of 3 state variables but 2 are expected: compare initial conditions?
 > po %>% trajectory(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
 [1] 1
 > 
@@ -276,9 +276,9 @@ Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: user 'step.fun' re
 +         },delta.t=1),params=c(a=1.1,b=0.0005,sigma=0.5,N.0=30,S.0=0),
 +      zeronames="clarence") -> po
 > try(po %>% simulate(times=1960:2000))
-Error : in ‘simulate’: in ‘discrete.time.sim’ plugin: variable 'clarence' not found among the state variables
+Error : in 'simulate': in 'discrete.time.sim' plugin: variable 'clarence' not found among the state variables
 > try(po %>% trajectory(times=1960:2000))
-Error : in ‘trajectory’: in map iterator: variable 'clarence' not found among the state variables
+Error : in 'trajectory': in map iterator: variable 'clarence' not found among the state variables
 > 
 > pomp(parus.bh,
 +      dmeasure=function(y,x,t,params,log,...){

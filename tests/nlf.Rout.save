@@ -103,12 +103,12 @@ newly created object(s):
 > r1 <- nlf(gompertz,est=c("K","r"),lags=c(1,2,3),
 +           nconverge=200,nasymp=1000,method="Nelder-Mead",
 +           seed=34999695L,verbose=TRUE)
-h in ‘nlf’ = 0.1 
-epsilon in ‘nlf’ = 0.2879638 0.2283782 
-fitted param 1 0.2112649 up in ‘nlf’ 
-fitted param 1 0.06441471 down in ‘nlf’ 
-fitted param 2 0.236051 up in ‘nlf’ 
-fitted param 2 -1e+09 down in ‘nlf’ 
+h in 'nlf' = 0.1 
+epsilon in 'nlf' = 0.2879638 0.2283782 
+fitted param 1 0.2112649 up in 'nlf' 
+fitted param 1 0.06441471 down in 'nlf' 
+fitted param 2 0.236051 up in 'nlf' 
+fitted param 2 -1e+09 down in 'nlf' 
 > 
 > lags <- 2
 > nboot <- length(obs(gompertz))-max(lags)
@@ -122,22 +122,22 @@ fitted param 2 -1e+09 down in ‘nlf’
 > try(nlf(gompertz,lags=c(1,2,3),est=c(1,2,3),
 +   nconverge=200,nasymp=1000,method="Nelder-Mead",
 +   seed=34999695L,verbose=TRUE))
-Error : in ‘nlf’: ‘est’ must name the parameters to be estimated
+Error : in 'nlf': 'est' must name the parameters to be estimated
 > try(nlf(gompertz,lags=c(1,2,3),est=c("bob"),
 +   nconverge=200,nasymp=1000,method="Nelder-Mead",
 +   seed=34999695L,verbose=TRUE))
-Error : in ‘nlf’: parameters named in ‘est’ must exist in ‘start’
+Error : in 'nlf': parameters named in 'est' must exist in 'start'
 > try(nlf(gompertz,est=c("K","r"),lags=c(1,2,3),
 +   nconverge=200,nasymp=1000,method="Nelder-Mead",
 +   seed=34999695L,lql.frac=2,verbose=TRUE))
-Error : in ‘nlf’: ‘lql.frac’ must be in (0,1)
+Error : in 'nlf': 'lql.frac' must be in (0,1)
 > try(nlf(gompertz,est=c("K","r"),lags=c(1,2,3),
 +   nconverge=200,nasymp=1000,method="Nelder-Mead",
 +   seed=34999695L,se.par.frac=2,verbose=TRUE))
-Error : in ‘nlf’: ‘se.par.frac’ must be in (0,1)
+Error : in 'nlf': 'se.par.frac' must be in (0,1)
 > try(nlf(simulate(gompertz,times=c(0:10,10.5)),
 +   est=c("K","r"),lags=c(1,2,3),
 +   nconverge=200,nasymp=1000,method="Nelder-Mead",
 +   seed=34999695L,verbose=TRUE))
-Error : in ‘nlf’: ‘nlf’ requires evenly spaced sampling times
+Error : in 'nlf': 'nlf' requires evenly spaced sampling times
 > 
