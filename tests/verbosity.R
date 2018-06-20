@@ -84,7 +84,14 @@ capture.output(simulate(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames=
   cfile="bob",verbose=TRUE),verbose=TRUE) -> po) -> out
 gsub("(\\w+)\\s.+","\\1",out,perl=TRUE)
 
+set.seed(3949586L)
 capture.output(invisible(mif2(window(ricker,end=10),Nmif=1,Np=1,rw.sd=rw.sd(r=1),
   transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
   type="message") -> out
+stopifnot(sum(grepl("filtering failure at time",out))==5)
+
+set.seed(3949586L)
+capture.output(invisible(mif(window(ricker,end=10),Nmif=1,Np=1,rw.sd=c(r=1),
+                             transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
+               type="message") -> out
 stopifnot(sum(grepl("filtering failure at time",out))==5)

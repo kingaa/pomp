@@ -323,44 +323,33 @@ mif.internal <- function (object, Nmif,
 
   transform <- as.logical(transform)
 
-  if (length(start)==0)
-    stop(
-      ep,sQuote("start"),
-      " must be specified if ",
-      sQuote("coef(object)")," is NULL",
-      call.=FALSE
-    )
+  if (length(start)==0) stop(ep,sQuote("start")," must be specified if ",
+      sQuote("coef(object)")," is NULL",call.=FALSE)
 
   if (transform)
     start <- partrans(object,start,dir="toEstimationScale")
 
   start.names <- names(start)
-  if (is.null(start.names))
-    stop(ep,sQuote("start"),
-         " must be a named vector",call.=FALSE)
+  if (is.null(start.names) || !is.numeric(start))
+    stop(ep,sQuote("start")," must be a named numeric vector",call.=FALSE)
 
   rw.names <- names(rw.sd)
   if (is.null(rw.names) || any(rw.sd<0))
-    stop(ep,sQuote("rw.sd"),
-         " must be a named non-negative numerical vector",call.=FALSE)
+    stop(ep,sQuote("rw.sd")," must be a named non-negative numerical vector",call.=FALSE)
   if (!all(rw.names%in%start.names))
-    stop(ep,"all the names of ",sQuote("rw.sd"),
-         " must be names of ",sQuote("start"),call.=FALSE)
+    stop(ep,"all the names of ",sQuote("rw.sd")," must be names of ",sQuote("start"),call.=FALSE)
   rw.names <- rw.names[rw.sd>0]
   rw.sd <- rw.sd[rw.sd>0]
   if (length(rw.names) == 0)
-    stop(ep,sQuote("rw.sd"),
-         " must have one positive entry for each parameter to be estimated",call.=FALSE)
+    stop(ep,sQuote("rw.sd")," must have one positive entry for each parameter to be estimated",call.=FALSE)
 
   pars <- rw.names[!(rw.names%in%ivps)]
 
   if (!is.character(ivps) || !all(ivps%in%start.names))
-    stop(ep,sQuote("ivps"),
-         " must name model parameters",call.=FALSE)
+    stop(ep,sQuote("ivps")," must name model parameters",call.=FALSE)
 
   ntimes <- length(time(object))
-  if (is.null(Np)) stop(ep,sQuote("Np"),
-                        " must be specified",call.=FALSE)
+  if (is.null(Np)) stop(ep,sQuote("Np")," must be specified",call.=FALSE)
   if (is.function(Np)) {
     Np <- tryCatch(
       vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
@@ -377,15 +366,12 @@ mif.internal <- function (object, Nmif,
   if (any(Np<=0))
     stop(ep,"number of particles, ",sQuote("Np"),", must always be positive",call.=FALSE)
   if (!is.numeric(Np))
-    stop(ep,sQuote("Np"),
-         " must be a number, a vector of numbers, or a function",
-         call.=FALSE)
+    stop(ep,sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
   Np <- as.integer(Np)
 
   ic.lag <- as.integer(ic.lag)
-  if ((length(ic.lag)!=1)||(ic.lag<1))
-    stop(ep,sQuote("ic.lag"),
-         " must be a positive integer",call.=FALSE)
+  if ((length(ic.lag)!=1)||(!is.finite(ic.lag))||(ic.lag<1))
+    stop(ep,sQuote("ic.lag")," must be a positive integer",call.=FALSE)
   if (ic.lag>ntimes) {
     warning(
       ep,sQuote("ic.lag")," = ",ic.lag," > ",ntimes,
@@ -406,12 +392,11 @@ mif.internal <- function (object, Nmif,
   }
 
   if (missing(cooling.fraction.50))
-    stop(ep,sQuote("cooling.fraction.50"),
-         " must be specified",call.=FALSE)
+    stop(ep,sQuote("cooling.fraction.50")," must be specified",call.=FALSE)
   cooling.fraction.50 <- as.numeric(cooling.fraction.50)
-  if ((length(cooling.fraction.50)!=1)||(cooling.fraction.50<0)||(cooling.fraction.50>1))
-    stop(ep,sQuote("cooling.fraction.50"),
-         " must be a number between 0 and 1",call.=FALSE)
+  if ((length(cooling.fraction.50)!=1)||(!is.finite(cooling.fraction.50))||
+      (cooling.fraction.50<0)||(cooling.fraction.50>1))
+    stop(ep,sQuote("cooling.fraction.50")," must be a number between 0 and 1",call.=FALSE)
 
   cooling <- mif.cooling(
     type=cooling.type,
@@ -419,12 +404,12 @@ mif.internal <- function (object, Nmif,
     ntimes=ntimes
   )
 
-  if ((length(var.factor)!=1)||(var.factor < 0))
+  var.factor <- as.numeric(var.factor)
+  if ((length(var.factor)!=1)||(!is.finite(var.factor))||(var.factor < 0))
     stop(ep,sQuote("var.factor")," must be a positive number",call.=FALSE)
 
   Nmif <- as.integer(Nmif)
-  if (Nmif<0)
-    stop(ep,sQuote("Nmif")," must be a positive integer",call.=FALSE)
+  if (Nmif<0) stop(ep,sQuote("Nmif")," must be a positive integer",call.=FALSE)
 
   theta <- start
 
@@ -509,7 +494,7 @@ mif.internal <- function (object, Nmif,
       fp={                         # fixed-point iteration
         theta[pars] <- pfp@filter.mean[pars,ntimes,drop=FALSE]
       },
-      stop(ep,"unrecognized method ",sQuote(method),call.=FALSE)
+      stop(ep,"unrecognized method ",sQuote(method),call.=FALSE) # nocov
     )
     theta[ivps] <- pfp@filter.mean[ivps,ic.lag]
     conv.rec[n+1,-c(1,2)] <- theta
@@ -564,22 +549,17 @@ setMethod(
     method <- match.arg(method)
 
     if (missing(start)) start <- coef(object)
-    if (missing(rw.sd))
-      stop(ep,sQuote("rw.sd")," must be specified.",call.=FALSE)
-    if (!is.numeric(rw.sd))
-      stop(ep,sQuote("rw.sd")," must be a named numeric vector.",call.=FALSE)
+    if (missing(rw.sd)) stop(ep,sQuote("rw.sd")," must be specified.",call.=FALSE)
+    if (!is.numeric(rw.sd)) stop(ep,sQuote("rw.sd")," must be a named numeric vector.",call.=FALSE)
     if (missing(ic.lag)) {
       if (length(ivps)>0) {
-        stop(ep,sQuote("ic.lag"),
-             " must be specified if ",sQuote("ivps"),
-             " are.",call.=FALSE)
+        stop(ep,sQuote("ic.lag")," must be specified if ",sQuote("ivps")," are.",call.=FALSE)
       } else {
         ic.lag <- length(time(object))
       }
     }
 
-    if (missing(Np))
-      stop(ep,sQuote("Np")," must be specified",call.=FALSE)
+    if (missing(Np)) stop(ep,sQuote("Np")," must be specified",call.=FALSE)
 
     cooling.type <- match.arg(cooling.type)
 

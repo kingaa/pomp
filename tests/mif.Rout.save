@@ -54,6 +54,68 @@ particle filter log likelihood at truth
 > guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 > guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 > 
+> po <- ou2
+> coef(po) <- numeric(0)
+> try(mif(po))
+Error : in 'mif': 'rw.sd' must be specified.
+> try(mif(po,rw.sd=c(3,2)))
+Error : in 'mif': 'Np' must be specified
+> try(mif(po,Np=10,rw.sd=c(3,2)))
+Error : in 'mif': 'start' must be specified if 'coef(object)' is NULL
+> try(mif(po,Np=10,start=numeric(0),rw.sd=c(3,2)))
+Error : in 'mif': 'start' must be specified if 'coef(object)' is NULL
+> try(mif(po,Np=10,start="yes",rw.sd=c(3,2)))
+Error : in 'mif': 'start' must be a named numeric vector
+> try(mif(po,Np=10,start=c(a="yes"),rw.sd=c(3,2)))
+Error : in 'mif': 'start' must be a named numeric vector
+> try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=3,b=2)))
+Error : in 'mif': all the names of 'rw.sd' must be names of 'start'
+> try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=3)))
+Error : in 'mif': 'cooling.fraction.50' must be specified
+> try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=3),cooling.fraction.50=3))
+Error : in 'mif': 'cooling.fraction.50' must be a number between 0 and 1
+> try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=3),cooling.fraction.50=1))
+Error : in 'mif': in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=-3),cooling.fraction.50=1))
+Error : in 'mif': 'rw.sd' must be a named non-negative numerical vector
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),cooling.fraction.50=1))
+Error : in 'mif': in 'mif.pfilter': process simulation error: in 'discrete.time.sim' plugin: variable 'x1' not found among the state variables
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(1),cooling.fraction.50=1))
+Error : in 'mif': 'rw.sd' must be a named non-negative numerical vector
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1,b.0=2),ivps="c",cooling.fraction.50=1))
+Error : in 'mif': 'ic.lag' must be specified if 'ivps' are.
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1,b.0=2),ivps="c",ic.lag=10,cooling.fraction.50=1))
+Error : in 'mif': 'ivps' must name model parameters
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1,b.0=2),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+Error : in 'mif': in 'mif.pfilter': process simulation error: in 'discrete.time.sim' plugin: variable 'x1' not found among the state variables
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=0),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+Error : in 'mif': 'rw.sd' must have one positive entry for each parameter to be estimated
+> try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=1),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+Error : in 'mif': 'ivps' must name model parameters
+> try(mif(po,Np="10",start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+Error : in 'mif': 'Np' must be a number, a vector of numbers, or a function
+> try(mif(po,Np=NULL,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+Error : in 'mif': 'Np' must be specified
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=-10,cooling.fraction.50=1))
+Error : in 'mif': 'ic.lag' must be a positive integer
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=NA,cooling.fraction.50=1))
+Error : in 'mif': 'ic.lag' must be a positive integer
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=NA))
+Error : in 'mif': 'cooling.fraction.50' must be a number between 0 and 1
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=NULL))
+Error : in 'mif': 'cooling.fraction.50' must be a number between 0 and 1
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=1,
++         var.factor=-100))
+Error : in 'mif': 'var.factor' must be a positive number
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=1,
++         var.factor=NA))
+Error : in 'mif': 'var.factor' must be a positive number
+> try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=1,
++         var.factor=NULL))
+Error : in 'mif': 'var.factor' must be a positive number
+> try(mif(ou2,Np=c(10,20,30),rw.sd=c(alpha.1=1),ivps="x1.0",ic.lag=5,cooling.fraction.50=1))
+Error : in 'mif': 'Np' must have length 1 or length 101
+> 
 > mif1 <- mif(ou2,Nmif=25,start=guess1,
 +             ivps=c('x1.0','x2.0'),
 +             rw.sd=c(
@@ -101,7 +163,7 @@ in 'plot-mif': 'y' is ignored
 > mif1a <- c(mif1)
 > coef(mif2)
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-  0.800  -0.481   0.343   0.900   3.000  -0.500   2.000   1.000  -3.294   2.481 
+  0.800  -0.508   0.344   0.900   3.000  -0.500   2.000   1.000  -3.462   2.563 
 > dim(coef(mif12))
 [1]  2 10
 > dim(coef(c(mif12,mif2)))

@@ -21,6 +21,40 @@ guess2 <- guess1 <- p.truth
 guess1[c('x1.0','x2.0','alpha.2','alpha.3')] <- 0.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 guess2[c('x1.0','x2.0','alpha.2','alpha.3')] <- 1.5*guess1[c('x1.0','x2.0','alpha.2','alpha.3')]
 
+po <- ou2
+coef(po) <- numeric(0)
+try(mif(po))
+try(mif(po,rw.sd=c(3,2)))
+try(mif(po,Np=10,rw.sd=c(3,2)))
+try(mif(po,Np=10,start=numeric(0),rw.sd=c(3,2)))
+try(mif(po,Np=10,start="yes",rw.sd=c(3,2)))
+try(mif(po,Np=10,start=c(a="yes"),rw.sd=c(3,2)))
+try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=3,b=2)))
+try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=3)))
+try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=3),cooling.fraction.50=3))
+try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=3),cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=-3),cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(1),cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1,b.0=2),ivps="c",cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1,b.0=2),ivps="c",ic.lag=10,cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1,b.0=2),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=0),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3),rw.sd=c(a=1),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+try(mif(po,Np="10",start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+try(mif(po,Np=NULL,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=-10,cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=NA,cooling.fraction.50=1))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=NA))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=NULL))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=1,
+        var.factor=-100))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=1,
+        var.factor=NA))
+try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),ivps="b.0",ic.lag=5,cooling.fraction.50=1,
+        var.factor=NULL))
+try(mif(ou2,Np=c(10,20,30),rw.sd=c(alpha.1=1),ivps="x1.0",ic.lag=5,cooling.fraction.50=1))
+
 mif1 <- mif(ou2,Nmif=25,start=guess1,
             ivps=c('x1.0','x2.0'),
             rw.sd=c(

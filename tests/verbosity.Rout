@@ -90,7 +90,7 @@ Error : in 'bsmc': too many filtering failures
 In addition: Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
 Error : in 'bsmc': in 'rmvnorm': infinite or missing values in 'x'
@@ -100,28 +100,28 @@ Error : in 'bsmc2': too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/Rtmp09m54m/11072/pomp_9d47a962a94244750e79523fafd300bf.c -o /tmp/Rtmp09m54m/11072/pomp_9d47a962a94244750e79523fafd300bf.o
-/tmp/Rtmp09m54m/11072/pomp_9d47a962a94244750e79523fafd300bf.c: In function ‘__pomp_rmeasure’:
-/tmp/Rtmp09m54m/11072/pomp_9d47a962a94244750e79523fafd300bf.c:16:1: error: expected ‘;’ before ‘}’ token
+make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.c -o /tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.o
+/tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.c: In function ‘__pomp_rmeasure’:
+/tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.c:16:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/Rtmp09m54m/11072/pomp_9d47a962a94244750e79523fafd300bf.o] Error 1
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/Rtmp09m54m/11072/pomp_9d47a962a94244750e79523fafd300bf.so': status = 1
+make[2]: *** [/tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.o] Error 1
+make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
+Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.so': status = 1
 In addition: Warning messages:
 1: in 'bsmc2': 2 filtering failures occurred. 
 2: in 'pfilter': 1 filtering failure occurred. 
 3: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 4: In library(pomp) : package 'pomp' already present in search()
 5: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > length(out)
 [1] 675
@@ -141,25 +141,26 @@ In addition: Warning messages:
 Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
 > capture.output(simulate(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
 +   cfile="bob",verbose=TRUE),verbose=TRUE) -> po) -> out
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/Rtmp09m54m/11072/bob.c -o /tmp/Rtmp09m54m/11072/bob.o
-gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -L/usr/local/lib64 -o /tmp/Rtmp09m54m/11072/bob.so /tmp/Rtmp09m54m/11072/bob.o -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -lR
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/Rtmpb5suy8/13246/bob.c -o /tmp/Rtmpb5suy8/13246/bob.o
+gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -L/usr/local/lib64 -o /tmp/Rtmpb5suy8/13246/bob.so /tmp/Rtmpb5suy8/13246/bob.o -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -lR
+make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
 Warning message:
 In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > gsub("(\\w+)\\s.+","\\1",out,perl=TRUE)
 [1] "model"     "compiling" "loading"   "unloading"
 > 
+> set.seed(3949586L)
 > capture.output(invisible(mif2(window(ricker,end=10),Nmif=1,Np=1,rw.sd=rw.sd(r=1),
 +   transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
 +   type="message") -> out
@@ -168,5 +169,16 @@ mif2 pfilter timestep 10 of 11 finished
 mif2 iteration 1 of 1 completed
 Warning message:
 in 'mif2.pfilter': 5 filtering failures occurred. 
+> stopifnot(sum(grepl("filtering failure at time",out))==5)
+> 
+> set.seed(3949586L)
+> capture.output(invisible(mif(window(ricker,end=10),Nmif=1,Np=1,rw.sd=c(r=1),
++                              transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
++                type="message") -> out
+pfilter timestep 5 of 11 finished
+pfilter timestep 10 of 11 finished
+mif iteration 1 of 1 completed
+Warning message:
+in 'mif.pfilter': 5 filtering failures occurred. 
 > stopifnot(sum(grepl("filtering failure at time",out))==5)
 > 
