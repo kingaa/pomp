@@ -70,6 +70,7 @@ try(pomp(ricker,skeleton=identity(identity)) -> po)
 try(pomp(ricker,toEstimationScale=identity) -> po)
 try(pomp(ricker,fromEstimationScale=identity) -> po)
 try(pomp("banana"))
+pomp(pomp(ricker,rprocess=NULL),dprocess=NULL) -> po
 pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
 
 xdat <- ricker@data

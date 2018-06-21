@@ -35,7 +35,7 @@ newly created object(s):
  euler.sir 
 > euler.sir %<>% pomp(initializer=NULL)
 > try(simulate(euler.sir))
-Error : in 'simulate': operation cannot be completed: initializer has not been specified
+Error : in 'simulate': in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
 > 
 > pompExample(gompertz)
 newly created object(s):

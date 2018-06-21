@@ -39,20 +39,31 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
 
   ## deal with missing components
   if (missing(skeleton)) skeleton <- NULL
+  if (missing(initializer)) initializer <- NULL
   if (missing(rmeasure)) rmeasure <- NULL
   if (missing(dmeasure)) dmeasure <- NULL
+  if (missing(rprocess)) rprocess <- NULL
+  if (missing(dprocess)) dprocess <- NULL
   if (missing(rprior)) rprior <- NULL
   if (missing(dprior)) dprior <- NULL
   if (missing(fromEstimationScale)) fromEstimationScale <- NULL
   if (missing(toEstimationScale)) toEstimationScale <- NULL
 
-  ## defaults for names of states, parameters, and accumulator variables
-  if (missing(statenames)) statenames <- character(0)
-  if (missing(paramnames)) paramnames <- character(0)
-  if (missing(zeronames)) zeronames <- character(0)
+  ## defaults for names of states, parameters, accumulator variables,
+  ## observations, and covariates
+  if (missing(statenames)) statenames <- NULL
+  if (missing(paramnames)) paramnames <- NULL
+  if (missing(zeronames)) zeronames <- NULL
+  if (missing(obsnames)) obsnames <- NULL
+  if (missing(covarnames)) covarnames <- NULL
   statenames <- as.character(statenames)
   paramnames <- as.character(paramnames)
   zeronames <- as.character(zeronames)
+  obsnames <- as.character(obsnames)
+  covarnames <- as.character(covarnames)
+
+  if (missing(covar)) covar <- NULL
+  if (missing(tcovar)) tcovar <- NULL
 
   ## check for duplicate names
   if (anyDuplicated(statenames)) {
@@ -75,8 +86,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
 
   ## store the data as double-precision matrix
   storage.mode(data) <- 'double'
-  if (missing(obsnames) || length(obsnames)==0) obsnames <- rownames(data)
-  obsnames <- as.character(obsnames)
+  if (length(obsnames)==0) obsnames <- rownames(data)
 
   ## check times
   if (!is.numeric(times) || any(is.na(times)) || !all(diff(times)>0))
@@ -89,18 +99,18 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   storage.mode(t0) <- 'double'
 
   ## check and arrange covariates
-  if (missing(covar)) {
+  if (is.null(covar)) {
     covar <- matrix(data=0,nrow=0,ncol=0)
     tcovar <- numeric(0)
-  } else if (missing(tcovar)) {
-    stop("if ",sQuote("covar")," is supplied, ",
-         sQuote("tcovar")," must also be supplied",call.=FALSE)
+  } else if (is.null(tcovar)) {
+    stop("if ",sQuote("covar")," is supplied, ",sQuote("tcovar"),
+         " must also be supplied",call.=FALSE)
   } else if (is.data.frame(covar)) {
     if ((is.numeric(tcovar) && (tcovar<1 || tcovar>length(covar))) ||
         (is.character(tcovar) && (!(tcovar%in%names(covar)))) ||
         (!is.numeric(tcovar) && !is.character(tcovar))) {
-      stop("if ",sQuote("covar")," is a data frame, ",
-           sQuote("tcovar")," should indicate the time variable",call.=FALSE)
+      stop("if ",sQuote("covar")," is a data frame, ",sQuote("tcovar"),
+           " should indicate the time variable",call.=FALSE)
     } else if (is.numeric(tcovar)) {
       tpos <- tcovar
       tcovar <- covar[[tpos]]
@@ -113,25 +123,24 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   } else {
     covar <- as.matrix(covar)
   }
-  if (missing(covarnames) || length(covarnames)==0)
-    covarnames <- as.character(colnames(covar))
-  if (!all(covarnames%in%colnames(covar))) {
+  if (length(covarnames)==0) covarnames <- as.character(colnames(covar))
+  if (!all(covarnames %in% colnames(covar))) {
     missing <- covarnames[!(covarnames%in%colnames(covar))]
-    stop("covariate(s) ",
-         paste(sapply(missing,sQuote),collapse=","),
+    stop("covariate(s) ",paste(sapply(missing,sQuote),collapse=","),
          " are not among the columns of ",sQuote("covar"),call.=FALSE)
   }
   storage.mode(tcovar) <- "double"
   storage.mode(covar) <- "double"
 
   ## use default initializer?
-  default.init <- missing(initializer) || (is(initializer,"pomp.fun") && initializer@mode == pompfunmode$undef)
+  default.init <- is.null(initializer) ||
+    ( is(initializer,"pomp.fun") && initializer@mode == pompfunmode$undef )
   if (default.init) initializer <- pomp.fun(slotname="initializer")
 
   ## default rprocess & dprocess
-  if (missing(rprocess))
+  if (is.null(rprocess))
     rprocess <- function (xstart,times,params,...) stop(sQuote("rprocess")," not specified",call.=FALSE)
-  if (missing(dprocess))
+  if (is.null(dprocess))
     dprocess <- function (x,times,params,log=FALSE,...) stop(sQuote("dprocess")," not specified",call.=FALSE)
 
   ## handle C snippets
