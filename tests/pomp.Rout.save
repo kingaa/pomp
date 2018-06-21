@@ -90,7 +90,7 @@ Error : in 'pomp': if 'covar' is a data frame, 'tcovar' should indicate the time
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
 Error : in 'pomp': covariate(s) 'henry' are not among the columns of 'covar'
 > try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
-Error : in 'pomp': if one of 'fromEstimationScale', 'toEstimationScale' is supplied, then so must the other
+Error : in 'pomp': if one of 'toEstimationScale', 'fromEstimationScale' is supplied, then so must the other
 > plot(po)
 > pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
 > try(pomp())
@@ -112,9 +112,9 @@ Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 > try(pomp(ricker,skeleton=identity(identity)) -> po)
 Error : in 'pomp': in 'skeleton': 'skeleton' must be a function of prototype skeleton(x, t, params, ...)
 > try(pomp(ricker,toEstimationScale=identity) -> po)
-Error : in 'pomp': if 'toEstimationScale' is supplied, then 'fromEstimationScale' must also be supplied
+Error : in 'pomp': if one of 'toEstimationScale', 'fromEstimationScale' is supplied, then so must the other
 > try(pomp(ricker,fromEstimationScale=identity) -> po)
-Error : in 'pomp': if 'fromEstimationScale' is supplied, then 'toEstimationScale' must also be supplied
+Error : in 'pomp': if one of 'toEstimationScale', 'fromEstimationScale' is supplied, then so must the other
 > try(pomp("banana"))
 Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 > pomp(pomp(ricker,rprocess=NULL),dprocess=NULL) -> po
