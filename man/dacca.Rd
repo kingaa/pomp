@@ -23,9 +23,6 @@ coef(dacca)
 #MLEs on the transformed scale
 coef(dacca,transform=TRUE)
 plot(simulate(dacca))
-# now change 'eps' and simulate again
-coef(dacca,"eps") <- 1
-plot(simulate(dacca))
 }
 \references{
   A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,

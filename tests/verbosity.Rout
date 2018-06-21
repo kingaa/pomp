@@ -90,7 +90,7 @@ Error : in 'bsmc': too many filtering failures
 In addition: Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/home/kingaa/projects/Rpkg/library/pomp",
+  "/userdata/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
 Error : in 'bsmc': in 'rmvnorm': infinite or missing values in 'x'
@@ -100,29 +100,32 @@ Error : in 'bsmc2': too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.c -o /tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.o
-/tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.c: In function ‘__pomp_rmeasure’:
-/tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.c:16:1: error: expected ‘;’ before ‘}’ token
+Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/RtmpqEuOUP/122279/pomp_f055f91227e6255eb573b4d46478d247.so': status = 1
+compiler messages:
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpqEuOUP/122279/pomp_f055f91227e6255eb573b4d46478d247.c -o /tmp/RtmpqEuOUP/122279/pomp_f055f91227e6255eb573b4d46478d247.o
+/tmp/RtmpqEuOUP/122279/pomp_f055f91227e6255eb573b4d46478d247.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpqEuOUP/122279/pomp_f055f91227e6255eb573b4d46478d247.c:16:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.o] Error 1
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
-Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/Rtmpb5suy8/13246/pomp_aaaa3e069bb4efdc85783bd6b3d478d3.so': status = 1
+make[2]: *** [/tmp/RtmpqEuOUP/122279/pomp_f055f91227e6255eb573b4d46478d247.o] Error 1
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 In addition: Warning messages:
 1: in 'bsmc2': 2 filtering failures occurred. 
 2: in 'pfilter': 1 filtering failure occurred. 
 3: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/home/kingaa/projects/Rpkg/library/pomp",
+  "/userdata/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 4: In library(pomp) : package 'pomp' already present in search()
 5: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/home/kingaa/projects/Rpkg/library/pomp",
+  "/userdata/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
+6: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
+  running command 'PKG_CPPFLAGS="-I/userdata/kingaa/projects/Rpkg/library/pomp/include" '/usr/local/apps/R/R-3.5.0/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpqEuOUP/122279/pomp_f055f91227e6255eb573b4d46478d247.so /tmp/RtmpqEuOUP/122279/pomp_f055f91227e6255eb573b4d46478d247.c 2>&1' had status 1
 > length(out)
 [1] 675
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)
@@ -141,24 +144,21 @@ In addition: Warning messages:
 Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/home/kingaa/projects/Rpkg/library/pomp",
+  "/userdata/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
 > capture.output(simulate(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
 +   cfile="bob",verbose=TRUE),verbose=TRUE) -> po) -> out
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.0/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/Rtmpb5suy8/13246/bob.c -o /tmp/Rtmpb5suy8/13246/bob.o
-gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -L/usr/local/lib64 -o /tmp/Rtmpb5suy8/13246/bob.so /tmp/Rtmpb5suy8/13246/bob.o -L/usr/local/apps/R/R-3.5.0/lib64/R/lib -lR
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
 Warning message:
 In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/home/kingaa/projects/Rpkg/library/pomp",
+  "/userdata/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > gsub("(\\w+)\\s.+","\\1",out,perl=TRUE)
-[1] "model"     "compiling" "loading"   "unloading"
+ [1] "model"             "compiling"         "compiler"         
+ [4] "make[2]: Entering" "gcc"               "gcc"              
+ [7] "make[2]: Leaving"  "make[2]: Entering" "make[2]: Leaving" 
+[10] "loading"           "unloading"        
 > 
 > set.seed(3949586L)
 > capture.output(invisible(mif2(window(ricker,end=10),Nmif=1,Np=1,rw.sd=rw.sd(r=1),

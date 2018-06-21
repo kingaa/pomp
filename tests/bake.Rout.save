@@ -20,21 +20,22 @@ Type 'q()' to quit R.
 > ### test of reproducibility utilities
 > 
 > library(pomp)
+> options(digits=2)
 > 
 > set.seed(5499)
 > w1 <- runif(2)
 > freeze({runif(5)},seed=499586)
-[1] 0.6719240 0.5092283 0.0643100 0.3672672 0.7148970
+[1] 0.672 0.509 0.064 0.367 0.715
 attr(,"seed")
-[1] 499586
+[1] 5e+05
 attr(,"system.time")
    user  system elapsed 
       0       0       0 
 > w2 <- runif(2)
 > freeze(runif(5),seed=499586)
-[1] 0.6719240 0.5092283 0.0643100 0.3672672 0.7148970
+[1] 0.672 0.509 0.064 0.367 0.715
 attr(,"seed")
-[1] 499586
+[1] 5e+05
 attr(,"system.time")
    user  system elapsed 
       0       0       0 

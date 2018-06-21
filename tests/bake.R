@@ -1,6 +1,7 @@
 ### test of reproducibility utilities
 
 library(pomp)
+options(digits=2)
 
 set.seed(5499)
 w1 <- runif(2)

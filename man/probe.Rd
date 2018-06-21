@@ -76,7 +76,7 @@
             probes, nsim, seed = NULL,
             method = c("subplex","Nelder-Mead","SANN","BFGS",
                        "sannbox","nloptr"),
-            verbose = getOption("verbose"), 
+            verbose = getOption("verbose"),
             fail.value = NA, transform = FALSE, \dots)
 \S4method{probe.match}{probed.pomp}(object, probes, nsim, seed,
             \dots, verbose = getOption("verbose"))
@@ -229,7 +229,7 @@ good <- probe(
                 y2.sd=probe.sd(var="y2"),
                 extra=function(x)max(x["y1",])
                 ),
-              nsim=500
+              nsim=300
               )
 summary(good)
 plot(good)
@@ -247,7 +247,7 @@ bad <- probe(
                y2.sd=probe.sd(var="y2"),
                extra=function(x)range(x["y1",])
                ),
-             nsim=500
+             nsim=300
              )
 summary(bad)
 plot(bad)
