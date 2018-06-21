@@ -1,4 +1,246 @@
 ## This file defines 'pomp', the basic constructor of the pomp class
+
+pomp <- function (data, times, t0, ..., rprocess, dprocess,
+                  rmeasure, dmeasure, measurement.model,
+                  skeleton, initializer, rprior, dprior, params, covar, tcovar,
+                  obsnames, statenames, paramnames, covarnames, zeronames,
+                  PACKAGE, fromEstimationScale, toEstimationScale,
+                  globals, cdir, cfile, shlib.args) {
+
+  ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
+
+  if (missing(data))
+    stop(ep,sQuote("data")," is a required argument",call.=FALSE)
+
+  ## return as quickly as possible if no work is to be done
+  if (nargs()==1 && is(data,"pomp")) return(data)
+
+  ## if one transformation is supplied, then both must be
+  fes <- !missing(fromEstimationScale)
+  tes <- !missing(toEstimationScale)
+  if (xor(fes,tes))
+    stop(ep,"if one of ",sQuote("toEstimationScale"),", ",
+         sQuote("fromEstimationScale")," is supplied, then so must the other",
+         call.=FALSE)
+
+  ## if 'measurement model' is specified as a formula, this overrides
+  ## specification of 'rmeasure' or 'dmeasure'
+  mmg <- !missing(measurement.model)
+  dmg <- !(missing(dmeasure) || is.null(dmeasure))
+  rmg <- !(missing(rmeasure) || is.null(rmeasure))
+  if (mmg) {
+    if (dmg||rmg)
+      warning(ep,"specifying ",sQuote("measurement.model"),
+              " overrides specification of ",
+              sQuote("rmeasure")," and ",sQuote("dmeasure"),
+              call.=FALSE)
+    mm <- measform2pomp(measurement.model)
+    rmeasure <- mm$rmeasure
+    dmeasure <- mm$dmeasure
+    dmg <- TRUE
+    rmg <- TRUE
+  }
+
+  ## the deterministic skeleton involves 'skeleton', 'skeleton.type', and
+  ## 'skelmap.delta.t'
+  skel.type <- "undef"
+  skel.delta.t <- 1
+
+  has.skel <- !missing(skeleton)
+  if (has.skel) {
+    skeleton <- substitute(skeleton)
+    flist <- list(
+      map=function (f, delta.t = 1) {
+        skel.type <<- "map"
+        if (delta.t <= 0)
+          stop("in ",sQuote("map"),", ",sQuote("delta.t"),
+               " must be positive",call.=FALSE)
+        skel.delta.t <<- as.numeric(delta.t)
+        f
+      },
+      vectorfield=function (f) {
+        skel.type <<- "vectorfield"
+        f
+      }
+    )
+    skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
+  }
+
+  if (missing(globals)) globals <- NULL
+  if (missing(cdir)) cdir <- NULL
+  if (missing(cfile)) cfile <- NULL
+  if (missing(shlib.args)) shlib.args <- NULL
+  if (missing(PACKAGE)) PACKAGE <- NULL
+
+  ## defaults for names of states, parameters, observations, and covariates
+  if (missing(statenames)) statenames <- NULL
+  if (missing(paramnames)) paramnames <- NULL
+  if (missing(obsnames)) obsnames <- NULL
+  if (missing(covarnames)) covarnames <- NULL
+
+  if (is(data,"pomp")) {
+    ## 'data' is a pomp object:
+    ## extract missing arguments from it
+
+    if (missing(times)) times <- data@times
+    if (missing(t0)) t0 <- data@t0
+
+    if (!rmg) rmeasure <- data@rmeasure
+    if (!dmg) dmeasure <- data@dmeasure
+
+    if (missing(rprocess)) rprocess <- data@rprocess
+    if (missing(dprocess)) dprocess <- data@dprocess
+    if (missing(rprior)) rprior <- data@rprior
+    if (missing(dprior)) dprior <- data@dprior
+    if (missing(initializer)) initializer <- data@initializer
+
+    if (missing(params)) params <- data@params
+    if (missing(covar)) covar <- data@covar
+    if (missing(tcovar)) tcovar <- data@tcovar
+    if (missing(zeronames)) zeronames <- data@zeronames
+
+    ## the deterministic skeleton involves 'skeleton', 'skeleton.type', and
+    ## 'skelmap.delta.t'
+    if (!has.skel) {
+      skel.type <- data@skeleton.type
+      skel.delta.t <- data@skelmap.delta.t
+      skeleton <- data@skeleton
+    }
+
+    if (fes && tes) {
+      from.trans <- fromEstimationScale
+      to.trans <- toEstimationScale
+    } else {
+      from.trans <- data@from.trans
+      to.trans <- data@to.trans
+    }
+
+    tryCatch(
+      pomp.internal(
+        data=data@data,
+        times=times,
+        t0=t0,
+        rprocess=rprocess,
+        dprocess=dprocess,
+        rmeasure=rmeasure,
+        dmeasure=dmeasure,
+        dprior=dprior,
+        rprior=rprior,
+        skeleton=skeleton,
+        skel.type=skel.type,
+        skel.delta.t=skel.delta.t,
+        initializer=initializer,
+        covar=covar,
+        tcovar=tcovar,
+        obsnames=obsnames,
+        statenames=statenames,
+        paramnames=paramnames,
+        covarnames=covarnames,
+        zeronames=zeronames,
+        PACKAGE=PACKAGE,
+        fromEstimationScale=from.trans,
+        toEstimationScale=to.trans,
+        params=params,
+        globals=globals,
+        cdir=cdir,
+        cfile=cfile,
+        shlib.args=shlib.args,
+        .solibs=data@solibs,
+        userdata=data@userdata,
+        ...
+      ),
+      error = function (e) {
+        stop(ep,conditionMessage(e),call.=FALSE)
+      }
+    )
+  } else if (is.data.frame(data)) {
+    ## 'data' is a data frame:
+    ## construct a pomp object de novo
+
+    ## preliminary error checking
+    if (missing(times)) stop(sQuote("times")," is a required argument",call.=FALSE)
+    if (missing(t0)) stop(sQuote("t0")," is a required argument",call.=FALSE)
+    if ((is.numeric(times) && (times<1 || times>ncol(data) ||times!=as.integer(times))) ||
+        (is.character(times) && (!(times%in%names(data)))) ||
+        (!is.numeric(times) && !is.character(times)) ||
+        length(times)!=1) {
+      stop(ep,"when ",sQuote("data")," is a data frame, ",sQuote("times"),
+           " must identify a single column of ",sQuote("data"),
+           " either by name or by index.",call.=FALSE)
+    }
+    if (is.numeric(times)) {
+      tpos <- as.integer(times)
+    } else if (is.character(times)) {
+      tpos <- match(times,names(data))
+    }
+    times <- data[[tpos]]
+    data <- do.call(rbind, lapply(data[-tpos], as.numeric))
+
+    if (missing(initializer)) initializer <- NULL
+    if (missing(rprocess)) rprocess <- NULL
+    if (missing(dprocess)) dprocess <- NULL
+    if (missing(rprior)) rprior <- NULL
+    if (missing(dprior)) dprior <- NULL
+
+    if (missing(params)) params <- numeric(0)
+    if (missing(covar)) covar <- NULL
+    if (missing(tcovar)) tcovar <- NULL
+    if (missing(zeronames)) zeronames <- NULL
+
+    if (!has.skel) skeleton <- NULL
+    if (!rmg) rmeasure <- NULL
+    if (!dmg) dmeasure <- NULL
+    if (fes && tes) {
+      from.trans <- fromEstimationScale
+      to.trans <- toEstimationScale
+    } else {
+      from.trans <- NULL
+      to.trans <- NULL
+    }
+
+    tryCatch(
+      pomp.internal(
+        data=data,
+        times=times,
+        t0=t0,
+        rprocess=rprocess,
+        dprocess=dprocess,
+        rmeasure=rmeasure,
+        dmeasure=dmeasure,
+        dprior=dprior,
+        rprior=rprior,
+        skeleton=skeleton,
+        skel.type=skel.type,
+        skel.delta.t=skel.delta.t,
+        initializer=initializer,
+        params=params,
+        covar=covar,
+        tcovar=tcovar,
+        obsnames=obsnames,
+        statenames=statenames,
+        paramnames=paramnames,
+        covarnames=covarnames,
+        zeronames=zeronames,
+        PACKAGE=PACKAGE,
+        fromEstimationScale=from.trans,
+        toEstimationScale=to.trans,
+        globals=globals,
+        cdir=cdir,
+        cfile=cfile,
+        shlib.args=shlib.args,
+        ...
+      ),
+      error = function (e) {
+        stop(ep,conditionMessage(e),call.=FALSE)
+      }
+    )
+  } else {
+    stop(ep,sQuote("data"),
+         " must be a data frame or an object of class ",sQuote("pomp"),
+         call.=FALSE)
+  }
+}
+
 pomp.internal <- function (data, times, t0, rprocess, dprocess,
                            rmeasure, dmeasure,
                            skeleton, skel.type, skel.delta.t,
@@ -447,245 +689,4 @@ measform2pomp <- function (formulae) {
       y
     }
   )
-}
-
-pomp <- function (data, times, t0, ..., rprocess, dprocess,
-                  rmeasure, dmeasure, measurement.model,
-                  skeleton, initializer, rprior, dprior, params, covar, tcovar,
-                  obsnames, statenames, paramnames, covarnames, zeronames,
-                  PACKAGE, fromEstimationScale, toEstimationScale,
-                  globals, cdir, cfile, shlib.args) {
-
-  ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
-
-  if (missing(data))
-    stop(ep,sQuote("data")," is a required argument",call.=FALSE)
-
-  ## return as quickly as possible if no work is to be done
-  if (nargs()==1 && is(data,"pomp")) return(data)
-
-  ## if one transformation is supplied, then both must be
-  fes <- !missing(fromEstimationScale)
-  tes <- !missing(toEstimationScale)
-  if (xor(fes,tes))
-    stop(ep,"if one of ",sQuote("toEstimationScale"),", ",
-         sQuote("fromEstimationScale")," is supplied, then so must the other",
-         call.=FALSE)
-
-  ## if 'measurement model' is specified as a formula, this overrides
-  ## specification of 'rmeasure' or 'dmeasure'
-  mmg <- !missing(measurement.model)
-  dmg <- !(missing(dmeasure) || is.null(dmeasure))
-  rmg <- !(missing(rmeasure) || is.null(rmeasure))
-  if (mmg) {
-    if (dmg||rmg)
-      warning(ep,"specifying ",sQuote("measurement.model"),
-              " overrides specification of ",
-              sQuote("rmeasure")," and ",sQuote("dmeasure"),
-              call.=FALSE)
-    mm <- measform2pomp(measurement.model)
-    rmeasure <- mm$rmeasure
-    dmeasure <- mm$dmeasure
-    dmg <- TRUE
-    rmg <- TRUE
-  }
-
-  ## the deterministic skeleton involves 'skeleton', 'skeleton.type', and
-  ## 'skelmap.delta.t'
-  skel.type <- "undef"
-  skel.delta.t <- 1
-
-  has.skel <- !missing(skeleton)
-  if (has.skel) {
-    skeleton <- substitute(skeleton)
-    flist <- list(
-      map=function (f, delta.t = 1) {
-        skel.type <<- "map"
-        if (delta.t <= 0)
-          stop("in ",sQuote("map"),", ",sQuote("delta.t"),
-               " must be positive",call.=FALSE)
-        skel.delta.t <<- as.numeric(delta.t)
-        f
-      },
-      vectorfield=function (f) {
-        skel.type <<- "vectorfield"
-        f
-      }
-    )
-    skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
-  }
-
-  if (missing(globals)) globals <- NULL
-  if (missing(cdir)) cdir <- NULL
-  if (missing(cfile)) cfile <- NULL
-  if (missing(shlib.args)) shlib.args <- NULL
-  if (missing(PACKAGE)) PACKAGE <- NULL
-
-  ## defaults for names of states, parameters, observations, and covariates
-  if (missing(statenames)) statenames <- NULL
-  if (missing(paramnames)) paramnames <- NULL
-  if (missing(obsnames)) obsnames <- NULL
-  if (missing(covarnames)) covarnames <- NULL
-
-  if (is(data,"pomp")) {
-    ## 'data' is a pomp object:
-    ## extract missing arguments from it
-
-    if (missing(times)) times <- data@times
-    if (missing(t0)) t0 <- data@t0
-
-    if (!rmg) rmeasure <- data@rmeasure
-    if (!dmg) dmeasure <- data@dmeasure
-
-    if (missing(rprocess)) rprocess <- data@rprocess
-    if (missing(dprocess)) dprocess <- data@dprocess
-    if (missing(rprior)) rprior <- data@rprior
-    if (missing(dprior)) dprior <- data@dprior
-    if (missing(initializer)) initializer <- data@initializer
-
-    if (missing(params)) params <- data@params
-    if (missing(covar)) covar <- data@covar
-    if (missing(tcovar)) tcovar <- data@tcovar
-    if (missing(zeronames)) zeronames <- data@zeronames
-
-    ## the deterministic skeleton involves 'skeleton', 'skeleton.type', and
-    ## 'skelmap.delta.t'
-    if (!has.skel) {
-      skel.type <- data@skeleton.type
-      skel.delta.t <- data@skelmap.delta.t
-      skeleton <- data@skeleton
-    }
-
-    if (fes && tes) {
-      from.trans <- fromEstimationScale
-      to.trans <- toEstimationScale
-    } else {
-      from.trans <- data@from.trans
-      to.trans <- data@to.trans
-    }
-
-    tryCatch(
-      pomp.internal(
-        data=data@data,
-        times=times,
-        t0=t0,
-        rprocess=rprocess,
-        dprocess=dprocess,
-        rmeasure=rmeasure,
-        dmeasure=dmeasure,
-        dprior=dprior,
-        rprior=rprior,
-        skeleton=skeleton,
-        skel.type=skel.type,
-        skel.delta.t=skel.delta.t,
-        initializer=initializer,
-        covar=covar,
-        tcovar=tcovar,
-        obsnames=obsnames,
-        statenames=statenames,
-        paramnames=paramnames,
-        covarnames=covarnames,
-        zeronames=zeronames,
-        PACKAGE=PACKAGE,
-        fromEstimationScale=from.trans,
-        toEstimationScale=to.trans,
-        params=params,
-        globals=globals,
-        cdir=cdir,
-        cfile=cfile,
-        shlib.args=shlib.args,
-        .solibs=data@solibs,
-        userdata=data@userdata,
-        ...
-      ),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-  } else if (is.data.frame(data)) {
-    ## 'data' is a data frame:
-    ## construct a pomp object de novo
-
-      ## preliminary error checking
-      if (missing(times)) stop(sQuote("times")," is a required argument",call.=FALSE)
-      if (missing(t0)) stop(sQuote("t0")," is a required argument",call.=FALSE)
-      if ((is.numeric(times) && (times<1 || times>ncol(data) ||times!=as.integer(times))) ||
-          (is.character(times) && (!(times%in%names(data)))) ||
-          (!is.numeric(times) && !is.character(times)) ||
-          length(times)!=1) {
-        stop(ep,"when ",sQuote("data")," is a data frame, ",sQuote("times"),
-             " must identify a single column of ",sQuote("data"),
-             " either by name or by index.",call.=FALSE)
-      }
-      if (is.numeric(times)) {
-        tpos <- as.integer(times)
-      } else if (is.character(times)) {
-        tpos <- match(times,names(data))
-      }
-      times <- data[[tpos]]
-      data <- do.call(rbind, lapply(data[-tpos], as.numeric))
-
-    if (missing(initializer)) initializer <- NULL
-    if (missing(rprocess)) rprocess <- NULL
-    if (missing(dprocess)) dprocess <- NULL
-    if (missing(rprior)) rprior <- NULL
-    if (missing(dprior)) dprior <- NULL
-
-    if (missing(params)) params <- numeric(0)
-    if (missing(covar)) covar <- NULL
-    if (missing(tcovar)) tcovar <- NULL
-    if (missing(zeronames)) zeronames <- NULL
-
-    if (!has.skel) skeleton <- NULL
-    if (!rmg) rmeasure <- NULL
-    if (!dmg) dmeasure <- NULL
-    if (fes && tes) {
-      from.trans <- fromEstimationScale
-      to.trans <- toEstimationScale
-    } else {
-      from.trans <- NULL
-      to.trans <- NULL
-    }
-
-    tryCatch(
-      pomp.internal(
-        data=data,
-        times=times,
-        t0=t0,
-        rprocess=rprocess,
-        dprocess=dprocess,
-        rmeasure=rmeasure,
-        dmeasure=dmeasure,
-        dprior=dprior,
-        rprior=rprior,
-        skeleton=skeleton,
-        skel.type=skel.type,
-        skel.delta.t=skel.delta.t,
-        initializer=initializer,
-        params=params,
-        covar=covar,
-        tcovar=tcovar,
-        obsnames=obsnames,
-        statenames=statenames,
-        paramnames=paramnames,
-        covarnames=covarnames,
-        zeronames=zeronames,
-        PACKAGE=PACKAGE,
-        fromEstimationScale=from.trans,
-        toEstimationScale=to.trans,
-        globals=globals,
-        cdir=cdir,
-        cfile=cfile,
-        shlib.args=shlib.args,
-        ...
-      ),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-  } else {
-    stop(ep,sQuote("data"),
-         " must be a data frame or an object of class ",sQuote("pomp"),
-         call.=FALSE)
-  }
 }
