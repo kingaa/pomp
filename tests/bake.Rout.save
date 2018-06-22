@@ -24,24 +24,13 @@ Type 'q()' to quit R.
 > 
 > set.seed(5499)
 > w1 <- runif(2)
-> freeze({runif(5)},seed=499586)
-[1] 0.672 0.509 0.064 0.367 0.715
-attr(,"seed")
-[1] 5e+05
-attr(,"system.time")
-   user  system elapsed 
-      0       0       0 
+> w4 <- freeze({runif(5)},seed=499586)
 > w2 <- runif(2)
-> freeze(runif(5),seed=499586)
-[1] 0.672 0.509 0.064 0.367 0.715
-attr(,"seed")
-[1] 5e+05
-attr(,"system.time")
-   user  system elapsed 
-      0       0       0 
+> w5 <- freeze(runif(5),seed=499586)
 > set.seed(5499)
 > w3 <- runif(4)
 > stopifnot(all.equal(c(w1,w2),w3))
+> stopifnot(all(w4==w5))
 > 
 > set.seed(32765883)
 > x1 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
