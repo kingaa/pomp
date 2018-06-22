@@ -1,10 +1,17 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.16.4}{
+  \itemize{
+    \item Messages from the compiler resulting from attempts to compile C snippets are now suppressed on all platforms except in case of failure.
+    Setting \code{verbose=TRUE} forces display of these messages.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.16.3}{
   \itemize{
     \item Fix a minor bugs in \code{spect}.
     \item Improve test coverage.
     \item \code{spect.match} has been refactored, with small changes to the interface.
+    \item \code{pomp} now handles specification of workhorse functions (i.e., \code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, \code{initializer}, \code{skeleton}, \code{rprior}, \code{dprior}, \code{fromEstimationScale}, \code{toEstimationScale}) as \code{NULL} more consistently.
   }
 }
 \section{Changes in \pkg{pomp} version 1.16.2}{
