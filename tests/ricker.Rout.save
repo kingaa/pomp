@@ -153,12 +153,12 @@ summary of covariates:
  Max.   :3.0  
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x2717890>
-<environment: 0x324f930>
+<bytecode: 0x3a3e098>
+<environment: 0x46bb458>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x2717e08>
-<environment: 0x324f930>
+<bytecode: 0x3a3e3e0>
+<environment: 0x46bb458>
 measurement model simulator, rmeasure = function (x, t, params, ...) 
 x
 measurement model density, dmeasure = function (x, y, t, params, log, ...) 
@@ -167,7 +167,7 @@ prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton (map) = function (x, t, params, ...) 
 x
-<environment: 0x324e2d0>
+<environment: 0x466e7c8>
 initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
@@ -181,7 +181,10 @@ Warning messages:
 Error : in 'pomp': 'measurement.model' takes formulae as arguments
 > try(pomp(ricker,measurement.model=list()))
 Error : in 'pomp': to use 'measurement.model' you must provide at least one formula
-> pomp(ricker,skeleton=NULL) -> po
+> pomp(ricker,skeleton=NULL,dprocess=NULL,dmeasure=NULL,
++      rmeasure=NULL,rprocess=NULL,dprior=NULL,rprior=NULL,
++      initializer=NULL,fromEstimationScale=NULL,
++      toEstimationScale=NULL) -> po
 > show(po)
 51 records of 1 observables, recorded from t = 0 to 50 
 summary of data:
@@ -193,43 +196,22 @@ summary of data:
  3rd Qu.: 71.00  
  Max.   :275.00  
 zero time, t0 = 0
-process model simulator, rprocess = function (xstart, times, params, ..., zeronames = character(0), 
-    tcovar, covar, .getnativesymbolinfo = TRUE) 
-{
-    tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
-        times = times, params = params, deltat = object@delta.t, 
-        method = 2L, zeronames = zeronames, tcovar = tcovar, 
-        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
-        error = function(e) {
-            stop(ep, conditionMessage(e), call. = FALSE)
-        })
-}
-<bytecode: 0x24b2ee8>
-<environment: 0x1d1b560>
+process model simulator, rprocess = function (xstart, times, params, ...) 
+stop(sQuote("rprocess"), " not specified", call. = FALSE)
+<bytecode: 0x3a3e098>
+<environment: 0x3a42d80>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x2717e08>
-<environment: 0x2712c08>
-measurement model simulator, rmeasure = native function '_ricker_poisson_rmeasure', dynamically loaded from 'pomp'
-measurement model density, dmeasure = native function '_ricker_poisson_dmeasure', dynamically loaded from 'pomp'
+<bytecode: 0x3a3e3e0>
+<environment: 0x3a42d80>
+measurement model simulator, rmeasure = not specified
+measurement model density, dmeasure = not specified
 prior simulator, rprior = not specified
-prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
+prior density, dprior = not specified
 skeleton = not specified
 initializer = not specified
-parameter transformation (to estimation scale) = function (params, ...) 
-{
-    params[c("r", "sigma", "phi", "c", "N.0")] <- log(params[c("r", 
-        "sigma", "phi", "c", "N.0")])
-    params
-}
-<environment: 0x35564a8>
-parameter transformation (from estimation scale) = function (params, ...) 
-{
-    params[c("r", "sigma", "phi", "c", "N.0")] <- exp(params[c("r", 
-        "sigma", "phi", "c", "N.0")])
-    params
-}
-<environment: 0x35564a8>
+parameter transformation (to estimation scale) = not specified
+parameter transformation (from estimation scale) = not specified
 parameter(s):
        r    sigma      phi        c      N.0      e.0 
 44.70118  0.30000 10.00000  1.00000  7.00000  0.00000 

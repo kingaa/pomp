@@ -85,7 +85,10 @@ try(pomp(as.data.frame(ricker),times="time",t0=0,
   dmeasure=function(x,y,t,params,log,...)1))
 try(pomp(ricker,measurement.model=3))
 try(pomp(ricker,measurement.model=list()))
-pomp(ricker,skeleton=NULL) -> po
+pomp(ricker,skeleton=NULL,dprocess=NULL,dmeasure=NULL,
+     rmeasure=NULL,rprocess=NULL,dprior=NULL,rprior=NULL,
+     initializer=NULL,fromEstimationScale=NULL,
+     toEstimationScale=NULL) -> po
 show(po)
 try(trajectory(po))
 

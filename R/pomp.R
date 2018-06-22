@@ -66,6 +66,10 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
   }
 
+  ## by default, use flat improper prior
+  if (missing(dprior))
+    dprior <- pomp.fun(f="_pomp_default_dprior",PACKAGE="pomp")
+
   if (missing(globals)) globals <- NULL
   if (missing(cdir)) cdir <- NULL
   if (missing(cfile)) cfile <- NULL
@@ -85,13 +89,12 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     if (missing(times)) times <- data@times
     if (missing(t0)) t0 <- data@t0
 
-    if (!rmg) rmeasure <- data@rmeasure
-    if (!dmg) dmeasure <- data@dmeasure
+    if (missing(rmeasure)) rmeasure <- data@rmeasure
+    if (missing(dmeasure)) dmeasure <- data@dmeasure
 
     if (missing(rprocess)) rprocess <- data@rprocess
     if (missing(dprocess)) dprocess <- data@dprocess
     if (missing(rprior)) rprior <- data@rprior
-    if (missing(dprior)) dprior <- data@dprior
     if (missing(initializer)) initializer <- data@initializer
 
     if (missing(params)) params <- data@params
@@ -180,7 +183,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     if (missing(rprocess)) rprocess <- NULL
     if (missing(dprocess)) dprocess <- NULL
     if (missing(rprior)) rprior <- NULL
-    if (missing(dprior)) dprior <- NULL
 
     if (missing(params)) params <- numeric(0)
     if (missing(covar)) covar <- NULL
@@ -259,8 +261,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   if (missing(userdata)) userdata <- list()
   added.userdata <- list(...)
   if (length(added.userdata)>0) {
-    message("In ",sQuote("pomp"),
-            ": the following unrecognized argument(s) ",
+    message("In ",sQuote("pomp"),": the following unrecognized argument(s) ",
             "will be stored for use by user-defined functions: ",
             paste(sQuote(names(added.userdata)),collapse=","))
     userdata[names(added.userdata)] <- added.userdata
@@ -462,7 +463,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   )
 
   ## type of skeleton (map or vectorfield)
-  ## skel.delta.t has no meaning in the latter case
+  ## skel.delta.t has no meaning in the vectorfield case
   skel.type <- match.arg(skel.type,c("map","vectorfield","undef"))
   skel.delta.t <- as.numeric(skel.delta.t)
   if (skel.delta.t <= 0)
@@ -508,22 +509,17 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   )
 
   ## handle dprior
-  if (is.null(dprior)) {
-    ## by default, use flat improper prior
-    dprior <- pomp.fun(f="_pomp_default_dprior",PACKAGE="pomp")
-  } else {
-    dprior <- pomp.fun(
-      f=dprior,
-      PACKAGE=PACKAGE,
-      proto=quote(dprior(params,log,...)),
-      slotname="dprior",
-      libname=libname,
-      statenames=statenames,
-      paramnames=paramnames,
-      obsnames=obsnames,
-      covarnames=covarnames
-    )
-  }
+  dprior <- pomp.fun(
+    f=dprior,
+    PACKAGE=PACKAGE,
+    proto=quote(dprior(params,log,...)),
+    slotname="dprior",
+    libname=libname,
+    statenames=statenames,
+    paramnames=paramnames,
+    obsnames=obsnames,
+    covarnames=covarnames
+  )
 
   ## handle parameter transformations
   from.trans <- pomp.fun(
@@ -551,8 +547,8 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   )
 
   has.trans <- !is.null(fromEstimationScale) &&
-    from.trans@mode!=pompfunmode$undef &&
-    to.trans@mode!=pompfunmode$undef
+    from.trans@mode != pompfunmode$undef &&
+    to.trans@mode != pompfunmode$undef
 
   ## check to make sure 'covars' is included as an argument where needed
   if (nrow(covar) > 0) {
