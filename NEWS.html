@@ -7,6 +7,17 @@
 
 <h2>News for package &lsquo;pomp&rsquo;</h2>
 
+<h3>Changes in <span class="pkg">pomp</span> version 1.16.4</h3>
+
+
+<ul>
+<li><p> Messages from the compiler resulting from attempts to compile C snippets are now suppressed on all platforms except in case of failure.
+Setting <code>verbose=TRUE</code> forces display of these messages.
+</p>
+</li></ul>
+
+
+
 <h3>Changes in <span class="pkg">pomp</span> version 1.16.3</h3>
 
 
@@ -18,6 +29,9 @@
 </p>
 </li>
 <li> <p><code>spect.match</code> has been refactored, with small changes to the interface.
+</p>
+</li>
+<li> <p><code>pomp</code> now handles specification of workhorse functions (i.e., <code>rprocess</code>, <code>dprocess</code>, <code>rmeasure</code>, <code>dmeasure</code>, <code>initializer</code>, <code>skeleton</code>, <code>rprior</code>, <code>dprior</code>, <code>fromEstimationScale</code>, <code>toEstimationScale</code>) as <code>NULL</code> more consistently.
 </p>
 </li></ul>
 
