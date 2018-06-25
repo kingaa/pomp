@@ -517,9 +517,9 @@ pomp(data = data.frame(t = 1:100, y = NA),
      covar = data.frame(t=0:100,K=seq(from=50,to=200,length=101)),
      tcovar = "t",
      rprocess = discrete.time.sim(Csnippet("double e = rnorm(0,sigma);
-                                            n = r*n*exp(1-n/K+e);"), delta.t = 1),
-     skeleton = map(Csnippet("Dn = r*n*exp(1-n/K);"), delta.t = 1),
-     rmeasure = Csnippet("y = rpois(n);"),
+                                            n = n*exp(r*(1-n/K)+e);"), delta.t = 1),
+     skeleton = map(Csnippet("Dn = n*exp(r*(1-n/K));"), delta.t = 1),
+     rmeasure = Csnippet("y = rnbinom_mu(theta,n);"),
      dmeasure = Csnippet("lik = dpois(y,n,give_log);"),
      rprior = Csnippet("r = rgamma(1,1); sigma = rgamma(1,1);"),
      dprior = Csnippet("lik = dgamma(r,1,1,1) + dgamma(sigma,1,1,1);
@@ -527,12 +527,12 @@ pomp(data = data.frame(t = 1:100, y = NA),
      initializer = Csnippet("n = n_0;"),
      toEstimationScale = Csnippet("Tr = log(r); Tsigma = log(sigma);"),
      fromEstimationScale = Csnippet("Tr = exp(r); Tsigma = exp(sigma);"),
-     paramnames = c("n_0", "r", "sigma"),
+     paramnames = c("n_0", "r", "sigma","theta"),
      statenames = "n") -> rick
 
 ## fill it with simulated data:
 
-rick <- simulate(rick, params = c(r=17, sigma = 0.1, n_0 = 50))
+rick <- simulate(rick, params = c(r=log(17), sigma = 0.1, theta=1, n_0 = 50))
 plot(rick)
 
 \dontrun{
