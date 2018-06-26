@@ -2,26 +2,27 @@
 #include "pomp_internal.h"
 
 SEXP apply_probe_data (SEXP object, SEXP probes) {
-  int nprotect = 0;
   SEXP retval, data, vals;
   int nprobe;
   int i;
 
   nprobe = LENGTH(probes);
-  PROTECT(data = GET_SLOT(object,install("data"))); nprotect++;
-  PROTECT(vals = NEW_LIST(nprobe)); nprotect++;
+  PROTECT(data = GET_SLOT(object,install("data")));
+  PROTECT(vals = NEW_LIST(nprobe));
   SET_NAMES(vals,GET_NAMES(probes));
 
   for (i = 0; i < nprobe; i++) {
-    SET_ELEMENT(vals,i,eval(lang2(VECTOR_ELT(probes,i),data),CLOENV(VECTOR_ELT(probes,i))));
+    SET_ELEMENT(vals,i,eval(PROTECT(lang2(VECTOR_ELT(probes,i),data)),
+                            CLOENV(VECTOR_ELT(probes,i))));
     if (!IS_NUMERIC(VECTOR_ELT(vals,i))) {
       errorcall(R_NilValue,"probe %ld returns a non-numeric result",i+1);
     }
+    UNPROTECT(1);
   }
-  PROTECT(vals = VectorToPairList(vals)); nprotect++;
-  PROTECT(retval = eval(LCONS(install("c"),vals),R_BaseEnv)); nprotect++;
+  PROTECT(vals = VectorToPairList(vals));
+  PROTECT(retval = eval(PROTECT(LCONS(install("c"),vals)),R_BaseEnv));
 
-  UNPROTECT(nprotect);
+  UNPROTECT(5);
   return retval;
 }
 
@@ -96,7 +97,8 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
       }
 
       // evaluate the probe on the simulated data
-      PROTECT(val = eval(lang2(VECTOR_ELT(probes,p),x),CLOENV(VECTOR_ELT(probes,p))));
+      PROTECT(val = eval(PROTECT(lang2(VECTOR_ELT(probes,p),x)),
+                         CLOENV(VECTOR_ELT(probes,p))));
       if (!IS_NUMERIC(val)) {
         errorcall(R_NilValue,"probe %ld returns a non-numeric result",p+1);
       }
@@ -113,7 +115,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
       xp = REAL(retval); yp = REAL(val);
       for (i = 0; i < len; i++) xp[s+nsims*(i+k)] = yp[i];
 
-      UNPROTECT(1);
+      UNPROTECT(2);
     }
 
   }

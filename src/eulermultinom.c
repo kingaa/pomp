@@ -23,28 +23,27 @@ static void deulermultinom_multi (int *n, int *ntrans, double *size, double *rat
 }
 
 SEXP R_Euler_Multinom (SEXP n, SEXP size, SEXP rate, SEXP dt) {
-  int nprotect = 0;
   int ntrans = length(rate);
   int dim[2];
-  SEXP nn, x;
+  SEXP nn, x, nm;
   if (length(size)>1)
     warningcall(R_NilValue,"in 'reulermultinom': only the first element of 'size' is meaningful");
   if (length(dt)>1)
     warningcall(R_NilValue,"in 'reulermultinom': only the first element of 'dt' is meaningful");
-  PROTECT(nn = AS_INTEGER(n)); nprotect++;
+  PROTECT(nn = AS_INTEGER(n));
   dim[0] = ntrans;
   dim[1] = INTEGER(nn)[0];
-  PROTECT(x = makearray(2,dim)); nprotect++;
-  setrownames(x,GET_NAMES(rate),2);
+  PROTECT(x = makearray(2,dim));
+  PROTECT(nm = GET_NAMES(rate));
+  setrownames(x,nm,2);
   GetRNGstate();
   reulermultinom_multi(INTEGER(nn),&ntrans,REAL(size),REAL(rate),REAL(dt),REAL(x));
   PutRNGstate();
-  UNPROTECT(nprotect);
+  UNPROTECT(3);
   return x;
 }
 
 SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP dt, SEXP log) {
-  int nprotect = 0;
   int ntrans = length(rate);
   int *dim, n;
   SEXP f;
@@ -56,9 +55,9 @@ SEXP D_Euler_Multinom (SEXP x, SEXP size, SEXP rate, SEXP dt, SEXP log) {
     warningcall(R_NilValue,"in 'deulermultinom': only the first element of 'size' is meaningful");
   if (length(dt)>1)
     warningcall(R_NilValue,"in 'deulermultinom': only the first element of 'dt' is meaningful");
-  PROTECT(f = NEW_NUMERIC(n)); nprotect++;
+  PROTECT(f = NEW_NUMERIC(n));
   deulermultinom_multi(&n,&ntrans,REAL(size),REAL(rate),REAL(dt),REAL(x),INTEGER(log),REAL(f));
-  UNPROTECT(nprotect);
+  UNPROTECT(1);
   return f;
 }
 

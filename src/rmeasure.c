@@ -30,14 +30,14 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
-  nvars = dim[0]; nrepsx = dim[1]; 
+  nvars = dim[0]; nrepsx = dim[1];
 
   if (ntimes != dim[2])
     errorcall(R_NilValue,"in 'rmeasure': length of 'times' and 3rd dimension of 'x' do not agree");
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
-  npars = dim[0]; nrepsp = dim[1]; 
+  npars = dim[0]; nrepsp = dim[1];
 
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
@@ -51,7 +51,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
   PROTECT(Onames = GET_ROWNAMES(GET_DIMNAMES(GET_SLOT(object,install("data"))))); nprotect++;
-    
+
   // set up the covariate table
   covariate_table = make_covariate_table(object,&ncovars);
 
@@ -62,7 +62,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   {
     int dim[3] = {nobs, nreps, ntimes};
     const char *dimnm[3] = {"variable","rep","time"};
-    PROTECT(Y = makearray(3,dim)); nprotect++; 
+    PROTECT(Y = makearray(3,dim)); nprotect++;
     setrownames(Y,Onames,3);
     fixdimnames(Y,dimnm,3);
   }
@@ -117,7 +117,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
     errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'"); // # nocov
 
-    break;
+  break;
 
   }
 
@@ -126,115 +126,116 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   case Rfun:			// R function
 
-    {
-      int first = 1;
-      int use_names = 0;
-      double *yt = REAL(Y);
-      double *time = REAL(times);
-      double *tp = REAL(tvec);
-      double *cp = REAL(cvec);
-      double *xp = REAL(xvec);
-      double *pp = REAL(pvec);
-      double *xs = REAL(x);
-      double *ps = REAL(params);
-      double *ys;
-      int *posn;
-      int i, j, k;
+  {
+    int first = 1;
+    int use_names = 0;
+    double *yt = REAL(Y);
+    double *time = REAL(times);
+    double *tp = REAL(tvec);
+    double *cp = REAL(cvec);
+    double *xp = REAL(xvec);
+    double *pp = REAL(pvec);
+    double *xs = REAL(x);
+    double *ps = REAL(params);
+    double *ys;
+    int *posn;
+    int i, j, k;
 
-      for (k = 0; k < ntimes; k++, time++) { // loop over times
+    for (k = 0; k < ntimes; k++, time++) { // loop over times
 
-	R_CheckUserInterrupt();	// check for user interrupt
+      R_CheckUserInterrupt();	// check for user interrupt
 
-	*tp = *time;		// copy the time
-	table_lookup(&covariate_table,*tp,cp); // interpolate the covariates
-    
-	for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
+      *tp = *time;		// copy the time
+      table_lookup(&covariate_table,*tp,cp); // interpolate the covariates
 
-	  // copy the states and parameters into place
-	  for (i = 0; i < nvars; i++) xp[i] = xs[i+nvars*((j%nrepsx)+nrepsx*k)];
-	  for (i = 0; i < npars; i++) pp[i] = ps[i+npars*(j%nrepsp)];
-	
-	  if (first) {
-	    // evaluate the call
-	    PROTECT(ans = eval(fcall,rho)); nprotect++;
-	    if (LENGTH(ans) != nobs) {
-	      errorcall(R_NilValue,"in 'rmeasure': user 'rmeasure' returns a vector of %d observables but %d are expected: compare 'data' slot?",
-		    LENGTH(ans),nobs);
-	    }
+      for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
 
-	    // get name information to fix potential alignment problems
-	    PROTECT(nm = GET_NAMES(ans)); nprotect++;
-	    use_names = !isNull(nm);
-	    if (use_names) {		// match names against names from data slot
-	      posn = INTEGER(PROTECT(matchnames(Onames,nm,"observables"))); nprotect++;
-	    } else {
-	      posn = 0;
-	    }
+        // copy the states and parameters into place
+        for (i = 0; i < nvars; i++) xp[i] = xs[i+nvars*((j%nrepsx)+nrepsx*k)];
+        for (i = 0; i < npars; i++) pp[i] = ps[i+npars*(j%nrepsp)];
 
-	    ys = REAL(AS_NUMERIC(ans));
+        if (first) {
+          // evaluate the call
+          PROTECT(ans = eval(fcall,rho)); nprotect++;
+          if (LENGTH(ans) != nobs) {
+            errorcall(R_NilValue,"in 'rmeasure': user 'rmeasure' returns a vector of %d observables but %d are expected: compare 'data' slot?",
+                      LENGTH(ans),nobs);
+          }
 
-	    first = 0;
+          // get name information to fix potential alignment problems
+          PROTECT(nm = GET_NAMES(ans)); nprotect++;
+          use_names = !isNull(nm);
+          if (use_names) {		// match names against names from data slot
+            posn = INTEGER(PROTECT(matchnames(Onames,nm,"observables"))); nprotect++;
+          } else {
+            posn = 0;
+          }
 
-	  } else {
+          ys = REAL(AS_NUMERIC(ans));
 
-	    ys = REAL(AS_NUMERIC(eval(fcall,rho)));
+          first = 0;
 
-	  }
+        } else {
 
-	  if (use_names) {
-	    for (i = 0; i < nobs; i++) yt[posn[i]] = ys[i];
-	  } else {
-	    for (i = 0; i < nobs; i++) yt[i] = ys[i];
-	  }
-      
-	}
+          ys = REAL(AS_NUMERIC(PROTECT(eval(fcall,rho))));
+          UNPROTECT(1);
+
+        }
+
+        if (use_names) {
+          for (i = 0; i < nobs; i++) yt[posn[i]] = ys[i];
+        } else {
+          for (i = 0; i < nobs; i++) yt[i] = ys[i];
+        }
+
       }
     }
+  }
 
     break;
 
   case native: 			// native routine
 
-    {
-      double *yt = REAL(Y);
-      double *time = REAL(times);
-      double *xs = REAL(x);
-      double *ps = REAL(params);
-      double *cp = REAL(cvec);
-      double *xp, *pp;
-      int j, k;
+  {
+    double *yt = REAL(Y);
+    double *time = REAL(times);
+    double *xs = REAL(x);
+    double *ps = REAL(params);
+    double *cp = REAL(cvec);
+    double *xp, *pp;
+    int j, k;
 
-      set_pomp_userdata(fcall);
-      GetRNGstate();
+    set_pomp_userdata(fcall);
+    GetRNGstate();
 
-      for (k = 0; k < ntimes; k++, time++) { // loop over times
+    for (k = 0; k < ntimes; k++, time++) { // loop over times
 
-	R_CheckUserInterrupt();	// check for user interrupt
+      R_CheckUserInterrupt();	// check for user interrupt
 
-	// interpolate the covar functions for the covariates
-	table_lookup(&covariate_table,*time,cp);
-    
-	for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
-	
-	  xp = &xs[nvars*((j%nrepsx)+nrepsx*k)];
-	  pp = &ps[npars*(j%nrepsp)];
-	
-	  (*ff)(yt,xp,pp,oidx,sidx,pidx,cidx,ncovars,cp,*time);
-      
-	}
+      // interpolate the covar functions for the covariates
+      table_lookup(&covariate_table,*time,cp);
+
+      for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
+
+        xp = &xs[nvars*((j%nrepsx)+nrepsx*k)];
+        pp = &ps[npars*(j%nrepsp)];
+
+        (*ff)(yt,xp,pp,oidx,sidx,pidx,cidx,ncovars,cp,*time);
+
       }
-
-      PutRNGstate();
-      unset_pomp_userdata();
     }
-    
+
+    PutRNGstate();
+    unset_pomp_userdata();
+  }
+
     break;
 
   default:
 
     errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'"); // # nocov
 
-    break;
+  break;
 
   }
 

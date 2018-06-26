@@ -104,16 +104,15 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
 }
 
 SEXP synth_loglik (SEXP ysim, SEXP ydat) {
-  int nprotect = 0;
   SEXP loglik, dim, y;
 
-  PROTECT(y = duplicate(AS_NUMERIC(ydat))); nprotect++;
-  PROTECT(dim = GET_DIM(ysim)); nprotect++;
-  PROTECT(ysim = AS_NUMERIC(ysim)); nprotect++;
-  PROTECT(loglik = NEW_NUMERIC(1)); nprotect++;
+  PROTECT(y = duplicate(AS_NUMERIC(ydat)));
+  PROTECT(dim = GET_DIM(ysim));
+  PROTECT(ysim = AS_NUMERIC(ysim));
+  PROTECT(loglik = NEW_NUMERIC(1));
 
   robust_synth_loglik(REAL(ysim),INTEGER(dim),REAL(y),REAL(loglik));
 
-  UNPROTECT(nprotect);
+  UNPROTECT(4);
   return loglik;
 }

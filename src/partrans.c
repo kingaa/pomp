@@ -38,7 +38,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
     errorcall(R_NilValue,"impossible error"); // # nocov
     break;
   }
-  
+
   // extract 'userdata' as pairlist
   PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
 
@@ -82,7 +82,7 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
       PROTECT(nm = GET_NAMES(ans)); nprotect++;
       if (isNull(nm))
 	errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
-      
+
       // set up matrix to hold the results
       npar2 = LENGTH(ans);
       ndim[0] = npar2; ndim[1] = nreps;
@@ -101,13 +101,13 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
 	pa = REAL(AS_NUMERIC(eval(fcall,rho)));
 	memcpy(pt,pa,npar2*sizeof(double));
       }
-      
+
     } else {			// vector case
-      
+
       PROTECT(tparams = eval(fcall,rho)); nprotect++;
       if (isNull(GET_NAMES(tparams)))
 	errorcall(R_NilValue,"in 'partrans': user transformation functions must return a named numeric vector");
-      
+
     }
 
     break;
@@ -115,11 +115,11 @@ SEXP do_partrans (SEXP object, SEXP params, SEXP dir, SEXP gnsi)
   case native:			// use native routine
 
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
-    
+
     if (qmat) {
       idx = INTEGER(PROTECT(name_index(GET_ROWNAMES(GET_DIMNAMES(params)),pompfun,"paramnames","parameters"))); nprotect++;
     } else {
-      idx = INTEGER(PROTECT(name_index(GET_NAMES(params),pompfun,"paramnames","parameters"))); nprotect++;
+      idx = INTEGER(PROTECT(name_index(PROTECT(GET_NAMES(params)),pompfun,"paramnames","parameters"))); nprotect+=2;
     }
 
     set_pomp_userdata(fcall);

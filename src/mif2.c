@@ -5,26 +5,25 @@
 
 SEXP randwalk_perturbation (SEXP params, SEXP rw_sd)
 {
-  int nprotect = 0;
   double *xp = 0, *rw, *xrw, *xs;
   SEXP Pnames, rwnames, pindex;
   int *dim, *pidx;
   int nrw = 0, npars, nreps;
   int j, k;
 
-  PROTECT(params = duplicate(params)); nprotect++;
+  PROTECT(params = duplicate(params));
 
   // unpack parameter matrix
   xp = REAL(params);
   dim = INTEGER(GET_DIM(params)); npars = dim[0]; nreps = dim[1];
-  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
+  PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params)));
 
   // names of parameters undergoing random walk
-  PROTECT(rwnames = GET_NAMES(rw_sd)); nprotect++; 
+  PROTECT(rwnames = GET_NAMES(rw_sd));
   nrw = LENGTH(rwnames); rw = REAL(rw_sd);
 
   // indices of parameters undergoing random walk
-  PROTECT(pindex = matchnames(Pnames,rwnames,"parameters")); nprotect++; 
+  PROTECT(pindex = matchnames(Pnames,rwnames,"parameters"));
   pidx = INTEGER(pindex);
 
   GetRNGstate();
@@ -37,6 +36,6 @@ SEXP randwalk_perturbation (SEXP params, SEXP rw_sd)
 
   PutRNGstate();
 
-  UNPROTECT(nprotect);
+  UNPROTECT(4);
   return(params);
 }

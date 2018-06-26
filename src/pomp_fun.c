@@ -33,41 +33,41 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
       PROTECT(nf = GET_SLOT(pfun,install("native.fun"))); nprotect++;
       PROTECT(pack = GET_SLOT(pfun,install("PACKAGE"))); nprotect++;
       if (LENGTH(pack) < 1) {
-	PROTECT(pack = mkString("")); nprotect++;
+        PROTECT(pack = mkString("")); nprotect++;
       }
 
       switch (*mode) {
-      case native: 
-	{
-	  SEXP nsi;
-	  PROTECT(nsi = eval(lang3(install("getNativeSymbolInfo"),nf,pack),R_BaseEnv)); nprotect++;
-	  PROTECT(f = getListElement(nsi,"address")); nprotect++;
-	}
-	break;
+      case native:
+      {
+        SEXP nsi;
+        PROTECT(nsi = eval(PROTECT(lang3(install("getNativeSymbolInfo"),nf,pack)),R_BaseEnv)); nprotect += 2;
+        PROTECT(f = getListElement(nsi,"address")); nprotect++;
+      }
+        break;
 
       case regNative:
-	{
-	  // Before version 3.4.0, R_MakeExternalPtrFn is not part of the R API.
-	  // Therefore, we must use some trickery to avoid the ISO C proscription of
-	  //     (void *) <-> (function *) conversion.
-	  const char *fname, *pkg;
-	  fname = (const char *) CHAR(STRING_ELT(nf,0));
-	  pkg = (const char *) CHAR(STRING_ELT(pack,0));
+      {
+        // Before version 3.4.0, R_MakeExternalPtrFn is not part of the R API.
+        // Therefore, we must use some trickery to avoid the ISO C proscription of
+        //     (void *) <-> (function *) conversion.
+        const char *fname, *pkg;
+        fname = (const char *) CHAR(STRING_ELT(nf,0));
+        pkg = (const char *) CHAR(STRING_ELT(pack,0));
 #if (R_VERSION < 197632) // before 3.4.0
-	  // This is cadged from 'R_MakeExternalPtrFn'.
-	  union {void *p; DL_FUNC fn;} trick;
-	  trick.fn = R_GetCCallable(pkg,fname);
-	  PROTECT(f = R_MakeExternalPtr(trick.p,R_NilValue,R_NilValue)); nprotect++;
+        // This is cadged from 'R_MakeExternalPtrFn'.
+        union {void *p; DL_FUNC fn;} trick;
+        trick.fn = R_GetCCallable(pkg,fname);
+        PROTECT(f = R_MakeExternalPtr(trick.p,R_NilValue,R_NilValue)); nprotect++;
 #else
-	  DL_FUNC fn;
-	  fn = R_GetCCallable(pkg,fname);
-	  PROTECT(f = R_MakeExternalPtrFn(fn,R_NilValue,R_NilValue)); nprotect++;
+        DL_FUNC fn;
+        fn = R_GetCCallable(pkg,fname);
+        PROTECT(f = R_MakeExternalPtrFn(fn,R_NilValue,R_NilValue)); nprotect++;
 #endif
-	}
-	break;
-      
+      }
+        break;
+
       case Rfun: case undef: default:
-	break;			// # nocov
+        break;			// # nocov
       }
 
       SET_SLOT(pfun,install("address"),f);
@@ -83,11 +83,11 @@ SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode)
     break;
 
   case undef: default:
-    {
-      const char *purp = (const char *) CHAR(STRING_ELT(GET_SLOT(pfun,install("purpose")),0));
+  {
+    const char *purp = (const char *) CHAR(STRING_ELT(GET_SLOT(pfun,install("purpose")),0));
 
-      errorcall(R_NilValue,"operation cannot be completed: %s has not been specified",purp);
-    }
+    errorcall(R_NilValue,"operation cannot be completed: %s has not been specified",purp);
+  }
 
   }
 

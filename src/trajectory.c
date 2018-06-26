@@ -10,7 +10,7 @@ static void iterate_map_native (double *X, double *time, double *p,
 				int ntimes, int nvars, int npars, int ncovars, int nzeros, int nreps,
 				int *sidx, int *pidx, int *cidx, int *zidx,
 				lookup_table *covar_table,
-				pomp_skeleton *ff, SEXP args) 
+				pomp_skeleton *ff, SEXP args)
 {
   double *covars = NULL;
   int nsteps;
@@ -38,7 +38,7 @@ static void iterate_map_native (double *X, double *time, double *p,
   unset_pomp_userdata();
 }
 
-static void iterate_map_R (double *X, double *time, double *p, 
+static void iterate_map_R (double *X, double *time, double *p,
 			   double deltat, double t, double *x,
 			   double *tp, double *xp, double *pp, double *cp,
 			   int ntimes, int nvars, int npars, int nzeros, int nreps,
@@ -56,7 +56,7 @@ static void iterate_map_R (double *X, double *time, double *p,
 
   for (k = 0; k < ntimes; k++, time++, X += nvars*nreps) {
     R_CheckUserInterrupt();
-    nsteps = num_map_steps(t,*time,deltat); 
+    nsteps = num_map_steps(t,*time,deltat);
     for (i = 0; i < nzeros; i++)
       for (j = 0, xs = &x[zidx[i]]; j < nreps; j++, xs += nvars)
 	*xs = 0.0;
@@ -79,9 +79,10 @@ static void iterate_map_R (double *X, double *time, double *p,
 	  fs = REAL(AS_NUMERIC(ans));
 	  first = 0;
 	} else {
-	  fs = REAL(AS_NUMERIC(eval(fcall,rho)));
+	  fs = REAL(AS_NUMERIC(PROTECT(eval(fcall,rho))));
+	  UNPROTECT(1);
 	}
-	if (use_names) 
+	if (use_names)
 	  for (i = 0; i < nvars; i++) xs[posn[i]] = fs[i];
 	else
 	  for (i = 0; i < nvars; i++) xs[i] = fs[i];
@@ -111,7 +112,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   deltat = *(REAL(GET_SLOT(object,install("skelmap.delta.t"))));
   t = *(REAL(AS_NUMERIC(t0)));
 
-  PROTECT(x0 = as_matrix(duplicate(x0))); nprotect++;
+  PROTECT(x0 = as_matrix(PROTECT(duplicate(x0)))); nprotect += 2;
   dim = INTEGER(GET_DIM(x0));
   nvars = dim[0]; nreps = dim[1];
 
@@ -128,7 +129,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x0))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
-    
+
   // set up the covariate table
   covariate_table = make_covariate_table(object,&ncovars);
 
@@ -317,7 +318,7 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
     PROTECT(RFUN(rho) = (CLOENV(fn))); nprotect++;
 
     PROTECT(RFUN(Snames) = Snames); nprotect++;
-    
+
     if (!isNull(RFUN(fcall))) R_ReleaseObject(RFUN(fcall));
     if (!isNull(RFUN(rho))) R_ReleaseObject(RFUN(rho));
     if (!isNull(RFUN(Snames))) R_ReleaseObject(RFUN(Snames));
@@ -369,7 +370,7 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   return R_NilValue;
 }
 
-void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, int *ip) 
+void pomp_vf_eval (int *neq, double *t, double *y, double *ydot, double *yout, int *ip)
 {
   switch (COMMON(mode)) {
 

@@ -39,14 +39,14 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
-  nvars = dim[0]; nrepsx = dim[1]; 
+  nvars = dim[0]; nrepsx = dim[1];
 
   if (ntimes != dim[2])
     errorcall(R_NilValue,"in 'dmeasure': length of 'times' and 3rd dimension of 'x' do not agree");
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
-  npars = dim[0]; nrepsp = dim[1]; 
+  npars = dim[0]; nrepsp = dim[1];
 
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
@@ -57,7 +57,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
-    
+
   give_log = *(INTEGER(AS_INTEGER(log)));
 
   // set up the covariate table
@@ -132,7 +132,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   {
     int dim[2] = {nreps, ntimes};
     const char *dimnm[2] = {"rep","time"};
-    PROTECT(F = makearray(2,dim)); nprotect++; 
+    PROTECT(F = makearray(2,dim)); nprotect++;
     fixdimnames(F,dimnm,2);
   }
 
@@ -169,7 +169,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 	  // copy the states and parameters into place
 	  memcpy(xp,&xs[nvars*((j%nrepsx)+nrepsx*k)],nvars*sizeof(double));
 	  memcpy(pp,&ps[npars*(j%nrepsp)],npars*sizeof(double));
-	
+
 	  if (first) {
 	    // evaluate the call
 	    PROTECT(ans = eval(fcall,rho)); nprotect++;
@@ -182,8 +182,8 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
 	  } else {
 
-	    *ft = *(REAL(AS_NUMERIC(eval(fcall,rho))));
-
+	    *ft = *(REAL(AS_NUMERIC(PROTECT(eval(fcall,rho)))));
+	    UNPROTECT(1);
 	  }
 
 	}
@@ -207,19 +207,19 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
       int j, k;
 
       for (k = 0; k < ntimes; k++, time++, yp += nobs) { // loop over times
-	
+
 	R_CheckUserInterrupt();	// check for user interrupt
 
 	// interpolate the covar functions for the covariates
 	table_lookup(&covariate_table,*time,cp);
 
 	for (j = 0; j < nreps; j++, ft++) { // loop over replicates
-	
+
 	  xp = &xs[nvars*((j%nrepsx)+nrepsx*k)];
 	  pp = &ps[npars*(j%nrepsp)];
-	
+
 	  (*ff)(ft,yp,xp,pp,give_log,oidx,sidx,pidx,cidx,ncovars,cp,*time);
-      
+
 	}
       }
     }
