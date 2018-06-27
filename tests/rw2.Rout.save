@@ -1,5 +1,5 @@
 
-R version 3.5.0 (2018-04-23) -- "Joy in Playing"
+R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
 Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -182,8 +182,8 @@ measurement model simulator, rmeasure = function (x, t, params, covars, ...)
     }
     y
 }
-<bytecode: 0x3c8d8d0>
-<environment: 0x15ffba0>
+<bytecode: 0x2ced520>
+<environment: 0x3893e60>
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     f <- 0
@@ -195,8 +195,8 @@ measurement model density, dmeasure = function (y, x, t, params, log, covars, ..
         f
     else exp(f)
 }
-<bytecode: 0x3c8ad00>
-<environment: 0x15ffba0>
+<bytecode: 0x3c8be08>
+<environment: 0x3893e60>
 prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton = not specified
