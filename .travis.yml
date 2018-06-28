@@ -11,8 +11,6 @@ matrix:
   include:
     - os: linux
       env: RVERSION=release
-      r_github_packages:
-        - jimhester/covr
       after_success:
         - grep -q -R "warning" "${RCHECK_DIR}/00install.out"
     - os: linux
