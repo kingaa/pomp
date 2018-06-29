@@ -5,8 +5,8 @@
 
 // implements the Ionides et al. (2006) MIF update rule
 
-SEXP mif_update (SEXP pfp, SEXP theta, SEXP gamma, SEXP varfactor,
-                 SEXP sigma, SEXP pars)
+SEXP mif_update (SEXP pfp, SEXP theta, SEXP gamma, SEXP varfactor, 
+		 SEXP sigma, SEXP pars)
 {
   double *v, *m1, *m2;
   double scal, sig, grad;
@@ -25,8 +25,8 @@ SEXP mif_update (SEXP pfp, SEXP theta, SEXP gamma, SEXP varfactor,
   dim = INTEGER(GET_DIM(FM)); nfm = dim[0]; ntimes = dim[1];
   dim = INTEGER(GET_DIM(PV)); npv = dim[0];
 
-  sidx = INTEGER(PROTECT(MATCHNAMES(PROTECT(sigma),pars,"random-walk SDs")));
-  thidx = INTEGER(PROTECT(MATCHNAMES(PROTECT(theta),pars,"parameters")));
+  sidx = INTEGER(PROTECT(matchnames(PROTECT(GET_NAMES(sigma)),pars,"random-walk SDs")));
+  thidx = INTEGER(PROTECT(matchnames(PROTECT(GET_NAMES(theta)),pars,"parameters")));
   midx = INTEGER(PROTECT(MATCHROWNAMES(FM,pars,"filter-mean variables")));
   vidx = INTEGER(PROTECT(MATCHROWNAMES(PV,pars,"prediction-variance variables")));
 
@@ -38,7 +38,7 @@ SEXP mif_update (SEXP pfp, SEXP theta, SEXP gamma, SEXP varfactor,
     m2 = REAL(FM)+midx[i];
     v = REAL(PV)+vidx[i];
     grad = (*m2-*m1)/(*v);
-    for (j = 1, m1 = m2, m2 += nfm, v += npv; j < ntimes; j++, m1 = m2, m2 += nfm, v += npv)
+    for (j = 1, m1 = m2, m2 += nfm, v += npv; j < ntimes; j++, m1 = m2, m2 += nfm, v += npv) 
       grad += (*m2-*m1)/(*v);
     REAL(newtheta)[thidx[i]] += scal*sig*sig*grad;
   }

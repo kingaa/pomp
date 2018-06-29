@@ -10,7 +10,6 @@
 
 #include "pomp.h"
 
-# define MATCHNAMES(X,N,W) (matchnames(GET_NAMES(X),(N),(W)))
 # define MATCHROWNAMES(X,N,W) (matchnames(GET_ROWNAMES(GET_DIMNAMES(X)),(N),(W)))
 # define MATCHCOLNAMES(X,N,W) (matchnames(GET_COLNAMES(GET_DIMNAMES(X)),(N),(W)))
 
@@ -43,7 +42,7 @@ static R_INLINE SEXP matchnames (SEXP x, SEXP names, const char *where) {
   int *idx, k;
   SEXP index, nm;
   PROTECT(nm = AS_CHARACTER(names));
-  PROTECT(index = match(x,names,0));
+  PROTECT(index = match(x,nm,0));
   idx = INTEGER(index);
   for (k = 0; k < n; k++) {
     if (idx[k]==0)
