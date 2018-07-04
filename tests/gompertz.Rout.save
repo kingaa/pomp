@@ -1,5 +1,5 @@
 
-R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
 Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -50,12 +50,12 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x36bf728>
-<environment: 0x468e168>
+<bytecode: 0x2ab3368>
+<environment: 0x2cd0e98>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x3b94130>
-<environment: 0x3190e70>
+<bytecode: 0x33bb9a8>
+<environment: 0x2e16670>
 measurement model simulator, rmeasure = native function '_gompertz_normal_rmeasure'
 measurement model density, dmeasure = native function '_gompertz_normal_dmeasure'
 prior simulator, rprior = not specified
@@ -66,12 +66,12 @@ parameter transformation (to estimation scale) = function (params, ...)
 {
     log(params)
 }
-<environment: 0x203e670>
+<environment: 0x2053b98>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x203e670>
+<environment: 0x2053b98>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -91,8 +91,8 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x36bf728>
-<environment: 0x468e168>
+<bytecode: 0x2ab3368>
+<environment: 0x2cd0e98>
 > 
 > po <- gompertz
 > coef(po)

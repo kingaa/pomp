@@ -1,5 +1,5 @@
 
-R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
 Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -46,7 +46,7 @@ function (theta, ...)
         Q
     theta
 }
-<environment: 0x43a1448>
+<environment: 0x1649448>
 Warning messages:
 1: In chol.default(rw.var, pivot = TRUE) :
   the matrix is either rank-deficient or indefinite

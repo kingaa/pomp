@@ -1,5 +1,5 @@
 
-R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
 Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -153,12 +153,12 @@ summary of covariates:
  Max.   :3.0  
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x3f40390>
-<environment: 0x42b2460>
+<bytecode: 0x35cdf78>
+<environment: 0x424eca8>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x413ff38>
-<environment: 0x42b2460>
+<bytecode: 0x35ce2c0>
+<environment: 0x424eca8>
 measurement model simulator, rmeasure = function (x, t, params, ...) 
 x
 measurement model density, dmeasure = function (x, y, t, params, log, ...) 
@@ -167,7 +167,7 @@ prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton (map) = function (x, t, params, ...) 
 x
-<environment: 0x42f4bc0>
+<environment: 0x4207610>
 initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
@@ -198,12 +198,12 @@ summary of data:
 zero time, t0 = 0
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x3f40390>
-<environment: 0x4fb3b50>
+<bytecode: 0x35cdf78>
+<environment: 0x35d38b0>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x413ff38>
-<environment: 0x4fb3b50>
+<bytecode: 0x35ce2c0>
+<environment: 0x35d38b0>
 measurement model simulator, rmeasure = not specified
 measurement model density, dmeasure = not specified
 prior simulator, rprior = not specified
