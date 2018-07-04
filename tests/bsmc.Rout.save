@@ -1,5 +1,5 @@
 
-R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
 Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -65,10 +65,9 @@ Error : in 'bsmc': in 'rmvnorm': infinite or missing values in 'x'
 Error : in 'bsmc': 'params' must be supplied
 > 
 > ##Run Liu & West particle filter
-> bsmc(ou2,params=prior,smooth=0.02,seed=49959,Np=100) -> smc
-Warning messages:
-1: in 'bsmc': argument 'seed' now has no effect.  Consider using 'freeze'. 
-2: in 'bsmc': 'Np' is ignored when 'params' is a matrix 
+> bsmc(ou2,params=prior,smooth=0.02,Np=100) -> smc
+Warning message:
+in 'bsmc': 'Np' is ignored when 'params' is a matrix 
 > smc <- bsmc(ou2,est="alpha.2",params=prior,smooth=0.02)
 > prior <- smc$prior
 > post <- smc$post

@@ -32,7 +32,7 @@ coef(garb) <- numeric(0)
 try(garb <- bsmc2(garb))
 
 ##Run Liu & West particle filter
-bsmc2(ou2,params=prior,smooth=0.02,seed=49959,Np=100) -> smc
+bsmc2(ou2,params=prior,smooth=0.02,Np=100) -> smc
 smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
 prior <- smc$prior
 post <- smc$post

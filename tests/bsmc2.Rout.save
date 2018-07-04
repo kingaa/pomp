@@ -1,5 +1,5 @@
 
-R version 3.4.4 (2018-03-15) -- "Someone to Lean On"
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
 Copyright (C) 2018 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -55,10 +55,9 @@ Error : in 'bsmc2': 'rprior' error: operation cannot be completed: rprior has no
 Error : in 'bsmc2': 'params' must be supplied
 > 
 > ##Run Liu & West particle filter
-> bsmc2(ou2,params=prior,smooth=0.02,seed=49959,Np=100) -> smc
-Warning messages:
-1: in 'bsmc2': argument 'seed' now has no effect.  Consider using 'freeze'. 
-2: in 'bsmc2': 'Np' is ignored when 'params' is a matrix 
+> bsmc2(ou2,params=prior,smooth=0.02,Np=100) -> smc
+Warning message:
+in 'bsmc2': 'Np' is ignored when 'params' is a matrix 
 > smc <- bsmc2(ou2,est="alpha.2",params=prior,smooth=0.02)
 > prior <- smc$prior
 > post <- smc$post

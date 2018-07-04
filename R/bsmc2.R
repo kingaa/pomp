@@ -8,8 +8,7 @@
 ## smooth = parameter 'h' from AGM
 
 bsmc2.internal <- function (object, params, Np, est,
-  smooth, tol, seed = NULL,
-  verbose = getOption("verbose"),
+  smooth, tol, verbose = getOption("verbose"),
   max.fail, transform, .getnativesymbolinfo = TRUE,
   ...) {
 
@@ -21,11 +20,6 @@ bsmc2.internal <- function (object, params, Np, est,
   gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
   ptsi.inv <- ptsi.for <- TRUE
   transform <- as.logical(transform)
-
-  if (!is.null(seed))
-    warning(ep,"argument ",sQuote("seed"),
-      " now has no effect.  Consider using ",
-      sQuote("freeze"),".",call.=FALSE)
 
   if (missing(params)) {
     if (length(coef(object))>0) {

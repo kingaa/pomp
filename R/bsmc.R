@@ -32,7 +32,6 @@ bsmc.internal <- function (object, params, Np, est,
   ntries = 1,
   tol = 1e-17,
   lower = -Inf, upper = Inf,
-  seed = NULL,
   verbose = getOption("verbose"),
   max.fail = 0,
   transform = FALSE,
@@ -46,11 +45,6 @@ bsmc.internal <- function (object, params, Np, est,
   gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
   ptsi.inv <- ptsi.for <- TRUE
   transform <- as.logical(transform)
-
-  if (!is.null(seed))
-    warning(ep,"argument ",sQuote("seed"),
-      " now has no effect.  Consider using ",
-      sQuote("freeze"),".",call.=FALSE)
 
   if (missing(params)) {
     if (length(coef(object))>0) {
