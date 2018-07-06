@@ -3,6 +3,7 @@ setGeneric("print",function(x,...)standardGeneric("print"))
 setGeneric("plot",function(x,y,...)standardGeneric("plot"))
 setGeneric("summary",function(object,...)standardGeneric("summary"))
 setGeneric("window",function(x,...)standardGeneric("window"))
+setGeneric("spy",function(object,...)standardGeneric("spy"))
 
 ## constituent components of a 'pomp' object
 setGeneric("dmeasure",function(object,...)standardGeneric("dmeasure"))

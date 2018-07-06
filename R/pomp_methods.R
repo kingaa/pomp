@@ -329,3 +329,20 @@ setMethod(
     invisible(NULL)
   }
 )
+
+setMethod(
+  "spy",
+  signature=signature(object="pomp"),
+  definition=function (object) {
+    if (length(object@solibs) > 0) {
+      f <- tempfile()
+      for (i in seq_along(object@solibs)) {
+        cat(object@solibs[[i]]$src,file=f)
+      }
+      file.show(f)
+      file.remove(f)
+    } else {
+      cat("no C snippets to display\n")
+    }
+  }
+)

@@ -264,7 +264,7 @@ callable.decl <- function (code) {
 
 randomName <- function (size = 4, stem = "") {
   paste0(stem,
-    " Time: ",format(Sys.time(),"%Y-%m-%d %H:%M:%OS3 %z"),
+    "Time: ",format(Sys.time(),"%Y-%m-%d %H:%M:%OS3 %z"),
     " Salt: ",
     paste(
       format(

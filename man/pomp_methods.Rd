@@ -8,6 +8,9 @@
 \alias{print-pomp}
 \alias{show,pomp-method}
 \alias{show-pomp}
+\alias{spy}
+\alias{spy,pomp-method}
+\alias{spy-pomp}
 \alias{time,pomp-method}
 \alias{time-pomp}
 \alias{time<-}
@@ -52,6 +55,7 @@
       oma = c(6, 0, 5, 0), axes = TRUE, \dots)
 \S4method{print}{pomp}(x, \dots)
 \S4method{show}{pomp}(object)
+\S4method{spy}{pomp}(object)
 \S4method{states}{pomp}(object, vars, \dots)
 \S4method{time}{pomp}(x, t0 = FALSE, \dots)
 \S4method{time}{pomp}(object, t0 = FALSE, \dots) <- value
@@ -178,6 +182,7 @@
       By default, \code{start} is the time of the first observation and \code{end} is the time of the last.
     }
     \item{show}{Displays the \code{pomp} object.}
+    \item{spy}{Displays any C snippet files associated with a \code{pomp} object.}
     \item{print}{Print method.}
     \item{plot}{
       Plots the data and state trajectories (if the latter exist).

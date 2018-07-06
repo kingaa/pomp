@@ -32,7 +32,8 @@ exportClasses(
 )
 
 exportMethods(
-    plot,show,print,coerce,summary,logLik,window,"$",
+    plot,show,print,spy,
+    coerce,summary,logLik,window,"$",
     pompLoad,pompUnload,
     dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
     dprior,rprior,

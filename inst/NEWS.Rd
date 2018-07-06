@@ -5,6 +5,7 @@
     \item When altering parameters in a call to \code{probe} on a \code{probed.pomp} object, the new parameters were ignored.
     This bug has been fixed.
     \item \code{mif2}, \code{pfilter}, \code{probe}, \code{probe.match}, and \code{probe.match.objfun} can now gracefully handle a list in the \code{start} or \code{params} arguments.
+    \item New \code{spy} method displays the C snippet file(s) associated with a \code{pomp} object.
   }
 }
 \section{Changes in \pkg{pomp} version 1.17.2}{

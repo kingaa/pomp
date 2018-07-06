@@ -100,15 +100,15 @@ Error : in 'bsmc2': too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.so': status = 1
+Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/RtmpB9yanY/43587/pomp_c330ee47cdf7fd65deb7e5216183eec9.so': status = 1
 compiler messages:
 make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.c -o /tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.o
-/tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.c: In function ‘__pomp_rmeasure’:
-/tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.c:16:1: error: expected ‘;’ before ‘}’ token
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpB9yanY/43587/pomp_c330ee47cdf7fd65deb7e5216183eec9.c -o /tmp/RtmpB9yanY/43587/pomp_c330ee47cdf7fd65deb7e5216183eec9.o
+/tmp/RtmpB9yanY/43587/pomp_c330ee47cdf7fd65deb7e5216183eec9.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpB9yanY/43587/pomp_c330ee47cdf7fd65deb7e5216183eec9.c:16:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.o] Error 1
+make[2]: *** [/tmp/RtmpB9yanY/43587/pomp_c330ee47cdf7fd65deb7e5216183eec9.o] Error 1
 make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
@@ -125,7 +125,7 @@ In addition: Warning messages:
   "/userdata/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 6: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
-  running command 'PKG_CPPFLAGS="-I/userdata/kingaa/projects/Rpkg/library/pomp/include" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.so /tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.c 2>&1' had status 1
+  running command 'PKG_CPPFLAGS="-I/userdata/kingaa/projects/Rpkg/library/pomp/include" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpB9yanY/43587/pomp_c330ee47cdf7fd65deb7e5216183eec9.so /tmp/RtmpB9yanY/43587/pomp_c330ee47cdf7fd65deb7e5216183eec9.c 2>&1' had status 1
 > length(out)
 [1] 675
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)
@@ -181,4 +181,339 @@ mif iteration 1 of 1 completed
 Warning message:
 in 'mif.pfilter': 5 filtering failures occurred. 
 > stopifnot(sum(grepl("filtering failure at time",out))==5)
+> 
+> spy(ricker)
+no C snippets to display
+> capture.output(pompExample(dacca)) -> out
+Warning messages:
+1: In find.package(package, lib.loc, quiet = TRUE) :
+  package 'pomp' found more than once, using the first from
+  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
+2: In library(pomp) : package 'pomp' already present in search()
+3: In find.package(package, lib.loc, quiet = TRUE) :
+  package 'pomp' found more than once, using the first from
+  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
+> spy(dacca)
+/* pomp model file: pomp_340660e70b0638f36be4dfc52330bbb7 */
+/* Time: 2018-07-06 16:41:10.873 -0400 Salt: EE444509B5E4E6D45828ABC6 */
+
+#include <pomp.h>
+#include <R_ext/Rdynload.h>
+
+int nrstage = 3, nbasis = 6; 
+#define tau	(__p[__parindex[0]])
+#define gamma	(__p[__parindex[1]])
+#define eps	(__p[__parindex[2]])
+#define delta	(__p[__parindex[3]])
+#define deltaI	(__p[__parindex[4]])
+#define logomega1	(__p[__parindex[5]])
+#define sd_beta	(__p[__parindex[6]])
+#define beta_trend	(__p[__parindex[7]])
+#define logbeta1	(__p[__parindex[8]])
+#define alpha	(__p[__parindex[9]])
+#define rho	(__p[__parindex[10]])
+#define clin	(__p[__parindex[11]])
+#define S_0	(__p[__parindex[12]])
+#define I_0	(__p[__parindex[13]])
+#define Y_0	(__p[__parindex[14]])
+#define R1_0	(__p[__parindex[15]])
+#define S	(__x[__stateindex[0]])
+#define I	(__x[__stateindex[1]])
+#define Y	(__x[__stateindex[2]])
+#define R1	(__x[__stateindex[3]])
+#define R2	(__x[__stateindex[4]])
+#define R3	(__x[__stateindex[5]])
+#define deaths	(__x[__stateindex[6]])
+#define W	(__x[__stateindex[7]])
+#define count	(__x[__stateindex[8]])
+#define seas1	(__covars[__covindex[0]])
+#define seas2	(__covars[__covindex[1]])
+#define seas3	(__covars[__covindex[2]])
+#define seas4	(__covars[__covindex[3]])
+#define seas5	(__covars[__covindex[4]])
+#define seas6	(__covars[__covindex[5]])
+#define pop	(__covars[__covindex[6]])
+#define dpopdt	(__covars[__covindex[7]])
+#define trend	(__covars[__covindex[8]])
+#define cholera_deaths	(__y[__obsindex[0]])
+#define DS	(__f[__stateindex[0]])
+#define DI	(__f[__stateindex[1]])
+#define DY	(__f[__stateindex[2]])
+#define DR1	(__f[__stateindex[3]])
+#define DR2	(__f[__stateindex[4]])
+#define DR3	(__f[__stateindex[5]])
+#define Ddeaths	(__f[__stateindex[6]])
+#define DW	(__f[__stateindex[7]])
+#define Dcount	(__f[__stateindex[8]])
+#define Ttau	(__pt[__parindex[0]])
+#define Tgamma	(__pt[__parindex[1]])
+#define Teps	(__pt[__parindex[2]])
+#define Tdelta	(__pt[__parindex[3]])
+#define TdeltaI	(__pt[__parindex[4]])
+#define Tlogomega1	(__pt[__parindex[5]])
+#define Tsd_beta	(__pt[__parindex[6]])
+#define Tbeta_trend	(__pt[__parindex[7]])
+#define Tlogbeta1	(__pt[__parindex[8]])
+#define Talpha	(__pt[__parindex[9]])
+#define Trho	(__pt[__parindex[10]])
+#define Tclin	(__pt[__parindex[11]])
+#define TS_0	(__pt[__parindex[12]])
+#define TI_0	(__pt[__parindex[13]])
+#define TY_0	(__pt[__parindex[14]])
+#define TR1_0	(__pt[__parindex[15]])
+#define lik	(__lik[0])
+
+void __pomp_initializer (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
+{
+
+  int k;
+  double sum = S_0+I_0+Y_0;
+  double *R = &R1;
+  const double *R0 = &R1_0;
+  for (k = 0; k < nrstage; k++) sum += R0[k];
+  S = nearbyint(pop*S_0/sum);
+  I = nearbyint(pop*I_0/sum);
+  Y = nearbyint(pop*Y_0/sum);
+  for (k = 0; k < nrstage; k++) R[k] = nearbyint(pop*R0[k]/sum);
+  W = 0;
+  deaths = 0;
+  count = 0;
+ 
+}
+
+
+void __pomp_par_trans (double *__pt, const double *__p, const int *__parindex)
+{
+
+  Ttau = exp(tau);
+  Tgamma = exp(gamma);
+  Teps = exp(eps);
+  Tdelta = exp(delta);
+  TdeltaI = exp(deltaI);
+  Tsd_beta = exp(sd_beta);
+  Talpha = exp(alpha);
+  Trho = exp(rho);
+  Tclin = expit(clin);
+  from_log_barycentric(&TS_0,&S_0,nrstage+3);
+ 
+}
+
+
+void __pomp_par_untrans (double *__pt, const double *__p, const int *__parindex)
+{
+
+  Ttau = log(tau);
+  Tgamma = log(gamma);
+  Teps = log(eps);
+  Tdelta = log(delta);
+  TdeltaI = log(deltaI);
+  Tsd_beta = log(sd_beta);
+  Talpha = log(alpha);
+  Trho = log(rho);
+  Tclin = logit(clin);
+  to_log_barycentric(&TS_0,&S_0,nrstage+3);
+ 
+}
+
+
+void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
+{
+
+  double v, tol = 1.0e-18;
+  v = deaths*tau;
+  if ((count > 0) || (!(R_FINITE(v)))) {
+    cholera_deaths = R_NaReal;
+  } else {
+    cholera_deaths = rnorm(deaths,v+tol);
+  }
+ 
+}
+
+
+void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
+{
+
+  double v, tol = 1.0e-18;
+  v = deaths*tau;
+  if ((count>0.0) || (!(R_FINITE(v)))) {
+    lik = tol;
+  } else {
+    lik = dnorm(cholera_deaths,deaths,v+tol,0)+tol;
+  }
+  if (give_log) lik = log(lik);
+ 
+}
+
+
+void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)
+{
+
+  double births;
+  double infections;
+  double sdeaths;
+  double ideaths;
+  double ydeaths;
+  double rdeaths[nrstage];
+  double disease;
+  double wanings;
+  double passages[nrstage+1];
+  double effI;
+  double neps;
+  double beta;
+  double omega;
+  double dw;
+  double *pt;
+  int j;
+
+  if (count != 0.0) return;
+
+  neps = eps*nrstage;
+
+  beta = exp(dot_product(nbasis,&seas1,&logbeta1)+beta_trend*trend);
+  omega = exp(dot_product(nbasis,&seas1,&logomega1));
+
+  dw = rnorm(0,sqrt(dt));	// white noise
+
+  effI = pow(I/pop,alpha);
+  births = dpopdt + delta*pop;	// births
+
+  passages[0] = gamma*I;	// recovery
+  ideaths = delta*I;	        // natural i deaths
+  disease = deltaI*I;	        // disease death
+  ydeaths = delta*Y;     	// natural rs deaths
+  wanings = rho*Y;		// loss of immunity
+
+  for (pt = &R1, j = 0; j < nrstage; j++, pt++) {
+    rdeaths[j] = *pt*delta;	// natural R deaths
+    passages[j+1] = *pt*neps;	// passage to the next immunity class
+  }
+
+  infections = (omega+(beta+sd_beta*dw/dt)*effI)*S; // infection
+  sdeaths = delta*S;	        // natural S deaths
+
+  S += (births - infections - sdeaths + passages[nrstage] + wanings)*dt;
+  I += (clin*infections - disease - ideaths - passages[0])*dt;
+  Y += ((1-clin)*infections - ydeaths - wanings)*dt;
+  for (pt = &R1, j = 0; j < nrstage; j++, pt++) 
+    *pt += (passages[j] - passages[j+1] - rdeaths[j])*dt;
+  deaths += disease*dt;		// cumulative deaths due to disease
+  W += dw;
+
+  // check for violations of positivity constraints
+  // nonzero 'count' variable signals violation
+  if (S < 0.0) {
+    S = 0.0; I = 0.0; Y = 0.0; 
+    count += 1; 
+  }
+  if (I < 0.0) {
+    I = 0.0; S = 0.0; 
+    count += 1e3; 
+  }
+  if (Y < 0.0) { 
+    Y = 0.0; S = 0.0; 
+    count += 1e6; 
+  }
+  if (deaths < 0.0) { 
+    deaths = 0.0; 
+    count += 1e9; 
+  }
+  for (pt = &R1, j = 0; j < nrstage-1; j++, pt++) {
+    if (*pt < 0.0) {
+      *pt = 0.0; *(pt+1) = 0.0;
+      count += 1e12; 
+    }
+  }
+  if (*pt < 0.0) {
+    *pt = 0.0; S = 0.0;
+    count += 1e12;
+  }
+ 
+}
+
+#undef tau
+#undef gamma
+#undef eps
+#undef delta
+#undef deltaI
+#undef logomega1
+#undef sd_beta
+#undef beta_trend
+#undef logbeta1
+#undef alpha
+#undef rho
+#undef clin
+#undef S_0
+#undef I_0
+#undef Y_0
+#undef R1_0
+#undef S
+#undef I
+#undef Y
+#undef R1
+#undef R2
+#undef R3
+#undef deaths
+#undef W
+#undef count
+#undef seas1
+#undef seas2
+#undef seas3
+#undef seas4
+#undef seas5
+#undef seas6
+#undef pop
+#undef dpopdt
+#undef trend
+#undef cholera_deaths
+#undef DS
+#undef DI
+#undef DY
+#undef DR1
+#undef DR2
+#undef DR3
+#undef Ddeaths
+#undef DW
+#undef Dcount
+#undef Ttau
+#undef Tgamma
+#undef Teps
+#undef Tdelta
+#undef TdeltaI
+#undef Tlogomega1
+#undef Tsd_beta
+#undef Tbeta_trend
+#undef Tlogbeta1
+#undef Talpha
+#undef Trho
+#undef Tclin
+#undef TS_0
+#undef TI_0
+#undef TY_0
+#undef TR1_0
+
+static int __pomp_load_stack = 0;
+
+void __pomp_load_stack_incr (void) {
+  ++__pomp_load_stack;
+}
+
+void __pomp_load_stack_decr (int *val) {
+  *val = --__pomp_load_stack;
+}
+
+void R_init_pomp_340660e70b0638f36be4dfc52330bbb7 (DllInfo *info)
+{
+R_RegisterCCallable("pomp_340660e70b0638f36be4dfc52330bbb7", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_340660e70b0638f36be4dfc52330bbb7", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_340660e70b0638f36be4dfc52330bbb7", "__pomp_initializer", (DL_FUNC) __pomp_initializer);
+R_RegisterCCallable("pomp_340660e70b0638f36be4dfc52330bbb7", "__pomp_par_trans", (DL_FUNC) __pomp_par_trans);
+R_RegisterCCallable("pomp_340660e70b0638f36be4dfc52330bbb7", "__pomp_par_untrans", (DL_FUNC) __pomp_par_untrans);
+R_RegisterCCallable("pomp_340660e70b0638f36be4dfc52330bbb7", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_340660e70b0638f36be4dfc52330bbb7", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_340660e70b0638f36be4dfc52330bbb7", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+}
+
+[1] TRUE
 > 
