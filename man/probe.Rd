@@ -68,7 +68,7 @@
 }
 \usage{
 \S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
-\S4method{probe}{probed.pomp}(object, probes, params, nsim, seed, \dots)
+\S4method{probe}{probed.pomp}(object, probes, nsim, seed, \dots)
 \S4method{probe.match.objfun}{pomp}(object, params, est, probes, nsim,
             seed = NULL, fail.value = NA, transform = FALSE, \dots)
 \S4method{probe.match.objfun}{probed.pomp}(object, probes, nsim, seed, \dots)

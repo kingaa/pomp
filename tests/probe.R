@@ -128,6 +128,7 @@ ofun <- probe.match.objfun(good)
 ofun(coef(good))
 
 ofun <- probe.match.objfun(ou2,est=c("alpha.1","alpha.2"),
+                           params=as.list(coef(ou2)),
                            probes=good$probes,nsim=100,
                            seed=349956868L
                            )
@@ -235,6 +236,7 @@ invisible(summary(pb))
 
 print(pb@seed)
 pbm <- probe.match(pb,est=c("r","sigma","phi"),
+                   start=as.list(coef(pb)),
                    method="nloptr",transform=TRUE,
                    algorithm="NLOPT_LN_SBPLX",
                    xtol_rel=1e-5)
@@ -381,6 +383,7 @@ invisible(pb$datvals)
 invisible(summary(pb))
 
 probe(pb) -> pb
+try(probe(pb,params=as.list(coef(pb))) -> pb)
 
 try(
     probe(

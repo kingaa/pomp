@@ -153,12 +153,12 @@ summary of covariates:
  Max.   :3.0  
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x35cdf78>
-<environment: 0x424eca8>
+<bytecode: 0x1fcfb98>
+<environment: 0x2c52968>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x35ce2c0>
-<environment: 0x424eca8>
+<bytecode: 0x1fcff88>
+<environment: 0x2c52968>
 measurement model simulator, rmeasure = function (x, t, params, ...) 
 x
 measurement model density, dmeasure = function (x, y, t, params, log, ...) 
@@ -167,7 +167,7 @@ prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton (map) = function (x, t, params, ...) 
 x
-<environment: 0x4207610>
+<environment: 0x2c05a98>
 initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
@@ -198,12 +198,12 @@ summary of data:
 zero time, t0 = 0
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x35cdf78>
-<environment: 0x35d38b0>
+<bytecode: 0x1fcfb98>
+<environment: 0x1fd1a10>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x35ce2c0>
-<environment: 0x35d38b0>
+<bytecode: 0x1fcff88>
+<environment: 0x1fd1a10>
 measurement model simulator, rmeasure = not specified
 measurement model density, dmeasure = not specified
 prior simulator, rprior = not specified

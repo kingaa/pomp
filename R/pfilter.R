@@ -63,6 +63,7 @@ pfilter.internal <- function (object, params, Np,
   save.states <- as.logical(save.states)
   save.params <- as.logical(save.params)
 
+  if (is.list(params)) params <- unlist(params)
   if (length(params)==0)
     stop(ep,sQuote("params")," must be specified",call.=FALSE)
 

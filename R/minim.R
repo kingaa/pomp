@@ -10,6 +10,7 @@ minim.internal <- function(objfun, start, est, object, method, transform,
   transform <- as.logical(transform)
   est <- as.character(est)
 
+  if (is.list(start)) start <- unlist(start)
   if (length(start)<1)
     stop(ep,sQuote("start")," must be supplied",call.=FALSE)
 
@@ -17,12 +18,12 @@ minim.internal <- function(objfun, start, est, object, method, transform,
     start <- partrans(object,start,dir="toEstimationScale")
     if (is.null(names(start))||(!all(est%in%names(start))))
       stop(ep,sQuote("est")," must refer to parameters named in ",
-           sQuote("partrans(object,start,dir=\"toEstimationScale\")"),call.=FALSE)
+        sQuote("partrans(object,start,dir=\"toEstimationScale\")"),call.=FALSE)
     guess <- start[est]
   } else {
     if (is.null(names(start))||(!all(est%in%names(start))))
       stop(ep,sQuote("est")," must refer to parameters named in ",
-           sQuote("start"),call.=FALSE)
+        sQuote("start"),call.=FALSE)
     guess <- start[est]
   }
 

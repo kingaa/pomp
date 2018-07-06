@@ -75,6 +75,12 @@ Error : in 'mif2': 'rw.sd' must be specified!
 > try(mif2(ou2,Nmif=1,Np=10,rw.sd=rw.sd(alpha.2=10),
 +   cooling.fraction.50=2,max.fail=0))
 Error : in 'mif2': 'cooling.fraction.50' must be in (0,1]
+> freeze(mif2(ou2,start=as.list(coef(ou2)),
++   Nmif=1,Np=10,rw.sd=rw.sd(alpha.2=10),
++   cooling.fraction.50=0.1),seed=5959696) -> m1
+Warning messages:
+1: in 'mif2.pfilter': filtering failure at last filter iteration, using unweighted mean for 'coef' 
+2: in 'mif2.pfilter': 89 filtering failures occurred. 
 > 
 > m1 <- mif2(ou2,Nmif=50,start=guess1,Np=1000,
 +            cooling.type="hyperbolic",cooling.fraction.50=0.05,

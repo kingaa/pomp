@@ -120,6 +120,7 @@ newly created object(s):
 > names(as.data.frame(pfilter(gompertz,Np=100,pred.mean=TRUE,pred.var=TRUE)))
 [1] "time"        "Y"           "ess"         "cond.loglik" "X"          
 [6] "X"          
+> pfilter(gompertz,params=as.list(coef(gompertz)),Np=100) -> pf
 > try(pfilter(gompertz) -> pf)
 Error : in 'pfilter': 'Np' must be specified
 > try(pfilter(gompertz,params=parmat(coef(gompertz),100),Np=1000) -> pf)

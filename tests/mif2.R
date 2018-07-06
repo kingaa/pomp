@@ -40,6 +40,9 @@ try(mif2(ou2,Nmif=1,Np="100"))
 try(mif2(ou2,Nmif=1,Np=10,cooling.fraction.50=1))
 try(mif2(ou2,Nmif=1,Np=10,rw.sd=rw.sd(alpha.2=10),
   cooling.fraction.50=2,max.fail=0))
+freeze(mif2(ou2,start=as.list(coef(ou2)),
+  Nmif=1,Np=10,rw.sd=rw.sd(alpha.2=10),
+  cooling.fraction.50=0.1),seed=5959696) -> m1
 
 m1 <- mif2(ou2,Nmif=50,start=guess1,Np=1000,
            cooling.type="hyperbolic",cooling.fraction.50=0.05,

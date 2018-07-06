@@ -47,6 +47,7 @@ pompExample(gompertz)
 pfilter(gompertz,params=parmat(coef(gompertz),100)) -> pf
 pfilter(gompertz,params=parmat(coef(gompertz),100),Np=100) -> pf
 names(as.data.frame(pfilter(gompertz,Np=100,pred.mean=TRUE,pred.var=TRUE)))
+pfilter(gompertz,params=as.list(coef(gompertz)),Np=100) -> pf
 try(pfilter(gompertz) -> pf)
 try(pfilter(gompertz,params=parmat(coef(gompertz),100),Np=1000) -> pf)
 coef(gompertz,"sigma") <- Inf

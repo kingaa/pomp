@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.17.3}{
+  \itemize{
+    \item When altering parameters in a call to \code{probe} on a \code{probed.pomp} object, the new parameters were ignored.
+    This bug has been fixed.
+    \item \code{mif2}, \code{pfilter}, \code{probe}, \code{probe.match}, and \code{probe.match.objfun} can now gracefully handle a list in the \code{start} or \code{params} arguments.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.17.2}{
   \itemize{
     \item The long-deprecated \code{seed} argument to \code{bsmc} and \code{bsmc2} has been removed.
@@ -30,7 +37,8 @@
     \item Fix bug in systematic resampler when \code{np != nw}.
     \item Fix bug in \code{conv.rec} when only one parameter is requested.
     \item Correct and improve documentation for \code{conv.rec}.
-    \item \code{coef<-} can now take a list of parameters: it simply applies \code{unlist} to turn the list into a numeric vector.
+    \item \code{coef<-} can now take a list of parameters:
+    it simply applies \code{unlist} to turn the list into a numeric vector.
     \item Simplify \code{conv.rec}.
   }
 }

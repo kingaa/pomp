@@ -100,15 +100,15 @@ Error : in 'bsmc2': too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/Rtmp8mx6UL/112948/pomp_67f8ddc5476c96038dbf87ed45166de0.so': status = 1
+Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.so': status = 1
 compiler messages:
 make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/Rtmp8mx6UL/112948/pomp_67f8ddc5476c96038dbf87ed45166de0.c -o /tmp/Rtmp8mx6UL/112948/pomp_67f8ddc5476c96038dbf87ed45166de0.o
-/tmp/Rtmp8mx6UL/112948/pomp_67f8ddc5476c96038dbf87ed45166de0.c: In function ‘__pomp_rmeasure’:
-/tmp/Rtmp8mx6UL/112948/pomp_67f8ddc5476c96038dbf87ed45166de0.c:16:1: error: expected ‘;’ before ‘}’ token
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.c -o /tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.o
+/tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.c:16:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/Rtmp8mx6UL/112948/pomp_67f8ddc5476c96038dbf87ed45166de0.o] Error 1
+make[2]: *** [/tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.o] Error 1
 make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
@@ -125,7 +125,7 @@ In addition: Warning messages:
   "/userdata/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 6: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
-  running command 'PKG_CPPFLAGS="-I/userdata/kingaa/projects/Rpkg/library/pomp/include" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/Rtmp8mx6UL/112948/pomp_67f8ddc5476c96038dbf87ed45166de0.so /tmp/Rtmp8mx6UL/112948/pomp_67f8ddc5476c96038dbf87ed45166de0.c 2>&1' had status 1
+  running command 'PKG_CPPFLAGS="-I/userdata/kingaa/projects/Rpkg/library/pomp/include" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.so /tmp/RtmpB1XdN5/127195/pomp_af6f088062cb094d3eecc5e7b025f284.c 2>&1' had status 1
 > length(out)
 [1] 675
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)

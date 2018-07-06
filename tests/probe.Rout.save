@@ -170,6 +170,7 @@ newly created object(s):
 [1] 6.34
 > 
 > ofun <- probe.match.objfun(ou2,est=c("alpha.1","alpha.2"),
++                            params=as.list(coef(ou2)),
 +                            probes=good$probes,nsim=100,
 +                            seed=349956868L
 +                            )
@@ -285,6 +286,7 @@ in 'plot-probed.pomp': 'y' is ignored
 > print(pb@seed)
 [1] 838775
 > pbm <- probe.match(pb,est=c("r","sigma","phi"),
++                    start=as.list(coef(pb)),
 +                    method="nloptr",transform=TRUE,
 +                    algorithm="NLOPT_LN_SBPLX",
 +                    xtol_rel=1e-5)
@@ -438,6 +440,7 @@ Error : in 'probe.match.objfun': each probe must be a function of a single argum
 > invisible(summary(pb))
 > 
 > probe(pb) -> pb
+> try(probe(pb,params=as.list(coef(pb))) -> pb)
 > 
 > try(
 +     probe(
