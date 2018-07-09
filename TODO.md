@@ -14,6 +14,7 @@
 - deprecate `mif` and `bsmc`
 - better scheme for indicating transformed variables in Csnippet parameter transformations
 - easier interface for lists of probes in `probe`
+- refurbish entire test suite
 
 ## For pomp:
 

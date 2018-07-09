@@ -45,8 +45,9 @@ sp <- spect(po,kernel.width=1,nsim=100,seed=838775L)
 invisible(summary(sp))
 
 po <- ricker
-coef(po,"phi") <- 30
-sp <- spect(po,kernel.width=11,nsim=100,seed=838775L)
+theta <- as.list(coef(po))
+theta["phi"] <- 30
+sp <- spect(po,kernel.width=11,nsim=100,seed=838775L,params=theta)
 invisible(summary(sp))
 plot(simulate(sp),variables="y")
 sp <- spect(sp)
