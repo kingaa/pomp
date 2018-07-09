@@ -82,5 +82,7 @@ try(bsmc(pomp(ou2,
          Np=100,est=c("alpha.1","alpha.2"),transform=TRUE,smooth=0.2))
 
 try(bsmc(ou2,Np=100,est=c("alpha.1","bob"),transform=TRUE,smooth=1))
+as.list(coef(ou2)) -> theta
+bsmc(ou2,Np=100,params=theta,est=c("alpha.1"),transform=TRUE,smooth=1) -> b
 
 dev.off()

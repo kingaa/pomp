@@ -30,7 +30,7 @@ try(pmcmc(ou2,Nmcmc=-2,Np=100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=
 try(pmcmc(ou2,Nmcmc=NULL,Np=100,proposal=mvn.diag.rw(rw.sd=c(alpha.2=0.01,alpha.3=0.01))))
 try(pmcmc(ou2,Nmcmc=2,Np=100))
 
-pmcmc(ou2,Nmcmc=2,Np=100,
+pmcmc(ou2,Nmcmc=2,Np=100,start=as.list(coef(ou2)),
       proposal=mvn.rw.adaptive(
           rw.sd=c(alpha.2=0.01,alpha.3=0.01),
           scale.start=50,shape.start=50)) -> ignore

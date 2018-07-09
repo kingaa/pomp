@@ -92,3 +92,5 @@ gg <- pomp(gompertz,tcovar="ctime",
            covar=data.frame(ctime=time(gompertz),
                             time=seq_along(time(gompertz))))
 try(simulate(gg,as.data.frame=TRUE,include.data=T))
+try(simulate(gg,params=list(r=0.5,K=2,sigma=0.3,tau=1)))
+try(trajectory(gg,params=list(r=0.5,K=2,sigma=0.3,tau=1)))

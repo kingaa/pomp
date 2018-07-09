@@ -40,6 +40,7 @@ pmcmc.internal <- function (object, Nmcmc,
 
     pompLoad(object,verbose=verbose)
 
+    if (is.list(start)) start <- unlist(start)
     if (length(start)==0)
         stop(ep,sQuote("start")," must be specified if ",
              sQuote("coef(object)")," is NULL",call.=FALSE)

@@ -19,7 +19,7 @@ gm4 <- spect.match(ou2,kernel.width=5,detrend="quadratic",nsim=50,
                    method="Nelder-Mead")
 gm5 <- spect.match(ou2,kernel.width=3,nsim=50,
                    est=c("alpha.1","alpha.4"),reltol=1e-3,maxit=100,
-                   method="Nelder-Mead")
+                   method="Nelder-Mead",start=as.list(coef(ou2)))
 plot(gm4,y=NA)
 plot(gm4,plot.data=FALSE)
 plot(gm4,plot.data=FALSE,quantile.styles=list(col=1:5))
@@ -67,7 +67,7 @@ try(spect.match(spp,weights="A"))
 try(spect.match(spp,weights=rep(1,5)))
 spp <- spect.match(spp,nsim=100,est="sigma",reltol=1e-3,maxit=100)
 spp <- spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,0),
-                   reltol=1e-3,maxit=100)
+                   reltol=1e-3,maxit=100,start=as.list(coef(spp)))
 try(spect.match(spp,weights=function(freq)ifelse(freq<0.2,1,NA)))
 try(spect.match(spp,est=spp@est,
                 weights=function(freq)ifelse(freq<0.2,1,"C")))

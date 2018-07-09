@@ -74,6 +74,9 @@ y %>% melt() %>% dcast(time~variable) %>%
 enkf <- enkf(pf,h=function(x)C%*%x,R=R,Np=1000)
 eakf <- eakf(pf,C=C,R=R,Np=1000)
 
+invisible(enkf(pf,h=function(x)C%*%x,R=R,Np=1000,params=as.list(coef(pf))))
+invisible(eakf(pf,C=C,R=R,Np=1000,params=as.list(coef(pf))))
+
 stopifnot(max(abs(c(kf$loglik,logLik(pf),logLik(enkf),logLik(eakf))-c(-391.0,-391.6,-390.5,-390.8)))<1)
 
 enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
@@ -81,7 +84,7 @@ enkf %>% as.data.frame() %>% melt(id.vars="time") %>%
 eakf %>% as.data.frame() %>% melt(id.vars="time") %>%
     ddply(~variable,summarize,n=length(value))
 
-enkf$forecast %>% melt() %>% 
+enkf$forecast %>% melt() %>%
     ggplot(aes(x=time,y=value,group=variable,color=variable))+
     geom_line()+theme_bw()
 

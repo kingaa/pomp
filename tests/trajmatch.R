@@ -45,10 +45,11 @@ invisible(capture.output(summary(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4'
 
 try(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",parscale=0.1,maxit=100,sched=rep(1,10)))
 
-summary(traj.match(ou2))
+summary(traj.match(ou2,start=as.list(coef(ou2))))
 ofun <- traj.match.objfun(ou2)
 try(traj.match.objfun(ou2,params=c("A")))
-ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','alpha.1','alpha.4','tau'))
+ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','alpha.1','alpha.4','tau'),
+                          params=as.list(coef(ou2)))
 print(ofun(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4','tau'))))
 
 try(ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','bob','alpha.4','harry')))

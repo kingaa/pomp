@@ -125,6 +125,8 @@ Error : in 'bsmc': 'dmeasure' error: oof!
 > 
 > try(bsmc(ou2,Np=100,est=c("alpha.1","bob"),transform=TRUE,smooth=1))
 Error : in 'bsmc': parameter(s) 'bob' not found.
+> as.list(coef(ou2)) -> theta
+> bsmc(ou2,Np=100,params=theta,est=c("alpha.1"),transform=TRUE,smooth=1) -> b
 > 
 > dev.off()
 null device 

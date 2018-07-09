@@ -85,7 +85,7 @@ invisible(coef(fit))
 plot(fit,thin=300)
 
 smc <- bsmc2(ou2,transform=TRUE,Np=2,smooth=0.01,est=estnames,
-             tol=1e-2,max.fail=100)
+             tol=1e-2,max.fail=100,params=as.list(coef(ou2)))
 
 try(bsmc2(pomp(po,dmeasure=function(y,x,t,params,log,...) stop("oof!")),
           Np=100,est=c("r","sigma"),transform=TRUE,smooth=0.2))

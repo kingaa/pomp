@@ -20,7 +20,7 @@ m1 <- nlf(
 
 m1 <- nlf(
     object=ou2,
-    start=theta.truth,
+    start=as.list(theta.truth),
     lags=c(4,6),
     nconverge=100,
     nasymp=2000,
@@ -52,6 +52,7 @@ m3 <- nlf(
 
 m4 <- nlf(
     m3,
+    start=as.list(coef(m3)),
     est=estnames,
     method="subplex",
     seed=300983678L

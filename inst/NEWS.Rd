@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.17.4}{
+  \itemize{
+    \item All inference functions can now take a list in the \code{start} or \code{params} arguments.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.17.3}{
   \itemize{
     \item When altering parameters in a call to \code{probe} on a \code{probed.pomp} object, the new parameters were ignored.

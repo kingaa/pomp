@@ -50,12 +50,12 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x29e7bc8>
-<environment: 0x2c0bd10>
+<bytecode: 0x29179a0>
+<environment: 0x2518220>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x32ebe20>
-<environment: 0x2d6fcc0>
+<bytecode: 0x33f29a0>
+<environment: 0x2d31220>
 measurement model simulator, rmeasure = native function '_gompertz_normal_rmeasure'
 measurement model density, dmeasure = native function '_gompertz_normal_dmeasure'
 prior simulator, rprior = not specified
@@ -66,12 +66,12 @@ parameter transformation (to estimation scale) = function (params, ...)
 {
     log(params)
 }
-<environment: 0x1f4a920>
+<environment: 0x1e93420>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x1f4a920>
+<environment: 0x1e93420>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -91,8 +91,8 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x29e7bc8>
-<environment: 0x2c0bd10>
+<bytecode: 0x29179a0>
+<environment: 0x2518220>
 > 
 > po <- gompertz
 > coef(po)
@@ -291,4 +291,8 @@ iteration    K
 Error : in 'simulate': error in merging actual and simulated data.
 Check names of data, covariates, and states for conflicts.
 'merge' error message: 'by' must specify a uniquely valid column
+> try(simulate(gg,params=list(r=0.5,K=2,sigma=0.3,tau=1)))
+Error : in 'simulate': in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
+> try(trajectory(gg,params=list(r=0.5,K=2,sigma=0.3,tau=1)))
+Error : in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
 > 

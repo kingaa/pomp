@@ -24,7 +24,7 @@ po <- ou2
 
 abc1 <- abc(po,
             Nabc=2000,
-            start=coef(ou2),
+            start=as.list(coef(ou2)),
             probes=probes.good,
             scale=scale.dat,
             epsilon=1.7,

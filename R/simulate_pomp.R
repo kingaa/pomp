@@ -26,11 +26,10 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   as.data.frame <- as.logical(as.data.frame)
   include.data <- as.logical(include.data)
 
-  if (missing(params))
-    params <- coef(object)
-
-  if (length(params)==0)
-    stop(ep,"no ",sQuote("params")," specified",call.=FALSE)
+  if (missing(params)) params <- coef(object)
+  if (is.list(params)) params <- unlist(params)
+  if (length(params)==0) stop(ep,"no ",sQuote("params")," specified",call.=FALSE)
+  storage.mode(params) <- "double"
 
   params <- as.matrix(params)
 

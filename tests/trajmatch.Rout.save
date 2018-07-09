@@ -109,7 +109,7 @@ $msg
 > try(traj.match(ou2,est=c('alpha.1','x1.0','alpha.4','x2.0','tau'),method="sannbox",parscale=0.1,maxit=100,sched=rep(1,10)))
 Error : in 'sannbox': insufficiently many temperatures supplied in 'control$sched'
 > 
-> summary(traj.match(ou2))
+> summary(traj.match(ou2,start=as.list(coef(ou2))))
 $params
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
     0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
@@ -129,7 +129,8 @@ $msg
 > ofun <- traj.match.objfun(ou2)
 > try(traj.match.objfun(ou2,params=c("A")))
 Error : in 'traj.match.objfun': 'params' must be a named numeric vector
-> ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','alpha.1','alpha.4','tau'))
+> ofun <- traj.match.objfun(ou2,est=c('x1.0','x2.0','alpha.1','alpha.4','tau'),
++                           params=as.list(coef(ou2)))
 > print(ofun(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4','tau'))))
 [1] 3327.081
 > 

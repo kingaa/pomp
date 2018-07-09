@@ -21,13 +21,9 @@ bsmc2.internal <- function (object, params, Np, est,
   ptsi.inv <- ptsi.for <- TRUE
   transform <- as.logical(transform)
 
-  if (missing(params)) {
-    if (length(coef(object))>0) {
-      params <- coef(object)
-    } else {
-      stop(ep,sQuote("params")," must be supplied",call.=FALSE)
-    }
-  }
+  if (missing(params)) params <- coef(object)
+  if (is.list(params)) params <- unlist(params)
+  if (length(params)==0) stop(ep,sQuote("params")," must be supplied",call.=FALSE)
 
   if (missing(Np)) Np <- NCOL(params)
   else if (is.matrix(params)&&(Np!=ncol(params))) {

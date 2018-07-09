@@ -131,7 +131,7 @@ newly created object(s):
 > plot(fit,thin=300)
 > 
 > smc <- bsmc2(ou2,transform=TRUE,Np=2,smooth=0.01,est=estnames,
-+              tol=1e-2,max.fail=100)
++              tol=1e-2,max.fail=100,params=as.list(coef(ou2)))
 Warning message:
 in 'bsmc2': 7 filtering failures occurred. 
 > 

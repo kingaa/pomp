@@ -112,6 +112,8 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
   fail.value <- as.numeric(fail.value)
 
   params <- start
+  if (is.list(params)) params <- unlist(params)
+
   guess <- params[est.index]
 
   if (eval.only) {
