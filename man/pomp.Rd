@@ -537,7 +537,7 @@ plot(rick)
 
 \dontrun{
     pompExample()
-    demos(package="pomp")
+    demo(package="pomp")
 }
 }
 \section{Warning}{
