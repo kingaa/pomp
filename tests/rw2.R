@@ -2,142 +2,148 @@ library(pomp)
 
 set.seed(45768683)
 
-rw.rprocess <- function (params, xstart, times, ...) { 
-    ## this function simulates two independent random walks with intensities s1, s2
-    nvars <- nrow(xstart)
-    nreps <- ncol(params)
-    ntimes <- length(times)
-    dt <- diff(times)
-    x <- array(0,dim=c(nvars,nreps,ntimes))
-    rownames(x) <- rownames(xstart)
-    noise.sds <- params[c('s1','s2'),]
-    x[,,1] <- xstart
-    for (j in 2:ntimes) {
-        ## we are mimicking a continuous-time process, so the increments have SD ~ sqrt(dt)
-        ## note that we do not have to assume that 'times' are equally spaced
-        x[c("x1","x2"),,j] <- rnorm(
-            n=2*nreps,
-            mean=x[c("x1","x2"),,j-1],
-            sd=noise.sds*dt[j-1]
-        )
-    }
-    x
+rw.rprocess <- function (params, xstart, times, ...) {
+  ## this function simulates two independent random walks with intensities s1, s2
+  nvars <- nrow(xstart)
+  nreps <- ncol(params)
+  ntimes <- length(times)
+  dt <- diff(times)
+  x <- array(0,dim=c(nvars,nreps,ntimes))
+  rownames(x) <- rownames(xstart)
+  noise.sds <- params[c('s1','s2'),]
+  x[,,1] <- xstart
+  for (j in 2:ntimes) {
+    ## we are mimicking a continuous-time process, so the increments have SD ~ sqrt(dt)
+    ## note that we do not have to assume that 'times' are equally spaced
+    x[c("x1","x2"),,j] <- rnorm(
+      n=2*nreps,
+      mean=x[c("x1","x2"),,j-1],
+      sd=noise.sds*dt[j-1]
+    )
+  }
+  x
 }
 
-rw.dprocess <- function (x, times, params, log = FALSE, ...) { 
-    ## given a sequence of consecutive states in 'x', this function computes the p.d.f.
-    nreps <- ncol(params)
-    ntimes <- length(times)
-    dt <- diff(times)
-    d <- array(0,dim=c(2,nreps,ntimes-1))
-    noise.sds <- params[c('s1','s2'),]
-    for (j in 2:ntimes)
-        d[,,j-1] <- dnorm(x[,,j]-x[,,j-1],mean=0,sd=noise.sds*dt[j-1],log=TRUE)
-    d <- apply(d,c(2,3),sum)
-    if (log) d else exp(d)
+rw.dprocess <- function (x, times, params, log = FALSE, ...) {
+  ## given a sequence of consecutive states in 'x', this function computes the p.d.f.
+  nreps <- ncol(params)
+  ntimes <- length(times)
+  dt <- diff(times)
+  d <- array(0,dim=c(2,nreps,ntimes-1))
+  noise.sds <- params[c('s1','s2'),]
+  for (j in 2:ntimes)
+    d[,,j-1] <- dnorm(x[,,j]-x[,,j-1],mean=0,sd=noise.sds*dt[j-1],log=TRUE)
+  d <- apply(d,c(2,3),sum)
+  if (log) d else exp(d)
 }
 
 bvnorm.rmeasure <- function (t, x, params, ...) {
-    ## noisy observations of the two walks with common noise SD 'tau'
-    c(
-        y1=rnorm(n=1,mean=x['x1'],sd=params['tau']),
-        y2=rnorm(n=1,mean=x['x2'],sd=params['tau'])
-    )
+  ## noisy observations of the two walks with common noise SD 'tau'
+  c(
+    y1=rnorm(n=1,mean=x['x1'],sd=params['tau']),
+    y2=rnorm(n=1,mean=x['x2'],sd=params['tau'])
+  )
 }
 
 bvnorm.dmeasure <- function (y, x, t, params, log = FALSE, ...) {
-    f <- sum(
-        dnorm(
-            x=y[c("y1","y2")],
-            mean=x[c("x1","x2")],
-            sd=params["tau"],
-            log=TRUE
-        ),
-        na.rm=TRUE
-    )
-    if (log) f else exp(f)
+  f <- sum(
+    dnorm(
+      x=y[c("y1","y2")],
+      mean=x[c("x1","x2")],
+      sd=params["tau"],
+      log=TRUE
+    ),
+    na.rm=TRUE
+  )
+  if (log) f else exp(f)
 }
 
-bad.initializer <- function (params, t0, ...) 
+bad.initializer <- function (params, t0, ...)
 {
-    ivpnames <- c("x1.0","x2.0")
-    x <- params[ivpnames]
-    x
+  ivpnames <- c("x1.0","x2.0")
+  x <- params[ivpnames]
+  x
 }
 
-crap.initializer <- function (params, t0, ...) 
+crap.initializer <- function (params, t0, ...)
 {
-    x <- rnorm(n=ceiling(runif(n=1,min=0,max=10)))
-    names(x) <-head(letters,length(x))
-    x
+  x <- rnorm(n=ceiling(runif(n=1,min=0,max=10)))
+  names(x) <-head(letters,length(x))
+  x
 }
 
 p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
 
 rw2 <- pomp(
-    rprocess = rw.rprocess,
-    dprocess = rw.dprocess,
-    measurement.model=list(
-        y1 ~ norm(mean=x1,sd=tau),
-        y2 ~ norm(mean=x2,sd=tau)
-    ),
-    initializer=bad.initializer,
-    data=data.frame(
-        t=1:100,
-        y1=rep(0,100),
-        y2=rep(0,100)
-    ),
-    times=1,
-    t0=0,
-    useless=23
+  rprocess = rw.rprocess,
+  dprocess = rw.dprocess,
+  measurement.model=list(
+    y1 ~ norm(mean=x1,sd=tau),
+    y2 ~ norm(mean=x2,sd=tau)
+  ),
+  initializer=bad.initializer,
+  data=data.frame(
+    t=1:100,
+    y1=rep(0,100),
+    y2=rep(0,100)
+  ),
+  times=1,
+  t0=0,
+  useless=23
 )
 
 rw2 <- pomp(
-    rprocess = rw.rprocess,
-    dprocess = rw.dprocess,
-    measurement.model=list(
-        y1 ~ norm(mean=x1,sd=tau),
-        y2 ~ norm(mean=x2,sd=tau)
-    ),
-    initializer=bad.initializer,
-    times="time",
-    data=data.frame(
-        y1=rep(0,100),
-        y2=rep(0,100),
-        time=1:100
-    ),
-    t0=0,
-    useless=23
+  rprocess = rw.rprocess,
+  dprocess = rw.dprocess,
+  measurement.model=list(
+    y1 ~ norm(mean=x1,sd=tau),
+    y2 ~ norm(mean=x2,sd=tau)
+  ),
+  initializer=bad.initializer,
+  times="time",
+  data=data.frame(
+    y1=rep(0,100),
+    y2=rep(0,100),
+    time=1:100
+  ),
+  t0=0,
+  useless=23
 )
 
-invisible(show(rw2))
+show(rw2)
 
 try(
-    simulate(rw2,params=p)
+  simulate(rw2,params=p)
 )
 
 rw2 <- pomp(rw2,initializer=crap.initializer)
 
 try(
-    simulate(rw2,params=p)
+  simulate(rw2,params=p)
 )
 
 rw2 <- pomp(
-    rprocess = rw.rprocess,
-    dprocess = rw.dprocess,
-    measurement.model=list(
-        y1 ~ norm(mean=x1,sd=tau),
-        y2 ~ norm(mean=x2,sd=tau)
-    ),
-    rmeasure=Csnippet("sid"),
-    dmeasure=Csnippet("nancy"),
-    times="time",
-    data=data.frame(
-        y1=rep(0,100),
-        y2=rep(0,100),
-        time=1:100
-    ),
-    t0=0
+  rprocess = rw.rprocess,
+  dprocess = onestep.dens(
+    Csnippet("
+      lik = dnorm(x1_2,x1_1,s1,1)+dnorm(x2_2,x2_1,s2,1);
+    ")
+  ),
+  statenames=c("x1","x2"),
+  paramnames=c("s1","s2"),
+  measurement.model=list(
+    y1 ~ norm(mean=x1,sd=tau),
+    y2 ~ norm(mean=x2,sd=tau)
+  ),
+  rmeasure=Csnippet("sid"),
+  dmeasure=Csnippet("nancy"),
+  times="time",
+  data=data.frame(
+    y1=rep(0,100),
+    y2=rep(0,100),
+    time=1:100
+  ),
+  t0=0
 )
 
 examples <- simulate(rw2,params=p)
@@ -170,9 +176,9 @@ stopifnot(max(abs(c1-d1),na.rm=T)<.Machine$double.eps*100)
 stopifnot(max(abs(e1-f1),na.rm=T)<.Machine$double.eps*100)
 
 po <- pomp(
-    rw2,
-    dmeasure = bvnorm.dmeasure,
-    rmeasure = bvnorm.rmeasure
+  rw2,
+  dmeasure = bvnorm.dmeasure,
+  rmeasure = bvnorm.rmeasure
 )
 
 a2 <- dmeasure(po,y=y[,1,1:4],x=x[,,1:4,drop=F],times=time(rw2)[1:4],p)
@@ -216,10 +222,10 @@ time(rw2) <- seq(1,1000,by=20)
 x <- simulate(rw2)
 invisible(states(x)[,1:5])
 try(
-    time(rw2) <- seq(-20,1000,by=20)
+  time(rw2) <- seq(-20,1000,by=20)
 )
 try(
-    time(rw2) <- c(0,5,10,15,12,20)
+  time(rw2) <- c(0,5,10,15,12,20)
 )
 time(rw2,t0=TRUE) <- seq(-20,1000,by=20)
 x <- simulate(rw2)

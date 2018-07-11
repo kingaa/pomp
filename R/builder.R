@@ -1,14 +1,12 @@
 pompCBuilder <- function (name = NULL, dir = NULL,
   statenames, paramnames, covarnames, obsnames,
-  rmeasure, dmeasure, step.fn, rate.fn, skeleton,
+  rmeasure, dmeasure, step.fn, rate.fn, dens.fn, skeleton,
   fromEstimationScale, toEstimationScale,
-  initializer,
-  rprior, dprior, globals, shlib.args = NULL,
+  initializer, rprior, dprior, globals, shlib.args = NULL,
   verbose = getOption("verbose",FALSE))
 {
 
   if (!is.null(name)) name <- cleanForC(name)
-  id <- randomName(4)
 
   if (is(globals,"Csnippet")) globals <- globals@text
 
@@ -23,10 +21,19 @@ pompCBuilder <- function (name = NULL, dir = NULL,
     pompheader <- system.file("include/pomp.h",package="pomp") # nocov
   }
 
+  ## some information to help make file (and filename) unique
+  timestamp <- format(Sys.time(),"%Y-%m-%d %H:%M:%OS3 %z")
+  salt <- paste(format(as.hexmode(ceiling(runif(n=4L,max=2^24))),
+    upper.case=TRUE),collapse="")
+
+  ## list of functions to register
+  registry <- c("load_stack_incr","load_stack_decr")
+
+  ## string 'csrc' will hold the full C source code
   csrc <- ""
   out <- textConnection(object="csrc",open="w",local=TRUE)
 
-  cat(file=out,render(header$file,pompheader=pompheader,id=id))
+  cat(file=out,render(header$file,pompheader=pompheader,timestamp=timestamp,salt=salt))
 
   ##    for (f in utility.fns) {
   ##        cat(file=out,f)
@@ -34,29 +41,16 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   cat(file=out,globals,footer$globals)
 
-  ## variable/parameter/observations definitions
+  ## state-variable/parameter/covariates macros
   for (v in seq_along(paramnames)) {
     cat(file=out,render(define$var,variable=paramnames[v],ptr='__p',ilist='__parindex',index=as.integer(v-1)))
-  }
-  for (v in seq_along(statenames)) {
-    cat(file=out,render(define$var,variable=statenames[v],ptr='__x',ilist='__stateindex',index=as.integer(v-1)))
   }
   for (v in seq_along(covarnames)) {
     cat(file=out,render(define$var,variable=covarnames[v],ptr='__covars',ilist='__covindex',index=as.integer(v-1)))
   }
-  for (v in seq_along(obsnames)) {
-    cat(file=out,render(define$var,variable=obsnames[v],ptr='__y',ilist='__obsindex',index=as.integer(v-1)))
-  }
   for (v in seq_along(statenames)) {
-    cat(file=out,render(define$var,variable=paste0("D",statenames[v]),ptr='__f',ilist='__stateindex',index=as.integer(v-1)))
+    cat(file=out,render(define$var,variable=statenames[v],ptr='__x',ilist='__stateindex',index=as.integer(v-1)))
   }
-  for (v in seq_along(paramnames)) {
-    cat(file=out,render(define$var,variable=paste0("T",paramnames[v]),ptr='__pt',ilist='__parindex',index=as.integer(v-1)))
-  }
-  cat(file=out,render(define$var.alt,variable="lik",ptr='__lik',index=0L))
-
-  ## list of functions to register
-  registry <- c("load_stack_incr","load_stack_decr")
 
   ## initializer function
   if (!missing(initializer)) {
@@ -64,38 +58,6 @@ pompCBuilder <- function (name = NULL, dir = NULL,
     cat(file=out,render(header$initializer))
     cat(file=out,callable.decl(initializer))
     cat(file=out,initializer,footer$initializer)
-  }
-
-  ## parameter transformation function
-  if (!missing(fromEstimationScale)) {
-    registry <- c(registry,"par_trans")
-    cat(file=out,render(header$fromEstimationScale))
-    cat(file=out,callable.decl(fromEstimationScale))
-    cat(file=out,fromEstimationScale,footer$fromEstimationScale)
-  }
-
-  ## inverse parameter transformation function
-  if (!missing(toEstimationScale)) {
-    registry <- c(registry,"par_untrans")
-    cat(file=out,render(header$toEstimationScale))
-    cat(file=out,callable.decl(toEstimationScale))
-    cat(file=out,toEstimationScale,footer$toEstimationScale)
-  }
-
-  ## rmeasure function
-  if (!missing(rmeasure)) {
-    registry <- c(registry,"rmeasure")
-    cat(file=out,render(header$rmeasure))
-    cat(file=out,callable.decl(rmeasure))
-    cat(file=out,rmeasure,footer$rmeasure)
-  }
-
-  ## dmeasure function
-  if (!missing(dmeasure)) {
-    registry <- c(registry,"dmeasure")
-    cat(file=out,render(header$dmeasure))
-    cat(file=out,callable.decl(dmeasure))
-    cat(file=out,dmeasure,footer$dmeasure)
   }
 
   ## Euler step function
@@ -114,12 +76,33 @@ pompCBuilder <- function (name = NULL, dir = NULL,
     cat(file=out,rate.fn,footer$rate.fn)
   }
 
-  ## skeleton function
-  if (!missing(skeleton)) {
-    registry <- c(registry,"skelfn")
-    cat(file=out,render(header$skeleton))
-    cat(file=out,callable.decl(skeleton))
-    cat(file=out,skeleton,footer$skeleton)
+  if (!(missing(rmeasure) && missing(dmeasure))) {
+
+    for (v in seq_along(obsnames)) {
+      cat(file=out,render(define$var,variable=obsnames[v],ptr='__y',ilist='__obsindex',index=as.integer(v-1)))
+    }
+
+    ## rmeasure function
+    if (!missing(rmeasure)) {
+      registry <- c(registry,"rmeasure")
+      cat(file=out,render(header$rmeasure))
+      cat(file=out,callable.decl(rmeasure))
+      cat(file=out,rmeasure,footer$rmeasure)
+    }
+
+    ## dmeasure function
+    if (!missing(dmeasure)) {
+      cat(file=out,render(define$var.alt,variable="lik",ptr='__lik',index=0L))
+      registry <- c(registry,"dmeasure")
+      cat(file=out,render(header$dmeasure))
+      cat(file=out,callable.decl(dmeasure))
+      cat(file=out,dmeasure,footer$dmeasure)
+      cat(file=out,render(undefine$var,variable="lik"))
+    }
+
+    for (v in obsnames) {
+      cat(file=out,render(undefine$var,variable=v))
+    }
   }
 
   ## rprior function
@@ -132,38 +115,93 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   ## dprior function
   if (!missing(dprior)) {
+    cat(file=out,render(define$var.alt,variable="lik",ptr='__lik',index=0L))
     registry <- c(registry,"dprior")
     cat(file=out,render(header$dprior))
     cat(file=out,callable.decl(dprior))
     cat(file=out,dprior,footer$dprior)
+    cat(file=out,render(undefine$var,variable="lik"))
   }
 
-  ## undefine variables
-  for (v in seq_along(paramnames)) {
-    cat(file=out,render(undefine$var,variable=paramnames[v]))
-  }
-  for (v in seq_along(statenames)) {
-    cat(file=out,render(undefine$var,variable=statenames[v]))
-  }
-  for (v in seq_along(covarnames)) {
-    cat(file=out,render(undefine$var,variable=covarnames[v]))
-  }
-  for (v in seq_along(obsnames)) {
-    cat(file=out,render(undefine$var,variable=obsnames[v]))
-  }
-  for (v in seq_along(statenames)) {
-    cat(file=out,render(undefine$var,variable=paste0("D",statenames[v])))
-  }
-  for (v in seq_along(paramnames)) {
-    cat(file=out,render(undefine$var,variable=paste0("T",paramnames[v])))
+  if (!(missing(fromEstimationScale) && missing(toEstimationScale))) {
+    for (v in seq_along(paramnames)) {
+      cat(file=out,render(define$var,variable=paste0("T",paramnames[v]),
+        ptr='__pt',ilist='__parindex',index=as.integer(v-1)))
+    }
+
+    ## parameter transformation function
+    if (!missing(fromEstimationScale)) {
+      registry <- c(registry,"par_trans")
+      cat(file=out,render(header$fromEstimationScale))
+      cat(file=out,callable.decl(fromEstimationScale))
+      cat(file=out,fromEstimationScale,footer$fromEstimationScale)
+    }
+
+    ## inverse parameter transformation function
+    if (!missing(toEstimationScale)) {
+      registry <- c(registry,"par_untrans")
+      cat(file=out,render(header$toEstimationScale))
+      cat(file=out,callable.decl(toEstimationScale))
+      cat(file=out,toEstimationScale,footer$toEstimationScale)
+    }
+
+    for (v in paramnames) {
+      cat(file=out,render(undefine$var,variable=paste0("T",v)))
+    }
   }
 
+  ## skeleton function
+  if (!missing(skeleton)) {
+    registry <- c(registry,"skelfn")
+    for (v in seq_along(statenames)) {
+      cat(file=out,render(define$var,variable=paste0("D",statenames[v]),ptr='__f',ilist='__stateindex',index=as.integer(v-1)))
+    }
+    cat(file=out,render(header$skeleton))
+    cat(file=out,callable.decl(skeleton))
+    cat(file=out,skeleton,footer$skeleton)
+    for (v in statenames) {
+      cat(file=out,render(undefine$var,variable=paste0("D",v)))
+    }
+  }
+
+  ## undefine state variables
+  for (v in statenames) {
+    cat(file=out,render(undefine$var,variable=v))
+  }
+
+  if (!missing(dens.fn)) {
+    cat(file=out,render(define$var.alt,variable="loglik",ptr='__loglik',index=0L))
+    for (v in seq_along(statenames)) {
+      cat(file=out,render(define$var,variable=paste0(statenames[v],"_1"),ptr='__x1',ilist='__stateindex',index=as.integer(v-1)))
+      cat(file=out,render(define$var,variable=paste0(statenames[v],"_2"),ptr='__x2',ilist='__stateindex',index=as.integer(v-1)))
+    }
+
+    registry <- c(registry,"densfn")
+    cat(file=out,render(header$dens.fn))
+    cat(file=out,callable.decl(dens.fn))
+    cat(file=out,dens.fn,footer$dens.fn)
+
+    for (v in statenames) {
+      cat(file=out,render(undefine$var,variable=paste0(v,"_1")))
+      cat(file=out,render(undefine$var,variable=paste0(v,"_2")))
+    }
+    cat(file=out,render(undefine$var,variable="loglik"))
+  }
+
+  ## more undefines
+  for (v in paramnames) {
+    cat(file=out,render(undefine$var,variable=v))
+  }
+  for (v in covarnames) {
+    cat(file=out,render(undefine$var,variable=v))
+  }
+
+  ## load/unload stack handling codes
   cat(file=out,stackhandling)
 
   ## registration
   cat(file=out,render(header$registration))
-  for (v in registry)
-    cat(file=out,render(registration,fun=v))
+  for (v in registry) cat(file=out,render(registration,fun=v))
   cat(file=out,footer$registration)
 
   close(out)
@@ -176,8 +214,13 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   csrc <- render(csrc,name=name)
 
   tryCatch(
-    pompCompile(fname=name,direc=pompSrcDir(dir,verbose=verbose),
-      src=csrc,shlib.args=shlib.args,verbose=verbose),
+    pompCompile(
+      fname=name,
+      direc=pompSrcDir(dir,verbose=verbose),
+      src=csrc,
+      shlib.args=shlib.args,
+      verbose=verbose
+    ),
     error = function (e) {
       stop("in ",sQuote("pompCBuilder"),": compilation error: ",conditionMessage(e),call.=FALSE)
     }
@@ -262,20 +305,6 @@ callable.decl <- function (code) {
   do.call(paste0,decl[fns])
 }
 
-randomName <- function (size = 4, stem = "") {
-  paste0(stem,
-    "Time: ",format(Sys.time(),"%Y-%m-%d %H:%M:%OS3 %z"),
-    " Salt: ",
-    paste(
-      format(
-        as.hexmode(ceiling(runif(n=size,max=2^24))),
-        upper.case=TRUE
-      ),
-      collapse=""
-    )
-  )
-}
-
 cleanForC <- function (text) {
   text <- as.character(text)
   text <- gsub("\\.","_",text)
@@ -318,12 +347,13 @@ undefine <- list(
 )
 
 header <- list(
-  file="/* pomp model file: {%name%} */\n/* {%id%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
+  file="/* pomp C snippet file: {%name%} */\n/* Time: {%timestamp%} */\n/* Salt: {%salt%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n",
   registration="\nvoid R_init_{%name%} (DllInfo *info)\n{\n",
   rmeasure="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
   dmeasure= "\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
   step.fn="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
-  rate.fn="\ndouble __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars){\n  double rate = 0.0;  \n",
+  rate.fn="\ndouble __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars)\n{\n  double rate = 0.0;  \n",
+  dens.fn="\nvoid __pomp_densfn (double *__loglik, const double *__x1, const double *__x2, double t1, double t2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars)\n{\n",
   skeleton="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
   initializer="\nvoid __pomp_initializer (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
   fromEstimationScale="\nvoid __pomp_par_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
@@ -337,6 +367,7 @@ fnames <- list(
   dmeasure= "__pomp_dmeasure",
   step.fn="__pomp_stepfn",
   rate.fn="__pomp_ratefn",
+  dens.fn="__pomp_densfn",
   skeleton="__pomp_skelfn",
   initializer="__pomp_initializer",
   fromEstimationScale="__pomp_par_trans",
@@ -359,13 +390,14 @@ footer <- list(
   dmeasure="\n}\n\n",
   step.fn="\n}\n\n",
   rate.fn="  return rate;\n}\n\n",
+  dens.fn="\n}\n\n",
   skeleton="\n}\n\n",
   initializer="\n}\n\n",
   fromEstimationScale="\n}\n\n",
   toEstimationScale="\n}\n\n",
   rprior="\n}\n\n",
   dprior="\n}\n\n",
-  globals="\n",
+  globals="\n\n",
   registration="}\n\n"
 )
 

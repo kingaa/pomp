@@ -176,7 +176,7 @@ static R_INLINE double dmultinom (int m, const double *prob, double *x, int give
       ff = (give_log) ? R_NegInf: 0.0;
       return ff;
     }
-    
+
     p += prob[k]; // sum of probabilities
     n += x[k]; // total number of events
   }
@@ -329,7 +329,7 @@ typedef void pomp_onestep_sim(double *x, const double *p,
 //     Inclusion of these calls in the user-defined function may result in significant slowdown.
 
 // PROTOTYPE FOR ONE-STEP LOG PROBABILITY DENSITY FUNCTION, AS USED BY "ONESTEP.DENS":
-typedef void pomp_onestep_pdf(double *f,
+typedef void pomp_onestep_pdf(double *lik,
 			      const double *x1, const double *x2, double t1, double t2, const double *p,
 			      const int *stateindex, const int *parindex, const int *covindex,
 			      int ncovars, const double *covars);

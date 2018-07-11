@@ -344,5 +344,6 @@ setMethod(
     } else {
       cat("no C snippets to display\n")
     }
+    invisible(NULL)
   }
 )
