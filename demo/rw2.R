@@ -6,39 +6,44 @@ library(pomp)
 ## increment of a random walk over any time
 
 rw2 <- pomp(
-    rprocess = onestep.sim(
-        step.fun = function(x, t, params, delta.t, ...) {
-            c(
-                x1=rnorm(n=1,mean=x['x1'],sd=params['s1']*delta.t),
-                x2=rnorm(n=1,mean=x['x2'],sd=params['s2']*delta.t)
-            )
-        }
-    ),
-    dprocess = onestep.dens(
-        dens.fun = function (x1, t1, x2, t2, params, ...) {
-            sum(
-                dnorm(
-                    x=x2[c('x1','x2')],
-                    mean=x1[c('x1','x2')],
-                    sd=params[c('s1','s2')]*(t2-t1),
-                    log=TRUE
-                ),
-                na.rm=TRUE
-            )
-        }
-    ),
-    measurement.model=list(
-        y1 ~ norm(mean=x1,sd=tau),
-        y2 ~ norm(mean=x2,sd=tau)
-    ),
-    data=data.frame(
-        t=1:100,
-        y1=rep(0,100),
-        y2=rep(0,100)
-    ),
-    times='t',
-    t0=0
+  rprocess = onestep.sim(
+    step.fun = Csnippet("
+      x1 = rnorm(x1,s1*dt);
+      x2 = rnorm(x2,s2*dt);
+      "
+    )
+  ),
+  dprocess = onestep.dens(
+    dens.fun = Csnippet("
+      double dt = t_2 - t_1;
+      loglik = dnorm(x1_2,x1_1,s1*dt,1)+
+          dnorm(x2_2,x2_1,s2*dt,1);
+      "
+    )
+  ),
+  rmeasure=Csnippet("
+      y1 = rnorm(x1,tau);
+      y2 = rnorm(x2,tau);
+    "
+  ),
+  dmeasure=Csnippet("
+      lik = dnorm(y1,x1,tau,1)+dnorm(y2,x2,tau,1);
+      lik = (give_log) ? lik : exp(lik);
+    "
+  ),
+  statenames=c("x1","x2"),
+  paramnames=c("s1","s2","tau"),
+  data=data.frame(
+    t=1:100,
+    y1=rep(0,100),
+    y2=rep(0,100)
+  ),
+  times='t',
+  t0=0
 )
 
 rw2 <- simulate(rw2,params=c(s1=3,s2=1,x1.0=0,x2.0=1,tau=10))
 plot(rw2)
+pf <- pfilter(rw2,Np=100)
+logLik(pf)
+plot(pf)

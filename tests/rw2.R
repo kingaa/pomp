@@ -121,8 +121,6 @@ try(simulate(rw2,params=p))
 rw2 <- pomp(
   rprocess = rw.rprocess,
   dprocess = rw.dprocess,
-  statenames=c("x1","x2"),
-  paramnames=c("s1","s2"),
   measurement.model=list(
     y1 ~ norm(mean=x1,sd=tau),
     y2 ~ norm(mean=x2,sd=tau)
@@ -140,19 +138,24 @@ rw2 <- pomp(
 
 rw2 <- simulate(rw2,params=p)[[1]]
 x <- states(rw2)
+y <- obs(rw2)
 d1 <- dprocess(rw2,x=x,times=time(rw2),params=p)
+m1 <- dmeasure(rw2,x=x,times=time(rw2),params=p,y=y)
 
 rw2 <- pomp(rw2,
+  dmeasure=Csnippet("
+    lik=dnorm(y1,x1,tau,1)+dnorm(y2,x2,tau,1);
+    lik = (give_log) ? lik : exp(lik);"),
   dprocess = onestep.dens(
-    Csnippet("
-      loglik = dnorm(x1_2,x1_1,s1,1)+dnorm(x2_2,x2_1,s2,1);
-      ")
+    Csnippet("loglik = dnorm(x1_2,x1_1,s1,1)+dnorm(x2_2,x2_1,s2,1);")
   ),
   statenames=c("x1","x2"),
-  paramnames=c("s1","s2")
+  paramnames=c("s1","s2","tau")
 )
 d2 <- dprocess(rw2,x=x,times=time(rw2),params=p)
+m2 <- dmeasure(rw2,x=x,times=time(rw2),params=p,y=y)
 stopifnot(all.equal(d1,d2))
+stopifnot(all.equal(m1,m2))
 
 y <- simulate(rw2,params=p,obs=T,states=T)
 y <- simulate(rw2,params=p,obs=T)

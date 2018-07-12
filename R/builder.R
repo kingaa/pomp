@@ -1,7 +1,7 @@
 pompCBuilder <- function (name = NULL, dir = NULL,
   statenames, paramnames, covarnames, obsnames,
   ..., globals, shlib.args = NULL,
-  templates = pomp_templates,
+  templates = snippet_templates,
   verbose = getOption("verbose",FALSE))
 {
 
@@ -38,26 +38,17 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   csrc <- ""
   out <- textConnection(object="csrc",open="w",local=TRUE)
 
-  cat(file=out,render(templates$file$header,
+  cat(file=out,render(pomp_templates$file$header,
     pompheader=pompheader,timestamp=timestamp,salt=salt))
-
-  ##    for (f in utility.fns) {
-  ##        cat(file=out,f)
-  ##    }
 
   cat(file=out,globals,"\n\n")
 
-  ## state-variable/parameter/covariates macros
-  for (v in seq_along(paramnames)) {
-    cat(file=out,render(templates$define$var,variable=paramnames[v],ptr='__p',ilist='__parindex',index=as.integer(v-1)))
-  }
-  for (v in seq_along(covarnames)) {
-    cat(file=out,render(templates$define$var,variable=covarnames[v],ptr='__covars',ilist='__covindex',index=as.integer(v-1)))
-  }
+  ## parameter/covariates macros
+  defmacros(out,covarnames=covarnames,paramnames=paramnames)
 
-  for (v in seq_along(statenames)) {
-    cat(file=out,render(templates$define$var,variable=statenames[v],ptr='__x',ilist='__stateindex',index=as.integer(v-1)))
-  }
+  if (has("initializer","step.fn","rate.fn","rmeasure","dmeasure","skeleton"))
+    ## state-variable macros
+    defmacros(out,statenames=statenames)
 
   ## initializer function
   if (has("initializer")) {
@@ -85,9 +76,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   if (has("rmeasure","dmeasure")) {
 
-    for (v in seq_along(obsnames)) {
-      cat(file=out,render(templates$define$var,variable=obsnames[v],ptr='__y',ilist='__obsindex',index=as.integer(v-1)))
-    }
+    defmacros(out,obsnames=obsnames)
 
     ## rmeasure function
     if (has("rmeasure")) {
@@ -99,18 +88,29 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
     ## dmeasure function
     if (has("dmeasure")) {
-      cat(file=out,render(templates$define$var.alt,variable="lik",ptr='__lik',index=0L))
+      defmacros(out,lik=TRUE)
       registry <- c(registry,fnames[["dmeasure"]])
       cat(file=out,render(templates$dmeasure$header),
         callable.decl(snippets$dmeasure),snippets$dmeasure,
         templates$dmeasure$footer)
-      cat(file=out,render(templates$undefine$var,variable="lik"))
+      cat(file=out,render(pomp_templates$undefine$var,variable="lik"))
     }
 
-    for (v in obsnames) {
-      cat(file=out,render(templates$undefine$var,variable=v))
-    }
+    undefmacros(out,obsnames=obsnames)
   }
+
+  ## skeleton function
+  if (has("skeleton")) {
+    registry <- c(registry,fnames[["skeleton"]])
+    defmacros(out,derivs=statenames)
+    cat(file=out,render(templates$skeleton$header),
+      callable.decl(snippets$skeleton),snippets$skeleton,
+      templates$skeleton$footer)
+    undefmacros(out,derivs=statenames)
+  }
+
+  if (has("initializer","step.fn","rate.fn","rmeasure","dmeasure","skeleton"))
+    undefmacros(out,statenames=statenames)
 
   ## rprior function
   if (has("rprior")) {
@@ -122,97 +122,52 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   ## dprior function
   if (has("dprior")) {
-    cat(file=out,render(templates$define$var.alt,variable="lik",ptr='__lik',index=0L))
+    defmacros(out,lik=TRUE)
     registry <- c(registry,fnames[["dprior"]])
     cat(file=out,render(templates$dprior$header),
       callable.decl(snippets$dprior),snippets$dprior,
       templates$dprior$footer)
-    cat(file=out,render(templates$undefine$var,variable="lik"))
+    undefmacros(out,lik=TRUE)
   }
 
+  if (has("dens.fn")) {
+    defmacros(out,before_n_after=statenames,loglik=TRUE)
+    registry <- c(registry,fnames[["dens.fn"]])
+    cat(file=out,render(templates$dens.fn$header),
+      callable.decl(snippets$dens.fn),snippets$dens.fn,
+      templates$dens.fn$footer)
+    undefmacros(out,before_n_after=statenames,loglik=TRUE)
+  }
+
+  ## parameter transformation functions
   if (has("fromEstimationScale","toEstimationScale")) {
-
-    for (v in seq_along(paramnames)) {
-      cat(file=out,render(templates$define$var,variable=paste0("T",paramnames[v]),
-        ptr='__pt',ilist='__parindex',index=as.integer(v-1)))
-    }
-
-    ## parameter transformation function
+    defmacros(out,transforms=paramnames)
     if (has("fromEstimationScale")) {
       registry <- c(registry,fnames[["fromEstimationScale"]])
       cat(file=out,render(templates$fromEstimationScale$header),
         callable.decl(snippets$fromEstimationScale),snippets$fromEstimationScale,
         templates$toEstimationScale$footer)
     }
-
-    ## inverse parameter transformation function
     if (has("toEstimationScale")) {
       registry <- c(registry,fnames[["toEstimationScale"]])
       cat(file=out,render(templates$toEstimationScale$header),
         callable.decl(snippets$toEstimationScale),snippets$toEstimationScale,
         templates$toEstimationScale$footer)
     }
-
-    for (v in paramnames) {
-      cat(file=out,render(templates$undefine$var,variable=paste0("T",v)))
-    }
+    undefmacros(out,transforms=paramnames)
   }
 
-  ## skeleton function
-  if (has("skeleton")) {
-    registry <- c(registry,fnames[["skeleton"]])
-    for (v in seq_along(statenames)) {
-      cat(file=out,render(templates$define$var,variable=paste0("D",statenames[v]),
-        ptr='__f',ilist='__stateindex',index=as.integer(v-1)))
-    }
-    cat(file=out,render(templates$skeleton$header),
-      callable.decl(snippets$skeleton),snippets$skeleton,
-      templates$skeleton$footer)
-    for (v in statenames) {
-      cat(file=out,render(templates$undefine$var,variable=paste0("D",v)))
-    }
-  }
-
-  ## undefine state variables
-  for (v in statenames) {
-    cat(file=out,render(templates$undefine$var,variable=v))
-  }
-
-  if (has("dens.fn")) {
-    cat(file=out,render(templates$define$var.alt,variable="loglik",ptr='__loglik',index=0L))
-    for (v in seq_along(statenames)) {
-      cat(file=out,render(templates$define$var,variable=paste0(statenames[v],"_1"),ptr='__x1',ilist='__stateindex',index=as.integer(v-1)))
-      cat(file=out,render(templates$define$var,variable=paste0(statenames[v],"_2"),ptr='__x2',ilist='__stateindex',index=as.integer(v-1)))
-    }
-
-    registry <- c(registry,fnames[["dens.fn"]])
-    cat(file=out,render(templates$dens.fn$header),
-      callable.decl(snippets$dens.fn),snippets$dens.fn,
-      templates$dens.fn$footer)
-
-    for (v in statenames) {
-      cat(file=out,render(templates$undefine$var,variable=paste0(v,"_1")))
-      cat(file=out,render(templates$undefine$var,variable=paste0(v,"_2")))
-    }
-    cat(file=out,render(templates$undefine$var,variable="loglik"))
-  }
-
-  ## more undefines
-  for (v in paramnames) {
-    cat(file=out,render(templates$undefine$var,variable=v))
-  }
-  for (v in covarnames) {
-    cat(file=out,render(templates$undefine$var,variable=v))
-  }
+  ## undefine the last macros
+  undefmacros(out,covarnames=covarnames,paramnames=paramnames)
 
   ## load/unload stack handling codes
-  cat(file=out,templates$stackhandling)
+  cat(file=out,pomp_templates$stackhandling)
 
   ## registration
-  cat(file=out,render(templates$registration$header))
+  cat(file=out,render(pomp_templates$registration$header))
   for (v in registry)
-    cat(file=out,render(templates$registration$main,fun=v))
-  cat(file=out,templates$registration$footer)
+    cat(file=out,render(pomp_templates$registration$main,fun=v))
+  cat(file=out,pomp_templates$registration$footer)
 
   close(out)
 
@@ -237,6 +192,62 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   )
 
   invisible(list(name=name,dir=dir,src=csrc))
+}
+
+defmacros <- function (out, covarnames, paramnames, statenames, obsnames,
+  before_n_after, derivs, transforms, lik = FALSE, loglik = FALSE) {
+  f1 <- function (nm, ptr, idx) {
+    for (v in seq_along(nm)) {
+      cat(file=out,render(pomp_templates$define$var,variable=nm[v],ptr=ptr,ilist=idx,
+        index=as.integer(v-1)))
+    }
+  }
+
+  if (!missing(covarnames)) f1(covarnames,"__covars","__covindex")
+  if (!missing(paramnames)) f1(paramnames,"__p","__parindex")
+  if (!missing(statenames)) f1(statenames,"__x","__stateindex")
+  if (!missing(obsnames)) f1(obsnames,"__y","__obsindex")
+  if (!missing(before_n_after)) {
+    f1(paste0(before_n_after,"_1"),"__x1","__stateindex")
+    f1(paste0(before_n_after,"_2"),"__x2","__stateindex")
+  }
+  if (!missing(derivs)) f1(paste0("D",derivs),"__f","__stateindex")
+  if (!missing(transforms)) f1(paste0("T",transforms),"__pt","__parindex")
+
+  f2 <- function (nm, ptr) {
+    cat(file=out,render(pomp_templates$define$var.alt,variable=nm,ptr=ptr,index=0L))
+  }
+
+  if (lik) f2("lik","__lik")
+  if (loglik) f2("loglik","__loglik")
+
+  invisible(NULL)
+}
+
+undefmacros <- function (out, covarnames, paramnames, statenames, obsnames,
+  before_n_after, derivs, transforms, lik = FALSE, loglik = FALSE) {
+
+  f1 <- function (nm) {
+    for (v in nm) {
+      cat(file=out,render(pomp_templates$undefine$var,variable=v))
+    }
+  }
+
+  if (!missing(covarnames)) f1(covarnames)
+  if (!missing(paramnames)) f1(paramnames)
+  if (!missing(statenames)) f1(statenames)
+  if (!missing(obsnames)) f1(obsnames)
+  if (!missing(before_n_after)) {
+    f1(paste0(before_n_after,"_1"))
+    f1(paste0(before_n_after,"_2"))
+  }
+  if (!missing(derivs)) f1(paste0("D",derivs))
+  if (!missing(transforms)) f1(paste0("T",transforms))
+
+  if (lik) f1("lik")
+  if (loglik) f1("loglik")
+
+  invisible(NULL)
 }
 
 pompSrcDir <- function (dir, verbose) {
@@ -381,13 +392,15 @@ pomp_templates <- list(
   file=list(
     header="/* pomp C snippet file: {%name%} */\n/* Time: {%timestamp%} */\n/* Salt: {%salt%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n"
   ),
-  stackhandling="
-static int __pomp_load_stack = 0;
+  stackhandling="\nstatic int __pomp_load_stack = 0;\n\nvoid __pomp_load_stack_incr (void) {++__pomp_load_stack;}\n\nvoid __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}\n",
+  registration=list(
+    header="\nvoid R_init_{%name%} (DllInfo *info)\n{\n",
+    main="R_RegisterCCallable(\"{%name%}\", \"{%fun%}\", (DL_FUNC) {%fun%});\n",
+    footer="}\n\n"
+  )
+)
 
-void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
-
-void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
-",
+snippet_templates <- list(
   initializer=list(
     header="\nvoid __pomp_initializer (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
     footer="\n}\n\n"
@@ -409,7 +422,7 @@ void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
     footer="  return rate;\n}\n\n"
   ),
   dens.fn=list(
-    header="\nvoid __pomp_densfn (double *__loglik, const double *__x1, const double *__x2, double t1, double t2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars)\n{\n",
+    header="\nvoid __pomp_densfn (double *__loglik, const double *__x1, const double *__x2, double t_1, double t_2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars)\n{\n",
     footer="\n}\n\n"
   ),
   skeleton=list(
@@ -431,11 +444,6 @@ void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
   dprior=list(
     header="\nvoid __pomp_dprior (double *__lik, const double *__p, int give_log, const int *__parindex)\n{\n",
     footer="\n}\n\n"
-  ),
-  registration=list(
-    header="\nvoid R_init_{%name%} (DllInfo *info)\n{\n",
-    main="R_RegisterCCallable(\"{%name%}\", \"{%fun%}\", (DL_FUNC) {%fun%});\n",
-    footer="}\n\n"
   )
 )
 

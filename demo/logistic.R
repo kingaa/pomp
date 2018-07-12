@@ -12,49 +12,34 @@ po <- pomp(
   times="t",
   t0=0,
   rprocess=euler.sim(
-    step.fun=function(x,t,params,delta.t,...){
-      with(
-        as.list(c(x,params)),
-        rnorm(
-          n=1,
-          mean=n+r*n*(1-n/K)*delta.t,
-          sd=sigma*n*sqrt(delta.t)
-        )
-      )
-    },
+    step.fun=Csnippet("
+        n = rnorm(n+r*n*(1-n/K)*dt,sigma*n*sqrt(dt));
+      "
+    ),
     delta.t=0.01
   ),
   dprocess=onestep.dens(
-    dens.fun=function(x1,x2,t1,t2,params,log,...){
-      delta.t <- t2-t1
-      with(
-        as.list(c(x1,params)),
-        dnorm(
-          x=x2['n'],
-          mean=n+r*n*(1-n/K)*delta.t,
-          sd=sigma*n*sqrt(delta.t),
-          log=log
-        )
-      )
-    }
+    dens.fun=Csnippet("
+        double dt = t_2-t_1;
+        loglik = dnorm(n_2,n_1+r*n_1*(1-n_1/K)*dt,sigma*n_1*sqrt(dt),1);
+      "
+    )
   ),
-  measurement.model=N~lnorm(meanlog=log(n),sdlog=log(1+tau)),
-  skeleton=vectorfield(
-    function(x,t,params,...){
-      with(
-        as.list(c(x,params)),
-        r*n*(1-n/K)
-      )
-    })
-)
+  rmeasure=Csnippet("N = rlnorm(log(n),log(1+tau));"),
+  dmeasure=Csnippet("lik = dlnorm(N,log(n),log(1+tau),give_log);"),
+  skeleton=vectorfield(Csnippet("Dn = r*n*(1-n/K);")),
+  initializer=Csnippet("n = n_0;"),
+  paramnames=c("r","K","tau","sigma","n_0"),
+  statenames=c("n")
+  )
 
-params <- c(n.0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
+params <- c(n_0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
 set.seed(73658676)
 po <- simulate(po,params=params)
 
 params <- cbind(
-  c(n.0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),
-  c(n.0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1)
+  c(n_0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),
+  c(n_0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1)
 )
 traj <- trajectory(po,params=params,as.data.frame=TRUE)
 traj <- reshape(traj,dir="wide",idvar="time",timevar="traj")

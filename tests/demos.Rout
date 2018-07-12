@@ -67,7 +67,7 @@ Type 'q()' to quit R.
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.006320477 secs
+Time difference of 0.006561041 secs
 
 > X <- reshape(X, dir = "wide", v.names = "X", timevar = "traj", 
 +     idvar = "time")
@@ -82,7 +82,7 @@ Time difference of 0.006320477 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.004600048 secs
+Time difference of 0.004657507 secs
 
 > x <- reshape(x, dir = "wide", v.names = c("Y", "X"), 
 +     timevar = "sim", idvar = "time")
@@ -105,7 +105,7 @@ Time difference of 0.004600048 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.6182451 secs
+Time difference of 0.5962627 secs
 
 > print(logmeanexp(sapply(pf, logLik), se = TRUE))
                    se 
@@ -114,17 +114,17 @@ Time difference of 0.6182451 secs
 > library(pomp)
 
 > po <- pomp(data = data.frame(N = rep(0, 1000), t = seq(0.1, 
-+     by = 0.1, length = 1000)), times = "t", t0 = 0, rprocess = euler.sim(step.fun = f .... [TRUNCATED] 
++     by = 0.1, length = 1000)), times = "t", t0 = 0, rprocess = euler.sim(step.fun = C .... [TRUNCATED] 
 
-> params <- c(n.0 = 10000, K = 10000, r = 0.9, sigma = 0.4, 
+> params <- c(n_0 = 10000, K = 10000, r = 0.9, sigma = 0.4, 
 +     tau = 0.1)
 
 > set.seed(73658676)
 
 > po <- simulate(po, params = params)
 
-> params <- cbind(c(n.0 = 100, K = 10000, r = 0.2, sigma = 0.4, 
-+     tau = 0.1), c(n.0 = 1000, K = 11000, r = 0.1, sigma = 0.4, 
+> params <- cbind(c(n_0 = 100, K = 10000, r = 0.2, sigma = 0.4, 
++     tau = 0.1), c(n_0 = 1000, K = 11000, r = 0.1, sigma = 0.4, 
 +     tau = 0.1))
 
 > traj <- trajectory(po, params = params, as.data.frame = TRUE)
@@ -150,14 +150,20 @@ Time difference of 0.6182451 secs
 
 > library(pomp)
 
-> rw2 <- pomp(rprocess = onestep.sim(step.fun = function(x, 
-+     t, params, delta.t, ...) {
-+     c(x1 = rnorm(n = 1, mean = x["x1"], sd = params["s ..." ... [TRUNCATED] 
+> rw2 <- pomp(rprocess = onestep.sim(step.fun = Csnippet("\n      x1 = rnorm(x1,s1*dt);\n      x2 = rnorm(x2,s2*dt);\n      ")), 
++     dprocess = one .... [TRUNCATED] 
 
 > rw2 <- simulate(rw2, params = c(s1 = 3, s2 = 1, x1.0 = 0, 
 +     x2.0 = 1, tau = 10))
 
 > plot(rw2)
+
+> pf <- pfilter(rw2, Np = 100)
+
+> logLik(pf)
+[1] -766.8304
+
+> plot(pf)
 
 > library(pomp)
 
@@ -194,7 +200,7 @@ Time difference of 0.6182451 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.006561995 secs
+Time difference of 0.006536245 secs
 
 > plot(incid ~ time, data = X, type = "l")
 
@@ -205,7 +211,7 @@ Time difference of 0.006561995 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.03986859 secs
+Time difference of 0.04319692 secs
 
 > plot(incid ~ time, data = x, col = as.factor(x$sim), 
 +     pch = 16)
@@ -216,12 +222,12 @@ Time difference of 0.03986859 secs
 > tic <- Sys.time()
 
 > logLik(pfilter(po, Np = 1000))
-[1] -672.9178
+[1] -658.1247
 
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 7.517316 secs
+Time difference of 7.519635 secs
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 
@@ -231,5 +237,5 @@ null device
           1 
 > 
 > print(packageVersion("pomp"))
-[1] '1.17.3.1'
+[1] '1.18.2.1'
 > 
