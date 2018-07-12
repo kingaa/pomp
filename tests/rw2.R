@@ -112,23 +112,15 @@ rw2 <- pomp(
 
 show(rw2)
 
-try(
-  simulate(rw2,params=p)
-)
+try(simulate(rw2,params=p))
 
 rw2 <- pomp(rw2,initializer=crap.initializer)
 
-try(
-  simulate(rw2,params=p)
-)
+try(simulate(rw2,params=p))
 
 rw2 <- pomp(
   rprocess = rw.rprocess,
-  dprocess = onestep.dens(
-    Csnippet("
-      lik = dnorm(x1_2,x1_1,s1,1)+dnorm(x2_2,x2_1,s2,1);
-    ")
-  ),
+  dprocess = rw.dprocess,
   statenames=c("x1","x2"),
   paramnames=c("s1","s2"),
   measurement.model=list(
@@ -146,8 +138,21 @@ rw2 <- pomp(
   t0=0
 )
 
-examples <- simulate(rw2,params=p)
-rw2 <- examples[[1]]
+rw2 <- simulate(rw2,params=p)[[1]]
+x <- states(rw2)
+d1 <- dprocess(rw2,x=x,times=time(rw2),params=p)
+
+rw2 <- pomp(rw2,
+  dprocess = onestep.dens(
+    Csnippet("
+      loglik = dnorm(x1_2,x1_1,s1,1)+dnorm(x2_2,x2_1,s2,1);
+      ")
+  ),
+  statenames=c("x1","x2"),
+  paramnames=c("s1","s2")
+)
+d2 <- dprocess(rw2,x=x,times=time(rw2),params=p)
+stopifnot(all.equal(d1,d2))
 
 y <- simulate(rw2,params=p,obs=T,states=T)
 y <- simulate(rw2,params=p,obs=T)

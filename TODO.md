@@ -18,6 +18,7 @@
 
 ## For pomp:
 
+- includes argument for `pompCompile` to facilitate inclusion of header files
 - graceful stopping for optimizers (at least for `nloptr`)
 - number of processors stored in `bake`, `stew`, `freeze` outputs
 - digest of data stored in `bake`, `stew`, `freeze` outputs
