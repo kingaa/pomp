@@ -206,6 +206,7 @@ setMethod(
         PACKAGE=object@PACKAGE,
         proto=quote(step.fun(x,t,params,delta.t,...)),
         slotname=object@slotname,
+        Cname=snippet_templates$step.fn$Cname,
         ...
       ),
       error = function (e) {
@@ -250,6 +251,7 @@ setMethod(
         PACKAGE=object@PACKAGE,
         proto=quote(step.fun(x,t,params,delta.t,...)),
         slotname=object@slotname,
+        Cname=snippet_templates$step.fn$Cname,
         ...
       ),
       error = function (e) {
@@ -294,6 +296,7 @@ setMethod(
         PACKAGE=object@PACKAGE,
         proto=quote(step.fun(x,t,params,...)),
         slotname=object@slotname,
+        Cname=snippet_templates$step.fn$Cname,
         ...
       ),
       error = function (e) {
@@ -338,6 +341,7 @@ setMethod(
         PACKAGE=object@PACKAGE,
         proto=quote(rate.fun(j,x,t,params,...)),
         slotname=object@slotname,
+        Cname=snippet_templates$rate.fn$Cname,
         ...
       ),
       error = function (e) {
@@ -386,6 +390,7 @@ setMethod(
         PACKAGE=object@PACKAGE,
         proto=quote(dens.fun(x1,x2,t1,t2,params,...)),
         slotname=object@slotname,
+        Cname=snippet_templates$dens.fn$Cname,
         ...
       ),
       error = function (e) {

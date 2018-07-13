@@ -15,9 +15,6 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   obsnames <- cleanForC(obsnames)
 
   snippets <- list(...)
-  snipnms <- names(snippets)
-
-  has <- function (...) any(c(...) %in% snipnms)
 
   ## rely on "-I" flags under *nix
   if (.Platform$OS.type=="unix") {
@@ -43,122 +40,28 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   cat(file=out,globals,"\n\n")
 
-  ## parameter/covariates macros
-  defmacros(out,covarnames=covarnames,paramnames=paramnames)
+  needsmap <- list(
+    statenames=statenames,
+    derivs=statenames,
+    before_n_after=statenames,
+    paramnames=paramnames,
+    transforms=paramnames,
+    covarnames=covarnames,
+    obsnames=obsnames,
+    lik=TRUE,
+    loglik=TRUE
+  )
 
-  if (has("initializer","step.fn","rate.fn","rmeasure","dmeasure","skeleton"))
-    ## state-variable macros
-    defmacros(out,statenames=statenames)
-
-  ## initializer function
-  if (has("initializer")) {
-    registry <- c(registry,fnames[["initializer"]])
-    cat(file=out,render(templates$initializer$header),
-      callable.decl(snippets$initializer),snippets$initializer,
-      templates$initializer$footer)
+  ## now we write the snippets, using the templates provided
+  ## we add each 'Cname' to the 'registry'
+  for (snip in names(snippets)) {
+    registry <- c(registry,templates[[snip]]$Cname)
+    do.call(defmacros,c(list(out),needsmap[templates[[snip]]$needs]))
+    cat(file=out,render(templates[[snip]]$header),
+      callable.decl(snippets[[snip]]),snippets[[snip]],
+      templates[[snip]]$footer)
+    do.call(undefmacros,c(list(out),needsmap[templates[[snip]]$needs]))
   }
-
-  ## Euler step function
-  if (has("step.fn")) {
-    registry <- c(registry,fnames[["step.fn"]])
-    cat(file=out,render(templates$step.fn$header),
-      callable.decl(snippets$step.fn),snippets$step.fn,
-      templates$step.fn$footer)
-  }
-
-  ## Gillespie rate function
-  if (has("rate.fn")) {
-    registry <- c(registry,fnames[["rate.fn"]])
-    cat(file=out,render(templates$rate.fn$header),
-      callable.decl(snippets$rate.fn),snippets$rate.fn,
-      templates$rate.fn$footer)
-  }
-
-  if (has("rmeasure","dmeasure")) {
-
-    defmacros(out,obsnames=obsnames)
-
-    ## rmeasure function
-    if (has("rmeasure")) {
-      registry <- c(registry,fnames[["rmeasure"]])
-      cat(file=out,render(templates$rmeasure$header),
-        callable.decl(snippets$rmeasure),snippets$rmeasure,
-        templates$rmeasure$footer)
-    }
-
-    ## dmeasure function
-    if (has("dmeasure")) {
-      defmacros(out,lik=TRUE)
-      registry <- c(registry,fnames[["dmeasure"]])
-      cat(file=out,render(templates$dmeasure$header),
-        callable.decl(snippets$dmeasure),snippets$dmeasure,
-        templates$dmeasure$footer)
-      cat(file=out,render(pomp_templates$undefine$var,variable="lik"))
-    }
-
-    undefmacros(out,obsnames=obsnames)
-  }
-
-  ## skeleton function
-  if (has("skeleton")) {
-    registry <- c(registry,fnames[["skeleton"]])
-    defmacros(out,derivs=statenames)
-    cat(file=out,render(templates$skeleton$header),
-      callable.decl(snippets$skeleton),snippets$skeleton,
-      templates$skeleton$footer)
-    undefmacros(out,derivs=statenames)
-  }
-
-  if (has("initializer","step.fn","rate.fn","rmeasure","dmeasure","skeleton"))
-    undefmacros(out,statenames=statenames)
-
-  ## rprior function
-  if (has("rprior")) {
-    registry <- c(registry,fnames[["rprior"]])
-    cat(file=out,render(templates$rprior$header),
-      callable.decl(snippets$rprior),snippets$rprior,
-      templates$rprior$footer)
-  }
-
-  ## dprior function
-  if (has("dprior")) {
-    defmacros(out,lik=TRUE)
-    registry <- c(registry,fnames[["dprior"]])
-    cat(file=out,render(templates$dprior$header),
-      callable.decl(snippets$dprior),snippets$dprior,
-      templates$dprior$footer)
-    undefmacros(out,lik=TRUE)
-  }
-
-  if (has("dens.fn")) {
-    defmacros(out,before_n_after=statenames,loglik=TRUE)
-    registry <- c(registry,fnames[["dens.fn"]])
-    cat(file=out,render(templates$dens.fn$header),
-      callable.decl(snippets$dens.fn),snippets$dens.fn,
-      templates$dens.fn$footer)
-    undefmacros(out,before_n_after=statenames,loglik=TRUE)
-  }
-
-  ## parameter transformation functions
-  if (has("fromEstimationScale","toEstimationScale")) {
-    defmacros(out,transforms=paramnames)
-    if (has("fromEstimationScale")) {
-      registry <- c(registry,fnames[["fromEstimationScale"]])
-      cat(file=out,render(templates$fromEstimationScale$header),
-        callable.decl(snippets$fromEstimationScale),snippets$fromEstimationScale,
-        templates$toEstimationScale$footer)
-    }
-    if (has("toEstimationScale")) {
-      registry <- c(registry,fnames[["toEstimationScale"]])
-      cat(file=out,render(templates$toEstimationScale$header),
-        callable.decl(snippets$toEstimationScale),snippets$toEstimationScale,
-        templates$toEstimationScale$footer)
-    }
-    undefmacros(out,transforms=paramnames)
-  }
-
-  ## undefine the last macros
-  undefmacros(out,covarnames=covarnames,paramnames=paramnames)
 
   ## load/unload stack handling codes
   cat(file=out,pomp_templates$stackhandling)
@@ -366,21 +269,6 @@ render <- function (template, ...) {
 
 ## TEMPLATES
 
-## the 'fnames' are needed in 'pomp_fun.R'
-fnames <- list(
-  rmeasure="__pomp_rmeasure",
-  dmeasure= "__pomp_dmeasure",
-  step.fn="__pomp_stepfn",
-  rate.fn="__pomp_ratefn",
-  dens.fn="__pomp_densfn",
-  skeleton="__pomp_skelfn",
-  initializer="__pomp_initializer",
-  fromEstimationScale="__pomp_par_trans",
-  toEstimationScale="__pomp_par_untrans",
-  rprior="__pomp_rprior",
-  dprior="__pomp_dprior"
-)
-
 pomp_templates <- list(
   define=list(
     var="#define {%variable%}\t({%ptr%}[{%ilist%}[{%index%}]])\n",
@@ -399,52 +287,3 @@ pomp_templates <- list(
     footer="}\n\n"
   )
 )
-
-snippet_templates <- list(
-  initializer=list(
-    header="\nvoid __pomp_initializer (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
-    footer="\n}\n\n"
-  ),
-  rmeasure=list(
-    header="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
-    footer="\n}\n\n"
-  ),
-  dmeasure=list(
-    header="\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
-    footer="\n}\n\n"
-  ),
-  step.fn=list(
-    header="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
-    footer="\n}\n\n"
-  ),
-  rate.fn=list(
-    header="\ndouble __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars)\n{\n  double rate = 0.0;  \n",
-    footer="  return rate;\n}\n\n"
-  ),
-  dens.fn=list(
-    header="\nvoid __pomp_densfn (double *__loglik, const double *__x1, const double *__x2, double t_1, double t_2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars)\n{\n",
-    footer="\n}\n\n"
-  ),
-  skeleton=list(
-    header="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
-    footer="\n}\n\n"
-  ),
-  fromEstimationScale=list(
-    header="\nvoid __pomp_par_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
-    footer="\n}\n\n"
-  ),
-  toEstimationScale=list(
-    header="\nvoid __pomp_par_untrans (double *__pt, const double *__p, const int *__parindex)\n{\n",
-    footer="\n}\n\n"
-  ),
-  rprior=list(
-    header="\nvoid __pomp_rprior (double *__p, const int *__parindex)\n{\n",
-    footer="\n}\n\n"
-  ),
-  dprior=list(
-    header="\nvoid __pomp_dprior (double *__lik, const double *__p, int give_log, const int *__parindex)\n{\n",
-    footer="\n}\n\n"
-  )
-)
-
-## utility.fns <- list()

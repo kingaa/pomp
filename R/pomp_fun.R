@@ -100,12 +100,13 @@ setMethod(
   signature=signature(f="Csnippet"),
   definition=function (f, PACKAGE, slotname = NULL, libname = NULL,
     obsnames = character(0), statenames = character(0),
-    paramnames = character(0), covarnames = character(0), ...) {
+    paramnames = character(0), covarnames = character(0),
+    Cname, ...) {
     slotname <- as.character(slotname)
     libname <- as.character(libname)
     new(
       "pomp.fun",
-      native.fun=render(fnames[[slotname]],name=libname),
+      native.fun=render(Cname,name=libname),
       PACKAGE=as.character(libname),
       mode=pompfunmode$regNative,
       obsnames=obsnames,

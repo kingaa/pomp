@@ -30,7 +30,7 @@ LazyData: true
 Contact: kingaa at umich dot edu
 BugReports: https://github.com/kingaa/pomp/issues/
 Collate: aaa.R authors.R bake.R generics.R eulermultinom.R
-	 csnippet.R safecall.R pomp_fun.R plugins.R builder.R
+	 csnippet.R safecall.R pomp_fun.R plugins.R templates.R builder.R
 	 parmat.R logmeanexp.R slice_design.R
 	 profile_design.R sobol.R bsplines.R sannbox.R
 	 pomp_class.R load.R pomp.R pomp_methods.R
