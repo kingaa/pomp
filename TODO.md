@@ -23,6 +23,8 @@
 
 ## For pomp:
 
+- add `include` argument to `pomp`?
+- include CWD in search-path for include files?
 - deprecate `obs` and `states` arguments in `simulate`
 - deprecate `mif` and `bsmc`
 - graceful stopping for optimizers (at least for `nloptr`)
