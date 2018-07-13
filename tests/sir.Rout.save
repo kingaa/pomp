@@ -137,7 +137,7 @@ Type 'q()' to quit R.
 +         with(
 +             as.list(c(x,params)),
 +             {
-+                 if (y > 0) 
++                 if (y > 0)
 +                     f <- diff(pnorm(q=y+c(-0.5,0.5),mean=rho*cases,sd=sqrt(rho*(1-rho)*cases),lower.tail=TRUE,log.p=FALSE))
 +                 else
 +                     f <- pnorm(q=0.5,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases),lower.tail=TRUE,log.p=FALSE)
@@ -193,8 +193,8 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x385f910>
-<environment: 0x2767c18>
+<bytecode: 0x3181c08>
+<environment: 0x21a3fe0>
 process model density, dprocess = function (x, times, params, ..., tcovar, covar, log = FALSE, 
     .getnativesymbolinfo = TRUE) 
 {
@@ -204,8 +204,8 @@ process model density, dprocess = function (x, times, params, ..., tcovar, covar
         stop(ep, conditionMessage(e), call. = FALSE)
     })
 }
-<bytecode: 0x3530a08>
-<environment: 0x25b1db0>
+<bytecode: 0x2f610d8>
+<environment: 0x2043670>
 measurement model simulator, rmeasure = native function '__pomp_rmeasure', defined by a Csnippet
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
@@ -236,7 +236,7 @@ skeleton (vectorfield) = function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x4b0fa80>
+<environment: 0x379c168>
 initializer = function (params, t0, ...) 
 {
     with(as.list(params), {
@@ -424,19 +424,63 @@ newly created object(s):
 > 
 > pomp(euler.sir,
 +      rmeasure=Csnippet("
-+        const SEXP bob = get_pomp_userdata(\"bob\");
-+        if (*INTEGER(bob) != 33) {
-+          Rprintf(\"error!\");
-+        }
-+        double mean = rho*cases;
-+        double sd = sqrt(cases*rho*(1-rho));
-+        reports = nearbyint(rnorm(mean,sd));
-+        reports = (reports > 0) ? reports : 0;"),
++       const SEXP bob = get_pomp_userdata(\"bob\");
++       if (*INTEGER(bob) != 33) {
++        Rprintf(\"error!\");
++       }
++       double mean = rho*cases;
++       double sd = sqrt(cases*rho*(1-rho));
++       reports = nearbyint(rnorm(mean,sd));
++       reports = (reports > 0) ? reports : 0;"),
 +     statenames=c("cases"),
 +     paramnames=c("rho"),bob=33L) -> po
 In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'bob'
 > 
 > simulate(po) -> po
+> 
+> pomp(euler.sir,
++   rmeasure=Csnippet("
++       const int *bob = get_pomp_userdata_int(\"bob\");
++       if (*bob != 33) {
++        error(\"wrong bob!\");
++       }
++       double mean = rho*cases;
++       double sd = sqrt(cases*rho*(1-rho));
++       reports = nearbyint(rnorm(mean,sd));
++       reports = (reports > 0) ? reports : 0;"),
++   statenames=c("cases"),
++   paramnames=c("rho"),bob=12L) -> po
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'bob'
+> try(simulate(po))
+Error : in 'simulate': wrong bob!
+> 
+> pomp(euler.sir,
++   rmeasure=Csnippet("
++       const double *joe = get_pomp_userdata_double(\"joe\");
++       if (joe != 33) {
++        error(\"oh no, joe!\");
++       }
++       double mean = rho*cases;
++       double sd = sqrt(cases*rho*(1-rho));
++       reports = nearbyint(rnorm(mean,sd));
++       reports = (reports > 0) ? reports : 0;"),
++   statenames=c("cases"),
++   paramnames=c("rho"),joe=12.0) -> po
+In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'joe'
+> try(simulate(po))
+Error : in 'simulate': oh no, joe!
+> 
+> pomp(euler.sir,
++   rmeasure=Csnippet("
++       double seas[11];
++       periodic_bspline_basis_eval(t,2.0,1,4,seas);
++       double mean = rho*seas[2]*cases;
++       double sd = pow(seas[3],5)*sqrt(cases*rho*(1-rho));
++       reports = nearbyint(rnorm(mean,sd));
++       reports = (reports > 0) ? reports : 0;"),
++   statenames=c("cases"),
++   paramnames=c("rho")) -> po
+> plot(simulate(po))
 > 
 > try(simulate(pomp(euler.sir,rprocess=euler.sim(Csnippet("error(\"yikes!\");"),delta.t=0.1))))
 Error : in 'simulate': in 'euler.sim' plugin: yikes!

@@ -2,8 +2,8 @@
 
 #include "pomp_internal.h"
 
-SEXP __pomp_userdata;
-#define USERDATA  (__pomp_userdata)
+static SEXP __pomp_ptr_userdata;
+#define USERDATA  (__pomp_ptr_userdata)
 
 void set_pomp_userdata (SEXP userdata) {
   USERDATA = userdata;

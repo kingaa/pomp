@@ -118,7 +118,7 @@ po <- pomp(
         with(
             as.list(c(x,params)),
             {
-                if (y > 0) 
+                if (y > 0)
                     f <- diff(pnorm(q=y+c(-0.5,0.5),mean=rho*cases,sd=sqrt(rho*(1-rho)*cases),lower.tail=TRUE,log.p=FALSE))
                 else
                     f <- pnorm(q=0.5,mean=rho*cases,sd=sqrt(rho*(1-rho)*cases),lower.tail=TRUE,log.p=FALSE)
@@ -281,18 +281,58 @@ stopifnot(identical(round(x1$cases,3),round(x2$cases,3)))
 
 pomp(euler.sir,
      rmeasure=Csnippet("
-       const SEXP bob = get_pomp_userdata(\"bob\");
-       if (*INTEGER(bob) != 33) {
-         Rprintf(\"error!\");
-       }
-       double mean = rho*cases;
-       double sd = sqrt(cases*rho*(1-rho));
-       reports = nearbyint(rnorm(mean,sd));
-       reports = (reports > 0) ? reports : 0;"),
+      const SEXP bob = get_pomp_userdata(\"bob\");
+      if (*INTEGER(bob) != 33) {
+       Rprintf(\"error!\");
+      }
+      double mean = rho*cases;
+      double sd = sqrt(cases*rho*(1-rho));
+      reports = nearbyint(rnorm(mean,sd));
+      reports = (reports > 0) ? reports : 0;"),
     statenames=c("cases"),
     paramnames=c("rho"),bob=33L) -> po
 
 simulate(po) -> po
+
+pomp(euler.sir,
+  rmeasure=Csnippet("
+      const int *bob = get_pomp_userdata_int(\"bob\");
+      if (*bob != 33) {
+       error(\"wrong bob!\");
+      }
+      double mean = rho*cases;
+      double sd = sqrt(cases*rho*(1-rho));
+      reports = nearbyint(rnorm(mean,sd));
+      reports = (reports > 0) ? reports : 0;"),
+  statenames=c("cases"),
+  paramnames=c("rho"),bob=12L) -> po
+try(simulate(po))
+
+pomp(euler.sir,
+  rmeasure=Csnippet("
+      const double *joe = get_pomp_userdata_double(\"joe\");
+      if (joe != 33) {
+       error(\"oh no, joe!\");
+      }
+      double mean = rho*cases;
+      double sd = sqrt(cases*rho*(1-rho));
+      reports = nearbyint(rnorm(mean,sd));
+      reports = (reports > 0) ? reports : 0;"),
+  statenames=c("cases"),
+  paramnames=c("rho"),joe=12.0) -> po
+try(simulate(po))
+
+pomp(euler.sir,
+  rmeasure=Csnippet("
+      double seas[11];
+      periodic_bspline_basis_eval(t,2.0,1,4,seas);
+      double mean = rho*seas[2]*cases;
+      double sd = pow(seas[3],5)*sqrt(cases*rho*(1-rho));
+      reports = nearbyint(rnorm(mean,sd));
+      reports = (reports > 0) ? reports : 0;"),
+  statenames=c("cases"),
+  paramnames=c("rho")) -> po
+plot(simulate(po))
 
 try(simulate(pomp(euler.sir,rprocess=euler.sim(Csnippet("error(\"yikes!\");"),delta.t=0.1))))
 try(simulate(pomp(euler.sir,rprocess=discrete.time.sim(Csnippet("error(\"yikes!\");"),delta.t=0.1))))

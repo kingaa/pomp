@@ -5,16 +5,22 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   verbose = getOption("verbose",FALSE))
 {
 
-  if (!is.null(name)) name <- cleanForC(name)
-
-  if (is(globals,"Csnippet")) globals <- globals@text
-
+  name <- cleanForC(name)
   statenames <- cleanForC(statenames)
   paramnames <- cleanForC(paramnames)
   covarnames <- cleanForC(covarnames)
   obsnames <- cleanForC(obsnames)
 
+  globals <- as(globals,"character")
+
   snippets <- list(...)
+
+  ## 'registry' holds a list of functions to register
+  registry <- c("__pomp_load_stack_incr","__pomp_load_stack_decr")
+  ## which utilities are needed?
+  utils <- which(sapply(seq_along(pomp_templates$utilities),
+    function(x) any(grepl(pomp_templates$utilities[[x]]$trigger,
+      snippets))))
 
   ## rely on "-I" flags under *nix
   if (.Platform$OS.type=="unix") {
@@ -28,9 +34,6 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   salt <- paste(format(as.hexmode(ceiling(runif(n=4L,max=2^24))),
     upper.case=TRUE),collapse="")
 
-  ## list of functions to register
-  registry <- c("__pomp_load_stack_incr","__pomp_load_stack_decr")
-
   ## string 'csrc' will hold the full C source code
   csrc <- ""
   out <- textConnection(object="csrc",open="w",local=TRUE)
@@ -39,6 +42,9 @@ pompCBuilder <- function (name = NULL, dir = NULL,
     pompheader=pompheader,timestamp=timestamp,salt=salt))
 
   cat(file=out,globals,"\n\n")
+
+  for (u in utils)
+    cat(file=out,pomp_templates$utilities[[u]]$header)
 
   needsmap <- list(
     statenames=statenames,
@@ -57,9 +63,8 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   for (snip in names(snippets)) {
     registry <- c(registry,templates[[snip]]$Cname)
     do.call(defmacros,c(list(out),needsmap[templates[[snip]]$needs]))
-    cat(file=out,render(templates[[snip]]$header),
-      callable.decl(snippets[[snip]]),snippets[[snip]],
-      templates[[snip]]$footer)
+    cat(file=out,"\n\n",render(templates[[snip]]$header),
+      snippets[[snip]],templates[[snip]]$footer)
     do.call(undefmacros,c(list(out),needsmap[templates[[snip]]$needs]))
   }
 
@@ -68,6 +73,8 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   ## registration
   cat(file=out,render(pomp_templates$registration$header))
+  for (v in utils)
+    cat(file=out,pomp_templates$utilities[[v]]$reg)
   for (v in registry)
     cat(file=out,render(pomp_templates$registration$main,fun=v))
   cat(file=out,pomp_templates$registration$footer)
@@ -76,7 +83,7 @@ pompCBuilder <- function (name = NULL, dir = NULL,
 
   csrc <- paste(csrc,collapse="\n")
 
-  if (is.null(name))
+  if (length(name)==0)
     name <- paste0("pomp_",digest(csrc,serialize=FALSE))
 
   csrc <- render(csrc,name=name)
@@ -192,7 +199,8 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
   cflags <- Sys.getenv("PKG_CPPFLAGS")
   cflags <- paste0("PKG_CPPFLAGS=\"",
     if (nchar(cflags)>0) paste0(cflags," ") else "",
-    "-I",system.file("include",package="pomp"),"\"")
+    "-I",system.file("include",package="pomp"),
+    " -I",getwd(),"\"")
 
   shlib.args <- as.character(shlib.args)
 
@@ -279,6 +287,29 @@ pomp_templates <- list(
   ),
   file=list(
     header="/* pomp C snippet file: {%name%} */\n/* Time: {%timestamp%} */\n/* Salt: {%salt%} */\n\n#include <{%pompheader%}>\n#include <R_ext/Rdynload.h>\n\n"
+  ),
+  utilities=list(
+    periodic_bspline_basis=list(
+      trigger="periodic_bspline_basis_eval",
+      header="static void (*__pomp_periodic_bspline_basis_eval)(double, double, int, int, double*);\n#define periodic_bspline_basis_eval(X,Y,M,N,Z)\t(__pomp_periodic_bspline_basis_eval((X),(Y),(M),(N),(Z)))
+\n",
+      reg="__pomp_periodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n"
+    ),
+    get_pomp_userdata_int=list(
+      trigger="get_pomp_userdata_int",
+      header="static const int * (*__pomp_get_pomp_userdata_int)(const char *);\n#define get_pomp_userdata_int(X)\t(__pomp_get_pomp_userdata_int(X))\n",
+      reg="__pomp_get_pomp_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n"
+    ),
+    get_pomp_userdata_double=list(
+      trigger="get_pomp_userdata_double",
+      header="static const double * (*__pomp_get_pomp_userdata_double)(const char *);\n#define get_pomp_userdata_double(X)\t(__pomp_get_pomp_userdata_double(X))\n",
+      reg="__pomp_get_pomp_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n"
+    ),
+    get_pomp_userdata=list(
+      trigger="get_pomp_userdata(\\b|[^_])",
+      header="static const SEXP (*__pomp_get_pomp_userdata)(const char *);\n#define get_pomp_userdata(X)\t(__pomp_get_pomp_userdata(X))\n",
+      reg="__pomp_get_pomp_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n"
+    )
   ),
   stackhandling="\nstatic int __pomp_load_stack = 0;\n\nvoid __pomp_load_stack_incr (void) {++__pomp_load_stack;}\n\nvoid __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}\n",
   registration=list(
