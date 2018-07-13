@@ -1,5 +1,15 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.18.2}{
+  \itemize{
+    \item The C snippet compiling facilities have been thoroughly reworked.
+  }
+}
+\section{Changes in \pkg{pomp} version 1.18.1}{
+  \itemize{
+    \item \code{onestep.dens} can now take a \code{Csnippet} specification of the process-model transition density.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.17.4}{
   \itemize{
     \item All inference functions can now take a list in the \code{start} or \code{params} arguments.

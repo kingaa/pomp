@@ -1,5 +1,15 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._2:
+
+        • The C snippet compiling facilities have been thoroughly
+          reworked.
+
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._1:
+
+        • ‘onestep.dens’ can now take a ‘Csnippet’ specification of the
+          process-model transition density.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_7._4:
 
         • All inference functions can now take a list in the ‘start’ or
