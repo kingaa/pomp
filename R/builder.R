@@ -232,19 +232,6 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
   invisible(solib)
 }
 
-callable.decl <- function (code) {
-
-  utilities <- list(
-    periodic_bspline_basis_eval="\tvoid (*periodic_bspline_basis_eval)(double,double,int,int,double*);\nperiodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable(\"pomp\",\"periodic_bspline_basis_eval\");\n",
-    get_pomp_userdata_int="\tconst int * (*get_pomp_userdata_int)(const char *);\nget_pomp_userdata_int = (const int *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_int\");\n",
-    get_pomp_userdata_double="\tconst double * (*get_pomp_userdata_double)(const char *);\nget_pomp_userdata_double = (const double *(*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata_double\");\n",
-    `get_pomp_userdata(\\b|[^_])`="\tconst SEXP (*get_pomp_userdata)(const char *);\nget_pomp_userdata = (const SEXP (*)(const char*)) R_GetCCallable(\"pomp\",\"get_pomp_userdata\");\n"
-  )
-
-  fns <- vapply(names(utilities),grepl,logical(1),code,perl=TRUE)
-  do.call(paste0,utilities[fns])
-}
-
 cleanForC <- function (text) {
   text <- as.character(text)
   text <- gsub("\\.","_",text)
