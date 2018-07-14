@@ -141,7 +141,6 @@ in 'pomp': : the following unrecognized argument(s) will be stored for use by us
 +     simulate(seed=806867104L) -> gsir1
 > 
 > pompExample(gillespie.sir)
-in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names'
 newly created object(s):
  gillespie.sir 
 > gsir2 <- simulate(gillespie.sir,params=coef(gsir),

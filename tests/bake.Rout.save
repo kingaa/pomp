@@ -48,7 +48,6 @@ Type 'q()' to quit R.
 > stopifnot(!exists("y3"))
 > 
 > pompExample(gillespie.sir)
-in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'comp.names','ic.names'
 newly created object(s):
  gillespie.sir 
 > simulate(gillespie.sir,seed=1347484107L) -> x

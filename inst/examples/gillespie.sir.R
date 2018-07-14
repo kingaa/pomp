@@ -536,40 +536,105 @@ pomp(
        pop=1000000,
        beta.sd=0
        ),
-     rprocess=gillespie.sim(
-       rate.fun="_sir_rates",
-       PACKAGE="pomp",
-       v=cbind(
-         birth=c(1,0,0,1,0),
-         sdeath=c(-1,0,0,-1,0),
-         infection=c(-1,1,0,0,0),
-         ideath=c(0,-1,0,-1,0),
-         recovery=c(0,-1,1,0,1),
-         rdeath=c(0,0,-1,-1,0)
-         )
-       ),
-     skeleton=vectorfield("_sir_ODE"),
-     measurement.model=reports~binom(size=cases,prob=rho),
-     PACKAGE="pomp",
-     statenames=c("S","I","R","N","cases"),
-     paramnames=c(
-       "gamma","mu","iota",
-       "beta1","beta.sd","pop","rho",
-       "S_0","I_0","R_0"
-       ),
-     zeronames=c("cases"),
-     comp.names=c("S","I","R"),
-     ic.names=c("S_0","I_0","R_0"),
-     fromEstimationScale="_sir_par_trans",
-     toEstimationScale="_sir_par_untrans",
-     initializer=function(params, t0, comp.names, ic.names, ...) {
-       x0 <- setNames(numeric(5),c("S","I","R","N","cases"))
-       fracs <- params[ic.names]
-       x0["N"] <- params["pop"]
-       x0[comp.names] <- round(params["pop"]*fracs/sum(fracs))
-       x0
-     }
-     ) -> gillespie.sir
+     globals="
+      int nbasis = 3, deg = 3;
+      double period = 1.0;",
+     rprocess=gillespie.hl.sim(
+       .pre="
+          double beta;
+          const double *xbeta = &beta1;
+          double seasonality[nbasis];
+          int k;",
+       birth=list(
+          "rate = mu*pop;",
+          c(S=1,I=0,R=0,N=1,cases=0)),
+       susc.death=list(
+          "rate = mu*S;",
+          c(S=-1,I=0,R=0,N=-1,cases=0)),
+       infection=list(
+          "periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);
+           for (k = 0, beta = 0; k < nbasis; k++) beta += seasonality[k]*xbeta[k];
+           rate = (beta*I+iota)*S/pop;",
+          c(S=-1,I=1,N=0,R=0,cases=0)),
+       inf.death=list(
+          "rate = mu*I;",
+          c(S=0,I=-1,R=0,N=-1,cases=0)),
+       recovery=list(
+          "rate = gamma*I;",
+          c(S=0,I=-1,R=1,N=0,cases=1)),
+       recov.death=list(
+          "rate = mu*R;",
+          c(S=0,I=0,R=-1,N=-1,cases=0)),
+       hmax=0.05),
+     skeleton=vectorfield(
+       Csnippet("
+        int nrate = 6;
+        double rate[nrate];
+        double term[nrate];
+        double beta;
+        const double *xbeta = &beta1;
+        double seasonality[nbasis];
+        int k;
+        periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);
+        for (k = 0, beta = 0; k < nbasis; k++) beta += seasonality[k]*xbeta[k];
+
+        rate[0] = mu*pop;
+        rate[1] = (iota+beta*I)/pop;
+        rate[2] = mu;
+        rate[3] = gamma;
+        rate[4] = mu;
+        rate[5] = mu;
+
+        term[0] = rate[0];
+        term[1] = rate[1]*S;
+        term[2] = rate[2]*S;
+        term[3] = rate[3]*I;
+        term[4] = rate[4]*I;
+        term[5] = rate[5]*R;
+
+        DS = term[0]-term[1]-term[2];
+        DI = term[1]-term[3]-term[4];
+        DR = term[3]-term[5];
+        Dcases = term[3];")),
+measurement.model=reports~binom(size=cases,prob=rho),
+statenames=c("S","I","R","N","cases"),
+paramnames=c(
+  "gamma","mu","iota",
+  "beta1","beta.sd","pop","rho",
+  "S_0","I_0","R_0"
+),
+zeronames=c("cases"),
+fromEstimationScale=Csnippet("
+  int k;
+  const double *xbeta = &beta1;
+  double *xtbeta = &Tbeta1;
+  Tgamma = exp(gamma);
+  Tmu = exp(mu);
+  Tiota = exp(iota);
+  for (k = 0; k < nbasis; k++) xtbeta[k] = exp(xbeta[k]);
+  Tbeta_sd = exp(beta_sd);
+  Trho = expit(rho);
+  from_log_barycentric(&TS_0,&S_0,3);"),
+toEstimationScale=Csnippet("
+  int k;
+  const double *xbeta = &beta1;
+  double *xtbeta = &Tbeta1;
+  Tgamma = log(gamma);
+  Tmu = log(mu);
+  Tiota = log(iota);
+  for (k = 0; k < nbasis; k++) xtbeta[k] = log(xbeta[k]);
+  Tbeta_sd = log(beta_sd);
+  Trho = logit(rho);
+  to_log_barycentric(&TS_0,&S_0,3);"),
+initializer=Csnippet("
+  double m;
+  m = pop/(S_0+I_0+R_0);
+  S = nearbyint(m*S_0);
+  I = nearbyint(m*I_0);
+  N = nearbyint(pop);
+  R = nearbyint(m*R_0);
+  cases = 0;"),
+) -> gillespie.sir
 
 ## originally, the data were created via:
 ## simulate(po,nsim=1,seed=1165270654L) -> gillespie.sir
