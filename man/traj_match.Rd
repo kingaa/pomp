@@ -158,7 +158,7 @@ optim(fn=ofun,par=c(2,0),method="BFGS")
 
 pompExample(bbs)
 ## some options are passed to the ODE integrator
-ofun <- traj.match.objfun(bbs,est=c("beta","gamma"),transform=TRUE,hmax=0.001,rtol=1e-6)
+ofun <- traj.match.objfun(bbs,est=c("Beta","gamma"),transform=TRUE,hmax=0.001,rtol=1e-6)
 optim(fn=ofun,par=c(0,-1),method="Nelder-Mead",control=list(reltol=1e-10))
 }
 \seealso{
