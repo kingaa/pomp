@@ -290,7 +290,8 @@ pomp(euler.sir,
       reports = nearbyint(rnorm(mean,sd));
       reports = (reports > 0) ? reports : 0;"),
     statenames=c("cases"),
-    paramnames=c("rho"),bob=33L) -> po
+    paramnames=c("rho"),
+    sid=4.50,nancy=c(18L,43L),bob=33L,sally=pi) -> po
 
 simulate(po) -> po
 
