@@ -60,7 +60,6 @@ Error : in 'pfilter': if 'Np' is a function, it must return a single positive in
   -480.50      0.39 
 > 
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > pf <- pfilter(euler.sir,Np=100)

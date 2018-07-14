@@ -20,47 +20,43 @@ Type 'q()' to quit R.
 > library(pomp)
 > 
 > pompExample(bbs)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period','logvar','logitvar'
 newly created object(s):
  bbs 
 > 
 > set.seed(48857734L)
 > 
 > coef(bbs)
-       gamma           mu         iota         beta      beta.sd          pop 
-   0.3333333    0.0000000    0.0000000    1.4000000    0.0000000 1400.0000000 
-         rho        sigma          S_0          I_0          R_0 
-   0.9000000    3.6000000    0.9990000    0.0010000    0.0000000 
+       gamma         Beta      Beta_sd          pop          rho        sigma 
+   0.3333333    1.4000000    0.0000000 1400.0000000    0.9000000    3.6000000 
+         S_0          I_0          R_0 
+   0.9990000    0.0010000    0.0000000 
 > coef(bbs,transform=TRUE)
-       gamma           mu         iota         beta      beta.sd          pop 
-  -1.0986123         -Inf         -Inf    0.3364722         -Inf 1400.0000000 
-         rho        sigma          S_0          I_0          R_0 
-   2.1972246    1.2809338   -0.0010005   -6.9077553         -Inf 
+       gamma         Beta      Beta_sd          pop          rho        sigma 
+  -1.0986123    0.3364722         -Inf 1400.0000000    2.1972246    1.2809338 
+         S_0          I_0          R_0 
+  -0.0010005   -6.9077553         -Inf 
 > 
-> bbs <- pomp(bbs,
-+             rprior=function(params,...){
-+               params["beta"] <- exp(runif(n=1,min=1,max=2))
-+               params["sigma"] <- runif(n=1,min=2,max=4)
-+               params
-+             }
-+             )
+> bbs <- pomp(bbs,rprior=Csnippet("
++               Beta = exp(runif(1,2));
++               sigma = runif(2,4);"),
++             paramnames=c("Beta","sigma"))
 > 
 > pf <- pfilter(bbs,Np=1000)
 > 
 > fit2 <- bsmc2(bbs,params=coef(bbs),Np=5000,transform=TRUE,
-+               est=c("beta","sigma"),smooth=0.2)
++               est=c("Beta","sigma"),smooth=0.2)
 > signif(coef(fit2),3)
-   gamma       mu     iota     beta  beta.sd      pop      rho    sigma 
-   0.333    0.000    0.000    3.750    0.000 1400.000    0.900    1.990 
-     S_0      I_0      R_0 
-   0.999    0.001    0.000 
+   gamma     Beta  Beta_sd      pop      rho    sigma      S_0      I_0 
+   0.333    3.800    0.000 1400.000    0.900    2.000    0.999    0.001 
+     R_0 
+   0.000 
 > 
-> fit3 <- traj.match(bbs,est=c("beta","sigma"),transform=TRUE)
+> fit3 <- traj.match(bbs,est=c("Beta","sigma"),transform=TRUE)
 > signif(coef(fit3),3)
-   gamma       mu     iota     beta  beta.sd      pop      rho    sigma 
-   0.333    0.000    0.000    2.090    0.000 1400.000    0.900    0.474 
-     S_0      I_0      R_0 
-   0.999    0.001    0.000 
+   gamma     Beta  Beta_sd      pop      rho    sigma      S_0      I_0 
+   0.333    2.090    0.000 1400.000    0.900    0.474    0.999    0.001 
+     R_0 
+   0.000 
 > 
 > sim1 <- simulate(bbs,nsim=20,as.data.frame=TRUE,include.data=TRUE)
 > sim2 <- simulate(bbs,nsim=20,as.data.frame=TRUE,obs=TRUE,include.data=TRUE)

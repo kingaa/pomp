@@ -562,9 +562,6 @@ pomp(
      ic.names=c("S_0","I_0","R_0"),
      fromEstimationScale="_sir_par_trans",
      toEstimationScale="_sir_par_untrans",
-     nbasis=3L,
-     degree=3L,
-     period=1.0,
      initializer=function(params, t0, comp.names, ic.names, ...) {
        x0 <- setNames(numeric(5),c("S","I","R","N","cases"))
        fracs <- params[ic.names]

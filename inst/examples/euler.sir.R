@@ -241,9 +241,6 @@ pomp(
      zeronames=c("cases"),
      fromEstimationScale="_sir_par_trans",
      toEstimationScale="_sir_par_untrans",
-     nbasis=3L,
-     degree=3L,
-     period=1.0,
      initializer="_sir_init"
      ) -> euler.sir
 

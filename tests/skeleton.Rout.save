@@ -43,7 +43,6 @@ newly created object(s):
 > ## non-autonomous case
 > 
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > euler.sir <- simulate(euler.sir,seed=266045243L)

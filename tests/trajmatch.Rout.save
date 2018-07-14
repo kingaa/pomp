@@ -35,7 +35,6 @@ Error : in 'trajectory': 'params' must be supplied
 > try(trajectory(pomp(ou2,skeleton=NULL)))
 Error : in 'trajectory': deterministic skeleton has not been properly specified
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > try(trajectory(euler.sir,atol=-100))

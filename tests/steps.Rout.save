@@ -32,7 +32,6 @@ newly created object(s):
 > stopifnot(identical(x,y))
 > 
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > tm <- sort(runif(n=100,max=1))

@@ -30,7 +30,6 @@ Error : in 'systematic_resampling': non-positive sum of weights
 Error : 'x' and 'y' must have equal lengths
 > 
 > pompExample(euler.sir)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 newly created object(s):
  euler.sir 
 > euler.sir %<>% pomp(initializer=NULL)

@@ -4,6 +4,9 @@
 
 #include "pomp.h"
 
+static int nbasis = 3, degree = 3;
+static double period = 1.0;
+
 // static double term_time (double t, double b0, double b1) 
 // {
 //   static double correction = 0.4958904;
@@ -43,7 +46,6 @@
 
 void _sir_par_untrans (double *pt, double *p, int *parindex) 
 {
-  int nbasis = *(get_pomp_userdata_int("nbasis"));
   int k;
   pt[parindex[0]] = log(GAMMA);
   pt[parindex[1]] = log(MU);
@@ -58,7 +60,6 @@ void _sir_par_untrans (double *pt, double *p, int *parindex)
  
 void _sir_par_trans (double *pt, double *p, int *parindex) 
 {
-  int nbasis = *(get_pomp_userdata_int("nbasis"));
   int k;
   pt[parindex[0]] = exp(GAMMA);
   pt[parindex[1]] = exp(MU);
@@ -122,14 +123,11 @@ void _sir_euler_simulator (double *x, const double *p,
   double trans[nrate];		// transition numbers
   double beta;
   double dW;
-  int nbasis = *(get_pomp_userdata_int("nbasis"));
-  int deg = *(get_pomp_userdata_int("degree"));
-  double period = *(get_pomp_userdata_double("period"));
   double seasonality[nbasis];
   int k;
 
   if (nbasis <= 0) return;
-  periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);
+  periodic_bspline_basis_eval(t,period,degree,nbasis,&seasonality[0]);
   for (k = 0, beta = 0; k < nbasis; k++)
     beta += seasonality[k]*BETA[k];
 
@@ -166,14 +164,11 @@ void _sir_ODE (double *f, double *x, const double *p,
   double rate[nrate];		// transition rates
   double term[nrate];		// terms in the equations
   double beta;
-  int nbasis = *(get_pomp_userdata_int("nbasis"));
-  int deg = *(get_pomp_userdata_int("degree"));
-  double period = *(get_pomp_userdata_double("period"));
   double seasonality[nbasis];
   int k;
 
   if (nbasis <= 0) return;
-  periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);
+  periodic_bspline_basis_eval(t,period,degree,nbasis,&seasonality[0]);
   for (k = 0, beta = 0; k < nbasis; k++)
     beta += seasonality[k]*BETA[k];
 
@@ -219,9 +214,6 @@ double _sir_rates (int j, double t, double *x, double *p,
 		   int ncovar, double *covar) {
   double beta;
   double rate = 0.0;
-  int nbasis = *(get_pomp_userdata_int("nbasis"));
-  int deg = *(get_pomp_userdata_int("degree"));
-  double period = *(get_pomp_userdata_double("period"));
   double seasonality[nbasis];
   int k;
 
@@ -233,7 +225,7 @@ double _sir_rates (int j, double t, double *x, double *p,
     rate = MU*SUSC;
     break;
   case 3:			// infection
-    periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);
+    periodic_bspline_basis_eval(t,period,degree,nbasis,&seasonality[0]);
     for (k = 0, beta = 0; k < nbasis; k++)
       beta += seasonality[k]*BETA[k];
     rate = (beta*INFD+IOTA)*SUSC/POPSIZE;
