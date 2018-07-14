@@ -312,6 +312,9 @@ mif.internal <- function (object, Nmif,
 
   ep <- paste0("in ",sQuote("mif"),": ")
 
+  warning(sQuote("mif")," is deprecated and will be removed in a forthcoming release.",
+          " Consider using ",sQuote("mif2")," instead.",call.=FALSE)
+
   if (method=="mif2") {
     stop(ep,"method=",sQuote("mif2")," has been removed.\n",
          "Use ",sQuote("mif2")," instead.",call.=FALSE)

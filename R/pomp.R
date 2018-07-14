@@ -261,7 +261,7 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   if (missing(userdata)) userdata <- list()
   added.userdata <- list(...)
   if (length(added.userdata)>0) {
-    message("In ",sQuote("pomp"),": the following unrecognized argument(s) ",
+    message(ep,": the following unrecognized argument(s) ",
             "will be stored for use by user-defined functions: ",
             paste(sQuote(names(added.userdata)),collapse=","))
     userdata[names(added.userdata)] <- added.userdata

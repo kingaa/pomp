@@ -376,6 +376,8 @@ setMethod(
                          max.fail = 0,
                          transform = FALSE,
                          ...) {
+    warning(sQuote("bsmc")," is deprecated and will be removed in a forthcoming",
+            " release.  Consider using ",sQuote("bsmc2"),".",call.=FALSE)
     bsmc.internal(
       object=object,
       params=params,

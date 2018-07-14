@@ -50,12 +50,12 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x3340ce8>
-<environment: 0x2ec9f80>
+<bytecode: 0x224a1d0>
+<environment: 0x1ea9240>
 process model density, dprocess = function (x, times, params, log = FALSE, ...) 
 stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x3e405e0>
-<environment: 0x3770b18>
+<bytecode: 0x2e71460>
+<environment: 0x2774ca0>
 measurement model simulator, rmeasure = native function '_gompertz_normal_rmeasure'
 measurement model density, dmeasure = native function '_gompertz_normal_dmeasure'
 prior simulator, rprior = not specified
@@ -66,12 +66,12 @@ parameter transformation (to estimation scale) = function (params, ...)
 {
     log(params)
 }
-<environment: 0x28dcf20>
+<environment: 0x191f668>
 parameter transformation (from estimation scale) = function (params, ...) 
 {
     exp(params)
 }
-<environment: 0x28dcf20>
+<environment: 0x191f668>
 parameter(s):
     K     r sigma   tau   X.0 
   1.0   0.1   0.1   0.1   1.0 
@@ -91,8 +91,8 @@ function (xstart, times, params, ..., zeronames = character(0),
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x3340ce8>
-<environment: 0x2ec9f80>
+<bytecode: 0x224a1d0>
+<environment: 0x1ea9240>
 > 
 > po <- gompertz
 > coef(po)
@@ -164,6 +164,8 @@ in 'coef<-':  names of 'value' are being discarded
 + )
 Error : in 'mif': 'mif' cannot estimate non-finite parameters.
 The following transformed parameters are non-finite: 'r'
+In addition: Warning message:
+'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 > 
 > set.seed(93848585L)
 > mf <- mif(
@@ -174,6 +176,8 @@ The following transformed parameters are non-finite: 'r'
 +   cooling.fraction=0.99^50,
 +   rw.sd=c(r=0.02,K=0.02)
 + )
+Warning message:
+'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 > coef(mf,transform=TRUE)
       K       r   sigma     tau     X.0 
  0.0421 -1.6254 -2.3026 -2.3026  0.0000 

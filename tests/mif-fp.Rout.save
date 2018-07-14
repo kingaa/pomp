@@ -46,6 +46,8 @@ newly created object(s):
 +             max.fail=100,
 +             method="fp"
 +             )
+Warning message:
+'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 > 
 > mif2 <- mif(ou2,Nmif=30,start=guess2,
 +             ivps=c('x1.0','x2.0'),
@@ -61,6 +63,8 @@ newly created object(s):
 +             max.fail=100,
 +             method="fp"
 +             )
+Warning message:
+'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 > 
 > plot(c(mif1,mif2))
 > 

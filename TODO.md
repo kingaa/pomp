@@ -24,9 +24,10 @@
 ## For pomp:
 
 - add `include` argument to `pomp`?
-- include CWD in search-path for include files?
+- all examples and demos should use C snippets (except gompertz?)
+- ~~include CWD in search-path for include files?~~
 - deprecate `obs` and `states` arguments in `simulate`
-- deprecate `mif` and `bsmc`
+- ~~deprecate `mif` and `bsmc`~~
 - graceful stopping for optimizers (at least for `nloptr`)
 - number of processors stored in `bake`, `stew`, `freeze` outputs
 - digest of data stored in `bake`, `stew`, `freeze` outputs
@@ -41,7 +42,7 @@
 - support for asymmetric MCMC proposals
 - one-point SCQL function for possible use in fitting initial conditions
 - save particle filtering variance?
-    Prediction means are optional.
+  Prediction means are optional.
 	Only interesting for end-user if one wants to look at residuals.
 - partial rejection control for `pfilter`?
 - adaptive particle numbers in pfilter (?)

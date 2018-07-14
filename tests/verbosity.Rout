@@ -93,39 +93,44 @@ In addition: Warning messages:
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
+3: 'bsmc' is deprecated and will be removed in a forthcoming release.  Consider using 'bsmc2'. 
+4: 'bsmc' is deprecated and will be removed in a forthcoming release.  Consider using 'bsmc2'. 
 Error : in 'bsmc': in 'rmvnorm': infinite or missing values in 'x'
+In addition: Warning message:
+'bsmc' is deprecated and will be removed in a forthcoming release.  Consider using 'bsmc2'. 
 Error : in 'bsmc2': in 'rmvnorm': infinite or missing values in 'x'
 filtering failure at time t = 4
 Error : in 'bsmc2': too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/RtmpCKiQis/456/pomp_e90cc83f8bc44745f5badb32eb4840b9.so': status = 1
+Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.so': status = 1
 compiler messages:
 make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpCKiQis/456/pomp_e90cc83f8bc44745f5badb32eb4840b9.c -o /tmp/RtmpCKiQis/456/pomp_e90cc83f8bc44745f5badb32eb4840b9.o
-/tmp/RtmpCKiQis/456/pomp_e90cc83f8bc44745f5badb32eb4840b9.c: In function ‘__pomp_rmeasure’:
-/tmp/RtmpCKiQis/456/pomp_e90cc83f8bc44745f5badb32eb4840b9.c:18:1: error: expected ‘;’ before ‘}’ token
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.c -o /tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.o
+/tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.c:18:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/RtmpCKiQis/456/pomp_e90cc83f8bc44745f5badb32eb4840b9.o] Error 1
+make[2]: *** [/tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.o] Error 1
 make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
 In addition: Warning messages:
 1: in 'bsmc2': 2 filtering failures occurred. 
 2: in 'pfilter': 1 filtering failure occurred. 
-3: In find.package(package, lib.loc, quiet = TRUE) :
+3: 'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
+4: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
-4: In library(pomp) : package 'pomp' already present in search()
-5: In find.package(package, lib.loc, quiet = TRUE) :
+5: In library(pomp) : package 'pomp' already present in search()
+6: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
-6: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
-  running command 'PKG_CPPFLAGS="-I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpCKiQis/456/pomp_e90cc83f8bc44745f5badb32eb4840b9.so /tmp/RtmpCKiQis/456/pomp_e90cc83f8bc44745f5badb32eb4840b9.c 2>&1' had status 1
+7: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
+  running command 'PKG_CPPFLAGS="-I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.so /tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.c 2>&1' had status 1
 > length(out)
 [1] 675
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)
@@ -178,8 +183,9 @@ in 'mif2.pfilter': 5 filtering failures occurred.
 pfilter timestep 5 of 11 finished
 pfilter timestep 10 of 11 finished
 mif iteration 1 of 1 completed
-Warning message:
-in 'mif.pfilter': 5 filtering failures occurred. 
+Warning messages:
+1: 'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
+2: in 'mif.pfilter': 5 filtering failures occurred. 
 > stopifnot(sum(grepl("filtering failure at time",out))==5)
 > 
 > spy(ricker)
@@ -196,8 +202,8 @@ Warning messages:
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > spy(dacca)
-/* pomp C snippet file: pomp_0a42e1c77749ee6a5c2b4649b6811d71 */
-/* Time: 2018-07-14 12:04:59.459 -0400 */
+/* pomp C snippet file: pomp_cfd1c8a6ef2089b1a6311a5b26830478 */
+/* Time: 2018-07-14 15:56:24.902 -0400 */
 /* Salt: EE444509B5E4E6D45828ABC6 */
 
 #include <pomp.h>
@@ -834,16 +840,16 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_0a42e1c77749ee6a5c2b4649b6811d71 (DllInfo *info)
+void R_init_pomp_cfd1c8a6ef2089b1a6311a5b26830478 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_0a42e1c77749ee6a5c2b4649b6811d71", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_0a42e1c77749ee6a5c2b4649b6811d71", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_0a42e1c77749ee6a5c2b4649b6811d71", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("pomp_0a42e1c77749ee6a5c2b4649b6811d71", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("pomp_0a42e1c77749ee6a5c2b4649b6811d71", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("pomp_0a42e1c77749ee6a5c2b4649b6811d71", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("pomp_0a42e1c77749ee6a5c2b4649b6811d71", "__pomp_to_untrans", (DL_FUNC) __pomp_to_untrans);
-R_RegisterCCallable("pomp_0a42e1c77749ee6a5c2b4649b6811d71", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_to_untrans", (DL_FUNC) __pomp_to_untrans);
+R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
 }
 
 > 

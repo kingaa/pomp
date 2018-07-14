@@ -24,8 +24,8 @@ Type 'q()' to quit R.
 > set.seed(599688L)
 > 
 > pompExample(blowflies)
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
-In 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
+in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
+in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
 newly created object(s):
  blowflies1 blowflies2 
 > 
