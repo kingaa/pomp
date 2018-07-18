@@ -1,5 +1,9 @@
 # pomp to-do list
 
+- move all model codes out of the package, except gompertz
+- new 'userdata' function to get void *?
+- update 'bbs' example (rename to 'bsflu')?
+
 ## For pomp 2:
 
 - on-the-fly modification of basic components
