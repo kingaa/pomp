@@ -3,6 +3,7 @@
 - move all model codes out of the package, except gompertz
 - new 'userdata' function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
+- make new header file for package developers
 
 ## For pomp 2:
 
