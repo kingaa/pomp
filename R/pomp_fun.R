@@ -98,7 +98,7 @@ setMethod(
 setMethod(
   "pomp.fun",
   signature=signature(f="Csnippet"),
-  definition=function (f, PACKAGE, slotname = NULL, libname = NULL,
+  definition=function (f, slotname = NULL, libname = NULL,
     obsnames = character(0), statenames = character(0),
     paramnames = character(0), covarnames = character(0),
     Cname, ...) {

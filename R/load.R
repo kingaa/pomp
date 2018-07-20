@@ -1,7 +1,7 @@
 pompLoad.internal <- function (object, ..., verbose = FALSE) {
   for (lib in object@solibs) {
     if (!is.loaded("__pomp_load_stack_incr",PACKAGE=lib$name)) {
-      dir <- pompSrcDir(lib$dir,verbose=verbose)
+      dir <- srcDir(lib$dir,verbose=verbose)
       solib <- file.path(dir,paste0(lib$name,.Platform$dynlib.ext))
       if (file.exists(solib)) {
         dyn.load(solib)
@@ -21,7 +21,7 @@ pompUnload.internal <- function (object, ..., verbose = FALSE) {
     if (is.loaded("__pomp_load_stack_decr",PACKAGE=lib$name)) {
       st <- .Call(load_stack_decr,lib$name)
       if (st==0) {
-        dir <- pompSrcDir(lib$dir,verbose=verbose)
+        dir <- srcDir(lib$dir,verbose=verbose)
         solib <- file.path(dir,paste0(lib$name,.Platform$dynlib.ext))
         dyn.unload(solib)
         if (verbose) cat("unloading",sQuote(solib),"\n")

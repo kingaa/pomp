@@ -1,8 +1,7 @@
-pompCBuilder <- function (name = NULL, dir = NULL,
-                          statenames, paramnames, covarnames, obsnames,
-                          ..., globals, shlib.args = NULL,
-                          templates = snippet_templates,
-                          verbose = getOption("verbose",FALSE))
+Cbuilder <- function (..., templates, name = NULL, dir = NULL,
+                      statenames, paramnames, covarnames, obsnames,
+                      globals, shlib.args = NULL,
+                      verbose = getOption("verbose",FALSE))
 {
 
   name <- cleanForC(name)
@@ -99,20 +98,20 @@ pompCBuilder <- function (name = NULL, dir = NULL,
   tryCatch(
     pompCompile(
       fname=name,
-      direc=pompSrcDir(dir,verbose=verbose),
+      direc=srcDir(dir,verbose=verbose),
       src=csrc,
       shlib.args=shlib.args,
       verbose=verbose
     ),
     error = function (e) {
-      stop("in ",sQuote("pompCBuilder"),": compilation error: ",conditionMessage(e),call.=FALSE)
+      stop("in ",sQuote("Cbuilder"),": compilation error: ",conditionMessage(e),call.=FALSE)
     }
   )
 
   invisible(list(name=name,dir=dir,src=csrc))
 }
 
-pompSrcDir <- function (dir, verbose) {
+srcDir <- function (dir, verbose) {
   if (is.null(dir)) {
     pid <- Sys.getpid()
     dir <- file.path(tempdir(),pid)
