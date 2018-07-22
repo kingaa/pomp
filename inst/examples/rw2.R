@@ -104,33 +104,31 @@ dat <- '"time";"y1";"y2"
 '
 
 pomp(
-     data=read.csv2(text=dat),
-     times="time",
-     t0=0,
-     params=c(x1.0=0,x2.0=0,s1=1,s2=3,tau=1), # parameters at which data were generated
-     rprocess = onestep.sim(
-       Csnippet("
+  data=read.csv2(text=dat),
+  times="time",
+  t0=0,
+  params=c(x1.0=0,x2.0=0,s1=1,s2=3,tau=1), # parameters at which data were generated
+  rprocess = onestep.sim(
+    Csnippet("
         x1 = rnorm(x1,s1*dt);
         x2 = rnorm(x2,s2*dt);"
-       )
-     ),
-     dprocess = onestep.dens(
-       dens.fun = Csnippet("
+    )
+  ),
+  dprocess = Csnippet("
         double dt = t_2 - t_1;
         loglik = dnorm(x1_2,x1_1,s1*dt,1)+
           dnorm(x2_2,x2_1,s2*dt,1);"
-       )
-     ),
-     rmeasure=Csnippet("
+  ),
+  rmeasure=Csnippet("
         y1 = rnorm(x1,tau);
         y2 = rnorm(x1,tau);"
-     ),
-     dmeasure=Csnippet("
+  ),
+  dmeasure=Csnippet("
         lik = dnorm(y1,x1,tau,1)+dnorm(y2,x2,tau,1);
         lik = (give_log) ? lik : exp(lik);"
-     ),
-     statenames=c("x1","x2"),
-     paramnames=c("s1","s2","tau")
-     ) -> rw2
+  ),
+  statenames=c("x1","x2"),
+  paramnames=c("s1","s2","tau")
+) -> rw2
 
 c("rw2")

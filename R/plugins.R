@@ -3,28 +3,28 @@ setClass(
   slots=c(
     csnippet='logical',
     slotname='character',
-    PACKAGE='character'
+    PACKAGE='character',
+    step.fn="ANY",
+    rate.fn="ANY"
   ),
   prototype=prototype(
     csnippet=FALSE,
     slotname=character(0),
-    PACKAGE=character(0)
+    PACKAGE=character(0),
+    step.fn=NULL,
+    rate.fn=NULL
   )
 )
 
 setClass(
   "onestepRprocessPlugin",
-  contains="pompPlugin",
-  slots=c(
-    step.fn="ANY"
-  )
+  contains="pompPlugin"
 )
 
 setClass(
   "discreteRprocessPlugin",
   contains="pompPlugin",
   slots=c(
-    step.fn="ANY",
     delta.t="numeric"
   )
 )
@@ -33,7 +33,6 @@ setClass(
   "eulerRprocessPlugin",
   contains="pompPlugin",
   slots=c(
-    step.fn="ANY",
     delta.t="numeric"
   )
 )
@@ -42,17 +41,8 @@ setClass(
   "gillespieRprocessPlugin",
   contains="pompPlugin",
   slots=c(
-    rate.fn="ANY",
     hmax="numeric",
     v="matrix"
-  )
-)
-
-setClass(
-  "onestepDprocessPlugin",
-  contains="pompPlugin",
-  slots=c(
-    dens.fn="ANY"
   )
 )
 
@@ -68,7 +58,8 @@ onestep.sim <- function (step.fun, PACKAGE) {
 discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("discreteRprocessPlugin",
-      step.fn=step.fun,delta.t=delta.t,
+      step.fn=step.fun,
+      delta.t=delta.t,
       slotname="step.fn",
       csnippet=is(step.fun,"Csnippet"),
       PACKAGE=PACKAGE)
@@ -77,7 +68,8 @@ discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
 euler.sim <- function (step.fun, delta.t, PACKAGE) {
   if (missing(PACKAGE)) PACKAGE <- character(0)
   new("eulerRprocessPlugin",
-      step.fn=step.fun,delta.t=delta.t,
+      step.fn=step.fun,
+      delta.t=delta.t,
       slotname="step.fn",
       csnippet=is(step.fun,"Csnippet"),
       PACKAGE=PACKAGE)
@@ -95,7 +87,9 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
          call.=FALSE)
   }
   new("gillespieRprocessPlugin",
-      rate.fn=rate.fun,v=v, hmax=hmax,
+      rate.fn=rate.fun,
+      v=v,
+      hmax=hmax,
       slotname="rate.fn",
       csnippet=is(rate.fun,"Csnippet"),
       PACKAGE=PACKAGE)
@@ -165,18 +159,21 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   v <- t(data.matrix(do.call(rbind, stoichdf)))
 
   new("gillespieRprocessPlugin",
-      rate.fn=rate.fn, v=v, hmax=hmax,
+      rate.fn=rate.fn,
+      v=v,
+      hmax=hmax,
       slotname="rate.fn",
       csnippet=TRUE)
 }
 
 onestep.dens <- function (dens.fun, PACKAGE) {
-  if (missing(PACKAGE)) PACKAGE <- character(0)
-  new("onestepDprocessPlugin",
-      dens.fn=dens.fun,
-      slotname="dens.fn",
-      csnippet=is(dens.fun,"Csnippet"),
-      PACKAGE=PACKAGE)
+  warning(sQuote("onestep.dens")," is deprecated and will be removed in a ",
+          "forthcoming release.  ","Specify ",sQuote("dprocess")," directly ",
+          "using a C snippet or R function.",call.=FALSE)
+  if (!missing(PACKAGE))
+    warning("in ",sQuote("onestep.dens"),": ",sQuote("PACKAGE")," ignored.",
+            call.=FALSE)
+  dens.fun
 }
 
 setMethod(
@@ -368,48 +365,6 @@ setMethod(
           covar=covar,
           zeronames=zeronames,
           hmax=object@hmax,
-          args=pairlist(...),
-          gnsi=.getnativesymbolinfo
-        ),
-        error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE)
-        }
-      )
-    }
-  }
-)
-
-setMethod(
-  "plugin.handler",
-  signature=signature(object='onestepDprocessPlugin'),
-  definition=function (object, ...) {
-    ep <- paste0("in ",sQuote("onestep.dens")," plugin: ")
-    efun <- tryCatch(
-      pomp.fun(
-        f=object@dens.fn,
-        PACKAGE=object@PACKAGE,
-        proto=quote(dens.fun(x1,x2,t1,t2,params,...)),
-        slotname=object@slotname,
-        Cname=snippet_templates$dens.fn$Cname,
-        ...
-      ),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-    function (x, times, params, ...,
-              tcovar, covar, log = FALSE,
-              .getnativesymbolinfo = TRUE) {
-      tryCatch(
-        .Call(
-          euler_model_density,
-          func=efun,
-          x=x,
-          times=times,
-          params=params,
-          tcovar=tcovar,
-          covar=covar,
-          log=log,
           args=pairlist(...),
           gnsi=.getnativesymbolinfo
         ),

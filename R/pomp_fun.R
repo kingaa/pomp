@@ -20,7 +20,7 @@ setClass(
   prototype=prototype(
     R.fun=function (...) {
       stop("in ",sQuote("pomp.fun"),
-        ": unreachable error: please report this bug!",call.=FALSE)
+           ": unreachable error: please report this bug!",call.=FALSE)
     },
     native.fun=character(0),
     PACKAGE=character(0),
@@ -67,8 +67,8 @@ setMethod(
       args <- prototype[-1]
       if (is.function(f)&&(!all(args%in%names(formals(f)))))
         stop("in ",sQuote(slotname),": ",
-          sQuote(fname)," must be a function of prototype ",
-          deparse(proto),call.=FALSE)
+             sQuote(fname)," must be a function of prototype ",
+             deparse(proto),call.=FALSE)
     }
     new("pomp.fun",R.fun=f,mode=pompfunmode$Rfun,purpose=as.character(slotname))
   }
@@ -78,9 +78,9 @@ setMethod(
   "pomp.fun",
   signature=signature(f="character"),
   definition=function (f, PACKAGE = NULL,
-    obsnames = character(0), statenames = character(0),
-    paramnames = character(0), covarnames = character(0),
-    slotname = NULL, ...) {
+                       obsnames = character(0), statenames = character(0),
+                       paramnames = character(0), covarnames = character(0),
+                       slotname = NULL, ...) {
     new(
       "pomp.fun",
       native.fun=f,
@@ -99,9 +99,9 @@ setMethod(
   "pomp.fun",
   signature=signature(f="Csnippet"),
   definition=function (f, slotname = NULL, libname = NULL,
-    obsnames = character(0), statenames = character(0),
-    paramnames = character(0), covarnames = character(0),
-    Cname, ...) {
+                       obsnames = character(0), statenames = character(0),
+                       paramnames = character(0), covarnames = character(0),
+                       Cname, ...) {
     slotname <- as.character(slotname)
     libname <- as.character(libname)
     new(

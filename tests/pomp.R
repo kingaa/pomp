@@ -56,15 +56,15 @@ try(pomp(dat,times="time",t0=0,covar=dat,tcovar="bob") -> po)
 try(pomp(dat,times="time",t0=0,covar=dat,tcovar=1,covarnames="henry") -> po)
 try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
 plot(po)
-pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
+try(pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}))
 try(pomp())
 try(pomp(as.matrix(dat),times=dat$time,t0=0) -> po)
-pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
-try(pomp(dat,times="bob",t0=0,skeleton=function(x,t,params,...){x}) -> po)
-try(pomp(dat,times=11,t0=0,skeleton=function(x,t,params,...){x}) -> po)
-try(pomp(dat,times=1.1,t0=0,skeleton=function(x,t,params,...){x}) -> po)
+try(pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po)
+try(pomp(dat,times="bob",t0=0,skeleton=map(function(x,t,params,...){x})) -> po)
+try(pomp(dat,times=11,t0=0,skeleton=map(function(x,t,params,...){x})) -> po)
+try(pomp(dat,times=1.1,t0=0,skeleton=map(function(x,t,params,...){x})) -> po)
 try(pomp(dat$y,times=dat$time,t0=0) -> po)
-pomp(dat,times=1,t0=0,skeleton=function(x,t,params,...){x}) -> po
+pomp(dat,times=1,t0=0,skeleton=map(function(x,t,params,...){x})) -> po
 try(pomp(dat$y,times=dat$time[1:10],t0=0) -> po)
 try(pomp(ricker,skeleton=identity(identity)) -> po)
 try(pomp(ricker,toEstimationScale=identity) -> po)

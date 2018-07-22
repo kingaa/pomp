@@ -104,15 +104,15 @@ Error : in 'bsmc2': too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot compile shared-object library '/tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.so': status = 1
+Error : in 'pomp': error in building shared-object library from C snippets: in 'Cbuilder': compilation error: cannot compile shared-object library '/tmp/RtmpfMDQ4B/7674/pomp_4c1857457d684b3f33e1b919661ed648.so': status = 1
 compiler messages:
 make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.c -o /tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.o
-/tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.c: In function ‘__pomp_rmeasure’:
-/tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.c:18:1: error: expected ‘;’ before ‘}’ token
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpfMDQ4B/7674/pomp_4c1857457d684b3f33e1b919661ed648.c -o /tmp/RtmpfMDQ4B/7674/pomp_4c1857457d684b3f33e1b919661ed648.o
+/tmp/RtmpfMDQ4B/7674/pomp_4c1857457d684b3f33e1b919661ed648.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpfMDQ4B/7674/pomp_4c1857457d684b3f33e1b919661ed648.c:18:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.o] Error 1
+make[2]: *** [/tmp/RtmpfMDQ4B/7674/pomp_4c1857457d684b3f33e1b919661ed648.o] Error 1
 make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
@@ -130,7 +130,7 @@ In addition: Warning messages:
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 7: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
-  running command 'PKG_CPPFLAGS="-I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.so /tmp/RtmpmZYDjG/20229/pomp_2f98ed10f52e9af9a491c25e90b35001.c 2>&1' had status 1
+  running command 'PKG_CPPFLAGS="-I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpfMDQ4B/7674/pomp_4c1857457d684b3f33e1b919661ed648.so /tmp/RtmpfMDQ4B/7674/pomp_4c1857457d684b3f33e1b919661ed648.c 2>&1' had status 1
 > length(out)
 [1] 675
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)
@@ -202,8 +202,8 @@ Warning messages:
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > spy(dacca)
-/* pomp C snippet file: pomp_cfd1c8a6ef2089b1a6311a5b26830478 */
-/* Time: 2018-07-14 15:56:24.902 -0400 */
+/* pomp C snippet file: pomp_60722541d67066806bc9374a19ae2738 */
+/* Time: 2018-07-22 12:06:19.175 -0400 */
 /* Salt: EE444509B5E4E6D45828ABC6 */
 
 #include <pomp.h>
@@ -211,43 +211,43 @@ Warning messages:
 
 int nrstage = 3, nbasis = 6; 
 
-#define seas1	(__covars[__covindex[0]])
-#define seas2	(__covars[__covindex[1]])
-#define seas3	(__covars[__covindex[2]])
-#define seas4	(__covars[__covindex[3]])
-#define seas5	(__covars[__covindex[4]])
-#define seas6	(__covars[__covindex[5]])
-#define pop	(__covars[__covindex[6]])
-#define dpopdt	(__covars[__covindex[7]])
-#define trend	(__covars[__covindex[8]])
-#define tau	(__p[__parindex[0]])
-#define gamma	(__p[__parindex[1]])
-#define eps	(__p[__parindex[2]])
-#define delta	(__p[__parindex[3]])
-#define deltaI	(__p[__parindex[4]])
-#define logomega1	(__p[__parindex[5]])
-#define sd_beta	(__p[__parindex[6]])
-#define beta_trend	(__p[__parindex[7]])
-#define logbeta1	(__p[__parindex[8]])
-#define alpha	(__p[__parindex[9]])
-#define rho	(__p[__parindex[10]])
-#define clin	(__p[__parindex[11]])
-#define S_0	(__p[__parindex[12]])
-#define I_0	(__p[__parindex[13]])
-#define Y_0	(__p[__parindex[14]])
-#define R1_0	(__p[__parindex[15]])
-#define S	(__x[__stateindex[0]])
-#define I	(__x[__stateindex[1]])
-#define Y	(__x[__stateindex[2]])
-#define R1	(__x[__stateindex[3]])
-#define R2	(__x[__stateindex[4]])
-#define R3	(__x[__stateindex[5]])
-#define deaths	(__x[__stateindex[6]])
-#define W	(__x[__stateindex[7]])
-#define count	(__x[__stateindex[8]])
 
+/* C snippet: 'step.fn' */
+#define tau		(__p[__parindex[0]])
+#define gamma		(__p[__parindex[1]])
+#define eps		(__p[__parindex[2]])
+#define delta		(__p[__parindex[3]])
+#define deltaI		(__p[__parindex[4]])
+#define logomega1		(__p[__parindex[5]])
+#define sd_beta		(__p[__parindex[6]])
+#define beta_trend		(__p[__parindex[7]])
+#define logbeta1		(__p[__parindex[8]])
+#define alpha		(__p[__parindex[9]])
+#define rho		(__p[__parindex[10]])
+#define clin		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[12]])
+#define I_0		(__p[__parindex[13]])
+#define Y_0		(__p[__parindex[14]])
+#define R1_0		(__p[__parindex[15]])
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define seas4		(__covars[__covindex[3]])
+#define seas5		(__covars[__covindex[4]])
+#define seas6		(__covars[__covindex[5]])
+#define pop		(__covars[__covindex[6]])
+#define dpopdt		(__covars[__covindex[7]])
+#define trend		(__covars[__covindex[8]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define Y		(__x[__stateindex[2]])
+#define R1		(__x[__stateindex[3]])
+#define R2		(__x[__stateindex[4]])
+#define R3		(__x[__stateindex[5]])
+#define deaths		(__x[__stateindex[6]])
+#define W		(__x[__stateindex[7]])
+#define count		(__x[__stateindex[8]])
 
- 
 void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)
 {
  
@@ -333,15 +333,6 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
  
 }
 
-#undef seas1
-#undef seas2
-#undef seas3
-#undef seas4
-#undef seas5
-#undef seas6
-#undef pop
-#undef dpopdt
-#undef trend
 #undef tau
 #undef gamma
 #undef eps
@@ -358,6 +349,15 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
 #undef I_0
 #undef Y_0
 #undef R1_0
+#undef seas1
+#undef seas2
+#undef seas3
+#undef seas4
+#undef seas5
+#undef seas6
+#undef pop
+#undef dpopdt
+#undef trend
 #undef S
 #undef I
 #undef Y
@@ -367,44 +367,44 @@ void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, con
 #undef deaths
 #undef W
 #undef count
-#define seas1	(__covars[__covindex[0]])
-#define seas2	(__covars[__covindex[1]])
-#define seas3	(__covars[__covindex[2]])
-#define seas4	(__covars[__covindex[3]])
-#define seas5	(__covars[__covindex[4]])
-#define seas6	(__covars[__covindex[5]])
-#define pop	(__covars[__covindex[6]])
-#define dpopdt	(__covars[__covindex[7]])
-#define trend	(__covars[__covindex[8]])
-#define tau	(__p[__parindex[0]])
-#define gamma	(__p[__parindex[1]])
-#define eps	(__p[__parindex[2]])
-#define delta	(__p[__parindex[3]])
-#define deltaI	(__p[__parindex[4]])
-#define logomega1	(__p[__parindex[5]])
-#define sd_beta	(__p[__parindex[6]])
-#define beta_trend	(__p[__parindex[7]])
-#define logbeta1	(__p[__parindex[8]])
-#define alpha	(__p[__parindex[9]])
-#define rho	(__p[__parindex[10]])
-#define clin	(__p[__parindex[11]])
-#define S_0	(__p[__parindex[12]])
-#define I_0	(__p[__parindex[13]])
-#define Y_0	(__p[__parindex[14]])
-#define R1_0	(__p[__parindex[15]])
-#define S	(__x[__stateindex[0]])
-#define I	(__x[__stateindex[1]])
-#define Y	(__x[__stateindex[2]])
-#define R1	(__x[__stateindex[3]])
-#define R2	(__x[__stateindex[4]])
-#define R3	(__x[__stateindex[5]])
-#define deaths	(__x[__stateindex[6]])
-#define W	(__x[__stateindex[7]])
-#define count	(__x[__stateindex[8]])
-#define cholera_deaths	(__y[__obsindex[0]])
 
+/* C snippet: 'rmeasure' */
+#define tau		(__p[__parindex[0]])
+#define gamma		(__p[__parindex[1]])
+#define eps		(__p[__parindex[2]])
+#define delta		(__p[__parindex[3]])
+#define deltaI		(__p[__parindex[4]])
+#define logomega1		(__p[__parindex[5]])
+#define sd_beta		(__p[__parindex[6]])
+#define beta_trend		(__p[__parindex[7]])
+#define logbeta1		(__p[__parindex[8]])
+#define alpha		(__p[__parindex[9]])
+#define rho		(__p[__parindex[10]])
+#define clin		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[12]])
+#define I_0		(__p[__parindex[13]])
+#define Y_0		(__p[__parindex[14]])
+#define R1_0		(__p[__parindex[15]])
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define seas4		(__covars[__covindex[3]])
+#define seas5		(__covars[__covindex[4]])
+#define seas6		(__covars[__covindex[5]])
+#define pop		(__covars[__covindex[6]])
+#define dpopdt		(__covars[__covindex[7]])
+#define trend		(__covars[__covindex[8]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define Y		(__x[__stateindex[2]])
+#define R1		(__x[__stateindex[3]])
+#define R2		(__x[__stateindex[4]])
+#define R3		(__x[__stateindex[5]])
+#define deaths		(__x[__stateindex[6]])
+#define W		(__x[__stateindex[7]])
+#define count		(__x[__stateindex[8]])
+#define cholera_deaths		(__y[__obsindex[0]])
 
- 
 void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
 {
  
@@ -418,15 +418,6 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
  
 }
 
-#undef seas1
-#undef seas2
-#undef seas3
-#undef seas4
-#undef seas5
-#undef seas6
-#undef pop
-#undef dpopdt
-#undef trend
 #undef tau
 #undef gamma
 #undef eps
@@ -443,6 +434,15 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #undef I_0
 #undef Y_0
 #undef R1_0
+#undef seas1
+#undef seas2
+#undef seas3
+#undef seas4
+#undef seas5
+#undef seas6
+#undef pop
+#undef dpopdt
+#undef trend
 #undef S
 #undef I
 #undef Y
@@ -453,45 +453,45 @@ void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const i
 #undef W
 #undef count
 #undef cholera_deaths
-#define seas1	(__covars[__covindex[0]])
-#define seas2	(__covars[__covindex[1]])
-#define seas3	(__covars[__covindex[2]])
-#define seas4	(__covars[__covindex[3]])
-#define seas5	(__covars[__covindex[4]])
-#define seas6	(__covars[__covindex[5]])
-#define pop	(__covars[__covindex[6]])
-#define dpopdt	(__covars[__covindex[7]])
-#define trend	(__covars[__covindex[8]])
-#define tau	(__p[__parindex[0]])
-#define gamma	(__p[__parindex[1]])
-#define eps	(__p[__parindex[2]])
-#define delta	(__p[__parindex[3]])
-#define deltaI	(__p[__parindex[4]])
-#define logomega1	(__p[__parindex[5]])
-#define sd_beta	(__p[__parindex[6]])
-#define beta_trend	(__p[__parindex[7]])
-#define logbeta1	(__p[__parindex[8]])
-#define alpha	(__p[__parindex[9]])
-#define rho	(__p[__parindex[10]])
-#define clin	(__p[__parindex[11]])
-#define S_0	(__p[__parindex[12]])
-#define I_0	(__p[__parindex[13]])
-#define Y_0	(__p[__parindex[14]])
-#define R1_0	(__p[__parindex[15]])
-#define S	(__x[__stateindex[0]])
-#define I	(__x[__stateindex[1]])
-#define Y	(__x[__stateindex[2]])
-#define R1	(__x[__stateindex[3]])
-#define R2	(__x[__stateindex[4]])
-#define R3	(__x[__stateindex[5]])
-#define deaths	(__x[__stateindex[6]])
-#define W	(__x[__stateindex[7]])
-#define count	(__x[__stateindex[8]])
-#define cholera_deaths	(__y[__obsindex[0]])
-#define lik	(__lik[0])
 
+/* C snippet: 'dmeasure' */
+#define tau		(__p[__parindex[0]])
+#define gamma		(__p[__parindex[1]])
+#define eps		(__p[__parindex[2]])
+#define delta		(__p[__parindex[3]])
+#define deltaI		(__p[__parindex[4]])
+#define logomega1		(__p[__parindex[5]])
+#define sd_beta		(__p[__parindex[6]])
+#define beta_trend		(__p[__parindex[7]])
+#define logbeta1		(__p[__parindex[8]])
+#define alpha		(__p[__parindex[9]])
+#define rho		(__p[__parindex[10]])
+#define clin		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[12]])
+#define I_0		(__p[__parindex[13]])
+#define Y_0		(__p[__parindex[14]])
+#define R1_0		(__p[__parindex[15]])
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define seas4		(__covars[__covindex[3]])
+#define seas5		(__covars[__covindex[4]])
+#define seas6		(__covars[__covindex[5]])
+#define pop		(__covars[__covindex[6]])
+#define dpopdt		(__covars[__covindex[7]])
+#define trend		(__covars[__covindex[8]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define Y		(__x[__stateindex[2]])
+#define R1		(__x[__stateindex[3]])
+#define R2		(__x[__stateindex[4]])
+#define R3		(__x[__stateindex[5]])
+#define deaths		(__x[__stateindex[6]])
+#define W		(__x[__stateindex[7]])
+#define count		(__x[__stateindex[8]])
+#define cholera_deaths		(__y[__obsindex[0]])
+#define lik		(__lik[0])
 
- 
 void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
 {
  
@@ -506,15 +506,6 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
  
 }
 
-#undef seas1
-#undef seas2
-#undef seas3
-#undef seas4
-#undef seas5
-#undef seas6
-#undef pop
-#undef dpopdt
-#undef trend
 #undef tau
 #undef gamma
 #undef eps
@@ -531,6 +522,15 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef I_0
 #undef Y_0
 #undef R1_0
+#undef seas1
+#undef seas2
+#undef seas3
+#undef seas4
+#undef seas5
+#undef seas6
+#undef pop
+#undef dpopdt
+#undef trend
 #undef S
 #undef I
 #undef Y
@@ -542,50 +542,50 @@ void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const
 #undef count
 #undef cholera_deaths
 #undef lik
-#define seas1	(__covars[__covindex[0]])
-#define seas2	(__covars[__covindex[1]])
-#define seas3	(__covars[__covindex[2]])
-#define seas4	(__covars[__covindex[3]])
-#define seas5	(__covars[__covindex[4]])
-#define seas6	(__covars[__covindex[5]])
-#define pop	(__covars[__covindex[6]])
-#define dpopdt	(__covars[__covindex[7]])
-#define trend	(__covars[__covindex[8]])
-#define tau	(__p[__parindex[0]])
-#define gamma	(__p[__parindex[1]])
-#define eps	(__p[__parindex[2]])
-#define delta	(__p[__parindex[3]])
-#define deltaI	(__p[__parindex[4]])
-#define logomega1	(__p[__parindex[5]])
-#define sd_beta	(__p[__parindex[6]])
-#define beta_trend	(__p[__parindex[7]])
-#define logbeta1	(__p[__parindex[8]])
-#define alpha	(__p[__parindex[9]])
-#define rho	(__p[__parindex[10]])
-#define clin	(__p[__parindex[11]])
-#define S_0	(__p[__parindex[12]])
-#define I_0	(__p[__parindex[13]])
-#define Y_0	(__p[__parindex[14]])
-#define R1_0	(__p[__parindex[15]])
-#define Ttau	(__pt[__parindex[0]])
-#define Tgamma	(__pt[__parindex[1]])
-#define Teps	(__pt[__parindex[2]])
-#define Tdelta	(__pt[__parindex[3]])
-#define TdeltaI	(__pt[__parindex[4]])
-#define Tlogomega1	(__pt[__parindex[5]])
-#define Tsd_beta	(__pt[__parindex[6]])
-#define Tbeta_trend	(__pt[__parindex[7]])
-#define Tlogbeta1	(__pt[__parindex[8]])
-#define Talpha	(__pt[__parindex[9]])
-#define Trho	(__pt[__parindex[10]])
-#define Tclin	(__pt[__parindex[11]])
-#define TS_0	(__pt[__parindex[12]])
-#define TI_0	(__pt[__parindex[13]])
-#define TY_0	(__pt[__parindex[14]])
-#define TR1_0	(__pt[__parindex[15]])
 
+/* C snippet: 'fromEstimationScale' */
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define seas4		(__covars[__covindex[3]])
+#define seas5		(__covars[__covindex[4]])
+#define seas6		(__covars[__covindex[5]])
+#define pop		(__covars[__covindex[6]])
+#define dpopdt		(__covars[__covindex[7]])
+#define trend		(__covars[__covindex[8]])
+#define tau		(__p[__parindex[0]])
+#define gamma		(__p[__parindex[1]])
+#define eps		(__p[__parindex[2]])
+#define delta		(__p[__parindex[3]])
+#define deltaI		(__p[__parindex[4]])
+#define logomega1		(__p[__parindex[5]])
+#define sd_beta		(__p[__parindex[6]])
+#define beta_trend		(__p[__parindex[7]])
+#define logbeta1		(__p[__parindex[8]])
+#define alpha		(__p[__parindex[9]])
+#define rho		(__p[__parindex[10]])
+#define clin		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[12]])
+#define I_0		(__p[__parindex[13]])
+#define Y_0		(__p[__parindex[14]])
+#define R1_0		(__p[__parindex[15]])
+#define Ttau		(__pt[__parindex[0]])
+#define Tgamma		(__pt[__parindex[1]])
+#define Teps		(__pt[__parindex[2]])
+#define Tdelta		(__pt[__parindex[3]])
+#define TdeltaI		(__pt[__parindex[4]])
+#define Tlogomega1		(__pt[__parindex[5]])
+#define Tsd_beta		(__pt[__parindex[6]])
+#define Tbeta_trend		(__pt[__parindex[7]])
+#define Tlogbeta1		(__pt[__parindex[8]])
+#define Talpha		(__pt[__parindex[9]])
+#define Trho		(__pt[__parindex[10]])
+#define Tclin		(__pt[__parindex[11]])
+#define TS_0		(__pt[__parindex[12]])
+#define TI_0		(__pt[__parindex[13]])
+#define TY_0		(__pt[__parindex[14]])
+#define TR1_0		(__pt[__parindex[15]])
 
- 
 void __pomp_from_trans (double *__pt, const double *__p, const int *__parindex)
 {
  
@@ -643,51 +643,51 @@ void __pomp_from_trans (double *__pt, const double *__p, const int *__parindex)
 #undef TI_0
 #undef TY_0
 #undef TR1_0
-#define seas1	(__covars[__covindex[0]])
-#define seas2	(__covars[__covindex[1]])
-#define seas3	(__covars[__covindex[2]])
-#define seas4	(__covars[__covindex[3]])
-#define seas5	(__covars[__covindex[4]])
-#define seas6	(__covars[__covindex[5]])
-#define pop	(__covars[__covindex[6]])
-#define dpopdt	(__covars[__covindex[7]])
-#define trend	(__covars[__covindex[8]])
-#define tau	(__p[__parindex[0]])
-#define gamma	(__p[__parindex[1]])
-#define eps	(__p[__parindex[2]])
-#define delta	(__p[__parindex[3]])
-#define deltaI	(__p[__parindex[4]])
-#define logomega1	(__p[__parindex[5]])
-#define sd_beta	(__p[__parindex[6]])
-#define beta_trend	(__p[__parindex[7]])
-#define logbeta1	(__p[__parindex[8]])
-#define alpha	(__p[__parindex[9]])
-#define rho	(__p[__parindex[10]])
-#define clin	(__p[__parindex[11]])
-#define S_0	(__p[__parindex[12]])
-#define I_0	(__p[__parindex[13]])
-#define Y_0	(__p[__parindex[14]])
-#define R1_0	(__p[__parindex[15]])
-#define Ttau	(__pt[__parindex[0]])
-#define Tgamma	(__pt[__parindex[1]])
-#define Teps	(__pt[__parindex[2]])
-#define Tdelta	(__pt[__parindex[3]])
-#define TdeltaI	(__pt[__parindex[4]])
-#define Tlogomega1	(__pt[__parindex[5]])
-#define Tsd_beta	(__pt[__parindex[6]])
-#define Tbeta_trend	(__pt[__parindex[7]])
-#define Tlogbeta1	(__pt[__parindex[8]])
-#define Talpha	(__pt[__parindex[9]])
-#define Trho	(__pt[__parindex[10]])
-#define Tclin	(__pt[__parindex[11]])
-#define TS_0	(__pt[__parindex[12]])
-#define TI_0	(__pt[__parindex[13]])
-#define TY_0	(__pt[__parindex[14]])
-#define TR1_0	(__pt[__parindex[15]])
 
+/* C snippet: 'toEstimationScale' */
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define seas4		(__covars[__covindex[3]])
+#define seas5		(__covars[__covindex[4]])
+#define seas6		(__covars[__covindex[5]])
+#define pop		(__covars[__covindex[6]])
+#define dpopdt		(__covars[__covindex[7]])
+#define trend		(__covars[__covindex[8]])
+#define tau		(__p[__parindex[0]])
+#define gamma		(__p[__parindex[1]])
+#define eps		(__p[__parindex[2]])
+#define delta		(__p[__parindex[3]])
+#define deltaI		(__p[__parindex[4]])
+#define logomega1		(__p[__parindex[5]])
+#define sd_beta		(__p[__parindex[6]])
+#define beta_trend		(__p[__parindex[7]])
+#define logbeta1		(__p[__parindex[8]])
+#define alpha		(__p[__parindex[9]])
+#define rho		(__p[__parindex[10]])
+#define clin		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[12]])
+#define I_0		(__p[__parindex[13]])
+#define Y_0		(__p[__parindex[14]])
+#define R1_0		(__p[__parindex[15]])
+#define Ttau		(__pt[__parindex[0]])
+#define Tgamma		(__pt[__parindex[1]])
+#define Teps		(__pt[__parindex[2]])
+#define Tdelta		(__pt[__parindex[3]])
+#define TdeltaI		(__pt[__parindex[4]])
+#define Tlogomega1		(__pt[__parindex[5]])
+#define Tsd_beta		(__pt[__parindex[6]])
+#define Tbeta_trend		(__pt[__parindex[7]])
+#define Tlogbeta1		(__pt[__parindex[8]])
+#define Talpha		(__pt[__parindex[9]])
+#define Trho		(__pt[__parindex[10]])
+#define Tclin		(__pt[__parindex[11]])
+#define TS_0		(__pt[__parindex[12]])
+#define TI_0		(__pt[__parindex[13]])
+#define TY_0		(__pt[__parindex[14]])
+#define TR1_0		(__pt[__parindex[15]])
 
- 
-void __pomp_to_untrans (double *__pt, const double *__p, const int *__parindex)
+void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
 {
  
   Ttau = log(tau);
@@ -744,43 +744,43 @@ void __pomp_to_untrans (double *__pt, const double *__p, const int *__parindex)
 #undef TI_0
 #undef TY_0
 #undef TR1_0
-#define seas1	(__covars[__covindex[0]])
-#define seas2	(__covars[__covindex[1]])
-#define seas3	(__covars[__covindex[2]])
-#define seas4	(__covars[__covindex[3]])
-#define seas5	(__covars[__covindex[4]])
-#define seas6	(__covars[__covindex[5]])
-#define pop	(__covars[__covindex[6]])
-#define dpopdt	(__covars[__covindex[7]])
-#define trend	(__covars[__covindex[8]])
-#define tau	(__p[__parindex[0]])
-#define gamma	(__p[__parindex[1]])
-#define eps	(__p[__parindex[2]])
-#define delta	(__p[__parindex[3]])
-#define deltaI	(__p[__parindex[4]])
-#define logomega1	(__p[__parindex[5]])
-#define sd_beta	(__p[__parindex[6]])
-#define beta_trend	(__p[__parindex[7]])
-#define logbeta1	(__p[__parindex[8]])
-#define alpha	(__p[__parindex[9]])
-#define rho	(__p[__parindex[10]])
-#define clin	(__p[__parindex[11]])
-#define S_0	(__p[__parindex[12]])
-#define I_0	(__p[__parindex[13]])
-#define Y_0	(__p[__parindex[14]])
-#define R1_0	(__p[__parindex[15]])
-#define S	(__x[__stateindex[0]])
-#define I	(__x[__stateindex[1]])
-#define Y	(__x[__stateindex[2]])
-#define R1	(__x[__stateindex[3]])
-#define R2	(__x[__stateindex[4]])
-#define R3	(__x[__stateindex[5]])
-#define deaths	(__x[__stateindex[6]])
-#define W	(__x[__stateindex[7]])
-#define count	(__x[__stateindex[8]])
 
+/* C snippet: 'initializer' */
+#define tau		(__p[__parindex[0]])
+#define gamma		(__p[__parindex[1]])
+#define eps		(__p[__parindex[2]])
+#define delta		(__p[__parindex[3]])
+#define deltaI		(__p[__parindex[4]])
+#define logomega1		(__p[__parindex[5]])
+#define sd_beta		(__p[__parindex[6]])
+#define beta_trend		(__p[__parindex[7]])
+#define logbeta1		(__p[__parindex[8]])
+#define alpha		(__p[__parindex[9]])
+#define rho		(__p[__parindex[10]])
+#define clin		(__p[__parindex[11]])
+#define S_0		(__p[__parindex[12]])
+#define I_0		(__p[__parindex[13]])
+#define Y_0		(__p[__parindex[14]])
+#define R1_0		(__p[__parindex[15]])
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define seas4		(__covars[__covindex[3]])
+#define seas5		(__covars[__covindex[4]])
+#define seas6		(__covars[__covindex[5]])
+#define pop		(__covars[__covindex[6]])
+#define dpopdt		(__covars[__covindex[7]])
+#define trend		(__covars[__covindex[8]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define Y		(__x[__stateindex[2]])
+#define R1		(__x[__stateindex[3]])
+#define R2		(__x[__stateindex[4]])
+#define R3		(__x[__stateindex[5]])
+#define deaths		(__x[__stateindex[6]])
+#define W		(__x[__stateindex[7]])
+#define count		(__x[__stateindex[8]])
 
- 
 void __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
 {
  
@@ -799,15 +799,6 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
  
 }
 
-#undef seas1
-#undef seas2
-#undef seas3
-#undef seas4
-#undef seas5
-#undef seas6
-#undef pop
-#undef dpopdt
-#undef trend
 #undef tau
 #undef gamma
 #undef eps
@@ -824,6 +815,15 @@ void __pomp_rinit (double *__x, const double *__p, double t, const int *__statei
 #undef I_0
 #undef Y_0
 #undef R1_0
+#undef seas1
+#undef seas2
+#undef seas3
+#undef seas4
+#undef seas5
+#undef seas6
+#undef pop
+#undef dpopdt
+#undef trend
 #undef S
 #undef I
 #undef Y
@@ -840,16 +840,16 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_cfd1c8a6ef2089b1a6311a5b26830478 (DllInfo *info)
+void R_init_pomp_60722541d67066806bc9374a19ae2738 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_to_untrans", (DL_FUNC) __pomp_to_untrans);
-R_RegisterCCallable("pomp_cfd1c8a6ef2089b1a6311a5b26830478", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_60722541d67066806bc9374a19ae2738", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_60722541d67066806bc9374a19ae2738", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_60722541d67066806bc9374a19ae2738", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_60722541d67066806bc9374a19ae2738", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_60722541d67066806bc9374a19ae2738", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_60722541d67066806bc9374a19ae2738", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_60722541d67066806bc9374a19ae2738", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_60722541d67066806bc9374a19ae2738", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
 }
 
 > 

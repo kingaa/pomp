@@ -67,7 +67,7 @@ Type 'q()' to quit R.
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.003055096 secs
+Time difference of 0.003051281 secs
 
 > X <- reshape(X, dir = "wide", v.names = "X", timevar = "traj", 
 +     idvar = "time")
@@ -82,7 +82,7 @@ Time difference of 0.003055096 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.03715062 secs
+Time difference of 0.002573729 secs
 
 > x <- reshape(x, dir = "wide", v.names = c("Y", "X"), 
 +     timevar = "sim", idvar = "time")
@@ -105,7 +105,7 @@ Time difference of 0.03715062 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.3622847 secs
+Time difference of 0.3384333 secs
 
 > print(logmeanexp(sapply(pf, logLik), se = TRUE))
                    se 
@@ -151,7 +151,7 @@ Time difference of 0.3622847 secs
 > library(pomp)
 
 > rw2 <- pomp(rprocess = onestep.sim(step.fun = Csnippet("\n      x1 = rnorm(x1,s1*dt);\n      x2 = rnorm(x2,s2*dt);\n      ")), 
-+     dprocess = one .... [TRUNCATED] 
++     dprocess = Csn .... [TRUNCATED] 
 
 > rw2 <- simulate(rw2, params = c(s1 = 3, s2 = 1, x1.0 = 0, 
 +     x2.0 = 1, tau = 10))
@@ -200,7 +200,7 @@ Time difference of 0.3622847 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.002512455 secs
+Time difference of 0.002559185 secs
 
 > plot(incid ~ time, data = X, type = "l")
 
@@ -211,7 +211,7 @@ Time difference of 0.002512455 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.02175212 secs
+Time difference of 0.02153707 secs
 
 > plot(incid ~ time, data = x, col = as.factor(x$sim), 
 +     pch = 16)
@@ -227,7 +227,7 @@ Time difference of 0.02175212 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 6.355713 secs
+Time difference of 6.385115 secs
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 
@@ -237,5 +237,5 @@ null device
           1 
 > 
 > print(packageVersion("pomp"))
-[1] '1.18.2.1'
+[1] '1.18.2.2'
 > 

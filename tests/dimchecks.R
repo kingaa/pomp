@@ -142,11 +142,10 @@ stopifnot(identical(
     dim(dprocess(ou2,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4))),
     c(4L,9L)))
 
-pomp(ou2,dprocess=function(x,times,params,log,...){0}) -> po
+try(pomp(ou2,dprocess=function(x,times,params,log,...){0}))
+pomp(ou2,dprocess=function(x1,x2,t1,t2,params,...){0}) -> po
 try(dprocess(po,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4)))
-pomp(ou2,dprocess=function(x,times,params,log,...){array(0,dim=c(1,1))}) -> po
-try(dprocess(po,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4)))
-pomp(ou2,dprocess=function(x,times,params,log,...){array(0,dim=c(dim(x)[2],length(times)-1))}) -> po
+pomp(ou2,dprocess=function(x1, x2, t1, t2, params,...){0}) -> po
 stopifnot(identical(
     dim(dprocess(po,x=x[,3:6,],times=1:10,params=parmat(coef(ou2),4))),
     c(4L,9L)))

@@ -2,6 +2,7 @@
 ## This is used in 'pomp.R', 'plugins.R', and 'builder.R'.
 snippet_templates <- list(
   initializer=list(
+    slotname="initializer",
     Cname="__pomp_rinit",
     proto=quote(initializer(params,t0,...)),
     header="\nvoid __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
@@ -22,6 +23,7 @@ snippet_templates <- list(
     )
   ),
   rmeasure=list(
+    slotname="rmeasure",
     Cname="__pomp_rmeasure",
     proto=quote(rmeasure(x,t,params,...)),
     header="\nvoid __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
@@ -46,6 +48,7 @@ snippet_templates <- list(
     )
   ),
   dmeasure=list(
+    slotname="dmeasure",
     Cname= "__pomp_dmeasure",
     proto=quote(dmeasure(y,x,t,params,log,...)),
     header="\nvoid __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
@@ -74,6 +77,7 @@ snippet_templates <- list(
     )
   ),
   step.fn=list(
+    slotname="step.fun",
     Cname="__pomp_stepfn",
     proto=quote(step.fun(x,t,params,...)),
     header="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
@@ -94,6 +98,7 @@ snippet_templates <- list(
     )
   ),
   rate.fn=list(
+    slotname="rate.fun",
     Cname="__pomp_ratefn",
     proto=quote(rate.fun(j,x,t,params,...)),
     header="\ndouble __pomp_ratefn (int j, double t, double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars)\n{\n  double rate = 0.0;  \n",
@@ -113,10 +118,11 @@ snippet_templates <- list(
       )
     )
   ),
-  dens.fn=list(
-    Cname="__pomp_densfn",
-    proto=quote(dens.fun(x1,x2,t1,t2,params,...)),
-    header="\nvoid __pomp_densfn (double *__loglik, const double *__x1, const double *__x2, double t_1, double t_2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars)\n{\n",
+  dprocess=list(
+    slotname="dprocess",
+    Cname="__pomp_dproc",
+    proto=quote(dprocess(x1,x2,t1,t2,params,...)),
+    header="\nvoid __pomp_dproc (double *__loglik, const double *__x1, const double *__x2, double t_1, double t_2, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars)\n{\n",
     footer="\n}\n\n",
     vars=list(
       params=list(
@@ -142,6 +148,7 @@ snippet_templates <- list(
     )
   ),
   skeleton=list(
+    slotname="skeleton",
     Cname="__pomp_skelfn",
     proto=quote(skeleton(x,t,params,...)),
     header="\nvoid __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)\n{\n",
@@ -166,6 +173,7 @@ snippet_templates <- list(
     )
   ),
   fromEstimationScale=list(
+    slotname="fromEstimationScale",
     Cname="__pomp_from_trans",
     proto=quote(from.trans(params,...)),
     header="\nvoid __pomp_from_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
@@ -186,6 +194,7 @@ snippet_templates <- list(
     )
   ),
   toEstimationScale=list(
+    slotname="toEstimationScale",
     Cname="__pomp_to_trans",
     proto=quote(to.trans(params,...)),
     header="\nvoid __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
@@ -206,6 +215,7 @@ snippet_templates <- list(
     )
   ),
   rprior=list(
+    slotname="rprior",
     Cname="__pomp_rprior",
     proto=quote(rprior(params,...)),
     header="\nvoid __pomp_rprior (double *__p, const int *__parindex)\n{\n",
@@ -222,6 +232,7 @@ snippet_templates <- list(
     )
   ),
   dprior=list(
+    slotname="dprior",
     Cname="__pomp_dprior",
     proto=quote(dprior(params,log,...)),
     header="\nvoid __pomp_dprior (double *__lik, const double *__p, int give_log, const int *__parindex)\n{\n",

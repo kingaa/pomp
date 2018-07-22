@@ -8,11 +8,11 @@ pdf(file='abc.pdf')
 set.seed(2079015564L)
 
 probes.good <- list(
-    y1.mean=probe.mean(var="y1"),
-    y2.mean=probe.mean(var="y2"),
-    probe.acf(var="y1",lags=c(0,5)),
-    probe.acf(var="y2",lags=c(0,5)),
-    probe.ccf(vars=c("y1","y2"),lags=0)
+  y1.mean=probe.mean(var="y1"),
+  y2.mean=probe.mean(var="y2"),
+  probe.acf(var="y1",lags=c(0,5)),
+  probe.acf(var="y2",lags=c(0,5)),
+  probe.ccf(vars=c("y1","y2"),lags=0)
 )
 psim <- probe(ou2,probes=probes.good,nsim=200)
 plot(psim)
@@ -29,7 +29,7 @@ abc1 <- abc(po,
             scale=scale.dat,
             epsilon=1.7,
             proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))
-            )
+)
 
 plot(abc1,scatter=TRUE)
 plot(abc1)
@@ -42,9 +42,9 @@ invisible(covmat(c(abc1,abc1)))
 try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(po,Nabc=2000,probes=probes.good,start=unname(coef(po)),scale=scale.dat,
-  epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
-  epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,epsilon=1.7,proposal="bob"))
 try(abc(po,Nabc=2000,probes="probes.good",scale=scale.dat,
         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
@@ -54,7 +54,7 @@ try(abc(pomp(po,dprior=function(params,log,...)Inf),Nabc=2000,probes=probes.good
         scale=scale.dat,epsilon=1.7,
         proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(pomp(po,Nabc=2000,probes=probes.good,
-        scale=scale.dat,epsilon=1.7)))
+             scale=scale.dat,epsilon=1.7)))
 try(abc(po,Nabc=2000,scale=scale.dat,
         epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(po,Nabc=2000,probes=probes.good,
@@ -74,7 +74,7 @@ abc2 <- abc(po,
             scale=scale.dat,
             epsilon=1,
             proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
-            )
+)
 plot(abc2)
 
 abc3 <- abc(po,
@@ -83,7 +83,7 @@ abc3 <- abc(po,
             scale=scale.dat,
             epsilon=2,
             proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
-            )
+)
 abc3 <- continue(abc3,Nabc=700)
 plot(abc3)
 
@@ -98,7 +98,7 @@ abc4 <- abc(probe(po,probes=probes.good,nsim=200),
             scale=scale.dat,
             epsilon=2,
             proposal=mvn.rw(sig)
-            )
+)
 plot(abc4)
 
 abc5 <- abc(abc4,Nabc=250)
@@ -106,15 +106,15 @@ plot(abc5)
 abc5 <- abc(abc5)
 
 dprior6 <- function (params, log, ...) {
-    ll <- sum(
-        dnorm(
-            x=params[c("alpha.1","alpha.2","alpha.3","alpha.4")],
-            mean=c(0.8,-0.5,0.3,0.9),
-            sd=5,
-            log=TRUE
-        )
+  ll <- sum(
+    dnorm(
+      x=params[c("alpha.1","alpha.2","alpha.3","alpha.4")],
+      mean=c(0.8,-0.5,0.3,0.9),
+      sd=5,
+      log=TRUE
     )
-    if (log) ll else exp(ll)
+  )
+  if (log) ll else exp(ll)
 }
 
 abc6 <- abc(pomp(po,dprior=dprior6),
@@ -123,7 +123,7 @@ abc6 <- abc(pomp(po,dprior=dprior6),
             scale=scale.dat,
             epsilon=1,
             proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
-            )
+)
 plot(abc6)
 
 try(c(abc6,ou2))
@@ -144,17 +144,17 @@ plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=100))
 invisible(covmat(abc7))
 
 capture.output(
-    abc8 <- abc(
-        pomp(ou2,dprior=function (params, log, ...) {
-            f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
-            if (log) f else exp(f)
-        }),
-        Nabc=500,verbose=TRUE,
-        probes=probes.good,
-        scale=scale.dat,
-        epsilon=5,
-        proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-                                 scale.start=500,shape.start=100))
+  abc8 <- abc(
+    pomp(ou2,dprior=function (params, log, ...) {
+      f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
+      if (log) f else exp(f)
+    }),
+    Nabc=500,verbose=TRUE,
+    probes=probes.good,
+    scale=scale.dat,
+    epsilon=5,
+    proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
+                             scale.start=500,shape.start=100))
 ) -> out
 stopifnot(length(out)==2201)
 stopifnot(sum(grepl("acceptance ratio",out))==100)
@@ -175,8 +175,8 @@ vmat <- matrix(c(1,0,0,0),ncol=2,nrow=2,
                dimnames=list(c("alpha.1","alpha.2"),
                              c("alpha.1","alpha.2")))
 abc9 <- abc(
-    abc8,Nabc=1,probes=probes.good,scale=scale.dat,epsilon=5,
-    proposal=mvn.rw.adaptive(rw.var=vmat,scale.start=500,shape.start=100))
+  abc8,Nabc=1,probes=probes.good,scale=scale.dat,epsilon=5,
+  proposal=mvn.rw.adaptive(rw.var=vmat,scale.start=500,shape.start=100))
 
 try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
         proposal=function(theta,...)stop("urp!")))
@@ -186,33 +186,33 @@ try(abc(pomp(ou2,dprior=function(params,log,...)stop("oof!")),
 neval <- 0
 try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
         proposal=function(theta,...) {
-            neval <<- neval+1
-            if (neval>1) stop("bif!") else theta
+          neval <<- neval+1
+          if (neval>1) stop("bif!") else theta
         }))
 neval <- 0
 try(abc(
-    pomp(ou2,dprior=function(params,log,...) {
-        neval <<- neval+1
-        if (neval>10) stop("eep!")
-        else if (log) 0
-        else 1
-    }),Nabc=20,probes=probes.good,scale=scale.dat,epsilon=1,
-    proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
+  pomp(ou2,dprior=function(params,log,...) {
+    neval <<- neval+1
+    if (neval>10) stop("eep!")
+    else if (log) 0
+    else 1
+  }),Nabc=20,probes=probes.good,scale=scale.dat,epsilon=1,
+  proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
 neval <- 0
 try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
         proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
         probes=function(y) {
-            neval <<- neval+1
-            if (neval>0) stop("pow!")
-            else 0
+          neval <<- neval+1
+          if (neval>0) stop("pow!")
+          else 0
         }))
 neval <- 0
 try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
         proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
         probes=function(y) {
-            neval <<- neval+1
-            if (neval>1) stop("paf!")
-            else 0
+          neval <<- neval+1
+          if (neval>1) stop("paf!")
+          else 0
         }))
 
 dev.off()

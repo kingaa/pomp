@@ -24,17 +24,11 @@ rw.rprocess <- function (params, xstart, times, ...) {
   x
 }
 
-rw.dprocess <- function (x, times, params, log = FALSE, ...) {
-  ## given a sequence of consecutive states in 'x', this function computes the p.d.f.
-  nreps <- ncol(params)
-  ntimes <- length(times)
-  dt <- diff(times)
-  d <- array(0,dim=c(2,nreps,ntimes-1))
-  noise.sds <- params[c('s1','s2'),]
-  for (j in 2:ntimes)
-    d[,,j-1] <- dnorm(x[,,j]-x[,,j-1],mean=0,sd=noise.sds*dt[j-1],log=TRUE)
-  d <- apply(d,c(2,3),sum)
-  if (log) d else exp(d)
+rw.dprocess <- function (x1, x2, t1, t2, params, ...) {
+  ## given consecutive states in 'x', this function computes the log p.d.f.
+  dt <- t2-t1
+  noise.sds <- params[c('s1','s2')]
+  sum(dnorm(x=x2,mean=x1,sd=noise.sds*dt,log=TRUE))
 }
 
 bvnorm.rmeasure <- function (t, x, params, ...) {
@@ -143,14 +137,13 @@ d1 <- dprocess(rw2,x=x,times=time(rw2),params=p)
 m1 <- dmeasure(rw2,x=x,times=time(rw2),params=p,y=y)
 
 rw2 <- pomp(rw2,
-  dmeasure=Csnippet("
+            dmeasure=Csnippet("
     lik=dnorm(y1,x1,tau,1)+dnorm(y2,x2,tau,1);
     lik = (give_log) ? lik : exp(lik);"),
-  dprocess = onestep.dens(
-    Csnippet("loglik = dnorm(x1_2,x1_1,s1,1)+dnorm(x2_2,x2_1,s2,1);")
-  ),
-  statenames=c("x1","x2"),
-  paramnames=c("s1","s2","tau")
+            dprocess = Csnippet("
+    loglik = dnorm(x1_2,x1_1,s1,1)+dnorm(x2_2,x2_1,s2,1);"),
+            statenames=c("x1","x2"),
+            paramnames=c("s1","s2","tau")
 )
 d2 <- dprocess(rw2,x=x,times=time(rw2),params=p)
 m2 <- dmeasure(rw2,x=x,times=time(rw2),params=p,y=y)

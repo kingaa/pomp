@@ -103,28 +103,28 @@ dat <- '"time";"y1";"y2"
 100;-4,81538906352058;-1,00365875150418
 '
 
-pomp( 
-     data=read.csv2(text=dat),
-     times="time",
-     t0=0,
-     rprocess=discrete.time.sim("_ou2_step",PACKAGE="pomp"),
-     dprocess=onestep.dens("_ou2_pdf",PACKAGE="pomp"),
-     dmeasure = "_ou2_dmeasure",
-     rmeasure = "_ou2_rmeasure",
-     skeleton = map("_ou2_skel",delta.t=1),
-     PACKAGE="pomp",
-     paramnames = c(
-       "alpha.1","alpha.2","alpha.3","alpha.4",
-       "sigma.1","sigma.2","sigma.3",
-       "tau"
-       ),
-     statenames = c("x1","x2"),
-     params=c(
-       alpha.1=0.8, alpha.2=-0.5, alpha.3=0.3, alpha.4=0.9,
-       sigma.1=3, sigma.2=-0.5, sigma.3=2,
-       tau=1, 
-       x1.0=-3, x2.0=4
-       )
-     ) -> ou2
+pomp(
+  data=read.csv2(text=dat),
+  times="time",
+  t0=0,
+  rprocess=discrete.time.sim("_ou2_step",PACKAGE="pomp"),
+  dprocess="_ou2_pdf",
+  dmeasure = "_ou2_dmeasure",
+  rmeasure = "_ou2_rmeasure",
+  skeleton = map("_ou2_skel",delta.t=1),
+  PACKAGE="pomp",
+  paramnames = c(
+    "alpha.1","alpha.2","alpha.3","alpha.4",
+    "sigma.1","sigma.2","sigma.3",
+    "tau"
+  ),
+  statenames = c("x1","x2"),
+  params=c(
+    alpha.1=0.8, alpha.2=-0.5, alpha.3=0.3, alpha.4=0.9,
+    sigma.1=3, sigma.2=-0.5, sigma.3=2,
+    tau=1,
+    x1.0=-3, x2.0=4
+  )
+) -> ou2
 
 c("ou2")

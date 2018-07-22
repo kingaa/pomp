@@ -78,7 +78,6 @@ in 'coef<-':  names of 'value' are being discarded
 > 
 > dat <- as.data.frame(ricker)
 > try(pomp(dat) -> po)
-Error : 'times' is a required argument
 > try(pomp(dat,times="time",t0=0,covar=dat) -> po)
 Error : in 'pomp': if 'covar' is supplied, 'tcovar' must also be supplied
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=3) -> po)
@@ -92,35 +91,37 @@ Error : in 'pomp': covariate(s) 'henry' are not among the columns of 'covar'
 > try(pomp(dat,times="time",t0=0,fromEstimationScale=identity) -> po)
 Error : in 'pomp': if one of 'toEstimationScale', 'fromEstimationScale' is supplied, then so must the other
 > plot(po)
-> pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
+> try(pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}))
+Error : in 'pomp': 'skeleton' must be specified as either a 'vectorfield' or a 'map'.
 > try(pomp())
-Error : in 'pomp': 'data' is a required argument
+Error : in 'pomp': 'data' is a required argument.
 > try(pomp(as.matrix(dat),times=dat$time,t0=0) -> po)
 Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
-> pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po
-> try(pomp(dat,times="bob",t0=0,skeleton=function(x,t,params,...){x}) -> po)
+> try(pomp(dat,times="time",t0=0,skeleton=function(x,t,params,...){x}) -> po)
+Error : in 'pomp': 'skeleton' must be specified as either a 'vectorfield' or a 'map'.
+> try(pomp(dat,times="bob",t0=0,skeleton=map(function(x,t,params,...){x})) -> po)
 Error : in 'pomp': when 'data' is a data frame, 'times' must identify a single column of 'data' either by name or by index.
-> try(pomp(dat,times=11,t0=0,skeleton=function(x,t,params,...){x}) -> po)
+> try(pomp(dat,times=11,t0=0,skeleton=map(function(x,t,params,...){x})) -> po)
 Error : in 'pomp': when 'data' is a data frame, 'times' must identify a single column of 'data' either by name or by index.
-> try(pomp(dat,times=1.1,t0=0,skeleton=function(x,t,params,...){x}) -> po)
+> try(pomp(dat,times=1.1,t0=0,skeleton=map(function(x,t,params,...){x})) -> po)
 Error : in 'pomp': when 'data' is a data frame, 'times' must identify a single column of 'data' either by name or by index.
 > try(pomp(dat$y,times=dat$time,t0=0) -> po)
 Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
-> pomp(dat,times=1,t0=0,skeleton=function(x,t,params,...){x}) -> po
+> pomp(dat,times=1,t0=0,skeleton=map(function(x,t,params,...){x})) -> po
 > try(pomp(dat$y,times=dat$time[1:10],t0=0) -> po)
 Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 > try(pomp(ricker,skeleton=identity(identity)) -> po)
-Error : in 'pomp': in 'skeleton': 'skeleton' must be a function of prototype skeleton(x, t, params, ...)
+Error : in 'pomp': 'skeleton' must be specified as either a 'vectorfield' or a 'map'.
 > try(pomp(ricker,toEstimationScale=identity) -> po)
 Error : in 'pomp': if one of 'toEstimationScale', 'fromEstimationScale' is supplied, then so must the other
 > try(pomp(ricker,fromEstimationScale=identity) -> po)
 Error : in 'pomp': if one of 'toEstimationScale', 'fromEstimationScale' is supplied, then so must the other
 > try(pomp("banana"))
-Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
+[1] "banana"
 > pomp(pomp(ricker,rprocess=NULL),dprocess=NULL) -> po
 > pomp(ricker,measurement.model=y~pois(N),rmeasure=Csnippet("y=rpois(N);")) -> po
 Warning message:
-in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure' 
+in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' and 'dmeasure'. 
 > 
 > xdat <- ricker@data
 > nm <- dimnames(xdat)
@@ -151,9 +152,60 @@ Error : in 'pomp': 'params' must be a named numeric vector
 > plot(po,yax.flip=TRUE)
 > 
 > try(pomp(as.data.frame(ricker)))
-Error : 'times' is a required argument
+   time   y
+1     0  68
+2     1   2
+3     2  87
+4     3   0
+5     4  12
+6     5 174
+7     6   0
+8     7   0
+9     8   1
+10    9  57
+11   10  11
+12   11 178
+13   12   0
+14   13   1
+15   14   0
+16   15  34
+17   16  72
+18   17   3
+19   18 101
+20   19   0
+21   20   8
+22   21 156
+23   22   0
+24   23   0
+25   24   3
+26   25  93
+27   26   0
+28   27  17
+29   28 121
+30   29   0
+31   30   0
+32   31  19
+33   32 107
+34   33   0
+35   34   4
+36   35 127
+37   36   0
+38   37   1
+39   38  47
+40   39   8
+41   40 117
+42   41   0
+43   42   3
+44   43  82
+45   44   2
+46   45  39
+47   46  70
+48   47  11
+49   48 275
+50   49   0
+51   50   0
 > try(pomp(as.data.frame(ricker),times="time"))
-Error : 't0' is a required argument
+Error : in 'pomp': in 'pomp': 't0' is a required argument
 > try(pomp(data.frame(t=10:1,y=1:10),times="t",t0=0))
 Error : in 'pomp': 'times' must be an increasing numeric vector
 > try(pomp(data.frame(t=c(1:9,NA),y=1:10),times="t",t0=0))

@@ -46,7 +46,7 @@ function (theta, ...)
         Q
     theta
 }
-<environment: 0x1585f38>
+<environment: 0x1c78fb0>
 Warning messages:
 1: In chol.default(rw.var, pivot = TRUE) :
   the matrix is either rank-deficient or indefinite

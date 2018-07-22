@@ -98,7 +98,7 @@ Error : in 'skeleton': 2nd dimensions of 'x' and 'params' are incompatible
 > 
 > try(pomp(ricker,skeleton=euler.sim(Csnippet("N = exp(log(r)+log(N)-N);"),delta.t=1),
 +          statenames="N",paramnames="r"))
-Error : in 'pomp': bad option for 'skeleton' argument
+Error : in 'pomp': 'skeleton' must be specified as either a 'vectorfield' or a 'map'.
 > 
 > dev.off()
 null device 

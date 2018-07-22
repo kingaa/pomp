@@ -98,7 +98,7 @@ in 'coef<-': name(s) 'new' do not refer to existing parameter(s); they are being
 +          cdir="bob"
 +          )
 +     )
-Error : in 'pomp': error in building shared-object library from C snippets: in 'pompCBuilder': compilation error: cannot create cache directory 'bob'
+Error : in 'pomp': error in building shared-object library from C snippets: in 'Cbuilder': compilation error: cannot create cache directory 'bob'
 > file.remove("bob")
 [1] TRUE
 > pomp(ricker,
@@ -155,12 +155,9 @@ summary of covariates:
  Max.   :3.0  
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x308d320>
-<environment: 0x3a431c8>
-process model density, dprocess = function (x, times, params, log = FALSE, ...) 
-stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x308d668>
-<environment: 0x3a431c8>
+<bytecode: 0x2cca820>
+<environment: 0x566ae68>
+process model density, dprocess = not specified
 measurement model simulator, rmeasure = function (x, t, params, ...) 
 x
 measurement model density, dmeasure = function (x, y, t, params, log, ...) 
@@ -169,7 +166,7 @@ prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton (map) = function (x, t, params, ...) 
 x
-<environment: 0x4545be8>
+<environment: 0x48a1268>
 initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
@@ -200,16 +197,13 @@ summary of data:
 zero time, t0 = 0
 process model simulator, rprocess = function (xstart, times, params, ...) 
 stop(sQuote("rprocess"), " not specified", call. = FALSE)
-<bytecode: 0x308d320>
-<environment: 0x3111b50>
-process model density, dprocess = function (x, times, params, log = FALSE, ...) 
-stop(sQuote("dprocess"), " not specified", call. = FALSE)
-<bytecode: 0x308d668>
-<environment: 0x3111b50>
+<bytecode: 0x2cca820>
+<environment: 0x5a53fe0>
+process model density, dprocess = not specified
 measurement model simulator, rmeasure = not specified
 measurement model density, dmeasure = not specified
 prior simulator, rprior = not specified
-prior density, dprior = not specified
+prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton = not specified
 initializer = not specified
 parameter transformation (to estimation scale) = not specified

@@ -66,6 +66,8 @@ Error : in 'pomp': 'data' must be a data frame or an object of class 'pomp'
 +         }
 +     )
 + )
+Warning message:
+'onestep.dens' is deprecated and will be removed in a forthcoming release.  Specify 'dprocess' directly using a C snippet or R function. 
 > 
 > params <- c(n.0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
 > po <- simulate(po,params=params)

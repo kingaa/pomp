@@ -13,13 +13,11 @@ rw2 <- pomp(
       "
     )
   ),
-  dprocess = onestep.dens(
-    dens.fun = Csnippet("
+  dprocess = Csnippet("
       double dt = t_2 - t_1;
       loglik = dnorm(x1_2,x1_1,s1*dt,1)+
           dnorm(x2_2,x2_1,s2*dt,1);
       "
-    )
   ),
   rmeasure=Csnippet("
       y1 = rnorm(x1,tau);

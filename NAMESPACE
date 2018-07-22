@@ -73,7 +73,7 @@ export(
     gillespie.hl.sim,
     mvn.diag.rw,mvn.rw,
     mvn.rw.adaptive,
-    rw.sd,
+    rw.sd,vectorfield,map,
     sobolDesign,
     sliceDesign,
     profileDesign,

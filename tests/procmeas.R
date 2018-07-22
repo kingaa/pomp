@@ -30,5 +30,5 @@ dm2 <- dmeasure(po,x=x,y=obs(po),times=time(po),params=coef(po),log=T)
 dm3 <- dmeasure(po,x=x,y=obs(po),times=time(po),params=pmat,log=T)
 stopifnot(identical(rbind(dm2,dm2,dm2),unname(dm3)))
 
-pomp(po,dprocess=onestep.dens(function(x1, x2, t1, t2, params, ...) stop("yikes!"))) -> po
+pomp(po,dprocess=function(x1, x2, t1, t2, params, ...) stop("yikes!")) -> po
 try(dprocess(po,x=x,times=time(po),params=coef(po),log=T))

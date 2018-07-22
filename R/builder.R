@@ -1,3 +1,84 @@
+makePompFuns <- function (..., templates, cfile = NULL, cdir = NULL,
+                          obsnames = NULL, statenames = NULL, paramnames = NULL, covarnames = NULL,
+                          PACKAGE = NULL, globals = NULL, shlib.args = NULL,
+                          verbose = getOption("verbose", FALSE)) {
+
+  ep <- paste0("in ",sQuote("makePompFuns"),": ")
+
+  if (missing(templates))
+    stop(ep,sQuote("templates")," must be supplied.",call.=FALSE)
+
+  statenames <- as.character(statenames)
+  paramnames <- as.character(paramnames)
+  obsnames <- as.character(obsnames)
+  covarnames <- as.character(covarnames)
+
+  if (anyDuplicated(statenames)) {
+    stop(ep,"all ",sQuote("statenames")," must be unique", call.=FALSE)
+  }
+  if (anyDuplicated(paramnames)) {
+    stop(ep,"all ",sQuote("paramnames")," must be unique", call.=FALSE)
+  }
+  if (anyDuplicated(obsnames)) {
+    stop(ep,"all ",sQuote("obsnames")," must be unique", call.=FALSE)
+  }
+  if (anyDuplicated(covarnames)) {
+    stop(ep,"all ",sQuote("covarnames")," must be unique", call.=FALSE)
+  }
+
+  horses <- list(...)
+  horses <- horses[!vapply(horses,is.null,logical(1))]  # remove nulls
+  snippets <- horses[vapply(horses,is,logical(1),"Csnippet")]
+  snippets <- lapply(snippets,slot,"text")
+
+  if (length(snippets) > 0) {
+    lib <- tryCatch(
+      do.call(
+        Cbuilder,
+        c(
+          list(
+            templates=templates,
+            dir=cdir,
+            name=cfile,
+            obsnames=obsnames,
+            statenames=statenames,
+            paramnames=paramnames,
+            covarnames=covarnames,
+            globals=globals,
+            shlib.args=shlib.args,
+            verbose=verbose
+          ),
+          snippets
+        )
+      ),
+      error = function (e) {
+        stop("error in building shared-object library from C snippets: ",
+             conditionMessage(e),call.=FALSE)
+      }
+    )
+  }
+
+  funs <- vector(mode="list",length=length(horses))
+  names(funs) <- names(horses)
+
+  for (s in names(funs)) {
+    funs[[s]] <- pomp.fun(
+      f=horses[[s]],
+      slotname=s,
+      PACKAGE=PACKAGE,
+      proto=templates[[s]]$proto,
+      Cname=templates[[s]]$Cname,
+      libname=lib$name,
+      statenames=statenames,
+      paramnames=paramnames,
+      obsnames=obsnames,
+      covarnames=covarnames
+    )
+  }
+
+  list(funs=funs,lib=lib)
+}
+
 Cbuilder <- function (..., templates, name = NULL, dir = NULL,
                       statenames, paramnames, covarnames, obsnames,
                       globals, shlib.args = NULL,
