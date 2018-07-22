@@ -205,7 +205,7 @@ Error : in 'pomp': 'params' must be a named numeric vector
 50   49   0
 51   50   0
 > try(pomp(as.data.frame(ricker),times="time"))
-Error : in 'pomp': in 'pomp': 't0' is a required argument
+Error : in 'pomp': 't0' is a required argument
 > try(pomp(data.frame(t=10:1,y=1:10),times="t",t0=0))
 Error : in 'pomp': 'times' must be an increasing numeric vector
 > try(pomp(data.frame(t=c(1:9,NA),y=1:10),times="t",t0=0))

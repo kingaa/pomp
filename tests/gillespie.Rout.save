@@ -130,7 +130,7 @@ Type 'q()' to quit R.
 +   ) %>%
 +   simulate() %>%
 +   plot(main="Gillespie SIR, with zeroing")
-in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
+in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'nbasis','degree','period'
 > 
 > gsir %>%
 +     pomp(rprocess=gillespie.sim(rate.fun=rate.fun.snip,
@@ -198,8 +198,8 @@ Error : in 'simulate': in 'gillespie.sim' plugin: 'rate.fun' returns a negative 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 Error : in 'simulate': in 'gillespie.sim' plugin: user 'rates' must return a single scalar rate.
 > 
-> try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix)) %>% simulate())
-Error : in 'pomp': in 'gillespie.sim' plugin: bad option for 'rate.fn' argument
+> try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix)))
+Error : in 'pomp': bad option for 'rate.fun' argument
 > 
 > create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
 +   data <- data.frame(time = times, reports = NA)

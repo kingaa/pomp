@@ -107,7 +107,7 @@ setMethod(
     new(
       "pomp.fun",
       native.fun=render(Cname,name=libname),
-      PACKAGE=as.character(libname),
+      PACKAGE=libname,
       mode=pompfunmode$regNative,
       obsnames=obsnames,
       statenames=statenames,

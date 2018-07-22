@@ -172,7 +172,7 @@ rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
 
 try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
 
-try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix)) %>% simulate())
+try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix)))
 
 create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
   data <- data.frame(time = times, reports = NA)

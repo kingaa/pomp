@@ -62,7 +62,7 @@ newly created object(s):
 newly created object(s):
  ricker 
 > try(pomp(ricker,initializer=Csnippet("e=0; N = N_0; step = 0;")))
-Error : in 'pomp': in 'pomp': when 'initializer' is provided as a C snippet, you must also provide 'statenames'
+Error : in 'pomp': when 'initializer' is provided as a C snippet, you must also provide 'statenames'
 > ricker <- pomp(ricker,
 +                rprocess=euler.sim(
 +                    Csnippet("double dW = rnorm(0,sqrt(dt));

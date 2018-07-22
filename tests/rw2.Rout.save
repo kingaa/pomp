@@ -104,7 +104,7 @@ Type 'q()' to quit R.
 +   t0=0,
 +   useless=23
 + )
-in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'useless'
+in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'useless'
 > 
 > rw2 <- pomp(
 +   rprocess = rw.rprocess,
@@ -123,7 +123,7 @@ in 'pomp': : the following unrecognized argument(s) will be stored for use by us
 +   t0=0,
 +   useless=23
 + )
-in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'useless'
+in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'useless'
 > 
 > show(rw2)
 100 records of 2 observables, recorded from t = 1 to 100 
@@ -168,8 +168,8 @@ measurement model simulator, rmeasure = function (x, t, params, covars, ...)
     }
     y
 }
-<bytecode: 0x3da9e28>
-<environment: 0x3cb55b0>
+<bytecode: 0x3725d80>
+<environment: 0x21c82c8>
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     f <- 0
@@ -181,8 +181,8 @@ measurement model density, dmeasure = function (y, x, t, params, log, covars, ..
         f
     else exp(f)
 }
-<bytecode: 0x3da8ea0>
-<environment: 0x3cb55b0>
+<bytecode: 0x3724df8>
+<environment: 0x21c82c8>
 prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton = not specified

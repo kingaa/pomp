@@ -191,8 +191,8 @@ process model simulator, rprocess = function (xstart, times, params, ..., zerona
             stop(ep, conditionMessage(e), call. = FALSE)
         })
 }
-<bytecode: 0x34290a0>
-<environment: 0x25e8ee0>
+<bytecode: 0x27e80a0>
+<environment: 0x2402e80>
 process model density, dprocess = function (t1, t2, params, x1, x2, covars, ...) 
 {
     with(as.list(params), {
@@ -241,7 +241,7 @@ skeleton (vectorfield) = function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x3586558>
+<environment: 0x2945478>
 initializer = function (params, t0, ...) 
 {
     with(as.list(params), {
@@ -438,7 +438,7 @@ newly created object(s):
 +      statenames=c("cases"),
 +      paramnames=c("rho"),
 +      sid=4.50,nancy=c(18L,43L),bob=33L,sally=pi) -> po
-in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'sid','nancy','bob','sally'
+in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'sid','nancy','bob','sally'
 > 
 > simulate(po) -> po
 > 
@@ -454,7 +454,7 @@ in 'pomp': : the following unrecognized argument(s) will be stored for use by us
 +       reports = (reports > 0) ? reports : 0;"),
 +      statenames=c("cases"),
 +      paramnames=c("rho"),bob=12L) -> po
-in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'bob'
+in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'bob'
 > try(simulate(po))
 Error : in 'simulate': wrong bob!
 > 
@@ -470,7 +470,7 @@ Error : in 'simulate': wrong bob!
 +       reports = (reports > 0) ? reports : 0;"),
 +      statenames=c("cases"),
 +      paramnames=c("rho"),joe=12.0) -> po
-in 'pomp': : the following unrecognized argument(s) will be stored for use by user-defined functions: 'joe'
+in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'joe'
 > try(simulate(po))
 Error : in 'simulate': oh no, joe!
 > 
@@ -494,11 +494,11 @@ Error : in 'simulate': in 'discrete.time.sim' plugin: yikes!
 Error : in 'simulate': in 'onestep.sim' plugin: yikes!
 > 
 > try(pomp(euler.sir,rprocess=euler.sim(3,delta.t=0.1)))
-Error : in 'pomp': in 'euler.sim' plugin: bad option for 'step.fn' argument
+Error : in 'pomp': bad option for 'step.fun' argument
 > try(pomp(euler.sir,rprocess=onestep.sim(3)))
-Error : in 'pomp': in 'onestep.sim' plugin: bad option for 'step.fn' argument
+Error : in 'pomp': bad option for 'step.fun' argument
 > try(pomp(euler.sir,rprocess=discrete.time.sim(3)))
-Error : in 'pomp': in 'discrete.time.sim' plugin: bad option for 'step.fn' argument
+Error : in 'pomp': bad option for 'step.fun' argument
 > try(pomp(euler.sir,rprocess=3))
 Error : in 'pomp': 'rprocess' plugin has an invalid form.
 > try(pomp(euler.sir,dprocess=3))

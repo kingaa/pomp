@@ -1,12 +1,29 @@
-makePompFuns <- function (..., templates, cfile = NULL, cdir = NULL,
-                          obsnames = NULL, statenames = NULL, paramnames = NULL, covarnames = NULL,
-                          PACKAGE = NULL, globals = NULL, shlib.args = NULL,
-                          verbose = getOption("verbose", FALSE)) {
+## 'hitch' takes (as ...) the workhorse specifications (as R functions,
+## C snippets, or plugins), processes these, and hitches them to 'pomp.fun'
+## objects suitable for use in the appropriate slots in 'pomp' objects.
 
-  ep <- paste0("in ",sQuote("makePompFuns"),": ")
+hitch <- function (..., templates, cfile, cdir,
+                   obsnames, statenames, paramnames, covarnames,
+                   PACKAGE, globals, shlib.args,
+                   verbose = getOption("verbose", FALSE)) {
+
+  ep <- character(0)
 
   if (missing(templates))
     stop(ep,sQuote("templates")," must be supplied.",call.=FALSE)
+
+  if (missing(cfile)) cfile <- NULL
+  if (missing(cdir)) cdir <- NULL
+  if (missing(PACKAGE)) PACKAGE <- NULL
+  if (missing(globals)) globals <- NULL
+  if (missing(shlib.args)) shlib.args <- NULL
+  PACKAGE <- as.character(PACKAGE)
+
+  ## defaults for names of states, parameters, observations, and covariates
+  if (missing(statenames)) statenames <- NULL
+  if (missing(paramnames)) paramnames <- NULL
+  if (missing(obsnames)) obsnames <- NULL
+  if (missing(covarnames)) covarnames <- NULL
 
   statenames <- as.character(statenames)
   paramnames <- as.character(paramnames)
@@ -27,7 +44,6 @@ makePompFuns <- function (..., templates, cfile = NULL, cdir = NULL,
   }
 
   horses <- list(...)
-  horses <- horses[!vapply(horses,is.null,logical(1))]  # remove nulls
   snippets <- horses[vapply(horses,is,logical(1),"Csnippet")]
   snippets <- lapply(snippets,slot,"text")
 
@@ -56,6 +72,11 @@ makePompFuns <- function (..., templates, cfile = NULL, cdir = NULL,
              conditionMessage(e),call.=FALSE)
       }
     )
+    libname <- lib$name
+    lib <- list(lib)
+  } else {
+    libname <- ""
+    lib <- NULL
   }
 
   funs <- vector(mode="list",length=length(horses))
@@ -64,11 +85,11 @@ makePompFuns <- function (..., templates, cfile = NULL, cdir = NULL,
   for (s in names(funs)) {
     funs[[s]] <- pomp.fun(
       f=horses[[s]],
-      slotname=s,
+      slotname=templates[[s]]$slotname,
       PACKAGE=PACKAGE,
       proto=templates[[s]]$proto,
       Cname=templates[[s]]$Cname,
-      libname=lib$name,
+      libname=libname,
       statenames=statenames,
       paramnames=paramnames,
       obsnames=obsnames,

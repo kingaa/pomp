@@ -286,71 +286,54 @@ setMethod("construct_pomp",
           }
 )
 
-pomp.internal <- function (
-  data, times, t0, rprocess, dprocess,
-  rmeasure, dmeasure,
-  skeleton, skel.type, skelmap.delta.t,
-  initializer, rprior, dprior,
-  params, covar, tcovar,
-  obsnames, statenames, paramnames, covarnames,
-  zeronames, PACKAGE,
-  fromEstimationScale, toEstimationScale,
-  globals, cdir, cfile, shlib.args,
-  userdata, ...,
-  .solibs = list(),
-  verbose = getOption("verbose",FALSE)
-) {
+pomp.internal <- function (data, times, t0, rprocess, dprocess,
+                           rmeasure, dmeasure,
+                           skeleton, skel.type, skelmap.delta.t,
+                           initializer, rprior, dprior,
+                           params, covar, tcovar,
+                           obsnames, statenames, paramnames, covarnames,
+                           zeronames, PACKAGE,
+                           fromEstimationScale, toEstimationScale,
+                           globals, cdir, cfile, shlib.args,
+                           userdata, ...,
+                           .solibs = list(),
+                           verbose = getOption("verbose",FALSE)) {
 
-  ep <- paste0("in ",sQuote("pomp"),": ")
+  ep <- character(0)
+  wp <- paste0("in ",sQuote("pomp"),": ")
 
   if (missing(t0)) stop(ep,sQuote("t0")," is a required argument",call.=FALSE)
 
   if (missing(userdata)) userdata <- list()
   added.userdata <- list(...)
   if (length(added.userdata)>0) {
-    message(ep,": the following unrecognized argument(s) ",
+    message(wp,"the following unrecognized argument(s) ",
             "will be stored for use by user-defined functions: ",
             paste(sQuote(names(added.userdata)),collapse=","))
     userdata[names(added.userdata)] <- added.userdata
   }
 
-  if (missing(globals)) globals <- NULL
-  if (missing(cdir)) cdir <- NULL
-  if (missing(cfile)) cfile <- NULL
-  if (missing(shlib.args)) shlib.args <- NULL
-  if (missing(PACKAGE)) PACKAGE <- NULL
-  PACKAGE <- as.character(PACKAGE)
-  globals <- as(globals,"character")
-
-  ## defaults for names of states, parameters, observations, and covariates
   if (missing(statenames)) statenames <- NULL
   if (missing(paramnames)) paramnames <- NULL
   if (missing(obsnames)) obsnames <- NULL
   if (missing(covarnames)) covarnames <- NULL
-  if (missing(zeronames)) zeronames <- NULL
 
   statenames <- as.character(statenames)
   paramnames <- as.character(paramnames)
-  zeronames <- as.character(zeronames)
   obsnames <- as.character(obsnames)
   covarnames <- as.character(covarnames)
 
+  if (missing(zeronames)) zeronames <- NULL
+  zeronames <- as.character(zeronames)
+  if (anyDuplicated(zeronames)) {
+    stop(ep,"all ",sQuote("zeronames")," must be unique", call.=FALSE)
+  }
+
   ## store the data as double-precision matrix
   storage.mode(data) <- 'double'
-  if (length(obsnames)==0) obsnames <- rownames(data)
-
-  ## check for duplicate names
-  if (anyDuplicated(statenames)) {
-    stop("all ",sQuote("statenames")," must be unique", call.=FALSE)
-  }
-  if (anyDuplicated(paramnames)) {
-    stop("all ",sQuote("paramnames")," must be unique", call.=FALSE)
-  }
+  if (length(obsnames) == 0) obsnames <- rownames(data)
   if (anyDuplicated(obsnames)) {
-    stop("all ",sQuote("paramnames")," must be unique", call.=FALSE)
-  }
-  if (anyDuplicated(zeronames)) {
-    stop("all ",sQuote("zeronames")," must be unique", call.=FALSE)
+    stop(ep,"all ",sQuote("obsnames")," must be unique", call.=FALSE)
   }
 
   ## check the parameters and force them to be double-precision
@@ -395,14 +378,18 @@ pomp.internal <- function (
   } else {
     covar <- as.matrix(covar)
   }
-  if (length(covarnames)==0) covarnames <- as.character(colnames(covar))
-  if (!all(covarnames %in% colnames(covar))) {
-    missing <- covarnames[!(covarnames%in%colnames(covar))]
-    stop("covariate(s) ",paste(sapply(missing,sQuote),collapse=","),
-         " are not among the columns of ",sQuote("covar"),call.=FALSE)
+  if (length(covarnames)==0) {
+    covarnames <- as.character(colnames(covar))
+  } else {
+    if (!all(covarnames %in% colnames(covar))) {
+      missing <- covarnames[!(covarnames%in%colnames(covar))]
+      stop("covariate(s) ",paste(sapply(missing,sQuote),collapse=","),
+           " are not among the columns of ",sQuote("covar"),call.=FALSE)
+    }
+    covar <- covar[,covarnames,drop=FALSE]
   }
   if (anyDuplicated(covarnames)) {
-    stop("all ",sQuote("covarnames")," must be unique", call.=FALSE)
+    stop(ep,"all ",sQuote("covarnames")," must be unique", call.=FALSE)
   }
   storage.mode(tcovar) <- "double"
   storage.mode(covar) <- "double"
@@ -412,75 +399,47 @@ pomp.internal <- function (
     (is(initializer,"pomp.fun") && initializer@mode == pompfunmode$undef )
   if (default.init) initializer <- pomp.fun(slotname="initializer")
 
+  if (is(initializer,"Csnippet") && length(statenames)==0) {
+      stop(ep,"when ",sQuote("initializer")," is provided as a C snippet, ",
+           "you must also provide ",sQuote("statenames"),call.=FALSE)
+  }
+
   ## by default, use flat improper prior
   if (is.null(dprior))
     dprior <- pomp.fun(f="_pomp_default_dprior",PACKAGE="pomp")
 
-  ## default rprocess & dprocess
+  ## handle skeleton
+  if (is.null(skeleton)) skel.type <- "undef"
+
+  ## default rprocess
   if (is.null(rprocess))
     rprocess <- function (xstart,times,params,...) stop(sQuote("rprocess")," not specified",call.=FALSE)
 
-  ## handle C snippets
-  snips <- list()
-  if (is(rprocess,"pompPlugin") && rprocess@csnippet)
-    snips <- c(snips,setNames(list(slot(rprocess,rprocess@slotname)@text),rprocess@slotname))
-  if (is(dprocess,"Csnippet"))
-    snips <- c(snips,dprocess=dprocess@text)
-  if (is(skeleton,"Csnippet"))
-    snips <- c(snips,skeleton=skeleton@text)
-  if (is(rmeasure,"Csnippet"))
-    snips <- c(snips,rmeasure=rmeasure@text)
-  if (is(dmeasure,"Csnippet"))
-    snips <- c(snips,dmeasure=dmeasure@text)
-  if (is(rprior,"Csnippet"))
-    snips <- c(snips,rprior=rprior@text)
-  if (is(dprior,"Csnippet"))
-    snips <- c(snips,dprior=dprior@text)
-  if (is(fromEstimationScale,"Csnippet"))
-    snips <- c(snips,fromEstimationScale=fromEstimationScale@text)
-  if (is(toEstimationScale,"Csnippet"))
-    snips <- c(snips,toEstimationScale=toEstimationScale@text)
-  if (is(initializer,"Csnippet")) {
-    if (length(statenames)==0)
-      stop(ep,"when ",sQuote("initializer")," is provided as a C snippet, ",
-           "you must also provide ",sQuote("statenames"),call.=FALSE)
-    snips <- c(snips,initializer=initializer@text)
-  }
-  if (length(snips)>0) {
-    libname <- tryCatch(
-      do.call(
-        Cbuilder,
-        c(
-          list(
-            name=cfile,
-            dir=cdir,
-            templates=snippet_templates,
-            obsnames=obsnames,
-            statenames=statenames,
-            paramnames=paramnames,
-            covarnames=covarnames,
-            globals=globals,
-            shlib.args=shlib.args,
-            verbose=verbose
-          ),
-          snips
-        )
-      ),
-      error = function (e) {
-        stop("error in building shared-object library from C snippets: ",
-             conditionMessage(e),call.=FALSE)
-      }
-    )
-    .solibs <- c(.solibs,list(libname))
-    libname <- libname$name
-  } else {
-    libname <- ''
-  }
+  hitches <- hitch(initializer=initializer,
+                   step.fn=if (is(rprocess,"pompPlugin")) rprocess@step.fn else NULL,
+                   rate.fn=if (is(rprocess,"pompPlugin")) rprocess@rate.fn else NULL,
+                   dprocess=dprocess,
+                   rmeasure=rmeasure,
+                   dmeasure=dmeasure,
+                   rprior=rprior,
+                   dprior=dprior,
+                   fromEstimationScale=fromEstimationScale,
+                   toEstimationScale=toEstimationScale,
+                   skeleton=skeleton,
+                   templates=snippet_templates,
+                   obsnames=obsnames,
+                   statenames=statenames,
+                   paramnames=paramnames,
+                   covarnames=covarnames,
+                   PACKAGE=PACKAGE,
+                   cfile=cfile,cdir=cdir,
+                   globals=globals,shlib.args=shlib.args,
+                   verbose=verbose)
 
   ## handle rprocess
   rprocess <- plugin.handler(
     rprocess,
-    libname=libname,
+    libname=hitches$lib[[1]]$name,
     statenames=statenames,
     paramnames=paramnames,
     obsnames=obsnames,
@@ -488,166 +447,34 @@ pomp.internal <- function (
     purpose = sQuote("rprocess")
   )
 
-  ## handle dprocess
-  dprocess <- pomp.fun(
-    f=dprocess,
-    PACKAGE=PACKAGE,
-    proto=snippet_templates$dprocess$proto,
-    slotname=snippet_templates$dprocess$slotname,
-    Cname=snippet_templates$dprocess$Cname,
-    libname=libname,
-    statenames=statenames,
-    paramnames=paramnames,
-    obsnames=obsnames,
-    covarnames=covarnames
-  )
-
-  ## handle initializer
-  if (!default.init) {
-    initializer <- pomp.fun(
-      f=initializer,
-      PACKAGE=PACKAGE,
-      proto=snippet_templates$initializer$proto,
-      slotname=snippet_templates$initializer$slotname,
-      Cname=snippet_templates$initializer$Cname,
-      libname=libname,
-      statenames=statenames,
-      paramnames=paramnames,
-      obsnames=obsnames,
-      covarnames=covarnames
-    )
-  }
-
-  ## handle skeleton
-  if (is.null(skeleton)) skel.type <- "undef"
-  skeleton <- pomp.fun(
-    f=skeleton,
-    PACKAGE=PACKAGE,
-    proto=snippet_templates$skeleton$proto,
-    slotname=snippet_templates$skeleton$slotname,
-    Cname=snippet_templates$skeleton$Cname,
-    libname=libname,
-    statenames=statenames,
-    paramnames=paramnames,
-    obsnames=obsnames,
-    covarnames=covarnames
-  )
-
-  ## type of skeleton (map or vectorfield)
-  ## skelmap.delta.t has no meaning in the vectorfield case
-  skel.type <- match.arg(skel.type,c("map","vectorfield","undef"))
-
-  ## handle rmeasure
-  rmeasure <- pomp.fun(
-    f=rmeasure,
-    PACKAGE=PACKAGE,
-    proto=snippet_templates$rmeasure$proto,
-    slotname=snippet_templates$rmeasure$slotname,
-    Cname=snippet_templates$rmeasure$Cname,
-    libname=libname,
-    statenames=statenames,
-    paramnames=paramnames,
-    obsnames=obsnames,
-    covarnames=covarnames
-  )
-
-  ## handle dmeasure
-  dmeasure <- pomp.fun(
-    f=dmeasure,
-    PACKAGE=PACKAGE,
-    proto=snippet_templates$dmeasure$proto,
-    slotname=snippet_templates$dmeasure$slotname,
-    Cname=snippet_templates$dmeasure$Cname,
-    libname=libname,
-    statenames=statenames,
-    paramnames=paramnames,
-    obsnames=obsnames,
-    covarnames=covarnames
-  )
-
-  ## handle rprior
-  rprior <- pomp.fun(
-    f=rprior,
-    PACKAGE=PACKAGE,
-    proto=snippet_templates$rprior$proto,
-    slotname=snippet_templates$rprior$slotname,
-    Cname=snippet_templates$rprior$Cname,
-    libname=libname,
-    statenames=statenames,
-    paramnames=paramnames,
-    obsnames=obsnames,
-    covarnames=covarnames
-  )
-
-  ## handle dprior
-  dprior <- pomp.fun(
-    f=dprior,
-    PACKAGE=PACKAGE,
-    proto=snippet_templates$dprior$proto,
-    slotname=snippet_templates$dprior$slotname,
-    Cname=snippet_templates$dprior$Cname,
-    libname=libname,
-    statenames=statenames,
-    paramnames=paramnames,
-    obsnames=obsnames,
-    covarnames=covarnames
-  )
-
-  ## handle parameter transformations
-  from.trans <- pomp.fun(
-    f=fromEstimationScale,
-    PACKAGE=PACKAGE,
-    proto=snippet_templates$fromEstimationScale$proto,
-    slotname=snippet_templates$fromEstimationScale$slotname,
-    Cname=snippet_templates$fromEstimationScale$Cname,
-    libname=libname,
-    statenames=statenames,
-    paramnames=paramnames,
-    obsnames=obsnames,
-    covarnames=covarnames
-  )
-
-  to.trans <- pomp.fun(
-    f=toEstimationScale,
-    PACKAGE=PACKAGE,
-    proto=snippet_templates$toEstimationScale$proto,
-    slotname=snippet_templates$toEstimationScale$slotname,
-    Cname=snippet_templates$toEstimationScale$Cname,
-    libname=libname,
-    statenames=statenames,
-    paramnames=paramnames,
-    obsnames=obsnames,
-    covarnames=covarnames
-  )
-
-  has.trans <- !is.null(fromEstimationScale) &&
-    from.trans@mode != pompfunmode$undef &&
-    to.trans@mode != pompfunmode$undef
+  ## are parameter transformations defined?
+  has.trans <- hitches$funs$fromEstimationScale@mode != pompfunmode$undef &&
+    hitches$funs$toEstimationScale@mode != pompfunmode$undef
 
   ## check to make sure 'covars' is included as an argument where needed
   if (nrow(covar) > 0) {
-    if ((skeleton@mode==pompfunmode$Rfun) &&
-        !("covars"%in%names(formals(skeleton@R.fun))))
-      warning(ep,"a covariate table has been given, yet the ",
+    if ((hitches$funs$skeleton@mode==pompfunmode$Rfun) &&
+        !("covars"%in%names(formals(hitches$funs$skeleton@R.fun))))
+      warning(wp,"a covariate table has been given, yet the ",
               sQuote("skeleton")," function does not have ",
               sQuote("covars")," as a formal argument: see ",
               sQuote("?pomp"),call.=FALSE)
-    if ((rmeasure@mode==pompfunmode$Rfun) &&
-        !("covars"%in%names(formals(rmeasure@R.fun))))
-      warning(ep,"a covariate table has been given, yet the ",
+    if ((hitches$funs$rmeasure@mode==pompfunmode$Rfun) &&
+        !("covars"%in%names(formals(hitches$funs$rmeasure@R.fun))))
+      warning(wp,"a covariate table has been given, yet the ",
               sQuote("rmeasure")," function does not have ",
               sQuote("covars")," as a formal argument: see ",
               sQuote("?pomp"),call.=FALSE)
-    if ((dmeasure@mode==pompfunmode$Rfun) &&
-        !("covars"%in%names(formals(dmeasure@R.fun))))
-      warning(ep,"a covariate table has been given, yet the ",
+    if ((hitches$funs$dmeasure@mode==pompfunmode$Rfun) &&
+        !("covars"%in%names(formals(hitches$funs$dmeasure@R.fun))))
+      warning(wp,"a covariate table has been given, yet the ",
               sQuote("dmeasure")," function does not have ",
               sQuote("covars")," as a formal argument: see ",
               sQuote("?pomp"),call.=FALSE)
   }
 
   if ((length(tcovar)>0)&&((min(tcovar)>t0)||(max(tcovar)<max(times))))
-    warning(ep,"the supplied covariate covariate times ",sQuote("tcovar"),
+    warning(wp,"the supplied covariate covariate times ",sQuote("tcovar"),
             " do not embrace the data times: covariates may be extrapolated",
             call.=FALSE
     )
@@ -655,27 +482,27 @@ pomp.internal <- function (
   new(
     'pomp',
     rprocess = rprocess,
-    dprocess = dprocess,
-    dmeasure = dmeasure,
-    rmeasure = rmeasure,
-    dprior = dprior,
-    rprior = rprior,
-    skeleton = skeleton,
+    dprocess = hitches$funs$dprocess,
+    dmeasure = hitches$funs$dmeasure,
+    rmeasure = hitches$funs$rmeasure,
+    dprior = hitches$funs$dprior,
+    rprior = hitches$funs$rprior,
+    skeleton = hitches$funs$skeleton,
     skeleton.type = skel.type,
     skelmap.delta.t = skelmap.delta.t,
     data = data,
     times = times,
     t0 = t0,
     default.init = default.init,
-    initializer = initializer,
+    initializer = hitches$funs$initializer,
     params = params,
     covar = covar,
     tcovar = tcovar,
     zeronames = zeronames,
     has.trans = has.trans,
-    from.trans = from.trans,
-    to.trans = to.trans,
-    solibs = .solibs,
+    from.trans = hitches$funs$fromEstimationScale,
+    to.trans = hitches$funs$toEstimationScale,
+    solibs = c(.solibs,hitches$lib),
     userdata = userdata
   )
 }
