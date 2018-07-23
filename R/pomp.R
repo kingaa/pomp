@@ -156,7 +156,7 @@ setMethod("construct_pomp",
             if (missing(initializer)) initializer <- NULL
 
             if (missing(rprocess) || is.null(rprocess)) {
-              rprocess <- null.plugin()
+              rprocess <- plugin()
             } else if (!is(rprocess,"pompPlugin")) {
               stop(ep,sQuote("rprocess"),
                    " must be specified using one of the plugins:\n",
@@ -235,7 +235,7 @@ setMethod("construct_pomp",
             if (missing(rprocess)) {
               rprocess <- data@rprocess
             } else if (is.null(rprocess)) {
-              rprocess <- null.plugin()
+              rprocess <- plugin()
             } else if (!is(rprocess,"pompPlugin")) {
               stop(ep,sQuote("rprocess"),
                    " must be specified using one of the plugins:\n",
@@ -489,7 +489,7 @@ pomp.internal <- function (data, times, t0,
 
   new(
     'pomp',
-    rprocess = modify.plugin(
+    rprocess = plugin(
       rprocess,
       step.fn=hitches$funs$step.fn,
       rate.fn=hitches$funs$rate.fn

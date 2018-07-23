@@ -129,5 +129,6 @@ try(simulate(pomp(ricker,initializer=Csnippet("m = N_0; e = 0;"),
 try(simulate(pomp(ricker,rmeasure=Csnippet("z = rpois(phi*N);"),
                   statenames=c("N"),obsnames=c("z"),paramnames=c("phi")),
                   params=c(r=1.5,sigma=0.1,phi=1,N_0=1,e.0=0,c=1)))
+try(simulate(pomp(ricker,rprocess=NULL)))
 
 dev.off()

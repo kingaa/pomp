@@ -3,7 +3,7 @@
 #include "pomp_internal.h"
 #include <R_ext/Constants.h>
 
-// method: 0 = Euler, 1 = one-step, 2 = fixed step
+// method: 1 = one-step, 2 = fixed step, 3 = Euler
 
 SEXP euler_model_simulator (SEXP func,
                             SEXP xstart, SEXP times, SEXP params,
@@ -146,10 +146,6 @@ SEXP euler_model_simulator (SEXP func,
             xt[zidx[i]+nvars*j] = 0.0;
 
         switch (method) {
-        case 0:			// Euler method
-          dt = deltat;
-          nstep = num_euler_steps(t,time[step],&dt);
-          break;
         case 1:			// one step
           dt = time[step]-t;
           nstep = (dt > 0) ? 1 : 0;
@@ -157,6 +153,10 @@ SEXP euler_model_simulator (SEXP func,
         case 2:			// fixed step
           dt = deltat;
           nstep = num_map_steps(t,time[step],dt);
+          break;
+        case 3:			// Euler method
+          dt = deltat;
+          nstep = num_euler_steps(t,time[step],&dt);
           break;
         default:
           errorcall(R_NilValue,"unrecognized 'method'"); // # nocov
@@ -239,7 +239,7 @@ SEXP euler_model_simulator (SEXP func,
 
           t += dt;
 
-          if ((method == 0) && (k == nstep-2)) { // penultimate step
+          if ((method == 3) && (k == nstep-2)) { // penultimate step
             dt = time[step]-t;
             t = time[step]-dt;
           }

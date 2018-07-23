@@ -291,15 +291,15 @@ setMethod(
       cat("summary of covariates:\n")
       print(summary(as.data.frame(object@covar)))
     }
-    if (object@rprocess@type == 1L) {
+    if (object@rprocess@type == 0L) {
       cat("undefined process-model simulator\n")
-    } else if (object@rprocess@type == 5L) {
+    } else if (object@rprocess@type == 4L) {
       cat("Gillespie-method process-model simulator, rate.fun = ")
       show(object@rprocess@rate.fn)
     } else {
-      if (object@rprocess@type == 2L) {
+      if (object@rprocess@type == 1L) {
         cat("one-step process-model simulator, step.fun = ")
-      } else if (object@rprocess@type == 3L) {
+      } else if (object@rprocess@type == 2L) {
         cat("discrete-time process-model simulator, step.fun = ")
       } else {
         cat("Euler-method process-model simulator, step.fun = ")

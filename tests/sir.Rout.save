@@ -247,7 +247,7 @@ skeleton (vectorfield) = function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x2b5eaa8>
+<environment: 0x2c69de0>
 initializer = function (params, t0, ...) 
 {
     with(as.list(params), {

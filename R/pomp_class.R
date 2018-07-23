@@ -31,7 +31,7 @@ setClass(
     data=array(data=numeric(0),dim=c(0,0)),
     times=numeric(0),
     t0=numeric(0),
-    rprocess=null.plugin(),
+    rprocess=plugin(),
     dprocess=pomp.fun(slotname="dprocess"),
     dmeasure=pomp.fun(slotname="dmeasure"),
     rmeasure=pomp.fun(slotname="rmeasure"),

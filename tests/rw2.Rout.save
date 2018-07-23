@@ -141,8 +141,8 @@ measurement model simulator, rmeasure = function (x, t, params, covars, ...)
     }
     y
 }
-<bytecode: 0x4e09720>
-<environment: 0x359e650>
+<bytecode: 0x32251a8>
+<environment: 0x103e0c0>
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     f <- 0
@@ -154,8 +154,8 @@ measurement model density, dmeasure = function (y, x, t, params, log, covars, ..
         f
     else exp(f)
 }
-<bytecode: 0x4e0a2f0>
-<environment: 0x359e650>
+<bytecode: 0x32216f8>
+<environment: 0x103e0c0>
 prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton = not specified

@@ -10,7 +10,7 @@ setClass(
   prototype=prototype(
     csnippet=FALSE,
     slotname=character(0),
-    type=1L,
+    type=0L,
     step.fn=NULL,
     rate.fn=NULL
   )
@@ -46,14 +46,14 @@ setClass(
   )
 )
 
-null.plugin <- function () {
-  new("pompPlugin")
-}
-
-modify.plugin <- function (object, step.fn, rate.fn) {
-  if (!missing(step.fn)) object@step.fn <- step.fn
-  if (!missing(rate.fn)) object@rate.fn <- rate.fn
-  object
+plugin <- function (object, step.fn, rate.fn) {
+  if (missing(object)) {
+    new("pompPlugin")
+  } else {
+    if (!missing(step.fn)) object@step.fn <- step.fn
+    if (!missing(rate.fn)) object@rate.fn <- rate.fn
+    object
+  }
 }
 
 onestep.sim <- function (step.fun) {
@@ -61,7 +61,7 @@ onestep.sim <- function (step.fun) {
       step.fn=step.fun,
       slotname="step.fun",
       csnippet=is(step.fun,"Csnippet"),
-      type=2L)
+      type=1L)
 }
 
 discrete.time.sim <- function (step.fun, delta.t = 1) {
@@ -70,7 +70,7 @@ discrete.time.sim <- function (step.fun, delta.t = 1) {
       delta.t=delta.t,
       slotname="step.fun",
       csnippet=is(step.fun,"Csnippet"),
-      type=3L)
+      type=2L)
 }
 
 euler.sim <- function (step.fun, delta.t) {
@@ -79,7 +79,7 @@ euler.sim <- function (step.fun, delta.t) {
       delta.t=delta.t,
       slotname="step.fun",
       csnippet=is(step.fun,"Csnippet"),
-      type=4L)
+      type=3L)
 }
 
 gillespie.sim <- function (rate.fun, v, d, hmax = Inf) {
@@ -102,7 +102,7 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf) {
       hmax=hmax,
       slotname="rate.fun",
       csnippet=is(rate.fun,"Csnippet"),
-      type=5L)
+      type=4L)
 }
 
 gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
@@ -177,7 +177,7 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
       hmax=hmax,
       slotname="rate.fun",
       csnippet=TRUE,
-      type=5L)
+      type=4L)
 }
 
 onestep.dens <- function (dens.fun, PACKAGE) {

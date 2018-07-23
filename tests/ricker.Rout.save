@@ -163,7 +163,7 @@ prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton (map) = function (x, t, params, ...) 
 x
-<environment: 0x4c0f068>
+<environment: 0x38434d0>
 initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
@@ -261,6 +261,8 @@ Error : in 'simulate': variable 'N' not found among the state variables
 +                   statenames=c("N"),obsnames=c("z"),paramnames=c("phi")),
 +                   params=c(r=1.5,sigma=0.1,phi=1,N_0=1,e.0=0,c=1)))
 Error : in 'simulate': variable 'z' not found among the observables
+> try(simulate(pomp(ricker,rprocess=NULL)))
+Error : in 'simulate': 'rprocess' is undefined.
 > 
 > dev.off()
 null device 

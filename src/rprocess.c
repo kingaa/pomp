@@ -88,29 +88,27 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   // extract the process function
   type = *(INTEGER(GET_SLOT(rproc,install("type"))));
   switch (type) {
-  case 2: // one-step simulator
+  case 1: // one-step simulator
   {
     SEXP fn;
     double deltat = 1.0;
-    int method = 1;
     PROTECT(fn = GET_SLOT(rproc,install("step.fn"))); nprotect++;
     PROTECT(X = euler_model_simulator(
-      fn,xstart,times,params,deltat,method,
+      fn,xstart,times,params,deltat,type,
       zeronames,tcovar,covar,args,gnsi)); nprotect++;
   }
     break;
-  case 3: case 4: // discrete-time and Euler
+  case 2: case 3: // discrete-time and Euler
   {
     SEXP fn;
     double deltat;
-    int method = (type == 3) ? 2 : 0;
     PROTECT(fn = GET_SLOT(rproc,install("step.fn"))); nprotect++;
     deltat = *(REAL(AS_NUMERIC(GET_SLOT(rproc,install("delta.t")))));
-    PROTECT(X = euler_model_simulator(fn,xstart,times,params,deltat,method,
+    PROTECT(X = euler_model_simulator(fn,xstart,times,params,deltat,type,
         zeronames,tcovar,covar,args,gnsi)); nprotect++;
   }
     break;
-  case 5: // Gillespie's method
+  case 4: // Gillespie's method
   {
     SEXP fn, vmatrix, hmax;
     PROTECT(fn = GET_SLOT(rproc,install("rate.fn"))); nprotect++;
@@ -120,8 +118,8 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
         zeronames,hmax,args,gnsi)); nprotect++;
   }
     break;
-  case 1: default:
-    errorcall(R_NilValue,"in 'rprocess': 'rprocess' is undefined.");
+  case 0: default:
+    errorcall(R_NilValue,"'rprocess' is undefined.");
     break;
   }
 

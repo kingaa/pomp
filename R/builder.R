@@ -1,6 +1,6 @@
-## 'hitch' takes (as ...) the workhorse specifications (as R functions,
-## C snippets, or plugins), processes these, and hitches them to 'pomp.fun'
-## objects suitable for use in the appropriate slots in 'pomp' objects.
+## 'hitch' takes (as ...) the workhorse specifications (as R functions or
+## C snippets, processes these, and hitches them to 'pomp.fun' objects
+## suitable for use in the appropriate slots in 'pomp' objects.
 
 hitch <- function (..., templates, cfile, cdir,
                    obsnames, statenames, paramnames, covarnames,

@@ -30,6 +30,7 @@ plot(gm4,data.styles=list(lty=c(1,2,3)))
 plot(gm4,data.styles=list(lty=1))
 
 pompExample(ricker)
+set.seed(362083261L)
 
 sp <- spect(ricker,kernel.width=3,nsim=100,seed=838775L)
 invisible(summary(sp))
