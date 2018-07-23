@@ -3,7 +3,7 @@
 - move all model codes out of the package, except gompertz
 - new 'userdata' function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
-- make new header file for package developers
+- ~~make new header file for package developers~~
 
 ## For pomp 2:
 
@@ -35,7 +35,7 @@
 - ~~deprecate `mif` and `bsmc`~~
 - graceful stopping for optimizers (at least for `nloptr`)
 - number of processors stored in `bake`, `stew`, `freeze` outputs
-- digest of data stored in `bake`, `stew`, `freeze` outputs
+- digest of data stored in `bake`, `stew`, `freeze` outputs (?)
 - documentation on `mifList`, `pmcmcList`, etc.
 - `pfilterList` object?
 - parameter transformations: put `transform` option into each estimation routine (`spect.match`)

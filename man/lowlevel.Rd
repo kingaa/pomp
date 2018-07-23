@@ -187,7 +187,7 @@
 \examples{
 pompExample(ricker)
 
-p <- parmat(c(r=42,c=1,phi=10,sigma=0.3,N.0=7,e.0=0),10)
+p <- parmat(c(r=42,c=1,phi=10,sigma=0.3,N_0=7,e.0=0),10)
 t <- c(1:10,20,30)
 t0 <- 0
 x0 <- init.state(ricker,params=p,t0=t0)
@@ -199,7 +199,7 @@ f <- skeleton(ricker,x=x,t=t,params=p)
 z <- trajectory(ricker,params=p,times=t,t0=t0)
 
 ## short arguments are recycled:
-p <- c(r=42,phi=10,c=1,sigma=0.3,N.0=7,e.0=0)
+p <- c(r=42,phi=10,c=1,sigma=0.3,N_0=7,e.0=0)
 t <- c(1:10,20,30)
 t0 <- 0
 x0 <- init.state(ricker,params=p,t0=t0)

@@ -1,9 +1,10 @@
 library(pomp)
 png(filename="steps-%02d.png",res=100)
 
+pompExample(ricker)
+
 set.seed(54588699L)
 
-pompExample(ricker)
 coef(ricker,"sigma") <- 0
 tm <- sort(runif(n=20,max=3))
 x <- trajectory(ricker,times=tm)["N",,]
@@ -28,8 +29,8 @@ ricker <- pomp(ricker,
                skeleton=NULL,
                initializer=Csnippet("e=0; N = N_0; step = 0;"),
                zeronames="step",
-               params=c(r=0.5,N.0=0.5,sigma=0.1,phi=10,c=1),
-               paramnames=c("sigma","r","N.0"),statenames=c("N","e","step"))
+               params=c(r=0.5,N_0=0.5,sigma=0.1,phi=10,c=1),
+               paramnames=c("sigma","r","N_0"),statenames=c("N","e","step"))
 time(ricker) <- sort(runif(n=20,max=50))
 ricker <- simulate(ricker)
 plot(ricker)

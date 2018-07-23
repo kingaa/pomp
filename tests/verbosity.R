@@ -68,7 +68,7 @@ capture.output({
 }) -> out
 length(out)
 stopifnot(sum(grepl("mif2 pfilter",out))==40)
-stopifnot(sum(grepl("model codes written",out))==1)
+stopifnot(sum(grepl("model codes written",out))==2)
 stopifnot(sum(grepl("fitted param",out))==6)
 stopifnot(sum(grepl("ABC iteration",out))==5)
 stopifnot(sum(grepl("acceptance ratio:",out))==24)

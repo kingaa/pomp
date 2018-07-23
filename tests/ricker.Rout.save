@@ -76,16 +76,16 @@ Error : in 'coef': name(s) 'log.r' correspond to no parameter(s)
 Warning message:
 in 'coef<-':  names of 'value' are being discarded 
 > coef(po,c("r","phi")) <- 1
-> coef(po) <- c(phi=1,r=3.5,N.0=10,e.0=0,sigma=0,c=1)
+> coef(po) <- c(phi=1,r=3.5,N_0=10,e.0=0,sigma=0,c=1)
 > coef(po)
-  phi     r   N.0   e.0 sigma     c 
+  phi     r   N_0   e.0 sigma     c 
   1.0   3.5  10.0   0.0   0.0   1.0 
 > coef(po,"new") <- 3
 Warning message:
 in 'coef<-': name(s) 'new' do not refer to existing parameter(s); they are being concatenated 
 > plot(simulate(po))
 > coef(po)
-  phi     r   N.0   e.0 sigma     c   new 
+  phi     r   N_0   e.0 sigma     c   new 
   1.0   3.5  10.0   0.0   0.0   1.0   3.0 
 > 
 > file.create("bob")
@@ -163,7 +163,7 @@ prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton (map) = function (x, t, params, ...) 
 x
-<environment: 0x445eab0>
+<environment: 0x4c0f068>
 initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
@@ -203,7 +203,7 @@ initializer = not specified
 parameter transformation (to estimation scale) = not specified
 parameter transformation (from estimation scale) = not specified
 parameter(s):
-       r    sigma      phi        c      N.0      e.0 
+       r    sigma      phi        c      N_0      e.0 
 44.70118  0.30000 10.00000  1.00000  7.00000  0.00000 
 > try(trajectory(po))
 Error : in 'trajectory': deterministic skeleton has not been properly specified
@@ -243,11 +243,11 @@ Error : in 'simulate': 'delta.t' should be a positive number
 > 
 > try(rprocess(ricker,xstart=init.state(ricker),params=coef(ricker),times=runif(10,max=5)))
 Error : 'times' is not an increasing sequence
-> try(simulate(ricker,params=c(r=1.5)))
-Error : in 'simulate': in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
-> try(simulate(ricker,params=c(r=1.5,sigma=0.1,N.0=1,e.0=0,c=1)))
+> try(simulate(ricker,params=c(r=1.5,sigma=0.1,phi=3,e.0=0,c=1)))
+Error : in 'simulate': variable 'N_0' not found among the parameters
+> try(simulate(ricker,params=c(r=1.5,sigma=0.1,N_0=1,e.0=0,c=1)))
 Error : in 'simulate': variable 'phi' not found among the parameters
-> try(simulate(ricker,params=c(r=1.5,phi=1,N.0=1,e.0=0,c=1)))
+> try(simulate(ricker,params=c(r=1.5,phi=1,N_0=1,e.0=0,c=1)))
 Error : in 'simulate': variable 'sigma' not found among the parameters
 > try(simulate(pomp(ricker,initializer=Csnippet("N = N_0; e = 0;"),
 +                   statenames=c("N","e"),paramnames=c("N_0")),
@@ -259,7 +259,7 @@ Error : in 'simulate': variable 'N_0' not found among the parameters
 Error : in 'simulate': variable 'N' not found among the state variables
 > try(simulate(pomp(ricker,rmeasure=Csnippet("z = rpois(phi*N);"),
 +                   statenames=c("N"),obsnames=c("z"),paramnames=c("phi")),
-+                   params=c(r=1.5,sigma=0.1,phi=1,N.0=1,e.0=0,c=1)))
++                   params=c(r=1.5,sigma=0.1,phi=1,N_0=1,e.0=0,c=1)))
 Error : in 'simulate': variable 'z' not found among the observables
 > 
 > dev.off()

@@ -244,7 +244,7 @@ dim(values(pbm))
 plot(pbm)
 invisible(summary(pbm))
 
-coef(po) <- c(r=10,sigma=0.3,c=1,phi=20,N.0=5,e.0=0)
+coef(po) <- c(r=10,sigma=0.3,c=1,phi=20,N_0=5,e.0=0)
 
 try(probe.match(po,params=numeric(3),nsim=20))
 try(probe.match.objfun(po,params=numeric(3),nsim=20))
@@ -269,7 +269,7 @@ invisible(summary(pb))
 
 pm <- probe.match(
     pb,
-    est=c("r","phi","N.0"),
+    est=c("r","phi","N_0"),
     transform=TRUE,
     parscale=c(0.1,0.1,0.1),
     nsim=200,
@@ -299,7 +299,7 @@ invisible(summary(pb))
 
 pm <- probe.match(
     pb,
-    est=c("r","phi","N.0"),
+    est=c("r","phi","N_0"),
     transform=TRUE,
     parscale=c(0.1,0.1,0.1),
     nsim=333,
@@ -500,9 +500,9 @@ try(probe(ou2,nsim=100,
           lags=c(1,2,2),powers=c(1,1,2))))
 
 neval <- 0
-try(probe.match(ricker,est=c("r","phi","N.0"),nsim=100,
+try(probe.match(ricker,est=c("r","phi","N_0"),nsim=100,
                 probes=function(y)stop("yipes!")))
-try(probe.match(ricker,est=c("r","phi","N.0"),nsim=100,
+try(probe.match(ricker,est=c("r","phi","N_0"),nsim=100,
                 probes=function(y){
                     neval <<- neval+1
                     if (neval>1) stop("jeepers!")

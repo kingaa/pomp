@@ -24,24 +24,20 @@ coef(rr2,c("r","phi"),transform=TRUE) <- coef(r2,c("r","phi"),transform=TRUE)
 stopifnot(all.equal(coef(rr2),coef(r2)))
 
 r3 <- pomp(
-           ricker,
-           dmeasure="_ricker_poisson_dmeasure",
-           PACKAGE="pomp",
-           paramnames=c("r","sigma","phi","c"),
-           statenames=c("N","e"),
-           obsnames=c("y")
-           )
+  ricker,
+  dmeasure=Csnippet("lik = dpois(y,phi*N,give_log);"),
+  paramnames=c("phi"),
+  statenames=c("N")
+)
 coef(r3) <- coef(r2)
 y3 <- obs(simulate(r3,seed=1066L))
 max(abs(y1-y3))
 r4 <- pomp(
-           r2,
-           rmeasure="_ricker_poisson_rmeasure",
-           PACKAGE="pomp",
-           paramnames=c("r","sigma","phi","c"),
-           statenames=c("N","e"),
-           obsnames=c("y")
-           )
+  r2,
+  rmeasure=Csnippet("y = rpois(phi*N);"),
+  paramnames=c("phi"),
+  statenames=c("N")
+)
 coef(r4) <- coef(r2)
 y4 <- obs(simulate(r4,seed=1066L))
 max(abs(y1-y4))
@@ -103,8 +99,8 @@ try(pomp(data.frame(t=1:10,y=1:10),times="t",t0=c(3,4)))
 try(pomp(data.frame(t=1:10,y=1:10),times="t",t0="Q"))
 
 try(pomp:::render("bob is {%one%} and {%two%}",
-  one="good",
-  two=c("bad","five"),
-  three=c("yellow","red","green")))
+                  one="good",
+                  two=c("bad","five"),
+                  three=c("yellow","red","green")))
 
 dev.off()

@@ -3,9 +3,9 @@ library(reshape2)
 library(plyr)
 library(magrittr)
 
-set.seed(1420306530L)
 
 pompExample(ricker)
+set.seed(1420306530L)
 po <- ricker
 
 pars <- coef(po)
@@ -50,7 +50,7 @@ f2 <- parmat(coef(gompertz,transform=TRUE),5)
 stopifnot(identical(f1,f2))
 
 pars1 <- parmat(coef(ricker),3)
-pars1["N.0",] <- c(3,5,7)
+pars1["N_0",] <- c(3,5,7)
 try(xstart <- init.state(po,params=pars1,nsim=8))
 xstart <- init.state(po,params=pars1,nsim=6)
 rprocess(po,xstart,times=0:5,params=pars1)[1,4:6,6]

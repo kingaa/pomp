@@ -22,11 +22,11 @@ Type 'q()' to quit R.
 > library(plyr)
 > library(magrittr)
 > 
-> set.seed(1420306530L)
 > 
 > pompExample(ricker)
 newly created object(s):
  ricker 
+> set.seed(1420306530L)
 > po <- ricker
 > 
 > pars <- coef(po)
@@ -174,7 +174,7 @@ newly created object(s):
 > stopifnot(identical(f1,f2))
 > 
 > pars1 <- parmat(coef(ricker),3)
-> pars1["N.0",] <- c(3,5,7)
+> pars1["N_0",] <- c(3,5,7)
 > try(xstart <- init.state(po,params=pars1,nsim=8))
 Error : in 'init.state': number of desired state-vectors 'nsim' is not a multiple of ncol('params')
 > xstart <- init.state(po,params=pars1,nsim=6)

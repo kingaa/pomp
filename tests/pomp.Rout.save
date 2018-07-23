@@ -52,25 +52,21 @@ in 'coef<-':  names of 'value' are being discarded
 > stopifnot(all.equal(coef(rr2),coef(r2)))
 > 
 > r3 <- pomp(
-+            ricker,
-+            dmeasure="_ricker_poisson_dmeasure",
-+            PACKAGE="pomp",
-+            paramnames=c("r","sigma","phi","c"),
-+            statenames=c("N","e"),
-+            obsnames=c("y")
-+            )
++   ricker,
++   dmeasure=Csnippet("lik = dpois(y,phi*N,give_log);"),
++   paramnames=c("phi"),
++   statenames=c("N")
++ )
 > coef(r3) <- coef(r2)
 > y3 <- obs(simulate(r3,seed=1066L))
 > max(abs(y1-y3))
 [1] 0
 > r4 <- pomp(
-+            r2,
-+            rmeasure="_ricker_poisson_rmeasure",
-+            PACKAGE="pomp",
-+            paramnames=c("r","sigma","phi","c"),
-+            statenames=c("N","e"),
-+            obsnames=c("y")
-+            )
++   r2,
++   rmeasure=Csnippet("y = rpois(phi*N);"),
++   paramnames=c("phi"),
++   statenames=c("N")
++ )
 > coef(r4) <- coef(r2)
 > y4 <- obs(simulate(r4,seed=1066L))
 > max(abs(y1-y4))
@@ -218,9 +214,9 @@ Error : in 'pomp': the zero-time 't0' must be a single number
 Error : in 'pomp': the zero-time 't0' must be a single number
 > 
 > try(pomp:::render("bob is {%one%} and {%two%}",
-+   one="good",
-+   two=c("bad","five"),
-+   three=c("yellow","red","green")))
++                   one="good",
++                   two=c("bad","five"),
++                   three=c("yellow","red","green")))
 Error : in 'render' incommensurate lengths of replacements
 > 
 > dev.off()

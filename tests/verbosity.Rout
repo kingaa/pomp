@@ -104,15 +104,15 @@ Error : in 'bsmc2': too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-Error : in 'pomp': error in building shared-object library from C snippets: in 'Cbuilder': compilation error: cannot compile shared-object library '/tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.so': status = 1
+Error : in 'pomp': error in building shared-object library from C snippets: in 'Cbuilder': compilation error: cannot compile shared-object library '/tmp/RtmpIafOxx/12243/pomp_fdf4b6a5bca9a4ec81f8d945bde7ce8d.so': status = 1
 compiler messages:
 make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.c -o /tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.o
-/tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.c: In function ‘__pomp_rmeasure’:
-/tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.c:18:1: error: expected ‘;’ before ‘}’ token
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpIafOxx/12243/pomp_fdf4b6a5bca9a4ec81f8d945bde7ce8d.c -o /tmp/RtmpIafOxx/12243/pomp_fdf4b6a5bca9a4ec81f8d945bde7ce8d.o
+/tmp/RtmpIafOxx/12243/pomp_fdf4b6a5bca9a4ec81f8d945bde7ce8d.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpIafOxx/12243/pomp_fdf4b6a5bca9a4ec81f8d945bde7ce8d.c:18:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.o] Error 1
+make[2]: *** [/tmp/RtmpIafOxx/12243/pomp_fdf4b6a5bca9a4ec81f8d945bde7ce8d.o] Error 1
 make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
@@ -129,12 +129,16 @@ In addition: Warning messages:
   package 'pomp' found more than once, using the first from
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
-7: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
-  running command 'PKG_CPPFLAGS="-I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.so /tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.c 2>&1' had status 1
+7: In find.package(package, lib.loc, quiet = TRUE) :
+  package 'pomp' found more than once, using the first from
+  "/home/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
+8: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
+  running command 'PKG_CPPFLAGS="-I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpIafOxx/12243/pomp_fdf4b6a5bca9a4ec81f8d945bde7ce8d.so /tmp/RtmpIafOxx/12243/pomp_fdf4b6a5bca9a4ec81f8d945bde7ce8d.c 2>&1' had status 1
 > length(out)
-[1] 676
+[1] 685
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)
-> stopifnot(sum(grepl("model codes written",out))==1)
+> stopifnot(sum(grepl("model codes written",out))==2)
 > stopifnot(sum(grepl("fitted param",out))==6)
 > stopifnot(sum(grepl("ABC iteration",out))==5)
 > stopifnot(sum(grepl("acceptance ratio:",out))==24)
@@ -152,6 +156,10 @@ Warning messages:
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
+3: In find.package(package, lib.loc, quiet = TRUE) :
+  package 'pomp' found more than once, using the first from
+  "/home/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > capture.output(simulate(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
 +   cfile="bob",verbose=TRUE),verbose=TRUE) -> po) -> out
 Warning message:
@@ -163,15 +171,18 @@ In find.package(package, lib.loc, quiet = TRUE) :
  [1] "model"             "compiling"         "compiler"         
  [4] "make[2]: Entering" "gcc"               "gcc"              
  [7] "make[2]: Leaving"  "make[2]: Entering" "make[2]: Leaving" 
-[10] "loading"           "unloading"        
+[10] "loading"           "loading"           "unloading"        
+[13] "unloading"        
 > 
 > set.seed(3949586L)
 > capture.output(invisible(mif2(window(ricker,end=10),Nmif=1,Np=1,rw.sd=rw.sd(r=1),
 +   transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
 +   type="message") -> out
+loading '/tmp/RtmpIafOxx/12243/pomp_35bf11708dd86f6cca4350018cf62819.so' 
 mif2 pfilter timestep 5 of 11 finished
 mif2 pfilter timestep 10 of 11 finished
 mif2 iteration 1 of 1 completed
+unloading '/tmp/RtmpIafOxx/12243/pomp_35bf11708dd86f6cca4350018cf62819.so' 
 Warning message:
 in 'mif2.pfilter': 5 filtering failures occurred. 
 > stopifnot(sum(grepl("filtering failure at time",out))==5)
@@ -180,16 +191,240 @@ in 'mif2.pfilter': 5 filtering failures occurred.
 > capture.output(invisible(mif(window(ricker,end=10),Nmif=1,Np=1,rw.sd=c(r=1),
 +                              transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
 +                type="message") -> out
+loading '/tmp/RtmpIafOxx/12243/pomp_35bf11708dd86f6cca4350018cf62819.so' 
 pfilter timestep 5 of 11 finished
 pfilter timestep 10 of 11 finished
 mif iteration 1 of 1 completed
+unloading '/tmp/RtmpIafOxx/12243/pomp_35bf11708dd86f6cca4350018cf62819.so' 
 Warning messages:
 1: 'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 2: in 'mif.pfilter': 5 filtering failures occurred. 
 > stopifnot(sum(grepl("filtering failure at time",out))==5)
 > 
 > spy(ricker)
-no C snippets to display
+/* pomp C snippet file: pomp_35bf11708dd86f6cca4350018cf62819 */
+/* Time: 2018-07-23 12:41:42.793 -0400 */
+/* Salt: E9F6225D337FFDD1ADE7D101 */
+
+#include <pomp.h>
+#include <R_ext/Rdynload.h>
+
+ 
+
+
+/* C snippet: 'initializer' */
+#define r		(__p[__parindex[0]])
+#define sigma		(__p[__parindex[1]])
+#define phi		(__p[__parindex[2]])
+#define c		(__p[__parindex[3]])
+#define N_0		(__p[__parindex[4]])
+#define N		(__x[__stateindex[0]])
+#define e		(__x[__stateindex[1]])
+
+void __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
+{
+ 
+        N = N_0;
+        e = 0; 
+}
+
+#undef r
+#undef sigma
+#undef phi
+#undef c
+#undef N_0
+#undef N
+#undef e
+
+/* C snippet: 'step.fn' */
+#define r		(__p[__parindex[0]])
+#define sigma		(__p[__parindex[1]])
+#define phi		(__p[__parindex[2]])
+#define c		(__p[__parindex[3]])
+#define N_0		(__p[__parindex[4]])
+#define N		(__x[__stateindex[0]])
+#define e		(__x[__stateindex[1]])
+
+void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)
+{
+ 
+        e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
+        N = exp(log(r)+log(N)-c*N+e); 
+}
+
+#undef r
+#undef sigma
+#undef phi
+#undef c
+#undef N_0
+#undef N
+#undef e
+
+/* C snippet: 'rmeasure' */
+#define r		(__p[__parindex[0]])
+#define sigma		(__p[__parindex[1]])
+#define phi		(__p[__parindex[2]])
+#define c		(__p[__parindex[3]])
+#define N_0		(__p[__parindex[4]])
+#define N		(__x[__stateindex[0]])
+#define e		(__x[__stateindex[1]])
+#define y		(__y[__obsindex[0]])
+
+void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
+{
+ 
+        y = rpois(phi*N); 
+}
+
+#undef r
+#undef sigma
+#undef phi
+#undef c
+#undef N_0
+#undef N
+#undef e
+#undef y
+
+/* C snippet: 'dmeasure' */
+#define r		(__p[__parindex[0]])
+#define sigma		(__p[__parindex[1]])
+#define phi		(__p[__parindex[2]])
+#define c		(__p[__parindex[3]])
+#define N_0		(__p[__parindex[4]])
+#define N		(__x[__stateindex[0]])
+#define e		(__x[__stateindex[1]])
+#define y		(__y[__obsindex[0]])
+#define lik		(__lik[0])
+
+void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
+{
+ 
+        lik = dpois(y,phi*N,give_log); 
+}
+
+#undef r
+#undef sigma
+#undef phi
+#undef c
+#undef N_0
+#undef N
+#undef e
+#undef y
+#undef lik
+
+/* C snippet: 'fromEstimationScale' */
+#define r		(__p[__parindex[0]])
+#define sigma		(__p[__parindex[1]])
+#define phi		(__p[__parindex[2]])
+#define c		(__p[__parindex[3]])
+#define N_0		(__p[__parindex[4]])
+#define Tr		(__pt[__parindex[0]])
+#define Tsigma		(__pt[__parindex[1]])
+#define Tphi		(__pt[__parindex[2]])
+#define Tc		(__pt[__parindex[3]])
+#define TN_0		(__pt[__parindex[4]])
+
+void __pomp_from_trans (double *__pt, const double *__p, const int *__parindex)
+{
+ 
+        Tr = exp(r);
+        Tsigma = exp(sigma);
+        Tphi = exp(phi);
+        Tc = exp(c);
+        TN_0 = exp(N_0); 
+}
+
+#undef r
+#undef sigma
+#undef phi
+#undef c
+#undef N_0
+#undef Tr
+#undef Tsigma
+#undef Tphi
+#undef Tc
+#undef TN_0
+
+/* C snippet: 'toEstimationScale' */
+#define r		(__p[__parindex[0]])
+#define sigma		(__p[__parindex[1]])
+#define phi		(__p[__parindex[2]])
+#define c		(__p[__parindex[3]])
+#define N_0		(__p[__parindex[4]])
+#define Tr		(__pt[__parindex[0]])
+#define Tsigma		(__pt[__parindex[1]])
+#define Tphi		(__pt[__parindex[2]])
+#define Tc		(__pt[__parindex[3]])
+#define TN_0		(__pt[__parindex[4]])
+
+void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
+{
+ 
+        Tr = log(r);
+        Tsigma = log(sigma);
+        Tphi = log(phi);
+        Tc = log(c);
+        TN_0 = log(N_0); 
+}
+
+#undef r
+#undef sigma
+#undef phi
+#undef c
+#undef N_0
+#undef Tr
+#undef Tsigma
+#undef Tphi
+#undef Tc
+#undef TN_0
+
+/* C snippet: 'skeleton' */
+#define r		(__p[__parindex[0]])
+#define sigma		(__p[__parindex[1]])
+#define phi		(__p[__parindex[2]])
+#define c		(__p[__parindex[3]])
+#define N_0		(__p[__parindex[4]])
+#define N		(__x[__stateindex[0]])
+#define e		(__x[__stateindex[1]])
+#define DN		(__f[__stateindex[0]])
+#define De		(__f[__stateindex[1]])
+
+void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
+{
+ 
+        DN = exp(log(r)+log(N)-c*N);
+        De = 0.0; 
+}
+
+#undef r
+#undef sigma
+#undef phi
+#undef c
+#undef N_0
+#undef N
+#undef e
+#undef DN
+#undef De
+
+static int __pomp_load_stack = 0;
+
+void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+
+void R_init_pomp_35bf11708dd86f6cca4350018cf62819 (DllInfo *info)
+{
+R_RegisterCCallable("pomp_35bf11708dd86f6cca4350018cf62819", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_35bf11708dd86f6cca4350018cf62819", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_35bf11708dd86f6cca4350018cf62819", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_35bf11708dd86f6cca4350018cf62819", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_35bf11708dd86f6cca4350018cf62819", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_35bf11708dd86f6cca4350018cf62819", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_35bf11708dd86f6cca4350018cf62819", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_35bf11708dd86f6cca4350018cf62819", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_35bf11708dd86f6cca4350018cf62819", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
+}
+
 > capture.output(pompExample(dacca)) -> out
 Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
@@ -202,8 +437,8 @@ Warning messages:
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > spy(dacca)
-/* pomp C snippet file: pomp_aafc5d3e534d78de4d6f0f5abf120170 */
-/* Time: 2018-07-23 10:19:05.142 -0400 */
+/* pomp C snippet file: pomp_568ce993439530c376f8503e14818991 */
+/* Time: 2018-07-23 12:41:43.339 -0400 */
 /* Salt: EE444509B5E4E6D45828ABC6 */
 
 #include <pomp.h>
@@ -840,16 +1075,16 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_aafc5d3e534d78de4d6f0f5abf120170 (DllInfo *info)
+void R_init_pomp_568ce993439530c376f8503e14818991 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_568ce993439530c376f8503e14818991", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_568ce993439530c376f8503e14818991", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_568ce993439530c376f8503e14818991", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_568ce993439530c376f8503e14818991", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_568ce993439530c376f8503e14818991", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_568ce993439530c376f8503e14818991", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_568ce993439530c376f8503e14818991", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_568ce993439530c376f8503e14818991", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
 }
 
 > 

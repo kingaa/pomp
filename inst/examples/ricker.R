@@ -55,27 +55,41 @@ dat <- '"time";"y"
 '
 
 pomp(
-     data=read.csv2(text=dat),
-     times="time",
-     t0=0,
-     params=c(r=exp(3.8),sigma=0.3,phi=10,c=1,N.0=7,e.0=0), # originally used to generate the data
-     rprocess=discrete.time.sim(
-       step.fun="_ricker_simulator"
-       ),
-     rmeasure="_ricker_poisson_rmeasure",
-     dmeasure="_ricker_poisson_dmeasure",
-     skeleton=map("_ricker_skeleton",delta.t=1),
-     paramnames=c("r","sigma","phi","c"),
-     statenames=c("N","e"),
-     toEstimationScale=function(params,...) {
-       params[c("r","sigma","phi","c","N.0")] <- log(params[c("r","sigma","phi","c","N.0")])
-       params
-     },
-     fromEstimationScale=function(params,...) {
-       params[c("r","sigma","phi","c","N.0")] <- exp(params[c("r","sigma","phi","c","N.0")])
-       params
-     },
-     PACKAGE="pomp"
-     ) -> ricker
+  data=read.csv2(text=dat),
+  times="time",
+  t0=0,
+  params=c(r=exp(3.8),sigma=0.3,phi=10,c=1,N_0=7,e.0=0), # originally used to generate the data
+  rprocess=discrete.time.sim(
+    step.fun=Csnippet("
+        e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
+        N = exp(log(r)+log(N)-c*N+e);"),
+    delta.t=1
+  ),
+  rmeasure=Csnippet("
+        y = rpois(phi*N);"),
+  dmeasure=Csnippet("
+        lik = dpois(y,phi*N,give_log);"),
+  skeleton=map(Csnippet("
+        DN = exp(log(r)+log(N)-c*N);
+        De = 0.0;"),
+               delta.t=1),
+  toEstimationScale=Csnippet("
+        Tr = log(r);
+        Tsigma = log(sigma);
+        Tphi = log(phi);
+        Tc = log(c);
+        TN_0 = log(N_0);"),
+  fromEstimationScale=Csnippet("
+        Tr = exp(r);
+        Tsigma = exp(sigma);
+        Tphi = exp(phi);
+        Tc = exp(c);
+        TN_0 = exp(N_0);"),
+  initializer=Csnippet("
+        N = N_0;
+        e = 0;"),
+  paramnames=c("r","sigma","phi","c","N_0"),
+  statenames=c("N","e")
+) -> ricker
 
 c("ricker")
