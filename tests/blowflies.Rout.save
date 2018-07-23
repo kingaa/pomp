@@ -21,13 +21,13 @@ Type 'q()' to quit R.
 > 
 > png(filename="blowflies-%02d.png",res=100)
 > 
-> set.seed(599688L)
-> 
 > pompExample(blowflies)
 in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
 in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'y.init'
 newly created object(s):
  blowflies1 blowflies2 
+> 
+> set.seed(599688L)
 > 
 > init.state(blowflies1)
         rep

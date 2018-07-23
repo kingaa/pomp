@@ -2,9 +2,9 @@ library(pomp)
 
 png(filename="blowflies-%02d.png",res=100)
 
-set.seed(599688L)
-
 pompExample(blowflies)
+
+set.seed(599688L)
 
 init.state(blowflies1)
 x1 <- simulate(blowflies1)

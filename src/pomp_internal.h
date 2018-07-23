@@ -14,12 +14,6 @@
 // Make with, e.g.,
 // cproto -I `R RHOME`/include -e *.c | perl -pe 's/\/\*(.+?)\*\//\n\/\/$1/g'
 
-// blowfly.c
-extern void _blowfly_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
-extern void _blowfly_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
-extern void _blowfly_simulator_one(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
-extern void _blowfly_simulator_two(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
-
 // bspline.c
 extern SEXP bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP deriv);
 extern SEXP periodic_bspline_basis(SEXP x, SEXP nbasis, SEXP degree, SEXP period, SEXP deriv);
@@ -106,12 +100,6 @@ extern SEXP probe_nlar(SEXP x, SEXP lags, SEXP powers);
 // resample.c
 extern void nosort_resamp(int nw, double *w, int np, int *p, int offset);
 extern SEXP systematic_resampling(SEXP weights);
-
-// ricker.c
-extern void _ricker_poisson_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
-extern void _ricker_poisson_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
-extern void _ricker_simulator(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
-extern void _ricker_skeleton(double *f, double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t);
 
 // rmeasure.c
 extern SEXP do_rmeasure(SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi);
