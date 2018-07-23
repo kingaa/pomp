@@ -11,7 +11,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
 {
   int nprotect = 0;
   int *xdim, npars, nvars, nreps, nrepsx, ntimes;
-  SEXP X, fn, args, covar, tcovar, dimF;
+  SEXP X, fn, args, covar, tcovar;
 
   PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
@@ -83,15 +83,6 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
   PROTECT(tcovar = GET_SLOT(object,install("tcovar"))); nprotect++;
 
   PROTECT(X = euler_model_density(fn,x,times,params,tcovar,covar,log,args,gnsi)); nprotect++;
-
-  PROTECT(dimF = GET_DIM(X)); nprotect++;
-  if ((isNull(dimF)) || (length(dimF) != 2)) {
-    errorcall(R_NilValue,"user 'dprocess' must return a rank-2 array.");
-  }
-  xdim = INTEGER(dimF);
-  if ((xdim[0] != nreps) || (xdim[1] != ntimes-1)) {
-    errorcall(R_NilValue,"user 'dprocess' must return a %d x %d array.",nreps,ntimes-1);
-  }
 
   {
     const char *dimnms[2] = {"rep","time"};
