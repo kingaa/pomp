@@ -108,7 +108,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   \item{PACKAGE}{
     optional string giving the name of the dynamically loaded library in which any native routines are to be found.
     This is only useful if one or more of the model components has been specified using a precompiled dynamically loaded library;
-    it is not useful if the components are specified using C snippets.
+    it is not used for any component specified using C snippets.
   }
   \item{fromEstimationScale, toEstimationScale}{
     optional parameter transformations.
@@ -192,7 +192,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     If the state process evolves in discrete time, specify \code{rprocess} using the \code{discrete.time.sim} plug-in.
     Specifically, provide \preformatted{
       rprocess = discrete.time.sim(step.fun = f, delta.t)}
-    to \code{pomp}, where \code{f} is a C snippet or \R function that takes simulates one step of the state process.
+    to \code{pomp}, where \code{f} is a C snippet or \R function that simulates one step of the state process.
     The former is the preferred option, due to its much greater computational efficiency.
     The goal of such a C snippet is to replace the state variables with their new random values at the end of the time interval.
     Accordingly, each state variable should be over-written with its new value.
@@ -291,13 +291,21 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     }
   }
   \subsection{Specifying \code{dprocess}}{
-    If you have a procedure that allows you to compute the probability density of an arbitrary transition from state \eqn{x_1}{x1} at time \eqn{t_1}{t1} to state \eqn{x_2}{x2} at time \eqn{t_2>t_1}{t2}, assuming that the state remains unchanged between \eqn{t_1}{t1} and \eqn{t_2}{t2}, then you can use the \code{onestep.dens} plug-in.
-    This is accomplished by furnishing \preformatted{
-      dprocess = onestep.dens(dens.fun = f)}
-    to \code{pomp}, where \code{f} is an \R function with prototype \preformatted{
+    If you have a procedure that allows you to compute the probability density of an arbitrary transition from state \eqn{x_1}{x1} at time \eqn{t_1}{t1} to state \eqn{x_2}{x2} at time \eqn{t_2>t_1}{t2}, assuming that the state remains unchanged between \eqn{t_1}{t1} and \eqn{t_2}{t2}, then you can furnish \preformatted{
+      dprocess = f}
+    to \code{pomp}, where \code{f} is a C snippet or \R function that computes the \emph{log} probability density.
+    Using a C snippet is preferred, due to its much greater computational efficiency.
+    The goal of such a C snippet is to fill the variable \code{loglik} with the log probability density.
+    In the context of such a C snippet, the parameters, and covariates will be defined, as will the times \code{t_1} and \code{t_2}.
+    The state variables at time \code{t_1} will have their usual name (see \code{statenames}) with a \dQuote{\code{_1}} appended.
+    Likewise, the state variables at time \code{t_2} will have a \dQuote{\code{_2}} appended.
+    See above under \dQuote{General rules for C snippet writing} for more details.
+    Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
+
+    If \code{f} is given as an \R function, it should have prototype \preformatted{
       f(x1, x2, t1, t2, params, ...)}
-    When \code{f} is called,
-    \code{x1} and \code{x2} will be named numeric vectors containing the values of the state process at times \code{t1} and \code{t2}, respectively,
+    When \code{f} is called, \code{x1} will be a named numeric vector containing the value of the state process at time \code{t1},
+    \code{x2} will be a named numeric vector containing the value of the state process at time \code{t2},
     and \code{params} will be a named numeric vector containing parameters.
     \code{f} should return the \emph{log} likelihood of a transition from \code{x1} at time \code{t1} to \code{x2} at time \code{t2}, assuming that no intervening transitions have occurred.
   }
