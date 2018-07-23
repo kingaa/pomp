@@ -121,14 +121,14 @@ d1 <- dprocess(rw2,x=x,times=time(rw2),params=p)
 m1 <- dmeasure(rw2,x=x,times=time(rw2),params=p,y=y)
 
 rw2 <- pomp(rw2,
-            dmeasure=Csnippet("
+  dmeasure=Csnippet("
     lik=dnorm(y1,x1,tau,1)+dnorm(y2,x2,tau,1);
     lik = (give_log) ? lik : exp(lik);"),
-            dprocess = Csnippet("
+  dprocess = Csnippet("
     double sdt = sqrt(t_2-t_1);
     loglik = dnorm(x1_2,x1_1,s1*sdt,1)+dnorm(x2_2,x2_1,s2*sdt,1);"),
-            statenames=c("x1","x2"),
-            paramnames=c("s1","s2","tau")
+  statenames=c("x1","x2"),
+  paramnames=c("s1","s2","tau")
 )
 d2 <- dprocess(rw2,x=x,times=time(rw2),params=p)
 m2 <- dmeasure(rw2,x=x,times=time(rw2),params=p,y=y)
@@ -216,3 +216,9 @@ time(rw2) <- c(0,20,25.8,50,60)
 time(rw2,t0=TRUE) <- c(0,20,25.8,50,60)
 time(rw2,t0=TRUE) <- c(0,0,20,25.8,50,60)
 time(rw2) <- c(0,20,25.8,50,60)
+
+try(rw2 <- pomp(rprocess = "onestep.sim(rw.rprocess)",
+  data=data.frame(t=1:100,y1=rep(0,100),y2=rep(0,100)),times=1,t0=0))
+try(rw2 <- pomp(rprocess = NULL,
+  data=data.frame(t=1:100,y1=rep(0,100),y2=rep(0,100)),times=1,t0=0,
+  obsnames=c("y1","y2","y2")))

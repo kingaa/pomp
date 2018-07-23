@@ -96,6 +96,9 @@ capture.output(invisible(mif(window(ricker,end=10),Nmif=1,Np=1,rw.sd=c(r=1),
                type="message") -> out
 stopifnot(sum(grepl("filtering failure at time",out))==5)
 
-spy(ricker)
 capture.output(pompExample(dacca)) -> out
 spy(dacca)
+
+pompExample(gillespie.sir)
+spy(gillespie.sir)
+show(gillespie.sir)

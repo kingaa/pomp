@@ -67,7 +67,7 @@ Type 'q()' to quit R.
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.007229567 secs
+Time difference of 0.006484032 secs
 
 > X <- reshape(X, dir = "wide", v.names = "X", timevar = "traj", 
 +     idvar = "time")
@@ -82,7 +82,7 @@ Time difference of 0.007229567 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.005115509 secs
+Time difference of 0.004848003 secs
 
 > x <- reshape(x, dir = "wide", v.names = c("Y", "X"), 
 +     timevar = "sim", idvar = "time")
@@ -105,7 +105,7 @@ Time difference of 0.005115509 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.5232186 secs
+Time difference of 0.5441837 secs
 
 > print(logmeanexp(sapply(pf, logLik), se = TRUE))
                    se 
@@ -200,7 +200,7 @@ Time difference of 0.5232186 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.005554676 secs
+Time difference of 0.005553484 secs
 
 > plot(incid ~ time, data = X, type = "l")
 
@@ -211,7 +211,7 @@ Time difference of 0.005554676 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.03944802 secs
+Time difference of 0.03784084 secs
 
 > plot(incid ~ time, data = x, col = as.factor(x$sim), 
 +     pch = 16)
@@ -227,7 +227,7 @@ Time difference of 0.03944802 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 7.573705 secs
+Time difference of 7.549056 secs
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 
