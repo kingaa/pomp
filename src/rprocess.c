@@ -126,16 +126,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   }
 
   PROTECT(dimX = GET_DIM(X)); nprotect++;
-  if ((isNull(dimX)) || (length(dimX) != 3)) {
-    errorcall(R_NilValue,"in 'rprocess': user 'rprocess' must return a rank-3 array");
-  }
   xdim = INTEGER(dimX);
-  if ((xdim[0] != nvars) || (xdim[1] != nreps) || (xdim[2] != ntimes)) {
-    errorcall(R_NilValue,"in 'rprocess': user 'rprocess' must return a %d x %d x %d array",nvars,nreps,ntimes);
-  }
-  if (isNull(GET_ROWNAMES(GET_DIMNAMES(X)))) {
-    errorcall(R_NilValue,"in 'rprocess': user 'rprocess' must return an array with rownames");
-  }
 
   if (off > 0) {
     xdim[2] -= off;
