@@ -111,13 +111,6 @@ stopifnot(identical(
 try(rprocess(ou2,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),5),offset=1))
 try(rprocess(ou2,xstart=parmat(x0,11),times=seq(0,10),params=parmat(coef(ou2),5),offset=1))
 
-pomp(ou2,rprocess=function(xstart,times,params,...){xstart}) -> po
-try(rprocess(po,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),1),offset=1))
-pomp(ou2,rprocess=function(xstart,times,params,...){x <- xstart; dim(x) <- c(nrow(xstart),1,ncol(xstart)); x}) -> po
-try(rprocess(po,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),1),offset=1))
-pomp(ou2,rprocess=function(xstart,times,params,...){array(runif(66),dim=c(2,3,11))}) -> po
-try(rprocess(po,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),1),offset=1))
-
 try(dprocess(ou2,x=x[,3,1],times=1,params=coef(ou2),log=TRUE))
 stopifnot(identical(
     dim(dprocess(ou2,x=x[,3,1:3],times=1:3,params=coef(ou2),log=TRUE)),

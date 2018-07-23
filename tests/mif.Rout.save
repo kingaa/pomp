@@ -97,7 +97,7 @@ Error : in 'mif': 'rw.sd' must be a named non-negative numerical vector
 In addition: Warning message:
 'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 > try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1),cooling.fraction.50=1))
-Error : in 'mif': in 'mif.pfilter': process simulation error: in 'discrete.time.sim' plugin: variable 'x1' not found among the state variables
+Error : in 'mif': in 'mif.pfilter': process simulation error: variable 'x1' not found among the state variables
 In addition: Warning message:
 'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 > try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(1),cooling.fraction.50=1))
@@ -111,7 +111,7 @@ Error : in 'mif': 'ivps' must name model parameters
 In addition: Warning message:
 'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 > try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=1,b.0=2),ivps="b.0",ic.lag=10,cooling.fraction.50=1))
-Error : in 'mif': in 'mif.pfilter': process simulation error: in 'discrete.time.sim' plugin: variable 'x1' not found among the state variables
+Error : in 'mif': in 'mif.pfilter': process simulation error: variable 'x1' not found among the state variables
 In addition: Warning message:
 'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 > try(mif(po,Np=10,start=c(a=3,b.0=1),rw.sd=c(a=0),ivps="b.0",ic.lag=10,cooling.fraction.50=1))

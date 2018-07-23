@@ -107,7 +107,7 @@ pomp(
   data=read.csv2(text=dat),
   times="time",
   t0=0,
-  rprocess=discrete.time.sim("_ou2_step",PACKAGE="pomp"),
+  rprocess=discrete.time.sim("_ou2_step"),
   dprocess="_ou2_pdf",
   dmeasure = "_ou2_dmeasure",
   rmeasure = "_ou2_rmeasure",

@@ -5,7 +5,7 @@ setClass(
     data = 'array',
     times = 'numeric',
     t0 = 'numeric',
-    rprocess = 'function',
+    rprocess = 'pompPlugin',
     dprocess = 'pomp.fun',
     dmeasure = 'pomp.fun',
     rmeasure = 'pomp.fun',
@@ -31,7 +31,7 @@ setClass(
     data=array(data=numeric(0),dim=c(0,0)),
     times=numeric(0),
     t0=numeric(0),
-    rprocess=function(xstart,times,params,...)stop(sQuote("rprocess")," not specified"),
+    rprocess=null.plugin(),
     dprocess=pomp.fun(slotname="dprocess"),
     dmeasure=pomp.fun(slotname="dmeasure"),
     rmeasure=pomp.fun(slotname="rmeasure"),
@@ -72,14 +72,6 @@ setClass(
                                     "must occur no later than the first observation"))
     if (object@skelmap.delta.t <= 0)
       retval <- append(retval,paste(sQuote("skelmap.delta.t"),"must be positive"))
-    if (!all(c('xstart','times','params','...')%in%names(formals(object@rprocess))))
-      retval <- append(
-        retval,
-        paste(
-          sQuote("rprocess"),"must be a function of prototype",
-          sQuote("rprocess(xstart,times,params,...)")
-        )
-      )
     if (length(object@tcovar)!=nrow(object@covar)) {
       retval <- append(
         retval,

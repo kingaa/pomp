@@ -214,7 +214,7 @@ po %>% trajectory(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% uniq
 po %>% simulate(times=1960:2000,as.data.frame=TRUE) %>% extract2("S") %>% unique()
 
 pomp(parus.bh,
-     rprocess=discrete.time.sim(function(x,t,params,...){
+     rprocess=discrete.time.sim(function(x,t,params,delta.t,...){
          stop("yikes!")
      }),
      dmeasure=function(y,x,t,params,log,...){
@@ -229,7 +229,7 @@ coef(po,"S.0") <- 0
 try(po %>% simulate(times=1960:2000))
 
 pomp(po,
-     rprocess=discrete.time.sim(function(x,t,params,...){
+     rprocess=discrete.time.sim(function(x,t,params,delta.t,...){
          with(as.list(c(x,params)),{
              eps <- rlnorm(n=1,-sigma*sigma/2,sigma)
              setNames(unname(c(a*N/(1+b*N)*eps,S+1,33)),

@@ -269,7 +269,7 @@ extern SEXP euler_model_density(SEXP func, SEXP x, SEXP times, SEXP params, SEXP
 extern SEXP do_dprocess(SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
 
 // euler.c
-extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, SEXP deltat, SEXP method, SEXP zeronames, SEXP tcovar, SEXP covar, SEXP args, SEXP gnsi);
+extern SEXP euler_model_simulator(SEXP func, SEXP xstart, SEXP times, SEXP params, double deltat, int method, SEXP zeronames, SEXP tcovar, SEXP covar, SEXP args, SEXP gnsi);
 extern int num_euler_steps(double t1, double t2, double *Rf_dt);
 extern int num_map_steps(double t1, double t2, double Rf_dt);
 

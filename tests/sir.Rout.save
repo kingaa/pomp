@@ -180,19 +180,25 @@ summary of covariates:
  Mean   :0.33359   Mean   :0.33321   Mean   :0.33321  
  3rd Qu.:0.56758   3rd Qu.:0.54719   3rd Qu.:0.54719  
  Max.   :0.66667   Max.   :0.66630   Max.   :0.66630  
-process model simulator, rprocess = function (xstart, times, params, ..., zeronames = character(0), 
-    tcovar, covar, .getnativesymbolinfo = TRUE) 
+Euler-method process-model simulator, step.fun = function (t, x, params, covars, delta.t, ...) 
 {
-    tryCatch(.Call(euler_model_simulator, func = efun, xstart = xstart, 
-        times = times, params = params, deltat = object@delta.t, 
-        method = 0L, zeronames = zeronames, tcovar = tcovar, 
-        covar = covar, args = pairlist(...), gnsi = .getnativesymbolinfo), 
-        error = function(e) {
-            stop(ep, conditionMessage(e), call. = FALSE)
-        })
+    with(as.list(c(x, params)), {
+        beta <- sum(c(beta1, beta2, beta3) * covars)
+        dW <- rgammawn(n = 1, sigma = beta.sd, dt = delta.t)
+        foi <- (iota + beta * I * dW/delta.t)/pop
+        trans <- c(rpois(n = 1, lambda = mu * pop * delta.t), 
+            reulermultinom(n = 1, size = S, rate = c(foi, mu), 
+                dt = delta.t), reulermultinom(n = 1, size = I, 
+                rate = c(gamma, mu), dt = delta.t), reulermultinom(n = 1, 
+                size = R, rate = c(mu), dt = delta.t))
+        c(S = S + trans[1] - trans[2] - trans[3], I = I + trans[2] - 
+            trans[4] - trans[5], R = R + trans[4] - trans[6], 
+            cases = cases + trans[4], W = if (beta.sd > 0) W + 
+                (dW - delta.t)/beta.sd else W, B = trans[1], 
+            SI = trans[2], SD = trans[3], IR = trans[4], ID = trans[5], 
+            RD = trans[6], dW = dW)
+    })
 }
-<bytecode: 0x27e80a0>
-<environment: 0x2402e80>
 process model density, dprocess = function (t1, t2, params, x1, x2, covars, ...) 
 {
     with(as.list(params), {
@@ -241,7 +247,7 @@ skeleton (vectorfield) = function (x, t, params, covars, ...)
         xdot
     })
 }
-<environment: 0x2945478>
+<environment: 0x2b5eaa8>
 initializer = function (params, t0, ...) 
 {
     with(as.list(params), {
@@ -487,11 +493,11 @@ Error : in 'simulate': oh no, joe!
 > plot(simulate(po))
 > 
 > try(simulate(pomp(euler.sir,rprocess=euler.sim(Csnippet("error(\"yikes!\");"),delta.t=0.1))))
-Error : in 'simulate': in 'euler.sim' plugin: yikes!
+Error : in 'simulate': yikes!
 > try(simulate(pomp(euler.sir,rprocess=discrete.time.sim(Csnippet("error(\"yikes!\");"),delta.t=0.1))))
-Error : in 'simulate': in 'discrete.time.sim' plugin: yikes!
+Error : in 'simulate': yikes!
 > try(simulate(pomp(euler.sir,rprocess=onestep.sim(Csnippet("error(\"yikes!\");")))))
-Error : in 'simulate': in 'onestep.sim' plugin: yikes!
+Error : in 'simulate': yikes!
 > 
 > try(pomp(euler.sir,rprocess=euler.sim(3,delta.t=0.1)))
 Error : in 'pomp': bad option for 'step.fun' argument
@@ -500,12 +506,13 @@ Error : in 'pomp': bad option for 'step.fun' argument
 > try(pomp(euler.sir,rprocess=discrete.time.sim(3)))
 Error : in 'pomp': bad option for 'step.fun' argument
 > try(pomp(euler.sir,rprocess=3))
-Error : in 'pomp': 'rprocess' plugin has an invalid form.
+Error : in 'pomp': 'rprocess' must be specified using one of the plugins:
+'onestep.sim', 'discrete.time.sim', 'euler.sim', 'gillespie.sim', or 'gillespie.hl.sim'.
 > try(pomp(euler.sir,dprocess=3))
 Error : in 'pomp': bad option for 'dprocess' argument
 > 
 > try(simulate(pomp(euler.sir,rprocess=discrete.time.sim(NULL))))
-Error : in 'simulate': in 'discrete.time.sim' plugin: operation cannot be completed: step.fn has not been specified
+Error : in 'simulate': operation cannot be completed: step.fun has not been specified
 > 
 > dev.off()
 null device 

@@ -55,7 +55,7 @@ kf <- pomp:::kalmanFilter(t,y,X0,A,Q,C,R)
 y %>% melt() %>% dcast(time~variable) %>%
   pomp(times='time',t0=0,
        rprocess=discrete.time.sim(
-         step.fun=function(x,t,params,...){
+         step.fun=function(x,t,params,delta.t,...){
            A%*%x+sqrtQ%*%rnorm(n=ncol(A))
          },
          delta.t=1),

@@ -103,7 +103,7 @@ gsir %>%
   plot(main="Gillespie SIR, no zeroing")
 
 gsir %>%
-  pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
+  pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",
                               v=Vmatrix,hmax=1/52/10),
        nbasis=3L,degree=3L,period=1.0,
        paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),

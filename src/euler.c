@@ -3,16 +3,18 @@
 #include "pomp_internal.h"
 #include <R_ext/Constants.h>
 
+// method: 0 = Euler, 1 = one-step, 2 = fixed step
+
 SEXP euler_model_simulator (SEXP func,
                             SEXP xstart, SEXP times, SEXP params,
-                            SEXP deltat, SEXP method, SEXP zeronames,
+                            double deltat, int method, SEXP zeronames,
                             SEXP tcovar, SEXP covar, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   pompfunmode mode = undef;
   int nvars, npars, nreps, ntimes, nzeros, ncovars, covlen;
   int nstep = 0;
-  double dt, dtt;
+  double dt;
   SEXP X;
   SEXP ans, nm, fn, fcall = R_NilValue, rho = R_NilValue;
   SEXP Snames, Pnames, Cnames;
@@ -20,11 +22,8 @@ SEXP euler_model_simulator (SEXP func,
   SEXP xvec = R_NilValue, pvec = R_NilValue, dtvec = R_NilValue;
   int *pidx = 0, *sidx = 0, *cidx = 0, *zidx = 0;
   pomp_onestep_sim *ff = NULL;
-  int meth = INTEGER_VALUE(method);
-  // meth: 0 = Euler, 1 = one-step, 2 = fixed step
 
-  dtt = NUMERIC_VALUE(deltat);
-  if (dtt <= 0)
+  if (deltat <= 0)
     errorcall(R_NilValue,"'delta.t' should be a positive number");
 
     {
@@ -146,9 +145,9 @@ SEXP euler_model_simulator (SEXP func,
           for (i = 0; i < nzeros; i++)
             xt[zidx[i]+nvars*j] = 0.0;
 
-        switch (meth) {
+        switch (method) {
         case 0:			// Euler method
-          dt = dtt;
+          dt = deltat;
           nstep = num_euler_steps(t,time[step],&dt);
           break;
         case 1:			// one step
@@ -156,7 +155,7 @@ SEXP euler_model_simulator (SEXP func,
           nstep = (dt > 0) ? 1 : 0;
           break;
         case 2:			// fixed step
-          dt = dtt;
+          dt = deltat;
           nstep = num_map_steps(t,time[step],dt);
           break;
         default:
@@ -240,7 +239,7 @@ SEXP euler_model_simulator (SEXP func,
 
           t += dt;
 
-          if ((meth == 0) && (k == nstep-2)) { // penultimate step
+          if ((method == 0) && (k == nstep-2)) { // penultimate step
             dt = time[step]-t;
             t = time[step]-dt;
           }

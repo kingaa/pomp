@@ -104,15 +104,15 @@ Error : in 'bsmc2': too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-Error : in 'pomp': error in building shared-object library from C snippets: in 'Cbuilder': compilation error: cannot compile shared-object library '/tmp/Rtmppqax5i/17393/pomp_f03e63ff1317c1143504c95df2945124.so': status = 1
+Error : in 'pomp': error in building shared-object library from C snippets: in 'Cbuilder': compilation error: cannot compile shared-object library '/tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.so': status = 1
 compiler messages:
 make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/Rtmppqax5i/17393/pomp_f03e63ff1317c1143504c95df2945124.c -o /tmp/Rtmppqax5i/17393/pomp_f03e63ff1317c1143504c95df2945124.o
-/tmp/Rtmppqax5i/17393/pomp_f03e63ff1317c1143504c95df2945124.c: In function ‘__pomp_rmeasure’:
-/tmp/Rtmppqax5i/17393/pomp_f03e63ff1317c1143504c95df2945124.c:18:1: error: expected ‘;’ before ‘}’ token
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.c -o /tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.o
+/tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.c:18:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/Rtmppqax5i/17393/pomp_f03e63ff1317c1143504c95df2945124.o] Error 1
+make[2]: *** [/tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.o] Error 1
 make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
 make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
@@ -130,9 +130,9 @@ In addition: Warning messages:
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 7: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
-  running command 'PKG_CPPFLAGS="-I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/Rtmppqax5i/17393/pomp_f03e63ff1317c1143504c95df2945124.so /tmp/Rtmppqax5i/17393/pomp_f03e63ff1317c1143504c95df2945124.c 2>&1' had status 1
+  running command 'PKG_CPPFLAGS="-I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.so /tmp/RtmpIb2H2S/13995/pomp_232d9867abe0c841dd90e6d68b5c07f2.c 2>&1' had status 1
 > length(out)
-[1] 675
+[1] 676
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)
 > stopifnot(sum(grepl("model codes written",out))==1)
 > stopifnot(sum(grepl("fitted param",out))==6)
@@ -202,8 +202,8 @@ Warning messages:
   "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > spy(dacca)
-/* pomp C snippet file: pomp_e9aebe3c5b9642c7fb109b6cc97975ce */
-/* Time: 2018-07-22 17:23:36.031 -0400 */
+/* pomp C snippet file: pomp_aafc5d3e534d78de4d6f0f5abf120170 */
+/* Time: 2018-07-23 10:19:05.142 -0400 */
 /* Salt: EE444509B5E4E6D45828ABC6 */
 
 #include <pomp.h>
@@ -840,16 +840,16 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_e9aebe3c5b9642c7fb109b6cc97975ce (DllInfo *info)
+void R_init_pomp_aafc5d3e534d78de4d6f0f5abf120170 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_e9aebe3c5b9642c7fb109b6cc97975ce", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_e9aebe3c5b9642c7fb109b6cc97975ce", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_e9aebe3c5b9642c7fb109b6cc97975ce", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-R_RegisterCCallable("pomp_e9aebe3c5b9642c7fb109b6cc97975ce", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("pomp_e9aebe3c5b9642c7fb109b6cc97975ce", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("pomp_e9aebe3c5b9642c7fb109b6cc97975ce", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("pomp_e9aebe3c5b9642c7fb109b6cc97975ce", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("pomp_e9aebe3c5b9642c7fb109b6cc97975ce", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_aafc5d3e534d78de4d6f0f5abf120170", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
 }
 
 > 

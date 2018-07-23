@@ -225,8 +225,7 @@ pomp(
        ),
      rprocess=euler.sim(
        step.fun="_sir_euler_simulator",
-       delta.t=1/52/20,
-       PACKAGE="pomp"
+       delta.t=1/52/20
        ),
      skeleton=vectorfield("_sir_ODE"),
      rmeasure="_sir_binom_rmeasure",

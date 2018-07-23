@@ -122,7 +122,7 @@ Type 'q()' to quit R.
 +   plot(main="Gillespie SIR, no zeroing")
 > 
 > gsir %>%
-+   pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",PACKAGE="pomp",
++   pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",
 +                               v=Vmatrix,hmax=1/52/10),
 +        nbasis=3L,degree=3L,period=1.0,
 +        paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
@@ -157,7 +157,7 @@ newly created object(s):
 +   theme_bw()+theme(legend.position=c(0.2,0.8))
 > 
 > try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix))))
-Error : in 'pomp': in 'gillespie.sim' plugin: 'v' must be a matrix.
+Error : in 'gillespie.sim' plugin: 'v' must be a matrix.
 > 
 > stopifnot(
 +   gsir %>%
@@ -186,17 +186,17 @@ Error : in 'pomp': in 'gillespie.sim' plugin: 'v' must be a matrix.
 + }
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
-Error : in 'simulate': in 'gillespie.sim' plugin: 'rate.fun' returns a negative rate
+Error : in 'simulate': 'rate.fun' returns a negative rate
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) -1
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
-Error : in 'simulate': in 'gillespie.sim' plugin: 'rate.fun' returns a negative rate
+Error : in 'simulate': 'rate.fun' returns a negative rate
 > 
 > rate.fun.bad <- function(j, x, t, params, covars, ...) c(1,1)
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=rate.fun.bad,v=Vmatrix)) %>% simulate())
-Error : in 'simulate': in 'gillespie.sim' plugin: user 'rates' must return a single scalar rate.
+Error : in 'simulate': user 'rates' must return a single scalar rate.
 > 
 > try(pomp(gsir,rprocess=gillespie.sim(rate.fun=3,v=Vmatrix)))
 Error : in 'pomp': bad option for 'rate.fun' argument

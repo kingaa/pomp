@@ -21,26 +21,10 @@ Type 'q()' to quit R.
 > 
 > set.seed(45768683)
 > 
-> rw.rprocess <- function (params, xstart, times, ...) {
+> rw.rprocess <- function (x, t, params, delta.t, ...) {
 +   ## this function simulates two independent random walks with intensities s1, s2
-+   nvars <- nrow(xstart)
-+   nreps <- ncol(params)
-+   ntimes <- length(times)
-+   dt <- diff(times)
-+   x <- array(0,dim=c(nvars,nreps,ntimes))
-+   rownames(x) <- rownames(xstart)
-+   noise.sds <- params[c('s1','s2'),]
-+   x[,,1] <- xstart
-+   for (j in 2:ntimes) {
-+     ## we are mimicking a continuous-time process, so the increments have SD ~ sqrt(dt)
-+     ## note that we do not have to assume that 'times' are equally spaced
-+     x[c("x1","x2"),,j] <- rnorm(
-+       n=2*nreps,
-+       mean=x[c("x1","x2"),,j-1],
-+       sd=noise.sds*dt[j-1]
-+     )
-+   }
-+   x
++   noise.sds <- params[c('s1','s2')]
++   rnorm(n=2,mean=x,sd=noise.sds*delta.t)
 + }
 > 
 > rw.dprocess <- function (x1, x2, t1, t2, params, ...) {
@@ -88,7 +72,7 @@ Type 'q()' to quit R.
 > p <- rbind(s1=c(2,2,3),s2=c(0.1,1,2),tau=c(1,5,0),x1.0=c(0,0,5),x2.0=c(0,0,0))
 > 
 > rw2 <- pomp(
-+   rprocess = rw.rprocess,
++   rprocess = onestep.sim(rw.rprocess),
 +   dprocess = rw.dprocess,
 +   measurement.model=list(
 +     y1 ~ norm(mean=x1,sd=tau),
@@ -107,7 +91,7 @@ Type 'q()' to quit R.
 in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'useless'
 > 
 > rw2 <- pomp(
-+   rprocess = rw.rprocess,
++   rprocess = onestep.sim(rw.rprocess),
 +   dprocess = rw.dprocess,
 +   measurement.model=list(
 +     y1 ~ norm(mean=x1,sd=tau),
@@ -136,21 +120,10 @@ summary of data:
  3rd Qu.:0   3rd Qu.:0  
  Max.   :0   Max.   :0  
 zero time, t0 = 0
-process model simulator, rprocess = function (params, xstart, times, ...) 
+one-step process-model simulator, step.fun = function (x, t, params, delta.t, ...) 
 {
-    nvars <- nrow(xstart)
-    nreps <- ncol(params)
-    ntimes <- length(times)
-    dt <- diff(times)
-    x <- array(0, dim = c(nvars, nreps, ntimes))
-    rownames(x) <- rownames(xstart)
-    noise.sds <- params[c("s1", "s2"), ]
-    x[, , 1] <- xstart
-    for (j in 2:ntimes) {
-        x[c("x1", "x2"), , j] <- rnorm(n = 2 * nreps, mean = x[c("x1", 
-            "x2"), , j - 1], sd = noise.sds * dt[j - 1])
-    }
-    x
+    noise.sds <- params[c("s1", "s2")]
+    rnorm(n = 2, mean = x, sd = noise.sds * delta.t)
 }
 process model density, dprocess = function (x1, x2, t1, t2, params, ...) 
 {
@@ -168,8 +141,8 @@ measurement model simulator, rmeasure = function (x, t, params, covars, ...)
     }
     y
 }
-<bytecode: 0x3725d80>
-<environment: 0x21c82c8>
+<bytecode: 0x4a59950>
+<environment: 0x27550f8>
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     f <- 0
@@ -181,8 +154,8 @@ measurement model density, dmeasure = function (y, x, t, params, log, covars, ..
         f
     else exp(f)
 }
-<bytecode: 0x3724df8>
-<environment: 0x21c82c8>
+<bytecode: 0x4a5a520>
+<environment: 0x27550f8>
 prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton = not specified
@@ -206,7 +179,7 @@ Error : in 'simulate': in 'init.state': a state variable and a parameter share a
 Error : in 'simulate': in 'init.state': user initializer returns vectors of non-uniform length
 > 
 > rw2 <- pomp(
-+   rprocess = rw.rprocess,
++   rprocess = onestep.sim(rw.rprocess),
 +   dprocess = rw.dprocess,
 +   measurement.model=list(
 +     y1 ~ norm(mean=x1,sd=tau),
@@ -320,16 +293,14 @@ newly created object(s):
 > time(rw2) <- seq(1,1000,by=20)
 > x <- simulate(rw2)
 > invisible(states(x)[,1:5])
-> try(
-+   time(rw2) <- seq(-20,1000,by=20)
-+ )
+> try(time(rw2) <- seq(-20,1000,by=20))
 Error : in 'time<-': the zero-time 't0' must occur no later than the first observation
-> try(
-+   time(rw2) <- c(0,5,10,15,12,20)
-+ )
+> try(time(rw2) <- c(0,5,10,15,12,20))
 Error : in 'time<-': the times specified must be an increasing sequence
 > time(rw2,t0=TRUE) <- seq(-20,1000,by=20)
 > x <- simulate(rw2)
+> time(pomp(rw2,times=4:6))
+[1] 4 5 6
 > time(rw2) <- c(0,20,25.8,50,60)
 > time(rw2,t0=TRUE) <- c(0,20,25.8,50,60)
 > time(rw2,t0=TRUE) <- c(0,0,20,25.8,50,60)

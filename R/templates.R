@@ -79,7 +79,7 @@ snippet_templates <- list(
   step.fn=list(
     slotname="step.fun",
     Cname="__pomp_stepfn",
-    proto=quote(step.fun(x,t,params,...)),
+    proto=quote(step.fun(x,t,params,delta.t,...)),
     header="\nvoid __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)\n{\n",
     footer="\n}\n\n",
     vars=list(

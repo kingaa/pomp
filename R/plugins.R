@@ -3,14 +3,14 @@ setClass(
   slots=c(
     csnippet='logical',
     slotname='character',
-    PACKAGE='character',
+    type='integer',
     step.fn="ANY",
     rate.fn="ANY"
   ),
   prototype=prototype(
     csnippet=FALSE,
     slotname=character(0),
-    PACKAGE=character(0),
+    type=1L,
     step.fn=NULL,
     rate.fn=NULL
   )
@@ -46,38 +46,44 @@ setClass(
   )
 )
 
-onestep.sim <- function (step.fun, PACKAGE) {
-  if (missing(PACKAGE)) PACKAGE <- character(0)
-  new("onestepRprocessPlugin",
-      step.fn=step.fun,
-      slotname="step.fn",
-      csnippet=is(step.fun,"Csnippet"),
-      PACKAGE=PACKAGE)
+null.plugin <- function () {
+  new("pompPlugin")
 }
 
-discrete.time.sim <- function (step.fun, delta.t = 1, PACKAGE) {
-  if (missing(PACKAGE)) PACKAGE <- character(0)
+modify.plugin <- function (object, step.fn, rate.fn) {
+  if (!missing(step.fn)) object@step.fn <- step.fn
+  if (!missing(rate.fn)) object@rate.fn <- rate.fn
+  object
+}
+
+onestep.sim <- function (step.fun) {
+  new("onestepRprocessPlugin",
+      step.fn=step.fun,
+      slotname="step.fun",
+      csnippet=is(step.fun,"Csnippet"),
+      type=2L)
+}
+
+discrete.time.sim <- function (step.fun, delta.t = 1) {
   new("discreteRprocessPlugin",
       step.fn=step.fun,
       delta.t=delta.t,
-      slotname="step.fn",
+      slotname="step.fun",
       csnippet=is(step.fun,"Csnippet"),
-      PACKAGE=PACKAGE)
+      type=3L)
 }
 
-euler.sim <- function (step.fun, delta.t, PACKAGE) {
-  if (missing(PACKAGE)) PACKAGE <- character(0)
+euler.sim <- function (step.fun, delta.t) {
   new("eulerRprocessPlugin",
       step.fn=step.fun,
       delta.t=delta.t,
-      slotname="step.fn",
+      slotname="step.fun",
       csnippet=is(step.fun,"Csnippet"),
-      PACKAGE=PACKAGE)
+      type=4L)
 }
 
-gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
+gillespie.sim <- function (rate.fun, v, d, hmax = Inf) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
-  if (missing(PACKAGE)) PACKAGE <- character(0)
   if (!missing(d)) {
     warning("argument ",sQuote("d")," is deprecated; updates to the simulation",
             " algorithm have made it unnecessary", call. = FALSE)
@@ -86,13 +92,17 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf, PACKAGE) {
     stop(ep,sQuote("v")," must be a matrix.",
          call.=FALSE)
   }
+  if (anyDuplicated(rownames(v))){
+    stop(ep,"duplicates in rownames of ",sQuote("v"), call.=FALSE)
+  }
+
   new("gillespieRprocessPlugin",
       rate.fn=rate.fun,
       v=v,
       hmax=hmax,
-      slotname="rate.fn",
+      slotname="rate.fun",
       csnippet=is(rate.fun,"Csnippet"),
-      PACKAGE=PACKAGE)
+      type=5L)
 }
 
 gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
@@ -109,7 +119,7 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   codeChunks <- lapply(args, "[[", 1)
   stoich <- lapply(args, "[[", 2)
 
-  checkCode <- function(x) {
+  checkCode <- function (x) {
     inh <- inherits(x, what = c("Csnippet", "character"), which = TRUE)
     if (!any(inh)) {
       stop(ep,"for each event, the first list-element should be a",
@@ -155,15 +165,19 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   ## state variables are in the same column even if the vectors in
   ## stoich have differently ordered names. Also, rbind will fail if
   ## the set of variables in each data frame is not the same.
-  stoichdf <- lapply(stoich, function (x) data.frame(as.list(x)))
+  stoichdf <- lapply(stoich, function (x) data.frame(as.list(x),check.names=FALSE))
   v <- t(data.matrix(do.call(rbind, stoichdf)))
+  if (anyDuplicated(rownames(v))){
+    stop(ep,"redundant or conflicting stoichiometry.",call.=FALSE)
+  }
 
   new("gillespieRprocessPlugin",
       rate.fn=rate.fn,
       v=v,
       hmax=hmax,
-      slotname="rate.fn",
-      csnippet=TRUE)
+      slotname="rate.fun",
+      csnippet=TRUE,
+      type=5L)
 }
 
 onestep.dens <- function (dens.fun, PACKAGE) {
@@ -175,203 +189,3 @@ onestep.dens <- function (dens.fun, PACKAGE) {
             call.=FALSE)
   dens.fun
 }
-
-setMethod(
-  "plugin.handler",
-  signature=signature(object='function'),
-  definition=function (object, ...) {
-    object
-  }
-)
-
-setMethod(
-  "plugin.handler",
-  signature=signature(object='ANY'),
-  definition=function (object, purpose = "\b", ...) {
-    stop(purpose," plugin has an invalid form.",call.=FALSE)
-  }
-)
-
-setMethod(
-  "plugin.handler",
-  signature=signature(object='onestepRprocessPlugin'),
-  definition=function (object, ...) {
-    ep <- paste0("in ",sQuote("onestep.sim")," plugin: ")
-    efun <- tryCatch(
-      pomp.fun(
-        f=object@step.fn,
-        PACKAGE=object@PACKAGE,
-        proto=quote(step.fun(x,t,params,delta.t,...)),
-        slotname=object@slotname,
-        Cname=snippet_templates$step.fn$Cname,
-        ...
-      ),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-    function (xstart, times, params, ...,
-              zeronames = character(0),
-              tcovar, covar,
-              .getnativesymbolinfo = TRUE) {
-      tryCatch(
-        .Call(
-          euler_model_simulator,
-          func=efun,
-          xstart=xstart,
-          times=times,
-          params=params,
-          deltat=1,
-          method=1L,
-          zeronames=zeronames,
-          tcovar=tcovar,
-          covar=covar,
-          args=pairlist(...),
-          gnsi=.getnativesymbolinfo
-        ),
-        error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE)
-        }
-      )
-    }
-  }
-)
-
-setMethod(
-  "plugin.handler",
-  signature=signature(object='eulerRprocessPlugin'),
-  definition=function (object, ...) {
-    ep <- paste0("in ",sQuote("euler.sim")," plugin: ")
-    efun <- tryCatch(
-      pomp.fun(
-        f=object@step.fn,
-        PACKAGE=object@PACKAGE,
-        proto=quote(step.fun(x,t,params,delta.t,...)),
-        slotname=object@slotname,
-        Cname=snippet_templates$step.fn$Cname,
-        ...
-      ),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-    function (xstart, times, params, ...,
-              zeronames = character(0),
-              tcovar, covar,
-              .getnativesymbolinfo = TRUE) {
-      tryCatch(
-        .Call(
-          euler_model_simulator,
-          func=efun,
-          xstart=xstart,
-          times=times,
-          params=params,
-          deltat=object@delta.t,
-          method=0L,
-          zeronames=zeronames,
-          tcovar=tcovar,
-          covar=covar,
-          args=pairlist(...),
-          gnsi=.getnativesymbolinfo
-        ),
-        error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE)
-        }
-      )
-    }
-  }
-)
-
-setMethod(
-  "plugin.handler",
-  signature=signature(object='discreteRprocessPlugin'),
-  definition=function (object, ...) {
-    ep <- paste0("in ",sQuote("discrete.time.sim")," plugin: ")
-    efun <- tryCatch(
-      pomp.fun(
-        f=object@step.fn,
-        PACKAGE=object@PACKAGE,
-        proto=quote(step.fun(x,t,params,...)),
-        slotname=object@slotname,
-        Cname=snippet_templates$step.fn$Cname,
-        ...
-      ),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-    function (xstart, times, params, ...,
-              zeronames = character(0),
-              tcovar, covar,
-              .getnativesymbolinfo = TRUE) {
-      tryCatch(
-        .Call(
-          euler_model_simulator,
-          func=efun,
-          xstart=xstart,
-          times=times,
-          params=params,
-          deltat=object@delta.t,
-          method=2L,
-          zeronames=zeronames,
-          tcovar=tcovar,
-          covar=covar,
-          args=pairlist(...),
-          gnsi=.getnativesymbolinfo
-        ),
-        error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE)
-        }
-      )
-    }
-  }
-)
-
-setMethod(
-  "plugin.handler",
-  signature=signature(object='gillespieRprocessPlugin'),
-  definition=function (object, ...) {
-    ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
-    efun <- tryCatch(
-      pomp.fun(
-        f=object@rate.fn,
-        PACKAGE=object@PACKAGE,
-        proto=quote(rate.fun(j,x,t,params,...)),
-        slotname=object@slotname,
-        Cname=snippet_templates$rate.fn$Cname,
-        ...
-      ),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-    function (xstart, times, params,
-              zeronames = character(0),
-              tcovar, covar,
-              .getnativesymbolinfo = TRUE,
-              ...) {
-      if (anyDuplicated(rownames(object@v))){
-        stop(ep,"duplicates in rownames of ",sQuote("v"), call.=FALSE)
-      }
-      tryCatch(
-        .Call(
-          SSA_simulator,
-          func=efun,
-          xstart=xstart,
-          times=times,
-          params=params,
-          vmatrix=object@v,
-          tcovar=tcovar,
-          covar=covar,
-          zeronames=zeronames,
-          hmax=object@hmax,
-          args=pairlist(...),
-          gnsi=.getnativesymbolinfo
-        ),
-        error = function (e) {
-          stop(ep,conditionMessage(e),call.=FALSE)
-        }
-      )
-    }
-  }
-)

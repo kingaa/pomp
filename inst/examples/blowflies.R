@@ -5,7 +5,7 @@
 library(pomp)
 
 ## following xia and tong, the delay is treated as fixed at 14 days
-## xia and tong claim to be using tau=8 bidays, but on inspection 
+## xia and tong claim to be using tau=8 bidays, but on inspection
 ## their Euler method is really tau=7 bidays
 
 blowfly.data <- '"day";"y";"set"
@@ -881,8 +881,7 @@ pomp(
      t0=14,
      rprocess=discrete.time.sim(
        step.fun="_blowfly_simulator_one",
-       delta.t=1,
-       PACKAGE="pomp"
+       delta.t=1
        ),
      rmeasure="_blowfly_rmeasure",
      dmeasure="_blowfly_dmeasure",
@@ -912,13 +911,13 @@ pomp(
      blowflies1,
      rprocess=discrete.time.sim(
        step.fun="_blowfly_simulator_two",
-       delta.t=2,
-       PACKAGE="pomp"
+       delta.t=2
        ),
      y.init=with( ## initial data
        raw.data,
        approx(x=day,y=y,xout=seq(from=0,to=14,by=2),rule=2)$y
        ),
+     PACKAGE="pomp",
      #y.init=c(948, 942, 911, 858, 801, 676, 504, 397),
      paramnames=c("P","N0","delta","sigma.P","sigma.d","sigma.y"),
      statenames=c("N1","R","S","e","eps"),
@@ -926,21 +925,21 @@ pomp(
 
 ## mle from search to date
 coef(blowflies1,transform=TRUE) <- c(
-                  P = 1.189, 
-                  delta = -1.828, 
-                  N0 = 6.522, 
-                  sigma.P = 0.301, 
-                  sigma.d = -0.292, 
+                  P = 1.189,
+                  delta = -1.828,
+                  N0 = 6.522,
+                  sigma.P = 0.301,
+                  sigma.d = -0.292,
                   sigma.y = -3.625
                   )
 
 ## mle from search to date
 coef(blowflies2,transform=TRUE) <- c(
-                  P = 1.005, 
-                  delta = -1.75, 
-                  N0 = 6.685, 
-                  sigma.P = 0.366, 
-                  sigma.d = -0.274, 
+                  P = 1.005,
+                  delta = -1.75,
+                  N0 = 6.685,
+                  sigma.P = 0.366,
+                  sigma.d = -0.274,
                   sigma.y = -4.524
                   )
 

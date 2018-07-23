@@ -154,7 +154,17 @@ setMethod("construct_pomp",
             ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
 
             if (missing(initializer)) initializer <- NULL
-            if (missing(rprocess)) rprocess <- NULL
+
+            if (missing(rprocess) || is.null(rprocess)) {
+              rprocess <- null.plugin()
+            } else if (!is(rprocess,"pompPlugin")) {
+              stop(ep,sQuote("rprocess"),
+                   " must be specified using one of the plugins:\n",
+                   sQuote("onestep.sim"),", ",sQuote("discrete.time.sim"),
+                   ", ",sQuote("euler.sim"),", ",sQuote("gillespie.sim"),
+                   ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
+            }
+
             if (missing(dprocess)) dprocess <- NULL
             if (missing(rmeasure)) rmeasure <- NULL
             if (missing(dmeasure)) dmeasure <- NULL
@@ -221,7 +231,19 @@ setMethod("construct_pomp",
             if (missing(t0)) t0 <- data@t0
 
             if (missing(initializer)) initializer <- data@initializer
-            if (missing(rprocess)) rprocess <- data@rprocess
+
+            if (missing(rprocess)) {
+              rprocess <- data@rprocess
+            } else if (is.null(rprocess)) {
+              rprocess <- null.plugin()
+            } else if (!is(rprocess,"pompPlugin")) {
+              stop(ep,sQuote("rprocess"),
+                   " must be specified using one of the plugins:\n",
+                   sQuote("onestep.sim"),", ",sQuote("discrete.time.sim"),
+                   ", ",sQuote("euler.sim"),", ",sQuote("gillespie.sim"),
+                   ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
+            }
+
             if (missing(dprocess)) dprocess <- data@dprocess
             if (missing(rmeasure)) rmeasure <- data@rmeasure
             if (missing(dmeasure)) dmeasure <- data@dmeasure
@@ -286,8 +308,8 @@ setMethod("construct_pomp",
           }
 )
 
-pomp.internal <- function (data, times, t0, rprocess, dprocess,
-                           rmeasure, dmeasure,
+pomp.internal <- function (data, times, t0,
+                           rprocess, dprocess, rmeasure, dmeasure,
                            skeleton, skel.type, skelmap.delta.t,
                            initializer, rprior, dprior,
                            params, covar, tcovar,
@@ -400,8 +422,8 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   if (default.init) initializer <- pomp.fun(slotname="initializer")
 
   if (is(initializer,"Csnippet") && length(statenames)==0) {
-      stop(ep,"when ",sQuote("initializer")," is provided as a C snippet, ",
-           "you must also provide ",sQuote("statenames"),call.=FALSE)
+    stop(ep,"when ",sQuote("initializer")," is provided as a C snippet, ",
+         "you must also provide ",sQuote("statenames"),call.=FALSE)
   }
 
   ## by default, use flat improper prior
@@ -411,13 +433,9 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
   ## handle skeleton
   if (is.null(skeleton)) skel.type <- "undef"
 
-  ## default rprocess
-  if (is.null(rprocess))
-    rprocess <- function (xstart,times,params,...) stop(sQuote("rprocess")," not specified",call.=FALSE)
-
   hitches <- hitch(initializer=initializer,
-                   step.fn=if (is(rprocess,"pompPlugin")) rprocess@step.fn else NULL,
-                   rate.fn=if (is(rprocess,"pompPlugin")) rprocess@rate.fn else NULL,
+                   step.fn=rprocess@step.fn,
+                   rate.fn=rprocess@rate.fn,
                    dprocess=dprocess,
                    rmeasure=rmeasure,
                    dmeasure=dmeasure,
@@ -436,16 +454,6 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
                    globals=globals,shlib.args=shlib.args,
                    verbose=verbose)
 
-  ## handle rprocess
-  rprocess <- plugin.handler(
-    rprocess,
-    libname=hitches$lib[[1]]$name,
-    statenames=statenames,
-    paramnames=paramnames,
-    obsnames=obsnames,
-    covarnames=covarnames,
-    purpose = sQuote("rprocess")
-  )
 
   ## are parameter transformations defined?
   has.trans <- hitches$funs$fromEstimationScale@mode != pompfunmode$undef &&
@@ -481,7 +489,11 @@ pomp.internal <- function (data, times, t0, rprocess, dprocess,
 
   new(
     'pomp',
-    rprocess = rprocess,
+    rprocess = modify.plugin(
+      rprocess,
+      step.fn=hitches$funs$step.fn,
+      rate.fn=hitches$funs$rate.fn
+    ),
     dprocess = hitches$funs$dprocess,
     dmeasure = hitches$funs$dmeasure,
     rmeasure = hitches$funs$rmeasure,

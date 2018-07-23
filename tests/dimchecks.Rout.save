@@ -287,7 +287,7 @@ newly created object(s):
 > stopifnot(identical(dim(x0 <- init.state(ou2,params=coef(ou2))),c(2L,1L)))
 > stopifnot(identical(dim(init.state(ou2,params=parmat(coef(ou2),5))),c(2L,5L)))
 > try(rprocess(ou2,xstart=x0,times=0,params=coef(ou2),offset=0))
-Error : in 'rprocess': length(times)<2: with no transitions, there is no work to do.
+Error : in 'rprocess': length(times) < 2: with no transitions, there is no work to do.
 > try(rprocess(ou2,xstart=x0,times=seq(0,10),params=coef(ou2),offset=-5))
 Error : illegal 'offset' value -5
 > stopifnot(identical(
@@ -311,16 +311,6 @@ Error : illegal 'offset' value 11
 Error : in 'rprocess': the larger number of replicates is not a multiple of smaller.
 > try(rprocess(ou2,xstart=parmat(x0,11),times=seq(0,10),params=parmat(coef(ou2),5),offset=1))
 Error : in 'rprocess': the larger number of replicates is not a multiple of smaller.
-> 
-> pomp(ou2,rprocess=function(xstart,times,params,...){xstart}) -> po
-> try(rprocess(po,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),1),offset=1))
-Error : in 'rprocess': user 'rprocess' must return a rank-3 array
-> pomp(ou2,rprocess=function(xstart,times,params,...){x <- xstart; dim(x) <- c(nrow(xstart),1,ncol(xstart)); x}) -> po
-> try(rprocess(po,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),1),offset=1))
-Error : in 'rprocess': user 'rprocess' must return a 2 x 3 x 11 array
-> pomp(ou2,rprocess=function(xstart,times,params,...){array(runif(66),dim=c(2,3,11))}) -> po
-> try(rprocess(po,xstart=parmat(x0,3),times=seq(0,10),params=parmat(coef(ou2),1),offset=1))
-Error : in 'rprocess': user 'rprocess' must return an array with rownames
 > 
 > try(dprocess(ou2,x=x[,3,1],times=1,params=coef(ou2),log=TRUE))
 Error : in 'dprocess': length(times)<2: with no transitions, there is no work to do.
