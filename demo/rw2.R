@@ -8,15 +8,15 @@ library(pomp)
 rw2 <- pomp(
   rprocess = onestep.sim(
     step.fun = Csnippet("
-      x1 = rnorm(x1,s1*dt);
-      x2 = rnorm(x2,s2*dt);
+      x1 = rnorm(x1,s1*sqrt(dt));
+      x2 = rnorm(x2,s2*sqrt(dt));
       "
     )
   ),
   dprocess = Csnippet("
-      double dt = t_2 - t_1;
-      loglik = dnorm(x1_2,x1_1,s1*dt,1)+
-          dnorm(x2_2,x2_1,s2*dt,1);
+      double sdt = sqrt(t_2 - t_1);
+      loglik = dnorm(x1_2,x1_1,s1*sdt,1)+
+          dnorm(x2_2,x2_1,s2*sdt,1);
       "
   ),
   rmeasure=Csnippet("

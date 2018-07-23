@@ -24,14 +24,14 @@ Type 'q()' to quit R.
 > rw.rprocess <- function (x, t, params, delta.t, ...) {
 +   ## this function simulates two independent random walks with intensities s1, s2
 +   noise.sds <- params[c('s1','s2')]
-+   rnorm(n=2,mean=x,sd=noise.sds*delta.t)
++   rnorm(n=2,mean=x,sd=noise.sds*sqrt(delta.t))
 + }
 > 
 > rw.dprocess <- function (x1, x2, t1, t2, params, ...) {
 +   ## given consecutive states in 'x', this function computes the log p.d.f.
 +   dt <- t2-t1
 +   noise.sds <- params[c('s1','s2')]
-+   sum(dnorm(x=x2,mean=x1,sd=noise.sds*dt,log=TRUE))
++   sum(dnorm(x=x2,mean=x1,sd=noise.sds*sqrt(dt),log=TRUE))
 + }
 > 
 > bvnorm.rmeasure <- function (t, x, params, ...) {
@@ -123,13 +123,13 @@ zero time, t0 = 0
 one-step process-model simulator, step.fun = function (x, t, params, delta.t, ...) 
 {
     noise.sds <- params[c("s1", "s2")]
-    rnorm(n = 2, mean = x, sd = noise.sds * delta.t)
+    rnorm(n = 2, mean = x, sd = noise.sds * sqrt(delta.t))
 }
 process model density, dprocess = function (x1, x2, t1, t2, params, ...) 
 {
     dt <- t2 - t1
     noise.sds <- params[c("s1", "s2")]
-    sum(dnorm(x = x2, mean = x1, sd = noise.sds * dt, log = TRUE))
+    sum(dnorm(x = x2, mean = x1, sd = noise.sds * sqrt(dt), log = TRUE))
 }
 measurement model simulator, rmeasure = function (x, t, params, covars, ...) 
 {
@@ -141,8 +141,8 @@ measurement model simulator, rmeasure = function (x, t, params, covars, ...)
     }
     y
 }
-<bytecode: 0x4a59950>
-<environment: 0x27550f8>
+<bytecode: 0x4e09720>
+<environment: 0x359e650>
 measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
 {
     f <- 0
@@ -154,8 +154,8 @@ measurement model density, dmeasure = function (y, x, t, params, log, covars, ..
         f
     else exp(f)
 }
-<bytecode: 0x4a5a520>
-<environment: 0x27550f8>
+<bytecode: 0x4e0a2f0>
+<environment: 0x359e650>
 prior simulator, rprior = not specified
 prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
 skeleton = not specified
@@ -209,7 +209,8 @@ in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' 
 +     lik=dnorm(y1,x1,tau,1)+dnorm(y2,x2,tau,1);
 +     lik = (give_log) ? lik : exp(lik);"),
 +             dprocess = Csnippet("
-+     loglik = dnorm(x1_2,x1_1,s1,1)+dnorm(x2_2,x2_1,s2,1);"),
++     double sdt = sqrt(t_2-t_1);
++     loglik = dnorm(x1_2,x1_1,s1*sdt,1)+dnorm(x2_2,x2_1,s2*sdt,1);"),
 +             statenames=c("x1","x2"),
 +             paramnames=c("s1","s2","tau")
 + )

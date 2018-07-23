@@ -5,14 +5,14 @@ set.seed(45768683)
 rw.rprocess <- function (x, t, params, delta.t, ...) {
   ## this function simulates two independent random walks with intensities s1, s2
   noise.sds <- params[c('s1','s2')]
-  rnorm(n=2,mean=x,sd=noise.sds*delta.t)
+  rnorm(n=2,mean=x,sd=noise.sds*sqrt(delta.t))
 }
 
 rw.dprocess <- function (x1, x2, t1, t2, params, ...) {
   ## given consecutive states in 'x', this function computes the log p.d.f.
   dt <- t2-t1
   noise.sds <- params[c('s1','s2')]
-  sum(dnorm(x=x2,mean=x1,sd=noise.sds*dt,log=TRUE))
+  sum(dnorm(x=x2,mean=x1,sd=noise.sds*sqrt(dt),log=TRUE))
 }
 
 bvnorm.rmeasure <- function (t, x, params, ...) {
@@ -125,7 +125,8 @@ rw2 <- pomp(rw2,
     lik=dnorm(y1,x1,tau,1)+dnorm(y2,x2,tau,1);
     lik = (give_log) ? lik : exp(lik);"),
             dprocess = Csnippet("
-    loglik = dnorm(x1_2,x1_1,s1,1)+dnorm(x2_2,x2_1,s2,1);"),
+    double sdt = sqrt(t_2-t_1);
+    loglik = dnorm(x1_2,x1_1,s1*sdt,1)+dnorm(x2_2,x2_1,s2*sdt,1);"),
             statenames=c("x1","x2"),
             paramnames=c("s1","s2","tau")
 )
