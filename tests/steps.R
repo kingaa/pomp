@@ -14,7 +14,7 @@ stopifnot(identical(x,y))
 pompExample(euler.sir)
 tm <- sort(runif(n=100,max=1))
 x <- trajectory(euler.sir,times=tm)["I",,]
-y <- simulate(euler.sir,times=tm,states=TRUE)["I",,]
+y <- simulate(euler.sir,times=tm,states=TRUE,seed=1232934371)["I",,]
 table(cut(x-y,breaks=c(-Inf,seq(-0.2,0.2,by=0.01),Inf),ordered=T))
 
 pompExample(ricker)

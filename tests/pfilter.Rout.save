@@ -69,7 +69,7 @@ newly created object(s):
      rho      S_0      I_0      R_0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(pf$loglik,digits=4)
-[1] -938
+[1] -941
 > 
 > coef(pf,"rho") <- -1
 > try(pfilter(pf))
@@ -78,11 +78,11 @@ likelihood, data, states, and parameters are:
    time:    0.0192308
     lik:          NaN
 reports:          617
-      S:       136068
-      I:         2098
-      R:  1.96182e+06
-  cases:         1026
-      W:   -0.0314294
+      S:       136019
+      I:         2127
+      R:  1.96184e+06
+  cases:         1050
+      W:    0.0783467
   gamma:           26
      mu:         0.02
    iota:         0.01
@@ -106,7 +106,7 @@ beta.sd:        0.001
      rho      S_0      I_0      R_0 
 6.00e-01 6.50e-02 1.00e-03 9.35e-01 
 > print(logLik(pf),digits=4)
-[1] -942.2
+[1] -940.2
 > plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
 > plot(ess~time,data=as.data.frame(pf),type='l')
 > plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')

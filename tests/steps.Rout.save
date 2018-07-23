@@ -37,11 +37,11 @@ newly created object(s):
  euler.sir 
 > tm <- sort(runif(n=100,max=1))
 > x <- trajectory(euler.sir,times=tm)["I",,]
-> y <- simulate(euler.sir,times=tm,states=TRUE)["I",,]
+> y <- simulate(euler.sir,times=tm,states=TRUE,seed=1232934371)["I",,]
 > table(cut(x-y,breaks=c(-Inf,seq(-0.2,0.2,by=0.01),Inf),ordered=T))
 
   (-Inf,-0.2]  (-0.2,-0.19] (-0.19,-0.18] (-0.18,-0.17] (-0.17,-0.16] 
-           96             0             0             0             0 
+           68             0             0             0             0 
 (-0.16,-0.15] (-0.15,-0.14] (-0.14,-0.13] (-0.13,-0.12] (-0.12,-0.11] 
             0             0             0             0             0 
  (-0.11,-0.1]  (-0.1,-0.09] (-0.09,-0.08] (-0.08,-0.07] (-0.07,-0.06] 
@@ -57,7 +57,7 @@ newly created object(s):
   (0.14,0.15]   (0.15,0.16]   (0.16,0.17]   (0.17,0.18]   (0.18,0.19] 
             0             0             0             0             0 
    (0.19,0.2]    (0.2, Inf] 
-            0             4 
+            0            32 
 > 
 > pompExample(ricker)
 newly created object(s):

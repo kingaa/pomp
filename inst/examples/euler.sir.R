@@ -212,36 +212,160 @@ dat <- '"time";"reports"
 '
 
 pomp(
-     data=read.csv2(text=dat),
-     times="time",
-     t0=0,
-     params=c(
-       gamma=26,mu=0.02,iota=0.01,
-       beta1=400,beta2=480,beta3=320,
-       beta.sd=1e-3,
-       pop=2.1e6,
-       rho=0.6,
-       S_0=26/400,I_0=0.001,R_0=1-26/400
-       ),
-     rprocess=euler.sim(
-       step.fun="_sir_euler_simulator",
-       delta.t=1/52/20
-       ),
-     skeleton=vectorfield("_sir_ODE"),
-     rmeasure="_sir_binom_rmeasure",
-     dmeasure="_sir_binom_dmeasure",
-     PACKAGE="pomp",
-     statenames=c("S","I","R","cases","W"),
-     paramnames=c(
-       "gamma","mu","iota",
-       "beta1","beta.sd","pop","rho",
-       "S_0","I_0","R_0"
-       ),
-     zeronames=c("cases"),
-     fromEstimationScale="_sir_par_trans",
-     toEstimationScale="_sir_par_untrans",
-     initializer="_sir_init"
-     ) -> euler.sir
+  data=read.csv2(text=dat),
+  times="time",
+  t0=0,
+  params=c(
+    gamma=26,mu=0.02,iota=0.01,
+    beta1=400,beta2=480,beta3=320,
+    beta.sd=1e-3,
+    pop=2.1e6,
+    rho=0.6,
+    S_0=26/400,I_0=0.001,R_0=1-26/400
+  ),
+  globals=Csnippet("
+    static int nbasis = 3, degree = 3;
+    static double period = 1.0;"),
+  initializer=Csnippet("
+    double m = pop/(S_0+I_0+R_0);
+    S = nearbyint(m*S_0);
+    I = nearbyint(m*I_0);
+    R = nearbyint(m*R_0);
+    cases = 0;
+    W = 0;"
+  ),
+  rprocess=euler.sim(
+    step.fun=Csnippet("
+    int nrate = 6;
+    double rate[nrate];		  // transition rates
+    double trans[nrate];		// transition numbers
+    double beta;
+    const double *BETA = &beta1;
+    double dW;
+    double seasonality[nbasis];
+    int k;
+
+    if (nbasis <= 0) return;
+    periodic_bspline_basis_eval(t,period,degree,nbasis,&seasonality[0]);
+    for (k = 0, beta = 0; k < nbasis; k++)
+      beta += seasonality[k]*BETA[k];
+
+    // gamma noise, mean=dt, variance=(beta_sd^2 dt)
+    dW = rgammawn(beta_sd,dt);
+
+    // compute the transition rates
+    rate[0] = mu*pop;		// birth into susceptible class
+    rate[1] = (iota+beta*I*dW/dt)/pop; // force of infection
+    rate[2] = mu;			// death from susceptible class
+    rate[3] = gamma;	// recovery
+    rate[4] = mu;			// death from infectious class
+    rate[5] = mu; 		// death from recovered class
+
+    // compute the transition numbers
+    trans[0] = rpois(rate[0]*dt);	// births are Poisson
+    reulermultinom(2,S,&rate[1],dt,&trans[1]);
+    reulermultinom(2,I,&rate[3],dt,&trans[3]);
+    reulermultinom(1,R,&rate[5],dt,&trans[5]);
+
+    // balance the equations
+    S += trans[0]-trans[1]-trans[2];
+    I += trans[1]-trans[3]-trans[4];
+    R += trans[3]-trans[5];
+    cases += trans[3];		// cases are cumulative recoveries
+    if (beta_sd > 0.0)  W += (dW-dt)/beta_sd;"
+    ),
+    delta.t=1/52/20
+  ),
+  skeleton=vectorfield(Csnippet("
+    int nrate = 6;
+    double rate[nrate];		// transition rates
+    double term[nrate];		// terms in the equations
+    double beta;
+    const double *BETA = &beta1;
+    double seasonality[nbasis];
+    int k;
+
+    periodic_bspline_basis_eval(t,period,degree,nbasis,&seasonality[0]);
+    for (k = 0, beta = 0; k < nbasis; k++)
+      beta += seasonality[k]*BETA[k];
+
+    // compute the transition rates
+    rate[0] = mu*pop;		// birth into susceptible class
+    rate[1] = (iota+beta*I)/pop; // force of infection
+    rate[2] = mu;			// death from susceptible class
+    rate[3] = gamma;	// recovery
+    rate[4] = mu;			// death from infectious class
+    rate[5] = mu; 		// death from recovered class
+
+    // compute the several terms
+    term[0] = rate[0];
+    term[1] = rate[1]*S;
+    term[2] = rate[2]*S;
+    term[3] = rate[3]*I;
+    term[4] = rate[4]*I;
+    term[5] = rate[5]*R;
+
+    // balance the equations
+    DS = term[0]-term[1]-term[2];
+    DI = term[1]-term[3]-term[4];
+    DR = term[3]-term[5];
+    Dcases = term[3];		// accumulate the new I->R transitions
+    DW = 0;			// no noise, so no noise accumulation"
+  )
+  ),
+  rmeasure=Csnippet("
+    double mean, sd;
+    double rep;
+    mean = cases*rho;
+    sd = sqrt(cases*rho*(1-rho));
+    rep = nearbyint(rnorm(mean,sd));
+    reports = (rep > 0) ? rep : 0;"
+  ),
+  dmeasure=Csnippet("
+    double mean, sd;
+    double f;
+    mean = cases*rho;
+    sd = sqrt(cases*rho*(1-rho));
+    if (reports > 0) {
+      f = pnorm(reports+0.5,mean,sd,1,0)-pnorm(reports-0.5,mean,sd,1,0);
+    } else {
+      f = pnorm(reports+0.5,mean,sd,1,0);
+    }
+    lik = (give_log) ? log(f) : f;"
+  ),
+  fromEstimationScale=Csnippet("
+    int k;
+    const double *BETA = &beta1;
+    double *TBETA = &Tbeta1;
+    Tgamma = exp(gamma);
+    Tmu = exp(mu);
+    Tiota = exp(iota);
+    for (k = 0; k < nbasis; k++)
+      TBETA[k] = exp(BETA[k]);
+    Tbeta_sd = exp(beta_sd);
+    Trho = expit(rho);
+    from_log_barycentric(&TS_0,&S_0,3);"
+  ),
+  toEstimationScale=Csnippet("
+    int k;
+    const double *BETA = &beta1;
+    double *TBETA = &Tbeta1;
+    Tgamma = log(gamma);
+    Tmu = log(mu);
+    Tiota = log(iota);
+    for (k = 0; k < nbasis; k++) TBETA[k] = log(BETA[k]);
+    Tbeta_sd = log(beta_sd);
+    Trho = logit(rho);
+    to_log_barycentric(&TS_0,&S_0,3);"
+  ),
+  statenames=c("S","I","R","cases","W"),
+  paramnames=c(
+    "gamma","mu","iota",
+    "beta1","beta.sd","pop","rho",
+    "S_0","I_0","R_0"
+  ),
+  zeronames=c("cases")
+) -> euler.sir
 
 ## the following was originally used to generate the data
 ## simulate(po,nsim=1,seed=329343545L) -> euler.sir

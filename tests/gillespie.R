@@ -33,30 +33,33 @@ rate.fun <- function(j, x, t, params, covars, ...) {
 
 rate.fun.snip <- Csnippet("
   double beta;
+  const double *BETA = &beta1;
+  const double *s = &seas_1;
+  int nbasis = *get_pomp_userdata_int(\"nbasis\");
+  int k;
+
   switch (j) {
-  case 1: 			// birth
-    rate = mu * N;
+  case 1:                       // birth
+    rate = mu*pop;
     break;
-  case 2:			// susceptible death
-    rate = mu * S;
+  case 2:                       // susceptible death
+    rate = mu*S;
     break;
-  case 3:			// infection
-    beta = seas_1 * beta1 + seas_2 * beta2 + seas_3 * beta3;
-    rate = (beta * I + iota) * S / N;
+  case 3:                       // infection
+    for (k = 0, beta = 0; k < nbasis; k++) beta += s[k]*BETA[k];
+    rate = (beta*I+iota)*S/pop;
     break;
-  case 4:			// infected death
-    rate = mu * I;
+  case 4:                       // infected death
+    rate = mu*I;
     break;
-  case 5:			// recovery
-    rate = gamma * I;
+  case 5:                       // recovery
+    rate = gamma*I;
     break;
-  case 6:			// recovered death
-    rate = mu * R;
+  case 6:                       // recovered death
+    rate = mu*R;
     break;
-  default:
-    error(\"unrecognized event %d\",j);
-    break;
-  }")
+  }"
+)
 
 cbind(
   birth=c(1,0,0,1,0),
@@ -83,7 +86,7 @@ data.frame(
         degree=3,period=1,nbasis=3)),
     tcovar="t",
     measurement.model=reports~binom(size=cases,prob=rho),
-    initializer=function(params, t0, ...){
+    initializer=function (params, t0, ...) {
       comp.names <- c("S","I","R")
       icnames <- paste(comp.names,"0",sep="_")
       snames <- c("S","I","R","N","cases")
@@ -103,30 +106,35 @@ gsir %>%
   plot(main="Gillespie SIR, no zeroing")
 
 gsir %>%
-  pomp(rprocess=gillespie.sim(rate.fun="_sir_rates",
-                              v=Vmatrix,hmax=1/52/10),
-       nbasis=3L,degree=3L,period=1.0,
-       paramnames=c("gamma","mu","iota","beta1","beta.sd","pop","rho"),
-       statenames=c("S","I","R","cases")
+  pomp(
+    rprocess=gillespie.sim(
+      rate.fun=rate.fun.snip,
+      v=Vmatrix,hmax=1/52/10
+    ),
+    nbasis=3L,
+    paramnames=c("gamma","mu","iota","beta1","beta2","beta3","beta.sd",
+      "pop","rho"),
+    statenames=c("S","I","R","N","cases")
   ) %>%
   simulate() %>%
   plot(main="Gillespie SIR, with zeroing")
 
 gsir %>%
-    pomp(rprocess=gillespie.sim(rate.fun=rate.fun.snip,
-                                v=Vmatrix,hmax=1/52/10),
-         paramnames = names(params),
-         statenames = c("S","I","R", "N", "cases"),
-         ) %>%
-    simulate(seed=806867104L) -> gsir1
+  pomp(rprocess=gillespie.sim(rate.fun=rate.fun.snip,
+    v=Vmatrix,hmax=1/52/10),
+    nbasis=3L,
+    paramnames=names(params),
+    statenames=c("S","I","R","N","cases"),
+  ) %>%
+  simulate(seed=806867104L) -> gsir1
 
 pompExample(gillespie.sir)
 gsir2 <- simulate(gillespie.sir,params=coef(gsir),
-                  times=time(gsir),t0=timezero(gsir),seed=806867104L)
+  times=time(gsir),t0=timezero(gsir),seed=806867104L)
 
 list(R=as.data.frame(gsir),
-     Csnippet=as.data.frame(gsir1),
-     C=as.data.frame(gsir2)) %>%
+  Csnippet=as.data.frame(gsir1),
+  C=as.data.frame(gsir2)) %>%
   melt(id="time") %>%
   subset(variable=="reports") %>%
   ggplot(aes(x=time,y=value,color=L1))+
@@ -139,7 +147,7 @@ try(gsir %>% pomp(rprocess=gillespie.sim(rate.fun=rate.fun,v=as.numeric(Vmatrix)
 stopifnot(
   gsir %>%
     simulate(params=c(gamma=0,mu=0,iota=0,beta1=0,beta2=0,beta3=0,beta.sd=0,
-                      rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) %>%
+      rho=0.1,S_0=0.07,I_0=1e-4,R_0=0.93,pop=1e6)) %>%
     states() %>% apply(1,diff) %>% equals(0) %>% all())
 
 rate.fun.bad <- function(j, x, t, params, covars, ...) {
@@ -185,12 +193,13 @@ create_example <- function(times = c(1,2), t0 = 0, mu = 0.001, N_0 = 1) {
     c(N=N_0,ct=12)
   }
   pomp(data = data, times = "time", t0 = t0, params = c(mu=mu),
-       rprocess = rprocess, initializer = initializer,
-       zeronames="ct", paramnames=c("mu"), statenames=c("N","ct"),
-       measurement.model = mmodel)
+    rprocess = rprocess, initializer = initializer,
+    zeronames="ct", paramnames=c("mu"), statenames=c("N","ct"),
+    measurement.model = mmodel)
 }
 
 simulate(create_example(times = 1), as.data.frame=TRUE)
 simulate(create_example(times = c(1,2)), as.data.frame=TRUE)
 
 dev.off()
+
