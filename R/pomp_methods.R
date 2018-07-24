@@ -27,13 +27,11 @@ as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 ## parameter transformations
 partrans.internal <- function (object, params,
                                dir = c("fromEstimationScale",
-                                       "toEstimationScale",
-                                       "forward","inverse"),
+                                       "toEstimationScale"),
                                .getnativesymbolinfo = TRUE, ...) {
   if (!object@has.trans) return(params)
   pompLoad(object)
-  dir <- switch(match.arg(dir),fromEstimationScale=1L,toEstimationScale=-1L,
-                forward=1L,inverse=-1L)
+  dir <- switch(match.arg(dir),fromEstimationScale=1L,toEstimationScale=-1L)
   rv <- .Call(do_partrans,object,params,dir,.getnativesymbolinfo)
   pompUnload(object)
   rv
@@ -42,9 +40,8 @@ partrans.internal <- function (object, params,
 setMethod(
   "partrans",
   signature=signature(object="pomp"),
-  definition=function (object, params, dir = c("fromEstimationScale",
-                                               "toEstimationScale", "forward","inverse"),
-                       ...)
+  definition=function (object, params,
+    dir = c("fromEstimationScale", "toEstimationScale"), ...)
     partrans.internal(object=object,params=params,dir=dir,...)
 )
 

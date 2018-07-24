@@ -87,10 +87,8 @@
   }
   \item{dir}{
     direction of the transformation.
-    \code{dir="forward"} applies the transformation from the \dQuote{natural} scale to the \dQuote{internal} scale.
-    This is the transformation specified by the \code{parameter.transform} argument to \code{pomp};
-    it is stored in the \sQuote{par.trans} slot of \code{object}.
-    \code{dir="inverse"} applies the inverse transformation (stored in the \sQuote{par.untrans} slot).
+    \code{dir="toEstimationScale"} applies the transformation from the model (or \dQuote{natural}) scale to the \dQuote{estimation} scale.
+    \code{dir="fromEstimationScale"} applies the inverse transformation (from the estimation scale to the natural scale.
   }
   \item{t0}{
     logical;
