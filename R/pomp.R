@@ -20,11 +20,19 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
          sQuote("pomp"),call.=FALSE)
 
   ## if one transformation is supplied, then both must be
-  fes <- missing(fromEstimationScale)
-  tes <- missing(toEstimationScale)
-  if (xor(fes,tes))
+  c1 <- missing(fromEstimationScale)
+  c2 <- missing(toEstimationScale)
+  if (xor(c1,c2))
     stop(ep,"if one of ",sQuote("toEstimationScale"),", ",
          sQuote("fromEstimationScale")," is supplied, then so must the other",
+         call.=FALSE)
+
+  ## if 'covar' is supplied, then so must 'tcovar'
+  c1 <- missing(covar)
+  c2 <- missing(tcovar)
+  if (xor(c1,c2))
+    stop(ep,"if one of ",sQuote("covar"),", ",
+         sQuote("tcovar")," is supplied, then so must the other",
          call.=FALSE)
 
   ## if 'measurement model' is specified as a formula, this overrides
@@ -107,7 +115,7 @@ setMethod("construct_pomp",
               tpos <- match(times,names(data))
             }
             times <- data[[tpos]]
-            data <- do.call(rbind, lapply(data[-tpos], as.numeric))
+            data <- do.call(rbind,lapply(data[-tpos],as.double))
 
             construct_pomp(data=data,times=times,...)
           }
@@ -367,7 +375,9 @@ pomp.internal <- function (data, times, t0,
 
   ## check times
   if (!is.numeric(times) || any(is.na(times)) || !all(diff(times)>0))
-    stop(sQuote("times")," must be an increasing numeric vector",call.=FALSE)
+    stop(sQuote("times"),
+         " must be an increasing numeric vector without missing values.",
+         call.=FALSE)
   storage.mode(times) <- 'double'
 
   ## check t0
@@ -379,9 +389,6 @@ pomp.internal <- function (data, times, t0,
   if (is.null(covar)) {
     covar <- matrix(data=0,nrow=0,ncol=0)
     tcovar <- numeric(0)
-  } else if (is.null(tcovar)) {
-    stop("if ",sQuote("covar")," is supplied, ",sQuote("tcovar"),
-         " must also be supplied",call.=FALSE)
   } else if (is.data.frame(covar)) {
     if ((is.numeric(tcovar) && (tcovar<1 || tcovar>length(covar))) ||
         (is.character(tcovar) && (!(tcovar%in%names(covar)))) ||
@@ -391,14 +398,15 @@ pomp.internal <- function (data, times, t0,
     } else if (is.numeric(tcovar)) {
       tpos <- tcovar
       tcovar <- covar[[tpos]]
-      covar <- as.matrix(covar[-tpos])
+      covar <- do.call(cbind,lapply(covar[-tpos],as.double))
     } else if (is.character(tcovar)) {
       tpos <- match(tcovar,names(covar))
       tcovar <- covar[[tpos]]
-      covar <- as.matrix(covar[-tpos])
+      covar <- do.call(cbind,lapply(covar[-tpos],as.double))
     }
   } else {
     covar <- as.matrix(covar)
+    storage.mode(covar) <- "double"
   }
   if (length(covarnames)==0) {
     covarnames <- as.character(colnames(covar))
@@ -481,7 +489,7 @@ pomp.internal <- function (data, times, t0,
               sQuote("?pomp"),call.=FALSE)
   }
 
-  if ((length(tcovar)>0)&&((min(tcovar)>t0)||(max(tcovar)<max(times))))
+  if ((length(tcovar)>0) && ((min(tcovar)>t0) || (max(tcovar)<max(times))))
     warning(wp,"the supplied covariate covariate times ",sQuote("tcovar"),
             " do not embrace the data times: covariates may be extrapolated",
             call.=FALSE

@@ -92,11 +92,19 @@ plot(po,yax.flip=TRUE)
 
 try(pomp(as.data.frame(ricker)))
 try(pomp(as.data.frame(ricker),times="time"))
+try(pomp(data.frame(t=10:1,y=1:10),t0=0))
 try(pomp(data.frame(t=10:1,y=1:10),times="t",t0=0))
 try(pomp(data.frame(t=c(1:9,NA),y=1:10),times="t",t0=0))
 try(pomp(data.frame(t="A",y=1:10),times="t",t0=0))
 try(pomp(data.frame(t=1:10,y=1:10),times="t",t0=c(3,4)))
 try(pomp(data.frame(t=1:10,y=1:10),times="t",t0="Q"))
+try(pomp(data.frame(t=1:10,y=1:10),times="t",t0=0,obsnames=c("y","y")))
+time(pomp(pomp(data.frame(t=1:10,y=1:10),times="t",t0=0),times=2:5) -> po)
+try(pomp(po,covar=data.frame(s=1:10,z=1:10)))
+pomp(po,covar=data.frame(s=-3:10,z=1:14,w=14:1),tcovar=1) -> po
+try(pomp(po,covarnames=c("w","w")))
+try(pomp(po,covarnames=c("w","q")))
+pomp(po,covarnames="w") -> po
 
 try(pomp:::render("bob is {%one%} and {%two%}",
                   one="good",
