@@ -45,7 +45,7 @@ stopifnot(identical(g1,g3[,4:6,]))
 
 pompExample(gompertz)
 p <- parmat(coef(gompertz),5)
-f1 <- partrans(gompertz,p,"inv")
+f1 <- partrans(gompertz,p,"to")
 f2 <- parmat(coef(gompertz,transform=TRUE),5)
 stopifnot(identical(f1,f2))
 

@@ -169,7 +169,7 @@ Error : in 'dmeasure': length('times') = 0, no work to do
 newly created object(s):
  gompertz 
 > p <- parmat(coef(gompertz),5)
-> f1 <- partrans(gompertz,p,"inv")
+> f1 <- partrans(gompertz,p,"to")
 > f2 <- parmat(coef(gompertz,transform=TRUE),5)
 > stopifnot(identical(f1,f2))
 > 

@@ -47,8 +47,8 @@
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots)
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots) <- value
 \S4method{obs}{pomp}(object, vars, \dots)
-\S4method{partrans}{pomp}(object, params, dir = c("fromEstimationScale",
-      "toEstimationScale","forward","inverse"), \dots)
+\S4method{partrans}{pomp}(object, params,
+      dir = c("fromEstimationScale", "toEstimationScale"), \dots)
 \S4method{plot}{pomp}(x, y, variables, panel = lines,
       nc = NULL, yax.flip = FALSE,
       mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),

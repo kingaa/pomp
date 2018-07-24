@@ -176,7 +176,7 @@ parus <- pomp(parus,toEstimationScale=logtrans,
 
 ## ----logistic-partrans-test,include=FALSE--------------------------------
 p <- c(r=1,K=200,N.0=200,sigma=0.5)
-coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
+coef(parus,transform=TRUE) <- partrans(parus,p,dir="to")
 stopifnot(all.equal(p,coef(parus)))
 
 ## ----parus-traj-match----------------------------------------------------
