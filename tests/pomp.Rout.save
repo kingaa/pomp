@@ -75,7 +75,7 @@ in 'coef<-':  names of 'value' are being discarded
 > dat <- as.data.frame(ricker)
 > try(pomp(dat) -> po)
 > try(pomp(dat,times="time",t0=0,covar=dat) -> po)
-Error : in 'pomp': if 'covar' is supplied, 'tcovar' must also be supplied
+Error : in 'pomp': if one of 'covar', 'tcovar' is supplied, then so must the other
 > try(pomp(dat,times="time",t0=0,covar=dat,tcovar=3) -> po)
 Error : in 'pomp': if 'covar' is a data frame, 'tcovar' should indicate the time variable
 > pomp(dat,times="time",t0=0,covar=dat,tcovar=1) -> po
@@ -202,16 +202,30 @@ Error : in 'pomp': 'params' must be a named numeric vector
 51   50   0
 > try(pomp(as.data.frame(ricker),times="time"))
 Error : in 'pomp': 't0' is a required argument
+> try(pomp(data.frame(t=10:1,y=1:10),t0=0))
+Error : in 'pomp': 'times' is a required argument
 > try(pomp(data.frame(t=10:1,y=1:10),times="t",t0=0))
-Error : in 'pomp': 'times' must be an increasing numeric vector
+Error : in 'pomp': 'times' must be an increasing numeric vector without missing values.
 > try(pomp(data.frame(t=c(1:9,NA),y=1:10),times="t",t0=0))
-Error : in 'pomp': 'times' must be an increasing numeric vector
+Error : in 'pomp': 'times' must be an increasing numeric vector without missing values.
 > try(pomp(data.frame(t="A",y=1:10),times="t",t0=0))
-Error : in 'pomp': 'times' must be an increasing numeric vector
+Error : in 'pomp': 'times' must be an increasing numeric vector without missing values.
 > try(pomp(data.frame(t=1:10,y=1:10),times="t",t0=c(3,4)))
 Error : in 'pomp': the zero-time 't0' must be a single number
 > try(pomp(data.frame(t=1:10,y=1:10),times="t",t0="Q"))
 Error : in 'pomp': the zero-time 't0' must be a single number
+> try(pomp(data.frame(t=1:10,y=1:10),times="t",t0=0,obsnames=c("y","y")))
+Error : in 'pomp': all 'obsnames' must be unique
+> time(pomp(pomp(data.frame(t=1:10,y=1:10),times="t",t0=0),times=2:5) -> po)
+[1] 2 3 4 5
+> try(pomp(po,covar=data.frame(s=1:10,z=1:10)))
+Error : in 'pomp': if one of 'covar', 'tcovar' is supplied, then so must the other
+> pomp(po,covar=data.frame(s=-3:10,z=1:14,w=14:1),tcovar=1) -> po
+> try(pomp(po,covarnames=c("w","w")))
+Error : in 'pomp': all 'covarnames' must be unique
+> try(pomp(po,covarnames=c("w","q")))
+Error : in 'pomp': covariate(s) 'q' are not among the columns of 'covar'
+> pomp(po,covarnames="w") -> po
 > 
 > try(pomp:::render("bob is {%one%} and {%two%}",
 +                   one="good",

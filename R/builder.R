@@ -1,11 +1,11 @@
-## 'hitch' takes (as ...) the workhorse specifications (as R functions or
+## 'hitch' takes (as '...') the workhorse specifications (as R functions or
 ## C snippets, processes these, and hitches them to 'pomp.fun' objects
 ## suitable for use in the appropriate slots in 'pomp' objects.
 
-hitch <- function (..., templates, cfile, cdir,
-                   obsnames, statenames, paramnames, covarnames,
-                   PACKAGE, globals, shlib.args,
-                   verbose = getOption("verbose", FALSE)) {
+hitch <- function (..., templates,
+  obsnames, statenames, paramnames, covarnames,
+  PACKAGE, globals, cfile, cdir, shlib.args,
+  verbose = getOption("verbose", FALSE)) {
 
   ep <- character(0)
 
@@ -69,11 +69,10 @@ hitch <- function (..., templates, cfile, cdir,
       ),
       error = function (e) {
         stop("error in building shared-object library from C snippets: ",
-             conditionMessage(e),call.=FALSE)
+          conditionMessage(e),call.=FALSE)
       }
     )
     libname <- lib$name
-    lib <- list(lib)
   } else {
     libname <- ""
     lib <- NULL
@@ -101,9 +100,9 @@ hitch <- function (..., templates, cfile, cdir,
 }
 
 Cbuilder <- function (..., templates, name = NULL, dir = NULL,
-                      statenames, paramnames, covarnames, obsnames,
-                      globals, shlib.args = NULL,
-                      verbose = getOption("verbose",FALSE))
+  statenames, paramnames, covarnames, obsnames,
+  globals, shlib.args = NULL,
+  verbose = getOption("verbose",FALSE))
 {
 
   name <- cleanForC(name)
@@ -120,8 +119,8 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
   registry <- c("__pomp_load_stack_incr","__pomp_load_stack_decr")
   ## which utilities are needed?
   utils <- which(sapply(seq_along(pomp_templates$utilities),
-                        function(x) any(grepl(pomp_templates$utilities[[x]]$trigger,
-                                              snippets))))
+    function(x) any(grepl(pomp_templates$utilities[[x]]$trigger,
+      snippets))))
 
   ## rely on "-I" flags under *nix
   if (.Platform$OS.type=="unix") {
@@ -133,14 +132,14 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
   ## some information to help make file (and filename) unique
   timestamp <- format(Sys.time(),"%Y-%m-%d %H:%M:%OS3 %z")
   salt <- paste(format(as.hexmode(ceiling(runif(n=4L,max=2^24))),
-                       upper.case=TRUE),collapse="")
+    upper.case=TRUE),collapse="")
 
   ## string 'csrc' will hold the full C source code
   csrc <- ""
   out <- textConnection(object="csrc",open="w",local=TRUE)
 
   cat(file=out,render(pomp_templates$file$header,
-                      pompheader=pompheader,timestamp=timestamp,salt=salt))
+    pompheader=pompheader,timestamp=timestamp,salt=salt))
 
   cat(file=out,globals,"\n\n")
 
@@ -166,7 +165,7 @@ Cbuilder <- function (..., templates, name = NULL, dir = NULL,
     }
     ## render the C snippet in context
     cat(file=out,render(templates[[snip]]$header),
-        snippets[[snip]],templates[[snip]]$footer)
+      snippets[[snip]],templates[[snip]]$footer)
     ## undefine variables
     for (k in seq_along(templates[[snip]]$vars)) {
       vtpl <- templates[[snip]]$vars[[k]]
@@ -251,9 +250,9 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
 
   cflags <- Sys.getenv("PKG_CPPFLAGS")
   cflags <- paste0("PKG_CPPFLAGS=\"",
-                   if (nchar(cflags)>0) paste0(cflags," ") else "",
-                   "-I",system.file("include",package="pomp"),
-                   " -I",getwd(),"\"")
+    if (nchar(cflags)>0) paste0(cflags," ") else "",
+    "-I",system.file("include",package="pomp"),
+    " -I",getwd(),"\"")
 
   shlib.args <- as.character(shlib.args)
 
@@ -277,7 +276,7 @@ pompCompile <- function (fname, direc, src, shlib.args = NULL, verbose) {
   stat <- as.integer(attr(rv,"status"))
   if (length(stat) > 0 && stat != 0L) {
     stop("cannot compile shared-object library ",sQuote(solib),": status = ",stat,
-         "\ncompiler messages:\n",paste(rv,collapse="\n"),call.=FALSE)
+      "\ncompiler messages:\n",paste(rv,collapse="\n"),call.=FALSE)
   } else if (verbose) {
     cat("compiler messages:",rv,sep="\n")
   }

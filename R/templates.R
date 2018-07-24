@@ -1,7 +1,7 @@
 ## default templates for pomp's own C snippets.
 ## This is used in 'pomp.R' and 'builder.R'.
 
-snippet_templates <- list(
+workhorse_templates <- list(
   initializer=list(
     slotname="initializer",
     Cname="__pomp_rinit",
