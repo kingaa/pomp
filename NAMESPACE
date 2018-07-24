@@ -61,7 +61,7 @@ S3method(as.data.frame,kalmand.pomp)
 export(
     pomp,
     bake,stew,freeze,
-    Csnippet,
+    Csnippet, hitch,
     reulermultinom,
     deulermultinom,
     rgammawn,

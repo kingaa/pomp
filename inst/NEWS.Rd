@@ -1,5 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.18.4}{
+  \itemize{
+    \item New \code{hitch} function facilitates construction of \code{pomp.fun} objects from \R functions, C snippets, and links to external libraries.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.18.3}{
   \itemize{
     \item The \code{euler.sir}, \code{gillespie.sir}, \code{blowflies}, \code{ricker}, \code{bbs}, \code{dacca}, and \code{rw2} examples are all now implemented using C snippets.
@@ -12,6 +17,8 @@
     \item The handling of \code{dprocess} has changed.
     The \code{onestep.dens} plugin is now deprecated and will soon be removed.
     \code{dprocess} is now specified directly using either a C snippet or an \R function, in much the same way that, for example, \code{dmeasure} is specified.
+    \item The old \sQuote{forward} and \sQuote{inverse} options for the \code{dir} argument of \code{partrans} have been dispensed with.
+    The much more descriptive options \sQuote{toEstimationScale} and \sQuote{fromEstimationScale} remain.
   }
 }
 \section{Changes in \pkg{pomp} version 1.18.2}{

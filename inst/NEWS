@@ -1,5 +1,11 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._4:
+
+        • New ‘hitch’ function facilitates construction of ‘pomp.fun’
+          objects from R functions, C snippets, and links to external
+          libraries.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._3:
 
         • The ‘euler.sir’, ‘gillespie.sir’, ‘blowflies’, ‘ricker’,
@@ -23,6 +29,11 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._3
           ‘dprocess’ is now specified directly using either a C snippet
           or an R function, in much the same way that, for example,
           ‘dmeasure’ is specified.
+
+        • The old ‘forward’ and ‘inverse’ options for the ‘dir’
+          argument of ‘partrans’ have been dispensed with.  The much
+          more descriptive options ‘toEstimationScale’ and
+          ‘fromEstimationScale’ remain.
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._2:
 
