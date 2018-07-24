@@ -122,33 +122,6 @@ setMethod("construct_pomp",
 )
 
 setMethod("construct_pomp",
-          signature=signature(data="missing"),
-          definition = function (
-            data, times, t0, ..., rprocess, rmeasure, obsnames
-          ) {
-
-            ep <- paste0("in ",sQuote("pomp"),": ")
-
-            if (missing(times) || !is.numeric(times))
-              stop(ep,sQuote("times")," must be supplied")
-            if (missing(t0) || !is.numeric(t0))
-              stop(ep,sQuote("t0")," must be supplied")
-            if (missing(rprocess))
-              stop(ep,sQuote("rprocess")," must be supplied")
-            if (missing(rmeasure))
-              stop(ep,sQuote("rmeasure")," must be supplied")
-            if (missing(obsnames))
-              stop(ep,sQuote("obsnames")," must be supplied")
-
-            data <- array(dim=c(length(obsnames),length(times)),
-                          dimnames=list(obsnames,NULL))
-
-            construct_pomp(data=data,times=times,t0=t0,
-                           rprocess=rprocess,rmeasure=rmeasure,obsnames=obsnames,...)
-          }
-)
-
-setMethod("construct_pomp",
           signature=signature(data="array"),
           definition = function (data, times, t0, ...,
                                  rprocess, dprocess,
@@ -304,15 +277,6 @@ setMethod("construct_pomp",
                 stop(ep,conditionMessage(e),call.=FALSE)
               }
             )
-          }
-)
-
-setMethod("construct_pomp",
-          signature=signature(data="ANY"),
-          definition = function (data, ...) {
-            ep <- paste0("in ",sQuote("pomp"),": ")
-            stop(ep,sQuote("data")," must be a data frame or an object of class ",
-                 sQuote("pomp"),call.=FALSE)
           }
 )
 
