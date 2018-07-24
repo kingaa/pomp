@@ -1,9 +1,10 @@
 # pomp to-do list
 
-- move all model codes out of the package, except gompertz
-- new 'userdata' function to get void *?
+- new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 - ~~make new header file for package developers~~
+- ~~move all model codes out of the package, except gompertz and ou2~~
+- export `hitch` function for compiling `pomp.fun`s
 
 ## For pomp 2:
 
@@ -29,13 +30,11 @@
 ## For pomp:
 
 - add `include` argument to `pomp`?
-- all examples and demos should use C snippets (except gompertz?)
 - ~~include CWD in search-path for include files?~~
 - deprecate `obs` and `states` arguments in `simulate`
 - ~~deprecate `mif` and `bsmc`~~
 - graceful stopping for optimizers (at least for `nloptr`)
 - number of processors stored in `bake`, `stew`, `freeze` outputs
-- digest of data stored in `bake`, `stew`, `freeze` outputs (?)
 - documentation on `mifList`, `pmcmcList`, etc.
 - `pfilterList` object?
 - parameter transformations: put `transform` option into each estimation routine (`spect.match`)

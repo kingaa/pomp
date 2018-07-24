@@ -1,5 +1,29 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._3:
+
+        • The ‘euler.sir’, ‘gillespie.sir’, ‘blowflies’, ‘ricker’,
+          ‘bbs’, ‘dacca’, and ‘rw2’ examples are all now implemented
+          using C snippets.
+
+        • A new ‘pomp_defines.h’ header is provided for developers of
+          packages that depend on ‘pomp’.
+
+        • Internally, ‘rprocess’ is no longer stored as an R function.
+          The use of plugins is now required for the implementation of
+          the ‘rprocess’ component.  Currently, there are five plugins
+          available: ‘onestep.sim’, ‘discrete.time.sim’, ‘euler.sim’,
+          ‘gillespie.sim’, and ‘gillespie.hl.sim’.
+
+        • The new ‘hitch’ function automates the building and linking
+          of C snippets and R functions into ‘pomp.fun’s.
+
+        • The handling of ‘dprocess’ has changed.  The ‘onestep.dens’
+          plugin is now deprecated and will soon be removed.
+          ‘dprocess’ is now specified directly using either a C snippet
+          or an R function, in much the same way that, for example,
+          ‘dmeasure’ is specified.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._2:
 
         • The C snippet compiling facilities have been thoroughly

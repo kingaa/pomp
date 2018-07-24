@@ -1,5 +1,19 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.18.3}{
+  \itemize{
+    \item The \code{euler.sir}, \code{gillespie.sir}, \code{blowflies}, \code{ricker}, \code{bbs}, \code{dacca}, and \code{rw2} examples are all now implemented using C snippets.
+    \item A new \file{pomp_defines.h} header is provided for developers of packages that depend on \pkg{pomp}.
+    \item Internally, \code{rprocess} is no longer stored as an \R function.
+    The use of plugins is now required for the implementation of the \code{rprocess} component.
+    Currently, there are five plugins available:
+    \code{onestep.sim}, \code{discrete.time.sim}, \code{euler.sim}, \code{gillespie.sim}, and \code{gillespie.hl.sim}.
+    \item The new \code{hitch} function automates the building and linking of C snippets and \R functions into \code{pomp.fun}s.
+    \item The handling of \code{dprocess} has changed.
+    The \code{onestep.dens} plugin is now deprecated and will soon be removed.
+    \code{dprocess} is now specified directly using either a C snippet or an \R function, in much the same way that, for example, \code{dmeasure} is specified.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.18.2}{
   \itemize{
     \item The C snippet compiling facilities have been thoroughly reworked.
