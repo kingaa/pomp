@@ -38,6 +38,8 @@ Type 'q()' to quit R.
 > x3 <- bake({runif(4)},file=file.path(tempdir(),"bake1.rds"))
 > stopifnot(all.equal(as.numeric(x1),as.numeric(x2)))
 > stopifnot(all.equal(as.numeric(x1),as.numeric(x3)))
+> rm(.Random.seed)
+> x4 <- bake({runif(4)},file=file.path(tempdir(),"bake3.rds"),seed=59566)
 > 
 > set.seed(113848)
 > stew({y1 <- runif(4)},file=file.path(tempdir(),"stew1.rds"))
@@ -46,12 +48,15 @@ Type 'q()' to quit R.
 [1] "y1"
 > stopifnot(all.equal(y1,y2))
 > stopifnot(!exists("y3"))
+> rm(.Random.seed)
+> stew({y4 <- runif(4)},file=file.path(tempdir(),"stew3.rds"),seed=59566)
 > 
 > pompExample(gillespie.sir)
 newly created object(s):
  gillespie.sir 
-> simulate(gillespie.sir,seed=1347484107L) -> x
-> freeze(simulate(gillespie.sir),seed=1347484107L) -> y
+> window(gillespie.sir,end=0.5) -> po
+> simulate(po,seed=1347484107L) -> x
+> freeze(simulate(po),seed=1347484107L) -> y
 > attr(y,"system.time") <- NULL
 > attr(y,"seed") <- NULL
 > attr(y,"kind") <- NULL
@@ -62,7 +67,7 @@ newly created object(s):
 Warning message:
 in 'freeze': expression evaluates to NULL 
 > invisible(bake({rnorm(5); NULL},seed=3494995,
-+                file=file.path(tempdir(),"bake3.rds")))
++   file=file.path(tempdir(),"bake4.rds")))
 Warning message:
 in 'bake': expression evaluates to NULL 
 > 

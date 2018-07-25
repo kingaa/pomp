@@ -23,42 +23,13 @@ Type 'q()' to quit R.
 newly created object(s):
  bbs 
 > 
-> set.seed(48857734L)
+> set.seed(48832734L)
 > 
-> coef(bbs)
-       gamma         Beta      Beta_sd          pop          rho        sigma 
-   0.3333333    1.4000000    0.0000000 1400.0000000    0.9000000    3.6000000 
-         S_0          I_0          R_0 
-   0.9990000    0.0010000    0.0000000 
-> coef(bbs,transform=TRUE)
-       gamma         Beta      Beta_sd          pop          rho        sigma 
-  -1.0986123    0.3364722         -Inf 1400.0000000    2.1972246    1.2809338 
-         S_0          I_0          R_0 
-  -0.0010005   -6.9077553         -Inf 
-> 
-> bbs <- pomp(bbs,rprior=Csnippet("
-+               Beta = exp(runif(1,2));
-+               sigma = runif(2,4);"),
-+             paramnames=c("Beta","sigma"))
-> 
+> stopifnot(all.equal(coef(bbs),partrans(bbs,coef(bbs,transform=TRUE),dir="from")))
+> po <- simulate(bbs)
+> stopifnot(sum(obs(po))==583)
 > pf <- pfilter(bbs,Np=1000)
-> 
-> fit2 <- bsmc2(bbs,params=coef(bbs),Np=5000,transform=TRUE,
-+               est=c("Beta","sigma"),smooth=0.2)
-> signif(coef(fit2),3)
-   gamma     Beta  Beta_sd      pop      rho    sigma      S_0      I_0 
-   0.333    3.800    0.000 1400.000    0.900    2.000    0.999    0.001 
-     R_0 
-   0.000 
-> 
-> fit3 <- traj.match(bbs,est=c("Beta","sigma"),transform=TRUE)
-> signif(coef(fit3),3)
-   gamma     Beta  Beta_sd      pop      rho    sigma      S_0      I_0 
-   0.333    2.090    0.000 1400.000    0.900    0.474    0.999    0.001 
-     R_0 
-   0.000 
-> 
-> sim1 <- simulate(bbs,nsim=20,as.data.frame=TRUE,include.data=TRUE)
-> sim2 <- simulate(bbs,nsim=20,as.data.frame=TRUE,obs=TRUE,include.data=TRUE)
-> sim3 <- simulate(bbs,nsim=20,as.data.frame=TRUE,states=TRUE,include.data=TRUE)
+> stopifnot(all.equal(round(mean(eff.sample.size(pf)),3),904.143))
+> tj <- trajectory(bbs)
+> stopifnot(all.equal(round(sum(tj["H",,]),3),1209.546))
 > 
