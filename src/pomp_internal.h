@@ -77,11 +77,6 @@ extern SEXP do_partrans(SEXP object, SEXP params, SEXP dir, SEXP gnsi);
 // pfilter.c
 extern SEXP pfilter_computations(SEXP x, SEXP params, SEXP Np, SEXP rw_sd, SEXP predmean, SEXP predvar, SEXP filtmean, SEXP trackancestry, SEXP onepar, SEXP weights, SEXP tol);
 
-// pomp_fun.c
-extern SEXP pomp_fun_handler(SEXP pfun, SEXP gnsi, pompfunmode *mode);
-extern SEXP load_stack_incr(SEXP pack);
-extern SEXP load_stack_decr(SEXP pack);
-
 // probe_acf.c
 extern SEXP probe_acf(SEXP x, SEXP lags, SEXP corr);
 extern SEXP probe_ccf(SEXP x, SEXP y, SEXP lags, SEXP corr);
@@ -112,16 +107,6 @@ extern SEXP do_rprocess(SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP 
 
 // simulate.c
 extern SEXP simulation_computations(SEXP object, SEXP params, SEXP times, SEXP t0, SEXP nsim, SEXP obs, SEXP states, SEXP gnsi);
-
-// sir.c
-extern void _sir_par_untrans(double *Rf_pt, double *p, int *parindex);
-extern void _sir_par_trans(double *Rf_pt, double *p, int *parindex);
-extern void _sir_init(double *x, const double *p, double t, const int *stateindex, const int *parindex, const int *covindex, const double *covars);
-extern void _sir_binom_dmeasure(double *lik, double *y, double *x, double *p, int give_log, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
-extern void _sir_binom_rmeasure(double *y, double *x, double *p, int *obsindex, int *stateindex, int *parindex, int *covindex, int ncovars, double *covars, double t);
-extern void _sir_euler_simulator(double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t, double Rf_dt);
-extern void _sir_ODE(double *f, double *x, const double *p, const int *stateindex, const int *parindex, const int *covindex, int covdim, const double *covar, double t);
-extern double _sir_rates(int j, double t, double *x, double *p, int *stateindex, int *parindex, int *covindex, int ncovar, double *covar);
 
 // skeleton.c
 extern void eval_skeleton_native(double *f, double *time, double *x, double *p, int nvars, int npars, int ncovars, int ntimes, int nrepx, int nrepp, int nreps, int *sidx, int *pidx, int *cidx, lookup_table *covar_table, pomp_skeleton *fun, SEXP args);

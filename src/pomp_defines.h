@@ -15,6 +15,11 @@
 
 typedef enum {undef=-1,Rfun=0,native=1,regNative=2} pompfunmode;
 
+extern SEXP load_stack_incr (SEXP pack);
+extern SEXP load_stack_decr (SEXP pack);
+// SEXP pomp_fun (SEXP pfun, SEXP gnsi);
+extern SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode);
+
 // lookup-table structure, as used internally
 typedef struct lookup_table {
   int length, width;

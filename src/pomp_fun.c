@@ -116,3 +116,20 @@ SEXP load_stack_decr (SEXP pack) {
   UNPROTECT(1);
   return s;
 }
+
+// 'pomp_fun' is provided for use by other packages
+// It returns a list of two elements.
+// The first is the the R function or the address of the native routine.
+// The second is the 'mode'.
+
+// SEXP pomp_fun (SEXP pfun, SEXP gnsi) {
+//   pompfunmode md;
+//   SEXP fun, mode, retval;
+//   PROTECT(fun = pomp_fun_handler(pfun,gnsi,&md));
+//   PROTECT(mode = NEW_INTEGER(1));
+//   *(INTEGER(mode)) = (int) md;
+//   PROTECT(retval = NEW_LIST(2));
+//   SET_ELEMENT(retval,0,fun);
+//   SET_ELEMENT(retval,0,mode);
+//   return retval;
+// }
