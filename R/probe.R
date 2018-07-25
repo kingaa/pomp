@@ -12,11 +12,10 @@ setClass(
   )
 )
 
-probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL, ...) {
+probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL,
+  .getnativesymbolinfo = TRUE, ...) {
 
   ep <- paste0("in ",sQuote("probe"),": ")
-
-  pompLoad(object)
 
   if (!is.list(probes)) probes <- list(probes)
   if (!all(sapply(probes,is.function)))
@@ -24,10 +23,14 @@ probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL, ...)
   if (!all(sapply(probes,function(f)length(formals(f))==1)))
     stop(ep,"each probe must be a function of a single argument",call.=FALSE)
 
+  gnsi <- as.logical(.getnativesymbolinfo)
+
   seed <- as.integer(seed)
 
   if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
+
+  pompLoad(object)
 
   ## apply probes to data
   datval <- tryCatch(
@@ -47,7 +50,8 @@ probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL, ...)
       params=params,
       seed=seed,
       probes=probes,
-      datval=datval
+      datval=datval,
+      gnsi=gnsi
     ),
     error = function (e) {
       stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)

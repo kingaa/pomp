@@ -71,12 +71,12 @@ pmof.internal <- function (object, params, est, probes,
 
   function (par) {
 
-    pompLoad(object)
-
     params[par.est.idx] <- par
 
     if (transform)
       tparams <- partrans(object,params,dir="fromEstimationScale")
+
+    pompLoad(object)
 
     ## apply probes to model simulations
     simval <- tryCatch(
@@ -87,12 +87,15 @@ pmof.internal <- function (object, params, est, probes,
         params=if (transform) tparams else params,
         seed=seed,
         probes=probes,
-        datval=datval
+        datval=datval,
+        gnsi=TRUE
       ),
       error = function (e) {
         stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)
       }
     )
+
+    pompUnload(object)
 
     ll <- tryCatch(
       .Call(synth_loglik,simval,datval),
@@ -100,7 +103,6 @@ pmof.internal <- function (object, params, est, probes,
         stop(ep,"in synthetic likelihood computation: ",conditionMessage(e),call.=FALSE)
       }
     )
-    pompUnload(object)
     if (is.finite(ll)||is.na(fail.value)) -ll else fail.value  # nocov
   }
 }
@@ -157,8 +159,6 @@ setMethod(
 
     ep <- paste0("in ",sQuote("probe.match"),": ")
 
-    pompLoad(object,verbose=verbose)
-
     if (missing(start)) start <- coef(object)
     if (missing(probes)) stop(ep,sQuote("probes")," must be supplied",call.=FALSE)
     if (missing(nsim)) stop(ep,sQuote("nsim")," must be supplied",call.=FALSE)
@@ -167,6 +167,8 @@ setMethod(
     est <- as.character(est)
     transform <- as.logical(transform)
     fail.value <- as.numeric(fail.value)
+
+    pompLoad(object,verbose=verbose)
 
     m <- minim.internal(
       objfun=probe.match.objfun(

@@ -26,7 +26,8 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
   return retval;
 }
 
-SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval) {
+SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes,
+  SEXP datval, SEXP gnsi) {
   int nprotect = 0;
   SEXP y, obs, times, t0, call, names;
   SEXP retval, val, valnames, x;
@@ -50,7 +51,9 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   // call 'simulate' to get simulated data sets
   PROTECT(obs = NEW_LOGICAL(1)); nprotect++;
   LOGICAL(obs)[0] = 1;		// we set obs=TRUE
-  PROTECT(call = LCONS(t0,R_NilValue)); nprotect++;
+  PROTECT(call = LCONS(gnsi,R_NilValue)); nprotect++;
+  SET_TAG(call,install(".getnativesymbolinfo"));
+  PROTECT(call = LCONS(t0,call)); nprotect++;
   SET_TAG(call,install("t0"));
   PROTECT(call = LCONS(times,call)); nprotect++;
   SET_TAG(call,install("times"));

@@ -1,218 +1,123 @@
 ### OU2 test of abc for pomp
 
-library(pomp)
-pompExample(ou2)
+png(filename="abc-%02d.png",res=100)
 
-pdf(file='abc.pdf')
+library(pomp)
+library(magrittr)
+
+pompExample(ou2)
 
 set.seed(2079015564L)
 
-probes.good <- list(
+plist <- list(
   y1.mean=probe.mean(var="y1"),
   y2.mean=probe.mean(var="y2"),
   probe.acf(var="y1",lags=c(0,5)),
   probe.acf(var="y2",lags=c(0,5)),
   probe.ccf(vars=c("y1","y2"),lags=0)
 )
-psim <- probe(ou2,probes=probes.good,nsim=200)
-plot(psim)
-## why do simulations sometimes seem extreme with respect to these probes?
 
-scale.dat <- apply(psim$simvals,2,sd)
+ou2 %>% probe(probes=plist,nsim=100) -> pb
 
-po <- ou2
+scale.dat <- apply(pb$simvals,2,sd)
 
-abc1 <- abc(po,
-            Nabc=2000,
-            start=as.list(coef(ou2)),
-            probes=probes.good,
-            scale=scale.dat,
-            epsilon=1.7,
-            proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))
-)
-
+ou2 %>%
+  abc(Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+    proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))) -> abc1
+plot(abc1,y="bob")
 plot(abc1,scatter=TRUE)
-plot(abc1)
-plot(abc1,pars=c("alpha.1","alpha.3"))
-abc1@pars <- character(0)
-plot(abc1)
-invisible(covmat(abc1))
-invisible(covmat(c(abc1,abc1)))
 
-try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
-        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(po,Nabc=2000,probes=probes.good,start=unname(coef(po)),scale=scale.dat,
-        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(po,Nabc=2000,probes=probes.good,start=numeric(0),scale=scale.dat,
-        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,epsilon=1.7,proposal="bob"))
-try(abc(po,Nabc=2000,probes="probes.good",scale=scale.dat,
-        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(po,Nabc=2000,probes=function(x,y)x,scale=scale.dat,
-        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(pomp(po,dprior=function(params,log,...)Inf),Nabc=2000,probes=probes.good,
-        scale=scale.dat,epsilon=1.7,
-        proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(pomp(po,Nabc=2000,probes=probes.good,
-             scale=scale.dat,epsilon=1.7)))
-try(abc(po,Nabc=2000,scale=scale.dat,
-        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(po,Nabc=2000,probes=probes.good,
-        epsilon=1.7,proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(po,Nabc=2000,probes=probes.good,scale=scale.dat,
-        proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+crossprod(
+  array(data=c(0.1,0.02,0,0.1),dim=c(2,2),
+    dimnames=list(c("alpha.1","alpha.2"),c("alpha.1","alpha.2")))
+) -> sig
 
+pb %>% abc(Nabc=100,scale=scale.dat,epsilon=2,proposal=mvn.rw(sig)) -> abc2
+abc2 %>% abc(Nabc=100) -> abc3
+abc1 %>% abc(Nabc=80) %>% continue(Nabc=20) -> abc4
 
-## check how sticky the chain is:
-runs <- rle(as.vector(conv.rec(abc1)[, "alpha.1"]))
-hist(runs$lengths)
-mean(runs$length)
+plot(c(abc1,abc2,abc3,abc4),y="bob")
+plot(c(abc1,abc2,abc3,abc4),scatter=TRUE)
 
-abc2 <- abc(po,
-            Nabc=500,
-            probes=probes.good,
-            scale=scale.dat,
-            epsilon=1,
-            proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
-)
-plot(abc2)
+c(c(abc1,abc2),abc3) -> abclist
+stopifnot(identical(abclist,c(abc1,c(abc2,abc3))))
+stopifnot(all(dim(conv.rec(abc1))==c(101,10)))
+stopifnot(all(dim(conv.rec(abc1,"alpha.1"))==c(101,1)))
 
-abc3 <- abc(po,
-            Nabc=500,
-            probes=probes.good,
-            scale=scale.dat,
-            epsilon=2,
-            proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
-)
-abc3 <- continue(abc3,Nabc=700)
-plot(abc3)
+c(abc1,abc2) %>% conv.rec() -> traces
+traces %>% length()
+traces %>% class()
+traces %>% sapply(dim)
+try(abclist %>% plot(pars="alpha.3",scatter=TRUE))
 
-sig <- array(data=c(0.1,0.02,0,0.1),
-             dim=c(2,2),
-             dimnames=list(c("alpha.1","alpha.2"),
-                           c("alpha.1","alpha.2")))
-sig <- crossprod(sig)
+abc1 %>%
+  abc(Nabc=500,dprior=Csnippet("
+    lik = dnorm(alpha_1,0.8,1,1)+dnorm(alpha_2,0.2,1,1);
+    lik = (give_log) ? lik : exp(lik);"
+  ),paramnames=c("alpha.1","alpha.2")) -> abc5
 
-abc4 <- abc(probe(po,probes=probes.good,nsim=200),
-            Nabc=500,
-            scale=scale.dat,
-            epsilon=2,
-            proposal=mvn.rw(sig)
-)
-plot(abc4)
+abc1 %>% abc(Nabc=50,start=as.list(coef(ou2))) %>% plot()
 
-abc5 <- abc(abc4,Nabc=250)
-plot(abc5)
-abc5 <- abc(abc5)
+abc4 %>% abc(proposal=function(theta,...)theta) %>% plot()
 
-dprior6 <- function (params, log, ...) {
-  ll <- sum(
-    dnorm(
-      x=params[c("alpha.1","alpha.2","alpha.3","alpha.4")],
-      mean=c(0.8,-0.5,0.3,0.9),
-      sd=5,
-      log=TRUE
-    )
-  )
-  if (log) ll else exp(ll)
-}
+try(abc(abc1,Nabc=-5))
+stopifnot(all(dim(conv.rec(abc(abc1,Nabc=0))==c(1,10))))
 
-abc6 <- abc(pomp(po,dprior=dprior6),
-            Nabc=500,
-            probes=probes.good,
-            scale=scale.dat,
-            epsilon=1,
-            proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))
-)
-plot(abc6)
+try(abc(ou2,Nabc=50,scale=scale.dat[1:2],epsilon=1.7,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(ou2,Nabc=50,probes=plist,scale=scale.dat[1:2],epsilon=1.7,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+po <- ou2
+coef(po) <- NULL
+try(abc(po,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(ou2,start=numeric(0),Nabc=100,probes=plist,scale=scale.dat,
+  epsilon=1.7,proposal="mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))"))
+try(abc(ou2,start=NULL,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+  proposal="mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))"))
+try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+  proposal=function(...)stop("yikes!")))
+try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+  proposal=function(...)3))
+try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7))
+try(abc(ou2,Nabc=100,proposal=function(theta,...)theta,probes="mary",
+  scale=scale.dat,epsilon=1.7))
+try(abc(ou2,Nabc=100,proposal="bob",probes="mary",epsilon=1.7))
+try(abc(ou2,Nabc=100,probes=plist,epsilon=1.7,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 
-try(c(abc6,ou2))
-try(c(c(abc6,abc6),ou2))
-abc7 <- c(abc2)
-abc7 <- c(abc7)
-try(abc7 <- c(abc2,abc3))
-try(abc7 <- c(abc7,abc3))
-plot(abc7 <- c(abc2,abc4))
-abc2 <- abc7[1]
-abc2 <- abc2[[1]]
-plot(abc2,scatter=TRUE,y=NA)
-plot(abc7,scatter=TRUE,y=NA)
-try(plot(abc7,pars=c("alpha.1"),scatter=TRUE,y=NA))
-plot(conv.rec(c(abc2,abc4)))
-plot(conv.rec(c(abc7,abc6)))
-plot(window(conv.rec(c(abc7,abc6),c("alpha.1","alpha.2")),thin=20,start=100))
-invisible(covmat(abc7))
+try(abc(abc1,Nabc=100,epsilon=NULL,scale=scale.dat))
+try(abc(ou2,start=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(ou2,Nabc=100,probes="plist[[1]]",scale=scale.dat[1],epsilon=1.7,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(ou2,Nabc=100,probes=function(x,y)x+y,scale=scale.dat[1],epsilon=1.7,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
+try(abc(abc1,dprior=function(params,log,...)stop("ouch!")))
+try(abc(abc1,dprior=function(params,log,...)Inf))
+try(abc(abc1,probes=function(x)stop("piff!")))
+count <- 0
+delayed.failure <- function (x) {count <<- count+1; if (count>2) stop("paff!") else 1}
+try(abc(abc1,scale=1,probes=delayed.failure))
+try(abc(abc1,proposal=function(...)stop("urp!")))
+count <- 0
+delayed.failure <- function (params,log,...) {count <<- count+1; if (count>5) stop("no sir!") else 1}
+try(abc(abc1,dprior=delayed.failure))
+count <- 0
+delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'fraid not!") else theta}
+try(abc(abc1,proposal=delayed.failure))
+try(c(abc1,ou2))
+try(c(abc1,NULL))
 
-capture.output(
-  abc8 <- abc(
-    pomp(ou2,dprior=function (params, log, ...) {
-      f <- sum(dnorm(params,mean=coef(ou2),sd=1,log=TRUE))
-      if (log) f else exp(f)
-    }),
-    Nabc=500,verbose=TRUE,
-    probes=probes.good,
-    scale=scale.dat,
-    epsilon=5,
-    proposal=mvn.rw.adaptive(rw.sd=c(alpha.2=0.01,alpha.3=0.01),
-                             scale.start=500,shape.start=100))
-) -> out
-stopifnot(length(out)==2201)
-stopifnot(sum(grepl("acceptance ratio",out))==100)
-
-abc8 <- continue(abc8,Nabc=2000,proposal=mvn.rw(covmat(abc8)))
-
-plot(abc8,scatter=TRUE)
-plot(abc8)
-
-traces <- window(conv.rec(abc8,c("alpha.2","alpha.3")),start=500)
-library(coda)
-rejectionRate(traces)
-autocorr.diag(traces)
-traces <- window(traces,thin=50)
-geweke.diag(traces)
-
-vmat <- matrix(c(1,0,0,0),ncol=2,nrow=2,
-               dimnames=list(c("alpha.1","alpha.2"),
-                             c("alpha.1","alpha.2")))
-abc9 <- abc(
-  abc8,Nabc=1,probes=probes.good,scale=scale.dat,epsilon=5,
-  proposal=mvn.rw.adaptive(rw.var=vmat,scale.start=500,shape.start=100))
-
-try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
-        proposal=function(theta,...)stop("urp!")))
-try(abc(pomp(ou2,dprior=function(params,log,...)stop("oof!")),
-        Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
-        proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
-neval <- 0
-try(abc(abc2,Nabc=3,probes=probes.good,scale=scale.dat,epsilon=1,
-        proposal=function(theta,...) {
-          neval <<- neval+1
-          if (neval>1) stop("bif!") else theta
-        }))
-neval <- 0
-try(abc(
-  pomp(ou2,dprior=function(params,log,...) {
-    neval <<- neval+1
-    if (neval>10) stop("eep!")
-    else if (log) 0
-    else 1
-  }),Nabc=20,probes=probes.good,scale=scale.dat,epsilon=1,
-  proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01))))
-neval <- 0
-try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
-        proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
-        probes=function(y) {
-          neval <<- neval+1
-          if (neval>0) stop("pow!")
-          else 0
-        }))
-neval <- 0
-try(abc(ou2,Nabc=10,scale=scale.dat,epsilon=1,
-        proposal=mvn.diag.rw(c(alpha.1=0.01,alpha.2=0.01)),
-        probes=function(y) {
-          neval <<- neval+1
-          if (neval>1) stop("paf!")
-          else 0
-        }))
+capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+  proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
+  verbose=TRUE) -> abc1) -> out
+stopifnot(length(out)==41)
+stopifnot(sum(grepl("acceptance",out))==20)
+stopifnot(sum(grepl("ABC iteration",out))==21)
 
 dev.off()

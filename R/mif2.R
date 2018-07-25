@@ -95,8 +95,7 @@ mif2.pfilter <- function (object, params, Np,
 
   do_ta <- length(.indices)>0L
   if (do_ta && length(.indices)!=Np[1L])
-    stop(ep,sQuote(".indices"),
-         " has improper length",call.=FALSE)
+    stop(ep,sQuote(".indices")," has improper length",call.=FALSE)
 
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
@@ -364,7 +363,7 @@ setMethod(
     if (missing(start)) start <- coef(object)
     if (length(start)==0)
       stop(ep,sQuote("start")," must be specified if ",
-           sQuote("coef(object)")," is NULL",call.=FALSE)
+           sQuote("coef(object)")," is empty.",call.=FALSE)
     if (is.null(names(start)))
       stop(ep,sQuote("start")," must be a named vector",
            call.=FALSE)
