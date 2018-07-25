@@ -28,7 +28,7 @@ extern void _pomp_default_dprior(double *lik, double *p, int give_log, int *pari
 extern SEXP do_dprior(SEXP object, SEXP params, SEXP log, SEXP gnsi);
 
 // dprocess.c
-extern SEXP euler_model_density(SEXP func, SEXP x, SEXP times, SEXP params, SEXP tcovar, SEXP covar, SEXP log, SEXP args, SEXP gnsi);
+extern SEXP onestep_density(SEXP func, SEXP x, SEXP times, SEXP params, SEXP tcovar, SEXP covar, SEXP log, SEXP args, SEXP gnsi);
 extern SEXP do_dprocess(SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP gnsi);
 
 // euler.c

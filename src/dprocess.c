@@ -82,7 +82,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
   PROTECT(covar = GET_SLOT(object,install("covar"))); nprotect++;
   PROTECT(tcovar = GET_SLOT(object,install("tcovar"))); nprotect++;
 
-  PROTECT(X = euler_model_density(fn,x,times,params,tcovar,covar,log,args,gnsi)); nprotect++;
+  PROTECT(X = onestep_density(fn,x,times,params,tcovar,covar,log,args,gnsi)); nprotect++;
 
   {
     const char *dimnms[2] = {"rep","time"};
@@ -93,10 +93,10 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
   return X;
 }
 
-// compute pdf of a sequence of Euler steps
-SEXP euler_model_density (SEXP func,
-                          SEXP x, SEXP times, SEXP params,
-                          SEXP tcovar, SEXP covar, SEXP log, SEXP args, SEXP gnsi)
+// compute pdf of a sequence of elementary steps
+SEXP onestep_density (SEXP func,
+		      SEXP x, SEXP times, SEXP params,
+		      SEXP tcovar, SEXP covar, SEXP log, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   pompfunmode mode = undef;
