@@ -4,7 +4,8 @@
 - update 'bbs' example (rename to 'bsflu')?
 - ~~make new header file for package developers~~
 - ~~move all model codes out of the package, except gompertz and ou2~~
-- export `hitch` function for compiling `pomp.fun`s
+- ~~export `hitch` function for compiling `pomp.fun`s~~
+- index by concept using `\concept{}` in the help files
 
 ## For pomp 2:
 
