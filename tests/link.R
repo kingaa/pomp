@@ -1,33 +1,31 @@
 library(pomp)
 
-options(verbose=FALSE)
-
 cat("double simplefun (double x) { return(x+3); }",file="simplefun.c")
 system2(R.home("bin/R"),args=c("CMD","COMPILE","simplefun.c"))
 
-pompExample(ricker)
+pompExample(gompertz)
 
-pomp(ricker,rmeasure=Csnippet("
+pomp(gompertz,rmeasure=Csnippet("
   double simplefun (double);
-  double m = simplefun(N);
-  y = rpois(phi*m);"),
-  statenames="N",paramnames="phi",
+  double m = simplefun(X);
+  Y = rlnorm(log(m),tau);"),
+  statenames="X",paramnames="tau",
   shlib.args="simplefun.o") -> po
 
 x <- simulate(po)
 
-pomp(ricker,rmeasure=Csnippet("
-  double m = simplefun(N);
-  y = rpois(phi*m);"),
-  statenames="N",paramnames="phi",
+pomp(gompertz,rmeasure=Csnippet("
+  double m = simplefun(X);
+  Y = rlnorm(log(m),tau);"),
+  statenames="X",paramnames="tau",
   shlib.args="simplefun.o",
   globals="double simplefun (double);"
   ) -> po
 
-pomp(ricker,rmeasure=Csnippet("
-  double m = simplefun(N);
-  y = rpois(phi*m);"),
-  statenames="N",paramnames="phi",
+pomp(gompertz,rmeasure=Csnippet("
+  double m = simplefun(X);
+  Y = rlnorm(log(m),tau);"),
+  statenames="X",paramnames="tau",
   shlib.args="simplefun.o",
   globals=Csnippet("double simplefun (double);")
 ) -> po
