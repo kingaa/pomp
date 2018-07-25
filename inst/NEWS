@@ -6,6 +6,9 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._4
           objects from R functions, C snippets, and links to external
           libraries.
 
+        • Native routines needed to access ‘pomp.fun’ objects in C are
+          now registered for use by other packages.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._3:
 
         • The ‘euler.sir’, ‘gillespie.sir’, ‘blowflies’, ‘ricker’,

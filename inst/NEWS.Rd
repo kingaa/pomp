@@ -3,6 +3,7 @@
 \section{Changes in \pkg{pomp} version 1.18.4}{
   \itemize{
     \item New \code{hitch} function facilitates construction of \code{pomp.fun} objects from \R functions, C snippets, and links to external libraries.
+    \item Native routines needed to access \code{pomp.fun} objects in C are now registered for use by other packages.
   }
 }
 \section{Changes in \pkg{pomp} version 1.18.3}{
