@@ -362,8 +362,7 @@ setMethod(
 
     if (missing(start)) start <- coef(object)
     if (length(start)==0)
-      stop(ep,sQuote("start")," must be specified if ",
-           sQuote("coef(object)")," is empty.",call.=FALSE)
+        stop(ep,"parameters must be specified.",call.=FALSE)
     if (is.null(names(start)))
       stop(ep,sQuote("start")," must be a named vector",
            call.=FALSE)

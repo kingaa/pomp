@@ -31,7 +31,8 @@ In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(abc(ou2,Nmcmc=2,Np=100,proposal=f,probes=list(probe.mean("y1")),
 +         scale=1,epsilon=1))
-Error : in 'abc': 'proposal' must return a named numeric vector
+in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'Nmcmc','Np'
+Error : in 'abc': 'proposal' must return a named numeric vector.
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(mvn.rw(matrix(0,2,2)))
@@ -46,7 +47,7 @@ function (theta, ...)
         Q
     theta
 }
-<environment: 0x19d7210>
+<environment: 0x33d31d0>
 Warning messages:
 1: In chol.default(rw.var, pivot = TRUE) :
   the matrix is either rank-deficient or indefinite

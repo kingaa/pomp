@@ -65,7 +65,7 @@ Error : in 'mif2': in 'rw.sd': parameters must be referenced by name.
 +   cooling.fraction.50=1,max.fail=0))
 Error : in 'mif2': in 'mif2.pfilter': too many filtering failures
 > try(mif2(ou2,Nmif=1,Np=100,start=numeric(0)))
-Error : in 'mif2': 'start' must be specified if 'coef(object)' is NULL
+Error : in 'mif2': parameters must be specified.
 > try(mif2(ou2,Nmif=1,Np=100,start=unname(coef(ou2))))
 Error : in 'mif2': 'start' must be a named vector
 > try(mif2(ou2,Nmif=1,Np="100"))
