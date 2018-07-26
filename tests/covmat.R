@@ -49,3 +49,5 @@ do.call(c,a1) -> a1
 
 covmat(a1[[1]])
 covmat(a1)
+
+covmat(a1,thin=20)

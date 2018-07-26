@@ -1,0 +1,141 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> set.seed(2130639172L)
+> 
+> reulermultinom(n=5,size=100,rate=c(1,2,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    5    6    7   11    5
+[2,]   18   17   16   16   20
+[3,]   20   22   21   23   20
+> reulermultinom(n=5,size=-3,rate=c(1,2,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]  NaN  NaN  NaN  NaN  NaN
+[2,]  NaN  NaN  NaN  NaN  NaN
+[3,]  NaN  NaN  NaN  NaN  NaN
+> reulermultinom(n=5,size=100,rate=c(1,-2,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]  NaN  NaN  NaN  NaN  NaN
+[2,]  NaN  NaN  NaN  NaN  NaN
+[3,]  NaN  NaN  NaN  NaN  NaN
+> reulermultinom(n=5,size=100,rate=c(1,NA,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    0    0    0    0    0
+[2,]    0    0    0    0    0
+[3,]    0    0    0    0    0
+> reulermultinom(n=5,size=100.3,rate=c(1,2,3),dt=0.1)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]  NaN  NaN  NaN  NaN  NaN
+[2,]  NaN  NaN  NaN  NaN  NaN
+[3,]  NaN  NaN  NaN  NaN  NaN
+> reulermultinom(n=0,size=100,rate=c(1,2,3),dt=0.1)
+    
+[1,]
+[2,]
+[3,]
+> try(reulermultinom(n=-2,size=100,rate=c(1,2,3),dt=0.1))
+Error : in 'reulermultinom': negative length vectors are not allowed
+> reulermultinom(n=1,size=100,rate=c(1,2e400,3),dt=0.1)
+     [,1]
+[1,]    0
+[2,]  NaN
+[3,]  NaN
+Warning messages:
+1: in 'reulermultinom': result of binomial draw is not finite 
+2: in 'reulermultinom': result of binomial draw is not finite 
+> reulermultinom(n=1,size=100,rate=c(1,2,3),dt=c(0.1,0.2,0.3,Inf))
+     [,1]
+[1,]   11
+[2,]   16
+[3,]   25
+Warning message:
+in 'reulermultinom': only the first element of 'dt' is meaningful 
+> reulermultinom(n=1,size=c(100,200,300),rate=c(1,2,3),dt=0.2)
+     [,1]
+[1,]    9
+[2,]   22
+[3,]   39
+Warning message:
+in 'reulermultinom': only the first element of 'size' is meaningful 
+> reulermultinom(n=1,size=0,rate=c(1,2,3),dt=0.2)
+     [,1]
+[1,]    0
+[2,]    0
+[3,]    0
+> reulermultinom(n=1,size=10,rate=c(1,Inf,1),0.1)
+     [,1]
+[1,]    0
+[2,]  NaN
+[3,]  NaN
+Warning messages:
+1: in 'reulermultinom': result of binomial draw is not finite 
+2: in 'reulermultinom': result of binomial draw is not finite 
+> reulermultinom(n=1,size=Inf,rate=c(1,100,1),0.1)
+     [,1]
+[1,]    0
+[2,]    0
+[3,]  NaN
+Warning messages:
+1: in 'reulermultinom': result of binomial draw is not finite 
+2: in 'reulermultinom': result of binomial draw is not finite 
+3: in 'reulermultinom': result of binomial draw is not finite 
+> x <- reulermultinom(n=3,size=100,rate=c(3,2,1),dt=0.1)
+> try(deulermultinom(rbind(x,c(0,1,0)),size=100,rate=c(3,2,1),dt=0.1))
+Error : in 'deulermultinom': NROW('x') should match length of 'rate'
+> deulermultinom(x,size=c(100,NA),rate=c(3,2,1),dt=0.1)
+[1] 0.0002229822 0.0008576482 0.0009731019
+Warning message:
+in 'deulermultinom': only the first element of 'size' is meaningful 
+> deulermultinom(x,size=100,rate=c(3,2,1),dt=c(0.1,0.2,0.3,Inf))
+[1] 0.0002229822 0.0008576482 0.0009731019
+Warning message:
+in 'deulermultinom': only the first element of 'dt' is meaningful 
+> deulermultinom(x,size=100,rate=c(3,2,1),dt=Inf)
+[1] 0 0 0
+> deulermultinom(x=c(3,4,0),size=10,rate=c(1,1,1),dt=0-.1)
+[1] NaN
+Warning message:
+in 'deulermultinom': NaNs produced 
+> deulermultinom(x=c(3,4,0),size=10,rate=c(1,1,-1),dt=0.1)
+[1] NaN
+Warning message:
+in 'deulermultinom': NaNs produced 
+> deulermultinom(x=c(3,-4,0),size=10,rate=c(1,1,1),dt=0.1)
+[1] 0
+> deulermultinom(x=c(3,6,3),size=10,rate=c(1,1,0),dt=0.1,log=TRUE)
+[1] -Inf
+> rgammawn(n=5,sigma=2,dt=0.1)
+[1] 2.593438e-18 2.417425e-05 5.489565e-25 1.344180e-18 3.775061e-03
+> rgammawn(n=5,sigma=1:5,dt=0.1)
+[1] 2.427178e-01 1.267494e-01 1.392075e-52 4.280372e-20 1.691824e-28
+> rgammawn(n=5,sigma=1,dt=rep(1,5))
+[1] 0.1460176 1.0105114 1.3691768 0.2244641 0.6028195
+> rgammawn(n=3,sigma=1:5,dt=rep(1,5))
+[1] 0.54660148 0.98459737 0.08619328
+> rgammawn(n=2,sigma=-5,dt=1)
+[1] 0.006126306 0.006738350
+> rgammawn(n=2,sigma=10,dt=-1)
+[1] NaN NaN
+> rgammawn(n=2,sigma=0,dt=1)
+[1] 1 1
+> try(rgammawn(n=-5,sigma=-5,dt=-1))
+Error : in 'rgammwn': negative length vectors are not allowed
+> 
