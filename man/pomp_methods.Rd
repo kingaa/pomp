@@ -150,6 +150,8 @@
       Here, \code{parameter.transform} is the parameter transformation function specified when \code{object} was created.
       \code{coef(object,pars,transform=TRUE) <- value} first, discards any names the \code{value} may have, sets \code{names(value) <- pars}, and then replaces the elements of \code{object}'s \code{params} slot \code{parameter.transform(value)}.
       In this case, if some of the names in \code{pars} do not already name parameters in \code{coef(object,transform=TRUE)}, then they are concatenated.
+
+      \code{coef(object) <- NULL} erases the parameters in \code{object}.
     }
     \item{obs}{
       \code{obs(object)} returns the array of observations.

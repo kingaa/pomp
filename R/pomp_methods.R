@@ -210,6 +210,7 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (object, pars, transform = FALSE, ..., value) {
     ep <- paste0("in ",sQuote("coef<-"),": ")
+    if (is.null(value)) value <- numeric(0)
     if (is.list(value)) value <- unlist(value)
     if (missing(pars)) {          ## replace the whole params slot with 'value'
       if (length(value)>0) {
