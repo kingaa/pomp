@@ -22,7 +22,7 @@ exportClasses(
 )
 
 exportMethods(
-    plot,show,print,spy,
+    plot,show,print,spy,c,
     coerce,summary,window,
     logLik,logEvidence,
     cond.logLik,cond.logEvidence,

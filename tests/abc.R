@@ -110,8 +110,20 @@ try(abc(abc1,dprior=delayed.failure))
 count <- 0
 delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'fraid not!") else theta}
 try(abc(abc1,proposal=delayed.failure))
+
 try(c(abc1,ou2))
 try(c(abc1,NULL))
+try(c(c(abc1,abc2),ou2))
+invisible(c(abc1))
+alist <- c(c(abc1,abc2))
+class(alist[2])
+try(alist[3])
+alist <- c(a=abc1,b=abc2)
+alist["b"]
+alist["c"]
+invisible(alist[["b"]])
+alist[["c"]]
+c(one=abc1,two=abc2,three=abc3)
 
 capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),

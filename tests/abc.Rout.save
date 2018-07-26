@@ -166,10 +166,47 @@ Error : in 'abc': 'dprior' error: no sir!
 > delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'fraid not!") else theta}
 > try(abc(abc1,proposal=delayed.failure))
 Error : in 'abc': in proposal function: 'fraid not!
+> 
 > try(c(abc1,ou2))
-Error : in 'c': cannot mix 'abc' and non-'abc' objects
+Error in validObject(.Object) : 
+  invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
 > try(c(abc1,NULL))
-Error : in 'c': cannot mix 'abc' and non-'abc' objects
+Error in validObject(.Object) : 
+  invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
+> try(c(c(abc1,abc2),ou2))
+Error in validObject(.Object) : 
+  invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
+> invisible(c(abc1))
+> alist <- c(c(abc1,abc2))
+> class(alist[2])
+[1] "abcList"
+attr(,"package")
+[1] "pomp"
+> try(alist[3])
+Error in validObject(.Object) : 
+  invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
+> alist <- c(a=abc1,b=abc2)
+> alist["b"]
+$b
+<object of class 'abc'>
+
+> alist["c"]
+$<NA>
+NULL
+
+> invisible(alist[["b"]])
+> alist[["c"]]
+NULL
+> c(one=abc1,two=abc2,three=abc3)
+$one
+<object of class 'abc'>
+
+$two
+<object of class 'abc'>
+
+$three
+<object of class 'abc'>
+
 > 
 > capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),

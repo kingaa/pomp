@@ -14,7 +14,6 @@
 \alias{abc-abc}
 \alias{continue,abc-method}
 \alias{continue-abc}
-\alias{abc-class}
 \alias{abc-methods}
 \alias{conv.rec,abc-method}
 \alias{conv.rec-abc}
@@ -24,7 +23,10 @@
 \alias{plot,abc-method}
 \alias{plot-abcList}
 \alias{plot,abcList-method}
-\alias{abcList-class}
+\alias{c-Abc}
+\alias{c,Abc-method}
+\alias{print,abc-method}
+\alias{print-abc}
 \alias{covmat}
 \alias{covmat,abc-method}
 \alias{covmat-abc}
