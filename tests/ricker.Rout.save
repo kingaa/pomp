@@ -1,0 +1,35 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> pompExample(ricker)
+newly created object(s):
+ ricker 
+> 
+> set.seed(48832734L)
+> 
+> stopifnot(all.equal(coef(ricker),partrans(ricker,coef(ricker,transform=TRUE),dir="from")))
+> po <- simulate(ricker)
+> stopifnot(sum(obs(po))==2040)
+> pf <- pfilter(ricker,Np=1000)
+> stopifnot(all.equal(round(mean(eff.sample.size(pf)),3),580.979))
+> tj <- trajectory(ricker)
+> stopifnot(all.equal(round(sum(tj["N",,]),3),193.225))
+> 

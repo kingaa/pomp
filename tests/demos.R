@@ -13,5 +13,3 @@ for (d in demos) {
 }
 
 dev.off()
-
-print(packageVersion("pomp"))
