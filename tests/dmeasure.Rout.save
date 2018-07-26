@@ -1,0 +1,113 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> 
+> po <- window(ou2,end=10)
+> 
+> set.seed(3434388L)
+> dat <- simulate(po,obs=T,states=T,nsim=5)
+> x <- dat$states
+> y <- dat$obs[,1,]
+> t <- time(po)
+> theta <- coef(po)
+> 
+> dmeasure(po,x=x,y=y,times=t,params=theta) -> L
+> dmeasure(po,x=x,y=y,times=t,params=theta,log=T) -> ll
+> stopifnot(all.equal(ll[,1:3],log(L[,1:3])))
+> stopifnot(identical(dim(ll),c(5L,10L)))
+> 
+> try(dmeasure(x=x,y=y,times=t,params=theta))
+Error in (function (classes, fdef, mtable)  : 
+  unable to find an inherited method for function 'dmeasure' for signature '"missing"'
+> try(dmeasure(x,y=y,times=t,params=theta))
+Error in (function (classes, fdef, mtable)  : 
+  unable to find an inherited method for function 'dmeasure' for signature '"array"'
+> try(dmeasure(po,x=x,y=y,times=t))
+Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
+  argument "params" is missing, with no default
+> try(dmeasure(po,x=x,y=y,params=theta))
+Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
+  argument "times" is missing, with no default
+> try(dmeasure(po,x=x,times=t,params=theta))
+Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
+  argument "y" is missing, with no default
+> try(dmeasure(po,y=y,times=t,params=theta))
+Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
+  argument "x" is missing, with no default
+> try(dmeasure(po,x=as.numeric(x),y=y,times=t,params=theta))
+Error : in 'dmeasure': length of 'times' and 3rd dimension of 'x' do not agree
+> try(dmeasure(po,x=x,y=as.numeric(y),times=t,params=theta))
+Error : in 'dmeasure': length of 'times' and 2nd dimension of 'y' do not agree
+> try(dmeasure(po,x=x,y=y,times=NULL,params=theta))
+Error : in 'dmeasure': length('times') = 0, no work to do
+> try(dmeasure(po,x=x[,,1],y=y[,1,drop=FALSE],times=t[1],params=theta))
+Error : in 'dmeasure': length of 'times' and 3rd dimension of 'x' do not agree
+> invisible(dmeasure(po,x=x[,,1,drop=FALSE],y=y[,1],times=t[1],params=theta))
+> stopifnot(all.equal(dmeasure(po,x=x[,1,,drop=FALSE],y=y,times=t,params=theta),
++                     dmeasure(po,x=x[,1,],y=y,times=t,params=theta)))
+> try(dmeasure(po,x=x,y=y[1,,drop=FALSE],times=t,params=theta))
+Error : variable 'y2' not found among the observables
+> try(dmeasure(po,x=x[1,,,drop=FALSE],y=y,times=t,params=theta))
+Error : variable 'x2' not found among the state variables
+> k <- which(names(theta)=="tau")
+> try(dmeasure(po,x=x,y=y,times=t,params=theta[-k]))
+Error : variable 'tau' not found among the parameters
+> 
+> xx <- x
+> xx[] <- as.integer(round(x))
+> stopifnot(all.equal(dmeasure(po,x=xx,y=y,times=t,params=theta,log=TRUE),
++                     dmeasure(po,x=round(x),y=y,times=t,params=theta,log=TRUE)))
+> 
+> stopifnot({
++   dmeasure(pomp(po,dmeasure=function(y,x,t,params,log,...)3),
++            x=x,y=y,times=t,params=theta,log=TRUE) -> z
++   dimnames(z)
++   all(z[]==3)
++ })
+> 
+> try(dmeasure(pomp(po,dmeasure=function(y,x,t,params,log,...)c(3,2,1)),
++              x=x,y=y,times=t,params=theta,log=TRUE))
+Error : in 'dmeasure': user 'dmeasure' returns a vector of length 3 when it should return a scalar
+> 
+> pp <- parmat(theta,10)
+> dmeasure(po,params=pp,x=x,y=y,t=t,log=TRUE) -> ll
+> stopifnot(all.equal(ll[1:5,],ll[6:10,]))
+> try(dmeasure(po,params=pp[,1:7],x=x,y=y,t=t,log=TRUE))
+Error : in 'dmeasure': larger number of replicates is not a multiple of smaller
+> 
+> pompExample(dacca)
+newly created object(s):
+ dacca 
+> set.seed(3434388L)
+> po <- window(dacca,end=1892)
+> dat <- simulate(po,obs=T,states=T,nsim=5)
+> x <- dat$states
+> y <- dat$obs[,1,,drop=FALSE]
+> t <- time(po)
+> theta <- coef(po)
+> 
+> dmeasure(po,x=x,y=y,times=t,params=theta) -> L
+> dmeasure(po,x=x,y=y,times=t,params=theta,log=T) -> ll
+> stopifnot(all.equal(ll[,1:3],log(L[,1:3])))
+> 
