@@ -95,6 +95,42 @@ setMethod(
   }
 )
 
+## extract the convergence record
+conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
+  transform <- as.logical(transform)
+  if (transform) {
+    retval <- cbind(
+      object@conv.rec[,c(1,2)],
+      t(
+        partrans(
+          object,
+          params=t(object@conv.rec)[-c(1,2),,drop=FALSE],
+          dir="fromEstimationScale"
+        )
+      )
+    )
+    names(dimnames(retval)) <- names(dimnames(object@conv.rec))
+  } else {
+    retval <- object@conv.rec
+  }
+  if (missing(pars)) {
+    retval
+  } else {
+    pars <- as.character(pars)
+    bad.pars <- setdiff(pars,colnames(retval))
+    if (length(bad.pars)>0)
+      stop(
+        "in ",sQuote("conv.rec"),": name(s) ",
+        paste(sQuote(bad.pars),collapse=","),
+        " correspond to no parameter(s) in ",
+        if (transform) sQuote("conv.rec(object,transform=TRUE)")
+        else sQuote("conv.rec(object,transform=FALSE)"),
+        call.=FALSE
+      )
+    retval[,pars,drop=FALSE]
+  }
+}
+
 mif2.diagnostics <- function (z) {
   ## assumes that z is a list of mif2d.pomps with identical structure
   mar.multi <- c(0,5.1,0,2.1)

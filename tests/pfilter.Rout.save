@@ -17,6 +17,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+> options(digits=4)
+> 
 > library(pomp)
 > 
 > pompExample(ou2)
@@ -25,110 +27,177 @@ newly created object(s):
 > 
 > set.seed(9994847L)
 > 
-> png(filename="pfilter-%02d.png",res=100)
-> 
 > pf <- pfilter(ou2,Np=1000)
-> print(coef(ou2,c('x1.0','x2.0','alpha.1','alpha.4')),digits=4)
-   x1.0    x2.0 alpha.1 alpha.4 
-   -3.0     4.0     0.8     0.9 
-> cat("particle filter log likelihood at truth\n")
-particle filter log likelihood at truth
-> print(pf$loglik,digits=4)
+> logLik(pf)
 [1] -478.2
+> stopifnot(logLik(pf)==sum(cond.logLik(pf)))
+> range(eff.sample.size(pf))
+[1]   5.083 241.359
+> range(cond.logLik(pf))
+[1] -8.157 -3.856
+> names(as(pf,"data.frame"))
+[1] "time"        "y1"          "y2"          "ess"         "cond.loglik"
+> identical(as(pf,"data.frame"),as.data.frame(pf))
+[1] TRUE
 > 
-> try(pfilter(ou2,Np=1000,params=c()))
-Error : in 'pfilter': 'params' must be specified
-> 
-> try(pfilter(ou2,Np=c(1000,10)))
+> try(pfilter(ou2))
+Error : in 'pfilter': 'Np' must be specified
+> try(pfilter(ou2,Np=NULL))
 Error : in 'pfilter': 'Np' must have length 1 or length 101
-> try(pfilter(ou2,Np=-100))
+> try(pfilter(ou2,Np=-10))
 Error : in 'pfilter': number of particles, 'Np', must always be positive
-> try(pfilter(ou2,Np="bob"))
-Error : in 'pfilter': 'Np' must be a number, a vector of numbers, or a function
-> try(pfilter(ou2,Np=100,params=matrix(0,nrow=3,ncol=100)))
+> try(pfilter(ou2,Np=c(10,20,30)))
+Error : in 'pfilter': 'Np' must have length 1 or length 101
+> invisible(pfilter(ou2,Np=ceiling(runif(101,min=10,max=100))))
+> try(pfilter(ou2,Np=100,tol=NA))
+Error : in 'pfilter': 'tol' should be a small positive number.
+> try(pfilter(ou2,Np=100,tol=-1))
+Error : in 'pfilter': 'tol' should be a small positive number.
+> try(pfilter(ou2,Np=100,tol=NULL))
+Error : in 'pfilter': 'tol' should be a small positive number.
+> try(pfilter(ou2,Np=100,tol=c(1,10,20)))
+Error : in 'pfilter': 'tol' should be a small positive number.
+> 
+> po <- ou2
+> coef(po) <- NULL
+> try(pfilter(po,Np=100))
+Error : in 'pfilter': 'params' must be specified
+> try(pfilter(po,Np=100,params=c()))
+Error : in 'pfilter': 'params' must be specified
+> try(pfilter(po,Np=100,params=NULL))
+Error : in 'pfilter': 'params' must be specified
+> try(pfilter(po,Np=100,params=c(1,2,3)))
+Error : in 'coef<-': 'value' must be a named vector
+> try(pfilter(po,Np=100,params=c(a=1,b=2,c=3)))
+Error : in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
+> try(pfilter(po,Np=100,params=list()))
+Error : in 'pfilter': 'params' must be specified
+> pf <- pfilter(po,Np=100,params=as.list(coef(ou2)))
+> 
+> pf <- pfilter(pf)
+> try(pfilter(pf,Np=-1000))
+Error : in 'pfilter': number of particles, 'Np', must always be positive
+> try(pfilter(pf,tol=-1))
+Error : in 'pfilter': 'tol' should be a small positive number.
+> stopifnot(all.equal(coef(pf),coef(ou2)))
+> theta <- coef(ou2)
+> theta["alpha.2"] <- 0.1
+> pf1 <- pfilter(pf,params=theta,Np=100)
+Warning message:
+in 'pfilter': 2 filtering failures occurred. 
+> stopifnot(identical(coef(pf1),theta))
+> 
+> pp <- parmat(coef(ou2),100)
+> pf <- pfilter(ou2,params=pp)
+> pf <- pfilter(pf1,params=pp)
+> try(pfilter(ou2,params=pp,Np=1000))
+Error : in 'pfilter': when 'params' is provided as a matrix, do not specify 'Np'!
+> rownames(pp) <- NULL
+> try(pfilter(ou2,params=pp))
 Error : in 'pfilter': 'params' must have rownames
-> try(pfilter(ou2,Np=1,max.fail=0))
-Error : in 'pfilter': too many filtering failures
-> try(replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) c(100,200) else 500)))
+> 
+> pf2 <- pfilter(ou2,Np=function(k)c(100,150)[(k-1)%%2+1])
+> table(pf2@Np)
+
+100 150 
+ 50  51 
+> try(pfilter(pf2,Np=function(k)c(100,-150)[(k-1)%%2+1]))
+Error : in 'pfilter': number of particles, 'Np', must always be positive
+> try(pfilter(pf2,Np=function(k)c(100,-150)))
 Error : in 'pfilter': if 'Np' is a function, it must return a single positive integer
-> pf <- replicate(n=10,pfilter(ou2,Np=function(k)if(k<10) 10000 else 500))
-> pf.ll <- sapply(pf,logLik)
-> ll.est <- log(mean(exp(pf.ll-mean(pf.ll))))+mean(pf.ll)
-> ll.se <- sd(exp(pf.ll-mean(pf.ll)))/exp(ll.est-mean(pf.ll))/sqrt(length(pf))
-> print(round(c(loglik=ll.est,loglik.se=ll.se),digits=2))
-   loglik loglik.se 
-  -480.50      0.39 
+> try(pfilter(pf2,Np="many"))
+Error : in 'pfilter': 'Np' must be a number, a vector of numbers, or a function
 > 
-> pompExample(euler.sir)
-newly created object(s):
- euler.sir 
-> pf <- pfilter(euler.sir,Np=100)
-> print(coef(pf))
-   gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
-2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
-     rho      S_0      I_0      R_0 
-6.00e-01 6.50e-02 1.00e-03 9.35e-01 
-> print(pf$loglik,digits=4)
-[1] -941
-> 
-> coef(pf,"rho") <- -1
-> try(pfilter(pf))
+> theta <- coef(ou2)
+> theta["sigma.2"] <- Inf
+> try(pfilter(pf,params=theta))
 Error : in 'pfilter': 'dmeasure' returns non-finite value.
 likelihood, data, states, and parameters are:
-   time:    0.0192308
+   time:            2
     lik:          NaN
-reports:          617
-      S:       136019
-      I:         2127
-      R:  1.96184e+06
-  cases:         1050
-      W:    0.0783467
-  gamma:           26
-     mu:         0.02
-   iota:         0.01
-  beta1:          400
-  beta2:          480
-  beta3:          320
-beta.sd:        0.001
-    pop:      2.1e+06
-    rho:           -1
-    S_0:        0.065
-    I_0:        0.001
-    R_0:        0.935
+     y1:      0.24217
+     y2:      7.03942
+     x1:         -Inf
+     x2:          NaN
+alpha.1:          0.8
+alpha.2:         -0.5
+alpha.3:          0.3
+alpha.4:          0.9
+sigma.1:            3
+sigma.2:          Inf
+sigma.3:            2
+    tau:            1
+   x1.0:           -3
+   x2.0:            4
+> theta <- coef(ou2)
+> theta["alpha.1"] <- 1e60
+> try(pfilter(pf,params=theta,pred.var=TRUE))
+Error : in 'pfilter': non-finite state variable(s): x1
 > 
-> p <- coef(euler.sir)
-> euler.sir@params <- numeric(0)
-> p["iota"] <- 1
-> pf <- pfilter(euler.sir,params=p,Np=100,filter.mean=TRUE)
-> print(coef(pf))
-   gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
-2.60e+01 2.00e-02 1.00e+00 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
-     rho      S_0      I_0      R_0 
-6.00e-01 6.50e-02 1.00e-03 9.35e-01 
-> print(logLik(pf),digits=4)
-[1] -940.2
-> plot(cond.loglik~time,data=as(pf,"data.frame"),type='l')
-> plot(ess~time,data=as.data.frame(pf),type='l')
-> plot(filter.mean.I~time,data=as(pf,"data.frame"),type='l')
+> try(pfilter(pf,rprocess=onestep.sim(
++   function(x, t, params, delta.t, ...)stop("yikes!"))))
+Error : in 'pfilter': process simulation error: yikes!
+> try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
+Error : in 'pfilter': error in calculation of weights: ouch!
+> try(pfilter(pf,dmeasure=function(y,x,t,params,log,...) -Inf))
+Error : in 'pfilter': 'dmeasure' returns non-finite value.
+likelihood, data, states, and parameters are:
+   time:            1
+    lik:         -Inf
+     y1:     -1.70082
+     y2:      4.24746
+     x1:      1.23799
+     x2:    -0.293585
+alpha.1:          0.8
+alpha.2:          0.1
+alpha.3:          0.3
+alpha.4:          0.9
+sigma.1:            3
+sigma.2:         -0.5
+sigma.3:            2
+    tau:            1
+   x1.0:           -3
+   x2.0:            4
 > 
-> pompExample(gompertz)
-newly created object(s):
- gompertz 
-> pfilter(gompertz,params=parmat(coef(gompertz),100)) -> pf
-> pfilter(gompertz,params=parmat(coef(gompertz),100),Np=100) -> pf
-> names(as.data.frame(pfilter(gompertz,Np=100,pred.mean=TRUE,pred.var=TRUE)))
-[1] "time"        "Y"           "ess"         "cond.loglik" "X"          
-[6] "X"          
-> pfilter(gompertz,params=as.list(coef(gompertz)),Np=100) -> pf
-> try(pfilter(gompertz) -> pf)
-Error : in 'pfilter': 'Np' must be specified
-> try(pfilter(gompertz,params=parmat(coef(gompertz),100),Np=1000) -> pf)
-Error : in 'pfilter': when 'params' is provided as a matrix, do not specify 'Np'!
-> coef(gompertz,"sigma") <- Inf
-> try(pfilter(gompertz,Np=1000,pred.var=TRUE))
-Error : in 'pfilter': non-finite state variable(s): X
+> set.seed(388966382L)
+> capture.output(try(pfilter(pf,Np=2,max.fail=20,verbose=TRUE)),
++   type="message") -> out
+pfilter timestep 5 of 100 finished
+pfilter timestep 10 of 100 finished
+pfilter timestep 15 of 100 finished
+pfilter timestep 20 of 100 finished
+> stopifnot(sum(grepl("filtering failure at",out))==21)
+> stopifnot(grepl("too many filtering failures",tail(out,1)))
 > 
-> dev.off()
-null device 
-          1 
+> pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE,save.params=TRUE)
+> pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
+> pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
+> pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
++                filter.traj=TRUE)
+Warning message:
+in 'pfilter': 100 filtering failures occurred. 
+> names(as(pf2,"data.frame"))
+ [1] "time"           "y1"             "y2"             "ess"           
+ [5] "cond.loglik"    "pred.mean.x1"   "pred.mean.x2"   "pred.var.x1"   
+ [9] "pred.var.x2"    "filter.mean.x1" "filter.mean.x2"
+> dim(filter.traj(pf3))
+[1]   2   1 100
+> dimnames(filter.traj(pf3))
+$variable
+[1] "x1" "x2"
+
+$rep
+[1] "1"
+
+$time
+  [1] "1"   "2"   "3"   "4"   "5"   "6"   "7"   "8"   "9"   "10"  "11"  "12" 
+ [13] "13"  "14"  "15"  "16"  "17"  "18"  "19"  "20"  "21"  "22"  "23"  "24" 
+ [25] "25"  "26"  "27"  "28"  "29"  "30"  "31"  "32"  "33"  "34"  "35"  "36" 
+ [37] "37"  "38"  "39"  "40"  "41"  "42"  "43"  "44"  "45"  "46"  "47"  "48" 
+ [49] "49"  "50"  "51"  "52"  "53"  "54"  "55"  "56"  "57"  "58"  "59"  "60" 
+ [61] "61"  "62"  "63"  "64"  "65"  "66"  "67"  "68"  "69"  "70"  "71"  "72" 
+ [73] "73"  "74"  "75"  "76"  "77"  "78"  "79"  "80"  "81"  "82"  "83"  "84" 
+ [85] "85"  "86"  "87"  "88"  "89"  "90"  "91"  "92"  "93"  "94"  "95"  "96" 
+ [97] "97"  "98"  "99"  "100"
+
 > 

@@ -18,21 +18,14 @@ importFrom(coda,mcmc,mcmc.list)
 
 exportClasses(
     pomp,
-    pfilterd.pomp,
-    kalmand.pomp,
-    mif2d.pomp,mif2List,
-    pmcmc,pmcmcList,
-    traj.matched.pomp,
-    nlfd.pomp,
-    probed.pomp,probe.matched.pomp,
-    spect.pomp,spect.matched.pomp,
-    abc,abcList,
     Csnippet
 )
 
 exportMethods(
     plot,show,print,spy,
-    coerce,summary,logLik,window,"$",
+    coerce,summary,window,
+    logLik,logEvidence,
+    cond.logLik,cond.logEvidence,
     pompLoad,pompUnload,
     dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
     dprior,rprior,
@@ -40,8 +33,9 @@ exportMethods(
     time,"time<-",timezero,"timezero<-",
     simulate,pfilter,
     enkf,eakf,
-    eff.sample.size,cond.logLik,
+    eff.sample.size,
     states,trajectory,
+    prior_samples,posterior_samples,
     mif2,continue,
     pred.mean,pred.var,filter.mean,filter.traj,
     conv.rec,values,

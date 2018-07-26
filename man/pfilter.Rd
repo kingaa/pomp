@@ -14,8 +14,6 @@
 \alias{pfilterd.pomp}
 \alias{logLik,pfilterd.pomp-method}
 \alias{logLik-pfilterd.pomp}
-\alias{$,pfilterd.pomp-method}
-\alias{$-pfilterd.pomp}
 \alias{pred.mean}
 \alias{pred.mean,pfilterd.pomp-method}
 \alias{pred.mean-pfilterd.pomp}

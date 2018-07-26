@@ -27,6 +27,7 @@ setGeneric("timezero",function(object,...)standardGeneric("timezero"))
 setGeneric("timezero<-",function(object,...,value)standardGeneric("timezero<-"))
 setGeneric("partrans",function(object,params,dir,...)standardGeneric("partrans"))
 setGeneric("logLik",function(object,...)standardGeneric("logLik"))
+setGeneric("logEvidence",function(object,...)standardGeneric("logEvidence"))
 
 ## internals
 setGeneric("pomp.fun",function(f,...)standardGeneric("pomp.fun"))
@@ -41,12 +42,16 @@ setGeneric("filter.mean",function(object,...)standardGeneric("filter.mean"))
 setGeneric("filter.traj",function(object,...)standardGeneric("filter.traj"))
 ## conditional log likelihood
 setGeneric("cond.logLik",function(object,...)standardGeneric("cond.logLik"))
+setGeneric("cond.logEvidence",function(object,...)standardGeneric("cond.logEvidence"))
 ## effective sample size
 setGeneric("eff.sample.size",function(object,...)standardGeneric("eff.sample.size"))
 ## convergence record
 setGeneric("conv.rec",function(object,...)standardGeneric("conv.rec"))
 ## values of probes
 setGeneric("values",function(object,...)standardGeneric("values"))
+## samples from prior and posterior distributions
+setGeneric("prior_samples",function(object,...)standardGeneric("prior_samples"))
+setGeneric("posterior_samples",function(object,...)standardGeneric("posterior_samples"))
 ## stochastic simulation
 setGeneric("simulate",function(object,nsim=1,seed=NULL,...)standardGeneric("simulate"))
 

@@ -37,6 +37,57 @@ setClass(
   )
 )
 
+setMethod(
+  "pfilter",
+  signature=signature(object="pomp"),
+  function (object, params, Np,
+            tol = 1e-17,
+            max.fail = Inf,
+            pred.mean = FALSE,
+            pred.var = FALSE,
+            filter.mean = FALSE,
+            filter.traj = FALSE,
+            save.states = FALSE,
+            save.params = FALSE,
+            verbose = getOption("verbose"),
+            ...) {
+    if (missing(params)) params <- coef(object)
+    pfilter.internal(
+      object=object,
+      params=params,
+      Np=Np,
+      tol=tol,
+      max.fail=max.fail,
+      pred.mean=pred.mean,
+      pred.var=pred.var,
+      filter.mean=filter.mean,
+      filter.traj=filter.traj,
+      save.states=save.states,
+      save.params=save.params,
+      verbose=verbose,
+      ...
+    )
+  }
+)
+
+setMethod(
+  "pfilter",
+  signature=signature(object="pfilterd.pomp"),
+  function (object, params, Np, tol, ...) {
+    if (missing(params)) params <- coef(object)
+    if (missing(Np)) Np <- object@Np
+    if (missing(tol)) tol <- object@tol
+    f <- selectMethod("pfilter","pomp")
+    f(
+      object=object,
+      params=params,
+      Np=Np,
+      tol=tol,
+      ...
+    )
+  }
+)
+
 pfilter.internal <- function (object, params, Np,
                               tol, max.fail,
                               pred.mean = FALSE,
@@ -47,23 +98,25 @@ pfilter.internal <- function (object, params, Np,
                               verbose = FALSE,
                               save.states = FALSE,
                               save.params = FALSE,
-                              .getnativesymbolinfo = TRUE) {
+                              .getnativesymbolinfo = TRUE,
+                              ...) {
 
   ep <- paste0("in ",sQuote("pfilter"),": ")
 
-  object <- as(object,"pomp")
-  pompLoad(object,verbose=verbose)
+  object <- as(pomp(object,...),"pomp")
 
-  gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
+  gnsi <- as.logical(.getnativesymbolinfo)
   pred.mean <- as.logical(pred.mean)
   pred.var <- as.logical(pred.var)
   filter.mean <- as.logical(filter.mean)
   filter.traj <- as.logical(filter.traj)
   verbose <- as.logical(verbose)
+  tol <- as.numeric(tol)
   save.states <- as.logical(save.states)
   save.params <- as.logical(save.params)
 
   if (is.list(params)) params <- unlist(params)
+  if (is.null(params)) params <- numeric(0)
   if (length(params)==0)
     stop(ep,sQuote("params")," must be specified",call.=FALSE)
 
@@ -99,8 +152,11 @@ pfilter.internal <- function (object, params, Np,
   if (is.matrix(params)) {
     if (!all(Np==ncol(params)))
       stop(ep,"when ",sQuote("params")," is provided as a matrix, do not specify ",
-        sQuote("Np"),"!",call.=FALSE)
+           sQuote("Np"),"!",call.=FALSE)
   }
+
+  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
+    stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
 
   if (NCOL(params)==1) {        # there is only one parameter vector
     one.par <- TRUE
@@ -112,7 +168,10 @@ pfilter.internal <- function (object, params, Np,
   if (is.null(paramnames))
     stop(ep,sQuote("params")," must have rownames",call.=FALSE)
 
-  init.x <- init.state(object,params=params,nsim=Np[1L])
+  pompLoad(object,verbose=verbose)
+
+  init.x <- init.state(object,params=params,nsim=Np[1L],
+                       .getnativesymbolinfo=gnsi)
   statenames <- rownames(init.x)
   nvars <- nrow(init.x)
   x <- init.x
@@ -197,14 +256,13 @@ pfilter.internal <- function (object, params, Np,
         times=times[c(nt,nt+1)],
         params=params,
         offset=1,
-        .getnativesymbolinfo=gnsi.rproc
+        .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
         stop(ep,"process simulation error: ",
              conditionMessage(e),call.=FALSE)
       }
     )
-    gnsi.rproc <- FALSE
 
     if (pred.var) { ## check for nonfinite state variables and parameters
       problem.indices <- unique(which(!is.finite(X),arr.ind=TRUE)[,1L])
@@ -226,7 +284,7 @@ pfilter.internal <- function (object, params, Np,
         times=times[nt+1],
         params=params,
         log=FALSE,
-        .getnativesymbolinfo=gnsi.dmeas
+        .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
         stop(ep,"error in calculation of weights: ",
@@ -242,7 +300,8 @@ pfilter.internal <- function (object, params, Np,
       msg <- nonfinite_dmeasure_error(time=times[nt+1],lik=weight,datvals,states,params)
       stop(ep,msg,call.=FALSE)
     }
-    gnsi.dmeas <- FALSE
+
+    gnsi <- FALSE
 
     ## compute prediction mean, prediction variance, filtering mean,
     ## effective sample size, log-likelihood
@@ -359,57 +418,6 @@ pfilter.internal <- function (object, params, Np,
     loglik=sum(loglik)
   )
 }
-
-setMethod(
-  "pfilter",
-  signature=signature(object="pomp"),
-  function (object, params, Np,
-            tol = 1e-17,
-            max.fail = Inf,
-            pred.mean = FALSE,
-            pred.var = FALSE,
-            filter.mean = FALSE,
-            filter.traj = FALSE,
-            save.states = FALSE,
-            save.params = FALSE,
-            verbose = getOption("verbose"),
-            ...) {
-    if (missing(params)) params <- coef(object)
-    pfilter.internal(
-      object=object,
-      params=params,
-      Np=Np,
-      tol=tol,
-      max.fail=max.fail,
-      pred.mean=pred.mean,
-      pred.var=pred.var,
-      filter.mean=filter.mean,
-      filter.traj=filter.traj,
-      save.states=save.states,
-      save.params=save.params,
-      verbose=verbose,
-      ...
-    )
-  }
-)
-
-setMethod(
-  "pfilter",
-  signature=signature(object="pfilterd.pomp"),
-  function (object, params, Np, tol, ...) {
-    if (missing(params)) params <- coef(object)
-    if (missing(Np)) Np <- object@Np
-    if (missing(tol)) tol <- object@tol
-    f <- selectMethod("pfilter","pomp")
-    f(
-      object=object,
-      params=params,
-      Np=Np,
-      tol=tol,
-      ...
-    )
-  }
-)
 
 nonfinite_dmeasure_error <- function (time, lik, datvals, states, params) {
   showvals <- c(time=time,lik=lik,datvals,states,params)

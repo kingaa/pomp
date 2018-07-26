@@ -7,34 +7,75 @@
 ## est = names of parameters to estimate; other parameters are not updated.
 ## smooth = parameter 'h' from AGM
 
+setClass(
+  "bsmcd.pomp",
+  contains="pomp",
+  slots=c(
+    transform="logical",
+    post="array",
+    prior="array",
+    est="character",
+    eff.sample.size="numeric",
+    smooth="numeric",
+    nfail="integer",
+    cond.log.evidence="numeric",
+    log.evidence="numeric"
+  )
+)
+
+setMethod(
+  "bsmc2",
+  signature=signature(object="pomp"),
+  definition = function (object, params, Np, est,
+                         smooth = 0.1, tol = 1e-17,
+                         verbose = getOption("verbose"),
+                         max.fail = 0, transform = FALSE,
+                         ...) {
+    bsmc2.internal(
+      object=object,
+      params=params,
+      Np=Np,
+      est=est,
+      smooth=smooth,
+      tol=tol,
+      verbose=verbose,
+      max.fail=max.fail,
+      transform=transform,
+      ...
+    )
+  }
+)
+
 bsmc2.internal <- function (object, params, Np, est,
-  smooth, tol, verbose = getOption("verbose"),
-  max.fail, transform, .getnativesymbolinfo = TRUE,
-  ...) {
+                            smooth, tol, verbose = getOption("verbose"),
+                            max.fail, transform, .getnativesymbolinfo = TRUE,
+                            ...) {
 
   ep <- paste0("in ",sQuote("bsmc2"),": ")
 
-  object <- as(object,"pomp")
-  pompLoad(object,verbose=verbose)
+  object <- as(pomp(object,...),"pomp")
 
-  gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
-  ptsi.inv <- ptsi.for <- TRUE
+  gnsi <- as.logical(.getnativesymbolinfo)
   transform <- as.logical(transform)
 
   if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
-  if (length(params)==0) stop(ep,sQuote("params")," must be supplied",call.=FALSE)
+  if (is.null(params)) params <- numeric(0)
+  if (length(params)==0) stop(ep,"parameters must be supplied",call.=FALSE)
 
   if (missing(Np)) Np <- NCOL(params)
-  else if (is.matrix(params)&&(Np!=ncol(params))) {
+  else if (is.matrix(params) && (Np!=ncol(params))) {
     warning(ep,sQuote("Np")," is ignored when ",sQuote("params"),
-      " is a matrix",call.=FALSE)
+            " is a matrix",call.=FALSE)
     Np <- ncol(params)
   }
 
+  if (!is.finite(Np) || Np < 1)
+    stop(ep,sQuote("Np")," must be a positive integer.",call.=FALSE)
+
   if ((!is.matrix(params)) && (Np > 1)) {
     params <- tryCatch(
-      rprior(object,params=parmat(params,Np)),
+      rprior(object,params=parmat(params,Np),.getnativesymbolinfo=gnsi),
       error = function (e) {
         stop(ep,sQuote("rprior")," error: ",conditionMessage(e),call.=FALSE)
       }
@@ -43,16 +84,16 @@ bsmc2.internal <- function (object, params, Np, est,
 
   if (transform)
     params <- partrans(object,params,dir="toEstimationScale",
-      .getnativesymbolinfo=ptsi.inv)
-  ptsi.inv <- FALSE
+                       .getnativesymbolinfo=gnsi)
 
   params <- as.matrix(params)
+  if (!is.numeric(params) || is.null(rownames(params)))
+    stop(ep,sQuote("params")," should be suppled as a numeric matrix with rownames",
+         " or a named numeric vector.",call.=FALSE)
 
   ntimes <- length(time(object))
   npars <- nrow(params)
   paramnames <- rownames(params)
-  if (is.null(paramnames))
-    stop(ep,sQuote("params")," must have rownames",call.=FALSE)
   prior <- params
 
   if (missing(est))
@@ -62,30 +103,37 @@ bsmc2.internal <- function (object, params, Np, est,
   if (any(is.na(estind))) {
     ind <- which(is.na(estind))
     stop(ep,"parameter(s) ",
-      paste(sapply(est[ind],sQuote),collapse=","),
-      " not found.",call.=FALSE)
+         paste(sapply(est[ind],sQuote),collapse=","),
+         " not found.",call.=FALSE)
   }
 
   if (npars.est<1)
     stop(ep,"no parameters to estimate",call.=FALSE)
 
-  if ((length(smooth)!=1)||(smooth>1)||(smooth<=0))
+  smooth <- as.numeric(smooth)
+  if ((length(smooth)!=1) || (!is.finite(smooth)) || (smooth>1) || (smooth<=0))
     stop(ep,sQuote("smooth")," must be a scalar in (0,1]",call.=FALSE)
 
   hsq <- smooth^2             #  see Liu & West eq(10.3.12)
   shrink <- sqrt(1-hsq)       #  'a' parameter of Liu & West
 
+  tol <- as.numeric(tol)
+  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
+    stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
+
+  pompLoad(object,verbose=verbose)
+
   xstart <- init.state(
     object,
     params=if (transform) {
       partrans(object,params,dir="fromEstimationScale",
-        .getnativesymbolinfo=ptsi.for)
+               .getnativesymbolinfo=gnsi)
     } else {
       params
-    }
+    },
+    .getnativesymbolinfo=gnsi
   )
   nvars <- nrow(xstart)
-  ptsi.for <- FALSE
 
   times <- time(object,t0=TRUE)
   x <- xstart
@@ -107,7 +155,7 @@ bsmc2.internal <- function (object, params, Np, est,
     params.var  <- cov(t(params[estind,,drop=FALSE]))
 
     if (verbose) {
-      cat("at step ",nt," (time =",times[nt+1],")\n",sep="")
+      cat("at step ",nt," (time = ",times[nt+1],")\n",sep="")
       print(
         rbind(
           prior.mean=params.mean[estind],
@@ -137,7 +185,7 @@ bsmc2.internal <- function (object, params, Np, est,
 
     if (transform)
       tparams <- partrans(object,params,dir="fromEstimationScale",
-        .getnativesymbolinfo=ptsi.for)
+                          .getnativesymbolinfo=gnsi)
 
     xpred <- rprocess(
       object,
@@ -149,9 +197,8 @@ bsmc2.internal <- function (object, params, Np, est,
         params
       },
       offset=1,
-      .getnativesymbolinfo=gnsi.rproc
+      .getnativesymbolinfo=gnsi
     )
-    gnsi.rproc <- FALSE
 
     ## evaluate likelihood of observation given xpred (from L&W AGM (4))
     weights <- tryCatch(
@@ -165,14 +212,15 @@ bsmc2.internal <- function (object, params, Np, est,
         } else {
           params
         },
-        .getnativesymbolinfo=gnsi.dmeas
+        .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
         stop(ep,sQuote("dmeasure")," error: ",conditionMessage(e),call.=FALSE)
       }
     )
 
-    gnsi.dmeas <- FALSE
+    gnsi <- FALSE  ## all native symbols have been looked up
+
     ## evaluate weights as per L&W AGM (5)
 
     storeForEvidence <- log(mean(weights))
@@ -213,8 +261,6 @@ bsmc2.internal <- function (object, params, Np, est,
       params[estind,] <- params[estind,smp,drop=FALSE]
     }
 
-    .getnativesymbolinfo <- FALSE
-
   }
 
   if (nfail>0)
@@ -247,26 +293,3 @@ bsmc2.internal <- function (object, params, Np, est,
     log.evidence=sum(evidence)
   )
 }
-
-setMethod(
-  "bsmc2",
-  signature=signature(object="pomp"),
-  definition = function (object, params, Np, est,
-    smooth = 0.1, tol = 1e-17,
-    verbose = getOption("verbose"),
-    max.fail = 0, transform = FALSE,
-    ...) {
-    bsmc2.internal(
-      object=object,
-      params=params,
-      Np=Np,
-      est=est,
-      smooth=smooth,
-      tol=tol,
-      verbose=verbose,
-      max.fail=max.fail,
-      transform=transform,
-      ...
-    )
-  }
-)

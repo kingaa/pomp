@@ -39,7 +39,7 @@ Collate: aaa.R authors.R bake.R generics.R eulermultinom.R
 	 dprior_pomp.R rprior_pomp.R
 	 simulate_pomp.R trajectory_pomp.R plot_pomp.R
 	 pfilter.R pfilter_methods.R minim.R traj_match.R
-	 bsmc2.R	 
+	 bsmc2.R bsmc2_methods.R
 	 kalman.R kalman_methods.R 
 	 mif2.R mif2_methods.R
 	 proposals.R pmcmc.R pmcmc_methods.R

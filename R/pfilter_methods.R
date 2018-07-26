@@ -1,12 +1,5 @@
 ## methods for the 'pfilterd.pomp' class
 
-## simple extractors
-setMethod(
-    "$",
-    signature=signature(x="pfilterd.pomp"),
-    definition=function (x,name) slot(x,name)
-)
-
 setMethod(
     "logLik",
     signature=signature(object="pfilterd.pomp"),
