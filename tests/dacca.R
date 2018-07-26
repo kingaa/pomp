@@ -1,14 +1,13 @@
 library(pomp)
 
-set.seed(1420306530L)
-
 pompExample(dacca)
+
+set.seed(1420306530L)
 
 x <- as.data.frame(dacca)
 x <- simulate(dacca,nsim=3,as.data.frame=TRUE)
 
 pf <- pfilter(dacca,Np=1000)
-pf1 <- pfilter(simulate(dacca),Np=1000)
 
 dacca2 <- dacca
 coef(dacca2,c("rho","clin")) <- c(2,0.1)
