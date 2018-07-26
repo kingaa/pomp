@@ -3,7 +3,9 @@ options(digits=2)
 
 library(pomp)
 suppressPackageStartupMessages(library(reshape2))
-suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(ggplot2))
 
 pompExample(gompertz)
 set.seed(398585L)
@@ -74,6 +76,5 @@ try(bsmc2(smc,params=theta,est="r",Np=100,
 theta <- coef(gompertz)
 theta["K"] <- 1
 try(capture.output(bsmc2(po,Np=2,params=theta,tol=1,max.fail=1,verbose=TRUE)) -> out)
-
 
 dev.off()

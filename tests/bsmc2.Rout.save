@@ -22,7 +22,9 @@ Type 'q()' to quit R.
 > 
 > library(pomp)
 > suppressPackageStartupMessages(library(reshape2))
-> suppressPackageStartupMessages(library(tidyverse))
+> suppressPackageStartupMessages(library(tidyr))
+> suppressPackageStartupMessages(library(dplyr))
+> suppressPackageStartupMessages(library(ggplot2))
 > 
 > pompExample(gompertz)
 newly created object(s):
@@ -129,7 +131,6 @@ Error : in 'bsmc2': 'dmeasure' error: whoa nelly!
 filtering failure at time t = 2
 filtering failure at time t = 3
 Error : in 'bsmc2': too many filtering failures
-> 
 > 
 > dev.off()
 null device 
