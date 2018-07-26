@@ -63,3 +63,134 @@
 - SDE examples
 - LPA beetle examples
 - budmoth examples
+
+## Tests
+
+### Unreconstructed:
+
+tests/bsplines.R
+tests/design.R
+tests/eulermultinom.R
+
+tests/prior.R
+tests/procmeas.R
+tests/proposals.R
+tests/partrans.R
+
+tests/dacca.R
+tests/logistic.R
+tests/ou2.R
+tests/rw2.R
+tests/sir2.R
+tests/sir.R
+
+tests/dimchecks.R
+tests/dp.R
+tests/fhn.R
+tests/filtfail.R
+tests/forecast.R
+
+tests/getting_started.R
+
+tests/gillespie2.R
+tests/gillespie.R
+tests/issue56.R
+
+tests/kalman.R
+
+tests/mif2-index.R
+tests/mif2.R
+
+tests/nlf.R
+
+tests/pmcmc.R
+
+tests/pomp.R
+
+tests/probe.R
+
+tests/sannbox.R
+
+tests/spect.R
+
+tests/steps.R
+
+tests/synlik.R
+
+tests/trajmatch.R
+
+### Groups of related functions:
+
+R/generics.R
+
+R/eulermultinom.R
+R/parmat.R
+R/sobol.R
+R/profile_design.R
+R/slice_design.R
+R/bsplines.R
+R/logmeanexp.R
+
+R/builder.R
+R/load.R
+R/plugins.R
+R/pomp_class.R
+R/pomp_fun.R
+R/pomp_methods.R
+R/pomp.R
+
+R/initstate_pomp.R
+R/dprior_pomp.R
+R/dprocess_pomp.R
+R/rmeasure_pomp.R
+R/rprior_pomp.R
+R/rprocess_pomp.R
+R/trajectory_pomp.R
+
+R/basic_probes.R
+R/probe_match.R
+R/probe.R
+
+R/kalman_methods.R
+R/kalman.R
+
+R/mif2_methods.R
+R/mif2.R
+
+R/minim.R
+
+R/nlf_funcs.R
+R/nlf_guts.R
+R/nlf_objfun.R
+R/nlf.R
+
+R/plot_pomp.R
+
+R/pmcmc_methods.R
+R/pmcmc.R
+R/proposals.R
+R/covmat.R
+
+R/sannbox.R
+
+R/simulate_pomp.R
+
+R/spect_match.R
+R/spect.R
+
+R/traj_match.R
+
+### Examples:
+
+- dacca.R
+- euler.sir.R
+- gillespie.sir.R
+- ou2.R
+- rw2.R
+
+### demos:
+
+- gompertz.R
+- logistic.R
+- rw2.R
+- sir.R
