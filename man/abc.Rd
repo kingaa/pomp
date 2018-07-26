@@ -92,10 +92,9 @@
     If \code{FALSE}, draw traceplots.
   }
   \item{x}{\code{abc} object.}
-  \item{y}{Ignored.}
+  \item{y}{Ignored, with a warning.}
   \item{\dots}{
-    Additional arguments.
-    These are currently ignored.
+    Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
   }
 }
 \section{Running ABC}{
@@ -148,6 +147,6 @@
 }
 \author{Edward L. Ionides, Aaron A. King}
 \seealso{
-  \code{\link{pomp}}, \code{\link{probe}}, \link{MCMC proposal distributions}, and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.  
+  \code{\link{pomp}}, \code{\link{probe}}, \link{MCMC proposal distributions}, and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 }
 \keyword{ts}

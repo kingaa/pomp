@@ -27,10 +27,9 @@ setMethod(
   "bsmc2",
   signature=signature(object="pomp"),
   definition = function (object, params, Np, est,
-                         smooth = 0.1, tol = 1e-17,
-                         verbose = getOption("verbose"),
-                         max.fail = 0, transform = FALSE,
-                         ...) {
+    smooth = 0.1, tol = 1e-17,
+    max.fail = 0, transform = FALSE, ...,
+    verbose = getOption("verbose")) {
     bsmc2.internal(
       object=object,
       params=params,
@@ -47,9 +46,9 @@ setMethod(
 )
 
 bsmc2.internal <- function (object, params, Np, est,
-                            smooth, tol, verbose = getOption("verbose"),
-                            max.fail, transform, .getnativesymbolinfo = TRUE,
-                            ...) {
+  smooth, tol, verbose = getOption("verbose"),
+  max.fail, transform, .getnativesymbolinfo = TRUE,
+  ...) {
 
   ep <- paste0("in ",sQuote("bsmc2"),": ")
 
@@ -66,7 +65,7 @@ bsmc2.internal <- function (object, params, Np, est,
   if (missing(Np)) Np <- NCOL(params)
   else if (is.matrix(params) && (Np!=ncol(params))) {
     warning(ep,sQuote("Np")," is ignored when ",sQuote("params"),
-            " is a matrix",call.=FALSE)
+      " is a matrix",call.=FALSE)
     Np <- ncol(params)
   }
 
@@ -84,12 +83,12 @@ bsmc2.internal <- function (object, params, Np, est,
 
   if (transform)
     params <- partrans(object,params,dir="toEstimationScale",
-                       .getnativesymbolinfo=gnsi)
+      .getnativesymbolinfo=gnsi)
 
   params <- as.matrix(params)
   if (!is.numeric(params) || is.null(rownames(params)))
     stop(ep,sQuote("params")," should be suppled as a numeric matrix with rownames",
-         " or a named numeric vector.",call.=FALSE)
+      " or a named numeric vector.",call.=FALSE)
 
   ntimes <- length(time(object))
   npars <- nrow(params)
@@ -103,8 +102,8 @@ bsmc2.internal <- function (object, params, Np, est,
   if (any(is.na(estind))) {
     ind <- which(is.na(estind))
     stop(ep,"parameter(s) ",
-         paste(sapply(est[ind],sQuote),collapse=","),
-         " not found.",call.=FALSE)
+      paste(sapply(est[ind],sQuote),collapse=","),
+      " not found.",call.=FALSE)
   }
 
   if (npars.est<1)
@@ -127,7 +126,7 @@ bsmc2.internal <- function (object, params, Np, est,
     object,
     params=if (transform) {
       partrans(object,params,dir="fromEstimationScale",
-               .getnativesymbolinfo=gnsi)
+        .getnativesymbolinfo=gnsi)
     } else {
       params
     },
@@ -185,7 +184,7 @@ bsmc2.internal <- function (object, params, Np, est,
 
     if (transform)
       tparams <- partrans(object,params,dir="fromEstimationScale",
-                          .getnativesymbolinfo=gnsi)
+        .getnativesymbolinfo=gnsi)
 
     xpred <- rprocess(
       object,
