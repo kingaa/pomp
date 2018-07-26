@@ -1,0 +1,101 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> 
+> library(pomp)
+> library(magrittr)
+> library(tidyr)
+
+Attaching package: 'tidyr'
+
+The following object is masked from 'package:magrittr':
+
+    extract
+
+> library(dplyr)
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> 
+> set.seed(1546383977L)
+> 
+> plist <- list(
++   y1.mean=probe.mean(var="Y"),
++   probe.acf(var="Y",lags=c(0,4,8))
++ )
+> 
+> gompertz %>%
++   probe(probes=plist,nsim=100) %>%
++   values() %>%
++   filter(.id=="sim") %>%
++   select(-.id) %>%
++   gather(variable,value) %>%
++   group_by(variable) %>%
++   summarize(value=(sd(value))) %>%
++   ungroup() %>%
++   spread(variable,value) %>%
++   unlist() -> scale.dat
+> 
+> abc(
++   gompertz,
++   dprior=Csnippet("
++     lik = dunif(K,0,2,1)+dunif(r,0,1,1)+
++       dunif(tau,0,1,1)+dunif(sigma,0,1,1);
++     lik = (give_log) ? lik : exp(lik);"),
++   paramnames=c("K","sigma","tau","r"),
++   Nabc=100,probes=plist,
++   scale=scale.dat,epsilon=10,
++   proposal=mvn.diag.rw(c(K=0.01,r=0.01,sigma=0.01,tau=0.01))
++ ) -> a1
+> 
+> replicate(3,
++   abc(
++     a1,
++     Nabc=500,probes=plist,
++     scale=scale.dat,epsilon=10,
++     proposal=mvn.diag.rw(c(K=0.01,r=0.01,sigma=0.01,tau=0.01))
++   )) -> a1
+> do.call(c,a1) -> a1
+> 
+> covmat(a1[[1]])
+              K         r     sigma       tau
+K      0.002857 -0.000019 -6.89e-04 -3.24e-04
+r     -0.000019  0.050648 -4.68e-04  2.92e-02
+sigma -0.000689 -0.000468  1.05e-03 -3.22e-05
+tau   -0.000324  0.029233 -3.22e-05  1.84e-02
+> covmat(a1)
+             K        r    sigma      tau
+K      0.01234 -0.01004 -0.00207  0.00981
+r     -0.01004  0.04172  0.00279 -0.00186
+sigma -0.00207  0.00279  0.00315 -0.00296
+tau    0.00981 -0.00186 -0.00296  0.02267
+> 
