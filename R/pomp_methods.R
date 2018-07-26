@@ -26,12 +26,11 @@ as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 
 ## parameter transformations
 partrans.internal <- function (object, params,
-                               dir = c("fromEstimationScale",
-                                       "toEstimationScale"),
-                               .getnativesymbolinfo = TRUE, ...) {
+  dir = c("fromEstimationScale", "toEstimationScale"),
+  .getnativesymbolinfo = TRUE, ...) {
   if (!object@has.trans) return(params)
+  dir <- switch(dir,fromEstimationScale=1L,toEstimationScale=-1L)
   pompLoad(object)
-  dir <- switch(match.arg(dir),fromEstimationScale=1L,toEstimationScale=-1L)
   rv <- .Call(do_partrans,object,params,dir,.getnativesymbolinfo)
   pompUnload(object)
   rv
@@ -41,8 +40,10 @@ setMethod(
   "partrans",
   signature=signature(object="pomp"),
   definition=function (object, params,
-    dir = c("fromEstimationScale", "toEstimationScale"), ...)
+    dir = c("fromEstimationScale", "toEstimationScale"), ...) {
+    dir <- match.arg(dir)
     partrans.internal(object=object,params=params,dir=dir,...)
+  }
 )
 
 
@@ -52,7 +53,7 @@ obs.internal <- function (object, vars, ...) {
     vars <- varnames
   else if (!all(vars%in%varnames))
     stop("in ",sQuote("obs"),": some elements of ",
-         sQuote("vars")," correspond to no observed variable",call.=FALSE)
+      sQuote("vars")," correspond to no observed variable",call.=FALSE)
   y <- object@data[vars,,drop=FALSE]
   dimnames(y) <- list(variable=rownames(y),time=time(object))
   y
@@ -166,10 +167,10 @@ setMethod(
     if (value[1L]>object@times[1L])
       if (!is.numeric(value) || length(value) > 1L)
         stop(ep,"the zero-time ",sQuote("t0"),
-             " must be a single number",call.=FALSE)
+          " must be a single number",call.=FALSE)
     if (value > object@times[1L])
       stop(ep,"the zero-time ",sQuote("t0"),
-           " must occur no later than the first observation",call.=FALSE)
+        " must occur no later than the first observation",call.=FALSE)
     storage.mode(value) <- "double"
     object@t0 <- value
     object
@@ -192,9 +193,9 @@ setMethod(
         excl <- setdiff(pars,names(params))
         if (length(excl)>0) {
           stop("in ",sQuote("coef"),": name(s) ",
-               paste(sQuote(excl),collapse=","),
-               " correspond to no parameter(s)",
-               call.=FALSE)
+            paste(sQuote(excl),collapse=","),
+            " correspond to no parameter(s)",
+            call.=FALSE)
         }
       }
       params[pars]
@@ -220,7 +221,7 @@ setMethod(
         if (is.null(pars)) {
           if (transform)
             stop(ep,"parameter.transform(",sQuote("value"),
-                 ") must be a named vector",call.=FALSE)
+              ") must be a named vector",call.=FALSE)
           else
             stop(ep,sQuote("value")," must be a named vector",call.=FALSE)
         }
@@ -244,10 +245,10 @@ setMethod(
         excl <- !(pars%in%names(params)) ## new parameter names
         if (any(excl)) { ## append parameters
           warning(ep,"name(s) ",
-                  paste(sQuote(pars[excl]),collapse=","),
-                  " do not refer to existing parameter(s);",
-                  " they are being concatenated",
-                  call.=FALSE)
+            paste(sQuote(pars[excl]),collapse=","),
+            " do not refer to existing parameter(s);",
+            " they are being concatenated",
+            call.=FALSE)
           params <- c(params,val[excl])
         }
         params[pars] <- val
@@ -275,17 +276,17 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (object) {
     cat(length(object@times),"records of",
-        nrow(obs(object)),"observables,",
-        "recorded from t =",
-        min(object@times),"to",max(object@times),"\n")
+      nrow(obs(object)),"observables,",
+      "recorded from t =",
+      min(object@times),"to",max(object@times),"\n")
     cat("summary of data:\n")
     print(summary(as.data.frame(t(obs(object)))))
     cat("zero time, t0 = ",object@t0,"\n",sep="")
     if (length(object@tcovar)>0) {
       cat(nrow(object@covar),"records of",
-          ncol(object@covar),"covariates,",
-          "recorded from t =",min(object@tcovar),
-          "to",max(object@tcovar),"\n")
+        ncol(object@covar),"covariates,",
+        "recorded from t =",min(object@tcovar),
+        "to",max(object@tcovar),"\n")
       cat("summary of covariates:\n")
       print(summary(as.data.frame(object@covar)))
     }
@@ -315,10 +316,10 @@ setMethod(
     cat("prior density, dprior = ")
     show(object@dprior)
     cat("skeleton ",
-        if (object@skeleton.type!="undef")
-          paste0("(",object@skeleton.type,") ")
-        else "",
-        "= ",sep="")
+      if (object@skeleton.type!="undef")
+        paste0("(",object@skeleton.type,") ")
+      else "",
+      "= ",sep="")
     show(object@skeleton)
     cat("initializer = ")
     show(object@initializer)
@@ -334,8 +335,8 @@ setMethod(
     }
     if (length(object@userdata)>0) {
       cat("extra user-defined variables: ",
-          paste(sapply(names(object@userdata),sQuote),collapse=", "),
-          "\n")
+        paste(sapply(names(object@userdata),sQuote),collapse=", "),
+        "\n")
     }
     invisible(NULL)
   }
