@@ -307,15 +307,6 @@ setMethod("construct_pomp",
   }
 )
 
-setMethod("construct_pomp",
-  signature=signature(data="ANY"),
-  definition = function (data, ...) {
-    ep <- paste0("in ",sQuote("pomp"),": ")
-    stop(ep,sQuote("data")," must be a data frame or an object of class ",
-      sQuote("pomp"),call.=FALSE)
-  }
-)
-
 pomp.internal <- function (data, times, t0,
   rprocess, dprocess, rmeasure, dmeasure,
   skeleton, .skel.type, .skelmap.delta.t,
