@@ -230,6 +230,8 @@ setMethod("construct_pomp",
 
     ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
 
+    data <- as(data,"pomp")
+
     if (missing(times)) {
       times <- data@times
     } else {

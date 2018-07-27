@@ -104,7 +104,7 @@ pfilter.internal <- function (object, params, Np,
 
   ep <- paste0("in ",sQuote("pfilter"),": ")
 
-  object <- pomp(as(object,"pomp"),...)
+  object <- pomp(object,...)
 
   gnsi <- as.logical(.getnativesymbolinfo)
   pred.mean <- as.logical(pred.mean)

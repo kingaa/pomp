@@ -52,7 +52,7 @@ bsmc2.internal <- function (object, params, Np, est,
 
   ep <- paste0("in ",sQuote("bsmc2"),": ")
 
-  object <- pomp(as(object,"pomp"),...)
+  object <- pomp(object,...)
 
   gnsi <- as.logical(.getnativesymbolinfo)
   transform <- as.logical(transform)

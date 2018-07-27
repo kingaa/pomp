@@ -131,7 +131,8 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
 
   ep <- paste0("in ",sQuote("abc"),": ")
 
-  object <- pomp(as(object,"pomp"),...)
+  object <- pomp(object,...)
+
   gnsi <- as.logical(.getnativesymbolinfo)
   .ndone <- as.integer(.ndone)
   .accepts <- as.integer(.accepts)

@@ -121,7 +121,7 @@ pmcmc.internal <- function (object, Nmcmc,
   .prev.pfp = NULL, .prev.log.prior = NULL,
   .getnativesymbolinfo = TRUE) {
 
-  object <- pomp(as(object,"pomp"),...)
+  object <- pomp(object,...)
 
   gnsi <- as.logical(.getnativesymbolinfo)
   verbose <- as.logical(verbose)
