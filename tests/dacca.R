@@ -1,85 +1,11 @@
+options(digits=3)
 library(pomp)
 
 pompExample(dacca)
 
 set.seed(1420306530L)
 
-x <- as.data.frame(dacca)
 x <- simulate(dacca,nsim=3,as.data.frame=TRUE)
-
+stopifnot(all.equal(round(sum(x$cholera.deaths),2),1011741.66))
 pf <- pfilter(dacca,Np=1000)
-
-dacca2 <- dacca
-coef(dacca2,c("rho","clin")) <- c(2,0.1)
-pf2 <- pfilter(simulate(dacca2),Np=1000)
-
-## to investigate the rogue crash:
-
-param.tab <- read.csv2(text='
-"";"gamma";"eps";"rho";"delta";"deltaI";"clin";"alpha";"beta_trend";"logbeta1";"logbeta2";"logbeta3";"logbeta4";"logbeta5";"logbeta6";"logomega1";"logomega2";"logomega3";"logomega4";"logomega5";"logomega6";"sd_beta";"tau";"S_0";"I_0";"Y_0";"R1_0";"R2_0";"R3_0"
-"mle1";20,8;19,1;0;0,02;0,06;1;1;-0,00498;0,747;6,38;-3,44;4,23;3,33;4,55;-1,6928195214;-2,5433835795;-2,8404393891;-4,6918179927;-8,4779724783;-4,3900588064;3,13;0,23;0,621;0,378;0;0,000843;0,000972;1,16e-07
-"box_min";10;0,2;0;0,02;0,03;1;1;-0,01;-4;0;-4;0;0;0;-10;-10;-10;-10;-10;-10;1;0,1;0;0;0;0;0;0
-"box_max";40;30;0;0,02;0,6;1;1;0;4;8;4;8;8;8;0;0;0;0;0;0;5;0,5;1;1;0;1;1;1
-',
-                       row.names=1
-                       )
-
-dacca.hyperparams <- list(
-                          min=unlist(param.tab["box_min",]),
-                          max=unlist(param.tab["box_max",])
-                          )
-
-dacca.rprior <- function (hyperparams, ...) {
-  r <- runif(length(hyperparams$min),min=hyperparams$min,max=hyperparams$max)
-  names(r) <- names(hyperparams$min)
-  r
-}
-
-op <- options(warn=-1)
-
-set.seed(7777+7)
-params.tricky <- dacca.rprior(dacca.hyperparams)
-m7 <- mif2(dacca,
-           Nmif=2,
-           start=params.tricky,
-           Np=100,
-           rw.sd=rw.sd(
-               gamma=0.1, eps=0.1, deltaI=0.1,
-               beta_trend=0.1,
-               logbeta1=0.1, logbeta2=0.1, logbeta3=0.1,
-               logbeta4=0.1, logbeta5=0.1, logbeta6=0.1,
-               logomega1=0.1, logomega2=0.1, logomega3=0.1,
-               logomega4=0.1, logomega5=0.1, logomega6=0.1,
-               sd_beta=0.1, tau=0.1,
-               S_0=ivp(0.2), I_0=ivp(0.2), R1_0=ivp(0.2),
-               R2_0=ivp(0.2), R3_0=ivp(0.2)
-           ),
-           cooling.type="geometric",
-           cooling.fraction.50=sqrt(0.1),
-           transform=TRUE
-           )
-m7 <- continue(m7)
-
-set.seed(12350)
-th.draw <- dacca.rprior(dacca.hyperparams)
-m1 <- mif2(dacca,
-           Nmif=10,
-           Np=100,
-           start=th.draw,
-           rw.sd=rw.sd(
-               gamma=0.1, eps=0.1, deltaI=0.1,
-               beta_trend=0.1,
-               logbeta1=0.1, logbeta2=0.1, logbeta3=0.1,
-               logbeta4=0.1, logbeta5=0.1, logbeta6=0.1,
-               logomega1=0.1, logomega2=0.1, logomega3=0.1,
-               logomega4=0.1, logomega5=0.1, logomega6=0.1,
-               sd_beta=0.1, tau=0.1,
-               S_0=ivp(0.2), I_0=ivp(0.2), R1_0=ivp(0.2),
-               R2_0=ivp(0.2), R3_0=ivp(0.2)
-           ),
-           cooling.type="geometric",
-           cooling.fraction.50=sqrt(0.1),
-           transform=TRUE
-           )
-
-options(op)
+stopifnot(all.equal(round(logLik(pf),2),-3753.56))
