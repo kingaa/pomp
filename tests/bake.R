@@ -31,8 +31,8 @@ stopifnot(!exists("y3"))
 rm(.Random.seed)
 stew({y4 <- runif(4)},file=file.path(tempdir(),"stew3.rds"),seed=59566)
 
-pompExample(gillespie.sir)
-window(gillespie.sir,end=0.5) -> po
+pompExample(sir2)
+window(sir2,end=0.5) -> po
 simulate(po,seed=1347484107L) -> x
 freeze(simulate(po),seed=1347484107L) -> y
 attr(y,"system.time") <- NULL

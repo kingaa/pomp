@@ -25,8 +25,10 @@
 \alias{filter.traj,pmcmcList-method}
 \alias{filter.traj-pmcmc}
 \alias{filter.traj-pmcmcList}
-\alias{print-pmcmc}
-\alias{print,pmcmc-method}
+\alias{show,pmcmc-method}
+\alias{show-pmcmc}
+\alias{show,pmcmcList-method}
+\alias{show-pmcmcList}
 \alias{plot-Pmcmc}
 \alias{plot,Pmcmc-method}
 \alias{covmat,pmcmc-method}

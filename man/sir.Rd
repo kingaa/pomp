@@ -1,13 +1,15 @@
-\name{sir}
+\name{SIR models}
 \title{Compartmental epidemiological models}
-\alias{euler.sir}
-\alias{gillespie.sir}
+\alias{sir}
+\alias{sir2}
 \alias{bbs}
 \docType{data}
 \description{
-  \code{euler.sir} is a \code{pomp} object encoding a simple seasonal SIR model.
+  \code{sir} is a \code{pomp} object encoding a simple seasonal SIR model.
   Simulation is performed using an Euler multinomial approximation.
-  \code{gillespie.sir} has the same model implemented using Gillespie's algorithm.
+
+  \code{sir2} has the same model implemented using Gillespie's algorithm.
+
   \code{bbs} is a nonseasonal SIR model together with data from a 1978 outbreak of influenza in a British boarding school.
 }
 \details{
@@ -16,15 +18,15 @@
   The boarding school influenza outbreak is described in Anonymous (1978).
 }
 \examples{
-pompExample(euler.sir)
-plot(euler.sir)
-plot(simulate(euler.sir,seed=20348585))
-coef(euler.sir)
+pompExample(sir)
+plot(sir)
+plot(simulate(sir))
+coef(sir)
 
-pompExample(gillespie.sir)
-plot(gillespie.sir)
-plot(simulate(window(gillespie.sir,end=3),seed=20348585))
-coef(gillespie.sir)
+pompExample(sir2)
+plot(sir2)
+plot(simulate(window(sir2,end=3)))
+coef(sir2)
 
 pompExample(bbs)
 plot(bbs)

@@ -25,11 +25,11 @@ f %>% melt() %>%
   labs(y=expression(N[t+1]),x=expression(N[t]),color=expression(log(r)))+
   theme_classic()
 
-pompExample(euler.sir)
-p <- parmat(coef(euler.sir),nrep=3)
+pompExample(sir)
+p <- parmat(coef(sir),nrep=3)
 p["beta2",2:3] <- exp(c(3,5))
-trajectory(euler.sir,params=p,times=seq(0,1,length=1000)) -> tj
-skeleton(euler.sir,x=tj,params=p,t=seq(0,1,length=1000)) -> f
+trajectory(sir,params=p,times=seq(0,1,length=1000)) -> tj
+skeleton(sir,x=tj,params=p,t=seq(0,1,length=1000)) -> f
 tj %>% apply(c(1,2),diff) %>% melt(value.name="diff") -> dtj
 f %>% melt(value.name="deriv") -> f
 join(f,dtj,by=c("time","variable","rep")) %>%

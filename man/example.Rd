@@ -40,7 +40,7 @@ pompExample(example, \dots, show = FALSE, envir = .GlobalEnv)
 \author{Aaron A. King}
 \examples{
   pompExample()
-  pompExample(euler.sir)
+  pompExample(sir)
   pompExample("gompertz")
   pompExample(ricker,envir=NULL)
 \dontrun{
@@ -50,8 +50,7 @@ pompExample(example, \dots, show = FALSE, envir = .GlobalEnv)
 \seealso{
   \code{\link{blowflies}}, \code{\link{dacca}}, \code{\link{gompertz}},
   \code{\link{ou2}}, \code{\link{ricker}}, \code{\link{rw2}},
-  \code{\link{euler.sir}}, \code{\link{gillespie.sir}},
-  \code{\link{bbs}}
+  \code{\link{sir}}, \code{\link{sir2}}, \code{\link{bbs}}
 }
 \keyword{models}
 \keyword{datasets}

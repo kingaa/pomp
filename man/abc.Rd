@@ -25,8 +25,10 @@
 \alias{plot,abcList-method}
 \alias{c-Abc}
 \alias{c,Abc-method}
-\alias{print,abc-method}
-\alias{print-abc}
+\alias{show,abc-method}
+\alias{show-abc}
+\alias{show,abcList-method}
+\alias{show-abcList}
 \alias{covmat}
 \alias{covmat,abc-method}
 \alias{covmat-abc}

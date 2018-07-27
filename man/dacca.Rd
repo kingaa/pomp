@@ -30,7 +30,7 @@ plot(simulate(dacca))
   Nature, 454:877-880, 2008
 }
 \seealso{
-  \code{\link{euler.sir}},
+  \code{\link{sir}},
   \code{\link{pomp}}
 }
 \keyword{models}

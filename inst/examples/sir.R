@@ -221,11 +221,19 @@ pomp(
     beta.sd=1e-3,
     pop=2.1e6,
     rho=0.6,
-    S_0=26/400,I_0=0.001,R_0=1-26/400
+    S_0=26/400,I_0=0.001,R_0=1-26/400-0.001
   ),
+  covar=periodic.bspline.basis(
+    x=seq(0,4.2,by=0.01),
+    period=1,
+    nbasis=3,
+    degree=3,
+    names="seas%d"
+  ),
+  tcovar=seq(0,4.2,by=0.01),
   globals=Csnippet("
-    static int nbasis = 3, degree = 3;
-    static double period = 1.0;"),
+    static int nbasis = 3;"
+  ),
   initializer=Csnippet("
     double m = pop/(S_0+I_0+R_0);
     S = nearbyint(m*S_0);
@@ -240,15 +248,9 @@ pomp(
     double rate[nrate];		  // transition rates
     double trans[nrate];		// transition numbers
     double beta;
-    const double *BETA = &beta1;
     double dW;
-    double seasonality[nbasis];
-    int k;
 
-    if (nbasis <= 0) return;
-    periodic_bspline_basis_eval(t,period,degree,nbasis,&seasonality[0]);
-    for (k = 0, beta = 0; k < nbasis; k++)
-      beta += seasonality[k]*BETA[k];
+    beta = dot_product(nbasis,&beta1,&seas1);
 
     // gamma noise, mean=dt, variance=(beta_sd^2 dt)
     dW = rgammawn(beta_sd,dt);
@@ -278,16 +280,12 @@ pomp(
   ),
   skeleton=vectorfield(Csnippet("
     int nrate = 6;
-    double rate[nrate];		// transition rates
+    double rate[nrate];		  // transition rates
     double term[nrate];		// terms in the equations
     double beta;
-    const double *BETA = &beta1;
-    double seasonality[nbasis];
-    int k;
+    double dW;
 
-    periodic_bspline_basis_eval(t,period,degree,nbasis,&seasonality[0]);
-    for (k = 0, beta = 0; k < nbasis; k++)
-      beta += seasonality[k]*BETA[k];
+    beta = dot_product(nbasis,&beta1,&seas1);
 
     // compute the transition rates
     rate[0] = mu*pop;		// birth into susceptible class
@@ -365,9 +363,9 @@ pomp(
     "S_0","I_0","R_0"
   ),
   zeronames=c("cases")
-) -> euler.sir
+) -> sir
 
 ## the following was originally used to generate the data
-## simulate(po,nsim=1,seed=329343545L) -> euler.sir
+## simulate(po,nsim=1,seed=329343545L) -> sir
 
-c("euler.sir")
+c("sir")
