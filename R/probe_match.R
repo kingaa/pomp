@@ -12,8 +12,6 @@ setClass(
   )
 )
 
-setMethod("$",signature=signature(x="probe.matched.pomp"),function(x, name)slot(x,name))
-
 setMethod(
   "summary",
   "probe.matched.pomp",
