@@ -22,7 +22,7 @@ exportClasses(
 )
 
 exportMethods(
-    plot,show,print,spy,c,
+    plot,show,print,spy,
     coerce,summary,window,
     logLik,logEvidence,
     cond.logLik,cond.logEvidence,
@@ -50,6 +50,8 @@ S3method(as.data.frame,pomp)
 S3method(as.data.frame,pfilterd.pomp)
 S3method(as.data.frame,probed.pomp)
 S3method(as.data.frame,kalmand.pomp)
+S3method(c,Abc)
+S3method(c,Pmcmc)
 
 export(
     pomp,

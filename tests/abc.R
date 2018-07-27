@@ -39,8 +39,8 @@ abc1 %>% abc(Nabc=80) %>% continue(Nabc=20) -> abc4
 plot(c(abc1,abc2,abc3,abc4),y="bob")
 plot(c(abc1,abc2,abc3,abc4),scatter=TRUE)
 
-c(c(abc1,abc2),abc3) -> abclist
-stopifnot(identical(abclist,c(abc1,c(abc2,abc3))))
+c(a=c(abc1,abc2),b=abc3) -> abclist
+stopifnot(identical(abclist,c(a1=abc1,c(a2=abc2,b=abc3))))
 stopifnot(all(dim(conv.rec(abc1))==c(101,10)))
 stopifnot(all(dim(conv.rec(abc1,"alpha.1"))==c(101,1)))
 
@@ -112,7 +112,7 @@ delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'
 try(abc(abc1,proposal=delayed.failure))
 
 try(c(abc1,ou2))
-invisible(c(abc1,NULL))
+try(c(abc1,NULL))
 try(c(c(abc1,abc2),ou2))
 invisible(c(abc1))
 alist <- c(c(abc1,abc2))

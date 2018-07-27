@@ -5,21 +5,23 @@ setClass(
   "abcList",
   contains="list",
   validity=function (object) {
-    if (!all(sapply(object,is,"abc"))) {
-      retval <- paste0(
-        "error in ",sQuote("c"),
-        ": dissimilar objects cannot be combined"
-      )
-      return(retval)
-    }
-    d <- sapply(object,function(x)dim(x@conv.rec))
-    if (!all(apply(d,1,diff)==0)) {
-      retval <- paste0(
-        "error in ",sQuote("c"),
-        ": to be combined, ",sQuote("abc"),
-        " objects must have chains of equal length"
-      )
-      return(retval)
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"abc"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+      d <- sapply(object,function(x)dim(x@conv.rec))
+      if (!all(apply(d,1,diff)==0)) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": to be combined, ",sQuote("abc"),
+          " objects must have chains of equal length"
+        )
+        return(retval)
+      }
     }
     TRUE
   }
@@ -28,15 +30,14 @@ setClass(
 setClassUnion("Abc",c("abc","abcList"))
 
 setMethod(
-  "c",
-  signature=signature(x="Abc"),
-  definition=function (x, ...) {
-    y <- list(x,...)
+  "cc",
+  signature=signature(...="Abc"),
+  definition=function (...) {
     y <- lapply(
-      y,
+      list(...),
       function (z) {
         if (is(z,"list"))
-          as(z,"list")
+          setNames(as(z,"list"),names(z))
         else
           z
       }
@@ -45,11 +46,21 @@ setMethod(
   }
 )
 
+c.Abc <- cc
+
 setMethod(
   "[",
   signature=signature(x="abcList"),
-  definition=function(x, i, ...)
-    new("abcList",as(x,"list")[i])
+  definition=function(x, i, ...) {
+    y <- as(x,"list")
+    names(y) <- names(x)
+    y <- unlist(y[i])
+    if (is.null(y)) {
+      list(NULL)
+    } else {
+      new("abcList",y)
+    }
+  }
 )
 
 ## extract the convergence record as an 'mcmc' object
@@ -72,20 +83,21 @@ setMethod(
 )
 
 setMethod(
-  "print",
-  signature=signature(x="abc"),
-  definition=function (x, ...) {
+  "show",
+  signature=signature(object="abc"),
+  definition=function (object) {
     cat("<object of class ",sQuote("abc"),">\n",sep="")
-    invisible(x)
+    invisible(NULL)
   }
 )
 
 setMethod(
-  "print",
-  signature=signature(x="abcList"),
-  definition=function (x, ...) {
-    lapply(as(x,"list"),print)
-    invisible(x)
+  "show",
+  signature=signature(object="abcList"),
+  definition=function (object) {
+    y <- as(object,"list")
+    names(y) <- names(object)
+    show(y)
   }
 )
 

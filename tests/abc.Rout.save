@@ -64,8 +64,8 @@ Warning message:
 in 'plot-abc': 'y' is ignored 
 > plot(c(abc1,abc2,abc3,abc4),scatter=TRUE)
 > 
-> c(c(abc1,abc2),abc3) -> abclist
-> stopifnot(identical(abclist,c(abc1,c(abc2,abc3))))
+> c(a=c(abc1,abc2),b=abc3) -> abclist
+> stopifnot(identical(abclist,c(a1=abc1,c(a2=abc2,b=abc3))))
 > stopifnot(all(dim(conv.rec(abc1))==c(101,10)))
 > stopifnot(all(dim(conv.rec(abc1,"alpha.1"))==c(101,1)))
 > 
@@ -168,12 +168,11 @@ Error : in 'abc': 'dprior' error: no sir!
 Error : in 'abc': in proposal function: 'fraid not!
 > 
 > try(c(abc1,ou2))
-Error in validObject(.Object) : 
-  invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
-> invisible(c(abc1,NULL))
+Error : 'c' is not defined for objects of mixed class.
+> try(c(abc1,NULL))
+Error : 'c' is not defined for objects of mixed class.
 > try(c(c(abc1,abc2),ou2))
-Error in validObject(.Object) : 
-  invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
+Error : 'c' is not defined for objects of mixed class.
 > invisible(c(abc1))
 > alist <- c(c(abc1,abc2))
 > class(alist[2])
@@ -181,15 +180,16 @@ Error in validObject(.Object) :
 attr(,"package")
 [1] "pomp"
 > try(alist[3])
-Error in validObject(.Object) : 
-  invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
+[[1]]
+NULL
+
 > alist <- c(a=abc1,b=abc2)
 > alist["b"]
 $b
 <object of class 'abc'>
 
 > alist["c"]
-$<NA>
+[[1]]
 NULL
 
 > invisible(alist[["b"]])

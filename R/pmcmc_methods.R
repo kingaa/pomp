@@ -3,23 +3,25 @@
 ## pmcmcList class
 setClass(
   "pmcmcList",
-  contains='list',
+  contains="list",
   validity=function (object) {
-    if (!all(sapply(object,is,"pmcmc"))) {
-      retval <- paste0(
-        "error in ",sQuote("c"),
-        ": dissimilar objects cannot be combined"
-      )
-      return(retval)
-    }
-    d <- sapply(object,function(x)dim(x@conv.rec))
-    if (!all(apply(d,1,diff)==0)) {
-      retval <- paste0(
-        "error in ",sQuote("c"),
-        ": to be combined, ",sQuote("pmcmc"),
-        " objects must have chains of equal length"
-      )
-      return(retval)
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"pmcmc"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+      d <- sapply(object,function(x)dim(x@conv.rec))
+      if (!all(apply(d,1,diff)==0)) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": to be combined, ",sQuote("pmcmc"),
+          " objects must have chains of equal length"
+        )
+        return(retval)
+      }
     }
     TRUE
   }
@@ -28,27 +30,37 @@ setClass(
 setClassUnion("Pmcmc",c("pmcmc","pmcmcList"))
 
 setMethod(
-  "c",
-  signature=signature(x="Pmcmc"),
-  definition=function (x, ...) {
+  "cc",
+  signature=signature(...="Pmcmc"),
+  definition=function (...) {
     y <- lapply(
-      list(x,...),
+      list(...),
       function (z) {
         if (is(z,"list"))
-          as(z,"list")
+          setNames(as(z,"list"),names(z))
         else
-          list(z)
+          z
       }
     )
-    new("pmcmcList",do.call(c,y))
+    new("pmcmcList",unlist(y))
   }
 )
+
+c.Pmcmc <- cc
 
 setMethod(
   "[",
   signature=signature(x="pmcmcList"),
-  definition=function(x, i, ...)
-    new("pmcmcList",as(x,"list")[i])
+  definition=function(x, i, ...) {
+    y <- as(x,"list")
+    names(y) <- names(x)
+    y <- unlist(y[i])
+    if (is.null(y)) {
+      list(NULL)
+    } else {
+      new("pmcmcList",y)
+    }
+  }
 )
 
 ## extract the convergence record as a coda::mcmc object
@@ -98,23 +110,23 @@ setMethod(
 )
 
 setMethod(
-  "print",
-  signature=signature(x="pmcmc"),
-  definition=function (x, ...) {
-    cat("<object of class ",sQuote("pmcmc"),">\n",sep="")
-    invisible(x)
+  "show",
+  signature=signature(object="pmcmc"),
+  definition=function (object) {
+    cat("<object of class ",sQuote("abc"),">\n",sep="")
+    invisible(NULL)
   }
 )
 
 setMethod(
-  "print",
-  signature=signature(x="pmcmcList"),
-  definition=function (x, ...) {
-    lapply(as(x,"list"),print)
-    invisible(x)
+  "show",
+  signature=signature(object="pmcmcList"),
+  definition=function (object) {
+    y <- as(object,"list")
+    names(y) <- names(object)
+    show(y)
   }
 )
-
 
 ## extract the estimated log likelihood
 setMethod('logLik','pmcmc',function(object,...)object@loglik)

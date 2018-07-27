@@ -5,6 +5,7 @@ setGeneric("plot",function(x,y,...)standardGeneric("plot"))
 setGeneric("summary",function(object,...)standardGeneric("summary"))
 setGeneric("window",function(x,...)standardGeneric("window"))
 setGeneric("spy",function(object,...)standardGeneric("spy"))
+setGeneric("cc",function(...)standardGeneric("cc"))
 
 ## constituent components of a 'pomp' object
 setGeneric("dmeasure",function(object,...)standardGeneric("dmeasure"))
@@ -105,273 +106,282 @@ setGeneric("pompLoad",function(object,...)standardGeneric("pompLoad"))
 setGeneric("pompUnload",function(object,...)standardGeneric("pompUnload"))
 
 setMethod(
-    "traj.match",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("traj.match"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "traj.match",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("traj.match"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "traj.match",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("traj.match")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "traj.match",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("traj.match")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "traj.match.objfun",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("traj.match.objfun"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "traj.match.objfun",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("traj.match.objfun"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "traj.match.objfun",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("traj.match.objfun")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "traj.match.objfun",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("traj.match.objfun")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "abc",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("abc"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "abc",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("abc"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "abc",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("abc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "abc",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("abc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "eakf",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("eakf"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "eakf",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("eakf"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "eakf",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("eakf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "eakf",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("eakf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "enkf",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("enkf"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "enkf",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("enkf"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "enkf",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("enkf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "enkf",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("enkf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "bsmc",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("bsmc"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "bsmc",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("bsmc"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "bsmc",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("bsmc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "bsmc",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("bsmc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "bsmc2",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("bsmc2"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "bsmc2",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("bsmc2"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "bsmc2",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("bsmc2")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "bsmc2",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("bsmc2")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "pfilter",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("pfilter"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "pfilter",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("pfilter"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "pfilter",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("pfilter")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "pfilter",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("pfilter")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "pmcmc",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("pmcmc"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "pmcmc",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("pmcmc"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "pmcmc",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("pmcmc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "pmcmc",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("pmcmc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "nlf",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("nlf"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "nlf",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("nlf"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "nlf",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("nlf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "nlf",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("nlf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "mif",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("mif"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "mif",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("mif"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "mif",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("mif")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "mif",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("mif")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "mif2",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("mif2"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "mif2",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("mif2"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "mif2",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("mif2")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "mif2",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("mif2")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "probe",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("probe"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "probe",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("probe"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "probe",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("probe")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "probe",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("probe")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "probe.match",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("probe.match"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "probe.match",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("probe.match"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "probe.match",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("probe.match")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "probe.match",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("probe.match")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "probe.match.objfun",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("probe.match.objfun"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "probe.match.objfun",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("probe.match.objfun"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "probe.match.objfun",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("probe.match.objfun")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "probe.match.objfun",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("probe.match.objfun")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "spect",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("spect"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "spect",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("spect"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "spect",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("spect")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "spect",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("spect")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
 )
 
 setMethod(
-    "continue",
-    signature=signature(object="missing"),
-    definition=function (...) {
-        stop("in ",sQuote("continue"),": ",sQuote("object")," is a required argument",call.=FALSE)
-    }
+  "continue",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("continue"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
 )
 
 setMethod(
-    "continue",
-    signature=signature(object="ANY"),
-    definition=function (object, ...) {
-        stop(sQuote("continue")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-    }
+  "continue",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("continue")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "cc",
+  signature=signature(...="ANY"),
+  definition=function(...) {
+    stop(sQuote("c")," is not defined for objects of mixed class.",
+      call.=FALSE)
+  }
 )
