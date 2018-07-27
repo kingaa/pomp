@@ -170,9 +170,7 @@ Error : in 'abc': in proposal function: 'fraid not!
 > try(c(abc1,ou2))
 Error in validObject(.Object) : 
   invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
-> try(c(abc1,NULL))
-Error in validObject(.Object) : 
-  invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
+> invisible(c(abc1,NULL))
 > try(c(c(abc1,abc2),ou2))
 Error in validObject(.Object) : 
   invalid class "abcList" object: error in 'c': dissimilar objects cannot be combined
@@ -218,4 +216,16 @@ $three
 > dev.off()
 null device 
           1 
+> 
+> list.files(pattern="abc-\\d{2}.png") %>% {
++   set_names(.,.)
++ } %>%
++   lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
++   sapply(digest::digest)
+                        abc-01.png                         abc-02.png 
+"abe0fe0cad2a06645c1b1c8fad26e5c7" "ba2576ef63c6bf61f02bdd59763ee804" 
+                        abc-03.png                         abc-04.png 
+"977ac7da8e2b66b7213b65b76d3d633c" "5ef73ec8917ed919958edee82cd4484b" 
+                        abc-05.png                         abc-06.png 
+"ccae4bf9071754926abdb526b6363345" "2e4499379f92820f47fa6c1365a99392" 
 > 

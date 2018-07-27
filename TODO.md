@@ -12,15 +12,19 @@
 - on-the-fly modification of basic components
 - `time` variable could retain its original name?
 - `initializer` -> `rinit` (and perhaps `dinit`)
+- `conv.rec` -> `traces` (with deprecation warning)
+- MCMC proposals as pomp slots?
 - piecewise constant interpolation of covariates
 - methods to change data (`obs<-`)?
+- remove `$` methods and replace with proper extractor functions
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification
 	- allow "R snippets": expressions evaluated in proper context?
-- remove `obs` and `states` arguments in `simulate`
-- remove `mif` and `bsmc` altogether
-- better scheme for indicating transformed variables in Csnippet parameter transformations (i.e., use `T` for parameters on transformed scale
+- remove `obs` and `states` arguments in `simulate`? or hide? `do_simulate` in C?
+- ~~remove `mif` and `bsmc` altogether~~
+- better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale
+- better scheme for indicating derivatives and maps in C snippets
 - easier interface for lists of probes in `probe`
 - better names for SIR examples
 - more/better demos and examples

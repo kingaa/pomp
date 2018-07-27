@@ -13,3 +13,10 @@ for (d in demos) {
 }
 
 dev.off()
+
+library(magrittr)
+list.files(pattern="demos-\\d{2}.png") %>% {
+  set_names(.,.)
+} %>%
+  lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
+  sapply(digest::digest)

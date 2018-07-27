@@ -41,13 +41,13 @@ newly created object(s):
 [1] TRUE
 > 
 > try(pfilter(ou2))
-Error : in 'pfilter': 'Np' must be specified
+Error : in 'pfilter': 'Np' must be specified.
 > try(pfilter(ou2,Np=NULL))
-Error : in 'pfilter': 'Np' must have length 1 or length 101
+Error : in 'pfilter': 'Np' must be specified.
 > try(pfilter(ou2,Np=-10))
-Error : in 'pfilter': number of particles, 'Np', must always be positive
+Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(ou2,Np=c(10,20,30)))
-Error : in 'pfilter': 'Np' must have length 1 or length 101
+Error : in 'pfilter': 'Np' must have length 1 or length 101.
 > invisible(pfilter(ou2,Np=ceiling(runif(101,min=10,max=100))))
 > try(pfilter(ou2,Np=100,tol=NA))
 Error : in 'pfilter': 'tol' should be a small positive number.
@@ -76,7 +76,7 @@ Error : in 'pfilter': 'params' must be specified
 > 
 > pf <- pfilter(pf)
 > try(pfilter(pf,Np=-1000))
-Error : in 'pfilter': number of particles, 'Np', must always be positive
+Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(pf,tol=-1))
 Error : in 'pfilter': 'tol' should be a small positive number.
 > stopifnot(all.equal(coef(pf),coef(ou2)))
@@ -91,7 +91,7 @@ in 'pfilter': 2 filtering failures occurred.
 > pf <- pfilter(ou2,params=pp)
 > pf <- pfilter(pf1,params=pp)
 > try(pfilter(ou2,params=pp,Np=1000))
-Error : in 'pfilter': when 'params' is provided as a matrix, do not specify 'Np'!
+Error : in 'pfilter': when 'params' is provided as a matrix, you must not also specify 'Np'.
 > rownames(pp) <- NULL
 > try(pfilter(ou2,params=pp))
 Error : in 'pfilter': 'params' must have rownames
@@ -102,11 +102,11 @@ Error : in 'pfilter': 'params' must have rownames
 100 150 
  50  51 
 > try(pfilter(pf2,Np=function(k)c(100,-150)[(k-1)%%2+1]))
-Error : in 'pfilter': number of particles, 'Np', must always be positive
+Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(pf2,Np=function(k)c(100,-150)))
-Error : in 'pfilter': if 'Np' is a function, it must return a single positive integer
+Error : in 'pfilter': if 'Np' is a function, it must return a single positive integer.
 > try(pfilter(pf2,Np="many"))
-Error : in 'pfilter': 'Np' must be a number, a vector of numbers, or a function
+Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > 
 > theta <- coef(ou2)
 > theta["sigma.2"] <- Inf

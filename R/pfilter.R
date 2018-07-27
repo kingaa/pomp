@@ -41,17 +41,18 @@ setMethod(
   "pfilter",
   signature=signature(object="pomp"),
   function (object, params, Np,
-            tol = 1e-17,
-            max.fail = Inf,
-            pred.mean = FALSE,
-            pred.var = FALSE,
-            filter.mean = FALSE,
-            filter.traj = FALSE,
-            save.states = FALSE,
-            save.params = FALSE,
-            verbose = getOption("verbose"),
-            ...) {
+    tol = 1e-17,
+    max.fail = Inf,
+    pred.mean = FALSE,
+    pred.var = FALSE,
+    filter.mean = FALSE,
+    filter.traj = FALSE,
+    save.states = FALSE,
+    save.params = FALSE,
+    verbose = getOption("verbose"),
+    ...) {
     if (missing(params)) params <- coef(object)
+    if (missing(Np)) Np <- NULL
     pfilter.internal(
       object=object,
       params=params,
@@ -89,21 +90,21 @@ setMethod(
 )
 
 pfilter.internal <- function (object, params, Np,
-                              tol, max.fail,
-                              pred.mean = FALSE,
-                              pred.var = FALSE,
-                              filter.mean = FALSE,
-                              filter.traj = FALSE,
-                              cooling, cooling.m,
-                              verbose = FALSE,
-                              save.states = FALSE,
-                              save.params = FALSE,
-                              .getnativesymbolinfo = TRUE,
-                              ...) {
+  tol, max.fail,
+  pred.mean = FALSE,
+  pred.var = FALSE,
+  filter.mean = FALSE,
+  filter.traj = FALSE,
+  cooling, cooling.m,
+  verbose = FALSE,
+  save.states = FALSE,
+  save.params = FALSE,
+  .getnativesymbolinfo = TRUE,
+  ...) {
 
   ep <- paste0("in ",sQuote("pfilter"),": ")
 
-  object <- as(pomp(object,...),"pomp")
+  object <- pomp(as(object,"pomp"),...)
 
   gnsi <- as.logical(.getnativesymbolinfo)
   pred.mean <- as.logical(pred.mean)
@@ -124,36 +125,7 @@ pfilter.internal <- function (object, params, Np,
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
 
-  if (missing(Np)) {
-    if (is.matrix(params)) {
-      Np <- ncol(params)
-    } else {
-      stop(ep,sQuote("Np")," must be specified",call.=FALSE)
-    }
-  }
-  if (is.function(Np)) {
-    Np <- tryCatch(
-      vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
-      error = function (e) {
-        stop(ep,"if ",sQuote("Np")," is a function, ",
-             "it must return a single positive integer",call.=FALSE)
-      }
-    )
-  }
-  if (length(Np)==1)
-    Np <- rep(Np,times=ntimes+1)
-  else if (length(Np)!=(ntimes+1))
-    stop(ep,sQuote("Np")," must have length 1 or length ",ntimes+1,call.=FALSE)
-  if (any(Np<=0))
-    stop(ep,"number of particles, ",sQuote("Np"),", must always be positive",call.=FALSE)
-  if (!is.numeric(Np))
-    stop(ep,sQuote("Np")," must be a number, a vector of numbers, or a function",call.=FALSE)
-  Np <- as.integer(Np)
-  if (is.matrix(params)) {
-    if (!all(Np==ncol(params)))
-      stop(ep,"when ",sQuote("params")," is provided as a matrix, do not specify ",
-           sQuote("Np"),"!",call.=FALSE)
-  }
+  Np <- num_particles(Np,ep,ntimes=ntimes,params=params)
 
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
     stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
@@ -171,7 +143,7 @@ pfilter.internal <- function (object, params, Np,
   pompLoad(object,verbose=verbose)
 
   init.x <- init.state(object,params=params,nsim=Np[1L],
-                       .getnativesymbolinfo=gnsi)
+    .getnativesymbolinfo=gnsi)
   statenames <- rownames(init.x)
   nvars <- nrow(init.x)
   x <- init.x
@@ -260,7 +232,7 @@ pfilter.internal <- function (object, params, Np,
       ),
       error = function (e) {
         stop(ep,"process simulation error: ",
-             conditionMessage(e),call.=FALSE)
+          conditionMessage(e),call.=FALSE)
       }
     )
 
@@ -288,7 +260,7 @@ pfilter.internal <- function (object, params, Np,
       ),
       error = function (e) {
         stop(ep,"error in calculation of weights: ",
-             conditionMessage(e),call.=FALSE)
+          conditionMessage(e),call.=FALSE)
       }
     )
     if (!all(is.finite(weights))) {
@@ -367,10 +339,10 @@ pfilter.internal <- function (object, params, Np,
   if (filter.traj) { ## select a single trajectory
     if (max(weights)>0) {
       b <- sample.int(n=length(weights),size=1L,
-                      prob=weights,replace=TRUE)
+        prob=weights,replace=TRUE)
     } else {
       b <- sample.int(n=length(weights),size=1L,
-                      replace=TRUE)
+        replace=TRUE)
     }
     filt.t[,1L,ntimes+1] <- xparticles[[ntimes]][,b]
     for (nt in seq.int(from=ntimes-1,to=1L,by=-1L)) {
@@ -423,10 +395,46 @@ nonfinite_dmeasure_error <- function (time, lik, datvals, states, params) {
   showvals <- c(time=time,lik=lik,datvals,states,params)
   m1 <- formatC(names(showvals),preserve.width="common")
   m2 <- formatC(showvals,digits=6,width=12,format="g",
-                preserve.width="common")
+    preserve.width="common")
   paste0(
     sQuote("dmeasure")," returns non-finite value.\n",
     "likelihood, data, states, and parameters are:\n",
     paste0(m1,": ",m2,collapse="\n")
   )
+}
+
+num_particles <- function (Np = NULL, ep, ntimes, params = NULL) {
+  if (is.null(Np)) {
+    if (is.matrix(params)) {
+      Np <- ncol(params)
+    } else {
+      stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
+    }
+  }
+  if (is.function(Np)) {
+    Np <- tryCatch(
+      vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
+      error = function (e) {
+        stop(ep,"if ",sQuote("Np")," is a function, ",
+          "it must return a single positive integer.",call.=FALSE)
+      }
+    )
+  }
+  if (length(Np) == 1)
+    Np <- rep(Np,times=ntimes+1)
+  else if (length(Np) != (ntimes+1))
+    stop(ep,sQuote("Np")," must have length 1 or length ",ntimes+1,".",call.=FALSE)
+  if (any(Np <= 0) || !all(is.finite(Np)))
+    stop(ep,"number of particles, ",sQuote("Np"),
+      ", must be a positive integer.",call.=FALSE)
+  if (!is.numeric(Np))
+    stop(ep,sQuote("Np")," must be a number, a vector of numbers, ",
+      "or a function.",call.=FALSE)
+  Np <- as.integer(Np)
+  if (is.matrix(params)) {
+    if (!all(Np == ncol(params)))
+      stop(ep,"when ",sQuote("params")," is provided as a matrix, ",
+        "you must not also specify ",sQuote("Np"),".",call.=FALSE)
+  }
+  Np
 }

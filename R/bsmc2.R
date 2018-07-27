@@ -52,7 +52,7 @@ bsmc2.internal <- function (object, params, Np, est,
 
   ep <- paste0("in ",sQuote("bsmc2"),": ")
 
-  object <- as(pomp(object,...),"pomp")
+  object <- pomp(as(object,"pomp"),...)
 
   gnsi <- as.logical(.getnativesymbolinfo)
   transform <- as.logical(transform)
@@ -141,7 +141,7 @@ bsmc2.internal <- function (object, params, Np, est,
   eff.sample.size <- as.numeric(rep(NA,ntimes))
   nfail <- 0L
 
-  mu <- array(data=NA,dim=c(nvars,Np,1))
+  mu <- array(data=NA,dim=c(nvars,Np,1L))
   rownames(mu) <- rownames(xstart)
   m  <- array(data=NA,dim=c(npars,Np))
   rownames(m) <- rownames(params)
@@ -149,7 +149,7 @@ bsmc2.internal <- function (object, params, Np, est,
   for (nt in seq_len(ntimes)) {
 
     ## calculate particle means ; as per L&W AGM (1)
-    params.mean <- apply(params,1,mean)
+    params.mean <- apply(params,1L,mean)
     ## calculate particle covariances : as per L&W AGM (1)
     params.var  <- cov(t(params[estind,,drop=FALSE]))
 
@@ -195,7 +195,7 @@ bsmc2.internal <- function (object, params, Np, est,
       } else {
         params
       },
-      offset=1,
+      offset=1L,
       .getnativesymbolinfo=gnsi
     )
 
@@ -228,7 +228,7 @@ bsmc2.internal <- function (object, params, Np, est,
 
     ## test for failure to filter
     dim(weights) <- NULL   ### needed?
-    failures <- ((weights<tol)|(!is.finite(weights))) # test for NA weights
+    failures <- ((weights<tol) | (!is.finite(weights))) # test for NA weights
     all.fail <- all(failures)
     if (all.fail) {                     # all particles are lost
       if (verbose) {

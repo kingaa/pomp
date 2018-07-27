@@ -2,10 +2,10 @@
 
 ## abcList class
 setClass(
-  'abcList',
-  contains='list',
+  "abcList",
+  contains="list",
   validity=function (object) {
-    if (!all(sapply(object,is,'abc'))) {
+    if (!all(sapply(object,is,"abc"))) {
       retval <- paste0(
         "error in ",sQuote("c"),
         ": dissimilar objects cannot be combined"
@@ -28,19 +28,20 @@ setClass(
 setClassUnion("Abc",c("abc","abcList"))
 
 setMethod(
-  'c',
+  "c",
   signature=signature(x="Abc"),
   definition=function (x, ...) {
+    y <- list(x,...)
     y <- lapply(
-      list(x,...),
+      y,
       function (z) {
         if (is(z,"list"))
           as(z,"list")
         else
-          list(z)
+          z
       }
     )
-    new("abcList",do.call(c,y))
+    new("abcList",unlist(y))
   }
 )
 
@@ -62,8 +63,8 @@ setMethod(
 
 ## extract the convergence record as an 'mcmc' object
 setMethod(
-  'conv.rec',
-  signature=signature(object='abc'),
+  "conv.rec",
+  signature=signature(object="abc"),
   definition=function (object, pars, ...) {
     if (missing(pars)) pars <- colnames(object@conv.rec)
     coda::mcmc(object@conv.rec[,pars,drop=FALSE])
@@ -72,11 +73,10 @@ setMethod(
 
 ## extract the convergence record as an 'mcmc.list' object
 setMethod(
-  'conv.rec',
-  signature=signature(object='abcList'),
+  "conv.rec",
+  signature=signature(object="abcList"),
   definition=function (object, ...) {
-    f <- selectMethod("conv.rec","abc")
-    coda::mcmc.list(lapply(object,f,...))
+    coda::mcmc.list(lapply(object,conv.rec,...))
   }
 )
 
@@ -95,7 +95,7 @@ setMethod(
 
 setMethod(
   "plot",
-  signature=signature(x='abcList'),
+  signature=signature(x="abcList"),
   definition=function (x, y, ...) {
     if (!missing(y)) {
       warning("in ",sQuote("plot-abc"),": ",
@@ -119,7 +119,7 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
       stop("in ",sQuote("plot-abc"),
         ": can't make a scatterplot with only one variable",call.=FALSE)
     } else {
-      pairs(x[,pars],col=x[,'.num'],...)
+      pairs(x[,pars],col=x[,".num"],...)
     }
   } else {
     mar.multi <- c(0,5.1,0,2.1)

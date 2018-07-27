@@ -112,7 +112,7 @@ delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'
 try(abc(abc1,proposal=delayed.failure))
 
 try(c(abc1,ou2))
-try(c(abc1,NULL))
+invisible(c(abc1,NULL))
 try(c(c(abc1,abc2),ou2))
 invisible(c(abc1))
 alist <- c(c(abc1,abc2))
@@ -133,3 +133,9 @@ stopifnot(sum(grepl("acceptance",out))==20)
 stopifnot(sum(grepl("ABC iteration",out))==21)
 
 dev.off()
+
+list.files(pattern="abc-\\d{2}.png") %>% {
+  set_names(.,.)
+} %>%
+  lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
+  sapply(digest::digest)

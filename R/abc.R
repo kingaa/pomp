@@ -62,8 +62,7 @@ setMethod(
     ...) {
 
     if (missing(probes)) probes <- object@probes
-    f <- selectMethod("abc","pomp")
-    f(object=object,probes=probes,...)
+    abc(object=as(object,"pomp"),probes=probes,...)
 
   }
 )
@@ -84,10 +83,8 @@ setMethod(
     if (missing(scale)) scale <- object@scale
     if (missing(epsilon)) epsilon <- object@epsilon
 
-    f <- selectMethod("abc","pomp")
-
-    f(
-      object=object,
+    abc(
+      object=as(object,"pomp"),
       Nabc=Nabc,
       start=start,
       proposal=proposal,
@@ -108,9 +105,7 @@ setMethod(
     ndone <- object@Nabc
     accepts <- object@accepts
 
-    f <- selectMethod("abc","abc")
-
-    obj <- f(
+    obj <- abc(
       object=object,
       Nabc=Nabc,
       .ndone=ndone,
@@ -136,7 +131,7 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
 
   ep <- paste0("in ",sQuote("abc"),": ")
 
-  object <- as(pomp(object,...),"pomp")
+  object <- pomp(as(object,"pomp"),...)
   gnsi <- as.logical(.getnativesymbolinfo)
   .ndone <- as.integer(.ndone)
   .accepts <- as.integer(.accepts)

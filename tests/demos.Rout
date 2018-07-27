@@ -67,7 +67,7 @@ Type 'q()' to quit R.
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.00536108 secs
+Time difference of 0.005792379 secs
 
 > X <- reshape(X, dir = "wide", v.names = "X", timevar = "traj", 
 +     idvar = "time")
@@ -82,7 +82,7 @@ Time difference of 0.00536108 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.002514362 secs
+Time difference of 0.002731323 secs
 
 > x <- reshape(x, dir = "wide", v.names = c("Y", "X"), 
 +     timevar = "sim", idvar = "time")
@@ -105,7 +105,7 @@ Time difference of 0.002514362 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.3559721 secs
+Time difference of 0.3636785 secs
 
 > print(logmeanexp(sapply(pf, logLik), se = TRUE))
                    se 
@@ -200,7 +200,7 @@ Time difference of 0.3559721 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.002534866 secs
+Time difference of 0.003797531 secs
 
 > plot(incid ~ time, data = X, type = "l")
 
@@ -211,7 +211,7 @@ Time difference of 0.002534866 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.02138019 secs
+Time difference of 0.02272296 secs
 
 > plot(incid ~ time, data = x, col = as.factor(x$sim), 
 +     pch = 16)
@@ -227,7 +227,7 @@ Time difference of 0.02138019 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 6.283307 secs
+Time difference of 6.355444 secs
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 
@@ -235,4 +235,19 @@ Warning messages:
 > dev.off()
 null device 
           1 
+> 
+> library(magrittr)
+> list.files(pattern="demos-\\d{2}.png") %>% {
++   set_names(.,.)
++ } %>%
++   lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
++   sapply(digest::digest)
+                      demos-01.png                       demos-02.png 
+"2b0bf2c53fbe3f25b86a8e1f60b9c138" "339c85836111913dce7ff36caf482d87" 
+                      demos-03.png                       demos-04.png 
+"ed836e323b6530f258468d3f6b45001f" "6836fa95c6091beed01d4863159e873c" 
+                      demos-05.png                       demos-06.png 
+"15e0a228531a56a1f7c3bd5e454661cc" "ddcb0d6625725d4121ba4fbd3694d88e" 
+                      demos-07.png 
+"8563c554fdcea17df66fd591b8f40b86" 
 > 

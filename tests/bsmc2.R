@@ -2,6 +2,7 @@ png(filename="bsmc2-%02d.png",res=100)
 options(digits=2)
 
 library(pomp)
+library(magrittr)
 suppressPackageStartupMessages(library(reshape2))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(dplyr))
@@ -11,8 +12,6 @@ pompExample(gompertz)
 set.seed(398585L)
 
 time(gompertz) <- 1:10
-
-Np <- 20000
 
 try(bsmc2(gompertz,Np=1000,smooth=0.01,est=c("r","K"),tol=1e-6))
 
@@ -78,3 +77,9 @@ theta["K"] <- 1
 try(capture.output(bsmc2(po,Np=2,params=theta,tol=1,max.fail=1,verbose=TRUE)) -> out)
 
 dev.off()
+
+list.files(pattern="bsmc2-\\d{2}.png") %>% {
+  set_names(.,.)
+} %>%
+  lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
+  sapply(digest::digest)
