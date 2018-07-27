@@ -29,7 +29,7 @@ probe.acf(var, lags, type = c("covariance", "correlation"),
 probe.ccf(vars, lags, type = c("covariance", "correlation"),
           transform = identity)
 probe.period(var, kernel.width, transform = identity)
-probe.quantile(var, prob, transform = identity)
+probe.quantile(var, prob)
 }
 \arguments{
   \item{var, vars}{
@@ -133,7 +133,7 @@ probe.quantile(var, prob, transform = identity)
 }
 \author{
   Daniel C. Reuman (d.reuman at imperial dot ac dot uk)
-  
+
   Aaron A. King (kingaa at umich dot edu)
 }
 \seealso{

@@ -38,10 +38,9 @@ probe.period <- function (var, kernel.width, transform = identity) {
     }
 }
 
-probe.quantile <- function (var, prob, transform = identity) {
+probe.quantile <- function (var, prob) {
     if (length(var)>1) stop(sQuote("probe.quantile")," is a univariate probe",call.=FALSE)
-    transform <- match.fun(transform)
-    function (y) quantile(transform(y[var,]),probs=prob)
+    function (y) quantile(y[var,],probs=prob)
 }
 
 ## probe.cov <- function (
