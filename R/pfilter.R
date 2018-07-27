@@ -119,7 +119,7 @@ pfilter.internal <- function (object, params, Np,
   if (is.list(params)) params <- unlist(params)
   if (is.null(params)) params <- numeric(0)
   if (length(params)==0)
-    stop(ep,sQuote("params")," must be specified",call.=FALSE)
+    stop(ep,sQuote("params")," must be specified.",call.=FALSE)
 
   one.par <- FALSE
   times <- time(object,t0=TRUE)
@@ -138,7 +138,7 @@ pfilter.internal <- function (object, params, Np,
 
   paramnames <- rownames(params)
   if (is.null(paramnames))
-    stop(ep,sQuote("params")," must have rownames",call.=FALSE)
+    stop(ep,sQuote("params")," must have rownames.",call.=FALSE)
 
   pompLoad(object,verbose=verbose)
 
@@ -424,7 +424,7 @@ num_particles <- function (Np = NULL, ep, ntimes, params = NULL) {
     Np <- rep(Np,times=ntimes+1)
   else if (length(Np) != (ntimes+1))
     stop(ep,sQuote("Np")," must have length 1 or length ",ntimes+1,".",call.=FALSE)
-  if (any(Np <= 0) || !all(is.finite(Np)))
+  if (!all(is.finite(Np)) || any(Np <= 0))
     stop(ep,"number of particles, ",sQuote("Np"),
       ", must be a positive integer.",call.=FALSE)
   if (!is.numeric(Np))
