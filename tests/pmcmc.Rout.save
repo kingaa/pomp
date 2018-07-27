@@ -23,7 +23,6 @@ Type 'q()' to quit R.
 > set.seed(857075216L)
 > 
 > library(pomp)
-> library(magrittr)
 > 
 > pompExample(gompertz,envir=NULL) -> po
 > 
@@ -49,6 +48,76 @@ Error : in 'pmcmc': 'proposal' must be specified
 > plot(c(mcmc1,mcmc2,mcmc3),pars=c("r","sigma"),density=FALSE)
 > plot(c(mcmc1,c(mcmc2,mcmc3)),pars=c("r","sigma"),trace=FALSE)
 > plot(conv.rec(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
+> print(mcmc1)
+<object of class 'pmcmc'>
+> c(mcmc1,mcmc2)
+An object of class "pmcmcList"
+[[1]]
+11 records of 1 observables, recorded from t = 0 to 10 
+summary of data:
+       Y        
+ Min.   :0.807  
+ 1st Qu.:0.957  
+ Median :1.080  
+ Mean   :1.039  
+ 3rd Qu.:1.140  
+ Max.   :1.176  
+zero time, t0 = 0
+discrete-time process-model simulator, step.fun = native function '_gompertz_simulator'
+process model density, dprocess = not specified
+measurement model simulator, rmeasure = native function '_gompertz_normal_rmeasure'
+measurement model density, dmeasure = native function '_gompertz_normal_dmeasure'
+prior simulator, rprior = not specified
+prior density, dprior = native function '__pomp_dprior', defined by a Csnippet
+skeleton (map) = native function '_gompertz_skeleton'
+initializer = not specified
+parameter transformation (to estimation scale) = function (params, ...) 
+{
+    log(params)
+}
+<environment: 0x44d7bd8>
+parameter transformation (from estimation scale) = function (params, ...) 
+{
+    exp(params)
+}
+<environment: 0x44d7bd8>
+parameter(s):
+     K      r  sigma    tau    X.0 
+1.0000 0.0835 0.0142 0.1000 1.0000 
+
+[[2]]
+11 records of 1 observables, recorded from t = 0 to 10 
+summary of data:
+       Y        
+ Min.   :0.807  
+ 1st Qu.:0.957  
+ Median :1.080  
+ Mean   :1.039  
+ 3rd Qu.:1.140  
+ Max.   :1.176  
+zero time, t0 = 0
+discrete-time process-model simulator, step.fun = native function '_gompertz_simulator'
+process model density, dprocess = not specified
+measurement model simulator, rmeasure = native function '_gompertz_normal_rmeasure'
+measurement model density, dmeasure = native function '_gompertz_normal_dmeasure'
+prior simulator, rprior = not specified
+prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
+skeleton (map) = native function '_gompertz_skeleton'
+initializer = not specified
+parameter transformation (to estimation scale) = function (params, ...) 
+{
+    log(params)
+}
+<environment: 0x44d7bd8>
+parameter transformation (from estimation scale) = function (params, ...) 
+{
+    exp(params)
+}
+<environment: 0x44d7bd8>
+parameter(s):
+      K       r   sigma     tau     X.0 
+ 1.0000  0.1720 -0.0584  0.1000  1.0000 
+
 > 
 > invisible(pmcmc(mcmc1,start=as.list(coef(mcmc3))))
 > try(pmcmc(mcmc1,start=NULL))
@@ -105,14 +174,4 @@ Error : in 'pmcmc': 'dprior' error: uh huh
 > dev.off()
 null device 
           1 
-> 
-> list.files(pattern="pmcmc-\\d{2}.png") %>% {
-+   set_names(.,.)
-+ } %>%
-+   lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
-+   sapply(digest::digest)
-                      pmcmc-01.png                       pmcmc-02.png 
-"e7a159aea6e863062608dfcfa0348af4" "d774596539710ca99f842c498da6a07f" 
-                      pmcmc-03.png 
-"5e672677bbe89d6339e1d53b597af138" 
 > 

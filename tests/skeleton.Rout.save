@@ -71,11 +71,3 @@ Removed 9 rows containing missing values (geom_point).
 null device 
           1 
 > 
-> list.files(pattern="skeleton-\\d{2}.png") %>% {
-+   set_names(.,.)
-+ } %>%
-+   lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
-+   sapply(digest::digest)
-                   skeleton-01.png                    skeleton-02.png 
-"d4034f3f6bc35875387df20e91df09c9" "5df664b1191a1f67d66ed64a392e73c1" 
-> 

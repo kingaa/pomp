@@ -21,7 +21,6 @@ Type 'q()' to quit R.
 > options(digits=2)
 > 
 > library(pomp)
-> library(magrittr)
 > suppressPackageStartupMessages(library(reshape2))
 > suppressPackageStartupMessages(library(tidyr))
 > suppressPackageStartupMessages(library(dplyr))
@@ -134,14 +133,4 @@ Error : in 'bsmc2': too many filtering failures
 > dev.off()
 null device 
           1 
-> 
-> list.files(pattern="bsmc2-\\d{2}.png") %>% {
-+   set_names(.,.)
-+ } %>%
-+   lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
-+   sapply(digest::digest)
-                      bsmc2-01.png                       bsmc2-02.png 
-"1243ecb1221bd215b87d8054c83aa2db" "66a308d61461785749e3acc052997037" 
-                      bsmc2-03.png                       bsmc2-04.png 
-"2375291d1060170ab670b44c810c689d" "7b095e71a6ca837c72f70748eb0a7a78" 
 > 

@@ -43,9 +43,3 @@ join(f,dtj,by=c("time","variable","rep")) %>%
   theme_bw()
 
 dev.off()
-
-list.files(pattern="skeleton-\\d{2}.png") %>% {
-  set_names(.,.)
-} %>%
-  lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
-  sapply(digest::digest)

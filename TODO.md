@@ -74,12 +74,10 @@
 
 tests/bsplines.R
 tests/design.R
-tests/eulermultinom.R
 
 tests/prior.R
 tests/procmeas.R
 tests/proposals.R
-tests/partrans.R
 
 tests/dacca.R
 tests/logistic.R
@@ -107,8 +105,6 @@ tests/mif2.R
 
 tests/nlf.R
 
-tests/pmcmc.R
-
 tests/pomp.R
 
 tests/probe.R
@@ -127,7 +123,6 @@ tests/trajmatch.R
 
 R/generics.R
 
-R/eulermultinom.R
 R/parmat.R
 R/sobol.R
 R/profile_design.R
@@ -146,7 +141,6 @@ R/pomp.R
 R/initstate_pomp.R
 R/dprior_pomp.R
 R/dprocess_pomp.R
-R/rmeasure_pomp.R
 R/rprior_pomp.R
 R/rprocess_pomp.R
 R/trajectory_pomp.R
@@ -170,11 +164,9 @@ R/nlf.R
 
 R/plot_pomp.R
 
-R/pmcmc_methods.R
-R/pmcmc.R
 R/proposals.R
-R/covmat.R
 
+R/covmat.R
 R/sannbox.R
 
 R/simulate_pomp.R

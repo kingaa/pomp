@@ -133,9 +133,3 @@ stopifnot(sum(grepl("acceptance",out))==20)
 stopifnot(sum(grepl("ABC iteration",out))==21)
 
 dev.off()
-
-list.files(pattern="abc-\\d{2}.png") %>% {
-  set_names(.,.)
-} %>%
-  lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
-  sapply(digest::digest)

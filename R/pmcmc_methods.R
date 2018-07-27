@@ -51,15 +51,6 @@ setMethod(
     new("pmcmcList",as(x,"list")[i])
 )
 
-setMethod(
-  "print",
-  signature=signature(x="pmcmc"),
-  definition=function (x, ...) {
-    cat("<object of class ",sQuote("pmcmc"),">\n",sep="")
-    invisible(x)
-  }
-)
-
 ## extract the convergence record as a coda::mcmc object
 setMethod(
   'conv.rec',
@@ -105,6 +96,25 @@ setMethod(
     plot(conv.rec(x,pars),...)
   }
 )
+
+setMethod(
+  "print",
+  signature=signature(x="pmcmc"),
+  definition=function (x, ...) {
+    cat("<object of class ",sQuote("pmcmc"),">\n",sep="")
+    invisible(x)
+  }
+)
+
+setMethod(
+  "print",
+  signature=signature(x="pmcmcList"),
+  definition=function (x, ...) {
+    lapply(as(x,"list"),print)
+    invisible(x)
+  }
+)
+
 
 ## extract the estimated log likelihood
 setMethod('logLik','pmcmc',function(object,...)object@loglik)

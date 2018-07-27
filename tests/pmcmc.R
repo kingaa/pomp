@@ -4,7 +4,6 @@ png(filename="pmcmc-%02d.png",res=100)
 set.seed(857075216L)
 
 library(pomp)
-library(magrittr)
 
 pompExample(gompertz,envir=NULL) -> po
 
@@ -29,6 +28,8 @@ mcmc3 <- continue(mcmc3,Nmcmc=50)
 plot(c(mcmc1,mcmc2,mcmc3),pars=c("r","sigma"),density=FALSE)
 plot(c(mcmc1,c(mcmc2,mcmc3)),pars=c("r","sigma"),trace=FALSE)
 plot(conv.rec(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
+print(mcmc1)
+c(mcmc1,mcmc2)
 
 invisible(pmcmc(mcmc1,start=as.list(coef(mcmc3))))
 try(pmcmc(mcmc1,start=NULL))
@@ -67,9 +68,3 @@ stopifnot(sum(grepl("acceptance ratio",out))==10)
 stopifnot(sum(grepl("PMCMC iteration",out))==11)
 
 dev.off()
-
-list.files(pattern="pmcmc-\\d{2}.png") %>% {
-  set_names(.,.)
-} %>%
-  lapply(function (x) readBin(x,what=raw(0),n=file.size(x))) %>%
-  sapply(digest::digest)

@@ -52,15 +52,6 @@ setMethod(
     new("abcList",as(x,"list")[i])
 )
 
-setMethod(
-  "print",
-  signature=signature(x="abc"),
-  definition=function (x, ...) {
-    cat("<object of class ",sQuote("abc"),">\n",sep="")
-    invisible(x)
-  }
-)
-
 ## extract the convergence record as an 'mcmc' object
 setMethod(
   "conv.rec",
@@ -77,6 +68,24 @@ setMethod(
   signature=signature(object="abcList"),
   definition=function (object, ...) {
     coda::mcmc.list(lapply(object,conv.rec,...))
+  }
+)
+
+setMethod(
+  "print",
+  signature=signature(x="abc"),
+  definition=function (x, ...) {
+    cat("<object of class ",sQuote("abc"),">\n",sep="")
+    invisible(x)
+  }
+)
+
+setMethod(
+  "print",
+  signature=signature(x="abcList"),
+  definition=function (x, ...) {
+    lapply(as(x,"list"),print)
+    invisible(x)
   }
 )
 
