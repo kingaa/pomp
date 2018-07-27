@@ -17,8 +17,6 @@
 \alias{probe.match-pomp}
 \alias{probe.match-probed.pomp}
 \alias{probe.match-probe.matched.pomp}
-\alias{probed.pomp-class}
-\alias{probe.matched.pomp-class}
 \alias{probe.match.objfun}
 \alias{probe.match.objfun,ANY-method}
 \alias{probe.match.objfun,missing-method}
@@ -36,13 +34,11 @@
 \alias{summary-probe.matched.pomp}
 \alias{values}
 \alias{values,probed.pomp-method}
-\alias{values,probe.matched.pomp-method}
 \alias{values-probed.pomp}
-\alias{values-probe.matched.pomp}
+\alias{covmat-probed.pomp}
+\alias{covmat,probed.pomp-method}
 \alias{plot,probed.pomp-method}
-\alias{plot,probe.matched.pomp-method}
 \alias{plot-probed.pomp}
-\alias{plot-probe.matched.pomp}
 \alias{summary,spect.pomp-method}
 \alias{summary,spect.matched.pomp-method}
 \alias{summary-spect.pomp}
@@ -54,10 +50,6 @@
 \alias{as,probed.pomp-method}
 \alias{logLik,probed.pomp-method}
 \alias{logLik-probed.pomp}
-\alias{$,probed.pomp-method}
-\alias{$-probed.pomp}
-\alias{$,probe.matched.pomp-method}
-\alias{$-probe.matched.pomp}
 \alias{coerce,probed.pomp,data.frame-method}
 \description{
   \code{probe} applies one or more \dQuote{probes} to time series data and model simulations and compares the results.
@@ -67,8 +59,10 @@
   \code{probe.match.objfun} constructs an objective function for probe-matching suitable for use in \code{optim}-like optimizers.
 }
 \usage{
-\S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots)
-\S4method{probe}{probed.pomp}(object, probes, nsim, seed, \dots)
+\S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots,
+            verbose = getOption("verbose", FALSE))
+\S4method{probe}{probed.pomp}(object, probes, nsim, seed = NULL, \dots,
+            verbose = getOption("verbose", FALSE))
 \S4method{probe.match.objfun}{pomp}(object, params, est, probes, nsim,
             seed = NULL, fail.value = NA, transform = FALSE, \dots)
 \S4method{probe.match.objfun}{probed.pomp}(object, probes, nsim, seed, \dots)
@@ -142,7 +136,7 @@
   The results of the probe computations on real and simulated data are stored in an object of class \code{probed.pomp}.
 
   A call to \code{probe.match} results in an attempt to optimize the agreement between model and data, as measured by the specified probes, over the parameters named in \code{est}.
-  The results, including coefficients of the fitted model and values of the probes for data and fitted-model simulations, are stored in an object of class \code{\link[=probe.matched.pomp-class]{probe.matched.pomp}}.
+  The results, including coefficients of the fitted model and values of the probes for data and fitted-model simulations, are stored in an object of class \code{probe.matched.pomp}.
 
   The objective function minimized by \code{probe.match} --- in a form suitable for use with \code{\link{optim}}-like optimizers --- is created by a call to \code{probe.match.objfun}.
   Specifically, \code{probe.match.objfun} will return a function that takes a single numeric-vector argument that is assumed to cotain the parameters named in \code{est}, in that order.
@@ -150,7 +144,7 @@
 }
 \value{
   \code{probe} returns an object of class \code{probed.pomp}.
-  \code{probed.pomp} is derived from the \code{\link[=pomp-class]{pomp}} class and therefore have all the slots of \code{pomp}.
+  \code{probed.pomp} is derived from the \code{pomp} class and therefore have all the slots of \code{pomp}.
   In addition, a \code{probed.pomp} class has the following slots:
   \describe{
     \item{probes}{list of the probes applied.}

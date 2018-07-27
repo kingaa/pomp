@@ -105,8 +105,6 @@ tests/nlf.R
 
 tests/pomp.R
 
-tests/probe.R
-
 tests/sannbox.R
 
 tests/spect.R
@@ -145,7 +143,6 @@ R/trajectory_pomp.R
 
 R/basic_probes.R
 R/probe_match.R
-R/probe.R
 
 R/kalman_methods.R
 R/kalman.R

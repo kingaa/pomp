@@ -28,7 +28,7 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
   y1 = (double *) R_alloc(nrow*ncol,sizeof(double));
   y2 = (double *) R_alloc(nrow*ncol,sizeof(double));
 
-  if (nrow < ncol)
+  if (nrow <= ncol)
     errorcall(R_NilValue,"'nsim' (=%ld) should be (much) larger than the number of probes (=%ld)",nrow,ncol);
 
   // compute column means, center each column, precondition
@@ -67,7 +67,7 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
     wbar += xx*xx;
   }
   wbar = sqrt(wbar-1);
-  
+
   // compute weighted column means, center each column, precondition
   memcpy(y1,y,nrow*ncol*sizeof(double));
   for (yp = y1, j = 0; j < ncol; j++, yp += nrow) {
@@ -80,7 +80,7 @@ static void robust_synth_loglik (double *y, int *dim, double *ydat, double *logl
     ydat[j] -= xx;		// subtract mean from realized probe
     for (xx = 0, i = 0; i < nrow; i++) {
       xx += yp[i]*yp[i];
-      yp[i] /= wbar; 
+      yp[i] /= wbar;
     }
     d = sqrt(xx/(nrow-1)); // column SD
     for (i = 0; i < nrow; i++) yp[i] *= (w[i]/d); // precondition & weight

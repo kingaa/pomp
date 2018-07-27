@@ -1,0 +1,124 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> png(filename="probe-%02d.png",res=100)
+> 
+> options(digits=3)
+> library(pomp)
+> library(magrittr)
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> 
+> set.seed(234501470L)
+> 
+> po <- gompertz
+> 
+> plist <- list(
++   mean=probe.mean("Y",trim=0.1,transform=sqrt),
++   sd=probe.sd("Y",transform=sqrt),
++   probe.marginal("Y",ref=obs(po)),
++   probe.acf("Y",lags=c(1,3,5),type="correlation",transform=sqrt),
++   probe.quantile("Y",prob=c(0.25,0.75))
++ )
+> 
+> probe(po,probes=plist,nsim=500,seed=595969) -> pb
+> plot(pb,y=NULL)
+Warning message:
+in 'plot-probed.pomp': 'y' is ignored 
+> pb %>% values() %>% head(3)
+   mean    sd marg.1    marg.2    marg.3 acf.1.Y acf.3.Y acf.5.Y   25%  75%
+0 1.054 0.127  1.000 -8.97e-17  5.66e-17   0.728   0.547   0.486 0.918 1.30
+1 0.978 0.127  0.904  1.72e-01 -2.96e-01   0.774   0.671   0.483 0.803 1.14
+2 1.017 0.109  1.084  3.38e-01 -1.66e-01   0.550   0.399   0.278 0.865 1.23
+   .id
+0 data
+1  sim
+2  sim
+> pb %>% as.data.frame() %>% head(3)
+       mean    sd marg.1    marg.2    marg.3 acf.1.Y acf.3.Y acf.5.Y   25%  75%
+data  1.054 0.127  1.000 -8.97e-17  5.66e-17   0.728   0.547   0.486 0.918 1.30
+sim.1 0.978 0.127  0.904  1.72e-01 -2.96e-01   0.774   0.671   0.483 0.803 1.14
+sim.2 1.017 0.109  1.084  3.38e-01 -1.66e-01   0.550   0.399   0.278 0.865 1.23
+> summary(pb)
+$coef
+    K     r sigma   tau   X.0 
+  1.0   0.1   0.1   0.1   1.0 
+
+$nsim
+[1] 500
+
+$quantiles
+   mean      sd  marg.1  marg.2  marg.3 acf.1.Y acf.3.Y acf.5.Y     25%     75% 
+  0.844   0.728   0.764   0.166   0.428   0.626   0.582   0.762   0.740   0.822 
+
+$pvals
+   mean      sd  marg.1  marg.2  marg.3 acf.1.Y acf.3.Y acf.5.Y     25%     75% 
+  0.315   0.547   0.475   0.335   0.858   0.750   0.838   0.479   0.523   0.359 
+
+$synth.loglik
+[1] 17.2
+
+> stopifnot(all.equal(logLik(pb),17.17,tolerance=0.005))
+> 
+> try(probe(po,nsim=10))
+Error : in 'probe': 'probes' must be furnished.
+> try(probe(po,probes=plist[1:3]))
+Error : in 'probe': 'nsim' must be specified.
+> try(probe(po,probes=plist[1:3],nsim=-100))
+Error : in 'probe': number of simulations, 'nsim', must be a single positive integer.
+> try(probe(po,probes=plist[1:3],nsim=c(10,20)))
+Error : in 'probe': number of simulations, 'nsim', must be a single positive integer.
+> try(probe(po,probes=plist[1:3],nsim=NA))
+Error : in 'probe': number of simulations, 'nsim', must be a single positive integer.
+> 
+> invisible(probe(pb))
+> plot(probe(pb,probes=plist[[1]]))
+> try(probe(pb,probes="okay"))
+Error : in 'probe': 'probes' must be a function or a list of functions.
+> try(probe(pb,probes=function(x,y)x+y))
+Error : in 'probe': each probe must be a function of a single argument.
+> try(probe(pb,probes=function(x)stop("hold on now!")))
+Error : in 'probe': applying probes to actual data: hold on now!
+> try({
++   count <- 0
++   delayed.error <- function (y) {
++     count <<- count+1
++     if (count>5) stop("whoa nelly!")
++     y[1]
++   }
++   probe(pb,probes=delayed.error)
++ })
+Error : in 'probe': applying probes to simulated data: whoa nelly!
+> try(probe(pb,nsim=10))
+Error : in 'probe': 'nsim' (=10), should be (much) larger than the number of probes (=10).
+> 
+> invisible(probe(pb,params=as.list(coef(pb))))
+> try(probe(pb,params=NULL))
+Error : in 'probe': 'params' must be specified.
+> try(probe(pb,params="I think so"))
+Error : in 'probe': 'params' must be furnished as a named numeric vector.
+> try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
+Error : in 'probe': 'params' must be specified.
+> 
+> dev.off()
+null device 
+          1 
+> 

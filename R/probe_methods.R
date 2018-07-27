@@ -1,3 +1,59 @@
+setMethod(
+  "summary",
+  signature=signature(object="probed.pomp"),
+  definition=function (object, ...) {
+    list(
+      coef=coef(object),
+      nsim=nrow(object@simvals),
+      quantiles=object@quantiles,
+      pvals=object@pvals,
+      synth.loglik=object@synth.loglik
+    )
+  }
+)
+
+setAs(
+  from="probed.pomp",
+  to="data.frame",
+  def = function (from) {
+    x <- rbind(from@datvals,as.data.frame(from@simvals))
+    rownames(x) <- c(
+      "data",
+      paste("sim",seq_len(nrow(from@simvals)),sep=".")
+    )
+    x
+  }
+)
+
+as.data.frame.probed.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
+
+setMethod(
+  "logLik",
+  signature=signature(object="probed.pomp"),
+  definition=function(object,...)object@synth.loglik
+)
+
+setMethod(
+  "values",
+  signature=signature(object="probed.pomp"),
+  definition=function (object, ...) {
+    x <- as.data.frame(rbind(object@datvals,object@simvals))
+    row.names(x) <- seq.int(from=0,to=nrow(x)-1)
+    x$.id <- factor(c("data",rep("sim",nrow(x)-1)))
+    x
+  }
+)
+
+setMethod("plot",
+  signature=signature(x="probed.pomp"),
+  definition=function (x, y, ...) {
+    if (!missing(y))
+      warning("in ",sQuote("plot-probed.pomp"),": ",
+        sQuote("y")," is ignored",call.=FALSE)
+    probeplot.internal(x=x,...)
+  }
+)
+
 probeplot.internal <- function (x, ...) {
   ##function for plotting diagonal panels
   diag.panel.hist <- function(x, ...) {
@@ -43,7 +99,7 @@ probeplot.internal <- function (x, ...) {
   datsimvals[1L,] <- x@datvals
   datsimvals[-1L,] <- x@simvals
 
-  labels <- paste("pb",seq_len(nprobes))
+  labels <- paste("probe",seq_len(nprobes))
   if (!is.null(names(x@datvals)))
     labels <- ifelse(names(x@datvals)=="",labels,names(x@datvals))
   lab.plus <- paste(labels,paste0("p=",round(x@pvals,3)),sep="\n")
@@ -63,67 +119,3 @@ probeplot.internal <- function (x, ...) {
     diag.panel.hist(datsimvals)
   }
 }
-
-setMethod("plot",
-  signature=signature(x="probed.pomp"),
-  definition=function (x, y, ...) {
-    if (!missing(y))
-      warning("in ",sQuote("plot-probed.pomp"),": ",
-        sQuote("y")," is ignored",call.=FALSE)
-    probeplot.internal(x=x,...)
-  }
-)
-
-setMethod(
-  "summary",
-  signature=signature(object="probed.pomp"),
-  definition=function (object, ...) {
-    list(
-      coef=coef(object),
-      nsim=nrow(object@simvals),
-      quantiles=object@quantiles,
-      pvals=object@pvals,
-      synth.loglik=object@synth.loglik
-    )
-  }
-)
-
-setAs(
-  from="probed.pomp",
-  to="data.frame",
-  def = function (from) {
-    x <- rbind(from@datvals,as.data.frame(from@simvals))
-    rownames(x) <- c(
-      "data",
-      paste("sim",seq_len(nrow(from@simvals)),sep=".")
-    )
-    x
-  }
-)
-
-as.data.frame.probed.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
-
-setMethod(
-  "logLik",
-  signature=signature(object="probed.pomp"),
-  definition=function(object,...)object@synth.loglik
-)
-
-setMethod(
-  "$",
-  signature=signature(x="probed.pomp"),
-  definition=function(x, name)slot(x,name)
-)
-
-values.probe.internal <- function (object, ...) {
-  x <- as.data.frame(rbind(object@datvals,object@simvals))
-  row.names(x) <- seq.int(from=0,to=nrow(x)-1)
-  x$.id <- factor(c("data",rep("sim",nrow(x)-1)))
-  x
-}
-
-setMethod(
-  "values",
-  signature=signature(object="probed.pomp"),
-  definition=values.probe.internal
-)

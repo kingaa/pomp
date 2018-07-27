@@ -15,15 +15,22 @@ setClass(
 setMethod(
   "probe",
   signature=signature(object="pomp"),
-  definition=function (object, probes, params, nsim = 1, seed = NULL, ...)
+  definition=function (object, probes, params, nsim, seed = NULL, ...,
+    verbose = getOption("verbose", FALSE))
   {
+
+    if (missing(probes)) probes <- NULL
+    if (missing(params)) params <- coef(object)
+    if (missing(nsim)) nsim <- NULL
+
     probe.internal(
       object=object,
       probes=probes,
       params=params,
       nsim=nsim,
       seed=seed,
-      ...
+      ...,
+      verbose=verbose
     )
   }
 )
@@ -31,50 +38,76 @@ setMethod(
 setMethod(
   "probe",
   signature=signature(object="probed.pomp"),
-  definition=function (object, probes, nsim, seed, ...) {
+  definition=function (object, probes, nsim, seed = NULL, ...,
+    verbose = getOption("verbose", FALSE)) {
 
     if (missing(probes)) probes <- object@probes
     if (missing(nsim)) nsim <- nrow(object@simvals)
-    if (missing(seed)) seed <- object@seed
 
     probe(
       as(object,"pomp"),
       probes=probes,
       nsim=nsim,
       seed=seed,
-      ...
+      ...,
+      verbose=verbose
     )
   }
 )
 
-probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL,
-  .getnativesymbolinfo = TRUE, ...) {
+probe.internal <- function (object, probes, params, nsim, seed,
+  .getnativesymbolinfo = TRUE, ..., verbose) {
 
   ep <- paste0("in ",sQuote("probe"),": ")
+  verbose <- as.logical(verbose)
 
+  object <- pomp(object,...)
+
+  if (is.null(probes))
+    stop(ep,sQuote("probes")," must be furnished.",call.=FALSE)
   if (!is.list(probes)) probes <- list(probes)
   if (!all(sapply(probes,is.function)))
-    stop(ep,sQuote("probes")," must be a function or a list of functions",call.=FALSE)
+    stop(ep,sQuote("probes")," must be a function or a list of functions.",
+      call.=FALSE)
   if (!all(sapply(probes,function(f)length(formals(f))==1)))
-    stop(ep,"each probe must be a function of a single argument",call.=FALSE)
+    stop(ep,"each probe must be a function of a single argument.",call.=FALSE)
 
-  gnsi <- as.logical(.getnativesymbolinfo)
+  if (is.list(params)) params <- unlist(params)
+  if (is.null(params)) params <- numeric(0)
+  if (length(params)==0)
+    stop(ep,sQuote("params")," must be specified.",call.=FALSE)
+  if (!is.numeric(params) || is.null(names(params)))
+    stop(ep,sQuote("params")," must be furnished as a named numeric vector.",
+      call.=FALSE)
+
+  nsim <- as.integer(nsim)
+  if (length(nsim) < 1)
+    stop(ep,sQuote("nsim")," must be specified.",call.=FALSE)
+  if (length(nsim) > 1 || !is.finite(nsim) || nsim <= 0)
+    stop(ep,"number of simulations, ",sQuote("nsim"),
+      ", must be a single positive integer.",call.=FALSE)
 
   seed <- as.integer(seed)
 
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
-
-  pompLoad(object)
+  gnsi <- as.logical(.getnativesymbolinfo)
 
   ## apply probes to data
   datval <- tryCatch(
     .Call(apply_probe_data,object,probes),
     error = function (e) {
-      stop(ep,"applying probes to actual data: ",conditionMessage(e),call.=FALSE)
+      stop(ep,"applying probes to actual data: ",
+        conditionMessage(e),call.=FALSE)
     }
   )
+
   nprobes <- length(datval)
+
+  if (nprobes >= nsim)
+    stop(ep,sQuote("nsim")," (=",nsim,"), should be (much) larger than the ",
+      "number of probes (=",nprobes,").",call.=FALSE)
+
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   ## apply probes to model simulations
   simval <- tryCatch(
@@ -89,7 +122,8 @@ probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL,
       gnsi=gnsi
     ),
     error = function (e) {
-      stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)
+      stop(ep,"applying probes to simulated data: ",
+        conditionMessage(e),call.=FALSE)
     }
   )
 
@@ -97,6 +131,7 @@ probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL,
   names(pvals) <- names(datval)
   quants <- numeric(nprobes)
   names(quants) <- names(datval)
+
   for (k in seq_len(nprobes)) {
     r <- min(sum(simval[,k]>datval[k]),sum(simval[,k]<datval[k]))
     tails <- (r+1)/(nsim+1)
@@ -107,13 +142,12 @@ probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL,
   ll <- tryCatch(
     .Call(synth_loglik,simval,datval),
     error = function (e) {
-      stop(ep,"in synthetic likelihood computation: ",conditionMessage(e),call.=FALSE)
+      stop(ep,"in synthetic likelihood computation: ",
+        conditionMessage(e),call.=FALSE)
     }
   )
 
   coef(object) <- params
-
-  pompUnload(object)
 
   new(
     "probed.pomp",

@@ -19,7 +19,7 @@ plist <- list(
 
 ou2 %>% probe(probes=plist,nsim=100) -> pb
 
-scale.dat <- apply(pb$simvals,2,sd)
+sqrt(diag(covmat(pb))) -> scale.dat
 
 ou2 %>%
   abc(Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,

@@ -1,4 +1,4 @@
-## helper function to extract a covariance matrix from MCMC traces
+## helper function to extract a covariance matrix
 
 setMethod("covmat",signature=signature(object="pmcmc"),
   definition=function (object, start = 1, thin = 1,
@@ -54,3 +54,9 @@ covmat.internal <- function (traces, start, thin, expand = 2.38, ...) {
   dimnames(v) <- list(nms[keep],nms[keep])
   v
 }
+
+setMethod("covmat",signature=signature(object="probed.pomp"),
+  definition=function (object, ...) {
+    n <- nrow(object@simvals)
+    crossprod(object@simvals)/(n-1)
+  })
