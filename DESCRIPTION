@@ -44,6 +44,7 @@ Collate: aaa.R authors.R bake.R generics.R eulermultinom.R
 	 mif2.R mif2_methods.R
 	 proposals.R pmcmc.R pmcmc_methods.R
  	 nlf_funcs.R nlf_guts.R nlf_objfun.R nlf.R
-	 probe.R probe_match.R basic_probes.R spect.R spect_match.R
+	 probe.R probe_methods.R probe_match.R basic_probes.R 
+	 spect.R spect_match.R
 	 abc.R abc_methods.R covmat.R
 	 example.R
