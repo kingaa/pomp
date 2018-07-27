@@ -79,12 +79,10 @@ tests/prior.R
 tests/procmeas.R
 tests/proposals.R
 
-tests/dacca.R
 tests/logistic.R
 tests/ou2.R
 tests/rw2.R
 tests/sir2.R
-tests/sir.R
 
 tests/dimchecks.R
 tests/dp.R
@@ -178,9 +176,6 @@ R/traj_match.R
 
 ### Examples:
 
-- dacca.R
-- euler.sir.R
-- gillespie.sir.R
 - ou2.R
 - rw2.R
 

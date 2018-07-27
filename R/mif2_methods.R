@@ -2,81 +2,71 @@
 
 ## mif2List class
 setClass(
-  'mif2List',
-  contains='list',
+  "mif2List",
+  contains="list",
   validity=function (object) {
-    if (!all(sapply(object,is,'mif2d.pomp'))) {
-      retval <- paste0(
-        "error in ",sQuote("c"),
-        ": dissimilar objects cannot be combined"
-      )
-      return(retval)
-    }
-    d <- sapply(object,function(x)dim(x@conv.rec))
-    if (!all(apply(d,1,diff)==0)) {
-      retval <- paste0(
-        "error in ",sQuote("c"),
-        ": to be combined, ",sQuote("mif2d.pomp"),
-        " objects must equal numbers of iterations"
-      )
-      return(retval)
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"mif2d.pomp"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+      d <- sapply(object,function(x)dim(x@conv.rec))
+      if (!all(apply(d,1,diff)==0)) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": to be combined, ",sQuote("mif2d.pomp"),
+          " objects must have chains of equal length"
+        )
+        return(retval)
+      }
     }
     TRUE
   }
 )
 
+setClassUnion("Mif2",c("mif2d.pomp","mif2List"))
+
 setMethod(
-  'c',
-  signature=signature(x='mif2d.pomp'),
-  definition=function (x, ...) {
-    y <- list(...)
-    if (length(y)==0) {
-      new("mif2List",list(x))
-    } else {
-      p <- sapply(y,is,'mif2d.pomp')
-      pl <- sapply(y,is,'mif2List')
-      if (!all(p||pl))
-        stop("in ",sQuote("c"),": cannot mix ",sQuote("mif2d.pomp"),
-             " and non-",sQuote("mif2d.pomp")," objects",call.=FALSE)
-      y[p] <- lapply(y[p],list)
-      y[pl] <- lapply(y[pl],as,"list")
-      new("mif2List",c(list(x),y,recursive=TRUE))
-    }
+  "cc",
+  signature=signature(...="Mif2"),
+  definition=function (...) {
+    y <- lapply(
+      list(...),
+      function (z) {
+        if (is(z,"list"))
+          setNames(as(z,"list"),names(z))
+        else
+          z
+      }
+    )
+    new("mif2List",unlist(y))
   }
 )
 
-setMethod(
-  'c',
-  signature=signature(x='mif2List'),
-  definition=function (x, ...) {
-    y <- list(...)
-    if (length(y)==0) {
-      x
-    } else {
-      p <- sapply(y,is,'mif2d.pomp')
-      pl <- sapply(y,is,'mif2List')
-      if (!all(p||pl))
-        stop("in ",sQuote("c"),": cannot mix ",sQuote("mif2d.pomp"),
-             " and non-",sQuote("mif2d.pomp")," objects",call.=FALSE)
-      y[p] <- lapply(y[p],list)
-      y[pl] <- lapply(y[pl],as,"list")
-      new("mif2List",c(as(x,"list"),y,recursive=TRUE))
-    }
-  }
-)
+c.Mif2 <- cc
 
 setMethod(
   "[",
   signature=signature(x="mif2List"),
   definition=function(x, i, ...) {
-    new('mif2List',as(x,"list")[i])
+    y <- as(x,"list")
+    names(y) <- names(x)
+    y <- unlist(y[i])
+    if (is.null(y)) {
+      list(NULL)
+    } else {
+      new("mif2List",y)
+    }
   }
 )
 
 setMethod('conv.rec','mif2d.pomp',
-          function (object, pars, transform = FALSE, ...) {
-            conv.rec.internal(object=object,pars=pars,transform=transform,...)
-          }
+  function (object, pars, transform = FALSE, ...) {
+    conv.rec.internal(object=object,pars=pars,transform=transform,...)
+  }
 )
 
 setMethod(
@@ -145,7 +135,7 @@ mif2.diagnostics <- function (z) {
   nc <- 1
   nr <- 2
   oldpar <- par(mar=mar.multi,oma=oma.multi,mfcol=c(2,1),
-                ask=dev.interactive(orNone=TRUE))
+    ask=dev.interactive(orNone=TRUE))
   on.exit(par(oldpar))
 
   time <- time(xx)
@@ -219,12 +209,31 @@ mif2.diagnostics <- function (z) {
 }
 
 setMethod(
+  "show",
+  signature=signature(object="mif2d.pomp"),
+  definition=function (object) {
+    cat("<object of class ",sQuote("mif2d.pomp"),">\n",sep="")
+    invisible(NULL)
+  }
+)
+
+setMethod(
+  "show",
+  signature=signature(object="mif2List"),
+  definition=function (object) {
+    y <- as(object,"list")
+    names(y) <- names(object)
+    show(y)
+  }
+)
+
+setMethod(
   "plot",
   "mif2d.pomp",
   function (x, y, ...) {
     if (!missing(y))
       warning("in ",sQuote("plot-mif2d.pomp"),": ",
-              sQuote("y")," is ignored",call.=FALSE)
+        sQuote("y")," is ignored",call.=FALSE)
     mif2.diagnostics(list(x))
   }
 )
@@ -235,7 +244,7 @@ setMethod(
   definition=function (x, y, ...) {
     if (!missing(y))
       warning("in ",sQuote("plot-mif2d.pomp"),": ",
-              sQuote("y")," is ignored",call.=FALSE)
+        sQuote("y")," is ignored",call.=FALSE)
     mif2.diagnostics(x)
   }
 )

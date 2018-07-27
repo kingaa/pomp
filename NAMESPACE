@@ -52,6 +52,7 @@ S3method(as.data.frame,probed.pomp)
 S3method(as.data.frame,kalmand.pomp)
 S3method(c,Abc)
 S3method(c,Pmcmc)
+S3method(c,Mif2)
 
 export(
     pomp,
