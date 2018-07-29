@@ -1,21 +1,29 @@
-trajectory.internal <- function (object, params, times, t0, as.data.frame = FALSE, .getnativesymbolinfo = TRUE, ...) {
+setMethod(
+  "trajectory",signature=signature(object="pomp"),
+  definition=function (object, params, times, t0, as.data.frame = FALSE, ...,
+    verbose = getOption("verbose",FALSE))
+    trajectory.internal(object=object,params=params,times=times,t0=t0,as.data.frame=as.data.frame,...,verbose=verbose)
+)
+
+trajectory.internal <- function (object, params, times, t0,
+  as.data.frame = FALSE, .getnativesymbolinfo = TRUE, ..., verbose) {
 
   ep <- paste0("in ",sQuote("trajectory"),": ")
 
-  pompLoad(object)
+  verbose <- as.logical(verbose)
+  as.data.frame <- as.logical(as.data.frame)
 
   if (missing(times))
     times <- time(object,t0=FALSE)
   else
     times <- as.numeric(times)
 
-  as.data.frame <- as.logical(as.data.frame)
-
   if (length(times)==0)
     stop(ep,sQuote("times")," is empty, there is no work to do",call.=FALSE)
 
   if (any(diff(times)<=0))
-    stop(ep,sQuote("times")," must be an increasing sequence of times",call.=FALSE)
+    stop(ep,sQuote("times"),
+      " must be an increasing sequence of times",call.=FALSE)
 
   if (missing(t0))
     t0 <- timezero(object)
@@ -23,7 +31,8 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
     t0 <- as.numeric(t0)
 
   if (t0>times[1L])
-    stop(ep,"the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
+    stop(ep,"the zero-time ",sQuote("t0"),
+      " must occur no later than the first observation",call.=FALSE)
   ntimes <- length(times)
 
   if (missing(params)) params <- coef(object)
@@ -45,13 +54,16 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
 
   type <- object@skeleton.type          # map or vectorfield?
 
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
+
   if (type=="map") {
 
     x <- tryCatch(
       .Call(iterate_map,object,times,t0,x0,params,.getnativesymbolinfo),
       error = function (e) {
         stop(ep,"in map iterator: ",
-             conditionMessage(e),call.=FALSE)
+          conditionMessage(e),call.=FALSE)
       }
     )
     .getnativesymbolinfo <- FALSE
@@ -82,11 +94,16 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
 
     .Call(pomp_desolve_takedown)
 
-    if (attr(X,'istate')[1L]!=2)
-      warning(ep,"abnormal exit from ODE integrator, istate = ",attr(X,'istate'),call.=FALSE) # nocov
+    if (attr(X,"istate")[1L]!=2)
+      warning(ep,"abnormal exit from ODE integrator, istate = ",attr(X,'istate')[1L],
+        call.=FALSE) # nocov
+
+    if (verbose) {
+      deSolve::diagnostics(X)
+    }
 
     x <- array(data=t(X[-1L,-1L]),dim=c(nvar,nrep,ntimes),
-               dimnames=list(statenames,NULL,NULL))
+      dimnames=list(statenames,NULL,NULL))
 
     for (z in znames)
       for (r in seq_len(ncol(x)))
@@ -118,13 +135,5 @@ trajectory.internal <- function (object, params, times, t0, as.data.frame = FALS
     x$traj <- factor(x$traj)
   }
 
-  pompUnload(object)
-
   x
 }
-
-setMethod(
-  "trajectory",signature=signature(object="pomp"),
-  definition=function (object, params, times, t0, as.data.frame = FALSE, ...)
-    trajectory.internal(object=object,params=params,times=times,t0=t0,as.data.frame=as.data.frame,...)
-)

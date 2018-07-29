@@ -1,5 +1,12 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.18.5}{
+  \itemize{
+    \item New \code{verbose} option in \code{trajectory} gives diagnostic information from \pkg{deSolve} integration routines.
+    Of course, this is pertinent only if the model skeleton is a vectorfield.
+    \item Bug in the display of \code{istate} when \code{deSolve::ode} errors has been fixed.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.18.4}{
   \itemize{
     \item New \code{hitch} function facilitates construction of \code{pomp.fun} objects from \R functions, C snippets, and links to external libraries.

@@ -64,7 +64,8 @@
 \S4method{rprior}{pomp}(object, params, \dots)
 \S4method{init.state}{pomp}(object, params, t0, nsim, \dots)
 \S4method{skeleton}{pomp}(object, x, t, params, \dots)
-\S4method{trajectory}{pomp}(object, params, times, t0, as.data.frame = FALSE, \dots)
+\S4method{trajectory}{pomp}(object, params, times, t0, as.data.frame = FALSE, \dots,
+          verbose = getOption("verbose", FALSE))
 \S4method{pompLoad}{pomp}(object, \dots)
 \S4method{pompUnload}{pomp}(object, \dots)
 }
@@ -112,6 +113,9 @@
     See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted.
 
     In all other cases, additional arguments are ignored.
+  }
+  \item{verbose}{
+    logical; if \code{TRUE}, more information will be displayed.
   }
 }
 \section{rprocess}{
