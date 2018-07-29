@@ -73,7 +73,6 @@
 ### Unreconstructed:
 
 tests/bsplines.R
-tests/design.R
 
 tests/prior.R
 tests/procmeas.R
@@ -120,9 +119,6 @@ tests/trajmatch.R
 R/generics.R
 
 R/parmat.R
-R/sobol.R
-R/profile_design.R
-R/slice_design.R
 R/bsplines.R
 R/logmeanexp.R
 
