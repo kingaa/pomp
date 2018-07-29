@@ -96,7 +96,7 @@ trajectory.internal <- function (object, params, times, t0,
 
     if (attr(X,"istate")[1L]!=2)
       warning(ep,"abnormal exit from ODE integrator, istate = ",attr(X,'istate')[1L],
-        call.=FALSE) # nocov
+        call.=FALSE)
 
     if (verbose) {
       deSolve::diagnostics(X)
