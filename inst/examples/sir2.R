@@ -597,6 +597,7 @@ pomp(
       DS = term[0]-term[1]-term[2];
       DI = term[1]-term[3]-term[4];
       DR = term[3]-term[5];
+      DN = term[0]-term[2]-term[4]-term[5];
       Dcases = term[3];"
     )
   ),
