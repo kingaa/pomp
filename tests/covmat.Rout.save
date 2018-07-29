@@ -121,4 +121,9 @@ in 'covmat': only 26 points being used to estimate covariance matrix
              r    sigma
 r      0.01526 -0.00183
 sigma -0.00183  0.00190
+> covmat(c(mcmc1,mcmc1))
+             r    sigma
+r      0.01518 -0.00182
+sigma -0.00182  0.00189
+> 
 > 

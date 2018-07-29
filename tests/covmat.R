@@ -62,3 +62,5 @@ mcmc1 <- pmcmc(po,Nmcmc=100,Np=100,dprior=Csnippet("
   paramnames=c("r","sigma"),
   proposal=prop1)
 covmat(mcmc1)
+covmat(c(mcmc1,mcmc1))
+
