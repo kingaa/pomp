@@ -2,19 +2,12 @@
 
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
-- ~~make new header file for package developers~~
-- ~~move all model codes out of the package, except gompertz and ou2~~
-- ~~export `hitch` function for compiling `pomp.fun`s~~
 - index by concept using `\concept{}` in the help files
 
 ## For pomp 2:
 
 - on-the-fly modification of basic components
 - rewrite examples to use `simulate` directly
-- what does a generic `pomp.fun` interface look like?
-- MCMC proposals as pomp slots?
-- probes as pomp slots?
-- should `pomp` throw away extra stuff?
 - `time` variable could retain its original name?
 - `initializer` -> `rinit` (and perhaps `dinit`)
 - `conv.rec` -> `traces` (with deprecation warning)
@@ -26,24 +19,26 @@
 	- deprecate character specification
 	- allow "R snippets": expressions evaluated in proper context?
 - remove `obs` and `states` arguments in `simulate`? or hide? `do_simulate` in C?
-- ~~remove `mif` and `bsmc` altogether~~
 - better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale
 - better scheme for indicating derivatives and maps in C snippets
 - easier interface for lists of probes in `probe`
-- better names for SIR examples
 - more/better demos and examples
 - plugin for adaptive tau leaping algorithm.
 - plugin for compartmental models
 - refurbish entire test suite
 	- 'skeleton' test is too delicate. why?
 - remove export of classes
+- put Kalman check in 'gompertz' test
+- put Kalman check in 'ou2' test
+- what does a generic `pomp.fun` interface look like?
+- MCMC proposals as pomp slots?
+- probes as pomp slots?
+- should `pomp` throw away extra stuff?
 
 ## For pomp:
 
 - add `include` argument to `pomp`?
-- ~~include CWD in search-path for include files?~~
 - deprecate `obs` and `states` arguments in `simulate`
-- ~~deprecate `mif` and `bsmc`~~
 - graceful stopping for optimizers (at least for `nloptr`)
 - number of processors stored in `bake`, `stew`, `freeze` outputs
 - documentation on `mifList`, `pmcmcList`, etc.
@@ -52,7 +47,6 @@
 - objective function for spectrum matching
 - objective function for NLF
 - trap errors for LAPACK
-- ~~write Csnippet support for `onestep.dens` and `gillespie.sim` plugins.~~
 - better unit tests for `sannbox`
 - support for asymmetric MCMC proposals
 - one-point SCQL function for possible use in fitting initial conditions
