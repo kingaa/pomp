@@ -275,69 +275,7 @@ setMethod(
   "show",
   signature=signature(object="pomp"),
   definition=function (object) {
-    cat(length(object@times),"records of",
-      nrow(obs(object)),"observables,",
-      "recorded from t =",
-      min(object@times),"to",max(object@times),"\n")
-    cat("summary of data:\n")
-    print(summary(as.data.frame(t(obs(object)))))
-    cat("zero time, t0 = ",object@t0,"\n",sep="")
-    if (length(object@tcovar)>0) {
-      cat(nrow(object@covar),"records of",
-        ncol(object@covar),"covariates,",
-        "recorded from t =",min(object@tcovar),
-        "to",max(object@tcovar),"\n")
-      cat("summary of covariates:\n")
-      print(summary(as.data.frame(object@covar)))
-    }
-    if (object@rprocess@type == 0L) {
-      cat("undefined process-model simulator\n")
-    } else if (object@rprocess@type == 4L) {
-      cat("Gillespie-method process-model simulator, rate.fun = ")
-      show(object@rprocess@rate.fn)
-    } else {
-      if (object@rprocess@type == 1L) {
-        cat("one-step process-model simulator, step.fun = ")
-      } else if (object@rprocess@type == 2L) {
-        cat("discrete-time process-model simulator, step.fun = ")
-      } else {
-        cat("Euler-method process-model simulator, step.fun = ")
-      }
-      show(object@rprocess@step.fn)
-    }
-    cat("process model density, dprocess = ")
-    show(object@dprocess)
-    cat("measurement model simulator, rmeasure = ")
-    show(object@rmeasure)
-    cat("measurement model density, dmeasure = ")
-    show(object@dmeasure)
-    cat("prior simulator, rprior = ")
-    show(object@rprior)
-    cat("prior density, dprior = ")
-    show(object@dprior)
-    cat("skeleton ",
-      if (object@skeleton.type!="undef")
-        paste0("(",object@skeleton.type,") ")
-      else "",
-      "= ",sep="")
-    show(object@skeleton)
-    cat("initializer = ")
-    show(object@initializer)
-    cat("parameter transformation (to estimation scale) = ")
-    show(object@to.trans)
-    cat("parameter transformation (from estimation scale) = ")
-    show(object@from.trans)
-    if (length(coef(object))>0) {
-      cat("parameter(s):\n")
-      print(coef(object))
-    } else {
-      cat ("parameter(s) unspecified\n");
-    }
-    if (length(object@userdata)>0) {
-      cat("extra user-defined variables: ",
-        paste(sapply(names(object@userdata),sQuote),collapse=", "),
-        "\n")
-    }
+    cat("<object of class ",sQuote("pomp"),">\n",sep="")
     invisible(NULL)
   }
 )
@@ -346,16 +284,84 @@ setMethod(
   "spy",
   signature=signature(object="pomp"),
   definition=function (object) {
-    if (length(object@solibs) > 0) {
-      f <- tempfile()
-      for (i in seq_along(object@solibs)) {
-        cat(object@solibs[[i]]$src,file=f)
-      }
-      file.show(f)
-      file.remove(f)
-    } else {
-      cat("no C snippets to display\n")
+    nm <- deparse(substitute(object,env=parent.frame()))
+    f <- tempfile()
+    sink(file=f)
+    cat("==================\npomp object ",sQuote(nm),":\n\n",sep="")
+    cat("-",length(object@times),"records of",
+      nrow(obs(object)),
+      ngettext(nrow(obs(object)),"observable,","observables,"),
+      "recorded from t =",
+      min(object@times),"to",max(object@times),"\n")
+    cat("- zero time, t0 = ",object@t0,"\n",sep="")
+    cat("- summary of data:\n")
+    print(summary(as.data.frame(t(obs(object)))))
+    if (length(object@tcovar)>0) {
+      cat("-",nrow(object@covar),"records of",
+        ncol(object@covar),"covariates,",
+        "recorded from t =",min(object@tcovar),
+        "to",max(object@tcovar),"\n")
+      cat("- summary of covariates:\n")
+      print(summary(as.data.frame(object@covar)))
     }
+    if (object@rprocess@type == 0L) {
+      cat("- undefined process-model simulator\n")
+    } else if (object@rprocess@type == 4L) {
+      cat("- Gillespie-method process-model simulator, rate.fun = ")
+      show(object@rprocess@rate.fn)
+    } else {
+      if (object@rprocess@type == 1L) {
+        cat("- one-step process-model simulator, step.fun = ")
+      } else if (object@rprocess@type == 2L) {
+        cat("- discrete-time process-model simulator, step.fun = ")
+      } else {
+        cat("- Euler-method process-model simulator, step.fun = ")
+      }
+      show(object@rprocess@step.fn)
+    }
+    cat("- process model density, dprocess = ")
+    show(object@dprocess)
+    cat("- measurement model simulator, rmeasure = ")
+    show(object@rmeasure)
+    cat("- measurement model density, dmeasure = ")
+    show(object@dmeasure)
+    cat("- prior simulator, rprior = ")
+    show(object@rprior)
+    cat("- prior density, dprior = ")
+    show(object@dprior)
+    cat("- skeleton ",
+      if (object@skeleton.type!="undef")
+        paste0("(",object@skeleton.type,") ")
+      else "",
+      "= ",sep="")
+    show(object@skeleton)
+    cat("- initializer = ")
+    show(object@initializer)
+    cat("- parameter transformation (to estimation scale) = ")
+    show(object@to.trans)
+    cat("- parameter transformation (from estimation scale) = ")
+    show(object@from.trans)
+    if (length(coef(object))>0) {
+      cat("- parameter(s):\n")
+      print(coef(object))
+    } else {
+      cat ("- parameter(s) unspecified\n");
+    }
+    if (length(object@userdata)>0) {
+      cat("- extra user-defined variables: ",
+        paste(sapply(names(object@userdata),sQuote),collapse=", "),
+        "\n")
+    }
+    ## now display C snippets
+    if (length(object@solibs) > 0) {
+      cat("- C snippet file 1:\n\n")
+      for (i in seq_along(object@solibs)) {
+        cat(object@solibs[[i]]$src)
+      }
+    }
+    sink(file=NULL)
+    file.show(f)
+    file.remove(f)
     invisible(NULL)
   }
 )

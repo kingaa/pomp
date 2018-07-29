@@ -1,13 +1,25 @@
-plotpomp.internal <- function (x, y,
-                               variables,
-                               panel = lines,
-                               nc = NULL,
-                               yax.flip = FALSE,
-                               mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
-                               oma = c(6, 0, 5, 0),
-                               axes = TRUE,
-                               xlabel,
-                               ...) {
+setMethod("plot","pomp",
+  function (x, y, variables,
+    panel = lines,
+    nc = NULL,
+    yax.flip = FALSE,
+    mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
+    oma = c(6, 0, 5, 0),
+    axes = TRUE,
+    ...) {
+    xlabel <- deparse(substitute(x,env=parent.frame()))
+    plotpomp.internal(x=x,y=y,variables=variables,
+      panel=panel,nc=nc,yax.flip=yax.flip,
+      mar=mar,oma=oma,axes=axes,
+      xlabel=xlabel,...)
+  }
+)
+
+plotpomp.internal <- function (x, y, variables,
+  panel = lines, nc = NULL, yax.flip = FALSE,
+  mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
+  oma = c(6, 0, 5, 0), axes = TRUE, xlabel, ...) {
+
   X <- as(x,"data.frame")
   vars <- names(X)
   tpos <- match("time",vars)
@@ -20,21 +32,21 @@ plotpomp.internal <- function (x, y,
     ylabels <- names(variables)
   }
 
-  plotpomp <- function (x, time, 
-                        xy.labels, xy.lines, panel = lines, nc, xlabel,
-                        type = "l", xlim = NULL, ylim = NULL, xlab = "time",
-                        ylab, log = "", col = par("col"), bg = NA,
-                        pch = par("pch"),
-                        cex = par("cex"), lty = par("lty"), lwd = par("lwd"),
-                        axes = TRUE, frame.plot = axes, ann = par("ann"),
-                        main = NULL,
-                        ...) {
+  plotpomp <- function (x, time,
+    xy.labels, xy.lines, panel = lines, nc, xlabel,
+    type = "l", xlim = NULL, ylim = NULL, xlab = "time",
+    ylab, log = "", col = par("col"), bg = NA,
+    pch = par("pch"),
+    cex = par("cex"), lty = par("lty"), lwd = par("lwd"),
+    axes = TRUE, frame.plot = axes, ann = par("ann"),
+    main = NULL,
+    ...) {
     panel <- match.fun(panel)
     addmain <- function (main,
-                         cex.main = par("cex.main"),
-                         font.main = par("font.main"),
-                         col.main = par("col.main"),
-                         ...) {
+      cex.main = par("cex.main"),
+      font.main = par("font.main"),
+      col.main = par("col.main"),
+      ...) {
       mtext(main,side=3,line=3,cex=cex.main,font=font.main,col=col.main,...)
     }
     nser <- NCOL(x)
@@ -47,7 +59,7 @@ plotpomp.internal <- function (x, y,
     on.exit(par(oldpar))
     for (i in seq_len(nser)) {
       plot.default(y=x[[i]],x=time,axes=FALSE,xlab="",ylab="",log=log,
-                   col=col,bg=bg,pch=pch,ann=ann,type="n",...)
+        col=col,bg=bg,pch=pch,ann=ann,type="n",...)
       panel(y=x[[i]],x=time,col=col,bg=bg,pch=pch,type=type,...)
       if (frame.plot)
         box(...)
@@ -81,35 +93,18 @@ plotpomp.internal <- function (x, y,
   for (page in seq_len(n.page)) {
     vv <- vars[seq(from=v1,to=v2)]
     plotpomp(
-             x=X[vv],
-             time=X[[tpos]],
-             ylab=ylabels,
-             xy.labels=FALSE,
-             xlabel=xlabel,
-             panel=panel,
-             nc=nc,
-             axes=axes,
-             ...
-             )
+      x=X[vv],
+      time=X[[tpos]],
+      ylab=ylabels,
+      xy.labels=FALSE,
+      xlabel=xlabel,
+      panel=panel,
+      nc=nc,
+      axes=axes,
+      ...
+    )
     v1 <- v2+1
-    v2 <- min(v1+plots.per.page-1,length(vars))    
+    v2 <- min(v1+plots.per.page-1,length(vars))
   }
   invisible(NULL)
 }
-
-setMethod("plot","pomp",
-          function (x, y, variables,
-                    panel = lines,
-                    nc = NULL,
-                    yax.flip = FALSE,
-                    mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
-                    oma = c(6, 0, 5, 0),
-                    axes = TRUE,
-                    ...) {
-            xlabel <- deparse(substitute(x,env=parent.frame()))
-            plotpomp.internal(x=x,y=y,variables=variables,
-                              panel=panel,nc=nc,yax.flip=yax.flip,
-                              mar=mar,oma=oma,axes=axes,
-                              xlabel=xlabel,...)
-          }
-          )

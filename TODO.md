@@ -10,10 +10,14 @@
 ## For pomp 2:
 
 - on-the-fly modification of basic components
+- rewrite examples to use `simulate` directly
+- what does a generic `pomp.fun` interface look like?
+- MCMC proposals as pomp slots?
+- probes as pomp slots?
+- should `pomp` throw away extra stuff?
 - `time` variable could retain its original name?
 - `initializer` -> `rinit` (and perhaps `dinit`)
 - `conv.rec` -> `traces` (with deprecation warning)
-- MCMC proposals as pomp slots?
 - piecewise constant interpolation of covariates
 - methods to change data (`obs<-`)?
 - remove `$` methods and replace with proper extractor functions
@@ -31,6 +35,8 @@
 - plugin for adaptive tau leaping algorithm.
 - plugin for compartmental models
 - refurbish entire test suite
+	- 'skeleton' test is too delicate. why?
+- remove export of classes
 
 ## For pomp:
 
