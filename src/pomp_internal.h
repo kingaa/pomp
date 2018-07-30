@@ -53,11 +53,6 @@ extern void R_init_pomp(DllInfo *info);
 // initstate.c
 extern SEXP do_init_state(SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi);
 
-// lookup_table.c
-extern struct lookup_table make_covariate_table(SEXP object, int *ncovar);
-extern SEXP lookup_in_table(SEXP ttable, SEXP xtable, SEXP t);
-extern void table_lookup(struct lookup_table *tab, double x, double *y);
-
 // mif2.c
 extern SEXP randwalk_perturbation(SEXP params, SEXP rw_sd);
 
