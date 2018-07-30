@@ -37,6 +37,8 @@
 \alias{probevals-probed.pomp}
 \alias{covmat-probed.pomp}
 \alias{covmat,probed.pomp-method}
+\alias{show,probed.pomp-method}
+\alias{show-probed.pomp}
 \alias{plot,probed.pomp-method}
 \alias{plot-probed.pomp}
 \alias{summary,spect.pomp-method}

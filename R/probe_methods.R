@@ -45,6 +45,15 @@ setMethod(
   definition=function(object,...)object@synth.loglik
 )
 
+setMethod(
+  "show",
+  signature=signature(object="probed.pomp"),
+  definition=function (object) {
+    cat("<object of class ",sQuote("probed.pomp"),">\n",sep="")
+    invisible(NULL)
+  }
+)
+
 setMethod("plot",
   signature=signature(x="probed.pomp"),
   definition=function (x, y, ...) {
