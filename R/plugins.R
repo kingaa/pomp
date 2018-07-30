@@ -120,7 +120,7 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   stoich <- lapply(args, "[[", 2)
 
   checkCode <- function (x) {
-    inh <- inherits(x, what = c("Csnippet", "character"), which = TRUE)
+    inh <- inherits(x, what = c("Csnippet", "character"))
     if (!any(inh)) {
       stop(ep,"for each event, the first list-element should be a",
            " C snippet or string.", call.=FALSE)
@@ -178,14 +178,4 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
       slotname="rate.fun",
       csnippet=TRUE,
       type=4L)
-}
-
-onestep.dens <- function (dens.fun, PACKAGE) {
-  warning(sQuote("onestep.dens")," is deprecated and will be removed in a ",
-          "forthcoming release.  ","Specify ",sQuote("dprocess")," directly ",
-          "using a C snippet or R function.",call.=FALSE)
-  if (!missing(PACKAGE))
-    warning("in ",sQuote("onestep.dens"),": ",sQuote("PACKAGE")," ignored.",
-            call.=FALSE)
-  dens.fun
 }
