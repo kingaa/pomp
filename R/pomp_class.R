@@ -55,8 +55,6 @@ setClass(
   ),
   validity=function (object) {
     retval <- character(0)
-    if (length(object@data)<1)
-      retval <- append(retval,paste(sQuote("data"),"is a required argument"))
     if (length(object@times)<1)
       retval <- append(retval,paste(sQuote("times"),"is a required argument"))
     if (!is.numeric(object@params) || (length(object@params)>0 && is.null(names(object@params))))

@@ -7,7 +7,6 @@
 ## For pomp 2:
 
 - on-the-fly modification of basic components
-- rewrite examples to use `simulate` directly
 - better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale
 - better scheme for indicating derivatives and maps in C snippets
 - `time` variable could retain its original name?
@@ -156,8 +155,6 @@ R/proposals.R
 
 R/covmat.R
 R/sannbox.R
-
-R/simulate_pomp.R
 
 R/spect_match.R
 R/spect.R

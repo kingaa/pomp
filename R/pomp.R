@@ -122,33 +122,6 @@ setMethod("construct_pomp",
 )
 
 setMethod("construct_pomp",
-  signature=signature(data="missing"),
-  definition = function (
-    data, times, t0, ..., rprocess, rmeasure, obsnames
-  ) {
-
-    ep <- paste0("in ",sQuote("pomp"),": ")
-
-    if (missing(times) || !is.numeric(times))
-      stop(ep,sQuote("times")," must be supplied")
-    if (missing(t0) || !is.numeric(t0))
-      stop(ep,sQuote("t0")," must be supplied")
-    if (missing(rprocess))
-      stop(ep,sQuote("rprocess")," must be supplied")
-    if (missing(rmeasure))
-      stop(ep,sQuote("rmeasure")," must be supplied")
-    if (missing(obsnames))
-      stop(ep,sQuote("obsnames")," must be supplied")
-
-    data <- array(dim=c(length(obsnames),length(times)),
-      dimnames=list(obsnames,NULL))
-
-    construct_pomp(data=data,times=times,t0=t0,
-      rprocess=rprocess,rmeasure=rmeasure,obsnames=obsnames,...)
-  }
-)
-
-setMethod("construct_pomp",
   signature=signature(data="array"),
   definition = function (data, times, t0, ...,
     rprocess, dprocess,
@@ -160,6 +133,17 @@ setMethod("construct_pomp",
     fromEstimationScale, toEstimationScale) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
+
+    if (missing(times) || !is.numeric(times) ||
+        !all(is.finite(times)) ||
+        (length(times)>1 && !all(diff(times)>0)))
+      stop(ep,sQuote("times")," must be specified as an increasing sequence ",
+        "of numbers.",call.=FALSE)
+
+    if (missing(t0) || !is.numeric(t0) || !is.finite(t0) ||
+        length(t0) > 1 ||  t0 > times[1])
+      stop(ep,sQuote("t0")," must be specified as a single number not ",
+        "greater than ",sQuote("times[1]"),".",call.=FALSE)
 
     if (missing(initializer)) initializer <- NULL
 
@@ -180,6 +164,11 @@ setMethod("construct_pomp",
     if (missing(dprior)) dprior <- NULL
     if (missing(fromEstimationScale)) fromEstimationScale <- NULL
     if (missing(toEstimationScale)) toEstimationScale <- NULL
+    if (missing(skeleton)) {
+      skeleton <- NULL
+      .skelmap.delta.t <- 1
+      .skel.type <- "undef"
+    }
 
     if (missing(params)) params <- numeric(0)
     if (missing(covar)) covar <- NULL

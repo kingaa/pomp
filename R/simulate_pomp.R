@@ -22,6 +22,42 @@ setMethod(
     )
 )
 
+setMethod(
+  "simulate",
+  signature=signature(object="missing"),
+  definition=function (object, nsim = 1, seed = NULL, params,
+    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+    include.data = FALSE, rprocess, rmeasure, obsnames, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    ep <- paste0("in ",sQuote("simulate"),": ")
+
+    if (missing(times))
+      stop(ep,sQuote("times")," is a required argument.",call.=FALSE)
+    if (missing(t0))
+      stop(ep,sQuote("t0")," is a required argument.",call.=FALSE)
+
+    object <- construct_pomp(array(dim=c(0,length(times))),times=times,t0=t0,
+      rprocess=rprocess,rmeasure=rmeasure,obsnames=obsnames,...,
+      verbose=verbose)
+
+    simulate.internal(
+      object=object,
+      nsim=nsim,
+      seed=seed,
+      params=params,
+      states=states,
+      obs=obs,
+      times=times,
+      t0=t0,
+      as.data.frame=as.data.frame,
+      include.data=include.data,
+      ...,
+      verbose=verbose
+    )
+  }
+)
+
 simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
   include.data = FALSE, .getnativesymbolinfo = TRUE, verbose, ...) {
@@ -35,22 +71,21 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   as.data.frame <- as.logical(as.data.frame)
   include.data <- as.logical(include.data)
 
+  if (length(nsim)!=1 || !is.numeric(nsim) || !is.finite(nsim) || nsim < 1)
+    stop(ep,sQuote("nsim")," must be a positive integer",call.=FALSE)
   nsim <- as.integer(nsim)
-  if (length(nsim)!=1 || !is.finite(nsim) || nsim < 1L)
-    stop(ep,sQuote("nsim")," must be a positive integer")
 
   ## set the random seed (be very careful about this)
   seed <- as.integer(seed)
   if (length(seed)>0) {
-    if (!exists('.Random.seed',envir=.GlobalEnv)) set.seed(NULL)
-    save.seed <- get('.Random.seed',envir=.GlobalEnv)
+    if (!exists(".Random.seed",envir=.GlobalEnv)) set.seed(NULL)
+    save.seed <- get(".Random.seed",envir=.GlobalEnv)
     set.seed(seed)
   }
 
   if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
-  if (is.null(params) || length(params)==0)
-    stop(ep,"no ",sQuote("params")," specified",call.=FALSE)
+  if (is.null(params)) params <- numeric(0)
 
   params <- as.matrix(params)
   storage.mode(params) <- "double"

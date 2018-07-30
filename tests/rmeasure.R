@@ -29,20 +29,25 @@ stopifnot(all.equal(as.numeric(y1),as.numeric(y2)))
 try(rmeasure(po,x=x[1,,,drop=FALSE],times=t,params=theta))
 k <- which(names(theta)=="tau")
 try(rmeasure(po,x=x,y=y,times=t,params=theta[-k]))
+try(rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(3,3)),
+  x=x,y=y,times=t,params=theta))
 
-stopifnot({
-  rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(3,3)),
-    x=x,y=y,times=t,params=theta,log=TRUE) -> z
-  dimnames(z)
-  all(z[]==3)
-})
+rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(y2=3,y1=3)),
+  x=x,y=y,times=t,params=theta) -> z
+stopifnot(dim(z)==c(2,100,10),rownames(z)==c("y2","y1"),z[]==3)
 
 try(rmeasure(pomp(po,rmeasure=function(x,t,params,...)c(3,2,1)),
-  x=x,y=y,times=t,params=theta,log=TRUE))
+  x=x,y=y,times=t,params=theta))
+
+rmeasure(pomp(po,rmeasure=function(x,t,params,...)c(a=3,b=2,c=1)),
+  x=x,y=y,times=t,params=theta) -> z
+
+stopifnot(dim(z)==c(3,100,10),rownames(z)==c("a","b","c"),
+  max(abs(z-c(3,2,1)))==0)
 
 pp <- parmat(theta,10)
-rmeasure(po,params=pp,x=x,y=y,t=t,log=TRUE) -> y
-try(rmeasure(po,params=pp[,1:7],x=x,t=t,log=TRUE))
+rmeasure(po,params=pp,x=x,y=y,t=t) -> y
+try(rmeasure(po,params=pp[,1:7],x=x,t=t))
 
 pompExample(dacca)
 set.seed(3434388L)

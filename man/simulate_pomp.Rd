@@ -11,9 +11,13 @@
 }
 \usage{
 \S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, params,
-         states = FALSE, obs = FALSE, times, t0,
-         as.data.frame = FALSE, include.data = FALSE, \dots,
-         verbose = getOption("verbose", FALSE))
+    states = FALSE, obs = FALSE, times, t0,
+    as.data.frame = FALSE, include.data = FALSE, \dots,
+    verbose = getOption("verbose", FALSE))
+\S4method{simulate}{missing}(object, nsim = 1, seed = NULL, params,
+    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+    include.data = FALSE, rprocess, rmeasure, obsnames, \dots,
+    verbose = getOption("verbose", FALSE))
 }
 \arguments{
   \item{object}{An object of class \code{pomp}.}
@@ -43,6 +47,10 @@
     A factor variable, \sQuote{sim}, distinguishes one simulation from another.
     If, in addition, \code{include.data=TRUE}, the original data are included as an additional \sQuote{simulation}.
     If \code{as.data.frame=FALSE}, \code{include.data} is ignored.
+  }
+  \item{rprocess, rmeasure, obsnames}{
+    Specifications of the model latent-state simulator (\code{rprocess}), the model measurement simulator (\code{rmeasure}), and names of observables (\code{obsnames}).
+    See \code{\link{pomp}} for details.
   }
   \item{\dots}{
     Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.

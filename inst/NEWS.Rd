@@ -16,6 +16,7 @@
     These classes are no longer exported (for the most part).
     \item The \code{transform} argument to the \code{probe.quantile} function has been removed (as it is entirely redundant!).
     \item The old and deprecated \code{mif} and \code{bsmc} methods have been removed.
+    \item One can now directly create a pomp by calling \code{simulate}, specifying \code{rprocess} and, optionally, \code{rmeasure}, without having to first create a dummy data frame.
   }
 }
 \section{Changes in \pkg{pomp} version 1.18.5}{

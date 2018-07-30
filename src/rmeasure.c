@@ -12,12 +12,13 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 {
   int nprotect = 0;
   pompfunmode mode = undef;
-  int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp, nobs;
-  SEXP Snames, Pnames, Cnames, Onames;
+  int ntimes, nvars, npars, ncovars, nreps, nrepsx, nrepsp;
+  int nobs = 0;
+  SEXP Snames, Pnames, Cnames, Onames = R_NilValue;
   SEXP cvec, tvec = R_NilValue, xvec = R_NilValue, pvec = R_NilValue;
-  SEXP fn, fcall, rho = R_NilValue, ans, nm;
+  SEXP fn, fcall, rho = R_NilValue;
   SEXP pompfun;
-  SEXP Y;
+  SEXP Y = R_NilValue;
   int *dim;
   int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
   struct lookup_table covariate_table;
@@ -26,14 +27,14 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
   if (ntimes < 1)
-    errorcall(R_NilValue,"in 'rmeasure': length('times') = 0, no work to do");
+    errorcall(R_NilValue,"in 'rmeasure': length('times') = 0, no work to do.");
 
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepsx = dim[1];
 
   if (ntimes != dim[2])
-    errorcall(R_NilValue,"in 'rmeasure': length of 'times' and 3rd dimension of 'x' do not agree");
+    errorcall(R_NilValue,"in 'rmeasure': length of 'times' and 3rd dimension of 'x' do not agree.");
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
@@ -42,15 +43,11 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
   if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
-    errorcall(R_NilValue,"in 'rmeasure': larger number of replicates is not a multiple of smaller");
-
-  dim = INTEGER(GET_DIM(GET_SLOT(object,install("data"))));
-  nobs = dim[0];
+    errorcall(R_NilValue,"in 'rmeasure': larger number of replicates is not a multiple of smaller.");
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
-  PROTECT(Onames = GET_ROWNAMES(GET_DIMNAMES(GET_SLOT(object,install("data"))))); nprotect++;
 
   // set up the covariate table
   covariate_table = make_covariate_table(object,&ncovars);
@@ -58,14 +55,6 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   // vector for interpolated covariates
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
   SET_NAMES(cvec,Cnames);
-
-  {
-    int dim[3] = {nobs, nreps, ntimes};
-    const char *dimnm[3] = {"variable","rep","time"};
-    PROTECT(Y = makearray(3,dim)); nprotect++;
-    setrownames(Y,Onames,3);
-    fixdimnames(Y,dimnm,3);
-  }
 
   // extract the user-defined function
   PROTECT(pompfun = GET_SLOT(object,install("rmeasure"))); nprotect++;
@@ -103,10 +92,12 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   case native:				// use native routine
 
     // construct state, parameter, covariate, observable indices
-    oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames","observables"))); nprotect++;
+    PROTECT(Onames = GET_SLOT(pompfun,install("obsnames"))); nprotect++;
     sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;
     pidx = INTEGER(PROTECT(name_index(Pnames,pompfun,"paramnames","parameters"))); nprotect++;
     cidx = INTEGER(PROTECT(name_index(Cnames,pompfun,"covarnames","covariates"))); nprotect++;
+    oidx = INTEGER(PROTECT(name_index(Onames,pompfun,"obsnames","observables"))); nprotect++;
+    nobs = LENGTH(Onames);
 
     // address of native routine
     *((void **) (&ff)) = R_ExternalPtrAddr(fn);
@@ -115,7 +106,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'"); // # nocov
+    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'."); // # nocov
 
   break;
 
@@ -128,8 +119,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   {
     int first = 1;
-    int use_names = 0;
-    double *yt = REAL(Y);
+    double *yt = 0;
     double *time = REAL(times);
     double *tp = REAL(tvec);
     double *cp = REAL(cvec);
@@ -138,7 +128,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
     double *xs = REAL(x);
     double *ps = REAL(params);
     double *ys;
-    int *posn;
+    SEXP ans, ans1;
     int i, j, k;
 
     for (k = 0; k < ntimes; k++, time++) { // loop over times
@@ -148,45 +138,52 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
       *tp = *time;		// copy the time
       table_lookup(&covariate_table,*tp,cp); // interpolate the covariates
 
-      for (j = 0; j < nreps; j++, yt += nobs) { // loop over replicates
+      for (j = 0; j < nreps; j++) { // loop over replicates
 
         // copy the states and parameters into place
         for (i = 0; i < nvars; i++) xp[i] = xs[i+nvars*((j%nrepsx)+nrepsx*k)];
         for (i = 0; i < npars; i++) pp[i] = ps[i+npars*(j%nrepsp)];
 
         if (first) {
+
           // evaluate the call
-          PROTECT(ans = eval(fcall,rho)); nprotect++;
-          if (LENGTH(ans) != nobs) {
-            errorcall(R_NilValue,"in 'rmeasure': user 'rmeasure' returns a vector of %d observables but %d are expected: compare 'data' slot?",
-                      LENGTH(ans),nobs);
-          }
+          PROTECT(ans1 = eval(fcall,rho)); nprotect++;
 
-          // get name information to fix potential alignment problems
-          PROTECT(nm = GET_NAMES(ans)); nprotect++;
-          use_names = !isNull(nm);
-          if (use_names) {		// match names against names from data slot
-            posn = INTEGER(PROTECT(matchnames(Onames,nm,"observables"))); nprotect++;
-          } else {
-            posn = 0;
+          nobs = LENGTH(ans1);
+          if (nobs < 1) {
+            errorcall(R_NilValue,"in 'rmeasure': zero-length result.");
           }
+          PROTECT(Onames = GET_NAMES(ans1)); nprotect++;
+          if (isNull(Onames)) {
+            errorcall(R_NilValue,
+              "in 'rmeasure': 'rmeasure' must return a named numeric vector.");
+          }
+          ys = REAL(AS_NUMERIC(ans1));
 
-          ys = REAL(AS_NUMERIC(ans));
+          // create array Y to hold the results
+          {
+            int dim[3] = {nobs, nreps, ntimes};
+            const char *dimnm[3] = {"variable","rep","time"};
+            PROTECT(Y = makearray(3,dim)); nprotect++;
+            setrownames(Y,Onames,3);
+            fixdimnames(Y,dimnm,3);
+          }
+          yt = REAL(Y);
 
           first = 0;
 
         } else {
 
-          ys = REAL(AS_NUMERIC(PROTECT(eval(fcall,rho))));
+          PROTECT(ans=eval(fcall,rho));
+          if (LENGTH(ans) != nobs)
+            errorcall(R_NilValue,"in 'rmeasure': 'rmeasure' returns variable-length results.");
+          ys = REAL(AS_NUMERIC(ans));
           UNPROTECT(1);
 
         }
 
-        if (use_names) {
-          for (i = 0; i < nobs; i++) yt[posn[i]] = ys[i];
-        } else {
-          for (i = 0; i < nobs; i++) yt[i] = ys[i];
-        }
+        for (i = 0; i < nobs; i++) yt[i] = ys[i];
+        yt += nobs;
 
       }
     }
@@ -197,6 +194,13 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   case native: 			// native routine
 
   {
+    int dim[3] = {nobs, nreps, ntimes};
+    const char *dimnm[3] = {"variable","rep","time"};
+
+    PROTECT(Y = makearray(3,dim)); nprotect++;
+    setrownames(Y,Onames,3);
+    fixdimnames(Y,dimnm,3);
+
     double *yt = REAL(Y);
     double *time = REAL(times);
     double *xs = REAL(x);

@@ -1,0 +1,240 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> png(filename="simulate-%02d.png",res=100)
+> 
+> library(pomp)
+> library(magrittr)
+> library(dplyr)
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+> 
+> set.seed(1041414791L)
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> ou2 %>% simulate(times=0:20,t0=-4,seed=298831503) %>% plot()
+> 
+> try(simulate(rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
++   rmeasure=Csnippet("w = rnorm(z,1);"),
++   initializer=Csnippet("z = 0;"),
++   statenames="z",obsnames="w"))
+Error : in 'simulate': 'times' is a required argument.
+> try(simulate(times=1:10,
++   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
++   rmeasure=Csnippet("w = rnorm(z,1);"),
++   initializer=Csnippet("z = 0;"),
++   statenames="z",obsnames="w"))
+Error : in 'simulate': 't0' is a required argument.
+> try(simulate(times=c(1:5,NA,7:10),t0=0,
++   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
++   rmeasure=Csnippet("w = rnorm(z,1);"),
++   initializer=Csnippet("z = 0;"),
++   statenames="z",obsnames="w"))
+Error : in 'pomp': 'times' must be specified as an increasing sequence of numbers.
+> try(simulate(times=NULL,t0=0,
++   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
++   rmeasure=Csnippet("w = rnorm(z,1);"),
++   initializer=Csnippet("z = 0;"),
++   statenames="z",obsnames="w"))
+Error : in 'pomp': 'times' must be specified as an increasing sequence of numbers.
+> try(simulate(times=1:10,t0=NA,
++   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
++   rmeasure=Csnippet("w = rnorm(z,1);"),
++   initializer=Csnippet("z = 0;"),
++   statenames="z",obsnames="w"))
+Error : in 'pomp': 't0' must be specified as a single number not greater than 'times[1]'.
+> try(simulate(times=1:10,t0=NULL,
++   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
++   rmeasure=Csnippet("w = rnorm(z,1);"),
++   initializer=Csnippet("z = 0;"),
++   statenames="z",obsnames="w"))
+Error : in 'pomp': 't0' must be specified as a single number not greater than 'times[1]'.
+> 
+> simulate(times=1:100,t0=0,seed=450738202,
++   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
++   rmeasure=Csnippet("w = rnorm(z,1);"),
++   initializer=Csnippet("z = 0;"),
++   statenames="z",obsnames="w") %>% plot()
+> 
+> try(simulate(times=1:100,t0=0,
++   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
++   rmeasure=function(t,x,params,...) c(w=rnorm(n=t,x["z"],1)),
++   initializer=Csnippet("z = 2;"),
++   statenames="z"))
+Error : in 'simulate': in 'rmeasure': 'rmeasure' returns variable-length results.
+> 
+> simulate(times=1:100,t0=0,seed=993523767,
++   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
++   rmeasure=function(t,x,params,...) c(w=rnorm(1,x["z"],1)),
++   initializer=Csnippet("z = 0;"),
++   statenames="z") -> po
+> po %>% plot()
+> 
+> simulate(times=1:100,t0=0,seed=378047885,
++   rprocess=onestep.sim(function(x,t,params,delta.t,...)
++     c(z=runif(n=1,x["z"]-0.5,x["z"]+0.5))),
++   rmeasure=function(t,x,params,...) c(w=rnorm(1,x["z"],1)),
++   initializer=function(params,t0,...)c(z=0)) %>% plot()
+> 
+> rm(.Random.seed)
+> simulate(po,seed=406214171) %>% plot()
+> simulate(po,params=as.list(coef(po)))
+<object of class 'pomp'>
+> 
+> data.frame(u=1:10,v=runif(10)) %>%
++   pomp(times="u",t0=0) %>%
++   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
++     rmeasure=function(t,x,params,...){
++       p <- x["w"]+c(-0.5,0.5)
++       c(y=runif(n=1,p[1],p[2]))
++     },
++     initializer=Csnippet("w=0;"),
++     statenames="w") %>%
++   obs() %>%
++   rownames()
+[1] "y"
+> 
+> data.frame(u=1:10,v=runif(10)) %>%
++   pomp(times="u",t0=0) %>%
++   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
++     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
++     initializer=Csnippet("w=0;"),
++     statenames="w",obsnames="y") %>%
++   obs() %>%
++   rownames()
+[1] "y"
+> 
+> try(simulate(ou2,nsim=-3))
+Error : in 'simulate': 'nsim' must be a positive integer
+> try(simulate(ou2,nsim=NA))
+Error : in 'simulate': 'nsim' must be a positive integer
+> try(simulate(ou2,nsim=NULL))
+Error : in 'simulate': 'nsim' must be a positive integer
+> try(simulate(ou2,nsim="bob"))
+Error : in 'simulate': 'nsim' must be a positive integer
+> 
+> ou2 %>% window(end=3) -> po
+> simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3) %>%
++   count(sim)
+# A tibble: 3 x 2
+  sim       n
+  <ord> <int>
+1 1         3
+2 2         3
+3 3         3
+> simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3,include.data=TRUE) %>%
++   count(sim)
+# A tibble: 4 x 2
+  sim       n
+  <ord> <int>
+1 data      3
+2 1         3
+3 2         3
+4 3         3
+> simulate(po,as.data.frame=TRUE,states=TRUE,seed=49569969)
+       x1   x2 sim time
+1 -1.5048 6.11   1    1
+2 -0.6614 4.80   1    2
+3  0.0843 5.75   1    3
+> simulate(po,as.data.frame=TRUE,obs=TRUE,seed=49569969)
+      y1   y2 sim time
+1 -1.033 6.49   1    1
+2 -0.486 3.18   1    2
+3  2.609 3.41   1    3
+> simulate(po,as.data.frame=TRUE,obs=FALSE,states=FALSE,seed=49569969)
+  time     y1   y2      x1   x2 sim
+1    1 -1.033 6.49 -1.5048 6.11   1
+2    2 -0.486 3.18 -0.6614 4.80   1
+3    3  2.609 3.41  0.0843 5.75   1
+> simulate(po,as.data.frame=TRUE,obs=TRUE,states=TRUE,seed=49569969)
+      y1   y2      x1   x2 sim time
+1 -1.033 6.49 -1.5048 6.11   1    1
+2 -0.486 3.18 -0.6614 4.80   1    2
+3  2.609 3.41  0.0843 5.75   1    3
+> simulate(po,as.data.frame=TRUE,include.data=TRUE,seed=49569969)
+  time     y1   y2  sim      x1   x2
+1    1 -1.701 4.25 data      NA   NA
+4    2  0.242 7.04 data      NA   NA
+6    3  3.768 2.98 data      NA   NA
+2    1 -1.033 6.49    1 -1.5048 6.11
+3    2 -0.486 3.18    1 -0.6614 4.80
+5    3  2.609 3.41    1  0.0843 5.75
+> simulate(po,as.data.frame=FALSE,include.data=TRUE,seed=49569969)
+<object of class 'pomp'>
+> simulate(po,states=TRUE) %>% rownames()
+[1] "x1" "x2"
+> simulate(po,obs=TRUE) %>% rownames()
+[1] "y1" "y2"
+> simulate(po,obs=TRUE,states=TRUE) %>% names()
+[1] "states" "obs"   
+> simulate(po,nsim=3) %>% show()
+[[1]]
+<object of class 'pomp'>
+
+[[2]]
+<object of class 'pomp'>
+
+[[3]]
+<object of class 'pomp'>
+
+> 
+> data.frame(u=1:10,v=runif(10)) %>%
++   pomp(times="u",t0=0) %>%
++   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
++     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
++     initializer=Csnippet("w=0;"),
++     statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE)
+   time  sim     v        y      w
+1     1 data 0.782       NA     NA
+3     2 data 0.695       NA     NA
+5     3 data 0.994       NA     NA
+7     4 data 0.598       NA     NA
+9     5 data 0.197       NA     NA
+11    6 data 0.672       NA     NA
+13    7 data 0.937       NA     NA
+15    8 data 0.655       NA     NA
+17    9 data 0.394       NA     NA
+19   10 data 0.363       NA     NA
+2     1    1    NA  0.60466 0.3401
+4     2    1    NA  0.05578 0.3278
+6     3    1    NA  0.27658 0.6310
+8     4    1    NA  0.48989 0.2888
+10    5    1    NA  1.25966 0.9205
+12    6    1    NA  0.56028 0.9226
+14    7    1    NA -0.00432 0.0657
+16    8    1    NA -0.32274 0.0378
+18    9    1    NA  0.26915 0.0829
+20   10    1    NA  0.39639 0.5822
+> 
+> dev.off()
+null device 
+          1 
+> 
