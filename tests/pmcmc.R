@@ -27,7 +27,7 @@ mcmc3 <- continue(mcmc3,Nmcmc=50)
 
 plot(c(mcmc1,mcmc2,mcmc3),pars=c("r","sigma"),density=FALSE)
 plot(c(mcmc1,c(mcmc2,mcmc3)),pars=c("r","sigma"),trace=FALSE)
-plot(conv.rec(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
+plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
 print(mcmc1)
 c(mcmc1,mcmc2)
 

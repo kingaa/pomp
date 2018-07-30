@@ -10,7 +10,7 @@ setClass(
     scale = 'numeric',
     epsilon = 'numeric',
     proposal = 'function',
-    conv.rec = 'matrix'
+    traces = 'matrix'
   ),
   prototype=prototype(
     pars = character(0),
@@ -21,7 +21,7 @@ setClass(
     epsilon = 1.0,
     proposal = function (...)
       stop("in ",sQuote("abc"),": proposal not specified",call.=FALSE),
-    conv.rec=array(dim=c(0,0))
+    traces=array(dim=c(0,0))
   )
 )
 
@@ -113,11 +113,11 @@ setMethod(
       ...
     )
 
-    obj@conv.rec <- rbind(
-      object@conv.rec[,colnames(obj@conv.rec)],
-      obj@conv.rec[-1,]
+    obj@traces <- rbind(
+      object@traces[,colnames(obj@traces)],
+      obj@traces[-1,]
     )
-    names(dimnames(obj@conv.rec)) <- c("iteration","variable")
+    names(dimnames(obj@traces)) <- c("iteration","variable")
     obj@Nabc <- as.integer(ndone+Nabc)
     obj@accepts <- as.integer(accepts+obj@accepts)
 
@@ -204,7 +204,7 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
   ## which does the right thing for continue() and
   ## should have negligible effect unless doing many short calls to continue()
 
-  conv.rec <- matrix(
+  traces <- matrix(
     data=NA,
     nrow=Nabc+1,
     ncol=length(theta),
@@ -226,7 +226,7 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
     stop(ep,sQuote("scale")," must have either length 1 or length equal to the",
       " number of probes (here, ",length(datval),").",call.=FALSE)
 
-  conv.rec[1,names(theta)] <- theta
+  traces[1,names(theta)] <- theta
 
   for (n in seq_len(Nabc)) { # main loop
 
@@ -276,14 +276,14 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
     }
 
     ## store a record of this iteration
-    conv.rec[n+1,names(theta)] <- theta
+    traces[n+1,names(theta)] <- theta
     if (verbose && (n%%5==0))
       cat("ABC iteration",n+.ndone,"of",Nabc+.ndone,
         "completed\nacceptance ratio:",
         round(.accepts/(n+.ndone),3),"\n")
   }
 
-  pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
+  pars <- apply(traces,2,function(x)diff(range(x))>0)
   pars <- names(pars[pars])
 
   pompUnload(object,verbose=verbose)
@@ -299,7 +299,7 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
     scale=scale,
     epsilon=epsilon,
     proposal=proposal,
-    conv.rec=conv.rec
+    traces=traces
   )
 
 }

@@ -1,6 +1,5 @@
 \name{Particle Markov Chain Monte Carlo}
 \title{The particle Markov chain Metropolis-Hastings algorithm}
-\docType{methods}
 \alias{pmcmc}
 \alias{pmcmc,missing-method}
 \alias{pmcmc,ANY-method}
@@ -17,10 +16,10 @@
 \alias{logLik-pmcmc}
 \alias{logLik,pmcmcList-method}
 \alias{logLik-pmcmcList}
-\alias{conv.rec,pmcmc-method}
-\alias{conv.rec-pmcmc}
-\alias{conv.rec,pmcmcList-method}
-\alias{conv.rec-pmcmcList}
+\alias{traces,pmcmc-method}
+\alias{traces-pmcmc}
+\alias{traces,pmcmcList-method}
+\alias{traces-pmcmcList}
 \alias{filter.traj,pmcmc-method}
 \alias{filter.traj,pmcmcList-method}
 \alias{filter.traj-pmcmc}
@@ -113,8 +112,9 @@
     \item{c}{
       Concatenates \code{pmcmc} objects into a \code{pmcmcList}.
     }
-    \item{\code{conv.rec(object, pars)}}{
-      returns the columns of the convergence-record matrix corresponding to the names in \code{pars} as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
+    \item{\code{traces(object, pars)}}{
+      returns the history of the MCMC iterations as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
+      Thus, it can be used as input for the various \pkg{coda} convergence diagnostics.
     }
     \item{\code{filter.traj(object, vars)}}{
       returns filter trajectories from a \code{pmcmc} or \code{pmcmcList} object.
@@ -157,7 +157,7 @@ chain <- pmcmc(chain)
 plot(chain)
 
 library(coda)
-trace <- window(conv.rec(chain,c("alpha.2","alpha.3")),start=2000)
+trace <- window(traces(chain,c("alpha.2","alpha.3")),start=2000)
 rejectionRate(trace)
 effectiveSize(trace)
 autocorr.diag(trace)

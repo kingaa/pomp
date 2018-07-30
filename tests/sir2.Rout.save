@@ -31,6 +31,6 @@ Type 'q()' to quit R.
 > pf <- pfilter(window(po,end=0.5),Np=1000)
 > stopifnot(all.equal(round(range(eff.sample.size(pf)),1),c(159.3,1000.0)))
 > tj <- trajectory(po,maxsteps=10000)
-> stopifnot(all.equal(round(apply(tj,1,sum),1),
-+   c(S=2985338.6,I=2050.7,R=50012610.7,N=5.3e+07,cases=913.4)))
+> stopifnot(all.equal(round(apply(tj,1,mean),1),
++   c(S=56327.1,I=38.7,R=943634.2,N=1e6,cases=17.2)))
 > 

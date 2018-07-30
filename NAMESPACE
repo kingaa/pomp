@@ -38,7 +38,7 @@ exportMethods(
     prior_samples,posterior_samples,
     mif2,continue,
     pred.mean,pred.var,filter.mean,filter.traj,
-    conv.rec,values,
+    traces,values,
     bsmc2,pmcmc,abc,nlf,
     covmat,
     traj.match.objfun,traj.match,
@@ -88,5 +88,6 @@ export(
     probe.nlar,
     probe.marginal,
     sannbox,
+    conv.rec,
     pompExample
 )

@@ -1,4 +1,17 @@
-pompLoad.internal <- function (object, ..., verbose = FALSE) {
+setMethod("pompLoad",
+  signature=signature(object='pomp'),
+  definition = function (object, ...) {
+    pompLoad.internal(object,...)
+  })
+
+setMethod("pompUnload",
+  signature=signature(object='pomp'),
+  definition = function (object, ...) {
+    pompUnload.internal(object,...)
+  })
+
+pompLoad.internal <- function (object, ...,
+  verbose = getOption("verbose", FALSE)) {
   for (lib in object@solibs) {
     if (!is.loaded("__pomp_load_stack_incr",PACKAGE=lib$name)) {
       dir <- srcDir(lib$dir,verbose=verbose)
@@ -16,7 +29,8 @@ pompLoad.internal <- function (object, ..., verbose = FALSE) {
   invisible(NULL)
 }
 
-pompUnload.internal <- function (object, ..., verbose = FALSE) {
+pompUnload.internal <- function (object, ...,
+  verbose = getOption("verbose", FALSE)) {
   for (lib in object@solibs) {
     if (is.loaded("__pomp_load_stack_decr",PACKAGE=lib$name)) {
       st <- .Call(load_stack_decr,lib$name)
@@ -30,15 +44,3 @@ pompUnload.internal <- function (object, ..., verbose = FALSE) {
   }
   invisible(NULL)
 }
-
-setMethod("pompLoad",
-          signature=signature(object='pomp'),
-          definition = function (object, ...) {
-            pompLoad.internal(object,...)
-          })
-
-setMethod("pompUnload",
-          signature=signature(object='pomp'),
-          definition = function (object, ...) {
-            pompUnload.internal(object,...)
-          })

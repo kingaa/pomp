@@ -66,10 +66,13 @@ in 'plot-abc': 'y' is ignored
 > 
 > c(a=c(abc1,abc2),b=abc3) -> abclist
 > stopifnot(identical(abclist,c(a1=abc1,c(a2=abc2,b=abc3))))
-> stopifnot(all(dim(conv.rec(abc1))==c(101,10)))
-> stopifnot(all(dim(conv.rec(abc1,"alpha.1"))==c(101,1)))
+> stopifnot(all(dim(traces(abc1))==c(101,10)))
+> stopifnot(all(dim(traces(abc1,"alpha.1"))==c(101,1)))
+> invisible(conv.rec(abc2))
+Warning message:
+'conv.rec' is deprecated and will be removed in a forthcoming release. Please use 'traces' instead. 
 > 
-> c(abc1,abc2) %>% conv.rec() -> traces
+> c(abc1,abc2) %>% traces() -> traces
 > traces %>% length()
 [1] 2
 > traces %>% class()
@@ -93,7 +96,7 @@ Error : in 'plot-abc': can't make a scatterplot with only one variable
 > 
 > try(abc(abc1,Nabc=-5))
 Error : in 'abc': 'Nabc' must be a positive integer.
-> stopifnot(all(dim(conv.rec(abc(abc1,Nabc=0))==c(1,10))))
+> stopifnot(all(dim(traces(abc(abc1,Nabc=0))==c(1,10))))
 > 
 > try(abc(ou2,Nabc=50,scale=scale.dat[1:2],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))

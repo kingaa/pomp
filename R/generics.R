@@ -5,7 +5,7 @@ setGeneric("plot",function(x,y,...)standardGeneric("plot"))
 setGeneric("summary",function(object,...)standardGeneric("summary"))
 setGeneric("window",function(x,...)standardGeneric("window"))
 setGeneric("spy",function(object,...)standardGeneric("spy"))
-setGeneric("cc",function(...)standardGeneric("cc"))
+setGeneric("concat",function(...)standardGeneric("concat"))
 
 ## constituent components of a 'pomp' object
 setGeneric("dmeasure",function(object,...)standardGeneric("dmeasure"))
@@ -47,7 +47,7 @@ setGeneric("cond.logEvidence",function(object,...)standardGeneric("cond.logEvide
 ## effective sample size
 setGeneric("eff.sample.size",function(object,...)standardGeneric("eff.sample.size"))
 ## convergence record
-setGeneric("conv.rec",function(object,...)standardGeneric("conv.rec"))
+setGeneric("traces",function(object,...)standardGeneric("traces"))
 ## values of probes
 setGeneric("values",function(object,...)standardGeneric("values"))
 ## samples from prior and posterior distributions
@@ -186,22 +186,6 @@ setMethod(
 )
 
 setMethod(
-  "bsmc",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("bsmc"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "bsmc",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("bsmc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-setMethod(
   "bsmc2",
   signature=signature(object="missing"),
   definition=function (...) {
@@ -262,22 +246,6 @@ setMethod(
   signature=signature(object="ANY"),
   definition=function (object, ...) {
     stop(sQuote("nlf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-setMethod(
-  "mif",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("mif"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "mif",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("mif")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 
@@ -378,7 +346,7 @@ setMethod(
 )
 
 setMethod(
-  "cc",
+  "concat",
   signature=signature(...="ANY"),
   definition=function(...) {
     stop(sQuote("c")," is not defined for objects of mixed class.",

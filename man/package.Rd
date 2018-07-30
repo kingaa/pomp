@@ -78,7 +78,7 @@
   \link{pomp low-level interface},
   \code{\link{pfilter}},
   \code{\link[=simulate-pomp]{simulate}},
-  \code{\link{mif}},
+  \code{\link{mif2}},
   \code{\link{nlf}},
   \code{\link{probe}},
   \code{\link{traj.match}},

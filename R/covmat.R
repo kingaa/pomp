@@ -3,7 +3,7 @@
 setMethod("covmat",signature=signature(object="pmcmc"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
-    covmat.internal(traces=as.matrix(conv.rec(object,object@pars)),
+    covmat.internal(traces=as.matrix(traces(object,object@pars)),
       start=start,thin=thin,
       expand=expand)
   })
@@ -12,7 +12,7 @@ setMethod("covmat",signature=signature(object="pmcmcList"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
     pars <- unique(c(sapply(object,slot,"pars")))
-    covmat.internal(traces=as.array(conv.rec(object,pars)),
+    covmat.internal(traces=as.array(traces(object,pars)),
       start=start,thin=thin,
       expand=expand)
   })
@@ -20,7 +20,7 @@ setMethod("covmat",signature=signature(object="pmcmcList"),
 setMethod("covmat",signature=signature(object="abc"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
-    covmat.internal(traces=as.matrix(conv.rec(object,object@pars)),
+    covmat.internal(traces=as.matrix(traces(object,object@pars)),
       start=start,thin=thin,
       expand=expand)
   })
@@ -29,7 +29,7 @@ setMethod("covmat",signature=signature(object="abcList"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
     pars <- unique(c(sapply(object,slot,"pars")))
-    covmat.internal(traces=as.array(conv.rec(object,pars)),
+    covmat.internal(traces=as.array(traces(object,pars)),
       start=start,thin=thin,
       expand=expand)
   })

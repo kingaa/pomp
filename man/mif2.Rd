@@ -1,6 +1,5 @@
 \name{Iterated filtering 2}
 \title{IF2: Maximum likelihood by iterated, perturbed Bayes maps}
-\docType{methods}
 \alias{mif2}
 \alias{mif2,ANY-method}
 \alias{mif2,missing-method}
@@ -15,12 +14,13 @@
 \alias{continue,missing-method}
 \alias{continue,mif2d.pomp-method}
 \alias{continue-mif2d.pomp}
-\alias{mif2d.pomp-class}
 \alias{mif2d.pomp-methods}
-\alias{conv.rec,mif2d.pomp-method}
-\alias{conv.rec-mif2d.pomp}
-\alias{conv.rec,mif2List-method}
-\alias{conv.rec-mif2List}
+\alias{traces}
+\alias{conv.rec}
+\alias{traces,mif2d.pomp-method}
+\alias{traces-mif2d.pomp}
+\alias{traces,mif2List-method}
+\alias{traces-mif2List}
 \alias{coef,mif2List-method}
 \alias{coef.rec-mif2List}
 \alias{show,mif2d.pomp-method}
@@ -31,7 +31,6 @@
 \alias{plot,mif2d.pomp-method}
 \alias{plot-mif2List}
 \alias{plot,mif2List-method}
-\alias{mif2List-class}
 \alias{c-mif2d.pomp}
 \alias{c,mif2d.pomp-method}
 \alias{c-mif2List}
@@ -56,8 +55,8 @@
 \S4method{mif2}{mif2d.pomp}(object, Nmif, start, Np, rw.sd, transform,
     cooling.type, cooling.fraction.50, tol, \dots)
 \S4method{continue}{mif2d.pomp}(object, Nmif = 1, \dots)
-\S4method{conv.rec}{mif2d.pomp}(object, pars, transform = FALSE, \dots)
-\S4method{conv.rec}{mif2List}(object, \dots)
+\S4method{traces}{mif2d.pomp}(object, pars, transform = FALSE, \dots)
+\S4method{traces}{mif2List}(object, \dots)
 rw.sd(\dots)
 }
 \arguments{
@@ -80,8 +79,7 @@ rw.sd(\dots)
     \code{Np(1)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
     \code{Np(2)}, from \code{time(object)[1]} to \code{time(object)[2]},
     and so on.
-    \strong{Note that this behavior differs from that of \code{\link{mif}}!}
-  }
+   }
   \item{rw.sd}{
     specification of the magnitude of the random-walk perturbations that will be applied to some or all model parameters.
     Parameters that are to be estimated should have positive perturbations specified here.
@@ -160,14 +158,15 @@ rw.sd(\dots)
 \section{Methods}{
   Methods that can be used to manipulate, display, or extract information from a \code{mif2d.pomp} object:
   \describe{
-    \item{conv.rec}{
-      \code{conv.rec(object, pars, transform)} returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
-      By default, all columns are returned.
+    \item{traces}{
+      \code{traces(object, pars, transform)} returns the history of the IF2 iterations as a matrix, which can be useful for diagnostic purposes.
+      By default, all parameters are returned; this can be restricted via the \code{pars} argument.
       If \code{transform=TRUE}, the parameters are transformed from the estimation scale.
     }
     \item{logLik}{
       Returns the value in the \code{loglik} slot.
       NB: this is \emph{not} the same as the likelihood of the model at the MLE!
+      To obtain the latter, one must run \code{pfilter} on the result of the \code{mif2} computation.
     }
     \item{c}{
       Concatenates \code{mif2d.pomp} objects into a \code{mif2List}.
@@ -209,7 +208,7 @@ rbind(mle1=c(coef(m1),loglik=logLik(pfilter(m1,Np=1000))),
 }
 \author{Aaron A. King, Edward L. Ionides, and Dao Nguyen}
 \seealso{
-  \code{\link{pomp}}, \code{\link{pfilter}}, \code{\link{mif}}, and the \href{https://kingaa.github.io/pomp/vignettes/mif2.html}{IF2 tutorial} on the \href{https://kingaa.github.io/pomp}{package website}.
+  \code{\link{pomp}}, \code{\link{pfilter}}, and the \href{https://kingaa.github.io/pomp/vignettes/mif2.html}{IF2 tutorial} on the \href{https://kingaa.github.io/pomp}{package website}.
 }
 \keyword{optimize}
 \keyword{ts}

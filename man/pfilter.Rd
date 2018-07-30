@@ -180,7 +180,7 @@ fm <- filter.mean(pf)    	## extract the filtering means
 }
 \author{Aaron A. King}
 \seealso{
-  \code{\link{pomp}}, \code{\link{mif}}, \code{\link{pmcmc}}, \code{\link{bsmc2}},
+  \code{\link{pomp}}, \code{\link{pmcmc}}, \code{\link{bsmc2}},
   and the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 }
 \keyword{ts}

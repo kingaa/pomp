@@ -29,7 +29,7 @@ License: GPL-3
 LazyData: true
 Contact: kingaa at umich dot edu
 BugReports: https://github.com/kingaa/pomp/issues/
-Collate: aaa.R authors.R bake.R generics.R eulermultinom.R
+Collate: aaa.R authors.R generics.R bake.R eulermultinom.R
 	 csnippet.R safecall.R pomp_fun.R plugins.R templates.R builder.R
 	 parmat.R logmeanexp.R slice_design.R
 	 profile_design.R sobol.R bsplines.R sannbox.R
@@ -48,3 +48,4 @@ Collate: aaa.R authors.R bake.R generics.R eulermultinom.R
 	 spect.R spect_match.R
 	 abc.R abc_methods.R covmat.R
 	 example.R
+	 deprecated.R

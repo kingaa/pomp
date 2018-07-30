@@ -13,7 +13,7 @@ setClass(
         )
         return(retval)
       }
-      d <- sapply(object,function(x)dim(x@conv.rec))
+      d <- sapply(object,function(x)dim(x@traces))
       if (!all(apply(d,1,diff)==0)) {
         retval <- paste0(
           "error in ",sQuote("c"),
@@ -30,7 +30,7 @@ setClass(
 setClassUnion("Mif2",c("mif2d.pomp","mif2List"))
 
 setMethod(
-  "cc",
+  "concat",
   signature=signature(...="Mif2"),
   definition=function (...) {
     y <- lapply(
@@ -46,7 +46,7 @@ setMethod(
   }
 )
 
-c.Mif2 <- cc
+c.Mif2 <- concat
 
 setMethod(
   "[",
@@ -63,17 +63,17 @@ setMethod(
   }
 )
 
-setMethod('conv.rec','mif2d.pomp',
+setMethod('traces','mif2d.pomp',
   function (object, pars, transform = FALSE, ...) {
-    conv.rec.internal(object=object,pars=pars,transform=transform,...)
+    traces.internal(object=object,pars=pars,transform=transform,...)
   }
 )
 
 setMethod(
-  'conv.rec',
+  'traces',
   signature=signature(object='mif2List'),
   definition=function (object, ...) {
-    lapply(object,conv.rec,...)
+    lapply(object,traces,...)
   }
 )
 
@@ -86,22 +86,22 @@ setMethod(
 )
 
 ## extract the convergence record
-conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
+traces.internal <- function (object, pars, transform = FALSE, ...) {
   transform <- as.logical(transform)
   if (transform) {
     retval <- cbind(
-      object@conv.rec[,c(1,2)],
+      object@traces[,c(1,2)],
       t(
         partrans(
           object,
-          params=t(object@conv.rec)[-c(1,2),,drop=FALSE],
+          params=t(object@traces)[-c(1,2),,drop=FALSE],
           dir="fromEstimationScale"
         )
       )
     )
-    names(dimnames(retval)) <- names(dimnames(object@conv.rec))
+    names(dimnames(retval)) <- names(dimnames(object@traces))
   } else {
-    retval <- object@conv.rec
+    retval <- object@traces
   }
   if (missing(pars)) {
     retval
@@ -110,11 +110,11 @@ conv.rec.internal <- function (object, pars, transform = FALSE, ...) {
     bad.pars <- setdiff(pars,colnames(retval))
     if (length(bad.pars)>0)
       stop(
-        "in ",sQuote("conv.rec"),": name(s) ",
+        "in ",sQuote("traces"),": name(s) ",
         paste(sQuote(bad.pars),collapse=","),
         " correspond to no parameter(s) in ",
-        if (transform) sQuote("conv.rec(object,transform=TRUE)")
-        else sQuote("conv.rec(object,transform=FALSE)"),
+        if (transform) sQuote("traces(object,transform=TRUE)")
+        else sQuote("traces(object,transform=FALSE)"),
         call.=FALSE
       )
     retval[,pars,drop=FALSE]
@@ -185,7 +185,7 @@ mif2.diagnostics <- function (z) {
     hi <- min(low+n.per.page-1,nplots)
     for (i in seq(from=low,to=hi,by=1)) {
       n <- i-low+1
-      dat <- sapply(z,function(po,label) conv.rec(po,label),label=plotnames[i])
+      dat <- sapply(z,function(po,label) traces(po,label),label=plotnames[i])
       matplot(
         y=dat,
         x=iteration,

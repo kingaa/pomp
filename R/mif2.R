@@ -48,7 +48,7 @@ setClass(
     cooling.type = 'character',
     cooling.fraction.50 = 'numeric',
     transform = 'logical',
-    conv.rec = 'matrix'
+    traces = 'matrix'
   )
 )
 
@@ -283,10 +283,10 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     start <- apply(paramMatrix,1L,mean)
   }
 
-  conv.rec <- array(dim=c(Nmif+1,length(start)+2),
+  traces <- array(dim=c(Nmif+1,length(start)+2),
                     dimnames=list(iteration=seq.int(.ndone,.ndone+Nmif),
                                   variable=c('loglik','nfail',names(start))))
-  conv.rec[1L,] <- c(NA,NA,start)
+  traces[1L,] <- c(NA,NA,start)
 
   object <- as(object,"pomp")
 
@@ -320,8 +320,8 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     gnsi <- FALSE
 
     paramMatrix <- pfp@paramMatrix
-    conv.rec[n+1,-c(1,2)] <- coef(pfp)
-    conv.rec[n,c(1,2)] <- c(pfp@loglik,pfp@nfail)
+    traces[n+1,-c(1,2)] <- coef(pfp)
+    traces[n,c(1,2)] <- c(pfp@loglik,pfp@nfail)
     .indices <- pfp@indices
 
     if (verbose) cat("mif2 iteration",n,"of",Nmif,"completed\n")
@@ -342,7 +342,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     cooling.type=cooling.type,
     cooling.fraction.50=cooling.fraction.50,
     transform=transform,
-    conv.rec=conv.rec
+    traces=traces
   )
 }
 
@@ -474,12 +474,12 @@ setMethod(
     f <- selectMethod("mif2","mif2d.pomp")
     obj <- f(object=object,Nmif=Nmif,.ndone=ndone,...)
 
-    object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1L,c('loglik','nfail')]
-    obj@conv.rec <- rbind(
-      object@conv.rec,
-      obj@conv.rec[-1L,colnames(object@conv.rec)]
+    object@traces[ndone+1,c('loglik','nfail')] <- obj@traces[1L,c('loglik','nfail')]
+    obj@traces <- rbind(
+      object@traces,
+      obj@traces[-1L,colnames(object@traces)]
     )
-    names(dimnames(obj@conv.rec)) <- c("iteration","variable")
+    names(dimnames(obj@traces)) <- c("iteration","variable")
     obj@Nmif <- as.integer(ndone+Nmif)
 
     obj

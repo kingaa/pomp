@@ -15,10 +15,10 @@
 \alias{continue,abc-method}
 \alias{continue-abc}
 \alias{abc-methods}
-\alias{conv.rec,abc-method}
-\alias{conv.rec-abc}
-\alias{conv.rec,abcList-method}
-\alias{conv.rec-abcList}
+\alias{traces,abc-method}
+\alias{traces-abc}
+\alias{traces,abcList-method}
+\alias{traces-abcList}
 \alias{plot-abc}
 \alias{plot,abc-method}
 \alias{plot-abcList}
@@ -53,8 +53,8 @@
     probes, scale, epsilon,
     verbose = getOption("verbose"), \dots)
 \S4method{continue}{abc}(object, Nabc = 1, \dots)
-\S4method{conv.rec}{abc}(object, pars, \dots)
-\S4method{conv.rec}{abcList}(object, \dots)
+\S4method{traces}{abc}(object, pars, \dots)
+\S4method{traces}{abcList}(object, \dots)
 \S4method{plot}{abc}(x, y, pars, scatter = FALSE, \dots)
 \S4method{plot}{abcList}(x, y, \dots)
 }
@@ -119,9 +119,9 @@
 \section{Methods}{
   Methods that can be used to manipulate, display, or extract information from an \code{abc} object:
   \describe{
-    \item{\code{conv.rec(object, pars)} }{
-      returns the columns of the convergence-record matrix corresponding to the names in \code{pars}.
-      By default, all rows are returned.
+    \item{\code{traces(object, pars)} }{
+      returns the history of the ABC iterations as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
+      Thus, it can be used as input for the various \pkg{coda} convergence diagnostics.
     }
     \item{c}{
       Concatenates \code{abc} objects into an \code{abcList}.

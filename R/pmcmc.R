@@ -7,7 +7,7 @@ setClass(
     Nmcmc = "integer",
     accepts = "integer",
     proposal = "function",
-    conv.rec = "array",
+    traces = "array",
     log.prior = "numeric"
   ),
   prototype=prototype(
@@ -16,7 +16,7 @@ setClass(
     accepts = 0L,
     proposal = function (...)
       stop("in ",sQuote("pmcmc"),": proposal not specified",call.=FALSE),
-    conv.rec=array(dim=c(0,0)),
+    traces=array(dim=c(0,0)),
     log.prior=numeric(0)
   )
 )
@@ -96,11 +96,11 @@ setMethod(
       .prev.log.prior=object@log.prior
     )
 
-    obj@conv.rec <- rbind(
-      object@conv.rec[,colnames(obj@conv.rec)],
-      obj@conv.rec[-1,]
+    obj@traces <- rbind(
+      object@traces[,colnames(obj@traces)],
+      obj@traces[-1,]
     )
-    names(dimnames(obj@conv.rec)) <- c("iteration","variable")
+    names(dimnames(obj@traces)) <- c("iteration","variable")
     ft <- array(dim=replace(dim(obj@filter.traj),2L,ndone+Nmcmc),
       dimnames=replace(dimnames(obj@filter.traj),2L,
         list(seq_len(ndone+Nmcmc))))
@@ -164,7 +164,7 @@ pmcmc.internal <- function (object, Nmcmc,
   if (verbose)
     cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
 
-  conv.rec <- matrix(
+  traces <- matrix(
     data=NA,
     nrow=Nmcmc+1,
     ncol=length(theta)+3,
@@ -207,8 +207,8 @@ pmcmc.internal <- function (object, Nmcmc,
     log.prior <- .prev.log.prior
     pfp@filter.traj <- pfp@filter.traj[,.ndone,,drop=FALSE]
   }
-  conv.rec[1,names(theta)] <- theta
-  conv.rec[1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
+  traces[1,names(theta)] <- theta
+  traces[1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
 
   filt.t <- array(
     data=0,
@@ -273,8 +273,8 @@ pmcmc.internal <- function (object, Nmcmc,
     filt.t[,n,] <- pfp@filter.traj[,1L,]
 
     ## store a record of this iteration
-    conv.rec[n+1,names(theta)] <- theta
-    conv.rec[n+1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
+    traces[n+1,names(theta)] <- theta
+    traces[n+1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
 
     if (verbose) cat("PMCMC iteration",n+.ndone,"of",Nmcmc+.ndone,
       "completed\nacceptance ratio:",
@@ -282,7 +282,7 @@ pmcmc.internal <- function (object, Nmcmc,
 
   }
 
-  pars <- apply(conv.rec,2,function(x)diff(range(x))>0)
+  pars <- apply(traces,2,function(x)diff(range(x))>0)
   pars <- setdiff(names(pars[pars]),c("loglik","log.prior","nfail"))
 
   pompUnload(object,verbose=verbose)
@@ -297,7 +297,7 @@ pmcmc.internal <- function (object, Nmcmc,
     proposal=proposal,
     Np=Np,
     tol=tol,
-    conv.rec=conv.rec,
+    traces=traces,
     log.prior=log.prior,
     filter.traj=filt.t
   )

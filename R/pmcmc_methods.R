@@ -13,7 +13,7 @@ setClass(
         )
         return(retval)
       }
-      d <- sapply(object,function(x)dim(x@conv.rec))
+      d <- sapply(object,function(x)dim(x@traces))
       if (!all(apply(d,1,diff)==0)) {
         retval <- paste0(
           "error in ",sQuote("c"),
@@ -30,7 +30,7 @@ setClass(
 setClassUnion("Pmcmc",c("pmcmc","pmcmcList"))
 
 setMethod(
-  "cc",
+  "concat",
   signature=signature(...="Pmcmc"),
   definition=function (...) {
     y <- lapply(
@@ -46,7 +46,7 @@ setMethod(
   }
 )
 
-c.Pmcmc <- cc
+c.Pmcmc <- concat
 
 setMethod(
   "[",
@@ -65,20 +65,20 @@ setMethod(
 
 ## extract the convergence record as a coda::mcmc object
 setMethod(
-  'conv.rec',
+  'traces',
   signature=signature(object='pmcmc'),
   function (object, pars, ...) {
-    if (missing(pars)) pars <- colnames(object@conv.rec)
-    coda::mcmc(object@conv.rec[,pars,drop=FALSE])
+    if (missing(pars)) pars <- colnames(object@traces)
+    coda::mcmc(object@traces[,pars,drop=FALSE])
   }
 )
 
 ## extract the convergence records as a coda::mcmc.list object
 setMethod(
-  'conv.rec',
+  'traces',
   signature=signature(object='pmcmcList'),
   definition=function (object, ...) {
-    coda::mcmc.list(lapply(object,conv.rec,...))
+    coda::mcmc.list(lapply(object,traces,...))
   }
 )
 
@@ -105,7 +105,7 @@ setMethod(
   "plot",
   signature=signature(x='Pmcmc'),
   function (x, pars, ...) {
-    plot(conv.rec(x,pars),...)
+    plot(traces(x,pars),...)
   }
 )
 

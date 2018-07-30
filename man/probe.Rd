@@ -77,8 +77,6 @@
 \S4method{probe.match}{probe.matched.pomp}(object, est, probes,
             nsim, seed, transform, fail.value, \dots,
             verbose = getOption("verbose"))
-\S4method{logLik}{probed.pomp}(object, \dots)
-\S4method{values}{probed.pomp}(object, \dots)
 }
 \arguments{
   \item{object}{
@@ -138,42 +136,18 @@
   A call to \code{probe.match} results in an attempt to optimize the agreement between model and data, as measured by the specified probes, over the parameters named in \code{est}.
   The results, including coefficients of the fitted model and values of the probes for data and fitted-model simulations, are stored in an object of class \code{probe.matched.pomp}.
 
-  The objective function minimized by \code{probe.match} --- in a form suitable for use with \code{\link{optim}}-like optimizers --- is created by a call to \code{probe.match.objfun}.
+  The objective function minimized by \code{probe.match}---in a form suitable for use with \code{\link{optim}}-like optimizers---is created by a call to \code{probe.match.objfun}.
   Specifically, \code{probe.match.objfun} will return a function that takes a single numeric-vector argument that is assumed to cotain the parameters named in \code{est}, in that order.
   This function will return the negative synthetic log likelihood for the probes specified.
 }
 \value{
-  \code{probe} returns an object of class \code{probed.pomp}.
-  \code{probed.pomp} is derived from the \code{pomp} class and therefore have all the slots of \code{pomp}.
-  In addition, a \code{probed.pomp} class has the following slots:
-  \describe{
-    \item{probes}{list of the probes applied.}
-    \item{datvals, simvals}{values of each of the probes applied to the real and simulated data, respectively.}
-    \item{quantiles}{fraction of simulations with probe values less than the value of the probe of the data.}
-    \item{pvals}{
-      two-sided p-values:
-      fraction of the \code{simvals} that deviate more extremely from the mean of the \code{simvals} than does \code{datavals}.
-    }
-    \item{synth.loglik}{
-      the log synthetic likelihood (Wood 2010).
-      This is the likelihood assuming that the probes are multivariate-normally distributed.
-    }
-  }
+  \code{probe} returns an object of class \code{probed.pomp}, which is derived from the \code{pomp} class and contains additional information about the \code{probe} calculation.
+
+  This information can be summarized via a call to \code{summary} and displayed graphically via a call to \code{plot}.
 
   \code{probe.match} returns an object of class \code{probe.matched.pomp}, which is derived from class \code{probed.pomp}.
-  \code{probe.matched.pomp} objects therefore have all the slots above plus the following:
-  \describe{
-    \item{est, transform, fail.value}{values of the corresponding arguments in the call to \code{probe.match}.}
-    \item{value}{value of the objective function at the optimum.}
-    \item{evals}{
-      number of function and gradient evaluations by the optimizer.
-      See \code{\link{optim}}.
-    }
-    \item{convergence, msg}{
-      Convergence code and message from the optimizer.
-      See \code{\link{optim}} and \code{\link{nloptr}}.
-    }
-  }
+  It therefore contains the information described above as well as information on the convergence of the optimization algorithm.
+  This can be displayed via a call to \code{summary}.
 
   \code{probe.match.objfun} returns a function suitable for use as an objective function in an \code{\link{optim}}-like optimizer.
 }
@@ -184,6 +158,8 @@
     }
     \item{summary}{
       displays summary information.
+      The summary includes quantiles (fractions of simulations with probe values less than those realized on the data) and the corresponding two-sided p-values.
+      In addition, the \dQuote{synthetic likelihood} (Wood 2010) is computed, under the assumption that the probe values are multivariate-normally distributed.
     }
     \item{values}{
       extracts the realized values of the probes on the data and on the simulations as a data frame in long format.
@@ -193,12 +169,11 @@
       returns the synthetic likelihood for the probes.
       NB: in general, this is not the same as the likelihood.
     }
-    \item{as, as.data.frame}{
-      when a \sQuote{probed.pomp} is coerced to a \sQuote{data.frame}, the first row gives the probes applied to the data; the rest of the rows give the probes evaluated on simulated data.
-      The rownames of the result can be used to distinguish these.
+    \item{as.data.frame, as(object,"data.frame")}{
+      coercing a \sQuote{probed.pomp} to a \sQuote{data.frame}, gives the realized values of the probes on the data and on the simulations.
+      The variable \code{.id} indicates whether the probes are from the data or simulations.
     }
   }
-  In addition, slots of this object can be accessed via the \code{$} operator.
 }
 \references{
   B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P. Ellner, E. McCauley, R. M. Nisbet, S. N. Wood

@@ -13,7 +13,7 @@ setClass(
         )
         return(retval)
       }
-      d <- sapply(object,function(x)dim(x@conv.rec))
+      d <- sapply(object,function(x)dim(x@traces))
       if (!all(apply(d,1,diff)==0)) {
         retval <- paste0(
           "error in ",sQuote("c"),
@@ -30,7 +30,7 @@ setClass(
 setClassUnion("Abc",c("abc","abcList"))
 
 setMethod(
-  "cc",
+  "concat",
   signature=signature(...="Abc"),
   definition=function (...) {
     y <- lapply(
@@ -46,7 +46,7 @@ setMethod(
   }
 )
 
-c.Abc <- cc
+c.Abc <- concat
 
 setMethod(
   "[",
@@ -65,20 +65,20 @@ setMethod(
 
 ## extract the convergence record as an 'mcmc' object
 setMethod(
-  "conv.rec",
+  "traces",
   signature=signature(object="abc"),
   definition=function (object, pars, ...) {
-    if (missing(pars)) pars <- colnames(object@conv.rec)
-    coda::mcmc(object@conv.rec[,pars,drop=FALSE])
+    if (missing(pars)) pars <- colnames(object@traces)
+    coda::mcmc(object@traces[,pars,drop=FALSE])
   }
 )
 
 ## extract the convergence record as an 'mcmc.list' object
 setMethod(
-  "conv.rec",
+  "traces",
   signature=signature(object="abcList"),
   definition=function (object, ...) {
-    coda::mcmc.list(lapply(object,conv.rec,...))
+    coda::mcmc.list(lapply(object,traces,...))
   }
 )
 
@@ -133,7 +133,7 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
       pars <- unique(do.call(c,lapply(z,function(x)names(x@params))))
   }
   if (scatter) {
-    x <- lapply(z,function(x)as.matrix(conv.rec(x,pars)))
+    x <- lapply(z,function(x)as.matrix(traces(x,pars)))
     x <- lapply(seq_along(x),function(n)cbind(x[[n]],.num=n))
     x <- do.call(rbind,x)
     if (ncol(x)<3) {
@@ -163,7 +163,7 @@ abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
       hi <- min(low+n.per.page-1,nplots)
       for (i in seq(from=low,to=hi,by=1)) {
         n <- i-low+1
-        dat <- sapply(z,conv.rec,pars=plotnames[i])
+        dat <- sapply(z,traces,pars=plotnames[i])
         matplot(
           y=dat,
           x=iteration,
