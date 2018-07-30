@@ -116,7 +116,8 @@ Error : in 'bsmc2': 'Np' must be a positive integer.
 Error : in 'bsmc2': 'tol' should be a small positive number.
 > try(bsmc2(smc,est="r",Np=100,max.fail=-1,tol=10))
 Error : in 'bsmc2': too many filtering failures
-> invisible(bsmc2(smc,est="r",Np=100,max.fail=Inf,tol=10))
+> bsmc2(smc,est="r",Np=100,max.fail=Inf,tol=10)
+<object of class 'bsmcd.pomp'>
 Warning message:
 in 'bsmc2': 10 filtering failures occurred. 
 > try(bsmc2(smc,params=theta,est="r",Np=100,

@@ -176,7 +176,10 @@ Error : 'c' is not defined for objects of mixed class.
 Error : 'c' is not defined for objects of mixed class.
 > try(c(c(abc1,abc2),ou2))
 Error : 'c' is not defined for objects of mixed class.
-> invisible(c(abc1))
+> c(abc1)
+[[1]]
+<object of class 'abc'>
+
 > alist <- c(c(abc1,abc2))
 > class(alist[2])
 [1] "abcList"
@@ -195,7 +198,8 @@ $b
 [[1]]
 NULL
 
-> invisible(alist[["b"]])
+> alist[["b"]]
+<object of class 'abc'>
 > alist[["c"]]
 NULL
 > c(one=abc1,two=abc2,three=abc3)

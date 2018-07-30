@@ -48,7 +48,8 @@ Error : in 'pfilter': 'Np' must be specified.
 Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(ou2,Np=c(10,20,30)))
 Error : in 'pfilter': 'Np' must have length 1 or length 101.
-> invisible(pfilter(ou2,Np=ceiling(runif(101,min=10,max=100))))
+> pfilter(ou2,Np=ceiling(runif(101,min=10,max=100)))
+<object of class 'pfilterd.pomp'>
 > try(pfilter(ou2,Np=100,tol=NA))
 Error : in 'pfilter': 'tol' should be a small positive number.
 > try(pfilter(ou2,Np=100,tol=-1))
@@ -106,7 +107,7 @@ Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(pf2,Np=function(k)c(100,-150)))
 Error : in 'pfilter': if 'Np' is a function, it must return a single positive integer.
 > try(pfilter(pf2,Np="many"))
-Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
+Error : in 'pfilter': 'Np' must be a number, a vector of numbers, or a function.
 > 
 > theta <- coef(ou2)
 > theta["sigma.2"] <- Inf

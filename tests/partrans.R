@@ -29,3 +29,7 @@ stopifnot(all.equal(partrans(gompertz,partrans(gompertz,pp,dir="to")),pp))
 try(partrans(pomp(gompertz,
   fromEstimationScale=function(params,...)unname(params),
   toEstimationScale=function(params,...)unname(params)),pp))
+
+pompExample(ou2)
+pp <- parmat(coef(ou2),10)
+stopifnot(all.equal(partrans(ou2,partrans(ou2,pp,dir="to"),dir="from"),pp))

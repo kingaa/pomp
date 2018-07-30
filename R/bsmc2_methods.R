@@ -31,6 +31,15 @@ setMethod("posterior_samples",
           })
 
 setMethod(
+  "show",
+  signature=signature(object="bsmcd.pomp"),
+  definition=function (object) {
+    cat("<object of class ",sQuote("bsmcd.pomp"),">\n",sep="")
+    invisible(NULL)
+  }
+)
+
+setMethod(
   "plot",
   signature(x="bsmcd.pomp"),
   function (x, y, ..., pars, thin) {

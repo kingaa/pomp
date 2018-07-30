@@ -67,7 +67,7 @@ try(bsmc2(po,params=pp,est="r"))
 try(bsmc2(smc,Np=-10,est="r"))
 try(bsmc2(smc,est="r",Np=100,tol=c(3,5)))
 try(bsmc2(smc,est="r",Np=100,max.fail=-1,tol=10))
-invisible(bsmc2(smc,est="r",Np=100,max.fail=Inf,tol=10))
+bsmc2(smc,est="r",Np=100,max.fail=Inf,tol=10)
 try(bsmc2(smc,params=theta,est="r",Np=100,
           dmeasure=Csnippet("error(\"whoa nelly!\");")))
 

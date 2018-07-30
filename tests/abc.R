@@ -115,14 +115,14 @@ try(abc(abc1,proposal=delayed.failure))
 try(c(abc1,ou2))
 try(c(abc1,NULL))
 try(c(c(abc1,abc2),ou2))
-invisible(c(abc1))
+c(abc1)
 alist <- c(c(abc1,abc2))
 class(alist[2])
 try(alist[3])
 alist <- c(a=abc1,b=abc2)
 alist["b"]
 alist["c"]
-invisible(alist[["b"]])
+alist[["b"]]
 alist[["c"]]
 c(one=abc1,two=abc2,three=abc3)
 

@@ -57,3 +57,9 @@ Error : in 'partrans': user transformation functions must return a named numeric
 +   toEstimationScale=function(params,...)unname(params)),pp))
 Error : in 'partrans': user transformation functions must return a named numeric vector
 > 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> pp <- parmat(coef(ou2),10)
+> stopifnot(all.equal(partrans(ou2,partrans(ou2,pp,dir="to"),dir="from"),pp))
+> 
