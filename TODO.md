@@ -8,20 +8,20 @@
 
 - on-the-fly modification of basic components
 - rewrite examples to use `simulate` directly
+- better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale
+- better scheme for indicating derivatives and maps in C snippets
 - `time` variable could retain its original name?
 - `initializer` -> `rinit` (and perhaps `dinit`)
-- `conv.rec` -> `traces` (with deprecation warning)
 - piecewise constant interpolation of covariates
-- methods to change data (`obs<-`)?
+- documentation for generics
 - remove `$` methods and replace with proper extractor functions
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification
 	- allow "R snippets": expressions evaluated in proper context?
 - remove `obs` and `states` arguments in `simulate`? or hide? `do_simulate` in C?
-- better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale
-- better scheme for indicating derivatives and maps in C snippets
 - easier interface for lists of probes in `probe`
+- methods to change data (`obs<-`)?
 - more/better demos and examples
 - plugin for adaptive tau leaping algorithm.
 - plugin for compartmental models
@@ -33,7 +33,6 @@
 - what does a generic `pomp.fun` interface look like?
 - MCMC proposals as pomp slots?
 - probes as pomp slots?
-- should `pomp` throw away extra stuff?
 
 ## For pomp:
 

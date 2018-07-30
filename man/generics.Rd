@@ -4,10 +4,11 @@
 \alias{traces}
 \alias{eff.sample.size}
 \alias{cond.logLik}
+\alias{spy}
 \alias{conv.rec}
 \alias{values}
-\alias{spy}
 \description{
+  Generic functions used by in the \pkg{pomp} package.
 }
 \usage{
 continue(object, \dots)
@@ -17,9 +18,7 @@ cond.logLik(object, \dots)
 rw.sd(\dots)
 }
 \arguments{
-  \item{object}{}
-  \item{\dots}{}
+  \item{object, \dots}{}
 }
-\value{}
 \keyword{programming}
 \keyword{internal}

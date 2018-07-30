@@ -8,7 +8,6 @@
 \alias{print-pomp}
 \alias{show,pomp-method}
 \alias{show-pomp}
-\alias{spy}
 \alias{spy,pomp-method}
 \alias{spy-pomp}
 \alias{time,pomp-method}

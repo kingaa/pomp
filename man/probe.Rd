@@ -33,9 +33,8 @@
 \alias{summary,probe.matched.pomp-method}
 \alias{summary-probed.pomp}
 \alias{summary-probe.matched.pomp}
-\alias{values}
-\alias{values,probed.pomp-method}
-\alias{values-probed.pomp}
+\alias{probevals,probed.pomp-method}
+\alias{probevals-probed.pomp}
 \alias{covmat-probed.pomp}
 \alias{covmat,probed.pomp-method}
 \alias{plot,probed.pomp-method}
