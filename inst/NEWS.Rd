@@ -1,5 +1,23 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 2.0.1}{
+  \itemize{
+    \item \code{values} has been deprecated and replaced by \code{probevals}.
+    \item The \code{conv.rec} method has been deprecated, replaced by the new \code{traces} method.
+    \item The \code{euler.sir} example has been renamed \code{sir}.
+    \item The \code{gillespie.sir} example has been renamed \code{sir2}.
+    \item The \code{covmat} method can now be applied to a \code{probed.pomp} object.
+    It returns the estimated covariance matrix of the probes.
+    \item When \code{trajectory} calls on \pkg{deSolve} routines to numerically integrate a model vectorfield, more informative error messages are generated, and diagnostics are printed when \code{verbose = TRUE}.
+    \item The \code{show} method applied to pomp objects is now quite terse.
+    To obtain detailed information, the \code{spy} method is available.
+    \item The \code{spy} method now returns the information formerly displayed in a call to \code{show}, in addition to the C files associated with any C snippets.
+    \item The use of \code{$} methods to access the slots of \pkg{pomp} S4 objects has now been removed.
+    These classes are no longer exported (for the most part).
+    \item The \code{transform} argument to the \code{probe.quantile} function has been removed (as it is entirely redundant!).
+    \item The old and deprecated \code{mif} and \code{bsmc} methods have been removed.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.18.5}{
   \itemize{
     \item New \code{verbose} option in \code{trajectory} gives diagnostic information from \pkg{deSolve} integration routines.
