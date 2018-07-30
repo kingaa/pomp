@@ -51,6 +51,10 @@ void R_init_pomp (DllInfo *info) {
   R_RegisterCCallable("pomp","pomp_fun_handler",(DL_FUNC) &pomp_fun_handler);
   R_RegisterCCallable("pomp","load_stack_incr",(DL_FUNC) &load_stack_incr);
   R_RegisterCCallable("pomp","load_stack_decr",(DL_FUNC) &load_stack_decr);
+  R_RegisterCCallable("pomp","make_covariate_table",(DL_FUNC) &make_covariate_table);
+  R_RegisterCCallable("pomp","lookup_in_table",(DL_FUNC) &lookup_in_table);
+  R_RegisterCCallable("pomp","table_lookup",(DL_FUNC) &table_lookup);
+  
   // Register routines
   R_registerRoutines(info,NULL,callMethods,NULL,NULL);
   R_useDynamicSymbols(info,TRUE);

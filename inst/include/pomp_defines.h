@@ -28,6 +28,10 @@ typedef struct lookup_table {
   double *y;
 } lookup_table;
 
+extern struct lookup_table make_covariate_table(SEXP object, int *ncovar);
+extern SEXP lookup_in_table(SEXP ttable, SEXP xtable, SEXP t);
+extern void table_lookup(struct lookup_table *tab, double x, double *y);
+
 static R_INLINE SEXP makearray (int rank, int *dim) {
   int *dimp, k;
   double *xp;
