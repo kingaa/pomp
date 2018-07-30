@@ -212,27 +212,27 @@ Error : in 'simulate': 'nsim' must be a positive integer
 +     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
 +     initializer=Csnippet("w=0;"),
 +     statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE)
-   time  sim     v        y      w
-1     1 data 0.782       NA     NA
-3     2 data 0.695       NA     NA
-5     3 data 0.994       NA     NA
-7     4 data 0.598       NA     NA
-9     5 data 0.197       NA     NA
-11    6 data 0.672       NA     NA
-13    7 data 0.937       NA     NA
-15    8 data 0.655       NA     NA
-17    9 data 0.394       NA     NA
-19   10 data 0.363       NA     NA
-2     1    1    NA  0.60466 0.3401
-4     2    1    NA  0.05578 0.3278
-6     3    1    NA  0.27658 0.6310
-8     4    1    NA  0.48989 0.2888
-10    5    1    NA  1.25966 0.9205
-12    6    1    NA  0.56028 0.9226
-14    7    1    NA -0.00432 0.0657
-16    8    1    NA -0.32274 0.0378
-18    9    1    NA  0.26915 0.0829
-20   10    1    NA  0.39639 0.5822
+   time  sim     v       y      w
+1     1 data 0.506      NA     NA
+3     2 data 0.354      NA     NA
+5     3 data 0.118      NA     NA
+7     4 data 0.200      NA     NA
+9     5 data 0.313      NA     NA
+11    6 data 0.331      NA     NA
+13    7 data 0.642      NA     NA
+15    8 data 0.675      NA     NA
+17    9 data 0.332      NA     NA
+19   10 data 0.255      NA     NA
+2     1    1    NA -0.0641 0.4245
+4     2    1    NA -0.1886 0.0431
+6     3    1    NA  1.3194 0.9761
+8     4    1    NA  0.6823 0.7060
+10    5    1    NA  0.0575 0.5363
+12    6    1    NA  0.6328 0.7515
+14    7    1    NA  0.5404 0.3363
+16    8    1    NA  0.3405 0.2047
+18    9    1    NA -0.1352 0.3626
+20   10    1    NA  0.3400 0.0616
 > 
 > dev.off()
 null device 

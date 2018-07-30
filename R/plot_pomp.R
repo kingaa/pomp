@@ -7,18 +7,16 @@ setMethod("plot","pomp",
     oma = c(6, 0, 5, 0),
     axes = TRUE,
     ...) {
-    xlabel <- deparse(substitute(x,env=parent.frame()))
     plotpomp.internal(x=x,y=y,variables=variables,
       panel=panel,nc=nc,yax.flip=yax.flip,
-      mar=mar,oma=oma,axes=axes,
-      xlabel=xlabel,...)
+      mar=mar,oma=oma,axes=axes,...)
   }
 )
 
 plotpomp.internal <- function (x, y, variables,
   panel = lines, nc = NULL, yax.flip = FALSE,
   mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
-  oma = c(6, 0, 5, 0), axes = TRUE, xlabel, ...) {
+  oma = c(6, 0, 5, 0), axes = TRUE, ...) {
 
   X <- as(x,"data.frame")
   vars <- names(X)
@@ -33,7 +31,7 @@ plotpomp.internal <- function (x, y, variables,
   }
 
   plotpomp <- function (x, time,
-    xy.labels, xy.lines, panel = lines, nc, xlabel,
+    xy.labels, xy.lines, panel = lines, nc,
     type = "l", xlim = NULL, ylim = NULL, xlab = "time",
     ylab, log = "", col = par("col"), bg = NA,
     pch = par("pch"),
@@ -50,7 +48,6 @@ plotpomp.internal <- function (x, y, variables,
       mtext(main,side=3,line=3,cex=cex.main,font=font.main,col=col.main,...)
     }
     nser <- NCOL(x)
-    if (is.null(main)) main <- xlabel
     nm <- ylab
     if (is.null(nm)) nm <- colnames(x)
     if (is.null(nc)) nc <- if(nser>4){2}else{1}
@@ -97,7 +94,6 @@ plotpomp.internal <- function (x, y, variables,
       time=X[[tpos]],
       ylab=ylabels,
       xy.labels=FALSE,
-      xlabel=xlabel,
       panel=panel,
       nc=nc,
       axes=axes,
