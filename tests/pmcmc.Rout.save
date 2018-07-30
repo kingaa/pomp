@@ -58,6 +58,11 @@ Error : in 'pmcmc': 'proposal' must be specified
 <object of class 'abc'>
 
 > 
+> try(pmcmc())
+Error : in 'pmcmc': 'object' is a required argument
+> try(pmcmc("bob"))
+Error : 'pmcmc' is not defined when 'object' is of class 'character'
+> 
 > invisible(pmcmc(mcmc1,start=as.list(coef(mcmc3))))
 > try(pmcmc(mcmc1,start=NULL))
 Error : in 'pmcmc': 'start' must be specified

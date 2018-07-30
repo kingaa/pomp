@@ -61,6 +61,9 @@ abc1 %>% abc(Nabc=50,start=as.list(coef(ou2))) %>% plot()
 
 abc4 %>% abc(proposal=function(theta,...)theta) %>% plot()
 
+try(abc())
+try(abc(3))
+
 try(abc(abc1,Nabc=-5))
 stopifnot(all(dim(traces(abc(abc1,Nabc=0))==c(1,10))))
 
@@ -132,5 +135,8 @@ capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 stopifnot(length(out)==41)
 stopifnot(sum(grepl("acceptance",out))==20)
 stopifnot(sum(grepl("ABC iteration",out))==21)
+
+try(continue())
+try(continue(44))
 
 dev.off()

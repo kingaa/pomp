@@ -94,6 +94,11 @@ Error : in 'plot-abc': can't make a scatterplot with only one variable
 > 
 > abc4 %>% abc(proposal=function(theta,...)theta) %>% plot()
 > 
+> try(abc())
+Error : in 'abc': 'object' is a required argument
+> try(abc(3))
+Error : 'abc' is not defined when 'object' is of class 'numeric'
+> 
 > try(abc(abc1,Nabc=-5))
 Error : in 'abc': 'Nabc' must be a positive integer.
 > stopifnot(all(dim(traces(abc(abc1,Nabc=0))==c(1,10))))
@@ -219,6 +224,11 @@ $three
 > stopifnot(length(out)==41)
 > stopifnot(sum(grepl("acceptance",out))==20)
 > stopifnot(sum(grepl("ABC iteration",out))==21)
+> 
+> try(continue())
+Error : in 'continue': 'object' is a required argument
+> try(continue(44))
+Error : 'continue' is not defined when 'object' is of class 'numeric'
 > 
 > dev.off()
 null device 

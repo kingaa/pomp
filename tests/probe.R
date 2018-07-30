@@ -31,6 +31,7 @@ try(probe(po,probes=plist[1:3],nsim=-100))
 try(probe(po,probes=plist[1:3],nsim=c(10,20)))
 try(probe(po,probes=plist[1:3],nsim=NA))
 
+try(probe(33L))
 invisible(probe(pb))
 plot(probe(pb,probes=plist[[1]]))
 try(probe(pb,probes="okay"))

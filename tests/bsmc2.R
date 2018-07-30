@@ -42,6 +42,9 @@ full_join(
   facet_grid(~variable,scales="free_x")+
   theme_bw()
 
+try(bsmc2())
+try(bsmc2(3L))
+
 po <- smc
 coef(po) <- NULL
 try(bsmc2(smc))

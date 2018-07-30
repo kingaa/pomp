@@ -1,0 +1,53 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> library(magrittr)
+> set.seed(807969746L)
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> init.state(gompertz)
+        rep
+variable [,1]
+       X    1
+> init.state(gompertz,params=coef(gompertz))
+        rep
+variable [,1]
+       X    1
+> 
+> p <- coef(gompertz)[-5]
+> try(init.state(gompertz,params=p))
+Error : in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
+> 
+> gompertz %>% simulate(initializer=NULL)
+<object of class 'pomp'>
+> 
+> gompertz %>%
++   pomp(initializer=function (params, t0, ...) 5) -> po
+> try(init.state(po))
+Error : in 'init.state': user 'initializer' must return a named numeric vector
+> 
+> pompExample(sir)
+newly created object(s):
+ sir 
+> try(sir %>% simulate(initializer=NULL))
+<object of class 'pomp'>
+> 

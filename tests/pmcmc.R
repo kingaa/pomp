@@ -31,6 +31,9 @@ plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
 print(mcmc1)
 c(mcmc1,mcmc2)
 
+try(pmcmc())
+try(pmcmc("bob"))
+
 invisible(pmcmc(mcmc1,start=as.list(coef(mcmc3))))
 try(pmcmc(mcmc1,start=NULL))
 try(pmcmc(mcmc1,start=-7))

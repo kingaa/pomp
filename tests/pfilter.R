@@ -14,6 +14,9 @@ range(cond.logLik(pf))
 names(as(pf,"data.frame"))
 identical(as(pf,"data.frame"),as.data.frame(pf))
 
+try(pfilter())
+try(pfilter("bob"))
+
 try(pfilter(ou2))
 try(pfilter(ou2,Np=NULL))
 try(pfilter(ou2,Np=-10))

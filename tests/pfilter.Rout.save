@@ -40,6 +40,11 @@ newly created object(s):
 > identical(as(pf,"data.frame"),as.data.frame(pf))
 [1] TRUE
 > 
+> try(pfilter())
+Error : in 'pfilter': 'object' is a required argument
+> try(pfilter("bob"))
+Error : 'pfilter' is not defined when 'object' is of class 'character'
+> 
 > try(pfilter(ou2))
 Error : in 'pfilter': 'Np' must be specified.
 > try(pfilter(ou2,Np=NULL))

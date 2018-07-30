@@ -13,7 +13,6 @@
 - `time` variable could retain its original name?
 - `initializer` -> `rinit` (and perhaps `dinit`)
 - piecewise constant interpolation of covariates
-- documentation for generics
 - remove `$` methods and replace with proper extractor functions
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
@@ -27,7 +26,6 @@
 - plugin for compartmental models
 - refurbish entire test suite
 	- 'skeleton' test is too delicate. why?
-- remove export of classes
 - put Kalman check in 'gompertz' test
 - put Kalman check in 'ou2' test
 - what does a generic `pomp.fun` interface look like?
