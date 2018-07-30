@@ -49,5 +49,5 @@ Error : in 'init.state': user 'initializer' must return a named numeric vector
 newly created object(s):
  sir 
 > try(sir %>% simulate(initializer=NULL))
-<object of class 'pomp'>
+Error : in 'simulate': in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
 > 

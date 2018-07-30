@@ -12,6 +12,8 @@
 \alias{posterior_samples}
 \alias{posterior_samples,bsmcd.pomp-method}
 \alias{posterior_samples-bsmcd.pomp}
+\alias{show,bsmcd.pomp-method}
+\alias{show-bsmcd.pomp}
 \alias{plot,bsmcd.pomp-method}
 \alias{plot-bsmcd.pomp}
 \alias{logEvidence}
@@ -61,7 +63,7 @@
     if \code{TRUE}, the algorithm operates on the transformed scale.
   }
   \item{\dots}{
-    passed to \code{pomp} to supply or modify model components or characteristics.
+    Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
   }
   \item{verbose}{
     logical; if \code{TRUE}, print diagnostic messages.

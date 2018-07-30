@@ -84,8 +84,8 @@
     logical; if TRUE, print progress reports.
   }
   \item{\dots}{
-    additional arguments that override the defaults.
-  }
+    Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
+ }
 }
 \value{
   An object of class \code{pmcmc}.

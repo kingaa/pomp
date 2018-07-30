@@ -33,6 +33,8 @@
 \alias{as,pfilterd.pomp-method}
 \alias{as.data.frame.pfilterd.pomp}
 \alias{coerce,pfilterd.pomp,data.frame-method}
+\alias{show,pfilterd.pomp-method}
+\alias{show-pfilterd.pomp}
 \description{
   A plain vanilla sequential Monte Carlo (particle filter) algorithm.
   Resampling is performed at each observation.
@@ -105,7 +107,7 @@
   \item{pars}{Names of parameters.}
   \item{vars}{Names of state variables.}
   \item{\dots}{
-    additional arguments that override the defaults.
+    Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
   }
 }
 \value{

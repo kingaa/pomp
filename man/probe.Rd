@@ -123,8 +123,9 @@
   }
   \item{\dots}{
     Additional arguments.
-    In the case of \code{probe}, these are currently ignored.
-    In the case of \code{probe.match}, these are passed to the optimizer (one of \code{\link{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}, or \code{\link{sannbox}}).
+    In the case of \code{probe} and \code{probe.match.objfun}, additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
+
+    In the case of \code{probe.match}, these are passed to the optimizer algorithm.
     These are passed via the optimizer's \code{control} list (in the case of \code{optim}, \code{subplex}, and \code{sannbox}) or the \code{opts} list (in the case of \code{nloptr}).
   }
 }

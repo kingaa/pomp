@@ -1,15 +1,59 @@
 ## simulate a partially-observed Markov process
 
+setMethod(
+  "simulate",
+  signature=signature(object="pomp"),
+  definition=function (object, nsim = 1, seed = NULL, params,
+    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+    include.data = FALSE, ..., verbose = getOption("verbose", FALSE))
+    simulate.internal(
+      object=object,
+      nsim=nsim,
+      seed=seed,
+      params=params,
+      states=states,
+      obs=obs,
+      times=times,
+      t0=t0,
+      as.data.frame=as.data.frame,
+      include.data=include.data,
+      ...,
+      verbose=verbose
+    )
+)
+
 simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
-                               states = FALSE, obs = FALSE,
-                               times, t0, as.data.frame = FALSE,
-                               include.data = FALSE,
-                               .getnativesymbolinfo = TRUE,
-                               verbose = getOption("verbose", FALSE), ...) {
+  states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+  include.data = FALSE, .getnativesymbolinfo = TRUE, verbose, ...) {
 
   ep <- paste0("in ",sQuote("simulate"),": ")
 
-  pompLoad(object,verbose=verbose)
+  object <- pomp(object,...,verbose=verbose)
+
+  obs <- as.logical(obs)
+  states <- as.logical(states)
+  as.data.frame <- as.logical(as.data.frame)
+  include.data <- as.logical(include.data)
+
+  nsim <- as.integer(nsim)
+  if (length(nsim)!=1 || !is.finite(nsim) || nsim < 1L)
+    stop(ep,sQuote("nsim")," must be a positive integer")
+
+  ## set the random seed (be very careful about this)
+  seed <- as.integer(seed)
+  if (length(seed)>0) {
+    if (!exists('.Random.seed',envir=.GlobalEnv)) set.seed(NULL)
+    save.seed <- get('.Random.seed',envir=.GlobalEnv)
+    set.seed(seed)
+  }
+
+  if (missing(params)) params <- coef(object)
+  if (is.list(params)) params <- unlist(params)
+  if (is.null(params) || length(params)==0)
+    stop(ep,"no ",sQuote("params")," specified",call.=FALSE)
+
+  params <- as.matrix(params)
+  storage.mode(params) <- "double"
 
   if (missing(times))
     times <- time(object,t0=FALSE)
@@ -21,28 +65,11 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   else
     t0 <- as.numeric(t0)
 
-  obs <- as.logical(obs)
-  states <- as.logical(states)
-  as.data.frame <- as.logical(as.data.frame)
-  include.data <- as.logical(include.data)
-
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
-  if (length(params)==0) stop(ep,"no ",sQuote("params")," specified",call.=FALSE)
-  storage.mode(params) <- "double"
-
-  params <- as.matrix(params)
-
-  ## set the random seed (be very careful about this)
-  seed <- as.integer(seed)
-  if (length(seed)>0) {
-    if (!exists('.Random.seed',envir=.GlobalEnv)) set.seed(NULL)
-    save.seed <- get('.Random.seed',envir=.GlobalEnv)
-    set.seed(seed)
-  }
-
   if (!obs && !states)
     object <- as(object,"pomp")
+
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   retval <- tryCatch(
     .Call(
@@ -63,7 +90,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   .getnativesymbolinfo <- FALSE
 
   ## restore the RNG state
-  if (length(seed)>0) {
+  if (length(seed) > 0) {
     assign('.Random.seed',save.seed,envir=.GlobalEnv)
   }
 
@@ -120,8 +147,8 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
         },
         error = function (e) {
           stop(ep,"error in merging actual and simulated data.\n",
-               "Check names of data, covariates, and states for conflicts.\n",
-               sQuote("merge")," error message: ",conditionMessage(e),call.=FALSE)
+            "Check names of data, covariates, and states for conflicts.\n",
+            sQuote("merge")," error message: ",conditionMessage(e),call.=FALSE)
         }
       )
     }
@@ -132,30 +159,5 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
 
   }
 
-  pompUnload(object,verbose=verbose)
-
   retval
 }
-
-setMethod(
-  "simulate",
-  signature=signature(object="pomp"),
-  definition=function (object, nsim = 1, seed = NULL, params,
-                       states = FALSE, obs = FALSE,
-                       times, t0, as.data.frame = FALSE,
-                       include.data = FALSE,
-                       ...)
-    simulate.internal(
-      object=object,
-      nsim=nsim,
-      seed=seed,
-      params=params,
-      states=states,
-      obs=obs,
-      times=times,
-      t0=t0,
-      as.data.frame=as.data.frame,
-      include.data=include.data,
-      ...
-    )
-)

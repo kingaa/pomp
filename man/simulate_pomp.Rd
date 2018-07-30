@@ -12,7 +12,8 @@
 \usage{
 \S4method{simulate}{pomp}(object, nsim = 1, seed = NULL, params,
          states = FALSE, obs = FALSE, times, t0,
-         as.data.frame = FALSE, include.data = FALSE, \dots)
+         as.data.frame = FALSE, include.data = FALSE, \dots,
+         verbose = getOption("verbose", FALSE))
 }
 \arguments{
   \item{object}{An object of class \code{pomp}.}
@@ -43,18 +44,23 @@
     If, in addition, \code{include.data=TRUE}, the original data are included as an additional \sQuote{simulation}.
     If \code{as.data.frame=FALSE}, \code{include.data} is ignored.
   }
-  \item{\dots}{further arguments that are currently ignored.}
+  \item{\dots}{
+    Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
+  }
+  \item{verbose}{
+    logical; setting \code{verbose = TRUE} will print more information to the console.
+  }
 }
 \value{
   If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \code{pomp} objects is returned.
   Each has a simulated data set, together with the parameters used (in slot \code{params}) and the state trajectories also (in slot \code{states}).
   If \code{times} is specified, then the simulated observations will be at times \code{times}.
-  
+
   If \code{nsim=1}, then a single \code{pomp} object is returned (and not a singleton list).
 
   If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-3 array with dimensions \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
   Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
-  The measurement process is not simulated in this case.   
+  The measurement process is not simulated in this case.
 
   If \code{states=FALSE} and \code{obs=TRUE}, simulated observations are returned as a rank-3 array with dimensions \code{nobs} x \code{(ncol(params)*nsim)} x \code{ntimes}.
   Here, \code{nobs} is the number of observables.
