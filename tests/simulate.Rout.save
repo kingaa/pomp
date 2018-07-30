@@ -89,7 +89,7 @@ Error : in 'pomp': 't0' must be specified as a single number not greater than 't
 +   rmeasure=function(t,x,params,...) c(w=rnorm(n=t,x["z"],1)),
 +   initializer=Csnippet("z = 2;"),
 +   statenames="z"))
-Error : in 'simulate': in 'rmeasure': 'rmeasure' returns variable-length results.
+Error : in 'simulate': 'rmeasure' returns variable-length results.
 > 
 > simulate(times=1:100,t0=0,seed=993523767,
 +   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
@@ -211,28 +211,11 @@ Error : in 'simulate': 'nsim' must be a positive integer
 +   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
 +     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
 +     initializer=Csnippet("w=0;"),
-+     statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE)
-   time  sim     v       y      w
-1     1 data 0.506      NA     NA
-3     2 data 0.354      NA     NA
-5     3 data 0.118      NA     NA
-7     4 data 0.200      NA     NA
-9     5 data 0.313      NA     NA
-11    6 data 0.331      NA     NA
-13    7 data 0.642      NA     NA
-15    8 data 0.675      NA     NA
-17    9 data 0.332      NA     NA
-19   10 data 0.255      NA     NA
-2     1    1    NA -0.0641 0.4245
-4     2    1    NA -0.1886 0.0431
-6     3    1    NA  1.3194 0.9761
-8     4    1    NA  0.6823 0.7060
-10    5    1    NA  0.0575 0.5363
-12    6    1    NA  0.6328 0.7515
-14    7    1    NA  0.5404 0.3363
-16    8    1    NA  0.3405 0.2047
-18    9    1    NA -0.1352 0.3626
-20   10    1    NA  0.3400 0.0616
++     statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE) -> dat
+> dat %>% names()
+[1] "time" "sim"  "v"    "y"    "w"   
+> dat %>% dim()
+[1] 20  5
 > 
 > dev.off()
 null device 

@@ -27,14 +27,14 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
   if (ntimes < 1)
-    errorcall(R_NilValue,"in 'rmeasure': length('times') = 0, no work to do.");
+    errorcall(R_NilValue,"length('times') = 0, no work to do.");
 
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepsx = dim[1];
 
   if (ntimes != dim[2])
-    errorcall(R_NilValue,"in 'rmeasure': length of 'times' and 3rd dimension of 'x' do not agree.");
+    errorcall(R_NilValue,"length of 'times' and 3rd dimension of 'x' do not agree.");
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
@@ -43,7 +43,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
   if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
-    errorcall(R_NilValue,"in 'rmeasure': larger number of replicates is not a multiple of smaller.");
+    errorcall(R_NilValue,"larger number of replicates is not a multiple of smaller.");
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
@@ -106,7 +106,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'."); // # nocov
+    errorcall(R_NilValue,"unrecognized 'mode'."); // # nocov
 
   break;
 
@@ -151,12 +151,11 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
           nobs = LENGTH(ans1);
           if (nobs < 1) {
-            errorcall(R_NilValue,"in 'rmeasure': zero-length result.");
+            errorcall(R_NilValue,"zero-length result.");
           }
           PROTECT(Onames = GET_NAMES(ans1)); nprotect++;
           if (isNull(Onames)) {
-            errorcall(R_NilValue,
-              "in 'rmeasure': 'rmeasure' must return a named numeric vector.");
+            errorcall(R_NilValue,"'rmeasure' must return a named numeric vector.");
           }
           ys = REAL(AS_NUMERIC(ans1));
 
@@ -176,7 +175,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
           PROTECT(ans=eval(fcall,rho));
           if (LENGTH(ans) != nobs)
-            errorcall(R_NilValue,"in 'rmeasure': 'rmeasure' returns variable-length results.");
+            errorcall(R_NilValue,"'rmeasure' returns variable-length results.");
           ys = REAL(AS_NUMERIC(ans));
           UNPROTECT(1);
 
@@ -237,7 +236,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   default:
 
-    errorcall(R_NilValue,"in 'rmeasure': unrecognized 'mode'"); // # nocov
+    errorcall(R_NilValue,"unrecognized 'mode'"); // # nocov
 
   break;
 

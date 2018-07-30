@@ -116,6 +116,8 @@ data.frame(u=1:10,v=runif(10)) %>%
   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
     initializer=Csnippet("w=0;"),
-    statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE)
+    statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE) -> dat
+dat %>% names()
+dat %>% dim()
 
 dev.off()

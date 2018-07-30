@@ -9,10 +9,17 @@ setMethod(
 
 rmeasure.internal <- function (object, x, times, params,
   .getnativesymbolinfo = TRUE, ...) {
-  storage.mode(x) <- "double"
-  storage.mode(params) <- "double"
-  pompLoad(object)
-  rv <- .Call(do_rmeasure,object,x,times,params,.getnativesymbolinfo)
-  pompUnload(object)
-  rv
+  tryCatch(
+    {
+      storage.mode(x) <- "double"
+      storage.mode(params) <- "double"
+      pompLoad(object)
+      rv <- .Call(do_rmeasure,object,x,times,params,.getnativesymbolinfo)
+      pompUnload(object)
+      rv
+    },
+    error = function (e) {
+      stop("in ",sQuote("rmeasure"),": ",conditionMessage(e),call.=FALSE)
+    }
+  )
 }

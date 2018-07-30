@@ -44,17 +44,13 @@ Error in (function (classes, fdef, mtable)  :
 Error in (function (classes, fdef, mtable)  : 
   unable to find an inherited method for function 'dmeasure' for signature '"array"'
 > try(dmeasure(po,x=x,y=y,times=t))
-Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
-  argument "params" is missing, with no default
+Error : in 'dmeasure': argument "params" is missing, with no default
 > try(dmeasure(po,x=x,y=y,params=theta))
-Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
-  argument "times" is missing, with no default
+Error : in 'dmeasure': argument "times" is missing, with no default
 > try(dmeasure(po,x=x,times=t,params=theta))
-Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
-  argument "y" is missing, with no default
+Error : in 'dmeasure': argument "y" is missing, with no default
 > try(dmeasure(po,y=y,times=t,params=theta))
-Error in dmeasure.internal(object = object, y = y, x = x, times = times,  : 
-  argument "x" is missing, with no default
+Error : in 'dmeasure': argument "x" is missing, with no default
 > try(dmeasure(po,x=as.numeric(x),y=y,times=t,params=theta))
 Error : in 'dmeasure': length of 'times' and 3rd dimension of 'x' do not agree
 > try(dmeasure(po,x=x,y=as.numeric(y),times=t,params=theta))
@@ -67,12 +63,12 @@ Error : in 'dmeasure': length of 'times' and 3rd dimension of 'x' do not agree
 > stopifnot(all.equal(dmeasure(po,x=x[,1,,drop=FALSE],y=y,times=t,params=theta),
 +                     dmeasure(po,x=x[,1,],y=y,times=t,params=theta)))
 > try(dmeasure(po,x=x,y=y[1,,drop=FALSE],times=t,params=theta))
-Error : variable 'y2' not found among the observables
+Error : in 'dmeasure': variable 'y2' not found among the observables
 > try(dmeasure(po,x=x[1,,,drop=FALSE],y=y,times=t,params=theta))
-Error : variable 'x2' not found among the state variables
+Error : in 'dmeasure': variable 'x2' not found among the state variables
 > k <- which(names(theta)=="tau")
 > try(dmeasure(po,x=x,y=y,times=t,params=theta[-k]))
-Error : variable 'tau' not found among the parameters
+Error : in 'dmeasure': variable 'tau' not found among the parameters
 > 
 > xx <- x
 > xx[] <- as.integer(round(x))

@@ -28,21 +28,21 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   PROTECT(times = AS_NUMERIC(times)); nprotect++;
   ntimes = length(times);
   if (ntimes < 1)
-    errorcall(R_NilValue,"in 'dmeasure': length('times') = 0, no work to do");
+    errorcall(R_NilValue,"length('times') = 0, no work to do");
 
   PROTECT(y = as_matrix(y)); nprotect++;
   dim = INTEGER(GET_DIM(y));
   nobs = dim[0];
 
   if (ntimes != dim[1])
-    errorcall(R_NilValue,"in 'dmeasure': length of 'times' and 2nd dimension of 'y' do not agree");
+    errorcall(R_NilValue,"length of 'times' and 2nd dimension of 'y' do not agree");
 
   PROTECT(x = as_state_array(x)); nprotect++;
   dim = INTEGER(GET_DIM(x));
   nvars = dim[0]; nrepsx = dim[1];
 
   if (ntimes != dim[2])
-    errorcall(R_NilValue,"in 'dmeasure': length of 'times' and 3rd dimension of 'x' do not agree");
+    errorcall(R_NilValue,"length of 'times' and 3rd dimension of 'x' do not agree");
 
   PROTECT(params = as_matrix(params)); nprotect++;
   dim = INTEGER(GET_DIM(params));
@@ -51,7 +51,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   nreps = (nrepsp > nrepsx) ? nrepsp : nrepsx;
 
   if ((nreps % nrepsp != 0) || (nreps % nrepsx != 0))
-    errorcall(R_NilValue,"in 'dmeasure': larger number of replicates is not a multiple of smaller");
+    errorcall(R_NilValue,"larger number of replicates is not a multiple of smaller");
 
   PROTECT(Onames = GET_ROWNAMES(GET_DIMNAMES(y))); nprotect++;
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
@@ -122,7 +122,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   default:
 
-    errorcall(R_NilValue,"in 'dmeasure': unrecognized 'mode'"); // # nocov
+    errorcall(R_NilValue,"unrecognized 'mode'"); // # nocov
 
     break;
 
@@ -174,7 +174,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 	    // evaluate the call
 	    PROTECT(ans = eval(fcall,rho)); nprotect++;
 	    if (LENGTH(ans) != 1)
-	      errorcall(R_NilValue,"in 'dmeasure': user 'dmeasure' returns a vector of length %d when it should return a scalar",LENGTH(ans));
+	      errorcall(R_NilValue,"user 'dmeasure' returns a vector of length %d when it should return a scalar",LENGTH(ans));
 
 	    *ft = *(REAL(AS_NUMERIC(ans)));
 
@@ -230,7 +230,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
 
   default:
 
-    errorcall(R_NilValue,"in 'dmeasure': unrecognized 'mode'"); // # nocov
+    errorcall(R_NilValue,"unrecognized 'mode'"); // # nocov
 
     break;
 
