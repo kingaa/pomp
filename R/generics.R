@@ -6,6 +6,11 @@ setGeneric("summary",function(object,...)standardGeneric("summary"))
 setGeneric("window",function(x,...)standardGeneric("window"))
 setGeneric("spy",function(object,...)standardGeneric("spy"))
 setGeneric("concat",function(...)standardGeneric("concat"))
+## continue an iterative calculation
+setGeneric("continue",function(object,...)standardGeneric("continue"))
+## history of an iterative calculation
+setGeneric("traces",function(object,...)standardGeneric("traces"))
+
 
 ## constituent components of a 'pomp' object
 setGeneric("dmeasure",function(object,...)standardGeneric("dmeasure"))
@@ -46,10 +51,8 @@ setGeneric("cond.logLik",function(object,...)standardGeneric("cond.logLik"))
 setGeneric("cond.logEvidence",function(object,...)standardGeneric("cond.logEvidence"))
 ## effective sample size
 setGeneric("eff.sample.size",function(object,...)standardGeneric("eff.sample.size"))
-## convergence record
-setGeneric("traces",function(object,...)standardGeneric("traces"))
 ## values of probes
-setGeneric("values",function(object,...)standardGeneric("values"))
+setGeneric("probevals",function(object,...)standardGeneric("probevals"))
 ## samples from prior and posterior distributions
 setGeneric("prior_samples",function(object,...)standardGeneric("prior_samples"))
 setGeneric("posterior_samples",function(object,...)standardGeneric("posterior_samples"))
@@ -97,9 +100,6 @@ setGeneric("probe.match",function(object,...)standardGeneric("probe.match"))
 ## power spectrum
 setGeneric("spect",function(object,...)standardGeneric("spect"))
 setGeneric("spect.match",function(object,...)standardGeneric("spect.match"))
-
-## continue an iteration
-setGeneric("continue",function(object,...)standardGeneric("continue"))
 
 ## dynamic loading and unloading
 setGeneric("pompLoad",function(object,...)standardGeneric("pompLoad"))

@@ -16,7 +16,7 @@ plist <- list(
 
 gompertz %>%
   probe(probes=plist,nsim=100) %>%
-  values() %>%
+  as.data.frame() %>%
   filter(.id=="sim") %>%
   select(-.id) %>%
   gather(variable,value) %>%

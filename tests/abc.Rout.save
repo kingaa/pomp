@@ -70,7 +70,7 @@ in 'plot-abc': 'y' is ignored
 > stopifnot(all(dim(traces(abc1,"alpha.1"))==c(101,1)))
 > invisible(conv.rec(abc2))
 Warning message:
-'conv.rec' is deprecated and will be removed in a forthcoming release. Please use 'traces' instead. 
+'conv.rec' is deprecated and will be removed in a forthcoming release.  Please use 'traces' instead. 
 > 
 > c(abc1,abc2) %>% traces() -> traces
 > traces %>% length()

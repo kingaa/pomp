@@ -1,4 +1,4 @@
-\name{Iterated filtering 2}
+\name{Iterated filtering}
 \title{IF2: Maximum likelihood by iterated, perturbed Bayes maps}
 \alias{mif2}
 \alias{mif2,ANY-method}
@@ -9,14 +9,11 @@
 \alias{mif2-pfilterd.pomp}
 \alias{mif2,pomp-method}
 \alias{mif2-pomp}
-\alias{continue}
 \alias{continue,ANY-method}
 \alias{continue,missing-method}
 \alias{continue,mif2d.pomp-method}
 \alias{continue-mif2d.pomp}
 \alias{mif2d.pomp-methods}
-\alias{traces}
-\alias{conv.rec}
 \alias{traces,mif2d.pomp-method}
 \alias{traces-mif2d.pomp}
 \alias{traces,mif2List-method}

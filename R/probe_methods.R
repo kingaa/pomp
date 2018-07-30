@@ -16,32 +16,33 @@ setAs(
   from="probed.pomp",
   to="data.frame",
   def = function (from) {
-    x <- rbind(from@datvals,as.data.frame(from@simvals))
-    rownames(x) <- c(
-      "data",
-      paste("sim",seq_len(nrow(from@simvals)),sep=".")
-    )
+    x <- as.data.frame(rbind(from@datvals,from@simvals))
+    row.names(x) <- seq.int(from=0,to=nrow(x)-1)
+    x$.id <- factor(c("data",rep("sim",nrow(x)-1)))
     x
   }
 )
 
-as.data.frame.probed.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
+setMethod(
+  "probevals",
+  signature=signature(object="probed.pomp"),
+  definition=function (object, ...) {
+    dv <- object@datvals
+    list(
+      data=array(dv,dim=c(1,length(dv)),dimnames=list(NULL,names(dv))),
+      sims=object@simvals
+    )
+  }
+)
+
+
+as.data.frame.probed.pomp <- function (x, row.names, optional, ...)
+  as(x,"data.frame")
 
 setMethod(
   "logLik",
   signature=signature(object="probed.pomp"),
   definition=function(object,...)object@synth.loglik
-)
-
-setMethod(
-  "values",
-  signature=signature(object="probed.pomp"),
-  definition=function (object, ...) {
-    x <- as.data.frame(rbind(object@datvals,object@simvals))
-    row.names(x) <- seq.int(from=0,to=nrow(x)-1)
-    x$.id <- factor(c("data",rep("sim",nrow(x)-1)))
-    x
-  }
 )
 
 setMethod("plot",

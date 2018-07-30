@@ -2,6 +2,7 @@
 \title{Probe a partially-observed Markov process by computing summary statistics and the synthetic likelihood.}
 \alias{Probes and synthetic likelihood}
 \alias{probe}
+\alias{probevals}
 \alias{probe,missing-method}
 \alias{probe,ANY-method}
 \alias{probe,pomp-method}
@@ -161,9 +162,9 @@
       The summary includes quantiles (fractions of simulations with probe values less than those realized on the data) and the corresponding two-sided p-values.
       In addition, the \dQuote{synthetic likelihood} (Wood 2010) is computed, under the assumption that the probe values are multivariate-normally distributed.
     }
-    \item{values}{
-      extracts the realized values of the probes on the data and on the simulations as a data frame in long format.
-      The variable \code{.id} indicates whether the probes are from the data or simulations.
+    \item{probevals}{
+      extracts the realized values of the probes on the data and on the simulations.
+      These are returned in a list of two elements, \code{datvals} and \code{simvals}.
     }
     \item{logLik}{
       returns the synthetic likelihood for the probes.
