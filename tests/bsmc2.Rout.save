@@ -127,7 +127,7 @@ Warning message:
 in 'bsmc2': 10 filtering failures occurred. 
 > try(bsmc2(smc,params=theta,est="r",Np=100,
 +           dmeasure=Csnippet("error(\"whoa nelly!\");")))
-Error : in 'bsmc2': 'dmeasure' error: whoa nelly!
+Error : in 'bsmc2': in 'dmeasure': whoa nelly!
 > 
 > theta <- coef(gompertz)
 > theta["K"] <- 1

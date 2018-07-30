@@ -214,7 +214,7 @@ bsmc2.internal <- function (object, params, Np, est,
         .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
-        stop(ep,sQuote("dmeasure")," error: ",conditionMessage(e),call.=FALSE)
+        stop(ep,conditionMessage(e),call.=FALSE)
       }
     )
 

@@ -259,8 +259,7 @@ pfilter.internal <- function (object, params, Np,
         .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
-        stop(ep,"error in calculation of weights: ",
-          conditionMessage(e),call.=FALSE)
+        stop(ep,conditionMessage(e),call.=FALSE)
       }
     )
     if (!all(is.finite(weights))) {
