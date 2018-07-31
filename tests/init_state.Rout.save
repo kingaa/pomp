@@ -45,9 +45,36 @@ Error : in default 'initializer': there are no parameters with suffix '.0'. See 
 > try(init.state(po))
 Error : in 'init.state': user 'initializer' must return a named numeric vector
 > 
+> pp <- parmat(coef(gompertz),10)
+> stopifnot(gompertz %>% init.state(params=pp) %>% as.numeric()==1)
+> try(init.state(gompertz,params=pp,nsim=5))
+Error : in 'init.state': number of desired state-vectors 'nsim' is not a multiple of ncol('params')
+> try(gompertz %>%
++   pomp(initializer=function(t0,params,...)
++     c(r=32)) %>%
++   init.state())
+Error : in 'init.state': a state variable and a parameter share a single name: 'r'
+> try({
++   pp <- matrix(c(1:5),1,5)
++   rownames(pp) <- "a"
++   gompertz %>%
++     pomp(initializer=function(t0,params,...)
++       c(X=rep(1,params["a"]))) %>%
++     init.state(params=pp)
++ })
+Error : in 'init.state': user initializer returns vectors of non-uniform length
+> 
+> 
 > pompExample(sir)
 newly created object(s):
  sir 
 > try(sir %>% simulate(initializer=NULL))
 Error : in 'simulate': in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
+> sir %>%
++   pomp(initializer=function(params,t0,covars,...)
++     c(S=covars["seas1"])) %>%
++   init.state()
+         rep
+variable       [,1]
+  S.seas1 0.6666667
 > 
