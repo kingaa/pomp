@@ -105,9 +105,9 @@ Error : in 'simulate': 'rmeasure' returns variable-length results.
 +   initializer=function(params,t0,...)c(z=0)) %>% plot()
 > 
 > rm(.Random.seed)
-> simulate(po,seed=406214171) %>% plot()
-> simulate(po,params=as.list(coef(po)))
-<object of class 'pomp'>
+> po %>%
++   simulate(params=as.list(coef(po)),seed=406214171) %>%
++   plot(variables=rep(c("z","w"),10),main="test",yax.flip=TRUE)
 > 
 > data.frame(u=1:10,v=runif(10)) %>%
 +   pomp(times="u",t0=0) %>%

@@ -67,8 +67,6 @@
 
 ### Unreconstructed:
 
-tests/bsplines.R
-
 tests/prior.R
 tests/procmeas.R
 tests/proposals.R
@@ -93,7 +91,6 @@ tests/issue56.R
 tests/kalman.R
 
 tests/mif2-index.R
-tests/mif2.R
 
 tests/nlf.R
 
@@ -111,10 +108,7 @@ tests/trajmatch.R
 
 ### Groups of related functions:
 
-R/generics.R
-
 R/parmat.R
-R/bsplines.R
 R/logmeanexp.R
 
 R/builder.R
@@ -125,7 +119,6 @@ R/pomp_fun.R
 R/pomp_methods.R
 R/pomp.R
 
-R/initstate_pomp.R
 R/dprior_pomp.R
 R/dprocess_pomp.R
 R/rprior_pomp.R
@@ -138,9 +131,6 @@ R/probe_match.R
 R/kalman_methods.R
 R/kalman.R
 
-R/mif2_methods.R
-R/mif2.R
-
 R/minim.R
 
 R/nlf_funcs.R
@@ -152,7 +142,6 @@ R/plot_pomp.R
 
 R/proposals.R
 
-R/covmat.R
 R/sannbox.R
 
 R/spect_match.R
@@ -164,6 +153,7 @@ R/traj_match.R
 
 - ou2.R
 - rw2.R
+- gompertz.R
 
 ### demos:
 

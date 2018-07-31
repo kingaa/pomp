@@ -66,8 +66,9 @@ simulate(times=1:100,t0=0,seed=378047885,
   initializer=function(params,t0,...)c(z=0)) %>% plot()
 
 rm(.Random.seed)
-simulate(po,seed=406214171) %>% plot()
-simulate(po,params=as.list(coef(po)))
+po %>%
+  simulate(params=as.list(coef(po)),seed=406214171) %>%
+  plot(variables=rep(c("z","w"),10),main="test",yax.flip=TRUE)
 
 data.frame(u=1:10,v=runif(10)) %>%
   pomp(times="u",t0=0) %>%
