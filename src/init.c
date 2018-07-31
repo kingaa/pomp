@@ -14,7 +14,7 @@ static const R_CallMethodDef callMethods[] = {
   {"R_Euler_Multinom", (DL_FUNC) &R_Euler_Multinom, 4},
   {"D_Euler_Multinom", (DL_FUNC) &D_Euler_Multinom, 5},
   {"R_GammaWN", (DL_FUNC) &R_GammaWN, 3},
-  {"pfilter_computations", (DL_FUNC) &pfilter_computations, 11},
+  {"pfilter_computations", (DL_FUNC) &pfilter_computations, 10},
   {"randwalk_perturbation", (DL_FUNC) &randwalk_perturbation, 2},
   {"simulation_computations", (DL_FUNC) &simulation_computations, 8},
   {"iterate_map", (DL_FUNC) &iterate_map, 6},
@@ -53,7 +53,7 @@ void R_init_pomp (DllInfo *info) {
   R_RegisterCCallable("pomp","make_covariate_table",(DL_FUNC) &make_covariate_table);
   R_RegisterCCallable("pomp","lookup_in_table",(DL_FUNC) &lookup_in_table);
   R_RegisterCCallable("pomp","table_lookup",(DL_FUNC) &table_lookup);
-  
+
   // Register routines
   R_registerRoutines(info,NULL,callMethods,NULL,NULL);
   R_useDynamicSymbols(info,TRUE);

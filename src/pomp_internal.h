@@ -70,7 +70,9 @@ extern void _ou2_rmeasure(double *y, double *x, double *p, int *obsindex, int *s
 extern SEXP do_partrans(SEXP object, SEXP params, SEXP dir, SEXP gnsi);
 
 // pfilter.c
-extern SEXP pfilter_computations(SEXP x, SEXP params, SEXP Np, SEXP rw_sd, SEXP predmean, SEXP predvar, SEXP filtmean, SEXP trackancestry, SEXP onepar, SEXP weights, SEXP tol);
+extern SEXP pfilter_computations(SEXP x, SEXP params, SEXP Np, SEXP predmean,
+  SEXP predvar, SEXP filtmean, SEXP trackancestry, SEXP doparRS,
+  SEXP weights, SEXP tol);
 
 // probe_acf.c
 extern SEXP probe_acf(SEXP x, SEXP lags, SEXP corr);

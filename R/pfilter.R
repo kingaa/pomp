@@ -112,7 +112,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   if (length(params)==0)
     stop(ep,sQuote("params")," must be specified.",call.=FALSE)
 
-  one.par <- FALSE
+  do.par.resample <- TRUE
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
 
@@ -155,7 +155,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
     stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
 
   if (NCOL(params)==1) {        # there is only one parameter vector
-    one.par <- TRUE
+    do.par.resample <- FALSE
     coef(object) <- params     # set params slot to the parameters
     params <- as.matrix(params)
   }
@@ -291,8 +291,9 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
       datvals <- object@data[,nt]
       weight <- weights[first]
       states <- X[,first,1L]
-      params <- if (one.par) params[,1L] else params[,first]
-      msg <- nonfinite_dmeasure_error(time=times[nt+1],lik=weight,datvals,states,params)
+      params <- if (do.par.resample) params[,first] else params[,1L]
+      msg <- nonfinite_dmeasure_error(time=times[nt+1],lik=weight,datvals,
+        states,params)
       stop(ep,msg,call.=FALSE)
     }
 
@@ -307,12 +308,11 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
         x=X,
         params=params,
         Np=Np[nt+1],
-        rw_sd=numeric(0),
         predmean=pred.mean,
         predvar=pred.var,
         filtmean=filter.mean,
         trackancestry=filter.traj,
-        onepar=one.par,
+        doparRS=do.par.resample,
         weights=weights,
         tol=tol
       ),
