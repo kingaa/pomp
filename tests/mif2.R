@@ -58,7 +58,7 @@ m2 <- continue(m2,Nmif=20)
 
 try(conv.rec(m2,c("bob","nancy")))
 
-freeze(continue(m2,Nmif=2,.paramMatrix=m2@paramMatrix),seed=595996) -> m2a
+freeze(mif2(m2,Nmif=2,.ndone=50,.paramMatrix=m2@paramMatrix),seed=595996) -> m2a
 freeze(continue(m2,Nmif=2),seed=595996) -> m2b
 stopifnot(all.equal(coef(m2a),coef(m2b)))
 

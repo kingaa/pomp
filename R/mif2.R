@@ -1,4 +1,4 @@
-## MIF2 algorithm functions
+## IF2 algorithm functions
 
 ## define the mif2d.pomp class
 setClass(
@@ -17,64 +17,9 @@ setClass(
 setMethod(
   "mif2",
   signature=signature(object="pomp"),
-  definition = function (object, Nmif = 1, start, Np,
-    rw.sd, transform = FALSE,
-    cooling.type = c("hyperbolic", "geometric"),
-    cooling.fraction.50,
-    tol = 1e-17, max.fail = Inf,
-    verbose = getOption("verbose"),...) {
-
-    ep <- paste0("in ",sQuote("mif2"),": ")
-
-    Nmif <- as.integer(Nmif)
-
-    if (missing(start)) start <- coef(object)
-    if (length(start)==0)
-      stop(ep,sQuote("start")," must be specified if ",
-        sQuote("coef(object)")," is NULL",call.=FALSE)
-    if (is.null(names(start)))
-      stop(ep,sQuote("start")," must be a named vector",
-        call.=FALSE)
-
-    ntimes <- length(time(object))
-
-    if (missing(Np))
-      stop(ep,sQuote("Np")," must be specified",call.=FALSE)
-    else if (is.function(Np)) {
-      Np <- tryCatch(
-        vapply(seq_len(ntimes),Np,numeric(1)),
-        error = function (e) {
-          stop(ep,"if ",sQuote("Np"),
-            " is a function, it must return a single positive integer",
-            call.=FALSE)
-        }
-      )
-    } else if (!is.numeric(Np))
-      stop(ep,sQuote("Np"),
-        " must be a number, a vector of numbers, or a function",
-        call.=FALSE)
-    if (length(Np)==1) {
-      Np <- rep(Np,times=ntimes)
-    } else if (length(Np)>ntimes) {
-      if (Np[1L] != Np[ntimes+1] || length(Np) > ntimes+1) {
-        warning(ep,"Np[k] ignored for k > ntimes",call.=FALSE)
-      }
-      Np <- head(Np,ntimes)
-    }
-    if (any(Np <= 0))
-      stop(ep,"number of particles, ",
-        sQuote("Np"),", must always be positive",call.=FALSE)
-
-    if (missing(rw.sd))
-      stop(ep,sQuote("rw.sd")," must be specified!",call.=FALSE)
-    rw.sd <- pkern.sd(rw.sd,time=time(object),paramnames=names(start))
-
-    cooling.type <- match.arg(cooling.type)
-
-    cooling.fraction.50 <- as.numeric(cooling.fraction.50)
-    if (cooling.fraction.50 <= 0 || cooling.fraction.50 > 1)
-      stop(ep,sQuote("cooling.fraction.50"),
-        " must be in (0,1]",call.=FALSE)
+  definition = function (object, Nmif = 1, start, Np, rw.sd, transform = FALSE,
+    cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
+    tol = 1e-17, max.fail = Inf, verbose = getOption("verbose"),...) {
 
     mif2.internal(
       object=object,
@@ -94,7 +39,6 @@ setMethod(
   }
 )
 
-
 setMethod(
   "mif2",
   signature=signature(object="pfilterd.pomp"),
@@ -103,17 +47,15 @@ setMethod(
     if (missing(Np)) Np <- object@Np
     if (missing(tol)) tol <- object@tol
 
-    f <- selectMethod("mif2","pomp")
-    f(object=object,Nmif=Nmif,Np=Np,tol=tol,...)
+    mif2(as(object,"pomp"),Nmif=Nmif,Np=Np,tol=tol,...)
   }
 )
 
 setMethod(
   "mif2",
   signature=signature(object="mif2d.pomp"),
-  definition = function (object, Nmif, start, Np,
-    rw.sd, transform, cooling.type, cooling.fraction.50,
-    tol, ...) {
+  definition = function (object, Nmif, start, Np, rw.sd, transform,
+    cooling.type, cooling.fraction.50, tol, ...) {
 
     if (missing(Nmif)) Nmif <- object@Nmif
     if (missing(start)) start <- coef(object)
@@ -125,11 +67,9 @@ setMethod(
     if (missing(Np)) Np <- object@Np
     if (missing(tol)) tol <- object@tol
 
-    f <- selectMethod("mif2","pomp")
-
-    f(object,Nmif=Nmif,start=start,Np=Np,rw.sd=rw.sd,transform=transform,
-      cooling.type=cooling.type,cooling.fraction.50=cooling.fraction.50,
-      tol=tol,...)
+    mif2(as(object,"pomp"),Nmif=Nmif,start=start,Np=Np,rw.sd=rw.sd,
+      transform=transform,cooling.type=cooling.type,
+      cooling.fraction.50=cooling.fraction.50,tol=tol,...)
   }
 )
 
@@ -140,8 +80,8 @@ setMethod(
 
     ndone <- object@Nmif
 
-    f <- selectMethod("mif2","mif2d.pomp")
-    obj <- f(object=object,Nmif=Nmif,.ndone=ndone,...)
+    obj <- mif2(object,Nmif=Nmif,...,
+      .ndone=ndone,.paramMatrix=object@paramMatrix)
 
     object@conv.rec[ndone+1,c('loglik','nfail')] <- obj@conv.rec[1L,c('loglik','nfail')]
     obj@conv.rec <- rbind(
@@ -156,25 +96,73 @@ setMethod(
 )
 
 mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
-  cooling.type, cooling.fraction.50,
-  tol = 1e-17, max.fail = Inf,
-  verbose = FALSE, .ndone = 0L,
-  .indices = integer(0),
-  .paramMatrix = NULL,
+  cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
+  tol = 1e-17, max.fail = Inf, verbose = FALSE, .ndone = 0L,
+  .indices = integer(0), .paramMatrix = NULL,
   .getnativesymbolinfo = TRUE, ...) {
 
   ep <- paste0("in ",sQuote("mif2"),": ")
 
-  pompLoad(object,verbose=verbose)
-
   transform <- as.logical(transform)
   verbose <- as.logical(verbose)
   gnsi <- as.logical(.getnativesymbolinfo)
+
+  if (length(Nmif) != 1 || !is.numeric(Nmif) || !is.finite(Nmif) || Nmif < 1)
+    stop(ep,sQuote("Nmif")," must be a positive integer.",call.=FALSE)
+  Nmif <- as.integer(Nmif)
+
+  if (missing(start)) start <- coef(object)
+  if (is.list(start)) start <- unlist(start)
+  if (length(start)==0 || !is.numeric(start) || is.null(names(start)))
+    stop(ep,"parameters must be specified as a named numeric vector.",call.=FALSE)
+
+  ntimes <- length(time(object))
+
+  if (is.null(Np)) {
+    stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
+  } else if (is.function(Np)) {
+    Np <- tryCatch(
+      vapply(seq_len(ntimes),Np,numeric(1)),
+      error = function (e) {
+        stop(ep,"if ",sQuote("Np"),
+          " is a function, it must return a single positive integer",
+          call.=FALSE)
+      }
+    )
+  } else if (!is.numeric(Np)) {
+    stop(ep,sQuote("Np"),
+      " must be a number, a vector of numbers, or a function",call.=FALSE)
+  }
+
+  if (length(Np) == 1) {
+    Np <- rep(Np,times=ntimes)
+  } else if (length(Np) > ntimes) {
+    if (Np[1L] != Np[ntimes+1] || length(Np) > ntimes+1) {
+      warning(ep,"Np[k] ignored for k > ntimes",call.=FALSE)
+    }
+    Np <- head(Np,ntimes)
+  } else if (length(Np) < ntimes) {
+    stop(ep,sQuote("Np")," must have length 1 or ",
+      sQuote("length(time(object))"),".",call.=FALSE)
+  }
+
+  if (!all(is.finite(Np)) || any(Np <= 0))
+    stop(ep,"number of particles, ",sQuote("Np"),
+      ", must be a positive integer.",call.=FALSE)
+
+  Np <- as.integer(Np)
   Np <- c(Np,Np[1L])
 
-  if (is.list(start)) start <- unlist(start)
+  if (missing(rw.sd))
+    stop(ep,sQuote("rw.sd")," must be specified!",call.=FALSE)
+  rw.sd <- pkern.sd(rw.sd,time=time(object),paramnames=names(start))
 
-  if (Nmif <= 0) stop(ep,sQuote("Nmif")," must be a positive integer",call.=FALSE)
+  if (length(cooling.fraction.50) != 1 || !is.numeric(cooling.fraction.50) ||
+      !is.finite(cooling.fraction.50) || cooling.fraction.50 <= 0 ||
+      cooling.fraction.50 > 1)
+    stop(ep,sQuote("cooling.fraction.50")," must be in (0,1]",call.=FALSE)
+  cooling.fraction.50 <- as.numeric(cooling.fraction.50)
+  cooling.type <- match.arg(cooling.type)
 
   cooling.fn <- mif2.cooling(
     type=cooling.type,
@@ -183,13 +171,8 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
   )
 
   if (is.null(.paramMatrix)) {
-    if (.ndone > 0) {               # call is from 'continue'
-      paramMatrix <- object@paramMatrix
-      start <- apply(paramMatrix,1L,mean)
-    } else {                         # initial call
-      paramMatrix <- array(data=start,dim=c(length(start),Np[1L]),
-        dimnames=list(variable=names(start),rep=NULL))
-    }
+    paramMatrix <- array(data=start,dim=c(length(start),Np[1L]),
+      dimnames=list(variable=names(start),rep=NULL))
   } else {
     paramMatrix <- .paramMatrix
     start <- apply(paramMatrix,1L,mean)
@@ -201,6 +184,9 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
   conv.rec[1L,] <- c(NA,NA,start)
 
   object <- as(object,"pomp")
+
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   if (transform)
     paramMatrix <- partrans(object,paramMatrix,dir="toEstimationScale",
@@ -244,8 +230,6 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     pfp@paramMatrix <- partrans(object,paramMatrix,dir="fromEstimationScale",
       .getnativesymbolinfo=gnsi)
 
-  pompUnload(object,verbose=verbose)
-
   new(
     "mif2d.pomp",
     pfp,
@@ -284,20 +268,21 @@ mif2.cooling <- function (type, fraction, ntimes) {
   )
 }
 
-mif2.pfilter <- function (object, params, Np,
-  mifiter, rw.sd, cooling.fn,
-  tol = 1e-17, max.fail = Inf,
-  transform, verbose,
-  .indices = integer(0),
+mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
+  tol = 1e-17, max.fail = Inf, transform, verbose, .indices = integer(0),
   .getnativesymbolinfo = TRUE) {
 
   ep <- paste0("in ",sQuote("mif2.pfilter"),": ")
 
+  tol <- as.numeric(tol)
   gnsi <- as.logical(.getnativesymbolinfo)
   transform <- as.logical(transform)
   verbose <- as.logical(verbose)
   mifiter <- as.integer(mifiter)
   Np <- as.integer(Np)
+
+  if (length(tol) != 1 || !is.finite(tol) || tol < 0)
+    stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
 
   do_ta <- length(.indices)>0L
   if (do_ta && length(.indices)!=Np[1L])
@@ -438,7 +423,7 @@ mif2.pfilter <- function (object, params, Np,
 
   new(
     "pfilterd.pomp",
-    object,
+    as(object,"pomp"),
     paramMatrix=params,
     eff.sample.size=eff.sample.size,
     cond.loglik=loglik,

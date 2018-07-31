@@ -37,7 +37,8 @@ newly created object(s):
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
-Error : in 'mif2': 'Np' must be specified
+Error in mif2.internal(object = object, Nmif = Nmif, start = start, Np = Np,  : 
+  argument "Np" is missing, with no default
 > try(mif2(ou2,Nmif=1,start=guess2,Np=rep(10,102),
 +          cooling.type="hyperbolic",cooling.fraction.50=0.05,
 +          rw.sd=rw.sd(
@@ -58,16 +59,16 @@ in 'mif2': Np[k] ignored for k > ntimes
 +          rw.sd=rw.sd(
 +              x1.0=ivp(0.5),x2.0=ivp(0.5),
 +              alpha.2=0.1,alpha.3=0.1)) -> ignore)
-Error : in 'mif2': 'Nmif' must be a positive integer
+Error : in 'mif2': 'Nmif' must be a positive integer.
 > try(mif2(ou2,Nmif=1,Np=1000,rw.sd=rw.sd(ivp(0.1))))
 Error : in 'mif2': in 'rw.sd': parameters must be referenced by name.
 > try(mif2(ou2,Nmif=1,Np=10,rw.sd=rw.sd(alpha.2=10),
 +   cooling.fraction.50=1,max.fail=0))
 Error : in 'mif2': in 'mif2.pfilter': too many filtering failures
 > try(mif2(ou2,Nmif=1,Np=100,start=numeric(0)))
-Error : in 'mif2': 'start' must be specified if 'coef(object)' is NULL
+Error : in 'mif2': parameters must be specified as a named numeric vector.
 > try(mif2(ou2,Nmif=1,Np=100,start=unname(coef(ou2))))
-Error : in 'mif2': 'start' must be a named vector
+Error : in 'mif2': parameters must be specified as a named numeric vector.
 > try(mif2(ou2,Nmif=1,Np="100"))
 Error : in 'mif2': 'Np' must be a number, a vector of numbers, or a function
 > try(mif2(ou2,Nmif=1,Np=10,cooling.fraction.50=1))
@@ -97,7 +98,7 @@ Warning messages:
 > try(conv.rec(m2,c("bob","nancy")))
 Error : in 'conv.rec': name(s) 'bob','nancy' correspond to no parameter(s) in 'conv.rec(object,transform=FALSE)'
 > 
-> freeze(continue(m2,Nmif=2,.paramMatrix=m2@paramMatrix),seed=595996) -> m2a
+> freeze(mif2(m2,Nmif=2,.ndone=50,.paramMatrix=m2@paramMatrix),seed=595996) -> m2a
 > freeze(continue(m2,Nmif=2),seed=595996) -> m2b
 > stopifnot(all.equal(coef(m2a),coef(m2b)))
 > 
@@ -171,7 +172,7 @@ truth   -481
 > try(continue(m4,Np=function(k)if(k<10) "B" else 500))
 Error : in 'mif2': if 'Np' is a function, it must return a single positive integer
 > try(continue(m4,Np=function(k)if(k<10) -30 else 500))
-Error : in 'mif2': number of particles, 'Np', must always be positive
+Error : in 'mif2': number of particles, 'Np', must be a positive integer.
 > 
 > pf <- pfilter(m4)
 > half <- 0.5
