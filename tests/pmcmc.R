@@ -18,6 +18,15 @@ mcmc1 <- pmcmc(po,Nmcmc=100,Np=100,dprior=Csnippet("
   paramnames=c("r","sigma"),
   proposal=prop1)
 
+try(pmcmc(po,Nmcmc=10,Np="bob"))
+try(pmcmc(po,Nmcmc=10))
+try(pmcmc(po,Nmcmc=10,Np=NULL))
+try(pmcmc(po,Nmcmc=10,Np=function(k)10*k))
+try(pmcmc(po,Nmcmc=10,Np=function(k)NULL))
+try(pmcmc(po,Nmcmc=10,Np=rep(100,20)))
+try(pmcmc(po,Nmcmc=10,Np=-50))
+try(pmcmc(po,Nmcmc=10,Np=NA))
+try(pmcmc(po,Nmcmc=10,Np=function(k)10*(k+1)))
 try(pmcmc(po,Nmcmc=100,Np=100))
 
 pf <- pfilter(po,Np=100)

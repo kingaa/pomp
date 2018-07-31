@@ -138,7 +138,7 @@ pmcmc.internal <- function (object, Nmcmc,
   if (!is.numeric(start) || is.null(names(start)))
     stop(ep,sQuote("start")," must be a named numeric vector",call.=FALSE)
 
-  if (is.null(Np)) {
+  if (missing(Np) || is.null(Np)) {
     stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
   } else if (is.function(Np)) {
     Np <- tryCatch(
@@ -156,7 +156,8 @@ pmcmc.internal <- function (object, Nmcmc,
   if (length(Np) == 1)
     Np <- rep(Np,times=ntimes+1)
   else if (length(Np) != (ntimes+1))
-    stop(ep,sQuote("Np")," must have length 1 or length ",ntimes+1,".",call.=FALSE)
+    stop(ep,sQuote("Np")," must have length 1 or length ",
+      sQuote("length(time(object))+1"),".",call.=FALSE)
 
   if (!all(is.finite(Np)) || any(Np <= 0))
     stop(ep,"number of particles, ",sQuote("Np"),
