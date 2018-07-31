@@ -37,6 +37,24 @@ Type 'q()' to quit R.
 +   paramnames=c("r","sigma"),
 +   proposal=prop1)
 > 
+> try(pmcmc(po,Nmcmc=10,Np="bob"))
+Error : in 'pmcmc': 'Np' must be a number, a vector of numbers, or a function.
+> try(pmcmc(po,Nmcmc=10))
+Error : in 'pmcmc': 'Np' must be specified.
+> try(pmcmc(po,Nmcmc=10,Np=NULL))
+Error : in 'pmcmc': 'Np' must be specified.
+> try(pmcmc(po,Nmcmc=10,Np=function(k)10*k))
+Error : in 'pmcmc': number of particles, 'Np', must be a positive integer.
+> try(pmcmc(po,Nmcmc=10,Np=function(k)NULL))
+Error : in 'pmcmc': if 'Np' is a function, it must return a single positive integer.
+> try(pmcmc(po,Nmcmc=10,Np=rep(100,20)))
+Error : in 'pmcmc': 'Np' must have length 1 or length 'length(time(object))+1'.
+> try(pmcmc(po,Nmcmc=10,Np=-50))
+Error : in 'pmcmc': number of particles, 'Np', must be a positive integer.
+> try(pmcmc(po,Nmcmc=10,Np=NA))
+Error : in 'pmcmc': 'Np' must be a number, a vector of numbers, or a function.
+> try(pmcmc(po,Nmcmc=10,Np=function(k)10*(k+1)))
+Error : in 'pmcmc': 'proposal' must be specified
 > try(pmcmc(po,Nmcmc=100,Np=100))
 Error : in 'pmcmc': 'proposal' must be specified
 > 

@@ -5,14 +5,34 @@ set.seed(857075216L)
 
 library(pomp)
 library(dplyr)
+library(reshape2)
 library(magrittr)
 
 pompExample(gompertz,envir=NULL) -> po
 po[[1]] %>% window(end=10) -> po
 
 mif2(po,Nmif=50,Np=100,transform=TRUE,cooling.fraction.50=0.5,
-  rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf
-plot(mf)
+  rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf1
+mif2(po,Nmif=50,Np=100,transform=TRUE,cooling.fraction.50=0.5,
+  rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf2
+plot(mf1,y=NA)
+plot(c(a=mf1,b=mf2) -> mfl,y=NA)
+c(a=mf1,b=c(mf1,mf2))
+mfl[1]
+mfl["b"]
+traces(mfl) %>% melt() %>%
+  filter(variable %in% c("sigma","K","r")) %>%
+  group_by(L1,variable) %>%
+  filter(value==max(value)) %>%
+  ungroup()
+coef(mfl)
+
+mfl %>%
+  traces(transform=TRUE,pars=c("r","sigma")) %>%
+  melt() %>%
+  filter(iteration==50)
+
+try(mfl %>% traces(pars="bob"))
 
 try(mif2(po,Nmif=NA,Np=100))
 try(mif2(po,Nmif=NULL,Np=100))
@@ -25,10 +45,12 @@ try(mif2(po,Nmif=1,Np=Inf))
 try(mif2(po,Nmif=1,Np=100))
 try(mif2(po,Nmif=1,Np=NULL))
 try(mif2(po,Nmif=1,Np=c(3,4)))
-try(mif2(po,Nmif=1,Np=c(rep(100,11),40),rw.sd=rw.sd(sigma=0.1),cooling.frac=0.5))
+try(mif2(po,Nmif=1,Np=c(rep(100,11),40),rw.sd=rw.sd(sigma=0.1),
+  cooling.frac=0.5))
 try(mif2(po,Nmif=1,Np=100,rw.sd=3))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd()))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(a=9)))
+try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=1:1000)))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(NULL)))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=12))
@@ -44,9 +66,21 @@ try(mif2(po,start=list(),Nmif=1,Np=100))
 try(mif2(po,start=list(NULL),Nmif=1,Np=100))
 try(mif2(po,start=c(3,2,1),Nmif=1,Np=100))
 try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw.sd(sigma=0.1)))
-mif2(po,Nmif=3,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
-  transform=TRUE,start=as.list(coef(po)))
+  transform=TRUE,start=as.list(coef(po)),.indices=1:50)
+try(mif2(po,Nmif=1,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+  cooling.fraction.50=0.1,.indices=1:30))
+try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+  cooling.fraction.50=0.1,rprocess=onestep.sim(function(x,t,params,covars,delta.t,...)stop("boink"))))
+try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+  cooling.fraction.50=0.1,dmeasure=function(y,x,t,params,covars,log,...)stop("blop")))
+try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+  cooling.fraction.50=0.1,dmeasure=function(y,x,t,params,covars,log,...)NA))
+mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
+  drpocess="oops",transform=TRUE,
+  dmeasure=function(t,x,y,params,log,...)0) -> mf3
+try(mif2(mf3,max.fail=1))
 
 theta <- coef(po)
 theta["sigma"] <- 0.2
@@ -55,5 +89,21 @@ po %>%
   mif2(Nmif=3,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
     cooling.fraction.50=0.5,transform=TRUE) %>%
   mif2() %>% continue(Nmif=3,cooling.fraction.50=0.1) %>% plot()
+
+capture.output(
+  mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+    cooling.fraction.50=1,cooling.type="hyperbolic",tol=1e-10,
+    transform=TRUE,start=as.list(coef(po)),verbose=TRUE),
+  type="output"
+) -> out
+stopifnot(sum(grepl("mif2 pfilter timestep",out))==4,
+  sum(grepl("mif2 iteration",out))==2)
+capture.output(
+  mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
+    cooling.fraction.50=1,cooling.type="hyperbolic",tol=10,
+    transform=TRUE,start=as.list(coef(po)),verbose=TRUE),
+  type="message"
+) -> out
+stopifnot(sum(grepl("filtering failure at time",out))==22)
 
 dev.off()

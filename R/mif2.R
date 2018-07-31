@@ -341,8 +341,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
         .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
-        stop(ep,"error in calculation of weights: ",
-          conditionMessage(e),call.=FALSE)
+        stop(ep,conditionMessage(e),call.=FALSE)
       }
     )
     if (!all(is.finite(weights))) {
@@ -361,8 +360,8 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
       if (any(weights>0)) {
         coef(object,transform=transform) <- apply(params,1L,weighted.mean,w=weights)
       } else {
-        warning(ep,"filtering failure at last filter iteration, using unweighted mean for ",
-          sQuote("coef"),call.=FALSE)
+        warning(ep,"filtering failure at last filter iteration; using ",
+          "unweighted mean for point estimate.",call.=FALSE)
         coef(object,transform=transform) <- apply(params,1L,mean)
       }
     }
@@ -468,7 +467,7 @@ pkern.sd <- function (rw.sd, time, paramnames) {
     } else if (len!=length(time)) {
       stop(ep,sQuote("rw.sd")," spec for parameter ",sQuote(n),
         " does not evaluate to a vector of the correct length (",
-        length(time),").",call.=FALSE)
+        sQuote("length(time(object))"),"=",length(time),").",call.=FALSE)
     }
   }
   do.call(rbind,sds)
