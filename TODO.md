@@ -12,7 +12,6 @@
 - `time` variable could retain its original name?
 - `initializer` -> `rinit` (and perhaps `dinit`)
 - piecewise constant interpolation of covariates
-- remove `$` methods and replace with proper extractor functions
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification
@@ -20,16 +19,14 @@
 - remove `obs` and `states` arguments in `simulate`? or hide? `do_simulate` in C?
 - easier interface for lists of probes in `probe`
 - methods to change data (`obs<-`)?
-- more/better demos and examples
-- plugin for adaptive tau leaping algorithm.
-- plugin for compartmental models
 - refurbish entire test suite
 	- 'skeleton' test is too delicate. why?
-- put Kalman check in 'gompertz' test
+- put Kalman check in 'gompertz' test: **is it correct?**
 - put Kalman check in 'ou2' test
-- what does a generic `pomp.fun` interface look like?
 - MCMC proposals as pomp slots?
 - probes as pomp slots?
+- what does a generic `pomp.fun` interface look like?
+- more/better demos and examples
 
 ## For pomp:
 
@@ -52,6 +49,8 @@
 - partial rejection control for `pfilter`?
 - adaptive particle numbers in pfilter (?)
 - parallel `pfilter` algorithm (?)
+- plugin for adaptive tau leaping algorithm.
+- plugin for compartmental models
 
 ## Helper packages
 
