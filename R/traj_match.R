@@ -11,9 +11,12 @@ setClass(
   )
 )
 
-setMethod("$",signature=signature(x="traj.matched.pomp"),function(x, name)slot(x,name))
-
-setMethod("logLik",signature=signature(object="traj.matched.pomp"),function(object, ...)object@value)
+setMethod(
+  "logLik",
+  signature=signature(object="traj.matched.pomp"),
+  definition=function(object, ...)
+    object@value
+)
 
 setMethod(
   "summary",
@@ -31,52 +34,11 @@ setMethod(
   }
 )
 
-tmof.internal <- function (object, params, est, transform, ...) {
-
-  ep <- paste0("in ",sQuote("traj.match.objfun"),": ")
-  object <- as(object,"pomp")
-  if (missing(est)) est <- character(0)
-  est <- as.character(est)
-  transform <- as.logical(transform)
-
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
-  if ((!is.numeric(params))||(is.null(names(params))))
-    stop(ep,sQuote("params")," must be a named numeric vector",call.=FALSE)
-  if (transform)
-    params <- partrans(object,params,dir="toEstimationScale")
-  par.est.idx <- match(est,names(params))
-  if (any(is.na(par.est.idx)))
-    stop(ep,"parameter(s): ",
-         paste(sapply(est[is.na(par.est.idx)],sQuote),collapse=","),
-         " not found in ",sQuote("params"),call.=FALSE)
-
-  function (par) {
-    pompLoad(object)
-    params[par.est.idx] <- par
-    if (transform)
-      tparams <- partrans(object,params,dir="fromEstimationScale")
-    d <- dmeasure(
-      object,
-      y=object@data,
-      x=trajectory(
-        object,
-        params=if (transform) tparams else params,
-        ...
-      ),
-      times=time(object),
-      params=if (transform) tparams else params,
-      log=TRUE
-    )
-    pompUnload(object)
-    -sum(d)
-  }
-}
-
 setMethod(
   "traj.match.objfun",
   signature=signature(object="pomp"),
-  function (object, params, est, transform = FALSE, ...)
+  function (object, params, est, transform = FALSE, ...) {
+
     tmof.internal(
       object=object,
       params=params,
@@ -84,15 +46,17 @@ setMethod(
       transform=transform,
       ...
     )
+
+  }
 )
 
 setMethod(
   "traj.match",
   signature=signature(object="pomp"),
   function (object, start, est = character(0),
-            method = c("Nelder-Mead","subplex","SANN","BFGS",
-                       "sannbox","nloptr"),
-            transform = FALSE, ...)
+    method = c("Nelder-Mead","subplex","SANN","BFGS",
+      "sannbox","nloptr"),
+    transform = FALSE, ...)
   {
 
     if (missing(start)) start <- coef(object)
@@ -146,13 +110,48 @@ setMethod(
     if (missing(est)) est <- object@est
     if (missing(transform)) transform <- object@transform
 
-    f <- selectMethod("traj.match","pomp")
-
-    f(
-      object=object,
-      est=est,
-      transform=transform,
-      ...
-    )
+    traj.match(as(object,"pomp"),est=est,transform=transform,...)
   }
 )
+
+tmof.internal <- function (object, params, est, transform, ...) {
+
+  ep <- paste0("in ",sQuote("traj.match.objfun"),": ")
+  object <- as(object,"pomp")
+  if (missing(est)) est <- character(0)
+  est <- as.character(est)
+  transform <- as.logical(transform)
+
+  if (missing(params)) params <- coef(object)
+  if (is.list(params)) params <- unlist(params)
+  if ((!is.numeric(params))||(is.null(names(params))))
+    stop(ep,sQuote("params")," must be a named numeric vector",call.=FALSE)
+  if (transform)
+    params <- partrans(object,params,dir="toEstimationScale")
+  par.est.idx <- match(est,names(params))
+  if (any(is.na(par.est.idx)))
+    stop(ep,"parameter(s): ",
+      paste(sapply(est[is.na(par.est.idx)],sQuote),collapse=","),
+      " not found in ",sQuote("params"),call.=FALSE)
+
+  function (par) {
+    pompLoad(object)
+    params[par.est.idx] <- par
+    if (transform)
+      tparams <- partrans(object,params,dir="fromEstimationScale")
+    d <- dmeasure(
+      object,
+      y=object@data,
+      x=trajectory(
+        object,
+        params=if (transform) tparams else params,
+        ...
+      ),
+      times=time(object),
+      params=if (transform) tparams else params,
+      log=TRUE
+    )
+    pompUnload(object)
+    -sum(d)
+  }
+}

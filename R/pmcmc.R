@@ -138,7 +138,30 @@ pmcmc.internal <- function (object, Nmcmc,
   if (!is.numeric(start) || is.null(names(start)))
     stop(ep,sQuote("start")," must be a named numeric vector",call.=FALSE)
 
-  Np <- num_particles(Np,ep,ntimes)
+  if (is.null(Np)) {
+    stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
+  } else if (is.function(Np)) {
+    Np <- tryCatch(
+      vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
+      error = function (e) {
+        stop(ep,"if ",sQuote("Np")," is a function, ",
+          "it must return a single positive integer.",call.=FALSE)
+      }
+    )
+  } else if (!is.numeric(Np)) {
+    stop(ep,sQuote("Np")," must be a number, a vector of numbers, ",
+      "or a function.",call.=FALSE)
+  }
+
+  if (length(Np) == 1)
+    Np <- rep(Np,times=ntimes+1)
+  else if (length(Np) != (ntimes+1))
+    stop(ep,sQuote("Np")," must have length 1 or length ",ntimes+1,".",call.=FALSE)
+
+  if (!all(is.finite(Np)) || any(Np <= 0))
+    stop(ep,"number of particles, ",sQuote("Np"),
+      ", must be a positive integer.",call.=FALSE)
+  Np <- as.integer(Np)
 
   if (is.null(proposal))
     stop(ep,sQuote("proposal")," must be specified",call.=FALSE)

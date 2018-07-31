@@ -1,12 +1,5 @@
 ## methods for the 'kalmand.pomp' class
 
-## simple extractors
-setMethod(
-    "$",
-    signature=signature(x="kalmand.pomp"),
-    definition=function (x,name) slot(x,name)
-)
-
 setMethod(
     "logLik",
     signature=signature(object="kalmand.pomp"),

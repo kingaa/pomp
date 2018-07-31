@@ -221,6 +221,7 @@ eakf.internal <- function (object, params, C, R, Np, verbose) {
       loglik=sum(condlogLik))
 }
 
+## Basic Kalman filter. Currently for internal consumption only.
 kalmanFilter <- function (t, y, X0, A, Q, C, R) {
   N <- ncol(y)
   nvar <- length(X0)

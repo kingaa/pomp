@@ -13,50 +13,166 @@
 ## of known period and improves the compatibility with the standard for pomp objects
 
 setClass("nlfd.pomp",
-         contains="pomp",
-         slots=c(
-           transform = "logical",
-           transform.data = "function",
-           est = 'character',
-           lags="integer",
-           nconverge = 'integer',
-           nasymp = 'integer',
-           seed="integer",
-           period="numeric",
-           tensor="logical",
-           nrbf="integer",
-           method="character",
-           lql.frac="numeric",
-           se.par.frac="numeric",
-           Qhat="matrix",
-           se="numeric",
-           logql="numeric"
-         ),
-         prototype=prototype(
-           transform=FALSE,
-           transform.data=identity,
-           est=character(0),
-           lags=integer(0),
-           nconverge=0L,
-           nasymp=0L,
-           seed=0L,
-           period=as.numeric(NA),
-           tensor=FALSE,
-           nrbf=4L,
-           method=character(0),
-           lql.frac=0.1,
-           se.par.frac=0.1,
-           Qhat=matrix(NA,0,0),
-           se=numeric(0),
-           logql=as.numeric(NA)
-         )
+  contains="pomp",
+  slots=c(
+    transform = "logical",
+    transform.data = "function",
+    est = 'character',
+    lags="integer",
+    nconverge = 'integer',
+    nasymp = 'integer',
+    seed="integer",
+    period="numeric",
+    tensor="logical",
+    nrbf="integer",
+    method="character",
+    lql.frac="numeric",
+    se.par.frac="numeric",
+    Qhat="matrix",
+    se="numeric",
+    logql="numeric"
+  ),
+  prototype=prototype(
+    transform=FALSE,
+    transform.data=identity,
+    est=character(0),
+    lags=integer(0),
+    nconverge=0L,
+    nasymp=0L,
+    seed=0L,
+    period=as.numeric(NA),
+    tensor=FALSE,
+    nrbf=4L,
+    method=character(0),
+    lql.frac=0.1,
+    se.par.frac=0.1,
+    Qhat=matrix(NA,0,0),
+    se=numeric(0),
+    logql=as.numeric(NA)
+  )
+)
+
+setMethod(
+  "nlf",
+  signature=signature(object="pomp"),
+  definition=function (object,
+    start, est, lags,
+    period = NA, tensor = FALSE,
+    nconverge = 1000L, nasymp = 1000L,
+    seed = 1066L, transform.data,
+    nrbf = 4L,
+    method = c(
+      "subplex", "Nelder-Mead", "BFGS", "CG",
+      "L-BFGS-B", "SANN", "Brent"
+    ),
+    skip.se = FALSE,
+    verbose = getOption("verbose"),
+    bootsamp = NULL,
+    lql.frac = 0.1, se.par.frac = 0.1,
+    eval.only = FALSE,
+    transform = FALSE, ...)
+  {
+    ep <- paste0("in ",sQuote("nlf"),": ")
+    transform <- as.logical(transform)
+    if (missing(transform.data)) transform.data <- identity
+    transform.data <- match.fun(transform.data)
+    period <- as.numeric(period)
+    tensor <- as.logical(tensor)
+    skip.se <- as.logical(skip.se)
+    eval.only <- as.logical(eval.only)
+    seed <- as.integer(seed)
+    lql.frac <- as.numeric(lql.frac)
+    se.par.frac <- as.numeric(se.par.frac)
+    bootstrap <- !is.null(bootsamp)
+    bootsamp <- as.integer(bootsamp)
+    lags <- as.integer(lags)
+    nrbf <- as.integer(nrbf)
+    nasymp <- as.integer(nasymp)
+    nconverge <- as.integer(nconverge)
+
+    method <- match.arg(method)
+
+    if (missing(est) || length(est)==0) eval.only <- TRUE
+    if (eval.only) est <- character(0)
+    if (missing(start)) start <- coef(object)
+    if (is.list(start)) start <- unlist(start)
+    if (!is.character(est))
+      stop(ep,sQuote("est")," must name the parameters to be estimated",
+        call.=FALSE)
+    if (!all(est%in%names(start)))
+      stop(ep,"parameters named in ",sQuote("est"),
+        " must exist in ",sQuote("start"),call.=FALSE)
+
+    nlf.internal(
+      object=object,
+      start=start,
+      est=est,
+      lags=lags,
+      period=period,
+      tensor=tensor,
+      nconverge=nconverge,
+      nasymp=nasymp,
+      seed=seed,
+      nrbf=nrbf,
+      method=method,
+      skip.se=skip.se,
+      verbose=verbose,
+      bootstrap=bootstrap,
+      bootsamp=bootsamp,
+      lql.frac=lql.frac,
+      se.par.frac=se.par.frac,
+      eval.only=eval.only,
+      transform=transform,
+      transform.data=transform.data,
+      ...
+    )
+  }
+)
+
+setMethod(
+  "nlf",
+  signature=signature(object="nlfd.pomp"),
+  definition=function (object, start, est, lags,
+    period, tensor, nconverge, nasymp, seed,
+    transform.data, nrbf, method, lql.frac, se.par.frac,
+    transform, ...)
+  {
+    if (missing(start)) start <- coef(object)
+    if (is.list(start)) start <- unlist(start)
+    if (missing(est)) est <- object@est
+    if (missing(lags)) lags <- object@lags
+    if (missing(period)) period <- object@period
+    if (missing(tensor)) tensor <- object@tensor
+    if (missing(nconverge)) nconverge <- object@nconverge
+    if (missing(nasymp)) nasymp <- object@nasymp
+    if (missing(seed)) seed <- object@seed
+    if (missing(transform)) transform <- object@transform
+    if (missing(transform.data)) transform.data <- object@transform.data
+    if (missing(nrbf)) nrbf <- object@nrbf
+    if (missing(method)) method <- object@method
+    if (missing(lql.frac)) lql.frac <- object@lql.frac
+    if (missing(se.par.frac)) se.par.frac <- object@se.par.frac
+
+    nlf(as(object,"pomp"), start=start, est=est, lags=lags, period=period,
+      tensor=tensor, nconverge=nconverge, seed=seed, transform=transform,
+      transform.data=transform.data, nrbf=nrbf, method=method,
+      lql.frac=lql.frac, se.par.frac=se.par.frac, ...)
+  }
+)
+
+setMethod(
+  "logLik",
+  signature=signature(object="nlfd.pomp"),
+  definition = function(object, ...) {
+    object@logql
+  }
 )
 
 nlf.internal <- function (object, start, est, lags, period, tensor,
-                          nconverge, nasymp, seed, transform,
-                          nrbf, method, skip.se, verbose,
-                          bootstrap, bootsamp, lql.frac, se.par.frac,
-                          eval.only, transform.data, ...)
+  nconverge, nasymp, seed, transform,
+  nrbf, method, skip.se, verbose,
+  bootstrap, bootsamp, lql.frac, se.par.frac,
+  eval.only, transform.data, ...)
 {
 
   ep <- paste0("in ",sQuote("nlf"),": ")
@@ -396,143 +512,3 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
     logql=-opt$value
   )
 }
-
-setMethod(
-  "nlf",
-  signature=signature(object="pomp"),
-  definition=function (object,
-                       start, est, lags,
-                       period = NA, tensor = FALSE,
-                       nconverge = 1000L, nasymp = 1000L,
-                       seed = 1066L, transform.data,
-                       nrbf = 4L,
-                       method = c(
-                         "subplex", "Nelder-Mead", "BFGS", "CG",
-                         "L-BFGS-B", "SANN", "Brent"
-                       ),
-                       skip.se = FALSE,
-                       verbose = getOption("verbose"),
-                       bootsamp = NULL,
-                       lql.frac = 0.1, se.par.frac = 0.1,
-                       eval.only = FALSE,
-                       transform = FALSE, ...)
-  {
-    ep <- paste0("in ",sQuote("nlf"),": ")
-    transform <- as.logical(transform)
-    if (missing(transform.data)) transform.data <- identity
-    transform.data <- match.fun(transform.data)
-    period <- as.numeric(period)
-    tensor <- as.logical(tensor)
-    skip.se <- as.logical(skip.se)
-    eval.only <- as.logical(eval.only)
-    seed <- as.integer(seed)
-    lql.frac <- as.numeric(lql.frac)
-    se.par.frac <- as.numeric(se.par.frac)
-    bootstrap <- !is.null(bootsamp)
-    bootsamp <- as.integer(bootsamp)
-    lags <- as.integer(lags)
-    nrbf <- as.integer(nrbf)
-    nasymp <- as.integer(nasymp)
-    nconverge <- as.integer(nconverge)
-
-    method <- match.arg(method)
-
-    if (missing(est) || length(est)==0) eval.only <- TRUE
-    if (eval.only) est <- character(0)
-    if (missing(start)) start <- coef(object)
-    if (is.list(start)) start <- unlist(start)
-    if (!is.character(est))
-      stop(ep,sQuote("est")," must name the parameters to be estimated",
-           call.=FALSE)
-    if (!all(est%in%names(start)))
-      stop(ep,"parameters named in ",sQuote("est"),
-           " must exist in ",sQuote("start"),call.=FALSE)
-
-    nlf.internal(
-      object=object,
-      start=start,
-      est=est,
-      lags=lags,
-      period=period,
-      tensor=tensor,
-      nconverge=nconverge,
-      nasymp=nasymp,
-      seed=seed,
-      nrbf=nrbf,
-      method=method,
-      skip.se=skip.se,
-      verbose=verbose,
-      bootstrap=bootstrap,
-      bootsamp=bootsamp,
-      lql.frac=lql.frac,
-      se.par.frac=se.par.frac,
-      eval.only=eval.only,
-      transform=transform,
-      transform.data=transform.data,
-      ...
-    )
-  }
-)
-
-setMethod(
-  "nlf",
-  signature=signature(object="nlfd.pomp"),
-  definition=function (object, start, est, lags,
-                       period, tensor, nconverge, nasymp, seed,
-                       transform.data, nrbf, method, lql.frac, se.par.frac,
-                       transform, ...)
-  {
-    if (missing(start)) start <- coef(object)
-    if (is.list(start)) start <- unlist(start)
-    if (missing(est)) est <- object@est
-    if (missing(lags)) lags <- object@lags
-    if (missing(period)) period <- object@period
-    if (missing(tensor)) tensor <- object@tensor
-    if (missing(nconverge)) nconverge <- object@nconverge
-    if (missing(nasymp)) nasymp <- object@nasymp
-    if (missing(seed)) seed <- object@seed
-    if (missing(transform)) transform <- object@transform
-    if (missing(transform.data)) transform.data <- object@transform.data
-    if (missing(nrbf)) nrbf <- object@nrbf
-    if (missing(method)) method <- object@method
-    if (missing(lql.frac)) lql.frac <- object@lql.frac
-    if (missing(se.par.frac)) se.par.frac <- object@se.par.frac
-
-    f <- selectMethod("nlf","pomp")
-    f(
-      object=as(object,"pomp"),
-      start=start,
-      est=est,
-      lags=lags,
-      period=period,
-      tensor=tensor,
-      nconverge=nconverge,
-      seed=seed,
-      transform=transform,
-      transform.data=transform.data,
-      nrbf=nrbf,
-      method=method,
-      lql.frac=lql.frac,
-      se.par.frac=se.par.frac,
-      ...
-    )
-  }
-)
-
-
-
-setMethod(
-  "$",
-  signature=signature(x="nlfd.pomp"),
-  definition = function (x, name) {
-    slot(x,name)
-  }
-)
-
-setMethod(
-  "logLik",
-  signature=signature(object="nlfd.pomp"),
-  definition = function(object, ...) {
-    object@logql
-  }
-)

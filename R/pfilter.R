@@ -51,6 +51,7 @@ setMethod(
     save.params = FALSE,
     verbose = getOption("verbose"),
     ...) {
+
     if (missing(params)) params <- coef(object)
     if (missing(Np)) Np <- NULL
     pfilter.internal(
@@ -68,6 +69,7 @@ setMethod(
       verbose=verbose,
       ...
     )
+
   }
 )
 
@@ -75,32 +77,21 @@ setMethod(
   "pfilter",
   signature=signature(object="pfilterd.pomp"),
   function (object, params, Np, tol, ...) {
+
     if (missing(params)) params <- coef(object)
     if (missing(Np)) Np <- object@Np
     if (missing(tol)) tol <- object@tol
-    f <- selectMethod("pfilter","pomp")
-    f(
-      object=object,
-      params=params,
-      Np=Np,
-      tol=tol,
-      ...
-    )
+
+    pfilter(as(object,"pomp"),params=params,Np=Np,tol=tol,...)
+
   }
 )
 
-pfilter.internal <- function (object, params, Np,
-  tol, max.fail,
-  pred.mean = FALSE,
-  pred.var = FALSE,
-  filter.mean = FALSE,
-  filter.traj = FALSE,
-  cooling, cooling.m,
-  verbose = FALSE,
-  save.states = FALSE,
-  save.params = FALSE,
-  .getnativesymbolinfo = TRUE,
-  ...) {
+pfilter.internal <- function (object, params, Np, tol, max.fail,
+  pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
+  filter.traj = FALSE, cooling, cooling.m, verbose = FALSE,
+  save.states = FALSE, save.params = FALSE,
+  .getnativesymbolinfo = TRUE, ...) {
 
   ep <- paste0("in ",sQuote("pfilter"),": ")
 
@@ -125,7 +116,40 @@ pfilter.internal <- function (object, params, Np,
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
 
-  Np <- num_particles(Np,ep,ntimes=ntimes,params=params)
+  if (is.null(Np)) {
+    if (is.matrix(params)) {
+      Np <- ncol(params)
+    } else {
+      stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
+    }
+  } else if (is.function(Np)) {
+    Np <- tryCatch(
+      vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
+      error = function (e) {
+        stop(ep,"if ",sQuote("Np")," is a function, ",
+          "it must return a single positive integer.",call.=FALSE)
+      }
+    )
+  } else if (!is.numeric(Np)) {
+    stop(ep,sQuote("Np")," must be a number, a vector of numbers, ",
+      "or a function.",call.=FALSE)
+  }
+
+  if (length(Np) == 1)
+    Np <- rep(Np,times=ntimes+1)
+  else if (length(Np) != (ntimes+1))
+    stop(ep,sQuote("Np")," must have length 1 or length ",ntimes+1,".",call.=FALSE)
+
+  if (!all(is.finite(Np)) || any(Np <= 0))
+    stop(ep,"number of particles, ",sQuote("Np"),
+      ", must be a positive integer.",call.=FALSE)
+  if (is.matrix(params)) {
+    if (!all(Np == ncol(params)))
+      stop(ep,"when ",sQuote("params")," is provided as a matrix, ",
+        "you must not also specify ",sQuote("Np"),".",call.=FALSE)
+  }
+
+  Np <- as.integer(Np)
 
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
     stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
@@ -400,42 +424,4 @@ nonfinite_dmeasure_error <- function (time, lik, datvals, states, params) {
     "likelihood, data, states, and parameters are:\n",
     paste0(m1,": ",m2,collapse="\n")
   )
-}
-
-num_particles <- function (Np = NULL, ep, ntimes, params = NULL) {
-
-  if (is.null(Np)) {
-    if (is.matrix(params)) {
-      Np <- ncol(params)
-    } else {
-      stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
-    }
-  } else if (is.function(Np)) {
-    Np <- tryCatch(
-      vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
-      error = function (e) {
-        stop(ep,"if ",sQuote("Np")," is a function, ",
-          "it must return a single positive integer.",call.=FALSE)
-      }
-    )
-  } else if (!is.numeric(Np)) {
-    stop(ep,sQuote("Np")," must be a number, a vector of numbers, ",
-      "or a function.",call.=FALSE)
-  }
-
-  if (length(Np) == 1)
-    Np <- rep(Np,times=ntimes+1)
-  else if (length(Np) != (ntimes+1))
-    stop(ep,sQuote("Np")," must have length 1 or length ",ntimes+1,".",call.=FALSE)
-
-  if (!all(is.finite(Np)) || any(Np <= 0))
-    stop(ep,"number of particles, ",sQuote("Np"),
-      ", must be a positive integer.",call.=FALSE)
-  Np <- as.integer(Np)
-  if (is.matrix(params)) {
-    if (!all(Np == ncol(params)))
-      stop(ep,"when ",sQuote("params")," is provided as a matrix, ",
-        "you must not also specify ",sQuote("Np"),".",call.=FALSE)
-  }
-  Np
 }

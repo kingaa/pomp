@@ -29,82 +29,6 @@ setMethod(
   }
 )
 
-pmof.internal <- function (object, params, est, probes,
-  nsim, seed = NULL, fail.value = NA,
-  transform = FALSE, ...)
-{
-
-  ep <- paste0("in ",sQuote("probe.match.objfun"),": ")
-  object <- as(object,"pomp")
-  transform <- as.logical(transform)
-  fail.value <- as.numeric(fail.value)
-  if (missing(est)) est <- character(0)
-  est <- as.character(est)
-  if (missing(nsim)) stop(ep,sQuote("nsim")," must be specified",call.=FALSE)
-  nsim <- as.integer(nsim)
-
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
-  if ((!is.numeric(params))||(is.null(names(params))))
-    stop(ep,sQuote("params")," must be a named numeric vector",call.=FALSE)
-  if (transform)
-    params <- partrans(object,params,dir="toEstimationScale")
-  par.est.idx <- match(est,names(params))
-  if (any(is.na(par.est.idx)))
-    stop(ep,"parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"),call.=FALSE)
-
-  if (missing(probes)) stop(ep,sQuote("probes")," must be supplied",call.=FALSE)
-  if (!is.list(probes)) probes <- list(probes)
-  if (!all(sapply(probes,is.function)))
-    stop(ep,sQuote("probes")," must be a function or a list of functions",call.=FALSE)
-  if (!all(sapply(probes,function(f)length(formals(f))==1)))
-    stop(ep,"each probe must be a function of a single argument",call.=FALSE)
-  ## apply probes to data
-  datval <- tryCatch(
-    .Call(apply_probe_data,object,probes),
-    error = function (e) {
-      stop(ep,"applying probes to actual data: ",conditionMessage(e),call.=FALSE)
-    }
-  )
-
-  function (par) {
-
-    params[par.est.idx] <- par
-
-    if (transform)
-      tparams <- partrans(object,params,dir="fromEstimationScale")
-
-    pompLoad(object)
-
-    ## apply probes to model simulations
-    simval <- tryCatch(
-      .Call(
-        apply_probe_sim,
-        object=object,
-        nsim=nsim,
-        params=if (transform) tparams else params,
-        seed=seed,
-        probes=probes,
-        datval=datval,
-        gnsi=TRUE
-      ),
-      error = function (e) {
-        stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)
-      }
-    )
-
-    pompUnload(object)
-
-    ll <- tryCatch(
-      .Call(synth_loglik,simval,datval),
-      error = function (e) {
-        stop(ep,"in synthetic likelihood computation: ",conditionMessage(e),call.=FALSE)
-      }
-    )
-    if (is.finite(ll)||is.na(fail.value)) -ll else fail.value  # nocov
-  }
-}
-
 setMethod(
   "probe.match.objfun",
   signature=signature(object="pomp"),
@@ -228,9 +152,7 @@ setMethod(
     if (missing(nsim)) nsim <- nrow(object@simvals)
     if (missing(seed)) seed <- object@seed
 
-    f <- selectMethod("probe.match","pomp")
-
-    f(object=object,probes=probes,nsim=nsim,seed=seed,
+    probe.match(as(object,"pomp"),probes=probes,nsim=nsim,seed=seed,
       verbose=verbose,...)
   }
 )
@@ -248,9 +170,82 @@ setMethod(
     if (missing(transform)) transform <- object@transform
     if (missing(fail.value)) fail.value <- object@fail.value
 
-    f <- selectMethod("probe.match","pomp")
-
-    f(object=object,est=est,probes=probes,nsim=nsim,seed=seed,
+    probe.match(as(object,"pomp"),est=est,probes=probes,nsim=nsim,seed=seed,
       transform=transform,fail.value=fail.value,verbose=verbose,...)
   }
 )
+
+pmof.internal <- function (object, params, est, probes, nsim, seed = NULL,
+  fail.value = NA, transform = FALSE, ...)
+{
+
+  ep <- paste0("in ",sQuote("probe.match.objfun"),": ")
+  object <- as(object,"pomp")
+  transform <- as.logical(transform)
+  fail.value <- as.numeric(fail.value)
+  if (missing(est)) est <- character(0)
+  est <- as.character(est)
+  if (missing(nsim)) stop(ep,sQuote("nsim")," must be specified",call.=FALSE)
+  nsim <- as.integer(nsim)
+
+  if (missing(params)) params <- coef(object)
+  if (is.list(params)) params <- unlist(params)
+  if ((!is.numeric(params))||(is.null(names(params))))
+    stop(ep,sQuote("params")," must be a named numeric vector",call.=FALSE)
+  if (transform)
+    params <- partrans(object,params,dir="toEstimationScale")
+  par.est.idx <- match(est,names(params))
+  if (any(is.na(par.est.idx)))
+    stop(ep,"parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"),call.=FALSE)
+
+  if (missing(probes)) stop(ep,sQuote("probes")," must be supplied",call.=FALSE)
+  if (!is.list(probes)) probes <- list(probes)
+  if (!all(sapply(probes,is.function)))
+    stop(ep,sQuote("probes")," must be a function or a list of functions",call.=FALSE)
+  if (!all(sapply(probes,function(f)length(formals(f))==1)))
+    stop(ep,"each probe must be a function of a single argument",call.=FALSE)
+  ## apply probes to data
+  datval <- tryCatch(
+    .Call(apply_probe_data,object,probes),
+    error = function (e) {
+      stop(ep,"applying probes to actual data: ",conditionMessage(e),call.=FALSE)
+    }
+  )
+
+  function (par) {
+
+    params[par.est.idx] <- par
+
+    if (transform)
+      tparams <- partrans(object,params,dir="fromEstimationScale")
+
+    pompLoad(object)
+
+    ## apply probes to model simulations
+    simval <- tryCatch(
+      .Call(
+        apply_probe_sim,
+        object=object,
+        nsim=nsim,
+        params=if (transform) tparams else params,
+        seed=seed,
+        probes=probes,
+        datval=datval,
+        gnsi=TRUE
+      ),
+      error = function (e) {
+        stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)
+      }
+    )
+
+    pompUnload(object)
+
+    ll <- tryCatch(
+      .Call(synth_loglik,simval,datval),
+      error = function (e) {
+        stop(ep,"in synthetic likelihood computation: ",conditionMessage(e),call.=FALSE)
+      }
+    )
+    if (is.finite(ll)||is.na(fail.value)) -ll else fail.value  # nocov
+  }
+}
