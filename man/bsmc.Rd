@@ -70,7 +70,7 @@
 \value{
   An object of class \dQuote{bsmcd_pomp}.
   One can plot the results using the \code{plot} method.
-  \code{plot(x, \dots, pars, thin)}, when \code{x} is a \code{bsmcd_pomp} object, produces density and scatter plots of the prior and posterior distributions.
+  When \code{x} is a \code{bsmcd_pomp} object, \code{plot(x, pars, thin, \dots)},          produces density and scatter plots of the prior and posterior distributions.
   One can restrict to particular parameters by naming them in the \code{pars} argument.
   By default, all the samples are plotted.
   When the number of samples is very large, it can be helpful to plot a subsample:

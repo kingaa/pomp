@@ -1,6 +1,7 @@
 ## helper function to extract a covariance matrix
 
-setMethod("covmat",
+setMethod(
+  "covmat",
   signature=signature(object="pmcmcd_pomp"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
@@ -9,7 +10,8 @@ setMethod("covmat",
       expand=expand)
   })
 
-setMethod("covmat",
+setMethod(
+  "covmat",
   signature=signature(object="pmcmcList"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
@@ -19,7 +21,8 @@ setMethod("covmat",
       expand=expand)
   })
 
-setMethod("covmat",
+setMethod(
+  "covmat",
   signature=signature(object="abcd_pomp"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
@@ -28,7 +31,8 @@ setMethod("covmat",
       expand=expand)
   })
 
-setMethod("covmat",
+setMethod(
+  "covmat",
   signature=signature(object="abcList"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
@@ -38,7 +42,9 @@ setMethod("covmat",
       expand=expand)
   })
 
-setMethod("covmat",signature=signature(object="probed_pomp"),
+setMethod(
+  "covmat",
+  signature=signature(object="probed_pomp"),
   definition=function (object, ...) {
     n <- nrow(object@simvals)
     crossprod(object@simvals)/(n-1)

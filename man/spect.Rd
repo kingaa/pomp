@@ -112,7 +112,6 @@
   A call to \code{spect} results in the estimation of the power spectrum for the (transformed, detrended) data and \code{nsim} model simulations.
   The results of these computations are stored in an object of class \code{\link[=spectd_pomp-class]{spectd_pomp}}.
 
-
   A call to \code{spect.match} results in an attempt to optimize the agreement between model and data spectrum over the parameters named in \code{est}.
   The results, including coefficients of the fitted model and power spectra of fitted model and data, are stored in an object of class \code{\link[=spect_matched_pomp-class]{spect_matched_pomp}}.
 }

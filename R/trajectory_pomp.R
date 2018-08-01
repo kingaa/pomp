@@ -1,8 +1,10 @@
 setMethod(
-  "trajectory",signature=signature(object="pomp"),
+  "trajectory",
+  signature=signature(object="pomp"),
   definition=function (object, params, times, t0, as.data.frame = FALSE, ...,
     verbose = getOption("verbose",FALSE))
-    trajectory.internal(object=object,params=params,times=times,t0=t0,as.data.frame=as.data.frame,...,verbose=verbose)
+    trajectory.internal(object=object,params=params,times=times,t0=t0,
+      as.data.frame=as.data.frame,...,verbose=verbose)
 )
 
 trajectory.internal <- function (object, params, times, t0,

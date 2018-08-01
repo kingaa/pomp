@@ -24,7 +24,7 @@ sqrt(diag(covmat(pb))) -> scale.dat
 ou2 %>%
   abc(Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
     proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))) -> abc1
-plot(abc1,y="bob")
+plot(abc1)
 plot(abc1,scatter=TRUE)
 
 crossprod(

@@ -44,8 +44,6 @@ Error : in 'bsmc2': 'rprior' error: operation cannot be completed: rprior has no
 +              est=c("r","K","sigma"),tol=1e-6,transform=TRUE)
 > 
 > plot(smc,y=NA)
-Warning message:
-in 'plot': 'y' is ignored 
 > plot(smc,pars=c("r","K"),thin=50)
 > try(plot(smc,pars="bob"))
 Error : in 'plot': unrecognized parameters: 'bob'
@@ -122,7 +120,7 @@ Error : in 'bsmc2': 'tol' should be a small positive number.
 > try(bsmc2(smc,est="r",Np=100,max.fail=-1,tol=10))
 Error : in 'bsmc2': too many filtering failures
 > bsmc2(smc,est="r",Np=100,max.fail=Inf,tol=10)
-<object of class 'bsmcd.pomp'>
+<object of class 'bsmcd_pomp'>
 Warning message:
 in 'bsmc2': 10 filtering failures occurred. 
 > try(bsmc2(smc,params=theta,est="r",Np=100,

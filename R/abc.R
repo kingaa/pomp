@@ -1,4 +1,4 @@
-## define the abc class
+## define the abcd_pomp class
 setClass(
   "abcd_pomp",
   contains="pomp",

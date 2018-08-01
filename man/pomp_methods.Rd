@@ -44,7 +44,7 @@
 \S4method{obs}{pomp}(object, vars, \dots)
 \S4method{partrans}{pomp}(object, params,
       dir = c("fromEstimationScale", "toEstimationScale"), \dots)
-\S4method{plot}{pomp}(x, y, variables, panel = lines,
+\S4method{plot}{pomp}(x, variables, panel = lines,
       nc = NULL, yax.flip = FALSE,
       mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
       oma = c(6, 0, 5, 0), axes = TRUE, \dots)
@@ -90,7 +90,6 @@
   \item{start, end}{
     start and end times of the window.
   }
-  \item{y}{ignored.}
   \item{variables}{
     optional character;
     names of variables to plot.

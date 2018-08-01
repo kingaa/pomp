@@ -65,8 +65,8 @@ setMethod(
 
 ## extract the convergence record as a coda::mcmc object
 setMethod(
-  'traces',
-  signature=signature(object='pmcmcd_pomp'),
+  "traces",
+  signature=signature(object="pmcmcd_pomp"),
   function (object, pars, ...) {
     if (missing(pars)) pars <- colnames(object@traces)
     coda::mcmc(object@traces[,pars,drop=FALSE])
@@ -75,8 +75,8 @@ setMethod(
 
 ## extract the convergence records as a coda::mcmc.list object
 setMethod(
-  'traces',
-  signature=signature(object='pmcmcList'),
+  "traces",
+  signature=signature(object="pmcmcList"),
   definition=function (object, ...) {
     coda::mcmc.list(lapply(object,traces,...))
   }
@@ -84,8 +84,8 @@ setMethod(
 
 ## extract the filtered trajectories from a pmcmcd_pomp
 setMethod(
-  'filter.traj',
-  signature=signature(object='pmcmcd_pomp'),
+  "filter.traj",
+  signature=signature(object="pmcmcd_pomp"),
   definition=function (object, ...) {
     filter.traj(as(object,"pfilterd_pomp"),...)
   }
@@ -93,8 +93,8 @@ setMethod(
 
 ## extract the filtered trajectories from a pmcmcList
 setMethod(
-  'filter.traj',
-  signature=signature(object='pmcmcList'),
+  "filter.traj",
+  signature=signature(object="pmcmcList"),
   definition=function (object, ...) {
     lapply(object,filter.traj,...)
   }
@@ -102,12 +102,23 @@ setMethod(
 
 setMethod(
   "plot",
-  signature=signature(x='Pmcmc'),
+  signature=signature(x="Pmcmc"),
   function (x, pars, ...) {
     plot(traces(x,pars),...)
   }
 )
 
 ## extract the estimated log likelihood
-setMethod('logLik','pmcmcd_pomp',function(object,...)object@loglik)
-setMethod('logLik','pmcmcList',function(object,...)sapply(object,slot,"loglik"))
+setMethod(
+  "logLik",
+  signature=signature(object="pmcmcd_pomp"),
+  definition=function (object, ...)
+    object@loglik
+)
+
+setMethod(
+  "logLik",
+  signature=signature(object="pmcmcList"),
+  definition=function (object, ...)
+    sapply(object,slot,"loglik")
+)

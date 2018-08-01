@@ -25,6 +25,16 @@ setAs(
 as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 
 ## parameter transformations
+setMethod(
+  "partrans",
+  signature=signature(object="pomp"),
+  definition=function (object, params,
+    dir = c("fromEstimationScale", "toEstimationScale"), ...) {
+    dir <- match.arg(dir)
+    partrans.internal(object=object,params=params,dir=dir,...)
+  }
+)
+
 partrans.internal <- function (object, params,
   dir = c("fromEstimationScale", "toEstimationScale"),
   .getnativesymbolinfo = TRUE, ...) {
@@ -36,53 +46,38 @@ partrans.internal <- function (object, params,
   rv
 }
 
-setMethod(
-  "partrans",
-  signature=signature(object="pomp"),
-  definition=function (object, params,
-    dir = c("fromEstimationScale", "toEstimationScale"), ...) {
-    dir <- match.arg(dir)
-    partrans.internal(object=object,params=params,dir=dir,...)
-  }
-)
-
-
-obs.internal <- function (object, vars, ...) {
-  varnames <- rownames(object@data)
-  if (missing(vars))
-    vars <- varnames
-  else if (!all(vars%in%varnames))
-    stop("in ",sQuote("obs"),": some elements of ",
-      sQuote("vars")," correspond to no observed variable",call.=FALSE)
-  y <- object@data[vars,,drop=FALSE]
-  dimnames(y) <- list(variable=rownames(y),time=time(object))
-  y
-}
-
 ## a simple method to extract the data array
 setMethod(
   "obs",
   signature=signature(object="pomp"),
-  definition=obs.internal
+  definition=function (object, vars, ...) {
+    varnames <- rownames(object@data)
+    if (missing(vars))
+      vars <- varnames
+    else if (!all(vars%in%varnames))
+      stop("in ",sQuote("obs"),": some elements of ",
+        sQuote("vars")," correspond to no observed variable",call.=FALSE)
+    y <- object@data[vars,,drop=FALSE]
+    dimnames(y) <- list(variable=rownames(y),time=time(object))
+    y
+  }
 )
 
 ## a simple method to extract the array of states
-states.internal <- function (object, vars, ...) {
-  if (length(object@states)==0) {
-    NULL
-  } else {
-    if (missing(vars))
-      vars <- seq(length=nrow(object@states))
-    x <- object@states[vars,,drop=FALSE]
-    dimnames(x) <- list(variable=rownames(x),time=time(object))
-    x
-  }
-}
-
 setMethod(
   "states",
   signature=signature(object="pomp"),
-  definition=states.internal
+  definition=function (object, vars, ...) {
+    if (length(object@states)==0) {
+      NULL
+    } else {
+      if (missing(vars))
+        vars <- seq(length=nrow(object@states))
+      x <- object@states[vars,,drop=FALSE]
+      dimnames(x) <- list(variable=rownames(x),time=time(object))
+      x
+    }
+  }
 )
 
 ## a simple method to extract the vector of times

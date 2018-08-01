@@ -3,6 +3,7 @@
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files
+- replace `\code{class name}` with `\dQuote{class name}` in docs
 
 ## For pomp 2:
 

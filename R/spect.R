@@ -144,9 +144,9 @@ setMethod(
   "spect",
   signature(object="pomp"),
   function (object, params, vars, kernel.width, nsim, seed = NULL,
-            transform.data = identity,
-            detrend = c("none","mean","linear","quadratic"),
-            ...) {
+    transform.data = identity,
+    detrend = c("none","mean","linear","quadratic"),
+    ...) {
 
     ep <- paste0("in ",sQuote("spect"),": ")
 
@@ -224,8 +224,9 @@ setMethod(
 
 setMethod(
   "spect",
-  signature(object="spectd_pomp"),
-  function (object, params, vars, kernel.width, nsim, seed = NULL, transform.data, detrend, ...) {
+  signature=signature(object="spectd_pomp"),
+  definition=function (object, params, vars, kernel.width,
+    nsim, seed = NULL, transform.data, detrend, ...) {
     if (missing(params)) params <- coef(object)
     if (missing(vars)) vars <- colnames(object@datspec)
     if (missing(kernel.width)) kernel.width <- object@kernel.width
@@ -249,18 +250,15 @@ setMethod(
 setMethod(
   "plot",
   "spectd_pomp",
-  function (x, y, max.plots.per.page = 4,
-            plot.data = TRUE,
-            quantiles = c(.025, .25, .5, .75, .975),
-            quantile.styles = list(lwd=1, lty=1, col="gray70"),
-            data.styles = list(lwd=2, lty=2, col="black")) {
+  function (x, max.plots.per.page = 4,
+    plot.data = TRUE,
+    quantiles = c(.025, .25, .5, .75, .975),
+    quantile.styles = list(lwd=1, lty=1, col="gray70"),
+    data.styles = list(lwd=2, lty=2, col="black")) {
 
     ep <- paste0("in ",sQuote("plot-spectd_pomp"),": ")
     spomp <- x
     nquants <- length(quantiles)
-
-    if (!missing(y))
-      warning("in ",sQuote("plot"),": ",sQuote("y")," is ignored",call.=FALSE)
 
     if (is.list(quantile.styles)) {
       for (i in c("lwd", "lty", "col")) {
@@ -270,8 +268,8 @@ setMethod(
           quantile.styles[[i]] <- rep(quantile.styles[[i]],nquants)
         if (length(quantile.styles[[i]])<nquants) {
           warning(ep,sQuote("quantile.styles"),
-                  " contains an element with more than 1 entry but fewer entries than quantiles",
-                  call.=FALSE)
+            " contains an element with more than 1 entry but fewer entries than quantiles",
+            call.=FALSE)
           quantile.styles[[i]]<-rep(quantile.styles[[i]],nquants)
         }
       }
@@ -289,8 +287,8 @@ setMethod(
             data.styles[[i]] <- rep(data.styles[[i]],nreps)
           if(length(data.styles[[i]]) < nreps) {
             warning(ep,sQuote("data.styles"),
-                    "contains an element with more than 1 entry but fewer entries than observed variables",
-                    call.=FALSE)
+              "contains an element with more than 1 entry but fewer entries than observed variables",
+              call.=FALSE)
             data.styles[[i]] <- rep(data.styles[[i]],nreps)
           }
         }

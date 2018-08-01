@@ -105,11 +105,11 @@ attr(,"class")
 > try(plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob"))))
 Error in object@traces[, pars, drop = FALSE] : subscript out of bounds
 > print(mcmc1)
-<object of class 'pomp'>
+<object of class 'pmcmcd_pomp'>
 > c(mcmc1,mcmc2) -> mcl
 > mcl[1]
 [[1]]
-<object of class 'abc'>
+<object of class 'pmcmcd_pomp'>
 
 > mcl[3]
 [[1]]

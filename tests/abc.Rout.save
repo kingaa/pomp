@@ -45,9 +45,7 @@ newly created object(s):
 > ou2 %>%
 +   abc(Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +     proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))) -> abc1
-> plot(abc1,y="bob")
-Warning message:
-in 'plot-abc': 'y' is ignored 
+> plot(abc1)
 > plot(abc1,scatter=TRUE)
 > 
 > crossprod(
@@ -60,8 +58,6 @@ in 'plot-abc': 'y' is ignored
 > abc1 %>% abc(Nabc=80) %>% continue(Nabc=20) -> abc4
 > 
 > plot(c(abc1,abc2,abc3,abc4),y="bob")
-Warning message:
-in 'plot-abc': 'y' is ignored 
 > plot(c(abc1,abc2,abc3,abc4),scatter=TRUE)
 > 
 > c(a=c(abc1,abc2),b=abc3) -> abclist
@@ -183,7 +179,7 @@ Error : 'c' is not defined for objects of mixed class.
 Error : 'c' is not defined for objects of mixed class.
 > c(abc1)
 [[1]]
-<object of class 'abc'>
+<object of class 'abcd_pomp'>
 
 > alist <- c(c(abc1,abc2))
 > class(alist[2])
@@ -197,25 +193,25 @@ NULL
 > alist <- c(a=abc1,b=abc2)
 > alist["b"]
 $b
-<object of class 'abc'>
+<object of class 'abcd_pomp'>
 
 > alist["c"]
 [[1]]
 NULL
 
 > alist[["b"]]
-<object of class 'abc'>
+<object of class 'abcd_pomp'>
 > alist[["c"]]
 NULL
 > c(one=abc1,two=abc2,three=abc3)
 $one
-<object of class 'abc'>
+<object of class 'abcd_pomp'>
 
 $two
-<object of class 'abc'>
+<object of class 'abcd_pomp'>
 
 $three
-<object of class 'abc'>
+<object of class 'abcd_pomp'>
 
 > 
 > capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,

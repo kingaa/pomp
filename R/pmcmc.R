@@ -1,4 +1,4 @@
-## define the pmcmc class
+## define the pmcmcd_pomp class
 setClass(
   "pmcmcd_pomp",
   contains="pfilterd_pomp",

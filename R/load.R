@@ -1,11 +1,13 @@
-setMethod("pompLoad",
-  signature=signature(object='pomp'),
+setMethod(
+  "pompLoad",
+  signature=signature(object="pomp"),
   definition = function (object, ...) {
     pompLoad.internal(object,...)
   })
 
-setMethod("pompUnload",
-  signature=signature(object='pomp'),
+setMethod(
+  "pompUnload",
+  signature=signature(object="pomp"),
   definition = function (object, ...) {
     pompUnload.internal(object,...)
   })

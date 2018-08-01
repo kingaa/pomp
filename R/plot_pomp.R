@@ -1,19 +1,17 @@
-setMethod("plot","pomp",
-  function (x, y, variables,
-    panel = lines,
-    nc = NULL,
-    yax.flip = FALSE,
+setMethod(
+  "plot",
+  signature=signature(x="pomp"),
+  definition=function (x, variables,
+    panel = lines, nc = NULL, yax.flip = FALSE,
     mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
-    oma = c(6, 0, 5, 0),
-    axes = TRUE,
-    ...) {
-    plotpomp.internal(x=x,y=y,variables=variables,
+    oma = c(6, 0, 5, 0), axes = TRUE, ...) {
+    plotpomp.internal(x=x,variables=variables,
       panel=panel,nc=nc,yax.flip=yax.flip,
       mar=mar,oma=oma,axes=axes,...)
   }
 )
 
-plotpomp.internal <- function (x, y, variables,
+plotpomp.internal <- function (x, variables,
   panel = lines, nc = NULL, yax.flip = FALSE,
   mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
   oma = c(6, 0, 5, 0), axes = TRUE, ...) {

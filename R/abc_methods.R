@@ -84,10 +84,16 @@ setMethod(
 
 setMethod(
   "plot",
+  signature=signature(x="abcd_pomp"),
+  definition=function (x, ..., pars, scatter = FALSE) {
+    abc.diagnostics(x,pars=pars,scatter=scatter,...)
+  }
+)
+
+setMethod(
+  "plot",
   signature=signature(x="Abc"),
-  definition=function (x, y, pars, scatter = FALSE, ...) {
-    if (!missing(y))
-      warning("in ",sQuote("plot"),": ",sQuote("y")," is ignored",call.=FALSE)
+  definition=function (x, ..., pars, scatter = FALSE) {
     abc.diagnostics(x,pars=pars,scatter=scatter,...)
   }
 )

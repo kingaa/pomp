@@ -63,23 +63,25 @@ setMethod(
   }
 )
 
-setMethod('traces','mif2d_pomp',
-  function (object, pars, transform = FALSE, ...) {
+setMethod(
+  "traces",
+  signature=signature(object="mif2d_pomp"),
+  definition=function (object, pars, transform = FALSE, ...) {
     traces.internal(object=object,pars=pars,transform=transform,...)
   }
 )
 
 setMethod(
-  'traces',
-  signature=signature(object='mif2List'),
+  "traces",
+  signature=signature(object="mif2List"),
   definition=function (object, ...) {
     lapply(object,traces,...)
   }
 )
 
 setMethod(
-  'coef',
-  signature=signature(object='mif2List'),
+  "coef",
+  signature=signature(object="mif2List"),
   definition=function (object, ...) {
     do.call(rbind,lapply(object,coef,...))
   }
@@ -124,9 +126,7 @@ traces.internal <- function (object, pars, transform = FALSE, ...) {
 setMethod(
   "plot",
   "Mif2",
-  function (x, y, ...) {
-    if (!missing(y))
-      warning("in ",sQuote("plot"),": ",sQuote("y")," is ignored",call.=FALSE)
+  function (x, ...) {
     mif2.diagnostics(x)
   }
 )
@@ -151,15 +151,8 @@ mif2.diagnostics <- function (z) {
 
   time <- time(xx)
   dat <- sapply(z,eff.sample.size)
-  matplot(
-    y=dat,
-    x=time,
-    axes = FALSE,
-    xlab = "",
-    log='y',
-    ylab = "eff. sample size",
-    type = "l"
-  )
+  matplot(y=dat,x=time,axes = FALSE,xlab = "",log="y",
+    ylab = "eff. sample size",type = "l")
   box()
   axis(2, xpd = NA)
   mtext("Filter diagnostics (last iteration)",side=3,line=2,outer=TRUE)

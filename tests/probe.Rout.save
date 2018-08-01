@@ -41,8 +41,6 @@ newly created object(s):
 > 
 > probe(po,probes=plist,nsim=500,seed=595969) -> pb
 > plot(pb,y=NULL)
-Warning message:
-in 'plot-probed.pomp': 'y' is ignored 
 > pb %>% values() %>% head(3)
    mean    sd marg.1    marg.2    marg.3 acf.1.Y acf.3.Y acf.5.Y   25%  75%
 0 1.054 0.127  1.000 -8.97e-17  5.66e-17   0.728   0.547   0.486 0.918 1.30

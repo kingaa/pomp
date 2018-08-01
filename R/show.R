@@ -2,6 +2,7 @@ setClassUnion("unshowable",members=c("pomp","abcd_pomp","bsmcd_pomp",
   "kalmand_pomp","mif2d_pomp","nlfd_pomp","pfilterd_pomp","pmcmcd_pomp",
   "probe_matched_pomp","probed_pomp","spect_matched_pomp","spectd_pomp",
   "traj_matched_pomp"))
+
 setClassUnion("listies",members=c("abcList","mif2List","pmcmcList"))
 
 setMethod(

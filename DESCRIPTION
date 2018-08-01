@@ -29,23 +29,26 @@ License: GPL-3
 LazyData: true
 Contact: kingaa at umich dot edu
 BugReports: https://github.com/kingaa/pomp/issues/
-Collate: aaa.R authors.R generics.R bake.R eulermultinom.R
-	 csnippet.R safecall.R pomp_fun.R plugins.R templates.R builder.R
-	 parmat.R logmeanexp.R slice_design.R
-	 profile_design.R sobol.R bsplines.R sannbox.R
-	 pomp_class.R load.R pomp.R pomp_methods.R
+Collate: aaa.R authors.R generics.R bake.R
+	 csnippet.R safecall.R pomp_fun.R plugins.R 
+	 templates.R builder.R
+	 parmat.R logmeanexp.R bsplines.R eulermultinom.R
+	 slice_design.R profile_design.R sobol.R
+	 pomp_class.R load.R pomp.R pomp_methods.R plot_pomp.R
 	 rmeasure_pomp.R rprocess_pomp.R initstate_pomp.R
 	 dmeasure_pomp.R dprocess_pomp.R skeleton_pomp.R
-	 dprior_pomp.R rprior_pomp.R
-	 simulate_pomp.R trajectory_pomp.R plot_pomp.R
-	 pfilter.R pfilter_methods.R minim.R traj_match.R
+	 dprior_pomp.R rprior_pomp.R trajectory_pomp.R
+	 simulate_pomp.R 
+	 pfilter.R pfilter_methods.R
+	 minim.R sannbox.R
+	 probe.R probe_methods.R probe_match.R basic_probes.R 
 	 bsmc2.R bsmc2_methods.R
 	 kalman.R kalman_methods.R 
 	 mif2.R mif2_methods.R
 	 proposals.R pmcmc.R pmcmc_methods.R
+ 	 abc.R abc_methods.R covmat.R
  	 nlf_funcs.R nlf_guts.R nlf_objfun.R nlf.R
-	 probe.R probe_methods.R probe_match.R basic_probes.R 
 	 spect.R spect_match.R
-	 abc.R abc_methods.R covmat.R
+	 traj_match.R
 	 example.R show.R
 	 deprecated.R

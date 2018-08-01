@@ -18,6 +18,8 @@
 \alias{traces-abcd_pomp}
 \alias{traces,abcList-method}
 \alias{traces-abcList}
+\alias{plot-abcd_pomp}
+\alias{plot,abcd_pomp-method}
 \alias{plot-Abc}
 \alias{plot,Abc-method}
 \alias{c-Abc}
@@ -44,7 +46,6 @@
 \S4method{continue}{abcd_pomp}(object, Nabc = 1, \dots)
 \S4method{traces}{abcd_pomp}(object, pars, \dots)
 \S4method{traces}{abcList}(object, \dots)
-\S4method{plot}{Abc}(x, y, pars, scatter = FALSE, \dots)
 }
 \arguments{
   \item{object}{
@@ -78,13 +79,6 @@
     logical; if TRUE, print progress reports.
   }
   \item{pars}{Names of parameters.}
-  \item{scatter}{
-    optional logical;
-    If \code{TRUE}, draw scatterplots.
-    If \code{FALSE}, draw traceplots.
-  }
-  \item{x}{\code{abc} object.}
-  \item{y}{Ignored, with a warning.}
   \item{\dots}{
     Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
   }
@@ -114,8 +108,8 @@
     \item{c}{
       Concatenates \code{abc} objects into an \code{abcList}.
     }
-    \item{plot}{
-      Diagnostic plots.
+    \item{\code{plot(x, pars, scatter)}}{
+       displays diagnostic plots of the traces of the parameters named in \code{pars} either against ABC iteration number (the default, \code{scatter=FALSE}) or as a scatterplot (\code{scatter = TRUE}).
     }
     \item{\code{covmat(object, start, thin, expand)}}{
       computes the empirical covariance matrix of the ABC samples beginning with iteration \code{start} and thinning by factor \code{thin}.

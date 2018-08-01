@@ -13,55 +13,103 @@ setClass(
   )
 )
 
-spect.mismatch <- function (par, est, object, params,
-                            vars, ker, nsim, seed,
-                            transform.data, detrend, weights,
-                            data.spec, fail.value) {
+setMethod(
+  "spect.match",
+  signature=signature(object="pomp"),
+  definition=function(object, start, est = character(0),
+    vars, nsim, seed = NULL,
+    kernel.width, transform.data,
+    detrend = c("none","mean","linear","quadratic"),
+    weights = 1,
+    method = c("subplex","Nelder-Mead","SANN"),
+    verbose = getOption("verbose"),
+    fail.value = NA, ...) {
+    ep <- paste0("in ",sQuote("spect.match"),": ")
+    if (missing(start)) start <- coef(object)
+    if (missing(vars)) vars <- rownames(object@data)
+    if (missing(nsim)) stop(ep,sQuote("nsim")," must be supplied",call.=FALSE)
+    if (missing(kernel.width)) stop(ep,sQuote("kernel.width")," must be specified",
+      call.=FALSE)
+    if (missing(transform.data)) transform.data <- identity
+    transform.data <- match.fun(transform.data)
+    detrend <- match.arg(detrend)
+    method <- match.arg(method)
 
-  pompLoad(object)
-
-  params[est] <- par
-
-  ## vector of frequencies and estimated power spectum of data
-  freq <- data.spec$freq
-  datval <- data.spec$spec
-
-  ## estimate power spectra of simulations
-  simvals <- compute.spect.sim(
-    object,
-    vars=vars,
-    params=params,
-    nsim=nsim,
-    seed=seed,
-    transform.data=transform.data,
-    detrend=detrend,
-    ker=ker
-  )
-  ## simvals is an nsim x nfreq x nobs array
-
-  ## compute a measure of the discrepancies between simulations and data
-  discrep <- array(dim=c(length(freq),length(vars)))
-  sim.means <- colMeans(simvals)
-  for (j in seq_along(freq)) {
-    for (k in seq_along(vars)) {
-      discrep[j,k] <- ((datval[j,k]-sim.means[j,k])^2)/mean((simvals[,j,k]-sim.means[j,k])^2)
-    }
-    discrep[j,] <- weights[j]*discrep[j,]
+    spect.match.internal(object, start, est, vars, nsim, seed,
+      kernel.width, transform.data, detrend, weights,
+      method, verbose, fail.value, ...)
   }
+)
 
-  if (!all(is.finite(discrep))) {
-    mismatch <- fail.value
-  } else {
-    mismatch <- sum(discrep)
+setMethod(
+  "spect.match",
+  signature=signature(object="spectd_pomp"),
+  definition=function(object, start, est = character(0), vars, nsim,
+    seed = NULL, kernel.width, transform.data,
+    detrend, weights = 1,
+    method = c("subplex","Nelder-Mead","SANN"),
+    verbose = getOption("verbose"), fail.value = NA,
+    ...) {
+    if (missing(start)) start <- object@params
+    if (missing(vars)) vars <- object@vars
+    if (missing(nsim)) nsim <- nrow(object@simspec)
+    if (missing(kernel.width)) kernel.width <- object@kernel.width
+    if (missing(transform.data)) transform.data <- object@transform.data
+    if (missing(detrend)) detrend <- object@detrend
+    method <- match.arg(method)
+    spect.match.internal(object,start=start,est=est,vars=vars,nsim=nsim,
+      seed=seed,kernel.width=kernel.width,
+      transform.data=transform.data,detrend=detrend,
+      weights=weights,method=method,
+      verbose=verbose,fail.value=fail.value,...)
   }
+)
 
-  pompUnload(object)
-  mismatch
-}
+setMethod(
+  "spect.match",
+  signature=signature(object="spect_matched_pomp"),
+  definition=function(object, start, est, vars, nsim, seed = NULL,
+    kernel.width, transform.data, detrend, weights, method,
+    verbose = getOption("verbose"), fail.value,
+    ...) {
+    if (missing(start)) start <- object@params
+    if (missing(est)) est <- object@est
+    if (missing(vars)) vars <- object@vars
+    if (missing(nsim)) nsim <- nrow(object@simspec)
+    if (missing(kernel.width)) kernel.width <- object@kernel.width
+    if (missing(transform.data)) transform.data <- object@transform.data
+    if (missing(detrend)) detrend <- object@detrend
+    if (missing(weights)) weights <- object@weights
+    if (missing(method)) method <- object@method
+    if (missing(fail.value)) fail.value <- object@fail.value
+    spect.match.internal(object,start=start,est=est,vars=vars,nsim=nsim,
+      seed=seed,kernel.width=kernel.width,
+      transform.data=transform.data,detrend=detrend,
+      weights=weights,method=method,
+      verbose=verbose,fail.value=fail.value,...)
+  }
+)
+
+setMethod(
+  "summary",
+  signature=signature(object="spect_matched_pomp"),
+  definition=function (object, ...) {
+    c(
+      summary(as(object,"spectd_pomp")),
+      list(
+        est=object@est,
+        value=object@value,
+        eval=object@evals,
+        convergence=object@convergence
+      ),
+      if(length(object@msg)>0) list(msg=object@msg) else NULL
+    )
+  }
+)
 
 spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
-                                 kernel.width, transform.data, detrend, weights,
-                                 method, verbose, fail.value, ...) {
+  kernel.width, transform.data, detrend, weights,
+  method, verbose, fail.value, ...) {
 
   ep <- paste0("in ",sQuote("spect.match"),": ")
   pompLoad(object,verbose=verbose)
@@ -72,7 +120,7 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
   eval.only <- (length(est)<1) || est=="" || is.na(est)
   if (!eval.only && !all(est %in% names(start)))
     stop(ep,sQuote("est")," must refer to parameters named in ",sQuote("start"),
-         call.=FALSE)
+      call.=FALSE)
   est.index <- which(names(start)%in%est)
 
   vars <- as.character(vars)
@@ -86,24 +134,24 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
   ker <- reuman.kernel(kernel.width)
 
   ds <- compute.spect.data(object,vars=vars,transform.data=transform.data,
-                           detrend=detrend,ker=ker)
+    detrend=detrend,ker=ker)
 
   if (is.numeric(weights)) {
     if (length(weights)==1) weights <- rep(weights,length(ds$freq))
     if ((length(weights)!=length(ds$freq)))
       stop(ep,"if ",sQuote("weights")," is provided as a vector, it must have length ",
-           length(ds$freq),call.=FALSE)
+        length(ds$freq),call.=FALSE)
   } else if (is.function(weights)) {
     weights <- tryCatch(
       vapply(ds$freq,weights,numeric(1)),
       error = function (e) {
         stop(ep,"problem with ",sQuote("weights")," function: ",
-             conditionMessage(e),call.=FALSE)
+          conditionMessage(e),call.=FALSE)
       }
     )
   } else {
     stop(ep,sQuote("weights"),
-         " must be specified as a vector or as a function",call.=FALSE)
+      " must be specified as a vector or as a function",call.=FALSE)
   }
   if (any((!is.finite(weights)) | (weights<0)))
     stop(ep,sQuote("weights")," should be nonnegative and finite",call.=FALSE)
@@ -207,93 +255,48 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
   )
 }
 
-setMethod("spect.match",
-          signature=signature(object="pomp"),
-          definition=function(object, start, est = character(0),
-                              vars, nsim, seed = NULL,
-                              kernel.width, transform.data,
-                              detrend = c("none","mean","linear","quadratic"),
-                              weights = 1,
-                              method = c("subplex","Nelder-Mead","SANN"),
-                              verbose = getOption("verbose"),
-                              fail.value = NA, ...) {
-            ep <- paste0("in ",sQuote("spect.match"),": ")
-            if (missing(start)) start <- coef(object)
-            if (missing(vars)) vars <- rownames(object@data)
-            if (missing(nsim)) stop(ep,sQuote("nsim")," must be supplied",call.=FALSE)
-            if (missing(kernel.width)) stop(ep,sQuote("kernel.width")," must be specified",
-                                            call.=FALSE)
-            if (missing(transform.data)) transform.data <- identity
-            transform.data <- match.fun(transform.data)
-            detrend <- match.arg(detrend)
-            method <- match.arg(method)
+spect.mismatch <- function (par, est, object, params,
+  vars, ker, nsim, seed,
+  transform.data, detrend, weights,
+  data.spec, fail.value) {
 
-            spect.match.internal(object, start, est, vars, nsim, seed,
-                                 kernel.width, transform.data, detrend, weights,
-                                 method, verbose, fail.value, ...)
-          }
-)
+  pompLoad(object)
 
-setMethod("spect.match",
-          signature=signature(object="spectd_pomp"),
-          definition=function(object, start, est = character(0), vars, nsim,
-                              seed = NULL, kernel.width, transform.data,
-                              detrend, weights = 1,
-                              method = c("subplex","Nelder-Mead","SANN"),
-                              verbose = getOption("verbose"), fail.value = NA,
-                              ...) {
-            if (missing(start)) start <- object@params
-            if (missing(vars)) vars <- object@vars
-            if (missing(nsim)) nsim <- nrow(object@simspec)
-            if (missing(kernel.width)) kernel.width <- object@kernel.width
-            if (missing(transform.data)) transform.data <- object@transform.data
-            if (missing(detrend)) detrend <- object@detrend
-            method <- match.arg(method)
-            spect.match.internal(object,start=start,est=est,vars=vars,nsim=nsim,
-                                 seed=seed,kernel.width=kernel.width,
-                                 transform.data=transform.data,detrend=detrend,
-                                 weights=weights,method=method,
-                                 verbose=verbose,fail.value=fail.value,...)
-          }
-)
+  params[est] <- par
 
-setMethod("spect.match",
-          signature=signature(object="spect_matched_pomp"),
-          definition=function(object, start, est, vars, nsim, seed = NULL,
-                              kernel.width, transform.data, detrend, weights, method,
-                              verbose = getOption("verbose"), fail.value,
-                              ...) {
-            if (missing(start)) start <- object@params
-            if (missing(est)) est <- object@est
-            if (missing(vars)) vars <- object@vars
-            if (missing(nsim)) nsim <- nrow(object@simspec)
-            if (missing(kernel.width)) kernel.width <- object@kernel.width
-            if (missing(transform.data)) transform.data <- object@transform.data
-            if (missing(detrend)) detrend <- object@detrend
-            if (missing(weights)) weights <- object@weights
-            if (missing(method)) method <- object@method
-            if (missing(fail.value)) fail.value <- object@fail.value
-            spect.match.internal(object,start=start,est=est,vars=vars,nsim=nsim,
-                                 seed=seed,kernel.width=kernel.width,
-                                 transform.data=transform.data,detrend=detrend,
-                                 weights=weights,method=method,
-                                 verbose=verbose,fail.value=fail.value,...)
-          }
-)
+  ## vector of frequencies and estimated power spectum of data
+  freq <- data.spec$freq
+  datval <- data.spec$spec
 
-setMethod(
-  "summary",
-  signature=signature(object="spect_matched_pomp"),
-  definition=function (object, ...) {
-    c(
-      summary(as(object,"spectd_pomp")),
-      list(
-        est=object@est,
-        value=object@value,
-        eval=object@evals,
-        convergence=object@convergence
-      ),
-      if(length(object@msg)>0) list(msg=object@msg) else NULL
-    )
+  ## estimate power spectra of simulations
+  simvals <- compute.spect.sim(
+    object,
+    vars=vars,
+    params=params,
+    nsim=nsim,
+    seed=seed,
+    transform.data=transform.data,
+    detrend=detrend,
+    ker=ker
+  )
+  ## simvals is an nsim x nfreq x nobs array
+
+  ## compute a measure of the discrepancies between simulations and data
+  discrep <- array(dim=c(length(freq),length(vars)))
+  sim.means <- colMeans(simvals)
+  for (j in seq_along(freq)) {
+    for (k in seq_along(vars)) {
+      discrep[j,k] <- ((datval[j,k]-sim.means[j,k])^2)/mean((simvals[,j,k]-sim.means[j,k])^2)
+    }
+    discrep[j,] <- weights[j]*discrep[j,]
   }
-)
+
+  if (!all(is.finite(discrep))) {
+    mismatch <- fail.value
+  } else {
+    mismatch <- sum(discrep)
+  }
+
+  pompUnload(object)
+  mismatch
+}

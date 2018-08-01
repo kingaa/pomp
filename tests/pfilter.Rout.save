@@ -54,7 +54,7 @@ Error : in 'pfilter': number of particles, 'Np', must be a positive integer.
 > try(pfilter(ou2,Np=c(10,20,30)))
 Error : in 'pfilter': 'Np' must have length 1 or length 101.
 > pfilter(ou2,Np=ceiling(runif(101,min=10,max=100)))
-<object of class 'pfilterd.pomp'>
+<object of class 'pfilterd_pomp'>
 > try(pfilter(ou2,Np=100,tol=NA))
 Error : in 'pfilter': 'tol' should be a small positive number.
 > try(pfilter(ou2,Np=100,tol=-1))

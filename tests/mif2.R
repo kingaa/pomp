@@ -15,7 +15,7 @@ mif2(po,Nmif=50,Np=100,transform=TRUE,cooling.fraction.50=0.5,
   rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf1
 mif2(po,Nmif=50,Np=100,transform=TRUE,cooling.fraction.50=0.5,
   rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf2
-plot(mf1,y=NA)
+plot(mf1)
 plot(c(a=mf1,b=mf2) -> mfl,y=NA)
 c(a=mf1,b=c(mf1,mf2))
 mfl[1]

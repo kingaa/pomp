@@ -45,12 +45,11 @@ setMethod(
   definition=function(object,...)object@synth.loglik
 )
 
-setMethod("plot",
+setMethod(
+  "plot",
   signature=signature(x="probed_pomp"),
-  definition=function (x, y, ...) {
-    if (!missing(y))
-      warning("in ",sQuote("plot"),": ",sQuote("y")," is ignored",call.=FALSE)
-    probeplot.internal(x=x,...)
+  definition=function (x, ...) {
+    probeplot.internal(x,...)
   }
 )
 

@@ -45,29 +45,25 @@ The following objects are masked from 'package:base':
 +   rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf1
 > mif2(po,Nmif=50,Np=100,transform=TRUE,cooling.fraction.50=0.5,
 +   rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf2
-> plot(mf1,y=NA)
-Warning message:
-in 'plot-mif2d.pomp': 'y' is ignored 
+> plot(mf1)
 > plot(c(a=mf1,b=mf2) -> mfl,y=NA)
-Warning message:
-in 'plot-mif2d.pomp': 'y' is ignored 
 > c(a=mf1,b=c(mf1,mf2))
 $a
-<object of class 'mif2d.pomp'>
+<object of class 'mif2d_pomp'>
 
 $b1
-<object of class 'mif2d.pomp'>
+<object of class 'mif2d_pomp'>
 
 $b2
-<object of class 'mif2d.pomp'>
+<object of class 'mif2d_pomp'>
 
 > mfl[1]
 $a
-<object of class 'mif2d.pomp'>
+<object of class 'mif2d_pomp'>
 
 > mfl["b"]
 $b
-<object of class 'mif2d.pomp'>
+<object of class 'mif2d_pomp'>
 
 > mfl[5]
 [[1]]
@@ -129,7 +125,7 @@ Error : in 'mif2': 'Np' must be specified.
 Error : in 'mif2': 'Np' must have length 1 or 'length(time(object))'.
 > try(mif2(po,Nmif=1,Np=c(rep(100,11),40),rw.sd=rw.sd(sigma=0.1),
 +   cooling.frac=0.5))
-<object of class 'mif2d.pomp'>
+<object of class 'mif2d_pomp'>
 Warning message:
 in 'mif2': Np[k] ignored for k > 'length(time(object))'. 
 > try(mif2(po,Nmif=1,Np=100,rw.sd=3))
@@ -174,7 +170,7 @@ in 'mif2': Np[k] ignored for k > 'length(time(object))'.
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 +   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
 +   transform=TRUE,start=as.list(coef(po)),.indices=1:50)
-<object of class 'mif2d.pomp'>
+<object of class 'mif2d_pomp'>
 > try(mif2(po,Nmif=1,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 +   cooling.fraction.50=0.1,.indices=1:30))
 Error : in 'mif2': in 'mif2.pfilter': '.indices' has improper length
@@ -237,7 +233,7 @@ mif2 iteration 1 of 2 completed
 mif2 pfilter timestep 5 of 11 finished
 mif2 pfilter timestep 10 of 11 finished
 mif2 iteration 2 of 2 completed
-<object of class 'mif2d.pomp'>
+<object of class 'mif2d_pomp'>
 Warning messages:
 1: in 'mif2.pfilter': 11 filtering failures occurred. 
 2: in 'mif2.pfilter': 11 filtering failures occurred. 

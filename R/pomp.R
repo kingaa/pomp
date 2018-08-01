@@ -94,7 +94,8 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   )
 }
 
-setMethod("construct_pomp",
+setMethod(
+  "construct_pomp",
   signature=signature(data="data.frame"),
   definition = function (data, times, ...) {
 
@@ -121,7 +122,8 @@ setMethod("construct_pomp",
   }
 )
 
-setMethod("construct_pomp",
+setMethod(
+  "construct_pomp",
   signature=signature(data="array"),
   definition = function (data, times, t0, ...,
     rprocess, dprocess,
@@ -203,7 +205,8 @@ setMethod("construct_pomp",
   }
 )
 
-setMethod("construct_pomp",
+setMethod(
+  "construct_pomp",
   signature=signature(data="pomp"),
   definition = function (
     data, times, t0, ...,
