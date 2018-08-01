@@ -100,16 +100,11 @@ tests/sannbox.R
 
 tests/spect.R
 
-tests/steps.R
-
 tests/synlik.R
 
 tests/trajmatch.R
 
 ### Groups of related functions:
-
-R/parmat.R
-R/logmeanexp.R
 
 R/builder.R
 R/load.R

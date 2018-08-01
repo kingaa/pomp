@@ -1,4 +1,5 @@
 logmeanexp <- function (x, se = FALSE) {
+  se <- isTRUE(se)
   mx <- max(x)
   mean <- mx+log(mean(exp(x-mx)))
   if (se) {

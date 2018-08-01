@@ -1,0 +1,39 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=7)
+> library(pomp)
+> 
+> logmeanexp(rep(10,10),se=TRUE)
+   se 
+10  0 
+> logmeanexp(10^seq(8,10),se=TRUE)
+         se 
+1e+10 6e+09 
+> logmeanexp(c(1.2e-100,1.4e-100,1.8e-100),se=TRUE)
+                         se 
+1.800000e-100 2.666667e-101 
+> logmeanexp(c(1e-200,1.5e-200,1.6e-200))
+[1] 1.6e-200
+> logmeanexp(10^seq(8,10),se=NA)
+[1] 1e+10
+> logmeanexp(10^seq(8,10),se=NULL)
+[1] 1e+10
+> 
+> 
