@@ -34,7 +34,7 @@ Collate: aaa.R authors.R generics.R bake.R
 	 templates.R builder.R
 	 parmat.R logmeanexp.R bsplines.R eulermultinom.R
 	 slice_design.R profile_design.R sobol.R
-	 pomp_class.R load.R pomp.R pomp_methods.R plot_pomp.R
+	 pomp_class.R load.R pomp.R pomp_methods.R
 	 rmeasure_pomp.R rprocess_pomp.R initstate_pomp.R
 	 dmeasure_pomp.R dprocess_pomp.R skeleton_pomp.R
 	 dprior_pomp.R rprior_pomp.R trajectory_pomp.R
@@ -50,5 +50,6 @@ Collate: aaa.R authors.R generics.R bake.R
  	 nlf_funcs.R nlf_guts.R nlf_objfun.R nlf.R
 	 spect.R spect_match.R
 	 traj_match.R
+	 plot_pomp.R
 	 example.R show.R
 	 deprecated.R

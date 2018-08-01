@@ -1,6 +1,8 @@
+setClassUnion("pomp_plottable",c("pomp","pfilterd_pomp"))
+
 setMethod(
   "plot",
-  signature=signature(x="pomp"),
+  signature=signature(x="pomp_plottable"),
   definition=function (x, variables,
     panel = lines, nc = NULL, yax.flip = FALSE,
     mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),

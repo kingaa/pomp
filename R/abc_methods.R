@@ -84,14 +84,6 @@ setMethod(
 
 setMethod(
   "plot",
-  signature=signature(x="abcd_pomp"),
-  definition=function (x, ..., pars, scatter = FALSE) {
-    abc.diagnostics(x,pars=pars,scatter=scatter,...)
-  }
-)
-
-setMethod(
-  "plot",
   signature=signature(x="Abc"),
   definition=function (x, ..., pars, scatter = FALSE) {
     abc.diagnostics(x,pars=pars,scatter=scatter,...)

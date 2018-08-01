@@ -4,6 +4,8 @@
 \alias{pomp-methods}
 \alias{plot,pomp-method}
 \alias{plot-pomp}
+\alias{plot,pomp_plottable-method}
+\alias{plot-pomp_plottable}
 \alias{spy,pomp-method}
 \alias{spy-pomp}
 \alias{time,pomp-method}
