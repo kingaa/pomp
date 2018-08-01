@@ -36,9 +36,13 @@ mcmc3 <- continue(mcmc3,Nmcmc=50)
 
 plot(c(mcmc1,mcmc2,mcmc3),pars=c("r","sigma"),density=FALSE)
 plot(c(mcmc1,c(mcmc2,mcmc3)),pars=c("r","sigma"),trace=FALSE)
+window(traces(c(c(mcmc1,c(mcmc2,mcmc3)))),thin=50)
 plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","sigma")))
+try(plot(traces(c(c(mcmc1,mcmc2),mcmc3),c("r","bob"))))
 print(mcmc1)
-c(mcmc1,mcmc2)
+c(mcmc1,mcmc2) -> mcl
+mcl[1]
+mcl[3]
 
 try(pmcmc())
 try(pmcmc("bob"))

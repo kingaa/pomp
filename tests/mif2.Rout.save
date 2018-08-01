@@ -69,6 +69,10 @@ $a
 $b
 <object of class 'mif2d.pomp'>
 
+> mfl[5]
+[[1]]
+NULL
+
 > traces(mfl) %>% melt() %>%
 +   filter(variable %in% c("sigma","K","r")) %>%
 +   group_by(L1,variable) %>%

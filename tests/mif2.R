@@ -20,6 +20,7 @@ plot(c(a=mf1,b=mf2) -> mfl,y=NA)
 c(a=mf1,b=c(mf1,mf2))
 mfl[1]
 mfl["b"]
+mfl[5]
 traces(mfl) %>% melt() %>%
   filter(variable %in% c("sigma","K","r")) %>%
   group_by(L1,variable) %>%
