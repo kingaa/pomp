@@ -22,10 +22,6 @@
 \alias{plot,Abc-method}
 \alias{c-Abc}
 \alias{c,Abc-method}
-\alias{show,abcd_pomp-method}
-\alias{show-abcd_pomp}
-\alias{show,abcList-method}
-\alias{show-abcList}
 \alias{covmat}
 \alias{covmat,abcd_pomp-method}
 \alias{covmat-abcd_pomp}

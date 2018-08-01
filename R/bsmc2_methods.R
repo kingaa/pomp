@@ -31,20 +31,12 @@ setMethod("posterior_samples",
           })
 
 setMethod(
-  "show",
-  signature=signature(object="bsmcd_pomp"),
-  definition=function (object) {
-    cat("<object of class ",sQuote("bsmcd_pomp"),">\n",sep="")
-    invisible(NULL)
-  }
-)
-
-setMethod(
   "plot",
   signature(x="bsmcd_pomp"),
   function (x, y, ..., pars, thin) {
     ep <- paste0("in ",sQuote("plot"),": ")
-    if (!missing(y)) warning(ep,sQuote("y")," is ignored",call.=FALSE)
+    if (!missing(y))
+      warning("in ",sQuote("plot"),": ",sQuote("y")," is ignored",call.=FALSE)
     if (missing(pars)) pars <- x@est
     pars <- as.character(pars)
     if (length(pars)<1) stop(ep,"no parameters to plot.",call.=FALSE)

@@ -83,25 +83,6 @@ setMethod(
 )
 
 setMethod(
-  "show",
-  signature=signature(object="abcd_pomp"),
-  definition=function (object) {
-    cat("<object of class ",sQuote("abcd_pomp"),">\n",sep="")
-    invisible(NULL)
-  }
-)
-
-setMethod(
-  "show",
-  signature=signature(object="abcList"),
-  definition=function (object) {
-    y <- as(object,"list")
-    names(y) <- names(object)
-    show(y)
-  }
-)
-
-setMethod(
   "plot",
   signature=signature(x="Abc"),
   definition=function (x, y, pars, scatter = FALSE, ...) {

@@ -24,10 +24,6 @@
 \alias{filter.traj,pmcmcList-method}
 \alias{filter.traj-pmcmcd_pomp}
 \alias{filter.traj-pmcmcList}
-\alias{show,pmcmcd_pomp-method}
-\alias{show-pmcmcd_pomp}
-\alias{show,pmcmcList-method}
-\alias{show-pmcmcList}
 \alias{plot-Pmcmc}
 \alias{plot,Pmcmc-method}
 \alias{covmat,pmcmcd_pomp-method}

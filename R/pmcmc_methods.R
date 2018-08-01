@@ -108,25 +108,6 @@ setMethod(
   }
 )
 
-setMethod(
-  "show",
-  signature=signature(object="pmcmcd_pomp"),
-  definition=function (object) {
-    cat("<object of class ",sQuote("abc"),">\n",sep="")
-    invisible(NULL)
-  }
-)
-
-setMethod(
-  "show",
-  signature=signature(object="pmcmcList"),
-  definition=function (object) {
-    y <- as(object,"list")
-    names(y) <- names(object)
-    show(y)
-  }
-)
-
 ## extract the estimated log likelihood
 setMethod('logLik','pmcmcd_pomp',function(object,...)object@loglik)
 setMethod('logLik','pmcmcList',function(object,...)sapply(object,slot,"loglik"))

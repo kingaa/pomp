@@ -47,5 +47,5 @@ Collate: aaa.R authors.R generics.R bake.R eulermultinom.R
 	 probe.R probe_methods.R probe_match.R basic_probes.R 
 	 spect.R spect_match.R
 	 abc.R abc_methods.R covmat.R
-	 example.R
+	 example.R show.R
 	 deprecated.R

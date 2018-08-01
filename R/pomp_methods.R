@@ -263,24 +263,6 @@ setMethod(
 )
 
 setMethod(
-  "print",
-  signature=signature(x="pomp"),
-  definition=function (x, ...) {
-    cat("<object of class ",sQuote("pomp"),">\n",sep="")
-    invisible(x)
-  }
-)
-
-setMethod(
-  "show",
-  signature=signature(object="pomp"),
-  definition=function (object) {
-    cat("<object of class ",sQuote("pomp"),">\n",sep="")
-    invisible(NULL)
-  }
-)
-
-setMethod(
   "spy",
   signature=signature(object="pomp"),
   definition=function (object) {

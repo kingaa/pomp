@@ -259,7 +259,8 @@ setMethod(
     spomp <- x
     nquants <- length(quantiles)
 
-    if (!missing(y)) warning(ep,sQuote("y")," is ignored",call.=FALSE)
+    if (!missing(y))
+      warning("in ",sQuote("plot"),": ",sQuote("y")," is ignored",call.=FALSE)
 
     if (is.list(quantile.styles)) {
       for (i in c("lwd", "lty", "col")) {

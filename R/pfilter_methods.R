@@ -18,15 +18,6 @@ setMethod(
   definition=function(object,...)object@cond.loglik
 )
 
-setMethod(
-  "show",
-  signature=signature(object="pfilterd_pomp"),
-  definition=function (object) {
-    cat("<object of class ",sQuote("pfilterd_pomp"),">\n",sep="")
-    invisible(NULL)
-  }
-)
-
 ## 'coerce' method: allows for coercion of a 'pomp' object to a data-frame
 setAs(
   from="pfilterd_pomp",

@@ -122,31 +122,11 @@ traces.internal <- function (object, pars, transform = FALSE, ...) {
 }
 
 setMethod(
-  "show",
-  signature=signature(object="mif2d_pomp"),
-  definition=function (object) {
-    cat("<object of class ",sQuote("mif2d_pomp"),">\n",sep="")
-    invisible(NULL)
-  }
-)
-
-setMethod(
-  "show",
-  signature=signature(object="mif2List"),
-  definition=function (object) {
-    y <- as(object,"list")
-    names(y) <- names(object)
-    show(y)
-  }
-)
-
-setMethod(
   "plot",
   "Mif2",
   function (x, y, ...) {
     if (!missing(y))
-      warning("in ",sQuote("plot"),": ",
-        sQuote("y")," is ignored",call.=FALSE)
+      warning("in ",sQuote("plot"),": ",sQuote("y")," is ignored",call.=FALSE)
     mif2.diagnostics(x)
   }
 )

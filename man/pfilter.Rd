@@ -33,8 +33,6 @@
 \alias{as,pfilterd_pomp-method}
 \alias{as.data.frame.pfilterd_pomp}
 \alias{coerce,pfilterd_pomp,data.frame-method}
-\alias{show,pfilterd_pomp-method}
-\alias{show-pfilterd_pomp}
 \description{
   A plain vanilla sequential Monte Carlo (particle filter) algorithm.
   Resampling is performed at each observation.

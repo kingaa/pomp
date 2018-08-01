@@ -12,8 +12,6 @@
 \alias{posterior_samples}
 \alias{posterior_samples,bsmcd_pomp-method}
 \alias{posterior_samples-bsmcd_pomp}
-\alias{show,bsmcd_pomp-method}
-\alias{show-bsmcd_pomp}
 \alias{plot,bsmcd_pomp-method}
 \alias{plot-bsmcd_pomp}
 \alias{logEvidence}

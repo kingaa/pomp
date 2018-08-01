@@ -20,10 +20,6 @@
 \alias{traces-mif2List}
 \alias{coef,mif2List-method}
 \alias{coef.rec-mif2List}
-\alias{show,mif2d_pomp-method}
-\alias{show-mif2d_pomp}
-\alias{show,mif2List-method}
-\alias{show-mif2List}
 \alias{plot-Mif2}
 \alias{plot,Mif2-method}
 \alias{c-Mif2}

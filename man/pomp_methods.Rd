@@ -4,10 +4,6 @@
 \alias{pomp-methods}
 \alias{plot,pomp-method}
 \alias{plot-pomp}
-\alias{print,pomp-method}
-\alias{print-pomp}
-\alias{show,pomp-method}
-\alias{show-pomp}
 \alias{spy,pomp-method}
 \alias{spy-pomp}
 \alias{time,pomp-method}
@@ -52,8 +48,6 @@
       nc = NULL, yax.flip = FALSE,
       mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
       oma = c(6, 0, 5, 0), axes = TRUE, \dots)
-\S4method{print}{pomp}(x, \dots)
-\S4method{show}{pomp}(object)
 \S4method{spy}{pomp}(object)
 \S4method{states}{pomp}(object, vars, \dots)
 \S4method{time}{pomp}(x, t0 = FALSE, \dots)
@@ -61,7 +55,6 @@
 \S4method{timezero}{pomp}(object, \dots)
 \S4method{timezero}{pomp}(object, \dots) <- value
 \S4method{window}{pomp}(x, start, end, \dots)
-\S4method{as}{pomp}(object, class)
 }
 \arguments{
   \item{object, x}{The \code{pomp} object.}
@@ -96,10 +89,6 @@
   }
   \item{start, end}{
     start and end times of the window.
-  }
-  \item{class}{
-    character;
-    name of the class to which \code{object} should be coerced.
   }
   \item{y}{ignored.}
   \item{variables}{
