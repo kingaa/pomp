@@ -3,7 +3,7 @@
 \docType{data}
 \title{Two-dimensional discrete-time Ornstein-Uhlenbeck process}
 \description{
-  \code{ou2} is a \code{pomp} object encoding a bivariate discrete-time Ornstein-Uhlenbeck process.
+  \code{ou2} is a \sQuote{pomp} object encoding a bivariate discrete-time Ornstein-Uhlenbeck process.
 }
 \details{
   If the state process is \eqn{X(t) = (x_{1}(t),x_{2}(t))}, then

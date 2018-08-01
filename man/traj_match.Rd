@@ -36,7 +36,7 @@
 }
 \arguments{
   \item{object}{
-    A \code{\link{pomp}} object.
+    A \sQuote{\link{pomp}} object.
     If \code{object} has no \code{skeleton} slot, an error will be generated.
   }
   \item{start}{
@@ -76,7 +76,7 @@
   For any value of the model parameters, this objective function is calculated by
   \enumerate{
     \item computing the deterministic trajectory of the model given the parameters.
-    This is the trajectory returned by \code{\link{trajectory}}, which relies on the model's deterministic skeleton as specified in the construction of the \code{pomp} object \code{object}.
+    This is the trajectory returned by \code{\link{trajectory}}, which relies on the model's deterministic skeleton as specified in the construction of the \sQuote{pomp} object \code{object}.
     \item evaluating the negative log likelihood of the data under the measurement model given the deterministic trajectory and the model parameters.
     This is accomplished via the model's \code{dmeasure} slot.
     The negative log likelihood is the objective function's value.
@@ -86,28 +86,8 @@
   Specifically, \code{traj.match.objfun} will return a function that takes a single numeric-vector argument that is assumed to cotain the parameters named in \code{est}, in that order.
 }
 \value{
-  \code{traj.match} returns an object of class \code{traj_matched_pomp}.
-  This class inherits from class \code{\link[=pomp-class]{pomp}} and contains the following additional slots:
-  \describe{
-    \item{transform, est}{
-      the values of these arguments on the call to \code{traj.match}.
-    }
-    \item{evals}{
-      number of function and gradient evaluations by the optimizer.
-      See \code{\link{optim}}.
-    }
-    \item{value}{
-      value of the objective function.
-      Larger values indicate better fit (i.e., \code{traj.match} attempts to maximize this quantity.
-    }
-    \item{convergence, msg}{
-      convergence code and message from the optimizer.
-      See \code{\link{optim}}.
-    }
-  }
-
-  Available methods for objects of this type include \code{summary} and \code{logLik}.
-  The other slots of this object can be accessed via the \code{$} operator.
+  \code{traj.match} returns an object of class \sQuote{traj_matched_pomp}.
+  Available methods for objects of this class include \code{summary} and \code{logLik}.
 
   \code{traj.match.objfun} returns a function suitable for use as an objective function in an \code{\link{optim}}-like optimizer.
 }

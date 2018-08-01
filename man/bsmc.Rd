@@ -32,7 +32,7 @@
 }
 \arguments{
   \item{object}{
-    An object of class \code{pomp} or inheriting class \code{pomp}.
+    An object of class \sQuote{pomp} or inheriting class \sQuote{pomp}.
   }
   \item{params, Np}{
     Specifications for the prior distribution of particles.
@@ -68,9 +68,9 @@
   }
 }
 \value{
-  An object of class \dQuote{bsmcd_pomp}.
+  An object of class \sQuote{bsmcd_pomp}.
   One can plot the results using the \code{plot} method.
-  When \code{x} is a \code{bsmcd_pomp} object, \code{plot(x, pars, thin, \dots)},          produces density and scatter plots of the prior and posterior distributions.
+  When \code{x} is a \sQuote{bsmcd_pomp} object, \code{plot(x, pars, thin, \dots)},          produces density and scatter plots of the prior and posterior distributions.
   One can restrict to particular parameters by naming them in the \code{pars} argument.
   By default, all the samples are plotted.
   When the number of samples is very large, it can be helpful to plot a subsample:

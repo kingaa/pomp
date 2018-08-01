@@ -53,7 +53,7 @@
 }
 \arguments{
   \item{object}{
-    An object of class \code{pomp} or inheriting class \code{pomp}.
+    An object of class \sQuote{pomp} or inheriting class \sQuote{pomp}.
   }
   \item{params}{
     optional named numeric vector containing the parameters at which the filtering should be performed.
@@ -68,7 +68,7 @@
     \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
     and so on, while when \code{T=length(time(object,t0=TRUE))},
     \code{Np(T)} is the number of particles to sample at the end of the time-series.
-    When \code{object} is of class \code{mif}, this is by default the same number of particles used in the \code{mif} iterations.
+    When \code{object} is of class \sQuote{mif}, this is by default the same number of particles used in the \code{mif} iterations.
 
     One should omit \code{Np} if \code{params} is a matrix of parameters, with one column for each particle.
     In this case, obviously, the number of particles is \code{ncol(params)}.
@@ -96,8 +96,8 @@
   }
   \item{save.states, save.params}{
     logical.
-    If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \code{\link[=pfilterd_pomp-class]{pfilterd_pomp}} object.
-    If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \code{\link[=pfilterd_pomp-class]{pfilterd_pomp}} object.
+    If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \sQuote{pfilterd_pomp} object.
+    If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \sQuote{pfilterd_pomp} object.
   }
   \item{verbose}{
     logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.
@@ -109,8 +109,8 @@
   }
 }
 \value{
-  An object of class \code{pfilterd_pomp}.
-  This class inherits from class \code{\link[=pomp-class]{pomp}}.
+  An object of class \sQuote{pfilterd_pomp}.
+  This class inherits from class \sQuote{pomp}.
   The following additional slots can be accessed via the \code{$} operator:
   \describe{
     \item{saved.states}{

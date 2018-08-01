@@ -32,7 +32,7 @@
 }
 \arguments{
   \item{object}{
-    A \code{pomp} object, with the data and model to fit to it.
+    A \sQuote{pomp} object, with the data and model to fit to it.
   }
   \item{start}{
     Named numeric vector with guessed parameters.
@@ -111,9 +111,9 @@
   This runs an optimizer to maximize \code{nlf.objfun}.
 }
 \value{
-  An object of class \code{nlfd_pomp}.
+  An object of class \sQuote{nlfd_pomp}.
   \code{logLik} applied to such an object returns the log quasi likelihood.
-  The \code{$} method allows extraction of arbitrary slots from the \code{nlfd_pomp} object.
+  The \code{$} method allows extraction of arbitrary slots from the \sQuote{nlfd_pomp} object.
 }
 \references{
   The following papers describe and motivate the NLF approach to model fitting:

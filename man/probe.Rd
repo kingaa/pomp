@@ -80,7 +80,7 @@
 }
 \arguments{
   \item{object}{
-    An object of class \code{pomp}.
+    An object of class \sQuote{pomp}.
   }
   \item{probes}{
     A single probe or a list of one or more probes.
@@ -132,21 +132,21 @@
 \details{
   A call to \code{probe} results in the evaluation of the probe(s) in \code{probes} on the data.
   Additionally, \code{nsim} simulated data sets are generated (via a call to \code{\link[=simulate-pomp]{simulate}}) and the probe(s) are applied to each of these.
-  The results of the probe computations on real and simulated data are stored in an object of class \code{probed_pomp}.
+  The results of the probe computations on real and simulated data are stored in an object of class \sQuote{probed_pomp}.
 
   A call to \code{probe.match} results in an attempt to optimize the agreement between model and data, as measured by the specified probes, over the parameters named in \code{est}.
-  The results, including coefficients of the fitted model and values of the probes for data and fitted-model simulations, are stored in an object of class \code{probe_matched_pomp}.
+  The results, including coefficients of the fitted model and values of the probes for data and fitted-model simulations, are stored in an object of class \sQuote{probe_matched_pomp}.
 
   The objective function minimized by \code{probe.match}---in a form suitable for use with \code{\link{optim}}-like optimizers---is created by a call to \code{probe.match.objfun}.
   Specifically, \code{probe.match.objfun} will return a function that takes a single numeric-vector argument that is assumed to cotain the parameters named in \code{est}, in that order.
   This function will return the negative synthetic log likelihood for the probes specified.
 }
 \value{
-  \code{probe} returns an object of class \code{probed_pomp}, which is derived from the \code{pomp} class and contains additional information about the \code{probe} calculation.
+  \code{probe} returns an object of class \sQuote{probed_pomp}, which is derived from the \sQuote{pomp} class and contains additional information about the \code{probe} calculation.
 
   This information can be summarized via a call to \code{summary} and displayed graphically via a call to \code{plot}.
 
-  \code{probe.match} returns an object of class \code{probe_matched_pomp}, which is derived from class \code{probed_pomp}.
+  \code{probe.match} returns an object of class \sQuote{probe_matched_pomp}, which is derived from class \sQuote{probed_pomp}.
   It therefore contains the information described above as well as information on the convergence of the optimization algorithm.
   This can be displayed via a call to \code{summary}.
 

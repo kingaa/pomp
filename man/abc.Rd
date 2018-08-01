@@ -49,7 +49,7 @@
 }
 \arguments{
   \item{object}{
-    An object of class \dQuote{pomp}.
+    An object of class \sQuote{pomp}.
   }
   \item{Nabc}{
     The number of ABC iterations to perform.
@@ -84,11 +84,11 @@
   }
 }
 \section{Running ABC}{
-  \code{abc} returns an object of class \dQuote{abcd_pomp}.
-  One or more \code{abc} objects can be joined to form an \code{abcList} object.
+  \code{abc} returns an object of class \sQuote{abcd_pomp}.
+  One or more \sQuote{abcd_pomp} objects can be joined to form an \sQuote{abcList} object.
 }
 \section{Re-running ABC iterations}{
-  To re-run a sequence of ABC iterations, one can use the \code{abc} method on a \code{abc} object.
+  To re-run a sequence of ABC iterations, one can use the \code{abc} method on a \sQuote{abcd_pomp} object.
   By default, the same parameters used for the original ABC run are re-used (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
   If one does specify additional arguments, these will override the defaults.
 }
@@ -99,14 +99,14 @@
   Additional arguments will override the defaults.
 }
 \section{Methods}{
-  Methods that can be used to manipulate, display, or extract information from an \code{abc} object:
+  Methods that can be used to manipulate, display, or extract information from an \sQuote{abc} object:
   \describe{
     \item{\code{traces(object, pars)} }{
-      returns the history of the ABC iterations as an object of class \dQuote{\link[coda]{mcmc}} or \dQuote{\link[coda]{mcmc.list}}.
+      returns the history of the ABC iterations as an object of class \sQuote{\link[coda]{mcmc}} or \sQuote{\link[coda]{mcmc.list}}.
       Thus, it can be used as input for the various \pkg{coda} convergence diagnostics.
     }
     \item{c}{
-      Concatenates \code{abc} objects into an \code{abcList}.
+      Concatenates \sQuote{abcd_pomp} objects into an \code{abcList}.
     }
     \item{\code{plot(x, pars, scatter)}}{
        displays diagnostic plots of the traces of the parameters named in \code{pars} either against ABC iteration number (the default, \code{scatter=FALSE}) or as a scatterplot (\code{scatter = TRUE}).

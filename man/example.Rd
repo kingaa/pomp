@@ -4,7 +4,7 @@
 \alias{Example pomp models}
 \alias{pompExample}
 \description{
-  \code{pompExample} loads pre-built example \code{pomp} objects.
+  \code{pompExample} loads pre-built example \sQuote{pomp} objects.
 }
 \usage{
 pompExample(example, \dots, show = FALSE, envir = .GlobalEnv)
@@ -30,7 +30,7 @@ pompExample(example, \dots, show = FALSE, envir = .GlobalEnv)
   If found, this file will be \code{source}d in a temporary environment.
   Additional arguments to \code{pompExample} define variables within this environment and will therefore be available when the code in \file{<example>.R} is \code{source}d.
 
-  The codes that construct these \code{pomp} objects can be found in the \file{examples} directory in the installed package.
+  The codes that construct these \sQuote{pomp} objects can be found in the \file{examples} directory in the installed package.
   Do \code{system.file("examples",package="pomp"))} to find this directory.
 }
 \value{

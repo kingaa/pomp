@@ -3,7 +3,7 @@
 \docType{data}
 \title{Ricker model with Poisson observations.}
 \description{
-  \code{ricker} is a \code{pomp} object encoding a stochastic Ricker model with Poisson measurement error.
+  \code{ricker} is a \sQuote{pomp} object encoding a stochastic Ricker model with Poisson measurement error.
 }
 \details{
   The state process is \eqn{N_{t+1} = r N_{t} \exp(-c N_{t}+e_{t})}{N[t+1] = r N[t] exp(-c N[t]+e[t])}, where the \eqn{e_t}{e[t]} are i.i.d. normal random deviates with zero mean and variance \eqn{\sigma^2}{sigma^2}.

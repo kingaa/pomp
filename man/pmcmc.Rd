@@ -48,7 +48,7 @@
 }
 \arguments{
   \item{object}{
-    An object of class \dQuote{pomp}.
+    An object of class \sQuote{pomp}.
   }
   \item{Nmcmc}{
     The number of PMCMC iterations to perform.
@@ -84,10 +84,10 @@
  }
 }
 \value{
-  An object of class \dQuote{pmcmcd_pomp}.
+  An object of class \sQuote{pmcmcd_pomp}.
 }
 \section{Re-running PMCMC Iterations}{
-  To re-run a sequence of PMCMC iterations, one can use the \code{pmcmc} method on a \code{pmcmc} object.
+  To re-run a sequence of PMCMC iterations, one can use the \code{pmcmc} method on a \sQuote{pmcmc} object.
   By default, the same parameters used for the original PMCMC run are re-used (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
   If one does specify additional arguments, these will override the defaults.
 }
@@ -106,14 +106,14 @@
 \section{Methods}{
   \describe{
     \item{c}{
-      Concatenates \code{pmcmc} objects into a \code{pmcmcList}.
+      Concatenates \sQuote{pmcmc} objects into a \code{pmcmcList}.
     }
     \item{\code{traces(object, pars)}}{
-      returns the history of the MCMC iterations as an object of class \dQuote{\link[coda]{mcmc}} or \dQuote{\link[coda]{mcmc.list}}.
+      returns the history of the MCMC iterations as an object of class \sQuote{\link[coda]{mcmc}} or \sQuote{\link[coda]{mcmc.list}}.
       Thus, it can be used as input for the various \pkg{coda} convergence diagnostics.
     }
     \item{\code{filter.traj(object, vars)}}{
-      returns filter trajectories from a \code{pmcmc} or \code{pmcmcList} object.
+      returns filter trajectories from a \code{pmcmc} or \sQuote{pmcmcList} object.
     }
     \item{plot}{
       Diagnostic plots.

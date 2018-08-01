@@ -50,7 +50,7 @@ rw.sd(\dots)
 }
 \arguments{
   \item{object}{
-    An object of class \code{pomp}.
+    An object of class \sQuote{pomp}.
   }
   \item{Nmif}{
     The number of filtering iterations to perform.
@@ -104,8 +104,8 @@ rw.sd(\dots)
   \item{pars}{names of parameters.}
 }
 \value{
-  Upon successful completion, \code{mif2} returns an object of class \code{mif2d_pomp}.
-  This class inherits from the \code{\link{pfilterd_pomp}} and \code{\link{pomp}} classes.
+  Upon successful completion, \code{mif2} returns an object of class \sQuote{mif2d_pomp}.
+  This class inherits from the \sQuote{\link{pfilterd_pomp}} and \sQuote{\link{pomp}} classes.
 }
 \section{Specifying the perturbations: the \code{rw.sd} function}{
   This function simply returns a list containing its arguments as unevaluated expressions.
@@ -134,7 +134,7 @@ rw.sd(\dots)
   Thus, in either case, the perturbations at the end of 50 IF2 iterations are a fraction \eqn{\alpha}{alpha} smaller than they are at first.
 }
 \section{Re-running \code{mif2} Iterations}{
-  To re-run a sequence of \code{mif2} iterations, one can use the \code{mif2} method on a \code{mif2d_pomp} object.
+  To re-run a sequence of \code{mif2} iterations, one can use the \code{mif2} method on a \sQuote{mif2d_pomp} object.
   By default, the same parameters used for the original \code{mif2} run are re-used (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
   If one does specify additional arguments, these will override the defaults.
 }
@@ -145,7 +145,7 @@ rw.sd(\dots)
   Additional arguments will override these defaults.
 }
 \section{Methods}{
-  Methods that can be used to manipulate, display, or extract information from a \code{mif2d_pomp} object:
+  Methods that can be used to manipulate, display, or extract information from a \sQuote{mif2d_pomp} object:
   \describe{
     \item{traces}{
       \code{traces(object, pars, transform)} returns the history of the IF2 iterations as a matrix, which can be useful for diagnostic purposes.
@@ -158,10 +158,10 @@ rw.sd(\dots)
       To obtain the latter, one must run \code{pfilter} on the result of the \code{mif2} computation.
     }
     \item{c}{
-      Concatenates \code{mif2d_pomp} objects into a \code{mif2List}.
+      Concatenates \sQuote{mif2d_pomp} objects into a \code{mif2List}.
     }
     \item{plot}{
-      Plots a series of diagnostic plots when applied to a \code{mif2d_pomp} or \code{mif2List} object.
+      Plots a series of diagnostic plots when applied to a \code{mif2d_pomp} or \sQuote{mif2List} object.
     }
   }
 }

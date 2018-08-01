@@ -5,7 +5,7 @@
 \docType{data}
 \title{Model for Nicholson's blowflies.}
 \description{
-  \code{blowflies1} and \code{blowflies2} are \code{pomp} objects encoding stochastic delay-difference models.
+  \code{blowflies1} and \code{blowflies2} are \sQuote{pomp} objects encoding stochastic delay-difference models.
 }
 \examples{
 pompExample(blowflies)

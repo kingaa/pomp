@@ -11,7 +11,7 @@
   The package is both a set of tools for data analysis and a platform upon which statistical inference methods for \acronym{POMP} models can be implemented.
 }
 \section{Data analysis using \pkg{pomp}}{
-  The first step in using \pkg{pomp} is to encode one's model(s) and data in objects of class \code{pomp}.
+  The first step in using \pkg{pomp} is to encode one's model(s) and data in objects of class \sQuote{pomp}.
   One does this via a call to \link[=pomp]{pomp constructor function}.
   Details on this are given in the documentation (\code{\link{pomp}}).
 
@@ -51,7 +51,7 @@
   Please do read the \href{https://kingaa.github.io/pomp/FAQ.html#how-can-i-submit-an-effective-request-for-help}{FAQ} before reporting an issue.
 }
 \section{Documentation}{
-  A number of tutorials, demonstrating the construction of \code{pomp} objects and the application of various inference algorithms, are available on the \href{https://kingaa.github.io/pomp/docs.html}{package webpage}.
+  A number of tutorials, demonstrating the construction of \sQuote{pomp} objects and the application of various inference algorithms, are available on the \href{https://kingaa.github.io/pomp/docs.html}{package webpage}.
   Examples are given in the tutorials on the \href{https://kingaa.github.io/pomp}{package website}, in the demos, and via the \code{\link{pompExample}} function.
   See a list of the demos via \preformatted{
     demo(package="pomp")}

@@ -13,10 +13,10 @@
 \alias{pomp_fun,pomp_fun-method}
 \alias{pomp_fun,Csnippet-method}
 \title{Definition and methods of the "pomp_fun" class}
-\description{Definition and methods of the \code{pomp_fun} class}
+\description{Definition and methods of the \sQuote{pomp_fun} class}
 \usage{
 \S4method{pomp_fun}{function}(f, proto = NULL, \dots)
-\S4method{pomp_fun}{character}(f, PACKAGE = NULL, 
+\S4method{pomp_fun}{character}(f, PACKAGE = NULL,
       obsnames = character(0), statenames = character(0),
       paramnames = character(0), covarnames = character(0), \dots)
 \S4method{pomp_fun}{Csnippet}(f, slotname = NULL, libname = NULL,
@@ -36,10 +36,10 @@
   \item{proto}{
     optional string; a prototype against which \code{f} will be checked.
   }
-  \item{object, x}{The \code{pomp_fun} object.}
+  \item{object, x}{The \sQuote{pomp_fun} object.}
 }
 \details{
-  The \code{pomp_fun} class helps to settle common issues associated with user-defined functions which can be defined either via R code or by a native, compiled routine.
+  The \sQuote{pomp_fun} class helps to settle common issues associated with user-defined functions which can be defined either via R code or by a native, compiled routine.
   It is not exported to userland.
 }
 \author{Aaron A. King}

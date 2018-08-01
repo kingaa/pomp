@@ -50,7 +50,7 @@
 }
 \arguments{
   \item{object}{
-    An object of class \code{pomp}.
+    An object of class \sQuote{pomp}.
   }
   \item{params}{
     optional named numeric vector of model parameters.
@@ -110,29 +110,16 @@
 }
 \details{
   A call to \code{spect} results in the estimation of the power spectrum for the (transformed, detrended) data and \code{nsim} model simulations.
-  The results of these computations are stored in an object of class \code{\link[=spectd_pomp-class]{spectd_pomp}}.
+  The results of these computations are stored in an object of class \sQuote{spectd_pomp}.
 
   A call to \code{spect.match} results in an attempt to optimize the agreement between model and data spectrum over the parameters named in \code{est}.
-  The results, including coefficients of the fitted model and power spectra of fitted model and data, are stored in an object of class \code{\link[=spect_matched_pomp-class]{spect_matched_pomp}}.
+  The results, including coefficients of the fitted model and power spectra of fitted model and data, are stored in an object of class \sQuote{spect_matched_pomp}.
 }
 \value{
-  \code{spect} returns an object of class \code{spectd_pomp}, which is derived from class \code{\link[=pomp-class]{pomp}} and therefore has all the slots of that class.
-  In addition, \code{spectd_pomp} objects have the following slots:
-  \describe{
-    \item{kernel.width}{width parameter of the smoothing kernel used.}
-    \item{transform}{transformation function used.}
-    \item{freq}{numeric vector of the frequencies at which the power spectrum is estimated.}
-    \item{datspec, simspec}{estimated power spectra for data and simulations, respectively.}
-    \item{pvals}{
-      one-sided p-values:
-      fraction of the simulated spectra that differ more from the mean simulated spectrum than does the data.
-      The metric used is \eqn{L^2}{L2} distance.
-    }
-    \item{detrend}{detrending option used.}
-  }
+  \code{spect} returns an object of class \sQuote{spectd_pomp}.
 
-  \code{spect.match} returns an object of class \code{spect_matched_pomp}, which is derived from class \code{spectd_pomp} and therefore has all the slots of that class.
-  In addition, \code{spect_matched_pomp} objects have the following slots:
+  \code{spect.match} returns an object of class \sQuote{spect_matched_pomp}, which is derived from class \sQuote{spectd_pomp} and therefore has all the slots of that class.
+  In addition, \sQuote{spect_matched_pomp} objects have the following slots:
   \describe{
     \item{est, weights, fail.value}{values of the corresponding arguments in the call to \code{spect.match}.}
     \item{evals}{

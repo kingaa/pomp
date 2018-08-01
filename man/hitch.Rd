@@ -6,8 +6,8 @@
   The algorithms in \pkg{pomp} make use of user-defined functions implementing the various elementary model computations (\code{rprocess}, \code{dprocess}, \code{rmeasure}, \code{dmeasure}, etc.).
   For short, we refer to these elementary computations as \dQuote{workhorses}.
   The user defines these functions using \R functions, links to native functions in dynamically-linked libraries, or C snippets.
-  For efficiency, \pkg{pomp} encodes the workhorses using \code{pomp_fun} objects.
-  The construction of \code{pomp_fun} objects is handled by the \code{hitch} function, which conceptually \dQuote{hitches} the workhorses to \code{pomp_fun}s for use in \pkg{pomp}.
+  For efficiency, \pkg{pomp} encodes the workhorses using \sQuote{pomp_fun} objects.
+  The construction of \sQuote{pomp_fun} objects is handled by the \code{hitch} function, which conceptually \dQuote{hitches} the workhorses to \code{pomp_fun}s for use in \pkg{pomp}.
 }
 \usage{
 hitch(\dots, templates,
@@ -19,8 +19,8 @@ hitch(\dots, templates,
  \item{\dots}{
     named arguments representing the workhorses.
     These can be \R functions, character strings naming routines in external, dynamically-linked libraries, C snippets, or \code{NULL}.
-    The first three are converted by \code{hitch} to \code{pomp_fun} objects which perform the indicated computations.
-    \code{NULL} arguments are translated to default \code{pomp_fun} objects, which trigger an error when they are asked to perform a computation.
+    The first three are converted by \code{hitch} to \sQuote{pomp_fun} objects which perform the indicated computations.
+    \code{NULL} arguments are translated to default \sQuote{pomp_fun} objects, which trigger an error when they are asked to perform a computation.
   }
   \item{templates}{
     named list of templates.
@@ -54,7 +54,7 @@ hitch(\dots, templates,
 }
 \value{
   \code{hitch} returns a named list of length two.
-  The element named \dQuote{funs} is itself a named list of \code{pomp_fun} objects, each of which corresponds to one of the horses passed in.
+  The element named \dQuote{funs} is itself a named list of \sQuote{pomp_fun} objects, each of which corresponds to one of the horses passed in.
   The element named \dQuote{lib} contains information on the shared-object library created using the C snippets (if any were passed to \code{hitch}).
   If no C snippets were passed to \code{hitch}, \code{lib} is \code{NULL}.
   Otherwise, it is a length-3 named list with the following elements:

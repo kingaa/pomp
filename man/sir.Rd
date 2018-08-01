@@ -5,7 +5,7 @@
 \alias{bbs}
 \docType{data}
 \description{
-  \code{sir} is a \code{pomp} object encoding a simple seasonal SIR model.
+  \code{sir} is a \sQuote{pomp} object encoding a simple seasonal SIR model.
   Simulation is performed using an Euler multinomial approximation.
 
   \code{sir2} has the same model implemented using Gillespie's algorithm.

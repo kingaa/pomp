@@ -38,8 +38,8 @@
 \alias{coef<-}
 \alias{coef<-,pomp-method}
 \alias{coef<--pomp}
-\title{Functions for manipulating, displaying, and extracting information from objects of the \code{pomp} class}
-\description{This page documents the various methods that allow one to extract information from, display, plot, and modify \code{pomp} objects.}
+\title{Functions for manipulating, displaying, and extracting information from objects of the \sQuote{pomp} class}
+\description{This page documents the various methods that allow one to extract information from, display, plot, and modify \sQuote{pomp} objects.}
 \usage{
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots)
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots) <- value
@@ -59,7 +59,7 @@
 \S4method{window}{pomp}(x, start, end, \dots)
 }
 \arguments{
-  \item{object, x}{The \code{pomp} object.}
+  \item{object, x}{The \sQuote{pomp} object.}
   \item{pars}{
     optional character;
     names of parameters to be retrieved or set.
@@ -128,7 +128,7 @@
       Likewise, \preformatted{coef(object,pars,transform=TRUE)} returns \preformatted{parameter.inv.transform(coef(object))[pars].}
     }
     \item{coef<-}{
-      Assigns values to the \code{params} slot of the \code{pomp} object.
+      Assigns values to the \code{params} slot of the \sQuote{pomp} object.
       \code{coef(object) <- value} has the effect of replacing the parameters of \code{object} with \code{value}.
       If \code{coef(object)} exists, then \code{coef(object,pars) <- value} replaces those parameters of \code{object} named in \code{pars} with the elements of \code{value};
       the names of \code{value} are ignored.
@@ -167,18 +167,18 @@
       \code{timezero(object) <- value} sets the zero-time to \code{value}.
     }
     \item{window}{
-      \code{window(x,start=t1,end=t2} returns a new \code{pomp} object, identical to \code{x} but with only the data in the window between times \code{t1} and \code{t2} (inclusive).
+      \code{window(x,start=t1,end=t2} returns a new \sQuote{pomp} object, identical to \code{x} but with only the data in the window between times \code{t1} and \code{t2} (inclusive).
       By default, \code{start} is the time of the first observation and \code{end} is the time of the last.
     }
-    \item{show}{Displays the \code{pomp} object.}
-    \item{spy}{Displays any C snippet files associated with a \code{pomp} object.}
+    \item{show}{Displays the \sQuote{pomp} object.}
+    \item{spy}{Displays any C snippet files associated with a \sQuote{pomp} object.}
     \item{print}{Print method.}
     \item{plot}{
       Plots the data and state trajectories (if the latter exist).
       Additional arguments are passed to the low-level plotting routine.
     }
     \item{as}{
-      A \code{pomp} object can be coerced to a data frame via \preformatted{as(object,"data.frame").}
+      A \sQuote{pomp} object can be coerced to a data frame via \preformatted{as(object,"data.frame").}
       The data frame contains the times, the data, and the state trajectories, if they exist.
     }
   }

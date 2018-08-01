@@ -20,7 +20,7 @@
     verbose = getOption("verbose", FALSE))
 }
 \arguments{
-  \item{object}{An object of class \code{pomp}.}
+  \item{object}{An object of class \sQuote{pomp}.}
   \item{nsim}{
     The number of simulations to perform.
     Note that the number of replicates will be \code{nsim} times \code{ncol(params)}.
@@ -60,11 +60,11 @@
   }
 }
 \value{
-  If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \code{pomp} objects is returned.
+  If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \sQuote{pomp} objects is returned.
   Each has a simulated data set, together with the parameters used (in slot \code{params}) and the state trajectories also (in slot \code{states}).
   If \code{times} is specified, then the simulated observations will be at times \code{times}.
 
-  If \code{nsim=1}, then a single \code{pomp} object is returned (and not a singleton list).
+  If \code{nsim=1}, then a single \sQuote{pomp} object is returned (and not a singleton list).
 
   If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-3 array with dimensions \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
   Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.

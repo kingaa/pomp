@@ -40,7 +40,7 @@
 \alias{print,unshowable-method}
 \alias{print,listies-method}
 \description{
-  A \code{pomp} object implements a partially observed Markov process (\acronym{POMP}) model.
+  A \sQuote{pomp} object implements a partially observed Markov process (\acronym{POMP}) model.
   Basic operations on this model (with shorthand terms) include:
   \enumerate{
     \item simulation of the state process given parameters (\code{rprocess})
@@ -55,7 +55,7 @@
   }
   \pkg{pomp} provides S4 methods that implement each of these basic operations.
   These operations can be combined to implement statistical inference methods that depend only on a model's \acronym{POMP} structure.
-  For convenience, parameter transformations may also be enclosed in a \code{pomp} object.
+  For convenience, parameter transformations may also be enclosed in a \sQuote{pomp} object.
 
   This page documents these elements.
 }
@@ -74,7 +74,7 @@
 \S4method{pompUnload}{pomp}(object, \dots)
 }
 \arguments{
-  \item{object}{an object of class \code{pomp}.}
+  \item{object}{an object of class \sQuote{pomp}.}
   \item{xstart}{
     an \code{nvar} x \code{nrep} matrix containing the starting state of the system.
     Columns of \code{xstart} correspond to states; rows to components of the state vector.
@@ -157,7 +157,7 @@
 }
 \section{init.state}{
   \code{init.state} returns an \code{nvar} x \code{nsim} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
-  By default, \code{t0} is the initial time defined when the \code{pomp} object ws constructed.
+  By default, \code{t0} is the initial time defined when the \sQuote{pomp} object ws constructed.
   If \code{nsim} is not specified, then \code{nsim=ncol(params)}.
 }
 \section{skeleton}{
@@ -181,14 +181,14 @@
   When the skeleton is a vectorfield, \code{trajectory} integrates it using \code{\link[deSolve]{ode}}.
   When the skeleton is a map, \code{trajectory} iterates it.
   By default, time is advanced 1 unit per iteration.
-  The user can change this behavior by specifying the desired timestep using the argument \code{skelmap.delta.t} in the construction of the \code{pomp} object.
+  The user can change this behavior by specifying the desired timestep using the argument \code{skelmap.delta.t} in the construction of the \sQuote{pomp} object.
 }
 \section{Parameter transformations}{
-  User-defined parameter transformations enclosed in the \code{pomp} object can be accessed via \code{\link{partrans}}.
+  User-defined parameter transformations enclosed in the \sQuote{pomp} object can be accessed via \code{\link{partrans}}.
 }
 \section{\code{pompLoad}, \code{pompUnload}}{
   \code{pompLoad} and \code{pompUnload} cause compiled codes associated with \code{object} to be dynamically linked or unlinked, respectively.
-  When C snippets are used in the construction of a \code{pomp} object, the resulting shared-object library is dynamically loaded (linked) before each use, and unloaded afterward.
+  When C snippets are used in the construction of a \sQuote{pomp} object, the resulting shared-object library is dynamically loaded (linked) before each use, and unloaded afterward.
   These functions are provided because in some instances, greater control may be desired.
   These functions have no effect on shared-object libraries linked by the user.
 }

@@ -3,7 +3,7 @@
 \docType{data}
 \title{Two-dimensional random-walk process}
 \description{
-  \code{rw2} is a \code{pomp} object encoding a 2-D normal random walk.
+  \code{rw2} is a \sQuote{pomp} object encoding a 2-D normal random walk.
 }
 \details{
   The random-walk process is fully but noisily observed.

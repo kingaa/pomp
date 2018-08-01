@@ -12,7 +12,6 @@
 \alias{eakf}
 \alias{eakf,pomp-method}
 \alias{eakf-pomp}
-\alias{kalmand_pomp-class}
 \alias{kalmand_pomp}
 \alias{logLik,kalmand_pomp-method}
 \alias{logLik-kalmand_pomp}
@@ -42,7 +41,7 @@
 }
 \arguments{
   \item{object}{
-    An object of class \code{pomp} or inheriting class \code{pomp}.
+    An object of class \sQuote{pomp} or inheriting class \sQuote{pomp}.
   }
   \item{params}{
     optional named numeric vector containing the parameters at which the filtering should be performed.
@@ -69,8 +68,8 @@
   }
 }
 \value{
-  An object of class \code{kalmand_pomp}.
-  This class inherits from class \code{\link[=pomp-class]{pomp}}.
+  An object of class \sQuote{kalmand_pomp}.
+  This class inherits from class \sQuote{pomp}.
 }
 \section{Methods}{
   \describe{

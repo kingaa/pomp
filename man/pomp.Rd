@@ -18,7 +18,7 @@
 \alias{vectorfield}
 \alias{map}
 \description{
-  This function constructs a \code{pomp} object,
+  This function constructs a \sQuote{pomp} object,
   encoding a partially-observed Markov process model together with a uni- or multi-variate time series.
   As such, it is central to all the package's functionality.
   One implements the model by specifying some or all of its \emph{basic components}.
@@ -50,8 +50,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \code{times} must be numeric and strictly increasing.
     Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.
 
-    In addition, a \code{pomp} object can be supplied in the \code{data} argument.
-    In this case, the call to \code{pomp} will add element to, or replace elements of, the supplied \code{pomp} object.
+    In addition, a \sQuote{pomp} object can be supplied in the \code{data} argument.
+    In this case, the call to \code{pomp} will add element to, or replace elements of, the supplied \sQuote{pomp} object.
   }
   \item{t0}{
     The zero-time, at which the stochastic dynamical system is to be initialized.
@@ -136,7 +136,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   }
 }
 \value{
-  The \code{pomp} constructor function returns an object, call it \code{P}, of class \code{pomp}.
+  The \code{pomp} constructor function returns an object, call it \code{P}, of class \sQuote{pomp}.
   \code{P} contains, in addition to the data, any elements of the model that have been specified as arguments to the \code{pomp} constructor function.
   One can add or modify elements of \code{P} by means of further calls to \code{pomp}, using \code{P} as the first argument in such calls.
 }
@@ -175,7 +175,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The latter must never be declared within a C snippet.
     \item Names of observables are determined by their names in the data.
     They must be referred to in measurement model C snippets (\code{rmeasure} and \code{dmeasure}) by those names.
-    \item If the \code{pomp} object contains a table of covariates (see above), then the variables in the covariate table will be available, by their names, in the context within which the C snippet is executed.
+    \item If the \sQuote{pomp} object contains a table of covariates (see above), then the variables in the covariate table will be available, by their names, in the context within which the C snippet is executed.
     \item Because the dot \sQuote{.} has syntactic meaning in C, \R variables with names containing dots (\sQuote{.}) are replaced in the C codes by variable names in which all dots have been replaced by underscores (\sQuote{_}).
     \item The header \file{R.h}, provided with \R, will be included in the generated C file, making all of the \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#The-R-API}{\R C API} available for use in the C snippet.
     This makes a great many useful functions available, including all of \R's \href{https://CRAN.R-project.org/doc/manuals/r-release/R-exts.html#Distribution-functions}{statistical distribution functions}.
@@ -471,7 +471,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   Its role is to evaluate the prior probability density (or log density if \code{log == TRUE}) and return that single scalar value.
 }
 \section{Covariates}{
-  If the \code{pomp} object contains covariates (specified via the \code{covar} argument; see above), then interpolated values of the covariates will be available to each of the model components whenever it is called.
+  If the \sQuote{pomp} object contains covariates (specified via the \code{covar} argument; see above), then interpolated values of the covariates will be available to each of the model components whenever it is called.
   In particular, variables with names as they appear in the \code{covar} data frame will be available to any C snippet.
   When a basic component is defined using an \R function, that function will be called with an extra argument, \code{covars}, which will be a named numeric vector containing the interpolated values from the covariate table.
 
@@ -479,7 +479,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   Nor are parameter transformations permitted to depend upon covariates.
 }
 \section{Parameter Transformations}{
-  When parameter transformations are desired, they can be integrated into the \code{pomp} object via the \code{toEstimationScale} and \code{fromEstimationScale} arguments.
+  When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{toEstimationScale} and \code{fromEstimationScale} arguments.
   As with the basic model components, these should ordinarily be specified using C snippets.
   When doing so, note that:
   \enumerate{
@@ -495,7 +495,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   \code{fromEstimationScale} should be the inverse of \code{toEstimationScale}.
 
   Note that it is the user's responsibility to make sure that the transformations are mutually inverse.
-  If \code{obj} is the constructed \code{pomp} object, and \code{coef(obj)} is non-empty, a simple check of this property is \preformatted{
+  If \code{obj} is the constructed \sQuote{pomp} object, and \code{coef(obj)} is non-empty, a simple check of this property is \preformatted{
     x <- coef(obj, transform = TRUE)
     obj1 <- obj
     coef(obj1, transform = TRUE) <- x
