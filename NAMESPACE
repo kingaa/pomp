@@ -47,9 +47,9 @@ exportMethods(
 )
 
 S3method(as.data.frame,pomp)
-S3method(as.data.frame,pfilterd.pomp)
-S3method(as.data.frame,probed.pomp)
-S3method(as.data.frame,kalmand.pomp)
+S3method(as.data.frame,pfilterd_pomp)
+S3method(as.data.frame,probed_pomp)
+S3method(as.data.frame,kalmand_pomp)
 S3method(c,Abc)
 S3method(c,Pmcmc)
 S3method(c,Mif2)

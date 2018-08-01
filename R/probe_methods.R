@@ -1,6 +1,6 @@
 setMethod(
   "summary",
-  signature=signature(object="probed.pomp"),
+  signature=signature(object="probed_pomp"),
   definition=function (object, ...) {
     list(
       coef=coef(object),
@@ -13,7 +13,7 @@ setMethod(
 )
 
 setAs(
-  from="probed.pomp",
+  from="probed_pomp",
   to="data.frame",
   def = function (from) {
     x <- as.data.frame(rbind(from@datvals,from@simvals))
@@ -25,7 +25,7 @@ setAs(
 
 setMethod(
   "probevals",
-  signature=signature(object="probed.pomp"),
+  signature=signature(object="probed_pomp"),
   definition=function (object, ...) {
     dv <- object@datvals
     list(
@@ -36,29 +36,29 @@ setMethod(
 )
 
 
-as.data.frame.probed.pomp <- function (x, row.names, optional, ...)
+as.data.frame.probed_pomp <- function (x, row.names, optional, ...)
   as(x,"data.frame")
 
 setMethod(
   "logLik",
-  signature=signature(object="probed.pomp"),
+  signature=signature(object="probed_pomp"),
   definition=function(object,...)object@synth.loglik
 )
 
 setMethod(
   "show",
-  signature=signature(object="probed.pomp"),
+  signature=signature(object="probed_pomp"),
   definition=function (object) {
-    cat("<object of class ",sQuote("probed.pomp"),">\n",sep="")
+    cat("<object of class ",sQuote("probed_pomp"),">\n",sep="")
     invisible(NULL)
   }
 )
 
 setMethod("plot",
-  signature=signature(x="probed.pomp"),
+  signature=signature(x="probed_pomp"),
   definition=function (x, y, ...) {
     if (!missing(y))
-      warning("in ",sQuote("plot-probed.pomp"),": ",
+      warning("in ",sQuote("plot-probed_pomp"),": ",
         sQuote("y")," is ignored",call.=FALSE)
     probeplot.internal(x=x,...)
   }

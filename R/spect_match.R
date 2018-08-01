@@ -1,6 +1,6 @@
 setClass(
-  "spect.matched.pomp",
-  contains="spect.pomp",
+  "spect_matched_pomp",
+  contains="spectd_pomp",
   slots=c(
     est="character",
     fail.value="numeric",
@@ -184,7 +184,7 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
   pompUnload(object,verbose=verbose)
 
   new(
-    "spect.matched.pomp",
+    "spect_matched_pomp",
     spect(
       object,
       params=params,
@@ -235,7 +235,7 @@ setMethod("spect.match",
 )
 
 setMethod("spect.match",
-          signature=signature(object="spect.pomp"),
+          signature=signature(object="spectd_pomp"),
           definition=function(object, start, est = character(0), vars, nsim,
                               seed = NULL, kernel.width, transform.data,
                               detrend, weights = 1,
@@ -258,7 +258,7 @@ setMethod("spect.match",
 )
 
 setMethod("spect.match",
-          signature=signature(object="spect.matched.pomp"),
+          signature=signature(object="spect_matched_pomp"),
           definition=function(object, start, est, vars, nsim, seed = NULL,
                               kernel.width, transform.data, detrend, weights, method,
                               verbose = getOption("verbose"), fail.value,
@@ -283,10 +283,10 @@ setMethod("spect.match",
 
 setMethod(
   "summary",
-  signature=signature(object="spect.matched.pomp"),
+  signature=signature(object="spect_matched_pomp"),
   definition=function (object, ...) {
     c(
-      summary(as(object,"spect.pomp")),
+      summary(as(object,"spectd_pomp")),
       list(
         est=object@est,
         value=object@value,

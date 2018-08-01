@@ -1,20 +1,20 @@
-## methods for the 'kalmand.pomp' class
+## methods for the 'kalmand_pomp' class
 
 setMethod(
     "logLik",
-    signature=signature(object="kalmand.pomp"),
+    signature=signature(object="kalmand_pomp"),
     definition=function(object,...)object@loglik
 )
 
 setMethod(
     "cond.logLik",
-    signature=signature(object="kalmand.pomp"),
+    signature=signature(object="kalmand_pomp"),
     definition=function(object,...)object@cond.loglik
 )
 
 ## 'coerce' method: allows for coercion of a 'pomp' object to a data-frame
 setAs(
-    from="kalmand.pomp",
+    from="kalmand_pomp",
     to="data.frame",
     def = function (from) {
         pm <- pred.mean(from)
@@ -31,14 +31,14 @@ setAs(
     }
 )
 
-as.data.frame.kalmand.pomp <- function (x, row.names, optional, ...) {
+as.data.frame.kalmand_pomp <- function (x, row.names, optional, ...) {
     as(x,"data.frame")
 }
 
 ## extract the prediction means
 setMethod(
     "pred.mean",
-    signature=signature(object="kalmand.pomp"),
+    signature=signature(object="kalmand_pomp"),
     definition=function (object, pars, ...) {
         if (missing(pars)) pars <- rownames(object@pred.mean)
         object@pred.mean[pars,,drop=FALSE]
@@ -48,7 +48,7 @@ setMethod(
 ## extract the filtering means
 setMethod(
     "filter.mean",
-    signature=signature(object="kalmand.pomp"),
+    signature=signature(object="kalmand_pomp"),
     definition=function (object, pars, ...) {
         if (missing(pars)) pars <- rownames(object@filter.mean)
         object@filter.mean[pars,,drop=FALSE]

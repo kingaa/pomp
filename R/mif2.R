@@ -1,9 +1,9 @@
 ## IF2 algorithm functions
 
-## define the mif2d.pomp class
+## define the mif2d_pomp class
 setClass(
-  'mif2d.pomp',
-  contains='pfilterd.pomp',
+  'mif2d_pomp',
+  contains='pfilterd_pomp',
   slots=c(
     Nmif = 'integer',
     rw.sd = 'matrix',
@@ -41,7 +41,7 @@ setMethod(
 
 setMethod(
   "mif2",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   definition = function (object, Nmif = 1, Np, tol, ...) {
 
     if (missing(Np)) Np <- object@Np
@@ -53,7 +53,7 @@ setMethod(
 
 setMethod(
   "mif2",
-  signature=signature(object="mif2d.pomp"),
+  signature=signature(object="mif2d_pomp"),
   definition = function (object, Nmif, start, Np, rw.sd, transform,
     cooling.type, cooling.fraction.50, tol, ...) {
 
@@ -75,7 +75,7 @@ setMethod(
 
 setMethod(
   'continue',
-  signature=signature(object='mif2d.pomp'),
+  signature=signature(object='mif2d_pomp'),
   definition = function (object, Nmif = 1, ...) {
 
     ndone <- object@Nmif
@@ -234,7 +234,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
       .getnativesymbolinfo=gnsi)
 
   new(
-    "mif2d.pomp",
+    "mif2d_pomp",
     pfp,
     Nmif=Nmif,
     rw.sd=rw.sd,
@@ -422,7 +422,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
   }
 
   new(
-    "pfilterd.pomp",
+    "pfilterd_pomp",
     as(object,"pomp"),
     paramMatrix=params,
     eff.sample.size=eff.sample.size,

@@ -3,35 +3,35 @@
 \alias{pmcmc}
 \alias{pmcmc,missing-method}
 \alias{pmcmc,ANY-method}
-\alias{pmcmc,pmcmc-method}
-\alias{pmcmc-pmcmc}
-\alias{pmcmc,pfilterd.pomp-method}
-\alias{pmcmc-pfilterd.pomp}
+\alias{pmcmc,pmcmcd_pomp-method}
+\alias{pmcmc-pmcmcd_pomp}
+\alias{pmcmc,pfilterd_pomp-method}
+\alias{pmcmc-pfilterd_pomp}
 \alias{pmcmc,pomp-method}
 \alias{pmcmc-pomp}
-\alias{continue,pmcmc-method}
-\alias{continue-pmcmc}
+\alias{continue,pmcmcd_pomp-method}
+\alias{continue-pmcmcd_pomp}
 \alias{pmcmc-methods}
-\alias{logLik,pmcmc-method}
-\alias{logLik-pmcmc}
+\alias{logLik,pmcmcd_pomp-method}
+\alias{logLik-pmcmcd_pomp}
 \alias{logLik,pmcmcList-method}
 \alias{logLik-pmcmcList}
-\alias{traces,pmcmc-method}
-\alias{traces-pmcmc}
+\alias{traces,pmcmcd_pomp-method}
+\alias{traces-pmcmcd_pomp}
 \alias{traces,pmcmcList-method}
 \alias{traces-pmcmcList}
-\alias{filter.traj,pmcmc-method}
+\alias{filter.traj,pmcmcd_pomp-method}
 \alias{filter.traj,pmcmcList-method}
-\alias{filter.traj-pmcmc}
+\alias{filter.traj-pmcmcd_pomp}
 \alias{filter.traj-pmcmcList}
-\alias{show,pmcmc-method}
-\alias{show-pmcmc}
+\alias{show,pmcmcd_pomp-method}
+\alias{show-pmcmcd_pomp}
 \alias{show,pmcmcList-method}
 \alias{show-pmcmcList}
 \alias{plot-Pmcmc}
 \alias{plot,Pmcmc-method}
-\alias{covmat,pmcmc-method}
-\alias{covmat-pmcmc}
+\alias{covmat,pmcmcd_pomp-method}
+\alias{covmat-pmcmcd_pomp}
 \alias{covmat,pmcmcList-method}
 \alias{covmat-pmcmcList}
 \alias{c-Pmcmc}
@@ -45,14 +45,14 @@
 \usage{
 \S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, proposal, Np,
     tol = 1e-17, max.fail = Inf, verbose = getOption("verbose"), \dots)
-\S4method{pmcmc}{pfilterd.pomp}(object, Nmcmc = 1, Np, tol, \dots)
-\S4method{pmcmc}{pmcmc}(object, Nmcmc, start, proposal, Np, tol,
+\S4method{pmcmc}{pfilterd_pomp}(object, Nmcmc = 1, Np, tol, \dots)
+\S4method{pmcmc}{pmcmcd_pomp}(object, Nmcmc, start, proposal, Np, tol,
     max.fail = Inf, verbose = getOption("verbose"), \dots)
-\S4method{continue}{pmcmc}(object, Nmcmc = 1, \dots)
+\S4method{continue}{pmcmcd_pomp}(object, Nmcmc = 1, \dots)
 }
 \arguments{
   \item{object}{
-    An object of class \code{pomp}.
+    An object of class \dQuote{pomp}.
   }
   \item{Nmcmc}{
     The number of PMCMC iterations to perform.
@@ -88,7 +88,7 @@
  }
 }
 \value{
-  An object of class \code{pmcmc}.
+  An object of class \dQuote{pmcmcd_pomp}.
 }
 \section{Re-running PMCMC Iterations}{
   To re-run a sequence of PMCMC iterations, one can use the \code{pmcmc} method on a \code{pmcmc} object.
@@ -113,7 +113,7 @@
       Concatenates \code{pmcmc} objects into a \code{pmcmcList}.
     }
     \item{\code{traces(object, pars)}}{
-      returns the history of the MCMC iterations as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
+      returns the history of the MCMC iterations as an object of class \dQuote{\link[coda]{mcmc}} or \dQuote{\link[coda]{mcmc.list}}.
       Thus, it can be used as input for the various \pkg{coda} convergence diagnostics.
     }
     \item{\code{filter.traj(object, vars)}}{

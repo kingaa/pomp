@@ -36,7 +36,7 @@ setGeneric("logLik",function(object,...)standardGeneric("logLik"))
 setGeneric("logEvidence",function(object,...)standardGeneric("logEvidence"))
 
 ## internals
-setGeneric("pomp.fun",function(f,...)standardGeneric("pomp.fun"))
+setGeneric("pomp_fun",function(f,...)standardGeneric("pomp_fun"))
 
 ## prediction mean
 setGeneric("pred.mean",function(object,...)standardGeneric("pred.mean"))

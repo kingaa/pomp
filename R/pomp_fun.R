@@ -4,22 +4,22 @@
 pompfunmode <- list(undef=-1L,Rfun=0L,native=1L,regNative=2L)
 
 setClass(
-  'pomp.fun',
+  "pomp_fun",
   slots=c(
-    R.fun = 'function',
-    native.fun = 'character',
-    PACKAGE = 'character',
-    mode = 'integer',
-    address = 'externalptr',
-    obsnames = 'character',
-    statenames = 'character',
-    paramnames = 'character',
-    covarnames = 'character',
-    purpose = 'character'
+    R.fun = "function",
+    native.fun = "character",
+    PACKAGE = "character",
+    mode = "integer",
+    address = "externalptr",
+    obsnames = "character",
+    statenames = "character",
+    paramnames = "character",
+    covarnames = "character",
+    purpose = "character"
   ),
   prototype=prototype(
     R.fun=function (...) {
-      stop("in ",sQuote("pomp.fun"),
+      stop("in ",sQuote("pomp_fun"),
         ": unreachable error: please report this bug!",call.=FALSE)
     },
     native.fun=character(0),
@@ -34,23 +34,23 @@ setClass(
 )
 
 setMethod(
-  "pomp.fun",
+  "pomp_fun",
   signature=signature(f="missing"),
   definition=function (f, slotname = NULL, ...) {
-    new("pomp.fun",purpose=as.character(slotname))
+    new("pomp_fun",purpose=as.character(slotname))
   }
 )
 
 setMethod(
-  "pomp.fun",
+  "pomp_fun",
   signature=signature(f="NULL"),
   definition=function (f, slotname = NULL, ...) {
-    new("pomp.fun",purpose=as.character(slotname))
+    new("pomp_fun",purpose=as.character(slotname))
   }
 )
 
 setMethod(
-  "pomp.fun",
+  "pomp_fun",
   signature=signature(f="ANY"),
   definition=function (f, slotname = NULL, ...) {
     stop("bad option for ",sQuote(slotname)," argument",call.=FALSE)
@@ -58,7 +58,7 @@ setMethod(
 )
 
 setMethod(
-  "pomp.fun",
+  "pomp_fun",
   signature=signature(f="function"),
   definition=function (f, proto = NULL, slotname = NULL, ...) {
     if (!is.null(proto)) {
@@ -70,19 +70,19 @@ setMethod(
           sQuote(fname)," must be a function of prototype ",
           deparse(proto),call.=FALSE)
     }
-    new("pomp.fun",R.fun=f,mode=pompfunmode$Rfun,purpose=as.character(slotname))
+    new("pomp_fun",R.fun=f,mode=pompfunmode$Rfun,purpose=as.character(slotname))
   }
 )
 
 setMethod(
-  "pomp.fun",
+  "pomp_fun",
   signature=signature(f="character"),
   definition=function (f, PACKAGE = NULL,
     obsnames = character(0), statenames = character(0),
     paramnames = character(0), covarnames = character(0),
     slotname = NULL, ...) {
     new(
-      "pomp.fun",
+      "pomp_fun",
       native.fun=f,
       PACKAGE=as.character(PACKAGE),
       mode=pompfunmode$native,
@@ -96,7 +96,7 @@ setMethod(
 )
 
 setMethod(
-  "pomp.fun",
+  "pomp_fun",
   signature=signature(f="Csnippet"),
   definition=function (f, slotname = NULL, libname = NULL,
     obsnames = character(0), statenames = character(0),
@@ -105,7 +105,7 @@ setMethod(
     slotname <- as.character(slotname)
     libname <- as.character(libname)
     new(
-      "pomp.fun",
+      "pomp_fun",
       native.fun=render(Cname,name=libname),
       PACKAGE=libname,
       mode=pompfunmode$regNative,
@@ -119,14 +119,14 @@ setMethod(
 )
 
 setMethod(
-  "pomp.fun",
-  signature=signature(f="pomp.fun"),
+  "pomp_fun",
+  signature=signature(f="pomp_fun"),
   definition=function (f, ...) f
 )
 
 setMethod(
-  'show',
-  signature=signature('pomp.fun'),
+  "show",
+  signature=signature("pomp_fun"),
   definition=function (object) {
     mode <- object@mode
     if (mode==pompfunmode$Rfun) { # R function
@@ -149,7 +149,7 @@ setMethod(
 )
 
 setMethod(
-  'print',
-  'pomp.fun',
+  "print",
+  "pomp_fun",
   function (x, ...) show(x)
 )

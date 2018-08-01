@@ -12,21 +12,21 @@
 \alias{eakf}
 \alias{eakf,pomp-method}
 \alias{eakf-pomp}
-\alias{kalmand.pomp-class}
-\alias{kalmand.pomp}
-\alias{logLik,kalmand.pomp-method}
-\alias{logLik-kalmand.pomp}
-\alias{$,kalmand.pomp-method}
-\alias{$-kalmand.pomp}
-\alias{pred.mean,kalmand.pomp-method}
-\alias{pred.mean-kalmand.pomp}
-\alias{filter.mean,kalmand.pomp-method}
-\alias{filter.mean-kalmand.pomp}
-\alias{cond.logLik,kalmand.pomp-method}
-\alias{cond.logLik-kalmand.pomp}
-\alias{as,kalmand.pomp-method}
-\alias{as.data.frame.kalmand.pomp}
-\alias{coerce,kalmand.pomp,data.frame-method}
+\alias{kalmand_pomp-class}
+\alias{kalmand_pomp}
+\alias{logLik,kalmand_pomp-method}
+\alias{logLik-kalmand_pomp}
+\alias{$,kalmand_pomp-method}
+\alias{$-kalmand_pomp}
+\alias{pred.mean,kalmand_pomp-method}
+\alias{pred.mean-kalmand_pomp}
+\alias{filter.mean,kalmand_pomp-method}
+\alias{filter.mean-kalmand_pomp}
+\alias{cond.logLik,kalmand_pomp-method}
+\alias{cond.logLik-kalmand_pomp}
+\alias{as,kalmand_pomp-method}
+\alias{as.data.frame.kalmand_pomp}
+\alias{coerce,kalmand_pomp,data.frame-method}
 \description{
   The ensemble Kalman filter and ensemble adjustment Kalman filter.
 }
@@ -35,10 +35,10 @@
               verbose = getOption("verbose"), \dots)
 \S4method{eakf}{pomp}(object, params, Np, C, R,
               verbose = getOption("verbose"), \dots)
-\S4method{logLik}{kalmand.pomp}(object, \dots)
-\S4method{cond.logLik}{kalmand.pomp}(object, \dots)
-\S4method{pred.mean}{kalmand.pomp}(object, pars, \dots)
-\S4method{filter.mean}{kalmand.pomp}(object, pars, \dots)
+\S4method{logLik}{kalmand_pomp}(object, \dots)
+\S4method{cond.logLik}{kalmand_pomp}(object, \dots)
+\S4method{pred.mean}{kalmand_pomp}(object, pars, \dots)
+\S4method{filter.mean}{kalmand_pomp}(object, pars, \dots)
 }
 \arguments{
   \item{object}{
@@ -69,7 +69,7 @@
   }
 }
 \value{
-  An object of class \code{kalmand.pomp}.
+  An object of class \code{kalmand_pomp}.
   This class inherits from class \code{\link[=pomp-class]{pomp}}.
 }
 \section{Methods}{

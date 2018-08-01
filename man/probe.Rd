@@ -6,53 +6,53 @@
 \alias{probe,missing-method}
 \alias{probe,ANY-method}
 \alias{probe,pomp-method}
-\alias{probe,probed.pomp-method}
+\alias{probe,probed_pomp-method}
 \alias{probe-pomp}
-\alias{probe-probed.pomp}
+\alias{probe-probed_pomp}
 \alias{probe.match}
 \alias{probe.match,ANY-method}
 \alias{probe.match,missing-method}
 \alias{probe.match,pomp-method}
-\alias{probe.match,probed.pomp-method}
-\alias{probe.match,probe.matched.pomp-method}
+\alias{probe.match,probed_pomp-method}
+\alias{probe.match,probe_matched_pomp-method}
 \alias{probe.match-pomp}
-\alias{probe.match-probed.pomp}
-\alias{probe.match-probe.matched.pomp}
+\alias{probe.match-probed_pomp}
+\alias{probe.match-probe_matched_pomp}
 \alias{probe.match.objfun}
 \alias{probe.match.objfun,ANY-method}
 \alias{probe.match.objfun,missing-method}
 \alias{probe.match.objfun,pomp-method}
-\alias{probe.match.objfun,probed.pomp-method}
+\alias{probe.match.objfun,probed_pomp-method}
 \alias{probe.match.objfun-pomp}
-\alias{probe.match.objfun-probed.pomp}
-\alias{probed.pomp-methods}
-\alias{probe.matched.pomp-methods}
-\alias{spect.pomp-methods}
-\alias{spect.matched.pomp-methods}
-\alias{summary,probed.pomp-method}
-\alias{summary,probe.matched.pomp-method}
-\alias{summary-probed.pomp}
-\alias{summary-probe.matched.pomp}
-\alias{probevals,probed.pomp-method}
-\alias{probevals-probed.pomp}
-\alias{covmat-probed.pomp}
-\alias{covmat,probed.pomp-method}
-\alias{show,probed.pomp-method}
-\alias{show-probed.pomp}
-\alias{plot,probed.pomp-method}
-\alias{plot-probed.pomp}
-\alias{summary,spect.pomp-method}
-\alias{summary,spect.matched.pomp-method}
-\alias{summary-spect.pomp}
-\alias{summary-spect.matched.pomp}
-\alias{plot,spect.pomp-method}
-\alias{plot,spect.matched.pomp-method}
-\alias{plot,spect.pomp-method}
-\alias{plot-spect.pomp}
-\alias{as,probed.pomp-method}
-\alias{logLik,probed.pomp-method}
-\alias{logLik-probed.pomp}
-\alias{coerce,probed.pomp,data.frame-method}
+\alias{probe.match.objfun-probed_pomp}
+\alias{probed_pomp-methods}
+\alias{probe_matched_pomp-methods}
+\alias{spectd_pomp-methods}
+\alias{spect_matched_pomp-methods}
+\alias{summary,probed_pomp-method}
+\alias{summary,probe_matched_pomp-method}
+\alias{summary-probed_pomp}
+\alias{summary-probe_matched_pomp}
+\alias{probevals,probed_pomp-method}
+\alias{probevals-probed_pomp}
+\alias{covmat-probed_pomp}
+\alias{covmat,probed_pomp-method}
+\alias{show,probed_pomp-method}
+\alias{show-probed_pomp}
+\alias{plot,probed_pomp-method}
+\alias{plot-probed_pomp}
+\alias{summary,spectd_pomp-method}
+\alias{summary,spect_matched_pomp-method}
+\alias{summary-spectd_pomp}
+\alias{summary-spect_matched_pomp}
+\alias{plot,spectd_pomp-method}
+\alias{plot,spect_matched_pomp-method}
+\alias{plot,spectd_pomp-method}
+\alias{plot-spectd_pomp}
+\alias{as,probed_pomp-method}
+\alias{logLik,probed_pomp-method}
+\alias{logLik-probed_pomp}
+\alias{coerce,probed_pomp,data.frame-method}
 \description{
   \code{probe} applies one or more \dQuote{probes} to time series data and model simulations and compares the results.
   It can be used to diagnose goodness of fit and/or as the basis for \dQuote{probe-matching}, a generalized method-of-moments approach to parameter estimation.
@@ -63,20 +63,20 @@
 \usage{
 \S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, \dots,
             verbose = getOption("verbose", FALSE))
-\S4method{probe}{probed.pomp}(object, probes, nsim, seed = NULL, \dots,
+\S4method{probe}{probed_pomp}(object, probes, nsim, seed = NULL, \dots,
             verbose = getOption("verbose", FALSE))
 \S4method{probe.match.objfun}{pomp}(object, params, est, probes, nsim,
             seed = NULL, fail.value = NA, transform = FALSE, \dots)
-\S4method{probe.match.objfun}{probed.pomp}(object, probes, nsim, seed, \dots)
+\S4method{probe.match.objfun}{probed_pomp}(object, probes, nsim, seed, \dots)
 \S4method{probe.match}{pomp}(object, start, est = character(0),
             probes, nsim, seed = NULL,
             method = c("subplex","Nelder-Mead","SANN","BFGS",
                        "sannbox","nloptr"),
             verbose = getOption("verbose"),
             fail.value = NA, transform = FALSE, \dots)
-\S4method{probe.match}{probed.pomp}(object, probes, nsim, seed,
+\S4method{probe.match}{probed_pomp}(object, probes, nsim, seed,
             \dots, verbose = getOption("verbose"))
-\S4method{probe.match}{probe.matched.pomp}(object, est, probes,
+\S4method{probe.match}{probe_matched_pomp}(object, est, probes,
             nsim, seed, transform, fail.value, \dots,
             verbose = getOption("verbose"))
 }
@@ -134,21 +134,21 @@
 \details{
   A call to \code{probe} results in the evaluation of the probe(s) in \code{probes} on the data.
   Additionally, \code{nsim} simulated data sets are generated (via a call to \code{\link[=simulate-pomp]{simulate}}) and the probe(s) are applied to each of these.
-  The results of the probe computations on real and simulated data are stored in an object of class \code{probed.pomp}.
+  The results of the probe computations on real and simulated data are stored in an object of class \code{probed_pomp}.
 
   A call to \code{probe.match} results in an attempt to optimize the agreement between model and data, as measured by the specified probes, over the parameters named in \code{est}.
-  The results, including coefficients of the fitted model and values of the probes for data and fitted-model simulations, are stored in an object of class \code{probe.matched.pomp}.
+  The results, including coefficients of the fitted model and values of the probes for data and fitted-model simulations, are stored in an object of class \code{probe_matched_pomp}.
 
   The objective function minimized by \code{probe.match}---in a form suitable for use with \code{\link{optim}}-like optimizers---is created by a call to \code{probe.match.objfun}.
   Specifically, \code{probe.match.objfun} will return a function that takes a single numeric-vector argument that is assumed to cotain the parameters named in \code{est}, in that order.
   This function will return the negative synthetic log likelihood for the probes specified.
 }
 \value{
-  \code{probe} returns an object of class \code{probed.pomp}, which is derived from the \code{pomp} class and contains additional information about the \code{probe} calculation.
+  \code{probe} returns an object of class \code{probed_pomp}, which is derived from the \code{pomp} class and contains additional information about the \code{probe} calculation.
 
   This information can be summarized via a call to \code{summary} and displayed graphically via a call to \code{plot}.
 
-  \code{probe.match} returns an object of class \code{probe.matched.pomp}, which is derived from class \code{probed.pomp}.
+  \code{probe.match} returns an object of class \code{probe_matched_pomp}, which is derived from class \code{probed_pomp}.
   It therefore contains the information described above as well as information on the convergence of the optimization algorithm.
   This can be displayed via a call to \code{summary}.
 
@@ -173,7 +173,7 @@
       NB: in general, this is not the same as the likelihood.
     }
     \item{as.data.frame, as(object,"data.frame")}{
-      coercing a \sQuote{probed.pomp} to a \sQuote{data.frame}, gives the realized values of the probes on the data and on the simulations.
+      coercing a \sQuote{probed_pomp} to a \sQuote{data.frame}, gives the realized values of the probes on the data and on the simulations.
       The variable \code{.id} indicates whether the probes are from the data or simulations.
     }
   }

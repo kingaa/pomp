@@ -1,5 +1,5 @@
 setClass(
-  "traj.matched.pomp",
+  "traj_matched_pomp",
   contains="pomp",
   slots=c(
     transform="logical",
@@ -13,14 +13,14 @@ setClass(
 
 setMethod(
   "logLik",
-  signature=signature(object="traj.matched.pomp"),
+  signature=signature(object="traj_matched_pomp"),
   definition=function(object, ...)
     object@value
 )
 
 setMethod(
   "summary",
-  signature=signature(object="traj.matched.pomp"),
+  signature=signature(object="traj_matched_pomp"),
   function (object, ...) {
     c(
       list(
@@ -90,7 +90,7 @@ setMethod(
     rownames(object@states) <- rownames(x)
 
     new(
-      "traj.matched.pomp",
+      "traj_matched_pomp",
       object,
       transform=transform,
       est=est,
@@ -104,7 +104,7 @@ setMethod(
 
 setMethod(
   "traj.match",
-  signature=signature(object="traj.matched.pomp"),
+  signature=signature(object="traj_matched_pomp"),
   function (object, est, transform, ...)
   {
     if (missing(est)) est <- object@est

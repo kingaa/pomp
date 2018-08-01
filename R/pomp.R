@@ -406,8 +406,8 @@ pomp.internal <- function (data, times, t0,
 
   ## use default initializer?
   default.init <- is.null(initializer) ||
-    (is(initializer,"pomp.fun") && initializer@mode == pompfunmode$undef )
-  if (default.init) initializer <- pomp.fun(slotname="initializer")
+    (is(initializer,"pomp_fun") && initializer@mode == pompfunmode$undef )
+  if (default.init) initializer <- pomp_fun(slotname="initializer")
 
   if (is(initializer,"Csnippet") && length(statenames)==0) {
     stop(ep,"when ",sQuote("initializer")," is provided as a C snippet, ",
@@ -416,7 +416,7 @@ pomp.internal <- function (data, times, t0,
 
   ## by default, use flat improper prior
   if (is.null(dprior))
-    dprior <- pomp.fun(f="_pomp_default_dprior",PACKAGE="pomp")
+    dprior <- pomp_fun(f="_pomp_default_dprior",PACKAGE="pomp")
 
   ## handle skeleton
   if (is.null(skeleton)) .skel.type <- "undef"

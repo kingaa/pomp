@@ -8,7 +8,7 @@
 ## smooth = parameter 'h' from AGM
 
 setClass(
-  "bsmcd.pomp",
+  "bsmcd_pomp",
   contains="pomp",
   slots=c(
     transform="logical",
@@ -279,7 +279,7 @@ bsmc2.internal <- function (object, params, Np, est,
   pompUnload(object,verbose=verbose)
 
   new(
-    "bsmcd.pomp",
+    "bsmcd_pomp",
     object,
     transform=transform,
     post=params,

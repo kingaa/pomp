@@ -1,35 +1,35 @@
-## methods for the 'pfilterd.pomp' class
+## methods for the 'pfilterd_pomp' class
 
 setMethod(
   "logLik",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   definition=function(object,...)object@loglik
 )
 
 setMethod(
   "eff.sample.size",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   definition=function(object,...)object@eff.sample.size
 )
 
 setMethod(
   "cond.logLik",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   definition=function(object,...)object@cond.loglik
 )
 
 setMethod(
   "show",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   definition=function (object) {
-    cat("<object of class ",sQuote("pfilterd.pomp"),">\n",sep="")
+    cat("<object of class ",sQuote("pfilterd_pomp"),">\n",sep="")
     invisible(NULL)
   }
 )
 
 ## 'coerce' method: allows for coercion of a 'pomp' object to a data-frame
 setAs(
-  from="pfilterd.pomp",
+  from="pfilterd_pomp",
   to="data.frame",
   def = function (from) {
     pm <- pred.mean(from)
@@ -50,12 +50,12 @@ setAs(
   }
 )
 
-as.data.frame.pfilterd.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
+as.data.frame.pfilterd_pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 
 ## extract the prediction means
 setMethod(
   "pred.mean",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   definition=function (object, pars, ...) {
     if (missing(pars)) pars <- rownames(object@pred.mean)
     object@pred.mean[pars,,drop=FALSE]
@@ -65,7 +65,7 @@ setMethod(
 ## extract the prediction variances
 setMethod(
   "pred.var",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   definition=function (object, pars, ...) {
     if (missing(pars)) pars <- rownames(object@pred.var)
     object@pred.var[pars,,drop=FALSE]
@@ -76,7 +76,7 @@ setMethod(
 ## extract the filtering means
 setMethod(
   "filter.mean",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   definition=function (object, pars, ...) {
     if (missing(pars)) pars <- rownames(object@filter.mean)
     object@filter.mean[pars,,drop=FALSE]
@@ -86,7 +86,7 @@ setMethod(
 ## extract the filtered trajectory
 setMethod(
   "filter.traj",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   definition=function (object, vars, ...) {
     if (missing(vars)) vars <- rownames(object@filter.traj)
     object@filter.traj[vars,,,drop=FALSE]

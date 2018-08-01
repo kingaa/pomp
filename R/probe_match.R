@@ -1,6 +1,6 @@
 setClass(
-  "probe.matched.pomp",
-  contains="probed.pomp",
+  "probe_matched_pomp",
+  contains="probed_pomp",
   slots=c(
     transform="logical",
     est="character",
@@ -14,10 +14,10 @@ setClass(
 
 setMethod(
   "summary",
-  "probe.matched.pomp",
+  "probe_matched_pomp",
   function (object, ...) {
     c(
-      summary(as(object,"probed.pomp")),
+      summary(as(object,"probed_pomp")),
       list(
         est=object@est,
         value=object@value,
@@ -50,7 +50,7 @@ setMethod(
 
 setMethod(
   "probe.match.objfun",
-  signature=signature(object="probed.pomp"),
+  signature=signature(object="probed_pomp"),
   function (object, probes, nsim, seed, ...) {
 
     if (missing(probes)) probes <- object@probes
@@ -129,7 +129,7 @@ setMethod(
     pompUnload(object,verbose=verbose)
 
     new(
-      "probe.matched.pomp",
+      "probe_matched_pomp",
       pb,
       transform=transform,
       est=est,
@@ -144,7 +144,7 @@ setMethod(
 
 setMethod(
   "probe.match",
-  signature=signature(object="probed.pomp"),
+  signature=signature(object="probed_pomp"),
   function(object, probes, nsim, seed, ...,
     verbose = getOption("verbose"))
   {
@@ -159,7 +159,7 @@ setMethod(
 
 setMethod(
   "probe.match",
-  signature=signature(object="probe.matched.pomp"),
+  signature=signature(object="probe_matched_pomp"),
   function(object, est, probes, nsim, seed, transform,
     fail.value, ..., verbose = getOption("verbose"))
   {

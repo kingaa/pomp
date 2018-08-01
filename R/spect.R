@@ -4,7 +4,7 @@
 ## Aaron A. King, U of Michigan
 
 setClass(
-  "spect.pomp",
+  "spectd_pomp",
   contains="pomp",
   slots=c(
     kernel.width="numeric",
@@ -20,7 +20,7 @@ setClass(
 
 setMethod(
   "summary",
-  "spect.pomp",
+  "spectd_pomp",
   function (object, ...) {
     list(
       coef=coef(object),
@@ -208,7 +208,7 @@ setMethod(
     pompUnload(object)
 
     new(
-      "spect.pomp",
+      "spectd_pomp",
       object,
       kernel.width=kernel.width,
       transform.data=transform.data,
@@ -224,7 +224,7 @@ setMethod(
 
 setMethod(
   "spect",
-  signature(object="spect.pomp"),
+  signature(object="spectd_pomp"),
   function (object, params, vars, kernel.width, nsim, seed = NULL, transform.data, detrend, ...) {
     if (missing(params)) params <- coef(object)
     if (missing(vars)) vars <- colnames(object@datspec)
@@ -248,14 +248,14 @@ setMethod(
 
 setMethod(
   "plot",
-  "spect.pomp",
+  "spectd_pomp",
   function (x, y, max.plots.per.page = 4,
             plot.data = TRUE,
             quantiles = c(.025, .25, .5, .75, .975),
             quantile.styles = list(lwd=1, lty=1, col="gray70"),
             data.styles = list(lwd=2, lty=2, col="black")) {
 
-    ep <- paste0("in ",sQuote("plot-spect.pomp"),": ")
+    ep <- paste0("in ",sQuote("plot-spectd_pomp"),": ")
     spomp <- x
     nquants <- length(quantiles)
 

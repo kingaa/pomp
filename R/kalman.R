@@ -1,5 +1,5 @@
 setClass(
-  "kalmand.pomp",
+  "kalmand_pomp",
   contains="pomp",
   slots=c(
     Np="integer",
@@ -109,7 +109,7 @@ enkf.internal <- function (object, params, h, R, Np, verbose) {
 
   }
 
-  new("kalmand.pomp",object,Np=Np,
+  new("kalmand_pomp",object,Np=Np,
       filter.mean=filterMeans,
       pred.mean=predMeans,
       forecast=forecast,
@@ -213,7 +213,7 @@ eakf.internal <- function (object, params, C, R, Np, verbose) {
     X[,] <- b%*%X+fm[,]
   }
 
-  new("kalmand.pomp",object,Np=Np,
+  new("kalmand_pomp",object,Np=Np,
       filter.mean=filterMeans,
       pred.mean=predMeans,
       forecast=forecast,

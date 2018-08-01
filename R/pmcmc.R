@@ -1,7 +1,7 @@
 ## define the pmcmc class
 setClass(
-  "pmcmc",
-  contains="pfilterd.pomp",
+  "pmcmcd_pomp",
+  contains="pfilterd_pomp",
   slots=c(
     pars = "character",
     Nmcmc = "integer",
@@ -49,7 +49,7 @@ setMethod(
 
 setMethod(
   "pmcmc",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   function (object, Nmcmc = 1, Np, tol, ...) {
 
     if (missing(Np)) Np <- object@Np
@@ -61,7 +61,7 @@ setMethod(
 
 setMethod(
   "pmcmc",
-  signature=signature(object="pmcmc"),
+  signature=signature(object="pmcmcd_pomp"),
   function (object, Nmcmc, start, proposal,
     Np, tol, max.fail = Inf,
     verbose = getOption("verbose"),
@@ -80,7 +80,7 @@ setMethod(
 
 setMethod(
   "continue",
-  signature=signature(object="pmcmc"),
+  signature=signature(object="pmcmcd_pomp"),
   function (object, Nmcmc = 1, ...) {
 
     ndone <- object@Nmcmc
@@ -92,7 +92,7 @@ setMethod(
       ...,
       .ndone=ndone,
       .accepts=accepts,
-      .prev.pfp=as(object,"pfilterd.pomp"),
+      .prev.pfp=as(object,"pfilterd_pomp"),
       .prev.log.prior=object@log.prior
     )
 
@@ -312,7 +312,7 @@ pmcmc.internal <- function (object, Nmcmc,
   pompUnload(object,verbose=verbose)
 
   new(
-    "pmcmc",
+    "pmcmcd_pomp",
     pfp,
     params=theta,
     pars=pars,

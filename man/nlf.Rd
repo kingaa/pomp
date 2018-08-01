@@ -6,13 +6,13 @@
 \alias{nlf,missing-method}
 \alias{nlf,pomp-method}
 \alias{nlf-pomp}
-\alias{nlf,nlfd.pomp-method}
-\alias{nlf-nlfd.pomp}
-\alias{nlfd.pomp-class}
-\alias{logLik,nlfd.pomp-method}
-\alias{logLik-nlfd.pomp}
-\alias{$,nlfd.pomp-method}
-\alias{$-nlfd.pomp}
+\alias{nlf,nlfd_pomp-method}
+\alias{nlf-nlfd_pomp}
+\alias{nlfd_pomp-class}
+\alias{logLik,nlfd_pomp-method}
+\alias{logLik-nlfd_pomp}
+\alias{$,nlfd_pomp-method}
+\alias{$-nlfd_pomp}
 \description{
   \code{nlf} calls an optimizer to maximize the nonlinear forecasting (NLF) goodness of fit.
   The latter is computed by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series, and quantifying the ability of the resulting fitted model to predict the data time series.
@@ -26,7 +26,7 @@
      skip.se = FALSE, verbose = getOption("verbose"), bootsamp = NULL,
      lql.frac = 0.1, se.par.frac = 0.1, eval.only = FALSE,
      transform = FALSE, \dots)
-\S4method{nlf}{nlfd.pomp}(object, start, est, lags, period, tensor,
+\S4method{nlf}{nlfd_pomp}(object, start, est, lags, period, tensor,
      nconverge, nasymp, seed, transform.data, nrbf, method,
      lql.frac, se.par.frac, transform, \dots)
 }
@@ -111,9 +111,9 @@
   This runs an optimizer to maximize \code{nlf.objfun}.
 }
 \value{
-  An object of class \code{nlfd.pomp}.
+  An object of class \code{nlfd_pomp}.
   \code{logLik} applied to such an object returns the log quasi likelihood.
-  The \code{$} method allows extraction of arbitrary slots from the \code{nlfd.pomp} object.
+  The \code{$} method allows extraction of arbitrary slots from the \code{nlfd_pomp} object.
 }
 \references{
   The following papers describe and motivate the NLF approach to model fitting:

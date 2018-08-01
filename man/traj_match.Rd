@@ -6,15 +6,15 @@
 \alias{traj.match,ANY-method}
 \alias{traj.match,missing-method}
 \alias{traj.match,pomp-method}
-\alias{traj.match-traj.matched.pomp}
-\alias{traj.match,traj.matched.pomp-method}
-\alias{logLik,traj.matched.pomp-method}
-\alias{logLik-traj.matched.pomp}
-\alias{$,traj.matched.pomp-method}
-\alias{$-traj.matched.pomp}
-\alias{summary,traj.matched.pomp-method}
-\alias{summary-traj.matched.pomp}
-\alias{traj.matched.pomp-class}
+\alias{traj.match-traj_matched_pomp}
+\alias{traj.match,traj_matched_pomp-method}
+\alias{logLik,traj_matched_pomp-method}
+\alias{logLik-traj_matched_pomp}
+\alias{$,traj_matched_pomp-method}
+\alias{$-traj_matched_pomp}
+\alias{summary,traj_matched_pomp-method}
+\alias{summary-traj_matched_pomp}
+\alias{traj_matched_pomp-class}
 \alias{traj.match.objfun}
 \alias{traj.match.objfun-pomp}
 \alias{traj.match.objfun,ANY-method}
@@ -31,7 +31,7 @@
            method = c("Nelder-Mead","subplex","SANN","BFGS",
                       "sannbox","nloptr"),
            transform = FALSE, \dots)
-  \S4method{traj.match}{traj.matched.pomp}(object, est, transform, \dots)
+  \S4method{traj.match}{traj_matched_pomp}(object, est, transform, \dots)
   \S4method{traj.match.objfun}{pomp}(object, params, est, transform = FALSE, \dots)
 }
 \arguments{
@@ -86,7 +86,7 @@
   Specifically, \code{traj.match.objfun} will return a function that takes a single numeric-vector argument that is assumed to cotain the parameters named in \code{est}, in that order.
 }
 \value{
-  \code{traj.match} returns an object of class \code{traj.matched.pomp}.
+  \code{traj.match} returns an object of class \code{traj_matched_pomp}.
   This class inherits from class \code{\link[=pomp-class]{pomp}} and contains the following additional slots:
   \describe{
     \item{transform, est}{

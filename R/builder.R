@@ -1,5 +1,5 @@
 ## 'hitch' takes (as '...') the workhorse specifications (as R functions or
-## C snippets, processes these, and hitches them to 'pomp.fun' objects
+## C snippets, processes these, and hitches them to 'pomp_fun' objects
 ## suitable for use in the appropriate slots in 'pomp' objects.
 
 hitch <- function (..., templates,
@@ -82,7 +82,7 @@ hitch <- function (..., templates,
   names(funs) <- names(horses)
 
   for (s in names(funs)) {
-    funs[[s]] <- pomp.fun(
+    funs[[s]] <- pomp_fun(
       f=horses[[s]],
       slotname=templates[[s]]$slotname,
       PACKAGE=PACKAGE,

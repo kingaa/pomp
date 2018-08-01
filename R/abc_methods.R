@@ -6,7 +6,7 @@ setClass(
   contains="list",
   validity=function (object) {
     if (length(object) > 0) {
-      if (!all(vapply(object,is,logical(1),"abc"))) {
+      if (!all(vapply(object,is,logical(1),"abcd_pomp"))) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": dissimilar objects cannot be combined"
@@ -17,7 +17,7 @@ setClass(
       if (!all(apply(d,1,diff)==0)) {
         retval <- paste0(
           "error in ",sQuote("c"),
-          ": to be combined, ",sQuote("abc"),
+          ": to be combined, ",sQuote("abcd_pomp"),
           " objects must have chains of equal length"
         )
         return(retval)
@@ -27,7 +27,7 @@ setClass(
   }
 )
 
-setClassUnion("Abc",c("abc","abcList"))
+setClassUnion("Abc",c("abcd_pomp","abcList"))
 
 setMethod(
   "concat",
@@ -66,7 +66,7 @@ setMethod(
 ## extract the convergence record as an 'mcmc' object
 setMethod(
   "traces",
-  signature=signature(object="abc"),
+  signature=signature(object="abcd_pomp"),
   definition=function (object, pars, ...) {
     if (missing(pars)) pars <- colnames(object@traces)
     coda::mcmc(object@traces[,pars,drop=FALSE])
@@ -84,9 +84,9 @@ setMethod(
 
 setMethod(
   "show",
-  signature=signature(object="abc"),
+  signature=signature(object="abcd_pomp"),
   definition=function (object) {
-    cat("<object of class ",sQuote("abc"),">\n",sep="")
+    cat("<object of class ",sQuote("abcd_pomp"),">\n",sep="")
     invisible(NULL)
   }
 )
@@ -101,32 +101,18 @@ setMethod(
   }
 )
 
-## plot abc object
 setMethod(
   "plot",
-  signature=signature(x="abc"),
+  signature=signature(x="Abc"),
   definition=function (x, y, pars, scatter = FALSE, ...) {
-    if (!missing(y)) {
-      warning("in ",sQuote("plot-abc"),": ",
-        sQuote("y")," is ignored",call.=FALSE)
-    }
-    abc.diagnostics(c(x),pars=pars,scatter=scatter,...)
-  }
-)
-
-setMethod(
-  "plot",
-  signature=signature(x="abcList"),
-  definition=function (x, y, ...) {
-    if (!missing(y)) {
-      warning("in ",sQuote("plot-abc"),": ",
-        sQuote("y")," is ignored",call.=FALSE)
-    }
-    abc.diagnostics(x,...)
+    if (!missing(y))
+      warning("in ",sQuote("plot"),": ",sQuote("y")," is ignored",call.=FALSE)
+    abc.diagnostics(x,pars=pars,scatter=scatter,...)
   }
 )
 
 abc.diagnostics <- function (z, pars, scatter = FALSE, ...) {
+  if (!is.list(z)) z <- list(z)
   if (missing(pars)) {
     pars <- unique(do.call(c,lapply(z,slot,"pars")))
     if (length(pars)<1)

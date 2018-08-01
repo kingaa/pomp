@@ -3,35 +3,31 @@
 \alias{mif2}
 \alias{mif2,ANY-method}
 \alias{mif2,missing-method}
-\alias{mif2,mif2d.pomp-method}
-\alias{mif2-mif2d.pomp}
-\alias{mif2,pfilterd.pomp-method}
-\alias{mif2-pfilterd.pomp}
+\alias{mif2,mif2d_pomp-method}
+\alias{mif2-mif2d_pomp}
+\alias{mif2,pfilterd_pomp-method}
+\alias{mif2-pfilterd_pomp}
 \alias{mif2,pomp-method}
 \alias{mif2-pomp}
 \alias{continue,ANY-method}
 \alias{continue,missing-method}
-\alias{continue,mif2d.pomp-method}
-\alias{continue-mif2d.pomp}
-\alias{mif2d.pomp-methods}
-\alias{traces,mif2d.pomp-method}
-\alias{traces-mif2d.pomp}
+\alias{continue,mif2d_pomp-method}
+\alias{continue-mif2d_pomp}
+\alias{mif2d_pomp-methods}
+\alias{traces,mif2d_pomp-method}
+\alias{traces-mif2d_pomp}
 \alias{traces,mif2List-method}
 \alias{traces-mif2List}
 \alias{coef,mif2List-method}
 \alias{coef.rec-mif2List}
-\alias{show,mif2d.pomp-method}
-\alias{show-mif2d.pomp}
+\alias{show,mif2d_pomp-method}
+\alias{show-mif2d_pomp}
 \alias{show,mif2List-method}
 \alias{show-mif2List}
-\alias{plot-mif2d.pomp}
-\alias{plot,mif2d.pomp-method}
-\alias{plot-mif2List}
-\alias{plot,mif2List-method}
-\alias{c-mif2d.pomp}
-\alias{c,mif2d.pomp-method}
-\alias{c-mif2List}
-\alias{c,mif2List-method}
+\alias{plot-Mif2}
+\alias{plot,Mif2-method}
+\alias{c-Mif2}
+\alias{c,Mif2-method}
 \alias{[-mif2List}
 \alias{[,mif2List-method}
 \alias{rw.sd}
@@ -48,11 +44,11 @@
 \S4method{mif2}{pomp}(object, Nmif = 1, start, Np, rw.sd, transform = FALSE,
     cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
     tol = 1e-17, max.fail = Inf, verbose = getOption("verbose"), \dots)
-\S4method{mif2}{pfilterd.pomp}(object, Nmif = 1, Np, tol, \dots)
-\S4method{mif2}{mif2d.pomp}(object, Nmif, start, Np, rw.sd, transform,
+\S4method{mif2}{pfilterd_pomp}(object, Nmif = 1, Np, tol, \dots)
+\S4method{mif2}{mif2d_pomp}(object, Nmif, start, Np, rw.sd, transform,
     cooling.type, cooling.fraction.50, tol, \dots)
-\S4method{continue}{mif2d.pomp}(object, Nmif = 1, \dots)
-\S4method{traces}{mif2d.pomp}(object, pars, transform = FALSE, \dots)
+\S4method{continue}{mif2d_pomp}(object, Nmif = 1, \dots)
+\S4method{traces}{mif2d_pomp}(object, pars, transform = FALSE, \dots)
 \S4method{traces}{mif2List}(object, \dots)
 rw.sd(\dots)
 }
@@ -112,8 +108,8 @@ rw.sd(\dots)
   \item{pars}{names of parameters.}
 }
 \value{
-  Upon successful completion, \code{mif2} returns an object of class \code{mif2d.pomp}.
-  This class inherits from the \code{\link{pfilterd.pomp}} and \code{\link{pomp}} classes.
+  Upon successful completion, \code{mif2} returns an object of class \code{mif2d_pomp}.
+  This class inherits from the \code{\link{pfilterd_pomp}} and \code{\link{pomp}} classes.
 }
 \section{Specifying the perturbations: the \code{rw.sd} function}{
   This function simply returns a list containing its arguments as unevaluated expressions.
@@ -142,7 +138,7 @@ rw.sd(\dots)
   Thus, in either case, the perturbations at the end of 50 IF2 iterations are a fraction \eqn{\alpha}{alpha} smaller than they are at first.
 }
 \section{Re-running \code{mif2} Iterations}{
-  To re-run a sequence of \code{mif2} iterations, one can use the \code{mif2} method on a \code{mif2d.pomp} object.
+  To re-run a sequence of \code{mif2} iterations, one can use the \code{mif2} method on a \code{mif2d_pomp} object.
   By default, the same parameters used for the original \code{mif2} run are re-used (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
   If one does specify additional arguments, these will override the defaults.
 }
@@ -153,7 +149,7 @@ rw.sd(\dots)
   Additional arguments will override these defaults.
 }
 \section{Methods}{
-  Methods that can be used to manipulate, display, or extract information from a \code{mif2d.pomp} object:
+  Methods that can be used to manipulate, display, or extract information from a \code{mif2d_pomp} object:
   \describe{
     \item{traces}{
       \code{traces(object, pars, transform)} returns the history of the IF2 iterations as a matrix, which can be useful for diagnostic purposes.
@@ -166,10 +162,10 @@ rw.sd(\dots)
       To obtain the latter, one must run \code{pfilter} on the result of the \code{mif2} computation.
     }
     \item{c}{
-      Concatenates \code{mif2d.pomp} objects into a \code{mif2List}.
+      Concatenates \code{mif2d_pomp} objects into a \code{mif2List}.
     }
     \item{plot}{
-      Plots a series of diagnostic plots when applied to a \code{mif2d.pomp} or \code{mif2List} object.
+      Plots a series of diagnostic plots when applied to a \code{mif2d_pomp} or \code{mif2List} object.
     }
   }
 }

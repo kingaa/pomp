@@ -1,4 +1,4 @@
-## this file defines methods for the 'pmcmc' and 'pmcmcList' classes
+## this file defines methods for the 'pmcmcd_pomp' and 'pmcmcList' classes
 
 ## pmcmcList class
 setClass(
@@ -6,7 +6,7 @@ setClass(
   contains="list",
   validity=function (object) {
     if (length(object) > 0) {
-      if (!all(vapply(object,is,logical(1),"pmcmc"))) {
+      if (!all(vapply(object,is,logical(1),"pmcmcd_pomp"))) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": dissimilar objects cannot be combined"
@@ -17,7 +17,7 @@ setClass(
       if (!all(apply(d,1,diff)==0)) {
         retval <- paste0(
           "error in ",sQuote("c"),
-          ": to be combined, ",sQuote("pmcmc"),
+          ": to be combined, ",sQuote("pmcmcd_pomp"),
           " objects must have chains of equal length"
         )
         return(retval)
@@ -27,7 +27,7 @@ setClass(
   }
 )
 
-setClassUnion("Pmcmc",c("pmcmc","pmcmcList"))
+setClassUnion("Pmcmc",c("pmcmcd_pomp","pmcmcList"))
 
 setMethod(
   "concat",
@@ -66,7 +66,7 @@ setMethod(
 ## extract the convergence record as a coda::mcmc object
 setMethod(
   'traces',
-  signature=signature(object='pmcmc'),
+  signature=signature(object='pmcmcd_pomp'),
   function (object, pars, ...) {
     if (missing(pars)) pars <- colnames(object@traces)
     coda::mcmc(object@traces[,pars,drop=FALSE])
@@ -82,12 +82,12 @@ setMethod(
   }
 )
 
-## extract the filtered trajectories from a pmcmc
+## extract the filtered trajectories from a pmcmcd_pomp
 setMethod(
   'filter.traj',
-  signature=signature(object='pmcmc'),
+  signature=signature(object='pmcmcd_pomp'),
   definition=function (object, ...) {
-    filter.traj(as(object,"pfilterd.pomp"),...)
+    filter.traj(as(object,"pfilterd_pomp"),...)
   }
 )
 
@@ -100,7 +100,6 @@ setMethod(
   }
 )
 
-## plot pmcmc object
 setMethod(
   "plot",
   signature=signature(x='Pmcmc'),
@@ -111,7 +110,7 @@ setMethod(
 
 setMethod(
   "show",
-  signature=signature(object="pmcmc"),
+  signature=signature(object="pmcmcd_pomp"),
   definition=function (object) {
     cat("<object of class ",sQuote("abc"),">\n",sep="")
     invisible(NULL)
@@ -129,5 +128,5 @@ setMethod(
 )
 
 ## extract the estimated log likelihood
-setMethod('logLik','pmcmc',function(object,...)object@loglik)
+setMethod('logLik','pmcmcd_pomp',function(object,...)object@loglik)
 setMethod('logLik','pmcmcList',function(object,...)sapply(object,slot,"loglik"))

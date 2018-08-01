@@ -3,41 +3,34 @@
 \docType{methods}
 \alias{abc}
 \alias{ABC}
-\alias{abc-abc}
-\alias{abc,probed.pomp-method}
+\alias{abc,probed_pomp-method}
 \alias{abc,ANY-method}
 \alias{abc,missing-method}
-\alias{abc-probed.pomp}
+\alias{abc-probed_pomp}
 \alias{abc,pomp-method}
 \alias{abc-pomp}
-\alias{abc,abc-method}
-\alias{abc-abc}
-\alias{continue,abc-method}
-\alias{continue-abc}
+\alias{abc,abcd_pomp-method}
+\alias{abc-abcd_pomp}
+\alias{continue,abcd_pomp-method}
+\alias{continue-abcd_pomp}
 \alias{abc-methods}
-\alias{traces,abc-method}
-\alias{traces-abc}
+\alias{traces,abcd_pomp-method}
+\alias{traces-abcd_pomp}
 \alias{traces,abcList-method}
 \alias{traces-abcList}
-\alias{plot-abc}
-\alias{plot,abc-method}
-\alias{plot-abcList}
-\alias{plot,abcList-method}
+\alias{plot-Abc}
+\alias{plot,Abc-method}
 \alias{c-Abc}
 \alias{c,Abc-method}
-\alias{show,abc-method}
-\alias{show-abc}
+\alias{show,abcd_pomp-method}
+\alias{show-abcd_pomp}
 \alias{show,abcList-method}
 \alias{show-abcList}
 \alias{covmat}
-\alias{covmat,abc-method}
-\alias{covmat-abc}
+\alias{covmat,abcd_pomp-method}
+\alias{covmat-abcd_pomp}
 \alias{covmat,abcList-method}
 \alias{covmat-abcList}
-\alias{c-abc}
-\alias{c,abc-method}
-\alias{c-abcList}
-\alias{c,abcList-method}
 \alias{[-abcList}
 \alias{[,abcList-method}
 \description{
@@ -47,20 +40,19 @@
 \S4method{abc}{pomp}(object, Nabc = 1, start,
     proposal, probes, scale, epsilon,
     verbose = getOption("verbose"), \dots)
-\S4method{abc}{probed.pomp}(object, probes,
+\S4method{abc}{probed_pomp}(object, probes,
     verbose = getOption("verbose"), \dots)
-\S4method{abc}{abc}(object, Nabc, start, proposal,
+\S4method{abc}{abcd_pomp}(object, Nabc, start, proposal,
     probes, scale, epsilon,
     verbose = getOption("verbose"), \dots)
-\S4method{continue}{abc}(object, Nabc = 1, \dots)
-\S4method{traces}{abc}(object, pars, \dots)
+\S4method{continue}{abcd_pomp}(object, Nabc = 1, \dots)
+\S4method{traces}{abcd_pomp}(object, pars, \dots)
 \S4method{traces}{abcList}(object, \dots)
-\S4method{plot}{abc}(x, y, pars, scatter = FALSE, \dots)
-\S4method{plot}{abcList}(x, y, \dots)
+\S4method{plot}{Abc}(x, y, pars, scatter = FALSE, \dots)
 }
 \arguments{
   \item{object}{
-    An object of class \code{pomp}.
+    An object of class \dQuote{pomp}.
   }
   \item{Nabc}{
     The number of ABC iterations to perform.
@@ -102,7 +94,7 @@
   }
 }
 \section{Running ABC}{
-  \code{abc} returns an object of class \code{abc}.
+  \code{abc} returns an object of class \dQuote{abcd_pomp}.
   One or more \code{abc} objects can be joined to form an \code{abcList} object.
 }
 \section{Re-running ABC iterations}{
@@ -120,7 +112,7 @@
   Methods that can be used to manipulate, display, or extract information from an \code{abc} object:
   \describe{
     \item{\code{traces(object, pars)} }{
-      returns the history of the ABC iterations as an object of class \code{\link[coda]{mcmc}} or \code{\link[coda]{mcmc.list}}.
+      returns the history of the ABC iterations as an object of class \dQuote{\link[coda]{mcmc}} or \dQuote{\link[coda]{mcmc.list}}.
       Thus, it can be used as input for the various \pkg{coda} convergence diagnostics.
     }
     \item{c}{

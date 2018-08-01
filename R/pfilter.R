@@ -1,7 +1,7 @@
 ## particle filtering codes
 
 setClass(
-  "pfilterd.pomp",
+  "pfilterd_pomp",
   contains="pomp",
   slots=c(
     pred.mean="array",
@@ -75,7 +75,7 @@ setMethod(
 
 setMethod(
   "pfilter",
-  signature=signature(object="pfilterd.pomp"),
+  signature=signature(object="pfilterd_pomp"),
   function (object, params, Np, tol, ...) {
 
     if (missing(params)) params <- coef(object)
@@ -396,7 +396,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   pompUnload(object,verbose=verbose)
 
   new(
-    "pfilterd.pomp",
+    "pfilterd_pomp",
     object,
     pred.mean=pred.m,
     pred.var=pred.v,

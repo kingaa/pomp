@@ -7,23 +7,23 @@
 \alias{bsmc2,missing-method}
 \alias{bsmc2,pomp-method}
 \alias{prior_samples}
-\alias{prior_samples,bsmcd.pomp-method}
-\alias{prior_samples-bsmcd.pomp}
+\alias{prior_samples,bsmcd_pomp-method}
+\alias{prior_samples-bsmcd_pomp}
 \alias{posterior_samples}
-\alias{posterior_samples,bsmcd.pomp-method}
-\alias{posterior_samples-bsmcd.pomp}
-\alias{show,bsmcd.pomp-method}
-\alias{show-bsmcd.pomp}
-\alias{plot,bsmcd.pomp-method}
-\alias{plot-bsmcd.pomp}
+\alias{posterior_samples,bsmcd_pomp-method}
+\alias{posterior_samples-bsmcd_pomp}
+\alias{show,bsmcd_pomp-method}
+\alias{show-bsmcd_pomp}
+\alias{plot,bsmcd_pomp-method}
+\alias{plot-bsmcd_pomp}
 \alias{logEvidence}
-\alias{logEvidence,bsmcd.pomp-method}
-\alias{logEvidence-bsmcd.pomp}
+\alias{logEvidence,bsmcd_pomp-method}
+\alias{logEvidence-bsmcd_pomp}
 \alias{cond.logEvidence}
-\alias{cond.logEvidence,bsmcd.pomp-method}
-\alias{cond.logEvidence-bsmcd.pomp}
-\alias{eff.sample.size,bsmcd.pomp-method}
-\alias{eff.sample.size-bsmcd.pomp}
+\alias{cond.logEvidence,bsmcd_pomp-method}
+\alias{cond.logEvidence-bsmcd_pomp}
+\alias{eff.sample.size,bsmcd_pomp-method}
+\alias{eff.sample.size-bsmcd_pomp}
 \description{
   Modified version of the Liu and West (2001) algorithm.
 }
@@ -70,9 +70,9 @@
   }
 }
 \value{
-  An object of class \dQuote{bsmcd.pomp}.
+  An object of class \dQuote{bsmcd_pomp}.
   One can plot the results using the \code{plot} method.
-  \code{plot(x, \dots, pars, thin)}, when \code{x} is a \code{bsmcd.pomp} object, produces density and scatter plots of the prior and posterior distributions.
+  \code{plot(x, \dots, pars, thin)}, when \code{x} is a \code{bsmcd_pomp} object, produces density and scatter plots of the prior and posterior distributions.
   One can restrict to particular parameters by naming them in the \code{pars} argument.
   By default, all the samples are plotted.
   When the number of samples is very large, it can be helpful to plot a subsample:

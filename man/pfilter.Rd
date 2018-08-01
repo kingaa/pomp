@@ -8,33 +8,33 @@
 \alias{pfilter,missing-method}
 \alias{pfilter,pomp-method}
 \alias{pfilter-pomp}
-\alias{pfilter,pfilterd.pomp-method}
-\alias{pfilter-pfilterd.pomp}
-\alias{pfilterd.pomp-class}
-\alias{pfilterd.pomp}
-\alias{logLik,pfilterd.pomp-method}
-\alias{logLik-pfilterd.pomp}
+\alias{pfilter,pfilterd_pomp-method}
+\alias{pfilter-pfilterd_pomp}
+\alias{pfilterd_pomp-class}
+\alias{pfilterd_pomp}
+\alias{logLik,pfilterd_pomp-method}
+\alias{logLik-pfilterd_pomp}
 \alias{pred.mean}
-\alias{pred.mean,pfilterd.pomp-method}
-\alias{pred.mean-pfilterd.pomp}
+\alias{pred.mean,pfilterd_pomp-method}
+\alias{pred.mean-pfilterd_pomp}
 \alias{pred.var}
-\alias{pred.var,pfilterd.pomp-method}
-\alias{pred.var-pfilterd.pomp}
+\alias{pred.var,pfilterd_pomp-method}
+\alias{pred.var-pfilterd_pomp}
 \alias{filter.mean}
-\alias{filter.mean,pfilterd.pomp-method}
-\alias{filter.mean-pfilterd.pomp}
+\alias{filter.mean,pfilterd_pomp-method}
+\alias{filter.mean-pfilterd_pomp}
 \alias{filter.traj}
-\alias{filter.traj,pfilterd.pomp-method}
-\alias{filter.traj-pfilterd.pomp}
-\alias{eff.sample.size,pfilterd.pomp-method}
-\alias{eff.sample.size-pfilterd.pomp}
-\alias{cond.logLik,pfilterd.pomp-method}
-\alias{cond.logLik-pfilterd.pomp}
-\alias{as,pfilterd.pomp-method}
-\alias{as.data.frame.pfilterd.pomp}
-\alias{coerce,pfilterd.pomp,data.frame-method}
-\alias{show,pfilterd.pomp-method}
-\alias{show-pfilterd.pomp}
+\alias{filter.traj,pfilterd_pomp-method}
+\alias{filter.traj-pfilterd_pomp}
+\alias{eff.sample.size,pfilterd_pomp-method}
+\alias{eff.sample.size-pfilterd_pomp}
+\alias{cond.logLik,pfilterd_pomp-method}
+\alias{cond.logLik-pfilterd_pomp}
+\alias{as,pfilterd_pomp-method}
+\alias{as.data.frame.pfilterd_pomp}
+\alias{coerce,pfilterd_pomp,data.frame-method}
+\alias{show,pfilterd_pomp-method}
+\alias{show-pfilterd_pomp}
 \description{
   A plain vanilla sequential Monte Carlo (particle filter) algorithm.
   Resampling is performed at each observation.
@@ -44,14 +44,14 @@
     max.fail = Inf, pred.mean = FALSE, pred.var = FALSE,
     filter.mean = FALSE, filter.traj = FALSE, save.states = FALSE,
     save.params = FALSE, verbose = getOption("verbose"), \dots)
-\S4method{pfilter}{pfilterd.pomp}(object, params, Np, tol, \dots)
-\S4method{logLik}{pfilterd.pomp}(object, \dots)
-\S4method{cond.logLik}{pfilterd.pomp}(object, \dots)
-\S4method{eff.sample.size}{pfilterd.pomp}(object, \dots)
-\S4method{pred.mean}{pfilterd.pomp}(object, pars, \dots)
-\S4method{pred.var}{pfilterd.pomp}(object, pars, \dots)
-\S4method{filter.mean}{pfilterd.pomp}(object, pars, \dots)
-\S4method{filter.traj}{pfilterd.pomp}(object, vars, \dots)
+\S4method{pfilter}{pfilterd_pomp}(object, params, Np, tol, \dots)
+\S4method{logLik}{pfilterd_pomp}(object, \dots)
+\S4method{cond.logLik}{pfilterd_pomp}(object, \dots)
+\S4method{eff.sample.size}{pfilterd_pomp}(object, \dots)
+\S4method{pred.mean}{pfilterd_pomp}(object, pars, \dots)
+\S4method{pred.var}{pfilterd_pomp}(object, pars, \dots)
+\S4method{filter.mean}{pfilterd_pomp}(object, pars, \dots)
+\S4method{filter.traj}{pfilterd_pomp}(object, vars, \dots)
 }
 \arguments{
   \item{object}{
@@ -98,8 +98,8 @@
   }
   \item{save.states, save.params}{
     logical.
-    If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \code{\link[=pfilterd.pomp-class]{pfilterd.pomp}} object.
-    If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \code{\link[=pfilterd.pomp-class]{pfilterd.pomp}} object.
+    If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \code{\link[=pfilterd_pomp-class]{pfilterd_pomp}} object.
+    If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \code{\link[=pfilterd_pomp-class]{pfilterd_pomp}} object.
   }
   \item{verbose}{
     logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.
@@ -111,7 +111,7 @@
   }
 }
 \value{
-  An object of class \code{pfilterd.pomp}.
+  An object of class \code{pfilterd_pomp}.
   This class inherits from class \code{\link[=pomp-class]{pomp}}.
   The following additional slots can be accessed via the \code{$} operator:
   \describe{

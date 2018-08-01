@@ -7,19 +7,19 @@
 \alias{spect-pomp}
 \alias{spect,ANY-method}
 \alias{spect,missing-method}
-\alias{spect,spect.pomp-method}
-\alias{spect-spect.pomp}
+\alias{spect,spectd_pomp-method}
+\alias{spect-spectd_pomp}
 \alias{spect.match}
 \alias{spect.match,ANY-method}
 \alias{spect.match,missing-method}
 \alias{spect.match,pomp-method}
 \alias{spect.match-pomp}
-\alias{spect.match,spect.pomp-method}
-\alias{spect.match-spect.pomp}
-\alias{spect.match,spect.matched.pomp-method}
-\alias{spect.match-spect.matched.pomp}
-\alias{spect.pomp-class}
-\alias{spect.matched.pomp-class}
+\alias{spect.match,spectd_pomp-method}
+\alias{spect.match-spectd_pomp}
+\alias{spect.match,spect_matched_pomp-method}
+\alias{spect.match-spect_matched_pomp}
+\alias{spectd_pomp-class}
+\alias{spect_matched_pomp-class}
 \description{
   \code{spect} estimates the power spectrum of time series data and model simulations and compares the results.
   It can be used to diagnose goodness of fit and/or as the basis for frequency-domain parameter estimation (\code{spect.match}).
@@ -31,14 +31,14 @@
 \S4method{spect}{pomp}(object, params, vars, kernel.width, nsim, seed = NULL,
      transform.data,detrend = c("none","mean","linear","quadratic"),
      \dots)
-\S4method{spect}{spect.pomp}(object, params, vars, kernel.width, nsim, seed = NULL,
+\S4method{spect}{spectd_pomp}(object, params, vars, kernel.width, nsim, seed = NULL,
      transform.data, detrend, \dots)
 \S4method{spect.match}{pomp}(object, start, est = character(0), vars, nsim,
      seed = NULL, kernel.width, transform.data,
      detrend = c("none","mean","linear","quadratic"), weights = 1,
      method = c("subplex","Nelder-Mead","SANN"), verbose = getOption("verbose"),
      fail.value = NA, \dots)
-\S4method{spect.match}{spect.pomp}(object, start, est = character(0), vars, nsim,
+\S4method{spect.match}{spectd_pomp}(object, start, est = character(0), vars, nsim,
      seed = NULL, kernel.width, transform.data, detrend, weights = 1,
      method = c("subplex","Nelder-Mead","SANN"), verbose = getOption("verbose"),
      fail.value = NA, \dots)
@@ -110,15 +110,15 @@
 }
 \details{
   A call to \code{spect} results in the estimation of the power spectrum for the (transformed, detrended) data and \code{nsim} model simulations.
-  The results of these computations are stored in an object of class \code{\link[=spect.pomp-class]{spect.pomp}}.
+  The results of these computations are stored in an object of class \code{\link[=spectd_pomp-class]{spectd_pomp}}.
 
 
   A call to \code{spect.match} results in an attempt to optimize the agreement between model and data spectrum over the parameters named in \code{est}.
-  The results, including coefficients of the fitted model and power spectra of fitted model and data, are stored in an object of class \code{\link[=spect.matched.pomp-class]{spect.matched.pomp}}.
+  The results, including coefficients of the fitted model and power spectra of fitted model and data, are stored in an object of class \code{\link[=spect_matched_pomp-class]{spect_matched_pomp}}.
 }
 \value{
-  \code{spect} returns an object of class \code{spect.pomp}, which is derived from class \code{\link[=pomp-class]{pomp}} and therefore has all the slots of that class.
-  In addition, \code{spect.pomp} objects have the following slots:
+  \code{spect} returns an object of class \code{spectd_pomp}, which is derived from class \code{\link[=pomp-class]{pomp}} and therefore has all the slots of that class.
+  In addition, \code{spectd_pomp} objects have the following slots:
   \describe{
     \item{kernel.width}{width parameter of the smoothing kernel used.}
     \item{transform}{transformation function used.}
@@ -132,8 +132,8 @@
     \item{detrend}{detrending option used.}
   }
 
-  \code{spect.match} returns an object of class \code{spect.matched.pomp}, which is derived from class \code{spect.pomp} and therefore has all the slots of that class.
-  In addition, \code{spect.matched.pomp} objects have the following slots:
+  \code{spect.match} returns an object of class \code{spect_matched_pomp}, which is derived from class \code{spectd_pomp} and therefore has all the slots of that class.
+  In addition, \code{spect_matched_pomp} objects have the following slots:
   \describe{
     \item{est, weights, fail.value}{values of the corresponding arguments in the call to \code{spect.match}.}
     \item{evals}{

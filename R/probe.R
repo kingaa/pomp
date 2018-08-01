@@ -1,5 +1,5 @@
 setClass(
-  "probed.pomp",
+  "probed_pomp",
   contains="pomp",
   slots=c(
     probes="list",
@@ -37,7 +37,7 @@ setMethod(
 
 setMethod(
   "probe",
-  signature=signature(object="probed.pomp"),
+  signature=signature(object="probed_pomp"),
   definition=function (object, probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE)) {
 
@@ -150,7 +150,7 @@ probe.internal <- function (object, probes, params, nsim, seed,
   coef(object) <- params
 
   new(
-    "probed.pomp",
+    "probed_pomp",
     object,
     probes=probes,
     datvals=datval,

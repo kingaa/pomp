@@ -1,4 +1,4 @@
-## ancillary methods for working with 'mif2d.pomp' and 'mif2List' objects
+## ancillary methods for working with 'mif2d_pomp' and 'mif2List' objects
 
 ## mif2List class
 setClass(
@@ -6,7 +6,7 @@ setClass(
   contains="list",
   validity=function (object) {
     if (length(object) > 0) {
-      if (!all(vapply(object,is,logical(1),"mif2d.pomp"))) {
+      if (!all(vapply(object,is,logical(1),"mif2d_pomp"))) {
         retval <- paste0(
           "error in ",sQuote("c"),
           ": dissimilar objects cannot be combined"
@@ -17,7 +17,7 @@ setClass(
       if (!all(apply(d,1,diff)==0)) {
         retval <- paste0(
           "error in ",sQuote("c"),
-          ": to be combined, ",sQuote("mif2d.pomp"),
+          ": to be combined, ",sQuote("mif2d_pomp"),
           " objects must have chains of equal length"
         )
         return(retval)
@@ -27,7 +27,7 @@ setClass(
   }
 )
 
-setClassUnion("Mif2",c("mif2d.pomp","mif2List"))
+setClassUnion("Mif2",c("mif2d_pomp","mif2List"))
 
 setMethod(
   "concat",
@@ -63,7 +63,7 @@ setMethod(
   }
 )
 
-setMethod('traces','mif2d.pomp',
+setMethod('traces','mif2d_pomp',
   function (object, pars, transform = FALSE, ...) {
     traces.internal(object=object,pars=pars,transform=transform,...)
   }
@@ -121,8 +121,39 @@ traces.internal <- function (object, pars, transform = FALSE, ...) {
   }
 }
 
+setMethod(
+  "show",
+  signature=signature(object="mif2d_pomp"),
+  definition=function (object) {
+    cat("<object of class ",sQuote("mif2d_pomp"),">\n",sep="")
+    invisible(NULL)
+  }
+)
+
+setMethod(
+  "show",
+  signature=signature(object="mif2List"),
+  definition=function (object) {
+    y <- as(object,"list")
+    names(y) <- names(object)
+    show(y)
+  }
+)
+
+setMethod(
+  "plot",
+  "Mif2",
+  function (x, y, ...) {
+    if (!missing(y))
+      warning("in ",sQuote("plot"),": ",
+        sQuote("y")," is ignored",call.=FALSE)
+    mif2.diagnostics(x)
+  }
+)
+
 mif2.diagnostics <- function (z) {
-  ## assumes that z is a list of mif2d.pomps with identical structure
+  if (!is.list(z)) z <- list(z)
+  ## assumes that z is a list of mif2d_pomps with identical structure
   mar.multi <- c(0,5.1,0,2.1)
   oma.multi <- c(6,0,5,0)
   xx <- z[[1]]
@@ -207,44 +238,3 @@ mif2.diagnostics <- function (z) {
   }
   invisible(NULL)
 }
-
-setMethod(
-  "show",
-  signature=signature(object="mif2d.pomp"),
-  definition=function (object) {
-    cat("<object of class ",sQuote("mif2d.pomp"),">\n",sep="")
-    invisible(NULL)
-  }
-)
-
-setMethod(
-  "show",
-  signature=signature(object="mif2List"),
-  definition=function (object) {
-    y <- as(object,"list")
-    names(y) <- names(object)
-    show(y)
-  }
-)
-
-setMethod(
-  "plot",
-  "mif2d.pomp",
-  function (x, y, ...) {
-    if (!missing(y))
-      warning("in ",sQuote("plot-mif2d.pomp"),": ",
-        sQuote("y")," is ignored",call.=FALSE)
-    mif2.diagnostics(list(x))
-  }
-)
-
-setMethod(
-  "plot",
-  signature=signature(x='mif2List'),
-  definition=function (x, y, ...) {
-    if (!missing(y))
-      warning("in ",sQuote("plot-mif2d.pomp"),": ",
-        sQuote("y")," is ignored",call.=FALSE)
-    mif2.diagnostics(x)
-  }
-)

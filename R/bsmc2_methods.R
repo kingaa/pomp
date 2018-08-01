@@ -1,30 +1,30 @@
 setMethod(
   "eff.sample.size",
-  signature=signature(object="bsmcd.pomp"),
+  signature=signature(object="bsmcd_pomp"),
   definition=function(object,...)object@eff.sample.size
 )
 
 setMethod(
   "logEvidence",
-  signature=signature(object="bsmcd.pomp"),
+  signature=signature(object="bsmcd_pomp"),
   definition=function(object,...)object@log.evidence
 )
 
 setMethod(
   "cond.logEvidence",
-  signature=signature(object="bsmcd.pomp"),
+  signature=signature(object="bsmcd_pomp"),
   definition=function(object,...)object@cond.log.evidence
 )
 
 setMethod("prior_samples",
-          signature=signature(object="bsmcd.pomp"),
+          signature=signature(object="bsmcd_pomp"),
           definition=function (object, pars, ...) {
             if (missing(pars)) pars <- object@est
             object@prior[pars,,drop=FALSE]
           })
 
 setMethod("posterior_samples",
-          signature=signature(object="bsmcd.pomp"),
+          signature=signature(object="bsmcd_pomp"),
           definition=function (object, pars, ...) {
             if (missing(pars)) pars <- object@est
             object@post[pars,,drop=FALSE]
@@ -32,16 +32,16 @@ setMethod("posterior_samples",
 
 setMethod(
   "show",
-  signature=signature(object="bsmcd.pomp"),
+  signature=signature(object="bsmcd_pomp"),
   definition=function (object) {
-    cat("<object of class ",sQuote("bsmcd.pomp"),">\n",sep="")
+    cat("<object of class ",sQuote("bsmcd_pomp"),">\n",sep="")
     invisible(NULL)
   }
 )
 
 setMethod(
   "plot",
-  signature(x="bsmcd.pomp"),
+  signature(x="bsmcd_pomp"),
   function (x, y, ..., pars, thin) {
     ep <- paste0("in ",sQuote("plot"),": ")
     if (!missing(y)) warning(ep,sQuote("y")," is ignored",call.=FALSE)

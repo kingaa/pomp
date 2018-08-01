@@ -12,7 +12,8 @@
 ## adds capacity to fit models with periodically time-varying parameters
 ## of known period and improves the compatibility with the standard for pomp objects
 
-setClass("nlfd.pomp",
+setClass(
+  "nlfd_pomp",
   contains="pomp",
   slots=c(
     transform = "logical",
@@ -131,7 +132,7 @@ setMethod(
 
 setMethod(
   "nlf",
-  signature=signature(object="nlfd.pomp"),
+  signature=signature(object="nlfd_pomp"),
   definition=function (object, start, est, lags,
     period, tensor, nconverge, nasymp, seed,
     transform.data, nrbf, method, lql.frac, se.par.frac,
@@ -162,7 +163,7 @@ setMethod(
 
 setMethod(
   "logLik",
-  signature=signature(object="nlfd.pomp"),
+  signature=signature(object="nlfd_pomp"),
   definition = function(object, ...) {
     object@logql
   }
@@ -491,7 +492,7 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
   pompUnload(object,verbose=verbose)
 
   new(
-    "nlfd.pomp",
+    "nlfd_pomp",
     object,
     params=opt$params,
     transform=transform,

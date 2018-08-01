@@ -1,6 +1,7 @@
 ## helper function to extract a covariance matrix
 
-setMethod("covmat",signature=signature(object="pmcmc"),
+setMethod("covmat",
+  signature=signature(object="pmcmcd_pomp"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
     covmat.internal(traces=as.matrix(traces(object,object@pars)),
@@ -8,7 +9,8 @@ setMethod("covmat",signature=signature(object="pmcmc"),
       expand=expand)
   })
 
-setMethod("covmat",signature=signature(object="pmcmcList"),
+setMethod("covmat",
+  signature=signature(object="pmcmcList"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
     pars <- unique(c(sapply(object,slot,"pars")))
@@ -17,7 +19,8 @@ setMethod("covmat",signature=signature(object="pmcmcList"),
       expand=expand)
   })
 
-setMethod("covmat",signature=signature(object="abc"),
+setMethod("covmat",
+  signature=signature(object="abcd_pomp"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
     covmat.internal(traces=as.matrix(traces(object,object@pars)),
@@ -25,13 +28,20 @@ setMethod("covmat",signature=signature(object="abc"),
       expand=expand)
   })
 
-setMethod("covmat",signature=signature(object="abcList"),
+setMethod("covmat",
+  signature=signature(object="abcList"),
   definition=function (object, start = 1, thin = 1,
     expand = 2.38, ...) {
     pars <- unique(c(sapply(object,slot,"pars")))
     covmat.internal(traces=as.array(traces(object,pars)),
       start=start,thin=thin,
       expand=expand)
+  })
+
+setMethod("covmat",signature=signature(object="probed_pomp"),
+  definition=function (object, ...) {
+    n <- nrow(object@simvals)
+    crossprod(object@simvals)/(n-1)
   })
 
 covmat.internal <- function (traces, start, thin, expand = 2.38, ...) {
@@ -54,9 +64,3 @@ covmat.internal <- function (traces, start, thin, expand = 2.38, ...) {
   dimnames(v) <- list(nms[keep],nms[keep])
   v
 }
-
-setMethod("covmat",signature=signature(object="probed.pomp"),
-  definition=function (object, ...) {
-    n <- nrow(object@simvals)
-    crossprod(object@simvals)/(n-1)
-  })

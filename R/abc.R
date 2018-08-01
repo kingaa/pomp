@@ -1,16 +1,16 @@
 ## define the abc class
 setClass(
-  'abc',
-  contains='pomp',
+  "abcd_pomp",
+  contains="pomp",
   slots=c(
-    pars = 'character',
-    Nabc = 'integer',
-    accepts = 'integer',
-    probes='list',
-    scale = 'numeric',
-    epsilon = 'numeric',
-    proposal = 'function',
-    traces = 'matrix'
+    pars = "character",
+    Nabc = "integer",
+    accepts = "integer",
+    probes="list",
+    scale = "numeric",
+    epsilon = "numeric",
+    proposal = "function",
+    traces = "matrix"
   ),
   prototype=prototype(
     pars = character(0),
@@ -56,7 +56,7 @@ setMethod(
 
 setMethod(
   "abc",
-  signature=signature(object="probed.pomp"),
+  signature=signature(object="probed_pomp"),
   definition=function (object, probes,
     verbose = getOption("verbose"),
     ...) {
@@ -69,7 +69,7 @@ setMethod(
 
 setMethod(
   "abc",
-  signature=signature(object="abc"),
+  signature=signature(object="abcd_pomp"),
   definition=function (object, Nabc,
     start, proposal,
     probes, scale, epsilon,
@@ -98,8 +98,8 @@ setMethod(
 )
 
 setMethod(
-  'continue',
-  signature=signature(object='abc'),
+  "continue",
+  signature=signature(object="abcd_pomp"),
   definition=function (object, Nabc = 1, ...) {
 
     ndone <- object@Nabc
@@ -289,7 +289,7 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
   pompUnload(object,verbose=verbose)
 
   new(
-    'abc',
+    "abcd_pomp",
     object,
     params=theta,
     pars=pars,
