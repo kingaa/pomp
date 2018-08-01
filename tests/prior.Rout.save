@@ -1,0 +1,65 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> 
+> library(pomp)
+> library(magrittr)
+> 
+> pompExample(ou2,envir=NULL) -> ou2
+> ou2[[1]] -> po
+> 
+> coef(po,"alpha.sd") <- 5
+Warning message:
+in 'coef<-': name(s) 'alpha.sd' do not refer to existing parameter(s); they are being concatenated 
+> 
+> set.seed(1835425749L)
+> 
+> po %>%
++   pomp(
++     dprior=function(params,log,...) {
++       ll <- sum(
++         dnorm(
++           x=params[c("alpha.1","alpha.2","alpha.3","alpha.4")],
++           mean=c(0.8,-0.5,0.3,0.9),
++           sd=params["alpha.sd"],
++           log=TRUE
++         )
++       )
++       if (log) ll else exp(ll)
++     },
++     rprior=function(params,...) {
++       params[c("alpha.1","alpha.2","alpha.3","alpha.4")] <- rnorm(
++         n=4,
++         mean=c(0.8,-0.5,0.3,0.9),
++         sd=params["alpha.sd"]
++       )
++       params
++     }
++   ) -> po
+> 
+> stopifnot(
++   po %>% dprior(params=coef(po),log=TRUE) == 4*dnorm(x=0,mean=0,sd=5,log=TRUE),
++   all.equal(po %>% dprior(params=coef(po)),dnorm(x=0,mean=0,sd=5)^4)
++ )
+> 
+> replicate(5,rprior(po,params=coef(po))) %>% parmat() -> theta
+> stopifnot(round(dprior(po,params=theta,log=TRUE),3) ==
++   c(-12.237, -10.848, -15.806, -10.847, -11.526))
+> 

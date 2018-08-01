@@ -67,10 +67,6 @@
 
 ### Unreconstructed:
 
-tests/prior.R
-tests/procmeas.R
-tests/proposals.R
-
 tests/logistic.R
 tests/ou2.R
 tests/rw2.R
@@ -114,10 +110,6 @@ R/pomp_fun.R
 R/pomp_methods.R
 R/pomp.R
 
-R/dprior_pomp.R
-R/dprocess_pomp.R
-R/rprior_pomp.R
-R/rprocess_pomp.R
 R/trajectory_pomp.R
 
 R/basic_probes.R
@@ -134,8 +126,6 @@ R/nlf_objfun.R
 R/nlf.R
 
 R/plot_pomp.R
-
-R/proposals.R
 
 R/sannbox.R
 
