@@ -25,6 +25,7 @@ setAs(
 as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 
 ## parameter transformations
+
 setMethod(
   "partrans",
   signature=signature(object="pomp"),
@@ -349,7 +350,9 @@ setMethod(
   "solibs<-",
   signature=signature(object="pomp"),
   definition=function (object, ..., value) {
+    if (!is.null(value)) {
       object@solibs <- c(list(value),object@solibs)
-      object
+    }
+    object
   }
 )
