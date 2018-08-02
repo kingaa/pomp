@@ -12,5 +12,4 @@ x <- simulate(window(dacca,end=1893),nsim=3,as.data.frame=TRUE)
 stopifnot(all.equal(round(mean(x$cholera.deaths)),1003))
 
 pf <- pfilter(window(dacca,end=1893),Np=1000)
-stopifnot(all.equal(round(logLik(pf),1),-150.9))
-
+stopifnot(abs(-150.9-logLik(pf))<2)
