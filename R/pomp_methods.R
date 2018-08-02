@@ -353,7 +353,7 @@ setMethod(
   "solibs<-",
   signature=signature(object="pomp"),
   definition=function (object, ..., value) {
-    if (is.null(value)) {
+    if (!is.null(value)) {
       object@solibs <- c(list(value),object@solibs)
     }
     object
