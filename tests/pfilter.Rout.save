@@ -75,7 +75,7 @@ Error : in 'pfilter': 'params' must be specified.
 > try(pfilter(po,Np=100,params=c(1,2,3)))
 Error : in 'coef<-': 'value' must be a named vector
 > try(pfilter(po,Np=100,params=c(a=1,b=2,c=3)))
-Error : in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.
+Error : in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
 > try(pfilter(po,Np=100,params=list()))
 Error : in 'pfilter': 'params' must be specified.
 > pf <- pfilter(po,Np=100,params=as.list(coef(ou2)))

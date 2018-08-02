@@ -234,7 +234,7 @@ pomp(
   globals=Csnippet("
     static int nbasis = 3;"
   ),
-  initializer=Csnippet("
+  rinit=Csnippet("
     double m = pop/(S_0+I_0+R_0);
     S = nearbyint(m*S_0);
     I = nearbyint(m*I_0);

@@ -26,7 +26,7 @@ po <- pomp(
   rmeasure=Csnippet("N = rlnorm(log(n),log(1+tau));"),
   dmeasure=Csnippet("lik = dlnorm(N,log(n),log(1+tau),give_log);"),
   skeleton=vectorfield(Csnippet("Dn = r*n*(1-n/K);")),
-  initializer=Csnippet("n = n_0;"),
+  rinit=Csnippet("n = n_0;"),
   paramnames=c("r","K","tau","sigma","n_0"),
   statenames=c("n")
 )

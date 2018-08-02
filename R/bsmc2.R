@@ -122,7 +122,7 @@ bsmc2.internal <- function (object, params, Np, est,
 
   pompLoad(object,verbose=verbose)
 
-  xstart <- init.state(
+  xstart <- rinit(
     object,
     params=if (transform) {
       partrans(object,params,dir="fromEstimationScale",

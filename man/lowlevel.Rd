@@ -20,9 +20,9 @@
 \alias{rprior}
 \alias{rprior,pomp-method}
 \alias{rprior-pomp}
-\alias{init.state}
-\alias{init.state,pomp-method}
-\alias{init.state-pomp}
+\alias{rinit}
+\alias{rinit,pomp-method}
+\alias{rinit-pomp}
 \alias{skeleton}
 \alias{skeleton,pomp-method}
 \alias{skeleton-pomp}
@@ -49,7 +49,7 @@
     \item evaluation of the likelihood of a set of observations given the states and parameters (\code{dmeasure})
     \item simulation from the prior probability distribution (\code{rprior})
     \item evaluation of the prior probability density (\code{dprior})
-    \item simulation from the distribution of initial states, given parameters (\code{init.state})
+    \item simulation from the distribution of initial states, given parameters (\code{rinit})
     \item evaluation of the deterministic skeleton at a point in state space, given parameters (\code{skeleton})
     \item computation of a trajectory of the deterministic skeleton given parameters (\code{trajectory})
   }
@@ -66,7 +66,7 @@
 \S4method{dmeasure}{pomp}(object, y, x, times, params, log = FALSE, \dots)
 \S4method{dprior}{pomp}(object, params, log = FALSE, \dots)
 \S4method{rprior}{pomp}(object, params, \dots)
-\S4method{init.state}{pomp}(object, params, t0, nsim, \dots)
+\S4method{rinit}{pomp}(object, params, t0, nsim, \dots)
 \S4method{skeleton}{pomp}(object, x, t, params, \dots)
 \S4method{trajectory}{pomp}(object, params, times, t0, as.data.frame = FALSE, \dots,
           verbose = getOption("verbose", FALSE))
@@ -97,7 +97,7 @@
     a \code{npar} x \code{nrep} matrix of parameters.
     Each column is an independent parameter set and is paired with the corresponding column of \code{x} or \code{xstart}.
 
-    In the case of \code{init.state}, \code{params} is a named vector of parameters.
+    In the case of \code{rinit}, \code{params} is a named vector of parameters.
   }
   \item{offset}{
     integer;
@@ -155,8 +155,8 @@
 \section{dprior, rprior}{
   \code{dprior} evaluates the prior probability density and \code{rprior} simulates from the prior.
 }
-\section{init.state}{
-  \code{init.state} returns an \code{nvar} x \code{nsim} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
+\section{rinit}{
+  \code{rinit} returns an \code{nvar} x \code{nsim} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
   By default, \code{t0} is the initial time defined when the \sQuote{pomp} object ws constructed.
   If \code{nsim} is not specified, then \code{nsim=ncol(params)}.
 }
@@ -198,7 +198,7 @@ pompExample(ricker)
 p <- parmat(c(r=42,c=1,phi=10,sigma=0.3,N_0=7,e.0=0),10)
 t <- c(1:10,20,30)
 t0 <- 0
-x0 <- init.state(ricker,params=p,t0=t0)
+x0 <- rinit(ricker,params=p,t0=t0)
 x <- rprocess(ricker,xstart=x0,times=c(t0,t),params=p,offset=1)
 y <- rmeasure(ricker,params=p,x=x,times=t)
 ll <- dmeasure(ricker,y=y[,3,,drop=FALSE],x=x,times=t,params=p,log=TRUE)
@@ -210,7 +210,7 @@ z <- trajectory(ricker,params=p,times=t,t0=t0)
 p <- c(r=42,phi=10,c=1,sigma=0.3,N_0=7,e.0=0)
 t <- c(1:10,20,30)
 t0 <- 0
-x0 <- init.state(ricker,params=p,t0=t0)
+x0 <- rinit(ricker,params=p,t0=t0)
 x <- rprocess(ricker,xstart=x0,times=c(t0,t),params=p,offset=1)
 y <- rmeasure(ricker,params=p,x=x,times=t)
 ll <- dmeasure(ricker,y=y,x=x,times=t,params=p,log=TRUE)

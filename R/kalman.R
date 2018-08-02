@@ -66,7 +66,7 @@ enkf.internal <- function (object, params, h, R, Np, verbose) {
   nobs <- nrow(y)
 
   Y <- array(dim=c(nobs,Np),dimnames=list(variable=rownames(y),rep=NULL))
-  X <- init.state(object,params=params,nsim=Np)
+  X <- rinit(object,params=params,nsim=Np)
   nvar <- nrow(X)
 
   filterMeans <- array(dim=c(nvar,ntimes),dimnames=list(variable=rownames(X),time=t))
@@ -159,7 +159,7 @@ eakf.internal <- function (object, params, C, R, Np, verbose) {
 
   y <- obs(object)
 
-  X <- init.state(object,params=params,nsim=Np)
+  X <- rinit(object,params=params,nsim=Np)
 
   nvar <- nrow(X)
   ntimes <- length(t)

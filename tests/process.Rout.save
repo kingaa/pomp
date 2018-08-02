@@ -39,7 +39,7 @@ rep      [,1]   [,2]  [,3]  [,4]   [,5]  [,6]  [,7]  [,8]  [,9]
   [2,]  -3.95  -4.90 -3.76 -3.50  -4.30 -3.24 -4.61 -3.97 -3.33
   [3,]  -4.38  -4.66 -5.71 -3.98  -7.21 -6.84 -4.84 -4.15 -4.51
 > 
-> po %>% init.state(params=coef(po)) -> x0
+> po %>% rinit(params=coef(po)) -> x0
 > freeze(po %>%
 +     rprocess(params=coef(po),xstart=parmat(x0,3),times=time(po,t0=TRUE),
 +       offset=1),

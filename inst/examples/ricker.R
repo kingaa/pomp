@@ -85,7 +85,7 @@ pomp(
         Tphi = exp(phi);
         Tc = exp(c);
         TN_0 = exp(N_0);"),
-  initializer=Csnippet("
+  rinit=Csnippet("
         N = N_0;
         e = 0;"),
   paramnames=c("r","sigma","phi","c","N_0"),

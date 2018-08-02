@@ -2,10 +2,10 @@
 ## This is used in 'pomp.R' and 'builder.R'.
 
 workhorse_templates <- list(
-  initializer=list(
-    slotname="initializer",
+  rinit=list(
+    slotname="rinit",
     Cname="__pomp_rinit",
-    proto=quote(initializer(params,t0,...)),
+    proto=quote(rinit(params,t0,...)),
     header="\nvoid __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)\n{\n",
     footer="\n}\n\n",
     vars=list(

@@ -631,7 +631,7 @@ pomp(
     Tbeta_sd = log(beta_sd);
     Trho = logit(rho);
     to_log_barycentric(&TS_0,&S_0,3);"),
-  initializer=Csnippet("
+  rinit=Csnippet("
     double m;
     m = pop/(S_0+I_0+R_0);
     S = nearbyint(m*S_0);

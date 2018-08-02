@@ -2,7 +2,7 @@
 
 pomp <- function (data, times, t0, ..., rprocess, dprocess,
   rmeasure, dmeasure, measurement.model,
-  skeleton, initializer, rprior, dprior, params, covar, tcovar,
+  skeleton, rinit, rprior, dprior, params, covar, tcovar,
   obsnames, statenames, paramnames, covarnames, zeronames,
   PACKAGE, fromEstimationScale, toEstimationScale,
   globals, cdir, cfile, shlib.args) {
@@ -83,7 +83,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     data=data,times=times,t0=t0,...,
     rprocess=rprocess,dprocess=dprocess,
     rmeasure=rmeasure,dmeasure=dmeasure,
-    initializer=initializer,
+    rinit=rinit,
     .skel.type=.skel.type,.skelmap.delta.t=.skelmap.delta.t,skeleton=skeleton,
     rprior=rprior,dprior=dprior,params=params,
     covar=covar,tcovar=tcovar,
@@ -129,7 +129,7 @@ setMethod(
     rprocess, dprocess,
     rmeasure, dmeasure,
     .skel.type, .skelmap.delta.t, skeleton,
-    initializer,
+    rinit,
     rprior, dprior,
     params, covar, tcovar,
     fromEstimationScale, toEstimationScale) {
@@ -147,7 +147,7 @@ setMethod(
       stop(ep,sQuote("t0")," must be specified as a single number not ",
         "greater than ",sQuote("times[1]"),".",call.=FALSE)
 
-    if (missing(initializer)) initializer <- NULL
+    if (missing(rinit)) rinit <- NULL
 
     if (missing(rprocess) || is.null(rprocess)) {
       rprocess <- plugin()
@@ -190,7 +190,7 @@ setMethod(
         skeleton=skeleton,
         .skel.type=.skel.type,
         .skelmap.delta.t=.skelmap.delta.t,
-        initializer=initializer,
+        rinit=rinit,
         params=params,
         covar=covar,
         tcovar=tcovar,
@@ -213,7 +213,7 @@ setMethod(
     rprocess, dprocess,
     rmeasure, dmeasure,
     .skel.type, .skelmap.delta.t, skeleton,
-    initializer,
+    rinit,
     rprior, dprior,
     params, covar, tcovar,
     zeronames,
@@ -230,7 +230,7 @@ setMethod(
 
     if (missing(t0)) t0 <- data@t0
 
-    if (missing(initializer)) initializer <- data@initializer
+    if (missing(rinit)) rinit <- data@rinit
 
     if (missing(rprocess)) {
       rprocess <- data@rprocess
@@ -281,7 +281,7 @@ setMethod(
         skeleton=skeleton,
         .skel.type=.skel.type,
         .skelmap.delta.t=.skelmap.delta.t,
-        initializer=initializer,
+        rinit=rinit,
         covar=covar,
         tcovar=tcovar,
         zeronames=zeronames,
@@ -302,7 +302,7 @@ setMethod(
 pomp.internal <- function (data, times, t0,
   rprocess, dprocess, rmeasure, dmeasure,
   skeleton, .skel.type, .skelmap.delta.t,
-  initializer, rprior, dprior,
+  rinit, rprior, dprior,
   params, covar, tcovar,
   obsnames, statenames, paramnames, covarnames,
   zeronames, PACKAGE,
@@ -407,13 +407,13 @@ pomp.internal <- function (data, times, t0,
   storage.mode(tcovar) <- "double"
   storage.mode(covar) <- "double"
 
-  ## use default initializer?
-  default.init <- is.null(initializer) ||
-    (is(initializer,"pomp_fun") && initializer@mode == pompfunmode$undef )
-  if (default.init) initializer <- pomp_fun(slotname="initializer")
+  ## use default rinit?
+  default.init <- is.null(rinit) ||
+    (is(rinit,"pomp_fun") && rinit@mode == pompfunmode$undef )
+  if (default.init) rinit <- pomp_fun(slotname="rinit")
 
-  if (is(initializer,"Csnippet") && length(statenames)==0) {
-    stop(ep,"when ",sQuote("initializer")," is provided as a C snippet, ",
+  if (is(rinit,"Csnippet") && length(statenames)==0) {
+    stop(ep,"when ",sQuote("rinit")," is provided as a C snippet, ",
       "you must also provide ",sQuote("statenames"),call.=FALSE)
   }
 
@@ -425,7 +425,7 @@ pomp.internal <- function (data, times, t0,
   if (is.null(skeleton)) .skel.type <- "undef"
 
   hitches <- hitch(
-    initializer=initializer,
+    rinit=rinit,
     step.fn=rprocess@step.fn,
     rate.fn=rprocess@rate.fn,
     dprocess=dprocess,
@@ -500,7 +500,7 @@ pomp.internal <- function (data, times, t0,
     times = times,
     t0 = t0,
     default.init = default.init,
-    initializer = hitches$funs$initializer,
+    rinit = hitches$funs$rinit,
     params = params,
     covar = covar,
     tcovar = tcovar,

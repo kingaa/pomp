@@ -28,7 +28,7 @@
     \item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
     \item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
     \item{dmeasure,}{the evaluator of the measurement model probability density function;}
-    \item{initializer,}{which samples from the distribution of the state process at the zero-time;}
+    \item{rinit,}{which samples from the distribution of the state process at the zero-time;}
     \item{rprior,}{which samples from a prior probability distribution on the parameters;}
     \item{dprior}{which evaluates the prior probability density function;}
     \item{skeleton}{which computes the deterministic skeleton of the unobserved state process.}
@@ -37,7 +37,7 @@
 }
 \usage{
 pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-     measurement.model, skeleton, initializer, rprior, dprior,
+     measurement.model, skeleton, rinit, rprior, dprior,
      params, covar, tcovar, obsnames, statenames, paramnames,
      covarnames, zeronames, PACKAGE,
      fromEstimationScale, toEstimationScale, globals,
@@ -74,9 +74,9 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     optional; the deterministic skeleton of the unobserved state process.
     See below under \dQuote{The Deterministic Skeleton} for details.
   }
-  \item{initializer}{
+  \item{rinit}{
     optional; draws from the distribution of initial values of the unobserved Markov state process.
-    Specifically, given a vector of parameters, \code{params} and an initial time, \code{t0}, the initializer determines the state vector at time \code{t0}.
+    Specifically, given a vector of parameters, \code{params} and an initial time, \code{t0}, the rinit determines the state vector at time \code{t0}.
     See below under \dQuote{The State-Process Initializer} for details.
   }
   \item{rprior, dprior}{
@@ -237,7 +237,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The variable \code{rate} will exist in the context of the code, as will the covariates (as named in \code{covar}) and the time \code{t}.
     The state variables and parameters will also be available provided that the \code{statenames} and \code{paramnames} arguments are provided to \code{pomp}.
     The named integer vector contains the changes to the state variables corresponding to the elementary event.
-    There should be named value for each of the state variables returned by the initializer.
+    There should be named value for each of the state variables returned by the rinit.
     Typically, these changes will be integers but floating point values are permissible.
     The arguments \code{.pre} and \code{.post} can be used to provide C code that will run either before or after the code in the event arguments.
     These hooks could be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
@@ -263,8 +263,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     \code{v} describes the changes that occur in each elementary event:
     it will usually comprise the values 1, -1, and 0 according to whether a state variable is incremented, decremented, or unchanged in an elementary event.
     The rows of \code{v} may be unnamed or named.
-    If the rows are unnamed, they are assumed to be in the same order as the vector of state variables returned by the initializer.
-    If the rows are named, the names of the state variables returned by the initializer will be matched to the rows of \code{v} to ensure a correct mapping.
+    If the rows are unnamed, they are assumed to be in the same order as the vector of state variables returned by the rinit.
+    If the rows are named, the names of the state variables returned by the rinit will be matched to the rows of \code{v} to ensure a correct mapping.
     If any of the row names of \code{v} cannot be found among the state variables or if any row names of \code{v} are duplicated, an error will occur.
 
     It is also possible to provide a C snippet via the \code{rate.fn} argument to \code{gillespie.sim}.
@@ -416,19 +416,19 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   When the state process is initialized, these are simply copied over as initial conditions.
   The names of the resulting state variables are obtained by dropping the \dQuote{\code{.0}} suffix.
 
-  One can override this default behavior by furnishing a value for the \code{initializer} argument of \code{pomp}.
+  One can override this default behavior by furnishing a value for the \code{rinit} argument of \code{pomp}.
   As usual, this can be provided either as a C snippet or as an \R function.
   In the former case, bear in mind that:
   \enumerate{
     \item The goal of a this snippet is the construction of a state vector, i.e., the setting of the dynamical states at time \eqn{t_0}{\code{t0}}.
     \item In addition to the parameters and covariates (if any), the variable \code{t}, containing the zero-time, will be defined in the context in which the snippet is executed.
-    \item \strong{NB:} The \code{statenames} argument plays a particularly important role when the initializer is specified using a C snippet.
+    \item \strong{NB:} The \code{statenames} argument plays a particularly important role when the rinit is specified using a C snippet.
     In particular, every state variable must be named in \code{statenames}.
     \strong{Failure to follow this rule will result in undefined behavior.}
   }
 
   If an \R function is to be used, pass \preformatted{
-    initializer = f}
+    rinit = f}
   to \code{pomp}, where \code{f} is a function with prototype \preformatted{
     f(params, t0, \dots)}
   When \code{f} is called,
@@ -440,7 +440,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   \code{f} must return a named numeric vector of initial states.
   It is of course important that the names of the states match the expectations of the other basic components.
 
-  Note that the state-process initializer can be either deterministic (the default) or stochastic.
+  Note that the state-process rinit can be either deterministic (the default) or stochastic.
   In the latter case, it samples from the distribution of the state process at the zero-time, \code{t0}.
 }
 \section{Specifying a Prior}{
@@ -532,7 +532,7 @@ pomp(data = data.frame(t = 1:100, y = NA),
      rprior = Csnippet("r = rgamma(1,1); sigma = rgamma(1,1);"),
      dprior = Csnippet("lik = dgamma(r,1,1,1) + dgamma(sigma,1,1,1);
                         if (!give_log) lik = exp(lik);"),
-     initializer = Csnippet("n = n_0;"),
+     rinit = Csnippet("n = n_0;"),
      toEstimationScale = Csnippet("Tr = log(r); Tsigma = log(sigma);"),
      fromEstimationScale = Csnippet("Tr = exp(r); Tsigma = exp(sigma);"),
      paramnames = c("n_0", "r", "sigma","theta"),

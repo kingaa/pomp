@@ -21,7 +21,7 @@ replicate(n=10,po %>% pfilter(Np=3000)) %>%
   sapply(logLik) %>%
   logmeanexp(se=TRUE) -> pf.ll.truth
 
-po %>% init.state(params=coef(po)) %>% as.numeric() -> x0
+po %>% rinit(params=coef(po)) %>% as.numeric() -> x0
 po %>% coef() %>% as.list() %$% {c(x=log(x0/K))} -> X0
 po %>% obs() %>% log() -> y
 po %>% coef() %>% as.list() %$% {matrix(c(exp(-r)),1,1)} -> A
@@ -31,7 +31,7 @@ po %>% coef() %>% as.list() %$% {tau*tau} -> R
 po %>% time() -> t
 pomp:::kalmanFilter(t,y,X0,A,Q,C,R) -> kf.truth
 
-mf %>% init.state(params=coef(mf)) %>% as.numeric() -> x0
+mf %>% rinit(params=coef(mf)) %>% as.numeric() -> x0
 mf %>% coef() %>% as.list() %$% {c(x=log(x0/K))} -> X0
 mf %>% obs() %>% log() -> y
 mf %>% coef() %>% as.list() %$% {matrix(c(exp(-r)),1,1)} -> A

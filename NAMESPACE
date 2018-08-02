@@ -27,7 +27,7 @@ exportMethods(
     logLik,logEvidence,
     cond.logLik,cond.logEvidence,
     pompLoad,pompUnload,
-    dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
+    dprocess,rprocess,rmeasure,dmeasure,rinit,skeleton,
     dprior,rprior,
     obs,partrans,coef,"coef<-",
     time,"time<-",timezero,"timezero<-",

@@ -312,8 +312,8 @@ setMethod(
       else "",
       "= ",sep="")
     show(object@skeleton)
-    cat("- initializer = ")
-    show(object@initializer)
+    cat("- rinit = ")
+    show(object@rinit)
     cat("- parameter transformation (to estimation scale) = ")
     show(object@to.trans)
     cat("- parameter transformation (from estimation scale) = ")

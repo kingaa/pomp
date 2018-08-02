@@ -47,7 +47,7 @@ newly created object(s):
 +     "),
 +     delta.t=1),
 +   skeleton=NULL,
-+   initializer=Csnippet("e=0; N = N_0; step = 0;"),
++   rinit=Csnippet("e=0; N = N_0; step = 0;"),
 +   zeronames="step",
 +   params=c(r=0.5,N_0=0.5,sigma=0.1,phi=10,c=1),
 +   paramnames=c("sigma","r","N_0"),statenames=c("N","e","step"))
@@ -90,7 +90,7 @@ newly created object(s):
 +       cases += trans[3];
 +       steps += 1;
 +       "),delta.t=0.01),
-+     initializer=Csnippet("
++     rinit=Csnippet("
 +       double m = pop/(S_0+I_0+R_0);
 +       S = nearbyint(m*S_0);
 +       I = nearbyint(m*I_0);

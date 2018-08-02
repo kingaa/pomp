@@ -166,7 +166,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
 
   pompLoad(object,verbose=verbose)
 
-  init.x <- init.state(object,params=params,nsim=Np[1L],
+  init.x <- rinit(object,params=params,nsim=Np[1L],
     .getnativesymbolinfo=gnsi)
   statenames <- rownames(init.x)
   nvars <- nrow(init.x)

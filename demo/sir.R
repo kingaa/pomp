@@ -160,7 +160,7 @@ pomp(
        "popsize","rho","theta","S.0","I.0","R.0"
        ),
      zeronames=c("incid","W"),
-     initializer=Csnippet(initlzr)
+     rinit=Csnippet(initlzr)
      ) -> po
 
 coef(po) <- c(

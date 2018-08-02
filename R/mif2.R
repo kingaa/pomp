@@ -310,7 +310,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
 
     if (nt == 1L) {
       ## get initial states
-      x <- init.state(object,params=if (transform) tparams else params)
+      x <- rinit(object,params=if (transform) tparams else params)
     }
 
     ## advance the state variables according to the process model

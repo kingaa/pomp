@@ -7,8 +7,8 @@
 
 #include "pomp_internal.h"
 
-// initializer.c
-typedef double pomp_initializer(double *x, const double *p, double t, 
+// rinit.c
+typedef double pomp_rinit(double *x, const double *p, double t, 
 				const int *stateindex, const int *parindex, const int *covindex,
 				const double *covars);
 
@@ -34,7 +34,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
   definit = *(INTEGER(GET_SLOT(object,install("default.init"))));
 
-  if (definit) {		// default initializer
+  if (definit) {		// default rinit
 
     SEXP fcall, pat, repl, val, ivpnames, statenames;
     int *pidx, j, k;
@@ -59,7 +59,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     
     nvar = LENGTH(ivpnames);
     if (nvar < 1) {
-      errorcall(R_NilValue,"in default 'initializer': there are no parameters with suffix '.0'. See '?pomp'.");
+      errorcall(R_NilValue,"in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.");
     }
     pidx = INTEGER(PROTECT(match(Pnames,ivpnames,0))); nprotect++;
     for (k = 0; k < nvar; k++) pidx[k]--;
@@ -85,14 +85,14 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	*xp = pp[pidx[k]];
     }
 
-  } else {			// user-supplied initializer
+  } else {			// user-supplied rinit
     
     SEXP pompfun, fcall, fn, tcovar, covar, covars = R_NilValue;
     pompfunmode mode = undef;
     double *cp = NULL;
 
-    // extract the initializer function and its environment
-    PROTECT(pompfun = GET_SLOT(object,install("initializer"))); nprotect++;
+    // extract the rinit function and its environment
+    PROTECT(pompfun = GET_SLOT(object,install("rinit"))); nprotect++;
     PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
     
     // extract covariates and interpolate
@@ -141,7 +141,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	PROTECT(Snames = GET_NAMES(x1)); nprotect++;
 	
 	if (!IS_NUMERIC(x1) || isNull(Snames)) {
-	  errorcall(R_NilValue,"in 'init.state': user 'initializer' must return a named numeric vector");
+	  errorcall(R_NilValue,"in 'init.state': user 'rinit' must return a named numeric vector");
 	}
 	
 	nvar = LENGTH(x1);
@@ -167,7 +167,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	  PROTECT(x2 = eval(fcall,rho));
 	  xp = REAL(x2);
 	  if (LENGTH(x2)!=nvar)
-	    errorcall(R_NilValue,"in 'init.state': user initializer returns vectors of non-uniform length");
+	    errorcall(R_NilValue,"in 'init.state': user rinit returns vectors of non-uniform length");
 	  memcpy(xt,xp,nvar*sizeof(double));
 	  UNPROTECT(1);
 	} 
@@ -183,7 +183,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 	SEXP Cnames;
 	int *sidx, *pidx, *cidx;
 	double *xt, *ps, time;
-	pomp_initializer *ff = NULL;
+	pomp_rinit *ff = NULL;
 	int j;
 
 	PROTECT(Snames = GET_SLOT(pompfun,install("statenames"))); nprotect++;

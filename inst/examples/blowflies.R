@@ -913,7 +913,7 @@ pomp(
   fromEstimationScale=function(params,...) {
     exp(params)
   },
-  initializer=function (params, t0, y.init, ...) {
+  rinit=function (params, t0, y.init, ...) {
     ntau <- length(y.init)
     n <- y.init[ntau:1]
     names(n) <- paste("N",seq_len(ntau),sep="")

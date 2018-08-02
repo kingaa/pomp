@@ -14,7 +14,7 @@ p["sigma.1",] <- seq(from=1,to=7,by=1)
 try(po %>% dprocess(x=x,times=t,params=p,log=TRUE))
 po %>% dprocess(x=x,times=t,params=p[,1:3],log=TRUE)
 
-po %>% init.state(params=coef(po)) -> x0
+po %>% rinit(params=coef(po)) -> x0
 freeze(po %>%
     rprocess(params=coef(po),xstart=parmat(x0,3),times=time(po,t0=TRUE),
       offset=1),

@@ -48,7 +48,7 @@ trajectory.internal <- function (object, params, times, t0,
   if (is.null(paramnames))
     stop(ep,sQuote("params")," must have rownames",call.=FALSE)
 
-  x0 <- init.state(object,params=params,t0=t0)
+  x0 <- rinit(object,params=params,t0=t0)
   nvar <- nrow(x0)
   statenames <- rownames(x0)
   dim(x0) <- c(nvar,nrep,1)

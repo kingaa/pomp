@@ -272,7 +272,7 @@ pomp(
        "alpha","rho","clin","S_0","I_0","Y_0","R1_0"),
      fromEstimationScale=from_est,
      toEstimationScale=to_est,
-     initializer=rinit
+     rinit=rinit
      ) -> dacca
 
 c("dacca")

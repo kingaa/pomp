@@ -19,7 +19,7 @@ setGeneric("dprocess",function(object,...)standardGeneric("dprocess"))
 setGeneric("rprocess",function(object,...)standardGeneric("rprocess"))
 setGeneric("dprior",function(object,...)standardGeneric("dprior"))
 setGeneric("rprior",function(object,...)standardGeneric("rprior"))
-setGeneric("init.state",function(object,...)standardGeneric("init.state"))
+setGeneric("rinit",function(object,...)standardGeneric("rinit"))
 setGeneric("skeleton",function(object,...)standardGeneric("skeleton"))
 
 ## functions to extract or call the components of a "pomp" object

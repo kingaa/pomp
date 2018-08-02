@@ -65,7 +65,7 @@ pomp(
       DH = DR = term[1];
       DW = 0;		    	// no noise, so no noise accumulation"
   )),
-  initializer=Csnippet("
+  rinit=Csnippet("
     double m = pop/(S_0+I_0+R_0);
     S = nearbyint(m*S_0);
     I = nearbyint(m*I_0);

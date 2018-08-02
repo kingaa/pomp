@@ -1,7 +1,10 @@
 \name{NEWS}
 \title{News for package `pomp'}
-\section{Changes in \pkg{pomp} version 2.0.1}{
+\section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item The \code{initializer} is no longer referred to by that name.
+    It is now \code{rinit}, since it draws from the distribution of the latent state at the initial time.
+    The low-level function \code{init.state} has been replaced by \code{rinit}.
     \item \code{values} has been deprecated and replaced by \code{probevals}.
     \item The \code{conv.rec} method has been deprecated, replaced by the new \code{traces} method.
     \item The \code{euler.sir} example has been renamed \code{sir}.
