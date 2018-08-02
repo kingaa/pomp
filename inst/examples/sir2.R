@@ -601,7 +601,12 @@ pomp(
       Dcases = term[3];"
     )
   ),
-  measurement.model=reports~binom(size=cases,prob=rho),
+  rmeasure=Csnippet("
+    reports = rbinom(cases,rho);"
+  ),
+  dmeasure=Csnippet("
+    lik = dbinom(reports,cases,rho,give_log);"
+  ),
   statenames=c("S","I","R","N","cases"),
   paramnames=c(
     "gamma","mu","iota",

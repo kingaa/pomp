@@ -73,7 +73,12 @@ pomp(
     H = 0;
     W = 0;"
   ),
-  measurement.model=reports~nbinom(mu=rho*H,size=1/sigma^2),
+  rmeasure=Csnippet("
+    reports = rnbinom_mu(1/sigma/sigma,rho*H);"
+  ),
+  dmeasure=Csnippet("
+    lik = dnbinom_mu(reports,1/sigma/sigma,rho*H,give_log);"
+    ),
   statenames=c("S","I","R","H","W"),
   paramnames=c(
     "gamma","Beta","Beta_sd","pop","rho","sigma",

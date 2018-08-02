@@ -2,6 +2,10 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
+        • The ‘measurement.model’ argument to ‘pomp’ has been removed.
+          It is now necessary to specify the measurement model directly
+          using ‘rmeasure’ and/or ‘dmeasure’.
+
         • The ‘initializer’ is no longer referred to by that name.  It
           is now ‘rinit’, since it draws from the distribution of the
           latent state at the initial time.  The low-level function

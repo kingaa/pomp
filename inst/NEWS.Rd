@@ -2,6 +2,8 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item The \code{measurement.model} argument to \code{pomp} has been removed.
+    It is now necessary to specify the measurement model directly using \code{rmeasure} and/or \code{dmeasure}.
     \item The \code{initializer} is no longer referred to by that name.
     It is now \code{rinit}, since it draws from the distribution of the latent state at the initial time.
     The low-level function \code{init.state} has been replaced by \code{rinit}.

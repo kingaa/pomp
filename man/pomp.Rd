@@ -37,10 +37,9 @@
 }
 \usage{
 pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-     measurement.model, skeleton, rinit, rprior, dprior,
-     params, covar, tcovar, obsnames, statenames, paramnames,
-     covarnames, zeronames, PACKAGE,
-     fromEstimationScale, toEstimationScale, globals,
+     skeleton, rinit, rprior, dprior, params, covar, tcovar,
+     obsnames, statenames, paramnames, covarnames, zeronames,
+     PACKAGE, fromEstimationScale, toEstimationScale, globals,
      cdir, cfile, shlib.args)
 }
 \arguments{
@@ -66,7 +65,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     In fact, no current \pkg{pomp} inference algorithm makes use of \code{dprocess}.
     This functionality is provided only to support future algorithm development.
   }
-  \item{rmeasure, dmeasure, measurement.model}{
+  \item{rmeasure, dmeasure}{
     optional; specifications of the measurement model.
     See below under \dQuote{The Measurement Model} for details.
   }
@@ -315,8 +314,7 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
 }
 \section{The Measurement Model}{
   The measurement model is the link between the data and the unobserved state process.
-  It can be specified either by using one or both of the \code{rprocess} and \code{dprocess} arguments, or via the \code{measurement.model} argument.
-  If \code{measurement.model} is given it overrides any specification via the \code{rmeasure} or \code{dmeasure} arguments, with a warning.
+  It can be specified either by using one or both of the \code{rprocess} and \code{dprocess} arguments.
 
   The best way to specify the measurement model is by giving C snippets for \code{rmeasure} and \code{dmeasure}.
   In writing an \code{rmeasure} C snippet, bear in mind that:
@@ -365,12 +363,6 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   \code{f} must return a single numeric value, the probability density of \code{y} given \code{x} at time \code{t}.
   If \code{log == TRUE}, then \code{f} should return instead the log of the probability density.
   \strong{Note: it is a common error to fail to account for both \code{log = TRUE} and \code{log = FALSE} when writing the \code{dmeasure} C snippet or function.}
-
-  One can also specify both the \code{rmeasure} and \code{dmeasure} components at once via the \code{measurement.model} argument.
-  It should be a formula or list of \code{nobs} formulae.
-  These are parsed internally to generate \code{rmeasure} and \code{dmeasure} functions.
-  \strong{Note:} this is a convenience function, primarily designed to facilitate model exploration;
-  it will typically be possible (and as a practical matter necessary) to accelerate measurement model computations by writing \code{dmeasure} and/or \code{rmeasure} using C snippets.
 }
 \section{The Deterministic Skeleton}{
   The skeleton is a dynamical system that expresses the central tendency of the unobserved Markov state process.

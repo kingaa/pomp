@@ -1,8 +1,8 @@
 ## This file defines 'pomp', the basic constructor of the pomp class
 
 pomp <- function (data, times, t0, ..., rprocess, dprocess,
-  rmeasure, dmeasure, measurement.model,
-  skeleton, rinit, rprior, dprior, params, covar, tcovar,
+  rmeasure, dmeasure, skeleton, rinit, rprior, dprior,
+  params, covar, tcovar,
   obsnames, statenames, paramnames, covarnames, zeronames,
   PACKAGE, fromEstimationScale, toEstimationScale,
   globals, cdir, cfile, shlib.args) {
@@ -34,20 +34,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     stop(ep,"if one of ",sQuote("covar"),", ",
       sQuote("tcovar")," is supplied, then so must the other",
       call.=FALSE)
-
-  ## if 'measurement model' is specified as a formula, this overrides
-  ## specification of 'rmeasure' or 'dmeasure'
-  if (!missing(measurement.model)) {
-    if (!(missing(dmeasure) || is.null(dmeasure)) ||
-        !(missing(rmeasure) || is.null(rmeasure)))
-      warning(ep,"specifying ",sQuote("measurement.model"),
-        " overrides specification of ",
-        sQuote("rmeasure")," and ",sQuote("dmeasure"),".",
-        call.=FALSE)
-    mm <- measform2pomp(measurement.model)
-    rmeasure <- mm$rmeasure
-    dmeasure <- mm$dmeasure
-  }
 
   construct_pomp(
     data=data,times=times,t0=t0,...,
@@ -471,86 +457,5 @@ pomp.internal <- function (data, times, t0,
     to.trans = hitches$funs$toEstimationScale,
     solibs = if (is.null(hitches$lib)) .solibs else c(list(hitches$lib),.solibs),
     userdata = .userdata
-  )
-}
-
-measform2pomp <- function (formulae) {
-
-  ep <- paste0("in ",sQuote("pomp"),": ")
-
-  if (!is.list(formulae))
-    formulae <- list(formulae)
-  nobs <- length(formulae)
-  if (nobs < 1)
-    stop(ep,"to use ",sQuote("measurement.model"),
-      " you must provide at least one formula",call.=FALSE)
-  for (k in seq_len(nobs)) {
-    if (!inherits(formulae[[k]],"formula"))
-      stop(ep,sQuote("measurement.model")," takes formulae as arguments",call.=FALSE)
-  }
-  obsnames <- unlist(lapply(formulae,function(x)x[[2L]]))
-  distrib <- lapply(formulae,function(x)as.character(x[[3L]][[1L]]))
-  ddistrib <- lapply(distrib,function(x)paste0("d",x))
-  rdistrib <- lapply(distrib,function(x)paste0("r",x))
-  for (k in seq_len(nobs)) {
-    tryCatch(
-      match.fun(ddistrib[[k]]),
-      error = function (e)
-        stop(ep,"distribution function ",ddistrib[[k]]," not found",call.=FALSE)
-    )
-    tryCatch(
-      match.fun(rdistrib[[k]]),
-      error = function (e)
-        stop(ep,"random deviate function ",rdistrib[[k]]," not found",call.=FALSE)
-    )
-  }
-  pred.args <- lapply(formulae,function(x)as.list(x[[3L]][-1L]))
-  dcalls <- vector(mode='list',length=nobs)
-  rcalls <- vector(mode='list',length=nobs)
-  for (k in seq_len(nobs)) {
-    dcalls[[k]] <- as.call(
-      c(
-        list(
-          as.name(ddistrib[[k]]),
-          x=obsnames[[k]]
-        ),
-        pred.args[[k]],
-        list(
-          log=TRUE
-        )
-      )
-    )
-    rcalls[[k]] <- as.call(
-      c(
-        list(
-          as.name(rdistrib[[k]]),
-          n=1
-        ),
-        pred.args[[k]]
-      )
-    )
-  }
-  list(
-    dmeasure = function (y, x, t, params, log, covars, ...) {
-      f <- 0
-      for (k in seq_len(nobs)) {
-        f <- f+eval(
-          dcalls[[k]],
-          envir=as.list(c(y,x,params,covars,t=t))
-        )
-      }
-      if (log) f else exp(f)
-    },
-    rmeasure = function (x, t, params, covars, ...) {
-      y <- numeric(length=nobs)
-      names(y) <- obsnames
-      for (k in seq_len(nobs)) {
-        y[k] <- eval(
-          rcalls[[k]],
-          envir=as.list(c(x,params,covars,t=t))
-        )
-      }
-      y
-    }
   )
 }
