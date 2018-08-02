@@ -24,29 +24,6 @@ setAs(
 
 as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 
-## parameter transformations
-
-setMethod(
-  "partrans",
-  signature=signature(object="pomp"),
-  definition=function (object, params,
-    dir = c("fromEstimationScale", "toEstimationScale"), ...) {
-    dir <- match.arg(dir)
-    partrans.internal(object=object,params=params,dir=dir,...)
-  }
-)
-
-partrans.internal <- function (object, params,
-  dir = c("fromEstimationScale", "toEstimationScale"),
-  .getnativesymbolinfo = TRUE, ...) {
-  if (!object@has.trans) return(params)
-  dir <- switch(dir,fromEstimationScale=1L,toEstimationScale=-1L)
-  pompLoad(object)
-  on.exit(pompUnload(object))
-  rv <- .Call(do_partrans,object,params,dir,.getnativesymbolinfo)
-  rv
-}
-
 ## a simple method to extract the data array
 setMethod(
   "obs",
@@ -180,7 +157,7 @@ setMethod(
   definition=function (object, pars, transform = FALSE, ...) {
     if (length(object@params)>0) {
       if (transform)
-        params <- partrans(object,params=object@params,dir="toEstimationScale")
+        params <- partrans(object,params=object@params,dir="toEst")
       else
         params <- object@params
       if (missing(pars))
@@ -212,7 +189,7 @@ setMethod(
     if (missing(pars)) {          ## replace the whole params slot with 'value'
       if (length(value)>0) {
         if (transform)
-          value <- partrans(object,params=value,dir="fromEstimationScale")
+          value <- partrans(object,params=value,dir="fromEst")
         pars <- names(value)
         if (is.null(pars)) {
           if (transform)
@@ -231,7 +208,7 @@ setMethod(
         names(val) <- pars
         val[] <- value
         if (transform)
-          value <- partrans(object,params=val,dir="fromEstimationScale")
+          value <- partrans(object,params=val,dir="fromEst")
         object@params <- value
       } else { ## pre-existing params slot
         params <- coef(object,transform=transform)
@@ -249,7 +226,7 @@ setMethod(
         }
         params[pars] <- val
         if (transform)
-          params <- partrans(object,params=params,dir="fromEstimationScale")
+          params <- partrans(object,params=params,dir="fromEst")
         object@params <- params
       }
     }
@@ -308,17 +285,21 @@ setMethod(
     cat("- prior density, dprior = ")
     show(object@dprior)
     cat("- skeleton ",
-      if (object@skeleton.type!="undef")
-        paste0("(",object@skeleton.type,") ")
+      if (object@skeleton@type == 1L)
+        paste0("(vectorfield)")
+      else if (object@skeleton@type == 2L)
+        paste0("(map with delta.t = ",object@skeleton@delta.t,") ")
       else "",
       "= ",sep="")
-    show(object@skeleton)
+    show(object@skeleton@skel.fn)
     cat("- rinit = ")
     show(object@rinit)
-    cat("- parameter transformation (to estimation scale) = ")
-    show(object@to.trans)
-    cat("- parameter transformation (from estimation scale) = ")
-    show(object@from.trans)
+    if (object@partrans@has) {
+      cat("- parameter transformation (to estimation scale) = ")
+      show(object@partrans@to)
+      cat("- parameter transformation (from estimation scale) = ")
+      show(object@partrans@from)
+    }
     if (length(coef(object))>0) {
       cat("- parameter(s):\n")
       print(coef(object))

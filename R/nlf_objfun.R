@@ -24,7 +24,7 @@ nlf.lql <- function (params.fitted, object, params, par.index,
     params[par.index] <- params.fitted
     
     if (transform)
-        params <- partrans(object,params,dir="fromEstimationScale")
+        params <- partrans(object,params,dir="fromEst")
 
     data.ts <- obs(object)
     

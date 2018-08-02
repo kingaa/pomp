@@ -192,7 +192,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
   on.exit(pompUnload(object,verbose=verbose))
 
   if (transform)
-    paramMatrix <- partrans(object,paramMatrix,dir="toEstimationScale",
+    paramMatrix <- partrans(object,paramMatrix,dir="toEst",
       .getnativesymbolinfo=gnsi)
 
   ## iterate the filtering
@@ -230,7 +230,7 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
   }
 
   if (transform)
-    pfp@paramMatrix <- partrans(object,paramMatrix,dir="fromEstimationScale",
+    pfp@paramMatrix <- partrans(object,paramMatrix,dir="fromEst",
       .getnativesymbolinfo=gnsi)
 
   new(
@@ -305,7 +305,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
     params <- .Call(randwalk_perturbation,params,pmag)
 
     if (transform)
-      tparams <- partrans(object,params,dir="fromEstimationScale",
+      tparams <- partrans(object,params,dir="fromEst",
         .getnativesymbolinfo=gnsi)
 
     if (nt == 1L) {

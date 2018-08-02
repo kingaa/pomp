@@ -97,7 +97,7 @@ traces.internal <- function (object, pars, transform = FALSE, ...) {
         partrans(
           object,
           params=t(object@traces)[-c(1,2),,drop=FALSE],
-          dir="fromEstimationScale"
+          dir="fromEst"
         )
       )
     )

@@ -68,6 +68,7 @@ export(
   gillespie.sim,
   gillespie.hl.sim,
   map,vectorfield,
+  parameter_trans,
   mvn.diag.rw,mvn.rw,
   mvn.rw.adaptive,
   rw.sd,vectorfield,map,

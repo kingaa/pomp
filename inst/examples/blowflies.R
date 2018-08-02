@@ -900,6 +900,10 @@ pomp(
       double size = 1.0/sigma_y/sigma_y;
       y = rnbinom_mu(size,N1);"
   ),
+  partrans=parameter_trans(
+    toEst=function(params,...) log(params),
+    fromEst=function(params,...) exp(params)
+  ),
   paramnames=c("P","N0","delta","sigma.P","sigma.d","sigma.y"),
   statenames=c("N1","R","S","e","eps"),
   y.init=with( ## initial data
@@ -907,12 +911,6 @@ pomp(
     approx(x=day,y=y,xout=seq(from=0,to=14,by=1),rule=2)$y
   ),
   #     y.init=c(948, 948, 942, 930, 911, 885, 858, 833.7, 801, 748.3, 676, 589.8, 504, 434.9, 397),
-  toEstimationScale=function(params,...) {
-    log(params)
-  },
-  fromEstimationScale=function(params,...) {
-    exp(params)
-  },
   rinit=function (params, t0, y.init, ...) {
     ntau <- length(y.init)
     n <- y.init[ntau:1]

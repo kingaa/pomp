@@ -17,6 +17,7 @@
 \alias{coerce,Csnippet,character-method}
 \alias{vectorfield}
 \alias{map}
+\alias{parameter_trans}
 \description{
   This function constructs a \sQuote{pomp} object,
   encoding a partially-observed Markov process model together with a uni- or multi-variate time series.
@@ -36,10 +37,9 @@
   The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp/}{package website}.
 }
 \usage{
-pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
-     skeleton, rinit, rprior, dprior, params, covar, tcovar,
-     obsnames, statenames, paramnames, covarnames, zeronames,
-     PACKAGE, fromEstimationScale, toEstimationScale, globals,
+pomp(data, times, t0, \dots, rinit, rprocess, dprocess, rmeasure, dmeasure,
+     skeleton, rprior, dprior, partrans, params, covar, tcovar, zeronames,
+     obsnames, statenames, paramnames, covarnames, PACKAGE, globals,
      cdir, cfile, shlib.args)
 }
 \arguments{
@@ -57,6 +57,11 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.
     This argument is required whenever \code{data} is a data-frame.
   }
+  \item{rinit}{
+    optional; draws from the distribution of initial values of the unobserved Markov state process.
+    Specifically, given a vector of parameters, \code{params} and an initial time, \code{t0}, the rinit determines the state vector at time \code{t0}.
+    See below under \dQuote{The State-Process Initializer} for details.
+  }
   \item{rprocess, dprocess}{
     optional; specification of the simulator and probability density evaluation function of the unobserved state process.
     See below under \dQuote{The Unobserved Markov State-Process Model} for details.
@@ -73,14 +78,17 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     optional; the deterministic skeleton of the unobserved state process.
     See below under \dQuote{The Deterministic Skeleton} for details.
   }
-  \item{rinit}{
-    optional; draws from the distribution of initial values of the unobserved Markov state process.
-    Specifically, given a vector of parameters, \code{params} and an initial time, \code{t0}, the rinit determines the state vector at time \code{t0}.
-    See below under \dQuote{The State-Process Initializer} for details.
-  }
   \item{rprior, dprior}{
     optional; specification of the prior distribution on parameters.
     See below under \dQuote{Specifying a Prior} for details.
+  }
+  \item{partrans}{
+    optional parameter transformations.
+    Many algorithms for parameter estimation search an unconstrained space of parameters.
+    When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+    One should supply the \code{partrans} argument via a call to \code{parameter_trans(toEst,fromEst)}.
+    Here, \code{toEst} and \code{fromEst} are transformations from the model scale to the estimation scale, and vice versa, respectively.
+    See below under \dQuote{Parameter Transformations} for more details.
   }
   \item{params}{
     optional; named numeric vector of parameters.
@@ -109,13 +117,6 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     This is only useful if one or more of the model components has been specified using a precompiled dynamically loaded library;
     it is not used for any component specified using C snippets.
   }
-  \item{fromEstimationScale, toEstimationScale}{
-    optional parameter transformations.
-    Many algorithms for parameter estimation search an unconstrained space of parameters.
-    When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
-    \code{toEstimationScale} and \code{fromEstimationScale} are transformations from the model scale to the estimation scale, and vice versa, respectively.
-    See below under \dQuote{Parameter Transformations} for more details.
-  }
   \item{globals}{
     optional character;
     C code that will be included in the source for (and therefore hard-coded into) the shared-object library created when the call to \code{pomp} uses C snippets.
@@ -130,8 +131,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
     The \code{shlib.args} can be used to pass command-line arguments to the \code{R CMD SHLIB} call that will compile the C snippets.
   }
   \item{\dots}{
-    Any additional arguments given to \code{pomp} will be made available to each of the basic components.
-    To prevent errors due to misspellings, a warning is issued if any such arguments are detected.
+    Any additional arguments given to \code{pomp} will be made available to each of the user-defined functions.
+    To prevent errors due to misspelling, a warning is issued if any such arguments are detected.
   }
 }
 \value{
@@ -471,11 +472,11 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   Nor are parameter transformations permitted to depend upon covariates.
 }
 \section{Parameter Transformations}{
-  When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{toEstimationScale} and \code{fromEstimationScale} arguments.
+  When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans(toEst,fromEst)} function.
   As with the basic model components, these should ordinarily be specified using C snippets.
   When doing so, note that:
   \enumerate{
-    \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale is specified using the \code{toEstimationScale} argument whilst the transformation mapping a parameter vector from the alternative scale to that on which the model is defined is specified with the \code{fromEstimationScale} argument.
+    \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \code{parameter_trans(toEst,fromEst)} argument.
     \item The goal of these snippets is the computation of the values of the transformed parameters.
     The value of transformed parameter \code{p} should be assigned to variable \code{Tp}.
     \item Time-, state-, and covariate-dependent transformations are not allowed.
@@ -483,8 +484,8 @@ pomp(data, times, t0, \dots, rprocess, dprocess, rmeasure, dmeasure,
   }
 
   These transformations can also be specified using \R functions with arguments \code{params} and \code{\dots}.
-  In this case, \code{toEstimationScale} should transform parameters from the scale that the basic components use internally to the scale used in estimation.
-  \code{fromEstimationScale} should be the inverse of \code{toEstimationScale}.
+  In this case, \code{toEst} should transform parameters from the scale that the basic components use internally to the scale used in estimation.
+  \code{fromEst} should be the inverse of \code{toEst}.
 
   Note that it is the user's responsibility to make sure that the transformations are mutually inverse.
   If \code{obj} is the constructed \sQuote{pomp} object, and \code{coef(obj)} is non-empty, a simple check of this property is \preformatted{
@@ -525,8 +526,9 @@ pomp(data = data.frame(t = 1:100, y = NA),
      dprior = Csnippet("lik = dgamma(r,1,1,1) + dgamma(sigma,1,1,1);
                         if (!give_log) lik = exp(lik);"),
      rinit = Csnippet("n = n_0;"),
-     toEstimationScale = Csnippet("Tr = log(r); Tsigma = log(sigma);"),
-     fromEstimationScale = Csnippet("Tr = exp(r); Tsigma = exp(sigma);"),
+     partrans=parameter_trans(
+        toEst = Csnippet("Tr = log(r); Tsigma = log(sigma);"),
+        fromEst = Csnippet("Tr = exp(r); Tsigma = exp(sigma);")),
      paramnames = c("n_0", "r", "sigma","theta"),
      statenames = "n") -> rick
 

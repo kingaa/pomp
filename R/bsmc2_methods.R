@@ -43,11 +43,11 @@ setMethod(
     if (missing(thin)) thin <- Inf
     bsmc.plot(
       prior=if (x@transform)
-        partrans(x,x@prior,dir="fromEstimationScale")
+        partrans(x,x@prior,dir="fromEst")
       else
         x@prior,
       post=if (x@transform)
-        partrans(x,x@post,dir="fromEstimationScale")
+        partrans(x,x@post,dir="fromEst")
       else
         x@post,
       pars=pars,

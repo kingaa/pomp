@@ -47,6 +47,39 @@ simulate(times=1:100,t0=0,seed=450738202,
   statenames="z",obsnames="w") %>% plot()
 
 try(simulate(times=1:100,t0=0,
+  rmeasure=Csnippet("w = rnorm(z,1);"),
+  rinit=Csnippet("z = 0;"),
+  statenames="z",obsnames="w"))
+
+invisible(simulate(times=1:100,t0=0,
+  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
+    z <- x["z"]
+    c(z=runif(1,z-0.5,z+0.5))
+  }),
+  rmeasure=function(x,t,params,...) {
+    z <- x["z"]
+    c(w = rnorm(1,z,1))
+  },params=c(z.0=0)))
+
+try(simulate(times=1:100,t0=0,
+  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
+    z <- x["z"]
+    c(z=runif(1,z-0.5,z+0.5))
+  }),params=c(z.0=0)))
+
+invisible(simulate(times=1:100,t0=0,
+  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
+    z <- x["z"]
+    c(z=runif(1,z-0.5,z+0.5))
+  }),params=c(z.0=0),states=TRUE))
+
+try(simulate(times=1:100,t0=0,
+  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
+    z <- x["z"]
+    c(z=runif(1,z-0.5,z+0.5))
+  }),params=c(z.0=0),obs=TRUE))
+
+try(simulate(times=1:100,t0=0,
   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
   rmeasure=function(t,x,params,...) c(w=rnorm(n=t,x["z"],1)),
   rinit=Csnippet("z = 2;"),

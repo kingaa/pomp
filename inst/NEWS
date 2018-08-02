@@ -2,6 +2,14 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
+        • Instead of providing separate ‘fromEstimationScale’ and
+          ‘toEstimationScale’ arguments to ‘pomp’, one now provides a
+          single ‘partrans’ argument constructed by means of the new
+          function ‘parameter_trans’.  In addition, references to
+          “fromEstimationScale” and “toEstimationScale” have been
+          abbreviated to “fromEst” and “toEst”, respectively,
+          throughout the package.
+
         • The ‘measurement.model’ argument to ‘pomp’ has been removed.
           It is now necessary to specify the measurement model directly
           using ‘rmeasure’ and/or ‘dmeasure’.

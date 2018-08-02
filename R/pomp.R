@@ -1,11 +1,10 @@
 ## This file defines 'pomp', the basic constructor of the pomp class
 
-pomp <- function (data, times, t0, ..., rprocess, dprocess,
-  rmeasure, dmeasure, skeleton, rinit, rprior, dprior,
-  params, covar, tcovar,
-  obsnames, statenames, paramnames, covarnames, zeronames,
-  PACKAGE, fromEstimationScale, toEstimationScale,
-  globals, cdir, cfile, shlib.args) {
+pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
+  rmeasure, dmeasure, skeleton, rprior, dprior, partrans,
+  params, covar, tcovar, zeronames,
+  obsnames, statenames, paramnames, covarnames,
+  PACKAGE, globals, cdir, cfile, shlib.args) {
 
   ep <- paste0("in ",sQuote("pomp"),": ")
 
@@ -19,14 +18,6 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     stop(ep,sQuote("data")," must be a data frame or an object of class ",
       sQuote("pomp"),".",call.=FALSE)
 
-  ## if one transformation is supplied, then both must be
-  c1 <- missing(fromEstimationScale)
-  c2 <- missing(toEstimationScale)
-  if (xor(c1,c2))
-    stop(ep,"if one of ",sQuote("toEstimationScale"),", ",
-      sQuote("fromEstimationScale")," is supplied, then so must the other",
-      call.=FALSE)
-
   ## if 'covar' is supplied, then so must 'tcovar'
   c1 <- missing(covar)
   c2 <- missing(tcovar)
@@ -37,14 +28,12 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
 
   construct_pomp(
     data=data,times=times,t0=t0,...,
-    rprocess=rprocess,dprocess=dprocess,
+    rinit=rinit,rprocess=rprocess,dprocess=dprocess,
     rmeasure=rmeasure,dmeasure=dmeasure,
-    rinit=rinit,skeleton=skeleton,
-    rprior=rprior,dprior=dprior,params=params,
-    covar=covar,tcovar=tcovar,
+    skeleton=skeleton,rprior=rprior,dprior=dprior,partrans=partrans,
+    params=params, covar=covar,tcovar=tcovar,zeronames=zeronames,
     obsnames=obsnames,statenames=statenames,paramnames=paramnames,
-    covarnames=covarnames,zeronames=zeronames,PACKAGE=PACKAGE,
-    fromEstimationScale=fromEstimationScale,toEstimationScale=toEstimationScale,
+    covarnames=covarnames,PACKAGE=PACKAGE,
     globals=globals,cdir=cdir,cfile=cfile,shlib.args=shlib.args
   )
 }
@@ -95,8 +84,8 @@ setMethod(
   "construct_pomp",
   signature=signature(data="array"),
   definition = function (data, times, t0, ...,
-    rinit, rprocess, dprocess, rmeasure, dmeasure, rprior, dprior, skeleton,
-    fromEstimationScale, toEstimationScale, params, covar, tcovar) {
+    rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
+    partrans, params, covar, tcovar) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")
 
@@ -123,6 +112,10 @@ setMethod(
         ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
     }
 
+    if (missing(dprocess)) dprocess <- NULL
+    if (missing(rmeasure)) rmeasure <- NULL
+    if (missing(dmeasure)) dmeasure <- NULL
+
     if (missing(skeleton) || is.null(skeleton)) {
       skeleton <- plugin()
     } else if (!is(skeleton,"pompPlugin")) {
@@ -130,13 +123,15 @@ setMethod(
         sQuote("map")," or ",sQuote("vectorfield"),".",call.=FALSE)
     }
 
-    if (missing(dprocess)) dprocess <- NULL
-    if (missing(rmeasure)) rmeasure <- NULL
-    if (missing(dmeasure)) dmeasure <- NULL
+    if (missing(partrans) || is.null(partrans)) {
+      partrans <- parameter_trans()
+    } else if (!is(partrans,"partrans_funs")) {
+      stop(ep,sQuote("partrans")," must be specified using ",
+        sQuote("parameter_trans"),".",call.=FALSE)
+    }
+
     if (missing(rprior)) rprior <- NULL
     if (missing(dprior)) dprior <- NULL
-    if (missing(fromEstimationScale)) fromEstimationScale <- NULL
-    if (missing(toEstimationScale)) toEstimationScale <- NULL
 
     if (missing(params)) params <- numeric(0)
     if (missing(covar)) covar <- NULL
@@ -152,14 +147,13 @@ setMethod(
         dprocess=dprocess,
         rmeasure=rmeasure,
         dmeasure=dmeasure,
+        skeleton=skeleton,
         dprior=dprior,
         rprior=rprior,
-        skeleton=skeleton,
+        partrans=partrans,
         params=params,
         covar=covar,
         tcovar=tcovar,
-        fromEstimationScale=fromEstimationScale,
-        toEstimationScale=toEstimationScale,
         ...
       ),
       error = function (e) {
@@ -173,9 +167,8 @@ setMethod(
   "construct_pomp",
   signature=signature(data="pomp"),
   definition = function (data, times, t0, ...,
-    rinit, rprocess, dprocess, rmeasure, dmeasure, rprior, dprior, skeleton,
-    fromEstimationScale, toEstimationScale, params, covar, tcovar,
-    zeronames) {
+    rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
+    partrans, params, covar, tcovar, zeronames) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
 
@@ -201,6 +194,10 @@ setMethod(
         ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
     }
 
+    if (missing(dprocess)) dprocess <- data@dprocess
+    if (missing(rmeasure)) rmeasure <- data@rmeasure
+    if (missing(dmeasure)) dmeasure <- data@dmeasure
+
     if (missing(skeleton)) {
       skeleton <- data@skeleton
     } else if (is.null(skeleton)) {
@@ -210,13 +207,17 @@ setMethod(
         sQuote("map")," or ",sQuote("vectorfield"),".",call.=FALSE)
     }
 
-    if (missing(dprocess)) dprocess <- data@dprocess
-    if (missing(rmeasure)) rmeasure <- data@rmeasure
-    if (missing(dmeasure)) dmeasure <- data@dmeasure
+    if (missing(partrans)) {
+      partrans <- data@partrans
+    } else if (is.null(partrans)) {
+      partrans <- parameter_trans()
+    } else if (!is(partrans,"partrans_funs")) {
+      stop(ep,sQuote("partrans")," must be specified using ",
+        sQuote("parameter_trans"),".",call.=FALSE)
+    }
+
     if (missing(rprior)) rprior <- data@rprior
     if (missing(dprior)) dprior <- data@dprior
-    if (missing(fromEstimationScale)) fromEstimationScale <- data@from.trans
-    if (missing(toEstimationScale)) toEstimationScale <- data@to.trans
 
     if (missing(params)) params <- data@params
     if (missing(covar)) covar <- data@covar
@@ -233,14 +234,13 @@ setMethod(
         dprocess=dprocess,
         rmeasure=rmeasure,
         dmeasure=dmeasure,
-        dprior=dprior,
-        rprior=rprior,
         skeleton=skeleton,
+        rprior=rprior,
+        dprior=dprior,
+        partrans=partrans,
         covar=covar,
         tcovar=tcovar,
         zeronames=zeronames,
-        fromEstimationScale=fromEstimationScale,
-        toEstimationScale=toEstimationScale,
         params=params,
         .solibs=data@solibs,
         .userdata=data@userdata,
@@ -253,21 +253,19 @@ setMethod(
   }
 )
 
-pomp.internal <- function (data, times, t0,
+pomp.internal <- function (data, times, t0, ...,
   rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-  fromEstimationScale, toEstimationScale,
-  params, covar, tcovar,
-  obsnames, statenames, paramnames, covarnames,
-  zeronames, PACKAGE,
-  globals, cdir, cfile, shlib.args,
-  .userdata, ...,
-  .solibs = list(),
-  verbose = getOption("verbose",FALSE)) {
+  partrans, params, covar, tcovar, zeronames, obsnames, statenames,
+  paramnames, covarnames, PACKAGE, globals, cdir, cfile, shlib.args,
+  .userdata, .solibs = list(), verbose = getOption("verbose",FALSE)) {
 
   ep <- character(0)
   wp <- paste0("in ",sQuote("pomp"),": ")
 
-  if (missing(t0)) stop(ep,sQuote("t0")," is a required argument",call.=FALSE)
+  if (missing(times) || is.null(times))
+    stop(ep,sQuote("times")," is a required argument.",call.=FALSE)
+  if (missing(t0) || is.null(t0))
+    stop(ep,sQuote("t0")," is a required argument.",call.=FALSE)
 
   if (missing(.userdata)) .userdata <- list()
   added.userdata <- list(...)
@@ -291,20 +289,20 @@ pomp.internal <- function (data, times, t0,
   if (missing(zeronames)) zeronames <- NULL
   zeronames <- as.character(zeronames)
   if (anyDuplicated(zeronames)) {
-    stop(ep,"all ",sQuote("zeronames")," must be unique", call.=FALSE)
+    stop(ep,"all ",sQuote("zeronames")," must be unique.", call.=FALSE)
   }
 
   ## store the data as double-precision matrix
   storage.mode(data) <- 'double'
   if (length(obsnames) == 0) obsnames <- rownames(data)
   if (anyDuplicated(obsnames)) {
-    stop(ep,"all ",sQuote("obsnames")," must be unique", call.=FALSE)
+    stop(ep,"all ",sQuote("obsnames")," must be unique.", call.=FALSE)
   }
 
   ## check the parameters and force them to be double-precision
   if (length(params)>0) {
     if (is.null(names(params)) || !is.numeric(params))
-      stop(sQuote("params")," must be a named numeric vector",call.=FALSE)
+      stop(sQuote("params")," must be a named numeric vector.",call.=FALSE)
   }
   storage.mode(params) <- 'double'
 
@@ -317,7 +315,7 @@ pomp.internal <- function (data, times, t0,
 
   ## check t0
   if (!is.numeric(t0) || length(t0) > 1)
-    stop("the zero-time ",sQuote("t0")," must be a single number",call.=FALSE)
+    stop("the zero-time ",sQuote("t0")," must be a single number.",call.=FALSE)
   storage.mode(t0) <- 'double'
 
   ## check and arrange covariates
@@ -382,8 +380,8 @@ pomp.internal <- function (data, times, t0,
     dmeasure=dmeasure,
     rprior=rprior,
     dprior=dprior,
-    fromEstimationScale=fromEstimationScale,
-    toEstimationScale=toEstimationScale,
+    toEst=partrans@to,
+    fromEst=partrans@from,
     skeleton=skeleton@skel.fn,
     templates=workhorse_templates,
     obsnames=obsnames,
@@ -397,10 +395,6 @@ pomp.internal <- function (data, times, t0,
     shlib.args=shlib.args,
     verbose=verbose
   )
-
-  ## are parameter transformations defined?
-  has.trans <- hitches$funs$fromEstimationScale@mode != pompfunmode$undef &&
-    hitches$funs$toEstimationScale@mode != pompfunmode$undef
 
   ## check to make sure 'covars' is included as an argument where needed
   if (nrow(covar) > 0) {
@@ -435,30 +429,35 @@ pomp.internal <- function (data, times, t0,
     data = data,
     times = times,
     t0 = t0,
+    default.init = default.init,
+    rinit = hitches$funs$rinit,
     rprocess = plugin(
       rprocess,
       step.fn=hitches$funs$step.fn,
       rate.fn=hitches$funs$rate.fn
     ),
+    dprocess = hitches$funs$dprocess,
+    dmeasure = hitches$funs$dmeasure,
+    rmeasure = hitches$funs$rmeasure,
     skeleton = plugin(
       skeleton,
       skel.fn=hitches$funs$skeleton
     ),
-    default.init = default.init,
-    rinit = hitches$funs$rinit,
-    dprocess = hitches$funs$dprocess,
-    dmeasure = hitches$funs$dmeasure,
-    rmeasure = hitches$funs$rmeasure,
     dprior = hitches$funs$dprior,
     rprior = hitches$funs$rprior,
+    partrans = parameter_trans(
+      toEst=hitches$funs$toEst,
+      fromEst=hitches$funs$fromEst
+    ),
     params = params,
     covar = covar,
     tcovar = tcovar,
     zeronames = zeronames,
-    has.trans = has.trans,
-    from.trans = hitches$funs$fromEstimationScale,
-    to.trans = hitches$funs$toEstimationScale,
-    solibs = if (is.null(hitches$lib)) .solibs else c(list(hitches$lib),.solibs),
+    solibs = if (is.null(hitches$lib)) {
+      .solibs
+    } else {
+      c(list(hitches$lib),.solibs)
+    },
     userdata = .userdata
   )
 }

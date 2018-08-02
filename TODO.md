@@ -3,6 +3,7 @@
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files
+- blowflies2 is wonky
 
 ## For pomp 2:
 
@@ -15,7 +16,7 @@
 - covariates:
     - piecewise constant interpolation of covariates
     - `covar`, `tcovar` specified as a pair using `safecall`
-- parameter transformations specified as a pair
+- ~~parameter transformations specified as a pair~~
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification

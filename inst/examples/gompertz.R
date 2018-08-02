@@ -105,25 +105,22 @@ dat <- '"time";"X";"Y"
 '
 
 pomp(
-     data=subset(read.csv2(text=dat),select=-X),
-     times="time",
-     t0=0,
-     params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
-     rprocess=discrete.time.sim(
-       step.fun="_gompertz_simulator"
-       ),
-     rmeasure="_gompertz_normal_rmeasure",
-     dmeasure="_gompertz_normal_dmeasure",
-     skeleton=map("_gompertz_skeleton",delta.t=1),
-     paramnames=c("r","K","sigma","tau"),
-     statenames=c("X"),
-     fromEstimationScale=function(params,...){
-       exp(params)
-     },
-     toEstimationScale=function(params,...){
-       log(params)
-     }
-     ) -> gompertz
+  data=subset(read.csv2(text=dat),select=-X),
+  times="time",
+  t0=0,
+  params=c(K=1,r=0.1,sigma=0.1,tau=0.1,X.0=1),
+  partrans=parameter_trans(
+    fromEst=function(params,...){exp(params)},
+    toEst=function(params,...){log(params)}),
+  rprocess=discrete.time.sim(
+    step.fun="_gompertz_simulator"
+  ),
+  rmeasure="_gompertz_normal_rmeasure",
+  dmeasure="_gompertz_normal_dmeasure",
+  skeleton=map("_gompertz_skeleton",delta.t=1),
+  paramnames=c("r","K","sigma","tau"),
+  statenames=c("X")
+) -> gompertz
 
 ## the following was used to create the data included
 ## simulate(po,nsim=1,seed=299438676L) -> gompertz

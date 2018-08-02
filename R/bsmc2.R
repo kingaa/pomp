@@ -82,8 +82,7 @@ bsmc2.internal <- function (object, params, Np, est,
   }
 
   if (transform)
-    params <- partrans(object,params,dir="toEstimationScale",
-      .getnativesymbolinfo=gnsi)
+    params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)
 
   params <- as.matrix(params)
   if (!is.numeric(params) || is.null(rownames(params)))
@@ -126,8 +125,7 @@ bsmc2.internal <- function (object, params, Np, est,
   xstart <- rinit(
     object,
     params=if (transform) {
-      partrans(object,params,dir="fromEstimationScale",
-        .getnativesymbolinfo=gnsi)
+      partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi)
     } else {
       params
     },
@@ -184,8 +182,7 @@ bsmc2.internal <- function (object, params, Np, est,
     params[estind,] <- m[estind,]+t(pert)
 
     if (transform)
-      tparams <- partrans(object,params,dir="fromEstimationScale",
-        .getnativesymbolinfo=gnsi)
+      tparams <- partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi)
 
     xpred <- rprocess(
       object,

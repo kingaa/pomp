@@ -173,8 +173,8 @@ workhorse_templates <- list(
       )
     )
   ),
-  fromEstimationScale=list(
-    slotname="fromEstimationScale",
+  fromEst=list(
+    slotname="fromEst",
     Cname="__pomp_from_trans",
     proto=quote(from.trans(params,...)),
     header="\nvoid __pomp_from_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
@@ -194,8 +194,8 @@ workhorse_templates <- list(
       )
     )
   ),
-  toEstimationScale=list(
-    slotname="toEstimationScale",
+  toEst=list(
+    slotname="toEst",
     Cname="__pomp_to_trans",
     proto=quote(to.trans(params,...)),
     header="\nvoid __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",

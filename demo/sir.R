@@ -87,7 +87,7 @@ skel <- '
 ## note we use barycentric coordinates for the initial conditions
 ## the success of this depends on S0, I0, R0 being in
 ## adjacent memory locations, in that order
-partrans <- "
+toEst <- "
   int k;
   Tgamma = log(gamma);
   Tmu = log(mu);
@@ -100,7 +100,7 @@ partrans <- "
   to_log_barycentric(&TS_0,&S_0,3);
 "
 
-paruntrans <- "
+fromEst <- "
   int k;
   Tgamma = exp(gamma);
   Tmu = exp(mu);
@@ -123,54 +123,56 @@ initlzr <- "
 "
 
 cbind(
-      time=seq(from=1928,to=1934,by=0.01),
-      as.data.frame(
-                    periodic.bspline.basis(
-                                           x=seq(from=1928,to=1934,by=0.01),
-                                           nbasis=3,
-                                           degree=3,
-                                           period=1,
-                                           names="seas%d"
-                                           )
-                    )
-      ) -> covar
+  time=seq(from=1928,to=1934,by=0.01),
+  as.data.frame(
+    periodic.bspline.basis(
+      x=seq(from=1928,to=1934,by=0.01),
+      nbasis=3,
+      degree=3,
+      period=1,
+      names="seas%d"
+    )
+  )
+) -> covar
 
 pomp(
-     data=subset(
-       LondonYorke,
-       subset=town=="New York"&disease=="measles"&year>=1928&year<=1933,
-       select=c(time,cases)
-       ),
-     times="time",
-     t0=1928,
-     globals=globals,
-     rmeasure=Csnippet(rmeas),
-     rprocess=euler.sim(
-       step.fun=Csnippet(step.fun),
-       delta.t=1/52/20
-       ),
-     skeleton=vectorfield(Csnippet(skel)),
-     covar=covar,
-     tcovar="time",
-     toEstimationScale=Csnippet(partrans),
-     fromEstimationScale=Csnippet(paruntrans),
-     statenames=c("S","I","R","incid","W"),
-     paramnames=c(
-       "gamma","mu","iota","beta1","beta.sd",
-       "popsize","rho","theta","S.0","I.0","R.0"
-       ),
-     zeronames=c("incid","W"),
-     rinit=Csnippet(initlzr)
-     ) -> po
+  data=subset(
+    LondonYorke,
+    subset=town=="New York"&disease=="measles"&year>=1928&year<=1933,
+    select=c(time,cases)
+  ),
+  times="time",
+  t0=1928,
+  globals=globals,
+  rmeasure=Csnippet(rmeas),
+  rprocess=euler.sim(
+    step.fun=Csnippet(step.fun),
+    delta.t=1/52/20
+  ),
+  skeleton=vectorfield(Csnippet(skel)),
+  covar=covar,
+  tcovar="time",
+  partrans=parameter_trans(
+    toEst=Csnippet(toEst),
+    fromEst=Csnippet(fromEst)
+  ),
+  statenames=c("S","I","R","incid","W"),
+  paramnames=c(
+    "gamma","mu","iota","beta1","beta.sd",
+    "popsize","rho","theta","S.0","I.0","R.0"
+  ),
+  zeronames=c("incid","W"),
+  rinit=Csnippet(initlzr)
+) -> po
 
 coef(po) <- c(
-              gamma=26,mu=0.02,iota=0.01,
-              beta1=120,beta2=140,beta3=100,
-              beta.sd=0.01,
-              popsize=5e6,
-              rho=0.1,theta=1,
-              S.0=0.22,I.0=0.0018,R.0=0.78
-              )
+  gamma=26,mu=0.02,iota=0.01,
+  beta1=120,beta2=140,beta3=100,
+  beta.sd=0.01,
+  popsize=5e6,
+  rho=0.1,theta=1,
+  S.0=0.22,I.0=0.0018,R.0=0.78
+)
 
 ## compute a trajectory of the deterministic skeleton
 tic <- Sys.time()
@@ -191,17 +193,17 @@ plot(incid~time,data=x,col=as.factor(x$sim),pch=16)
 ## compute the likelihood.
 ## first add a dmeasure
 po <- pomp(
-           po,
-           dmeasure=Csnippet('
+  po,
+  dmeasure=Csnippet('
   lik = dnbinom_mu(cases,theta,rho*incid,give_log);
 '
-             ),
-           statenames=c("S","I","R","incid","W"),
-           paramnames=c(
-             "gamma","mu","iota","beta1","beta.sd",
-             "popsize","rho","theta","S.0","I.0","R.0"
-             )
-           )
+  ),
+  statenames=c("S","I","R","incid","W"),
+  paramnames=c(
+    "gamma","mu","iota","beta1","beta.sd",
+    "popsize","rho","theta","S.0","I.0","R.0"
+  )
+)
 
 ## then run a particle filter
 tic <- Sys.time()

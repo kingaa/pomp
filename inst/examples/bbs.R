@@ -78,28 +78,30 @@ pomp(
   ),
   dmeasure=Csnippet("
     lik = dnbinom_mu(reports,1/sigma/sigma,rho*H,give_log);"
-    ),
+  ),
   statenames=c("S","I","R","H","W"),
   paramnames=c(
     "gamma","Beta","Beta_sd","pop","rho","sigma",
     "S_0","I_0","R_0"  # note we rely on these being adjacent
   ),
   zeronames=c("H"),
-  toEstimationScale=Csnippet("
-    Tgamma = log(gamma);
-    TBeta = log(Beta);
-    TBeta_sd = log(Beta_sd);
-    Trho = logit(rho);
-    Tsigma = log(sigma);
-    to_log_barycentric(&TS_0,&S_0,3);"
-  ),
-  fromEstimationScale=Csnippet("
-    Tgamma = exp(gamma);
-    TBeta = exp(Beta);
-    TBeta_sd = exp(Beta_sd);
-    Trho = expit(rho);
-    Tsigma = exp(sigma);
-    from_log_barycentric(&TS_0,&S_0,3);"
+  partrans=parameter_trans(
+    toEst=Csnippet("
+      Tgamma = log(gamma);
+      TBeta = log(Beta);
+      TBeta_sd = log(Beta_sd);
+      Trho = logit(rho);
+      Tsigma = log(sigma);
+      to_log_barycentric(&TS_0,&S_0,3);"
+    ),
+    fromEst=Csnippet("
+      Tgamma = exp(gamma);
+      TBeta = exp(Beta);
+      TBeta_sd = exp(Beta_sd);
+      Trho = expit(rho);
+      Tsigma = exp(sigma);
+      from_log_barycentric(&TS_0,&S_0,3);"
+    )
   )
 ) -> bbs
 

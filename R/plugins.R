@@ -74,51 +74,51 @@ plugin <- function (object, step.fn, rate.fn, skel.fn) {
 
 onestep.sim <- function (step.fun) {
   new("onestepRprocessPlugin",
-      step.fn=step.fun,
-      slotname="step.fun",
-      csnippet=is(step.fun,"Csnippet"),
-      type=1L)
+    step.fn=step.fun,
+    slotname="step.fun",
+    csnippet=is(step.fun,"Csnippet"),
+    type=1L)
 }
 
 discrete.time.sim <- function (step.fun, delta.t = 1) {
   new("discreteRprocessPlugin",
-      step.fn=step.fun,
-      delta.t=delta.t,
-      slotname="step.fun",
-      csnippet=is(step.fun,"Csnippet"),
-      type=2L)
+    step.fn=step.fun,
+    delta.t=delta.t,
+    slotname="step.fun",
+    csnippet=is(step.fun,"Csnippet"),
+    type=2L)
 }
 
 euler.sim <- function (step.fun, delta.t) {
   new("eulerRprocessPlugin",
-      step.fn=step.fun,
-      delta.t=delta.t,
-      slotname="step.fun",
-      csnippet=is(step.fun,"Csnippet"),
-      type=3L)
+    step.fn=step.fun,
+    delta.t=delta.t,
+    slotname="step.fun",
+    csnippet=is(step.fun,"Csnippet"),
+    type=3L)
 }
 
 gillespie.sim <- function (rate.fun, v, d, hmax = Inf) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
   if (!missing(d)) {
     warning("argument ",sQuote("d")," is deprecated; updates to the simulation",
-            " algorithm have made it unnecessary", call. = FALSE)
+      " algorithm have made it unnecessary", call. = FALSE)
   }
   if (!is.matrix(v)) {
     stop(ep,sQuote("v")," must be a matrix.",
-         call.=FALSE)
+      call.=FALSE)
   }
   if (anyDuplicated(rownames(v))){
     stop(ep,"duplicates in rownames of ",sQuote("v"), call.=FALSE)
   }
 
   new("gillespieRprocessPlugin",
-      rate.fn=rate.fun,
-      v=v,
-      hmax=hmax,
-      slotname="rate.fun",
-      csnippet=is(rate.fun,"Csnippet"),
-      type=4L)
+    rate.fn=rate.fun,
+    v=v,
+    hmax=hmax,
+    slotname="rate.fun",
+    csnippet=is(rate.fun,"Csnippet"),
+    type=4L)
 }
 
 gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
@@ -128,7 +128,7 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   for (k in seq_along(args)) {
     if (!is.list(args[[k]]) || length(args[[k]]) != 2) {
       stop(ep,"each of the events should be specified using a length-2 list",
-           call.=FALSE)
+        call.=FALSE)
     }
   }
 
@@ -139,11 +139,11 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
     inh <- inherits(x, what = c("Csnippet", "character"))
     if (!any(inh)) {
       stop(ep,"for each event, the first list-element should be a",
-           " C snippet or string.", call.=FALSE)
+        " C snippet or string.", call.=FALSE)
     }
     if (length(x) != 1){
       stop(ep,"for each event, the length of the first list-element",
-           " should be 1.", call.=FALSE)
+        " should be 1.", call.=FALSE)
     }
     as(x,"character")
   }
@@ -154,15 +154,15 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
     .pre <- paste(as.character(.pre),collapse="\n")
     .post <- paste(as.character(.post),collapse="\n")
   },
-  error = function (e) {
-    stop(ep,sQuote(".pre")," and ",sQuote(".post"),
-         " must be C snippets or strings.",call.=FALSE)
-  })
+    error = function (e) {
+      stop(ep,sQuote(".pre")," and ",sQuote(".post"),
+        " must be C snippets or strings.",call.=FALSE)
+    })
 
   for (k in seq_along(stoich)) {
     if (!is.numeric(stoich[[k]]) || is.null(names(stoich[[k]]))) {
       stop(ep,"for each event, the second list-element should be",
-           " a named numeric vector", call.=FALSE)
+        " a named numeric vector", call.=FALSE)
     }
   }
 
@@ -188,12 +188,12 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   }
 
   new("gillespieRprocessPlugin",
-      rate.fn=rate.fn,
-      v=v,
-      hmax=hmax,
-      slotname="rate.fun",
-      csnippet=TRUE,
-      type=4L)
+    rate.fn=rate.fn,
+    v=v,
+    hmax=hmax,
+    slotname="rate.fun",
+    csnippet=TRUE,
+    type=4L)
 }
 
 vectorfield <- function (f) {
@@ -207,3 +207,35 @@ map <- function (f, delta.t = 1) {
   new("mapPlugin",skel.fn=f,delta.t=delta.t,type=2L)
 }
 
+
+setClass(
+  "partrans_funs",
+  slots=c(
+    has="logical",
+    to="ANY",
+    from="ANY"
+  ),
+  prototype=prototype(
+    has=FALSE,
+    to=NULL,
+    from=NULL
+  )
+)
+
+parameter_trans <- function (toEst, fromEst) {
+
+  ep <- paste0("in ",sQuote("parameter_trans"),": ")
+
+  ## if one transformation is supplied, then both must be
+  c1 <- missing(toEst) || is.null(toEst)
+  c2 <- missing(fromEst) || is.null(fromEst)
+
+  if (xor(c1,c2)) {
+    stop(ep,"if one of ",sQuote("toEst"),", ",sQuote("fromEst"),
+      " is supplied, then so must the other be.",call.=FALSE)
+  } else if (c1 || (is(toEst,"pomp_fun") && toEst@mode == -1L)) {
+    new("partrans_funs",has=FALSE)
+  } else {
+    new("partrans_funs",has=TRUE,to=toEst,from=fromEst)
+  }
+}

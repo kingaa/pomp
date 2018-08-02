@@ -44,8 +44,7 @@
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots)
 \S4method{coef}{pomp}(object, pars, transform = FALSE, \dots) <- value
 \S4method{obs}{pomp}(object, vars, \dots)
-\S4method{partrans}{pomp}(object, params,
-      dir = c("fromEstimationScale", "toEstimationScale"), \dots)
+\S4method{partrans}{pomp}(object, params, dir = c("fromEst", "toEst"), \dots)
 \S4method{plot}{pomp}(x, variables, panel = lines,
       nc = NULL, yax.flip = FALSE,
       mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
@@ -81,8 +80,8 @@
   }
   \item{dir}{
     direction of the transformation.
-    \code{dir="toEstimationScale"} applies the transformation from the model (or \dQuote{natural}) scale to the \dQuote{estimation} scale.
-    \code{dir="fromEstimationScale"} applies the inverse transformation (from the estimation scale to the natural scale.
+    \code{dir="toEst"} applies the transformation from the model (or \dQuote{natural}) scale to the \dQuote{estimation} scale.
+    \code{dir="fromEst"} applies the inverse transformation (from the estimation scale to the natural scale.
   }
   \item{t0}{
     logical;

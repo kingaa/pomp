@@ -614,28 +614,30 @@ pomp(
     "S_0","I_0","R_0"
   ),
   zeronames=c("cases"),
-  fromEstimationScale=Csnippet("
-    int k;
-    const double *xbeta = &beta1;
-    double *xtbeta = &Tbeta1;
-    Tgamma = exp(gamma);
-    Tmu = exp(mu);
-    Tiota = exp(iota);
-    for (k = 0; k < nbasis; k++) xtbeta[k] = exp(xbeta[k]);
-    Tbeta_sd = exp(beta_sd);
-    Trho = expit(rho);
-    from_log_barycentric(&TS_0,&S_0,3);"),
-  toEstimationScale=Csnippet("
-    int k;
-    const double *xbeta = &beta1;
-    double *xtbeta = &Tbeta1;
-    Tgamma = log(gamma);
-    Tmu = log(mu);
-    Tiota = log(iota);
-    for (k = 0; k < nbasis; k++) xtbeta[k] = log(xbeta[k]);
-    Tbeta_sd = log(beta_sd);
-    Trho = logit(rho);
-    to_log_barycentric(&TS_0,&S_0,3);"),
+  partrans=parameter_trans(
+    fromEst=Csnippet("
+      int k;
+      const double *xbeta = &beta1;
+      double *xtbeta = &Tbeta1;
+      Tgamma = exp(gamma);
+      Tmu = exp(mu);
+      Tiota = exp(iota);
+      for (k = 0; k < nbasis; k++) xtbeta[k] = exp(xbeta[k]);
+      Tbeta_sd = exp(beta_sd);
+      Trho = expit(rho);
+      from_log_barycentric(&TS_0,&S_0,3);"),
+    toEst=Csnippet("
+      int k;
+      const double *xbeta = &beta1;
+      double *xtbeta = &Tbeta1;
+      Tgamma = log(gamma);
+      Tmu = log(mu);
+      Tiota = log(iota);
+      for (k = 0; k < nbasis; k++) xtbeta[k] = log(xbeta[k]);
+      Tbeta_sd = log(beta_sd);
+      Trho = logit(rho);
+      to_log_barycentric(&TS_0,&S_0,3);")
+  ),
   rinit=Csnippet("
     double m;
     m = pop/(S_0+I_0+R_0);
@@ -643,7 +645,7 @@ pomp(
     I = nearbyint(m*I_0);
     N = nearbyint(pop);
     R = nearbyint(m*R_0);
-    cases = 0;"),
+    cases = 0;")
 ) -> sir2
 
 ## originally, the data were created via:

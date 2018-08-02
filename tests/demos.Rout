@@ -67,7 +67,7 @@ Type 'q()' to quit R.
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.003240824 secs
+Time difference of 0.006758928 secs
 
 > X <- reshape(X, dir = "wide", v.names = "X", timevar = "traj", 
 +     idvar = "time")
@@ -82,7 +82,7 @@ Time difference of 0.003240824 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.02259469 secs
+Time difference of 0.04701853 secs
 
 > x <- reshape(x, dir = "wide", v.names = c("Y", "X"), 
 +     timevar = "sim", idvar = "time")
@@ -105,7 +105,7 @@ Time difference of 0.02259469 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.3310089 secs
+Time difference of 0.5600603 secs
 
 > print(logmeanexp(sapply(pf, logLik), se = TRUE))
                    se 
@@ -175,9 +175,9 @@ Time difference of 0.3310089 secs
 
 > skel <- "\n  double rate[6];\t\t// transition rates\n  double term[6];\t\t// transition numbers\n  double beta;\t\t\t// transmission rate\n  int k;\ ..." ... [TRUNCATED] 
 
-> partrans <- "\n  int k;\n  Tgamma = log(gamma);\n  Tmu = log(mu);\n  Tiota = log(iota);\n  for (k = 0; k < nbasis; k++)\n    (&Tbeta1)[k] = log((&be ..." ... [TRUNCATED] 
+> toEst <- "\n  int k;\n  Tgamma = log(gamma);\n  Tmu = log(mu);\n  Tiota = log(iota);\n  for (k = 0; k < nbasis; k++)\n    (&Tbeta1)[k] = log((&beta1 ..." ... [TRUNCATED] 
 
-> paruntrans <- "\n  int k;\n  Tgamma = exp(gamma);\n  Tmu = exp(mu);\n  Tiota = exp(iota);\n  for (k = 0; k < nbasis; k++)\n    (&Tbeta1)[k] = exp((& ..." ... [TRUNCATED] 
+> fromEst <- "\n  int k;\n  Tgamma = exp(gamma);\n  Tmu = exp(mu);\n  Tiota = exp(iota);\n  for (k = 0; k < nbasis; k++)\n    (&Tbeta1)[k] = exp((&bet ..." ... [TRUNCATED] 
 
 > initlzr <- "\n  double m = popsize/(S_0+I_0+R_0);\n  S = nearbyint(m*S_0);\n  I = nearbyint(m*I_0);\n  R = nearbyint(m*R_0);\n  incid = 0;\n  W = 0; ..." ... [TRUNCATED] 
 
@@ -200,7 +200,7 @@ Time difference of 0.3310089 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.00259161 secs
+Time difference of 0.007009268 secs
 
 > plot(incid ~ time, data = X, type = "l")
 
@@ -211,7 +211,7 @@ Time difference of 0.00259161 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.0235517 secs
+Time difference of 0.04692698 secs
 
 > plot(incid ~ time, data = x, col = as.factor(x$sim), 
 +     pch = 16)
@@ -227,7 +227,7 @@ Time difference of 0.0235517 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 6.491271 secs
+Time difference of 7.460326 secs
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 

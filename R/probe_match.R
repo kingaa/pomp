@@ -192,7 +192,7 @@ pmof.internal <- function (object, params, est, probes, nsim, seed = NULL,
   if ((!is.numeric(params))||(is.null(names(params))))
     stop(ep,sQuote("params")," must be a named numeric vector",call.=FALSE)
   if (transform)
-    params <- partrans(object,params,dir="toEstimationScale")
+    params <- partrans(object,params,dir="toEst")
   par.est.idx <- match(est,names(params))
   if (any(is.na(par.est.idx)))
     stop(ep,"parameter(s): ",sQuote(est[is.na(par.est.idx)])," not found in ",sQuote("params"),call.=FALSE)
@@ -216,7 +216,7 @@ pmof.internal <- function (object, params, est, probes, nsim, seed = NULL,
     params[par.est.idx] <- par
 
     if (transform)
-      tparams <- partrans(object,params,dir="fromEstimationScale")
+      tparams <- partrans(object,params,dir="fromEst")
 
     pompLoad(object)
     on.exit(pompUnload(object))
