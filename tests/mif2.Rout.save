@@ -169,11 +169,8 @@ In addition: Warning message:
 in 'mif2': Np[k] ignored for k > 'length(time(object))'. 
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 +   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
-+   transform=TRUE,start=as.list(coef(po)),.indices=1:50)
++   transform=TRUE,start=as.list(coef(po)))
 <object of class 'mif2d_pomp'>
-> try(mif2(po,Nmif=1,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
-+   cooling.fraction.50=0.1,.indices=1:30))
-Error : in 'mif2': in 'mif2.pfilter': '.indices' has improper length
 > try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 +   cooling.fraction.50=0.1,rprocess=onestep.sim(function(x,t,params,covars,delta.t,...)stop("boink"))))
 Error : in 'mif2': in 'mif2.pfilter': process simulation error: boink

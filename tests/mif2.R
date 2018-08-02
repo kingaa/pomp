@@ -69,9 +69,7 @@ try(mif2(po,start=c(3,2,1),Nmif=1,Np=100))
 try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw.sd(sigma=0.1)))
 mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
-  transform=TRUE,start=as.list(coef(po)),.indices=1:50)
-try(mif2(po,Nmif=1,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
-  cooling.fraction.50=0.1,.indices=1:30))
+  transform=TRUE,start=as.list(coef(po)))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,rprocess=onestep.sim(function(x,t,params,covars,delta.t,...)stop("boink"))))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),

@@ -1,0 +1,62 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> 
+> library(pomp)
+> library(magrittr)
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> 
+> set.seed(1481104436)
+> 
+> gompertz %>%
++   mif2(Nmif=4,Np=1000,
++     transform=TRUE,
++     .indices=seq.int(1000),
++     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
++     cooling.fraction=0.5) %>%
++   slot("indices") %>%
++   table()
+.
+217 801 
+765 235 
+> 
+> set.seed(962724905)
+> 
+> gompertz %>%
++   mif2(Nmif=4,Np=100,
++     transform=TRUE,
++     .indices=as.list(seq.int(100)),
++     rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
++     cooling.fraction=0.5) %>%
++   slot("indices") %>%
++   unlist() %>%
++   table()
+.
+ 21 
+100 
+> 
+> try(mif2(gompertz,Nmif=1,Np=100,transform=TRUE,
++   .indices=1:5,rw.sd=rw.sd(r=0.02,K=0.02,sigma=0.02),
++   cooling.fraction=0.5))
+Error : in 'mif2': in 'mif2.pfilter': '.indices' has improper length
+> 

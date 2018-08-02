@@ -10,7 +10,8 @@
 - better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale
 - better scheme for indicating derivatives and maps in C snippets
 - `time` variable could retain its original name?
-- `initializer` -> `rinit` (and perhaps `dinit`)
+- ~~`initializer` -> `rinit`~~
+- perhaps `dinit`?
 - piecewise constant interpolation of covariates
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
@@ -86,8 +87,6 @@ tests/issue56.R
 
 tests/kalman.R
 
-tests/mif2-index.R
-
 tests/nlf.R
 
 tests/pomp.R
@@ -105,7 +104,6 @@ tests/trajmatch.R
 R/builder.R
 R/load.R
 R/plugins.R
-R/pomp_class.R
 R/pomp_fun.R
 R/pomp_methods.R
 R/pomp.R
