@@ -20,8 +20,8 @@ plist <- list(
 
 probe(po,probes=plist,nsim=500,seed=595969) -> pb
 plot(pb,y=NULL)
-pb %>% values() %>% head(3)
-pb %>% as.data.frame() %>% head(3)
+pb %>% values() %>% head(3) %>% knitr::kable()
+pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
 summary(pb)
 stopifnot(all.equal(logLik(pb),17.17,tolerance=0.005))
 

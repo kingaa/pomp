@@ -8,7 +8,7 @@ pomp(gompertz,rmeasure=Csnippet("
   cdir=getwd(),cfile="sf"
 ) -> po
 
-file.remove("sf.so")
+file.remove(paste0("sf",.Platform$dynlib.ext))
 
 capture.output(x <- simulate(po,verbose=TRUE)) -> out
 stopifnot(sum(grepl("loading",out))==2)

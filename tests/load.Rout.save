@@ -29,7 +29,7 @@ newly created object(s):
 +   cdir=getwd(),cfile="sf"
 + ) -> po
 > 
-> file.remove("sf.so")
+> file.remove(paste0("sf",.Platform$dynlib.ext))
 [1] TRUE
 > 
 > capture.output(x <- simulate(po,verbose=TRUE)) -> out
