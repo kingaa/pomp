@@ -2,13 +2,13 @@ useDynLib(pomp,.registration=TRUE)
 
 import(methods)
 importFrom(graphics,plot,par,abline,pairs,matplot,box,axis,mtext,
-           points,polygon,lines,plot.default,legend,hist,rect,text,title)
+  points,polygon,lines,plot.default,legend,hist,rect,text,title)
 importFrom(utils,head)
 importFrom(grDevices,rgb,dev.interactive)
 importFrom(stats,simulate,time,coef,logLik,window,fitted,
-           dnorm,runif,sd,var,cov,cor,median,density,
-           spec.pgram,rnorm,weighted.mean,optim,
-           .lm.fit,setNames,kernel,quantile)
+  dnorm,runif,sd,var,cov,cor,median,density,
+  spec.pgram,rnorm,weighted.mean,optim,
+  .lm.fit,setNames,kernel,quantile)
 importFrom(digest,digest)
 importFrom(mvtnorm,dmvnorm,rmvnorm)
 importFrom(subplex,subplex)
@@ -17,33 +17,33 @@ importFrom(nloptr,nloptr)
 importFrom(coda,mcmc,mcmc.list)
 
 exportClasses(
-    pomp,
-    Csnippet
+  pomp,
+  Csnippet
 )
 
 exportMethods(
-    plot,show,print,spy,
-    coerce,summary,window,
-    logLik,logEvidence,
-    cond.logLik,cond.logEvidence,
-    pompLoad,pompUnload,
-    dprocess,rprocess,rmeasure,dmeasure,rinit,skeleton,
-    dprior,rprior,
-    obs,partrans,coef,"coef<-",
-    time,"time<-",timezero,"timezero<-",
-    simulate,pfilter,
-    enkf,eakf,
-    eff.sample.size,
-    states,trajectory,
-    prior_samples,posterior_samples,
-    mif2,continue,
-    pred.mean,pred.var,filter.mean,filter.traj,
-    traces,probevals,
-    bsmc2,pmcmc,abc,nlf,
-    covmat,
-    traj.match.objfun,traj.match,
-    probe.match.objfun,probe,probe.match,
-    spect,spect.match
+  plot,show,print,spy,
+  coerce,summary,window,
+  logLik,logEvidence,
+  cond.logLik,cond.logEvidence,
+  pompLoad,pompUnload,
+  dprocess,rprocess,rmeasure,dmeasure,rinit,skeleton,
+  dprior,rprior,
+  obs,partrans,coef,"coef<-",
+  time,"time<-",timezero,"timezero<-",
+  simulate,pfilter,
+  enkf,eakf,
+  eff.sample.size,
+  states,trajectory,
+  prior_samples,posterior_samples,
+  mif2,continue,
+  pred.mean,pred.var,filter.mean,filter.traj,
+  traces,probevals,
+  bsmc2,pmcmc,abc,nlf,
+  covmat,
+  traj.match.objfun,traj.match,
+  probe.match.objfun,probe,probe.match,
+  spect,spect.match
 )
 
 S3method(as.data.frame,pomp)
@@ -55,39 +55,40 @@ S3method(c,Pmcmc)
 S3method(c,Mif2)
 
 export(
-    pomp,
-    bake,stew,freeze,
-    Csnippet, hitch,
-    reulermultinom,
-    deulermultinom,
-    rgammawn,
-    euler.sim,
-    discrete.time.sim,
-    onestep.sim,
-    onestep.dens,
-    gillespie.sim,
-    gillespie.hl.sim,
-    mvn.diag.rw,mvn.rw,
-    mvn.rw.adaptive,
-    rw.sd,vectorfield,map,
-    sobolDesign,
-    sliceDesign,
-    profileDesign,
-    bspline.basis,
-    periodic.bspline.basis,
-    parmat,
-    logmeanexp,
-    probe.mean,
-    probe.median,
-    probe.var,
-    probe.sd,
-    probe.period,
-    probe.quantile,
-    probe.acf,
-    probe.ccf,
-    probe.nlar,
-    probe.marginal,
-    sannbox,
-    conv.rec,values,  # deprecated
-    pompExample
+  pomp,
+  bake,stew,freeze,
+  Csnippet, hitch,
+  reulermultinom,
+  deulermultinom,
+  rgammawn,
+  euler.sim,
+  discrete.time.sim,
+  onestep.sim,
+  onestep.dens,
+  gillespie.sim,
+  gillespie.hl.sim,
+  map,vectorfield,
+  mvn.diag.rw,mvn.rw,
+  mvn.rw.adaptive,
+  rw.sd,vectorfield,map,
+  sobolDesign,
+  sliceDesign,
+  profileDesign,
+  bspline.basis,
+  periodic.bspline.basis,
+  parmat,
+  logmeanexp,
+  probe.mean,
+  probe.median,
+  probe.var,
+  probe.sd,
+  probe.period,
+  probe.quantile,
+  probe.acf,
+  probe.ccf,
+  probe.nlar,
+  probe.marginal,
+  sannbox,
+  conv.rec,values,  # deprecated
+  pompExample
 )

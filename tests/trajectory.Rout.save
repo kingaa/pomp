@@ -1,0 +1,183 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> png(filename="trajectory-%02d.png",res=100)
+> 
+> library(pomp)
+> library(magrittr)
+> 
+> pomp(
++   data=NULL,
++   times=seq(0,60,by=0.1),t0=0,
++   skeleton=vectorfield(Csnippet("
++     DV = c*(V-pow(V,3)/3 - R + i);
++     DR = (V + a - b*R)/c;"
++   )),
++   rinit=Csnippet("
++     V = 1; R = 0;"
++   ),
++   statenames=c("V","R"),
++   paramnames=c("c","i","a","b"),
++   params=c(a=0.7,b=0.8,c=2,i=0.8)
++ ) -> fhn
+> 
+> 
+> x <- array(c(0,1,1,2,1,1,0,-1),
++   dim=c(2,2,2),
++   dimnames=list(c("V","R"),NULL,NULL))
+> params <- rbind(a=c(0.7,0.5),b=c(0.8,0.5),c=c(2,5),i=c(0.8,0))
+> skeleton(fhn,x,t=c(0,3),params=params)
+, , 1
+
+        rep
+variable  [,1]  [,2]
+       V -0.40 -6.67
+       R -0.05  0.10
+
+, , 2
+
+        rep
+variable  [,1] [,2]
+       V 0.933  5.0
+       R 0.450  0.2
+
+> y <- trajectory(fhn,params=params,hmax=0.1)
+> invisible(y[,,599:601])
+> matplot(time(fhn),t(y["V",,]),type='l',lty=1)
+> plot(y[1,,],y[2,,],type='n')
+> points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
+> points(y[1,2,],y[2,2,],pch='.',cex=3,col='red')
+> 
+> ## nonautonomous case
+> pomp(
++   data=fhn,
++   times=seq(0,100,by=0.01),t0=0,
++   tcovar=seq(0,101,by=0.1),
++   covar=cbind(i=sin(2*pi*seq(0,101,by=0.1))),
++   skeleton=vectorfield(
++     function(x,t,params,covars,...) {
++       c(
++         V=unname(params['c']*(x['V']-(x['V']^3)/3-x['R']+covars['i'])),
++         R=unname((x['V']+params['a']-params['b']*x['R'])/params['c'])
++       )
++     }
++   )
++ ) -> fhn1
+> 
+> invisible(skeleton(fhn1,x,t=c(0,3),params=params))
+> y <- trajectory(fhn1,params=params,hmax=0.01)
+> invisible(y[,,199:201])
+> matplot(time(fhn1),t(y["V",,]),type='l',lty=1)
+> plot(y[1,,],y[2,,],type='n')
+> points(y[1,1,],y[2,1,],pch='.',cex=3,col='black')
+> points(y[1,2,],y[2,2,],pch='.',cex=3,col='red')
+> 
+> invisible(trajectory(fhn,times=c(1,5)))
+> try(trajectory(fhn,times=NULL))
+Error : in 'trajectory': 'times' is empty, there is no work to do.
+> try(trajectory(fhn,times=c(1,1,1)))
+Error : in 'trajectory': 'times' must be an increasing sequence of times.
+> try(trajectory(fhn,t0=10))
+Error : in 'trajectory': the zero-time 't0' must occur no later than the first observation.
+> try(trajectory(fhn,params=c(3,2,1)))
+Error : in 'trajectory': 'params' must have names (or rownames).
+> try(trajectory(fhn,params=matrix(c(3,2,1,5),2,2)))
+Error : in 'trajectory': 'params' must have names (or rownames).
+> try(trajectory(fhn,params=NULL))
+Error : in 'trajectory': 'params' must be supplied.
+> try(trajectory(fhn,params=list(a=3,b=2)))
+Error : variable 'c' not found among the parameters
+> try(trajectory(fhn,maxsteps=-1))
+DLSODA-  MXSTEP (=I1) .lt. 0  
+In above message, I1 = -1
+ 
+Error : in 'trajectory': error in ODE integrator: illegal input detected before taking any integration steps - see written message
+> try(trajectory(fhn,maxsteps=1,verbose=TRUE)->x)
+DLSODA-  At current T (=R1), MXSTEP (=I1) steps   
+      taken on this call before reaching TOUT     
+In above message, I1 = 1
+ 
+In above message, R1 = 9.89415e-05
+ 
+
+--------------------
+lsoda return code
+--------------------
+
+  return code (idid) =  -1 
+  Excess work done on this call. (Perhaps wrong Jacobian type MF.)
+
+--------------------
+INTEGER values
+--------------------
+
+  1 The return code : -1 
+  2 The number of steps taken for the problem so far: 1 
+  3 The number of function evaluations for the problem so far: 3 
+  5 The method order last used (successfully): 1 
+  6 The order of the method to be attempted on the next step: 1 
+  7 If return flag =-4,-5: the largest component in error vector 0 
+  8 The length of the real work array actually required: 52 
+  9 The length of the integer work array actually required: 22 
+ 14 The number of Jacobian evaluations and LU decompositions so far: 0 
+ 15 The method indicator for the last succesful step,
+           1=adams (nonstiff), 2= bdf (stiff): 1 
+ 16 The current method indicator to be attempted on the next step,
+           1=adams (nonstiff), 2= bdf (stiff): 1 
+ 
+--------------------
+RSTATE values
+--------------------
+
+  1 The step size in t last used (successfully): 9.89e-05 
+  2 The step size to be attempted on the next step: 9.89e-05 
+  3 The current value of the independent variable which the solver has reached: 9.89e-05 
+  4 Tolerance scale factor > 1.0 computed when requesting too much accuracy: 0 
+  5 The value of t at the time of the last method switch, if any: 0 
+ 
+Warning messages:
+1: In lsoda(y, times, func, parms, ...) :
+  an excessive amount of work (> maxsteps ) was done, but integration was not successful - increase maxsteps
+2: In lsoda(y, times, func, parms, ...) :
+  Returning early. Results are accurate, as far as they go
+3: in 'trajectory': abnormal exit from ODE integrator, istate = -1 
+> fhn@skeleton@type <- 3L
+> try(trajectory(fhn))
+Error : in 'trajectory': deterministic skeleton has not been properly specified
+> 
+> pompExample(sir)
+newly created object(s):
+ sir 
+> trajectory(sir,as.data.frame=TRUE) -> x
+> plot(cases~time,data=x,type='l')
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> gompertz %>% trajectory() -> x
+> try(gompertz %>%
++     pomp(skeleton=map(function(t,x,params,...)c(3,2))) %>%
++     trajectory() -> x)
+Error : in 'trajectory': in map iterator: user 'skeleton' returns a vector of 2 state variables but 1 are expected
+> 
+> dev.off()
+null device 
+          1 
+> 

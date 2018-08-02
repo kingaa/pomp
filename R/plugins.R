@@ -5,14 +5,16 @@ setClass(
     slotname='character',
     type='integer',
     step.fn="ANY",
-    rate.fn="ANY"
+    rate.fn="ANY",
+    skel.fn="ANY"
   ),
   prototype=prototype(
     csnippet=FALSE,
     slotname=character(0),
     type=0L,
     step.fn=NULL,
-    rate.fn=NULL
+    rate.fn=NULL,
+    skel.fn=NULL
   )
 )
 
@@ -46,12 +48,26 @@ setClass(
   )
 )
 
-plugin <- function (object, step.fn, rate.fn) {
+setClass(
+  "vectorfieldPlugin",
+  contains="pompPlugin"
+)
+
+setClass(
+  "mapPlugin",
+  contains="pompPlugin",
+  slots=c(
+    delta.t="numeric"
+  )
+)
+
+plugin <- function (object, step.fn, rate.fn, skel.fn) {
   if (missing(object)) {
     new("pompPlugin")
   } else {
     if (!missing(step.fn)) object@step.fn <- step.fn
     if (!missing(rate.fn)) object@rate.fn <- rate.fn
+    if (!missing(skel.fn)) object@skel.fn <- skel.fn
     object
   }
 }
@@ -179,3 +195,15 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
       csnippet=TRUE,
       type=4L)
 }
+
+vectorfield <- function (f) {
+  new("vectorfieldPlugin",skel.fn=f,type=1L)
+}
+
+map <- function (f, delta.t = 1) {
+  if (!isTRUE(delta.t > 0 && length(delta.t)==1))
+    stop("in ",sQuote("map"),": ",sQuote("delta.t"),
+      " must be a positive number.",call.=FALSE)
+  new("mapPlugin",skel.fn=f,delta.t=delta.t,type=2L)
+}
+

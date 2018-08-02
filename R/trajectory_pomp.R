@@ -21,11 +21,11 @@ trajectory.internal <- function (object, params, times, t0,
     times <- as.numeric(times)
 
   if (length(times)==0)
-    stop(ep,sQuote("times")," is empty, there is no work to do",call.=FALSE)
+    stop(ep,sQuote("times")," is empty, there is no work to do.",call.=FALSE)
 
   if (any(diff(times)<=0))
     stop(ep,sQuote("times"),
-      " must be an increasing sequence of times",call.=FALSE)
+      " must be an increasing sequence of times.",call.=FALSE)
 
   if (missing(t0))
     t0 <- timezero(object)
@@ -34,19 +34,21 @@ trajectory.internal <- function (object, params, times, t0,
 
   if (t0>times[1L])
     stop(ep,"the zero-time ",sQuote("t0"),
-      " must occur no later than the first observation",call.=FALSE)
+      " must occur no later than the first observation.",call.=FALSE)
   ntimes <- length(times)
 
   if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
-  if (length(params)==0) stop(ep,sQuote("params")," must be supplied",call.=FALSE)
+  if (is.null(params)) params <- numeric(0)
+
+  if (length(params)==0) stop(ep,sQuote("params")," must be supplied.",call.=FALSE)
   storage.mode(params) <- "double"
 
   params <- as.matrix(params)
   nrep <- ncol(params)
   paramnames <- rownames(params)
   if (is.null(paramnames))
-    stop(ep,sQuote("params")," must have rownames",call.=FALSE)
+    stop(ep,sQuote("params")," must have names (or rownames).",call.=FALSE)
 
   x0 <- rinit(object,params=params,t0=t0)
   nvar <- nrow(x0)
@@ -54,12 +56,12 @@ trajectory.internal <- function (object, params, times, t0,
   dim(x0) <- c(nvar,nrep,1)
   dimnames(x0) <- list(statenames,NULL,NULL)
 
-  type <- object@skeleton.type          # map or vectorfield?
+  type <- object@skeleton@type          # map or vectorfield?
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
-  if (type=="map") {
+  if (type == 2L) {          ## MAP
 
     x <- tryCatch(
       .Call(iterate_map,object,times,t0,x0,params,.getnativesymbolinfo),
@@ -70,7 +72,7 @@ trajectory.internal <- function (object, params, times, t0,
     )
     .getnativesymbolinfo <- FALSE
 
-  } else if (type=="vectorfield") {
+  } else if (type == 1L) {   ## VECTORFIELD
 
     znames <- object@zeronames
     if (length(znames)>0) x0[znames,,] <- 0
@@ -79,7 +81,7 @@ trajectory.internal <- function (object, params, times, t0,
     .getnativesymbolinfo <- FALSE
 
     X <- tryCatch(
-      ode(
+      deSolve::ode(
         y=x0,
         times=c(t0,times),
         method="lsoda",

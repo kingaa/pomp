@@ -15,9 +15,9 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   ## return as quickly as possible if no work is to be done
   if (nargs()==1) return(data)
 
-  if (!is(data,"data.frame") && !is(data,"pomp"))
-    stop(ep,sQuote("data")," must be a data frame or an object of class ",
-      sQuote("pomp"),call.=FALSE)
+  if (!inherits(data,what=c("data.frame","pomp","NULL")))
+    stop(ep,sQuote("data")," must be a data frame, an object of class ",
+      sQuote("pomp"),", or NULL",call.=FALSE)
 
   ## if one transformation is supplied, then both must be
   c1 <- missing(fromEstimationScale)
@@ -49,42 +49,11 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
     dmeasure <- mm$dmeasure
   }
 
-  ## the deterministic skeleton involves 'skeleton', 'skeleton.type', and
-  ## 'skelmap.delta.t'
-  .skel.type <- "undef"
-  .skelmap.delta.t <- 1
-  if (missing(skeleton)) {
-    skeleton <- NULL
-  } else if (is.null(skeleton)) {
-    .skel.type <- "remove"
-  } else if (is(skeleton,"safecall")) {
-    skeleton <- skeleton@call
-    flist <- list(
-      map=function (f, delta.t = 1) {
-        .skel.type <<- "map"
-        .skelmap.delta.t <<- as.numeric(delta.t)
-        if (.skelmap.delta.t <= 0)
-          stop("in ",sQuote("map"),", ",sQuote("delta.t"),
-            " must be positive",call.=FALSE)
-        f
-      },
-      vectorfield=function (f) {
-        .skel.type <<- "vectorfield"
-        f
-      }
-    )
-    skeleton <- eval(skeleton,envir=flist,enclos=parent.frame())
-  } else {
-    stop(ep,sQuote("skeleton")," must be specified as either a ",
-      sQuote("vectorfield")," or a ",sQuote("map"),".",call.=FALSE)
-  }
-
   construct_pomp(
     data=data,times=times,t0=t0,...,
     rprocess=rprocess,dprocess=dprocess,
     rmeasure=rmeasure,dmeasure=dmeasure,
-    rinit=rinit,
-    .skel.type=.skel.type,.skelmap.delta.t=.skelmap.delta.t,skeleton=skeleton,
+    rinit=rinit,skeleton=skeleton,
     rprior=rprior,dprior=dprior,params=params,
     covar=covar,tcovar=tcovar,
     obsnames=obsnames,statenames=statenames,paramnames=paramnames,
@@ -124,15 +93,21 @@ setMethod(
 
 setMethod(
   "construct_pomp",
+  signature=signature(data="NULL"),
+  definition = function (data, times, ...) {
+    if (missing(times))
+      stop(ep,sQuote("times")," is a required argument.",call.=FALSE)
+    data <- array(dim=c(0,length(times)))
+    construct_pomp(data,times=times,...)
+  }
+)
+
+setMethod(
+  "construct_pomp",
   signature=signature(data="array"),
   definition = function (data, times, t0, ...,
-    rprocess, dprocess,
-    rmeasure, dmeasure,
-    .skel.type, .skelmap.delta.t, skeleton,
-    rinit,
-    rprior, dprior,
-    params, covar, tcovar,
-    fromEstimationScale, toEstimationScale) {
+    rinit, rprocess, dprocess, rmeasure, dmeasure, rprior, dprior, skeleton,
+    fromEstimationScale, toEstimationScale, params, covar, tcovar) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
 
@@ -159,6 +134,13 @@ setMethod(
         ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
     }
 
+    if (missing(skeleton) || is.null(skeleton)) {
+      skeleton <- plugin()
+    } else if (!is(skeleton,"pompPlugin")) {
+      stop(ep,sQuote("skeleton")," must be specified using either ",
+        sQuote("map")," or ",sQuote("vectorfield"),".",call.=FALSE)
+    }
+
     if (missing(dprocess)) dprocess <- NULL
     if (missing(rmeasure)) rmeasure <- NULL
     if (missing(dmeasure)) dmeasure <- NULL
@@ -166,11 +148,6 @@ setMethod(
     if (missing(dprior)) dprior <- NULL
     if (missing(fromEstimationScale)) fromEstimationScale <- NULL
     if (missing(toEstimationScale)) toEstimationScale <- NULL
-    if (missing(skeleton)) {
-      skeleton <- NULL
-      .skelmap.delta.t <- 1
-      .skel.type <- "undef"
-    }
 
     if (missing(params)) params <- numeric(0)
     if (missing(covar)) covar <- NULL
@@ -181,6 +158,7 @@ setMethod(
         data=data,
         times=times,
         t0=t0,
+        rinit=rinit,
         rprocess=rprocess,
         dprocess=dprocess,
         rmeasure=rmeasure,
@@ -188,9 +166,6 @@ setMethod(
         dprior=dprior,
         rprior=rprior,
         skeleton=skeleton,
-        .skel.type=.skel.type,
-        .skelmap.delta.t=.skelmap.delta.t,
-        rinit=rinit,
         params=params,
         covar=covar,
         tcovar=tcovar,
@@ -208,17 +183,10 @@ setMethod(
 setMethod(
   "construct_pomp",
   signature=signature(data="pomp"),
-  definition = function (
-    data, times, t0, ...,
-    rprocess, dprocess,
-    rmeasure, dmeasure,
-    .skel.type, .skelmap.delta.t, skeleton,
-    rinit,
-    rprior, dprior,
-    params, covar, tcovar,
-    zeronames,
-    fromEstimationScale, toEstimationScale
-  ) {
+  definition = function (data, times, t0, ...,
+    rinit, rprocess, dprocess, rmeasure, dmeasure, rprior, dprior, skeleton,
+    fromEstimationScale, toEstimationScale, params, covar, tcovar,
+    zeronames) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
 
@@ -244,6 +212,15 @@ setMethod(
         ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
     }
 
+    if (missing(skeleton)) {
+      skeleton <- data@skeleton
+    } else if (is.null(skeleton)) {
+      skeleton <- plugin()
+    } else if (!is(skeleton,"pompPlugin")) {
+      stop(ep,sQuote("skeleton")," must be specified using either ",
+        sQuote("map")," or ",sQuote("vectorfield"),".",call.=FALSE)
+    }
+
     if (missing(dprocess)) dprocess <- data@dprocess
     if (missing(rmeasure)) rmeasure <- data@rmeasure
     if (missing(dmeasure)) dmeasure <- data@dmeasure
@@ -257,21 +234,12 @@ setMethod(
     if (missing(tcovar)) tcovar <- data@tcovar
     if (missing(zeronames)) zeronames <- data@zeronames
 
-    if (.skel.type == "remove") {
-      .skel.type <- "undef"
-      .skelmap.delta.t <- 1
-      skeleton <- NULL
-    } else if (.skel.type == "undef") {
-      .skel.type <- data@skeleton.type
-      .skelmap.delta.t <- data@skelmap.delta.t
-      skeleton <- data@skeleton
-    }
-
     tryCatch(
       pomp.internal(
         data=data@data,
         times=times,
         t0=t0,
+        rinit=rinit,
         rprocess=rprocess,
         dprocess=dprocess,
         rmeasure=rmeasure,
@@ -279,9 +247,6 @@ setMethod(
         dprior=dprior,
         rprior=rprior,
         skeleton=skeleton,
-        .skel.type=.skel.type,
-        .skelmap.delta.t=.skelmap.delta.t,
-        rinit=rinit,
         covar=covar,
         tcovar=tcovar,
         zeronames=zeronames,
@@ -300,13 +265,11 @@ setMethod(
 )
 
 pomp.internal <- function (data, times, t0,
-  rprocess, dprocess, rmeasure, dmeasure,
-  skeleton, .skel.type, .skelmap.delta.t,
-  rinit, rprior, dprior,
+  rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
+  fromEstimationScale, toEstimationScale,
   params, covar, tcovar,
   obsnames, statenames, paramnames, covarnames,
   zeronames, PACKAGE,
-  fromEstimationScale, toEstimationScale,
   globals, cdir, cfile, shlib.args,
   .userdata, ...,
   .solibs = list(),
@@ -421,9 +384,6 @@ pomp.internal <- function (data, times, t0,
   if (is.null(dprior))
     dprior <- pomp_fun(f="_pomp_default_dprior",PACKAGE="pomp")
 
-  ## handle skeleton
-  if (is.null(skeleton)) .skel.type <- "undef"
-
   hitches <- hitch(
     rinit=rinit,
     step.fn=rprocess@step.fn,
@@ -435,7 +395,7 @@ pomp.internal <- function (data, times, t0,
     dprior=dprior,
     fromEstimationScale=fromEstimationScale,
     toEstimationScale=toEstimationScale,
-    skeleton=skeleton,
+    skeleton=skeleton@skel.fn,
     templates=workhorse_templates,
     obsnames=obsnames,
     statenames=statenames,
@@ -483,24 +443,25 @@ pomp.internal <- function (data, times, t0,
 
   new(
     'pomp',
+    data = data,
+    times = times,
+    t0 = t0,
     rprocess = plugin(
       rprocess,
       step.fn=hitches$funs$step.fn,
       rate.fn=hitches$funs$rate.fn
     ),
+    skeleton = plugin(
+      skeleton,
+      skel.fn=hitches$funs$skeleton
+    ),
+    default.init = default.init,
+    rinit = hitches$funs$rinit,
     dprocess = hitches$funs$dprocess,
     dmeasure = hitches$funs$dmeasure,
     rmeasure = hitches$funs$rmeasure,
     dprior = hitches$funs$dprior,
     rprior = hitches$funs$rprior,
-    skeleton = hitches$funs$skeleton,
-    skeleton.type = .skel.type,
-    skelmap.delta.t = .skelmap.delta.t,
-    data = data,
-    times = times,
-    t0 = t0,
-    default.init = default.init,
-    rinit = hitches$funs$rinit,
     params = params,
     covar = covar,
     tcovar = tcovar,
@@ -593,7 +554,3 @@ measform2pomp <- function (formulae) {
     }
   )
 }
-
-vectorfield <- safecall
-map <- safecall
-

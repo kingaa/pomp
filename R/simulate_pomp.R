@@ -37,7 +37,7 @@ setMethod(
     if (missing(t0))
       stop(ep,sQuote("t0")," is a required argument.",call.=FALSE)
 
-    object <- construct_pomp(array(dim=c(0,length(times))),times=times,t0=t0,
+    object <- construct_pomp(data=NULL,times=times,t0=t0,
       rprocess=rprocess,rmeasure=rmeasure,obsnames=obsnames,...,
       verbose=verbose)
 

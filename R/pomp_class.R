@@ -11,9 +11,7 @@ setClass(
     rmeasure = "pomp_fun",
     dprior = "pomp_fun",
     rprior = "pomp_fun",
-    skeleton.type = "character",
-    skeleton = "pomp_fun",
-    skelmap.delta.t = "numeric",
+    skeleton = "pompPlugin",
     default.init = "logical",
     rinit = "pomp_fun",
     states = "array",
@@ -37,9 +35,7 @@ setClass(
     rmeasure=pomp_fun(slotname="rmeasure"),
     dprior=pomp_fun(slotname="dprior"),
     rprior=pomp_fun(slotname="rprior"),
-    skeleton.type="map",
-    skeleton=pomp_fun(slotname="skeleton"),
-    skelmap.delta.t=as.numeric(NA),
+    skeleton=plugin(),
     default.init=TRUE,
     rinit=pomp_fun(slotname="rinit"),
     states=array(data=numeric(0),dim=c(0,0)),
@@ -68,8 +64,6 @@ setClass(
     if (object@t0 > object@times[1])
       retval <- append(retval,paste("the zero-time",sQuote("t0"),
         "must occur no later than the first observation"))
-    if (object@skelmap.delta.t <= 0)
-      retval <- append(retval,paste(sQuote("skelmap.delta.t"),"must be positive"))
     if (length(object@tcovar)!=nrow(object@covar)) {
       retval <- append(
         retval,
