@@ -489,7 +489,7 @@ pomp.internal <- function (data, times, t0,
     has.trans = has.trans,
     from.trans = hitches$funs$fromEstimationScale,
     to.trans = hitches$funs$toEstimationScale,
-    solibs = if (is.null(hitches$lib)) .solibs else c(.solibs,list(hitches$lib)),
+    solibs = if (is.null(hitches$lib)) .solibs else c(list(hitches$lib),.solibs),
     userdata = .userdata
   )
 }
@@ -577,3 +577,4 @@ measform2pomp <- function (formulae) {
 
 vectorfield <- safecall
 map <- safecall
+

@@ -27,6 +27,7 @@ setGeneric("timezero",function(object,...)standardGeneric("timezero"))
 setGeneric("timezero<-",function(object,...,value)standardGeneric("timezero<-"))
 setGeneric("partrans",function(object,params,dir,...)standardGeneric("partrans"))
 setGeneric("logLik",function(object,...)standardGeneric("logLik"))
+setGeneric("solibs<-",function(object,...,value)standardGeneric("solibs<-"))
 
 ## internals
 setGeneric("pomp.fun",function(f,...)standardGeneric("pomp.fun"))
