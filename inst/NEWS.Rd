@@ -1,5 +1,13 @@
 \name{NEWS}
 \title{News for package `pomp'}
+\section{Changes in \pkg{pomp} version 1.18.6}{
+  \itemize{
+    \item \code{show} and \code{print} methods have been made very terse:
+    they simply report on the class of the object in question.
+    To see more detailed information about a \sQuote{pomp} object, use \code{spy}.
+    \item New (unexported) \code{solibs<-} method allows developers of packages extending \pkg{pomp} to incorporate C snippets into object that contain \sQuote{pomp} objects.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.18.5}{
   \itemize{
     \item New \code{verbose} option in \code{trajectory} gives diagnostic information from \pkg{deSolve} integration routines.

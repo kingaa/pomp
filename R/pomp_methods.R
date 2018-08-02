@@ -26,9 +26,9 @@ as.data.frame.pomp <- function (x, row.names, optional, ...) as(x,"data.frame")
 
 ## parameter transformations
 partrans.internal <- function (object, params,
-                               dir = c("fromEstimationScale",
-                                       "toEstimationScale"),
-                               .getnativesymbolinfo = TRUE, ...) {
+  dir = c("fromEstimationScale",
+    "toEstimationScale"),
+  .getnativesymbolinfo = TRUE, ...) {
   if (!object@has.trans) return(params)
   pompLoad(object)
   dir <- switch(match.arg(dir),fromEstimationScale=1L,toEstimationScale=-1L)
@@ -52,7 +52,7 @@ obs.internal <- function (object, vars, ...) {
     vars <- varnames
   else if (!all(vars%in%varnames))
     stop("in ",sQuote("obs"),": some elements of ",
-         sQuote("vars")," correspond to no observed variable",call.=FALSE)
+      sQuote("vars")," correspond to no observed variable",call.=FALSE)
   y <- object@data[vars,,drop=FALSE]
   dimnames(y) <- list(variable=rownames(y),time=time(object))
   y
@@ -166,10 +166,10 @@ setMethod(
     if (value[1L]>object@times[1L])
       if (!is.numeric(value) || length(value) > 1L)
         stop(ep,"the zero-time ",sQuote("t0"),
-             " must be a single number",call.=FALSE)
+          " must be a single number",call.=FALSE)
     if (value > object@times[1L])
       stop(ep,"the zero-time ",sQuote("t0"),
-           " must occur no later than the first observation",call.=FALSE)
+        " must occur no later than the first observation",call.=FALSE)
     storage.mode(value) <- "double"
     object@t0 <- value
     object
@@ -192,9 +192,9 @@ setMethod(
         excl <- setdiff(pars,names(params))
         if (length(excl)>0) {
           stop("in ",sQuote("coef"),": name(s) ",
-               paste(sQuote(excl),collapse=","),
-               " correspond to no parameter(s)",
-               call.=FALSE)
+            paste(sQuote(excl),collapse=","),
+            " correspond to no parameter(s)",
+            call.=FALSE)
         }
       }
       params[pars]
@@ -220,7 +220,7 @@ setMethod(
         if (is.null(pars)) {
           if (transform)
             stop(ep,"parameter.transform(",sQuote("value"),
-                 ") must be a named vector",call.=FALSE)
+              ") must be a named vector",call.=FALSE)
           else
             stop(ep,sQuote("value")," must be a named vector",call.=FALSE)
         }
@@ -244,10 +244,10 @@ setMethod(
         excl <- !(pars%in%names(params)) ## new parameter names
         if (any(excl)) { ## append parameters
           warning(ep,"name(s) ",
-                  paste(sQuote(pars[excl]),collapse=","),
-                  " do not refer to existing parameter(s);",
-                  " they are being concatenated",
-                  call.=FALSE)
+            paste(sQuote(pars[excl]),collapse=","),
+            " do not refer to existing parameter(s);",
+            " they are being concatenated",
+            call.=FALSE)
           params <- c(params,val[excl])
         }
         params[pars] <- val
@@ -353,7 +353,9 @@ setMethod(
   "solibs<-",
   signature=signature(object="pomp"),
   definition=function (object, ..., value) {
+    if (is.null(value)) {
       object@solibs <- c(list(value),object@solibs)
-      object
+    }
+    object
   }
 )

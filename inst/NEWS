@@ -1,5 +1,15 @@
 _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
+_C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._6:
+
+        • ‘show’ and ‘print’ methods have been made very terse: they
+          simply report on the class of the object in question.  To see
+          more detailed information about a ‘pomp’ object, use ‘spy’.
+
+        • New (unexported) ‘solibs<-’ method allows developers of
+          packages extending ‘pomp’ to incorporate C snippets into
+          object that contain ‘pomp’ objects.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._5:
 
         • New ‘verbose’ option in ‘trajectory’ gives diagnostic
