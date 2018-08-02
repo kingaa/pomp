@@ -5,7 +5,8 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (object, nsim = 1, seed = NULL, params,
     states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
-    include.data = FALSE, ..., verbose = getOption("verbose", FALSE))
+    include.data = FALSE, ..., verbose = getOption("verbose", FALSE)) {
+
     simulate.internal(
       object=object,
       nsim=nsim,
@@ -20,6 +21,8 @@ setMethod(
       ...,
       verbose=verbose
     )
+
+  }
 )
 
 setMethod(

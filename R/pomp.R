@@ -7,7 +7,7 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   PACKAGE, fromEstimationScale, toEstimationScale,
   globals, cdir, cfile, shlib.args) {
 
-  ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
+  ep <- paste0("in ",sQuote("pomp"),": ")
 
   if (missing(data))
     stop(ep,sQuote("data")," is a required argument.",call.=FALSE)
@@ -16,8 +16,8 @@ pomp <- function (data, times, t0, ..., rprocess, dprocess,
   if (nargs()==1) return(data)
 
   if (!inherits(data,what=c("data.frame","pomp","NULL")))
-    stop(ep,sQuote("data")," must be a data frame, an object of class ",
-      sQuote("pomp"),", or NULL",call.=FALSE)
+    stop(ep,sQuote("data")," must be a data frame or an object of class ",
+      sQuote("pomp"),".",call.=FALSE)
 
   ## if one transformation is supplied, then both must be
   c1 <- missing(fromEstimationScale)
