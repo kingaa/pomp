@@ -4,12 +4,12 @@ dprocess.internal <- function (object, x, times, params, log = FALSE, .getnative
     storage.mode(x) <- "double"
     storage.mode(params) <- "double"
     pompLoad(object)
+    on.exit(pompUnload(object))
     rv <- tryCatch(
       .Call(do_dprocess,object,x,times,params,log,.getnativesymbolinfo),
       error=function (e) {
         stop("in ",sQuote("dprocess"),": ",conditionMessage(e),call.=FALSE)
       })
-    pompUnload(object)
     rv
 }
 

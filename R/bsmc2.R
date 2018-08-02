@@ -121,6 +121,7 @@ bsmc2.internal <- function (object, params, Np, est,
     stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
 
   pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   xstart <- rinit(
     object,
@@ -275,8 +276,6 @@ bsmc2.internal <- function (object, params, Np, est,
 
   ## replace parameters with point estimate (posterior median)
   coef(object,transform=transform) <- apply(params,1,median)
-
-  pompUnload(object,verbose=verbose)
 
   new(
     "bsmcd_pomp",

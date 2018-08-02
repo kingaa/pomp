@@ -3,8 +3,8 @@
 rprior.internal <- function (object, params, .getnativesymbolinfo = TRUE, ...) {
     storage.mode(params) <- "double"
     pompLoad(object)
+    on.exit(pompUnload(object))
     rv <- .Call(do_rprior,object,params,.getnativesymbolinfo)
-    pompUnload(object)
     rv
 }
 

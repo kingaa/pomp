@@ -50,6 +50,7 @@ setMethod(
     method = c("subplex","Nelder-Mead","SANN"),
     verbose = getOption("verbose"), fail.value = NA,
     ...) {
+
     if (missing(start)) start <- object@params
     if (missing(vars)) vars <- object@vars
     if (missing(nsim)) nsim <- nrow(object@simspec)
@@ -57,11 +58,13 @@ setMethod(
     if (missing(transform.data)) transform.data <- object@transform.data
     if (missing(detrend)) detrend <- object@detrend
     method <- match.arg(method)
+
     spect.match.internal(object,start=start,est=est,vars=vars,nsim=nsim,
       seed=seed,kernel.width=kernel.width,
       transform.data=transform.data,detrend=detrend,
       weights=weights,method=method,
       verbose=verbose,fail.value=fail.value,...)
+
   }
 )
 
@@ -72,6 +75,7 @@ setMethod(
     kernel.width, transform.data, detrend, weights, method,
     verbose = getOption("verbose"), fail.value,
     ...) {
+
     if (missing(start)) start <- object@params
     if (missing(est)) est <- object@est
     if (missing(vars)) vars <- object@vars
@@ -82,11 +86,13 @@ setMethod(
     if (missing(weights)) weights <- object@weights
     if (missing(method)) method <- object@method
     if (missing(fail.value)) fail.value <- object@fail.value
+
     spect.match.internal(object,start=start,est=est,vars=vars,nsim=nsim,
       seed=seed,kernel.width=kernel.width,
       transform.data=transform.data,detrend=detrend,
       weights=weights,method=method,
       verbose=verbose,fail.value=fail.value,...)
+
   }
 )
 
@@ -94,6 +100,7 @@ setMethod(
   "summary",
   signature=signature(object="spect_matched_pomp"),
   definition=function (object, ...) {
+
     c(
       summary(as(object,"spectd_pomp")),
       list(
@@ -104,6 +111,7 @@ setMethod(
       ),
       if(length(object@msg)>0) list(msg=object@msg) else NULL
     )
+
   }
 )
 
@@ -112,7 +120,6 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
   method, verbose, fail.value, ...) {
 
   ep <- paste0("in ",sQuote("spect.match"),": ")
-  pompLoad(object,verbose=verbose)
 
   obj.fn <- spect.mismatch
 
@@ -132,6 +139,9 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
     stop(ep,sQuote("nsim")," must be specified as a positive integer",call.=FALSE)
 
   ker <- reuman.kernel(kernel.width)
+
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   ds <- compute.spect.data(object,vars=vars,transform.data=transform.data,
     detrend=detrend,ker=ker)
@@ -229,8 +239,6 @@ spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
     msg <- opt$message
   }
 
-  pompUnload(object,verbose=verbose)
-
   new(
     "spect_matched_pomp",
     spect(
@@ -260,13 +268,14 @@ spect.mismatch <- function (par, est, object, params,
   transform.data, detrend, weights,
   data.spec, fail.value) {
 
-  pompLoad(object)
-
   params[est] <- par
 
   ## vector of frequencies and estimated power spectum of data
   freq <- data.spec$freq
   datval <- data.spec$spec
+
+  pompLoad(object)
+  on.exit(pompUnload(object))
 
   ## estimate power spectra of simulations
   simvals <- compute.spect.sim(
@@ -297,6 +306,5 @@ spect.mismatch <- function (par, est, object, params,
     mismatch <- sum(discrep)
   }
 
-  pompUnload(object)
   mismatch
 }

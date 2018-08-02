@@ -109,7 +109,7 @@ DLSODA-  MXSTEP (=I1) .lt. 0
 In above message, I1 = -1
  
 Error : in 'trajectory': error in ODE integrator: illegal input detected before taking any integration steps - see written message
-> try(trajectory(fhn,maxsteps=1,verbose=TRUE)->x)
+> try(trajectory(fhn,maxsteps=1,verbose=TRUE) -> x)
 DLSODA-  At current T (=R1), MXSTEP (=I1) steps   
       taken on this call before reaching TOUT     
 In above message, I1 = 1

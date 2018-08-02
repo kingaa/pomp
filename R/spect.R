@@ -150,7 +150,6 @@ setMethod(
 
     ep <- paste0("in ",sQuote("spect"),": ")
 
-    pompLoad(object)
 
     if (missing(params)) params <- coef(object)
     if (is.list(params)) params <- unlist(params)
@@ -162,6 +161,9 @@ setMethod(
 
     detrend <- match.arg(detrend)
     ker <- reuman.kernel(kernel.width)
+
+    pompLoad(object)
+    on.exit(pompUnload(object))
 
     ds <- compute.spect.data(
       object,
@@ -204,8 +206,6 @@ setMethod(
     pvals[length(vars)+1] <- (nsim+1-sum(totsimdist<totdatdist))/(nsim+1)
 
     coef(object) <- params
-
-    pompUnload(object)
 
     new(
       "spectd_pomp",

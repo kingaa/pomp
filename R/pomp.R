@@ -81,10 +81,13 @@ setMethod(
   "construct_pomp",
   signature=signature(data="NULL"),
   definition = function (data, times, ...) {
+
+    ep <- paste0("in ",sQuote("pomp"),": ")
+
     if (missing(times))
       stop(ep,sQuote("times")," is a required argument.",call.=FALSE)
-    data <- array(dim=c(0,length(times)))
-    construct_pomp(data,times=times,...)
+
+    construct_pomp(data=array(dim=c(0,length(times))),times=times,...)
   }
 )
 
@@ -95,7 +98,7 @@ setMethod(
     rinit, rprocess, dprocess, rmeasure, dmeasure, rprior, dprior, skeleton,
     fromEstimationScale, toEstimationScale, params, covar, tcovar) {
 
-    ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
+    ep <- paste0("in ",sQuote("pomp"),": ")
 
     if (missing(times) || !is.numeric(times) ||
         !all(is.finite(times)) ||

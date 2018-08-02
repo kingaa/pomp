@@ -58,8 +58,8 @@ trajectory.internal <- function (object, params, times, t0,
 
   type <- object@skeleton@type          # map or vectorfield?
 
-  pompLoad(object,verbose=verbose)
-  on.exit(pompUnload(object,verbose=verbose))
+  pompLoad(object)
+  on.exit(pompUnload(object))
 
   if (type == 2L) {          ## MAP
 

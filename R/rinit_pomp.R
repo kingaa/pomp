@@ -15,7 +15,7 @@ rinit.internal <- function (object, params, t0, nsim,
   else storage.mode(params) <- "double"
   if (missing(nsim)) nsim <- NCOL(params)
   pompLoad(object)
+  on.exit(pompUnload(object))
   x <- .Call(do_init_state,object,params,t0,nsim,.getnativesymbolinfo)
-  pompUnload(object)
   x
 }

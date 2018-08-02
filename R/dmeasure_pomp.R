@@ -17,8 +17,8 @@ dmeasure.internal <- function (object, y, x, times, params, log = FALSE,
       storage.mode(x) <- "double"
       storage.mode(params) <- "double"
       pompLoad(object)
+      on.exit(pompUnload(object))
       rv <- .Call(do_dmeasure,object,y,x,times,params,log,.getnativesymbolinfo)
-      pompUnload(object)
       rv
     },
     error = function (e) {

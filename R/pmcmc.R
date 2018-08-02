@@ -170,6 +170,7 @@ pmcmc.internal <- function (object, Nmcmc,
     stop(ep,sQuote("proposal")," must be a function",call.=FALSE)
 
   pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   ## test proposal distribution
   theta <- tryCatch(
@@ -308,8 +309,6 @@ pmcmc.internal <- function (object, Nmcmc,
 
   pars <- apply(traces,2,function(x)diff(range(x))>0)
   pars <- setdiff(names(pars[pars]),c("loglik","log.prior","nfail"))
-
-  pompUnload(object,verbose=verbose)
 
   new(
     "pmcmcd_pomp",

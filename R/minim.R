@@ -5,7 +5,6 @@ minim.internal <- function(objfun, start, est, object, method, transform,
 {
 
   ep <- paste0("in ",sQuote("minim"),": ")
-  pompLoad(object,verbose=verbose)
 
   transform <- as.logical(transform)
   est <- as.character(est)
@@ -13,6 +12,9 @@ minim.internal <- function(objfun, start, est, object, method, transform,
   if (is.list(start)) start <- unlist(start)
   if (length(start)<1)
     stop(ep,sQuote("start")," must be supplied",call.=FALSE)
+
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   if (transform) {
     start <- partrans(object,start,dir="toEstimationScale")
@@ -70,8 +72,6 @@ minim.internal <- function(objfun, start, est, object, method, transform,
 
   if (transform)
     start <- partrans(object,start,dir="fromEstimationScale")
-
-  pompUnload(object,verbose=verbose)
 
   list(
     params=start,

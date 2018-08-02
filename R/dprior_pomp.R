@@ -4,8 +4,8 @@ dprior.internal <- function (object, params, log = FALSE,
                              .getnativesymbolinfo = TRUE, ...) {
     storage.mode(params) <- "double"
     pompLoad(object)
+    on.exit(pompUnload(object))
     rv <- .Call(do_dprior,object,params,log,.getnativesymbolinfo)
-    pompUnload(object)
     rv
 }
 

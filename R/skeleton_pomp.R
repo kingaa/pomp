@@ -11,7 +11,7 @@ skeleton.internal <- function (object, x, t, params, .getnativesymbolinfo = TRUE
   storage.mode(x) <- "double"
   storage.mode(params) <- "double"
   pompLoad(object)
+  on.exit(pompUnload(object))
   rv <- .Call(do_skeleton,object,x,t,params,.getnativesymbolinfo)
-  pompUnload(object)
   rv
 }

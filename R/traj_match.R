@@ -136,6 +136,7 @@ tmof.internal <- function (object, params, est, transform, ...) {
 
   function (par) {
     pompLoad(object)
+    on.exit(pompUnload(object))
     params[par.est.idx] <- par
     if (transform)
       tparams <- partrans(object,params,dir="fromEstimationScale")
@@ -151,7 +152,6 @@ tmof.internal <- function (object, params, est, transform, ...) {
       params=if (transform) tparams else params,
       log=TRUE
     )
-    pompUnload(object)
     -sum(d)
   }
 }

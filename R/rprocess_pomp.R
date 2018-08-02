@@ -4,8 +4,8 @@ rprocess.internal <- function (object, xstart, times, params, offset = 0L, .getn
     storage.mode(xstart) <- "double"
     storage.mode(params) <- "double"
     pompLoad(object)
+    on.exit(pompUnload(object))
     rv <- .Call(do_rprocess,object,xstart,times,params,offset,.getnativesymbolinfo)
-    pompUnload(object)
     rv
 }
 

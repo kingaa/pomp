@@ -177,7 +177,9 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
 {
 
   ep <- paste0("in ",sQuote("nlf"),": ")
+
   pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   if (eval.only) est <- character(0)
   if (transform)
@@ -488,8 +490,6 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
     opt$se <- setNames(sqrt(diag(Qhat))/sqrt(npts),names(params)[par.index])
     opt$npts <- npts
   }
-
-  pompUnload(object,verbose=verbose)
 
   new(
     "nlfd_pomp",

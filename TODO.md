@@ -12,7 +12,10 @@
 - `time` variable could retain its original name?
 - ~~`initializer` -> `rinit`~~
 - perhaps `dinit`?
-- piecewise constant interpolation of covariates
+- covariates:
+    - piecewise constant interpolation of covariates
+    - `covar`, `tcovar` specified as a pair using `safecall`
+- parameter transformations specified as a pair
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification

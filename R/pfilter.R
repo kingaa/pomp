@@ -165,6 +165,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
     stop(ep,sQuote("params")," must have rownames.",call.=FALSE)
 
   pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   init.x <- rinit(object,params=params,nsim=Np[1L],
     .getnativesymbolinfo=gnsi)
@@ -392,8 +393,6 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
       ),
       call.=FALSE
     )
-
-  pompUnload(object,verbose=verbose)
 
   new(
     "pfilterd_pomp",

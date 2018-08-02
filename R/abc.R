@@ -174,6 +174,7 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
       ", must be specified",call.=FALSE)
 
   pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   ## test proposal distribution
   theta <- tryCatch(
@@ -285,8 +286,6 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
 
   pars <- apply(traces,2,function(x)diff(range(x))>0)
   pars <- names(pars[pars])
-
-  pompUnload(object,verbose=verbose)
 
   new(
     "abcd_pomp",

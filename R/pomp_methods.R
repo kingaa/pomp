@@ -42,8 +42,8 @@ partrans.internal <- function (object, params,
   if (!object@has.trans) return(params)
   dir <- switch(dir,fromEstimationScale=1L,toEstimationScale=-1L)
   pompLoad(object)
+  on.exit(pompUnload(object))
   rv <- .Call(do_partrans,object,params,dir,.getnativesymbolinfo)
-  pompUnload(object)
   rv
 }
 

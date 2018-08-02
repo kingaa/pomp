@@ -91,6 +91,7 @@ setMethod(
     fail.value <- as.numeric(fail.value)
 
     pompLoad(object,verbose=verbose)
+    on.exit(pompUnload(object,verbose=verbose))
 
     m <- minim.internal(
       objfun=probe.match.objfun(
@@ -125,8 +126,6 @@ setMethod(
         stop(ep,conditionMessage(e),call.=FALSE)
       }
     )
-
-    pompUnload(object,verbose=verbose)
 
     new(
       "probe_matched_pomp",
@@ -220,6 +219,7 @@ pmof.internal <- function (object, params, est, probes, nsim, seed = NULL,
       tparams <- partrans(object,params,dir="fromEstimationScale")
 
     pompLoad(object)
+    on.exit(pompUnload(object))
 
     ## apply probes to model simulations
     simval <- tryCatch(
@@ -237,8 +237,6 @@ pmof.internal <- function (object, params, est, probes, nsim, seed = NULL,
         stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)
       }
     )
-
-    pompUnload(object)
 
     ll <- tryCatch(
       .Call(synth_loglik,simval,datval),

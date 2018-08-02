@@ -65,7 +65,7 @@ try(trajectory(fhn,params=matrix(c(3,2,1,5),2,2)))
 try(trajectory(fhn,params=NULL))
 try(trajectory(fhn,params=list(a=3,b=2)))
 try(trajectory(fhn,maxsteps=-1))
-try(trajectory(fhn,maxsteps=1,verbose=TRUE)->x)
+try(trajectory(fhn,maxsteps=1,verbose=TRUE) -> x)
 fhn@skeleton@type <- 3L
 try(trajectory(fhn))
 
