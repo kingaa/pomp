@@ -109,24 +109,7 @@
   }
 }
 \value{
-  An object of class \sQuote{pfilterd_pomp}.
-  This class inherits from class \sQuote{pomp}.
-  The following additional slots can be accessed via the \code{$} operator:
-  \describe{
-    \item{saved.states}{
-      If \code{pfilter} was called with \code{save.states=TRUE}, this is the list of state-vectors at each time point, for each particle.
-      It is a length-\code{ntimes} list of \code{nvars}-by-\code{Np} arrays.
-      In particular, \code{saved.states[[t]][,i]} can be considered a sample from \eqn{f[X_t|y_{1:t}]}.
-    }
-    \item{saved.params}{
-      If \code{pfilter} was called with \code{save.params=TRUE}, this is the list of parameter-vectors at each time point, for each particle.
-      It is a length-\code{ntimes} list of \code{npars}-by-\code{Np} arrays.
-      In particular, \code{saved.params[[t]][,i]} is the parameter portion of the i-th particle at time \eqn{t}.
-    }
-    \item{Np, tol, nfail}{
-      the number of particles used, failure tolerance, and number of filtering failures (see below), respectively.
-    }
-  }
+  An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
 }
 \section{Methods}{
   \describe{

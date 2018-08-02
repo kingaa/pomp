@@ -10,8 +10,6 @@
 \alias{traj.match,traj_matched_pomp-method}
 \alias{logLik,traj_matched_pomp-method}
 \alias{logLik-traj_matched_pomp}
-\alias{$,traj_matched_pomp-method}
-\alias{$-traj_matched_pomp}
 \alias{summary,traj_matched_pomp-method}
 \alias{summary-traj_matched_pomp}
 \alias{traj_matched_pomp-class}

@@ -15,8 +15,6 @@
 \alias{kalmand_pomp}
 \alias{logLik,kalmand_pomp-method}
 \alias{logLik-kalmand_pomp}
-\alias{$,kalmand_pomp-method}
-\alias{$-kalmand_pomp}
 \alias{pred.mean,kalmand_pomp-method}
 \alias{pred.mean-kalmand_pomp}
 \alias{filter.mean,kalmand_pomp-method}

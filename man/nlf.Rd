@@ -11,8 +11,6 @@
 \alias{nlfd_pomp-class}
 \alias{logLik,nlfd_pomp-method}
 \alias{logLik-nlfd_pomp}
-\alias{$,nlfd_pomp-method}
-\alias{$-nlfd_pomp}
 \description{
   \code{nlf} calls an optimizer to maximize the nonlinear forecasting (NLF) goodness of fit.
   The latter is computed by simulating data from a model, fitting a nonlinear autoregressive model to the simulated time series, and quantifying the ability of the resulting fitted model to predict the data time series.
@@ -113,7 +111,6 @@
 \value{
   An object of class \sQuote{nlfd_pomp}.
   \code{logLik} applied to such an object returns the log quasi likelihood.
-  The \code{$} method allows extraction of arbitrary slots from the \sQuote{nlfd_pomp} object.
 }
 \references{
   The following papers describe and motivate the NLF approach to model fitting:
