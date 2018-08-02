@@ -4,10 +4,6 @@
 \alias{pomp-methods}
 \alias{plot,pomp-method}
 \alias{plot-pomp}
-\alias{print,pomp-method}
-\alias{print-pomp}
-\alias{show,pomp-method}
-\alias{show-pomp}
 \alias{spy}
 \alias{spy,pomp-method}
 \alias{spy-pomp}
@@ -53,8 +49,6 @@
       nc = NULL, yax.flip = FALSE,
       mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
       oma = c(6, 0, 5, 0), axes = TRUE, \dots)
-\S4method{print}{pomp}(x, \dots)
-\S4method{show}{pomp}(object)
 \S4method{spy}{pomp}(object)
 \S4method{states}{pomp}(object, vars, \dots)
 \S4method{time}{pomp}(x, t0 = FALSE, \dots)
@@ -62,7 +56,6 @@
 \S4method{timezero}{pomp}(object, \dots)
 \S4method{timezero}{pomp}(object, \dots) <- value
 \S4method{window}{pomp}(x, start, end, \dots)
-\S4method{as}{pomp}(object, class)
 }
 \arguments{
   \item{object, x}{The \code{pomp} object.}
@@ -97,10 +90,6 @@
   }
   \item{start, end}{
     start and end times of the window.
-  }
-  \item{class}{
-    character;
-    name of the class to which \code{object} should be coerced.
   }
   \item{y}{ignored.}
   \item{variables}{
@@ -181,9 +170,7 @@
       \code{window(x,start=t1,end=t2} returns a new \code{pomp} object, identical to \code{x} but with only the data in the window between times \code{t1} and \code{t2} (inclusive).
       By default, \code{start} is the time of the first observation and \code{end} is the time of the last.
     }
-    \item{show}{Displays the \code{pomp} object.}
-    \item{spy}{Displays any C snippet files associated with a \code{pomp} object.}
-    \item{print}{Print method.}
+    \item{spy}{Displays the structure of a \code{pomp} object.}
     \item{plot}{
       Plots the data and state trajectories (if the latter exist).
       Additional arguments are passed to the low-level plotting routine.

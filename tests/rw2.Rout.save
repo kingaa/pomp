@@ -110,65 +110,7 @@ in 'pomp': the following unrecognized argument(s) will be stored for use by user
 in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'useless'
 > 
 > show(rw2)
-100 records of 2 observables, recorded from t = 1 to 100 
-summary of data:
-       y1          y2   
- Min.   :0   Min.   :0  
- 1st Qu.:0   1st Qu.:0  
- Median :0   Median :0  
- Mean   :0   Mean   :0  
- 3rd Qu.:0   3rd Qu.:0  
- Max.   :0   Max.   :0  
-zero time, t0 = 0
-one-step process-model simulator, step.fun = function (x, t, params, delta.t, ...) 
-{
-    noise.sds <- params[c("s1", "s2")]
-    rnorm(n = 2, mean = x, sd = noise.sds * sqrt(delta.t))
-}
-process model density, dprocess = function (x1, x2, t1, t2, params, ...) 
-{
-    dt <- t2 - t1
-    noise.sds <- params[c("s1", "s2")]
-    sum(dnorm(x = x2, mean = x1, sd = noise.sds * sqrt(dt), log = TRUE))
-}
-measurement model simulator, rmeasure = function (x, t, params, covars, ...) 
-{
-    y <- numeric(length = nobs)
-    names(y) <- obsnames
-    for (k in seq_len(nobs)) {
-        y[k] <- eval(rcalls[[k]], envir = as.list(c(x, params, 
-            covars, t = t)))
-    }
-    y
-}
-<bytecode: 0x33051a8>
-<environment: 0x111e0c0>
-measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
-{
-    f <- 0
-    for (k in seq_len(nobs)) {
-        f <- f + eval(dcalls[[k]], envir = as.list(c(y, x, params, 
-            covars, t = t)))
-    }
-    if (log) 
-        f
-    else exp(f)
-}
-<bytecode: 0x33016f8>
-<environment: 0x111e0c0>
-prior simulator, rprior = not specified
-prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
-skeleton = not specified
-initializer = function (params, t0, ...) 
-{
-    ivpnames <- c("x1.0", "x2.0")
-    x <- params[ivpnames]
-    x
-}
-parameter transformation (to estimation scale) = not specified
-parameter transformation (from estimation scale) = not specified
-parameter(s) unspecified
-extra user-defined variables:  'useless' 
+<object of class 'pomp'>
 > 
 > try(simulate(rw2,params=p))
 Error : in 'simulate': in 'init.state': a state variable and a parameter share a single name: 'x1.0'

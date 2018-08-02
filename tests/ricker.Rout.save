@@ -134,40 +134,7 @@ Error : in 'map', 'delta.t' must be positive
 +   skeleton=map(function(x,t,params,...)x,delta.t=1),
 +   rmeasure=function(x,t,params,...)x,
 +   dmeasure=function(x,y,t,params,log,...)1))
-51 records of 1 observables, recorded from t = 0 to 50 
-summary of data:
-       y         
- Min.   :  0.00  
- 1st Qu.:  0.00  
- Median :  8.00  
- Mean   : 41.39  
- 3rd Qu.: 71.00  
- Max.   :275.00  
-zero time, t0 = 0
-3 records of 1 covariates, recorded from t = 1 to 3 
-summary of covariates:
-       z      
- Min.   :1.0  
- 1st Qu.:1.5  
- Median :2.0  
- Mean   :2.0  
- 3rd Qu.:2.5  
- Max.   :3.0  
-undefined process-model simulator
-process model density, dprocess = not specified
-measurement model simulator, rmeasure = function (x, t, params, ...) 
-x
-measurement model density, dmeasure = function (x, y, t, params, log, ...) 
-1
-prior simulator, rprior = not specified
-prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
-skeleton (map) = function (x, t, params, ...) 
-x
-<environment: 0x38434d0>
-initializer = not specified
-parameter transformation (to estimation scale) = not specified
-parameter transformation (from estimation scale) = not specified
-parameter(s) unspecified
+<object of class 'pomp'>
 Warning messages:
 1: in 'pomp': a covariate table has been given, yet the 'skeleton' function does not have 'covars' as a formal argument: see '?pomp' 
 2: in 'pomp': a covariate table has been given, yet the 'rmeasure' function does not have 'covars' as a formal argument: see '?pomp' 
@@ -182,29 +149,7 @@ Error : in 'pomp': to use 'measurement.model' you must provide at least one form
 +      initializer=NULL,fromEstimationScale=NULL,
 +      toEstimationScale=NULL) -> po
 > show(po)
-51 records of 1 observables, recorded from t = 0 to 50 
-summary of data:
-       y         
- Min.   :  0.00  
- 1st Qu.:  0.00  
- Median :  8.00  
- Mean   : 41.39  
- 3rd Qu.: 71.00  
- Max.   :275.00  
-zero time, t0 = 0
-undefined process-model simulator
-process model density, dprocess = not specified
-measurement model simulator, rmeasure = not specified
-measurement model density, dmeasure = not specified
-prior simulator, rprior = not specified
-prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
-skeleton = not specified
-initializer = not specified
-parameter transformation (to estimation scale) = not specified
-parameter transformation (from estimation scale) = not specified
-parameter(s):
-       r    sigma      phi        c      N_0      e.0 
-44.70118  0.30000 10.00000  1.00000  7.00000  0.00000 
+<object of class 'pomp'>
 > try(trajectory(po))
 Error : in 'trajectory': deterministic skeleton has not been properly specified
 > 

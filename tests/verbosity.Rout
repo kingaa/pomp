@@ -90,7 +90,7 @@ Error : in 'bsmc': too many filtering failures
 In addition: Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
 3: 'bsmc' is deprecated and will be removed in a forthcoming release.  Consider using 'bsmc2'. 
@@ -104,37 +104,37 @@ Error : in 'bsmc2': too many filtering failures
 filtering failure at time t = 3
 filtering failure at time t = 20
 filtering failure at time t = 20
-Error : in 'pomp': error in building shared-object library from C snippets: in 'Cbuilder': compilation error: cannot compile shared-object library '/tmp/RtmpJzSEvJ/53789/pomp_cc3324ec8b92d8ebc06506060e5fba6c.so': status = 1
+Error : in 'pomp': error in building shared-object library from C snippets: in 'Cbuilder': compilation error: cannot compile shared-object library '/tmp/RtmpPyLxcp/31300/pomp_22317a81967d50fad7b52cbf4664c4d1.so': status = 1
 compiler messages:
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include -I/userdata/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpJzSEvJ/53789/pomp_cc3324ec8b92d8ebc06506060e5fba6c.c -o /tmp/RtmpJzSEvJ/53789/pomp_cc3324ec8b92d8ebc06506060e5fba6c.o
-/tmp/RtmpJzSEvJ/53789/pomp_cc3324ec8b92d8ebc06506060e5fba6c.c: In function ‘__pomp_rmeasure’:
-/tmp/RtmpJzSEvJ/53789/pomp_cc3324ec8b92d8ebc06506060e5fba6c.c:18:1: error: expected ‘;’ before ‘}’ token
+make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpPyLxcp/31300/pomp_22317a81967d50fad7b52cbf4664c4d1.c -o /tmp/RtmpPyLxcp/31300/pomp_22317a81967d50fad7b52cbf4664c4d1.o
+/tmp/RtmpPyLxcp/31300/pomp_22317a81967d50fad7b52cbf4664c4d1.c: In function ‘__pomp_rmeasure’:
+/tmp/RtmpPyLxcp/31300/pomp_22317a81967d50fad7b52cbf4664c4d1.c:18:1: error: expected ‘;’ before ‘}’ token
  }
  ^
-make[2]: *** [/tmp/RtmpJzSEvJ/53789/pomp_cc3324ec8b92d8ebc06506060e5fba6c.o] Error 1
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: *** [/tmp/RtmpPyLxcp/31300/pomp_22317a81967d50fad7b52cbf4664c4d1.o] Error 1
+make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
 In addition: Warning messages:
 1: in 'bsmc2': 2 filtering failures occurred. 
 2: in 'pfilter': 1 filtering failure occurred. 
 3: 'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 4: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 5: In library(pomp) : package 'pomp' already present in search()
 6: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 7: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 8: In system2(command = R.home("bin/R"), args = c("CMD", "SHLIB", "-c",  :
-  running command 'PKG_CPPFLAGS="-I/userdata/kingaa/projects/Rpkg/library/pomp/include -I/userdata/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpJzSEvJ/53789/pomp_cc3324ec8b92d8ebc06506060e5fba6c.so /tmp/RtmpJzSEvJ/53789/pomp_cc3324ec8b92d8ebc06506060e5fba6c.c 2>&1' had status 1
+  running command 'PKG_CPPFLAGS="-I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests" '/usr/local/apps/R/R-3.5.1/lib64/R/bin/R' CMD SHLIB -c -o /tmp/RtmpPyLxcp/31300/pomp_22317a81967d50fad7b52cbf4664c4d1.so /tmp/RtmpPyLxcp/31300/pomp_22317a81967d50fad7b52cbf4664c4d1.c 2>&1' had status 1
 > length(out)
 [1] 685
 > stopifnot(sum(grepl("mif2 pfilter",out))==40)
@@ -153,19 +153,19 @@ In addition: Warning messages:
 Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
 3: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > capture.output(simulate(pomp(ricker,rmeasure=Csnippet("y=rpois(N);"),statenames="N",
 +   cfile="bob",verbose=TRUE),verbose=TRUE) -> po) -> out
 Warning message:
 In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > gsub("(\\w+)\\s.+","\\1",out,perl=TRUE)
  [1] "model"             "compiling"         "compiler"         
@@ -178,11 +178,11 @@ In find.package(package, lib.loc, quiet = TRUE) :
 > capture.output(invisible(mif2(window(ricker,end=10),Nmif=1,Np=1,rw.sd=rw.sd(r=1),
 +   transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
 +   type="message") -> out
-loading '/tmp/RtmpJzSEvJ/53789/pomp_6d864352f620c7287e84ece91fc19613.so' 
+loading '/tmp/RtmpPyLxcp/31300/pomp_3a1491d2db8ede63e6c71b43bfe4d8b8.so' 
 mif2 pfilter timestep 5 of 11 finished
 mif2 pfilter timestep 10 of 11 finished
 mif2 iteration 1 of 1 completed
-unloading '/tmp/RtmpJzSEvJ/53789/pomp_6d864352f620c7287e84ece91fc19613.so' 
+unloading '/tmp/RtmpPyLxcp/31300/pomp_3a1491d2db8ede63e6c71b43bfe4d8b8.so' 
 Warning message:
 in 'mif2.pfilter': 5 filtering failures occurred. 
 > stopifnot(sum(grepl("filtering failure at time",out))==5)
@@ -191,11 +191,11 @@ in 'mif2.pfilter': 5 filtering failures occurred.
 > capture.output(invisible(mif(window(ricker,end=10),Nmif=1,Np=1,rw.sd=c(r=1),
 +                              transform=TRUE,cooling.fraction.50=1,verbose=TRUE)),
 +                type="message") -> out
-loading '/tmp/RtmpJzSEvJ/53789/pomp_6d864352f620c7287e84ece91fc19613.so' 
+loading '/tmp/RtmpPyLxcp/31300/pomp_3a1491d2db8ede63e6c71b43bfe4d8b8.so' 
 pfilter timestep 5 of 11 finished
 pfilter timestep 10 of 11 finished
 mif iteration 1 of 1 completed
-unloading '/tmp/RtmpJzSEvJ/53789/pomp_6d864352f620c7287e84ece91fc19613.so' 
+unloading '/tmp/RtmpPyLxcp/31300/pomp_3a1491d2db8ede63e6c71b43bfe4d8b8.so' 
 Warning messages:
 1: 'mif' is deprecated and will be removed in a forthcoming release. Consider using 'mif2' instead. 
 2: in 'mif.pfilter': 5 filtering failures occurred. 
@@ -205,16 +205,73 @@ Warning messages:
 Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
 3: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > spy(dacca)
-/* pomp C snippet file: pomp_d2025942f1e4597394ac222e00c36707 */
-/* Time: 2018-07-23 15:55:30.217 -0400 */
+==================
+pomp object 'dacca':
+
+- 600 records of 1 observable, recorded from t = 1891 to 1941 
+- zero time, t0 = 1891
+- summary of data:
+ cholera.deaths
+ Min.   :   2  
+ 1st Qu.:  46  
+ Median : 294  
+ Mean   : 590  
+ 3rd Qu.: 772  
+ Max.   :5596  
+- 5017 records of 9 covariates, recorded from t = 1891 to 1941 
+- summary of covariates:
+     seas1           seas2           seas3           seas4      
+ Min.   :0.000   Min.   :0.000   Min.   :0.000   Min.   :0.000  
+ 1st Qu.:0.000   1st Qu.:0.000   1st Qu.:0.000   1st Qu.:0.000  
+ Median :0.023   Median :0.021   Median :0.018   Median :0.018  
+ Mean   :0.168   Mean   :0.167   Mean   :0.166   Mean   :0.166  
+ 3rd Qu.:0.322   3rd Qu.:0.296   3rd Qu.:0.309   3rd Qu.:0.309  
+ Max.   :0.666   Max.   :0.667   Max.   :0.666   Max.   :0.666  
+     seas5           seas6            pop              dpopdt     
+ Min.   :0.000   Min.   :0.000   Min.   :2420656   Min.   :13824  
+ 1st Qu.:0.000   1st Qu.:0.000   1st Qu.:2729310   1st Qu.:19940  
+ Median :0.021   Median :0.023   Median :3055864   Median :27660  
+ Mean   :0.166   Mean   :0.167   Mean   :3089849   Mean   :36207  
+ 3rd Qu.:0.296   3rd Qu.:0.322   3rd Qu.:3318329   3rd Qu.:40816  
+ Max.   :0.667   Max.   :0.666   Max.   :4236627   Max.   :90533  
+     trend      
+ Min.   :-25.1  
+ 1st Qu.:-12.5  
+ Median :  0.0  
+ Mean   :  0.0  
+ 3rd Qu.: 12.5  
+ Max.   : 25.1  
+- Euler-method process-model simulator, step.fun = native function '__pomp_stepfn', defined by a Csnippet
+- process model density, dprocess = not specified
+- measurement model simulator, rmeasure = native function '__pomp_rmeasure', defined by a Csnippet
+- measurement model density, dmeasure = native function '__pomp_dmeasure', defined by a Csnippet
+- prior simulator, rprior = not specified
+- prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
+- skeleton = not specified
+- initializer = native function '__pomp_rinit', defined by a Csnippet
+- parameter transformation (to estimation scale) = native function '__pomp_to_trans', defined by a Csnippet
+- parameter transformation (from estimation scale) = native function '__pomp_from_trans', defined by a Csnippet
+- parameter(s):
+     gamma        eps        rho      delta     deltaI       clin      alpha 
+  2.08e+01   1.91e+01   0.00e+00   2.00e-02   6.00e-02   1.00e+00   1.00e+00 
+beta_trend   logbeta1   logbeta2   logbeta3   logbeta4   logbeta5   logbeta6 
+ -4.98e-03   7.47e-01   6.38e+00  -3.44e+00   4.23e+00   3.33e+00   4.55e+00 
+ logomega1  logomega2  logomega3  logomega4  logomega5  logomega6    sd_beta 
+ -1.69e+00  -2.54e+00  -2.84e+00  -4.69e+00  -8.48e+00  -4.39e+00   3.13e+00 
+       tau        S_0        I_0        Y_0       R1_0       R2_0       R3_0 
+  2.30e-01   6.21e-01   3.78e-01   0.00e+00   8.43e-04   9.72e-04   1.16e-07 
+- C snippet file 1:
+
+/* pomp C snippet file: pomp_e5977718faefc94000b45dc258de4949 */
+/* Time: 2018-08-01 20:22:31.092 -0400 */
 /* Salt: EE444509B5E4E6D45828ABC6 */
 
 #include <pomp.h>
@@ -851,33 +908,33 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_d2025942f1e4597394ac222e00c36707 (DllInfo *info)
+void R_init_pomp_e5977718faefc94000b45dc258de4949 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_d2025942f1e4597394ac222e00c36707", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_d2025942f1e4597394ac222e00c36707", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_d2025942f1e4597394ac222e00c36707", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-R_RegisterCCallable("pomp_d2025942f1e4597394ac222e00c36707", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("pomp_d2025942f1e4597394ac222e00c36707", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("pomp_d2025942f1e4597394ac222e00c36707", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("pomp_d2025942f1e4597394ac222e00c36707", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("pomp_d2025942f1e4597394ac222e00c36707", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_e5977718faefc94000b45dc258de4949", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_e5977718faefc94000b45dc258de4949", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_e5977718faefc94000b45dc258de4949", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_e5977718faefc94000b45dc258de4949", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_e5977718faefc94000b45dc258de4949", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_e5977718faefc94000b45dc258de4949", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_e5977718faefc94000b45dc258de4949", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_e5977718faefc94000b45dc258de4949", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
 }
 
 > 
 > pompExample(gillespie.sir)
-'envir' chosen:<environment: 0x6944c18>
+'envir' chosen:<environment: 0x635eef0>
 encoding = "native.enc" chosen
 --> parsed 4 expressions; now eval(.)ing them:
 has srcrefs:
 List of 4
  $ : 'srcref' int [1:8] 1 1 1 13 1 13 1 1
-  ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x550b638> 
+  ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x6367980> 
  $ : 'srcref' int [1:8] 3 1 525 1 1 1 3 525
-  ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x550b638> 
+  ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x6367980> 
  $ : 'srcref' int [1:8] 527 1 637 18 1 18 527 637
-  ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x550b638> 
+  ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x6367980> 
  $ : 'srcref' int [1:8] 642 1 642 18 1 18 642 642
-  ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x550b638> 
+  ..- attr(*, "srcfile")=Classes 'srcfilecopy', 'srcfile' <environment: 0x6367980> 
 
 >>>> eval(expression_nr. 1 )
 		 =================
@@ -910,15 +967,15 @@ curr.fun: symbol <-
 +      params=c(
 +        gamma=24,mu=1/70,iota=0.1,
 +        beta1=330,bet .... [TRUNCATED] 
-model codes written to '/tmp/RtmpJzSEvJ/53789/pomp_2400823addc47ca659139a2848bd6f27.c' 
-compiling '/tmp/RtmpJzSEvJ/53789/pomp_2400823addc47ca659139a2848bd6f27.so' 
+model codes written to '/tmp/RtmpPyLxcp/31300/pomp_898f7787c09c7dbfdd59b0fe21f0b16f.c' 
+compiling '/tmp/RtmpPyLxcp/31300/pomp_898f7787c09c7dbfdd59b0fe21f0b16f.so' 
 compiler messages:
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/userdata/kingaa/projects/Rpkg/library/pomp/include -I/userdata/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpJzSEvJ/53789/pomp_2400823addc47ca659139a2848bd6f27.c -o /tmp/RtmpJzSEvJ/53789/pomp_2400823addc47ca659139a2848bd6f27.o
-gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.5.1/lib64/R/lib -L/usr/local/lib64 -o /tmp/RtmpJzSEvJ/53789/pomp_2400823addc47ca659139a2848bd6f27.so /tmp/RtmpJzSEvJ/53789/pomp_2400823addc47ca659139a2848bd6f27.o -L/usr/local/apps/R/R-3.5.1/lib64/R/lib -lR
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Entering directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
-make[2]: Leaving directory `/userdata/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
+gcc -std=gnu99 -I"/usr/local/apps/R/R-3.5.1/lib64/R/include" -DNDEBUG -I/home/kingaa/projects/Rpkg/library/pomp/include -I/home/kingaa/projects/Rpkg/pomp/tests  -I/usr/local/include   -fpic  -g -O2 -Wall -pedantic -c /tmp/RtmpPyLxcp/31300/pomp_898f7787c09c7dbfdd59b0fe21f0b16f.c -o /tmp/RtmpPyLxcp/31300/pomp_898f7787c09c7dbfdd59b0fe21f0b16f.o
+gcc -std=gnu99 -shared -L/usr/local/apps/R/R-3.5.1/lib64/R/lib -L/usr/local/lib64 -o /tmp/RtmpPyLxcp/31300/pomp_898f7787c09c7dbfdd59b0fe21f0b16f.so /tmp/RtmpPyLxcp/31300/pomp_898f7787c09c7dbfdd59b0fe21f0b16f.o -L/usr/local/apps/R/R-3.5.1/lib64/R/lib -lR
+make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Entering directory `/home/kingaa/projects/Rpkg/pomp/tests'
+make[2]: Leaving directory `/home/kingaa/projects/Rpkg/pomp/tests'
 curr.fun: symbol <-
  .. after 'expression(pomp(''     data=read.csv2(text=dat),''     times="time",''     t0=0,''     params=c(''       gamma=24,mu=1/70,iota=0.1,''       beta1=330,beta2=410,beta3=490,''       rho=0.1,''       S_0=0.05,I_0=1e-4,R_0=0.95,''       pop=1000000,''       beta.sd=0''       ),''     globals="''      int nbasis = 3, deg = 3;''      double period = 1.0;",''     rprocess=gillespie.hl.sim(''       .pre="''          double beta;''          const double *xbeta = &beta1;''          double seasonality[nbasis];''          int k;",''       birth=list(''          "rate = mu*pop;",''          c(S=1,I=0,R=0,N=1,cases=0)),''       susc.death=list(''          "rate = mu*S;",''          c(S=-1,I=0,R=0,N=-1,cases=0)),''       infection=list(''          "periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);''           for (k = 0, beta = 0; k < nbasis; k++) beta += seasonality[k]*xbeta[k];''           rate = (beta*I+iota)*S/pop;",''          c(S=-1,I=1,N=0,R=0,cases=0)),''       inf.death=list(''          "rate = mu*I;",''          c(S=0,I=-1,R=0,N=-1,cases=0)),''       recovery=list(''          "rate = gamma*I;",''          c(S=0,I=-1,R=1,N=0,cases=1)),''       recov.death=list(''          "rate = mu*R;",''          c(S=0,I=0,R=-1,N=-1,cases=0)),''       hmax=0.05),''     skeleton=vectorfield(''       Csnippet("''        int nrate = 6;''        double rate[nrate];''        double term[nrate];''        double beta;''        const double *xbeta = &beta1;''        double seasonality[nbasis];''        int k;''        periodic_bspline_basis_eval(t,period,deg,nbasis,&seasonality[0]);''        for (k = 0, beta = 0; k < nbasis; k++) beta += seasonality[k]*xbeta[k];''''        rate[0] = mu*pop;''        rate[1] = (iota+beta*I)/pop;''        rate[2] = mu;''        rate[3] = gamma;''        rate[4] = mu;''        rate[5] = mu;''''        term[0] = rate[0];''        term[1] = rate[1]*S;''        term[2] = rate[2]*S;''        term[3] = rate[3]*I;''        term[4] = rate[4]*I;''        term[5] = rate[5]*R;''''        DS = term[0]-term[1]-term[2];''        DI = term[1]-term[3]-term[4];''        DR = term[3]-term[5];''        Dcases = term[3];")),''measurement.model=reports~binom(size=cases,prob=rho),''statenames=c("S","I","R","N","cases"),''paramnames=c(''  "gamma","mu","iota",''  "beta1","beta.sd","pop","rho",''  "S_0","I_0","R_0"''),''zeronames=c("cases"),''fromEstimationScale=Csnippet("''  int k;''  const double *xbeta = &beta1;''  double *xtbeta = &Tbeta1;''  Tgamma = exp(gamma);''  Tmu = exp(mu);''  Tiota = exp(iota);''  for (k = 0; k < nbasis; k++) xtbeta[k] = exp(xbeta[k]);''  Tbeta_sd = exp(beta_sd);''  Trho = expit(rho);''  from_log_barycentric(&TS_0,&S_0,3);"),''toEstimationScale=Csnippet("''  int k;''  const double *xbeta = &beta1;''  double *xtbeta = &Tbeta1;''  Tgamma = log(gamma);''  Tmu = log(mu);''  Tiota = log(iota);''  for (k = 0; k < nbasis; k++) xtbeta[k] = log(xbeta[k]);''  Tbeta_sd = log(beta_sd);''  Trho = logit(rho);''  to_log_barycentric(&TS_0,&S_0,3);"),''initializer=Csnippet("''  double m;''  m = pop/(S_0+I_0+R_0);''  S = nearbyint(m*S_0);''  I = nearbyint(m*I_0);''  N = nearbyint(pop);''  R = nearbyint(m*R_0);''  cases = 0;"),'') -> gillespie.sir)'
 
@@ -937,16 +994,69 @@ newly created object(s):
 Warning messages:
 1: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 2: In library(pomp) : package 'pomp' already present in search()
 3: In find.package(package, lib.loc, quiet = TRUE) :
   package 'pomp' found more than once, using the first from
-  "/userdata/kingaa/projects/Rpkg/library/pomp",
+  "/home/kingaa/projects/Rpkg/library/pomp",
   "/home/kingaa/R/x86_64-pc-linux-gnu-library/3.5/pomp"
 > spy(gillespie.sir)
-/* pomp C snippet file: pomp_2400823addc47ca659139a2848bd6f27 */
-/* Time: 2018-07-23 15:55:31.026 -0400 */
+==================
+pomp object 'gillespie.sir':
+
+- 521 records of 1 observable, recorded from t = 0 to 10 
+- zero time, t0 = 0
+- summary of data:
+    reports     
+ Min.   :  0.0  
+ 1st Qu.:  4.0  
+ Median : 10.0  
+ Mean   : 23.7  
+ 3rd Qu.: 40.0  
+ Max.   :120.0  
+- Gillespie-method process-model simulator, rate.fun = native function '__pomp_ratefn', defined by a Csnippet
+- process model density, dprocess = not specified
+- measurement model simulator, rmeasure = function (x, t, params, covars, ...) 
+{
+    y <- numeric(length = nobs)
+    names(y) <- obsnames
+    for (k in seq_len(nobs)) {
+        y[k] <- eval(rcalls[[k]], envir = as.list(c(x, params, 
+            covars, t = t)))
+    }
+    y
+}
+<bytecode: 0x68d96c0>
+<environment: 0x68d8620>
+- measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
+{
+    f <- 0
+    for (k in seq_len(nobs)) {
+        f <- f + eval(dcalls[[k]], envir = as.list(c(y, x, params, 
+            covars, t = t)))
+    }
+    if (log) 
+        f
+    else exp(f)
+}
+<bytecode: 0x68d4620>
+<environment: 0x68d8620>
+- prior simulator, rprior = not specified
+- prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
+- skeleton (vectorfield) = native function '__pomp_skelfn', defined by a Csnippet
+- initializer = native function '__pomp_rinit', defined by a Csnippet
+- parameter transformation (to estimation scale) = native function '__pomp_to_trans', defined by a Csnippet
+- parameter transformation (from estimation scale) = native function '__pomp_from_trans', defined by a Csnippet
+- parameter(s):
+   gamma       mu     iota    beta1    beta2    beta3      rho      S_0 
+2.40e+01 1.43e-02 1.00e-01 3.30e+02 4.10e+02 4.90e+02 1.00e-01 5.00e-02 
+     I_0      R_0      pop  beta.sd 
+1.00e-04 9.50e-01 1.00e+06 0.00e+00 
+- C snippet file 1:
+
+/* pomp C snippet file: pomp_898f7787c09c7dbfdd59b0fe21f0b16f */
+/* Time: 2018-08-01 20:22:31.431 -0400 */
 /* Salt: C18C07759B24E50E36C93349 */
 
 #include <pomp.h>
@@ -1290,65 +1400,18 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_2400823addc47ca659139a2848bd6f27 (DllInfo *info)
+void R_init_pomp_898f7787c09c7dbfdd59b0fe21f0b16f (DllInfo *info)
 {
 __pomp_periodic_bspline_basis_eval = (void (*)(double,double,int,int,double*)) R_GetCCallable("pomp","periodic_bspline_basis_eval");
-R_RegisterCCallable("pomp_2400823addc47ca659139a2848bd6f27", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_2400823addc47ca659139a2848bd6f27", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_2400823addc47ca659139a2848bd6f27", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-R_RegisterCCallable("pomp_2400823addc47ca659139a2848bd6f27", "__pomp_ratefn", (DL_FUNC) __pomp_ratefn);
-R_RegisterCCallable("pomp_2400823addc47ca659139a2848bd6f27", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("pomp_2400823addc47ca659139a2848bd6f27", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("pomp_2400823addc47ca659139a2848bd6f27", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
+R_RegisterCCallable("pomp_898f7787c09c7dbfdd59b0fe21f0b16f", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_898f7787c09c7dbfdd59b0fe21f0b16f", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_898f7787c09c7dbfdd59b0fe21f0b16f", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_898f7787c09c7dbfdd59b0fe21f0b16f", "__pomp_ratefn", (DL_FUNC) __pomp_ratefn);
+R_RegisterCCallable("pomp_898f7787c09c7dbfdd59b0fe21f0b16f", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_898f7787c09c7dbfdd59b0fe21f0b16f", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_898f7787c09c7dbfdd59b0fe21f0b16f", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
 }
 
 > show(gillespie.sir)
-521 records of 1 observables, recorded from t = 0 to 10 
-summary of data:
-    reports     
- Min.   :  0.0  
- 1st Qu.:  4.0  
- Median : 10.0  
- Mean   : 23.7  
- 3rd Qu.: 40.0  
- Max.   :120.0  
-zero time, t0 = 0
-Gillespie-method process-model simulator, rate.fun = native function '__pomp_ratefn', defined by a Csnippet
-process model density, dprocess = not specified
-measurement model simulator, rmeasure = function (x, t, params, covars, ...) 
-{
-    y <- numeric(length = nobs)
-    names(y) <- obsnames
-    for (k in seq_len(nobs)) {
-        y[k] <- eval(rcalls[[k]], envir = as.list(c(x, params, 
-            covars, t = t)))
-    }
-    y
-}
-<bytecode: 0x5f583f0>
-<environment: 0x5f5b2d0>
-measurement model density, dmeasure = function (y, x, t, params, log, covars, ...) 
-{
-    f <- 0
-    for (k in seq_len(nobs)) {
-        f <- f + eval(dcalls[[k]], envir = as.list(c(y, x, params, 
-            covars, t = t)))
-    }
-    if (log) 
-        f
-    else exp(f)
-}
-<bytecode: 0x5f58fc0>
-<environment: 0x5f5b2d0>
-prior simulator, rprior = not specified
-prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
-skeleton (vectorfield) = native function '__pomp_skelfn', defined by a Csnippet
-initializer = native function '__pomp_rinit', defined by a Csnippet
-parameter transformation (to estimation scale) = native function '__pomp_to_trans', defined by a Csnippet
-parameter transformation (from estimation scale) = native function '__pomp_from_trans', defined by a Csnippet
-parameter(s):
-   gamma       mu     iota    beta1    beta2    beta3      rho      S_0 
-2.40e+01 1.43e-02 1.00e-01 3.30e+02 4.10e+02 4.90e+02 1.00e-01 5.00e-02 
-     I_0      R_0      pop  beta.sd 
-1.00e-04 9.50e-01 1.00e+06 0.00e+00 
+<object of class 'pomp'>
 > 

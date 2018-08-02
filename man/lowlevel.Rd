@@ -35,6 +35,10 @@
 \alias{pompUnload}
 \alias{pompUnload-pomp}
 \alias{pompUnload,pomp-method}
+\alias{show,unshowable-method}
+\alias{print,unshowable-method}
+\alias{show,listies-method}
+\alias{print,listies-method}
 \description{
   A \code{pomp} object implements a partially observed Markov process (\acronym{POMP}) model.
   Basic operations on this model (with shorthand terms) include:

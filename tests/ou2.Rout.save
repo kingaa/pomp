@@ -23,7 +23,33 @@ Type 'q()' to quit R.
 newly created object(s):
  ou2 
 > spy(ou2)
-no C snippets to display
+==================
+pomp object 'ou2':
+
+- 100 records of 2 observables, recorded from t = 1 to 100 
+- zero time, t0 = 0
+- summary of data:
+       y1                 y2           
+ Min.   :-11.0134   Min.   :-13.22834  
+ 1st Qu.: -3.2758   1st Qu.: -4.39348  
+ Median : -0.1118   Median :  0.05163  
+ Mean   : -0.4198   Mean   :  0.11127  
+ 3rd Qu.:  2.6820   3rd Qu.:  4.10134  
+ Max.   : 11.0790   Max.   : 16.85998  
+- discrete-time process-model simulator, step.fun = native function '_ou2_step', dynamically loaded from 'pomp'
+- process model density, dprocess = native function '_ou2_pdf', dynamically loaded from 'pomp'
+- measurement model simulator, rmeasure = native function '_ou2_rmeasure', dynamically loaded from 'pomp'
+- measurement model density, dmeasure = native function '_ou2_dmeasure', dynamically loaded from 'pomp'
+- prior simulator, rprior = not specified
+- prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
+- skeleton (map) = native function '_ou2_skel', dynamically loaded from 'pomp'
+- initializer = not specified
+- parameter transformation (to estimation scale) = not specified
+- parameter transformation (from estimation scale) = not specified
+- parameter(s):
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+
 > 
 > ## fix some parameters
 > p <- c(

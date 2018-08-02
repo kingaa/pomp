@@ -29,37 +29,7 @@ Error : in 'pompExample': 'envir' must be an environment or NULL
 newly created object(s):
  gompertz 
 > show(gompertz)
-101 records of 1 observables, recorded from t = 0 to 100 
-summary of data:
-       Y        
- Min.   :0.609  
- 1st Qu.:0.918  
- Median :1.136  
- Mean   :1.133  
- 3rd Qu.:1.297  
- Max.   :1.880  
-zero time, t0 = 0
-discrete-time process-model simulator, step.fun = native function '_gompertz_simulator'
-process model density, dprocess = not specified
-measurement model simulator, rmeasure = native function '_gompertz_normal_rmeasure'
-measurement model density, dmeasure = native function '_gompertz_normal_dmeasure'
-prior simulator, rprior = not specified
-prior density, dprior = native function '_pomp_default_dprior', dynamically loaded from 'pomp'
-skeleton (map) = native function '_gompertz_skeleton'
-initializer = not specified
-parameter transformation (to estimation scale) = function (params, ...) 
-{
-    log(params)
-}
-<environment: 0x2591428>
-parameter transformation (from estimation scale) = function (params, ...) 
-{
-    exp(params)
-}
-<environment: 0x2591428>
-parameter(s):
-    K     r sigma   tau   X.0 
-  1.0   0.1   0.1   0.1   1.0 
+<object of class 'pomp'>
 > print(gompertz@rmeasure)
 native function '_gompertz_normal_rmeasure'
 > print(gompertz@dmeasure)
