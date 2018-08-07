@@ -64,6 +64,9 @@ Error : in 'rmeasure': variable 'tau' not found among the parameters
 > try(rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(3,3)),
 +   x=x,y=y,times=t,params=theta))
 Error : in 'rmeasure': 'rmeasure' must return a named numeric vector.
+> try(rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c()),
++   x=x,y=y,times=t,params=theta))
+Error : in 'rmeasure': zero-length result.
 > 
 > rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(y2=3,y1=3)),
 +   x=x,y=y,times=t,params=theta) -> z

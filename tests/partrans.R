@@ -31,3 +31,8 @@ try(partrans(pomp(gompertz,partrans=parameter_trans(
 pompExample(ou2)
 pp <- parmat(coef(ou2),10)
 stopifnot(all.equal(partrans(ou2,partrans(ou2,pp,dir="to"),dir="from"),pp))
+
+pompExample(bbs)
+pp <- parmat(coef(bbs),100)
+pp["Beta",] <- runif(100,0,100)
+stopifnot(all.equal(partrans(bbs,partrans(bbs,pp,dir="to")),pp))

@@ -25,7 +25,6 @@
 - easier interface for lists of probes in `probe`
 - methods to change data (`obs<-`)?
 - refurbish entire test suite
-	- 'skeleton' test is too delicate. why?
 - put Kalman check in 'gompertz' test: **is it correct?**
 - put Kalman check in 'ou2' test
 - MCMC proposals as pomp slots?
@@ -79,7 +78,6 @@ tests/sir2.R
 
 tests/dimchecks.R
 tests/dp.R
-tests/fhn.R
 tests/filtfail.R
 tests/forecast.R
 
@@ -111,8 +109,6 @@ R/plugins.R
 R/pomp_fun.R
 R/pomp_methods.R
 R/pomp.R
-
-R/trajectory_pomp.R
 
 R/basic_probes.R
 R/probe_match.R

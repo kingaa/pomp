@@ -31,6 +31,8 @@ k <- which(names(theta)=="tau")
 try(rmeasure(po,x=x,y=y,times=t,params=theta[-k]))
 try(rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(3,3)),
   x=x,y=y,times=t,params=theta))
+try(rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c()),
+  x=x,y=y,times=t,params=theta))
 
 rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(y2=3,y1=3)),
   x=x,y=y,times=t,params=theta) -> z
