@@ -4,6 +4,9 @@
 - update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files
 - blowflies2 is wonky
+- `show` methods for plugins
+- separate skeleton and rprocess plugin types?
+- covariates provided using a constructor function
 
 ## For pomp 2:
 
@@ -107,7 +110,6 @@ R/builder.R
 R/load.R
 R/plugins.R
 R/pomp_fun.R
-R/pomp_methods.R
 R/pomp.R
 
 R/basic_probes.R
