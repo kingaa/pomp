@@ -111,10 +111,14 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     stop(ep,sQuote("Nmif")," must be a positive integer.",call.=FALSE)
   Nmif <- as.integer(Nmif)
 
-  if (missing(start)) start <- coef(object)
-  if (is.list(start)) start <- unlist(start)
-  if (length(start)==0 || !is.numeric(start) || is.null(names(start)))
-    stop(ep,"parameters must be specified as a named numeric vector.",call.=FALSE)
+  if (is.null(.paramMatrix)) {
+    if (missing(start)) start <- coef(object)
+    if (is.list(start)) start <- unlist(start)
+    if (length(start)==0 || !is.numeric(start) || is.null(names(start)))
+      stop(ep,"parameters must be specified as a named numeric vector.",call.=FALSE)
+  } else {  ## if '.paramMatrix' is supplied, 'start' is ignored
+    start <- apply(.paramMatrix,1L,mean)
+  }
 
   ntimes <- length(time(object))
 
@@ -175,7 +179,6 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
       dimnames=list(variable=names(start),rep=NULL))
   } else {
     paramMatrix <- .paramMatrix
-    start <- apply(paramMatrix,1L,mean)
   }
 
   conv.rec <- array(dim=c(Nmif+1,length(start)+2),
