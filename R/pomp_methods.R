@@ -36,7 +36,7 @@ setMethod(
       stop("in ",sQuote("obs"),": some elements of ",
         sQuote("vars")," correspond to no observed variable",call.=FALSE)
     y <- object@data[vars,,drop=FALSE]
-    dimnames(y) <- list(variable=rownames(y),time=time(object))
+    dimnames(y) <- list(variable=vars,time=time(object))
     y
   }
 )
@@ -49,10 +49,13 @@ setMethod(
     if (length(object@states)==0) {
       NULL
     } else {
-      if (missing(vars))
-        vars <- seq(length=nrow(object@states))
+      varnames <- rownames(object@states)
+      if (missing(vars)) vars <- varnames
+      else if (!all(vars%in%varnames))
+        stop("in ",sQuote("states"),": some elements of ",
+          sQuote("vars")," correspond to no state variable",call.=FALSE)
       x <- object@states[vars,,drop=FALSE]
-      dimnames(x) <- list(variable=rownames(x),time=time(object))
+      dimnames(x) <- list(variable=vars,time=time(object))
       x
     }
   }
@@ -120,6 +123,13 @@ setMethod(
       start <- tm[1L]
     if (missing(end))
       end <- tm[length(tm)]
+    if (!(is.numeric(start) && is.finite(start) && length(start)==1 &&
+        is.numeric(end) && is.finite(end) && length(end)==1))
+      stop("in ",sQuote("window"),": ",sQuote("start")," and ",sQuote("end"),
+        " must be finite times.",call.=FALSE)
+    if (!isTRUE(start <= end))
+      stop("in ",sQuote("window"),": ",sQuote("start")," must not be later ",
+        "than ",sQuote("end"),".",call.=FALSE)
     tm <- tm[(tm>=start)&(tm<=end)]
     time(x,t0=FALSE) <- tm
     x
@@ -137,10 +147,9 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function(object,...,value) {
     ep <- paste0("in ",sQuote("timezero<-"),": ")
-    if (value[1L]>object@times[1L])
-      if (!is.numeric(value) || length(value) > 1L)
-        stop(ep,"the zero-time ",sQuote("t0"),
-          " must be a single number",call.=FALSE)
+    if (!(is.numeric(value) && length(value) == 1L && is.finite(value)))
+      stop(ep,"the zero-time ",sQuote("t0"),
+        " must be a single finite number",call.=FALSE)
     if (value > object@times[1L])
       stop(ep,"the zero-time ",sQuote("t0"),
         " must occur no later than the first observation",call.=FALSE)
