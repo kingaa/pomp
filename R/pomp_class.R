@@ -7,14 +7,14 @@ setClass(
     t0 = "numeric",
     default.init = "logical",
     rinit = "pomp_fun",
-    rprocess = "pompPlugin",
+    rprocess = "rprocPlugin",
     dprocess = "pomp_fun",
     dmeasure = "pomp_fun",
     rmeasure = "pomp_fun",
     dprior = "pomp_fun",
     rprior = "pomp_fun",
-    skeleton = "pompPlugin",
-    partrans = "partrans_funs",
+    skeleton = "skelPlugin",
+    partrans = "partransPlugin",
     states = "array",
     params = "numeric",
     covar = "matrix",
@@ -29,13 +29,13 @@ setClass(
     t0=numeric(0),
     default.init=TRUE,
     rinit=pomp_fun(slotname="rinit"),
-    rprocess=plugin(),
+    rprocess=rproc_plugin(),
     dprocess=pomp_fun(slotname="dprocess"),
     dmeasure=pomp_fun(slotname="dmeasure"),
     rmeasure=pomp_fun(slotname="rmeasure"),
     dprior=pomp_fun(slotname="dprior"),
     rprior=pomp_fun(slotname="rprior"),
-    skeleton=plugin(),
+    skeleton=skel_plugin(),
     partrans=parameter_trans(),
     states=array(data=numeric(0),dim=c(0,0)),
     params=numeric(0),
@@ -55,7 +55,7 @@ setClass(
       retval <- append(retval,paste("the length of",sQuote("times"),"should match the number of observations"))
     if (length(object@t0)<1)
       retval <- append(retval,paste(sQuote("t0"),"is a required argument"))
-    if (length(object@t0)>1)
+    if (!is.numeric(object@t0) || !is.finite(object@t0) || length(object@t0)>1)
       retval <- append(retval,paste(sQuote("t0"),"must be a single number"))
     if (object@t0 > object@times[1])
       retval <- append(retval,paste("the zero-time",sQuote("t0"),

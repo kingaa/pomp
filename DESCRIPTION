@@ -2,7 +2,7 @@ Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
 Version: 2.0.0.0
-Date: 2018-08-07
+Date: 2018-08-08
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -30,7 +30,8 @@ LazyData: true
 Contact: kingaa at umich dot edu
 BugReports: https://github.com/kingaa/pomp/issues/
 Collate: aaa.R authors.R generics.R bake.R
-	 csnippet.R safecall.R pomp_fun.R plugins.R
+	 csnippet.R safecall.R pomp_fun.R
+	 rprocess_plugins.R skeleton_plugins.R parameter_trans.R
 	 templates.R builder.R
 	 parmat.R logmeanexp.R bsplines.R eulermultinom.R
 	 slice_design.R profile_design.R sobol.R

@@ -103,13 +103,7 @@ setMethod(
     if (missing(rinit)) rinit <- NULL
 
     if (missing(rprocess) || is.null(rprocess)) {
-      rprocess <- plugin()
-    } else if (!is(rprocess,"pompPlugin")) {
-      stop(ep,sQuote("rprocess"),
-        " must be specified using one of the plugins:\n",
-        sQuote("onestep.sim"),", ",sQuote("discrete.time.sim"),
-        ", ",sQuote("euler.sim"),", ",sQuote("gillespie.sim"),
-        ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
+      rprocess <- rproc_plugin()
     }
 
     if (missing(dprocess)) dprocess <- NULL
@@ -117,17 +111,11 @@ setMethod(
     if (missing(dmeasure)) dmeasure <- NULL
 
     if (missing(skeleton) || is.null(skeleton)) {
-      skeleton <- plugin()
-    } else if (!is(skeleton,"pompPlugin")) {
-      stop(ep,sQuote("skeleton")," must be specified using either ",
-        sQuote("map")," or ",sQuote("vectorfield"),".",call.=FALSE)
+      skeleton <- skel_plugin()
     }
 
     if (missing(partrans) || is.null(partrans)) {
       partrans <- parameter_trans()
-    } else if (!is(partrans,"partrans_funs")) {
-      stop(ep,sQuote("partrans")," must be specified using ",
-        sQuote("parameter_trans"),".",call.=FALSE)
     }
 
     if (missing(rprior)) rprior <- NULL
@@ -185,13 +173,7 @@ setMethod(
     if (missing(rprocess)) {
       rprocess <- data@rprocess
     } else if (is.null(rprocess)) {
-      rprocess <- plugin()
-    } else if (!is(rprocess,"pompPlugin")) {
-      stop(ep,sQuote("rprocess"),
-        " must be specified using one of the plugins:\n",
-        sQuote("onestep.sim"),", ",sQuote("discrete.time.sim"),
-        ", ",sQuote("euler.sim"),", ",sQuote("gillespie.sim"),
-        ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
+      rprocess <- rproc_plugin()
     }
 
     if (missing(dprocess)) dprocess <- data@dprocess
@@ -201,19 +183,13 @@ setMethod(
     if (missing(skeleton)) {
       skeleton <- data@skeleton
     } else if (is.null(skeleton)) {
-      skeleton <- plugin()
-    } else if (!is(skeleton,"pompPlugin")) {
-      stop(ep,sQuote("skeleton")," must be specified using either ",
-        sQuote("map")," or ",sQuote("vectorfield"),".",call.=FALSE)
+      skeleton <- skel_plugin()
     }
 
     if (missing(partrans)) {
       partrans <- data@partrans
     } else if (is.null(partrans)) {
       partrans <- parameter_trans()
-    } else if (!is(partrans,"partrans_funs")) {
-      stop(ep,sQuote("partrans")," must be specified using ",
-        sQuote("parameter_trans"),".",call.=FALSE)
     }
 
     if (missing(rprior)) rprior <- data@rprior
@@ -274,6 +250,24 @@ pomp.internal <- function (data, times, t0, ...,
       "will be stored for use by user-defined functions: ",
       paste(sQuote(names(added.userdata)),collapse=","))
     .userdata[names(added.userdata)] <- added.userdata
+  }
+
+  if (!is(rprocess,"rprocPlugin")) {
+    stop(ep,sQuote("rprocess"),
+      " must be specified using one of the plugins:\n",
+      sQuote("onestep.sim"),", ",sQuote("discrete.time.sim"),
+      ", ",sQuote("euler.sim"),", ",sQuote("gillespie.sim"),
+      ", or ",sQuote("gillespie.hl.sim"),".",call.=FALSE)
+  }
+
+  if (!is(skeleton,"skelPlugin")) {
+    stop(ep,sQuote("skeleton")," must be specified using either ",
+      sQuote("map")," or ",sQuote("vectorfield"),".",call.=FALSE)
+  }
+
+  if (!is(partrans,"partransPlugin")) {
+    stop(ep,sQuote("partrans")," must be specified using ",
+      sQuote("parameter_trans"),".",call.=FALSE)
   }
 
   if (missing(statenames)) statenames <- NULL
@@ -431,7 +425,7 @@ pomp.internal <- function (data, times, t0, ...,
     t0 = t0,
     default.init = default.init,
     rinit = hitches$funs$rinit,
-    rprocess = plugin(
+    rprocess = rproc_plugin(
       rprocess,
       step.fn=hitches$funs$step.fn,
       rate.fn=hitches$funs$rate.fn
@@ -439,7 +433,7 @@ pomp.internal <- function (data, times, t0, ...,
     dprocess = hitches$funs$dprocess,
     dmeasure = hitches$funs$dmeasure,
     rmeasure = hitches$funs$rmeasure,
-    skeleton = plugin(
+    skeleton = skel_plugin(
       skeleton,
       skel.fn=hitches$funs$skeleton
     ),

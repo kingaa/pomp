@@ -3,10 +3,11 @@
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files
-- blowflies2 is wonky
 - `show` methods for plugins
-- separate skeleton and rprocess plugin types?
 - covariates provided using a constructor function
+- ~~separate skeleton and rprocess plugin types?~~
+- typedefs in 'pomp_defines.h'
+- new `parameter_trans` arguments: `log`, `logit`, `log.barycentric`
 
 ## For pomp 2:
 

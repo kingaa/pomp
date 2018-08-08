@@ -1,79 +1,63 @@
 setClass(
-  "pompPlugin",
+  "rprocPlugin",
   slots=c(
     csnippet='logical',
     slotname='character',
     type='integer',
     step.fn="ANY",
-    rate.fn="ANY",
-    skel.fn="ANY"
+    rate.fn="ANY"
   ),
   prototype=prototype(
     csnippet=FALSE,
     slotname=character(0),
     type=0L,
     step.fn=NULL,
-    rate.fn=NULL,
-    skel.fn=NULL
+    rate.fn=NULL
   )
 )
 
 setClass(
-  "onestepRprocessPlugin",
-  contains="pompPlugin"
+  "onestepRprocPlugin",
+  contains="rprocPlugin"
 )
 
 setClass(
-  "discreteRprocessPlugin",
-  contains="pompPlugin",
+  "discreteRprocPlugin",
+  contains="rprocPlugin",
   slots=c(
     delta.t="numeric"
   )
 )
 
 setClass(
-  "eulerRprocessPlugin",
-  contains="pompPlugin",
+  "eulerRprocPlugin",
+  contains="rprocPlugin",
   slots=c(
     delta.t="numeric"
   )
 )
 
 setClass(
-  "gillespieRprocessPlugin",
-  contains="pompPlugin",
+  "gillespieRprocPlugin",
+  contains="rprocPlugin",
   slots=c(
     hmax="numeric",
     v="matrix"
   )
 )
 
-setClass(
-  "vectorfieldPlugin",
-  contains="pompPlugin"
-)
-
-setClass(
-  "mapPlugin",
-  contains="pompPlugin",
-  slots=c(
-    delta.t="numeric"
-  )
-)
-
-plugin <- function (object, step.fn, rate.fn, skel.fn) {
+rproc_plugin <- function (object, step.fn, rate.fn) {
   if (missing(object)) {
-    new("pompPlugin")
+    new("rprocPlugin")
   } else {
     if (!missing(step.fn)) object@step.fn <- step.fn
     if (!missing(rate.fn)) object@rate.fn <- rate.fn
-    if (!missing(skel.fn)) object@skel.fn <- skel.fn
     object
   }
 }
 
 onestep.sim <- function (step.fun) {
-  new("onestepRprocessPlugin",
+  new("onestepRprocPlugin",
     step.fn=step.fun,
     slotname="step.fun",
     csnippet=is(step.fun,"Csnippet"),
@@ -81,7 +65,7 @@ onestep.sim <- function (step.fun) {
 }
 
 discrete.time.sim <- function (step.fun, delta.t = 1) {
-  new("discreteRprocessPlugin",
+  new("discreteRprocPlugin",
     step.fn=step.fun,
     delta.t=delta.t,
     slotname="step.fun",
@@ -90,7 +74,7 @@ discrete.time.sim <- function (step.fun, delta.t = 1) {
 }
 
 euler.sim <- function (step.fun, delta.t) {
-  new("eulerRprocessPlugin",
+  new("eulerRprocPlugin",
     step.fn=step.fun,
     delta.t=delta.t,
     slotname="step.fun",
@@ -112,7 +96,7 @@ gillespie.sim <- function (rate.fun, v, d, hmax = Inf) {
     stop(ep,"duplicates in rownames of ",sQuote("v"), call.=FALSE)
   }
 
-  new("gillespieRprocessPlugin",
+  new("gillespieRprocPlugin",
     rate.fn=rate.fun,
     v=v,
     hmax=hmax,
@@ -187,55 +171,11 @@ gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
     stop(ep,"redundant or conflicting stoichiometry.",call.=FALSE)
   }
 
-  new("gillespieRprocessPlugin",
+  new("gillespieRprocPlugin",
     rate.fn=rate.fn,
     v=v,
     hmax=hmax,
     slotname="rate.fun",
     csnippet=TRUE,
     type=4L)
-}
-
-vectorfield <- function (f) {
-  new("vectorfieldPlugin",skel.fn=f,type=1L)
-}
-
-map <- function (f, delta.t = 1) {
-  if (!isTRUE(delta.t > 0 && length(delta.t)==1))
-    stop("in ",sQuote("map"),": ",sQuote("delta.t"),
-      " must be a positive number.",call.=FALSE)
-  new("mapPlugin",skel.fn=f,delta.t=delta.t,type=2L)
-}
-
-
-setClass(
-  "partrans_funs",
-  slots=c(
-    has="logical",
-    to="ANY",
-    from="ANY"
-  ),
-  prototype=prototype(
-    has=FALSE,
-    to=NULL,
-    from=NULL
-  )
-)
-
-parameter_trans <- function (toEst, fromEst) {
-
-  ep <- paste0("in ",sQuote("parameter_trans"),": ")
-
-  ## if one transformation is supplied, then both must be
-  c1 <- missing(toEst) || is.null(toEst)
-  c2 <- missing(fromEst) || is.null(fromEst)
-
-  if (xor(c1,c2)) {
-    stop(ep,"if one of ",sQuote("toEst"),", ",sQuote("fromEst"),
-      " is supplied, then so must the other be.",call.=FALSE)
-  } else if (c1 || (is(toEst,"pomp_fun") && toEst@mode == -1L)) {
-    new("partrans_funs",has=FALSE)
-  } else {
-    new("partrans_funs",has=TRUE,to=toEst,from=fromEst)
-  }
 }
