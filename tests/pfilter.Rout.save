@@ -166,7 +166,7 @@ sigma.3:            2
    x2.0:            4
 > 
 > set.seed(388966382L)
-> capture.output(try(pfilter(pf,Np=2,max.fail=20,verbose=TRUE)),
+> capture.output(try(pfilter(pf,Np=2,max.fail=20,verbose=TRUE,filter.mean=TRUE)),
 +   type="message") -> out
 pfilter timestep 5 of 100 finished
 pfilter timestep 10 of 100 finished
@@ -179,7 +179,7 @@ pfilter timestep 20 of 100 finished
 > pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
 > pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
-+                filter.traj=TRUE)
++   filter.traj=TRUE)
 Warning message:
 in 'pfilter': 100 filtering failures occurred. 
 > names(as(pf2,"data.frame"))

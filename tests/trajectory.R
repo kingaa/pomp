@@ -78,5 +78,6 @@ gompertz %>% trajectory() -> x
 try(gompertz %>%
     pomp(skeleton=map(function(t,x,params,...)c(3,2))) %>%
     trajectory() -> x)
+try(gompertz %>% pomp(skeleton=map(function(t,x,params,...)x,delta.t=-1)))
 
 dev.off()

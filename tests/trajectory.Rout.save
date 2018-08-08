@@ -176,6 +176,8 @@ newly created object(s):
 +     pomp(skeleton=map(function(t,x,params,...)c(3,2))) %>%
 +     trajectory() -> x)
 Error : in 'trajectory': in map iterator: user 'skeleton' returns a vector of 2 state variables but 1 are expected
+> try(gompertz %>% pomp(skeleton=map(function(t,x,params,...)x,delta.t=-1)))
+Error : in 'map': 'delta.t' must be a positive number.
 > 
 > dev.off()
 null device 

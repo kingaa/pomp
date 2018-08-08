@@ -72,7 +72,7 @@ try(pfilter(pf,dmeasure=Csnippet("error(\"ouch!\");")))
 try(pfilter(pf,dmeasure=function(y,x,t,params,log,...) -Inf))
 
 set.seed(388966382L)
-capture.output(try(pfilter(pf,Np=2,max.fail=20,verbose=TRUE)),
+capture.output(try(pfilter(pf,Np=2,max.fail=20,verbose=TRUE,filter.mean=TRUE)),
   type="message") -> out
 stopifnot(sum(grepl("filtering failure at",out))==21)
 stopifnot(grepl("too many filtering failures",tail(out,1)))
@@ -81,7 +81,7 @@ pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE,save.params=TRUE)
 pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
 pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),
-               filter.traj=TRUE)
+  filter.traj=TRUE)
 names(as(pf2,"data.frame"))
 dim(filter.traj(pf3))
 dimnames(filter.traj(pf3))

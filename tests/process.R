@@ -13,6 +13,14 @@ p["sigma.1",] <- seq(from=1,to=7,by=1)
 
 try(po %>% dprocess(x=x,times=t,params=p,log=TRUE))
 po %>% dprocess(x=x,times=t,params=p[,1:3],log=TRUE)
+try(po %>% dprocess(x=x[,,2],times=t[2],params=p[,1:3],log=FALSE))
+try(po %>% dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:2],log=FALSE))
+po %>% dprocess(x=x[,,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
+  apply(1,sum)
+try(po %>% dprocess(x=x[,1:2,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
+  apply(1,sum))
+po %>% dprocess(x=x[,1,2:5],times=t[2:5],params=p[,1:3],log=TRUE) %>%
+    apply(1,sum)
 
 po %>% rinit(params=coef(po)) -> x0
 freeze(po %>%
