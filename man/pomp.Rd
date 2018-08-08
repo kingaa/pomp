@@ -18,6 +18,15 @@
 \alias{vectorfield}
 \alias{map}
 \alias{parameter_trans}
+\alias{parameter_trans,ANY,ANY-method}
+\alias{parameter_trans,missing,missing-method}
+\alias{parameter_trans,ANY,missing-method}
+\alias{parameter_trans,missing,ANY-method}
+\alias{parameter_trans,Csnippet,Csnippet-method}
+\alias{parameter_trans,character,character-method}
+\alias{parameter_trans,function,function-method}
+\alias{parameter_trans,NULL,NULL-method}
+\alias{parameter_trans,pomp_fun,pomp_fun-method}
 \description{
   This function constructs a \sQuote{pomp} object,
   encoding a partially-observed Markov process model together with a uni- or multi-variate time series.
@@ -86,8 +95,7 @@ pomp(data, times, t0, \dots, rinit, rprocess, dprocess, rmeasure, dmeasure,
     optional parameter transformations.
     Many algorithms for parameter estimation search an unconstrained space of parameters.
     When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
-    One should supply the \code{partrans} argument via a call to \code{parameter_trans(toEst,fromEst)}.
-    Here, \code{toEst} and \code{fromEst} are transformations from the model scale to the estimation scale, and vice versa, respectively.
+    One should supply the \code{partrans} argument via a call to \code{parameter_trans(toEst,fromEst,\dots,log,logit,barycentric)}.
     See below under \dQuote{Parameter Transformations} for more details.
   }
   \item{params}{
@@ -472,7 +480,7 @@ pomp(data, times, t0, \dots, rinit, rprocess, dprocess, rmeasure, dmeasure,
   Nor are parameter transformations permitted to depend upon covariates.
 }
 \section{Parameter Transformations}{
-  When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans(toEst,fromEst)} function.
+  When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans(toEst,fromEst,\dots,log,logit,barycentric)} function.
   As with the basic model components, these should ordinarily be specified using C snippets.
   When doing so, note that:
   \enumerate{
@@ -496,6 +504,9 @@ pomp(data, times, t0, \dots, rinit, rprocess, dprocess, rmeasure, dmeasure,
     identical(coef(obj1, transform=TRUE), x)}
 
   By default, both functions are the identity transformation.
+
+  One can use the \code{log} and \code{logit} arguments of \code{parameter_trans} to name variables that should be log-transformed or logit-transformed, respectively.
+  The \code{barycentric} argument can name sets of parameters that should be log-barycentric transformed.
 }
 \section{Accumulator Variables}{
   In formulating models, one sometimes wishes to define a state variable that will accumulate some quantity over the interval between successive observations.

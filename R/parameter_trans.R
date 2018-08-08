@@ -50,8 +50,9 @@ setMethod(
     if (missing(log) && missing(logit) && missing(barycentric))
       new("partransPlugin",has=TRUE,to=toEst,from=fromEst)
     else
-      parameter_trans.internal(toEst=toEst@text,fromEst=fromEst@text,
-        log=log,logit=logit,barycentric=barycentric)
+      parameter_trans.internal(toEst=as(toEst,"character"),
+        fromEst=as(fromEst,"character"),log=log,logit=logit,
+        barycentric=barycentric)
   }
 )
 

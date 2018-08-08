@@ -5,17 +5,14 @@
 - index by concept using `\concept{}` in the help files
 - `show` methods for plugins
 - covariates provided using a constructor function
-- ~~separate skeleton and rprocess plugin types?~~
 - typedefs in 'pomp_defines.h'
-- new `parameter_trans` arguments: `log`, `logit`, `log.barycentric`
 
 ## For pomp 2:
 
 - on-the-fly modification of basic components
-- better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale
+- ~~better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale~~
 - better scheme for indicating derivatives and maps in C snippets
 - `time` variable could retain its original name?
-- ~~`initializer` -> `rinit`~~
 - perhaps `dinit`?
 - covariates:
     - piecewise constant interpolation of covariates
