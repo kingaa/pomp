@@ -25,13 +25,15 @@ traces(mfl) %>% melt() %>%
   filter(variable %in% c("sigma","K","r")) %>%
   group_by(L1,variable) %>%
   filter(value==max(value)) %>%
-  ungroup()
+  ungroup() %>%
+  as.data.frame()
 coef(mfl)
 
 mfl %>%
   traces(transform=TRUE,pars=c("r","sigma")) %>%
   melt() %>%
-  filter(iteration==50)
+  filter(iteration==50) %>%
+  as.data.frame()
 
 try(mfl %>% traces(pars="bob"))
 
@@ -58,8 +60,6 @@ try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=12))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=NA))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=c(3,2)))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=NULL))
-try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=0.1,
-  cooling.type="quick"))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=0.1,
   cooling.type="geometric",tol=-3))
 try(mif2(po,start=NULL,Nmif=1,Np=100))

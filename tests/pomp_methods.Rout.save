@@ -54,7 +54,7 @@ variable     1     2    3
    1    2    3 
 4.25 7.04 2.98 
 > try(obs(po,c("y2","z")))
-Error : in 'obs': some elements of 'vars' correspond to no observed variable
+Error : in ‘obs’: some elements of ‘vars’ correspond to no observed variable
 > 
 > states(po)
 NULL
@@ -62,7 +62,7 @@ NULL
     1     2     3 
 -1.06 -2.44 -5.57 
 > try(states(po1,"z"))
-Error : in 'states': some elements of 'vars' correspond to no state variable
+Error : in ‘states’: some elements of ‘vars’ correspond to no state variable
 > states(po1)[,1:3]
         time
 variable     1     2     3
@@ -76,35 +76,35 @@ variable     1     2     3
 > 
 > time(po) <- 1:10
 > try(time(po) <- c("bob","nancy"))
-Error : in 'time<-': 'value' must be a numeric vector
+Error : in ‘time<-’: ‘value’ must be a numeric vector
 > time(po1,t0=TRUE) <- 0:10
 > try(time(po) <- 10:0)
-Error : in 'time<-': the times specified must be an increasing sequence
+Error : in ‘time<-’: the times specified must be an increasing sequence
 > try(time(po,t0=TRUE) <- c(4,1:10))
-Error : in 'time<-': the zero-time 't0' must occur no later than the first observation
+Error : in ‘time<-’: the zero-time ‘t0’ must occur no later than the first observation
 > 
 > window(po,end=5)
-<object of class 'pomp'>
+<object of class ‘pomp’>
 > window(po,start=5)
-<object of class 'pomp'>
+<object of class ‘pomp’>
 > window(po,start=5,end=10)
-<object of class 'pomp'>
+<object of class ‘pomp’>
 > try(window(po,start=5,end=3))
-Error : in 'window': 'start' must not be later than 'end'.
+Error : in ‘window’: ‘start’ must not be later than ‘end’.
 > try(window(po,start=NA,end=3))
-Error : in 'window': 'start' and 'end' must be finite times.
+Error : in ‘window’: ‘start’ and ‘end’ must be finite times.
 > try(window(po,start=1,end=NULL))
-Error : in 'window': 'start' and 'end' must be finite times.
+Error : in ‘window’: ‘start’ and ‘end’ must be finite times.
 > 
 > timezero(po)
 [1] 0
 > timezero(po) <- -3
 > try(timezero(po) <- NA)
-Error : in 'timezero<-': the zero-time 't0' must be a single finite number
+Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number
 > try(timezero(po) <- c(1,2,3))
-Error : in 'timezero<-': the zero-time 't0' must be a single finite number
+Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number
 > try(timezero(po) <- 20)
-Error : in 'timezero<-': the zero-time 't0' must occur no later than the first observation
+Error : in ‘timezero<-’: the zero-time ‘t0’ must occur no later than the first observation
 > 
 > coef(po)
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
@@ -113,12 +113,12 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 alpha.3     tau 
     0.3     1.0 
 > try(coef(po,c("alpha.3","z")))
-Error : in 'coef': name(s) 'z' correspond to no parameter(s)
+Error : in ‘coef’: name(s) ‘z’ correspond to no parameter(s)
 > 
 > coef(po,"alpha.3") <- 4
 > coef(po,"z") <- 9
 Warning message:
-in 'coef<-': name(s) 'z' do not refer to existing parameter(s); they are being concatenated 
+in ‘coef<-’: name(s) ‘z’ do not refer to existing parameter(s); they are being concatenated 
 > coef(po)
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
     0.8    -0.5     4.0     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
@@ -146,11 +146,11 @@ newly created object(s):
   1.0   0.1   1.0   0.1   1.0 
 > coef(po,c("r","K")) <- c(a=1,b=2)
 Warning message:
-in 'coef<-':  names of 'value' are being discarded 
+in ‘coef<-’:  names of ‘value’ are being discarded 
 > coef(po,transform=TRUE) <- c(r=1,K=1)
 > coef(po) <- NULL
 > try(coef(po,transform=FALSE) <- c(5,3))
-Error : in 'coef<-': 'value' must be a named vector
+Error : in ‘coef<-’: ‘value’ must be a named vector
 > try(coef(po,transform=TRUE) <- c(5,3))
 Error : in 'partrans': user transformation functions must return a named numeric vector
 > coef(po,transform=TRUE) <- c(r=1,K=1)
@@ -161,7 +161,7 @@ Error : in 'partrans': user transformation functions must return a named numeric
 +   window(start=5,end=20) %>%
 +   pomp(covar=data.frame(time=0:20,q=0:20),tcovar="time",
 +   larry=3L) -> po1
-in 'pomp': the following unrecognized argument(s) will be stored for use by user-defined functions: 'larry'
+in ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘larry’
 > as(po1,"data.frame") %>% head()
   time     Y  q
 1    5 0.873  5

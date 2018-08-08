@@ -1,4 +1,4 @@
-REXE = R
+REXE = R --vanilla
 RCMD = $(REXE) CMD
 
 SAVED = $(shell ls *.Rout.save *.Rout)

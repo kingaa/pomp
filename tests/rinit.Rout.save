@@ -38,7 +38,7 @@ variable [,1]
 Error : in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
 > 
 > gompertz %>% simulate(rinit=NULL)
-<object of class 'pomp'>
+<object of class ‘pomp’>
 > 
 > gompertz %>%
 +   pomp(rinit=function (params, t0, ...) 5) -> po
@@ -69,7 +69,7 @@ Error : in 'init.state': user rinit returns vectors of non-uniform length
 newly created object(s):
  sir 
 > try(sir %>% simulate(rinit=NULL))
-Error : in 'simulate': in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
+Error : in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
 > sir %>%
 +   pomp(rinit=function(params,t0,covars,...)
 +     c(S=covars["seas1"])) %>%

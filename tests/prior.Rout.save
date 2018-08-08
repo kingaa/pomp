@@ -27,7 +27,7 @@ Type 'q()' to quit R.
 > 
 > coef(po,"alpha.sd") <- 5
 Warning message:
-in 'coef<-': name(s) 'alpha.sd' do not refer to existing parameter(s); they are being concatenated 
+in ‘coef<-’: name(s) ‘alpha.sd’ do not refer to existing parameter(s); they are being concatenated 
 > 
 > set.seed(1835425749L)
 > 

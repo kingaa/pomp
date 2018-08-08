@@ -40,7 +40,7 @@ newly created object(s):
   0.1   0.1   0.1   1.0 
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("TK = exp(K);")),
 +   paramnames="K"),theta3))
-Error : in 'parameter_trans': if one of 'toEst', 'fromEst' is supplied, then so must the other be.
+Error : in ‘parameter_trans’: if one of ‘toEst’, ‘fromEst’ is supplied, then so must the other be.
 > try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("TK = exp(K);"),
 +   to=Csnippet("TK = log(K);")),paramnames="K"),theta3))
 Error : variable 'K' not found among the parameters

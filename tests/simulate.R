@@ -131,9 +131,9 @@ try(simulate(ou2,nsim="bob"))
 
 ou2 %>% window(end=3) -> po
 simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3) %>%
-  count(sim)
+  count(sim) %>% as.data.frame()
 simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3,include.data=TRUE) %>%
-  count(sim)
+  count(sim) %>% as.data.frame()
 simulate(po,as.data.frame=TRUE,states=TRUE,seed=49569969)
 simulate(po,as.data.frame=TRUE,obs=TRUE,seed=49569969)
 simulate(po,as.data.frame=TRUE,obs=FALSE,states=FALSE,seed=49569969)

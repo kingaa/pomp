@@ -34,7 +34,7 @@ newly created object(s):
 > time(gompertz) <- 1:10
 > 
 > try(bsmc2(gompertz,Np=1000,smooth=0.01,est=c("r","K"),tol=1e-6))
-Error : in 'bsmc2': 'rprior' error: operation cannot be completed: rprior has not been specified
+Error : in ‘bsmc2’: ‘rprior’ error: operation cannot be completed: rprior has not been specified
 > 
 > smc <- bsmc2(gompertz,rprior=Csnippet("
 +               K = runif(0.1,1);
@@ -46,10 +46,10 @@ Error : in 'bsmc2': 'rprior' error: operation cannot be completed: rprior has no
 > plot(smc,y=NA)
 > plot(smc,pars=c("r","K"),thin=50)
 > try(plot(smc,pars="bob"))
-Error : in 'plot': unrecognized parameters: 'bob'
+Error : in ‘plot’: unrecognized parameters: ‘bob’
 > plot(smc,pars="K")
 > try(plot(smc,pars=NULL))
-Error : in 'plot': no parameters to plot.
+Error : in ‘plot’: no parameters to plot.
 > range(eff.sample.size(smc))
 [1] 251 743
 > logEvidence(smc)
@@ -70,69 +70,69 @@ Error : in 'plot': no parameters to plot.
 +   theme_bw()
 > 
 > try(bsmc2())
-Error : in 'bsmc2': 'object' is a required argument
+Error : in ‘bsmc2’: ‘object’ is a required argument
 > try(bsmc2(3L))
-Error : 'bsmc2' is not defined when 'object' is of class 'integer'
+Error : ‘bsmc2’ is not defined when ‘object’ is of class ‘integer’
 > 
 > po <- smc
 > coef(po) <- NULL
 > try(bsmc2(smc))
-Error : in 'bsmc2': no parameters to estimate
+Error : in ‘bsmc2’: no parameters to estimate
 > try(bsmc2(po))
-Error : in 'bsmc2': parameters must be supplied
+Error : in ‘bsmc2’: parameters must be supplied
 > try(bsmc2(po,params=NULL))
-Error : in 'bsmc2': parameters must be supplied
+Error : in ‘bsmc2’: parameters must be supplied
 > try(bsmc2(po,params="yes"))
-Error : in 'bsmc2': 'params' should be suppled as a numeric matrix with rownames or a named numeric vector.
+Error : in ‘bsmc2’: ‘params’ should be suppled as a numeric matrix with rownames or a named numeric vector.
 > try(bsmc2(po,params=list()))
-Error : in 'bsmc2': parameters must be supplied
+Error : in ‘bsmc2’: parameters must be supplied
 > try(bsmc2(po,params=c(1,2,3)))
-Error : in 'bsmc2': 'params' should be suppled as a numeric matrix with rownames or a named numeric vector.
+Error : in ‘bsmc2’: ‘params’ should be suppled as a numeric matrix with rownames or a named numeric vector.
 > theta <- coef(smc)
 > try(bsmc2(po,params=as.list(theta)))
-Error : in 'bsmc2': no parameters to estimate
+Error : in ‘bsmc2’: no parameters to estimate
 > try(bsmc2(po,params=as.list(theta),est="bob"))
-Error : in 'bsmc2': parameter(s) 'bob' not found.
+Error : in ‘bsmc2’: parameter(s) ‘bob’ not found.
 > try(bsmc2(po,params=as.list(theta),est="r"))
-Error : in 'bsmc2': in 'rmvnorm': infinite or missing values in 'x'
+Error : in ‘bsmc2’: in ‘rmvnorm’: infinite or missing values in 'x'
 > pp <- parmat(theta,100)
 > capture.output(invisible(bsmc2(po,params=pp,est="r",Np=1,verbose=TRUE))) -> out
 Warning message:
-in 'bsmc2': 'Np' is ignored when 'params' is a matrix 
+in ‘bsmc2’: ‘Np’ is ignored when ‘params’ is a matrix 
 > stopifnot(sum(grepl("prior.mean",out))==10)
 > try(bsmc2(po,params=pp,est="r",smooth=2))
-Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > try(bsmc2(po,params=pp,est="r",smooth=NA))
-Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > try(bsmc2(po,params=pp,est="r",smooth=NULL))
-Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > try(bsmc2(po,params=pp,est="r",smooth=list(3)))
-Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > try(bsmc2(po,params=pp,est="r",smooth=c(0.1,0.5)))
-Error : in 'bsmc2': 'smooth' must be a scalar in (0,1]
+Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > rownames(pp) <- NULL
 > try(bsmc2(po,params=pp,est="r"))
-Error : in 'bsmc2': 'params' should be suppled as a numeric matrix with rownames or a named numeric vector.
+Error : in ‘bsmc2’: ‘params’ should be suppled as a numeric matrix with rownames or a named numeric vector.
 > try(bsmc2(smc,Np=-10,est="r"))
-Error : in 'bsmc2': 'Np' must be a positive integer.
+Error : in ‘bsmc2’: ‘Np’ must be a positive integer.
 > try(bsmc2(smc,est="r",Np=100,tol=c(3,5)))
-Error : in 'bsmc2': 'tol' should be a small positive number.
+Error : in ‘bsmc2’: ‘tol’ should be a small positive number.
 > try(bsmc2(smc,est="r",Np=100,max.fail=-1,tol=10))
-Error : in 'bsmc2': too many filtering failures
+Error : in ‘bsmc2’: too many filtering failures
 > bsmc2(smc,est="r",Np=100,max.fail=Inf,tol=10)
-<object of class 'bsmcd_pomp'>
+<object of class ‘bsmcd_pomp’>
 Warning message:
-in 'bsmc2': 10 filtering failures occurred. 
+in ‘bsmc2’: 10 filtering failures occurred. 
 > try(bsmc2(smc,params=theta,est="r",Np=100,
 +           dmeasure=Csnippet("error(\"whoa nelly!\");")))
-Error : in 'bsmc2': in 'dmeasure': whoa nelly!
+Error : in ‘bsmc2’: in ‘dmeasure’: whoa nelly!
 > 
 > theta <- coef(gompertz)
 > theta["K"] <- 1
 > try(capture.output(bsmc2(po,Np=2,params=theta,tol=1,max.fail=1,verbose=TRUE)) -> out)
 filtering failure at time t = 2
 filtering failure at time t = 3
-Error : in 'bsmc2': too many filtering failures
+Error : in ‘bsmc2’: too many filtering failures
 > 
 > dev.off()
 null device 

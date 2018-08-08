@@ -39,36 +39,36 @@ newly created object(s):
 > 
 > try(dmeasure(x=x,y=y,times=t,params=theta))
 Error in (function (classes, fdef, mtable)  : 
-  unable to find an inherited method for function 'dmeasure' for signature '"missing"'
+  unable to find an inherited method for function ‘dmeasure’ for signature ‘"missing"’
 > try(dmeasure(x,y=y,times=t,params=theta))
 Error in (function (classes, fdef, mtable)  : 
-  unable to find an inherited method for function 'dmeasure' for signature '"array"'
+  unable to find an inherited method for function ‘dmeasure’ for signature ‘"array"’
 > try(dmeasure(po,x=x,y=y,times=t))
-Error : in 'dmeasure': argument "params" is missing, with no default
+Error : in ‘dmeasure’: argument "params" is missing, with no default
 > try(dmeasure(po,x=x,y=y,params=theta))
-Error : in 'dmeasure': argument "times" is missing, with no default
+Error : in ‘dmeasure’: argument "times" is missing, with no default
 > try(dmeasure(po,x=x,times=t,params=theta))
-Error : in 'dmeasure': argument "y" is missing, with no default
+Error : in ‘dmeasure’: argument "y" is missing, with no default
 > try(dmeasure(po,y=y,times=t,params=theta))
-Error : in 'dmeasure': argument "x" is missing, with no default
+Error : in ‘dmeasure’: argument "x" is missing, with no default
 > try(dmeasure(po,x=as.numeric(x),y=y,times=t,params=theta))
-Error : in 'dmeasure': length of 'times' and 3rd dimension of 'x' do not agree
+Error : in ‘dmeasure’: length of 'times' and 3rd dimension of 'x' do not agree
 > try(dmeasure(po,x=x,y=as.numeric(y),times=t,params=theta))
-Error : in 'dmeasure': length of 'times' and 2nd dimension of 'y' do not agree
+Error : in ‘dmeasure’: length of 'times' and 2nd dimension of 'y' do not agree
 > try(dmeasure(po,x=x,y=y,times=NULL,params=theta))
-Error : in 'dmeasure': length('times') = 0, no work to do
+Error : in ‘dmeasure’: length('times') = 0, no work to do
 > try(dmeasure(po,x=x[,,1],y=y[,1,drop=FALSE],times=t[1],params=theta))
-Error : in 'dmeasure': length of 'times' and 3rd dimension of 'x' do not agree
+Error : in ‘dmeasure’: length of 'times' and 3rd dimension of 'x' do not agree
 > invisible(dmeasure(po,x=x[,,1,drop=FALSE],y=y[,1],times=t[1],params=theta))
 > stopifnot(all.equal(dmeasure(po,x=x[,1,,drop=FALSE],y=y,times=t,params=theta),
 +                     dmeasure(po,x=x[,1,],y=y,times=t,params=theta)))
 > try(dmeasure(po,x=x,y=y[1,,drop=FALSE],times=t,params=theta))
-Error : in 'dmeasure': variable 'y2' not found among the observables
+Error : in ‘dmeasure’: variable 'y2' not found among the observables
 > try(dmeasure(po,x=x[1,,,drop=FALSE],y=y,times=t,params=theta))
-Error : in 'dmeasure': variable 'x2' not found among the state variables
+Error : in ‘dmeasure’: variable 'x2' not found among the state variables
 > k <- which(names(theta)=="tau")
 > try(dmeasure(po,x=x,y=y,times=t,params=theta[-k]))
-Error : in 'dmeasure': variable 'tau' not found among the parameters
+Error : in ‘dmeasure’: variable 'tau' not found among the parameters
 > 
 > xx <- x
 > xx[] <- as.integer(round(x))
@@ -84,13 +84,13 @@ Error : in 'dmeasure': variable 'tau' not found among the parameters
 > 
 > try(dmeasure(pomp(po,dmeasure=function(y,x,t,params,log,...)c(3,2,1)),
 +              x=x,y=y,times=t,params=theta,log=TRUE))
-Error : in 'dmeasure': user 'dmeasure' returns a vector of length 3 when it should return a scalar
+Error : in ‘dmeasure’: user 'dmeasure' returns a vector of length 3 when it should return a scalar
 > 
 > pp <- parmat(theta,10)
 > dmeasure(po,params=pp,x=x,y=y,t=t,log=TRUE) -> ll
 > stopifnot(all.equal(ll[1:5,],ll[6:10,]))
 > try(dmeasure(po,params=pp[,1:7],x=x,y=y,t=t,log=TRUE))
-Error : in 'dmeasure': larger number of replicates is not a multiple of smaller
+Error : in ‘dmeasure’: larger number of replicates is not a multiple of smaller
 > 
 > pompExample(dacca)
 newly created object(s):

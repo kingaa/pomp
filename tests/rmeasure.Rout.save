@@ -39,34 +39,34 @@ newly created object(s):
 > 
 > try(rmeasure(x=x,times=t,params=theta))
 Error in (function (classes, fdef, mtable)  : 
-  unable to find an inherited method for function 'rmeasure' for signature '"missing"'
+  unable to find an inherited method for function ‘rmeasure’ for signature ‘"missing"’
 > try(rmeasure(po,x=x,times=t))
-Error : in 'rmeasure': argument "params" is missing, with no default
+Error : in ‘rmeasure’: argument "params" is missing, with no default
 > try(rmeasure(po,x=x,params=theta))
-Error : in 'rmeasure': argument "times" is missing, with no default
+Error : in ‘rmeasure’: argument "times" is missing, with no default
 > try(rmeasure(po,times=t,params=theta))
-Error : in 'rmeasure': argument "x" is missing, with no default
+Error : in ‘rmeasure’: argument "x" is missing, with no default
 > try(rmeasure(po,x=as.numeric(x),y=y,times=t,params=theta))
-Error : in 'rmeasure': length of 'times' and 3rd dimension of 'x' do not agree.
+Error : in ‘rmeasure’: length of 'times' and 3rd dimension of 'x' do not agree.
 > try(rmeasure(po,x=x,times=NULL,params=theta))
-Error : in 'rmeasure': length('times') = 0, no work to do.
+Error : in ‘rmeasure’: length('times') = 0, no work to do.
 > try(rmeasure(po,x=x[,,1],times=t[1],params=theta))
-Error : in 'rmeasure': length of 'times' and 3rd dimension of 'x' do not agree.
+Error : in ‘rmeasure’: length of 'times' and 3rd dimension of 'x' do not agree.
 > invisible(rmeasure(po,x=x[,,1,drop=FALSE],times=t[1],params=theta))
 > freeze(rmeasure(po,x=x[,1,],times=t,params=theta),seed=349596L) -> y1
 > freeze(rmeasure(po,x=x[,1,,drop=FALSE],times=t,params=theta),seed=349596L) -> y2
 > stopifnot(all.equal(as.numeric(y1),as.numeric(y2)))
 > try(rmeasure(po,x=x[1,,,drop=FALSE],times=t,params=theta))
-Error : in 'rmeasure': variable 'x2' not found among the state variables
+Error : in ‘rmeasure’: variable 'x2' not found among the state variables
 > k <- which(names(theta)=="tau")
 > try(rmeasure(po,x=x,y=y,times=t,params=theta[-k]))
-Error : in 'rmeasure': variable 'tau' not found among the parameters
+Error : in ‘rmeasure’: variable 'tau' not found among the parameters
 > try(rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(3,3)),
 +   x=x,y=y,times=t,params=theta))
-Error : in 'rmeasure': 'rmeasure' must return a named numeric vector.
+Error : in ‘rmeasure’: 'rmeasure' must return a named numeric vector.
 > try(rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c()),
 +   x=x,y=y,times=t,params=theta))
-Error : in 'rmeasure': zero-length result.
+Error : in ‘rmeasure’: zero-length result.
 > 
 > rmeasure(pomp(po,rmeasure=function(y,x,t,params,log,...)c(y2=3,y1=3)),
 +   x=x,y=y,times=t,params=theta) -> z
@@ -74,7 +74,7 @@ Error : in 'rmeasure': zero-length result.
 > 
 > try(rmeasure(pomp(po,rmeasure=function(x,t,params,...)c(3,2,1)),
 +   x=x,y=y,times=t,params=theta))
-Error : in 'rmeasure': 'rmeasure' must return a named numeric vector.
+Error : in ‘rmeasure’: 'rmeasure' must return a named numeric vector.
 > 
 > rmeasure(pomp(po,rmeasure=function(x,t,params,...)c(a=3,b=2,c=1)),
 +   x=x,y=y,times=t,params=theta) -> z
@@ -85,7 +85,7 @@ Error : in 'rmeasure': 'rmeasure' must return a named numeric vector.
 > pp <- parmat(theta,10)
 > rmeasure(po,params=pp,x=x,y=y,t=t) -> y
 > try(rmeasure(po,params=pp[,1:7],x=x,t=t))
-Error : in 'rmeasure': larger number of replicates is not a multiple of smaller.
+Error : in ‘rmeasure’: larger number of replicates is not a multiple of smaller.
 > 
 > pompExample(dacca)
 newly created object(s):

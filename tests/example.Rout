@@ -138,22 +138,22 @@ examples in /userdata/kingaa/projects/Rpkg/library/pomp/examples:
 > names(pompExample(ricker,envir=NULL))
 [1] "ricker"
 Warning message:
-in 'pompExample': using '/userdata/kingaa/projects/Rpkg/library/pomp/examples/ricker.R' from '/userdata/kingaa/projects/Rpkg/library/pomp/examples' 
+in ‘pompExample’: using ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples/ricker.R’ from ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples’ 
 > 
 > try(pompExample(bob))
-Error : in 'pompExample': cannot find file 'bob.R'
+Error : in ‘pompExample’: cannot find file ‘bob.R’
 > 
 > e <- new.env()
 > pompExample(ricker,envir=e)
 newly created object(s):
  ricker 
 Warning message:
-in 'pompExample': using '/userdata/kingaa/projects/Rpkg/library/pomp/examples/ricker.R' from '/userdata/kingaa/projects/Rpkg/library/pomp/examples' 
+in ‘pompExample’: using ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples/ricker.R’ from ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples’ 
 > ls(envir=e)
 [1] "ricker"
 > 
 > try(pompExample(gompertz,envir="bob"))
-Error : in 'pompExample': 'envir' must be an environment or NULL
+Error : in ‘pompExample’: ‘envir’ must be an environment or NULL
 In addition: Warning message:
-in 'pompExample': using '/userdata/kingaa/projects/Rpkg/library/pomp/examples/gompertz.R' from '/userdata/kingaa/projects/Rpkg/library/pomp/examples' 
+in ‘pompExample’: using ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples/gompertz.R’ from ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples’ 
 > 

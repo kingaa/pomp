@@ -50,7 +50,7 @@ newly created object(s):
 |1  | 0.978| 0.127|  0.904|  0.172| -0.296|   0.774|   0.671|   0.483| 0.803| 1.14|sim  |
 |2  | 1.017| 0.109|  1.084|  0.338| -0.166|   0.550|   0.399|   0.278| 0.865| 1.23|sim  |
 Warning message:
-'values' is deprecated and will be removed in a forthcoming release.  Please use 'probevals' or 'as.data.frame' instead. 
+‘values’ is deprecated and will be removed in a forthcoming release.  Please use ‘probevals’ or ‘as.data.frame’ instead. 
 > pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
 
 
@@ -81,26 +81,26 @@ $synth.loglik
 > stopifnot(all.equal(logLik(pb),17.17,tolerance=0.005))
 > 
 > try(probe(po,nsim=10))
-Error : in 'probe': 'probes' must be furnished.
+Error : in ‘probe’: ‘probes’ must be furnished.
 > try(probe(po,probes=plist[1:3]))
-Error : in 'probe': 'nsim' must be specified.
+Error : in ‘probe’: ‘nsim’ must be specified.
 > try(probe(po,probes=plist[1:3],nsim=-100))
-Error : in 'probe': number of simulations, 'nsim', must be a single positive integer.
+Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
 > try(probe(po,probes=plist[1:3],nsim=c(10,20)))
-Error : in 'probe': number of simulations, 'nsim', must be a single positive integer.
+Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
 > try(probe(po,probes=plist[1:3],nsim=NA))
-Error : in 'probe': number of simulations, 'nsim', must be a single positive integer.
+Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
 > 
 > try(probe(33L))
-Error : 'probe' is not defined when 'object' is of class 'integer'
+Error : ‘probe’ is not defined when ‘object’ is of class ‘integer’
 > invisible(probe(pb))
 > plot(probe(pb,probes=plist[[1]]))
 > try(probe(pb,probes="okay"))
-Error : in 'probe': 'probes' must be a function or a list of functions.
+Error : in ‘probe’: ‘probes’ must be a function or a list of functions.
 > try(probe(pb,probes=function(x,y)x+y))
-Error : in 'probe': each probe must be a function of a single argument.
+Error : in ‘probe’: each probe must be a function of a single argument.
 > try(probe(pb,probes=function(x)stop("hold on now!")))
-Error : in 'probe': applying probes to actual data: hold on now!
+Error : in ‘probe’: applying probes to actual data: hold on now!
 > try({
 +   count <- 0
 +   delayed.error <- function (y) {
@@ -110,17 +110,17 @@ Error : in 'probe': applying probes to actual data: hold on now!
 +   }
 +   probe(pb,probes=delayed.error)
 + })
-Error : in 'probe': applying probes to simulated data: whoa nelly!
+Error : in ‘probe’: applying probes to simulated data: whoa nelly!
 > try(probe(pb,nsim=10))
-Error : in 'probe': 'nsim' (=10), should be (much) larger than the number of probes (=10).
+Error : in ‘probe’: ‘nsim’ (=10), should be (much) larger than the number of probes (=10).
 > 
 > invisible(probe(pb,params=as.list(coef(pb))))
 > try(probe(pb,params=NULL))
-Error : in 'probe': 'params' must be specified.
+Error : in ‘probe’: ‘params’ must be specified.
 > try(probe(pb,params="I think so"))
-Error : in 'probe': 'params' must be furnished as a named numeric vector.
+Error : in ‘probe’: ‘params’ must be furnished as a named numeric vector.
 > try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
-Error : in 'probe': 'params' must be specified.
+Error : in ‘probe’: ‘params’ must be specified.
 > 
 > sapply(probevals(pb),colnames)
       data      sims     

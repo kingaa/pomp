@@ -24,13 +24,13 @@ Type 'q()' to quit R.
 > library(magrittr)
 > library(dplyr)
 
-Attaching package: 'dplyr'
+Attaching package: ‘dplyr’
 
-The following objects are masked from 'package:stats':
+The following objects are masked from ‘package:stats’:
 
     filter, lag
 
-The following objects are masked from 'package:base':
+The following objects are masked from ‘package:base’:
 
     intersect, setdiff, setequal, union
 
@@ -46,37 +46,37 @@ newly created object(s):
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in 'simulate': 'times' is a required argument.
+Error : in ‘simulate’: ‘times’ is a required argument.
 > try(simulate(times=1:10,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in 'simulate': 't0' is a required argument.
+Error : in ‘simulate’: ‘t0’ is a required argument.
 > try(simulate(times=c(1:5,NA,7:10),t0=0,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in 'pomp': 'times' must be specified as an increasing sequence of numbers.
+Error : in ‘pomp’: ‘times’ must be specified as an increasing sequence of numbers.
 > try(simulate(times=NULL,t0=0,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in 'pomp': 'times' must be specified as an increasing sequence of numbers.
+Error : in ‘pomp’: ‘times’ must be specified as an increasing sequence of numbers.
 > try(simulate(times=1:10,t0=NA,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in 'pomp': 't0' must be specified as a single number not greater than 'times[1]'.
+Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
 > try(simulate(times=1:10,t0=NULL,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in 'pomp': 't0' must be specified as a single number not greater than 'times[1]'.
+Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
 > 
 > simulate(times=1:100,t0=0,seed=450738202,
 +   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
@@ -88,7 +88,7 @@ Error : in 'pomp': 't0' must be specified as a single number not greater than 't
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in 'simulate': 'rprocess' is undefined.
+Error : in ‘simulate’: 'rprocess' is undefined.
 > 
 > invisible(simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
@@ -105,7 +105,7 @@ Error : in 'simulate': 'rprocess' is undefined.
 +     z <- x["z"]
 +     c(z=runif(1,z-0.5,z+0.5))
 +   }),params=c(z.0=0)))
-Error : in 'simulate': operation cannot be completed: rmeasure has not been specified
+Error : in ‘simulate’: operation cannot be completed: rmeasure has not been specified
 > 
 > invisible(simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
@@ -118,14 +118,14 @@ Error : in 'simulate': operation cannot be completed: rmeasure has not been spec
 +     z <- x["z"]
 +     c(z=runif(1,z-0.5,z+0.5))
 +   }),params=c(z.0=0),obs=TRUE))
-Error : in 'simulate': operation cannot be completed: rmeasure has not been specified
+Error : in ‘simulate’: operation cannot be completed: rmeasure has not been specified
 > 
 > try(simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
 +   rmeasure=function(t,x,params,...) c(w=rnorm(n=t,x["z"],1)),
 +   rinit=Csnippet("z = 2;"),
 +   statenames="z"))
-Error : in 'simulate': 'rmeasure' returns variable-length results.
+Error : in ‘simulate’: 'rmeasure' returns variable-length results.
 > 
 > simulate(times=1:100,t0=0,seed=993523767,
 +   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
@@ -169,32 +169,28 @@ Error : in 'simulate': 'rmeasure' returns variable-length results.
 [1] "y"
 > 
 > try(simulate(ou2,nsim=-3))
-Error : in 'simulate': 'nsim' must be a positive integer
+Error : in ‘simulate’: ‘nsim’ must be a positive integer
 > try(simulate(ou2,nsim=NA))
-Error : in 'simulate': 'nsim' must be a positive integer
+Error : in ‘simulate’: ‘nsim’ must be a positive integer
 > try(simulate(ou2,nsim=NULL))
-Error : in 'simulate': 'nsim' must be a positive integer
+Error : in ‘simulate’: ‘nsim’ must be a positive integer
 > try(simulate(ou2,nsim="bob"))
-Error : in 'simulate': 'nsim' must be a positive integer
+Error : in ‘simulate’: ‘nsim’ must be a positive integer
 > 
 > ou2 %>% window(end=3) -> po
 > simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3) %>%
-+   count(sim)
-# A tibble: 3 x 2
-  sim       n
-  <ord> <int>
-1 1         3
-2 2         3
-3 3         3
++   count(sim) %>% as.data.frame()
+  sim n
+1   1 3
+2   2 3
+3   3 3
 > simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3,include.data=TRUE) %>%
-+   count(sim)
-# A tibble: 4 x 2
-  sim       n
-  <ord> <int>
-1 data      3
-2 1         3
-3 2         3
-4 3         3
++   count(sim) %>% as.data.frame()
+   sim n
+1 data 3
+2    1 3
+3    2 3
+4    3 3
 > simulate(po,as.data.frame=TRUE,states=TRUE,seed=49569969)
        x1   x2 sim time
 1 -1.5048 6.11   1    1
@@ -224,7 +220,7 @@ Error : in 'simulate': 'nsim' must be a positive integer
 3    2 -0.486 3.18    1 -0.6614 4.80
 5    3  2.609 3.41    1  0.0843 5.75
 > simulate(po,as.data.frame=FALSE,include.data=TRUE,seed=49569969)
-<object of class 'pomp'>
+<object of class ‘pomp’>
 > simulate(po,states=TRUE) %>% rownames()
 [1] "x1" "x2"
 > simulate(po,obs=TRUE) %>% rownames()
@@ -233,13 +229,13 @@ Error : in 'simulate': 'nsim' must be a positive integer
 [1] "states" "obs"   
 > simulate(po,nsim=3) %>% show()
 [[1]]
-<object of class 'pomp'>
+<object of class ‘pomp’>
 
 [[2]]
-<object of class 'pomp'>
+<object of class ‘pomp’>
 
 [[3]]
-<object of class 'pomp'>
+<object of class ‘pomp’>
 
 > 
 > data.frame(u=1:10,v=runif(10)) %>%

@@ -22,46 +22,42 @@ Type 'q()' to quit R.
 > library(pomp)
 > library(dplyr)
 
-Attaching package: 'dplyr'
+Attaching package: ‘dplyr’
 
-The following objects are masked from 'package:stats':
+The following objects are masked from ‘package:stats’:
 
     filter, lag
 
-The following objects are masked from 'package:base':
+The following objects are masked from ‘package:base’:
 
     intersect, setdiff, setequal, union
 
 > 
 > ## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.
 > x <- sliceDesign(center=c(A=3,B=8,C=0),B=seq(0,10,by=1))
-> x %>% count(slice)
-# A tibble: 1 x 2
-  slice     n
-  <fct> <int>
-1 B        11
+> x %>% count(slice) %>% as.data.frame()
+  slice  n
+1     B 11
 > plot(x)
 > 
 > ## Two slices through the same point along the A and C directions.
 > x <- sliceDesign(c(A=3,B=8,C=0),A=seq(0,5,by=1),C=seq(0,5,length=11))
-> x %>% count(slice)
-# A tibble: 2 x 2
-  slice     n
-  <fct> <int>
-1 A         6
-2 C        11
+> x %>% count(slice) %>% as.data.frame()
+  slice  n
+1     A  6
+2     C 11
 > plot(x)
 > 
 > try(x <- sliceDesign(center=c(A=3,C=0),B=seq(0,10,by=1)))
-Error : in 'sliceDesign': variable 'B' does not appear in 'center'
+Error : in ‘sliceDesign’: variable ‘B’ does not appear in ‘center’
 > try(x <- sliceDesign(center=c(A=3),B=seq(0,10,by=1),C=c(1,2,3)))
-Error : in 'sliceDesign': variables 'B','C' do not appear in 'center'
+Error : in ‘sliceDesign’: variables ‘B’,‘C’ do not appear in ‘center’
 > try(x <- sliceDesign(center=c(3),B=seq(0,10,by=1),C=c(1,2,3)))
-Error : in 'sliceDesign': 'center' must be a named numeric vector
+Error : in ‘sliceDesign’: ‘center’ must be a named numeric vector
 > try(x <- sliceDesign(center=c(A="3"),B=seq(0,10,by=1),C=c(1,2,3)))
-Error : in 'sliceDesign': 'center' must be a named numeric vector
+Error : in ‘sliceDesign’: ‘center’ must be a named numeric vector
 > try(x <- sliceDesign(center=c(A=3,B=2),seq(1,3),A=seq(0,5)))
-Error : in 'sliceDesign': you cannot slice along an unnamed parameter
+Error : in ‘sliceDesign’: you cannot slice along an unnamed parameter
 > 
 > dev.off()
 null device 

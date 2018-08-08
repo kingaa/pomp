@@ -5,12 +5,12 @@ library(dplyr)
 
 ## A single 11-point slice through the point c(A=3,B=8,C=0) along the B direction.
 x <- sliceDesign(center=c(A=3,B=8,C=0),B=seq(0,10,by=1))
-x %>% count(slice)
+x %>% count(slice) %>% as.data.frame()
 plot(x)
 
 ## Two slices through the same point along the A and C directions.
 x <- sliceDesign(c(A=3,B=8,C=0),A=seq(0,5,by=1),C=seq(0,5,length=11))
-x %>% count(slice)
+x %>% count(slice) %>% as.data.frame()
 plot(x)
 
 try(x <- sliceDesign(center=c(A=3,C=0),B=seq(0,10,by=1)))
