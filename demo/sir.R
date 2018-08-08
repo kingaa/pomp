@@ -3,22 +3,22 @@ library(pomp)
 ## negative binomial measurement model
 ## E[cases|incid] = rho*incid
 ## Var[cases|incid] = rho*incid*(1+rho*incid/theta)
-rmeas <- '
+rmeas <- "
   cases = rnbinom_mu(theta,rho*incid);
-'
+"
 
 ## three basis functions
-globals <- '
+globals <- "
   static int nbasis = 3;
-'
+"
 
 ## SIR process model with extra-demographic stochasticity
 ## and seasonal transmission
-step.fun <- '
+step.fun <- "
   double rate[6];		// transition rates
-  double trans[6];		// transition numbers
+  double trans[6];	// transition numbers
   double beta;			// transmission rate
-  double dW;			// white noise increment
+  double dW;		    // white noise increment
   int k;
 
   // seasonality in transmission
@@ -32,7 +32,7 @@ step.fun <- '
   rate[0] = mu*popsize;		// birth into susceptible class
   rate[1] = (iota+beta*I*dW/dt)/popsize; // force of infection
   rate[2] = mu;			// death from susceptible class
-  rate[3] = gamma;		// recovery
+  rate[3] = gamma;	// recovery
   rate[4] = mu;			// death from infectious class
   rate[5] = mu; 		// death from recovered class
 
@@ -48,9 +48,9 @@ step.fun <- '
   R += trans[3]-trans[5];
   incid += trans[3];	// incidence is cumulative recoveries
   if (beta_sd > 0.0) W += (dW-dt)/beta_sd; // increment has mean = 0, variance = dt
-'
+"
 
-skel <- '
+skel <- "
   double rate[6];		// transition rates
   double term[6];		// transition numbers
   double beta;			// transmission rate
@@ -63,7 +63,7 @@ skel <- '
   rate[0] = mu*popsize;		// birth into susceptible class
   rate[1] = (iota+beta*I)/popsize; // force of infection
   rate[2] = mu;			// death from susceptible class
-  rate[3] = gamma;		// recovery
+  rate[3] = gamma;	// recovery
   rate[4] = mu;			// death from infectious class
   rate[5] = mu; 		// death from recovered class
 
@@ -81,36 +81,6 @@ skel <- '
   DR = term[3]-term[5];
   Dincid = term[3];		// accumulate the new I->R transitions
   DW = 0;
-'
-
-## parameter transformations
-## note we use barycentric coordinates for the initial conditions
-## the success of this depends on S0, I0, R0 being in
-## adjacent memory locations, in that order
-toEst <- "
-  int k;
-  Tgamma = log(gamma);
-  Tmu = log(mu);
-  Tiota = log(iota);
-  for (k = 0; k < nbasis; k++)
-    (&Tbeta1)[k] = log((&beta1)[k]);
-  Tbeta_sd = log(beta_sd);
-  Trho = logit(rho);
-  Ttheta = log(theta);
-  to_log_barycentric(&TS_0,&S_0,3);
-"
-
-fromEst <- "
-  int k;
-  Tgamma = exp(gamma);
-  Tmu = exp(mu);
-  Tiota = exp(iota);
-  for (k = 0; k < nbasis; k++)
-    (&Tbeta1)[k] = exp((&beta1)[k]);
-  Tbeta_sd = exp(beta_sd);
-  Trho = expit(rho);
-  Ttheta = exp(theta);
-  from_log_barycentric(&TS_0,&S_0,3);
 "
 
 initlzr <- "
@@ -153,12 +123,13 @@ pomp(
   covar=covar,
   tcovar="time",
   partrans=parameter_trans(
-    toEst=Csnippet(toEst),
-    fromEst=Csnippet(fromEst)
+    log=c("gamma","mu","iota","beta_sd","theta",sprintf("beta%d",1:3)),
+    logit="rho",
+    barycentric=c("S_0","I_0","R_0")
   ),
   statenames=c("S","I","R","incid","W"),
   paramnames=c(
-    "gamma","mu","iota","beta1","beta.sd",
+    "gamma","mu","iota","beta1","beta2","beta3","beta.sd",
     "popsize","rho","theta","S.0","I.0","R.0"
   ),
   zeronames=c("incid","W"),

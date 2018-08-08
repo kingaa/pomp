@@ -86,22 +86,9 @@ pomp(
   ),
   zeronames=c("H"),
   partrans=parameter_trans(
-    toEst=Csnippet("
-      Tgamma = log(gamma);
-      TBeta = log(Beta);
-      TBeta_sd = log(Beta_sd);
-      Trho = logit(rho);
-      Tsigma = log(sigma);
-      to_log_barycentric(&TS_0,&S_0,3);"
-    ),
-    fromEst=Csnippet("
-      Tgamma = exp(gamma);
-      TBeta = exp(Beta);
-      TBeta_sd = exp(Beta_sd);
-      Trho = expit(rho);
-      Tsigma = exp(sigma);
-      from_log_barycentric(&TS_0,&S_0,3);"
-    )
+    log=c("gamma","Beta","Beta_sd","sigma"),
+    logit="rho",
+    barycentric=c("S_0","I_0","R_0")
   )
 ) -> bbs
 

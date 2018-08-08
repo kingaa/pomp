@@ -101,32 +101,6 @@ covartable <- data.frame(
   trend=tcovar-mean(tcovar)
 )
 
-to_est <- Csnippet("
-  Ttau = log(tau);
-  Tgamma = log(gamma);
-  Teps = log(eps);
-  Tdelta = log(delta);
-  TdeltaI = log(deltaI);
-  Tsd_beta = log(sd_beta);
-  Talpha = log(alpha);
-  Trho = log(rho);
-  Tclin = logit(clin);
-  to_log_barycentric(&TS_0,&S_0,nrstage+3);
-")
-
-from_est <- Csnippet("
-  Ttau = exp(tau);
-  Tgamma = exp(gamma);
-  Teps = exp(eps);
-  Tdelta = exp(delta);
-  TdeltaI = exp(deltaI);
-  Tsd_beta = exp(sd_beta);
-  Talpha = exp(alpha);
-  Trho = exp(rho);
-  Tclin = expit(clin);
-  from_log_barycentric(&TS_0,&S_0,nrstage+3);
-")
-
 rinit <- Csnippet("
   int k;
   double sum = S_0+I_0+Y_0;
@@ -263,7 +237,11 @@ pomp(
   ),
   dmeasure = norm_dmeas,
   rmeasure=norm_rmeas,
-  partrans=parameter_trans(toEst=to_est,fromEst=from_est),
+  partrans=parameter_trans(
+    log=c("tau","gamma","eps","delta","deltaI","sd_beta","alpha","rho"),
+    logit="clin",
+    barycentric=c("S_0","I_0","Y_0",sprintf("R%01d_0",1:nrstage))
+  ),
   rinit=rinit,
   covar=covartable,
   tcovar='time',

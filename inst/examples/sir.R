@@ -336,27 +336,17 @@ pomp(
       int k;
       const double *BETA = &beta1;
       double *TBETA = &Tbeta1;
-      Tgamma = exp(gamma);
-      Tmu = exp(mu);
-      Tiota = exp(iota);
-      for (k = 0; k < nbasis; k++)
-        TBETA[k] = exp(BETA[k]);
-      Tbeta_sd = exp(beta_sd);
-      Trho = expit(rho);
-      from_log_barycentric(&TS_0,&S_0,3);"
+      for (k = 0; k < nbasis; k++) TBETA[k] = exp(BETA[k]);"
     ),
     toEst=Csnippet("
       int k;
       const double *BETA = &beta1;
       double *TBETA = &Tbeta1;
-      Tgamma = log(gamma);
-      Tmu = log(mu);
-      Tiota = log(iota);
-      for (k = 0; k < nbasis; k++) TBETA[k] = log(BETA[k]);
-      Tbeta_sd = log(beta_sd);
-      Trho = logit(rho);
-      to_log_barycentric(&TS_0,&S_0,3);"
-    )
+      for (k = 0; k < nbasis; k++) TBETA[k] = log(BETA[k]);"
+    ),
+    log=c("gamma","mu","iota","beta_sd"),
+    logit="rho",
+    barycentric=c("S_0","I_0","R_0")
   ),
   statenames=c("S","I","R","cases","W"),
   paramnames=c(

@@ -901,8 +901,7 @@ pomp(
       y = rnbinom_mu(size,N1);"
   ),
   partrans=parameter_trans(
-    toEst=function(params,...) log(params),
-    fromEst=function(params,...) exp(params)
+    log=c("P","delta","N0","sigma.P","sigma.d","sigma.y")
   ),
   paramnames=c("P","N0","delta","sigma.P","sigma.d","sigma.y"),
   statenames=c("N1","R","S","e","eps"),

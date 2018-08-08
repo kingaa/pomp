@@ -76,22 +76,6 @@ skel <- "
   DX = pow(K,1-S)*pow(X,S);
 "
 
-partrans <- "
-  Tr = log(r);
-  TK = log(K);
-  Tsigma = log(sigma);
-  TX_0 = log(X_0);
-  Ttau = log(tau);
-"
-
-paruntrans <- "
-  Tr = exp(r);
-  TK = exp(K);
-  Tsigma = exp(sigma);
-  TX_0 = exp(X_0);
-  Ttau = exp(tau);
-"
-
 pomp(
   data=data.frame(t=1:100,Y=NA),
   times="t",
@@ -105,10 +89,7 @@ pomp(
     delta.t=1
   ),
   skeleton=map(Csnippet(skel),delta.t=1),
-  partrans=parameter_trans(
-    toEst=Csnippet(partrans),
-    fromEst=Csnippet(paruntrans)
-  )
+  partrans=parameter_trans(log=c("r","K","sigma","tau","X.0"))
 ) -> Gompertz
 
 ## simulate some data

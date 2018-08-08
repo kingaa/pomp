@@ -35,6 +35,8 @@ setGeneric("partrans",function(object,...)standardGeneric("partrans"))
 setGeneric("logLik",function(object,...)standardGeneric("logLik"))
 setGeneric("logEvidence",function(object,...)standardGeneric("logEvidence"))
 setGeneric("solibs<-",function(object,...,value)standardGeneric("solibs<-"))
+setGeneric("parameter_trans",
+  function(toEst, fromEst,...)standardGeneric("parameter_trans"))
 
 ## internals
 setGeneric("pomp_fun",function(f,...)standardGeneric("pomp_fun"))

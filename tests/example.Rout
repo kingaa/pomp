@@ -102,20 +102,7 @@ pomp(
         DN = exp(log(r)+log(N)-c*N);
         De = 0.0;"),
     delta.t=1),
-  partrans=parameter_trans(
-    toEst=Csnippet("
-        Tr = log(r);
-        Tsigma = log(sigma);
-        Tphi = log(phi);
-        Tc = log(c);
-        TN_0 = log(N_0);"),
-    fromEst=Csnippet("
-        Tr = exp(r);
-        Tsigma = exp(sigma);
-        Tphi = exp(phi);
-        Tc = exp(c);
-        TN_0 = exp(N_0);")
-  ),
+  partrans=parameter_trans(log=c("r","sigma","phi","c","N_0")),
   rinit=Csnippet("
         N = N_0;
         e = 0;"

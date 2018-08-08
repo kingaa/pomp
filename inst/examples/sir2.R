@@ -609,34 +609,15 @@ pomp(
   ),
   statenames=c("S","I","R","N","cases"),
   paramnames=c(
-    "gamma","mu","iota",
-    "beta1","beta.sd","pop","rho",
+    "gamma","mu","iota","pop","rho",
+    "beta1","beta2","beta3","beta.sd",
     "S_0","I_0","R_0"
   ),
   zeronames=c("cases"),
   partrans=parameter_trans(
-    fromEst=Csnippet("
-      int k;
-      const double *xbeta = &beta1;
-      double *xtbeta = &Tbeta1;
-      Tgamma = exp(gamma);
-      Tmu = exp(mu);
-      Tiota = exp(iota);
-      for (k = 0; k < nbasis; k++) xtbeta[k] = exp(xbeta[k]);
-      Tbeta_sd = exp(beta_sd);
-      Trho = expit(rho);
-      from_log_barycentric(&TS_0,&S_0,3);"),
-    toEst=Csnippet("
-      int k;
-      const double *xbeta = &beta1;
-      double *xtbeta = &Tbeta1;
-      Tgamma = log(gamma);
-      Tmu = log(mu);
-      Tiota = log(iota);
-      for (k = 0; k < nbasis; k++) xtbeta[k] = log(xbeta[k]);
-      Tbeta_sd = log(beta_sd);
-      Trho = logit(rho);
-      to_log_barycentric(&TS_0,&S_0,3);")
+    log=c("gamma","mu","iota","beta_sd",sprintf("beta%d",1:3)),
+    logit="rho",
+    barycentric=c("S_0","I_0","R_0")
   ),
   rinit=Csnippet("
     double m;

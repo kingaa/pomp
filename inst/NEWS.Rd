@@ -4,6 +4,7 @@
   \itemize{
     \item Instead of providing separate \code{fromEstimationScale} and \code{toEstimationScale} arguments to \code{pomp}, one now provides a single \code{partrans} argument constructed by means of the new function \code{parameter_trans}.
     In addition, references to \dQuote{fromEstimationScale} and \dQuote{toEstimationScale} have been abbreviated to \dQuote{fromEst} and \dQuote{toEst}, respectively, throughout the package.
+    \item The \code{parameter_trans} function now takes arguments \code{log}, \code{logit}, and \code{barycentric}, with names of parameters to be log-, logit-, and log-barycentric transformed, respectively.
     \item The \code{measurement.model} argument to \code{pomp} has been removed.
     It is now necessary to specify the measurement model directly using \code{rmeasure} and/or \code{dmeasure}.
     \item The \code{initializer} is no longer referred to by that name.
