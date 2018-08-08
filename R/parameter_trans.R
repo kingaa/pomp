@@ -124,8 +124,8 @@ parameter_trans.internal <- function (toEst, fromEst, ...,
   out2 <- textConnection(object="toEst",open="a",local=TRUE)
 
   if (length(log) > 0) {
-    tpl1 <- "\tT{%v%} = exp({%v%});\n"
-    tpl2 <- "\tT{%v%} = log({%v%});\n"
+    tpl1 <- "\t{%v%} = exp(T_{%v%});\n"
+    tpl2 <- "\tT_{%v%} = log({%v%});\n"
     for (v in log) {
       cat(file=out1,render(tpl1,v=v))
       cat(file=out2,render(tpl2,v=v))
@@ -133,8 +133,8 @@ parameter_trans.internal <- function (toEst, fromEst, ...,
   }
 
   if (length(logit) > 0) {
-    tpl1 <- "\tT{%v%} = expit({%v%});\n"
-    tpl2 <- "\tT{%v%} = logit({%v%});\n"
+    tpl1 <- "\t{%v%} = expit(T_{%v%});\n"
+    tpl2 <- "\tT_{%v%} = logit({%v%});\n"
     for (v in logit) {
       cat(file=out1,render(tpl1,v=v))
       cat(file=out2,render(tpl2,v=v))
@@ -142,8 +142,8 @@ parameter_trans.internal <- function (toEst, fromEst, ...,
   }
 
   if (length(barycentric) > 0) {
-    tpl1 <- "\tfrom_log_barycentric(&T{%v%},&{%v%},{%n%});"
-    tpl2 <- "\tto_log_barycentric(&T{%v%},&{%v%},{%n%});"
+    tpl1 <- "\tfrom_log_barycentric(&{%v%},&T_{%v%},{%n%});"
+    tpl2 <- "\tto_log_barycentric(&T_{%v%},&{%v%},{%n%});"
     for (b in barycentric) {
       cat(file=out1,render(tpl1,v=b[1],n=length(b)))
       cat(file=out2,render(tpl2,v=b[1],n=length(b)))

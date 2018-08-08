@@ -334,14 +334,14 @@ pomp(
   partrans=parameter_trans(
     fromEst=Csnippet("
       int k;
-      const double *BETA = &beta1;
-      double *TBETA = &Tbeta1;
-      for (k = 0; k < nbasis; k++) TBETA[k] = exp(BETA[k]);"
+      const double *TBETA = &T_beta1;
+      double *BETA = &beta1;
+      for (k = 0; k < nbasis; k++) BETA[k] = exp(TBETA[k]);"
     ),
     toEst=Csnippet("
       int k;
       const double *BETA = &beta1;
-      double *TBETA = &Tbeta1;
+      double *TBETA = &T_beta1;
       for (k = 0; k < nbasis; k++) TBETA[k] = log(BETA[k]);"
     ),
     log=c("gamma","mu","iota","beta_sd"),

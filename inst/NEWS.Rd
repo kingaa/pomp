@@ -4,6 +4,8 @@
   \itemize{
     \item Instead of providing separate \code{fromEstimationScale} and \code{toEstimationScale} arguments to \code{pomp}, one now provides a single \code{partrans} argument constructed by means of the new function \code{parameter_trans}.
     In addition, references to \dQuote{fromEstimationScale} and \dQuote{toEstimationScale} have been abbreviated to \dQuote{fromEst} and \dQuote{toEst}, respectively, throughout the package.
+    \item When writing C snippets for parameter transformations, the notation \code{T_p} refers to the value of \code{p} on the estimation scale.
+    Thus, if parameter \eqn{alpha} is to be log-transformed for estimation, the \code{toEst} snippet would contain the line \code{T_alpha = log(alpha);} and the \code{fromEst} snippet would include \code{alpha = exp(T_alpha);}.
     \item The \code{parameter_trans} function now takes arguments \code{log}, \code{logit}, and \code{barycentric}, with names of parameters to be log-, logit-, and log-barycentric transformed, respectively.
     \item The \code{measurement.model} argument to \code{pomp} has been removed.
     It is now necessary to specify the measurement model directly using \code{rmeasure} and/or \code{dmeasure}.

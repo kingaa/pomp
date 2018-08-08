@@ -484,9 +484,10 @@ pomp(data, times, t0, \dots, rinit, rprocess, dprocess, rmeasure, dmeasure,
   As with the basic model components, these should ordinarily be specified using C snippets.
   When doing so, note that:
   \enumerate{
-    \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \code{parameter_trans(toEst,fromEst)} argument.
-    \item The goal of these snippets is the computation of the values of the transformed parameters.
-    The value of transformed parameter \code{p} should be assigned to variable \code{Tp}.
+    \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \code{parameter_trans(toEst,fromEst)}.
+    \item The goal of these snippets is the transformation of the parameters from the natural scale to the estimation scale, and vice-versa.
+    If \code{p} is the name of a variable on the natural scale, its value on the estimation scale is \code{T_p}.
+    Thus the \code{toEst} snippet computes \code{T_p} given \code{p} whilst the \code{fromEst} snippet computes \code{p} given \code{T_p}.
     \item Time-, state-, and covariate-dependent transformations are not allowed.
     Therefore, neither the time, nor any state variables, nor any of the covariates will be available in the context within which a parameter transformation snippet is executed.
   }
@@ -537,9 +538,7 @@ pomp(data = data.frame(t = 1:100, y = NA),
      dprior = Csnippet("lik = dgamma(r,1,1,1) + dgamma(sigma,1,1,1);
                         if (!give_log) lik = exp(lik);"),
      rinit = Csnippet("n = n_0;"),
-     partrans=parameter_trans(
-        toEst = Csnippet("Tr = log(r); Tsigma = log(sigma);"),
-        fromEst = Csnippet("Tr = exp(r); Tsigma = exp(sigma);")),
+     partrans=parameter_trans(log=c("r","sigma")),
      paramnames = c("n_0", "r", "sigma","theta"),
      statenames = "n") -> rick
 

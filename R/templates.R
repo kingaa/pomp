@@ -177,7 +177,7 @@ workhorse_templates <- list(
     slotname="fromEst",
     Cname="__pomp_from_trans",
     proto=quote(from.trans(params,...)),
-    header="\nvoid __pomp_from_trans (double *__pt, const double *__p, const int *__parindex)\n{\n",
+    header="\nvoid __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)\n{\n",
     footer="\n}\n\n",
     vars=list(
       covars=list(
@@ -189,7 +189,7 @@ workhorse_templates <- list(
         cref="__p[__parindex[{%v%}]]"
       ),
       transforms=list(
-        names=quote(paste0("T",paramnames)),
+        names=quote(paste0("T_",paramnames)),
         cref="__pt[__parindex[{%v%}]]"
       )
     )
@@ -210,7 +210,7 @@ workhorse_templates <- list(
         cref="__p[__parindex[{%v%}]]"
       ),
       transforms=list(
-        names=quote(paste0("T",paramnames)),
+        names=quote(paste0("T_",paramnames)),
         cref="__pt[__parindex[{%v%}]]"
       )
     )

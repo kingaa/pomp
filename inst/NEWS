@@ -10,6 +10,13 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
           abbreviated to “fromEst” and “toEst”, respectively,
           throughout the package.
 
+        • When writing C snippets for parameter transformations, the
+          notation ‘T_p’ refers to the value of ‘p’ on the estimation
+          scale.  Thus, if parameter alpha is to be log-transformed for
+          estimation, the ‘toEst’ snippet would contain the line
+          ‘T_alpha = log(alpha);’ and the ‘fromEst’ snippet would
+          include ‘alpha = exp(T_alpha);’.
+
         • The ‘parameter_trans’ function now takes arguments ‘log’,
           ‘logit’, and ‘barycentric’, with names of parameters to be
           log-, logit-, and log-barycentric transformed, respectively.

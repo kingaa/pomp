@@ -15,10 +15,12 @@ stopifnot(all.equal(partrans(gompertz,theta3)[names(theta1)],theta1))
 
 theta3 <- theta2[-1]
 partrans(gompertz,theta3)
-try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("TK = exp(K);")),
+try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);")),
   paramnames="K"),theta3))
-try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("TK = exp(K);"),
-  to=Csnippet("TK = log(K);")),paramnames="K"),theta3))
+try(partrans(pomp(gompertz,partrans=parameter_trans(from=Csnippet("K = exp(T_K);"),
+  to=Csnippet("T_K = log(K);")),paramnames="K"),theta3))
+try(partrans(pomp(gompertz,partrans=parameter_trans(log="K"),paramnames="K"),
+  theta3))
 try(partrans(pomp(gompertz,partrans=parameter_trans(from=function(params,...)unname(params),
   to=function(params,...)unname(params))),theta3))
 
