@@ -9,12 +9,12 @@
 #include "pomp_internal.h"
 
 void eval_skeleton_native (double *f,
-                           double *time, double *x, double *p,
-                           int nvars, int npars, int ncovars, int ntimes,
-                           int nrepx, int nrepp, int nreps,
-                           int *sidx, int *pidx, int *cidx,
-                           lookup_table *covar_table,
-                           pomp_skeleton *fun, SEXP args)
+  double *time, double *x, double *p,
+  int nvars, int npars, int ncovars, int ntimes,
+  int nrepx, int nrepp, int nreps,
+  int *sidx, int *pidx, int *cidx,
+  lookup_table_t *covar_table,
+  pomp_skeleton *fun, SEXP args)
 {
   double *xp, *pp;
   double *covars = NULL;
@@ -36,12 +36,12 @@ void eval_skeleton_native (double *f,
 }
 
 void eval_skeleton_R (double *f,
-                      double *time, double *x, double *p,
-                      SEXP fcall, SEXP rho, SEXP Snames,
-                      double *tp, double *xp, double *pp, double *cp,
-                      int nvars, int npars, int ntimes,
-                      int nrepx, int nrepp, int nreps,
-                      lookup_table *covar_table)
+  double *time, double *x, double *p,
+  SEXP fcall, SEXP rho, SEXP Snames,
+  double *tp, double *xp, double *pp, double *cp,
+  int nvars, int npars, int ntimes,
+  int nrepx, int nrepp, int nreps,
+  lookup_table_t *covar_table)
 {
   int nprotect = 0;
   int first = 1;
@@ -95,7 +95,7 @@ SEXP do_skeleton (SEXP object, SEXP x, SEXP t, SEXP params, SEXP gnsi)
   SEXP Snames, Cnames, Pnames;
   SEXP pompfun;
   SEXP fn, args, F;
-  lookup_table covariate_table;
+  lookup_table_t covariate_table;
 
   PROTECT(t = AS_NUMERIC(t)); nprotect++;
   ntimes = LENGTH(t);

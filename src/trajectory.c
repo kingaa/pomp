@@ -6,11 +6,11 @@
 #include "pomp_internal.h"
 
 static void iterate_map_native (double *X, double *time, double *p,
-				double deltat, double t, double *x,
-				int ntimes, int nvars, int npars, int ncovars, int nzeros, int nreps,
-				int *sidx, int *pidx, int *cidx, int *zidx,
-				lookup_table *covar_table,
-				pomp_skeleton *ff, SEXP args)
+  double deltat, double t, double *x,
+  int ntimes, int nvars, int npars, int ncovars, int nzeros, int nreps,
+  int *sidx, int *pidx, int *cidx, int *zidx,
+  lookup_table_t *covar_table,
+  pomp_skeleton *ff, SEXP args)
 {
   double *covars = NULL;
   int nsteps;
@@ -39,11 +39,11 @@ static void iterate_map_native (double *X, double *time, double *p,
 }
 
 static void iterate_map_R (double *X, double *time, double *p,
-			   double deltat, double t, double *x,
-			   double *tp, double *xp, double *pp, double *cp,
-			   int ntimes, int nvars, int npars, int nzeros, int nreps,
-			   lookup_table *covar_table, int *zidx,
-			   SEXP Snames, SEXP fcall, SEXP rho)
+  double deltat, double t, double *x,
+  double *tp, double *xp, double *pp, double *cp,
+  int ntimes, int nvars, int npars, int nzeros, int nreps,
+  lookup_table_t *covar_table, int *zidx,
+  SEXP Snames, SEXP fcall, SEXP rho)
 {
   int nprotect = 0;
   int first = 1;
@@ -106,7 +106,7 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
   int *zidx = 0;
   int nvars, npars, nreps, ntimes, ncovars, nzeros;
   int *dim;
-  lookup_table covariate_table;
+  lookup_table_t covariate_table;
   double deltat, t;
 
   deltat = *(REAL(GET_SLOT(object,install("skelmap.delta.t"))));
@@ -225,7 +225,7 @@ static struct {
     pompfunmode mode;
     SEXP object;
     SEXP params;
-    lookup_table covar_table;
+    lookup_table_t covar_table;
     int nvars;
     int npars;
     int ncovars;

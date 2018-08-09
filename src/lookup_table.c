@@ -4,8 +4,8 @@
 
 #include "pomp_internal.h"
 
-struct lookup_table make_covariate_table (SEXP object, int *ncovar) {
-  struct lookup_table tab;
+lookup_table_t make_covariate_table (SEXP object, int *ncovar) {
+  lookup_table_t tab;
   int *dim;
   dim = INTEGER(GET_DIM(GET_SLOT(object,install("covar"))));
   tab.length = dim[0];
@@ -41,7 +41,7 @@ SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t) {
     SET_NAMES(X,GET_COLNAMES(GET_DIMNAMES(xtable)));
   }
 
-  struct lookup_table tab = {ntimes,nvar,0,REAL(ttable),REAL(xtable)};
+  lookup_table_t tab = {ntimes,nvar,0,REAL(ttable),REAL(xtable)};
   for (j = 0, tp = REAL(t), xp = REAL(X); j < nt; j++, tp++, xp += nvar)
     table_lookup(&tab,*tp,xp);
 
@@ -50,8 +50,7 @@ SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t) {
 }
 
 // linear interpolation on a lookup table
-//void table_lookup (struct lookup_table *tab, double x, double *y, double *dydt)
-void table_lookup (struct lookup_table *tab, double x, double *y)
+void table_lookup (lookup_table_t *tab, double x, double *y)
 {
   int flag = 0;
   int j, k;

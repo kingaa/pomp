@@ -8,6 +8,12 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+typedef void periodic_bspline_basis_eval_t (double x, double period, int degree, int nbasis, double *y);
+typedef void periodic_bspline_basis_eval_deriv_t (double x, double period, int degree, int nbasis, int deriv, double *y);
+typedef const SEXP get_pomp_userdata_t (const char *name);
+typedef const int *get_pomp_userdata_int_t (const char *name);
+typedef const double *get_pomp_userdata_double_t (const char *name);
+
 // UTILITY FOR GAMMA WHITENOISE
 // This function draws a random increment of a gamma whitenoise process.
 // This will have expectation=dt and variance=(sigma^2*dt)
@@ -264,15 +270,6 @@ static R_INLINE double dbetanbinom (double x, double mu, double size,
   double f = lchoose(size+x-1,size-1)-lbeta(a,b)+lbeta(a+size,b+x);
   return (give_log) ? f : exp(f);
 }
-
-// FACILITY FOR EVALUATING A SET OF PERIODIC BSPLINE BASIS FUNCTIONS
-extern void periodic_bspline_basis_eval(double x, double period, int degree, int nbasis, double *y);
-extern void periodic_bspline_basis_eval_deriv(double x, double period, int degree, int nbasis, int deriv, double *y);
-
-// FACILITIES FOR EXTRACTING R OBJECTS FROM THE 'USERDATA' SLOT
-extern const SEXP get_pomp_userdata(const char *name);
-extern const int *get_pomp_userdata_int(const char *name);
-extern const double *get_pomp_userdata_double(const char *name);
 
 // THE FOLLOWING ARE C PROTOTYPES FOR COMPONENTS OF POMP MODELS
 // FOR USE WHEN THE LATTER ARE SPECIFIED USING NATIVE CODES COMPILED INTO
