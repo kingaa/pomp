@@ -313,8 +313,7 @@ setMethod(
         cat(object@solibs[[i]]$src)
       }
     }
-    file.show(f)
-    file.remove(f)
+    file.show(f,delete.file=TRUE)
     invisible(NULL)
   }
 )
