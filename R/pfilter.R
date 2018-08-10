@@ -37,22 +37,74 @@ setClass(
   )
 )
 
+setMethod(
+  "pfilter",
+  signature=signature(object="pomp"),
+  function (object, params, Np,
+    tol = 1e-17,
+    max.fail = Inf,
+    pred.mean = FALSE,
+    pred.var = FALSE,
+    filter.mean = FALSE,
+    filter.traj = FALSE,
+    save.states = FALSE,
+    save.params = FALSE,
+    verbose = getOption("verbose"),
+    ...) {
+    if (missing(params)) params <- coef(object)
+    pfilter.internal(
+      object=object,
+      params=params,
+      Np=Np,
+      tol=tol,
+      max.fail=max.fail,
+      pred.mean=pred.mean,
+      pred.var=pred.var,
+      filter.mean=filter.mean,
+      filter.traj=filter.traj,
+      save.states=save.states,
+      save.params=save.params,
+      verbose=verbose,
+      ...
+    )
+  }
+)
+
+setMethod(
+  "pfilter",
+  signature=signature(object="pfilterd.pomp"),
+  function (object, params, Np, tol, ...) {
+    if (missing(params)) params <- coef(object)
+    if (missing(Np)) Np <- object@Np
+    if (missing(tol)) tol <- object@tol
+    f <- selectMethod("pfilter","pomp")
+    f(
+      object=object,
+      params=params,
+      Np=Np,
+      tol=tol,
+      ...
+    )
+  }
+)
+
 pfilter.internal <- function (object, params, Np,
-                              tol, max.fail,
-                              pred.mean = FALSE,
-                              pred.var = FALSE,
-                              filter.mean = FALSE,
-                              filter.traj = FALSE,
-                              cooling, cooling.m,
-                              verbose = FALSE,
-                              save.states = FALSE,
-                              save.params = FALSE,
-                              .getnativesymbolinfo = TRUE) {
+  tol, max.fail,
+  pred.mean = FALSE,
+  pred.var = FALSE,
+  filter.mean = FALSE,
+  filter.traj = FALSE,
+  cooling, cooling.m,
+  verbose = FALSE,
+  save.states = FALSE,
+  save.params = FALSE,
+  .getnativesymbolinfo = TRUE) {
 
   ep <- paste0("in ",sQuote("pfilter"),": ")
 
   object <- as(object,"pomp")
   pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   gnsi.rproc <- gnsi.dmeas <- as.logical(.getnativesymbolinfo)
   pred.mean <- as.logical(pred.mean)
@@ -83,7 +135,7 @@ pfilter.internal <- function (object, params, Np,
       vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
       error = function (e) {
         stop(ep,"if ",sQuote("Np")," is a function, ",
-             "it must return a single positive integer",call.=FALSE)
+          "it must return a single positive integer",call.=FALSE)
       }
     )
   }
@@ -118,7 +170,7 @@ pfilter.internal <- function (object, params, Np,
   x <- init.x
 
   ## set up storage for saving samples from filtering distributions
-  if (save.states | filter.traj) {
+  if (save.states || filter.traj) {
     xparticles <- setNames(vector(mode="list",length=ntimes),time(object))
   }
   if (save.params) {
@@ -201,7 +253,7 @@ pfilter.internal <- function (object, params, Np,
       ),
       error = function (e) {
         stop(ep,"process simulation error: ",
-             conditionMessage(e),call.=FALSE)
+          conditionMessage(e),call.=FALSE)
       }
     )
     gnsi.rproc <- FALSE
@@ -230,7 +282,7 @@ pfilter.internal <- function (object, params, Np,
       ),
       error = function (e) {
         stop(ep,"error in calculation of weights: ",
-             conditionMessage(e),call.=FALSE)
+          conditionMessage(e),call.=FALSE)
       }
     )
     if (!all(is.finite(weights))) {
@@ -290,7 +342,7 @@ pfilter.internal <- function (object, params, Np,
         stop(ep,"too many filtering failures",call.=FALSE)
     }
 
-    if (save.states | filter.traj) {
+    if (save.states || filter.traj) {
       xparticles[[nt]] <- x
       dimnames(xparticles[[nt]]) <- setNames(dimnames(xparticles[[nt]]),c("variable","rep"))
     }
@@ -306,13 +358,7 @@ pfilter.internal <- function (object, params, Np,
   } ## end of main loop
 
   if (filter.traj) { ## select a single trajectory
-    if (max(weights)>0) {
-      b <- sample.int(n=length(weights),size=1L,
-                      prob=weights,replace=TRUE)
-    } else {
-      b <- sample.int(n=length(weights),size=1L,
-                      replace=TRUE)
-    }
+    b <- sample.int(n=length(weights),size=1L,replace=TRUE)
     filt.t[,1L,ntimes+1] <- xparticles[[ntimes]][,b]
     for (nt in seq.int(from=ntimes-1,to=1L,by=-1L)) {
       b <- pedigree[[nt+1]][b]
@@ -339,8 +385,6 @@ pfilter.internal <- function (object, params, Np,
       call.=FALSE
     )
 
-  pompUnload(object,verbose=verbose)
-
   new(
     "pfilterd.pomp",
     object,
@@ -360,62 +404,11 @@ pfilter.internal <- function (object, params, Np,
   )
 }
 
-setMethod(
-  "pfilter",
-  signature=signature(object="pomp"),
-  function (object, params, Np,
-            tol = 1e-17,
-            max.fail = Inf,
-            pred.mean = FALSE,
-            pred.var = FALSE,
-            filter.mean = FALSE,
-            filter.traj = FALSE,
-            save.states = FALSE,
-            save.params = FALSE,
-            verbose = getOption("verbose"),
-            ...) {
-    if (missing(params)) params <- coef(object)
-    pfilter.internal(
-      object=object,
-      params=params,
-      Np=Np,
-      tol=tol,
-      max.fail=max.fail,
-      pred.mean=pred.mean,
-      pred.var=pred.var,
-      filter.mean=filter.mean,
-      filter.traj=filter.traj,
-      save.states=save.states,
-      save.params=save.params,
-      verbose=verbose,
-      ...
-    )
-  }
-)
-
-setMethod(
-  "pfilter",
-  signature=signature(object="pfilterd.pomp"),
-  function (object, params, Np, tol, ...) {
-    if (missing(params)) params <- coef(object)
-    if (missing(Np)) Np <- object@Np
-    if (missing(tol)) tol <- object@tol
-    f <- selectMethod("pfilter","pomp")
-    f(
-      object=object,
-      params=params,
-      Np=Np,
-      tol=tol,
-      ...
-    )
-  }
-)
-
 nonfinite_dmeasure_error <- function (time, lik, datvals, states, params) {
   showvals <- c(time=time,lik=lik,datvals,states,params)
   m1 <- formatC(names(showvals),preserve.width="common")
   m2 <- formatC(showvals,digits=6,width=12,format="g",
-                preserve.width="common")
+    preserve.width="common")
   paste0(
     sQuote("dmeasure")," returns non-finite value.\n",
     "likelihood, data, states, and parameters are:\n",

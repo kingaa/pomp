@@ -3,18 +3,19 @@
 #include "pomp_internal.h"
 #include <Rdefines.h>
 
-// examines weights for filtering failure
-// computes log likelihood and effective sample size
+// examines weights for filtering failure.
+// computes conditional log likelihood and effective sample size.
 // computes (if desired) prediction mean, prediction variance, filtering mean.
 // it is assumed that ncol(x) == ncol(params).
 // weights are used in filtering mean computation.
 // if length(weights) == 1, an unweighted average is computed.
-// returns all of the above in a named list
+// tracks ancestry of particles if desired.
+// returns all of the above in a named list.
 SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
-			   SEXP rw_sd,
-			   SEXP predmean, SEXP predvar,
-			   SEXP filtmean, SEXP trackancestry, SEXP onepar,
-			   SEXP weights, SEXP tol)
+  SEXP rw_sd,
+  SEXP predmean, SEXP predvar,
+  SEXP filtmean, SEXP trackancestry, SEXP onepar,
+  SEXP weights, SEXP tol)
 {
   int nprotect = 0;
   SEXP pm = R_NilValue, pv = R_NilValue, fm = R_NilValue, anc = R_NilValue;
@@ -61,7 +62,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   do_par_resamp = !do_par_resamp || do_rw; // should we do parameter resampling?
 
   if (do_par_resamp) {
-    if (dim[1] != nreps) 
+    if (dim[1] != nreps)
       errorcall(R_NilValue,"ncol('states') should be equal to ncol('params')"); // # nocov
   }
 
@@ -69,12 +70,12 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   PROTECT(loglik = NEW_NUMERIC(1)); nprotect++; // log likelihood
   PROTECT(fail = NEW_LOGICAL(1)); nprotect++;	// particle failure?
 
-  xw = REAL(weights); 
+  xw = REAL(weights);
   toler = *(REAL(tol));		// failure tolerance
 
   // check the weights and compute sum and sum of squares
   for (k = 0, w = 0, ws = 0, nlost = 0; k < nreps; k++) {
-    if (xw[k] > toler) {	
+    if (xw[k] > toler) {
       w += xw[k];
       ws += xw[k]*xw[k];
     } else {			// this particle is lost
@@ -94,7 +95,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
 
   if (do_rw) {
     // indices of parameters undergoing random walk
-    PROTECT(pindex = matchnames(Pnames,rw_names,"parameters")); nprotect++; 
+    PROTECT(pindex = matchnames(Pnames,rw_names,"parameters")); nprotect++;
     xp = REAL(params);
     pidx = INTEGER(pindex);
     lv = nvars+nrw;
@@ -137,10 +138,10 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     }
 
     // compute prediction variance
-    if (do_pv) {	
+    if (do_pv) {
       for (k = 0, sumsq = 0; k < nreps; k++) {
-	vsq = xx[j+k*nvars]-sum;
-	sumsq += vsq*vsq;
+        vsq = xx[j+k*nvars]-sum;
+        sumsq += vsq*vsq;
       }
       xpv[j] = sumsq / ((double) (nreps - 1));
     }
@@ -148,11 +149,11 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     //  compute filter mean
     if (do_fm) {
       if (all_fail) {		// unweighted average
-	for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars]; 
-	xfm[j] = ws/((double) nreps);
+        for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars];
+        xfm[j] = ws/((double) nreps);
       } else { 			// weighted average
-	for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars]*xw[k]; 
-	xfm[j] = ws/w;
+        for (k = 0, ws = 0; k < nreps; k++) ws += xx[j+k*nvars]*xw[k];
+        xfm[j] = ws/w;
       }
     }
 
@@ -164,30 +165,30 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
       offset = pidx[j];		// position of the parameter
 
       if (do_pm || do_pv) {
-	for (k = 0, sum = 0; k < nreps; k++) sum += xp[offset+k*npars];
-	sum /= ((double) nreps);
-	xpm[nvars+j] = sum;
+        for (k = 0, sum = 0; k < nreps; k++) sum += xp[offset+k*npars];
+        sum /= ((double) nreps);
+        xpm[nvars+j] = sum;
       }
 
       if (do_pv) {
-	for (k = 0, sumsq = 0; k < nreps; k++) {
-	  vsq = xp[offset+k*npars]-sum;
-	  sumsq += vsq*vsq;
-	}
-	xpv[nvars+j] = sumsq / ((double) (nreps - 1));
+        for (k = 0, sumsq = 0; k < nreps; k++) {
+          vsq = xp[offset+k*npars]-sum;
+          sumsq += vsq*vsq;
+        }
+        xpv[nvars+j] = sumsq / ((double) (nreps - 1));
       }
 
     }
 
     if (do_fm) {
       for (j = 0; j < npars; j++) {
-	if (all_fail) {		// unweighted average
-	  for (k = 0, ws = 0; k < nreps; k++) ws += xp[j+k*npars];
-	  xfm[nvars+j] = ws/((double) nreps);
-	} else {		// weighted average
-	  for (k = 0, ws = 0; k < nreps; k++) ws += xp[j+k*npars]*xw[k];
-	  xfm[nvars+j] = ws/w;
-	}
+        if (all_fail) {		// unweighted average
+          for (k = 0, ws = 0; k < nreps; k++) ws += xp[j+k*npars];
+          xfm[nvars+j] = ws/((double) nreps);
+        } else {		// weighted average
+          for (k = 0, ws = 0; k < nreps; k++) ws += xp[j+k*npars]*xw[k];
+          xfm[nvars+j] = ws/w;
+        }
       }
     }
   }
@@ -220,11 +221,11 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     // resample
     nosort_resamp(nreps,REAL(weights),np,sample,0);
     for (k = 0; k < np; k++) { // copy the particles
-      for (j = 0, xx = ss+nvars*sample[k]; j < nvars; j++, st++, xx++) 
-	*st = *xx;
+      for (j = 0, xx = ss+nvars*sample[k]; j < nvars; j++, st++, xx++)
+        *st = *xx;
       if (do_par_resamp) {
-	for (j = 0, xp = ps+npars*sample[k]; j < npars; j++, pt++, xp++) 
-	  *pt = *xp;
+        for (j = 0, xp = ps+npars*sample[k]; j < npars; j++, pt++, xp++)
+          *pt = *xp;
       }
       if (do_ta) xanc[k] = sample[k]+1;
     }
@@ -238,7 +239,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
     setrownames(x,Xnames,2);
     fixdimnames(x,dimnm,2);
 
-    if (do_ta) 
+    if (do_ta)
       for (k = 0; k < np; k++) xanc[k] = k+1;
   }
 
@@ -260,7 +261,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   SET_ELEMENT(retval,0,fail);
   SET_ELEMENT(retval,1,loglik);
   SET_ELEMENT(retval,2,ess);
-  
+
   if (all_fail) {
     SET_ELEMENT(retval,3,x);
   } else {
