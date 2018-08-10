@@ -114,11 +114,12 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
   if (is.null(.paramMatrix)) {
     if (missing(start)) start <- coef(object)
     if (is.list(start)) start <- unlist(start)
-    if (length(start)==0 || !is.numeric(start) || is.null(names(start)))
-      stop(ep,"parameters must be specified as a named numeric vector.",call.=FALSE)
   } else {  ## if '.paramMatrix' is supplied, 'start' is ignored
     start <- apply(.paramMatrix,1L,mean)
   }
+
+  if (length(start)==0 || !is.numeric(start) || is.null(names(start)))
+    stop(ep,"parameters must be specified as a named numeric vector.",call.=FALSE)
 
   ntimes <- length(time(object))
 
