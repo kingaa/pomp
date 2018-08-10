@@ -268,6 +268,7 @@ setMethod(
     nm <- deparse(substitute(object,env=parent.frame()))
     f <- tempfile()
     sink(file=f)
+    on.exit(sink(file=NULL))
     cat("==================\npomp object ",sQuote(nm),":\n\n",sep="")
     cat("-",length(object@times),"records of",
       nrow(obs(object)),
@@ -340,7 +341,6 @@ setMethod(
         cat(object@solibs[[i]]$src)
       }
     }
-    sink(file=NULL)
     file.show(f)
     file.remove(f)
     invisible(NULL)
