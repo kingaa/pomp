@@ -29,6 +29,12 @@
     \item One can now directly create a pomp by calling \code{simulate}, specifying \code{rprocess} and, optionally, \code{rmeasure}, without having to first create a dummy data frame.
   }
 }
+\section{Changes in \pkg{pomp} version 1.18.7}{
+  \itemize{
+    \item A bug in \code{pfilter} (and hence \code{pmcmc}) when \code{filter.traj=TRUE} was discovered and fixed.
+    In the buggy version, the filter trajectory was sampled with incorrect weights.
+  }
+}
 \section{Changes in \pkg{pomp} version 1.18.6}{
   \itemize{
     \item \code{show} and \code{print} methods have been made very terse:

@@ -54,6 +54,7 @@ setMethod(
 
     if (missing(params)) params <- coef(object)
     if (missing(Np)) Np <- NULL
+      
     pfilter.internal(
       object=object,
       params=params,
@@ -174,7 +175,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   x <- init.x
 
   ## set up storage for saving samples from filtering distributions
-  if (save.states | filter.traj) {
+  if (save.states || filter.traj) {
     xparticles <- setNames(vector(mode="list",length=ntimes),time(object))
   }
   if (save.params) {
@@ -345,7 +346,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
         stop(ep,"too many filtering failures",call.=FALSE)
     }
 
-    if (save.states | filter.traj) {
+    if (save.states || filter.traj) {
       xparticles[[nt]] <- x
       dimnames(xparticles[[nt]]) <- setNames(dimnames(xparticles[[nt]]),c("variable","rep"))
     }
@@ -361,13 +362,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   } ## end of main loop
 
   if (filter.traj) { ## select a single trajectory
-    if (max(weights)>0) {
-      b <- sample.int(n=length(weights),size=1L,
-        prob=weights,replace=TRUE)
-    } else {
-      b <- sample.int(n=length(weights),size=1L,
-        replace=TRUE)
-    }
+    b <- sample.int(n=length(weights),size=1L,replace=TRUE)
     filt.t[,1L,ntimes+1] <- xparticles[[ntimes]][,b]
     for (nt in seq.int(from=ntimes-1,to=1L,by=-1L)) {
       b <- pedigree[[nt+1]][b]

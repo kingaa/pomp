@@ -3,13 +3,14 @@
 #include "pomp_internal.h"
 #include <Rdefines.h>
 
-// examines weights for filtering failure
-// computes log likelihood and effective sample size
+// examines weights for filtering failure.
+// computes conditional log likelihood and effective sample size.
 // computes (if desired) prediction mean, prediction variance, filtering mean.
 // it is assumed that ncol(x) == ncol(params).
 // weights are used in filtering mean computation.
 // if length(weights) == 1, an unweighted average is computed.
-// returns all of the above in a named list
+// tracks ancestry of particles if desired.
+// returns all of the above in a named list.
 SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   SEXP predmean, SEXP predvar,
   SEXP filtmean, SEXP trackancestry, SEXP doparRS,
