@@ -130,20 +130,20 @@ setMethod(
   definition=function (object) {
     mode <- object@mode
     if (mode==pompfunmode$Rfun) { # R function
+      cat("\t\t")
       show(object@R.fun)
     } else if (mode==pompfunmode$native) { # user supplied native code
-      cat("native function ",sQuote(object@native.fun),sep="")
+      cat("\t\tnative function ",sQuote(object@native.fun),sep="")
       if (length(object@PACKAGE)>0)
         cat(", dynamically loaded from ",sQuote(object@PACKAGE),sep="")
-      cat ("\n")
+      cat("\n")
     } else if (mode==pompfunmode$regNative) { # built from C snippets
-      cat("native function ",sQuote(object@native.fun),sep="")
+      cat("\t\tnative function ",sQuote(object@native.fun),sep="")
       if (length(object@PACKAGE)>0)
-        cat(", defined by a C snippet in library ",
-          sQuote(object@PACKAGE),sep="")
-      cat ("\n")
+        cat(", defined by a C snippet in library ",sQuote(object@PACKAGE),sep="")
+      cat("\n")
     } else {
-      cat("not specified\n")
+      cat("\t\tnot specified\n")
     }
   }
 )

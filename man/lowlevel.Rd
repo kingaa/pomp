@@ -35,10 +35,20 @@
 \alias{pompUnload}
 \alias{pompUnload-pomp}
 \alias{pompUnload,pomp-method}
-\alias{show,unshowable-method}
-\alias{show,listies-method}
 \alias{print,unshowable-method}
 \alias{print,listies-method}
+\alias{show,unshowable-method}
+\alias{show,listies-method}
+\alias{show,rprocPlugin-method}
+\alias{show,onestepRprocPlugin-method}
+\alias{show,discreteRprocPlugin-method}
+\alias{show,eulerRprocPlugin-method}
+\alias{show,gillespieRprocPlugin-method}
+\alias{show,skelPlugin-method}
+\alias{show,vectorfieldPlugin-method}
+\alias{show,mapPlugin-method}
+\alias{show,partransPlugin-method}
+\alias{show,mapPlugin-method}
 \description{
   A \sQuote{pomp} object implements a partially observed Markov process (\acronym{POMP}) model.
   Basic operations on this model (with shorthand terms) include:

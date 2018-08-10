@@ -251,69 +251,55 @@ setMethod(
     nm <- deparse(substitute(object,env=parent.frame()))
     f <- tempfile()
     sink(file=f)
+    on.exit(sink(file=NULL))
     cat("==================\npomp object ",sQuote(nm),":\n\n",sep="")
-    cat("-",length(object@times),"records of",
-      nrow(obs(object)),
-      ngettext(nrow(obs(object)),"observable,","observables,"),
+    cat("- data:\n")
+    cat("  -",length(object@times),"records of",
+      nrow(object@data),
+      ngettext(nrow(object@data),"observable,","observables,"),
       "recorded from t =",
       min(object@times),"to",max(object@times),"\n")
-    cat("- zero time, t0 = ",object@t0,"\n",sep="")
-    cat("- summary of data:\n")
+    cat("  - summary of data:\n")
     print(summary(as.data.frame(t(obs(object)))))
+    cat("\n- zero time, t0 = ",object@t0,"\n",sep="")
     if (length(object@tcovar)>0) {
-      cat("-",nrow(object@covar),"records of",
+      cat("- covariates:")
+      cat("  -",nrow(object@covar),"records of",
         ncol(object@covar),"covariates,",
         "recorded from t =",min(object@tcovar),
         "to",max(object@tcovar),"\n")
-      cat("- summary of covariates:\n")
+      cat("  - summary of covariates:\n")
       print(summary(as.data.frame(object@covar)))
     }
-    if (object@rprocess@type == 0L) {
-      cat("- undefined process-model simulator\n")
-    } else if (object@rprocess@type == 4L) {
-      cat("- Gillespie-method process-model simulator, rate.fun = ")
-      show(object@rprocess@rate.fn)
+    cat("- initial state simulator, rinit:\n")
+    if (object@default.init) {
+      cat("\t\t(default initializer)\n")
     } else {
-      if (object@rprocess@type == 1L) {
-        cat("- one-step process-model simulator, step.fun = ")
-      } else if (object@rprocess@type == 2L) {
-        cat("- discrete-time process-model simulator, step.fun = ")
-      } else {
-        cat("- Euler-method process-model simulator, step.fun = ")
-      }
-      show(object@rprocess@step.fn)
+      show(object@rinit)
     }
-    cat("- process model density, dprocess = ")
+    cat("- process-model simulator, rprocess:\n")
+    show(object@rprocess)
+    cat("- process model density, dprocess:\n")
     show(object@dprocess)
-    cat("- measurement model simulator, rmeasure = ")
+    cat("- measurement model simulator, rmeasure:\n")
     show(object@rmeasure)
-    cat("- measurement model density, dmeasure = ")
+    cat("- measurement model density, dmeasure:\n")
     show(object@dmeasure)
-    cat("- prior simulator, rprior = ")
+    cat("- prior simulator, rprior:\n")
     show(object@rprior)
-    cat("- prior density, dprior = ")
+    cat("- prior density, dprior:\n")
     show(object@dprior)
-    cat("- skeleton ",
-      if (object@skeleton@type == 1L)
-        paste0("(vectorfield)")
-      else if (object@skeleton@type == 2L)
-        paste0("(map with delta.t = ",object@skeleton@delta.t,") ")
-      else "",
-      "= ",sep="")
-    show(object@skeleton@skel.fn)
-    cat("- rinit = ")
-    show(object@rinit)
+    cat("- deterministic skeleton:\n")
+    show(object@skeleton)
     if (object@partrans@has) {
-      cat("- parameter transformation (to estimation scale) = ")
-      show(object@partrans@to)
-      cat("- parameter transformation (from estimation scale) = ")
-      show(object@partrans@from)
+      cat("- parameter transformations:\n")
+      show(object@partrans)
     }
     if (length(coef(object))>0) {
-      cat("- parameter(s):\n")
+      cat("- parameter vector:\n")
       print(coef(object))
     } else {
-      cat ("- parameter(s) unspecified\n");
+      cat ("- parameter vector unspecified\n");
     }
     if (length(object@userdata)>0) {
       cat("- extra user-defined variables: ",
@@ -322,12 +308,11 @@ setMethod(
     }
     ## now display C snippets
     if (length(object@solibs) > 0) {
-      cat("- C snippet file 1:\n\n")
       for (i in seq_along(object@solibs)) {
+        cat("- C snippet file ",i,":\n\n")
         cat(object@solibs[[i]]$src)
       }
     }
-    sink(file=NULL)
     file.show(f)
     file.remove(f)
     invisible(NULL)

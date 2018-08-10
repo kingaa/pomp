@@ -46,6 +46,55 @@ setClass(
   )
 )
 
+setMethod(
+  "show",
+  signature=signature(object="rprocPlugin"),
+  definition=function (object) {
+    cat("  - undefined\n")
+  }
+)
+
+setMethod(
+  "show",
+  signature=signature(object="onestepRprocPlugin"),
+  definition=function (object) {
+    cat("  - one-step process-model simulator, step.fun:\n")
+    show(object@step.fn)
+  }
+)
+
+setMethod(
+  "show",
+  signature=signature(object="discreteRprocPlugin"),
+  definition=function (object) {
+    cat("  - discrete-time process-model simulator, step.fun:\n")
+    show(object@step.fn)
+    cat("  - time-step =",object@delta.t,"\n")
+  }
+)
+
+setMethod(
+  "show",
+  signature=signature(object="eulerRprocPlugin"),
+  definition=function (object) {
+    cat("  - Euler-method process-model simulator, step.fun:\n")
+    show(object@step.fn)
+    cat("  - time-step =",object@delta.t,"\n")
+  }
+)
+
+setMethod(
+  "show",
+  signature=signature(object="gillespieRprocPlugin"),
+  definition=function (object) {
+    cat("  - Gillespie-method process-model simulator, rate.fun:\n")
+    show(object@rate.fn)
+    cat("  - stoichiometry matrix:\n")
+    print(object@v)
+    cat("\n")
+  }
+)
+
 rproc_plugin <- function (object, step.fn, rate.fn) {
   if (missing(object)) {
     new("rprocPlugin")

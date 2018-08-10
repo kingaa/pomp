@@ -27,6 +27,33 @@ setClass(
   )
 )
 
+setMethod(
+  "show",
+  signature=signature(object="skelPlugin"),
+  definition=function (object) {
+    cat("  - undefined\n")
+  }
+)
+
+setMethod(
+  "show",
+  signature=signature(object="vectorfieldPlugin"),
+  definition=function (object) {
+    cat("  - vectorfield:\n")
+    show(object@skel.fn)
+  }
+)
+
+setMethod(
+  "show",
+  signature=signature(object="mapPlugin"),
+  definition=function (object) {
+    cat("  - map:\n")
+    show(object@skel.fn)
+    cat("  - time-step =",object@delta.t,"\n")
+  }
+)
+
 skel_plugin <- function (object, skel.fn) {
   if (missing(object)) {
     new("skelPlugin")

@@ -13,6 +13,17 @@ setClass(
 )
 
 setMethod(
+  "show",
+  signature=signature(object="partransPlugin"),
+  definition=function (object) {
+    cat("  - to estimation scale:\n")
+    show(object@to)
+    cat("  - from estimation scale:\n")
+    show(object@from)
+  }
+)
+
+setMethod(
   "parameter_trans",
   signature=signature(toEst="NULL",fromEst="NULL"),
   definition=function(toEst, fromEst, ...) {

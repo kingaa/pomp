@@ -118,6 +118,7 @@ pomp(
   rmeasure="_gompertz_normal_rmeasure",
   dmeasure="_gompertz_normal_dmeasure",
   skeleton=map("_gompertz_skeleton",delta.t=1),
+  PACKAGE="pomp",
   paramnames=c("r","K","sigma","tau"),
   statenames=c("X")
 ) -> gompertz

@@ -3,9 +3,8 @@
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files
-- `show` methods for plugins
+- ~~`show` methods for plugins~~
 - covariates provided using a constructor function
-- typedefs in 'pomp_defines.h'
 
 ## For pomp 2:
 
@@ -122,8 +121,6 @@ R/nlf_funcs.R
 R/nlf_guts.R
 R/nlf_objfun.R
 R/nlf.R
-
-R/plot_pomp.R
 
 R/sannbox.R
 
