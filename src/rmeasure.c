@@ -21,7 +21,7 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
   SEXP Y = R_NilValue;
   int *dim;
   int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
-  struct lookup_table covariate_table;
+  lookup_table_t covariate_table;
   pomp_measure_model_simulator *ff = NULL;
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;

@@ -22,7 +22,7 @@ SEXP do_dmeasure (SEXP object, SEXP y, SEXP x, SEXP times, SEXP params, SEXP log
   SEXP F;
   int *sidx = 0, *pidx = 0, *cidx = 0, *oidx = 0;
   int *dim;
-  struct lookup_table covariate_table;
+  lookup_table_t covariate_table;
   pomp_measure_model_density *ff = NULL;
 
   PROTECT(times = AS_NUMERIC(times)); nprotect++;

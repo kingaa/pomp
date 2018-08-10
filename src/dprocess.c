@@ -124,7 +124,7 @@ SEXP onestep_density (SEXP func,
   PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
 
   // set up the covariate table
-  struct lookup_table covariate_table = {covlen, ncovars, 0, REAL(tcovar), REAL(covar)};
+  lookup_table_t covariate_table = {covlen, ncovars, 0, REAL(tcovar), REAL(covar)};
 
   // vector for interpolated covariates
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;

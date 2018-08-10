@@ -65,7 +65,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   double *covars = NULL;
   const double *par;
   double y[nvar];
-  struct lookup_table tab = {lcov, mcov, 0, tcov, cov};
+  lookup_table_t tab = {lcov, mcov, 0, tcov, cov};
   int i, j;
 
   if (mcov > 0) covars = (double *) Calloc(mcov,double);

@@ -15,22 +15,25 @@
 
 typedef enum {undef=-1,Rfun=0,native=1,regNative=2} pompfunmode;
 
-extern SEXP load_stack_incr (SEXP pack);
-extern SEXP load_stack_decr (SEXP pack);
-// SEXP pomp_fun (SEXP pfun, SEXP gnsi);
-extern SEXP pomp_fun_handler (SEXP pfun, SEXP gnsi, pompfunmode *mode);
-
 // lookup-table structure, as used internally
-typedef struct lookup_table {
+typedef struct {
   int length, width;
   int index;
   double *x;
   double *y;
-} lookup_table;
+} lookup_table_t;
 
-extern struct lookup_table make_covariate_table(SEXP object, int *ncovar);
-extern SEXP lookup_in_table(SEXP ttable, SEXP xtable, SEXP t);
-extern void table_lookup(struct lookup_table *tab, double x, double *y);
+typedef SEXP pomp_fun_handler_t (SEXP pfun, SEXP gnsi, pompfunmode *mode);
+typedef SEXP load_stack_incr_t (SEXP pack);
+typedef SEXP load_stack_decr_t (SEXP pack);
+typedef lookup_table_t make_covariate_table_t (SEXP object, int *ncovar);
+typedef SEXP lookup_in_table_t (SEXP ttable, SEXP xtable, SEXP t);
+typedef void table_lookup_t (lookup_table_t *tab, double x, double *y);
+typedef SEXP apply_probe_data_t (SEXP object, SEXP probes);
+typedef SEXP apply_probe_sim_t (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval, SEXP gnsi);
+typedef SEXP systematic_resampling_t (SEXP weights);
+typedef void set_pomp_userdata_t (SEXP userdata);
+typedef void unset_pomp_userdata_t (void);
 
 static R_INLINE SEXP makearray (int rank, int *dim) {
   int *dimp, k;
