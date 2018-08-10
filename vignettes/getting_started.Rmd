@@ -52,7 +52,7 @@ registerDoMPI(cl)
 registerDoRNG(348885445L)
 ```
 ```{r prelims,echo=FALSE,cache=FALSE}
-stopifnot(packageVersion("pomp")>="1.11")
+stopifnot(packageVersion("pomp")>="1.18.7")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -465,7 +465,7 @@ parus <- pomp(parus,toEstimationScale=logtrans,
 ```
 ```{r logistic-partrans-test,include=FALSE}
 p <- c(r=1,K=200,N.0=200,sigma=0.5)
-coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
+coef(parus,transform=TRUE) <- partrans(parus,p,dir="toEst")
 stopifnot(all.equal(p,coef(parus)))
 ```
 
@@ -526,7 +526,7 @@ To obtain an estimate of the log likelihood at that (putative) MLE, we run 5 ind
 This gives us both an unbiased estimate of the log likelihood at that point and an estimate of the Monte Carlo error in that estimate.
 A useful way of displaying the results of such multi-start search is the pairwise scatterplot matrix:
 ```{r plot-mles}
-pairs(~loglik+r+K+sigma,data=mles)
+pairs(~loglik+r+K+sigma,data=subset(mles,loglik>max(loglik)-50))
 ```
 
 We can improve the quality of our estimates and obtain likelihood-ratio-test based confidence intervals by constructing *profile likelihoods*.
@@ -542,6 +542,7 @@ dim(pd)
 pairs(~r+K+sigma+N.0,data=pd)
 ```
 ```{r parus-profile2,eval=FALSE,purl=FALSE}
+library(plyr)
 foreach (p=iter(pd,"row"),
          .combine=rbind,
          .errorhandling="remove",

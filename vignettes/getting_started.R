@@ -7,7 +7,7 @@ registerDoMPI(cl)
 registerDoRNG(348885445L)
 
 ## ----prelims,echo=FALSE,cache=FALSE--------------------------------------
-stopifnot(packageVersion("pomp")>="1.11")
+stopifnot(packageVersion("pomp")>="1.18.7")
 options(
   keep.source=TRUE,
   stringsAsFactors=FALSE,
@@ -178,7 +178,7 @@ parus <- pomp(parus,toEstimationScale=logtrans,
 
 ## ----logistic-partrans-test,include=FALSE--------------------------------
 p <- c(r=1,K=200,N.0=200,sigma=0.5)
-coef(parus,transform=TRUE) <- partrans(parus,p,dir="inv")
+coef(parus,transform=TRUE) <- partrans(parus,p,dir="toEst")
 stopifnot(all.equal(p,coef(parus)))
 
 ## ----parus-traj-match----------------------------------------------------
@@ -217,7 +217,7 @@ bake(file="parus-mif.rds",{
 }) -> mles
 
 ## ----plot-mles-----------------------------------------------------------
-pairs(~loglik+r+K+sigma,data=mles)
+pairs(~loglik+r+K+sigma,data=subset(mles,loglik>max(loglik)-50))
 
 ## ----parus-profile1------------------------------------------------------
 profileDesign(
@@ -230,6 +230,7 @@ pairs(~r+K+sigma+N.0,data=pd)
 
 ## ----parus-profile-eval,include=FALSE,purl=TRUE,eval=TRUE----------------
 bake("parus-profile.rds",{
+    library(plyr)
     foreach (p=iter(pd,"row"),
              .combine=rbind,
              .errorhandling="remove",
