@@ -20,7 +20,7 @@ plotpomp.internal <- function (x, variables,
 
   X <- as(x,"data.frame")
   vars <- names(X)
-  tpos <- match("time",vars)
+  tpos <- match(x@timename,vars)
   if (missing(variables)) {
     vars <- vars[-tpos]
     vars <- setdiff(vars,colnames(x@covar))
@@ -92,6 +92,7 @@ plotpomp.internal <- function (x, variables,
     plotpomp(
       x=X[vv],
       time=X[[tpos]],
+      xlab=x@timename,
       ylab=ylabels,
       xy.labels=FALSE,
       panel=panel,

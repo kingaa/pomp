@@ -1,16 +1,17 @@
 library(pomp)
+library(magrittr)
+library(dplyr)
+library(ggplot2)
 
 ## a stochastic version of the Verhulst-Pearl logistic model
 ## this evolves in continuous time, but we approximate the
 ## stochastic dynamics using an Euler approximation
 ## (plugin 'euler.sim') with fixed step-size
 
-po <- pomp(
-  data=data.frame(
-    N=rep(0,1000),
-    t=seq(0.1,by=0.1,length=1000)),
-  times="t",
+simulate(
+  times=seq(0.1,by=0.1,length=1000),
   t0=0,
+  params=c(n_0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1),
   rprocess=euler.sim(
     step.fun=Csnippet("
         n = rnorm(n+r*n*(1-n/K)*dt,sigma*n*sqrt(dt));
@@ -28,21 +29,25 @@ po <- pomp(
   skeleton=vectorfield(Csnippet("Dn = r*n*(1-n/K);")),
   rinit=Csnippet("n = n_0;"),
   paramnames=c("r","K","tau","sigma","n_0"),
-  statenames=c("n")
-)
-
-params <- c(n_0=10000,K=10000,r=0.9,sigma=0.4,tau=0.1)
-set.seed(73658676)
-po <- simulate(po,params=params)
+  statenames=c("n"),
+  obsnames="N",
+  seed=73658676L
+) -> po
 
 params <- cbind(
   c(n_0=100,K=10000,r=0.2,sigma=0.4,tau=0.1),
-  c(n_0=1000,K=11000,r=0.1,sigma=0.4,tau=0.1)
+  c(n_0=100,K=20000,r=0.1,sigma=0.4,tau=0.1),
+  c(n_0=100,K=30000,r=0.3,sigma=0.2,tau=0.1)
 )
-traj <- trajectory(po,params=params,as.data.frame=TRUE)
-traj <- reshape(traj,dir="wide",idvar="time",timevar="traj")
-sim <- simulate(po,params=params,as.data.frame=TRUE,seed=34597368L)
-sim <- reshape(sim,dir="wide",idvar="time",timevar="sim")
-matplot(range(time(po)),range(c(traj[-1],sim[-1])),type='n',bty='l',lty=1,xlab="time",ylab="n",main="simulations vs trajectories")
-matlines(traj$time,traj[-1],type='l',bty='l',lty=1,xlab="time",ylab="n")
-matlines(sim$time,sim[c("n.1","n.2")],type='l',bty='l',lty=1,xlab="time",ylab="n")
+
+po %>% trajectory(params=params,as.data.frame=TRUE) %>%
+  rename(rep=traj) %>%
+  mutate(type="deterministic") -> traj
+po %>% simulate(params=params,as.data.frame=TRUE,seed=34597368L,states=TRUE) %>%
+  rename(rep=sim) %>%
+  mutate(type="stochastic") -> sim
+rbind(traj,sim) %>%
+  ggplot(aes(x=time,y=n,group=interaction(rep,type),color=type))+
+  geom_line()+
+  theme_bw()+
+  labs(title="Logistic model",subtitle="simulations vs. trajectories",color="")

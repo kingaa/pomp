@@ -33,24 +33,15 @@ Type 'q()' to quit R.
 
 > library(pomp)
 
-> gompertz <- pomp(data = data.frame(time = 1:100, Y = NA), 
-+     times = "time", t0 = 0, rprocess = discrete.time.sim(step.fun = function(x, 
-+      .... [TRUNCATED] 
+> library(ggplot2)
 
-> dmeas <- "\n    lik = dlnorm(Y,log(X),tau,give_log);\n"
+> library(magrittr)
 
-> rmeas <- "\n    Y = rlnorm(log(X),tau);\n"
+> gompertz <- simulate(times = 1:100, t0 = 0, params = c(K = 1, 
++     r = 0.1, sigma = 0.1, tau = 0.1, X.0 = 1), rprocess = discrete.time.sim(step.fu .... [TRUNCATED] 
 
-> step.fun <- "\n  double S = exp(-r*dt);\n  double logeps = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;\n  /* note that X is over-written by the next line  ..." ... [TRUNCATED] 
-
-> skel <- "\n  double dt = 1.0;\n  double S = exp(-r*dt);\n  /* note that X is not over-written in the skeleton function */\n  DX = pow(K,1-S)*pow(X,S ..." ... [TRUNCATED] 
-
-> Gompertz <- pomp(data = data.frame(t = 1:100, Y = NA), 
-+     times = "t", t0 = 0, paramnames = c("r", "K", "sigma", "X.0", 
-+         "tau"), state .... [TRUNCATED] 
-
-> Gompertz <- simulate(Gompertz, params = c(K = 1, r = 0.1, 
-+     sigma = 0.1, tau = 0.1, X.0 = 1))
+> Gompertz <- simulate(times = 0:100, t0 = 0, params = c(K = 1, 
++     r = 0.1, sigma = 0.1, tau = 0.1, X.0 = 1), dmeasure = Csnippet("\n    lik = dln ..." ... [TRUNCATED] 
 
 > p <- parmat(coef(Gompertz), nrep = 4)
 
@@ -63,13 +54,11 @@ Type 'q()' to quit R.
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.006981611 secs
+Time difference of 0.003841877 secs
 
-> X <- reshape(X, dir = "wide", v.names = "X", timevar = "traj", 
-+     idvar = "time")
-
-> matplot(X$time, X[-1], type = "l", lty = 1, bty = "l", 
-+     xlab = "time", ylab = "X", main = "Gompertz model\ndeterministic trajectories")
+> X %>% ggplot(aes(x = time, y = X, group = traj, color = traj)) + 
++     geom_line() + theme_bw() + labs(title = "Gompertz model", 
++     subtitle =  .... [TRUNCATED] 
 
 > tic <- Sys.time()
 
@@ -78,21 +67,11 @@ Time difference of 0.006981611 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.03663802 secs
+Time difference of 0.003856659 secs
 
-> x <- reshape(x, dir = "wide", v.names = c("Y", "X"), 
-+     timevar = "sim", idvar = "time")
-
-> op <- par(mfrow = c(2, 1), mgp = c(2, 1, 0), mar = c(3, 
-+     3, 0, 0), bty = "l")
-
-> matplot(x$time, x[c("X.1", "X.2", "X.3")], lty = 1, 
-+     type = "l", xlab = "time", ylab = "X", main = "Gompertz model\nstochastic simulations")
-
-> matplot(x$time, x[c("Y.1", "Y.2", "Y.3")], lty = 1, 
-+     type = "l", xlab = "time", ylab = "Y")
-
-> par(op)
+> x %>% ggplot(aes(x = time, y = X, group = sim, color = sim)) + 
++     geom_line() + theme_bw() + labs(title = "Gompertz model", 
++     subtitle = "s ..." ... [TRUNCATED] 
 
 > tic <- Sys.time()
 
@@ -101,63 +80,62 @@ Time difference of 0.03663802 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.5520217 secs
+Time difference of 0.3514786 secs
 
 > print(logmeanexp(sapply(pf, logLik), se = TRUE))
-                   se 
-52.9985769  0.1921968 
+                     se 
+75.25036908  0.08779528 
 
 > library(pomp)
 
-> po <- pomp(data = data.frame(N = rep(0, 1000), t = seq(0.1, 
-+     by = 0.1, length = 1000)), times = "t", t0 = 0, rprocess = euler.sim(step.fun = C .... [TRUNCATED] 
+> library(magrittr)
 
-> params <- c(n_0 = 10000, K = 10000, r = 0.9, sigma = 0.4, 
-+     tau = 0.1)
+> library(dplyr)
 
-> set.seed(73658676)
+Attaching package: ‘dplyr’
 
-> po <- simulate(po, params = params)
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+
+> library(ggplot2)
+
+> po <- simulate(times = seq(0.1, by = 0.1, length = 1000), 
++     t0 = 0, params = c(n_0 = 10000, K = 10000, r = 0.9, sigma = 0.4, 
++         tau = 0 .... [TRUNCATED] 
 
 > params <- cbind(c(n_0 = 100, K = 10000, r = 0.2, sigma = 0.4, 
-+     tau = 0.1), c(n_0 = 1000, K = 11000, r = 0.1, sigma = 0.4, 
-+     tau = 0.1))
++     tau = 0.1), c(n_0 = 100, K = 20000, r = 0.1, sigma = 0.4, 
++     tau = 0.1), c( .... [TRUNCATED] 
 
-> traj <- trajectory(po, params = params, as.data.frame = TRUE)
+> traj <- po %>% trajectory(params = params, as.data.frame = TRUE) %>% 
++     rename(rep = traj) %>% mutate(type = "deterministic")
 
-> traj <- reshape(traj, dir = "wide", idvar = "time", 
-+     timevar = "traj")
+> sim <- po %>% simulate(params = params, as.data.frame = TRUE, 
++     seed = 34597368, states = TRUE) %>% rename(rep = sim) %>% 
++     mutate(type =  .... [TRUNCATED] 
 
-> sim <- simulate(po, params = params, as.data.frame = TRUE, 
-+     seed = 34597368)
-
-> sim <- reshape(sim, dir = "wide", idvar = "time", 
-+     timevar = "sim")
-
-> matplot(range(time(po)), range(c(traj[-1], sim[-1])), 
-+     type = "n", bty = "l", lty = 1, xlab = "time", ylab = "n", 
-+     main = "simulations v ..." ... [TRUNCATED] 
-
-> matlines(traj$time, traj[-1], type = "l", bty = "l", 
-+     lty = 1, xlab = "time", ylab = "n")
-
-> matlines(sim$time, sim[c("n.1", "n.2")], type = "l", 
-+     bty = "l", lty = 1, xlab = "time", ylab = "n")
+> rbind(traj, sim) %>% ggplot(aes(x = time, y = n, group = interaction(rep, 
++     type), color = type)) + geom_line() + theme_bw() + labs(title = "Lo ..." ... [TRUNCATED] 
 
 > library(pomp)
 
-> rw2 <- pomp(rprocess = onestep.sim(step.fun = Csnippet("\n      x1 = rnorm(x1,s1*sqrt(dt));\n      x2 = rnorm(x2,s2*sqrt(dt));\n      ")), 
-+     dp .... [TRUNCATED] 
+> library(magrittr)
 
-> rw2 <- simulate(rw2, params = c(s1 = 3, s2 = 1, x1.0 = 0, 
-+     x2.0 = 1, tau = 10))
+> rw2 <- simulate(times = seq(1, 100), t0 = 0, params = c(s1 = 3, 
++     s2 = 1, x1.0 = 0, x2.0 = 1, tau = 10), rprocess = onestep.sim(step.fun = Csni .... [TRUNCATED] 
 
 > plot(rw2)
 
-> pf <- pfilter(rw2, Np = 100)
+> pf <- pfilter(rw2, Np = 1000)
 
 > logLik(pf)
-[1] -766.8304
+[1] -757.0675
 
 > plot(pf)
 
@@ -192,7 +170,7 @@ Time difference of 0.5520217 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.004277706 secs
+Time difference of 0.002586365 secs
 
 > plot(incid ~ time, data = X, type = "l")
 
@@ -203,7 +181,7 @@ Time difference of 0.004277706 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.03581047 secs
+Time difference of 0.02820539 secs
 
 > plot(incid ~ time, data = x, col = as.factor(x$sim), 
 +     pch = 16)
@@ -214,12 +192,12 @@ Time difference of 0.03581047 secs
 > tic <- Sys.time()
 
 > logLik(pfilter(po, Np = 1000))
-[1] -658.1247
+[1] -671.6956
 
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 7.836996 secs
+Time difference of 6.552425 secs
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 

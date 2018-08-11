@@ -119,7 +119,7 @@ trajectory.internal <- function (object, params, times, t0,
 
   }
 
-  dimnames(x) <- setNames(dimnames(x),c("variable","rep","time"))
+  dimnames(x) <- setNames(dimnames(x),c("variable","rep",object@timename))
 
   if (as.data.frame) {
     x <- lapply(
@@ -130,7 +130,7 @@ trajectory.internal <- function (object, params, times, t0,
         dim(y) <- dim(y)[c(1L,3L)]
         y <- as.data.frame(t(y))
         names(y) <- nm
-        y$time <- times
+        y[[object@timename]] <- times
         y$traj <- as.integer(k)
         y
       }

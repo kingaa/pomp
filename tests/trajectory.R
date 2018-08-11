@@ -19,7 +19,6 @@ pomp(
   params=c(a=0.7,b=0.8,c=2,i=0.8)
 ) -> fhn
 
-
 x <- array(c(0,1,1,2,1,1,0,-1),
   dim=c(2,2,2),
   dimnames=list(c("V","R"),NULL,NULL))

@@ -9,9 +9,12 @@
 ## For pomp 2:
 
 - on-the-fly modification of basic components
+	- OK for simulate, probe, pfilter, abc, bsmc2, pmcmc, mif2
+	- needed for probe_match, nlf, kalman, spect, spect_match
+	- not to be done for trajectory, traj_match
 - ~~better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale~~
 - better scheme for indicating derivatives and maps in C snippets
-- `time` variable could retain its original name?
+- ~~`time` variable could retain its original name?~~
 - perhaps `dinit`?
 - covariates:
     - piecewise constant interpolation of covariates

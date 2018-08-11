@@ -79,6 +79,6 @@ simulate(po$bbs,rmeasure=Csnippet("
   periodic_bspline_basis_eval(t,5,3,3,fluc);
   reports = rpois(H*fluc[2]+100*fluc[0]);"),
   statenames="H",seed=2122234848L,as.data.frame=TRUE) -> dat
-plot(dat[c("time","H","reports")])
+plot(dat[c("day","H","reports")])
 
 dev.off()

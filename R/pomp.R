@@ -56,13 +56,15 @@ setMethod(
     }
     if (is.numeric(times)) {
       tpos <- as.integer(times)
+      timename <- names(data)[tpos]
     } else if (is.character(times)) {
       tpos <- match(times,names(data))
+      timename <- times
     }
     times <- data[[tpos]]
     data <- do.call(rbind,lapply(data[-tpos],as.double))
 
-    construct_pomp(data=data,times=times,...)
+    construct_pomp(data=data,times=times,...,timename=timename)
   }
 )
 
@@ -85,7 +87,7 @@ setMethod(
   signature=signature(data="array"),
   definition = function (data, times, t0, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-    partrans, params, covar, tcovar) {
+    partrans, params, covar, tcovar, timename) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")
 
@@ -130,6 +132,7 @@ setMethod(
         data=data,
         times=times,
         t0=t0,
+        timename=timename,
         rinit=rinit,
         rprocess=rprocess,
         dprocess=dprocess,
@@ -156,7 +159,7 @@ setMethod(
   signature=signature(data="pomp"),
   definition = function (data, times, t0, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-    partrans, params, covar, tcovar, zeronames) {
+    partrans, params, covar, tcovar, zeronames, timename) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
 
@@ -167,6 +170,7 @@ setMethod(
     }
 
     if (missing(t0)) t0 <- data@t0
+    if (missing(timename)) timename <- data@timename
 
     if (missing(rinit)) rinit <- data@rinit
 
@@ -205,6 +209,7 @@ setMethod(
         data=data@data,
         times=times,
         t0=t0,
+        timename=timename,
         rinit=rinit,
         rprocess=rprocess,
         dprocess=dprocess,
@@ -229,7 +234,7 @@ setMethod(
   }
 )
 
-pomp.internal <- function (data, times, t0, ...,
+pomp.internal <- function (data, times, t0, timename, ...,
   rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
   partrans, params, covar, tcovar, zeronames, obsnames, statenames,
   paramnames, covarnames, PACKAGE, globals, cdir, cfile, shlib.args,
@@ -242,6 +247,10 @@ pomp.internal <- function (data, times, t0, ...,
     stop(ep,sQuote("times")," is a required argument.",call.=FALSE)
   if (missing(t0) || is.null(t0))
     stop(ep,sQuote("t0")," is a required argument.",call.=FALSE)
+  if (missing(timename) || is.null(timename))
+    timename <- "time"
+  else
+    timename <- as.character(timename)
 
   if (missing(.userdata)) .userdata <- list()
   added.userdata <- list(...)
@@ -423,6 +432,7 @@ pomp.internal <- function (data, times, t0, ...,
     data = data,
     times = times,
     t0 = t0,
+    timename = timename,
     default.init = default.init,
     rinit = hitches$funs$rinit,
     rprocess = rproc_plugin(

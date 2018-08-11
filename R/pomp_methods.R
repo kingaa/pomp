@@ -6,7 +6,7 @@ setAs(
   to="data.frame",
   def = function (from) {
     x <- as.data.frame(cbind(from@times,t(from@data)))
-    names(x) <- c("time",rownames(from@data))
+    names(x) <- c(from@timename,rownames(from@data))
     if (length(from@states)>0) {
       nm <- names(x)
       x <- cbind(x,t(from@states))
@@ -36,7 +36,8 @@ setMethod(
       stop("in ",sQuote("obs"),": some elements of ",
         sQuote("vars")," correspond to no observed variable",call.=FALSE)
     y <- object@data[vars,,drop=FALSE]
-    dimnames(y) <- list(variable=vars,time=time(object))
+    dimnames(y) <- setNames(list(vars,time(object)),
+      c("variable",object@timename))
     y
   }
 )
@@ -55,7 +56,8 @@ setMethod(
         stop("in ",sQuote("states"),": some elements of ",
           sQuote("vars")," correspond to no state variable",call.=FALSE)
       x <- object@states[vars,,drop=FALSE]
-      dimnames(x) <- list(variable=vars,time=time(object))
+      dimnames(x) <- setNames(list(vars,time(object)),
+        c("variable",object@timename))
       x
     }
   }

@@ -23,7 +23,7 @@ Type 'q()' to quit R.
 +                     system.file("examples",package="pomp")))
 > 
 > pompExample()
-examples in /userdata/kingaa/projects/Rpkg/library/pomp/examples:
+examples in /home/kingaa/projects/Rpkg/library/pomp/examples:
 [1] "bbs"       "blowflies" "dacca"     "gompertz"  "ou2"       "ricker"   
 [7] "rw2"       "sir"       "sir2"     
 > pompExample(ricker,show=TRUE)
@@ -116,16 +116,16 @@ c("ricker")
 > options(pomp.examples=list(getOption("pomp.examples"),
 +                            getOption("pomp.examples")))
 > pompExample()
-examples in /userdata/kingaa/projects/Rpkg/library/pomp/examples:
+examples in /home/kingaa/projects/Rpkg/library/pomp/examples:
 [1] "bbs"       "blowflies" "dacca"     "gompertz"  "ou2"       "ricker"   
 [7] "rw2"       "sir"       "sir2"     
-examples in /userdata/kingaa/projects/Rpkg/library/pomp/examples:
+examples in /home/kingaa/projects/Rpkg/library/pomp/examples:
 [1] "bbs"       "blowflies" "dacca"     "gompertz"  "ou2"       "ricker"   
 [7] "rw2"       "sir"       "sir2"     
 > names(pompExample(ricker,envir=NULL))
 [1] "ricker"
 Warning message:
-in ‘pompExample’: using ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples/ricker.R’ from ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples’ 
+in ‘pompExample’: using ‘/home/kingaa/projects/Rpkg/library/pomp/examples/ricker.R’ from ‘/home/kingaa/projects/Rpkg/library/pomp/examples’ 
 > 
 > try(pompExample(bob))
 Error : in ‘pompExample’: cannot find file ‘bob.R’
@@ -135,12 +135,12 @@ Error : in ‘pompExample’: cannot find file ‘bob.R’
 newly created object(s):
  ricker 
 Warning message:
-in ‘pompExample’: using ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples/ricker.R’ from ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples’ 
+in ‘pompExample’: using ‘/home/kingaa/projects/Rpkg/library/pomp/examples/ricker.R’ from ‘/home/kingaa/projects/Rpkg/library/pomp/examples’ 
 > ls(envir=e)
 [1] "ricker"
 > 
 > try(pompExample(gompertz,envir="bob"))
 Error : in ‘pompExample’: ‘envir’ must be an environment or NULL
 In addition: Warning message:
-in ‘pompExample’: using ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples/gompertz.R’ from ‘/userdata/kingaa/projects/Rpkg/library/pomp/examples’ 
+in ‘pompExample’: using ‘/home/kingaa/projects/Rpkg/library/pomp/examples/gompertz.R’ from ‘/home/kingaa/projects/Rpkg/library/pomp/examples’ 
 > 

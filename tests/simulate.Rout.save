@@ -245,7 +245,7 @@ Error : in ‘simulate’: ‘nsim’ must be a positive integer
 +     rinit=Csnippet("w=0;"),
 +     statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE) -> dat
 > dat %>% names()
-[1] "time" "sim"  "v"    "y"    "w"   
+[1] "u"   "sim" "v"   "y"   "w"  
 > dat %>% dim()
 [1] 20  5
 > 

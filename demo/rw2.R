@@ -1,11 +1,14 @@
 library(pomp)
+library(magrittr)
 
 ## a simple two-dimensional random walk
 ## this makes use of the 'onestep.sim' plugin
 ## which we can use since we can simulate the
 ## increment of a random walk over any time
 
-rw2 <- pomp(
+simulate(
+  times=seq(1,100), t0=0,
+  params=c(s1=3,s2=1,x1.0=0,x2.0=1,tau=10),
   rprocess = onestep.sim(
     step.fun = Csnippet("
       x1 = rnorm(x1,s1*sqrt(dt));
@@ -31,17 +34,10 @@ rw2 <- pomp(
   ),
   statenames=c("x1","x2"),
   paramnames=c("s1","s2","tau"),
-  data=data.frame(
-    t=1:100,
-    y1=rep(0,100),
-    y2=rep(0,100)
-  ),
-  times='t',
-  t0=0
-)
+  obsnames=c("y1","y2")
+) -> rw2
 
-rw2 <- simulate(rw2,params=c(s1=3,s2=1,x1.0=0,x2.0=1,tau=10))
 plot(rw2)
-pf <- pfilter(rw2,Np=100)
+pf <- pfilter(rw2,Np=1000)
 logLik(pf)
 plot(pf)

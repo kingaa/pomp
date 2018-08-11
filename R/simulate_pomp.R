@@ -55,7 +55,6 @@ setMethod(
       t0=t0,
       as.data.frame=as.data.frame,
       include.data=include.data,
-      ...,
       verbose=verbose
     )
   }
@@ -193,7 +192,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
 
     retval$sim <- ordered(retval$sim)
     if (include.data) levels(retval$sim)[1L] <- "data"
-    retval <- retval[order(retval$sim,retval$time),]
+    retval <- retval[order(retval$sim,retval[[object@timename]]),]
 
   }
 
