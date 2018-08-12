@@ -4,7 +4,6 @@
 - update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files
 - ~~`show` methods for plugins~~
-- covariates provided using a constructor function
 
 ## For pomp 2:
 
@@ -17,6 +16,7 @@
 - ~~`time` variable could retain its original name?~~
 - perhaps `dinit`?
 - covariates:
+	- covariates provided using a constructor function
     - piecewise constant interpolation of covariates
     - `covar`, `tcovar` specified as a pair using `safecall`
 - ~~parameter transformations specified as a pair~~
@@ -77,7 +77,6 @@
 tests/logistic.R
 tests/ou2.R
 tests/rw2.R
-tests/sir2.R
 
 tests/dimchecks.R
 tests/dp.R
@@ -97,8 +96,6 @@ tests/nlf.R
 tests/pomp.R
 
 tests/sannbox.R
-
-tests/spect.R
 
 tests/synlik.R
 
@@ -120,15 +117,14 @@ R/kalman.R
 
 R/minim.R
 
+R/nlf.R
+R/nlf_objfun.R
 R/nlf_funcs.R
 R/nlf_guts.R
-R/nlf_objfun.R
-R/nlf.R
 
 R/sannbox.R
 
 R/spect_match.R
-R/spect.R
 
 R/traj_match.R
 
@@ -140,7 +136,4 @@ R/traj_match.R
 
 ### demos:
 
-- gompertz.R
-- logistic.R
-- rw2.R
 - sir.R

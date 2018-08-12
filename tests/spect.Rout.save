@@ -1,0 +1,120 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> png(filename="spect-%02d.png",res=100)
+> 
+> library(pomp)
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> set.seed(362083261L)
+> 
+> sp <- spect(gompertz,kernel.width=3,nsim=100,seed=838775L)
+> summary(sp)
+$coef
+    K     r sigma   tau   X.0 
+  1.0   0.1   0.1   0.1   1.0 
+
+$nsim
+[1] 100
+
+$pvals
+    Y   all 
+0.287 0.287 
+
+> plot(sp)
+> 
+> spect(sp,kernel.width=5,seed=838775L) -> sp2
+> plot(sp2)
+> 
+> spect(sp,detrend="mean") -> sp3
+> spect(sp,detrend="linear") -> sp4
+> spect(sp,detrend="quadratic") -> sp5
+> 
+> theta <- as.list(coef(sp))
+> theta$r <- 25
+> spect(sp,params=theta) -> sp4
+> plot(sp4,quantiles=c(0.5,0.95))
+> plot(sp4,plot.data=FALSE,quantile.styles=list(col=1:5))
+> plot(sp4,plot.data=FALSE,quantile.styles=list(col="grey10",lty=1:5))
+> plot(sp4,plot.data=FALSE,quantile.styles=list(col="grey10",lty=1:3))
+Warning message:
+in ‘plot’: ‘quantile.styles’ contains an element with more than 1 entry but fewer entries than quantiles 
+> try(plot(sp4,plot.data=FALSE,quantile.styles=c(col="grey10",lty=1:3)))
+Error : in ‘plot’: ‘quantile.styles’ must be a list.
+> plot(sp4,plot.data=TRUE,data.styles=list(col="red",lty=1))
+> try(plot(sp4,plot.data=TRUE,data.styles=c(col="red",lty=1)))
+Error : in ‘plot’: ‘data.styles’ must be a list
+> 
+> try(spect(sp,kernel.width=-3))
+Error : in ‘spect’: ‘kernel.width’ must be specified as a single positive integer.
+> try(spect(sp,kernel.width=NA))
+Error : in ‘spect’: ‘kernel.width’ must be specified as a single positive integer.
+> try(spect(sp,kernel.width=NULL))
+Error : in ‘spect’: ‘kernel.width’ must be specified as a single positive integer.
+> 
+> try(spect(sp,nsim=-100))
+Error : in ‘spect’: ‘nsim’ must be specified as a positive integer.
+> try(spect(sp,nsim=Inf))
+Error : in ‘spect’: ‘nsim’ must be specified as a positive integer.
+> try(spect(sp,nsim=NULL))
+Error : in ‘spect’: ‘nsim’ must be specified as a positive integer.
+> 
+> sp4@data[17] <- NA
+> try(spect(sp4))
+Error : in ‘spect’: missing or infinite values in the data.
+> 
+> try(spect(sp3,rmeasure=function(x,t,params,...){
++   if (t==13) c(Y=NA) else c(Y=unname(x["N"]))
++ }))
+Error : in ‘spect’: missing or infinite values in simulated data.
+> 
+> time(sp3) <- c(0:7,10:40)
+> try(spect(sp3))
+Error : in ‘spect’: ‘spect’ assumes evenly spaced times.
+> 
+> try(spect(sp2,rmeasure=function(x,t,params,...) stop("yikes!")))
+Error : in ‘spect’: in ‘simulate’: yikes!
+> 
+> simulate(times=1:100,t0=0,
++   rprocess=euler.sim(Csnippet("
++        x = rnorm(0,1);
++        y = rnorm(0,1);
++        z = rnorm(0,1);"),
++     delta.t=1),
++   rmeasure=Csnippet("
++        a = rnorm(x,1);
++        b = rnorm(y,1);
++        c = rnorm(z,1);"),
++   rinit=Csnippet("x = y = z = 0;"),
++   obsnames=c("a","b","c"),
++   statenames=c("x","y","z"),
++   params=c()) -> bob
+> 
+> plot(spect(bob,kernel.width=3,nsim=500),
++   data.style=list(lwd=c(2,3),lty=2,col='red'))
+Warning message:
+in ‘plot’: ‘data.styles’contains an element with more than 1 entry but fewer entries than observed variables 
+> 
+> dev.off()
+null device 
+          1 
+> 
