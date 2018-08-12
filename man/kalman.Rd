@@ -21,6 +21,9 @@
 \alias{filter.mean-kalmand_pomp}
 \alias{cond.logLik,kalmand_pomp-method}
 \alias{cond.logLik-kalmand_pomp}
+\alias{forecast}
+\alias{forecast,kalmand_pomp-method}
+\alias{forecast-kalmand_pomp}
 \alias{as,kalmand_pomp-method}
 \alias{as.data.frame.kalmand_pomp}
 \alias{coerce,kalmand_pomp,data.frame-method}
@@ -28,14 +31,15 @@
   The ensemble Kalman filter and ensemble adjustment Kalman filter.
 }
 \usage{
-\S4method{enkf}{pomp}(object, params, Np, h, R,
-              verbose = getOption("verbose"), \dots)
-\S4method{eakf}{pomp}(object, params, Np, C, R,
-              verbose = getOption("verbose"), \dots)
+\S4method{enkf}{pomp}(object, params, Np, h, R, \dots,
+              verbose = getOption("verbose", FALSE))
+\S4method{eakf}{pomp}(object, params, Np, C, R, \dots,
+              verbose = getOption("verbose", FALSE))
 \S4method{logLik}{kalmand_pomp}(object, \dots)
 \S4method{cond.logLik}{kalmand_pomp}(object, \dots)
-\S4method{pred.mean}{kalmand_pomp}(object, pars, \dots)
-\S4method{filter.mean}{kalmand_pomp}(object, pars, \dots)
+\S4method{pred.mean}{kalmand_pomp}(object, vars, \dots)
+\S4method{filter.mean}{kalmand_pomp}(object, vars, \dots)
+\S4method{forecast}{kalmand_pomp}(object, vars, \dots)
 }
 \arguments{
   \item{object}{
@@ -60,7 +64,7 @@
   \item{R}{
     matrix; variance of the measurement noise.
   }
-  \item{pars}{Names of variables.}
+  \item{vars}{Names of variables.}
   \item{\dots}{
     additional arguments (currently ignored).
   }
@@ -86,6 +90,9 @@
     \item{filter.mean}{
       Extract the mean of the filtering distribution, which is that of \deqn{X_t \vert y_1,\dots,y_t,}{X_t | y_1,\dots,y_t,} where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively, at time \eqn{t}.
     }
+    \item{forecast}{
+      Extract the mean of the forecasting distribution, which is that of \deqn{Y_t \vert y_1,\dots,y_{t-1},}{Y_t | y_1,\dots,y_{t-1},}.
+    }
   }
 }
 \author{Aaron A. King}
@@ -107,4 +114,3 @@
   Monthly Weather Review 129:2884--2903
 }
 \keyword{ts}
-\keyword{internals}

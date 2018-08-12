@@ -89,8 +89,6 @@ tests/gillespie2.R
 tests/gillespie.R
 tests/issue56.R
 
-tests/kalman.R
-
 tests/nlf.R
 
 tests/pomp.R
@@ -111,9 +109,6 @@ R/pomp.R
 
 R/basic_probes.R
 R/probe_match.R
-
-R/kalman_methods.R
-R/kalman.R
 
 R/minim.R
 

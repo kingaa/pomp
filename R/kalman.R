@@ -36,27 +36,96 @@ setClass(
 setMethod(
   "enkf",
   signature=signature(object="pomp"),
-  function (object, params, Np, h, R,
-            verbose = getOption("verbose"),
-            ...) {
-    if (missing(params)) params <- coef(object)
-    if (is.list(params)) params <- unlist(params)
+  function (object, params, Np, h, R, ...,
+    verbose = getOption("verbose", FALSE)) {
+
     enkf.internal(
       object=object,
       params=params,
       h=h,
       R=R,
       Np=Np,
-      verbose=verbose,
-      ...
+      ...,
+      verbose=verbose
+    )
+
+  }
+)
+
+## ENSEMBLE ADJUSTMENT KALMAN FILTER (EAKF)
+
+## Ensemble: $X_t\in \mathbb{R}^{m\times q}$
+## Prediction mean: $M_t=\langle X \rangle$ (ensemble average).
+## Prediction variance: $V_t=\langle\langle X \rangle\rangle$ (ensemble variance).
+## SVD of prediction variance: $V = Q_{V}\,D_{V}\,Q_{V}^T$
+## Another SVD: $U=D_V^{1/2}\,Q_V^T\,C^T\,R^{-1}\,C\,Q_V\,D_V^{1/2}=Q_U\,D_U\,Q_U^T$
+## Adjustment: $B=Q_V\,D_V^{1/2}\,Q_U\,(I+D_U)^{-1/2}\,D_V^{-1/2}\,Q_V^T$
+## Kalman gain: $K=B\,V\,B^T\,C^T\,R^{-1}$
+## Filter mean: $m_t=M_t+K_t\,(y_t-C\,M_t)$
+## Updated ensemble: $x_{t}=B\,(X_t-M_t\,\mathbb{1})+m_t\,\mathbb{1}$
+
+setMethod(
+  "eakf",
+  signature=signature(object="pomp"),
+  function (object, params, Np, C, R, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    eakf.internal(
+      object=object,
+      params=params,
+      C=C,
+      R=R,
+      Np=Np,
+      ...,
+      verbose=verbose
     )
   }
 )
 
-enkf.internal <- function (object, params, h, R, Np, verbose) {
+setMethod(
+  "eakf",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("eakf"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "eakf",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("eakf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "enkf",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("enkf"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "enkf",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("enkf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
+)
+
+enkf.internal <- function (object, params, h, R, Np, ..., verbose) {
+
+  ep <- paste0("in ",sQuote("enkf"),": ")
+
   Np <- as.integer(Np)
   R <- as.matrix(R)
   verbose <- as.logical(verbose)
+
+  object <- pomp(object,...)
+
+  if (missing(params)) params <- coef(object)
+  if (is.list(params)) params <- unlist(params)
 
   t <- time(object)
   tt <- time(object,t0=TRUE)
@@ -77,8 +146,7 @@ enkf.internal <- function (object, params, h, R, Np, verbose) {
   sqrtR <- tryCatch(
     t(chol(R)),                     # t(sqrtR)%*%sqrtR == R
     error = function (e) {
-      stop("in ",sQuote("enkf"),": degenerate ",sQuote("R"),
-           ": ",conditionMessage(e),call.=FALSE)
+      stop(ep,"degenerate ",sQuote("R"),": ",conditionMessage(e),call.=FALSE)
     }
   )
 
@@ -110,49 +178,25 @@ enkf.internal <- function (object, params, h, R, Np, verbose) {
   }
 
   new("kalmand_pomp",object,Np=Np,
-      filter.mean=filterMeans,
-      pred.mean=predMeans,
-      forecast=forecast,
-      cond.loglik=condlogLik,
-      loglik=sum(condlogLik))
+    filter.mean=filterMeans,
+    pred.mean=predMeans,
+    forecast=forecast,
+    cond.loglik=condlogLik,
+    loglik=sum(condlogLik))
 }
 
-## ENSEMBLE ADJUSTMENT KALMAN FILTER (EAKF)
+eakf.internal <- function (object, params, C, R, Np, ..., verbose) {
 
-## Ensemble: $X_t\in \mathbb{R}^{m\times q}$
-## Prediction mean: $M_t=\langle X \rangle$ (ensemble average).
-## Prediction variance: $V_t=\langle\langle X \rangle\rangle$ (ensemble variance).
-## SVD of prediction variance: $V = Q_{V}\,D_{V}\,Q_{V}^T$
-## Another SVD: $U=D_V^{1/2}\,Q_V^T\,C^T\,R^{-1}\,C\,Q_V\,D_V^{1/2}=Q_U\,D_U\,Q_U^T$
-## Adjustment: $B=Q_V\,D_V^{1/2}\,Q_U\,(I+D_U)^{-1/2}\,D_V^{-1/2}\,Q_V^T$
-## Kalman gain: $K=B\,V\,B^T\,C^T\,R^{-1}$
-## Filter mean: $m_t=M_t+K_t\,(y_t-C\,M_t)$
-## Updated ensemble: $x_{t}=B\,(X_t-M_t\,\mathbb{1})+m_t\,\mathbb{1}$
+  ep <- paste0("in ",sQuote("eakf"),": ")
 
-setMethod(
-  "eakf",
-  signature=signature(object="pomp"),
-  function (object, params, Np, C, R,
-            verbose = getOption("verbose"),
-            ...) {
-    if (missing(params)) params <- coef(object)
-    if (is.list(params)) params <- unlist(params)
-    eakf.internal(
-      object=object,
-      params=params,
-      C=C,
-      R=R,
-      Np=Np,
-      verbose=verbose,
-      ...
-    )
-  }
-)
-
-eakf.internal <- function (object, params, C, R, Np, verbose) {
   Np <- as.integer(Np)
   R <- as.matrix(R)
   verbose <- as.logical(verbose)
+
+  object <- pomp(object,...)
+
+  if (missing(params)) params <- coef(object)
+  if (is.list(params)) params <- unlist(params)
 
   t <- time(object)
   tt <- time(object,t0=TRUE)
@@ -165,16 +209,17 @@ eakf.internal <- function (object, params, C, R, Np, verbose) {
   ntimes <- length(t)
   nobs <- nrow(y)
 
-  filterMeans <- array(dim=c(nvar,ntimes),dimnames=list(variable=rownames(X),time=t))
-  predMeans <- array(dim=c(nvar,ntimes),dimnames=list(variable=rownames(X),time=t))
+  filterMeans <- array(dim=c(nvar,ntimes),
+    dimnames=list(variable=rownames(X),time=t))
+  predMeans <- array(dim=c(nvar,ntimes),
+    dimnames=list(variable=rownames(X),time=t))
   forecast <- array(dim=c(nobs,ntimes),dimnames=dimnames(y))
   condlogLik <- numeric(ntimes)
 
   ri <- tryCatch(
     solve(R),
     error = function (e) {
-      stop("in ",sQuote("eakf"),": degenerate ",sQuote("R"),
-           ": ",conditionMessage(e),call.=FALSE)
+      stop(ep,"degenerate ",sQuote("R"),": ",conditionMessage(e),call.=FALSE)
     }
   )
 
@@ -196,7 +241,8 @@ eakf.internal <- function (object, params, C, R, Np, verbose) {
     w <- crossprod(ww,svdV$d*ww)+R  # forecast variance
     svdW <- svd(w,nv=0)
 
-    condlogLik[k] <- sum(dnorm(x=crossprod(svdW$u,resid),mean=0,sd=sqrt(svdW$d),log=TRUE))
+    condlogLik[k] <- sum(dnorm(x=crossprod(svdW$u,resid),mean=0,
+      sd=sqrt(svdW$d),log=TRUE))
 
     u <- sqrt(svdV$d)*ww
     u <- tcrossprod(u%*%ri,u)
@@ -214,11 +260,11 @@ eakf.internal <- function (object, params, C, R, Np, verbose) {
   }
 
   new("kalmand_pomp",object,Np=Np,
-      filter.mean=filterMeans,
-      pred.mean=predMeans,
-      forecast=forecast,
-      cond.loglik=condlogLik,
-      loglik=sum(condlogLik))
+    filter.mean=filterMeans,
+    pred.mean=predMeans,
+    forecast=forecast,
+    cond.loglik=condlogLik,
+    loglik=sum(condlogLik))
 }
 
 ## Basic Kalman filter. Currently for internal consumption only.
@@ -227,7 +273,7 @@ kalmanFilter <- function (t, y, X0, A, Q, C, R) {
   nvar <- length(X0)
   nobs <- nrow(y)
   filterMeans <- array(dim=c(nvar,N),
-                       dimnames=list(variable=names(X0),time=NULL))
+    dimnames=list(variable=names(X0),time=NULL))
   predMeans <- filterMeans
   forecast <- array(dim=c(nobs,N),dimnames=dimnames(y))
   condlogLik <- numeric(N)
@@ -242,7 +288,8 @@ kalmanFilter <- function (t, y, X0, A, Q, C, R) {
     resid <- y[,k]-C%*%pm              # forecast error
     w <- tcrossprod(C%*%pv,C)+R        # forecast variance
     svdW <- svd(w,nv=0)
-    condlogLik[k] <- sum(dnorm(x=crossprod(svdW$u,resid),mean=0,sd=sqrt(svdW$d),log=TRUE))
+    condlogLik[k] <- sum(dnorm(x=crossprod(svdW$u,resid),mean=0,
+      sd=sqrt(svdW$d),log=TRUE))
     pvi <- svdV$u%*%(t(svdV$u)/svdV$d) # prediction precision
     fvi <- pvi+cric                    # filter precision
     svdv <- svd(fvi,nv=0)
@@ -252,8 +299,8 @@ kalmanFilter <- function (t, y, X0, A, Q, C, R) {
     forecast[,k] <- C %*% pm
   }
   list(filterMeans=filterMeans,
-       predMeans=predMeans,
-       forecast=forecast,
-       cond.loglik=condlogLik,
-       loglik=sum(condlogLik))
+    predMeans=predMeans,
+    forecast=forecast,
+    cond.loglik=condlogLik,
+    loglik=sum(condlogLik))
 }

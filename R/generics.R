@@ -49,6 +49,8 @@ setGeneric("pred.var",function(object,...)standardGeneric("pred.var"))
 setGeneric("filter.mean",function(object,...)standardGeneric("filter.mean"))
 ## filter trajectory
 setGeneric("filter.traj",function(object,...)standardGeneric("filter.traj"))
+## forecast
+setGeneric("forecast",function(object,...)standardGeneric("forecast"))
 ## conditional log likelihood
 setGeneric("cond.logLik",function(object,...)standardGeneric("cond.logLik"))
 setGeneric("cond.logEvidence",function(object,...)standardGeneric("cond.logEvidence"))
@@ -153,38 +155,6 @@ setMethod(
   signature=signature(object="ANY"),
   definition=function (object, ...) {
     stop(sQuote("abc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-setMethod(
-  "eakf",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("eakf"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "eakf",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("eakf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-setMethod(
-  "enkf",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("enkf"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "enkf",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("enkf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

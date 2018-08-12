@@ -47,9 +47,9 @@ as.data.frame.pfilterd_pomp <- function (x, row.names, optional, ...) as(x,"data
 setMethod(
   "pred.mean",
   signature=signature(object="pfilterd_pomp"),
-  definition=function (object, pars, ...) {
-    if (missing(pars)) pars <- rownames(object@pred.mean)
-    object@pred.mean[pars,,drop=FALSE]
+  definition=function (object, vars, ...) {
+    if (missing(vars)) vars <- rownames(object@pred.mean)
+    object@pred.mean[vars,,drop=FALSE]
   }
 )
 
@@ -57,9 +57,9 @@ setMethod(
 setMethod(
   "pred.var",
   signature=signature(object="pfilterd_pomp"),
-  definition=function (object, pars, ...) {
-    if (missing(pars)) pars <- rownames(object@pred.var)
-    object@pred.var[pars,,drop=FALSE]
+  definition=function (object, vars, ...) {
+    if (missing(vars)) vars <- rownames(object@pred.var)
+    object@pred.var[vars,,drop=FALSE]
   }
 )
 
@@ -68,9 +68,9 @@ setMethod(
 setMethod(
   "filter.mean",
   signature=signature(object="pfilterd_pomp"),
-  definition=function (object, pars, ...) {
-    if (missing(pars)) pars <- rownames(object@filter.mean)
-    object@filter.mean[pars,,drop=FALSE]
+  definition=function (object, vars, ...) {
+    if (missing(vars)) vars <- rownames(object@filter.mean)
+    object@filter.mean[vars,,drop=FALSE]
   }
 )
 

@@ -46,9 +46,9 @@
 \S4method{logLik}{pfilterd_pomp}(object, \dots)
 \S4method{cond.logLik}{pfilterd_pomp}(object, \dots)
 \S4method{eff.sample.size}{pfilterd_pomp}(object, \dots)
-\S4method{pred.mean}{pfilterd_pomp}(object, pars, \dots)
-\S4method{pred.var}{pfilterd_pomp}(object, pars, \dots)
-\S4method{filter.mean}{pfilterd_pomp}(object, pars, \dots)
+\S4method{pred.mean}{pfilterd_pomp}(object, vars, \dots)
+\S4method{pred.var}{pfilterd_pomp}(object, vars, \dots)
+\S4method{filter.mean}{pfilterd_pomp}(object, vars, \dots)
 \S4method{filter.traj}{pfilterd_pomp}(object, vars, \dots)
 }
 \arguments{
@@ -102,8 +102,7 @@
   \item{verbose}{
     logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.
   }
-  \item{pars}{Names of parameters.}
-  \item{vars}{Names of state variables.}
+  \item{vars}{Names of state variables or parameters.}
   \item{\dots}{
     Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
   }
