@@ -1,0 +1,85 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # options(digits=3)
+> # png(filename="synlik-%02d.png",res=100)
+> 
+> library(pomp)
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> 
+> set.seed(6457673L)
+> 
+> po <- window(ou2,end=5)
+> 
+> ou2.kalman <- function (x, object, params) {
++   y <- obs(object)
++   p <- params
++   p[names(x)] <- x
++   x0 <- rinit(object,params=p)
++   A <- matrix(p[c('alpha.1','alpha.2','alpha.3','alpha.4')],2,2)
++   C <- diag(1,2)
++   Q <- matrix(p[c('sigma.1','sigma.2',NA,'sigma.3')],2,2)
++   Q[1,2] <- 0
++   Q <- tcrossprod(Q)
++   R <- diag(p['tau']^2,2,2)
++   pomp:::kalmanFilter(t=time(object),y=y,X0=x0,A=A,C=C,Q=Q,R=R)$loglik
++ }
+> 
+> # exact likelihood
+> p.truth <- coef(po)
+> loglik.truth <- ou2.kalman(p.truth,po,p.truth)
+> 
+> ## likelihood from probes (works since ou2 is Gaussian)
+> loglik.probe <- replicate(n=500,logLik(probe(po,nsim=200,probes=function(x)x)))
+> ## likelihood from particle filters
+> loglik.pfilter <- replicate(n=500,logLik(pfilter(po,Np=200)))
+> 
+> kruskal.test(list(loglik.probe,loglik.pfilter))
+
+	Kruskal-Wallis rank sum test
+
+data:  list(loglik.probe, loglik.pfilter)
+Kruskal-Wallis chi-squared = 16.871, df = 1, p-value = 4.001e-05
+
+> wilcox.test(loglik.probe,loglik.pfilter)
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  loglik.probe and loglik.pfilter
+W = 143760, p-value = 4.003e-05
+alternative hypothesis: true location shift is not equal to 0
+
+> ks.test(loglik.pfilter,loglik.probe)
+
+	Two-sample Kolmogorov-Smirnov test
+
+data:  loglik.pfilter and loglik.probe
+D = 0.174, p-value = 5.329e-07
+alternative hypothesis: two-sided
+
+> plot(density(loglik.probe))
+> abline(v=loglik.truth)
+> plot(density(loglik.pfilter))
+> abline(v=loglik.truth)
+> 
+> # dev.off()
+> 

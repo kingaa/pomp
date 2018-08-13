@@ -91,10 +91,6 @@ tests/issue56.R
 
 tests/nlf.R
 
-tests/sannbox.R
-
-tests/synlik.R
-
 tests/trajmatch.R
 
 ### Groups of related functions:
@@ -114,8 +110,6 @@ R/nlf_objfun.R
 R/nlf_funcs.R
 R/nlf_guts.R
 
-R/sannbox.R
-
 R/spect_match.R
 
 R/traj_match.R
@@ -125,7 +119,3 @@ R/traj_match.R
 - ou2.R
 - rw2.R
 - gompertz.R
-
-### demos:
-
-- sir.R

@@ -268,6 +268,8 @@ eakf.internal <- function (object, params, C, R, Np, ..., verbose) {
 }
 
 ## Basic Kalman filter. Currently for internal consumption only.
+## X(t) ~ MVN(A*X(t-1),Q)
+## Y(t) ~ MVN(C*X(t),R)
 kalmanFilter <- function (t, y, X0, A, Q, C, R) {
   N <- ncol(y)
   nvar <- length(X0)
