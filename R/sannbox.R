@@ -54,6 +54,12 @@ sannbox <- function (par, fn, control = list(), ...) {
 
     if (is.null(control$candidate.dist))
         candidate.dist <- function (par, temp, scale) rnorm(n=npar,mean=par,sd=scale*temp)
+    else if (!is.null(control$candidate.dist) &&
+             is.function(control$candidate.dist))
+        candidate.dist <- control$candidate.dist
+    else
+        stop(ep, sQuote("control$candidate.dist"), " must be a function",
+             call.=FALSE)
 
     if (length(control$lower)<npar)
         control$lower <- rep(control$lower,npar)
