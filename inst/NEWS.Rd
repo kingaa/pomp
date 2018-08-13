@@ -33,6 +33,7 @@
   \itemize{
     \item A bug in \code{pfilter} (and hence \code{pmcmc}) when \code{filter.traj=TRUE} was discovered and fixed.
     In the buggy version, the filter trajectory was sampled with incorrect weights.
+    \item Timo Voipio contributed a pull request that traps the error resulting from \code{sannbox} being passed a \code{candidate.dist} that is not a function.
   }
 }
 \section{Changes in \pkg{pomp} version 1.18.6}{
