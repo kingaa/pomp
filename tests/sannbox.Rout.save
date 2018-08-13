@@ -33,3 +33,9 @@ Type 'q()' to quit R.
 + }
 > invisible(sannbox(par=c(2,2),fn=f))
 > 
+> try(sannbox(par=c(2,2),fn=f,control=list(candidate.dist="bob")))
+Error : in 'sannbox': 'control$candidate.dist' must be a function.
+> try(sannbox(par=c(2,2),fn=f,control=list(
++   candidate.dist=function(x)x)))
+Error : in 'sannbox': 'candidate.dist' must be a function of prototype 'candidate.dist(par, temp, scale, ...)'.
+> 

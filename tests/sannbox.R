@@ -13,3 +13,7 @@ f <- function (x) {
   else Inf
 }
 invisible(sannbox(par=c(2,2),fn=f))
+
+try(sannbox(par=c(2,2),fn=f,control=list(candidate.dist="bob")))
+try(sannbox(par=c(2,2),fn=f,control=list(
+  candidate.dist=function(x)x)))

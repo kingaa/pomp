@@ -7,6 +7,10 @@ _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._7
           version, the filter trajectory was sampled with incorrect
           weights.
 
+        • Timo Voipio contributed a pull request that traps the error
+          resulting from ‘sannbox’ being passed a ‘candidate.dist’ that
+          is not a function.
+
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _1._1_8._6:
 
         • ‘show’ and ‘print’ methods have been made very terse: they
