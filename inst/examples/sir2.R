@@ -536,14 +536,16 @@ pomp(
     pop=1000000,
     beta.sd=0
   ),
-  covar=periodic.bspline.basis(
-    x=seq(0,10.2,by=0.01),
-    period=1,
-    nbasis=3,
-    degree=3,
-    names="seas%d"
+  covar=covariate_table(
+    periodic.bspline.basis(
+      x=seq(0,10.2,by=0.01),
+      period=1,
+      nbasis=3,
+      degree=3,
+      names="seas%d"
+    ),
+    times=seq(0,10.2,by=0.01)
   ),
-  tcovar=seq(0,10.2,by=0.01),
   globals=Csnippet("
       static int nbasis = 3;"
   ),

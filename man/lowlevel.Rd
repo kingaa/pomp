@@ -49,6 +49,7 @@
 \alias{show,mapPlugin-method}
 \alias{show,partransPlugin-method}
 \alias{show,mapPlugin-method}
+\alias{show,covartable-method}
 \description{
   A \sQuote{pomp} object implements a partially observed Markov process (\acronym{POMP}) model.
   Basic operations on this model (with shorthand terms) include:

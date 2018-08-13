@@ -47,10 +47,10 @@ SEXP do_rmeasure (SEXP object, SEXP x, SEXP times, SEXP params, SEXP gnsi)
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
+  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
 
   // set up the covariate table
-  covariate_table = make_covariate_table(object,&ncovars);
+  covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
 
   // vector for interpolated covariates
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;

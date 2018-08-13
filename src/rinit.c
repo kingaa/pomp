@@ -12,7 +12,7 @@ typedef double pomp_rinit(double *x, const double *p, double t,
   const int *stateindex, const int *parindex, const int *covindex,
   const double *covars);
 
-SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
+SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 {
   int nprotect = 0;
   SEXP Pnames, Snames;
@@ -86,7 +86,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
   } else {			// user-supplied rinit
 
-    SEXP pompfun, fcall, fn, tcovar, covar, covars = R_NilValue;
+    SEXP pompfun, fcall, fn, covars = R_NilValue;
     pompfunmode mode = undef;
     double *cp = NULL;
 
@@ -95,12 +95,8 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
     PROTECT(fn = pomp_fun_handler(pompfun,gnsi,&mode)); nprotect++;
 
     // extract covariates and interpolate
-    PROTECT(tcovar = GET_SLOT(object,install("tcovar"))); nprotect++;
-    if (LENGTH(tcovar) > 0) {	// do table lookup
-      PROTECT(covar = GET_SLOT(object,install("covar"))); nprotect++;
-      PROTECT(covars = lookup_in_table(tcovar,covar,t0)); nprotect++;
-      cp = REAL(covars);
-    }
+    PROTECT(covars = lookup_in_table(GET_SLOT(object,install("covar")),t0)); nprotect++;
+    if (LENGTH(covars) > 0) cp = REAL(covars);
 
     // extract userdata
     PROTECT(fcall = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
@@ -114,7 +110,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       int j, *midx;
 
       // extract covariates and interpolate
-      if (LENGTH(tcovar) > 0) { // add covars to call
+      if (cp != NULL) { // add covars to call
         PROTECT(fcall = LCONS(covars,fcall)); nprotect++;
         SET_TAG(fcall,install("covars"));
       }
@@ -186,7 +182,7 @@ SEXP do_init_state (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
       int j;
 
       PROTECT(Snames = GET_SLOT(pompfun,install("statenames"))); nprotect++;
-      PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
+      PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
 
       // construct state, parameter, covariate, observable indices
       sidx = INTEGER(PROTECT(name_index(Snames,pompfun,"statenames","state variables"))); nprotect++;

@@ -13,8 +13,8 @@ setAs(
       names(x) <- c(nm,rownames(from@states))
     }
     if (length(from@covar)>0) {
-      nm <- c(names(x),colnames(from@covar))
-      y <- .Call(lookup_in_table,from@tcovar,from@covar,from@times)
+      nm <- c(names(x),get_covariate_names(from@covar))
+      y <- .Call(lookup_in_table,from@covar,from@times)
       x <- cbind(x,t(y))
       names(x) <- nm
     }
@@ -259,16 +259,9 @@ setMethod(
     cat("  - summary of data:\n")
     print(summary(as.data.frame(t(obs(object)))))
     cat("\n- zero time, t0 = ",object@t0,"\n",sep="")
-    if (length(object@tcovar)>0) {
-      cat("- covariates:")
-      cat("  -",nrow(object@covar),"records of",
-        ncol(object@covar),"covariates,",
-        "recorded from t =",min(object@tcovar),
-        "to",max(object@tcovar),"\n")
-      cat("  - summary of covariates:\n")
-      print(summary(as.data.frame(object@covar)))
-    }
-    cat("- initial state simulator, rinit:\n")
+    cat("- covariates:")
+    show(object@covar)
+    cat("\n- initial state simulator, rinit:\n")
     if (object@default.init) {
       cat("\t\t(default initializer)\n")
     } else {

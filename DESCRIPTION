@@ -31,7 +31,7 @@ Contact: kingaa at umich dot edu
 BugReports: https://github.com/kingaa/pomp/issues/
 Collate: aaa.R authors.R generics.R bake.R
 	 csnippet.R safecall.R pomp_fun.R
-	 rprocess_plugins.R skeleton_plugins.R parameter_trans.R
+	 rprocess_plugins.R skeleton_plugins.R parameter_trans.R covariate_table.R
 	 templates.R builder.R
 	 parmat.R logmeanexp.R bsplines.R eulermultinom.R
 	 slice_design.R profile_design.R sobol.R

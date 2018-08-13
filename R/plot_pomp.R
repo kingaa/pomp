@@ -23,7 +23,7 @@ plotpomp.internal <- function (x, variables,
   tpos <- match(x@timename,vars)
   if (missing(variables)) {
     vars <- vars[-tpos]
-    vars <- setdiff(vars,colnames(x@covar))
+    vars <- setdiff(vars,get_covariate_names(x@covar))
     ylabels <- NULL
   } else {
     vars <- variables

@@ -1,9 +1,13 @@
 library(pomp)
 
 set.seed(364121008L)
-tt <- seq(0,10)
-xx <- cbind(x=runif(11),y=runif(11))
+ct <- covariate_table(x=runif(11),y=runif(11),times=seq(0,10))
+.Call(pomp:::lookup_in_table,covar=ct,t=runif(5))
 
-.Call(pomp:::lookup_in_table,ttable=tt,xtable=xx,t=runif(5))
-.Call(pomp:::lookup_in_table,ttable=runif(11),xtable=xx,t=runif(5))
-try(.Call(pomp:::lookup_in_table,ttable=tt[1:3],xtable=xx,t=runif(5)))
+try(covariate_table(x=runif(11),y=runif(11),times=seq(10,0)))
+try(covariate_table(x=runif(4),y=runif(11),times=seq(0,10)))
+try(covariate_table(x=runif(11),y=runif(11),times=seq(0,3)))
+covariate_table()
+try(covariate_table(times=1:10))
+try(covariate_table(a=1:10,times=1))
+try(covariate_table(a=1:10,times="a"))

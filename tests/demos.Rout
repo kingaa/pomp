@@ -54,7 +54,7 @@ Type 'q()' to quit R.
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.003841877 secs
+Time difference of 0.006004572 secs
 
 > X %>% ggplot(aes(x = time, y = X, group = traj, color = traj)) + 
 +     geom_line() + theme_bw() + labs(title = "Gompertz model", 
@@ -67,7 +67,7 @@ Time difference of 0.003841877 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.003856659 secs
+Time difference of 0.007303953 secs
 
 > x %>% ggplot(aes(x = time, y = X, group = sim, color = sim)) + 
 +     geom_line() + theme_bw() + labs(title = "Gompertz model", 
@@ -80,7 +80,7 @@ Time difference of 0.003856659 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.3514786 secs
+Time difference of 0.5177701 secs
 
 > print(logmeanexp(sapply(pf, logLik), se = TRUE))
                      se 
@@ -151,17 +151,9 @@ The following objects are masked from ‘package:base’:
 
 > initlzr <- "\n  double m = popsize/(S_0+I_0+R_0);\n  S = nearbyint(m*S_0);\n  I = nearbyint(m*I_0);\n  R = nearbyint(m*R_0);\n  incid = 0;\n  W = 0; ..." ... [TRUNCATED] 
 
-> covar <- cbind(time = seq(from = 1928, to = 1934, 
-+     by = 0.01), as.data.frame(periodic.bspline.basis(x = seq(from = 1928, 
-+     to = 1934, by  .... [TRUNCATED] 
-
 > po <- pomp(data = subset(LondonYorke, subset = town == 
 +     "New York" & disease == "measles" & year >= 1928 & year <= 
 +     1933, select = c(tim .... [TRUNCATED] 
-
-> coef(po) <- c(gamma = 26, mu = 0.02, iota = 0.01, 
-+     beta1 = 120, beta2 = 140, beta3 = 100, beta.sd = 0.01, popsize = 5e+06, 
-+     rho = 0.1, t .... [TRUNCATED] 
 
 > tic <- Sys.time()
 
@@ -170,7 +162,7 @@ The following objects are masked from ‘package:base’:
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.002586365 secs
+Time difference of 0.006443262 secs
 
 > plot(incid ~ time, data = X, type = "l")
 
@@ -181,7 +173,7 @@ Time difference of 0.002586365 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 0.02820539 secs
+Time difference of 0.04510951 secs
 
 > plot(incid ~ time, data = x, col = as.factor(x$sim), 
 +     pch = 16)
@@ -197,7 +189,7 @@ Time difference of 0.02820539 secs
 > toc <- Sys.time()
 
 > print(toc - tic)
-Time difference of 6.552425 secs
+Time difference of 7.768881 secs
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 

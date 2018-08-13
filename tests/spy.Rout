@@ -25,10 +25,10 @@ Type 'q()' to quit R.
 > pompExample(gompertz,envir=NULL) %>% extract2(1) -> po
 > 
 > pomp(po,partrans=NULL,bob=3,
-+   covar=data.frame(a=0:20,b=0:20),tcovar="a") -> po1
++   covar=covariate_table(a=0:20,b=0:20,times="a")) -> po1
 in ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
 Warning message:
-in ‘pomp’: the supplied covariate covariate times ‘tcovar’ do not embrace the data times: covariates may be extrapolated 
+in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > spy(po1)
 ==================
 pomp object ‘po1’:
@@ -54,6 +54,7 @@ pomp object ‘po1’:
  Mean   :10  
  3rd Qu.:15  
  Max.   :20  
+
 - initial state simulator, rinit:
 		(default initializer)
 - process-model simulator, rprocess:
@@ -85,7 +86,7 @@ pomp object ‘po1’:
 +     rinit=function(params,t0,...)params,
 +     paramnames="r") -> po2
 Warning message:
-in ‘pomp’: the supplied covariate covariate times ‘tcovar’ do not embrace the data times: covariates may be extrapolated 
+in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > spy(po2)
 ==================
 pomp object ‘po2’:
@@ -111,10 +112,11 @@ pomp object ‘po2’:
  Mean   :10  
  3rd Qu.:15  
  Max.   :20  
+
 - initial state simulator, rinit:
 		function (params, t0, ...) 
 params
-<environment: 0x3cb9168>
+<environment: 0x29c1830>
 - process-model simulator, rprocess:
   - discrete-time process-model simulator, step.fun:
 		native function ‘_gompertz_simulator’, dynamically loaded from ‘pomp’
@@ -135,16 +137,16 @@ params
   - time-step = 1 
 - parameter transformations:
   - to estimation scale:
-		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_0948685815525d65a77400b5fcbf02a9’
+		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_c9806604fc29113e02b277760d7a2300’
   - from estimation scale:
-		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_0948685815525d65a77400b5fcbf02a9’
+		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_c9806604fc29113e02b277760d7a2300’
 - parameter vector unspecified
 - extra user-defined variables:  ‘bob’ 
 - C snippet file  1 :
 
-/* pomp C snippet file: pomp_0948685815525d65a77400b5fcbf02a9 */
-/* Time: 2018-08-13 09:41:07.606 -0400 */
-/* Salt: 9C8D12F0F6B60CFB88B36B8D */
+/* pomp C snippet file: pomp_c9806604fc29113e02b277760d7a2300 */
+/* Time: 2018-08-13 17:09:06.784 -0400 */
+/* Salt: 311D5A1012803446225AABE7 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -186,12 +188,12 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_0948685815525d65a77400b5fcbf02a9 (DllInfo *info)
+void R_init_pomp_c9806604fc29113e02b277760d7a2300 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_0948685815525d65a77400b5fcbf02a9", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_0948685815525d65a77400b5fcbf02a9", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_0948685815525d65a77400b5fcbf02a9", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("pomp_0948685815525d65a77400b5fcbf02a9", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_c9806604fc29113e02b277760d7a2300", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_c9806604fc29113e02b277760d7a2300", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_c9806604fc29113e02b277760d7a2300", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_c9806604fc29113e02b277760d7a2300", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
 }
 
 > 

@@ -11,7 +11,7 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
 {
   int nprotect = 0;
   int *xdim, npars, nvars, nreps, nrepsx, ntimes;
-  SEXP X, fn, args, covar, tcovar;
+  SEXP X, fn, args, covar;
 
   PROTECT(gnsi = duplicate(gnsi)); nprotect++;
 
@@ -80,9 +80,8 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
   // extract other arguments
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
   PROTECT(covar = GET_SLOT(object,install("covar"))); nprotect++;
-  PROTECT(tcovar = GET_SLOT(object,install("tcovar"))); nprotect++;
 
-  PROTECT(X = onestep_density(fn,x,times,params,tcovar,covar,log,args,gnsi)); nprotect++;
+  PROTECT(X = onestep_density(fn,x,times,params,covar,log,args,gnsi)); nprotect++;
 
   {
     const char *dimnms[2] = {"rep","time"};
@@ -94,14 +93,13 @@ SEXP do_dprocess (SEXP object, SEXP x, SEXP times, SEXP params, SEXP log, SEXP g
 }
 
 // compute pdf of a sequence of elementary steps
-SEXP onestep_density (SEXP func,
-		      SEXP x, SEXP times, SEXP params,
-		      SEXP tcovar, SEXP covar, SEXP log, SEXP args, SEXP gnsi)
+SEXP onestep_density (SEXP func, SEXP x, SEXP times, SEXP params, SEXP covar,
+  SEXP log, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   pompfunmode mode = undef;
   int give_log;
-  int nvars, npars, nreps, ntimes, ncovars, covlen;
+  int nvars, npars, nreps, ntimes, ncovars;
   pomp_onestep_pdf *ff = NULL;
   SEXP cvec, pvec = R_NilValue;
   SEXP t1vec = R_NilValue, t2vec = R_NilValue;
@@ -115,17 +113,15 @@ SEXP onestep_density (SEXP func,
     int *dim;
     dim = INTEGER(GET_DIM(x)); nvars = dim[0]; nreps = dim[1];
     dim = INTEGER(GET_DIM(params)); npars = dim[0];
-    dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; ncovars = dim[1];
     ntimes = LENGTH(times);
   }
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
+  PROTECT(Cnames = get_covariate_names(covar)); nprotect++;
 
   // set up the covariate table
-  lookup_table_t covariate_table = {covlen, ncovars, 0, REAL(tcovar), REAL(covar)};
-
+  lookup_table_t covariate_table = make_covariate_table(covar,&ncovars);
   // vector for interpolated covariates
   PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
   SET_NAMES(cvec,Cnames);

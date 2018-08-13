@@ -129,10 +129,10 @@ SEXP iterate_map (SEXP object, SEXP times, SEXP t0, SEXP x0, SEXP params, SEXP g
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x0))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
+  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
 
   // set up the covariate table
-  covariate_table = make_covariate_table(object,&ncovars);
+  covariate_table = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
 
   // extract user-defined function
   PROTECT(pompfun = GET_SLOT(skel,install("skel.fn"))); nprotect++;
@@ -288,12 +288,12 @@ SEXP pomp_desolve_setup (SEXP object, SEXP x0, SEXP params, SEXP gnsi) {
   COMMON(nreps) = nreps;
 
   // set up the covariate table
-  COMMON(covar_table) = make_covariate_table(object,&ncovars);
+  COMMON(covar_table) = make_covariate_table(GET_SLOT(object,install("covar")),&ncovars);
   COMMON(ncovars) = ncovars;
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(x0))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("covar"))))); nprotect++;
+  PROTECT(Cnames = get_covariate_names(GET_SLOT(object,install("covar")))); nprotect++;
 
   switch (COMMON(mode)) {
 

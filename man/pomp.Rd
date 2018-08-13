@@ -27,6 +27,10 @@
 \alias{parameter_trans,function,function-method}
 \alias{parameter_trans,NULL,NULL-method}
 \alias{parameter_trans,pomp_fun,pomp_fun-method}
+\alias{covariate_table}
+\alias{covariate_table,character-method}
+\alias{covariate_table,numeric-method}
+\alias{covariate_table,missing-method}
 \description{
   This function constructs a \sQuote{pomp} object,
   encoding a partially-observed Markov process model together with a uni- or multi-variate time series.
@@ -47,7 +51,7 @@
 }
 \usage{
 pomp(data, times, t0, \dots, rinit, rprocess, dprocess, rmeasure, dmeasure,
-     skeleton, rprior, dprior, partrans, params, covar, tcovar, zeronames,
+     skeleton, rprior, dprior, partrans, params, covar, zeronames,
      obsnames, statenames, paramnames, covarnames, PACKAGE, globals,
      cdir, cfile, shlib.args)
 }
@@ -102,10 +106,8 @@ pomp(data, times, t0, \dots, rinit, rprocess, dprocess, rmeasure, dmeasure,
     optional; named numeric vector of parameters.
     This will be coerced internally to storage mode \code{double}.
   }
-  \item{covar, tcovar}{
-    optional data frame of covariates:
-    \code{covar} is the table of covariates (one column per variable);
-    \code{tcovar} the name or the index of the time variable.
+  \item{covar}{
+    optional covariate table, constructed using \code{covariate_table}.
 
     If a covariate table is supplied, then the value of each of the covariates is interpolated as needed.
     The resulting interpolated values are made available to the appropriate basic components.
@@ -473,7 +475,7 @@ pomp(data, times, t0, \dots, rinit, rprocess, dprocess, rmeasure, dmeasure,
 }
 \section{Covariates}{
   If the \sQuote{pomp} object contains covariates (specified via the \code{covar} argument; see above), then interpolated values of the covariates will be available to each of the model components whenever it is called.
-  In particular, variables with names as they appear in the \code{covar} data frame will be available to any C snippet.
+  In particular, variables with names as they appear in the \code{covar} covariate table will be available to any C snippet.
   When a basic component is defined using an \R function, that function will be called with an extra argument, \code{covars}, which will be a named numeric vector containing the interpolated values from the covariate table.
 
   An exception to this rule is the prior (\code{rprior} and \code{dprior}): covariate-dependent priors are not allowed.
@@ -527,8 +529,9 @@ pomp(data, times, t0, \dots, rinit, rprocess, dprocess, rmeasure, dmeasure,
 
 pomp(data = data.frame(t = 1:100, y = NA),
      times = "t", t0 = 0,
-     covar = data.frame(t=0:100,K=seq(from=50,to=200,length=101)),
-     tcovar = "t",
+     covar = covariate_table(
+       data.frame(t=0:100,K=seq(from=50,to=200,length=101)),
+       times = "t"),
      rprocess = discrete.time.sim(Csnippet("double e = rnorm(0,sigma);
                                             n = n*exp(r*(1-n/K)+e);"), delta.t = 1),
      skeleton = map(Csnippet("Dn = n*exp(r*(1-n/K));"), delta.t = 1),

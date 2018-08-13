@@ -4,44 +4,44 @@
 
 #include "pomp_internal.h"
 
+SEXP get_covariate_names (SEXP object) {
+  return GET_COLNAMES(GET_DIMNAMES(GET_SLOT(object,install("table"))));
+}
+
 lookup_table_t make_covariate_table (SEXP object, int *ncovar) {
   lookup_table_t tab;
   int *dim;
-  dim = INTEGER(GET_DIM(GET_SLOT(object,install("covar"))));
+  dim = INTEGER(GET_DIM(GET_SLOT(object,install("table"))));
   tab.length = dim[0];
   *ncovar = tab.width = dim[1];
   tab.index = 0;
-  tab.x = REAL(GET_SLOT(object,install("tcovar")));
-  tab.y = REAL(GET_SLOT(object,install("covar")));
+  tab.x = REAL(GET_SLOT(object,install("times")));
+  tab.y = REAL(GET_SLOT(object,install("table")));
   return tab;
 }
 
-SEXP lookup_in_table (SEXP ttable, SEXP xtable, SEXP t) {
+SEXP lookup_in_table (SEXP covar, SEXP t) {
   int nprotect = 0;
-  int *dim, xdim[2], ntimes, nvar;
+  int xdim[2], nvar;
   int j, nt;
   double *tp, *xp;
-  SEXP X;
+  SEXP Cnames, X;
 
   PROTECT(t = AS_NUMERIC(t)); nprotect++;
   nt = LENGTH(t);
+  PROTECT(Cnames = get_covariate_names(covar)); nprotect++;
 
-  dim = INTEGER(GET_DIM(xtable));
-  ntimes = dim[0]; nvar = dim[1];
-  PROTECT(ttable = AS_NUMERIC(ttable)); nprotect++;
-  if (ntimes != LENGTH(ttable))
-    errorcall(R_NilValue,"in 'lookup_in_table': incommensurate dimensions");
+  lookup_table_t tab = make_covariate_table(covar,&nvar);
 
   if (nt > 1) {
     xdim[0] = nvar; xdim[1] = nt;
     PROTECT(X = makearray(2,xdim)); nprotect++;
-    setrownames(X,GET_COLNAMES(GET_DIMNAMES(xtable)),2);
+    setrownames(X,Cnames,2);
   } else {
     PROTECT(X = NEW_NUMERIC(nvar)); nprotect++;
-    SET_NAMES(X,GET_COLNAMES(GET_DIMNAMES(xtable)));
+    SET_NAMES(X,Cnames);
   }
 
-  lookup_table_t tab = {ntimes,nvar,0,REAL(ttable),REAL(xtable)};
   for (j = 0, tp = REAL(t), xp = REAL(X); j < nt; j++, tp++, xp += nvar)
     table_lookup(&tab,*tp,xp);
 

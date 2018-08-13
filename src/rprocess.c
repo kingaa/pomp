@@ -12,7 +12,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
 {
   int nprotect = 0;
   int *xdim, type, nvars, npars, nreps, nrepsx, ntimes, off;
-  SEXP X, Xoff, copy, rproc, args, zeronames, tcovar, covar;
+  SEXP X, Xoff, copy, rproc, args, zeronames, covar;
   SEXP dimXstart, dimP, dimX;
   const char *dimnm[3] = {"variable","rep","time"};
 
@@ -83,7 +83,6 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
   PROTECT(args = VectorToPairList(GET_SLOT(object,install("userdata")))); nprotect++;
   PROTECT(zeronames = GET_SLOT(object,install("zeronames"))); nprotect++;
   PROTECT(covar = GET_SLOT(object,install("covar"))); nprotect++;
-  PROTECT(tcovar = GET_SLOT(object,install("tcovar"))); nprotect++;
 
   // extract the process function
   type = *(INTEGER(GET_SLOT(rproc,install("type"))));
@@ -95,7 +94,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     PROTECT(fn = GET_SLOT(rproc,install("step.fn"))); nprotect++;
     PROTECT(X = euler_model_simulator(
       fn,xstart,times,params,deltat,type,
-      zeronames,tcovar,covar,args,gnsi)); nprotect++;
+      zeronames,covar,args,gnsi)); nprotect++;
   }
     break;
   case 2: case 3: // discrete-time and Euler
@@ -105,7 +104,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     PROTECT(fn = GET_SLOT(rproc,install("step.fn"))); nprotect++;
     deltat = *(REAL(AS_NUMERIC(GET_SLOT(rproc,install("delta.t")))));
     PROTECT(X = euler_model_simulator(fn,xstart,times,params,deltat,type,
-        zeronames,tcovar,covar,args,gnsi)); nprotect++;
+        zeronames,covar,args,gnsi)); nprotect++;
   }
     break;
   case 4: // Gillespie's method
@@ -114,7 +113,7 @@ SEXP do_rprocess (SEXP object, SEXP xstart, SEXP times, SEXP params, SEXP offset
     PROTECT(fn = GET_SLOT(rproc,install("rate.fn"))); nprotect++;
     PROTECT(vmatrix = GET_SLOT(rproc,install("v"))); nprotect++;
     PROTECT(hmax = GET_SLOT(rproc,install("hmax"))); nprotect++;
-    PROTECT(X = SSA_simulator(fn,xstart,times,params,vmatrix,tcovar,covar,
+    PROTECT(X = SSA_simulator(fn,xstart,times,params,vmatrix,covar,
         zeronames,hmax,args,gnsi)); nprotect++;
   }
     break;

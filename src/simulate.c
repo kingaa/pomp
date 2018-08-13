@@ -48,7 +48,7 @@ SEXP simulation_computations (SEXP object, SEXP params, SEXP times, SEXP t0,
   *INTEGER(Nreps) = nreps;
 
   // initialize the simulations
-  PROTECT(xstart = do_init_state(object,params,t0,Nreps,gnsi)); nprotect++;
+  PROTECT(xstart = do_rinit(object,params,t0,Nreps,gnsi)); nprotect++;
   PROTECT(statenames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   dim = INTEGER(GET_DIM(xstart));
   nvars = dim[0];

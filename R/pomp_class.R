@@ -18,8 +18,7 @@ setClass(
     partrans = "partransPlugin",
     states = "array",
     params = "numeric",
-    covar = "matrix",
-    tcovar = "numeric",
+    covar = "covartable",
     zeronames = "character",
     solibs = "list",
     userdata = "list"
@@ -41,8 +40,7 @@ setClass(
     partrans=parameter_trans(),
     states=array(data=numeric(0),dim=c(0,0)),
     params=numeric(0),
-    covar=array(data=numeric(0),dim=c(0,0)),
-    tcovar=numeric(0),
+    covar=covariate_table(),
     zeronames=character(0),
     solibs=list(),
     userdata=list()
@@ -62,25 +60,6 @@ setClass(
     if (object@t0 > object@times[1])
       retval <- append(retval,paste("the zero-time",sQuote("t0"),
         "must occur no later than the first observation"))
-    if (length(object@tcovar)!=nrow(object@covar)) {
-      retval <- append(
-        retval,
-        paste(
-          "the length of",sQuote("tcovar"),
-          "should match the number of rows of",sQuote("covar")
-        )
-      )
-    }
-    if (!is.numeric(object@tcovar))
-      retval <- append(
-        retval,
-        paste(
-          sQuote("tcovar"),
-          "must either be a numeric vector or must name a numeric vector in the data frame",
-          sQuote("covar")
-        )
-      )
-
     if (length(retval)==0) TRUE else retval
   }
 )

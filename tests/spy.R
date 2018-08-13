@@ -6,7 +6,7 @@ library(magrittr)
 pompExample(gompertz,envir=NULL) %>% extract2(1) -> po
 
 pomp(po,partrans=NULL,bob=3,
-  covar=data.frame(a=0:20,b=0:20),tcovar="a") -> po1
+  covar=covariate_table(a=0:20,b=0:20,times="a")) -> po1
 spy(po1)
 
 po1 %>%

@@ -16,6 +16,6 @@ rinit.internal <- function (object, params, t0, nsim,
   if (missing(nsim)) nsim <- NCOL(params)
   pompLoad(object)
   on.exit(pompUnload(object))
-  x <- .Call(do_init_state,object,params,t0,nsim,.getnativesymbolinfo)
+  x <- .Call(do_rinit,object,params,t0,nsim,.getnativesymbolinfo)
   x
 }

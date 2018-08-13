@@ -7,7 +7,7 @@ static const R_CallMethodDef callMethods[] = {
   {"systematic_resampling", (DL_FUNC) &systematic_resampling, 1},
   {"euler_model_simulator", (DL_FUNC) &euler_model_simulator, 11},
   {"onestep_density", (DL_FUNC) &onestep_density, 9},
-  {"lookup_in_table", (DL_FUNC) &lookup_in_table, 3},
+  {"lookup_in_table", (DL_FUNC) &lookup_in_table, 2},
   {"load_stack_incr", (DL_FUNC) &load_stack_incr, 1},
   {"load_stack_decr", (DL_FUNC) &load_stack_decr, 1},
   {"SSA_simulator", (DL_FUNC) &SSA_simulator, 11},
@@ -37,7 +37,7 @@ static const R_CallMethodDef callMethods[] = {
   {"do_rprior", (DL_FUNC) &do_rprior, 3},
   {"do_dprior", (DL_FUNC) &do_dprior, 4},
   {"do_skeleton", (DL_FUNC) &do_skeleton, 5},
-  {"do_init_state", (DL_FUNC) &do_init_state, 5},
+  {"do_rinit", (DL_FUNC) &do_rinit, 5},
   {NULL, NULL, 0}
 };
 
@@ -53,7 +53,6 @@ void R_init_pomp (DllInfo *info) {
   R_RegisterCCallable("pomp","set_pomp_userdata",(DL_FUNC) &set_pomp_userdata);
   R_RegisterCCallable("pomp","unset_pomp_userdata",(DL_FUNC) &unset_pomp_userdata);
   R_RegisterCCallable("pomp","make_covariate_table",(DL_FUNC) &make_covariate_table);
-  R_RegisterCCallable("pomp","lookup_in_table",(DL_FUNC) &lookup_in_table);
   R_RegisterCCallable("pomp","table_lookup",(DL_FUNC) &table_lookup);
   R_RegisterCCallable("pomp","apply_probe_data",(DL_FUNC) &apply_probe_data);
   R_RegisterCCallable("pomp","apply_probe_sim",(DL_FUNC) &apply_probe_sim);

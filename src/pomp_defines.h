@@ -27,7 +27,6 @@ typedef SEXP pomp_fun_handler_t (SEXP pfun, SEXP gnsi, pompfunmode *mode);
 typedef SEXP load_stack_incr_t (SEXP pack);
 typedef SEXP load_stack_decr_t (SEXP pack);
 typedef lookup_table_t make_covariate_table_t (SEXP object, int *ncovar);
-typedef SEXP lookup_in_table_t (SEXP ttable, SEXP xtable, SEXP t);
 typedef void table_lookup_t (lookup_table_t *tab, double x, double *y);
 typedef SEXP apply_probe_data_t (SEXP object, SEXP probes);
 typedef SEXP apply_probe_sim_t (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval, SEXP gnsi);

@@ -5,14 +5,12 @@
 
 // method: 1 = one-step, 2 = fixed step, 3 = Euler
 
-SEXP euler_model_simulator (SEXP func,
-                            SEXP xstart, SEXP times, SEXP params,
-                            double deltat, int method, SEXP zeronames,
-                            SEXP tcovar, SEXP covar, SEXP args, SEXP gnsi)
+SEXP euler_model_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
+  double deltat, int method, SEXP zeronames, SEXP covar, SEXP args, SEXP gnsi)
 {
   int nprotect = 0;
   pompfunmode mode = undef;
-  int nvars, npars, nreps, ntimes, nzeros, ncovars, covlen;
+  int nvars, npars, nreps, ntimes, nzeros, ncovars;
   int nstep = 0;
   double dt;
   SEXP X;
@@ -30,16 +28,15 @@ SEXP euler_model_simulator (SEXP func,
       int *dim;
       dim = INTEGER(GET_DIM(xstart)); nvars = dim[0]; nreps = dim[1];
       dim = INTEGER(GET_DIM(params)); npars = dim[0];
-      dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; ncovars = dim[1];
       ntimes = LENGTH(times);
     }
 
     PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
     PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-    PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
+    PROTECT(Cnames = get_covariate_names(covar)); nprotect++;
 
     // set up the covariate table
-    lookup_table_t covariate_table = {covlen, ncovars, 0, REAL(tcovar), REAL(covar)};
+    lookup_table_t covariate_table = make_covariate_table(covar,&ncovars);
 
     // vector for interpolated covariates
     PROTECT(cvec = NEW_NUMERIC(ncovars)); nprotect++;
@@ -191,7 +188,7 @@ SEXP euler_model_simulator (SEXP func,
                 PROTECT(ans = eval(fcall,rho));	nprotect++; // evaluate the call
                 if (LENGTH(ans) != nvars) {
                   errorcall(R_NilValue,"user 'step.fun' returns a vector of %d state variables but %d are expected: compare initial conditions?",
-                            LENGTH(ans),nvars);
+                    LENGTH(ans),nvars);
                 }
 
                 PROTECT(nm = GET_NAMES(ans)); nprotect++;

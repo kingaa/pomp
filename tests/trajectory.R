@@ -35,8 +35,10 @@ points(y[1,2,],y[2,2,],pch='.',cex=3,col='red')
 pomp(
   data=fhn,
   times=seq(0,100,by=0.01),t0=0,
-  tcovar=seq(0,101,by=0.1),
-  covar=cbind(i=sin(2*pi*seq(0,101,by=0.1))),
+  covar=covariate_table(
+    i=sin(2*pi*seq(0,101,by=0.1)),
+    times=seq(0,101,by=0.1)
+  ),
   skeleton=vectorfield(
     function(x,t,params,covars,...) {
       c(

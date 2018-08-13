@@ -36,7 +36,9 @@ setGeneric("logLik",function(object,...)standardGeneric("logLik"))
 setGeneric("logEvidence",function(object,...)standardGeneric("logEvidence"))
 setGeneric("solibs<-",function(object,...,value)standardGeneric("solibs<-"))
 setGeneric("parameter_trans",
-  function(toEst, fromEst,...)standardGeneric("parameter_trans"))
+  function(toEst,fromEst,...)standardGeneric("parameter_trans"))
+setGeneric("covariate_table",
+  function(...,times)standardGeneric("covariate_table"))
 
 ## internals
 setGeneric("pomp_fun",function(f,...)standardGeneric("pomp_fun"))

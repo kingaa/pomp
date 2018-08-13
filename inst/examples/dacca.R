@@ -243,8 +243,7 @@ pomp(
     barycentric=c("S_0","I_0","Y_0",sprintf("R%01d_0",1:nrstage))
   ),
   rinit=rinit,
-  covar=covartable,
-  tcovar='time',
+  covar=covariate_table(covartable,times='time'),
   zeronames = c("deaths","count"),
   statenames = c("S","I","Y",sprintf("R%d",seq_len(nrstage)),"deaths","W","count"),
   paramnames = c("tau","gamma","eps","delta","deltaI",

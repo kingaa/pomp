@@ -2,6 +2,10 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
+        • Covariates are now included using the ‘covariate_table’
+          construction, passed via the ‘covar’ argument to ‘pomp’.  The
+          ‘tcovar’ argument is no longer used.
+
         • Instead of providing separate ‘fromEstimationScale’ and
           ‘toEstimationScale’ arguments to ‘pomp’, one now provides a
           single ‘partrans’ argument constructed by means of the new

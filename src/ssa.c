@@ -1,9 +1,9 @@
 #include "pomp_internal.h"
 #include <R_ext/Constants.h>
 
-static void gillespie (double *t, double tmax, double *f, double *y, 
-		       const double *v, int nvar, int nevent, Rboolean hasvname,
-		       const int *ivmat) {
+static void gillespie (double *t, double tmax, double *f, double *y,
+  const double *v, int nvar, int nevent, Rboolean hasvname,
+  const int *ivmat) {
   double tstep, p;
   double vv;
   int i, j;
@@ -31,21 +31,21 @@ static void gillespie (double *t, double tmax, double *f, double *y,
     int jevent = nevent-1;
     for (j = 0; j < jevent; j++) {
       if (p > f[j]) {
-	p -= f[j];
+        p -= f[j];
       } else {
-	jevent = j;
-	break;
+        jevent = j;
+        break;
       }
     }
 
     for (i = 0; i < nvar; i++) {
       vv = v[i+nvar*jevent];
       if (vv != 0) {
-	if (hasvname) {
-	  y[ivmat[i]] += vv;
-	} else {
-	  y[i] += vv;
-	}
+        if (hasvname) {
+          y[ivmat[i]] += vv;
+        } else {
+          y[i] += vv;
+        }
       }
     }
 
@@ -53,19 +53,18 @@ static void gillespie (double *t, double tmax, double *f, double *y,
 }
 
 static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
-		 int nvar, int nevent, int npar, int nrep, int ntimes,
-		 double *xstart, const double *times, const double *params, double *xout,
-		 const double *v, int nzero, const int *izero,
-		 const int *istate, const int *ipar, int ncovar, const int *icovar,
-		 Rboolean hasvname, const int *ivmat,
-		 int lcov, int mcov, double *tcov, double *cov, const double *hmax) {
+  int nvar, int nevent, int npar, int nrep, int ntimes,
+  double *xstart, const double *times, const double *params, double *xout,
+  const double *v, int nzero, const int *izero,
+  const int *istate, const int *ipar, int ncovar, const int *icovar,
+  Rboolean hasvname, const int *ivmat,
+  int mcov, lookup_table_t *tab, const double *hmax) {
   double t = times[0];
   double tmax;
   double *f = NULL;
   double *covars = NULL;
   const double *par;
   double y[nvar];
-  lookup_table_t tab = {lcov, mcov, 0, tcov, cov};
   int i, j;
 
   if (mcov > 0) covars = (double *) Calloc(mcov,double);
@@ -78,7 +77,7 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
   // Set appropriate states to zero
   for (i = 0; i < nzero; i++) y[izero[i]] = 0.0;
   // Initialize the covariate vector
-  if (mcov > 0) table_lookup(&tab,t,covars);
+  if (mcov > 0) table_lookup(tab,t,covars);
   // Initialise propensity functions & tree
   for (j = 0; j < nevent; j++) {
     f[j] = ratefun(j+1,t,y,par,istate,ipar,icovar,mcov,covars);
@@ -94,12 +93,12 @@ static void SSA (pomp_ssa_rate_fn *ratefun, int irep,
     tmax = (tmax > times[icount]) ? times[icount] : tmax;
     gillespie(&t,tmax,f,y,v,nvar,nevent,hasvname,ivmat);
 
-    if (mcov > 0) table_lookup(&tab,t,covars);
+    if (mcov > 0) table_lookup(tab,t,covars);
 
     for (j = 0; j < nevent; j++) {
       f[j] = ratefun(j+1,t,y,par,istate,ipar,icovar,mcov,covars);
       if (f[j] < 0.0)
-	errorcall(R_NilValue,"'rate.fun' returns a negative rate");
+        errorcall(R_NilValue,"'rate.fun' returns a negative rate");
     }
 
     // Record output at required time points
@@ -144,8 +143,7 @@ static pomp_ssa_rate_fn *ssa_internal_rxrate; // function computing reaction rat
 #define RXR     (ssa_internal_rxrate)
 
 static double default_ssa_rate_fn (int j, double t, const double *x, const double *p,
-				   int *stateindex, int *parindex, int *covindex,
-				   int ncovar, double *covar)
+  int *stateindex, int *parindex, int *covindex, int ncovar, double *covar)
 {
   int nprotect = 0;
   int *op, k;
@@ -177,25 +175,24 @@ static double default_ssa_rate_fn (int j, double t, const double *x, const doubl
 }
 
 SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
-		    SEXP vmatrix, SEXP tcovar, SEXP covar,
-		    SEXP zeronames, SEXP hmax, SEXP args, SEXP gnsi)
+  SEXP vmatrix, SEXP covar, SEXP zeronames, SEXP hmax, SEXP args,
+  SEXP gnsi)
 {
   int nprotect = 0;
   int *dim, xdim[3];
   int nvar, nvarv, nevent, npar, nrep, ntimes;
-  int covlen, covdim;
   SEXP statenames, paramnames, covarnames;
-  int nstates, nparams, ncovars;
+  int nstates, nparams, ncovars, covdim;
   int nzeros = LENGTH(zeronames);
   pompfunmode use_native = undef;
   SEXP X, pindex, sindex, cindex, zindex, vindex;
   int *sidx, *pidx, *cidx, *zidx, *vidx;
   SEXP fn, Snames, Pnames, Cnames, Vnames;
+  lookup_table_t covariate_table;
   Rboolean hasvnames;
 
   dim = INTEGER(GET_DIM(xstart)); nvar = dim[0]; nrep = dim[1];
   dim = INTEGER(GET_DIM(params)); npar = dim[0];
-  dim = INTEGER(GET_DIM(covar)); covlen = dim[0]; covdim = dim[1];
   dim = INTEGER(GET_DIM(vmatrix)); nvarv = dim[0]; nevent = dim[1];
   if (nvarv != nvar) {
     errorcall(R_NilValue,"number of state variables must equal the number of rows in v.");
@@ -204,8 +201,10 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
 
   PROTECT(Snames = GET_ROWNAMES(GET_DIMNAMES(xstart))); nprotect++;
   PROTECT(Pnames = GET_ROWNAMES(GET_DIMNAMES(params))); nprotect++;
-  PROTECT(Cnames = GET_COLNAMES(GET_DIMNAMES(covar))); nprotect++;
+  PROTECT(Cnames = get_covariate_names(covar)); nprotect++;
   PROTECT(Vnames = GET_ROWNAMES(GET_DIMNAMES(vmatrix))); nprotect++;
+
+  covariate_table = make_covariate_table(covar,&covdim);
 
   PROTECT(statenames = GET_SLOT(func,install("statenames"))); nprotect++;
   PROTECT(paramnames = GET_SLOT(func,install("paramnames"))); nprotect++;
@@ -267,7 +266,7 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     pidx = 0;
   }
   if (ncovars>0) {
-    PROTECT(cindex = MATCHCOLNAMES(covar,covarnames,"covariates")); nprotect++;
+    PROTECT(cindex = matchnames(Cnames,covarnames,"covariates")); nprotect++;
     cidx = INTEGER(cindex);
   } else {
     cidx = 0;
@@ -294,10 +293,10 @@ SEXP SSA_simulator (SEXP func, SEXP xstart, SEXP times, SEXP params,
     int i;
     for (i = 0; i < nrep; i++) {
       SSA(RXR,i,nvar,nevent,npar,nrep,ntimes,
-	  REAL(xstart),REAL(times),REAL(params),
-	  REAL(X),REAL(vmatrix),
-	  nzeros,zidx,sidx,pidx,ncovars,cidx,hasvnames,vidx,covlen,covdim,
-	  REAL(tcovar),REAL(covar),REAL(hmax));
+        REAL(xstart),REAL(times),REAL(params),
+        REAL(X),REAL(vmatrix),
+        nzeros,zidx,sidx,pidx,ncovars,cidx,hasvnames,vidx,
+        covdim,&covariate_table,REAL(hmax));
     }
   }
   PutRNGstate();

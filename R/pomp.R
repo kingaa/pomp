@@ -2,7 +2,7 @@
 
 pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
   rmeasure, dmeasure, skeleton, rprior, dprior, partrans,
-  params, covar, tcovar, zeronames,
+  params, covar, zeronames,
   obsnames, statenames, paramnames, covarnames,
   PACKAGE, globals, cdir, cfile, shlib.args) {
 
@@ -18,20 +18,12 @@ pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
   ## return as quickly as possible if no work is to be done
   if (nargs()==1) return(data)
 
-  ## if 'covar' is supplied, then so must 'tcovar'
-  c1 <- missing(covar)
-  c2 <- missing(tcovar)
-  if (xor(c1,c2))
-    stop(ep,"if one of ",sQuote("covar"),", ",
-      sQuote("tcovar")," is supplied, then so must the other",
-      call.=FALSE)
-
   construct_pomp(
     data=data,times=times,t0=t0,...,
     rinit=rinit,rprocess=rprocess,dprocess=dprocess,
     rmeasure=rmeasure,dmeasure=dmeasure,
     skeleton=skeleton,rprior=rprior,dprior=dprior,partrans=partrans,
-    params=params, covar=covar,tcovar=tcovar,zeronames=zeronames,
+    params=params, covar=covar,zeronames=zeronames,
     obsnames=obsnames,statenames=statenames,paramnames=paramnames,
     covarnames=covarnames,PACKAGE=PACKAGE,
     globals=globals,cdir=cdir,cfile=cfile,shlib.args=shlib.args
@@ -91,7 +83,7 @@ setMethod(
   signature=signature(data="array"),
   definition = function (data, times, t0, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-    partrans, params, covar, tcovar, timename) {
+    partrans, params, covar, timename) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")
 
@@ -117,8 +109,7 @@ setMethod(
     if (missing(dprior)) dprior <- NULL
 
     if (missing(params)) params <- numeric(0)
-    if (missing(covar)) covar <- NULL
-    if (missing(tcovar)) tcovar <- NULL
+    if (missing(covar)) covar <- covariate_table()
 
     tryCatch(
       pomp.internal(
@@ -137,7 +128,6 @@ setMethod(
         partrans=partrans,
         params=params,
         covar=covar,
-        tcovar=tcovar,
         ...
       ),
       error = function (e) {
@@ -152,7 +142,7 @@ setMethod(
   signature=signature(data="pomp"),
   definition = function (data, times, t0, ...,
     rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-    partrans, params, covar, tcovar, zeronames, timename) {
+    partrans, params, covar, zeronames, timename) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
 
@@ -194,7 +184,6 @@ setMethod(
 
     if (missing(params)) params <- data@params
     if (missing(covar)) covar <- data@covar
-    if (missing(tcovar)) tcovar <- data@tcovar
     if (missing(zeronames)) zeronames <- data@zeronames
 
     tryCatch(
@@ -213,7 +202,6 @@ setMethod(
         dprior=dprior,
         partrans=partrans,
         covar=covar,
-        tcovar=tcovar,
         zeronames=zeronames,
         params=params,
         .solibs=data@solibs,
@@ -229,7 +217,7 @@ setMethod(
 
 pomp.internal <- function (data, times, t0, timename, ...,
   rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
-  partrans, params, covar, tcovar, zeronames, obsnames, statenames,
+  partrans, params, covar, zeronames, obsnames, statenames,
   paramnames, covarnames, PACKAGE, globals, cdir, cfile, shlib.args,
   .userdata, .solibs = list(), verbose = getOption("verbose",FALSE)) {
 
@@ -241,14 +229,14 @@ pomp.internal <- function (data, times, t0, timename, ...,
       (length(times)>1 && !all(diff(times)>0)))
     stop(ep,sQuote("times")," must be specified as an increasing sequence ",
       "of numbers.",call.=FALSE)
-  storage.mode(times) <- 'double'
+  storage.mode(times) <- "double"
 
   ## check t0
   if (missing(t0) || !is.numeric(t0) || !is.finite(t0) ||
       length(t0) > 1 ||  t0 > times[1])
     stop(ep,sQuote("t0")," must be specified as a single number not ",
       "greater than ",sQuote("times[1]"),".",call.=FALSE)
-  storage.mode(t0) <- 'double'
+  storage.mode(t0) <- "double"
 
   if (missing(timename) || is.null(timename))
     timename <- "time"
@@ -296,7 +284,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
   zeronames <- unique(as.character(zeronames))
 
   ## store the data as double-precision matrix
-  storage.mode(data) <- 'double'
+  storage.mode(data) <- "double"
   if (length(obsnames) == 0) obsnames <- rownames(data)
 
   ## check the parameters and force them to be double-precision
@@ -304,48 +292,8 @@ pomp.internal <- function (data, times, t0, timename, ...,
     if (is.null(names(params)) || !is.numeric(params) || any(names(params)==""))
       stop(sQuote("params")," must be a named numeric vector.",call.=FALSE)
   }
-  storage.mode(params) <- 'double'
+  storage.mode(params) <- "double"
 
-  ## check and arrange covariates
-  if (is.null(covar)) {
-    covar <- matrix(data=0,nrow=0,ncol=0)
-    tcovar <- numeric(0)
-  } else if (is.data.frame(covar)) {
-    if (anyDuplicated(names(covar))) {
-      stop(ep,"names of covariates must be unique.", call.=FALSE)
-    }
-    if ((is.numeric(tcovar) && (tcovar<1 || tcovar>length(covar) ||
-        tcovar!=as.integer(tcovar))) ||
-        (is.character(tcovar) && (!(tcovar%in%names(covar)))) ||
-        (!is.numeric(tcovar) && !is.character(tcovar)) || length(tcovar) != 1) {
-      stop("when ",sQuote("covar")," is a data frame, ",sQuote("tcovar"),
-        " must identify a single column of ",sQuote("covar"),
-        " either by name or by index.",call.=FALSE)
-    } else if (is.numeric(tcovar)) {
-      tpos <- tcovar
-      tcovar <- covar[[tpos]]
-      covar <- do.call(cbind,lapply(covar[-tpos],as.double))
-    } else if (is.character(tcovar)) {
-      tpos <- match(tcovar,names(covar))
-      tcovar <- covar[[tpos]]
-      covar <- do.call(cbind,lapply(covar[-tpos],as.double))
-    }
-  } else {
-    covar <- as.matrix(covar)
-    storage.mode(covar) <- "double"
-  }
-  if (length(covarnames)==0) {
-    covarnames <- as.character(colnames(covar))
-  } else {
-    if (!all(covarnames %in% colnames(covar))) {
-      missing <- covarnames[!(covarnames%in%colnames(covar))]
-      stop("covariate(s) ",paste(sapply(missing,sQuote),collapse=","),
-        " are not among the columns of ",sQuote("covar"),".",call.=FALSE)
-    }
-    covar <- covar[,covarnames,drop=FALSE]
-  }
-  storage.mode(tcovar) <- "double"
-  storage.mode(covar) <- "double"
 
   ## use default rinit?
   default.init <- is.null(rinit) ||
@@ -360,6 +308,24 @@ pomp.internal <- function (data, times, t0, timename, ...,
   ## by default, use flat improper prior
   if (is.null(dprior))
     dprior <- pomp_fun(f="_pomp_default_dprior",PACKAGE="pomp")
+
+  ## check and arrange covariates
+  if (is.null(covar)) {
+    covar <- covariate_table()
+  } else if (!is(covar,"covartable")) {
+    stop(ep,"bad option for ",sQuote("covar"),".",call.=FALSE)
+  }
+
+  if (length(covarnames) == 0) {
+    covarnames <- get_covariate_names(covar)
+  } else {
+    covar <- tryCatch(
+      select_covariates(covar,covarnames),
+      error = function (e) {
+        stop(ep,conditionMessage(e),call.=FALSE)
+      }
+    )
+  }
 
   hitches <- hitch(
     rinit=rinit,
@@ -387,35 +353,17 @@ pomp.internal <- function (data, times, t0, timename, ...,
   )
 
   ## check to make sure 'covars' is included as an argument where needed
-  if (nrow(covar) > 0) {
-    if ((hitches$funs$skeleton@mode==pompfunmode$Rfun) &&
-        !("covars"%in%names(formals(hitches$funs$skeleton@R.fun))))
-      warning(wp,"a covariate table has been given, yet the ",
-        sQuote("skeleton")," function does not have ",
-        sQuote("covars")," as a formal argument: see ",
-        sQuote("?pomp"),call.=FALSE)
-    if ((hitches$funs$rmeasure@mode==pompfunmode$Rfun) &&
-        !("covars"%in%names(formals(hitches$funs$rmeasure@R.fun))))
-      warning(wp,"a covariate table has been given, yet the ",
-        sQuote("rmeasure")," function does not have ",
-        sQuote("covars")," as a formal argument: see ",
-        sQuote("?pomp"),call.=FALSE)
-    if ((hitches$funs$dmeasure@mode==pompfunmode$Rfun) &&
-        !("covars"%in%names(formals(hitches$funs$dmeasure@R.fun))))
-      warning(wp,"a covariate table has been given, yet the ",
-        sQuote("dmeasure")," function does not have ",
-        sQuote("covars")," as a formal argument: see ",
-        sQuote("?pomp"),call.=FALSE)
-  }
+  covar_fun_warning(covar,"rprocess",hitches$funs,wp)
+  covar_fun_warning(covar,"dprocess",hitches$funs,wp)
+  covar_fun_warning(covar,"rmeasure",hitches$funs,wp)
+  covar_fun_warning(covar,"dmeasure",hitches$funs,wp)
+  covar_fun_warning(covar,"skeleton",hitches$funs,wp)
 
-  if ((length(tcovar)>0) && ((min(tcovar)>t0) || (max(tcovar)<max(times))))
-    warning(wp,"the supplied covariate covariate times ",sQuote("tcovar"),
-      " do not embrace the data times: covariates may be extrapolated",
-      call.=FALSE
-    )
+  ## check to see if covariate times embrace the data times
+  covar_time_warning(covar,times,t0,wp)
 
   new(
-    'pomp',
+    "pomp",
     data = data,
     times = times,
     t0 = t0,
@@ -442,7 +390,6 @@ pomp.internal <- function (data, times, t0, timename, ...,
     ),
     params = params,
     covar = covar,
-    tcovar = tcovar,
     zeronames = zeronames,
     solibs = if (is.null(hitches$lib)) {
       .solibs

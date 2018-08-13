@@ -92,19 +92,6 @@ initlzr <- "
   W = 0;
 "
 
-cbind(
-  time=seq(from=1928,to=1934,by=0.01),
-  as.data.frame(
-    periodic.bspline.basis(
-      x=seq(from=1928,to=1934,by=0.01),
-      nbasis=3,
-      degree=3,
-      period=1,
-      names="seas%d"
-    )
-  )
-) -> covar
-
 pomp(
   data=subset(
     LondonYorke,
@@ -113,6 +100,14 @@ pomp(
   ),
   times="time",
   t0=1928,
+  params=c(
+    gamma=26,mu=0.02,iota=0.01,
+    beta1=120,beta2=140,beta3=100,
+    beta.sd=0.01,
+    popsize=5e6,
+    rho=0.1,theta=1,
+    S.0=0.22,I.0=0.0018,R.0=0.78
+  ),
   globals=globals,
   rmeasure=Csnippet(rmeas),
   rprocess=euler.sim(
@@ -120,8 +115,16 @@ pomp(
     delta.t=1/52/20
   ),
   skeleton=vectorfield(Csnippet(skel)),
-  covar=covar,
-  tcovar="time",
+  covar=covariate_table(
+    times=seq(from=1928,to=1934,by=0.01),
+    periodic.bspline.basis(
+      x=seq(from=1928,to=1934,by=0.01),
+      nbasis=3,
+      degree=3,
+      period=1,
+      names="seas%d"
+    )
+  ),
   partrans=parameter_trans(
     log=c("gamma","mu","iota","beta_sd","theta",sprintf("beta%d",1:3)),
     logit="rho",
@@ -135,15 +138,6 @@ pomp(
   zeronames=c("incid","W"),
   rinit=Csnippet(initlzr)
 ) -> po
-
-coef(po) <- c(
-  gamma=26,mu=0.02,iota=0.01,
-  beta1=120,beta2=140,beta3=100,
-  beta.sd=0.01,
-  popsize=5e6,
-  rho=0.1,theta=1,
-  S.0=0.22,I.0=0.0018,R.0=0.78
-)
 
 ## compute a trajectory of the deterministic skeleton
 tic <- Sys.time()

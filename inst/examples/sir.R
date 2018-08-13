@@ -223,14 +223,16 @@ pomp(
     rho=0.6,
     S_0=26/400,I_0=0.001,R_0=1-26/400-0.001
   ),
-  covar=periodic.bspline.basis(
-    x=seq(0,4.2,by=0.01),
-    period=1,
-    nbasis=3,
-    degree=3,
-    names="seas%d"
+  covar=covariate_table(
+    periodic.bspline.basis(
+      x=seq(0,4.2,by=0.01),
+      period=1,
+      nbasis=3,
+      degree=3,
+      names="seas%d"
+    ),
+    times=seq(0,4.2,by=0.01)
   ),
-  tcovar=seq(0,4.2,by=0.01),
   globals=Csnippet("
     static int nbasis = 3;"
   ),
