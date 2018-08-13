@@ -76,12 +76,12 @@ variable     1     2     3
 > 
 > time(po) <- 1:10
 > try(time(po) <- c("bob","nancy"))
-Error : in ‘time<-’: ‘value’ must be a numeric vector
+Error : in ‘time<-’: ‘value’ must be a numeric vector.
 > time(po1,t0=TRUE) <- 0:10
 > try(time(po) <- 10:0)
-Error : in ‘time<-’: the times specified must be an increasing sequence
+Error : in ‘time<-’: the times specified must be an increasing sequence.
 > try(time(po,t0=TRUE) <- c(4,1:10))
-Error : in ‘time<-’: the zero-time ‘t0’ must occur no later than the first observation
+Error : in ‘time<-’: the zero-time ‘t0’ must occur no later than the first observation.
 > 
 > window(po,end=5)
 <object of class ‘pomp’>
@@ -100,11 +100,11 @@ Error : in ‘window’: ‘start’ and ‘end’ must be finite times.
 [1] 0
 > timezero(po) <- -3
 > try(timezero(po) <- NA)
-Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number
+Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number.
 > try(timezero(po) <- c(1,2,3))
-Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number
+Error : in ‘timezero<-’: the zero-time ‘t0’ must be a single finite number.
 > try(timezero(po) <- 20)
-Error : in ‘timezero<-’: the zero-time ‘t0’ must occur no later than the first observation
+Error : in ‘timezero<-’: the zero-time ‘t0’ must occur no later than the first observation.
 > 
 > coef(po)
 alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
@@ -113,7 +113,7 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 alpha.3     tau 
     0.3     1.0 
 > try(coef(po,c("alpha.3","z")))
-Error : in ‘coef’: name(s) ‘z’ correspond to no parameter(s)
+Error : in ‘coef’: name(s) ‘z’ correspond to no parameter(s).
 > 
 > coef(po,"alpha.3") <- 4
 > coef(po,"z") <- 9

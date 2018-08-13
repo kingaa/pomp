@@ -1,0 +1,197 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> 
+> library(pomp)
+> library(magrittr)
+> 
+> pompExample(gompertz,envir=NULL) %>% extract2(1) -> po
+> 
+> pomp(po,partrans=NULL,bob=3,
++   covar=data.frame(a=0:20,b=0:20),tcovar="a") -> po1
+in ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
+Warning message:
+in ‘pomp’: the supplied covariate covariate times ‘tcovar’ do not embrace the data times: covariates may be extrapolated 
+> spy(po1)
+==================
+pomp object ‘po1’:
+
+- data:
+  - 101 records of 1 observable, recorded from t = 0 to 100 
+  - summary of data:
+       Y        
+ Min.   :0.609  
+ 1st Qu.:0.918  
+ Median :1.136  
+ Mean   :1.133  
+ 3rd Qu.:1.297  
+ Max.   :1.880  
+
+- zero time, t0 = 0
+- covariates:  - 21 records of 1 covariates, recorded from t = 0 to 20 
+  - summary of covariates:
+       b     
+ Min.   : 0  
+ 1st Qu.: 5  
+ Median :10  
+ Mean   :10  
+ 3rd Qu.:15  
+ Max.   :20  
+- initial state simulator, rinit:
+		(default initializer)
+- process-model simulator, rprocess:
+  - discrete-time process-model simulator, step.fun:
+		native function ‘_gompertz_simulator’, dynamically loaded from ‘pomp’
+  - time-step = 1 
+- process model density, dprocess:
+		not specified
+- measurement model simulator, rmeasure:
+		native function ‘_gompertz_normal_rmeasure’, dynamically loaded from ‘pomp’
+- measurement model density, dmeasure:
+		native function ‘_gompertz_normal_dmeasure’, dynamically loaded from ‘pomp’
+- prior simulator, rprior:
+		not specified
+- prior density, dprior:
+		native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+- deterministic skeleton:
+  - map:
+		native function ‘_gompertz_skeleton’, dynamically loaded from ‘pomp’
+  - time-step = 1 
+- parameter vector:
+    K     r sigma   tau   X.0 
+  1.0   0.1   0.1   0.1   1.0 
+- extra user-defined variables:  ‘bob’ 
+
+> 
+> po1 %>%
++   pomp(partrans=parameter_trans(log="r"),params=NULL,
++     rinit=function(params,t0,...)params,
++     paramnames="r") -> po2
+Warning message:
+in ‘pomp’: the supplied covariate covariate times ‘tcovar’ do not embrace the data times: covariates may be extrapolated 
+> spy(po2)
+==================
+pomp object ‘po2’:
+
+- data:
+  - 101 records of 1 observable, recorded from t = 0 to 100 
+  - summary of data:
+       Y        
+ Min.   :0.609  
+ 1st Qu.:0.918  
+ Median :1.136  
+ Mean   :1.133  
+ 3rd Qu.:1.297  
+ Max.   :1.880  
+
+- zero time, t0 = 0
+- covariates:  - 21 records of 1 covariates, recorded from t = 0 to 20 
+  - summary of covariates:
+       b     
+ Min.   : 0  
+ 1st Qu.: 5  
+ Median :10  
+ Mean   :10  
+ 3rd Qu.:15  
+ Max.   :20  
+- initial state simulator, rinit:
+		function (params, t0, ...) 
+params
+<environment: 0x3cb9168>
+- process-model simulator, rprocess:
+  - discrete-time process-model simulator, step.fun:
+		native function ‘_gompertz_simulator’, dynamically loaded from ‘pomp’
+  - time-step = 1 
+- process model density, dprocess:
+		not specified
+- measurement model simulator, rmeasure:
+		native function ‘_gompertz_normal_rmeasure’, dynamically loaded from ‘pomp’
+- measurement model density, dmeasure:
+		native function ‘_gompertz_normal_dmeasure’, dynamically loaded from ‘pomp’
+- prior simulator, rprior:
+		not specified
+- prior density, dprior:
+		native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+- deterministic skeleton:
+  - map:
+		native function ‘_gompertz_skeleton’, dynamically loaded from ‘pomp’
+  - time-step = 1 
+- parameter transformations:
+  - to estimation scale:
+		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_0948685815525d65a77400b5fcbf02a9’
+  - from estimation scale:
+		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_0948685815525d65a77400b5fcbf02a9’
+- parameter vector unspecified
+- extra user-defined variables:  ‘bob’ 
+- C snippet file  1 :
+
+/* pomp C snippet file: pomp_0948685815525d65a77400b5fcbf02a9 */
+/* Time: 2018-08-13 09:41:07.606 -0400 */
+/* Salt: 9C8D12F0F6B60CFB88B36B8D */
+
+#include <pomp.h>
+#include <R_ext/Rdynload.h>
+
+ 
+
+
+/* C snippet: 'toEst' */
+#define b		(__covars[__covindex[0]])
+#define r		(__p[__parindex[0]])
+#define T_r		(__pt[__parindex[0]])
+
+void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
+{
+ 	T_r = log(r); 
+}
+
+#undef b
+#undef r
+#undef T_r
+
+/* C snippet: 'fromEst' */
+#define b		(__covars[__covindex[0]])
+#define r		(__p[__parindex[0]])
+#define T_r		(__pt[__parindex[0]])
+
+void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
+{
+ 	r = exp(T_r); 
+}
+
+#undef b
+#undef r
+#undef T_r
+
+static int __pomp_load_stack = 0;
+
+void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+
+void R_init_pomp_0948685815525d65a77400b5fcbf02a9 (DllInfo *info)
+{
+R_RegisterCCallable("pomp_0948685815525d65a77400b5fcbf02a9", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_0948685815525d65a77400b5fcbf02a9", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_0948685815525d65a77400b5fcbf02a9", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_0948685815525d65a77400b5fcbf02a9", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+}
+
+> 

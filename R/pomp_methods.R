@@ -79,7 +79,7 @@ setMethod(
   definition=function (object, t0 = FALSE, ..., value) {
     ep <- paste0("in ",sQuote("time<-"),": ")
     if (!is.numeric(value))
-      stop(ep,sQuote("value")," must be a numeric vector",call.=FALSE)
+      stop(ep,sQuote("value")," must be a numeric vector.",call.=FALSE)
     storage.mode(value) <- "double"
     tt <- object@times
     dd <- object@data
@@ -91,9 +91,9 @@ setMethod(
       object@times <- value
     }
     if (!all(diff(object@times)>0))
-      stop(ep,"the times specified must be an increasing sequence",call.=FALSE)
+      stop(ep,"the times specified must be an increasing sequence.",call.=FALSE)
     if (object@t0>object@times[1])
-      stop(ep,"the zero-time ",sQuote("t0")," must occur no later than the first observation",call.=FALSE)
+      stop(ep,"the zero-time ",sQuote("t0")," must occur no later than the first observation.",call.=FALSE)
     object@data <- array(
       data=NA,
       dim=c(nrow(dd),length(object@times)),
@@ -151,10 +151,10 @@ setMethod(
     ep <- paste0("in ",sQuote("timezero<-"),": ")
     if (!(is.numeric(value) && length(value) == 1L && is.finite(value)))
       stop(ep,"the zero-time ",sQuote("t0"),
-        " must be a single finite number",call.=FALSE)
+        " must be a single finite number.",call.=FALSE)
     if (value > object@times[1L])
       stop(ep,"the zero-time ",sQuote("t0"),
-        " must occur no later than the first observation",call.=FALSE)
+        " must occur no later than the first observation.",call.=FALSE)
     storage.mode(value) <- "double"
     object@t0 <- value
     object
@@ -178,7 +178,7 @@ setMethod(
         if (length(excl)>0) {
           stop("in ",sQuote("coef"),": name(s) ",
             paste(sQuote(excl),collapse=","),
-            " correspond to no parameter(s)",
+            " correspond to no parameter(s).",
             call.=FALSE)
         }
       }
@@ -203,11 +203,7 @@ setMethod(
           value <- partrans(object,params=value,dir="fromEst")
         pars <- names(value)
         if (is.null(pars)) {
-          if (transform)
-            stop(ep,"parameter.transform(",sQuote("value"),
-              ") must be a named vector",call.=FALSE)
-          else
-            stop(ep,sQuote("value")," must be a named vector",call.=FALSE)
+          stop(ep,sQuote("value")," must be a named vector",call.=FALSE)
         }
       }
       object@params <- value
@@ -218,9 +214,8 @@ setMethod(
         val <- numeric(length(pars))
         names(val) <- pars
         val[] <- value
-        if (transform)
-          value <- partrans(object,params=val,dir="fromEst")
-        object@params <- value
+        if (transform) val <- partrans(object,params=val,dir="fromEst")
+        object@params <- val
       } else { ## pre-existing params slot
         params <- coef(object,transform=transform)
         val <- numeric(length(pars))

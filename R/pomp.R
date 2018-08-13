@@ -11,12 +11,12 @@ pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
   if (missing(data))
     stop(ep,sQuote("data")," is a required argument.",call.=FALSE)
 
-  ## return as quickly as possible if no work is to be done
-  if (nargs()==1) return(data)
-
   if (!inherits(data,what=c("data.frame","pomp","NULL")))
     stop(ep,sQuote("data")," must be a data frame or an object of class ",
       sQuote("pomp"),".",call.=FALSE)
+
+  ## return as quickly as possible if no work is to be done
+  if (nargs()==1) return(data)
 
   ## if 'covar' is supplied, then so must 'tcovar'
   c1 <- missing(covar)
@@ -45,11 +45,15 @@ setMethod(
 
     ep <- paste0("in ",sQuote("pomp"),": ")  # error prefix
 
-    if (missing(times)) stop(ep,sQuote("times")," is a required argument",call.=FALSE)
-    if ((is.numeric(times) && (times<1 || times>ncol(data) || times!=as.integer(times))) ||
+    if (anyDuplicated(names(data))) {
+      stop(ep,"names of data variables must be unique.", call.=FALSE)
+    }
+    if (missing(times))
+      stop(ep,sQuote("times")," is a required argument",call.=FALSE)
+    if ((is.numeric(times) && (times<1 || times>ncol(data) ||
+        times!=as.integer(times))) ||
         (is.character(times) && (!(times%in%names(data)))) ||
-        (!is.numeric(times) && !is.character(times)) ||
-        length(times)!=1) {
+        (!is.numeric(times) && !is.character(times)) || length(times)!=1) {
       stop(ep,"when ",sQuote("data")," is a data frame, ",sQuote("times"),
         " must identify a single column of ",sQuote("data"),
         " either by name or by index.",call.=FALSE)
@@ -90,17 +94,6 @@ setMethod(
     partrans, params, covar, tcovar, timename) {
 
     ep <- paste0("in ",sQuote("pomp"),": ")
-
-    if (missing(times) || !is.numeric(times) ||
-        !all(is.finite(times)) ||
-        (length(times)>1 && !all(diff(times)>0)))
-      stop(ep,sQuote("times")," must be specified as an increasing sequence ",
-        "of numbers.",call.=FALSE)
-
-    if (missing(t0) || !is.numeric(t0) || !is.finite(t0) ||
-        length(t0) > 1 ||  t0 > times[1])
-      stop(ep,sQuote("t0")," must be specified as a single number not ",
-        "greater than ",sQuote("times[1]"),".",call.=FALSE)
 
     if (missing(rinit)) rinit <- NULL
 
@@ -243,10 +236,20 @@ pomp.internal <- function (data, times, t0, timename, ...,
   ep <- character(0)
   wp <- paste0("in ",sQuote("pomp"),": ")
 
-  if (missing(times) || is.null(times))
-    stop(ep,sQuote("times")," is a required argument.",call.=FALSE)
-  if (missing(t0) || is.null(t0))
-    stop(ep,sQuote("t0")," is a required argument.",call.=FALSE)
+  ## check times
+  if (missing(times) || !is.numeric(times) || !all(is.finite(times)) ||
+      (length(times)>1 && !all(diff(times)>0)))
+    stop(ep,sQuote("times")," must be specified as an increasing sequence ",
+      "of numbers.",call.=FALSE)
+  storage.mode(times) <- 'double'
+
+  ## check t0
+  if (missing(t0) || !is.numeric(t0) || !is.finite(t0) ||
+      length(t0) > 1 ||  t0 > times[1])
+    stop(ep,sQuote("t0")," must be specified as a single number not ",
+      "greater than ",sQuote("times[1]"),".",call.=FALSE)
+  storage.mode(t0) <- 'double'
+
   if (missing(timename) || is.null(timename))
     timename <- "time"
   else
@@ -290,47 +293,34 @@ pomp.internal <- function (data, times, t0, timename, ...,
   covarnames <- as.character(covarnames)
 
   if (missing(zeronames)) zeronames <- NULL
-  zeronames <- as.character(zeronames)
-  if (anyDuplicated(zeronames)) {
-    stop(ep,"all ",sQuote("zeronames")," must be unique.", call.=FALSE)
-  }
+  zeronames <- unique(as.character(zeronames))
 
   ## store the data as double-precision matrix
   storage.mode(data) <- 'double'
   if (length(obsnames) == 0) obsnames <- rownames(data)
-  if (anyDuplicated(obsnames)) {
-    stop(ep,"all ",sQuote("obsnames")," must be unique.", call.=FALSE)
-  }
 
   ## check the parameters and force them to be double-precision
   if (length(params)>0) {
-    if (is.null(names(params)) || !is.numeric(params))
+    if (is.null(names(params)) || !is.numeric(params) || any(names(params)==""))
       stop(sQuote("params")," must be a named numeric vector.",call.=FALSE)
   }
   storage.mode(params) <- 'double'
-
-  ## check times
-  if (!is.numeric(times) || any(is.na(times)) || !all(diff(times)>0))
-    stop(sQuote("times"),
-      " must be an increasing numeric vector without missing values.",
-      call.=FALSE)
-  storage.mode(times) <- 'double'
-
-  ## check t0
-  if (!is.numeric(t0) || length(t0) > 1)
-    stop("the zero-time ",sQuote("t0")," must be a single number.",call.=FALSE)
-  storage.mode(t0) <- 'double'
 
   ## check and arrange covariates
   if (is.null(covar)) {
     covar <- matrix(data=0,nrow=0,ncol=0)
     tcovar <- numeric(0)
   } else if (is.data.frame(covar)) {
-    if ((is.numeric(tcovar) && (tcovar<1 || tcovar>length(covar))) ||
+    if (anyDuplicated(names(covar))) {
+      stop(ep,"names of covariates must be unique.", call.=FALSE)
+    }
+    if ((is.numeric(tcovar) && (tcovar<1 || tcovar>length(covar) ||
+        tcovar!=as.integer(tcovar))) ||
         (is.character(tcovar) && (!(tcovar%in%names(covar)))) ||
-        (!is.numeric(tcovar) && !is.character(tcovar))) {
-      stop("if ",sQuote("covar")," is a data frame, ",sQuote("tcovar"),
-        " should indicate the time variable",call.=FALSE)
+        (!is.numeric(tcovar) && !is.character(tcovar)) || length(tcovar) != 1) {
+      stop("when ",sQuote("covar")," is a data frame, ",sQuote("tcovar"),
+        " must identify a single column of ",sQuote("covar"),
+        " either by name or by index.",call.=FALSE)
     } else if (is.numeric(tcovar)) {
       tpos <- tcovar
       tcovar <- covar[[tpos]]
@@ -350,12 +340,9 @@ pomp.internal <- function (data, times, t0, timename, ...,
     if (!all(covarnames %in% colnames(covar))) {
       missing <- covarnames[!(covarnames%in%colnames(covar))]
       stop("covariate(s) ",paste(sapply(missing,sQuote),collapse=","),
-        " are not among the columns of ",sQuote("covar"),call.=FALSE)
+        " are not among the columns of ",sQuote("covar"),".",call.=FALSE)
     }
     covar <- covar[,covarnames,drop=FALSE]
-  }
-  if (anyDuplicated(covarnames)) {
-    stop(ep,"all ",sQuote("covarnames")," must be unique", call.=FALSE)
   }
   storage.mode(tcovar) <- "double"
   storage.mode(covar) <- "double"
@@ -367,7 +354,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
 
   if (is(rinit,"Csnippet") && length(statenames)==0) {
     stop(ep,"when ",sQuote("rinit")," is provided as a C snippet, ",
-      "you must also provide ",sQuote("statenames"),call.=FALSE)
+      "you must also provide ",sQuote("statenames"),".",call.=FALSE)
   }
 
   ## by default, use flat improper prior

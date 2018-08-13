@@ -7,7 +7,7 @@ hitch <- function (..., templates,
   PACKAGE, globals, cfile, cdir, shlib.args,
   verbose = getOption("verbose", FALSE)) {
 
-  ep <- character(0)
+  ep <- paste0("in ",sQuote("hitch"),": ")
 
   if (missing(templates))
     stop(ep,sQuote("templates")," must be supplied.",call.=FALSE)
@@ -30,17 +30,11 @@ hitch <- function (..., templates,
   obsnames <- as.character(obsnames)
   covarnames <- as.character(covarnames)
 
-  if (anyDuplicated(statenames)) {
-    stop(ep,"all ",sQuote("statenames")," must be unique", call.=FALSE)
-  }
-  if (anyDuplicated(paramnames)) {
-    stop(ep,"all ",sQuote("paramnames")," must be unique", call.=FALSE)
-  }
-  if (anyDuplicated(obsnames)) {
-    stop(ep,"all ",sQuote("obsnames")," must be unique", call.=FALSE)
-  }
-  if (anyDuplicated(covarnames)) {
-    stop(ep,"all ",sQuote("covarnames")," must be unique", call.=FALSE)
+  if (anyDuplicated(c(statenames,paramnames,obsnames,covarnames))) {
+    stop(ep,"the variable names in ",sQuote("statenames"),", ",
+      sQuote("paramnames"),", ",sQuote("covarnames"),", ",
+      ", and ",sQuote("obsnames")," must be unique and disjoint.",
+      call.=FALSE)
   }
 
   horses <- list(...)

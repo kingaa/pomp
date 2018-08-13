@@ -91,8 +91,6 @@ tests/issue56.R
 
 tests/nlf.R
 
-tests/pomp.R
-
 tests/sannbox.R
 
 tests/synlik.R
@@ -105,7 +103,6 @@ R/builder.R
 R/load.R
 R/plugins.R
 R/pomp_fun.R
-R/pomp.R
 
 R/basic_probes.R
 R/probe_match.R
