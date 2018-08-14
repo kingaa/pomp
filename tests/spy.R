@@ -14,3 +14,7 @@ po1 %>%
     rinit=function(params,t0,...)params,
     paramnames="r") -> po2
 spy(po2)
+
+pompExample(sir)
+spy(sir)
+

@@ -142,8 +142,8 @@ probe.internal <- function (object, probes, params, nsim, seed,
   ll <- tryCatch(
     .Call(synth_loglik,simval,datval),
     error = function (e) {
-      stop(ep,"in synthetic likelihood computation: ",
-        conditionMessage(e),call.=FALSE)
+      stop(ep,"in synthetic likelihood computation: ",  # nocov
+        conditionMessage(e),call.=FALSE)                # nocov
     }
   )
 

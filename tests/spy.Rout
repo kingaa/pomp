@@ -116,7 +116,7 @@ pomp object ‘po2’:
 - initial state simulator, rinit:
 		function (params, t0, ...) 
 params
-<environment: 0x29c1830>
+<environment: 0x2a815b8>
 - process-model simulator, rprocess:
   - discrete-time process-model simulator, step.fun:
 		native function ‘_gompertz_simulator’, dynamically loaded from ‘pomp’
@@ -137,16 +137,16 @@ params
   - time-step = 1 
 - parameter transformations:
   - to estimation scale:
-		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_c9806604fc29113e02b277760d7a2300’
+		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_777371064cb6a780e219cae3ee80fce6’
   - from estimation scale:
-		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_c9806604fc29113e02b277760d7a2300’
+		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_777371064cb6a780e219cae3ee80fce6’
 - parameter vector unspecified
 - extra user-defined variables:  ‘bob’ 
 - C snippet file  1 :
 
-/* pomp C snippet file: pomp_c9806604fc29113e02b277760d7a2300 */
-/* Time: 2018-08-13 17:09:06.784 -0400 */
-/* Salt: 311D5A1012803446225AABE7 */
+/* pomp C snippet file: pomp_777371064cb6a780e219cae3ee80fce6 */
+/* Time: 2018-08-13 21:10:34.622 -0400 */
+/* Salt: 1BC946699580FD54826E2A0C */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -188,12 +188,551 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_c9806604fc29113e02b277760d7a2300 (DllInfo *info)
+void R_init_pomp_777371064cb6a780e219cae3ee80fce6 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_c9806604fc29113e02b277760d7a2300", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_c9806604fc29113e02b277760d7a2300", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_c9806604fc29113e02b277760d7a2300", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("pomp_c9806604fc29113e02b277760d7a2300", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_777371064cb6a780e219cae3ee80fce6", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_777371064cb6a780e219cae3ee80fce6", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_777371064cb6a780e219cae3ee80fce6", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_777371064cb6a780e219cae3ee80fce6", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
 }
 
+> 
+> pompExample(sir)
+newly created object(s):
+ sir 
+> spy(sir)
+==================
+pomp object ‘sir’:
+
+- data:
+  - 208 records of 1 observable, recorded from t = 0.0192 to 4 
+  - summary of data:
+    reports    
+ Min.   :  98  
+ 1st Qu.: 197  
+ Median : 256  
+ Mean   : 434  
+ 3rd Qu.: 629  
+ Max.   :1507  
+
+- zero time, t0 = 0
+- covariates:  - 421 records of 3 covariates, recorded from t = 0 to 4.2 
+  - summary of covariates:
+     seas1           seas2           seas3      
+ Min.   :0.042   Min.   :0.042   Min.   :0.042  
+ 1st Qu.:0.118   1st Qu.:0.122   1st Qu.:0.099  
+ Median :0.335   Median :0.322   Median :0.289  
+ Mean   :0.345   Mean   :0.334   Mean   :0.321  
+ 3rd Qu.:0.560   3rd Qu.:0.539   3rd Qu.:0.539  
+ Max.   :0.667   Max.   :0.667   Max.   :0.667  
+
+- initial state simulator, rinit:
+		native function ‘__pomp_rinit’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+- process-model simulator, rprocess:
+  - Euler-method process-model simulator, step.fun:
+		native function ‘__pomp_stepfn’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+  - time-step = 0.000962 
+- process model density, dprocess:
+		not specified
+- measurement model simulator, rmeasure:
+		native function ‘__pomp_rmeasure’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+- measurement model density, dmeasure:
+		native function ‘__pomp_dmeasure’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+- prior simulator, rprior:
+		not specified
+- prior density, dprior:
+		native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
+- deterministic skeleton:
+  - vectorfield:
+		native function ‘__pomp_skelfn’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+- parameter transformations:
+  - to estimation scale:
+		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+  - from estimation scale:
+		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+- parameter vector:
+   gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
+2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
+     rho      S_0      I_0      R_0 
+6.00e-01 6.50e-02 1.00e-03 9.34e-01 
+- C snippet file  1 :
+
+/* pomp C snippet file: pomp_066a4d98f8d71b9a5040d3c8ca66cf50 */
+/* Time: 2018-08-13 21:10:34.923 -0400 */
+/* Salt: 7C766E5AFD640F32B6EF2CA3 */
+
+#include <pomp.h>
+#include <R_ext/Rdynload.h>
+
+
+    static int nbasis = 3; 
+
+
+/* C snippet: 'rinit' */
+#define gamma		(__p[__parindex[0]])
+#define mu		(__p[__parindex[1]])
+#define iota		(__p[__parindex[2]])
+#define beta1		(__p[__parindex[3]])
+#define beta_sd		(__p[__parindex[4]])
+#define pop		(__p[__parindex[5]])
+#define rho		(__p[__parindex[6]])
+#define S_0		(__p[__parindex[7]])
+#define I_0		(__p[__parindex[8]])
+#define R_0		(__p[__parindex[9]])
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define R		(__x[__stateindex[2]])
+#define cases		(__x[__stateindex[3]])
+#define W		(__x[__stateindex[4]])
+
+void __pomp_rinit (double *__x, const double *__p, double t, const int *__stateindex, const int *__parindex, const int *__covindex, const double *__covars)
+{
+ 
+    double m = pop/(S_0+I_0+R_0);
+    S = nearbyint(m*S_0);
+    I = nearbyint(m*I_0);
+    R = nearbyint(m*R_0);
+    cases = 0;
+    W = 0; 
+}
+
+#undef gamma
+#undef mu
+#undef iota
+#undef beta1
+#undef beta_sd
+#undef pop
+#undef rho
+#undef S_0
+#undef I_0
+#undef R_0
+#undef seas1
+#undef seas2
+#undef seas3
+#undef S
+#undef I
+#undef R
+#undef cases
+#undef W
+
+/* C snippet: 'step.fn' */
+#define gamma		(__p[__parindex[0]])
+#define mu		(__p[__parindex[1]])
+#define iota		(__p[__parindex[2]])
+#define beta1		(__p[__parindex[3]])
+#define beta_sd		(__p[__parindex[4]])
+#define pop		(__p[__parindex[5]])
+#define rho		(__p[__parindex[6]])
+#define S_0		(__p[__parindex[7]])
+#define I_0		(__p[__parindex[8]])
+#define R_0		(__p[__parindex[9]])
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define R		(__x[__stateindex[2]])
+#define cases		(__x[__stateindex[3]])
+#define W		(__x[__stateindex[4]])
+
+void __pomp_stepfn (double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __covdim, const double *__covars, double t, double dt)
+{
+ 
+    int nrate = 6;
+    double rate[nrate];		  // transition rates
+    double trans[nrate];		// transition numbers
+    double beta;
+    double dW;
+
+    beta = dot_product(nbasis,&beta1,&seas1);
+
+    // gamma noise, mean=dt, variance=(beta_sd^2 dt)
+    dW = rgammawn(beta_sd,dt);
+
+    // compute the transition rates
+    rate[0] = mu*pop;		// birth into susceptible class
+    rate[1] = (iota+beta*I*dW/dt)/pop; // force of infection
+    rate[2] = mu;			// death from susceptible class
+    rate[3] = gamma;	// recovery
+    rate[4] = mu;			// death from infectious class
+    rate[5] = mu; 		// death from recovered class
+
+    // compute the transition numbers
+    trans[0] = rpois(rate[0]*dt);	// births are Poisson
+    reulermultinom(2,S,&rate[1],dt,&trans[1]);
+    reulermultinom(2,I,&rate[3],dt,&trans[3]);
+    reulermultinom(1,R,&rate[5],dt,&trans[5]);
+
+    // balance the equations
+    S += trans[0]-trans[1]-trans[2];
+    I += trans[1]-trans[3]-trans[4];
+    R += trans[3]-trans[5];
+    cases += trans[3];		// cases are cumulative recoveries
+    if (beta_sd > 0.0)  W += (dW-dt)/beta_sd; 
+}
+
+#undef gamma
+#undef mu
+#undef iota
+#undef beta1
+#undef beta_sd
+#undef pop
+#undef rho
+#undef S_0
+#undef I_0
+#undef R_0
+#undef seas1
+#undef seas2
+#undef seas3
+#undef S
+#undef I
+#undef R
+#undef cases
+#undef W
+
+/* C snippet: 'rmeasure' */
+#define gamma		(__p[__parindex[0]])
+#define mu		(__p[__parindex[1]])
+#define iota		(__p[__parindex[2]])
+#define beta1		(__p[__parindex[3]])
+#define beta_sd		(__p[__parindex[4]])
+#define pop		(__p[__parindex[5]])
+#define rho		(__p[__parindex[6]])
+#define S_0		(__p[__parindex[7]])
+#define I_0		(__p[__parindex[8]])
+#define R_0		(__p[__parindex[9]])
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define R		(__x[__stateindex[2]])
+#define cases		(__x[__stateindex[3]])
+#define W		(__x[__stateindex[4]])
+#define reports		(__y[__obsindex[0]])
+
+void __pomp_rmeasure (double *__y, const double *__x, const double *__p, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
+{
+ 
+    double mean, sd;
+    double rep;
+    mean = cases*rho;
+    sd = sqrt(cases*rho*(1-rho));
+    rep = nearbyint(rnorm(mean,sd));
+    reports = (rep > 0) ? rep : 0; 
+}
+
+#undef gamma
+#undef mu
+#undef iota
+#undef beta1
+#undef beta_sd
+#undef pop
+#undef rho
+#undef S_0
+#undef I_0
+#undef R_0
+#undef seas1
+#undef seas2
+#undef seas3
+#undef S
+#undef I
+#undef R
+#undef cases
+#undef W
+#undef reports
+
+/* C snippet: 'dmeasure' */
+#define gamma		(__p[__parindex[0]])
+#define mu		(__p[__parindex[1]])
+#define iota		(__p[__parindex[2]])
+#define beta1		(__p[__parindex[3]])
+#define beta_sd		(__p[__parindex[4]])
+#define pop		(__p[__parindex[5]])
+#define rho		(__p[__parindex[6]])
+#define S_0		(__p[__parindex[7]])
+#define I_0		(__p[__parindex[8]])
+#define R_0		(__p[__parindex[9]])
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define R		(__x[__stateindex[2]])
+#define cases		(__x[__stateindex[3]])
+#define W		(__x[__stateindex[4]])
+#define reports		(__y[__obsindex[0]])
+#define lik		(__lik[0])
+
+void __pomp_dmeasure (double *__lik, const double *__y, const double *__x, const double *__p, int give_log, const int *__obsindex, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
+{
+ 
+    double mean, sd;
+    double f;
+    mean = cases*rho;
+    sd = sqrt(cases*rho*(1-rho));
+    if (reports > 0) {
+      f = pnorm(reports+0.5,mean,sd,1,0)-pnorm(reports-0.5,mean,sd,1,0);
+    } else {
+      f = pnorm(reports+0.5,mean,sd,1,0);
+    }
+    lik = (give_log) ? log(f) : f; 
+}
+
+#undef gamma
+#undef mu
+#undef iota
+#undef beta1
+#undef beta_sd
+#undef pop
+#undef rho
+#undef S_0
+#undef I_0
+#undef R_0
+#undef seas1
+#undef seas2
+#undef seas3
+#undef S
+#undef I
+#undef R
+#undef cases
+#undef W
+#undef reports
+#undef lik
+
+/* C snippet: 'toEst' */
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define gamma		(__p[__parindex[0]])
+#define mu		(__p[__parindex[1]])
+#define iota		(__p[__parindex[2]])
+#define beta1		(__p[__parindex[3]])
+#define beta_sd		(__p[__parindex[4]])
+#define pop		(__p[__parindex[5]])
+#define rho		(__p[__parindex[6]])
+#define S_0		(__p[__parindex[7]])
+#define I_0		(__p[__parindex[8]])
+#define R_0		(__p[__parindex[9]])
+#define T_gamma		(__pt[__parindex[0]])
+#define T_mu		(__pt[__parindex[1]])
+#define T_iota		(__pt[__parindex[2]])
+#define T_beta1		(__pt[__parindex[3]])
+#define T_beta_sd		(__pt[__parindex[4]])
+#define T_pop		(__pt[__parindex[5]])
+#define T_rho		(__pt[__parindex[6]])
+#define T_S_0		(__pt[__parindex[7]])
+#define T_I_0		(__pt[__parindex[8]])
+#define T_R_0		(__pt[__parindex[9]])
+
+void __pomp_to_trans (double *__pt, const double *__p, const int *__parindex)
+{
+ 
+      int k;
+      const double *BETA = &beta1;
+      double *TBETA = &T_beta1;
+      for (k = 0; k < nbasis; k++) TBETA[k] = log(BETA[k]);
+	T_gamma = log(gamma);
+	T_mu = log(mu);
+	T_iota = log(iota);
+	T_beta_sd = log(beta_sd);
+	T_rho = logit(rho);
+	to_log_barycentric(&T_S_0,&S_0,3); 
+}
+
+#undef seas1
+#undef seas2
+#undef seas3
+#undef gamma
+#undef mu
+#undef iota
+#undef beta1
+#undef beta_sd
+#undef pop
+#undef rho
+#undef S_0
+#undef I_0
+#undef R_0
+#undef T_gamma
+#undef T_mu
+#undef T_iota
+#undef T_beta1
+#undef T_beta_sd
+#undef T_pop
+#undef T_rho
+#undef T_S_0
+#undef T_I_0
+#undef T_R_0
+
+/* C snippet: 'fromEst' */
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define gamma		(__p[__parindex[0]])
+#define mu		(__p[__parindex[1]])
+#define iota		(__p[__parindex[2]])
+#define beta1		(__p[__parindex[3]])
+#define beta_sd		(__p[__parindex[4]])
+#define pop		(__p[__parindex[5]])
+#define rho		(__p[__parindex[6]])
+#define S_0		(__p[__parindex[7]])
+#define I_0		(__p[__parindex[8]])
+#define R_0		(__p[__parindex[9]])
+#define T_gamma		(__pt[__parindex[0]])
+#define T_mu		(__pt[__parindex[1]])
+#define T_iota		(__pt[__parindex[2]])
+#define T_beta1		(__pt[__parindex[3]])
+#define T_beta_sd		(__pt[__parindex[4]])
+#define T_pop		(__pt[__parindex[5]])
+#define T_rho		(__pt[__parindex[6]])
+#define T_S_0		(__pt[__parindex[7]])
+#define T_I_0		(__pt[__parindex[8]])
+#define T_R_0		(__pt[__parindex[9]])
+
+void __pomp_from_trans (double *__p, const double *__pt, const int *__parindex)
+{
+ 
+      int k;
+      const double *TBETA = &T_beta1;
+      double *BETA = &beta1;
+      for (k = 0; k < nbasis; k++) BETA[k] = exp(TBETA[k]);
+	gamma = exp(T_gamma);
+	mu = exp(T_mu);
+	iota = exp(T_iota);
+	beta_sd = exp(T_beta_sd);
+	rho = expit(T_rho);
+	from_log_barycentric(&S_0,&T_S_0,3); 
+}
+
+#undef seas1
+#undef seas2
+#undef seas3
+#undef gamma
+#undef mu
+#undef iota
+#undef beta1
+#undef beta_sd
+#undef pop
+#undef rho
+#undef S_0
+#undef I_0
+#undef R_0
+#undef T_gamma
+#undef T_mu
+#undef T_iota
+#undef T_beta1
+#undef T_beta_sd
+#undef T_pop
+#undef T_rho
+#undef T_S_0
+#undef T_I_0
+#undef T_R_0
+
+/* C snippet: 'skeleton' */
+#define gamma		(__p[__parindex[0]])
+#define mu		(__p[__parindex[1]])
+#define iota		(__p[__parindex[2]])
+#define beta1		(__p[__parindex[3]])
+#define beta_sd		(__p[__parindex[4]])
+#define pop		(__p[__parindex[5]])
+#define rho		(__p[__parindex[6]])
+#define S_0		(__p[__parindex[7]])
+#define I_0		(__p[__parindex[8]])
+#define R_0		(__p[__parindex[9]])
+#define seas1		(__covars[__covindex[0]])
+#define seas2		(__covars[__covindex[1]])
+#define seas3		(__covars[__covindex[2]])
+#define S		(__x[__stateindex[0]])
+#define I		(__x[__stateindex[1]])
+#define R		(__x[__stateindex[2]])
+#define cases		(__x[__stateindex[3]])
+#define W		(__x[__stateindex[4]])
+#define DS		(__f[__stateindex[0]])
+#define DI		(__f[__stateindex[1]])
+#define DR		(__f[__stateindex[2]])
+#define Dcases		(__f[__stateindex[3]])
+#define DW		(__f[__stateindex[4]])
+
+void __pomp_skelfn (double *__f, const double *__x, const double *__p, const int *__stateindex, const int *__parindex, const int *__covindex, int __ncovars, const double *__covars, double t)
+{
+ 
+    int nrate = 6;
+    double rate[nrate];		  // transition rates
+    double term[nrate];		// terms in the equations
+    double beta;
+    double dW;
+
+    beta = dot_product(nbasis,&beta1,&seas1);
+
+    // compute the transition rates
+    rate[0] = mu*pop;		// birth into susceptible class
+    rate[1] = (iota+beta*I)/pop; // force of infection
+    rate[2] = mu;			// death from susceptible class
+    rate[3] = gamma;	// recovery
+    rate[4] = mu;			// death from infectious class
+    rate[5] = mu; 		// death from recovered class
+
+    // compute the several terms
+    term[0] = rate[0];
+    term[1] = rate[1]*S;
+    term[2] = rate[2]*S;
+    term[3] = rate[3]*I;
+    term[4] = rate[4]*I;
+    term[5] = rate[5]*R;
+
+    // balance the equations
+    DS = term[0]-term[1]-term[2];
+    DI = term[1]-term[3]-term[4];
+    DR = term[3]-term[5];
+    Dcases = term[3];		// accumulate the new I->R transitions
+    DW = 0;			// no noise, so no noise accumulation 
+}
+
+#undef gamma
+#undef mu
+#undef iota
+#undef beta1
+#undef beta_sd
+#undef pop
+#undef rho
+#undef S_0
+#undef I_0
+#undef R_0
+#undef seas1
+#undef seas2
+#undef seas3
+#undef S
+#undef I
+#undef R
+#undef cases
+#undef W
+#undef DS
+#undef DI
+#undef DR
+#undef Dcases
+#undef DW
+
+static int __pomp_load_stack = 0;
+
+void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
+
+void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
+
+void R_init_pomp_066a4d98f8d71b9a5040d3c8ca66cf50 (DllInfo *info)
+{
+R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
+}
+
+> 
 > 

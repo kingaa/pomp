@@ -128,6 +128,7 @@ alist["c"]
 alist[["b"]]
 alist[["c"]]
 c(one=abc1,two=abc2,three=abc3)
+print(c(one=abc1,two=abc2,three=abc3))
 
 capture.output(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01)),
