@@ -149,6 +149,8 @@ probe.internal <- function (object, probes, params, nsim, seed,
 
   coef(object) <- params
 
+  names(dimnames(simval)) <- c("rep","probe")
+
   new(
     "probed_pomp",
     object,

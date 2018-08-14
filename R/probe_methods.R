@@ -29,7 +29,8 @@ setMethod(
   definition=function (object, ...) {
     dv <- object@datvals
     list(
-      data=array(dv,dim=c(1,length(dv)),dimnames=list(NULL,names(dv))),
+      data=array(dv,dim=c(1,length(dv)),
+        dimnames=list(rep="data",probe=names(dv))),
       sims=object@simvals
     )
   }

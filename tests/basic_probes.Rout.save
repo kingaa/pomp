@@ -1,0 +1,199 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> 
+> library(pomp)
+> library(magrittr)
+> library(reshape2)
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> library(tidyr)
+
+Attaching package: ‘tidyr’
+
+The following object is masked from ‘package:reshape2’:
+
+    smiths
+
+The following object is masked from ‘package:magrittr’:
+
+    extract
+
+> library(ggplot2)
+> 
+> set.seed(255066335)
+> 
+> pompExample(ou2)
+newly created object(s):
+ ou2 
+> 
+> plist <- list(
++   mean=probe.mean("y1"),
++   med=probe.median("y2"),
++   v=probe.var("y1"),
++   sd=probe.sd("y2"),
++   pd=probe.period("y1",kernel.width=5),
++   probe.quantile("y2",prob=c(0.1,0.5,0.9)),
++   probe.acf("y1",lags=c(0,1,3,6)),
++   probe.acf("y2",lags=c(1,2,3),type="cor"),
++   probe.ccf(c("y1","y2"),lags=c(0,1,2)),
++   probe.marginal("y1",ref=obs(ou2,"y1")),
++   probe.nlar("y2",lags=c(1,1,1,2,2),powers=c(1,2,3,1,2))
++ )
+> 
+> ou2 %>% probe(probes=plist,nsim=1000) -> pb
+> summary(pb)
+$coef
+alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
+    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
+
+$nsim
+[1] 1000
+
+$quantiles
+    mean      med        v       sd       pd      10%      50%      90% 
+   0.127    0.434    0.025    0.049    0.008    0.897    0.434    0.060 
+acf.0.y1 acf.1.y1 acf.3.y1 acf.6.y1 acf.1.y2 acf.2.y2 acf.3.y2    ccf.0 
+   0.025    0.029    0.083    0.910    0.103    0.157    0.268    0.596 
+   ccf.1    ccf.2   marg.1   marg.2   marg.3 nlar.1^1 nlar.1^2 nlar.1^3 
+   0.957    0.955    0.065    0.887    0.577    0.081    0.996    0.594 
+nlar.2^1 nlar.2^2 
+   0.870    0.005 
+
+$pvals
+    mean      med        v       sd       pd      10%      50%      90% 
+ 0.25574  0.86913  0.05195  0.09990  0.01798  0.20779  0.86913  0.12188 
+acf.0.y1 acf.1.y1 acf.3.y1 acf.6.y1 acf.1.y2 acf.2.y2 acf.3.y2    ccf.0 
+ 0.05195  0.05994  0.16783  0.18182  0.20779  0.31568  0.53746  0.80919 
+   ccf.1    ccf.2   marg.1   marg.2   marg.3 nlar.1^1 nlar.1^2 nlar.1^3 
+ 0.08791  0.09191  0.13187  0.22777  0.84715  0.16384  0.00999  0.81319 
+nlar.2^1 nlar.2^2 
+ 0.26174  0.01199 
+
+$synth.loglik
+[1] 76
+
+> stopifnot(logLik(pb)==summary(pb)$synth.loglik)
+> 
+> try(probe.mean(c("y1","y2")))
+Error : ‘probe.mean’ is a univariate probe
+> try(probe.median(c("y1","y2")))
+Error : ‘probe.median’ is a univariate probe
+> try(probe.var(c("y1","y2")))
+Error : ‘probe.var’ is a univariate probe
+> try(probe.sd(c("y1","y2")))
+Error : ‘probe.sd’ is a univariate probe
+> try(probe.period(c("y1","y2")))
+Error : ‘probe.period’ is a univariate probe
+> try(probe.quantile(c("y1","y2")))
+Error : ‘probe.quantile’ is a univariate probe
+> try(probe.marginal(c("y1","y2")))
+Error : ‘probe.marginal’ is a univariate probe
+> try(probe.ccf("y1"))
+Error : in ‘probe.ccf’: ‘vars’ must name two variables
+> try(probe.nlar(c("y1","y2")))
+Error : ‘probe.nlar’ is a univariate probe
+> 
+> probe.acf(c("y1","y2"),lags=c(0,1),type="cor") -> f
+Warning message:
+in ‘probe.acf’: useless zero lag discarded in ‘probe.acf’ 
+> probe.acf(c("y1","y2"),lags=c(1,5),type="cor") -> f
+> ou2 %>% simulate() %>% obs() %>% f()
+acf.1.y1 acf.5.y1 acf.1.y2 acf.5.y2 
+  0.7134  -0.4232   0.8906  -0.0723 
+> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
+Error : in ‘probe.acf’: subscript out of bounds
+> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f())
+Error : in ‘probe.acf’: series 1 has no data
+> ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
+acf.1.y1 acf.5.y1 acf.1.y2 acf.5.y2 
+   0.980    0.895    0.980    0.895 
+> 
+> probe.ccf(c("y2","y1"),lags=c(0,1,2),type="cor") -> f
+> ou2 %>% simulate() %>% obs() %>% f()
+ccf.0 ccf.1 ccf.2 
+0.159 0.515 0.700 
+> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
+Error : in ‘probe.ccf’: subscript out of bounds
+> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f())
+Error : in ‘probe.ccf’: series 1 has no data
+> ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
+ ccf.0  ccf.1  ccf.2 
+-1.000 -0.778 -0.515 
+> 
+> probe.marginal("y1",ref=obs(ou2,"y1"),order=6,diff=2) -> f
+> ou2 %>% simulate() %>% obs() %>% f()
+   marg.1    marg.2    marg.3    marg.4    marg.5    marg.6 
+ 1.08e+00  1.30e-02 -1.59e-03 -4.50e-04  2.47e-05  3.46e-06 
+> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
+Error : in ‘probe.marginal’: subscript out of bounds
+> ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
+> stopifnot(all(is.na(x)))
+> try(ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f())
+Error : in ‘probe.marginal’: length of 'ref' must equal length of data
+> ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f() -> x
+> stopifnot(x==0)
+> 
+> try(probe.nlar("y1",lags=c(0,-1)))
+Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ are required arguments.
+> try(probe.nlar("y1",lags=c(0,-1),powers=2))
+Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive integers.
+> try(probe.nlar("y1",lags=c(0,1,2),powers=c(0,-1)))
+Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive integers.
+> try(probe.nlar("y1",lags=c(0,1,NA),powers=c(0,1)))
+Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive integers.
+> try(probe.nlar("y1",lags=c(0,1,2),powers=NA))
+Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive integers.
+> try(probe.nlar("y1",lags=c(0,1,2),powers=NULL))
+Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive integers.
+> try(probe.nlar("y1",lags=list(0,1,2),powers=1))
+Error : in ‘probe.nlar’: ‘lags’ and ‘powers’ must be positive integers.
+> try(probe.nlar("y1",lags=list(1,2),powers=c(1,2,3)))
+Error : in ‘probe.nlar’: ‘lags’ must match ‘powers’ in length, or have length 1
+> try(probe.nlar("y1",lags=list(1,2,3),powers=c(1,2)))
+Error : in ‘probe.nlar’: ‘powers’ must match ‘lags’ in length, or have length 1
+> 
+> plist <- list(
++   probe.nlar("y1",lags=c(1,2,3),powers=2),
++   probe.nlar("y2",lags=1,powers=c(1,2,3))
++ )
+> probe.nlar("y2",lags=1,powers=c(1,2,3)) -> f
+> ou2 %>% simulate() %>% obs() %>% f()
+nlar.1^1 nlar.1^2 nlar.1^3 
+8.89e-01 1.78e-04 4.17e-05 
+> try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
+Error : in ‘probe.nlar’: subscript out of bounds
+> ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
+> stopifnot(x==0)
+> ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
+nlar.1^1 nlar.1^2 nlar.1^3 
+  0.8815   0.0988   0.0149 
+> 
+> 
