@@ -45,9 +45,6 @@
 - better unit tests for `sannbox`
 - support for asymmetric MCMC proposals
 - one-point SCQL function for possible use in fitting initial conditions
-- save particle filtering variance?
-  Prediction means are optional.
-	Only interesting for end-user if one wants to look at residuals.
 - partial rejection control for `pfilter`?
 - adaptive particle numbers in pfilter (?)
 - parallel `pfilter` algorithm (?)
@@ -79,7 +76,6 @@ tests/ou2.R
 tests/rw2.R
 
 tests/dimchecks.R
-tests/dp.R
 tests/filtfail.R
 tests/forecast.R
 
