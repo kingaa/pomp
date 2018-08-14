@@ -18,3 +18,9 @@ spy(po2)
 pompExample(sir)
 spy(sir)
 
+pompExample(rw2)
+spy(rw2)
+
+pompExample(sir2)
+spy(sir2)
+

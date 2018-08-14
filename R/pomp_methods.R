@@ -12,8 +12,9 @@ setAs(
       x <- cbind(x,t(from@states))
       names(x) <- c(nm,rownames(from@states))
     }
-    if (length(from@covar)>0) {
-      nm <- c(names(x),get_covariate_names(from@covar))
+    cnames <- get_covariate_names(from@covar)
+    if (length(cnames) > 0) {
+      nm <- c(names(x),cnames)  # perhaps not strictly necessary (but see issue #56)
       y <- .Call(lookup_in_table,from@covar,from@times)
       x <- cbind(x,t(y))
       names(x) <- nm
