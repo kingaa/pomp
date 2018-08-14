@@ -1,3 +1,6 @@
+## deterministic trajectory computation
+setGeneric("trajectory",function(object,...)standardGeneric("trajectory"))
+
 setMethod(
   "trajectory",
   signature=signature(object="pomp"),

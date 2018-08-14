@@ -1,3 +1,5 @@
+## trajectory matching
+
 setClass(
   "traj_matched_pomp",
   contains="pomp",
@@ -10,6 +12,11 @@ setClass(
     value="numeric"
   )
 )
+
+setGeneric("traj.match.objfun",
+  function(object,...)standardGeneric("traj.match.objfun"))
+setGeneric("traj.match",
+  function(object,...)standardGeneric("traj.match"))
 
 setMethod(
   "logLik",
@@ -111,6 +118,38 @@ setMethod(
     if (missing(transform)) transform <- object@transform
 
     traj.match(as(object,"pomp"),est=est,transform=transform,...)
+  }
+)
+
+setMethod(
+  "traj.match",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("traj.match"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "traj.match",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("traj.match")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "traj.match.objfun",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("traj.match.objfun"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "traj.match.objfun",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("traj.match.objfun")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

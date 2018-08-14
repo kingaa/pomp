@@ -23,6 +23,8 @@ setClass(
   )
 )
 
+setGeneric("bsmc2",function(object,...)standardGeneric("bsmc2"))
+
 setMethod(
   "bsmc2",
   signature=signature(object="pomp"),
@@ -42,6 +44,22 @@ setMethod(
       transform=transform,
       ...
     )
+  }
+)
+
+setMethod(
+  "bsmc2",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("bsmc2"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "bsmc2",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("bsmc2")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

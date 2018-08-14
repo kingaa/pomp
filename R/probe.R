@@ -1,3 +1,5 @@
+## probes and synthetic likelihood
+
 setClass(
   "probed_pomp",
   contains="pomp",
@@ -11,6 +13,8 @@ setClass(
     seed="integer"
   )
 )
+
+setGeneric("probe",function(object,probes,...)standardGeneric("probe"))
 
 setMethod(
   "probe",
@@ -52,6 +56,22 @@ setMethod(
       ...,
       verbose=verbose
     )
+  }
+)
+
+setMethod(
+  "probe",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("probe"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "probe",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("probe")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

@@ -13,6 +13,9 @@ setClass(
   )
 )
 
+setGeneric("spect.match",function(object,...)
+  standardGeneric("spect.match"))
+
 setMethod(
   "spect.match",
   signature=signature(object="pomp"),

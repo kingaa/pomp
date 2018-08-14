@@ -1,3 +1,5 @@
+## ABC algorithm functions
+
 ## define the abcd_pomp class
 setClass(
   "abcd_pomp",
@@ -24,6 +26,8 @@ setClass(
     traces=array(dim=c(0,0))
   )
 )
+
+setGeneric('abc',function(object,...)standardGeneric("abc"))
 
 setMethod(
   "abc",
@@ -122,6 +126,22 @@ setMethod(
     obj@accepts <- as.integer(accepts+obj@accepts)
 
     obj
+  }
+)
+
+setMethod(
+  "abc",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("abc"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "abc",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("abc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

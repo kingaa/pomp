@@ -29,6 +29,11 @@ setMethod(
   }
 )
 
+setGeneric("probe.match.objfun",
+  function(object,...)standardGeneric("probe.match.objfun"))
+setGeneric("probe.match",
+  function(object,...)standardGeneric("probe.match"))
+
 setMethod(
   "probe.match.objfun",
   signature=signature(object="pomp"),
@@ -171,6 +176,38 @@ setMethod(
 
     probe.match(as(object,"pomp"),est=est,probes=probes,nsim=nsim,seed=seed,
       transform=transform,fail.value=fail.value,verbose=verbose,...)
+  }
+)
+
+setMethod(
+  "probe.match",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("probe.match"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "probe.match",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("probe.match")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "probe.match.objfun",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("probe.match.objfun"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "probe.match.objfun",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("probe.match.objfun")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

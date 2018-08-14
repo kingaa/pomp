@@ -1,5 +1,8 @@
 ## simulate a partially-observed Markov process
 
+setGeneric("simulate",function(object,nsim=1,seed=NULL,...)
+  standardGeneric("simulate"))
+
 setMethod(
   "simulate",
   signature=signature(object="pomp"),

@@ -1,3 +1,4 @@
+## particle Markov chain Monte Carlo (PMCMC)
 ## define the pmcmcd_pomp class
 setClass(
   "pmcmcd_pomp",
@@ -20,6 +21,8 @@ setClass(
     log.prior=numeric(0)
   )
 )
+
+setGeneric('pmcmc',function(object,...)standardGeneric("pmcmc"))
 
 setMethod(
   "pmcmc",
@@ -44,7 +47,7 @@ setMethod(
       verbose=verbose,
       ...
     )
-      
+
   }
 )
 
@@ -112,6 +115,22 @@ setMethod(
     obj@accepts <- as.integer(accepts+obj@accepts)
 
     obj
+  }
+)
+
+setMethod(
+  "pmcmc",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("pmcmc"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "pmcmc",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("pmcmc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

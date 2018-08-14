@@ -1,4 +1,4 @@
-## Fit a POMP object using NLF
+## nonlinear forecasting
 ## v. 0.1, 3 Dec. 2007
 ## by Bruce Kendall & Steve Ellner
 ##
@@ -52,6 +52,8 @@ setClass(
     logql=as.numeric(NA)
   )
 )
+
+setGeneric('nlf',function(object,...)standardGeneric("nlf"))
 
 setMethod(
   "nlf",
@@ -158,6 +160,22 @@ setMethod(
       tensor=tensor, nconverge=nconverge, seed=seed, transform=transform,
       transform.data=transform.data, nrbf=nrbf, method=method,
       lql.frac=lql.frac, se.par.frac=se.par.frac, ...)
+  }
+)
+
+setMethod(
+  "nlf",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("nlf"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "nlf",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("nlf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

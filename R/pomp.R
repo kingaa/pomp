@@ -30,6 +30,9 @@ pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
   )
 }
 
+setGeneric("construct_pomp",
+  function(data,...)standardGeneric("construct_pomp"))
+
 setMethod(
   "construct_pomp",
   signature=signature(data="data.frame"),

@@ -1,5 +1,5 @@
+## basic SMC (particle filter)
 ## particle filtering codes
-
 setClass(
   "pfilterd_pomp",
   contains="pomp",
@@ -37,6 +37,8 @@ setClass(
   )
 )
 
+setGeneric("pfilter",function(object,...)standardGeneric("pfilter"))
+
 setMethod(
   "pfilter",
   signature=signature(object="pomp"),
@@ -54,7 +56,7 @@ setMethod(
 
     if (missing(params)) params <- coef(object)
     if (missing(Np)) Np <- NULL
-      
+
     pfilter.internal(
       object=object,
       params=params,
@@ -85,6 +87,22 @@ setMethod(
 
     pfilter(as(object,"pomp"),params=params,Np=Np,tol=tol,...)
 
+  }
+)
+
+setMethod(
+  "pfilter",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("pfilter"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "pfilter",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("pfilter")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

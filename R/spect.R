@@ -1,3 +1,4 @@
+## power spectrum
 ## Authors:
 ## Cai GoGwilt, Daniel Reuman, Aaron A. King
 
@@ -27,6 +28,8 @@ setMethod(
     )
   }
 )
+
+setGeneric("spect",function(object,...)standardGeneric("spect"))
 
 setMethod(
   "spect",
@@ -78,6 +81,22 @@ setMethod(
       ...
     )
 
+  }
+)
+
+setMethod(
+  "spect",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("spect"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "spect",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("spect")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 

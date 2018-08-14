@@ -1,3 +1,5 @@
+## Kalman filter methods
+
 setClass(
   "kalmand_pomp",
   contains="pomp",
@@ -18,6 +20,9 @@ setClass(
     loglik=as.double(NA)
   )
 )
+
+setGeneric("enkf",function(object,...)standardGeneric("enkf"))
+setGeneric("eakf",function(object,...)standardGeneric("eakf"))
 
 ## ENSEMBLE KALMAN FILTER (ENKF)
 

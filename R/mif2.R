@@ -14,6 +14,8 @@ setClass(
   )
 )
 
+setGeneric("mif2",function(object,...)standardGeneric("mif2"))
+
 setMethod(
   "mif2",
   signature=signature(object="pomp"),
@@ -92,6 +94,22 @@ setMethod(
     obj@Nmif <- as.integer(ndone+Nmif)
 
     obj
+  }
+)
+
+setMethod(
+  "mif2",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("mif2"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "mif2",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("mif2")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 
