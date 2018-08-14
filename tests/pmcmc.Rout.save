@@ -116,6 +116,13 @@ Error in object@traces[, pars, drop = FALSE] : subscript out of bounds
 NULL
 
 > 
+> stopifnot(dim(filter.traj(mcmc1))==c(1,100,11),
++   length(filter.traj(c(mcmc1,mcmc2,mcmc3)))==3)
+> logLik(mcmc1)
+[1] 4.9
+> logLik(c(mcmc1,mcmc2,mcmc3))
+[1] 4.90 4.58 4.58
+> 
 > try(pmcmc())
 Error : in ‘pmcmc’: ‘object’ is a required argument
 > try(pmcmc("bob"))

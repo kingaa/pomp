@@ -1,5 +1,7 @@
 options(digits=3)
 
+set.seed(758723694)
+
 library(pomp)
 library(magrittr)
 
@@ -175,4 +177,5 @@ pompExample(sir,envir=NULL) %>% extract2(1) %>%
 po2 %>% simulate(seed=4358686) %>% as.data.frame()
 pomp(po2,covar=NULL)@covar
 try(po2 %>% pomp(covar="bob"))
+try(po2 %>% pomp(rmeasure=function(x)x))
 

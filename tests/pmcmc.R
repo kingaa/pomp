@@ -44,6 +44,11 @@ c(mcmc1,mcmc2) -> mcl
 mcl[1]
 mcl[3]
 
+stopifnot(dim(filter.traj(mcmc1))==c(1,100,11),
+  length(filter.traj(c(mcmc1,mcmc2,mcmc3)))==3)
+logLik(mcmc1)
+logLik(c(mcmc1,mcmc2,mcmc3))
+
 try(pmcmc())
 try(pmcmc("bob"))
 

@@ -68,7 +68,7 @@ setMethod(
       if (is.function(f)&&(!all(args%in%names(formals(f)))))
         stop("in ",sQuote(slotname),": ",
           sQuote(fname)," must be a function of prototype ",
-          deparse(proto),call.=FALSE)
+          sQuote(deparse(proto)),call.=FALSE)
     }
     new("pomp_fun",R.fun=f,mode=pompfunmode$Rfun,purpose=as.character(slotname))
   }

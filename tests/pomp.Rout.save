@@ -19,6 +19,8 @@ Type 'q()' to quit R.
 
 > options(digits=3)
 > 
+> set.seed(758723694)
+> 
 > library(pomp)
 > library(magrittr)
 > 
@@ -194,13 +196,13 @@ Warning messages:
 5    5  3.775 -4.43
 6    6 -3.080 -3.92
 > as.data.frame(po1) %>% head()
-  time     y1    y2     x1    x2
-1    1  0.301  5.41 -0.533  6.47
-2    2 -1.199 10.31 -1.083  9.64
-3    3 -3.229 12.07 -3.210 11.76
-4    4  4.063 17.06  3.603 16.76
-5    5  5.410 14.99  5.767 14.97
-6    6  4.683 12.94  4.362 13.69
+  time    y1    y2     x1    x2
+1    1 -1.61  8.43 -0.465  6.94
+2    2 -4.17 10.48 -3.771  9.72
+3    3 -7.72 11.50 -6.085 11.34
+4    4 -2.72  9.73 -1.778 10.01
+5    5  3.90  5.89  4.874  5.21
+6    6  5.67  1.17  5.699  1.01
 > 
 > obs(po)[,1:3]
         time
@@ -217,14 +219,14 @@ Error : in ‘obs’: some elements of ‘vars’ correspond to no observed vari
 NULL
 > states(po1,"x1")[,1:3]
      1      2      3 
--0.533 -1.083 -3.210 
+-0.465 -3.771 -6.085 
 > try(states(po1,"z"))
 Error : in ‘states’: some elements of ‘vars’ correspond to no state variable
 > states(po1)[,1:3]
         time
 variable      1     2     3
-      x1 -0.533 -1.08 -3.21
-      x2  6.467  9.64 11.76
+      x1 -0.465 -3.77 -6.08
+      x2  6.941  9.72 11.34
 > 
 > time(po)[1:3]
 [1] 1 2 3
@@ -342,5 +344,7 @@ in ‘pomp’: the following unrecognized argument(s) will be stored for use by 
 		<none>
 > try(po2 %>% pomp(covar="bob"))
 Error : in ‘pomp’: bad option for ‘covar’.
+> try(po2 %>% pomp(rmeasure=function(x)x))
+Error : in ‘pomp’: in ‘rmeasure’: ‘rmeasure’ must be a function of prototype ‘rmeasure(x, t, params, ...)’
 > 
 > 
