@@ -35,6 +35,7 @@ exportMethods(
     plot,show,print,spy,
     coerce,summary,logLik,window,"$",
     pompLoad,pompUnload,
+    "solibs<-",
     dprocess,rprocess,rmeasure,dmeasure,init.state,skeleton,
     dprior,rprior,
     obs,partrans,coef,"coef<-",

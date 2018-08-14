@@ -1,0 +1,46 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(pomp)
+> 
+> pompExample(gompertz)
+newly created object(s):
+ gompertz 
+> 
+> pomp(gompertz,rmeasure=Csnippet("
++   Y = rlnorm(log(X),tau);"),
++   statenames="X",paramnames="tau",
++   cdir=getwd(),cfile="sf"
++ ) -> po
+> 
+> file.remove(paste0("sf",.Platform$dynlib.ext))
+[1] TRUE
+> 
+> capture.output(x <- simulate(po,verbose=TRUE)) -> out
+> stopifnot(sum(grepl("loading",out))==2)
+> 
+> pompExample(euler.sir)
+newly created object(s):
+ euler.sir 
+> 
+> solibs(euler.sir) <- NULL
+> solibs(euler.sir) <- euler.sir@solibs[[1]]
+> stopifnot(length(euler.sir@solibs)==2,
++   length(unique(sapply(euler.sir@solibs,getElement,"src")))==1)
+> 
