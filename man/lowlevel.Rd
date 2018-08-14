@@ -35,6 +35,8 @@
 \alias{pompUnload}
 \alias{pompUnload-pomp}
 \alias{pompUnload,pomp-method}
+\alias{solibs<-}
+\alias{solibs<-pomp-method}
 \alias{print,unshowable-method}
 \alias{print,listies-method}
 \alias{show,unshowable-method}

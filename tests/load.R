@@ -12,3 +12,10 @@ file.remove(paste0("sf",.Platform$dynlib.ext))
 
 capture.output(x <- simulate(po,verbose=TRUE)) -> out
 stopifnot(sum(grepl("loading",out))==2)
+
+pompExample(sir)
+
+solibs(sir) <- NULL
+solibs(sir) <- sir@solibs[[1]]
+stopifnot(length(sir@solibs)==2,
+  length(unique(sapply(sir@solibs,getElement,"src")))==1)

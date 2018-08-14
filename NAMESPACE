@@ -31,6 +31,7 @@ exportMethods(
   covariate_table,
   dprocess,rprocess,rmeasure,dmeasure,rinit,skeleton,
   dprior,rprior,
+  "solibs<-",
   obs,partrans,coef,"coef<-",
   time,"time<-",timezero,"timezero<-",
   simulate,pfilter,
