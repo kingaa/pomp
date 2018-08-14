@@ -28,8 +28,7 @@
 \alias{parameter_trans,NULL,NULL-method}
 \alias{parameter_trans,pomp_fun,pomp_fun-method}
 \alias{covariate_table}
-\alias{covariate_table,character-method}
-\alias{covariate_table,numeric-method}
+\alias{covariate_table,ANY-method}
 \alias{covariate_table,missing-method}
 \description{
   This function constructs a \sQuote{pomp} object,

@@ -32,7 +32,7 @@ setMethod(
   signature=signature(times="missing"),
   definition=function (..., times) {
     ep <- paste0("in ",sQuote("covariate_table"),": ")
-    if (nargs() > 1)
+    if (nargs() > 0)
       stop(ep,sQuote("times")," is a required argument",call.=FALSE)
     new("covartable")
   }
@@ -40,9 +40,11 @@ setMethod(
 
 setMethod(
   "covariate_table",
-  signature=signature(times="character"),
+  signature=signature(times="ANY"),
   definition=function (..., times) {
+
     ep <- paste0("in ",sQuote("covariate_table"),": ")
+
     df <- tryCatch(
       data.frame(...,check.names=FALSE),
       error = function (e) {
@@ -54,64 +56,41 @@ setMethod(
       stop(ep,"names of covariates must be unique.", call.=FALSE)
     }
 
-    if (length(times) != 1)
-      stop(ep,sQuote("times")," is not a unique variable name.",call.=FALSE)
-    tpos <- match(times,names(df))
-    if (!is.finite(tpos))
-      stop(ep,sQuote("times")," corresponds to none of the variables.",
-        call.=FALSE)
-    times <- df[[tpos]]
-    df <- df[-tpos]
-    covariate_table.internal(table=df,times=times)
-  }
-)
-
-setMethod(
-  "covariate_table",
-  signature=signature(times="numeric"),
-  definition=function (..., times) {
-    ep <- paste0("in ",sQuote("covariate_table"),": ")
-    df <- tryCatch(
-      data.frame(...,check.names=FALSE),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-
-    if (anyDuplicated(names(df))) {
-      stop(ep,"names of covariates must be unique.", call.=FALSE)
-    }
+    if (length(times) == 0 ||
+        (length(times) > 1 && !is.numeric(times)) ||
+        (length(times) == 1 && !is.numeric(times) && !is.character(times)))
+      stop(ep,sQuote("times")," should either be a vector of times or ",
+        "identify a single time variable.",call.=FALSE)
 
     if (length(times) == 1) {
-      if (times < 1 || times > length(df) || times != as.integer(times))
+      if (is.character(times)) {
+        tpos <- match(times,names(df))
+      } else if (is.numeric(times)) {
+        tpos <- as.integer(times)
+      }
+      if (tpos < 1 || tpos > length(df) || !is.finite(tpos))
         stop(ep,sQuote("times")," must identify a single variable ",
           "either by name or by index.",call.=FALSE)
-      tpos <- as.integer(times)
       times <- df[[tpos]]
       df <- df[-tpos]
     }
-    covariate_table.internal(table=df,times=times)
+
+    if (length(df) == 0)
+      stop(ep,"no covariates specified.",call.=FALSE)
+
+    if (length(times) != nrow(df))
+      stop(ep,sQuote("times")," must agree in length with the covariates.",
+        call.=FALSE)
+
+    if (any(!is.finite(times)) || !all(diff(times)>0))
+      stop(ep,sQuote("times")," should be an increasing sequence of times ",
+        "(without missing values).",call.=FALSE)
+
+    new("covartable",times=as.double(times),
+      table=do.call(cbind,lapply(df,as.double)))
+
   }
 )
-
-covariate_table.internal <- function (table, times) {
-
-  ep <- paste0("in ",sQuote("covariate_table"),": ")
-
-  if (any(!is.finite(times)) || !all(diff(times)>0))
-    stop(ep,sQuote("times")," should be an increasing sequence of times ",
-      "(without missing values).",call.=FALSE)
-
-  if (length(table) == 0)
-    stop(ep,"no covariates specified.",call.=FALSE)
-  if (length(times) != nrow(table))
-    stop(ep,sQuote("times")," must agree in length with the covariates.",
-      call.=FALSE)
-
-  table <- do.call(cbind,lapply(table,as.double))
-
-  new("covartable",times=as.double(times),table=table)
-}
 
 get_covariate_names <- function (object) {
   colnames(object@table)

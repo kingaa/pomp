@@ -19,18 +19,17 @@ Type 'q()' to quit R.
 
 > library(pomp)
 > 
-> set.seed(364121008L)
-> ct <- covariate_table(x=runif(11),y=runif(11),times=seq(0,10))
-> .Call(pomp:::lookup_in_table,covar=ct,t=runif(5))
-       [,1]      [,2]      [,3]      [,4]      [,5]
-x 0.4487819 0.4458939 0.4262695 0.4706191 0.4420908
-y 0.3256547 0.3167708 0.2564017 0.3928307 0.3050716
+> ct <- covariate_table(x=20:30,y=10:0,times=seq(0,10))
+> .Call(pomp:::lookup_in_table,covar=ct,t=c(1,2.3,4,7))
+  [,1] [,2] [,3] [,4]
+x   21 22.3   24   27
+y    9  7.7    6    3
 > 
-> try(covariate_table(x=runif(11),y=runif(11),times=seq(10,0)))
+> try(covariate_table(x=20:30,y=10:0,times=seq(10,0)))
 Error : in ‘covariate_table’: ‘times’ should be an increasing sequence of times (without missing values).
-> try(covariate_table(x=runif(4),y=runif(11),times=seq(0,10)))
+> try(covariate_table(x=20:23,y=10:0,times=seq(0,10)))
 Error : in ‘covariate_table’: arguments imply differing number of rows: 4, 11
-> try(covariate_table(x=runif(11),y=runif(11),times=seq(0,3)))
+> try(covariate_table(x=20:30,y=10:0,times=seq(0,3)))
 Error : in ‘covariate_table’: ‘times’ must agree in length with the covariates.
 > covariate_table()
 		<none>
@@ -40,4 +39,6 @@ Error : in ‘covariate_table’: no covariates specified.
 Error : in ‘covariate_table’: no covariates specified.
 > try(covariate_table(a=1:10,times="a"))
 Error : in ‘covariate_table’: no covariates specified.
+> try(covariate_table(a=1:10))
+Error : in ‘covariate_table’: ‘times’ is a required argument
 > 
