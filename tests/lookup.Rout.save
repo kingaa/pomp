@@ -41,4 +41,12 @@ Error : in ‘covariate_table’: no covariates specified.
 Error : in ‘covariate_table’: no covariates specified.
 > try(covariate_table(a=1:10))
 Error : in ‘covariate_table’: ‘times’ is a required argument
+> try(covariate_table(a=1:10,a=10:1,times=1:10))
+Error : in ‘covariate_table’: names of covariates must be unique.
+> try(covariate_table(a=1:10,b=10:1,times="b"))
+Error : in ‘covariate_table’: ‘times’ should be an increasing sequence of times (without missing values).
+> try(covariate_table(a=1:10,b=10:1,times="c"))
+Error : in ‘covariate_table’: ‘times’ must identify a single variable either by name or by index.
+> try(covariate_table(a=1:10,b=10:1,times=NA))
+Error : in ‘covariate_table’: ‘times’ should either be a vector of times or identify a single time variable.
 > 
