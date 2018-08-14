@@ -3,7 +3,6 @@
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files
-- ~~`show` methods for plugins~~
 
 ## For pomp 2:
 
@@ -11,15 +10,11 @@
 	- OK for simulate, probe, pfilter, abc, bsmc2, pmcmc, mif2
 	- needed for probe_match, nlf, kalman, spect, spect_match
 	- not to be done for trajectory, traj_match
-- ~~better scheme for indicating transformed variables in C snippet parameter transformations (i.e., use `T` for parameters on transformed scale~~
 - better scheme for indicating derivatives and maps in C snippets
-- ~~`time` variable could retain its original name?~~
-- perhaps `dinit`?
+-- perhaps `dinit`?
 - covariates:
-	- covariates provided using a constructor function
-    - piecewise constant interpolation of covariates
-    - `covar`, `tcovar` specified as a pair using `safecall`
-- ~~parameter transformations specified as a pair~~
+	- ~~covariates provided using a constructor function~~
+   	- piecewise constant interpolation of covariates
 - change specification of horsemen
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification
@@ -59,6 +54,11 @@
 - plugin for adaptive tau leaping algorithm.
 - plugin for compartmental models
 
+## Documentation
+
+- FAQ needs update with new issues
+- Complete rewrite of manual for v. 2
+
 ## Helper packages
 
 - parallel mif-farm and multi-start optimization helpers
@@ -96,7 +96,6 @@ tests/trajmatch.R
 ### Groups of related functions:
 
 R/builder.R
-R/load.R
 R/plugins.R
 R/pomp_fun.R
 
