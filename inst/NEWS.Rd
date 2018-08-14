@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item The documentation system has been thoroughly overhauled.
     \item In \code{skeleton}, the \code{t} argument has been replaced by \code{times}, to make this uniform with the other workhorse functions.
     \item Covariates are now included using the \code{covariate_table} construction, passed via the \code{covar} argument to \code{pomp}.
     The \code{tcovar} argument is no longer used.

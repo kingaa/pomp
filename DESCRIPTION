@@ -79,7 +79,7 @@ Collate:
     'filter_traj.R'
     'forecast.R'
     'nlf.R'
-    'logLik.R'
+    'loglik.R'
     'logmeanexp.R'
     'minim.R'
     'nlf_funcs.R'

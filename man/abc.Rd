@@ -96,7 +96,8 @@ dynamical systems Journal of the Royal Society, Interface 6:187--202, 2009.
 the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 
 Other summary statistics: \code{\link{Basic probes}},
-  \code{\link{Probe values}}, \code{\link{Probes}}
+  \code{\link{Probe matching}}, \code{\link{Probe values}},
+  \code{\link{Probes}}
 }
 \author{
 Edward L. Ionides, Aaron A. King

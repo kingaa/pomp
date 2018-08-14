@@ -3,23 +3,10 @@
 ##' Probe a partially-observed Markov process by computing summary statistics
 ##' and the synthetic likelihood.
 ##'
-##' @name Probes
-##' @docType methods
-##' @rdname probe
-##' @include pomp_class.R pomp_fun.R
-##' @aliases probe probe,missing-method probe,ANY-method
-##'
-##' @details
 ##' \code{probe} applies one or more \dQuote{probes} to time series data and
 ##' model simulations and compares the results.  It can be used to diagnose
 ##' goodness of fit and/or as the basis for \dQuote{probe-matching}, a
 ##' generalized method-of-moments approach to parameter estimation.
-##' \code{probe.match} calls an optimizer to adjust model parameters to do
-##' probe-matching, i.e., to minimize the discrepancy between simulated and
-##' actual data.  This discrepancy is measured using the \dQuote{synthetic
-##' likelihood} as defined by Wood (2010).  \code{probe.match.objfun}
-##' constructs an objective function for probe-matching suitable for use in
-##' \code{optim}-like optimizers.
 ##'
 ##' A call to \code{probe} results in the evaluation of the probe(s) in
 ##' \code{probes} on the data.  Additionally, \code{nsim} simulated data sets
@@ -28,40 +15,12 @@
 ##' computations on real and simulated data are stored in an object of class
 ##' \sQuote{probed_pomp}.
 ##'
-##' A call to \code{probe.match} results in an attempt to optimize the
-##' agreement between model and data, as measured by the specified probes, over
-##' the parameters named in \code{est}.  The results, including coefficients of
-##' the fitted model and values of the probes for data and fitted-model
-##' simulations, are stored in an object of class \sQuote{probe_matched_pomp}.
-##'
-##' The objective function minimized by \code{probe.match}---in a form suitable
-##' for use with \code{\link{optim}}-like optimizers---is created by a call to
-##' \code{probe.match.objfun}.  Specifically, \code{probe.match.objfun} will
-##' return a function that takes a single numeric-vector argument that is
-##' assumed to cotain the parameters named in \code{est}, in that order.  This
-##' function will return the negative synthetic log likelihood for the probes
-##' specified.
-##'
-##' @details
-##' In the case of \code{probe.match}, these are passed to the optimizer
-##' algorithm.  These are passed via the optimizer's \code{control} list (in
-##' the case of \code{optim}, \code{subplex}, and \code{sannbox}) or the
-##' \code{opts} list (in the case of \code{nloptr}).
-##' @return \code{probe} returns an object of class \sQuote{probed_pomp}, which
-##' is derived from the \sQuote{pomp} class and contains additional information
-##' about the \code{probe} calculation.
-##'
-##' This information can be summarized via a call to \code{summary} and
-##' displayed graphically via a call to \code{plot}.
-##'
-##' \code{probe.match} returns an object of class \sQuote{probe_matched_pomp},
-##' which is derived from class \sQuote{probed_pomp}.  It therefore contains
-##' the information described above as well as information on the convergence
-##' of the optimization algorithm.  This can be displayed via a call to
-##' \code{summary}.
-##'
-##' \code{probe.match.objfun} returns a function suitable for use as an
-##' objective function in an \code{\link{optim}}-like optimizer.
+##' @name Probes
+##' @docType methods
+##' @rdname probe
+##' @include pomp_class.R pomp_fun.R
+##' @aliases probe probe,missing-method probe,ANY-method
+##' @family summary statistics
 ##'
 ##' @section Methods:
 ##' \describe{
@@ -84,9 +43,16 @@
 ##' indicates whether the probes are from the data or simulations.  }
 ##' }
 ##'
+##' @return
+##' \code{probe} returns an object of class \sQuote{probed_pomp}, which
+##' is derived from the \sQuote{pomp} class and contains additional information
+##' about the \code{probe} calculation.
+##'
+##' This information can be summarized via a call to \code{summary} and
+##' displayed graphically via a call to \code{plot}.
+##'
 ##' @author Daniel C. Reuman, Aaron A. King
 ##'
-##' @family summary statistics
 ##' @seealso \link{Basic probes}, \code{\link{spect}}, and the
 ##' tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
@@ -105,6 +71,7 @@ setClass(
   contains="pomp",
   slots=c(
     probes="list",
+    nsim="integer",
     datvals="numeric",
     simvals="array",
     quantiles="numeric",
@@ -116,7 +83,7 @@ setClass(
 
 setGeneric(
   "probe",
-  function (object, probes, ...)
+  function (object, ...)
     standardGeneric("probe")
 )
 
@@ -136,18 +103,7 @@ setGeneric(
 ##' @param seed optional integer;
 ##' if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
 ##' See \code{\link[=simulate-pomp]{simulate}}.
-##' @param start named numeric vector; the initial guess of parameters.
-##' @param est character vector; the names of parameters to be estimated.
-##' @param method Optimization method.  Choices refer to algorithms used in
-##' \code{\link{optim}}, \code{\link[subplex]{subplex}}, and
-##' \code{\link[nloptr]{nloptr}}.
 ##' @param verbose logical; print diagnostic messages?
-##' @param fail.value optional numeric scalar; if non-\code{NA}, this value is
-##' substituted for non-finite values of the objective function.  It should be
-##' a large number (i.e., bigger than any legitimate values the objective
-##' function is likely to take).
-##' @param transform logical; if \code{TRUE}, optimization is performed on the
-##' transformed scale.
 ##' @param \dots Additional arguments.  In the case of \code{probe} and
 ##' \code{probe.match.objfun}, additional arguments are passed to
 ##' \code{\link{pomp}}, allowing one to supply new or modify existing model
@@ -186,7 +142,7 @@ setMethod(
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(probes)) probes <- object@probes
-    if (missing(nsim)) nsim <- nrow(object@simvals)
+    if (missing(nsim)) nsim <- object@nsim
 
     probe(
       as(object,"pomp"),
@@ -315,6 +271,7 @@ probe.internal <- function (object, probes, params, nsim, seed,
     "probed_pomp",
     object,
     probes=probes,
+    nsim=nsim,
     datvals=datval,
     simvals=simval,
     quantiles=quants,

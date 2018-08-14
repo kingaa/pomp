@@ -22,6 +22,7 @@ Return the values of the probes, evaluated on simulations, and on the data.
 }
 \seealso{
 Other summary statistics: \code{\link{Basic probes}},
-  \code{\link{Probes}}, \code{\link{abc}}
+  \code{\link{Probe matching}}, \code{\link{Probes}},
+  \code{\link{abc}}
 }
 \concept{summary statistics}

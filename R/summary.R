@@ -7,8 +7,7 @@
 ##' @include probe_match.R probe.R spect.R spect_match.R traj_match.R
 ##'
 ##' @aliases summary,probed_pomp-method summary,spectd_pomp-method
-##' summary,probe_matched_pomp-method summary,spect_matched_pomp-method
-##' summary,traj_matched_pomp-method
+##' summary,spect_matched_pomp-method summary,traj_matched_pomp-method
 ##'
 ##' @param object a fitted model object
 ##' @param \dots ignored
@@ -86,24 +85,5 @@ setMethod(
       if(length(object@msg)>0) list(msg=object@msg) else NULL
     )
 
-  }
-)
-
-##' @name summary-probe_matched_pomp
-##' @rdname summary
-setMethod(
-  "summary",
-  signature=signature(object="probe_matched_pomp"),
-  definition=function (object, ...) {
-    c(
-      summary(as(object,"probed_pomp")),
-      list(
-        est=object@est,
-        value=object@value,
-        eval=object@evals,
-        convergence=object@convergence
-      ),
-      if(length(object@msg)>0) list(msg=object@msg) else NULL
-    )
   }
 )

@@ -52,11 +52,11 @@ Error : in ‘plot’: unrecognized parameters: ‘bob’
 Error : in ‘plot’: no parameters to plot.
 > range(eff.sample.size(smc))
 [1] 251 743
-> logEvidence(smc)
+> logLik(smc)
 [1] 2.7
-> range(cond.logEvidence(smc))
+> range(cond.logLik(smc))
 [1] -0.68  0.98
-> stopifnot(sum(cond.logEvidence(smc))==logEvidence(smc))
+> stopifnot(sum(cond.logLik(smc))==logLik(smc))
 > 
 > full_join(
 +   smc %>% prior_samples() %>% melt(value.name="prior"),

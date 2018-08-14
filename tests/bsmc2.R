@@ -27,9 +27,9 @@ try(plot(smc,pars="bob"))
 plot(smc,pars="K")
 try(plot(smc,pars=NULL))
 range(eff.sample.size(smc))
-logEvidence(smc)
-range(cond.logEvidence(smc))
-stopifnot(sum(cond.logEvidence(smc))==logEvidence(smc))
+logLik(smc)
+range(cond.logLik(smc))
+stopifnot(sum(cond.logLik(smc))==logLik(smc))
 
 full_join(
   smc %>% prior_samples() %>% melt(value.name="prior"),

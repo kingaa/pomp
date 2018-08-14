@@ -99,8 +99,9 @@ S. N. Wood Statistical inference for noisy nonlinear ecological dynamic
 systems, Nature, 466: 1102--1104, 2010.
 }
 \seealso{
-Other summary statistics: \code{\link{Probe values}},
-  \code{\link{Probes}}, \code{\link{abc}}
+Other summary statistics: \code{\link{Probe matching}},
+  \code{\link{Probe values}}, \code{\link{Probes}},
+  \code{\link{abc}}
 }
 \author{
 Daniel C. Reuman, Aaron A. King

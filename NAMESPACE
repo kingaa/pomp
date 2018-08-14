@@ -44,7 +44,7 @@ exportMethods(
   bsmc2,pmcmc,abc,nlf,
   covmat,
   traj.match.objfun,traj.match,
-  probe.match.objfun,probe,probe.match,
+  probe.match.objfun,probe,
   spect,spect.match
 )
 

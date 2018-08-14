@@ -12,7 +12,6 @@
 ##' show,bsmcd_pomp-method show,kalmand_pomp-method show,mif2d_pomp-method
 ##' show,nlfd_pomp-method show,pfilterd_pomp-method show,pmcmcd_pomp-method
 ##' show,probed_pomp-method show,spectd_pomp-method
-##' show,probe_matched_pomp-method
 ##' show,spect_matched_pomp-method show,traj_matched_pomp-method
 ##' show,rprocPlugin-method
 ##' show,discreteRprocPlugin-method show,eulerRprocPlugin-method
@@ -30,7 +29,7 @@ NULL
 setClassUnion("unshowable",members=c("pomp","abcd_pomp","bsmcd_pomp",
   "kalmand_pomp","mif2d_pomp","nlfd_pomp","pfilterd_pomp","pmcmcd_pomp",
   "probed_pomp","spectd_pomp",
-  "probe_matched_pomp","spect_matched_pomp","traj_matched_pomp"))
+  "spect_matched_pomp","traj_matched_pomp"))
 
 setMethod(
   "show",
