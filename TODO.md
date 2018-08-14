@@ -75,7 +75,6 @@ tests/logistic.R
 tests/ou2.R
 tests/rw2.R
 
-tests/dimchecks.R
 tests/filtfail.R
 tests/forecast.R
 
@@ -83,7 +82,6 @@ tests/getting_started.R
 
 tests/gillespie2.R
 tests/gillespie.R
-tests/issue56.R
 
 tests/nlf.R
 

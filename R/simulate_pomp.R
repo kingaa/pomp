@@ -77,7 +77,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   include.data <- as.logical(include.data)
 
   if (length(nsim)!=1 || !is.numeric(nsim) || !is.finite(nsim) || nsim < 1)
-    stop(ep,sQuote("nsim")," must be a positive integer",call.=FALSE)
+    stop(ep,sQuote("nsim")," must be a positive integer.",call.=FALSE)
   nsim <- as.integer(nsim)
 
   ## set the random seed (be very careful about this)

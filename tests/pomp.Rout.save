@@ -69,7 +69,7 @@ Error : in ‘pomp’: variable(s) ‘c’ are not among the covariates.
 +     pomp(covar=covariate_table(c=0:10,d=0:10,times=1),
 +       covarnames="d",times=1,t0=0,bob=3) %>% class() %>%
 +     equals("pomp"))
-in ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
+in ‘pomp’: the unrecognized argument ‘bob’ will be stored for use by user-defined functions.
 > try(data.frame(a=1:10,b=1:10) %>%
 +     pomp(covar=covariate_table(c=1:10,d=1:10,d=1:10,times=1),
 +       times=1,t0=0))
@@ -320,7 +320,7 @@ Error : in 'partrans': user transformation functions must return a named numeric
 +   window(start=5,end=20) %>%
 +   pomp(covar=covariate_table(times=0:20,q=0:20),
 +     larry=3L) -> po1
-in ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘larry’
+in ‘pomp’: the unrecognized argument ‘larry’ will be stored for use by user-defined functions.
 > as(po1,"data.frame") %>% head()
   time     Y  q
 1    5 0.873  5

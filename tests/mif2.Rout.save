@@ -189,7 +189,7 @@ sigma:    0.0860322
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
 +   drpocess="oops",transform=TRUE,
 +   dmeasure=function(t,x,y,params,log,...)0) -> mf3
-in ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘drpocess’
+in ‘pomp’: the unrecognized argument ‘drpocess’ will be stored for use by user-defined functions.
 Warning messages:
 1: in ‘mif2.pfilter’: filtering failure at last filter iteration; using unweighted mean for point estimate. 
 2: in ‘mif2.pfilter’: 11 filtering failures occurred. 

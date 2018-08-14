@@ -1,0 +1,89 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> set.seed(58668844L)
+> 
+> library(pomp)
+> library(magrittr)
+> 
+> simulate(times=seq(1,100),t0=0,
++   nbasis=9L,
++   period=50.0,
++   msg="hello!",
++   params=setNames(runif(n=9,min=-5,max=5),sprintf("beta%d",1:9)),
++   rprocess=euler.sim(
++     Csnippet("
++       static int first = 1;
++       if (first) {
++         SEXP Msg = get_pomp_userdata(\"msg\");
++         char *msg = CHAR(STRING_ELT(Msg,0));
++         Rprintf(\"%s\\n\",msg);
++         first = 0;
++       }
++       int nbasis = *(get_pomp_userdata_int(\"nbasis\"));
++       int degree = 3;
++       double period = *(get_pomp_userdata_double(\"period\"));
++       double dxdt[nbasis];
++       periodic_bspline_basis_eval(t,period,degree,nbasis,dxdt);
++       x += dt*dot_product(nbasis,dxdt,&beta1);"
++     ),delta.t=0.01
++   ),
++   rmeasure=Csnippet("y = x;"),
++   rinit=Csnippet("x = 0;"),
++   statenames="x",obsnames="y",paramnames=c("beta1","beta2","beta3")
++ ) -> po
+in ‘pomp’: the unrecognized arguments ‘nbasis’,‘period’,‘msg’ will be stored for use by user-defined functions.
+hello!
+> 
+> try(po %>%
++   simulate(rprocess=onestep.sim(
++     Csnippet("
++       SEXP Msg = get_pomp_userdata(\"bob\");
++       char *msg = CHAR(STRING_ELT(Msg,0));
++       Rprintf(\"%s\\n\",msg);"))))
+Error : in ‘simulate’: no user-provided element 'bob' is found.
+> try(po %>%
++     simulate(rprocess=onestep.sim(
++       Csnippet("double nbasis = *(get_pomp_userdata_double(\"nbasis\"));"))))
+Error : in ‘simulate’: user-provided element 'nbasis' is not a numeric vector.
+> try(po %>%
++     simulate(rprocess=onestep.sim(
++       Csnippet("double nbasis = *(get_pomp_userdata_double(\"bob\"));"))))
+Error : in ‘simulate’: no user-provided element named 'bob' is found.
+> try(po %>%
++     simulate(rprocess=onestep.sim(
++       Csnippet("int nbasis = *(get_pomp_userdata_int(\"period\"));"))))
+Error : in ‘simulate’: user-provided element 'period' is not an integer.
+> try(po %>%
++     simulate(rprocess=onestep.sim(
++       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));"))))
+Error : in ‘simulate’: no user-provided element named 'bob' is found.
+> try(po %>%
++     simulate(rprocess=onestep.sim(
++       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),
++       bob=3))
+in ‘pomp’: the unrecognized argument ‘bob’ will be stored for use by user-defined functions.
+Error : in ‘simulate’: user-provided element 'bob' is not an integer.
+> stopifnot(po %>%
++     simulate(rprocess=onestep.sim(
++       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),
++       bob=3L) %>% class() %>% equals("pomp"))
+in ‘pomp’: the unrecognized argument ‘bob’ will be stored for use by user-defined functions.
+> 

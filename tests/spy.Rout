@@ -26,7 +26,7 @@ Type 'q()' to quit R.
 > 
 > pomp(po,partrans=NULL,bob=3,
 +   covar=covariate_table(a=0:20,b=0:20,times="a")) -> po1
-in ‘pomp’: the following unrecognized argument(s) will be stored for use by user-defined functions: ‘bob’
+in ‘pomp’: the unrecognized argument ‘bob’ will be stored for use by user-defined functions.
 Warning message:
 in ‘pomp’: the supplied covariate times do not embrace the data times: covariates may be extrapolated. 
 > spy(po1)
@@ -116,7 +116,7 @@ pomp object ‘po2’:
 - initial state simulator, rinit:
 		function (params, t0, ...) 
 params
-<environment: 0x2a815b8>
+<environment: 0x3f368e0>
 - process-model simulator, rprocess:
   - discrete-time process-model simulator, step.fun:
 		native function ‘_gompertz_simulator’, dynamically loaded from ‘pomp’
@@ -137,16 +137,16 @@ params
   - time-step = 1 
 - parameter transformations:
   - to estimation scale:
-		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_777371064cb6a780e219cae3ee80fce6’
+		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_b32742c6d26d09b8e28dc630ca05ae8d’
   - from estimation scale:
-		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_777371064cb6a780e219cae3ee80fce6’
+		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_b32742c6d26d09b8e28dc630ca05ae8d’
 - parameter vector unspecified
 - extra user-defined variables:  ‘bob’ 
 - C snippet file  1 :
 
-/* pomp C snippet file: pomp_777371064cb6a780e219cae3ee80fce6 */
-/* Time: 2018-08-13 21:10:34.622 -0400 */
-/* Salt: 1BC946699580FD54826E2A0C */
+/* pomp C snippet file: pomp_b32742c6d26d09b8e28dc630ca05ae8d */
+/* Time: 2018-08-14 08:39:18.991 -0400 */
+/* Salt: DC3C4FC0453FFF7050BFF963 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -188,12 +188,12 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_777371064cb6a780e219cae3ee80fce6 (DllInfo *info)
+void R_init_pomp_b32742c6d26d09b8e28dc630ca05ae8d (DllInfo *info)
 {
-R_RegisterCCallable("pomp_777371064cb6a780e219cae3ee80fce6", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_777371064cb6a780e219cae3ee80fce6", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_777371064cb6a780e219cae3ee80fce6", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("pomp_777371064cb6a780e219cae3ee80fce6", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_b32742c6d26d09b8e28dc630ca05ae8d", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_b32742c6d26d09b8e28dc630ca05ae8d", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_b32742c6d26d09b8e28dc630ca05ae8d", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_b32742c6d26d09b8e28dc630ca05ae8d", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
 }
 
 > 
@@ -227,29 +227,29 @@ pomp object ‘sir’:
  Max.   :0.667   Max.   :0.667   Max.   :0.667  
 
 - initial state simulator, rinit:
-		native function ‘__pomp_rinit’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+		native function ‘__pomp_rinit’, defined by a C snippet in library ‘pomp_1508e8bb3f1f9424e20f87326ebed469’
 - process-model simulator, rprocess:
   - Euler-method process-model simulator, step.fun:
-		native function ‘__pomp_stepfn’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+		native function ‘__pomp_stepfn’, defined by a C snippet in library ‘pomp_1508e8bb3f1f9424e20f87326ebed469’
   - time-step = 0.000962 
 - process model density, dprocess:
 		not specified
 - measurement model simulator, rmeasure:
-		native function ‘__pomp_rmeasure’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+		native function ‘__pomp_rmeasure’, defined by a C snippet in library ‘pomp_1508e8bb3f1f9424e20f87326ebed469’
 - measurement model density, dmeasure:
-		native function ‘__pomp_dmeasure’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+		native function ‘__pomp_dmeasure’, defined by a C snippet in library ‘pomp_1508e8bb3f1f9424e20f87326ebed469’
 - prior simulator, rprior:
 		not specified
 - prior density, dprior:
 		native function ‘_pomp_default_dprior’, dynamically loaded from ‘pomp’
 - deterministic skeleton:
   - vectorfield:
-		native function ‘__pomp_skelfn’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+		native function ‘__pomp_skelfn’, defined by a C snippet in library ‘pomp_1508e8bb3f1f9424e20f87326ebed469’
 - parameter transformations:
   - to estimation scale:
-		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+		native function ‘__pomp_to_trans’, defined by a C snippet in library ‘pomp_1508e8bb3f1f9424e20f87326ebed469’
   - from estimation scale:
-		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_066a4d98f8d71b9a5040d3c8ca66cf50’
+		native function ‘__pomp_from_trans’, defined by a C snippet in library ‘pomp_1508e8bb3f1f9424e20f87326ebed469’
 - parameter vector:
    gamma       mu     iota    beta1    beta2    beta3  beta.sd      pop 
 2.60e+01 2.00e-02 1.00e-02 4.00e+02 4.80e+02 3.20e+02 1.00e-03 2.10e+06 
@@ -257,9 +257,9 @@ pomp object ‘sir’:
 6.00e-01 6.50e-02 1.00e-03 9.34e-01 
 - C snippet file  1 :
 
-/* pomp C snippet file: pomp_066a4d98f8d71b9a5040d3c8ca66cf50 */
-/* Time: 2018-08-13 21:10:34.923 -0400 */
-/* Salt: 7C766E5AFD640F32B6EF2CA3 */
+/* pomp C snippet file: pomp_1508e8bb3f1f9424e20f87326ebed469 */
+/* Time: 2018-08-14 08:39:19.287 -0400 */
+/* Salt: 96C5DA7E5DDDAA459152B923 */
 
 #include <pomp.h>
 #include <R_ext/Rdynload.h>
@@ -721,17 +721,17 @@ void __pomp_load_stack_incr (void) {++__pomp_load_stack;}
 
 void __pomp_load_stack_decr (int *val) {*val = --__pomp_load_stack;}
 
-void R_init_pomp_066a4d98f8d71b9a5040d3c8ca66cf50 (DllInfo *info)
+void R_init_pomp_1508e8bb3f1f9424e20f87326ebed469 (DllInfo *info)
 {
-R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
-R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
-R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
-R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
-R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
-R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
-R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
-R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
-R_RegisterCCallable("pomp_066a4d98f8d71b9a5040d3c8ca66cf50", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
+R_RegisterCCallable("pomp_1508e8bb3f1f9424e20f87326ebed469", "__pomp_load_stack_incr", (DL_FUNC) __pomp_load_stack_incr);
+R_RegisterCCallable("pomp_1508e8bb3f1f9424e20f87326ebed469", "__pomp_load_stack_decr", (DL_FUNC) __pomp_load_stack_decr);
+R_RegisterCCallable("pomp_1508e8bb3f1f9424e20f87326ebed469", "__pomp_rinit", (DL_FUNC) __pomp_rinit);
+R_RegisterCCallable("pomp_1508e8bb3f1f9424e20f87326ebed469", "__pomp_stepfn", (DL_FUNC) __pomp_stepfn);
+R_RegisterCCallable("pomp_1508e8bb3f1f9424e20f87326ebed469", "__pomp_rmeasure", (DL_FUNC) __pomp_rmeasure);
+R_RegisterCCallable("pomp_1508e8bb3f1f9424e20f87326ebed469", "__pomp_dmeasure", (DL_FUNC) __pomp_dmeasure);
+R_RegisterCCallable("pomp_1508e8bb3f1f9424e20f87326ebed469", "__pomp_to_trans", (DL_FUNC) __pomp_to_trans);
+R_RegisterCCallable("pomp_1508e8bb3f1f9424e20f87326ebed469", "__pomp_from_trans", (DL_FUNC) __pomp_from_trans);
+R_RegisterCCallable("pomp_1508e8bb3f1f9424e20f87326ebed469", "__pomp_skelfn", (DL_FUNC) __pomp_skelfn);
 }
 
 > 

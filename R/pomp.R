@@ -249,9 +249,11 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (missing(.userdata)) .userdata <- list()
   added.userdata <- list(...)
   if (length(added.userdata)>0) {
-    message(wp,"the following unrecognized argument(s) ",
-      "will be stored for use by user-defined functions: ",
-      paste(sQuote(names(added.userdata)),collapse=","))
+    message(wp,"the unrecognized ",
+      ngettext(length(added.userdata),"argument","arguments")," ",
+      paste(sQuote(names(added.userdata)),collapse=","),
+      " will be stored for use by user-defined functions."
+    )
     .userdata[names(added.userdata)] <- added.userdata
   }
 
