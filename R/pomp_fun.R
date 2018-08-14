@@ -1,6 +1,7 @@
 ## a class for functions that may be defined in R,
 ## using pre-written native routines, or C snippets
 
+## also defined in 'pomp_defines.h'
 pompfunmode <- list(undef=-1L,Rfun=0L,native=1L,regNative=2L)
 
 setClass(

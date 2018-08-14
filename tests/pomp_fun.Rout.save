@@ -1,0 +1,50 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3,keep.source=TRUE)
+> 
+> library(pomp)
+> library(magrittr)
+> 
+> pomp:::pomp_fun()
+		not specified
+> pomp:::pomp_fun(NULL)
+		not specified
+> try(pomp:::pomp_fun(36,slotname="silly"))
+Error : bad option for ‘silly’ argument
+> pomp:::pomp_fun(function(x,y)x+y,proto=quote(bob(x,y)),slotname="blarp")
+		function(x,y)x+y
+> try(pomp:::pomp_fun(function(x)x+y,proto=quote(bob(x,y)),slotname="blarp"))
+Error : in ‘blarp’: ‘bob’ must be a function of prototype ‘bob(x, y)’
+> pomp:::pomp_fun(function(x)x+y,slotname="blarp") -> f
+> print(f)
+		function(x)x+y
+> pomp:::pomp_fun("jehosaphat",PACKAGE="harglebarge",slotname="blurp")
+		native function ‘jehosaphat’, dynamically loaded from ‘harglebarge’
+> pomp:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork")
+		native function 
+> pomp:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp")
+		native function 
+> pomp:::pomp_fun(Csnippet("x = x;"),paramnames="x",slotname="blork",Cname="yurp",
++   libname="splarm")
+		native function ‘yurp’, defined by a C snippet in library ‘splarm’
+> pomp:::pomp_fun(f)
+		function(x)x+y
+> 
+> 
