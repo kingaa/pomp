@@ -154,4 +154,7 @@ data.frame(u=1:10,v=runif(10)) %>%
 dat %>% names()
 dat %>% dim()
 
+pompExample(rw2)
+simulate(rw2,zeronames="x2") %>% plot()
+
 dev.off()

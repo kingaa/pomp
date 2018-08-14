@@ -78,8 +78,6 @@ tests/rw2.R
 tests/filtfail.R
 tests/forecast.R
 
-tests/getting_started.R
-
 tests/gillespie2.R
 tests/gillespie.R
 
