@@ -103,6 +103,8 @@ po %>%
   simulate(params=as.list(coef(po)),seed=406214171) %>%
   plot(variables=rep(c("z","w"),10),main="test",yax.flip=TRUE)
 
+set.seed(1041414791L)
+
 data.frame(u=1:10,v=runif(10)) %>%
   pomp(times="u",t0=0) %>%
   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),

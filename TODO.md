@@ -10,6 +10,7 @@
 	- OK for simulate, probe, pfilter, abc, bsmc2, pmcmc, mif2, kalman, spect
 	- needed for probe_match, nlf, spect_match
 	- not to be done for trajectory, traj_match
+- matching functions will go away, in favor of objective function constructors
 - better scheme for indicating derivatives and maps in C snippets
 -- perhaps `dinit`?
 - covariates:
@@ -21,6 +22,7 @@
 	- allow "R snippets": expressions evaluated in proper context?
 - remove `obs` and `states` arguments in `simulate`? or hide? `do_simulate` in C?
 - easier interface for lists of probes in `probe`
+- documentation on `mifList`, `pmcmcList`, etc.
 - methods to change data (`obs<-`)?
 - refurbish entire test suite
 - put Kalman check in 'gompertz' test: **is it correct?**
@@ -35,12 +37,8 @@
 - add `include` argument to `pomp`?
 - deprecate `obs` and `states` arguments in `simulate`
 - graceful stopping for optimizers (at least for `nloptr`)
-- number of processors stored in `bake`, `stew`, `freeze` outputs
-- documentation on `mifList`, `pmcmcList`, etc.
 - `pfilterList` object?
 - parameter transformations: put `transform` option into each estimation routine (`spect.match`)
-- objective function for spectrum matching
-- objective function for NLF
 - trap errors for LAPACK
 - better unit tests for `sannbox`
 - support for asymmetric MCMC proposals
@@ -59,6 +57,7 @@
 ## Helper packages
 
 - parallel mif-farm and multi-start optimization helpers
+- number of processors stored in `bake`, `stew`, `freeze` outputs
 - parallel likelihood profiling tool
 
 ## Examples
@@ -89,7 +88,6 @@ tests/trajmatch.R
 
 R/builder.R
 R/plugins.R
-R/pomp_fun.R
 
 R/probe_match.R
 
