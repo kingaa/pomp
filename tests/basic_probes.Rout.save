@@ -69,38 +69,10 @@ newly created object(s):
 + )
 > 
 > ou2 %>% probe(probes=plist,nsim=1000) -> pb
-> summary(pb)
-$coef
-alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0 
-    0.8    -0.5     0.3     0.9     3.0    -0.5     2.0     1.0    -3.0     4.0 
-
-$nsim
-[1] 1000
-
-$quantiles
-    mean      med        v       sd       pd      10%      50%      90% 
-   0.127    0.434    0.025    0.049    0.008    0.897    0.434    0.060 
-acf.0.y1 acf.1.y1 acf.3.y1 acf.6.y1 acf.1.y2 acf.2.y2 acf.3.y2    ccf.0 
-   0.025    0.029    0.083    0.910    0.103    0.157    0.268    0.596 
-   ccf.1    ccf.2   marg.1   marg.2   marg.3 nlar.1^1 nlar.1^2 nlar.1^3 
-   0.957    0.955    0.065    0.887    0.577    0.081    0.996    0.594 
-nlar.2^1 nlar.2^2 
-   0.870    0.005 
-
-$pvals
-    mean      med        v       sd       pd      10%      50%      90% 
- 0.25574  0.86913  0.05195  0.09990  0.01798  0.20779  0.86913  0.12188 
-acf.0.y1 acf.1.y1 acf.3.y1 acf.6.y1 acf.1.y2 acf.2.y2 acf.3.y2    ccf.0 
- 0.05195  0.05994  0.16783  0.18182  0.20779  0.31568  0.53746  0.80919 
-   ccf.1    ccf.2   marg.1   marg.2   marg.3 nlar.1^1 nlar.1^2 nlar.1^3 
- 0.08791  0.09191  0.13187  0.22777  0.84715  0.16384  0.00999  0.81319 
-nlar.2^1 nlar.2^2 
- 0.26174  0.01199 
-
-$synth.loglik
-[1] 76
-
-> stopifnot(logLik(pb)==summary(pb)$synth.loglik)
+> summary(pb) -> sm
+> stopifnot(names(sm)==c("coef","nsim","quantiles","pvals","synth.loglik"),
++   logLik(pb)==sm$synth.loglik,
++   length(sm$pvals)==26,length(sm$quantiles)==26)
 > 
 > try(probe.mean(c("y1","y2")))
 Error : ‘probe.mean’ is a univariate probe
@@ -125,9 +97,9 @@ Error : ‘probe.nlar’ is a univariate probe
 Warning message:
 in ‘probe.acf’: useless zero lag discarded in ‘probe.acf’ 
 > probe.acf(c("y1","y2"),lags=c(1,5),type="cor") -> f
-> ou2 %>% simulate() %>% obs() %>% f()
-acf.1.y1 acf.5.y1 acf.1.y2 acf.5.y2 
-  0.7134  -0.4232   0.8906  -0.0723 
+> ou2 %>% simulate() %>% obs() %>% f() -> v
+> stopifnot(names(v)==c("acf.1.y1", "acf.5.y1", "acf.1.y2", "acf.5.y2"))
+> 
 > try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
 Error : in ‘probe.acf’: subscript out of bounds
 > try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f())
@@ -135,7 +107,6 @@ Error : in ‘probe.acf’: series 1 has no data
 > ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
 acf.1.y1 acf.5.y1 acf.1.y2 acf.5.y2 
    0.980    0.895    0.980    0.895 
-> 
 > probe.ccf(c("y2","y1"),lags=c(0,1,2),type="cor") -> f
 > ou2 %>% simulate() %>% obs() %>% f()
 ccf.0 ccf.1 ccf.2 
@@ -195,5 +166,4 @@ Error : in ‘probe.nlar’: subscript out of bounds
 > ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
 nlar.1^1 nlar.1^2 nlar.1^3 
   0.8815   0.0988   0.0149 
-> 
 > 

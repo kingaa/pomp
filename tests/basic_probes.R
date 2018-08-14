@@ -26,8 +26,10 @@ plist <- list(
 )
 
 ou2 %>% probe(probes=plist,nsim=1000) -> pb
-summary(pb)
-stopifnot(logLik(pb)==summary(pb)$synth.loglik)
+summary(pb) -> sm
+stopifnot(names(sm)==c("coef","nsim","quantiles","pvals","synth.loglik"),
+  logLik(pb)==sm$synth.loglik,
+  length(sm$pvals)==26,length(sm$quantiles)==26)
 
 try(probe.mean(c("y1","y2")))
 try(probe.median(c("y1","y2")))
@@ -41,11 +43,12 @@ try(probe.nlar(c("y1","y2")))
 
 probe.acf(c("y1","y2"),lags=c(0,1),type="cor") -> f
 probe.acf(c("y1","y2"),lags=c(1,5),type="cor") -> f
-ou2 %>% simulate() %>% obs() %>% f()
+ou2 %>% simulate() %>% obs() %>% f() -> v
+stopifnot(names(v)==c("acf.1.y1", "acf.5.y1", "acf.1.y2", "acf.5.y2"))
+
 try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
 try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f())
 ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
-
 probe.ccf(c("y2","y1"),lags=c(0,1,2),type="cor") -> f
 ou2 %>% simulate() %>% obs() %>% f()
 try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f())
@@ -81,4 +84,3 @@ try(ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y=1)) %>% obs() %>% f()
 ou2 %>% simulate(rmeasure=function(t,x,params,...) c(y1=NA,y2=NA)) %>% obs() %>% f() -> x
 stopifnot(x==0)
 ou2 %>% simulate(times=1:10,rmeasure=function(t,x,params,...) c(y1=-t,y2=t)) %>% obs() %>% f()
-
