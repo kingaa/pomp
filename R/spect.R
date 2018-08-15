@@ -17,18 +17,6 @@ setClass(
   )
 )
 
-setMethod(
-  "summary",
-  "spectd_pomp",
-  function (object, ...) {
-    list(
-      coef=coef(object),
-      nsim=nrow(object@simspec),
-      pvals=object@pvals
-    )
-  }
-)
-
 setGeneric("spect",function(object,...)standardGeneric("spect"))
 
 setMethod(
@@ -97,22 +85,6 @@ setMethod(
   signature=signature(object="ANY"),
   definition=function (object, ...) {
     stop(sQuote("spect")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-setMethod(
-  "plot",
-  "spectd_pomp",
-  function (x, max.plots.per.page = 4,
-    plot.data = TRUE,
-    quantiles = c(.025, .25, .5, .75, .975),
-    quantile.styles = list(lwd=1, lty=1, col="gray70"),
-    data.styles = list(lwd=2, lty=2, col="black")) {
-
-    plot_spect.internal(x,max.plots.per.page=max.plots.per.page,
-      plot.data=plot.data,quantiles=quantiles,quantile.styles=quantile.styles,
-      data.styles=data.styles)
-
   }
 )
 
@@ -200,7 +172,6 @@ spect.internal <- function (object, params, vars, kernel.width, nsim,
     pvals=pvals
   )
 }
-
 
 ## detrends in one of several ways, according to type.
 ## tseries is a numeric vector,
@@ -295,110 +266,4 @@ compute.spect.sim <- function (object, params, vars, nsim, seed, transform.data,
     }
   }
   simspec
-}
-
-plot_spect.internal <- function (x, max.plots.per.page, plot.data,
-  quantiles, quantile.styles, data.styles) {
-
-  ep <- paste0("in ",sQuote("plot"),": ")
-
-  spomp <- x
-  nquants <- length(quantiles)
-
-  if (!is.list(quantile.styles))
-    stop(ep,sQuote("quantile.styles")," must be a list.",call.=FALSE)
-
-  for (i in c("lwd", "lty", "col")) {
-    if (is.null(quantile.styles[[i]]))
-      quantile.styles[[i]] <- rep(1,nquants)
-    if (length(quantile.styles[[i]])==1)
-      quantile.styles[[i]] <- rep(quantile.styles[[i]],nquants)
-    if (length(quantile.styles[[i]])<nquants) {
-      warning(ep,sQuote("quantile.styles"),
-        " contains an element with more than 1 entry but fewer entries than quantiles",
-        call.=FALSE)
-      quantile.styles[[i]]<-rep(quantile.styles[[i]],nquants)
-    }
-  }
-
-  if (plot.data) {
-    nreps <- ncol(spomp@datspec)
-
-    if (!is.list(data.styles))
-      stop(ep,sQuote("data.styles")," must be a list",call.=FALSE)
-
-    for (i in c("lwd", "lty", "col")) {
-      if(is.null(data.styles[[i]]))
-        data.styles[[i]] <- rep(2,nreps)
-      if(length(data.styles[[i]])==1)
-        data.styles[[i]] <- rep(data.styles[[i]],nreps)
-      if(length(data.styles[[i]]) < nreps) {
-        warning(ep,sQuote("data.styles"),
-          "contains an element with more than 1 entry but ",
-          "fewer entries than observed variables",
-          call.=FALSE)
-        data.styles[[i]] <- rep(data.styles[[i]],nreps)
-      }
-    }
-  }
-
-  dimsim <- dim(spomp@simspec)
-  nfreq <- dimsim[2]
-  nobs <- dimsim[3]
-  oldpar <- par(
-    mfrow=c(min(nobs,max.plots.per.page),1),
-    mar=c(3,3,1,0.5),
-    mgp=c(2,1,0),
-    bty="l",
-    ask=if (nobs>max.plots.per.page) TRUE else par("ask")
-  )
-  on.exit(par(oldpar))
-  ylabs <- dimnames(spomp@simspec)[[3]]
-  for (i in seq_len(nobs)) {
-    spectraquants <- array(dim=c(nfreq,length(quantiles)))
-    for (j in seq_len(nfreq))
-      spectraquants[j,] <- quantile(
-        spomp@simspec[,j,i],
-        probs=quantiles
-      )
-    if (plot.data) {
-      ylimits <- c(
-        min(spectraquants,spomp@datspec[,i]),
-        max(spectraquants,spomp@datspec[,i])
-      )
-    } else {
-      ylimits <- c(
-        min(spectraquants),
-        max(spectraquants)
-      )
-    }
-    plot(
-      NULL,
-      xlim=range(spomp@freq),ylim=ylimits,
-      xlab=if (i==nobs) "frequency" else "",
-      ylab=expression(paste(log[10],"power"))
-    )
-    title(
-      main=paste0(ylabs[i],", p = ",round(spomp@pvals[i],4)),
-      line=0
-    )
-    for (j in seq_along(quantiles)) {
-      lines(
-        x=spomp@freq,
-        y=spectraquants[,j],
-        lwd=quantile.styles$lwd[j],
-        lty=quantile.styles$lty[j],
-        col=quantile.styles$col[j]
-      )
-    }
-    if(plot.data) {
-      lines(
-        x=spomp@freq,
-        y=spomp@datspec[,i],
-        lty=data.styles$lty[i],
-        lwd=data.styles$lwd[i],
-        col=data.styles$col[i]
-      )
-    }
-  }
 }

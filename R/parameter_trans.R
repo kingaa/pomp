@@ -12,6 +12,12 @@ setClass(
   )
 )
 
+setGeneric(
+    "parameter_trans",
+    function (toEst, fromEst, ...)
+        standardGeneric("parameter_trans")
+)
+
 setMethod(
   "show",
   signature=signature(object="partransPlugin"),
@@ -45,7 +51,7 @@ setMethod(
 setMethod(
   "parameter_trans",
   signature=signature(toEst="missing",fromEst="missing"),
-  definition=function(toEst, fromEst, ..., log, logit, barycentric) {
+  definition=function(..., log, logit, barycentric) {
     if (missing(log) && missing(logit) && missing(barycentric))
       new("partransPlugin",has=FALSE)
     else

@@ -4,6 +4,25 @@ setClassUnion("unshowable",members=c("pomp","abcd_pomp","bsmcd_pomp",
   "traj_matched_pomp"))
 
 setMethod(
+  "show",
+  signature=signature(object="unshowable"),
+  definition=function (object) {
+    cat("<object of class ",sQuote(as.character(class(object))),">\n",sep="")
+    invisible(NULL)
+  }
+)
+
+setMethod(
+  "show",
+  signature=signature(object="listies"),
+  definition=function (object) {
+    y <- as(object,"list")
+    names(y) <- names(object)
+    show(y)
+  }
+)
+
+setMethod(
   "print",
   signature=signature(x="unshowable"),
   definition=function (x, ...) {
@@ -13,10 +32,11 @@ setMethod(
 )
 
 setMethod(
-  "show",
-  signature=signature(object="unshowable"),
-  definition=function (object) {
-    cat("<object of class ",sQuote(as.character(class(object))),">\n",sep="")
-    invisible(NULL)
+  "print",
+  signature=signature(x="listies"),
+  definition=function (x, ...) {
+    show(x)
+    invisible(x)
   }
 )
+

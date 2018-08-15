@@ -31,9 +31,9 @@ Contact: kingaa at umich dot edu
 BugReports: https://github.com/kingaa/pomp/issues/
 Collate: aaa.R authors.R generics.R bake.R
 	 csnippet.R safecall.R pomp_fun.R
-	 rprocess_plugins.R skeleton_plugins.R parameter_trans.R covariate_table.R
+	 rprocess_plugins.R skeleton_plugins.R 
+	 parameter_trans.R covariate_table.R
 	 templates.R builder.R
-	 parmat.R logmeanexp.R bsplines.R eulermultinom.R
 	 slice_design.R profile_design.R sobol.R
 	 pomp_class.R load.R pomp.R pomp_methods.R partrans.R
 	 rmeasure_pomp.R rprocess_pomp.R rinit_pomp.R
@@ -45,13 +45,20 @@ Collate: aaa.R authors.R generics.R bake.R
 	 probe.R probe_methods.R probe_match.R basic_probes.R 
 	 bsmc2.R bsmc2_methods.R
 	 kalman.R kalman_methods.R 
-	 mif2.R mif2_methods.R
-	 proposals.R pmcmc.R pmcmc_methods.R
- 	 abc.R abc_methods.R covmat.R
+	 mif2.R
+	 proposals.R pmcmc.R
+ 	 abc.R covmat.R
  	 nlf_funcs.R nlf_guts.R nlf_objfun.R nlf.R
 	 spect.R spect_match.R
 	 traj_match.R
-	 plot_pomp.R
+	 listies.R
+	 concat.R show.R print.R spy.R plot.R
+	 extract.R logLik.R coef.R
+	 time.R timezero.R window.R obs.R 
+	 eff_sample_size.R summary.R
+	 filter_traj.R filter_mean.R pred_mean.R pred_var.R 
+	 traces.R forecast.R
+	 continue.R 
 	 example.R 
-	 show.R listies.R
+	 parmat.R logmeanexp.R bsplines.R eulermultinom.R
 	 deprecated.R

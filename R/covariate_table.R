@@ -10,6 +10,12 @@ setClass(
   )
 )
 
+setGeneric(
+    "covariate_table",
+    function (..., times)
+        standardGeneric("covariate_table")
+)
+
 setMethod(
   "show",
   signature=signature(object="covartable"),
@@ -30,7 +36,7 @@ setMethod(
 setMethod(
   "covariate_table",
   signature=signature(times="missing"),
-  definition=function (..., times) {
+  definition=function (...) {
     ep <- paste0("in ",sQuote("covariate_table"),": ")
     if (nargs() > 0)
       stop(ep,sQuote("times")," is a required argument",call.=FALSE)

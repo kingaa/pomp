@@ -99,25 +99,6 @@ setMethod(
   }
 )
 
-setMethod(
-  "summary",
-  signature=signature(object="spect_matched_pomp"),
-  definition=function (object, ...) {
-
-    c(
-      summary(as(object,"spectd_pomp")),
-      list(
-        est=object@est,
-        value=object@value,
-        eval=object@evals,
-        convergence=object@convergence
-      ),
-      if(length(object@msg)>0) list(msg=object@msg) else NULL
-    )
-
-  }
-)
-
 spect.match.internal <- function(object, start, est, vars, nsim, seed = NULL,
   kernel.width, transform.data, detrend, weights,
   method, verbose, fail.value, ...) {

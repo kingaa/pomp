@@ -12,23 +12,6 @@ setClass(
   )
 )
 
-setMethod(
-  "summary",
-  "probe_matched_pomp",
-  function (object, ...) {
-    c(
-      summary(as(object,"probed_pomp")),
-      list(
-        est=object@est,
-        value=object@value,
-        eval=object@evals,
-        convergence=object@convergence
-      ),
-      if(length(object@msg)>0) list(msg=object@msg) else NULL
-    )
-  }
-)
-
 setGeneric("probe.match.objfun",
   function(object,...)standardGeneric("probe.match.objfun"))
 setGeneric("probe.match",

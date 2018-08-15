@@ -26,22 +26,6 @@ setMethod(
 )
 
 setMethod(
-  "summary",
-  signature=signature(object="traj_matched_pomp"),
-  function (object, ...) {
-    c(
-      list(
-        params=coef(object),
-        loglik=object@value,
-        eval=object@evals,
-        convergence=object@convergence
-      ),
-      if(length(object@msg)>0) list(msg=object@msg) else NULL
-    )
-  }
-)
-
-setMethod(
   "traj.match.objfun",
   signature=signature(object="pomp"),
   function (object, params, est, transform = FALSE, ...) {

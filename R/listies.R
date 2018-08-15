@@ -1,54 +1,120 @@
+setClass(
+  "pompList",
+  contains="list",
+  validity=function (object) {
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"pomp"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+    }
+    TRUE
+  }
+)
+
+setClass(
+  "abcList",
+  contains="list",
+  validity=function (object) {
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"abcd_pomp"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+      d <- sapply(object,function(x)dim(x@traces))
+      if (!all(apply(d,1,diff)==0)) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": to be combined, ",sQuote("abcd_pomp"),
+          " objects must have chains of equal length"
+        )
+        return(retval)
+      }
+    }
+    TRUE
+  }
+)
+
+setClass(
+  "mif2List",
+  contains="list",
+  validity=function (object) {
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"mif2d_pomp"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+      d <- sapply(object,function(x)dim(x@traces))
+      if (!all(apply(d,1,diff)==0)) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": to be combined, ",sQuote("mif2d_pomp"),
+          " objects must have chains of equal length"
+        )
+        return(retval)
+      }
+    }
+    TRUE
+  }
+)
+
+setClass(
+  "pmcmcList",
+  contains="list",
+  validity=function (object) {
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"pmcmcd_pomp"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+      d <- sapply(object,function(x)dim(x@traces))
+      if (!all(apply(d,1,diff)==0)) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": to be combined, ",sQuote("pmcmcd_pomp"),
+          " objects must have chains of equal length"
+        )
+        return(retval)
+      }
+    }
+    TRUE
+  }
+)
+
+setClass(
+  "pfilterList",
+  contains="list",
+  validity=function (object) {
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"pfilterd_pomp"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+    }
+    TRUE
+  }
+)
+
+setClassUnion("Pomp",c("pomp","pompList"))
+setClassUnion("Pfilter",c("pfilterd_pomp","pfilterList"))
+setClassUnion("Abc",c("abcd_pomp","abcList"))
+setClassUnion("Mif2",c("mif2d_pomp","mif2List"))
+setClassUnion("Pmcmc",c("pmcmcd_pomp","pmcmcList"))
+
 setClassUnion("listies",
   members=c("pompList","abcList","mif2List","pmcmcList","pfilterList"))
-
-setMethod(
-  "show",
-  signature=signature(object="listies"),
-  definition=function (object) {
-    y <- as(object,"list")
-    names(y) <- names(object)
-    show(y)
-  }
-)
-
-setMethod(
-  "print",
-  signature=signature(x="listies"),
-  definition=function (x, ...) {
-    show(x)
-    invisible(x)
-  }
-)
-
-setMethod(
-  "[",
-  signature=signature(x="listies"),
-  definition=function(x, i, ...) {
-    y <- as(x,"list")
-    names(y) <- names(x)
-    cl <- class(x)
-    y <- unlist(y[i])
-    if (is.null(y)) {
-      list(NULL)
-    } else {
-      new(cl,y)
-    }
-  }
-)
-
-setMethod(
-  "coef",
-  signature=signature(object="listies"),
-  definition=function(object, ...) {
-    do.call(cbind,lapply(object,coef))
-  }
-)
-
-
-setMethod(
-  "logLik",
-  signature=signature(object="listies"),
-  definition=function(object, ...) {
-    do.call(c,lapply(object,logLik))
-  }
-)

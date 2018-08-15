@@ -76,28 +76,6 @@ setMethod(
 )
 
 setMethod(
-  'continue',
-  signature=signature(object='mif2d_pomp'),
-  definition = function (object, Nmif = 1, ...) {
-
-    ndone <- object@Nmif
-
-    obj <- mif2(object,Nmif=Nmif,...,
-      .ndone=ndone,.paramMatrix=object@paramMatrix)
-
-    object@traces[ndone+1,c('loglik','nfail')] <- obj@traces[1L,c('loglik','nfail')]
-    obj@traces <- rbind(
-      object@traces,
-      obj@traces[-1L,colnames(object@traces)]
-    )
-    names(dimnames(obj@traces)) <- c("iteration","variable")
-    obj@Nmif <- as.integer(ndone+Nmif)
-
-    obj
-  }
-)
-
-setMethod(
   "mif2",
   signature=signature(object="missing"),
   definition=function (...) {

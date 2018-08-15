@@ -102,34 +102,6 @@ setMethod(
 )
 
 setMethod(
-  "continue",
-  signature=signature(object="abcd_pomp"),
-  definition=function (object, Nabc = 1, ...) {
-
-    ndone <- object@Nabc
-    accepts <- object@accepts
-
-    obj <- abc(
-      object=object,
-      Nabc=Nabc,
-      .ndone=ndone,
-      .accepts=accepts,
-      ...
-    )
-
-    obj@traces <- rbind(
-      object@traces[,colnames(obj@traces)],
-      obj@traces[-1,]
-    )
-    names(dimnames(obj@traces)) <- c("iteration","variable")
-    obj@Nabc <- as.integer(ndone+Nabc)
-    obj@accepts <- as.integer(accepts+obj@accepts)
-
-    obj
-  }
-)
-
-setMethod(
   "abc",
   signature=signature(object="missing"),
   definition=function (...) {

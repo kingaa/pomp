@@ -1,0 +1,36 @@
+## set and manipulate the zero-time
+
+setGeneric(
+    "timezero",
+    function (object, ...)
+        standardGeneric("timezero")
+)
+
+setGeneric(
+    "timezero<-",
+    function (object, ..., value)
+        standardGeneric("timezero<-")
+)
+
+setMethod(
+  "timezero",
+  signature=signature(object="pomp"),
+  definition=function(object,...)object@t0
+)
+
+setMethod(
+  "timezero<-",
+  signature=signature(object="pomp"),
+  definition=function(object,...,value) {
+    ep <- paste0("in ",sQuote("timezero<-"),": ")
+    if (!(is.numeric(value) && length(value) == 1L && is.finite(value)))
+      stop(ep,"the zero-time ",sQuote("t0"),
+        " must be a single finite number.",call.=FALSE)
+    if (value > object@times[1L])
+      stop(ep,"the zero-time ",sQuote("t0"),
+        " must occur no later than the first observation.",call.=FALSE)
+    storage.mode(value) <- "double"
+    object@t0 <- value
+    object
+  }
+)

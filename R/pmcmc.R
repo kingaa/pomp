@@ -83,42 +83,6 @@ setMethod(
 )
 
 setMethod(
-  "continue",
-  signature=signature(object="pmcmcd_pomp"),
-  function (object, Nmcmc = 1, ...) {
-
-    ndone <- object@Nmcmc
-    accepts <- object@accepts
-
-    obj <- pmcmc(
-      object=object,
-      Nmcmc=Nmcmc,
-      ...,
-      .ndone=ndone,
-      .accepts=accepts,
-      .prev.pfp=as(object,"pfilterd_pomp"),
-      .prev.log.prior=object@log.prior
-    )
-
-    obj@traces <- rbind(
-      object@traces[,colnames(obj@traces)],
-      obj@traces[-1,]
-    )
-    names(dimnames(obj@traces)) <- c("iteration","variable")
-    ft <- array(dim=replace(dim(obj@filter.traj),2L,ndone+Nmcmc),
-      dimnames=replace(dimnames(obj@filter.traj),2L,
-        list(seq_len(ndone+Nmcmc))))
-    ft[,seq_len(ndone),] <- object@filter.traj
-    ft[,ndone+seq_len(Nmcmc),] <- obj@filter.traj
-    obj@filter.traj <- ft
-    obj@Nmcmc <- as.integer(ndone+Nmcmc)
-    obj@accepts <- as.integer(accepts+obj@accepts)
-
-    obj
-  }
-)
-
-setMethod(
   "pmcmc",
   signature=signature(object="missing"),
   definition=function (...) {

@@ -1,6 +1,7 @@
 # pomp to-do list
 
 - `as.data.frame` and ?? for `listies`
+- all methods use transforms if they exist
 - reorganize common methods: one file per method?
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
