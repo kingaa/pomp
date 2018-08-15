@@ -308,3 +308,41 @@ setMethod(
     invisible(NULL)
   }
 )
+
+setClass(
+  "pompList",
+  contains="list",
+  validity=function (object) {
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"pomp"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+    }
+    TRUE
+  }
+)
+
+setClassUnion("Pomp",c("pomp","pompList"))
+
+setMethod(
+  "concat",
+  signature=signature(...="Pomp"),
+  definition=function (...) {
+    y <- lapply(
+      list(...),
+      function (z) {
+        if (is(z,"list"))
+          setNames(as(z,"list"),names(z))
+        else
+          z
+      }
+    )
+    new("pompList",unlist(y))
+  }
+)
+
+c.Pomp <- concat

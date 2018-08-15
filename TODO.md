@@ -1,5 +1,7 @@
 # pomp to-do list
 
+- `as.data.frame` and ?? for `listies`
+- reorganize common methods: one file per method?
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files

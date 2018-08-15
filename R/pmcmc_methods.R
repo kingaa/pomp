@@ -48,21 +48,6 @@ setMethod(
 
 c.Pmcmc <- concat
 
-setMethod(
-  "[",
-  signature=signature(x="pmcmcList"),
-  definition=function(x, i, ...) {
-    y <- as(x,"list")
-    names(y) <- names(x)
-    y <- unlist(y[i])
-    if (is.null(y)) {
-      list(NULL)
-    } else {
-      new("pmcmcList",y)
-    }
-  }
-)
-
 ## extract the convergence record as a coda::mcmc object
 setMethod(
   "traces",
@@ -96,7 +81,13 @@ setMethod(
   "filter.traj",
   signature=signature(object="pmcmcList"),
   definition=function (object, ...) {
-    lapply(object,filter.traj,...)
+    fts <- lapply(object,filter.traj,...)
+    d <- dim(fts[[1]])
+    nm <- dimnames(fts[[1]])
+    x <- do.call(c,fts)
+    dim(x) <- c(d,length(fts))
+    dimnames(x) <- c(nm,list(chain=names(fts)))
+    x
   }
 )
 
@@ -114,11 +105,4 @@ setMethod(
   signature=signature(object="pmcmcd_pomp"),
   definition=function (object, ...)
     object@loglik
-)
-
-setMethod(
-  "logLik",
-  signature=signature(object="pmcmcList"),
-  definition=function (object, ...)
-    sapply(object,slot,"loglik")
 )

@@ -115,7 +115,13 @@ count <- 0
 delayed.failure <- function (theta,...) {count <<- count+1; if (count>5) stop("'fraid not!") else theta}
 try(abc(abc1,proposal=delayed.failure))
 
-try(c(abc1,ou2))
+coef(c(abc1,ou2)) -> theta
+stopifnot(dim(theta)==c(10,2),
+  rownames(theta)==c("alpha.1","alpha.2","alpha.3","alpha.4",
+    "sigma.1","sigma.2","sigma.3","tau","x1.0","x2.0"),
+  apply(theta[c("alpha.3","alpha.4",
+    "sigma.1","sigma.2","sigma.3","tau","x1.0","x2.0"),],1,diff)==0,
+  apply(theta[c("alpha.1","alpha.2"),],1,diff) != 0)
 try(c(abc1,NULL))
 try(c(c(abc1,abc2),ou2))
 c(abc1)

@@ -171,8 +171,13 @@ Error : in ‘abc’: ‘dprior’ error: no sir!
 > try(abc(abc1,proposal=delayed.failure))
 Error : in ‘abc’: in proposal function: 'fraid not!
 > 
-> try(c(abc1,ou2))
-Error : ‘c’ is not defined for objects of mixed class.
+> coef(c(abc1,ou2)) -> theta
+> stopifnot(dim(theta)==c(10,2),
++   rownames(theta)==c("alpha.1","alpha.2","alpha.3","alpha.4",
++     "sigma.1","sigma.2","sigma.3","tau","x1.0","x2.0"),
++   apply(theta[c("alpha.3","alpha.4",
++     "sigma.1","sigma.2","sigma.3","tau","x1.0","x2.0"),],1,diff)==0,
++   apply(theta[c("alpha.1","alpha.2"),],1,diff) != 0)
 > try(c(abc1,NULL))
 Error : ‘c’ is not defined for objects of mixed class.
 > try(c(c(abc1,abc2),ou2))
@@ -234,7 +239,7 @@ $three
 > try(continue())
 Error : in ‘continue’: ‘object’ is a required argument
 > try(continue(44))
-Error : ‘continue’ is not defined when ‘object’ is of class ‘numeric’
+Error : ‘continue’ is not defined for objects of class ‘numeric’
 > 
 > dev.off()
 null device 

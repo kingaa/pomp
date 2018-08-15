@@ -29,8 +29,6 @@
 \alias{covmat-abcd_pomp}
 \alias{covmat,abcList-method}
 \alias{covmat-abcList}
-\alias{[-abcList}
-\alias{[,abcList-method}
 \description{
   The approximate Bayesian computation (ABC) algorithm for estimating the parameters of a partially-observed Markov process.
 }

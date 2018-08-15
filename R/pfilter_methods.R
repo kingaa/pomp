@@ -63,7 +63,6 @@ setMethod(
   }
 )
 
-
 ## extract the filtering means
 setMethod(
   "filter.mean",
@@ -74,6 +73,44 @@ setMethod(
   }
 )
 
+setClass(
+  "pfilterList",
+  contains="list",
+  validity=function (object) {
+    if (length(object) > 0) {
+      if (!all(vapply(object,is,logical(1),"pfilterd_pomp"))) {
+        retval <- paste0(
+          "error in ",sQuote("c"),
+          ": dissimilar objects cannot be combined"
+        )
+        return(retval)
+      }
+    }
+    TRUE
+  }
+)
+
+setClassUnion("Pfilter",c("pfilterd_pomp","pfilterList"))
+
+setMethod(
+  "concat",
+  signature=signature(...="Pfilter"),
+  definition=function (...) {
+    y <- lapply(
+      list(...),
+      function (z) {
+        if (is(z,"list"))
+          setNames(as(z,"list"),names(z))
+        else
+          z
+      }
+    )
+    new("pfilterList",unlist(y))
+  }
+)
+
+c.Pfilter <- concat
+
 ## extract the filtered trajectory
 setMethod(
   "filter.traj",
@@ -83,3 +120,18 @@ setMethod(
     object@filter.traj[vars,,,drop=FALSE]
   }
 )
+
+setMethod(
+  "filter.traj",
+  signature=signature(object="pfilterList"),
+  definition=function (object, ...) {
+    fts <- lapply(object,filter.traj,...)
+    d <- dim(fts[[1]])
+    nm <- dimnames(fts[[1]])
+    x <- do.call(c,fts)
+    dim(x) <- c(d,length(fts))
+    dimnames(x) <- c(nm,list(chain=names(fts)))
+    x
+  }
+)
+

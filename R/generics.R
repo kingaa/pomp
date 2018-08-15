@@ -76,12 +76,67 @@ setMethod(
   }
 )
 
+
 setMethod(
   "continue",
   signature=signature(object="ANY"),
   definition=function (object, ...) {
-    stop(sQuote("continue")," is not defined when ",sQuote("object"),
-      " is of class ",sQuote(class(object)),call.=FALSE)
+    stop(sQuote("continue")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "filter.mean",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("filter.mean")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "filter.traj",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("filter.traj")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "pred.mean",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("pred.mean")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "pred.var",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("pred.var")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "eff.sample.size",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("eff.sample.size")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "traces",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("traces")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
   }
 )
 

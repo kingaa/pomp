@@ -32,8 +32,6 @@
 \alias{covmat-pmcmcList}
 \alias{c-Pmcmc}
 \alias{c,Pmcmc-method}
-\alias{[-pmcmcList}
-\alias{[,pmcmcList-method}
 \description{
   The Particle MCMC algorithm for estimating the parameters of a partially-observed Markov process.
   Running \code{pmcmc} causes a particle random-walk Metropolis-Hastings Markov chain algorithm to run for the specified number of proposals.

@@ -26,6 +26,7 @@
 \alias{filter.traj}
 \alias{filter.traj,pfilterd_pomp-method}
 \alias{filter.traj-pfilterd_pomp}
+\alias{filter.traj,pfilterList-method}
 \alias{eff.sample.size,pfilterd_pomp-method}
 \alias{eff.sample.size-pfilterd_pomp}
 \alias{cond.logLik,pfilterd_pomp-method}

@@ -38,6 +38,16 @@
 \alias{coef<-}
 \alias{coef<-,pomp-method}
 \alias{coef<--pomp}
+\alias{[,listies-method}
+\alias{coef,listies-method}
+\alias{logLik,listies-method}
+\alias{eff.sample.size,ANY-method}
+\alias{filter.mean,ANY-method}
+\alias{filter.traj,ANY-method}
+\alias{pred.mean,ANY-method}
+\alias{pred.var,ANY-method}
+\alias{traces,ANY-method}
+\alias{,ANY-method}
 \title{Functions for manipulating, displaying, and extracting information from objects of the \sQuote{pomp} class}
 \description{This page documents the various methods that allow one to extract information from, display, plot, and modify \sQuote{pomp} objects.}
 \usage{

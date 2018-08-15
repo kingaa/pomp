@@ -48,21 +48,6 @@ setMethod(
 
 c.Abc <- concat
 
-setMethod(
-  "[",
-  signature=signature(x="abcList"),
-  definition=function(x, i, ...) {
-    y <- as(x,"list")
-    names(y) <- names(x)
-    y <- unlist(y[i])
-    if (is.null(y)) {
-      list(NULL)
-    } else {
-      new("abcList",y)
-    }
-  }
-)
-
 ## extract the convergence record as an 'mcmc' object
 setMethod(
   "traces",

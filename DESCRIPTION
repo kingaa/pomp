@@ -2,7 +2,7 @@ Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
 Version: 2.0.0.0
-Date: 2018-08-14
+Date: 2018-08-15
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -52,5 +52,6 @@ Collate: aaa.R authors.R generics.R bake.R
 	 spect.R spect_match.R
 	 traj_match.R
 	 plot_pomp.R
-	 example.R show.R
+	 example.R 
+	 show.R listies.R
 	 deprecated.R

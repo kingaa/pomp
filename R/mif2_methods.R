@@ -49,21 +49,6 @@ setMethod(
 c.Mif2 <- concat
 
 setMethod(
-  "[",
-  signature=signature(x="mif2List"),
-  definition=function(x, i, ...) {
-    y <- as(x,"list")
-    names(y) <- names(x)
-    y <- unlist(y[i])
-    if (is.null(y)) {
-      list(NULL)
-    } else {
-      new("mif2List",y)
-    }
-  }
-)
-
-setMethod(
   "traces",
   signature=signature(object="mif2d_pomp"),
   definition=function (object, pars, transform = FALSE, ...) {

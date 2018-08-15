@@ -24,8 +24,6 @@
 \alias{plot,Mif2-method}
 \alias{c-Mif2}
 \alias{c,Mif2-method}
-\alias{[-mif2List}
-\alias{[,mif2List-method}
 \alias{rw.sd}
 \alias{ivp}
 \description{
