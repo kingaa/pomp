@@ -129,7 +129,8 @@ pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
   rmeasure, dmeasure, skeleton, rprior, dprior, partrans,
   params, covar, zeronames,
   obsnames, statenames, paramnames, covarnames,
-  PACKAGE, globals, cdir, cfile, shlib.args) {
+  PACKAGE, globals, cdir, cfile, shlib.args,
+  verbose = getOption("verbose", FALSE)) {
 
   ep <- paste0("in ",sQuote("pomp"),": ")
 
@@ -151,7 +152,8 @@ pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
     params=params, covar=covar,zeronames=zeronames,
     obsnames=obsnames,statenames=statenames,paramnames=paramnames,
     covarnames=covarnames,PACKAGE=PACKAGE,
-    globals=globals,cdir=cdir,cfile=cfile,shlib.args=shlib.args
+    globals=globals,cdir=cdir,cfile=cfile,shlib.args=shlib.args,
+    verbose=verbose
   )
 }
 
@@ -349,7 +351,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
   rinit, rprocess, dprocess, rmeasure, dmeasure, skeleton, rprior, dprior,
   partrans, params, covar, zeronames, obsnames, statenames,
   paramnames, covarnames, PACKAGE, globals, cdir, cfile, shlib.args,
-  .userdata, .solibs = list(), verbose = getOption("verbose",FALSE)) {
+  .userdata, .solibs = list(), verbose = getOption("verbose", FALSE)) {
 
   ep <- character(0)
   wp <- paste0("in ",sQuote("pomp"),": ")
@@ -530,4 +532,8 @@ pomp.internal <- function (data, times, t0, timename, ...,
     },
     userdata = .userdata
   )
+}
+
+has_default_init <- function (object) {
+  object@default.init
 }

@@ -58,47 +58,36 @@ Error : in ‘plot’: no parameters to plot.
 [1] -0.68  0.98
 > stopifnot(sum(cond.logLik(smc))==logLik(smc))
 > 
-> full_join(
-+   smc %>% prior_samples() %>% melt(value.name="prior"),
-+   smc %>% posterior_samples() %>% melt(value.name="posterior"),
-+   by=c("variable","rep")
-+ ) %>%
-+   gather(dist,value,prior,posterior) %>%
-+   ggplot(aes(x=value,group=dist,fill=dist,color=dist))+
-+   geom_density(alpha=0.5)+
-+   facet_grid(~variable,scales="free_x")+
-+   theme_bw()
-> 
 > try(bsmc2())
-Error : in ‘bsmc2’: ‘object’ is a required argument
+Error : in ‘bsmc2’: ‘data’ is a required argument
 > try(bsmc2(3L))
-Error : ‘bsmc2’ is not defined when ‘object’ is of class ‘integer’
+Error : ‘bsmc2’ is not defined when ‘data’ is of class ‘integer’
 > 
 > po <- smc
 > coef(po) <- NULL
 > try(bsmc2(smc))
-Error : in ‘bsmc2’: no parameters to estimate
+Error : in ‘bsmc2’: ‘Np’ must be specified.
 > try(bsmc2(po))
-Error : in ‘bsmc2’: parameters must be supplied
+Error : in ‘bsmc2’: ‘Np’ must be specified.
 > try(bsmc2(po,params=NULL))
-Error : in ‘bsmc2’: parameters must be supplied
+Error : in ‘bsmc2’: ‘params’ should be a numeric matrix with rownames, a data frame, or a named numeric vector.
 > try(bsmc2(po,params="yes"))
-Error : in ‘bsmc2’: ‘params’ should be suppled as a numeric matrix with rownames or a named numeric vector.
+Error : in ‘bsmc2’: ‘params’ should be a numeric matrix with rownames, a data frame, or a named numeric vector.
 > try(bsmc2(po,params=list()))
-Error : in ‘bsmc2’: parameters must be supplied
+Error : in ‘bsmc2’: ‘Np’ must be specified.
 > try(bsmc2(po,params=c(1,2,3)))
-Error : in ‘bsmc2’: ‘params’ should be suppled as a numeric matrix with rownames or a named numeric vector.
+Error : in ‘bsmc2’: ‘Np’ must be specified.
 > theta <- coef(smc)
 > try(bsmc2(po,params=as.list(theta)))
-Error : in ‘bsmc2’: no parameters to estimate
-> try(bsmc2(po,params=as.list(theta),est="bob"))
+Error : in ‘bsmc2’: ‘Np’ must be specified.
+> try(bsmc2(po,params=as.list(theta),Np=10,est="bob"))
 Error : in ‘bsmc2’: parameter(s) ‘bob’ not found.
-> try(bsmc2(po,params=as.list(theta),est="r"))
+> try(bsmc2(po,params=as.list(theta),Np=1,est="r"))
 Error : in ‘bsmc2’: in ‘rmvnorm’: infinite or missing values in 'x'
 > pp <- parmat(theta,100)
 > capture.output(invisible(bsmc2(po,params=pp,est="r",Np=1,verbose=TRUE))) -> out
 Warning message:
-in ‘bsmc2’: ‘Np’ is ignored when ‘params’ is a matrix 
+in ‘bsmc2’: ‘Np’ is ignored since ‘params’ is a matrix. 
 > stopifnot(sum(grepl("prior.mean",out))==10)
 > try(bsmc2(po,params=pp,est="r",smooth=2))
 Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
@@ -112,7 +101,7 @@ Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 Error : in ‘bsmc2’: ‘smooth’ must be a scalar in (0,1]
 > rownames(pp) <- NULL
 > try(bsmc2(po,params=pp,est="r"))
-Error : in ‘bsmc2’: ‘params’ should be suppled as a numeric matrix with rownames or a named numeric vector.
+Error : in ‘bsmc2’: ‘rprior’ error: variable 'r' not found among the parameters
 > try(bsmc2(smc,Np=-10,est="r"))
 Error : in ‘bsmc2’: ‘Np’ must be a positive integer.
 > try(bsmc2(smc,est="r",Np=100,tol=c(3,5)))
@@ -130,8 +119,8 @@ Error : in ‘bsmc2’: in ‘dmeasure’: whoa nelly!
 > theta <- coef(gompertz)
 > theta["K"] <- 1
 > try(capture.output(bsmc2(po,Np=2,params=theta,tol=1,max.fail=1,verbose=TRUE)) -> out)
+filtering failure at time t = 1
 filtering failure at time t = 2
-filtering failure at time t = 3
 Error : in ‘bsmc2’: too many filtering failures
 > 
 > dev.off()

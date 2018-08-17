@@ -159,43 +159,49 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
   transform <- as.logical(transform)
 
   if (missing(params)) {
-    params <- coef(object)
-    if (missing(Np)) stop(ep,sQuote("Np")," is not specified.",call.=FALSE)
-  } else if (is.matrix(params)) {
-    if (Np != ncol(params))
-      warning(ep,sQuote("Np")," is ignored when ",sQuote("params"),
-        " is a matrix.",call.=FALSE)
-    Np <- ncol(params)
+    params <- as.matrix(coef(object))
   } else if (is.data.frame(params)) {
     params <- t(data.matrix(params))
-    Np <- ncol(params)
   } else if (is.list(params)) {
     params <- unlist(params)
-    if (missing(Np)) stop(ep,sQuote("Np")," is not specified.",call.=FALSE)
-  } else if (is.null(params)) {
-    params <- numeric(0)
-    if (missing(Np)) stop(ep,sQuote("Np")," is not specified.",call.=FALSE)
+    params <- setNames(as.double(params),names(params))
+    params <- as.matrix(params)
+  } else if (is.numeric(params)) {
+    params <- as.matrix(params)
+  } else {
+    stop(ep,sQuote("params")," should be a numeric matrix with rownames,",
+      " a data frame, or a named numeric vector.",call.=FALSE)
   }
+
+  if (!missing(Np) && (length(Np) > 1 || !is.finite(Np) || Np < 1))
+    stop(ep,sQuote("Np")," must be a positive integer.",call.=FALSE)
+  if (missing(Np) && ncol(params) == 1)
+    stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
+  else if (missing(Np))
+    Np <- ncol(params)
+  else if (ncol(params) != 1 && Np != ncol(params)) {
+    warning(ep,sQuote("Np")," is ignored since ",sQuote("params"),
+      " is a matrix.",call.=FALSE)
+    Np <- ncol(params)
+  }
+  else
+    params <- parmat(params,Np)
 
   Np <- as.integer(Np)
 
-  if (length(Np) > 1 || !is.finite(Np) || Np < 1)
-    stop(ep,sQuote("Np")," must be a positive integer.",call.=FALSE)
+  if (length(params)==0)
+    stop(ep,"no parameter to be estimated.",call.=FALSE)
 
-  if ((!is.matrix(params)) && (Np > 1)) {
-    params <- tryCatch(
-      rprior(object,params=parmat(params,Np),.getnativesymbolinfo=gnsi),
-      error = function (e) {
-        stop(ep,sQuote("rprior")," error: ",conditionMessage(e),call.=FALSE)
-      }
-    )
-  }
+  params <- tryCatch(
+    rprior(object,params=params,.getnativesymbolinfo=gnsi),
+    error = function (e) {
+      stop(ep,sQuote("rprior")," error: ",conditionMessage(e),call.=FALSE)
+    }
+  )
 
   if (!is.numeric(params) || is.null(rownames(params)))
     stop(ep,sQuote("params")," should be suppled as a numeric matrix with rownames",
       " or a named numeric vector.",call.=FALSE)
-
-  params <- as.matrix(params)
 
   if (transform)
     params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)

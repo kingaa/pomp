@@ -7,7 +7,7 @@
 pomp(data, times, t0, ..., rinit, rprocess, dprocess, rmeasure, dmeasure,
   skeleton, rprior, dprior, partrans, params, covar, zeronames, obsnames,
   statenames, paramnames, covarnames, PACKAGE, globals, cdir, cfile,
-  shlib.args)
+  shlib.args, verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}

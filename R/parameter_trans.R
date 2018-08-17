@@ -25,11 +25,11 @@
 ##'   \item Time-, state-, and covariate-dependent transformations are not allowed.
 ##'   Therefore, neither the time, nor any state variables, nor any of the covariates will be available in the context within which a parameter transformation snippet is executed.
 ##' }
-##' 
+##'
 ##' These transformations can also be specified using \R functions with arguments \code{params} and \code{\dots}.
 ##' In this case, \code{toEst} should transform parameters from the scale that the basic components use internally to the scale used in estimation.
 ##' \code{fromEst} should be the inverse of \code{toEst}.
-##' 
+##'
 ##' Note that it is the user's responsibility to make sure that the transformations are mutually inverse.
 ##' If \code{obj} is the constructed \sQuote{pomp} object, and \code{coef(obj)} is non-empty, a simple check of this property is \preformatted{
 ##'   x <- coef(obj, transform = TRUE)
@@ -37,7 +37,7 @@
 ##'   coef(obj1, transform = TRUE) <- x
 ##'   identical(coef(obj), coef(obj1))
 ##'   identical(coef(obj1, transform=TRUE), x)}
-##' 
+##'
 ##' One can use the \code{log} and \code{logit} arguments of \code{parameter_trans} to name variables that should be log-transformed or logit-transformed, respectively.
 ##' The \code{barycentric} argument can name sets of parameters that should be log-barycentric transformed.
 ##
@@ -215,4 +215,8 @@ parameter_trans.internal <- function (toEst, fromEst, ...,
   toEst <- paste(toEst,collapse="\n")
 
   new("partransPlugin",has=TRUE,to=Csnippet(toEst),from=Csnippet(fromEst))
+}
+
+has_partrans <- function (object) {
+  object@partrans@has
 }
