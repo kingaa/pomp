@@ -47,7 +47,7 @@
 ##' For all of the functions described here, access to the underlying C
 ##' routines is available: see below.
 ##'
-##' @name Random distributions
+##' @name distributions
 ##' @rdname distributions
 ##'
 ##' @param n integer; number of random variates to generate.

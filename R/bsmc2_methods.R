@@ -3,7 +3,7 @@
 ##' These functions return the samples of the prior and posterior distributions
 ##' from a \code{bsmc2} run.
 ##'
-##' @name Prior and posterior samples
+##' @name samples
 ##' @rdname samples
 ##' @include pomp-package.R bsmc2.R
 ##' @aliases prior_samples prior_samples,missing-method prior_samples,ANY-method

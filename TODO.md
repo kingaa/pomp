@@ -6,6 +6,11 @@
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files
+- get rid of `probevals`?
+- matching functions will go away, in favor of objective function constructors:
+    - 'probe.match.objfun' looks good: needs testing
+    - 'traj.match.objfun' needs to be made stateful
+    - 'spect.match.objfun' is not yet written
 
 ## For pomp 2:
 
@@ -13,7 +18,6 @@
 	- OK for simulate, probe, pfilter, abc, bsmc2, pmcmc, mif2, kalman, spect
 	- needed for probe_match, nlf, spect_match
 	- not to be done for trajectory, traj_match
-- matching functions will go away, in favor of objective function constructors
 - better scheme for indicating derivatives and maps in C snippets
 -- perhaps `dinit`?
 - covariates:
@@ -23,7 +27,7 @@
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification
 	- allow "R snippets": expressions evaluated in proper context?
-- remove `obs` and `states` arguments in `simulate`? or hide? `do_simulate` in C?
+- remove `obs` and `states` arguments in `simulate`? or hide them? `do_simulate` in C?
 - easier interface for lists of probes in `probe`
 - documentation on `mifList`, `pmcmcList`, etc.
 - methods to change data (`obs<-`)?

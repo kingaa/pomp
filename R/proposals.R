@@ -3,7 +3,7 @@
 ##' Functions to construct proposal distributions for use with MCMC methods.
 ##'
 ##'
-##' @name MCMC proposals
+##' @name proposals
 ##' @rdname proposals
 ##'
 ##' @param rw.var square numeric matrix with row- and column-names.  Specifies

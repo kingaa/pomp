@@ -2,7 +2,7 @@
 ##'
 ##' Trajectories drawn from the smoothing distribution
 ##'
-##' @name Filtering trajectories
+##' @name filter.traj
 ##' @aliases filter.traj filter.traj,ANY-method filter.traj,missing-method
 ##' @include pfilter.R pmcmc.R
 ##' @rdname filter_traj

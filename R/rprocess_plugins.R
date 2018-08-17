@@ -107,7 +107,7 @@
 ##' }
 ##' }
 ##' }
-##' @name rprocess plugins
+##' @name rprocess_plugins
 ##' @rdname rprocess_plugins
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R

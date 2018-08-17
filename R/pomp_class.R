@@ -1,6 +1,6 @@
 ##' The basic pomp class
 ##'
-##' The basic class implementing a POMP model with data
+##' The basic class implementing a \acronym{POMP} model with data
 ##'
 ##' @rdname pomp_class
 ##' @include pomp_fun.R

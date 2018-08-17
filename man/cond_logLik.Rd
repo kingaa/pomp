@@ -38,4 +38,13 @@ The estimated conditional log likelihood from a fitted model.
 The conditional log likelihood is defined to be the value of the density
 of \deqn{Y_t | Y_1,\dots,Y_{t-1}}{Yt | Y1,\dots,Y(t-1)} evaluated at \eqn{Y_t = y^*_t}{Yt = yt*}.
 Here, \eqn{Y_t}{Yt} is the observable process and \eqn{y^*_t}{yt*} is the data, at time \eqn{t}.
+
+\deqn{\ell_t(\theta) = \mathrm{Prob}[y_t \vert y_1, \dots, y_{t-1}],}{ell_t(theta)=Prob[y_t | y_1, \dots, y_(t-1)],} where \eqn{y_t} are the data, at time \eqn{t}.
 }
+\seealso{
+Other particle filter methods: \code{\link{eff.sample.size}},
+  \code{\link{filter.mean}}, \code{\link{mif2}},
+  \code{\link{pfilter}}, \code{\link{pmcmc}},
+  \code{\link{pred.mean}}, \code{\link{pred.var}}
+}
+\concept{particle filter methods}

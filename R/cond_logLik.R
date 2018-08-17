@@ -6,13 +6,17 @@
 ##' of \deqn{Y_t | Y_1,\dots,Y_{t-1}}{Yt | Y1,\dots,Y(t-1)} evaluated at \eqn{Y_t = y^*_t}{Yt = yt*}.
 ##' Here, \eqn{Y_t}{Yt} is the observable process and \eqn{y^*_t}{yt*} is the data, at time \eqn{t}.
 ##'
+##' \deqn{\ell_t(\theta) = \mathrm{Prob}[y_t \vert y_1, \dots, y_{t-1}],}{ell_t(theta)=Prob[y_t | y_1, \dots, y_(t-1)],} where \eqn{y_t} are the data, at time \eqn{t}.
+##' 
 ##' @name cond.logLik
 ##' @docType methods
 ##' @rdname cond_logLik
 ##' @include pomp_class.R kalman.R pfilter.R
 ##' @aliases cond.logLik cond.logLik,missing-method cond.logLik,ANY-method
+##' @family particle filter methods
 ##'
-##' @return numerical value of the conditional log likelihood.
+##' @return
+##' numerical value of the conditional log likelihood.
 ##' Note that some methods compute not the log likelihood itself but instead a related quantity.
 ##' To keep the code simple, the \code{logLik} function is nevertheless used to extract this quantity.
 NULL

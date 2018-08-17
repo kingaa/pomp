@@ -10,7 +10,7 @@
 ##'
 ##' This runs an optimizer to maximize \code{nlf.objfun}.
 ##'
-##' @name Nonlinear forecasting
+##' @name nlf
 ##' @rdname nlf
 ##' @include pomp_class.R simulate_pomp.R
 ##' @aliases nlf nlf,missing-method nlf,ANY-method

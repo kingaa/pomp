@@ -2,10 +2,16 @@
 ##'
 ##' The mean of the filtering distribution
 ##'
-##' @name Filtering mean
+##' The filtering distribution is that of
+##' \deqn{X_t \vert y_1,\dots,y_t,}{X_t | y_1,\dots,y_t,}
+##' where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively,
+##' at time \eqn{t}. 
+##'
+##' @name filter.mean
 ##' @aliases filter.mean filter.mean,ANY-method filter.mean,missing-method
 ##' @include pfilter.R kalman.R
 ##' @rdname filter_mean
+##' @family particle filter methods
 NULL
 
 setGeneric(

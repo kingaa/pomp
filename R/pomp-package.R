@@ -212,7 +212,7 @@ NULL
 ##' risk.}
 ##'
 ##'
-##' @name Childhood disease incidence data
+##' @name measles
 ##' @rdname measles
 ##' @aliases LondonYorke ewmeas ewcitmeas
 ##' @docType data
@@ -347,7 +347,7 @@ NULL
 ##'
 ##' The boarding school influenza outbreak is described in Anonymous (1978).
 ##'
-##' @name SIR models
+##' @name sir_models
 ##' @rdname sir
 ##' @aliases sir sir2 bbs
 ##' @docType data

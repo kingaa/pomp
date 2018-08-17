@@ -8,39 +8,29 @@
 ##' of fit and/or as the basis for frequency-domain parameter estimation
 ##' (\code{spect.match}).
 ##'
-##' \code{spect.match} tries to match the power spectrum of the model to that
-##' of the data.  It calls an optimizer to adjust model parameters to minimize
-##' the discrepancy between simulated and actual data.
-##'
 ##' A call to \code{spect} results in the estimation of the power spectrum for
 ##' the (transformed, detrended) data and \code{nsim} model simulations.  The
 ##' results of these computations are stored in an object of class
 ##' \sQuote{spectd_pomp}.
 ##'
-##' A call to \code{spect.match} results in an attempt to optimize the
-##' agreement between model and data spectrum over the parameters named in
-##' \code{est}.  The results, including coefficients of the fitted model and
-##' power spectra of fitted model and data, are stored in an object of class
-##' \sQuote{spect_matched_pomp}.
-##'
-##' @name Power spectrum
+##' @name spect
+##' @docType methods
 ##' @rdname spect
 ##' @include simulate_pomp.R
 ##' @aliases spect spect,missing-method spect,ANY-method
+##' @family summary statistics methods
 ##'
 ##' @param object An object of class \sQuote{pomp}.
 ##' @param params optional named numeric vector of model parameters.  By
 ##' default, \code{params=coef(object)}.
-##' @param vars optional; names of observed variables for which the power
-##' spectrum will be computed.  This must be a subset of
-##' \code{rownames(obs(object))}.  By default, the spectrum will be computed
-##' for all observables.
+##' @param vars optional; names of observed variables for which the power spectrum will be computed.
+##' By default, the spectrum will be computed for all observables.
 ##' @param kernel.width width parameter for the smoothing kernel used for
 ##' calculating the estimate of the spectrum.
 ##' @param nsim number of model simulations to be computed.
 ##' @param seed optional; if non-\code{NULL}, the random number generator will
-##' be initialized with this seed for simulations.  See
-##' \code{\link[=simulate-pomp]{simulate}}.
+##' be initialized with this seed for simulations.
+##' See \code{\link[=simulate-pomp]{simulate}}.
 ##' @param transform.data function; this transformation will be applied to the
 ##' observables prior to estimation of the spectrum, and prior to any
 ##' detrending.
@@ -48,36 +38,10 @@
 ##' detrending, and subtraction of constant, linear, and quadratic trends from
 ##' the data.  Detrending is applied to each data series and to each model
 ##' simulation independently.
-##' @param weights optional.  The mismatch between model and data is measured
-##' by a weighted average of mismatch at each frequency.  By default, all
-##' frequencies are weighted equally.  \code{weights} can be specified either
-##' as a vector (which must have length equal to the number of frequencies) or
-##' as a function of frequency.  If the latter, \code{weights(freq)} must
-##' return a nonnegative weight for each frequency.
-##' @param start named numeric vector; the initial guess of parameters.
-##' @param est character vector; the names of parameters to be estimated.
-##' @param method Optimization method.  Choices are
-##' \code{\link[subplex]{subplex}}, \code{\link{sannbox}}, and any of the
-##' methods used by \code{\link{optim}}.
-##' @param verbose logical; print diagnostic messages?
-##' @param fail.value optional scalar; if non-\code{NA}, this value is
-##' substituted for non-finite values of the objective function.
-##' @param \dots Additional arguments.  In the case of \code{spect}, these are
-##' currently ignored.  In the case of \code{spect.match}, these are passed to
-##' \code{optim} or \code{subplex} in the \code{control} list.
+##' @param \dots ignored
 ##'
 ##' @return
-##' \code{spect} returns an object of class \sQuote{spectd_pomp}.
-##'
-##' \code{spect.match} returns an object of class \sQuote{spect_matched_pomp},
-##' which is derived from class \sQuote{spectd_pomp} and therefore has all the
-##' slots of that class.  In addition, \sQuote{spect_matched_pomp} objects have
-##' the following slots: \describe{ \item{est, weights, fail.value}{values of
-##' the corresponding arguments in the call to \code{spect.match}.}
-##' \item{evals}{ number of function and gradient evaluations by the optimizer.
-##' See \code{\link{optim}}.  } \item{value}{Value of the objective function.}
-##' \item{convergence, msg}{ Convergence code and message from the optimizer.
-##' See \code{\link{optim}}.  } }
+##' An object of class \sQuote{spectd_pomp}.
 ##'
 ##' @author Daniel C. Reuman, Cai GoGwilt, Aaron A. King
 ##'
@@ -102,6 +66,8 @@ setClass(
   "spectd_pomp",
   contains="pomp",
   slots=c(
+    nsim="integer",
+    seed="integer",
     kernel.width="numeric",
     transform.data="function",
     vars="character",
@@ -119,8 +85,26 @@ setGeneric(
     standardGeneric("spect")
 )
 
+setMethod(
+  "spect",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("spect"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "spect",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("spect")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
 ##' @name spect-pomp
-##' @aliases spect,pomp-method
+##' @aliases spect spect,pomp-method
 ##' @rdname spect
 setMethod(
   "spect",
@@ -131,6 +115,7 @@ setMethod(
 
     detrend <- match.arg(detrend)
     transform.data <- match.fun(transform.data)
+    if (missing(params)) params <- coef(object)
 
     spect.internal(
       object,
@@ -178,29 +163,13 @@ setMethod(
   }
 )
 
-setMethod(
-  "spect",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("spect"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "spect",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("spect")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
 spect.internal <- function (object, params, vars, kernel.width, nsim,
   seed = NULL, transform.data, detrend, ...) {
 
   ep <- paste0("in ",sQuote("spect"),": ")
 
-  if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
+  if (is.null(params)) params <- numeric(0)
 
   if (missing(vars)) vars <- rownames(object@data)
 
@@ -214,6 +183,9 @@ spect.internal <- function (object, params, vars, kernel.width, nsim,
       !is.finite(nsim) || (nsim<1))
     stop(ep,sQuote("nsim")," must be specified as a positive integer.",
       call.=FALSE)
+
+  nsim <- as.integer(nsim)
+  seed <- as.integer(seed)
 
   ker <- reuman.kernel(kernel.width)
 
@@ -268,6 +240,8 @@ spect.internal <- function (object, params, vars, kernel.width, nsim,
   new(
     "spectd_pomp",
     object,
+    nsim=nsim,
+    seed=seed,
     kernel.width=kernel.width,
     transform.data=transform.data,
     vars=vars,
@@ -277,36 +251,6 @@ spect.internal <- function (object, params, vars, kernel.width, nsim,
     simspec=simspec,
     pvals=pvals
   )
-}
-
-## detrends in one of several ways, according to type.
-## tseries is a numeric vector,
-pomp.detrend <- function (tseries, type) {
-  switch(
-    type,
-    mean=tseries-mean(tseries),
-    linear={
-      m <- cbind(1,seq_along(tseries))
-      .lm.fit(m,tseries)$residuals
-    },
-    quadratic={
-      x <- seq_along(tseries)
-      m <- cbind(1,x,x*x)
-      .lm.fit(m,tseries)$residuals
-    },
-    tseries
-  )
-}
-
-## The default smoothing kernel for the R spec.pgram function is weird.
-## This function creates a better one.
-reuman.kernel <- function (kernel.width) {
-  ker <- kernel("modified.daniell",m=kernel.width)
-  x <- seq.int(from=0,to=kernel.width,by=1)/kernel.width
-  ker[[1L]] <- (15/(16*2*pi))*((x-1)^2)*((x+1)^2)
-  ker[[1L]] <- ker[[1L]]/(2*sum(ker[[1L]][-1])+ker[[1L]][1L])
-  attr(ker,"name") <- NULL
-  ker
 }
 
 compute.spect.data <- function (object, vars, transform.data, detrend, ker) {
@@ -373,3 +317,48 @@ compute.spect.sim <- function (object, params, vars, nsim, seed,
   }
   simspec
 }
+
+## detrends in one of several ways, according to type.
+## tseries is a numeric vector,
+pomp.detrend <- function (tseries, type) {
+  switch(
+    type,
+    mean=tseries-mean(tseries),
+    linear={
+      m <- cbind(1,seq_along(tseries))
+      .lm.fit(m,tseries)$residuals
+    },
+    quadratic={
+      x <- seq_along(tseries)
+      m <- cbind(1,x,x*x)
+      .lm.fit(m,tseries)$residuals
+    },
+    tseries
+  )
+}
+
+## The default smoothing kernel for the R spec.pgram function is weird.
+## This function creates a better one.
+reuman.kernel <- function (kernel.width) {
+  ker <- kernel("modified.daniell",m=kernel.width)
+  x <- seq.int(from=0,to=kernel.width,by=1)/kernel.width
+  ker[[1L]] <- (15/(16*2*pi))*((x-1)^2)*((x+1)^2)
+  ker[[1L]] <- ker[[1L]]/(2*sum(ker[[1L]][-1])+ker[[1L]][1L])
+  attr(ker,"name") <- NULL
+  ker
+}
+
+##' @name summary-spectd_pomp
+##' @aliases summary,spectd_pomp-method
+##' @rdname summary
+setMethod(
+  "summary",
+  signature=signature(object="spectd_pomp"),
+  definition=function (object) {
+    list(
+      coef=coef(object),
+      nsim=nrow(object@simspec),
+      pvals=object@pvals
+    )
+  }
+)

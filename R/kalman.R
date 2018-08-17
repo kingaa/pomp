@@ -2,7 +2,7 @@
 ##'
 ##' The ensemble Kalman filter and ensemble adjustment Kalman filter.
 ##'
-##' @name Ensemble Kalman filter methods
+##' @name kalman
 ##' @rdname kalman
 ##' @include pomp_class.R
 ##' @aliases enkf eakf enkf,ANY-method enkf,missing-method

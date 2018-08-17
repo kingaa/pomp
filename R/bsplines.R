@@ -4,7 +4,7 @@
 ##' gives a basis of spline functions.  \code{periodic.bspline.basis} gives a
 ##' basis of periodic spline functions.
 ##'
-##' @name B splines
+##' @name bsplines
 ##' @rdname bsplines
 ##'
 ##' @param x Vector at which the spline functions are to be evaluated.

@@ -38,7 +38,7 @@
 ##' As with the other basic components, \code{f} may take additional arguments, provided these are passed along with it in the call to \code{pomp}.
 ##' The function \code{f} must return a numeric vector of the same length as \code{x}, which contains the value of the map or vectorfield at the required point and time.
 ##' 
-##' @name skeleton plugins
+##' @name skeleton_plugins
 ##' @rdname skeleton_plugins
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R

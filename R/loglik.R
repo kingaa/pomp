@@ -17,7 +17,7 @@
 ##'
 NULL
 
-##' @name logLik
+##' @name logLik-generic
 ##' @rdname loglik
 setGeneric(
   "logLik",
@@ -45,8 +45,8 @@ setMethod(
 setMethod(
   "logLik",
   signature=signature(object="listies"),
-  definition=function(object, ...) {
-    do.call(c,lapply(object,logLik))
+  definition=function(object,...) {
+    do.call(c,lapply(object,logLik,...))
   }
 )
 
@@ -56,7 +56,7 @@ setMethod(
 setMethod(
   "logLik",
   signature=signature(object="pfilterd_pomp"),
-  definition=function(object,...)object@loglik
+  definition=function(object)object@loglik
 )
 
 ##' @name logLik-kalmand_pomp
@@ -65,7 +65,7 @@ setMethod(
 setMethod(
   "logLik",
   signature=signature(object="kalmand_pomp"),
-  definition=function(object,...)object@loglik
+  definition=function(object)object@loglik
 )
 
 ##' @name logLik-pmcmcd_pomp
@@ -74,21 +74,8 @@ setMethod(
 setMethod(
   "logLik",
   signature=signature(object="pmcmcd_pomp"),
-  definition=function (object, ...)
+  definition=function (object)
     object@loglik
-)
-
-##' @name logLik-probed_pomp
-##' @aliases logLik,probed_pomp-method
-##' @rdname loglik
-##'
-##' @return
-##' When \code{object} is of \sQuote{probed_pomp} class (i.e., the result of a \code{probe} computation), \code{logLik} retrieves the \dQuote{synthetic likelihood} (see \code{\link{probe}}).
-##'
-setMethod(
-  "logLik",
-  signature=signature(object="probed_pomp"),
-  definition=function(object,...)object@synth.loglik
 )
 
 ##' @name logLik-nlfd_pomp
@@ -116,5 +103,5 @@ setMethod(
 setMethod(
   "logLik",
   signature=signature(object="bsmcd_pomp"),
-  definition=function(object,...)object@log.evidence
+  definition=function(object)object@log.evidence
 )

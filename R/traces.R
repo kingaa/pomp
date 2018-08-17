@@ -2,7 +2,7 @@
 ##'
 ##' Retrieve the history of an iterative calculation.
 ##'
-##' @name Traces
+##' @name traces
 ##' @rdname traces
 ##' @aliases traces traces,missing-method traces,ANY-method
 ##' @include pmcmc.R mif2.R abc.R

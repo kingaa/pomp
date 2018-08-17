@@ -5,10 +5,11 @@
 ##' random-walk Metropolis-Hastings Markov chain algorithm to run for the
 ##' specified number of proposals.
 ##'
-##' @name Particle MCMC
+##' @name pmcmc
 ##' @rdname pmcmc
 ##' @include pfilter.R proposals.R load.R
 ##' @aliases pmcmc pmcmc,ANY-method pmcmc,missing-method
+##' @family particle filter methods
 ##'
 ##' @param object An object of class \sQuote{pomp}.
 ##' @param Nmcmc The number of PMCMC iterations to perform.
@@ -17,7 +18,7 @@
 ##' distribution.  Currently, the proposal distribution must be symmetric for
 ##' proper inference: it is the user's responsibility to ensure that it is.
 ##' Several functions that construct appropriate proposal function are
-##' provided: see \link{MCMC proposals} for more information.
+##' provided: see \link[=proposals]{MCMC proposals} for more information.
 ##' @param Np a positive integer; the number of particles to use in each
 ##' filtering operation.
 ##' @param tol numeric scalar; particles with log likelihood below \code{tol}
@@ -43,7 +44,7 @@
 ##'
 ##' @author Edward L. Ionides, Aaron A. King, Sebastian Funk
 ##'
-##' @seealso \code{\link{pfilter}}, \link{MCMC proposals}, and the
+##' @seealso \code{\link{pfilter}}, \link[=proposals]{MCMC proposals}, and the
 ##' tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 ##'
 ##' @references

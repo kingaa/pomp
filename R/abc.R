@@ -31,8 +31,8 @@
 ##'
 ##' @author Edward L. Ionides, Aaron A. King
 ##'
-##' @family summary statistics
-##' @seealso \code{\link{probe}}, \link{MCMC proposals}, and
+##' @family summary statistics methods
+##' @seealso \code{\link{probe}}, \link[=proposals]{MCMC proposals}, and
 ##' the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
 ##' @references
@@ -95,7 +95,7 @@ setGeneric(
 ##'   Currently, the proposal distribution must be symmetric for proper inference:
 ##'   it is the user's responsibility to ensure that it is.
 ##'   Several functions that construct appropriate proposal function are provided:
-##'   see \link{MCMC proposals} for more information.
+##'   see \link[=proposals]{MCMC proposals} for more information.
 ##' @param probes List of probes (AKA summary statistics).
 ##'  See \code{\link{probe}} for details.
 ##' @param scale named numeric vector of scales.

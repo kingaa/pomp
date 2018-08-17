@@ -15,12 +15,12 @@
 ##' computations on real and simulated data are stored in an object of class
 ##' \sQuote{probed_pomp}.
 ##'
-##' @name Probes
+##' @name probe
 ##' @docType methods
 ##' @rdname probe
 ##' @include pomp_class.R pomp_fun.R
 ##' @aliases probe probe,missing-method probe,ANY-method
-##' @family summary statistics
+##' @family summary statistics methods
 ##'
 ##' @section Methods:
 ##' \describe{
@@ -53,8 +53,7 @@
 ##'
 ##' @author Daniel C. Reuman, Aaron A. King
 ##'
-##' @seealso \link{Basic probes}, \code{\link{spect}}, and the
-##' tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
+##' @seealso the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
 ##' @references
 ##' B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P.
@@ -96,7 +95,7 @@ setGeneric(
 ##' A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
 ##' A vector-valued probe must always return a vector of the same size.
 ##' A number of useful probes are provided with the package:
-##' see \link{Basic probes}.
+##' see \link[=basic_probes]{basic probes}.
 ##' @param params optional named numeric vector of model parameters.
 ##' By default, \code{params=coef(object)}.
 ##' @param nsim the number of model simulations to be computed.
@@ -104,10 +103,8 @@ setGeneric(
 ##' if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
 ##' See \code{\link[=simulate-pomp]{simulate}}.
 ##' @param verbose logical; print diagnostic messages?
-##' @param \dots Additional arguments.  In the case of \code{probe} and
-##' \code{probe.match.objfun}, additional arguments are passed to
-##' \code{\link{pomp}}, allowing one to supply new or modify existing model
-##' characteristics or components.
+##' @param \dots additional arguments which can be used to change the defaults or modify
+##' model characteristics or components.
 ##'
 setMethod(
   "probe",
@@ -280,3 +277,33 @@ probe.internal <- function (object, probes, params, nsim, seed,
     seed=seed
   )
 }
+
+##' @name summary-probed_pomp
+##' @aliases summary,probed_pomp-method
+##' @rdname summary
+setMethod(
+  "summary",
+  signature=signature(object="probed_pomp"),
+  definition=function (object) {
+    list(
+      coef=coef(object),
+      nsim=nrow(object@simvals),
+      quantiles=object@quantiles,
+      pvals=object@pvals,
+      synth.loglik=object@synth.loglik
+    )
+  }
+)
+
+##' @name logLik-probed_pomp
+##' @aliases logLik,probed_pomp-method
+##' @rdname loglik
+##'
+##' @return
+##' When \code{object} is of \sQuote{probed_pomp} class (i.e., the result of a \code{probe} computation), \code{logLik} retrieves the \dQuote{synthetic likelihood} (see \code{\link{probe}}).
+##'
+setMethod(
+  "logLik",
+  signature=signature(object="probed_pomp"),
+  definition=function(object)object@synth.loglik
+)

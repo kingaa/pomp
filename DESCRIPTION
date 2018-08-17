@@ -2,7 +2,7 @@ Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
 Version: 2.0.0.0
-Date: 2018-08-15
+Date: 2018-08-17
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -91,10 +91,11 @@ Collate:
     'plot.R'
     'pred_mean.R'
     'pred_var.R'
+    'summary.R'
+    'probe_match.R'
     'spect_match.R'
     'trajectory.R'
     'traj_match.R'
-    'probe_match.R'
     'show.R'
     'print.R'
     'profile_design.R'
@@ -103,7 +104,6 @@ Collate:
     'sobol.R'
     'spy.R'
     'states.R'
-    'summary.R'
     'time.R'
     'timezero.R'
     'window.R'

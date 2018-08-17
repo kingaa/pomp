@@ -2,11 +2,11 @@
 ##'
 ##' Return the values of the probes, evaluated on simulations, and on the data.
 ##'
-##' @name Probe values
+##' @name probevals
 ##' @rdname probevals
 ##' @include probe.R
 ##' @aliases probevals probevals,missing-method probevals,ANY-method
-##' @family summary statistics
+##' @family summary statistics methods
 NULL
 
 setGeneric(

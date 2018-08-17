@@ -7,7 +7,7 @@
 ##' @include pmcmc.R abc.R probe.R
 ##' @rdname covmat
 ##'
-##' @seealso \link{MCMC proposals}.
+##' @seealso \link[=proposals]{MCMC proposals}.
 NULL
 
 setGeneric(

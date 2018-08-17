@@ -16,8 +16,6 @@
 \alias{show,pmcmcd_pomp-method}
 \alias{show,probed_pomp-method}
 \alias{show,spectd_pomp-method}
-\alias{show,spect_matched_pomp-method}
-\alias{show,traj_matched_pomp-method}
 \alias{show,rprocPlugin-method}
 \alias{show,discreteRprocPlugin-method}
 \alias{show,eulerRprocPlugin-method}

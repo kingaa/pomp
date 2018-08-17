@@ -2,10 +2,15 @@
 ##'
 ##' Estimate the effective sample size of a Monte Carlo computation.
 ##'
-##' @name Effective sample size
+##' Effective sample size is computed as
+##' \deqn{\left(\sum_i\!w_{it}^2\right)^{-1},}{1/(sum(w_it^2)),}
+##' where \eqn{w_{it}}{w_it} is the normalized weight of particle \eqn{i} at time \eqn{t}.
+##'
+##' @name eff.sample.size
 ##' @rdname eff_sample_size
 ##' @include pfilter.R bsmc2.R
 ##' @aliases eff.sample.size eff.sample.size,missing-method eff.sample.size,ANY-method
+##' @family particle filter methods
 ##'
 ##' @param object object extending class \sQuote{pomp}
 ##' @param \dots ignored

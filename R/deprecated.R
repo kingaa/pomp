@@ -1,6 +1,6 @@
 ##' Deprecated functions
 ##'
-##' @name Deprecated functions
+##' @name deprecated
 ##' @rdname deprecated
 ##' @keywords internal
 ##' @include traces.R probevals.R rprocess_plugins.R

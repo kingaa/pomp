@@ -5,7 +5,7 @@
 ##'
 ##' When C snippets are used in the construction of a \sQuote{pomp} object, the resulting shared-object library is dynamically loaded (linked) before each use, and unloaded afterward.
 ##'
-##' @name pompLoad and pompUnload
+##' @name load
 ##' @docType methods
 ##' @rdname load
 ##' @include pomp_class.R

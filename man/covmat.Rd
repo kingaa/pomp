@@ -56,5 +56,5 @@ covariance matrix of the probes, as applied to simulated data.
 A helper function to extract a covariance matrix.
 }
 \seealso{
-\link{MCMC proposals}.
+\link[=proposals]{MCMC proposals}.
 }

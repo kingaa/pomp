@@ -163,19 +163,19 @@ coef(parus,transform=TRUE) <- partrans(parus,p,dir="toEst")
 stopifnot(all.equal(p,coef(parus)))
 
 ## ----parus-traj-match----------------------------------------------------
-tm <- traj.match(parus,start=c(r=1,K=200,N.0=200,sigma=0.5),
-                 est=c("r","K"),transform=TRUE)
-signif(coef(tm),3)
-logLik(tm)
+##tm <- traj.match(parus,start=c(r=1,K=200,N.0=200,sigma=0.5),
+##                 est=c("r","K"),transform=TRUE)
+##signif(coef(tm),3)
+##logLik(tm)
 
 ## ----parus-tm-sim1-------------------------------------------------------
-coef(tm,"sigma") <- 0
-simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
-  ggplot(aes(x=year,y=P,group=sim,alpha=(sim=="data")))+
-    scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
-                       labels=c(`FALSE`="simulation",`TRUE`="data"))+
-    geom_line()+
-    theme_bw()
+## coef(tm,"sigma") <- 0
+## simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
+##   ggplot(aes(x=year,y=P,group=sim,alpha=(sim=="data")))+
+##     scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
+##                        labels=c(`FALSE`="simulation",`TRUE`="data"))+
+##     geom_line()+
+##     theme_bw()
 
 ## ----parus-dprior--------------------------------------------------------
 parus %<>%

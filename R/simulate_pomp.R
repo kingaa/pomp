@@ -9,7 +9,7 @@
 ##' user to write highly optimized code for these potentially expensive
 ##' computations.
 ##'
-##' @name POMP simulation
+##' @name simulate
 ##' @docType methods
 ##' @rdname simulate
 ##' @include workhorses.R pomp_class.R
@@ -82,7 +82,7 @@ setGeneric(
 )
 
 ##' @name simulate-pomp
-##' @aliases simulate,pomp-method
+##' @aliases simulate simulate,pomp-method
 ##' @rdname simulate
 setMethod(
   "simulate",

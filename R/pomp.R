@@ -27,7 +27,7 @@
 ##' Statistical Software} paper, an updated version of which is to be found on
 ##' the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
-##' @name Pomp constructor
+##' @name pomp
 ##' @rdname pomp
 ##' @include pomp_class.R pomp_fun.R csnippet.R safecall.R builder.R
 ##'

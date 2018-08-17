@@ -1,9 +1,10 @@
-##' @title Useful probes for partially-observed Markov processes
-##' @name Basic probes
-##' @rdname basic_probes
+##' Useful probes for partially-observed Markov processes
 ##'
-##' @description Several simple and configurable probes are provided with in the package.
+##' Several simple and configurable probes are provided with in the package.
 ##' These can be used directly and as templates for custom probes.
+##'
+##' @name basic_probes
+##' @rdname basic_probes
 ##'
 ##' @param var,vars character; the name(s) of the observed variable(s).
 ##' @param trim the fraction of observations to be trimmed (see
@@ -40,7 +41,7 @@
 ##' comes from a call to \code{\link{obs}}) as input and returns a single
 ##' numerical value.
 ##' @author Daniel C. Reuman, Aaron A. King
-##' @family summary statistics
+##' @family summary statistics methods
 ##'
 ##' @references
 ##' B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P.

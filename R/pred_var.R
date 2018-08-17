@@ -2,10 +2,16 @@
 ##'
 ##' The variance of the prediction distribution
 ##'
-##' @name Prediction variance
+##' The prediction distribution is that of
+##' \deqn{X_t \vert y_1,\dots,y_{t-1},}{X_t | y_1,\dots,y_(t-1),}
+##' where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively,
+##' at time \eqn{t}.
+##' 
+##' @name pred.var
 ##' @aliases pred.var pred.var,ANY-method pred.var,missing-method
 ##' @include pfilter.R kalman.R
 ##' @rdname pred_var
+##' @family particle filter methods
 NULL
 
 setGeneric(

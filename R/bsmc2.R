@@ -2,56 +2,45 @@
 ##'
 ##' Modified version of the Liu and West (2001) algorithm.
 ##'
-##' @name Bayesian sequential Monte Carlo
+##' @name bsmc2
 ##' @docType methods
 ##' @rdname bsmc2
 ##' @include pomp_class.R workhorses.R
 ##' @aliases bsmc2,missing-method bsmc2,ANY-method bsmc2,pomp-method
+##  @family particle filter methods
 ##'
 ##' @details
-##' There are two ways to specify the prior distribution of particles.  If
-##' \code{params} is unspecified or is a named vector, \code{Np} draws are made
-##' from the prior distribution, as specified by \code{\link{rprior}}.
-##' Alternatively, \code{params} can be specified as an \code{npars} x
-##' \code{Np} matrix (with rownames).
+##' There are two ways to specify the prior distribution of particles.
+##' If \code{params} is unspecified or is a named vector, \code{Np} draws are made from the prior distribution, as specified by \code{\link{rprior}}.
+##' Alternatively, \code{params} can be specified as an \code{npars} x \code{Np} matrix (with rownames).
 ##'
-##' \code{bsmc2} uses a version of the original algorithm, but discards the
-##' auxiliary particle filter.  The modification appears to give superior
-##' performance for the same amount of effort.
+##' \code{bsmc2} uses a version of the original algorithm, but discards the auxiliary particle filter.
+##' The modification appears to give superior performance for the same amount of effort.
 ##'
-##' @param object An object of class \sQuote{pomp} or inheriting class
-##' \sQuote{pomp}.
+##' @param object An object of class \sQuote{pomp} or inheriting class \sQuote{pomp}.
 ##' @param params,Np Specifications for the prior distribution of particles.
 ##' See details below.
-##' @param est Names of the parameters that are to be estimated.  No updates
-##' will be made to the other parameters.  If \code{est} is not specified, all
-##' parameters for which there is variation in \code{params} will be estimated.
-##' @param smooth Kernel density smoothing parameter.  The compensating
-##' shrinkage factor will be \code{sqrt(1-smooth^2)}.  Thus, \code{smooth=0}
-##' means that no noise will be added to parameters.  The general
-##' recommendation is that the value of \code{smooth} should be chosen close to
-##' 0 (e.g., \code{shrink} ~ 0.1).
-##' @param tol,max.fail Particles with log likelihood below \code{tol} are
-##' considered to be \dQuote{lost}.  A filtering failure occurs when, at some
-##' time point, all particles are lost.  When all particles are lost, the
-##' conditional log likelihood at that time point is set to be \code{log(tol)}.
+##' @param est Names of the parameters that are to be estimated.  No updates will be made to the other parameters.
+##' If \code{est} is not specified, all parameters for which there is variation in \code{params} will be estimated.
+##' @param smooth Kernel density smoothing parameter.
+##' The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
+##' Thus, \code{smooth=0} means that no noise will be added to parameters.
+##' The general recommendation is that the value of \code{smooth} should be chosen close to 0 (e.g., \code{shrink} ~ 0.1).
+##' @param tol,max.fail
+##' Particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.  A filtering failure occurs when, at some time point, all particles are lost.
+##' When all particles are lost, the conditional log likelihood at that time point is set to be \code{log(tol)}.
 ##' \code{max.fail} gives the maximum number of filtering failures tolerated.
-##' If the number of filtering failures exceeds this number, execution will
-##' terminate with an error.
-##' @param transform logical; if \code{TRUE}, the algorithm operates on the
-##' transformed scale.
-##' @param \dots Additional arguments are passed to \code{\link{pomp}},
-##' allowing one to supply new or modify existing model characteristics or
-##' components.
-##' @param verbose logical; if \code{TRUE}, print diagnostic messages.
-##' @return An object of class \sQuote{bsmcd_pomp}.  One can plot the results
-##' using the \code{plot} method.  When \code{x} is a \sQuote{bsmcd_pomp}
-##' object, \code{plot(x, pars, thin, \dots{})}, produces density and scatter
-##' plots of the prior and posterior distributions.  One can restrict to
-##' particular parameters by naming them in the \code{pars} argument.  By
-##' default, all the samples are plotted.  When the number of samples is very
-##' large, it can be helpful to plot a subsample: \code{thin} specifies the
-##' size of this random subsample.
+##' If the number of filtering failures exceeds this number, execution will terminate with an error.
+##' @param transform logical;
+##' if \code{TRUE}, the algorithm operates on the transformed scale.
+##' @param \dots Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
+##' @param verbose logical;
+##' if \code{TRUE}, print diagnostic messages.
+##' @return An object of class \sQuote{bsmcd_pomp}.
+##' One can plot the results using the \code{plot} method.
+##' When \code{x} is a \sQuote{bsmcd_pomp} object, \code{plot(x, pars, thin, \dots{})}, produces density and scatter plots of the prior and posterior distributions.
+##' One can restrict to particular parameters by naming them in the \code{pars} argument.  By default, all the samples are plotted.
+##' When the number of samples is very large, it can be helpful to plot a subsample: \code{thin} specifies the size of this random subsample.
 ##'
 ##' @author Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
 ##'

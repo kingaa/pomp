@@ -3,27 +3,30 @@
 ##' Estimation of parameters by maximum synthetic likelihood
 ##'
 ##' In probe-matching, one attempts to minimize the discrepancy between simulated and actual data, as measured by a set of summary statistics called \emph{probes}.
-##' In \pkg{pomp}, this discrepancy is measured using the \dQuote{synthetic
-##' likelihood} as defined by Wood (2010).
+##' In \pkg{pomp}, this discrepancy is measured using the \dQuote{synthetic likelihood} as defined by Wood (2010).
 ##'
-##' \code{probe.match.objfun} construct a stateful objective function for probe-matching suitable for use in \code{optim}-like optimizers.
-##' Specifically, \code{probe.match.objfun} will
-##' return a function that takes a single numeric-vector argument that is
-##' assumed to contain the parameters named in \code{est}, in that order.
-##' This function will return the negative synthetic log likelihood for the probes specified.
-##' The function is stateful: each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
 ##'
-##' @name Probe matching
+##' @name probe.match
 ##' @rdname probe_match
 ##' @keywords optimize
 ##' @aliases probe.match probe.match.objfun probe.match.objfun,missing-method
 ##' probe.match.objfun,ANY-method
-##' @family summary statistics
+##' @include probe.R loglik.R summary.R
+##' @family summary statistics methods
 ##'
 ##' @return
-##' \code{probe.match.objfun} returns an object of class \sQuote{probe_match_objfun}, which is a stateful function suitable for use as an
-##' objective function in an \code{\link{optim}}-like optimizer.
+##' \code{probe.match.objfun} construct a stateful objective function for probe matching.
+##' Specfically, \code{probe.match.objfun} returns an object of class \sQuote{probe_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+##' In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
+##' When called, it wil return the negative synthetic log likelihood for the probes specified.
+##' It is a stateful function:
+##' Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
 ##'
+##' @section Important Note:
+##' Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
+##' For this reason, \code{\link[=logLik,probe_match_objfun-method]{logLik}} and \code{\link[=summary,probe_match_objfun-method]{summary}} both call \code{probe} on the estimated parameters.
+##' One should check that the parameters agree with those that are returned by the optimizer.
+##' The best practice is to call \code{\link[=probe,probe_match_objfun-method]{probe}} on the objective function after the optimization has been performed, thus obtaining a \sQuote{probed_pomp} object containing the (putative) optimal parameters and synthetic likelihood.
 NULL
 
 setClass(
@@ -64,17 +67,16 @@ setMethod(
 ##'
 ##' @inheritParams probe-pomp
 ##' @param est character vector; the names of parameters to be estimated.
-##' @param fail.value optional numeric scalar; if non-\code{NA}, this value is
-##' substituted for non-finite values of the objective function.  It should be
-##' a large number (i.e., bigger than any legitimate values the objective
-##' function is likely to take).
-##' @param transform logical; if \code{TRUE}, optimization is performed on the
-##' transformed scale.
+##' @param fail.value optional numeric scalar;
+##' if non-\code{NA}, this value is substituted for non-finite values of the objective function.
+##' It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).
+##' @param transform logical;
+##' if \code{TRUE}, optimization is to be performed on the transformed scale.
 ##'
 setMethod(
   "probe.match.objfun",
   signature=signature(object="pomp"),
-  function (object, params, est, probes,
+  definition=function (object, params, est, probes,
     nsim, seed = NULL, fail.value = NA,
     transform = FALSE, ...) {
 
@@ -97,7 +99,7 @@ setMethod(
 setMethod(
   "probe.match.objfun",
   signature=signature(object="probed_pomp"),
-  function (object, params, est, probes, nsim, seed = NULL,
+  definition=function (object, params, est, probes, nsim, seed = NULL,
     fail.value = NA, transform = FALSE, ...) {
 
     if (missing(probes)) probes <- object@probes
@@ -116,6 +118,17 @@ setMethod(
       ...
     )
 
+  }
+)
+
+##' @name probe.match.objfun-probe_match_objfun
+##' @aliases probe.match.objfun,probe_match_objfun-method
+##' @rdname probe_match
+setMethod(
+  "probe.match.objfun",
+  signature=signature(object="probe_match_objfun"),
+  definition=function (object, ...) {
+    probe.match.objfun(object@env$object,...)
   }
 )
 
@@ -210,7 +223,7 @@ setMethod(
 setMethod(
   "summary",
   signature=signature(object="probe_match_objfun"),
-  definition=function (object, ...) {
+  definition=function (object) {
     summary(probe(object@env$object))
   }
 )
@@ -221,8 +234,7 @@ setMethod(
 setMethod(
   "logLik",
   signature=signature(object="probe_match_objfun"),
-  definition=function (object, ...) {
+  definition=function (object) {
     logLik(probe(object@env$object))
   }
 )
-

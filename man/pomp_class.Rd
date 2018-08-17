@@ -5,6 +5,6 @@
 \alias{pomp-class}
 \title{The basic pomp class}
 \description{
-The basic class implementing a POMP model with data
+The basic class implementing a \acronym{POMP} model with data
 }
 \keyword{internal}

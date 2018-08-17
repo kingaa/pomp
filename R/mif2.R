@@ -12,10 +12,11 @@
 ##' user-specified cooling schedule.  The algorithm is presented and justified
 ##' in Ionides et al. (2015).
 ##'
-##' @name Iterated filtering
+##' @name mif2
 ##' @rdname mif2
 ##' @include pfilter.R workhorses.R pomp_class.R safecall.R
 ##' @aliases mif2 mif2,missing-method mif2,ANY-method
+##' @family particle filter methods
 ##'
 ##' @param object An object of class \sQuote{pomp}.
 ##' @param Nmif The number of filtering iterations to perform.
@@ -98,8 +99,7 @@
 ##'
 ##' @author Aaron A. King, Edward L. Ionides, and Dao Nguyen
 ##'
-##' @seealso \code{\link{pfilter}} and the
-##' \href{https://kingaa.github.io/pomp/vignettes/mif2.html}{IF2 tutorial}
+##' @seealso the \href{https://kingaa.github.io/pomp/vignettes/mif2.html}{IF2 tutorial}
 ##' on the \href{https://kingaa.github.io/pomp}{package website}.
 ##'
 ##' @references
@@ -108,7 +108,6 @@
 ##' Proc. Natl. Acad. Sci. U.S.A., 112:719--724, 2015.
 NULL
 
-## define the mif2d_pomp class
 setClass(
   'mif2d_pomp',
   contains='pfilterd_pomp',

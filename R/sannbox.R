@@ -1,9 +1,8 @@
 ##' Simulated annealing with box constraints.
 ##'
-##' \code{sannbox} is a straightforward implementation of simulated annealing
-##' with box constraints.
+##' A straightforward implementation of simulated annealing with box constraints.
 ##'
-##' @name Simulated annealing with box constraints
+##' @name sannbox
 ##' @rdname sannbox
 ##'
 ##' @details The \code{control} argument is a list that can supply any of the

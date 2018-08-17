@@ -2,7 +2,7 @@
 ##'
 ##' Equipping models with parameter transformations.
 ##'
-##' @name Parameter transformations
+##' @name parameter_trans
 ##' @rdname parameter_trans
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R

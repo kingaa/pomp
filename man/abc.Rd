@@ -31,7 +31,7 @@
 Currently, the proposal distribution must be symmetric for proper inference:
 it is the user's responsibility to ensure that it is.
 Several functions that construct appropriate proposal function are provided:
-see \link{MCMC proposals} for more information.}
+see \link[=proposals]{MCMC proposals} for more information.}
 
 \item{probes}{List of probes (AKA summary statistics).
 See \code{\link{probe}} for details.}
@@ -92,14 +92,14 @@ Bayesian computation scheme for parameter inference and model selection in
 dynamical systems Journal of the Royal Society, Interface 6:187--202, 2009.
 }
 \seealso{
-\code{\link{probe}}, \link{MCMC proposals}, and
+\code{\link{probe}}, \link[=proposals]{MCMC proposals}, and
 the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 
-Other summary statistics: \code{\link{Basic probes}},
-  \code{\link{Probe matching}}, \code{\link{Probe values}},
-  \code{\link{Probes}}
+Other summary statistics methods: \code{\link{basic_probes}},
+  \code{\link{probe.match}}, \code{\link{probevals}},
+  \code{\link{probe}}, \code{\link{spect}}
 }
 \author{
 Edward L. Ionides, Aaron A. King
 }
-\concept{summary statistics}
+\concept{summary statistics methods}
