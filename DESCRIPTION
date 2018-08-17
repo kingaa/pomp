@@ -43,6 +43,7 @@ Collate:
     'pomp_class.R'
     'probe.R'
     'abc.R'
+    'as_pomp.R'
     'authors.R'
     'bake.R'
     'basic_probes.R'

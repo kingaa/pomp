@@ -51,6 +51,7 @@ S3method(as.data.frame,pomp)
 S3method(as.data.frame,pfilterd_pomp)
 S3method(as.data.frame,probed_pomp)
 S3method(as.data.frame,kalmand_pomp)
+S3method(as.pomp,traj_match_objfun)
 S3method(c,Pomp)
 S3method(c,Abc)
 S3method(c,Pmcmc)
@@ -58,7 +59,7 @@ S3method(c,Mif2)
 S3method(c,Pfilter)
 
 export(
-  pomp,
+  pomp,as.pomp,
   bake,stew,freeze,
   Csnippet, hitch,
   reulermultinom,

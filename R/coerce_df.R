@@ -4,14 +4,14 @@
 ##' The contents of the resulting data frame depend on the nature of the object.
 ##'
 ##' @name as.data.frame
-##' @rdname coerce_df
+##' @rdname as_data_frame
 ##' @include pomp_class.R pfilter.R bsmc2.R mif2.R pmcmc.R abc.R
 ##' @include probe.R kalman.R
 NULL
 
 ##' @name coerce-pomp-data.frame
 ##' @aliases coerce,pomp,data.frame-method
-##' @rdname coerce_df
+##' @rdname as_data_frame
 ##'
 ##' @details
 ##' When \code{object} is a simple \sQuote{pomp} object,
@@ -42,7 +42,7 @@ setAs(
 )
 
 ##' @method as.data.frame pomp
-##' @rdname coerce_df
+##' @rdname as_data_frame
 ##'
 ##' @param x the object to be coerced
 ##' @param \dots ignored
@@ -51,7 +51,7 @@ as.data.frame.pomp <- function (x, ...) as(x,"data.frame")
 
 ##' @name as,pfilterd_pomp-method
 ##' @aliases coerce,pfilterd_pomp,data.frame-method
-##' @rdname coerce_df
+##' @rdname as_data_frame
 ##'
 ##' @details When \code{object} is a simple \sQuote{pfilterd_pomp} object,
 ##' coercion to a data frame results in a data frame with the same content as for a simple \sQuote{pomp},
@@ -80,12 +80,12 @@ setAs(
 )
 
 ##' @method as.data.frame pfilterd_pomp
-##' @rdname coerce_df
+##' @rdname as_data_frame
 as.data.frame.pfilterd_pomp <- function (x, ...) as(x,"data.frame")
 
 ##' @name as,probed_pomp-method
 ##' @aliases coerce,probed_pomp,data.frame-method
-##' @rdname coerce_df
+##' @rdname as_data_frame
 ##'
 ##' @details When \code{object} is a \sQuote{probed_pomp} object,
 ##' coercion to a data frame results in a data frame with the values of the probes computed on the data and on simulations.
@@ -102,13 +102,13 @@ setAs(
 )
 
 ##' @method as.data.frame probed_pomp
-##' @rdname coerce_df
+##' @rdname as_data_frame
 as.data.frame.probed_pomp <- function (x, ...)
   as(x,"data.frame")
 
 ##' @name as,kalmand_pomp-method
 ##' @aliases coerce,kalmand_pomp,data.frame-method
-##' @rdname coerce_df
+##' @rdname as_data_frame
 setAs(
   from="kalmand_pomp",
   to="data.frame",
@@ -131,7 +131,7 @@ setAs(
 )
 
 ##' @method as.data.frame kalmand_pomp
-##' @rdname coerce_df
+##' @rdname as_data_frame
 as.data.frame.kalmand_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
