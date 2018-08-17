@@ -8,6 +8,7 @@
 ##'
 ##' @name trajectory
 ##' @rdname trajectory
+##' @include workhorses.R pomp_class.R
 ##'
 ##' @return
 ##' \code{trajectory} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
@@ -51,16 +52,19 @@ setMethod(
 ##' @name trajectory-pomp
 ##' @aliases trajectory trajectory,pomp-method
 ##' @rdname trajectory
-##' @include workhorses.R pomp_class.R
 ##'
 ##' @inheritParams rmeasure
 ##' @inheritParams rinit
 ##'
 ##' @param as.data.frame logical;
 ##' if \code{TRUE}, return the result as a data-frame.
+##' @param verbose logical; if \code{TRUE}, more information will be displayed.
+##'
 ##' @param \dots Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
 ##' See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
-##' @param verbose logical; if \code{TRUE}, more information will be displayed.
+##'
+##' Note that this behavior differs from most other functions in \pkg{pomp}.
+##' It is not possible to modify the model structure in a call to \code{trajectory}.
 ##'
 setMethod(
   "trajectory",
@@ -148,7 +152,6 @@ trajectory.internal <- function (object, params, times, t0,
       deSolve::ode(
         y=x0,
         times=c(t0,times),
-        method="lsoda",
         func="pomp_vf_eval",
         dllname="pomp",
         initfunc=NULL,

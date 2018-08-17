@@ -76,6 +76,9 @@ The best practice is to call \code{\link[=probe,probe_match_objfun-method]{probe
 }
 
 \seealso{
+\code{\link{trajectory}}, \code{\link{optim}},
+\code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
+
 Other summary statistics methods: \code{\link{abc}},
   \code{\link{basic_probes}}, \code{\link{probevals}},
   \code{\link{probe}}, \code{\link{spect}}

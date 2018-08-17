@@ -94,3 +94,7 @@ One should check that the parameters agree with those that are returned by the o
 The best practice is to call \code{\link[=spect,spect_match_objfun-method]{spect}} on the objective function after the optimization has been performed, thus obtaining a \sQuote{spectd_pomp} object containing the (putative) optimal parameters.
 }
 
+\seealso{
+\code{\link{trajectory}}, \code{\link{optim}},
+\code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
+}

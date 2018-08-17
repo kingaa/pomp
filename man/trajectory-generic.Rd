@@ -12,7 +12,10 @@ trajectory(object, ...)
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
 
 \item{...}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
-See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.}
+See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
+
+Note that this behavior differs from most other functions in \pkg{pomp}.
+It is not possible to modify the model structure in a call to \code{trajectory}.}
 }
 \description{
 Generic trajectory

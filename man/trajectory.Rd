@@ -25,7 +25,10 @@ These must be in non-decreasing order.}
 if \code{TRUE}, return the result as a data-frame.}
 
 \item{\dots}{Additional arguments are passed to the ODE integrator (if the skeleton is a vectorfield) and are ignored if it is a map.
-See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.}
+See \code{\link[deSolve]{ode}} for a description of the additional arguments accepted by the ODE integrator.
+
+Note that this behavior differs from most other functions in \pkg{pomp}.
+It is not possible to modify the model structure in a call to \code{trajectory}.}
 
 \item{verbose}{logical; if \code{TRUE}, more information will be displayed.}
 }
