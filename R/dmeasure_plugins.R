@@ -15,7 +15,7 @@
 ##'    dmeasure = f}
 ##' to \pkg{pomp} algorithms,
 ##' where \code{f} is a C snippet or \R function that implements your procedure.
-##' 
+##'
 ##' Using a C snippet is much preferred, due to its much greater computational efficiency.
 ##' See \code{\link{Csnippet}} for general rules on writing C snippets.
 ##' The goal of a \dfn{dmeasure} C snippet is to fill the variable \code{lik} with the either the probability density or the log probability density, depending on the value of the variable \code{give_log}.
@@ -27,7 +27,7 @@
 ##'     \item The goal of a dmeasure C snippet is to set the value of the \code{lik} variable to the likelihood of the data given the state, if \code{give_log == 0}.
 ##'     If \code{give_log == 1}, \code{lik} should be set to the log likelihood.
 ##'   }
-##' 
+##'
 ##' If \code{dmeasure} is to be provided instead as an \R function, this is accomplished by supplying \preformatted{
 ##'   dmeasure = f}
 ##' to \code{pomp}, where \code{f} has prototype \preformatted{
@@ -41,7 +41,7 @@
 ##'   \item \code{t} will be a scalar, the corresponding observation time.
 ##' }
 ##' \code{f} must return a single numeric value, the probability density (or log probability density) of \code{y} given \code{x} at time \code{t}.
-##' 
+##'
 ##' \strong{NB: it is a common error to fail to account for both \code{log = TRUE} and \code{log = FALSE} when writing the \code{dmeasure} C snippet or function.}
 ##'
 NULL

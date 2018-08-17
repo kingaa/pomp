@@ -3,10 +3,18 @@
 ##' The approximate Bayesian computation (ABC) algorithm for estimating the parameters of a partially-observed Markov process.
 ##'
 ##' @name abc
+##' @aliases abc abc,ANY-method abc,missing-method
 ##' @rdname abc
 ##' @docType methods
-##' @include pomp_class.R probe.R
+##' @include pomp_class.R probe.R continue.R workhorses.R
 ##'
+##' @inheritParams pomp
+##' @inheritParams probe
+##' @inheritParams pmcmc
+##' @param Nabc the number of ABC iterations to perform.
+##' @param scale named numeric vector of scales.
+##' @param epsilon ABC tolerance.
+
 ##' @section Running ABC:
 ##'
 ##' \code{abc} returns an object of class \sQuote{abcd_pomp}.
@@ -25,14 +33,17 @@
 ##' By default, all the algorithmic parameters are the same as used in the original call to \code{abc}.
 ##' Additional arguments will override the defaults.
 ##'
-##' @section ABC diagnostics:
-##' \code{plot} applied to an ABC object will produce a series of
-##' diagnostic plots.
+##' @section Methods:
+##' The following can be applied to the output of an \code{abc} operation:
+##' \describe{
+##' \item{plot}{produces a series of diagnostic plots}
+##' \item{traces}{produces a \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
+##' }
 ##'
 ##' @author Edward L. Ionides, Aaron A. King
 ##'
 ##' @family summary statistics methods
-##' @seealso \code{\link{probe}}, \link[=proposals]{MCMC proposals}, and
+##' @seealso \link[=proposals]{MCMC proposals}, and
 ##' the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
 ##' @references
@@ -48,12 +59,8 @@
 ##' Bayesian computation scheme for parameter inference and model selection in
 ##' dynamical systems Journal of the Royal Society, Interface 6:187--202, 2009.
 ##'
-##' @aliases  abc,ANY-method abc,missing-method
 NULL
 
-##' @name abc-pomp
-##' @aliases abc abc,pomp-method
-##' @rdname abc
 setClass(
   "abcd_pomp",
   contains="pomp",
@@ -82,43 +89,68 @@ setClass(
 
 setGeneric(
   "abc",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("abc")
 )
 
-##' @rdname abc
-##'
-##' @param object an object of class \dQuote{pomp}.
-##' @param Nabc the number of ABC iterations to perform.
-##' @param start named numeric vector; the starting guess of the parameters.
-##' @param proposal optional function that draws from the proposal distribution.
-##'   Currently, the proposal distribution must be symmetric for proper inference:
-##'   it is the user's responsibility to ensure that it is.
-##'   Several functions that construct appropriate proposal function are provided:
-##'   see \link[=proposals]{MCMC proposals} for more information.
-##' @param probes List of probes (AKA summary statistics).
-##'  See \code{\link{probe}} for details.
-##' @param scale named numeric vector of scales.
-##' @param epsilon ABC tolerance.
-##' @param verbose logical; if TRUE, print progress reports.
-##' @param \dots  Additional arguments are passed to \code{\link{pomp}},
-##' allowing one to supply new or modify existing model characteristics or components.
 setMethod(
   "abc",
-  signature=signature(object="pomp"),
-  definition=function (object, Nabc = 1, start, proposal, probes, scale,
+  signature=signature(data="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("abc"),": ",sQuote("data")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "abc",
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
+    stop(sQuote("abc")," is not defined when ",sQuote("data")," is of class ",sQuote(class(data)),call.=FALSE)
+  }
+)
+
+##' @name abc-data.frame
+##' @aliases abc,data.frame-method
+##' @rdname abc
+setMethod(
+  "abc",
+  signature=signature(data="data.frame"),
+  definition=function (data, Nabc = 1, params,
+    rinit, rprocess, rmeasure, dprior, proposal, probes, scale,
     epsilon, ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(start)) start <- coef(object)
+    object <- pomp(data,params=params,rinit=rinit,rprocess=rprocess,
+      rmeasure=rmeasure,dprior=dprior,...,verbose=verbose)
+
+    abc(
+      object,
+      Nabc=Nabc,
+      proposal=proposal,
+      probes=probes,
+      scale=scale,
+      epsilon=epsilon,
+      verbose=verbose
+    )
+  }
+)
+
+##' @name abc-pomp
+##' @aliases abc,pomp-method
+##' @rdname abc
+setMethod(
+  "abc",
+  signature=signature(data="pomp"),
+  definition=function (data, Nabc = 1, proposal, probes, scale,
+    epsilon, ..., verbose = getOption("verbose", FALSE)) {
+
     if (missing(proposal)) proposal <- NULL
     if (missing(probes)) probes <- NULL
     if (missing(scale)) scale <- NULL
     if (missing(epsilon)) epsilon <- NULL
 
     abc.internal(
-      object=object,
+      data,
       Nabc=Nabc,
-      start=start,
       proposal=proposal,
       probes=probes,
       scale=scale,
@@ -129,15 +161,15 @@ setMethod(
   }
 )
 
-#' @rdname abc
+##' @rdname abc
 setMethod(
   "abc",
-  signature=signature(object="probed_pomp"),
-  definition=function (object, probes, ...,
+  signature=signature(data="probed_pomp"),
+  definition=function (data, probes, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    if (missing(probes)) probes <- object@probes
-    abc(object=as(object,"pomp"),probes=probes,...)
+    if (missing(probes)) probes <- data@probes
+    abc(as(data,"pomp"),probes=probes,...)
 
   }
 )
@@ -145,21 +177,19 @@ setMethod(
 ##' @rdname abc
 setMethod(
   "abc",
-  signature=signature(object="abcd_pomp"),
-  definition=function (object, Nabc, start, proposal, probes, scale, epsilon,
-    verbose = getOption("verbose"), ...) {
+  signature=signature(data="abcd_pomp"),
+  definition=function (data, Nabc, proposal, probes, scale, epsilon,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(Nabc)) Nabc <- object@Nabc
-    if (missing(start)) start <- coef(object)
-    if (missing(proposal)) proposal <- object@proposal
-    if (missing(probes)) probes <- object@probes
-    if (missing(scale)) scale <- object@scale
-    if (missing(epsilon)) epsilon <- object@epsilon
+    if (missing(Nabc)) Nabc <- data@Nabc
+    if (missing(proposal)) proposal <- data@proposal
+    if (missing(probes)) probes <- data@probes
+    if (missing(scale)) scale <- data@scale
+    if (missing(epsilon)) epsilon <- data@epsilon
 
     abc(
-      object=as(object,"pomp"),
+      as(data,"pomp"),
       Nabc=Nabc,
-      start=start,
       proposal=proposal,
       probes=probes,
       scale=scale,
@@ -170,49 +200,58 @@ setMethod(
   }
 )
 
+##' @name continue-abcd_pomp
+##' @aliases continue,abcd_pomp-method
+##' @rdname continue
+##'
+##' @param Nabc positive integer; number of additional iterations to perform
+##'
 setMethod(
-  "abc",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("abc"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  "continue",
+  signature=signature(object="abcd_pomp"),
+  definition=function (object, Nabc = 1, ...) {
+
+    ndone <- object@Nabc
+    accepts <- object@accepts
+
+    obj <- abc(object,Nabc=Nabc,.ndone=ndone,.accepts=accepts,...)
+
+    obj@traces <- rbind(
+      object@traces[,colnames(obj@traces)],
+      obj@traces[-1,]
+    )
+    names(dimnames(obj@traces)) <- c("iteration","variable")
+    obj@Nabc <- as.integer(ndone+Nabc)
+    obj@accepts <- as.integer(accepts+obj@accepts)
+
+    obj
   }
 )
 
-setMethod(
-  "abc",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("abc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
-  verbose = FALSE, .ndone = 0L, .accepts = 0L, .getnativesymbolinfo = TRUE,
+abc.internal <- function (object, Nabc, proposal, probes, epsilon, scale,
+  verbose, .ndone = 0L, .accepts = 0L, .getnativesymbolinfo = TRUE,
   ...) {
 
   ep <- paste0("in ",sQuote("abc"),": ")
 
-  object <- pomp(object,...)
-
   gnsi <- as.logical(.getnativesymbolinfo)
-  .ndone <- as.integer(.ndone)
-  .accepts <- as.integer(.accepts)
   scale <- as.numeric(scale)
   epsilon <- as.numeric(epsilon)
   epssq <- epsilon*epsilon
   verbose <- as.logical(verbose)
+  .ndone <- as.integer(.ndone)
+  .accepts <- as.integer(.accepts)
+
+  object <- pomp(object,...)
+  params <- coef(object)
 
   Nabc <- as.integer(Nabc)
   if (!is.finite(Nabc) || Nabc < 0)
     stop(ep,sQuote("Nabc")," must be a positive integer.",call.=FALSE)
 
-  if (is.list(start)) start <- unlist(start)
-  start <- setNames(as.numeric(start),names(start))
-  if (length(start)==0)
-    stop(ep,"parameters must be specified.",call.=FALSE)
-  start.names <- names(start)
-  if (is.null(start.names) || !is.numeric(start))
-    stop(ep,sQuote("start")," must be a named numeric vector.",call.=FALSE)
+  param.names <- names(params)
+  if (is.null(param.names) || !is.numeric(params))
+    stop(ep,sQuote("params")," must be a named numeric vector.",call.=FALSE)
 
   if (is.null(proposal))
     stop(ep,sQuote("proposal")," must be specified",call.=FALSE)
@@ -239,7 +278,7 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
 
   ## test proposal distribution
   theta <- tryCatch(
-    proposal(start,.n=0),
+    proposal(params,.n=0),
     error = function (e) {
       stop(ep,"in proposal function: ",conditionMessage(e),call.=FALSE)
     }
@@ -252,7 +291,7 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
     cat("performing",Nabc,"ABC iteration(s)\n")
   }
 
-  theta <- start
+  theta <- params
   log.prior <- tryCatch(
     dprior(object,params=theta,log=TRUE,.getnativesymbolinfo=gnsi),
     error = function (e) {
@@ -260,8 +299,8 @@ abc.internal <- function (object, Nabc, start, proposal, probes, epsilon, scale,
     }
   )
   if (!is.finite(log.prior))
-    stop(ep,"inadmissible value of ",sQuote("dprior")," at start parameters.",
-      call.=FALSE)
+    stop(ep,"inadmissible value of ",sQuote("dprior"),
+      " at starting parameters.",call.=FALSE)
   ## we suppose that theta is a "match",
   ## which does the right thing for continue() and
   ## should have negligible effect unless doing many short calls to continue()

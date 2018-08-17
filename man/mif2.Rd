@@ -5,6 +5,8 @@
 \alias{mif2}
 \alias{mif2,missing-method}
 \alias{mif2,ANY-method}
+\alias{mif2-data.frame}
+\alias{mif2,data.frame-method}
 \alias{mif2-pomp}
 \alias{mif2,pomp-method}
 \alias{mif2-pfilterd_pomp}
@@ -13,23 +15,38 @@
 \alias{mif2,mif2d_pomp-method}
 \title{Iterated filtering: maximum likelihood by iterated, perturbed Bayes maps}
 \usage{
-\S4method{mif2}{pomp}(object, Nmif = 1, start, Np, rw.sd,
-  transform = FALSE, cooling.type = c("hyperbolic", "geometric"),
-  cooling.fraction.50, tol = 1e-17, max.fail = Inf,
-  verbose = getOption("verbose", FALSE), ...)
+\S4method{mif2}{data.frame}(data, rinit, rprocess, dmeasure, Nmif = 1,
+  params, Np, rw.sd, transform = FALSE, cooling.type = c("hyperbolic",
+  "geometric"), cooling.fraction.50, tol = 1e-17, max.fail = Inf, ...,
+  verbose = getOption("verbose", FALSE))
 
-\S4method{mif2}{pfilterd_pomp}(object, Nmif = 1, Np, tol, ...)
+\S4method{mif2}{pomp}(data, Nmif = 1, Np, rw.sd, transform = FALSE,
+  cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
+  tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose",
+  FALSE))
 
-\S4method{mif2}{mif2d_pomp}(object, Nmif, start, Np, rw.sd, transform,
-  cooling.type, cooling.fraction.50, tol, ...)
+\S4method{mif2}{pfilterd_pomp}(data, Nmif = 1, Np, tol, ...)
+
+\S4method{mif2}{mif2d_pomp}(data, Nmif, Np, rw.sd, transform, cooling.type,
+  cooling.fraction.50, tol, ...)
 }
 \arguments{
-\item{object}{An object of class \sQuote{pomp}.}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
+
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{dmeasure}, see \link[=dmeasure_plugins]{here}.}
 
 \item{Nmif}{The number of filtering iterations to perform.}
 
-\item{start}{named numerical vector; the starting guess of the parameters.
-By default, \preformatted{start=coef(object).}}
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
 
 \item{Np}{the number of particles to use in filtering.  This may be
 specified as a single positive integer, in which case the same number of
@@ -69,12 +86,17 @@ perturbations is reduced with successive filtering iterations.
 \code{cooling.type} specifies the nature of the cooling schedule.  See
 below (under \dQuote{Specifying the perturbations}) for more detail.}
 
-\item{tol, max.fail}{passed to the particle filter.  See the descriptions
-under \code{\link{pfilter}}.}
+\item{tol}{positive numeric scalar;
+particles with likelihood less than \code{tol} are considered to be incompatible with the data.
+See the section on \emph{Filtering Failures} below for more information.}
 
-\item{verbose}{logical; if TRUE, print progress reports.}
+\item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
+If the number of filtering failures exceeds this number, execution will terminate with an error.
+By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
-\item{\dots}{additional arguments that override the defaults or change model structure.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
+
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 }
 \value{
 Upon successful completion, \code{mif2} returns an object of class

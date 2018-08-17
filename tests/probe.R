@@ -53,7 +53,4 @@ try(probe(pb,params=NULL))
 try(probe(pb,params="I think so"))
 try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
 
-sapply(probevals(pb),colnames)
-sapply(probevals(pb),dim)
-
 dev.off()

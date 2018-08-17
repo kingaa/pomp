@@ -14,10 +14,10 @@
   transform = FALSE, fail.value = NA, ode_control = list(), ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class the extends \sQuote{pomp}}
+\item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
 
-\item{params}{optional named numeric vector of model parameters.
-By default, \code{params=coef(object)}.}
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
 
 \item{est}{character vector; the names of parameters to be estimated.}
 

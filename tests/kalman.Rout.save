@@ -151,13 +151,13 @@ Error : in ‘enkf’: degenerate ‘R’: the leading minor of order 2 is not p
 Error : in ‘eakf’: degenerate ‘R’: Lapack routine dgesv: system is exactly singular: U[2,2] = 0
 > 
 > try(enkf())
-Error : in ‘enkf’: ‘object’ is a required argument
+Error : in ‘enkf’: ‘data’ is a required argument
 > try(enkf("bob"))
-Error : ‘enkf’ is not defined when ‘object’ is of class ‘character’
+Error : ‘enkf’ is not defined when ‘data’ is of class ‘character’
 > try(eakf())
-Error : in ‘eakf’: ‘object’ is a required argument
+Error : in ‘eakf’: ‘data’ is a required argument
 > try(eakf("bob"))
-Error : ‘eakf’ is not defined when ‘object’ is of class ‘character’
+Error : ‘eakf’ is not defined when ‘data’ is of class ‘character’
 > 
 > dev.off()
 null device 

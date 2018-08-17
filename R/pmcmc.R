@@ -7,30 +7,18 @@
 ##'
 ##' @name pmcmc
 ##' @rdname pmcmc
-##' @include pfilter.R proposals.R load.R
+##' @include pfilter.R proposals.R load.R continue.R
 ##' @aliases pmcmc pmcmc,ANY-method pmcmc,missing-method
 ##' @family particle filter methods
 ##'
-##' @param object An object of class \sQuote{pomp}.
+##' @inheritParams pomp
+##' @inheritParams pfilter
 ##' @param Nmcmc The number of PMCMC iterations to perform.
-##' @param start named numeric vector; the starting guess of the parameters.
 ##' @param proposal optional function that draws from the proposal
 ##' distribution.  Currently, the proposal distribution must be symmetric for
 ##' proper inference: it is the user's responsibility to ensure that it is.
 ##' Several functions that construct appropriate proposal function are
 ##' provided: see \link[=proposals]{MCMC proposals} for more information.
-##' @param Np a positive integer; the number of particles to use in each
-##' filtering operation.
-##' @param tol numeric scalar; particles with log likelihood below \code{tol}
-##' are considered to be \dQuote{lost}.  A filtering failure occurs when, at
-##' some time point, all particles are lost.
-##' @param max.fail integer; maximum number of filtering failures permitted.
-##' If the number of failures exceeds this number, execution will terminate
-##' with an error.
-##' @param verbose logical; if TRUE, print progress reports.
-##' @param \dots Additional arguments are passed to \code{\link{pomp}},
-##' allowing one to supply new or modify existing model characteristics or
-##' components.
 ##'
 ##' @return An object of class \sQuote{pmcmcd_pomp}.
 ##'
@@ -81,8 +69,50 @@ setClass(
 
 setGeneric(
   "pmcmc",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("pmcmc")
+)
+
+setMethod(
+  "pmcmc",
+  signature=signature(data="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("pmcmc"),": ",sQuote("data")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "pmcmc",
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
+    stop(sQuote("pmcmc")," is not defined when ",sQuote("data")," is of class ",sQuote(class(data)),call.=FALSE)
+  }
+)
+
+##' @name pmcmc-data.frame
+##' @aliases pmcmc,data.frame-method
+##' @rdname pmcmc
+setMethod(
+  "pmcmc",
+  signature=signature(data="data.frame"),
+  function (data, Nmcmc = 1, params, rinit, rprocess, dmeasure, dprior,
+    proposal, Np, tol = 1e-17, max.fail = Inf, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    object <- pomp(data,params=params,rinit=rinit,rprocess=rprocess,
+      dmeasure=dmeasure,dprior=dprior,...,verbose=verbose)
+
+    pmcmc(
+      object,
+      Nmcmc=Nmcmc,
+      proposal=proposal,
+      Np=Np,
+      tol=tol,
+      max.fail=max.fail,
+      verbose=verbose
+    )
+
+  }
 )
 
 ##' @name pmcmc-pomp
@@ -90,17 +120,13 @@ setGeneric(
 ##' @rdname pmcmc
 setMethod(
   "pmcmc",
-  signature=signature(object="pomp"),
-  function (object, Nmcmc = 1, start, proposal, Np, tol = 1e-17,
-    max.fail = Inf, verbose = getOption("verbose"), ...) {
-
-    if (missing(start)) start <- coef(object)
-    if (missing(proposal)) proposal <- NULL
+  signature=signature(data="pomp"),
+  function (data, Nmcmc = 1, proposal, Np, tol = 1e-17,
+    max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
 
     pmcmc.internal(
-      object=object,
+      data,
       Nmcmc=Nmcmc,
-      start=start,
       proposal=proposal,
       Np=Np,
       tol=tol,
@@ -117,13 +143,14 @@ setMethod(
 ##' @rdname pmcmc
 setMethod(
   "pmcmc",
-  signature=signature(object="pfilterd_pomp"),
-  function (object, Nmcmc = 1, Np, tol, ...) {
+  signature=signature(data="pfilterd_pomp"),
+  function (data, Nmcmc = 1, Np, tol, max.fail=Inf, ...,
+    verbose = getOption("verbose", FALSE)) {
 
-    if (missing(Np)) Np <- object@Np
-    if (missing(tol)) tol <- object@tol
+    if (missing(Np)) Np <- data@Np
+    if (missing(tol)) tol <- data@tol
 
-    pmcmc(as(object,"pomp"),Nmcmc=Nmcmc,Np=Np,tol=tol,...)
+    pmcmc(as(data,"pomp"),Nmcmc=Nmcmc,Np=Np,tol=tol,...)
   }
 )
 
@@ -132,62 +159,75 @@ setMethod(
 ##' @rdname pmcmc
 setMethod(
   "pmcmc",
-  signature=signature(object="pmcmcd_pomp"),
-  function (object, Nmcmc, start, proposal,
-    Np, tol, max.fail = Inf,
-    verbose = getOption("verbose"),
-    ...) {
+  signature=signature(data="pmcmcd_pomp"),
+  function (data, Nmcmc, proposal, Np, tol, max.fail = Inf,
+    ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(Nmcmc)) Nmcmc <- object@Nmcmc
-    if (missing(start)) start <- coef(object)
-    if (missing(proposal)) proposal <- object@proposal
-    if (missing(Np)) Np <- object@Np
-    if (missing(tol)) tol <- object@tol
+    if (missing(Nmcmc)) Nmcmc <- data@Nmcmc
+    if (missing(proposal)) proposal <- data@proposal
+    if (missing(Np)) Np <- data@Np
+    if (missing(tol)) tol <- data@tol
 
-    pmcmc(as(object,"pomp"),Nmcmc=Nmcmc,start=start,proposal=proposal,
+    pmcmc(as(data,"pomp"),Nmcmc=Nmcmc,proposal=proposal,
       Np=Np,tol=tol,max.fail=max.fail,verbose=verbose,...)
   }
 )
 
+##' @name continue-pmcmcd_pomp
+##' @aliases continue,pmcmcd_pomp-method
+##' @rdname continue
+##'
+##' @param Nmcmc positive integer; number of additional iterations to perform
+##'
 setMethod(
-  "pmcmc",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("pmcmc"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  "continue",
+  signature=signature(object="pmcmcd_pomp"),
+  function (object, Nmcmc = 1, ...) {
+
+    ndone <- object@Nmcmc
+    accepts <- object@accepts
+
+    obj <- pmcmc(
+      object,
+      Nmcmc=Nmcmc,
+      ...,
+      .ndone=ndone,
+      .accepts=accepts,
+      .prev.pfp=as(object,"pfilterd_pomp"),
+      .prev.log.prior=object@log.prior
+    )
+
+    obj@traces <- rbind(
+      object@traces[,colnames(obj@traces)],
+      obj@traces[-1,]
+    )
+    names(dimnames(obj@traces)) <- c("iteration","variable")
+    ft <- array(dim=replace(dim(obj@filter.traj),2L,ndone+Nmcmc),
+      dimnames=replace(dimnames(obj@filter.traj),2L,
+        list(seq_len(ndone+Nmcmc))))
+    ft[,seq_len(ndone),] <- object@filter.traj
+    ft[,ndone+seq_len(Nmcmc),] <- obj@filter.traj
+    obj@filter.traj <- ft
+    obj@Nmcmc <- as.integer(ndone+Nmcmc)
+    obj@accepts <- as.integer(accepts+obj@accepts)
+
+    obj
   }
 )
 
-setMethod(
-  "pmcmc",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("pmcmc")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-pmcmc.internal <- function (object, Nmcmc,
-  start, proposal, Np, tol, max.fail, ...,
-  verbose,
-  .ndone = 0L, .accepts = 0L,
-  .prev.pfp = NULL, .prev.log.prior = NULL,
+pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
+  verbose, .ndone = 0L, .accepts = 0L, .prev.pfp = NULL, .prev.log.prior = NULL,
   .getnativesymbolinfo = TRUE) {
-
-  object <- pomp(object,...)
-
-  gnsi <- as.logical(.getnativesymbolinfo)
-  verbose <- as.logical(verbose)
-  .ndone <- as.integer(.ndone)
-  .accepts <- as.integer(.accepts)
-  ntimes <- length(time(object))
 
   ep <- paste0("in ",sQuote("pmcmc"),": ")
 
-  if (is.list(start)) start <- unlist(start)
-  if (is.null(start)) start <- numeric(0)
-  if (length(start)==0)
-    stop(ep,sQuote("start")," must be specified",call.=FALSE)
-  if (!is.numeric(start) || is.null(names(start)))
-    stop(ep,sQuote("start")," must be a named numeric vector",call.=FALSE)
+  gnsi <- as.logical(.getnativesymbolinfo)
+  ntimes <- length(time(object))
+  verbose <- as.logical(verbose)
+  .ndone <- as.integer(.ndone)
+  .accepts <- as.integer(.accepts)
+
+  object <- pomp(object,...,verbose=verbose)
 
   if (missing(Np) || is.null(Np)) {
     stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
@@ -215,13 +255,15 @@ pmcmc.internal <- function (object, Nmcmc,
       ", must be a positive integer.",call.=FALSE)
   Np <- as.integer(Np)
 
-  if (is.null(proposal))
+  if (missing(proposal) || is.null(proposal))
     stop(ep,sQuote("proposal")," must be specified",call.=FALSE)
   if (!is.function(proposal))
     stop(ep,sQuote("proposal")," must be a function",call.=FALSE)
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
+
+  start <- coef(object)
 
   ## test proposal distribution
   theta <- tryCatch(
@@ -253,7 +295,7 @@ pmcmc.internal <- function (object, Nmcmc,
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
     pfp <- tryCatch(
       pfilter.internal(
-        object=object,
+        object,
         params=theta,
         Np=Np,
         tol=tol,

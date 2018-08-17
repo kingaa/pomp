@@ -3,7 +3,7 @@
 ##' @name deprecated
 ##' @rdname deprecated
 ##' @keywords internal
-##' @include traces.R probevals.R rprocess_plugins.R
+##' @include traces.R rprocess_plugins.R
 NULL
 
 ##' @name conv.rec
@@ -21,7 +21,7 @@ conv.rec <- function (object, ...) {
 ##' @keywords internal
 values <- function (object, ...) {
   warning(sQuote("values")," is deprecated and will be removed in a ",
-    "forthcoming release.  Please use ",sQuote("probevals")," or ",
+    "forthcoming release.  Please use ",
     sQuote("as.data.frame")," instead.",call.=FALSE)
   as(object,"data.frame")
 }

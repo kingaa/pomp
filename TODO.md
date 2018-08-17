@@ -3,10 +3,9 @@
 - `as.data.frame` and ?? for `listies`
 - all methods use transforms if they exist
 - reorganize common methods: one file per method?
-- new `userdata` function to get void *?
-- update 'bbs' example (rename to 'bsflu')?
 - index by concept using `\concept{}` in the help files
 - get rid of `probevals`?
+- ~~get rid of `prior_samples` and `posterior_samples`~~
 - matching functions will go away, in favor of objective function constructors:
     - 'probe.match.objfun' looks good: needs testing
     - 'traj.match.objfun' looks good: needs testing
@@ -19,6 +18,8 @@
 - specific workhorses in individual functions!!
 - consolidate examples somehow (it's bad to have so many NULL R files)
 - need a better term than "plugin"
+- new `userdata` function to get void *?
+- update 'bbs' example (rename to 'bsflu')?
 
 ## For pomp 2:
 

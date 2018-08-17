@@ -18,38 +18,39 @@
 ##' @name probe
 ##' @docType methods
 ##' @rdname probe
-##' @include pomp_class.R pomp_fun.R
+##' @include pomp_class.R pomp_fun.R pomp.R
 ##' @aliases probe probe,missing-method probe,ANY-method
 ##' @family summary statistics methods
 ##'
-##' @section Methods:
-##' \describe{
-##' \item{plot}{ displays diagnostic plots.  }
-##' \item{summary}{ displays summary information.  The summary includes
-##' quantiles (fractions of simulations with probe values less than those
-##' realized on the data) and the corresponding two-sided p-values.  In
-##' addition, the \dQuote{synthetic likelihood} (Wood 2010) is computed, under
-##' the assumption that the probe values are multivariate-normally distributed.
-##' }
-##' \item{probevals}{ extracts the realized values of the probes on the data
-##' and on the simulations.  These are returned in a list of two elements,
-##' \code{datvals} and \code{simvals}.  }
-##' \item{logLik}{ returns the synthetic
-##' likelihood for the probes.  NB: in general, this is not the same as the
-##' likelihood.  }
-##' \item{as.data.frame, as(object,"data.frame")}{ coercing a
-##' \sQuote{probed_pomp} to a \sQuote{data.frame}, gives the realized values of
-##' the probes on the data and on the simulations.  The variable \code{.id}
-##' indicates whether the probes are from the data or simulations.  }
-##' }
+##' @inheritParams pomp
+##' @param probes a single probe or a list of one or more probes.
+##' A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
+##' A vector-valued probe must always return a vector of the same size.
+##' A number of useful probes are provided with the package:
+##' see \link[=basic_probes]{basic probes}.
+##' @param nsim the number of model simulations to be computed.
+##' @param seed optional integer;
+##' if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
+##' See \code{\link[=simulate-pomp]{simulate}}.
 ##'
 ##' @return
-##' \code{probe} returns an object of class \sQuote{probed_pomp}, which
-##' is derived from the \sQuote{pomp} class and contains additional information
-##' about the \code{probe} calculation.
+##' \code{probe} returns an object of class \sQuote{probed_pomp}, which contains the data and the model, together with the results of the \code{probe} calculation.
 ##'
-##' This information can be summarized via a call to \code{summary} and
-##' displayed graphically via a call to \code{plot}.
+##' @section Methods:
+##' The following methods are available.
+##' \describe{
+##' \item{plot}{ displays diagnostic plots.  }
+##' \item{summary}{ displays summary information.
+##' The summary includes quantiles (fractions of simulations with probe values less than those realized on the data) and the corresponding two-sided p-values.
+##' In addition, the \dQuote{synthetic likelihood} (Wood 2010) is computed,
+##' under the assumption that the probe values are multivariate-normally distributed.  }
+##' \item{logLik}{ returns the synthetic likelihood for the probes.
+##' NB: in general, this is not the same as the likelihood.  }
+##' \item{as.data.frame}{
+##'  coerces a \sQuote{probed_pomp} to a \sQuote{data.frame}.
+##'  The latter contains the realized values of the probes on the data and on the simulations.
+##' The variable \code{.id} indicates whether the probes are from the data or simulations.  }
+##' }
 ##'
 ##' @author Daniel C. Reuman, Aaron A. King
 ##'
@@ -82,45 +83,68 @@ setClass(
 
 setGeneric(
   "probe",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("probe")
+)
+
+setMethod(
+  "probe",
+  signature=signature(data="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("probe"),": ",sQuote("data"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "probe",
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
+    stop(sQuote("probe")," is not defined when ",sQuote("data")," is of class ",
+      sQuote(class(data)),call.=FALSE)
+  }
+)
+
+##' @name probe-data.frame
+##' @aliases probe,data.frame-method
+##' @rdname probe
+setMethod(
+  "probe",
+  signature=signature(data="data.frame"),
+  definition=function (data, rinit, rprocess, rmeasure, params,
+    probes, nsim, seed = NULL, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    object <- pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+      params=params,...,verbose=verbose)
+
+    probe(
+      object,
+      probes=probes,
+      nsim=nsim,
+      seed=seed,
+      verbose=verbose
+    )
+
+  }
 )
 
 ##' @name probe-pomp
 ##' @aliases probe,pomp-method
 ##' @rdname probe
-##'
-##' @param object an object of class \sQuote{pomp}, or of a class the extends \sQuote{pomp}
-##' @param probes a single probe or a list of one or more probes.
-##' A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
-##' A vector-valued probe must always return a vector of the same size.
-##' A number of useful probes are provided with the package:
-##' see \link[=basic_probes]{basic probes}.
-##' @param params optional named numeric vector of model parameters.
-##' By default, \code{params=coef(object)}.
-##' @param nsim the number of model simulations to be computed.
-##' @param seed optional integer;
-##' if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
-##' See \code{\link[=simulate-pomp]{simulate}}.
-##' @param verbose logical; print diagnostic messages?
-##' @param \dots additional arguments which can be used to change the defaults or modify
-##' model characteristics or components.
-##'
 setMethod(
   "probe",
-  signature=signature(object="pomp"),
-  definition=function (object, probes, params, nsim, seed = NULL, ...,
+  signature=signature(data="pomp"),
+  definition=function (data, probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE))
   {
 
     if (missing(probes)) probes <- NULL
-    if (missing(params)) params <- coef(object)
     if (missing(nsim)) nsim <- NULL
 
     probe.internal(
-      object=object,
+      data,
       probes=probes,
-      params=params,
       nsim=nsim,
       seed=seed,
       ...,
@@ -134,15 +158,15 @@ setMethod(
 ##' @rdname probe
 setMethod(
   "probe",
-  signature=signature(object="probed_pomp"),
-  definition=function (object, probes, nsim, seed = NULL, ...,
+  signature=signature(data="probed_pomp"),
+  definition=function (data, probes, nsim, seed = NULL, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    if (missing(probes)) probes <- object@probes
-    if (missing(nsim)) nsim <- object@nsim
+    if (missing(probes)) probes <- data@probes
+    if (missing(nsim)) nsim <- data@nsim
 
     probe(
-      as(object,"pomp"),
+      as(data,"pomp"),
       probes=probes,
       nsim=nsim,
       seed=seed,
@@ -152,23 +176,7 @@ setMethod(
   }
 )
 
-setMethod(
-  "probe",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("probe"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "probe",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("probe")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-probe.internal <- function (object, probes, params, nsim, seed,
+probe.internal <- function (object, probes, nsim, seed,
   .getnativesymbolinfo = TRUE, ..., verbose) {
 
   ep <- paste0("in ",sQuote("probe"),": ")
@@ -185,14 +193,6 @@ probe.internal <- function (object, probes, params, nsim, seed,
   if (!all(sapply(probes,function(f)length(formals(f))==1)))
     stop(ep,"each probe must be a function of a single argument.",call.=FALSE)
 
-  if (is.list(params)) params <- unlist(params)
-  if (is.null(params)) params <- numeric(0)
-  if (length(params)==0)
-    stop(ep,sQuote("params")," must be specified.",call.=FALSE)
-  if (!is.numeric(params) || is.null(names(params)))
-    stop(ep,sQuote("params")," must be furnished as a named numeric vector.",
-      call.=FALSE)
-
   nsim <- as.integer(nsim)
   if (length(nsim) < 1)
     stop(ep,sQuote("nsim")," must be specified.",call.=FALSE)
@@ -201,8 +201,12 @@ probe.internal <- function (object, probes, params, nsim, seed,
       ", must be a single positive integer.",call.=FALSE)
 
   seed <- as.integer(seed)
-
   gnsi <- as.logical(.getnativesymbolinfo)
+
+  params <- coef(object)
+
+  pompLoad(object,verbose=verbose)
+  on.exit(pompUnload(object,verbose=verbose))
 
   ## apply probes to data
   datval <- tryCatch(
@@ -218,9 +222,6 @@ probe.internal <- function (object, probes, params, nsim, seed,
   if (nprobes >= nsim)
     stop(ep,sQuote("nsim")," (=",nsim,"), should be (much) larger than the ",
       "number of probes (=",nprobes,").",call.=FALSE)
-
-  pompLoad(object,verbose=verbose)
-  on.exit(pompUnload(object,verbose=verbose))
 
   ## apply probes to model simulations
   simval <- tryCatch(
@@ -259,8 +260,6 @@ probe.internal <- function (object, probes, params, nsim, seed,
         conditionMessage(e),call.=FALSE)                # nocov
     }
   )
-
-  coef(object) <- params
 
   names(dimnames(simval)) <- c("rep","probe")
 

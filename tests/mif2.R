@@ -62,14 +62,14 @@ try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=c(3,2)))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=NULL))
 try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=0.1,
   cooling.type="geometric",tol=-3))
-try(mif2(po,start=NULL,Nmif=1,Np=100))
-try(mif2(po,start=list(),Nmif=1,Np=100))
-try(mif2(po,start=list(NULL),Nmif=1,Np=100))
-try(mif2(po,start=c(3,2,1),Nmif=1,Np=100))
+try(mif2(po,params=NULL,Nmif=1,Np=100))
+try(mif2(po,params=list(),Nmif=1,Np=100))
+try(mif2(po,params=list(NULL),Nmif=1,Np=100))
+try(mif2(po,params=c(3,2,1),Nmif=1,Np=100))
 try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw.sd(sigma=0.1)))
 mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
-  transform=TRUE,start=as.list(coef(po)))
+  transform=TRUE,params=as.list(coef(po)))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,rprocess=onestep.sim(function(x,t,params,covars,delta.t,...)stop("boink"))))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
@@ -92,7 +92,7 @@ po %>%
 capture.output(
   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
     cooling.fraction.50=1,cooling.type="hyperbolic",tol=1e-10,
-    transform=TRUE,start=as.list(coef(po)),verbose=TRUE),
+    transform=TRUE,params=as.list(coef(po)),verbose=TRUE),
   type="output"
 ) -> out
 stopifnot(sum(grepl("mif2 pfilter timestep",out))==4,
@@ -100,7 +100,7 @@ stopifnot(sum(grepl("mif2 pfilter timestep",out))==4,
 capture.output(
   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
     cooling.fraction.50=1,cooling.type="hyperbolic",tol=10,
-    transform=TRUE,start=as.list(coef(po)),verbose=TRUE),
+    transform=TRUE,params=as.list(coef(po)),verbose=TRUE),
   type="message"
 ) -> out
 stopifnot(sum(grepl("filtering failure at time",out))==22)

@@ -5,13 +5,11 @@
 ##'
 ##' @name pfilter
 ##' @rdname pfilter
-##' @include pomp_class.R pomp.R
+##' @include pomp_class.R pomp.R rprocess_plugins.R dmeasure_plugins.R
 ##' @aliases pfilter,ANY-method pfilter,missing-method pfilter
 ##' @family particle filter methods
 ##'
-##' @param object An object of class \sQuote{pomp} or inheriting class \dQuote{pomp}.
-##' @param params optional named numeric vector containing the parameters at which the filtering should be performed.
-##' By default, \code{params = coef(object)}.
+##' @inheritParams pomp
 ##' @param Np the number of particles to use.
 ##' This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
 ##' Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers of length \preformatted{length(time(object,t0=TRUE))} or as a function taking a positive integer argument.
@@ -36,19 +34,21 @@
 ##' @param save.states,save.params logical.
 ##' If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \sQuote{pfilterd_pomp} object.
 ##' If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \sQuote{pfilterd_pomp} object.
-##' @param verbose logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.
-##' @param \dots Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
-##' 
+##'
 ##' @return
 ##' An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
-##' 
+##'
 ##' @section Methods:
 ##' \describe{
 ##' \item{logLik}{ the estimated log likelihood  }
 ##' \item{cond.logLik}{ the estimated conditional log likelihood }
-##' \item{eff.sample.size}{ the (time-dependent) estimated effective sample size }
+##' \item{eff.sample.size}{
+##' the (time-dependent) estimated effective sample size }
 ##' \item{pred.mean, pred.var}{ the mean and variance of the approximate prediction distribution }
 ##' \item{filter.mean}{ the mean of the filtering distribution }
+##' \item{filter.traj}{ retrieve one sample from the smoothing distribution}
+##' \item{as.data.frame}{ coerce to a data frame }
+##' \item{plot}{diagnostic plots}
 ##' }
 ##'
 ##' @author Aaron A. King
@@ -115,17 +115,39 @@ setClass(
 
 setGeneric(
   "pfilter",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("pfilter")
 )
 
-##' @name pfilter-pomp
-##' @aliases pfilter,pomp-method
+setMethod(
+  "pfilter",
+  signature=signature(data="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("pfilter"),": ",sQuote("data")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "pfilter",
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
+    stop(sQuote("pfilter")," is not defined when ",sQuote("data")," is of class ",sQuote(class(data)),call.=FALSE)
+  }
+)
+
+##' @name pfilter-data.frame
+##' @aliases pfilter,data.frame-method
 ##' @rdname pfilter
 setMethod(
   "pfilter",
-  signature=signature(object="pomp"),
-  function (object, params, Np,
+  signature=signature(data="data.frame"),
+  definition=function (
+    data,
+    rinit,
+    rprocess,
+    dmeasure,
+    params,
+    Np,
     tol = 1e-17,
     max.fail = Inf,
     pred.mean = FALSE,
@@ -134,14 +156,52 @@ setMethod(
     filter.traj = FALSE,
     save.states = FALSE,
     save.params = FALSE,
-    verbose = getOption("verbose"),
-    ...) {
+    ...,
+    verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params)) params <- coef(object)
-    if (missing(Np)) Np <- NULL
+    object <- pomp(data,rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,...)
+
+    pfilter(
+      object,
+      params=params,
+      Np=Np,
+      tol=tol,
+      max.fail=max.fail,
+      pred.mean=pred.mean,
+      pred.var=pred.var,
+      filter.mean=filter.mean,
+      filter.traj=filter.traj,
+      save.states=save.states,
+      save.params=save.params,
+      verbose=verbose
+    )
+
+  }
+)
+
+##' @name pfilter-pomp
+##' @aliases pfilter,pomp-method
+##' @rdname pfilter
+setMethod(
+  "pfilter",
+  signature=signature(data="pomp"),
+  definition=function (
+    data,
+    params,
+    Np,
+    tol = 1e-17,
+    max.fail = Inf,
+    pred.mean = FALSE,
+    pred.var = FALSE,
+    filter.mean = FALSE,
+    filter.traj = FALSE,
+    save.states = FALSE,
+    save.params = FALSE,
+    ...,
+    verbose = getOption("verbose", FALSE)) {
 
     pfilter.internal(
-      object=object,
+      data,
       params=params,
       Np=Np,
       tol=tol,
@@ -164,31 +224,14 @@ setMethod(
 ##' @rdname pfilter
 setMethod(
   "pfilter",
-  signature=signature(object="pfilterd_pomp"),
-  function (object, params, Np, tol, ...) {
+  signature=signature(data="pfilterd_pomp"),
+  function (data, params, Np, tol, ...) {
 
-    if (missing(params)) params <- coef(object)
-    if (missing(Np)) Np <- object@Np
-    if (missing(tol)) tol <- object@tol
+    if (missing(Np)) Np <- data@Np
+    if (missing(tol)) tol <- data@tol
 
-    pfilter(as(object,"pomp"),params=params,Np=Np,tol=tol,...)
+    pfilter(as(data,"pomp"),params=params,Np=Np,tol=tol,...)
 
-  }
-)
-
-setMethod(
-  "pfilter",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("pfilter"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "pfilter",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("pfilter")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 
@@ -212,16 +255,15 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   save.states <- as.logical(save.states)
   save.params <- as.logical(save.params)
 
+  if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
   if (is.null(params)) params <- numeric(0)
-  if (length(params)==0)
-    stop(ep,sQuote("params")," must be specified.",call.=FALSE)
 
   do.par.resample <- TRUE
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
 
-  if (is.null(Np)) {
+  if (missing(Np) || is.null(Np)) {
     if (is.matrix(params)) {
       Np <- ncol(params)
     } else {

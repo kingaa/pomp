@@ -26,6 +26,13 @@ When \code{f} is called, \code{x1} will be a named numeric vector containing the
 
   To see examples, consult the demos and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 }
+\section{\strong{Note}}{
+
+It is not typically necessary (or even feasible) to define \code{dprocess}.
+In fact, no current \pkg{pomp} inference algorithm makes use of \code{dprocess}.
+This functionality is provided only to support future algorithm development.
+}
+
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{accumulators}}, \code{\link{covariates}},

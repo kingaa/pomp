@@ -5,24 +5,41 @@
 \alias{pfilter}
 \alias{pfilter,ANY-method}
 \alias{pfilter,missing-method}
+\alias{pfilter-data.frame}
+\alias{pfilter,data.frame-method}
 \alias{pfilter-pomp}
 \alias{pfilter,pomp-method}
 \alias{pfilter-pfilterd_pomp}
 \alias{pfilter,pfilterd_pomp-method}
 \title{Particle filter}
 \usage{
-\S4method{pfilter}{pomp}(object, params, Np, tol = 1e-17,
-  max.fail = Inf, pred.mean = FALSE, pred.var = FALSE,
+\S4method{pfilter}{data.frame}(data, rinit, rprocess, dmeasure, params, Np,
+  tol = 1e-17, max.fail = Inf, pred.mean = FALSE, pred.var = FALSE,
   filter.mean = FALSE, filter.traj = FALSE, save.states = FALSE,
-  save.params = FALSE, verbose = getOption("verbose"), ...)
+  save.params = FALSE, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{pfilter}{pfilterd_pomp}(object, params, Np, tol, ...)
+\S4method{pfilter}{pomp}(data, params, Np, tol = 1e-17, max.fail = Inf,
+  pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
+  filter.traj = FALSE, save.states = FALSE, save.params = FALSE, ...,
+  verbose = getOption("verbose", FALSE))
+
+\S4method{pfilter}{pfilterd_pomp}(data, params, Np, tol, ...)
 }
 \arguments{
-\item{object}{An object of class \sQuote{pomp} or inheriting class \dQuote{pomp}.}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
 
-\item{params}{optional named numeric vector containing the parameters at which the filtering should be performed.
-By default, \code{params = coef(object)}.}
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{dmeasure}, see \link[=dmeasure_plugins]{here}.}
+
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
 
 \item{Np}{the number of particles to use.
 This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
@@ -56,9 +73,9 @@ By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \sQuote{pfilterd_pomp} object.
 If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \sQuote{pfilterd_pomp} object.}
 
-\item{verbose}{logical; if \code{TRUE}, progress information is reported as \code{pfilter} works.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
 
-\item{\dots}{Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.}
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 }
 \value{
 An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
@@ -72,9 +89,13 @@ Resampling is performed at each observation.
 \describe{
 \item{logLik}{ the estimated log likelihood  }
 \item{cond.logLik}{ the estimated conditional log likelihood }
-\item{eff.sample.size}{ the (time-dependent) estimated effective sample size }
+\item{eff.sample.size}{
+the (time-dependent) estimated effective sample size }
 \item{pred.mean, pred.var}{ the mean and variance of the approximate prediction distribution }
 \item{filter.mean}{ the mean of the filtering distribution }
+\item{filter.traj}{ retrieve one sample from the smoothing distribution}
+\item{as.data.frame}{ coerce to a data frame }
+\item{plot}{diagnostic plots}
 }
 }
 

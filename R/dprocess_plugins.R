@@ -26,4 +26,8 @@
 ##'
 ##'   To see examples, consult the demos and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
+##' @section \strong{Note}:
+##' It is not typically necessary (or even feasible) to define \code{dprocess}.
+##' In fact, no current \pkg{pomp} inference algorithm makes use of \code{dprocess}.
+##' This functionality is provided only to support future algorithm development.
 NULL

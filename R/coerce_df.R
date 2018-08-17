@@ -135,3 +135,25 @@ setAs(
 as.data.frame.kalmand_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
+
+##' @name as,bsmcd_pomp-method
+##' @aliases coerce,bsmcd_pomp,data.frame-method
+##' @rdname as_data_frame
+setAs(
+  from="bsmcd_pomp",
+  to="data.frame",
+  def = function (from) {
+    prior <- as.data.frame(t(from@prior))
+    post <- as.data.frame(t(from@post))
+    prior$.id <- "prior"
+    post$.id <- "posterior"
+    rbind(prior,post)
+  }
+)
+
+##' @method as.data.frame bsmcd_pomp
+##' @rdname as_data_frame
+as.data.frame.bsmcd_pomp <- function (x, ...) {
+  as(x,"data.frame")
+}
+

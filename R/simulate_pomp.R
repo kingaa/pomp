@@ -3,74 +3,41 @@
 ##' \code{simulate} generates simulations of the state and measurement
 ##' processes.
 ##'
-##' Simulation of the state process and of the measurement process are each
-##' accomplished by a single call to the user-supplied \code{rprocess} and
-##' \code{rmeasure} functions, respectively.  This makes it possible for the
-##' user to write highly optimized code for these potentially expensive
-##' computations.
-##'
 ##' @name simulate
 ##' @docType methods
 ##' @rdname simulate
-##' @include workhorses.R pomp_class.R
+##' @include workhorses.R pomp_class.R pomp.R
 ##'
-##' @param object An object of class \sQuote{pomp}.
-##' @param nsim The number of simulations to perform.  Note that the number of
-##' replicates will be \code{nsim} times \code{ncol(params)}.
-##' @param seed optional; if set, the pseudorandom number generator (RNG) will
-##' be initialized with \code{seed}.  the random seed to use.  The RNG will be
-##' restored to its original state afterward.
-##' @param params either a named numeric vector or a numeric matrix with
-##' rownames.  The parameters to use in simulating the model.  If \code{params}
-##' is not given, then the contents of the \code{params} slot of \code{object}
-##' will be used, if they exist.
+##' @inheritParams pomp
+##' @param object optional; if present, it should be the output of one of \pkg{pomp}'s methods
+##' @param nsim The number of simulations to perform.
+##' Note that the number of replicates will be \code{nsim} times \code{ncol(params)}.
+##' @param seed optional;
+##' if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.  the random seed to use.
+##' The RNG will be restored to its original state afterward.
 ##' @param states Do we want the state trajectories?
 ##' @param obs Do we want data-frames of the simulated observations?
-##' @param times,t0 \code{times} specifies the times at which simulated
-##' observations will be made.  \code{t0} specifies the start time (the time at
-##' which the initial conditions hold).  The default for \code{times} is is
-##' \code{times=time(object,t0=FALSE)} and \code{t0=timezero(object)},
-##' respectively.
-##' @param as.data.frame,include.data logical; if \code{as.data.frame=TRUE},
-##' the results are returned as a data-frame.  A factor variable, \sQuote{sim},
-##' distinguishes one simulation from another.  If, in addition,
-##' \code{include.data=TRUE}, the original data are included as an additional
-##' \sQuote{simulation}.  If \code{as.data.frame=FALSE}, \code{include.data} is
-##' ignored.
-##' @param rprocess,rmeasure,obsnames Specifications of the model latent-state
-##' simulator (\code{rprocess}), the model measurement simulator
-##' (\code{rmeasure}), and names of observables (\code{obsnames}).  See
-##' \code{\link{pomp}} for details.
-##' @param \dots Additional arguments are passed to \code{\link{pomp}},
-##' allowing one to supply new or modify existing model characteristics or
-##' components.
-##' @param verbose logical; setting \code{verbose = TRUE} will print more
-##' information to the console.
+##' @param as.data.frame,include.data logical;
+##' if \code{as.data.frame=TRUE}, the results are returned as a data-frame.
+##' A factor variable, \sQuote{sim}, distinguishes one simulation from another.
+##' If, in addition, \code{include.data=TRUE}, the original data are included as an additional \sQuote{simulation}.
+##' If \code{as.data.frame=FALSE}, \code{include.data} is ignored.
 ##'
-##' @return
-##' If \code{states=FALSE} and \code{obs=FALSE} (the default), a list
-##' of \code{nsim} \sQuote{pomp} objects is returned.  Each has a simulated
-##' data set, together with the parameters used (in slot \code{params}) and the
-##' state trajectories also (in slot \code{states}).  If \code{times} is
-##' specified, then the simulated observations will be at times \code{times}.
+##' @return If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \sQuote{pomp} objects is returned.
+##' Each has a simulated data set, together with the parameters used (in slot \code{params}) and the state trajectories also (in slot \code{states}).
+##' If \code{times} is specified, then the simulated observations will be at times \code{times}.
 ##'
-##' If \code{nsim=1}, then a single \sQuote{pomp} object is returned (and not a
-##' singleton list).
+##' If \code{nsim=1}, then a single \sQuote{pomp} object is returned (and not a singleton list).
 ##'
-##' If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories
-##' are returned as a rank-3 array with dimensions \code{nvar} x
-##' \code{(ncol(params)*nsim)} x \code{ntimes}.  Here, \code{nvar} is the
-##' number of state variables and \code{ntimes} the length of the argument
-##' \code{times}.  The measurement process is not simulated in this case.
+##' If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-3 array with dimensions \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
+##' Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
+##' The measurement process is not simulated in this case.
 ##'
-##' If \code{states=FALSE} and \code{obs=TRUE}, simulated observations are
-##' returned as a rank-3 array with dimensions \code{nobs} x
-##' \code{(ncol(params)*nsim)} x \code{ntimes}.  Here, \code{nobs} is the
-##' number of observables.
+##' If \code{states=FALSE} and \code{obs=TRUE}, simulated observations are returned as a rank-3 array with dimensions \code{nobs} x \code{(ncol(params)*nsim)} x \code{ntimes}.
+##' Here, \code{nobs} is the number of observables.
 ##'
-##' If both \code{states=TRUE} and \code{obs=TRUE}, then a named list is
-##' returned.  It contains the state trajectories and simulated observations as
-##' above.
+##' If both \code{states=TRUE} and \code{obs=TRUE}, then a named list is returned.
+##' It contains the state trajectories and simulated observations as above.
 ##'
 ##' @author Aaron A. King
 NULL
@@ -87,12 +54,16 @@ setGeneric(
 setMethod(
   "simulate",
   signature=signature(object="pomp"),
-  definition=function (object, nsim = 1, seed = NULL, params,
+  definition=function (object, nsim = 1, seed = NULL,
+    rinit, rprocess, rmeasure, params,
     states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
     include.data = FALSE, ..., verbose = getOption("verbose", FALSE)) {
 
     simulate.internal(
       object=object,
+      rinit=rinit,
+      rprocess=rprocess,
+      rmeasure=rmeasure,
       nsim=nsim,
       seed=seed,
       params=params,
@@ -115,9 +86,10 @@ setMethod(
 setMethod(
   "simulate",
   signature=signature(object="missing"),
-  definition=function (object, nsim = 1, seed = NULL, params,
+  definition=function (object, nsim = 1, seed = NULL,
+    rinit, rprocess, rmeasure, params,
     states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
-    include.data = FALSE, rprocess, rmeasure, obsnames, ...,
+    include.data = FALSE, ...,
     verbose = getOption("verbose", FALSE)) {
 
     ep <- paste0("in ",sQuote("simulate"),": ")
@@ -128,7 +100,7 @@ setMethod(
       stop(ep,sQuote("t0")," is a required argument.",call.=FALSE)
 
     object <- construct_pomp(data=NULL,times=times,t0=t0,
-      rprocess=rprocess,rmeasure=rmeasure,obsnames=obsnames,...,
+      rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
       verbose=verbose)
 
     simulate.internal(
@@ -153,7 +125,7 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
 
   ep <- paste0("in ",sQuote("simulate"),": ")
 
-  object <- pomp(object,...,verbose=verbose)
+  object <- pomp(object,...)
 
   obs <- as.logical(obs)
   states <- as.logical(states)

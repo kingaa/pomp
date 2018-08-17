@@ -1,71 +1,58 @@
 ##' Constructor of the basic pomp object
 ##'
-##' This function constructs a \sQuote{pomp} object, encoding a
-##' partially-observed Markov process model together with a uni- or
-##' multi-variate time series.  As such, it is central to all the package's
-##' functionality.  One implements the model by specifying some or all of its
-##' \emph{basic components}.  These include:
+##' This function constructs a \sQuote{pomp} object, encoding a partially-observed Markov process model together with a uni- or multi-variate time series.
+##' As such, it is central to all the package's functionality.
+##' One implements the model by specifying some or all of its \emph{basic components}.
+##' These include:
 ##' \describe{
-##' \item{rprocess,}{the
-##' simulator of the unobserved Markov state process;}
-##' \item{dprocess,}{the
-##' evaluator of the probability density function for transitions of the
-##' unobserved Markov state process;}
-##' \item{rmeasure,}{the simulator of the
-##' observed process, conditional on the unobserved state;}
-##' \item{dmeasure,}{the evaluator of the measurement model probability density
-##' function;}
-##' \item{rinit,}{which samples from the distribution of the state
-##' process at the zero-time;}
-##' \item{rprior,}{which samples from a prior
-##' probability distribution on the parameters;}
-##' \item{dprior}{which evaluates
-##' the prior probability density function;}
-##' \item{skeleton}{which computes the
-##' deterministic skeleton of the unobserved state process.} }
-##' The basic structure and its rationale are described in the \emph{Journal of
-##' Statistical Software} paper, an updated version of which is to be found on
-##' the \href{https://kingaa.github.io/pomp/}{package website}.
+##' \item{rprocess,}{the simulator of the unobserved Markov state process;}
+##' \item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
+##' \item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
+##' \item{dmeasure,}{the evaluator of the measurement model probability density function;}
+##' \item{rinit,}{which samples from the distribution of the state process at the zero-time;}
+##' \item{rprior,}{which samples from a prior probability distribution on the parameters;} \item{dprior}{which evaluates the prior probability density function;} \item{skeleton}{which computes the deterministic skeleton of the unobserved state process.}
+##' }
+##' The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
 ##' @name pomp
 ##' @rdname pomp
 ##' @include pomp_class.R pomp_fun.R csnippet.R safecall.R builder.R
+##' @keywords internal
 ##'
-##' @param data,times required; the time series data and times at which
-##' observations are made.  \code{data} should be given as a data-frame and
-##' \code{times} must indicate the column of observation times by name or
-##' index.  \code{times} must be numeric and strictly increasing.  Internally,
-##' \code{data} will be internally coerced to an array with storage-mode
-##' \code{double}.
+##' @param data either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.
+##' @param times the times at which
+##' observations are made.
+##' \code{times} must indicate the column of observation times by name or index.
+##' The time vector must be numeric and strictly increasing.
+##' Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.
 ##'
-##' In addition, a \sQuote{pomp} object can be supplied in the \code{data}
-##' argument.  In this case, the call to \code{pomp} will add element to, or
-##' replace elements of, the supplied \sQuote{pomp} object.
-##' @param t0 The zero-time, at which the stochastic dynamical system is to be
-##' initialized.  This must be no later than the time of the first observation,
-##' i.e., \code{t0 <= times[1]}.  This argument is required whenever
-##' \code{data} is a data-frame.
-##' @param rinit optional; draws from the distribution of initial values of the
-##' unobserved Markov state process.  Specifically, given a vector of
-##' parameters, \code{params} and an initial time, \code{t0}, the rinit
-##' determines the state vector at time \code{t0}.  See below under \dQuote{The
-##' State-Process Initializer} for details.
-##' @param rprocess,dprocess optional; specification of the simulator and
-##' probability density evaluation function of the unobserved state process.
-##' See below under \dQuote{The Unobserved Markov State-Process Model} for
-##' details.
+##' @param t0 The zero-time, i.e., the time of the initial state.
+##' This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.
 ##'
-##' \strong{Note:} it is not typically necessary (or even feasible) to define
-##' \code{dprocess}.  In fact, no current \pkg{pomp} inference algorithm makes
-##' use of \code{dprocess}.  This functionality is provided only to support
-##' future algorithm development.
-##' @param rmeasure,dmeasure optional; specifications of the measurement model.
-##' See below under \dQuote{The Measurement Model} for details.
+##' @param rinit simulator of the initial-state distribution.
+##' This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+##' For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.
+##'
+##' @param rprocess simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+##' For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.
+##'
+##' @param dprocess optional;
+##' specification of the probability density evaluation function of the unobserved state process.
+##'
+##' @param rmeasure simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+##' For more information on specifying \code{rmeasure}, see \link[=rmeasure_plugins]{here}.
+##'
+##' @param dmeasure evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+##' For more information on specifying \code{dmeasure}, see \link[=dmeasure_plugins]{here}.
+##'
 ##' @param skeleton optional; the deterministic skeleton of the unobserved
-##' state process.  See below under \dQuote{The Deterministic Skeleton} for
-##' details.
+##' state process.
+##' For more information on specifying \code{skeleton}, see \link[=skeleton_plugins]{here}.
+##'
 ##' @param rprior,dprior optional; specification of the prior distribution on
-##' parameters.  See below under \dQuote{Specifying a Prior} for details.
+##' parameters.
+##' For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_plugins]{here}.
+##'
 ##' @param partrans optional parameter transformations.  Many algorithms for
 ##' parameter estimation search an unconstrained space of parameters.  When
 ##' working with such an algorithm and a model for which the parameters are
@@ -109,9 +96,9 @@
 ##' default, a random filename is used.  The \code{shlib.args} can be used to
 ##' pass command-line arguments to the \code{R CMD SHLIB} call that will
 ##' compile the C snippets.
-##' @param \dots Any additional arguments given to \code{pomp} will be made
-##' available to each of the user-defined functions.  To prevent errors due to
-##' misspelling, a warning is issued if any such arguments are detected.
+##' @param \dots additional arguments supply new or modify existing model characteristics or components.
+##' @param verbose if \code{TRUE}, diagnostic messages will be printed to the console
+##'
 ##' @return The \code{pomp} constructor function returns an object, call it
 ##' \code{P}, of class \sQuote{pomp}.  \code{P} contains, in addition to the
 ##' data, any elements of the model that have been specified as arguments to

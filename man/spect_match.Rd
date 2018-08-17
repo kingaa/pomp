@@ -3,10 +3,12 @@
 \docType{methods}
 \name{spect.match}
 \alias{spect.match}
+\alias{spect.match.objfun}
 \alias{spect.match.objfun,missing-method}
 \alias{spect.match.objfun,ANY-method}
+\alias{spect.match.objfun-data.frame}
+\alias{spect.match.objfun,data.frame-method}
 \alias{spect.match.objfun-pomp}
-\alias{spect.match.objfun}
 \alias{spect.match.objfun,pomp-method}
 \alias{spect.match.objfun-spectd_pomp}
 \alias{spect.match.objfun,spectd_pomp-method}
@@ -14,21 +16,37 @@
 \alias{spect.match.objfun,spect_match_objfun-method}
 \title{Spectrum matching}
 \usage{
-\S4method{spect.match.objfun}{pomp}(object, params, est = character(0),
-  vars, nsim, seed = NULL, kernel.width, transform.data,
-  detrend = c("none", "mean", "linear", "quadratic"), weights = 1,
-  fail.value = NA, transform = FALSE, ...)
+\S4method{spect.match.objfun}{data.frame}(data, rinit, rprocess, rmeasure,
+  params, est = character(0), vars, nsim, seed = NULL, kernel.width,
+  transform.data, detrend, weights = 1, fail.value = NA,
+  transform = FALSE, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{spect.match.objfun}{spectd_pomp}(object, params, est, vars, nsim,
-  seed = NULL, kernel.width, transform.data, detrend, ...)
+\S4method{spect.match.objfun}{pomp}(data, est = character(0), vars, nsim,
+  seed = NULL, kernel.width, transform.data, detrend, weights = 1,
+  fail.value = NA, transform = FALSE, ...,
+  verbose = getOption("verbose", FALSE))
 
-\S4method{spect.match.objfun}{spect_match_objfun}(object, ...)
+\S4method{spect.match.objfun}{spectd_pomp}(data, est, vars, nsim,
+  seed = NULL, kernel.width, transform.data, detrend, ...,
+  verbose = getOption("verbose", FALSE))
+
+\S4method{spect.match.objfun}{spect_match_objfun}(data, ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class the extends \sQuote{pomp}}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
 
-\item{params}{optional named numeric vector of model parameters.
-By default, \code{params=coef(object)}.}
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rmeasure}, see \link[=rmeasure_plugins]{here}.}
+
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
 
 \item{est}{character vector; the names of parameters to be estimated.}
 
@@ -66,8 +84,9 @@ It should be a large number (i.e., bigger than any legitimate values the objecti
 \item{transform}{logical;
 if \code{TRUE}, optimization is to be performed on the transformed scale.}
 
-\item{...}{additional arguments which can be used to change the defaults or modify
-model characteristics or components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
+
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 }
 \value{
 \code{spect.match.objfun} constructs a stateful objective function for spectrum matching.

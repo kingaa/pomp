@@ -5,6 +5,8 @@
 \alias{spect}
 \alias{spect,missing-method}
 \alias{spect,ANY-method}
+\alias{spect-data.frame}
+\alias{spect,data.frame-method}
 \alias{spect-pomp}
 \alias{spect,pomp-method}
 \alias{spect-spectd_pomp}
@@ -13,20 +15,36 @@
 \alias{spect,spect_match_objfun-method}
 \title{Power spectrum}
 \usage{
-\S4method{spect}{pomp}(object, params, vars, kernel.width, nsim,
-  seed = NULL, transform.data = identity, detrend = c("none", "mean",
-  "linear", "quadratic"), ...)
+\S4method{spect}{data.frame}(data, rinit, rprocess, rmeasure, params, vars,
+  kernel.width, nsim, seed = NULL, transform.data = identity,
+  detrend = c("none", "mean", "linear", "quadratic"), ...,
+  verbose = getOption("verbose", FALSE))
 
-\S4method{spect}{spectd_pomp}(object, params, vars, kernel.width, nsim,
-  seed = NULL, transform.data, detrend, ...)
+\S4method{spect}{pomp}(data, vars, kernel.width, nsim, seed = NULL,
+  transform.data = identity, detrend = c("none", "mean", "linear",
+  "quadratic"), ..., verbose = getOption("verbose", FALSE))
 
-\S4method{spect}{spect_match_objfun}(object, ...)
+\S4method{spect}{spectd_pomp}(data, vars, kernel.width, nsim,
+  seed = NULL, transform.data, detrend, ...,
+  verbose = getOption("verbose", FALSE))
+
+\S4method{spect}{spect_match_objfun}(data, ...)
 }
 \arguments{
-\item{object}{An object of class \sQuote{pomp}.}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
 
-\item{params}{optional named numeric vector of model parameters.  By
-default, \code{params=coef(object)}.}
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rmeasure}, see \link[=rmeasure_plugins]{here}.}
+
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
 
 \item{vars}{optional; names of observed variables for which the power spectrum will be computed.
 By default, the spectrum will be computed for all observables.}
@@ -49,10 +67,18 @@ detrending, and subtraction of constant, linear, and quadratic trends from
 the data.  Detrending is applied to each data series and to each model
 simulation independently.}
 
-\item{\dots}{ignored}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
+
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 }
 \value{
-An object of class \sQuote{spectd_pomp}.
+An object of class \sQuote{spectd_pomp}, which contains the model, the data, and the results of the \code{spect} computation.
+The following methods are available:
+\describe{
+\item{plot}{produces some diagnostic plots}
+\item{summary}{displays a summary}
+\item{logLik}{gives a measure of the agreement of the power spectra}
+}
 }
 \description{
 Power spectrum computation and spectrum-matching for partially-observed
@@ -80,11 +106,9 @@ environmental noise affects the nonlinear dynamics of cycling,
 stage-structured populations.  \emph{Ecology Letters}, \bold{11}, 820-830.
 }
 \seealso{
-\code{\link{simulate}}, \code{\link{probe}}
-
 Other summary statistics methods: \code{\link{abc}},
   \code{\link{basic_probes}}, \code{\link{probe.match}},
-  \code{\link{probevals}}, \code{\link{probe}}
+  \code{\link{probe}}
 }
 \author{
 Daniel C. Reuman, Cai GoGwilt, Aaron A. King

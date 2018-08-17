@@ -100,8 +100,8 @@ systems, Nature, 466: 1102--1104, 2010.
 }
 \seealso{
 Other summary statistics methods: \code{\link{abc}},
-  \code{\link{probe.match}}, \code{\link{probevals}},
-  \code{\link{probe}}, \code{\link{spect}}
+  \code{\link{probe.match}}, \code{\link{probe}},
+  \code{\link{spect}}
 }
 \author{
 Daniel C. Reuman, Aaron A. King

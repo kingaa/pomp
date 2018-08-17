@@ -16,13 +16,11 @@
 ##' @name spect
 ##' @docType methods
 ##' @rdname spect
-##' @include simulate_pomp.R
+##' @include simulate_pomp.R pomp.R
 ##' @aliases spect spect,missing-method spect,ANY-method
 ##' @family summary statistics methods
 ##'
-##' @param object An object of class \sQuote{pomp}.
-##' @param params optional named numeric vector of model parameters.  By
-##' default, \code{params=coef(object)}.
+##' @inheritParams pomp
 ##' @param vars optional; names of observed variables for which the power spectrum will be computed.
 ##' By default, the spectrum will be computed for all observables.
 ##' @param kernel.width width parameter for the smoothing kernel used for
@@ -38,14 +36,17 @@
 ##' detrending, and subtraction of constant, linear, and quadratic trends from
 ##' the data.  Detrending is applied to each data series and to each model
 ##' simulation independently.
-##' @param \dots ignored
 ##'
 ##' @return
-##' An object of class \sQuote{spectd_pomp}.
+##' An object of class \sQuote{spectd_pomp}, which contains the model, the data, and the results of the \code{spect} computation.
+##' The following methods are available:
+##' \describe{
+##' \item{plot}{produces some diagnostic plots}
+##' \item{summary}{displays a summary}
+##' \item{logLik}{gives a measure of the agreement of the power spectra}
+##' }
 ##'
 ##' @author Daniel C. Reuman, Cai GoGwilt, Aaron A. King
-##'
-##' @seealso \code{\link{simulate}}, \code{\link{probe}}
 ##'
 ##' @references
 ##' D.C. Reuman, R.A. Desharnais, R.F. Costantino, O. Ahmad, J.E.
@@ -57,10 +58,6 @@
 ##' environmental noise affects the nonlinear dynamics of cycling,
 ##' stage-structured populations.  \emph{Ecology Letters}, \bold{11}, 820-830.
 NULL
-
-## power spectrum
-## Authors:
-## Cai GoGwilt, Daniel Reuman, Aaron A. King
 
 setClass(
   "spectd_pomp",
@@ -81,52 +78,78 @@ setClass(
 
 setGeneric(
   "spect",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("spect")
 )
 
 setMethod(
   "spect",
-  signature=signature(object="missing"),
+  signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("spect"),": ",sQuote("object"),
+    stop("in ",sQuote("spect"),": ",sQuote("data"),
       " is a required argument",call.=FALSE)
   }
 )
 
 setMethod(
   "spect",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
     stop(sQuote("spect")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+      sQuote(class(data)),call.=FALSE)
   }
 )
 
-##' @name spect-pomp
-##' @aliases spect spect,pomp-method
+##' @name spect-data.frame
+##' @aliases spect spect,data.frame-method
 ##' @rdname spect
 setMethod(
   "spect",
-  signature(object="pomp"),
-  function (object, params, vars, kernel.width, nsim, seed = NULL,
-    transform.data = identity, detrend = c("none","mean","linear","quadratic"),
-    ...) {
+  signature(data="data.frame"),
+  function (data, rinit, rprocess, rmeasure, params,
+    vars, kernel.width, nsim, seed = NULL, transform.data = identity,
+    detrend = c("none","mean","linear","quadratic"), ...,
+    verbose = getOption("verbose", FALSE)) {
 
-    detrend <- match.arg(detrend)
-    transform.data <- match.fun(transform.data)
-    if (missing(params)) params <- coef(object)
+    object <- pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+      params=params,...,verbose=verbose)
 
-    spect.internal(
+    spect(
       object,
-      params=params,
       vars=vars,
       kernel.width=kernel.width,
       nsim=nsim,
       seed=seed,
       transform.data=transform.data,
       detrend=detrend,
-      ...
+      verbose=verbose
+    )
+
+  }
+)
+##' @name spect-pomp
+##' @aliases spect spect,pomp-method
+##' @rdname spect
+setMethod(
+  "spect",
+  signature(data="pomp"),
+  function (data, vars, kernel.width, nsim, seed = NULL,
+    transform.data = identity, detrend = c("none","mean","linear","quadratic"),
+    ..., verbose = getOption("verbose", FALSE)) {
+
+    detrend <- match.arg(detrend)
+    transform.data <- match.fun(transform.data)
+
+    spect.internal(
+      data,
+      vars=vars,
+      kernel.width=kernel.width,
+      nsim=nsim,
+      seed=seed,
+      transform.data=transform.data,
+      detrend=detrend,
+      ...,
+      verbose=verbose
     )
 
   }
@@ -137,20 +160,18 @@ setMethod(
 ##' @rdname spect
 setMethod(
   "spect",
-  signature=signature(object="spectd_pomp"),
-  definition=function (object, params, vars, kernel.width,
-    nsim, seed = NULL, transform.data, detrend, ...) {
+  signature=signature(data="spectd_pomp"),
+  definition=function (data, vars, kernel.width, nsim, seed = NULL,
+    transform.data, detrend, ..., verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params)) params <- coef(object)
-    if (missing(vars)) vars <- colnames(object@datspec)
-    if (missing(kernel.width)) kernel.width <- object@kernel.width
-    if (missing(nsim)) nsim <- nrow(object@simspec)
-    if (missing(transform.data)) transform.data <- object@transform.data
-    if (missing(detrend)) detrend <- object@detrend
+    if (missing(vars)) vars <- colnames(data@datspec)
+    if (missing(kernel.width)) kernel.width <- data@kernel.width
+    if (missing(nsim)) nsim <- data@nsim
+    if (missing(transform.data)) transform.data <- data@transform.data
+    if (missing(detrend)) detrend <- data@detrend
 
     spect(
-      as(object,"pomp"),
-      params=params,
+      as(data,"pomp"),
       vars=vars,
       kernel.width=kernel.width,
       nsim=nsim,
@@ -163,13 +184,10 @@ setMethod(
   }
 )
 
-spect.internal <- function (object, params, vars, kernel.width, nsim,
-  seed = NULL, transform.data, detrend, ...) {
+spect.internal <- function (object, vars, kernel.width, nsim, seed = NULL,
+  transform.data, detrend, ..., verbose) {
 
   ep <- paste0("in ",sQuote("spect"),": ")
-
-  if (is.list(params)) params <- unlist(params)
-  if (is.null(params)) params <- numeric(0)
 
   if (missing(vars)) vars <- rownames(object@data)
 
@@ -186,10 +204,13 @@ spect.internal <- function (object, params, vars, kernel.width, nsim,
 
   nsim <- as.integer(nsim)
   seed <- as.integer(seed)
+  verbose <- as.logical(verbose)
 
   ker <- reuman.kernel(kernel.width)
 
-  object <- pomp(object,...)
+  object <- pomp(object,...,verbose=verbose)
+
+  params <- coef(object)
 
   pompLoad(object)
   on.exit(pompUnload(object))

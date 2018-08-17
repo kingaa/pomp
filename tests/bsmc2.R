@@ -31,17 +31,6 @@ logLik(smc)
 range(cond.logLik(smc))
 stopifnot(sum(cond.logLik(smc))==logLik(smc))
 
-full_join(
-  smc %>% prior_samples() %>% melt(value.name="prior"),
-  smc %>% posterior_samples() %>% melt(value.name="posterior"),
-  by=c("variable","rep")
-) %>%
-  gather(dist,value,prior,posterior) %>%
-  ggplot(aes(x=value,group=dist,fill=dist,color=dist))+
-  geom_density(alpha=0.5)+
-  facet_grid(~variable,scales="free_x")+
-  theme_bw()
-
 try(bsmc2())
 try(bsmc2(3L))
 

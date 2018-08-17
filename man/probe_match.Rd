@@ -6,6 +6,8 @@
 \alias{probe.match.objfun}
 \alias{probe.match.objfun,missing-method}
 \alias{probe.match.objfun,ANY-method}
+\alias{probe.match.objfun-data.frame}
+\alias{probe.match.objfun,data.frame-method}
 \alias{probe.match.objfun-pomp}
 \alias{probe.match.objfun,pomp-method}
 \alias{probe.match.objfun-probed_pomp}
@@ -14,19 +16,36 @@
 \alias{probe.match.objfun,probe_match_objfun-method}
 \title{Probe matching}
 \usage{
-\S4method{probe.match.objfun}{pomp}(object, params, est, probes, nsim,
-  seed = NULL, fail.value = NA, transform = FALSE, ...)
+\S4method{probe.match.objfun}{data.frame}(data, rinit, rprocess, rmeasure,
+  params, est, probes, nsim, seed = NULL, fail.value = NA,
+  transform = FALSE, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{probe.match.objfun}{probed_pomp}(object, params, est, probes,
-  nsim, seed = NULL, fail.value = NA, transform = FALSE, ...)
+\S4method{probe.match.objfun}{pomp}(data, est, probes, nsim, seed = NULL,
+  fail.value = NA, transform = FALSE, ...,
+  verbose = getOption("verbose", FALSE))
 
-\S4method{probe.match.objfun}{probe_match_objfun}(object, ...)
+\S4method{probe.match.objfun}{probed_pomp}(data, est, probes, nsim,
+  seed = NULL, fail.value = NA, transform = FALSE, ...,
+  verbose = getOption("verbose", FALSE))
+
+\S4method{probe.match.objfun}{probe_match_objfun}(data, ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class the extends \sQuote{pomp}}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
 
-\item{params}{optional named numeric vector of model parameters.
-By default, \code{params=coef(object)}.}
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rmeasure}, see \link[=rmeasure_plugins]{here}.}
+
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
 
 \item{est}{character vector; the names of parameters to be estimated.}
 
@@ -49,8 +68,9 @@ It should be a large number (i.e., bigger than any legitimate values the objecti
 \item{transform}{logical;
 if \code{TRUE}, optimization is to be performed on the transformed scale.}
 
-\item{...}{additional arguments which can be used to change the defaults or modify
-model characteristics or components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
+
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 }
 \value{
 \code{probe.match.objfun} construct a stateful objective function for probe matching.
@@ -79,8 +99,8 @@ The best practice is to call \code{\link[=probe,probe_match_objfun-method]{probe
 \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 
 Other summary statistics methods: \code{\link{abc}},
-  \code{\link{basic_probes}}, \code{\link{probevals}},
-  \code{\link{probe}}, \code{\link{spect}}
+  \code{\link{basic_probes}}, \code{\link{probe}},
+  \code{\link{spect}}
 }
 \concept{summary statistics methods}
 \keyword{optimize}

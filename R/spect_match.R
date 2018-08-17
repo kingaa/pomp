@@ -11,7 +11,16 @@
 ##' @docType methods
 ##' @rdname spect_match
 ##' @include spect.R probe_match.R loglik.R
-##' @aliases spect.match.objfun,missing-method spect.match.objfun,ANY-method
+##' @aliases spect.match.objfun spect.match.objfun,missing-method spect.match.objfun,ANY-method
+##'
+##' @inheritParams pomp
+##' @inheritParams probe.match
+##' @inheritParams spect
+##' @param weights optional numeric or function.
+##' The mismatch between model and data is measured by a weighted average of mismatch at each frequency.
+##' By default, all frequencies are weighted equally.
+##' \code{weights} can be specified either as a vector (which must have length equal to the number of frequencies) or as a function of frequency.
+##' If the latter, \code{weights(freq)} must return a nonnegative weight for each frequency.
 ##'
 ##' @return
 ##' \code{spect.match.objfun} constructs a stateful objective function for spectrum matching.
@@ -41,55 +50,87 @@ setClass(
 
 setGeneric(
   "spect.match.objfun",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("spect.match.objfun")
 )
 
 setMethod(
   "spect.match.objfun",
-  signature=signature(object="missing"),
+  signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("spect.match.objfun"),": ",sQuote("object"),
+    stop("in ",sQuote("spect.match.objfun"),": ",sQuote("data"),
       " is a required argument",call.=FALSE)
   }
 )
 
 setMethod(
   "spect.match.objfun",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
     stop(sQuote("spect.match.objfun")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+      sQuote(class(data)),call.=FALSE)
+  }
+)
+
+##' @name spect.match.objfun-data.frame
+##' @aliases spect.match.objfun,data.frame-method
+##' @rdname spect_match
+setMethod(
+  "spect.match.objfun",
+  signature=signature(data="data.frame"),
+  definition=function(data, rinit, rprocess, rmeasure, params,
+    est = character(0), vars, nsim, seed = NULL, kernel.width, transform.data,
+    detrend, weights = 1, fail.value = NA, transform = FALSE, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    object <- pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+      params=params,...,verbose=verbose)
+
+    spect.match.objfun(
+      object,
+      est=est,
+      vars=vars,
+      nsim=nsim,
+      seed=seed,
+      kernel.width=kernel.width,
+      transform.data=transform.data,
+      detrend=detrend,
+      weights=weights,
+      fail.value=fail.value,
+      transform=transform,
+      verbose=verbose
+    )
+
   }
 )
 
 ##' @name spect.match.objfun-pomp
-##' @aliases spect.match.objfun spect.match.objfun,pomp-method
+##' @aliases spect.match.objfun,pomp-method
 ##' @rdname spect_match
-##'
-##' @inheritParams probe.match
-##' @inheritParams spect
-##' @param weights optional numeric or function.
-##' The mismatch between model and data is measured by a weighted average of mismatch at each frequency.
-##' By default, all frequencies are weighted equally.
-##' \code{weights} can be specified either as a vector (which must have length equal to the number of frequencies) or as a function of frequency.
-##' If the latter, \code{weights(freq)} must return a nonnegative weight for each frequency.
-##'
 setMethod(
   "spect.match.objfun",
-  signature=signature(object="pomp"),
-  definition=function(object, params, est = character(0),
+  signature=signature(data="pomp"),
+  definition=function(data, est = character(0),
     vars, nsim, seed = NULL, kernel.width, transform.data,
-    detrend = c("none","mean","linear","quadratic"),
-    weights = 1, fail.value = NA, transform = FALSE, ...) {
+    detrend, weights = 1, fail.value = NA, transform = FALSE, ...,
+    verbose = getOption("verbose", FALSE)) {
 
-    transform.data <- match.fun(transform.data)
-    detrend <- match.arg(detrend)
+    object <- pomp(data,...,verbose=verbose)
 
-    smof.internal(object,params=params,est=est,vars=vars,nsim=nsim,
-      seed=seed,kernel.width=kernel.width,transform.data=transform.data,
-      detrend=detrend,weights=weights,fail.value=fail.value,
-      transform=transform,...)
+    smof.internal(
+      object,
+      est=est,
+      vars=vars,
+      nsim=nsim,
+      seed=seed,
+      kernel.width=kernel.width,
+      transform.data=transform.data,
+      detrend=detrend,
+      weights=weights,
+      fail.value=fail.value,
+      transform=transform,
+      verbose=verbose
+    )
 
   }
 )
@@ -99,20 +140,29 @@ setMethod(
 ##' @rdname spect_match
 setMethod(
   "spect.match.objfun",
-  signature=signature(object="spectd_pomp"),
-  definition=function(object, params, est, vars, nsim, seed = NULL,
-    kernel.width, transform.data, detrend, ...) {
+  signature=signature(data="spectd_pomp"),
+  definition=function(data, est, vars, nsim, seed = NULL,
+    kernel.width, transform.data, detrend, ...,
+    verbose = getOption("verbose", FALSE)) {
 
-    if (missing(params)) params <- object@params
-    if (missing(vars)) vars <- object@vars
-    if (missing(nsim)) nsim <- object@nsim
-    if (missing(kernel.width)) kernel.width <- object@kernel.width
-    if (missing(transform.data)) transform.data <- object@transform.data
-    if (missing(detrend)) detrend <- object@detrend
+    if (missing(vars)) vars <- data@vars
+    if (missing(nsim)) nsim <- data@nsim
+    if (missing(kernel.width)) kernel.width <- data@kernel.width
+    if (missing(transform.data)) transform.data <- data@transform.data
+    if (missing(detrend)) detrend <- data@detrend
 
-    spect.match.objfun(object,params=params,est=est,vars=vars,nsim=nsim,
-      seed=seed,kernel.width=kernel.width, transform.data=transform.data,
-      detrend=detrend,...)
+    smof.internal(
+      data,
+      est=est,
+      vars=vars,
+      nsim=nsim,
+      seed=seed,
+      kernel.width=kernel.width,
+      transform.data=transform.data,
+      detrend=detrend,
+      ...,
+      verbose=verbose
+    )
 
   }
 )
@@ -122,15 +172,15 @@ setMethod(
 ##' @rdname spect_match
 setMethod(
   "spect.match.objfun",
-  signature=signature(object="spect_match_objfun"),
-  definition=function(object, ...) {
+  signature=signature(data="spect_match_objfun"),
+  definition=function(data, ...) {
 
-    spect.match.objfun(object@env$object,...)
+    spect.match.objfun(data@env$object,...)
 
   }
 )
 
-smof.internal <- function (object, params, est, vars, nsim, seed,
+smof.internal <- function (object, est, vars, nsim, seed,
   kernel.width, transform.data, detrend, weights, fail.value, transform, ...) {
 
   ep <- paste0("in ",sQuote("spect.match.objfun"),": ")
@@ -138,7 +188,7 @@ smof.internal <- function (object, params, est, vars, nsim, seed,
   transform <- as.logical(transform)
   fail.value <- as.numeric(fail.value)
 
-  if (missing(params)) params <- coef(object)
+  params <- coef(object)
 
   if (missing(est)) est <- character(0)
   est <- as.character(est)
@@ -235,9 +285,9 @@ spect.discrep <- function (object, ker, weights) {
 ##' @aliases spect,spect_match_objfun-method
 setMethod(
   "spect",
-  signature=signature(object="spect_match_objfun"),
-  definition=function (object, ...) {
-    spect(object@env$object,...)
+  signature=signature(data="spect_match_objfun"),
+  definition=function (data, ...) {
+    spect(data@env$object,...)
   }
 )
 

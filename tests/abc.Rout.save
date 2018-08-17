@@ -86,14 +86,14 @@ Error : in ‘plot-abc’: can't make a scatterplot with only one variable
 +     lik = (give_log) ? lik : exp(lik);"
 +   ),paramnames=c("alpha.1","alpha.2")) -> abc5
 > 
-> abc1 %>% abc(Nabc=50,start=as.list(coef(ou2))) %>% plot()
+> abc1 %>% abc(Nabc=50,params=as.list(coef(ou2))) %>% plot()
 > 
 > abc4 %>% abc(proposal=function(theta,...)theta) %>% plot()
 > 
 > try(abc())
-Error : in ‘abc’: ‘object’ is a required argument
+Error : in ‘abc’: ‘data’ is a required argument
 > try(abc(3))
-Error : ‘abc’ is not defined when ‘object’ is of class ‘numeric’
+Error : ‘abc’ is not defined when ‘data’ is of class ‘numeric’
 > 
 > try(abc(abc1,Nabc=-5))
 Error : in ‘abc’: ‘Nabc’ must be a positive integer.
@@ -109,13 +109,13 @@ Error : in ‘abc’: ‘scale’ must have either length 1 or length equal to t
 > coef(po) <- NULL
 > try(abc(po,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: parameters must be specified.
-> try(abc(ou2,start=numeric(0),Nabc=100,probes=plist,scale=scale.dat,
+Error : in ‘abc’: ‘params’ must be a named numeric vector.
+> try(abc(ou2,params=numeric(0),Nabc=100,probes=plist,scale=scale.dat,
 +   epsilon=1.7,proposal="mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))"))
-Error : in ‘abc’: parameters must be specified.
-> try(abc(ou2,start=NULL,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+Error : in ‘abc’: ‘params’ must be a named numeric vector.
+> try(abc(ou2,params=NULL,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: parameters must be specified.
+Error : in ‘abc’: ‘params’ must be a named numeric vector.
 > try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal="mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))"))
 Error : in ‘abc’: ‘proposal’ must be a function.
@@ -141,9 +141,9 @@ Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified
 > 
 > try(abc(abc1,Nabc=100,epsilon=NULL,scale=scale.dat))
 Error : in ‘abc’: abc match criterion, ‘epsilon’, must be specified
-> try(abc(ou2,start=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+> try(abc(ou2,params=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-Error : in ‘abc’: ‘start’ must be a named numeric vector.
+Error : in ‘pomp’: ‘params’ must be a named numeric vector.
 > try(abc(ou2,Nabc=100,probes="plist[[1]]",scale=scale.dat[1],epsilon=1.7,
 +   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 Error : in ‘abc’: ‘probes’ must be a function or a list of functions.
@@ -153,7 +153,7 @@ Error : in ‘abc’: each probe must be a function of a single argument
 > try(abc(abc1,dprior=function(params,log,...)stop("ouch!")))
 Error : in ‘abc’: ‘dprior’ error: ouch!
 > try(abc(abc1,dprior=function(params,log,...)Inf))
-Error : in ‘abc’: inadmissible value of ‘dprior’ at start parameters.
+Error : in ‘abc’: inadmissible value of ‘dprior’ at starting parameters.
 > try(abc(abc1,probes=function(x)stop("piff!")))
 Error : in ‘abc’: in ‘apply_probe_data’: piff!
 > count <- 0

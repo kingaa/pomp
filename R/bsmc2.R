@@ -5,8 +5,8 @@
 ##' @name bsmc2
 ##' @docType methods
 ##' @rdname bsmc2
-##' @include pomp_class.R workhorses.R
-##' @aliases bsmc2,missing-method bsmc2,ANY-method bsmc2,pomp-method
+##' @include pomp_class.R workhorses.R pomp.R
+##' @aliases bsmc2 bsmc2,missing-method bsmc2,ANY-method
 ##  @family particle filter methods
 ##'
 ##' @details
@@ -17,34 +17,28 @@
 ##' \code{bsmc2} uses a version of the original algorithm, but discards the auxiliary particle filter.
 ##' The modification appears to give superior performance for the same amount of effort.
 ##'
-##' @param object An object of class \sQuote{pomp} or inheriting class \sQuote{pomp}.
-##' @param params,Np Specifications for the prior distribution of particles.
-##' See details below.
+##' @inheritParams pomp
+##' @inheritParams pfilter
+##' @param params parameters
+##' @param Np number of particles
 ##' @param est Names of the parameters that are to be estimated.  No updates will be made to the other parameters.
 ##' If \code{est} is not specified, all parameters for which there is variation in \code{params} will be estimated.
 ##' @param smooth Kernel density smoothing parameter.
 ##' The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
 ##' Thus, \code{smooth=0} means that no noise will be added to parameters.
 ##' The general recommendation is that the value of \code{smooth} should be chosen close to 0 (e.g., \code{shrink} ~ 0.1).
-##' @param tol,max.fail
-##' Particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.  A filtering failure occurs when, at some time point, all particles are lost.
-##' When all particles are lost, the conditional log likelihood at that time point is set to be \code{log(tol)}.
-##' \code{max.fail} gives the maximum number of filtering failures tolerated.
-##' If the number of filtering failures exceeds this number, execution will terminate with an error.
 ##' @param transform logical;
 ##' if \code{TRUE}, the algorithm operates on the transformed scale.
-##' @param \dots Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.
-##' @param verbose logical;
-##' if \code{TRUE}, print diagnostic messages.
-##' @return An object of class \sQuote{bsmcd_pomp}.
-##' One can plot the results using the \code{plot} method.
-##' When \code{x} is a \sQuote{bsmcd_pomp} object, \code{plot(x, pars, thin, \dots{})}, produces density and scatter plots of the prior and posterior distributions.
-##' One can restrict to particular parameters by naming them in the \code{pars} argument.  By default, all the samples are plotted.
-##' When the number of samples is very large, it can be helpful to plot a subsample: \code{thin} specifies the size of this random subsample.
+##'
+##' @return
+##' An object of class \sQuote{bsmcd_pomp}.
+##' The following methods are avaiable:
+##' \describe{
+##' \item{\code{\link[=plot,bsmcd_pomp-method]{plot}}}{produces diagnostic plots}
+##' \item{as.data.frame}{puts the prior and posterior samples into a data frame}
+##' }
 ##'
 ##' @author Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
-##'
-##' @seealso \code{\link{pfilter}}, \code{\link{pmcmc}}
 ##'
 ##' @references
 ##' Liu, J. and M. West.
@@ -79,21 +73,41 @@ setClass(
 
 setGeneric(
   "bsmc2",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("bsmc2")
 )
 
-##' @name bsmc2
-##' @aliases bsmc2-pomp
 setMethod(
   "bsmc2",
-  signature=signature(object="pomp"),
-  definition = function (object, params, Np, est,
-    smooth = 0.1, tol = 1e-17,
-    max.fail = 0, transform = FALSE, ...,
-    verbose = getOption("verbose")) {
-    bsmc2.internal(
-      object=object,
+  signature=signature(data="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("bsmc2"),": ",sQuote("data")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "bsmc2",
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
+    stop(sQuote("bsmc2")," is not defined when ",sQuote("data")," is of class ",sQuote(class(data)),call.=FALSE)
+  }
+)
+
+##' @name bsmc2-data.frame
+##' @rdname bsmc2
+##' @aliases bsmc2-data.frame bsmc2,data.frame-method
+setMethod(
+  "bsmc2",
+  signature=signature(data="data.frame"),
+  definition = function (data, params, rprior, rinit, rprocess, rmeasure,
+    Np, est, smooth = 0.1, tol = 1e-17, max.fail = 0, transform = FALSE, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    object <- pomp(data,rinit=rinit,rprocess=rprocess,
+      rmeasure=rmeasure,dprior=dprior,...,verbose=verbose)
+
+    bsmc2(
+      object,
       params=params,
       Np=Np,
       est=est,
@@ -101,53 +115,71 @@ setMethod(
       tol=tol,
       verbose=verbose,
       max.fail=max.fail,
-      transform=transform,
-      ...
+      transform=transform
     )
+
   }
 )
 
+##' @name bsmc2-pomp
+##' @rdname bsmc2
+##' @aliases bsmc2-pomp bsmc2,pomp-method
 setMethod(
   "bsmc2",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("bsmc2"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  signature=signature(data="pomp"),
+  definition = function (data, params, Np, est, smooth = 0.1, tol = 1e-17,
+    max.fail = 0, transform = FALSE, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    bsmc2.internal(
+      data,
+      params=params,
+      Np=Np,
+      est=est,
+      smooth=smooth,
+      tol=tol,
+      max.fail=max.fail,
+      transform=transform,
+      ...,
+      verbose=verbose
+    )
+
   }
 )
 
-setMethod(
-  "bsmc2",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("bsmc2")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-bsmc2.internal <- function (object, params, Np, est,
-  smooth, tol, verbose = getOption("verbose"),
+bsmc2.internal <- function (object, params, Np, est, smooth, tol,
   max.fail, transform, .getnativesymbolinfo = TRUE,
-  ...) {
+  ..., verbose) {
 
   ep <- paste0("in ",sQuote("bsmc2"),": ")
 
-  object <- pomp(object,...)
+  object <- pomp(object,...,verbose=verbose)
 
   gnsi <- as.logical(.getnativesymbolinfo)
   transform <- as.logical(transform)
 
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
-  if (is.null(params)) params <- numeric(0)
-  if (length(params)==0) stop(ep,"parameters must be supplied",call.=FALSE)
-
-  if (missing(Np)) Np <- NCOL(params)
-  else if (is.matrix(params) && (Np!=ncol(params))) {
-    warning(ep,sQuote("Np")," is ignored when ",sQuote("params"),
-      " is a matrix",call.=FALSE)
+  if (missing(params)) {
+    params <- coef(object)
+    if (missing(Np)) stop(ep,sQuote("Np")," is not specified.",call.=FALSE)
+  } else if (is.matrix(params)) {
+    if (Np != ncol(params))
+      warning(ep,sQuote("Np")," is ignored when ",sQuote("params"),
+        " is a matrix.",call.=FALSE)
     Np <- ncol(params)
+  } else if (is.data.frame(params)) {
+    params <- t(data.matrix(params))
+    Np <- ncol(params)
+  } else if (is.list(params)) {
+    params <- unlist(params)
+    if (missing(Np)) stop(ep,sQuote("Np")," is not specified.",call.=FALSE)
+  } else if (is.null(params)) {
+    params <- numeric(0)
+    if (missing(Np)) stop(ep,sQuote("Np")," is not specified.",call.=FALSE)
   }
 
-  if (!is.finite(Np) || Np < 1)
+  Np <- as.integer(Np)
+
+  if (length(Np) > 1 || !is.finite(Np) || Np < 1)
     stop(ep,sQuote("Np")," must be a positive integer.",call.=FALSE)
 
   if ((!is.matrix(params)) && (Np > 1)) {
@@ -159,13 +191,14 @@ bsmc2.internal <- function (object, params, Np, est,
     )
   }
 
-  if (transform)
-    params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)
-
-  params <- as.matrix(params)
   if (!is.numeric(params) || is.null(rownames(params)))
     stop(ep,sQuote("params")," should be suppled as a numeric matrix with rownames",
       " or a named numeric vector.",call.=FALSE)
+
+  params <- as.matrix(params)
+
+  if (transform)
+    params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)
 
   ntimes <- length(time(object))
   npars <- nrow(params)

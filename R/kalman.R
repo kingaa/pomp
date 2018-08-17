@@ -4,30 +4,23 @@
 ##'
 ##' @name kalman
 ##' @rdname kalman
-##' @include pomp_class.R
+##' @include pomp_class.R pomp.R
 ##' @aliases enkf eakf enkf,ANY-method enkf,missing-method
 ##' eakf,ANY-method eakf,missing-method
 ##'
-##' @param object An object of class \sQuote{pomp} or extending class
-##' \sQuote{pomp}.
-##' @param params optional named numeric vector containing the parameters at
-##' which the filtering should be performed.  By default, \code{params =
-##' coef(object)}.
+##' @inheritParams pomp
 ##' @param Np the number of particles to use.
-##' @param verbose logical; if \code{TRUE}, progress information is reported.
 ##' @param h function returning the expected value of the observation given the
 ##' state.
 ##' @param C matrix converting state vector into expected value of the
 ##' observation.
 ##' @param R matrix; variance of the measurement noise.
-##' @param \dots additional arguments, which can be used to modify components of the model.
 ##'
 ##' @return An object of class \sQuote{kalmand_pomp}.
 ##'
 ##' @author Aaron A. King
 ##'
-##' @seealso \code{\link{pfilter}}, and the tutorials on
-##' the \href{https://kingaa.github.io/pomp}{package website}.
+##' @seealso \code{\link{pfilter}}, and the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 ##'
 ##' @references
 ##' Evensen, G. (1994) Sequential data assimilation with a
@@ -64,14 +57,50 @@ setClass(
 
 setGeneric(
   "enkf",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("enkf")
 )
 
 setGeneric(
   "eakf",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("eakf")
+)
+
+setMethod(
+  "eakf",
+  signature=signature(data="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("eakf"),": ",sQuote("data"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "eakf",
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
+    stop(sQuote("eakf")," is not defined when ",sQuote("data")," is of class ",
+      sQuote(class(data)),call.=FALSE)
+  }
+)
+
+setMethod(
+  "enkf",
+  signature=signature(data="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("enkf"),": ",sQuote("data"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "enkf",
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
+    stop(sQuote("enkf")," is not defined when ",sQuote("data"),
+      " is of class ",sQuote(class(data)),call.=FALSE)
+  }
 )
 
 ## ENSEMBLE KALMAN FILTER (ENKF)
@@ -88,18 +117,42 @@ setGeneric(
 ## Updated ensemble: $X^u_{t}=X_t + K_t\,(O_t - Y_t)$
 ## Filter mean: $m_t=\langle X^u_t \rangle = \frac{1}{q} \sum\limits_{i=1}^q x^{u_i}_t$
 
+##' @name enkf-data.frame
+##' @aliases enkf,data.frame-method
+##' @rdname kalman
+setMethod(
+  "enkf",
+  signature=signature(data="data.frame"),
+  function (data, rinit, rprocess, params,
+    Np, h, R, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    object <- pomp(data,rinit=rinit,rprocess=rprocess,params=params,...,
+      verbose=verbose)
+
+    enkf(
+      object,
+      params=params,
+      h=h,
+      R=R,
+      Np=Np,
+      verbose=verbose
+    )
+
+  }
+)
+
 ##' @name enkf-pomp
 ##' @aliases enkf,pomp-method
 ##' @rdname kalman
 setMethod(
   "enkf",
-  signature=signature(object="pomp"),
-  function (object, params, Np, h, R, ...,
+  signature=signature(data="pomp"),
+  function (data, Np, h, R, ...,
     verbose = getOption("verbose", FALSE)) {
 
     enkf.internal(
-      object=object,
-      params=params,
+      data,
       h=h,
       R=R,
       Np=Np,
@@ -122,60 +175,52 @@ setMethod(
 ## Filter mean: $m_t=M_t+K_t\,(y_t-C\,M_t)$
 ## Updated ensemble: $x_{t}=B\,(X_t-M_t\,\mathbb{1})+m_t\,\mathbb{1}$
 
+##' @name eakf-data.frame
+##' @aliases eakf,data.frame-method
+##' @rdname kalman
+setMethod(
+  "eakf",
+  signature=signature(data="data.frame"),
+  function (data, rinit, rprocess, params,
+    Np, C, R, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    object <- pomp(data,rinit=rinit,rprocess=rprocess,params=params,...,
+      verbose=verbose)
+
+    eakf(
+      object,
+      C=C,
+      R=R,
+      Np=Np,
+      verbose=verbose
+    )
+
+  }
+)
+
 ##' @name eakf-pomp
 ##' @aliases eakf,pomp-method
 ##' @rdname kalman
 setMethod(
   "eakf",
-  signature=signature(object="pomp"),
-  function (object, params, Np, C, R, ...,
+  signature=signature(data="pomp"),
+  function (data, Np, C, R, ...,
     verbose = getOption("verbose", FALSE)) {
 
     eakf.internal(
-      object=object,
-      params=params,
+      data,
       C=C,
       R=R,
       Np=Np,
       ...,
       verbose=verbose
     )
+
   }
 )
 
-setMethod(
-  "eakf",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("eakf"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "eakf",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("eakf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-setMethod(
-  "enkf",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("enkf"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "enkf",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("enkf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-enkf.internal <- function (object, params, h, R, Np, ..., verbose) {
+enkf.internal <- function (object, h, R, Np, ..., verbose) {
 
   ep <- paste0("in ",sQuote("enkf"),": ")
 
@@ -185,8 +230,7 @@ enkf.internal <- function (object, params, h, R, Np, ..., verbose) {
 
   object <- pomp(object,...)
 
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
+  params <- coef(object)
 
   t <- time(object)
   tt <- time(object,t0=TRUE)
@@ -256,8 +300,7 @@ eakf.internal <- function (object, params, C, R, Np, ..., verbose) {
 
   object <- pomp(object,...)
 
-  if (missing(params)) params <- coef(object)
-  if (is.list(params)) params <- unlist(params)
+  params <- coef(object)
 
   t <- time(object)
   tt <- time(object,t0=TRUE)

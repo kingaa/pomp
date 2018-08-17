@@ -57,7 +57,7 @@ abc1 %>%
     lik = (give_log) ? lik : exp(lik);"
   ),paramnames=c("alpha.1","alpha.2")) -> abc5
 
-abc1 %>% abc(Nabc=50,start=as.list(coef(ou2))) %>% plot()
+abc1 %>% abc(Nabc=50,params=as.list(coef(ou2))) %>% plot()
 
 abc4 %>% abc(proposal=function(theta,...)theta) %>% plot()
 
@@ -75,9 +75,9 @@ po <- ou2
 coef(po) <- NULL
 try(abc(po,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
-try(abc(ou2,start=numeric(0),Nabc=100,probes=plist,scale=scale.dat,
+try(abc(ou2,params=numeric(0),Nabc=100,probes=plist,scale=scale.dat,
   epsilon=1.7,proposal="mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))"))
-try(abc(ou2,start=NULL,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+try(abc(ou2,params=NULL,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
   proposal="mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))"))
@@ -95,7 +95,7 @@ try(abc(ou2,Nabc=100,probes=plist,scale=scale.dat,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 
 try(abc(abc1,Nabc=100,epsilon=NULL,scale=scale.dat))
-try(abc(ou2,start=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
+try(abc(ou2,params=c(1,2,3),Nabc=100,probes=plist,scale=scale.dat,epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))
 try(abc(ou2,Nabc=100,probes="plist[[1]]",scale=scale.dat[1],epsilon=1.7,
   proposal=mvn.diag.rw(rw.sd=c(alpha.1=0.01,alpha.2=0.01))))

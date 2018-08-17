@@ -5,19 +5,40 @@
 \alias{bsmc2}
 \alias{bsmc2,missing-method}
 \alias{bsmc2,ANY-method}
-\alias{bsmc2,pomp-method}
+\alias{bsmc2-data.frame}
+\alias{bsmc2,data.frame-method}
 \alias{bsmc2-pomp}
+\alias{bsmc2,pomp-method}
 \title{The Liu and West Bayesian particle filter}
 \usage{
-\S4method{bsmc2}{pomp}(object, params, Np, est, smooth = 0.1,
+\S4method{bsmc2}{data.frame}(data, params, rprior, rinit, rprocess,
+  rmeasure, Np, est, smooth = 0.1, tol = 1e-17, max.fail = 0,
+  transform = FALSE, ..., verbose = getOption("verbose", FALSE))
+
+\S4method{bsmc2}{pomp}(data, params, Np, est, smooth = 0.1,
   tol = 1e-17, max.fail = 0, transform = FALSE, ...,
-  verbose = getOption("verbose"))
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{object}{An object of class \sQuote{pomp} or inheriting class \sQuote{pomp}.}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
 
-\item{params, Np}{Specifications for the prior distribution of particles.
-See details below.}
+\item{params}{parameters}
+
+\item{rprior}{optional; specification of the prior distribution on
+parameters.
+For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_plugins]{here}.}
+
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rmeasure}, see \link[=rmeasure_plugins]{here}.}
+
+\item{Np}{number of particles}
 
 \item{est}{Names of the parameters that are to be estimated.  No updates will be made to the other parameters.
 If \code{est} is not specified, all parameters for which there is variation in \code{params} will be estimated.}
@@ -27,25 +48,28 @@ The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
 Thus, \code{smooth=0} means that no noise will be added to parameters.
 The general recommendation is that the value of \code{smooth} should be chosen close to 0 (e.g., \code{shrink} ~ 0.1).}
 
-\item{tol, max.fail}{Particles with log likelihood below \code{tol} are considered to be \dQuote{lost}.  A filtering failure occurs when, at some time point, all particles are lost.
-When all particles are lost, the conditional log likelihood at that time point is set to be \code{log(tol)}.
-\code{max.fail} gives the maximum number of filtering failures tolerated.
-If the number of filtering failures exceeds this number, execution will terminate with an error.}
+\item{tol}{positive numeric scalar;
+particles with likelihood less than \code{tol} are considered to be incompatible with the data.
+See the section on \emph{Filtering Failures} below for more information.}
+
+\item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
+If the number of filtering failures exceeds this number, execution will terminate with an error.
+By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
 \item{transform}{logical;
 if \code{TRUE}, the algorithm operates on the transformed scale.}
 
-\item{\dots}{Additional arguments are passed to \code{\link{pomp}}, allowing one to supply new or modify existing model characteristics or components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
 
-\item{verbose}{logical;
-if \code{TRUE}, print diagnostic messages.}
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 }
 \value{
 An object of class \sQuote{bsmcd_pomp}.
-One can plot the results using the \code{plot} method.
-When \code{x} is a \sQuote{bsmcd_pomp} object, \code{plot(x, pars, thin, \dots{})}, produces density and scatter plots of the prior and posterior distributions.
-One can restrict to particular parameters by naming them in the \code{pars} argument.  By default, all the samples are plotted.
-When the number of samples is very large, it can be helpful to plot a subsample: \code{thin} specifies the size of this random subsample.
+The following methods are avaiable:
+\describe{
+\item{\code{\link[=plot,bsmcd_pomp-method]{plot}}}{produces diagnostic plots}
+\item{as.data.frame}{puts the prior and posterior samples into a data frame}
+}
 }
 \description{
 Modified version of the Liu and West (2001) algorithm.
@@ -64,9 +88,6 @@ Combining Parameter and State Estimation in Simulation-Based Filtering.
 In A. Doucet, N. de Freitas, and N. J. Gordon, editors,
 Sequential Monte Carlo Methods in Practice, pages 197-224.
 Springer, New York, 2001.
-}
-\seealso{
-\code{\link{pfilter}}, \code{\link{pmcmc}}
 }
 \author{
 Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides

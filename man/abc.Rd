@@ -5,45 +5,68 @@
 \alias{abc}
 \alias{abc,ANY-method}
 \alias{abc,missing-method}
+\alias{abc-data.frame}
+\alias{abc,data.frame-method}
 \alias{abc-pomp}
 \alias{abc,pomp-method}
 \alias{abc,probed_pomp-method}
 \alias{abc,abcd_pomp-method}
 \title{Approximate Bayesian computation}
 \usage{
-\S4method{abc}{pomp}(object, Nabc = 1, start, proposal, probes, scale,
-  epsilon, ..., verbose = getOption("verbose", FALSE))
-
-\S4method{abc}{probed_pomp}(object, probes, ...,
+\S4method{abc}{data.frame}(data, Nabc = 1, params, rinit, rprocess,
+  rmeasure, dprior, proposal, probes, scale, epsilon, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{abc}{abcd_pomp}(object, Nabc, start, proposal, probes, scale,
-  epsilon, verbose = getOption("verbose"), ...)
+\S4method{abc}{pomp}(data, Nabc = 1, proposal, probes, scale, epsilon,
+  ..., verbose = getOption("verbose", FALSE))
+
+\S4method{abc}{probed_pomp}(data, probes, ...,
+  verbose = getOption("verbose", FALSE))
+
+\S4method{abc}{abcd_pomp}(data, Nabc, proposal, probes, scale, epsilon,
+  ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{object}{an object of class \dQuote{pomp}.}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
 
 \item{Nabc}{the number of ABC iterations to perform.}
 
-\item{start}{named numeric vector; the starting guess of the parameters.}
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
 
-\item{proposal}{optional function that draws from the proposal distribution.
-Currently, the proposal distribution must be symmetric for proper inference:
-it is the user's responsibility to ensure that it is.
-Several functions that construct appropriate proposal function are provided:
-see \link[=proposals]{MCMC proposals} for more information.}
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
 
-\item{probes}{List of probes (AKA summary statistics).
-See \code{\link{probe}} for details.}
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rmeasure}, see \link[=rmeasure_plugins]{here}.}
+
+\item{dprior}{optional; specification of the prior distribution on
+parameters.
+For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_plugins]{here}.}
+
+\item{proposal}{optional function that draws from the proposal
+distribution.  Currently, the proposal distribution must be symmetric for
+proper inference: it is the user's responsibility to ensure that it is.
+Several functions that construct appropriate proposal function are
+provided: see \link[=proposals]{MCMC proposals} for more information.}
+
+\item{probes}{a single probe or a list of one or more probes.
+A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
+A vector-valued probe must always return a vector of the same size.
+A number of useful probes are provided with the package:
+see \link[=basic_probes]{basic probes}.}
 
 \item{scale}{named numeric vector of scales.}
 
 \item{epsilon}{ABC tolerance.}
 
-\item{\dots}{Additional arguments are passed to \code{\link{pomp}},
-allowing one to supply new or modify existing model characteristics or components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
 
-\item{verbose}{logical; if TRUE, print progress reports.}
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 }
 \description{
 The approximate Bayesian computation (ABC) algorithm for estimating the parameters of a partially-observed Markov process.
@@ -72,10 +95,13 @@ By default, all the algorithmic parameters are the same as used in the original 
 Additional arguments will override the defaults.
 }
 
-\section{ABC diagnostics}{
+\section{Methods}{
 
-\code{plot} applied to an ABC object will produce a series of
-diagnostic plots.
+The following can be applied to the output of an \code{abc} operation:
+\describe{
+\item{plot}{produces a series of diagnostic plots}
+\item{traces}{produces a \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
+}
 }
 
 \references{
@@ -92,12 +118,12 @@ Bayesian computation scheme for parameter inference and model selection in
 dynamical systems Journal of the Royal Society, Interface 6:187--202, 2009.
 }
 \seealso{
-\code{\link{probe}}, \link[=proposals]{MCMC proposals}, and
+\link[=proposals]{MCMC proposals}, and
 the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 
 Other summary statistics methods: \code{\link{basic_probes}},
-  \code{\link{probe.match}}, \code{\link{probevals}},
-  \code{\link{probe}}, \code{\link{spect}}
+  \code{\link{probe.match}}, \code{\link{probe}},
+  \code{\link{spect}}
 }
 \author{
 Edward L. Ionides, Aaron A. King

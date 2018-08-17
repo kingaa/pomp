@@ -14,14 +14,13 @@
 ##'
 ##' @name mif2
 ##' @rdname mif2
-##' @include pfilter.R workhorses.R pomp_class.R safecall.R
+##' @include pfilter.R workhorses.R pomp_class.R safecall.R continue.R
 ##' @aliases mif2 mif2,missing-method mif2,ANY-method
 ##' @family particle filter methods
 ##'
-##' @param object An object of class \sQuote{pomp}.
+##' @inheritParams pomp
+##' @inheritParams pfilter
 ##' @param Nmif The number of filtering iterations to perform.
-##' @param start named numerical vector; the starting guess of the parameters.
-##' By default, \preformatted{start=coef(object).}
 ##' @param Np the number of particles to use in filtering.  This may be
 ##' specified as a single positive integer, in which case the same number of
 ##' particles will be used at each timestep.  Alternatively, if one wishes the
@@ -56,10 +55,6 @@
 ##' perturbations is reduced with successive filtering iterations.
 ##' \code{cooling.type} specifies the nature of the cooling schedule.  See
 ##' below (under \dQuote{Specifying the perturbations}) for more detail.
-##' @param tol,max.fail passed to the particle filter.  See the descriptions
-##' under \code{\link{pfilter}}.
-##' @param verbose logical; if TRUE, print progress reports.
-##' @param \dots additional arguments that override the defaults or change model structure.
 ##'
 ##' @return
 ##' Upon successful completion, \code{mif2} returns an object of class
@@ -123,8 +118,54 @@ setClass(
 
 setGeneric(
   "mif2",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("mif2")
+)
+
+setMethod(
+  "mif2",
+  signature=signature(data="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("mif2"),": ",sQuote("data")," is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "mif2",
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
+    stop(sQuote("mif2")," is not defined when ",sQuote("data")," is of class ",sQuote(class(data)),call.=FALSE)
+  }
+)
+
+##' @name mif2-data.frame
+##' @aliases mif2,data.frame-method
+##' @rdname mif2
+setMethod(
+  "mif2",
+  signature=signature(data="data.frame"),
+  definition = function (data, rinit, rprocess, dmeasure,
+    Nmif = 1, params, Np, rw.sd, transform = FALSE,
+    cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
+    tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
+
+    object <- pomp(data,rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,
+      params=params,...,verbose=verbose)
+
+    mif2.internal(
+      object,
+      Nmif=Nmif,
+      Np=Np,
+      rw.sd=rw.sd,
+      transform=transform,
+      cooling.type=cooling.type,
+      cooling.fraction.50=cooling.fraction.50,
+      tol=tol,
+      max.fail=max.fail,
+      verbose=verbose
+    )
+
+  }
 )
 
 ##' @name mif2-pomp
@@ -132,16 +173,14 @@ setGeneric(
 ##' @rdname mif2
 setMethod(
   "mif2",
-  signature=signature(object="pomp"),
-  definition = function (object, Nmif = 1, start, Np, rw.sd, transform = FALSE,
+  signature=signature(data="pomp"),
+  definition = function (data, Nmif = 1, Np, rw.sd, transform = FALSE,
     cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
-    tol = 1e-17, max.fail = Inf, verbose = getOption("verbose", FALSE),
-    ...) {
+    tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
 
     mif2.internal(
-      object=object,
+      data,
       Nmif=Nmif,
-      start=start,
       Np=Np,
       rw.sd=rw.sd,
       transform=transform,
@@ -161,13 +200,13 @@ setMethod(
 ##' @rdname mif2
 setMethod(
   "mif2",
-  signature=signature(object="pfilterd_pomp"),
-  definition = function (object, Nmif = 1, Np, tol, ...) {
+  signature=signature(data="pfilterd_pomp"),
+  definition = function (data, Nmif = 1, Np, tol, ...) {
 
-    if (missing(Np)) Np <- object@Np
-    if (missing(tol)) tol <- object@tol
+    if (missing(Np)) Np <- data@Np
+    if (missing(tol)) tol <- data@tol
 
-    mif2(as(object,"pomp"),Nmif=Nmif,Np=Np,tol=tol,...)
+    mif2(as(data,"pomp"),Nmif=Nmif,Np=Np,tol=tol,...)
   }
 )
 
@@ -176,43 +215,54 @@ setMethod(
 ##' @rdname mif2
 setMethod(
   "mif2",
-  signature=signature(object="mif2d_pomp"),
-  definition = function (object, Nmif, start, Np, rw.sd, transform,
+  signature=signature(data="mif2d_pomp"),
+  definition = function (data, Nmif, Np, rw.sd, transform,
     cooling.type, cooling.fraction.50, tol, ...) {
 
-    if (missing(Nmif)) Nmif <- object@Nmif
-    if (missing(start)) start <- coef(object)
-    if (missing(rw.sd)) rw.sd <- object@rw.sd
-    if (missing(transform)) transform <- object@transform
-    if (missing(cooling.type)) cooling.type <- object@cooling.type
-    if (missing(cooling.fraction.50)) cooling.fraction.50 <- object@cooling.fraction.50
+    if (missing(Nmif)) Nmif <- data@Nmif
+    if (missing(Np)) Np <- data@Np
+    if (missing(rw.sd)) rw.sd <- data@rw.sd
+    if (missing(transform)) transform <- data@transform
+    if (missing(cooling.type)) cooling.type <- data@cooling.type
+    if (missing(cooling.fraction.50))
+      cooling.fraction.50 <- data@cooling.fraction.50
+    if (missing(tol)) tol <- data@tol
 
-    if (missing(Np)) Np <- object@Np
-    if (missing(tol)) tol <- object@tol
-
-    mif2(as(object,"pomp"),Nmif=Nmif,start=start,Np=Np,rw.sd=rw.sd,
+    mif2(as(data,"pomp"),Nmif=Nmif,Np=Np,rw.sd=rw.sd,
       transform=transform,cooling.type=cooling.type,
       cooling.fraction.50=cooling.fraction.50,tol=tol,...)
   }
 )
 
+##' @name continue-mif2d_pomp
+##' @aliases continue,mif2d_pomp-method
+##' @rdname continue
+##'
+##' @param Nmif positive integer; number of additional iterations to perform
+##'
 setMethod(
-  "mif2",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("mif2"),": ",sQuote("object")," is a required argument",call.=FALSE)
+  "continue",
+  signature=signature(object="mif2d_pomp"),
+  definition = function (object, Nmif = 1, ...) {
+
+    ndone <- object@Nmif
+
+    obj <- mif2(object,Nmif=Nmif,...,
+      .ndone=ndone,.paramMatrix=object@paramMatrix)
+
+    object@traces[ndone+1,c('loglik','nfail')] <- obj@traces[1L,c('loglik','nfail')]
+    obj@traces <- rbind(
+      object@traces,
+      obj@traces[-1L,colnames(object@traces)]
+    )
+    names(dimnames(obj@traces)) <- c("iteration","variable")
+    obj@Nmif <- as.integer(ndone+Nmif)
+
+    obj
   }
 )
 
-setMethod(
-  "mif2",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("mif2")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
-  }
-)
-
-mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
+mif2.internal <- function (object, Nmif, Np, rw.sd, transform = FALSE,
   cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
   tol = 1e-17, max.fail = Inf, verbose = FALSE, .ndone = 0L,
   .indices = integer(0), .paramMatrix = NULL,
@@ -224,19 +274,17 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
   verbose <- as.logical(verbose)
   gnsi <- as.logical(.getnativesymbolinfo)
 
+  object <- pomp(object,...)
+
   if (length(Nmif) != 1 || !is.numeric(Nmif) || !is.finite(Nmif) || Nmif < 1)
     stop(ep,sQuote("Nmif")," must be a positive integer.",call.=FALSE)
   Nmif <- as.integer(Nmif)
 
   if (is.null(.paramMatrix)) {
-    if (missing(start)) start <- coef(object)
-    if (is.list(start)) start <- unlist(start)
+    start <- coef(object)
   } else {  ## if '.paramMatrix' is supplied, 'start' is ignored
     start <- apply(.paramMatrix,1L,mean)
   }
-
-  if (length(start)==0 || !is.numeric(start) || is.null(names(start)))
-    stop(ep,"parameters must be specified as a named numeric vector.",call.=FALSE)
 
   ntimes <- length(time(object))
 
@@ -306,8 +354,6 @@ mif2.internal <- function (object, Nmif, start, Np, rw.sd, transform = FALSE,
     dimnames=list(iteration=seq.int(.ndone,.ndone+Nmif),
       variable=c('loglik','nfail',names(start))))
   traces[1L,] <- c(NA,NA,start)
-
-  object <- pomp(object,...)
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))

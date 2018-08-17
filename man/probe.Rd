@@ -5,6 +5,8 @@
 \alias{probe}
 \alias{probe,missing-method}
 \alias{probe,ANY-method}
+\alias{probe-data.frame}
+\alias{probe,data.frame-method}
 \alias{probe-pomp}
 \alias{probe,pomp-method}
 \alias{probe-probed_pomp}
@@ -13,16 +15,33 @@
 \alias{probe,probe_match_objfun-method}
 \title{Probes (AKA summary statistics)}
 \usage{
-\S4method{probe}{pomp}(object, probes, params, nsim, seed = NULL, ...,
+\S4method{probe}{data.frame}(data, rinit, rprocess, rmeasure, params,
+  probes, nsim, seed = NULL, ..., verbose = getOption("verbose",
+  FALSE))
+
+\S4method{probe}{pomp}(data, probes, nsim, seed = NULL, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{probe}{probed_pomp}(object, probes, nsim, seed = NULL, ...,
+\S4method{probe}{probed_pomp}(data, probes, nsim, seed = NULL, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{probe}{probe_match_objfun}(object, ...)
+\S4method{probe}{probe_match_objfun}(data, ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class the extends \sQuote{pomp}}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
+
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rmeasure}, see \link[=rmeasure_plugins]{here}.}
+
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
 
 \item{probes}{a single probe or a list of one or more probes.
 A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
@@ -30,27 +49,18 @@ A vector-valued probe must always return a vector of the same size.
 A number of useful probes are provided with the package:
 see \link[=basic_probes]{basic probes}.}
 
-\item{params}{optional named numeric vector of model parameters.
-By default, \code{params=coef(object)}.}
-
 \item{nsim}{the number of model simulations to be computed.}
 
 \item{seed}{optional integer;
 if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
 See \code{\link[=simulate-pomp]{simulate}}.}
 
-\item{\dots}{additional arguments which can be used to change the defaults or modify
-model characteristics or components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
 
-\item{verbose}{logical; print diagnostic messages?}
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 }
 \value{
-\code{probe} returns an object of class \sQuote{probed_pomp}, which
-is derived from the \sQuote{pomp} class and contains additional information
-about the \code{probe} calculation.
-
-This information can be summarized via a call to \code{summary} and
-displayed graphically via a call to \code{plot}.
+\code{probe} returns an object of class \sQuote{probed_pomp}, which contains the data and the model, together with the results of the \code{probe} calculation.
 }
 \description{
 Probe a partially-observed Markov process by computing summary statistics
@@ -71,24 +81,19 @@ computations on real and simulated data are stored in an object of class
 }
 \section{Methods}{
 
+The following methods are available.
 \describe{
 \item{plot}{ displays diagnostic plots.  }
-\item{summary}{ displays summary information.  The summary includes
-quantiles (fractions of simulations with probe values less than those
-realized on the data) and the corresponding two-sided p-values.  In
-addition, the \dQuote{synthetic likelihood} (Wood 2010) is computed, under
-the assumption that the probe values are multivariate-normally distributed.
-}
-\item{probevals}{ extracts the realized values of the probes on the data
-and on the simulations.  These are returned in a list of two elements,
-\code{datvals} and \code{simvals}.  }
-\item{logLik}{ returns the synthetic
-likelihood for the probes.  NB: in general, this is not the same as the
-likelihood.  }
-\item{as.data.frame, as(object,"data.frame")}{ coercing a
-\sQuote{probed_pomp} to a \sQuote{data.frame}, gives the realized values of
-the probes on the data and on the simulations.  The variable \code{.id}
-indicates whether the probes are from the data or simulations.  }
+\item{summary}{ displays summary information.
+The summary includes quantiles (fractions of simulations with probe values less than those realized on the data) and the corresponding two-sided p-values.
+In addition, the \dQuote{synthetic likelihood} (Wood 2010) is computed,
+under the assumption that the probe values are multivariate-normally distributed.  }
+\item{logLik}{ returns the synthetic likelihood for the probes.
+NB: in general, this is not the same as the likelihood.  }
+\item{as.data.frame}{
+ coerces a \sQuote{probed_pomp} to a \sQuote{data.frame}.
+ The latter contains the realized values of the probes on the data and on the simulations.
+The variable \code{.id} indicates whether the probes are from the data or simulations.  }
 }
 }
 
@@ -106,7 +111,7 @@ the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 
 Other summary statistics methods: \code{\link{abc}},
   \code{\link{basic_probes}}, \code{\link{probe.match}},
-  \code{\link{probevals}}, \code{\link{spect}}
+  \code{\link{spect}}
 }
 \author{
 Daniel C. Reuman, Aaron A. King

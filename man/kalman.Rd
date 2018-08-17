@@ -9,25 +9,40 @@
 \alias{enkf,missing-method}
 \alias{eakf,ANY-method}
 \alias{eakf,missing-method}
+\alias{enkf-data.frame}
+\alias{enkf,data.frame-method}
 \alias{enkf-pomp}
 \alias{enkf,pomp-method}
+\alias{eakf-data.frame}
+\alias{eakf,data.frame-method}
 \alias{eakf-pomp}
 \alias{eakf,pomp-method}
 \title{Ensemble Kalman filters}
 \usage{
-\S4method{enkf}{pomp}(object, params, Np, h, R, ...,
+\S4method{enkf}{data.frame}(data, rinit, rprocess, params, Np, h, R, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{eakf}{pomp}(object, params, Np, C, R, ...,
+\S4method{enkf}{pomp}(data, Np, h, R, ..., verbose = getOption("verbose",
+  FALSE))
+
+\S4method{eakf}{data.frame}(data, rinit, rprocess, params, Np, C, R, ...,
   verbose = getOption("verbose", FALSE))
+
+\S4method{eakf}{pomp}(data, Np, C, R, ..., verbose = getOption("verbose",
+  FALSE))
 }
 \arguments{
-\item{object}{An object of class \sQuote{pomp} or extending class
-\sQuote{pomp}.}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
 
-\item{params}{optional named numeric vector containing the parameters at
-which the filtering should be performed.  By default, \code{params =
-coef(object)}.}
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
 
 \item{Np}{the number of particles to use.}
 
@@ -36,9 +51,9 @@ state.}
 
 \item{R}{matrix; variance of the measurement noise.}
 
-\item{\dots}{additional arguments, which can be used to modify components of the model.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
 
-\item{verbose}{logical; if \code{TRUE}, progress information is reported.}
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 
 \item{C}{matrix converting state vector into expected value of the
 observation.}
@@ -61,8 +76,7 @@ Anderson, J. L. (2001) An Ensemble Adjustment Kalman Filter for Data
 Assimilation Monthly Weather Review 129:2884--2903
 }
 \seealso{
-\code{\link{pfilter}}, and the tutorials on
-the \href{https://kingaa.github.io/pomp}{package website}.
+\code{\link{pfilter}}, and the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 }
 \author{
 Aaron A. King

@@ -3,7 +3,7 @@
 ##' Specify the process model simulator using helper functions.
 ##' These are called \dQuote{plugins}.
 ##'
-##' \subsection{Discrete-time processes}{
+##' @section Discrete-time processes:
 ##' If the state process evolves in discrete time, specify \code{rprocess} using the \code{discrete.time.sim} plug-in.
 ##' Specifically, provide \preformatted{
 ##' rprocess = discrete.time.sim(step.fun = f, delta.t),}
@@ -21,10 +21,8 @@
 ##' \code{params} will be a named numeric vector containing parameters,
 ##' and \code{delta.t} will be the time-step.
 ##' It should return a named vector of the same length, and with the same set of names, as \code{x}, representing a draw from the distribution of the state process at time \code{t+delta.t}, conditional on its having value \code{x} at time \code{t}.
-##' }
 ##'
-##'
-##' \subsection{Continuous-time processes}{
+##' @section Continuous-time processes:
 ##' If the state process evolves in continuous time, but you can use an Euler approximation, implement \code{rprocess} using the \code{euler.sim} plug-in.
 ##' Specify \preformatted{
 ##' rprocess = euler.sim(step.fun = f, delta.t)}
@@ -38,7 +36,21 @@
 ##' rprocess = onestep.sim(step.fun = f).}
 ##' Again, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
 ##' The form of \code{f} should be as above (in the discrete-time or Euler cases).
+##' @section Size of time step:
+##' The simulator plug-ins \code{discrete.time.sim}, \code{euler.sim}, and \code{onestep.sim} all work by taking discrete time steps.
+##' They differ as to how this is done.
+##' Specifically,
+##' \enumerate{
+##' \item \code{onestep.sim} takes a single step to go from any given time \code{t1} to any later time \code{t2} (\code{t1 < t2}).
+##' Thus, this plug-in is designed for use in situations where a closed-form solution to the process exists.
+##' \item To go from \code{t1} to \code{t2}, \code{euler.sim} takes \code{n} steps of equal size, where \preformatted{
+##' n = ceiling((t2-t1)/delta.t).}
+##' \item \code{discrete.time.sim} assumes that the process evolves in discrete time, where the interval between successive times is \code{delta.t}.
+##' Thus, to go from \code{t1} to \code{t2}, \code{discrete.time.sim} takes \code{n} steps of size exactly \code{delta.t}, where \preformatted{
+##' n = floor((t2-t1)/delta.t).}
+##' }
 ##'
+##' @section Exact (event-driven) simulations:
 ##' If you desire exact simulation of certain continuous-time Markov chains, an implementation of Gillespie's algorithm (Gillespie 1977) is available,
 ##' via the \code{gillespie.sim} and \code{gillespie.hl.sim} plug-ins.
 ##' The former allows for the rate function to be provided as an \R function or a single C snippet,
@@ -92,21 +104,6 @@
 ##' When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
 ##' By default, the elementary event rates will be recomputed at least once per observation interval.
 ##'
-##' \subsection{Size of time step}{
-##' The simulator plug-ins \code{discrete.time.sim}, \code{euler.sim}, and \code{onestep.sim} all work by taking discrete time steps.
-##' They differ as to how this is done.
-##' Specifically,
-##' \enumerate{
-##' \item \code{onestep.sim} takes a single step to go from any given time \code{t1} to any later time \code{t2} (\code{t1 < t2}).
-##' Thus, this plug-in is designed for use in situations where a closed-form solution to the process exists.
-##' \item To go from \code{t1} to \code{t2}, \code{euler.sim} takes \code{n} steps of equal size, where \preformatted{
-##' n = ceiling((t2-t1)/delta.t).}
-##' \item \code{discrete.time.sim} assumes that the process evolves in discrete time, where the interval between successive times is \code{delta.t}.
-##' Thus, to go from \code{t1} to \code{t2}, \code{discrete.time.sim} takes \code{n} steps of size exactly \code{delta.t}, where \preformatted{
-##' n = floor((t2-t1)/delta.t).}
-##' }
-##' }
-##' }
 ##' @name rprocess_plugins
 ##' @rdname rprocess_plugins
 ##' @docType methods

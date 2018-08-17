@@ -5,6 +5,8 @@
 \alias{pmcmc}
 \alias{pmcmc,ANY-method}
 \alias{pmcmc,missing-method}
+\alias{pmcmc-data.frame}
+\alias{pmcmc,data.frame-method}
 \alias{pmcmc-pomp}
 \alias{pmcmc,pomp-method}
 \alias{pmcmc-pfilterd_pomp}
@@ -13,20 +15,40 @@
 \alias{pmcmc,pmcmcd_pomp-method}
 \title{The particle Markov chain Metropolis-Hastings algorithm}
 \usage{
-\S4method{pmcmc}{pomp}(object, Nmcmc = 1, start, proposal, Np,
-  tol = 1e-17, max.fail = Inf, verbose = getOption("verbose"), ...)
+\S4method{pmcmc}{data.frame}(data, Nmcmc = 1, params, rinit, rprocess,
+  dmeasure, dprior, proposal, Np, tol = 1e-17, max.fail = Inf, ...,
+  verbose = getOption("verbose", FALSE))
 
-\S4method{pmcmc}{pfilterd_pomp}(object, Nmcmc = 1, Np, tol, ...)
+\S4method{pmcmc}{pomp}(data, Nmcmc = 1, proposal, Np, tol = 1e-17,
+  max.fail = Inf, ..., verbose = getOption("verbose", FALSE))
 
-\S4method{pmcmc}{pmcmcd_pomp}(object, Nmcmc, start, proposal, Np, tol,
-  max.fail = Inf, verbose = getOption("verbose"), ...)
+\S4method{pmcmc}{pfilterd_pomp}(data, Nmcmc = 1, Np, tol,
+  max.fail = Inf, ..., verbose = getOption("verbose", FALSE))
+
+\S4method{pmcmc}{pmcmcd_pomp}(data, Nmcmc, proposal, Np, tol,
+  max.fail = Inf, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
-\item{object}{An object of class \sQuote{pomp}.}
+\item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
 
 \item{Nmcmc}{The number of PMCMC iterations to perform.}
 
-\item{start}{named numeric vector; the starting guess of the parameters.}
+\item{params}{optional; named numeric vector of parameters.  This will be
+coerced internally to storage mode \code{double}.}
+
+\item{rinit}{simulator of the initial-state distribution.
+This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+
+\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+
+\item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+For more information on specifying \code{dmeasure}, see \link[=dmeasure_plugins]{here}.}
+
+\item{dprior}{optional; specification of the prior distribution on
+parameters.
+For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_plugins]{here}.}
 
 \item{proposal}{optional function that draws from the proposal
 distribution.  Currently, the proposal distribution must be symmetric for
@@ -34,22 +56,29 @@ proper inference: it is the user's responsibility to ensure that it is.
 Several functions that construct appropriate proposal function are
 provided: see \link[=proposals]{MCMC proposals} for more information.}
 
-\item{Np}{a positive integer; the number of particles to use in each
-filtering operation.}
+\item{Np}{the number of particles to use.
+This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
+Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers of length \preformatted{length(time(object,t0=TRUE))} or as a function taking a positive integer argument.
+In the latter case, \code{Np(k)} must be a single positive integer, representing the number of particles to be used at the \code{k}-th timestep:
+\code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
+\code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
+and so on,
+while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
+When \code{object} is of class \sQuote{mif}, this is by default the same number of particles used in the \code{mif} iterations.
 
-\item{tol}{numeric scalar; particles with log likelihood below \code{tol}
-are considered to be \dQuote{lost}.  A filtering failure occurs when, at
-some time point, all particles are lost.}
+One should omit \code{Np} if \code{params} is a matrix of parameters, with one column for each particle.  In this case, obviously, the number of particles is \code{ncol(params)}.}
 
-\item{max.fail}{integer; maximum number of filtering failures permitted.
-If the number of failures exceeds this number, execution will terminate
-with an error.}
+\item{tol}{positive numeric scalar;
+particles with likelihood less than \code{tol} are considered to be incompatible with the data.
+See the section on \emph{Filtering Failures} below for more information.}
 
-\item{verbose}{logical; if TRUE, print progress reports.}
+\item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
+If the number of filtering failures exceeds this number, execution will terminate with an error.
+By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
-\item{\dots}{Additional arguments are passed to \code{\link{pomp}},
-allowing one to supply new or modify existing model characteristics or
-components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.}
+
+\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
 }
 \value{
 An object of class \sQuote{pmcmcd_pomp}.

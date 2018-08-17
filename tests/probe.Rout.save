@@ -50,7 +50,7 @@ newly created object(s):
 |1  | 0.978| 0.127|  0.904|  0.172| -0.296|   0.774|   0.671|   0.483| 0.803| 1.14|sim  |
 |2  | 1.017| 0.109|  1.084|  0.338| -0.166|   0.550|   0.399|   0.278| 0.865| 1.23|sim  |
 Warning message:
-‘values’ is deprecated and will be removed in a forthcoming release.  Please use ‘probevals’ or ‘as.data.frame’ instead. 
+‘values’ is deprecated and will be removed in a forthcoming release.  Please use ‘as.data.frame’ instead. 
 > pb %>% as.data.frame() %>% head(3) %>% knitr::kable()
 
 
@@ -92,7 +92,7 @@ Error : in ‘probe’: number of simulations, ‘nsim’, must be a single posi
 Error : in ‘probe’: number of simulations, ‘nsim’, must be a single positive integer.
 > 
 > try(probe(33L))
-Error : ‘probe’ is not defined when ‘object’ is of class ‘integer’
+Error : ‘probe’ is not defined when ‘data’ is of class ‘integer’
 > invisible(probe(pb))
 > plot(probe(pb,probes=plist[[1]]))
 > try(probe(pb,probes="okay"))
@@ -116,28 +116,13 @@ Error : in ‘probe’: ‘nsim’ (=10), should be (much) larger than the numbe
 > 
 > invisible(probe(pb,params=as.list(coef(pb))))
 > try(probe(pb,params=NULL))
-Error : in ‘probe’: ‘params’ must be specified.
+Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
 > try(probe(pb,params="I think so"))
-Error : in ‘probe’: ‘params’ must be furnished as a named numeric vector.
+Error : in ‘pomp’: ‘params’ must be a named numeric vector.
+In addition: Warning message:
+In setNames(as.double(params), names(params)) : NAs introduced by coercion
 > try({pb1 <- pb; coef(pb1) <- NULL; probe(pb1)})
-Error : in ‘probe’: ‘params’ must be specified.
-> 
-> sapply(probevals(pb),colnames)
-      data      sims     
- [1,] "mean"    "mean"   
- [2,] "sd"      "sd"     
- [3,] "marg.1"  "marg.1" 
- [4,] "marg.2"  "marg.2" 
- [5,] "marg.3"  "marg.3" 
- [6,] "acf.1.Y" "acf.1.Y"
- [7,] "acf.3.Y" "acf.3.Y"
- [8,] "acf.5.Y" "acf.5.Y"
- [9,] "25%"     "25%"    
-[10,] "75%"     "75%"    
-> sapply(probevals(pb),dim)
-     data sims
-[1,]    1  500
-[2,]   10   10
+Error : in ‘probe’: applying probes to simulated data: in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
 > 
 > dev.off()
 null device 

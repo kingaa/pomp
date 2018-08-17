@@ -14,6 +14,9 @@
 \alias{as,kalmand_pomp-method}
 \alias{coerce,kalmand_pomp,data.frame-method}
 \alias{as.data.frame.kalmand_pomp}
+\alias{as,bsmcd_pomp-method}
+\alias{coerce,bsmcd_pomp,data.frame-method}
+\alias{as.data.frame.bsmcd_pomp}
 \title{Coerce to data frame}
 \usage{
 \method{as.data.frame}{pomp}(x, ...)
@@ -23,6 +26,8 @@
 \method{as.data.frame}{probed_pomp}(x, ...)
 
 \method{as.data.frame}{kalmand_pomp}(x, ...)
+
+\method{as.data.frame}{bsmcd_pomp}(x, ...)
 }
 \arguments{
 \item{x}{the object to be coerced}

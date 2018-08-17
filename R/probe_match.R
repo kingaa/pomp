@@ -14,6 +14,14 @@
 ##' @include probe.R
 ##' @family summary statistics methods
 ##'
+##' @inheritParams probe-pomp
+##' @param est character vector; the names of parameters to be estimated.
+##' @param fail.value optional numeric scalar;
+##' if non-\code{NA}, this value is substituted for non-finite values of the objective function.
+##' It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).
+##' @param transform logical;
+##' if \code{TRUE}, optimization is to be performed on the transformed scale.
+##'
 ##' @return
 ##' \code{probe.match.objfun} construct a stateful objective function for probe matching.
 ##' Specfically, \code{probe.match.objfun} returns an object of class \sQuote{probe_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
@@ -41,55 +49,70 @@ setClass(
 
 setGeneric(
   "probe.match.objfun",
-  function (object, ...)
+  function (data, ...)
     standardGeneric("probe.match.objfun")
 )
 
 setMethod(
   "probe.match.objfun",
-  signature=signature(object="missing"),
+  signature=signature(data="missing"),
   definition=function (...) {
-    stop("in ",sQuote("probe.match.objfun"),": ",sQuote("object"),
+    stop("in ",sQuote("probe.match.objfun"),": ",sQuote("data"),
       " is a required argument",call.=FALSE)
   }
 )
 
 setMethod(
   "probe.match.objfun",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
+  signature=signature(data="ANY"),
+  definition=function (data, ...) {
     stop(sQuote("probe.match.objfun")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
+      sQuote(class(data)),call.=FALSE)
+  }
+)
+
+##' @name probe.match.objfun-data.frame
+##' @aliases probe.match.objfun,data.frame-method
+##' @rdname probe_match
+setMethod(
+  "probe.match.objfun",
+  signature=signature(data="data.frame"),
+  definition=function (data, rinit, rprocess, rmeasure, params,
+    est, probes, nsim, seed = NULL, fail.value = NA, transform = FALSE, ...,
+    verbose = getOption("verbose", FALSE)) {
+
+    object <- probe(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+      params=params,probes=probes,nsim=nsim,seed=seed,params=params,...,
+      verbose=verbose)
+
+    probe.match.objfun(
+      object,
+      est=est,
+      fail.value=fail.value,
+      transform=transform,
+      verbose=verbose
+    )
+
   }
 )
 
 ##' @name probe.match.objfun-pomp
 ##' @aliases probe.match.objfun,pomp-method
 ##' @rdname probe_match
-##'
-##' @inheritParams probe-pomp
-##' @param est character vector; the names of parameters to be estimated.
-##' @param fail.value optional numeric scalar;
-##' if non-\code{NA}, this value is substituted for non-finite values of the objective function.
-##' It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).
-##' @param transform logical;
-##' if \code{TRUE}, optimization is to be performed on the transformed scale.
-##'
 setMethod(
   "probe.match.objfun",
-  signature=signature(object="pomp"),
-  definition=function (object, params, est, probes,
-    nsim, seed = NULL, fail.value = NA,
-    transform = FALSE, ...) {
+  signature=signature(data="pomp"),
+  definition=function (data, est, probes, nsim, seed = NULL, fail.value = NA,
+    transform = FALSE, ..., verbose = getOption("verbose", FALSE)) {
 
-    object <- probe(object,probes=probes,nsim=nsim,
-      seed=seed,params=params,...)
+    object <- probe(data,probes=probes,nsim=nsim,seed=seed,...,verbose=verbose)
 
     probe.match.objfun(
-      object=object,
+      object,
       est=est,
       fail.value=fail.value,
-      transform=transform
+      transform=transform,
+      verbose=verbose
     )
 
   }
@@ -100,24 +123,24 @@ setMethod(
 ##' @rdname probe_match
 setMethod(
   "probe.match.objfun",
-  signature=signature(object="probed_pomp"),
-  definition=function (object, params, est, probes, nsim, seed = NULL,
-    fail.value = NA, transform = FALSE, ...) {
+  signature=signature(data="probed_pomp"),
+  definition=function (data, est, probes, nsim, seed = NULL,
+    fail.value = NA, transform = FALSE, ...,
+    verbose = getOption("verbose", FALSE)) {
 
-    if (missing(probes)) probes <- object@probes
-    if (missing(nsim)) nsim <- nrow(object@simvals)
-    if (missing(seed)) seed <- object@seed
+    if (missing(probes)) probes <- data@probes
+    if (missing(nsim)) nsim <- data@nsim
 
     pmof.internal(
-      object=object,
-      params=params,
+      data,
       est=est,
       probes=probes,
       nsim=nsim,
       seed=seed,
       fail.value=fail.value,
       transform=transform,
-      ...
+      ...,
+      verbose=verbose
     )
 
   }
@@ -128,15 +151,14 @@ setMethod(
 ##' @rdname probe_match
 setMethod(
   "probe.match.objfun",
-  signature=signature(object="probe_match_objfun"),
-  definition=function (object, ...) {
-    probe.match.objfun(object@env$object,...)
+  signature=signature(data="probe_match_objfun"),
+  definition=function (data, ..., verbose = getOption("verbose", FALSE)) {
+    probe.match.objfun(data@env$object,...,verbose=verbose)
   }
 )
 
-pmof.internal <- function (object, params, est, probes, nsim, seed = NULL,
-  fail.value = NA, transform = FALSE, ...)
-{
+pmof.internal <- function (object, est, probes, nsim, seed = NULL,
+  fail.value = NA, transform = FALSE, ..., verbose) {
 
   ep <- paste0("in ",sQuote("probe.match.objfun"),": ")
 
@@ -190,7 +212,7 @@ probe.eval <- function (object) {
       seed=object@seed,
       probes=object@probes,
       datval=object@datvals,
-      .getNativeSymbolInfo=TRUE
+      .getnativesymbolinfo=TRUE
     ),
     error = function (e) {
       stop(ep,"applying probes to simulated data: ",
@@ -214,8 +236,8 @@ probe.eval <- function (object) {
 ##' @aliases probe,probe_match_objfun-method
 setMethod(
   "probe",
-  signature=signature(object="probe_match_objfun"),
-  definition=function (object, ...) {
-    probe(object@env$object,...)
+  signature=signature(data="probe_match_objfun"),
+  definition=function (data, ...) {
+    probe(data@env$object,...)
   }
 )
