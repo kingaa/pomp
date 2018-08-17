@@ -11,7 +11,7 @@
 \title{Trajectory matching}
 \usage{
 \S4method{traj.match.objfun}{pomp}(object, params, est,
-  transform = FALSE, ...)
+  transform = FALSE, fail.value = NA, ode_control = list(), ...)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class the extends \sQuote{pomp}}
@@ -24,26 +24,42 @@ By default, \code{params=coef(object)}.}
 \item{transform}{logical;
 if \code{TRUE}, optimization is to be performed on the transformed scale.}
 
-\item{...}{additional arguments which can be used to change the defaults or modify
-model characteristics or components.}
+\item{fail.value}{optional numeric scalar;
+if non-\code{NA}, this value is substituted for non-finite values of the objective function.
+It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
+
+\item{ode_control}{optional list;
+the elements of this list will be passed to \code{\link[=deSolve]{ode}}.}
+
+\item{\dots}{additional arguments will modify the model structure}
 }
 \value{
-\code{traj.match.objfun} returns a function suitable for use as an
-objective function in an \code{\link{optim}}-like optimizer.
+\code{traj.match.objfun} constructs a stateful objective function for spectrum matching.
+Specifically, \code{traj.match.objfun} returns an object of class \sQuote{traj_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
+When called, it will return the negative log likelihood.
+It is a stateful function:
+Each time it is called, it will remember the values of the parameters and its estimate of the log likelihood.
 }
 \description{
-Fitting a deterministic model to data.
+Estimation of parameters for deterministic \acronym{POMP} models
 }
 \details{
-In trajectory matching, one attempts to minimize the discrepancy between a \acronym{POMP} model's predictions and data under the assumption that the process model is deterministic and all discrepancies between model and data are due to measurement error.
-The measurement model likelihood (evaluated by \code{dmeasure}), or rather its negative, is a natural measure of the discrepancy.
+In trajectory matching, one attempts to minimize the discrepancy between a \acronym{POMP} model's predictions and data under the assumption that the latent state process is deterministic and all discrepancies between model and data are due to measurement error.
+The measurement model likelihood (\code{dmeasure}), or rather its negative, is the natural measure of the discrepancy.
 
-Thus trajectory matching is a generalization of the traditional nonlinear least squares approach.
-In particular, if, on some scale, the measurement errors are normal with constant variance, then trajectory matching is equivalent to least squares (on that particular scale).
+Trajectory matching is a generalization of the traditional nonlinear least squares approach.
+In particular, if, on some scale, measurement errors are normal with constant variance, then trajectory matching is equivalent to least squares on that particular scale.
 
-The objective function itself --- in a form suitable for use with \code{\link{optim}}-like optimizers --- is created by a call to \code{traj.match.objfun}.
-Specifically, \code{traj.match.objfun} will return a function that takes a single numeric-vector argument that is assumed to cotain the parameters named in \code{est}, in that order.
+\code{traj.match.objfun} constructs an objective function that evaluates the likelihood function.
+It can be passed to any one of a variety of numerical optimization routines, which will adjust model parameters to minimize the discrepancies between the power spectrum of model simulations and that of the data.
 }
+\section{Important Note}{
+
+Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
+One should check that the parameters agree with those that are returned by the optimizer.
+}
+
 \seealso{
 \code{\link{trajectory}}, \code{\link{optim}},
 \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}

@@ -70,12 +70,12 @@ if \code{TRUE}, optimization is to be performed on the transformed scale.}
 model characteristics or components.}
 }
 \value{
-\code{spect.match.objfun} construct a stateful objective function for spectrum matching.
-Specfically, \code{spect.match.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+\code{spect.match.objfun} constructs a stateful objective function for spectrum matching.
+Specifically, \code{spect.match.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 It is a stateful function:
-Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
+Each time it is called, it will remember the values of the parameters and the discrepancy measure.
 }
 \description{
 Estimation of parameters by matching power spectra
@@ -89,7 +89,6 @@ It can be passed to any one of a variety of numerical optimization routines, whi
 \section{Important Note}{
 
 Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-For this reason, \code{\link[=logLik,spect_match_objfun-method]{logLik}} and \code{\link[=summary,spect_match_objfun-method]{summary}} both call \code{spect} on the estimated parameters.
 One should check that the parameters agree with those that are returned by the optimizer.
 The best practice is to call \code{\link[=spect,spect_match_objfun-method]{spect}} on the objective function after the optimization has been performed, thus obtaining a \sQuote{spectd_pomp} object containing the (putative) optimal parameters.
 }

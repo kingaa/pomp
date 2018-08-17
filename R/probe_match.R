@@ -24,12 +24,11 @@
 ##'
 ##' @section Important Note:
 ##' Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-##' For this reason, \code{\link[=logLik,probe_match_objfun-method]{logLik}} and \code{\link[=summary,probe_match_objfun-method]{summary}} both call \code{probe} on the estimated parameters.
 ##' One should check that the parameters agree with those that are returned by the optimizer.
 ##' The best practice is to call \code{\link[=probe,probe_match_objfun-method]{probe}} on the objective function after the optimization has been performed, thus obtaining a \sQuote{probed_pomp} object containing the (putative) optimal parameters and synthetic likelihood.
 ##' @seealso \code{\link{trajectory}}, \code{\link{optim}},
 ##' \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
-##' 
+##'
 NULL
 
 setClass(
@@ -175,6 +174,7 @@ pmof.internal <- function (object, params, est, probes, nsim, seed = NULL,
   )
 
   new("probe_match_objfun",ofun,env=environment(ofun))
+
 }
 
 probe.eval <- function (object) {
@@ -227,7 +227,7 @@ setMethod(
   "summary",
   signature=signature(object="probe_match_objfun"),
   definition=function (object) {
-    summary(probe(object@env$object))
+    summary(object@env$object)
   }
 )
 
@@ -238,6 +238,17 @@ setMethod(
   "logLik",
   signature=signature(object="probe_match_objfun"),
   definition=function (object) {
-    logLik(probe(object@env$object))
+    logLik(object@env$object)
+  }
+)
+
+##' @name coef-probe_match_objfun
+##' @rdname coef
+##' @aliases coef,probe_match_objfun-method
+setMethod(
+  "coef",
+  signature=signature(object="probe_match_objfun"),
+  definition=function (object, ...) {
+    coef(object@env$object,...)
   }
 )

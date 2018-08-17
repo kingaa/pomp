@@ -10,26 +10,25 @@
 ##' @name spect.match
 ##' @docType methods
 ##' @rdname spect_match
-##' @include spect.R probe_match.R loglik.R summary.R
+##' @include spect.R probe_match.R loglik.R summary.R coef.R
 ##' @aliases spect.match.objfun,missing-method spect.match.objfun,ANY-method
 ##'
 ##' @return
-##' \code{spect.match.objfun} construct a stateful objective function for spectrum matching.
-##' Specfically, \code{spect.match.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
+##' \code{spect.match.objfun} constructs a stateful objective function for spectrum matching.
+##' Specifically, \code{spect.match.objfun} returns an object of class \sQuote{spect_match_objfun}, which is a function suitable for use in an \code{\link{optim}}-like optimizer.
 ##' In particular, this function takes a single numeric-vector argument that is assumed to contain the parameters named in \code{est}, in that order.
 ##' When called, it will return the (optionally weighted) \eqn{L^2}{L2} distance between the data spectrum and simulated spectra.
 ##' It is a stateful function:
-##' Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
+##' Each time it is called, it will remember the values of the parameters and the discrepancy measure.
 ##'
 ##' @section Important Note:
 ##' Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-##' For this reason, \code{\link[=logLik,spect_match_objfun-method]{logLik}} and \code{\link[=summary,spect_match_objfun-method]{summary}} both call \code{spect} on the estimated parameters.
 ##' One should check that the parameters agree with those that are returned by the optimizer.
 ##' The best practice is to call \code{\link[=spect,spect_match_objfun-method]{spect}} on the objective function after the optimization has been performed, thus obtaining a \sQuote{spectd_pomp} object containing the (putative) optimal parameters.
-##' 
+##'
 ##' @seealso \code{\link{trajectory}}, \code{\link{optim}},
 ##' \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
-##' 
+##'
 NULL
 
 setClass(
@@ -197,6 +196,9 @@ smof.internal <- function (object, params, est, vars, nsim, seed,
   ofun <- function (par) {
     params[idx] <- par
     coef(object,transform=transform) <<- params
+    object@simspec <- compute.spect.sim(object,vars=object@vars,
+      params=object@params,nsim=object@nsim,seed=object@seed,
+      transform.data=object@transform.data,detrend=object@detrend,ker=ker)
     discrep <<- spect.discrep(object,ker=ker,weights=weights)
     if (is.finite(discrep) || is.na(fail.value)) discrep else fail.value
   }
@@ -213,24 +215,12 @@ smof.internal <- function (object, params, est, vars, nsim, seed,
 ## compute a measure of the discrepancies between simulations and data
 spect.discrep <- function (object, ker, weights) {
 
-  ## estimate power spectra of simulations
-  simvals <- compute.spect.sim(
-    object,
-    vars=object@vars,
-    params=object@params,
-    nsim=object@nsim,
-    seed=object@seed,
-    transform.data=object@transform.data,
-    detrend=object@detrend,
-    ker=ker
-  )
-
   discrep <- array(dim=c(length(object@freq),length(object@vars)))
-  sim.means <- colMeans(simvals)
+  sim.means <- colMeans(object@simspec)
   for (j in seq_along(object@freq)) {
     for (k in seq_along(object@vars)) {
       discrep[j,k] <- ((object@datspec[j,k]-sim.means[j,k])^2)/
-        mean((simvals[,j,k]-sim.means[j,k])^2)
+        mean((object@simspec[,j,k]-sim.means[j,k])^2)
     }
     discrep[j,] <- weights[j]*discrep[j,]
   }
@@ -238,7 +228,6 @@ spect.discrep <- function (object, ker, weights) {
   sum(discrep)
 
 }
-
 
 ##' @name spect-spect_match_objfun
 ##' @rdname spect
@@ -258,7 +247,7 @@ setMethod(
   "summary",
   signature=signature(object="spect_match_objfun"),
   definition=function (object) {
-    summary(spect(object@env$object))
+    summary(object@env$object)
   }
 )
 
@@ -269,8 +258,19 @@ setMethod(
   "logLik",
   signature=signature(object="spect_match_objfun"),
   definition=function (object) {
-    discrep <- spect.discrep(object,ker=object@env$ker,
+    discrep <- spect.discrep(object$env$object,ker=object@env$ker,
       weights=object@env$weights)
     -discrep
+  }
+)
+
+##' @name coef-spect_match_objfun
+##' @rdname coef
+##' @aliases coef,spect_match_objfun-method
+setMethod(
+  "coef",
+  signature=signature(object="spect_match_objfun"),
+  definition=function (object, ...) {
+    coef(object@env$object,...)
   }
 )
