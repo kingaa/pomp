@@ -10,7 +10,7 @@
 ##' @name spect.match
 ##' @docType methods
 ##' @rdname spect_match
-##' @include spect.R probe_match.R loglik.R summary.R coef.R
+##' @include spect.R probe_match.R loglik.R
 ##' @aliases spect.match.objfun,missing-method spect.match.objfun,ANY-method
 ##'
 ##' @return
@@ -205,7 +205,8 @@ smof.internal <- function (object, params, est, vars, nsim, seed,
 
   environment(ofun) <- list2env(
     list(object=object,transform=transform,fail.value=fail.value,
-      params=params,idx=idx,discrep=discrep,seed=seed,ker=ker,weights=weights),
+      params=params,idx=idx,discrep=discrep,seed=seed,ker=ker,
+      weights=weights),
     parent=parent.frame(2)
   )
 
@@ -240,17 +241,6 @@ setMethod(
   }
 )
 
-##' @name summary-spect_match_objfun
-##' @rdname summary
-##' @aliases summary,spect_match_objfun-method
-setMethod(
-  "summary",
-  signature=signature(object="spect_match_objfun"),
-  definition=function (object) {
-    summary(object@env$object)
-  }
-)
-
 ##' @name logLik-spect_match_objfun
 ##' @rdname loglik
 ##' @aliases logLik,spect_match_objfun-method
@@ -261,16 +251,5 @@ setMethod(
     discrep <- spect.discrep(object$env$object,ker=object@env$ker,
       weights=object@env$weights)
     -discrep
-  }
-)
-
-##' @name coef-spect_match_objfun
-##' @rdname coef
-##' @aliases coef,spect_match_objfun-method
-setMethod(
-  "coef",
-  signature=signature(object="spect_match_objfun"),
-  definition=function (object, ...) {
-    coef(object@env$object,...)
   }
 )

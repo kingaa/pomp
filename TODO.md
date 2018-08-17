@@ -14,7 +14,7 @@
 	- 'nlf' needs to be reworked
 - revisit whether `pomp` can handle all `params` chopping and changing
 - C snippet instructions
-- ClassUnion for objfun methods
+- ~~ClassUnion for objfun methods~~
 
 ## For pomp 2:
 

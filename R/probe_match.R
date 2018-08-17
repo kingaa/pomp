@@ -11,7 +11,7 @@
 ##' @keywords optimize
 ##' @aliases probe.match probe.match.objfun probe.match.objfun,missing-method
 ##' probe.match.objfun,ANY-method
-##' @include probe.R loglik.R summary.R
+##' @include probe.R
 ##' @family summary statistics methods
 ##'
 ##' @return
@@ -217,38 +217,5 @@ setMethod(
   signature=signature(object="probe_match_objfun"),
   definition=function (object, ...) {
     probe(object@env$object,...)
-  }
-)
-
-##' @name summary-probe_match_obfjun
-##' @rdname summary
-##' @aliases summary,probe_match_objfun-method
-setMethod(
-  "summary",
-  signature=signature(object="probe_match_objfun"),
-  definition=function (object) {
-    summary(object@env$object)
-  }
-)
-
-##' @name logLik-probe_match_obfjun
-##' @rdname loglik
-##' @aliases logLik,probe_match_objfun-method
-setMethod(
-  "logLik",
-  signature=signature(object="probe_match_objfun"),
-  definition=function (object) {
-    logLik(object@env$object)
-  }
-)
-
-##' @name coef-probe_match_objfun
-##' @rdname coef
-##' @aliases coef,probe_match_objfun-method
-setMethod(
-  "coef",
-  signature=signature(object="probe_match_objfun"),
-  definition=function (object, ...) {
-    coef(object@env$object,...)
   }
 )

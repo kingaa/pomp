@@ -14,7 +14,7 @@
 ##' @name traj.match
 ##' @docType methods
 ##' @rdname traj_match
-##' @include trajectory.R pomp_class.R workhorses.R summary.R loglik.R
+##' @include trajectory.R pomp_class.R workhorses.R
 ##' @aliases traj.match.objfun,missing-method traj.match.objfun,ANY-method
 ##'
 ##' @return
@@ -144,44 +144,4 @@ traj.match.nll <- function (object, seed, ode_control) {
   -sum(dmeasure(object,y=obs(object),x=object@states,
     times=time(object),params=coef(object),
     log=TRUE))
-}
-
-##' @name logLik-traj_match_objfun
-##' @rdname loglik
-##' @aliases logLik,traj_match_objfun-method
-setMethod(
-  "logLik",
-  signature=signature(object="traj_match_objfun"),
-  definition=function (object) {
-    object@env$loglik
-  }
-)
-
-##' @name coef-traj_match_objfun
-##' @rdname coef
-##' @aliases coef,traj_match_objfun-method
-setMethod(
-  "coef",
-  signature=signature(object="traj_match_objfun"),
-  definition=function (object, ...) {
-    coef(object@env$object,...)
-  }
-)
-
-##' @name coerce-traj_match_objfun-pomp
-##' @aliases coerce,traj_match_objfun,pomp-method
-##' @rdname as_pomp
-##'
-setAs(
-  from="traj_match_objfun",
-  to="pomp",
-  def = function (from) {
-    from@env$object
-  }
-)
-
-##' @method as.pomp traj_match_objfun
-##' @rdname as_pomp
-as.pomp.traj_match_objfun <- function (object) {
-  as(object,"pomp")
 }
