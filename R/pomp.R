@@ -250,6 +250,8 @@ setMethod(
     if (missing(dprior)) dprior <- NULL
 
     if (missing(params)) params <- numeric(0)
+    if (is.list(params)) params <- unlist(params)
+
     if (missing(covar)) covar <- covariate_table()
 
     tryCatch(
@@ -431,12 +433,12 @@ pomp.internal <- function (data, times, t0, timename, ...,
   if (length(obsnames) == 0) obsnames <- rownames(data)
 
   ## check the parameters and force them to be double-precision
-  if (length(params)>0) {
-    if (is.null(names(params)) || !is.numeric(params) || any(names(params)==""))
+  params <- setNames(as.double(params),names(params))
+  if (length(params) > 0) {
+    if (is.null(names(params)) || !is.numeric(params) ||
+        !all(nzchar(names(params))))
       stop(sQuote("params")," must be a named numeric vector.",call.=FALSE)
   }
-  storage.mode(params) <- "double"
-
 
   ## use default rinit?
   default.init <- is.null(rinit) ||
