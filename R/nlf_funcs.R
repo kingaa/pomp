@@ -6,7 +6,7 @@ make.lags.nlf <- function(x, lags, cov = NULL, nobs = 10000) {
   n <- min(nobs,N)
   if (N > nobs)
     warning("in ",sQuote("make.lags.nlf"),
-            ": series length truncated to default in make.lags",call.=FALSE)
+      ": series length truncated to default in make.lags",call.=FALSE)
   start <- max(lags)+1
   temp <- matrix(0,ncol=xd*length(lags),nrow=n)
   for (k in seq_len(length(lags))) {
@@ -32,15 +32,15 @@ make.lags.nlf <- function(x, lags, cov = NULL, nobs = 10000) {
   else
     y <- x[a:b,]
   list(
-       x=temp,
-       y=y,
-       nvar=m,
-       cov=cov,
-       lags=lags,
-       skip=skip,
-       start=a,
-       end=b
-       )
+    x=temp,
+    y=y,
+    nvar=m,
+    cov=cov,
+    lags=lags,
+    skip=skip,
+    start=a,
+    end=b
+  )
 }
 
 make.rbfbasis <- function (X, knots, fac) {
@@ -52,13 +52,13 @@ make.rbfbasis <- function (X, knots, fac) {
     }
   }
   exp(fac*(X1^2))
-}	 
+}
 
 ## GAUSS trimr function:
 ## trims n1 rows from the start,
-## n2 rows from the end of a matrix or vector 
+## n2 rows from the end of a matrix or vector
 trimr <- function (a, n1, n2) {
-    a[seq.int(from=n1+1,to=NROW(a)-n2,by=1)]
+  a[seq.int(from=n1+1,to=NROW(a)-n2,by=1)]
 }
 
 Newey.West <- function(x, y, maxlag) {
@@ -66,17 +66,16 @@ Newey.West <- function(x, y, maxlag) {
   out <- mean(x*y,na.rm=TRUE)
   for (i in seq_len(maxlag)) {
     out <- out+
-        w[i]*mean(trimr(x,i,0)*trimr(y,0,i),na.rm=TRUE)+
-        w[i]*mean(trimr(y,i,0)*trimr(x,0,i),na.rm=TRUE)
+      w[i]*mean(trimr(x,i,0)*trimr(y,0,i),na.rm=TRUE)+
+      w[i]*mean(trimr(y,i,0)*trimr(x,0,i),na.rm=TRUE)
   }
   out
-} 
-
+}
 
 make.tensorbasis.nlf <- function(A,B) {
   if(nrow(A)!=nrow(B))
-      stop("in ",sQuote("make.tensorbasis.nlf"),
-           ": incompatible matrices in make.tensorbasis",call.=FALSE)
+    stop("in ",sQuote("make.tensorbasis.nlf"),
+      ": incompatible matrices in make.tensorbasis",call.=FALSE)
   ncol.A <- ncol(A)
   ncol.B <- ncol(B)
   Tmat <- matrix(0,nrow(A),ncol.A*ncol.B)

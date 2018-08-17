@@ -1,7 +1,19 @@
+##' Spy
+##'
+##' Peek into the inside of one of \pkg{pomp}'s objects.
+##'
+##' @name spy
+##' @rdname spy
+##' @include pomp_class.R
+##' @aliases spy,missing-method spy,ANY-method
+##'
+##' @param object the object whose structure we wish to examine
+NULL
+
 setGeneric(
-    "spy",
-    function (object, ...)
-        standardGeneric("spy")
+  "spy",
+  function (object, ...)
+    standardGeneric("spy")
 )
 
 setMethod(
@@ -22,6 +34,7 @@ setMethod(
   }
 )
 
+##' @rdname spy
 setMethod(
   "spy",
   signature=signature(object="pomp"),

@@ -1,3 +1,57 @@
+##' @title Useful probes for partially-observed Markov processes
+##' @name Basic probes
+##' @rdname basic_probes
+##'
+##' @description Several simple and configurable probes are provided with in the package.
+##' These can be used directly and as templates for custom probes.
+##'
+##' @param var,vars character; the name(s) of the observed variable(s).
+##' @param trim the fraction of observations to be trimmed (see
+##' \code{\link{mean}}).
+##' @param transform transformation to be applied to the data before the probe
+##' is computed.
+##' @param na.rm if \code{TRUE}, remove all NA observations prior to computing
+##' the probe.
+##' @param kernel.width width of modified Daniell smoothing kernel to be used
+##' in power-spectrum computation: see \code{\link{kernel}}.
+##' @param prob a single probability; the quantile to compute: see
+##' \code{\link{quantile}}.
+##' @param lags In \code{probe.ccf}, a vector of lags between time series.
+##' Positive lags correspond to \code{x} advanced relative to \code{y};
+##' negative lags, to the reverse.
+##'
+##' In \code{probe.nlar}, a vector of lags present in the nonlinear
+##' autoregressive model that will be fit to the actual and simulated data.
+##' See Details, below, for a precise description.
+##' @param powers the powers of each term (corresponding to \code{lags}) in the
+##' the nonlinear autoregressive model that will be fit to the actual and
+##' simulated data.  See Details, below, for a precise description.
+##' @param type Compute autocorrelation or autocovariance?
+##' @param ref empirical reference distribution.  Simulated data will be
+##' regressed against the values of \code{ref}, sorted and, optionally,
+##' differenced.  The resulting regression coefficients capture information
+##' about the shape of the marginal distribution.  A good choice for \code{ref}
+##' is the data itself.
+##' @param order order of polynomial regression.
+##' @param diff order of differencing to perform.
+##' @return A call to any one of these functions returns a probe function,
+##' suitable for use in \code{\link{probe}} or \code{\link{probe.match}}.  That
+##' is, the function returned by each of these takes a data array (such as
+##' comes from a call to \code{\link{obs}}) as input and returns a single
+##' numerical value.
+##' @author Daniel C. Reuman, Aaron A. King
+##' @family summary statistics
+##'
+##' @references
+##' B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P.
+##' Ellner, E. McCauley, R. M. Nisbet, S. N. Wood Why do populations cycle? A
+##' synthesis of statistical and mechanistic modeling approaches, Ecology,
+##' 80:1789--1805, 1999.
+##'
+##' S. N. Wood Statistical inference for noisy nonlinear ecological dynamic
+##' systems, Nature, 466: 1102--1104, 2010.
+##'
+##'@rdname basic_probes
 probe.mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
   if (length(var)>1)
     stop(sQuote("probe.mean")," is a univariate probe",call.=FALSE)
@@ -5,12 +59,14 @@ probe.mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
   function(y) mean(x=transform(y[var,]),trim=trim,na.rm=na.rm)
 }
 
+##'@rdname basic_probes
 probe.median <- function (var, na.rm = TRUE) {
   if (length(var)>1)
     stop(sQuote("probe.median")," is a univariate probe",call.=FALSE)
   function(y) median(x=as.numeric(y[var,]),na.rm=na.rm)
 }
 
+##'@rdname basic_probes
 probe.var <- function (var, transform = identity, na.rm = TRUE) {
   if (length(var)>1)
     stop(sQuote("probe.var")," is a univariate probe",call.=FALSE)
@@ -18,6 +74,7 @@ probe.var <- function (var, transform = identity, na.rm = TRUE) {
   function(y) var(x=transform(y[var,]),na.rm=na.rm)
 }
 
+##'@rdname basic_probes
 probe.sd <- function (var, transform = identity, na.rm = TRUE) {
   if (length(var)>1)
     stop(sQuote("probe.sd")," is a univariate probe",call.=FALSE)
@@ -25,6 +82,7 @@ probe.sd <- function (var, transform = identity, na.rm = TRUE) {
   function(y) sd(x=transform(y[var,]),na.rm=na.rm)
 }
 
+##'@rdname basic_probes
 probe.period <- function (var, kernel.width, transform = identity) {
   if (length(var)>1)
     stop(sQuote("probe.period")," is a univariate probe",call.=FALSE)
@@ -43,12 +101,14 @@ probe.period <- function (var, kernel.width, transform = identity) {
   }
 }
 
+##'@rdname basic_probes
 probe.quantile <- function (var, prob) {
   if (length(var)>1)
     stop(sQuote("probe.quantile")," is a univariate probe",call.=FALSE)
   function (y) quantile(y[var,],probs=prob)
 }
 
+##'@rdname basic_probes
 probe.acf <- function (var, lags, type = c("covariance", "correlation"),
   transform = identity) {
   type <- match.arg(type)
@@ -73,7 +133,9 @@ probe.acf <- function (var, lags, type = c("covariance", "correlation"),
   )
 }
 
-probe.ccf <- function (vars, lags, type = c("covariance", "correlation"), transform = identity) {
+##'@rdname basic_probes
+probe.ccf <- function (vars, lags, type = c("covariance", "correlation"),
+  transform = identity) {
   type <- match.arg(type)
   corr <- type=="correlation"
   transform <- match.fun(transform)
@@ -95,7 +157,9 @@ probe.ccf <- function (vars, lags, type = c("covariance", "correlation"), transf
   )
 }
 
-probe.marginal <- function (var, ref, order = 3, diff = 1, transform = identity) {
+##'@rdname basic_probes
+probe.marginal <- function (var, ref, order = 3, diff = 1,
+  transform = identity) {
   if (length(var)>1) stop(sQuote("probe.marginal")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)
   setup <- .Call(probe_marginal_setup,transform(ref),order,diff)
@@ -112,6 +176,7 @@ probe.marginal <- function (var, ref, order = 3, diff = 1, transform = identity)
   )
 }
 
+##'@rdname basic_probes
 probe.nlar <- function (var, lags, powers, transform = identity) {
   if (length(var)>1) stop(sQuote("probe.nlar")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)

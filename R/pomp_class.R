@@ -1,4 +1,14 @@
-## define the pomp class
+##' The basic pomp class
+##'
+##' The basic class implementing a POMP model with data
+##'
+##' @rdname pomp_class
+##' @include pomp_fun.R
+##' @include csnippet.R safecall.R
+##' @include rprocess_plugins.R skeleton_plugins.R
+##' @include covariate_table.R parameter_trans.R
+##' @keywords internal
+
 setClass(
   "pomp",
   slots=c(

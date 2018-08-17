@@ -1,3 +1,29 @@
+##' The log-mean-exp trick
+##'
+##' \code{logmeanexp} computes \deqn{\log\frac{1}{N}\sum_{n=1}^N\!e^x_i,}{log
+##' mean exp(x_i),} avoiding over- and under-flow in doing so.  It can
+##' optionally return an estimate of the standard error in this quantity.
+##'
+##' When \code{se = TRUE}, \code{logmeanexp} uses a jackknife estimate of the
+##' variance in \eqn{log(x)}.
+##'
+##' @param x numeric
+##' @param se logical; give approximate standard error?
+##' @return \code{log(mean(exp(x)))} computed so as to avoid over- or
+##' underflow.  If \code{se = FALSE}, the approximate standard error is
+##' returned as well.
+##' @author Aaron A. King
+##' @examples
+##'
+##'   ## generate a bifurcation diagram for the Ricker map
+##'   pompExample(ricker)
+##'   ll <- replicate(n=5,logLik(pfilter(ricker,Np=1000)))
+##'   ## an estimate of the log likelihood:
+##'   logmeanexp(ll)
+##'   ## with standard error:
+##'   logmeanexp(ll,se=TRUE)
+##'
+
 logmeanexp <- function (x, se = FALSE) {
   se <- isTRUE(se)
   mx <- max(x)
@@ -5,8 +31,8 @@ logmeanexp <- function (x, se = FALSE) {
   if (se) {
     n <- length(x)
     jk <- vapply(seq_len(n),
-                 function(k) logmeanexp(x[-k]),
-                 numeric(1))
+      function(k) logmeanexp(x[-k]),
+      numeric(1))
     c(mean,se=(n-1)*sd(jk)/sqrt(n))
   } else {
     mean

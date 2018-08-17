@@ -1,26 +1,25 @@
-## extract prediction means
+##' Prediction mean
+##'
+##' The mean of the prediction distribution
+##'
+##' @name Prediction mean
+##' @aliases pred.mean pred.mean,ANY-method pred.mean,missing-method
+##' @include pfilter.R kalman.R
+##' @rdname pred_mean
+NULL
 
 setGeneric(
-    "pred.mean",
-    function (object, ...)
-        standardGeneric("pred.mean")
+  "pred.mean",
+  function (object, ...)
+    standardGeneric("pred.mean")
 )
 
 setMethod(
   "pred.mean",
-  signature=signature(object="kalmand_pomp"),
-  definition=function (object, vars, ...) {
-    if (missing(vars)) vars <- rownames(object@pred.mean)
-    object@pred.mean[vars,,drop=FALSE]
-  }
-)
-
-setMethod(
-  "pred.mean",
-  signature=signature(object="pfilterd_pomp"),
-  definition=function (object, vars, ...) {
-    if (missing(vars)) vars <- rownames(object@pred.mean)
-    object@pred.mean[vars,,drop=FALSE]
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("pred.mean"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
   }
 )
 
@@ -33,3 +32,30 @@ setMethod(
   }
 )
 
+##' @name pred.mean-kalmand_pomp
+##' @aliases pred.mean,kalmand_pomp-method
+##' @rdname pred_mean
+##' @inheritParams filter.mean-kalmand_pomp
+##'
+setMethod(
+  "pred.mean",
+  signature=signature(object="kalmand_pomp"),
+  definition=function (object, vars, ...) {
+    if (missing(vars)) vars <- rownames(object@pred.mean)
+    object@pred.mean[vars,,drop=FALSE]
+  }
+)
+
+##' @name pred.mean-pfilterd_pomp
+##' @aliases pred.mean,pfilterd_pomp-method
+##' @rdname pred_mean
+##' @inheritParams filter.mean-kalmand_pomp
+##'
+setMethod(
+  "pred.mean",
+  signature=signature(object="pfilterd_pomp"),
+  definition=function (object, vars, ...) {
+    if (missing(vars)) vars <- rownames(object@pred.mean)
+    object@pred.mean[vars,,drop=FALSE]
+  }
+)

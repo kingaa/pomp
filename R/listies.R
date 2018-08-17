@@ -1,3 +1,15 @@
+##' listies
+##'
+##' List-like objects.
+##'
+##' @name listies
+##' @rdname listies
+##' @keywords internal
+##' @include pomp_class.R
+##' @include abc.R pmcmc.R mif2.R pfilter.R
+NULL
+
+##' @rdname listies
 setClass(
   "pompList",
   contains="list",
@@ -15,6 +27,7 @@ setClass(
   }
 )
 
+##' @rdname listies
 setClass(
   "abcList",
   contains="list",
@@ -41,6 +54,7 @@ setClass(
   }
 )
 
+##' @rdname listies
 setClass(
   "mif2List",
   contains="list",
@@ -67,6 +81,7 @@ setClass(
   }
 )
 
+##' @rdname listies
 setClass(
   "pmcmcList",
   contains="list",
@@ -93,6 +108,7 @@ setClass(
   }
 )
 
+##' @rdname listies
 setClass(
   "pfilterList",
   contains="list",
@@ -110,11 +126,21 @@ setClass(
   }
 )
 
+##' @rdname listies
 setClassUnion("Pomp",c("pomp","pompList"))
+
+##' @rdname listies
 setClassUnion("Pfilter",c("pfilterd_pomp","pfilterList"))
+
+##' @rdname listies
 setClassUnion("Abc",c("abcd_pomp","abcList"))
+
+##' @rdname listies
 setClassUnion("Mif2",c("mif2d_pomp","mif2List"))
+
+##' @rdname listies
 setClassUnion("Pmcmc",c("pmcmcd_pomp","pmcmcList"))
 
+##' @rdname listies
 setClassUnion("listies",
   members=c("pompList","abcList","mif2List","pmcmcList","pfilterList"))

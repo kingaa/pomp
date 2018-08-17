@@ -1,11 +1,27 @@
-## history of an iterative calculation
+##' Traces
+##'
+##' Retrieve the history of an iterative calculation.
+##'
+##' @name Traces
+##' @rdname traces
+##' @aliases traces traces,missing-method traces,ANY-method
+##' @include pmcmc.R mif2.R abc.R
+NULL
 
 setGeneric(
-    "traces",
-    function (object, ...)
-        standardGeneric("traces")
+  "traces",
+  function (object, ...)
+    standardGeneric("traces")
 )
 
+setMethod(
+  "traces",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("traces"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
 
 setMethod(
   "traces",
@@ -16,6 +32,22 @@ setMethod(
   }
 )
 
+##' @name traces-mif2d_pomp
+##' @aliases traces,mif2d_pomp-method
+##' @rdname traces
+##'
+##' @param object an object of class extending \sQuote{pomp}, the result of the application of a parameter estimation algorithm
+##' @param pars names of parameters
+##' @param transform logical; should the traces be transformed back onto the natural scale?
+##' @param \dots ignored or (in the case of the listies, passed to the more primitive function)
+##'
+##' @return
+##' When \code{object} is the result of a \code{\link{mif2}} calculation,
+##' \code{traces(object, pars, transform = FALSE)} returns the traces of the parameters named in \code{pars}.
+##' By default, the traces of all parameters are returned.
+##' Note that, if the computation was performed with transformed parameters, the traces are on the estimation scale.
+##' If \code{transform=TRUE}, the parameters are transformed from the estimation scale onto the natural scale.
+##'
 setMethod(
   "traces",
   signature=signature(object="mif2d_pomp"),
@@ -24,6 +56,9 @@ setMethod(
   }
 )
 
+##' @name traces-mif2List
+##' @aliases traces,mif2List-method traces-Mif2 traces,Mif2-method
+##' @rdname traces
 setMethod(
   "traces",
   signature=signature(object="mif2List"),
@@ -32,7 +67,12 @@ setMethod(
   }
 )
 
-## extract the traces as a coda::mcmc object
+##' @name traces-abcd_pomp
+##' @aliases traces,abcd_pomp-method
+##' @rdname traces
+##' @return
+##' When \code{object} is a \sQuote{abcd_pomp}, \code{traces(object)}
+##' extracts the traces as a \code{coda::mcmc}.
 setMethod(
   "traces",
   signature=signature(object="abcd_pomp"),
@@ -42,7 +82,12 @@ setMethod(
   }
 )
 
-## extract the traces as a coda::mcmc.list object
+##' @name traces-abcList
+##' @aliases traces,abcList-method traces-Abc traces,Abc-method
+##' @rdname traces
+##' @return
+##' When \code{object} is a \sQuote{abcList}, \code{traces(object)}
+##' extracts the traces as a \code{coda::mcmc.list}.
 setMethod(
   "traces",
   signature=signature(object="abcList"),
@@ -51,7 +96,14 @@ setMethod(
   }
 )
 
-## extract the traces as a coda::mcmc object
+##' @name traces-pmcmcd_pomp
+##' @aliases traces,pmcmcd_pomp-method
+##' @rdname traces
+##' @return
+##' When \code{object} is a \sQuote{pmcmcd_pomp}, \code{traces(object)}
+##' extracts the traces as a \code{coda::mcmc}.
+##' @details
+##' Note that \code{\link{pmcmc}} does not currently support parameter transformations.
 setMethod(
   "traces",
   signature=signature(object="pmcmcd_pomp"),
@@ -61,7 +113,12 @@ setMethod(
   }
 )
 
-## extract the traces as a coda::mcmc.list object
+##' @name traces-pmcmcList
+##' @aliases traces,pmcmcList-method traces-Pmcmc traces,Pmcmc-method
+##' @rdname traces
+##' @return
+##' When \code{object} is a \sQuote{pmcmcList}, \code{traces(object)}
+##' extracts the traces as a \code{coda::mcmc.list}.
 setMethod(
   "traces",
   signature=signature(object="pmcmcList"),
@@ -70,7 +127,6 @@ setMethod(
   }
 )
 
-## extract the traces
 traces.internal <- function (object, pars, transform = FALSE, ...) {
   transform <- as.logical(transform)
   if (transform) {

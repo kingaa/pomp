@@ -1,10 +1,40 @@
+##' Plotting
+##'
+##' Diagnostic plots.
+##'
+##' @name plot
+##' @rdname plot
+##' @include pomp_class.R
+##' @include abc.R bsmc2.R mif2.R pmcmc.R pfilter.R spect.R
+##' @include listies.R
+##' @aliases plot,missing-method plot,ANY-method
+NULL
+
 setGeneric(
-    "plot",
-    function (x, y, ...)
-        standardGeneric("plot")
+  "plot",
+  function (x, y, ...)
+    standardGeneric("plot")
 )
 
 setClassUnion("pomp_plottable",c("pomp","pfilterd_pomp"))
+
+##' @name plot-pomp
+##' @rdname plot
+##' @aliases plot,pomp_plottable-method plot,pomp-method
+##' plot,pfilterd_pomp-method plot-pomp plot-pfilterd_pomp
+##'
+##' @param x the object to plot
+##' @param variables optional character; names of variables to be displayed
+##' @param panel function of prototype \code{panel(x, col, bg, pch, type, ...)} which gives the action to be carried out in each panel of the display.
+##' @param nc the number of columns to use.
+##' Defaults to 1 for up to 4 series, otherwise to 2.
+##' @param yax.flip logical;
+##' if TRUE, the y-axis (ticks and numbering) should flip from side 2 (left) to 4 (right) from series to series.
+##' @param mar,oma the \code{\link{par}} \code{mar} and \code{oma} settings.
+##' Modify with care!
+##' @param axes logical; indicates if x- and y- axes should be drawn
+##' @param \dots ignored or passed to low-level plotting functions
+##'
 
 setMethod(
   "plot",
@@ -13,20 +43,35 @@ setMethod(
     panel = lines, nc = NULL, yax.flip = FALSE,
     mar = c(0, 5.1, 0, if (yax.flip) 5.1 else 2.1),
     oma = c(6, 0, 5, 0), axes = TRUE, ...) {
+
     plotpomp.internal(x=x,variables=variables,
       panel=panel,nc=nc,yax.flip=yax.flip,
       mar=mar,oma=oma,axes=axes,...)
+
   }
 )
 
+##' @name plot-Pmcmc
+##' @aliases plot,Pmcmc-method plot,pmcmcd_pomp-method plot,pmcmcList-method
+##' @rdname plot
+##'
+##' @param pars names of parameters.
+##'
 setMethod(
   "plot",
   signature=signature(x="Pmcmc"),
-  function (x, pars, ...) {
+  definition=function (x, pars, ...) {
     plot(traces(x,pars),...)
   }
 )
 
+##' @name plot-Abc
+##' @aliases plot,Abc-method plot,abcd_pomp-method plot,abcList-method
+##' @rdname plot
+##'
+##' @param scatter logical; if \code{FALSE}, traces of the parameters named in \code{pars} will be plotted against ABC iteration number.
+##' If \code{TRUE}, the traces will be displayed or as a scatterplot.
+##'
 setMethod(
   "plot",
   signature=signature(x="Abc"),
@@ -35,10 +80,17 @@ setMethod(
   }
 )
 
+##' @name plot-bsmcd_pomp
+##' @aliases plot,bsmcd_pomp-method
+##' @rdname plot
+##'
+##' @param thin integer; when the number of samples is very large, it can be helpful to plot a random subsample:
+##' \code{thin} specifies the size of this subsample.
+##'
 setMethod(
   "plot",
-  signature(x="bsmcd_pomp"),
-  function (x, pars, thin, ...) {
+  signature=signature(x="bsmcd_pomp"),
+  definition=function (x, pars, thin, ...) {
     ep <- paste0("in ",sQuote("plot"),": ")
     if (missing(pars)) pars <- x@est
     pars <- as.character(pars)
@@ -60,15 +112,22 @@ setMethod(
   }
 )
 
+##' @name plot-Mif2
+##' @aliases plot,Mif2-method plot,mif2d_pomp-method plot,mif2List-method
+##' @rdname plot
+##' @param y ignored
+##'
 setMethod(
   "plot",
-  "Mif2",
-  function (x, ...) {
+  signature=signature(x="Mif2"),
+  definition=function (x, ...) {
     mif2.diagnostics(x)
   }
 )
 
-
+##' @name plot-probed_pomp
+##' @aliases plot,probed_pomp-method
+##' @rdname plot
 setMethod(
   "plot",
   signature=signature(x="probed_pomp"),
@@ -77,12 +136,20 @@ setMethod(
   }
 )
 
-
+##' @name plot-spectd_pomp
+##' @aliases plot,spectd_pomp-method
+##' @rdname plot
+##'
+##' @param max.plots.per.page positive integer; maximum number of plots on a page
+##' @param plot.data logical; should the data spectrum be included?
+##' @param quantiles numeric; quantiles to display
+##' @param quantile.styles list; plot styles to use for quantiles
+##' @param data.styles list; plot styles to use for data
+##'
 setMethod(
   "plot",
-  "spectd_pomp",
-  function (x, max.plots.per.page = 4,
-    plot.data = TRUE,
+  signature=signature(x="spectd_pomp"),
+  definition=function (x, max.plots.per.page = 4, plot.data = TRUE,
     quantiles = c(.025, .25, .5, .75, .975),
     quantile.styles = list(lwd=1, lty=1, col="gray70"),
     data.styles = list(lwd=2, lty=2, col="black")) {

@@ -1,3 +1,5 @@
+##' @include pomp-package.R
+
 .onAttach <- function (...) {
   exampleDir <- getOption("pomp.examples")
   pompExampleDir <- system.file("examples",package="pomp")

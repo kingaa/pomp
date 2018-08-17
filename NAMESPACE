@@ -24,8 +24,7 @@ exportClasses(
 exportMethods(
   plot,show,print,spy,
   coerce,summary,window,
-  logLik,logEvidence,
-  cond.logLik,cond.logEvidence,
+  logLik,cond.logLik,
   pompLoad,pompUnload,
   parameter_trans,
   covariate_table,

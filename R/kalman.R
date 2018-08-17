@@ -1,4 +1,45 @@
-## Kalman filter methods
+##' Ensemble Kalman filters
+##'
+##' The ensemble Kalman filter and ensemble adjustment Kalman filter.
+##'
+##' @name Ensemble Kalman filter methods
+##' @rdname kalman
+##' @include pomp_class.R
+##' @aliases enkf eakf enkf,ANY-method enkf,missing-method
+##' eakf,ANY-method eakf,missing-method
+##'
+##' @param object An object of class \sQuote{pomp} or extending class
+##' \sQuote{pomp}.
+##' @param params optional named numeric vector containing the parameters at
+##' which the filtering should be performed.  By default, \code{params =
+##' coef(object)}.
+##' @param Np the number of particles to use.
+##' @param verbose logical; if \code{TRUE}, progress information is reported.
+##' @param h function returning the expected value of the observation given the
+##' state.
+##' @param C matrix converting state vector into expected value of the
+##' observation.
+##' @param R matrix; variance of the measurement noise.
+##' @param \dots additional arguments, which can be used to modify components of the model.
+##'
+##' @return An object of class \sQuote{kalmand_pomp}.
+##'
+##' @author Aaron A. King
+##'
+##' @seealso \code{\link{pfilter}}, and the tutorials on
+##' the \href{https://kingaa.github.io/pomp}{package website}.
+##'
+##' @references
+##' Evensen, G. (1994) Sequential data assimilation with a
+##' nonlinear quasi-geostrophic model using Monte Carlo methods to forecast
+##' error statistics Journal of Geophysical Research: Oceans 99:10143--10162
+##'
+##' Evensen, G. (2009) Data assimilation: the ensemble Kalman filter
+##' Springer-Verlag.
+##'
+##' Anderson, J. L. (2001) An Ensemble Adjustment Kalman Filter for Data
+##' Assimilation Monthly Weather Review 129:2884--2903
+NULL
 
 setClass(
   "kalmand_pomp",
@@ -21,8 +62,17 @@ setClass(
   )
 )
 
-setGeneric("enkf",function(object,...)standardGeneric("enkf"))
-setGeneric("eakf",function(object,...)standardGeneric("eakf"))
+setGeneric(
+  "enkf",
+  function (object, ...)
+    standardGeneric("enkf")
+)
+
+setGeneric(
+  "eakf",
+  function (object, ...)
+    standardGeneric("eakf")
+)
 
 ## ENSEMBLE KALMAN FILTER (ENKF)
 
@@ -38,6 +88,9 @@ setGeneric("eakf",function(object,...)standardGeneric("eakf"))
 ## Updated ensemble: $X^u_{t}=X_t + K_t\,(O_t - Y_t)$
 ## Filter mean: $m_t=\langle X^u_t \rangle = \frac{1}{q} \sum\limits_{i=1}^q x^{u_i}_t$
 
+##' @name enkf-pomp
+##' @aliases enkf,pomp-method
+##' @rdname kalman
 setMethod(
   "enkf",
   signature=signature(object="pomp"),
@@ -69,6 +122,9 @@ setMethod(
 ## Filter mean: $m_t=M_t+K_t\,(y_t-C\,M_t)$
 ## Updated ensemble: $x_{t}=B\,(X_t-M_t\,\mathbb{1})+m_t\,\mathbb{1}$
 
+##' @name eakf-pomp
+##' @aliases eakf,pomp-method
+##' @rdname kalman
 setMethod(
   "eakf",
   signature=signature(object="pomp"),

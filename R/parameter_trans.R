@@ -1,3 +1,17 @@
+##' Parameter transformations
+##'
+##' Equipping models with parameter transformations.
+##'
+##' @name Parameter transformations
+##' @rdname parameter_trans
+##' @docType methods
+##' @include pomp_fun.R csnippet.R
+##' @aliases parameter_trans parameter_trans,missing,missing-method
+##' parameter_trans,ANY,ANY-method parameter_trans,ANY,missing-method
+##' parameter_trans,NULL,NULL-method parameter_trans,function,function-method
+##' parameter_trans,missing,ANY-method parameter_trans,pomp_fun,pomp_fun-method
+##' @keywords internal
+
 setClass(
   "partransPlugin",
   slots=c(
@@ -13,20 +27,9 @@ setClass(
 )
 
 setGeneric(
-    "parameter_trans",
-    function (toEst, fromEst, ...)
-        standardGeneric("parameter_trans")
-)
-
-setMethod(
-  "show",
-  signature=signature(object="partransPlugin"),
-  definition=function (object) {
-    cat("  - to estimation scale:\n")
-    show(object@to)
-    cat("  - from estimation scale:\n")
-    show(object@from)
-  }
+  "parameter_trans",
+  function (toEst, fromEst, ...)
+    standardGeneric("parameter_trans")
 )
 
 setMethod(
@@ -48,6 +51,9 @@ setMethod(
   }
 )
 
+##' @name parameter_trans-missing,missing
+##' @aliases parameter_trans,missing,missing-method
+##' @rdname parameter_trans
 setMethod(
   "parameter_trans",
   signature=signature(toEst="missing",fromEst="missing"),
@@ -60,6 +66,9 @@ setMethod(
   }
 )
 
+##' @name parameter_trans-Csnippet,Csnippet
+##' @aliases parameter_trans,Csnippet,Csnippet-method
+##' @rdname parameter_trans
 setMethod(
   "parameter_trans",
   signature=signature(toEst="Csnippet",fromEst="Csnippet"),
@@ -73,6 +82,9 @@ setMethod(
   }
 )
 
+##' @name parameter_trans-character,character
+##' @aliases parameter_trans,character,character-method
+##' @rdname parameter_trans
 setMethod(
   "parameter_trans",
   signature=signature(toEst="character",fromEst="character"),
@@ -81,6 +93,9 @@ setMethod(
   }
 )
 
+##' @name parameter_trans-function,function
+##' @aliases parameter_trans,function,function-method
+##' @rdname parameter_trans
 setMethod(
   "parameter_trans",
   signature=signature(toEst="function",fromEst="function"),
@@ -118,10 +133,6 @@ setMethod(
 
 parameter_trans.internal <- function (toEst, fromEst, ...,
   log, logit, barycentric) {
-
-  #   if (xor(missing(toEst),missing(fromEst)))
-  #     stop("in ",sQuote("parameter_trans"),": if one of ",sQuote("toEst"),", ",
-  #       sQuote("fromEst")," is supplied, then so must the other be.",call.=FALSE)
 
   if (missing(toEst)) toEst <- NULL
   if (missing(fromEst)) fromEst <- NULL

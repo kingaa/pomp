@@ -29,36 +29,82 @@ License: GPL-3
 LazyData: true
 Contact: kingaa at umich dot edu
 BugReports: https://github.com/kingaa/pomp/issues/
-Collate: aaa.R authors.R generics.R bake.R
-	 csnippet.R safecall.R pomp_fun.R
-	 rprocess_plugins.R skeleton_plugins.R 
-	 parameter_trans.R covariate_table.R
-	 templates.R builder.R
-	 slice_design.R profile_design.R sobol.R
-	 pomp_class.R load.R pomp.R pomp_methods.R partrans.R
-	 rmeasure_pomp.R rprocess_pomp.R rinit_pomp.R
-	 dmeasure_pomp.R dprocess_pomp.R skeleton_pomp.R
-	 dprior_pomp.R rprior_pomp.R trajectory_pomp.R
-	 simulate_pomp.R 
-	 pfilter.R pfilter_methods.R
-	 minim.R sannbox.R
-	 probe.R probe_methods.R probe_match.R basic_probes.R 
-	 bsmc2.R bsmc2_methods.R
-	 kalman.R kalman_methods.R 
-	 mif2.R
-	 proposals.R pmcmc.R
- 	 abc.R covmat.R
- 	 nlf_funcs.R nlf_guts.R nlf_objfun.R nlf.R
-	 spect.R spect_match.R
-	 traj_match.R
-	 listies.R
-	 concat.R show.R print.R spy.R plot.R
-	 extract.R logLik.R coef.R
-	 time.R timezero.R window.R obs.R 
-	 eff_sample_size.R summary.R
-	 filter_traj.R filter_mean.R pred_mean.R pred_var.R 
-	 traces.R forecast.R
-	 continue.R 
-	 example.R 
-	 parmat.R logmeanexp.R bsplines.R eulermultinom.R
-	 deprecated.R
+Encoding: UTF-8
+Collate: 
+    'pomp-package.R'
+    'aaa.R'
+    'csnippet.R'
+    'pomp_fun.R'
+    'parameter_trans.R'
+    'covariate_table.R'
+    'skeleton_plugins.R'
+    'rprocess_plugins.R'
+    'safecall.R'
+    'pomp_class.R'
+    'probe.R'
+    'abc.R'
+    'authors.R'
+    'bake.R'
+    'basic_probes.R'
+    'workhorses.R'
+    'bsmc2.R'
+    'bsmc2_methods.R'
+    'bsplines.R'
+    'templates.R'
+    'builder.R'
+    'pomp.R'
+    'pfilter.R'
+    'mif2.R'
+    'load.R'
+    'proposals.R'
+    'pmcmc.R'
+    'listies.R'
+    'coef.R'
+    'kalman.R'
+    'coerce_df.R'
+    'concat.R'
+    'cond_logLik.R'
+    'continue.R'
+    'covmat.R'
+    'probevals.R'
+    'traces.R'
+    'deprecated.R'
+    'design.R'
+    'eff_sample_size.R'
+    'eulermultinom.R'
+    'simulate_pomp.R'
+    'example.R'
+    'extract.R'
+    'filter_mean.R'
+    'filter_traj.R'
+    'forecast.R'
+    'nlf.R'
+    'logLik.R'
+    'logmeanexp.R'
+    'minim.R'
+    'nlf_funcs.R'
+    'nlf_guts.R'
+    'nlf_objfun.R'
+    'obs.R'
+    'parmat.R'
+    'spect.R'
+    'plot.R'
+    'pred_mean.R'
+    'pred_var.R'
+    'spect_match.R'
+    'trajectory.R'
+    'traj_match.R'
+    'probe_match.R'
+    'show.R'
+    'print.R'
+    'profile_design.R'
+    'sannbox.R'
+    'slice_design.R'
+    'sobol.R'
+    'spy.R'
+    'states.R'
+    'summary.R'
+    'time.R'
+    'timezero.R'
+    'window.R'
+RoxygenNote: 6.1.0

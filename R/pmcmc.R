@@ -1,5 +1,61 @@
-## particle Markov chain Monte Carlo (PMCMC)
-## define the pmcmcd_pomp class
+##' The particle Markov chain Metropolis-Hastings algorithm
+##'
+##' The Particle MCMC algorithm for estimating the parameters of a
+##' partially-observed Markov process.  Running \code{pmcmc} causes a particle
+##' random-walk Metropolis-Hastings Markov chain algorithm to run for the
+##' specified number of proposals.
+##'
+##' @name Particle MCMC
+##' @rdname pmcmc
+##' @include pfilter.R proposals.R load.R
+##' @aliases pmcmc pmcmc,ANY-method pmcmc,missing-method
+##'
+##' @param object An object of class \sQuote{pomp}.
+##' @param Nmcmc The number of PMCMC iterations to perform.
+##' @param start named numeric vector; the starting guess of the parameters.
+##' @param proposal optional function that draws from the proposal
+##' distribution.  Currently, the proposal distribution must be symmetric for
+##' proper inference: it is the user's responsibility to ensure that it is.
+##' Several functions that construct appropriate proposal function are
+##' provided: see \link{MCMC proposals} for more information.
+##' @param Np a positive integer; the number of particles to use in each
+##' filtering operation.
+##' @param tol numeric scalar; particles with log likelihood below \code{tol}
+##' are considered to be \dQuote{lost}.  A filtering failure occurs when, at
+##' some time point, all particles are lost.
+##' @param max.fail integer; maximum number of filtering failures permitted.
+##' If the number of failures exceeds this number, execution will terminate
+##' with an error.
+##' @param verbose logical; if TRUE, print progress reports.
+##' @param \dots Additional arguments are passed to \code{\link{pomp}},
+##' allowing one to supply new or modify existing model characteristics or
+##' components.
+##'
+##' @return An object of class \sQuote{pmcmcd_pomp}.
+##'
+##' @section Re-running PMCMC Iterations:
+##' To re-run a sequence of PMCMC
+##' iterations, one can use the \code{pmcmc} method on a \sQuote{pmcmc} object.
+##' By default, the same parameters used for the original PMCMC run are re-used
+##' (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults
+##' of which are shown above).  If one does specify additional arguments, these
+##' will override the defaults.
+##'
+##' @author Edward L. Ionides, Aaron A. King, Sebastian Funk
+##'
+##' @seealso \code{\link{pfilter}}, \link{MCMC proposals}, and the
+##' tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
+##'
+##' @references
+##' C. Andrieu, A. Doucet, and R. Holenstein (2010)
+##' Particle Markov chain Monte Carlo methods.
+##' Journal of the Royal Statistical Society, Series B, 72: 269–342.
+##'
+##' C. Andrieu and G.O. Roberts (2009)
+##' The pseudo-marginal approach for computation
+##' Annals of Statistics, 37:697-725.
+NULL
+
 setClass(
   "pmcmcd_pomp",
   contains="pfilterd_pomp",
@@ -22,16 +78,20 @@ setClass(
   )
 )
 
-setGeneric('pmcmc',function(object,...)standardGeneric("pmcmc"))
+setGeneric(
+  "pmcmc",
+  function (object, ...)
+    standardGeneric("pmcmc")
+)
 
+##' @name pmcmc-pomp
+##' @aliases pmcmc,pomp-method
+##' @rdname pmcmc
 setMethod(
   "pmcmc",
   signature=signature(object="pomp"),
-  function (object, Nmcmc = 1,
-    start, proposal, Np,
-    tol = 1e-17, max.fail = Inf,
-    verbose = getOption("verbose"),
-    ...) {
+  function (object, Nmcmc = 1, start, proposal, Np, tol = 1e-17,
+    max.fail = Inf, verbose = getOption("verbose"), ...) {
 
     if (missing(start)) start <- coef(object)
     if (missing(proposal)) proposal <- NULL
@@ -51,6 +111,9 @@ setMethod(
   }
 )
 
+##' @name pmcmc-pfilterd_pomp
+##' @aliases pmcmc,pfilterd_pomp-method
+##' @rdname pmcmc
 setMethod(
   "pmcmc",
   signature=signature(object="pfilterd_pomp"),
@@ -63,6 +126,9 @@ setMethod(
   }
 )
 
+##' @name pmcmc-pmcmcd_pomp
+##' @aliases pmcmc,pmcmcd_pomp-method
+##' @rdname pmcmc
 setMethod(
   "pmcmc",
   signature=signature(object="pmcmcd_pomp"),

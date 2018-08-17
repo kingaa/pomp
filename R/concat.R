@@ -1,15 +1,24 @@
-## methods to concatenate objects into useful listies
+##' Concatenate
+##'
+##' Methods to concatenate objects into useful listies
+##'
+##' @name concat
+##' @rdname concat
+##' @include listies.R
+##' @keywords internal
+NULL
+
 setGeneric(
-    "concat",
-    function (...)
-        standardGeneric("concat")
+  "concat",
+  function (...)
+    standardGeneric("concat")
 )
 
 setMethod(
   "concat",
   signature=signature(...="missing"),
   definition=function(...) {
-      NULL
+    NULL
   }
 )
 
@@ -22,6 +31,7 @@ setMethod(
   }
 )
 
+##' @rdname concat
 setMethod(
   "concat",
   signature=signature(...="Pomp"),
@@ -39,6 +49,7 @@ setMethod(
   }
 )
 
+##' @rdname concat
 setMethod(
   "concat",
   signature=signature(...="Pfilter"),
@@ -56,6 +67,7 @@ setMethod(
   }
 )
 
+##' @rdname concat
 setMethod(
   "concat",
   signature=signature(...="Abc"),
@@ -73,6 +85,7 @@ setMethod(
   }
 )
 
+##' @rdname concat
 setMethod(
   "concat",
   signature=signature(...="Mif2"),
@@ -90,6 +103,7 @@ setMethod(
   }
 )
 
+##' @rdname concat
 setMethod(
   "concat",
   signature=signature(...="Pmcmc"),
@@ -107,8 +121,22 @@ setMethod(
   }
 )
 
-c.Pomp <- concat
-c.Pfilter <- concat
-c.Abc <- concat
-c.Mif2 <- concat
-c.Pmcmc <- concat
+##' @method c Pomp
+##' @rdname concat
+c.Pomp <- function (...) concat(...)
+
+##' @method c Pfilter
+##' @rdname concat
+c.Pfilter <- function (...) concat(...)
+
+##' @method c Abc
+##' @rdname concat
+c.Abc <- function (...) concat(...)
+
+##' @method c Mif2
+##' @rdname concat
+c.Mif2 <- function (...) concat(...)
+
+##' @method c Pmcmc
+##' @rdname concat
+c.Pmcmc <- function (...) concat(...)

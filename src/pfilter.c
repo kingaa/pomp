@@ -28,7 +28,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   int *dim, np;
   int nvars, npars = 0, nreps, nlost;
   int do_pm, do_pv, do_fm, do_ta, do_pr, all_fail = 0;
-  double sum, sumsq, vsq, ws, w, toler;
+  double sum = 0, sumsq = 0, vsq, ws, w, toler;
   int j, k;
 
   PROTECT(dimX = GET_DIM(x)); nprotect++;

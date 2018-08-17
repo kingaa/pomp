@@ -1,5 +1,105 @@
-## basic SMC (particle filter)
-## particle filtering codes
+##' Particle filter
+##'
+##' A plain vanilla sequential Monte Carlo (particle filter) algorithm.
+##' Resampling is performed at each observation.
+##'
+##' @name Particle filter
+##' @rdname pfilter
+##' @include pomp_class.R pomp.R
+##' @aliases pfilter,ANY-method pfilter,missing-method pfilter
+##'
+##' @param object An object of class \sQuote{pomp} or inheriting class \dQuote{pomp}.
+##' @param params optional named numeric vector containing the parameters at
+##' which the filtering should be performed.  By default, \code{params = coef(object)}.
+##' @param Np the number of particles to use.  This may be specified as a
+##' single positive integer, in which case the same number of particles will be
+##' used at each timestep.  Alternatively, if one wishes the number of
+##' particles to vary across timesteps, one may specify \code{Np} either as a
+##' vector of positive integers of length
+##' \preformatted{length(time(object,t0=TRUE))} or as a function taking a
+##' positive integer argument.  In the latter case, \code{Np(k)} must be a
+##' single positive integer, representing the number of particles to be used at
+##' the \code{k}-th timestep: \code{Np(0)} is the number of particles to use
+##' going from \code{timezero(object)} to \code{time(object)[1]}, \code{Np(1)},
+##' from \code{timezero(object)} to \code{time(object)[1]}, and so on, while
+##' when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of
+##' particles to sample at the end of the time-series.  When \code{object} is
+##' of class \sQuote{mif}, this is by default the same number of particles used
+##' in the \code{mif} iterations.
+##'
+##' One should omit \code{Np} if \code{params} is a matrix of parameters, with
+##' one column for each particle.  In this case, obviously, the number of
+##' particles is \code{ncol(params)}.
+##' @param tol positive numeric scalar; particles with likelihood less than
+##' \code{tol} are considered to be incompatible with the data.  See the
+##' section on \emph{Filtering Failures} below for more information.
+##' @param max.fail integer; the maximum number of filtering failures allowed
+##' (see below).  If the number of filtering failures exceeds this number,
+##' execution will terminate with an error.  By default, \code{max.fail} is set
+##' to infinity, so no error can be triggered.
+##' @param pred.mean logical; if \code{TRUE}, the prediction means are
+##' calculated for the state variables and parameters.
+##' @param pred.var logical; if \code{TRUE}, the prediction variances are
+##' calculated for the state variables and parameters.
+##' @param filter.mean logical; if \code{TRUE}, the filtering means are
+##' calculated for the state variables and parameters.
+##' @param filter.traj logical; if \code{TRUE}, a filtered trajectory is
+##' returned for the state variables and parameters.
+##' @param save.states,save.params logical.  If \code{save.states=TRUE}, the
+##' state-vector for each particle at each time is saved in the
+##' \code{saved.states} slot of the returned \sQuote{pfilterd_pomp} object.  If
+##' \code{save.params=TRUE}, the parameter-vector for each particle at each
+##' time is saved in the \code{saved.params} slot of the returned
+##' \sQuote{pfilterd_pomp} object.
+##' @param verbose logical; if \code{TRUE}, progress information is reported as
+##' \code{pfilter} works.
+##' @param \dots Additional arguments are passed to \code{\link{pomp}},
+##' allowing one to supply new or modify existing model characteristics or
+##' components.
+##' @return An object of class \sQuote{pfilterd_pomp}, which extends class
+##' \sQuote{pomp}.
+##' @section Methods: \describe{ \item{logLik}{ Extracts the estimated log
+##' likelihood.  } \item{cond.logLik}{ Extracts the estimated conditional log
+##' likelihood \deqn{\ell_t(\theta) = \mathrm{Prob}[y_t \vert y_1, \dots,
+##' y_{t-1}],}{ell_t(theta)=Prob[y_t | y_1, \dots, y_(t-1)],} where \eqn{y_t}
+##' are the data, at time \eqn{t}.  } \item{eff.sample.size}{ Extracts the
+##' (time-dependent) estimated effective sample size, computed as
+##' \deqn{\left(\sum_i\!w_{it}^2\right)^{-1},}{1/(sum(w_it^2)),} where
+##' \eqn{w_{it}}{w_it} is the normalized weight of particle \eqn{i} at time
+##' \eqn{t}.  } \item{pred.mean, pred.var}{ Extract the mean and variance of
+##' the approximate prediction distribution.  This prediction distribution is
+##' that of \deqn{X_t \vert y_1,\dots,y_{t-1},}{X_t | y_1,\dots,y_(t-1),} where
+##' \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively, at time
+##' \eqn{t}.  } \item{filter.mean}{ Extract the mean of the filtering
+##' distribution, which is that of \deqn{X_t \vert y_1,\dots,y_t,}{X_t |
+##' y_1,\dots,y_t,} where \eqn{X_t}, \eqn{y_t} are the state vector and data,
+##' respectively, at time \eqn{t}.  } }
+##'
+##' @author Aaron A. King
+##'
+##' @seealso \code{\link{mif2}}, \code{\link{pmcmc}}, \code{\link{bsmc2}}, and
+##' the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
+##'
+##' @references
+##' M. S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp.
+##' A Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian Bayesian Tracking.
+##' IEEE Trans. Sig. Proc. 50:174--188, 2002.
+##'
+##' @examples
+##'
+##' pompExample(gompertz)
+##' pf <- pfilter(gompertz,Np=1000)	## use 1000 particles
+##' plot(pf)
+##' logLik(pf)
+##' cond.logLik(pf)			## conditional log-likelihoods
+##' eff.sample.size(pf)             ## effective sample size
+##' logLik(pfilter(pf))      	## run it again with 1000 particles
+##' ## run it again with 2000 particles
+##' pf <- pfilter(pf,Np=2000,filter.mean=TRUE)
+##' fm <- filter.mean(pf)    	## extract the filtering means
+##'
+NULL
+
 setClass(
   "pfilterd_pomp",
   contains="pomp",
@@ -37,8 +137,15 @@ setClass(
   )
 )
 
-setGeneric("pfilter",function(object,...)standardGeneric("pfilter"))
+setGeneric(
+  "pfilter",
+  function (object, ...)
+    standardGeneric("pfilter")
+)
 
+##' @name pfilter-pomp
+##' @aliases pfilter,pomp-method
+##' @rdname pfilter
 setMethod(
   "pfilter",
   signature=signature(object="pomp"),
@@ -76,6 +183,9 @@ setMethod(
   }
 )
 
+##' @name pfilter-pfilterd_pomp
+##' @aliases pfilter,pfilterd_pomp-method
+##' @rdname pfilter
 setMethod(
   "pfilter",
   signature=signature(object="pfilterd_pomp"),

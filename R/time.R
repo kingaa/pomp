@@ -1,16 +1,35 @@
-## methods to manipulate the vector of times
+##' Methods to manipulate the obseration times
+##'
+##' Get and set the vector of observation times.
+##'
+##' @name time
+##' @rdname time
+##' @aliases time time<- time,ANY-method time,missing-method
+NULL
 
 setGeneric(
-    "time",
-    function (x, ...)
-        standardGeneric("time")
+  "time",
+  function (x, ...)
+    standardGeneric("time")
 )
 
 setGeneric(
-    "time<-",
-    function (object, ..., value)
-        standardGeneric("time<-")
+  "time<-",
+  function (object, ..., value)
+    standardGeneric("time<-")
 )
+
+##' @name time-pomp
+##' @aliases time,pomp-method
+##' @rdname time
+##' @param x  a \sQuote{pomp} object
+##' @param t0 logical; should the zero time be included?
+##' @param \dots ignored
+##'
+##' @details
+##' \code{time(object)} returns the vector of observation times.
+##' \code{time(object,t0=TRUE)} returns the vector of observation
+##' times with the zero-time \code{t0} prepended.
 
 setMethod(
   "time",
@@ -20,6 +39,17 @@ setMethod(
   }
 )
 
+##' @name time<--pomp
+##' @aliases time<-,pomp-method
+##' @rdname time
+##' @param object  a \sQuote{pomp} object
+##' @param value numeric vector; the new vector of times
+##'
+##' @details
+##' \code{time(object) <- value} replaces the observation times slot (\code{times}) of \code{object} with \code{value}.
+##' \code{time(object,t0=TRUE) <- value} has the same effect, but the first element in \code{value} is taken to be the initial time.
+##' The second and subsequent elements of \code{value} are taken to be the observation times.
+##' Those data and states (if they exist) corresponding to the new times are retained.
 setMethod(
   "time<-",
   signature=signature(object="pomp"),

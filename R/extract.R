@@ -1,3 +1,10 @@
+##' @include listies.R
+##' @keywords internal
+##' @rdname listies
+#' @name [-listies
+#' @aliases [,listies-method
+NULL
+
 setMethod(
   "[",
   signature=signature(x="listies"),

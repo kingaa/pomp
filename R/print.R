@@ -1,3 +1,13 @@
+##' Print methods
+##'
+##' These methods print their argument and return it *invisibly*.
+##'
+##' @name print
+##' @rdname print
+##' @include show.R
+##' @aliases print,listies-method print,pomp_fun-method print,unshowable-method
+NULL
+
 setGeneric(
     "print",
     function (x, ...)
@@ -22,3 +32,8 @@ setMethod(
   }
 )
 
+setMethod(
+  "print",
+  "pomp_fun",
+  function (x, ...) show(x)
+)

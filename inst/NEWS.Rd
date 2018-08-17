@@ -2,6 +2,7 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item In \code{skeleton}, the \code{t} argument has been replaced by \code{times}, to make this uniform with the other workhorse functions.
     \item Covariates are now included using the \code{covariate_table} construction, passed via the \code{covar} argument to \code{pomp}.
     The \code{tcovar} argument is no longer used.
     \item Instead of providing separate \code{fromEstimationScale} and \code{toEstimationScale} arguments to \code{pomp}, one now provides a single \code{partrans} argument constructed by means of the new function \code{parameter_trans}.

@@ -1,3 +1,95 @@
+##' Parameter estimation my maximum simulated quasi-likelihood (nonlinear
+##' forecasting)
+##'
+##' \code{nlf} calls an optimizer to maximize the nonlinear forecasting (NLF)
+##' goodness of fit.  The latter is computed by simulating data from a model,
+##' fitting a nonlinear autoregressive model to the simulated time series, and
+##' quantifying the ability of the resulting fitted model to predict the data
+##' time series.  NLF is an \sQuote{indirect inference} method using a
+##' quasi-likelihood as the objective function.
+##'
+##' This runs an optimizer to maximize \code{nlf.objfun}.
+##'
+##' @name Nonlinear forecasting
+##' @rdname nlf
+##' @include pomp_class.R simulate_pomp.R
+##' @aliases nlf nlf,missing-method nlf,ANY-method
+##'
+##' @param object A \sQuote{pomp} object, with the data and model to fit to it.
+##' @param start Named numeric vector with guessed parameters.
+##' @param est Vector containing the names or indices of parameters to be
+##' estimated.
+##' @param lags A vector specifying the lags to use when constructing the
+##' nonlinear autoregressive prediction model.  The first lag is the prediction
+##' interval.
+##' @param period numeric; \code{period=NA} means the model is nonseasonal.
+##' period>0 is the period of seasonal forcing in 'real time'.
+##' @param tensor logical; if FALSE, the fitted model is a generalized additive
+##' model with time mod period as one of the predictors, i.e., a gam with
+##' time-varying intercept.  If TRUE, the fitted model is a gam with lagged
+##' state variables as predictors and time-periodic coefficients, constructed
+##' using tensor products of basis functions of state variables with basis
+##' functions of time.
+##' @param nconverge number of convergence timesteps to be discarded from the
+##' model simulation.
+##' @param nasymp number of asymptotic timesteps to be recorded from the model
+##' simulation.
+##' @param seed integer specifying the random number seed to use.  When
+##' fitting, it is usually best to always run the simulations with the same
+##' sequence of random numbers, which is accomplished by setting \code{seed} to
+##' an integer.  If you want a truly random simulation, set \code{seed=NULL}.
+##' @param transform logical; if \code{TRUE}, parameters are optimized on the
+##' transformed scale.
+##' @param transform.data optional function.  If specified, forecasting is
+##' performed using data and model simulations transformed by this function.
+##' By default, \code{transform.data} is the identity function, i.e., no
+##' transformation is performed.  The main purpose of \code{transform.data} is
+##' to achieve approximately multivariate normal forecasting errors.  If data
+##' are univariate, \code{transform.data} should take a scalar and return a
+##' scalar.  If data are multivariate, \code{transform.data} should assume a
+##' vector input and return a vector of the same length.
+##' @param nrbf integer scalar; the number of radial basis functions to be used
+##' at each lag.
+##' @param method Optimization method.  Choices are
+##' \code{\link[subplex]{subplex}} and any of the methods used by
+##' \code{\link{optim}}.
+##' @param skip.se logical; if \code{TRUE}, skip the computation of standard
+##' errors.
+##' @param verbose logical; if \code{TRUE}, the negative log quasilikelihood
+##' and parameter values are printed at each iteration of the optimizer.
+##' @param bootsamp vector of integers; used to have the quasi-loglikelihood
+##' evaluated using a bootstrap re-sampling of the data set.
+##' @param lql.frac target fractional change in log quasi-likelihood for
+##' quadratic standard error estimate
+##' @param se.par.frac initial parameter-change fraction for quadratic standard
+##' error estimate
+##' @param eval.only logical; if \code{TRUE}, no optimization is attempted and
+##' the quasi-loglikelihood value is evaluated at the \code{start} parameters.
+##' @param \dots Arguments that will be passed to \code{optim} or
+##' \code{subplex} in the \code{control} list.
+##'
+##' @return An object of class \sQuote{nlfd_pomp}.  \code{logLik} applied to
+##' such an object returns the log quasi likelihood.
+##'
+##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
+##'
+##' @references
+##' Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B.
+##' T. and Nychka D. W. (1998) Noise and nonlinearity in measles epidemics:
+##' combining mechanistic and statistical approaches to population modeling.
+##' \emph{American Naturalist} \bold{151}, 425--440.
+##'
+##' Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P.,
+##' McCauley, E., Nisbet, R. M. and Wood S. N. (1999) Why do populations cycle?
+##' A synthesis of statistical and mechanistic modeling approaches.
+##' \emph{Ecology} \bold{80}, 1789--1805.
+##'
+##' Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J.,
+##' Murdoch, W. W. and Turchin, P. (2005) Population cycles in the pine looper
+##' moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
+##' \emph{Ecological Monographs} \bold{75}, 259--276.
+NULL
+
 ## nonlinear forecasting
 ## v. 0.1, 3 Dec. 2007
 ## by Bruce Kendall & Steve Ellner
@@ -53,8 +145,15 @@ setClass(
   )
 )
 
-setGeneric('nlf',function(object,...)standardGeneric("nlf"))
+setGeneric(
+  "nlf",
+  function (object, ...)
+    standardGeneric("nlf")
+)
 
+##' @name nlf-pomp
+##' @aliases nlf,pomp-method
+##' @rdname nlf
 setMethod(
   "nlf",
   signature=signature(object="pomp"),
@@ -132,6 +231,9 @@ setMethod(
   }
 )
 
+##' @name nlf-nlfd_pomp
+##' @aliases nlf,nlfd_pomp-method
+##' @rdname nlf
 setMethod(
   "nlf",
   signature=signature(object="nlfd_pomp"),
@@ -179,20 +281,9 @@ setMethod(
   }
 )
 
-setMethod(
-  "logLik",
-  signature=signature(object="nlfd_pomp"),
-  definition = function(object, ...) {
-    object@logql
-  }
-)
-
 nlf.internal <- function (object, start, est, lags, period, tensor,
-  nconverge, nasymp, seed, transform,
-  nrbf, method, skip.se, verbose,
-  bootstrap, bootsamp, lql.frac, se.par.frac,
-  eval.only, transform.data, ...)
-{
+  nconverge, nasymp, seed, transform, nrbf, method, skip.se, verbose,
+  bootstrap, bootsamp, lql.frac, se.par.frac, eval.only, transform.data, ...) {
 
   ep <- paste0("in ",sQuote("nlf"),": ")
 

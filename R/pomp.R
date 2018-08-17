@@ -1,5 +1,143 @@
-## This file defines 'pomp', the basic constructor of the pomp class
+##' Constructor of the basic pomp object
+##'
+##' This function constructs a \sQuote{pomp} object, encoding a
+##' partially-observed Markov process model together with a uni- or
+##' multi-variate time series.  As such, it is central to all the package's
+##' functionality.  One implements the model by specifying some or all of its
+##' \emph{basic components}.  These include:
+##' \describe{
+##' \item{rprocess,}{the
+##' simulator of the unobserved Markov state process;}
+##' \item{dprocess,}{the
+##' evaluator of the probability density function for transitions of the
+##' unobserved Markov state process;}
+##' \item{rmeasure,}{the simulator of the
+##' observed process, conditional on the unobserved state;}
+##' \item{dmeasure,}{the evaluator of the measurement model probability density
+##' function;}
+##' \item{rinit,}{which samples from the distribution of the state
+##' process at the zero-time;}
+##' \item{rprior,}{which samples from a prior
+##' probability distribution on the parameters;}
+##' \item{dprior}{which evaluates
+##' the prior probability density function;}
+##' \item{skeleton}{which computes the
+##' deterministic skeleton of the unobserved state process.} }
+##' The basic structure and its rationale are described in the \emph{Journal of
+##' Statistical Software} paper, an updated version of which is to be found on
+##' the \href{https://kingaa.github.io/pomp/}{package website}.
+##'
+##' @name Pomp constructor
+##' @rdname pomp
+##' @include pomp_class.R pomp_fun.R csnippet.R safecall.R builder.R
+##'
+##' @param data,times required; the time series data and times at which
+##' observations are made.  \code{data} should be given as a data-frame and
+##' \code{times} must indicate the column of observation times by name or
+##' index.  \code{times} must be numeric and strictly increasing.  Internally,
+##' \code{data} will be internally coerced to an array with storage-mode
+##' \code{double}.
+##'
+##' In addition, a \sQuote{pomp} object can be supplied in the \code{data}
+##' argument.  In this case, the call to \code{pomp} will add element to, or
+##' replace elements of, the supplied \sQuote{pomp} object.
+##' @param t0 The zero-time, at which the stochastic dynamical system is to be
+##' initialized.  This must be no later than the time of the first observation,
+##' i.e., \code{t0 <= times[1]}.  This argument is required whenever
+##' \code{data} is a data-frame.
+##' @param rinit optional; draws from the distribution of initial values of the
+##' unobserved Markov state process.  Specifically, given a vector of
+##' parameters, \code{params} and an initial time, \code{t0}, the rinit
+##' determines the state vector at time \code{t0}.  See below under \dQuote{The
+##' State-Process Initializer} for details.
+##' @param rprocess,dprocess optional; specification of the simulator and
+##' probability density evaluation function of the unobserved state process.
+##' See below under \dQuote{The Unobserved Markov State-Process Model} for
+##' details.
+##'
+##' \strong{Note:} it is not typically necessary (or even feasible) to define
+##' \code{dprocess}.  In fact, no current \pkg{pomp} inference algorithm makes
+##' use of \code{dprocess}.  This functionality is provided only to support
+##' future algorithm development.
+##' @param rmeasure,dmeasure optional; specifications of the measurement model.
+##' See below under \dQuote{The Measurement Model} for details.
+##' @param skeleton optional; the deterministic skeleton of the unobserved
+##' state process.  See below under \dQuote{The Deterministic Skeleton} for
+##' details.
+##' @param rprior,dprior optional; specification of the prior distribution on
+##' parameters.  See below under \dQuote{Specifying a Prior} for details.
+##' @param partrans optional parameter transformations.  Many algorithms for
+##' parameter estimation search an unconstrained space of parameters.  When
+##' working with such an algorithm and a model for which the parameters are
+##' constrained, it can be useful to transform parameters.  One should supply
+##' the \code{partrans} argument via a call to
+##' \code{parameter_trans(toEst,fromEst,\dots{},log,logit,barycentric)}.  See
+##' below under \dQuote{Parameter Transformations} for more details.
+##' @param params optional; named numeric vector of parameters.  This will be
+##' coerced internally to storage mode \code{double}.
+##' @param covar optional covariate table, constructed using
+##' \code{covariate_table}.
+##'
+##' If a covariate table is supplied, then the value of each of the covariates
+##' is interpolated as needed.  The resulting interpolated values are made
+##' available to the appropriate basic components.  Note that \code{covar} will
+##' be coerced internally to storage mode \code{double}.  See below under
+##' \dQuote{Covariates} for more details.
+##' @param obsnames,statenames,paramnames,covarnames optional character vectors
+##' specifying the names of observables, state variables, parameters, and
+##' covariates, respectively.  These are used only in the event that one or
+##' more of the basic components are defined using C snippets or native
+##' routines.  It is usually unnecessary to specify \code{obsnames} or
+##' \code{covarnames}, as these will by default be read from \code{data} and
+##' \code{covars}, respectively.
+##' @param zeronames optional character vector specifying the names of
+##' accumulator variables (see below under \dQuote{Accumulator Variables}).
+##' @param PACKAGE optional string giving the name of the dynamically loaded
+##' library in which any native routines are to be found.  This is only useful
+##' if one or more of the model components has been specified using a
+##' precompiled dynamically loaded library; it is not used for any component
+##' specified using C snippets.
+##' @param globals optional character; C code that will be included in the
+##' source for (and therefore hard-coded into) the shared-object library
+##' created when the call to \code{pomp} uses C snippets.  If no C snippets are
+##' used, \code{globals} has no effect.
+##' @param cdir,cfile,shlib.args optional character variables.  \code{cdir}
+##' specifies the name of the directory within which C snippet code will be
+##' compiled.  By default, this is in a temporary directory specific to the
+##' running instance of .  \code{cfile} gives the name of the file (in
+##' directory \code{cdir}) into which C snippet codes will be written.  By
+##' default, a random filename is used.  The \code{shlib.args} can be used to
+##' pass command-line arguments to the \code{R CMD SHLIB} call that will
+##' compile the C snippets.
+##' @param \dots Any additional arguments given to \code{pomp} will be made
+##' available to each of the user-defined functions.  To prevent errors due to
+##' misspelling, a warning is issued if any such arguments are detected.
+##' @return The \code{pomp} constructor function returns an object, call it
+##' \code{P}, of class \sQuote{pomp}.  \code{P} contains, in addition to the
+##' data, any elements of the model that have been specified as arguments to
+##' the \code{pomp} constructor function.  One can add or modify elements of
+##' \code{P} by means of further calls to \code{pomp}, using \code{P} as the
+##' first argument in such calls.
+##'
+##' @section Important note:
+##'
+##' \strong{ It is not typically necessary (or even
+##' feasible) to define all of the basic components for any given purpose.
+##' Each \pkg{pomp} algorithm makes use of only a subset of these components.
+##' Any algorithm requiring a component that is not present will generate an
+##' error letting you know that you have not provided a needed component.  }
+##'
+##' @author Aaron A. King
+##' @references
+##' A. A. King, D. Nguyen, and E. L. Ionides (2016)
+##' Statistical Inference for Partially Observed Markov Processes via the Package \pkg{pomp}.
+##' Journal of Statistical Software 69(12): 1--43.
+##'
+##' D. T. Gillespie (1977)
+##' Exact stochastic simulation of coupled chemical reactions.
+##' Journal of Physical Chemistry 81:2340--2361.
 
+##' @rdname pomp
 pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
   rmeasure, dmeasure, skeleton, rprior, dprior, partrans,
   params, covar, zeronames,

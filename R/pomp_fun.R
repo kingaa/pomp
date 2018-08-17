@@ -1,5 +1,26 @@
-## a class for functions that may be defined in R,
-## using pre-written native routines, or C snippets
+##' The "pomp_fun" class
+##'
+##' Definition and methods of the \sQuote{pomp_fun} class
+##'
+##' The \sQuote{pomp_fun} class helps to settle common issues associated with
+##' user-defined functions which can be defined either via R code or by a
+##' native, compiled routine.  It is not exported to userland.
+##'
+##' @name pomp_fun
+##' @rdname pomp_fun
+##' @include pomp-package.R csnippet.R
+##' @docType methods
+##' @keywords programming internal
+##'
+##' @param f A function or the name of a native routine.
+##' @param PACKAGE optional; the name of the dynamically-loadable library in
+##' which the native function \code{f} can be found.
+##' @param proto optional string; a prototype against which \code{f} will be
+##' checked.
+##' @param object,x the \sQuote{pomp_fun} object.
+##' @author Aaron A. King
+##' @seealso \code{\link{pomp}}
+
 
 ## also defined in 'pomp_defines.h'
 pompfunmode <- list(undef=-1L,Rfun=0L,native=1L,regNative=2L)
@@ -32,6 +53,12 @@ setClass(
     covarnames = character(0),
     purpose = "a needed function"
   )
+)
+
+setGeneric(
+  "pomp_fun",
+  function (f, ...)
+    standardGeneric("pomp_fun")
 )
 
 setMethod(
@@ -123,34 +150,4 @@ setMethod(
   "pomp_fun",
   signature=signature(f="pomp_fun"),
   definition=function (f, ...) f
-)
-
-setMethod(
-  "show",
-  signature=signature("pomp_fun"),
-  definition=function (object) {
-    mode <- object@mode
-    if (mode==pompfunmode$Rfun) { # R function
-      cat("\t\t")
-      show(object@R.fun)
-    } else if (mode==pompfunmode$native) { # user supplied native code
-      cat("\t\tnative function ",sQuote(object@native.fun),sep="")
-      if (length(object@PACKAGE)>0)
-        cat(", dynamically loaded from ",sQuote(object@PACKAGE),sep="")
-      cat("\n")
-    } else if (mode==pompfunmode$regNative) { # built from C snippets
-      cat("\t\tnative function ",sQuote(object@native.fun),sep="")
-      if (length(object@PACKAGE)>0)
-        cat(", defined by a C snippet in library ",sQuote(object@PACKAGE),sep="")
-      cat("\n")
-    } else {
-      cat("\t\tnot specified\n")
-    }
-  }
-)
-
-setMethod(
-  "print",
-  "pomp_fun",
-  function (x, ...) show(x)
 )

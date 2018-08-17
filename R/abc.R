@@ -1,6 +1,59 @@
-## ABC algorithm functions
+##' Approximate Bayesian computation
+##'
+##' The approximate Bayesian computation (ABC) algorithm for estimating the parameters of a partially-observed Markov process.
+##'
+##' @name abc
+##' @rdname abc
+##' @docType methods
+##' @include pomp_class.R probe.R
+##'
+##' @section Running ABC:
+##'
+##' \code{abc} returns an object of class \sQuote{abcd_pomp}.
+##' One or more \sQuote{abcd_pomp} objects can be joined to form an \sQuote{abcList} object.
+##'
+##' @section Re-running ABC iterations:
+##'
+##' To re-run a sequence of ABC iterations, one can use the \code{abc} method on a \sQuote{abcd_pomp} object.
+##' By default, the same parameters used for the original ABC run are re-used (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults of which are shown above).
+##' If one does specify additional arguments, these will override the defaults.
+##'
+##' @section Continuing ABC iterations:
+##'
+##' One can continue a series of ABC iterations from where one left off using the \code{continue} method.
+##' A call to \code{abc} to perform \code{Nabc=m} iterations followed by a call to \code{continue} to perform \code{Nabc=n} iterations will produce precisely the same effect as a single call to \code{abc} to perform \code{Nabc=m+n} iterations.
+##' By default, all the algorithmic parameters are the same as used in the original call to \code{abc}.
+##' Additional arguments will override the defaults.
+##'
+##' @section ABC diagnostics:
+##' \code{plot} applied to an ABC object will produce a series of
+##' diagnostic plots.
+##'
+##' @author Edward L. Ionides, Aaron A. King
+##'
+##' @family summary statistics
+##' @seealso \code{\link{probe}}, \link{MCMC proposals}, and
+##' the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
+##'
+##' @references
+##' J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder,
+##' Approximate Bayesian computational methods.  Statistics and Compuing
+##' 22:1167--1180, 2012.
+##'
+##' T. Toni and M. P. H. Stumpf, Simulation-based model selection for dynamical
+##' systems in systems and population biology, Bioinformatics 26:104--110,
+##' 2010.
+##'
+##' T. Toni, D. Welch, N. Strelkowa, A. Ipsen, and M. P. H. Stumpf, Approximate
+##' Bayesian computation scheme for parameter inference and model selection in
+##' dynamical systems Journal of the Royal Society, Interface 6:187--202, 2009.
+##'
+##' @aliases  abc,ANY-method abc,missing-method
+NULL
 
-## define the abcd_pomp class
+##' @name abc-pomp
+##' @aliases abc abc,pomp-method
+##' @rdname abc
 setClass(
   "abcd_pomp",
   contains="pomp",
@@ -27,16 +80,34 @@ setClass(
   )
 )
 
-setGeneric('abc',function(object,...)standardGeneric("abc"))
+setGeneric(
+  "abc",
+  function (object, ...)
+    standardGeneric("abc")
+)
 
+##' @rdname abc
+##'
+##' @param object an object of class \dQuote{pomp}.
+##' @param Nabc the number of ABC iterations to perform.
+##' @param start named numeric vector; the starting guess of the parameters.
+##' @param proposal optional function that draws from the proposal distribution.
+##'   Currently, the proposal distribution must be symmetric for proper inference:
+##'   it is the user's responsibility to ensure that it is.
+##'   Several functions that construct appropriate proposal function are provided:
+##'   see \link{MCMC proposals} for more information.
+##' @param probes List of probes (AKA summary statistics).
+##'  See \code{\link{probe}} for details.
+##' @param scale named numeric vector of scales.
+##' @param epsilon ABC tolerance.
+##' @param verbose logical; if TRUE, print progress reports.
+##' @param \dots  Additional arguments are passed to \code{\link{pomp}},
+##' allowing one to supply new or modify existing model characteristics or components.
 setMethod(
   "abc",
   signature=signature(object="pomp"),
-  definition=function (object, Nabc = 1,
-    start, proposal,
-    probes, scale, epsilon,
-    verbose = getOption("verbose"),
-    ...) {
+  definition=function (object, Nabc = 1, start, proposal, probes, scale,
+    epsilon, ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(start)) start <- coef(object)
     if (missing(proposal)) proposal <- NULL
@@ -58,12 +129,12 @@ setMethod(
   }
 )
 
+#' @rdname abc
 setMethod(
   "abc",
   signature=signature(object="probed_pomp"),
-  definition=function (object, probes,
-    verbose = getOption("verbose"),
-    ...) {
+  definition=function (object, probes, ...,
+    verbose = getOption("verbose", FALSE)) {
 
     if (missing(probes)) probes <- object@probes
     abc(object=as(object,"pomp"),probes=probes,...)
@@ -71,14 +142,12 @@ setMethod(
   }
 )
 
+##' @rdname abc
 setMethod(
   "abc",
   signature=signature(object="abcd_pomp"),
-  definition=function (object, Nabc,
-    start, proposal,
-    probes, scale, epsilon,
-    verbose = getOption("verbose"),
-    ...) {
+  definition=function (object, Nabc, start, proposal, probes, scale, epsilon,
+    verbose = getOption("verbose"), ...) {
 
     if (missing(Nabc)) Nabc <- object@Nabc
     if (missing(start)) start <- coef(object)

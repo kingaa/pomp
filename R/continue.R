@@ -1,9 +1,23 @@
-## continue an iterative calculation
+##' Continue an iterative calculation
+##'
+##' Continue an iterative computation where it left off.
+##'
+##' @name continue
+##' @include mif2.R abc.R pmcmc.R
+##' @aliases continue continue,missing-method continue,ANY-method
+##' @rdname continue
+##'
+##' @param object the result of an iterative \pkg{pomp} computation
+##' @param \dots additional arguments will be passed to the underlying method.
+##' This allows one to modify parameters used in the original computations.
+NULL
 
+##' @name continue
+##' @rdname continue
 setGeneric(
-    "continue",
-    function (object, ...)
-        standardGeneric("continue")
+  "continue",
+  function (object, ...)
+    standardGeneric("continue")
 )
 
 setMethod(
@@ -24,6 +38,12 @@ setMethod(
   }
 )
 
+##' @name continue-abcd_pomp
+##' @aliases continue,abcd_pomp-method
+##' @rdname continue
+##'
+##' @param Nabc positive integer; number of additional iterations to perform
+##'
 setMethod(
   "continue",
   signature=signature(object="abcd_pomp"),
@@ -52,9 +72,15 @@ setMethod(
   }
 )
 
+##' @name continue-mif2d_pomp
+##' @aliases continue,mif2d_pomp-method
+##' @rdname continue
+##'
+##' @param Nmif positive integer; number of additional iterations to perform
+##'
 setMethod(
-  'continue',
-  signature=signature(object='mif2d_pomp'),
+  "continue",
+  signature=signature(object="mif2d_pomp"),
   definition = function (object, Nmif = 1, ...) {
 
     ndone <- object@Nmif
@@ -74,6 +100,12 @@ setMethod(
   }
 )
 
+##' @name continue-pmcmcd_pomp
+##' @aliases continue,pmcmcd_pomp-method
+##' @rdname continue
+##'
+##' @param Nmcmc positive integer; number of additional iterations to perform
+##'
 setMethod(
   "continue",
   signature=signature(object="pmcmcd_pomp"),

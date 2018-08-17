@@ -1,9 +1,27 @@
+##' Summary methods
+##'
+##' Display a summary of a fitted model object.
+##'
+##' @rdname summary
+##' @name summary
+##' @include probe_match.R probe.R spect.R spect_match.R traj_match.R
+##'
+##' @aliases summary,probed_pomp-method summary,spectd_pomp-method
+##' summary,probe_matched_pomp-method summary,spect_matched_pomp-method
+##' summary,traj_matched_pomp-method
+##'
+##' @param object a fitted model object
+##' @param \dots ignored
+NULL
+
 setGeneric(
     "summary",
     function (object, ...)
         standardGeneric("summary")
 )
 
+##' @name summary-probed_pomp
+##' @rdname summary
 setMethod(
   "summary",
   signature=signature(object="probed_pomp"),
@@ -18,10 +36,12 @@ setMethod(
   }
 )
 
+##' @name summary-spectd_pomp
+##' @rdname summary
 setMethod(
   "summary",
-  "spectd_pomp",
-  function (object, ...) {
+  signature=signature(object="spectd_pomp"),
+  definition=function (object, ...) {
     list(
       coef=coef(object),
       nsim=nrow(object@simspec),
@@ -30,10 +50,12 @@ setMethod(
   }
 )
 
+##' @name summary-traj_matched_pomp
+##' @rdname summary
 setMethod(
   "summary",
   signature=signature(object="traj_matched_pomp"),
-  function (object, ...) {
+  definition=function (object, ...) {
     c(
       list(
         params=coef(object),
@@ -46,6 +68,8 @@ setMethod(
   }
 )
 
+##' @name summary-spect_matched_pomp
+##' @rdname summary
 setMethod(
   "summary",
   signature=signature(object="spect_matched_pomp"),
@@ -65,10 +89,12 @@ setMethod(
   }
 )
 
+##' @name summary-probe_matched_pomp
+##' @rdname summary
 setMethod(
   "summary",
-  "probe_matched_pomp",
-  function (object, ...) {
+  signature=signature(object="probe_matched_pomp"),
+  definition=function (object, ...) {
     c(
       summary(as(object,"probed_pomp")),
       list(

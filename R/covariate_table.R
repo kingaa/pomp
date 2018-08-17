@@ -1,3 +1,14 @@
+##' Covariates
+##'
+##' Including time-varying covariates in a model.
+##'
+##' @name Covariates
+##' @rdname covariate_table
+##' @aliases covariate_table covariate_table,missing-method
+##' covariate_table,ANY-method
+##' @include pomp_class.R
+NULL
+
 setClass(
   "covartable",
   slots=c(
@@ -11,9 +22,9 @@ setClass(
 )
 
 setGeneric(
-    "covariate_table",
-    function (..., times)
-        standardGeneric("covariate_table")
+  "covariate_table",
+  function (..., times)
+    standardGeneric("covariate_table")
 )
 
 setMethod(
@@ -44,6 +55,15 @@ setMethod(
   }
 )
 
+##' @name covariate_table-ANY
+##' @aliases covariate_table,ANY-method
+##' @rdname covariate_table
+##'
+##' @param times the times corresponding to the covariates.
+##' This may be given as a vector of (increasing, finite) numerical values.
+##' Alternatively, one can indicate one of the variables given (either as a vector or as a data-frame column) by name or by index.
+##' @param \dots numeric vectors or data frames containing time-varying covariates
+##'
 setMethod(
   "covariate_table",
   signature=signature(times="ANY"),
