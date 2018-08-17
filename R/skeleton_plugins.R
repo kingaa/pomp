@@ -1,7 +1,15 @@
 ##' Deterministic skeleton of a model
-##' 
+##'
 ##' Specifying the deterministic skeleton of a model.
 ##'
+##' @name skeleton_plugins
+##' @rdname skeleton_plugins
+##' @docType methods
+##' @include pomp_fun.R csnippet.R
+##' @keywords internal
+##' @family information on model implementation
+##'
+##' @details
 ##' The skeleton is a dynamical system that expresses the central tendency of the unobserved Markov state process.
 ##' As such, it is not uniquely defined, but can be both interesting in itself and useful in practice.
 ##' In \pkg{pomp}, the skeleton is used by \code{\link{trajectory}} and \code{\link{traj.match}}.
@@ -37,12 +45,7 @@
 ##' }
 ##' As with the other basic components, \code{f} may take additional arguments, provided these are passed along with it in the call to \code{pomp}.
 ##' The function \code{f} must return a numeric vector of the same length as \code{x}, which contains the value of the map or vectorfield at the required point and time.
-##' 
-##' @name skeleton_plugins
-##' @rdname skeleton_plugins
-##' @docType methods
-##' @include pomp_fun.R csnippet.R
-##' @keywords internal
+##'
 NULL
 
 setClass(
@@ -114,7 +117,7 @@ skel_plugin <- function (object, skel.fn) {
 ##' @rdname skeleton_plugins
 ##' @param f procedure for evaluating the deterministic skeleton
 ##' This can be a C snippet, an \R function, or the name of a native routine in a dynamically linked library.
-##' 
+##'
 vectorfield <- function (f) {
   new("vectorfieldPlugin",skel.fn=f,type=1L)
 }
@@ -122,7 +125,7 @@ vectorfield <- function (f) {
 ##' @name map
 ##' @rdname skeleton_plugins
 ##' @param delta.t positive numerical value; the size of the discrete time step corresponding to an application of the map
-##' 
+##'
 map <- function (f, delta.t = 1) {
   if (!isTRUE(delta.t > 0 && length(delta.t)==1))
     stop("in ",sQuote("map"),": ",sQuote("delta.t"),

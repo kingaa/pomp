@@ -13,8 +13,12 @@
     - 'spect.match.objfun' looks good: needs testing
 	- 'nlf' needs to be reworked
 - revisit whether `pomp` can handle all `params` chopping and changing
-- C snippet instructions
+- ~~C snippet instructions~~
 - ~~ClassUnion for objfun methods~~
+- if `pomp` becomes essentially hidden, where will `zeronames` be documented?
+- specific workhorses in individual functions!!
+- consolidate examples somehow (it's bad to have so many NULL R files)
+- need a better term than "plugin"
 
 ## For pomp 2:
 
@@ -98,12 +102,12 @@ tests/trajmatch.R
 R/builder.R
 R/plugins.R
 
-R/probe_match.R
-
 R/nlf.R
 R/nlf_objfun.R
 R/nlf_funcs.R
 R/nlf_guts.R
+
+R/probe_match.R
 
 R/spect_match.R
 

@@ -2,11 +2,21 @@
 ##'
 ##' Including time-varying covariates in a model.
 ##'
-##' @name Covariates
+##' @name covariates
 ##' @rdname covariate_table
 ##' @aliases covariate_table covariate_table,missing-method
 ##' covariate_table,ANY-method
 ##' @include pomp_class.R
+##' @family information on model implementation
+##'
+##' @details
+##' If the \sQuote{pomp} object contains covariates (specified via the \code{covar} argument), then interpolated values of the covariates will be available to each of the model components whenever it is called.
+##' In particular, variables with names as they appear in the \code{covar} covariate table will be available to any C snippet.
+##' When a basic component is defined using an \R function, that function will be called with an extra argument, \code{covars}, which will be a named numeric vector containing the interpolated values from the covariate table.
+##' 
+##' An exception to this rule is the prior (\code{rprior} and \code{dprior}):
+##' covariate-dependent priors are not allowed.
+##' Nor are parameter transformations permitted to depend upon covariates.
 NULL
 
 setClass(

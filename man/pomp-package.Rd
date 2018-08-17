@@ -45,6 +45,15 @@ also provides various tools for plotting and extracting information on
 models and data.
 }
 
+\section{Important note}{
+
+\strong{
+It is not typically necessary (or even feasible) to define all of the basic components for any given purpose.
+Each \pkg{pomp} algorithm makes use of only a subset of these components.
+Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.
+}
+}
+
 \references{
 A. A. King, D. Nguyen, and E. L. Ionides (2016) Statistical
 Inference for Partially Observed Markov Processes via the Package

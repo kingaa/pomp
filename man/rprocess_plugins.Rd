@@ -157,3 +157,14 @@ n = floor((t2-t1)/delta.t).}
 }
 }
 }
+\seealso{
+Other information on model implementation: \code{\link{Csnippet}},
+  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{dmeasure_plugins}},
+  \code{\link{dprocess_plugins}},
+  \code{\link{parameter_trans}},
+  \code{\link{prior_plugins}}, \code{\link{rinit_plugins}},
+  \code{\link{rmeasure_plugins}},
+  \code{\link{skeleton_plugins}}
+}
+\concept{information on model implementation}

@@ -53,4 +53,15 @@ where, as usual,
 As with the other basic components, \code{f} may take additional arguments, provided these are passed along with it in the call to \code{pomp}.
 The function \code{f} must return a numeric vector of the same length as \code{x}, which contains the value of the map or vectorfield at the required point and time.
 }
+\seealso{
+Other information on model implementation: \code{\link{Csnippet}},
+  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{dmeasure_plugins}},
+  \code{\link{dprocess_plugins}},
+  \code{\link{parameter_trans}},
+  \code{\link{prior_plugins}}, \code{\link{rinit_plugins}},
+  \code{\link{rmeasure_plugins}},
+  \code{\link{rprocess_plugins}}
+}
+\concept{information on model implementation}
 \keyword{internal}

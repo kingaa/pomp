@@ -11,6 +11,37 @@
 ##' parameter_trans,NULL,NULL-method parameter_trans,function,function-method
 ##' parameter_trans,missing,ANY-method parameter_trans,pomp_fun,pomp_fun-method
 ##' @keywords internal
+##' @family information on model implementation
+##'
+##' @details
+##' When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans(toEst,fromEst,\dots,log,logit,barycentric)} function.
+##' As with the basic model components, these should ordinarily be specified using C snippets.
+##' When doing so, note that:
+##' \enumerate{
+##'   \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \code{parameter_trans(toEst,fromEst)}.
+##'   \item The goal of these snippets is the transformation of the parameters from the natural scale to the estimation scale, and vice-versa.
+##'   If \code{p} is the name of a variable on the natural scale, its value on the estimation scale is \code{T_p}.
+##'   Thus the \code{toEst} snippet computes \code{T_p} given \code{p} whilst the \code{fromEst} snippet computes \code{p} given \code{T_p}.
+##'   \item Time-, state-, and covariate-dependent transformations are not allowed.
+##'   Therefore, neither the time, nor any state variables, nor any of the covariates will be available in the context within which a parameter transformation snippet is executed.
+##' }
+##' 
+##' These transformations can also be specified using \R functions with arguments \code{params} and \code{\dots}.
+##' In this case, \code{toEst} should transform parameters from the scale that the basic components use internally to the scale used in estimation.
+##' \code{fromEst} should be the inverse of \code{toEst}.
+##' 
+##' Note that it is the user's responsibility to make sure that the transformations are mutually inverse.
+##' If \code{obj} is the constructed \sQuote{pomp} object, and \code{coef(obj)} is non-empty, a simple check of this property is \preformatted{
+##'   x <- coef(obj, transform = TRUE)
+##'   obj1 <- obj
+##'   coef(obj1, transform = TRUE) <- x
+##'   identical(coef(obj), coef(obj1))
+##'   identical(coef(obj1, transform=TRUE), x)}
+##' 
+##' One can use the \code{log} and \code{logit} arguments of \code{parameter_trans} to name variables that should be log-transformed or logit-transformed, respectively.
+##' The \code{barycentric} argument can name sets of parameters that should be log-barycentric transformed.
+##
+NULL
 
 setClass(
   "partransPlugin",
