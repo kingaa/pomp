@@ -9,15 +9,17 @@
 - get rid of `probevals`?
 - matching functions will go away, in favor of objective function constructors:
     - 'probe.match.objfun' looks good: needs testing
-    - 'traj.match.objfun' needs to be made stateful
-    - 'spect.match.objfun' is not yet written
+    - 'traj.match.objfun' looks good: needs testing
+    - 'spect.match.objfun' looks good: needs testing
+	- 'nlf' needs to be reworked
+- revisit whether `pomp` can handle all `params` chopping and changing
+- C snippet instructions
+- ClassUnion for objfun methods
 
 ## For pomp 2:
 
 - on-the-fly modification of basic components
-	- OK for simulate, probe, pfilter, abc, bsmc2, pmcmc, mif2, kalman, spect
-	- needed for probe_match, nlf, spect_match
-	- not to be done for trajectory, traj_match
+	- needed for nlf
 - better scheme for indicating derivatives and maps in C snippets
 -- perhaps `dinit`?
 - covariates:
@@ -97,8 +99,6 @@ R/builder.R
 R/plugins.R
 
 R/probe_match.R
-
-R/minim.R
 
 R/nlf.R
 R/nlf_objfun.R

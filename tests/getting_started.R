@@ -5,8 +5,9 @@ options(
   stringsAsFactors=FALSE,
   encoding="UTF-8",
   scipen=5
-  )
+)
 set.seed(594709947L)
+options(digits=3)
 png(filename="getting_started-%02d.png",res=100)
 
 ## ----load-parus-data-----------------------------------------------------
@@ -39,7 +40,7 @@ parus.dat <- read.csv(text="
                       1984,214
                       1985,175
                       1986,211"
-                      )
+)
 
 ## ----parus-plot----------------------------------------------------------
 library(ggplot2)
@@ -57,8 +58,8 @@ step.fun <- Csnippet("
 
 ## ----logistic-pomp1------------------------------------------------------
 parus <- pomp(data=parus.dat,time="year",t0=1959,
-              rprocess=euler.sim(step.fun=step.fun,delta.t=1/365),
-              statenames="N",paramnames=c("r","K","sigma"))
+  rprocess=euler.sim(step.fun=step.fun,delta.t=1/365),
+  statenames="N",paramnames=c("r","K","sigma"))
 
 ## ----logistic-simul1-----------------------------------------------------
 simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),states=TRUE)
@@ -68,11 +69,11 @@ library(magrittr)
 library(reshape2)
 
 simStates %>%
-    melt() %>%
-    dcast(rep+time~variable) %>%
-    ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
-    geom_line()+guides(color=FALSE)+
-    theme_bw()
+  melt() %>%
+  dcast(rep+time~variable) %>%
+  ggplot(mapping=aes(x=time,y=N,group=rep,color=factor(rep)))+
+  geom_line()+guides(color=FALSE)+
+  theme_bw()
 
 ## ----logistic-rmeasure---------------------------------------------------
 rmeas <- Csnippet("
@@ -84,22 +85,22 @@ parus <- pomp(parus,rmeasure=rmeas,statenames="N")
 
 ## ----logistic-simul2-----------------------------------------------------
 sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),
-                nsim=10,obs=TRUE,states=TRUE)
+  nsim=10,obs=TRUE,states=TRUE)
 
 ## ----logistic-plot2,echo=FALSE-------------------------------------------
 sim %>% melt() %>%
-    ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
-    geom_line()+
-    guides(color=FALSE)+scale_y_sqrt()+
-    facet_grid(variable~.,scales="free_y")+
-    theme_bw()
+  ggplot(mapping=aes(x=time,y=value,group=rep,color=factor(rep)))+
+  geom_line()+
+  guides(color=FALSE)+scale_y_sqrt()+
+  facet_grid(variable~.,scales="free_y")+
+  theme_bw()
 
 sim %>% melt() %>% dcast(rep+time~variable,value.var='value') %>%
-    ggplot(mapping=aes(x=N,y=P,color=factor(rep)))+
-    geom_point()+scale_x_sqrt()+scale_y_sqrt()+
-    coord_equal()+
-    guides(color=FALSE)+
-    theme_bw()
+  ggplot(mapping=aes(x=N,y=P,color=factor(rep)))+
+  geom_point()+scale_x_sqrt()+scale_y_sqrt()+
+  coord_equal()+
+  guides(color=FALSE)+
+  theme_bw()
 
 ## ----logistic-dmeasure---------------------------------------------------
 dmeas <- Csnippet("
@@ -128,10 +129,10 @@ traj <- trajectory(parus,params=pars,times=seq(1959,1970,by=0.01))
 ## ----logistic-plot3,echo=FALSE-------------------------------------------
 parus %>%
   trajectory(params=pars,times=seq(1959,1970,by=0.01),as.data.frame=TRUE) %>%
-    ggplot(mapping=aes(x=year,y=N,group=traj,color=traj))+
-    guides(color=FALSE)+
-    geom_line()+
-    theme_bw()
+  ggplot(mapping=aes(x=year,y=N,group=traj,color=traj))+
+  guides(color=FALSE)+
+  geom_line()+
+  theme_bw()
 
 ## ----bh-stepfun----------------------------------------------------------
 bh.step <- Csnippet("
@@ -163,19 +164,27 @@ coef(parus,transform=TRUE) <- partrans(parus,p,dir="toEst")
 stopifnot(all.equal(p,coef(parus)))
 
 ## ----parus-traj-match----------------------------------------------------
-##tm <- traj.match(parus,start=c(r=1,K=200,N.0=200,sigma=0.5),
-##                 est=c("r","K"),transform=TRUE)
-##signif(coef(tm),3)
-##logLik(tm)
+tm <- traj.match.objfun(parus,params=c(r=1,K=200,N.0=200,sigma=0.5),
+  est=c("r","K"),transform=TRUE)
+logLik(tm)
+
+library(subplex)
+subplex(par=log(c(1,200)),fn=tm) -> out
+print(out)
+logLik(tm)
+signif(coef(tm),3)
+stopifnot(all.equal(
+  unname(coef(tm,c("r","K"),transform=TRUE)),out$par))
 
 ## ----parus-tm-sim1-------------------------------------------------------
-## coef(tm,"sigma") <- 0
-## simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
-##   ggplot(aes(x=year,y=P,group=sim,alpha=(sim=="data")))+
-##     scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
-##                        labels=c(`FALSE`="simulation",`TRUE`="data"))+
-##     geom_line()+
-##     theme_bw()
+tm <- as.pomp(tm)
+coef(tm,"sigma") <- 0
+simulate(tm,nsim=10,as.data.frame=TRUE,include.data=TRUE) %>%
+  ggplot(aes(x=year,y=P,group=sim,alpha=(sim=="data")))+
+    scale_alpha_manual(name="",values=c(`TRUE`=1,`FALSE`=0.2),
+                       labels=c(`FALSE`="simulation",`TRUE`="data"))+
+    geom_line()+
+    theme_bw()
 
 ## ----parus-dprior--------------------------------------------------------
 parus %<>%
@@ -183,3 +192,5 @@ parus %<>%
     lik = dunif(r,0,5,1)+dunif(K,100,600,1)+dunif(sigma,0,2,1);
     lik = (give_log) ? lik : exp(lik);
   "),paramnames=c("r","K","sigma"))
+
+dev.off()

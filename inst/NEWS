@@ -2,6 +2,13 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
+        • The old ‘probe.match’ and ‘traj.match’ functions have been
+          removed.  The new approach to parameter estimation based on
+          numerical optimization involves constructing stateful
+          objective functions.  There are now three of these:
+          ‘traj.match.objfun’, ‘probe.match.objfun’, and
+          ‘spect.match.objfun’.
+
         • The documentation system has been thoroughly overhauled.
 
         • In ‘skeleton’, the ‘t’ argument has been replaced by ‘times’,

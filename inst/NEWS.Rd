@@ -2,6 +2,9 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
+    \item The old \code{probe.match} and \code{traj.match} functions have been removed.
+    The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions.
+    There are now three of these: \code{traj.match.objfun}, \code{probe.match.objfun}, and \code{spect.match.objfun}.
     \item The documentation system has been thoroughly overhauled.
     \item In \code{skeleton}, the \code{t} argument has been replaced by \code{times}, to make this uniform with the other workhorse functions.
     \item Covariates are now included using the \code{covariate_table} construction, passed via the \code{covar} argument to \code{pomp}.
