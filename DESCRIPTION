@@ -2,7 +2,7 @@ Package: pomp
 Type: Package
 Title: Statistical Inference for Partially Observed Markov Processes
 Version: 2.0.0.0
-Date: 2018-08-17
+Date: 2018-08-18
 Authors@R: c(person(given=c("Aaron","A."),family="King",
 		role=c("aut","cre"),email="kingaa@umich.edu"),
 	  person(given=c("Edward","L."),family="Ionides",role=c("aut")),
@@ -37,8 +37,8 @@ Collate:
     'pomp_fun.R'
     'parameter_trans.R'
     'covariate_table.R'
-    'skeleton_plugins.R'
-    'rprocess_plugins.R'
+    'skeleton_spec.R'
+    'rprocess_spec.R'
     'safecall.R'
     'pomp_class.R'
     'workhorses.R'
@@ -56,7 +56,7 @@ Collate:
     'blowflies.R'
     'bsmc2.R'
     'bsplines.R'
-    'dmeasure_plugins.R'
+    'dmeasure_spec.R'
     'pfilter.R'
     'mif2.R'
     'load.R'
@@ -73,7 +73,7 @@ Collate:
     'traces.R'
     'deprecated.R'
     'design.R'
-    'dprocess_plugins.R'
+    'dprocess_spec.R'
     'eff_sample_size.R'
     'eulermultinom.R'
     'simulate_pomp.R'
@@ -105,11 +105,11 @@ Collate:
     'pred_var.R'
     'show.R'
     'print.R'
-    'prior_plugins.R'
+    'prior_spec.R'
     'profile_design.R'
     'ricker.R'
-    'rinit_plugins.R'
-    'rmeasure_plugins.R'
+    'rinit_spec.R'
+    'rmeasure_spec.R'
     'rw2.R'
     'sannbox.R'
     'sir.R'

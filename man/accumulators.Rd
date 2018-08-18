@@ -15,12 +15,10 @@ See \code{\link{sir}} and the tutorials on the \href{https://kingaa.github.io/po
 }
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{covariates}}, \code{\link{dmeasure_plugins}},
-  \code{\link{dprocess_plugins}},
-  \code{\link{parameter_trans}},
-  \code{\link{prior_plugins}}, \code{\link{rinit_plugins}},
-  \code{\link{rmeasure_plugins}},
-  \code{\link{rprocess_plugins}},
-  \code{\link{skeleton_plugins}}
+  \code{\link{covariates}}, \code{\link{dmeasure_spec}},
+  \code{\link{dprocess_spec}},
+  \code{\link{parameter_trans}}, \code{\link{prior_spec}},
+  \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
+  \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}}
 }
 \concept{information on model implementation}

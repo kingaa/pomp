@@ -36,17 +36,17 @@ coerced internally to storage mode \code{double}.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+For more information on specifying \code{rinit}, see \link[=rinit_spec]{here}.}
 
 \item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+For more information on specifying \code{rprocess}, see \link[=rprocess_spec]{here}.}
 
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rmeasure}, see \link[=rmeasure_plugins]{here}.}
+For more information on specifying \code{rmeasure}, see \link[=rmeasure_spec]{here}.}
 
 \item{dprior}{optional; specification of the prior distribution on
 parameters.
-For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_plugins]{here}.}
+For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_spec]{here}.}
 
 \item{proposal}{optional function that draws from the proposal
 distribution.  Currently, the proposal distribution must be symmetric for

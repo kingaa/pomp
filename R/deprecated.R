@@ -3,7 +3,7 @@
 ##' @name deprecated
 ##' @rdname deprecated
 ##' @keywords internal
-##' @include traces.R rprocess_plugins.R
+##' @include traces.R rprocess_spec.R
 NULL
 
 ##' @name conv.rec

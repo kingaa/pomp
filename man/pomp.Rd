@@ -25,27 +25,27 @@ This must be no later than the time of the first observation, i.e., \code{t0 <= 
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+For more information on specifying \code{rinit}, see \link[=rinit_spec]{here}.}
 
 \item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+For more information on specifying \code{rprocess}, see \link[=rprocess_spec]{here}.}
 
 \item{dprocess}{optional;
 specification of the probability density evaluation function of the unobserved state process.}
 
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rmeasure}, see \link[=rmeasure_plugins]{here}.}
+For more information on specifying \code{rmeasure}, see \link[=rmeasure_spec]{here}.}
 
 \item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{dmeasure}, see \link[=dmeasure_plugins]{here}.}
+For more information on specifying \code{dmeasure}, see \link[=dmeasure_spec]{here}.}
 
 \item{skeleton}{optional; the deterministic skeleton of the unobserved
 state process.
-For more information on specifying \code{skeleton}, see \link[=skeleton_plugins]{here}.}
+For more information on specifying \code{skeleton}, see \link[=skeleton_spec]{here}.}
 
 \item{rprior, dprior}{optional; specification of the prior distribution on
 parameters.
-For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_plugins]{here}.}
+For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_spec]{here}.}
 
 \item{partrans}{optional parameter transformations.  Many algorithms for
 parameter estimation search an unconstrained space of parameters.  When

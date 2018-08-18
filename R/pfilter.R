@@ -5,7 +5,7 @@
 ##'
 ##' @name pfilter
 ##' @rdname pfilter
-##' @include pomp_class.R pomp.R rprocess_plugins.R dmeasure_plugins.R
+##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R
 ##' @aliases pfilter,ANY-method pfilter,missing-method pfilter
 ##' @family particle filter methods
 ##'

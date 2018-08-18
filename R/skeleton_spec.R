@@ -2,8 +2,8 @@
 ##'
 ##' Specifying the deterministic skeleton of a model.
 ##'
-##' @name skeleton_plugins
-##' @rdname skeleton_plugins
+##' @name skeleton_spec
+##' @rdname skeleton_spec
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R
 ##' @keywords internal
@@ -114,7 +114,7 @@ skel_plugin <- function (object, skel.fn) {
 }
 
 ##' @name vectorfield
-##' @rdname skeleton_plugins
+##' @rdname skeleton_spec
 ##' @param f procedure for evaluating the deterministic skeleton
 ##' This can be a C snippet, an \R function, or the name of a native routine in a dynamically linked library.
 ##'
@@ -123,7 +123,7 @@ vectorfield <- function (f) {
 }
 
 ##' @name map
-##' @rdname skeleton_plugins
+##' @rdname skeleton_spec
 ##' @param delta.t positive numerical value; the size of the discrete time step corresponding to an application of the map
 ##'
 map <- function (f, delta.t = 1) {

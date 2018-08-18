@@ -5,7 +5,7 @@
 ##' @rdname pomp_class
 ##' @include pomp_fun.R
 ##' @include csnippet.R safecall.R
-##' @include rprocess_plugins.R skeleton_plugins.R
+##' @include rprocess_spec.R skeleton_spec.R
 ##' @include covariate_table.R parameter_trans.R
 ##' @keywords internal
 

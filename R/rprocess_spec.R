@@ -104,8 +104,8 @@
 ##' When the process is non-autonomous (i.e., the event rates depend explicitly on time), it can be useful to set \code{hmax} to the maximum step that will be taken.
 ##' By default, the elementary event rates will be recomputed at least once per observation interval.
 ##'
-##' @name rprocess_plugins
-##' @rdname rprocess_plugins
+##' @name rprocess_spec
+##' @rdname rprocess_spec
 ##' @docType methods
 ##' @include pomp_fun.R csnippet.R
 ##' @family information on model implementation
@@ -191,7 +191,7 @@ rproc_plugin <- function (object, step.fn, rate.fn) {
 }
 
 ##' @name onestep.sim
-##' @rdname rprocess_plugins
+##' @rdname rprocess_spec
 onestep.sim <- function (step.fun) {
   new("onestepRprocPlugin",
     step.fn=step.fun,
@@ -200,7 +200,7 @@ onestep.sim <- function (step.fun) {
     type=1L)
 }
 
-##' @rdname rprocess_plugins
+##' @rdname rprocess_spec
 ##' @name discrete.time.sim
 discrete.time.sim <- function (step.fun, delta.t = 1) {
   new("discreteRprocPlugin",
@@ -211,7 +211,7 @@ discrete.time.sim <- function (step.fun, delta.t = 1) {
     type=2L)
 }
 
-##' @rdname rprocess_plugins
+##' @rdname rprocess_spec
 ##' @name euler.sim
 euler.sim <- function (step.fun, delta.t) {
   new("eulerRprocPlugin",
@@ -222,7 +222,7 @@ euler.sim <- function (step.fun, delta.t) {
     type=3L)
 }
 
-##' @rdname rprocess_plugins
+##' @rdname rprocess_spec
 ##' @name gillespie.sim
 gillespie.sim <- function (rate.fun, v, hmax = Inf) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
@@ -243,7 +243,7 @@ gillespie.sim <- function (rate.fun, v, hmax = Inf) {
     type=4L)
 }
 
-##' @rdname rprocess_plugins
+##' @rdname rprocess_spec
 ##' @name gillespie.hl.sim
 ##'
 gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {

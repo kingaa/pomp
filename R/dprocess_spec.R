@@ -2,8 +2,8 @@
 ##'
 ##' Specify the process model density
 ##'
-##' @name dprocess_plugins
-##' @rdname dprocess_plugins
+##' @name dprocess_spec
+##' @rdname dprocess_spec
 ##' @family information on model implementation
 ##'
 ##' @details

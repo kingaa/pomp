@@ -2,8 +2,8 @@
 ##'
 ##' Specify the initial-state distribution simulator
 ##'
-##' @name rinit_plugins
-##' @rdname rinit_plugins
+##' @name rinit_spec
+##' @rdname rinit_spec
 ##' @family information on model implementation
 ##'
 ##' @details

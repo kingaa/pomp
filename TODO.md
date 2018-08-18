@@ -1,25 +1,18 @@
 # pomp to-do list
 
-- `as.data.frame` and ?? for `listies`
 - all methods use transforms if they exist
-- reorganize common methods: one file per method?
+- `as.data.frame` and ?? for `listies`
 - index by concept using `\concept{}` in the help files
-- make default initializer into a `pomp_fun` (and obviate the need for the `default_initializer` flag_t
-- null methods for `covariate_table` and `parameter_trans` can go into the argument lists
-- ~~get rid of `probevals`?~~
-- ~~get rid of `prior_samples` and `posterior_samples`~~
+- make default initializer into a `pomp_fun` (and obviate the need for the `default_initializer` flag
 - matching functions will go away, in favor of objective function constructors:
     - 'probe.match.objfun' looks good: needs testing
     - 'traj.match.objfun' looks good: needs testing
     - 'spect.match.objfun' looks good: needs testing
 	- 'nlf' needs to be reworked
 - revisit whether `pomp` can handle all `params` chopping and changing
-- ~~C snippet instructions~~
-- ~~ClassUnion for objfun methods~~
 - if `pomp` becomes essentially hidden, where will `zeronames` be documented?
 - specific workhorses in individual functions!!
 - consolidate examples somehow (it's bad to have so many NULL R files)
-- need a better term than "plugin"
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 

@@ -2,8 +2,8 @@
 ##'
 ##' Specify a measurement-model simulator
 ##'
-##' @name rmeasure_plugins
-##' @rdname rmeasure_plugins
+##' @name rmeasure_spec
+##' @rdname rmeasure_spec
 ##' @family information on model implementation
 ##'
 ##' @details

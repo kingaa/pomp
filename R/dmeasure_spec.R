@@ -2,8 +2,8 @@
 ##'
 ##' Specify the measurement model density
 ##'
-##' @name dmeasure_plugins
-##' @rdname dmeasure_plugins
+##' @name dmeasure_spec
+##' @rdname dmeasure_spec
 ##' @family information on model implementation
 ##'
 ##' @details

@@ -35,13 +35,13 @@
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rinit}, see \link[=rinit_plugins]{here}.}
+For more information on specifying \code{rinit}, see \link[=rinit_spec]{here}.}
 
 \item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rprocess}, see \link[=rprocess_plugins]{here}.}
+For more information on specifying \code{rprocess}, see \link[=rprocess_spec]{here}.}
 
 \item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{dmeasure}, see \link[=dmeasure_plugins]{here}.}
+For more information on specifying \code{dmeasure}, see \link[=dmeasure_spec]{here}.}
 
 \item{Nmif}{The number of filtering iterations to perform.}
 

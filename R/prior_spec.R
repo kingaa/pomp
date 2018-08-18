@@ -2,8 +2,8 @@
 ##'
 ##' Specify the prior distribution
 ##'
-##' @name prior_plugins
-##' @rdname prior_plugins
+##' @name prior_spec
+##' @rdname prior_spec
 ##' @family information on model implementation
 ##'
 ##' @details
