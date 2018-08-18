@@ -1,3 +1,20 @@
+##' @rdname design
+##' @export
+sobolDesign <- function (lower = numeric(0), upper = numeric(0), nseq) {
+  ep <- paste0("in ",sQuote("sobolDesign"),": ")
+  if (length(lower)!=length(upper))
+    stop(ep,sQuote("lower")," and ",sQuote("upper")," must have same length",call.=FALSE)
+  lnames <- names(lower)
+  if (is.null(lnames))
+    stop(ep,sQuote("lower")," and ",sQuote("upper")," must be named vectors",call.=FALSE)
+  if (!all(sort(lnames)==sort(names(upper))))
+    stop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match",call.=FALSE)
+  upper <- upper[lnames]
+  ranges <- lapply(lnames,function(k)c(lower[k],upper[k]))
+  names(ranges) <- lnames
+  sobol(ranges,n=as.integer(nseq))
+}
+
 sobol <- function (vars, n) {
   ep <- paste0("in ",sQuote("sobolDesign"),": ")
   d <- length(vars)
@@ -18,20 +35,4 @@ sobol <- function (vars, n) {
   )
   colnames(y) <- names(vars)
   as.data.frame(y)
-}
-
-##' @rdname design
-sobolDesign <- function (lower = numeric(0), upper = numeric(0), nseq) {
-  ep <- paste0("in ",sQuote("sobolDesign"),": ")
-  if (length(lower)!=length(upper))
-    stop(ep,sQuote("lower")," and ",sQuote("upper")," must have same length",call.=FALSE)
-  lnames <- names(lower)
-  if (is.null(lnames))
-    stop(ep,sQuote("lower")," and ",sQuote("upper")," must be named vectors",call.=FALSE)
-  if (!all(sort(lnames)==sort(names(upper))))
-    stop(ep,"names of ",sQuote("lower")," and ",sQuote("upper")," must match",call.=FALSE)
-  upper <- upper[lnames]
-  ranges <- lapply(lnames,function(k)c(lower[k],upper[k]))
-  names(ranges) <- lnames
-  sobol(ranges,n=as.integer(nseq))
 }

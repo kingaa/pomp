@@ -8,6 +8,11 @@
 ##' @include abc.R bsmc2.R mif2.R pmcmc.R pfilter.R spect.R
 ##' @include listies.R
 ##' @aliases plot,missing-method plot,ANY-method
+##'
+##' @importFrom graphics plot par abline pairs matplot box axis mtext points polygon lines plot.default legend hist rect text title
+##' @importFrom grDevices rgb dev.interactive
+##' @importFrom stats quantile cor density
+##'
 NULL
 
 setGeneric(
@@ -36,6 +41,7 @@ setClassUnion("pomp_plottable",c("pomp","pfilterd_pomp"))
 ##' @param \dots ignored or passed to low-level plotting functions
 ##'
 
+##' @export
 setMethod(
   "plot",
   signature=signature(x="pomp_plottable"),
@@ -57,6 +63,7 @@ setMethod(
 ##'
 ##' @param pars names of parameters.
 ##'
+##' @export
 setMethod(
   "plot",
   signature=signature(x="Pmcmc"),
@@ -72,6 +79,7 @@ setMethod(
 ##' @param scatter logical; if \code{FALSE}, traces of the parameters named in \code{pars} will be plotted against ABC iteration number.
 ##' If \code{TRUE}, the traces will be displayed or as a scatterplot.
 ##'
+##' @export
 setMethod(
   "plot",
   signature=signature(x="Abc"),
@@ -87,6 +95,7 @@ setMethod(
 ##' @param thin integer; when the number of samples is very large, it can be helpful to plot a random subsample:
 ##' \code{thin} specifies the size of this subsample.
 ##'
+##' @export
 setMethod(
   "plot",
   signature=signature(x="bsmcd_pomp"),
@@ -117,6 +126,7 @@ setMethod(
 ##' @rdname plot
 ##' @param y ignored
 ##'
+##' @export
 setMethod(
   "plot",
   signature=signature(x="Mif2"),
@@ -128,6 +138,7 @@ setMethod(
 ##' @name plot-probed_pomp
 ##' @aliases plot,probed_pomp-method
 ##' @rdname plot
+##' @export
 setMethod(
   "plot",
   signature=signature(x="probed_pomp"),
@@ -146,6 +157,7 @@ setMethod(
 ##' @param quantile.styles list; plot styles to use for quantiles
 ##' @param data.styles list; plot styles to use for data
 ##'
+##' @export
 setMethod(
   "plot",
   signature=signature(x="spectd_pomp"),

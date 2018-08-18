@@ -1,3 +1,13 @@
+##' NLF guts
+##'
+##' @name nlf-guts
+##' @rdname nlf
+##' @importFrom mvtnorm dmvnorm
+##' @importFrom stats dnorm .lm.fit sd cov
+##' @keywords internal
+##'
+NULL
+
 nlf.guts <- function (data.mat, data.times, model.mat, model.times,
   lags, period, tensor, nrbf = 4, bootstrap = FALSE, bootsamp = NULL) {
 

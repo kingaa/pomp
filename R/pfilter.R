@@ -5,9 +5,11 @@
 ##'
 ##' @name pfilter
 ##' @rdname pfilter
-##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R
 ##' @aliases pfilter,ANY-method pfilter,missing-method pfilter
 ##' @family particle filter methods
+##'
+##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R
+##' @importFrom stats setNames
 ##'
 ##' @inheritParams pomp
 ##' @param Np the number of particles to use.
@@ -138,6 +140,7 @@ setMethod(
 ##' @name pfilter-data.frame
 ##' @aliases pfilter,data.frame-method
 ##' @rdname pfilter
+##' @export
 setMethod(
   "pfilter",
   signature=signature(data="data.frame"),
@@ -182,6 +185,7 @@ setMethod(
 ##' @name pfilter-pomp
 ##' @aliases pfilter,pomp-method
 ##' @rdname pfilter
+##' @export
 setMethod(
   "pfilter",
   signature=signature(data="pomp"),
@@ -222,6 +226,7 @@ setMethod(
 ##' @name pfilter-pfilterd_pomp
 ##' @aliases pfilter,pfilterd_pomp-method
 ##' @rdname pfilter
+##' @export
 setMethod(
   "pfilter",
   signature=signature(data="pfilterd_pomp"),

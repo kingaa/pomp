@@ -8,7 +8,7 @@
 \alias{euler.sim}
 \alias{gillespie.sim}
 \alias{gillespie.hl.sim}
-\title{rprocess}
+\title{The latent state process simulator}
 \usage{
 onestep.sim(step.fun)
 
@@ -46,11 +46,10 @@ If any of the row names of \code{v} cannot be found among the state variables or
 
 \item{\dots}{individual C snippets corresponding to elementary events}
 
-\item{.pre, .post}{C snippets (see Details, below)}
+\item{.pre, .post}{C snippets (see Details)}
 }
 \description{
-Specify the process model simulator using helper functions.
-These are called \dQuote{plugins}.
+Specification of rprocess using \dQuote{plugins}.
 }
 \section{Discrete-time processes}{
 
@@ -62,7 +61,7 @@ The former is the preferred option, due to its much greater computational effici
 The goal of such a C snippet is to replace the state variables with their new random values at the end of the time interval.
 Accordingly, each state variable should be over-written with its new value.
 In addition to the states, parameters, covariates (if any), and observables, the variables \code{t} and \code{dt}, containing respectively the time at the beginning of the step and the step's duration, will be defined in the context in which the C snippet is executed.
-See above under \dQuote{General rules for C snippet writing} for more details.
+See \code{\link{Csnippet}} for general rules on writing C snippets.
 Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 
 If \code{f} is given as an \R function, it should have prototype \preformatted{
@@ -164,7 +163,8 @@ By default, the elementary event rates will be recomputed at least once per obse
 
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{accumulators}},
+  \code{\link{covariate_table}},
   \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}}, \code{\link{prior_spec}},
   \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},

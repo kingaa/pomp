@@ -32,6 +32,7 @@ setGeneric(
 ##' \code{covmat(object)} gives the covariance matrix of the chains.
 ##' This can be useful, for example, in tuning the proposal distribution.
 ##'
+##' @export
 setMethod(
   "covmat",
   signature=signature(object="pmcmcd_pomp"),
@@ -44,6 +45,7 @@ setMethod(
 ##' @name covmat-pmcmcList
 ##' @aliases covmat,pmcmcList-method
 ##' @rdname covmat
+##' @export
 setMethod(
   "covmat",
   signature=signature(object="pmcmcList"),
@@ -57,6 +59,7 @@ setMethod(
 ##' @name covmat-abcd_pomp
 ##' @aliases covmat,abcd_pomp-method
 ##' @rdname covmat
+##' @export
 setMethod(
   "covmat",
   signature=signature(object="abcd_pomp"),
@@ -69,6 +72,8 @@ setMethod(
 ##' @name covmat-abcList
 ##' @aliases covmat,abcList-method
 ##' @rdname covmat
+##'
+##' @export
 setMethod(
   "covmat",
   signature=signature(object="abcList"),
@@ -82,11 +87,14 @@ setMethod(
 ##' @name covmat-probed_pomp
 ##' @aliases covmat,probed_pomp-method
 ##' @rdname covmat
+##' @importFrom stats var
 ##'
 ##' @return
 ##' When \code{object} is a \sQuote{probed_pomp} object (i.e., the result
 ##' of a \code{probe} computation), \code{covmat(object)} returns the
 ##' covariance matrix of the probes, as applied to simulated data.
+##'
+##' @export
 setMethod(
   "covmat",
   signature=signature(object="probed_pomp"),

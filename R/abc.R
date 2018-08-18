@@ -7,6 +7,7 @@
 ##' @rdname abc
 ##' @docType methods
 ##' @include pomp_class.R probe.R continue.R workhorses.R
+##' @importFrom stats runif
 ##'
 ##' @inheritParams pomp
 ##' @inheritParams probe
@@ -112,6 +113,7 @@ setMethod(
 ##' @name abc-data.frame
 ##' @aliases abc,data.frame-method
 ##' @rdname abc
+##' @export
 setMethod(
   "abc",
   signature=signature(data="data.frame"),
@@ -137,6 +139,7 @@ setMethod(
 ##' @name abc-pomp
 ##' @aliases abc,pomp-method
 ##' @rdname abc
+##' @export
 setMethod(
   "abc",
   signature=signature(data="pomp"),
@@ -162,6 +165,7 @@ setMethod(
 )
 
 ##' @rdname abc
+##' @export
 setMethod(
   "abc",
   signature=signature(data="probed_pomp"),
@@ -175,6 +179,7 @@ setMethod(
 )
 
 ##' @rdname abc
+##' @export
 setMethod(
   "abc",
   signature=signature(data="abcd_pomp"),
@@ -206,6 +211,7 @@ setMethod(
 ##'
 ##' @param Nabc positive integer; number of additional iterations to perform
 ##'
+##' @export
 setMethod(
   "continue",
   signature=signature(object="abcd_pomp"),

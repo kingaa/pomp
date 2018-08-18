@@ -3,12 +3,13 @@
 ##' @name deprecated
 ##' @rdname deprecated
 ##' @keywords internal
-##' @include traces.R rprocess_spec.R
+##' @include traces.R rprocess_spec.R coerce_df.R
 NULL
 
 ##' @name conv.rec
 ##' @rdname deprecated
 ##' @keywords internal
+##' @export
 conv.rec <- function (object, ...) {
   warning(sQuote("conv.rec")," is deprecated and will be removed in a ",
     "forthcoming release.  Please use ",sQuote("traces")," instead.",
@@ -19,6 +20,7 @@ conv.rec <- function (object, ...) {
 ##' @name values
 ##' @rdname deprecated
 ##' @keywords internal
+##' @export
 values <- function (object, ...) {
   warning(sQuote("values")," is deprecated and will be removed in a ",
     "forthcoming release.  Please use ",
@@ -29,6 +31,7 @@ values <- function (object, ...) {
 ##' @name onestep.dens
 ##' @rdname deprecated
 ##' @keywords internal
+##' @export
 onestep.dens <- function (dens.fun, PACKAGE) {
   warning(sQuote("onestep.dens")," is deprecated and will be removed in a ",
     "forthcoming release.  ","Specify ",sQuote("dprocess")," directly ",

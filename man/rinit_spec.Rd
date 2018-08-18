@@ -2,9 +2,9 @@
 % Please edit documentation in R/rinit_spec.R
 \name{rinit_spec}
 \alias{rinit_spec}
-\title{rinit}
+\title{The initial-state distribution}
 \description{
-Specify the initial-state distribution simulator
+Specification of rinit
 }
 \details{
 To fully specify the unobserved Markov state process, one must give its distribution at the zero-time (\code{t0}).
@@ -43,7 +43,8 @@ In the latter case, it samples from the distribution of the state process at the
 }
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{accumulators}},
+  \code{\link{covariate_table}},
   \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}}, \code{\link{prior_spec}},
   \code{\link{rmeasure_spec}}, \code{\link{rprocess_spec}},

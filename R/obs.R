@@ -6,6 +6,8 @@
 ##' @docType methods
 ##' @rdname obs
 ##' @include pomp_class.R
+##' @importFrom stats setNames
+##'
 NULL
 
 setGeneric(
@@ -21,6 +23,7 @@ setGeneric(
 ##' @param vars names of variables to retrieve
 ##' @param \dots ignored
 ##'
+##' @export
 setMethod(
   "obs",
   signature=signature(object="pomp"),

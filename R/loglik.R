@@ -42,6 +42,7 @@ setMethod(
   }
 )
 
+##' @export
 setMethod(
   "logLik",
   signature=signature(object="listies"),
@@ -53,6 +54,7 @@ setMethod(
 ##' @name logLik-pfilterd_pomp
 ##' @aliases logLik,pfilterd_pomp-method
 ##' @rdname loglik
+##' @export
 setMethod(
   "logLik",
   signature=signature(object="pfilterd_pomp"),
@@ -62,6 +64,7 @@ setMethod(
 ##' @name logLik-kalmand_pomp
 ##' @aliases logLik,kalmand_pomp-method
 ##' @rdname loglik
+##' @export
 setMethod(
   "logLik",
   signature=signature(object="kalmand_pomp"),
@@ -71,6 +74,7 @@ setMethod(
 ##' @name logLik-pmcmcd_pomp
 ##' @aliases logLik,pmcmcd_pomp-method
 ##' @rdname loglik
+##' @export
 setMethod(
   "logLik",
   signature=signature(object="pmcmcd_pomp"),
@@ -85,6 +89,7 @@ setMethod(
 ##' @return
 ##' When \code{object} is of \sQuote{nlfd_pomp} class (i.e., the result of a \code{nlf} computation), \code{logLik} retrieves the \dQuote{simulate maximum quasi log likelihood} (see \code{\link{nlf}}).
 ##'
+##' @export
 setMethod(
   "logLik",
   signature=signature(object="nlfd_pomp"),
@@ -97,9 +102,12 @@ setMethod(
 ##' @aliases logLik,bsmcd_pomp-method
 ##' @rdname loglik
 ##'
+##' @importFrom stats logLik
+##'
 ##' @return
 ##' When \code{object} is of \sQuote{bsmcd_pomp} class (i.e., the result of a \code{bsmc2} computation), \code{logLik} retrieves the \dQuote{log evidence} (see \code{\link{bsmc2}}).
 ##'
+##' @export
 setMethod(
   "logLik",
   signature=signature(object="bsmcd_pomp"),

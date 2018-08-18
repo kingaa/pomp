@@ -34,7 +34,8 @@ Its role is to evaluate the prior probability density (or log density if \code{l
 }
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{accumulators}},
+  \code{\link{covariate_table}},
   \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}}, \code{\link{rinit_spec}},
   \code{\link{rmeasure_spec}}, \code{\link{rprocess_spec}},

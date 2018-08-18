@@ -15,7 +15,7 @@
 ##' }
 ##'
 ##' @name workhorses
-##' @include pomp_class.R pomp_fun.R
+##' @include pomp_class.R pomp_fun.R load.R
 ##' @docType methods
 ##' @family pomp workhorses
 ##' @seealso
@@ -67,6 +67,7 @@ setGeneric(
 ##' \code{dmeasure} returns a matrix of dimensions \code{nreps} x \code{ntimes}.
 ##' If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or log likelihood if \code{log = TRUE}) of the observation \code{y[,k]} at time \code{times[k]} given the state \code{x[,j,k]}.
 ##'
+##' @export
 setMethod(
   "dmeasure",
   signature=signature(object="pomp"),
@@ -119,6 +120,7 @@ setGeneric(
 ##' @return
 ##' The required density (or log density), as a numeric vector.
 ##'
+##' @export
 setMethod(
   "dprior",
   signature=signature(object="pomp"),
@@ -162,6 +164,7 @@ setGeneric(
 ##' \code{dprocess} returns a matrix of dimensions \code{nrep} x \code{ntimes-1}.
 ##' If \code{d} is the returned matrix, \code{d[j,k]} is the likelihood (or the log likelihood if \code{log=TRUE}) of the transition from state \code{x[,j,k-1]} at time \code{times[k-1]} to state \code{x[,j,k]} at time \code{times[k]}.
 ##'
+##' @export
 setMethod(
   "dprocess",
   signature=signature(object="pomp"),
@@ -211,6 +214,7 @@ setGeneric(
 ##' If \code{dir=toEst}, they are transformed onto the estimation scale.
 ##' In both cases, the parameters are returned as a named numeric vector or an array with rownames, as appropriate.
 ##'
+##' @export
 setMethod(
   "partrans",
   signature=signature(object="pomp"),
@@ -261,7 +265,8 @@ setGeneric(
 ##' \code{rinit} returns an \code{nvar} x \code{nsim} matrix of state-process initial conditions when given an \code{npar} x \code{nsim} matrix of parameters, \code{params}, and an initial time \code{t0}.
 ##' By default, \code{t0} is the initial time defined when the \sQuote{pomp} object ws constructed.
 ##' If \code{nsim} is not specified, then \code{nsim=ncol(params)}.
-
+##'
+##' @export
 setMethod(
   "rinit",
   signature=signature("pomp"),
@@ -306,6 +311,7 @@ setGeneric(
 ##' @return
 ##' \code{rmeasure} returns a rank-3 array of dimensions \code{nobs} x \code{nrep} x \code{ntimes}, where \code{nobs} is the number of observed variables.
 ##'
+##' @export
 setMethod(
   "rmeasure",
   signature=signature(object="pomp"),
@@ -354,6 +360,7 @@ setGeneric(
 ##' @return
 ##' A numeric matrix containing the required samples.
 ##'
+##' @export
 setMethod(
   "rprior",
   signature=signature(object="pomp"),
@@ -409,6 +416,7 @@ setGeneric(
 ##' \code{x[,j,k]} is the value of the state process in the \code{j}-th realization at time \code{times[k+offset]}.
 ##' The rownames of \code{x} must correspond to those of \code{xstart}.
 ##'
+##' @export
 setMethod(
   "rprocess",
   signature=signature(object="pomp"),
@@ -454,7 +462,8 @@ setGeneric(
 ##' @return
 ##' \code{skeleton} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
 ##' If \code{f} is the returned matrix, \code{f[i,j,k]} is the i-th component of the deterministic skeleton at time \code{times[k]} given the state \code{x[,j,k]} and parameters \code{params[,j]}.
-
+##'
+##' @export
 setMethod(
   "skeleton",
   signature=signature("pomp"),

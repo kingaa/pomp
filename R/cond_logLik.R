@@ -7,7 +7,7 @@
 ##' Here, \eqn{Y_t}{Yt} is the observable process and \eqn{y^*_t}{yt*} is the data, at time \eqn{t}.
 ##'
 ##' \deqn{\ell_t(\theta) = \mathrm{Prob}[y_t \vert y_1, \dots, y_{t-1}],}{ell_t(theta)=Prob[y_t | y_1, \dots, y_(t-1)],} where \eqn{y_t} are the data, at time \eqn{t}.
-##' 
+##'
 ##' @name cond.logLik
 ##' @docType methods
 ##' @rdname cond_logLik
@@ -51,6 +51,7 @@ setMethod(
 ##' @param object an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}
 ##' @param \dots ignored
 ##'
+##' @export
 setMethod(
   "cond.logLik",
   signature=signature(object="kalmand_pomp"),
@@ -60,6 +61,7 @@ setMethod(
 ##' @name cond.logLik-pfilterd_pomp
 ##' @aliases cond.logLik,pfilterd_pomp-method
 ##' @rdname cond_logLik
+##' @export
 setMethod(
   "cond.logLik",
   signature=signature(object="pfilterd_pomp"),
@@ -73,6 +75,7 @@ setMethod(
 ##' @return
 ##' When \code{object} is of class \sQuote{bsmcd_pomp} (i.e., the result of a \code{bsmc2} computation), \code{cond.logLik} returns the conditional log \dQuote{evidence} (see \code{\link{bsmc2}}).
 ##'
+##' @export
 setMethod(
   "cond.logLik",
   signature=signature(object="bsmcd_pomp"),

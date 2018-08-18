@@ -65,4 +65,6 @@
 ##' See the package website, \url{https://kingaa.github.io/pomp/}, for more
 ##' references.
 ##'
+##' @useDynLib pomp, .registration = TRUE
+##' @import methods
 NULL

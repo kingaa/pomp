@@ -21,6 +21,7 @@
 ##'   x <- trajectory(ricker,times=seq(from=1000,to=2000,by=1),params=p)
 ##'   matplot(p["r",],x["N",,],pch='.',col='black',xlab="log(r)",ylab="N",log='x')
 ##'
+##' @export
 
 parmat <- function (params, nrep = 1) {
   d <- dim(params)

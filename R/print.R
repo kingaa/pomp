@@ -14,6 +14,7 @@ setGeneric(
         standardGeneric("print")
 )
 
+##' @export
 setMethod(
   "print",
   signature=signature(x="unshowable"),
@@ -23,6 +24,7 @@ setMethod(
   }
 )
 
+##' @export
 setMethod(
   "print",
   signature=signature(x="listies"),
@@ -32,6 +34,7 @@ setMethod(
   }
 )
 
+##' @export
 setMethod(
   "print",
   "pomp_fun",

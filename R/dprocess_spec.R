@@ -1,6 +1,6 @@
-##' dprocess
+##' The latent state process density
 ##'
-##' Specify the process model density
+##' Specification of dprocess.
 ##'
 ##' @name dprocess_spec
 ##' @rdname dprocess_spec

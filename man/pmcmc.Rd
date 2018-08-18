@@ -33,22 +33,25 @@
 
 \item{Nmcmc}{The number of PMCMC iterations to perform.}
 
-\item{params}{optional; named numeric vector of parameters.  This will be
-coerced internally to storage mode \code{double}.}
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rinit}, see \link[=rinit_spec]{here}.}
+Setting \code{rinit=NULL} sets the initial-state simulator to its default.
+For more information, see \link[=rinit_spec]{here}.}
 
-\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rprocess}, see \link[=rprocess_spec]{here}.}
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+Setting \code{rprocess=NULL} removes the latent-state simulator.
+For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
 
 \item{dmeasure}{evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{dmeasure}, see \link[=dmeasure_spec]{here}.}
+Setting \code{dmeasure=NULL} removes the measurement density evaluator.
+For more information, see \link[=dmeasure_spec]{here}.}
 
-\item{dprior}{optional; specification of the prior distribution on
-parameters.
-For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_spec]{here}.}
+\item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{dprior=NULL} removes the prior distribution density evaluator.
+For more information, see \link[=prior_spec]{here}.}
 
 \item{proposal}{optional function that draws from the proposal
 distribution.  Currently, the proposal distribution must be symmetric for
@@ -76,9 +79,11 @@ See the section on \emph{Filtering Failures} below for more information.}
 If the number of filtering failures exceeds this number, execution will terminate with an error.
 By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
+Named arguments that are not recognized by \pkg{pomp} will be stored for the use of the basic model components.
+See the \link[=userdata]{documentation here} for details.}
 
-\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
+\item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
 An object of class \sQuote{pmcmcd_pomp}.
@@ -112,10 +117,11 @@ Annals of Statistics, 37:697-725.
 \code{\link{pfilter}}, \link[=proposals]{MCMC proposals}, and the
 tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 
-Other particle filter methods: \code{\link{cond.logLik}},
-  \code{\link{eff.sample.size}}, \code{\link{filter.mean}},
-  \code{\link{mif2}}, \code{\link{pfilter}},
-  \code{\link{pred.mean}}, \code{\link{pred.var}}
+Other particle filter methods: \code{\link{bsmc2}},
+  \code{\link{cond.logLik}}, \code{\link{eff.sample.size}},
+  \code{\link{filter.mean}}, \code{\link{mif2}},
+  \code{\link{pfilter}}, \code{\link{pred.mean}},
+  \code{\link{pred.var}}
 }
 \author{
 Edward L. Ionides, Aaron A. King, Sebastian Funk

@@ -31,9 +31,10 @@ Effective sample size is computed as
 where \eqn{w_{it}}{w_it} is the normalized weight of particle \eqn{i} at time \eqn{t}.
 }
 \seealso{
-Other particle filter methods: \code{\link{cond.logLik}},
-  \code{\link{filter.mean}}, \code{\link{mif2}},
-  \code{\link{pfilter}}, \code{\link{pmcmc}},
-  \code{\link{pred.mean}}, \code{\link{pred.var}}
+Other particle filter methods: \code{\link{bsmc2}},
+  \code{\link{cond.logLik}}, \code{\link{filter.mean}},
+  \code{\link{mif2}}, \code{\link{pfilter}},
+  \code{\link{pmcmc}}, \code{\link{pred.mean}},
+  \code{\link{pred.var}}
 }
 \concept{particle filter methods}

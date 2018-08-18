@@ -1,6 +1,6 @@
-##' Deterministic skeleton of a model
+##' The deterministic skeleton of a model
 ##'
-##' Specifying the deterministic skeleton of a model.
+##' Specification of \dfn{skeleton}.
 ##'
 ##' @name skeleton_spec
 ##' @rdname skeleton_spec
@@ -117,6 +117,7 @@ skel_plugin <- function (object, skel.fn) {
 ##' @rdname skeleton_spec
 ##' @param f procedure for evaluating the deterministic skeleton
 ##' This can be a C snippet, an \R function, or the name of a native routine in a dynamically linked library.
+##' @export
 ##'
 vectorfield <- function (f) {
   new("vectorfieldPlugin",skel.fn=f,type=1L)
@@ -125,6 +126,7 @@ vectorfield <- function (f) {
 ##' @name map
 ##' @rdname skeleton_spec
 ##' @param delta.t positive numerical value; the size of the discrete time step corresponding to an application of the map
+##' @export
 ##'
 map <- function (f, delta.t = 1) {
   if (!isTRUE(delta.t > 0 && length(delta.t)==1))

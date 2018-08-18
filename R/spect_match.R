@@ -10,9 +10,10 @@
 ##' @name spect.match
 ##' @docType methods
 ##' @rdname spect_match
-##' @include spect.R probe_match.R loglik.R
 ##' @aliases spect.match.objfun spect.match.objfun,missing-method spect.match.objfun,ANY-method
 ##'
+##' @include spect.R probe_match.R loglik.R
+#'
 ##' @inheritParams pomp
 ##' @inheritParams probe.match
 ##' @inheritParams spect
@@ -30,12 +31,9 @@
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and the discrepancy measure.
 ##'
-##' @section Important Note:
-##' Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-##' One should check that the parameters agree with those that are returned by the optimizer.
-##' The best practice is to call \code{\link[=spect,spect_match_objfun-method]{spect}} on the objective function after the optimization has been performed, thus obtaining a \sQuote{spectd_pomp} object containing the (putative) optimal parameters.
+##' @inheritSection objfun Important Note
 ##'
-##' @seealso \code{\link{trajectory}}, \code{\link{optim}},
+##' @seealso \code{\link{spect}}, \code{\link{optim}},
 ##' \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 ##'
 NULL
@@ -75,6 +73,7 @@ setMethod(
 ##' @name spect.match.objfun-data.frame
 ##' @aliases spect.match.objfun,data.frame-method
 ##' @rdname spect_match
+##' @export
 setMethod(
   "spect.match.objfun",
   signature=signature(data="data.frame"),
@@ -107,6 +106,7 @@ setMethod(
 ##' @name spect.match.objfun-pomp
 ##' @aliases spect.match.objfun,pomp-method
 ##' @rdname spect_match
+##' @export
 setMethod(
   "spect.match.objfun",
   signature=signature(data="pomp"),
@@ -138,6 +138,7 @@ setMethod(
 ##' @name spect.match.objfun-spectd_pomp
 ##' @aliases spect.match.objfun,spectd_pomp-method
 ##' @rdname spect_match
+##' @export
 setMethod(
   "spect.match.objfun",
   signature=signature(data="spectd_pomp"),
@@ -170,6 +171,7 @@ setMethod(
 ##' @name spect.match.objfun-spect_match_objfun
 ##' @aliases spect.match.objfun,spect_match_objfun-method
 ##' @rdname spect_match
+##' @export
 setMethod(
   "spect.match.objfun",
   signature=signature(data="spect_match_objfun"),
@@ -283,6 +285,7 @@ spect.discrep <- function (object, ker, weights) {
 ##' @name spect-spect_match_objfun
 ##' @rdname spect
 ##' @aliases spect,spect_match_objfun-method
+##' @export
 setMethod(
   "spect",
   signature=signature(data="spect_match_objfun"),
@@ -294,6 +297,7 @@ setMethod(
 ##' @name logLik-spect_match_objfun
 ##' @rdname loglik
 ##' @aliases logLik,spect_match_objfun-method
+##' @export
 setMethod(
   "logLik",
   signature=signature(object="spect_match_objfun"),

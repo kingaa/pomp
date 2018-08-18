@@ -1,6 +1,6 @@
-##' rmeasure
+##' The measurement-model simulator
 ##'
-##' Specify a measurement-model simulator
+##' Specification of rmeasure
 ##'
 ##' @name rmeasure_spec
 ##' @rdname rmeasure_spec
@@ -15,7 +15,7 @@
 ##'   rmeasure = f}
 ##' to \pkg{pomp} algorithms,
 ##' where \code{f} is a C snippet or \R function that implements your procedure.
-##' 
+##'
 ##' Using a C snippet is much preferred, due to its much greater computational efficiency.
 ##' See \code{\link{Csnippet}} for general rules on writing C snippets.
 ##'
@@ -25,9 +25,9 @@
 ##'     Accordingly, each observable should be assigned a new value.
 ##'     \item In addition to the states, parameters, covariates (if any), and observables, the variable \code{t}, containing the time of the observation, will be defined in the context in which the snippet is executed.
 ##'   }
-##' 
+##'
 ##' The demos and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website} give examples as well.
-##' 
+##'
 ##' It is also possible, though far less efficient, to specify \code{rmeasure} using an \R function.
 ##' In this case, specify the measurement model simulator by furnishing \preformatted{
 ##'   rmeasure = f}

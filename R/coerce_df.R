@@ -46,6 +46,7 @@ setAs(
 ##'
 ##' @param x the object to be coerced
 ##' @param \dots ignored
+##' @export
 ##'
 as.data.frame.pomp <- function (x, ...) as(x,"data.frame")
 
@@ -81,6 +82,7 @@ setAs(
 
 ##' @method as.data.frame pfilterd_pomp
 ##' @rdname as_data_frame
+##' @export
 as.data.frame.pfilterd_pomp <- function (x, ...) as(x,"data.frame")
 
 ##' @name as,probed_pomp-method
@@ -103,6 +105,7 @@ setAs(
 
 ##' @method as.data.frame probed_pomp
 ##' @rdname as_data_frame
+##' @export
 as.data.frame.probed_pomp <- function (x, ...)
   as(x,"data.frame")
 
@@ -132,6 +135,7 @@ setAs(
 
 ##' @method as.data.frame kalmand_pomp
 ##' @rdname as_data_frame
+##' @export
 as.data.frame.kalmand_pomp <- function (x, ...) {
   as(x,"data.frame")
 }
@@ -153,6 +157,7 @@ setAs(
 
 ##' @method as.data.frame bsmcd_pomp
 ##' @rdname as_data_frame
+##' @export
 as.data.frame.bsmcd_pomp <- function (x, ...) {
   as(x,"data.frame")
 }

@@ -36,6 +36,7 @@ setMethod(
 )
 
 ##' @rdname spy
+##' @export
 setMethod(
   "spy",
   signature=signature(object="pomp"),

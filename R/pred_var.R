@@ -6,7 +6,7 @@
 ##' \deqn{X_t \vert y_1,\dots,y_{t-1},}{X_t | y_1,\dots,y_(t-1),}
 ##' where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively,
 ##' at time \eqn{t}.
-##' 
+##'
 ##' @name pred.var
 ##' @aliases pred.var pred.var,ANY-method pred.var,missing-method
 ##' @include pfilter.R kalman.R
@@ -43,6 +43,7 @@ setMethod(
 ##' @rdname pred_var
 ##' @inheritParams filter.mean-kalmand_pomp
 ##'
+##' @export
 setMethod(
   "pred.var",
   signature=signature(object="pfilterd_pomp"),

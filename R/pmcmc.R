@@ -11,6 +11,7 @@
 ##' @aliases pmcmc pmcmc,ANY-method pmcmc,missing-method
 ##' @family particle filter methods
 ##'
+##' @importFrom stats runif
 ##' @inheritParams pomp
 ##' @inheritParams pfilter
 ##' @param Nmcmc The number of PMCMC iterations to perform.
@@ -92,6 +93,7 @@ setMethod(
 ##' @name pmcmc-data.frame
 ##' @aliases pmcmc,data.frame-method
 ##' @rdname pmcmc
+##' @export
 setMethod(
   "pmcmc",
   signature=signature(data="data.frame"),
@@ -118,6 +120,7 @@ setMethod(
 ##' @name pmcmc-pomp
 ##' @aliases pmcmc,pomp-method
 ##' @rdname pmcmc
+##' @export
 setMethod(
   "pmcmc",
   signature=signature(data="pomp"),
@@ -141,6 +144,7 @@ setMethod(
 ##' @name pmcmc-pfilterd_pomp
 ##' @aliases pmcmc,pfilterd_pomp-method
 ##' @rdname pmcmc
+##' @export
 setMethod(
   "pmcmc",
   signature=signature(data="pfilterd_pomp"),
@@ -157,6 +161,7 @@ setMethod(
 ##' @name pmcmc-pmcmcd_pomp
 ##' @aliases pmcmc,pmcmcd_pomp-method
 ##' @rdname pmcmc
+##' @export
 setMethod(
   "pmcmc",
   signature=signature(data="pmcmcd_pomp"),
@@ -179,6 +184,7 @@ setMethod(
 ##'
 ##' @param Nmcmc positive integer; number of additional iterations to perform
 ##'
+##' @export
 setMethod(
   "continue",
   signature=signature(object="pmcmcd_pomp"),

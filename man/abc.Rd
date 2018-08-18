@@ -31,22 +31,25 @@
 
 \item{Nabc}{the number of ABC iterations to perform.}
 
-\item{params}{optional; named numeric vector of parameters.  This will be
-coerced internally to storage mode \code{double}.}
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rinit}, see \link[=rinit_spec]{here}.}
+Setting \code{rinit=NULL} sets the initial-state simulator to its default.
+For more information, see \link[=rinit_spec]{here}.}
 
-\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rprocess}, see \link[=rprocess_spec]{here}.}
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+Setting \code{rprocess=NULL} removes the latent-state simulator.
+For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
 
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rmeasure}, see \link[=rmeasure_spec]{here}.}
+Setting \code{rmeasure=NULL} removes the measurement model simulator.
+For more information, see \link[=rmeasure_spec]{here}.}
 
-\item{dprior}{optional; specification of the prior distribution on
-parameters.
-For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_spec]{here}.}
+\item{dprior}{optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+Setting \code{dprior=NULL} removes the prior distribution density evaluator.
+For more information, see \link[=prior_spec]{here}.}
 
 \item{proposal}{optional function that draws from the proposal
 distribution.  Currently, the proposal distribution must be symmetric for
@@ -64,9 +67,11 @@ see \link[=basic_probes]{basic probes}.}
 
 \item{epsilon}{ABC tolerance.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
+Named arguments that are not recognized by \pkg{pomp} will be stored for the use of the basic model components.
+See the \link[=userdata]{documentation here} for details.}
 
-\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
+\item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \description{
 The approximate Bayesian computation (ABC) algorithm for estimating the parameters of a partially-observed Markov process.

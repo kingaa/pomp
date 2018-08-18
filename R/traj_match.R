@@ -25,10 +25,7 @@
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the log likelihood.
 ##'
-##' @section Important Note:
-##' Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-##' One should check that the parameters agree with those that are returned by the optimizer.
-##'
+##' @inheritSection objfun Important Note
 ##' @seealso \code{\link{trajectory}}, \code{\link{optim}},
 ##' \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 NULL
@@ -74,6 +71,7 @@ setMethod(
 ##' the elements of this list will be passed to \code{\link[=deSolve]{ode}}.
 ##' @param \dots additional arguments will modify the model structure
 ##'
+##' @export
 setMethod(
   "traj.match.objfun",
   signature=signature(object="pomp"),

@@ -29,6 +29,7 @@ setClassUnion("unshowable",members=c("pomp","abcd_pomp","bsmcd_pomp",
   "kalmand_pomp","mif2d_pomp","nlfd_pomp","pfilterd_pomp","pmcmcd_pomp",
   "probed_pomp","spectd_pomp"))
 
+##' @export
 setMethod(
   "show",
   signature=signature(object="unshowable"),
@@ -38,6 +39,7 @@ setMethod(
   }
 )
 
+##' @export
 setMethod(
   "show",
   signature=signature(object="listies"),
@@ -48,6 +50,7 @@ setMethod(
   }
 )
 
+##' @export
 setMethod(
   "show",
   signature=signature("pomp_fun"),

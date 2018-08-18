@@ -5,6 +5,7 @@
 ##'
 ##' @name basic_probes
 ##' @rdname basic_probes
+##' @importFrom stats median spec.pgram kernel quantile sd var
 ##'
 ##' @param var,vars character; the name(s) of the observed variable(s).
 ##' @param trim the fraction of observations to be trimmed (see
@@ -52,7 +53,10 @@
 ##' S. N. Wood Statistical inference for noisy nonlinear ecological dynamic
 ##' systems, Nature, 466: 1102--1104, 2010.
 ##'
+NULL
+
 ##'@rdname basic_probes
+##' @export
 probe.mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
   if (length(var)>1)
     stop(sQuote("probe.mean")," is a univariate probe",call.=FALSE)
@@ -61,6 +65,7 @@ probe.mean <- function (var, trim = 0, transform = identity, na.rm = TRUE) {
 }
 
 ##'@rdname basic_probes
+##' @export
 probe.median <- function (var, na.rm = TRUE) {
   if (length(var)>1)
     stop(sQuote("probe.median")," is a univariate probe",call.=FALSE)
@@ -68,6 +73,7 @@ probe.median <- function (var, na.rm = TRUE) {
 }
 
 ##'@rdname basic_probes
+##' @export
 probe.var <- function (var, transform = identity, na.rm = TRUE) {
   if (length(var)>1)
     stop(sQuote("probe.var")," is a univariate probe",call.=FALSE)
@@ -76,6 +82,7 @@ probe.var <- function (var, transform = identity, na.rm = TRUE) {
 }
 
 ##'@rdname basic_probes
+##' @export
 probe.sd <- function (var, transform = identity, na.rm = TRUE) {
   if (length(var)>1)
     stop(sQuote("probe.sd")," is a univariate probe",call.=FALSE)
@@ -84,6 +91,7 @@ probe.sd <- function (var, transform = identity, na.rm = TRUE) {
 }
 
 ##'@rdname basic_probes
+##' @export
 probe.period <- function (var, kernel.width, transform = identity) {
   if (length(var)>1)
     stop(sQuote("probe.period")," is a univariate probe",call.=FALSE)
@@ -103,6 +111,7 @@ probe.period <- function (var, kernel.width, transform = identity) {
 }
 
 ##'@rdname basic_probes
+##' @export
 probe.quantile <- function (var, prob) {
   if (length(var)>1)
     stop(sQuote("probe.quantile")," is a univariate probe",call.=FALSE)
@@ -110,6 +119,7 @@ probe.quantile <- function (var, prob) {
 }
 
 ##'@rdname basic_probes
+##' @export
 probe.acf <- function (var, lags, type = c("covariance", "correlation"),
   transform = identity) {
   type <- match.arg(type)
@@ -135,6 +145,7 @@ probe.acf <- function (var, lags, type = c("covariance", "correlation"),
 }
 
 ##'@rdname basic_probes
+##' @export
 probe.ccf <- function (vars, lags, type = c("covariance", "correlation"),
   transform = identity) {
   type <- match.arg(type)
@@ -159,6 +170,7 @@ probe.ccf <- function (vars, lags, type = c("covariance", "correlation"),
 }
 
 ##'@rdname basic_probes
+##' @export
 probe.marginal <- function (var, ref, order = 3, diff = 1,
   transform = identity) {
   if (length(var)>1) stop(sQuote("probe.marginal")," is a univariate probe",call.=FALSE)
@@ -178,6 +190,7 @@ probe.marginal <- function (var, ref, order = 3, diff = 1,
 }
 
 ##'@rdname basic_probes
+##' @export
 probe.nlar <- function (var, lags, powers, transform = identity) {
   if (length(var)>1) stop(sQuote("probe.nlar")," is a univariate probe",call.=FALSE)
   transform <- match.fun(transform)

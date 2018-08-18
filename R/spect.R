@@ -16,10 +16,11 @@
 ##' @name spect
 ##' @docType methods
 ##' @rdname spect
-##' @include simulate_pomp.R pomp.R
 ##' @aliases spect spect,missing-method spect,ANY-method
 ##' @family summary statistics methods
 ##'
+##' @include simulate_pomp.R pomp.R
+##' @importFrom stats spec.pgram kernel .lm.fit
 ##' @inheritParams pomp
 ##' @param vars optional; names of observed variables for which the power spectrum will be computed.
 ##' By default, the spectrum will be computed for all observables.
@@ -103,6 +104,7 @@ setMethod(
 ##' @name spect-data.frame
 ##' @aliases spect spect,data.frame-method
 ##' @rdname spect
+##' @export
 setMethod(
   "spect",
   signature(data="data.frame"),
@@ -130,6 +132,7 @@ setMethod(
 ##' @name spect-pomp
 ##' @aliases spect spect,pomp-method
 ##' @rdname spect
+##' @export
 setMethod(
   "spect",
   signature(data="pomp"),
@@ -158,6 +161,7 @@ setMethod(
 ##' @name spect-spectd_pomp
 ##' @aliases spect,spectd_pomp-method
 ##' @rdname spect
+##' @export
 setMethod(
   "spect",
   signature=signature(data="spectd_pomp"),
@@ -372,6 +376,7 @@ reuman.kernel <- function (kernel.width) {
 ##' @name summary-spectd_pomp
 ##' @aliases summary,spectd_pomp-method
 ##' @rdname summary
+##' @export
 setMethod(
   "summary",
   signature=signature(object="spectd_pomp"),

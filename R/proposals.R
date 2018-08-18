@@ -5,6 +5,7 @@
 ##'
 ##' @name proposals
 ##' @rdname proposals
+##' @importFrom stats rnorm
 ##'
 ##' @param rw.var square numeric matrix with row- and column-names.  Specifies
 ##' the variance-covariance matrix for a multivariate normal random-walk
@@ -40,6 +41,7 @@
 NULL
 
 ##' @rdname proposals
+##' @export
 mvn.diag.rw <- function (rw.sd) {
   if (missing(rw.sd) || !is.numeric(rw.sd)) {
     stop("in ",sQuote("mvn.diag.rw"),": ",
@@ -58,6 +60,7 @@ mvn.diag.rw <- function (rw.sd) {
 }
 
 ##' @rdname proposals
+##' @export
 mvn.rw <- function (rw.var) {
   rw.var <- as.matrix(rw.var)
   parnm <- colnames(rw.var)
@@ -84,6 +87,7 @@ mvn.rw <- function (rw.var) {
 }
 
 ##' @rdname proposals
+##' @export
 ## a stateful function implementing an adaptive proposal
 mvn.rw.adaptive <- function (rw.sd, rw.var, scale.start = NA,
   scale.cooling = 0.999,shape.start = NA, target = 0.234, max.scaling = 50) {

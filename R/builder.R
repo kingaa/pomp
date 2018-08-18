@@ -15,6 +15,9 @@
 ##' @docType methods
 ##' @include pomp_class.R csnippet.R safecall.R templates.R
 ##'
+##' @importFrom digest digest
+##' @importFrom stats runif
+##'
 ##' @param \dots named arguments representing the workhorses.  These can be
 ##' functions, character strings naming routines in external,
 ##' dynamically-linked libraries, C snippets, or \code{NULL}.  The first three
@@ -72,6 +75,7 @@ NULL
 ## suitable for use in the appropriate slots in 'pomp' objects.
 
 ##' @rdname hitch
+##' @export
 hitch <- function (..., templates,
   obsnames, statenames, paramnames, covarnames,
   PACKAGE, globals, cfile, cdir, shlib.args,

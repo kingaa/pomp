@@ -14,8 +14,8 @@
   as.data.frame = FALSE, include.data = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{simulate}{missing}(object, nsim = 1, seed = NULL, rinit,
-  rprocess, rmeasure, params, states = FALSE, obs = FALSE, times, t0,
+\S4method{simulate}{missing}(nsim = 1, seed = NULL, rinit, rprocess,
+  rmeasure, params, states = FALSE, obs = FALSE, times, t0,
   as.data.frame = FALSE, include.data = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 }
@@ -31,23 +31,25 @@ The RNG will be restored to its original state afterward.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rinit}, see \link[=rinit_spec]{here}.}
+Setting \code{rinit=NULL} sets the initial-state simulator to its default.
+For more information, see \link[=rinit_spec]{here}.}
 
-\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rprocess}, see \link[=rprocess_spec]{here}.}
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+Setting \code{rprocess=NULL} removes the latent-state simulator.
+For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
 
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rmeasure}, see \link[=rmeasure_spec]{here}.}
+Setting \code{rmeasure=NULL} removes the measurement model simulator.
+For more information, see \link[=rmeasure_spec]{here}.}
 
-\item{params}{optional; named numeric vector of parameters.  This will be
-coerced internally to storage mode \code{double}.}
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{states}{Do we want the state trajectories?}
 
 \item{obs}{Do we want data-frames of the simulated observations?}
 
-\item{times}{the times at which
-observations are made.
+\item{times}{the times at which observations are made.
 \code{times} must indicate the column of observation times by name or index.
 The time vector must be numeric and strictly increasing.
 Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.}
@@ -61,9 +63,11 @@ A factor variable, \sQuote{sim}, distinguishes one simulation from another.
 If, in addition, \code{include.data=TRUE}, the original data are included as an additional \sQuote{simulation}.
 If \code{as.data.frame=FALSE}, \code{include.data} is ignored.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
+Named arguments that are not recognized by \pkg{pomp} will be stored for the use of the basic model components.
+See the \link[=userdata]{documentation here} for details.}
 
-\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
+\item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
 If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \sQuote{pomp} objects is returned.

@@ -34,8 +34,7 @@ will always be 0.} \item{final.params}{last tried value of \code{par}.}
 A straightforward implementation of simulated annealing with box constraints.
 }
 \details{
-The \code{control} argument is a list that can supply any of the
-following components:
+The \code{control} argument is a list that can supply any of the following components:
 \describe{
 \item{trace}{ Non-negative integer.
 If positive, tracing information on the progress of the optimization is

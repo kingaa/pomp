@@ -13,6 +13,8 @@
 ##' @name nlf
 ##' @rdname nlf
 ##' @include pomp_class.R simulate_pomp.R
+##' @importFrom stats .lm.fit optim setNames
+##'
 ##' @aliases nlf nlf,missing-method nlf,ANY-method
 ##'
 ##' @param object A \sQuote{pomp} object, with the data and model to fit to it.

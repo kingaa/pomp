@@ -5,7 +5,7 @@
 ##' The filtering distribution is that of
 ##' \deqn{X_t \vert y_1,\dots,y_t,}{X_t | y_1,\dots,y_t,}
 ##' where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively,
-##' at time \eqn{t}. 
+##' at time \eqn{t}.
 ##'
 ##' @name filter.mean
 ##' @aliases filter.mean filter.mean,ANY-method filter.mean,missing-method
@@ -46,6 +46,7 @@ setMethod(
 ##' @param vars optional character; names of variables
 ##' @param \dots ignored
 ##'
+##' @export
 setMethod(
   "filter.mean",
   signature=signature(object="kalmand_pomp"),
@@ -58,6 +59,7 @@ setMethod(
 ##' @name filter.mean-pfilterd_pomp
 ##' @aliases filter.mean,pfilterd_pomp-method
 ##' @rdname filter_mean
+##' @export
 setMethod(
   "filter.mean",
   signature=signature(object="pfilterd_pomp"),

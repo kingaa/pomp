@@ -32,16 +32,19 @@
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rinit}, see \link[=rinit_spec]{here}.}
+Setting \code{rinit=NULL} sets the initial-state simulator to its default.
+For more information, see \link[=rinit_spec]{here}.}
 
-\item{rprocess}{simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rprocess}, see \link[=rprocess_spec]{here}.}
+\item{rprocess}{simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+Setting \code{rprocess=NULL} removes the latent-state simulator.
+For more information, \link[=rprocess_spec]{see the documentation on these plugins}.}
 
 \item{rmeasure}{simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-For more information on specifying \code{rmeasure}, see \link[=rmeasure_spec]{here}.}
+Setting \code{rmeasure=NULL} removes the measurement model simulator.
+For more information, see \link[=rmeasure_spec]{here}.}
 
-\item{params}{optional; named numeric vector of parameters.  This will be
-coerced internally to storage mode \code{double}.}
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{probes}{a single probe or a list of one or more probes.
 A probe is simply a scalar- or vector-valued function of one argument that can be applied to the data array of a \sQuote{pomp}.
@@ -55,9 +58,11 @@ see \link[=basic_probes]{basic probes}.}
 if non-\code{NULL}, the random number generator will be initialized with this seed for simulations.
 See \code{\link[=simulate-pomp]{simulate}}.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
+Named arguments that are not recognized by \pkg{pomp} will be stored for the use of the basic model components.
+See the \link[=userdata]{documentation here} for details.}
 
-\item{verbose}{if \code{TRUE}, diagnostic messages will be printed to the console}
+\item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
 \value{
 \code{probe} returns an object of class \sQuote{probed_pomp}, which contains the data and the model, together with the results of the \code{probe} calculation.

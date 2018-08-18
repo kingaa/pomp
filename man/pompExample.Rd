@@ -3,9 +3,6 @@
 \name{pompExample}
 \alias{pompExample}
 \title{Examples of the construction of POMP models}
-\usage{
-pompExample(example, ..., show = FALSE, envir = .GlobalEnv)
-}
 \arguments{
 \item{example}{example to load given as a name or literal character string.
 Evoked without an argument, \code{pompExample} lists all available

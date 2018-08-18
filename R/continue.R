@@ -13,6 +13,7 @@ NULL
 
 ##' @name continue
 ##' @rdname continue
+##' @export
 setGeneric(
   "continue",
   function (object, ...)

@@ -5,23 +5,36 @@
 ##' One implements the model by specifying some or all of its \emph{basic components}.
 ##' These include:
 ##' \describe{
-##' \item{rprocess,}{the simulator of the unobserved Markov state process;}
-##' \item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
-##' \item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
-##' \item{dmeasure,}{the evaluator of the measurement model probability density function;}
-##' \item{rinit,}{which samples from the distribution of the state process at the zero-time;}
-##' \item{rprior,}{which samples from a prior probability distribution on the parameters;} \item{dprior}{which evaluates the prior probability density function;} \item{skeleton}{which computes the deterministic skeleton of the unobserved state process.}
+##' \item{rprocess}{the simulator of the unobserved Markov state process;}
+##' \item{dprocess}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
+##' \item{rmeasure}{the simulator of the observed process, conditional on the unobserved state;}
+##' \item{dmeasure}{the evaluator of the measurement model probability density function;}
+##' \item{rinit}{which samples from the distribution of the state process at the zero-time;}
+##' \item{rprior}{which samples from a prior probability distribution on the parameters;}
+##' \item{dprior}{which evaluates the prior probability density function;}
+##' \item{skeleton}{which computes the deterministic skeleton of the unobserved state process;}
+##' \item{partrans}{which performs parameter transformations.}
 ##' }
 ##' The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp/}{package website}.
+##'
+##' Each basic component is supplied via an argument of the same name.
+##' These can be given in the call to \code{pomp}, or to many of the package's other functions.
+##' In any case, the effect is the same: to add, remove, or modify the basic component.
+##'
+##' Each basic component can be furnished using C snippets, \R functions, or pre-compiled native routine available in user-provided dynamically loaded libraries.
 ##'
 ##' @name pomp
 ##' @rdname pomp
 ##' @include pomp_class.R pomp_fun.R csnippet.R safecall.R builder.R
+##' @include rinit_spec.R rprocess_spec.R rmeasure_spec.R
+##' @include dprocess_spec.R dmeasure_spec.R prior_spec.R
+##' @include skeleton_spec.R parameter_trans.R covariate_table.R
+##' @importFrom stats setNames
 ##' @keywords internal
 ##'
 ##' @param data either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.
-##' @param times the times at which
-##' observations are made.
+##'
+##' @param times the times at which observations are made.
 ##' \code{times} must indicate the column of observation times by name or index.
 ##' The time vector must be numeric and strictly increasing.
 ##' Internally, \code{data} will be internally coerced to an array with storage-mode \code{double}.
@@ -31,100 +44,120 @@
 ##'
 ##' @param rinit simulator of the initial-state distribution.
 ##' This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-##' For more information on specifying \code{rinit}, see \link[=rinit_spec]{here}.
+##' Setting \code{rinit=NULL} sets the initial-state simulator to its default.
+##' For more information, see \link[=rinit_spec]{here}.
 ##'
-##' @param rprocess simulator of the latent state process, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-##' For more information on specifying \code{rprocess}, see \link[=rprocess_spec]{here}.
+##' @param rprocess simulator of the latent state process, specified using one of the \link[=rprocess_spec]{rprocess plugins}.
+##' Setting \code{rprocess=NULL} removes the latent-state simulator.
+##' For more information, \link[=rprocess_spec]{see the documentation on these plugins}.
 ##'
 ##' @param dprocess optional;
 ##' specification of the probability density evaluation function of the unobserved state process.
-##'
+##' Setting \code{dprocess=NULL} removes the latent-state density evaluator.
+##' For more information, see \link[=dprocess_spec]{here}.
+##' 
 ##' @param rmeasure simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-##' For more information on specifying \code{rmeasure}, see \link[=rmeasure_spec]{here}.
+##' Setting \code{rmeasure=NULL} removes the measurement model simulator.
+##' For more information, see \link[=rmeasure_spec]{here}.
 ##'
 ##' @param dmeasure evaluator of the measurement model density, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
-##' For more information on specifying \code{dmeasure}, see \link[=dmeasure_spec]{here}.
+##' Setting \code{dmeasure=NULL} removes the measurement density evaluator.
+##' For more information, see \link[=dmeasure_spec]{here}.
 ##'
-##' @param skeleton optional; the deterministic skeleton of the unobserved
-##' state process.
-##' For more information on specifying \code{skeleton}, see \link[=skeleton_spec]{here}.
+##' @param skeleton optional; the deterministic skeleton of the unobserved state process.
+##' Depending on whether the model operates in continuous or discrete time, this is either a vectorfield or a map.
+##' Accordingly, this is supplied using either the \code{\link[=skeleton_spec]{vectorfield}} or \code{\link[=skeleton_spec]{map}} fnctions.
+##' Setting \code{skeleton=NULL} removes the deterministic skeleton.
+##' For more information, see \link[=skeleton_spec]{here}.
 ##'
-##' @param rprior,dprior optional; specification of the prior distribution on
-##' parameters.
-##' For more information on specifying \code{rprior} and \code{dprior}, see \link[=prior_spec]{here}.
+##' @param rprior optional; prior distribution sampler, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+##' Setting \code{rprior=NULL} removes the prior distribution sampler.
+##' For more information, see \link[=prior_spec]{here}.
 ##'
-##' @param partrans optional parameter transformations.  Many algorithms for
-##' parameter estimation search an unconstrained space of parameters.  When
-##' working with such an algorithm and a model for which the parameters are
-##' constrained, it can be useful to transform parameters.  One should supply
-##' the \code{partrans} argument via a call to
-##' \code{parameter_trans(toEst,fromEst,\dots{},log,logit,barycentric)}.  See
-##' below under \dQuote{Parameter Transformations} for more details.
-##' @param params optional; named numeric vector of parameters.  This will be
-##' coerced internally to storage mode \code{double}.
-##' @param covar optional covariate table, constructed using
-##' \code{covariate_table}.
+##' @param dprior optional; prior distribution density evaluator, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
+##' Setting \code{dprior=NULL} removes the prior distribution density evaluator.
+##' For more information, see \link[=prior_spec]{here}.
 ##'
-##' If a covariate table is supplied, then the value of each of the covariates
-##' is interpolated as needed.  The resulting interpolated values are made
-##' available to the appropriate basic components.  Note that \code{covar} will
-##' be coerced internally to storage mode \code{double}.  See below under
-##' \dQuote{Covariates} for more details.
-##' @param obsnames,statenames,paramnames,covarnames optional character vectors
-##' specifying the names of observables, state variables, parameters, and
-##' covariates, respectively.  These are used only in the event that one or
-##' more of the basic components are defined using C snippets or native
-##' routines.  It is usually unnecessary to specify \code{obsnames} or
-##' \code{covarnames}, as these will by default be read from \code{data} and
-##' \code{covars}, respectively.
-##' @param zeronames optional character vector specifying the names of
-##' accumulator variables (see below under \dQuote{Accumulator Variables}).
-##' @param PACKAGE optional string giving the name of the dynamically loaded
-##' library in which any native routines are to be found.  This is only useful
-##' if one or more of the model components has been specified using a
-##' precompiled dynamically loaded library; it is not used for any component
-##' specified using C snippets.
-##' @param globals optional character; C code that will be included in the
-##' source for (and therefore hard-coded into) the shared-object library
-##' created when the call to \code{pomp} uses C snippets.  If no C snippets are
-##' used, \code{globals} has no effect.
-##' @param cdir,cfile,shlib.args optional character variables.  \code{cdir}
-##' specifies the name of the directory within which C snippet code will be
-##' compiled.  By default, this is in a temporary directory specific to the
-##' running instance of .  \code{cfile} gives the name of the file (in
-##' directory \code{cdir}) into which C snippet codes will be written.  By
-##' default, a random filename is used.  The \code{shlib.args} can be used to
-##' pass command-line arguments to the \code{R CMD SHLIB} call that will
-##' compile the C snippets.
+##' @param partrans optional parameter transformations, constructed using \code{\link{parameter_trans}}.
+##' 
+##' Many algorithms for parameter estimation search an unconstrained space of parameters.
+##' When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
+##' One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
+##' For more information, see \link[=parameter_trans]{here}.
+##' 
+##' @param covar optional covariate table, constructed using \code{\link{covariate_table}}.
+##'
+##' If a covariate table is supplied, then the value of each of the covariates is interpolated as needed.
+##' The resulting interpolated values are made available to the appropriate basic components.
+##' See the documentation for \code{\link{covariate_table}} for details.
+##' 
+##' @param params optional; named numeric vector of parameters.
+##' This will be coerced internally to storage mode \code{double}.
+##' 
+##' @param obsnames optional character vector;
+##' names the observables.
+##' It is usually unnecessary to specify \code{obsnames}, as by default, these are read from the names of the data variables.
+##' 
+##' @param statenames optional character vector;
+##' names the latent state variables.
+##' 
+##' @param paramnames optional character vector;
+##' names model parameters.
+##' 
+##' @param covarnames optional character vector;
+##' names the covariates.
+##' It is usually unnecessary to specify \code{covarnames}, as by default, these are read from the names of the covariates.
+##' 
+##' @param zeronames optional character vector specifying the names of accumulator variables.
+##' See \link[=accumulators]{here} for a definition and discussion of accumulator variables.
+##' 
+##' @param PACKAGE optional character;
+##' the name (without extension) of the external, dynamically loaded library in which any native routines are to be found.
+##' This is only useful if one or more of the model components has been specified using a precompiled dynamically loaded library;
+##' it is not used for any component specified using C snippets.
+##' \code{PACKAGE} can name at most one library.
+##' 
+##' @param globals optional character;
+##' arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
+##' If no C snippets are used, \code{globals} has no effect.
+##' 
+##' @param cdir,cfile optional character variables.
+##' \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
+##' By default, this is in a temporary directory specific to the \R session.
+##' \code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
+##' By default, a random filename is used.
+##' 
+##' @param shlib.args optional character variables.
+##' Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.
+##' 
 ##' @param \dots additional arguments supply new or modify existing model characteristics or components.
-##' @param verbose if \code{TRUE}, diagnostic messages will be printed to the console
+##' Named arguments that are not recognized by \pkg{pomp} will be stored for the use of the basic model components.
+##' See the \link[=userdata]{documentation here} for details.
+##' 
+##' @param verbose logical; if \code{TRUE}, diagnostic messages will be printed to the console.
 ##'
-##' @return The \code{pomp} constructor function returns an object, call it
-##' \code{P}, of class \sQuote{pomp}.  \code{P} contains, in addition to the
-##' data, any elements of the model that have been specified as arguments to
-##' the \code{pomp} constructor function.  One can add or modify elements of
-##' \code{P} by means of further calls to \code{pomp}, using \code{P} as the
-##' first argument in such calls.
+##' @return
+##' The \code{pomp} constructor function returns an object, call it \code{P}, of class \sQuote{pomp}.
+##' \code{P} contains, in addition to the data, any elements of the model that have been specified as arguments to the \code{pomp} constructor function.
+##' One can add or modify elements of \code{P} by means of further calls to \code{pomp}, using \code{P} as the first argument in such calls.
+##' One can pass \code{P} to most of the \pkg{pomp} package methods via their \code{data} argument.
 ##'
-##' @section Important note:
+##' @section Note:
 ##'
-##' \strong{ It is not typically necessary (or even
-##' feasible) to define all of the basic components for any given purpose.
+##' \strong{ It is not typically necessary (or even feasible) to define all of the basic components for any given purpose.
 ##' Each \pkg{pomp} algorithm makes use of only a subset of these components.
-##' Any algorithm requiring a component that is not present will generate an
-##' error letting you know that you have not provided a needed component.  }
+##' Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.  }
 ##'
 ##' @author Aaron A. King
+##' 
 ##' @references
 ##' A. A. King, D. Nguyen, and E. L. Ionides (2016)
 ##' Statistical Inference for Partially Observed Markov Processes via the Package \pkg{pomp}.
 ##' Journal of Statistical Software 69(12): 1--43.
-##'
-##' D. T. Gillespie (1977)
-##' Exact stochastic simulation of coupled chemical reactions.
-##' Journal of Physical Chemistry 81:2340--2361.
+NULL
 
 ##' @rdname pomp
+##' @export
 pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
   rmeasure, dmeasure, skeleton, rprior, dprior, partrans,
   params, covar, zeronames,

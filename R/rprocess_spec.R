@@ -1,7 +1,6 @@
-##' rprocess
+##' The latent state process simulator
 ##'
-##' Specify the process model simulator using helper functions.
-##' These are called \dQuote{plugins}.
+##' Specification of rprocess using \dQuote{plugins}.
 ##'
 ##' @section Discrete-time processes:
 ##' If the state process evolves in discrete time, specify \code{rprocess} using the \code{discrete.time.sim} plug-in.
@@ -12,7 +11,7 @@
 ##' The goal of such a C snippet is to replace the state variables with their new random values at the end of the time interval.
 ##' Accordingly, each state variable should be over-written with its new value.
 ###' In addition to the states, parameters, covariates (if any), and observables, the variables \code{t} and \code{dt}, containing respectively the time at the beginning of the step and the step's duration, will be defined in the context in which the C snippet is executed.
-##' See above under \dQuote{General rules for C snippet writing} for more details.
+##' See \code{\link{Csnippet}} for general rules on writing C snippets.
 ##' Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
 ##' If \code{f} is given as an \R function, it should have prototype \preformatted{
@@ -127,7 +126,7 @@
 ##' the names of the state variables returned by \code{rinit} will be matched
 ##' to the rows of \code{v} to ensure a correct mapping.
 ##' If any of the row names of \code{v} cannot be found among the state variables or if any row names of \code{v} are duplicated, an error will occur.
-##' @param .pre,.post C snippets (see Details, below)
+##' @param .pre,.post C snippets (see Details)
 ##' @param \dots individual C snippets corresponding to elementary events
 ##' @param hmax maximum time step allowed (see below)
 NULL
@@ -192,6 +191,7 @@ rproc_plugin <- function (object, step.fn, rate.fn) {
 
 ##' @name onestep.sim
 ##' @rdname rprocess_spec
+##' @export
 onestep.sim <- function (step.fun) {
   new("onestepRprocPlugin",
     step.fn=step.fun,
@@ -202,6 +202,7 @@ onestep.sim <- function (step.fun) {
 
 ##' @rdname rprocess_spec
 ##' @name discrete.time.sim
+##' @export
 discrete.time.sim <- function (step.fun, delta.t = 1) {
   new("discreteRprocPlugin",
     step.fn=step.fun,
@@ -213,6 +214,7 @@ discrete.time.sim <- function (step.fun, delta.t = 1) {
 
 ##' @rdname rprocess_spec
 ##' @name euler.sim
+##' @export
 euler.sim <- function (step.fun, delta.t) {
   new("eulerRprocPlugin",
     step.fn=step.fun,
@@ -224,6 +226,7 @@ euler.sim <- function (step.fun, delta.t) {
 
 ##' @rdname rprocess_spec
 ##' @name gillespie.sim
+##' @export
 gillespie.sim <- function (rate.fun, v, hmax = Inf) {
   ep <- paste0("in ",sQuote("gillespie.sim")," plugin: ")
   if (!is.matrix(v)) {
@@ -246,6 +249,7 @@ gillespie.sim <- function (rate.fun, v, hmax = Inf) {
 ##' @rdname rprocess_spec
 ##' @name gillespie.hl.sim
 ##'
+##' @export
 gillespie.hl.sim <- function (..., .pre = "", .post = "", hmax = Inf) {
   ep <- paste0("in ",sQuote("gillespie.hl.sim")," plugin: ")
   args <- list(...)

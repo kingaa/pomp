@@ -3,9 +3,11 @@
 ##' Extract the latent states from a \sQuote{pomp} object.
 ##'
 ##' @name states
+##' @rdname states
 ##' @docType methods
 ##' @include pomp_class.R
-##' @rdname states
+##' @importFrom stats setNames
+##'
 NULL
 
 setGeneric(
@@ -19,6 +21,7 @@ setGeneric(
 ##' @rdname states
 ##' @inheritParams obs
 ##'
+##' @export
 setMethod(
   "states",
   signature=signature(object="pomp"),

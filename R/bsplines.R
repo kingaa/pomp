@@ -56,6 +56,7 @@
 NULL
 
 ##' @rdname bsplines
+##' @export
 bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL) {
   ep <- paste0("in ",sQuote("bspline.basis"),": ")
   y <- tryCatch(
@@ -83,6 +84,7 @@ bspline.basis <- function (x, nbasis, degree = 3, deriv = 0, names = NULL) {
 }
 
 ##' @rdname bsplines
+##' @export
 periodic.bspline.basis <- function (x, nbasis, degree = 3, period = 1,
   deriv = 0, names = NULL) {
   ep <- paste0("in ",sQuote("periodic.bspline.basis"),": ")

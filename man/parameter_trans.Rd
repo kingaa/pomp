@@ -60,7 +60,8 @@ The \code{barycentric} argument can name sets of parameters that should be log-b
 }
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{accumulators}},
+  \code{\link{covariate_table}},
   \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
   \code{\link{prior_spec}}, \code{\link{rinit_spec}},
   \code{\link{rmeasure_spec}}, \code{\link{rprocess_spec}},

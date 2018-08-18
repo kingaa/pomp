@@ -36,7 +36,7 @@ setMethod(
 ##' @rdname forecast
 ##' @inheritParams filter.mean-kalmand_pomp
 ##'
-
+##' @export
 setMethod(
   "forecast",
   signature=signature(object="kalmand_pomp"),

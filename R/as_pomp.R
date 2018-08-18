@@ -10,6 +10,7 @@
 ##' @param object the object to be coerced
 ##' @param \dots additional arguments
 
+##' @export
 as.pomp <- function (object, ...) {
   as(object,"pomp")
 }

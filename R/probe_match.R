@@ -30,12 +30,8 @@
 ##' It is a stateful function:
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
 ##'
-##' @section Important Note:
-##' Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-##' One should check that the parameters agree with those that are returned by the optimizer.
-##' The best practice is to call \code{\link[=probe,probe_match_objfun-method]{probe}} on the objective function after the optimization has been performed, thus obtaining a \sQuote{probed_pomp} object containing the (putative) optimal parameters and synthetic likelihood.
-##' @seealso \code{\link{trajectory}}, \code{\link{optim}},
-##' \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
+##' @inheritSection objfun Important Note
+##' @seealso \code{\link{probe}}, \code{\link{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 ##'
 NULL
 
@@ -74,6 +70,7 @@ setMethod(
 ##' @name probe.match.objfun-data.frame
 ##' @aliases probe.match.objfun,data.frame-method
 ##' @rdname probe_match
+##' @export
 setMethod(
   "probe.match.objfun",
   signature=signature(data="data.frame"),
@@ -99,6 +96,7 @@ setMethod(
 ##' @name probe.match.objfun-pomp
 ##' @aliases probe.match.objfun,pomp-method
 ##' @rdname probe_match
+##' @export
 setMethod(
   "probe.match.objfun",
   signature=signature(data="pomp"),
@@ -121,6 +119,7 @@ setMethod(
 ##' @name probe.match.objfun-probed_pomp
 ##' @aliases probe.match.objfun,probed_pomp-method
 ##' @rdname probe_match
+##' @export
 setMethod(
   "probe.match.objfun",
   signature=signature(data="probed_pomp"),
@@ -149,6 +148,7 @@ setMethod(
 ##' @name probe.match.objfun-probe_match_objfun
 ##' @aliases probe.match.objfun,probe_match_objfun-method
 ##' @rdname probe_match
+##' @export
 setMethod(
   "probe.match.objfun",
   signature=signature(data="probe_match_objfun"),
@@ -234,6 +234,7 @@ probe.eval <- function (object) {
 ##' @name probe-probe_match_obfjun
 ##' @rdname probe
 ##' @aliases probe,probe_match_objfun-method
+##' @export
 setMethod(
   "probe",
   signature=signature(data="probe_match_objfun"),

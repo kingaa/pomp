@@ -18,6 +18,9 @@
 ##' @aliases mif2 mif2,missing-method mif2,ANY-method
 ##' @family particle filter methods
 ##'
+##' @importFrom utils head
+##' @importFrom stats  weighted.mean
+##'
 ##' @inheritParams pomp
 ##' @inheritParams pfilter
 ##' @param Nmif The number of filtering iterations to perform.
@@ -141,6 +144,7 @@ setMethod(
 ##' @name mif2-data.frame
 ##' @aliases mif2,data.frame-method
 ##' @rdname mif2
+##' @export
 setMethod(
   "mif2",
   signature=signature(data="data.frame"),
@@ -171,6 +175,7 @@ setMethod(
 ##' @name mif2-pomp
 ##' @aliases mif2,pomp-method
 ##' @rdname mif2
+##' @export
 setMethod(
   "mif2",
   signature=signature(data="pomp"),
@@ -198,6 +203,7 @@ setMethod(
 ##' @name mif2-pfilterd_pomp
 ##' @aliases mif2,pfilterd_pomp-method
 ##' @rdname mif2
+##' @export
 setMethod(
   "mif2",
   signature=signature(data="pfilterd_pomp"),
@@ -213,6 +219,7 @@ setMethod(
 ##' @name mif2-mif2d_pomp
 ##' @aliases mif2,mif2d_pomp-method
 ##' @rdname mif2
+##' @export
 setMethod(
   "mif2",
   signature=signature(data="mif2d_pomp"),
@@ -240,6 +247,7 @@ setMethod(
 ##'
 ##' @param Nmif positive integer; number of additional iterations to perform
 ##'
+##' @export
 setMethod(
   "continue",
   signature=signature(object="mif2d_pomp"),
@@ -649,4 +657,5 @@ pkern.sd <- function (rw.sd, time, paramnames) {
 ##' @param \dots Specification of the random-walk intensities (as standard deviations).
 ##' @seealso \code{\link{mif2}}
 ##'
+##' @export
 rw.sd <- safecall

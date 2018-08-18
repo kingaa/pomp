@@ -2,9 +2,9 @@
 % Please edit documentation in R/rmeasure_spec.R
 \name{rmeasure_spec}
 \alias{rmeasure_spec}
-\title{rmeasure}
+\title{The measurement-model simulator}
 \description{
-Specify a measurement-model simulator
+Specification of rmeasure
 }
 \details{
 The measurement model is the link between the data and the unobserved state process.
@@ -44,7 +44,8 @@ When \code{f} is called,
 }
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{accumulators}},
+  \code{\link{covariate_table}},
   \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}}, \code{\link{prior_spec}},
   \code{\link{rinit_spec}}, \code{\link{rprocess_spec}},

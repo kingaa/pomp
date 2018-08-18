@@ -36,6 +36,8 @@ setMethod(
 ##' @aliases traces,mif2d_pomp-method
 ##' @rdname traces
 ##'
+##' @importFrom coda mcmc mcmc.list
+##'
 ##' @param object an object of class extending \sQuote{pomp}, the result of the application of a parameter estimation algorithm
 ##' @param pars names of parameters
 ##' @param transform logical; should the traces be transformed back onto the natural scale?
@@ -48,6 +50,7 @@ setMethod(
 ##' Note that, if the computation was performed with transformed parameters, the traces are on the estimation scale.
 ##' If \code{transform=TRUE}, the parameters are transformed from the estimation scale onto the natural scale.
 ##'
+##' @export
 setMethod(
   "traces",
   signature=signature(object="mif2d_pomp"),
@@ -59,6 +62,7 @@ setMethod(
 ##' @name traces-mif2List
 ##' @aliases traces,mif2List-method traces-Mif2 traces,Mif2-method
 ##' @rdname traces
+##' @export
 setMethod(
   "traces",
   signature=signature(object="mif2List"),
@@ -73,6 +77,7 @@ setMethod(
 ##' @return
 ##' When \code{object} is a \sQuote{abcd_pomp}, \code{traces(object)}
 ##' extracts the traces as a \code{coda::mcmc}.
+##' @export
 setMethod(
   "traces",
   signature=signature(object="abcd_pomp"),
@@ -88,6 +93,7 @@ setMethod(
 ##' @return
 ##' When \code{object} is a \sQuote{abcList}, \code{traces(object)}
 ##' extracts the traces as a \code{coda::mcmc.list}.
+##' @export
 setMethod(
   "traces",
   signature=signature(object="abcList"),
@@ -104,6 +110,7 @@ setMethod(
 ##' extracts the traces as a \code{coda::mcmc}.
 ##' @details
 ##' Note that \code{\link{pmcmc}} does not currently support parameter transformations.
+##' @export
 setMethod(
   "traces",
   signature=signature(object="pmcmcd_pomp"),
@@ -119,6 +126,7 @@ setMethod(
 ##' @return
 ##' When \code{object} is a \sQuote{pmcmcList}, \code{traces(object)}
 ##' extracts the traces as a \code{coda::mcmc.list}.
+##' @export
 setMethod(
   "traces",
   signature=signature(object="pmcmcList"),

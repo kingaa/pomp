@@ -5,6 +5,8 @@
 ##' @name time
 ##' @rdname time
 ##' @aliases time time<- time,ANY-method time,missing-method
+##'
+##' @importFrom stats time
 NULL
 
 setGeneric(
@@ -30,6 +32,7 @@ setGeneric(
 ##' \code{time(object)} returns the vector of observation times.
 ##' \code{time(object,t0=TRUE)} returns the vector of observation
 ##' times with the zero-time \code{t0} prepended.
+##' @export
 
 setMethod(
   "time",
@@ -50,6 +53,7 @@ setMethod(
 ##' \code{time(object,t0=TRUE) <- value} has the same effect, but the first element in \code{value} is taken to be the initial time.
 ##' The second and subsequent elements of \code{value} are taken to be the observation times.
 ##' Those data and states (if they exist) corresponding to the new times are retained.
+##' @export
 setMethod(
   "time<-",
   signature=signature(object="pomp"),

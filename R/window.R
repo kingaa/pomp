@@ -6,6 +6,7 @@
 ##' @docType methods
 ##' @rdname window
 ##' @include pomp_class.R
+##' @importFrom stats window
 NULL
 
 setGeneric(
@@ -20,6 +21,8 @@ setGeneric(
 ##' @param x a \sQuote{pomp} object or object of class extending \sQuote{pomp}
 ##' @param start,end the left and right ends of the window, in units of time
 ##' @param \dots ignored
+##'
+##' @export
 setMethod(
   "window",
   signature=signature(x="pomp"),

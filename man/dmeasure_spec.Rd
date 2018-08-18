@@ -2,9 +2,9 @@
 % Please edit documentation in R/dmeasure_spec.R
 \name{dmeasure_spec}
 \alias{dmeasure_spec}
-\title{dmeasure}
+\title{The measurement model density}
 \description{
-Specify the measurement model density
+Specification of dmeasure.
 }
 \details{
 The measurement model is the link between the data and the unobserved state process.
@@ -46,7 +46,8 @@ When \code{f} is called,
 }
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{accumulators}},
+  \code{\link{covariate_table}},
   \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}}, \code{\link{prior_spec}},
   \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},

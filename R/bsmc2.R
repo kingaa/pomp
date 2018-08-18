@@ -7,7 +7,10 @@
 ##' @rdname bsmc2
 ##' @include pomp_class.R workhorses.R pomp.R
 ##' @aliases bsmc2 bsmc2,missing-method bsmc2,ANY-method
-##  @family particle filter methods
+##' @family particle filter methods
+##'
+##' @importFrom mvtnorm rmvnorm
+##' @importFrom stats median cov setNames
 ##'
 ##' @details
 ##' There are two ways to specify the prior distribution of particles.
@@ -96,6 +99,7 @@ setMethod(
 ##' @name bsmc2-data.frame
 ##' @rdname bsmc2
 ##' @aliases bsmc2-data.frame bsmc2,data.frame-method
+##' @export
 setMethod(
   "bsmc2",
   signature=signature(data="data.frame"),
@@ -124,6 +128,7 @@ setMethod(
 ##' @name bsmc2-pomp
 ##' @rdname bsmc2
 ##' @aliases bsmc2-pomp bsmc2,pomp-method
+##' @export
 setMethod(
   "bsmc2",
   signature=signature(data="pomp"),

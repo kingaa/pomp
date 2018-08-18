@@ -5,7 +5,7 @@
 \alias{skeleton_spec}
 \alias{vectorfield}
 \alias{map}
-\title{Deterministic skeleton of a model}
+\title{The deterministic skeleton of a model}
 \usage{
 vectorfield(f)
 
@@ -18,7 +18,7 @@ This can be a C snippet, an \R function, or the name of a native routine in a dy
 \item{delta.t}{positive numerical value; the size of the discrete time step corresponding to an application of the map}
 }
 \description{
-Specifying the deterministic skeleton of a model.
+Specification of \dfn{skeleton}.
 }
 \details{
 The skeleton is a dynamical system that expresses the central tendency of the unobserved Markov state process.
@@ -55,7 +55,8 @@ The function \code{f} must return a numeric vector of the same length as \code{x
 }
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{accumulators}},
+  \code{\link{covariate_table}},
   \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}}, \code{\link{prior_spec}},
   \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},

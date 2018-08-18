@@ -37,6 +37,7 @@ setMethod(
 ##'
 ##' @inheritParams filter.mean-kalmand_pomp
 ##'
+##' @export
 setMethod(
   "filter.traj",
   signature=signature(object="pfilterd_pomp"),
@@ -49,6 +50,7 @@ setMethod(
 ##' @name filter.traj-pfilterList
 ##' @aliases filter.traj,pfilterList-method
 ##' @rdname filter_traj
+##' @export
 setMethod(
   "filter.traj",
   signature=signature(object="pfilterList"),
@@ -66,6 +68,7 @@ setMethod(
 ##' @name filter.traj-pmcmcd_pomp
 ##' @aliases filter.traj,pmcmcd_pomp-method
 ##' @rdname filter_traj
+##' @export
 setMethod(
   "filter.traj",
   signature=signature(object="pmcmcd_pomp"),
@@ -77,6 +80,7 @@ setMethod(
 ##' @name filter.traj-pmcmcList
 ##' @aliases filter.traj,pmcmcList-method
 ##' @rdname filter_traj
+##' @export
 setMethod(
   "filter.traj",
   signature=signature(object="pmcmcList"),

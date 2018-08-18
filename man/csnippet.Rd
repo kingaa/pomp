@@ -61,8 +61,8 @@ This can be used to declare global variables, define useful functions, and inclu
 
 \seealso{
 Other information on model implementation: \code{\link{accumulators}},
-  \code{\link{covariates}}, \code{\link{dmeasure_spec}},
-  \code{\link{dprocess_spec}},
+  \code{\link{covariate_table}},
+  \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}}, \code{\link{prior_spec}},
   \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
   \code{\link{rprocess_spec}}, \code{\link{skeleton_spec}}

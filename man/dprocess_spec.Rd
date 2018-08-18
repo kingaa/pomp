@@ -2,9 +2,9 @@
 % Please edit documentation in R/dprocess_spec.R
 \name{dprocess_spec}
 \alias{dprocess_spec}
-\title{dprocess}
+\title{The latent state process density}
 \description{
-Specify the process model density
+Specification of dprocess.
 }
 \details{
 Suppose you have a procedure that allows you to compute the probability density of an arbitrary transition from state \eqn{x_1}{x1} at time \eqn{t_1}{t1} to state \eqn{x_2}{x2} at time \eqn{t_2>t_1}{t2}
@@ -35,7 +35,8 @@ This functionality is provided only to support future algorithm development.
 
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
-  \code{\link{accumulators}}, \code{\link{covariates}},
+  \code{\link{accumulators}},
+  \code{\link{covariate_table}},
   \code{\link{dmeasure_spec}},
   \code{\link{parameter_trans}}, \code{\link{prior_spec}},
   \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},

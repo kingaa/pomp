@@ -4,9 +4,10 @@
 ##'
 ##' @name sannbox
 ##' @rdname sannbox
+##' @importFrom stats rnorm
 ##'
-##' @details The \code{control} argument is a list that can supply any of the
-##' following components:
+##' @details
+##' The \code{control} argument is a list that can supply any of the following components:
 ##' \describe{
 ##' \item{trace}{ Non-negative integer.
 ##' If positive, tracing information on the progress of the optimization is
@@ -81,6 +82,7 @@ NULL
 ## Daniel Reuman, Imperial College London
 
 ##' @rdname sannbox
+##' @export
 sannbox <- function (par, fn, control = list(), ...) {
 
   big <- 1e35  ## a very large number

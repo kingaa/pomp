@@ -10,6 +10,9 @@
 ##' @rdname trajectory
 ##' @include workhorses.R pomp_class.R
 ##'
+##' @importFrom deSolve ode diagnostics
+##' @importFrom stats setNames
+##'
 ##' @return
 ##' \code{trajectory} returns an array of dimensions \code{nvar} x \code{nrep} x \code{ntimes}.
 ##' If \code{x} is the returned matrix, \code{x[i,j,k]} is the i-th component of the state vector at time \code{times[k]} given parameters \code{params[,j]}.
@@ -66,6 +69,7 @@ setMethod(
 ##' Note that this behavior differs from most other functions in \pkg{pomp}.
 ##' It is not possible to modify the model structure in a call to \code{trajectory}.
 ##'
+##' @export
 setMethod(
   "trajectory",
   signature=signature(object="pomp"),
@@ -149,7 +153,7 @@ trajectory.internal <- function (object, params, times, t0,
     .getnativesymbolinfo <- FALSE
 
     X <- tryCatch(
-      deSolve::ode(
+      ode(
         y=x0,
         times=c(t0,times),
         func="pomp_vf_eval",
@@ -169,9 +173,7 @@ trajectory.internal <- function (object, params, times, t0,
       warning(ep,"abnormal exit from ODE integrator, istate = ",attr(X,'istate')[1L],
         call.=FALSE)
 
-    if (verbose) {
-      deSolve::diagnostics(X)
-    }
+    if (verbose) diagnostics(X)
 
     x <- array(data=t(X[-1L,-1L]),dim=c(nvar,nrep,ntimes),
       dimnames=list(statenames,NULL,NULL))

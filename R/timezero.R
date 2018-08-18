@@ -32,6 +32,7 @@ setGeneric(
 ##' @param object an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}
 ##' @param \dots ignored
 ##'
+##' @export
 setMethod(
   "timezero",
   signature=signature(object="pomp"),
@@ -44,6 +45,7 @@ setMethod(
 ##'
 ##' @param value numeric; the new zero-time value
 ##'
+##' @export
 setMethod(
   "timezero<-",
   signature=signature(object="pomp"),

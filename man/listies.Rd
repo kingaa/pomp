@@ -17,6 +17,9 @@
 \alias{[-listies}
 \alias{[,listies-method}
 \title{listies}
+\usage{
+\S4method{[}{listies}(x, i, j, ..., drop = TRUE)
+}
 \description{
 List-like objects.
 }

@@ -18,9 +18,11 @@
 ##' @name probe
 ##' @docType methods
 ##' @rdname probe
-##' @include pomp_class.R pomp_fun.R pomp.R
 ##' @aliases probe probe,missing-method probe,ANY-method
 ##' @family summary statistics methods
+##'
+##' @include pomp_class.R pomp_fun.R pomp.R
+##' @importFrom stats quantile
 ##'
 ##' @inheritParams pomp
 ##' @param probes a single probe or a list of one or more probes.
@@ -108,6 +110,7 @@ setMethod(
 ##' @name probe-data.frame
 ##' @aliases probe,data.frame-method
 ##' @rdname probe
+##' @export
 setMethod(
   "probe",
   signature=signature(data="data.frame"),
@@ -132,6 +135,7 @@ setMethod(
 ##' @name probe-pomp
 ##' @aliases probe,pomp-method
 ##' @rdname probe
+##' @export
 setMethod(
   "probe",
   signature=signature(data="pomp"),
@@ -156,6 +160,7 @@ setMethod(
 ##' @name probe-probed_pomp
 ##' @aliases probe,probed_pomp-method
 ##' @rdname probe
+##' @export
 setMethod(
   "probe",
   signature=signature(data="probed_pomp"),

@@ -3,12 +3,7 @@
 \docType{methods}
 \name{pomp_fun}
 \alias{pomp_fun}
-\alias{pompfunmode}
 \title{The "pomp_fun" class}
-\format{An object of class \code{list} of length 4.}
-\usage{
-pompfunmode
-}
 \arguments{
 \item{f}{A function or the name of a native routine.}
 

@@ -1,6 +1,6 @@
-##' dmeasure
+##' The measurement model density
 ##'
-##' Specify the measurement model density
+##' Specification of dmeasure.
 ##'
 ##' @name dmeasure_spec
 ##' @rdname dmeasure_spec

@@ -4,7 +4,8 @@
 ##'
 ##' @name kalman
 ##' @rdname kalman
-##' @include pomp_class.R pomp.R
+##' @include pomp_class.R pomp.R workhorses.R
+##' @importFrom stats dnorm rnorm
 ##' @aliases enkf eakf enkf,ANY-method enkf,missing-method
 ##' eakf,ANY-method eakf,missing-method
 ##'
@@ -120,6 +121,7 @@ setMethod(
 ##' @name enkf-data.frame
 ##' @aliases enkf,data.frame-method
 ##' @rdname kalman
+##' @export
 setMethod(
   "enkf",
   signature=signature(data="data.frame"),
@@ -145,6 +147,7 @@ setMethod(
 ##' @name enkf-pomp
 ##' @aliases enkf,pomp-method
 ##' @rdname kalman
+##' @export
 setMethod(
   "enkf",
   signature=signature(data="pomp"),
@@ -178,6 +181,7 @@ setMethod(
 ##' @name eakf-data.frame
 ##' @aliases eakf,data.frame-method
 ##' @rdname kalman
+##' @export
 setMethod(
   "eakf",
   signature=signature(data="data.frame"),
@@ -202,6 +206,7 @@ setMethod(
 ##' @name eakf-pomp
 ##' @aliases eakf,pomp-method
 ##' @rdname kalman
+##' @export
 setMethod(
   "eakf",
   signature=signature(data="pomp"),

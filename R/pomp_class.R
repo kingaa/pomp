@@ -9,6 +9,7 @@
 ##' @include covariate_table.R parameter_trans.R
 ##' @keywords internal
 
+##' @export
 setClass(
   "pomp",
   slots=c(

@@ -16,8 +16,8 @@
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
 
-\item{params}{optional; named numeric vector of parameters.  This will be
-coerced internally to storage mode \code{double}.}
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{est}{character vector; the names of parameters to be estimated.}
 
@@ -57,7 +57,7 @@ It can be passed to any one of a variety of numerical optimization routines, whi
 \section{Important Note}{
 
 Since \pkg{pomp} cannot guarantee that the \emph{final} call an optimizer makes to the function is a call \emph{at} the optimum, it cannot guarantee that the parameters stored in the function are the optimal ones.
-One should check that the parameters agree with those that are returned by the optimizer.
+The best practice is to evaluate the function on the parameters returned by the optimization routine, which will ensure that these parameters are stored.
 }
 
 \seealso{

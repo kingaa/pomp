@@ -1,4 +1,5 @@
 ##' @rdname design
+##' @export
 sliceDesign <- function (center, ...) {
   slices <- list(...)
   if ((!is.numeric(center))||is.null(names(center)))

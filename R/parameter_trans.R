@@ -57,12 +57,14 @@ setClass(
   )
 )
 
+##' @export
 setGeneric(
   "parameter_trans",
   function (toEst, fromEst, ...)
     standardGeneric("parameter_trans")
 )
 
+##' @export
 setMethod(
   "parameter_trans",
   signature=signature(toEst="NULL",fromEst="NULL"),
@@ -71,6 +73,7 @@ setMethod(
   }
 )
 
+##' @export
 setMethod(
   "parameter_trans",
   signature=signature(toEst="pomp_fun",fromEst="pomp_fun"),
@@ -85,6 +88,7 @@ setMethod(
 ##' @name parameter_trans-missing,missing
 ##' @aliases parameter_trans,missing,missing-method
 ##' @rdname parameter_trans
+##' @export
 setMethod(
   "parameter_trans",
   signature=signature(toEst="missing",fromEst="missing"),
@@ -100,6 +104,7 @@ setMethod(
 ##' @name parameter_trans-Csnippet,Csnippet
 ##' @aliases parameter_trans,Csnippet,Csnippet-method
 ##' @rdname parameter_trans
+##' @export
 setMethod(
   "parameter_trans",
   signature=signature(toEst="Csnippet",fromEst="Csnippet"),
@@ -116,6 +121,7 @@ setMethod(
 ##' @name parameter_trans-character,character
 ##' @aliases parameter_trans,character,character-method
 ##' @rdname parameter_trans
+##' @export
 setMethod(
   "parameter_trans",
   signature=signature(toEst="character",fromEst="character"),
@@ -127,6 +133,7 @@ setMethod(
 ##' @name parameter_trans-function,function
 ##' @aliases parameter_trans,function,function-method
 ##' @rdname parameter_trans
+##' @export
 setMethod(
   "parameter_trans",
   signature=signature(toEst="function",fromEst="function"),

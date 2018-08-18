@@ -8,6 +8,7 @@
 ##' @aliases coef,missing-method coef,ANY-method
 ##' coef<-,missing-method coef<-,ANY-method
 ##' @include pomp_class.R listies.R
+##' @importFrom stats coef
 NULL
 
 setGeneric(
@@ -61,6 +62,7 @@ setMethod(
 ##' @name coef-listies
 ##' @aliases coef,listies-method
 ##' @rdname coef
+##' @export
 setMethod(
   "coef",
   signature=signature(object="listies"),
@@ -84,6 +86,7 @@ setMethod(
 ##' \code{coef(object,transform=TRUE)} returns the parameters transformed onto
 ##' the estimation scale.
 ##'
+##' @export
 setMethod(
   "coef",
   signature=signature(object="pomp"),
@@ -127,6 +130,7 @@ setMethod(
 ##' parameter transformation from \code{object} before altering the
 ##' coefficients.
 ##'
+##' @export
 setMethod(
   "coef<-",
   signature=signature(object="pomp"),

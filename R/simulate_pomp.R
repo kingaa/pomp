@@ -7,6 +7,7 @@
 ##' @docType methods
 ##' @rdname simulate
 ##' @include workhorses.R pomp_class.R pomp.R
+##' @importFrom stats simulate
 ##'
 ##' @inheritParams pomp
 ##' @param object optional; if present, it should be the output of one of \pkg{pomp}'s methods
@@ -51,6 +52,7 @@ setGeneric(
 ##' @name simulate-pomp
 ##' @aliases simulate simulate,pomp-method
 ##' @rdname simulate
+##' @export
 setMethod(
   "simulate",
   signature=signature(object="pomp"),
@@ -83,10 +85,11 @@ setMethod(
 ##' @name simulate-missing
 ##' @aliases simulate,missing-method
 ##' @rdname simulate
+##' @export
 setMethod(
   "simulate",
   signature=signature(object="missing"),
-  definition=function (object, nsim = 1, seed = NULL,
+  definition=function (nsim = 1, seed = NULL,
     rinit, rprocess, rmeasure, params,
     states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
     include.data = FALSE, ...,

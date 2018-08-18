@@ -1,10 +1,10 @@
 ##' Bake, stew, and freeze
-##' 
+##'
 ##' Tools for reproducible computations.
 ##'
 ##' @name bake
 ##' @rdname bake
-##' 
+##'
 ##' @details
 ##' On cooking shows, recipes requiring lengthy baking or stewing are prepared beforehand.  The \code{bake} and \code{stew} functions perform analogously:
 ##' an computation is performed and stored in a named file.
@@ -67,6 +67,7 @@
 ##'
 
 ##' @rdname bake
+##' @export
 bake <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
   if (file.exists(file)) {
     readRDS(file)
@@ -96,6 +97,7 @@ bake <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
 }
 
 ##' @rdname bake
+##' @export
 stew <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
   if (file.exists(file)) {
     objlist <- load(file)
@@ -128,6 +130,7 @@ stew <- function (file, expr, seed, kind = NULL, normal.kind = NULL) {
 }
 
 ##' @rdname bake
+##' @export
 freeze <- function (expr, seed, kind = NULL, normal.kind = NULL) {
   rng.control <- !missing(seed)
   if (rng.control) {

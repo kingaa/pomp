@@ -28,9 +28,10 @@ where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively,
 at time \eqn{t}.
 }
 \seealso{
-Other particle filter methods: \code{\link{cond.logLik}},
-  \code{\link{eff.sample.size}}, \code{\link{filter.mean}},
-  \code{\link{mif2}}, \code{\link{pfilter}},
-  \code{\link{pmcmc}}, \code{\link{pred.mean}}
+Other particle filter methods: \code{\link{bsmc2}},
+  \code{\link{cond.logLik}}, \code{\link{eff.sample.size}},
+  \code{\link{filter.mean}}, \code{\link{mif2}},
+  \code{\link{pfilter}}, \code{\link{pmcmc}},
+  \code{\link{pred.mean}}
 }
 \concept{particle filter methods}

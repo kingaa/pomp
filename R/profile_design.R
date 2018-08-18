@@ -1,4 +1,5 @@
 ##' @rdname design
+##' @export
 profileDesign <- function (..., lower, upper, nprof,
   stringsAsFactors = default.stringsAsFactors()) {
   prof <- list(...)

@@ -5,6 +5,8 @@
 #' @aliases [,listies-method
 NULL
 
+##' @export
+##' @rdname listies
 setMethod(
   "[",
   signature=signature(x="listies"),

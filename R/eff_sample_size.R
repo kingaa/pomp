@@ -42,6 +42,7 @@ setMethod(
 ##' @name eff.sample.size-bsmcd_pomp
 ##' @aliases eff.sample.size,bsmcd_pomp-method
 ##' @rdname eff_sample_size
+##' @export
 setMethod(
   "eff.sample.size",
   signature=signature(object="bsmcd_pomp"),
@@ -51,6 +52,7 @@ setMethod(
 ##' @name eff.sample.size-pfilterd_pomp
 ##' @aliases eff.sample.size,pfilterd_pomp-method
 ##' @rdname eff_sample_size
+##' @export
 setMethod(
   "eff.sample.size",
   signature=signature(object="pfilterd_pomp"),

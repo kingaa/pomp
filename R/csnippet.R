@@ -61,6 +61,7 @@ setClass(
 ##' @name Csnippet
 ##' @rdname csnippet
 ##' @param text character; text written in the C language
+##' @export
 Csnippet <- function (text) {
   new("Csnippet",text=as.character(text))
 }
@@ -75,3 +76,7 @@ setAs(
     from@text
   }
 )
+
+##' @method as.character Csnippet
+##' @export
+as.character.Csnippet <- function(x, ...) as(x,"character")

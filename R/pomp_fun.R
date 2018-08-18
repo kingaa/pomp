@@ -20,7 +20,7 @@
 ##' @param object,x the \sQuote{pomp_fun} object.
 ##' @author Aaron A. King
 ##' @seealso \code{\link{pomp}}
-
+NULL
 
 ## also defined in 'pomp_defines.h'
 pompfunmode <- list(undef=-1L,Rfun=0L,native=1L,regNative=2L)
