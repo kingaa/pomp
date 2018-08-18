@@ -4,7 +4,9 @@
 - all methods use transforms if they exist
 - reorganize common methods: one file per method?
 - index by concept using `\concept{}` in the help files
-- get rid of `probevals`?
+- make default initializer into a `pomp_fun` (and obviate the need for the `default_initializer` flag_t
+- null methods for `covariate_table` and `parameter_trans` can go into the argument lists
+- ~~get rid of `probevals`?~~
 - ~~get rid of `prior_samples` and `posterior_samples`~~
 - matching functions will go away, in favor of objective function constructors:
     - 'probe.match.objfun' looks good: needs testing
@@ -39,6 +41,7 @@
 - documentation on `mifList`, `pmcmcList`, etc.
 - methods to change data (`obs<-`)?
 - refurbish entire test suite
+	- perhaps use more, smaller method and function specific tests?
 - put Kalman check in 'gompertz' test: **is it correct?**
 - put Kalman check in 'ou2' test
 - MCMC proposals as pomp slots?
