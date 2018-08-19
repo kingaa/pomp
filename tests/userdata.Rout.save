@@ -49,7 +49,7 @@ Type 'q()' to quit R.
 +   rinit=Csnippet("x = 0;"),
 +   statenames="x",obsnames="y",paramnames=c("beta1","beta2","beta3")
 + ) -> po
-in ‘pomp’: the unrecognized arguments ‘nbasis’,‘period’,‘msg’ will be stored for use by user-defined functions.
+in ‘pomp’: the unrecognized arguments ‘nbasis’,‘period’,‘msg’ are  available for use by the POMP basic components.
 hello!
 > 
 > try(po %>%
@@ -79,11 +79,11 @@ Error : in ‘simulate’: no user-provided element named 'bob' is found.
 +     simulate(rprocess=onestep.sim(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),
 +       bob=3))
-in ‘pomp’: the unrecognized argument ‘bob’ will be stored for use by user-defined functions.
+in ‘pomp’: the unrecognized argument ‘bob’ is  available for use by the POMP basic components.
 Error : in ‘simulate’: user-provided element 'bob' is not an integer.
 > stopifnot(po %>%
 +     simulate(rprocess=onestep.sim(
 +       Csnippet("int nbasis = *(get_pomp_userdata_int(\"bob\"));")),
 +       bob=3L) %>% class() %>% equals("pomp"))
-in ‘pomp’: the unrecognized argument ‘bob’ will be stored for use by user-defined functions.
+in ‘pomp’: the unrecognized argument ‘bob’ is  available for use by the POMP basic components.
 > 

@@ -20,9 +20,10 @@ Internally, \code{data} will be internally coerced to an array with storage-mode
 \item{t0}{The zero-time, i.e., the time of the initial state.
 This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
 
-\item{\dots}{additional arguments supply new or modify existing model characteristics or components.
-Named arguments that are not recognized by \pkg{pomp} will be stored for the use of the basic model components.
-See the \link[=userdata]{documentation here} for details.}
+\item{\dots}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components.
+This allows the user to pass information to the basic components outside of model parameters, covariates, data, and state variables.
+See the \link[=userdata]{documentation here} for information on how to use this facility.}
 
 \item{rinit}{simulator of the initial-state distribution.
 This can be furnished either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
@@ -121,20 +122,20 @@ One can add or modify elements of \code{P} by means of further calls to \code{po
 One can pass \code{P} to most of the \pkg{pomp} package methods via their \code{data} argument.
 }
 \description{
-This function constructs a \sQuote{pomp} object, encoding a partially-observed Markov process model together with a uni- or multi-variate time series.
+This function constructs a \sQuote{pomp} object, encoding a partially-observed Markov process (\acronym{POMP}) model together with a uni- or multi-variate time series.
 As such, it is central to all the package's functionality.
-One implements the model by specifying some or all of its \emph{basic components}.
-These include:
+One implements the \acronym{POMP} model by specifying some or all of its \emph{basic components}.
+These comprise:
 \describe{
-\item{rprocess}{the simulator of the unobserved Markov state process;}
-\item{dprocess}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
-\item{rmeasure}{the simulator of the observed process, conditional on the unobserved state;}
-\item{dmeasure}{the evaluator of the measurement model probability density function;}
-\item{rinit}{which samples from the distribution of the state process at the zero-time;}
-\item{rprior}{which samples from a prior probability distribution on the parameters;}
-\item{dprior}{which evaluates the prior probability density function;}
-\item{skeleton}{which computes the deterministic skeleton of the unobserved state process;}
-\item{partrans}{which performs parameter transformations.}
+\item{rinit,}{which samples from the distribution of the state process at the zero-time;}
+\item{rprocess,}{the simulator of the unobserved Markov state process;}
+\item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
+\item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
+\item{dmeasure,}{the evaluator of the measurement model probability density function;}
+\item{rprior,}{which samples from a prior probability distribution on the parameters;}
+\item{dprior,}{which evaluates the prior probability density function;}
+\item{skeleton,}{which computes the deterministic skeleton of the unobserved state process;}
+\item{partrans,}{which performs parameter transformations.}
 }
 The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp/}{package website}.
 }

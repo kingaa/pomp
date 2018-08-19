@@ -79,9 +79,10 @@ See the section on \emph{Filtering Failures} below for more information.}
 If the number of filtering failures exceeds this number, execution will terminate with an error.
 By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components.
-Named arguments that are not recognized by \pkg{pomp} will be stored for the use of the basic model components.
-See the \link[=userdata]{documentation here} for details.}
+\item{...}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components.
+This allows the user to pass information to the basic components outside of model parameters, covariates, data, and state variables.
+See the \link[=userdata]{documentation here} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

@@ -60,7 +60,7 @@ Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},
   \code{\link{parameter_trans}}, \code{\link{prior_spec}},
   \code{\link{rinit_spec}}, \code{\link{rmeasure_spec}},
-  \code{\link{rprocess_spec}}
+  \code{\link{rprocess_spec}}, \code{\link{userdata}}
 }
 \concept{information on model implementation}
 \keyword{internal}

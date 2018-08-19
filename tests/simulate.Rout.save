@@ -58,25 +58,25 @@ Error : in ‘simulate’: ‘t0’ is a required argument.
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘pomp’: ‘times’ must be specified as an increasing sequence of numbers.
+Error : in ‘simulate’: in ‘pomp’: ‘times’ must be specified as an increasing sequence of numbers.
 > try(simulate(times=NULL,t0=0,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘pomp’: ‘times’ must be specified as an increasing sequence of numbers.
+Error : in ‘simulate’: in ‘pomp’: ‘times’ must be specified as an increasing sequence of numbers.
 > try(simulate(times=1:10,t0=NA,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
+Error : in ‘simulate’: in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
 > try(simulate(times=1:10,t0=NULL,
 +   rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
 +   rinit=Csnippet("z = 0;"),
 +   statenames="z",obsnames="w"))
-Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
+Error : in ‘simulate’: in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
 > 
 > simulate(times=1:100,t0=0,seed=450738202,
 +   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),

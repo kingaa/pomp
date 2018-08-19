@@ -69,9 +69,14 @@ setMethod(
     if (missing(t0))
       stop(ep,sQuote("t0")," is a required argument.",call.=FALSE)
 
-    object <- construct_pomp(data=NULL,times=times,t0=t0,
-      rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
-      verbose=verbose)
+    object <- tryCatch(
+      pomp(data=NULL,times=times,t0=t0,
+        rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
+        verbose=verbose),
+      error=function (e) {
+        stop(ep,conditionMessage(e),call.=FALSE)
+      }
+    )
 
     simulate.internal(
       object=object,
@@ -86,15 +91,6 @@ setMethod(
       include.data=include.data,
       verbose=verbose
     )
-  }
-)
-
-setMethod(
-  "simulate",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("simulate")," is not defined for objects of class ",
-      sQuote(class(object)),call.=FALSE)
   }
 )
 

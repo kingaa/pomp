@@ -1,19 +1,19 @@
 ##' Constructor of the basic pomp object
 ##'
-##' This function constructs a \sQuote{pomp} object, encoding a partially-observed Markov process model together with a uni- or multi-variate time series.
+##' This function constructs a \sQuote{pomp} object, encoding a partially-observed Markov process (\acronym{POMP}) model together with a uni- or multi-variate time series.
 ##' As such, it is central to all the package's functionality.
-##' One implements the model by specifying some or all of its \emph{basic components}.
-##' These include:
+##' One implements the \acronym{POMP} model by specifying some or all of its \emph{basic components}.
+##' These comprise:
 ##' \describe{
-##' \item{rprocess}{the simulator of the unobserved Markov state process;}
-##' \item{dprocess}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
-##' \item{rmeasure}{the simulator of the observed process, conditional on the unobserved state;}
-##' \item{dmeasure}{the evaluator of the measurement model probability density function;}
-##' \item{rinit}{which samples from the distribution of the state process at the zero-time;}
-##' \item{rprior}{which samples from a prior probability distribution on the parameters;}
-##' \item{dprior}{which evaluates the prior probability density function;}
-##' \item{skeleton}{which computes the deterministic skeleton of the unobserved state process;}
-##' \item{partrans}{which performs parameter transformations.}
+##' \item{rinit,}{which samples from the distribution of the state process at the zero-time;}
+##' \item{rprocess,}{the simulator of the unobserved Markov state process;}
+##' \item{dprocess,}{the evaluator of the probability density function for transitions of the unobserved Markov state process;}
+##' \item{rmeasure,}{the simulator of the observed process, conditional on the unobserved state;}
+##' \item{dmeasure,}{the evaluator of the measurement model probability density function;}
+##' \item{rprior,}{which samples from a prior probability distribution on the parameters;}
+##' \item{dprior,}{which evaluates the prior probability density function;}
+##' \item{skeleton,}{which computes the deterministic skeleton of the unobserved state process;}
+##' \item{partrans,}{which performs parameter transformations.}
 ##' }
 ##' The basic structure and its rationale are described in the \emph{Journal of Statistical Software} paper, an updated version of which is to be found on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
@@ -130,9 +130,10 @@
 ##' @param shlib.args optional character variables.
 ##' Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.
 ##'
-##' @param \dots additional arguments supply new or modify existing model characteristics or components.
-##' Named arguments that are not recognized by \pkg{pomp} will be stored for the use of the basic model components.
-##' See the \link[=userdata]{documentation here} for details.
+##' @param \dots additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+##' When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components.
+##' This allows the user to pass information to the basic components outside of model parameters, covariates, data, and state variables.
+##' See the \link[=userdata]{documentation here} for information on how to use this facility.
 ##'
 ##' @param verbose logical; if \code{TRUE}, diagnostic messages will be printed to the console.
 ##'
@@ -421,7 +422,8 @@ pomp.internal <- function (data, times, t0, timename, ...,
     message(wp,"the unrecognized ",
       ngettext(length(added.userdata),"argument","arguments")," ",
       paste(sQuote(names(added.userdata)),collapse=","),
-      " will be stored for use by user-defined functions."
+      ngettext(length(added.userdata)," is"," are")," ",
+      " available for use by the POMP basic components."
     )
     .userdata[names(added.userdata)] <- added.userdata
   }
