@@ -8,7 +8,7 @@
 
 #include "pomp_internal.h"
 
-void _pomp_default_dprior (double *lik, double *p, int give_log, int *parindex) {
+void _flat_improper_dprior (double *lik, double *p, int give_log, int *parindex) {
   *lik = (give_log) ? 0.0 : 1.0;
 }
 

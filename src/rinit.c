@@ -7,11 +7,6 @@
 
 #include "pomp_internal.h"
 
-// rinit.c
-typedef double pomp_rinit(double *x, const double *p, double t,
-  const int *stateindex, const int *parindex, const int *covindex,
-  const double *covars);
-
 SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 {
   int nprotect = 0;

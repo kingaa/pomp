@@ -55,7 +55,7 @@
 ##' specification of the probability density evaluation function of the unobserved state process.
 ##' Setting \code{dprocess=NULL} removes the latent-state density evaluator.
 ##' For more information, see \link[=dprocess_spec]{here}.
-##' 
+##'
 ##' @param rmeasure simulator of the measurement model, specified either as a C snippet, an \R function, or the name of a pre-compiled native routine available in a dynamically loaded library.
 ##' Setting \code{rmeasure=NULL} removes the measurement model simulator.
 ##' For more information, see \link[=rmeasure_spec]{here}.
@@ -79,61 +79,61 @@
 ##' For more information, see \link[=prior_spec]{here}.
 ##'
 ##' @param partrans optional parameter transformations, constructed using \code{\link{parameter_trans}}.
-##' 
+##'
 ##' Many algorithms for parameter estimation search an unconstrained space of parameters.
 ##' When working with such an algorithm and a model for which the parameters are constrained, it can be useful to transform parameters.
 ##' One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 ##' For more information, see \link[=parameter_trans]{here}.
-##' 
+##'
 ##' @param covar optional covariate table, constructed using \code{\link{covariate_table}}.
 ##'
 ##' If a covariate table is supplied, then the value of each of the covariates is interpolated as needed.
 ##' The resulting interpolated values are made available to the appropriate basic components.
 ##' See the documentation for \code{\link{covariate_table}} for details.
-##' 
+##'
 ##' @param params optional; named numeric vector of parameters.
 ##' This will be coerced internally to storage mode \code{double}.
-##' 
+##'
 ##' @param obsnames optional character vector;
 ##' names the observables.
 ##' It is usually unnecessary to specify \code{obsnames}, as by default, these are read from the names of the data variables.
-##' 
+##'
 ##' @param statenames optional character vector;
 ##' names the latent state variables.
-##' 
+##'
 ##' @param paramnames optional character vector;
 ##' names model parameters.
-##' 
+##'
 ##' @param covarnames optional character vector;
 ##' names the covariates.
 ##' It is usually unnecessary to specify \code{covarnames}, as by default, these are read from the names of the covariates.
-##' 
+##'
 ##' @param zeronames optional character vector specifying the names of accumulator variables.
 ##' See \link[=accumulators]{here} for a definition and discussion of accumulator variables.
-##' 
+##'
 ##' @param PACKAGE optional character;
 ##' the name (without extension) of the external, dynamically loaded library in which any native routines are to be found.
 ##' This is only useful if one or more of the model components has been specified using a precompiled dynamically loaded library;
 ##' it is not used for any component specified using C snippets.
 ##' \code{PACKAGE} can name at most one library.
-##' 
+##'
 ##' @param globals optional character;
 ##' arbitrary C code that will be hard-coded into the shared-object library created when  C snippets are provided.
 ##' If no C snippets are used, \code{globals} has no effect.
-##' 
+##'
 ##' @param cdir,cfile optional character variables.
 ##' \code{cdir} specifies the name of the directory within which C snippet code will be compiled.
 ##' By default, this is in a temporary directory specific to the \R session.
 ##' \code{cfile} gives the name of the file (in directory \code{cdir}) into which C snippet codes will be written.
 ##' By default, a random filename is used.
-##' 
+##'
 ##' @param shlib.args optional character variables.
 ##' Command-line arguments to the \code{R CMD SHLIB} call that compiles the C snippets.
-##' 
+##'
 ##' @param \dots additional arguments supply new or modify existing model characteristics or components.
 ##' Named arguments that are not recognized by \pkg{pomp} will be stored for the use of the basic model components.
 ##' See the \link[=userdata]{documentation here} for details.
-##' 
+##'
 ##' @param verbose logical; if \code{TRUE}, diagnostic messages will be printed to the console.
 ##'
 ##' @return
@@ -149,7 +149,7 @@
 ##' Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.  }
 ##'
 ##' @author Aaron A. King
-##' 
+##'
 ##' @references
 ##' A. A. King, D. Nguyen, and E. L. Ionides (2016)
 ##' Statistical Inference for Partially Observed Markov Processes via the Package \pkg{pomp}.
@@ -158,9 +158,10 @@ NULL
 
 ##' @rdname pomp
 ##' @export
-pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
-  rmeasure, dmeasure, skeleton, rprior, dprior, partrans,
-  params, covar, zeronames,
+pomp <- function (data, times, t0, ...,
+  rinit, rprocess, dprocess, rmeasure, dmeasure,
+  skeleton, rprior, dprior, partrans, covar,
+  params, zeronames,
   obsnames, statenames, paramnames, covarnames,
   PACKAGE, globals, cdir, cfile, shlib.args,
   verbose = getOption("verbose", FALSE)) {
@@ -175,7 +176,13 @@ pomp <- function (data, times, t0, ..., rinit, rprocess, dprocess,
       sQuote("pomp"),".",call.=FALSE)
 
   ## return as quickly as possible if no work is to be done
-  if (nargs()==1) return(data)
+  if (missing(times) && missing(t0) &&
+      missing(rinit) && missing(rprocess) && missing(dprocess) &&
+      missing(rmeasure) && missing(dmeasure) && missing(skeleton) &&
+      missing(rprior) && missing(dprior) && missing(partrans) &&
+      missing(covar) && missing(params) && missing(zeronames) &&
+      length(list(...)) == 0)
+    return(data)
 
   construct_pomp(
     data=data,times=times,t0=t0,...,
@@ -463,8 +470,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
   }
 
   ## use default rinit?
-  default.init <- is.null(rinit) ||
-    (is(rinit,"pomp_fun") && rinit@mode == pompfunmode$undef )
+  default.init <- is.null(rinit) || is.undef.pomp_fun(rinit)
   if (default.init) rinit <- pomp_fun(slotname="rinit")
 
   if (is(rinit,"Csnippet") && length(statenames)==0) {
@@ -474,7 +480,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
 
   ## by default, use flat improper prior
   if (is.null(dprior))
-    dprior <- pomp_fun(f="_pomp_default_dprior",PACKAGE="pomp")
+    dprior <- pomp_fun(f="_flat_improper_dprior",PACKAGE="pomp")
 
   ## check and arrange covariates
   if (is.null(covar)) {
@@ -483,16 +489,8 @@ pomp.internal <- function (data, times, t0, timename, ...,
     stop(ep,"bad option for ",sQuote("covar"),".",call.=FALSE)
   }
 
-  if (length(covarnames) == 0) {
+  if (length(covarnames) == 0)
     covarnames <- get_covariate_names(covar)
-  } else {
-    covar <- tryCatch(
-      select_covariates(covar,covarnames),
-      error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE)
-      }
-    )
-  }
 
   hitches <- hitch(
     rinit=rinit,

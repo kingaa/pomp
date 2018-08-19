@@ -151,3 +151,7 @@ setMethod(
   signature=signature(f="pomp_fun"),
   definition=function (f, ...) f
 )
+
+is.undef.pomp_fun <- function (object) {
+  is(object,"pomp_fun") && object@mode == pompfunmode$undef
+}

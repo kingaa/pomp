@@ -5,7 +5,7 @@
 \title{Constructor of the basic pomp object}
 \usage{
 pomp(data, times, t0, ..., rinit, rprocess, dprocess, rmeasure, dmeasure,
-  skeleton, rprior, dprior, partrans, params, covar, zeronames, obsnames,
+  skeleton, rprior, dprior, partrans, covar, params, zeronames, obsnames,
   statenames, paramnames, covarnames, PACKAGE, globals, cdir, cfile,
   shlib.args, verbose = getOption("verbose", FALSE))
 }
@@ -67,14 +67,14 @@ When working with such an algorithm and a model for which the parameters are con
 One should supply the \code{partrans} argument via a call to \code{\link{parameter_trans}}.
 For more information, see \link[=parameter_trans]{here}.}
 
-\item{params}{optional; named numeric vector of parameters.
-This will be coerced internally to storage mode \code{double}.}
-
 \item{covar}{optional covariate table, constructed using \code{\link{covariate_table}}.
 
 If a covariate table is supplied, then the value of each of the covariates is interpolated as needed.
 The resulting interpolated values are made available to the appropriate basic components.
 See the documentation for \code{\link{covariate_table}} for details.}
+
+\item{params}{optional; named numeric vector of parameters.
+This will be coerced internally to storage mode \code{double}.}
 
 \item{zeronames}{optional character vector specifying the names of accumulator variables.
 See \link[=accumulators]{here} for a definition and discussion of accumulator variables.}

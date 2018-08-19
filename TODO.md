@@ -2,14 +2,12 @@
 
 - "guide to upgrading to **pomp** version 2"
 - all methods need all `pomp` arguments, no?
-- make `pomp` return as quickly as possible when no extra work is needed
+- ~~make `pomp` return as quickly as possible when no extra work is needed~~
 - all methods use transforms if they exist
 - `as.data.frame` and ?? for `listies`
 - index by concept using `\concept{}` in the help files
 - document user-data functions
 - provide full suite of methods for `traj.match.objfun`
-- make default initializer into a `pomp_fun` (and obviate the need for the `default_initializer` flag
-    - all initializers will require `statenames`!
 - matching functions will go away, in favor of objective function constructors:
     - 'probe.match.objfun' looks good: needs testing
     - 'traj.match.objfun' looks good: needs testing
@@ -35,7 +33,8 @@
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification
 	- allow "R snippets": expressions evaluated in proper context?
-- remove `obs` and `states` arguments in `simulate`? or hide them? `do_simulate` in C?
+- remove `obs` and `states` arguments in `simulate`? or hide them?
+- `do_simulate` in C?
 - easier interface for lists of probes in `probe`
 - documentation on `mifList`, `pmcmcList`, etc.
 - methods to change data (`obs<-`)?
