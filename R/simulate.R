@@ -49,39 +49,6 @@ setGeneric(
     standardGeneric("simulate")
 )
 
-##' @name simulate-pomp
-##' @aliases simulate simulate,pomp-method
-##' @rdname simulate
-##' @export
-setMethod(
-  "simulate",
-  signature=signature(object="pomp"),
-  definition=function (object, nsim = 1, seed = NULL,
-    rinit, rprocess, rmeasure, params,
-    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
-    include.data = FALSE, ..., verbose = getOption("verbose", FALSE)) {
-
-    simulate.internal(
-      object=object,
-      rinit=rinit,
-      rprocess=rprocess,
-      rmeasure=rmeasure,
-      nsim=nsim,
-      seed=seed,
-      params=params,
-      states=states,
-      obs=obs,
-      times=times,
-      t0=t0,
-      as.data.frame=as.data.frame,
-      include.data=include.data,
-      ...,
-      verbose=verbose
-    )
-
-  }
-)
-
 ##' @name simulate-missing
 ##' @aliases simulate,missing-method
 ##' @rdname simulate
@@ -122,13 +89,93 @@ setMethod(
   }
 )
 
+setMethod(
+  "simulate",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("simulate")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
+)
+
+##' @name simulate-data.frame
+##' @aliases simulate simulate,data.frame-method
+##' @rdname simulate
+##' @export
+setMethod(
+  "simulate",
+  signature=signature(object="data.frame"),
+  definition=function (object, nsim = 1, seed = NULL,
+    rinit, rprocess, rmeasure, params,
+    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+    include.data = FALSE, ..., verbose = getOption("verbose", FALSE)) {
+
+    object <- tryCatch(
+      pomp(object,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+        times=times,t0=t0,...,verbose=verbose),
+      error = function (e) {
+        ep <- paste0("in ",sQuote("simulate"),": ")
+        stop(ep,conditionMessage(e),call.=FALSE)
+      }
+    )
+
+    simulate(
+      object=object,
+      nsim=nsim,
+      seed=seed,
+      params=params,
+      states=states,
+      obs=obs,
+      times=time(object),
+      t0=timezero(object),
+      as.data.frame=as.data.frame,
+      include.data=include.data,
+      verbose=verbose
+    )
+
+  }
+)
+
+##' @name simulate-pomp
+##' @aliases simulate simulate,pomp-method
+##' @rdname simulate
+##' @export
+setMethod(
+  "simulate",
+  signature=signature(object="pomp"),
+  definition=function (object, nsim = 1, seed = NULL,
+    rinit, rprocess, rmeasure, params,
+    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+    include.data = FALSE, ..., verbose = getOption("verbose", FALSE)) {
+
+    simulate.internal(
+      object=object,
+      rinit=rinit,
+      rprocess=rprocess,
+      rmeasure=rmeasure,
+      nsim=nsim,
+      seed=seed,
+      params=params,
+      states=states,
+      obs=obs,
+      times=times,
+      t0=t0,
+      as.data.frame=as.data.frame,
+      include.data=include.data,
+      ...,
+      verbose=verbose
+    )
+
+  }
+)
+
 simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
-  include.data = FALSE, .getnativesymbolinfo = TRUE, verbose, ...) {
+  include.data = FALSE, .getnativesymbolinfo = TRUE, ..., verbose) {
 
   ep <- paste0("in ",sQuote("simulate"),": ")
 
-  object <- pomp(object,...)
+  object <- pomp(object,...,verbose=verbose)
 
   obs <- as.logical(obs)
   states <- as.logical(states)

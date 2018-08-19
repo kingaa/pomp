@@ -15,7 +15,7 @@
 ##'
 ##' @name pompExample
 ##' @rdname pompExample
-##' @include pomp.R simulate_pomp.R
+##' @include pomp.R simulate.R
 ##' @importFrom stats setNames
 ##'
 ##' @param example example to load given as a name or literal character string.

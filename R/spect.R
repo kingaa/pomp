@@ -19,7 +19,7 @@
 ##' @aliases spect spect,missing-method spect,ANY-method
 ##' @family summary statistics methods
 ##'
-##' @include simulate_pomp.R pomp.R
+##' @include simulate.R pomp.R
 ##' @importFrom stats spec.pgram kernel .lm.fit
 ##' @inheritParams pomp
 ##' @param vars optional; names of observed variables for which the power spectrum will be computed.

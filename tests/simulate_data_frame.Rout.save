@@ -1,0 +1,67 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> options(digits=3)
+> 
+> library(pomp)
+> library(magrittr)
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> 
+> set.seed(1041414791L)
+> 
+> data.frame(t=0:10,y=runif(11)) %>%
++   simulate(times="t",t0=0,
++     rprocess=discrete.time.sim(
++       step.fun=function(x,t,params,delta.t,...) {
++         setNames(c(params["r"]*x*exp(-x)),"x")
++       }),
++     rmeasure=function(x,t,params,...) {
++       c(y=rpois(n=1,100*x))
++     },
++     params=c(r=15,x.0=0.1)
++   )
+<object of class ‘pomp’>
+> 
+> try(data.frame(t=0:10,y=runif(11)) %>%
++   simulate(times=1:50))
+Error : in ‘simulate’: in ‘pomp’: when ‘data’ is a data frame, ‘times’ must identify a single column of ‘data’ either by name or by index.
+> try(data.frame(t=0:10,y=runif(11)) %>%
++     simulate(times="t"))
+Error : in ‘simulate’: in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
+> try(data.frame(t=0:10,y=runif(11)) %>%
++     simulate(times="t",t0=0))
+Error : in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
+> try(data.frame(t=0:10,y=runif(11)) %>%
++     simulate(times="t",t0=0))
+Error : in ‘simulate’: in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
+> try(data.frame(t=0:10,y=runif(11)) %>%
++     simulate(times="t",t0=0,params=c(x.0=1)))
+Error : in ‘simulate’: 'rprocess' is undefined.
+> 

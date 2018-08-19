@@ -12,7 +12,7 @@
 ##'
 ##' @name nlf
 ##' @rdname nlf
-##' @include pomp_class.R simulate_pomp.R
+##' @include pomp_class.R simulate.R
 ##' @importFrom stats .lm.fit optim setNames
 ##'
 ##' @aliases nlf nlf,missing-method nlf,ANY-method

@@ -276,6 +276,30 @@ static R_INLINE double dbetanbinom (double x, double mu, double size,
 // A MANUALLY-LINKED LIBRARY.
 // THEY CANNOT BE USED WITHIN C SNIPPETS.
 
+// PROTOTYPE FOR INITIAL-STATE SAMPLER (rinit)
+typedef void pomp_rinit(double *x, const double *p, double t,
+  const int *stateindex, const int *parindex, const int *covindex,
+  const double *covars);
+// Description:
+//  on input:
+// p          = pointer to parameter vector
+// t          = time
+// stateindex = pointer to vector of integers pointing to the states in 'x' in the order specified by
+//                the 'statenames' argument of 'euler.simulator'
+// parindex   = pointer to vector of integers pointing to the parameters in 'p' in the order specified by
+//                the 'paramnames' argument of 'euler.simulator'
+// covindex   = pointer to vector of integers pointing to the covariates in 'covars' in the order
+//                specified by the 'covarnames' argument of 'euler.simulator'
+// covars     = pointer to a vector containing the values of the covariates at time t, as interpolated
+//                from the covariate table supplied to 'euler.simulator'
+//  on output:
+// x          = contains the state vector (i.e., at time t)
+//
+// NB: There is no need to call GetRNGstate() or PutRNGstate() in the body of the user-defined function.
+//     The RNG is initialized before any call to this function, and the RNG state is written afterward.
+//     Inclusion of these calls in the user-defined function may result in significant slowdown.
+
+
 // PROTOTYPE FOR STOCHASTIC SIMULATION ALGORITHM REACTION-RATE FUNCTION, AS USED BY "GILLESPIE.SIM":
 typedef double pomp_ssa_rate_fn(int event, double t, const double *x, const double *p,
 				const int *stateindex, const int *parindex, const int *covindex,

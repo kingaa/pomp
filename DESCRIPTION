@@ -79,7 +79,7 @@ Collate:
     'design.R'
     'eff_sample_size.R'
     'eulermultinom.R'
-    'simulate_pomp.R'
+    'simulate.R'
     'example.R'
     'extract.R'
     'filter_mean.R'
