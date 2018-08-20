@@ -230,12 +230,14 @@ setMethod(
 setMethod(
   "pfilter",
   signature=signature(data="pfilterd_pomp"),
-  function (data, params, Np, tol, ...) {
+  function (data, params, Np, tol, ...,
+    verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
     if (missing(tol)) tol <- data@tol
 
-    pfilter(as(data,"pomp"),params=params,Np=Np,tol=tol,...)
+    pfilter(as(data,"pomp"),params=params,Np=Np,tol=tol,...,
+      verbose=verbose)
 
   }
 )

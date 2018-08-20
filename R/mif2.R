@@ -193,8 +193,8 @@ setMethod(
       cooling.fraction.50=cooling.fraction.50,
       tol=tol,
       max.fail=max.fail,
-      verbose=verbose,
-      ...
+      ...,
+      verbose=verbose
     )
 
   }
@@ -207,12 +207,13 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="pfilterd_pomp"),
-  definition = function (data, Nmif = 1, Np, tol, ...) {
+  definition = function (data, Nmif = 1, Np, tol, ...,
+    verbose = getOption("verbose", FALSE)) {
 
     if (missing(Np)) Np <- data@Np
     if (missing(tol)) tol <- data@tol
 
-    mif2(as(data,"pomp"),Nmif=Nmif,Np=Np,tol=tol,...)
+    mif2(as(data,"pomp"),Nmif=Nmif,Np=Np,tol=tol,...,verbose=verbose)
   }
 )
 
@@ -224,7 +225,8 @@ setMethod(
   "mif2",
   signature=signature(data="mif2d_pomp"),
   definition = function (data, Nmif, Np, rw.sd, transform,
-    cooling.type, cooling.fraction.50, tol, ...) {
+    cooling.type, cooling.fraction.50, tol, ...,
+    verbose = getOption("verbose", FALSE)) {
 
     if (missing(Nmif)) Nmif <- data@Nmif
     if (missing(Np)) Np <- data@Np
@@ -237,7 +239,8 @@ setMethod(
 
     mif2(as(data,"pomp"),Nmif=Nmif,Np=Np,rw.sd=rw.sd,
       transform=transform,cooling.type=cooling.type,
-      cooling.fraction.50=cooling.fraction.50,tol=tol,...)
+      cooling.fraction.50=cooling.fraction.50,tol=tol,...,
+      verbose=verbose)
   }
 )
 
@@ -251,12 +254,14 @@ setMethod(
 setMethod(
   "continue",
   signature=signature(object="mif2d_pomp"),
-  definition = function (object, Nmif = 1, ...) {
+  definition = function (object, Nmif = 1, ...,
+    verbose = getOption("verbose", FALSE)) {
 
     ndone <- object@Nmif
 
     obj <- mif2(object,Nmif=Nmif,...,
-      .ndone=ndone,.paramMatrix=object@paramMatrix)
+      .ndone=ndone,.paramMatrix=object@paramMatrix,
+      verbose=verbose)
 
     object@traces[ndone+1,c('loglik','nfail')] <- obj@traces[1L,c('loglik','nfail')]
     obj@traces <- rbind(

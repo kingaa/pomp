@@ -23,7 +23,8 @@
   filter.traj = FALSE, save.states = FALSE, save.params = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{pfilter}{pfilterd_pomp}(data, params, Np, tol, ...)
+\S4method{pfilter}{pfilterd_pomp}(data, params, Np, tol, ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
@@ -77,9 +78,10 @@ If \code{save.states=TRUE}, the state-vector for each particle at each time is s
 If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \sQuote{pfilterd_pomp} object.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
-When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components.
-This allows the user to pass information to the basic components outside of model parameters, covariates, data, and state variables.
-See the \link[=userdata]{documentation here} for information on how to use this facility.}
+See \code{\link{pomp}} for a full list of recognized arguments.
+When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
+This allows the user to pass information to the basic components outside of the usual route of covariates (\code{covar}) and model parameters (\code{params}).
+See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }

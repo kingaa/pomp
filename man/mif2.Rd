@@ -25,10 +25,11 @@
   tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose",
   FALSE))
 
-\S4method{mif2}{pfilterd_pomp}(data, Nmif = 1, Np, tol, ...)
+\S4method{mif2}{pfilterd_pomp}(data, Nmif = 1, Np, tol, ...,
+  verbose = getOption("verbose", FALSE))
 
 \S4method{mif2}{mif2d_pomp}(data, Nmif, Np, rw.sd, transform, cooling.type,
-  cooling.fraction.50, tol, ...)
+  cooling.fraction.50, tol, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
@@ -98,9 +99,10 @@ If the number of filtering failures exceeds this number, execution will terminat
 By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
-When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components.
-This allows the user to pass information to the basic components outside of model parameters, covariates, data, and state variables.
-See the \link[=userdata]{documentation here} for information on how to use this facility.}
+See \code{\link{pomp}} for a full list of recognized arguments.
+When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
+This allows the user to pass information to the basic components outside of the usual route of covariates (\code{covar}) and model parameters (\code{params}).
+See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
 }
