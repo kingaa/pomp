@@ -127,8 +127,8 @@ A Tutorial on Particle Filters for Online Nonlinear, Non-Gaussian Bayesian Track
 IEEE Trans. Sig. Proc. 50:174--188, 2002.
 }
 \seealso{
-\code{\link{mif2}}, \code{\link{pmcmc}}, \code{\link{bsmc2}}, and
-the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
+Other elementary POMP methods: \code{\link{probe}},
+  \code{\link{simulate}}
 
 Other particle filter methods: \code{\link{bsmc2}},
   \code{\link{cond.logLik}}, \code{\link{eff.sample.size}},
@@ -139,4 +139,5 @@ Other particle filter methods: \code{\link{bsmc2}},
 \author{
 Aaron A. King
 }
+\concept{elementary POMP methods}
 \concept{particle filter methods}

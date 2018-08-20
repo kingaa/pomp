@@ -9,7 +9,9 @@
 ##' @rdname pmcmc
 ##' @include pfilter.R proposals.R load.R continue.R
 ##' @aliases pmcmc pmcmc,ANY-method pmcmc,missing-method
+##' @author Edward L. Ionides, Aaron A. King, Sebastian Funk
 ##' @family particle filter methods
+##' @seealso \link[=proposals]{MCMC proposals}
 ##'
 ##' @importFrom stats runif
 ##' @inheritParams pomp
@@ -30,11 +32,6 @@
 ##' (except for \code{tol}, \code{max.fail}, and \code{verbose}, the defaults
 ##' of which are shown above).  If one does specify additional arguments, these
 ##' will override the defaults.
-##'
-##' @author Edward L. Ionides, Aaron A. King, Sebastian Funk
-##'
-##' @seealso \code{\link{pfilter}}, \link[=proposals]{MCMC proposals}, and the
-##' tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 ##'
 ##' @references
 ##' C. Andrieu, A. Doucet, and R. Holenstein (2010)

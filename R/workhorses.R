@@ -18,8 +18,7 @@
 ##' @include pomp_class.R pomp_fun.R load.R
 ##' @docType methods
 ##' @family pomp workhorses
-##' @seealso
-##' \code{\link[=simulate-pomp]{simulate}} \code{\link{trajectory}}
+##' @seealso \code{\link[=simulate-pomp]{simulate}} \code{\link{trajectory}}
 ##'
 ##' @author Aaron A. King
 ##'

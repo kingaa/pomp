@@ -17,11 +17,10 @@
 ##' @rdname sir
 ##' @aliases sir sir2 bbs
 ##' @docType data
-##' @seealso \code{\link{pomp}} and the tutorials on the
-##' \href{https://kingaa.github.io/pomp/}{package website}.
 ##' @references Anonymous (1978).  Influenza in a boarding school.  British
 ##' Medical Journal 1:587
 ##' @keywords datasets models
+##' @family pomp examples
 ##' @examples
 ##'
 ##' pompExample(sir)

@@ -6,6 +6,7 @@
 ##' @rdname accumulators
 ##' @aliases zeronames
 ##' @family information on model implementation
+##' @seealso \code{\link{sir}}
 ##'
 ##' @details
 ##' In formulating models, one sometimes wishes to define a state variable that will accumulate some quantity over the interval between successive observations.

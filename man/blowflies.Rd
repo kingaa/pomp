@@ -71,7 +71,12 @@ rates.  in G. Oster (ed.), Some Questions in Mathematical Biology, vol. 13,
 pp. 65--90.  American Mathematical Society, Providence.
 }
 \seealso{
-\code{\link{pomp}}
+Other pomp examples: \code{\link{dacca}},
+  \code{\link{gompertz}}, \code{\link{measles}},
+  \code{\link{ou2}}, \code{\link{pompExample}},
+  \code{\link{ricker}}, \code{\link{rw2}},
+  \code{\link{sir_models}}
 }
+\concept{pomp examples}
 \keyword{datasets}
 \keyword{models}

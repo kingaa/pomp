@@ -6,6 +6,8 @@
 ##' @name pfilter
 ##' @rdname pfilter
 ##' @aliases pfilter,ANY-method pfilter,missing-method pfilter
+##' @author Aaron A. King
+##' @family elementary POMP methods
 ##' @family particle filter methods
 ##'
 ##' @include pomp_class.R pomp.R rprocess_spec.R dmeasure_spec.R
@@ -52,11 +54,6 @@
 ##' \item{as.data.frame}{ coerce to a data frame }
 ##' \item{plot}{diagnostic plots}
 ##' }
-##'
-##' @author Aaron A. King
-##'
-##' @seealso \code{\link{mif2}}, \code{\link{pmcmc}}, \code{\link{bsmc2}}, and
-##' the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
 ##'
 ##' @references
 ##' M. S. Arulampalam, S. Maskell, N. Gordon, & T. Clapp.

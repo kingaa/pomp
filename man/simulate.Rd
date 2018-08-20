@@ -84,6 +84,11 @@ The option \code{include.data} allows one to include the original data in the da
 \code{simulate} generates simulations of the state and measurement
 processes.
 }
+\seealso{
+Other elementary POMP methods: \code{\link{pfilter}},
+  \code{\link{probe}}
+}
 \author{
 Aaron A. King
 }
+\concept{elementary POMP methods}

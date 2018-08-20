@@ -15,8 +15,8 @@
 ##' @name ou2
 ##' @rdname ou2
 ##' @docType data
-##' @seealso \code{\link{pomp}}
 ##' @keywords models datasets
+##' @family pomp examples
 ##' @examples
 ##'
 ##' pompExample(ou2)

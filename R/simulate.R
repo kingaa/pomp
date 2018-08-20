@@ -8,6 +8,8 @@
 ##' @rdname simulate
 ##' @include workhorses.R pomp_class.R pomp.R
 ##' @importFrom stats simulate
+##' @author Aaron A. King
+##' @family elementary POMP methods
 ##'
 ##' @inheritParams pomp
 ##' @param object optional; if present, it should be the output of one of \pkg{pomp}'s methods
@@ -31,7 +33,6 @@
 ##' If \code{as.data.frame} is set to \code{TRUE}, then the simulated data and states are returned as a data frame, along with the values of the covariates (if any) at the requested times.
 ##' The option \code{include.data} allows one to include the original data in the data frame.
 ##'
-##' @author Aaron A. King
 NULL
 
 setGeneric(

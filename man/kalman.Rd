@@ -81,9 +81,7 @@ Springer-Verlag.
 Anderson, J. L. (2001) An Ensemble Adjustment Kalman Filter for Data
 Assimilation Monthly Weather Review 129:2884--2903
 }
-\seealso{
-\code{\link{pfilter}}, and the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
-}
 \author{
 Aaron A. King
 }
+\concept{particle filtering methods}

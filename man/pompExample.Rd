@@ -49,12 +49,15 @@ The codes that construct these \sQuote{pomp} objects can be found in the
 
 }
 \seealso{
-\code{\link{blowflies}}, \code{\link{dacca}},
-\code{\link{gompertz}}, \code{\link{ou2}}, \code{\link{ricker}},
-\code{\link{rw2}}, \code{\link{sir}}, \code{\link{sir2}}, \code{\link{bbs}}
+Other pomp examples: \code{\link{blowflies}},
+  \code{\link{dacca}}, \code{\link{gompertz}},
+  \code{\link{measles}}, \code{\link{ou2}},
+  \code{\link{ricker}}, \code{\link{rw2}},
+  \code{\link{sir_models}}
 }
 \author{
 Aaron A. King
 }
+\concept{pomp examples}
 \keyword{datasets}
 \keyword{models}

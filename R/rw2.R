@@ -6,8 +6,8 @@
 ##'
 ##' @name rw2
 ##' @docType data
-##' @seealso \code{\link{pomp}}, \code{\link{ou2}}
 ##' @keywords datasets models
+##' @family pomp examples
 ##' @examples
 ##'
 ##' pompExample(rw2)

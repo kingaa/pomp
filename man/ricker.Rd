@@ -23,8 +23,12 @@ coef(ricker)
 
 }
 \seealso{
-\code{\link{pomp}}, \code{\link{gompertz}}, and the tutorials on
-the \href{https://kingaa.github.io/pomp/}{package website}.
+Other pomp examples: \code{\link{blowflies}},
+  \code{\link{dacca}}, \code{\link{gompertz}},
+  \code{\link{measles}}, \code{\link{ou2}},
+  \code{\link{pompExample}}, \code{\link{rw2}},
+  \code{\link{sir_models}}
 }
+\concept{pomp examples}
 \keyword{datasets}
 \keyword{models}

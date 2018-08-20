@@ -23,6 +23,7 @@
 ##' Chickenpox and Mumps: I. Seasonal Variation in Contact Rates, American
 ##' Journal of Epidemiology, 98:453--468, 1973.
 ##' @keywords datasets
+##' @family pomp examples
 ##' @examples
 ##'
 ##' plot(cases~time,data=LondonYorke,subset=disease=="measles",type='n',main="measles",bty='l')

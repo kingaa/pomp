@@ -14,6 +14,8 @@ Specifically, variables named in the \code{pomp}'s \code{zeronames} argument wil
 See \code{\link{sir}} and the tutorials on the \href{https://kingaa.github.io/pomp/}{package website} for examples.
 }
 \seealso{
+\code{\link{sir}}
+
 Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{covariate_table}},
   \code{\link{dmeasure_spec}}, \code{\link{dprocess_spec}},

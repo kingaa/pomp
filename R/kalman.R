@@ -8,6 +8,8 @@
 ##' @importFrom stats dnorm rnorm
 ##' @aliases enkf eakf enkf,ANY-method enkf,missing-method
 ##' eakf,ANY-method eakf,missing-method
+##' @author Aaron A. King
+##' @family particle filtering methods
 ##'
 ##' @inheritParams pomp
 ##' @param Np the number of particles to use.
@@ -17,11 +19,8 @@
 ##' observation.
 ##' @param R matrix; variance of the measurement noise.
 ##'
-##' @return An object of class \sQuote{kalmand_pomp}.
-##'
-##' @author Aaron A. King
-##'
-##' @seealso \code{\link{pfilter}}, and the tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
+##' @return
+##' An object of class \sQuote{kalmand_pomp}.
 ##'
 ##' @references
 ##' Evensen, G. (1994) Sequential data assimilation with a

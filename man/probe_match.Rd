@@ -101,11 +101,14 @@ The best practice is to evaluate the function on the parameters returned by the 
 }
 
 \seealso{
-\code{\link{probe}}, \code{\link{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
+\code{\link{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 
 Other summary statistics methods: \code{\link{abc}},
   \code{\link{basic_probes}}, \code{\link{probe}},
   \code{\link{spect}}
+}
+\author{
+Aaron A. King
 }
 \concept{summary statistics methods}
 \keyword{optimize}

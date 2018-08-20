@@ -8,6 +8,9 @@
 ##' @docType methods
 ##' @include pomp_class.R probe.R continue.R workhorses.R
 ##' @importFrom stats runif
+##' @author Edward L. Ionides, Aaron A. King
+##' @family summary statistics methods
+##' @seealso \link[=proposals]{MCMC proposals}
 ##'
 ##' @inheritParams pomp
 ##' @inheritParams probe
@@ -40,12 +43,6 @@
 ##' \item{plot}{produces a series of diagnostic plots}
 ##' \item{traces}{produces a \code{\link[coda]{mcmc}} object, to which the various \pkg{coda} convergence diagnostics can be applied}
 ##' }
-##'
-##' @author Edward L. Ionides, Aaron A. King
-##'
-##' @family summary statistics methods
-##' @seealso \link[=proposals]{MCMC proposals}, and
-##' the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
 ##' @references
 ##' J.-M. Marin, P. Pudlo, C. P. Robert, and R. J. Ryder,

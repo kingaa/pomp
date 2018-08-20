@@ -116,8 +116,7 @@ The pseudo-marginal approach for computation
 Annals of Statistics, 37:697-725.
 }
 \seealso{
-\code{\link{pfilter}}, \link[=proposals]{MCMC proposals}, and the
-tutorials on the \href{https://kingaa.github.io/pomp}{package website}.
+\link[=proposals]{MCMC proposals}
 
 Other particle filter methods: \code{\link{bsmc2}},
   \code{\link{cond.logLik}}, \code{\link{eff.sample.size}},

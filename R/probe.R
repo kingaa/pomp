@@ -19,6 +19,8 @@
 ##' @docType methods
 ##' @rdname probe
 ##' @aliases probe probe,missing-method probe,ANY-method
+##' @author Daniel C. Reuman, Aaron A. King
+##' @family elementary POMP methods
 ##' @family summary statistics methods
 ##'
 ##' @include pomp_class.R pomp_fun.R pomp.R
@@ -53,10 +55,6 @@
 ##'  The latter contains the realized values of the probes on the data and on the simulations.
 ##' The variable \code{.id} indicates whether the probes are from the data or simulations.  }
 ##' }
-##'
-##' @author Daniel C. Reuman, Aaron A. King
-##'
-##' @seealso the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 ##'
 ##' @references
 ##' B. E. Kendall, C. J. Briggs, W. M. Murdoch, P. Turchin, S. P.

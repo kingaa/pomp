@@ -17,6 +17,9 @@
 ##' @rdname pompExample
 ##' @include pomp.R simulate.R
 ##' @importFrom stats setNames
+##' @author Aaron A. King
+##' @keywords models datasets
+##' @family pomp examples
 ##'
 ##' @param example example to load given as a name or literal character string.
 ##' Evoked without an argument, \code{pompExample} lists all available
@@ -31,14 +34,6 @@
 ##' @return By default, \code{pompExample} has the side effect of creating one
 ##' or more objects in the global workspace.  If \code{envir=NULL}, there are
 ##' no side effects; rather, the objects are returned as a list.
-##'
-##' @author Aaron A. King
-##'
-##' @seealso \code{\link{blowflies}}, \code{\link{dacca}},
-##' \code{\link{gompertz}}, \code{\link{ou2}}, \code{\link{ricker}},
-##' \code{\link{rw2}}, \code{\link{sir}}, \code{\link{sir2}}, \code{\link{bbs}}
-##'
-##' @keywords models datasets
 ##'
 ##' @examples
 ##'

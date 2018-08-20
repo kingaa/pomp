@@ -30,7 +30,12 @@ logLik(pf)
 
 }
 \seealso{
-\code{\link{pomp}}
+Other pomp examples: \code{\link{blowflies}},
+  \code{\link{dacca}}, \code{\link{gompertz}},
+  \code{\link{measles}}, \code{\link{pompExample}},
+  \code{\link{ricker}}, \code{\link{rw2}},
+  \code{\link{sir_models}}
 }
+\concept{pomp examples}
 \keyword{datasets}
 \keyword{models}

@@ -125,8 +125,7 @@ Bayesian computation scheme for parameter inference and model selection in
 dynamical systems Journal of the Royal Society, Interface 6:187--202, 2009.
 }
 \seealso{
-\link[=proposals]{MCMC proposals}, and
-the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
+\link[=proposals]{MCMC proposals}
 
 Other summary statistics methods: \code{\link{basic_probes}},
   \code{\link{probe.match}}, \code{\link{probe}},

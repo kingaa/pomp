@@ -34,7 +34,7 @@
 ##' @name blowflies
 ##' @aliases blowflies blowflies1 blowflies2
 ##' @docType data
-##' @seealso \code{\link{pomp}}
+##' @family pomp examples
 ##' @references
 ##' A. J. Nicholson (1957)
 ##' The self-adjustment of populations to change.

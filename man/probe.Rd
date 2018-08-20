@@ -25,7 +25,8 @@
 \S4method{probe}{probed_pomp}(data, probes, nsim, seed = NULL, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{probe}{probe_match_objfun}(data, ...)
+\S4method{probe}{probe_match_objfun}(data, ...,
+  verbose = getOption("verbose", FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
@@ -114,7 +115,8 @@ S. N. Wood Statistical inference for noisy nonlinear ecological dynamic
 systems, Nature, 466: 1102--1104, 2010.
 }
 \seealso{
-the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
+Other elementary POMP methods: \code{\link{pfilter}},
+  \code{\link{simulate}}
 
 Other summary statistics methods: \code{\link{abc}},
   \code{\link{basic_probes}}, \code{\link{probe.match}},
@@ -123,4 +125,5 @@ Other summary statistics methods: \code{\link{abc}},
 \author{
 Daniel C. Reuman, Aaron A. King
 }
+\concept{elementary POMP methods}
 \concept{summary statistics methods}

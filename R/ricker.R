@@ -11,9 +11,8 @@
 ##'
 ##' @name ricker
 ##' @docType data
-##' @seealso \code{\link{pomp}}, \code{\link{gompertz}}, and the tutorials on
-##' the \href{https://kingaa.github.io/pomp/}{package website}.
 ##' @keywords datasets models
+##' @family pomp examples
 ##' @examples
 ##'
 ##' pompExample(ricker)

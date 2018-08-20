@@ -1,9 +1,7 @@
 # pomp to-do list
 
 - "guide to upgrading to **pomp** version 2"
-- all methods need all `pomp` arguments, no?
-- ~~make `pomp` return as quickly as possible when no extra work is needed~~
-- all methods use transforms if they exist
+- **all methods use transforms if they exist**
 - `as.data.frame` and ?? for `listies`
 - index by concept using `\concept{}` in the help files
 - document user-data functions
@@ -13,10 +11,11 @@
     - 'traj.match.objfun' looks good: needs testing
     - 'spect.match.objfun' looks good: needs testing
 	- 'nlf' needs to be reworked
-- revisit whether `pomp` can handle all `params` chopping and changing
+- **revisit whether `pomp` can handle all `params` chopping and changing**
 - if `pomp` becomes essentially hidden, where will `zeronames` be documented?
-- specific workhorses in individual functions!!
-- consolidate examples somehow (it's bad to have so many NULL R files)
+- put all NLF codes into one file
+- import and re-export `reshape2::melt`?
+- demonstration of Fisher information via `pfilter` on slice designs?
 - new `userdata` function to get void *?
 - update 'bbs' example (rename to 'bsflu')?
 
@@ -25,7 +24,7 @@
 - on-the-fly modification of basic components
 	- needed for nlf
 - better scheme for indicating derivatives and maps in C snippets
--- perhaps `dinit`?
+- perhaps `dinit`?
 - covariates:
 	- ~~covariates provided using a constructor function~~
    	- piecewise constant interpolation of covariates
@@ -33,11 +32,12 @@
 	- new class for specifying precompiled native routines (with its own `PACKAGE` argument)
 	- deprecate character specification
 	- allow "R snippets": expressions evaluated in proper context?
-- remove `obs` and `states` arguments in `simulate`? or hide them?
+- ~~remove `obs` and `states` arguments in `simulate`? or hide them?~~
 - `do_simulate` in C?
 - easier interface for lists of probes in `probe`
-- documentation on `mifList`, `pmcmcList`, etc.
+- documentation on `mifList`, `pmcmcList`, etc.?
 - methods to change data (`obs<-`)?
+	- perhaps recognized data variables, states, covariates in calls to `pomp` are replaceed?
 - refurbish entire test suite
 	- perhaps use more, smaller method and function specific tests?
 - put Kalman check in 'gompertz' test: **is it correct?**

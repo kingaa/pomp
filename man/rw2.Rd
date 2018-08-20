@@ -19,7 +19,12 @@ plot(x[[1]])
 
 }
 \seealso{
-\code{\link{pomp}}, \code{\link{ou2}}
+Other pomp examples: \code{\link{blowflies}},
+  \code{\link{dacca}}, \code{\link{gompertz}},
+  \code{\link{measles}}, \code{\link{ou2}},
+  \code{\link{pompExample}}, \code{\link{ricker}},
+  \code{\link{sir_models}}
 }
+\concept{pomp examples}
 \keyword{datasets}
 \keyword{models}

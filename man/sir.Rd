@@ -44,8 +44,12 @@ Anonymous (1978).  Influenza in a boarding school.  British
 Medical Journal 1:587
 }
 \seealso{
-\code{\link{pomp}} and the tutorials on the
-\href{https://kingaa.github.io/pomp/}{package website}.
+Other pomp examples: \code{\link{blowflies}},
+  \code{\link{dacca}}, \code{\link{gompertz}},
+  \code{\link{measles}}, \code{\link{ou2}},
+  \code{\link{pompExample}}, \code{\link{ricker}},
+  \code{\link{rw2}}
 }
+\concept{pomp examples}
 \keyword{datasets}
 \keyword{models}

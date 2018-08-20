@@ -30,8 +30,12 @@ coef(gompertz,transform=TRUE)
 
 }
 \seealso{
-\code{pomp}, \code{ricker}, and the tutorials at
-\url{https://kingaa.github.io/pomp/}.
+Other pomp examples: \code{\link{blowflies}},
+  \code{\link{dacca}}, \code{\link{measles}},
+  \code{\link{ou2}}, \code{\link{pompExample}},
+  \code{\link{ricker}}, \code{\link{rw2}},
+  \code{\link{sir_models}}
 }
+\concept{pomp examples}
 \keyword{datasets}
 \keyword{models}

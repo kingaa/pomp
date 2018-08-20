@@ -17,9 +17,8 @@
 ##'
 ##' @name gompertz
 ##' @docType data
-##' @seealso \code{pomp}, \code{ricker}, and the tutorials at
-##' \url{https://kingaa.github.io/pomp/}.
 ##' @keywords models datasets
+##' @family pomp examples
 ##' @examples
 ##'
 ##' pompExample(gompertz)

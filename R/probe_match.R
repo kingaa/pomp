@@ -12,7 +12,9 @@
 ##' @aliases probe.match probe.match.objfun probe.match.objfun,missing-method
 ##' probe.match.objfun,ANY-method
 ##' @include probe.R
+##' @author Aaron A. King
 ##' @family summary statistics methods
+##' @seealso \code{\link{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
 ##' @inheritParams probe-pomp
 ##' @param est character vector; the names of parameters to be estimated.
@@ -31,7 +33,6 @@
 ##' Each time it is called, it will remember the values of the parameters and its estimate of the synthetic likelihood.
 ##'
 ##' @inheritSection objfun Important Note
-##' @seealso \code{\link{probe}}, \code{\link{optim}}, \code{\link[subplex]{subplex}}, \code{\link[nloptr]{nloptr}}
 ##'
 NULL
 
@@ -238,7 +239,8 @@ probe.eval <- function (object) {
 setMethod(
   "probe",
   signature=signature(data="probe_match_objfun"),
-  definition=function (data, ...) {
+  definition=function (data, ...,
+    verbose = getOption("verbose", FALSE)) {
     probe(data@env$object,...)
   }
 )

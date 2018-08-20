@@ -37,7 +37,12 @@ A. A. King, E. L. Ionides, M. Pascual, and M. J. Bouma,
 Inapparent infections and cholera dynamics, Nature, 454:877-880, 2008
 }
 \seealso{
-\code{\link{sir}}, \code{\link{pomp}}
+Other pomp examples: \code{\link{blowflies}},
+  \code{\link{gompertz}}, \code{\link{measles}},
+  \code{\link{ou2}}, \code{\link{pompExample}},
+  \code{\link{ricker}}, \code{\link{rw2}},
+  \code{\link{sir_models}}
 }
+\concept{pomp examples}
 \keyword{datasets}
 \keyword{models}
