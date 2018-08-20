@@ -22,12 +22,6 @@ try(data.frame(a=1:10,b=1:10) %>% pomp(times=NULL))
 try(data.frame(a=1:10,b=1:10) %>% pomp(times=1,t0=11))
 try(data.frame(a=1:10,b=1:10) %>% pomp(times=1,t0=NULL))
 try(data.frame(a=1:10,b=1:10) %>% pomp(times=1,t0=NA))
-try(data.frame(a=1:10,b=1:10) %>%
-    pomp(covar=covariate_table(times=1,c=1:10,d=1:10),
-      covarnames=c("e","f"),times=1,t0=0))
-try(data.frame(a=1:10,b=1:10) %>%
-    pomp(covar=covariate_table(c=1:10,d=1:10,times=1),
-      covarnames=c("c"),times=1,t0=0))
 stopifnot(data.frame(a=1:10,b=1:10) %>%
     pomp(covar=covariate_table(c=0:10,d=0:10,times=1),
       covarnames="d",times=1,t0=0,bob=3) %>% class() %>%

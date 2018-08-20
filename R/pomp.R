@@ -423,7 +423,7 @@ pomp.internal <- function (data, times, t0, timename, ...,
     message(wp,"the unrecognized ",
       ngettext(length(added.userdata),"argument","arguments")," ",
       paste(sQuote(names(added.userdata)),collapse=","),
-      ngettext(length(added.userdata)," is"," are")," ",
+      ngettext(length(added.userdata)," is"," are"),
       " available for use by the POMP basic components."
     )
     .userdata[names(added.userdata)] <- added.userdata

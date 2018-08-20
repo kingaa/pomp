@@ -18,20 +18,29 @@
 ##' @param seed optional;
 ##' if set, the pseudorandom number generator (RNG) will be initialized with \code{seed}.  the random seed to use.
 ##' The RNG will be restored to its original state afterward.
+##' @param states Do we want the state trajectories?
+##' @param obs Do we want data-frames of the simulated observations?
 ##' @param as.data.frame,include.data logical;
 ##' if \code{as.data.frame=TRUE}, the results are returned as a data-frame.
-##' An ordered factor variable, \sQuote{.id}, distinguishes one simulation from another.
+##' A factor variable, \sQuote{sim}, distinguishes one simulation from another.
 ##' If, in addition, \code{include.data=TRUE}, the original data are included as an additional \sQuote{simulation}.
 ##' If \code{as.data.frame=FALSE}, \code{include.data} is ignored.
 ##'
-##' @return
-##' By default, \code{nsim} \sQuote{pomp} objects are returned.
-##' Each has a simulated data set, together with the parameters used and the realized trajectories of the latent state variables.
+##' @return If \code{states=FALSE} and \code{obs=FALSE} (the default), a list of \code{nsim} \sQuote{pomp} objects is returned.
+##' Each has a simulated data set, together with the parameters used (in slot \code{params}) and the state trajectories also (in slot \code{states}).
 ##' If \code{times} is specified, then the simulated observations will be at times \code{times}.
-##' If \code{nsim=1}, then a single \sQuote{pomp} object is returned.
 ##'
-##' If \code{as.data.frame} is set to \code{TRUE}, then the simulated data and states are returned as a data frame, along with the values of the covariates (if any) at the requested times.
-##' The option \code{include.data} allows one to include the original data in the data frame.
+##' If \code{nsim=1}, then a single \sQuote{pomp} object is returned (and not a singleton list).
+##'
+##' If \code{states=TRUE} and \code{obs=FALSE}, simulated state trajectories are returned as a rank-3 array with dimensions \code{nvar} x \code{(ncol(params)*nsim)} x \code{ntimes}.
+##' Here, \code{nvar} is the number of state variables and \code{ntimes} the length of the argument \code{times}.
+##' The measurement process is not simulated in this case.
+##'
+##' If \code{states=FALSE} and \code{obs=TRUE}, simulated observations are returned as a rank-3 array with dimensions \code{nobs} x \code{(ncol(params)*nsim)} x \code{ntimes}.
+##' Here, \code{nobs} is the number of observables.
+##'
+##' If both \code{states=TRUE} and \code{obs=TRUE}, then a named list is returned.
+##' It contains the state trajectories and simulated observations as above.
 ##'
 NULL
 
@@ -50,8 +59,8 @@ setMethod(
   signature=signature(object="missing"),
   definition=function (nsim = 1, seed = NULL,
     rinit, rprocess, rmeasure, params,
-    times, t0,
-    as.data.frame = FALSE, include.data = TRUE, ...,
+    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+    include.data = FALSE, ...,
     verbose = getOption("verbose", FALSE)) {
 
     ep <- paste0("in ",sQuote("simulate"),": ")
@@ -61,22 +70,28 @@ setMethod(
     if (missing(t0))
       stop(ep,sQuote("t0")," is a required argument.",call.=FALSE)
 
+    object <- tryCatch(
+      pomp(data=NULL,times=times,t0=t0,
+        rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,...,
+        verbose=verbose),
+      error=function (e) {
+        stop(ep,conditionMessage(e),call.=FALSE)
+      }
+    )
+
     simulate.internal(
-      object=NULL,
-      rinit=rinit,
-      rprocess=rprocess,
-      rmeasure=rmeasure,
-      params=params,
+      object=object,
       nsim=nsim,
       seed=seed,
+      params=params,
+      states=states,
+      obs=obs,
       times=times,
       t0=t0,
       as.data.frame=as.data.frame,
       include.data=include.data,
-      ...,
       verbose=verbose
     )
-
   }
 )
 
@@ -89,21 +104,29 @@ setMethod(
   signature=signature(object="data.frame"),
   definition=function (object, nsim = 1, seed = NULL,
     rinit, rprocess, rmeasure, params,
-    times, t0,
-    as.data.frame = FALSE, include.data = TRUE, ...,
-    verbose = getOption("verbose", FALSE)) {
+    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+    include.data = FALSE, ..., verbose = getOption("verbose", FALSE)) {
 
-    simulate.internal(
-      object=pomp(object,times=times,t0=t0),
-      rinit=rinit,
-      rprocess=rprocess,
-      rmeasure=rmeasure,
-      params=params,
+    object <- tryCatch(
+      pomp(object,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+        times=times,t0=t0,...,verbose=verbose),
+      error = function (e) {
+        ep <- paste0("in ",sQuote("simulate"),": ")
+        stop(ep,conditionMessage(e),call.=FALSE)
+      }
+    )
+
+    simulate(
+      object=object,
       nsim=nsim,
       seed=seed,
+      params=params,
+      states=states,
+      obs=obs,
+      times=time(object),
+      t0=timezero(object),
       as.data.frame=as.data.frame,
       include.data=include.data,
-      ...,
       verbose=verbose
     )
 
@@ -119,9 +142,8 @@ setMethod(
   signature=signature(object="pomp"),
   definition=function (object, nsim = 1, seed = NULL,
     rinit, rprocess, rmeasure, params,
-    times, t0,
-    as.data.frame = FALSE, include.data = TRUE, ...,
-    verbose = getOption("verbose", FALSE)) {
+    states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+    include.data = FALSE, ..., verbose = getOption("verbose", FALSE)) {
 
     simulate.internal(
       object=object,
@@ -131,6 +153,8 @@ setMethod(
       nsim=nsim,
       seed=seed,
       params=params,
+      states=states,
+      obs=obs,
       times=times,
       t0=t0,
       as.data.frame=as.data.frame,
@@ -142,24 +166,16 @@ setMethod(
   }
 )
 
-simulate.internal <- function (object,
-  nsim = 1L, seed = NULL,
-  times, t0, params,
-  as.data.frame = FALSE, include.data = FALSE, ...,
-  .getnativesymbolinfo = TRUE,
-  .states = FALSE, .obs = FALSE, verbose) {
+simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
+  states = FALSE, obs = FALSE, times, t0, as.data.frame = FALSE,
+  include.data = FALSE, .getnativesymbolinfo = TRUE, ..., verbose) {
 
   ep <- paste0("in ",sQuote("simulate"),": ")
 
-  object <- tryCatch(
-    pomp(object,times=times,t0=t0,...,verbose=verbose),
-    error=function (e) {
-      stop(ep,conditionMessage(e),call.=FALSE)
-    }
-  )
+  object <- pomp(object,...,verbose=verbose)
 
-  obs <- as.logical(.obs)
-  states <- as.logical(.states)
+  obs <- as.logical(obs)
+  states <- as.logical(states)
   as.data.frame <- as.logical(as.data.frame)
   include.data <- as.logical(include.data)
 

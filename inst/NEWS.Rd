@@ -2,10 +2,6 @@
 \title{News for package `pomp'}
 \section{Changes in \pkg{pomp} version 2.0.0}{
   \itemize{
-    \item The \code{obs} and \code{states} arguments to \code{simulate} have been removed.
-    They have been replaced by the hidden arguments \code{.obs} and \code{.states}.
-    \item The default for \code{include.data} has changed to \code{TRUE}.
-    When \code{simulate} returns a data frame, the variable distinguishing different realizations is now named \code{.id} and is an ordered factor (with the data, identified by \code{.id="data"}, leading).
     \item The old \code{probe.match} and \code{traj.match} functions have been removed.
     The new approach to parameter estimation based on numerical optimization involves constructing stateful objective functions.
     There are now three of these: \code{traj.match.objfun}, \code{probe.match.objfun}, and \code{spect.match.objfun}.

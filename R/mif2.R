@@ -220,14 +220,12 @@ setMethod(
 setMethod(
   "continue",
   signature=signature(object="mif2d_pomp"),
-  definition = function (object, Nmif = 1, ...,
-    verbose = getOption("verbose", FALSE)) {
+  definition = function (object, Nmif = 1, ...) {
 
     ndone <- object@Nmif
 
     obj <- mif2(object,Nmif=Nmif,...,
-      .ndone=ndone,.paramMatrix=object@paramMatrix,
-      verbose=verbose)
+      .ndone=ndone,.paramMatrix=object@paramMatrix)
 
     object@traces[ndone+1,c('loglik','nfail')] <- obj@traces[1L,c('loglik','nfail')]
     obj@traces <- rbind(

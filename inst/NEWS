@@ -2,15 +2,6 @@ _N_e_w_s _f_o_r _p_a_c_k_a_g_e '_p_o_m_p'
 
 _C_h_a_n_g_e_s _i_n '_p_o_m_p' _v_e_r_s_i_o_n _2._0._0:
 
-        • The ‘obs’ and ‘states’ arguments to ‘simulate’ have been
-          removed.  They have been replaced by the hidden arguments
-          ‘.obs’ and ‘.states’.
-
-        • The default for ‘include.data’ has changed to ‘TRUE’.  When
-          ‘simulate’ returns a data frame, the variable distinguishing
-          different realizations is now named ‘.id’ and is an ordered
-          factor (with the data, identified by ‘.id="data"’, leading).
-
         • The old ‘probe.match’ and ‘traj.match’ functions have been
           removed.  The new approach to parameter estimation based on
           numerical optimization involves constructing stateful

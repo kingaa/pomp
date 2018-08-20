@@ -32,8 +32,8 @@ simulate(times=seq(1,100),t0=0,
 ) -> po
 
 try(po %>%
-  simulate(rprocess=onestep.sim(
-    Csnippet("
+    simulate(rprocess=onestep.sim(
+      Csnippet("
       SEXP Msg = get_pomp_userdata(\"bob\");
       char *msg = CHAR(STRING_ELT(Msg,0));
       Rprintf(\"%s\\n\",msg);"))))

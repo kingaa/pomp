@@ -57,19 +57,11 @@ Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater
 Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
 > try(data.frame(a=1:10,b=1:10) %>% pomp(times=1,t0=NA))
 Error : in ‘pomp’: ‘t0’ must be specified as a single number not greater than ‘times[1]’.
-> try(data.frame(a=1:10,b=1:10) %>%
-+     pomp(covar=covariate_table(times=1,c=1:10,d=1:10),
-+       covarnames=c("e","f"),times=1,t0=0))
-Error : in ‘pomp’: variable(s) ‘e’,‘f’ are not among the covariates.
-> try(data.frame(a=1:10,b=1:10) %>%
-+     pomp(covar=covariate_table(c=1:10,d=1:10,times=1),
-+       covarnames=c("c"),times=1,t0=0))
-Error : in ‘pomp’: variable(s) ‘c’ are not among the covariates.
 > stopifnot(data.frame(a=1:10,b=1:10) %>%
 +     pomp(covar=covariate_table(c=0:10,d=0:10,times=1),
 +       covarnames="d",times=1,t0=0,bob=3) %>% class() %>%
 +     equals("pomp"))
-in ‘pomp’: the unrecognized argument ‘bob’ will be stored for use by user-defined functions.
+in ‘pomp’: the unrecognized argument ‘bob’ is available for use by the POMP basic components.
 > try(data.frame(a=1:10,b=1:10) %>%
 +     pomp(covar=covariate_table(c=1:10,d=1:10,d=1:10,times=1),
 +       times=1,t0=0))
@@ -320,7 +312,7 @@ Error : in 'partrans': user transformation functions must return a named numeric
 +   window(start=5,end=20) %>%
 +   pomp(covar=covariate_table(times=0:20,q=0:20),
 +     larry=3L) -> po1
-in ‘pomp’: the unrecognized argument ‘larry’ will be stored for use by user-defined functions.
+in ‘pomp’: the unrecognized argument ‘larry’ is available for use by the POMP basic components.
 > as(po1,"data.frame") %>% head()
   time     Y  q
 1    5 0.873  5
