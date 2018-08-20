@@ -1,14 +1,11 @@
 options(digits=3)
-png(filename="simulate-%02d.png",res=100)
+png(filename="simulate_missing-%02d.png",res=100)
 
 library(pomp)
 library(magrittr)
 library(dplyr)
 
 set.seed(1041414791L)
-
-pompExample(ou2)
-ou2 %>% simulate(times=0:20,t0=-4,seed=298831503) %>% plot()
 
 try(simulate(rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
   rmeasure=Csnippet("w = rnorm(z,1);"),
@@ -51,7 +48,7 @@ try(simulate(times=1:100,t0=0,
   rinit=Csnippet("z = 0;"),
   statenames="z",obsnames="w"))
 
-invisible(simulate(times=1:100,t0=0,
+simulate(times=1:100,t0=0,
   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
     z <- x["z"]
     c(z=runif(1,z-0.5,z+0.5))
@@ -59,7 +56,7 @@ invisible(simulate(times=1:100,t0=0,
   rmeasure=function(x,t,params,...) {
     z <- x["z"]
     c(w = rnorm(1,z,1))
-  },params=c(z.0=0)))
+  },params=c(z.0=0))
 
 try(simulate(times=1:100,t0=0,
   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
@@ -67,17 +64,42 @@ try(simulate(times=1:100,t0=0,
     c(z=runif(1,z-0.5,z+0.5))
   }),params=c(z.0=0)))
 
-invisible(simulate(times=1:100,t0=0,
+simulate(times=1:100,t0=0,
   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
     z <- x["z"]
     c(z=runif(1,z-0.5,z+0.5))
-  }),params=c(z.0=0),states=TRUE))
+  }),params=c(z.0=0),.states=TRUE) %>%
+  str()
 
 try(simulate(times=1:100,t0=0,
   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
     z <- x["z"]
     c(z=runif(1,z-0.5,z+0.5))
-  }),params=c(z.0=0),obs=TRUE))
+  }),params=c(z.0=0),.obs=TRUE))
+
+simulate(times=1:100,t0=0,
+  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
+    z <- x["z"]
+    c(z=runif(1,z-0.5,z+0.5))
+  }),
+  rmeasure=function(x,t,params,...) {
+    z <- x["z"]
+    c(w = rnorm(1,z,1))
+  },
+  params=c(z.0=0),.obs=TRUE) %>%
+  str()
+
+simulate(times=1:100,t0=0,
+  rprocess=onestep.sim(function(x,t,params,delta.t,...) {
+    z <- x["z"]
+    c(z=runif(1,z-0.5,z+0.5))
+  }),
+  rmeasure=function(x,t,params,...) {
+    z <- x["z"]
+    c(w = rnorm(1,z,1))
+  },
+  params=c(z.0=0),.states=TRUE,.obs=TRUE) %>%
+  str()
 
 try(simulate(times=1:100,t0=0,
   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
@@ -89,74 +111,12 @@ simulate(times=1:100,t0=0,seed=993523767,
   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
   rmeasure=function(t,x,params,...) c(w=rnorm(1,x["z"],1)),
   rinit=Csnippet("z = 0;"),
-  statenames="z") -> po
-po %>% plot()
+  statenames="z") %>% plot()
 
 simulate(times=1:100,t0=0,seed=378047885,
   rprocess=onestep.sim(function(x,t,params,delta.t,...)
     c(z=runif(n=1,x["z"]-0.5,x["z"]+0.5))),
   rmeasure=function(t,x,params,...) c(w=rnorm(1,x["z"],1)),
   rinit=function(params,t0,...)c(z=0)) %>% plot()
-
-rm(.Random.seed)
-po %>%
-  simulate(params=as.list(coef(po)),seed=406214171) %>%
-  plot(variables=rep(c("z","w"),10),main="test",yax.flip=TRUE)
-
-set.seed(1041414791L)
-
-data.frame(u=1:10,v=runif(10)) %>%
-  pomp(times="u",t0=0) %>%
-  simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
-    rmeasure=function(t,x,params,...){
-      p <- x["w"]+c(-0.5,0.5)
-      c(y=runif(n=1,p[1],p[2]))
-    },
-    rinit=Csnippet("w=0;"),
-    statenames="w") %>%
-  obs() %>%
-  rownames()
-
-data.frame(u=1:10,v=runif(10)) %>%
-  pomp(times="u",t0=0) %>%
-  simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
-    rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
-    rinit=Csnippet("w=0;"),
-    statenames="w",obsnames="y") %>%
-  obs() %>%
-  rownames()
-
-try(simulate(ou2,nsim=-3))
-try(simulate(ou2,nsim=NA))
-try(simulate(ou2,nsim=NULL))
-try(simulate(ou2,nsim="bob"))
-
-ou2 %>% window(end=3) -> po
-simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3) %>%
-  count(sim) %>% as.data.frame()
-simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3,include.data=TRUE) %>%
-  count(sim) %>% as.data.frame()
-simulate(po,as.data.frame=TRUE,states=TRUE,seed=49569969)
-simulate(po,as.data.frame=TRUE,obs=TRUE,seed=49569969)
-simulate(po,as.data.frame=TRUE,obs=FALSE,states=FALSE,seed=49569969)
-simulate(po,as.data.frame=TRUE,obs=TRUE,states=TRUE,seed=49569969)
-simulate(po,as.data.frame=TRUE,include.data=TRUE,seed=49569969)
-simulate(po,as.data.frame=FALSE,include.data=TRUE,seed=49569969)
-simulate(po,states=TRUE) %>% rownames()
-simulate(po,obs=TRUE) %>% rownames()
-simulate(po,obs=TRUE,states=TRUE) %>% names()
-simulate(po,nsim=3) %>% show()
-
-data.frame(u=1:10,v=runif(10)) %>%
-  pomp(times="u",t0=0) %>%
-  simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
-    rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
-    rinit=Csnippet("w=0;"),
-    statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE) -> dat
-dat %>% names()
-dat %>% dim()
-
-pompExample(rw2)
-simulate(rw2,zeronames="x2") %>% plot()
 
 dev.off()

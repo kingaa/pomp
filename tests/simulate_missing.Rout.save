@@ -18,7 +18,7 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 Type 'q()' to quit R.
 
 > options(digits=3)
-> png(filename="simulate-%02d.png",res=100)
+> png(filename="simulate_missing-%02d.png",res=100)
 > 
 > library(pomp)
 > library(magrittr)
@@ -36,11 +36,6 @@ The following objects are masked from ‘package:base’:
 
 > 
 > set.seed(1041414791L)
-> 
-> pompExample(ou2)
-newly created object(s):
- ou2 
-> ou2 %>% simulate(times=0:20,t0=-4,seed=298831503) %>% plot()
 > 
 > try(simulate(rprocess=onestep.sim(Csnippet("z = runif(0,1);")),
 +   rmeasure=Csnippet("w = rnorm(z,1);"),
@@ -90,7 +85,7 @@ Error : in ‘simulate’: in ‘pomp’: ‘t0’ must be specified as a single
 +   statenames="z",obsnames="w"))
 Error : in ‘simulate’: 'rprocess' is undefined.
 > 
-> invisible(simulate(times=1:100,t0=0,
+> simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
 +     z <- x["z"]
 +     c(z=runif(1,z-0.5,z+0.5))
@@ -98,7 +93,8 @@ Error : in ‘simulate’: 'rprocess' is undefined.
 +   rmeasure=function(x,t,params,...) {
 +     z <- x["z"]
 +     c(w = rnorm(1,z,1))
-+   },params=c(z.0=0)))
++   },params=c(z.0=0))
+<object of class ‘pomp’>
 > 
 > try(simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
@@ -107,18 +103,64 @@ Error : in ‘simulate’: 'rprocess' is undefined.
 +   }),params=c(z.0=0)))
 Error : in ‘simulate’: operation cannot be completed: rmeasure has not been specified
 > 
-> invisible(simulate(times=1:100,t0=0,
+> simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
 +     z <- x["z"]
 +     c(z=runif(1,z-0.5,z+0.5))
-+   }),params=c(z.0=0),states=TRUE))
++   }),params=c(z.0=0),.states=TRUE) %>%
++   str()
+ num [1, 1, 1:100] -0.06025 -0.00142 -0.08048 -0.15307 0.10254 ...
+ - attr(*, "dimnames")=List of 3
+  ..$ variable: chr "z"
+  ..$ rep     : NULL
+  ..$ time    : NULL
 > 
 > try(simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
 +     z <- x["z"]
 +     c(z=runif(1,z-0.5,z+0.5))
-+   }),params=c(z.0=0),obs=TRUE))
++   }),params=c(z.0=0),.obs=TRUE))
 Error : in ‘simulate’: operation cannot be completed: rmeasure has not been specified
+> 
+> simulate(times=1:100,t0=0,
++   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
++     z <- x["z"]
++     c(z=runif(1,z-0.5,z+0.5))
++   }),
++   rmeasure=function(x,t,params,...) {
++     z <- x["z"]
++     c(w = rnorm(1,z,1))
++   },
++   params=c(z.0=0),.obs=TRUE) %>%
++   str()
+ num [1, 1, 1:100] 0.8794 0.2775 0.0428 -1.018 0.4496 ...
+ - attr(*, "dimnames")=List of 3
+  ..$ variable: chr "w"
+  ..$ rep     : NULL
+  ..$ time    : NULL
+> 
+> simulate(times=1:100,t0=0,
++   rprocess=onestep.sim(function(x,t,params,delta.t,...) {
++     z <- x["z"]
++     c(z=runif(1,z-0.5,z+0.5))
++   }),
++   rmeasure=function(x,t,params,...) {
++     z <- x["z"]
++     c(w = rnorm(1,z,1))
++   },
++   params=c(z.0=0),.states=TRUE,.obs=TRUE) %>%
++   str()
+List of 2
+ $ states: num [1, 1, 1:100] 0.0212 0.2814 0.3127 -0.1149 -0.3917 ...
+  ..- attr(*, "dimnames")=List of 3
+  .. ..$ variable: chr "z"
+  .. ..$ rep     : NULL
+  .. ..$ time    : NULL
+ $ obs   : num [1, 1, 1:100] 1.613 -0.899 0.662 -1.267 -2.096 ...
+  ..- attr(*, "dimnames")=List of 3
+  .. ..$ variable: chr "w"
+  .. ..$ rep     : NULL
+  .. ..$ time    : NULL
 > 
 > try(simulate(times=1:100,t0=0,
 +   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
@@ -131,130 +173,13 @@ Error : in ‘simulate’: 'rmeasure' returns variable-length results.
 +   rprocess=onestep.sim(Csnippet("z = runif(z-0.5,z+0.5);")),
 +   rmeasure=function(t,x,params,...) c(w=rnorm(1,x["z"],1)),
 +   rinit=Csnippet("z = 0;"),
-+   statenames="z") -> po
-> po %>% plot()
++   statenames="z") %>% plot()
 > 
 > simulate(times=1:100,t0=0,seed=378047885,
 +   rprocess=onestep.sim(function(x,t,params,delta.t,...)
 +     c(z=runif(n=1,x["z"]-0.5,x["z"]+0.5))),
 +   rmeasure=function(t,x,params,...) c(w=rnorm(1,x["z"],1)),
 +   rinit=function(params,t0,...)c(z=0)) %>% plot()
-> 
-> rm(.Random.seed)
-> po %>%
-+   simulate(params=as.list(coef(po)),seed=406214171) %>%
-+   plot(variables=rep(c("z","w"),10),main="test",yax.flip=TRUE)
-> 
-> set.seed(1041414791L)
-> 
-> data.frame(u=1:10,v=runif(10)) %>%
-+   pomp(times="u",t0=0) %>%
-+   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
-+     rmeasure=function(t,x,params,...){
-+       p <- x["w"]+c(-0.5,0.5)
-+       c(y=runif(n=1,p[1],p[2]))
-+     },
-+     rinit=Csnippet("w=0;"),
-+     statenames="w") %>%
-+   obs() %>%
-+   rownames()
-[1] "y"
-> 
-> data.frame(u=1:10,v=runif(10)) %>%
-+   pomp(times="u",t0=0) %>%
-+   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
-+     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
-+     rinit=Csnippet("w=0;"),
-+     statenames="w",obsnames="y") %>%
-+   obs() %>%
-+   rownames()
-[1] "y"
-> 
-> try(simulate(ou2,nsim=-3))
-Error : in ‘simulate’: ‘nsim’ must be a positive integer.
-> try(simulate(ou2,nsim=NA))
-Error : in ‘simulate’: ‘nsim’ must be a positive integer.
-> try(simulate(ou2,nsim=NULL))
-Error : in ‘simulate’: ‘nsim’ must be a positive integer.
-> try(simulate(ou2,nsim="bob"))
-Error : in ‘simulate’: ‘nsim’ must be a positive integer.
-> 
-> ou2 %>% window(end=3) -> po
-> simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3) %>%
-+   count(sim) %>% as.data.frame()
-  sim n
-1   1 3
-2   2 3
-3   3 3
-> simulate(po,as.data.frame=TRUE,seed=49569969,nsim=3,include.data=TRUE) %>%
-+   count(sim) %>% as.data.frame()
-   sim n
-1 data 3
-2    1 3
-3    2 3
-4    3 3
-> simulate(po,as.data.frame=TRUE,states=TRUE,seed=49569969)
-       x1   x2 sim time
-1 -1.5048 6.11   1    1
-2 -0.6614 4.80   1    2
-3  0.0843 5.75   1    3
-> simulate(po,as.data.frame=TRUE,obs=TRUE,seed=49569969)
-      y1   y2 sim time
-1 -1.033 6.49   1    1
-2 -0.486 3.18   1    2
-3  2.609 3.41   1    3
-> simulate(po,as.data.frame=TRUE,obs=FALSE,states=FALSE,seed=49569969)
-  time     y1   y2      x1   x2 sim
-1    1 -1.033 6.49 -1.5048 6.11   1
-2    2 -0.486 3.18 -0.6614 4.80   1
-3    3  2.609 3.41  0.0843 5.75   1
-> simulate(po,as.data.frame=TRUE,obs=TRUE,states=TRUE,seed=49569969)
-      y1   y2      x1   x2 sim time
-1 -1.033 6.49 -1.5048 6.11   1    1
-2 -0.486 3.18 -0.6614 4.80   1    2
-3  2.609 3.41  0.0843 5.75   1    3
-> simulate(po,as.data.frame=TRUE,include.data=TRUE,seed=49569969)
-  time     y1   y2  sim      x1   x2
-1    1 -1.701 4.25 data      NA   NA
-4    2  0.242 7.04 data      NA   NA
-6    3  3.768 2.98 data      NA   NA
-2    1 -1.033 6.49    1 -1.5048 6.11
-3    2 -0.486 3.18    1 -0.6614 4.80
-5    3  2.609 3.41    1  0.0843 5.75
-> simulate(po,as.data.frame=FALSE,include.data=TRUE,seed=49569969)
-<object of class ‘pomp’>
-> simulate(po,states=TRUE) %>% rownames()
-[1] "x1" "x2"
-> simulate(po,obs=TRUE) %>% rownames()
-[1] "y1" "y2"
-> simulate(po,obs=TRUE,states=TRUE) %>% names()
-[1] "states" "obs"   
-> simulate(po,nsim=3) %>% show()
-[[1]]
-<object of class ‘pomp’>
-
-[[2]]
-<object of class ‘pomp’>
-
-[[3]]
-<object of class ‘pomp’>
-
-> 
-> data.frame(u=1:10,v=runif(10)) %>%
-+   pomp(times="u",t0=0) %>%
-+   simulate(rprocess=onestep.sim(Csnippet("w = runif(0,1);")),
-+     rmeasure=Csnippet("y=runif(w-0.5,w+0.5);"),
-+     rinit=Csnippet("w=0;"),
-+     statenames="w",obsnames="y",as.data.frame=TRUE,include.data=TRUE) -> dat
-> dat %>% names()
-[1] "u"   "sim" "v"   "y"   "w"  
-> dat %>% dim()
-[1] 20  5
-> 
-> pompExample(rw2)
-newly created object(s):
- rw2 
-> simulate(rw2,zeronames="x2") %>% plot()
 > 
 > dev.off()
 null device 
