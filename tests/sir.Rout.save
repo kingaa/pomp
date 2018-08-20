@@ -174,9 +174,13 @@ in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' 
 > 
 > t1 <- seq(0,4/52,by=1/52/25)
 > X1 <- simulate(po,nsim=10,states=TRUE,obs=TRUE,times=t1)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > t2 <- seq(0,2,by=1/52)
 > X2 <- simulate(po,nsim=1,states=TRUE,obs=TRUE,times=t2)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > t3 <- seq(0,20,by=1/52)
 > X3 <- trajectory(po,times=t3,hmax=1/52)

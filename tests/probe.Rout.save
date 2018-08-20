@@ -368,6 +368,8 @@ Error : in 'probe.match.objfun': each probe must be a function of a single argum
 > invisible(as(pm,"pomp"))
 > pm <- probe.match(pm,seed=613980375L)
 > invisible(simulate(pm,states=TRUE,obs=TRUE))
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > invisible(cbind(truth=coef(ricker),est=coef(pm),guess=coef(po)))
 > 

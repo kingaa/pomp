@@ -98,6 +98,8 @@ in 'coef<-':  names of 'value' are being discarded
 4        X   1    4 1.030 states
 5        X   1    5 1.033 states
 6        X   1    6 1.115 states
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > pfilter(gompertz,Np=1000) -> pf
 > round(logLik(pf))
 [1] 32

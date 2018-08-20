@@ -62,8 +62,12 @@ Type 'q()' to quit R.
 3   10 0.005 0.995
 4  100 0.091 0.909
 5 1000 0.655 0.345
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > create_example(times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
 +     simulate(nsim=100,as.data.frame=TRUE, states=TRUE) -> sims
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > sims %>%
 +     subset(sim<=4) %>%
 +     melt(id=c("time","sim")) %>%
@@ -85,9 +89,13 @@ Type 'q()' to quit R.
 3   10 0.011 0.989
 4  100 0.101 0.899
 5 1000 0.656 0.344
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > create_example(simulator="onestep",
 +                times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
 +     simulate(nsim=100,as.data.frame=TRUE, states=TRUE) -> sims
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > sims %>%
 +     subset(sim<=4) %>%
 +     melt(id=c("time","sim")) %>%
@@ -109,9 +117,13 @@ Type 'q()' to quit R.
 3   10 0.018 0.982
 4  100 0.118 0.882
 5 1000 0.645 0.355
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > create_example(simulator="euler",
 +                times=seq(0,5,by=0.2),mu=0.01,N_0=100) %>%
 +     simulate(nsim=100,as.data.frame=TRUE, states=TRUE) -> sims
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > sims %>%
 +     subset(sim<=4) %>%
 +     melt(id=c("time","sim")) %>%
@@ -128,6 +140,8 @@ Type 'q()' to quit R.
   N freq
 1 0  631
 2 1  369
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > create_example(mu=1) %>%
 +   simulate(as.data.frame=TRUE, states=TRUE, times = c(0,1), nsim = 1000, seed=1066) %>%
 +   subset(time>0) %>%
@@ -135,12 +149,16 @@ Type 'q()' to quit R.
   N freq
 1 0  640
 2 1  360
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > create_example() %>%
 +   simulate(as.data.frame=TRUE, states=TRUE, times = c(1e4), nsim = 10000, seed=1066) %>%
 +   count(~N)
   N freq
 1 0 9999
 2 1    1
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > create_example(N_0=1000,mu=0.02,simulator="gillespie",
 +   times=-1/0.02*log(c(1,0.8,0.6,0.4,0.2,0.01))) %>%
@@ -150,6 +168,8 @@ Type 'q()' to quit R.
 +   labs(title="death process, Gillespie",subtitle=expression(mu==0.02))+
 +   facet_grid(time~.,labeller=label_bquote(t==.(signif(time,3))))+
 +   theme(strip.text=element_text(size=6))
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > create_example(N_0=1000,mu=0.02,simulator="onestep",
 +   times=-1/0.02*log(c(1,0.8,0.6,0.4,0.2,0.01))) %>%
@@ -159,6 +179,8 @@ Type 'q()' to quit R.
 +   labs(title="death process, onestep",subtitle=expression(mu==0.02))+
 +   facet_grid(time~.,labeller=label_bquote(t==.(signif(time,3))))+
 +   theme(strip.text=element_text(size=6))
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > create_example(N_0=1000,mu=0.02,simulator="euler",
 +   times=-1/0.02*log(c(1,0.8,0.6,0.4,0.2,0.01))) %>%
@@ -168,6 +190,8 @@ Type 'q()' to quit R.
 +   labs(title="death process, Euler",subtitle=expression(mu==0.02))+
 +   facet_grid(time~.,labeller=label_bquote(t==.(signif(time,3))))+
 +   theme(strip.text=element_text(size=6))
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > dev.off()
 null device 

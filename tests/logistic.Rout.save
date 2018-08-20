@@ -75,6 +75,8 @@ Warning message:
 > 
 > t <- seq(0,by=0.005,length=50)
 > x <- simulate(po,times=t,t0=t[1],states=TRUE,obs=TRUE)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > n <- x$states[,,45:50,drop=FALSE]
 > dt <- mean(diff(t))

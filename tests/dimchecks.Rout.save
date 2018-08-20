@@ -238,6 +238,8 @@ variable [,1]        [,2]       [,3]       [,4]      [,5]       [,6]
 10   5    2 1.450 -0.0379
 11   6    1 7.000  0.0000
 12   6    2 0.257 -0.1030
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > simulate(ricker,params=pars1,nsim=2,times=0:1,obs=T) %>%
 +     melt() %>% dcast(rep+time~variable)
    rep time   y
@@ -253,6 +255,8 @@ variable [,1]        [,2]       [,3]       [,4]      [,5]       [,6]
 10   5    2  22
 11   6    1  80
 12   6    2   4
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > simulate(ricker,params=pars1,nsim=2,times=0:1,obs=T,states=T) %>%
 +     melt() %>% dcast(rep+time~variable) %>%
 +     mutate(N=signif(N,3),e=signif(e,3))
@@ -269,6 +273,8 @@ variable [,1]        [,2]       [,3]       [,4]      [,5]       [,6]
 10   5    2 1.780  0.1650  19
 11   6    1 7.000  0.0000  67
 12   6    2 0.248 -0.1400   2
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > pomp(ricker,
 +      initializer=Csnippet("N = rnorm(7,1); e = 0;"),statenames=c("N","e")

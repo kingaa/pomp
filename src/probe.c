@@ -26,7 +26,8 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
   return retval;
 }
 
-SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval) {
+SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed,
+  SEXP probes, SEXP datval, SEXP rho) {
   int nprotect = 0;
   SEXP y, obs, times, t0, call, names;
   SEXP retval, val, valnames, x;
@@ -55,7 +56,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   PROTECT(call = LCONS(times,call)); nprotect++;
   SET_TAG(call,install("times"));
   PROTECT(call = LCONS(obs,call)); nprotect++;
-  SET_TAG(call,install("obs"));
+  SET_TAG(call,install(".obs"));
   PROTECT(call = LCONS(params,call)); nprotect++;
   SET_TAG(call,install("params"));
   PROTECT(call = LCONS(seed,call)); nprotect++;
@@ -64,8 +65,8 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   SET_TAG(call,install("nsim"));
   PROTECT(call = LCONS(object,call)); nprotect++;
   SET_TAG(call,install("object"));
-  PROTECT(call = LCONS(install("simulate"),call)); nprotect++;
-  PROTECT(y = eval(call,R_GlobalEnv)); nprotect++;
+  PROTECT(call = LCONS(install("simulate.internal"),call)); nprotect++;
+  PROTECT(y = eval(call,rho)); nprotect++;
 
   nvars = INTEGER(GET_DIM(y))[0];
   nsims = INTEGER(GET_DIM(y))[1];

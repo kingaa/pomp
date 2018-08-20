@@ -48,6 +48,16 @@ newly created object(s):
 +   z[,k,] <- bias/sd                               ## z score
 +   mse[,k,] <- bias^2+sd^2                         ## mean squared error
 + }
+Warning messages:
+1: the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
+2: the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
+3: the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
+4: the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
+5: the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
+6: the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
+7: the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
+8: the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
+9: the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > fit <- mif(ou2,Nmif=3,rw.sd=c(alpha.1=0.1,alpha.4=0.1),Np=1000,cooling.fraction=0.98^50,var.factor=1,ic.lag=2)
 Warning message:

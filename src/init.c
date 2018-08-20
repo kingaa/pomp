@@ -22,7 +22,7 @@ static const R_CallMethodDef callMethods[] = {
   {"pomp_desolve_setup", (DL_FUNC) &pomp_desolve_setup, 4},
   {"pomp_desolve_takedown", (DL_FUNC) &pomp_desolve_takedown, 0},
   {"apply_probe_data", (DL_FUNC) &apply_probe_data, 2},
-  {"apply_probe_sim", (DL_FUNC) &apply_probe_sim, 6},
+  {"apply_probe_sim", (DL_FUNC) &apply_probe_sim, 7},
   {"probe_marginal_setup", (DL_FUNC) &probe_marginal_setup, 3},
   {"probe_marginal_solve", (DL_FUNC) &probe_marginal_solve, 3},
   {"probe_acf", (DL_FUNC) &probe_acf, 3},

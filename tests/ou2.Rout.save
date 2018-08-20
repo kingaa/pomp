@@ -65,8 +65,14 @@ alpha.1 alpha.2 alpha.3 alpha.4 sigma.1 sigma.2 sigma.3     tau    x1.0    x2.0
 > 
 > ou2.sim <- simulate(ou2)
 > x <- simulate(ou2,nsim=3,states=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > y <- simulate(ou2,nsim=3,obs=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > z <- simulate(ou2,nsim=3,obs=T,states=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > window(ou2.sim,end=50) -> ignore
 > window(ou2.sim,end=150) -> ignore
 > time(ignore) <- seq(2,50,by=2)

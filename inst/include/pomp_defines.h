@@ -30,7 +30,7 @@ typedef lookup_table_t make_covariate_table_t (SEXP object, int *ncovar);
 typedef SEXP lookup_in_table_t (SEXP ttable, SEXP xtable, SEXP t);
 typedef void table_lookup_t (lookup_table_t *tab, double x, double *y);
 typedef SEXP apply_probe_data_t (SEXP object, SEXP probes);
-typedef SEXP apply_probe_sim_t (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval);
+typedef SEXP apply_probe_sim_t (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes, SEXP datval, SEXP rho);
 typedef SEXP systematic_resampling_t (SEXP weights);
 typedef void set_pomp_userdata_t (SEXP userdata);
 typedef void unset_pomp_userdata_t (void);

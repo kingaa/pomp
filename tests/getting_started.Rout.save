@@ -86,6 +86,8 @@ Type 'q()' to quit R.
 > 
 > ## ----logistic-simul1-----------------------------------------------------
 > simStates <- simulate(parus,nsim=10,params=c(r=0.2,K=200,sigma=0.5,N.0=200),states=TRUE)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > ## ----logistic-plot1,echo=FALSE-------------------------------------------
 > melt(simStates) %>%
@@ -105,6 +107,8 @@ Type 'q()' to quit R.
 > ## ----logistic-simul2-----------------------------------------------------
 > sim <- simulate(parus,params=c(r=0.2,K=200,sigma=0.5,N.0=200),
 +                 nsim=10,obs=TRUE,states=TRUE)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > ## ----logistic-plot2,echo=FALSE-------------------------------------------
 > sim %>% melt() %>%
@@ -288,8 +292,12 @@ Error : in 'trajectory': in map iterator: variable 'clarence' not found among th
 +      }) -> po
 > try(dmeasure(po,x=simulate(parus.bh,states=T),y=obs(po),times=time(po),params=coef(po)))
 Error : in 'dmeasure': user 'dmeasure' returns a vector of length 2 when it should return a scalar
+In addition: Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > try(rmeasure(po,x=simulate(parus.bh,states=T),y=obs(po),times=time(po),params=coef(po)))
 Error : in 'rmeasure': user 'rmeasure' returns a vector of 2 observables but 1 are expected: compare 'data' slot?
+In addition: Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > dev.off()
 null device 

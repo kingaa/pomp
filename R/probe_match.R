@@ -87,7 +87,8 @@ pmof.internal <- function (object, params, est, probes,
         params=if (transform) tparams else params,
         seed=seed,
         probes=probes,
-        datval=datval
+        datval=datval,
+        rho=parent.env(parent.env(environment()))
       ),
       error = function (e) {
         stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)

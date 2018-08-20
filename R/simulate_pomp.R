@@ -1,11 +1,11 @@
 ## simulate a partially-observed Markov process
 
 simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
-                               states = FALSE, obs = FALSE,
-                               times, t0, as.data.frame = FALSE,
-                               include.data = FALSE,
-                               .getnativesymbolinfo = TRUE,
-                               verbose = getOption("verbose", FALSE), ...) {
+  .states, .obs,
+  times, t0, as.data.frame = FALSE,
+  include.data = FALSE,
+  .getnativesymbolinfo = TRUE,
+  verbose = getOption("verbose", FALSE), ...) {
 
   ep <- paste0("in ",sQuote("simulate"),": ")
 
@@ -21,8 +21,11 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
   else
     t0 <- as.numeric(t0)
 
-  obs <- as.logical(obs)
-  states <- as.logical(states)
+  if (missing(.states)) .states <- FALSE
+  if (missing(.obs)) .obs <- FALSE
+
+  obs <- as.logical(.obs)
+  states <- as.logical(.states)
   as.data.frame <- as.logical(as.data.frame)
   include.data <- as.logical(include.data)
 
@@ -120,8 +123,8 @@ simulate.internal <- function (object, nsim = 1L, seed = NULL, params,
         },
         error = function (e) {
           stop(ep,"error in merging actual and simulated data.\n",
-               "Check names of data, covariates, and states for conflicts.\n",
-               sQuote("merge")," error message: ",conditionMessage(e),call.=FALSE)
+            "Check names of data, covariates, and states for conflicts.\n",
+            sQuote("merge")," error message: ",conditionMessage(e),call.=FALSE)
         }
       )
     }
@@ -141,21 +144,30 @@ setMethod(
   "simulate",
   signature=signature(object="pomp"),
   definition=function (object, nsim = 1, seed = NULL, params,
-                       states = FALSE, obs = FALSE,
-                       times, t0, as.data.frame = FALSE,
-                       include.data = FALSE,
-                       ...)
+    states, obs,
+    times, t0, as.data.frame = FALSE,
+    include.data = FALSE,
+    ...) {
+
+    if (!missing(states) || !missing(obs))
+      warning("the ",sQuote("states")," and ",
+        sQuote("obs")," arguments of ",sQuote("simulate"),
+        " are deprecated and will be removed in a future release.",
+        call.=FALSE)
+
     simulate.internal(
       object=object,
       nsim=nsim,
       seed=seed,
       params=params,
-      states=states,
-      obs=obs,
+      .states=states,
+      .obs=obs,
       times=times,
       t0=t0,
       as.data.frame=as.data.frame,
       include.data=include.data,
       ...
     )
+
+  }
 )

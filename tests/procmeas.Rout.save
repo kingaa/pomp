@@ -29,6 +29,8 @@ newly created object(s):
 > 
 > pmat <- parmat(coef(po),3)
 > sims <- simulate(po,states=T,obs=T,params=pmat)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > 
 > dp <- dprocess(po,x=sims$states,times=time(po),params=pmat,log=T)
 > try(dprocess(po,x=sims$states[,,c(1,2,4)],times=time(po)[c(1,2,4)],params=pmat))
@@ -46,6 +48,8 @@ Error : in 'dprocess': ou2_pdf error: transitions must be consecutive
 > stopifnot(identical(dm,dm1))
 > 
 > x <- simulate(po,states=T,params=coef(po))
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > dp2 <- dprocess(po,x=x,times=time(po),params=coef(po),log=T)
 > dp3 <- dprocess(po,x=x,times=time(po),params=pmat,log=T)
 > stopifnot(identical(rbind(dp2,dp2,dp2),unname(dp3)))

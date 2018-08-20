@@ -30,6 +30,8 @@ newly created object(s):
 > tm <- sort(runif(n=20,max=3))
 > x <- trajectory(ricker,times=tm)["N",,]
 > y <- simulate(ricker,times=tm,states=TRUE)["N",,]
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > stopifnot(identical(x,y))
 > 
 > pompExample(euler.sir)
@@ -38,6 +40,8 @@ newly created object(s):
 > tm <- sort(runif(n=100,max=1))
 > x <- trajectory(euler.sir,times=tm)["I",,]
 > y <- simulate(euler.sir,times=tm,states=TRUE,seed=1232934371)["I",,]
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > table(cut(x-y,breaks=c(-Inf,seq(-0.2,0.2,by=0.01),Inf),ordered=T))
 
   (-Inf,-0.2]  (-0.2,-0.19] (-0.19,-0.18] (-0.18,-0.17] (-0.17,-0.16] 

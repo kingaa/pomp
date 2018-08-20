@@ -97,12 +97,12 @@ compute.spect.data <- function (object, vars, transform.data, detrend, ker) {
 compute.spect.sim <- function (object, params, vars, nsim, seed, transform.data, detrend, ker) {
   ep <- paste0("in ",sQuote("spect"),": ")
   sims <- tryCatch(
-    simulate(
+    simulate.internal(
       object,
       nsim=nsim,
       seed=seed,
       params=params,
-      obs=TRUE,
+      .obs=TRUE,
       times=time(object,t0=FALSE),
       t0=timezero(object)
     ),

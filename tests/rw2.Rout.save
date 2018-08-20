@@ -162,13 +162,29 @@ in 'pomp': specifying 'measurement.model' overrides specification of 'rmeasure' 
 > stopifnot(all.equal(m1,m2))
 > 
 > y <- simulate(rw2,params=p,obs=T,states=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > y <- simulate(rw2,params=p,obs=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > x <- simulate(rw2,params=p,states=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > x <- simulate(rw2,nsim=10,params=p,states=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > x <- simulate(rw2,nsim=10,params=p[,1],states=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > x <- simulate(rw2,nsim=10,params=p[,1],obs=T,states=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > x <- simulate(rw2,nsim=10,params=p[,1],obs=T,states=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > x <- simulate(rw2,nsim=10,params=p,obs=T,states=T)
+Warning message:
+the 'states' and 'obs' arguments of 'simulate' are deprecated and will be removed in a future release. 
 > x <- simulate(rw2,nsim=10,params=p[,1])
 > 
 > x <- obs(rw2)

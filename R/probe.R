@@ -47,7 +47,8 @@ probe.internal <- function (object, probes, params, nsim = 1L, seed = NULL, ...)
       params=params,
       seed=seed,
       probes=probes,
-      datval=datval
+      datval=datval,
+      rho=parent.frame(2)
     ),
     error = function (e) {
       stop(ep,"applying probes to simulated data: ",conditionMessage(e),call.=FALSE)
