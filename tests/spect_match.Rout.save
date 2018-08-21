@@ -40,19 +40,18 @@ newly created object(s):
 +     seed=5069977
 +     ) -> f
 > 
-> f(0)
-[1] 121
+> stopifnot(f(0)==f(1))
 > 
-> f %>% spect.match.objfun(est=c("alpha.1")) -> f1
+> f %>% spect.match.objfun(est=c("alpha.1"),seed=580656309) -> f1
 > plot(sapply(seq(0.3,1.2,by=0.1),f1),log='y')
 > 
 > f1(1.1)
-[1] 3244
+[1] 4776
 > plot(spect(f1))
 > library(subplex)
 > subplex(fn=f1,par=0.4,control=list(reltol=1e-3)) -> out
 > f1(out$par)
-[1] 79.1
+[1] 83.8
 > plot(spect(f1))
 > 
 > dev.off()

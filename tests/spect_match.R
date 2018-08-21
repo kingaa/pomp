@@ -19,9 +19,9 @@ ou2 %>%
     seed=5069977
     ) -> f
 
-f(0)
+stopifnot(f(0)==f(1))
 
-f %>% spect.match.objfun(est=c("alpha.1")) -> f1
+f %>% spect.match.objfun(est=c("alpha.1"),seed=580656309) -> f1
 plot(sapply(seq(0.3,1.2,by=0.1),f1),log='y')
 
 f1(1.1)
