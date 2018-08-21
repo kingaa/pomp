@@ -11,6 +11,10 @@
 ##'
 ##' @name pomp-package
 ##' @docType package
+##' @author Aaron A. King
+##' @family information on model implementation
+##' @family \pkg{pomp} parameter estimation methods
+##' @family elementary POMP methods
 ##'
 ##' @section Data analysis using \pkg{pomp}:
 ##'
@@ -48,12 +52,6 @@
 ##' Each \pkg{pomp} algorithm makes use of only a subset of these components.
 ##' Any algorithm requiring a component that is not present will generate an error letting you know that you have not provided a needed component.
 ##' }
-##'
-##' @author Aaron A. King
-##'
-##' @seealso \code{\link{pfilter}}, \code{\link[=simulate-pomp]{simulate}},
-##' \code{\link{mif2}}, \code{\link{nlf}}, \code{\link{probe}},
-##' \code{\link{traj.match}}, \code{\link{bsmc2}}, \code{\link{pmcmc}}
 ##'
 ##' @references
 ##' A. A. King, D. Nguyen, and E. L. Ionides (2016) Statistical
