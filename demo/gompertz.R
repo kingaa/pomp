@@ -87,10 +87,7 @@ p <- parmat(coef(Gompertz),nrep=4)
 p["X.0",] <- c(0.5,0.9,1.1,1.5)
 
 ## compute a trajectory of the deterministic skeleton
-tic <- Sys.time()
 X <- trajectory(Gompertz,params=p,as.data.frame=TRUE)
-toc <- Sys.time()
-print(toc-tic)
 X %>%
   ggplot(aes(x=time,y=X,group=traj,color=traj))+
   geom_line()+
@@ -98,10 +95,7 @@ X %>%
   labs(title="Gompertz model",subtitle="deterministic trajectories")
 
 ## simulate from the model
-tic <- Sys.time()
 x <- simulate(Gompertz,params=p,as.data.frame=TRUE)
-toc <- Sys.time()
-print(toc-tic)
 
 x %>%
   ggplot(aes(x=time,y=X,group=sim,color=sim))+
@@ -110,9 +104,6 @@ x %>%
   labs(title="Gompertz model",subtitle="stochastic simulations")
 
 ## run a particle filter
-tic <- Sys.time()
 pf <- replicate(n=10,pfilter(Gompertz,Np=500))
-toc <- Sys.time()
-print(toc-tic)
 
 print(logmeanexp(sapply(pf,logLik),se=TRUE))

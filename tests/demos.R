@@ -9,7 +9,7 @@ demos <- list.files(path=system.file("demo",package="pomp"),
                     full.names=TRUE)
 
 for (d in demos) {
-  source(d,local=TRUE,echo=TRUE)
+  print(system.time(source(d,local=TRUE,echo=TRUE)))
 }
 
 dev.off()

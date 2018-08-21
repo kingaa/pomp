@@ -140,19 +140,11 @@ pomp(
 ) -> po
 
 ## compute a trajectory of the deterministic skeleton
-tic <- Sys.time()
 X <- trajectory(po,hmax=1/52,as.data.frame=TRUE)
-toc <- Sys.time()
-print(toc-tic)
-
 plot(incid~time,data=X,type='l')
 
 ## simulate from the model
-tic <- Sys.time()
 x <- simulate(po,nsim=3,as.data.frame=TRUE)
-toc <- Sys.time()
-print(toc-tic)
-
 plot(incid~time,data=x,col=as.factor(x$sim),pch=16)
 
 ## compute the likelihood.
@@ -171,7 +163,4 @@ po <- pomp(
 )
 
 ## then run a particle filter
-tic <- Sys.time()
 logLik(pfilter(po,Np=1000))
-toc <- Sys.time()
-print(toc-tic)

@@ -28,7 +28,7 @@ Type 'q()' to quit R.
 +                     full.names=TRUE)
 > 
 > for (d in demos) {
-+   source(d,local=TRUE,echo=TRUE)
++   print(system.time(source(d,local=TRUE,echo=TRUE)))
 + }
 
 > library(pomp)
@@ -47,44 +47,25 @@ Type 'q()' to quit R.
 
 > p["X.0", ] <- c(0.5, 0.9, 1.1, 1.5)
 
-> tic <- Sys.time()
-
 > X <- trajectory(Gompertz, params = p, as.data.frame = TRUE)
-
-> toc <- Sys.time()
-
-> print(toc - tic)
-Time difference of 0.006004572 secs
 
 > X %>% ggplot(aes(x = time, y = X, group = traj, color = traj)) + 
 +     geom_line() + theme_bw() + labs(title = "Gompertz model", 
 +     subtitle =  .... [TRUNCATED] 
 
-> tic <- Sys.time()
-
 > x <- simulate(Gompertz, params = p, as.data.frame = TRUE)
-
-> toc <- Sys.time()
-
-> print(toc - tic)
-Time difference of 0.007303953 secs
 
 > x %>% ggplot(aes(x = time, y = X, group = sim, color = sim)) + 
 +     geom_line() + theme_bw() + labs(title = "Gompertz model", 
 +     subtitle = "s ..." ... [TRUNCATED] 
 
-> tic <- Sys.time()
-
 > pf <- replicate(n = 10, pfilter(Gompertz, Np = 500))
-
-> toc <- Sys.time()
-
-> print(toc - tic)
-Time difference of 0.5177701 secs
 
 > print(logmeanexp(sapply(pf, logLik), se = TRUE))
                      se 
 75.25036908  0.08779528 
+   user  system elapsed 
+  1.256   0.064   1.377 
 
 > library(pomp)
 
@@ -122,6 +103,8 @@ The following objects are masked from ‘package:base’:
 
 > rbind(traj, sim) %>% ggplot(aes(x = time, y = n, group = interaction(rep, 
 +     type), color = type)) + geom_line() + theme_bw() + labs(title = "Lo ..." ... [TRUNCATED] 
+   user  system elapsed 
+  0.336   0.040   0.434 
 
 > library(pomp)
 
@@ -138,6 +121,8 @@ The following objects are masked from ‘package:base’:
 [1] -757.0675
 
 > plot(pf)
+   user  system elapsed 
+  0.180   0.052   0.289 
 
 > library(pomp)
 
@@ -155,25 +140,11 @@ The following objects are masked from ‘package:base’:
 +     "New York" & disease == "measles" & year >= 1928 & year <= 
 +     1933, select = c(tim .... [TRUNCATED] 
 
-> tic <- Sys.time()
-
 > X <- trajectory(po, hmax = 1/52, as.data.frame = TRUE)
-
-> toc <- Sys.time()
-
-> print(toc - tic)
-Time difference of 0.006443262 secs
 
 > plot(incid ~ time, data = X, type = "l")
 
-> tic <- Sys.time()
-
 > x <- simulate(po, nsim = 3, as.data.frame = TRUE)
-
-> toc <- Sys.time()
-
-> print(toc - tic)
-Time difference of 0.04510951 secs
 
 > plot(incid ~ time, data = x, col = as.factor(x$sim), 
 +     pch = 16)
@@ -181,15 +152,10 @@ Time difference of 0.04510951 secs
 > po <- pomp(po, dmeasure = Csnippet("\n  lik = dnbinom_mu(cases,theta,rho*incid,give_log);\n"), 
 +     statenames = c("S", "I", "R", "incid", "W"), p .... [TRUNCATED] 
 
-> tic <- Sys.time()
-
 > logLik(pfilter(po, Np = 1000))
 [1] -671.6956
-
-> toc <- Sys.time()
-
-> print(toc - tic)
-Time difference of 7.768881 secs
+   user  system elapsed 
+  6.708   0.072   6.888 
 Warning messages:
 1: in 'table_lookup': extrapolating at 1.934011e+03 
 2: in 'table_lookup': extrapolating at 1.934011e+03 
