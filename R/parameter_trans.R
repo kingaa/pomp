@@ -5,7 +5,7 @@
 ##' @name parameter_trans
 ##' @rdname parameter_trans
 ##' @docType methods
-##' @include pomp_fun.R csnippet.R
+##' @include pomp_fun.R csnippet.R pomp_stop.R
 ##' @aliases parameter_trans parameter_trans,missing,missing-method
 ##' parameter_trans,ANY,ANY-method parameter_trans,ANY,missing-method
 ##' parameter_trans,NULL,NULL-method parameter_trans,function,function-method
@@ -158,8 +158,8 @@ setMethod(
   "parameter_trans",
   signature=signature(toEst="ANY",fromEst="missing"),
   definition=function(toEst, fromEst, ...) {
-    stop("in ",sQuote("parameter_trans"),": if one of ",sQuote("toEst"),", ",
-      sQuote("fromEst")," is supplied, then so must the other be.",call.=FALSE)
+    pomp_stop("if one of ",sQuote("toEst"),", ",sQuote("fromEst"),
+      " is supplied, then so must the other be.")
   }
 )
 
