@@ -26,7 +26,6 @@ transformations that log-transform the parameters for estimation purposes.
 pompExample(gompertz)
 plot(gompertz)
 coef(gompertz)
-coef(gompertz,transform=TRUE)
 
 }
 \seealso{

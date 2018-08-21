@@ -22,8 +22,6 @@
 ##' @param fail.value optional numeric scalar;
 ##' if non-\code{NA}, this value is substituted for non-finite values of the objective function.
 ##' It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).
-##' @param transform logical;
-##' if \code{TRUE}, optimization is to be performed on the transformed scale.
 ##'
 ##' @return
 ##' \code{probe.match.objfun} construct a stateful objective function for probe matching.
@@ -77,7 +75,7 @@ setMethod(
   "probe.match.objfun",
   signature=signature(data="data.frame"),
   definition=function (data, rinit, rprocess, rmeasure, params,
-    est, probes, nsim, seed = NULL, fail.value = NA, transform = FALSE, ...,
+    est, probes, nsim, seed = NULL, fail.value = NA, ...,
     verbose = getOption("verbose", FALSE)) {
 
     object <- probe(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
@@ -88,7 +86,6 @@ setMethod(
       object,
       est=est,
       fail.value=fail.value,
-      transform=transform,
       verbose=verbose
     )
 
@@ -103,7 +100,7 @@ setMethod(
   "probe.match.objfun",
   signature=signature(data="pomp"),
   definition=function (data, est, probes, nsim, seed = NULL, fail.value = NA,
-    transform = FALSE, ..., verbose = getOption("verbose", FALSE)) {
+    ..., verbose = getOption("verbose", FALSE)) {
 
     object <- probe(data,probes=probes,nsim=nsim,seed=seed,...,verbose=verbose)
 
@@ -111,7 +108,6 @@ setMethod(
       object,
       est=est,
       fail.value=fail.value,
-      transform=transform,
       verbose=verbose
     )
 
@@ -126,8 +122,7 @@ setMethod(
   "probe.match.objfun",
   signature=signature(data="probed_pomp"),
   definition=function (data, est, probes, nsim, seed = NULL,
-    fail.value = NA, transform = FALSE, ...,
-    verbose = getOption("verbose", FALSE)) {
+    fail.value = NA, ..., verbose = getOption("verbose", FALSE)) {
 
     if (missing(probes)) probes <- data@probes
     if (missing(nsim)) nsim <- data@nsim
@@ -139,7 +134,6 @@ setMethod(
       nsim=nsim,
       seed=seed,
       fail.value=fail.value,
-      transform=transform,
       ...,
       verbose=verbose
     )
@@ -160,11 +154,10 @@ setMethod(
 )
 
 pmof.internal <- function (object, est, probes, nsim, seed = NULL,
-  fail.value = NA, transform = FALSE, ..., verbose) {
+  fail.value = NA, ..., verbose) {
 
   ep <- paste0("in ",sQuote("probe.match.objfun"),": ")
 
-  transform <- as.logical(transform)
   fail.value <- as.numeric(fail.value)
   loglik <- logLik(object)
 
@@ -172,7 +165,7 @@ pmof.internal <- function (object, est, probes, nsim, seed = NULL,
   est <- as.character(est)
   est <- est[nzchar(est)]
 
-  params <- coef(object,transform=transform)
+  params <- coef(object,transform=TRUE)
 
   idx <- match(est,names(params))
   if (any(is.na(idx))) {
@@ -186,13 +179,13 @@ pmof.internal <- function (object, est, probes, nsim, seed = NULL,
 
   ofun <- function (par) {
     params[idx] <- par
-    coef(object,transform=transform) <<- params
+    coef(object,transform=TRUE) <<- params
     loglik <<- probe.eval(object)
     if (is.finite(loglik) || is.na(fail.value)) -loglik else fail.value
   }
 
   environment(ofun) <- list2env(
-    list(object=object,transform=transform,fail.value=fail.value,
+    list(object=object,fail.value=fail.value,
       params=params,idx=idx,loglik=loglik,seed=seed),
     parent=parent.frame(2)
   )

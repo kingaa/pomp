@@ -16,11 +16,11 @@
 \title{Iterated filtering: maximum likelihood by iterated, perturbed Bayes maps}
 \usage{
 \S4method{mif2}{data.frame}(data, rinit, rprocess, dmeasure, Nmif = 1,
-  params, Np, rw.sd, transform = FALSE, cooling.type = c("hyperbolic",
-  "geometric"), cooling.fraction.50, tol = 1e-17, max.fail = Inf, ...,
+  params, Np, rw.sd, cooling.type = c("hyperbolic", "geometric"),
+  cooling.fraction.50, tol = 1e-17, max.fail = Inf, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{mif2}{pomp}(data, Nmif = 1, Np, rw.sd, transform = FALSE,
+\S4method{mif2}{pomp}(data, Nmif = 1, Np, rw.sd,
   cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
   tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose",
   FALSE))
@@ -28,7 +28,7 @@
 \S4method{mif2}{pfilterd_pomp}(data, Nmif = 1, Np, tol, ...,
   verbose = getOption("verbose", FALSE))
 
-\S4method{mif2}{mif2d_pomp}(data, Nmif, Np, rw.sd, transform, cooling.type,
+\S4method{mif2}{mif2d_pomp}(data, Nmif, Np, rw.sd, cooling.type,
   cooling.fraction.50, tol, ..., verbose = getOption("verbose", FALSE))
 }
 \arguments{
@@ -70,8 +70,6 @@ Likewise, \code{ivp(s,lag)} is equivalent to \preformatted{ifelse(time==time[lag
 See below for some examples.
 The perturbations that are applied are normally distributed with the specified s.d.
 If \code{transform = TRUE}, then they are applied on the estimation scale.}
-
-\item{transform}{logical; if \code{TRUE}, optimization is performed on the estimation scale, as defined by the user-supplied parameter transformations (see \code{\link{pomp}}).  This can be used, for example, to enforce positivity or interval constraints on model parameters.  See the tutorials on the \href{https://kingaa.github.io/pomp}{package website} for examples.}
 
 \item{cooling.type, cooling.fraction.50}{specifications for the cooling schedule,
 i.e., the manner and rate with which the intensity of the parameter perturbations is reduced with successive filtering iterations.

@@ -11,9 +11,9 @@ library(magrittr)
 pompExample(gompertz,envir=NULL) -> po
 po[[1]] %>% window(end=10) -> po
 
-mif2(po,Nmif=50,Np=100,transform=TRUE,cooling.fraction.50=0.5,
+mif2(po,Nmif=50,Np=100,cooling.fraction.50=0.5,
   rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf1
-mif2(po,Nmif=50,Np=100,transform=TRUE,cooling.fraction.50=0.5,
+mif2(po,Nmif=50,Np=100,cooling.fraction.50=0.5,
   rw.sd=rw.sd(sigma=0.02,K=0.02,r=0.02)) -> mf2
 plot(mf1)
 plot(c(a=mf1,b=mf2) -> mfl,y=NA)
@@ -68,7 +68,7 @@ try(mif2(po,params=c(3,2,1),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
 try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw.sd(sigma=0.1)))
 mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
-  transform=TRUE,params=as.list(coef(po)))
+  params=as.list(coef(po)))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,rprocess=onestep.sim(function(x,t,params,covars,delta.t,...)stop("boink"))))
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
@@ -76,7 +76,7 @@ try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
   cooling.fraction.50=0.1,dmeasure=function(y,x,t,params,covars,log,...)NA))
 mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
-  drpocess="oops",transform=TRUE,
+  drpocess="oops",
   dmeasure=function(t,x,y,params,log,...)0) -> mf3
 try(mif2(mf3,max.fail=1))
 
@@ -85,13 +85,13 @@ theta["sigma"] <- 0.2
 po %>%
   pfilter(Np=100,params=theta) %>%
   mif2(Nmif=3,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
-    cooling.fraction.50=0.5,transform=TRUE) %>%
+    cooling.fraction.50=0.5) %>%
   mif2() %>% continue(Nmif=3,cooling.fraction.50=0.1) %>% plot()
 
 capture.output(
   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
     cooling.fraction.50=1,cooling.type="hyperbolic",tol=1e-10,
-    transform=TRUE,params=as.list(coef(po)),verbose=TRUE),
+    params=as.list(coef(po)),verbose=TRUE),
   type="output"
 ) -> out
 stopifnot(sum(grepl("mif2 pfilter timestep",out))==4,
@@ -99,7 +99,7 @@ stopifnot(sum(grepl("mif2 pfilter timestep",out))==4,
 capture.output(
   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
     cooling.fraction.50=1,cooling.type="hyperbolic",tol=10,
-    transform=TRUE,params=as.list(coef(po)),verbose=TRUE),
+    params=as.list(coef(po)),verbose=TRUE),
   type="message"
 ) -> out
 stopifnot(sum(grepl("filtering failure at time",out))==22)

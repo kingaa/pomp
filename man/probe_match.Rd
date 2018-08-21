@@ -17,16 +17,15 @@
 \title{Probe matching}
 \usage{
 \S4method{probe.match.objfun}{data.frame}(data, rinit, rprocess, rmeasure,
-  params, est, probes, nsim, seed = NULL, fail.value = NA,
-  transform = FALSE, ..., verbose = getOption("verbose", FALSE))
+  params, est, probes, nsim, seed = NULL, fail.value = NA, ...,
+  verbose = getOption("verbose", FALSE))
 
 \S4method{probe.match.objfun}{pomp}(data, est, probes, nsim, seed = NULL,
-  fail.value = NA, transform = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
+  fail.value = NA, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{probe.match.objfun}{probed_pomp}(data, est, probes, nsim,
-  seed = NULL, fail.value = NA, transform = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
+  seed = NULL, fail.value = NA, ..., verbose = getOption("verbose",
+  FALSE))
 
 \S4method{probe.match.objfun}{probe_match_objfun}(data, ...,
   verbose = getOption("verbose", FALSE))
@@ -67,9 +66,6 @@ See \code{\link[=simulate-pomp]{simulate}}.}
 \item{fail.value}{optional numeric scalar;
 if non-\code{NA}, this value is substituted for non-finite values of the objective function.
 It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
-
-\item{transform}{logical;
-if \code{TRUE}, optimization is to be performed on the transformed scale.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

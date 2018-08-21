@@ -31,8 +31,6 @@
 ##' The compensating shrinkage factor will be \code{sqrt(1-smooth^2)}.
 ##' Thus, \code{smooth=0} means that no noise will be added to parameters.
 ##' The general recommendation is that the value of \code{smooth} should be chosen close to 0 (e.g., \code{shrink} ~ 0.1).
-##' @param transform logical;
-##' if \code{TRUE}, the algorithm operates on the transformed scale.
 ##'
 ##' @return
 ##' An object of class \sQuote{bsmcd_pomp}.
@@ -63,7 +61,6 @@ setClass(
   "bsmcd_pomp",
   contains="pomp",
   slots=c(
-    transform="logical",
     post="array",
     prior="array",
     est="character",
@@ -105,7 +102,7 @@ setMethod(
   "bsmc2",
   signature=signature(data="data.frame"),
   definition = function (data, params, rprior, rinit, rprocess, rmeasure,
-    Np, est, smooth = 0.1, tol = 1e-17, max.fail = 0, transform = FALSE, ...,
+    Np, est, smooth = 0.1, tol = 1e-17, max.fail = 0, ...,
     verbose = getOption("verbose", FALSE)) {
 
     object <- pomp(data,rinit=rinit,rprocess=rprocess,
@@ -119,8 +116,7 @@ setMethod(
       smooth=smooth,
       tol=tol,
       verbose=verbose,
-      max.fail=max.fail,
-      transform=transform
+      max.fail=max.fail
     )
 
   }
@@ -134,8 +130,7 @@ setMethod(
   "bsmc2",
   signature=signature(data="pomp"),
   definition = function (data, params, Np, est, smooth = 0.1, tol = 1e-17,
-    max.fail = 0, transform = FALSE, ...,
-    verbose = getOption("verbose", FALSE)) {
+    max.fail = 0, ..., verbose = getOption("verbose", FALSE)) {
 
     bsmc2.internal(
       data,
@@ -145,7 +140,6 @@ setMethod(
       smooth=smooth,
       tol=tol,
       max.fail=max.fail,
-      transform=transform,
       ...,
       verbose=verbose
     )
@@ -153,8 +147,35 @@ setMethod(
   }
 )
 
+##' @name plot-bsmcd_pomp
+##' @aliases plot,bsmcd_pomp-method
+##' @rdname plot
+##'
+##' @param thin integer; when the number of samples is very large, it can be helpful to plot a random subsample:
+##' \code{thin} specifies the size of this subsample.
+##'
+##' @export
+setMethod(
+  "plot",
+  signature=signature(x="bsmcd_pomp"),
+  definition=function (x, pars, thin, ...) {
+    ep <- paste0("in ",sQuote("plot"),": ")
+    if (missing(pars)) pars <- x@est
+    pars <- as.character(pars)
+    if (length(pars)<1) stop(ep,"no parameters to plot.",call.=FALSE)
+    if (missing(thin)) thin <- Inf
+    bsmc.plot(
+      prior=partrans(x,x@prior,dir="fromEst"),
+      post=partrans(x,x@post,dir="fromEst"),
+      pars=pars,
+      thin=thin,
+      ...
+    )
+  }
+)
+
 bsmc2.internal <- function (object, params, Np, est, smooth, tol,
-  max.fail, transform, .getnativesymbolinfo = TRUE,
+  max.fail, .getnativesymbolinfo = TRUE,
   ..., verbose) {
 
   ep <- paste0("in ",sQuote("bsmc2"),": ")
@@ -162,7 +183,6 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
   object <- pomp(object,...,verbose=verbose)
 
   gnsi <- as.logical(.getnativesymbolinfo)
-  transform <- as.logical(transform)
 
   if (missing(params)) {
     params <- as.matrix(coef(object))
@@ -209,8 +229,7 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
     stop(ep,sQuote("params")," should be suppled as a numeric matrix with rownames",
       " or a named numeric vector.",call.=FALSE)
 
-  if (transform)
-    params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)
+  params <- partrans(object,params,dir="toEst",.getnativesymbolinfo=gnsi)
 
   ntimes <- length(time(object))
   npars <- nrow(params)
@@ -247,11 +266,7 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
 
   xstart <- rinit(
     object,
-    params=if (transform) {
-      partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi)
-    } else {
-      params
-    },
+    params=partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi),
     .getnativesymbolinfo=gnsi
   )
   nvars <- nrow(xstart)
@@ -304,18 +319,13 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
 
     params[estind,] <- m[estind,]+t(pert)
 
-    if (transform)
-      tparams <- partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi)
+    tparams <- partrans(object,params,dir="fromEst",.getnativesymbolinfo=gnsi)
 
     xpred <- rprocess(
       object,
       xstart=x,
       times=times[c(nt,nt+1)],
-      params=if (transform) {
-        tparams
-      } else {
-        params
-      },
+      params=tparams,
       offset=1L,
       .getnativesymbolinfo=gnsi
     )
@@ -327,11 +337,7 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
         y=object@data[,nt,drop=FALSE],
         x=xpred,
         times=times[nt+1],
-        params=if (transform) {
-          tparams
-        } else {
-          params
-        },
+        params=tparams,
         .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
@@ -395,12 +401,11 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
     )
 
   ## replace parameters with point estimate (posterior median)
-  coef(object,transform=transform) <- apply(params,1,median)
+  coef(object,transform=TRUE) <- apply(params,1,median)
 
   new(
     "bsmcd_pomp",
     object,
-    transform=transform,
     post=params,
     prior=prior,
     est=as.character(est),
@@ -410,4 +415,53 @@ bsmc2.internal <- function (object, params, Np, est, smooth, tol,
     cond.log.evidence=evidence,
     log.evidence=sum(evidence)
   )
+}
+
+bsmc.plot <- function (prior, post, pars, thin, ...) {
+  ep <- paste0("in ",sQuote("plot"),": ")
+  p1 <- sample.int(n=ncol(prior),size=min(thin,ncol(prior)))
+  p2 <- sample.int(n=ncol(post),size=min(thin,ncol(post)))
+  if (!all(pars %in% rownames(prior))) {
+    missing <- which(!(pars%in%rownames(prior)))
+    stop(ep,"unrecognized parameters: ",
+      paste(sQuote(pars[missing]),collapse=","),call.=FALSE)
+  }
+  prior <- t(prior[pars,,drop=FALSE])
+  post <- t(post[pars,,drop=FALSE])
+  all <- rbind(prior,post)
+
+  scplot <- function (x, y, ...) { ## prior, posterior pairwise scatterplot
+    op <- par(new=TRUE)
+    on.exit(par(op))
+    i <- which(x[1L]==all[1L,])
+    j <- which(y[1L]==all[1L,])
+    points(prior[p1,i],prior[p1,j],pch=20,col=rgb(0.85,0.85,0.85,0.1),
+      xlim=range(all[,i]),ylim=range(all[,j]))
+    points(post[p2,i],post[p2,j],pch=20,col=rgb(0,0,1,0.01))
+  }
+
+  dplot <- function (x, ...) { ## marginal posterior histogram
+    i <- which(x[1L]==all[1L,])
+    d1 <- density(prior[,i])
+    d2 <- density(post[,i])
+    usr <- par("usr")
+    op <- par(usr=c(usr[c(1L,2L)],0,1.5*max(d1$y,d2$y)))
+    on.exit(par(op))
+    polygon(d1,col=rgb(0.85,0.85,0.85,0.5))
+    polygon(d2,col=rgb(0,0,1,0.5))
+  }
+
+  if (length(pars) > 1) {
+    pairs(all,labels=pars,panel=scplot,diag.panel=dplot)
+  }  else {
+    d1 <- density(prior[,1])
+    d2 <- density(post[,1])
+    usr <- par("usr")
+    op <- par(usr=c(usr[c(1L,2L)],0,1.5*max(d1$y,d2$y)))
+    on.exit(par(op))
+    plot(range(all[,1]),range(c(0,d1$y,d2$y)),type='n',
+      xlab=pars,ylab="density")
+    polygon(d1,col=rgb(0.85,0.85,0.85,0.5))
+    polygon(d2,col=rgb(0,0,1,0.5))
+  }
 }

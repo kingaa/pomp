@@ -38,7 +38,6 @@
 ##' See below for some examples.
 ##' The perturbations that are applied are normally distributed with the specified s.d.
 ##' If \code{transform = TRUE}, then they are applied on the estimation scale.
-##' @param transform logical; if \code{TRUE}, optimization is performed on the estimation scale, as defined by the user-supplied parameter transformations (see \code{\link{pomp}}).  This can be used, for example, to enforce positivity or interval constraints on model parameters.  See the tutorials on the \href{https://kingaa.github.io/pomp}{package website} for examples.
 ##' @param cooling.type,cooling.fraction.50 specifications for the cooling schedule,
 ##' i.e., the manner and rate with which the intensity of the parameter perturbations is reduced with successive filtering iterations.
 ##' \code{cooling.type} specifies the nature of the cooling schedule.
@@ -91,7 +90,6 @@ setClass(
     rw.sd = 'matrix',
     cooling.type = 'character',
     cooling.fraction.50 = 'numeric',
-    transform = 'logical',
     traces = 'matrix'
   )
 )
@@ -126,7 +124,7 @@ setMethod(
   "mif2",
   signature=signature(data="data.frame"),
   definition = function (data, rinit, rprocess, dmeasure,
-    Nmif = 1, params, Np, rw.sd, transform = FALSE,
+    Nmif = 1, params, Np, rw.sd,
     cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
     tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
 
@@ -138,7 +136,6 @@ setMethod(
       Nmif=Nmif,
       Np=Np,
       rw.sd=rw.sd,
-      transform=transform,
       cooling.type=cooling.type,
       cooling.fraction.50=cooling.fraction.50,
       tol=tol,
@@ -156,7 +153,7 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="pomp"),
-  definition = function (data, Nmif = 1, Np, rw.sd, transform = FALSE,
+  definition = function (data, Nmif = 1, Np, rw.sd,
     cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
     tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
 
@@ -165,7 +162,6 @@ setMethod(
       Nmif=Nmif,
       Np=Np,
       rw.sd=rw.sd,
-      transform=transform,
       cooling.type=cooling.type,
       cooling.fraction.50=cooling.fraction.50,
       tol=tol,
@@ -201,21 +197,20 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="mif2d_pomp"),
-  definition = function (data, Nmif, Np, rw.sd, transform,
+  definition = function (data, Nmif, Np, rw.sd,
     cooling.type, cooling.fraction.50, tol, ...,
     verbose = getOption("verbose", FALSE)) {
 
     if (missing(Nmif)) Nmif <- data@Nmif
     if (missing(Np)) Np <- data@Np
     if (missing(rw.sd)) rw.sd <- data@rw.sd
-    if (missing(transform)) transform <- data@transform
     if (missing(cooling.type)) cooling.type <- data@cooling.type
     if (missing(cooling.fraction.50))
       cooling.fraction.50 <- data@cooling.fraction.50
     if (missing(tol)) tol <- data@tol
 
     mif2(as(data,"pomp"),Nmif=Nmif,Np=Np,rw.sd=rw.sd,
-      transform=transform,cooling.type=cooling.type,
+      cooling.type=cooling.type,
       cooling.fraction.50=cooling.fraction.50,tol=tol,...,
       verbose=verbose)
   }
@@ -250,7 +245,7 @@ setMethod(
   }
 )
 
-mif2.internal <- function (object, Nmif, Np, rw.sd, transform = FALSE,
+mif2.internal <- function (object, Nmif, Np, rw.sd,
   cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
   tol = 1e-17, max.fail = Inf, verbose = FALSE, .ndone = 0L,
   .indices = integer(0), .paramMatrix = NULL,
@@ -258,7 +253,6 @@ mif2.internal <- function (object, Nmif, Np, rw.sd, transform = FALSE,
 
   ep <- paste0("in ",sQuote("mif2"),": ")
 
-  transform <- as.logical(transform)
   verbose <- as.logical(verbose)
   gnsi <- as.logical(.getnativesymbolinfo)
 
@@ -346,9 +340,8 @@ mif2.internal <- function (object, Nmif, Np, rw.sd, transform = FALSE,
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
-  if (transform)
-    paramMatrix <- partrans(object,paramMatrix,dir="toEst",
-      .getnativesymbolinfo=gnsi)
+  paramMatrix <- partrans(object,paramMatrix,dir="toEst",
+    .getnativesymbolinfo=gnsi)
 
   ## iterate the filtering
   for (n in seq_len(Nmif)) {
@@ -364,7 +357,6 @@ mif2.internal <- function (object, Nmif, Np, rw.sd, transform = FALSE,
         tol=tol,
         max.fail=max.fail,
         verbose=verbose,
-        transform=transform,
         .indices=.indices,
         .getnativesymbolinfo=gnsi
       ),
@@ -384,9 +376,8 @@ mif2.internal <- function (object, Nmif, Np, rw.sd, transform = FALSE,
 
   }
 
-  if (transform)
-    pfp@paramMatrix <- partrans(object,paramMatrix,dir="fromEst",
-      .getnativesymbolinfo=gnsi)
+  pfp@paramMatrix <- partrans(object,paramMatrix,dir="fromEst",
+    .getnativesymbolinfo=gnsi)
 
   new(
     "mif2d_pomp",
@@ -395,7 +386,6 @@ mif2.internal <- function (object, Nmif, Np, rw.sd, transform = FALSE,
     rw.sd=rw.sd,
     cooling.type=cooling.type,
     cooling.fraction.50=cooling.fraction.50,
-    transform=transform,
     traces=traces
   )
 }
@@ -427,14 +417,13 @@ mif2.cooling <- function (type, fraction, ntimes) {
 }
 
 mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
-  tol = 1e-17, max.fail = Inf, transform, verbose, .indices = integer(0),
+  tol = 1e-17, max.fail = Inf, verbose, .indices = integer(0),
   .getnativesymbolinfo = TRUE) {
 
   ep <- paste0("in ",sQuote("mif2.pfilter"),": ")
 
   tol <- as.numeric(tol)
   gnsi <- as.logical(.getnativesymbolinfo)
-  transform <- as.logical(transform)
   verbose <- as.logical(verbose)
   mifiter <- as.integer(mifiter)
   Np <- as.integer(Np)
@@ -459,13 +448,12 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
     pmag <- cooling.fn(nt,mifiter)$alpha*rw.sd[,nt]
     params <- .Call(randwalk_perturbation,params,pmag)
 
-    if (transform)
-      tparams <- partrans(object,params,dir="fromEst",
-        .getnativesymbolinfo=gnsi)
+    tparams <- partrans(object,params,dir="fromEst",
+      .getnativesymbolinfo=gnsi)
 
     if (nt == 1L) {
       ## get initial states
-      x <- rinit(object,params=if (transform) tparams else params)
+      x <- rinit(object,params=tparams)
     }
 
     ## advance the state variables according to the process model
@@ -474,7 +462,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
         object,
         xstart=x,
         times=times[c(nt,nt+1)],
-        params=if (transform) tparams else params,
+        params=tparams,
         offset=1,
         .getnativesymbolinfo=gnsi
       ),
@@ -491,7 +479,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
         y=object@data[,nt,drop=FALSE],
         x=X,
         times=times[nt+1],
-        params=if (transform) tparams else params,
+        params=tparams,
         log=FALSE,
         .getnativesymbolinfo=gnsi
       ),
@@ -504,7 +492,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
       datvals <- object@data[,nt]
       weight <- weights[first]
       states <- X[,first,1L]
-      params <- if (transform) tparams[,first] else params[,first]
+      params <- tparams[,first]
       msg <- nonfinite_dmeasure_error(time=times[nt+1],lik=weight,datvals,states,params)
       stop(ep,msg,call.=FALSE)
     }
@@ -513,11 +501,11 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
     ## compute weighted mean at last timestep
     if (nt == ntimes) {
       if (any(weights>0)) {
-        coef(object,transform=transform) <- apply(params,1L,weighted.mean,w=weights)
+        coef(object,transform=TRUE) <- apply(params,1L,weighted.mean,w=weights)
       } else {
         warning(ep,"filtering failure at last filter iteration; using ",
           "unweighted mean for point estimate.",call.=FALSE)
-        coef(object,transform=transform) <- apply(params,1L,mean)
+        coef(object,transform=TRUE) <- apply(params,1L,mean)
       }
     }
 
@@ -544,9 +532,7 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
     all.fail <- xx$fail
     loglik[nt] <- xx$loglik
     eff.sample.size[nt] <- xx$ess
-    if (do_ta) {
-      .indices <- .indices[xx$ancestry]
-    }
+    if (do_ta) .indices <- .indices[xx$ancestry]
 
     x <- xx$states
     params <- xx$params
@@ -564,17 +550,9 @@ mif2.pfilter <- function (object, params, Np, mifiter, rw.sd, cooling.fn,
 
   }
 
-  if (nfail>0) {
-    warning(
-      ep,nfail,
-      ngettext(
-        nfail,
-        msg1=" filtering failure occurred.",
-        msg2=" filtering failures occurred."
-      ),
-      call.=FALSE
-    )
-  }
+  if (nfail>0)
+    warning(ep,nfail,ngettext(nfail,msg1=" filtering failure occurred.",
+      msg2=" filtering failures occurred."),call.=FALSE)
 
   new(
     "pfilterd_pomp",

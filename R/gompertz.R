@@ -24,6 +24,5 @@
 ##' pompExample(gompertz)
 ##' plot(gompertz)
 ##' coef(gompertz)
-##' coef(gompertz,transform=TRUE)
 ##'
 NULL

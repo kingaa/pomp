@@ -165,7 +165,7 @@ stopifnot(all.equal(p,coef(parus)))
 
 ## ----parus-traj-match----------------------------------------------------
 tm <- traj.match.objfun(parus,params=c(r=1,K=200,N.0=200,sigma=0.5),
-  est=c("r","K"),transform=TRUE)
+  est=c("r","K"))
 logLik(tm)
 
 library(subplex)

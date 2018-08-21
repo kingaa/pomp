@@ -10,8 +10,8 @@
 \alias{traj.match.objfun,pomp-method}
 \title{Trajectory matching}
 \usage{
-\S4method{traj.match.objfun}{pomp}(object, params, est,
-  transform = FALSE, fail.value = NA, ode_control = list(), ...)
+\S4method{traj.match.objfun}{pomp}(object, params, est, fail.value = NA,
+  ode_control = list(), ...)
 }
 \arguments{
 \item{object}{an object of class \sQuote{pomp}, or of a class that extends \sQuote{pomp}.}
@@ -20,9 +20,6 @@
 This will be coerced internally to storage mode \code{double}.}
 
 \item{est}{character vector; the names of parameters to be estimated.}
-
-\item{transform}{logical;
-if \code{TRUE}, optimization is to be performed on the transformed scale.}
 
 \item{fail.value}{optional numeric scalar;
 if non-\code{NA}, this value is substituted for non-finite values of the objective function.

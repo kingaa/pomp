@@ -75,14 +75,13 @@ setMethod(
 setMethod(
   "traj.match.objfun",
   signature=signature(object="pomp"),
-  function (object, params, est, transform = FALSE, fail.value = NA,
+  function (object, params, est, fail.value = NA,
     ode_control = list(), ...) {
 
     tmof.internal(
       object=object,
       params=params,
       est=est,
-      transform=transform,
       fail.value=fail.value,
       ode_control=ode_control,
       ...
@@ -91,21 +90,20 @@ setMethod(
   }
 )
 
-tmof.internal <- function (object, params, est, transform, fail.value,
+tmof.internal <- function (object, params, est, fail.value,
   ode_control, ...) {
 
   ep <- paste0("in ",sQuote("traj.match.objfun"),": ")
 
   object <- pomp(object,params=params,...)
 
-  transform <- as.logical(transform)
   fail.value <- as.numeric(fail.value)
 
   if (missing(est)) est <- character(0)
   est <- as.character(est)
   est <- est[nzchar(est)]
 
-  params <- coef(object,transform=transform)
+  params <- coef(object,transform=TRUE)
 
   idx <- match(est,names(params))
   if (any(is.na(idx))) {
@@ -121,14 +119,14 @@ tmof.internal <- function (object, params, est, transform, fail.value,
 
   ofun <- function (par) {
     params[idx] <- par
-    coef(object,transform=transform) <<- params
+    coef(object,transform=TRUE) <<- params
     ll <- traj.match.nll(object,ode_control=ode_control)
     loglik <<- -ll
     if (is.finite(ll) || is.na(fail.value)) ll else fail.value
   }
 
   environment(ofun) <- list2env(
-    list(object=object,transform=transform,fail.value=fail.value,
+    list(object=object,fail.value=fail.value,
       params=params,idx=idx,loglik=loglik,ode_control=ode_control),
     parent=parent.frame(2)
   )

@@ -12,12 +12,12 @@
 \title{The Liu and West Bayesian particle filter}
 \usage{
 \S4method{bsmc2}{data.frame}(data, params, rprior, rinit, rprocess,
-  rmeasure, Np, est, smooth = 0.1, tol = 1e-17, max.fail = 0,
-  transform = FALSE, ..., verbose = getOption("verbose", FALSE))
+  rmeasure, Np, est, smooth = 0.1, tol = 1e-17, max.fail = 0, ...,
+  verbose = getOption("verbose", FALSE))
 
 \S4method{bsmc2}{pomp}(data, params, Np, est, smooth = 0.1,
-  tol = 1e-17, max.fail = 0, transform = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
+  tol = 1e-17, max.fail = 0, ..., verbose = getOption("verbose",
+  FALSE))
 }
 \arguments{
 \item{data}{either a data frame holding the time series data, or an object of class \sQuote{pomp}, i.e., the output of one of \pkg{pomp}'s methods.}
@@ -58,9 +58,6 @@ See the section on \emph{Filtering Failures} below for more information.}
 \item{max.fail}{integer; the maximum number of filtering failures allowed (see below).
 If the number of filtering failures exceeds this number, execution will terminate with an error.
 By default, \code{max.fail} is set to infinity, so no error can be triggered.}
-
-\item{transform}{logical;
-if \code{TRUE}, the algorithm operates on the transformed scale.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

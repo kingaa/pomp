@@ -80,7 +80,7 @@ setMethod(
   signature=signature(data="data.frame"),
   definition=function(data, rinit, rprocess, rmeasure, params,
     est = character(0), vars, nsim, seed = NULL, kernel.width, transform.data,
-    detrend, weights = 1, fail.value = NA, transform = FALSE, ...,
+    detrend, weights = 1, fail.value = NA, ...,
     verbose = getOption("verbose", FALSE)) {
 
     object <- pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
@@ -97,7 +97,6 @@ setMethod(
       detrend=detrend,
       weights=weights,
       fail.value=fail.value,
-      transform=transform,
       verbose=verbose
     )
 
@@ -113,7 +112,7 @@ setMethod(
   signature=signature(data="pomp"),
   definition=function(data, est = character(0),
     vars, nsim, seed = NULL, kernel.width, transform.data,
-    detrend, weights = 1, fail.value = NA, transform = FALSE, ...,
+    detrend, weights = 1, fail.value = NA, ...,
     verbose = getOption("verbose", FALSE)) {
 
     object <- pomp(data,...,verbose=verbose)
@@ -129,7 +128,6 @@ setMethod(
       detrend=detrend,
       weights=weights,
       fail.value=fail.value,
-      transform=transform,
       verbose=verbose
     )
 
@@ -184,11 +182,10 @@ setMethod(
 )
 
 smof.internal <- function (object, est, vars, nsim, seed,
-  kernel.width, transform.data, detrend, weights, fail.value, transform, ...) {
+  kernel.width, transform.data, detrend, weights, fail.value, ...) {
 
   ep <- paste0("in ",sQuote("spect.match.objfun"),": ")
 
-  transform <- as.logical(transform)
   fail.value <- as.numeric(fail.value)
 
   params <- coef(object)
@@ -231,7 +228,7 @@ smof.internal <- function (object, est, vars, nsim, seed,
     stop(ep,sQuote("weights")," should be nonnegative and finite",call.=FALSE)
   weights <- weights/mean(weights)
 
-  params <- coef(object,transform=transform)
+  params <- coef(object,transform=TRUE)
 
   idx <- match(est,names(params))
   if (any(is.na(idx))) {
@@ -248,7 +245,7 @@ smof.internal <- function (object, est, vars, nsim, seed,
 
   ofun <- function (par) {
     params[idx] <- par
-    coef(object,transform=transform) <<- params
+    coef(object,transform=TRUE) <<- params
     object@simspec <- compute.spect.sim(object,vars=object@vars,
       params=object@params,nsim=object@nsim,seed=object@seed,
       transform.data=object@transform.data,detrend=object@detrend,ker=ker)
@@ -257,7 +254,7 @@ smof.internal <- function (object, est, vars, nsim, seed,
   }
 
   environment(ofun) <- list2env(
-    list(object=object,transform=transform,fail.value=fail.value,
+    list(object=object,fail.value=fail.value,
       params=params,idx=idx,discrep=discrep,seed=seed,ker=ker,
       weights=weights),
     parent=parent.frame(2)

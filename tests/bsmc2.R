@@ -2,10 +2,9 @@ png(filename="bsmc2-%02d.png",res=100)
 options(digits=2)
 
 library(pomp)
-suppressPackageStartupMessages(library(reshape2))
-suppressPackageStartupMessages(library(tidyr))
-suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(ggplot2))
+library(tidyr)
+library(dplyr)
+library(ggplot2)
 
 pompExample(gompertz)
 set.seed(398585L)
@@ -19,7 +18,7 @@ smc <- bsmc2(gompertz,rprior=Csnippet("
               r = rlnorm(log(0.2),1);
               sigma = rlnorm(log(0.1),0.5);"),
              paramnames=c("r","K","sigma"),Np=1000,smooth=0.01,
-             est=c("r","K","sigma"),tol=1e-6,transform=TRUE)
+             est=c("r","K","sigma"),tol=1e-6)
 
 plot(smc,y=NA)
 plot(smc,pars=c("r","K"),thin=50)

@@ -18,13 +18,12 @@
 \usage{
 \S4method{spect.match.objfun}{data.frame}(data, rinit, rprocess, rmeasure,
   params, est = character(0), vars, nsim, seed = NULL, kernel.width,
-  transform.data, detrend, weights = 1, fail.value = NA,
-  transform = FALSE, ..., verbose = getOption("verbose", FALSE))
+  transform.data, detrend, weights = 1, fail.value = NA, ...,
+  verbose = getOption("verbose", FALSE))
 
 \S4method{spect.match.objfun}{pomp}(data, est = character(0), vars, nsim,
   seed = NULL, kernel.width, transform.data, detrend, weights = 1,
-  fail.value = NA, transform = FALSE, ...,
-  verbose = getOption("verbose", FALSE))
+  fail.value = NA, ..., verbose = getOption("verbose", FALSE))
 
 \S4method{spect.match.objfun}{spectd_pomp}(data, est, vars, nsim,
   seed = NULL, kernel.width, transform.data, detrend, ...,
@@ -83,9 +82,6 @@ If the latter, \code{weights(freq)} must return a nonnegative weight for each fr
 \item{fail.value}{optional numeric scalar;
 if non-\code{NA}, this value is substituted for non-finite values of the objective function.
 It should be a large number (i.e., bigger than any legitimate values the objective function is likely to take).}
-
-\item{transform}{logical;
-if \code{TRUE}, optimization is to be performed on the transformed scale.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
