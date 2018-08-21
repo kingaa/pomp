@@ -101,12 +101,19 @@ setMethod(
 setMethod(
   "bsmc2",
   signature=signature(data="data.frame"),
-  definition = function (data, params, rprior, rinit, rprocess, rmeasure,
+  definition = function (data,
+    params, rprior, rinit, rprocess, rmeasure, partrans,
     Np, est, smooth = 0.1, tol = 1e-17, max.fail = 0, ...,
     verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,rinit=rinit,rprocess=rprocess,
-      rmeasure=rmeasure,dprior=dprior,...,verbose=verbose)
+    object <- tryCatch(
+      pomp(data,rinit=rinit,rprocess=rprocess,rmeasure=rmeasure,
+        rprior=rprior,partrans=partrans,...,verbose=verbose),
+      error = function (e) {
+        ep <- paste0("in ",sQuote("bsmc2"),": ")
+        stop(ep,conditionMessage(e),call.=FALSE)
+      }
+    )
 
     bsmc2(
       object,
@@ -175,8 +182,7 @@ setMethod(
 )
 
 bsmc2.internal <- function (object, params, Np, est, smooth, tol,
-  max.fail, .getnativesymbolinfo = TRUE,
-  ..., verbose) {
+  max.fail, .getnativesymbolinfo = TRUE, ..., verbose) {
 
   ep <- paste0("in ",sQuote("bsmc2"),": ")
 

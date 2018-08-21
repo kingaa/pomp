@@ -123,13 +123,20 @@ setMethod(
 setMethod(
   "mif2",
   signature=signature(data="data.frame"),
-  definition = function (data, rinit, rprocess, dmeasure,
-    Nmif = 1, params, Np, rw.sd,
+  definition = function (data,
+    rinit, rprocess, dmeasure, partrans, params,
+    Nmif = 1, Np, rw.sd,
     cooling.type = c("hyperbolic", "geometric"), cooling.fraction.50,
     tol = 1e-17, max.fail = Inf, ..., verbose = getOption("verbose", FALSE)) {
 
-    object <- pomp(data,rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,
-      params=params,...,verbose=verbose)
+    object <- tryCatch(
+      pomp(data,rinit=rinit,rprocess=rprocess,dmeasure=dmeasure,
+        partrans=partrans,params=params,...,verbose=verbose),
+      error = function (e) {
+        ep <- paste0("in ",sQuote("mif2"),": ")
+        stop(ep,conditionMessage(e),call.=FALSE)
+      }
+    )
 
     mif2.internal(
       object,
