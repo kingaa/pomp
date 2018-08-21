@@ -25,7 +25,6 @@
 ##' and so on,
 ##' while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
 ##'
-##' One should omit \code{Np} if \code{params} is a matrix of parameters, with one column for each particle.  In this case, obviously, the number of particles is \code{ncol(params)}.
 ##' @param tol positive numeric scalar;
 ##' particles with likelihood less than \code{tol} are considered to be incompatible with the data.
 ##' See the section on \emph{Filtering Failures} below for more information.
@@ -41,9 +40,9 @@
 ##' @param filter.mean logical; if \code{TRUE}, the filtering means are calculated for the state variables and parameters.
 ##'
 ##' @param filter.traj logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.
-##' @param save.states,save.params logical.
-##' If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \sQuote{pfilterd_pomp} object.
-##' If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \sQuote{pfilterd_pomp} object.
+##'
+##' @param save.states logical.
+##' If \code{save.states=TRUE}, the state-vector for each particle at each time is saved.
 ##'
 ##' @return
 ##' An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
@@ -94,7 +93,6 @@ setClass(
     eff.sample.size="numeric",
     cond.loglik="numeric",
     saved.states="list",
-    saved.params="list",
     Np="integer",
     tol="numeric",
     nfail="integer",
@@ -110,7 +108,6 @@ setClass(
     eff.sample.size=numeric(0),
     cond.loglik=numeric(0),
     saved.states=list(),
-    saved.params=list(),
     Np=as.integer(NA),
     tol=as.double(NA),
     nfail=as.integer(NA),
@@ -161,7 +158,6 @@ setMethod(
     filter.mean = FALSE,
     filter.traj = FALSE,
     save.states = FALSE,
-    save.params = FALSE,
     ...,
     verbose = getOption("verbose", FALSE)) {
 
@@ -178,7 +174,6 @@ setMethod(
       filter.mean=filter.mean,
       filter.traj=filter.traj,
       save.states=save.states,
-      save.params=save.params,
       verbose=verbose
     )
 
@@ -203,7 +198,6 @@ setMethod(
     filter.mean = FALSE,
     filter.traj = FALSE,
     save.states = FALSE,
-    save.params = FALSE,
     ...,
     verbose = getOption("verbose", FALSE)) {
 
@@ -218,7 +212,6 @@ setMethod(
       filter.mean=filter.mean,
       filter.traj=filter.traj,
       save.states=save.states,
-      save.params=save.params,
       verbose=verbose,
       ...
     )
@@ -246,9 +239,8 @@ setMethod(
 
 pfilter.internal <- function (object, params, Np, tol, max.fail,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
-  filter.traj = FALSE, cooling, cooling.m, verbose = FALSE,
-  save.states = FALSE, save.params = FALSE,
-  .getnativesymbolinfo = TRUE, ...) {
+  filter.traj = FALSE, cooling, cooling.m, save.states = FALSE, ...,
+  .getnativesymbolinfo = TRUE, verbose = FALSE) {
 
   ep <- paste0("in ",sQuote("pfilter"),": ")
 
@@ -264,25 +256,19 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   pred.var <- as.logical(pred.var)
   filter.mean <- as.logical(filter.mean)
   filter.traj <- as.logical(filter.traj)
-  verbose <- as.logical(verbose)
   tol <- as.numeric(tol)
   save.states <- as.logical(save.states)
-  save.params <- as.logical(save.params)
+  verbose <- as.logical(verbose)
 
   if (missing(params)) params <- coef(object)
   if (is.list(params)) params <- unlist(params)
-  if (is.null(params)) params <- numeric(0)
+  params <- setNames(as.numeric(params),names(params))
 
-  do.par.resample <- TRUE
   times <- time(object,t0=TRUE)
   ntimes <- length(times)-1
 
   if (missing(Np) || is.null(Np)) {
-    if (is.matrix(params)) {
-      Np <- ncol(params)
-    } else {
-      stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
-    }
+    stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
   } else if (is.function(Np)) {
     Np <- tryCatch(
       vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
@@ -306,25 +292,16 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
     stop(ep,"number of particles, ",sQuote("Np"),
       ", must be a positive integer.",call.=FALSE)
 
-  if (is.matrix(params)) {
-    if (!all(Np == ncol(params)))
-      stop(ep,"when ",sQuote("params")," is provided as a matrix, ",
-        "you must not also specify ",sQuote("Np"),".",call.=FALSE)
-  }
-
   Np <- as.integer(Np)
 
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
     stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
 
-  params <- as.matrix(params)
-  if (is.null(rownames(params)) || !all(nzchar(rownames(params))))
-    stop(ep,sQuote("params")," must be named.",call.=FALSE)
+  if (length(params) > 0 &&
+      (is.null(names(params)) || !all(nzchar(names(params)))))
+    stop(ep,sQuote("params")," must be a named numeric vector.",call.=FALSE)
 
-  if (NCOL(params)==1) {        # there is only one parameter vector
-    do.par.resample <- FALSE
-    coef(object) <- params[,1]  # set params slot to the parameters
-  }
+  coef(object) <- params      ## set params slot to the parameters
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
@@ -337,11 +314,6 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   ## set up storage for saving samples from filtering distributions
   if (save.states || filter.traj) {
     xparticles <- setNames(vector(mode="list",length=ntimes),time(object))
-  }
-  if (save.params) {
-    pparticles <- setNames(vector(mode="list",length=ntimes),time(object))
-  } else {
-    pparticles <- list()
   }
   if (filter.traj) {
     pedigree <- vector(mode="list",length=ntimes+1)
@@ -429,7 +401,6 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
       datvals <- object@data[,nt]
       weight <- weights[first]
       states <- X[,first,1L]
-      params <- if (do.par.resample) params[,first] else params[,1L]
       msg <- nonfinite_dmeasure_error(time=times[nt+1],lik=weight,datvals,
         states,params)
       stop(ep,msg,call.=FALSE)
@@ -450,7 +421,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
         predvar=pred.var,
         filtmean=filter.mean,
         trackancestry=filter.traj,
-        doparRS=do.par.resample,
+        doparRS=FALSE,
         weights=weights,
         tol=tol
       ),
@@ -463,7 +434,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
     eff.sample.size[nt] <- xx$ess
 
     x <- xx$states
-    params <- xx$params
+    params <- xx$params[,1L]
 
     if (pred.mean) pred.m[,nt] <- xx$pm
     if (pred.var) pred.v[,nt] <- xx$pv
@@ -482,7 +453,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
         c("variable","rep"))
     }
 
-    if (verbose && (nt%%5==0))
+    if (verbose && (nt%%5 == 0))
       cat("pfilter timestep",nt,"of",ntimes,"finished\n")
 
   } ## end of main loop
@@ -505,7 +476,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   if (!save.states) xparticles <- list()
 
   if (nfail>0)
-    warning(ep,nfail,"filtering ",ngettext(nfail,"failure","failures"),
+    warning(ep,nfail," filtering ",ngettext(nfail,"failure","failures"),
       " occurred.",call.=FALSE)
 
   new(
@@ -519,7 +490,6 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
     eff.sample.size=eff.sample.size,
     cond.loglik=loglik,
     saved.states=xparticles,
-    saved.params=pparticles,
     Np=as.integer(Np),
     tol=tol,
     nfail=as.integer(nfail),

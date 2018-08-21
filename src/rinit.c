@@ -54,7 +54,7 @@ SEXP do_rinit (SEXP object, SEXP params, SEXP t0, SEXP nsim, SEXP gnsi)
 
     nvar = LENGTH(ivpnames);
     if (nvar < 1) {
-      errorcall(R_NilValue,"in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.");
+      errorcall(R_NilValue,"in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.");
     }
     pidx = INTEGER(PROTECT(match(Pnames,ivpnames,0))); nprotect++;
     for (k = 0; k < nvar; k++) pidx[k]--;

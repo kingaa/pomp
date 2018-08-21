@@ -46,12 +46,8 @@ theta["alpha.2"] <- 0.1
 pf1 <- pfilter(pf,params=theta,Np=100)
 stopifnot(identical(coef(pf1),theta))
 
-pp <- parmat(coef(ou2),100)
-pf <- pfilter(ou2,params=pp)
-pf <- pfilter(pf1,params=pp)
-try(pfilter(ou2,params=pp,Np=1000))
-rownames(pp) <- NULL
-try(pfilter(ou2,params=pp))
+try(pfilter(ou2,params=parmat(coef(ou2),100)))
+try(pfilter(ou2,Np=100,params=parmat(coef(ou2),100)))
 
 pf2 <- pfilter(ou2,Np=function(k)c(100,150)[(k-1)%%2+1])
 table(pf2@Np)
@@ -77,7 +73,7 @@ capture.output(try(pfilter(pf,Np=2,max.fail=20,verbose=TRUE,filter.mean=TRUE)),
 stopifnot(sum(grepl("filtering failure at",out))==21)
 stopifnot(grepl("too many filtering failures",tail(out,1)))
 
-pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE,save.params=TRUE)
+pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
 pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
 pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),

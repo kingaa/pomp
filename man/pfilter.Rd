@@ -17,12 +17,12 @@
 \usage{
 \S4method{pfilter}{data.frame}(data, rinit, rprocess, dmeasure, params, Np,
   tol = 1e-17, max.fail = Inf, pred.mean = FALSE, pred.var = FALSE,
-  filter.mean = FALSE, filter.traj = FALSE, save.states = FALSE,
-  save.params = FALSE, ..., verbose = getOption("verbose", FALSE))
+  filter.mean = FALSE, filter.traj = FALSE, save.states = FALSE, ...,
+  verbose = getOption("verbose", FALSE))
 
 \S4method{pfilter}{pomp}(data, params, Np, tol = 1e-17, max.fail = Inf,
   pred.mean = FALSE, pred.var = FALSE, filter.mean = FALSE,
-  filter.traj = FALSE, save.states = FALSE, save.params = FALSE, ...,
+  filter.traj = FALSE, save.states = FALSE, ...,
   verbose = getOption("verbose", FALSE))
 
 \S4method{pfilter}{pfilterd_pomp}(data, params, Np, tol, ...,
@@ -72,9 +72,8 @@ By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
 \item{filter.traj}{logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.}
 
-\item{save.states, save.params}{logical.
-If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \sQuote{pfilterd_pomp} object.
-If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \sQuote{pfilterd_pomp} object.}
+\item{save.states}{logical.
+If \code{save.states=TRUE}, the state-vector for each particle at each time is saved.}
 
 \item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.

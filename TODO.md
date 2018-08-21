@@ -1,7 +1,7 @@
 # pomp to-do list
 
 - "guide to upgrading to **pomp** version 2"
-- take away `pfilter` when `params` is a matrix?
+- ~~take away option of passing `params` as a matrix to `pfilter`~~
 - **all methods use transforms if they exist**
 - `as.data.frame` and ?? for `listies`
 - index by concept using `\concept{}` in the help files

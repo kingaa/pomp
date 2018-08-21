@@ -67,17 +67,17 @@ Error : in ‘pfilter’: ‘tol’ should be a small positive number.
 > po <- ou2
 > coef(po) <- NULL
 > try(pfilter(po,Np=100))
-Error : in ‘pfilter’: ‘params’ must be named.
+Error : in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
 > try(pfilter(po,Np=100,params=c()))
-Error : in ‘pfilter’: ‘params’ must be named.
+Error : in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
 > try(pfilter(po,Np=100,params=NULL))
-Error : in ‘pfilter’: ‘params’ must be named.
+Error : in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
 > try(pfilter(po,Np=100,params=c(1,2,3)))
-Error : in ‘pfilter’: ‘params’ must be named.
+Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
 > try(pfilter(po,Np=100,params=c(a=1,b=2,c=3)))
-Error : in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
+Error : in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
 > try(pfilter(po,Np=100,params=list()))
-Error : in ‘pfilter’: ‘params’ must be named.
+Error : in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
 > pf <- pfilter(po,Np=100,params=as.list(coef(ou2)))
 > 
 > pf <- pfilter(pf)
@@ -93,14 +93,10 @@ Warning message:
 in ‘pfilter’: 2 filtering failures occurred. 
 > stopifnot(identical(coef(pf1),theta))
 > 
-> pp <- parmat(coef(ou2),100)
-> pf <- pfilter(ou2,params=pp)
-> pf <- pfilter(pf1,params=pp)
-> try(pfilter(ou2,params=pp,Np=1000))
-Error : in ‘pfilter’: when ‘params’ is provided as a matrix, you must not also specify ‘Np’.
-> rownames(pp) <- NULL
-> try(pfilter(ou2,params=pp))
-Error : in ‘pfilter’: ‘params’ must be named.
+> try(pfilter(ou2,params=parmat(coef(ou2),100)))
+Error : in ‘pfilter’: ‘Np’ must be specified.
+> try(pfilter(ou2,Np=100,params=parmat(coef(ou2),100)))
+Error : in ‘pfilter’: ‘params’ must be a named numeric vector.
 > 
 > pf2 <- pfilter(ou2,Np=function(k)c(100,150)[(k-1)%%2+1])
 > table(pf2@Np)
@@ -152,10 +148,10 @@ likelihood, data, states, and parameters are:
     lik:         -Inf
      y1:     -1.70082
      y2:      4.24746
-     x1:      1.23799
-     x2:    -0.293585
+     x1:     0.153823
+     x2:      6.86341
 alpha.1:          0.8
-alpha.2:          0.1
+alpha.2:         -0.5
 alpha.3:          0.3
 alpha.4:          0.9
 sigma.1:            3
@@ -172,10 +168,20 @@ pfilter timestep 5 of 100 finished
 pfilter timestep 10 of 100 finished
 pfilter timestep 15 of 100 finished
 pfilter timestep 20 of 100 finished
+pfilter timestep 25 of 100 finished
+pfilter timestep 30 of 100 finished
+pfilter timestep 35 of 100 finished
+pfilter timestep 40 of 100 finished
+pfilter timestep 45 of 100 finished
+pfilter timestep 50 of 100 finished
+pfilter timestep 55 of 100 finished
+pfilter timestep 60 of 100 finished
+pfilter timestep 65 of 100 finished
+pfilter timestep 70 of 100 finished
 > stopifnot(sum(grepl("filtering failure at",out))==21)
 > stopifnot(grepl("too many filtering failures",tail(out,1)))
 > 
-> pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE,save.params=TRUE)
+> pf1 <- pfilter(pf,save.states=TRUE,filter.traj=TRUE)
 > pf2 <- pfilter(pf,pred.mean=TRUE,pred.var=TRUE,filter.mean=TRUE)
 > pf3 <- pfilter(pf,t0=1,filter.traj=TRUE)
 > pf4 <- pfilter(pf,dmeasure=Csnippet("lik = (give_log) ? R_NegInf : 0;"),

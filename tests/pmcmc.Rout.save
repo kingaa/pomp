@@ -32,31 +32,44 @@ Type 'q()' to quit R.
 > 
 > mcmc1 <- pmcmc(po,Nmcmc=100,Np=100,dprior=Csnippet("
 +     lik = dunif(r,0,1,1)+dnorm(sigma,0,1,1);
-+     lik = (give_log) ? lik : exp(lik);"
-+ ),
++     lik = (give_log) ? lik : exp(lik);"),
 +   paramnames=c("r","sigma"),
 +   proposal=prop1)
 > 
-> try(pmcmc(po,Nmcmc=10,Np="bob"))
-Error : in ‘pmcmc’: ‘Np’ must be a number, a vector of numbers, or a function.
-> try(pmcmc(po,Nmcmc=10))
-Error : in ‘pmcmc’: ‘Np’ must be specified.
-> try(pmcmc(po,Nmcmc=10,Np=NULL))
-Error : in ‘pmcmc’: ‘Np’ must be specified.
-> try(pmcmc(po,Nmcmc=10,Np=function(k)10*k))
-Error : in ‘pmcmc’: number of particles, ‘Np’, must be a positive integer.
-> try(pmcmc(po,Nmcmc=10,Np=function(k)NULL))
-Error : in ‘pmcmc’: if ‘Np’ is a function, it must return a single positive integer.
-> try(pmcmc(po,Nmcmc=10,Np=rep(100,20)))
-Error : in ‘pmcmc’: ‘Np’ must have length 1 or length ‘length(time(object))+1’.
-> try(pmcmc(po,Nmcmc=10,Np=-50))
-Error : in ‘pmcmc’: number of particles, ‘Np’, must be a positive integer.
-> try(pmcmc(po,Nmcmc=10,Np=NA))
-Error : in ‘pmcmc’: ‘Np’ must be a number, a vector of numbers, or a function.
-> try(pmcmc(po,Nmcmc=10,Np=function(k)10*(k+1)))
+> try(pmcmc())
+Error : in ‘pmcmc’: ‘data’ is a required argument
+> try(pmcmc("bob"))
+Error : ‘pmcmc’ is not defined when ‘data’ is of class ‘character’
+> try(pmcmc(po))
 Error : in ‘pmcmc’: ‘proposal’ must be specified
-> try(pmcmc(po,Nmcmc=100,Np=100))
+> try(pmcmc(po,proposal="yes"))
+Error : in ‘pmcmc’: ‘proposal’ must be a function: object 'yes' of mode 'function' was not found
+> try(pmcmc(po,proposal=NULL))
 Error : in ‘pmcmc’: ‘proposal’ must be specified
+> try(pmcmc(po,proposal=3))
+Error : in ‘pmcmc’: ‘proposal’ must be a function: object 'proposal' of mode 'function' was not found
+> try(pmcmc(po,proposal="prop1"))
+Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must be specified.
+> try(pmcmc(po,proposal=prop1))
+Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must be specified.
+> try(pmcmc(po,proposal=prop1,Np="bob"))
+Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must be a number, a vector of numbers, or a function.
+> try(pmcmc(po,proposal=prop1,Np=NULL))
+Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must be specified.
+> try(pmcmc(po,proposal=prop1,Np=NA))
+Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must be a number, a vector of numbers, or a function.
+> try(pmcmc(po,proposal=prop1,Np=c(1,2,3)))
+Error : in ‘pmcmc’: in ‘pfilter’: ‘Np’ must have length 1 or length 12.
+> try(pmcmc(po,proposal=prop1,Np=-5))
+Error : in ‘pmcmc’: in ‘pfilter’: number of particles, ‘Np’, must be a positive integer.
+> pmcmc(po,proposal=prop1,Np=1)
+<object of class ‘pmcmcd_pomp’>
+> pmcmc(po,proposal=prop1,Np=rep(1,12))
+<object of class ‘pmcmcd_pomp’>
+> try(pmcmc(po,proposal=prop1,Np=function(k)10*k))
+Error : in ‘pmcmc’: in ‘pfilter’: number of particles, ‘Np’, must be a positive integer.
+> pmcmc(po,proposal=prop1,Np=function(k)10*k+10)
+<object of class ‘pmcmcd_pomp’>
 > 
 > pf <- pfilter(po,Np=100)
 > mcmc2 <- pmcmc(pf,Nmcmc=100,proposal=prop1)
@@ -86,37 +99,28 @@ NULL
 > logLik(mcmc1)
 [1] 4.9
 > logLik(c(mcmc1,mcmc2,mcmc3))
-[1] 4.90 4.58 4.58
-> 
-> try(pmcmc())
-Error : in ‘pmcmc’: ‘data’ is a required argument
-> try(pmcmc("bob"))
-Error : ‘pmcmc’ is not defined when ‘data’ is of class ‘character’
+[1] 4.90 5.55 5.93
 > 
 > pmcmc(mcmc1,params=as.list(coef(mcmc3)))
 <object of class ‘pmcmcd_pomp’>
 > try(pmcmc(mcmc1,params=NULL))
-Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
+Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try(pmcmc(mcmc1,params=-7))
-Error : in ‘pomp’: ‘params’ must be a named numeric vector.
+Error : in ‘pmcmc’: in ‘pomp’: ‘params’ must be a named numeric vector.
 > try(pmcmc(mcmc1,params="yes"))
-Error : in ‘pomp’: ‘params’ must be a named numeric vector.
+Error : in ‘pmcmc’: in ‘pomp’: ‘params’ must be a named numeric vector.
 In addition: Warning message:
 In setNames(as.double(params), names(params)) : NAs introduced by coercion
 > try(pmcmc(mcmc1,params=list()))
-Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
+Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
 > try({tmp <- mcmc1; coef(tmp) <- NULL; pmcmc(tmp)})
-Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
+Error : in ‘pmcmc’: in default 'rinit': there are no parameters with suffix '.0'. See '?rinit_spec'.
 In addition: Warning message:
 In rnorm(n = n, mean = theta[parnm], sd = rw.sd) : NAs produced
-> try(pmcmc(mcmc1,proposal="random"))
-Error : in ‘pmcmc’: ‘proposal’ must be a function
-> try(pmcmc(mcmc1,proposal=NULL))
-Error : in ‘pmcmc’: ‘proposal’ must be specified
 > try(pmcmc(mcmc1,proposal=function(...)c(3,2)))
 Error : in ‘pmcmc’: ‘proposal’ must return a named numeric vector
 > try(pmcmc(mcmc1,proposal=function(...)c(a=3,b=2,X.0=1)))

@@ -226,43 +226,26 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   ep <- paste0("in ",sQuote("pmcmc"),": ")
 
   gnsi <- as.logical(.getnativesymbolinfo)
-  ntimes <- length(time(object))
   verbose <- as.logical(verbose)
   .ndone <- as.integer(.ndone)
   .accepts <- as.integer(.accepts)
 
-  object <- pomp(object,...,verbose=verbose)
-
-  if (missing(Np) || is.null(Np)) {
-    stop(ep,sQuote("Np")," must be specified.",call.=FALSE)
-  } else if (is.function(Np)) {
-    Np <- tryCatch(
-      vapply(seq.int(from=0,to=ntimes,by=1),Np,numeric(1)),
-      error = function (e) {
-        stop(ep,"if ",sQuote("Np")," is a function, ",
-          "it must return a single positive integer.",call.=FALSE)
-      }
-    )
-  } else if (!is.numeric(Np)) {
-    stop(ep,sQuote("Np")," must be a number, a vector of numbers, ",
-      "or a function.",call.=FALSE)
-  }
-
-  if (length(Np) == 1)
-    Np <- rep(Np,times=ntimes+1)
-  else if (length(Np) != (ntimes+1))
-    stop(ep,sQuote("Np")," must have length 1 or length ",
-      sQuote("length(time(object))+1"),".",call.=FALSE)
-
-  if (!all(is.finite(Np)) || any(Np <= 0))
-    stop(ep,"number of particles, ",sQuote("Np"),
-      ", must be a positive integer.",call.=FALSE)
-  Np <- as.integer(Np)
+  object <- tryCatch(
+    pomp(object,...,verbose=verbose),
+    error = function (e) {
+      stop(ep,conditionMessage(e),call.=FALSE)
+    }
+  )
 
   if (missing(proposal) || is.null(proposal))
     stop(ep,sQuote("proposal")," must be specified",call.=FALSE)
-  if (!is.function(proposal))
-    stop(ep,sQuote("proposal")," must be a function",call.=FALSE)
+  proposal <- tryCatch(
+    match.fun(proposal),
+    error = function (e) {
+      stop(ep,sQuote("proposal")," must be a function: ",conditionMessage(e),
+        call.=FALSE)
+    }
+  )
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
@@ -293,19 +276,14 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
 
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
     pfp <- tryCatch(
-      pfilter.internal(
+      pfilter(
         object,
         params=theta,
         Np=Np,
         tol=tol,
         max.fail=max.fail,
-        pred.mean=FALSE,
-        pred.var=FALSE,
-        filter.mean=TRUE,
         filter.traj=TRUE,
-        save.states=FALSE,
-        save.params=FALSE,
-        verbose=FALSE,
+        verbose=verbose,
         .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
@@ -352,19 +330,14 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
 
       ## run the particle filter on the proposed new parameter values
       pfp.prop <- tryCatch(
-        pfilter.internal(
-          object=pfp,
+        pfilter(
+          pfp,
           params=theta.prop,
           Np=Np,
           tol=tol,
           max.fail=max.fail,
-          pred.mean=FALSE,
-          pred.var=FALSE,
-          filter.mean=TRUE,
           filter.traj=TRUE,
-          save.states=FALSE,
-          save.params=FALSE,
-          verbose=FALSE,
+          verbose=verbose,
           .getnativesymbolinfo=gnsi
         ),
         error = function (e) {
@@ -407,10 +380,9 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
     Nmcmc=Nmcmc,
     accepts=.accepts,
     proposal=proposal,
-    Np=Np,
-    tol=tol,
     traces=traces,
     log.prior=log.prior,
     filter.traj=filt.t
   )
+
 }
