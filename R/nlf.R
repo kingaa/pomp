@@ -661,8 +661,15 @@ nlf.lql <- function (params.fitted, object, params, par.index,
   data.ts <- obs(object)
 
   y <- tryCatch(
-    simulate(object,times=times,t0=t0,params=params,seed=seed,
-      obs=TRUE,states=FALSE),
+    freeze(
+      {
+        x0 <- rinit(object,params=params,t0=t0)
+        x <- rprocess(object,params=params,times=time(object,t0=TRUE),
+          xstart=x0)
+        rmeasure(object,x=x,times=time(object),params=params)
+      },
+      seed=seed
+    ),
     error = function (e) {
       stop(ep,"simulation error: ",conditionMessage(e),call.=FALSE) # nocov
     }

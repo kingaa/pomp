@@ -330,13 +330,20 @@ compute.spect.sim <- function (object, params, vars, nsim, seed,
   ep <- paste0("in ",sQuote("spect"),": ")
 
   sims <- tryCatch(
-    simulate(object,nsim=nsim,seed=seed,params=params,states=FALSE,obs=TRUE),
+    freeze(
+      {
+        x0 <- rinit(object,params=params,t0=timezero(object),nsim=nsim)
+        x <- rprocess(object,params=params,times=time(object,t0=TRUE),
+          xstart=x0,offset=1L)
+        y <- rmeasure(object,x=x,times=time(object),params=params)
+        y[vars,,,drop=FALSE]
+      },
+      seed=seed
+    ),
     error = function (e) {
       stop(ep,conditionMessage(e),call.=FALSE)
     }
   )
-
-  sims <- sims[vars,,,drop=FALSE]
 
   if (any(!is.finite(sims)))
     stop(ep,"missing or infinite values in simulated data.",call.=FALSE)

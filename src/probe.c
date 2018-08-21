@@ -13,7 +13,7 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
 
   for (i = 0; i < nprobe; i++) {
     SET_ELEMENT(vals,i,eval(PROTECT(lang2(VECTOR_ELT(probes,i),data)),
-                            CLOENV(VECTOR_ELT(probes,i))));
+      CLOENV(VECTOR_ELT(probes,i))));
     if (!IS_NUMERIC(VECTOR_ELT(vals,i))) {
       errorcall(R_NilValue,"probe %ld returns a non-numeric result",i+1);
     }
@@ -26,11 +26,11 @@ SEXP apply_probe_data (SEXP object, SEXP probes) {
   return retval;
 }
 
-SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probes,
-  SEXP datval, SEXP gnsi) {
+SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed,
+  SEXP probes, SEXP datval, SEXP gnsi) {
   int nprotect = 0;
-  SEXP y, obs, times, t0, call, names;
-  SEXP retval, val, valnames, x;
+  SEXP x0, x, y, times, t0, timesplus, offset, names;
+  SEXP retval, val, valnames;
   int nprobe, nsims, nvars, ntimes, nvals;
   int xdim[2];
   double *xp, *yp;
@@ -40,6 +40,8 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   if ((LENGTH(nsim)!=1) || (INTEGER(nsim)[0]<=0))
     errorcall(R_NilValue,"'nsim' must be a positive integer");
 
+  PROTECT(gnsi = duplicate(gnsi)); nprotect++;
+
   // 'names' holds the names of the probe values
   // we get these from a previous call to 'apply_probe_data'
   nprobe = LENGTH(probes);
@@ -47,33 +49,23 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
   PROTECT(names = GET_NAMES(datval)); nprotect++;
   PROTECT(t0 = GET_SLOT(object,install("t0"))); nprotect++;
   PROTECT(times = GET_SLOT(object,install("times"))); nprotect++;
-
-  // call 'simulate' to get simulated data sets
-  PROTECT(obs = NEW_LOGICAL(1)); nprotect++;
-  LOGICAL(obs)[0] = 1;		// we set obs=TRUE
-  PROTECT(call = LCONS(gnsi,R_NilValue)); nprotect++;
-  SET_TAG(call,install(".getnativesymbolinfo"));
-  PROTECT(call = LCONS(t0,call)); nprotect++;
-  SET_TAG(call,install("t0"));
-  PROTECT(call = LCONS(times,call)); nprotect++;
-  SET_TAG(call,install("times"));
-  PROTECT(call = LCONS(obs,call)); nprotect++;
-  SET_TAG(call,install("obs"));
-  PROTECT(call = LCONS(params,call)); nprotect++;
-  SET_TAG(call,install("params"));
-  PROTECT(call = LCONS(seed,call)); nprotect++;
-  SET_TAG(call,install("seed"));
-  PROTECT(call = LCONS(nsim,call)); nprotect++;
-  SET_TAG(call,install("nsim"));
-  PROTECT(call = LCONS(object,call)); nprotect++;
-  SET_TAG(call,install("object"));
-  PROTECT(call = LCONS(install("simulate"),call)); nprotect++;
-  PROTECT(y = eval(call,R_GlobalEnv)); nprotect++;
+  // generate simulated data sets
+  // first, the initial state
+  PROTECT(x0 = do_rinit(object,params,t0,nsim,gnsi)); nprotect++;
+  // now the 'rprocess'
+  // recall that 'rprocess' needs to have 't0' in the 'times' vector
+  // and we compensate for this with 'offset'
+  PROTECT(timesplus = eval(lang3(install("c"),t0,times),R_BaseEnv)); nprotect++;
+  PROTECT(offset = NEW_INTEGER(1)); nprotect++;
+  *(INTEGER(offset)) = 1;
+  PROTECT(x = do_rprocess(object,x0,timesplus,params,offset,gnsi)); nprotect++;
+  // now the 'rmeasure'
+  PROTECT(y = do_rmeasure(object,x,times,params,gnsi)); nprotect++;
+  *(INTEGER(gnsi)) = 0;
 
   nvars = INTEGER(GET_DIM(y))[0];
   nsims = INTEGER(GET_DIM(y))[1];
-  ntimes = INTEGER(GET_DIM(y))[2]; // recall that 'simulate' returns a value for time zero
-
+  ntimes = INTEGER(GET_DIM(y))[2];
   // set up temporary storage
   xdim[0] = nvars; xdim[1] = ntimes;
   PROTECT(x = makearray(2,xdim)); nprotect++;
@@ -101,7 +93,7 @@ SEXP apply_probe_sim (SEXP object, SEXP nsim, SEXP params, SEXP seed, SEXP probe
 
       // evaluate the probe on the simulated data
       PROTECT(val = eval(PROTECT(lang2(VECTOR_ELT(probes,p),x)),
-                         CLOENV(VECTOR_ELT(probes,p))));
+        CLOENV(VECTOR_ELT(probes,p))));
       if (!IS_NUMERIC(val)) {
         errorcall(R_NilValue,"probe %ld returns a non-numeric result",p+1);
       }

@@ -1,13 +1,18 @@
 library(pomp)
+library(magrittr)
+library(plyr)
+library(reshape2)
 
 pompExample(ou2)
 
 po <- window(ou2,end=10)
 
 set.seed(3434388L)
-dat <- simulate(po,obs=T,states=T,nsim=5)
-x <- dat$states
-y <- dat$obs[,1,]
+simulate(po,nsim=5,as.data.frame=TRUE,include.data=FALSE)%>%
+  melt(id.vars=c("time","sim")) %>%
+  acast(variable~sim~time) -> y
+x <- y[c("x1","x2"),,,drop=FALSE]
+y <- y[c("y1","y2"),1,]
 t <- time(po)
 theta <- coef(po)
 
@@ -57,12 +62,14 @@ try(dmeasure(po,params=pp[,1:7],x=x,y=y,t=t,log=TRUE))
 pompExample(dacca)
 set.seed(3434388L)
 po <- window(dacca,end=1892)
-dat <- simulate(po,obs=T,states=T,nsim=5)
-x <- dat$states
-y <- dat$obs[,1,,drop=FALSE]
+po %>% simulate(nsim=5) -> dat
+dat %>% lapply(states) %>% melt() %>%
+  acast(variable~L1~time) -> x
+dat %>% lapply(obs) %>% melt() %>%
+  subset(L1==1) %>%
+  acast(variable~L1~time) -> y
 t <- time(po)
 theta <- coef(po)
-
 dmeasure(po,x=x,y=y,times=t,params=theta) -> L
 dmeasure(po,x=x,y=y,times=t,params=theta,log=T) -> ll
 stopifnot(all.equal(ll[,1:3],log(L[,1:3])))
