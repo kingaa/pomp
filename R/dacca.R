@@ -25,10 +25,8 @@
 ##'
 ##' pompExample(dacca)
 ##' plot(dacca)
-##' #MLEs on the natural scale
+##' ## MLE:
 ##' coef(dacca)
-##' #MLEs on the transformed scale
-##' coef(dacca,transform=TRUE)
 ##' plot(simulate(dacca))
 ##'
 NULL
