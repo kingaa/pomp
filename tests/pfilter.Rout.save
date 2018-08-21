@@ -41,9 +41,9 @@ newly created object(s):
 [1] TRUE
 > 
 > try(pfilter())
-Error : in ‘pfilter’: ‘object’ is a required argument
+Error : in ‘pfilter’: ‘data’ is a required argument
 > try(pfilter("bob"))
-Error : ‘pfilter’ is not defined when ‘object’ is of class ‘character’
+Error : ‘pfilter’ is not defined when ‘data’ is of class ‘character’
 > 
 > try(pfilter(ou2))
 Error : in ‘pfilter’: ‘Np’ must be specified.
@@ -67,17 +67,17 @@ Error : in ‘pfilter’: ‘tol’ should be a small positive number.
 > po <- ou2
 > coef(po) <- NULL
 > try(pfilter(po,Np=100))
-Error : in ‘pfilter’: ‘params’ must be specified.
+Error : in ‘pfilter’: ‘params’ must be named.
 > try(pfilter(po,Np=100,params=c()))
-Error : in ‘pfilter’: ‘params’ must be specified.
+Error : in ‘pfilter’: ‘params’ must be named.
 > try(pfilter(po,Np=100,params=NULL))
-Error : in ‘pfilter’: ‘params’ must be specified.
+Error : in ‘pfilter’: ‘params’ must be named.
 > try(pfilter(po,Np=100,params=c(1,2,3)))
-Error : in ‘coef<-’: ‘value’ must be a named vector
+Error : in ‘pfilter’: ‘params’ must be named.
 > try(pfilter(po,Np=100,params=c(a=1,b=2,c=3)))
 Error : in default 'rinit': there are no parameters with suffix '.0'. See '?pomp'.
 > try(pfilter(po,Np=100,params=list()))
-Error : in ‘pfilter’: ‘params’ must be specified.
+Error : in ‘pfilter’: ‘params’ must be named.
 > pf <- pfilter(po,Np=100,params=as.list(coef(ou2)))
 > 
 > pf <- pfilter(pf)
@@ -100,7 +100,7 @@ in ‘pfilter’: 2 filtering failures occurred.
 Error : in ‘pfilter’: when ‘params’ is provided as a matrix, you must not also specify ‘Np’.
 > rownames(pp) <- NULL
 > try(pfilter(ou2,params=pp))
-Error : in ‘pfilter’: ‘params’ must have rownames.
+Error : in ‘pfilter’: ‘params’ must be named.
 > 
 > pf2 <- pfilter(ou2,Np=function(k)c(100,150)[(k-1)%%2+1])
 > table(pf2@Np)

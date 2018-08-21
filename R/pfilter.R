@@ -294,6 +294,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   if (!all(is.finite(Np)) || any(Np <= 0))
     stop(ep,"number of particles, ",sQuote("Np"),
       ", must be a positive integer.",call.=FALSE)
+
   if (is.matrix(params)) {
     if (!all(Np == ncol(params)))
       stop(ep,"when ",sQuote("params")," is provided as a matrix, ",
@@ -305,15 +306,14 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   if (length(tol) != 1 || !is.finite(tol) || tol < 0)
     stop(ep,sQuote("tol")," should be a small positive number.",call.=FALSE)
 
+  params <- as.matrix(params)
+  if (is.null(rownames(params)) || !all(nzchar(rownames(params))))
+    stop(ep,sQuote("params")," must be named.",call.=FALSE)
+
   if (NCOL(params)==1) {        # there is only one parameter vector
     do.par.resample <- FALSE
-    coef(object) <- params     # set params slot to the parameters
-    params <- as.matrix(params)
+    coef(object) <- params[,1]  # set params slot to the parameters
   }
-
-  paramnames <- rownames(params)
-  if (is.null(paramnames))
-    stop(ep,sQuote("params")," must have rownames.",call.=FALSE)
 
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
