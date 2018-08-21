@@ -102,7 +102,7 @@ X.0   1.0000 1.0000
 4        50    sigma  1.06  b
 > 
 > try(mfl %>% traces(pars="bob"))
-Error : in ‘traces’: name(s) ‘bob’ correspond to no parameter(s) in ‘traces(object,transform=FALSE)’
+Error : in ‘traces’: parameter ‘bob’ not found.
 > 
 > try(mif2(po,Nmif=NA,Np=100))
 Error : in ‘mif2’: ‘Nmif’ must be a positive integer.
@@ -126,8 +126,7 @@ Error : in ‘mif2’: ‘rw.sd’ must be specified!
 Error : in ‘mif2’: ‘Np’ must be specified.
 > try(mif2(po,Nmif=1,Np=c(3,4)))
 Error : in ‘mif2’: ‘Np’ must have length 1 or ‘length(time(object))’.
-> try(mif2(po,Nmif=1,Np=c(rep(100,11),40),rw.sd=rw.sd(sigma=0.1),
-+   cooling.frac=0.5))
+> mif2(po,Nmif=1,Np=c(rep(100,11),40),rw.sd=rw.sd(sigma=0.1),cooling.frac=0.5)
 <object of class ‘mif2d_pomp’>
 Warning message:
 in ‘mif2’: Np[k] ignored for k > ‘length(time(object))’. 
@@ -147,28 +146,28 @@ Error : in ‘mif2’: in ‘rw.sd’: parameters must be referenced by name.
 Error : in ‘mif2’: ‘cooling.fraction.50’ must be in (0,1]
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=NA))
 Error : in ‘mif2’: ‘cooling.fraction.50’ must be in (0,1]
-> try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=c(3,2)))
+> try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=c(0.1,1)))
 Error : in ‘mif2’: ‘cooling.fraction.50’ must be in (0,1]
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=NULL))
 Error : in ‘mif2’: ‘cooling.fraction.50’ must be in (0,1]
 > try(mif2(po,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1),cooling.fraction.50=0.1,
 +   cooling.type="geometric",tol=-3))
 Error : in ‘mif2’: in ‘mif2.pfilter’: ‘tol’ should be a small positive number.
-> try(mif2(po,start=NULL,Nmif=1,Np=100))
-Error : in ‘mif2’: parameters must be specified as a named numeric vector.
-> try(mif2(po,start=list(),Nmif=1,Np=100))
-Error : in ‘mif2’: parameters must be specified as a named numeric vector.
-> try(mif2(po,start=list(NULL),Nmif=1,Np=100))
-Error : in ‘mif2’: parameters must be specified as a named numeric vector.
-> try(mif2(po,start=c(3,2,1),Nmif=1,Np=100))
-Error : in ‘mif2’: parameters must be specified as a named numeric vector.
+> try(mif2(po,params=NULL,Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
+Error : in ‘mif2’: the following parameter(s), given random walks in ‘rw.sd’, are not present in ‘start’: ‘sigma’
+> try(mif2(po,params=list(),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
+Error : in ‘mif2’: the following parameter(s), given random walks in ‘rw.sd’, are not present in ‘start’: ‘sigma’
+> try(mif2(po,params=list(NULL),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
+Error : in ‘pomp’: (list) object cannot be coerced to type 'double'
+> try(mif2(po,params=c(3,2,1),Nmif=1,Np=100,rw.sd=rw.sd(sigma=0.1)))
+Error : in ‘pomp’: ‘params’ must be a named numeric vector.
 > try(mif2(po,Nmif=1,Np=100:1000,rw.sd=rw.sd(sigma=0.1)))
 Error : in ‘mif2’: ‘cooling.fraction.50’ is a required argument.
 In addition: Warning message:
 in ‘mif2’: Np[k] ignored for k > ‘length(time(object))’. 
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 +   cooling.fraction.50=0.1,cooling.type="geometric",tol=1e-10,
-+   transform=TRUE,start=as.list(coef(po)))
++   transform=TRUE,params=as.list(coef(po)))
 <object of class ‘mif2d_pomp’>
 > try(mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 +   cooling.fraction.50=0.1,rprocess=onestep.sim(function(x,t,params,covars,delta.t,...)stop("boink"))))
@@ -192,7 +191,7 @@ sigma:    0.0860322
 > mif2(po,Nmif=2,Np=50,rw.sd=rw.sd(sigma=0.01),cooling.fraction.50=0.1,
 +   drpocess="oops",transform=TRUE,
 +   dmeasure=function(t,x,y,params,log,...)0) -> mf3
-in ‘pomp’: the unrecognized argument ‘drpocess’ will be stored for use by user-defined functions.
+in ‘pomp’: the unrecognized argument ‘drpocess’ is available for use by the POMP basic components.
 Warning messages:
 1: in ‘mif2.pfilter’: filtering failure at last filter iteration; using unweighted mean for point estimate. 
 2: in ‘mif2.pfilter’: 11 filtering failures occurred. 
@@ -212,7 +211,7 @@ Error : in ‘mif2’: in ‘mif2.pfilter’: too many filtering failures
 > capture.output(
 +   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 +     cooling.fraction.50=1,cooling.type="hyperbolic",tol=1e-10,
-+     transform=TRUE,start=as.list(coef(po)),verbose=TRUE),
++     transform=TRUE,params=as.list(coef(po)),verbose=TRUE),
 +   type="output"
 + ) -> out
 > stopifnot(sum(grepl("mif2 pfilter timestep",out))==4,
@@ -220,7 +219,7 @@ Error : in ‘mif2’: in ‘mif2.pfilter’: too many filtering failures
 > capture.output(
 +   mif2(po,Nmif=2,Np=100,rw.sd=rw.sd(sigma=0.01,X.0=ivp(0.01)),
 +     cooling.fraction.50=1,cooling.type="hyperbolic",tol=10,
-+     transform=TRUE,start=as.list(coef(po)),verbose=TRUE),
++     transform=TRUE,params=as.list(coef(po)),verbose=TRUE),
 +   type="message"
 + ) -> out
 mif2 pfilter timestep 5 of 11 finished
