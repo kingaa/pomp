@@ -10,15 +10,21 @@
 ##' parameter_trans,ANY,ANY-method parameter_trans,ANY,missing-method
 ##' parameter_trans,NULL,NULL-method parameter_trans,function,function-method
 ##' parameter_trans,missing,ANY-method parameter_trans,pomp_fun,pomp_fun-method
-##' @keywords internal
 ##' @family information on model implementation
 ##'
+##' @param toEst,fromEst procedures that perform transformation of model parameters to and from the estimation scale, respectively.
+##' These can be furnished using C snippets, \R functions, or via procedures in an external, dynamically loaded library.
+##' @param log names of parameters to be log transformed.
+##' @param logit names of parameters to be logit transformed.
+##' @param barycentric names of parameters to be collectively transformed according to the log barycentric transformation.
+##' @param \dots ignored.
+##'
 ##' @details
-##' When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans(toEst,fromEst,\dots,log,logit,barycentric)} function.
+##' When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans} function.
 ##' As with the basic model components, these should ordinarily be specified using C snippets.
 ##' When doing so, note that:
 ##' \enumerate{
-##'   \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \code{parameter_trans(toEst,fromEst)}.
+##'   \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \preformatted{parameter_trans(toEst,fromEst)}.
 ##'   \item The goal of these snippets is the transformation of the parameters from the natural scale to the estimation scale, and vice-versa.
 ##'   If \code{p} is the name of a variable on the natural scale, its value on the estimation scale is \code{T_p}.
 ##'   Thus the \code{toEst} snippet computes \code{T_p} given \code{p} whilst the \code{fromEst} snippet computes \code{p} given \code{T_p}.
@@ -40,6 +46,12 @@
 ##'
 ##' One can use the \code{log} and \code{logit} arguments of \code{parameter_trans} to name variables that should be log-transformed or logit-transformed, respectively.
 ##' The \code{barycentric} argument can name sets of parameters that should be log-barycentric transformed.
+##'
+##' The logit transform is defined by
+##' \deqn{\mathrm{logit}(\theta)=\log\frac{\theta}{1-\theta}.}{logit(theta) = log(theta/(1-theta)).}
+##'
+##' The log barycentric transformation of variables \eqn{\theta_1,\dots,\theta_n}{theta1,\dots,thetan} is given by
+##' \deqn{\mathrm{logbarycentric}(\theta_1,\dots,\theta_n)=\left(\log\frac{\theta_1}{\sum_i \theta_i},\dots,\log\frac{\theta_n}{\sum_i \theta_i}\right).}{logbarycentric(theta1,\dots,thetan)=(log(theta1/sum(theta)),\dots,log(thetan/sum(theta))).}
 ##
 NULL
 
@@ -85,22 +97,6 @@ setMethod(
   }
 )
 
-##' @name parameter_trans-missing,missing
-##' @aliases parameter_trans,missing,missing-method
-##' @rdname parameter_trans
-##' @export
-setMethod(
-  "parameter_trans",
-  signature=signature(toEst="missing",fromEst="missing"),
-  definition=function(..., log, logit, barycentric) {
-    if (missing(log) && missing(logit) && missing(barycentric))
-      new("partransPlugin",has=FALSE)
-    else
-      parameter_trans.internal(toEst=NULL,fromEst=NULL,
-        log=log,logit=logit,barycentric=barycentric)
-  }
-)
-
 ##' @name parameter_trans-Csnippet,Csnippet
 ##' @aliases parameter_trans,Csnippet,Csnippet-method
 ##' @rdname parameter_trans
@@ -115,6 +111,22 @@ setMethod(
       parameter_trans.internal(toEst=as(toEst,"character"),
         fromEst=as(fromEst,"character"),log=log,logit=logit,
         barycentric=barycentric)
+  }
+)
+
+##' @name parameter_trans-missing,missing
+##' @aliases parameter_trans,missing,missing-method
+##' @rdname parameter_trans
+##' @export
+setMethod(
+  "parameter_trans",
+  signature=signature(toEst="missing",fromEst="missing"),
+  definition=function(..., log, logit, barycentric) {
+    if (missing(log) && missing(logit) && missing(barycentric))
+      new("partransPlugin",has=FALSE)
+    else
+      parameter_trans.internal(toEst=NULL,fromEst=NULL,
+        log=log,logit=logit,barycentric=barycentric)
   }
 )
 

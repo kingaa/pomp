@@ -15,7 +15,7 @@ forecast(object, ...)
 \S4method{forecast}{kalmand_pomp}(object, vars, ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}}
+\item{object}{result of a filtering computation}
 
 \item{...}{ignored}
 

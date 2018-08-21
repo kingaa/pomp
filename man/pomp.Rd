@@ -20,10 +20,11 @@ Internally, \code{data} will be internally coerced to an array with storage-mode
 \item{t0}{The zero-time, i.e., the time of the initial state.
 This must be no later than the time of the first observation, i.e., \code{t0 <= times[1]}.}
 
-\item{\dots}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+\item{\dots}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
+
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual route of covariates (\code{covar}) and model parameters (\code{params}).
+This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
 See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
 \item{rinit}{simulator of the initial-state distribution.

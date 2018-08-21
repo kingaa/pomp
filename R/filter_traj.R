@@ -2,10 +2,24 @@
 ##'
 ##' Trajectories drawn from the smoothing distribution
 ##'
+##' The smoothing distribution is the distribution of
+##' \deqn{X_t | Y_1=y^*_1, \dots, Y_T=y^*_T,}{Xt | Y1=y1*, \dots, YT=yT*,}
+##' where \eqn{X_t}{Xt} is the latent state process, \eqn{Y_t}{Yt} is the observable process, \eqn{t} is time, and \eqn{T} is the time of the final observation.
+##'
+##' In a particle filter, the trajectories of the individual particles are not independent of one another, since they share ancestry.
+##' However, a randomly sampled particle trajectory \eqn{X_1,\dots,X_T} is a draw from the smoothing distribution.
+##' Seting \code{filter.traj = TRUE} in \code{\link{pfilter}} causes one such trajectory to be sampled.
+##' By running multiple independent \code{pfilter} operations, one can thus build up a picture of the smoothing distribution.
+##'
+##' In particle MCMC (\code{\link{pmcmc}}), this operation is performed at each MCMC iteration.
+##' Assuming the MCMC chain has converged, and after proper measures are taken to assure approximate independence of samples, \code{filter.traj} allows one to extract a sample from the smoothing distribution.
+##'
 ##' @name filter.traj
 ##' @aliases filter.traj filter.traj,ANY-method filter.traj,missing-method
 ##' @include pfilter.R pmcmc.R
 ##' @rdname filter_traj
+##' @family particle filter methods
+##' @inheritParams filter.mean
 NULL
 
 setGeneric(
@@ -35,8 +49,6 @@ setMethod(
 ##' @aliases filter.traj,pfilterd_pomp-method
 ##' @rdname filter_traj
 ##'
-##' @inheritParams filter.mean-kalmand_pomp
-##'
 ##' @export
 setMethod(
   "filter.traj",
@@ -54,8 +66,8 @@ setMethod(
 setMethod(
   "filter.traj",
   signature=signature(object="pfilterList"),
-  definition=function (object, ...) {
-    fts <- lapply(object,filter.traj,...)
+  definition=function (object, vars, ...) {
+    fts <- lapply(object,filter.traj,vars=vars,...)
     d <- dim(fts[[1]])
     nm <- dimnames(fts[[1]])
     x <- do.call(c,fts)
@@ -84,8 +96,8 @@ setMethod(
 setMethod(
   "filter.traj",
   signature=signature(object="pmcmcList"),
-  definition=function (object, ...) {
-    fts <- lapply(object,filter.traj,...)
+  definition=function (object, vars, ...) {
+    fts <- lapply(object,filter.traj,vars=vars,...)
     d <- dim(fts[[1]])
     nm <- dimnames(fts[[1]])
     x <- do.call(c,fts)

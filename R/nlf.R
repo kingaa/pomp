@@ -17,6 +17,7 @@
 ##' @importFrom mvtnorm dmvnorm
 ##' @aliases nlf nlf,missing-method nlf,ANY-method
 ##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
+##' @family \pkg{pomp} parameter estimation methods
 ##' @references
 ##' Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B.
 ##' T. and Nychka D. W. (1998) Noise and nonlinearity in measles epidemics:

@@ -54,8 +54,10 @@ Specification of rprocess using \dQuote{plugins}.
 \section{Discrete-time processes}{
 
 If the state process evolves in discrete time, specify \code{rprocess} using the \code{discrete.time.sim} plug-in.
-Specifically, provide \preformatted{
-rprocess = discrete.time.sim(step.fun = f, delta.t),}
+Specifically, provide
+\preformatted{
+    rprocess = discrete.time.sim(step.fun = f, delta.t),
+}
 where \code{f} is a C snippet or \R function that simulates one step of the state process.
 The former is the preferred option, due to its much greater computational efficiency.
 The goal of such a C snippet is to replace the state variables with their new random values at the end of the time interval.
@@ -64,8 +66,10 @@ In addition to the states, parameters, covariates (if any), and observables, the
 See \code{\link{Csnippet}} for general rules on writing C snippets.
 Examples are to be found in the tutorials on the \href{https://kingaa.github.io/pomp/}{package website}.
 
-If \code{f} is given as an \R function, it should have prototype \preformatted{
-f(x, t, params, delta.t, ...)}
+If \code{f} is given as an \R function, it should have prototype
+\preformatted{
+    f(x, t, params, delta.t, ...)
+}
 When \code{f} is called, \code{x} will be a named numeric vector containing the value of the state process at time \code{t},
 \code{params} will be a named numeric vector containing parameters,
 and \code{delta.t} will be the time-step.
@@ -75,16 +79,20 @@ It should return a named vector of the same length, and with the same set of nam
 \section{Continuous-time processes}{
 
 If the state process evolves in continuous time, but you can use an Euler approximation, implement \code{rprocess} using the \code{euler.sim} plug-in.
-Specify \preformatted{
-rprocess = euler.sim(step.fun = f, delta.t)}
+Specify
+\preformatted{
+    rprocess = euler.sim(step.fun = f, delta.t)
+}
 in this case.
 As before, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
 The form of \code{f} will be the same as above (in the discrete-time case).
 
 If you have a procedure that allows you, given the value of the state process at any time,
 to simulate it at an arbitrary time in the future, use the \code{onestep.sim} plug-in.
-To do so, specify \preformatted{
-rprocess = onestep.sim(step.fun = f).}
+To do so, specify
+\preformatted{
+    rprocess = onestep.sim(step.fun = f).
+}
 Again, \code{f} can be provided either as a C snippet or as an \R function, the former resulting in much quicker computations.
 The form of \code{f} should be as above (in the discrete-time or Euler cases).
 }
@@ -97,11 +105,15 @@ Specifically,
 \enumerate{
 \item \code{onestep.sim} takes a single step to go from any given time \code{t1} to any later time \code{t2} (\code{t1 < t2}).
 Thus, this plug-in is designed for use in situations where a closed-form solution to the process exists.
-\item To go from \code{t1} to \code{t2}, \code{euler.sim} takes \code{n} steps of equal size, where \preformatted{
-n = ceiling((t2-t1)/delta.t).}
+\item To go from \code{t1} to \code{t2}, \code{euler.sim} takes \code{n} steps of equal size, where
+\preformatted{
+    n = ceiling((t2-t1)/delta.t).
+}
 \item \code{discrete.time.sim} assumes that the process evolves in discrete time, where the interval between successive times is \code{delta.t}.
-Thus, to go from \code{t1} to \code{t2}, \code{discrete.time.sim} takes \code{n} steps of size exactly \code{delta.t}, where \preformatted{
-n = floor((t2-t1)/delta.t).}
+Thus, to go from \code{t1} to \code{t2}, \code{discrete.time.sim} takes \code{n} steps of size exactly \code{delta.t}, where
+\preformatted{
+    n = floor((t2-t1)/delta.t).
+}
 }
 }
 
@@ -113,8 +125,10 @@ The former allows for the rate function to be provided as an \R function or a si
 while the latter provides a means of specifying the elementary events via a list of C snippets.
 
 A high-level interface to the simulator is provided by \code{gillespie.hl.sim}.
-To use it, supply \preformatted{
-  rprocess = gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)}
+To use it, supply
+\preformatted{
+    rprocess = gillespie.hl.sim(..., .pre = "", .post = "", hmax = Inf)
+}
 to \code{pomp}.
 Each argument in \code{...} corresponds to a single elementary event and should be a list containing two elements.
 The first should be a string or C snippet;
@@ -127,17 +141,24 @@ There should be named value for each of the state variables returned by \code{ri
 The arguments \code{.pre} and \code{.post} can be used to provide C code that will run respectively before and after the elementary-event snippets.
 These hooks can be useful for avoiding duplication of code that performs calculations needed to obtain several of the different event rates.
 
-Here's how a simple birth-death model might be specified: \preformatted{
-gillespie.hl.sim(
-    birth=list("rate = b*N;",c(N=1)),
-    death=list("rate = m*N;",c(N=-1)))}
+Here's how a simple birth-death model might be specified:
+\preformatted{
+    gillespie.hl.sim(
+        birth=list("rate = b*N;",c(N=1)),
+        death=list("rate = m*N;",c(N=-1))
+    )
+}
 In the above, the state variable \code{N} represents the population size and parameters \code{b}, \code{m} are the birth and death rates, respectively.
 
-To use the lower-level \code{gillespie.sim} interface, furnish \preformatted{
-rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)}
+To use the lower-level \code{gillespie.sim} interface, furnish
+\preformatted{
+    rprocess = gillespie.sim(rate.fun = f, v, hmax = Inf)
+}
 to \code{pomp}, where \code{f} gives the rates of the elementary events.
-Here, \code{f} may be an \R function of the form \preformatted{
-f(j, x, t, params, ...)}
+Here, \code{f} may be an \R function with prototype
+\preformatted{
+    f(j, x, t, params, ...)
+}
 When \code{f} is called,
 the integer \code{j} will be the number of the elementary event (corresponding to the column the matrix \code{v}, see below),
 \code{x} will be a named numeric vector containing the value of the state process at time \code{t} and

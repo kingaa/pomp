@@ -67,10 +67,11 @@ see \link[=basic_probes]{basic probes}.}
 
 \item{epsilon}{ABC tolerance.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
+
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual route of covariates (\code{covar}) and model parameters (\code{params}).
+This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
 See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
@@ -130,8 +131,14 @@ dynamical systems Journal of the Royal Society, Interface 6:187--202, 2009.
 Other summary statistics methods: \code{\link{basic_probes}},
   \code{\link{probe.match}}, \code{\link{probe}},
   \code{\link{spect}}
+
+Other \pkg{pomp} parameter estimation methods: \code{\link{bsmc2}},
+  \code{\link{kalman}}, \code{\link{mif2}},
+  \code{\link{nlf}}, \code{\link{pmcmc}},
+  \code{\link{probe.match}}, \code{\link{spect.match}}
 }
 \author{
 Edward L. Ionides, Aaron A. King
 }
+\concept{\pkg{pomp} parameter estimation methods}
 \concept{summary statistics methods}

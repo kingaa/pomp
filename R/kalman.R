@@ -10,6 +10,7 @@
 ##' eakf,ANY-method eakf,missing-method
 ##' @author Aaron A. King
 ##' @family particle filtering methods
+##' @family \pkg{pomp} parameter estimation methods
 ##'
 ##' @inheritParams pomp
 ##' @param Np the number of particles to use.

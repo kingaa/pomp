@@ -20,12 +20,12 @@
 \S4method{cond.logLik}{bsmcd_pomp}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}}
+\item{object}{result of a filtering computation}
 
-\item{\dots}{ignored}
+\item{...}{ignored}
 }
 \value{
-numerical value of the conditional log likelihood.
+The numerical value of the conditional log likelihood.
 Note that some methods compute not the log likelihood itself but instead a related quantity.
 To keep the code simple, the \code{logLik} function is nevertheless used to extract this quantity.
 
@@ -35,17 +35,19 @@ When \code{object} is of class \sQuote{bsmcd_pomp} (i.e., the result of a \code{
 The estimated conditional log likelihood from a fitted model.
 }
 \details{
-The conditional log likelihood is defined to be the value of the density
+The conditional likelihood is defined to be the value of the density
 of \deqn{Y_t | Y_1,\dots,Y_{t-1}}{Yt | Y1,\dots,Y(t-1)} evaluated at \eqn{Y_t = y^*_t}{Yt = yt*}.
 Here, \eqn{Y_t}{Yt} is the observable process and \eqn{y^*_t}{yt*} is the data, at time \eqn{t}.
 
-\deqn{\ell_t(\theta) = \mathrm{Prob}[y_t \vert y_1, \dots, y_{t-1}],}{ell_t(theta)=Prob[y_t | y_1, \dots, y_(t-1)],} where \eqn{y_t} are the data, at time \eqn{t}.
+Thus the conditional log likelihood at time \eqn{t} is
+\deqn{\ell_t(\theta) = \log f[Y_t=y^*_t \vert Y_1=y^*_1, \dots, Y_{t-1}=y^*_{t-1}],}{ell_t(theta)=log f[Yt = yt*t | Y1=y1*, \dots, Y(t-1)=y(t-1)*],}
+where \eqn{f} is the probability density above.
 }
 \seealso{
 Other particle filter methods: \code{\link{bsmc2}},
   \code{\link{eff.sample.size}}, \code{\link{filter.mean}},
-  \code{\link{mif2}}, \code{\link{pfilter}},
-  \code{\link{pmcmc}}, \code{\link{pred.mean}},
-  \code{\link{pred.var}}
+  \code{\link{filter.traj}}, \code{\link{mif2}},
+  \code{\link{pfilter}}, \code{\link{pmcmc}},
+  \code{\link{pred.mean}}, \code{\link{pred.var}}
 }
 \concept{particle filter methods}

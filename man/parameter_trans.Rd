@@ -10,32 +10,44 @@
 \alias{parameter_trans,function,function-method}
 \alias{parameter_trans,missing,ANY-method}
 \alias{parameter_trans,pomp_fun,pomp_fun-method}
-\alias{parameter_trans-missing,missing}
 \alias{parameter_trans-Csnippet,Csnippet}
 \alias{parameter_trans,Csnippet,Csnippet-method}
+\alias{parameter_trans-missing,missing}
 \alias{parameter_trans-character,character}
 \alias{parameter_trans,character,character-method}
 \alias{parameter_trans-function,function}
 \title{Parameter transformations}
 \usage{
-\S4method{parameter_trans}{missing,missing}(..., log, logit, barycentric)
-
 \S4method{parameter_trans}{Csnippet,Csnippet}(toEst, fromEst, ..., log,
   logit, barycentric)
+
+\S4method{parameter_trans}{missing,missing}(..., log, logit, barycentric)
 
 \S4method{parameter_trans}{character,character}(toEst, fromEst, ...)
 
 \S4method{parameter_trans}{`function`,`function`}(toEst, fromEst, ...)
 }
+\arguments{
+\item{toEst, fromEst}{procedures that perform transformation of model parameters to and from the estimation scale, respectively.
+These can be furnished using C snippets, \R functions, or via procedures in an external, dynamically loaded library.}
+
+\item{\dots}{ignored.}
+
+\item{log}{names of parameters to be log transformed.}
+
+\item{logit}{names of parameters to be logit transformed.}
+
+\item{barycentric}{names of parameters to be collectively transformed according to the log barycentric transformation.}
+}
 \description{
 Equipping models with parameter transformations.
 }
 \details{
-When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans(toEst,fromEst,\dots,log,logit,barycentric)} function.
+When parameter transformations are desired, they can be integrated into the \sQuote{pomp} object via the \code{partrans} arguments using the \code{parameter_trans} function.
 As with the basic model components, these should ordinarily be specified using C snippets.
 When doing so, note that:
 \enumerate{
-  \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \code{parameter_trans(toEst,fromEst)}.
+  \item The parameter transformation mapping a parameter vector from the scale used by the model codes to another scale, and the inverse transformation, are specified via a call to \preformatted{parameter_trans(toEst,fromEst)}.
   \item The goal of these snippets is the transformation of the parameters from the natural scale to the estimation scale, and vice-versa.
   If \code{p} is the name of a variable on the natural scale, its value on the estimation scale is \code{T_p}.
   Thus the \code{toEst} snippet computes \code{T_p} given \code{p} whilst the \code{fromEst} snippet computes \code{p} given \code{T_p}.
@@ -57,6 +69,12 @@ If \code{obj} is the constructed \sQuote{pomp} object, and \code{coef(obj)} is n
 
 One can use the \code{log} and \code{logit} arguments of \code{parameter_trans} to name variables that should be log-transformed or logit-transformed, respectively.
 The \code{barycentric} argument can name sets of parameters that should be log-barycentric transformed.
+
+The logit transform is defined by
+\deqn{\mathrm{logit}(\theta)=\log\frac{\theta}{1-\theta}.}{logit(theta) = log(theta/(1-theta)).}
+
+The log barycentric transformation of variables \eqn{\theta_1,\dots,\theta_n}{theta1,\dots,thetan} is given by
+\deqn{\mathrm{logbarycentric}(\theta_1,\dots,\theta_n)=\left(\log\frac{\theta_1}{\sum_i \theta_i},\dots,\log\frac{\theta_n}{\sum_i \theta_i}\right).}{logbarycentric(theta1,\dots,thetan)=(log(theta1/sum(theta)),\dots,log(thetan/sum(theta))).}
 }
 \seealso{
 Other information on model implementation: \code{\link{Csnippet}},
@@ -68,4 +86,3 @@ Other information on model implementation: \code{\link{Csnippet}},
   \code{\link{skeleton_spec}}, \code{\link{userdata}}
 }
 \concept{information on model implementation}
-\keyword{internal}

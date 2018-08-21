@@ -3,15 +3,23 @@
 ##' The mean of the filtering distribution
 ##'
 ##' The filtering distribution is that of
-##' \deqn{X_t \vert y_1,\dots,y_t,}{X_t | y_1,\dots,y_t,}
-##' where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively,
-##' at time \eqn{t}.
+##' \deqn{X_t \vert Y_1=y^*_1,\dots,Y_t=y^*_t,}{Xt | Y1=y1*,\dots,Yt=yt*,}
+##' where \eqn{X_t}{Xt}, \eqn{Y_t}{Yt} are the latent state and observable processes, respectively, and \eqn{y^*_t}{yt*} is the data, at time \eqn{t}.
+##'
+##' The filtering mean is therefore the expectation of this distribution
+##' \deqn{E[X_t \vert Y_1=y^*_1,\dots,Y_t=y^*_t].}{E[Xt | Y1=y1*,\dots,Yt=yt*].}
 ##'
 ##' @name filter.mean
+##' @docType methods
 ##' @aliases filter.mean filter.mean,ANY-method filter.mean,missing-method
 ##' @include pfilter.R kalman.R
 ##' @rdname filter_mean
 ##' @family particle filter methods
+##'
+##' @param object result of a filtering computation
+##' @param vars optional character; names of variables
+##' @param \dots ignored
+##'
 NULL
 
 setGeneric(
@@ -41,11 +49,6 @@ setMethod(
 ##' @name filter.mean-kalmand_pomp
 ##' @aliases filter.mean,kalmand_pomp-method
 ##' @rdname filter_mean
-##'
-##' @param object an object of class \sQuote{pomp}, or of a class extending \sQuote{pomp}
-##' @param vars optional character; names of variables
-##' @param \dots ignored
-##'
 ##' @export
 setMethod(
   "filter.mean",

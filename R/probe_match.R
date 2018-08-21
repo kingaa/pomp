@@ -14,6 +14,7 @@
 ##' @include probe.R
 ##' @author Aaron A. King
 ##' @family summary statistics methods
+##' @family \pkg{pomp} parameter estimation methods
 ##' @seealso \code{\link{optim}} \code{\link[subplex]{subplex}} \code{\link[nloptr]{nloptr}}
 ##'
 ##' @inheritParams probe-pomp

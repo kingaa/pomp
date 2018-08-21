@@ -53,10 +53,11 @@ state.}
 
 \item{R}{matrix; variance of the measurement noise.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
+
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual route of covariates (\code{covar}) and model parameters (\code{params}).
+This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
 See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
@@ -81,7 +82,14 @@ Springer-Verlag.
 Anderson, J. L. (2001) An Ensemble Adjustment Kalman Filter for Data
 Assimilation Monthly Weather Review 129:2884--2903
 }
+\seealso{
+Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+  \code{\link{bsmc2}}, \code{\link{mif2}},
+  \code{\link{nlf}}, \code{\link{pmcmc}},
+  \code{\link{probe.match}}, \code{\link{spect.match}}
+}
 \author{
 Aaron A. King
 }
+\concept{\pkg{pomp} parameter estimation methods}
 \concept{particle filtering methods}

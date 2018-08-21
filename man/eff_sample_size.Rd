@@ -11,16 +11,14 @@
 \alias{eff.sample.size,pfilterd_pomp-method}
 \title{Effective sample size}
 \usage{
-eff.sample.size(object, ...)
-
 \S4method{eff.sample.size}{bsmcd_pomp}(object, ...)
 
 \S4method{eff.sample.size}{pfilterd_pomp}(object, ...)
 }
 \arguments{
-\item{object}{object extending class \sQuote{pomp}}
+\item{object}{result of a filtering computation}
 
-\item{\dots}{ignored}
+\item{...}{ignored}
 }
 \description{
 Estimate the effective sample size of a Monte Carlo computation.
@@ -33,8 +31,8 @@ where \eqn{w_{it}}{w_it} is the normalized weight of particle \eqn{i} at time \e
 \seealso{
 Other particle filter methods: \code{\link{bsmc2}},
   \code{\link{cond.logLik}}, \code{\link{filter.mean}},
-  \code{\link{mif2}}, \code{\link{pfilter}},
-  \code{\link{pmcmc}}, \code{\link{pred.mean}},
-  \code{\link{pred.var}}
+  \code{\link{filter.traj}}, \code{\link{mif2}},
+  \code{\link{pfilter}}, \code{\link{pmcmc}},
+  \code{\link{pred.mean}}, \code{\link{pred.var}}
 }
 \concept{particle filter methods}

@@ -5,6 +5,7 @@
 \alias{pfilter}
 \alias{pfilter,ANY-method}
 \alias{pfilter,missing-method}
+\alias{pfilterd_pomp-class}
 \alias{pfilter-data.frame}
 \alias{pfilter,data.frame-method}
 \alias{pfilter-pomp}
@@ -77,10 +78,11 @@ By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \sQuote{pfilterd_pomp} object.
 If \code{save.params=TRUE}, the parameter-vector for each particle at each time is saved in the \code{saved.params} slot of the returned \sQuote{pfilterd_pomp} object.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
+
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual route of covariates (\code{covar}) and model parameters (\code{params}).
+This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
 See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
@@ -132,9 +134,9 @@ Other elementary POMP methods: \code{\link{probe}},
 
 Other particle filter methods: \code{\link{bsmc2}},
   \code{\link{cond.logLik}}, \code{\link{eff.sample.size}},
-  \code{\link{filter.mean}}, \code{\link{mif2}},
-  \code{\link{pmcmc}}, \code{\link{pred.mean}},
-  \code{\link{pred.var}}
+  \code{\link{filter.mean}}, \code{\link{filter.traj}},
+  \code{\link{mif2}}, \code{\link{pmcmc}},
+  \code{\link{pred.mean}}, \code{\link{pred.var}}
 }
 \author{
 Aaron A. King

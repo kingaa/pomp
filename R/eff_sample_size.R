@@ -11,10 +11,10 @@
 ##' @include pfilter.R bsmc2.R
 ##' @aliases eff.sample.size eff.sample.size,missing-method eff.sample.size,ANY-method
 ##' @family particle filter methods
+##' @inheritParams filter.mean
 ##'
-##' @param object object extending class \sQuote{pomp}
-##' @param \dots ignored
-##'
+NULL
+
 setGeneric(
     "eff.sample.size",
     function (object, ...)

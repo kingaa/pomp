@@ -68,10 +68,11 @@ A factor variable, \sQuote{sim}, distinguishes one simulation from another.
 If, in addition, \code{include.data=TRUE}, the original data are included as an additional \sQuote{simulation}.
 If \code{as.data.frame=FALSE}, \code{include.data} is ignored.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
+
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual route of covariates (\code{covar}) and model parameters (\code{params}).
+This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
 See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}

@@ -62,10 +62,11 @@ By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 \item{transform}{logical;
 if \code{TRUE}, the algorithm operates on the transformed scale.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
+
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual route of covariates (\code{covar}) and model parameters (\code{params}).
+This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
 See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
@@ -99,11 +100,17 @@ Springer, New York, 2001.
 \seealso{
 Other particle filter methods: \code{\link{cond.logLik}},
   \code{\link{eff.sample.size}}, \code{\link{filter.mean}},
-  \code{\link{mif2}}, \code{\link{pfilter}},
-  \code{\link{pmcmc}}, \code{\link{pred.mean}},
-  \code{\link{pred.var}}
+  \code{\link{filter.traj}}, \code{\link{mif2}},
+  \code{\link{pfilter}}, \code{\link{pmcmc}},
+  \code{\link{pred.mean}}, \code{\link{pred.var}}
+
+Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+  \code{\link{kalman}}, \code{\link{mif2}},
+  \code{\link{nlf}}, \code{\link{pmcmc}},
+  \code{\link{probe.match}}, \code{\link{spect.match}}
 }
 \author{
 Michael Lavine, Matthew Ferrari, Aaron A. King, Edward L. Ionides
 }
+\concept{\pkg{pomp} parameter estimation methods}
 \concept{particle filter methods}

@@ -1,6 +1,7 @@
 # pomp to-do list
 
 - "guide to upgrading to **pomp** version 2"
+- take away `pfilter` when `params` is a matrix?
 - **all methods use transforms if they exist**
 - `as.data.frame` and ?? for `listies`
 - index by concept using `\concept{}` in the help files
@@ -46,6 +47,7 @@
 - probes as pomp slots?
 - what does a generic `pomp.fun` interface look like?
 - more/better demos and examples
+- document Beta-binomial and other distributions
 
 ## For pomp:
 

@@ -10,8 +10,9 @@
 ##' @include pfilter.R proposals.R load.R continue.R
 ##' @aliases pmcmc pmcmc,ANY-method pmcmc,missing-method
 ##' @author Edward L. Ionides, Aaron A. King, Sebastian Funk
-##' @family particle filter methods
 ##' @seealso \link[=proposals]{MCMC proposals}
+##' @family particle filter methods
+##' @family \pkg{pomp} parameter estimation methods
 ##'
 ##' @importFrom stats runif
 ##' @inheritParams pomp

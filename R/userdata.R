@@ -1,4 +1,4 @@
-##' Userdata
+##' Facilities for making additional information to basic components
 ##'
 ##' When \acronym{POMP} basic components need information they can't get from parameters or covariates.
 ##'
@@ -24,7 +24,7 @@
 ##'
 ##' @section When the basic component is specified as an \R function:
 ##' We can implement a simulator for the aforementioned measurement model so: \preformatted{
-##'    f(t, x, params, theta, ...) {
+##'    f <- function (t, x, params, theta, ...) {
 ##'       y <- rpois(n=2,x[c("x1","x2")]+theta)
 ##'       setNames(y,c("y1","y2"))
 ##'    }}
@@ -32,11 +32,11 @@
 ##' We simply provide an additional argument to whichever \pkg{pomp} algorithm we are employing (e.g., \code{\link[=simulate-pomp]{simulate}}, \code{\link{pfilter}}, \code{\link{mif2}}, \code{\link{abc}}, etc.).
 ##' For example:
 ##' \preformatted{
-##'     simulate(rmeasure = f, theta = 42, ...)
+##'     simulate(..., rmeasure = f, theta = 42, ...)
 ##' }
 ##' where the \code{\dots} represent the other \code{simulate} arguments we might want to supply.
-##' When we do so, a warning message will be generated, informing us that \code{theta} is available for use by the \acronym{POMP} basic components.
-##' This warning forestalls accidental triggering of this facility due to typographical error.
+##' When we do so, a message will be generated, informing us that \code{theta} is available for use by the \acronym{POMP} basic components.
+##' This warning helps forestall accidental triggering of this facility due to typographical error.
 ##'
 ##' @section When the basic component is specified via a C snippet:
 ##' A C snippet implementation of the aforementioned measurement model is:
@@ -54,7 +54,7 @@
 ##' For example, it is wise to wrap floating point scalars and vectors with \code{as.double} and integers with \code{as.integer}.
 ##' In the present example, our call to simulate might look like
 ##' \preformatted{
-##'     simulate(rmeasure = f, theta = as.double(42), ...)
+##'     simulate(..., rmeasure = f, theta = as.double(42), ...)
 ##' }
 ##'
 ##' Since the two functions \code{get_pomp_userdata_double} and \code{get_pomp_userdata_int} return pointers, it is trivial to pass vectors of double-precision and integers.
@@ -76,13 +76,13 @@
 ##'
 ##' @examples
 ##' ## The familiar Ricker example
-##' ## For some bizarre reason, we wish to pass phi
-##' ## via the userdata facility.
+##' ## For some bizarre reason, we wish to pass 'phi' via the userdata facility.
 ##'
 ##' ## C snippet approach:
 ##'
 ##' simulate(times=1:100,t0=0,
-##'   params=c(r=3.8,sigma=0.3,phi=10,N.0=7),
+##'   phi=as.double(100),
+##'   params=c(r=3.8,sigma=0.3,N.0=7),
 ##'   rprocess=discrete.time.sim(
 ##'     step.fun=Csnippet("
 ##'       double e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
@@ -96,13 +96,13 @@
 ##'   ),
 ##'   paramnames=c("r","sigma"),
 ##'   statenames="N",
-##'   obsnames="y",
-##'   phi=as.double(100)
+##'   obsnames="y"
 ##' ) -> rick1
 ##'
 ##' ## The same problem solved using 'globals':
 ##' simulate(times=1:100,t0=0,
-##'   params=c(r=3.8,sigma=0.3,phi=10,N.0=7),
+##'   globals=Csnippet("static double phi = 100;"),
+##'   params=c(r=3.8,sigma=0.3,N.0=7),
 ##'   rprocess=discrete.time.sim(
 ##'     step.fun=Csnippet("
 ##'       double e = (sigma > 0.0) ? rnorm(0,sigma) : 0.0;
@@ -115,14 +115,14 @@
 ##'   ),
 ##'   paramnames=c("r","sigma"),
 ##'   statenames="N",
-##'   obsnames="y",
-##'   globals=Csnippet("double phi = 100;")
+##'   obsnames="y"
 ##' ) -> rick2
 ##'
 ##' ## Finally, the R function approach:
 ##'
 ##' simulate(times=1:100,t0=0,
-##'   params=c(r=3.8,sigma=0.3,phi=10,N.0=7),
+##'   phi=100,
+##'   params=c(r=3.8,sigma=0.3,N.0=7),
 ##'   rprocess=discrete.time.sim(
 ##'     step.fun=function (t, x, params, delta.t, ...) {
 ##'       e <- rnorm(n=1,mean=0,sd=params["sigma"])
@@ -133,8 +133,7 @@
 ##'   ),
 ##'   rmeasure=function(x, t, params, phi, ...) {
 ##'       c(y=unname(rpois(n=1,lambda=phi*x["N"])))
-##'   },
-##'   phi=100
+##'   }
 ##' ) -> rick3
 ##'
 ##' @name userdata

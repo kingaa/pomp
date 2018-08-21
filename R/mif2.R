@@ -13,6 +13,7 @@
 ##' @aliases mif2 mif2,missing-method mif2,ANY-method
 ##' @author Aaron A. King, Edward L. Ionides, Dao Nguyen
 ##' @family particle filter methods
+##' @family \pkg{pomp} parameter estimation methods
 ##'
 ##' @importFrom utils head
 ##' @importFrom stats  weighted.mean
@@ -46,6 +47,16 @@
 ##' @return
 ##' Upon successful completion, \code{mif2} returns an object of class
 ##' \sQuote{mif2d_pomp}.
+##'
+##' @section Methods:
+##' The following methods are available for such an object:
+##' \describe{
+##' \item{\code{\link{logLik}}}{ returns the so-called \dfn{mif log likelihood} which is the log likelihood of the perturbed model, not of the focal model itself.
+##' To obtain the latter, it is advisable to run several \code{\link{pfilter}} operations on the result of a \code{mif2} computatation.}
+##' \item{\code{\link{coef}}}{ extracts the point estimate }
+##' \item{\code{\link{eff.sample.size}}}{ extracts the effective sample size of the final filtering iteration}
+##' }
+##' Various other methods can be applied, including all the methods applicable to a \code{\link[=pfilter]{pfilterd_pomp}} object and all other \pkg{pomp} estimation algorithms and diagnostic methods.
 ##'
 ##' @section Specifying the perturbations:
 ##' The \code{rw.sd} function simply returns a list containing its arguments as unevaluated expressions.

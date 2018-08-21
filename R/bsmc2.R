@@ -8,6 +8,7 @@
 ##' @include pomp_class.R workhorses.R pomp.R
 ##' @aliases bsmc2 bsmc2,missing-method bsmc2,ANY-method
 ##' @family particle filter methods
+##' @family \pkg{pomp} parameter estimation methods
 ##'
 ##' @importFrom mvtnorm rmvnorm
 ##' @importFrom stats median cov setNames

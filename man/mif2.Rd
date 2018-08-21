@@ -86,10 +86,11 @@ See the section on \emph{Filtering Failures} below for more information.}
 If the number of filtering failures exceeds this number, execution will terminate with an error.
 By default, \code{max.fail} is set to infinity, so no error can be triggered.}
 
-\item{...}{additional arguments supply new or modify existing model characteristics or components for use by \pkg{pomp} package algorithms.
+\item{...}{additional arguments supply new or modify existing model characteristics or components.
 See \code{\link{pomp}} for a full list of recognized arguments.
+
 When named arguments not recognized by \code{\link{pomp}} are provided, these are made available to all basic components via the so-called \dfn{userdata} facility.
-This allows the user to pass information to the basic components outside of the usual route of covariates (\code{covar}) and model parameters (\code{params}).
+This allows the user to pass information to the basic components outside of the usual routes of covariates (\code{covar}) and model parameters (\code{params}).
 See the \link[=userdata]{userdata documentation here} for information on how to use this facility.}
 
 \item{verbose}{logical; if \code{TRUE}, diagnostic messages will be printed to the console.}
@@ -106,6 +107,18 @@ This extra variability effectively smooths the likelihood surface and combats pa
 As the iterations progress, the magnitude of the perturbations is diminished according to a user-specified cooling schedule.
 The algorithm is presented and justified in Ionides et al. (2015).
 }
+\section{Methods}{
+
+The following methods are available for such an object:
+\describe{
+\item{\code{\link{logLik}}}{ returns the so-called \dfn{mif log likelihood} which is the log likelihood of the perturbed model, not of the focal model itself.
+To obtain the latter, it is advisable to run several \code{\link{pfilter}} operations on the result of a \code{mif2} computatation.}
+\item{\code{\link{coef}}}{ extracts the point estimate }
+\item{\code{\link{eff.sample.size}}}{ extracts the effective sample size of the final filtering iteration}
+}
+Various other methods can be applied, including all the methods applicable to a \code{\link[=pfilter]{pfilterd_pomp}} object and all other \pkg{pomp} estimation algorithms and diagnostic methods.
+}
+
 \section{Specifying the perturbations}{
 
 The \code{rw.sd} function simply returns a list containing its arguments as unevaluated expressions.
@@ -135,11 +148,17 @@ Proc. Natl. Acad. Sci. U.S.A., 112:719--724, 2015.
 \seealso{
 Other particle filter methods: \code{\link{bsmc2}},
   \code{\link{cond.logLik}}, \code{\link{eff.sample.size}},
-  \code{\link{filter.mean}}, \code{\link{pfilter}},
-  \code{\link{pmcmc}}, \code{\link{pred.mean}},
-  \code{\link{pred.var}}
+  \code{\link{filter.mean}}, \code{\link{filter.traj}},
+  \code{\link{pfilter}}, \code{\link{pmcmc}},
+  \code{\link{pred.mean}}, \code{\link{pred.var}}
+
+Other \pkg{pomp} parameter estimation methods: \code{\link{abc}},
+  \code{\link{bsmc2}}, \code{\link{kalman}},
+  \code{\link{nlf}}, \code{\link{pmcmc}},
+  \code{\link{probe.match}}, \code{\link{spect.match}}
 }
 \author{
 Aaron A. King, Edward L. Ionides, Dao Nguyen
 }
+\concept{\pkg{pomp} parameter estimation methods}
 \concept{particle filter methods}

@@ -5,7 +5,8 @@
 ##'
 ##' @name pfilter
 ##' @rdname pfilter
-##' @aliases pfilter,ANY-method pfilter,missing-method pfilter
+##' @aliases pfilter pfilter,ANY-method pfilter,missing-method
+##' pfilterd_pomp-class
 ##' @author Aaron A. King
 ##' @family elementary POMP methods
 ##' @family particle filter methods
@@ -41,7 +42,6 @@
 ##'
 ##' @return
 ##' An object of class \sQuote{pfilterd_pomp}, which extends class \sQuote{pomp}.
-##'
 ##' @section Methods:
 ##' \describe{
 ##' \item{logLik}{ the estimated log likelihood  }

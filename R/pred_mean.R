@@ -3,15 +3,19 @@
 ##' The mean of the prediction distribution
 ##'
 ##' The prediction distribution is that of
-##' \deqn{X_t \vert y_1,\dots,y_{t-1},}{X_t | y_1,\dots,y_(t-1),}
-##' where \eqn{X_t}, \eqn{y_t} are the state vector and data, respectively,
-##' at time \eqn{t}.
+##' \deqn{X_t \vert Y_1=y^*_1,\dots,Y_{t-1}=y^*_{t-1},}{Xt | Y1=y1*,\dots,Y(t-1)=y(t-1)*,}
+##' where \eqn{X_t}{Xt}, \eqn{Y_t}{Yt} are the latent state and observable processes, respectively, and \eqn{y^*_t}{yt*} is the data, at time \eqn{t}.
+##'
+##' The prediction mean is therefore the expectation of this distribution
+##' \deqn{E[X_t \vert Y_1=y^*_1,\dots,Y_{t-1}=y^*_{t-1}].}{E[Xt | Y1=y1*,\dots,Y(t-1)=y(t-1)*].}
 ##'
 ##' @name pred.mean
 ##' @aliases pred.mean pred.mean,ANY-method pred.mean,missing-method
 ##' @include pfilter.R kalman.R
 ##' @rdname pred_mean
 ##' @family particle filter methods
+##' @inheritParams filter.mean
+##'
 NULL
 
 setGeneric(
@@ -41,8 +45,6 @@ setMethod(
 ##' @name pred.mean-kalmand_pomp
 ##' @aliases pred.mean,kalmand_pomp-method
 ##' @rdname pred_mean
-##' @inheritParams filter.mean-kalmand_pomp
-##'
 ##' @export
 setMethod(
   "pred.mean",
@@ -56,8 +58,6 @@ setMethod(
 ##' @name pred.mean-pfilterd_pomp
 ##' @aliases pred.mean,pfilterd_pomp-method
 ##' @rdname pred_mean
-##' @inheritParams filter.mean-kalmand_pomp
-##'
 ##' @export
 setMethod(
   "pred.mean",
