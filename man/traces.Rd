@@ -27,15 +27,15 @@
 \usage{
 \S4method{traces}{mif2d_pomp}(object, pars, transform = FALSE, ...)
 
-\S4method{traces}{mif2List}(object, ...)
+\S4method{traces}{mif2List}(object, pars, ...)
 
 \S4method{traces}{abcd_pomp}(object, pars, ...)
 
-\S4method{traces}{abcList}(object, ...)
+\S4method{traces}{abcList}(object, pars, ...)
 
 \S4method{traces}{pmcmcd_pomp}(object, pars, ...)
 
-\S4method{traces}{pmcmcList}(object, ...)
+\S4method{traces}{pmcmcList}(object, pars, ...)
 }
 \arguments{
 \item{object}{an object of class extending \sQuote{pomp}, the result of the application of a parameter estimation algorithm}

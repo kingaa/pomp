@@ -66,8 +66,8 @@ setMethod(
 setMethod(
   "traces",
   signature=signature(object="mif2List"),
-  definition=function (object, ...) {
-    lapply(object,traces,...)
+  definition=function (object, pars, ...) {
+    lapply(object,traces,pars,...)
   }
 )
 
@@ -82,8 +82,8 @@ setMethod(
   "traces",
   signature=signature(object="abcd_pomp"),
   definition=function (object, pars, ...) {
-    if (missing(pars)) pars <- colnames(object@traces)
-    coda::mcmc(object@traces[,pars,drop=FALSE])
+    tr <- traces.internal(object,pars=pars)
+    coda::mcmc(tr)
   }
 )
 
@@ -97,8 +97,8 @@ setMethod(
 setMethod(
   "traces",
   signature=signature(object="abcList"),
-  definition=function (object, ...) {
-    coda::mcmc.list(lapply(object,traces,...))
+  definition=function (object, pars, ...) {
+    coda::mcmc.list(lapply(object,traces,pars=pars))
   }
 )
 
@@ -115,8 +115,8 @@ setMethod(
   "traces",
   signature=signature(object="pmcmcd_pomp"),
   function (object, pars, ...) {
-    if (missing(pars)) pars <- colnames(object@traces)
-    coda::mcmc(object@traces[,pars,drop=FALSE])
+    tr <- traces.internal(object,pars=pars)
+    coda::mcmc(tr)
   }
 )
 
@@ -130,8 +130,8 @@ setMethod(
 setMethod(
   "traces",
   signature=signature(object="pmcmcList"),
-  definition=function (object, ...) {
-    coda::mcmc.list(lapply(object,traces,...))
+  definition=function (object, pars, ...) {
+    coda::mcmc.list(lapply(object,traces,pars=pars))
   }
 )
 
@@ -159,13 +159,11 @@ traces.internal <- function (object, pars, transform = FALSE, ...) {
     bad.pars <- setdiff(pars,colnames(retval))
     if (length(bad.pars)>0)
       stop(
-        "in ",sQuote("traces"),": name(s) ",
-        paste(sQuote(bad.pars),collapse=","),
-        " correspond to no parameter(s) in ",
-        if (transform) sQuote("traces(object,transform=TRUE)")
-        else sQuote("traces(object,transform=FALSE)"),
-        call.=FALSE
-      )
+        "in ",sQuote("traces"),": ",
+        ngettext(length(bad.pars),"parameter ","parameters "),
+        paste(sQuote(bad.pars),collapse=",")," not found.",call.=FALSE)
+
     retval[,pars,drop=FALSE]
+
   }
 }
