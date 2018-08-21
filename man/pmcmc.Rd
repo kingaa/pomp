@@ -66,10 +66,7 @@ In the latter case, \code{Np(k)} must be a single positive integer, representing
 \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
 \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
 and so on,
-while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
-When \code{object} is of class \sQuote{mif}, this is by default the same number of particles used in the \code{mif} iterations.
-
-One should omit \code{Np} if \code{params} is a matrix of parameters, with one column for each particle.  In this case, obviously, the number of particles is \code{ncol(params)}.}
+while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.}
 
 \item{tol}{positive numeric scalar;
 particles with likelihood less than \code{tol} are considered to be incompatible with the data.

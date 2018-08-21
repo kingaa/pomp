@@ -286,15 +286,10 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   if (verbose)
     cat("performing",Nmcmc,"PMCMC iteration(s) using",Np[1L],"particles\n")
 
-  traces <- matrix(
-    data=NA,
-    nrow=Nmcmc+1,
-    ncol=length(theta)+3,
+  traces <- array(data=NA_real_,dim=c(Nmcmc+1,length(theta)+3),
     dimnames=list(
       iteration=seq(from=0,to=Nmcmc,by=1),
-      variable=c("loglik","log.prior","nfail",names(theta))
-    )
-  )
+      variable=c("loglik","log.prior","nfail",names(theta))))
 
   if (.ndone==0L) { ## compute prior and likelihood on initial parameter vector
     pfp <- tryCatch(
@@ -314,7 +309,7 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
         .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
-        stop(ep,conditionMessage(e),call.=FALSE) # nocov
+        stop(ep,conditionMessage(e),call.=FALSE)
       }
     )
     log.prior <- tryCatch(
@@ -332,12 +327,9 @@ pmcmc.internal <- function (object, Nmcmc, proposal, Np, tol, max.fail, ...,
   traces[1,names(theta)] <- theta
   traces[1,c(1,2,3)] <- c(pfp@loglik,log.prior,pfp@nfail)
 
-  filt.t <- array(
-    data=0,
-    dim=replace(dim(pfp@filter.traj),2L,Nmcmc),
+  filt.t <- array(data=numeric(0),dim=replace(dim(pfp@filter.traj),2L,Nmcmc),
     dimnames=replace(dimnames(pfp@filter.traj),2L,
-      list(as.character(seq_len(Nmcmc))))
-  )
+      list(as.character(seq_len(Nmcmc)))))
 
   for (n in seq_len(Nmcmc)) { # main loop
 

@@ -6,7 +6,7 @@
 ##' @name pfilter
 ##' @rdname pfilter
 ##' @aliases pfilter pfilter,ANY-method pfilter,missing-method
-##' pfilterd_pomp-class
+##' pfilterd_pomp-class pfilterd_pomp
 ##' @author Aaron A. King
 ##' @family elementary POMP methods
 ##' @family particle filter methods
@@ -15,6 +15,7 @@
 ##' @importFrom stats setNames
 ##'
 ##' @inheritParams pomp
+##'
 ##' @param Np the number of particles to use.
 ##' This may be specified as a single positive integer, in which case the same number of particles will be used at each timestep.
 ##' Alternatively, if one wishes the number of particles to vary across timesteps, one may specify \code{Np} either as a vector of positive integers of length \preformatted{length(time(object,t0=TRUE))} or as a function taking a positive integer argument.
@@ -23,18 +24,22 @@
 ##' \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
 ##' and so on,
 ##' while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
-##' When \code{object} is of class \sQuote{mif}, this is by default the same number of particles used in the \code{mif} iterations.
 ##'
 ##' One should omit \code{Np} if \code{params} is a matrix of parameters, with one column for each particle.  In this case, obviously, the number of particles is \code{ncol(params)}.
 ##' @param tol positive numeric scalar;
 ##' particles with likelihood less than \code{tol} are considered to be incompatible with the data.
 ##' See the section on \emph{Filtering Failures} below for more information.
+##'
 ##' @param max.fail integer; the maximum number of filtering failures allowed (see below).
 ##' If the number of filtering failures exceeds this number, execution will terminate with an error.
 ##' By default, \code{max.fail} is set to infinity, so no error can be triggered.
+##'
 ##' @param pred.mean logical; if \code{TRUE}, the prediction means are calculated for the state variables and parameters.
+##'
 ##' @param pred.var logical; if \code{TRUE}, the prediction variances are calculated for the state variables and parameters.
+##'
 ##' @param filter.mean logical; if \code{TRUE}, the filtering means are calculated for the state variables and parameters.
+##'
 ##' @param filter.traj logical; if \code{TRUE}, a filtered trajectory is returned for the state variables and parameters.
 ##' @param save.states,save.params logical.
 ##' If \code{save.states=TRUE}, the state-vector for each particle at each time is saved in the \code{saved.states} slot of the returned \sQuote{pfilterd_pomp} object.
@@ -70,8 +75,9 @@
 ##' eff.sample.size(pf)             ## effective sample size
 ##' logLik(pfilter(pf))      	## run it again with 1000 particles
 ##' ## run it again with 2000 particles
-##' pf <- pfilter(pf,Np=2000,filter.mean=TRUE)
+##' pf <- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE)
 ##' fm <- filter.mean(pf)    	## extract the filtering means
+##' ft <- filter.traj(pf)    	## one draw from the smoothing distribution
 ##'
 NULL
 
@@ -233,8 +239,7 @@ setMethod(
     if (missing(Np)) Np <- data@Np
     if (missing(tol)) tol <- data@tol
 
-    pfilter(as(data,"pomp"),params=params,Np=Np,tol=tol,...,
-      verbose=verbose)
+    pfilter(as(data,"pomp"),params=params,Np=Np,tol=tol,...,verbose=verbose)
 
   }
 )
@@ -247,7 +252,12 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
 
   ep <- paste0("in ",sQuote("pfilter"),": ")
 
-  object <- pomp(object,...)
+  object <- tryCatch(
+    pomp(object,...),
+    error = function (e) {
+      stop(ep,conditionMessage(e),call.=FALSE)
+    }
+  )
 
   gnsi <- as.logical(.getnativesymbolinfo)
   pred.mean <- as.logical(pred.mean)
@@ -289,7 +299,8 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   if (length(Np) == 1)
     Np <- rep(Np,times=ntimes+1)
   else if (length(Np) != (ntimes+1))
-    stop(ep,sQuote("Np")," must have length 1 or length ",ntimes+1,".",call.=FALSE)
+    stop(ep,sQuote("Np")," must have length 1 or length ",
+      ntimes+1,".",call.=FALSE)
 
   if (!all(is.finite(Np)) || any(Np <= 0))
     stop(ep,"number of particles, ",sQuote("Np"),
@@ -318,8 +329,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   pompLoad(object,verbose=verbose)
   on.exit(pompUnload(object,verbose=verbose))
 
-  init.x <- rinit(object,params=params,nsim=Np[1L],
-    .getnativesymbolinfo=gnsi)
+  init.x <- rinit(object,params=params,nsim=Np[1L],.getnativesymbolinfo=gnsi)
   statenames <- rownames(init.x)
   nvars <- nrow(init.x)
   x <- init.x
@@ -343,53 +353,29 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
 
   ## set up storage for prediction means, variances, etc.
   if (pred.mean) {
-    pred.m <- matrix(
-      data=0,
-      nrow=nvars,
-      ncol=ntimes,
-      dimnames=list(
-        variable=statenames,
-        time=time(object))
-    )
+    pred.m <- array(data=numeric(1),dim=c(nvars,ntimes),
+      dimnames=list(variable=statenames,time=time(object)))
   } else {
     pred.m <- array(data=numeric(0),dim=c(0,0))
   }
 
   if (pred.var) {
-    pred.v <- matrix(
-      data=0,
-      nrow=nvars,
-      ncol=ntimes,
-      dimnames=list(
-        variable=statenames,
-        time=time(object))
-    )
+    pred.v <- array(data=numeric(1),dim=c(nvars,ntimes),
+      dimnames=list(variable=statenames,time=time(object)))
   } else {
     pred.v <- array(data=numeric(0),dim=c(0,0))
   }
 
   if (filter.mean) {
-    filt.m <- matrix(
-      data=0,
-      nrow=nvars,
-      ncol=ntimes,
-      dimnames=list(
-        variable=statenames,
-        time=time(object))
-    )
+    filt.m <- array(data=numeric(1),dim=c(nvars,ntimes),
+      dimnames=list(variable=statenames,time=time(object)))
   } else {
     filt.m <- array(data=numeric(0),dim=c(0,0))
   }
 
   if (filter.traj) {
-    filt.t <- array(
-      data=0,
-      dim=c(nvars,1,ntimes+1),
-      dimnames=list(
-        variable=statenames,
-        rep=1,
-        time=times)
-    )
+    filt.t <- array(data=numeric(1),dim=c(nvars,1,ntimes+1),
+      dimnames=list(variable=statenames,rep=1,time=times))
   } else {
     filt.t <- array(data=numeric(0),dim=c(0,0,0))
   }
@@ -403,7 +389,7 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
         xstart=x,
         times=times[c(nt,nt+1)],
         params=params,
-        offset=1,
+        offset=1L,
         .getnativesymbolinfo=gnsi
       ),
       error = function (e) {
@@ -479,31 +465,21 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
     x <- xx$states
     params <- xx$params
 
-    if (pred.mean)
-      pred.m[,nt] <- xx$pm
-    if (pred.var)
-      pred.v[,nt] <- xx$pv
-    if (filter.mean)
-      filt.m[,nt] <- xx$fm
-    if (filter.traj)
-      pedigree[[nt]] <- xx$ancestry
+    if (pred.mean) pred.m[,nt] <- xx$pm
+    if (pred.var) pred.v[,nt] <- xx$pv
+    if (filter.mean) filt.m[,nt] <- xx$fm
+    if (filter.traj) pedigree[[nt]] <- xx$ancestry
 
     if (all.fail) { ## all particles are lost
       nfail <- nfail+1
-      if (verbose)
-        message("filtering failure at time t = ",times[nt+1])
-      if (nfail>max.fail)
-        stop(ep,"too many filtering failures",call.=FALSE)
+      if (verbose) message("filtering failure at time t = ",times[nt+1])
+      if (nfail>max.fail) stop(ep,"too many filtering failures",call.=FALSE)
     }
 
     if (save.states || filter.traj) {
       xparticles[[nt]] <- x
-      dimnames(xparticles[[nt]]) <- setNames(dimnames(xparticles[[nt]]),c("variable","rep"))
-    }
-
-    if (save.params) {
-      pparticles[[nt]] <- params
-      dimnames(pparticles[[nt]]) <- setNames(dimnames(pparticles[[nt]]),c("variable","rep"))
+      dimnames(xparticles[[nt]]) <- setNames(dimnames(xparticles[[nt]]),
+        c("variable","rep"))
     }
 
     if (verbose && (nt%%5==0))
@@ -529,15 +505,8 @@ pfilter.internal <- function (object, params, Np, tol, max.fail,
   if (!save.states) xparticles <- list()
 
   if (nfail>0)
-    warning(
-      ep,nfail,
-      ngettext(
-        nfail,
-        msg1=" filtering failure occurred.",
-        msg2=" filtering failures occurred."
-      ),
-      call.=FALSE
-    )
+    warning(ep,nfail,"filtering ",ngettext(nfail,"failure","failures"),
+      " occurred.",call.=FALSE)
 
   new(
     "pfilterd_pomp",

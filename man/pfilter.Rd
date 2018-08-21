@@ -6,6 +6,7 @@
 \alias{pfilter,ANY-method}
 \alias{pfilter,missing-method}
 \alias{pfilterd_pomp-class}
+\alias{pfilterd_pomp}
 \alias{pfilter-data.frame}
 \alias{pfilter,data.frame-method}
 \alias{pfilter-pomp}
@@ -53,10 +54,7 @@ In the latter case, \code{Np(k)} must be a single positive integer, representing
 \code{Np(0)} is the number of particles to use going from \code{timezero(object)} to \code{time(object)[1]},
 \code{Np(1)}, from \code{timezero(object)} to \code{time(object)[1]},
 and so on,
-while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.
-When \code{object} is of class \sQuote{mif}, this is by default the same number of particles used in the \code{mif} iterations.
-
-One should omit \code{Np} if \code{params} is a matrix of parameters, with one column for each particle.  In this case, obviously, the number of particles is \code{ncol(params)}.}
+while when \code{T=length(time(object,t0=TRUE))}, \code{Np(T)} is the number of particles to sample at the end of the time-series.}
 
 \item{tol}{positive numeric scalar;
 particles with likelihood less than \code{tol} are considered to be incompatible with the data.
@@ -119,8 +117,9 @@ cond.logLik(pf)			## conditional log-likelihoods
 eff.sample.size(pf)             ## effective sample size
 logLik(pfilter(pf))      	## run it again with 1000 particles
 ## run it again with 2000 particles
-pf <- pfilter(pf,Np=2000,filter.mean=TRUE)
+pf <- pfilter(pf,Np=2000,filter.mean=TRUE,filter.traj=TRUE)
 fm <- filter.mean(pf)    	## extract the filtering means
+ft <- filter.traj(pf)    	## one draw from the smoothing distribution
 
 }
 \references{

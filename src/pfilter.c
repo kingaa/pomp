@@ -37,6 +37,7 @@ SEXP pfilter_computations (SEXP x, SEXP params, SEXP Np,
   xx = REAL(x);
   PROTECT(Xnames = GET_ROWNAMES(GET_DIMNAMES(x))); nprotect++;
 
+  PROTECT(params = as_matrix(params)); nprotect++;
   PROTECT(dimP = GET_DIM(params)); nprotect++;
   dim = INTEGER(dimP);
   npars = dim[0];
