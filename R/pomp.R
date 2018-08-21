@@ -179,7 +179,7 @@ pomp <- function (data, times, t0, ...,
       sQuote("pomp"),".",call.=FALSE)
 
   ## return as quickly as possible if no work is to be done
-  if (missing(times) && missing(t0) &&
+  if (is(data,"pomp") && missing(times) && missing(t0) &&
       missing(rinit) && missing(rprocess) && missing(dprocess) &&
       missing(rmeasure) && missing(dmeasure) && missing(skeleton) &&
       missing(rprior) && missing(dprior) && missing(partrans) &&

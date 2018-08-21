@@ -8,7 +8,7 @@ library(magrittr)
 try(pomp())
 try(pomp("bob"))
 try(pomp(times=3))
-stopifnot(is.null(pomp(NULL)))
+try(pomp(NULL))
 try(data.frame(a=1:10,a=1:10,check.names=FALSE) %>% pomp(t0=4))
 try(data.frame(a=1:10,b=1:10) %>% pomp(t0=4))
 try(data.frame(a=1:10,b=1:10) %>% pomp(times="b"))
@@ -172,4 +172,3 @@ po2 %>% simulate(seed=4358686) %>% as.data.frame()
 pomp(po2,covar=NULL)@covar
 try(po2 %>% pomp(covar="bob"))
 try(po2 %>% pomp(rmeasure=function(x)x))
-
