@@ -13,9 +13,25 @@
 ##' @name nlf
 ##' @rdname nlf
 ##' @include pomp_class.R simulate.R
-##' @importFrom stats .lm.fit optim setNames
-##'
+##' @importFrom stats .lm.fit optim setNames dnorm .lm.fit sd cov
+##' @importFrom mvtnorm dmvnorm
 ##' @aliases nlf nlf,missing-method nlf,ANY-method
+##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
+##' @references
+##' Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B.
+##' T. and Nychka D. W. (1998) Noise and nonlinearity in measles epidemics:
+##' combining mechanistic and statistical approaches to population modeling.
+##' \emph{American Naturalist} \bold{151}, 425--440.
+##'
+##' Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P.,
+##' McCauley, E., Nisbet, R. M. and Wood S. N. (1999) Why do populations cycle?
+##' A synthesis of statistical and mechanistic modeling approaches.
+##' \emph{Ecology} \bold{80}, 1789--1805.
+##'
+##' Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J.,
+##' Murdoch, W. W. and Turchin, P. (2005) Population cycles in the pine looper
+##' moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
+##' \emph{Ecological Monographs} \bold{75}, 259--276.
 ##'
 ##' @param object A \sQuote{pomp} object, with the data and model to fit to it.
 ##' @param start Named numeric vector with guessed parameters.
@@ -73,23 +89,6 @@
 ##' @return An object of class \sQuote{nlfd_pomp}.  \code{logLik} applied to
 ##' such an object returns the log quasi likelihood.
 ##'
-##' @author Stephen P. Ellner, Bruce E. Kendall, Aaron A. King
-##'
-##' @references
-##' Ellner, S. P., Bailey, B. A., Bobashev, G. V., Gallant, A. R., Grenfell, B.
-##' T. and Nychka D. W. (1998) Noise and nonlinearity in measles epidemics:
-##' combining mechanistic and statistical approaches to population modeling.
-##' \emph{American Naturalist} \bold{151}, 425--440.
-##'
-##' Kendall, B. E., Briggs, C. J., Murdoch, W. W., Turchin, P., Ellner, S. P.,
-##' McCauley, E., Nisbet, R. M. and Wood S. N. (1999) Why do populations cycle?
-##' A synthesis of statistical and mechanistic modeling approaches.
-##' \emph{Ecology} \bold{80}, 1789--1805.
-##'
-##' Kendall, B. E., Ellner, S. P., McCauley, E., Wood, S. N., Briggs, C. J.,
-##' Murdoch, W. W. and Turchin, P. (2005) Population cycles in the pine looper
-##' moth (\emph{Bupalus piniarius}): dynamical tests of mechanistic hypotheses.
-##' \emph{Ecological Monographs} \bold{75}, 259--276.
 NULL
 
 ## nonlinear forecasting
@@ -151,6 +150,24 @@ setGeneric(
   "nlf",
   function (object, ...)
     standardGeneric("nlf")
+)
+
+setMethod(
+  "nlf",
+  signature=signature(object="missing"),
+  definition=function (...) {
+    stop("in ",sQuote("nlf"),": ",sQuote("object"),
+      " is a required argument",call.=FALSE)
+  }
+)
+
+setMethod(
+  "nlf",
+  signature=signature(object="ANY"),
+  definition=function (object, ...) {
+    stop(sQuote("nlf")," is not defined for objects of class ",
+      sQuote(class(object)),call.=FALSE)
+  }
 )
 
 ##' @name nlf-pomp
@@ -264,22 +281,6 @@ setMethod(
       tensor=tensor, nconverge=nconverge, seed=seed, transform=transform,
       transform.data=transform.data, nrbf=nrbf, method=method,
       lql.frac=lql.frac, se.par.frac=se.par.frac, ...)
-  }
-)
-
-setMethod(
-  "nlf",
-  signature=signature(object="missing"),
-  definition=function (...) {
-    stop("in ",sQuote("nlf"),": ",sQuote("object")," is a required argument",call.=FALSE)
-  }
-)
-
-setMethod(
-  "nlf",
-  signature=signature(object="ANY"),
-  definition=function (object, ...) {
-    stop(sQuote("nlf")," is not defined when ",sQuote("object")," is of class ",sQuote(class(object)),call.=FALSE)
   }
 )
 
@@ -626,4 +627,330 @@ nlf.internal <- function (object, start, est, lags, period, tensor,
     se=opt$se,
     logql=-opt$value
   )
+}
+
+## Evaluates the NLF objective function given a POMP object.
+## Version 0.1, 3 Dec. 2007, Bruce E. Kendall & Stephen P. Ellner
+## Version 0.2, May 2008, Stephen P. Ellner
+###
+### Computes the vector of log quasi-likelihood values at the observations
+### Note that the log QL itself is returned, not the negative log QL,
+### so a large NEGATIVE value is used to flag bad parameters
+###
+
+nlf.objfun <- function (...)
+  -sum(nlf.lql(...),na.rm=TRUE)
+
+nlf.lql <- function (params.fitted, object, params, par.index,
+  transform = FALSE,
+  times, t0, lags, period, tensor, seed = NULL,
+  transform.data = identity, nrbf = 4, verbose = FALSE,
+  bootstrap = FALSE, bootsamp = NULL) {
+
+  ep <- paste0("in ",sQuote("nlf.lql"),": ")
+
+  transform <- as.logical(transform)
+
+  FAILED =  -99999999999
+  params[par.index] <- params.fitted
+
+  if (transform)
+    params <- partrans(object,params,dir="fromEst")
+
+  data.ts <- obs(object)
+
+  y <- tryCatch(
+    simulate(object,times=times,t0=t0,params=params,seed=seed,
+      obs=TRUE,states=FALSE),
+    error = function (e) {
+      stop(ep,"simulation error: ",conditionMessage(e),call.=FALSE) # nocov
+    }
+  )
+
+  ## Test whether the model time series is valid
+  if (!all(is.finite(y))) return(FAILED)
+
+  model.ts <- array(
+    dim=c(nrow(data.ts),length(times)),
+    dimnames=list(rownames(data.ts),NULL)
+  )
+  model.ts[,] <- apply(y[,1,,drop=FALSE],c(2,3),transform.data)
+  data.ts[,] <- apply(data.ts,2,transform.data)
+
+  tryCatch(
+    nlf.guts(
+      data.mat=data.ts,
+      data.times=time(object),
+      model.mat=model.ts,
+      model.times=times,
+      lags=lags,
+      period=period,
+      tensor=tensor,
+      nrbf=nrbf,
+      bootstrap=bootstrap,
+      bootsamp=bootsamp
+    ),
+    error = function (e) {
+      stop(ep,conditionMessage(e),call.=FALSE) # nocov
+    }
+  )
+}
+
+## Key 'nlf' function
+nlf.guts <- function (data.mat, data.times, model.mat, model.times,
+  lags, period, tensor, nrbf = 4, bootstrap = FALSE, bootsamp = NULL) {
+
+  ## Version 1.0, 4 December 2007, S.P. Ellner and Bruce E. Kendall
+  ## Verstion 1.1, 19 June 2008, S.P. Ellner and A.A. King.
+
+  ## Peculiarities of the code
+  ## 1. No basis functions involving cross terms of state variables
+  ## 2. Model and data time series are assumed to be matrices with the same number of
+  ##    rows (= number of observation vars in data set = number of obs. vars. simulated by model)
+  ##    This is formally a requirement of pomp objects, and here it is absolutely required.
+
+
+  #####################################################################################
+  ## ARGUMENTS:
+  ## data.mat = matrix of data time series, nobs x ntimes.data
+  ## model.mat = matrix of model time series, nobs x ntimes.sim
+  ## lags = vector of lag times for forecasting y(t) = f(y(t-lag1),y(t-lag2),....)+error
+  ## nrbf = number of radial basis functions
+  ## period: period=NA means the model is nonseasonal. period=integer>0 is the period of
+  ##         seasonal forcing in 'real time' (the units of model.times).
+  ## tensor: logical. if FALSE, the fitted model is a gam with time(mod period) as
+  ##         one of the predictors, i.e. a gam with time-varying intercept.
+  ##         if TRUE, the fitted model is a gam with lagged state variables as
+  ##         predictors and time-periodic coefficients, constructed using tensor
+  ##         products of basis functions of state variables with basis functions of time.
+  ##
+  ##       NOTE: periodic models are constructed so that the time variable on the
+  ##       right hand side corresponds to the observation time of the predictee,
+  ##       not of the predictors
+  ##
+  ##
+  ## VALUE: the NLF approximation to the log likelihood of the data series
+  ##        under the forecasting model based on model.mat. The approximation used
+  ##        here is a generalized additive model for each observation variable, conditional
+  ##        on lagged values of all observation variables, with multivariate normal errors.
+  ##        The return from this function is the vector of log quasi-likelihood values at
+  ##        the data points; this must be summed to get the log quasiliklihood function.
+  ##
+  ## IMPORTANT NOTE TO FUTURE PROGRAMMERS: It may appear at first glance that basis
+  ## functions for the data series, and other things related to the data series, could be
+  ## constructed once and for all rather than rebuilt on each call to this function.
+  ## THIS IS NOT TRUE. The basis functions are constructed anew on each call using
+  ## information from the model-simulated time series, and this feature is important
+  ## for reliable NLF parameter estimation because it rules out spurious good fits
+  ## that really are due to extrapolation far from the model-simulated time series.
+  #######################################################################################
+
+
+  FAILED = -999999999;
+
+  nvar <- nrow(data.mat)
+  multivar <- (nvar>1)
+
+  ## do a lagged embedding for observation variable 1
+  data.ts <- data.mat[1,]
+  model.ts <- model.mat[1,]
+
+  ## Set up the RBF knots
+  xm <- diff(range(model.ts))
+  rbf.knots <- min(model.ts)+seq(-0.1,1.1,length=nrbf)*xm
+  s <- 0.3*xm
+  fac <- -1/(2*s^2)
+  if (!is.finite(fac)) return(FAILED)
+  if (fac==0) return(FAILED)
+
+  seas <- (!is.na(period)&&abs(period)>0)
+
+  if (seas) {
+    seas.sim <- model.times%%abs(period)
+    seas.data <- data.times%%abs(period)
+  } else {
+    seas.sim <- NULL
+    seas.data <- NULL
+  }
+
+  ## Lag the data and set up the predicted values & seasonal indices
+  Lags.model <- make.lags.nlf(model.ts,lags=lags,cov=seas.sim)
+  Lags.data <- make.lags.nlf(data.ts,lags=lags,cov=seas.data)
+
+  if (bootstrap) {
+    Lags.data$x <- Lags.data$x[bootsamp,]
+    Lags.data$y <- Lags.data$y[bootsamp]
+    if (seas) Lags.data$cov <- Lags.data$cov[bootsamp]
+  }
+
+  data.pred <- matrix(Lags.data$y,ncol=1)
+  model.pred <- matrix(Lags.model$y,ncol=1)
+
+  rbfbasis.model <- make.rbfbasis(Lags.model$x,knots=rbf.knots,fac=fac)
+  rbfbasis.data <- make.rbfbasis(Lags.data$x,knots=rbf.knots,fac=fac)
+
+  if (seas) {
+    ## Set up the RBF knots
+    rbf.cov.knots <- seq(-0.1,1.1,length=nrbf)*period
+    s <- 0.3*period
+    fac.cov <- -1/(2*s^2)
+    if (!is.finite(fac.cov)) return(FAILED)
+    if (fac.cov==0) return(FAILED)
+
+    rbfbasis.cov.model <- make.rbfbasis(Lags.model$cov,knots=rbf.cov.knots,fac=fac.cov)
+    rbfbasis.cov.data <- make.rbfbasis(Lags.data$cov,knots=rbf.cov.knots,fac=fac.cov)
+  }
+
+  if (multivar) {
+    for (jvar in seq(from=2,to=nvar,by=1)) {
+      data.ts <- data.mat[jvar,]
+      model.ts <- model.mat[jvar,]
+
+      ## Set up the RBF knots
+      xm <- diff(range(model.ts))
+      rbf.knots <- min(model.ts)+seq(-0.1,1.1,length=nrbf)*xm
+      s <- 0.3*xm
+      fac <- -1/(2*s^2)
+      if (fac==0) return(FAILED)
+
+      ## Lag the data and set up the predicted values & seasonal indices
+      Lags.model <- make.lags.nlf(model.ts,lags=lags,cov=seas.sim)
+      Lags.data <- make.lags.nlf(data.ts,lags=lags,cov=seas.data)
+
+      if (bootstrap) {
+        Lags.data$x=Lags.data$x[bootsamp,]
+        Lags.data$y=Lags.data$y[bootsamp]
+      }
+
+      data.pred <- cbind(data.pred,Lags.data$y)
+      model.pred <- cbind(model.pred,Lags.model$y)
+      rbfbasis.model <- cbind(rbfbasis.model,make.rbfbasis(Lags.model$x,knots=rbf.knots,fac=fac))
+      rbfbasis.data <- cbind(rbfbasis.data,make.rbfbasis(Lags.data$x,knots=rbf.knots,fac=fac))
+
+    }
+  }
+
+  if (seas) {
+    if (tensor) {
+      ## make gam coefficients time-dependent
+      rbfbasis.model <- make.tensorbasis.nlf(rbfbasis.model,rbfbasis.cov.model)
+      rbfbasis.data <- make.tensorbasis.nlf(rbfbasis.data,rbfbasis.cov.data)
+    } else {
+      ## add time-varying intercept
+      rbfbasis.model <- cbind(rbfbasis.model,rbfbasis.cov.model)
+      rbfbasis.data <- cbind(rbfbasis.data,rbfbasis.cov.data)
+    }
+  }
+
+  prediction.errors <- matrix(0,dim(data.pred)[1],nvar)
+  model.residuals <- matrix(0,dim(model.pred)[1],nvar)
+
+  for (jvar in seq_len(nvar)) {
+    model.lm <- .lm.fit(rbfbasis.model,model.pred[,jvar])
+    model.residuals[,jvar] <- model.lm$residuals
+    ck <- model.lm$coefficients
+    fitted.data <- rbfbasis.data%*%matrix(ck,ncol=1)
+    prediction.errors[,jvar] <- data.pred[,jvar]-fitted.data
+  }
+
+  if (nvar==1) {
+    sigma.model <- sd(model.residuals[,1])
+    LQL <- dnorm(prediction.errors[,1],mean=0,sd=sigma.model,log=TRUE)
+  } else {
+    sigma.model <- cov(model.residuals)
+    LQL <- dmvnorm(prediction.errors,sigma=sigma.model,log=TRUE)
+    ## NOTE: This could be improved using GLS.
+  }
+
+  LQL
+}
+
+make.lags.nlf <- function(x, lags, cov = NULL, nobs = 10000) {
+  x <- as.matrix(x)
+  xd <- ncol(x)
+  m <- length(lags)
+  N <- min(nobs,nrow(x)-max(lags))
+  n <- min(nobs,N)
+  if (N > nobs)
+    warning("in ",sQuote("make.lags.nlf"),
+      ": series length truncated to default in make.lags",call.=FALSE)
+  start <- max(lags)+1
+  temp <- matrix(0,ncol=xd*length(lags),nrow=n)
+  for (k in seq_len(length(lags))) {
+    a <- start-lags[k]
+    b <- a + n - 1
+    temp[,(1:xd)+(k-1)*xd] <- x[(a:b),]
+  }
+  a <- start
+  b <- a + n - 1
+  if(xd == 1)
+    lab <- format(paste0("lag",rep(lags,rep(xd,length(lags)))))
+  else
+    lab <- format(paste0(rep(seq_len(xd),length(lags)),"lag",rep(lags,rep(xd,length(lags)))))
+  dimnames(temp) <- list(NULL,lab)
+  skip <- NA
+  if (!is.null(cov)) {
+    cov <- as.matrix(cov)
+    cov <- cov[a:b,,drop=FALSE]
+    skip <- (1:ncol(cov))+m*xd
+  }
+  if(xd == 1)
+    y <- c(x[a:b])
+  else
+    y <- x[a:b,]
+  list(
+    x=temp,
+    y=y,
+    nvar=m,
+    cov=cov,
+    lags=lags,
+    skip=skip,
+    start=a,
+    end=b
+  )
+}
+
+make.rbfbasis <- function (X, knots, fac) {
+  X1 <- X-knots[1]
+  nknots <- length(knots)
+  if (nknots>1) {
+    for (j in seq(from=2,to=nknots,by=1)) {
+      X1 <- cbind(X1,X-knots[j])
+    }
+  }
+  exp(fac*(X1^2))
+}
+
+## GAUSS trimr function:
+## trims n1 rows from the start,
+## n2 rows from the end of a matrix or vector
+trimr <- function (a, n1, n2) {
+  a[seq.int(from=n1+1,to=NROW(a)-n2,by=1)]
+}
+
+Newey.West <- function(x, y, maxlag) {
+  w <- 1-seq_len(maxlag)/(maxlag+1)
+  out <- mean(x*y,na.rm=TRUE)
+  for (i in seq_len(maxlag)) {
+    out <- out+
+      w[i]*mean(trimr(x,i,0)*trimr(y,0,i),na.rm=TRUE)+
+      w[i]*mean(trimr(y,i,0)*trimr(x,0,i),na.rm=TRUE)
+  }
+  out
+}
+
+make.tensorbasis.nlf <- function(A,B) {
+  if(nrow(A)!=nrow(B))
+    stop("in ",sQuote("make.tensorbasis.nlf"),
+      ": incompatible matrices in make.tensorbasis",call.=FALSE)
+  ncol.A <- ncol(A)
+  ncol.B <- ncol(B)
+  Tmat <- matrix(0,nrow(A),ncol.A*ncol.B)
+  for (i in seq_len(ncol.A)) {
+    start <- (i-1)*ncol.B
+    for (j in seq_len(ncol.B)) {
+      Tmat[,start+j] <- A[,i]*B[,j]
+    }
+  }
+  Tmat
 }
